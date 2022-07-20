@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<com5003dconfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+
+<connectivity>
+    <debuglevel>1</debuglevel>
+    <ethernet>
+        <ipadress>
+            <resourcemanager>127.0.0.1</resourcemanager>
+        </ipadress>
+        <port>
+            <protobufserver>6307</protobufserver>
+            <scpiserver>6308</scpiserver>
+            <resourcemanager>6312</resourcemanager>
+        </port>
+        <scpiactive>1</scpiactive>
+    </ethernet>
+    <i2c>
+        <device>
+            <node>/dev/i2c-0</node>
+        </device>
+        <adress>
+            <master>32</master>
+            <atmel>33</atmel>
+            <flash>80</flash>
+        </adress>
+    </i2c>
+    <fpga>
+        <device>
+            <node>/dev/zFPGA1reg</node>
+        </device>
+    </fpga>
+</connectivity>
+	
+<resource>
+    <sense>
+        <m0>
+            <alias1>UL1</alias1>
+            <alias2>REF1</alias2>
+            <ctrlchannel>1</ctrlchannel>
+            <dspchannel>0</dspchannel>
+            <overloadbit>-1</overloadbit>
+            <avail>true</avail>
+        </m0>
+        <m1>
+            <alias1>UL2</alias1>
+            <alias2>REF2</alias2>
+            <ctrlchannel>2</ctrlchannel>
+            <dspchannel>2</dspchannel>
+            <overloadbit>-1</overloadbit>
+            <avail>true</avail>
+        </m1>
+        <m2>
+            <alias1>UL3</alias1>
+            <alias2>REF3</alias2>
+            <ctrlchannel>3</ctrlchannel>
+            <dspchannel>4</dspchannel>
+            <overloadbit>-1</overloadbit>
+            <avail>true</avail>
+        </m2>
+        <m3>
+            <alias1>IL1</alias1>
+            <alias2>REF4</alias2>
+            <ctrlchannel>4</ctrlchannel>
+            <dspchannel>1</dspchannel>
+            <overloadbit>0</overloadbit>
+            <avail>true</avail>
+        </m3>
+        <m4>
+            <alias1>IL2</alias1>
+            <alias2>REF5</alias2>
+            <ctrlchannel>5</ctrlchannel>
+            <dspchannel>3</dspchannel>
+            <overloadbit>1</overloadbit>
+            <avail>true</avail>
+        </m4>
+        <m5>
+            <alias1>IL3</alias1>
+            <alias2>REF6</alias2>
+            <ctrlchannel>6</ctrlchannel>
+            <dspchannel>5</dspchannel>
+            <overloadbit>2</overloadbit>
+            <avail>true</avail>
+        </m5>
+    </sense>
+
+    <sample>
+        <s0>
+            <alias>S1</alias>
+            <avail>true</avail>
+        </s0>
+    </sample>
+
+    <source>
+        <fpzout>
+            <fo0>
+                <alias>Fout1</alias>
+                <dspserver>6310</dspserver>
+                <dspchannel>0</dspchannel>
+                <avail>true</avail>
+            </fo0>
+            <fo1>
+                <alias>Fout2</alias>
+                <dspserver>6310</dspserver>
+                <dspchannel>1</dspchannel>
+                <avail>true</avail>
+            </fo1>
+            <fo2>
+                <alias>Fout3</alias>
+                <dspserver>6310</dspserver>
+                <dspchannel>2</dspchannel>
+                <avail>true</avail>
+            </fo2>
+            <fo3>
+                <alias>Fout4</alias>
+                <dspserver>6310</dspserver>
+                <dspchannel>3</dspchannel>
+                <avail>true</avail>
+            </fo3>
+        </fpzout>
+    </source>
+
+    <frqinput>
+        <fi0>
+            <alias>Fin1</alias>
+            <avail>true</avail>
+        </fi0>
+        <fi1>
+            <alias>Fin2</alias>
+            <avail>true</avail>
+        </fi1>
+        <fi2>
+            <alias>Fin3</alias>
+            <avail>true</avail>
+        </fi2>
+        <fi3>
+            <alias>Fin4</alias>
+            <avail>true</avail>
+        </fi3>
+    </frqinput>
+
+    <schead>
+        <sh0>
+            <alias>SC1</alias>
+            <avail>true</avail>
+        </sh0>
+    </schead>
+
+    <hkey>
+        <hk0>
+            <alias>HK1</alias>
+            <avail>true</avail>
+        </hk0>
+    </hkey>
+</resource>
+
+</com5003dconfig> 

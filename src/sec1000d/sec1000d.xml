@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<sec1000dconfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+    <connectivity>
+        <debuglevel>0</debuglevel>
+        <ethernet>
+            <ipadress>
+                <resourcemanager>127.0.0.1</resourcemanager>
+            </ipadress>
+            <port>
+                <server>6305</server>
+                <resourcemanager>6312</resourcemanager>
+            </port>
+        </ethernet>
+        <fpga>
+            <device>
+                <node>/dev/zFPGA1ec</node>
+            </device>
+        </fpga>
+        <inputs>
+            <n>11</n>
+            <inp1>
+                <name>sh0</name>
+                <muxer>5</muxer>
+            </inp1>
+            <inp2>
+                <name>fi0</name>
+                <muxer>0</muxer>
+            </inp2>
+            <inp3>
+                <name>fi1</name>
+                <muxer>1</muxer>
+            </inp3>
+            <inp4>
+                <name>fi2</name>
+                <muxer>2</muxer>
+            </inp4>
+            <inp5>
+                <name>fi3</name>
+                <muxer>3</muxer>
+            </inp5>
+            <inp6>
+                <name>fo0</name>
+                <muxer>27</muxer>
+            </inp6>
+            <inp7>
+                <name>fo1</name>
+                <muxer>28</muxer>
+            </inp7>
+            <inp8>
+                <name>fo2</name>
+                <muxer>29</muxer>
+            </inp8>
+            <inp9>
+                <name>fo3</name>
+                <muxer>30</muxer>
+            </inp9>
+            <inp10>
+                <name>hk0</name>
+                <muxer>6</muxer>
+            </inp10>
+            <inp11>
+                <name>t1ms</name>
+                <muxer>7</muxer>
+            </inp11>
+        </inputs>
+    </connectivity>
+
+    <resource>
+        <ecalcchannel>
+            <n>8</n>
+            <base>0</base>
+            <irqbase>2048</irqbase>
+        </ecalcchannel>
+    </resource>
+
+</sec1000dconfig>
+

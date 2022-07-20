@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <xs:simpleType name="debugtype">
+        <xs:restriction base="xs:integer">
+            <xs:maxInclusive value='7'/>
+            <xs:minInclusive value='0'/>
+        </xs:restriction>
+    </xs:simpleType>
+
+
+    <xs:simpleType name="porttype">
+        <xs:restriction base="xs:integer">
+            <xs:maxInclusive value='60000'/>
+            <xs:minExclusive value='1024'/>
+        </xs:restriction>
+    </xs:simpleType>
+
+
+    <xs:simpleType name="ipadresstype">
+        <xs:restriction base="xs:string">
+            <xs:pattern value = '\b(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b'/>
+        </xs:restriction>
+    </xs:simpleType>
+
+
+    <xs:simpleType name="nodetype">
+        <xs:restriction base="xs:string"/>
+    </xs:simpleType>
+
+
+    <xs:simpleType name="muxertype">
+        <xs:restriction base="xs:integer">
+            <xs:maxInclusive value='31'/>
+            <xs:minInclusive value='0'/>
+        </xs:restriction>
+    </xs:simpleType>
+
+
+    <xs:simpleType name="inputsignaltype">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="sh0"/>
+            <xs:enumeration value="sh1"/>
+            <xs:enumeration value="sh2"/>
+            <xs:enumeration value="sh3"/>
+            <xs:enumeration value="s00"/>
+            <xs:enumeration value="s01"/>
+            <xs:enumeration value="s02"/>
+            <xs:enumeration value="s03"/>
+            <xs:enumeration value="s04"/>
+            <xs:enumeration value="s05"/>
+            <xs:enumeration value="s06"/>
+            <xs:enumeration value="s07"/>
+            <xs:enumeration value="s08"/>
+            <xs:enumeration value="s09"/>
+            <xs:enumeration value="s010"/>
+            <xs:enumeration value="s011"/>
+            <xs:enumeration value="fo0"/>
+            <xs:enumeration value="fo1"/>
+            <xs:enumeration value="fo2"/>
+            <xs:enumeration value="fo3"/>
+            <xs:enumeration value="fi0"/>
+            <xs:enumeration value="fi1"/>
+            <xs:enumeration value="fi2"/>
+            <xs:enumeration value="fi3"/>
+            <xs:enumeration value="hk0"/>
+            <xs:enumeration value="t1ms"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+
+    <xs:simpleType name="ntype">
+        <xs:restriction base="xs:integer">
+            <xs:maxInclusive value='32'/>
+            <xs:minInclusive value='1'/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:complexType name="inputdefinitiontype">
+        <xs:sequence>
+            <xs:element name="name" type="inputsignaltype"/>
+            <xs:element name="muxer" type="muxertype"/>
+        </xs:sequence>
+    </xs:complexType>
+
+
+    <xs:complexType name="inputstype">
+        <xs:sequence>
+            <xs:element name="n" type="ntype" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="inp1" type="inputdefinitiontype" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="inp2" type="inputdefinitiontype" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="inp3" type="inputdefinitiontype" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="inp4" type="inputdefinitiontype" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="inp5" type="inputdefinitiontype" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="inp6" type="inputdefinitiontype" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="inp7" type="inputdefinitiontype" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="inp8" type="inputdefinitiontype" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="inp9" type="inputdefinitiontype" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="inp10" type="inputdefinitiontype" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="inp11" type="inputdefinitiontype" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="inp12" type="inputdefinitiontype" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="inp13" type="inputdefinitiontype" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="inp14" type="inputdefinitiontype" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="inp15" type="inputdefinitiontype" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="inp16" type="inputdefinitiontype" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="inp17" type="inputdefinitiontype" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="inp18" type="inputdefinitiontype" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="inp19" type="inputdefinitiontype" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="inp20" type="inputdefinitiontype" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="inp21" type="inputdefinitiontype" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="inp22" type="inputdefinitiontype" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="inp23" type="inputdefinitiontype" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="inp24" type="inputdefinitiontype" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="inp25" type="inputdefinitiontype" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="inp26" type="inputdefinitiontype" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="inp27" type="inputdefinitiontype" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="inp28" type="inputdefinitiontype" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="inp29" type="inputdefinitiontype" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="inp30" type="inputdefinitiontype" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="inp31" type="inputdefinitiontype" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="inp32" type="inputdefinitiontype" minOccurs="0" maxOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+
+
+    <xs:complexType name="connectivitytype">
+        <xs:sequence>
+            <xs:element name="debuglevel" type="debugtype"/>
+            <xs:element name="ethernet">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="ipadress">
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:element name="resourcemanager" type="ipadresstype"/>
+                                </xs:sequence>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element name="port">
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:element name="server" type="porttype"/>
+                                    <xs:element name="resourcemanager" type="porttype"/>
+                                </xs:sequence>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+
+            <xs:element name="fpga">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="device">
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:element name="node" type="nodetype"/>
+                                </xs:sequence>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+
+            <xs:element name="inputs" type="inputstype"/>
+
+        </xs:sequence>
+    </xs:complexType>
+
+
+    <xs:complexType name="ecalcchanneltype">
+        <xs:sequence>
+            <xs:element name="n" type="xs:integer"/>
+            <xs:element name="base" type="xs:integer"/>
+            <xs:element name="irqbase" type="xs:integer"/>
+        </xs:sequence>
+    </xs:complexType>
+
+
+    <xs:element name="sec1000dconfig">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="connectivity" type="connectivitytype"/>
+                <xs:element name="resource">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="ecalcchannel" type="ecalcchanneltype"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+</xs:schema>
+

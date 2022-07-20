@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<zdsp1dconfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+	<connectivity>
+		<debuglevel>0</debuglevel>
+		<ethernet>
+			<ipadress>
+                                <resourcemanager>127.0.0.1</resourcemanager>
+			</ipadress>	
+			<port>
+                                <protobufserver>6310</protobufserver>
+                                <scpiserver>6311</scpiserver>
+				<resourcemanager>6312</resourcemanager>
+			</port>
+                        <scpiactive>1</scpiactive>
+		</ethernet>
+		<dsp>
+			<device> 
+				<node>/dev/zFPGA1dsp1</node>
+			</device>
+		</dsp>		
+	</connectivity>
+
+        <dspsettings>
+                <bootfile>/opt/zera/bin/zdsp21362.ldr</bootfile>
+                <boot>1</boot>
+                <samplingsystem>
+                        <channels>6</channels>
+                        <signalperiod>504</signalperiod>
+                        <measureperiod>504</measureperiod>
+                </samplingsystem>
+        </dspsettings>
+
+</zdsp1dconfig> 
