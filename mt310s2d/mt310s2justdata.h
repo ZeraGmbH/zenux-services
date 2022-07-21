@@ -36,7 +36,7 @@ class cMT310S2JustData: public cSCPIConnection  // alle korrekturdaten für eine
 public:
     cMT310S2JustData(cSCPI* scpiinterface);
     ~cMT310S2JustData();
-    virtual void initSCPIConnection(QString leadingNodes);
+    virtual void initSCPIConnection(QString leadingNodes) override;
 
     cJustData* m_pGainCorrection;
     cJustData* m_pPhaseCorrection; 
@@ -49,7 +49,7 @@ public:
     void computeJustData();
 
 protected slots:
-    virtual void executeCommand(int cmdCode, cProtonetCommand* protoCmd);
+    virtual void executeCommand(int cmdCode, cProtonetCommand* protoCmd) override;
 
 protected:
     QString mReadGainCorrection(QString&sInput);

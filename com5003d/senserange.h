@@ -36,7 +36,7 @@ class cSenseRange:public cSCPIConnection
 public:
     cSenseRange(cSCPI *scpiinterface, QString name, QString alias, bool avail, double rValue, double rejection, double ovrejection, double adcrejection, quint8 rselcode, quint8 rspec);
     ~cSenseRange();
-    virtual void initSCPIConnection(QString leadingNodes);
+    virtual void initSCPIConnection(QString leadingNodes) override;
     quint8 getAdjustmentStatus();
 
     QString& getName();
@@ -50,7 +50,7 @@ public:
     void computeJustData();
 
 protected slots:
-    virtual void executeCommand(int cmdCode, cProtonetCommand* protoCmd);
+    virtual void executeCommand(int cmdCode, cProtonetCommand* protoCmd) override;
 
 private:
     cATMEL* m_pATMEL;

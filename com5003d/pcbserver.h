@@ -92,7 +92,7 @@ public:
       @param the servers name
       */
     explicit cPCBServer();
-    virtual void initSCPIConnection(QString leadingNodes);
+    virtual void initSCPIConnection(QString leadingNodes) override;
     cSCPI* getSCPIInterface();
     quint32 getMsgNr();
 
@@ -132,7 +132,7 @@ protected:
 protected slots:
     virtual void doConfiguration() = 0; // all servers must configure
     virtual void setupServer(); // all servers must setup
-    virtual void executeCommand(int cmdCode, cProtonetCommand* protoCmd);
+    virtual void executeCommand(int cmdCode, cProtonetCommand* protoCmd) override;
     virtual void sendAnswer(cProtonetCommand* protoCmd);
     virtual void setSCPIConnection();
     virtual void SCPIInput();

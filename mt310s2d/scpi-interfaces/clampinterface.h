@@ -26,11 +26,11 @@ class cClampInterface: public cSCPIConnection
 {
 public:
     cClampInterface(cMT310S2dServer *server);
-    virtual void initSCPIConnection(QString leadingNodes);
+    virtual void initSCPIConnection(QString leadingNodes) override;
     void actualizeClampStatus(quint16 devConnectedMask);
 
 protected slots:
-    virtual void executeCommand(int cmdCode, cProtonetCommand* protoCmd);
+    virtual void executeCommand(int cmdCode, cProtonetCommand* protoCmd) override;
 private:
     void generateAndNotifyClampChannelList();
     QString readClampChannelCatalog(QString& sInput);

@@ -29,7 +29,7 @@ class cFPZInChannel : public cSCPIConnection
 
 public:
     cFPZInChannel(cCOM5003dServer* server, QString description, quint8 nr, FRQInputSystem::cChannelSettings* cSettings);
-    virtual void initSCPIConnection(QString leadingNodes);
+    virtual void initSCPIConnection(QString leadingNodes) override;
 
     QString& getName();
     QString& getAlias();
@@ -37,7 +37,7 @@ public:
     bool isAvail();
 
 protected slots:
-    virtual void executeCommand(int cmdCode, cProtonetCommand* protoCmd);
+    virtual void executeCommand(int cmdCode, cProtonetCommand* protoCmd) override;
 
 private:
     cCOM5003dServer* m_pMyServer;

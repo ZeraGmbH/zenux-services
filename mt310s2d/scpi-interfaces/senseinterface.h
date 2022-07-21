@@ -48,21 +48,21 @@ class cSenseInterface : public cResource, public cAdjFlash, public cAdjXML
 public:
     cSenseInterface(cMT310S2dServer *server);
     ~cSenseInterface();
-    virtual void initSCPIConnection(QString leadingNoMModedes);
+    virtual void initSCPIConnection(QString leadingNoMModedes) override;
     cSenseChannel* getChannel(QString& name);
     QString getChannelSystemName(quint16 ctrlChannel);
     cSenseRange* getRange(QString channelName, QString rangeName);
-    virtual quint8 getAdjustmentStatus(); // we return 0 if adj. otherwise  1 +2 +4
-    virtual void registerResource(RMConnection *rmConnection, quint16 port);
-    virtual void unregisterResource(RMConnection *rmConnection);
-    virtual QString exportXMLString(int indent = 1);
+    virtual quint8 getAdjustmentStatus() override; // we return 0 if adj. otherwise  1 +2 +4
+    virtual void registerResource(RMConnection *rmConnection, quint16 port) override;
+    virtual void unregisterResource(RMConnection *rmConnection) override;
+    virtual QString exportXMLString(int indent = 1) override;
     void m_ComputeSenseAdjData();
 protected:
-    virtual void exportAdjData(QDataStream& stream);
-    virtual bool importAdjData(QDataStream& stream);
-    virtual bool importXMLDocument(QDomDocument* qdomdoc);
+    virtual void exportAdjData(QDataStream& stream) override;
+    virtual bool importAdjData(QDataStream& stream) override;
+    virtual bool importXMLDocument(QDomDocument* qdomdoc) override;
 protected slots:
-    virtual void executeCommand(int cmdCode, cProtonetCommand* protoCmd);
+    virtual void executeCommand(int cmdCode, cProtonetCommand* protoCmd) override;
 private:
     cMT310S2dServer* m_pMyServer;
     cSystemInfo* m_pSystemInfo;
