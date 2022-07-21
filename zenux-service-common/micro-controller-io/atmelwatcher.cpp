@@ -1,13 +1,7 @@
-#include <syslog.h>
-#include <sys/types.h>
+#include "atmelwatcher.h"
+#include <QTimer>
 #include <unistd.h>
 #include <fcntl.h>
-
-#include <QTimer>
-
-#include "com5003dglobal.h"
-#include "atmelwatcher.h"
-
 
 cAtmelWatcher::cAtmelWatcher(quint8 dlevel, QString devNode, int timeout, int tperiod)
     :m_sDeviceNode(devNode), m_nDebugLevel(dlevel)
@@ -19,56 +13,38 @@ cAtmelWatcher::cAtmelWatcher(quint8 dlevel, QString devNode, int timeout, int tp
     m_TimerPeriod.setInterval(tperiod);
 }
 
-
-cAtmelWatcher::~cAtmelWatcher()
-{
-}
-
-
 void cAtmelWatcher::start()
 {
-    syslog(LOG_INFO,"Atmel run-detection started\n");
+    qInfo("Atmel run-detection started");
     m_TimerTO.start();
     m_TimerPeriod.start();
     connect(&m_TimerPeriod, SIGNAL(timeout()), this, SLOT(doAtmelTest()));
 }
 
-
 void cAtmelWatcher::doAtmelTest()
 {
-
-    long pcbTestReg;
-    int ret;
     QByteArray ba = m_sDeviceNode.toLatin1();
-
-    if ( (ret = (fd = open(ba.data(),O_RDWR))) < 0 )
-    {
-        if (DEBUG1)  syslog(LOG_ERR,"error %d opening fpga device: '%s'\n", ret, ba.data());
+    int ret = (fd = open(ba.data(),O_RDWR));
+    if ( ret < 0 ) {
+        qCritical("error %d opening fpga device: '%s'", ret, ba.data());
     }
     else
     {
-        if (lseek(fd,0xffc,0) < 0 )
-        {
+        if (lseek(fd,0xffc,0) < 0 ) {
             close(fd);
-            if  (DEBUG1)  syslog(LOG_ERR,"error positioning fpga device: %s\n", ba.data());
+            qCritical("error positioning fpga device: %s", ba.data());
         }
-        else
-        {
+        else {
+            long pcbTestReg;
             ret = read(fd,(char*) &pcbTestReg,4);
             close(fd);
-
-            if (DEBUG2)
-                syslog(LOG_INFO,"reading fpga adr 0xffc =  %ld\n", pcbTestReg);
-
-            if (ret < 0 )
-            {
-                if (DEBUG1)  syslog(LOG_ERR,"error reading fpga device: %s\n",ba.data());
+            if (ret < 0 ) {
+                qCritical("error reading fpga device: %s",ba.data());
             }
             else
             {
-                if ((pcbTestReg & 1) > 0)
-                {
-                    syslog(LOG_INFO,"Atmel running\n");
+                if ((pcbTestReg & 1) > 0) {
+                    qInfo("Atmel running");
                     m_TimerTO.disconnect(SIGNAL(timeout()));
                     m_TimerPeriod.disconnect(SIGNAL(timeout()));
                     m_TimerTO.stop();
@@ -80,10 +56,9 @@ void cAtmelWatcher::doAtmelTest()
     }
 }
 
-
 void cAtmelWatcher::doTimeout()
 {
-    syslog(LOG_ERR,"Atmel did not start within timeout\n");
+    qCritical("Atmel did not start within timeout");
     m_TimerPeriod.disconnect(SIGNAL(timeout()));
     m_TimerPeriod.stop();
     emit timeout();

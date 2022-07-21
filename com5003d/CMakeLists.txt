@@ -1,6 +1,5 @@
 set(SOURCES
     micro-controller-io/atmel.cpp
-    micro-controller-io/atmelwatcher.cpp
     scpi-interfaces/frqinputinterface.cpp
     scpi-interfaces/hkeyinterface.cpp
     scpi-interfaces/samplinginterface.cpp
@@ -38,7 +37,6 @@ set(SOURCES
 
 set(HEADER
     micro-controller-io/atmel.h
-    micro-controller-io/atmelwatcher.h
     scpi-interfaces/frqinputinterface.h
     scpi-interfaces/hkeyinterface.h
     scpi-interfaces/samplinginterface.h
