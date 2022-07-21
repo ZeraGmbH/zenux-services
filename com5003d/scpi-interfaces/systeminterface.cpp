@@ -466,7 +466,7 @@ QString cSystemInterface::m_InterfaceRead(QString &sInput)
     if (cmd.isQuery())
     {
         QString s;
-        m_pMyServer->getSCPIInterface()->exportSCPIModelXML(s);
+        m_pSCPIInterface->exportSCPIModelXML(s);
         return s;
     }
     else
