@@ -144,7 +144,7 @@ target_link_libraries(mt310s2d-lib
     ZeraClasses::zeradev
     VeinMeta::VfProtobuf
     VeinMeta::zeraprotobuf
-    zeraservercommon
+    zenuxservicecommon
     )
 
 add_executable(mt310s2d

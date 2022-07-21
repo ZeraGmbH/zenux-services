@@ -124,7 +124,7 @@ target_link_libraries(com5003d
     ZeraClasses::zeradev
     VeinMeta::VfProtobuf
     VeinMeta::zeraprotobuf
-    zeraservercommon
+    zenuxservicecommon
     )
 
 target_include_directories(com5003d

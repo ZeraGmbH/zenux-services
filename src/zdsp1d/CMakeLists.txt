@@ -34,7 +34,7 @@ target_link_libraries(zdsp1d
     VeinMeta::xiqnet
     VeinMeta::zeraprotobuf
     ZeraClasses::zeraxmlconfig
-    zeraservercommon
+    zenuxservicecommon
     )
 
 if(${Systemd_FOUND})

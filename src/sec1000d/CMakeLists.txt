@@ -74,7 +74,7 @@ target_link_libraries(sec1000d
     ZeraClasses::zeramath 
     VeinMeta::VfProtobuf
     VeinMeta::zeraprotobuf 
-    zeraservercommon
+    zenuxservicecommon
     )
 
 target_include_directories(sec1000d
