@@ -4,6 +4,9 @@ set(HEADER
     micro-controller-io/atmelwatcher.h
     resources/resource.h
     resources/rmconnection.h
+    scpi-interfaces/fpzinchannel.h
+    scpi-interfaces/frqinputinterface.h
+    settings/frqinputsettings.h
     )
 
 add_library(zenuxservicecommon SHARED
@@ -13,6 +16,9 @@ add_library(zenuxservicecommon SHARED
     micro-controller-io/atmelwatcher.cpp
     resources/resource.cpp
     resources/rmconnection.cpp
+    scpi-interfaces/fpzinchannel.cpp
+    scpi-interfaces/frqinputinterface.cpp
+    settings/frqinputsettings.cpp
     )
 
 target_link_libraries(zenuxservicecommon
@@ -21,6 +27,7 @@ target_link_libraries(zenuxservicecommon
     VeinMeta::xiqnet
     Zera::SCPI
     Zera::scpi-tcp
+    ZeraClasses::zeraxmlconfig
     # ask linker to help us finding unresolved symbols
     "-Wl,--no-undefined"
     )
@@ -34,6 +41,7 @@ target_include_directories(zenuxservicecommon
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/meas-channels>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/micro-controller-io>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/resources>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/scpi-interfaces>
     )
 
 set_target_properties(zenuxservicecommon PROPERTIES VERSION ${PROJECT_VERSION})

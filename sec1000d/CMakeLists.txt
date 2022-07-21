@@ -65,7 +65,6 @@ target_link_libraries(sec1000d
     Qt5::Network
     Qt5::Gui
     ZeraClasses::zeramisc 
-    ZeraClasses::zeraxmlconfig 
     ZeraClasses::zeramath 
     VeinMeta::VfProtobuf
     VeinMeta::zeraprotobuf 
