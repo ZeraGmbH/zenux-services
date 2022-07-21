@@ -120,12 +120,12 @@ void cClamp::exportAdjData(QDataStream &stream)
     stream << m_sSerial; //  serial
     stream << m_AdjDateTime.toString(Qt::TextDate); // date, time
     QString spec;
-    for(auto range : m_RangeList) {
+    for(auto range : qAsConst(m_RangeList)) {
         spec = range->getName();
         stream << spec;
         range->getJustData()->Serialize(stream);
     }
-    for(auto range : m_RangeListSecondary) {
+    for(auto range : qAsConst(m_RangeListSecondary)) {
         spec = range->getName();
         stream << spec;
         range->getJustData()->Serialize(stream);
@@ -209,10 +209,10 @@ QString cClamp::exportXMLString(int indent)
     QDomElement typeTag = justqdom.createElement( "Sense");
     adjtag.appendChild(typeTag);
 
-    for(auto range : m_RangeList) {
+    for(auto range : qAsConst(m_RangeList)) {
         exportRangeXml(justqdom, typeTag, range);
     }
-    for(auto range : m_RangeListSecondary) {
+    for(auto range : qAsConst(m_RangeListSecondary)) {
         exportRangeXml(justqdom, typeTag, range);
     }
     return justqdom.toString(indent);
@@ -375,10 +375,10 @@ quint8 cClamp::getAdjustmentStatus()
     }
 
     quint8 stat = 255;
-    for(auto range : m_RangeList) {
+    for(auto range : qAsConst(m_RangeList)) {
         stat &= range->getAdjustmentStatus();
     }
-    for(auto range : m_RangeListSecondary) {
+    for(auto range : qAsConst(m_RangeListSecondary)) {
         stat &= range->getAdjustmentStatus();
     }
     if ((stat & JustData::Justified)== 0) {
@@ -573,11 +573,11 @@ void cClamp::addSense()
 
 void cClamp::addSenseInterface()
 {
-    for(cSenseRange *range : m_RangeList) {
+    for(cSenseRange *range : qAsConst(m_RangeList)) {
         range->initSCPIConnection(QString("SENSE:%1").arg(m_sChannelName));
         connect(range, &cSenseRange::cmdExecutionDone, this, &cClamp::cmdExecutionDone);
     }
-    for(cSenseRange *range : m_RangeListSecondary) {
+    for(cSenseRange *range : qAsConst(m_RangeListSecondary)) {
         range->initSCPIConnection(QString("SENSE:%1").arg(m_sChannelNameSecondary));
         connect(range, &cSenseRange::cmdExecutionDone, this, &cClamp::cmdExecutionDone);
     }
@@ -599,56 +599,56 @@ void cClamp::addSystAdjInterfaceChannel(QString channelName)
     cmdParent = QString("SYSTEM:CLAMP:%1").arg(channelName);
     delegate = new cSCPIDelegate(cmdParent, "SERIALNUMBER", SCPI::isQuery | SCPI::isCmdwP, m_pSCPIInterface, clamp::cmdSerial);
     m_DelegateList.append(delegate);
-    connect(delegate, SIGNAL(execute(int, cProtonetCommand*)), this, SLOT(executeCommand(int, cProtonetCommand*)));
+    connect(delegate, SIGNAL(execute(int,cProtonetCommand*)), this, SLOT(executeCommand(int,cProtonetCommand*)));
     delegate = new cSCPIDelegate(cmdParent, "VERSION", SCPI::isQuery | SCPI::isCmdwP, m_pSCPIInterface, clamp::cmdVersion);
     m_DelegateList.append(delegate);
-    connect(delegate, SIGNAL(execute(int, cProtonetCommand*)), this, SLOT(executeCommand(int, cProtonetCommand*)));
+    connect(delegate, SIGNAL(execute(int,cProtonetCommand*)), this, SLOT(executeCommand(int,cProtonetCommand*)));
     delegate = new cSCPIDelegate(cmdParent, "TYPE",SCPI::isQuery | SCPI::isCmdwP, m_pSCPIInterface, clamp::cmdType);
     m_DelegateList.append(delegate);
-    connect(delegate, SIGNAL(execute(int, cProtonetCommand*)), this, SLOT(executeCommand(int, cProtonetCommand*)));
+    connect(delegate, SIGNAL(execute(int,cProtonetCommand*)), this, SLOT(executeCommand(int,cProtonetCommand*)));
     delegate = new cSCPIDelegate(cmdParent, "NAME",SCPI::isQuery, m_pSCPIInterface, clamp::cmdName );
     m_DelegateList.append(delegate);
-    connect(delegate, SIGNAL(execute(int, cProtonetCommand*)), this, SLOT(executeCommand(int, cProtonetCommand*)));
+    connect(delegate, SIGNAL(execute(int,cProtonetCommand*)), this, SLOT(executeCommand(int,cProtonetCommand*)));
 
     cmdParent = QString("SYSTEM:ADJUSTMENT:CLAMP:%1:FLASH").arg(channelName);
     delegate = new cSCPIDelegate(cmdParent,"WRITE", SCPI::isCmd, m_pSCPIInterface, clamp::cmdFlashWrite);
     m_DelegateList.append(delegate);
-    connect(delegate, SIGNAL(execute(int, cProtonetCommand*)), this, SLOT(executeCommand(int, cProtonetCommand*)));
+    connect(delegate, SIGNAL(execute(int,cProtonetCommand*)), this, SLOT(executeCommand(int,cProtonetCommand*)));
     delegate = new cSCPIDelegate(cmdParent,"READ", SCPI::isCmd, m_pSCPIInterface, clamp::cmdFlashRead);
     m_DelegateList.append(delegate);
-    connect(delegate, SIGNAL(execute(int, cProtonetCommand*)), this, SLOT(executeCommand(int, cProtonetCommand*)));
+    connect(delegate, SIGNAL(execute(int,cProtonetCommand*)), this, SLOT(executeCommand(int,cProtonetCommand*)));
     delegate = new cSCPIDelegate(cmdParent,"CHKSUM", SCPI::isQuery, m_pSCPIInterface, clamp::cmdChksum);
     m_DelegateList.append(delegate);
-    connect(delegate, SIGNAL(execute(int, cProtonetCommand*)), this, SLOT(executeCommand(int, cProtonetCommand*)));
+    connect(delegate, SIGNAL(execute(int,cProtonetCommand*)), this, SLOT(executeCommand(int,cProtonetCommand*)));
     delegate = new cSCPIDelegate(cmdParent,"RESET", SCPI::isCmd, m_pSCPIInterface, clamp::cmdFlashReset);
     m_DelegateList.append(delegate);
-    connect(delegate, SIGNAL(execute(int, cProtonetCommand*)), this, SLOT(executeCommand(int, cProtonetCommand*)));
+    connect(delegate, SIGNAL(execute(int,cProtonetCommand*)), this, SLOT(executeCommand(int,cProtonetCommand*)));
 
     cmdParent = QString("SYSTEM:ADJUSTMENT:CLAMP:%1:XML").arg(channelName);
     delegate = new cSCPIDelegate(cmdParent,"WRITE", SCPI::isCmd, m_pSCPIInterface, clamp::cmdXMLWrite);
     m_DelegateList.append(delegate);
-    connect(delegate, SIGNAL(execute(int, cProtonetCommand*)), this, SLOT(executeCommand(int, cProtonetCommand*)));
+    connect(delegate, SIGNAL(execute(int,cProtonetCommand*)), this, SLOT(executeCommand(int,cProtonetCommand*)));
     delegate = new cSCPIDelegate(cmdParent,"READ", SCPI::isCmd, m_pSCPIInterface, clamp::cmdXMLRead);
     m_DelegateList.append(delegate);
-    connect(delegate, SIGNAL(execute(int, cProtonetCommand*)), this, SLOT(executeCommand(int, cProtonetCommand*)));
+    connect(delegate, SIGNAL(execute(int,cProtonetCommand*)), this, SLOT(executeCommand(int,cProtonetCommand*)));
 
     cmdParent = QString("STATUS:CLAMP:%1").arg(channelName);
     delegate = new cSCPIDelegate(cmdParent, "ADJUSTMENT", SCPI::isQuery, m_pSCPIInterface, clamp::cmdStatAdjustment);
     m_DelegateList.append(delegate);
-    connect(delegate, SIGNAL(execute(int, cProtonetCommand*)), this, SLOT(executeCommand(int, cProtonetCommand*)));
+    connect(delegate, SIGNAL(execute(int,cProtonetCommand*)), this, SLOT(executeCommand(int,cProtonetCommand*)));
 }
 
 cSenseRange* cClamp::getRange(QString name)
 {
     cSenseRange* rangeFound = nullptr;
-    for(auto range : m_RangeList) {
+    for(auto range : qAsConst(m_RangeList)) {
         if (range->getName() == name) {
             rangeFound = range;
             break;
         }
     }
     if(!rangeFound) {
-        for(auto range : m_RangeListSecondary) {
+        for(auto range : qAsConst(m_RangeListSecondary)) {
             if (range->getName() == name) {
                 rangeFound = range;
                 break;
@@ -668,11 +668,11 @@ void cClamp::removeAllRanges()
         }
     }
     // then we delete them what automatically destroys their interfaces
-    for(auto* range : m_RangeList) {
+    for(auto* range : qAsConst(m_RangeList)) {
         delete range; // the cSenseRange objects will also remove their interfaces including that for adjustment data
     }
     m_RangeList.clear();
-    for(auto* range : m_RangeListSecondary) {
+    for(auto* range : qAsConst(m_RangeListSecondary)) {
         delete range;
     }
     m_RangeListSecondary.clear();

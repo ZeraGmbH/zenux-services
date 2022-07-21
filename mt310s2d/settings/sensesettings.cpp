@@ -17,7 +17,7 @@ cSenseSettings::cSenseSettings(Zera::XMLConfig::cReader *xmlread)
 
 cSenseSettings::~cSenseSettings()
 {
-    for(auto channel : m_ChannelSettingsList) {
+    for(auto channel : qAsConst(m_ChannelSettingsList)) {
         delete channel;
     }
 }

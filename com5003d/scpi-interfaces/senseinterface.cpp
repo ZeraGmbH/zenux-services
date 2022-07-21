@@ -163,25 +163,25 @@ void cSenseInterface::initSCPIConnection(QString leadingNodes)
 
     delegate = new cSCPIDelegate(QString("%1SENSE").arg(leadingNodes),"VERSION",SCPI::isQuery,m_pSCPIInterface, SenseSystem::cmdVersion);
     m_DelegateList.append(delegate);
-    connect(delegate, SIGNAL(execute(int, cProtonetCommand*)), this, SLOT(executeCommand(int, cProtonetCommand*)));
+    connect(delegate, SIGNAL(execute(int,cProtonetCommand*)), this, SLOT(executeCommand(int,cProtonetCommand*)));
     delegate = new cSCPIDelegate(QString("%1SENSE").arg(leadingNodes),"MMODE",SCPI::isQuery | SCPI::isCmdwP ,m_pSCPIInterface, SenseSystem::cmdMMode);
     m_DelegateList.append(delegate);
-    connect(delegate, SIGNAL(execute(int, cProtonetCommand*)), this, SLOT(executeCommand(int, cProtonetCommand*)));
+    connect(delegate, SIGNAL(execute(int,cProtonetCommand*)), this, SLOT(executeCommand(int,cProtonetCommand*)));
     delegate = new cSCPIDelegate(QString("%1SENSE:MMODE").arg(leadingNodes),"CATALOG",SCPI::isQuery,m_pSCPIInterface, SenseSystem::cmdMModeCat );
     m_DelegateList.append(delegate);
-    connect(delegate, SIGNAL(execute(int, cProtonetCommand*)), this, SLOT(executeCommand(int, cProtonetCommand*)));
+    connect(delegate, SIGNAL(execute(int,cProtonetCommand*)), this, SLOT(executeCommand(int,cProtonetCommand*)));
     delegate = new cSCPIDelegate(QString("%1SENSE:CHANNEL").arg(leadingNodes),"CATALOG", SCPI::isQuery, m_pSCPIInterface, SenseSystem::cmdChannelCat);
     m_DelegateList.append(delegate);
-    connect(delegate, SIGNAL(execute(int, cProtonetCommand*)), this, SLOT(executeCommand(int, cProtonetCommand*)));
+    connect(delegate, SIGNAL(execute(int,cProtonetCommand*)), this, SLOT(executeCommand(int,cProtonetCommand*)));
     delegate = new cSCPIDelegate(QString("%1SENSE:GROUP").arg(leadingNodes),"CATALOG", SCPI::isQuery, m_pSCPIInterface, SenseSystem::cmdGroupCat);
     m_DelegateList.append(delegate);
-    connect(delegate, SIGNAL(execute(int, cProtonetCommand*)), this, SLOT(executeCommand(int, cProtonetCommand*)));
+    connect(delegate, SIGNAL(execute(int,cProtonetCommand*)), this, SLOT(executeCommand(int,cProtonetCommand*)));
     delegate = new cSCPIDelegate(QString("%1SENSE:CORRECTION").arg(leadingNodes),"INIT", SCPI::isCmd, m_pSCPIInterface, SenseSystem::initAdjData);
     m_DelegateList.append(delegate);
-    connect(delegate, SIGNAL(execute(int, cProtonetCommand*)), this, SLOT(executeCommand(int, cProtonetCommand*)));  
+    connect(delegate, SIGNAL(execute(int,cProtonetCommand*)), this, SLOT(executeCommand(int,cProtonetCommand*)));  
     delegate = new cSCPIDelegate(QString("%1SENSE:CORRECTION").arg(leadingNodes),"COMPUTE", SCPI::isCmd, m_pSCPIInterface, SenseSystem::computeAdjData);
     m_DelegateList.append(delegate);
-    connect(delegate, SIGNAL(execute(int, cProtonetCommand*)), this, SLOT(executeCommand(int, cProtonetCommand*)));
+    connect(delegate, SIGNAL(execute(int,cProtonetCommand*)), this, SLOT(executeCommand(int,cProtonetCommand*)));
 
 
     for (int i = 0; i < m_ChannelList.count(); i++)

@@ -24,7 +24,7 @@ cHKeyInterface::cHKeyInterface(cMT310S2dServer *server) :
 
 cHKeyInterface::~cHKeyInterface()
 {
-    for(auto channel : m_ChannelList) {
+    for(auto channel : qAsConst(m_ChannelList)) {
         delete channel;
     }
 }
@@ -38,11 +38,11 @@ void cHKeyInterface::initSCPIConnection(QString leadingNodes)
 
     delegate = new cSCPIDelegate(QString("%1HKEY").arg(leadingNodes),"VERSION",SCPI::isQuery, m_pSCPIInterface, HKeySystem::cmdVersion);
     m_DelegateList.append(delegate);
-    connect(delegate, SIGNAL(execute(int, cProtonetCommand*)), this, SLOT(executeCommand(int, cProtonetCommand*)));
+    connect(delegate, SIGNAL(execute(int,cProtonetCommand*)), this, SLOT(executeCommand(int,cProtonetCommand*)));
     delegate = new cSCPIDelegate(QString("%1HKEY:CHANNEL").arg(leadingNodes),"CATALOG", SCPI::isQuery, m_pSCPIInterface, HKeySystem::cmdChannelCat);
     m_DelegateList.append(delegate);
-    connect(delegate, SIGNAL(execute(int, cProtonetCommand*)), this, SLOT(executeCommand(int, cProtonetCommand*)));
-    for(auto channel : m_ChannelList) {
+    connect(delegate, SIGNAL(execute(int,cProtonetCommand*)), this, SLOT(executeCommand(int,cProtonetCommand*)));
+    for(auto channel : qAsConst(m_ChannelList)) {
         connect(channel, &cSCPIConnection::strNotifier, this, &cSCPIConnection::strNotifier);
         connect(channel, SIGNAL(cmdExecutionDone(cProtonetCommand*)), this, SIGNAL(cmdExecutionDone(cProtonetCommand*)));
         channel->initSCPIConnection(QString("%1HKEY").arg(leadingNodes));
@@ -51,14 +51,14 @@ void cHKeyInterface::initSCPIConnection(QString leadingNodes)
 
 void cHKeyInterface::registerResource(RMConnection *rmConnection, quint16 port)
 {
-    for(auto channel : m_ChannelList) {
+    for(auto channel : qAsConst(m_ChannelList)) {
         register1Resource(rmConnection, m_pMyServer->getMsgNr(), QString("HKEY;%1;1;%2;%3;").arg(channel->getName()).arg(channel->getDescription()).arg(port));
     }
 }
 
 void cHKeyInterface::unregisterResource(RMConnection *rmConnection)
 {
-    for(auto channel : m_ChannelList) {
+    for(auto channel : qAsConst(m_ChannelList)) {
         unregister1Resource(rmConnection, m_pMyServer->getMsgNr(), QString("HKEY;%1;").arg(channel->getName()));
     }
 }

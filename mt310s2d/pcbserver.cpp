@@ -38,10 +38,10 @@ void cPCBServer::initSCPIConnection(QString leadingNodes)
 
     delegate = new cSCPIDelegate(QString("%1SERVER").arg(leadingNodes),"REGISTER",SCPI::isCmdwP, m_pSCPIInterface, PCBServer::cmdRegister);
     m_DelegateList.append(delegate);
-    connect(delegate, SIGNAL(execute(int, cProtonetCommand*)), this, SLOT(executeCommand(int, cProtonetCommand*)));
+    connect(delegate, SIGNAL(execute(int,cProtonetCommand*)), this, SLOT(executeCommand(int,cProtonetCommand*)));
     delegate = new cSCPIDelegate(QString("%1SERVER").arg(leadingNodes),"UNREGISTER",SCPI::isQuery | SCPI::isCmd , m_pSCPIInterface, PCBServer::cmdUnregister);
     m_DelegateList.append(delegate);
-    connect(delegate, SIGNAL(execute(int, cProtonetCommand*)), this, SLOT(executeCommand(int, cProtonetCommand*)));
+    connect(delegate, SIGNAL(execute(int,cProtonetCommand*)), this, SLOT(executeCommand(int,cProtonetCommand*)));
 
 }
 

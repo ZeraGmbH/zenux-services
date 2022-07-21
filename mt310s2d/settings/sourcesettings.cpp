@@ -15,7 +15,7 @@ cSourceSettings::cSourceSettings(Zera::XMLConfig::cReader *xmlread)
 
 cSourceSettings::~cSourceSettings()
 {
-    for(auto channel : m_ChannelSettingsList) {
+    for(auto channel : qAsConst(m_ChannelSettingsList)) {
         delete channel;
     }
 }
