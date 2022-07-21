@@ -2,7 +2,6 @@ set(SOURCES
     micro-controller-io/atmel.cpp
     micro-controller-io/atmelemobcontroller.cpp
     micro-controller-io/atmelsysctrl.cpp
-    micro-controller-io/atmelwatcher.cpp
     scpi-interfaces/clampinterface.cpp
     scpi-interfaces/emobinterface.cpp
     scpi-interfaces/frqinputinterface.cpp
@@ -48,7 +47,6 @@ set(HEADER
     micro-controller-io/atmelemobcontroller.h
     micro-controller-io/atmel.h
     micro-controller-io/atmelsysctrl.h
-    micro-controller-io/atmelwatcher.h
     scpi-interfaces/clampinterface.h
     scpi-interfaces/emobinterface.h
     scpi-interfaces/frqinputinterface.h

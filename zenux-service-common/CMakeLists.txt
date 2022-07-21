@@ -1,5 +1,6 @@
 set(HEADER
     meas-channels/justnode.h
+    micro-controller-io/atmelwatcher.h
     resources/resource.h
     resources/rmconnection.h
     )
@@ -7,6 +8,7 @@ set(HEADER
 add_library(zenuxservicecommon SHARED
     ${HEADER}
     meas-channels/justnode.cpp
+    micro-controller-io/atmelwatcher.cpp
     resources/resource.cpp
     resources/rmconnection.cpp
     )
@@ -26,7 +28,9 @@ target_include_directories(zenuxservicecommon
     PUBLIC
     $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/zenuxservicecommon>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/meas-channels>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/micro-controller-io>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/resources>
     )
 
