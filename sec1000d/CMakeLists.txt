@@ -36,10 +36,10 @@ set(HEADER
     )
 
 set(CONFIG_FILES
-    ${CMAKE_CURRENT_SOURCE_DIR}/settings/sec1000d.xml
+    ${CMAKE_CURRENT_SOURCE_DIR}/configs/sec1000d.xml
 )
 set(CONFIG_VALIDATOR
-    ${CMAKE_CURRENT_SOURCE_DIR}/settings/sec1000d.xsd
+    ${CMAKE_CURRENT_SOURCE_DIR}/configs/sec1000d.xsd
 )
 
 # check for valid config files / display in qt-creator
@@ -91,4 +91,20 @@ install(
     FILES ${CONFIG_FILES} ${CONFIG_VALIDATOR}
     DESTINATION ${CMAKE_INSTALL_SYSCONFDIR}/zera/sec1000d
     )
+
+if(${useSystemd})
+    set(SYSTEMD_UNITS
+        systemd/sec1000d.service
+        systemd/sec1000d.socket
+        )
+    add_custom_target(sec1000d-systemd-units ALL
+        DEPENDS ${SYSTEMD_UNITS}
+        SOURCES ${SYSTEMD_UNITS}
+        COMMAND echo "Install systemd units..."
+        )
+    install(
+        FILES ${SYSTEMD_UNITS}
+        DESTINATION ${SYSTEMD_UNIT_INSTALL_PATH}
+        )
+endif()
 

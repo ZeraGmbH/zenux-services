@@ -1,0 +1,17 @@
+[Unit]
+Description=Zera DSP daemon
+
+Requires=dev-zFPGA1dsp1.device
+After=dev-zFPGA1dsp1.device
+
+[Service]
+ExecStart=/usr/bin/zdsp1d /etc/zera/zdsp1d/zdsp1d.xml
+Type=notify
+User=zera-services
+NoNewPrivileges=true
+ProtectHome=true
+StandardOutput=journal
+SyslogLevel=info
+
+[Install]
+WantedBy=multi-user.target

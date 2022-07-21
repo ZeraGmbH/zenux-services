@@ -1,10 +1,6 @@
 set(SOURCES
     micro-controller-io/atmel.cpp
-    micro-controller-io/atmelemobcontroller.cpp
-    micro-controller-io/atmelsysctrl.cpp
     micro-controller-io/atmelwatcher.cpp
-    scpi-interfaces/clampinterface.cpp
-    scpi-interfaces/emobinterface.cpp
     scpi-interfaces/frqinputinterface.cpp
     scpi-interfaces/hkeyinterface.cpp
     scpi-interfaces/samplinginterface.cpp
@@ -18,13 +14,16 @@ set(SOURCES
     settings/ethsettings.cpp
     settings/fpgasettings.cpp
     settings/frqinputsettings.cpp
+    settings/hkeysettings.cpp
     settings/i2csettings.cpp
     settings/samplingsettings.cpp
     settings/scheadsettings.cpp
     settings/sensesettings.cpp
     settings/sourcesettings.cpp
-    settings/hkeysettings.cpp
+    main.cpp
+    com5003d.cpp
     justdata.cpp
+    com5003justdata.cpp
     pcbserver.cpp
     samplerange.cpp
     senserange.cpp
@@ -35,23 +34,12 @@ set(SOURCES
     resource.cpp
     fpzinchannel.cpp
     scheadchannel.cpp
-    clampjustdata.cpp
-    adjflash.cpp
-    clamp.cpp
-    adjxml.cpp
-    mt310s2d.cpp
-    mt310s2justdata.cpp
     hkeychannel.cpp
     )
 
 set(HEADER
-    micro-controller-io/atmelbaseinterface.h
-    micro-controller-io/atmelemobcontroller.h
     micro-controller-io/atmel.h
-    micro-controller-io/atmelsysctrl.h
     micro-controller-io/atmelwatcher.h
-    scpi-interfaces/clampinterface.h
-    scpi-interfaces/emobinterface.h
     scpi-interfaces/frqinputinterface.h
     scpi-interfaces/hkeyinterface.h
     scpi-interfaces/samplinginterface.h
@@ -72,9 +60,13 @@ set(HEADER
     settings/sensesettings.h
     settings/sourcesettings.h
     zeraglobal.h
+    com5003d.h
     justdata.h
-    mt310s2dscpi.h
+    com5003justdata.h
+    hkeychannel.h
+    com5003scpi.h
     pcbserver.h
+    com5003dglobal.h
     resource.h
     samplerange.h
     senserange.h
@@ -87,48 +79,36 @@ set(HEADER
     notificationdata.h
     fpzinchannel.h
     scheadchannel.h
-    clampjustdata.h
-    clamp.h
-    mt310s2d.h
-    mt310s2dglobal.h
-    mt310s2justdata.h
-    hkeychannel.h
     )
 
 set(CONFIG_FILES
-    ${CMAKE_CURRENT_SOURCE_DIR}/mt310s2d.xml
-)
+    ${CMAKE_CURRENT_SOURCE_DIR}/configs/com5003d.xml
+    )
 set(CONFIG_VALIDATOR
-    ${CMAKE_CURRENT_SOURCE_DIR}/mt310s2d.xsd
-)
+    ${CMAKE_CURRENT_SOURCE_DIR}/configs/com5003d.xsd
+    )
 
 # check for valid config files / display in qt-creator
-add_custom_target(mt310s2d-configs ALL
+add_custom_target(com5003d-configs ALL
     DEPENDS ${CONFIG_VALIDATOR} ${CONFIG_FILES}
     SOURCES ${CONFIG_VALIDATOR} ${CONFIG_FILES}
     COMMAND xmllint --noout --schema ${CONFIG_VALIDATOR} ${CONFIG_FILES}
     )
 
-
-add_library(mt310s2d-lib STATIC
-    ${HEADER}
+add_executable(com5003d
     ${SOURCES}
-    )
-
-target_include_directories(mt310s2d-lib
-    PRIVATE
-    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${HEADER}
     )
 
 if(${Systemd_FOUND})
-    target_link_libraries(mt310s2d-lib
-        PUBLIC
+    target_link_libraries(com5003d
+        PRIVATE
         systemd
     )
 endif()
 
-target_link_libraries(mt310s2d-lib
-    PUBLIC
+target_link_libraries(com5003d
+    PRIVATE
     Qt5::Core
     Qt5::Gui
     Qt5::Xml
@@ -137,7 +117,7 @@ target_link_libraries(mt310s2d-lib
     Zera::scpi-tcp
     VeinMeta::xiqnet
     ZeraClasses::zerai2c
-    ZeraClasses::zeraproxy
+    ZeraClasses::zeraproxy 
     ZeraClasses::zeramisc
     ZeraClasses::zeraxmlconfig
     ZeraClasses::zeramath
@@ -147,22 +127,33 @@ target_link_libraries(mt310s2d-lib
     zenuxservicecommon
     )
 
-add_executable(mt310s2d
-    main.cpp
+target_include_directories(com5003d
+    PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}
     )
 
-target_link_libraries(mt310s2d
-    PUBLIC
-    mt310s2d-lib
-    )
-
-install(TARGETS mt310s2d
-    EXPORT mt310s2dExport
+install(TARGETS com5003d
+    EXPORT com5003dExport
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
     )
 
 install(
     FILES ${CONFIG_FILES} ${CONFIG_VALIDATOR}
-    DESTINATION ${CMAKE_INSTALL_SYSCONFDIR}/zera/mt310s2d
+    DESTINATION ${CMAKE_INSTALL_SYSCONFDIR}/zera/com5003d
     )
 
+if(${useSystemd})
+    set(SYSTEMD_UNITS
+        systemd/com5003d.service
+        systemd/com5003d.socket
+        )
+    add_custom_target(com5003d-systemd-units ALL
+        DEPENDS ${SYSTEMD_UNITS}
+        SOURCES ${SYSTEMD_UNITS}
+        COMMAND echo "Install systemd units..."
+        )
+    install(
+        FILES ${SYSTEMD_UNITS}
+        DESTINATION ${SYSTEMD_UNIT_INSTALL_PATH}
+        )
+endif()

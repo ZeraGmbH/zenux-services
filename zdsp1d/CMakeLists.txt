@@ -8,10 +8,10 @@ file(GLOB HEADER
     )
 
 set(CONFIG_FILES
-    ${CMAKE_CURRENT_SOURCE_DIR}/settings/zdsp1d.xml
+    ${CMAKE_CURRENT_SOURCE_DIR}/configs/zdsp1d.xml
 )
 set(CONFIG_VALIDATOR
-    ${CMAKE_CURRENT_SOURCE_DIR}/settings/zdsp1d.xsd
+    ${CMAKE_CURRENT_SOURCE_DIR}/configs/zdsp1d.xsd
 )
 
 # check for valid config files / display in qt-creator
@@ -59,3 +59,18 @@ install(
     DESTINATION ${CMAKE_INSTALL_SYSCONFDIR}/zera/zdsp1d
     )
 
+if(${useSystemd})
+    set(SYSTEMD_UNITS
+        systemd/zdsp1d.service
+        systemd/zdsp1d.socket
+        )
+    add_custom_target(zdsp1d-systemd-units ALL
+        DEPENDS ${SYSTEMD_UNITS}
+        SOURCES ${SYSTEMD_UNITS}
+        COMMAND echo "Install systemd units..."
+        )
+    install(
+        FILES ${SYSTEMD_UNITS}
+        DESTINATION ${SYSTEMD_UNIT_INSTALL_PATH}
+        )
+endif()

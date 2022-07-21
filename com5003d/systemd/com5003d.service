@@ -1,0 +1,20 @@
+[Unit]
+Description=COM5003 daemon
+Before=modulemanager.service
+Requires=dev-zFPGA1reg.device
+After=dev-zFPGA1reg.device
+Requires=dev-i2c\x2d0.device
+After=dev-i2c\x2d0.device
+ConditionKernelCommandLine=zera_device=com5003
+
+[Service]
+ExecStart=/usr/bin/com5003d /etc/zera/com5003d/com5003d.xml
+Type=notify
+User=zera-services
+NoNewPrivileges=true
+ProtectHome=true
+StandardOutput=journal
+SyslogLevel=info
+
+[Install]
+WantedBy=multi-user.target

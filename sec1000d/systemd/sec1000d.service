@@ -1,0 +1,18 @@
+[Unit]
+Description=SEC1000 daemon
+Before=modulemanager.service
+Requires=dev-zFPGA1reg.device
+After=dev-zFPGA1reg.device
+
+[Service]
+ExecStart=/usr/bin/sec1000d /etc/zera/sec1000d/sec1000d.xml
+Type=notify
+# Avoid power off failure -> Send SIGKILL instead of SIGTERM
+KillSignal=SIGKILL
+User=zera-services
+NoNewPrivileges=true
+ProtectHome=true
+StandardOutput=journal
+
+[Install]
+WantedBy=multi-user.target

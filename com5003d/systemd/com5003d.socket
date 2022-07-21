@@ -1,0 +1,8 @@
+[Unit]
+ConditionKernelCommandLine=zera_device=com5003
+
+[Socket]
+ListenStream=6307
+
+[Install]
+WantedBy=sockets.target
