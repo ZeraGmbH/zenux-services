@@ -36,10 +36,10 @@ set(HEADER
     )
 
 set(CONFIG_FILES
-    ${CMAKE_CURRENT_SOURCE_DIR}/sec1000d.xml
+    ${CMAKE_CURRENT_SOURCE_DIR}/settings/sec1000d.xml
 )
 set(CONFIG_VALIDATOR
-    ${CMAKE_CURRENT_SOURCE_DIR}/sec1000d.xsd
+    ${CMAKE_CURRENT_SOURCE_DIR}/settings/sec1000d.xsd
 )
 
 # check for valid config files / display in qt-creator
