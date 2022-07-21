@@ -18,13 +18,13 @@ cSourceInterface::cSourceInterface(cCOM5003dServer *server) :
 
     // we have 4 frequency output channels
     cFPZChannel* pChannel;
-    pChannel = new cFPZChannel(m_pMyServer->getSCPIInterface(), "Reference frequency output 0..1MHz", 0, channelSettings.at(0) );
+    pChannel = new cFPZChannel(m_pSCPIInterface, "Reference frequency output 0..1MHz", 0, channelSettings.at(0) );
     m_ChannelList.append(pChannel);
-    pChannel = new cFPZChannel(m_pMyServer->getSCPIInterface(), "Reference frequency output 0..1MHz", 1, channelSettings.at(1) );
+    pChannel = new cFPZChannel(m_pSCPIInterface, "Reference frequency output 0..1MHz", 1, channelSettings.at(1) );
     m_ChannelList.append(pChannel);
-    pChannel = new cFPZChannel(m_pMyServer->getSCPIInterface(), "Reference frequency output 0..1MHz", 2,  channelSettings.at(2) );
+    pChannel = new cFPZChannel(m_pSCPIInterface, "Reference frequency output 0..1MHz", 2,  channelSettings.at(2) );
     m_ChannelList.append(pChannel);
-    pChannel = new cFPZChannel(m_pMyServer->getSCPIInterface(), "Reference frequency output 0..1MHz", 3, channelSettings.at(3) );
+    pChannel = new cFPZChannel(m_pSCPIInterface, "Reference frequency output 0..1MHz", 3, channelSettings.at(3) );
     m_ChannelList.append(pChannel);
 
     m_sVersion = SourceSystem::Version;

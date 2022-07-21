@@ -29,8 +29,8 @@ cSamplingInterface::cSamplingInterface(cMT310S2dServer* server) :
     m_sVersion = SamplingSystem::Version;
     m_nType = 0;
 
-    m_SampleRangeList.append(new cSampleRange(m_pMyServer->getSCPIInterface(),"F50Hz", 504, 0));
-    m_SampleRangeList.append(new cSampleRange(m_pMyServer->getSCPIInterface(),"F20Hz", 720, 1));
+    m_SampleRangeList.append(new cSampleRange(m_pSCPIInterface, "F50Hz", 504, 0));
+    m_SampleRangeList.append(new cSampleRange(m_pSCPIInterface, "F20Hz", 720, 1));
 
     pAtmel->setSamplingRange(0); // default we set 50Hz 504 samples
     setNotifierSampleChannelRange(); // we must intialize our setting (notifier)
