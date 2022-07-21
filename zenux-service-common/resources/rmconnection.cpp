@@ -34,7 +34,7 @@ void RMConnection::SendCommand(QString &cmd, QString &par, quint32 msgnr)
 
 void RMConnection::tcpErrorHandler(QAbstractSocket::SocketError errorCode)
 {
-    qWarning("tcp socket error resource manager port: %d\n",errorCode);
+    qCritical("tcp socket error resource manager port: %d",errorCode);
     emit connectionRMError();
 }
 
@@ -45,7 +45,7 @@ void RMConnection::responseHandler(std::shared_ptr<google::protobuf::Message> re
     if (answer != nullptr) {
         if ( !(answer->has_reply() && answer->reply().rtype() == answer->reply().ACK)) {
             QByteArray ba = m_sCommand.toLocal8Bit();
-            qWarning("command: %s, was not acknowledged\n", ba.data());
+            qWarning("command: %s, was not acknowledged", ba.data());
             emit connectionRMError();
         }
         else {
@@ -53,7 +53,7 @@ void RMConnection::responseHandler(std::shared_ptr<google::protobuf::Message> re
         }
     }
     else {
-        qWarning("answer from resource manager not protobuf \n");
+        qCritical("answer from resource manager not protobuf");
         emit connectionRMError();
     }
 }
