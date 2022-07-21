@@ -48,14 +48,14 @@ void cSCHeadInterface::initSCPIConnection(QString leadingNodes)
     }
 }
 
-void cSCHeadInterface::registerResource(cRMConnection *rmConnection, quint16 port)
+void cSCHeadInterface::registerResource(RMConnection *rmConnection, quint16 port)
 {
     for(auto channel : m_ChannelList) {
         register1Resource(rmConnection, m_pMyServer->getMsgNr(), QString("SCHEAD;%1;1;%2;%3;").arg(channel->getName()).arg(channel->getDescription()).arg(port));
     }
 }
 
-void cSCHeadInterface::unregisterResource(cRMConnection *rmConnection)
+void cSCHeadInterface::unregisterResource(RMConnection *rmConnection)
 {
     for(auto channel : m_ChannelList) {
         unregister1Resource(rmConnection, m_pMyServer->getMsgNr(), QString("SCHEAD;%1;").arg(channel->getName()));

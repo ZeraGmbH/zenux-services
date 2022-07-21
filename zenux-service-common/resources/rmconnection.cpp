@@ -1,6 +1,6 @@
 #include "rmconnection.h"
 
-cRMConnection::cRMConnection(QString ipadr, quint16 port, quint8 dlevel) :
+RMConnection::RMConnection(QString ipadr, quint16 port, quint8 dlevel) :
     m_sIPAdr(ipadr),
     m_nPort(port),
     m_nDebugLevel(dlevel)
@@ -8,7 +8,7 @@ cRMConnection::cRMConnection(QString ipadr, quint16 port, quint8 dlevel) :
     m_pResourceManagerClient = 0;
 }
 
-void cRMConnection::connect2RM()
+void RMConnection::connect2RM()
 {
     if (m_pResourceManagerClient) // in case we try to
         delete m_pResourceManagerClient;
@@ -17,11 +17,11 @@ void cRMConnection::connect2RM()
     connect(m_pResourceManagerClient, SIGNAL(sigSocketError(QAbstractSocket::SocketError)), this, SLOT(tcpErrorHandler(QAbstractSocket::SocketError)));
     connect(m_pResourceManagerClient, SIGNAL(sigConnectionEstablished()), this, SIGNAL(connected()));
     connect(m_pResourceManagerClient, SIGNAL(sigConnectionClosed()), this, SIGNAL(connectionRMError()));
-    connect(m_pResourceManagerClient, &XiQNetPeer::sigMessageReceived, this, &cRMConnection::responseHandler);
+    connect(m_pResourceManagerClient, &XiQNetPeer::sigMessageReceived, this, &RMConnection::responseHandler);
     m_pResourceManagerClient->startConnection(m_sIPAdr, m_nPort);
 }
 
-void cRMConnection::SendCommand(QString &cmd, QString &par, quint32 msgnr)
+void RMConnection::SendCommand(QString &cmd, QString &par, quint32 msgnr)
 {
     m_sCommand = cmd;
     ProtobufMessage::NetMessage message;
@@ -32,13 +32,13 @@ void cRMConnection::SendCommand(QString &cmd, QString &par, quint32 msgnr)
     m_pResourceManagerClient->sendMessage(message);
 }
 
-void cRMConnection::tcpErrorHandler(QAbstractSocket::SocketError errorCode)
+void RMConnection::tcpErrorHandler(QAbstractSocket::SocketError errorCode)
 {
     qWarning("tcp socket error resource manager port: %d\n",errorCode);
     emit connectionRMError();
 }
 
-void cRMConnection::responseHandler(std::shared_ptr<google::protobuf::Message> response)
+void RMConnection::responseHandler(std::shared_ptr<google::protobuf::Message> response)
 {
     std::shared_ptr<ProtobufMessage::NetMessage> answer = nullptr;
     answer = std::static_pointer_cast<ProtobufMessage::NetMessage>(response);
@@ -58,7 +58,7 @@ void cRMConnection::responseHandler(std::shared_ptr<google::protobuf::Message> r
     }
 }
 
-void cRMConnection::SendIdent(QString ident)
+void RMConnection::SendIdent(QString ident)
 {
     ProtobufMessage::NetMessage envelope;
     ProtobufMessage::NetMessage::NetReply* message = envelope.mutable_reply();

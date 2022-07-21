@@ -7,6 +7,7 @@
 #include <QTimer>
 
 #include "pcbserver.h"
+#include "rmconnection.h"
 
 class QStateMachine;
 class QState;
@@ -21,7 +22,6 @@ class cHKeyInterface;
 class cSystemInfo;
 class cAdjustment;
 class cAtmelWatcher;
-class cRMConnection;
 class QSocketNotifier;
 class cClampInterface;
 
@@ -43,7 +43,7 @@ public:
     cHKeyInterface* m_pHKeyInterface;
     cSystemInfo* m_pSystemInfo;
     cAdjustment* m_pAdjHandler;
-    cRMConnection* m_pRMConnection;
+    RMConnection* m_pRMConnection;
     cClampInterface* m_pClampInterface;
 
     int DevFileDescriptorCtrl; // kerneltreiber wird nur 1x geöffnet und dann gehalten

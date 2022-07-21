@@ -21,6 +21,7 @@
 #include "dsp1scpi.h"
 #include "zhserver.h"
 #include "dsp.h"
+#include "rmconnection.h"
 
 
 typedef QVector<float> tDspMemArray;
@@ -32,7 +33,6 @@ class cZDSP1Server; // forward
 class cDebugSettings;
 class cETHSettings;
 class cDSPSettings;
-class cRMConnection;
 class QTcpServer;
 class QTcpSocket;
 

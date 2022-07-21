@@ -53,14 +53,14 @@ void cSourceInterface::initSCPIConnection(QString leadingNodes)
     }
 }
 
-void cSourceInterface::registerResource(cRMConnection *rmConnection, quint16 port)
+void cSourceInterface::registerResource(RMConnection *rmConnection, quint16 port)
 {
     for(auto channel : m_ChannelList) {
         register1Resource(rmConnection, m_pMyServer->getMsgNr(), QString("SOURCE;%1;1;%2;%3;").arg(channel->getName()).arg(channel->getDescription()).arg(port));
     }
 }
 
-void cSourceInterface::unregisterResource(cRMConnection *rmConnection)
+void cSourceInterface::unregisterResource(RMConnection *rmConnection)
 {
     for(auto channel : m_ChannelList) {
         unregister1Resource(rmConnection, m_pMyServer->getMsgNr(), QString("SOURCE;%1;").arg(channel->getName()));

@@ -64,7 +64,7 @@ void cFRQInputInterface::initSCPIConnection(QString leadingNodes)
 }
 
 
-void cFRQInputInterface::registerResource(cRMConnection *rmConnection, quint16 port)
+void cFRQInputInterface::registerResource(RMConnection *rmConnection, quint16 port)
 {
     cFPZInChannel* pChannel;
     for (int i = 0; i < m_ChannelList.count(); i++)
@@ -75,7 +75,7 @@ void cFRQInputInterface::registerResource(cRMConnection *rmConnection, quint16 p
 }
 
 
-void cFRQInputInterface::unregisterResource(cRMConnection *rmConnection)
+void cFRQInputInterface::unregisterResource(RMConnection *rmConnection)
 {
     cFPZInChannel* pChannel;
     for (int i = 0; i < m_ChannelList.count(); i++)

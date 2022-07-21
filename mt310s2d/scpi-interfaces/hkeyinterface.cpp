@@ -49,14 +49,14 @@ void cHKeyInterface::initSCPIConnection(QString leadingNodes)
     }
 }
 
-void cHKeyInterface::registerResource(cRMConnection *rmConnection, quint16 port)
+void cHKeyInterface::registerResource(RMConnection *rmConnection, quint16 port)
 {
     for(auto channel : m_ChannelList) {
         register1Resource(rmConnection, m_pMyServer->getMsgNr(), QString("HKEY;%1;1;%2;%3;").arg(channel->getName()).arg(channel->getDescription()).arg(port));
     }
 }
 
-void cHKeyInterface::unregisterResource(cRMConnection *rmConnection)
+void cHKeyInterface::unregisterResource(RMConnection *rmConnection)
 {
     for(auto channel : m_ChannelList) {
         unregister1Resource(rmConnection, m_pMyServer->getMsgNr(), QString("HKEY;%1;").arg(channel->getName()));

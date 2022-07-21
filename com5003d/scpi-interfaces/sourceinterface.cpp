@@ -65,7 +65,7 @@ void cSourceInterface::initSCPIConnection(QString leadingNodes)
 }
 
 
-void cSourceInterface::registerResource(cRMConnection *rmConnection, quint16 port)
+void cSourceInterface::registerResource(RMConnection *rmConnection, quint16 port)
 {
     cFPZChannel* pChannel;
     for (int i = 0; i < 4; i++)
@@ -76,7 +76,7 @@ void cSourceInterface::registerResource(cRMConnection *rmConnection, quint16 por
 }
 
 
-void cSourceInterface::unregisterResource(cRMConnection *rmConnection)
+void cSourceInterface::unregisterResource(RMConnection *rmConnection)
 {
     cFPZChannel* pChannel;
     for (int i = 0; i < 4; i++)

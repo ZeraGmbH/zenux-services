@@ -89,13 +89,13 @@ void cSamplingInterface::initSCPIConnection(QString leadingNodes)
 }
 
 
-void cSamplingInterface::registerResource(cRMConnection *rmConnection, quint16 port)
+void cSamplingInterface::registerResource(RMConnection *rmConnection, quint16 port)
 {
     register1Resource(rmConnection, m_pMyServer->getMsgNr(), QString("SAMPLE;%1;1;%2;%3;").arg(m_sName).arg(m_sDescription).arg(port));
 }
 
 
-void cSamplingInterface::unregisterResource(cRMConnection *rmConnection)
+void cSamplingInterface::unregisterResource(RMConnection *rmConnection)
 {
     unregister1Resource(rmConnection, m_pMyServer->getMsgNr(), QString("SAMPLE;%1;").arg(m_sName));
 }

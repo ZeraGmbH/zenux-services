@@ -7,6 +7,7 @@
 #include <QTimer>
 
 #include "pcbserver.h"
+#include "rmconnection.h"
 
 class QStateMachine;
 class QState;
@@ -21,7 +22,6 @@ class cSystemInterface;
 class cECalculatorInterface;
 class cECalculatorChannel;
 class cSystemInfo;
-class cRMConnection;
 
 
 class cSEC1000dServer: public cPCBServer
@@ -42,7 +42,7 @@ public:
     cSystemInterface* m_pSystemInterface;
     cECalculatorInterface* m_pECalculatorInterface;
     cSystemInfo* m_pSystemInfo;
-    cRMConnection* m_pRMConnection;
+    RMConnection* m_pRMConnection;
 
     int DevFileDescriptor; // kerneltreiber wird nur 1x geöffnet und dann gehalten
     int m_nDebugLevel;

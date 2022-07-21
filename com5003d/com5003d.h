@@ -7,6 +7,7 @@
 #include <QTimer>
 
 #include "pcbserver.h"
+#include "rmconnection.h"
 
 class QStateMachine;
 class QState;
@@ -21,7 +22,6 @@ class cHKeyInterface;
 class cSystemInfo;
 class cAdjustment;
 class cAtmelWatcher;
-class cRMConnection;
 
 
 class cCOM5003dServer: public cPCBServer
@@ -42,7 +42,7 @@ public:
     cHKeyInterface* m_pHKeyInterface;
     cSystemInfo* m_pSystemInfo;
     cAdjustment* m_pAdjHandler;
-    cRMConnection* m_pRMConnection;
+    RMConnection* m_pRMConnection;
 
 
 signals:

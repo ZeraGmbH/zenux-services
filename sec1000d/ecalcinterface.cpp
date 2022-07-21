@@ -103,7 +103,7 @@ void cECalculatorInterface::executeCommand(int cmdCode, cProtonetCommand *protoC
 }
 
 
-void cECalculatorInterface::registerResource(cRMConnection *rmConnection, quint16 port)
+void cECalculatorInterface::registerResource(RMConnection *rmConnection, quint16 port)
 {
     // we register all our error calculator units as resources
     register1Resource(rmConnection, m_pMyServer->getMsgNr(), QString("SEC1;ECALCULATOR;%1;%2;%3;")
@@ -114,7 +114,7 @@ void cECalculatorInterface::registerResource(cRMConnection *rmConnection, quint1
 }
 
 
-void cECalculatorInterface::unregisterResource(cRMConnection *rmConnection)
+void cECalculatorInterface::unregisterResource(RMConnection *rmConnection)
 {
     unregister1Resource(rmConnection, m_pMyServer->getMsgNr(), QString("SEC1;ECALCULATOR;"));
 }

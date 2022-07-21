@@ -7,11 +7,11 @@
 #include <QString>
 #include <QAbstractSocket>
 
-class cRMConnection: public QObject
+class RMConnection: public QObject
 {
     Q_OBJECT
 public:
-    cRMConnection(QString ipadr, quint16 port, quint8 dlevel);
+    RMConnection(QString ipadr, quint16 port, quint8 dlevel);
     void connect2RM();
     void SendIdent(QString ident);
 public slots:

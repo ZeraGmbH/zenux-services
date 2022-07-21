@@ -684,7 +684,7 @@ bool cSenseInterface::importXMLDocument(QDomDocument* qdomdoc) // n steht auf ei
     return ChksumOK && SenseOK;
 }
 
-void cSenseInterface::registerResource(cRMConnection *rmConnection, quint16 port)
+void cSenseInterface::registerResource(RMConnection *rmConnection, quint16 port)
 {
     msgNrList.clear();
     for(auto channel : m_ChannelList) {
@@ -700,7 +700,7 @@ void cSenseInterface::registerResource(cRMConnection *rmConnection, quint16 port
 
 }
 
-void cSenseInterface::unregisterResource(cRMConnection *rmConnection)
+void cSenseInterface::unregisterResource(RMConnection *rmConnection)
 {
     msgNrList.clear();
     for(auto channel : m_ChannelList) {

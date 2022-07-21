@@ -497,7 +497,7 @@ bool cSenseInterface::importAdjData(QDomNode& node) // n steht auf einem element
 }
 
 
-void cSenseInterface::registerResource(cRMConnection *rmConnection, quint16 port)
+void cSenseInterface::registerResource(RMConnection *rmConnection, quint16 port)
 {
     cSenseChannel* pChannel;
     msgNrList.clear();
@@ -518,7 +518,7 @@ void cSenseInterface::registerResource(cRMConnection *rmConnection, quint16 port
 }
 
 
-void cSenseInterface::unregisterResource(cRMConnection *rmConnection)
+void cSenseInterface::unregisterResource(RMConnection *rmConnection)
 {
     cSenseChannel* pChannel;
     msgNrList.clear();

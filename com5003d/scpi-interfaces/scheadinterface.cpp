@@ -59,7 +59,7 @@ void cSCHeadInterface::initSCPIConnection(QString leadingNodes)
 }
 
 
-void cSCHeadInterface::registerResource(cRMConnection *rmConnection, quint16 port)
+void cSCHeadInterface::registerResource(RMConnection *rmConnection, quint16 port)
 {
     cSCHeadChannel* pChannel;
     for (int i = 0; i < m_ChannelList.count(); i++)
@@ -70,7 +70,7 @@ void cSCHeadInterface::registerResource(cRMConnection *rmConnection, quint16 por
 }
 
 
-void cSCHeadInterface::unregisterResource(cRMConnection *rmConnection)
+void cSCHeadInterface::unregisterResource(RMConnection *rmConnection)
 {
     cSCHeadChannel* pChannel;
     for (int i = 0; i < m_ChannelList.count(); i++)

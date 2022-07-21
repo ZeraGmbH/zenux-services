@@ -53,8 +53,8 @@ public:
     QString getChannelSystemName(quint16 ctrlChannel);
     cSenseRange* getRange(QString channelName, QString rangeName);
     virtual quint8 getAdjustmentStatus(); // we return 0 if adj. otherwise  1 +2 +4
-    virtual void registerResource(cRMConnection *rmConnection, quint16 port);
-    virtual void unregisterResource(cRMConnection *rmConnection);
+    virtual void registerResource(RMConnection *rmConnection, quint16 port);
+    virtual void unregisterResource(RMConnection *rmConnection);
     virtual QString exportXMLString(int indent = 1);
     void m_ComputeSenseAdjData();
 protected:

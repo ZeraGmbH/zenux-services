@@ -206,7 +206,7 @@ void cSEC1000dServer::doSetupServer()
         sigaction(SIGIO, &mySigAction, NULL); // handler für sigio definieren
         SetFASync();
         // our resource mananager connection must be opened after configuration is done
-        m_pRMConnection = new cRMConnection(m_pETHSettings->getRMIPadr(), m_pETHSettings->getPort(resourcemanager), m_pDebugSettings->getDebugLevel());
+        m_pRMConnection = new RMConnection(m_pETHSettings->getRMIPadr(), m_pETHSettings->getPort(resourcemanager), m_pDebugSettings->getDebugLevel());
         //connect(m_pRMConnection, SIGNAL(connectionRMError()), this, SIGNAL(abortInit()));
         // so we must complete our state machine here
         m_nRetryRMConnect = 100;

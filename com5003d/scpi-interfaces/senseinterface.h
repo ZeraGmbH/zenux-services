@@ -63,8 +63,8 @@ public:
     virtual bool importAdjData(QString& s, QDataStream& stream);
     virtual void exportAdjData(QDomDocument& doc, QDomElement& qde); // the derived class exports adjdata beneath qdomelement
     virtual bool importAdjData(QDomNode& node);
-    virtual void registerResource(cRMConnection *rmConnection, quint16 port);
-    virtual void unregisterResource(cRMConnection *rmConnection);
+    virtual void registerResource(RMConnection *rmConnection, quint16 port);
+    virtual void unregisterResource(RMConnection *rmConnection);
 
 protected slots:
     virtual void executeCommand(int cmdCode, cProtonetCommand* protoCmd);

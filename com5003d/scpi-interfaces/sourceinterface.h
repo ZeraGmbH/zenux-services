@@ -33,8 +33,8 @@ public:
     cSourceInterface(cCOM5003dServer* server);
     ~cSourceInterface();
     virtual void initSCPIConnection(QString leadingNodes);
-    virtual void registerResource(cRMConnection *rmConnection, quint16 port);
-    virtual void unregisterResource(cRMConnection *rmConnection);
+    virtual void registerResource(RMConnection *rmConnection, quint16 port);
+    virtual void unregisterResource(RMConnection *rmConnection);
 
 protected slots:
     virtual void executeCommand(int cmdCode, cProtonetCommand* protoCmd);

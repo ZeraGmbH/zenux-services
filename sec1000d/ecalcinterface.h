@@ -43,8 +43,8 @@ public:
     cECalculatorInterface(cSEC1000dServer* server, cETHSettings* ethsettings, cECalculatorSettings* ecalcSettings, cFPGASettings* fpgasettings, cInputSettings* inputsettings);
     ~cECalculatorInterface();
     void initSCPIConnection(QString leadingNodes) override;
-    virtual void registerResource(cRMConnection *rmConnection, quint16 port) override;
-    virtual void unregisterResource(cRMConnection *rmConnection);
+    virtual void registerResource(RMConnection *rmConnection, quint16 port) override;
+    virtual void unregisterResource(RMConnection *rmConnection);
     QList<cECalculatorChannel*> getECalcChannelList();
 
 protected slots:

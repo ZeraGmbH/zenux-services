@@ -15,7 +15,7 @@ cResource::~cResource()
 }
 
 
-void cResource::register1Resource(cRMConnection *rmConnection, quint32 msgnr, QString registerParameter)
+void cResource::register1Resource(RMConnection *rmConnection, quint32 msgnr, QString registerParameter)
 {
     QString cmd = QString("RESOURCE:ADD");
     msgNrList.append(msgnr);
@@ -23,7 +23,7 @@ void cResource::register1Resource(cRMConnection *rmConnection, quint32 msgnr, QS
 }
 
 
-void cResource::unregister1Resource(cRMConnection *rmConnection, quint32 msgnr, QString unregisterParameter)
+void cResource::unregister1Resource(RMConnection *rmConnection, quint32 msgnr, QString unregisterParameter)
 {
     QString cmd = QString("RESOURCE:REMOVE");
     msgNrList.append(msgnr);
