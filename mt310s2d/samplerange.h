@@ -15,12 +15,12 @@ class cSampleRange: public cSCPIConnection
     Q_OBJECT
 public:
     cSampleRange(cSCPI* scpiinterface, QString name, quint16 srate, quint8 selcode);
-    virtual void initSCPIConnection(QString leadingNodes);
+    virtual void initSCPIConnection(QString leadingNodes) override;
     QString &getName();
     quint8 getSelCode();
     quint16 getSRate();
 protected slots:
-    virtual void executeCommand(int cmdCode, cProtonetCommand* protoCmd);
+    virtual void executeCommand(int cmdCode, cProtonetCommand* protoCmd) override;
 private:
     QString m_ReadSRate(QString &sInput);
     QString m_sName;

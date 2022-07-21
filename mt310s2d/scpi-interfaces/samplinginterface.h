@@ -31,11 +31,11 @@ class cSamplingInterface: public cResource
     Q_OBJECT
 public:
     cSamplingInterface(cMT310S2dServer *server);
-    virtual void initSCPIConnection(QString leadingNodes);
-    virtual void registerResource(RMConnection *rmConnection, quint16 port);
-    virtual void unregisterResource(RMConnection *rmConnection);
+    virtual void initSCPIConnection(QString leadingNodes) override;
+    virtual void registerResource(RMConnection *rmConnection, quint16 port) override;
+    virtual void unregisterResource(RMConnection *rmConnection) override;
 protected slots:
-    virtual void executeCommand(int cmdCode, cProtonetCommand* protoCmd);
+    virtual void executeCommand(int cmdCode, cProtonetCommand* protoCmd) override;
 private:
     void setNotifierSampleChannelRange();
     QString m_ReadVersion(QString& sInput);

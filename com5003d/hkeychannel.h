@@ -29,7 +29,7 @@ class cHKeyChannel : public cSCPIConnection
 
 public:
     cHKeyChannel(cSCPI* scpiinterface, QString description, quint8 nr, HKeySystem::cChannelSettings* cSettings);
-    virtual void initSCPIConnection(QString leadingNodes);
+    virtual void initSCPIConnection(QString leadingNodes) override;
 
     QString& getName();
     QString& getAlias();
@@ -37,7 +37,7 @@ public:
     bool isAvail();
 
 protected slots:
-    virtual void executeCommand(int cmdCode, cProtonetCommand* protoCmd);
+    virtual void executeCommand(int cmdCode, cProtonetCommand* protoCmd) override;
 
 private:
     QString m_sName; // the channel's name

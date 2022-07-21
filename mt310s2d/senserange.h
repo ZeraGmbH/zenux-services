@@ -41,7 +41,7 @@ public:
                 quint16 mmask,
                 cMT310S2JustData* justdata);
     ~cSenseRange();
-    virtual void initSCPIConnection(QString leadingNodes);
+    virtual void initSCPIConnection(QString leadingNodes) override;
     quint8 getAdjustmentStatus();
 
     QString& getName();
@@ -56,7 +56,7 @@ public:
     void computeJustData();
 
 protected slots:
-    virtual void executeCommand(int cmdCode, cProtonetCommand* protoCmd);
+    virtual void executeCommand(int cmdCode, cProtonetCommand* protoCmd) override;
 
 protected:
     QString m_sName; // the range name

@@ -61,7 +61,7 @@ class cECalculatorChannel : public cSCPIConnection
 public:
     cECalculatorChannel(cSEC1000dServer* server, cECalculatorSettings* esettings, cFPGASettings* fsettings, cInputSettings* inpsettings, quint16 nr);
     ~cECalculatorChannel();
-    virtual void initSCPIConnection(QString leadingNodes);
+    virtual void initSCPIConnection(QString leadingNodes) override;
 
     QString& getName();
     bool isfree();
@@ -74,7 +74,7 @@ public:
     void m_resetInterrupt(quint8 interrupt);
 
 protected slots:
-    virtual void executeCommand(int cmdCode, cProtonetCommand* protoCmd);
+    virtual void executeCommand(int cmdCode, cProtonetCommand* protoCmd) override;
 
 private:
     cSEC1000dServer* m_pMyServer;

@@ -30,10 +30,10 @@ class cStatusInterface: public cSCPIConnection
 
 public:
     cStatusInterface(cCOM5003dServer *server);
-    virtual void initSCPIConnection(QString leadingNodes);
+    virtual void initSCPIConnection(QString leadingNodes) override;
 
 protected slots:
-    virtual void executeCommand(int cmdCode, cProtonetCommand* protoCmd);
+    virtual void executeCommand(int cmdCode, cProtonetCommand* protoCmd) override;
 
 private:
     cCOM5003dServer* m_pMyServer;

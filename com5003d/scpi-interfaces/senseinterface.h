@@ -56,18 +56,18 @@ class cSenseInterface : public cResource, public cAdjFlash, public cAdjXML
 public:
     cSenseInterface(cCOM5003dServer* server);
     ~cSenseInterface();
-    virtual void initSCPIConnection(QString leadingNodes);
+    virtual void initSCPIConnection(QString leadingNodes) override;
     cSenseChannel* getChannel(QString& name);
-    quint8 getAdjustmentStatus(); // we return 0 if not adj. else 1
-    virtual void exportAdjData(QDataStream& stream);
-    virtual bool importAdjData(QString& s, QDataStream& stream);
-    virtual void exportAdjData(QDomDocument& doc, QDomElement& qde); // the derived class exports adjdata beneath qdomelement
-    virtual bool importAdjData(QDomNode& node);
-    virtual void registerResource(RMConnection *rmConnection, quint16 port);
-    virtual void unregisterResource(RMConnection *rmConnection);
+    quint8 getAdjustmentStatus() override; // we return 0 if not adj. else 1
+    virtual void exportAdjData(QDataStream& stream) override;
+    virtual bool importAdjData(QString& s, QDataStream& stream) override;
+    virtual void exportAdjData(QDomDocument& doc, QDomElement& qde) override; // the derived class exports adjdata beneath qdomelement
+    virtual bool importAdjData(QDomNode& node) override;
+    virtual void registerResource(RMConnection *rmConnection, quint16 port) override;
+    virtual void unregisterResource(RMConnection *rmConnection) override;
 
 protected slots:
-    virtual void executeCommand(int cmdCode, cProtonetCommand* protoCmd);
+    virtual void executeCommand(int cmdCode, cProtonetCommand* protoCmd) override;
 
 private:
     cCOM5003dServer* m_pMyServer;

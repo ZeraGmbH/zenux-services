@@ -34,7 +34,7 @@ class cSenseChannel : public cSCPIConnection
 public:
     cSenseChannel(cSCPI* scpiinterface, QString description, QString unit, SenseSystem::cChannelSettings* cSettings, quint8 nr);
     ~cSenseChannel();
-    virtual void initSCPIConnection(QString leadingNodes);
+    virtual void initSCPIConnection(QString leadingNodes) override;
 
     void setRangeList(QList<cSenseRange*>& list);
     QList<cSenseRange*>& getRangeList();
@@ -58,7 +58,7 @@ public:
     void computeJustData();
 
 protected slots:
-    virtual void executeCommand(int cmdCode, cProtonetCommand* protoCmd);
+    virtual void executeCommand(int cmdCode, cProtonetCommand* protoCmd) override;
 
 private:
     QString m_sName; // the channels name m0...

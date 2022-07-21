@@ -36,7 +36,7 @@ class cCOM5003JustData: public cSCPIConnection  // alle korrekturdaten für eine
 public:
     cCOM5003JustData(cSCPI* scpiinterface);
     ~cCOM5003JustData();
-    virtual void initSCPIConnection(QString leadingNodes);
+    virtual void initSCPIConnection(QString leadingNodes) override;
 
     cJustData* m_pGainCorrection;
     cJustData* m_pPhaseCorrection; 
@@ -49,7 +49,7 @@ public:
     void computeJustData();
 
 protected slots:
-    virtual void executeCommand(int cmdCode, cProtonetCommand* protoCmd);
+    virtual void executeCommand(int cmdCode, cProtonetCommand* protoCmd) override;
 
 private:    
     QString mReadGainCorrection(QString&sInput);

@@ -44,7 +44,7 @@ public:
     ~cECalculatorInterface();
     void initSCPIConnection(QString leadingNodes) override;
     virtual void registerResource(RMConnection *rmConnection, quint16 port) override;
-    virtual void unregisterResource(RMConnection *rmConnection);
+    virtual void unregisterResource(RMConnection *rmConnection) override;
     QList<cECalculatorChannel*> getECalcChannelList();
 
 protected slots:

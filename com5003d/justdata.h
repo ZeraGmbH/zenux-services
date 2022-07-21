@@ -42,7 +42,7 @@ class cJustData: public cSCPIConnection // base class for adjustment coefficient
 public:
     cJustData(cSCPI *scpiinterface, int order,double init);
     ~cJustData();
-    virtual void initSCPIConnection(QString leadingNodes);
+    virtual void initSCPIConnection(QString leadingNodes) override;
 
     void Serialize(QDataStream& qds); // can be used to write adjustment data to flash memory
     void Deserialize(QDataStream& qds); // coefficients and nodes will be serialitzed both
@@ -59,7 +59,7 @@ public:
     void initJustData(double init); // for initialization of justdata
 
 protected slots:
-    virtual void executeCommand(int cmdCode, cProtonetCommand* protoCmd);
+    virtual void executeCommand(int cmdCode, cProtonetCommand* protoCmd) override;
 
 private:
     quint8 m_nStatus;
