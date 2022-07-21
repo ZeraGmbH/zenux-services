@@ -78,7 +78,7 @@ void cNodeZHServer::SetNodeNameList(QStringList* sl)
 
 cZHServer::cZHServer()
 {
-    sSoftwareVersion = QString("%1 %2").arg(ServerBasisName).arg(ServerVersion);
+    sSoftwareVersion = QString("%1 %2").arg(ServerBasisName, ServerVersion);
     sServerName = ServerBasisName;
 }
 

@@ -128,7 +128,7 @@ cSenseInterface::cSenseInterface(cMT310S2dServer *server) :
 
 cSenseInterface::~cSenseInterface()
 {
-    for(auto channel : m_ChannelList) {
+    for(auto channel : qAsConst(m_ChannelList)) {
         delete channel;
     }
     m_ChannelList.clear();
@@ -141,26 +141,26 @@ void cSenseInterface::initSCPIConnection(QString leadingNodes)
     }
     cSCPIDelegate* delegate = new cSCPIDelegate(QString("%1SENSE").arg(leadingNodes),"VERSION",SCPI::isQuery, m_pSCPIInterface, SenseSystem::cmdVersion);
     m_DelegateList.append(delegate);
-    connect(delegate, SIGNAL(execute(int, cProtonetCommand*)), this, SLOT(executeCommand(int, cProtonetCommand*)));
+    connect(delegate, SIGNAL(execute(int,cProtonetCommand*)), this, SLOT(executeCommand(int,cProtonetCommand*)));
     delegate = new cSCPIDelegate(QString("%1SENSE").arg(leadingNodes),"MMODE",SCPI::isQuery | SCPI::isCmdwP , m_pSCPIInterface, SenseSystem::cmdMMode);
     m_DelegateList.append(delegate);
-    connect(delegate, SIGNAL(execute(int, cProtonetCommand*)), this, SLOT(executeCommand(int, cProtonetCommand*)));
+    connect(delegate, SIGNAL(execute(int,cProtonetCommand*)), this, SLOT(executeCommand(int,cProtonetCommand*)));
     delegate = new cSCPIDelegate(QString("%1SENSE:MMODE").arg(leadingNodes),"CATALOG",SCPI::isQuery, m_pSCPIInterface, SenseSystem::cmdMModeCat );
     m_DelegateList.append(delegate);
-    connect(delegate, SIGNAL(execute(int, cProtonetCommand*)), this, SLOT(executeCommand(int, cProtonetCommand*)));
+    connect(delegate, SIGNAL(execute(int,cProtonetCommand*)), this, SLOT(executeCommand(int,cProtonetCommand*)));
     delegate = new cSCPIDelegate(QString("%1SENSE:CHANNEL").arg(leadingNodes),"CATALOG", SCPI::isQuery, m_pSCPIInterface, SenseSystem::cmdChannelCat);
     m_DelegateList.append(delegate);
-    connect(delegate, SIGNAL(execute(int, cProtonetCommand*)), this, SLOT(executeCommand(int, cProtonetCommand*)));
+    connect(delegate, SIGNAL(execute(int,cProtonetCommand*)), this, SLOT(executeCommand(int,cProtonetCommand*)));
     delegate = new cSCPIDelegate(QString("%1SENSE:GROUP").arg(leadingNodes),"CATALOG", SCPI::isQuery, m_pSCPIInterface, SenseSystem::cmdGroupCat);
     m_DelegateList.append(delegate);
-    connect(delegate, SIGNAL(execute(int, cProtonetCommand*)), this, SLOT(executeCommand(int, cProtonetCommand*)));
+    connect(delegate, SIGNAL(execute(int,cProtonetCommand*)), this, SLOT(executeCommand(int,cProtonetCommand*)));
     delegate = new cSCPIDelegate(QString("%1SENSE:CORRECTION").arg(leadingNodes),"INIT", SCPI::isCmd, m_pSCPIInterface, SenseSystem::initAdjData);
     m_DelegateList.append(delegate);
-    connect(delegate, SIGNAL(execute(int, cProtonetCommand*)), this, SLOT(executeCommand(int, cProtonetCommand*)));
+    connect(delegate, SIGNAL(execute(int,cProtonetCommand*)), this, SLOT(executeCommand(int,cProtonetCommand*)));
     delegate = new cSCPIDelegate(QString("%1SENSE:CORRECTION").arg(leadingNodes),"COMPUTE", SCPI::isCmd, m_pSCPIInterface, SenseSystem::computeAdjData);
     m_DelegateList.append(delegate);
-    connect(delegate, SIGNAL(execute(int, cProtonetCommand*)), this, SLOT(executeCommand(int, cProtonetCommand*)));
-    for(auto channel : m_ChannelList) {
+    connect(delegate, SIGNAL(execute(int,cProtonetCommand*)), this, SLOT(executeCommand(int,cProtonetCommand*)));
+    for(auto channel : qAsConst(m_ChannelList)) {
         // we also must connect the signals for notification and for output
         connect(channel, &cSCPIConnection::strNotifier, this, &cSCPIConnection::strNotifier);
         connect(channel, SIGNAL(cmdExecutionDone(cProtonetCommand*)), this, SIGNAL(cmdExecutionDone(cProtonetCommand*)));
@@ -169,13 +169,13 @@ void cSenseInterface::initSCPIConnection(QString leadingNodes)
     QString cmdParent = QString("STATUS:PCB");
     delegate = new cSCPIDelegate(cmdParent, "ADJUSTMENT", SCPI::isQuery, m_pSCPIInterface, SenseSystem::cmdStatAdjustment);
     m_DelegateList.append(delegate);
-    connect(delegate, SIGNAL(execute(int, cProtonetCommand*)), this, SLOT(executeCommand(int, cProtonetCommand*)));
+    connect(delegate, SIGNAL(execute(int,cProtonetCommand*)), this, SLOT(executeCommand(int,cProtonetCommand*)));
 }
 
 cSenseChannel *cSenseInterface::getChannel(QString &name)
 {
     cSenseChannel *channelFound = nullptr;
-    for(auto channel : m_ChannelList) {
+    for(auto channel : qAsConst(m_ChannelList)) {
         if(channel->getName() == name) {
             channelFound = channel;
             break;
@@ -187,7 +187,7 @@ cSenseChannel *cSenseInterface::getChannel(QString &name)
 QString cSenseInterface::getChannelSystemName(quint16 ctrlChannel)
 {
     QString nameFound;
-    for(auto channel : m_ChannelList) {
+    for(auto channel : qAsConst(m_ChannelList)) {
         if(channel->getCtrlChannel() == ctrlChannel) {
             nameFound = channel->getName();
             break;
@@ -210,7 +210,7 @@ quint8 cSenseInterface::getAdjustmentStatus()
 {
     quint8 adjustmentStatusMask = Adjustment::adjusted;
     // Loop adjustment state for all channels
-    for(auto channel : m_ChannelList) {
+    for(auto channel : qAsConst(m_ChannelList)) {
         quint8 channelFlags = channel->getAdjustmentStatus();
         // Currently there is one flag in channel flags only
         if((channelFlags & JustData::Justified)== 0) {
@@ -286,7 +286,6 @@ bool cSenseInterface::importAdjData(QDataStream &stream)
     }
 
     stream >> s;
-    QString SVersion = QString(s);
     stream >> s; // we take the device name
 
     QString sysDevName = m_pSystemInfo->getDeviceName();
@@ -354,7 +353,6 @@ bool cSenseInterface::importAdjData(QDataStream &stream)
     }
 
     stream >> s;
-    QDateTime DateTime = QDateTime::fromString(QString(s), Qt::TextDate); // datum und uhrzeit übernehmen
     while (!stream.atEnd()) {
         bool done;
         stream >> s;
@@ -395,8 +393,8 @@ void cSenseInterface::exportAdjData(QDataStream &stream)
     stream << m_pSystemInfo->getDeviceVersion().toStdString().c_str(); // geräte name versionsnummern ...
     stream << m_pSystemInfo->getSerialNumber().toStdString().c_str(); // seriennummer
     stream << QDateTime::currentDateTime().toString(Qt::TextDate).toStdString().c_str(); // datum,uhrzeit
-    for(auto channel : m_ChannelList) {
-        for(auto range : channel->getRangeList()) {
+    for(auto channel : qAsConst(m_ChannelList)) {
+        for(auto range : qAsConst(channel->getRangeList())) {
             if ((range->getMMask() & SenseSystem::Direct)> 0)
             {
                 QString spec = QString("%1:%2:%3")
@@ -457,7 +455,7 @@ QString cSenseInterface::exportXMLString(int indent)
     QDomElement typeTag = justqdom.createElement( "Sense");
     adjtag.appendChild(typeTag);
 
-    for(auto channel : m_ChannelList) {
+    for(auto channel : qAsConst(m_ChannelList)) {
         QDomText t;
         QDomElement chtag = justqdom.createElement( "Channel" );
         typeTag.appendChild( chtag );
@@ -466,7 +464,7 @@ QString cSenseInterface::exportXMLString(int indent)
         t = justqdom.createTextNode(channel->getName());
         nametag.appendChild( t );
 
-        for(auto range : channel->getRangeList()) {
+        for(auto range : qAsConst(channel->getRangeList())) {
             if ((range->getMMask() & SenseSystem::Direct)> 0) {
                 QDomElement rtag = justqdom.createElement( "Range" );
                 chtag.appendChild( rtag );
@@ -538,7 +536,7 @@ QString cSenseInterface::exportXMLString(int indent)
 
 void cSenseInterface::m_ComputeSenseAdjData()
 {
-    for(auto channel : m_ChannelList) {
+    for(auto channel : qAsConst(m_ChannelList)) {
         channel->computeJustData();
     }
 }
@@ -687,7 +685,7 @@ bool cSenseInterface::importXMLDocument(QDomDocument* qdomdoc) // n steht auf ei
 void cSenseInterface::registerResource(RMConnection *rmConnection, quint16 port)
 {
     msgNrList.clear();
-    for(auto channel : m_ChannelList) {
+    for(auto channel : qAsConst(m_ChannelList)) {
         register1Resource(rmConnection, m_pMyServer->getMsgNr(), QString("SENSE;%1;1;%2;%3;")
                          .arg(channel->getName())
                          .arg(channel->getDescription())
@@ -703,7 +701,7 @@ void cSenseInterface::registerResource(RMConnection *rmConnection, quint16 port)
 void cSenseInterface::unregisterResource(RMConnection *rmConnection)
 {
     msgNrList.clear();
-    for(auto channel : m_ChannelList) {
+    for(auto channel : qAsConst(m_ChannelList)) {
         unregister1Resource(rmConnection, m_pMyServer->getMsgNr(), QString("SENSE;%1;")
                          .arg(channel->getName()));
     }
@@ -789,7 +787,7 @@ QString cSenseInterface::m_InitSenseAdjData(QString &sInput)
     cSCPICommand cmd = sInput;
     // cmd.isCommand(0) is not correct but we leave it for compatibility
     if ( cmd.isCommand(0) || (cmd.isCommand(1) && (cmd.getParam(0) == ""))) {
-        for(auto channel : m_ChannelList) {
+        for(auto channel : qAsConst(m_ChannelList)) {
             channel->initJustData();
         }
         return SCPI::scpiAnswer[SCPI::ack];
@@ -847,7 +845,7 @@ bool cSenseInterface::setSenseMode(QString sMode)
         quint8 mode;
         mode = m_MModeHash[sMode];
         pAtmel->setMeasMode((mode >> 1) & 1); // set the atmels mode here...atmel only knows ac and hf
-        for(auto channel : m_ChannelList) {
+        for(auto channel : qAsConst(m_ChannelList)) {
             channel->setMMode(mode);
         }
         m_sMMode = sMode;

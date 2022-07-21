@@ -170,27 +170,27 @@ void cMT310S2dServer::doConfiguration()
 
                 // we want to initialize all settings first
                 m_pDebugSettings = new cDebugSettings(myXMLConfigReader);
-                connect(myXMLConfigReader,SIGNAL(valueChanged(const QString&)),m_pDebugSettings,SLOT(configXMLInfo(const QString&)));
+                connect(myXMLConfigReader,SIGNAL(valueChanged(QString)),m_pDebugSettings,SLOT(configXMLInfo(QString)));
                 m_pETHSettings = new cETHSettings(myXMLConfigReader);
-                connect(myXMLConfigReader,SIGNAL(valueChanged(const QString&)),m_pETHSettings,SLOT(configXMLInfo(const QString&)));
+                connect(myXMLConfigReader,SIGNAL(valueChanged(QString)),m_pETHSettings,SLOT(configXMLInfo(QString)));
                 m_pI2CSettings = new cI2CSettings(myXMLConfigReader);
-                connect(myXMLConfigReader,SIGNAL(valueChanged(const QString&)),m_pI2CSettings,SLOT(configXMLInfo(const QString&)));
+                connect(myXMLConfigReader,SIGNAL(valueChanged(QString)),m_pI2CSettings,SLOT(configXMLInfo(QString)));
                 m_pFPGASettings = new cFPGASettings(myXMLConfigReader);
-                connect(myXMLConfigReader,SIGNAL(valueChanged(const QString&)),m_pFPGASettings,SLOT(configXMLInfo(const QString&)));
+                connect(myXMLConfigReader,SIGNAL(valueChanged(QString)),m_pFPGASettings,SLOT(configXMLInfo(QString)));
                 m_pCtrlSettings = new cCtrlSettings(myXMLConfigReader);
-                connect(myXMLConfigReader,SIGNAL(valueChanged(const QString&)),m_pCtrlSettings,SLOT(configXMLInfo(const QString&)));
+                connect(myXMLConfigReader,SIGNAL(valueChanged(QString)),m_pCtrlSettings,SLOT(configXMLInfo(QString)));
                 m_pSenseSettings = new cSenseSettings(myXMLConfigReader);
-                connect(myXMLConfigReader,SIGNAL(valueChanged(const QString&)),m_pSenseSettings,SLOT(configXMLInfo(const QString&)));
+                connect(myXMLConfigReader,SIGNAL(valueChanged(QString)),m_pSenseSettings,SLOT(configXMLInfo(QString)));
                 m_pSourceSettings = new cSourceSettings(myXMLConfigReader);
-                connect(myXMLConfigReader,SIGNAL(valueChanged(const QString&)),m_pSourceSettings,SLOT(configXMLInfo(const QString&)));
+                connect(myXMLConfigReader,SIGNAL(valueChanged(QString)),m_pSourceSettings,SLOT(configXMLInfo(QString)));
                 m_pSamplingSettings = new cSamplingSettings(myXMLConfigReader);
-                connect(myXMLConfigReader,SIGNAL(valueChanged(const QString&)),m_pSamplingSettings,SLOT(configXMLInfo(const QString&)));
+                connect(myXMLConfigReader,SIGNAL(valueChanged(QString)),m_pSamplingSettings,SLOT(configXMLInfo(QString)));
                 m_pFRQInputSettings = new cFRQInputSettings(myXMLConfigReader);
-                connect(myXMLConfigReader,SIGNAL(valueChanged(const QString&)),m_pFRQInputSettings,SLOT(configXMLInfo(const QString&)));
+                connect(myXMLConfigReader,SIGNAL(valueChanged(QString)),m_pFRQInputSettings,SLOT(configXMLInfo(QString)));
                 m_pSCHeadSettings = new cSCHeadSettings(myXMLConfigReader);
-                connect(myXMLConfigReader,SIGNAL(valueChanged(const QString&)),m_pSCHeadSettings,SLOT(configXMLInfo(const QString&)));
+                connect(myXMLConfigReader,SIGNAL(valueChanged(QString)),m_pSCHeadSettings,SLOT(configXMLInfo(QString)));
                 m_pHKeySettings = new cHKeySettings(myXMLConfigReader);
-                connect(myXMLConfigReader,SIGNAL(valueChanged(const QString&)),m_pHKeySettings,SLOT(configXMLInfo(const QString&)));
+                connect(myXMLConfigReader,SIGNAL(valueChanged(QString)),m_pHKeySettings,SLOT(configXMLInfo(QString)));
 
 
                 QString s = args.at(1);

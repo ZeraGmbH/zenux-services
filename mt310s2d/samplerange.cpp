@@ -20,9 +20,9 @@ void cSampleRange::initSCPIConnection(QString leadingNodes)
     if (leadingNodes != "")
         leadingNodes += ":";
 
-    delegate = new cSCPIDelegate(QString("%1%2").arg(leadingNodes).arg(m_sName),"SRATE", SCPI::isQuery, m_pSCPIInterface, SampleRangeSamples);
+    delegate = new cSCPIDelegate(QString("%1%2").arg(leadingNodes, m_sName),"SRATE", SCPI::isQuery, m_pSCPIInterface, SampleRangeSamples);
     m_DelegateList.append(delegate);
-    connect(delegate, SIGNAL(execute(int, cProtonetCommand*)), this, SLOT(executeCommand(int, cProtonetCommand*)));
+    connect(delegate, SIGNAL(execute(int,cProtonetCommand*)), this, SLOT(executeCommand(int,cProtonetCommand*)));
 }
 
 

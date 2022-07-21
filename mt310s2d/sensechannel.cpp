@@ -21,7 +21,7 @@ cSenseChannel::cSenseChannel(cSCPI* scpiinterface, QString description, QString 
 
 cSenseChannel::~cSenseChannel()
 {
-    for(auto range : m_RangeList) {
+    for(auto range : qAsConst(m_RangeList)) {
         delete range;
     }
 }
@@ -31,37 +31,37 @@ void cSenseChannel::initSCPIConnection(QString leadingNodes)
     if (leadingNodes != "")
         leadingNodes += ":";
     cSCPIDelegate* delegate;
-    delegate = new cSCPIDelegate(QString("%1%2").arg(leadingNodes).arg(m_sName),"ALIAS", SCPI::isQuery, m_pSCPIInterface, SenseChannel::cmdAlias);
+    delegate = new cSCPIDelegate(QString("%1%2").arg(leadingNodes, m_sName),"ALIAS", SCPI::isQuery, m_pSCPIInterface, SenseChannel::cmdAlias);
     m_DelegateList.append(delegate);
-    connect(delegate, SIGNAL(execute(int, cProtonetCommand*)), this, SLOT(executeCommand(int, cProtonetCommand*)));
-    delegate = new cSCPIDelegate(QString("%1%2").arg(leadingNodes).arg(m_sName),"TYPE", SCPI::isQuery, m_pSCPIInterface, SenseChannel::cmdType);
+    connect(delegate, SIGNAL(execute(int,cProtonetCommand*)), this, SLOT(executeCommand(int,cProtonetCommand*)));
+    delegate = new cSCPIDelegate(QString("%1%2").arg(leadingNodes, m_sName),"TYPE", SCPI::isQuery, m_pSCPIInterface, SenseChannel::cmdType);
     m_DelegateList.append(delegate);
-    connect(delegate, SIGNAL(execute(int, cProtonetCommand*)), this, SLOT(executeCommand(int, cProtonetCommand*)));
-    delegate = new cSCPIDelegate(QString("%1%2").arg(leadingNodes).arg(m_sName),"UNIT", SCPI::isQuery, m_pSCPIInterface, SenseChannel::cmdUnit);
+    connect(delegate, SIGNAL(execute(int,cProtonetCommand*)), this, SLOT(executeCommand(int,cProtonetCommand*)));
+    delegate = new cSCPIDelegate(QString("%1%2").arg(leadingNodes, m_sName),"UNIT", SCPI::isQuery, m_pSCPIInterface, SenseChannel::cmdUnit);
     m_DelegateList.append(delegate);
-    connect(delegate, SIGNAL(execute(int, cProtonetCommand*)), this, SLOT(executeCommand(int, cProtonetCommand*)));
-    delegate = new cSCPIDelegate(QString("%1%2").arg(leadingNodes).arg(m_sName),"DSPCHANNEL", SCPI::isQuery, m_pSCPIInterface, SenseChannel::cmdDspChannel);
+    connect(delegate, SIGNAL(execute(int,cProtonetCommand*)), this, SLOT(executeCommand(int,cProtonetCommand*)));
+    delegate = new cSCPIDelegate(QString("%1%2").arg(leadingNodes, m_sName),"DSPCHANNEL", SCPI::isQuery, m_pSCPIInterface, SenseChannel::cmdDspChannel);
     m_DelegateList.append(delegate);
-    connect(delegate, SIGNAL(execute(int, cProtonetCommand*)), this, SLOT(executeCommand(int, cProtonetCommand*)));
-    delegate = new cSCPIDelegate(QString("%1%2").arg(leadingNodes).arg(m_sName),"STATUS", SCPI::isQuery, m_pSCPIInterface, SenseChannel::cmdStatus);
+    connect(delegate, SIGNAL(execute(int,cProtonetCommand*)), this, SLOT(executeCommand(int,cProtonetCommand*)));
+    delegate = new cSCPIDelegate(QString("%1%2").arg(leadingNodes, m_sName),"STATUS", SCPI::isQuery, m_pSCPIInterface, SenseChannel::cmdStatus);
     m_DelegateList.append(delegate);
-    connect(delegate, SIGNAL(execute(int, cProtonetCommand*)), this, SLOT(executeCommand(int, cProtonetCommand*)));
-    delegate = new cSCPIDelegate(QString("%1%2:STATUS").arg(leadingNodes).arg(m_sName),"RESET", SCPI::isCmd, m_pSCPIInterface, SenseChannel::cmdStatusReset);
+    connect(delegate, SIGNAL(execute(int,cProtonetCommand*)), this, SLOT(executeCommand(int,cProtonetCommand*)));
+    delegate = new cSCPIDelegate(QString("%1%2:STATUS").arg(leadingNodes, m_sName),"RESET", SCPI::isCmd, m_pSCPIInterface, SenseChannel::cmdStatusReset);
     m_DelegateList.append(delegate);
-    connect(delegate, SIGNAL(execute(int, cProtonetCommand*)), this, SLOT(executeCommand(int, cProtonetCommand*)));
-    delegate = new cSCPIDelegate(QString("%1%2").arg(leadingNodes).arg(m_sName),"RANGE", SCPI::isQuery | SCPI::isCmdwP, m_pSCPIInterface, SenseChannel::cmdRange);
+    connect(delegate, SIGNAL(execute(int,cProtonetCommand*)), this, SLOT(executeCommand(int,cProtonetCommand*)));
+    delegate = new cSCPIDelegate(QString("%1%2").arg(leadingNodes, m_sName),"RANGE", SCPI::isQuery | SCPI::isCmdwP, m_pSCPIInterface, SenseChannel::cmdRange);
     m_DelegateList.append(delegate);
-    connect(delegate, SIGNAL(execute(int, cProtonetCommand*)), this, SLOT(executeCommand(int, cProtonetCommand*)));
-    delegate = new cSCPIDelegate(QString("%1%2").arg(leadingNodes).arg(m_sName),"URVALUE", SCPI::isQuery, m_pSCPIInterface, SenseChannel::cmdUrvalue);
+    connect(delegate, SIGNAL(execute(int,cProtonetCommand*)), this, SLOT(executeCommand(int,cProtonetCommand*)));
+    delegate = new cSCPIDelegate(QString("%1%2").arg(leadingNodes, m_sName),"URVALUE", SCPI::isQuery, m_pSCPIInterface, SenseChannel::cmdUrvalue);
     m_DelegateList.append(delegate);
-    connect(delegate, SIGNAL(execute(int, cProtonetCommand*)), this, SLOT(executeCommand(int, cProtonetCommand*)));
-    delegate = new cSCPIDelegate(QString("%1%2:RANGE").arg(leadingNodes).arg(m_sName),"CATALOG", SCPI::isQuery, m_pSCPIInterface, SenseChannel::cmdRangeCat);
+    connect(delegate, SIGNAL(execute(int,cProtonetCommand*)), this, SLOT(executeCommand(int,cProtonetCommand*)));
+    delegate = new cSCPIDelegate(QString("%1%2:RANGE").arg(leadingNodes, m_sName),"CATALOG", SCPI::isQuery, m_pSCPIInterface, SenseChannel::cmdRangeCat);
     m_DelegateList.append(delegate);
-    connect(delegate, SIGNAL(execute(int, cProtonetCommand*)), this, SLOT(executeCommand(int, cProtonetCommand*)));
+    connect(delegate, SIGNAL(execute(int,cProtonetCommand*)), this, SLOT(executeCommand(int,cProtonetCommand*)));
 
-    for(auto range : m_RangeList) {
+    for(auto range : qAsConst(m_RangeList)) {
         connect(range, SIGNAL(cmdExecutionDone(cProtonetCommand*)), this, SIGNAL(cmdExecutionDone(cProtonetCommand*)));
-        range->initSCPIConnection(QString("%1%2").arg(leadingNodes).arg(m_sName));
+        range->initSCPIConnection(QString("%1%2").arg(leadingNodes, m_sName));
     }
 }
 
@@ -132,7 +132,7 @@ void cSenseChannel::removeRangeList(QList<cSenseRange *> &list)
 
 cSenseRange *cSenseChannel::getRange(QString &name)
 {
-    for(auto range : m_RangeList) {
+    for(auto range : qAsConst(m_RangeList)) {
         if(range->getName() == name) {
             return range;
         }
@@ -143,7 +143,7 @@ cSenseRange *cSenseChannel::getRange(QString &name)
 quint8 cSenseChannel::getAdjustmentStatus()
 {
     quint8 adj = 255;
-    for(auto range : m_RangeList) {
+    for(auto range : qAsConst(m_RangeList)) {
         adj &= range->getAdjustmentStatus();
     }
     return adj;
@@ -182,7 +182,7 @@ void cSenseChannel::setUnit(QString &s)
 void cSenseChannel::setMMode(int m)
 {
     m_nMMode = m;
-    for(auto range : m_RangeList) {
+    for(auto range : qAsConst(m_RangeList)) {
         range->setMMode(m);
     }
     notifierSenseChannelRangeCat.forceTrigger(); // better we would ask for changed avail ranges and then trigger !!!
@@ -196,14 +196,14 @@ bool cSenseChannel::isAvail()
 
 void cSenseChannel::initJustData()
 {
-    for(auto range : m_RangeList) {
+    for(auto range : qAsConst(m_RangeList)) {
         range->initJustData();
     }
 }
 
 void cSenseChannel::computeJustData()
 {
-    for(auto range : m_RangeList) {
+    for(auto range : qAsConst(m_RangeList)) {
         range->computeJustData();
     }
 }
@@ -292,7 +292,7 @@ void cSenseChannel::setNotifierSenseChannelRange()
 {
     quint8 rSelCode;
     if ( pAtmel->readRange(m_nCtrlChannel, rSelCode) == ZeraMcontrollerBase::cmddone ) {
-        for(auto range : m_RangeList) {
+        for(auto range : qAsConst(m_RangeList)) {
             if ( (range->getSelCode() == rSelCode) && (range->isAvail())) {
                 notifierSenseChannelRange = range->getName();
                 break;
@@ -341,7 +341,7 @@ QString cSenseChannel::m_ReadUrvalue(QString &sInput)
 {
     cSCPICommand cmd = sInput;
     if (cmd.isQuery()) {
-        for(auto range : m_RangeList) {
+        for(auto range : qAsConst(m_RangeList)) {
             if (range->getName() == notifierSenseChannelRange.getString()) {
                 return QString("%1").arg(range->getUrvalue());
             }

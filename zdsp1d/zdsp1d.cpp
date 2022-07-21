@@ -551,9 +551,9 @@ QString& cZDSP1Client::DspVarListRead(QString& s)
         {
             n=ba->size();
             char* c;
-            sOutput +=QString("%1%2").arg(DspVar->Name).arg(":");
+            sOutput +=QString("%1%2").arg(DspVar->Name, ":");
             sOutput += QString(c = qSEncryption((char*)(ba->data()),n));
-            delete c;
+            delete [] c;
         }
         else
         {
@@ -792,11 +792,11 @@ void cZDSP1Server::doConfiguration()
             {
                 // we want to initialize all settings first
                 m_pDebugSettings = new cDebugSettings(myXMLConfigReader);
-                connect(myXMLConfigReader,SIGNAL(valueChanged(const QString&)),m_pDebugSettings,SLOT(configXMLInfo(const QString&)));
+                connect(myXMLConfigReader,SIGNAL(valueChanged(QString)),m_pDebugSettings,SLOT(configXMLInfo(QString)));
                 m_pETHSettings = new cETHSettings(myXMLConfigReader);
-                connect(myXMLConfigReader,SIGNAL(valueChanged(const QString&)),m_pETHSettings,SLOT(configXMLInfo(const QString&)));
+                connect(myXMLConfigReader,SIGNAL(valueChanged(QString)),m_pETHSettings,SLOT(configXMLInfo(QString)));
                 m_pDspSettings = new cDSPSettings(myXMLConfigReader);
-                connect(myXMLConfigReader,SIGNAL(valueChanged(const QString&)),m_pDspSettings,SLOT(configXMLInfo(const QString&)));
+                connect(myXMLConfigReader,SIGNAL(valueChanged(QString)),m_pDspSettings,SLOT(configXMLInfo(QString)));
 
                 QString s = args.at(1);
                 if(!myXMLConfigReader->loadXMLFile(s)) {
