@@ -31,7 +31,6 @@ set(SOURCES
     fpzchannel.cpp
     adjustment.cpp
     systeminfo.cpp
-    resource.cpp
     fpzinchannel.cpp
     scheadchannel.cpp
     hkeychannel.cpp
@@ -67,7 +66,6 @@ set(HEADER
     com5003scpi.h
     pcbserver.h
     com5003dglobal.h
-    resource.h
     samplerange.h
     senserange.h
     sensechannel.h
@@ -113,9 +111,6 @@ target_link_libraries(com5003d
     Qt5::Gui
     Qt5::Xml
     Qt5::Network
-    Zera::SCPI
-    Zera::scpi-tcp
-    VeinMeta::xiqnet
     ZeraClasses::zerai2c
     ZeraClasses::zeraproxy 
     ZeraClasses::zeramisc

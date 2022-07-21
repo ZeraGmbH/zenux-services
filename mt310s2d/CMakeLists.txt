@@ -32,7 +32,6 @@ set(SOURCES
     fpzchannel.cpp
     adjustment.cpp
     systeminfo.cpp
-    resource.cpp
     fpzinchannel.cpp
     scheadchannel.cpp
     clampjustdata.cpp
@@ -75,7 +74,6 @@ set(HEADER
     justdata.h
     mt310s2dscpi.h
     pcbserver.h
-    resource.h
     samplerange.h
     senserange.h
     sensechannel.h
@@ -133,9 +131,6 @@ target_link_libraries(mt310s2d-lib
     Qt5::Gui
     Qt5::Xml
     Qt5::Network
-    Zera::SCPI
-    Zera::scpi-tcp
-    VeinMeta::xiqnet
     ZeraClasses::zerai2c
     ZeraClasses::zeraproxy
     ZeraClasses::zeramisc

@@ -8,7 +8,6 @@ set(SOURCES
     systeminterface.cpp
     debugsettings.cpp
     systeminfo.cpp
-    resource.cpp
     ecalcsettings.cpp
     ecalcinterface.cpp
     ecalcchannel.cpp
@@ -26,7 +25,6 @@ set(HEADER
     statusinterface.h
     systeminterface.h
     debugsettings.h
-    resource.h
     systeminfo.h
     notificationdata.h
     ecalcsettings.h
@@ -66,9 +64,6 @@ target_link_libraries(sec1000d
     Qt5::Xml
     Qt5::Network
     Qt5::Gui
-    Zera::SCPI
-    VeinMeta::xiqnet
-    Zera::scpi-tcp
     ZeraClasses::zeramisc 
     ZeraClasses::zeraxmlconfig 
     ZeraClasses::zeramath 
