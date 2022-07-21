@@ -89,7 +89,7 @@ set(CONFIG_VALIDATOR
     )
 
 # check for valid config files / display in qt-creator
-add_custom_target(com5003-configs ALL
+add_custom_target(com5003d-configs ALL
     DEPENDS ${CONFIG_VALIDATOR} ${CONFIG_FILES}
     SOURCES ${CONFIG_VALIDATOR} ${CONFIG_FILES}
     COMMAND xmllint --noout --schema ${CONFIG_VALIDATOR} ${CONFIG_FILES}

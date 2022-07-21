@@ -7,10 +7,19 @@ file(GLOB HEADER
     *.h  
     )
 
-set(OTHER_FILES 
-    zdsp1d.xsd
-    zdsp1d.xml
+set(CONFIG_FILES
+    ${CMAKE_CURRENT_SOURCE_DIR}/settings/zdsp1d.xml
 )
+set(CONFIG_VALIDATOR
+    ${CMAKE_CURRENT_SOURCE_DIR}/settings/zdsp1d.xsd
+)
+
+# check for valid config files / display in qt-creator
+add_custom_target(zdsp1d-configs ALL
+    DEPENDS ${CONFIG_VALIDATOR} ${CONFIG_FILES}
+    SOURCES ${CONFIG_VALIDATOR} ${CONFIG_FILES}
+    COMMAND xmllint --noout --schema ${CONFIG_VALIDATOR} ${CONFIG_FILES}
+    )
 
 add_executable(zdsp1d
     ${SOURCES}
@@ -46,7 +55,7 @@ install(TARGETS zdsp1d
     )
 
 install(
-    FILES ${OTHER_FILES}
+    FILES ${CONFIG_FILES} ${CONFIG_VALIDATOR}
     DESTINATION ${CMAKE_INSTALL_SYSCONFDIR}/zera/zdsp1d
     )
 
