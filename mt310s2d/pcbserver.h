@@ -133,6 +133,7 @@ protected:
     QList<cResource*> resourceList;
     QTcpServer* m_pSCPIServer;
     QTcpSocket* m_pSCPISocket;
+    NotZeroNumGen m_msgNumGen;
 
 protected slots:
     virtual void doConfiguration() = 0; // all servers must configure
@@ -151,7 +152,6 @@ private:
 
     QString m_sInput, m_sOutput;
     QTcpSocket* resourceManagerSocket;
-    NotZeroNumGen m_msgNumGen;
 
     void m_RegisterNotifier(cProtonetCommand* protoCmd); // registeres 1 notifier per command
     void m_UnregisterNotifier(cProtonetCommand *protoCmd); // unregisters all notifiers

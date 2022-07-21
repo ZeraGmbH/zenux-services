@@ -1,6 +1,5 @@
 set(SOURCES
     micro-controller-io/atmel.cpp
-    scpi-interfaces/frqinputinterface.cpp
     scpi-interfaces/hkeyinterface.cpp
     scpi-interfaces/samplinginterface.cpp
     scpi-interfaces/scheadinterface.cpp
@@ -12,7 +11,6 @@ set(SOURCES
     settings/debugsettings.cpp
     settings/ethsettings.cpp
     settings/fpgasettings.cpp
-    settings/frqinputsettings.cpp
     settings/hkeysettings.cpp
     settings/i2csettings.cpp
     settings/samplingsettings.cpp
@@ -30,14 +28,12 @@ set(SOURCES
     fpzchannel.cpp
     adjustment.cpp
     systeminfo.cpp
-    fpzinchannel.cpp
     scheadchannel.cpp
     hkeychannel.cpp
     )
 
 set(HEADER
     micro-controller-io/atmel.h
-    scpi-interfaces/frqinputinterface.h
     scpi-interfaces/hkeyinterface.h
     scpi-interfaces/samplinginterface.h
     scpi-interfaces/scheadinterface.h
@@ -49,7 +45,6 @@ set(HEADER
     settings/debugsettings.h
     settings/ethsettings.h
     settings/fpgasettings.h
-    settings/frqinputsettings.h
     settings/hkeysettings.h
     settings/i2csettings.h
     settings/samplingsettings.h
@@ -73,7 +68,6 @@ set(HEADER
     adjustment.h
     systeminfo.h
     notificationdata.h
-    fpzinchannel.h
     scheadchannel.h
     )
 
@@ -112,7 +106,6 @@ target_link_libraries(com5003d
     ZeraClasses::zerai2c
     ZeraClasses::zeraproxy 
     ZeraClasses::zeramisc
-    ZeraClasses::zeraxmlconfig
     ZeraClasses::zeramath
     ZeraClasses::zeradev
     VeinMeta::VfProtobuf

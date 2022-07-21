@@ -33,7 +33,6 @@ target_link_libraries(zdsp1d
     Qt5::Core
     VeinMeta::xiqnet
     VeinMeta::zeraprotobuf
-    ZeraClasses::zeraxmlconfig
     zenuxservicecommon
     )
 
