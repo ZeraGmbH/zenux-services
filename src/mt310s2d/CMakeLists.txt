@@ -110,24 +110,24 @@ add_custom_target(mt310s2d-configs ALL
     )
 
 
-add_library(mt310s2d_lib STATIC
+add_library(mt310s2d-lib STATIC
     ${HEADER}
     ${SOURCES}
     )
 
-target_include_directories(mt310s2d_lib
+target_include_directories(mt310s2d-lib
     PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}
     )
 
 if(${Systemd_FOUND})
-    target_link_libraries(mt310s2d_lib
+    target_link_libraries(mt310s2d-lib
         PUBLIC
         systemd
     )
 endif()
 
-target_link_libraries(mt310s2d_lib
+target_link_libraries(mt310s2d-lib
     PUBLIC
     Qt5::Core
     Qt5::Gui
@@ -153,7 +153,7 @@ add_executable(mt310s2d
 
 target_link_libraries(mt310s2d
     PUBLIC
-    mt310s2d_lib
+    mt310s2d-lib
     )
 
 install(TARGETS mt310s2d
