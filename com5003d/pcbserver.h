@@ -7,6 +7,7 @@
 #ifndef PCBSERVER_H
 #define PCBSERVER_H
 
+#include "notzeronumgen.h"
 #include <QObject>
 #include <QList>
 #include <xiqnetwrapper.h>
@@ -147,6 +148,7 @@ private:
 
     QString m_sInput, m_sOutput;
     QTcpSocket* resourceManagerSocket;
+    NotZeroNumGen m_msgNumGen;
 
     void m_RegisterNotifier(cProtonetCommand* protoCmd); // registeres 1 notifier per command
     void m_UnregisterNotifier(cProtonetCommand *protoCmd); // unregisters all notifiers
@@ -154,7 +156,6 @@ private:
     QList<cNotificationData> notifierRegisterList;
 
     void doUnregisterNotifier(XiQNetPeer *peer, const QByteArray &clientID = QByteArray());
-    quint32 m_nMsgNr;
 
 private slots:
     virtual void establishNewConnection(XiQNetPeer* newClient);

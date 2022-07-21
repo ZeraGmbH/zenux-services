@@ -23,7 +23,6 @@
 cPCBServer::cPCBServer()
     : cSCPIConnection(ScpiSingletonFactory::getScpiObj(ServerName))
 {
-    m_nMsgNr = 0;
     m_sServerName = ServerName;
     m_sServerVersion = ServerVersion;
     myXMLConfigReader = new Zera::XMLConfig::cReader();
@@ -55,10 +54,7 @@ cSCPI *cPCBServer::getSCPIInterface()
 
 quint32 cPCBServer::getMsgNr()
 {
-    m_nMsgNr++;
-    if (m_nMsgNr == 0)
-        m_nMsgNr++;
-    return m_nMsgNr;
+    return m_msgNumGen.getMsgNr();
 }
 
 
