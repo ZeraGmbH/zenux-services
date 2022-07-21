@@ -1,4 +1,5 @@
 set(HEADER
+    notzeronumgen.h
     meas-channels/justnode.h
     micro-controller-io/atmelwatcher.h
     resources/resource.h
@@ -7,6 +8,7 @@ set(HEADER
 
 add_library(zenuxservicecommon SHARED
     ${HEADER}
+    notzeronumgen.cpp
     meas-channels/justnode.cpp
     micro-controller-io/atmelwatcher.cpp
     resources/resource.cpp
