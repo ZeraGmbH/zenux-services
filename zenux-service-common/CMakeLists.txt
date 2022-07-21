@@ -24,7 +24,7 @@ target_link_libraries(zenuxservicecommon
 # announce headers - target perspective
 target_include_directories(zenuxservicecommon
     PUBLIC
-    $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/zera-classes/zenuxservicecommon>
+    $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/zenuxservicecommon>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/meas-channels>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/resources>
@@ -37,7 +37,7 @@ generate_export_header(zenuxservicecommon)
 
 install(FILES
     ${CMAKE_CURRENT_BINARY_DIR}/zenuxservicecommon_export.h
-    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/zera-classes/zenuxservicecommon
+    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/zenuxservicecommon
     )
 
 install(TARGETS zenuxservicecommon
@@ -72,5 +72,5 @@ install(EXPORT zenuxservicecommonExport
 # install public headers
 install(
     FILES ${HEADER}
-    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/zera-classes/zenuxservicecommon
+    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/zenuxservicecommon
     )
