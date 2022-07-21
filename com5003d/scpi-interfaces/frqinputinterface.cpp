@@ -17,13 +17,13 @@ cFRQInputInterface::cFRQInputInterface(cCOM5003dServer *server) :
 
     // we have 4 frequency input channels
     cFPZInChannel* pChannel;
-    pChannel = new cFPZInChannel(m_pMyServer, "Frequency input 0..1MHz", 0, channelSettings.at(0) );
+    pChannel = new cFPZInChannel(m_pSCPIInterface, "Frequency input 0..1MHz", 0, channelSettings.at(0) );
     m_ChannelList.append(pChannel);
-    pChannel = new cFPZInChannel(m_pMyServer, "Frequency output 0..1MHz", 1, channelSettings.at(1) );
+    pChannel = new cFPZInChannel(m_pSCPIInterface, "Frequency output 0..1MHz", 1, channelSettings.at(1) );
     m_ChannelList.append(pChannel);
-    pChannel = new cFPZInChannel(m_pMyServer, "Frequency output 0..1MHz", 2,  channelSettings.at(2) );
+    pChannel = new cFPZInChannel(m_pSCPIInterface, "Frequency output 0..1MHz", 2,  channelSettings.at(2) );
     m_ChannelList.append(pChannel);
-    pChannel = new cFPZInChannel(m_pMyServer, "Frequency output 0..1MHz", 3, channelSettings.at(3) );
+    pChannel = new cFPZInChannel(m_pSCPIInterface, "Frequency output 0..1MHz", 3, channelSettings.at(3) );
     m_ChannelList.append(pChannel);
 
     m_sVersion = FRQInputSystem::Version;

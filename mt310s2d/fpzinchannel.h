@@ -1,9 +1,8 @@
 #ifndef FPZINCHANNEL_H
 #define FPZINCHANNEL_H
 
-#include <QObject>
-
 #include <scpiconnection.h>
+#include <scpi.h>
 
 namespace FPZINChannel
 {
@@ -21,14 +20,12 @@ namespace FRQInputSystem
     class cChannelSettings;
 }
 
-class cMT310S2dServer;
-
 class cFPZInChannel : public cSCPIConnection
 {
     Q_OBJECT
 
 public:
-    cFPZInChannel(cMT310S2dServer* server, QString description, quint8 nr, FRQInputSystem::cChannelSettings* cSettings);
+    cFPZInChannel(cSCPI* scpiInterface, QString description, quint8 nr, FRQInputSystem::cChannelSettings* cSettings);
     virtual void initSCPIConnection(QString leadingNodes) override;
 
     QString& getName();
@@ -40,7 +37,6 @@ protected slots:
     virtual void executeCommand(int cmdCode, cProtonetCommand* protoCmd) override;
 
 private:
-    cMT310S2dServer* m_pMyServer;
     QString m_sName; // the channel's name
     QString m_sAlias;
     QString m_sDescription; // the channel's brief description
