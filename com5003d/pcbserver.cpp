@@ -52,6 +52,7 @@ quint32 cPCBServer::getMsgNr()
     return m_msgNumGen.getMsgNr();
 }
 
+
 QString &cPCBServer::getName()
 {
     return m_sServerName;

@@ -1,9 +1,9 @@
 #ifndef FRQINPUTINTERFACE_H
 #define FRQINPUTINTERFACE_H
 
-#include "notzeronumgen.h"
-#include "resource.h"
+#include <QObject>
 #include <QList>
+#include "resource.h"
 #include <scpiconnection.h>
 #include "fpzinchannel.h"
 
@@ -21,9 +21,7 @@ class cFRQInputInterface : public cResource
 {
     Q_OBJECT
 public:
-    cFRQInputInterface(cSCPI* scpiInterface,
-                       QList<FRQInputSystem::cChannelSettings *> channelSettings,
-                       NotZeroNumGen *msgNumGen);
+    cFRQInputInterface(cMT310S2dServer *server);
     ~cFRQInputInterface();
     virtual void initSCPIConnection(QString leadingNodes) override;
     virtual void registerResource(RMConnection *rmConnection, quint16 port) override;
@@ -34,9 +32,10 @@ private:
     QString m_ReadVersion(QString& sInput);
     QString m_ReadChannelCatalog(QString& sInput);
 
+    cMT310S2dServer* m_pMyServer;
     QList<cFPZInChannel*> m_ChannelList;
     QString m_sVersion;
-    NotZeroNumGen *m_msgNumGen;
+
 };
 
 #endif // FRQINPUTINTERFACE_H

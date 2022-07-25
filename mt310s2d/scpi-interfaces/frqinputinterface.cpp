@@ -1,5 +1,6 @@
 #include <scpiconnection.h>
 #include "resource.h"
+#include "mt310s2d.h"
 #include "frqinputinterface.h"
 #include "fpzinchannel.h"
 #include <protonetcommand.h>
@@ -7,12 +8,13 @@
 #include <xmlsettings.h>
 #include <scpi.h>
 
-cFRQInputInterface::cFRQInputInterface(cSCPI *scpiInterface,
-                                       QList<FRQInputSystem::cChannelSettings*> channelSettings,
-                                       NotZeroNumGen *msgNumGen) :
-    cResource(scpiInterface),
-    m_msgNumGen(msgNumGen)
+cFRQInputInterface::cFRQInputInterface(cMT310S2dServer *server) :
+    cResource(server->getSCPIInterface()),
+    m_pMyServer(server)
 {
+    QList<FRQInputSystem::cChannelSettings*> channelSettings;
+    channelSettings = m_pMyServer->m_pFRQInputSettings->getChannelSettings();
+
     // we have 4 frequency input channels
     cFPZInChannel* pChannel;
     pChannel = new cFPZInChannel(m_pSCPIInterface, "Frequency input 0..1MHz", 0, channelSettings.at(0) );
@@ -55,14 +57,14 @@ void cFRQInputInterface::initSCPIConnection(QString leadingNodes)
 void cFRQInputInterface::registerResource(RMConnection *rmConnection, quint16 port)
 {
     for(auto channel : m_ChannelList) {
-        register1Resource(rmConnection, m_msgNumGen->getMsgNr(), QString("FRQINPUT;%1;1;%2;%3;").arg(channel->getName()).arg(channel->getDescription()).arg(port));
+        register1Resource(rmConnection, m_pMyServer->getMsgNr(), QString("FRQINPUT;%1;1;%2;%3;").arg(channel->getName()).arg(channel->getDescription()).arg(port));
     }
 }
 
 void cFRQInputInterface::unregisterResource(RMConnection *rmConnection)
 {
     for(auto channel : m_ChannelList) {
-        unregister1Resource(rmConnection, m_msgNumGen->getMsgNr(), QString("FRQINPUT;%1;").arg(channel->getName()));
+        unregister1Resource(rmConnection, m_pMyServer->getMsgNr(), QString("FRQINPUT;%1;").arg(channel->getName()));
     }
 }
 

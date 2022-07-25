@@ -4,6 +4,7 @@ set(SOURCES
     micro-controller-io/atmelsysctrl.cpp
     scpi-interfaces/clampinterface.cpp
     scpi-interfaces/emobinterface.cpp
+    scpi-interfaces/frqinputinterface.cpp
     scpi-interfaces/hkeyinterface.cpp
     scpi-interfaces/samplinginterface.cpp
     scpi-interfaces/scheadinterface.cpp
@@ -15,6 +16,7 @@ set(SOURCES
     settings/debugsettings.cpp
     settings/ethsettings.cpp
     settings/fpgasettings.cpp
+    settings/frqinputsettings.cpp
     settings/i2csettings.cpp
     settings/samplingsettings.cpp
     settings/scheadsettings.cpp
@@ -29,6 +31,7 @@ set(SOURCES
     fpzchannel.cpp
     adjustment.cpp
     systeminfo.cpp
+    fpzinchannel.cpp
     scheadchannel.cpp
     clampjustdata.cpp
     adjflash.cpp
@@ -46,6 +49,7 @@ set(HEADER
     micro-controller-io/atmelsysctrl.h
     scpi-interfaces/clampinterface.h
     scpi-interfaces/emobinterface.h
+    scpi-interfaces/frqinputinterface.h
     scpi-interfaces/hkeyinterface.h
     scpi-interfaces/samplinginterface.h
     scpi-interfaces/scheadinterface.h
@@ -57,6 +61,7 @@ set(HEADER
     settings/debugsettings.h
     settings/ethsettings.h
     settings/fpgasettings.h
+    settings/frqinputsettings.h
     settings/hkeysettings.h
     settings/i2csettings.h
     settings/samplingsettings.h
@@ -76,6 +81,7 @@ set(HEADER
     adjustment.h
     systeminfo.h
     notificationdata.h
+    fpzinchannel.h
     scheadchannel.h
     clampjustdata.h
     clamp.h
@@ -126,6 +132,7 @@ target_link_libraries(mt310s2d-lib
     ZeraClasses::zerai2c
     ZeraClasses::zeraproxy
     ZeraClasses::zeramisc
+    ZeraClasses::zeraxmlconfig
     ZeraClasses::zeramath
     ZeraClasses::zeradev
     VeinMeta::VfProtobuf
