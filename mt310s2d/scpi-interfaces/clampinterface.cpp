@@ -25,13 +25,13 @@ void cClampInterface::initSCPIConnection(QString leadingNodes)
     cSCPIDelegate* delegate;
     delegate = new cSCPIDelegate(QString("%1SYSTEM:CLAMP:CHANNEL").arg(leadingNodes),"CATALOG",SCPI::isQuery, m_pSCPIInterface, ClampSystem::cmdClampChannelCat);
     m_DelegateList.append(delegate);
-    connect(delegate, SIGNAL(execute(int,cProtonetCommand*)), this, SLOT(executeCommand(int,cProtonetCommand*)));
+    connect(delegate, SIGNAL(execute(int, cProtonetCommand*)), this, SLOT(executeCommand(int, cProtonetCommand*)));
     delegate = new cSCPIDelegate(QString("%1SYSTEM:CLAMP").arg(leadingNodes),"WRITE",SCPI::isCmd, m_pSCPIInterface, ClampSystem::cmdClampWrite);
     m_DelegateList.append(delegate);
-    connect(delegate, SIGNAL(execute(int,cProtonetCommand*)), this, SLOT(executeCommand(int,cProtonetCommand*)));
+    connect(delegate, SIGNAL(execute(int, cProtonetCommand*)), this, SLOT(executeCommand(int, cProtonetCommand*)));
     delegate = new cSCPIDelegate(QString("%1SYSTEM:ADJUSTMENT:CLAMP").arg(leadingNodes),"XML",SCPI::isQuery | SCPI::isCmdwP, m_pSCPIInterface, ClampSystem::cmdClampImportExport);
     m_DelegateList.append(delegate);
-    connect(delegate, SIGNAL(execute(int,cProtonetCommand*)), this, SLOT(executeCommand(int,cProtonetCommand*)));
+    connect(delegate, SIGNAL(execute(int, cProtonetCommand*)), this, SLOT(executeCommand(int, cProtonetCommand*)));
 }
 
 void cClampInterface::actualizeClampStatus(quint16 devConnectedMask)
@@ -135,7 +135,7 @@ QString cClampInterface::writeAllClamps(QString &sInput)
             if (pAtmel->getEEPROMAccessEnable(enable) == ZeraMcontrollerBase::cmddone) {
                 if (enable) {
                     bool done = true;
-                    for(auto clamp : qAsConst(m_clampHash)) {
+                    for(auto clamp : m_clampHash) {
                         done = done && clamp->exportAdjFlash();
                     }
                     if (!done) {
@@ -162,7 +162,7 @@ QString cClampInterface::importExportAllClamps(QString &sInput)
     cSCPICommand cmd = sInput;
     if (cmd.isQuery()) {
         QString xmlTotal;
-        for(auto clamp : qAsConst(m_clampHash)) {
+        for(auto clamp : m_clampHash) {
             QString xmlClamp = clamp->exportXMLString(-1);
             xmlClamp.replace("\n","");
             xmlTotal.append(xmlClamp);

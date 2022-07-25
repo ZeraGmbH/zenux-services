@@ -6,7 +6,8 @@
 cSamplingSettings::cSamplingSettings(Zera::XMLConfig::cReader *xmlread)
 {
     m_pXMLReader = xmlread;
-    m_ChannelSettingsList.append(new SamplingSystem::cChannelSettings);
+    SamplingSystem::cChannelSettings* settings = new SamplingSystem::cChannelSettings;
+    m_ChannelSettingsList.append(settings);
 
     m_ConfigXMLMap["com5003dconfig:resource:sample:s0:alias"] = SamplingSystem::cfgAlias;
     m_ConfigXMLMap["com5003dconfigresource:sample:s0:avail"] = SamplingSystem::cfgAvail;

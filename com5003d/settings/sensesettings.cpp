@@ -4,9 +4,10 @@
 cSenseSettings::cSenseSettings(Zera::XMLConfig::cReader *xmlread)
 {
     m_pXMLReader = xmlread;
+    SenseSystem::cChannelSettings *settings;
     for (int i = 0; i < 6; i++)
     {
-        m_ChannelSettingsList.append(new SenseSystem::cChannelSettings);
+        m_ChannelSettingsList.append(settings = new SenseSystem::cChannelSettings);
         m_ConfigXMLMap[QString("com5003dconfig:resource:sense:m%1:alias1").arg(i)] = SenseSystem::cfg0Alias1 + i;
         m_ConfigXMLMap[QString("com5003dconfig:resource:sense:m%1:alias2").arg(i)] = SenseSystem::cfg0Alias2 + i;
         m_ConfigXMLMap[QString("com5003dconfig:resource:sense:m%1:ctrlchannel").arg(i)] = SenseSystem::cfg0ctrlchannel + i;

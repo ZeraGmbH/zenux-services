@@ -4,9 +4,10 @@
 cHKeySettings::cHKeySettings(Zera::XMLConfig::cReader *xmlread)
 {
     m_pXMLReader = xmlread;
+    HKeySystem::cChannelSettings *settings;
     for (int i = 0; i < 1; i++)
     {
-        m_ChannelSettingsList.append(new HKeySystem::cChannelSettings);
+        m_ChannelSettingsList.append(settings = new HKeySystem::cChannelSettings);
         m_ConfigXMLMap[QString("com5003dconfig:resource:hkey:hk%1:alias").arg(i)] = HKeySystem::cfgHK0Alias + i;
         m_ConfigXMLMap[QString("com5003dconfig:resource:hkey:hk%1:avail").arg(i)] = HKeySystem::cfgHK0avail + i;
     }

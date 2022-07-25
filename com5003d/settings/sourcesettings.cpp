@@ -3,9 +3,10 @@
 cSourceSettings::cSourceSettings(Zera::XMLConfig::cReader *xmlread)
 {
     m_pXMLReader = xmlread;
+    SourceSystem::cChannelSettings *settings;
     for (int i = 0; i < 4; i++)
     {
-        m_ChannelSettingsList.append(new SourceSystem::cChannelSettings);
+        m_ChannelSettingsList.append(settings = new SourceSystem::cChannelSettings);
         m_ConfigXMLMap[QString("com5003dconfig:resource:source:fpzout:fo%1:alias").arg(i)] = SourceSystem::cfg0Alias + i;
         m_ConfigXMLMap[QString("com5003dconfig:resource:source:fpzout:fo%1:dspserver").arg(i)] = SourceSystem::cfg0dspserver + i;
         m_ConfigXMLMap[QString("com5003dconfig:resource:source:fpzout:fo%1:dspchannel").arg(i)] = SourceSystem::cfg0dspchannel + i;
