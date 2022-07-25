@@ -21,12 +21,25 @@ add_custom_target(zdsp1d-configs ALL
     COMMAND xmllint --noout --schema ${CONFIG_VALIDATOR} ${CONFIG_FILES}
     )
 
-add_executable(zdsp1d
-    ${SOURCES}
+
+add_library(zdsp1d-lib STATIC
     ${HEADER}
+    ${SOURCES}
     )
 
-target_link_libraries(zdsp1d
+target_include_directories(zdsp1d-lib
+    PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    )
+
+if(${Systemd_FOUND})
+    target_link_libraries(zdsp1d-lib
+        PRIVATE
+        systemd
+    )
+endif()
+
+target_link_libraries(zdsp1d-lib
     PUBLIC
     Qt5::Xml
     Qt5::Network
@@ -37,16 +50,13 @@ target_link_libraries(zdsp1d
     zenuxservicecommon
     )
 
-if(${Systemd_FOUND})
-    target_link_libraries(zdsp1d
-        PRIVATE
-        systemd
+add_executable(zdsp1d
+    main.cpp
     )
-endif()
 
-target_include_directories(zdsp1d
-    PRIVATE
-    ${CMAKE_CURRENT_SOURCE_DIR}
+target_link_libraries(zdsp1d
+    PUBLIC
+    zdsp1d-lib
     )
 
 install(TARGETS zdsp1d
