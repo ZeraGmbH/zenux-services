@@ -47,20 +47,26 @@ add_custom_target(sec1000d-configs ALL
     COMMAND xmllint --noout --schema ${CONFIG_VALIDATOR} ${CONFIG_FILES}
     )
 
-add_executable(sec1000d
-    ${SOURCES}
+
+add_library(sec1000d-lib STATIC
     ${HEADER}
+    ${SOURCES}
+    )
+
+target_include_directories(sec1000d-lib
+    PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}
     )
 
 if(${Systemd_FOUND})
-    target_link_libraries(sec1000d
+    target_link_libraries(sec1000d-lib
         PRIVATE
         systemd
     )
 endif()
 
-target_link_libraries(sec1000d
-    PRIVATE
+target_link_libraries(sec1000d-lib
+    PUBLIC
     Qt5::Xml
     Qt5::Network
     Qt5::Gui
@@ -72,9 +78,13 @@ target_link_libraries(sec1000d
     zenuxservicecommon
     )
 
-target_include_directories(sec1000d
-    PRIVATE
-    ${CMAKE_CURRENT_SOURCE_DIR}
+add_executable(sec1000d
+    main.cpp
+    )
+
+target_link_libraries(sec1000d
+    PUBLIC
+    sec1000d-lib
     )
 
 install(TARGETS sec1000d
