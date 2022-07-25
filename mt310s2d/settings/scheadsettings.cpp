@@ -13,7 +13,7 @@ cSCHeadSettings::cSCHeadSettings(Zera::XMLConfig::cReader *xmlread)
 
 cSCHeadSettings::~cSCHeadSettings()
 {
-    for(auto channel : qAsConst(m_ChannelSettingsList)) {
+    for(auto channel : m_ChannelSettingsList) {
         delete channel;
     }
 }

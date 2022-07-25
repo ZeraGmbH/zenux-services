@@ -29,7 +29,7 @@ cFRQInputInterface::cFRQInputInterface(cSCPI *scpiInterface,
 
 cFRQInputInterface::~cFRQInputInterface()
 {
-    for(auto channel : qAsConst(m_ChannelList)) {
+    for(auto channel : m_ChannelList) {
         delete channel;
     }
 }
@@ -41,11 +41,11 @@ void cFRQInputInterface::initSCPIConnection(QString leadingNodes)
     }
     cSCPIDelegate* delegate = new cSCPIDelegate(QString("%1FRQINPUT").arg(leadingNodes),"VERSION",SCPI::isQuery, m_pSCPIInterface, FRQInputSystem::cmdVersion);
     m_DelegateList.append(delegate);
-    connect(delegate, SIGNAL(execute(int,cProtonetCommand*)), this, SLOT(executeCommand(int,cProtonetCommand*)));
+    connect(delegate, SIGNAL(execute(int, cProtonetCommand*)), this, SLOT(executeCommand(int, cProtonetCommand*)));
     delegate = new cSCPIDelegate(QString("%1FRQINPUT:CHANNEL").arg(leadingNodes),"CATALOG", SCPI::isQuery, m_pSCPIInterface, FRQInputSystem::cmdChannelCat);
     m_DelegateList.append(delegate);
-    connect(delegate, SIGNAL(execute(int,cProtonetCommand*)), this, SLOT(executeCommand(int,cProtonetCommand*)));
-    for (auto channel : qAsConst(m_ChannelList)) {
+    connect(delegate, SIGNAL(execute(int, cProtonetCommand*)), this, SLOT(executeCommand(int, cProtonetCommand*)));
+    for (auto channel : m_ChannelList) {
         connect(channel, &cSCPIConnection::strNotifier, this, &cSCPIConnection::strNotifier);
         connect(channel, SIGNAL(cmdExecutionDone(cProtonetCommand*)), this, SIGNAL(cmdExecutionDone(cProtonetCommand*)));
         channel->initSCPIConnection(QString("%1FRQINPUT").arg(leadingNodes));
@@ -54,14 +54,14 @@ void cFRQInputInterface::initSCPIConnection(QString leadingNodes)
 
 void cFRQInputInterface::registerResource(RMConnection *rmConnection, quint16 port)
 {
-    for(auto channel : qAsConst(m_ChannelList)) {
-        register1Resource(rmConnection, m_msgNumGen->getMsgNr(), QString("FRQINPUT;%1;1;%2;%3;").arg(channel->getName()).arg(channel->getDescription(), port));
+    for(auto channel : m_ChannelList) {
+        register1Resource(rmConnection, m_msgNumGen->getMsgNr(), QString("FRQINPUT;%1;1;%2;%3;").arg(channel->getName()).arg(channel->getDescription()).arg(port));
     }
 }
 
 void cFRQInputInterface::unregisterResource(RMConnection *rmConnection)
 {
-    for(auto channel : qAsConst(m_ChannelList)) {
+    for(auto channel : m_ChannelList) {
         unregister1Resource(rmConnection, m_msgNumGen->getMsgNr(), QString("FRQINPUT;%1;").arg(channel->getName()));
     }
 }

@@ -15,7 +15,7 @@ void EmobInterface::initSCPIConnection(QString leadingNodes)
     }
     cSCPIDelegate* delegate = new cSCPIDelegate(QString("%1SYSTEM:EMOB:CHANNEL").arg(leadingNodes),"CATALOG",SCPI::isQuery, m_pSCPIInterface, cmdChannelCat);
     m_DelegateList.append(delegate);
-    connect(delegate, SIGNAL(execute(int,cProtonetCommand*)), this, SLOT(executeCommand(int,cProtonetCommand*)));
+    connect(delegate, SIGNAL(execute(int, cProtonetCommand*)), this, SLOT(executeCommand(int, cProtonetCommand*)));
 }
 
 void EmobInterface::actualizeClampStatus(quint16 devConnectedMask)

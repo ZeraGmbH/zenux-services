@@ -4,7 +4,8 @@
 cSamplingSettings::cSamplingSettings(Zera::XMLConfig::cReader *xmlread)
 {
     m_pXMLReader = xmlread;
-    m_ChannelSettingsList.append(new SamplingSystem::cChannelSettings);
+    SamplingSystem::cChannelSettings* settings = new SamplingSystem::cChannelSettings;
+    m_ChannelSettingsList.append(settings);
 
     m_ConfigXMLMap["mt310s2dconfig:resource:sample:s0:alias"] = SamplingSystem::cfgAlias;
     m_ConfigXMLMap["mt310s2dconfig:resource:sample:s0:avail"] = SamplingSystem::cfgAvail;
@@ -12,7 +13,7 @@ cSamplingSettings::cSamplingSettings(Zera::XMLConfig::cReader *xmlread)
 
 cSamplingSettings::~cSamplingSettings()
 {
-    for(auto channel : qAsConst(m_ChannelSettingsList)) {
+    for(auto channel : m_ChannelSettingsList) {
         delete channel;
     }
 }
