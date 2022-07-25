@@ -91,20 +91,26 @@ add_custom_target(com5003d-configs ALL
     COMMAND xmllint --noout --schema ${CONFIG_VALIDATOR} ${CONFIG_FILES}
     )
 
-add_executable(com5003d
-    ${SOURCES}
+
+add_library(com5003d-lib STATIC
     ${HEADER}
+    ${SOURCES}
+    )
+
+target_include_directories(com5003d-lib
+    PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}
     )
 
 if(${Systemd_FOUND})
-    target_link_libraries(com5003d
+    target_link_libraries(com5003d-lib
         PRIVATE
         systemd
     )
 endif()
 
-target_link_libraries(com5003d
-    PRIVATE
+target_link_libraries(com5003d-lib
+    PUBLIC
     Qt5::Core
     Qt5::Gui
     Qt5::Xml
@@ -120,9 +126,13 @@ target_link_libraries(com5003d
     zenuxservicecommon
     )
 
-target_include_directories(com5003d
-    PRIVATE
-    ${CMAKE_CURRENT_SOURCE_DIR}
+add_executable(com5003d
+    main.cpp
+    )
+
+target_link_libraries(com5003d
+    PUBLIC
+    com5003d-lib
     )
 
 install(TARGETS com5003d

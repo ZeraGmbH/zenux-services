@@ -174,4 +174,3 @@ if(${useSystemd})
         DESTINATION ${SYSTEMD_UNIT_INSTALL_PATH}
         )
 endif()
-
