@@ -14,7 +14,6 @@ set(SOURCES
     scpi-interfaces/systeminterface.cpp
     settings/debugsettings.cpp
     settings/ethsettings.cpp
-    settings/fpgasettings.cpp
     settings/frqinputsettings.cpp
     settings/i2csettings.cpp
     settings/samplingsettings.cpp
@@ -58,7 +57,6 @@ set(HEADER
     scpi-interfaces/systeminterface.h
     settings/debugsettings.h
     settings/ethsettings.h
-    settings/fpgasettings.h
     settings/frqinputsettings.h
     settings/hkeysettings.h
     settings/i2csettings.h

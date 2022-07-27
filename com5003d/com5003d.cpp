@@ -155,13 +155,14 @@ void cCOM5003dServer::doConfiguration()
             write(m_nFPGAfd, &sigStart, 4);
 
             // we want to initialize all settings first
+            QString xmlConfigTopNode = "com5003dconfig";
             m_pDebugSettings = new cDebugSettings(myXMLConfigReader);
             connect(myXMLConfigReader,SIGNAL(valueChanged(const QString&)),m_pDebugSettings,SLOT(configXMLInfo(const QString&)));
             m_pETHSettings = new cETHSettings(myXMLConfigReader);
             connect(myXMLConfigReader,SIGNAL(valueChanged(const QString&)),m_pETHSettings,SLOT(configXMLInfo(const QString&)));
             m_pI2CSettings = new cI2CSettings(myXMLConfigReader);
             connect(myXMLConfigReader,SIGNAL(valueChanged(const QString&)),m_pI2CSettings,SLOT(configXMLInfo(const QString&)));
-            m_pFPGASettings = new cFPGASettings(myXMLConfigReader);
+            m_pFPGASettings = new cFPGASettings(myXMLConfigReader, xmlConfigTopNode);
             connect(myXMLConfigReader,SIGNAL(valueChanged(const QString&)),m_pFPGASettings,SLOT(configXMLInfo(const QString&)));
             m_pSenseSettings = new cSenseSettings(myXMLConfigReader);
             connect(myXMLConfigReader,SIGNAL(valueChanged(const QString&)),m_pSenseSettings,SLOT(configXMLInfo(const QString&)));

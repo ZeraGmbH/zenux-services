@@ -3,7 +3,6 @@ set(SOURCES
     sec1000d.cpp
     pcbserver.cpp
     ethsettings.cpp
-    fpgasettings.cpp
     statusinterface.cpp
     systeminterface.cpp
     debugsettings.cpp
@@ -21,7 +20,6 @@ set(HEADER
     pcbserver.h
     sec1000dglobal.h
     ethsettings.h
-    fpgasettings.h
     statusinterface.h
     systeminterface.h
     debugsettings.h

@@ -1,12 +1,10 @@
 #include "fpgasettings.h"
-#include "mt310s2dglobal.h"
 #include <xmlconfigreader.h>
 
-cFPGASettings::cFPGASettings(Zera::XMLConfig::cReader *xmlread)
+cFPGASettings::cFPGASettings(Zera::XMLConfig::cReader *xmlread, QString topXmlNode)
 {
     m_pXMLReader = xmlread;
-    m_ConfigXMLMap["mt310s2dconfig:connectivity:fpga:device:node"] = FPGASettings::setFPGADevNode;
-    m_sDeviceNode = defaultFPGADeviceNode;
+    m_ConfigXMLMap[topXmlNode + ":connectivity:fpga:device:node"] = FPGASettings::setFPGADevNode;
 }
 
 QString& cFPGASettings::getDeviceNode()
