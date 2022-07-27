@@ -37,14 +37,9 @@
     </i2c>
     <fpga>
         <device>
-            <node>/dev/zFPGA1msg</node>
-        </device>
-    </fpga>
-    <ctrl>
-        <device>
             <node>/dev/zFPGA1reg</node>
         </device>
-    </ctrl>
+    </fpga>
 </connectivity>
 	
 <resource>
