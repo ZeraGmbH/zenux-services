@@ -166,7 +166,7 @@ void cMT310S2dServer::doConfiguration()
             {
                 QString xmlConfigTopNode = "mt310s2dconfig";
                 // we want to initialize all settings first
-                m_pDebugSettings = new cDebugSettings(myXMLConfigReader);
+                m_pDebugSettings = new cDebugSettings(myXMLConfigReader, xmlConfigTopNode);
                 connect(myXMLConfigReader,SIGNAL(valueChanged(const QString&)),m_pDebugSettings,SLOT(configXMLInfo(const QString&)));
                 m_pETHSettings = new cETHSettings(myXMLConfigReader);
                 connect(myXMLConfigReader,SIGNAL(valueChanged(const QString&)),m_pETHSettings,SLOT(configXMLInfo(const QString&)));

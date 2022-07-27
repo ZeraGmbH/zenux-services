@@ -8,7 +8,6 @@ set(SOURCES
     scpi-interfaces/sourceinterface.cpp
     scpi-interfaces/statusinterface.cpp
     scpi-interfaces/systeminterface.cpp
-    settings/debugsettings.cpp
     settings/ethsettings.cpp
     settings/frqinputsettings.cpp
     settings/hkeysettings.cpp
@@ -43,7 +42,6 @@ set(HEADER
     scpi-interfaces/sourceinterface.h
     scpi-interfaces/statusinterface.h
     scpi-interfaces/systeminterface.h
-    settings/debugsettings.h
     settings/ethsettings.h
     settings/frqinputsettings.h
     settings/hkeysettings.h

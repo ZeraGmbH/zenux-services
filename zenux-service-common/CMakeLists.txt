@@ -4,6 +4,7 @@ set(HEADER
     micro-controller-io/atmelwatcher.h
     resources/resource.h
     resources/rmconnection.h
+    settings/debugsettings.h
     settings/fpgasettings.h
     )
 
@@ -14,6 +15,7 @@ add_library(zenuxservicecommon SHARED
     micro-controller-io/atmelwatcher.cpp
     resources/resource.cpp
     resources/rmconnection.cpp
+    settings/debugsettings.cpp
     settings/fpgasettings.cpp
     )
 
