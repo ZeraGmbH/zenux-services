@@ -164,7 +164,7 @@ void cMT310S2dServer::doConfiguration()
 
             if (myXMLConfigReader->loadSchema(defaultXSDFile))
             {
-
+                QString xmlConfigTopNode = "mt310s2dconfig";
                 // we want to initialize all settings first
                 m_pDebugSettings = new cDebugSettings(myXMLConfigReader);
                 connect(myXMLConfigReader,SIGNAL(valueChanged(const QString&)),m_pDebugSettings,SLOT(configXMLInfo(const QString&)));
@@ -172,7 +172,7 @@ void cMT310S2dServer::doConfiguration()
                 connect(myXMLConfigReader,SIGNAL(valueChanged(const QString&)),m_pETHSettings,SLOT(configXMLInfo(const QString&)));
                 m_pI2CSettings = new cI2CSettings(myXMLConfigReader);
                 connect(myXMLConfigReader,SIGNAL(valueChanged(const QString&)),m_pI2CSettings,SLOT(configXMLInfo(const QString&)));
-                m_pFPGASettings = new cFPGASettings(myXMLConfigReader);
+                m_pFPGASettings = new cFPGASettings(myXMLConfigReader, xmlConfigTopNode);
                 connect(myXMLConfigReader,SIGNAL(valueChanged(const QString&)),m_pFPGASettings,SLOT(configXMLInfo(const QString&)));
                 m_pSenseSettings = new cSenseSettings(myXMLConfigReader);
                 connect(myXMLConfigReader,SIGNAL(valueChanged(const QString&)),m_pSenseSettings,SLOT(configXMLInfo(const QString&)));

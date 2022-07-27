@@ -137,12 +137,13 @@ void cSEC1000dServer::doConfiguration()
             connect(m_pNotifier, SIGNAL(activated(int)), this, SLOT(SECIntHandler(int)));
             if (myXMLConfigReader->loadSchema(defaultXSDFile))
             {
+                QString xmlConfigTopNode = "sec1000dconfig";
                 // we want to initialize all settings first
                 m_pDebugSettings = new cDebugSettings(myXMLConfigReader);
                 connect(myXMLConfigReader,SIGNAL(valueChanged(const QString&)),m_pDebugSettings,SLOT(configXMLInfo(const QString&)));
                 m_pETHSettings = new cETHSettings(myXMLConfigReader);
                 connect(myXMLConfigReader,SIGNAL(valueChanged(const QString&)),m_pETHSettings,SLOT(configXMLInfo(const QString&)));
-                m_pFPGASettings = new cFPGASettings(myXMLConfigReader);
+                m_pFPGASettings = new cFPGASettings(myXMLConfigReader, xmlConfigTopNode);
                 connect(myXMLConfigReader,SIGNAL(valueChanged(const QString&)),m_pFPGASettings,SLOT(configXMLInfo(const QString&)));
                 m_pECalcSettings = new cECalculatorSettings(myXMLConfigReader);
                 connect(myXMLConfigReader,SIGNAL(valueChanged(const QString&)),m_pECalcSettings,SLOT(configXMLInfo(const QString&)));
