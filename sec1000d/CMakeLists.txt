@@ -5,7 +5,6 @@ set(SOURCES
     ethsettings.cpp
     statusinterface.cpp
     systeminterface.cpp
-    debugsettings.cpp
     systeminfo.cpp
     ecalcsettings.cpp
     ecalcinterface.cpp
@@ -22,7 +21,6 @@ set(HEADER
     ethsettings.h
     statusinterface.h
     systeminterface.h
-    debugsettings.h
     systeminfo.h
     notificationdata.h
     ecalcsettings.h

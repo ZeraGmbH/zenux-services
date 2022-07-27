@@ -1,10 +1,10 @@
 #include "debugsettings.h"
 #include <xmlconfigreader.h>
 
-cDebugSettings::cDebugSettings(Zera::XMLConfig::cReader *xmlread)
+cDebugSettings::cDebugSettings(Zera::XMLConfig::cReader *xmlread, QString topXmlNode)
 {
     m_pXMLReader=xmlread;
-    m_ConfigXMLMap["mt310s2dconfig:connectivity:debuglevel"] = DebugSettings::setdebuglevel;
+    m_ConfigXMLMap[topXmlNode + ":connectivity:debuglevel"] = DebugSettings::setdebuglevel;
 }
 
 quint8 cDebugSettings::getDebugLevel()
