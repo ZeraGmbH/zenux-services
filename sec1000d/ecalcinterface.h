@@ -54,7 +54,7 @@ private:
     cSEC1000dServer* m_pMyServer;
     cETHSettings* m_pETHsettings;
     cECalculatorSettings* m_pecalcsettings;
-    cFPGASettings* m_pfpgasettings;
+    cFPGASettings* m_pFPGASettings;
     cInputSettings* m_pInputSettings;
 
     QString m_sVersion;

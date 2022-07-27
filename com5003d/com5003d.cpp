@@ -51,7 +51,7 @@ cCOM5003dServer::cCOM5003dServer()
     m_pDebugSettings = nullptr;
     m_pETHSettings = nullptr;
     m_pI2CSettings = nullptr;
-    m_pFPGAsettings = nullptr;
+    m_pFPGASettings = nullptr;
     m_pSenseSettings = nullptr;
     pAtmel = nullptr;
     m_pAtmelWatcher = nullptr;
@@ -106,7 +106,7 @@ cCOM5003dServer::~cCOM5003dServer()
     if (m_pDebugSettings) delete m_pDebugSettings;
     if (m_pETHSettings) delete m_pETHSettings;
     if (m_pI2CSettings) delete m_pI2CSettings;
-    if (m_pFPGAsettings) delete m_pFPGAsettings;
+    if (m_pFPGASettings) delete m_pFPGASettings;
     if (m_pSenseSettings) delete m_pSenseSettings;
     if (m_pSourceSettings) delete m_pSourceSettings;
     if (m_pFRQInputSettings) delete m_pFRQInputSettings;
@@ -161,8 +161,8 @@ void cCOM5003dServer::doConfiguration()
             connect(myXMLConfigReader,SIGNAL(valueChanged(const QString&)),m_pETHSettings,SLOT(configXMLInfo(const QString&)));
             m_pI2CSettings = new cI2CSettings(myXMLConfigReader);
             connect(myXMLConfigReader,SIGNAL(valueChanged(const QString&)),m_pI2CSettings,SLOT(configXMLInfo(const QString&)));
-            m_pFPGAsettings = new cFPGASettings(myXMLConfigReader);
-            connect(myXMLConfigReader,SIGNAL(valueChanged(const QString&)),m_pFPGAsettings,SLOT(configXMLInfo(const QString&)));
+            m_pFPGASettings = new cFPGASettings(myXMLConfigReader);
+            connect(myXMLConfigReader,SIGNAL(valueChanged(const QString&)),m_pFPGASettings,SLOT(configXMLInfo(const QString&)));
             m_pSenseSettings = new cSenseSettings(myXMLConfigReader);
             connect(myXMLConfigReader,SIGNAL(valueChanged(const QString&)),m_pSenseSettings,SLOT(configXMLInfo(const QString&)));
             m_pSourceSettings = new cSourceSettings(myXMLConfigReader);
@@ -218,7 +218,7 @@ void cCOM5003dServer::programAtmelFlash()
 
         m_nerror = atmelProgError; // preset error
 
-        devNode = m_pFPGAsettings->getDeviceNode();
+        devNode = m_pFPGASettings->getDeviceNode();
         syslog(LOG_INFO,"Starting programming atmel flash\n");
 
         if ( (fd = open(devNode.toLatin1().data(),O_RDWR)) < 0 )
@@ -322,7 +322,7 @@ void cCOM5003dServer::programAtmelFlash()
 
 void cCOM5003dServer::doWait4Atmel()
 {
-    m_pAtmelWatcher = new cAtmelWatcher(m_pDebugSettings->getDebugLevel(), m_pFPGAsettings->getDeviceNode(), 10000, 100);
+    m_pAtmelWatcher = new cAtmelWatcher(m_pDebugSettings->getDebugLevel(), m_pFPGASettings->getDeviceNode(), 10000, 100);
 
     m_nerror = atmelError; // we preset error
     connect(m_pAtmelWatcher,SIGNAL(timeout()),this,SIGNAL(abortInit()));

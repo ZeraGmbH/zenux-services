@@ -33,7 +33,7 @@ public:
     ~cSEC1000dServer();
 
     cDebugSettings* m_pDebugSettings;
-    cFPGASettings* m_pFPGAsettings;
+    cFPGASettings* m_pFPGASettings;
     cETHSettings* m_pETHSettings;
     cECalculatorSettings* m_pECalcSettings;
     cInputSettings* m_pInputSettings;

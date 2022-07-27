@@ -10,7 +10,7 @@ cECalculatorInterface::cECalculatorInterface(cSEC1000dServer* server, cETHSettin
     m_pMyServer(server),
     m_pETHsettings(ethsettings),
     m_pecalcsettings(ecalcSettings),
-    m_pfpgasettings(fpgasettings),
+    m_pFPGASettings(fpgasettings),
     m_pInputSettings(inputsettings)
 {
     m_sVersion = ECalcSystem::Version;
@@ -19,7 +19,7 @@ cECalculatorInterface::cECalculatorInterface(cSEC1000dServer* server, cETHSettin
     int n = m_pecalcsettings->getNumber();
     for (int i = 0; i < n; i++ )
     {
-        cECalculatorChannel* eChan = new cECalculatorChannel(m_pMyServer, m_pecalcsettings, m_pfpgasettings, m_pInputSettings, i);
+        cECalculatorChannel* eChan = new cECalculatorChannel(m_pMyServer, m_pecalcsettings, m_pFPGASettings, m_pInputSettings, i);
         m_ECalculatorChannelList.append(eChan); // we have a list for seq. access
         m_ECalculatorChannelHash[eChan->getName()] = eChan; // and a hash for access by channel name
         m_ECalculatorChannelList.at(i)->m_StopErrorCalculator(); // initially we stop all ec's

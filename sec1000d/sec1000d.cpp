@@ -53,7 +53,7 @@ cSEC1000dServer::cSEC1000dServer()
 {
     m_pDebugSettings = 0;
     m_pETHSettings = 0;
-    m_pFPGAsettings = 0;
+    m_pFPGASettings = 0;
     m_pECalcSettings = 0;
     m_pInputSettings = 0;
     m_pStatusInterface = 0;
@@ -97,7 +97,7 @@ cSEC1000dServer::~cSEC1000dServer()
 {
     if (m_pDebugSettings) delete m_pDebugSettings;
     if (m_pETHSettings) delete m_pETHSettings;
-    if (m_pFPGAsettings) delete m_pFPGAsettings;
+    if (m_pFPGASettings) delete m_pFPGASettings;
     if (m_pECalcSettings) delete m_pECalcSettings;
     if (m_pInputSettings) delete m_pInputSettings;
     if (m_pStatusInterface) delete m_pStatusInterface;
@@ -142,8 +142,8 @@ void cSEC1000dServer::doConfiguration()
                 connect(myXMLConfigReader,SIGNAL(valueChanged(const QString&)),m_pDebugSettings,SLOT(configXMLInfo(const QString&)));
                 m_pETHSettings = new cETHSettings(myXMLConfigReader);
                 connect(myXMLConfigReader,SIGNAL(valueChanged(const QString&)),m_pETHSettings,SLOT(configXMLInfo(const QString&)));
-                m_pFPGAsettings = new cFPGASettings(myXMLConfigReader);
-                connect(myXMLConfigReader,SIGNAL(valueChanged(const QString&)),m_pFPGAsettings,SLOT(configXMLInfo(const QString&)));
+                m_pFPGASettings = new cFPGASettings(myXMLConfigReader);
+                connect(myXMLConfigReader,SIGNAL(valueChanged(const QString&)),m_pFPGASettings,SLOT(configXMLInfo(const QString&)));
                 m_pECalcSettings = new cECalculatorSettings(myXMLConfigReader);
                 connect(myXMLConfigReader,SIGNAL(valueChanged(const QString&)),m_pECalcSettings,SLOT(configXMLInfo(const QString&)));
                 m_pInputSettings = new cInputSettings(myXMLConfigReader);
@@ -171,7 +171,7 @@ void cSEC1000dServer::doConfiguration()
 void cSEC1000dServer::doSetupServer()
 {
 
-    m_sSECDeviceNode = m_pFPGAsettings->getDeviceNode(); // we try to open the sec device
+    m_sSECDeviceNode = m_pFPGASettings->getDeviceNode(); // we try to open the sec device
 
     if (SECDevOpen() < 0)
     {
@@ -187,7 +187,7 @@ void cSEC1000dServer::doSetupServer()
         scpiConnectionList.append(this); // the server itself has some commands
         scpiConnectionList.append(m_pStatusInterface = new cStatusInterface());
         scpiConnectionList.append(m_pSystemInterface = new cSystemInterface(this, m_pSystemInfo));
-        scpiConnectionList.append(m_pECalculatorInterface = new cECalculatorInterface(this, m_pETHSettings, m_pECalcSettings, m_pFPGAsettings, m_pInputSettings));
+        scpiConnectionList.append(m_pECalculatorInterface = new cECalculatorInterface(this, m_pETHSettings, m_pECalcSettings, m_pFPGASettings, m_pInputSettings));
 
         resourceList.append(m_pECalculatorInterface); // all our resources
         m_ECalculatorChannelList = m_pECalculatorInterface->getECalcChannelList(); // we use this list in interrupt service
@@ -267,7 +267,7 @@ int cSEC1000dServer::SECDevOpen()
 {
     if ( (DevFileDescriptor = open(m_sSECDeviceNode.toLatin1().data(), O_RDWR)) < 0 )
     {
-        if (DEBUG1)  syslog(LOG_ERR,"error opening sec device: %s\n",m_pFPGAsettings->getDeviceNode().toLatin1().data());
+        if (DEBUG1)  syslog(LOG_ERR,"error opening sec device: %s\n",m_pFPGASettings->getDeviceNode().toLatin1().data());
     }
     return DevFileDescriptor;
 }
