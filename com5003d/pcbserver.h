@@ -104,7 +104,7 @@ public:
     QString& getVersion();
 
     cDebugSettings* m_pDebugSettings;
-    cFPGASettings* m_pFPGAsettings;
+    cFPGASettings* m_pFPGASettings;
     cI2CSettings* m_pI2CSettings;
     cETHSettings* m_pETHSettings;
     cSenseSettings* m_pSenseSettings;

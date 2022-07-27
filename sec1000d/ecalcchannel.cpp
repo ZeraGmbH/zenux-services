@@ -20,7 +20,7 @@ cECalculatorChannel::cECalculatorChannel(cSEC1000dServer* server, cECalculatorSe
     cSCPIConnection(ScpiSingletonFactory::getScpiObj(ServerName)),
     m_pMyServer(server),
     m_pecalcsettings(esettings),
-    m_pfpgasettings(fsettings),
+    m_pFPGASettings(fsettings),
     m_pInputSettings(inpsettings),
     m_nNr(nr)
 {

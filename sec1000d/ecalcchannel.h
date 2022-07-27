@@ -79,7 +79,7 @@ protected slots:
 private:
     cSEC1000dServer* m_pMyServer;
     cECalculatorSettings* m_pecalcsettings;
-    cFPGASettings* m_pfpgasettings;
+    cFPGASettings* m_pFPGASettings;
     cInputSettings* m_pInputSettings;
     quint16 m_nNr;
     quint32 m_nBaseAdress;
