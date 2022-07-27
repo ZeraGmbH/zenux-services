@@ -16,7 +16,6 @@ enum DebugLevel {NoDebug, DebugLevel1, DebugLevel2, DebugLevel3 = 4, MaxDebugLev
 #define ServerVersion "V1.00"
 #define MaxClients 30
 #define defaultDebugLevel NoDebug
-#define defaultFPGADeviceNode "/dev/zFPGA1reg"
 #define defaultI2CDeviceNode "/dev/i2c-3"
 #define defaultProtoBufServerPort 6307
 #define defaultSCPIServerPort 6308
