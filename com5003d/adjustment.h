@@ -26,7 +26,7 @@ public:
     bool exportJDataFlash();
     bool importJDataFlash();
     bool exportJDataXML(QString& file);
-    bool importJDataXML(QString& file);
+    bool importAdjXML(QString& file);
     virtual void exportAdjData(QDomDocument& doc, QDomElement& qde);
     virtual bool importAdjData(QDomNode& node);
     void addAdjFlashObject(cAdjFlash* obj);

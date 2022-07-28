@@ -313,7 +313,7 @@ bool cAdjustment::exportJDataXML(QString &file)
 }
 
 
-bool cAdjustment::importJDataXML(QString &file)
+bool cAdjustment::importAdjXML(QString &file)
 {
     QDateTime DateTime;
 
