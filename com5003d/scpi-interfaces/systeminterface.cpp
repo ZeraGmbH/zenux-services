@@ -432,16 +432,15 @@ QString cSystemInterface::m_AdjXMLRead(QString &sInput)
         {
             QString filename = cmd.getParam(0);
             if (m_pMyServer->m_pAdjHandler->importJDataXML(filename))
-                ret = ZeraMcontrollerBase::cmddone;
+                return SCPI::scpiAnswer[SCPI::ack];
             else
-                ret = ZeraMcontrollerBase::cmdexecfault;
+                return SCPI::scpiAnswer[SCPI::errexec];
         }
         else
             return SCPI::scpiAnswer[SCPI::erraut];
     }
 
-    m_genAnswer(ret, s);
-    return s;
+    return SCPI::scpiAnswer[SCPI::nak];
 }
 
 
