@@ -431,7 +431,7 @@ QString cSystemInterface::m_AdjXMLRead(QString &sInput)
         if (enable)
         {
             QString filename = cmd.getParam(0);
-            if (m_pMyServer->m_pAdjHandler->importJDataXML(filename))
+            if (m_pMyServer->m_pAdjHandler->importAdjXML(filename))
                 return SCPI::scpiAnswer[SCPI::ack];
             else
                 return SCPI::scpiAnswer[SCPI::errexec];
