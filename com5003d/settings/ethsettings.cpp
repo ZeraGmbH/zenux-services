@@ -1,9 +1,6 @@
-#include <QVariant>
-#include <xmlconfigreader.h>
-
-#include "com5003dglobal.h"
 #include "ethsettings.h"
-
+#include "com5003dglobal.h"
+#include <xmlconfigreader.h>
 
 cETHSettings::cETHSettings(Zera::XMLConfig::cReader *xmlread)
 {
@@ -19,17 +16,14 @@ cETHSettings::cETHSettings(Zera::XMLConfig::cReader *xmlread)
     m_nRMPort = defaultRMPort;
 }
 
-
 QString cETHSettings::getRMIPadr()
 {
     return m_sRMIPAdr;
 }
 
-
 quint16 cETHSettings::getPort(ethmember member)
 {
     quint16 port;
-
     switch (member)
     {
     case protobufserver:
@@ -42,23 +36,18 @@ quint16 cETHSettings::getPort(ethmember member)
         port = m_nRMPort;
         break;
     }
-
     return port;
 }
-
 
 bool cETHSettings::isSCPIactive()
 {
     return m_bSCPIactive;
 }
 
-
 void cETHSettings::configXMLInfo(QString key)
 {
     bool ok;
-
-    if (m_ConfigXMLMap.contains(key))
-    {
+    if (m_ConfigXMLMap.contains(key)) {
         switch (m_ConfigXMLMap[key])
         {
         case setRMIPAdress:

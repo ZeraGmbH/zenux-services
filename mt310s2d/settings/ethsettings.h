@@ -23,7 +23,6 @@ enum ethconfigstate
 class cETHSettings : public XMLSettings
 {
     Q_OBJECT
-
 public:
     cETHSettings(Zera::XMLConfig::cReader *xmlread);
     QString getRMIPadr();
