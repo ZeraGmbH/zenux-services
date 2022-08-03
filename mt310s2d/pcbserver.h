@@ -56,6 +56,7 @@ class cSCPI;
 class cStatusInterface;  // forward
 class cDebugSettings;
 class cFPGASettings;
+class cCtrlSettings;
 class cI2CSettings;
 class cETHSettings;
 class cFRQInputSettings;
@@ -105,6 +106,7 @@ public:
 
     cDebugSettings* m_pDebugSettings;
     cFPGASettings* m_pFPGASettings;
+    cCtrlSettings* m_pCtrlSettings;
     cI2CSettings* m_pI2CSettings;
     cETHSettings* m_pETHSettings;
     cSenseSettings* m_pSenseSettings;
