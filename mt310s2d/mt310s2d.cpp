@@ -15,6 +15,7 @@
 #include "scpi-interfaces/sourceinterface.h"
 #include "scpi-interfaces/statusinterface.h"
 #include "scpi-interfaces/systeminterface.h"
+#include "settings/ctrlsettings.h"
 #include "settings/debugsettings.h"
 #include "settings/ethsettings.h"
 #include "settings/frqinputsettings.h"
@@ -64,6 +65,7 @@ cMT310S2dServer::cMT310S2dServer()
     m_pETHSettings = nullptr;
     m_pI2CSettings = nullptr;
     m_pFPGASettings = nullptr;
+    m_pCtrlSettings  = nullptr;
     m_pSenseSettings = nullptr;
     pAtmelSys = nullptr;
     pAtmel = nullptr;
@@ -118,6 +120,7 @@ cMT310S2dServer::~cMT310S2dServer()
     if (m_pETHSettings) delete m_pETHSettings;
     if (m_pI2CSettings) delete m_pI2CSettings;
     if (m_pFPGASettings) delete m_pFPGASettings;
+    if (m_pCtrlSettings) delete m_pCtrlSettings;
     if (m_pSenseSettings) delete m_pSenseSettings;
     if (m_pSourceSettings) delete m_pSourceSettings;
     if (m_pFRQInputSettings) delete m_pFRQInputSettings;
@@ -174,6 +177,8 @@ void cMT310S2dServer::doConfiguration()
                 connect(myXMLConfigReader,SIGNAL(valueChanged(const QString&)),m_pI2CSettings,SLOT(configXMLInfo(const QString&)));
                 m_pFPGASettings = new cFPGASettings(myXMLConfigReader, xmlConfigTopNode);
                 connect(myXMLConfigReader,SIGNAL(valueChanged(const QString&)),m_pFPGASettings,SLOT(configXMLInfo(const QString&)));
+                m_pCtrlSettings = new cCtrlSettings(myXMLConfigReader);
+                connect(myXMLConfigReader,SIGNAL(valueChanged(const QString&)),m_pCtrlSettings,SLOT(configXMLInfo(const QString&)));
                 m_pSenseSettings = new cSenseSettings(myXMLConfigReader);
                 connect(myXMLConfigReader,SIGNAL(valueChanged(const QString&)),m_pSenseSettings,SLOT(configXMLInfo(const QString&)));
                 m_pSourceSettings = new cSourceSettings(myXMLConfigReader);
@@ -211,7 +216,7 @@ void cMT310S2dServer::doWait4Atmel()
     // a singletom for atmel would be nice...
     pAtmelSys = new cATMELSysCtrl(m_pI2CSettings->getDeviceNode(), m_pI2CSettings->getI2CAdress(i2cSettings::atmelsys), m_pDebugSettings->getDebugLevel());
     pAtmel = new cATMEL(m_pI2CSettings->getDeviceNode(), m_pI2CSettings->getI2CAdress(i2cSettings::atmel), m_pDebugSettings->getDebugLevel());
-    m_pAtmelWatcher = new cAtmelWatcher(m_pDebugSettings->getDebugLevel(), m_pFPGASettings->getDeviceNode(), 10000, 100);
+    m_pAtmelWatcher = new cAtmelWatcher(m_pDebugSettings->getDebugLevel(), m_pCtrlSettings->getDeviceNode(), 10000, 100);
 
     m_nerror = atmelError; // we preset error
     connect(m_pAtmelWatcher,SIGNAL(timeout()),this,SIGNAL(abortInit()));
@@ -222,68 +227,85 @@ void cMT310S2dServer::doWait4Atmel()
 
 void cMT310S2dServer::doSetupServer()
 {
+    m_sCtrlDeviceNode = m_pCtrlSettings->getDeviceNode(); // we try to open the ctrl device
+    m_sMessageDeviceNode = m_pFPGASettings->getDeviceNode();
+
     MTServer = this;
 
-    pAtmel->setPLLChannel(1); // default channel m0 for pll control
-    m_pSystemInfo = new cSystemInfo();
-    m_pAdjHandler = new cAdjustment(this);
+    if (CtrlDevOpen() < 0)
+    {
+        m_nerror = ctrlDeviceError; // and finish if not possible
+        emit abortInit();
+    }
+    else
+        if (MessageDevOpen() < 0)
+        {
+            m_nerror = fpgaDeviceError;
+            emit abortInit();
+        }
+        else
+        {
+            pAtmel->setPLLChannel(1); // default channel m0 for pll control
+            m_pSystemInfo = new cSystemInfo();
+            m_pAdjHandler = new cAdjustment(this);
 
-    //m_pSystemInfo, m_pI2CSettings->getDeviceNode(), m_pDebugSettings->getDebugLevel(), m_pI2CSettings->getI2CAdress(i2cSettings::flash)
+            //m_pSystemInfo, m_pI2CSettings->getDeviceNode(), m_pDebugSettings->getDebugLevel(), m_pI2CSettings->getI2CAdress(i2cSettings::flash)
 
-    cPCBServer::setupServer(); // here our scpi interface gets instanciated, we need this for further steps
+            cPCBServer::setupServer(); // here our scpi interface gets instanciated, we need this for further steps
 
-    scpiConnectionList.append(this); // the server itself has some commands
-    scpiConnectionList.append(m_pStatusInterface = new cStatusInterface(this));
-    scpiConnectionList.append(m_pSystemInterface = new cSystemInterface(this));
-    scpiConnectionList.append(m_pSenseInterface = new cSenseInterface(this));
-    scpiConnectionList.append(m_pSamplingInterface = new cSamplingInterface(this));
-    scpiConnectionList.append(m_pSourceInterface = new cSourceInterface(this));
-    scpiConnectionList.append(m_pFRQInputInterface = new cFRQInputInterface(this));
-    scpiConnectionList.append(m_pSCHeadInterface = new cSCHeadInterface(this));
-    scpiConnectionList.append(m_pHKeyInterface = new cHKeyInterface(this));
-    scpiConnectionList.append(m_pClampInterface = new cClampInterface(this));
+            scpiConnectionList.append(this); // the server itself has some commands
+            scpiConnectionList.append(m_pStatusInterface = new cStatusInterface(this));
+            scpiConnectionList.append(m_pSystemInterface = new cSystemInterface(this));
+            scpiConnectionList.append(m_pSenseInterface = new cSenseInterface(this));
+            scpiConnectionList.append(m_pSamplingInterface = new cSamplingInterface(this));
+            scpiConnectionList.append(m_pSourceInterface = new cSourceInterface(this));
+            scpiConnectionList.append(m_pFRQInputInterface = new cFRQInputInterface(this));
+            scpiConnectionList.append(m_pSCHeadInterface = new cSCHeadInterface(this));
+            scpiConnectionList.append(m_pHKeyInterface = new cHKeyInterface(this));
+            scpiConnectionList.append(m_pClampInterface = new cClampInterface(this));
 
-    resourceList.append(m_pSenseInterface); // all our resources
-    resourceList.append(m_pSamplingInterface);
-    resourceList.append(m_pSourceInterface);
-    resourceList.append(m_pFRQInputInterface);
-    resourceList.append(m_pSCHeadInterface);
-    resourceList.append(m_pHKeyInterface);
+            resourceList.append(m_pSenseInterface); // all our resources
+            resourceList.append(m_pSamplingInterface);
+            resourceList.append(m_pSourceInterface);
+            resourceList.append(m_pFRQInputInterface);
+            resourceList.append(m_pSCHeadInterface);
+            resourceList.append(m_pHKeyInterface);
 
 
-    m_pAdjHandler->addAdjFlashObject(m_pSenseInterface);
-    m_pSenseInterface->importAdjFlash(); // we read adjustmentdata at least once
+            m_pAdjHandler->addAdjFlashObject(m_pSenseInterface);
+            m_pSenseInterface->importAdjFlash(); // we read adjustmentdata at least once
 
-    initSCPIConnections();
+            initSCPIConnections();
 
-    // after init. we once poll the devices connected at power up
-    updateI2cDevicesConnected();
+            // after init. we once poll the devices connected at power up
+            updateI2cDevicesConnected();
 
-    myServer->startServer(m_pETHSettings->getPort(protobufserver)); // and can start the server now
-    m_pSCPIServer->listen(QHostAddress::AnyIPv4, m_pETHSettings->getPort(scpiserver));
+            myServer->startServer(m_pETHSettings->getPort(protobufserver)); // and can start the server now
+            m_pSCPIServer->listen(QHostAddress::AnyIPv4, m_pETHSettings->getPort(scpiserver));
 
-    mySigAction.sa_handler = &SigHandler; // setup signal handler
-    sigemptyset(&mySigAction.sa_mask);
-    mySigAction. sa_flags = SA_RESTART;
-    mySigAction.sa_restorer = nullptr;
-    sigaction(SIGIO, &mySigAction, nullptr); // set handler for sigio
+            mySigAction.sa_handler = &SigHandler; // setup signal handler
+            sigemptyset(&mySigAction.sa_mask);
+            mySigAction. sa_flags = SA_RESTART;
+            mySigAction.sa_restorer = nullptr;
+            sigaction(SIGIO, &mySigAction, nullptr); // set handler for sigio
 
-    SetFASync();
-    enableClampInterrupt();
+            SetFASync();
+            enableClampInterrupt();
 
-    // our resource mananager connection must be opened after configuration is done
-    m_pRMConnection = new RMConnection(m_pETHSettings->getRMIPadr(), m_pETHSettings->getPort(resourcemanager), m_pDebugSettings->getDebugLevel());
-    //connect(m_pRMConnection, SIGNAL(connectionRMError()), this, SIGNAL(abortInit()));
-    // so we must complete our state machine here
-    m_nRetryRMConnect = 100;
-    m_retryTimer.setSingleShot(true);
-    connect(&m_retryTimer, SIGNAL(timeout()), this, SIGNAL(serverSetup()));
+            // our resource mananager connection must be opened after configuration is done
+            m_pRMConnection = new RMConnection(m_pETHSettings->getRMIPadr(), m_pETHSettings->getPort(resourcemanager), m_pDebugSettings->getDebugLevel());
+            //connect(m_pRMConnection, SIGNAL(connectionRMError()), this, SIGNAL(abortInit()));
+            // so we must complete our state machine here
+            m_nRetryRMConnect = 100;
+            m_retryTimer.setSingleShot(true);
+            connect(&m_retryTimer, SIGNAL(timeout()), this, SIGNAL(serverSetup()));
 
-    stateconnect2RM->addTransition(m_pRMConnection, SIGNAL(connected()), stateSendRMIdentandRegister);
-    stateconnect2RM->addTransition(m_pRMConnection, SIGNAL(connectionRMError()), stateconnect2RMError);
-    stateconnect2RMError->addTransition(this, SIGNAL(serverSetup()), stateconnect2RM);
+            stateconnect2RM->addTransition(m_pRMConnection, SIGNAL(connected()), stateSendRMIdentandRegister);
+            stateconnect2RM->addTransition(m_pRMConnection, SIGNAL(connectionRMError()), stateconnect2RMError);
+            stateconnect2RMError->addTransition(this, SIGNAL(serverSetup()), stateconnect2RM);
 
-    emit serverSetup(); // so we enter state machine's next state
+            emit serverSetup(); // so we enter state machine's next state
+        }
 }
 
 
@@ -326,10 +348,34 @@ void cMT310S2dServer::doIdentAndRegister()
 }
 
 
+int cMT310S2dServer::CtrlDevOpen()
+{
+    if ( (DevFileDescriptorCtrl = open(m_sCtrlDeviceNode.toLatin1().data(), O_RDWR)) < 0 )
+    {
+        if (m_pDebugSettings->getDebugLevel() & 1)  syslog(LOG_ERR,"error opening ctrl device: %s\n",m_pCtrlSettings->getDeviceNode().toLatin1().data());
+    }
+    return DevFileDescriptorCtrl;
+}
+
+
+int cMT310S2dServer::MessageDevOpen()
+{
+    if ( (DevFileDescriptorMsg = open(m_sMessageDeviceNode.toLatin1().data(), O_RDWR)) < 0 )
+    {
+        if (m_pDebugSettings->getDebugLevel() & 1)  syslog(LOG_ERR,"error opening ctrl device: %s\n",m_pFPGASettings->getDeviceNode().toLatin1().data());
+    }
+    return DevFileDescriptorMsg;
+}
+
+
 void cMT310S2dServer::SetFASync()
 {
+    fcntl(DevFileDescriptorMsg, F_SETOWN, getpid()); // wir sind "besitzer" des device
+    int oflags = fcntl(DevFileDescriptorMsg, F_GETFL);
+    fcntl(DevFileDescriptorMsg, F_SETFL, oflags | FASYNC); // async. benachrichtung (sigio) einschalten
+
     fcntl(DevFileDescriptorCtrl, F_SETOWN, getpid());
-    int oflags = fcntl(DevFileDescriptorCtrl, F_GETFL);
+    oflags = fcntl(DevFileDescriptorCtrl, F_GETFL);
     fcntl(DevFileDescriptorCtrl, F_SETFL, oflags | FASYNC);
 }
 
