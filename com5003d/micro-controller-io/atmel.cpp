@@ -4,6 +4,7 @@
 #include "com5003dglobal.h"
 #include "i2cutils.h"
 #include "atmel.h"
+#include "atmelerrorlog.h"
 
 enum hw_cmdcode
 {
@@ -166,7 +167,9 @@ ZeraMcontrollerBase::atmelRM cATMEL::readRange(quint8 channel, quint8 &range)
     hw_cmd CMD(hwGetRange, channel, nullptr, 0);
     quint8 answ[2];
     writeCommand(&CMD, answ, 2);
-    if(getLastErrorMask() == 0) {
+    quint32 errorMask = getLastErrorMask();
+    AtmelErrorLog::logReadRange(channel, errorMask);
+    if(errorMask == 0) {
         range = answ[0];
         ret = cmddone;
     }
@@ -178,7 +181,9 @@ ZeraMcontrollerBase::atmelRM cATMEL::setRange(quint8 channel, quint8 range)
 {
     hw_cmd CMD(hwSetRange, channel, &range, 1);
     writeCommand(&CMD);
-    return getLastErrorMask() == 0 ? cmddone : cmdexecfault;
+    quint32 errorMask = getLastErrorMask();
+    AtmelErrorLog::logSetRange(channel, range, errorMask);
+    return errorMask == 0 ? cmddone : cmdexecfault;
 }
 
 
