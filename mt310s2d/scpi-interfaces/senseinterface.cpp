@@ -106,7 +106,11 @@ cSenseInterface::cSenseInterface(cMT310S2dServer *server) :
     }
 
     rngList.clear();
-    rngList.append(new cSenseRange(m_pSCPIInterface,    "0A",    "--", true,    0.0, 3197613.0, 3997016.0, 8388607.0,  0, SenseSystem::modeAC | SenseSystem::modeADJ | SenseSystem::Direct, new cMT310S2JustData(m_pSCPIInterface)));
+    // rValue = 1e-12 (yes a pico Ampere error - for 100% range sample value):
+    // We did not yet find the place but it seems 0.0 turns into a divisor causing DSP to run almost infinite
+    // loop on range change when running power1module on a channnel supportin 0A
+    rngList.append(new cSenseRange(m_pSCPIInterface,    "0A",    "--", true,    1e-12, 3197613.0, 3997016.0, 8388607.0,  0, SenseSystem::modeAC | SenseSystem::modeADJ | SenseSystem::Direct, new cMT310S2JustData(m_pSCPIInterface)));
+
     rngList.append(new cSenseRange(m_pSCPIInterface,    "8V",    "8V", false,   8.0, 3355443.0, 4194304.0, 8388607.0,  9, SenseSystem::modeADJ | SenseSystem::Direct, new cMT310S2JustData(m_pSCPIInterface)));
     rngList.append(new cSenseRange(m_pSCPIInterface,    "5V",    "5V", false,   5.0, 4194304.0, 5242880.0, 8388607.0, 10, SenseSystem::modeADJ | SenseSystem::Direct, new cMT310S2JustData(m_pSCPIInterface)));
     rngList.append(new cSenseRange(m_pSCPIInterface,    "2V",    "2V", false,   2.0, 2835586.0, 3544483.0, 8388607.0, 11, SenseSystem::modeADJ | SenseSystem::Direct, new cMT310S2JustData(m_pSCPIInterface)));
