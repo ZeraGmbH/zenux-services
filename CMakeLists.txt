@@ -47,4 +47,6 @@ add_subdirectory(sec1000d)
 add_subdirectory(zdsp1d)
 add_subdirectory(zenux-service-common)
 
+enable_testing()
+
 feature_summary(WHAT ALL FATAL_ON_MISSING_REQUIRED_PACKAGES)
