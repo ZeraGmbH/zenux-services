@@ -33,6 +33,8 @@ find_package(zeradev REQUIRED)
 find_package(VfProtobuf REQUIRED)
 find_package(zeraprotobuf REQUIRED)
 
+enable_testing()
+
 if(${useSystemd})
     find_package(PkgConfig REQUIRED)
     pkg_check_modules(Systemd REQUIRED libsystemd)
@@ -46,7 +48,5 @@ add_subdirectory(mt310s2d)
 add_subdirectory(sec1000d)
 add_subdirectory(zdsp1d)
 add_subdirectory(zenux-service-common)
-
-enable_testing()
 
 feature_summary(WHAT ALL FATAL_ON_MISSING_REQUIRED_PACKAGES)
