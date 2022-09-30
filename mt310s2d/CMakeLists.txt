@@ -1,90 +1,90 @@
 set(SOURCES
-    micro-controller-io/atmel.cpp
-    micro-controller-io/atmelemobcontroller.cpp
-    micro-controller-io/atmelsysctrl.cpp
-    scpi-interfaces/clampinterface.cpp
-    scpi-interfaces/emobinterface.cpp
-    scpi-interfaces/frqinputinterface.cpp
-    scpi-interfaces/hkeyinterface.cpp
-    scpi-interfaces/samplinginterface.cpp
-    scpi-interfaces/scheadinterface.cpp
-    scpi-interfaces/senseinterface.cpp
-    scpi-interfaces/sourceinterface.cpp
-    scpi-interfaces/statusinterface.cpp
-    scpi-interfaces/systeminterface.cpp
-    settings/ctrlsettings.cpp
-    settings/ethsettings.cpp
-    settings/frqinputsettings.cpp
-    settings/i2csettings.cpp
-    settings/samplingsettings.cpp
-    settings/scheadsettings.cpp
-    settings/sensesettings.cpp
-    settings/sourcesettings.cpp
-    settings/hkeysettings.cpp
-    justdata.cpp
-    pcbserver.cpp
-    samplerange.cpp
-    senserange.cpp
-    sensechannel.cpp
-    fpzchannel.cpp
-    adjustment.cpp
-    systeminfo.cpp
-    fpzinchannel.cpp
-    scheadchannel.cpp
-    clampjustdata.cpp
-    adjflash.cpp
-    clamp.cpp
-    adjxml.cpp
-    mt310s2d.cpp
-    mt310s2justdata.cpp
-    hkeychannel.cpp
+    src/micro-controller-io/atmel.cpp
+    src/micro-controller-io/atmelemobcontroller.cpp
+    src/micro-controller-io/atmelsysctrl.cpp
+    src/scpi-interfaces/clampinterface.cpp
+    src/scpi-interfaces/emobinterface.cpp
+    src/scpi-interfaces/frqinputinterface.cpp
+    src/scpi-interfaces/hkeyinterface.cpp
+    src/scpi-interfaces/samplinginterface.cpp
+    src/scpi-interfaces/scheadinterface.cpp
+    src/scpi-interfaces/senseinterface.cpp
+    src/scpi-interfaces/sourceinterface.cpp
+    src/scpi-interfaces/statusinterface.cpp
+    src/scpi-interfaces/systeminterface.cpp
+    src/settings/ctrlsettings.cpp
+    src/settings/ethsettings.cpp
+    src/settings/frqinputsettings.cpp
+    src/settings/i2csettings.cpp
+    src/settings/samplingsettings.cpp
+    src/settings/scheadsettings.cpp
+    src/settings/sensesettings.cpp
+    src/settings/sourcesettings.cpp
+    src/settings/hkeysettings.cpp
+    src/justdata.cpp
+    src/pcbserver.cpp
+    src/samplerange.cpp
+    src/senserange.cpp
+    src/sensechannel.cpp
+    src/fpzchannel.cpp
+    src/adjustment.cpp
+    src/systeminfo.cpp
+    src/fpzinchannel.cpp
+    src/scheadchannel.cpp
+    src/clampjustdata.cpp
+    src/adjflash.cpp
+    src/clamp.cpp
+    src/adjxml.cpp
+    src/mt310s2d.cpp
+    src/mt310s2justdata.cpp
+    src/hkeychannel.cpp
     )
 
 set(HEADER
-    micro-controller-io/atmelbaseinterface.h
-    micro-controller-io/atmelemobcontroller.h
-    micro-controller-io/atmel.h
-    micro-controller-io/atmelsysctrl.h
-    scpi-interfaces/clampinterface.h
-    scpi-interfaces/emobinterface.h
-    scpi-interfaces/frqinputinterface.h
-    scpi-interfaces/hkeyinterface.h
-    scpi-interfaces/samplinginterface.h
-    scpi-interfaces/scheadinterface.h
-    scpi-interfaces/senseinterface.h
-    scpi-interfaces/sourceinterface.h
-    scpi-interfaces/statusinterface.h
-    scpi-interfaces/systeminterface.h
-    settings/ctrlsettings.h
-    settings/ethsettings.h
-    settings/frqinputsettings.h
-    settings/hkeysettings.h
-    settings/i2csettings.h
-    settings/samplingsettings.h
-    settings/scheadsettings.h
-    settings/sensesettings.h
-    settings/sourcesettings.h
-    zeraglobal.h
-    justdata.h
-    mt310s2dscpi.h
-    pcbserver.h
-    samplerange.h
-    senserange.h
-    sensechannel.h
-    fpzchannel.h
-    adjflash.h
-    adjxml.h
-    adjustment.h
-    systeminfo.h
-    notificationdata.h
-    fpzinchannel.h
-    scheadchannel.h
-    clampjustdata.h
-    clamp.h
-    mt310s2d.h
-    mt310s2dglobal.h
-    mt310s2justdata.h
-    hkeychannel.h
+    src/micro-controller-io/atmelbaseinterface.h
+    src/micro-controller-io/atmelemobcontroller.h
+    src/micro-controller-io/atmel.h
+    src/micro-controller-io/atmelsysctrl.h
+    src/scpi-interfaces/clampinterface.h
+    src/scpi-interfaces/emobinterface.h
+    src/scpi-interfaces/frqinputinterface.h
+    src/scpi-interfaces/hkeyinterface.h
+    src/scpi-interfaces/samplinginterface.h
+    src/scpi-interfaces/scheadinterface.h
+    src/scpi-interfaces/senseinterface.h
+    src/scpi-interfaces/sourceinterface.h
+    src/scpi-interfaces/statusinterface.h
+    src/scpi-interfaces/systeminterface.h
+    src/settings/ctrlsettings.h
+    src/settings/ethsettings.h
+    src/settings/frqinputsettings.h
+    src/settings/hkeysettings.h
+    src/settings/i2csettings.h
+    src/settings/samplingsettings.h
+    src/settings/scheadsettings.h
+    src/settings/sensesettings.h
+    src/settings/sourcesettings.h
+    src/zeraglobal.h
+    src/justdata.h
+    src/mt310s2dscpi.h
+    src/pcbserver.h
+    src/samplerange.h
+    src/senserange.h
+    src/sensechannel.h
+    src/fpzchannel.h
+    src/adjflash.h
+    src/adjxml.h
+    src/adjustment.h
+    src/systeminfo.h
+    src/notificationdata.h
+    src/fpzinchannel.h
+    src/scheadchannel.h
+    src/clampjustdata.h
+    src/clamp.h
+    src/mt310s2d.h
+    src/mt310s2dglobal.h
+    src/mt310s2justdata.h
+    src/hkeychannel.h
     )
 
 set(CONFIG_FILES
@@ -110,9 +110,10 @@ add_library(mt310s2d-lib STATIC
 target_include_directories(mt310s2d-lib
     PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/micro-controller-io>
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/scpi-interfaces>
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/settings>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/micro-controller-io>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/scpi-interfaces>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/settings>
     )
 
 if(${Systemd_FOUND})
@@ -140,7 +141,7 @@ target_link_libraries(mt310s2d-lib
     )
 
 add_executable(mt310s2d
-    main.cpp
+    src/main.cpp
     )
 
 target_link_libraries(mt310s2d
