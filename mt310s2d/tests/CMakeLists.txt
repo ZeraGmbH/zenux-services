@@ -4,7 +4,9 @@
 find_package(Qt5Test REQUIRED)
 
 add_library(testhelpers STATIC
-    )
+    senserangetesttemplate.cpp
+    senserangetesttemplate.h
+)
 
 target_include_directories(testhelpers
     PUBLIC
