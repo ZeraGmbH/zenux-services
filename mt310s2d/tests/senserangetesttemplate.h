@@ -8,7 +8,7 @@
 class SenseRangeTestTemplate
 {
 protected:
-    void _init();
+    void _init(QString leadingNodes, QString alias, double rValue, double rejection, double ovrejection, double adcrejection, quint16 mmask);
     void _cleanup();
 
     cSCPI *scpi;

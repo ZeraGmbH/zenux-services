@@ -1,11 +1,12 @@
 #include "senserangetesttemplate.h"
 
 
-void SenseRangeTestTemplate::_init()
+void SenseRangeTestTemplate::_init(QString leadingNodes, QString alias, double rValue, double rejection, double ovrejection, double adcrejection, quint16 mmask)
 {
     scpi = new cSCPI("foo");
     justData = new cMT310S2JustData(scpi);
-    testRange = new cSenseRange(scpi, "100mA", "100mA", true, 1000, 1000, 1000, 1000, 0, SenseSystem::modeAC, justData);
+    testRange = new cSenseRange(scpi, alias, alias, true, rValue, rejection, ovrejection, adcrejection, 0, mmask, justData);
+    testRange->initSCPIConnection(leadingNodes);
 }
 
 void SenseRangeTestTemplate::_cleanup()

@@ -12,7 +12,7 @@ QTEST_MAIN(test_senserange);
 
 void test_senserange::init()
 {
-    _init();
+    _init("SENSE:m4", "100mA", 1000, 1000, 1000, 1000, SenseSystem::modeAC);
 }
 
 void test_senserange::cleanup()
@@ -21,9 +21,7 @@ void test_senserange::cleanup()
 }
 
 void test_senserange::findScpiObject()
-{
-    testRange->initSCPIConnection("SENSE:m4");
-
+{   
     QString scpiString = "SENSE:m4:100mA:REJECTION?";
     cSCPIObject* scpiObject = scpi->getSCPIObject(scpiString, false);
     QVERIFY(scpiObject != nullptr);
@@ -31,8 +29,6 @@ void test_senserange::findScpiObject()
 
 void test_senserange::executeScpiQuery()
 {
-    testRange->initSCPIConnection("SENSE:m4");
-
     QString scpiString = "SENSE:m4:100mA:REJECTION?";
     cSCPIObject* scpiObject = scpi->getSCPIObject(scpiString, false);
     QVERIFY(scpiObject != nullptr);
@@ -43,9 +39,7 @@ void test_senserange::executeScpiQuery()
 }
 
 void test_senserange::verifyScpiQuery()
-{
-    testRange->initSCPIConnection("SENSE:m4");
-
+{   
     QString scpiString = "SENSE:m4:100mA:REJECTION?";
     cSCPIObject* scpiObject = scpi->getSCPIObject(scpiString, false);
     QVERIFY(scpiObject != nullptr);
