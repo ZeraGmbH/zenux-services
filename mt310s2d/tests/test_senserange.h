@@ -9,6 +9,8 @@ class test_senserange : public QObject
 private slots:
     void findScpiObject();
     void executeScpiQuery();
+    void verifyScpiQuery();
+
 };
 
 #endif // TEST_SENSERANGE_H
