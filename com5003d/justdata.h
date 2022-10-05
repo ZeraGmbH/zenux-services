@@ -37,10 +37,18 @@ enum StatusMasks
 
 class cJustNode;
 
+struct TJustDataParam
+{
+    cSCPI *scpiinterface;
+    int order;
+    double init;
+    bool(*checkPermission)(bool &enable);
+};
+
 class cJustData: public cSCPIConnection // base class for adjustment coefficients and nodes
 {
 public:
-    cJustData(cSCPI *scpiinterface, int order, double init, bool (*checkPermission)(bool &));
+    cJustData(TJustDataParam param);
     ~cJustData();
     virtual void initSCPIConnection(QString leadingNodes) override;
 
