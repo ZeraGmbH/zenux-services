@@ -43,6 +43,7 @@ struct TJustDataParam
     int order;
     double init;
     bool(*checkPermission)(bool &enable);
+    int digits;
 };
 
 class cJustData: public cSCPIConnection // base class for adjustment coefficients and nodes
@@ -75,6 +76,7 @@ private:
     double* m_pCoefficient; // size of data depends on order
     cJustNode* m_pJustNode; // same
     int m_nOrder; // we notice order
+    int m_digits;
 
     QString m_ReadWriteStatus(QString& sInput);
     QString m_ReadWriteJustCoeeficient(QString& sInput, quint8 index);
