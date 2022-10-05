@@ -8,14 +8,14 @@
 #include "justdata.h"
 #include <justnode.h>
 
-cJustData::cJustData(cSCPI* scpiinterface, int order, double init, bool (*checkPermission)(bool &)) :
-    cSCPIConnection(scpiinterface),
-    m_checkPermission(checkPermission),
-    m_nOrder(order)
+cJustData::cJustData(TJustDataParam param) :
+    cSCPIConnection(param.scpiinterface),
+    m_checkPermission(param.checkPermission),
+    m_nOrder(param.order)
 {
-    m_pCoefficient = new double[order+1];  
-    m_pJustNode = new cJustNode[order+1]; 
-    initJustData(init);
+    m_pCoefficient = new double[param.order+1];
+    m_pJustNode = new cJustNode[param.order+1];
+    initJustData(param.init);
 }
 
 
