@@ -91,3 +91,5 @@ install(
     FILES ${HEADER}
     DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/zenuxservicecommon
     )
+
+add_subdirectory(tests)
