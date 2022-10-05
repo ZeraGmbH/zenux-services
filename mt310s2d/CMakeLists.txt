@@ -21,7 +21,6 @@ set(SOURCES
     src/settings/sensesettings.cpp
     src/settings/sourcesettings.cpp
     src/settings/hkeysettings.cpp
-    src/justdata.cpp
     src/pcbserver.cpp
     src/samplerange.cpp
     src/senserange.cpp
@@ -65,7 +64,6 @@ set(HEADER
     src/settings/sensesettings.h
     src/settings/sourcesettings.h
     src/zeraglobal.h
-    src/justdata.h
     src/mt310s2dscpi.h
     src/pcbserver.h
     src/samplerange.h
@@ -133,7 +131,6 @@ target_link_libraries(mt310s2d-lib
     ZeraClasses::zeraproxy
     ZeraClasses::zeramisc
     ZeraClasses::zeraxmlconfig
-    ZeraClasses::zeramath
     ZeraClasses::zeradev
     VeinMeta::VfProtobuf
     VeinMeta::zeraprotobuf

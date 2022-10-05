@@ -18,7 +18,6 @@ set(SOURCES
     settings/sourcesettings.cpp
     main.cpp
     com5003d.cpp
-    justdata.cpp
     com5003justdata.cpp
     pcbserver.cpp
     samplerange.cpp
@@ -52,7 +51,6 @@ set(HEADER
     settings/sourcesettings.h
     zeraglobal.h
     com5003d.h
-    justdata.h
     com5003justdata.h
     hkeychannel.h
     com5003scpi.h
@@ -113,7 +111,6 @@ target_link_libraries(com5003d-lib
     ZeraClasses::zeraproxy 
     ZeraClasses::zeramisc
     ZeraClasses::zeraxmlconfig
-    ZeraClasses::zeramath
     ZeraClasses::zeradev
     VeinMeta::VfProtobuf
     VeinMeta::zeraprotobuf

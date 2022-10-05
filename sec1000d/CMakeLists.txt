@@ -68,7 +68,6 @@ target_link_libraries(sec1000d-lib
     Qt5::Gui
     ZeraClasses::zeramisc 
     ZeraClasses::zeraxmlconfig 
-    ZeraClasses::zeramath 
     VeinMeta::VfProtobuf
     VeinMeta::zeraprotobuf 
     zenuxservicecommon

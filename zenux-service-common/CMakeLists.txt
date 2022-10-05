@@ -1,4 +1,5 @@
 set(HEADER
+    src/justdata.h
     src/notzeronumgen.h
     src/meas-channels/justnode.h
     src/micro-controller-io/atmelerrorlog.h
@@ -11,6 +12,7 @@ set(HEADER
 
 add_library(zenuxservicecommon SHARED
     ${HEADER}
+    src/justdata.cpp
     src/notzeronumgen.cpp
     src/meas-channels/justnode.cpp
     src/micro-controller-io/atmelerrorlog.cpp
@@ -28,6 +30,7 @@ target_link_libraries(zenuxservicecommon
     Zera::SCPI
     Zera::scpi-tcp
     ZeraClasses::zeraxmlconfig
+    ZeraClasses::zeramath
     # ask linker to help us finding unresolved symbols
     "-Wl,--no-undefined"
     )
