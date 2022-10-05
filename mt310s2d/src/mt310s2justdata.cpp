@@ -12,9 +12,9 @@ cMT310S2JustData::cMT310S2JustData(cSCPI *scpiinterface) :
     bool(*checkPermission)(bool &enable) = [] (bool &enable) {
         return pAtmel->getEEPROMAccessEnable(enable) == ZeraMcontrollerBase::cmddone;
     };
-    m_pGainCorrection = new cJustData({m_pSCPIInterface, GainCorrOrder, 1.0, checkPermission});
-    m_pPhaseCorrection = new cJustData({m_pSCPIInterface, PhaseCorrOrder, 0.0, checkPermission});
-    m_pOffsetCorrection =  new cJustData({m_pSCPIInterface, OffsetCorrOrder, 0.0, checkPermission});
+    m_pGainCorrection = new cJustData({m_pSCPIInterface, GainCorrOrder, 1.0, checkPermission, 6});
+    m_pPhaseCorrection = new cJustData({m_pSCPIInterface, PhaseCorrOrder, 0.0, checkPermission, 6});
+    m_pOffsetCorrection =  new cJustData({m_pSCPIInterface, OffsetCorrOrder, 0.0, checkPermission, 6});
 }
 
 

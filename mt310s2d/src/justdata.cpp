@@ -11,7 +11,8 @@
 cJustData::cJustData(TJustDataParam param) :
     cSCPIConnection(param.scpiinterface),
     m_checkPermission(param.checkPermission),
-    m_nOrder(param.order)
+    m_nOrder(param.order),
+    m_digits(param.digits)
 {
     m_pCoefficient = new double[param.order+1];
     m_pJustNode = new cJustNode[param.order+1];
@@ -190,7 +191,7 @@ QString cJustData::m_ReadWriteJustNode(QString &sInput, quint8 index)
 
     if (cmd.isQuery())
     {
-        return QString("%1").arg(getNode(index)->Serialize(6));
+        return QString("%1").arg(getNode(index)->Serialize(m_digits));
     }
     else
     {
@@ -271,7 +272,7 @@ QString cJustData::SerializeNodes()
     int i;
     QString s = "";
     for (i = 0; i < m_nOrder+1; i++)
-        s += m_pJustNode[i].Serialize(6);
+        s += m_pJustNode[i].Serialize(m_digits);
     return s;
 }
 
