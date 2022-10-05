@@ -40,7 +40,7 @@ class cJustNode;
 class cJustData: public cSCPIConnection // base class for adjustment coefficients and nodes
 {
 public:
-    cJustData(cSCPI *scpiinterface, int order,double init);
+    cJustData(cSCPI *scpiinterface, int order, double init, bool (*checkPermission)(bool &));
     ~cJustData();
     virtual void initSCPIConnection(QString leadingNodes) override;
 
@@ -60,7 +60,8 @@ public:
 
 protected slots:
     virtual void executeCommand(int cmdCode, cProtonetCommand* protoCmd) override;
-
+protected:
+    bool (*m_checkPermission)(bool &);
 private:
     quint8 m_nStatus;
     double* m_pCoefficient; // size of data depends on order
