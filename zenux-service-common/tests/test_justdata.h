@@ -15,7 +15,13 @@ private slots:
     void findScpiObject();
     void nodeSetAndRead();
     void coeffSetAndRead();
-
+    void nodeSetReject();
+    void coeffSetReject();
+    void nodeSetFail();
+    void coeffSetFail();
+    void nodeSetOneCrap();
+    void nodeSettwoCrap();
+    void coefSetCrap();
 private:
     cSCPI *scpi;
     cJustData *justData;
