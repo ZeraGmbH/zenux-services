@@ -10,13 +10,10 @@
 #include <scpidelegate.h>
 #include "justdata.h"
 #include <justnode.h>
-#include "micro-controller-io/atmel.h"
 
-
-extern cATMEL* pAtmel;
-
-cJustData::cJustData(cSCPI *scpiinterface, int order, double init) :
+cJustData::cJustData(cSCPI *scpiinterface, int order, double init, bool (*checkPermission)(bool &)) :
     cSCPIConnection(scpiinterface),
+    m_checkPermission(checkPermission),
     m_nOrder(order)
 {
     m_pCoefficient = new double[order+1];
@@ -124,7 +121,7 @@ QString cJustData::m_ReadWriteStatus(QString &sInput)
     {
         if (cmd.isCommand(1))
         {
-            if (pAtmel->getEEPROMAccessEnable(enable) == ZeraMcontrollerBase::cmddone)
+            if (m_checkPermission(enable))
             {
                 if (enable)
                 {
@@ -164,7 +161,7 @@ QString cJustData::m_ReadWriteJustCoeeficient(QString &sInput, quint8 index)
         if (cmd.isCommand(1))
         {
             bool enable;
-            if (pAtmel->getEEPROMAccessEnable(enable) == ZeraMcontrollerBase::cmddone)
+            if (m_checkPermission(enable))
             {
                 if (enable)
                 {
@@ -204,7 +201,7 @@ QString cJustData::m_ReadWriteJustNode(QString &sInput, quint8 index)
         {
             bool enable;
             bool ok0, ok1;
-            if (pAtmel->getEEPROMAccessEnable(enable) == ZeraMcontrollerBase::cmddone)
+            if (m_checkPermission(enable))
             {
                 if (enable)
                 {

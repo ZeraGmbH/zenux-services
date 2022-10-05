@@ -14,9 +14,12 @@ extern cATMEL* pAtmel;
 cCOM5003JustData::cCOM5003JustData(cSCPI *scpiinterface) :
     cSCPIConnection(scpiinterface)
 {
-    m_pGainCorrection = new cJustData(m_pSCPIInterface, GainCorrOrder, 1.0);
-    m_pPhaseCorrection = new cJustData(m_pSCPIInterface, PhaseCorrOrder, 0.0);
-    m_pOffsetCorrection =  new cJustData(m_pSCPIInterface, OffsetCorrOrder, 0.0);
+    bool(*checkPermission)(bool &enable) = [] (bool &enable) {
+        return pAtmel->getEEPROMAccessEnable(enable) == ZeraMcontrollerBase::cmddone;
+    };
+    m_pGainCorrection = new cJustData(m_pSCPIInterface, GainCorrOrder, 1.0, checkPermission);
+    m_pPhaseCorrection = new cJustData(m_pSCPIInterface, PhaseCorrOrder, 0.0, checkPermission);
+    m_pOffsetCorrection =  new cJustData(m_pSCPIInterface, OffsetCorrOrder, 0.0, checkPermission);
 }
 
 
