@@ -1,24 +1,24 @@
 set(HEADER
-    notzeronumgen.h
-    meas-channels/justnode.h
-    micro-controller-io/atmelerrorlog.h
-    micro-controller-io/atmelwatcher.h
-    resources/resource.h
-    resources/rmconnection.h
-    settings/debugsettings.h
-    settings/fpgasettings.h
+    src/notzeronumgen.h
+    src/meas-channels/justnode.h
+    src/micro-controller-io/atmelerrorlog.h
+    src/micro-controller-io/atmelwatcher.h
+    src/resources/resource.h
+    src/resources/rmconnection.h
+    src/settings/debugsettings.h
+    src/settings/fpgasettings.h
     )
 
 add_library(zenuxservicecommon SHARED
     ${HEADER}
-    notzeronumgen.cpp
-    meas-channels/justnode.cpp
-    micro-controller-io/atmelerrorlog.cpp
-    micro-controller-io/atmelwatcher.cpp
-    resources/resource.cpp
-    resources/rmconnection.cpp
-    settings/debugsettings.cpp
-    settings/fpgasettings.cpp
+    src/notzeronumgen.cpp
+    src/meas-channels/justnode.cpp
+    src/micro-controller-io/atmelerrorlog.cpp
+    src/micro-controller-io/atmelwatcher.cpp
+    src/resources/resource.cpp
+    src/resources/rmconnection.cpp
+    src/settings/debugsettings.cpp
+    src/settings/fpgasettings.cpp
     )
 
 target_link_libraries(zenuxservicecommon
@@ -37,11 +37,11 @@ target_include_directories(zenuxservicecommon
     PUBLIC
     $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/zenuxservicecommon>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/meas-channels>
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/micro-controller-io>
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/resources>
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/settings>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/meas-channels>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/micro-controller-io>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/resources>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/settings>
     )
 
 set_target_properties(zenuxservicecommon PROPERTIES VERSION ${PROJECT_VERSION})
