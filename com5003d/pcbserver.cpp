@@ -5,6 +5,7 @@
 #include <QString>
 #include <QTcpSocket>
 #include <QTcpServer>
+#include <QDataStream>
 #include <xiqnetpeer.h>
 #include <xmlconfigreader.h>
 #include <xiqnetserver.h>

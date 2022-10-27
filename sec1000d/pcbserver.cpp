@@ -4,6 +4,7 @@
 #include <QList>
 #include <QString>
 #include <QTcpSocket>
+#include <QDataStream>
 #include <xiqnetpeer.h>
 #include <xmlconfigreader.h>
 #include <xiqnetserver.h>

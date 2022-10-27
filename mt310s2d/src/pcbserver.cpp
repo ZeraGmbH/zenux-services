@@ -19,6 +19,7 @@
 #include <QString>
 #include <QTcpSocket>
 #include <QTcpServer>
+#include <QDataStream>
 
 cPCBServer::cPCBServer()
     : cSCPIConnection(ScpiSingletonFactory::getScpiObj(ServerName))
