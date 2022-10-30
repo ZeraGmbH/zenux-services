@@ -445,66 +445,6 @@ void cDspVarResolver::addSection(sMemSection* sec)
     MemSectionList.append(sec);
 }
 
-/*
-long cDspVarResolver::offs(QString& s,  sMemSection** pSec, int *type)
-{
-    SearchedVar = 0;
-    long ret = -1; // erstmal fehler
-    *pSec = NULL; // dito
-    bool ok;
-    sMemSection *msec; // sonst variablenliste durchforsten
-    QString ts = s.upper();
-    QChar* cts = ts.data();
-    QString sSearch=VarParser.GetKeyword(&cts);
-    for ( msec = MemSectionList.first(); msec; msec = MemSectionList.next() )
-    { //
-        long offs = 0;
-        for (int i = 0; i< msec->n;i++)
-        {
-            if (sSearch==msec->DspVar[i].Name)
-            { // der name ist schon drin
-                SearchedVar = &(msec->DspVar[i]);
-                if (type != NULL) // wenn der variablen type gebraucht wird
-                    *type = SearchedVar->type;
-                ts = ts.stripWhiteSpace();
-                ts = ts.remove(msec->DspVar[i].Name); // name raus
-                if (ts.length() > 0)
-                { // wenn noch was da, dann muss das ein +/- offset sein
-                    ret = ts.toLong(&ok,10); // prüfen auf dez. konstante
-                    if (ok)
-                    {
-                        ret += offs;
-                        break;
-                    }
-                    ret = ts.toLong(&ok,16); // mal hex versuchen
-                    if (ok) {
-                        ret += offs;
-                        break;
-                    }
-                    ret = -1; // sonst ist das ein fehler
-                    break;
-                }
-                ret = offs; // startadresse der variablen
-                break;
-            }
-            offs += msec->DspVar[i].size;
-        }
-        if (ret > -1)
-        {
-            *pSec = msec; // merken der sektion in der die variable stand
-            break;
-        }
-    }
-    if (ret > -1) return ret; // offset adresse
-    if (type != NULL) // wenn der variablen type gebraucht wird
-        *type = eUnknown; // wir kennen den type nicht wenn die adresse absolut übertragen wurde
-    ret = s.toLong(&ok,10); // prüfen auf dez. konstante
-    if (ok) return ret;
-    ret = s.toLong(&ok,16); // mal hex versuchen
-    if (ok) return ret;
-    return -1;
-}
-*/
 
 void cDspVarResolver::initMemsection(sMemSection *psec)
 {
