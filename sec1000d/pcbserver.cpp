@@ -164,13 +164,12 @@ void cPCBServer::sendAnswer(cProtonetCommand *protoCmd)
 
 void cPCBServer::m_RegisterNotifier(cProtonetCommand *protoCmd)
 {
-    QString dummy;
     cSCPICommand cmd = protoCmd->m_sInput;
 
     if (cmd.isCommand(1)) // we only expect 1 parameter
     {
         QString query = cmd.getParam(0);
-        cSCPIObject* scpiObject = m_pSCPIInterface->getSCPIObject(query, dummy);
+        cSCPIObject* scpiObject = m_pSCPIInterface->getSCPIObject(query);
         if (scpiObject) {
             cNotificationData notData;
 
@@ -243,7 +242,6 @@ void cPCBServer::executeCommand(std::shared_ptr<google::protobuf::Message> cmd)
 {
     std::shared_ptr<ProtobufMessage::NetMessage> protobufCommand = nullptr;
     cSCPIObject* scpiObject;
-    QString dummy;
 
     //XiQNetPeer* client = qobject_cast<XiQNetPeer*>(sender());
 
@@ -270,7 +268,7 @@ void cPCBServer::executeCommand(std::shared_ptr<google::protobuf::Message> cmd)
                 m_sInput = QString::fromStdString(scpiCmd.command()) +  " " + QString::fromStdString(scpiCmd.parameter());
 
                 cProtonetCommand* protoCmd;
-                if ( (scpiObject =  m_pSCPIInterface->getSCPIObject(m_sInput, dummy)) != 0)
+                if ( (scpiObject =  m_pSCPIInterface->getSCPIObject(m_sInput)) != 0)
                 {
                     protoCmd = new cProtonetCommand(peer, true, true, clientId, messageNr, m_sInput, scpiObject->getType());
                     cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
@@ -297,7 +295,7 @@ void cPCBServer::executeCommand(std::shared_ptr<google::protobuf::Message> cmd)
             m_sInput =  QString::fromStdString(protobufCommand->scpi().command());
             QByteArray clientId = QByteArray(); // we set an empty byte array
             cProtonetCommand* protoCmd;
-            if ( (scpiObject =  m_pSCPIInterface->getSCPIObject(m_sInput, dummy)) != 0)
+            if ( (scpiObject =  m_pSCPIInterface->getSCPIObject(m_sInput)) != 0)
             {
                 protoCmd = new cProtonetCommand(peer, false, true, clientId, 0, m_sInput, scpiObject->getType());
                 cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
