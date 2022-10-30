@@ -145,8 +145,8 @@ void test_justdata::coefSetCrap()
     QString scpiStringWrite = "sens:m0:8V:corr:offset:coef:0 foo;";
     cSCPIObject* scpiObjectWrite = scpi->getSCPIObject(scpiStringWrite, false);
     QVERIFY(scpiObjectWrite != nullptr);
-    cProtonetCommand* protoCmdWrite = new cProtonetCommand(0, false, true, QByteArray(), 0, scpiStringWrite);
+    cProtonetCommand cmdWrite(0, false, true, QByteArray(), 0, scpiStringWrite);
     cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObjectWrite);
-    QVERIFY(scpiDelegate->executeSCPI(protoCmdWrite));
-    QCOMPARE((protoCmdWrite->m_sOutput), "errval");
+    QVERIFY(scpiDelegate->executeSCPI(&cmdWrite));
+    QCOMPARE(cmdWrite.m_sOutput, "errval");
 }
