@@ -124,7 +124,6 @@ endif()
 target_link_libraries(mt310s2d-lib
     PUBLIC
     Qt5::Core
-    Qt5::Gui
     Qt5::Xml
     Qt5::Network
     ZeraClasses::zerai2c

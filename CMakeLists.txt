@@ -20,7 +20,7 @@ include(GenerateExportHeader)
 
 option(useSystemd "Using libsystemd" ON)
 
-find_package(Qt5 COMPONENTS Core Gui Xml Network Test CONFIG REQUIRED)
+find_package(Qt5 COMPONENTS Core Xml Network Test CONFIG REQUIRED)
 find_package(SCPI REQUIRED)
 find_package(scpi-tcp REQUIRED)
 find_package(xiqnet REQUIRED)
