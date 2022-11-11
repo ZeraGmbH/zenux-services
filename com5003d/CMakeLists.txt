@@ -104,7 +104,6 @@ endif()
 target_link_libraries(com5003d-lib
     PUBLIC
     Qt5::Core
-    Qt5::Gui
     Qt5::Xml
     Qt5::Network
     ZeraClasses::zerai2c
