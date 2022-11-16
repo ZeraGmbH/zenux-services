@@ -23,14 +23,14 @@ void test_senserange::cleanup()
 void test_senserange::findScpiObject()
 {   
     QString scpiString = "SENSE:m4:100mA:REJECTION?";
-    cSCPIObject* scpiObject = scpi->getSCPIObject(scpiString, false);
+    cSCPIObject* scpiObject = scpi->getSCPIObject(scpiString);
     QVERIFY(scpiObject != nullptr);
 }
 
 void test_senserange::executeScpiQuery()
 {
     QString scpiString = "SENSE:m4:100mA:REJECTION?";
-    cSCPIObject* scpiObject = scpi->getSCPIObject(scpiString, false);
+    cSCPIObject* scpiObject = scpi->getSCPIObject(scpiString);
     QVERIFY(scpiObject != nullptr);
 
     cProtonetCommand* protoCmd = new cProtonetCommand(0, false, true, QByteArray(), 0, scpiString);
@@ -41,7 +41,7 @@ void test_senserange::executeScpiQuery()
 void test_senserange::verifyScpiQuery()
 {   
     QString scpiString = "SENSE:m4:100mA:REJECTION?";
-    cSCPIObject* scpiObject = scpi->getSCPIObject(scpiString, false);
+    cSCPIObject* scpiObject = scpi->getSCPIObject(scpiString);
     QVERIFY(scpiObject != nullptr);
 
     cProtonetCommand* protoCmd = new cProtonetCommand(0, false, true, QByteArray(), 0, scpiString);
