@@ -22,21 +22,21 @@ void test_justdata::cleanup()
 void test_justdata::findScpiObject()
 {
     QString scpiString = "sens:m0:8V:corr:offset:node:0?";
-    cSCPIObject* scpiObject = scpi->getSCPIObject(scpiString, false);
+    cSCPIObject* scpiObject = scpi->getSCPIObject(scpiString);
     QVERIFY(scpiObject != nullptr);
 }
 
 void test_justdata::nodeSetAndRead()
 {
     QString scpiStringWrite = "sens:m0:8V:corr:offset:node:0 0.1;0.02;";
-    cSCPIObject* scpiObjectWrite = scpi->getSCPIObject(scpiStringWrite, false);
+    cSCPIObject* scpiObjectWrite = scpi->getSCPIObject(scpiStringWrite);
     QVERIFY(scpiObjectWrite != nullptr);
     cProtonetCommand* protoCmdWrite = new cProtonetCommand(0, false, true, QByteArray(), 0, scpiStringWrite);
     cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObjectWrite);
     QVERIFY(scpiDelegate->executeSCPI(protoCmdWrite));
 
     QString scpiStringRead = "sens:m0:8V:corr:offset:node:0?";
-    cSCPIObject* scpiObjectRead = scpi->getSCPIObject(scpiStringWrite, false);
+    cSCPIObject* scpiObjectRead = scpi->getSCPIObject(scpiStringWrite);
     QVERIFY(scpiObjectRead != nullptr);
     cProtonetCommand* protoCmdRead = new cProtonetCommand(0, false, true, QByteArray(), 0, scpiStringRead);
     scpiDelegate = static_cast<cSCPIDelegate*>(scpiObjectRead);
@@ -47,14 +47,14 @@ void test_justdata::nodeSetAndRead()
 void test_justdata::coeffSetAndRead()
 {
     QString scpiStringWrite = "sens:m0:8V:corr:offset:coef:0 0.1234569;";
-    cSCPIObject* scpiObjectWrite = scpi->getSCPIObject(scpiStringWrite, false);
+    cSCPIObject* scpiObjectWrite = scpi->getSCPIObject(scpiStringWrite);
     QVERIFY(scpiObjectWrite != nullptr);
     cProtonetCommand* protoCmdWrite = new cProtonetCommand(0, false, true, QByteArray(), 0, scpiStringWrite);
     cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObjectWrite);
     QVERIFY(scpiDelegate->executeSCPI(protoCmdWrite));
 
     QString scpiStringRead = "sens:m0:8V:corr:offset:coef:0?";
-    cSCPIObject* scpiObjectRead = scpi->getSCPIObject(scpiStringWrite, false);
+    cSCPIObject* scpiObjectRead = scpi->getSCPIObject(scpiStringWrite);
     QVERIFY(scpiObjectRead != nullptr);
     cProtonetCommand* protoCmdRead = new cProtonetCommand(0, false, true, QByteArray(), 0, scpiStringRead);
     scpiDelegate = static_cast<cSCPIDelegate*>(scpiObjectRead);
@@ -68,7 +68,7 @@ void test_justdata::nodeSetReject()
     justDataReject->initSCPIConnection("sens:m1:8V:corr:offset");
 
     QString scpiStringWrite = "sens:m1:8V:corr:offset:node:0 0.1;0.02;";
-    cSCPIObject* scpiObjectWrite = scpi->getSCPIObject(scpiStringWrite, false);
+    cSCPIObject* scpiObjectWrite = scpi->getSCPIObject(scpiStringWrite);
     QVERIFY(scpiObjectWrite != nullptr);
     cProtonetCommand* protoCmdWrite = new cProtonetCommand(0, false, true, QByteArray(), 0, scpiStringWrite);
     cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObjectWrite);
@@ -82,7 +82,7 @@ void test_justdata::coeffSetReject()
     justDataReject->initSCPIConnection("sens:m1:8V:corr:offset");
 
     QString scpiStringWrite = "sens:m1:8V:corr:offset:coef:0 0.1;";
-    cSCPIObject* scpiObjectWrite = scpi->getSCPIObject(scpiStringWrite, false);
+    cSCPIObject* scpiObjectWrite = scpi->getSCPIObject(scpiStringWrite);
     QVERIFY(scpiObjectWrite != nullptr);
     cProtonetCommand* protoCmdWrite = new cProtonetCommand(0, false, true, QByteArray(), 0, scpiStringWrite);
     cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObjectWrite);
@@ -96,7 +96,7 @@ void test_justdata::nodeSetFail()
     justDataReject->initSCPIConnection("sens:m1:8V:corr:offset");
 
     QString scpiStringWrite = "sens:m1:8V:corr:offset:node:0 0.1;0.02;";
-    cSCPIObject* scpiObjectWrite = scpi->getSCPIObject(scpiStringWrite, false);
+    cSCPIObject* scpiObjectWrite = scpi->getSCPIObject(scpiStringWrite);
     QVERIFY(scpiObjectWrite != nullptr);
     cProtonetCommand* protoCmdWrite = new cProtonetCommand(0, false, true, QByteArray(), 0, scpiStringWrite);
     cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObjectWrite);
@@ -110,7 +110,7 @@ void test_justdata::coeffSetFail()
     justDataReject->initSCPIConnection("sens:m1:8V:corr:offset");
 
     QString scpiStringWrite = "sens:m1:8V:corr:offset:coef:0 0.1;";
-    cSCPIObject* scpiObjectWrite = scpi->getSCPIObject(scpiStringWrite, false);
+    cSCPIObject* scpiObjectWrite = scpi->getSCPIObject(scpiStringWrite);
     QVERIFY(scpiObjectWrite != nullptr);
     cProtonetCommand* protoCmdWrite = new cProtonetCommand(0, false, true, QByteArray(), 0, scpiStringWrite);
     cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObjectWrite);
@@ -121,7 +121,7 @@ void test_justdata::coeffSetFail()
 void test_justdata::nodeSetOneCrap()
 {
     QString scpiStringWrite = "sens:m0:8V:corr:offset:node:0 0.01;bar;";
-    cSCPIObject* scpiObjectWrite = scpi->getSCPIObject(scpiStringWrite, false);
+    cSCPIObject* scpiObjectWrite = scpi->getSCPIObject(scpiStringWrite);
     QVERIFY(scpiObjectWrite != nullptr);
     cProtonetCommand* protoCmdWrite = new cProtonetCommand(0, false, true, QByteArray(), 0, scpiStringWrite);
     cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObjectWrite);
@@ -132,7 +132,7 @@ void test_justdata::nodeSetOneCrap()
 void test_justdata::nodeSettwoCrap()
 {
     QString scpiStringWrite = "sens:m0:8V:corr:offset:node:0 foo;0.01;";
-    cSCPIObject* scpiObjectWrite = scpi->getSCPIObject(scpiStringWrite, false);
+    cSCPIObject* scpiObjectWrite = scpi->getSCPIObject(scpiStringWrite);
     QVERIFY(scpiObjectWrite != nullptr);
     cProtonetCommand* protoCmdWrite = new cProtonetCommand(0, false, true, QByteArray(), 0, scpiStringWrite);
     cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObjectWrite);
@@ -143,7 +143,7 @@ void test_justdata::nodeSettwoCrap()
 void test_justdata::coefSetCrap()
 {
     QString scpiStringWrite = "sens:m0:8V:corr:offset:coef:0 foo;";
-    cSCPIObject* scpiObjectWrite = scpi->getSCPIObject(scpiStringWrite, false);
+    cSCPIObject* scpiObjectWrite = scpi->getSCPIObject(scpiStringWrite);
     QVERIFY(scpiObjectWrite != nullptr);
     cProtonetCommand cmdWrite(0, false, true, QByteArray(), 0, scpiStringWrite);
     cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObjectWrite);
