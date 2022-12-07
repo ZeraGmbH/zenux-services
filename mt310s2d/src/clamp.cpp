@@ -527,7 +527,14 @@ void cClamp::initClamp(quint8 type)
         m_RangeList.append(new cSenseRange(m_pSCPIInterface, "C100mA", "C100mA", true, 0.1, 1677722.0, 2097152.0, 8388607.0, 19, SenseSystem::modeAC | SenseSystem::Clamp, clampJustData));
         clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("2mV")), 1000.0);
         m_RangeList.append(new cSenseRange(m_pSCPIInterface, "C50mA", "C50mA", true, 0.05, 1677722.0, 2097152.0, 8388607.0, 20, SenseSystem::modeAC | SenseSystem::Clamp, clampJustData));
-
+        break;
+    case RC3000:
+        clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("5V")), 1000.0);
+        m_RangeList.append(new cSenseRange(m_pSCPIInterface, "C3000A", "C3000A", true, 3000.0, 2516582.0, 2516582.0, 8388607.0, 10, SenseSystem::modeAC | SenseSystem::Clamp, clampJustData));
+        clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("500mV")), 1000.0);
+        m_RangeList.append(new cSenseRange(m_pSCPIInterface, "C300A", "C300A", true, 300.0, 2126689.0, 2126689.0 * 1.25, 8388607.0, 13, SenseSystem::modeAC | SenseSystem::Clamp, clampJustData));
+        clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("50mV")), 1000.0);
+        m_RangeList.append(new cSenseRange(m_pSCPIInterface, "C30A", "C30A", true, 30.0, 2013266.0, 2013266.0 * 1.25, 8388607.0, 16, SenseSystem::modeAC | SenseSystem::Clamp, clampJustData));
         break;
     }
 }
@@ -535,30 +542,31 @@ void cClamp::initClamp(quint8 type)
 QString cClamp::getClampTypeName(quint8 type)
 {
     QString CLName;
-
     switch (type)
     {
-       case CL120A:
-            CLName = QString("CL120A");
-            break;
-       case CL300A:
-            CLName = QString("CL300A");
-            break;
-       case CL1000A:
-            CLName  = QString("CL1000A");
-            break;
-       case EMOB32:
-            CLName = QString("EMOB32");
-            break;
-       case EMOB200DC:
-            CLName = QString("EMOB200DC");
-            break;
-       case EMOB80:
-            CLName = QString("EMOB80");
-            break;
-
-       default:
-            CLName = QString("Undefined");
+    case CL120A:
+        CLName = QString("CL120A");
+        break;
+    case CL300A:
+        CLName = QString("CL300A");
+        break;
+    case CL1000A:
+        CLName  = QString("CL1000A");
+        break;
+    case EMOB32:
+        CLName = QString("EMOB32");
+        break;
+    case EMOB200DC:
+        CLName = QString("EMOB200DC");
+        break;
+    case EMOB80:
+        CLName = QString("EMOB80");
+        break;
+    case RC3000:
+        CLName = QString("RC3000");
+        break;
+    default:
+        CLName = QString("Undefined");
     }
     return CLName;
 }
