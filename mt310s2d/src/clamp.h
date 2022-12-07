@@ -36,6 +36,8 @@ enum ClampTypes
     EMOB200DC,
     EMOB80,
     RC3000,
+    CL200ADC1000VDC,
+    CL1000VDC,
 
     anzCL
 };
@@ -73,6 +75,7 @@ private:
     ClampTypes readClampType();
     void removeAllRanges();
     void exportRangeXml(QDomDocument &justqdom, QDomElement &typeTag, cSenseRange *range);
+    void add1000VSecondaryRange();
 
     QString handleScpiReadWriteSerial(QString &scpiCmdStr);
     QString handleScpiReadWriteVersion(QString &scpiCmdStr);
