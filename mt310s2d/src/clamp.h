@@ -35,6 +35,7 @@ enum ClampTypes
     EMOB32,
     EMOB200DC,
     EMOB80,
+    RC3000,
 
     anzCL
 };
