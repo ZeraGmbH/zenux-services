@@ -106,9 +106,7 @@ target_link_libraries(com5003d-lib
     Qt5::Core
     Qt5::Xml
     Qt5::Network
-    ZeraClasses::zerai2c
     ZeraClasses::zeraproxy 
-    ZeraClasses::zeramisc
     ZeraClasses::zeraxmlconfig
     ZeraClasses::zera-i2c-devices
     VeinMeta::VfProtobuf
