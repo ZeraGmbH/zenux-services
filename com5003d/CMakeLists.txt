@@ -110,7 +110,7 @@ target_link_libraries(com5003d-lib
     ZeraClasses::zeraproxy 
     ZeraClasses::zeramisc
     ZeraClasses::zeraxmlconfig
-    ZeraClasses::zeradev
+    ZeraClasses::zera-i2c-devices
     VeinMeta::VfProtobuf
     VeinMeta::zeraprotobuf
     zenuxservicecommon

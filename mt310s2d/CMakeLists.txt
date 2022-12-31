@@ -130,7 +130,7 @@ target_link_libraries(mt310s2d-lib
     ZeraClasses::zeraproxy
     ZeraClasses::zeramisc
     ZeraClasses::zeraxmlconfig
-    ZeraClasses::zeradev
+    ZeraClasses::zera-i2c-devices
     VeinMeta::VfProtobuf
     VeinMeta::zeraprotobuf
     zenuxservicecommon

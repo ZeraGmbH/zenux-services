@@ -29,7 +29,7 @@ find_package(zeraproxy REQUIRED)
 find_package(zeramisc REQUIRED)
 find_package(zeraxmlconfig REQUIRED)
 find_package(zeramath REQUIRED)
-find_package(zeradev REQUIRED)
+find_package(zera-i2c-devices REQUIRED)
 find_package(VfProtobuf REQUIRED)
 find_package(zeraprotobuf REQUIRED)
 
