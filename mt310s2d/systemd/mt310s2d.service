@@ -23,4 +23,4 @@ StandardOutput=journal
 SyslogLevel=info
 
 [Install]
-WantedBy=modulemanager.service
+WantedBy=multi-user.target
