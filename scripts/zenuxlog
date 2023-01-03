@@ -1,0 +1,13 @@
+#!/bin/sh
+
+journalctl $@ -b -o short-precise \
+    -u com5003d.service \
+    -u com5003-fpga1file.service \
+    -u mt310s2d.service \
+    -u mt310s2-fpga1file.service \
+    -u mt310s2-mcontroller-startup.service \
+    -u modulemanager.service \
+    -u sec1000d.service \
+    -u zdsp1d.service \
+    -u resourcemanager.service
+
