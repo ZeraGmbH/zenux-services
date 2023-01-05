@@ -109,7 +109,6 @@ target_link_libraries(com5003d-lib
     Zera::zera-proxy
     Zera::zera-xmlconfig
     Zera::zera-i2c-devices
-    VeinMeta::VfProtobuf
     VeinMeta::zeraprotobuf
     zenuxservicecommon
     )
