@@ -129,7 +129,6 @@ target_link_libraries(mt310s2d-lib
     Zera::zera-proxy
     Zera::zera-xmlconfig
     Zera::zera-i2c-devices
-    VeinMeta::VfProtobuf
     VeinMeta::zeraprotobuf
     zenuxservicecommon
     )

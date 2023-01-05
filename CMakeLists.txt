@@ -24,7 +24,6 @@ find_package(Qt5 COMPONENTS Core Xml Network Test CONFIG REQUIRED)
 find_package(SCPI REQUIRED)
 find_package(xiqnet REQUIRED)
 find_package(ZeraClasses REQUIRED)
-find_package(VfProtobuf REQUIRED)
 find_package(zeraprotobuf REQUIRED)
 
 enable_testing()

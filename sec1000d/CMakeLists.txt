@@ -66,7 +66,6 @@ target_link_libraries(sec1000d-lib
     Qt5::Xml
     Qt5::Network
     Zera::zera-xmlconfig
-    VeinMeta::VfProtobuf
     VeinMeta::zeraprotobuf
     zenuxservicecommon
     )
