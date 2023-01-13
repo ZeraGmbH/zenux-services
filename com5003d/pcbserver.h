@@ -150,8 +150,8 @@ private:
     QTcpSocket* resourceManagerSocket;
     NotZeroNumGen m_msgNumGen;
 
-    void m_RegisterNotifier(cProtonetCommand* protoCmd); // registeres 1 notifier per command
-    void m_UnregisterNotifier(cProtonetCommand *protoCmd); // unregisters all notifiers
+    void registerNotifier(cProtonetCommand* protoCmd); // registeres 1 notifier per command
+    void unregisterNotifier(cProtonetCommand *protoCmd); // unregisters all notifiers
     QList<cNotificationData> notifierRegisterNext;
     QList<cNotificationData> notifierRegisterList;
 

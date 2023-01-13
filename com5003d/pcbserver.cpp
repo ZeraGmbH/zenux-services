@@ -93,10 +93,10 @@ void cPCBServer::executeCommand(int cmdCode, cProtonetCommand *protoCmd)
     switch (cmdCode)
     {
     case PCBServer::cmdRegister:
-        m_RegisterNotifier(protoCmd);
+        registerNotifier(protoCmd);
         break;
     case PCBServer::cmdUnregister:
-        m_UnregisterNotifier(protoCmd);
+        unregisterNotifier(protoCmd);
         break;
     }
 
@@ -241,7 +241,7 @@ void cPCBServer::SCPIdisconnect()
 }
 
 
-void cPCBServer::m_RegisterNotifier(cProtonetCommand *protoCmd)
+void cPCBServer::registerNotifier(cProtonetCommand *protoCmd)
 {
     bool ok;
     cSCPICommand cmd = protoCmd->m_sInput;
@@ -282,7 +282,7 @@ void cPCBServer::m_RegisterNotifier(cProtonetCommand *protoCmd)
 }
 
 
-void cPCBServer::m_UnregisterNotifier(cProtonetCommand *protoCmd)
+void cPCBServer::unregisterNotifier(cProtonetCommand *protoCmd)
 {
     cSCPICommand cmd = protoCmd->m_sInput;
 
