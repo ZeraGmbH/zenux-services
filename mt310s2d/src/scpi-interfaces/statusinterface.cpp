@@ -5,7 +5,7 @@
 #include "micro-controller-io/atmel.h"
 
 cStatusInterface::cStatusInterface(cMT310S2dServer* server) :
-    cSCPIConnection(server->getSCPIInterface()),
+    ScpiConnection(server->getSCPIInterface()),
     m_pMyServer(server)
 {
 }

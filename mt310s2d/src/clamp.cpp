@@ -12,7 +12,7 @@
 #include <i2cmuxerscopedonoff.h>
 
 cClamp::cClamp() :
-    cSCPIConnection(nullptr) // TODO get rid of dummy clamp
+    ScpiConnection(nullptr) // TODO get rid of dummy clamp
 {
 }
 
@@ -20,7 +20,7 @@ cClamp::cClamp(cMT310S2dServer *server, QString channelName, quint8 ctrlChannel,
     cAdjFlash(server->m_pI2CSettings->getDeviceNode(),
               server->m_pI2CSettings->getI2CAdress(i2cSettings::clampflash),
               i2cMuxer),
-    cSCPIConnection(server->getSCPIInterface()),
+    ScpiConnection(server->getSCPIInterface()),
     m_pSenseInterface(server->m_pSenseInterface),
     m_sChannelName(channelName),
     m_i2cMuxAdress(server->m_pI2CSettings->getI2CAdress(i2cSettings::flashmux)),

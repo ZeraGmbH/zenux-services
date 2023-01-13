@@ -7,7 +7,7 @@
 
 
 cSCHeadChannel::cSCHeadChannel(cSCPI *scpiinterface, QString description, quint8 nr, SCHeadSystem::cChannelSettings *cSettings) :
-    cSCPIConnection(scpiinterface),
+    ScpiConnection(scpiinterface),
     m_sDescription(description)
 {
     m_sName = QString("sh%1").arg(nr);

@@ -11,7 +11,7 @@
 
 
 cFPZInChannel::cFPZInChannel(cSCPI *scpiInterface, QString description, quint8 nr, FRQInputSystem::cChannelSettings *cSettings) :
-    cSCPIConnection(scpiInterface),
+    ScpiConnection(scpiInterface),
     m_sDescription(description)
 {
     m_sName = QString("fi%1").arg(nr);

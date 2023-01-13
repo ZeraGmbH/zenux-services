@@ -24,10 +24,10 @@ enum Commands
 }
 
 
-class cSCPIConnection;
+class ScpiConnection;
 class cSenseInterface;
 
-class cSenseChannel : public cSCPIConnection
+class cSenseChannel : public ScpiConnection
 {
     Q_OBJECT
 

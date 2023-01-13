@@ -10,7 +10,7 @@
 
 
 cFPZChannel::cFPZChannel(cSCPI *scpiinterface, QString description, quint8 nr, SourceSystem::cChannelSettings *cSettings) :
-    cSCPIConnection(scpiinterface),
+    ScpiConnection(scpiinterface),
     m_sDescription(description)
 {
 

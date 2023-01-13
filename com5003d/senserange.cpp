@@ -6,7 +6,7 @@
 
 
 cSenseRange::cSenseRange(cSCPI *scpiinterface, QString name, QString alias, bool avail, double rValue, double rejection, double ovrejection, double adcrejection, quint8 rselcode, quint8 rspec) :
-    cSCPIConnection(scpiinterface),
+    ScpiConnection(scpiinterface),
     m_sName(name),
     m_sAlias(alias),
     m_bAvail(avail),

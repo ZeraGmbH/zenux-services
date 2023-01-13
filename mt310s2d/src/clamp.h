@@ -42,7 +42,7 @@ enum ClampTypes
     anzCL
 };
 
-class cClamp: public cAdjFlash, public cAdjXML, public cSCPIConnection
+class cClamp: public cAdjFlash, public cAdjXML, public ScpiConnection
 {
 public:
     cClamp();

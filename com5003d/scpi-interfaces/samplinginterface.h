@@ -31,7 +31,7 @@ enum Commands
 }
 
 class QString;
-class cSCPIConnection;
+class ScpiConnection;
 class cSamplingSettings;
 class cClientNetBase;
 class cCOM5003dServer;

@@ -54,7 +54,7 @@ class cFPGASettings;
 class cInputSettings;
 class cProtonetCommand;
 
-class cECalculatorChannel : public cSCPIConnection
+class cECalculatorChannel : public ScpiConnection
 {
     Q_OBJECT
 

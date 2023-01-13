@@ -22,7 +22,7 @@ enum ClampCommands
 };
 }
 
-class cClampInterface: public cSCPIConnection
+class cClampInterface: public ScpiConnection
 {
 public:
     cClampInterface(cMT310S2dServer *server);

@@ -20,7 +20,7 @@
 #include "pcbserver.h"
 
 cPCBServer::cPCBServer() :
-    cSCPIConnection(ScpiSingletonFactory::getScpiObj(ServerName))
+    ScpiConnection(ScpiSingletonFactory::getScpiObj(ServerName))
 {
     m_sServerName = ServerName;
     m_sServerVersion = ServerVersion;
@@ -364,7 +364,7 @@ void cPCBServer::initSCPIConnections()
     for (int i = 0; i < scpiConnectionList.count(); i++)
     {
         scpiConnectionList.at(i)->initSCPIConnection(""); // we have our interface
-        connect(scpiConnectionList.at(i), &cSCPIConnection::valNotifier, this, &cPCBServer::establishNewNotifier);
+        connect(scpiConnectionList.at(i), &ScpiConnection::valNotifier, this, &cPCBServer::establishNewNotifier);
         connect(scpiConnectionList.at(i), SIGNAL(cmdExecutionDone(cProtonetCommand*)), this, SLOT(sendAnswer(cProtonetCommand*)));
     }
 }

@@ -7,7 +7,7 @@
 #include "micro-controller-io/atmel.h"
 
 cSenseChannel::cSenseChannel(cSCPI* scpiinterface, QString description, QString unit, SenseSystem::cChannelSettings *cSettings, quint8 nr) :
-    cSCPIConnection(scpiinterface),
+    ScpiConnection(scpiinterface),
     m_sDescription(description),
     m_sUnit(unit)
 {

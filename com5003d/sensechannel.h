@@ -32,10 +32,10 @@ enum MMode
 }
 
 
-class cSCPIConnection;
+class ScpiConnection;
 
 
-class cSenseChannel : public cSCPIConnection
+class cSenseChannel : public ScpiConnection
 {
     Q_OBJECT
 

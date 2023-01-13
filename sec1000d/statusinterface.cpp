@@ -3,7 +3,7 @@
 
 
 cStatusInterface::cStatusInterface() :
-    cSCPIConnection(ScpiSingletonFactory::getScpiObj(ServerName))
+    ScpiConnection(ScpiSingletonFactory::getScpiObj(ServerName))
 {
 }
 

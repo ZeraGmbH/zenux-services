@@ -29,7 +29,7 @@ enum Commands
 
 class cATMEL;
 
-class cSenseRange:public cSCPIConnection
+class cSenseRange:public ScpiConnection
 {
     Q_OBJECT
 

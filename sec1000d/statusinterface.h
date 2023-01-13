@@ -19,7 +19,7 @@ enum StatusCommands
 }
 
 
-class cStatusInterface: public cSCPIConnection
+class cStatusInterface: public ScpiConnection
 {
     Q_OBJECT
 

@@ -36,7 +36,7 @@ enum SystemCommands
 class cMT310S2dServer;
 class adjFlash;
 
-class cSystemInterface: public cSCPIConnection
+class cSystemInterface: public ScpiConnection
 {
     Q_OBJECT
 

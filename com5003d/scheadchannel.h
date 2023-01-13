@@ -22,7 +22,7 @@ namespace SCHeadSystem
 }
 
 
-class cSCHeadChannel : public cSCPIConnection
+class cSCHeadChannel : public ScpiConnection
 {
     Q_OBJECT
 

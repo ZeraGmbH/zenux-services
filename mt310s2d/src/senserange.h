@@ -24,7 +24,7 @@ enum Commands
 class cMTJustData;
 class cSCPI;
 
-class cSenseRange:public cSCPIConnection
+class cSenseRange:public ScpiConnection
 {
     Q_OBJECT
 

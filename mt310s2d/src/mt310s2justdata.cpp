@@ -7,7 +7,7 @@
 #include <scpi.h>
 
 cMT310S2JustData::cMT310S2JustData(cSCPI *scpiinterface) :
-    cSCPIConnection(scpiinterface)
+    ScpiConnection(scpiinterface)
 {
     bool(*checkPermission)(bool &enable) = [] (bool &enable) {
         return pAtmel->getEEPROMAccessEnable(enable) == ZeraMcontrollerBase::cmddone;
@@ -75,7 +75,7 @@ void cMT310S2JustData::executeCommand(int cmdCode, cProtonetCommand *protoCmd)
     switch (cmdCode)
     {
     case DirectGain:
-        protoCmd->m_sOutput = mReadGainCorrection(protoCmd->m_sInput);
+        protoCmd->m_sOutput = scpiGetGainCorrection(protoCmd->m_sInput);
         break;
     case DirectJustGain:
         protoCmd->m_sOutput = mReadJustGainCorrection(protoCmd->m_sInput);
@@ -108,10 +108,10 @@ void cMT310S2JustData::executeCommand(int cmdCode, cProtonetCommand *protoCmd)
 }
 
 
-QString cMT310S2JustData::mReadGainCorrection(QString& sInput)
+QString cMT310S2JustData::scpiGetGainCorrection(const QString &scpiInput)
 {
     bool ok;
-    cSCPICommand cmd = sInput;
+    cSCPICommand cmd = scpiInput;
 
     if (cmd.isQuery(1))
     {

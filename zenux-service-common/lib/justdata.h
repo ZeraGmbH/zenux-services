@@ -43,7 +43,7 @@ struct TJustDataParam
     int digits;
 };
 
-class cJustData: public cSCPIConnection // base class for adjustment coefficients and nodes
+class cJustData: public ScpiConnection // base class for adjustment coefficients and nodes
 {
 public:
     cJustData(TJustDataParam param);

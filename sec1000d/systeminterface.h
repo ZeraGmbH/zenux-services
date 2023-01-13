@@ -25,7 +25,7 @@ class cSystemInfo;
 class cSEC1000dServer;
 class cAdjustment;
 
-class cSystemInterface: public cSCPIConnection
+class cSystemInterface: public ScpiConnection
 {
     Q_OBJECT
 
