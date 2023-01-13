@@ -360,7 +360,7 @@ void cPCBServer::executeCommand(std::shared_ptr<google::protobuf::Message> cmd)
 }
 
 
-void cPCBServer::establishNewNotifier(cNotificationString *notifier)
+void cPCBServer::establishNewNotifier(NotificationString *notifier)
 {
     if (notifierRegisterNext.count() > 0) // if we're waiting for notifier
     {
@@ -375,7 +375,7 @@ void cPCBServer::establishNewNotifier(cNotificationString *notifier)
 
 void cPCBServer::asyncHandler()
 {
-    cNotificationString* notifier = qobject_cast<cNotificationString*>(sender());
+    NotificationString* notifier = qobject_cast<NotificationString*>(sender());
 
     if (notifierRegisterList.count() > 0)
     {

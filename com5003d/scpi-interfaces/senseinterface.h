@@ -89,8 +89,8 @@ private:
     QString m_InitSenseAdjData(QString& sInput);
     QString m_ComputeSenseAdjData(QString& sInput);
 
-    cNotificationString notifierSenseMMode;
-    cNotificationString notifierSenseChannelCat;
+    NotificationString notifierSenseMMode;
+    NotificationString notifierSenseChannelCat;
 
     void setNotifierSenseMMode();
     void setNotifierSenseChannelCat();

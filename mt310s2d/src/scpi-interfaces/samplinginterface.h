@@ -58,7 +58,7 @@ private:
     bool m_bAvail; // is this sampling system available ?
     QList<cSampleRange*> m_SampleRangeList;
     QStringList m_pllChannelList;
-    cNotificationString notifierSampleChannelRange;
+    NotificationString notifierSampleChannelRange;
 };
 
 #endif // SAMPLINGINTERFACE_H

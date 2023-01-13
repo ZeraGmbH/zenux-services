@@ -98,7 +98,7 @@ private:
     void m_stop(cProtonetCommand* protoCmd);
     void m_resetInt(cProtonetCommand* protoCmd);
 
-    cNotificationValue notifierECalcChannelIntReg;
+    NotificationValue notifierECalcChannelIntReg;
 
 };
 

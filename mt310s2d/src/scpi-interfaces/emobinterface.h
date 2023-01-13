@@ -24,7 +24,7 @@ private:
     QString readChannelCatalog(QString scpiCmd);
 
     cI2CSettings *m_i2cSettings;
-    cNotificationString m_notifierChannelList;
+    NotificationString m_notifierChannelList;
 };
 
 #endif // EMOBINTERFACE_H

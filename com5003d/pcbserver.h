@@ -160,7 +160,7 @@ private:
 private slots:
     virtual void establishNewConnection(XiQNetPeer* newClient);
     virtual void executeCommand(std::shared_ptr<google::protobuf::Message> cmd);
-    virtual void establishNewNotifier(cNotificationString* notifier);
+    virtual void establishNewNotifier(NotificationString* notifier);
     virtual void asyncHandler();
     virtual void peerConnectionClosed();
 };
