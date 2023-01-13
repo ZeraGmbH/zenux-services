@@ -54,7 +54,6 @@ class XiQNetPeer;
 class cSCPI;
 class cStatusInterface;  // forward
 
-
 /**
   @mainpage base class for pcb servers
 
@@ -72,33 +71,18 @@ class cStatusInterface;  // forward
 
   */
 
-
 class cPCBServer: public ScpiConnection
 {
     Q_OBJECT
-
 public:
-    /**
-      @b Initialise the const variables and connections for new clients and their commands
-      @param the servers name
-      */
     explicit cPCBServer();
     virtual void initSCPIConnection(QString leadingNodes) override;
     quint32 getMsgNr();
-
-    /**
-      @b reads out the server's name
-      */
     QString& getName();
     QString& getVersion();
-
     cStatusInterface* m_pStatusInterface;
-
-
 signals:
     void sendAnswer(QByteArray answer);
-
-
 protected:
     void initSCPIConnections();
     XiQNetServer* myServer; // the real server that does the communication job
@@ -112,18 +96,10 @@ protected slots:
     virtual void doConfiguration() = 0; // all servers must configure
     virtual void setupServer(); // all servers must setup
     virtual void executeCommand(int cmdCode, cProtonetCommand* protoCmd) override;
-    virtual void sendAnswer(cProtonetCommand* protoCmd);
-
+    void sendAnswerProto(cProtonetCommand* protoCmd);
 private:
-    /**
-      @b The server's name. The name also specifies the servers service (port number).
-      */
     QString m_sServerName;
     QString m_sServerVersion;
-
-    /**
-      @b A pointer to the server's scpi interface.
-      */
     QString m_sInput, m_sOutput;
     QTcpSocket* resourceManagerSocket;
     NotZeroNumGen m_msgNumGen;
@@ -137,7 +113,7 @@ private:
 
 private slots:
     virtual void establishNewConnection(XiQNetPeer* newClient);
-    virtual void executeCommand(std::shared_ptr<google::protobuf::Message> cmd);
+    void executeCommandProto(std::shared_ptr<google::protobuf::Message> cmd);
     virtual void establishNewNotifier(NotificationValue *notifier);
     virtual void asyncHandler(quint32 irqreg);
     virtual void peerConnectionClosed();

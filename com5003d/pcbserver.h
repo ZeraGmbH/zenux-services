@@ -134,7 +134,7 @@ protected slots:
     virtual void doConfiguration() = 0; // all servers must configure
     virtual void setupServer(); // all servers must setup
     virtual void executeCommand(int cmdCode, cProtonetCommand* protoCmd) override;
-    virtual void sendAnswer(cProtonetCommand* protoCmd);
+    void sendAnswerProto(cProtonetCommand* protoCmd);
     virtual void setSCPIConnection();
     virtual void SCPIInput();
     virtual void SCPIdisconnect();
@@ -159,7 +159,7 @@ private:
 
 private slots:
     virtual void establishNewConnection(XiQNetPeer* newClient);
-    virtual void executeCommand(std::shared_ptr<google::protobuf::Message> cmd);
+    void executeCommandProto(std::shared_ptr<google::protobuf::Message> cmd);
     virtual void establishNewNotifier(NotificationString* notifier);
     virtual void asyncHandler();
     virtual void peerConnectionClosed();
