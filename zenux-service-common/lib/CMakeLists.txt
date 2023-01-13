@@ -26,7 +26,6 @@ target_link_libraries(zenuxservicecommon
     Qt5::Core
     VeinMeta::xiqnet
     Zera::SCPI
-    Zera::scpi-tcp
     Zera::zera-xmlconfig
     Zera::zera-math
     # ask linker to help us finding unresolved symbols
