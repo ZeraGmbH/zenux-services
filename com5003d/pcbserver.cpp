@@ -40,10 +40,10 @@ void cPCBServer::initSCPIConnection(QString leadingNodes)
 
     delegate = new cSCPIDelegate(QString("%1SERVER").arg(leadingNodes),"REGISTER",SCPI::isCmdwP,m_pSCPIInterface, PCBServer::cmdRegister);
     m_DelegateList.append(delegate);
-    connect(delegate, SIGNAL(execute(int, cProtonetCommand*)), this, SLOT(executeCommand(int, cProtonetCommand*)));
+    connect(delegate, &cSCPIDelegate::execute, this, &cPCBServer::executeCommand);
     delegate = new cSCPIDelegate(QString("%1SERVER").arg(leadingNodes),"UNREGISTER",SCPI::isQuery | SCPI::isCmd ,m_pSCPIInterface, PCBServer::cmdUnregister);
     m_DelegateList.append(delegate);
-    connect(delegate, SIGNAL(execute(int, cProtonetCommand*)), this, SLOT(executeCommand(int, cProtonetCommand*)));
+    connect(delegate, &cSCPIDelegate::execute, this, &cPCBServer::executeCommand);
 
 }
 
@@ -76,13 +76,13 @@ void cPCBServer::setupServer()
 {
     myServer = new XiQNetServer(this); // our working (talking) horse
     myServer->setDefaultWrapper(&m_ProtobufWrapper);
-    connect(myServer,SIGNAL(sigClientConnected(XiQNetPeer*)),this,SLOT(establishNewConnection(XiQNetPeer*)));
+    connect(myServer,&XiQNetServer::sigClientConnected,this,&cPCBServer::establishNewConnection);
 
     if (m_pETHSettings->isSCPIactive())
     {
         m_pSCPIServer = new QTcpServer();
         m_pSCPIServer->setMaxPendingConnections(1); // we only accept 1 client to connect
-        connect(m_pSCPIServer, SIGNAL(newConnection()), this, SLOT(setSCPIConnection()));
+        connect(m_pSCPIServer, &QTcpServer::newConnection, this, &cPCBServer::setSCPIConnection);
     }
 
 }
@@ -105,7 +105,7 @@ void cPCBServer::executeCommand(int cmdCode, cProtonetCommand *protoCmd)
 }
 
 
-void cPCBServer::sendAnswer(cProtonetCommand *protoCmd)
+void cPCBServer::sendAnswerProto(cProtonetCommand *protoCmd)
 {
     if (protoCmd->m_pPeer == 0)
     {
@@ -197,8 +197,8 @@ void cPCBServer::sendAnswer(cProtonetCommand *protoCmd)
 void cPCBServer::setSCPIConnection()
 {
     m_pSCPISocket = m_pSCPIServer->nextPendingConnection();
-    connect(m_pSCPISocket, SIGNAL(readyRead()), this, SLOT(SCPIInput()));
-    connect(m_pSCPISocket, SIGNAL(disconnected()), this, SLOT(SCPIdisconnect()));
+    connect(m_pSCPISocket, &QIODevice::readyRead, this, &cPCBServer::SCPIInput);
+    connect(m_pSCPISocket, &QAbstractSocket::disconnected, this, &cPCBServer::SCPIdisconnect);
 }
 
 
@@ -315,12 +315,11 @@ void cPCBServer::doUnregisterNotifier(XiQNetPeer* peer, const QByteArray &client
 
 void cPCBServer::establishNewConnection(XiQNetPeer *newClient)
 {
-    connect(newClient,SIGNAL(sigMessageReceived(std::shared_ptr<google::protobuf::Message>)),this,SLOT(executeCommand(std::shared_ptr<google::protobuf::Message>)));
-    // later ... connect(newClient,SIGNAL(sigMessageReceived(QByteArray*)),this,SLOT(executeCommand(QByteArray*)));
+    connect(newClient, &XiQNetPeer::sigMessageReceived, this, &cPCBServer::executeCommandProto);
 }
 
 
-void cPCBServer::executeCommand(std::shared_ptr<google::protobuf::Message> cmd)
+void cPCBServer::executeCommandProto(std::shared_ptr<google::protobuf::Message> cmd)
 {
     cSCPIObject* scpiObject;
     XiQNetPeer* peer = qobject_cast<XiQNetPeer*>(sender());
@@ -379,7 +378,7 @@ void cPCBServer::establishNewNotifier(NotificationString *notifier)
         cNotificationData notData = notifierRegisterNext.takeFirst(); // we pick the notification data
         notData.notString = notifier;
         notifierRegisterList.append(notData); //
-        connect(notifier, SIGNAL(valueChanged()), this, SLOT(asyncHandler()));
+        connect(notifier, &NotificationString::valueChanged, this, &cPCBServer::asyncHandler);
     }
 }
 
@@ -442,7 +441,7 @@ void cPCBServer::initSCPIConnections()
     {
         scpiConnectionList.at(i)->initSCPIConnection(""); // we have our interface
         connect(scpiConnectionList.at(i), &ScpiConnection::strNotifier, this, &cPCBServer::establishNewNotifier);
-        connect(scpiConnectionList.at(i), SIGNAL(cmdExecutionDone(cProtonetCommand*)), this, SLOT(sendAnswer(cProtonetCommand*)));
+        connect(scpiConnectionList.at(i), &ScpiConnection::cmdExecutionDone, this, &cPCBServer::sendAnswerProto);
     }
 }
 

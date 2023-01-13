@@ -649,43 +649,43 @@ void cClamp::addSystAdjInterfaceChannel(QString channelName)
     cmdParent = QString("SYSTEM:CLAMP:%1").arg(channelName);
     delegate = new cSCPIDelegate(cmdParent, "SERIALNUMBER", SCPI::isQuery | SCPI::isCmdwP, m_pSCPIInterface, clamp::cmdSerial);
     m_DelegateList.append(delegate);
-    connect(delegate, SIGNAL(execute(int, cProtonetCommand*)), this, SLOT(executeCommand(int, cProtonetCommand*)));
+    connect(delegate, &cSCPIDelegate::execute, this, &cClamp::executeCommand);
     delegate = new cSCPIDelegate(cmdParent, "VERSION", SCPI::isQuery | SCPI::isCmdwP, m_pSCPIInterface, clamp::cmdVersion);
     m_DelegateList.append(delegate);
-    connect(delegate, SIGNAL(execute(int, cProtonetCommand*)), this, SLOT(executeCommand(int, cProtonetCommand*)));
+    connect(delegate, &cSCPIDelegate::execute, this, &cClamp::executeCommand);
     delegate = new cSCPIDelegate(cmdParent, "TYPE",SCPI::isQuery | SCPI::isCmdwP, m_pSCPIInterface, clamp::cmdType);
     m_DelegateList.append(delegate);
-    connect(delegate, SIGNAL(execute(int, cProtonetCommand*)), this, SLOT(executeCommand(int, cProtonetCommand*)));
+    connect(delegate, &cSCPIDelegate::execute, this, &cClamp::executeCommand);
     delegate = new cSCPIDelegate(cmdParent, "NAME",SCPI::isQuery, m_pSCPIInterface, clamp::cmdName );
     m_DelegateList.append(delegate);
-    connect(delegate, SIGNAL(execute(int, cProtonetCommand*)), this, SLOT(executeCommand(int, cProtonetCommand*)));
+    connect(delegate, &cSCPIDelegate::execute, this, &cClamp::executeCommand);
 
     cmdParent = QString("SYSTEM:ADJUSTMENT:CLAMP:%1:FLASH").arg(channelName);
     delegate = new cSCPIDelegate(cmdParent,"WRITE", SCPI::isCmd, m_pSCPIInterface, clamp::cmdFlashWrite);
     m_DelegateList.append(delegate);
-    connect(delegate, SIGNAL(execute(int, cProtonetCommand*)), this, SLOT(executeCommand(int, cProtonetCommand*)));
+    connect(delegate, &cSCPIDelegate::execute, this, &cClamp::executeCommand);
     delegate = new cSCPIDelegate(cmdParent,"READ", SCPI::isCmd, m_pSCPIInterface, clamp::cmdFlashRead);
     m_DelegateList.append(delegate);
-    connect(delegate, SIGNAL(execute(int, cProtonetCommand*)), this, SLOT(executeCommand(int, cProtonetCommand*)));
+    connect(delegate, &cSCPIDelegate::execute, this, &cClamp::executeCommand);
     delegate = new cSCPIDelegate(cmdParent,"CHKSUM", SCPI::isQuery, m_pSCPIInterface, clamp::cmdChksum);
     m_DelegateList.append(delegate);
-    connect(delegate, SIGNAL(execute(int, cProtonetCommand*)), this, SLOT(executeCommand(int, cProtonetCommand*)));
+    connect(delegate, &cSCPIDelegate::execute, this, &cClamp::executeCommand);
     delegate = new cSCPIDelegate(cmdParent,"RESET", SCPI::isCmd, m_pSCPIInterface, clamp::cmdFlashReset);
     m_DelegateList.append(delegate);
-    connect(delegate, SIGNAL(execute(int, cProtonetCommand*)), this, SLOT(executeCommand(int, cProtonetCommand*)));
+    connect(delegate, &cSCPIDelegate::execute, this, &cClamp::executeCommand);
 
     cmdParent = QString("SYSTEM:ADJUSTMENT:CLAMP:%1:XML").arg(channelName);
     delegate = new cSCPIDelegate(cmdParent,"WRITE", SCPI::isCmd, m_pSCPIInterface, clamp::cmdXMLWrite);
     m_DelegateList.append(delegate);
-    connect(delegate, SIGNAL(execute(int, cProtonetCommand*)), this, SLOT(executeCommand(int, cProtonetCommand*)));
+    connect(delegate, &cSCPIDelegate::execute, this, &cClamp::executeCommand);
     delegate = new cSCPIDelegate(cmdParent,"READ", SCPI::isCmd, m_pSCPIInterface, clamp::cmdXMLRead);
     m_DelegateList.append(delegate);
-    connect(delegate, SIGNAL(execute(int, cProtonetCommand*)), this, SLOT(executeCommand(int, cProtonetCommand*)));
+    connect(delegate, &cSCPIDelegate::execute, this, &cClamp::executeCommand);
 
     cmdParent = QString("STATUS:CLAMP:%1").arg(channelName);
     delegate = new cSCPIDelegate(cmdParent, "ADJUSTMENT", SCPI::isQuery, m_pSCPIInterface, clamp::cmdStatAdjustment);
     m_DelegateList.append(delegate);
-    connect(delegate, SIGNAL(execute(int, cProtonetCommand*)), this, SLOT(executeCommand(int, cProtonetCommand*)));
+    connect(delegate, &cSCPIDelegate::execute, this, &cClamp::executeCommand);
 }
 
 cSenseRange* cClamp::getRange(QString name)

@@ -839,7 +839,7 @@ void cZDSP1Server::doSetupServer()
     {
         m_pSCPIServer = new QTcpServer(this);
         m_pSCPIServer->setMaxPendingConnections(1); // we only accept 1 client to connect
-        connect(m_pSCPIServer, SIGNAL(newConnection()), this, SLOT(setSCPIConnection()));
+        connect(m_pSCPIServer, &QTcpServer::newConnection, this, &cZDSP1Server::setSCPIConnection);
         m_pSCPIServer->listen(QHostAddress::AnyIPv4, m_pETHSettings->getPort(scpiserver));
     }
 
@@ -2268,7 +2268,7 @@ cZDSP1Client* cZDSP1Server::GetClient(XiQNetPeer *peer)
 
 void cZDSP1Server::establishNewConnection(XiQNetPeer *newClient)
 {
-    connect(newClient, &XiQNetPeer::sigMessageReceived, this, &cZDSP1Server::executeCommand);
+    connect(newClient, &XiQNetPeer::sigMessageReceived, this, &cZDSP1Server::executeCommandProto);
     connect(newClient, SIGNAL(sigConnectionClosed()), this, SLOT(deleteConnection()));
     AddClient(newClient); // we additionally add the client to our list
 }
@@ -2281,7 +2281,7 @@ void cZDSP1Server::deleteConnection()
 }
 
 
-void cZDSP1Server::executeCommand(std::shared_ptr<google::protobuf::Message> cmd)
+void cZDSP1Server::executeCommandProto(std::shared_ptr<google::protobuf::Message> cmd)
 {
     QString m_sInput, m_sOutput;
     std::shared_ptr<ProtobufMessage::NetMessage> protobufCommand = nullptr;

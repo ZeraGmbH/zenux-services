@@ -51,10 +51,10 @@ void cSourceInterface::initSCPIConnection(QString leadingNodes)
 
     delegate = new cSCPIDelegate(QString("%1SOURCE").arg(leadingNodes),"VERSION",SCPI::isQuery,m_pSCPIInterface, SourceSystem::cmdVersion);
     m_DelegateList.append(delegate);
-    connect(delegate, SIGNAL(execute(int, cProtonetCommand*)), this, SLOT(executeCommand(int, cProtonetCommand*)));
+    connect(delegate, &cSCPIDelegate::execute, this, &cSourceInterface::executeCommand);
     delegate = new cSCPIDelegate(QString("%1SOURCE:CHANNEL").arg(leadingNodes),"CATALOG", SCPI::isQuery, m_pSCPIInterface, SourceSystem::cmdChannelCat);
     m_DelegateList.append(delegate);
-    connect(delegate, SIGNAL(execute(int, cProtonetCommand*)), this, SLOT(executeCommand(int, cProtonetCommand*)));
+    connect(delegate, &cSCPIDelegate::execute, this, &cSourceInterface::executeCommand);
 
     for (int i = 0; i < m_ChannelList.count(); i++)
     {

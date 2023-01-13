@@ -37,10 +37,10 @@ void cSCHeadInterface::initSCPIConnection(QString leadingNodes)
     cSCPIDelegate* delegate;
     delegate = new cSCPIDelegate(QString("%1SCHEAD").arg(leadingNodes),"VERSION",SCPI::isQuery, m_pSCPIInterface, SCHeadSystem::cmdVersion);
     m_DelegateList.append(delegate);
-    connect(delegate, SIGNAL(execute(int, cProtonetCommand*)), this, SLOT(executeCommand(int, cProtonetCommand*)));
+    connect(delegate, &cSCPIDelegate::execute, this, &cSCHeadInterface::executeCommand);
     delegate = new cSCPIDelegate(QString("%1SCHEAD:CHANNEL").arg(leadingNodes),"CATALOG", SCPI::isQuery, m_pSCPIInterface, SCHeadSystem::cmdChannelCat);
     m_DelegateList.append(delegate);
-    connect(delegate, SIGNAL(execute(int, cProtonetCommand*)), this, SLOT(executeCommand(int, cProtonetCommand*)));
+    connect(delegate, &cSCPIDelegate::execute, this, &cSCHeadInterface::executeCommand);
     for(auto channel : m_ChannelList) {
         connect(channel, &ScpiConnection::strNotifier, this, &ScpiConnection::strNotifier);
         connect(channel, SIGNAL(cmdExecutionDone(cProtonetCommand*)), this, SIGNAL(cmdExecutionDone(cProtonetCommand*)));

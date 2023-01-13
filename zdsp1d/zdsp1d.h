@@ -242,9 +242,9 @@ private:
 private slots:
     virtual void establishNewConnection(XiQNetPeer* newClient);
     virtual void deleteConnection();
-    virtual void executeCommand(std::shared_ptr<google::protobuf::Message> cmd);
+    void executeCommandProto(std::shared_ptr<google::protobuf::Message> cmd);
 
-    virtual void setSCPIConnection();
+    void setSCPIConnection();
     virtual void SCPIInput();
     virtual void SCPIdisconnect();
 

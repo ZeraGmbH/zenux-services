@@ -38,10 +38,10 @@ void cHKeyInterface::initSCPIConnection(QString leadingNodes)
 
     delegate = new cSCPIDelegate(QString("%1HKEY").arg(leadingNodes),"VERSION",SCPI::isQuery, m_pSCPIInterface, HKeySystem::cmdVersion);
     m_DelegateList.append(delegate);
-    connect(delegate, SIGNAL(execute(int, cProtonetCommand*)), this, SLOT(executeCommand(int, cProtonetCommand*)));
+    connect(delegate, &cSCPIDelegate::execute, this, &cHKeyInterface::executeCommand);
     delegate = new cSCPIDelegate(QString("%1HKEY:CHANNEL").arg(leadingNodes),"CATALOG", SCPI::isQuery, m_pSCPIInterface, HKeySystem::cmdChannelCat);
     m_DelegateList.append(delegate);
-    connect(delegate, SIGNAL(execute(int, cProtonetCommand*)), this, SLOT(executeCommand(int, cProtonetCommand*)));
+    connect(delegate, &cSCPIDelegate::execute, this, &cHKeyInterface::executeCommand);
     for(auto channel : m_ChannelList) {
         connect(channel, &ScpiConnection::strNotifier, this, &ScpiConnection::strNotifier);
         connect(channel, SIGNAL(cmdExecutionDone(cProtonetCommand*)), this, SIGNAL(cmdExecutionDone(cProtonetCommand*)));
