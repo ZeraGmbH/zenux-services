@@ -1,15 +1,12 @@
 #ifndef ECALCCHANNEL_H
 #define ECALCCHANNEL_H
 
-
+#include "scpiconnection.h"
+#include "ecalcsettings.h"
+#include "notificationvalue.h"
 #include <QObject>
 #include <QList>
 #include <QByteArray>
-
-#include <scpiconnection.h>
-#include "ecalcsettings.h"
-#include <notificationvalue.h>
-
 
 #define baseChnName "ec"
 

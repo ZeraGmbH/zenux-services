@@ -3,9 +3,9 @@
 
 #include <scpi.h>
 #include <scpicommand.h>
-#include <scpiconnection.h>
+#include "scpiconnection.h"
 #include "hkeychannel.h"
-#include <protonetcommand.h>
+#include "protonetcommand.h"
 #include "settings/hkeysettings.h"
 
 

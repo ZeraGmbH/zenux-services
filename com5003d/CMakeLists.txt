@@ -49,7 +49,6 @@ set(HEADER
     settings/scheadsettings.h
     settings/sensesettings.h
     settings/sourcesettings.h
-    zeraglobal.h
     com5003d.h
     com5003justdata.h
     hkeychannel.h

@@ -1,11 +1,10 @@
 #ifndef FRQINPUTSETTINGS_H
 #define FRQINPUTSETTINGS_H
 
+#include <xmlsettings.h>
 #include <QObject>
 #include <QList>
 #include <QString>
-#include <xmlconfigreader.h>
-#include <xmlsettings.h>
 
 namespace FRQInputSystem
 {

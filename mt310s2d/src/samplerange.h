@@ -1,7 +1,7 @@
 #ifndef SAMPLERANGE_H
 #define SAMPLERANGE_H
 
-#include <scpiconnection.h>
+#include "scpiconnection.h"
 #include <scpi.h>
 #include <QString>
 

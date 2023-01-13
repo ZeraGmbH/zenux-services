@@ -1,14 +1,13 @@
 #ifndef ECALCINTERFACE_H
 #define ECALCINTERFACE_H
 
+#include "resource.h"
+#include "scpiconnection.h"
+#include "ecalcchannel.h"
+#include "notificationvalue.h"
 #include <QObject>
 #include <QList>
 #include <QHash>
-
-#include "resource.h"
-#include <scpiconnection.h>
-#include "ecalcchannel.h"
-#include <notificationvalue.h>
 
 namespace ECalcSystem
 {

@@ -1,10 +1,9 @@
 #ifndef NOTIFICATIONDATA_H
 #define NOTIFICATIONDATA_H
 
+#include "notificationvalue.h"
 #include <QByteArray>
 #include <xiqnetpeer.h>
-
-#include <notificationvalue.h>
 
 struct cNotificationData
 {

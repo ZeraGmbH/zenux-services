@@ -13,9 +13,7 @@ set(SOURCES
     )
 
 set(HEADER
-    zeraglobal.h
     sec1000d.h
-    sec1000dscpi.h
     pcbserver.h
     sec1000dglobal.h
     ethsettings.h

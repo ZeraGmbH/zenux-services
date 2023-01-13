@@ -2,7 +2,6 @@
 #define SCHEADSETTINGS_H
 
 #include <xmlsettings.h>
-#include <xmlconfigreader.h>
 #include <QString>
 
 namespace SCHeadSystem

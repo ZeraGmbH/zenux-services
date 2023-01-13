@@ -1,10 +1,7 @@
-// header datei mt310s2justdata.h
-
 #ifndef MT310S2JUSTDATA_H
 #define MT310S2JUSTDATA_H
 
-#include <QObject>
-#include <scpiconnection.h>
+#include "scpiconnection.h"
 
 enum DirectJustCommands
 {

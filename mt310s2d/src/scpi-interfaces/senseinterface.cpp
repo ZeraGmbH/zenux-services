@@ -8,8 +8,8 @@
 #include "senserange.h"
 #include "systeminfo.h"
 #include "adjflash.h"
-#include <protonetcommand.h>
-#include <scpiconnection.h>
+#include "protonetcommand.h"
+#include "scpiconnection.h"
 #include "resource.h"
 #include "micro-controller-io/atmel.h"
 #include "settings/i2csettings.h"

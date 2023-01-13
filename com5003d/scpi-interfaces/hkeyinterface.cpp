@@ -1,9 +1,9 @@
 #include "hkeyinterface.h"
-#include <scpiconnection.h>
+#include "scpiconnection.h"
 #include "resource.h"
 #include "com5003d.h"
 #include "hkeychannel.h"
-#include <protonetcommand.h>
+#include "protonetcommand.h"
 #include "settings/hkeysettings.h"
 #include <xmlsettings.h>
 #include <scpi.h>

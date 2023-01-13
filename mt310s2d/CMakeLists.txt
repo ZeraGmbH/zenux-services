@@ -63,8 +63,6 @@ set(HEADER
     src/settings/scheadsettings.h
     src/settings/sensesettings.h
     src/settings/sourcesettings.h
-    src/zeraglobal.h
-    src/mt310s2dscpi.h
     src/pcbserver.h
     src/samplerange.h
     src/senserange.h

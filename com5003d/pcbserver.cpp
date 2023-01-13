@@ -15,9 +15,9 @@
 #include <netmessages.pb.h>
 #include <QtDebug>
 #include <scpisingletonfactory.h>
-#include <protonetcommand.h>
+#include "protonetcommand.h"
 #include "resource.h"
-#include <scpiconnection.h>
+#include "scpiconnection.h"
 #include "pcbserver.h"
 #include "com5003dglobal.h"
 #include "settings/ethsettings.h"

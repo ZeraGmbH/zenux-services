@@ -7,16 +7,15 @@
 #ifndef PCBSERVER_H
 #define PCBSERVER_H
 
+#include "sec1000dglobal.h"
+#include "scpiconnection.h"
+#include "notificationvalue.h"
+#include "notificationdata.h"
 #include "notzeronumgen.h"
 #include <QObject>
 #include <QList>
 #include <xiqnetwrapper.h>
 #include <scpisingletonfactory.h>
-
-#include "sec1000dglobal.h"
-#include <scpiconnection.h>
-#include <notificationvalue.h>
-#include "notificationdata.h"
 
 class QTcpSocket;
 class QByteArray;

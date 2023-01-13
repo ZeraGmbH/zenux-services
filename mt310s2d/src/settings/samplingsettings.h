@@ -1,8 +1,8 @@
 #ifndef SAMPLINGSETTINGS_H
 #define SAMPLINGSETTINGS_H
 
-#include <QList>
 #include <xmlsettings.h>
+#include <QList>
 
 namespace SamplingSystem
 {

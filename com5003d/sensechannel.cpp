@@ -4,9 +4,9 @@
 #include <scpi.h>
 #include <scpicommand.h>
 #include "senserange.h"
-#include <scpiconnection.h>
+#include "scpiconnection.h"
 #include "sensechannel.h"
-#include <protonetcommand.h>
+#include "protonetcommand.h"
 #include "micro-controller-io/atmel.h"
 #include "settings/sensesettings.h"
 

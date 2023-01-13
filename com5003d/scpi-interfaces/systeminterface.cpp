@@ -3,10 +3,10 @@
 
 #include "com5003d.h"
 #include "adjustment.h"
-#include <scpidelegate.h>
+#include "scpidelegate.h"
 #include "systeminfo.h"
 #include "systeminterface.h"
-#include <protonetcommand.h>
+#include "protonetcommand.h"
 #include "micro-controller-io/atmel.h"
 
 extern cATMEL* pAtmel;

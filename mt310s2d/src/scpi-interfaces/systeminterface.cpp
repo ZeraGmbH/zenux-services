@@ -1,10 +1,10 @@
 #include "mt310s2d.h"
 #include "adjustment.h"
-#include <scpidelegate.h>
+#include "scpidelegate.h"
 #include "systeminfo.h"
 #include "systeminterface.h"
 #include "senseinterface.h"
-#include <protonetcommand.h>
+#include "protonetcommand.h"
 #include "micro-controller-io/atmel.h"
 #include <scpi.h>
 #include <scpicommand.h>

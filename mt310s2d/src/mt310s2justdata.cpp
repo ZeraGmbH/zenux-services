@@ -1,6 +1,6 @@
-#include <protonetcommand.h>
+#include "protonetcommand.h"
 #include "justdata.h"
-#include <scpidelegate.h>
+#include "scpidelegate.h"
 #include "mt310s2justdata.h"
 #include "micro-controller-io/atmel.h"
 #include <qdatastream.h>

@@ -2,7 +2,6 @@
 #define CTRLSETTINGS
 
 #include <xmlsettings.h>
-#include <xmlconfigreader.h>
 #include <QString>
 
 namespace CTRLSettings

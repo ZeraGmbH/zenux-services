@@ -2,7 +2,6 @@
 #define ETHSETTINGS_H
 
 #include <xmlsettings.h>
-#include <xmlconfigreader.h>
 
 enum ethmember
 {

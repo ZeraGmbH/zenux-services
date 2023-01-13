@@ -1,5 +1,5 @@
 #include "ecalcinterface.h"
-#include <scpiconnection.h>
+#include "scpiconnection.h"
 #include "sec1000d.h"
 #include "protonetcommand.h"
 #include <scpi.h>

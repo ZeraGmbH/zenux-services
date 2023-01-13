@@ -1,8 +1,6 @@
 #ifndef CLAMPJUSTDATA
 #define CLAMPJUSTDATA
 
-#include <QObject>
-
 #include "mt310s2justdata.h"
 #include "senserange.h"
 

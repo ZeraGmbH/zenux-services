@@ -1,13 +1,10 @@
 #ifndef STATUSINTERFACE_H
 #define STATUSINTERFACE_H
 
+#include "mt310s2d.h"
+#include "scpiconnection.h"
 #include <QObject>
 #include <QList>
-#include <scpi.h>
-
-#include "mt310s2d.h"
-#include <scpiconnection.h>
-#include <scpidelegate.h>
 
 namespace StatusSystem
 {

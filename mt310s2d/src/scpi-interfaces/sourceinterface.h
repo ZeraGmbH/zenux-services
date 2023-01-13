@@ -1,12 +1,9 @@
 #ifndef SOURCEINTERFACE_H
 #define SOURCEINTERFACE_H
 
-
-#include <QObject>
-#include <QList>
-
 #include "fpzchannel.h"
 #include "resource.h"
+#include <QList>
 
 namespace SourceSystem
 {

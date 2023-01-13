@@ -4,7 +4,7 @@
 #include <QObject>
 #include <scpi.h>
 
-#include <scpiconnection.h>
+#include "scpiconnection.h"
 #include "mt310s2justdata.h"
 
 namespace SenseRange

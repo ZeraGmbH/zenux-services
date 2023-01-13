@@ -3,7 +3,7 @@
 
 #include "adjflash.h"
 #include "adjxml.h"
-#include "scpi-interfaces/senseinterface.h"
+#include "senseinterface.h"
 #include <QList>
 #include <QDateTime>
 #include <QDomElement>

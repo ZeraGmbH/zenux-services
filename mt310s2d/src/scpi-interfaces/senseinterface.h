@@ -5,7 +5,7 @@
 #include "adjflash.h"
 #include "adjxml.h"
 #include "resource.h"
-#include <scpiconnection.h>
+#include "scpiconnection.h"
 #include "sensechannel.h"
 #include "systeminfo.h"
 #include <QList>

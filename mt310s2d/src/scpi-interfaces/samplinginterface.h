@@ -2,7 +2,7 @@
 #define SAMPLINGINTERFACE_H
 
 #include "mt310s2d.h"
-#include <scpiconnection.h>
+#include "scpiconnection.h"
 #include "samplerange.h"
 #include "resource.h"
 #include <QList>

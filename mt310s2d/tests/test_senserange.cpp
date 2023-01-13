@@ -2,7 +2,7 @@
 #include "senserange.h"
 #include "senseinterface.h"
 
-#include <protonetcommand.h>
+#include "protonetcommand.h"
 #include <scpi.h>
 
 
