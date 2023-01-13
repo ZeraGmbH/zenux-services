@@ -240,75 +240,50 @@ void cPCBServer::establishNewConnection(XiQNetPeer *newClient)
 
 void cPCBServer::executeCommand(std::shared_ptr<google::protobuf::Message> cmd)
 {
-    std::shared_ptr<ProtobufMessage::NetMessage> protobufCommand = nullptr;
     cSCPIObject* scpiObject;
-
-    //XiQNetPeer* client = qobject_cast<XiQNetPeer*>(sender());
-
     XiQNetPeer* peer = qobject_cast<XiQNetPeer*>(sender());
-    protobufCommand = std::static_pointer_cast<ProtobufMessage::NetMessage>(cmd);
-    if ( (protobufCommand != nullptr) && (peer != nullptr))
-    {
-        if (protobufCommand->has_clientid())
-        {
+    std::shared_ptr<ProtobufMessage::NetMessage> protobufCommand = std::static_pointer_cast<ProtobufMessage::NetMessage>(cmd);
+    if ( (protobufCommand != nullptr) && (peer != nullptr)) {
+        if (protobufCommand->has_clientid()) {
             QByteArray clientId = QByteArray(protobufCommand->clientid().data(), protobufCommand->clientid().size());
-
-            if (protobufCommand->has_netcommand())
-            {
+            if (protobufCommand->has_netcommand()) {
                 // in case of "lost" clients we delete registration for notification
                 doUnregisterNotifier(peer, clientId);
             }
-
-            else
-
-            if (protobufCommand->has_messagenr())
-            {
+            else if (protobufCommand->has_messagenr()) {
                 quint32 messageNr = protobufCommand->messagenr();
                 ProtobufMessage::NetMessage::ScpiCommand scpiCmd = protobufCommand->scpi();
                 m_sInput = QString::fromStdString(scpiCmd.command()) +  " " + QString::fromStdString(scpiCmd.parameter());
-
                 cProtonetCommand* protoCmd;
-                if ( (scpiObject =  m_pSCPIInterface->getSCPIObject(m_sInput)) != 0)
-                {
+                if ( (scpiObject =  m_pSCPIInterface->getSCPIObject(m_sInput)) != 0) {
                     protoCmd = new cProtonetCommand(peer, true, true, clientId, messageNr, m_sInput, scpiObject->getType());
                     cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
-                    if (!scpiDelegate->executeSCPI(protoCmd))
-                    {
+                    if (!scpiDelegate->executeSCPI(protoCmd)) {
                         protoCmd->m_sOutput = SCPI::scpiAnswer[SCPI::nak];
                         emit cmdExecutionDone(protoCmd);
                     }
                 }
-                else
-                {
-                    protoCmd = new cProtonetCommand(peer, true, true, clientId, messageNr, m_sInput, 0);
+                else {
+                    protoCmd = new cProtonetCommand(peer, true, true, clientId, messageNr, m_sInput);
                     protoCmd->m_sOutput = SCPI::scpiAnswer[SCPI::nak];
                     emit cmdExecutionDone(protoCmd);
                 }
-
                 // we get a signal when a command is finished and send answer then
             }
         }
-
-        else
-
-        {
+        else {
             m_sInput =  QString::fromStdString(protobufCommand->scpi().command());
             QByteArray clientId = QByteArray(); // we set an empty byte array
             cProtonetCommand* protoCmd;
-            if ( (scpiObject =  m_pSCPIInterface->getSCPIObject(m_sInput)) != 0)
-            {
+            if ( (scpiObject =  m_pSCPIInterface->getSCPIObject(m_sInput)) != 0) {
                 protoCmd = new cProtonetCommand(peer, false, true, clientId, 0, m_sInput, scpiObject->getType());
                 cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
-
-                if (!scpiDelegate->executeSCPI(protoCmd))
-                {
+                if (!scpiDelegate->executeSCPI(protoCmd)) {
                     protoCmd->m_sOutput = SCPI::scpiAnswer[SCPI::nak]+";";
                     emit cmdExecutionDone(protoCmd);
                 }
-
             }
-            else
-            {
+            else {
                 protoCmd = new cProtonetCommand(peer, false, true, clientId, 0, m_sInput, 0);
                 protoCmd->m_sOutput = SCPI::scpiAnswer[SCPI::nak]+";";
                 emit cmdExecutionDone(protoCmd);
