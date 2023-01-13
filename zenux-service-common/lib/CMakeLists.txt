@@ -3,6 +3,7 @@ file(GLOB HEADERS
     ${CMAKE_CURRENT_SOURCE_DIR}/meas-channels/*.h
     ${CMAKE_CURRENT_SOURCE_DIR}/micro-controller-io/*.h
     ${CMAKE_CURRENT_SOURCE_DIR}/resources/*.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/scpi-protobuf/*.h
     ${CMAKE_CURRENT_SOURCE_DIR}/settings/*.h
     )
 
@@ -11,6 +12,7 @@ file(GLOB SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/meas-channels/*.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/micro-controller-io/*.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/resources/*.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/scpi-protobuf/*.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/settings/*.cpp
     )
 
@@ -40,6 +42,7 @@ target_include_directories(zenuxservicecommon
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/meas-channels>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/micro-controller-io>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/resources>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/scpi-protobuf>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/settings>
     )
 
