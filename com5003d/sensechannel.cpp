@@ -14,7 +14,7 @@ extern cATMEL* pAtmel;
 
 
 cSenseChannel::cSenseChannel(cSCPI *scpiinterface, QString description, QString unit, SenseSystem::cChannelSettings *cSettings, quint8 nr) :
-    cSCPIConnection(scpiinterface),
+    ScpiConnection(scpiinterface),
     m_sDescription(description), m_sUnit(unit)
 {
     m_sName = QString("m%1").arg(nr);

@@ -12,7 +12,7 @@
 extern cATMEL* pAtmel;
 
 cCOM5003JustData::cCOM5003JustData(cSCPI *scpiinterface) :
-    cSCPIConnection(scpiinterface)
+    ScpiConnection(scpiinterface)
 {
     bool(*checkPermission)(bool &enable) = [] (bool &enable) {
         return pAtmel->getEEPROMAccessEnable(enable) == ZeraMcontrollerBase::cmddone;
@@ -81,7 +81,7 @@ void cCOM5003JustData::executeCommand(int cmdCode, cProtonetCommand *protoCmd)
     {
     case com5003Gain:
     case com5003JustGain:
-        protoCmd->m_sOutput = mReadGainCorrection(protoCmd->m_sInput);
+        protoCmd->m_sOutput = scpiGetGainCorrection(protoCmd->m_sInput);
         break;
     case com5003Phase:
     case com5003JustPhase:
@@ -107,10 +107,10 @@ void cCOM5003JustData::executeCommand(int cmdCode, cProtonetCommand *protoCmd)
 }
 
 
-QString cCOM5003JustData::mReadGainCorrection(QString& sInput)
+QString cCOM5003JustData::scpiGetGainCorrection(const QString &scpiInput)
 {
     bool ok;
-    cSCPICommand cmd = sInput;
+    cSCPICommand cmd = scpiInput;
 
     if (cmd.isQuery(1))
     {

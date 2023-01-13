@@ -20,7 +20,7 @@ namespace FRQInputSystem
     class cChannelSettings;
 }
 
-class cFPZInChannel : public cSCPIConnection
+class cFPZInChannel : public ScpiConnection
 {
     Q_OBJECT
 

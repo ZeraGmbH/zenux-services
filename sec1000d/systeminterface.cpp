@@ -10,7 +10,7 @@
 
 
 cSystemInterface::cSystemInterface(cSEC1000dServer *server, cSystemInfo *sInfo) :
-    cSCPIConnection(ScpiSingletonFactory::getScpiObj(ServerName)),
+    ScpiConnection(ScpiSingletonFactory::getScpiObj(ServerName)),
     m_pMyServer(server),
     m_pSystemInfo(sInfo)
 {

@@ -2,7 +2,7 @@
 #include "emobinterface.h"
 
 EmobInterface::EmobInterface(cI2CSettings *i2cSettings, cSCPI *pSCPIInterface) :
-    cSCPIConnection(pSCPIInterface),
+    ScpiConnection(pSCPIInterface),
     m_i2cSettings(i2cSettings),
     m_notifierChannelList(";")
 {

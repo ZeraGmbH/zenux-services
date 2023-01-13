@@ -66,7 +66,7 @@ void cECalculatorInterface::initSCPIConnection(QString leadingNodes)
     for (int i = 0; i < n; i++)
     {
         // we also must connect the signals for notification and for output
-        connect(m_ECalculatorChannelList.at(i), &cSCPIConnection::valNotifier, this, &cSCPIConnection::valNotifier);
+        connect(m_ECalculatorChannelList.at(i), &ScpiConnection::valNotifier, this, &ScpiConnection::valNotifier);
         connect(m_ECalculatorChannelList.at(i), SIGNAL(cmdExecutionDone(cProtonetCommand*)), this, SIGNAL(cmdExecutionDone(cProtonetCommand*)));
 
         m_ECalculatorChannelList.at(i)->initSCPIConnection(QString("%1ECALCULATOR").arg(leadingNodes));

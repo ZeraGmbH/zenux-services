@@ -166,7 +166,7 @@ void cSenseInterface::initSCPIConnection(QString leadingNodes)
     connect(delegate, SIGNAL(execute(int, cProtonetCommand*)), this, SLOT(executeCommand(int, cProtonetCommand*)));
     for(auto channel : m_ChannelList) {
         // we also must connect the signals for notification and for output
-        connect(channel, &cSCPIConnection::strNotifier, this, &cSCPIConnection::strNotifier);
+        connect(channel, &ScpiConnection::strNotifier, this, &ScpiConnection::strNotifier);
         connect(channel, SIGNAL(cmdExecutionDone(cProtonetCommand*)), this, SIGNAL(cmdExecutionDone(cProtonetCommand*)));
         channel->initSCPIConnection(QString("%1SENSE").arg(leadingNodes));
     }

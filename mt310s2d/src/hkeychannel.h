@@ -14,7 +14,7 @@ namespace HKEYChannel
     };
 }
 
-class cHKeyChannel : public cSCPIConnection
+class cHKeyChannel : public ScpiConnection
 {
     Q_OBJECT
 public:

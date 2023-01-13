@@ -24,7 +24,7 @@ enum StatusCommands
 class cAdjustment;
 
 
-class cStatusInterface: public cSCPIConnection
+class cStatusInterface: public ScpiConnection
 {
     Q_OBJECT
 

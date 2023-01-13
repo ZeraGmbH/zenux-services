@@ -29,7 +29,7 @@ class QDataStream;
 class cJustData;
 
 
-class cMT310S2JustData: public cSCPIConnection  // alle korrekturdaten für einen bereich + status
+class cMT310S2JustData: public ScpiConnection  // alle korrekturdaten für einen bereich + status
 {
     Q_OBJECT
 
@@ -52,7 +52,7 @@ protected slots:
     virtual void executeCommand(int cmdCode, cProtonetCommand* protoCmd) override;
 
 protected:
-    QString mReadGainCorrection(QString&sInput);
+    QString scpiGetGainCorrection(const QString &scpiInput);
     QString mReadJustGainCorrection(QString&sInput);
     QString mReadPhaseCorrection(QString&sInput);
     QString mReadJustPhaseCorrection(QString&sInput);

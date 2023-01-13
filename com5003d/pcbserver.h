@@ -83,7 +83,7 @@ class cSourceSettings;
   */
 
 
-class cPCBServer: public cSCPIConnection
+class cPCBServer: public ScpiConnection
 {
     Q_OBJECT
 
@@ -125,7 +125,7 @@ protected:
     XiQNetWrapper m_ProtobufWrapper;
     Zera::XMLConfig::cReader* myXMLConfigReader; // the xml configurator
     QString m_sConfigurationPath;
-    QList<cSCPIConnection*> scpiConnectionList; // a list of all scpi connections
+    QList<ScpiConnection*> scpiConnectionList; // a list of all scpi connections
     QList<cResource*> resourceList;
     QTcpServer* m_pSCPIServer;
     QTcpSocket* m_pSCPISocket;

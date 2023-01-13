@@ -5,7 +5,7 @@
 
 
 cResource::cResource(cSCPI *scpiInterface) :
-    cSCPIConnection(scpiInterface)
+    ScpiConnection(scpiInterface)
 {
 }
 

@@ -6,7 +6,7 @@
 #include <QList>
 
 // pure virtual base class for resources to register themselves anywhere
-class cResource: public cSCPIConnection
+class cResource: public ScpiConnection
 {
     Q_OBJECT
 public:

@@ -10,7 +10,7 @@ enum SampleRangeCommands
     SampleRangeSamples
 };
 
-class cSampleRange: public cSCPIConnection
+class cSampleRange: public ScpiConnection
 {
     Q_OBJECT
 public:

@@ -5,7 +5,7 @@
 #include <protonetcommand.h>
 
 cSampleRange::cSampleRange(cSCPI *scpiinterface, QString name, quint16 srate, quint8 selcode) :
-    cSCPIConnection(scpiinterface),
+    ScpiConnection(scpiinterface),
     m_sName(name),
     m_nSRate(srate),
     m_nSelCode(selcode)

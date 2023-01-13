@@ -10,7 +10,7 @@
 #include <scpicommand.h>
 
 cSystemInterface::cSystemInterface(cMT310S2dServer *server) :
-    cSCPIConnection(server->getSCPIInterface()),
+    ScpiConnection(server->getSCPIInterface()),
     m_pMyServer(server)
 {
 }

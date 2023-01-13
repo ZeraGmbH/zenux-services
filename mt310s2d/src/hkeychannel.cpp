@@ -4,7 +4,7 @@
 #include <scpicommand.h>
 
 cHKeyChannel::cHKeyChannel(cSCPI *scpiinterface, QString description, quint8 nr, HKeySystem::cChannelSettings *cSettings) :
-    cSCPIConnection(scpiinterface),
+    ScpiConnection(scpiinterface),
     m_sDescription(description)
 {
     m_sName = QString("hk%1").arg(nr);

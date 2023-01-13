@@ -23,7 +23,7 @@ namespace HKeySystem
 
 class cSCPI;
 
-class cHKeyChannel : public cSCPIConnection
+class cHKeyChannel : public ScpiConnection
 {
     Q_OBJECT
 

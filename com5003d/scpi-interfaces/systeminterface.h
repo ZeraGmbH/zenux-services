@@ -31,7 +31,7 @@ enum SystemCommands
 };
 }
 
-class cSystemInterface: public cSCPIConnection
+class cSystemInterface: public ScpiConnection
 {
     Q_OBJECT
 

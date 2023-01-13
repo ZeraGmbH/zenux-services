@@ -6,7 +6,7 @@
 #include <notificationstring.h>
 #include <protonetcommand.h>
 
-class EmobInterface: public cSCPIConnection
+class EmobInterface: public ScpiConnection
 {
 public:
     enum SystemCommands

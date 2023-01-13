@@ -9,7 +9,7 @@
 #include <justnode.h>
 
 cJustData::cJustData(TJustDataParam param) :
-    cSCPIConnection(param.scpiinterface),
+    ScpiConnection(param.scpiinterface),
     m_checkPermission(param.checkPermission),
     m_nOrder(param.order),
     m_digits(param.digits)

@@ -30,7 +30,7 @@ namespace SourceSystem
     class cChannelSettings;
 }
 
-class cFPZChannel : public cSCPIConnection
+class cFPZChannel : public ScpiConnection
 {
     Q_OBJECT
 
