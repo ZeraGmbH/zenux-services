@@ -72,7 +72,7 @@ private:
     QString m_ReadWritePLL(QString& sInput);
     QString m_ReadPLLCatalog(QString& sInput);
 
-    cNotificationString notifierSampleChannelRange;
+    NotificationString notifierSampleChannelRange;
 
     void setNotifierSampleChannelRange();
 

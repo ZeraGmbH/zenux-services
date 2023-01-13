@@ -1,21 +1,21 @@
 #include "notificationvalue.h"
 
-cNotificationValue::cNotificationValue()
+NotificationValue::NotificationValue()
     :m_nValue(0)
 {
 }
 
-cNotificationValue::cNotificationValue(quint32 val)
+NotificationValue::NotificationValue(quint32 val)
     :m_nValue(val)
 {
 }
 
-quint32 cNotificationValue::getValue()
+quint32 NotificationValue::getValue()
 {
     return m_nValue;
 }
 
-void cNotificationValue::setValue(quint32 val)
+void NotificationValue::setValue(quint32 val)
 {
     quint32 edge;
     if ((edge = ((m_nValue ^ val) & val)) > 0)
@@ -23,7 +23,7 @@ void cNotificationValue::setValue(quint32 val)
     m_nValue |= val;
 }
 
-void cNotificationValue::clrValue(quint32 val)
+void NotificationValue::clrValue(quint32 val)
 {
     m_nValue = m_nValue & ~val;
 }

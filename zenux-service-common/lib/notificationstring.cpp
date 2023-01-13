@@ -1,28 +1,28 @@
 #include "notificationstring.h"
 
-cNotificationString::cNotificationString()
+NotificationString::NotificationString()
     :m_sValue("")
 {
 }
 
-cNotificationString::cNotificationString(QString str)
+NotificationString::NotificationString(QString str)
     :m_sValue(str)
 {
 }
 
-QString cNotificationString::getString()
+QString NotificationString::getString()
 {
     return m_sValue;
 }
 
-void cNotificationString::operator =(QString str)
+void NotificationString::operator =(QString str)
 {
     if (m_sValue != str)
         emit valueChanged();
     m_sValue = str;
 }
 
-void cNotificationString::forceTrigger()
+void NotificationString::forceTrigger()
 {
     emit valueChanged();
 }

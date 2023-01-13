@@ -10,7 +10,7 @@ struct cNotificationData
 {
     XiQNetPeer *netPeer;
     QByteArray clientID;
-    cNotificationValue *notValue;
+    NotificationValue *notValue;
 };
 
 #endif // NOTIFICATIONDATA_H

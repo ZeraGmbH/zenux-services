@@ -11,7 +11,7 @@ struct cNotificationData
     XiQNetPeer *netPeer;
     QByteArray clientID;
     quint16 notifier;
-    cNotificationString *notString;
+    NotificationString *notString;
 };
 
 #endif // NOTIFICATIONDATA_H

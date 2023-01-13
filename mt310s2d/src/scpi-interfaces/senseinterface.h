@@ -84,8 +84,8 @@ private:
     QString m_ComputeSenseAdjData(QString& sInput);
     QString handleScpiReadAdjStatus(QString& sInput);
 
-    cNotificationString notifierSenseMMode;
-    cNotificationString notifierSenseChannelCat;
+    NotificationString notifierSenseMMode;
+    NotificationString notifierSenseChannelCat;
 
     void setNotifierSenseMMode();
     void setNotifierSenseChannelCat();

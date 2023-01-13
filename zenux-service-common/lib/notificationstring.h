@@ -4,13 +4,13 @@
 #include <QObject>
 #include <QString>
 
-class cNotificationString: public QObject
+class NotificationString: public QObject
 {
     Q_OBJECT
 
 public:
-    cNotificationString();
-    cNotificationString(QString str);
+    NotificationString();
+    NotificationString(QString str);
     QString getString();
     void operator = (QString str);
     void forceTrigger();

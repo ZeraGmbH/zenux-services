@@ -56,9 +56,9 @@ private:
     double m_fFormFactor;
     bool m_bAvail; // is this channel available ?
 
-    cNotificationString notifierConstant;
-    void initNotifier(cNotificationString& notifier);
-    cNotificationString notifierPowerType;
+    NotificationString notifierConstant;
+    void initNotifier(NotificationString& notifier);
+    NotificationString notifierPowerType;
 
     QString m_ReadAlias(QString& sInput);
     QString m_ReadType(QString& sInput);

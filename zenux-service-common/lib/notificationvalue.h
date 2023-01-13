@@ -4,13 +4,13 @@
 #include <QObject>
 #include <QtGlobal>
 
-class cNotificationValue: public QObject
+class NotificationValue: public QObject
 {
     Q_OBJECT
 
 public:
-    cNotificationValue();
-    cNotificationValue(quint32 val);
+    NotificationValue();
+    NotificationValue(quint32 val);
     quint32 getValue();
     void setValue(quint32 val); // emits no signal
     void clrValue(quint32 val);

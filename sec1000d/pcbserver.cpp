@@ -293,7 +293,7 @@ void cPCBServer::executeCommand(std::shared_ptr<google::protobuf::Message> cmd)
 }
 
 
-void cPCBServer::establishNewNotifier(cNotificationValue *notifier)
+void cPCBServer::establishNewNotifier(NotificationValue *notifier)
 {
     if (notifierRegisterNext.count() > 0) // if we're waiting for notifier
     {
@@ -308,7 +308,7 @@ void cPCBServer::establishNewNotifier(cNotificationValue *notifier)
 
 void cPCBServer::asyncHandler(quint32 irqreg)
 {
-    cNotificationValue* notifier = qobject_cast<cNotificationValue*>(sender());
+    NotificationValue* notifier = qobject_cast<NotificationValue*>(sender());
 
     if (notifierRegisterList.count() > 0)
     {

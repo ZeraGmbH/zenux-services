@@ -39,7 +39,7 @@ private:
 
     cMT310S2dServer *m_pMyServer;
     cSenseInterface *m_pSenseInterface;
-    cNotificationString m_notifierClampChannelList;
+    NotificationString m_notifierClampChannelList;
     quint16 m_nClampStatus;
     QHash<QString, cClamp*> m_clampHash;
     QSet<QString> m_clampSecondarySet;
