@@ -1,18 +1,17 @@
 #ifndef SENSEINTERFACE_H
 #define SENSEINTERFACE_H
 
+#include "adjflash.h"
+#include "adjxml.h"
+#include "resource.h"
+#include "scpiconnection.h"
+#include "sensechannel.h"
+#include "notificationstring.h"
 #include <QObject>
 #include <QList>
 #include <QStateMachine>
 #include <QState>
 #include <QFinalState>
-
-#include "adjflash.h"
-#include "adjxml.h"
-#include "resource.h"
-#include <scpiconnection.h>
-#include "sensechannel.h"
-#include <notificationstring.h>
 
 namespace SenseSystem
 {
@@ -45,9 +44,6 @@ const QString sMMode[2] = {"AC", "REF"};
 }
 
 class cCOM5003dServer;
-class cSenseSettings;
-class QDataStream;
-
 
 class cSenseInterface : public cResource, public cAdjFlash, public cAdjXML
 {

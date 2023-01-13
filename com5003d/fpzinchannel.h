@@ -2,7 +2,7 @@
 #define FPZINCHANNEL_H
 
 #include <scpi.h>
-#include <scpiconnection.h>
+#include "scpiconnection.h"
 
 namespace FPZINChannel
 {

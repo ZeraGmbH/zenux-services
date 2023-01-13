@@ -1,16 +1,10 @@
 #ifndef HKEYINTERFACE_H
 #define HKEYINTERFACE_H
 
-#include <QObject>
-#include <QList>
-#include <QStateMachine>
-#include <QState>
-#include <QFinalState>
-
 #include "resource.h"
-#include <scpiconnection.h>
+#include "scpiconnection.h"
 #include "hkeychannel.h"
-
+#include <QList>
 
 namespace HKeySystem
 {

@@ -1,6 +1,6 @@
-#include <scpiconnection.h>
+#include "scpiconnection.h"
 #include "scheadchannel.h"
-#include <protonetcommand.h>
+#include "protonetcommand.h"
 #include "settings/scheadsettings.h"
 #include <scpi.h>
 #include <scpicommand.h>

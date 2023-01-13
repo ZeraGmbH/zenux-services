@@ -4,7 +4,7 @@
 #define COM5003JUSTDATA_H
 
 #include <QObject>
-#include <scpiconnection.h>
+#include "scpiconnection.h"
 
 enum com5003JustCommands
 {

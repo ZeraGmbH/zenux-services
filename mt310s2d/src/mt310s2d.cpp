@@ -30,6 +30,9 @@
 #include <xiqnetserver.h>
 #include <QSocketNotifier>
 #include <QCoreApplication>
+#include <QStateMachine>
+#include <QState>
+#include <QFinalState>
 #include <unistd.h>
 #include <fcntl.h>
 #include <syslog.h>

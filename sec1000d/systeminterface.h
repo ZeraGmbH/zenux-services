@@ -1,11 +1,7 @@
 #ifndef SYSTEMINTERFACE_H
 #define SYSTEMINTERFACE_H
 
-#include <QObject>
-#include <QList>
-#include <scpi.h>
-
-#include <scpiconnection.h>
+#include "scpiconnection.h"
 
 namespace SystemSystem
 {

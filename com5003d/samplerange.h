@@ -3,7 +3,7 @@
 
 #include <QObject>
 
-#include <scpiconnection.h>
+#include "scpiconnection.h"
 
 enum SampleRangeCommands
 {

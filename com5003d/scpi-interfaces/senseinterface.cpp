@@ -4,7 +4,7 @@
 #include <QDomDocument>
 #include <QDomText>
 #include <QDebug>
-#include <scpiconnection.h>
+#include "scpiconnection.h"
 #include "resource.h"
 
 #include "senseinterface.h"
@@ -13,7 +13,7 @@
 #include "sensechannel.h"
 #include "senserange.h"
 #include "adjflash.h"
-#include <protonetcommand.h>
+#include "protonetcommand.h"
 #include "micro-controller-io/atmel.h"
 #include "settings/ethsettings.h"
 #include "settings/sensesettings.h"

@@ -1,8 +1,9 @@
-#include <scpiconnection.h>
+#include "scpiconnection.h"
 #include "mt310s2d.h"
 #include "fpzinchannel.h"
-#include <protonetcommand.h>
+#include "protonetcommand.h"
 #include "settings/frqinputsettings.h"
+#include <scpi.h>
 #include <scpicommand.h>
 
 cFPZInChannel::cFPZInChannel(cSCPI *scpiInterface, QString description, quint8 nr, FRQInputSystem::cChannelSettings *cSettings) :

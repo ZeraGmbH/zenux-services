@@ -4,12 +4,8 @@
 #ifndef DSP_H
 #define DSP_H
 
-#include <QString>
-#include <QList>
-#include <QDataStream>
-#include <QHash>
-
 #include "parse.h"
+#include <QHash>
 
 // enum zum lesen von dsp port adressen über ioctl
 // Serial Port Interface,  Serial Interface, DSP Ctrl Register, what ?, the device name

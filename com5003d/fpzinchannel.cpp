@@ -3,10 +3,10 @@
 
 #include <scpi.h>
 #include <scpicommand.h>
-#include <scpiconnection.h>
+#include "scpiconnection.h"
 #include "com5003d.h"
 #include "fpzinchannel.h"
-#include <protonetcommand.h>
+#include "protonetcommand.h"
 #include "settings/frqinputsettings.h"
 
 

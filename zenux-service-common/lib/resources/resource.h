@@ -2,7 +2,7 @@
 #define RESOURCE_H
 
 #include "rmconnection.h"
-#include <scpiconnection.h>
+#include "scpiconnection.h"
 #include <QList>
 
 // pure virtual base class for resources to register themselves anywhere

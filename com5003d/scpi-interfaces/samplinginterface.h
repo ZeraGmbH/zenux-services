@@ -1,13 +1,12 @@
 #ifndef SAMPLINGINTERFACE_H
 #define SAMPLINGINTERFACE_H
 
+#include "samplerange.h"
+#include "resource.h"
+#include "notificationstring.h"
 #include <QObject>
 #include <QList>
 #include <QStringList>
-
-#include "samplerange.h"
-#include "resource.h"
-#include <notificationstring.h>
 
 namespace SamplingSystem
 {
@@ -30,12 +29,7 @@ enum Commands
 
 }
 
-class QString;
-class ScpiConnection;
-class cSamplingSettings;
-class cClientNetBase;
 class cCOM5003dServer;
-
 
 class cSamplingInterface: public cResource
 {

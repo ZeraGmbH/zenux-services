@@ -1,17 +1,11 @@
 #ifndef SHEADINTERFACE_H
 #define SHEADINTERFACE_H
 
-
+#include "resource.h"
+#include "scpiconnection.h"
+#include "scheadchannel.h"
 #include <QObject>
 #include <QList>
-#include <QStateMachine>
-#include <QState>
-#include <QFinalState>
-
-#include "resource.h"
-#include <scpiconnection.h>
-#include "scheadchannel.h"
-
 
 namespace SCHeadSystem
 {

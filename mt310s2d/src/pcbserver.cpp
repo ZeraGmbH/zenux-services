@@ -1,6 +1,6 @@
-#include <protonetcommand.h>
+#include "protonetcommand.h"
 #include "resource.h"
-#include <scpiconnection.h>
+#include "scpiconnection.h"
 #include "pcbserver.h"
 #include "mt310s2dglobal.h"
 #include "settings/ethsettings.h"

@@ -5,7 +5,7 @@
 #include "protonetcommand.h"
 #include <scpi.h>
 #include <scpicommand.h>
-#include <scpidelegate.h>
+#include "scpidelegate.h"
 #include <scpisingletonfactory.h>
 
 

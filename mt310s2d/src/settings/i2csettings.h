@@ -1,7 +1,6 @@
 #ifndef I2CSETTINGS_H
 #define I2CSETTINGS_H
 
-#include <xmlconfigreader.h>
 #include <xmlsettings.h>
 #include <i2cmuxer.h>
 #include <QObject>

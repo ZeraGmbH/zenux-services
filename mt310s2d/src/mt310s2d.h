@@ -4,10 +4,9 @@
 #ifndef MT310S2D_H
 #define MT310S2D_H
 
-#include <QTimer>
-
 #include "pcbserver.h"
 #include "rmconnection.h"
+#include <QTimer>
 
 class QStateMachine;
 class QState;

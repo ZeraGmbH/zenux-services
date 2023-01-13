@@ -1,17 +1,11 @@
 #ifndef FRQINPUTINTERFACE_H
 #define FRQINPUTINTERFACE_H
 
-
+#include "resource.h"
+#include "scpiconnection.h"
+#include "fpzinchannel.h"
 #include <QObject>
 #include <QList>
-#include <QStateMachine>
-#include <QState>
-#include <QFinalState>
-
-#include "resource.h"
-#include <scpiconnection.h>
-#include "fpzinchannel.h"
-
 
 namespace FRQInputSystem
 {

@@ -3,9 +3,9 @@
 #include <qdatastream.h>
 #include <scpi.h>
 
-#include <protonetcommand.h>
+#include "protonetcommand.h"
 #include "justdata.h"
-#include <scpidelegate.h>
+#include "scpidelegate.h"
 #include "com5003justdata.h"
 #include "micro-controller-io/atmel.h"
 

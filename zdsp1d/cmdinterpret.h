@@ -3,8 +3,6 @@
 #ifndef KINTERPRETER_H
 #define KINTERPRETER_H
 
-#include <stdlib.h>
-//#include <qstring.h>
 #include "parse.h"
 
 class cNode;

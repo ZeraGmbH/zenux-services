@@ -5,7 +5,7 @@
 #include <QList>
 
 #include "senserange.h"
-#include <notificationstring.h>
+#include "notificationstring.h"
 #include "settings/sensesettings.h"
 
 namespace SenseChannel

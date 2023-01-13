@@ -2,9 +2,9 @@
 #define EMOBINTERFACE_H
 
 #include "mt310s2d.h"
-#include <scpiconnection.h>
-#include <notificationstring.h>
-#include <protonetcommand.h>
+#include "scpiconnection.h"
+#include "notificationstring.h"
+#include "protonetcommand.h"
 
 class EmobInterface: public ScpiConnection
 {

@@ -1,13 +1,11 @@
 #ifndef STATUSINTERFACE_H
 #define STATUSINTERFACE_H
 
+#include "com5003d.h"
+#include "scpiconnection.h"
+#include "scpidelegate.h"
 #include <QObject>
 #include <QList>
-#include <scpi.h>
-
-#include "com5003d.h"
-#include <scpiconnection.h>
-#include <scpidelegate.h>
 
 namespace StatusSystem
 {

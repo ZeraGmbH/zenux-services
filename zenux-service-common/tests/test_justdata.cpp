@@ -1,5 +1,5 @@
 #include "test_justdata.h"
-#include <protonetcommand.h>
+#include "protonetcommand.h"
 
 QTEST_MAIN(test_justdata);
 

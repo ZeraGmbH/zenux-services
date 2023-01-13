@@ -8,7 +8,7 @@
 #include <scpicommand.h>
 
 #include "sec1000d.h"
-#include <scpiconnection.h>
+#include "scpiconnection.h"
 #include "ecalcchannel.h"
 #include "fpgasettings.h"
 #include "inputsettings.h"

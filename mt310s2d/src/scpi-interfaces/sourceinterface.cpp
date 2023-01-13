@@ -1,9 +1,9 @@
 #include "sourceinterface.h"
-#include <scpiconnection.h>
+#include "scpiconnection.h"
 #include "resource.h"
 #include "mt310s2d.h"
 #include "fpzchannel.h"
-#include <protonetcommand.h>
+#include "protonetcommand.h"
 #include "settings/sourcesettings.h"
 #include <scpi.h>
 

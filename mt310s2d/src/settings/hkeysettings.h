@@ -1,7 +1,6 @@
 #ifndef HKEYSETTINGS_H
 #define HKEYSETTINGS_H
 
-#include <xmlconfigreader.h>
 #include <xmlsettings.h>
 
 namespace HKeySystem

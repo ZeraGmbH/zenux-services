@@ -2,7 +2,7 @@
 #define SENSECHANNEL_H
 
 #include "senserange.h"
-#include <notificationstring.h>
+#include "notificationstring.h"
 #include "settings/sensesettings.h"
 #include <QList>
 

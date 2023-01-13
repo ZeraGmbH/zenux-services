@@ -1,13 +1,9 @@
 #ifndef ATMEL_H
 #define ATMEL_H
 
-#include <QString>
-#include <intelhexfileio.h>
-#include <crcutils.h>
-#include <protocol_zera_bootloader.h>
-#include <protocol_zera_hard.h>
-#include <zera_mcontroller_base.h>
 #include "atmelbaseinterface.h"
+#include <zera_mcontroller_base.h>
+#include <QString>
 
 class cATMEL : public ZeraMcontrollerBase, public AtmelBaseInterface
 {
