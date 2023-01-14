@@ -4,9 +4,9 @@
 EthSettingsSec::EthSettingsSec(Zera::XMLConfig::cReader *xmlread)
 {
     m_pXMLReader = xmlread;
-    m_ConfigXMLMap["sec1000dconfig:connectivity:ethernet:ipadress:resourcemanager"] = setRmIpAdress;
-    m_ConfigXMLMap["sec1000dconfig:connectivity:ethernet:port:server"] = setProtobufServerPort;
-    m_ConfigXMLMap["sec1000dconfig:connectivity:ethernet:port:resourcemanager"] = setRmPort;
+    m_ConfigXMLMap["serviceconfig:connectivity:ethernet:ipadress:resourcemanager"] = setRmIpAdress;
+    m_ConfigXMLMap["serviceconfig:connectivity:ethernet:port:server"] = setProtobufServerPort;
+    m_ConfigXMLMap["serviceconfig:connectivity:ethernet:port:resourcemanager"] = setRmPort;
 }
 
 QString EthSettingsSec::getRMIPadr()
