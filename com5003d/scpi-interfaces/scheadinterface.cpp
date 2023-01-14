@@ -4,7 +4,7 @@
 #include "com5003d.h"
 #include "scheadchannel.h"
 #include "protonetcommand.h"
-#include "settings/scheadsettings.h"
+#include "scheadsettings.h"
 #include <xmlsettings.h>
 #include <scpi.h>
 
