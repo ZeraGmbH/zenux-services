@@ -8,13 +8,13 @@ cSenseSettings::cSenseSettings(Zera::XMLConfig::cReader *xmlread)
     for (int i = 0; i < 6; i++)
     {
         m_ChannelSettingsList.append(settings = new SenseSystem::cChannelSettings);
-        m_ConfigXMLMap[QString("com5003dconfig:resource:sense:m%1:alias1").arg(i)] = SenseSystem::cfg0Alias1 + i;
-        m_ConfigXMLMap[QString("com5003dconfig:resource:sense:m%1:alias2").arg(i)] = SenseSystem::cfg0Alias2 + i;
-        m_ConfigXMLMap[QString("com5003dconfig:resource:sense:m%1:ctrlchannel").arg(i)] = SenseSystem::cfg0ctrlchannel + i;
-        m_ConfigXMLMap[QString("com5003dconfig:resource:sense:m%1:dspchannel").arg(i)] = SenseSystem::cfg0dspchannel + i;
-        m_ConfigXMLMap[QString("com5003dconfig:resource:sense:m%1:overloadbit").arg(i)] = SenseSystem::cfg0overloadbit + i;
+        m_ConfigXMLMap[QString("pcbdconfig:resource:sense:m%1:alias1").arg(i)] = SenseSystem::cfg0Alias1 + i;
+        m_ConfigXMLMap[QString("pcbdconfig:resource:sense:m%1:alias2").arg(i)] = SenseSystem::cfg0Alias2 + i;
+        m_ConfigXMLMap[QString("pcbdconfig:resource:sense:m%1:ctrlchannel").arg(i)] = SenseSystem::cfg0ctrlchannel + i;
+        m_ConfigXMLMap[QString("pcbdconfig:resource:sense:m%1:dspchannel").arg(i)] = SenseSystem::cfg0dspchannel + i;
+        m_ConfigXMLMap[QString("pcbdconfig:resource:sense:m%1:overloadbit").arg(i)] = SenseSystem::cfg0overloadbit + i;
 
-        m_ConfigXMLMap[QString("com5003dconfig:resource:sense:m%1:avail").arg(i)] = SenseSystem::cfg0avail + i;
+        m_ConfigXMLMap[QString("pcbdconfig:resource:sense:m%1:avail").arg(i)] = SenseSystem::cfg0avail + i;
     }
 }
 

@@ -5,8 +5,8 @@ cHKeySettings::cHKeySettings(Zera::XMLConfig::cReader *xmlread)
     m_pXMLReader = xmlread;
     for (int i = 0; i < 1; i++) {
         m_ChannelSettingsList.append(new HKeySystem::cChannelSettings);
-        m_ConfigXMLMap[QString("mt310s2dconfig:resource:hkey:hk%1:alias").arg(i)] = HKeySystem::cfgHK0Alias + i;
-        m_ConfigXMLMap[QString("mt310s2dconfig:resource:hkey:hk%1:avail").arg(i)] = HKeySystem::cfgHK0avail + i;
+        m_ConfigXMLMap[QString("pcbdconfig:resource:hkey:hk%1:alias").arg(i)] = HKeySystem::cfgHK0Alias + i;
+        m_ConfigXMLMap[QString("pcbdconfig:resource:hkey:hk%1:avail").arg(i)] = HKeySystem::cfgHK0avail + i;
     }
 }
 

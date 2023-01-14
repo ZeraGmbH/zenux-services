@@ -234,7 +234,7 @@
 </xs:complexType>
 
 
-<xs:element name="mt310s2dconfig">
+<xs:element name="pcbdconfig">
     <xs:complexType>
         <xs:sequence>
             <xs:element name="connectivity" type="connectivitytype"/>

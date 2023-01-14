@@ -198,7 +198,7 @@
 </xs:complexType>
 
 
-<xs:element name="com5003dconfig">
+<xs:element name="pcbdconfig">
     <xs:complexType>
         <xs:sequence>
             <xs:element name="connectivity" type="connectivitytype"/>

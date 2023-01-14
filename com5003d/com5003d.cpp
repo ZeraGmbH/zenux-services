@@ -155,7 +155,7 @@ void cCOM5003dServer::doConfiguration()
             write(m_nFPGAfd, &sigStart, 4);
 
             // we want to initialize all settings first
-            QString xmlConfigTopNode = "com5003dconfig";
+            QString xmlConfigTopNode = "pcbdconfig";
             m_pDebugSettings = new cDebugSettings(myXMLConfigReader, xmlConfigTopNode);
             connect(myXMLConfigReader,SIGNAL(valueChanged(const QString&)),m_pDebugSettings,SLOT(configXMLInfo(const QString&)));
             m_pETHSettings = new cETHSettings(myXMLConfigReader);

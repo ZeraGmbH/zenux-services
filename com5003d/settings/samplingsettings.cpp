@@ -9,8 +9,8 @@ cSamplingSettings::cSamplingSettings(Zera::XMLConfig::cReader *xmlread)
     SamplingSystem::cChannelSettings* settings = new SamplingSystem::cChannelSettings;
     m_ChannelSettingsList.append(settings);
 
-    m_ConfigXMLMap["com5003dconfig:resource:sample:s0:alias"] = SamplingSystem::cfgAlias;
-    m_ConfigXMLMap["com5003dconfigresource:sample:s0:avail"] = SamplingSystem::cfgAvail;
+    m_ConfigXMLMap["pcbdconfig:resource:sample:s0:alias"] = SamplingSystem::cfgAlias;
+    m_ConfigXMLMap["pcbconfigresource:sample:s0:avail"] = SamplingSystem::cfgAvail;
 }
 
 

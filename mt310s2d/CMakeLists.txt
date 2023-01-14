@@ -20,7 +20,6 @@ set(SOURCES
     src/settings/scheadsettings.cpp
     src/settings/sensesettings.cpp
     src/settings/sourcesettings.cpp
-    src/settings/hkeysettings.cpp
     src/pcbserver.cpp
     src/samplerange.cpp
     src/senserange.cpp
@@ -57,7 +56,6 @@ set(HEADER
     src/settings/ctrlsettings.h
     src/settings/ethsettings.h
     src/settings/frqinputsettings.h
-    src/settings/hkeysettings.h
     src/settings/i2csettings.h
     src/settings/samplingsettings.h
     src/settings/scheadsettings.h

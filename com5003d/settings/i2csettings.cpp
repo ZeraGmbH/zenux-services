@@ -8,10 +8,10 @@
 cI2CSettings::cI2CSettings(Zera::XMLConfig::cReader *xmlread)
 {
     m_pXMLReader = xmlread;
-    m_ConfigXMLMap["com5003dconfig:connectivity:i2c:device:node"] = i2cSettings::SetDevNode;
-    m_ConfigXMLMap["com5003dconfig:connectivity:i2c:adress:master"] = i2cSettings::SetMasterAdr;
-    m_ConfigXMLMap["com5003dconfig:connectivity:i2c:adress:atmel"] = i2cSettings::SetAtmelAdr;
-    m_ConfigXMLMap["com5003dconfig:connectivity:i2c:adress:flash"] = i2cSettings::SetFlashAdr;
+    m_ConfigXMLMap["pcbdconfig:connectivity:i2c:device:node"] = i2cSettings::SetDevNode;
+    m_ConfigXMLMap["pcbdconfig:connectivity:i2c:adress:master"] = i2cSettings::SetMasterAdr;
+    m_ConfigXMLMap["pcbdconfig:connectivity:i2c:adress:atmel"] = i2cSettings::SetAtmelAdr;
+    m_ConfigXMLMap["pcbdconfig:connectivity:i2c:adress:flash"] = i2cSettings::SetFlashAdr;
     m_sDeviceNode = defaultI2CDeviceNode;
     m_nMasterAdr = defaultI2CMasterAdress;
     m_nAtmelAdr = defaultI2CAtmelAdress;

@@ -7,8 +7,8 @@ cSamplingSettings::cSamplingSettings(Zera::XMLConfig::cReader *xmlread)
     SamplingSystem::cChannelSettings* settings = new SamplingSystem::cChannelSettings;
     m_ChannelSettingsList.append(settings);
 
-    m_ConfigXMLMap["mt310s2dconfig:resource:sample:s0:alias"] = SamplingSystem::cfgAlias;
-    m_ConfigXMLMap["mt310s2dconfig:resource:sample:s0:avail"] = SamplingSystem::cfgAvail;
+    m_ConfigXMLMap["pcbdconfig:resource:sample:s0:alias"] = SamplingSystem::cfgAlias;
+    m_ConfigXMLMap["pcbdconfig:resource:sample:s0:avail"] = SamplingSystem::cfgAvail;
 }
 
 cSamplingSettings::~cSamplingSettings()

@@ -5,11 +5,11 @@
 cETHSettings::cETHSettings(Zera::XMLConfig::cReader *xmlread)
 {
     m_pXMLReader = xmlread;
-    m_ConfigXMLMap["com5003dconfig:connectivity:ethernet:ipadress:resourcemanager"] = setRMIPAdress;
-    m_ConfigXMLMap["com5003dconfig:connectivity:ethernet:port:protobufserver"] = setProtobufServerPort;
-    m_ConfigXMLMap["com5003dconfig:connectivity:ethernet:port:scpiserver"] = setSCPIServerPort;
-    m_ConfigXMLMap["com5003dconfig:connectivity:ethernet:port:resourcemanager"] = setRMPort;
-    m_ConfigXMLMap["com5003dconfig:connectivity:ethernet:scpiactive"] = setSCPIactive;
+    m_ConfigXMLMap["pcbdconfig:connectivity:ethernet:ipadress:resourcemanager"] = setRMIPAdress;
+    m_ConfigXMLMap["pcbdconfig:connectivity:ethernet:port:protobufserver"] = setProtobufServerPort;
+    m_ConfigXMLMap["pcbdconfig:connectivity:ethernet:port:scpiserver"] = setSCPIServerPort;
+    m_ConfigXMLMap["pcbdconfig:connectivity:ethernet:port:resourcemanager"] = setRMPort;
+    m_ConfigXMLMap["pcbdconfig:connectivity:ethernet:scpiactive"] = setSCPIactive;
 
     m_nProtobufServerPort = defaultProtoBufServerPort;
     m_nSCPIServerPort = defaultSCPIServerPort;
