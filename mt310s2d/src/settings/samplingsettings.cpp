@@ -13,7 +13,7 @@ cSamplingSettings::cSamplingSettings(Zera::XMLConfig::cReader *xmlread)
 
 cSamplingSettings::~cSamplingSettings()
 {
-    for(auto channel : m_ChannelSettingsList) {
+    for(auto channel : qAsConst(m_ChannelSettingsList)) {
         delete channel;
     }
 }
