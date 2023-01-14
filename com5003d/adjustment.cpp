@@ -450,12 +450,9 @@ void cAdjustment::exportAdjData(QDomDocument &doc, QDomElement &qde)
 
 bool cAdjustment::importAdjData(QDomNode &node)
 {
-    bool ok;
-
     if (node.toElement().tagName() != "Chksum") // data not for us
         return false;
-
-    m_nChecksum = node.toElement().text().toInt(&ok);
+    m_nChecksum = node.toElement().text().toInt();
     return true;
 }
 

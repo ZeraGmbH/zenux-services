@@ -17,9 +17,8 @@ cSenseSettings::cSenseSettings(Zera::XMLConfig::cReader *xmlread)
 
 cSenseSettings::~cSenseSettings()
 {
-    for(auto channel : m_ChannelSettingsList) {
+    for(auto channel : qAsConst(m_ChannelSettingsList))
         delete channel;
-    }
 }
 
 QList<SenseSystem::cChannelSettings*> &cSenseSettings::getChannelSettings()
@@ -29,7 +28,6 @@ QList<SenseSystem::cChannelSettings*> &cSenseSettings::getChannelSettings()
 
 void cSenseSettings::configXMLInfo(QString key)
 {
-    bool ok;
     if (m_ConfigXMLMap.contains(key)) {
         switch (m_ConfigXMLMap[key])
         {
@@ -59,78 +57,78 @@ void cSenseSettings::configXMLInfo(QString key)
             break;
 
         case SenseSystem::cfg0ctrlchannel:
-            m_ChannelSettingsList.at(0)->m_nCtrlChannel = m_pXMLReader->getValue(key).toInt(&ok);
+            m_ChannelSettingsList.at(0)->m_nCtrlChannel = m_pXMLReader->getValue(key).toInt();
             break;
         case SenseSystem::cfg1ctrlchannel:
-            m_ChannelSettingsList.at(1)->m_nCtrlChannel = m_pXMLReader->getValue(key).toInt(&ok);
+            m_ChannelSettingsList.at(1)->m_nCtrlChannel = m_pXMLReader->getValue(key).toInt();
             break;
         case SenseSystem::cfg2ctrlchannel:
-            m_ChannelSettingsList.at(2)->m_nCtrlChannel = m_pXMLReader->getValue(key).toInt(&ok);
+            m_ChannelSettingsList.at(2)->m_nCtrlChannel = m_pXMLReader->getValue(key).toInt();
             break;
         case SenseSystem::cfg3ctrlchannel:
-            m_ChannelSettingsList.at(3)->m_nCtrlChannel = m_pXMLReader->getValue(key).toInt(&ok);
+            m_ChannelSettingsList.at(3)->m_nCtrlChannel = m_pXMLReader->getValue(key).toInt();
             break;
         case SenseSystem::cfg4ctrlchannel:
-            m_ChannelSettingsList.at(4)->m_nCtrlChannel = m_pXMLReader->getValue(key).toInt(&ok);
+            m_ChannelSettingsList.at(4)->m_nCtrlChannel = m_pXMLReader->getValue(key).toInt();
             break;
         case SenseSystem::cfg5ctrlchannel:
-            m_ChannelSettingsList.at(5)->m_nCtrlChannel = m_pXMLReader->getValue(key).toInt(&ok);
+            m_ChannelSettingsList.at(5)->m_nCtrlChannel = m_pXMLReader->getValue(key).toInt();
             break;
         case SenseSystem::cfg6ctrlchannel:
-            m_ChannelSettingsList.at(6)->m_nCtrlChannel = m_pXMLReader->getValue(key).toInt(&ok);
+            m_ChannelSettingsList.at(6)->m_nCtrlChannel = m_pXMLReader->getValue(key).toInt();
             break;
         case SenseSystem::cfg7ctrlchannel:
-            m_ChannelSettingsList.at(7)->m_nCtrlChannel = m_pXMLReader->getValue(key).toInt(&ok);
+            m_ChannelSettingsList.at(7)->m_nCtrlChannel = m_pXMLReader->getValue(key).toInt();
             break;
 
         case SenseSystem::cfg0dspchannel:
-            m_ChannelSettingsList.at(0)->m_nDspChannel  =  m_pXMLReader->getValue(key).toInt(&ok);
+            m_ChannelSettingsList.at(0)->m_nDspChannel  =  m_pXMLReader->getValue(key).toInt();
             break;
         case SenseSystem::cfg1dspchannel:
-            m_ChannelSettingsList.at(1)->m_nDspChannel  =  m_pXMLReader->getValue(key).toInt(&ok);
+            m_ChannelSettingsList.at(1)->m_nDspChannel  =  m_pXMLReader->getValue(key).toInt();
             break;
         case SenseSystem::cfg2dspchannel:
-            m_ChannelSettingsList.at(2)->m_nDspChannel  =  m_pXMLReader->getValue(key).toInt(&ok);
+            m_ChannelSettingsList.at(2)->m_nDspChannel  =  m_pXMLReader->getValue(key).toInt();
             break;
         case SenseSystem::cfg3dspchannel:
-            m_ChannelSettingsList.at(3)->m_nDspChannel  =  m_pXMLReader->getValue(key).toInt(&ok);
+            m_ChannelSettingsList.at(3)->m_nDspChannel  =  m_pXMLReader->getValue(key).toInt();
             break;
         case SenseSystem::cfg4dspchannel:
-            m_ChannelSettingsList.at(4)->m_nDspChannel  =  m_pXMLReader->getValue(key).toInt(&ok);
+            m_ChannelSettingsList.at(4)->m_nDspChannel  =  m_pXMLReader->getValue(key).toInt();
             break;
         case SenseSystem::cfg5dspchannel:
-            m_ChannelSettingsList.at(5)->m_nDspChannel  =  m_pXMLReader->getValue(key).toInt(&ok);
+            m_ChannelSettingsList.at(5)->m_nDspChannel  =  m_pXMLReader->getValue(key).toInt();
             break;
         case SenseSystem::cfg6dspchannel:
-            m_ChannelSettingsList.at(6)->m_nDspChannel  =  m_pXMLReader->getValue(key).toInt(&ok);
+            m_ChannelSettingsList.at(6)->m_nDspChannel  =  m_pXMLReader->getValue(key).toInt();
             break;
         case SenseSystem::cfg7dspchannel:
-            m_ChannelSettingsList.at(7)->m_nDspChannel  =  m_pXMLReader->getValue(key).toInt(&ok);
+            m_ChannelSettingsList.at(7)->m_nDspChannel  =  m_pXMLReader->getValue(key).toInt();
             break;
 
         case SenseSystem::cfg0overloadbit:
-            m_ChannelSettingsList.at(0)->m_nOverloadBit  =  m_pXMLReader->getValue(key).toInt(&ok);
+            m_ChannelSettingsList.at(0)->m_nOverloadBit  =  m_pXMLReader->getValue(key).toInt();
             break;
         case SenseSystem::cfg1overloadbit:
-            m_ChannelSettingsList.at(1)->m_nOverloadBit  =  m_pXMLReader->getValue(key).toInt(&ok);
+            m_ChannelSettingsList.at(1)->m_nOverloadBit  =  m_pXMLReader->getValue(key).toInt();
             break;
         case SenseSystem::cfg2overloadbit:
-            m_ChannelSettingsList.at(2)->m_nOverloadBit  =  m_pXMLReader->getValue(key).toInt(&ok);
+            m_ChannelSettingsList.at(2)->m_nOverloadBit  =  m_pXMLReader->getValue(key).toInt();
             break;
         case SenseSystem::cfg3overloadbit:
-            m_ChannelSettingsList.at(3)->m_nOverloadBit  =  m_pXMLReader->getValue(key).toInt(&ok);
+            m_ChannelSettingsList.at(3)->m_nOverloadBit  =  m_pXMLReader->getValue(key).toInt();
             break;
         case SenseSystem::cfg4overloadbit:
-            m_ChannelSettingsList.at(4)->m_nOverloadBit  =  m_pXMLReader->getValue(key).toInt(&ok);
+            m_ChannelSettingsList.at(4)->m_nOverloadBit  =  m_pXMLReader->getValue(key).toInt();
             break;
         case SenseSystem::cfg5overloadbit:
-            m_ChannelSettingsList.at(5)->m_nOverloadBit  =  m_pXMLReader->getValue(key).toInt(&ok);
+            m_ChannelSettingsList.at(5)->m_nOverloadBit  =  m_pXMLReader->getValue(key).toInt();
             break;
         case SenseSystem::cfg6overloadbit:
-            m_ChannelSettingsList.at(6)->m_nOverloadBit  =  m_pXMLReader->getValue(key).toInt(&ok);
+            m_ChannelSettingsList.at(6)->m_nOverloadBit  =  m_pXMLReader->getValue(key).toInt();
             break;
         case SenseSystem::cfg7overloadbit:
-            m_ChannelSettingsList.at(7)->m_nOverloadBit  =  m_pXMLReader->getValue(key).toInt(&ok);
+            m_ChannelSettingsList.at(7)->m_nOverloadBit  =  m_pXMLReader->getValue(key).toInt();
             break;
 
         case SenseSystem::cfg0avail:

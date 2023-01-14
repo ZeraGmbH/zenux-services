@@ -14,8 +14,7 @@ quint8 cDebugSettings::getDebugLevel()
 
 void cDebugSettings::configXMLInfo(QString key)
 {
-    bool ok;
     if (m_ConfigXMLMap.contains(key)) {
-        m_nDebugLevel = m_pXMLReader->getValue(key).toInt(&ok);
+        m_nDebugLevel = m_pXMLReader->getValue(key).toInt();
     }
 }

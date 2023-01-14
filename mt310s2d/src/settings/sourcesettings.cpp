@@ -15,9 +15,8 @@ cSourceSettings::cSourceSettings(Zera::XMLConfig::cReader *xmlread)
 
 cSourceSettings::~cSourceSettings()
 {
-    for(auto channel : m_ChannelSettingsList) {
+    for(auto channel : qAsConst(m_ChannelSettingsList))
         delete channel;
-    }
 }
 
 QList<SourceSystem::cChannelSettings*> &cSourceSettings::getChannelSettings()
@@ -27,7 +26,6 @@ QList<SourceSystem::cChannelSettings*> &cSourceSettings::getChannelSettings()
 
 void cSourceSettings::configXMLInfo(QString key)
 {
-    bool ok;
     if (m_ConfigXMLMap.contains(key)) {
         switch (m_ConfigXMLMap[key])
         {
@@ -44,28 +42,28 @@ void cSourceSettings::configXMLInfo(QString key)
             m_ChannelSettingsList.at(3)->m_sAlias = m_pXMLReader->getValue(key);
             break;
         case SourceSystem::cfg0dspserver:
-            m_ChannelSettingsList.at(0)->m_nDspServerPort = m_pXMLReader->getValue(key).toInt(&ok);
+            m_ChannelSettingsList.at(0)->m_nDspServerPort = m_pXMLReader->getValue(key).toInt();
             break;
         case SourceSystem::cfg1dspserver:
-            m_ChannelSettingsList.at(1)->m_nDspServerPort = m_pXMLReader->getValue(key).toInt(&ok);
+            m_ChannelSettingsList.at(1)->m_nDspServerPort = m_pXMLReader->getValue(key).toInt();
             break;
         case SourceSystem::cfg2dspserver:
-            m_ChannelSettingsList.at(2)->m_nDspServerPort = m_pXMLReader->getValue(key).toInt(&ok);
+            m_ChannelSettingsList.at(2)->m_nDspServerPort = m_pXMLReader->getValue(key).toInt();
             break;
         case SourceSystem::cfg3dspserver:
-            m_ChannelSettingsList.at(3)->m_nDspServerPort = m_pXMLReader->getValue(key).toInt(&ok);
+            m_ChannelSettingsList.at(3)->m_nDspServerPort = m_pXMLReader->getValue(key).toInt();
             break;
         case SourceSystem::cfg0dspchannel:
-            m_ChannelSettingsList.at(0)->m_nDspChannel  =  m_pXMLReader->getValue(key).toInt(&ok);
+            m_ChannelSettingsList.at(0)->m_nDspChannel  =  m_pXMLReader->getValue(key).toInt();
             break;
         case SourceSystem::cfg1dspchannel:
-            m_ChannelSettingsList.at(1)->m_nDspChannel  =  m_pXMLReader->getValue(key).toInt(&ok);
+            m_ChannelSettingsList.at(1)->m_nDspChannel  =  m_pXMLReader->getValue(key).toInt();
             break;
         case SourceSystem::cfg2dspchannel:
-            m_ChannelSettingsList.at(2)->m_nDspChannel  =  m_pXMLReader->getValue(key).toInt(&ok);
+            m_ChannelSettingsList.at(2)->m_nDspChannel  =  m_pXMLReader->getValue(key).toInt();
             break;
         case SourceSystem::cfg3dspchannel:
-            m_ChannelSettingsList.at(3)->m_nDspChannel  =  m_pXMLReader->getValue(key).toInt(&ok);
+            m_ChannelSettingsList.at(3)->m_nDspChannel  =  m_pXMLReader->getValue(key).toInt();
             break;
         case SourceSystem::cfg0avail:
             m_ChannelSettingsList.at(0)->avail = (m_pXMLReader->getValue(key) == "true");
