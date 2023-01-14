@@ -237,10 +237,10 @@ void cPCBServer::registerNotifier(cProtonetCommand *protoCmd)
         QString query = cmd.getParam(0);
         cSCPIObject* scpiObject = m_pSCPIInterface->getSCPIObject(query);
         if(scpiObject) {
-            cNotificationData notData;
+            NotificationStructForPcb notData;
             notData.netPeer = protoCmd->m_pPeer;
-            notData.clientID = protoCmd->m_clientId;
-            notData.notifier = cmd.getParam(1).toInt();
+            notData.clientId = protoCmd->m_clientId;
+            notData.notifierId = cmd.getParam(1).toInt();
             connect(notData.netPeer, &XiQNetPeer::sigConnectionClosed, this, &cPCBServer::notifyPeerConnectionClosed);
             m_notifierRegisterNext.append(notData); // we wait for a notifier signal
 
@@ -278,10 +278,10 @@ void cPCBServer::doUnregisterNotifier(XiQNetPeer* peer, const QByteArray &client
         // we have to remove all notifiers for this client and or clientId
         // iterate backwards so removals do not confuse our loop
         for(int i = m_notifierRegisterList.count()-1; i >= 0; i--) {
-            cNotificationData notData = m_notifierRegisterList.at(i);
+            NotificationStructForPcb notData = m_notifierRegisterList.at(i);
             if(peer == notData.netPeer) {
                 // we found the client
-                if(clientID.isEmpty() || notData.clientID.isEmpty() || (notData.clientID == clientID)) {
+                if(clientID.isEmpty() || notData.clientId.isEmpty() || (notData.clientId == clientID)) {
                     m_notifierRegisterList.removeAt(i);
                 }
             }
@@ -345,40 +345,31 @@ void cPCBServer::executeCommandProto(std::shared_ptr<google::protobuf::Message> 
     }
 }
 
-
 void cPCBServer::establishNewNotifier(NotificationString *notifier)
 {
     if (m_notifierRegisterNext.count() > 0) // if we're waiting for notifier
     {
         disconnect(notifier, 0, 0, 0); // we disconnect first because we only want 1 signal
-        cNotificationData notData = m_notifierRegisterNext.takeFirst(); // we pick the notification data
+        NotificationStructForPcb notData = m_notifierRegisterNext.takeFirst(); // we pick the notification data
         notData.notString = notifier;
         m_notifierRegisterList.append(notData); //
         connect(notifier, &NotificationString::valueChanged, this, &cPCBServer::asyncHandler);
     }
 }
 
-
 void cPCBServer::asyncHandler()
 {
     NotificationString* notifier = qobject_cast<NotificationString*>(sender());
-
-    if (m_notifierRegisterList.count() > 0)
-    {
+    if (m_notifierRegisterList.count() > 0) {
         ProtobufMessage::NetMessage protobufIntMessage;
-
         if (m_notifierRegisterList.count() > 0)
-            for (int i = 0; i < m_notifierRegisterList.count(); i++)
-            {
-                cNotificationData notData = m_notifierRegisterList.at(i);
-                if (notData.notString == notifier)
-                {
+            for (int i = 0; i < m_notifierRegisterList.count(); i++) {
+                NotificationStructForPcb notData = m_notifierRegisterList.at(i);
+                if (notData.notString == notifier) {
                     ProtobufMessage::NetMessage::NetReply *intMessage = protobufIntMessage.mutable_reply();
-                    QString s = QString("Notify:%1").arg(notData.notifier);
-                    if (notData.clientID.isEmpty()) // old style communication
-                    {
+                    QString s = QString("Notify:%1").arg(notData.notifierId);
+                    if (notData.clientId.isEmpty()) { // old style communication
                         QByteArray block;
-
                         QDataStream out(&block, QIODevice::WriteOnly);
                         out.setVersion(QDataStream::Qt_4_0);
                         out << (qint32)0;
@@ -389,14 +380,12 @@ void cPCBServer::asyncHandler()
 
                         notData.netPeer->getTcpSocket()->write(block);
                     }
-                    else
-                    {
+                    else {
                         intMessage->set_body(s.toStdString());
                         intMessage->set_rtype(ProtobufMessage::NetMessage_NetReply_ReplyType_ACK);
-                        QByteArray id = notData.clientID;
+                        QByteArray id = notData.clientId;
                         protobufIntMessage.set_clientid(id, id.count());
                         protobufIntMessage.set_messagenr(0); // interrupt
-
                         notData.netPeer->sendMessage(protobufIntMessage);
                     }
                 }
@@ -404,13 +393,11 @@ void cPCBServer::asyncHandler()
     }
 }
 
-
 void cPCBServer::notifyPeerConnectionClosed()
 {
     XiQNetPeer *peer = qobject_cast<XiQNetPeer*>(QObject::sender());
     doUnregisterNotifier(peer);
 }
-
 
 void cPCBServer::initSCPIConnections()
 {
@@ -421,5 +408,3 @@ void cPCBServer::initSCPIConnections()
         connect(scpiConnectionList.at(i), &ScpiConnection::cmdExecutionDone, this, &cPCBServer::sendAnswerProto);
     }
 }
-
-

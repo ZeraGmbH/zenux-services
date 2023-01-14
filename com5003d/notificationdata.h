@@ -1,12 +1,11 @@
 #ifndef NOTIFICATIONDATA_H
 #define NOTIFICATIONDATA_H
 
-#include <QByteArray>
-#include <xiqnetpeer.h>
-
 #include "notificationstring.h"
+#include <xiqnetpeer.h>
+#include <QByteArray>
 
-struct cNotificationData
+struct NotificationStructForPcb
 {
     XiQNetPeer *netPeer;
     QByteArray clientId;

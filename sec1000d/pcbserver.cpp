@@ -169,7 +169,7 @@ void cPCBServer::registerNotifier(cProtonetCommand *protoCmd)
         QString query = cmd.getParam(0);
         cSCPIObject* scpiObject = m_pSCPIInterface->getSCPIObject(query);
         if(scpiObject) {
-            cNotificationData notData;
+            NotificationStructForSec notData;
             notData.netPeer = protoCmd->m_pPeer;
             notData.clientID = protoCmd->m_clientId;
             connect(notData.netPeer, &XiQNetPeer::sigConnectionClosed, this, &cPCBServer::notifyPeerConnectionClosed);
@@ -210,7 +210,7 @@ void cPCBServer::doUnregisterNotifier(XiQNetPeer* peer, const QByteArray &client
         // we have to remove all notifiers for this client and or clientId
         // iterate backwards so removals do not confuse our loop
         for(int i = m_notifierRegisterList.count()-1; i >= 0; i--) {
-            cNotificationData notData = m_notifierRegisterList.at(i);
+            NotificationStructForSec notData = m_notifierRegisterList.at(i);
             if(peer == notData.netPeer) {
                 // we found the client
                 if(clientID.isEmpty() || notData.clientID.isEmpty() || (notData.clientID == clientID)) {
@@ -281,40 +281,31 @@ void cPCBServer::executeCommandProto(std::shared_ptr<google::protobuf::Message> 
     }
 }
 
-
 void cPCBServer::establishNewNotifier(NotificationValue *notifier)
 {
     if (m_notifierRegisterNext.count() > 0) // if we're waiting for notifier
     {
         disconnect(notifier, 0, 0, 0); // we disconnect first because we only want 1 signal
-        cNotificationData notData = m_notifierRegisterNext.takeFirst(); // we pick the notification data
+        NotificationStructForSec notData = m_notifierRegisterNext.takeFirst(); // we pick the notification data
         notData.notValue = notifier;
         m_notifierRegisterList.append(notData); //
         connect(notifier, &NotificationValue::risingEdge, this, &cPCBServer::asyncHandler);
     }
 }
 
-
 void cPCBServer::asyncHandler(quint32 irqreg)
 {
     NotificationValue* notifier = qobject_cast<NotificationValue*>(sender());
-
-    if (m_notifierRegisterList.count() > 0)
-    {
+    if (m_notifierRegisterList.count() > 0) {
         ProtobufMessage::NetMessage protobufIntMessage;
-
         if (m_notifierRegisterList.count() > 0)
-            for (int i = 0; i < m_notifierRegisterList.count(); i++)
-            {
-                cNotificationData notData = m_notifierRegisterList.at(i);
-                if (notData.notValue == notifier)
-                {
+            for (int i = 0; i < m_notifierRegisterList.count(); i++) {
+                NotificationStructForSec notData = m_notifierRegisterList.at(i);
+                if (notData.notValue == notifier) {
                     ProtobufMessage::NetMessage::NetReply *intMessage = protobufIntMessage.mutable_reply();
                     QString s = QString("IRQ:%1").arg(irqreg);
-                    if (notData.clientID.isEmpty()) // old style communication
-                    {
+                    if (notData.clientID.isEmpty()) { // old style communication
                         QByteArray block;
-
                         QDataStream out(&block, QIODevice::WriteOnly);
                         out.setVersion(QDataStream::Qt_4_0);
                         out << (qint32)0;
