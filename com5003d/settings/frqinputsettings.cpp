@@ -1,39 +1,31 @@
 #include "frqinputsettings.h"
-#include <QList>
-#include <QVariant>
+#include <xmlconfigreader.h>
 
 cFRQInputSettings::cFRQInputSettings(Zera::XMLConfig::cReader *xmlread)
 {
     m_pXMLReader = xmlread;
-    FRQInputSystem::cChannelSettings *settings;
-    for (int i = 0; i < 4; i++)
-    {
-        m_ChannelSettingsList.append(settings = new FRQInputSystem::cChannelSettings);
+    for (int i = 0; i < 4; i++) {
+        m_ChannelSettingsList.append(new FRQInputSystem::cChannelSettings);
         m_ConfigXMLMap[QString("pcbdconfig:resource:frqinput:fi%1:alias").arg(i)] = FRQInputSystem::cfgFin0Alias + i;
         m_ConfigXMLMap[QString("pcbdconfig:resource:frqinput:fi%1:avail").arg(i)] = FRQInputSystem::cfgFin0avail + i;
     }
 }
 
-
 cFRQInputSettings::~cFRQInputSettings()
 {
-    for (int i = 0; i < m_ChannelSettingsList.count(); i++)
-        delete m_ChannelSettingsList.at(i);
+    for(auto channel : qAsConst(m_ChannelSettingsList)) {
+        delete channel;
+    }
 }
-
 
 QList<FRQInputSystem::cChannelSettings*> &cFRQInputSettings::getChannelSettings()
 {
     return m_ChannelSettingsList;
 }
 
-
 void cFRQInputSettings::configXMLInfo(QString key)
 {
-    bool ok;
-
-    if (m_ConfigXMLMap.contains(key))
-    {
+    if (m_ConfigXMLMap.contains(key)) {
         switch (m_ConfigXMLMap[key])
         {
         case FRQInputSystem::cfgFin0Alias:
