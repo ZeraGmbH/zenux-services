@@ -3,29 +3,29 @@
 #include "systeminfo.h"
 #include "adjustment.h"
 #include "rmconnection.h"
-#include "micro-controller-io/atmelsysctrl.h"
-#include "micro-controller-io/atmel.h"
-#include "micro-controller-io/atmelwatcher.h"
-#include "scpi-interfaces/clampinterface.h"
-#include "scpi-interfaces/frqinputinterface.h"
-#include "scpi-interfaces/hkeyinterface.h"
-#include "scpi-interfaces/samplinginterface.h"
-#include "scpi-interfaces/scheadinterface.h"
-#include "scpi-interfaces/senseinterface.h"
-#include "scpi-interfaces/sourceinterface.h"
-#include "scpi-interfaces/statusinterface.h"
-#include "scpi-interfaces/systeminterface.h"
-#include "settings/ctrlsettings.h"
-#include "settings/debugsettings.h"
-#include "settings/ethsettings.h"
-#include "settings/frqinputsettings.h"
-#include "settings/fpgasettings.h"
-#include "settings/hkeysettings.h"
-#include "settings/i2csettings.h"
-#include "settings/samplingsettings.h"
-#include "settings/scheadsettings.h"
-#include "settings/sensesettings.h"
-#include "settings/sourcesettings.h"
+#include "atmelsysctrl.h"
+#include "atmel.h"
+#include "atmelwatcher.h"
+#include "clampinterface.h"
+#include "frqinputinterface.h"
+#include "hkeyinterface.h"
+#include "samplinginterface.h"
+#include "scheadinterface.h"
+#include "senseinterface.h"
+#include "sourceinterface.h"
+#include "statusinterface.h"
+#include "systeminterface.h"
+#include "ctrlsettings.h"
+#include "debugsettings.h"
+#include "ethsettings.h"
+#include "frqinputsettings.h"
+#include "fpgasettings.h"
+#include "hkeysettings.h"
+#include "i2csettings.h"
+#include "samplingsettings.h"
+#include "scheadsettings.h"
+#include "sensesettings.h"
+#include "sourcesettings.h"
 #include <xmlconfigreader.h>
 #include <xiqnetserver.h>
 #include <QSocketNotifier>
@@ -170,12 +170,12 @@ void cMT310S2dServer::doConfiguration()
 
             if (myXMLConfigReader->loadSchema(defaultXSDFile))
             {
-                QString xmlConfigTopNode = "pcbdconfig";
+                QString xmlConfigTopNode = "serviceconfig";
                 // we want to initialize all settings first
                 m_pDebugSettings = new cDebugSettings(myXMLConfigReader, xmlConfigTopNode);
                 connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pDebugSettings,&cDebugSettings::configXMLInfo);
-                m_pETHSettings = new EthSettingsPcb(myXMLConfigReader);
-                connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pETHSettings,&EthSettingsPcb::configXMLInfo);
+                m_pETHSettings = new EthSettings(myXMLConfigReader);
+                connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pETHSettings,&EthSettings::configXMLInfo);
                 m_pI2CSettings = new cI2CSettings(myXMLConfigReader);
                 connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pI2CSettings,&cI2CSettings::configXMLInfo);
                 m_pFPGASettings = new cFPGASettings(myXMLConfigReader, xmlConfigTopNode);
@@ -283,8 +283,8 @@ void cMT310S2dServer::doSetupServer()
             // after init. we once poll the devices connected at power up
             updateI2cDevicesConnected();
 
-            myServer->startServer(m_pETHSettings->getPort(protobufserver)); // and can start the server now
-            m_pSCPIServer->listen(QHostAddress::AnyIPv4, m_pETHSettings->getPort(scpiserver));
+            myServer->startServer(m_pETHSettings->getPort(EthSettings::protobufserver)); // and can start the server now
+            m_pSCPIServer->listen(QHostAddress::AnyIPv4, m_pETHSettings->getPort(EthSettings::scpiserver));
 
             mySigAction.sa_handler = &SigHandler; // setup signal handler
             sigemptyset(&mySigAction.sa_mask);
@@ -296,7 +296,7 @@ void cMT310S2dServer::doSetupServer()
             enableClampInterrupt();
 
             // our resource mananager connection must be opened after configuration is done
-            m_pRMConnection = new RMConnection(m_pETHSettings->getRMIPadr(), m_pETHSettings->getPort(resourcemanager), m_pDebugSettings->getDebugLevel());
+            m_pRMConnection = new RMConnection(m_pETHSettings->getRMIPadr(), m_pETHSettings->getPort(EthSettings::resourcemanager), m_pDebugSettings->getDebugLevel());
             //connect(m_pRMConnection, SIGNAL(connectionRMError()), this, SIGNAL(abortInit()));
             // so we must complete our state machine here
             m_nRetryRMConnect = 100;
@@ -343,7 +343,7 @@ void cMT310S2dServer::doIdentAndRegister()
     {
         cResource *res = resourceList.at(i);
         connect(m_pRMConnection, SIGNAL(rmAck(quint32)), res, SLOT(resourceManagerAck(quint32)) );
-        res->registerResource(m_pRMConnection, m_pETHSettings->getPort(protobufserver));
+        res->registerResource(m_pRMConnection, m_pETHSettings->getPort(EthSettings::protobufserver));
     }
 #ifdef SYSTEMD_NOTIFICATION
     sd_notify(0, "READY=1");

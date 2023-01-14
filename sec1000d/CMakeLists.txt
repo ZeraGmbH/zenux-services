@@ -2,7 +2,6 @@ set(SOURCES
     main.cpp
     sec1000d.cpp
     pcbserver.cpp
-    ethsettings.cpp
     statusinterface.cpp
     systeminterface.cpp
     systeminfo.cpp
@@ -16,7 +15,6 @@ set(HEADER
     sec1000d.h
     pcbserver.h
     sec1000dglobal.h
-    ethsettings.h
     statusinterface.h
     systeminterface.h
     systeminfo.h
@@ -40,7 +38,6 @@ add_custom_target(sec1000d-configs ALL
     SOURCES ${CONFIG_VALIDATOR} ${CONFIG_FILES}
     COMMAND xmllint --noout --schema ${CONFIG_VALIDATOR} ${CONFIG_FILES}
     )
-
 
 add_library(sec1000d-lib STATIC
     ${HEADER}

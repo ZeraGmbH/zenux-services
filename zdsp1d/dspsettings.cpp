@@ -7,12 +7,12 @@
 cDSPSettings::cDSPSettings(Zera::XMLConfig::cReader *xmlread)
 {
     m_pXMLReader = xmlread;
-    m_ConfigXMLMap["zdsp1dconfig:connectivity:dsp:device:node"] = DSPSettings::setDSPDevNode;
-    m_ConfigXMLMap["zdsp1dconfig:dspsettings:bootfile"] = DSPSettings::setDSPBootfile;
-    m_ConfigXMLMap["zdsp1dconfig:dspsettings:boot"] = DSPSettings::setDSPBoot;
-    m_ConfigXMLMap["zdsp1dconfig:dspsettings:samplingsystem:channels"] = DSPSettings::setDSPChannelNr;
-    m_ConfigXMLMap["zdsp1dconfig:dspsettings:samplingsystem:signalperiod"] = DSPSettings::setDSPSignalPeriod;
-    m_ConfigXMLMap["zdsp1dconfig:dspsettings:samplingsystem:measureperiod"] = DSPSettings::setDSPMeasPeriod;
+    m_ConfigXMLMap["serviceconfig:connectivity:dsp:device:node"] = DSPSettings::setDSPDevNode;
+    m_ConfigXMLMap["serviceconfig:dspsettings:bootfile"] = DSPSettings::setDSPBootfile;
+    m_ConfigXMLMap["serviceconfig:dspsettings:boot"] = DSPSettings::setDSPBoot;
+    m_ConfigXMLMap["serviceconfig:dspsettings:samplingsystem:channels"] = DSPSettings::setDSPChannelNr;
+    m_ConfigXMLMap["serviceconfig:dspsettings:samplingsystem:signalperiod"] = DSPSettings::setDSPSignalPeriod;
+    m_ConfigXMLMap["serviceconfig:dspsettings:samplingsystem:measureperiod"] = DSPSettings::setDSPMeasPeriod;
 }
 
 

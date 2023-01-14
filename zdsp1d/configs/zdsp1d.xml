@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 
-<zdsp1dconfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<serviceconfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 
 	<connectivity>
 		<debuglevel>0</debuglevel>
@@ -32,4 +32,4 @@
                 </samplingsystem>
         </dspsettings>
 
-</zdsp1dconfig> 
+</serviceconfig> 

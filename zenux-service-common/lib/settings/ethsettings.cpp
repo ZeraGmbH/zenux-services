@@ -1,22 +1,22 @@
 #include "ethsettings.h"
 #include <xmlconfigreader.h>
 
-EthSettingsPcb::EthSettingsPcb(Zera::XMLConfig::cReader *xmlread)
+EthSettings::EthSettings(Zera::XMLConfig::cReader *xmlread)
 {
     m_pXMLReader = xmlread;
-    m_ConfigXMLMap["pcbdconfig:connectivity:ethernet:ipadress:resourcemanager"] = setRMIPAdress;
-    m_ConfigXMLMap["pcbdconfig:connectivity:ethernet:port:protobufserver"] = setProtobufServerPort;
-    m_ConfigXMLMap["pcbdconfig:connectivity:ethernet:port:scpiserver"] = setSCPIServerPort;
-    m_ConfigXMLMap["pcbdconfig:connectivity:ethernet:port:resourcemanager"] = setRMPort;
-    m_ConfigXMLMap["pcbdconfig:connectivity:ethernet:scpiactive"] = setSCPIactive;
+    m_ConfigXMLMap["serviceconfig:connectivity:ethernet:ipadress:resourcemanager"] = setRmIpAdress;
+    m_ConfigXMLMap["serviceconfig:connectivity:ethernet:port:protobufserver"] = setProtobufServerPort;
+    m_ConfigXMLMap["serviceconfig:connectivity:ethernet:port:scpiserver"] = setScpiServerPort;
+    m_ConfigXMLMap["serviceconfig:connectivity:ethernet:port:resourcemanager"] = setRmPort;
+    m_ConfigXMLMap["serviceconfig:connectivity:ethernet:scpiactive"] = setSCPIactive;
 }
 
-QString EthSettingsPcb::getRMIPadr()
+QString EthSettings::getRMIPadr()
 {
     return m_sRMIPAdr;
 }
 
-quint16 EthSettingsPcb::getPort(ethmember member)
+quint16 EthSettings::getPort(ethmember member)
 {
     quint16 port;
     switch (member)
@@ -34,26 +34,26 @@ quint16 EthSettingsPcb::getPort(ethmember member)
     return port;
 }
 
-bool EthSettingsPcb::isSCPIactive()
+bool EthSettings::isSCPIactive()
 {
     return m_bSCPIactive;
 }
 
-void EthSettingsPcb::configXMLInfo(QString key)
+void EthSettings::configXMLInfo(QString key)
 {
     if (m_ConfigXMLMap.contains(key)) {
         switch (m_ConfigXMLMap[key])
         {
-        case setRMIPAdress:
+        case setRmIpAdress:
             m_sRMIPAdr = m_pXMLReader->getValue(key);
             break;
         case setProtobufServerPort:
             m_nProtobufServerPort = m_pXMLReader->getValue(key).toInt();
             break;
-        case setSCPIServerPort:
+        case setScpiServerPort:
             m_nSCPIServerPort = m_pXMLReader->getValue(key).toInt();
             break;
-        case setRMPort:
+        case setRmPort:
             m_nRMPort = m_pXMLReader->getValue(key).toInt();
             break;
         case setSCPIactive:

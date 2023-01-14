@@ -6,12 +6,12 @@
 cI2CSettings::cI2CSettings(Zera::XMLConfig::cReader *xmlread)
 {
     m_pXMLReader = xmlread;
-    m_ConfigXMLMap["pcbdconfig:connectivity:i2c:device:node"] = i2cSettings::SetDevNode;
-    m_ConfigXMLMap["pcbdconfig:connectivity:i2c-systemctrl:adress:atmel"] = i2cSettings::SetAtmelSysAdr;
-    m_ConfigXMLMap["pcbdconfig:connectivity:i2c:adress:atmel"] = i2cSettings::SetAtmelAdr;
-    m_ConfigXMLMap["pcbdconfig:connectivity:i2c:adress:clampmux"] = i2cSettings::SetFlashMuxAdr;
-    m_ConfigXMLMap["pcbdconfig:connectivity:i2c:adress:flash"] = i2cSettings::SetFlashAdr;
-    m_ConfigXMLMap["pcbdconfig:connectivity:i2c:adress:clampflash"] = i2cSettings::SetClampFlashAdr;
+    m_ConfigXMLMap["serviceconfig:connectivity:i2c:device:node"] = i2cSettings::SetDevNode;
+    m_ConfigXMLMap["serviceconfig:connectivity:i2c-systemctrl:adress:atmel"] = i2cSettings::SetAtmelSysAdr;
+    m_ConfigXMLMap["serviceconfig:connectivity:i2c:adress:atmel"] = i2cSettings::SetAtmelAdr;
+    m_ConfigXMLMap["serviceconfig:connectivity:i2c:adress:clampmux"] = i2cSettings::SetFlashMuxAdr;
+    m_ConfigXMLMap["serviceconfig:connectivity:i2c:adress:flash"] = i2cSettings::SetFlashAdr;
+    m_ConfigXMLMap["serviceconfig:connectivity:i2c:adress:clampflash"] = i2cSettings::SetClampFlashAdr;
     m_sDeviceNode = defaultI2CDeviceNode;
     m_nAtmelSysAdr = defaultI2CSysAtmelAdress;
     m_nAtmelAdr = defaultI2CAtmelAdress;

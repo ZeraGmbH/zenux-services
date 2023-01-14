@@ -791,10 +791,10 @@ void cZDSP1Server::doConfiguration()
             if (myXMLConfigReader->loadSchema(defaultXSDFile))
             {
                 // we want to initialize all settings first
-                QString xmlConfigTopNode = "zdsp1dconfig";
+                QString xmlConfigTopNode = "serviceconfig";
                 m_pDebugSettings = new cDebugSettings(myXMLConfigReader, xmlConfigTopNode);
                 connect(myXMLConfigReader,SIGNAL(valueChanged(const QString&)),m_pDebugSettings,SLOT(configXMLInfo(const QString&)));
-                m_pETHSettings = new EthSettingsDsp(myXMLConfigReader);
+                m_pETHSettings = new EthSettings(myXMLConfigReader);
                 connect(myXMLConfigReader,SIGNAL(valueChanged(const QString&)),m_pETHSettings,SLOT(configXMLInfo(const QString&)));
                 m_pDspSettings = new cDSPSettings(myXMLConfigReader);
                 connect(myXMLConfigReader,SIGNAL(valueChanged(const QString&)),m_pDspSettings,SLOT(configXMLInfo(const QString&)));
@@ -833,14 +833,14 @@ void cZDSP1Server::doSetupServer()
     myProtonetServer =  new XiQNetServer(this);
     myProtonetServer->setDefaultWrapper(&m_ProtobufWrapper);
     connect(myProtonetServer, SIGNAL(sigClientConnected(XiQNetPeer*)), this, SLOT(establishNewConnection(XiQNetPeer*)));
-    myProtonetServer->startServer(m_pETHSettings->getPort(protobufserver)); // and can start the server now
+    myProtonetServer->startServer(m_pETHSettings->getPort(EthSettings::protobufserver)); // and can start the server now
 
     if (m_pETHSettings->isSCPIactive())
     {
         m_pSCPIServer = new QTcpServer(this);
         m_pSCPIServer->setMaxPendingConnections(1); // we only accept 1 client to connect
         connect(m_pSCPIServer, &QTcpServer::newConnection, this, &cZDSP1Server::setSCPIConnection);
-        m_pSCPIServer->listen(QHostAddress::AnyIPv4, m_pETHSettings->getPort(scpiserver));
+        m_pSCPIServer->listen(QHostAddress::AnyIPv4, m_pETHSettings->getPort(EthSettings::scpiserver));
     }
 
     m_sDspDeviceNode = m_pDspSettings->getDeviceNode(); // we try to open the dsp device
@@ -871,7 +871,7 @@ void cZDSP1Server::doSetupServer()
                     if (setSamplingSystem()) // now we try to set the dsp's sampling system
                     {
                         // our resource mananager connection must be opened after configuration is done
-                        m_pRMConnection = new cRMConnection(m_pETHSettings->getRMIPadr(), m_pETHSettings->getPort(resourcemanager), m_pDebugSettings->getDebugLevel());
+                        m_pRMConnection = new cRMConnection(m_pETHSettings->getRMIPadr(), m_pETHSettings->getPort(EthSettings::resourcemanager), m_pDebugSettings->getDebugLevel());
                         stateconnect2RM->addTransition(m_pRMConnection, SIGNAL(connected()), stateSendRMIdentandRegister);
                         stateconnect2RM->addTransition(m_pRMConnection, SIGNAL(connectionRMError()), stateconnect2RMError);
                         stateconnect2RMError->addTransition(this, SIGNAL(serverSetup()), stateconnect2RM);
@@ -892,7 +892,7 @@ void cZDSP1Server::doSetupServer()
             }
             else // but for debugging purpose dsp is booted by ice
             {
-                m_pRMConnection = new cRMConnection(m_pETHSettings->getRMIPadr(), m_pETHSettings->getPort(resourcemanager), m_pDebugSettings->getDebugLevel());
+                m_pRMConnection = new cRMConnection(m_pETHSettings->getRMIPadr(), m_pETHSettings->getPort(EthSettings::resourcemanager), m_pDebugSettings->getDebugLevel());
                 stateconnect2RM->addTransition(m_pRMConnection, SIGNAL(connected()), stateSendRMIdentandRegister);
                 stateconnect2RM->addTransition(m_pRMConnection, SIGNAL(connectionRMError()), stateconnect2RMError);
                 stateconnect2RMError->addTransition(this, SIGNAL(serverSetup()), stateconnect2RM);
@@ -936,7 +936,7 @@ void cZDSP1Server::doIdentAndRegister()
 {
     m_pRMConnection->SendIdent(sServerName);
 
-    quint32 port = m_pETHSettings->getPort(protobufserver);
+    quint32 port = m_pETHSettings->getPort(EthSettings::protobufserver);
 
     QString cmd, par;
 

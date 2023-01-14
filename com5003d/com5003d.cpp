@@ -18,26 +18,26 @@
 #include "systeminfo.h"
 #include "adjustment.h"
 #include "rmconnection.h"
-#include "micro-controller-io/atmel.h"
-#include "micro-controller-io/atmelwatcher.h"
-#include "scpi-interfaces/frqinputinterface.h"
-#include "scpi-interfaces/hkeyinterface.h"
-#include "scpi-interfaces/samplinginterface.h"
-#include "scpi-interfaces/scheadinterface.h"
-#include "scpi-interfaces/senseinterface.h"
-#include "scpi-interfaces/sourceinterface.h"
-#include "scpi-interfaces/statusinterface.h"
-#include "scpi-interfaces/systeminterface.h"
-#include "settings/debugsettings.h"
-#include "settings/ethsettings.h"
-#include "settings/frqinputsettings.h"
-#include "settings/fpgasettings.h"
-#include "settings/hkeysettings.h"
-#include "settings/i2csettings.h"
-#include "settings/sensesettings.h"
-#include "settings/samplingsettings.h"
-#include "settings/sourcesettings.h"
-#include "settings/scheadsettings.h"
+#include "atmel.h"
+#include "atmelwatcher.h"
+#include "frqinputinterface.h"
+#include "hkeyinterface.h"
+#include "samplinginterface.h"
+#include "scheadinterface.h"
+#include "senseinterface.h"
+#include "sourceinterface.h"
+#include "statusinterface.h"
+#include "systeminterface.h"
+#include "debugsettings.h"
+#include "ethsettings.h"
+#include "frqinputsettings.h"
+#include "fpgasettings.h"
+#include "hkeysettings.h"
+#include "i2csettings.h"
+#include "sensesettings.h"
+#include "samplingsettings.h"
+#include "sourcesettings.h"
+#include "scheadsettings.h"
 
 #ifdef SYSTEMD_NOTIFICATION
 #include <systemd/sd-daemon.h>
@@ -155,10 +155,10 @@ void cCOM5003dServer::doConfiguration()
             write(m_nFPGAfd, &sigStart, 4);
 
             // we want to initialize all settings first
-            QString xmlConfigTopNode = "pcbdconfig";
+            QString xmlConfigTopNode = "serviceconfig";
             m_pDebugSettings = new cDebugSettings(myXMLConfigReader, xmlConfigTopNode);
             connect(myXMLConfigReader,SIGNAL(valueChanged(const QString&)),m_pDebugSettings,SLOT(configXMLInfo(const QString&)));
-            m_pETHSettings = new EthSettingsPcb(myXMLConfigReader);
+            m_pETHSettings = new EthSettings(myXMLConfigReader);
             connect(myXMLConfigReader,SIGNAL(valueChanged(const QString&)),m_pETHSettings,SLOT(configXMLInfo(const QString&)));
             m_pI2CSettings = new cI2CSettings(myXMLConfigReader);
             connect(myXMLConfigReader,SIGNAL(valueChanged(const QString&)),m_pI2CSettings,SLOT(configXMLInfo(const QString&)));
@@ -363,11 +363,11 @@ void cCOM5003dServer::doSetupServer()
 
     initSCPIConnections();
 
-    myServer->startServer(m_pETHSettings->getPort(protobufserver)); // and can start the server now
-    m_pSCPIServer->listen(QHostAddress::AnyIPv4, m_pETHSettings->getPort(scpiserver));
+    myServer->startServer(m_pETHSettings->getPort(EthSettings::protobufserver)); // and can start the server now
+    m_pSCPIServer->listen(QHostAddress::AnyIPv4, m_pETHSettings->getPort(EthSettings::scpiserver));
 
     // our resource mananager connection must be opened after configuration is done
-    m_pRMConnection = new RMConnection(m_pETHSettings->getRMIPadr(), m_pETHSettings->getPort(resourcemanager), m_pDebugSettings->getDebugLevel());
+    m_pRMConnection = new RMConnection(m_pETHSettings->getRMIPadr(), m_pETHSettings->getPort(EthSettings::resourcemanager), m_pDebugSettings->getDebugLevel());
     //connect(m_pRMConnection, SIGNAL(connectionRMError()), this, SIGNAL(abortInit()));
     // so we must complete our state machine here
     m_nRetryRMConnect = 100;
@@ -413,7 +413,7 @@ void cCOM5003dServer::doIdentAndRegister()
     {
         cResource *res = resourceList.at(i);
         connect(m_pRMConnection, SIGNAL(rmAck(quint32)), res, SLOT(resourceManagerAck(quint32)) );
-        res->registerResource(m_pRMConnection, m_pETHSettings->getPort(protobufserver));
+        res->registerResource(m_pRMConnection, m_pETHSettings->getPort(EthSettings::protobufserver));
     }
 #ifdef SYSTEMD_NOTIFICATION
     sd_notify(0, "READY=1");

@@ -6,8 +6,8 @@ cFRQInputSettings::cFRQInputSettings(Zera::XMLConfig::cReader *xmlread)
     m_pXMLReader = xmlread;
     for (int i = 0; i < 4; i++) {
         m_ChannelSettingsList.append(new FRQInputSystem::cChannelSettings);
-        m_ConfigXMLMap[QString("pcbdconfig:resource:frqinput:fi%1:alias").arg(i)] = FRQInputSystem::cfgFin0Alias + i;
-        m_ConfigXMLMap[QString("pcbdconfig:resource:frqinput:fi%1:avail").arg(i)] = FRQInputSystem::cfgFin0avail + i;
+        m_ConfigXMLMap[QString("serviceconfig:resource:frqinput:fi%1:alias").arg(i)] = FRQInputSystem::cfgFin0Alias + i;
+        m_ConfigXMLMap[QString("serviceconfig:resource:frqinput:fi%1:avail").arg(i)] = FRQInputSystem::cfgFin0avail + i;
     }
 }
 

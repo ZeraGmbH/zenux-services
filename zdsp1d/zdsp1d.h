@@ -123,7 +123,7 @@ public:
     int m_nDebugLevel;
 
     cDebugSettings* m_pDebugSettings;
-    EthSettingsDsp* m_pETHSettings;
+    EthSettings* m_pETHSettings;
     cDSPSettings* m_pDspSettings;
 
 signals:

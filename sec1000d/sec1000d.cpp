@@ -19,7 +19,7 @@
 #include "sec1000d.h"
 #include "pcbserver.h"
 #include "debugsettings.h"
-#include "ethsettings.h"
+#include "ethsettingssec.h"
 #include "fpgasettings.h"
 #include "ecalcsettings.h"
 #include "inputsettings.h"
@@ -198,7 +198,7 @@ void cSEC1000dServer::doSetupServer()
 
         initSCPIConnections();
 
-        myServer->startServer(m_pETHSettings->getPort(server)); // and can start the server now
+        myServer->startServer(m_pETHSettings->getPort(EthSettingsSec::protobufserver)); // and can start the server now
 
         mySigAction.sa_handler = &SigHandler; // signal handler einrichten
         sigemptyset(&mySigAction.sa_mask);
@@ -207,7 +207,7 @@ void cSEC1000dServer::doSetupServer()
         sigaction(SIGIO, &mySigAction, NULL); // handler für sigio definieren
         SetFASync();
         // our resource mananager connection must be opened after configuration is done
-        m_pRMConnection = new RMConnection(m_pETHSettings->getRMIPadr(), m_pETHSettings->getPort(resourcemanager), m_pDebugSettings->getDebugLevel());
+        m_pRMConnection = new RMConnection(m_pETHSettings->getRMIPadr(), m_pETHSettings->getPort(EthSettingsSec::resourcemanager), m_pDebugSettings->getDebugLevel());
         //connect(m_pRMConnection, SIGNAL(connectionRMError()), this, SIGNAL(abortInit()));
         // so we must complete our state machine here
         m_nRetryRMConnect = 100;
@@ -254,7 +254,7 @@ void cSEC1000dServer::doIdentAndRegister()
     {
         cResource *res = resourceList.at(i);
         connect(m_pRMConnection, SIGNAL(rmAck(quint32)), res, SLOT(resourceManagerAck(quint32)) );
-        res->registerResource(m_pRMConnection, m_pETHSettings->getPort(server));
+        res->registerResource(m_pRMConnection, m_pETHSettings->getPort(EthSettingsSec::protobufserver));
     }
 
 #ifdef SYSTEMD_NOTIFICATION

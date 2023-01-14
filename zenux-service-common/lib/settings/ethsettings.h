@@ -3,27 +3,25 @@
 
 #include <xmlsettings.h>
 
-enum ethmember
-{
-    protobufserver,
-    scpiserver,
-    resourcemanager
-};
-
-enum ethconfigstate
-{
-    setRMIPAdress,
-    setProtobufServerPort,
-    setSCPIServerPort,
-    setRMPort,
-    setSCPIactive
-};
-
-class EthSettingsPcb : public XMLSettings
+class EthSettings : public XMLSettings
 {
     Q_OBJECT
 public:
-    EthSettingsPcb(Zera::XMLConfig::cReader *xmlread);
+    enum ethmember
+    {
+        protobufserver,
+        scpiserver,
+        resourcemanager
+    };
+    enum ethconfigstate
+    {
+        setRmIpAdress,
+        setProtobufServerPort,
+        setScpiServerPort,
+        setRmPort,
+        setSCPIactive
+    };
+    EthSettings(Zera::XMLConfig::cReader *xmlread);
     QString getRMIPadr();
     quint16 getPort(ethmember member);
     bool isSCPIactive();

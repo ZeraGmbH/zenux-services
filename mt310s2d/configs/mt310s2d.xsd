@@ -234,7 +234,7 @@
 </xs:complexType>
 
 
-<xs:element name="pcbdconfig">
+<xs:element name="serviceconfig">
     <xs:complexType>
         <xs:sequence>
             <xs:element name="connectivity" type="connectivitytype"/>
