@@ -1,6 +1,7 @@
 #include "statusinterface.h"
+#include "sec1000dglobal.h"
 #include "protonetcommand.h"
-
+#include "scpisingletonfactory.h"
 
 cStatusInterface::cStatusInterface() :
     ScpiConnection(ScpiSingletonFactory::getScpiObj(ServerName))

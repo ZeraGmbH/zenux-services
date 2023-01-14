@@ -8,11 +8,13 @@
 #include <scpicommand.h>
 
 #include "sec1000d.h"
+#include "sec1000dglobal.h"
 #include "scpiconnection.h"
 #include "ecalcchannel.h"
 #include "fpgasettings.h"
 #include "inputsettings.h"
 #include "protonetcommand.h"
+#include "scpisingletonfactory.h"
 
 extern void SigHandler(int);
 
