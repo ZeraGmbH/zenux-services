@@ -3,18 +3,19 @@
 
 #include <xmlsettings.h>
 
-namespace HKeySystem
+namespace HKeySystem {
+
+enum configstate
 {
-    enum configstate
-    {
-        cfgHK0Alias,
-        cfgHK0avail,
-    };
-    struct cChannelSettings // what we want to get configured
-    {
-        QString m_sAlias; // the names channel
-        bool avail; // is this channel available ?
-    };
+    cfgHK0Alias,
+    cfgHK0avail,
+};
+
+struct cChannelSettings // what we want to get configured
+{
+    QString m_sAlias; // the names channel
+    bool avail; // is this channel available ?
+};
 }
 
 class cHKeySettings : public XMLSettings

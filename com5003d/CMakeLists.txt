@@ -89,8 +89,12 @@ add_library(com5003d-lib STATIC
     )
 
 target_include_directories(com5003d-lib
-    PRIVATE
-    ${CMAKE_CURRENT_SOURCE_DIR}
+    PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/micro-controller-io>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/scpi-interfaces>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/settings>
     )
 
 if(${Systemd_FOUND})
