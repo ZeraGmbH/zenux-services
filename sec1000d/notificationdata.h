@@ -2,10 +2,10 @@
 #define NOTIFICATIONDATA_H
 
 #include "notificationvalue.h"
-#include <QByteArray>
 #include <xiqnetpeer.h>
+#include <QByteArray>
 
-struct cNotificationData
+struct NotificationStructForSec
 {
     XiQNetPeer *netPeer;
     QByteArray clientID;

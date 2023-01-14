@@ -5,11 +5,11 @@
 #include <xiqnetpeer.h>
 #include <QByteArray>
 
-struct cNotificationData
+struct NotificationStructForPcb
 {
     XiQNetPeer *netPeer;
-    QByteArray clientID;
-    quint16 notifier;
+    QByteArray clientId;
+    quint16 notifierId;
     NotificationString *notString;
 };
 
