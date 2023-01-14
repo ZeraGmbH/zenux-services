@@ -13,10 +13,11 @@
 #include <unistd.h>
 #include <netmessages.pb.h>
 #include <QtDebug>
-
+#include "sec1000dglobal.h"
 #include "protonetcommand.h"
 #include "resource.h"
 #include "scpiconnection.h"
+#include "scpisingletonfactory.h"
 #include "pcbserver.h"
 
 cPCBServer::cPCBServer() :
@@ -26,7 +27,6 @@ cPCBServer::cPCBServer() :
     m_sServerVersion = ServerVersion;
     myXMLConfigReader = new Zera::XMLConfig::cReader();
 }
-
 
 void cPCBServer::initSCPIConnection(QString leadingNodes)
 {
@@ -43,24 +43,20 @@ void cPCBServer::initSCPIConnection(QString leadingNodes)
     connect(delegate, &cSCPIDelegate::execute, this, &cPCBServer::executeCommand);
 }
 
-
 quint32 cPCBServer::getMsgNr()
 {
     return m_msgNumGen.getMsgNr();
 }
-
 
 QString &cPCBServer::getName()
 {
     return m_sServerName;
 }
 
-
 QString &cPCBServer::getVersion()
 {
     return m_sServerVersion;
 }
-
 
 void cPCBServer::setupServer()
 {
@@ -68,7 +64,6 @@ void cPCBServer::setupServer()
     myServer->setDefaultWrapper(&m_ProtobufWrapper);
     connect(myServer,&XiQNetServer::sigClientConnected,this,&cPCBServer::establishNewConnection);
 }
-
 
 void cPCBServer::executeCommand(int cmdCode, cProtonetCommand *protoCmd)
 {
@@ -85,7 +80,6 @@ void cPCBServer::executeCommand(int cmdCode, cProtonetCommand *protoCmd)
     if (protoCmd->m_bwithOutput)
         emit cmdExecutionDone(protoCmd);
 }
-
 
 void cPCBServer::sendAnswerProto(cProtonetCommand *protoCmd)
 {
@@ -138,15 +132,10 @@ void cPCBServer::sendAnswerProto(cProtonetCommand *protoCmd)
 
         protobufAnswer.set_clientid(protoCmd->m_clientId, protoCmd->m_clientId.count());
         protobufAnswer.set_messagenr(protoCmd->m_nmessageNr);
-
         protoCmd->m_pPeer->sendMessage(protobufAnswer);
     }
-
-    else
-
-    {
+    else {
         QByteArray block;
-
         QDataStream out(&block, QIODevice::WriteOnly);
         out.setVersion(QDataStream::Qt_4_0);
         out << (qint32)0;
@@ -154,13 +143,10 @@ void cPCBServer::sendAnswerProto(cProtonetCommand *protoCmd)
         out << protoCmd->m_sOutput.toUtf8();
         out.device()->seek(0);
         out << (qint32)(block.size() - sizeof(qint32));
-
         protoCmd->m_pPeer->getTcpSocket()->write(block);
     }
-
     delete protoCmd;
 }
-
 
 void cPCBServer::registerNotifier(cProtonetCommand *protoCmd)
 {
@@ -316,14 +302,12 @@ void cPCBServer::asyncHandler(quint32 irqreg)
 
                         notData.netPeer->getTcpSocket()->write(block);
                     }
-                    else
-                    {
+                    else {
                         intMessage->set_body(s.toStdString());
                         intMessage->set_rtype(ProtobufMessage::NetMessage_NetReply_ReplyType_ACK);
                         QByteArray id = notData.clientID;
                         protobufIntMessage.set_clientid(id, id.count());
                         protobufIntMessage.set_messagenr(0); // interrupt
-
                         notData.netPeer->sendMessage(protobufIntMessage);
                     }
                 }
@@ -331,13 +315,11 @@ void cPCBServer::asyncHandler(quint32 irqreg)
     }
 }
 
-
 void cPCBServer::notifyPeerConnectionClosed()
 {
     XiQNetPeer *peer = qobject_cast<XiQNetPeer*>(QObject::sender());
     doUnregisterNotifier(peer);
 }
-
 
 void cPCBServer::initSCPIConnections()
 {
@@ -348,5 +330,3 @@ void cPCBServer::initSCPIConnections()
         connect(scpiConnectionList.at(i), &ScpiConnection::cmdExecutionDone, this, &cPCBServer::sendAnswerProto);
     }
 }
-
-

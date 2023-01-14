@@ -1,7 +1,9 @@
 #include "ecalcinterface.h"
+#include "sec1000dglobal.h"
 #include "scpiconnection.h"
 #include "sec1000d.h"
 #include "protonetcommand.h"
+#include "scpisingletonfactory.h"
 #include <scpi.h>
 #include <xmlsettings.h>
 
