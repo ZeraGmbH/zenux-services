@@ -48,23 +48,20 @@ QString& cI2CSettings::getDeviceNode()
 
 void cI2CSettings::configXMLInfo(QString key)
 {
-    bool ok;
-
-    if (m_ConfigXMLMap.contains(key))
-    {
+    if (m_ConfigXMLMap.contains(key)) {
         switch (m_ConfigXMLMap[key])
         {
         case i2cSettings::SetDevNode:
             m_sDeviceNode = m_pXMLReader->getValue(key);
             break;
         case i2cSettings::SetMasterAdr:
-            m_nMasterAdr = m_pXMLReader->getValue(key).toInt(&ok);
+            m_nMasterAdr = m_pXMLReader->getValue(key).toInt();
             break;
         case i2cSettings::SetAtmelAdr:
-            m_nAtmelAdr = m_pXMLReader->getValue(key).toInt(&ok);
+            m_nAtmelAdr = m_pXMLReader->getValue(key).toInt();
             break;
         case i2cSettings::SetFlashAdr:
-            m_nFlashAdr = m_pXMLReader->getValue(key).toInt(&ok);
+            m_nFlashAdr = m_pXMLReader->getValue(key).toInt();
             break;
         }
     }
