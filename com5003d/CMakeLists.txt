@@ -9,7 +9,6 @@ set(SOURCES
     scpi-interfaces/statusinterface.cpp
     scpi-interfaces/systeminterface.cpp
     settings/i2csettings.cpp
-    settings/samplingsettings.cpp
     settings/scheadsettings.cpp
     settings/sensesettings.cpp
     settings/sourcesettings.cpp
@@ -39,7 +38,6 @@ set(HEADER
     scpi-interfaces/statusinterface.h
     scpi-interfaces/systeminterface.h
     settings/i2csettings.h
-    settings/samplingsettings.h
     settings/scheadsettings.h
     settings/sensesettings.h
     settings/sourcesettings.h
