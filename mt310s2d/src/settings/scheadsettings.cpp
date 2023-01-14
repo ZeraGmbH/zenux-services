@@ -1,5 +1,4 @@
 #include "scheadsettings.h"
-#include <xmlconfigreader.h>
 
 cSCHeadSettings::cSCHeadSettings(Zera::XMLConfig::cReader *xmlread)
 {
@@ -13,9 +12,8 @@ cSCHeadSettings::cSCHeadSettings(Zera::XMLConfig::cReader *xmlread)
 
 cSCHeadSettings::~cSCHeadSettings()
 {
-    for(auto channel : m_ChannelSettingsList) {
+    for(auto channel : qAsConst(m_ChannelSettingsList))
         delete channel;
-    }
 }
 
 QList<SCHeadSystem::cChannelSettings*> &cSCHeadSettings::getChannelSettings()
@@ -29,10 +27,10 @@ void cSCHeadSettings::configXMLInfo(QString key)
         switch (m_ConfigXMLMap[key])
         {
         case SCHeadSystem::cfgSH0Alias:
-            m_ChannelSettingsList.at(0)->m_sAlias = m_pXMLReader->getValue(key);
+            m_ChannelSettingsList.at(0)->m_alias = m_pXMLReader->getValue(key);
             break;
         case SCHeadSystem::cfgSH0avail:
-            m_ChannelSettingsList.at(0)->avail = (m_pXMLReader->getValue(key) == "true");
+            m_ChannelSettingsList.at(0)->m_avail = (m_pXMLReader->getValue(key) == "true");
             break;
         }
     }

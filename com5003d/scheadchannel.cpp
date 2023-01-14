@@ -14,8 +14,8 @@ cSCHeadChannel::cSCHeadChannel(cSCPI *scpiinterface, QString description, quint8
     m_sDescription(description)
 {
     m_sName = QString("sh%1").arg(nr);
-    m_sAlias = cSettings->m_sAlias;
-    m_bAvail = cSettings->avail;
+    m_sAlias = cSettings->m_alias;
+    m_bAvail = cSettings->m_avail;
 }
 
 
