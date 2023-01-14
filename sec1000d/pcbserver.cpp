@@ -172,7 +172,7 @@ void cPCBServer::registerNotifier(cProtonetCommand *protoCmd)
             cNotificationData notData;
             notData.netPeer = protoCmd->m_pPeer;
             notData.clientID = protoCmd->m_clientId;
-            connect(notData.netPeer, &XiQNetPeer::sigConnectionClosed, this, &cPCBServer::peerConnectionClosed);
+            connect(notData.netPeer, &XiQNetPeer::sigConnectionClosed, this, &cPCBServer::notifyPeerConnectionClosed);
             m_notifierRegisterNext.append(notData); // we wait for a notifier signal
 
             cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
@@ -341,7 +341,7 @@ void cPCBServer::asyncHandler(quint32 irqreg)
 }
 
 
-void cPCBServer::peerConnectionClosed()
+void cPCBServer::notifyPeerConnectionClosed()
 {
     XiQNetPeer *peer = qobject_cast<XiQNetPeer*>(QObject::sender());
     doUnregisterNotifier(peer);
