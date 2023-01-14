@@ -3,8 +3,8 @@
 
 #include <xmlsettings.h>
 
-namespace HKeySystem
-{
+namespace HKeySystem {
+
 enum configstate
 {
     cfgHK0Alias,
@@ -21,16 +21,12 @@ struct cChannelSettings // what we want to get configured
 class cHKeySettings : public XMLSettings
 {
     Q_OBJECT
-
 public:
     cHKeySettings(Zera::XMLConfig::cReader *xmlread);
     ~cHKeySettings();
     QList<HKeySystem::cChannelSettings*>& getChannelSettings();
-
-
 public slots:
     virtual void configXMLInfo(QString key);
-
 private:
     QList<HKeySystem::cChannelSettings*> m_ChannelSettingsList;
 };

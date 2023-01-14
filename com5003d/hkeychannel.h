@@ -1,9 +1,8 @@
 #ifndef HKEYCHANNEL_H
 #define HKEYCHANNEL_H
 
-#include <QObject>
-
 #include "scpiconnection.h"
+#include "hkeysettings.h"
 
 namespace HKEYChannel
 {

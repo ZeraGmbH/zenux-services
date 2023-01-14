@@ -1,19 +1,14 @@
 #include "hkeysettings.h"
-#include <xmlconfigreader.h>
-#include <QList>
-#include <QVariant>
 
 cHKeySettings::cHKeySettings(Zera::XMLConfig::cReader *xmlread)
 {
     m_pXMLReader = xmlread;
-    for (int i = 0; i < 1; i++)
-    {
+    for (int i = 0; i < 1; i++) {
         m_ChannelSettingsList.append(new HKeySystem::cChannelSettings);
         m_ConfigXMLMap[QString("mt310s2dconfig:resource:hkey:hk%1:alias").arg(i)] = HKeySystem::cfgHK0Alias + i;
         m_ConfigXMLMap[QString("mt310s2dconfig:resource:hkey:hk%1:avail").arg(i)] = HKeySystem::cfgHK0avail + i;
     }
 }
-
 
 cHKeySettings::~cHKeySettings()
 {
@@ -27,11 +22,9 @@ QList<HKeySystem::cChannelSettings*> &cHKeySettings::getChannelSettings()
     return m_ChannelSettingsList;
 }
 
-
 void cHKeySettings::configXMLInfo(QString key)
 {
-    if (m_ConfigXMLMap.contains(key))
-    {
+    if (m_ConfigXMLMap.contains(key)) {
         switch (m_ConfigXMLMap[key])
         {
         case HKeySystem::cfgHK0Alias:
