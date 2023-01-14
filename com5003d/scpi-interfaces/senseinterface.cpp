@@ -14,9 +14,9 @@
 #include "senserange.h"
 #include "adjflash.h"
 #include "protonetcommand.h"
-#include "micro-controller-io/atmel.h"
-#include "settings/ethsettings.h"
-#include "settings/sensesettings.h"
+#include "atmel.h"
+#include "ethsettings.h"
+#include "sensesettings.h"
 #include <xmlsettings.h>
 
 
@@ -784,9 +784,7 @@ void cSenseInterface::registerSense()
             list.at(j)->setAvail( !list.at(j)->getAvail()); // we only toggle the ranges avail
 
     }
-
-    registerResource(m_pMyServer->m_pRMConnection, m_pMyServer->m_pETHSettings->getPort(protobufserver));
-
+    registerResource(m_pMyServer->m_pRMConnection, m_pMyServer->m_pETHSettings->getPort(EthSettings::protobufserver));
 }
 
 

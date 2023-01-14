@@ -6,8 +6,8 @@ cSCHeadSettings::cSCHeadSettings(Zera::XMLConfig::cReader *xmlread)
     m_pXMLReader = xmlread;
     for (int i = 0; i < 1; i++) {
         m_ChannelSettingsList.append(new SCHeadSystem::cChannelSettings);
-        m_ConfigXMLMap[QString("pcbdconfig:resource:schead:sh%1:alias").arg(i)] = SCHeadSystem::cfgSH0Alias + i;
-        m_ConfigXMLMap[QString("pcbdconfig:resource:schead:sh%1:avail").arg(i)] = SCHeadSystem::cfgSH0avail + i;
+        m_ConfigXMLMap[QString("serviceconfig:resource:schead:sh%1:alias").arg(i)] = SCHeadSystem::cfgSH0Alias + i;
+        m_ConfigXMLMap[QString("serviceconfig:resource:schead:sh%1:avail").arg(i)] = SCHeadSystem::cfgSH0avail + i;
     }
 }
 

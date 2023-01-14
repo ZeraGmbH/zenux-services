@@ -51,7 +51,7 @@ public:
     cDebugSettings* m_pDebugSettings;
     cFPGASettings* m_pFPGASettings;
     cI2CSettings* m_pI2CSettings;
-    EthSettingsPcb* m_pETHSettings;
+    EthSettings* m_pETHSettings;
     cSenseSettings* m_pSenseSettings;
     cSamplingSettings* m_pSamplingSettings;
     cSourceSettings* m_pSourceSettings;

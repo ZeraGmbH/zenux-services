@@ -13,7 +13,6 @@ set(SOURCES
     src/scpi-interfaces/statusinterface.cpp
     src/scpi-interfaces/systeminterface.cpp
     src/settings/ctrlsettings.cpp
-    src/settings/ethsettings.cpp
     src/settings/i2csettings.cpp
     src/settings/samplingsettings.cpp
     src/settings/scheadsettings.cpp
@@ -53,7 +52,6 @@ set(HEADER
     src/scpi-interfaces/statusinterface.h
     src/scpi-interfaces/systeminterface.h
     src/settings/ctrlsettings.h
-    src/settings/ethsettings.h
     src/settings/i2csettings.h
     src/settings/samplingsettings.h
     src/settings/scheadsettings.h

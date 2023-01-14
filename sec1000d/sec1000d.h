@@ -8,7 +8,7 @@
 
 #include "pcbserver.h"
 #include "rmconnection.h"
-#include "ethsettings.h"
+#include "ethsettingssec.h"
 
 class QStateMachine;
 class QState;

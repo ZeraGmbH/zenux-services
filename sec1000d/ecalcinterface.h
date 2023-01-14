@@ -5,7 +5,7 @@
 #include "scpiconnection.h"
 #include "ecalcchannel.h"
 #include "notificationvalue.h"
-#include "ethsettings.h"
+#include "ethsettingssec.h"
 #include <QObject>
 #include <QList>
 #include <QHash>

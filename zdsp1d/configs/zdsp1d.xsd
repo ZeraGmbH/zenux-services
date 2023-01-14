@@ -135,7 +135,7 @@
         </xs:complexType>
 
 
-	<xs:element name="zdsp1dconfig">
+	<xs:element name="serviceconfig">
 		<xs:complexType>
 			<xs:sequence>
 				<xs:element name="connectivity" type="connectivitytype"/>

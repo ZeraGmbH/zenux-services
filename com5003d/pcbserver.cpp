@@ -3,7 +3,7 @@
 #include "protonetcommand.h"
 #include "resource.h"
 #include "scpiconnection.h"
-#include "settings/ethsettings.h"
+#include "ethsettings.h"
 #include <xiqnetpeer.h>
 #include <xmlconfigreader.h>
 #include <xiqnetserver.h>
