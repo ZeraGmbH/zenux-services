@@ -2,20 +2,21 @@
 #define SCHEADSETTINGS_H
 
 #include <xmlsettings.h>
-#include <QString>
 
-namespace SCHeadSystem
+namespace SCHeadSystem {
+
+enum configstate
 {
-    enum configstate
-    {
-        cfgSH0Alias,
-        cfgSH0avail,
-    };
-    struct cChannelSettings // what we want to get configured
-    {
-        QString m_sAlias; // the names channel
-        bool avail; // is this channel available ?
-    };
+    cfgSH0Alias,
+    cfgSH0avail,
+};
+
+struct cChannelSettings // what we want to get configured
+{
+    QString m_alias; // the names channel
+    bool m_avail;    // is this channel available ?
+};
+
 }
 
 class cSCHeadSettings : public XMLSettings
