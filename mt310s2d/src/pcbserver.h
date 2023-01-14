@@ -165,7 +165,7 @@ private slots:
     void executeCommandProto(std::shared_ptr<google::protobuf::Message> cmd);
     virtual void establishNewNotifier(NotificationString* notifier);
     virtual void asyncHandler();
-    virtual void peerConnectionClosed();
+    virtual void notifyPeerConnectionClosed();
 };
 
 #endif // PCBSERVER_H

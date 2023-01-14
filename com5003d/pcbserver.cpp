@@ -250,9 +250,9 @@ void cPCBServer::registerNotifier(cProtonetCommand *protoCmd)
         if(scpiObject) {
             cNotificationData notData;
             notData.netPeer = protoCmd->m_pPeer;
-            notData.clientID = protoCmd->m_clientId;
-            notData.notifier = cmd.getParam(1).toInt();
-            connect(notData.netPeer, &XiQNetPeer::sigConnectionClosed, this, &cPCBServer::peerConnectionClosed);
+            notData.clientId = protoCmd->m_clientId;
+            notData.notifierId = cmd.getParam(1).toInt();
+            connect(notData.netPeer, &XiQNetPeer::sigConnectionClosed, this, &cPCBServer::notifyPeerConnectionClosed);
             m_notifierRegisterNext.append(notData); // we wait for a notifier signal
 
             cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
@@ -292,7 +292,7 @@ void cPCBServer::doUnregisterNotifier(XiQNetPeer* peer, const QByteArray &client
             cNotificationData notData = m_notifierRegisterList.at(i);
             if(peer == notData.netPeer) {
                 // we found the client
-                if(clientID.isEmpty() || notData.clientID.isEmpty() || (notData.clientID == clientID)) {
+                if(clientID.isEmpty() || notData.clientId.isEmpty() || (notData.clientId == clientID)) {
                     m_notifierRegisterList.removeAt(i);
                 }
             }
@@ -385,8 +385,8 @@ void cPCBServer::asyncHandler()
                 if (notData.notString == notifier)
                 {
                     ProtobufMessage::NetMessage::NetReply *intMessage = protobufIntMessage.mutable_reply();
-                    QString s = QString("Notify:%1").arg(notData.notifier);
-                    if (notData.clientID.isEmpty()) // old style communication
+                    QString s = QString("Notify:%1").arg(notData.notifierId);
+                    if (notData.clientId.isEmpty()) // old style communication
                     {
                         QByteArray block;
 
@@ -404,7 +404,7 @@ void cPCBServer::asyncHandler()
                     {
                         intMessage->set_body(s.toStdString());
                         intMessage->set_rtype(ProtobufMessage::NetMessage_NetReply_ReplyType_ACK);
-                        QByteArray id = notData.clientID;
+                        QByteArray id = notData.clientId;
                         protobufIntMessage.set_clientid(id, id.count());
                         protobufIntMessage.set_messagenr(0); // interrupt
 
@@ -415,7 +415,7 @@ void cPCBServer::asyncHandler()
     }
 }
 
-void cPCBServer::peerConnectionClosed()
+void cPCBServer::notifyPeerConnectionClosed()
 {
     XiQNetPeer *peer = qobject_cast<XiQNetPeer*>(QObject::sender());
     doUnregisterNotifier(peer);

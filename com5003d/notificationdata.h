@@ -9,8 +9,8 @@
 struct cNotificationData
 {
     XiQNetPeer *netPeer;
-    QByteArray clientID;
-    quint16 notifier;
+    QByteArray clientId;
+    quint16 notifierId;
     NotificationString *notString;
 };
 
