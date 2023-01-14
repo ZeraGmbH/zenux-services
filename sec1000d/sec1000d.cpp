@@ -137,7 +137,7 @@ void cSEC1000dServer::doConfiguration()
             connect(m_pNotifier, SIGNAL(activated(int)), this, SLOT(SECIntHandler(int)));
             if (myXMLConfigReader->loadSchema(defaultXSDFile))
             {
-                QString xmlConfigTopNode = "sec1000dconfig";
+                QString xmlConfigTopNode = "serviceconfig";
                 // we want to initialize all settings first
                 m_pDebugSettings = new cDebugSettings(myXMLConfigReader, xmlConfigTopNode);
                 connect(myXMLConfigReader,SIGNAL(valueChanged(const QString&)),m_pDebugSettings,SLOT(configXMLInfo(const QString&)));

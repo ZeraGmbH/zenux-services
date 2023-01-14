@@ -6,9 +6,9 @@ cECalculatorSettings::cECalculatorSettings(Zera::XMLConfig::cReader *xmlread)
 {
     m_pXMLReader = xmlread;
 
-    m_ConfigXMLMap[QString("sec1000dconfig:resource:ecalcchannel:n")] = ECalculatorSystem::setnumber;
-    m_ConfigXMLMap[QString("sec1000dconfig:resource:ecalcchannel:base")] = ECalculatorSystem::setbaseadress;
-    m_ConfigXMLMap[QString("sec1000dconfig:resource:ecalcchannel:irqbase")] = ECalculatorSystem::setirqadress;
+    m_ConfigXMLMap[QString("serviceconfig:resource:ecalcchannel:n")] = ECalculatorSystem::setnumber;
+    m_ConfigXMLMap[QString("serviceconfig:resource:ecalcchannel:base")] = ECalculatorSystem::setbaseadress;
+    m_ConfigXMLMap[QString("serviceconfig:resource:ecalcchannel:irqbase")] = ECalculatorSystem::setirqadress;
 }
 
 

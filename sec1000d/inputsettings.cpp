@@ -7,7 +7,7 @@ cInputSettings::cInputSettings(Zera::XMLConfig::cReader *xmlread)
 {
     m_pXMLReader = xmlread;
 
-    m_ConfigXMLMap[QString("sec1000dconfig:connectivity:inputs:n")] = InputSettings::setnumber;
+    m_ConfigXMLMap[QString("serviceconfig:connectivity:inputs:n")] = InputSettings::setnumber;
     // for the inputs we generate new entries dynamically
 }
 
@@ -38,8 +38,8 @@ void cInputSettings::configXMLInfo(QString key)
             m_nCount = m_pXMLReader->getValue(key).toInt(&ok);
             for (int i = 0; i < m_nCount; i++)
             {
-                m_ConfigXMLMap[QString("sec1000dconfig:connectivity:inputs:inp%1:name").arg(i+1)] = InputSettings::setinputname1+i;
-                m_ConfigXMLMap[QString("sec1000dconfig:connectivity:inputs:inp%1:muxer").arg(i+1)] = InputSettings::setinputmuxer1+i;
+                m_ConfigXMLMap[QString("serviceconfig:connectivity:inputs:inp%1:name").arg(i+1)] = InputSettings::setinputname1+i;
+                m_ConfigXMLMap[QString("serviceconfig:connectivity:inputs:inp%1:muxer").arg(i+1)] = InputSettings::setinputmuxer1+i;
 
             }
         }
