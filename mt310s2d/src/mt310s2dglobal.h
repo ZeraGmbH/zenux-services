@@ -22,8 +22,6 @@ enum DebugLevel {NoDebug, DebugLevel1, DebugLevel2, DebugLevel3 = 4, MaxDebugLev
 #define defaultCTRLDeviceNode "/dev/zFPGA1ctrl"
 #define defaultI2CDeviceNode "/dev/i2c-3"
 #define defaultProtoBufServerPort 6307
-#define defaultSCPIServerPort 6308
-#define defaultRMPort 6312
 #define defaultI2CSysAtmelAdress 0x22
 #define defaultI2CAtmelAdress 0x21
 #define defaultI2CFlashMuxAdress 0x71

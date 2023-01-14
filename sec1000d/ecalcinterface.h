@@ -5,6 +5,7 @@
 #include "scpiconnection.h"
 #include "ecalcchannel.h"
 #include "notificationvalue.h"
+#include "ethsettings.h"
 #include <QObject>
 #include <QList>
 #include <QHash>
@@ -26,7 +27,6 @@ enum Commands
 }
 
 class cSEC1000dServer;
-class cETHSettings;
 class cECalculatorChannel;
 class cECalculatorSettings;
 class cFPGASettings;
@@ -39,7 +39,7 @@ class cECalculatorInterface : public cResource
     Q_OBJECT
 
 public:
-    cECalculatorInterface(cSEC1000dServer* server, cETHSettings* ethsettings, cECalculatorSettings* ecalcSettings, cFPGASettings* fpgasettings, cInputSettings* inputsettings);
+    cECalculatorInterface(cSEC1000dServer* server, EthSettingsSec* ethsettings, cECalculatorSettings* ecalcSettings, cFPGASettings* fpgasettings, cInputSettings* inputsettings);
     ~cECalculatorInterface();
     void initSCPIConnection(QString leadingNodes) override;
     virtual void registerResource(RMConnection *rmConnection, quint16 port) override;
@@ -51,7 +51,7 @@ protected slots:
 
 private:
     cSEC1000dServer* m_pMyServer;
-    cETHSettings* m_pETHsettings;
+    EthSettingsSec* m_pETHsettings;
     cECalculatorSettings* m_pecalcsettings;
     cFPGASettings* m_pFPGASettings;
     cInputSettings* m_pInputSettings;

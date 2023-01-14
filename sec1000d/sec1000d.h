@@ -8,13 +8,13 @@
 
 #include "pcbserver.h"
 #include "rmconnection.h"
+#include "ethsettings.h"
 
 class QStateMachine;
 class QState;
 class QSocketNotifier;
 class cDebugSettings;
 class cFPGASettings;
-class cETHSettings;
 class cECalculatorSettings;
 class cInputSettings;
 class cStatusInterface;
@@ -34,7 +34,7 @@ public:
 
     cDebugSettings* m_pDebugSettings;
     cFPGASettings* m_pFPGASettings;
-    cETHSettings* m_pETHSettings;
+    EthSettingsSec* m_pETHSettings;
     cECalculatorSettings* m_pECalcSettings;
     cInputSettings* m_pInputSettings;
 

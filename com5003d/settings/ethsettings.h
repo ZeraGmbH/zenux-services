@@ -2,7 +2,6 @@
 #define ETHSETTINGS_H
 
 #include <xmlsettings.h>
-#include <xmlconfigreader.h>
 
 enum ethmember
 {
@@ -20,11 +19,11 @@ enum ethconfigstate
     setSCPIactive
 };
 
-class cETHSettings : public XMLSettings
+class EthSettingsPcb : public XMLSettings
 {
     Q_OBJECT
 public:
-    cETHSettings(Zera::XMLConfig::cReader *xmlread);
+    EthSettingsPcb(Zera::XMLConfig::cReader *xmlread);
     QString getRMIPadr();
     quint16 getPort(ethmember member);
     bool isSCPIactive();
@@ -35,7 +34,5 @@ private:
     quint16 m_nProtobufServerPort, m_nSCPIServerPort, m_nRMPort;
     bool m_bSCPIactive;
 };
-
-
 
 #endif // ETHSETTINGS_H

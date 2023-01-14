@@ -16,12 +16,12 @@ enum ethconfigstate
     setRMPort
 };
 
-class cETHSettings : public XMLSettings
+class EthSettingsSec : public XMLSettings
 {
     Q_OBJECT
 
 public:
-    cETHSettings(Zera::XMLConfig::cReader *xmlread);
+    EthSettingsSec(Zera::XMLConfig::cReader *xmlread);
     QString getRMIPadr();
     quint16 getPort(ethmember member);
 

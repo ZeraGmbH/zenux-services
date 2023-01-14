@@ -174,8 +174,8 @@ void cMT310S2dServer::doConfiguration()
                 // we want to initialize all settings first
                 m_pDebugSettings = new cDebugSettings(myXMLConfigReader, xmlConfigTopNode);
                 connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pDebugSettings,&cDebugSettings::configXMLInfo);
-                m_pETHSettings = new cETHSettings(myXMLConfigReader);
-                connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pETHSettings,&cETHSettings::configXMLInfo);
+                m_pETHSettings = new EthSettingsPcb(myXMLConfigReader);
+                connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pETHSettings,&EthSettingsPcb::configXMLInfo);
                 m_pI2CSettings = new cI2CSettings(myXMLConfigReader);
                 connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pI2CSettings,&cI2CSettings::configXMLInfo);
                 m_pFPGASettings = new cFPGASettings(myXMLConfigReader, xmlConfigTopNode);

@@ -794,7 +794,7 @@ void cZDSP1Server::doConfiguration()
                 QString xmlConfigTopNode = "zdsp1dconfig";
                 m_pDebugSettings = new cDebugSettings(myXMLConfigReader, xmlConfigTopNode);
                 connect(myXMLConfigReader,SIGNAL(valueChanged(const QString&)),m_pDebugSettings,SLOT(configXMLInfo(const QString&)));
-                m_pETHSettings = new cETHSettings(myXMLConfigReader);
+                m_pETHSettings = new EthSettingsDsp(myXMLConfigReader);
                 connect(myXMLConfigReader,SIGNAL(valueChanged(const QString&)),m_pETHSettings,SLOT(configXMLInfo(const QString&)));
                 m_pDspSettings = new cDSPSettings(myXMLConfigReader);
                 connect(myXMLConfigReader,SIGNAL(valueChanged(const QString&)),m_pDspSettings,SLOT(configXMLInfo(const QString&)));
