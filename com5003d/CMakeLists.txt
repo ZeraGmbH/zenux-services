@@ -10,7 +10,6 @@ set(SOURCES
     scpi-interfaces/systeminterface.cpp
     settings/ethsettings.cpp
     settings/frqinputsettings.cpp
-    settings/hkeysettings.cpp
     settings/i2csettings.cpp
     settings/samplingsettings.cpp
     settings/scheadsettings.cpp
@@ -43,7 +42,6 @@ set(HEADER
     scpi-interfaces/systeminterface.h
     settings/ethsettings.h
     settings/frqinputsettings.h
-    settings/hkeysettings.h
     settings/i2csettings.h
     settings/samplingsettings.h
     settings/scheadsettings.h

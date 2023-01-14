@@ -5,7 +5,7 @@
 cCtrlSettings::cCtrlSettings(Zera::XMLConfig::cReader *xmlread)
 {
     m_pXMLReader = xmlread;
-    m_ConfigXMLMap["mt310s2dconfig:connectivity:ctrl:device:node"] = CTRLSettings::setCTRLDevNode;
+    m_ConfigXMLMap["pcbdconfig:connectivity:ctrl:device:node"] = CTRLSettings::setCTRLDevNode;
     m_sDeviceNode = defaultCTRLDeviceNode;
 }
 

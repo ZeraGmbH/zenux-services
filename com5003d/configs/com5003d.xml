@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 
-<com5003dconfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<pcbdconfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 
 
 <connectivity>
@@ -155,4 +155,4 @@
     </hkey>
 </resource>
 
-</com5003dconfig> 
+</pcbdconfig>

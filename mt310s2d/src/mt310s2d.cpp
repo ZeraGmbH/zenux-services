@@ -170,7 +170,7 @@ void cMT310S2dServer::doConfiguration()
 
             if (myXMLConfigReader->loadSchema(defaultXSDFile))
             {
-                QString xmlConfigTopNode = "mt310s2dconfig";
+                QString xmlConfigTopNode = "pcbdconfig";
                 // we want to initialize all settings first
                 m_pDebugSettings = new cDebugSettings(myXMLConfigReader, xmlConfigTopNode);
                 connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pDebugSettings,&cDebugSettings::configXMLInfo);
