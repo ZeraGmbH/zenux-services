@@ -3,8 +3,8 @@
 
 #include <xmlsettings.h>
 
-namespace FRQInputSystem
-{
+namespace FRQInputSystem {
+
 enum configstate
 {
     cfgFin0Alias,
@@ -22,24 +22,20 @@ struct cChannelSettings // what we want to get configured
     QString m_sAlias; // the names channel
     bool avail; // is this channel available ?
 };
+
 }
 
 class cFRQInputSettings : public XMLSettings
 {
     Q_OBJECT
-
 public:
     cFRQInputSettings(Zera::XMLConfig::cReader *xmlread);
     ~cFRQInputSettings();
     QList<FRQInputSystem::cChannelSettings*>& getChannelSettings();
-
-
 public slots:
     virtual void configXMLInfo(QString key);
-
 private:
     QList<FRQInputSystem::cChannelSettings*> m_ChannelSettingsList;
 };
-
 
 #endif // FRQINPUTSETTINGS_H

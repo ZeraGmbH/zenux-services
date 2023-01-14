@@ -13,7 +13,7 @@ cFRQInputSettings::cFRQInputSettings(Zera::XMLConfig::cReader *xmlread)
 
 cFRQInputSettings::~cFRQInputSettings()
 {
-    for(auto channel : m_ChannelSettingsList) {
+    for(auto channel : qAsConst(m_ChannelSettingsList)) {
         delete channel;
     }
 }

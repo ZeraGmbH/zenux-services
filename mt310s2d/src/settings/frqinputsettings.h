@@ -2,12 +2,9 @@
 #define FRQINPUTSETTINGS_H
 
 #include <xmlsettings.h>
-#include <QObject>
-#include <QList>
-#include <QString>
 
-namespace FRQInputSystem
-{
+namespace FRQInputSystem {
+
 enum configstate
 {
     cfgFin0Alias,
@@ -25,6 +22,7 @@ struct cChannelSettings // what we want to get configured
     QString m_sAlias; // the names channel
     bool avail; // is this channel available ?
 };
+
 }
 
 class cFRQInputSettings : public XMLSettings
