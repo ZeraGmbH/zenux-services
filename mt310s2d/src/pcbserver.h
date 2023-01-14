@@ -9,6 +9,7 @@
 #include "debugsettings.h"
 #include "fpgasettings.h"
 #include "ctrlsettings.h"
+#include "ethsettings.h"
 #include <scpi.h>
 #include <xiqnetwrapper.h>
 #include <netmessages.pb.h>
@@ -31,7 +32,6 @@ enum commands
 class cStatusInterface;  // forward
 class cCtrlSettings;
 class cI2CSettings;
-class cETHSettings;
 class cFRQInputSettings;
 class cSCHeadSettings;
 class cHKeySettings;
@@ -54,7 +54,7 @@ public:
     cFPGASettings* m_pFPGASettings;
     cCtrlSettings* m_pCtrlSettings;
     cI2CSettings* m_pI2CSettings;
-    cETHSettings* m_pETHSettings;
+    EthSettingsPcb* m_pETHSettings;
     cSenseSettings* m_pSenseSettings;
     cSamplingSettings* m_pSamplingSettings;
     cSourceSettings* m_pSourceSettings;

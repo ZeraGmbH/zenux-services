@@ -16,8 +16,6 @@ enum DebugLevel {NoDebug, DebugLevel1, DebugLevel2, DebugLevel3 = 4, MaxDebugLev
 #define ServerVersion "V1.00"
 #define MaxClients 80
 #define defaultDebugLevel NoDebug
-#define defaultServerPort 6320
-#define defaultRMPort 6312
 #define defaultXSDFile "/etc/zera/sec1000d/sec1000d.xsd"
 
 enum ServerErrors

@@ -158,7 +158,7 @@ void cCOM5003dServer::doConfiguration()
             QString xmlConfigTopNode = "pcbdconfig";
             m_pDebugSettings = new cDebugSettings(myXMLConfigReader, xmlConfigTopNode);
             connect(myXMLConfigReader,SIGNAL(valueChanged(const QString&)),m_pDebugSettings,SLOT(configXMLInfo(const QString&)));
-            m_pETHSettings = new cETHSettings(myXMLConfigReader);
+            m_pETHSettings = new EthSettingsPcb(myXMLConfigReader);
             connect(myXMLConfigReader,SIGNAL(valueChanged(const QString&)),m_pETHSettings,SLOT(configXMLInfo(const QString&)));
             m_pI2CSettings = new cI2CSettings(myXMLConfigReader);
             connect(myXMLConfigReader,SIGNAL(valueChanged(const QString&)),m_pI2CSettings,SLOT(configXMLInfo(const QString&)));

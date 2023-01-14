@@ -20,12 +20,12 @@ enum ethconfigstate
     setSCPIactive
 };
 
-class cETHSettings : public XMLSettings
+class EthSettingsDsp : public XMLSettings
 {
     Q_OBJECT
 
 public:
-    cETHSettings(Zera::XMLConfig::cReader *xmlread);
+    EthSettingsDsp(Zera::XMLConfig::cReader *xmlread);
     QString getRMIPadr();
     quint16 getPort(ethmember member);
     bool isSCPIactive();

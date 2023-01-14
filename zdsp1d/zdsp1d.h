@@ -22,6 +22,7 @@
 #include "zhserver.h"
 #include "dsp.h"
 #include "rmconnection.h"
+#include "ethsettings.h"
 
 
 typedef QVector<float> tDspMemArray;
@@ -31,7 +32,6 @@ class QStateMachine;
 class QState;
 class cZDSP1Server; // forward
 class cDebugSettings;
-class cETHSettings;
 class cDSPSettings;
 class QTcpServer;
 class QTcpSocket;
@@ -123,7 +123,7 @@ public:
     int m_nDebugLevel;
 
     cDebugSettings* m_pDebugSettings;
-    cETHSettings* m_pETHSettings;
+    EthSettingsDsp* m_pETHSettings;
     cDSPSettings* m_pDspSettings;
 
 signals:

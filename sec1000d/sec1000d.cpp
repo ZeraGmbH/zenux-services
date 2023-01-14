@@ -141,7 +141,7 @@ void cSEC1000dServer::doConfiguration()
                 // we want to initialize all settings first
                 m_pDebugSettings = new cDebugSettings(myXMLConfigReader, xmlConfigTopNode);
                 connect(myXMLConfigReader,SIGNAL(valueChanged(const QString&)),m_pDebugSettings,SLOT(configXMLInfo(const QString&)));
-                m_pETHSettings = new cETHSettings(myXMLConfigReader);
+                m_pETHSettings = new EthSettingsSec(myXMLConfigReader);
                 connect(myXMLConfigReader,SIGNAL(valueChanged(const QString&)),m_pETHSettings,SLOT(configXMLInfo(const QString&)));
                 m_pFPGASettings = new cFPGASettings(myXMLConfigReader, xmlConfigTopNode);
                 connect(myXMLConfigReader,SIGNAL(valueChanged(const QString&)),m_pFPGASettings,SLOT(configXMLInfo(const QString&)));
