@@ -6,7 +6,7 @@
 #include "scpiconnection.h"
 #include "fpzchannel.h"
 #include "protonetcommand.h"
-#include "settings/sourcesettings.h"
+#include "sourcesettings.h"
 
 
 cFPZChannel::cFPZChannel(cSCPI *scpiinterface, QString description, quint8 nr, SourceSystem::cChannelSettings *cSettings) :
