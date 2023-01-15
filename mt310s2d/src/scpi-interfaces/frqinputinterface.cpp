@@ -4,7 +4,8 @@
 #include "frqinputinterface.h"
 #include "fpzinchannel.h"
 #include "protonetcommand.h"
-#include "settings/frqinputsettings.h"
+#include "frqinputsettings.h"
+#include "notzeronumgen.h"
 #include <xmlsettings.h>
 #include <scpi.h>
 
@@ -57,14 +58,14 @@ void cFRQInputInterface::initSCPIConnection(QString leadingNodes)
 void cFRQInputInterface::registerResource(RMConnection *rmConnection, quint16 port)
 {
     for(auto channel : m_ChannelList) {
-        register1Resource(rmConnection, m_pMyServer->getMsgNr(), QString("FRQINPUT;%1;1;%2;%3;").arg(channel->getName()).arg(channel->getDescription()).arg(port));
+        register1Resource(rmConnection, NotZeroNumGen::getMsgNr(), QString("FRQINPUT;%1;1;%2;%3;").arg(channel->getName()).arg(channel->getDescription()).arg(port));
     }
 }
 
 void cFRQInputInterface::unregisterResource(RMConnection *rmConnection)
 {
     for(auto channel : m_ChannelList) {
-        unregister1Resource(rmConnection, m_pMyServer->getMsgNr(), QString("FRQINPUT;%1;").arg(channel->getName()));
+        unregister1Resource(rmConnection, NotZeroNumGen::getMsgNr(), QString("FRQINPUT;%1;").arg(channel->getName()));
     }
 }
 

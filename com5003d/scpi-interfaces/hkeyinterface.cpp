@@ -4,7 +4,8 @@
 #include "com5003d.h"
 #include "hkeychannel.h"
 #include "protonetcommand.h"
-#include "settings/hkeysettings.h"
+#include "hkeysettings.h"
+#include "notzeronumgen.h"
 #include <xmlsettings.h>
 #include <scpi.h>
 
@@ -65,7 +66,7 @@ void cHKeyInterface::registerResource(RMConnection *rmConnection, quint16 port)
     for (int i = 0; i < m_ChannelList.count(); i++)
     {
         pChannel = m_ChannelList.at(i);
-        register1Resource(rmConnection, m_pMyServer->getMsgNr(), QString("HKEY;%1;1;%2;%3;").arg(pChannel->getName()).arg(pChannel->getDescription()).arg(port));
+        register1Resource(rmConnection, NotZeroNumGen::getMsgNr(), QString("HKEY;%1;1;%2;%3;").arg(pChannel->getName()).arg(pChannel->getDescription()).arg(port));
     }
 }
 
@@ -76,7 +77,7 @@ void cHKeyInterface::unregisterResource(RMConnection *rmConnection)
     for (int i = 0; i < m_ChannelList.count(); i++)
     {
         pChannel = m_ChannelList.at(i);
-        unregister1Resource(rmConnection, m_pMyServer->getMsgNr(), QString("HKEY;%1;").arg(pChannel->getName()));
+        unregister1Resource(rmConnection, NotZeroNumGen::getMsgNr(), QString("HKEY;%1;").arg(pChannel->getName()));
     }
 }
 

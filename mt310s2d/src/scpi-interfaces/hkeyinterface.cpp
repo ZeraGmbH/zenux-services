@@ -3,7 +3,8 @@
 #include "mt310s2d.h"
 #include "hkeychannel.h"
 #include "protonetcommand.h"
-#include "settings/hkeysettings.h"
+#include "hkeysettings.h"
+#include "notzeronumgen.h"
 #include <xmlsettings.h>
 #include <scpi.h>
 
@@ -52,14 +53,14 @@ void cHKeyInterface::initSCPIConnection(QString leadingNodes)
 void cHKeyInterface::registerResource(RMConnection *rmConnection, quint16 port)
 {
     for(auto channel : m_ChannelList) {
-        register1Resource(rmConnection, m_pMyServer->getMsgNr(), QString("HKEY;%1;1;%2;%3;").arg(channel->getName()).arg(channel->getDescription()).arg(port));
+        register1Resource(rmConnection, NotZeroNumGen::getMsgNr(), QString("HKEY;%1;1;%2;%3;").arg(channel->getName()).arg(channel->getDescription()).arg(port));
     }
 }
 
 void cHKeyInterface::unregisterResource(RMConnection *rmConnection)
 {
     for(auto channel : m_ChannelList) {
-        unregister1Resource(rmConnection, m_pMyServer->getMsgNr(), QString("HKEY;%1;").arg(channel->getName()));
+        unregister1Resource(rmConnection, NotZeroNumGen::getMsgNr(), QString("HKEY;%1;").arg(channel->getName()));
     }
 }
 

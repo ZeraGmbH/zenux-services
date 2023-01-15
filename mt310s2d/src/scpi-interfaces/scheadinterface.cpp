@@ -5,6 +5,7 @@
 #include "scheadchannel.h"
 #include "protonetcommand.h"
 #include "scheadsettings.h"
+#include "notzeronumgen.h"
 #include <xmlsettings.h>
 #include <scpi.h>
 
@@ -51,14 +52,14 @@ void cSCHeadInterface::initSCPIConnection(QString leadingNodes)
 void cSCHeadInterface::registerResource(RMConnection *rmConnection, quint16 port)
 {
     for(auto channel : m_ChannelList) {
-        register1Resource(rmConnection, m_pMyServer->getMsgNr(), QString("SCHEAD;%1;1;%2;%3;").arg(channel->getName()).arg(channel->getDescription()).arg(port));
+        register1Resource(rmConnection, NotZeroNumGen::getMsgNr(), QString("SCHEAD;%1;1;%2;%3;").arg(channel->getName()).arg(channel->getDescription()).arg(port));
     }
 }
 
 void cSCHeadInterface::unregisterResource(RMConnection *rmConnection)
 {
     for(auto channel : m_ChannelList) {
-        unregister1Resource(rmConnection, m_pMyServer->getMsgNr(), QString("SCHEAD;%1;").arg(channel->getName()));
+        unregister1Resource(rmConnection, NotZeroNumGen::getMsgNr(), QString("SCHEAD;%1;").arg(channel->getName()));
     }
 }
 

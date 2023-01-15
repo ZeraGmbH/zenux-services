@@ -44,11 +44,6 @@ void cPCBServer::initSCPIConnection(QString leadingNodes)
     connect(delegate, &cSCPIDelegate::execute, this, &cPCBServer::executeCommand);
 }
 
-quint32 cPCBServer::getMsgNr()
-{
-    return NotZeroNumGen::getMsgNr();
-}
-
 QString &cPCBServer::getName()
 {
     return m_sServerName;

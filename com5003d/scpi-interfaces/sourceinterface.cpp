@@ -5,6 +5,7 @@
 #include "fpzchannel.h"
 #include "protonetcommand.h"
 #include "sourcesettings.h"
+#include "notzeronumgen.h"
 #include <xmlsettings.h>
 #include <scpi.h>
 
@@ -71,7 +72,7 @@ void cSourceInterface::registerResource(RMConnection *rmConnection, quint16 port
     for (int i = 0; i < 4; i++)
     {
         pChannel = m_ChannelList.at(i);
-        register1Resource(rmConnection, m_pMyServer->getMsgNr(), QString("SOURCE;%1;1;%2;%3;").arg(pChannel->getName()).arg(pChannel->getDescription()).arg(port));
+        register1Resource(rmConnection, NotZeroNumGen::getMsgNr(), QString("SOURCE;%1;1;%2;%3;").arg(pChannel->getName()).arg(pChannel->getDescription()).arg(port));
     }
 }
 
@@ -82,7 +83,7 @@ void cSourceInterface::unregisterResource(RMConnection *rmConnection)
     for (int i = 0; i < 4; i++)
     {
         pChannel = m_ChannelList.at(i);
-        unregister1Resource(rmConnection, m_pMyServer->getMsgNr(), QString("SOURCE;%1;").arg(pChannel->getName()));
+        unregister1Resource(rmConnection, NotZeroNumGen::getMsgNr(), QString("SOURCE;%1;").arg(pChannel->getName()));
     }
 }
 

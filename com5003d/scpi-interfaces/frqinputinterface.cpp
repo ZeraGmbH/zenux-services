@@ -4,7 +4,8 @@
 #include "com5003d.h"
 #include "fpzinchannel.h"
 #include "protonetcommand.h"
-#include "settings/frqinputsettings.h"
+#include "frqinputsettings.h"
+#include "notzeronumgen.h"
 #include <xmlsettings.h>
 #include <scpi.h>
 
@@ -70,7 +71,7 @@ void cFRQInputInterface::registerResource(RMConnection *rmConnection, quint16 po
     for (int i = 0; i < m_ChannelList.count(); i++)
     {
         pChannel = m_ChannelList.at(i);
-        register1Resource(rmConnection, m_pMyServer->getMsgNr(), QString("FRQINPUT;%1;1;%2;%3;").arg(pChannel->getName()).arg(pChannel->getDescription()).arg(port));
+        register1Resource(rmConnection, NotZeroNumGen::getMsgNr(), QString("FRQINPUT;%1;1;%2;%3;").arg(pChannel->getName()).arg(pChannel->getDescription()).arg(port));
     }
 }
 
@@ -81,7 +82,7 @@ void cFRQInputInterface::unregisterResource(RMConnection *rmConnection)
     for (int i = 0; i < m_ChannelList.count(); i++)
     {
         pChannel = m_ChannelList.at(i);
-        unregister1Resource(rmConnection, m_pMyServer->getMsgNr(), QString("FRQINPUT;%1;").arg(pChannel->getName()));
+        unregister1Resource(rmConnection, NotZeroNumGen::getMsgNr(), QString("FRQINPUT;%1;").arg(pChannel->getName()));
     }
 }
 

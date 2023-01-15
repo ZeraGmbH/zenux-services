@@ -3,8 +3,9 @@
 #include "scpiconnection.h"
 #include "samplerange.h"
 #include "mt310s2d.h"
-#include "micro-controller-io/atmel.h"
-#include "settings/samplingsettings.h"
+#include "atmel.h"
+#include "samplingsettings.h"
+#include "notzeronumgen.h"
 
 cSamplingInterface::cSamplingInterface(cMT310S2dServer* server) :
     cResource(server->getSCPIInterface()),
@@ -79,12 +80,12 @@ void cSamplingInterface::initSCPIConnection(QString leadingNodes)
 
 void cSamplingInterface::registerResource(RMConnection *rmConnection, quint16 port)
 {
-    register1Resource(rmConnection, m_pMyServer->getMsgNr(), QString("SAMPLE;%1;1;%2;%3;").arg(m_sName).arg(m_sDescription).arg(port));
+    register1Resource(rmConnection, NotZeroNumGen::getMsgNr(), QString("SAMPLE;%1;1;%2;%3;").arg(m_sName).arg(m_sDescription).arg(port));
 }
 
 void cSamplingInterface::unregisterResource(RMConnection *rmConnection)
 {
-    unregister1Resource(rmConnection, m_pMyServer->getMsgNr(), QString("SAMPLE;%1;").arg(m_sName));
+    unregister1Resource(rmConnection, NotZeroNumGen::getMsgNr(), QString("SAMPLE;%1;").arg(m_sName));
 }
 
 void cSamplingInterface::executeCommand(int cmdCode, cProtonetCommand *protoCmd)
