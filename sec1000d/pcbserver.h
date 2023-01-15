@@ -34,7 +34,6 @@ class cPCBServer: public ScpiConnection
 public:
     explicit cPCBServer();
     virtual void initSCPIConnection(QString leadingNodes) override;
-    quint32 getMsgNr();
     QString& getName();
     QString& getVersion();
     cStatusInterface* m_pStatusInterface;

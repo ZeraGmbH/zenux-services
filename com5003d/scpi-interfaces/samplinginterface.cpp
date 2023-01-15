@@ -7,8 +7,9 @@
 #include "samplerange.h"
 #include "samplinginterface.h"
 #include "com5003d.h"
-#include "micro-controller-io/atmel.h"
-#include "settings/samplingsettings.h"
+#include "atmel.h"
+#include "samplingsettings.h"
+#include "notzeronumgen.h"
 
 extern cATMEL* pAtmel;
 
@@ -91,13 +92,13 @@ void cSamplingInterface::initSCPIConnection(QString leadingNodes)
 
 void cSamplingInterface::registerResource(RMConnection *rmConnection, quint16 port)
 {
-    register1Resource(rmConnection, m_pMyServer->getMsgNr(), QString("SAMPLE;%1;1;%2;%3;").arg(m_sName).arg(m_sDescription).arg(port));
+    register1Resource(rmConnection, NotZeroNumGen::getMsgNr(), QString("SAMPLE;%1;1;%2;%3;").arg(m_sName).arg(m_sDescription).arg(port));
 }
 
 
 void cSamplingInterface::unregisterResource(RMConnection *rmConnection)
 {
-    unregister1Resource(rmConnection, m_pMyServer->getMsgNr(), QString("SAMPLE;%1;").arg(m_sName));
+    unregister1Resource(rmConnection, NotZeroNumGen::getMsgNr(), QString("SAMPLE;%1;").arg(m_sName));
 }
 
 

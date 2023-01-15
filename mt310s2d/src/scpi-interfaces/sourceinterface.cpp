@@ -5,6 +5,7 @@
 #include "fpzchannel.h"
 #include "protonetcommand.h"
 #include "sourcesettings.h"
+#include "notzeronumgen.h"
 #include <scpi.h>
 
 cSourceInterface::cSourceInterface(cMT310S2dServer *server) :
@@ -56,14 +57,14 @@ void cSourceInterface::initSCPIConnection(QString leadingNodes)
 void cSourceInterface::registerResource(RMConnection *rmConnection, quint16 port)
 {
     for(auto channel : m_ChannelList) {
-        register1Resource(rmConnection, m_pMyServer->getMsgNr(), QString("SOURCE;%1;1;%2;%3;").arg(channel->getName()).arg(channel->getDescription()).arg(port));
+        register1Resource(rmConnection, NotZeroNumGen::getMsgNr(), QString("SOURCE;%1;1;%2;%3;").arg(channel->getName()).arg(channel->getDescription()).arg(port));
     }
 }
 
 void cSourceInterface::unregisterResource(RMConnection *rmConnection)
 {
     for(auto channel : m_ChannelList) {
-        unregister1Resource(rmConnection, m_pMyServer->getMsgNr(), QString("SOURCE;%1;").arg(channel->getName()));
+        unregister1Resource(rmConnection, NotZeroNumGen::getMsgNr(), QString("SOURCE;%1;").arg(channel->getName()));
     }
 }
 

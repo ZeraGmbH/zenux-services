@@ -11,9 +11,10 @@
 #include "protonetcommand.h"
 #include "scpiconnection.h"
 #include "resource.h"
-#include "micro-controller-io/atmel.h"
-#include "settings/i2csettings.h"
-#include "settings/sensesettings.h"
+#include "atmel.h"
+#include "i2csettings.h"
+#include "sensesettings.h"
+#include "notzeronumgen.h"
 #include <xmlsettings.h>
 #include <QList>
 #include <QStringList>
@@ -692,13 +693,13 @@ void cSenseInterface::registerResource(RMConnection *rmConnection, quint16 port)
 {
     msgNrList.clear();
     for(auto channel : m_ChannelList) {
-        register1Resource(rmConnection, m_pMyServer->getMsgNr(), QString("SENSE;%1;1;%2;%3;")
+        register1Resource(rmConnection, NotZeroNumGen::getMsgNr(), QString("SENSE;%1;1;%2;%3;")
                          .arg(channel->getName())
                          .arg(channel->getDescription())
                          .arg(port));
     }
     // additional we register measuring mode switch as resource
-    register1Resource(rmConnection, m_pMyServer->getMsgNr(), QString("SENSE;MMODE;1;%1;%2;")
+    register1Resource(rmConnection, NotZeroNumGen::getMsgNr(), QString("SENSE;MMODE;1;%1;%2;")
                       .arg(SenseSystem::sMeasuringModeDescription)
                       .arg(port));
 
@@ -708,7 +709,7 @@ void cSenseInterface::unregisterResource(RMConnection *rmConnection)
 {
     msgNrList.clear();
     for(auto channel : m_ChannelList) {
-        unregister1Resource(rmConnection, m_pMyServer->getMsgNr(), QString("SENSE;%1;")
+        unregister1Resource(rmConnection, NotZeroNumGen::getMsgNr(), QString("SENSE;%1;")
                          .arg(channel->getName()));
     }
 }

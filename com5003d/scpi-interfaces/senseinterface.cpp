@@ -1,12 +1,6 @@
-#include <QList>
-#include <QStringList>
-#include <QDomElement>
-#include <QDomDocument>
-#include <QDomText>
-#include <QDebug>
 #include "scpiconnection.h"
 #include "resource.h"
-
+#include "notzeronumgen.h"
 #include "senseinterface.h"
 #include "com5003d.h"
 #include "justdata.h"
@@ -18,6 +12,12 @@
 #include "ethsettings.h"
 #include "sensesettings.h"
 #include <xmlsettings.h>
+#include <QList>
+#include <QStringList>
+#include <QDomElement>
+#include <QDomDocument>
+#include <QDomText>
+#include <QDebug>
 
 
 extern cATMEL* pAtmel;
@@ -504,14 +504,14 @@ void cSenseInterface::registerResource(RMConnection *rmConnection, quint16 port)
     for (int i = 0; i < 6; i++)
     {
         pChannel = m_ChannelList.at(i);
-        register1Resource(rmConnection, m_pMyServer->getMsgNr(), QString("SENSE;%1;1;%2;%3;")
+        register1Resource(rmConnection, NotZeroNumGen::getMsgNr(), QString("SENSE;%1;1;%2;%3;")
                          .arg(pChannel->getName())
                          .arg(pChannel->getDescription())
                          .arg(port));
     }
 
     // additional we register measuring mode switch as resource
-    register1Resource(rmConnection, m_pMyServer->getMsgNr(), QString("SENSE;MMODE;1;%1;%2;")
+    register1Resource(rmConnection, NotZeroNumGen::getMsgNr(), QString("SENSE;MMODE;1;%1;%2;")
                       .arg(SenseSystem::sMeasuringModeDescription)
                       .arg(port));
 
@@ -525,7 +525,7 @@ void cSenseInterface::unregisterResource(RMConnection *rmConnection)
     for (int i = 0; i < 6; i++)
     {
         pChannel = m_ChannelList.at(i);
-        unregister1Resource(rmConnection, m_pMyServer->getMsgNr(), QString("SENSE;%1;")
+        unregister1Resource(rmConnection, NotZeroNumGen::getMsgNr(), QString("SENSE;%1;")
                          .arg(pChannel->getName()));
     }
 }

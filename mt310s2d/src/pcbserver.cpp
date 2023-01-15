@@ -47,11 +47,6 @@ cSCPI *cPCBServer::getSCPIInterface()
     return m_pSCPIInterface;
 }
 
-quint32 cPCBServer::getMsgNr()
-{
-    return NotZeroNumGen::getMsgNr();
-}
-
 QString &cPCBServer::getName()
 {
     return m_sServerName;

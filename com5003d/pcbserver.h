@@ -43,7 +43,6 @@ public:
     explicit cPCBServer();
     virtual void initSCPIConnection(QString leadingNodes) override;
     cSCPI* getSCPIInterface();
-    quint32 getMsgNr();
     QString& getName();
     QString& getVersion();
 
