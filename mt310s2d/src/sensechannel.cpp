@@ -143,9 +143,8 @@ cSenseRange *cSenseChannel::getRange(QString &name)
 quint8 cSenseChannel::getAdjustmentStatus()
 {
     quint8 adj = 255;
-    for(auto range : m_RangeList) {
+    for(auto range : qAsConst(m_RangeList))
         adj &= range->getAdjustmentStatus();
-    }
     return adj;
 }
 

@@ -2,8 +2,6 @@
 #define SENSESETTINGS_H
 
 #include <xmlsettings.h>
-#include <QString>
-#include <QList>
 
 namespace SenseSystem
 {
