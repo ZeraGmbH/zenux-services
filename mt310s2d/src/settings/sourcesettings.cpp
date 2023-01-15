@@ -1,10 +1,9 @@
 #include "sourcesettings.h"
-#include <xmlconfigreader.h>
 
 cSourceSettings::cSourceSettings(Zera::XMLConfig::cReader *xmlread)
 {
     m_pXMLReader = xmlread;
-    for (int i = 0; i < 4; i++){
+    for (int i = 0; i < 4; i++) {
         m_ChannelSettingsList.append(new SourceSystem::cChannelSettings);
         m_ConfigXMLMap[QString("serviceconfig:resource:source:fpzout:fo%1:alias").arg(i)] = SourceSystem::cfg0Alias + i;
         m_ConfigXMLMap[QString("serviceconfig:resource:source:fpzout:fo%1:dspserver").arg(i)] = SourceSystem::cfg0dspserver + i;
