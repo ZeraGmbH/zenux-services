@@ -1,10 +1,10 @@
-#include <QFile>
-#include <QByteArray>
-#include <QTextCodec>
-#include <QList>
-#include <QString>
-#include <QTcpSocket>
-#include <QDataStream>
+#include "sec1000dglobal.h"
+#include "protonetcommand.h"
+#include "resource.h"
+#include "scpiconnection.h"
+#include "scpisingletonfactory.h"
+#include "pcbserver.h"
+#include "notzeronumgen.h"
 #include <xiqnetpeer.h>
 #include <xmlconfigreader.h>
 #include <xiqnetserver.h>
@@ -13,12 +13,13 @@
 #include <unistd.h>
 #include <netmessages.pb.h>
 #include <QtDebug>
-#include "sec1000dglobal.h"
-#include "protonetcommand.h"
-#include "resource.h"
-#include "scpiconnection.h"
-#include "scpisingletonfactory.h"
-#include "pcbserver.h"
+#include <QFile>
+#include <QByteArray>
+#include <QTextCodec>
+#include <QList>
+#include <QString>
+#include <QTcpSocket>
+#include <QDataStream>
 
 cPCBServer::cPCBServer() :
     ScpiConnection(ScpiSingletonFactory::getScpiObj(ServerName))
@@ -45,7 +46,7 @@ void cPCBServer::initSCPIConnection(QString leadingNodes)
 
 quint32 cPCBServer::getMsgNr()
 {
-    return m_msgNumGen.getMsgNr();
+    return NotZeroNumGen::getMsgNr();
 }
 
 QString &cPCBServer::getName()
