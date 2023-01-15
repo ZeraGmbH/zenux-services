@@ -6,9 +6,12 @@
 class NotZeroNumGen
 {
 public:
-    quint32 getMsgNr();
+    static quint32 getMsgNr();
 private:
+    NotZeroNumGen() = default;
+    quint32 getMsgNrFromObject();
     quint32 m_nMsgNr = 0;
+    static NotZeroNumGen *m_theInstance;
 };
 
 #endif // NOTZERONUMGEN_H

@@ -4,7 +4,6 @@
 #include "scpiconnection.h"
 #include "notificationstring.h"
 #include "notificationdata.h"
-#include "notzeronumgen.h"
 #include "resource.h"
 #include "debugsettings.h"
 #include "fpgasettings.h"
@@ -89,7 +88,6 @@ private:
 
     QString m_sInput, m_sOutput;
     QTcpSocket* resourceManagerSocket;
-    NotZeroNumGen m_msgNumGen;
 
     void registerNotifier(cProtonetCommand* protoCmd); // registeres 1 notifier per command
     void unregisterNotifier(cProtonetCommand *protoCmd); // unregisters all notifiers

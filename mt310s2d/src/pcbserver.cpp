@@ -4,6 +4,7 @@
 #include "resource.h"
 #include "scpiconnection.h"
 #include "ethsettings.h"
+#include "notzeronumgen.h"
 #include <xiqnetpeer.h>
 #include <xmlconfigreader.h>
 #include <xiqnetserver.h>
@@ -48,7 +49,7 @@ cSCPI *cPCBServer::getSCPIInterface()
 
 quint32 cPCBServer::getMsgNr()
 {
-    return m_msgNumGen.getMsgNr();
+    return NotZeroNumGen::getMsgNr();
 }
 
 QString &cPCBServer::getName()
