@@ -30,62 +30,42 @@ cFRQInputInterface::cFRQInputInterface(cCOM5003dServer *server) :
     m_sVersion = FRQInputSystem::Version;
 }
 
-
 cFRQInputInterface::~cFRQInputInterface()
 {
-    cFPZInChannel* cptr;
-    for ( int i = 0; i < m_ChannelList.count(); i++)
-    {
-        cptr = m_ChannelList.at(i);
-        delete cptr;
+    for(auto channel : qAsConst(m_ChannelList)) {
+        delete channel;
     }
 }
 
-
 void cFRQInputInterface::initSCPIConnection(QString leadingNodes)
 {
-    cSCPIDelegate* delegate;
-
     if (leadingNodes != "")
         leadingNodes += ":";
-
-    delegate = new cSCPIDelegate(QString("%1FRQINPUT").arg(leadingNodes),"VERSION",SCPI::isQuery,m_pSCPIInterface, FRQInputSystem::cmdVersion);
+    cSCPIDelegate* delegate = new cSCPIDelegate(QString("%1FRQINPUT").arg(leadingNodes),"VERSION",SCPI::isQuery,m_pSCPIInterface, FRQInputSystem::cmdVersion);
     m_DelegateList.append(delegate);
     connect(delegate, &cSCPIDelegate::execute, this, &cFRQInputInterface::executeCommand);
     delegate = new cSCPIDelegate(QString("%1FRQINPUT:CHANNEL").arg(leadingNodes),"CATALOG", SCPI::isQuery, m_pSCPIInterface, FRQInputSystem::cmdChannelCat);
     m_DelegateList.append(delegate);
     connect(delegate, &cSCPIDelegate::execute, this, &cFRQInputInterface::executeCommand);
-
-    for (int i = 0; i < m_ChannelList.count(); i++)
-    {
-        connect(m_ChannelList.at(i), &ScpiConnection::strNotifier, this, &ScpiConnection::strNotifier);
-        connect(m_ChannelList.at(i), SIGNAL(cmdExecutionDone(cProtonetCommand*)), this, SIGNAL(cmdExecutionDone(cProtonetCommand*)));
-        m_ChannelList.at(i)->initSCPIConnection(QString("%1FRQINPUT").arg(leadingNodes));
+    for (auto channel : qAsConst(m_ChannelList)) {
+        connect(channel, &ScpiConnection::strNotifier, this, &ScpiConnection::strNotifier);
+        connect(channel, SIGNAL(cmdExecutionDone(cProtonetCommand*)), this, SIGNAL(cmdExecutionDone(cProtonetCommand*)));
+        channel->initSCPIConnection(QString("%1FRQINPUT").arg(leadingNodes));
     }
 }
-
 
 void cFRQInputInterface::registerResource(RMConnection *rmConnection, quint16 port)
 {
-    cFPZInChannel* pChannel;
-    for (int i = 0; i < m_ChannelList.count(); i++)
-    {
-        pChannel = m_ChannelList.at(i);
-        register1Resource(rmConnection, NotZeroNumGen::getMsgNr(), QString("FRQINPUT;%1;1;%2;%3;").arg(pChannel->getName()).arg(pChannel->getDescription()).arg(port));
-    }
+    for(auto channel : qAsConst(m_ChannelList))
+        register1Resource(rmConnection, NotZeroNumGen::getMsgNr(), QString("FRQINPUT;%1;1;%2;%3;").arg(channel->getName()).arg(channel->getDescription()).arg(port));
 }
-
 
 void cFRQInputInterface::unregisterResource(RMConnection *rmConnection)
 {
-    cFPZInChannel* pChannel;
-    for (int i = 0; i < m_ChannelList.count(); i++)
-    {
-        pChannel = m_ChannelList.at(i);
-        unregister1Resource(rmConnection, NotZeroNumGen::getMsgNr(), QString("FRQINPUT;%1;").arg(pChannel->getName()));
+    for(auto channel : qAsConst(m_ChannelList)) {
+        unregister1Resource(rmConnection, NotZeroNumGen::getMsgNr(), QString("FRQINPUT;%1;").arg(channel->getName()));
     }
 }
-
 
 void cFRQInputInterface::executeCommand(int cmdCode, cProtonetCommand *protoCmd)
 {
@@ -98,29 +78,22 @@ void cFRQInputInterface::executeCommand(int cmdCode, cProtonetCommand *protoCmd)
         protoCmd->m_sOutput = m_ReadChannelCatalog(protoCmd->m_sInput);
         break;
     }
-
     if (protoCmd->m_bwithOutput)
         emit cmdExecutionDone(protoCmd);
 }
 
-
 QString cFRQInputInterface::m_ReadVersion(QString &sInput)
 {
     cSCPICommand cmd = sInput;
-
     if (cmd.isQuery())
         return m_sVersion;
-    else
-        return SCPI::scpiAnswer[SCPI::nak];
+    return SCPI::scpiAnswer[SCPI::nak];
 }
-
 
 QString cFRQInputInterface::m_ReadChannelCatalog(QString &sInput)
 {
     cSCPICommand cmd = sInput;
-
-    if (cmd.isQuery())
-    {
+    if (cmd.isQuery()) {
         int i;
         QString s;
         for (i = 0; i < m_ChannelList.count()-1; i++ )
@@ -129,11 +102,5 @@ QString cFRQInputInterface::m_ReadChannelCatalog(QString &sInput)
 
         return s;
     }
-    else
-        return SCPI::scpiAnswer[SCPI::nak];
+    return SCPI::scpiAnswer[SCPI::nak];
 }
-
-
-
-
-
