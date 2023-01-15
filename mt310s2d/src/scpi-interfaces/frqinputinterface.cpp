@@ -1,7 +1,7 @@
+#include "frqinputinterface.h"
 #include "scpiconnection.h"
 #include "resource.h"
 #include "mt310s2d.h"
-#include "frqinputinterface.h"
 #include "fpzinchannel.h"
 #include "protonetcommand.h"
 #include "frqinputsettings.h"
@@ -32,23 +32,22 @@ cFRQInputInterface::cFRQInputInterface(cMT310S2dServer *server) :
 
 cFRQInputInterface::~cFRQInputInterface()
 {
-    for(auto channel : m_ChannelList) {
+    for(auto channel : qAsConst(m_ChannelList)) {
         delete channel;
     }
 }
 
 void cFRQInputInterface::initSCPIConnection(QString leadingNodes)
 {
-    if (leadingNodes != "") {
+    if (leadingNodes != "")
         leadingNodes += ":";
-    }
     cSCPIDelegate* delegate = new cSCPIDelegate(QString("%1FRQINPUT").arg(leadingNodes),"VERSION",SCPI::isQuery, m_pSCPIInterface, FRQInputSystem::cmdVersion);
     m_DelegateList.append(delegate);
     connect(delegate, &cSCPIDelegate::execute, this, &cFRQInputInterface::executeCommand);
     delegate = new cSCPIDelegate(QString("%1FRQINPUT:CHANNEL").arg(leadingNodes),"CATALOG", SCPI::isQuery, m_pSCPIInterface, FRQInputSystem::cmdChannelCat);
     m_DelegateList.append(delegate);
     connect(delegate, &cSCPIDelegate::execute, this, &cFRQInputInterface::executeCommand);
-    for (auto channel : m_ChannelList) {
+    for (auto channel : qAsConst(m_ChannelList)) {
         connect(channel, &ScpiConnection::strNotifier, this, &ScpiConnection::strNotifier);
         connect(channel, SIGNAL(cmdExecutionDone(cProtonetCommand*)), this, SIGNAL(cmdExecutionDone(cProtonetCommand*)));
         channel->initSCPIConnection(QString("%1FRQINPUT").arg(leadingNodes));
@@ -57,14 +56,13 @@ void cFRQInputInterface::initSCPIConnection(QString leadingNodes)
 
 void cFRQInputInterface::registerResource(RMConnection *rmConnection, quint16 port)
 {
-    for(auto channel : m_ChannelList) {
+    for(auto channel : qAsConst(m_ChannelList))
         register1Resource(rmConnection, NotZeroNumGen::getMsgNr(), QString("FRQINPUT;%1;1;%2;%3;").arg(channel->getName()).arg(channel->getDescription()).arg(port));
-    }
 }
 
 void cFRQInputInterface::unregisterResource(RMConnection *rmConnection)
 {
-    for(auto channel : m_ChannelList) {
+    for(auto channel : qAsConst(m_ChannelList)) {
         unregister1Resource(rmConnection, NotZeroNumGen::getMsgNr(), QString("FRQINPUT;%1;").arg(channel->getName()));
     }
 }
@@ -80,17 +78,15 @@ void cFRQInputInterface::executeCommand(int cmdCode, cProtonetCommand *protoCmd)
         protoCmd->m_sOutput = m_ReadChannelCatalog(protoCmd->m_sInput);
         break;
     }
-    if (protoCmd->m_bwithOutput) {
+    if (protoCmd->m_bwithOutput)
         emit cmdExecutionDone(protoCmd);
-    }
 }
 
 QString cFRQInputInterface::m_ReadVersion(QString &sInput)
 {
     cSCPICommand cmd = sInput;
-    if (cmd.isQuery()) {
+    if (cmd.isQuery())
         return m_sVersion;
-    }
     return SCPI::scpiAnswer[SCPI::nak];
 }
 
