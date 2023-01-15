@@ -15,7 +15,6 @@ set(SOURCES
     src/settings/ctrlsettings.cpp
     src/settings/i2csettings.cpp
     src/settings/sensesettings.cpp
-    src/settings/sourcesettings.cpp
     src/pcbserver.cpp
     src/samplerange.cpp
     src/senserange.cpp
@@ -52,7 +51,6 @@ set(HEADER
     src/settings/ctrlsettings.h
     src/settings/i2csettings.h
     src/settings/sensesettings.h
-    src/settings/sourcesettings.h
     src/pcbserver.h
     src/samplerange.h
     src/senserange.h

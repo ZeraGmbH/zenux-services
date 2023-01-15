@@ -4,7 +4,7 @@
 #include "mt310s2d.h"
 #include "fpzchannel.h"
 #include "protonetcommand.h"
-#include "settings/sourcesettings.h"
+#include "sourcesettings.h"
 #include <scpi.h>
 
 cSourceInterface::cSourceInterface(cMT310S2dServer *server) :

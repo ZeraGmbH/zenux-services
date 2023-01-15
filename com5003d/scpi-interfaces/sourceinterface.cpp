@@ -4,7 +4,7 @@
 #include "com5003d.h"
 #include "fpzchannel.h"
 #include "protonetcommand.h"
-#include "settings/sourcesettings.h"
+#include "sourcesettings.h"
 #include <xmlsettings.h>
 #include <scpi.h>
 
