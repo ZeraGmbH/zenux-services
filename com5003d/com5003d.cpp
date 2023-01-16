@@ -37,7 +37,7 @@
 #include "sensesettings.h"
 #include "samplingsettings.h"
 #include "foutsettings.h"
-#include "scheadsettings.h"
+#include "scinsettings.h"
 
 #ifdef SYSTEMD_NOTIFICATION
 #include <systemd/sd-daemon.h>
@@ -172,8 +172,8 @@ void cCOM5003dServer::doConfiguration()
             connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pSamplingSettings,&cSamplingSettings::configXMLInfo);
             m_FInSettings = new FInSettings(myXMLConfigReader);
             connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_FInSettings,&FInSettings::configXMLInfo);
-            m_pSCHeadSettings = new cSCHeadSettings(myXMLConfigReader);
-            connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pSCHeadSettings,&cSCHeadSettings::configXMLInfo);
+            m_pSCHeadSettings = new ScInSettings(myXMLConfigReader);
+            connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pSCHeadSettings,&ScInSettings::configXMLInfo);
             m_HkInSettings = new HkInSettings(myXMLConfigReader);
             connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_HkInSettings,&HkInSettings::configXMLInfo);
 

@@ -1,9 +1,9 @@
 #ifndef SCHEADCHANNEL_H
 #define SCHEADCHANNEL_H
 
-#include <QObject>
-
 #include "scpiconnection.h"
+#include "scinsettings.h"
+#include <QObject>
 
 namespace SCHEADChannel
 {
@@ -15,29 +15,18 @@ enum Commands
 
 }
 
-
-namespace SCHeadSystem
-{
-    class cChannelSettings;
-}
-
-
 class cSCHeadChannel : public ScpiConnection
 {
     Q_OBJECT
-
 public:
-    cSCHeadChannel(cSCPI *scpiinterface, QString description, quint8 nr, SCHeadSystem::cChannelSettings* cSettings);
+    cSCHeadChannel(cSCPI *scpiinterface, QString description, quint8 nr, ScInSettings::ChannelSettings* cSettings);
     virtual void initSCPIConnection(QString leadingNodes) override;
-
     QString& getName();
     QString& getAlias();
     QString& getDescription();
     bool isAvail();
-
 protected slots:
     virtual void executeCommand(int cmdCode, cProtonetCommand* protoCmd) override;
-
 private:
     QString m_sName; // the channel's name
     QString m_sAlias;

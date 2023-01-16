@@ -23,7 +23,7 @@
 #include "hkinsettings.h"
 #include "i2csettings.h"
 #include "samplingsettings.h"
-#include "scheadsettings.h"
+#include "scinsettings.h"
 #include "sensesettings.h"
 #include "foutsettings.h"
 #include <xmlconfigreader.h>
@@ -190,8 +190,8 @@ void cMT310S2dServer::doConfiguration()
                 connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pSamplingSettings,&cSamplingSettings::configXMLInfo);
                 m_FInSettings = new FInSettings(myXMLConfigReader);
                 connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_FInSettings,&FInSettings::configXMLInfo);
-                m_pSCHeadSettings = new cSCHeadSettings(myXMLConfigReader);
-                connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pSCHeadSettings,&cSCHeadSettings::configXMLInfo);
+                m_pSCHeadSettings = new ScInSettings(myXMLConfigReader);
+                connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pSCHeadSettings,&ScInSettings::configXMLInfo);
                 m_HkInSettings = new HkInSettings(myXMLConfigReader);
                 connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_HkInSettings,&HkInSettings::configXMLInfo);
 

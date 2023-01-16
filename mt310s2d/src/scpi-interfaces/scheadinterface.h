@@ -20,7 +20,7 @@ enum Commands
 }
 
 class cMT310S2dServer;
-class cSCHeadSettings;
+class ScInSettings;
 
 
 class cSCHeadInterface : public cResource

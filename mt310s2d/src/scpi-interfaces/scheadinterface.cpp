@@ -4,7 +4,7 @@
 #include "mt310s2d.h"
 #include "scheadchannel.h"
 #include "protonetcommand.h"
-#include "scheadsettings.h"
+#include "scinsettings.h"
 #include "notzeronumgen.h"
 #include <xmlsettings.h>
 #include <scpi.h>
@@ -13,7 +13,7 @@ cSCHeadInterface::cSCHeadInterface(cMT310S2dServer *server) :
     cResource(server->getSCPIInterface()),
     m_pMyServer(server)
 {
-    QList<SCHeadSystem::cChannelSettings*> channelSettings;
+    QList<ScInSettings::ChannelSettings*> channelSettings;
     channelSettings = m_pMyServer->m_pSCHeadSettings->getChannelSettings();
 
     // we have 1 scanning head input channel
