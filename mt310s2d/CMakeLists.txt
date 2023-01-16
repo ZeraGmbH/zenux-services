@@ -20,7 +20,6 @@ set(SOURCES
     src/sensechannel.cpp
     src/adjustment.cpp
     src/systeminfo.cpp
-    src/fpzinchannel.cpp
     src/scheadchannel.cpp
     src/clampjustdata.cpp
     src/adjflash.cpp
@@ -57,7 +56,6 @@ set(HEADER
     src/adjustment.h
     src/systeminfo.h
     src/notificationdata.h
-    src/fpzinchannel.h
     src/scheadchannel.h
     src/clampjustdata.h
     src/clamp.h
