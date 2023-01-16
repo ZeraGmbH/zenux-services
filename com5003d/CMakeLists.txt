@@ -5,7 +5,6 @@ set(SOURCES
     scpi-interfaces/samplinginterface.cpp
     scpi-interfaces/scheadinterface.cpp
     scpi-interfaces/senseinterface.cpp
-    scpi-interfaces/sourceinterface.cpp
     scpi-interfaces/statusinterface.cpp
     scpi-interfaces/systeminterface.cpp
     settings/i2csettings.cpp
@@ -31,7 +30,6 @@ set(HEADER
     scpi-interfaces/samplinginterface.h
     scpi-interfaces/scheadinterface.h
     scpi-interfaces/senseinterface.h
-    scpi-interfaces/sourceinterface.h
     scpi-interfaces/statusinterface.h
     scpi-interfaces/systeminterface.h
     settings/i2csettings.h
