@@ -17,7 +17,6 @@ set(SOURCES
     samplerange.cpp
     senserange.cpp
     sensechannel.cpp
-    fpzchannel.cpp
     adjustment.cpp
     systeminfo.cpp
     fpzinchannel.cpp
@@ -46,7 +45,6 @@ set(HEADER
     samplerange.h
     senserange.h
     sensechannel.h
-    fpzchannel.h
     adjflash.h
     adjxml.h
     adjustment.h
