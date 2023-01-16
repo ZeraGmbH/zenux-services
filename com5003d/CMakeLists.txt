@@ -16,7 +16,6 @@ set(SOURCES
     sensechannel.cpp
     adjustment.cpp
     systeminfo.cpp
-    scheadchannel.cpp
     )
 
 set(HEADER
@@ -41,7 +40,6 @@ set(HEADER
     adjustment.h
     systeminfo.h
     notificationdata.h
-    scheadchannel.h
     )
 
 set(CONFIG_FILES
