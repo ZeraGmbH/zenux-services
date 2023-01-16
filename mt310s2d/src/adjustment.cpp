@@ -12,7 +12,7 @@
 
 #include "mt310s2dglobal.h"
 #include "adjflash.h"
-#include "justdata.h"
+#include "justdatainterface.h"
 #include "adjxml.h"
 #include "systeminfo.h"
 #include "adjustment.h"

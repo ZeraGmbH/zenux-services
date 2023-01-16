@@ -1,7 +1,7 @@
 #include <scpi.h>
 
 #include "clampjustdata.h"
-#include "justdata.h"
+#include "justdatainterface.h"
 
 cClampJustData::cClampJustData(cSCPI *scpiinterface, cSenseRange *cascadedRange, double cvRatio)
     :JustDataRangeGainPhaseOffset(scpiinterface), m_pFirstStageRange(cascadedRange), m_cvRatio(cvRatio)

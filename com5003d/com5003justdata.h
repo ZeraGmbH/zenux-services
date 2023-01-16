@@ -23,7 +23,7 @@ const int OffsetCorrOrder = 3;
 
 
 class QDataStream;
-class cJustData;
+class JustDataInterface;
 
 
 class JustDataRangeGainPhaseOffset: public ScpiConnection  // alle korrekturdaten für einen bereich + status
@@ -35,9 +35,9 @@ public:
     ~JustDataRangeGainPhaseOffset();
     virtual void initSCPIConnection(QString leadingNodes) override;
 
-    cJustData* m_pGainCorrection;
-    cJustData* m_pPhaseCorrection; 
-    cJustData* m_pOffsetCorrection;
+    JustDataInterface* m_pGainCorrection;
+    JustDataInterface* m_pPhaseCorrection; 
+    JustDataInterface* m_pOffsetCorrection;
     
     void Serialize(QDataStream&); // zum schreiben aller justagedaten in flashspeicher
     void Deserialize(QDataStream&); // zum lesen aller justagedaten aus flashspeicher

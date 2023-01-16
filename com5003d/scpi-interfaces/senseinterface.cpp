@@ -3,7 +3,7 @@
 #include "notzeronumgen.h"
 #include "senseinterface.h"
 #include "com5003d.h"
-#include "justdata.h"
+#include "justdatainterface.h"
 #include "sensechannel.h"
 #include "senserange.h"
 #include "adjflash.h"
@@ -454,7 +454,7 @@ bool cSenseInterface::importAdjData(QDomNode& node) // n steht auf einem element
                             rngPtr = chnPtr->getRange(Name);
                         }
 
-                        cJustData* pJustData = 0;
+                        JustDataInterface* pJustData = 0;
 
                         if (rngPtr != 0)
                         {

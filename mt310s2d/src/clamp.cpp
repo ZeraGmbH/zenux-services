@@ -1,6 +1,6 @@
 #include "clamp.h"
 #include "adjustment.h"
-#include "justdata.h"
+#include "justdatainterface.h"
 #include "mt310s2d.h"
 #include "mt310s2dglobal.h"
 #include "senserange.h"
@@ -308,7 +308,7 @@ bool cClamp::importXMLDocument(QDomDocument *qdomdoc, bool ignoreType)
                                         rngPtr = getRange(Name);
                                     }
 
-                                    cJustData* pJustData = nullptr;
+                                    JustDataInterface* pJustData = nullptr;
                                     if (rngPtr != 0) {
                                         if (tName == "Gain") {
                                             pJustData = rngPtr->getJustData()->m_pGainCorrection;
