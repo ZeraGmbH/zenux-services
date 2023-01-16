@@ -1,12 +1,12 @@
 #include "scpiconnection.h"
 #include "scheadchannel.h"
 #include "protonetcommand.h"
-#include "scheadsettings.h"
+#include "scinsettings.h"
 #include <scpi.h>
 #include <scpicommand.h>
 
 
-cSCHeadChannel::cSCHeadChannel(cSCPI *scpiinterface, QString description, quint8 nr, SCHeadSystem::cChannelSettings *cSettings) :
+cSCHeadChannel::cSCHeadChannel(cSCPI *scpiinterface, QString description, quint8 nr, ScInSettings::ChannelSettings *cSettings) :
     ScpiConnection(scpiinterface),
     m_sDescription(description)
 {

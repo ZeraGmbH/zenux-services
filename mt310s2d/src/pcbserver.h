@@ -32,7 +32,7 @@ class cStatusInterface;  // forward
 class cCtrlSettings;
 class cI2CSettings;
 class FInSettings;
-class cSCHeadSettings;
+class ScInSettings;
 class HkInSettings;
 class cSenseSettings;
 class cSamplingSettings;
@@ -57,7 +57,7 @@ public:
     cSamplingSettings* m_pSamplingSettings;
     FOutSettings* m_pSourceSettings;
     FInSettings* m_FInSettings;
-    cSCHeadSettings* m_pSCHeadSettings;
+    ScInSettings* m_pSCHeadSettings;
     HkInSettings* m_HkInSettings;
     cStatusInterface* m_pStatusInterface;
 public slots:
