@@ -13,11 +13,6 @@ namespace SCHeadSystem
 
 const QString Version = "V1.00";
 
-enum Commands
-{
-    cmdVersion,
-    cmdChannelCat
-};
 }
 
 class cSCHeadInterface : public cResource

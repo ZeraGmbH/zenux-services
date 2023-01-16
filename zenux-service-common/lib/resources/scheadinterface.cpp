@@ -6,17 +6,21 @@
 #include "notzeronumgen.h"
 #include <xmlsettings.h>
 
+enum Commands
+{
+    cmdVersion,
+    cmdChannelCat
+};
+
 cSCHeadInterface::cSCHeadInterface(cSCPI *scpiInterface, ScInSettings *settings) :
     cResource(scpiInterface)
 {
     QList<ScInSettings::ChannelSettings*> channelSettings;
     channelSettings = settings->getChannelSettings();
-
     // we have 1 scanning head input channel
     cSCHeadChannel* pChannel;
     pChannel = new cSCHeadChannel(m_pSCPIInterface, "Scanning head input", 0, channelSettings.at(0) );
     m_ChannelList.append(pChannel);
-
     m_sVersion = SCHeadSystem::Version;
 }
 
@@ -32,10 +36,10 @@ void cSCHeadInterface::initSCPIConnection(QString leadingNodes)
     if (leadingNodes != "")
         leadingNodes += ":";
     cSCPIDelegate* delegate;
-    delegate = new cSCPIDelegate(QString("%1SCHEAD").arg(leadingNodes),"VERSION",SCPI::isQuery, m_pSCPIInterface, SCHeadSystem::cmdVersion);
+    delegate = new cSCPIDelegate(QString("%1SCHEAD").arg(leadingNodes),"VERSION",SCPI::isQuery, m_pSCPIInterface, cmdVersion);
     m_DelegateList.append(delegate);
     connect(delegate, &cSCPIDelegate::execute, this, &cSCHeadInterface::executeCommand);
-    delegate = new cSCPIDelegate(QString("%1SCHEAD:CHANNEL").arg(leadingNodes),"CATALOG", SCPI::isQuery, m_pSCPIInterface, SCHeadSystem::cmdChannelCat);
+    delegate = new cSCPIDelegate(QString("%1SCHEAD:CHANNEL").arg(leadingNodes),"CATALOG", SCPI::isQuery, m_pSCPIInterface, cmdChannelCat);
     m_DelegateList.append(delegate);
     connect(delegate, &cSCPIDelegate::execute, this, &cSCHeadInterface::executeCommand);
     for(auto channel : m_ChannelList) {
@@ -54,23 +58,21 @@ void cSCHeadInterface::registerResource(RMConnection *rmConnection, quint16 port
 
 void cSCHeadInterface::unregisterResource(RMConnection *rmConnection)
 {
-    for(auto channel : m_ChannelList) {
+    for(auto channel : m_ChannelList)
         unregister1Resource(rmConnection, NotZeroNumGen::getMsgNr(), QString("SCHEAD;%1;").arg(channel->getName()));
-    }
 }
 
 void cSCHeadInterface::executeCommand(int cmdCode, cProtonetCommand *protoCmd)
 {
     switch (cmdCode)
     {
-    case SCHeadSystem::cmdVersion:
+    case cmdVersion:
         protoCmd->m_sOutput = m_ReadVersion(protoCmd->m_sInput);
         break;
-    case SCHeadSystem::cmdChannelCat:
+    case cmdChannelCat:
         protoCmd->m_sOutput = m_ReadChannelCatalog(protoCmd->m_sInput);
         break;
     }
-
     if (protoCmd->m_bwithOutput)
         emit cmdExecutionDone(protoCmd);
 }
