@@ -1,8 +1,6 @@
 #ifndef FPZCHANNEL_H
 #define FPZCHANNEL_H
 
-#include <QObject>
-
 #include "scpiconnection.h"
 #include "notificationstring.h"
 
