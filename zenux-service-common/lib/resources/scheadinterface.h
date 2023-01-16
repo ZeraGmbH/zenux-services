@@ -8,17 +8,11 @@
 #include <scpi.h>
 #include <QList>
 
-namespace SCHeadSystem
-{
-
-const QString Version = "V1.00";
-
-}
-
 class cSCHeadInterface : public cResource
 {
     Q_OBJECT
 public:
+    const QString Version = "V1.00";
     cSCHeadInterface(cSCPI *scpiInterface, ScInSettings *settings);
     ~cSCHeadInterface();
     virtual void initSCPIConnection(QString leadingNodes) override;
@@ -27,11 +21,9 @@ public:
 protected slots:
     virtual void executeCommand(int cmdCode, cProtonetCommand* protoCmd) override;
 private:
-    QList<ScInChannelInterface*> m_ChannelList;
-    QString m_sVersion;
-
     QString m_ReadVersion(QString& sInput);
     QString m_ReadChannelCatalog(QString& sInput);
+    QList<ScInChannelInterface*> m_ChannelList;
 };
 
 #endif // SHEADINTERFACE_H

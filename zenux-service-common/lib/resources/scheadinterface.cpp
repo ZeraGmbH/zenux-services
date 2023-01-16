@@ -16,7 +16,6 @@ cSCHeadInterface::cSCHeadInterface(cSCPI *scpiInterface, ScInSettings *settings)
     ScInChannelInterface* pChannel;
     pChannel = new ScInChannelInterface(m_pSCPIInterface, "Scanning head input", 0, channelSettings.at(0) );
     m_ChannelList.append(pChannel);
-    m_sVersion = SCHeadSystem::Version;
 }
 
 cSCHeadInterface::~cSCHeadInterface()
@@ -74,7 +73,7 @@ QString cSCHeadInterface::m_ReadVersion(QString &sInput)
 {
     cSCPICommand cmd = sInput;
     if (cmd.isQuery())
-        return m_sVersion;
+        return Version;
     else
         return SCPI::scpiAnswer[SCPI::nak];
 }
@@ -88,7 +87,6 @@ QString cSCHeadInterface::m_ReadChannelCatalog(QString &sInput)
         for (i = 0; i < m_ChannelList.count()-1; i++ )
             s += m_ChannelList.at(i)->getName() + ";";
         s += m_ChannelList.at(i)->getName();
-
         return s;
     }
     else
