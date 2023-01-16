@@ -2,7 +2,7 @@
 #define HKEYCHANNEL_H
 
 #include "scpiconnection.h"
-#include "hkeysettings.h"
+#include "hkinsettings.h"
 
 namespace HKEYChannel
 {
@@ -15,19 +15,12 @@ enum Commands
 }
 
 
-namespace HKeySystem
-{
-    class cChannelSettings;
-}
-
-class cSCPI;
-
 class cHKeyChannel : public ScpiConnection
 {
     Q_OBJECT
 
 public:
-    cHKeyChannel(cSCPI* scpiinterface, QString description, quint8 nr, HKeySystem::cChannelSettings* cSettings);
+    cHKeyChannel(cSCPI* scpiinterface, QString description, quint8 nr, HkInSettings::ChannelSettings* cSettings);
     virtual void initSCPIConnection(QString leadingNodes) override;
 
     QString& getName();

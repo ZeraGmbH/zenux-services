@@ -3,7 +3,7 @@
 #include "mt310s2d.h"
 #include "hkeychannel.h"
 #include "protonetcommand.h"
-#include "hkeysettings.h"
+#include "hkinsettings.h"
 #include "notzeronumgen.h"
 #include <xmlsettings.h>
 #include <scpi.h>
@@ -12,8 +12,8 @@ cHKeyInterface::cHKeyInterface(cMT310S2dServer *server) :
     cResource(server->getSCPIInterface()),
     m_pMyServer(server)
 {
-    QList<HKeySystem::cChannelSettings*> channelSettings;
-    channelSettings = m_pMyServer->m_pHKeySettings->getChannelSettings();
+    QList<HkInSettings::ChannelSettings*> channelSettings;
+    channelSettings = m_pMyServer->m_HkInSettings->getChannelSettings();
 
     // we have 1 hand key input channel
     cHKeyChannel* pChannel;
@@ -25,7 +25,7 @@ cHKeyInterface::cHKeyInterface(cMT310S2dServer *server) :
 
 cHKeyInterface::~cHKeyInterface()
 {
-    for(auto channel : m_ChannelList) {
+    for(auto channel : qAsConst(m_ChannelList)) {
         delete channel;
     }
 }
@@ -43,7 +43,7 @@ void cHKeyInterface::initSCPIConnection(QString leadingNodes)
     delegate = new cSCPIDelegate(QString("%1HKEY:CHANNEL").arg(leadingNodes),"CATALOG", SCPI::isQuery, m_pSCPIInterface, HKeySystem::cmdChannelCat);
     m_DelegateList.append(delegate);
     connect(delegate, &cSCPIDelegate::execute, this, &cHKeyInterface::executeCommand);
-    for(auto channel : m_ChannelList) {
+    for(auto channel : qAsConst(m_ChannelList)) {
         connect(channel, &ScpiConnection::strNotifier, this, &ScpiConnection::strNotifier);
         connect(channel, &ScpiConnection::cmdExecutionDone, this, &ScpiConnection::cmdExecutionDone);
         channel->initSCPIConnection(QString("%1HKEY").arg(leadingNodes));
@@ -52,14 +52,14 @@ void cHKeyInterface::initSCPIConnection(QString leadingNodes)
 
 void cHKeyInterface::registerResource(RMConnection *rmConnection, quint16 port)
 {
-    for(auto channel : m_ChannelList) {
+    for(auto channel : qAsConst(m_ChannelList)) {
         register1Resource(rmConnection, NotZeroNumGen::getMsgNr(), QString("HKEY;%1;1;%2;%3;").arg(channel->getName()).arg(channel->getDescription()).arg(port));
     }
 }
 
 void cHKeyInterface::unregisterResource(RMConnection *rmConnection)
 {
-    for(auto channel : m_ChannelList) {
+    for(auto channel : qAsConst(m_ChannelList)) {
         unregister1Resource(rmConnection, NotZeroNumGen::getMsgNr(), QString("HKEY;%1;").arg(channel->getName()));
     }
 }
@@ -83,9 +83,8 @@ void cHKeyInterface::executeCommand(int cmdCode, cProtonetCommand *protoCmd)
 QString cHKeyInterface::m_ReadVersion(QString &sInput)
 {
     cSCPICommand cmd = sInput;
-    if (cmd.isQuery()) {
+    if (cmd.isQuery())
         return m_sVersion;
-    }
     return SCPI::scpiAnswer[SCPI::nak];
 }
 

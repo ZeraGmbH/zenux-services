@@ -32,7 +32,7 @@
 #include "ethsettings.h"
 #include "frqinputsettings.h"
 #include "fpgasettings.h"
-#include "hkeysettings.h"
+#include "hkinsettings.h"
 #include "i2csettings.h"
 #include "sensesettings.h"
 #include "samplingsettings.h"
@@ -174,8 +174,8 @@ void cCOM5003dServer::doConfiguration()
             connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pFRQInputSettings,&cFRQInputSettings::configXMLInfo);
             m_pSCHeadSettings = new cSCHeadSettings(myXMLConfigReader);
             connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pSCHeadSettings,&cSCHeadSettings::configXMLInfo);
-            m_pHKeySettings = new cHKeySettings(myXMLConfigReader);
-            connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pHKeySettings,&cHKeySettings::configXMLInfo);
+            m_HkInSettings = new HkInSettings(myXMLConfigReader);
+            connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_HkInSettings,&HkInSettings::configXMLInfo);
 
             QString s = args.at(1);
             qDebug() << s;

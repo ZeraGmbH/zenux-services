@@ -31,7 +31,7 @@ class cStatusInterface;  // forward
 class cI2CSettings;
 class cFRQInputSettings;
 class cSCHeadSettings;
-class cHKeySettings;
+class HkInSettings;
 class cSenseSettings;
 class cSamplingSettings;
 class FOutSettings;
@@ -55,7 +55,7 @@ public:
     FOutSettings* m_pSourceSettings;
     cFRQInputSettings* m_pFRQInputSettings;
     cSCHeadSettings* m_pSCHeadSettings;
-    cHKeySettings* m_pHKeySettings;
+    HkInSettings* m_HkInSettings;
     cStatusInterface* m_pStatusInterface;
 
 protected:
