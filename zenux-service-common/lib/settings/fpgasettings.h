@@ -5,14 +5,6 @@
 #include <xmlconfigreader.h>
 #include <QString>
 
-namespace FPGASettings
-{
-enum configstate
-{
-    setFPGADevNode
-};
-}
-
 class cFPGASettings : public XMLSettings
 {
     Q_OBJECT
