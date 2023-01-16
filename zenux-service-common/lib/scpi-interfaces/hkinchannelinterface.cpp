@@ -1,8 +1,4 @@
 #include "hkinchannelinterface.h"
-#include "scpiconnection.h"
-#include "protonetcommand.h"
-#include <scpi.h>
-#include <scpicommand.h>
 
 enum Commands
 {

@@ -2,8 +2,6 @@
 #define FPGASETTINGS_H
 
 #include <xmlsettings.h>
-#include <xmlconfigreader.h>
-#include <QString>
 
 class FPGASettings : public XMLSettings
 {

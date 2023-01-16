@@ -1,12 +1,5 @@
 #include "fingroupresourceandinterface.h"
-#include "scpiconnection.h"
-#include "resource.h"
-#include "finchannelinterface.h"
-#include "protonetcommand.h"
-#include "finsettings.h"
 #include "notzeronumgen.h"
-#include <xmlsettings.h>
-#include <scpi.h>
 
 enum Commands
 {

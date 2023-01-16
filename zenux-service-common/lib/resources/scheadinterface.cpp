@@ -1,10 +1,5 @@
 #include "scheadinterface.h"
-#include "scpiconnection.h"
-#include "resource.h"
-#include "scheadchannel.h"
-#include "protonetcommand.h"
 #include "notzeronumgen.h"
-#include <xmlsettings.h>
 
 enum Commands
 {

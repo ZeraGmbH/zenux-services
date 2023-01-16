@@ -2,8 +2,6 @@
 #define FOUTSETTINGS_H
 
 #include <xmlsettings.h>
-#include <QString>
-#include <QList>
 
 class FOutSettings : public XMLSettings
 {

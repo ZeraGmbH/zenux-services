@@ -1,11 +1,7 @@
-#include <math.h>
-#include <scpi.h>
+#include "justdatainterface.h"
 #include <gaussmatrix.h>
 #include <gaussnode.h>
-#include "protonetcommand.h"
-#include "scpiconnection.h"
-#include "scpidelegate.h"
-#include "justdatainterface.h"
+#include <math.h>
 
 enum JustCommands
 {

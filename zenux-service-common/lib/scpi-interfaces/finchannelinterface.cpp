@@ -1,8 +1,4 @@
 #include "finchannelinterface.h"
-#include "scpiconnection.h"
-#include "protonetcommand.h"
-#include "finsettings.h"
-#include <scpi.h>
 
 enum Commands
 {

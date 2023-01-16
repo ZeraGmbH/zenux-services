@@ -1,5 +1,4 @@
 #include "ethsettings.h"
-#include <xmlconfigreader.h>
 
 enum ethconfigstate
 {

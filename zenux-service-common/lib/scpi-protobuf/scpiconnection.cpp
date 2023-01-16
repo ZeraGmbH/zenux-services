@@ -1,6 +1,4 @@
-#include <scpi.h>
 #include "scpiconnection.h"
-#include "scpidelegate.h"
 
 ScpiConnection::ScpiConnection(cSCPI *scpiInterface)
     : m_pSCPIInterface(scpiInterface)

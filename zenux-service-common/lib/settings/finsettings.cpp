@@ -1,5 +1,4 @@
 #include "finsettings.h"
-#include <xmlconfigreader.h>
 
 enum configstate
 {
