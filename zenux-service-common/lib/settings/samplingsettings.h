@@ -4,28 +4,21 @@
 #include <xmlsettings.h>
 #include <QList>
 
-namespace SamplingSystem
+class SamplingSettings : public XMLSettings
 {
-    struct cChannelSettings // what we want to get configured
+public:
+    struct ChannelSettings // what we want to get configured
     {
         QString m_sAlias; // the channels alias
         bool m_bAvail; // is this channel available ?
     };
-
-} // namespace SamplingSystem
-
-class cSamplingSettings : public XMLSettings
-{
-public:
-    cSamplingSettings(Zera::XMLConfig::cReader *xmlread);
-    ~cSamplingSettings();
-    QList<SamplingSystem::cChannelSettings*>& getChannelSettings();
+    SamplingSettings(Zera::XMLConfig::cReader *xmlread);
+    ~SamplingSettings();
+    QList<ChannelSettings*>& getChannelSettings();
 public slots:
     virtual void configXMLInfo(QString key);
 private:
-    QList<SamplingSystem::cChannelSettings*> m_ChannelSettingsList;
+    QList<ChannelSettings*> m_ChannelSettingsList;
 };
-
-
 
 #endif // SAMPLINGSETTINGS_H

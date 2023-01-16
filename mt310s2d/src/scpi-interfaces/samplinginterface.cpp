@@ -20,7 +20,7 @@ cSamplingInterface::cSamplingInterface(cMT310S2dServer* server) :
     m_pllChannelList.append("m5");
     m_pllChannelList.append("m7");
 
-    QList<SamplingSystem::cChannelSettings*> channelSettings;
+    QList<SamplingSettings::ChannelSettings*> channelSettings;
     channelSettings = m_pMyServer->m_pSamplingSettings->getChannelSettings();
 
     m_sName = "s0";
