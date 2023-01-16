@@ -6,12 +6,6 @@
 
 namespace SamplingSystem
 {
-    enum configstate
-    {
-        cfgAlias,
-        cfgAvail
-    };
-
     struct cChannelSettings // what we want to get configured
     {
         QString m_sAlias; // the channels alias
