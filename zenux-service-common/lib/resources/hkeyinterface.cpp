@@ -1,6 +1,6 @@
 #include "hkeyinterface.h"
 #include "resource.h"
-#include "hkeychannel.h"
+#include "hkinchannelinterface.h"
 #include "protonetcommand.h"
 #include "hkinsettings.h"
 #include "notzeronumgen.h"
@@ -14,8 +14,8 @@ cHKeyInterface::cHKeyInterface(cSCPI *scpiInterface, HkInSettings *settings) :
     channelSettings = settings->getChannelSettings();
 
     // we have 1 hand key input channel
-    cHKeyChannel* pChannel;
-    pChannel = new cHKeyChannel(m_pSCPIInterface, "Hand key input", 0, channelSettings.at(0) );
+    HkInChannelInterface* pChannel;
+    pChannel = new HkInChannelInterface(m_pSCPIInterface, "Hand key input", 0, channelSettings.at(0) );
     m_ChannelList.append(pChannel);
 
     m_sVersion = HKeySystem::Version;

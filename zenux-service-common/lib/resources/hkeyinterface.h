@@ -3,7 +3,7 @@
 
 #include "resource.h"
 #include "scpiconnection.h"
-#include "hkeychannel.h"
+#include "hkinchannelinterface.h"
 #include "hkinsettings.h"
 #include <scpi.h>
 #include <QList>
@@ -35,7 +35,7 @@ protected slots:
     virtual void executeCommand(int cmdCode, cProtonetCommand* protoCmd) override;
 
 private:
-    QList<cHKeyChannel*> m_ChannelList;
+    QList<HkInChannelInterface*> m_ChannelList;
     QString m_sVersion;
 
     QString m_ReadVersion(QString& sInput);
