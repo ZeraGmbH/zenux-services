@@ -4,14 +4,6 @@
 #include <xmlsettings.h>
 #include <xmlconfigreader.h>
 
-namespace DebugSettings
-{
-enum debugconfigstate
-{
-    setdebuglevel
-};
-}
-
 class cDebugSettings: public XMLSettings
 {
     Q_OBJECT
