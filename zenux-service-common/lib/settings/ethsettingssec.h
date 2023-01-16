@@ -12,13 +12,6 @@ public:
         protobufserver,
         resourcemanager
     };
-
-    enum ethconfigstate
-    {
-        setRmIpAdress,
-        setProtobufServerPort,
-        setRmPort
-    };
     EthSettingsSec(Zera::XMLConfig::cReader *xmlread);
     QString getRMIPadr();
     quint16 getPort(ethmember member);
