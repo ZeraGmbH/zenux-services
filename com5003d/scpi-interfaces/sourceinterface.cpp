@@ -1,20 +1,16 @@
 #include "sourceinterface.h"
 #include "scpiconnection.h"
 #include "resource.h"
-#include "com5003d.h"
 #include "fpzchannel.h"
 #include "protonetcommand.h"
 #include "sourcesettings.h"
 #include "notzeronumgen.h"
-#include <scpi.h>
 
-cSourceInterface::cSourceInterface(cCOM5003dServer *server) :
-    cResource(server->getSCPIInterface()),
-    m_pMyServer(server)
+cSourceInterface::cSourceInterface(cSCPI *scpiInterface, cSourceSettings *settings) :
+    cResource(scpiInterface)
 {
     QList<SourceSystem::cChannelSettings*> channelSettings;
-    channelSettings = m_pMyServer->m_pSourceSettings->getChannelSettings();
-
+    channelSettings = settings->getChannelSettings();
     // we have 4 frequency output channels
     cFPZChannel* pChannel;
     pChannel = new cFPZChannel(m_pSCPIInterface, "Reference frequency output 0..1MHz", 0, channelSettings.at(0) );
@@ -46,10 +42,10 @@ void cSourceInterface::initSCPIConnection(QString leadingNodes)
     delegate = new cSCPIDelegate(QString("%1SOURCE:CHANNEL").arg(leadingNodes),"CATALOG", SCPI::isQuery, m_pSCPIInterface, SourceSystem::cmdChannelCat);
     m_DelegateList.append(delegate);
     connect(delegate, &cSCPIDelegate::execute, this, &cSourceInterface::executeCommand);
-    for (int i = 0; i < m_ChannelList.count(); i++) {
-        connect(m_ChannelList.at(i), &ScpiConnection::strNotifier, this, &ScpiConnection::strNotifier);
-        connect(m_ChannelList.at(i), &ScpiConnection::cmdExecutionDone, this, &ScpiConnection::cmdExecutionDone);
-        m_ChannelList.at(i)->initSCPIConnection(QString("%1SOURCE").arg(leadingNodes));
+    for(auto channel : qAsConst(m_ChannelList)) {
+        connect(channel, &ScpiConnection::strNotifier, this, &ScpiConnection::strNotifier);
+        connect(channel, &ScpiConnection::cmdExecutionDone, this, &ScpiConnection::cmdExecutionDone);
+        channel->initSCPIConnection(QString("%1SOURCE").arg(leadingNodes));
     }
 }
 
