@@ -1,10 +1,10 @@
 #include "finchannelinterface.h"
 #include "scpiconnection.h"
 #include "protonetcommand.h"
-#include "settings/frqinputsettings.h"
+#include "finsettings.h"
 #include <scpi.h>
 
-FInChannelInterface::FInChannelInterface(cSCPI *scpiInterface, QString description, quint8 nr, FRQInputSystem::cChannelSettings *cSettings) :
+FInChannelInterface::FInChannelInterface(cSCPI *scpiInterface, QString description, quint8 nr, FInSettings::ChannelSettings *cSettings) :
     ScpiConnection(scpiInterface),
     m_sDescription(description)
 {

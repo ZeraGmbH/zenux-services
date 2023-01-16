@@ -1,59 +1,69 @@
-#include "frqinputsettings.h"
+#include "finsettings.h"
 #include <xmlconfigreader.h>
 
-cFRQInputSettings::cFRQInputSettings(Zera::XMLConfig::cReader *xmlread)
+enum configstate
+{
+    cfgFin0Alias,
+    cfgFin1Alias,
+    cfgFin2Alias,
+    cfgFin3Alias,
+    cfgFin0avail,
+    cfgFin1avail,
+    cfgFin2avail,
+    cfgFin3avail,
+};
+
+FInSettings::FInSettings(Zera::XMLConfig::cReader *xmlread)
 {
     m_pXMLReader = xmlread;
     for (int i = 0; i < 4; i++) {
-        m_ChannelSettingsList.append(new FRQInputSystem::cChannelSettings);
-        m_ConfigXMLMap[QString("serviceconfig:resource:frqinput:fi%1:alias").arg(i)] = FRQInputSystem::cfgFin0Alias + i;
-        m_ConfigXMLMap[QString("serviceconfig:resource:frqinput:fi%1:avail").arg(i)] = FRQInputSystem::cfgFin0avail + i;
+        m_ChannelSettingsList.append(new ChannelSettings);
+        m_ConfigXMLMap[QString("serviceconfig:resource:frqinput:fi%1:alias").arg(i)] = cfgFin0Alias + i;
+        m_ConfigXMLMap[QString("serviceconfig:resource:frqinput:fi%1:avail").arg(i)] = cfgFin0avail + i;
     }
 }
 
-cFRQInputSettings::~cFRQInputSettings()
+FInSettings::~FInSettings()
 {
     for(auto channel : qAsConst(m_ChannelSettingsList)) {
         delete channel;
     }
 }
 
-QList<FRQInputSystem::cChannelSettings*> &cFRQInputSettings::getChannelSettings()
+QList<FInSettings::ChannelSettings *> &FInSettings::getChannelSettings()
 {
     return m_ChannelSettingsList;
 }
 
-void cFRQInputSettings::configXMLInfo(QString key)
+void FInSettings::configXMLInfo(QString key)
 {
     if (m_ConfigXMLMap.contains(key)) {
         switch (m_ConfigXMLMap[key])
         {
-        case FRQInputSystem::cfgFin0Alias:
+        case cfgFin0Alias:
             m_ChannelSettingsList.at(0)->m_sAlias = m_pXMLReader->getValue(key);
             break;
-        case FRQInputSystem::cfgFin1Alias:
+        case cfgFin1Alias:
             m_ChannelSettingsList.at(1)->m_sAlias = m_pXMLReader->getValue(key);
             break;
-        case FRQInputSystem::cfgFin2Alias:
+        case cfgFin2Alias:
             m_ChannelSettingsList.at(2)->m_sAlias = m_pXMLReader->getValue(key);
             break;
-        case FRQInputSystem::cfgFin3Alias:
+        case cfgFin3Alias:
             m_ChannelSettingsList.at(3)->m_sAlias = m_pXMLReader->getValue(key);
             break;
-        case FRQInputSystem::cfgFin0avail:
+        case cfgFin0avail:
             m_ChannelSettingsList.at(0)->avail = (m_pXMLReader->getValue(key) == "true");
             break;
-        case FRQInputSystem::cfgFin1avail:
+        case cfgFin1avail:
             m_ChannelSettingsList.at(1)->avail = (m_pXMLReader->getValue(key) == "true");
             break;
-        case FRQInputSystem::cfgFin2avail:
+        case cfgFin2avail:
             m_ChannelSettingsList.at(2)->avail = (m_pXMLReader->getValue(key) == "true");
             break;
-        case FRQInputSystem::cfgFin3avail:
+        case cfgFin3avail:
             m_ChannelSettingsList.at(3)->avail = (m_pXMLReader->getValue(key) == "true");
             break;
         }
     }
 }
-
-

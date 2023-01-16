@@ -30,7 +30,7 @@
 #include "systeminterface.h"
 #include "debugsettings.h"
 #include "ethsettings.h"
-#include "frqinputsettings.h"
+#include "finsettings.h"
 #include "fpgasettings.h"
 #include "hkinsettings.h"
 #include "i2csettings.h"
@@ -109,7 +109,7 @@ cCOM5003dServer::~cCOM5003dServer()
     if (m_pFPGASettings) delete m_pFPGASettings;
     if (m_pSenseSettings) delete m_pSenseSettings;
     if (m_pSourceSettings) delete m_pSourceSettings;
-    if (m_pFRQInputSettings) delete m_pFRQInputSettings;
+    if (m_FInSettings) delete m_FInSettings;
     if (m_pSCHeadSettings) delete m_pSCHeadSettings;
     if (pAtmel) delete pAtmel;
     if (m_pAtmelWatcher) delete m_pAtmelWatcher;
@@ -170,8 +170,8 @@ void cCOM5003dServer::doConfiguration()
             connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pSourceSettings,&FOutSettings::configXMLInfo);
             m_pSamplingSettings = new cSamplingSettings(myXMLConfigReader);
             connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pSamplingSettings,&cSamplingSettings::configXMLInfo);
-            m_pFRQInputSettings = new cFRQInputSettings(myXMLConfigReader);
-            connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pFRQInputSettings,&cFRQInputSettings::configXMLInfo);
+            m_FInSettings = new FInSettings(myXMLConfigReader);
+            connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_FInSettings,&FInSettings::configXMLInfo);
             m_pSCHeadSettings = new cSCHeadSettings(myXMLConfigReader);
             connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pSCHeadSettings,&cSCHeadSettings::configXMLInfo);
             m_HkInSettings = new HkInSettings(myXMLConfigReader);
@@ -346,7 +346,7 @@ void cCOM5003dServer::doSetupServer()
     scpiConnectionList.append(m_pSenseInterface = new cSenseInterface(this));
     scpiConnectionList.append(m_pSamplingInterface = new cSamplingInterface(this));
     scpiConnectionList.append(m_pSourceInterface = new FOutGroupResourceAndInterface(getSCPIInterface(), m_pSourceSettings));
-    scpiConnectionList.append(m_pFRQInputInterface = new FInGroupResourceAndInterface(getSCPIInterface(), m_pFRQInputSettings));
+    scpiConnectionList.append(m_pFRQInputInterface = new FInGroupResourceAndInterface(getSCPIInterface(), m_FInSettings));
     scpiConnectionList.append(m_pSCHeadInterface = new cSCHeadInterface(this));
     scpiConnectionList.append(m_pHKeyInterface = new cHKeyInterface(this));
 

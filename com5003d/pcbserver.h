@@ -29,7 +29,7 @@ enum commands
 
 class cStatusInterface;  // forward
 class cI2CSettings;
-class cFRQInputSettings;
+class FInSettings;
 class cSCHeadSettings;
 class HkInSettings;
 class cSenseSettings;
@@ -53,7 +53,7 @@ public:
     cSenseSettings* m_pSenseSettings;
     cSamplingSettings* m_pSamplingSettings;
     FOutSettings* m_pSourceSettings;
-    cFRQInputSettings* m_pFRQInputSettings;
+    FInSettings* m_FInSettings;
     cSCHeadSettings* m_pSCHeadSettings;
     HkInSettings* m_HkInSettings;
     cStatusInterface* m_pStatusInterface;
