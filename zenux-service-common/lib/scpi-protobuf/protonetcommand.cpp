@@ -11,7 +11,6 @@ cProtonetCommand::cProtonetCommand(XiQNetPeer *peer, bool hasClientId, bool with
 {
 }
 
-
 cProtonetCommand::cProtonetCommand(const cProtonetCommand *protoCmd)
 {
     m_pPeer = protoCmd->m_pPeer;
