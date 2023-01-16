@@ -36,7 +36,7 @@
 #include "i2csettings.h"
 #include "sensesettings.h"
 #include "samplingsettings.h"
-#include "sourcesettings.h"
+#include "foutsettings.h"
 #include "scheadsettings.h"
 
 #ifdef SYSTEMD_NOTIFICATION
@@ -166,8 +166,8 @@ void cCOM5003dServer::doConfiguration()
             connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pFPGASettings,&cFPGASettings::configXMLInfo);
             m_pSenseSettings = new cSenseSettings(myXMLConfigReader);
             connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pSenseSettings,&cSenseSettings::configXMLInfo);
-            m_pSourceSettings = new cSourceSettings(myXMLConfigReader);
-            connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pSourceSettings,&cSourceSettings::configXMLInfo);
+            m_pSourceSettings = new FOutSettings(myXMLConfigReader);
+            connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pSourceSettings,&FOutSettings::configXMLInfo);
             m_pSamplingSettings = new cSamplingSettings(myXMLConfigReader);
             connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pSamplingSettings,&cSamplingSettings::configXMLInfo);
             m_pFRQInputSettings = new cFRQInputSettings(myXMLConfigReader);

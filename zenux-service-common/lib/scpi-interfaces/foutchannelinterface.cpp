@@ -1,7 +1,7 @@
 #include "scpiconnection.h"
 #include "foutchannelinterface.h"
 #include "protonetcommand.h"
-#include "sourcesettings.h"
+#include "foutsettings.h"
 #include <scpi.h>
 
 FOutChannelInterface::FOutChannelInterface(cSCPI *scpiinterface, QString description, quint8 nr, SourceSystem::cChannelSettings *cSettings) :
