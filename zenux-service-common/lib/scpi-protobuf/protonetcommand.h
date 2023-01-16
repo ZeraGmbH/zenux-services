@@ -1,10 +1,9 @@
 #ifndef PROTONETCOMMAND_H
 #define PROTONETCOMMAND_H
 
+#include <xiqnetpeer.h>
 #include <QByteArray>
 #include <QString>
-
-class XiQNetPeer;
 
 class cProtonetCommand
 {
