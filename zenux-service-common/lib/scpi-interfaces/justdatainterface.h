@@ -2,6 +2,7 @@
 #define JUSTDATAINTERFACE_H
 
 #include "scpiconnection.h"
+#include <justnode.h>
 #include <QDataStream>
 #include <QString>
 
@@ -9,43 +10,21 @@
 // the order must not necessarily be used
 // setting only the first node results in a effectively 0 order
 // a new generated object is also initialized like that
-
-enum JustCommands
-{
-    JustStatus,
-    JustCoefficient0,
-    JustCoefficient1,
-    JustCoefficient2,
-    JustCoefficient3,
-    JustNode0,
-    JustNode1,
-    JustNode2,
-    JustNode3
-};
-
-namespace JustData {
-
-enum StatusMasks
-{
-    Justified = 128
-};
-
-}
-
-class cJustNode;
-
-struct TJustDataParam
-{
-    cSCPI *scpiinterface;
-    int order;
-    double init;
-    bool(*checkPermission)(bool &enable);
-    int digits;
-};
-
 class JustDataInterface: public ScpiConnection // base class for adjustment coefficients and nodes
 {
 public:
+    enum StatusMasks
+    {
+        Justified = 128
+    };
+    struct TJustDataParam
+    {
+        cSCPI *scpiinterface;
+        int order;
+        double init;
+        bool(*checkPermission)(bool &enable);
+        int digits;
+    };
     JustDataInterface(TJustDataParam param);
     ~JustDataInterface();
     virtual void initSCPIConnection(QString leadingNodes) override;
@@ -63,10 +42,8 @@ public:
     bool cmpCoefficients(); // calculates coefficients from nodes
     quint8 getStatus();
     void initJustData(double init); // for initialization of justdata
-
 protected slots:
     virtual void executeCommand(int cmdCode, cProtonetCommand* protoCmd) override;
-
 protected:
     bool(*m_checkPermission)(bool &enable);
 private:

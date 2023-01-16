@@ -479,7 +479,7 @@ quint8 cAdjustment::getAdjustmentStatus()
 
     ret = m_nAdjStatus; // here we already stored ev. wrong serial or wrong version
 
-    if ((stat & JustData::Justified)== 0)
+    if ((stat & JustDataInterface::Justified)== 0)
         ret += Adjustment::notAdjusted;
 
     return ret;
