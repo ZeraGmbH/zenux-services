@@ -18,7 +18,6 @@ set(SOURCES
     sensechannel.cpp
     adjustment.cpp
     systeminfo.cpp
-    fpzinchannel.cpp
     scheadchannel.cpp
     hkeychannel.cpp
     )
@@ -48,7 +47,6 @@ set(HEADER
     adjustment.h
     systeminfo.h
     notificationdata.h
-    fpzinchannel.h
     scheadchannel.h
     )
 
