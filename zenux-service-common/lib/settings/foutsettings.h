@@ -7,25 +7,6 @@
 
 namespace SourceSystem
 {
-    enum configstate
-    {
-        cfg0Alias,
-        cfg1Alias,
-        cfg2Alias,
-        cfg3Alias,
-        cfg0dspserver,
-        cfg1dspserver,
-        cfg2dspserver,
-        cfg3dspserver,
-        cfg0dspchannel,
-        cfg1dspchannel,
-        cfg2dspchannel,
-        cfg3dspchannel,
-        cfg0avail,
-        cfg1avail,
-        cfg2avail,
-        cfg3avail
-    };
     struct cChannelSettings // what we want to get configured
     {
         QString m_sAlias; // the names channel

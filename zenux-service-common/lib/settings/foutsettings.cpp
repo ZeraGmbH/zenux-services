@@ -1,14 +1,34 @@
 #include "foutsettings.h"
 
+enum configstate
+{
+    cfg0Alias,
+    cfg1Alias,
+    cfg2Alias,
+    cfg3Alias,
+    cfg0dspserver,
+    cfg1dspserver,
+    cfg2dspserver,
+    cfg3dspserver,
+    cfg0dspchannel,
+    cfg1dspchannel,
+    cfg2dspchannel,
+    cfg3dspchannel,
+    cfg0avail,
+    cfg1avail,
+    cfg2avail,
+    cfg3avail
+};
+
 FOutSettings::FOutSettings(Zera::XMLConfig::cReader *xmlread)
 {
     m_pXMLReader = xmlread;
     for (int i = 0; i < 4; i++) {
         m_ChannelSettingsList.append(new SourceSystem::cChannelSettings);
-        m_ConfigXMLMap[QString("serviceconfig:resource:source:fpzout:fo%1:alias").arg(i)] = SourceSystem::cfg0Alias + i;
-        m_ConfigXMLMap[QString("serviceconfig:resource:source:fpzout:fo%1:dspserver").arg(i)] = SourceSystem::cfg0dspserver + i;
-        m_ConfigXMLMap[QString("serviceconfig:resource:source:fpzout:fo%1:dspchannel").arg(i)] = SourceSystem::cfg0dspchannel + i;
-        m_ConfigXMLMap[QString("serviceconfig:resource:source:fpzout:fo%1:avail").arg(i)] = SourceSystem::cfg0avail + i;
+        m_ConfigXMLMap[QString("serviceconfig:resource:source:fpzout:fo%1:alias").arg(i)] = cfg0Alias + i;
+        m_ConfigXMLMap[QString("serviceconfig:resource:source:fpzout:fo%1:dspserver").arg(i)] = cfg0dspserver + i;
+        m_ConfigXMLMap[QString("serviceconfig:resource:source:fpzout:fo%1:dspchannel").arg(i)] = cfg0dspchannel + i;
+        m_ConfigXMLMap[QString("serviceconfig:resource:source:fpzout:fo%1:avail").arg(i)] = cfg0avail + i;
     }
 }
 
@@ -28,52 +48,52 @@ void FOutSettings::configXMLInfo(QString key)
     if (m_ConfigXMLMap.contains(key)) {
         switch (m_ConfigXMLMap[key])
         {
-        case SourceSystem::cfg0Alias:
+        case cfg0Alias:
             m_ChannelSettingsList.at(0)->m_sAlias = m_pXMLReader->getValue(key);
             break;
-        case SourceSystem::cfg1Alias:
+        case cfg1Alias:
             m_ChannelSettingsList.at(1)->m_sAlias = m_pXMLReader->getValue(key);
             break;
-        case SourceSystem::cfg2Alias:
+        case cfg2Alias:
             m_ChannelSettingsList.at(2)->m_sAlias = m_pXMLReader->getValue(key);
             break;
-        case SourceSystem::cfg3Alias:
+        case cfg3Alias:
             m_ChannelSettingsList.at(3)->m_sAlias = m_pXMLReader->getValue(key);
             break;
-        case SourceSystem::cfg0dspserver:
+        case cfg0dspserver:
             m_ChannelSettingsList.at(0)->m_nDspServerPort = m_pXMLReader->getValue(key).toInt();
             break;
-        case SourceSystem::cfg1dspserver:
+        case cfg1dspserver:
             m_ChannelSettingsList.at(1)->m_nDspServerPort = m_pXMLReader->getValue(key).toInt();
             break;
-        case SourceSystem::cfg2dspserver:
+        case cfg2dspserver:
             m_ChannelSettingsList.at(2)->m_nDspServerPort = m_pXMLReader->getValue(key).toInt();
             break;
-        case SourceSystem::cfg3dspserver:
+        case cfg3dspserver:
             m_ChannelSettingsList.at(3)->m_nDspServerPort = m_pXMLReader->getValue(key).toInt();
             break;
-        case SourceSystem::cfg0dspchannel:
+        case cfg0dspchannel:
             m_ChannelSettingsList.at(0)->m_nDspChannel  =  m_pXMLReader->getValue(key).toInt();
             break;
-        case SourceSystem::cfg1dspchannel:
+        case cfg1dspchannel:
             m_ChannelSettingsList.at(1)->m_nDspChannel  =  m_pXMLReader->getValue(key).toInt();
             break;
-        case SourceSystem::cfg2dspchannel:
+        case cfg2dspchannel:
             m_ChannelSettingsList.at(2)->m_nDspChannel  =  m_pXMLReader->getValue(key).toInt();
             break;
-        case SourceSystem::cfg3dspchannel:
+        case cfg3dspchannel:
             m_ChannelSettingsList.at(3)->m_nDspChannel  =  m_pXMLReader->getValue(key).toInt();
             break;
-        case SourceSystem::cfg0avail:
+        case cfg0avail:
             m_ChannelSettingsList.at(0)->avail = (m_pXMLReader->getValue(key) == "true");
             break;
-        case SourceSystem::cfg1avail:
+        case cfg1avail:
             m_ChannelSettingsList.at(1)->avail = (m_pXMLReader->getValue(key) == "true");
             break;
-        case SourceSystem::cfg2avail:
+        case cfg2avail:
             m_ChannelSettingsList.at(2)->avail = (m_pXMLReader->getValue(key) == "true");
             break;
-        case SourceSystem::cfg3avail:
+        case cfg3avail:
             m_ChannelSettingsList.at(3)->avail = (m_pXMLReader->getValue(key) == "true");
             break;
         }
