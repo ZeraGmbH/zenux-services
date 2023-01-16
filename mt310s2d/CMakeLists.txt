@@ -9,7 +9,6 @@ set(SOURCES
     src/scpi-interfaces/samplinginterface.cpp
     src/scpi-interfaces/scheadinterface.cpp
     src/scpi-interfaces/senseinterface.cpp
-    src/scpi-interfaces/sourceinterface.cpp
     src/scpi-interfaces/statusinterface.cpp
     src/scpi-interfaces/systeminterface.cpp
     src/settings/ctrlsettings.cpp
@@ -44,7 +43,6 @@ set(HEADER
     src/scpi-interfaces/samplinginterface.h
     src/scpi-interfaces/scheadinterface.h
     src/scpi-interfaces/senseinterface.h
-    src/scpi-interfaces/sourceinterface.h
     src/scpi-interfaces/statusinterface.h
     src/scpi-interfaces/systeminterface.h
     src/settings/ctrlsettings.h
