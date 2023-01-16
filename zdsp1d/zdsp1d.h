@@ -128,7 +128,6 @@ public:
 
 signals:
     void serverSetup();
-    void sendAnswer(QByteArray);
     void abortInit();
 
 private:

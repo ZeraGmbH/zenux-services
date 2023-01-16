@@ -58,10 +58,6 @@ public:
     cHKeySettings* m_pHKeySettings;
     cStatusInterface* m_pStatusInterface;
 
-signals:
-    void sendAnswer(QByteArray answer);
-
-
 protected:
     void initSCPIConnections();
     XiQNetServer* myServer; // the real server that does the communication job
