@@ -22,8 +22,8 @@ public:
 protected slots:
     virtual void executeCommand(int cmdCode, cProtonetCommand* protoCmd) override;
 private:
-    QString m_ReadVersion(QString& sInput);
-    QString m_ReadChannelCatalog(QString& sInput);
+    QString readVersion(QString& sInput);
+    QString readChannelCatalog(QString& sInput);
     QList<FInChannelInterface*> m_ChannelList;
 };
 
