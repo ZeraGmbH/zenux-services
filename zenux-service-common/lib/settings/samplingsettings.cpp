@@ -7,28 +7,28 @@ enum configstate
     cfgAvail
 };
 
-cSamplingSettings::cSamplingSettings(Zera::XMLConfig::cReader *xmlread)
+SamplingSettings::SamplingSettings(Zera::XMLConfig::cReader *xmlread)
 {
     m_pXMLReader = xmlread;
-    SamplingSystem::cChannelSettings* settings = new SamplingSystem::cChannelSettings;
+    ChannelSettings* settings = new ChannelSettings;
     m_ChannelSettingsList.append(settings);
 
     m_ConfigXMLMap["serviceconfig:resource:sample:s0:alias"] = cfgAlias;
     m_ConfigXMLMap["serviceconfig:resource:sample:s0:avail"] = cfgAvail;
 }
 
-cSamplingSettings::~cSamplingSettings()
+SamplingSettings::~SamplingSettings()
 {
     for(auto channel : qAsConst(m_ChannelSettingsList))
         delete channel;
 }
 
-QList<SamplingSystem::cChannelSettings *> &cSamplingSettings::getChannelSettings()
+QList<SamplingSettings::ChannelSettings *> &SamplingSettings::getChannelSettings()
 {
     return m_ChannelSettingsList;
 }
 
-void cSamplingSettings::configXMLInfo(QString key)
+void SamplingSettings::configXMLInfo(QString key)
 {
     if (m_ConfigXMLMap.contains(key)) {
         switch (m_ConfigXMLMap[key])

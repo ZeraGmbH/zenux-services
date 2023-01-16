@@ -33,7 +33,7 @@ class FInSettings;
 class ScInSettings;
 class HkInSettings;
 class cSenseSettings;
-class cSamplingSettings;
+class SamplingSettings;
 class FOutSettings;
 
 class cPCBServer: public ScpiConnection
@@ -51,7 +51,7 @@ public:
     cI2CSettings* m_pI2CSettings;
     EthSettings* m_pETHSettings;
     cSenseSettings* m_pSenseSettings;
-    cSamplingSettings* m_pSamplingSettings;
+    SamplingSettings* m_pSamplingSettings;
     FOutSettings* m_foutSettings;
     FInSettings* m_finSettings;
     ScInSettings* m_pSCHeadSettings;

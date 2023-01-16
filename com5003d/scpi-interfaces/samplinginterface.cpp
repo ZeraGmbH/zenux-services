@@ -25,7 +25,7 @@ cSamplingInterface::cSamplingInterface(cCOM5003dServer *server) :
     m_pllChannelList.append("m4");
     m_pllChannelList.append("m5");
 
-    QList<SamplingSystem::cChannelSettings*> channelSettings;
+    QList<SamplingSettings::ChannelSettings*> channelSettings;
     channelSettings = m_pMyServer->m_pSamplingSettings->getChannelSettings();
 
     m_sName = "s0";
