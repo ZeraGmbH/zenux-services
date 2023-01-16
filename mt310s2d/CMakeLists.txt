@@ -4,7 +4,6 @@ set(SOURCES
     src/micro-controller-io/atmelsysctrl.cpp
     src/scpi-interfaces/clampinterface.cpp
     src/scpi-interfaces/emobinterface.cpp
-    src/scpi-interfaces/hkeyinterface.cpp
     src/scpi-interfaces/samplinginterface.cpp
     src/scpi-interfaces/scheadinterface.cpp
     src/scpi-interfaces/senseinterface.cpp
@@ -35,7 +34,6 @@ set(HEADER
     src/micro-controller-io/atmelsysctrl.h
     src/scpi-interfaces/clampinterface.h
     src/scpi-interfaces/emobinterface.h
-    src/scpi-interfaces/hkeyinterface.h
     src/scpi-interfaces/samplinginterface.h
     src/scpi-interfaces/scheadinterface.h
     src/scpi-interfaces/senseinterface.h
