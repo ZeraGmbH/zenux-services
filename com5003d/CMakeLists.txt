@@ -1,7 +1,6 @@
 set(SOURCES
     micro-controller-io/atmel.cpp
     scpi-interfaces/samplinginterface.cpp
-    scpi-interfaces/scheadinterface.cpp
     scpi-interfaces/senseinterface.cpp
     scpi-interfaces/statusinterface.cpp
     scpi-interfaces/systeminterface.cpp
@@ -21,7 +20,6 @@ set(SOURCES
 set(HEADER
     micro-controller-io/atmel.h
     scpi-interfaces/samplinginterface.h
-    scpi-interfaces/scheadinterface.h
     scpi-interfaces/senseinterface.h
     scpi-interfaces/statusinterface.h
     scpi-interfaces/systeminterface.h

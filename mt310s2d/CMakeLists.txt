@@ -5,7 +5,6 @@ set(SOURCES
     src/scpi-interfaces/clampinterface.cpp
     src/scpi-interfaces/emobinterface.cpp
     src/scpi-interfaces/samplinginterface.cpp
-    src/scpi-interfaces/scheadinterface.cpp
     src/scpi-interfaces/senseinterface.cpp
     src/scpi-interfaces/statusinterface.cpp
     src/scpi-interfaces/systeminterface.cpp
@@ -34,7 +33,6 @@ set(HEADER
     src/scpi-interfaces/clampinterface.h
     src/scpi-interfaces/emobinterface.h
     src/scpi-interfaces/samplinginterface.h
-    src/scpi-interfaces/scheadinterface.h
     src/scpi-interfaces/senseinterface.h
     src/scpi-interfaces/statusinterface.h
     src/scpi-interfaces/systeminterface.h
