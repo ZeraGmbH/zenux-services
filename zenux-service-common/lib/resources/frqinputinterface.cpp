@@ -1,7 +1,6 @@
 #include "frqinputinterface.h"
 #include "scpiconnection.h"
 #include "resource.h"
-#include "com5003d.h"
 #include "fpzinchannelinterface.h"
 #include "protonetcommand.h"
 #include "frqinputsettings.h"
@@ -40,7 +39,7 @@ void cFRQInputInterface::initSCPIConnection(QString leadingNodes)
 {
     if (leadingNodes != "")
         leadingNodes += ":";
-    cSCPIDelegate* delegate = new cSCPIDelegate(QString("%1FRQINPUT").arg(leadingNodes),"VERSION",SCPI::isQuery,m_pSCPIInterface, FRQInputSystem::cmdVersion);
+    cSCPIDelegate* delegate = new cSCPIDelegate(QString("%1FRQINPUT").arg(leadingNodes),"VERSION",SCPI::isQuery, m_pSCPIInterface, FRQInputSystem::cmdVersion);
     m_DelegateList.append(delegate);
     connect(delegate, &cSCPIDelegate::execute, this, &cFRQInputInterface::executeCommand);
     delegate = new cSCPIDelegate(QString("%1FRQINPUT:CHANNEL").arg(leadingNodes),"CATALOG", SCPI::isQuery, m_pSCPIInterface, FRQInputSystem::cmdChannelCat);
