@@ -1,20 +1,16 @@
 #include "sourceinterface.h"
 #include "scpiconnection.h"
 #include "resource.h"
-#include "mt310s2d.h"
 #include "fpzchannel.h"
 #include "protonetcommand.h"
 #include "sourcesettings.h"
 #include "notzeronumgen.h"
-#include <scpi.h>
 
-cSourceInterface::cSourceInterface(cMT310S2dServer *server) :
-    cResource(server->getSCPIInterface()),
-    m_pMyServer(server)
+cSourceInterface::cSourceInterface(cSCPI *scpiInterface, cSourceSettings *settings) :
+    cResource(scpiInterface)
 {
     QList<SourceSystem::cChannelSettings*> channelSettings;
-    channelSettings = m_pMyServer->m_pSourceSettings->getChannelSettings();
-
+    channelSettings = settings->getChannelSettings();
     // we have 4 frequency output channels
     cFPZChannel* pChannel;
     pChannel = new cFPZChannel(m_pSCPIInterface, "Reference frequency output 0..1MHz", 0, channelSettings.at(0) );
