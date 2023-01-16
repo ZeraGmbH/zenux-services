@@ -32,11 +32,9 @@ protected slots:
 private:
     QString m_ReadVersion(QString& sInput);
     QString m_ReadChannelCatalog(QString& sInput);
-
     cMT310S2dServer* m_pMyServer;
     QList<FpzInChannelInterface*> m_ChannelList;
     QString m_sVersion;
-
 };
 
 #endif // FRQINPUTINTERFACE_H
