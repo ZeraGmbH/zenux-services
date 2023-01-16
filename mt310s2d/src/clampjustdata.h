@@ -11,7 +11,7 @@
 
 class cSCPI;
 
-class cClampJustData: public cMT310S2JustData
+class cClampJustData: public JustDataRangeGainPhaseOffset
 {
     Q_OBJECT
 

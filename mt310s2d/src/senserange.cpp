@@ -7,7 +7,7 @@
 #include "protonetcommand.h"
 
 
-cSenseRange::cSenseRange(cSCPI *scpiinterface, QString name, QString alias, bool avail, double rValue, double rejection, double ovrejection, double adcrejection, quint8 rselcode, quint16 mmask, cMT310S2JustData* justdata) :
+cSenseRange::cSenseRange(cSCPI *scpiinterface, QString name, QString alias, bool avail, double rValue, double rejection, double ovrejection, double adcrejection, quint8 rselcode, quint16 mmask, JustDataRangeGainPhaseOffset* justdata) :
     ScpiConnection(scpiinterface),
     m_sName(name),
     m_sAlias(alias),
@@ -93,7 +93,7 @@ quint16 cSenseRange::getMMask()
 }
 
 
-cMT310S2JustData *cSenseRange::getJustData()
+JustDataRangeGainPhaseOffset *cSenseRange::getJustData()
 {
     return m_pJustdata;
 }

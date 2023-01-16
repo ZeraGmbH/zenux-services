@@ -39,7 +39,7 @@ public:
                 double adcrejection,
                 quint8 rselcode,
                 quint16 mmask,
-                cMT310S2JustData* justdata);
+                JustDataRangeGainPhaseOffset* justdata);
     ~cSenseRange();
     virtual void initSCPIConnection(QString leadingNodes) override;
     quint8 getAdjustmentStatus();
@@ -48,7 +48,7 @@ public:
     double getUrvalue();
     quint8 getSelCode();
     quint16 getMMask();
-    cMT310S2JustData* getJustData();
+    JustDataRangeGainPhaseOffset* getJustData();
     bool isAvail();
     void setMMode(int m);
 
@@ -78,7 +78,7 @@ protected:
     QString m_ReadRangeOVRejection(QString& sInput);
     QString m_ReadRangeADWRejection(QString& sInput);
 
-    cMT310S2JustData* m_pJustdata;
+    JustDataRangeGainPhaseOffset* m_pJustdata;
 
 };
 
