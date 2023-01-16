@@ -13,8 +13,8 @@ cSCHeadInterface::cSCHeadInterface(cSCPI *scpiInterface, ScInSettings *settings)
     QList<ScInSettings::ChannelSettings*> channelSettings;
     channelSettings = settings->getChannelSettings();
     // we have 1 scanning head input channel
-    cSCHeadChannel* pChannel;
-    pChannel = new cSCHeadChannel(m_pSCPIInterface, "Scanning head input", 0, channelSettings.at(0) );
+    ScInChannelInterface* pChannel;
+    pChannel = new ScInChannelInterface(m_pSCPIInterface, "Scanning head input", 0, channelSettings.at(0) );
     m_ChannelList.append(pChannel);
     m_sVersion = SCHeadSystem::Version;
 }

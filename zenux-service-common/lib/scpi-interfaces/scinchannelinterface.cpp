@@ -1,6 +1,6 @@
-#include "scheadchannel.h"
+#include "scinchannelinterface.h"
 
-cSCHeadChannel::cSCHeadChannel(cSCPI *scpiinterface, QString description, quint8 nr, ScInSettings::ChannelSettings *cSettings) :
+ScInChannelInterface::ScInChannelInterface(cSCPI *scpiinterface, QString description, quint8 nr, ScInSettings::ChannelSettings *cSettings) :
     ScpiConnection(scpiinterface),
     m_sDescription(description)
 {
@@ -9,7 +9,7 @@ cSCHeadChannel::cSCHeadChannel(cSCPI *scpiinterface, QString description, quint8
     m_bAvail = cSettings->m_avail;
 }
 
-void cSCHeadChannel::initSCPIConnection(QString leadingNodes)
+void ScInChannelInterface::initSCPIConnection(QString leadingNodes)
 {
 
     if (leadingNodes != "")
@@ -17,13 +17,13 @@ void cSCHeadChannel::initSCPIConnection(QString leadingNodes)
     cSCPIDelegate* delegate;
     delegate = new cSCPIDelegate(QString("%1%2").arg(leadingNodes).arg(m_sName),"ALIAS", SCPI::isQuery, m_pSCPIInterface, SCHEADChannel::cmdAlias);
     m_DelegateList.append(delegate);
-    connect(delegate, &cSCPIDelegate::execute, this, &cSCHeadChannel::executeCommand);
+    connect(delegate, &cSCPIDelegate::execute, this, &ScInChannelInterface::executeCommand);
     delegate = new cSCPIDelegate(QString("%1%2").arg(leadingNodes).arg(m_sName),"STATUS", SCPI::isQuery, m_pSCPIInterface, SCHEADChannel::cmdStatus);
     m_DelegateList.append(delegate);
-    connect(delegate, &cSCPIDelegate::execute, this, &cSCHeadChannel::executeCommand);
+    connect(delegate, &cSCPIDelegate::execute, this, &ScInChannelInterface::executeCommand);
 }
 
-void cSCHeadChannel::executeCommand(int cmdCode, cProtonetCommand *protoCmd)
+void ScInChannelInterface::executeCommand(int cmdCode, cProtonetCommand *protoCmd)
 {
     switch (cmdCode)
     {
@@ -38,27 +38,27 @@ void cSCHeadChannel::executeCommand(int cmdCode, cProtonetCommand *protoCmd)
         emit cmdExecutionDone(protoCmd);
 }
 
-QString &cSCHeadChannel::getName()
+QString &ScInChannelInterface::getName()
 {
     return m_sName;
 }
 
-QString &cSCHeadChannel::getAlias()
+QString &ScInChannelInterface::getAlias()
 {
     return m_sAlias;
 }
 
-QString &cSCHeadChannel::getDescription()
+QString &ScInChannelInterface::getDescription()
 {
     return m_sDescription;
 }
 
-bool cSCHeadChannel::isAvail()
+bool ScInChannelInterface::isAvail()
 {
     return m_bAvail;
 }
 
-QString cSCHeadChannel::m_ReadAlias(QString &sInput)
+QString ScInChannelInterface::m_ReadAlias(QString &sInput)
 {
     cSCPICommand cmd = sInput;
     if (cmd.isQuery())
@@ -67,7 +67,7 @@ QString cSCHeadChannel::m_ReadAlias(QString &sInput)
         return SCPI::scpiAnswer[SCPI::nak];
 }
 
-QString cSCHeadChannel::m_ReadChannelStatus(QString &sInput)
+QString ScInChannelInterface::m_ReadChannelStatus(QString &sInput)
 {
     cSCPICommand cmd = sInput;
     if (cmd.isQuery()) {
