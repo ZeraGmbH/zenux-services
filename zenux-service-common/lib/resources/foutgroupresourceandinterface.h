@@ -13,11 +13,6 @@ class FOutGroupResourceAndInterface : public cResource
     Q_OBJECT
 public:
     const QString Version = "V1.00";
-    enum Commands
-    {
-        cmdVersion,
-        cmdChannelCat
-    };
     FOutGroupResourceAndInterface(cSCPI *scpiInterface, FOutSettings* settings);
     ~FOutGroupResourceAndInterface();
     virtual void initSCPIConnection(QString leadingNodes) override;

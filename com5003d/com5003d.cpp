@@ -21,7 +21,7 @@
 #include "atmel.h"
 #include "atmelwatcher.h"
 #include "fingroupresourceandinterface.h"
-#include "hkeyinterface.h"
+#include "hkingroupresourceandinterface.h"
 #include "samplinginterface.h"
 #include "scheadinterface.h"
 #include "senseinterface.h"
@@ -119,7 +119,7 @@ cCOM5003dServer::~cCOM5003dServer()
     if (m_pSourceInterface) delete m_pSourceInterface;
     if (m_pFRQInputInterface) delete m_pFRQInputInterface;
     if (m_pSCHeadInterface) delete m_pSCHeadInterface;
-    if (m_pHKeyInterface) delete m_pHKeyInterface;
+    if (m_hkInInterface) delete m_hkInInterface;
     if (m_pSystemInfo) delete m_pSystemInfo;
     if (m_pAdjHandler) delete m_pAdjHandler;
     if (m_pRMConnection) delete m_pRMConnection;
@@ -348,14 +348,14 @@ void cCOM5003dServer::doSetupServer()
     scpiConnectionList.append(m_pSourceInterface = new FOutGroupResourceAndInterface(getSCPIInterface(), m_foutSettings));
     scpiConnectionList.append(m_pFRQInputInterface = new FInGroupResourceAndInterface(getSCPIInterface(), m_finSettings));
     scpiConnectionList.append(m_pSCHeadInterface = new cSCHeadInterface(this));
-    scpiConnectionList.append(m_pHKeyInterface = new cHKeyInterface(getSCPIInterface(), m_hkInSettings));
+    scpiConnectionList.append(m_hkInInterface = new HkInGroupResourceAndInterface(getSCPIInterface(), m_hkInSettings));
 
     resourceList.append(m_pSenseInterface); // all our resources
     resourceList.append(m_pSamplingInterface);
     resourceList.append(m_pSourceInterface);
     resourceList.append(m_pFRQInputInterface);
     resourceList.append(m_pSCHeadInterface);
-    resourceList.append(m_pHKeyInterface);
+    resourceList.append(m_hkInInterface);
 
     m_pAdjHandler->addAdjFlashObject(m_pSenseInterface); // we add the senseinterface to both
     m_pAdjHandler->addAdjXMLObject(m_pSenseInterface); // adjustment list (flash and xml)

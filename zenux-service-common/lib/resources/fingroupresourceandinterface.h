@@ -9,20 +9,11 @@
 #include <QObject>
 #include <QList>
 
-namespace FRQInputSystem
-{
-    const QString Version = "V1.00";
-    enum Commands
-    {
-        cmdVersion,
-        cmdChannelCat
-    };
-}
-
 class FInGroupResourceAndInterface : public cResource
 {
     Q_OBJECT
 public:
+    const QString Version = "V1.00";
     FInGroupResourceAndInterface(cSCPI *scpiInterface, FInSettings *settings);
     ~FInGroupResourceAndInterface();
     virtual void initSCPIConnection(QString leadingNodes) override;
@@ -34,7 +25,6 @@ private:
     QString m_ReadVersion(QString& sInput);
     QString m_ReadChannelCatalog(QString& sInput);
     QList<FInChannelInterface*> m_ChannelList;
-    QString m_sVersion;
 };
 
 #endif // FINGROUPRESOURCEANDINTERFACE_H

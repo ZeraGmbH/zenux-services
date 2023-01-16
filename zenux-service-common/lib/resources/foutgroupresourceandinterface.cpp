@@ -6,6 +6,12 @@
 #include "foutsettings.h"
 #include "notzeronumgen.h"
 
+enum Commands
+{
+    cmdVersion,
+    cmdChannelCat
+};
+
 FOutGroupResourceAndInterface::FOutGroupResourceAndInterface(cSCPI *scpiInterface, FOutSettings *settings) :
     cResource(scpiInterface)
 {

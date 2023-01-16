@@ -8,6 +8,12 @@
 #include <xmlsettings.h>
 #include <scpi.h>
 
+enum Commands
+{
+    cmdVersion,
+    cmdChannelCat
+};
+
 FInGroupResourceAndInterface::FInGroupResourceAndInterface(cSCPI *scpiInterface, FInSettings *settings) :
     cResource(scpiInterface)
 {
@@ -24,8 +30,6 @@ FInGroupResourceAndInterface::FInGroupResourceAndInterface(cSCPI *scpiInterface,
     m_ChannelList.append(pChannel);
     pChannel = new FInChannelInterface(m_pSCPIInterface, "Frequency output 0..1MHz", 3, channelSettings.at(3) );
     m_ChannelList.append(pChannel);
-
-    m_sVersion = FRQInputSystem::Version;
 }
 
 FInGroupResourceAndInterface::~FInGroupResourceAndInterface()
@@ -38,10 +42,10 @@ void FInGroupResourceAndInterface::initSCPIConnection(QString leadingNodes)
 {
     if (leadingNodes != "")
         leadingNodes += ":";
-    cSCPIDelegate* delegate = new cSCPIDelegate(QString("%1FRQINPUT").arg(leadingNodes),"VERSION",SCPI::isQuery, m_pSCPIInterface, FRQInputSystem::cmdVersion);
+    cSCPIDelegate* delegate = new cSCPIDelegate(QString("%1FRQINPUT").arg(leadingNodes),"VERSION",SCPI::isQuery, m_pSCPIInterface, cmdVersion);
     m_DelegateList.append(delegate);
     connect(delegate, &cSCPIDelegate::execute, this, &FInGroupResourceAndInterface::executeCommand);
-    delegate = new cSCPIDelegate(QString("%1FRQINPUT:CHANNEL").arg(leadingNodes),"CATALOG", SCPI::isQuery, m_pSCPIInterface, FRQInputSystem::cmdChannelCat);
+    delegate = new cSCPIDelegate(QString("%1FRQINPUT:CHANNEL").arg(leadingNodes),"CATALOG", SCPI::isQuery, m_pSCPIInterface, cmdChannelCat);
     m_DelegateList.append(delegate);
     connect(delegate, &cSCPIDelegate::execute, this, &FInGroupResourceAndInterface::executeCommand);
     for (auto channel : qAsConst(m_ChannelList)) {
@@ -67,10 +71,10 @@ void FInGroupResourceAndInterface::executeCommand(int cmdCode, cProtonetCommand 
 {
     switch (cmdCode)
     {
-    case FRQInputSystem::cmdVersion:
+    case cmdVersion:
         protoCmd->m_sOutput = m_ReadVersion(protoCmd->m_sInput);
         break;
-    case FRQInputSystem::cmdChannelCat:
+    case cmdChannelCat:
         protoCmd->m_sOutput = m_ReadChannelCatalog(protoCmd->m_sInput);
         break;
     }
@@ -82,7 +86,7 @@ QString FInGroupResourceAndInterface::m_ReadVersion(QString &sInput)
 {
     cSCPICommand cmd = sInput;
     if (cmd.isQuery())
-        return m_sVersion;
+        return Version;
     return SCPI::scpiAnswer[SCPI::nak];
 }
 
