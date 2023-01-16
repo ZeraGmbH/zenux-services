@@ -1,7 +1,7 @@
 #ifndef TEST_JUSTDATA_H
 #define TEST_JUSTDATA_H
 
-#include "justdata.h"
+#include "justdatainterface.h"
 
 #include <scpi.h>
 #include <QTest>
@@ -24,7 +24,7 @@ private slots:
     void coefSetCrap();
 private:
     cSCPI *scpi;
-    cJustData *justData;
+    JustDataInterface *justData;
 };
 
 #endif // TEST_JUSTDATA_H

@@ -1,11 +1,11 @@
-#ifndef JUSTDATA_H
-#define JUSTDATA_H
+#ifndef JUSTDATAINTERFACE_H
+#define JUSTDATAINTERFACE_H
 
 #include "scpiconnection.h"
 #include <QDataStream>
 #include <QString>
 
-// a cJustData object has a max. possible order
+// a JustDataInterface object has a max. possible order
 // the order must not necessarily be used
 // setting only the first node results in a effectively 0 order
 // a new generated object is also initialized like that
@@ -43,11 +43,11 @@ struct TJustDataParam
     int digits;
 };
 
-class cJustData: public ScpiConnection // base class for adjustment coefficients and nodes
+class JustDataInterface: public ScpiConnection // base class for adjustment coefficients and nodes
 {
 public:
-    cJustData(TJustDataParam param);
-    ~cJustData();
+    JustDataInterface(TJustDataParam param);
+    ~JustDataInterface();
     virtual void initSCPIConnection(QString leadingNodes) override;
 
     void Serialize(QDataStream& qds); // can be used to write adjustment data to flash memory

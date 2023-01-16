@@ -5,10 +5,10 @@
 #include "protonetcommand.h"
 #include "scpiconnection.h"
 #include "scpidelegate.h"
-#include "justdata.h"
+#include "justdatainterface.h"
 #include <justnode.h>
 
-cJustData::cJustData(TJustDataParam param) :
+JustDataInterface::JustDataInterface(TJustDataParam param) :
     ScpiConnection(param.scpiinterface),
     m_checkPermission(param.checkPermission),
     m_nOrder(param.order),
@@ -20,53 +20,53 @@ cJustData::cJustData(TJustDataParam param) :
 }
 
 
-cJustData::~cJustData()
+JustDataInterface::~JustDataInterface()
 {
     delete [] m_pCoefficient;
     delete [] m_pJustNode;
 }
 
 
-void cJustData::initSCPIConnection(QString leadingNodes)
+void JustDataInterface::initSCPIConnection(QString leadingNodes)
 {
     cSCPIDelegate* delegate;
 
     delegate = new cSCPIDelegate(QString("%1").arg(leadingNodes), "STATUS", SCPI::isCmdwP || SCPI::isQuery, m_pSCPIInterface, JustStatus);
     m_DelegateList.append(delegate);
-    connect(delegate, &cSCPIDelegate::execute, this, &cJustData::executeCommand);
+    connect(delegate, &cSCPIDelegate::execute, this, &JustDataInterface::executeCommand);
 
     if (leadingNodes != "")
         leadingNodes += ":";
 
     delegate = new cSCPIDelegate(QString("%1COEFFICIENT").arg(leadingNodes), "0", SCPI::isCmdwP || SCPI::isQuery, m_pSCPIInterface, JustCoefficient0);
     m_DelegateList.append(delegate);
-    connect(delegate, &cSCPIDelegate::execute, this, &cJustData::executeCommand);
+    connect(delegate, &cSCPIDelegate::execute, this, &JustDataInterface::executeCommand);
     delegate = new cSCPIDelegate(QString("%1COEFFICIENT").arg(leadingNodes), "1", SCPI::isCmdwP || SCPI::isQuery, m_pSCPIInterface, JustCoefficient1);
     m_DelegateList.append(delegate);
-    connect(delegate, &cSCPIDelegate::execute, this, &cJustData::executeCommand);
+    connect(delegate, &cSCPIDelegate::execute, this, &JustDataInterface::executeCommand);
     delegate = new cSCPIDelegate(QString("%1COEFFICIENT").arg(leadingNodes), "2", SCPI::isCmdwP || SCPI::isQuery, m_pSCPIInterface, JustCoefficient2);
     m_DelegateList.append(delegate);
-    connect(delegate, &cSCPIDelegate::execute, this, &cJustData::executeCommand);
+    connect(delegate, &cSCPIDelegate::execute, this, &JustDataInterface::executeCommand);
     delegate = new cSCPIDelegate(QString("%1COEFFICIENT").arg(leadingNodes), "3", SCPI::isCmdwP || SCPI::isQuery, m_pSCPIInterface, JustCoefficient3);
     m_DelegateList.append(delegate);
-    connect(delegate, &cSCPIDelegate::execute, this, &cJustData::executeCommand);
+    connect(delegate, &cSCPIDelegate::execute, this, &JustDataInterface::executeCommand);
     delegate = new cSCPIDelegate(QString("%1NODE").arg(leadingNodes), "0", SCPI::isCmdwP || SCPI::isQuery, m_pSCPIInterface, JustNode0);
     m_DelegateList.append(delegate);
-    connect(delegate, &cSCPIDelegate::execute, this, &cJustData::executeCommand);
+    connect(delegate, &cSCPIDelegate::execute, this, &JustDataInterface::executeCommand);
     delegate = new cSCPIDelegate(QString("%1NODE").arg(leadingNodes), "1", SCPI::isCmdwP || SCPI::isQuery, m_pSCPIInterface, JustNode1);
     m_DelegateList.append(delegate);
-    connect(delegate, &cSCPIDelegate::execute, this, &cJustData::executeCommand);
+    connect(delegate, &cSCPIDelegate::execute, this, &JustDataInterface::executeCommand);
     delegate = new cSCPIDelegate(QString("%1NODE").arg(leadingNodes), "2", SCPI::isCmdwP || SCPI::isQuery, m_pSCPIInterface, JustNode2);
     m_DelegateList.append(delegate);
-    connect(delegate, &cSCPIDelegate::execute, this, &cJustData::executeCommand);
+    connect(delegate, &cSCPIDelegate::execute, this, &JustDataInterface::executeCommand);
     delegate = new cSCPIDelegate(QString("%1NODE").arg(leadingNodes), "3", SCPI::isCmdwP || SCPI::isQuery, m_pSCPIInterface, JustNode3);
     m_DelegateList.append(delegate);
-    connect(delegate, &cSCPIDelegate::execute, this, &cJustData::executeCommand);
+    connect(delegate, &cSCPIDelegate::execute, this, &JustDataInterface::executeCommand);
 
 }
 
 
-void cJustData::executeCommand(int cmdCode, cProtonetCommand *protoCmd)
+void JustDataInterface::executeCommand(int cmdCode, cProtonetCommand *protoCmd)
 {
     switch (cmdCode)
     {
@@ -104,7 +104,7 @@ void cJustData::executeCommand(int cmdCode, cProtonetCommand *protoCmd)
 }
 
 
-QString cJustData::m_ReadWriteStatus(QString &sInput)
+QString JustDataInterface::m_ReadWriteStatus(QString &sInput)
 {
     bool ok;
     bool enable;
@@ -144,7 +144,7 @@ QString cJustData::m_ReadWriteStatus(QString &sInput)
 }
 
 
-QString cJustData::m_ReadWriteJustCoeeficient(QString &sInput, quint8 index)
+QString JustDataInterface::m_ReadWriteJustCoeeficient(QString &sInput, quint8 index)
 {
     bool ok;
 
@@ -185,7 +185,7 @@ QString cJustData::m_ReadWriteJustCoeeficient(QString &sInput, quint8 index)
 }
 
 
-QString cJustData::m_ReadWriteJustNode(QString &sInput, quint8 index)
+QString JustDataInterface::m_ReadWriteJustNode(QString &sInput, quint8 index)
 {
     cSCPICommand cmd = sInput;
 
@@ -228,7 +228,7 @@ QString cJustData::m_ReadWriteJustNode(QString &sInput, quint8 index)
 }
 
 
-void cJustData::Serialize(QDataStream& qds) // writes adjustment data to a qdatastream
+void JustDataInterface::Serialize(QDataStream& qds) // writes adjustment data to a qdatastream
 {
     int i;
     qds << m_nStatus;
@@ -239,7 +239,7 @@ void cJustData::Serialize(QDataStream& qds) // writes adjustment data to a qdata
 }
 
 
-void cJustData::Deserialize(QDataStream& qds) // reads adjustment data from a qdatastream
+void JustDataInterface::Deserialize(QDataStream& qds) // reads adjustment data from a qdatastream
 {
     int i;
     qds >> m_nStatus;
@@ -250,14 +250,14 @@ void cJustData::Deserialize(QDataStream& qds) // reads adjustment data from a qd
 }
 
 
-QString cJustData::SerializeStatus()
+QString JustDataInterface::SerializeStatus()
 {
     QString s = QString("%1").arg(m_nStatus);
     return s;
 }
 	
 	
-QString cJustData::SerializeCoefficients() // writes adjustment data to qstring
+QString JustDataInterface::SerializeCoefficients() // writes adjustment data to qstring
 {
     int i;
     QString s = "";
@@ -267,7 +267,7 @@ QString cJustData::SerializeCoefficients() // writes adjustment data to qstring
 }
 
 
-QString cJustData::SerializeNodes()
+QString JustDataInterface::SerializeNodes()
 {
     int i;
     QString s = "";
@@ -277,14 +277,14 @@ QString cJustData::SerializeNodes()
 }
 
 
-void cJustData::DeserializeStatus(const QString &s)
+void JustDataInterface::DeserializeStatus(const QString &s)
 {
     bool ok;
     m_nStatus = s.toInt(&ok);
 }
 
 
-void cJustData::DeserializeCoefficients(const QString& s) 
+void JustDataInterface::DeserializeCoefficients(const QString& s) 
 {	
     int i;
     for (i = 0; i < m_nOrder+1; i++)
@@ -292,7 +292,7 @@ void cJustData::DeserializeCoefficients(const QString& s)
 }
 
 
-void cJustData::DeserializeNodes(const QString& s)
+void JustDataInterface::DeserializeNodes(const QString& s)
 {
     int i;
     for (i = 0; i < m_nOrder+1; i++)
@@ -300,7 +300,7 @@ void cJustData::DeserializeNodes(const QString& s)
 }
 
 
-bool cJustData::setNode(int index, cJustNode jn) // // !!! setting node sequence is relevant !!!
+bool JustDataInterface::setNode(int index, cJustNode jn) // // !!! setting node sequence is relevant !!!
 {
     if (index < m_nOrder+1)
     {
@@ -312,13 +312,13 @@ bool cJustData::setNode(int index, cJustNode jn) // // !!! setting node sequence
 }
 
 
-cJustNode* cJustData::getNode(int index) // can be read back
+cJustNode* JustDataInterface::getNode(int index) // can be read back
 {
     return &m_pJustNode[index];
 }
  
 
-bool cJustData::setCoefficient(int index, double value)
+bool JustDataInterface::setCoefficient(int index, double value)
 {
     if (index < m_nOrder+1)
     {
@@ -333,13 +333,13 @@ bool cJustData::setCoefficient(int index, double value)
 }
 
 
-double cJustData::getCoefficient(int index)
+double JustDataInterface::getCoefficient(int index)
 {
     return m_pCoefficient[index];
 }
 
 
-bool cJustData::cmpCoefficients() // calculates coefficients from nodes
+bool JustDataInterface::cmpCoefficients() // calculates coefficients from nodes
 {
     const double epsilon = 1e-7;
     int realOrd, i; // find out real
@@ -381,13 +381,13 @@ bool cJustData::cmpCoefficients() // calculates coefficients from nodes
 }
 
 
-quint8 cJustData::getStatus()
+quint8 JustDataInterface::getStatus()
 {
     return m_nStatus;
 }
 
 
-void cJustData::initJustData(double init)
+void JustDataInterface::initJustData(double init)
 {
     setNode(0 , cJustNode(init,0.0)); // setting the 1st node and all following
     cmpCoefficients();
@@ -395,7 +395,7 @@ void cJustData::initJustData(double init)
 }
 
     
-double cJustData::getCorrection(double arg) // calculates correction value
+double JustDataInterface::getCorrection(double arg) // calculates correction value
 {
     double Arg = 1.0;
     double Corr = 0.0;

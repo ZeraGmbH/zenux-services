@@ -2,7 +2,7 @@
 #include "mt310s2dglobal.h"
 #include "mt310s2d.h"
 #include "adjustment.h"
-#include "justdata.h"
+#include "justdatainterface.h"
 #include "mt310s2justdata.h"
 #include "sensechannel.h"
 #include "senserange.h"
@@ -639,7 +639,7 @@ bool cSenseInterface::importXMLDocument(QDomDocument* qdomdoc) // n steht auf ei
                                                 qDebug() << Name;
                                                 rngPtr = chnPtr->getRange(Name);
                                             }
-                                            cJustData* pJustData = nullptr;
+                                            JustDataInterface* pJustData = nullptr;
                                             if (rngPtr != nullptr) {
                                                 if (tName == "Gain") {
                                                     pJustData = rngPtr->getJustData()->m_pGainCorrection;

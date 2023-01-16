@@ -1,6 +1,6 @@
 #include "com5003dglobal.h"
 #include "adjflash.h"
-#include "justdata.h"
+#include "justdatainterface.h"
 #include "adjxml.h"
 #include "systeminfo.h"
 #include "adjustment.h"
