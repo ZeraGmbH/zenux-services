@@ -1,45 +1,45 @@
-#include "fpzoutgroupresourceandinterface.h"
+#include "foutgroupresourceandinterface.h"
 #include "scpiconnection.h"
 #include "resource.h"
-#include "fpzoutchannelinterface.h"
+#include "foutchannelinterface.h"
 #include "protonetcommand.h"
 #include "sourcesettings.h"
 #include "notzeronumgen.h"
 
-FpzOutGroupResourceAndInterface::FpzOutGroupResourceAndInterface(cSCPI *scpiInterface, cSourceSettings *settings) :
+FOutGroupResourceAndInterface::FOutGroupResourceAndInterface(cSCPI *scpiInterface, cSourceSettings *settings) :
     cResource(scpiInterface)
 {
     QList<SourceSystem::cChannelSettings*> channelSettings;
     channelSettings = settings->getChannelSettings();
     // we have 4 frequency output channels
-    FpzOutChannelInterface* pChannel;
-    pChannel = new FpzOutChannelInterface(m_pSCPIInterface, "Reference frequency output 0..1MHz", 0, channelSettings.at(0) );
+    FOutChannelInterface* pChannel;
+    pChannel = new FOutChannelInterface(m_pSCPIInterface, "Reference frequency output 0..1MHz", 0, channelSettings.at(0) );
     m_ChannelList.append(pChannel);
-    pChannel = new FpzOutChannelInterface(m_pSCPIInterface, "Reference frequency output 0..1MHz", 1, channelSettings.at(1) );
+    pChannel = new FOutChannelInterface(m_pSCPIInterface, "Reference frequency output 0..1MHz", 1, channelSettings.at(1) );
     m_ChannelList.append(pChannel);
-    pChannel = new FpzOutChannelInterface(m_pSCPIInterface, "Reference frequency output 0..1MHz", 2, channelSettings.at(2) );
+    pChannel = new FOutChannelInterface(m_pSCPIInterface, "Reference frequency output 0..1MHz", 2, channelSettings.at(2) );
     m_ChannelList.append(pChannel);
-    pChannel = new FpzOutChannelInterface(m_pSCPIInterface, "Reference frequency output 0..1MHz", 3, channelSettings.at(3) );
+    pChannel = new FOutChannelInterface(m_pSCPIInterface, "Reference frequency output 0..1MHz", 3, channelSettings.at(3) );
     m_ChannelList.append(pChannel);
 }
 
-FpzOutGroupResourceAndInterface::~FpzOutGroupResourceAndInterface()
+FOutGroupResourceAndInterface::~FOutGroupResourceAndInterface()
 {
     for(auto channel : qAsConst(m_ChannelList))
         delete channel;
 }
 
-void FpzOutGroupResourceAndInterface::initSCPIConnection(QString leadingNodes)
+void FOutGroupResourceAndInterface::initSCPIConnection(QString leadingNodes)
 {
     if (leadingNodes != "")
         leadingNodes += ":";
     cSCPIDelegate* delegate;
     delegate = new cSCPIDelegate(QString("%1SOURCE").arg(leadingNodes),"VERSION",SCPI::isQuery, m_pSCPIInterface, cmdVersion);
     m_DelegateList.append(delegate);
-    connect(delegate, &cSCPIDelegate::execute, this, &FpzOutGroupResourceAndInterface::executeCommand);
+    connect(delegate, &cSCPIDelegate::execute, this, &FOutGroupResourceAndInterface::executeCommand);
     delegate = new cSCPIDelegate(QString("%1SOURCE:CHANNEL").arg(leadingNodes),"CATALOG", SCPI::isQuery, m_pSCPIInterface, cmdChannelCat);
     m_DelegateList.append(delegate);
-    connect(delegate, &cSCPIDelegate::execute, this, &FpzOutGroupResourceAndInterface::executeCommand);
+    connect(delegate, &cSCPIDelegate::execute, this, &FOutGroupResourceAndInterface::executeCommand);
     for(auto channel : qAsConst(m_ChannelList)) {
         connect(channel, &ScpiConnection::strNotifier, this, &ScpiConnection::strNotifier);
         connect(channel, &ScpiConnection::cmdExecutionDone, this, &ScpiConnection::cmdExecutionDone);
@@ -47,7 +47,7 @@ void FpzOutGroupResourceAndInterface::initSCPIConnection(QString leadingNodes)
     }
 }
 
-void FpzOutGroupResourceAndInterface::registerResource(RMConnection *rmConnection, quint16 port)
+void FOutGroupResourceAndInterface::registerResource(RMConnection *rmConnection, quint16 port)
 {
     for(auto channel : qAsConst(m_ChannelList))
         register1Resource(rmConnection,
@@ -55,7 +55,7 @@ void FpzOutGroupResourceAndInterface::registerResource(RMConnection *rmConnectio
                           QString("SOURCE;%1;1;%2;%3;").arg(channel->getName()).arg(channel->getDescription()).arg(port));
 }
 
-void FpzOutGroupResourceAndInterface::unregisterResource(RMConnection *rmConnection)
+void FOutGroupResourceAndInterface::unregisterResource(RMConnection *rmConnection)
 {
     for(auto channel : qAsConst(m_ChannelList))
         unregister1Resource(rmConnection,
@@ -63,7 +63,7 @@ void FpzOutGroupResourceAndInterface::unregisterResource(RMConnection *rmConnect
                             QString("SOURCE;%1;").arg(channel->getName()));
 }
 
-void FpzOutGroupResourceAndInterface::executeCommand(int cmdCode, cProtonetCommand *protoCmd)
+void FOutGroupResourceAndInterface::executeCommand(int cmdCode, cProtonetCommand *protoCmd)
 {
     switch (cmdCode)
     {
@@ -78,7 +78,7 @@ void FpzOutGroupResourceAndInterface::executeCommand(int cmdCode, cProtonetComma
         emit cmdExecutionDone(protoCmd);
 }
 
-QString FpzOutGroupResourceAndInterface::readVersion(QString &sInput)
+QString FOutGroupResourceAndInterface::readVersion(QString &sInput)
 {
     cSCPICommand cmd = sInput;
     if (cmd.isQuery())
@@ -87,7 +87,7 @@ QString FpzOutGroupResourceAndInterface::readVersion(QString &sInput)
         return SCPI::scpiAnswer[SCPI::nak];
 }
 
-QString FpzOutGroupResourceAndInterface::readSourceChannelCatalog(QString &sInput)
+QString FOutGroupResourceAndInterface::readSourceChannelCatalog(QString &sInput)
 {
     cSCPICommand cmd = sInput;
     if (cmd.isQuery()) {

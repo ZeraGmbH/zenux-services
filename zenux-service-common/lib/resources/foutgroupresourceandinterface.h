@@ -1,14 +1,14 @@
-#ifndef FPZOUTGROUPRESOURCEANDINTERFACE_H
-#define FPZOUTGROUPRESOURCEANDINTERFACE_H
+#ifndef FOUTGROUPRESOURCEANDINTERFACE_H
+#define FOUTGROUPRESOURCEANDINTERFACE_H
 
-#include "fpzoutchannelinterface.h"
+#include "foutchannelinterface.h"
 #include "resource.h"
 #include "sourcesettings.h"
 #include <scpi.h>
 #include <QObject>
 #include <QList>
 
-class FpzOutGroupResourceAndInterface : public cResource
+class FOutGroupResourceAndInterface : public cResource
 {
     Q_OBJECT
 public:
@@ -18,8 +18,8 @@ public:
         cmdVersion,
         cmdChannelCat
     };
-    FpzOutGroupResourceAndInterface(cSCPI *scpiInterface, cSourceSettings* settings);
-    ~FpzOutGroupResourceAndInterface();
+    FOutGroupResourceAndInterface(cSCPI *scpiInterface, cSourceSettings* settings);
+    ~FOutGroupResourceAndInterface();
     virtual void initSCPIConnection(QString leadingNodes) override;
     virtual void registerResource(RMConnection *rmConnection, quint16 port) override;
     virtual void unregisterResource(RMConnection *rmConnection) override;
@@ -28,7 +28,7 @@ protected slots:
 private:
     QString readVersion(QString &sInput);
     QString readSourceChannelCatalog(QString &sInput);
-    QList<FpzOutChannelInterface*> m_ChannelList;
+    QList<FOutChannelInterface*> m_ChannelList;
 };
 
-#endif // FPZOUTGROUPRESOURCEANDINTERFACE_H
+#endif // FOUTGROUPRESOURCEANDINTERFACE_H
