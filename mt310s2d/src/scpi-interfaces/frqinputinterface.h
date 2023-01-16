@@ -4,7 +4,7 @@
 #include "resource.h"
 #include "mt310s2d.h"
 #include "scpiconnection.h"
-#include "fpzinchannel.h"
+#include "fpzinchannelinterface.h"
 #include <QObject>
 #include <QList>
 
@@ -34,7 +34,7 @@ private:
     QString m_ReadChannelCatalog(QString& sInput);
 
     cMT310S2dServer* m_pMyServer;
-    QList<cFPZInChannel*> m_ChannelList;
+    QList<FpzInChannelInterface*> m_ChannelList;
     QString m_sVersion;
 
 };

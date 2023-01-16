@@ -1,5 +1,5 @@
-#ifndef FPZINCHANNEL_H
-#define FPZINCHANNEL_H
+#ifndef FPZINCHANNELINTERFACE_H
+#define FPZINCHANNELINTERFACE_H
 
 #include "scpiconnection.h"
 
@@ -19,12 +19,12 @@ namespace FRQInputSystem
     class cChannelSettings;
 }
 
-class cFPZInChannel : public ScpiConnection
+class FpzInChannelInterface : public ScpiConnection
 {
     Q_OBJECT
 
 public:
-    cFPZInChannel(cSCPI* scpiInterface, QString description, quint8 nr, FRQInputSystem::cChannelSettings* cSettings);
+    FpzInChannelInterface(cSCPI* scpiInterface, QString description, quint8 nr, FRQInputSystem::cChannelSettings* cSettings);
     virtual void initSCPIConnection(QString leadingNodes) override;
 
     QString& getName();
@@ -45,4 +45,4 @@ private:
     QString m_ReadChannelStatus(QString& sInput);
 };
 
-#endif // FPZINCHANNEL_H
+#endif // FPZINCHANNELINTERFACE_H
