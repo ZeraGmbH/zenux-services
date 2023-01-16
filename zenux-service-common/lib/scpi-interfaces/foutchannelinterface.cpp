@@ -1,7 +1,6 @@
 #include "scpiconnection.h"
 #include "foutchannelinterface.h"
 #include "protonetcommand.h"
-#include "foutsettings.h"
 #include <scpi.h>
 
 enum Commands
@@ -18,7 +17,7 @@ enum Commands
 
 static constexpr double FormFactor = 5.6294995e6; // fout = (Pact/Pnenn) * FPZnenn * FormFactor
 
-FOutChannelInterface::FOutChannelInterface(cSCPI *scpiinterface, QString description, quint8 nr, SourceSystem::cChannelSettings *cSettings) :
+FOutChannelInterface::FOutChannelInterface(cSCPI *scpiinterface, QString description, quint8 nr, FOutSettings::ChannelSettings *cSettings) :
     ScpiConnection(scpiinterface),
     m_sDescription(description)
 {

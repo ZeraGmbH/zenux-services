@@ -3,7 +3,6 @@
 #include "resource.h"
 #include "foutchannelinterface.h"
 #include "protonetcommand.h"
-#include "foutsettings.h"
 #include "notzeronumgen.h"
 
 enum Commands
@@ -15,8 +14,7 @@ enum Commands
 FOutGroupResourceAndInterface::FOutGroupResourceAndInterface(cSCPI *scpiInterface, FOutSettings *settings) :
     cResource(scpiInterface)
 {
-    QList<SourceSystem::cChannelSettings*> channelSettings;
-    channelSettings = settings->getChannelSettings();
+    QList<FOutSettings::ChannelSettings*> channelSettings = settings->getChannelSettings();
     // we have 4 frequency output channels
     FOutChannelInterface* pChannel;
     pChannel = new FOutChannelInterface(m_pSCPIInterface, "Reference frequency output 0..1MHz", 0, channelSettings.at(0) );

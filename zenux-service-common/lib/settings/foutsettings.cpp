@@ -24,7 +24,7 @@ FOutSettings::FOutSettings(Zera::XMLConfig::cReader *xmlread)
 {
     m_pXMLReader = xmlread;
     for (int i = 0; i < 4; i++) {
-        m_ChannelSettingsList.append(new SourceSystem::cChannelSettings);
+        m_ChannelSettingsList.append(new ChannelSettings);
         m_ConfigXMLMap[QString("serviceconfig:resource:source:fpzout:fo%1:alias").arg(i)] = cfg0Alias + i;
         m_ConfigXMLMap[QString("serviceconfig:resource:source:fpzout:fo%1:dspserver").arg(i)] = cfg0dspserver + i;
         m_ConfigXMLMap[QString("serviceconfig:resource:source:fpzout:fo%1:dspchannel").arg(i)] = cfg0dspchannel + i;
@@ -38,7 +38,7 @@ FOutSettings::~FOutSettings()
         delete channel;
 }
 
-QList<SourceSystem::cChannelSettings*> &FOutSettings::getChannelSettings()
+QList<FOutSettings::ChannelSettings*> &FOutSettings::getChannelSettings()
 {
     return m_ChannelSettingsList;
 }

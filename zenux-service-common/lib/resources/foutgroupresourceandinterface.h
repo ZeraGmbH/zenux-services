@@ -5,7 +5,6 @@
 #include "resource.h"
 #include "foutsettings.h"
 #include <scpi.h>
-#include <QObject>
 #include <QList>
 
 class FOutGroupResourceAndInterface : public cResource
