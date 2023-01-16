@@ -15,7 +15,7 @@ class cStatusInterface;
 class cSystemInterface;
 class cSenseInterface;
 class cSamplingInterface;
-class cSourceInterface;
+class FpzOutGroupResourceAndInterface;
 class cFRQInputInterface;
 class cSCHeadInterface;
 class cHKeyInterface;
@@ -36,7 +36,7 @@ public:
     cSystemInterface* m_pSystemInterface;
     cSenseInterface* m_pSenseInterface;
     cSamplingInterface* m_pSamplingInterface;
-    cSourceInterface* m_pSourceInterface;
+    FpzOutGroupResourceAndInterface* m_pSourceInterface;
     cFRQInputInterface* m_pFRQInputInterface;
     cSCHeadInterface* m_pSCHeadInterface;
     cHKeyInterface* m_pHKeyInterface;

@@ -1,4 +1,4 @@
-#include "sourceinterface.h"
+#include "fpzoutgroupresourceandinterface.h"
 #include "scpiconnection.h"
 #include "resource.h"
 #include "fpzoutchannelinterface.h"
@@ -6,7 +6,7 @@
 #include "sourcesettings.h"
 #include "notzeronumgen.h"
 
-cSourceInterface::cSourceInterface(cSCPI *scpiInterface, cSourceSettings *settings) :
+FpzOutGroupResourceAndInterface::FpzOutGroupResourceAndInterface(cSCPI *scpiInterface, cSourceSettings *settings) :
     cResource(scpiInterface)
 {
     QList<SourceSystem::cChannelSettings*> channelSettings;
@@ -21,27 +21,25 @@ cSourceInterface::cSourceInterface(cSCPI *scpiInterface, cSourceSettings *settin
     m_ChannelList.append(pChannel);
     pChannel = new FpzOutChannelInterface(m_pSCPIInterface, "Reference frequency output 0..1MHz", 3, channelSettings.at(3) );
     m_ChannelList.append(pChannel);
-    m_sVersion = SourceSystem::Version;
 }
 
-cSourceInterface::~cSourceInterface()
+FpzOutGroupResourceAndInterface::~FpzOutGroupResourceAndInterface()
 {
-    for(auto channel : qAsConst(m_ChannelList)) {
+    for(auto channel : qAsConst(m_ChannelList))
         delete channel;
-    }
 }
 
-void cSourceInterface::initSCPIConnection(QString leadingNodes)
+void FpzOutGroupResourceAndInterface::initSCPIConnection(QString leadingNodes)
 {
     if (leadingNodes != "")
         leadingNodes += ":";
     cSCPIDelegate* delegate;
-    delegate = new cSCPIDelegate(QString("%1SOURCE").arg(leadingNodes),"VERSION",SCPI::isQuery, m_pSCPIInterface, SourceSystem::cmdVersion);
+    delegate = new cSCPIDelegate(QString("%1SOURCE").arg(leadingNodes),"VERSION",SCPI::isQuery, m_pSCPIInterface, cmdVersion);
     m_DelegateList.append(delegate);
-    connect(delegate, &cSCPIDelegate::execute, this, &cSourceInterface::executeCommand);
-    delegate = new cSCPIDelegate(QString("%1SOURCE:CHANNEL").arg(leadingNodes),"CATALOG", SCPI::isQuery, m_pSCPIInterface, SourceSystem::cmdChannelCat);
+    connect(delegate, &cSCPIDelegate::execute, this, &FpzOutGroupResourceAndInterface::executeCommand);
+    delegate = new cSCPIDelegate(QString("%1SOURCE:CHANNEL").arg(leadingNodes),"CATALOG", SCPI::isQuery, m_pSCPIInterface, cmdChannelCat);
     m_DelegateList.append(delegate);
-    connect(delegate, &cSCPIDelegate::execute, this, &cSourceInterface::executeCommand);
+    connect(delegate, &cSCPIDelegate::execute, this, &FpzOutGroupResourceAndInterface::executeCommand);
     for(auto channel : qAsConst(m_ChannelList)) {
         connect(channel, &ScpiConnection::strNotifier, this, &ScpiConnection::strNotifier);
         connect(channel, &ScpiConnection::cmdExecutionDone, this, &ScpiConnection::cmdExecutionDone);
@@ -49,45 +47,47 @@ void cSourceInterface::initSCPIConnection(QString leadingNodes)
     }
 }
 
-void cSourceInterface::registerResource(RMConnection *rmConnection, quint16 port)
+void FpzOutGroupResourceAndInterface::registerResource(RMConnection *rmConnection, quint16 port)
 {
-    for(auto channel : qAsConst(m_ChannelList)) {
-        register1Resource(rmConnection, NotZeroNumGen::getMsgNr(), QString("SOURCE;%1;1;%2;%3;").arg(channel->getName()).arg(channel->getDescription()).arg(port));
-    }
+    for(auto channel : qAsConst(m_ChannelList))
+        register1Resource(rmConnection,
+                          NotZeroNumGen::getMsgNr(),
+                          QString("SOURCE;%1;1;%2;%3;").arg(channel->getName()).arg(channel->getDescription()).arg(port));
 }
 
-void cSourceInterface::unregisterResource(RMConnection *rmConnection)
+void FpzOutGroupResourceAndInterface::unregisterResource(RMConnection *rmConnection)
 {
-    for(auto channel : qAsConst(m_ChannelList)) {
-        unregister1Resource(rmConnection, NotZeroNumGen::getMsgNr(), QString("SOURCE;%1;").arg(channel->getName()));
-    }
+    for(auto channel : qAsConst(m_ChannelList))
+        unregister1Resource(rmConnection,
+                            NotZeroNumGen::getMsgNr(),
+                            QString("SOURCE;%1;").arg(channel->getName()));
 }
 
-void cSourceInterface::executeCommand(int cmdCode, cProtonetCommand *protoCmd)
+void FpzOutGroupResourceAndInterface::executeCommand(int cmdCode, cProtonetCommand *protoCmd)
 {
     switch (cmdCode)
     {
-    case SourceSystem::cmdVersion:
-        protoCmd->m_sOutput = m_ReadVersion(protoCmd->m_sInput);
+    case cmdVersion:
+        protoCmd->m_sOutput = readVersion(protoCmd->m_sInput);
         break;
-    case SourceSystem::cmdChannelCat:
-        protoCmd->m_sOutput = m_ReadSourceChannelCatalog(protoCmd->m_sInput);
+    case cmdChannelCat:
+        protoCmd->m_sOutput = readSourceChannelCatalog(protoCmd->m_sInput);
         break;
     }
     if (protoCmd->m_bwithOutput)
         emit cmdExecutionDone(protoCmd);
 }
 
-QString cSourceInterface::m_ReadVersion(QString &sInput)
+QString FpzOutGroupResourceAndInterface::readVersion(QString &sInput)
 {
     cSCPICommand cmd = sInput;
     if (cmd.isQuery())
-        return m_sVersion;
+        return Version;
     else
         return SCPI::scpiAnswer[SCPI::nak];
 }
 
-QString cSourceInterface::m_ReadSourceChannelCatalog(QString &sInput)
+QString FpzOutGroupResourceAndInterface::readSourceChannelCatalog(QString &sInput)
 {
     cSCPICommand cmd = sInput;
     if (cmd.isQuery()) {

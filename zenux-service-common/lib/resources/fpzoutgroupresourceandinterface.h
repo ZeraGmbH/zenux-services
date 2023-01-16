@@ -1,5 +1,5 @@
-#ifndef SOURCEINTERFACE_H
-#define SOURCEINTERFACE_H
+#ifndef FPZOUTGROUPRESOURCEANDINTERFACE_H
+#define FPZOUTGROUPRESOURCEANDINTERFACE_H
 
 #include "fpzoutchannelinterface.h"
 #include "resource.h"
@@ -8,36 +8,27 @@
 #include <QObject>
 #include <QList>
 
-namespace SourceSystem
-{
-const QString Version = "V1.00";
-
-enum Commands
-{
-    cmdVersion,
-    cmdChannelCat
-};
-}
-
-class cSourceInterface : public cResource
+class FpzOutGroupResourceAndInterface : public cResource
 {
     Q_OBJECT
 public:
-    cSourceInterface(cSCPI *scpiInterface, cSourceSettings* settings);
-    ~cSourceInterface();
+    const QString Version = "V1.00";
+    enum Commands
+    {
+        cmdVersion,
+        cmdChannelCat
+    };
+    FpzOutGroupResourceAndInterface(cSCPI *scpiInterface, cSourceSettings* settings);
+    ~FpzOutGroupResourceAndInterface();
     virtual void initSCPIConnection(QString leadingNodes) override;
     virtual void registerResource(RMConnection *rmConnection, quint16 port) override;
     virtual void unregisterResource(RMConnection *rmConnection) override;
 protected slots:
     virtual void executeCommand(int cmdCode, cProtonetCommand* protoCmd) override;
 private:
+    QString readVersion(QString &sInput);
+    QString readSourceChannelCatalog(QString &sInput);
     QList<FpzOutChannelInterface*> m_ChannelList;
-    QString m_sVersion;
-
-    QString m_ReadVersion(QString &sInput);
-    QString m_ReadSourceChannelCatalog(QString &sInput);
 };
 
-
-
-#endif // SOURCEINTERFACE_H
+#endif // FPZOUTGROUPRESOURCEANDINTERFACE_H
