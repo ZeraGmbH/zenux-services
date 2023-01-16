@@ -1,6 +1,5 @@
 #include "hkeyinterface.h"
 #include "resource.h"
-#include "mt310s2d.h"
 #include "hkeychannel.h"
 #include "protonetcommand.h"
 #include "hkinsettings.h"
