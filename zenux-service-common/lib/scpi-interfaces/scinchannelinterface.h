@@ -4,16 +4,6 @@
 #include "scpiconnection.h"
 #include "scinsettings.h"
 
-namespace SCHEADChannel
-{
-enum Commands
-{
-    cmdAlias,
-    cmdStatus
-};
-
-}
-
 class ScInChannelInterface : public ScpiConnection
 {
     Q_OBJECT
