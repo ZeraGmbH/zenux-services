@@ -4,6 +4,12 @@
 #include "finsettings.h"
 #include <scpi.h>
 
+enum Commands
+{
+    cmdAlias,
+    cmdStatus
+};
+
 FInChannelInterface::FInChannelInterface(cSCPI *scpiInterface, QString description, quint8 nr, FInSettings::ChannelSettings *cSettings) :
     ScpiConnection(scpiInterface),
     m_sDescription(description)
@@ -17,10 +23,11 @@ void FInChannelInterface::initSCPIConnection(QString leadingNodes)
 {
     if (leadingNodes != "")
         leadingNodes += ":";
-    cSCPIDelegate* delegate = new cSCPIDelegate(QString("%1%2").arg(leadingNodes).arg(m_sName),"ALIAS", SCPI::isQuery, m_pSCPIInterface, FPZINChannel::cmdAlias);
+    cSCPIDelegate* delegate;
+    delegate = new cSCPIDelegate(QString("%1%2").arg(leadingNodes).arg(m_sName),"ALIAS", SCPI::isQuery, m_pSCPIInterface, cmdAlias);
     m_DelegateList.append(delegate);
     connect(delegate, &cSCPIDelegate::execute, this, &FInChannelInterface::executeCommand);
-    delegate = new cSCPIDelegate(QString("%1%2").arg(leadingNodes).arg(m_sName),"STATUS", SCPI::isQuery, m_pSCPIInterface, FPZINChannel::cmdStatus);
+    delegate = new cSCPIDelegate(QString("%1%2").arg(leadingNodes).arg(m_sName),"STATUS", SCPI::isQuery, m_pSCPIInterface, cmdStatus);
     m_DelegateList.append(delegate);
     connect(delegate, &cSCPIDelegate::execute, this, &FInChannelInterface::executeCommand);
 }
@@ -29,10 +36,10 @@ void FInChannelInterface::executeCommand(int cmdCode, cProtonetCommand *protoCmd
 {
     switch (cmdCode)
     {
-    case FPZINChannel::cmdAlias:
+    case cmdAlias:
         protoCmd->m_sOutput = m_ReadAlias(protoCmd->m_sInput);
         break;
-    case FPZINChannel::cmdStatus:
+    case cmdStatus:
         protoCmd->m_sOutput = m_ReadChannelStatus(protoCmd->m_sInput);
         break;
     }
@@ -73,9 +80,8 @@ QString FInChannelInterface::m_ReadChannelStatus(QString &sInput)
 {
     cSCPICommand cmd = sInput;
     if (cmd.isQuery()) {
-        quint32 r;
-        r = ((m_bAvail) ? 0 : 1 << 31);
-            return QString("%1").arg(r);
+        quint32 r = ((m_bAvail) ? 0 : 1 << 31);
+        return QString("%1").arg(r);
     }
     else
         return SCPI::scpiAnswer[SCPI::nak];
