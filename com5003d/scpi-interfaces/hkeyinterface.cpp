@@ -4,7 +4,7 @@
 #include "com5003d.h"
 #include "hkeychannel.h"
 #include "protonetcommand.h"
-#include "hkeysettings.h"
+#include "hkinsettings.h"
 #include "notzeronumgen.h"
 #include <xmlsettings.h>
 #include <scpi.h>
@@ -14,8 +14,8 @@ cHKeyInterface::cHKeyInterface(cCOM5003dServer *server) :
     cResource(server->getSCPIInterface()),
     m_pMyServer(server)
 {
-    QList<HKeySystem::cChannelSettings*> channelSettings;
-    channelSettings = m_pMyServer->m_pHKeySettings->getChannelSettings();
+    QList<HkInSettings::ChannelSettings*> channelSettings;
+    channelSettings = m_pMyServer->m_HkInSettings->getChannelSettings();
 
     // we have 1 hand key input channel
     cHKeyChannel* pChannel;

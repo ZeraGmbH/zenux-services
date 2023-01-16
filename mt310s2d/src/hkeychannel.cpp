@@ -4,7 +4,7 @@
 #include <scpi.h>
 #include <scpicommand.h>
 
-cHKeyChannel::cHKeyChannel(cSCPI *scpiinterface, QString description, quint8 nr, HKeySystem::cChannelSettings *cSettings) :
+cHKeyChannel::cHKeyChannel(cSCPI *scpiinterface, QString description, quint8 nr, HkInSettings::ChannelSettings *cSettings) :
     ScpiConnection(scpiinterface),
     m_sDescription(description)
 {

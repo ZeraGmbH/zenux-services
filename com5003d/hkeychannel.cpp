@@ -6,10 +6,10 @@
 #include "scpiconnection.h"
 #include "hkeychannel.h"
 #include "protonetcommand.h"
-#include "settings/hkeysettings.h"
+#include "hkinsettings.h"
 
 
-cHKeyChannel::cHKeyChannel(cSCPI *scpiinterface, QString description, quint8 nr, HKeySystem::cChannelSettings *cSettings) :
+cHKeyChannel::cHKeyChannel(cSCPI *scpiinterface, QString description, quint8 nr, HkInSettings::ChannelSettings *cSettings) :
     ScpiConnection(scpiinterface),
     m_sDescription(description)
 {
