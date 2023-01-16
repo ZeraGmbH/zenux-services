@@ -21,9 +21,8 @@ cSCHeadInterface::cSCHeadInterface(cSCPI *scpiInterface, ScInSettings *settings)
 
 cSCHeadInterface::~cSCHeadInterface()
 {
-    for(auto channel : m_ChannelList) {
+    for(auto channel : qAsConst(m_ChannelList))
         delete channel;
-    }
 }
 
 void cSCHeadInterface::initSCPIConnection(QString leadingNodes)
@@ -37,7 +36,7 @@ void cSCHeadInterface::initSCPIConnection(QString leadingNodes)
     delegate = new cSCPIDelegate(QString("%1SCHEAD:CHANNEL").arg(leadingNodes),"CATALOG", SCPI::isQuery, m_pSCPIInterface, cmdChannelCat);
     m_DelegateList.append(delegate);
     connect(delegate, &cSCPIDelegate::execute, this, &cSCHeadInterface::executeCommand);
-    for(auto channel : m_ChannelList) {
+    for(auto channel : qAsConst(m_ChannelList)) {
         connect(channel, &ScpiConnection::strNotifier, this, &ScpiConnection::strNotifier);
         connect(channel, &ScpiConnection::cmdExecutionDone, this, &ScpiConnection::cmdExecutionDone);
         channel->initSCPIConnection(QString("%1SCHEAD").arg(leadingNodes));
@@ -46,14 +45,13 @@ void cSCHeadInterface::initSCPIConnection(QString leadingNodes)
 
 void cSCHeadInterface::registerResource(RMConnection *rmConnection, quint16 port)
 {
-    for(auto channel : m_ChannelList) {
+    for(auto channel : qAsConst(m_ChannelList))
         register1Resource(rmConnection, NotZeroNumGen::getMsgNr(), QString("SCHEAD;%1;1;%2;%3;").arg(channel->getName()).arg(channel->getDescription()).arg(port));
-    }
 }
 
 void cSCHeadInterface::unregisterResource(RMConnection *rmConnection)
 {
-    for(auto channel : m_ChannelList)
+    for(auto channel : qAsConst(m_ChannelList))
         unregister1Resource(rmConnection, NotZeroNumGen::getMsgNr(), QString("SCHEAD;%1;").arg(channel->getName()));
 }
 
@@ -72,24 +70,19 @@ void cSCHeadInterface::executeCommand(int cmdCode, cProtonetCommand *protoCmd)
         emit cmdExecutionDone(protoCmd);
 }
 
-
 QString cSCHeadInterface::m_ReadVersion(QString &sInput)
 {
     cSCPICommand cmd = sInput;
-
     if (cmd.isQuery())
         return m_sVersion;
     else
         return SCPI::scpiAnswer[SCPI::nak];
 }
 
-
 QString cSCHeadInterface::m_ReadChannelCatalog(QString &sInput)
 {
     cSCPICommand cmd = sInput;
-
-    if (cmd.isQuery())
-    {
+    if (cmd.isQuery()) {
         int i;
         QString s;
         for (i = 0; i < m_ChannelList.count()-1; i++ )
@@ -101,9 +94,3 @@ QString cSCHeadInterface::m_ReadChannelCatalog(QString &sInput)
     else
         return SCPI::scpiAnswer[SCPI::nak];
 }
-
-
-
-
-
-
