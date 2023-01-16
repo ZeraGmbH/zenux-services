@@ -83,7 +83,7 @@ void cSamplingInterface::initSCPIConnection(QString leadingNodes)
 
     for (int i = 0; i < m_SampleRangeList.count(); i++)
     {
-        connect(m_SampleRangeList.at(i), SIGNAL(cmdExecutionDone(cProtonetCommand*)), this, SIGNAL(cmdExecutionDone(cProtonetCommand*)));
+        connect(m_SampleRangeList.at(i), &ScpiConnection::cmdExecutionDone, this, &ScpiConnection::cmdExecutionDone);
         m_SampleRangeList.at(i)->initSCPIConnection(QString("%1SAMPLE:%2").arg(leadingNodes).arg(m_sName));
     }
 

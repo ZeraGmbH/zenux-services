@@ -60,7 +60,7 @@ void cSenseChannel::initSCPIConnection(QString leadingNodes)
     connect(delegate, &cSCPIDelegate::execute, this, &cSenseChannel::executeCommand);
 
     for(auto range : m_RangeList) {
-        connect(range, SIGNAL(cmdExecutionDone(cProtonetCommand*)), this, SIGNAL(cmdExecutionDone(cProtonetCommand*)));
+        connect(range, &ScpiConnection::cmdExecutionDone, this, &ScpiConnection::cmdExecutionDone);
         range->initSCPIConnection(QString("%1%2").arg(leadingNodes).arg(m_sName));
     }
 }

@@ -14,9 +14,9 @@ void RMConnection::connect2RM()
         delete m_pResourceManagerClient;
     m_pResourceManagerClient = new XiQNetPeer(this);
     m_pResourceManagerClient->setWrapper(&m_ProtobufWrapper);
-    connect(m_pResourceManagerClient, SIGNAL(sigSocketError(QAbstractSocket::SocketError)), this, SLOT(tcpErrorHandler(QAbstractSocket::SocketError)));
-    connect(m_pResourceManagerClient, SIGNAL(sigConnectionEstablished()), this, SIGNAL(connected()));
-    connect(m_pResourceManagerClient, SIGNAL(sigConnectionClosed()), this, SIGNAL(connectionRMError()));
+    connect(m_pResourceManagerClient, &XiQNetPeer::sigSocketError, this, &RMConnection::tcpErrorHandler);
+    connect(m_pResourceManagerClient, &XiQNetPeer::sigConnectionEstablished, this, &RMConnection::connected);
+    connect(m_pResourceManagerClient, &XiQNetPeer::sigConnectionClosed, this, &RMConnection::connectionRMError);
     connect(m_pResourceManagerClient, &XiQNetPeer::sigMessageReceived, this, &RMConnection::responseHandler);
     m_pResourceManagerClient->startConnection(m_sIPAdr, m_nPort);
 }

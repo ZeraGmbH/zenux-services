@@ -88,14 +88,14 @@ cCOM5003dServer::cCOM5003dServer()
     m_pInitializationMachine->addState(stateFINISH);
     m_pInitializationMachine->setInitialState(stateCONF);
 
-    QObject::connect(statexmlConfiguration, SIGNAL(entered()), this, SLOT(doConfiguration()));
-    QObject::connect(stateprogAtmel, SIGNAL(entered()), this, SLOT(programAtmelFlash()));
-    QObject::connect(statewait4Atmel, SIGNAL(entered()), this, SLOT(doWait4Atmel()));
-    QObject::connect(statesetupServer, SIGNAL(entered()), this, SLOT(doSetupServer()));
-    QObject::connect(stateconnect2RM, SIGNAL(entered()), this, SLOT(doConnect2RM()));
-    QObject::connect(stateconnect2RMError, SIGNAL(entered()), this, SLOT(connect2RMError()));
-    QObject::connect(stateSendRMIdentandRegister, SIGNAL(entered()), this, SLOT(doIdentAndRegister()));
-    QObject::connect(stateFINISH, SIGNAL(entered()), this, SLOT(doCloseServer()));
+    QObject::connect(statexmlConfiguration, &QAbstractState::entered, this, &cCOM5003dServer::doConfiguration);
+    QObject::connect(stateprogAtmel, &QAbstractState::entered, this, &cCOM5003dServer::programAtmelFlash);
+    QObject::connect(statewait4Atmel, &QAbstractState::entered, this, &cCOM5003dServer::doWait4Atmel);
+    QObject::connect(statesetupServer, &QAbstractState::entered, this, &cCOM5003dServer::doSetupServer);
+    QObject::connect(stateconnect2RM, &QAbstractState::entered, this, &cCOM5003dServer::doConnect2RM);
+    QObject::connect(stateconnect2RMError, &QAbstractState::entered, this, &cCOM5003dServer::connect2RMError);
+    QObject::connect(stateSendRMIdentandRegister, &QAbstractState::entered, this, &cCOM5003dServer::doIdentAndRegister);
+    QObject::connect(stateFINISH, &QAbstractState::entered, this, &cCOM5003dServer::doCloseServer);
 
     m_pInitializationMachine->start();
 }
@@ -157,25 +157,25 @@ void cCOM5003dServer::doConfiguration()
             // we want to initialize all settings first
             QString xmlConfigTopNode = "serviceconfig";
             m_pDebugSettings = new cDebugSettings(myXMLConfigReader, xmlConfigTopNode);
-            connect(myXMLConfigReader,SIGNAL(valueChanged(const QString&)),m_pDebugSettings,SLOT(configXMLInfo(const QString&)));
+            connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pDebugSettings,&cDebugSettings::configXMLInfo);
             m_pETHSettings = new EthSettings(myXMLConfigReader);
-            connect(myXMLConfigReader,SIGNAL(valueChanged(const QString&)),m_pETHSettings,SLOT(configXMLInfo(const QString&)));
+            connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pETHSettings,&EthSettings::configXMLInfo);
             m_pI2CSettings = new cI2CSettings(myXMLConfigReader);
-            connect(myXMLConfigReader,SIGNAL(valueChanged(const QString&)),m_pI2CSettings,SLOT(configXMLInfo(const QString&)));
+            connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pI2CSettings,&cI2CSettings::configXMLInfo);
             m_pFPGASettings = new cFPGASettings(myXMLConfigReader, xmlConfigTopNode);
-            connect(myXMLConfigReader,SIGNAL(valueChanged(const QString&)),m_pFPGASettings,SLOT(configXMLInfo(const QString&)));
+            connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pFPGASettings,&cFPGASettings::configXMLInfo);
             m_pSenseSettings = new cSenseSettings(myXMLConfigReader);
-            connect(myXMLConfigReader,SIGNAL(valueChanged(const QString&)),m_pSenseSettings,SLOT(configXMLInfo(const QString&)));
+            connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pSenseSettings,&cSenseSettings::configXMLInfo);
             m_pSourceSettings = new cSourceSettings(myXMLConfigReader);
-            connect(myXMLConfigReader,SIGNAL(valueChanged(const QString&)),m_pSourceSettings,SLOT(configXMLInfo(const QString&)));
+            connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pSourceSettings,&cSourceSettings::configXMLInfo);
             m_pSamplingSettings = new cSamplingSettings(myXMLConfigReader);
-            connect(myXMLConfigReader,SIGNAL(valueChanged(const QString&)),m_pSamplingSettings,SLOT(configXMLInfo(const QString&)));
+            connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pSamplingSettings,&cSamplingSettings::configXMLInfo);
             m_pFRQInputSettings = new cFRQInputSettings(myXMLConfigReader);
-            connect(myXMLConfigReader,SIGNAL(valueChanged(const QString&)),m_pFRQInputSettings,SLOT(configXMLInfo(const QString&)));
+            connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pFRQInputSettings,&cFRQInputSettings::configXMLInfo);
             m_pSCHeadSettings = new cSCHeadSettings(myXMLConfigReader);
-            connect(myXMLConfigReader,SIGNAL(valueChanged(const QString&)),m_pSCHeadSettings,SLOT(configXMLInfo(const QString&)));
+            connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pSCHeadSettings,&cSCHeadSettings::configXMLInfo);
             m_pHKeySettings = new cHKeySettings(myXMLConfigReader);
-            connect(myXMLConfigReader,SIGNAL(valueChanged(const QString&)),m_pHKeySettings,SLOT(configXMLInfo(const QString&)));
+            connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pHKeySettings,&cHKeySettings::configXMLInfo);
 
             QString s = args.at(1);
             qDebug() << s;
@@ -326,8 +326,8 @@ void cCOM5003dServer::doWait4Atmel()
     m_pAtmelWatcher = new cAtmelWatcher(m_pDebugSettings->getDebugLevel(), m_pFPGASettings->getDeviceNode(), 10000, 100);
 
     m_nerror = atmelError; // we preset error
-    connect(m_pAtmelWatcher,SIGNAL(timeout()),this,SIGNAL(abortInit()));
-    connect(m_pAtmelWatcher,SIGNAL(running()),this,SIGNAL(atmelRunning()));
+    connect(m_pAtmelWatcher,&cAtmelWatcher::timeout,this,&cCOM5003dServer::abortInit);
+    connect(m_pAtmelWatcher,&cAtmelWatcher::running,this,&cCOM5003dServer::atmelRunning);
     m_pAtmelWatcher->start();
 }
 
@@ -372,7 +372,7 @@ void cCOM5003dServer::doSetupServer()
     // so we must complete our state machine here
     m_nRetryRMConnect = 100;
     m_retryTimer.setSingleShot(true);
-    connect(&m_retryTimer, SIGNAL(timeout()), this, SIGNAL(serverSetup()));
+    connect(&m_retryTimer, &QTimer::timeout, this, &cCOM5003dServer::serverSetup);
 
     stateconnect2RM->addTransition(m_pRMConnection, SIGNAL(connected()), stateSendRMIdentandRegister);
     stateconnect2RM->addTransition(m_pRMConnection, SIGNAL(connectionRMError()), stateconnect2RMError);

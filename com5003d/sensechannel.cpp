@@ -72,7 +72,7 @@ void cSenseChannel::initSCPIConnection(QString leadingNodes)
 
     for (int i = 0;i < m_RangeList.count(); i++)
     {
-        connect(m_RangeList.at(i), SIGNAL(cmdExecutionDone(cProtonetCommand*)), this, SIGNAL(cmdExecutionDone(cProtonetCommand*)));
+        connect(m_RangeList.at(i), &ScpiConnection::cmdExecutionDone, this, &ScpiConnection::cmdExecutionDone);
         m_RangeList.at(i)->initSCPIConnection(QString("%1%2").arg(leadingNodes).arg(m_sName));
     }
 }

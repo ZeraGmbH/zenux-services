@@ -82,12 +82,12 @@ cSEC1000dServer::cSEC1000dServer()
     m_pInitializationMachine->addState(stateFINISH);
     m_pInitializationMachine->setInitialState(stateCONF);
 
-    QObject::connect(statexmlConfiguration, SIGNAL(entered()), this, SLOT(doConfiguration()));
-    QObject::connect(statesetupServer, SIGNAL(entered()), this, SLOT(doSetupServer()));
-    QObject::connect(stateconnect2RM, SIGNAL(entered()), this, SLOT(doConnect2RM()));
-    QObject::connect(stateconnect2RMError, SIGNAL(entered()), this, SLOT(connect2RMError()));
-    QObject::connect(stateSendRMIdentandRegister, SIGNAL(entered()), this, SLOT(doIdentAndRegister()));
-    QObject::connect(stateFINISH, SIGNAL(entered()), this, SLOT(doCloseServer()));
+    QObject::connect(statexmlConfiguration, &QAbstractState::entered, this, &cSEC1000dServer::doConfiguration);
+    QObject::connect(statesetupServer, &QAbstractState::entered, this, &cSEC1000dServer::doSetupServer);
+    QObject::connect(stateconnect2RM, &QAbstractState::entered, this, &cSEC1000dServer::doConnect2RM);
+    QObject::connect(stateconnect2RMError, &QAbstractState::entered, this, &cSEC1000dServer::connect2RMError);
+    QObject::connect(stateSendRMIdentandRegister, &QAbstractState::entered, this, &cSEC1000dServer::doIdentAndRegister);
+    QObject::connect(stateFINISH, &QAbstractState::entered, this, &cSEC1000dServer::doCloseServer);
 
     m_pInitializationMachine->start();
 }
@@ -134,21 +134,21 @@ void cSEC1000dServer::doConfiguration()
             fcntl( pipeFD[1], F_SETFL, O_NONBLOCK);
             fcntl( pipeFD[0], F_SETFL, O_NONBLOCK);
             m_pNotifier = new QSocketNotifier(pipeFD[0], QSocketNotifier::Read, this);
-            connect(m_pNotifier, SIGNAL(activated(int)), this, SLOT(SECIntHandler(int)));
+            connect(m_pNotifier, &QSocketNotifier::activated, this, &cSEC1000dServer::SECIntHandler);
             if (myXMLConfigReader->loadSchema(defaultXSDFile))
             {
                 QString xmlConfigTopNode = "serviceconfig";
                 // we want to initialize all settings first
                 m_pDebugSettings = new cDebugSettings(myXMLConfigReader, xmlConfigTopNode);
-                connect(myXMLConfigReader,SIGNAL(valueChanged(const QString&)),m_pDebugSettings,SLOT(configXMLInfo(const QString&)));
+                connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pDebugSettings,&cDebugSettings::configXMLInfo);
                 m_pETHSettings = new EthSettingsSec(myXMLConfigReader);
-                connect(myXMLConfigReader,SIGNAL(valueChanged(const QString&)),m_pETHSettings,SLOT(configXMLInfo(const QString&)));
+                connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pETHSettings,&EthSettingsSec::configXMLInfo);
                 m_pFPGASettings = new cFPGASettings(myXMLConfigReader, xmlConfigTopNode);
-                connect(myXMLConfigReader,SIGNAL(valueChanged(const QString&)),m_pFPGASettings,SLOT(configXMLInfo(const QString&)));
+                connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pFPGASettings,&cFPGASettings::configXMLInfo);
                 m_pECalcSettings = new cECalculatorSettings(myXMLConfigReader);
-                connect(myXMLConfigReader,SIGNAL(valueChanged(const QString&)),m_pECalcSettings,SLOT(configXMLInfo(const QString&)));
+                connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pECalcSettings,&cECalculatorSettings::configXMLInfo);
                 m_pInputSettings = new cInputSettings(myXMLConfigReader);
-                connect(myXMLConfigReader,SIGNAL(valueChanged(const QString&)),m_pInputSettings,SLOT(configXMLInfo(const QString&)));
+                connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pInputSettings,&cInputSettings::configXMLInfo);
 
                 QString s = args.at(1);
                 qDebug() << s;
@@ -212,7 +212,7 @@ void cSEC1000dServer::doSetupServer()
         // so we must complete our state machine here
         m_nRetryRMConnect = 100;
         m_retryTimer.setSingleShot(true);
-        connect(&m_retryTimer, SIGNAL(timeout()), this, SIGNAL(serverSetup()));
+        connect(&m_retryTimer, &QTimer::timeout, this, &cSEC1000dServer::serverSetup);
 
         stateconnect2RM->addTransition(m_pRMConnection, SIGNAL(connected()), stateSendRMIdentandRegister);
         stateconnect2RM->addTransition(m_pRMConnection, SIGNAL(connectionRMError()), stateconnect2RMError);
