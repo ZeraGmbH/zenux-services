@@ -1,49 +1,38 @@
-#ifndef FPZCHANNEL_H
-#define FPZCHANNEL_H
+#ifndef FPZOUTCHANNELINTERFACE_H
+#define FPZOUTCHANNELINTERFACE_H
 
 #include "scpiconnection.h"
 #include "notificationstring.h"
-
-namespace FPZChannel
-{
-enum Commands
-{
-    cmdAlias,
-    cmdType,
-    cmdDspServer,
-    cmdDspChannel,
-    cmdStatus,
-    cmdFormFactor,
-    cmdConstant,
-    cmdPowtype
-};
-
-
-const double FormFactor = 5.6294995e6; // fout = (Pact/Pnenn) * FPZnenn * FormFactor
-}
-
 
 namespace SourceSystem
 {
     class cChannelSettings;
 }
 
-class cFPZChannel : public ScpiConnection
+class FpzOutChannelInterface : public ScpiConnection
 {
     Q_OBJECT
-
 public:
-    cFPZChannel(cSCPI *scpiinterface, QString description, quint8 nr, SourceSystem::cChannelSettings* cSettings);
+    enum Commands
+    {
+        cmdAlias,
+        cmdType,
+        cmdDspServer,
+        cmdDspChannel,
+        cmdStatus,
+        cmdFormFactor,
+        cmdConstant,
+        cmdPowtype
+    };
+    const double FormFactor = 5.6294995e6; // fout = (Pact/Pnenn) * FPZnenn * FormFactor
+    FpzOutChannelInterface(cSCPI *scpiinterface, QString description, quint8 nr, SourceSystem::cChannelSettings* cSettings);
     virtual void initSCPIConnection(QString leadingNodes) override;
-
     QString& getName();
     QString& getAlias();
     QString& getDescription();
     bool isAvail();
-
 protected slots:
     virtual void executeCommand(int cmdCode, cProtonetCommand* protoCmd) override;
-
 private:
     QString m_sName; // the channel's name
     QString m_sAlias;
@@ -68,4 +57,4 @@ private:
     QString m_ReadWritePowerType(QString &sInput);
 };
 
-#endif // FPZCHANNEL_H
+#endif // FPZOUTCHANNELINTERFACE_H

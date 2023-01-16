@@ -1,7 +1,7 @@
 #ifndef SOURCEINTERFACE_H
 #define SOURCEINTERFACE_H
 
-#include "fpzchannel.h"
+#include "fpzoutchannelinterface.h"
 #include "resource.h"
 #include "sourcesettings.h"
 #include <scpi.h>
@@ -31,7 +31,7 @@ public:
 protected slots:
     virtual void executeCommand(int cmdCode, cProtonetCommand* protoCmd) override;
 private:
-    QList<cFPZChannel*> m_ChannelList;
+    QList<FpzOutChannelInterface*> m_ChannelList;
     QString m_sVersion;
 
     QString m_ReadVersion(QString &sInput);

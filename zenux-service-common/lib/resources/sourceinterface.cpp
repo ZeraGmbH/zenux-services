@@ -1,7 +1,7 @@
 #include "sourceinterface.h"
 #include "scpiconnection.h"
 #include "resource.h"
-#include "fpzchannel.h"
+#include "fpzoutchannelinterface.h"
 #include "protonetcommand.h"
 #include "sourcesettings.h"
 #include "notzeronumgen.h"
@@ -12,14 +12,14 @@ cSourceInterface::cSourceInterface(cSCPI *scpiInterface, cSourceSettings *settin
     QList<SourceSystem::cChannelSettings*> channelSettings;
     channelSettings = settings->getChannelSettings();
     // we have 4 frequency output channels
-    cFPZChannel* pChannel;
-    pChannel = new cFPZChannel(m_pSCPIInterface, "Reference frequency output 0..1MHz", 0, channelSettings.at(0) );
+    FpzOutChannelInterface* pChannel;
+    pChannel = new FpzOutChannelInterface(m_pSCPIInterface, "Reference frequency output 0..1MHz", 0, channelSettings.at(0) );
     m_ChannelList.append(pChannel);
-    pChannel = new cFPZChannel(m_pSCPIInterface, "Reference frequency output 0..1MHz", 1, channelSettings.at(1) );
+    pChannel = new FpzOutChannelInterface(m_pSCPIInterface, "Reference frequency output 0..1MHz", 1, channelSettings.at(1) );
     m_ChannelList.append(pChannel);
-    pChannel = new cFPZChannel(m_pSCPIInterface, "Reference frequency output 0..1MHz", 2, channelSettings.at(2) );
+    pChannel = new FpzOutChannelInterface(m_pSCPIInterface, "Reference frequency output 0..1MHz", 2, channelSettings.at(2) );
     m_ChannelList.append(pChannel);
-    pChannel = new cFPZChannel(m_pSCPIInterface, "Reference frequency output 0..1MHz", 3, channelSettings.at(3) );
+    pChannel = new FpzOutChannelInterface(m_pSCPIInterface, "Reference frequency output 0..1MHz", 3, channelSettings.at(3) );
     m_ChannelList.append(pChannel);
     m_sVersion = SourceSystem::Version;
 }
