@@ -18,7 +18,7 @@ class cSamplingInterface;
 class FOutGroupResourceAndInterface;
 class FInGroupResourceAndInterface;
 class cSCHeadInterface;
-class cHKeyInterface;
+class HkInGroupResourceAndInterface;
 class cSystemInfo;
 class cAdjustment;
 class cAtmelWatcher;
@@ -39,7 +39,7 @@ public:
     FOutGroupResourceAndInterface* m_pSourceInterface;
     FInGroupResourceAndInterface* m_pFRQInputInterface;
     cSCHeadInterface* m_pSCHeadInterface;
-    cHKeyInterface* m_pHKeyInterface;
+    HkInGroupResourceAndInterface* m_hkInInterface;
     cSystemInfo* m_pSystemInfo;
     cAdjustment* m_pAdjHandler;
     RMConnection* m_pRMConnection;
