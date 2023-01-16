@@ -1,7 +1,6 @@
 #include "scheadinterface.h"
 #include "scpiconnection.h"
 #include "resource.h"
-#include "com5003d.h"
 #include "scheadchannel.h"
 #include "protonetcommand.h"
 #include "scinsettings.h"
@@ -10,12 +9,11 @@
 #include <scpi.h>
 
 
-cSCHeadInterface::cSCHeadInterface(cCOM5003dServer *server) :
-    cResource(server->getSCPIInterface())
+cSCHeadInterface::cSCHeadInterface(cSCPI *scpiInterface, ScInSettings *settings) :
+    cResource(scpiInterface)
 {
-    m_pMyServer = server;
     QList<ScInSettings::ChannelSettings*> channelSettings;
-    channelSettings = m_pMyServer->m_pSCHeadSettings->getChannelSettings();
+    channelSettings = settings->getChannelSettings();
 
     // we have 1 scanning head input channel
     cSCHeadChannel* pChannel;
