@@ -13,18 +13,6 @@ class FOutChannelInterface : public ScpiConnection
 {
     Q_OBJECT
 public:
-    enum Commands
-    {
-        cmdAlias,
-        cmdType,
-        cmdDspServer,
-        cmdDspChannel,
-        cmdStatus,
-        cmdFormFactor,
-        cmdConstant,
-        cmdPowtype
-    };
-    const double FormFactor = 5.6294995e6; // fout = (Pact/Pnenn) * FPZnenn * FormFactor
     FOutChannelInterface(cSCPI *scpiinterface, QString description, quint8 nr, SourceSystem::cChannelSettings* cSettings);
     virtual void initSCPIConnection(QString leadingNodes) override;
     QString& getName();

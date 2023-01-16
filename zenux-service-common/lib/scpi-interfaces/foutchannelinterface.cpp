@@ -4,6 +4,20 @@
 #include "foutsettings.h"
 #include <scpi.h>
 
+enum Commands
+{
+    cmdAlias,
+    cmdType,
+    cmdDspServer,
+    cmdDspChannel,
+    cmdStatus,
+    cmdFormFactor,
+    cmdConstant,
+    cmdPowtype
+};
+
+static constexpr double FormFactor = 5.6294995e6; // fout = (Pact/Pnenn) * FPZnenn * FormFactor
+
 FOutChannelInterface::FOutChannelInterface(cSCPI *scpiinterface, QString description, quint8 nr, SourceSystem::cChannelSettings *cSettings) :
     ScpiConnection(scpiinterface),
     m_sDescription(description)
