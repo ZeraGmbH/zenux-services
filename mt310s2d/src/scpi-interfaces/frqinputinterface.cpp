@@ -2,7 +2,7 @@
 #include "scpiconnection.h"
 #include "resource.h"
 #include "mt310s2d.h"
-#include "fpzinchannel.h"
+#include "fpzinchannelinterface.h"
 #include "protonetcommand.h"
 #include "frqinputsettings.h"
 #include "notzeronumgen.h"
@@ -17,14 +17,14 @@ cFRQInputInterface::cFRQInputInterface(cMT310S2dServer *server) :
     channelSettings = m_pMyServer->m_pFRQInputSettings->getChannelSettings();
 
     // we have 4 frequency input channels
-    cFPZInChannel* pChannel;
-    pChannel = new cFPZInChannel(m_pSCPIInterface, "Frequency input 0..1MHz", 0, channelSettings.at(0) );
+    FpzInChannelInterface* pChannel;
+    pChannel = new FpzInChannelInterface(m_pSCPIInterface, "Frequency input 0..1MHz", 0, channelSettings.at(0) );
     m_ChannelList.append(pChannel);
-    pChannel = new cFPZInChannel(m_pSCPIInterface, "Frequency output 0..1MHz", 1, channelSettings.at(1) );
+    pChannel = new FpzInChannelInterface(m_pSCPIInterface, "Frequency output 0..1MHz", 1, channelSettings.at(1) );
     m_ChannelList.append(pChannel);
-    pChannel = new cFPZInChannel(m_pSCPIInterface, "Frequency output 0..1MHz", 2,  channelSettings.at(2) );
+    pChannel = new FpzInChannelInterface(m_pSCPIInterface, "Frequency output 0..1MHz", 2,  channelSettings.at(2) );
     m_ChannelList.append(pChannel);
-    pChannel = new cFPZInChannel(m_pSCPIInterface, "Frequency output 0..1MHz", 3, channelSettings.at(3) );
+    pChannel = new FpzInChannelInterface(m_pSCPIInterface, "Frequency output 0..1MHz", 3, channelSettings.at(3) );
     m_ChannelList.append(pChannel);
 
     m_sVersion = FRQInputSystem::Version;

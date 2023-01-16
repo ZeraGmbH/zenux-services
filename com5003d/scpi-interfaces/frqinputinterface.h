@@ -3,7 +3,7 @@
 
 #include "resource.h"
 #include "scpiconnection.h"
-#include "fpzinchannel.h"
+#include "fpzinchannelinterface.h"
 #include <QObject>
 #include <QList>
 
@@ -39,7 +39,7 @@ protected slots:
 
 private:
     cCOM5003dServer* m_pMyServer;
-    QList<cFPZInChannel*> m_ChannelList;
+    QList<FpzInChannelInterface*> m_ChannelList;
     QString m_sVersion;
 
     QString m_ReadVersion(QString& sInput);
