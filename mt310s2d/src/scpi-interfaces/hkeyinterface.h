@@ -4,6 +4,8 @@
 #include "resource.h"
 #include "scpiconnection.h"
 #include "hkeychannel.h"
+#include "hkinsettings.h"
+#include <scpi.h>
 #include <QList>
 
 namespace HKeySystem
@@ -18,14 +20,12 @@ enum Commands
 };
 }
 
-class cMT310S2dServer;
-
 class cHKeyInterface : public cResource
 {
     Q_OBJECT
 
 public:
-    cHKeyInterface(cMT310S2dServer *server);
+    cHKeyInterface(cSCPI *scpiInterface, HkInSettings *settings);
     ~cHKeyInterface();
     virtual void initSCPIConnection(QString leadingNodes) override;
     virtual void registerResource(RMConnection *rmConnection, quint16 port) override;
@@ -35,7 +35,6 @@ protected slots:
     virtual void executeCommand(int cmdCode, cProtonetCommand* protoCmd) override;
 
 private:
-    cMT310S2dServer* m_pMyServer;
     QList<cHKeyChannel*> m_ChannelList;
     QString m_sVersion;
 

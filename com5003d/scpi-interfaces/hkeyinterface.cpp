@@ -10,12 +10,11 @@
 #include <scpi.h>
 
 
-cHKeyInterface::cHKeyInterface(cCOM5003dServer *server) :
-    cResource(server->getSCPIInterface()),
-    m_pMyServer(server)
+cHKeyInterface::cHKeyInterface(cSCPI *scpiInterface, HkInSettings *settings) :
+    cResource(scpiInterface)
 {
     QList<HkInSettings::ChannelSettings*> channelSettings;
-    channelSettings = m_pMyServer->m_HkInSettings->getChannelSettings();
+    channelSettings = settings->getChannelSettings();
 
     // we have 1 hand key input channel
     cHKeyChannel* pChannel;
