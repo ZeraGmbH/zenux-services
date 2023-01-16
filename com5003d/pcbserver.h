@@ -47,7 +47,7 @@ public:
     QString& getVersion();
 
     cDebugSettings* m_pDebugSettings;
-    cFPGASettings* m_pFPGASettings;
+    FPGASettings* m_pFPGASettings;
     cI2CSettings* m_pI2CSettings;
     EthSettings* m_pETHSettings;
     cSenseSettings* m_pSenseSettings;

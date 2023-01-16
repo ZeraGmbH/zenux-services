@@ -143,8 +143,8 @@ void cSEC1000dServer::doConfiguration()
                 connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pDebugSettings,&cDebugSettings::configXMLInfo);
                 m_pETHSettings = new EthSettingsSec(myXMLConfigReader);
                 connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pETHSettings,&EthSettingsSec::configXMLInfo);
-                m_pFPGASettings = new cFPGASettings(myXMLConfigReader, xmlConfigTopNode);
-                connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pFPGASettings,&cFPGASettings::configXMLInfo);
+                m_pFPGASettings = new FPGASettings(myXMLConfigReader, xmlConfigTopNode);
+                connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pFPGASettings,&FPGASettings::configXMLInfo);
                 m_pECalcSettings = new cECalculatorSettings(myXMLConfigReader);
                 connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pECalcSettings,&cECalculatorSettings::configXMLInfo);
                 m_pInputSettings = new cInputSettings(myXMLConfigReader);

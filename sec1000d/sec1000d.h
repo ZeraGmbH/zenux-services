@@ -14,7 +14,7 @@ class QStateMachine;
 class QState;
 class QSocketNotifier;
 class cDebugSettings;
-class cFPGASettings;
+class FPGASettings;
 class cECalculatorSettings;
 class cInputSettings;
 class cStatusInterface;
@@ -33,7 +33,7 @@ public:
     ~cSEC1000dServer();
 
     cDebugSettings* m_pDebugSettings;
-    cFPGASettings* m_pFPGASettings;
+    FPGASettings* m_pFPGASettings;
     EthSettingsSec* m_pETHSettings;
     cECalculatorSettings* m_pECalcSettings;
     cInputSettings* m_pInputSettings;

@@ -178,8 +178,8 @@ void cMT310S2dServer::doConfiguration()
                 connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pETHSettings,&EthSettings::configXMLInfo);
                 m_pI2CSettings = new cI2CSettings(myXMLConfigReader);
                 connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pI2CSettings,&cI2CSettings::configXMLInfo);
-                m_pFPGASettings = new cFPGASettings(myXMLConfigReader, xmlConfigTopNode);
-                connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pFPGASettings,&cFPGASettings::configXMLInfo);
+                m_pFPGASettings = new FPGASettings(myXMLConfigReader, xmlConfigTopNode);
+                connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pFPGASettings,&FPGASettings::configXMLInfo);
                 m_pCtrlSettings = new cCtrlSettings(myXMLConfigReader);
                 connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pCtrlSettings,&cCtrlSettings::configXMLInfo);
                 m_pSenseSettings = new cSenseSettings(myXMLConfigReader);
