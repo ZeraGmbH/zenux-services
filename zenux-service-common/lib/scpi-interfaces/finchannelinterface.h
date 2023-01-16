@@ -17,12 +17,12 @@ public:
 protected slots:
     virtual void executeCommand(int cmdCode, cProtonetCommand* protoCmd) override;
 private:
+    QString readAlias(QString& sInput);
+    QString readChannelStatus(QString& sInput);
     QString m_sName; // the channel's name
     QString m_sAlias;
     QString m_sDescription; // the channel's brief description
     bool m_bAvail; // is this channel available ?
-    QString m_ReadAlias(QString& sInput);
-    QString m_ReadChannelStatus(QString& sInput);
 };
 
 #endif // FINCHANNELINTERFACE_H

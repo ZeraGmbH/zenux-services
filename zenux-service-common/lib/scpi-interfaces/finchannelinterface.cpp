@@ -37,10 +37,10 @@ void FInChannelInterface::executeCommand(int cmdCode, cProtonetCommand *protoCmd
     switch (cmdCode)
     {
     case cmdAlias:
-        protoCmd->m_sOutput = m_ReadAlias(protoCmd->m_sInput);
+        protoCmd->m_sOutput = readAlias(protoCmd->m_sInput);
         break;
     case cmdStatus:
-        protoCmd->m_sOutput = m_ReadChannelStatus(protoCmd->m_sInput);
+        protoCmd->m_sOutput = readChannelStatus(protoCmd->m_sInput);
         break;
     }
     if (protoCmd->m_bwithOutput)
@@ -67,7 +67,7 @@ bool FInChannelInterface::isAvail()
     return m_bAvail;
 }
 
-QString FInChannelInterface::m_ReadAlias(QString &sInput)
+QString FInChannelInterface::readAlias(QString &sInput)
 {
     cSCPICommand cmd = sInput;
     if (cmd.isQuery())
@@ -76,7 +76,7 @@ QString FInChannelInterface::m_ReadAlias(QString &sInput)
         return SCPI::scpiAnswer[SCPI::nak];
 }
 
-QString FInChannelInterface::m_ReadChannelStatus(QString &sInput)
+QString FInChannelInterface::readChannelStatus(QString &sInput)
 {
     cSCPICommand cmd = sInput;
     if (cmd.isQuery()) {
