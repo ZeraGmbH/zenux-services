@@ -72,17 +72,17 @@ void FInGroupResourceAndInterface::executeCommand(int cmdCode, cProtonetCommand 
     switch (cmdCode)
     {
     case cmdVersion:
-        protoCmd->m_sOutput = m_ReadVersion(protoCmd->m_sInput);
+        protoCmd->m_sOutput = readVersion(protoCmd->m_sInput);
         break;
     case cmdChannelCat:
-        protoCmd->m_sOutput = m_ReadChannelCatalog(protoCmd->m_sInput);
+        protoCmd->m_sOutput = readChannelCatalog(protoCmd->m_sInput);
         break;
     }
     if (protoCmd->m_bwithOutput)
         emit cmdExecutionDone(protoCmd);
 }
 
-QString FInGroupResourceAndInterface::m_ReadVersion(QString &sInput)
+QString FInGroupResourceAndInterface::readVersion(QString &sInput)
 {
     cSCPICommand cmd = sInput;
     if (cmd.isQuery())
@@ -90,7 +90,7 @@ QString FInGroupResourceAndInterface::m_ReadVersion(QString &sInput)
     return SCPI::scpiAnswer[SCPI::nak];
 }
 
-QString FInGroupResourceAndInterface::m_ReadChannelCatalog(QString &sInput)
+QString FInGroupResourceAndInterface::readChannelCatalog(QString &sInput)
 {
     cSCPICommand cmd = sInput;
     if (cmd.isQuery()) {
@@ -99,7 +99,6 @@ QString FInGroupResourceAndInterface::m_ReadChannelCatalog(QString &sInput)
         for (i = 0; i < m_ChannelList.count()-1; i++ )
             s += m_ChannelList.at(i)->getName() + ";";
         s += m_ChannelList.at(i)->getName();
-
         return s;
     }
     return SCPI::scpiAnswer[SCPI::nak];
