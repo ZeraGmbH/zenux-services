@@ -218,7 +218,7 @@ quint8 cSenseInterface::getAdjustmentStatus()
     for(auto channel : m_ChannelList) {
         quint8 channelFlags = channel->getAdjustmentStatus();
         // Currently there is one flag in channel flags only
-        if((channelFlags & JustData::Justified)== 0) {
+        if((channelFlags & JustDataInterface::Justified)== 0) {
             adjustmentStatusMask = Adjustment::notAdjusted;
             break;
         }
