@@ -55,28 +55,28 @@ void FOutChannelInterface::executeCommand(int cmdCode, cProtonetCommand *protoCm
     switch (cmdCode)
     {
     case cmdAlias:
-        protoCmd->m_sOutput = m_ReadAlias(protoCmd->m_sInput);
+        protoCmd->m_sOutput = readAlias(protoCmd->m_sInput);
         break;
     case cmdType:
-        protoCmd->m_sOutput = m_ReadType(protoCmd->m_sInput);
+        protoCmd->m_sOutput = readType(protoCmd->m_sInput);
         break;
     case cmdDspServer:
-        protoCmd->m_sOutput = m_ReadDspServer(protoCmd->m_sInput);
+        protoCmd->m_sOutput = readDspServer(protoCmd->m_sInput);
         break;
     case cmdDspChannel:
-        protoCmd->m_sOutput = m_ReadDspChannel(protoCmd->m_sInput);
+        protoCmd->m_sOutput = readDspChannel(protoCmd->m_sInput);
         break;
     case cmdStatus:
-        protoCmd->m_sOutput = m_ReadChannelStatus(protoCmd->m_sInput);
+        protoCmd->m_sOutput = readChannelStatus(protoCmd->m_sInput);
         break;
     case cmdFormFactor:
-        protoCmd->m_sOutput = m_ReadFFactor(protoCmd->m_sInput);
+        protoCmd->m_sOutput = readFFactor(protoCmd->m_sInput);
         break;
     case cmdConstant:
-        protoCmd->m_sOutput = m_ReadWriteConstant(protoCmd->m_sInput);
+        protoCmd->m_sOutput = readWriteConstant(protoCmd->m_sInput);
         break;
     case cmdPowtype:
-        protoCmd->m_sOutput = m_ReadWritePowerType(protoCmd->m_sInput);
+        protoCmd->m_sOutput = readWritePowerType(protoCmd->m_sInput);
         break;
     }
     if (protoCmd->m_bwithOutput)
@@ -108,7 +108,7 @@ bool FOutChannelInterface::isAvail()
     return m_bAvail;
 }
 
-QString FOutChannelInterface::m_ReadAlias(QString &sInput)
+QString FOutChannelInterface::readAlias(QString &sInput)
 {
     cSCPICommand cmd = sInput;
     if (cmd.isQuery())
@@ -117,7 +117,7 @@ QString FOutChannelInterface::m_ReadAlias(QString &sInput)
         return SCPI::scpiAnswer[SCPI::nak];
 }
 
-QString FOutChannelInterface::m_ReadType(QString &sInput)
+QString FOutChannelInterface::readType(QString &sInput)
 {
     cSCPICommand cmd = sInput;
     if (cmd.isQuery())
@@ -126,7 +126,7 @@ QString FOutChannelInterface::m_ReadType(QString &sInput)
         return SCPI::scpiAnswer[SCPI::nak];
 }
 
-QString FOutChannelInterface::m_ReadDspServer(QString &sInput)
+QString FOutChannelInterface::readDspServer(QString &sInput)
 {
     cSCPICommand cmd = sInput;
     if (cmd.isQuery())
@@ -135,7 +135,7 @@ QString FOutChannelInterface::m_ReadDspServer(QString &sInput)
         return SCPI::scpiAnswer[SCPI::nak];
 }
 
-QString FOutChannelInterface::m_ReadDspChannel(QString &sInput)
+QString FOutChannelInterface::readDspChannel(QString &sInput)
 {
     cSCPICommand cmd = sInput;
     if (cmd.isQuery())
@@ -144,7 +144,7 @@ QString FOutChannelInterface::m_ReadDspChannel(QString &sInput)
         return SCPI::scpiAnswer[SCPI::nak];
 }
 
-QString FOutChannelInterface::m_ReadChannelStatus(QString &sInput)
+QString FOutChannelInterface::readChannelStatus(QString &sInput)
 {
     cSCPICommand cmd = sInput;
     if (cmd.isQuery()) {
@@ -156,7 +156,7 @@ QString FOutChannelInterface::m_ReadChannelStatus(QString &sInput)
         return SCPI::scpiAnswer[SCPI::nak];
 }
 
-QString FOutChannelInterface::m_ReadFFactor(QString &sInput)
+QString FOutChannelInterface::readFFactor(QString &sInput)
 {
     cSCPICommand cmd = sInput;
     if (cmd.isQuery())
@@ -165,7 +165,7 @@ QString FOutChannelInterface::m_ReadFFactor(QString &sInput)
         return SCPI::scpiAnswer[SCPI::nak];
 }
 
-QString FOutChannelInterface::m_ReadWriteConstant(QString &sInput)
+QString FOutChannelInterface::readWriteConstant(QString &sInput)
 {
     cSCPICommand cmd = sInput;
     if (cmd.isQuery()) {
@@ -181,7 +181,7 @@ QString FOutChannelInterface::m_ReadWriteConstant(QString &sInput)
         return SCPI::scpiAnswer[SCPI::nak];
 }
 
-QString FOutChannelInterface::m_ReadWritePowerType(QString &sInput)
+QString FOutChannelInterface::readWritePowerType(QString &sInput)
 {
     cSCPICommand cmd = sInput;
     if (cmd.isQuery()) {

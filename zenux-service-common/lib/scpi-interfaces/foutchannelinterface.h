@@ -34,6 +34,15 @@ public:
 protected slots:
     virtual void executeCommand(int cmdCode, cProtonetCommand* protoCmd) override;
 private:
+    QString readAlias(QString& sInput);
+    QString readType(QString& sInput);
+    QString readDspServer(QString& sInput);
+    QString readDspChannel(QString& sInput);
+    QString readChannelStatus(QString& sInput);
+    QString readFFactor(QString& sInput);
+    QString readWriteConstant(QString& sInput);
+    QString readWritePowerType(QString &sInput);
+    void initNotifier(NotificationString& notifier);
     QString m_sName; // the channel's name
     QString m_sAlias;
     QString m_sDescription; // the channel's brief description
@@ -42,19 +51,8 @@ private:
     quint8 m_nType;
     double m_fFormFactor;
     bool m_bAvail; // is this channel available ?
-
     NotificationString notifierConstant;
-    void initNotifier(NotificationString& notifier);
     NotificationString notifierPowerType;
-
-    QString m_ReadAlias(QString& sInput);
-    QString m_ReadType(QString& sInput);
-    QString m_ReadDspServer(QString& sInput);
-    QString m_ReadDspChannel(QString& sInput);
-    QString m_ReadChannelStatus(QString& sInput);
-    QString m_ReadFFactor(QString& sInput);
-    QString m_ReadWriteConstant(QString& sInput);
-    QString m_ReadWritePowerType(QString &sInput);
 };
 
 #endif // FOUTCHANNELINTERFACE_H
