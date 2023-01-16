@@ -1,14 +1,8 @@
-#include <QList>
-#include <QString>
-
-#include <scpi.h>
-#include <scpicommand.h>
-#include "scpiconnection.h"
-#include "com5003d.h"
 #include "fpzinchannel.h"
+#include "scpiconnection.h"
 #include "protonetcommand.h"
 #include "settings/frqinputsettings.h"
-
+#include <scpi.h>
 
 cFPZInChannel::cFPZInChannel(cSCPI *scpiInterface, QString description, quint8 nr, FRQInputSystem::cChannelSettings *cSettings) :
     ScpiConnection(scpiInterface),

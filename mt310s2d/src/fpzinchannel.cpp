@@ -1,10 +1,8 @@
-#include "scpiconnection.h"
-#include "mt310s2d.h"
 #include "fpzinchannel.h"
+#include "scpiconnection.h"
 #include "protonetcommand.h"
 #include "settings/frqinputsettings.h"
 #include <scpi.h>
-#include <scpicommand.h>
 
 cFPZInChannel::cFPZInChannel(cSCPI *scpiInterface, QString description, quint8 nr, FRQInputSystem::cChannelSettings *cSettings) :
     ScpiConnection(scpiInterface),
@@ -27,7 +25,6 @@ void cFPZInChannel::initSCPIConnection(QString leadingNodes)
     connect(delegate, &cSCPIDelegate::execute, this, &cFPZInChannel::executeCommand);
 }
 
-
 void cFPZInChannel::executeCommand(int cmdCode, cProtonetCommand *protoCmd)
 {
     switch (cmdCode)
@@ -42,7 +39,6 @@ void cFPZInChannel::executeCommand(int cmdCode, cProtonetCommand *protoCmd)
     if (protoCmd->m_bwithOutput)
         emit cmdExecutionDone(protoCmd);
 }
-
 
 QString &cFPZInChannel::getName()
 {
@@ -64,7 +60,6 @@ bool cFPZInChannel::isAvail()
     return m_bAvail;
 }
 
-
 QString cFPZInChannel::m_ReadAlias(QString &sInput)
 {
     cSCPICommand cmd = sInput;
@@ -73,7 +68,6 @@ QString cFPZInChannel::m_ReadAlias(QString &sInput)
     else
         return SCPI::scpiAnswer[SCPI::nak];
 }
-
 
 QString cFPZInChannel::m_ReadChannelStatus(QString &sInput)
 {
