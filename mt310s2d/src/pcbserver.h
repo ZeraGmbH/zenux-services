@@ -60,8 +60,6 @@ public:
     cSCHeadSettings* m_pSCHeadSettings;
     cHKeySettings* m_pHKeySettings;
     cStatusInterface* m_pStatusInterface;
-signals:
-    void sendAnswer(QByteArray answer);
 public slots:
     void sendAnswerProto(cProtonetCommand* protoCmd);
 protected:
