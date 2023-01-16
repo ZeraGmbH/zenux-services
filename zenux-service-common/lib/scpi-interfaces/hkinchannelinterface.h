@@ -1,23 +1,14 @@
-#ifndef HKEYCHANNEL_H
-#define HKEYCHANNEL_H
+#ifndef HKINCHANNELINTERFACE_H
+#define HKINCHANNELINTERFACE_H
 
 #include "scpiconnection.h"
 #include "hkinsettings.h"
 
-namespace HKEYChannel
-{
-    enum Commands
-    {
-        cmdAlias,
-        cmdStatus
-    };
-}
-
-class cHKeyChannel : public ScpiConnection
+class HkInChannelInterface : public ScpiConnection
 {
     Q_OBJECT
 public:
-    cHKeyChannel(cSCPI* scpiinterface, QString description, quint8 nr, HkInSettings::ChannelSettings* cSettings);
+    HkInChannelInterface(cSCPI* scpiinterface, QString description, quint8 nr, HkInSettings::ChannelSettings* cSettings);
     virtual void initSCPIConnection(QString leadingNodes) override;
     QString& getName();
     QString& getAlias();
@@ -26,12 +17,12 @@ public:
 protected slots:
     virtual void executeCommand(int cmdCode, cProtonetCommand* protoCmd) override;
 private:
+    QString readAlias(QString& sInput);
+    QString readChannelStatus(QString& sInput);
     QString m_sName; // the channel's name
     QString m_sAlias;
     QString m_sDescription; // the channel's brief description
     bool m_bAvail; // is this channel available ?
-    QString m_ReadAlias(QString& sInput);
-    QString m_ReadChannelStatus(QString& sInput);
 };
 
-#endif // HKEYCHANNEL_H
+#endif // HKINCHANNELINTERFACE_H
