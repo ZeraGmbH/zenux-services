@@ -1,4 +1,4 @@
-#include "scheadinterface.h"
+#include "scingroupresourceandinterface.h"
 #include "notzeronumgen.h"
 
 enum Commands
@@ -7,7 +7,7 @@ enum Commands
     cmdChannelCat
 };
 
-cSCHeadInterface::cSCHeadInterface(cSCPI *scpiInterface, ScInSettings *settings) :
+ScInGroupResourceAndInterface::ScInGroupResourceAndInterface(cSCPI *scpiInterface, ScInSettings *settings) :
     cResource(scpiInterface)
 {
     QList<ScInSettings::ChannelSettings*> channelSettings;
@@ -18,23 +18,23 @@ cSCHeadInterface::cSCHeadInterface(cSCPI *scpiInterface, ScInSettings *settings)
     m_ChannelList.append(pChannel);
 }
 
-cSCHeadInterface::~cSCHeadInterface()
+ScInGroupResourceAndInterface::~ScInGroupResourceAndInterface()
 {
     for(auto channel : qAsConst(m_ChannelList))
         delete channel;
 }
 
-void cSCHeadInterface::initSCPIConnection(QString leadingNodes)
+void ScInGroupResourceAndInterface::initSCPIConnection(QString leadingNodes)
 {
     if (leadingNodes != "")
         leadingNodes += ":";
     cSCPIDelegate* delegate;
     delegate = new cSCPIDelegate(QString("%1SCHEAD").arg(leadingNodes),"VERSION",SCPI::isQuery, m_pSCPIInterface, cmdVersion);
     m_DelegateList.append(delegate);
-    connect(delegate, &cSCPIDelegate::execute, this, &cSCHeadInterface::executeCommand);
+    connect(delegate, &cSCPIDelegate::execute, this, &ScInGroupResourceAndInterface::executeCommand);
     delegate = new cSCPIDelegate(QString("%1SCHEAD:CHANNEL").arg(leadingNodes),"CATALOG", SCPI::isQuery, m_pSCPIInterface, cmdChannelCat);
     m_DelegateList.append(delegate);
-    connect(delegate, &cSCPIDelegate::execute, this, &cSCHeadInterface::executeCommand);
+    connect(delegate, &cSCPIDelegate::execute, this, &ScInGroupResourceAndInterface::executeCommand);
     for(auto channel : qAsConst(m_ChannelList)) {
         connect(channel, &ScpiConnection::strNotifier, this, &ScpiConnection::strNotifier);
         connect(channel, &ScpiConnection::cmdExecutionDone, this, &ScpiConnection::cmdExecutionDone);
@@ -42,19 +42,19 @@ void cSCHeadInterface::initSCPIConnection(QString leadingNodes)
     }
 }
 
-void cSCHeadInterface::registerResource(RMConnection *rmConnection, quint16 port)
+void ScInGroupResourceAndInterface::registerResource(RMConnection *rmConnection, quint16 port)
 {
     for(auto channel : qAsConst(m_ChannelList))
         register1Resource(rmConnection, NotZeroNumGen::getMsgNr(), QString("SCHEAD;%1;1;%2;%3;").arg(channel->getName()).arg(channel->getDescription()).arg(port));
 }
 
-void cSCHeadInterface::unregisterResource(RMConnection *rmConnection)
+void ScInGroupResourceAndInterface::unregisterResource(RMConnection *rmConnection)
 {
     for(auto channel : qAsConst(m_ChannelList))
         unregister1Resource(rmConnection, NotZeroNumGen::getMsgNr(), QString("SCHEAD;%1;").arg(channel->getName()));
 }
 
-void cSCHeadInterface::executeCommand(int cmdCode, cProtonetCommand *protoCmd)
+void ScInGroupResourceAndInterface::executeCommand(int cmdCode, cProtonetCommand *protoCmd)
 {
     switch (cmdCode)
     {
@@ -69,7 +69,7 @@ void cSCHeadInterface::executeCommand(int cmdCode, cProtonetCommand *protoCmd)
         emit cmdExecutionDone(protoCmd);
 }
 
-QString cSCHeadInterface::m_ReadVersion(QString &sInput)
+QString ScInGroupResourceAndInterface::m_ReadVersion(QString &sInput)
 {
     cSCPICommand cmd = sInput;
     if (cmd.isQuery())
@@ -78,7 +78,7 @@ QString cSCHeadInterface::m_ReadVersion(QString &sInput)
         return SCPI::scpiAnswer[SCPI::nak];
 }
 
-QString cSCHeadInterface::m_ReadChannelCatalog(QString &sInput)
+QString ScInGroupResourceAndInterface::m_ReadChannelCatalog(QString &sInput)
 {
     cSCPICommand cmd = sInput;
     if (cmd.isQuery()) {
