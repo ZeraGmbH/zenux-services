@@ -3,7 +3,7 @@
 
 #include "resource.h"
 #include "scpiconnection.h"
-#include "scheadchannel.h"
+#include "scinchannelinterface.h"
 #include "scinsettings.h"
 #include <scpi.h>
 #include <QList>
@@ -27,7 +27,7 @@ public:
 protected slots:
     virtual void executeCommand(int cmdCode, cProtonetCommand* protoCmd) override;
 private:
-    QList<cSCHeadChannel*> m_ChannelList;
+    QList<ScInChannelInterface*> m_ChannelList;
     QString m_sVersion;
 
     QString m_ReadVersion(QString& sInput);

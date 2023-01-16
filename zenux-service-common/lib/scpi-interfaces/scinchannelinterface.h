@@ -1,9 +1,8 @@
-#ifndef SCHEADCHANNEL_H
-#define SCHEADCHANNEL_H
+#ifndef SCINCHANNELINTERFACE_H
+#define SCINCHANNELINTERFACE_H
 
 #include "scpiconnection.h"
 #include "scinsettings.h"
-#include <QObject>
 
 namespace SCHEADChannel
 {
@@ -15,11 +14,11 @@ enum Commands
 
 }
 
-class cSCHeadChannel : public ScpiConnection
+class ScInChannelInterface : public ScpiConnection
 {
     Q_OBJECT
 public:
-    cSCHeadChannel(cSCPI *scpiinterface, QString description, quint8 nr, ScInSettings::ChannelSettings* cSettings);
+    ScInChannelInterface(cSCPI *scpiinterface, QString description, quint8 nr, ScInSettings::ChannelSettings* cSettings);
     virtual void initSCPIConnection(QString leadingNodes) override;
     QString& getName();
     QString& getAlias();
@@ -37,4 +36,4 @@ private:
 };
 
 
-#endif // SCHEADCHANNEL_H
+#endif // SCINCHANNELINTERFACE_H
