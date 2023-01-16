@@ -3,7 +3,7 @@
 
 #include "foutchannelinterface.h"
 #include "resource.h"
-#include "sourcesettings.h"
+#include "foutsettings.h"
 #include <scpi.h>
 #include <QObject>
 #include <QList>
@@ -18,7 +18,7 @@ public:
         cmdVersion,
         cmdChannelCat
     };
-    FOutGroupResourceAndInterface(cSCPI *scpiInterface, cSourceSettings* settings);
+    FOutGroupResourceAndInterface(cSCPI *scpiInterface, FOutSettings* settings);
     ~FOutGroupResourceAndInterface();
     virtual void initSCPIConnection(QString leadingNodes) override;
     virtual void registerResource(RMConnection *rmConnection, quint16 port) override;

@@ -1,5 +1,5 @@
-#ifndef SOURCESETTINGS_H
-#define SOURCESETTINGS_H
+#ifndef FOUTSETTINGS_H
+#define FOUTSETTINGS_H
 
 #include <xmlsettings.h>
 #include <QString>
@@ -35,12 +35,12 @@ namespace SourceSystem
     };
 }
 
-class cSourceSettings : public XMLSettings
+class FOutSettings : public XMLSettings
 {
     Q_OBJECT
 public:
-    cSourceSettings(Zera::XMLConfig::cReader *xmlread);
-    ~cSourceSettings();
+    FOutSettings(Zera::XMLConfig::cReader *xmlread);
+    ~FOutSettings();
     QList<SourceSystem::cChannelSettings*>& getChannelSettings();
 public slots:
     virtual void configXMLInfo(QString key);
@@ -48,4 +48,4 @@ private:
     QList<SourceSystem::cChannelSettings*> m_ChannelSettingsList;
 };
 
-#endif // SOURCESETTINGS_H
+#endif // FOUTSETTINGS_H

@@ -34,7 +34,7 @@ class cSCHeadSettings;
 class cHKeySettings;
 class cSenseSettings;
 class cSamplingSettings;
-class cSourceSettings;
+class FOutSettings;
 
 class cPCBServer: public ScpiConnection
 {
@@ -52,7 +52,7 @@ public:
     EthSettings* m_pETHSettings;
     cSenseSettings* m_pSenseSettings;
     cSamplingSettings* m_pSamplingSettings;
-    cSourceSettings* m_pSourceSettings;
+    FOutSettings* m_pSourceSettings;
     cFRQInputSettings* m_pFRQInputSettings;
     cSCHeadSettings* m_pSCHeadSettings;
     cHKeySettings* m_pHKeySettings;

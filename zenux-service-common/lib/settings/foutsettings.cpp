@@ -1,6 +1,6 @@
-#include "sourcesettings.h"
+#include "foutsettings.h"
 
-cSourceSettings::cSourceSettings(Zera::XMLConfig::cReader *xmlread)
+FOutSettings::FOutSettings(Zera::XMLConfig::cReader *xmlread)
 {
     m_pXMLReader = xmlread;
     for (int i = 0; i < 4; i++) {
@@ -12,18 +12,18 @@ cSourceSettings::cSourceSettings(Zera::XMLConfig::cReader *xmlread)
     }
 }
 
-cSourceSettings::~cSourceSettings()
+FOutSettings::~FOutSettings()
 {
     for(auto channel : qAsConst(m_ChannelSettingsList))
         delete channel;
 }
 
-QList<SourceSystem::cChannelSettings*> &cSourceSettings::getChannelSettings()
+QList<SourceSystem::cChannelSettings*> &FOutSettings::getChannelSettings()
 {
     return m_ChannelSettingsList;
 }
 
-void cSourceSettings::configXMLInfo(QString key)
+void FOutSettings::configXMLInfo(QString key)
 {
     if (m_ConfigXMLMap.contains(key)) {
         switch (m_ConfigXMLMap[key])

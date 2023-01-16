@@ -3,10 +3,10 @@
 #include "resource.h"
 #include "foutchannelinterface.h"
 #include "protonetcommand.h"
-#include "sourcesettings.h"
+#include "foutsettings.h"
 #include "notzeronumgen.h"
 
-FOutGroupResourceAndInterface::FOutGroupResourceAndInterface(cSCPI *scpiInterface, cSourceSettings *settings) :
+FOutGroupResourceAndInterface::FOutGroupResourceAndInterface(cSCPI *scpiInterface, FOutSettings *settings) :
     cResource(scpiInterface)
 {
     QList<SourceSystem::cChannelSettings*> channelSettings;

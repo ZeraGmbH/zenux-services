@@ -25,7 +25,7 @@
 #include "samplingsettings.h"
 #include "scheadsettings.h"
 #include "sensesettings.h"
-#include "sourcesettings.h"
+#include "foutsettings.h"
 #include <xmlconfigreader.h>
 #include <xiqnetserver.h>
 #include <QSocketNotifier>
@@ -184,8 +184,8 @@ void cMT310S2dServer::doConfiguration()
                 connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pCtrlSettings,&cCtrlSettings::configXMLInfo);
                 m_pSenseSettings = new cSenseSettings(myXMLConfigReader);
                 connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pSenseSettings,&cSenseSettings::configXMLInfo);
-                m_pSourceSettings = new cSourceSettings(myXMLConfigReader);
-                connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pSourceSettings,&cSourceSettings::configXMLInfo);
+                m_pSourceSettings = new FOutSettings(myXMLConfigReader);
+                connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pSourceSettings,&FOutSettings::configXMLInfo);
                 m_pSamplingSettings = new cSamplingSettings(myXMLConfigReader);
                 connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pSamplingSettings,&cSamplingSettings::configXMLInfo);
                 m_pFRQInputSettings = new cFRQInputSettings(myXMLConfigReader);
