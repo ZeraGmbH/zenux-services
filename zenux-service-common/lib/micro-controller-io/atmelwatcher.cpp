@@ -8,7 +8,7 @@ cAtmelWatcher::cAtmelWatcher(quint8 dlevel, QString devNode, int timeout, int tp
 {
     m_TimerTO.setSingleShot(true);
     m_TimerTO.setInterval(timeout);
-    connect(&m_TimerTO, SIGNAL(timeout()), this, SLOT(doTimeout()));
+    connect(&m_TimerTO, &QTimer::timeout, this, &cAtmelWatcher::doTimeout);
     m_TimerPeriod.setSingleShot(false);
     m_TimerPeriod.setInterval(tperiod);
 }
@@ -18,7 +18,7 @@ void cAtmelWatcher::start()
     qInfo("Atmel run-detection started");
     m_TimerTO.start();
     m_TimerPeriod.start();
-    connect(&m_TimerPeriod, SIGNAL(timeout()), this, SLOT(doAtmelTest()));
+    connect(&m_TimerPeriod, &QTimer::timeout, this, &cAtmelWatcher::doAtmelTest);
 }
 
 void cAtmelWatcher::doAtmelTest()

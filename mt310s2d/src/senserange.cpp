@@ -58,7 +58,7 @@ void cSenseRange::initSCPIConnection(QString leadingNodes)
     m_DelegateList.append(delegate);
     connect(delegate, &cSCPIDelegate::execute, this, &cSenseRange::executeCommand);
 
-    connect(m_pJustdata, SIGNAL(cmdExecutionDone(cProtonetCommand*)), this, SIGNAL(cmdExecutionDone(cProtonetCommand*)));
+    connect(m_pJustdata, &ScpiConnection::cmdExecutionDone, this, &ScpiConnection::cmdExecutionDone);
     m_pJustdata->initSCPIConnection(QString("%1%2").arg(leadingNodes).arg(m_sName));
 }
 

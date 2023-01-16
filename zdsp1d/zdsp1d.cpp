@@ -733,12 +733,12 @@ cZDSP1Server::cZDSP1Server()
     m_pInitializationMachine->addState(stateFINISH);
     m_pInitializationMachine->setInitialState(stateCONF);
 
-    QObject::connect(statexmlConfiguration, SIGNAL(entered()), this, SLOT(doConfiguration()));
-    QObject::connect(statesetupServer, SIGNAL(entered()), this, SLOT(doSetupServer()));
-    QObject::connect(stateconnect2RM, SIGNAL(entered()), this, SLOT(doConnect2RM()));
-    QObject::connect(stateconnect2RMError, SIGNAL(entered()), this, SLOT(connect2RMError()));
-    QObject::connect(stateSendRMIdentandRegister, SIGNAL(entered()), this, SLOT(doIdentAndRegister()));
-    QObject::connect(stateFINISH, SIGNAL(entered()), this, SLOT(doCloseServer()));
+    QObject::connect(statexmlConfiguration, &QAbstractState::entered, this, &cZDSP1Server::doConfiguration);
+    QObject::connect(statesetupServer, &QAbstractState::entered, this, &cZDSP1Server::doSetupServer);
+    QObject::connect(stateconnect2RM, &QAbstractState::entered, this, &cZDSP1Server::doConnect2RM);
+    QObject::connect(stateconnect2RMError, &QAbstractState::entered, this, &cZDSP1Server::connect2RMError);
+    QObject::connect(stateSendRMIdentandRegister, &QAbstractState::entered, this, &cZDSP1Server::doIdentAndRegister);
+    QObject::connect(stateFINISH, &QAbstractState::entered, this, &cZDSP1Server::doCloseServer);
 
     m_pInitializationMachine->start();
  }
@@ -786,18 +786,18 @@ void cZDSP1Server::doConfiguration()
             fcntl( pipeFD[1], F_SETFL, O_NONBLOCK);
             fcntl( pipeFD[0], F_SETFL, O_NONBLOCK);
             m_pNotifier = new QSocketNotifier(pipeFD[0], QSocketNotifier::Read, this);
-            connect(m_pNotifier, SIGNAL(activated(int)), this, SLOT(DspIntHandler(int)));
+            connect(m_pNotifier, &QSocketNotifier::activated, this, &cZDSP1Server::DspIntHandler);
 
             if (myXMLConfigReader->loadSchema(defaultXSDFile))
             {
                 // we want to initialize all settings first
                 QString xmlConfigTopNode = "serviceconfig";
                 m_pDebugSettings = new cDebugSettings(myXMLConfigReader, xmlConfigTopNode);
-                connect(myXMLConfigReader,SIGNAL(valueChanged(const QString&)),m_pDebugSettings,SLOT(configXMLInfo(const QString&)));
+                connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pDebugSettings,&cDebugSettings::configXMLInfo);
                 m_pETHSettings = new EthSettings(myXMLConfigReader);
-                connect(myXMLConfigReader,SIGNAL(valueChanged(const QString&)),m_pETHSettings,SLOT(configXMLInfo(const QString&)));
+                connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pETHSettings,&EthSettings::configXMLInfo);
                 m_pDspSettings = new cDSPSettings(myXMLConfigReader);
-                connect(myXMLConfigReader,SIGNAL(valueChanged(const QString&)),m_pDspSettings,SLOT(configXMLInfo(const QString&)));
+                connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pDspSettings,&cDSPSettings::configXMLInfo);
 
                 QString s = args.at(1);
                 if(!myXMLConfigReader->loadXMLFile(s)) {
@@ -832,7 +832,7 @@ void cZDSP1Server::doSetupServer()
 
     myProtonetServer =  new XiQNetServer(this);
     myProtonetServer->setDefaultWrapper(&m_ProtobufWrapper);
-    connect(myProtonetServer, SIGNAL(sigClientConnected(XiQNetPeer*)), this, SLOT(establishNewConnection(XiQNetPeer*)));
+    connect(myProtonetServer, &XiQNetServer::sigClientConnected, this, &cZDSP1Server::establishNewConnection);
     myProtonetServer->startServer(m_pETHSettings->getPort(EthSettings::protobufserver)); // and can start the server now
 
     if (m_pETHSettings->isSCPIactive())
@@ -860,7 +860,7 @@ void cZDSP1Server::doSetupServer()
         SetFASync();
         m_nRetryRMConnect = 100;
         m_retryTimer.setSingleShot(true);
-        connect(&m_retryTimer, SIGNAL(timeout()), this, SIGNAL(serverSetup()));
+        connect(&m_retryTimer, &QTimer::timeout, this, &cZDSP1Server::serverSetup);
 
         if (setDspType()) // interrogate the mounted dsp device type and bootfile match
         {
@@ -2269,7 +2269,7 @@ cZDSP1Client* cZDSP1Server::GetClient(XiQNetPeer *peer)
 void cZDSP1Server::establishNewConnection(XiQNetPeer *newClient)
 {
     connect(newClient, &XiQNetPeer::sigMessageReceived, this, &cZDSP1Server::executeCommandProto);
-    connect(newClient, SIGNAL(sigConnectionClosed()), this, SLOT(deleteConnection()));
+    connect(newClient, &XiQNetPeer::sigConnectionClosed, this, &cZDSP1Server::deleteConnection);
     AddClient(newClient); // we additionally add the client to our list
 }
 
@@ -2396,8 +2396,8 @@ void cZDSP1Server::setSCPIConnection()
 
     m_pSCPIClient = AddSCPIClient();
 
-    connect(m_pSCPISocket, SIGNAL(readyRead()), this, SLOT(SCPIInput()));
-    connect(m_pSCPISocket, SIGNAL(disconnected()), this, SLOT(SCPIdisconnect()));
+    connect(m_pSCPISocket, &QIODevice::readyRead, this, &cZDSP1Server::SCPIInput);
+    connect(m_pSCPISocket, &QAbstractSocket::disconnected, this, &cZDSP1Server::SCPIdisconnect);
 }
 
 

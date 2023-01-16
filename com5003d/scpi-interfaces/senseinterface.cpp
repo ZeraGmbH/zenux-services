@@ -135,9 +135,9 @@ cSenseInterface::cSenseInterface(cCOM5003dServer *server) :
     m_ChangeSenseModeMachine.addState(&m_RegisterSenseState);
     m_ChangeSenseModeMachine.addState(&m_NotifySenseState);
     m_ChangeSenseModeMachine.setInitialState(&m_UnregisterSenseState);
-    connect(&m_UnregisterSenseState, SIGNAL(entered()), this, SLOT(unregisterSense()));
-    connect(&m_RegisterSenseState, SIGNAL(entered()), this, SLOT(registerSense()));
-    connect(&m_NotifySenseState, SIGNAL(entered()), this, SLOT(notifySense()));
+    connect(&m_UnregisterSenseState, &QAbstractState::entered, this, &cSenseInterface::unregisterSense);
+    connect(&m_RegisterSenseState, &QAbstractState::entered, this, &cSenseInterface::registerSense);
+    connect(&m_NotifySenseState, &QAbstractState::entered, this, &cSenseInterface::notifySense);
 }
 
 
@@ -188,7 +188,7 @@ void cSenseInterface::initSCPIConnection(QString leadingNodes)
     {
         // we also must connect the signals for notification and for output
         connect(m_ChannelList.at(i), &ScpiConnection::strNotifier, this, &ScpiConnection::strNotifier);
-        connect(m_ChannelList.at(i), SIGNAL(cmdExecutionDone(cProtonetCommand*)), this, SIGNAL(cmdExecutionDone(cProtonetCommand*)));
+        connect(m_ChannelList.at(i), &ScpiConnection::cmdExecutionDone, this, &ScpiConnection::cmdExecutionDone);
 
         m_ChannelList.at(i)->initSCPIConnection(QString("%1SENSE").arg(leadingNodes));
     }

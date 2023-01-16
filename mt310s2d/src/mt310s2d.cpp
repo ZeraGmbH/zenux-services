@@ -105,13 +105,13 @@ cMT310S2dServer::cMT310S2dServer()
     m_pInitializationMachine->addState(stateFINISH);
     m_pInitializationMachine->setInitialState(stateCONF);
 
-    QObject::connect(statexmlConfiguration, SIGNAL(entered()), this, SLOT(doConfiguration()));
-    QObject::connect(statewait4Atmel, SIGNAL(entered()), this, SLOT(doWait4Atmel()));
-    QObject::connect(statesetupServer, SIGNAL(entered()), this, SLOT(doSetupServer()));
-    QObject::connect(stateconnect2RM, SIGNAL(entered()), this, SLOT(doConnect2RM()));
-    QObject::connect(stateconnect2RMError, SIGNAL(entered()), this, SLOT(connect2RMError()));
-    QObject::connect(stateSendRMIdentandRegister, SIGNAL(entered()), this, SLOT(doIdentAndRegister()));
-    QObject::connect(stateFINISH, SIGNAL(entered()), this, SLOT(doCloseServer()));
+    QObject::connect(statexmlConfiguration, &QAbstractState::entered, this, &cMT310S2dServer::doConfiguration);
+    QObject::connect(statewait4Atmel, &QAbstractState::entered, this, &cMT310S2dServer::doWait4Atmel);
+    QObject::connect(statesetupServer, &QAbstractState::entered, this, &cMT310S2dServer::doSetupServer);
+    QObject::connect(stateconnect2RM, &QAbstractState::entered, this, &cMT310S2dServer::doConnect2RM);
+    QObject::connect(stateconnect2RMError, &QAbstractState::entered, this, &cMT310S2dServer::connect2RMError);
+    QObject::connect(stateSendRMIdentandRegister, &QAbstractState::entered, this, &cMT310S2dServer::doIdentAndRegister);
+    QObject::connect(stateFINISH, &QAbstractState::entered, this, &cMT310S2dServer::doCloseServer);
 
     m_pInitializationMachine->start();
 }
@@ -166,7 +166,7 @@ void cMT310S2dServer::doConfiguration()
             fcntl( pipeFD[1], F_SETFL, O_NONBLOCK);
             fcntl( pipeFD[0], F_SETFL, O_NONBLOCK);
             m_pNotifier = new QSocketNotifier(pipeFD[0], QSocketNotifier::Read, this);
-            connect(m_pNotifier, SIGNAL(activated(int)), this, SLOT(MTIntHandler(int)));
+            connect(m_pNotifier, &QSocketNotifier::activated, this, &cMT310S2dServer::MTIntHandler);
 
             if (myXMLConfigReader->loadSchema(defaultXSDFile))
             {
@@ -222,8 +222,8 @@ void cMT310S2dServer::doWait4Atmel()
     m_pAtmelWatcher = new cAtmelWatcher(m_pDebugSettings->getDebugLevel(), m_pCtrlSettings->getDeviceNode(), 10000, 100);
 
     m_nerror = atmelError; // we preset error
-    connect(m_pAtmelWatcher,SIGNAL(timeout()),this,SIGNAL(abortInit()));
-    connect(m_pAtmelWatcher,SIGNAL(running()),this,SIGNAL(atmelRunning()));
+    connect(m_pAtmelWatcher,&cAtmelWatcher::timeout,this,&cMT310S2dServer::abortInit);
+    connect(m_pAtmelWatcher,&cAtmelWatcher::running,this,&cMT310S2dServer::atmelRunning);
     m_pAtmelWatcher->start();
 }
 
@@ -301,7 +301,7 @@ void cMT310S2dServer::doSetupServer()
             // so we must complete our state machine here
             m_nRetryRMConnect = 100;
             m_retryTimer.setSingleShot(true);
-            connect(&m_retryTimer, SIGNAL(timeout()), this, SIGNAL(serverSetup()));
+            connect(&m_retryTimer, &QTimer::timeout, this, &cMT310S2dServer::serverSetup);
 
             stateconnect2RM->addTransition(m_pRMConnection, SIGNAL(connected()), stateSendRMIdentandRegister);
             stateconnect2RM->addTransition(m_pRMConnection, SIGNAL(connectionRMError()), stateconnect2RMError);

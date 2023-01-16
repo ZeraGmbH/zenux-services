@@ -168,7 +168,7 @@ void cSenseInterface::initSCPIConnection(QString leadingNodes)
     for(auto channel : m_ChannelList) {
         // we also must connect the signals for notification and for output
         connect(channel, &ScpiConnection::strNotifier, this, &ScpiConnection::strNotifier);
-        connect(channel, SIGNAL(cmdExecutionDone(cProtonetCommand*)), this, SIGNAL(cmdExecutionDone(cProtonetCommand*)));
+        connect(channel, &ScpiConnection::cmdExecutionDone, this, &ScpiConnection::cmdExecutionDone);
         channel->initSCPIConnection(QString("%1SENSE").arg(leadingNodes));
     }
     QString cmdParent = QString("STATUS:PCB");

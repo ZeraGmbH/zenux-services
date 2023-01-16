@@ -45,7 +45,7 @@ void cHKeyInterface::initSCPIConnection(QString leadingNodes)
     connect(delegate, &cSCPIDelegate::execute, this, &cHKeyInterface::executeCommand);
     for(auto channel : m_ChannelList) {
         connect(channel, &ScpiConnection::strNotifier, this, &ScpiConnection::strNotifier);
-        connect(channel, SIGNAL(cmdExecutionDone(cProtonetCommand*)), this, SIGNAL(cmdExecutionDone(cProtonetCommand*)));
+        connect(channel, &ScpiConnection::cmdExecutionDone, this, &ScpiConnection::cmdExecutionDone);
         channel->initSCPIConnection(QString("%1HKEY").arg(leadingNodes));
     }
 }

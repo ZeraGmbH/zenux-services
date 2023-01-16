@@ -20,9 +20,9 @@ void cRMConnection::connect2RM()
         delete m_pResourceManagerClient;
     m_pResourceManagerClient = new XiQNetPeer(this);
     m_pResourceManagerClient->setWrapper(&m_ProtobufWrapper);
-    connect(m_pResourceManagerClient, SIGNAL(sigSocketError(QAbstractSocket::SocketError)), this, SLOT(tcpErrorHandler(QAbstractSocket::SocketError)));
-    connect(m_pResourceManagerClient, SIGNAL(sigConnectionEstablished()), this, SIGNAL(connected()));
-    connect(m_pResourceManagerClient, SIGNAL(sigConnectionClosed()), this, SIGNAL(connectionRMError()));
+    connect(m_pResourceManagerClient, &XiQNetPeer::sigSocketError, this, &cRMConnection::tcpErrorHandler);
+    connect(m_pResourceManagerClient, &XiQNetPeer::sigConnectionEstablished, this, &cRMConnection::connected);
+    connect(m_pResourceManagerClient, &XiQNetPeer::sigConnectionClosed, this, &cRMConnection::connectionRMError);
     connect(m_pResourceManagerClient, &XiQNetPeer::sigMessageReceived, this, &cRMConnection::responseHandler);
     m_pResourceManagerClient->startConnection(m_sIPAdr, m_nPort);
 }
