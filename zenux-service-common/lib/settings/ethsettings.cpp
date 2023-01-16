@@ -1,6 +1,15 @@
 #include "ethsettings.h"
 #include <xmlconfigreader.h>
 
+enum ethconfigstate
+{
+    setRmIpAdress,
+    setProtobufServerPort,
+    setScpiServerPort,
+    setRmPort,
+    setSCPIactive
+};
+
 EthSettings::EthSettings(Zera::XMLConfig::cReader *xmlread)
 {
     m_pXMLReader = xmlread;

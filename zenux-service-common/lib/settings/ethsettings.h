@@ -13,14 +13,6 @@ public:
         scpiserver,
         resourcemanager
     };
-    enum ethconfigstate
-    {
-        setRmIpAdress,
-        setProtobufServerPort,
-        setScpiServerPort,
-        setRmPort,
-        setSCPIactive
-    };
     EthSettings(Zera::XMLConfig::cReader *xmlread);
     QString getRMIPadr();
     quint16 getPort(ethmember member);
