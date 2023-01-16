@@ -10,7 +10,7 @@
 #include "fingroupresourceandinterface.h"
 #include "hkingroupresourceandinterface.h"
 #include "samplinginterface.h"
-#include "scheadinterface.h"
+#include "scingroupresourceandinterface.h"
 #include "senseinterface.h"
 #include "foutgroupresourceandinterface.h"
 #include "statusinterface.h"
@@ -263,7 +263,7 @@ void cMT310S2dServer::doSetupServer()
             scpiConnectionList.append(m_pSamplingInterface = new cSamplingInterface(this));
             scpiConnectionList.append(m_pSourceInterface = new FOutGroupResourceAndInterface(getSCPIInterface(), m_foutSettings));
             scpiConnectionList.append(m_pFRQInputInterface = new FInGroupResourceAndInterface(getSCPIInterface(), m_finSettings));
-            scpiConnectionList.append(m_pSCHeadInterface = new cSCHeadInterface(getSCPIInterface(), m_pSCHeadSettings));
+            scpiConnectionList.append(m_pSCHeadInterface = new ScInGroupResourceAndInterface(getSCPIInterface(), m_pSCHeadSettings));
             scpiConnectionList.append(m_hkInInterface = new HkInGroupResourceAndInterface(getSCPIInterface(), m_hkInSettings));
             scpiConnectionList.append(m_pClampInterface = new cClampInterface(this));
 

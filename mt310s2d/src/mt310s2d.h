@@ -16,7 +16,7 @@ class cSenseInterface;
 class cSamplingInterface;
 class FOutGroupResourceAndInterface;
 class FInGroupResourceAndInterface;
-class cSCHeadInterface;
+class ScInGroupResourceAndInterface;
 class HkInGroupResourceAndInterface;
 class cSystemInfo;
 class cAdjustment;
@@ -38,7 +38,7 @@ public:
     cSamplingInterface* m_pSamplingInterface;
     FOutGroupResourceAndInterface* m_pSourceInterface;
     FInGroupResourceAndInterface* m_pFRQInputInterface;
-    cSCHeadInterface* m_pSCHeadInterface;
+    ScInGroupResourceAndInterface* m_pSCHeadInterface;
     HkInGroupResourceAndInterface* m_hkInInterface;
     cSystemInfo* m_pSystemInfo;
     cAdjustment* m_pAdjHandler;

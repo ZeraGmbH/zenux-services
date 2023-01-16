@@ -8,13 +8,13 @@
 #include <scpi.h>
 #include <QList>
 
-class cSCHeadInterface : public cResource
+class ScInGroupResourceAndInterface : public cResource
 {
     Q_OBJECT
 public:
     const QString Version = "V1.00";
-    cSCHeadInterface(cSCPI *scpiInterface, ScInSettings *settings);
-    ~cSCHeadInterface();
+    ScInGroupResourceAndInterface(cSCPI *scpiInterface, ScInSettings *settings);
+    ~ScInGroupResourceAndInterface();
     virtual void initSCPIConnection(QString leadingNodes) override;
     virtual void registerResource(RMConnection *rmConnection, quint16 port) override;
     virtual void unregisterResource(RMConnection *rmConnection) override;
