@@ -6,9 +6,7 @@
 #include "protonetcommand.h"
 #include "sourcesettings.h"
 #include "notzeronumgen.h"
-#include <xmlsettings.h>
 #include <scpi.h>
-
 
 cSourceInterface::cSourceInterface(cCOM5003dServer *server) :
     cResource(server->getSCPIInterface()),
@@ -23,70 +21,51 @@ cSourceInterface::cSourceInterface(cCOM5003dServer *server) :
     m_ChannelList.append(pChannel);
     pChannel = new cFPZChannel(m_pSCPIInterface, "Reference frequency output 0..1MHz", 1, channelSettings.at(1) );
     m_ChannelList.append(pChannel);
-    pChannel = new cFPZChannel(m_pSCPIInterface, "Reference frequency output 0..1MHz", 2,  channelSettings.at(2) );
+    pChannel = new cFPZChannel(m_pSCPIInterface, "Reference frequency output 0..1MHz", 2, channelSettings.at(2) );
     m_ChannelList.append(pChannel);
     pChannel = new cFPZChannel(m_pSCPIInterface, "Reference frequency output 0..1MHz", 3, channelSettings.at(3) );
     m_ChannelList.append(pChannel);
-
     m_sVersion = SourceSystem::Version;
 }
 
-
 cSourceInterface::~cSourceInterface()
 {
-    cFPZChannel* cptr;
-    for ( int i = 0; i < m_ChannelList.count(); i++)
-    {
-        cptr = m_ChannelList.at(i);
-        delete cptr;
+    for(auto channel : qAsConst(m_ChannelList)) {
+        delete channel;
     }
 }
 
-
 void cSourceInterface::initSCPIConnection(QString leadingNodes)
 {
-    cSCPIDelegate* delegate;
-
     if (leadingNodes != "")
         leadingNodes += ":";
-
+    cSCPIDelegate* delegate;
     delegate = new cSCPIDelegate(QString("%1SOURCE").arg(leadingNodes),"VERSION",SCPI::isQuery,m_pSCPIInterface, SourceSystem::cmdVersion);
     m_DelegateList.append(delegate);
     connect(delegate, &cSCPIDelegate::execute, this, &cSourceInterface::executeCommand);
     delegate = new cSCPIDelegate(QString("%1SOURCE:CHANNEL").arg(leadingNodes),"CATALOG", SCPI::isQuery, m_pSCPIInterface, SourceSystem::cmdChannelCat);
     m_DelegateList.append(delegate);
     connect(delegate, &cSCPIDelegate::execute, this, &cSourceInterface::executeCommand);
-
-    for (int i = 0; i < m_ChannelList.count(); i++)
-    {
+    for (int i = 0; i < m_ChannelList.count(); i++) {
         connect(m_ChannelList.at(i), &ScpiConnection::strNotifier, this, &ScpiConnection::strNotifier);
         connect(m_ChannelList.at(i), &ScpiConnection::cmdExecutionDone, this, &ScpiConnection::cmdExecutionDone);
         m_ChannelList.at(i)->initSCPIConnection(QString("%1SOURCE").arg(leadingNodes));
     }
 }
 
-
 void cSourceInterface::registerResource(RMConnection *rmConnection, quint16 port)
 {
-    cFPZChannel* pChannel;
-    for (int i = 0; i < 4; i++)
-    {
-        pChannel = m_ChannelList.at(i);
-        register1Resource(rmConnection, NotZeroNumGen::getMsgNr(), QString("SOURCE;%1;1;%2;%3;").arg(pChannel->getName()).arg(pChannel->getDescription()).arg(port));
+    for(auto channel : qAsConst(m_ChannelList)) {
+        register1Resource(rmConnection, NotZeroNumGen::getMsgNr(), QString("SOURCE;%1;1;%2;%3;").arg(channel->getName()).arg(channel->getDescription()).arg(port));
     }
 }
-
 
 void cSourceInterface::unregisterResource(RMConnection *rmConnection)
 {
-    cFPZChannel* pChannel;
-    for (int i = 0; i < 4; i++)
-    {
-        pChannel = m_ChannelList.at(i);
-        unregister1Resource(rmConnection, NotZeroNumGen::getMsgNr(), QString("SOURCE;%1;").arg(pChannel->getName()));
+    for(auto channel : qAsConst(m_ChannelList)) {
+        unregister1Resource(rmConnection, NotZeroNumGen::getMsgNr(), QString("SOURCE;%1;").arg(channel->getName()));
     }
 }
-
 
 void cSourceInterface::executeCommand(int cmdCode, cProtonetCommand *protoCmd)
 {
@@ -99,41 +78,30 @@ void cSourceInterface::executeCommand(int cmdCode, cProtonetCommand *protoCmd)
         protoCmd->m_sOutput = m_ReadSourceChannelCatalog(protoCmd->m_sInput);
         break;
     }
-
     if (protoCmd->m_bwithOutput)
         emit cmdExecutionDone(protoCmd);
 }
 
-
 QString cSourceInterface::m_ReadVersion(QString &sInput)
 {
     cSCPICommand cmd = sInput;
-
     if (cmd.isQuery())
         return m_sVersion;
     else
         return SCPI::scpiAnswer[SCPI::nak];
 }
 
-
 QString cSourceInterface::m_ReadSourceChannelCatalog(QString &sInput)
 {
     cSCPICommand cmd = sInput;
-
-    if (cmd.isQuery())
-    {
+    if (cmd.isQuery()) {
         int i;
         QString s;
         for (i = 0; i < m_ChannelList.count()-1; i++ )
             s += m_ChannelList.at(i)->getName() + ";";
         s += m_ChannelList.at(i)->getName();
-
         return s;
     }
     else
         return SCPI::scpiAnswer[SCPI::nak];
 }
-
-
-
-
