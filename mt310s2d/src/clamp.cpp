@@ -375,18 +375,14 @@ quint8 cClamp::getAdjustmentStatus()
     }
 
     quint8 stat = 255;
-    for(auto range : m_RangeList) {
+    for(auto range : m_RangeList)
         stat &= range->getAdjustmentStatus();
-    }
-    for(auto range : m_RangeListSecondary) {
+    for(auto range : m_RangeListSecondary)
         stat &= range->getAdjustmentStatus();
-    }
-    if ((stat & JustData::Justified)== 0) {
+    if ((stat & JustDataInterface::Justified)== 0)
         return Adjustment::notAdjusted;
-    }
-    else {
+    else
         return Adjustment::adjusted;
-    }
 }
 
 ClampTypes cClamp::readClampType()
