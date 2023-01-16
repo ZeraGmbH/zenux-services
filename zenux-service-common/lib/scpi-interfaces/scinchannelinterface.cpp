@@ -1,5 +1,11 @@
 #include "scinchannelinterface.h"
 
+enum Commands
+{
+    cmdAlias,
+    cmdStatus
+};
+
 ScInChannelInterface::ScInChannelInterface(cSCPI *scpiinterface, QString description, quint8 nr, ScInSettings::ChannelSettings *cSettings) :
     ScpiConnection(scpiinterface),
     m_sDescription(description)
@@ -15,10 +21,10 @@ void ScInChannelInterface::initSCPIConnection(QString leadingNodes)
     if (leadingNodes != "")
         leadingNodes += ":";
     cSCPIDelegate* delegate;
-    delegate = new cSCPIDelegate(QString("%1%2").arg(leadingNodes).arg(m_sName),"ALIAS", SCPI::isQuery, m_pSCPIInterface, SCHEADChannel::cmdAlias);
+    delegate = new cSCPIDelegate(QString("%1%2").arg(leadingNodes).arg(m_sName),"ALIAS", SCPI::isQuery, m_pSCPIInterface, cmdAlias);
     m_DelegateList.append(delegate);
     connect(delegate, &cSCPIDelegate::execute, this, &ScInChannelInterface::executeCommand);
-    delegate = new cSCPIDelegate(QString("%1%2").arg(leadingNodes).arg(m_sName),"STATUS", SCPI::isQuery, m_pSCPIInterface, SCHEADChannel::cmdStatus);
+    delegate = new cSCPIDelegate(QString("%1%2").arg(leadingNodes).arg(m_sName),"STATUS", SCPI::isQuery, m_pSCPIInterface, cmdStatus);
     m_DelegateList.append(delegate);
     connect(delegate, &cSCPIDelegate::execute, this, &ScInChannelInterface::executeCommand);
 }
@@ -27,10 +33,10 @@ void ScInChannelInterface::executeCommand(int cmdCode, cProtonetCommand *protoCm
 {
     switch (cmdCode)
     {
-    case SCHEADChannel::cmdAlias:
+    case cmdAlias:
         protoCmd->m_sOutput = m_ReadAlias(protoCmd->m_sInput);
         break;
-    case SCHEADChannel::cmdStatus:
+    case cmdStatus:
         protoCmd->m_sOutput = m_ReadChannelStatus(protoCmd->m_sInput);
         break;
     }
