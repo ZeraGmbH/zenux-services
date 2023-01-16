@@ -18,7 +18,6 @@ set(SOURCES
     adjustment.cpp
     systeminfo.cpp
     scheadchannel.cpp
-    hkeychannel.cpp
     )
 
 set(HEADER
@@ -33,7 +32,6 @@ set(HEADER
     settings/sensesettings.h
     com5003d.h
     com5003justdata.h
-    hkeychannel.h
     com5003scpi.h
     pcbserver.h
     com5003dglobal.h

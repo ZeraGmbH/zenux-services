@@ -26,7 +26,6 @@ set(SOURCES
     src/adjxml.cpp
     src/mt310s2d.cpp
     src/mt310s2justdata.cpp
-    src/hkeychannel.cpp
     )
 
 set(HEADER
@@ -60,7 +59,6 @@ set(HEADER
     src/mt310s2d.h
     src/mt310s2dglobal.h
     src/mt310s2justdata.h
-    src/hkeychannel.h
     )
 
 set(CONFIG_FILES
