@@ -9,12 +9,11 @@
 #include <xmlsettings.h>
 #include <scpi.h>
 
-cFRQInputInterface::cFRQInputInterface(cCOM5003dServer *server) :
-    cResource(server->getSCPIInterface()),
-    m_pMyServer(server)
+cFRQInputInterface::cFRQInputInterface(cSCPI *scpiInterface, cFRQInputSettings *settings) :
+    cResource(scpiInterface)
 {
     QList<FRQInputSystem::cChannelSettings*> channelSettings;
-    channelSettings = m_pMyServer->m_pFRQInputSettings->getChannelSettings();
+    channelSettings = settings->getChannelSettings();
 
     // we have 4 frequency input channels
     FpzInChannelInterface* pChannel;
