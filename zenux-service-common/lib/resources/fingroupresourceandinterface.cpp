@@ -3,15 +3,15 @@
 #include "resource.h"
 #include "finchannelinterface.h"
 #include "protonetcommand.h"
-#include "frqinputsettings.h"
+#include "finsettings.h"
 #include "notzeronumgen.h"
 #include <xmlsettings.h>
 #include <scpi.h>
 
-FInGroupResourceAndInterface::FInGroupResourceAndInterface(cSCPI *scpiInterface, cFRQInputSettings *settings) :
+FInGroupResourceAndInterface::FInGroupResourceAndInterface(cSCPI *scpiInterface, FInSettings *settings) :
     cResource(scpiInterface)
 {
-    QList<FRQInputSystem::cChannelSettings*> channelSettings;
+    QList<FInSettings::ChannelSettings*> channelSettings;
     channelSettings = settings->getChannelSettings();
 
     // we have 4 frequency input channels
@@ -30,9 +30,8 @@ FInGroupResourceAndInterface::FInGroupResourceAndInterface(cSCPI *scpiInterface,
 
 FInGroupResourceAndInterface::~FInGroupResourceAndInterface()
 {
-    for(auto channel : qAsConst(m_ChannelList)) {
+    for(auto channel : qAsConst(m_ChannelList))
         delete channel;
-    }
 }
 
 void FInGroupResourceAndInterface::initSCPIConnection(QString leadingNodes)
@@ -60,9 +59,8 @@ void FInGroupResourceAndInterface::registerResource(RMConnection *rmConnection, 
 
 void FInGroupResourceAndInterface::unregisterResource(RMConnection *rmConnection)
 {
-    for(auto channel : qAsConst(m_ChannelList)) {
+    for(auto channel : qAsConst(m_ChannelList))
         unregister1Resource(rmConnection, NotZeroNumGen::getMsgNr(), QString("FRQINPUT;%1;").arg(channel->getName()));
-    }
 }
 
 void FInGroupResourceAndInterface::executeCommand(int cmdCode, cProtonetCommand *protoCmd)

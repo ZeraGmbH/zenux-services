@@ -2,6 +2,7 @@
 #define FINCHANNELINTERFACE_H
 
 #include "scpiconnection.h"
+#include "finsettings.h"
 
 namespace FPZINChannel
 {
@@ -13,18 +14,11 @@ enum Commands
 
 }
 
-
-namespace FRQInputSystem
-{
-    class cChannelSettings;
-}
-
 class FInChannelInterface : public ScpiConnection
 {
     Q_OBJECT
-
 public:
-    FInChannelInterface(cSCPI* scpiInterface, QString description, quint8 nr, FRQInputSystem::cChannelSettings* cSettings);
+    FInChannelInterface(cSCPI* scpiInterface, QString description, quint8 nr, FInSettings::ChannelSettings* cSettings);
     virtual void initSCPIConnection(QString leadingNodes) override;
 
     QString& getName();
