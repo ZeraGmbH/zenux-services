@@ -52,10 +52,10 @@ public:
     EthSettings* m_pETHSettings;
     cSenseSettings* m_pSenseSettings;
     cSamplingSettings* m_pSamplingSettings;
-    FOutSettings* m_pSourceSettings;
-    FInSettings* m_FInSettings;
+    FOutSettings* m_foutSettings;
+    FInSettings* m_finSettings;
     ScInSettings* m_pSCHeadSettings;
-    HkInSettings* m_HkInSettings;
+    HkInSettings* m_hkInSettings;
     cStatusInterface* m_pStatusInterface;
 
 protected:

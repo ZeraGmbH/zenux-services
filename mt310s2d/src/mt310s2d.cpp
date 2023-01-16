@@ -125,8 +125,8 @@ cMT310S2dServer::~cMT310S2dServer()
     if (m_pFPGASettings) delete m_pFPGASettings;
     if (m_pCtrlSettings) delete m_pCtrlSettings;
     if (m_pSenseSettings) delete m_pSenseSettings;
-    if (m_pSourceSettings) delete m_pSourceSettings;
-    if (m_FInSettings) delete m_FInSettings;
+    if (m_foutSettings) delete m_foutSettings;
+    if (m_finSettings) delete m_finSettings;
     if (m_pSCHeadSettings) delete m_pSCHeadSettings;
     if (pAtmelSys) delete pAtmelSys;
     if (pAtmel) delete pAtmel;
@@ -184,16 +184,16 @@ void cMT310S2dServer::doConfiguration()
                 connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pCtrlSettings,&cCtrlSettings::configXMLInfo);
                 m_pSenseSettings = new cSenseSettings(myXMLConfigReader);
                 connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pSenseSettings,&cSenseSettings::configXMLInfo);
-                m_pSourceSettings = new FOutSettings(myXMLConfigReader);
-                connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pSourceSettings,&FOutSettings::configXMLInfo);
+                m_foutSettings = new FOutSettings(myXMLConfigReader);
+                connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_foutSettings,&FOutSettings::configXMLInfo);
                 m_pSamplingSettings = new cSamplingSettings(myXMLConfigReader);
                 connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pSamplingSettings,&cSamplingSettings::configXMLInfo);
-                m_FInSettings = new FInSettings(myXMLConfigReader);
-                connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_FInSettings,&FInSettings::configXMLInfo);
+                m_finSettings = new FInSettings(myXMLConfigReader);
+                connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_finSettings,&FInSettings::configXMLInfo);
                 m_pSCHeadSettings = new ScInSettings(myXMLConfigReader);
                 connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pSCHeadSettings,&ScInSettings::configXMLInfo);
-                m_HkInSettings = new HkInSettings(myXMLConfigReader);
-                connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_HkInSettings,&HkInSettings::configXMLInfo);
+                m_hkInSettings = new HkInSettings(myXMLConfigReader);
+                connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_hkInSettings,&HkInSettings::configXMLInfo);
 
 
                 QString s = args.at(1);
@@ -261,10 +261,10 @@ void cMT310S2dServer::doSetupServer()
             scpiConnectionList.append(m_pSystemInterface = new cSystemInterface(this));
             scpiConnectionList.append(m_pSenseInterface = new cSenseInterface(this));
             scpiConnectionList.append(m_pSamplingInterface = new cSamplingInterface(this));
-            scpiConnectionList.append(m_pSourceInterface = new FOutGroupResourceAndInterface(getSCPIInterface(), m_pSourceSettings));
-            scpiConnectionList.append(m_pFRQInputInterface = new FInGroupResourceAndInterface(getSCPIInterface(), m_FInSettings));
+            scpiConnectionList.append(m_pSourceInterface = new FOutGroupResourceAndInterface(getSCPIInterface(), m_foutSettings));
+            scpiConnectionList.append(m_pFRQInputInterface = new FInGroupResourceAndInterface(getSCPIInterface(), m_finSettings));
             scpiConnectionList.append(m_pSCHeadInterface = new cSCHeadInterface(this));
-            scpiConnectionList.append(m_pHKeyInterface = new cHKeyInterface(this));
+            scpiConnectionList.append(m_pHKeyInterface = new cHKeyInterface(getSCPIInterface(), m_hkInSettings));
             scpiConnectionList.append(m_pClampInterface = new cClampInterface(this));
 
             resourceList.append(m_pSenseInterface); // all our resources

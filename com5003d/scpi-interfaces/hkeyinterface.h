@@ -4,7 +4,8 @@
 #include "resource.h"
 #include "scpiconnection.h"
 #include "hkeychannel.h"
-#include <QObject>
+#include "hkinsettings.h"
+#include <scpi.h>
 #include <QList>
 
 namespace HKeySystem
@@ -19,14 +20,12 @@ enum Commands
 };
 }
 
-class cCOM5003dServer;
-
 class cHKeyInterface : public cResource
 {
     Q_OBJECT
 
 public:
-    cHKeyInterface(cCOM5003dServer *server);
+    cHKeyInterface(cSCPI *scpiInterface, HkInSettings *settings);
     ~cHKeyInterface();
     virtual void initSCPIConnection(QString leadingNodes) override;
     virtual void registerResource(RMConnection *rmConnection, quint16 port) override;
@@ -36,7 +35,6 @@ protected slots:
     virtual void executeCommand(int cmdCode, cProtonetCommand* protoCmd) override;
 
 private:
-    cCOM5003dServer* m_pMyServer;
     QList<cHKeyChannel*> m_ChannelList;
     QString m_sVersion;
 
