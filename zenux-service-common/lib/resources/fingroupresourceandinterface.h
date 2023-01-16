@@ -1,9 +1,9 @@
-#ifndef FRQINPUTINTERFACE_H
-#define FRQINPUTINTERFACE_H
+#ifndef FINGROUPRESOURCEANDINTERFACE_H
+#define FINGROUPRESOURCEANDINTERFACE_H
 
 #include "resource.h"
 #include "scpiconnection.h"
-#include "fpzinchannelinterface.h"
+#include "finchannelinterface.h"
 #include "frqinputsettings.h"
 #include <scpi.h>
 #include <QObject>
@@ -19,12 +19,12 @@ namespace FRQInputSystem
     };
 }
 
-class cFRQInputInterface : public cResource
+class FInGroupResourceAndInterface : public cResource
 {
     Q_OBJECT
 public:
-    cFRQInputInterface(cSCPI *scpiInterface, cFRQInputSettings *settings);
-    ~cFRQInputInterface();
+    FInGroupResourceAndInterface(cSCPI *scpiInterface, cFRQInputSettings *settings);
+    ~FInGroupResourceAndInterface();
     virtual void initSCPIConnection(QString leadingNodes) override;
     virtual void registerResource(RMConnection *rmConnection, quint16 port) override;
     virtual void unregisterResource(RMConnection *rmConnection) override;
@@ -33,8 +33,8 @@ protected slots:
 private:
     QString m_ReadVersion(QString& sInput);
     QString m_ReadChannelCatalog(QString& sInput);
-    QList<FpzInChannelInterface*> m_ChannelList;
+    QList<FInChannelInterface*> m_ChannelList;
     QString m_sVersion;
 };
 
-#endif // FRQINPUTINTERFACE_H
+#endif // FINGROUPRESOURCEANDINTERFACE_H

@@ -1,10 +1,10 @@
-#include "fpzinchannelinterface.h"
+#include "finchannelinterface.h"
 #include "scpiconnection.h"
 #include "protonetcommand.h"
 #include "settings/frqinputsettings.h"
 #include <scpi.h>
 
-FpzInChannelInterface::FpzInChannelInterface(cSCPI *scpiInterface, QString description, quint8 nr, FRQInputSystem::cChannelSettings *cSettings) :
+FInChannelInterface::FInChannelInterface(cSCPI *scpiInterface, QString description, quint8 nr, FRQInputSystem::cChannelSettings *cSettings) :
     ScpiConnection(scpiInterface),
     m_sDescription(description)
 {
@@ -13,19 +13,19 @@ FpzInChannelInterface::FpzInChannelInterface(cSCPI *scpiInterface, QString descr
     m_bAvail = cSettings->avail;
 }
 
-void FpzInChannelInterface::initSCPIConnection(QString leadingNodes)
+void FInChannelInterface::initSCPIConnection(QString leadingNodes)
 {
     if (leadingNodes != "")
         leadingNodes += ":";
     cSCPIDelegate* delegate = new cSCPIDelegate(QString("%1%2").arg(leadingNodes).arg(m_sName),"ALIAS", SCPI::isQuery, m_pSCPIInterface, FPZINChannel::cmdAlias);
     m_DelegateList.append(delegate);
-    connect(delegate, &cSCPIDelegate::execute, this, &FpzInChannelInterface::executeCommand);
+    connect(delegate, &cSCPIDelegate::execute, this, &FInChannelInterface::executeCommand);
     delegate = new cSCPIDelegate(QString("%1%2").arg(leadingNodes).arg(m_sName),"STATUS", SCPI::isQuery, m_pSCPIInterface, FPZINChannel::cmdStatus);
     m_DelegateList.append(delegate);
-    connect(delegate, &cSCPIDelegate::execute, this, &FpzInChannelInterface::executeCommand);
+    connect(delegate, &cSCPIDelegate::execute, this, &FInChannelInterface::executeCommand);
 }
 
-void FpzInChannelInterface::executeCommand(int cmdCode, cProtonetCommand *protoCmd)
+void FInChannelInterface::executeCommand(int cmdCode, cProtonetCommand *protoCmd)
 {
     switch (cmdCode)
     {
@@ -40,27 +40,27 @@ void FpzInChannelInterface::executeCommand(int cmdCode, cProtonetCommand *protoC
         emit cmdExecutionDone(protoCmd);
 }
 
-QString &FpzInChannelInterface::getName()
+QString &FInChannelInterface::getName()
 {
     return m_sName;
 }
 
-QString &FpzInChannelInterface::getAlias()
+QString &FInChannelInterface::getAlias()
 {
     return m_sAlias;
 }
 
-QString &FpzInChannelInterface::getDescription()
+QString &FInChannelInterface::getDescription()
 {
     return m_sDescription;
 }
 
-bool FpzInChannelInterface::isAvail()
+bool FInChannelInterface::isAvail()
 {
     return m_bAvail;
 }
 
-QString FpzInChannelInterface::m_ReadAlias(QString &sInput)
+QString FInChannelInterface::m_ReadAlias(QString &sInput)
 {
     cSCPICommand cmd = sInput;
     if (cmd.isQuery())
@@ -69,7 +69,7 @@ QString FpzInChannelInterface::m_ReadAlias(QString &sInput)
         return SCPI::scpiAnswer[SCPI::nak];
 }
 
-QString FpzInChannelInterface::m_ReadChannelStatus(QString &sInput)
+QString FInChannelInterface::m_ReadChannelStatus(QString &sInput)
 {
     cSCPICommand cmd = sInput;
     if (cmd.isQuery()) {

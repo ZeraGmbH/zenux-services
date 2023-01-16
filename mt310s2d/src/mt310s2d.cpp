@@ -7,12 +7,12 @@
 #include "atmel.h"
 #include "atmelwatcher.h"
 #include "clampinterface.h"
-#include "frqinputinterface.h"
+#include "fingroupresourceandinterface.h"
 #include "hkeyinterface.h"
 #include "samplinginterface.h"
 #include "scheadinterface.h"
 #include "senseinterface.h"
-#include "fpzoutgroupresourceandinterface.h"
+#include "foutgroupresourceandinterface.h"
 #include "statusinterface.h"
 #include "systeminterface.h"
 #include "ctrlsettings.h"
@@ -261,8 +261,8 @@ void cMT310S2dServer::doSetupServer()
             scpiConnectionList.append(m_pSystemInterface = new cSystemInterface(this));
             scpiConnectionList.append(m_pSenseInterface = new cSenseInterface(this));
             scpiConnectionList.append(m_pSamplingInterface = new cSamplingInterface(this));
-            scpiConnectionList.append(m_pSourceInterface = new FpzOutGroupResourceAndInterface(getSCPIInterface(), m_pSourceSettings));
-            scpiConnectionList.append(m_pFRQInputInterface = new cFRQInputInterface(getSCPIInterface(), m_pFRQInputSettings));
+            scpiConnectionList.append(m_pSourceInterface = new FOutGroupResourceAndInterface(getSCPIInterface(), m_pSourceSettings));
+            scpiConnectionList.append(m_pFRQInputInterface = new FInGroupResourceAndInterface(getSCPIInterface(), m_pFRQInputSettings));
             scpiConnectionList.append(m_pSCHeadInterface = new cSCHeadInterface(this));
             scpiConnectionList.append(m_pHKeyInterface = new cHKeyInterface(this));
             scpiConnectionList.append(m_pClampInterface = new cClampInterface(this));

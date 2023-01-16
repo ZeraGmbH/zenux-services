@@ -1,5 +1,5 @@
-#ifndef FPZOUTCHANNELINTERFACE_H
-#define FPZOUTCHANNELINTERFACE_H
+#ifndef FOUTCHANNELINTERFACE_H
+#define FOUTCHANNELINTERFACE_H
 
 #include "scpiconnection.h"
 #include "notificationstring.h"
@@ -9,7 +9,7 @@ namespace SourceSystem
     class cChannelSettings;
 }
 
-class FpzOutChannelInterface : public ScpiConnection
+class FOutChannelInterface : public ScpiConnection
 {
     Q_OBJECT
 public:
@@ -25,7 +25,7 @@ public:
         cmdPowtype
     };
     const double FormFactor = 5.6294995e6; // fout = (Pact/Pnenn) * FPZnenn * FormFactor
-    FpzOutChannelInterface(cSCPI *scpiinterface, QString description, quint8 nr, SourceSystem::cChannelSettings* cSettings);
+    FOutChannelInterface(cSCPI *scpiinterface, QString description, quint8 nr, SourceSystem::cChannelSettings* cSettings);
     virtual void initSCPIConnection(QString leadingNodes) override;
     QString& getName();
     QString& getAlias();
@@ -57,4 +57,4 @@ private:
     QString m_ReadWritePowerType(QString &sInput);
 };
 
-#endif // FPZOUTCHANNELINTERFACE_H
+#endif // FOUTCHANNELINTERFACE_H

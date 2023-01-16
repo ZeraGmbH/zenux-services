@@ -1,10 +1,10 @@
 #include "scpiconnection.h"
-#include "fpzoutchannelinterface.h"
+#include "foutchannelinterface.h"
 #include "protonetcommand.h"
 #include "sourcesettings.h"
 #include <scpi.h>
 
-FpzOutChannelInterface::FpzOutChannelInterface(cSCPI *scpiinterface, QString description, quint8 nr, SourceSystem::cChannelSettings *cSettings) :
+FOutChannelInterface::FOutChannelInterface(cSCPI *scpiinterface, QString description, quint8 nr, SourceSystem::cChannelSettings *cSettings) :
     ScpiConnection(scpiinterface),
     m_sDescription(description)
 {
@@ -19,38 +19,38 @@ FpzOutChannelInterface::FpzOutChannelInterface(cSCPI *scpiinterface, QString des
     m_bAvail = cSettings->avail;
 }
 
-void FpzOutChannelInterface::initSCPIConnection(QString leadingNodes)
+void FOutChannelInterface::initSCPIConnection(QString leadingNodes)
 {
     if (leadingNodes != "")
         leadingNodes += ":";
     cSCPIDelegate* delegate;
     delegate = new cSCPIDelegate(QString("%1%2").arg(leadingNodes).arg(m_sName),"ALIAS", SCPI::isQuery, m_pSCPIInterface, cmdAlias);
     m_DelegateList.append(delegate);
-    connect(delegate, &cSCPIDelegate::execute, this, &FpzOutChannelInterface::executeCommand);
+    connect(delegate, &cSCPIDelegate::execute, this, &FOutChannelInterface::executeCommand);
     delegate = new cSCPIDelegate(QString("%1%2").arg(leadingNodes).arg(m_sName),"TYPE", SCPI::isQuery, m_pSCPIInterface, cmdType);
     m_DelegateList.append(delegate);
-    connect(delegate, &cSCPIDelegate::execute, this, &FpzOutChannelInterface::executeCommand);
+    connect(delegate, &cSCPIDelegate::execute, this, &FOutChannelInterface::executeCommand);
     delegate = new cSCPIDelegate(QString("%1%2").arg(leadingNodes).arg(m_sName),"DSPSERVER", SCPI::isQuery, m_pSCPIInterface, cmdDspServer);
     m_DelegateList.append(delegate);
-    connect(delegate, &cSCPIDelegate::execute, this, &FpzOutChannelInterface::executeCommand);
+    connect(delegate, &cSCPIDelegate::execute, this, &FOutChannelInterface::executeCommand);
     delegate = new cSCPIDelegate(QString("%1%2").arg(leadingNodes).arg(m_sName),"DSPCHANNEL", SCPI::isQuery, m_pSCPIInterface, cmdDspChannel);
     m_DelegateList.append(delegate);
-    connect(delegate, &cSCPIDelegate::execute, this, &FpzOutChannelInterface::executeCommand);
+    connect(delegate, &cSCPIDelegate::execute, this, &FOutChannelInterface::executeCommand);
     delegate = new cSCPIDelegate(QString("%1%2").arg(leadingNodes).arg(m_sName),"STATUS", SCPI::isQuery, m_pSCPIInterface, cmdStatus);
     m_DelegateList.append(delegate);
-    connect(delegate, &cSCPIDelegate::execute, this, &FpzOutChannelInterface::executeCommand);
+    connect(delegate, &cSCPIDelegate::execute, this, &FOutChannelInterface::executeCommand);
     delegate = new cSCPIDelegate(QString("%1%2").arg(leadingNodes).arg(m_sName),"FFACTOR", SCPI::isQuery, m_pSCPIInterface, cmdFormFactor);
     m_DelegateList.append(delegate);
-    connect(delegate, &cSCPIDelegate::execute, this, &FpzOutChannelInterface::executeCommand);
+    connect(delegate, &cSCPIDelegate::execute, this, &FOutChannelInterface::executeCommand);
     delegate = new cSCPIDelegate(QString("%1%2").arg(leadingNodes).arg(m_sName),"CONSTANT", SCPI::isQuery | SCPI::isCmdwP , m_pSCPIInterface, cmdConstant);
     m_DelegateList.append(delegate);
-    connect(delegate, &cSCPIDelegate::execute, this, &FpzOutChannelInterface::executeCommand);
+    connect(delegate, &cSCPIDelegate::execute, this, &FOutChannelInterface::executeCommand);
     delegate = new cSCPIDelegate(QString("%1%2").arg(leadingNodes).arg(m_sName),"POWTYPE", SCPI::isQuery | SCPI::isCmdwP , m_pSCPIInterface, cmdPowtype);
     m_DelegateList.append(delegate);
-    connect(delegate, &cSCPIDelegate::execute, this, &FpzOutChannelInterface::executeCommand);
+    connect(delegate, &cSCPIDelegate::execute, this, &FOutChannelInterface::executeCommand);
 }
 
-void FpzOutChannelInterface::executeCommand(int cmdCode, cProtonetCommand *protoCmd)
+void FOutChannelInterface::executeCommand(int cmdCode, cProtonetCommand *protoCmd)
 {
     switch (cmdCode)
     {
@@ -83,32 +83,32 @@ void FpzOutChannelInterface::executeCommand(int cmdCode, cProtonetCommand *proto
         emit cmdExecutionDone(protoCmd);
 }
 
-void FpzOutChannelInterface::initNotifier(NotificationString &notifier)
+void FOutChannelInterface::initNotifier(NotificationString &notifier)
 {
     notifier = "0.0";
 }
 
-QString &FpzOutChannelInterface::getName()
+QString &FOutChannelInterface::getName()
 {
     return m_sName;
 }
 
-QString &FpzOutChannelInterface::getAlias()
+QString &FOutChannelInterface::getAlias()
 {
     return m_sAlias;
 }
 
-QString &FpzOutChannelInterface::getDescription()
+QString &FOutChannelInterface::getDescription()
 {
     return m_sDescription;
 }
 
-bool FpzOutChannelInterface::isAvail()
+bool FOutChannelInterface::isAvail()
 {
     return m_bAvail;
 }
 
-QString FpzOutChannelInterface::m_ReadAlias(QString &sInput)
+QString FOutChannelInterface::m_ReadAlias(QString &sInput)
 {
     cSCPICommand cmd = sInput;
     if (cmd.isQuery())
@@ -117,7 +117,7 @@ QString FpzOutChannelInterface::m_ReadAlias(QString &sInput)
         return SCPI::scpiAnswer[SCPI::nak];
 }
 
-QString FpzOutChannelInterface::m_ReadType(QString &sInput)
+QString FOutChannelInterface::m_ReadType(QString &sInput)
 {
     cSCPICommand cmd = sInput;
     if (cmd.isQuery())
@@ -126,7 +126,7 @@ QString FpzOutChannelInterface::m_ReadType(QString &sInput)
         return SCPI::scpiAnswer[SCPI::nak];
 }
 
-QString FpzOutChannelInterface::m_ReadDspServer(QString &sInput)
+QString FOutChannelInterface::m_ReadDspServer(QString &sInput)
 {
     cSCPICommand cmd = sInput;
     if (cmd.isQuery())
@@ -135,7 +135,7 @@ QString FpzOutChannelInterface::m_ReadDspServer(QString &sInput)
         return SCPI::scpiAnswer[SCPI::nak];
 }
 
-QString FpzOutChannelInterface::m_ReadDspChannel(QString &sInput)
+QString FOutChannelInterface::m_ReadDspChannel(QString &sInput)
 {
     cSCPICommand cmd = sInput;
     if (cmd.isQuery())
@@ -144,7 +144,7 @@ QString FpzOutChannelInterface::m_ReadDspChannel(QString &sInput)
         return SCPI::scpiAnswer[SCPI::nak];
 }
 
-QString FpzOutChannelInterface::m_ReadChannelStatus(QString &sInput)
+QString FOutChannelInterface::m_ReadChannelStatus(QString &sInput)
 {
     cSCPICommand cmd = sInput;
     if (cmd.isQuery()) {
@@ -156,7 +156,7 @@ QString FpzOutChannelInterface::m_ReadChannelStatus(QString &sInput)
         return SCPI::scpiAnswer[SCPI::nak];
 }
 
-QString FpzOutChannelInterface::m_ReadFFactor(QString &sInput)
+QString FOutChannelInterface::m_ReadFFactor(QString &sInput)
 {
     cSCPICommand cmd = sInput;
     if (cmd.isQuery())
@@ -165,7 +165,7 @@ QString FpzOutChannelInterface::m_ReadFFactor(QString &sInput)
         return SCPI::scpiAnswer[SCPI::nak];
 }
 
-QString FpzOutChannelInterface::m_ReadWriteConstant(QString &sInput)
+QString FOutChannelInterface::m_ReadWriteConstant(QString &sInput)
 {
     cSCPICommand cmd = sInput;
     if (cmd.isQuery()) {
@@ -181,7 +181,7 @@ QString FpzOutChannelInterface::m_ReadWriteConstant(QString &sInput)
         return SCPI::scpiAnswer[SCPI::nak];
 }
 
-QString FpzOutChannelInterface::m_ReadWritePowerType(QString &sInput)
+QString FOutChannelInterface::m_ReadWritePowerType(QString &sInput)
 {
     cSCPICommand cmd = sInput;
     if (cmd.isQuery()) {
