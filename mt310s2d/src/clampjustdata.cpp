@@ -4,7 +4,7 @@
 #include "justdata.h"
 
 cClampJustData::cClampJustData(cSCPI *scpiinterface, cSenseRange *cascadedRange, double cvRatio)
-    :cMT310S2JustData(scpiinterface), m_pFirstStageRange(cascadedRange), m_cvRatio(cvRatio)
+    :JustDataRangeGainPhaseOffset(scpiinterface), m_pFirstStageRange(cascadedRange), m_cvRatio(cvRatio)
 {   
 }
 

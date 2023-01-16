@@ -17,7 +17,7 @@ cSenseRange::cSenseRange(cSCPI *scpiinterface, QString name, QString alias, bool
     m_nSelCode(rselcode),
     m_nRSpec(rspec)
 {
-    m_pJustdata = new cCOM5003JustData(m_pSCPIInterface);
+    m_pJustdata = new JustDataRangeGainPhaseOffset(m_pSCPIInterface);
 }
 
 
@@ -85,7 +85,7 @@ quint8 cSenseRange::getSelCode()
 }
 
 
-cCOM5003JustData *cSenseRange::getJustData()
+JustDataRangeGainPhaseOffset *cSenseRange::getJustData()
 {
     return m_pJustdata;
 }

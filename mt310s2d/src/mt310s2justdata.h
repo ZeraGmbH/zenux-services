@@ -26,13 +26,13 @@ class QDataStream;
 class cJustData;
 
 
-class cMT310S2JustData: public ScpiConnection  // alle korrekturdaten für einen bereich + status
+class JustDataRangeGainPhaseOffset: public ScpiConnection  // alle korrekturdaten für einen bereich + status
 {
     Q_OBJECT
 
 public:
-    cMT310S2JustData(cSCPI* scpiinterface);
-    ~cMT310S2JustData();
+    JustDataRangeGainPhaseOffset(cSCPI* scpiinterface);
+    ~JustDataRangeGainPhaseOffset();
     virtual void initSCPIConnection(QString leadingNodes) override;
 
     cJustData* m_pGainCorrection;
@@ -67,6 +67,4 @@ protected:
     virtual double getJustOffsetCorrection(double par);
 };
 
-
-#endif // MT310S2JUSTDATA_H
-
+#endif

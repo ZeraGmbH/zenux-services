@@ -42,7 +42,7 @@ public:
     QString& getName();
     double getUrvalue();
     quint8 getSelCode();
-    cCOM5003JustData* getJustData();
+    JustDataRangeGainPhaseOffset* getJustData();
     bool getAvail();
     void setAvail(bool b);
 
@@ -63,7 +63,7 @@ private:
     double m_fADCRejection; // the adc's maximum rejection
     quint8 m_nSelCode; // selection code
     quint8 m_nRSpec; // range spec (phys. or virt. range)
-    cCOM5003JustData* m_pJustdata;
+    JustDataRangeGainPhaseOffset* m_pJustdata;
 
     QString m_ReadRangeType(QString& sInput);
     QString m_ReadRangeAlias(QString& sInput);

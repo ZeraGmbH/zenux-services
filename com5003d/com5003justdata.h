@@ -1,22 +1,19 @@
-// header datei com5003justdata.h
-
 #ifndef COM5003JUSTDATA_H
 #define COM5003JUSTDATA_H
 
-#include <QObject>
 #include "scpiconnection.h"
 
-enum com5003JustCommands
+enum DirectJustCommands
 {
-    com5003Gain,
-    com5003JustGain,
-    com5003Phase,
-    com5003JustPhase,
-    com5003Offset,
-    com5003JustOffset,
-    com5003JustStatus,
-    com5003JustCompute,
-    com5003JustInit
+    DirectGain,
+    DirectJustGain,
+    DirectPhase,
+    DirectJustPhase,
+    DirectOffset,
+    DirectJustOffset,
+    DirectJustStatus,
+    DirectJustCompute,
+    DirectJustInit
 };
 
 
@@ -29,13 +26,13 @@ class QDataStream;
 class cJustData;
 
 
-class cCOM5003JustData: public ScpiConnection  // alle korrekturdaten für einen bereich + status
+class JustDataRangeGainPhaseOffset: public ScpiConnection  // alle korrekturdaten für einen bereich + status
 {
     Q_OBJECT
 
 public:
-    cCOM5003JustData(cSCPI* scpiinterface);
-    ~cCOM5003JustData();
+    JustDataRangeGainPhaseOffset(cSCPI* scpiinterface);
+    ~JustDataRangeGainPhaseOffset();
     virtual void initSCPIConnection(QString leadingNodes) override;
 
     cJustData* m_pGainCorrection;
@@ -51,15 +48,23 @@ public:
 protected slots:
     virtual void executeCommand(int cmdCode, cProtonetCommand* protoCmd) override;
 
-private:    
+protected:
     QString scpiGetGainCorrection(const QString &scpiInput);
+    QString mReadJustGainCorrection(QString&sInput);
     QString mReadPhaseCorrection(QString&sInput);
+    QString mReadJustPhaseCorrection(QString&sInput);
     QString mReadOffsetCorrection(QString&sInput);
+    QString mReadJustOffsetCorrection(QString&sInput);
     QString m_ReadStatus(QString& sInput);
     QString m_ComputeJustData(QString& sInput);
     QString m_InitJustData(QString& sInput);
+
+    virtual double getGainCorrection(double par);
+    virtual double getJustGainCorrection(double par);
+    virtual double getPhaseCorrection(double par);
+    virtual double getJustPhaseCorrection(double par);
+    virtual double getOffsetCorrection(double par);
+    virtual double getJustOffsetCorrection(double par);
 };
 
-
 #endif
-
