@@ -1,5 +1,4 @@
 #include "fpgasettings.h"
-#include <xmlconfigreader.h>
 
 enum configstate
 {

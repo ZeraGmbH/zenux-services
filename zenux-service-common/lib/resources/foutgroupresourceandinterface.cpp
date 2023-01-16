@@ -1,8 +1,4 @@
 #include "foutgroupresourceandinterface.h"
-#include "scpiconnection.h"
-#include "resource.h"
-#include "foutchannelinterface.h"
-#include "protonetcommand.h"
 #include "notzeronumgen.h"
 
 enum Commands

@@ -1,11 +1,5 @@
 #include "hkingroupresourceandinterface.h"
-#include "resource.h"
-#include "hkinchannelinterface.h"
-#include "protonetcommand.h"
-#include "hkinsettings.h"
 #include "notzeronumgen.h"
-#include <xmlsettings.h>
-#include <scpi.h>
 
 enum Commands
 {

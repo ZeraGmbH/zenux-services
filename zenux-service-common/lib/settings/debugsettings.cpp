@@ -1,5 +1,4 @@
 #include "debugsettings.h"
-#include <xmlconfigreader.h>
 
 enum debugconfigstate
 {

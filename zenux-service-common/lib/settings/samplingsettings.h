@@ -2,7 +2,6 @@
 #define SAMPLINGSETTINGS_H
 
 #include <xmlsettings.h>
-#include <QList>
 
 class SamplingSettings : public XMLSettings
 {

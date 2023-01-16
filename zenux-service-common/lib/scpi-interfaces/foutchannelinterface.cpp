@@ -1,7 +1,4 @@
-#include "scpiconnection.h"
 #include "foutchannelinterface.h"
-#include "protonetcommand.h"
-#include <scpi.h>
 
 enum Commands
 {

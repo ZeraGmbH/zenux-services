@@ -2,7 +2,6 @@
 #define DEBUGSETTINGS_H
 
 #include <xmlsettings.h>
-#include <xmlconfigreader.h>
 
 class cDebugSettings: public XMLSettings
 {

@@ -1,5 +1,4 @@
 #include "samplingsettings.h"
-#include <xmlconfigreader.h>
 
 enum configstate
 {
