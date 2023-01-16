@@ -1,6 +1,9 @@
 #ifndef NOTZERONUMGEN_H
 #define NOTZERONUMGEN_H
 
+// Singleton creating unique numbers unequal to zero
+// just add NotZeroNumGen::getMsgNr()
+
 #include <QtGlobal>
 
 class NotZeroNumGen
