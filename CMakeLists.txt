@@ -11,7 +11,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(PROJECT_VERSION_MAJOR "2")
 set(PROJECT_VERSION_MINOR "0")
 set(PROJECT_VERSION_PATCH "0")
-
 set(PROJECT_VERSION "${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}")
 
 include(FeatureSummary)
@@ -26,8 +25,6 @@ find_package(xiqnet REQUIRED)
 find_package(ZeraClasses REQUIRED)
 find_package(zeraprotobuf REQUIRED)
 
-enable_testing()
-
 if(${useSystemd})
     find_package(PkgConfig REQUIRED)
     pkg_check_modules(Systemd REQUIRED libsystemd)
@@ -36,6 +33,9 @@ if(${useSystemd})
     get_filename_component(SYSTEMD_UNIT_INSTALL_PATH "${CMAKE_INSTALL_PREFIX}/../lib/systemd/system" ABSOLUTE)
 endif()
 
+enable_testing()
+# Inspired by
+# https://github.com/KDAB/kdabtv/blob/master/Qt-Widgets-and-more/UnitTests/Tests/CMakeLists.txt
 function(SETUP_TESTS)
     foreach(_testname ${ARGN})
         add_test(NAME ${_testname}
@@ -51,8 +51,7 @@ function(SETUP_TESTS)
             )
         target_link_libraries(${_testname}
             PUBLIC
-            testhelpers
-            testhelpers_just
+            senserangetesttemplate
             )
     endforeach()
 endfunction()
