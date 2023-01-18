@@ -1,4 +1,3 @@
-#include "sec1000dglobal.h"
 #include "protonetcommand.h"
 #include "resource.h"
 #include "scpiconnection.h"
@@ -21,11 +20,11 @@
 #include <QTcpSocket>
 #include <QDataStream>
 
-cPCBServer::cPCBServer() :
-    ScpiConnection(ScpiSingletonFactory::getScpiObj(ServerName))
+cPCBServer::cPCBServer(QString name, QString version) :
+    ScpiConnection(ScpiSingletonFactory::getScpiObj(name)),
+    m_sServerName(name),
+    m_sServerVersion(version)
 {
-    m_sServerName = ServerName;
-    m_sServerVersion = ServerVersion;
     myXMLConfigReader = new Zera::XMLConfig::cReader();
 }
 

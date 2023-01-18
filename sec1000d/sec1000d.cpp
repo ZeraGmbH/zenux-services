@@ -48,8 +48,8 @@ struct sigaction mySigAction;
 // sigset_t mySigmask, origSigmask;
 
 
-cSEC1000dServer::cSEC1000dServer()
-    :cPCBServer()
+cSEC1000dServer::cSEC1000dServer() :
+    cPCBServer(ServerName, ServerVersion)
 {
     m_pDebugSettings = 0;
     m_pETHSettings = 0;

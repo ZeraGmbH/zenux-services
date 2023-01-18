@@ -45,9 +45,9 @@
 
 cATMEL* pAtmel; // we take a static object for atmel connection
 
-cCOM5003dServer::cCOM5003dServer()
+cCOM5003dServer::cCOM5003dServer() :
+    cPCBServer(ServerName, ServerVersion)
 {
-    // TODO: Move to cPCBServer::cPCBServer?
     m_pDebugSettings = nullptr;
     m_pETHSettings = nullptr;
     m_pI2CSettings = nullptr;
