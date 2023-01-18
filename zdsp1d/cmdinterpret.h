@@ -1,5 +1,3 @@
-// header datei für kommando interpreter
-
 #ifndef KINTERPRETER_H
 #define KINTERPRETER_H
 

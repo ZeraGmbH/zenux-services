@@ -1,7 +1,3 @@
-// header datei zdsp1d.h
-// globale definitionen
-
-
 #ifndef ZDSP1D_H
 #define ZDSP1D_H
 

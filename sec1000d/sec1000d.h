@@ -1,6 +1,3 @@
-// header datei com5003.h
-// globale definitionen
-
 #ifndef SEC1000D_H
 #define SEC1000D_H
 
