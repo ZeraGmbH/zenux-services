@@ -18,7 +18,6 @@ set(HEADER
     statusinterface.h
     systeminterface.h
     systeminfo.h
-    notificationdata.h
     ecalcsettings.h
     ecalcinterface.h
     ecalcchannel.h

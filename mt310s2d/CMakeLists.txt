@@ -47,7 +47,6 @@ set(HEADER
     src/adjxml.h
     src/adjustment.h
     src/systeminfo.h
-    src/notificationdata.h
     src/clampjustdata.h
     src/clamp.h
     src/mt310s2d.h

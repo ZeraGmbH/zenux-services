@@ -2,8 +2,7 @@
 #define PCBSERVER_H
 
 #include "scpiconnection.h"
-#include "notificationstring.h"
-#include "notificationdata.h"
+#include "notificationstructwithstringandid.h"
 #include "resource.h"
 #include "ethsettings.h"
 #include <scpi.h>

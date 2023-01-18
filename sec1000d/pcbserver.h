@@ -2,8 +2,7 @@
 #define PCBSERVER_H
 
 #include "scpiconnection.h"
-#include "notificationstring.h"
-#include "notificationdata.h"
+#include "notificationstructwithvalue.h"
 #include "resource.h"
 #include <scpi.h>
 #include <xiqnetwrapper.h>

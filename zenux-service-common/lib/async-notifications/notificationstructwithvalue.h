@@ -1,5 +1,5 @@
-#ifndef NOTIFICATIONDATA_H
-#define NOTIFICATIONDATA_H
+#ifndef NOTIFICATIONSTRUCTWITHVALUE_H
+#define NOTIFICATIONSTRUCTWITHVALUE_H
 
 #include "notificationvalue.h"
 #include <xiqnetpeer.h>
@@ -12,4 +12,4 @@ struct NotificationStructWithValue
     NotificationValue *notValue;
 };
 
-#endif // NOTIFICATIONDATA_H
+#endif // NOTIFICATIONSTRUCTWITHVALUE_H
