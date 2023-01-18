@@ -25,8 +25,6 @@ enum commands
 };
 }
 
-class SamplingSettings;
-
 class cPCBServer: public ScpiConnection
 {
     Q_OBJECT
@@ -38,7 +36,6 @@ public:
     QString& getVersion();
 
     EthSettings* m_pETHSettings;
-    SamplingSettings* m_pSamplingSettings;
 public slots:
     void sendAnswerProto(cProtonetCommand* protoCmd);
 protected:
