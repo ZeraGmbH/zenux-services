@@ -26,7 +26,6 @@ enum commands
 }
 
 class SamplingSettings;
-class FOutSettings;
 
 class cPCBServer: public ScpiConnection
 {
@@ -40,7 +39,6 @@ public:
 
     EthSettings* m_pETHSettings;
     SamplingSettings* m_pSamplingSettings;
-    FOutSettings* m_foutSettings;
 public slots:
     void sendAnswerProto(cProtonetCommand* protoCmd);
 protected:
