@@ -28,7 +28,6 @@ enum commands
 class FInSettings;
 class ScInSettings;
 class HkInSettings;
-class cSenseSettings;
 class SamplingSettings;
 class FOutSettings;
 
@@ -43,7 +42,6 @@ public:
     QString& getVersion();
 
     EthSettings* m_pETHSettings;
-    cSenseSettings* m_pSenseSettings;
     SamplingSettings* m_pSamplingSettings;
     FOutSettings* m_foutSettings;
     FInSettings* m_finSettings;
