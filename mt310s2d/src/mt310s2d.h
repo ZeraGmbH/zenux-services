@@ -11,6 +11,7 @@
 #include "hkinsettings.h"
 #include "scinsettings.h"
 #include "finsettings.h"
+#include "foutsettings.h"
 #include <QTimer>
 
 class QStateMachine;
@@ -46,6 +47,7 @@ public:
     HkInSettings* m_hkInSettings;
     ScInSettings* m_pSCHeadSettings;
     FInSettings* m_finSettings;
+    FOutSettings* m_foutSettings;
     cSystemInterface* m_pSystemInterface;
     cSenseInterface* m_pSenseInterface;
     cSamplingInterface* m_pSamplingInterface;
