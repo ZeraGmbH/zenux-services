@@ -3,6 +3,7 @@
 
 #include "pcbserver.h"
 #include "rmconnection.h"
+#include "debugsettings.h"
 #include <QTimer>
 
 class QStateMachine;
@@ -29,6 +30,7 @@ public:
     explicit cMT310S2dServer();
     ~cMT310S2dServer();
 
+    cDebugSettings* m_pDebugSettings;
     cStatusInterface* m_pStatusInterface;
     cSystemInterface* m_pSystemInterface;
     cSenseInterface* m_pSenseInterface;

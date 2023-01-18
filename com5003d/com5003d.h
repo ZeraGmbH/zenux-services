@@ -1,10 +1,10 @@
 #ifndef COM5003D_H
 #define COM5003D_H
 
-#include <QTimer>
-
 #include "pcbserver.h"
 #include "rmconnection.h"
+#include "debugsettings.h"
+#include <QTimer>
 
 class QStateMachine;
 class QState;
@@ -29,6 +29,7 @@ public:
     explicit cCOM5003dServer();
     ~cCOM5003dServer();
 
+    cDebugSettings* m_pDebugSettings;
     cStatusInterface* m_pStatusInterface;
     cSystemInterface* m_pSystemInterface;
     cSenseInterface* m_pSenseInterface;
