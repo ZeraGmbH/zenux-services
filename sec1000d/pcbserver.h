@@ -5,8 +5,6 @@
 #include "notificationstring.h"
 #include "notificationdata.h"
 #include "resource.h"
-#include "debugsettings.h"
-#include "fpgasettings.h"
 #include <scpi.h>
 #include <xiqnetwrapper.h>
 #include <netmessages.pb.h>
@@ -34,6 +32,8 @@ public:
     virtual void initSCPIConnection(QString leadingNodes) override;
     QString& getName();
     QString& getVersion();
+public slots:
+    void sendAnswerProto(cProtonetCommand* protoCmd);
 protected:
     void initSCPIConnections();
     XiQNetServer* myServer; // the real server that does the communication job
@@ -47,7 +47,6 @@ protected slots:
     virtual void doConfiguration() = 0; // all servers must configure
     virtual void setupServer(); // all servers must setup
     virtual void executeCommand(int cmdCode, cProtonetCommand* protoCmd) override;
-    void sendAnswerProto(cProtonetCommand* protoCmd);
 private:
     QString m_sServerName;
     QString m_sServerVersion;
