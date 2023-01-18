@@ -26,8 +26,6 @@ enum commands
 };
 }
 
-class cStatusInterface;  // forward
-
 class cPCBServer: public ScpiConnection
 {
     Q_OBJECT
@@ -36,7 +34,6 @@ public:
     virtual void initSCPIConnection(QString leadingNodes) override;
     QString& getName();
     QString& getVersion();
-    cStatusInterface* m_pStatusInterface;
 protected:
     void initSCPIConnections();
     XiQNetServer* myServer; // the real server that does the communication job
