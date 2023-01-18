@@ -1,6 +1,3 @@
-// header datei zeraglobal.h
-// hier werden global alle status-, event- usw. informationen definiert 
-
 #ifndef ZERAGLOBAL_H
 #define ZERAGLOBAL_H
 

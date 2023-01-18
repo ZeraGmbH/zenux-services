@@ -1,5 +1,3 @@
-// header datei für keyword parser
-
 #ifndef KPARSER_H
 #define KPARSER_H
 

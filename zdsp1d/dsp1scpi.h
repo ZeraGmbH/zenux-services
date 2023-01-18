@@ -1,5 +1,3 @@
-// header datei für scpi erweiterung für dsp server
-
 #include <QString>
 
 #ifndef SCPIDSPS_H

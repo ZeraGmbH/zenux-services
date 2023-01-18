@@ -1,6 +1,3 @@
-// header datei mt310touchd.h
-// globale definitionen
-
 #ifndef MT310S2D_H
 #define MT310S2D_H
 

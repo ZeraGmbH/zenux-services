@@ -1,6 +1,3 @@
-// header datei dsp.h
-// definitionen rund um den dsp
-
 #ifndef DSP_H
 #define DSP_H
 

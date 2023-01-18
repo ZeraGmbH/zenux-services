@@ -64,7 +64,6 @@ cATMEL* pAtmel; // we take a static object for atmel connection
 cMT310S2dServer::cMT310S2dServer() :
     cPCBServer(ServerName, ServerVersion)
 {
-    // TODO: Move to cPCBServer::cPCBServer?
     m_pDebugSettings = nullptr;
     m_pETHSettings = nullptr;
     m_pI2CSettings = nullptr;

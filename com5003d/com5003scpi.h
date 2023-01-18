@@ -1,5 +1,3 @@
-// header datei für scpi erweiterung für com5003 server
-
 #ifndef SCPIDSPS_H
 #define SCPIDSPS_H
 

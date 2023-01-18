@@ -1,6 +1,3 @@
-// header datei com5003.h
-// globale definitionen
-
 #ifndef COM5003D_H
 #define COM5003D_H
 
