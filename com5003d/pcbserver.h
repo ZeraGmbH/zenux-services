@@ -25,8 +25,6 @@ enum commands
 };
 }
 
-class SamplingSettings;
-
 class cPCBServer: public ScpiConnection
 {
     Q_OBJECT
@@ -38,8 +36,6 @@ public:
     QString& getVersion();
 
     EthSettings* m_pETHSettings;
-    SamplingSettings* m_pSamplingSettings;
-
 protected:
     void initSCPIConnections();
     XiQNetServer* myServer; // the real server that does the communication job

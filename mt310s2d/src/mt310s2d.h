@@ -12,6 +12,7 @@
 #include "scinsettings.h"
 #include "finsettings.h"
 #include "foutsettings.h"
+#include "samplingsettings.h"
 #include <QTimer>
 
 class QStateMachine;
@@ -48,6 +49,7 @@ public:
     ScInSettings* m_pSCHeadSettings;
     FInSettings* m_finSettings;
     FOutSettings* m_foutSettings;
+    SamplingSettings* m_pSamplingSettings;
     cSystemInterface* m_pSystemInterface;
     cSenseInterface* m_pSenseInterface;
     cSamplingInterface* m_pSamplingInterface;
