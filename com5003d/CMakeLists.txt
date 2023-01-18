@@ -37,7 +37,6 @@ set(HEADER
     adjxml.h
     adjustment.h
     systeminfo.h
-    notificationdata.h
     )
 
 set(CONFIG_FILES

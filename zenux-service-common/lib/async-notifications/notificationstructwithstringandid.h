@@ -1,5 +1,5 @@
-#ifndef NOTIFICATIONDATA_H
-#define NOTIFICATIONDATA_H
+#ifndef NOTIFICATIONSTRUCTWITHSTRINGANDID_H
+#define NOTIFICATIONSTRUCTWITHSTRINGANDID_H
 
 #include "notificationstring.h"
 #include <xiqnetpeer.h>
@@ -13,4 +13,4 @@ struct NotificationStructWithStringAndId
     NotificationString *notString;
 };
 
-#endif // NOTIFICATIONDATA_H
+#endif // NOTIFICATIONSTRUCTWITHSTRINGANDID_H
