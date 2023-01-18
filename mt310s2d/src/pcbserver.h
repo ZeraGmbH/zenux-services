@@ -25,7 +25,6 @@ enum commands
 };
 }
 
-class FInSettings;
 class SamplingSettings;
 class FOutSettings;
 
@@ -42,7 +41,6 @@ public:
     EthSettings* m_pETHSettings;
     SamplingSettings* m_pSamplingSettings;
     FOutSettings* m_foutSettings;
-    FInSettings* m_finSettings;
 public slots:
     void sendAnswerProto(cProtonetCommand* protoCmd);
 protected:

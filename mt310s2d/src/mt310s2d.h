@@ -10,6 +10,7 @@
 #include "sensesettings.h"
 #include "hkinsettings.h"
 #include "scinsettings.h"
+#include "finsettings.h"
 #include <QTimer>
 
 class QStateMachine;
@@ -44,6 +45,7 @@ public:
     cSenseSettings* m_pSenseSettings;
     HkInSettings* m_hkInSettings;
     ScInSettings* m_pSCHeadSettings;
+    FInSettings* m_finSettings;
     cSystemInterface* m_pSystemInterface;
     cSenseInterface* m_pSenseInterface;
     cSamplingInterface* m_pSamplingInterface;
