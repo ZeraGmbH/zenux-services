@@ -5,7 +5,6 @@
 #include "notificationstring.h"
 #include "notificationdata.h"
 #include "resource.h"
-#include "ctrlsettings.h"
 #include "ethsettings.h"
 #include <scpi.h>
 #include <xiqnetwrapper.h>
@@ -27,7 +26,6 @@ enum commands
 }
 
 class cStatusInterface;  // forward
-class cCtrlSettings;
 class cI2CSettings;
 class FInSettings;
 class ScInSettings;
@@ -46,7 +44,6 @@ public:
     QString& getName();
     QString& getVersion();
 
-    cCtrlSettings* m_pCtrlSettings;
     cI2CSettings* m_pI2CSettings;
     EthSettings* m_pETHSettings;
     cSenseSettings* m_pSenseSettings;
