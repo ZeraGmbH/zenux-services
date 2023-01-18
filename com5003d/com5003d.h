@@ -5,6 +5,7 @@
 #include "rmconnection.h"
 #include "debugsettings.h"
 #include "fpgasettings.h"
+#include "i2csettings.h"
 #include <QTimer>
 
 class QStateMachine;
@@ -33,6 +34,7 @@ public:
     cDebugSettings* m_pDebugSettings;
     FPGASettings* m_pFPGASettings;
     cStatusInterface* m_pStatusInterface;
+    cI2CSettings* m_pI2CSettings;
     cSystemInterface* m_pSystemInterface;
     cSenseInterface* m_pSenseInterface;
     cSamplingInterface* m_pSamplingInterface;
