@@ -61,7 +61,8 @@ static struct sigaction mySigAction;
 cATMELSysCtrl* pAtmelSys; // we take a static object for atmel connection
 cATMEL* pAtmel; // we take a static object for atmel connection
 
-cMT310S2dServer::cMT310S2dServer()
+cMT310S2dServer::cMT310S2dServer() :
+    cPCBServer(ServerName, ServerVersion)
 {
     // TODO: Move to cPCBServer::cPCBServer?
     m_pDebugSettings = nullptr;

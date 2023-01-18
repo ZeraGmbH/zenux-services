@@ -5,7 +5,6 @@
 #include "notificationstring.h"
 #include "notificationdata.h"
 #include "resource.h"
-#include "debugsettings.h"
 #include "fpgasettings.h"
 #include "ethsettings.h"
 #include <scpi.h>
@@ -40,13 +39,12 @@ class cPCBServer: public ScpiConnection
 {
     Q_OBJECT
 public:
-    explicit cPCBServer();
+    explicit cPCBServer(QString name, QString version);
     virtual void initSCPIConnection(QString leadingNodes) override;
     cSCPI* getSCPIInterface();
     QString& getName();
     QString& getVersion();
 
-    cDebugSettings* m_pDebugSettings;
     FPGASettings* m_pFPGASettings;
     cI2CSettings* m_pI2CSettings;
     EthSettings* m_pETHSettings;
