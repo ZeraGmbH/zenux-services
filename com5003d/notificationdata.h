@@ -5,7 +5,7 @@
 #include <xiqnetpeer.h>
 #include <QByteArray>
 
-struct NotificationStructForPcb
+struct NotificationStructWithStringAndId
 {
     XiQNetPeer *netPeer;
     QByteArray clientId;

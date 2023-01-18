@@ -55,8 +55,8 @@ private:
 
     void registerNotifier(cProtonetCommand* protoCmd); // registeres 1 notifier per command
     void unregisterNotifier(cProtonetCommand *protoCmd); // unregisters all notifiers
-    QList<NotificationStructForSec> m_notifierRegisterNext;
-    QList<NotificationStructForSec> m_notifierRegisterList;
+    QList<NotificationStructWithValue> m_notifierRegisterNext;
+    QList<NotificationStructWithValue> m_notifierRegisterList;
 
     void doUnregisterNotifier(XiQNetPeer *peer, const QByteArray &clientID = QByteArray());
 

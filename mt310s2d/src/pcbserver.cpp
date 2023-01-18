@@ -190,7 +190,7 @@ void cPCBServer::registerNotifier(cProtonetCommand *protoCmd)
         QString query = cmd.getParam(0);
         cSCPIObject* scpiObject = m_pSCPIInterface->getSCPIObject(query);
         if(scpiObject) {
-            NotificationStructForPcb notData;
+            NotificationStructWithStringAndId notData;
             notData.netPeer = protoCmd->m_pPeer;
             notData.clientId = protoCmd->m_clientId;
             notData.notifierId = cmd.getParam(1).toInt();
@@ -230,7 +230,7 @@ void cPCBServer::doUnregisterNotifier(XiQNetPeer* peer, const QByteArray &client
         // we have to remove all notifiers for this client and or clientId
         // iterate backwards so removals do not confuse our loop
         for(int i = m_notifierRegisterList.count()-1; i >= 0; i--) {
-            NotificationStructForPcb notData = m_notifierRegisterList.at(i);
+            NotificationStructWithStringAndId notData = m_notifierRegisterList.at(i);
             if(peer == notData.netPeer) {
                 // we found the client
                 if(clientID.isEmpty() || notData.clientId.isEmpty() || (notData.clientId == clientID)) {
@@ -301,7 +301,7 @@ void cPCBServer::establishNewNotifier(NotificationString *notifier)
     if (m_notifierRegisterNext.count() > 0) // if we're waiting for notifier
     {
         disconnect(notifier, 0, 0, 0); // we disconnect first because we only want 1 signal
-        NotificationStructForPcb notData = m_notifierRegisterNext.takeFirst(); // we pick the notification data
+        NotificationStructWithStringAndId notData = m_notifierRegisterNext.takeFirst(); // we pick the notification data
         notData.notString = notifier;
         m_notifierRegisterList.append(notData); //
         connect(notifier, &NotificationString::valueChanged, this, &cPCBServer::asyncHandler);
@@ -315,7 +315,7 @@ void cPCBServer::asyncHandler()
         ProtobufMessage::NetMessage protobufIntMessage;
         if (m_notifierRegisterList.count() > 0)
             for (int i = 0; i < m_notifierRegisterList.count(); i++) {
-                NotificationStructForPcb notData = m_notifierRegisterList.at(i);
+                NotificationStructWithStringAndId notData = m_notifierRegisterList.at(i);
                 if (notData.notString == notifier) {
                     ProtobufMessage::NetMessage::NetReply *intMessage = protobufIntMessage.mutable_reply();
                     QString s = QString("Notify:%1").arg(notData.notifierId);
