@@ -5,7 +5,6 @@
 #include "notificationstring.h"
 #include "notificationdata.h"
 #include "resource.h"
-#include "fpgasettings.h"
 #include "ctrlsettings.h"
 #include "ethsettings.h"
 #include <scpi.h>
@@ -47,7 +46,6 @@ public:
     QString& getName();
     QString& getVersion();
 
-    FPGASettings* m_pFPGASettings;
     cCtrlSettings* m_pCtrlSettings;
     cI2CSettings* m_pI2CSettings;
     EthSettings* m_pETHSettings;

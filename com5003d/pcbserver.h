@@ -5,7 +5,6 @@
 #include "notificationstring.h"
 #include "notificationdata.h"
 #include "resource.h"
-#include "fpgasettings.h"
 #include "ethsettings.h"
 #include <scpi.h>
 #include <xiqnetwrapper.h>
@@ -45,7 +44,6 @@ public:
     QString& getName();
     QString& getVersion();
 
-    FPGASettings* m_pFPGASettings;
     cI2CSettings* m_pI2CSettings;
     EthSettings* m_pETHSettings;
     cSenseSettings* m_pSenseSettings;
