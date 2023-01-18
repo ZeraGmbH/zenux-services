@@ -27,7 +27,6 @@ enum commands
 
 class FInSettings;
 class ScInSettings;
-class HkInSettings;
 class SamplingSettings;
 class FOutSettings;
 
@@ -46,7 +45,6 @@ public:
     FOutSettings* m_foutSettings;
     FInSettings* m_finSettings;
     ScInSettings* m_pSCHeadSettings;
-    HkInSettings* m_hkInSettings;
 
 protected:
     void initSCPIConnections();
