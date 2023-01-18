@@ -25,7 +25,6 @@ enum commands
 };
 }
 
-class cI2CSettings;
 class FInSettings;
 class ScInSettings;
 class HkInSettings;
@@ -43,7 +42,6 @@ public:
     QString& getName();
     QString& getVersion();
 
-    cI2CSettings* m_pI2CSettings;
     EthSettings* m_pETHSettings;
     cSenseSettings* m_pSenseSettings;
     SamplingSettings* m_pSamplingSettings;
