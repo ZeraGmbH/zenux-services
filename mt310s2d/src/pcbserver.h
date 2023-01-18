@@ -25,7 +25,6 @@ enum commands
 };
 }
 
-class cStatusInterface;  // forward
 class cI2CSettings;
 class FInSettings;
 class ScInSettings;
@@ -52,7 +51,6 @@ public:
     FInSettings* m_finSettings;
     ScInSettings* m_pSCHeadSettings;
     HkInSettings* m_hkInSettings;
-    cStatusInterface* m_pStatusInterface;
 public slots:
     void sendAnswerProto(cProtonetCommand* protoCmd);
 protected:
