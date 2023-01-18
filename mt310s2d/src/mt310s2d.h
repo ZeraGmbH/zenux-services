@@ -7,6 +7,7 @@
 #include "fpgasettings.h"
 #include "ctrlsettings.h"
 #include "i2csettings.h"
+#include "sensesettings.h"
 #include <QTimer>
 
 class QStateMachine;
@@ -38,6 +39,7 @@ public:
     cCtrlSettings* m_pCtrlSettings;
     cStatusInterface* m_pStatusInterface;
     cI2CSettings* m_pI2CSettings;
+    cSenseSettings* m_pSenseSettings;
     cSystemInterface* m_pSystemInterface;
     cSenseInterface* m_pSenseInterface;
     cSamplingInterface* m_pSamplingInterface;
