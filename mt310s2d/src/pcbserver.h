@@ -58,7 +58,6 @@ protected slots:
 private:
     QString m_sServerName;
     QString m_sServerVersion;
-
     QString m_sInput, m_sOutput;
     QTcpSocket* resourceManagerSocket;
 

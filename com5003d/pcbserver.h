@@ -30,12 +30,14 @@ class cPCBServer: public ScpiConnection
     Q_OBJECT
 public:
     explicit cPCBServer(QString name, QString version);
-    virtual void initSCPIConnection(QString leadingNodes) override;
+    void initSCPIConnection(QString leadingNodes) override;
     cSCPI* getSCPIInterface();
     QString& getName();
     QString& getVersion();
 
     EthSettings* m_pETHSettings;
+public slots:
+    void sendAnswerProto(cProtonetCommand* protoCmd);
 protected:
     void initSCPIConnections();
     XiQNetServer* myServer; // the real server that does the communication job
@@ -46,16 +48,13 @@ protected:
     QList<cResource*> resourceList;
     QTcpServer* m_pSCPIServer;
     QTcpSocket* m_pSCPISocket;
-
 protected slots:
     virtual void doConfiguration() = 0; // all servers must configure
     virtual void setupServer(); // all servers must setup
     virtual void executeCommand(int cmdCode, cProtonetCommand* protoCmd) override;
-    void sendAnswerProto(cProtonetCommand* protoCmd);
     virtual void setSCPIConnection();
     virtual void SCPIInput();
     virtual void SCPIdisconnect();
-
 private:
     QString m_sServerName;
     QString m_sServerVersion;
@@ -64,11 +63,9 @@ private:
 
     void registerNotifier(cProtonetCommand* protoCmd); // registeres 1 notifier per command
     void unregisterNotifier(cProtonetCommand *protoCmd); // unregisters all notifiers
+    void doUnregisterNotifier(XiQNetPeer *peer, const QByteArray &clientID = QByteArray());
     QList<NotificationStructForPcb> m_notifierRegisterNext;
     QList<NotificationStructForPcb> m_notifierRegisterList;
-
-    void doUnregisterNotifier(XiQNetPeer *peer, const QByteArray &clientID = QByteArray());
-
 private slots:
     virtual void establishNewConnection(XiQNetPeer* newClient);
     void executeCommandProto(std::shared_ptr<google::protobuf::Message> cmd);
