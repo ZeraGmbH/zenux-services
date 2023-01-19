@@ -8,24 +8,6 @@
 #include <QDateTime>
 #include <QDomElement>
 
-namespace clamp
-{
-    enum Commands
-    {
-        cmdSerial,
-        cmdVersion,
-        cmdType,
-        cmdName,
-        cmdFlashWrite,
-        cmdFlashRead,
-        cmdFlashReset,
-        cmdChksum,
-        cmdXMLWrite,
-        cmdXMLRead,
-        cmdStatAdjustment
-    };
-}
-
 enum ClampTypes
 {
     undefined,
