@@ -31,7 +31,7 @@ class JustDataRangeGainPhaseOffset: public ScpiConnection  // alle korrekturdate
     Q_OBJECT
 
 public:
-    JustDataRangeGainPhaseOffset(cSCPI* scpiinterface);
+    JustDataRangeGainPhaseOffset(cSCPI* scpiinterface, std::function<bool (bool &)> nonFlashWritePermission);
     ~JustDataRangeGainPhaseOffset();
     virtual void initSCPIConnection(QString leadingNodes) override;
 

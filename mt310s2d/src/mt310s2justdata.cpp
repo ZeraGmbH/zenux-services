@@ -5,15 +5,12 @@
 #include "atmel.h"
 #include <scpi.h>
 
-JustDataRangeGainPhaseOffset::JustDataRangeGainPhaseOffset(cSCPI *scpiinterface) :
+JustDataRangeGainPhaseOffset::JustDataRangeGainPhaseOffset(cSCPI *scpiinterface, std::function<bool(bool&)> nonFlashWritePermission) :
     ScpiConnection(scpiinterface)
 {
-    bool(*checkPermission)(bool &enable) = [] (bool &enable) {
-        return pAtmel->getEEPROMAccessEnable(enable) == ZeraMcontrollerBase::cmddone;
-    };
-    m_pGainCorrection = new JustDataInterface({m_pSCPIInterface, GainCorrOrder, 1.0, checkPermission, 6});
-    m_pPhaseCorrection = new JustDataInterface({m_pSCPIInterface, PhaseCorrOrder, 0.0, checkPermission, 6});
-    m_pOffsetCorrection =  new JustDataInterface({m_pSCPIInterface, OffsetCorrOrder, 0.0, checkPermission, 6});
+    m_pGainCorrection = new JustDataInterface({m_pSCPIInterface, GainCorrOrder, 1.0, nonFlashWritePermission, 6});
+    m_pPhaseCorrection = new JustDataInterface({m_pSCPIInterface, PhaseCorrOrder, 0.0, nonFlashWritePermission, 6});
+    m_pOffsetCorrection =  new JustDataInterface({m_pSCPIInterface, OffsetCorrOrder, 0.0, nonFlashWritePermission, 6});
 }
 
 JustDataRangeGainPhaseOffset::~JustDataRangeGainPhaseOffset()
