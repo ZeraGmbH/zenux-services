@@ -26,7 +26,6 @@ set(SOURCES
     )
 
 set(HEADER
-    src/micro-controller-io/atmelbaseinterface.h
     src/micro-controller-io/atmelemobcontroller.h
     src/micro-controller-io/atmel.h
     src/micro-controller-io/atmelsysctrl.h
