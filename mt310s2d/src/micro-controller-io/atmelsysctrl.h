@@ -1,12 +1,12 @@
 #ifndef ATMELATMELSYS_H
 #define ATMELATMELSYS_H
 
-#include "atmelbaseinterface.h"
+#include <atmelreadversioninterface.h>
 #include <intelhexfileio.h>
 #include <zera_mcontroller_base.h>
 #include <QString>
 
-class cATMELSysCtrl : public ZeraMcontrollerBase, public AtmelBaseInterface
+class cATMELSysCtrl : public ZeraMcontrollerBase, public AtmelReadVersionInterface
 {
 public:
     cATMELSysCtrl(QString devnode, quint8 adr, quint8 debuglevel);

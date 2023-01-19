@@ -1,9 +1,9 @@
 #ifndef ATMELEMOBCONTROLLER_H
 #define ATMELEMOBCONTROLLER_H
 
-#include "atmelbaseinterface.h"
+#include <atmelreadversioninterface.h>
 
-class AtmelEmobController : public ZeraMcontrollerBase, public AtmelBaseInterface
+class AtmelEmobController : public ZeraMcontrollerBase, public AtmelReadVersionInterface
 {
 public:
     AtmelEmobController(QString devnode, quint8 adr, quint8 debuglevel);
