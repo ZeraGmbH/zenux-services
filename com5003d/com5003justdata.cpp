@@ -86,19 +86,16 @@ void JustDataRangeGainPhaseOffset::executeCommand(int cmdCode, cProtonetCommand 
         protoCmd->m_sOutput = m_InitJustData(protoCmd->m_sInput);
         break;
     }
-
     if (protoCmd->m_bwithOutput)
         emit cmdExecutionDone(protoCmd);
 }
 
 QString JustDataRangeGainPhaseOffset::scpiGetGainCorrection(const QString &scpiInput)
 {
-    bool ok;
     cSCPICommand cmd = scpiInput;
-
-    if (cmd.isQuery(1))
-    {
+    if (cmd.isQuery(1)) {
         QString spar = cmd.getParam(0);
+        bool ok;
         double par = spar.toDouble(&ok);
         if (ok)
             return QString("%1").arg(m_pGainCorrection->getCorrection(par),0,'f',8);
@@ -111,12 +108,10 @@ QString JustDataRangeGainPhaseOffset::scpiGetGainCorrection(const QString &scpiI
 
 QString JustDataRangeGainPhaseOffset::mReadJustGainCorrection(QString &sInput)
 {
-    bool ok;
     cSCPICommand cmd = sInput;
-
-    if (cmd.isQuery(1))
-    {
+    if (cmd.isQuery(1)) {
         QString spar = cmd.getParam(0);
+        bool ok;
         double par = spar.toDouble(&ok);
         if (ok)
             return QString("%1").arg(getJustGainCorrection(par));
@@ -129,12 +124,10 @@ QString JustDataRangeGainPhaseOffset::mReadJustGainCorrection(QString &sInput)
 
 QString JustDataRangeGainPhaseOffset::mReadPhaseCorrection(QString& sInput)
 {
-    bool ok;
     cSCPICommand cmd = sInput;
-
-    if (cmd.isQuery(1))
-    {
+    if (cmd.isQuery(1)) {
         QString spar = cmd.getParam(0);
+        bool ok;
         double par = spar.toDouble(&ok);
         if (ok)
             return QString("%1").arg(m_pPhaseCorrection->getCorrection(par),0,'f',7);
@@ -143,17 +136,14 @@ QString JustDataRangeGainPhaseOffset::mReadPhaseCorrection(QString& sInput)
     }
     else
         return SCPI::scpiAnswer[SCPI::nak];
-
 }
 
 QString JustDataRangeGainPhaseOffset::mReadJustPhaseCorrection(QString &sInput)
 {
-    bool ok;
     cSCPICommand cmd = sInput;
-
-    if (cmd.isQuery(1))
-    {
+    if (cmd.isQuery(1)) {
         QString spar = cmd.getParam(0);
+        bool ok;
         double par = spar.toDouble(&ok);
         if (ok)
             return QString("%1").arg(getJustPhaseCorrection(par));
@@ -166,12 +156,10 @@ QString JustDataRangeGainPhaseOffset::mReadJustPhaseCorrection(QString &sInput)
 
 QString JustDataRangeGainPhaseOffset::mReadOffsetCorrection(QString& sInput)
 {
-    bool ok;
     cSCPICommand cmd = sInput;
-
-    if (cmd.isQuery(1))
-    {
+    if (cmd.isQuery(1)) {
         QString spar = cmd.getParam(0);
+        bool ok;
         double par = spar.toDouble(&ok);
         if (ok)
             return QString("%1").arg(m_pOffsetCorrection->getCorrection(par),0,'f',8);
@@ -180,17 +168,14 @@ QString JustDataRangeGainPhaseOffset::mReadOffsetCorrection(QString& sInput)
     }
     else
         return SCPI::scpiAnswer[SCPI::nak];
-
 }
 
 QString JustDataRangeGainPhaseOffset::mReadJustOffsetCorrection(QString &sInput)
 {
-    bool ok;
     cSCPICommand cmd = sInput;
-
-    if (cmd.isQuery(1))
-    {
+    if (cmd.isQuery(1)) {
         QString spar = cmd.getParam(0);
+        bool ok;
         double par = spar.toDouble(&ok);
         if (ok)
             return QString("%1").arg(getJustOffsetCorrection(par));
@@ -199,26 +184,22 @@ QString JustDataRangeGainPhaseOffset::mReadJustOffsetCorrection(QString &sInput)
     }
     else
         return SCPI::scpiAnswer[SCPI::nak];
-
 }
 
 QString JustDataRangeGainPhaseOffset::m_ReadStatus(QString& sInput)
 {
     cSCPICommand cmd = sInput;
-
-    if (cmd.isQuery())
-    {
+    if (cmd.isQuery()) {
         return QString("%1").arg(getAdjustmentStatus());
     }
     else
         return SCPI::scpiAnswer[SCPI::nak];
 }
 
-
 QString JustDataRangeGainPhaseOffset::m_ComputeJustData(QString& sInput)
 {
     cSCPICommand cmd = sInput;
-    if (cmd.isCommand(1) && (cmd.getParam(0) == "")) {
+    if(cmd.isCommand(1) && (cmd.getParam(0) == "")) {
         bool enable;
         if(m_nonFlashWritePermission(enable)) {
             if (enable) {
@@ -236,7 +217,6 @@ QString JustDataRangeGainPhaseOffset::m_ComputeJustData(QString& sInput)
     else
         return SCPI::scpiAnswer[SCPI::nak];
 }
-
 
 QString JustDataRangeGainPhaseOffset::m_InitJustData(QString &sInput)
 {
@@ -260,7 +240,6 @@ QString JustDataRangeGainPhaseOffset::m_InitJustData(QString &sInput)
         return SCPI::scpiAnswer[SCPI::nak];
 }
 
-
 void JustDataRangeGainPhaseOffset::Serialize(QDataStream& qds)  // zum schreiben aller justagedaten in flashspeicher
 {
     m_pGainCorrection->Serialize(qds); 
@@ -268,7 +247,6 @@ void JustDataRangeGainPhaseOffset::Serialize(QDataStream& qds)  // zum schreiben
     m_pOffsetCorrection->Serialize(qds);
 }
  
-
 void JustDataRangeGainPhaseOffset::Deserialize(QDataStream& qds) // zum lesen aller justagedaten aus flashspeicher
 {
     m_pGainCorrection->Deserialize(qds); 
@@ -276,13 +254,11 @@ void JustDataRangeGainPhaseOffset::Deserialize(QDataStream& qds) // zum lesen al
     m_pOffsetCorrection->Deserialize(qds);
 }
 
-
 quint8 JustDataRangeGainPhaseOffset::getAdjustmentStatus()
 {
     return m_pGainCorrection->getStatus() & m_pPhaseCorrection->getStatus() & m_pOffsetCorrection->getStatus();
 
 }
-
 
 void JustDataRangeGainPhaseOffset::initJustData()
 {
@@ -291,14 +267,12 @@ void JustDataRangeGainPhaseOffset::initJustData()
     m_pOffsetCorrection->initJustData(0.0);
 }
 
-
 void JustDataRangeGainPhaseOffset::computeJustData()
 {
     m_pGainCorrection->cmpCoefficients();
     m_pPhaseCorrection->cmpCoefficients();
     m_pOffsetCorrection->cmpCoefficients();
 }
-
 
 double JustDataRangeGainPhaseOffset::getGainCorrection(double par)
 {
