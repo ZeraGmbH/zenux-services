@@ -24,7 +24,8 @@ void JustRangeTripletOffsetGainPhase::initSCPIConnection(QString leadingNodes)
 {
     if (leadingNodes != "")
         leadingNodes += ":";
-    cSCPIDelegate* delegate = new cSCPIDelegate(QString("%1CORRECTION").arg(leadingNodes), "GAIN", SCPI::CmdwP , m_pSCPIInterface, DirectGain);
+    cSCPIDelegate* delegate;
+    delegate = new cSCPIDelegate(QString("%1CORRECTION").arg(leadingNodes), "GAIN", SCPI::CmdwP , m_pSCPIInterface, DirectGain);
     m_DelegateList.append(delegate);
     connect(delegate, &cSCPIDelegate::execute, this, &JustRangeTripletOffsetGainPhase::executeCommand);
     delegate = new cSCPIDelegate(QString("%1CORRECTION").arg(leadingNodes), "ADJGAIN", SCPI::CmdwP , m_pSCPIInterface, DirectJustGain);
