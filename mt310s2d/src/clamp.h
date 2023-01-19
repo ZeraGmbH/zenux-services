@@ -75,7 +75,6 @@ private:
     ClampTypes readClampType();
     void removeAllRanges();
     void exportRangeXml(QDomDocument &justqdom, QDomElement &typeTag, cSenseRange *range);
-    void add1000VSecondaryRange();
 
     QString handleScpiReadWriteSerial(QString &scpiCmdStr);
     QString handleScpiReadWriteVersion(QString &scpiCmdStr);
