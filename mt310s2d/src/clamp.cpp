@@ -12,6 +12,21 @@
 #include <i2cutils.h>
 #include <i2cmuxerscopedonoff.h>
 
+enum Commands
+{
+    cmdSerial,
+    cmdVersion,
+    cmdType,
+    cmdName,
+    cmdFlashWrite,
+    cmdFlashRead,
+    cmdFlashReset,
+    cmdChksum,
+    cmdXMLWrite,
+    cmdXMLRead,
+    cmdStatAdjustment
+};
+
 cClamp::cClamp() :
     ScpiConnection(nullptr) // TODO get rid of dummy clamp
 {
@@ -72,37 +87,37 @@ QString cClamp::getSerial()
 void cClamp::executeCommand(int cmdCode, cProtonetCommand *protoCmd)
 {
     switch (cmdCode) {
-    case clamp::cmdSerial:
+    case cmdSerial:
         protoCmd->m_sOutput = handleScpiReadWriteSerial(protoCmd->m_sInput);
         break;
-    case clamp::cmdVersion:
+    case cmdVersion:
         protoCmd->m_sOutput = handleScpiReadWriteVersion(protoCmd->m_sInput);
         break;
-    case clamp::cmdType:
+    case cmdType:
         protoCmd->m_sOutput = handleScpiReadWriteType(protoCmd->m_sInput);
         break;
-    case clamp::cmdName:
+    case cmdName:
         protoCmd->m_sOutput = handleScpiReadName(protoCmd->m_sInput);
         break;
-    case clamp::cmdFlashWrite:
+    case cmdFlashWrite:
         protoCmd->m_sOutput = handleScpiWriteFlash(protoCmd->m_sInput);
         break;
-    case clamp::cmdFlashRead:
+    case cmdFlashRead:
         protoCmd->m_sOutput = handleScpiReadFlash(protoCmd->m_sInput);
         break;
-    case clamp::cmdFlashReset:
+    case cmdFlashReset:
         protoCmd->m_sOutput = handleScpiResetFlash(protoCmd->m_sInput);
         break;
-    case clamp::cmdChksum:
+    case cmdChksum:
         protoCmd->m_sOutput = handleScpiReadChksum(protoCmd->m_sInput);
         break;
-    case clamp::cmdXMLWrite:
+    case cmdXMLWrite:
         protoCmd->m_sOutput = handleScpiWriteXML(protoCmd->m_sInput);
         break;
-    case clamp::cmdXMLRead:
+    case cmdXMLRead:
         protoCmd->m_sOutput = handleScpiReadXML(protoCmd->m_sInput);
         break;
-    case clamp::cmdStatAdjustment:
+    case cmdStatAdjustment:
         protoCmd->m_sOutput = handleScpiReadAdjStatus(protoCmd->m_sInput);
         break;
     }
@@ -644,43 +659,43 @@ void cClamp::addSystAdjInterfaceChannel(QString channelName)
     cSCPIDelegate* delegate;
 
     cmdParent = QString("SYSTEM:CLAMP:%1").arg(channelName);
-    delegate = new cSCPIDelegate(cmdParent, "SERIALNUMBER", SCPI::isQuery | SCPI::isCmdwP, m_pSCPIInterface, clamp::cmdSerial);
+    delegate = new cSCPIDelegate(cmdParent, "SERIALNUMBER", SCPI::isQuery | SCPI::isCmdwP, m_pSCPIInterface, cmdSerial);
     m_DelegateList.append(delegate);
     connect(delegate, &cSCPIDelegate::execute, this, &cClamp::executeCommand);
-    delegate = new cSCPIDelegate(cmdParent, "VERSION", SCPI::isQuery | SCPI::isCmdwP, m_pSCPIInterface, clamp::cmdVersion);
+    delegate = new cSCPIDelegate(cmdParent, "VERSION", SCPI::isQuery | SCPI::isCmdwP, m_pSCPIInterface, cmdVersion);
     m_DelegateList.append(delegate);
     connect(delegate, &cSCPIDelegate::execute, this, &cClamp::executeCommand);
-    delegate = new cSCPIDelegate(cmdParent, "TYPE",SCPI::isQuery | SCPI::isCmdwP, m_pSCPIInterface, clamp::cmdType);
+    delegate = new cSCPIDelegate(cmdParent, "TYPE",SCPI::isQuery | SCPI::isCmdwP, m_pSCPIInterface, cmdType);
     m_DelegateList.append(delegate);
     connect(delegate, &cSCPIDelegate::execute, this, &cClamp::executeCommand);
-    delegate = new cSCPIDelegate(cmdParent, "NAME",SCPI::isQuery, m_pSCPIInterface, clamp::cmdName );
+    delegate = new cSCPIDelegate(cmdParent, "NAME",SCPI::isQuery, m_pSCPIInterface, cmdName );
     m_DelegateList.append(delegate);
     connect(delegate, &cSCPIDelegate::execute, this, &cClamp::executeCommand);
 
     cmdParent = QString("SYSTEM:ADJUSTMENT:CLAMP:%1:FLASH").arg(channelName);
-    delegate = new cSCPIDelegate(cmdParent,"WRITE", SCPI::isCmd, m_pSCPIInterface, clamp::cmdFlashWrite);
+    delegate = new cSCPIDelegate(cmdParent,"WRITE", SCPI::isCmd, m_pSCPIInterface, cmdFlashWrite);
     m_DelegateList.append(delegate);
     connect(delegate, &cSCPIDelegate::execute, this, &cClamp::executeCommand);
-    delegate = new cSCPIDelegate(cmdParent,"READ", SCPI::isCmd, m_pSCPIInterface, clamp::cmdFlashRead);
+    delegate = new cSCPIDelegate(cmdParent,"READ", SCPI::isCmd, m_pSCPIInterface, cmdFlashRead);
     m_DelegateList.append(delegate);
     connect(delegate, &cSCPIDelegate::execute, this, &cClamp::executeCommand);
-    delegate = new cSCPIDelegate(cmdParent,"CHKSUM", SCPI::isQuery, m_pSCPIInterface, clamp::cmdChksum);
+    delegate = new cSCPIDelegate(cmdParent,"CHKSUM", SCPI::isQuery, m_pSCPIInterface, cmdChksum);
     m_DelegateList.append(delegate);
     connect(delegate, &cSCPIDelegate::execute, this, &cClamp::executeCommand);
-    delegate = new cSCPIDelegate(cmdParent,"RESET", SCPI::isCmd, m_pSCPIInterface, clamp::cmdFlashReset);
+    delegate = new cSCPIDelegate(cmdParent,"RESET", SCPI::isCmd, m_pSCPIInterface, cmdFlashReset);
     m_DelegateList.append(delegate);
     connect(delegate, &cSCPIDelegate::execute, this, &cClamp::executeCommand);
 
     cmdParent = QString("SYSTEM:ADJUSTMENT:CLAMP:%1:XML").arg(channelName);
-    delegate = new cSCPIDelegate(cmdParent,"WRITE", SCPI::isCmd, m_pSCPIInterface, clamp::cmdXMLWrite);
+    delegate = new cSCPIDelegate(cmdParent,"WRITE", SCPI::isCmd, m_pSCPIInterface, cmdXMLWrite);
     m_DelegateList.append(delegate);
     connect(delegate, &cSCPIDelegate::execute, this, &cClamp::executeCommand);
-    delegate = new cSCPIDelegate(cmdParent,"READ", SCPI::isCmd, m_pSCPIInterface, clamp::cmdXMLRead);
+    delegate = new cSCPIDelegate(cmdParent,"READ", SCPI::isCmd, m_pSCPIInterface, cmdXMLRead);
     m_DelegateList.append(delegate);
     connect(delegate, &cSCPIDelegate::execute, this, &cClamp::executeCommand);
 
     cmdParent = QString("STATUS:CLAMP:%1").arg(channelName);
-    delegate = new cSCPIDelegate(cmdParent, "ADJUSTMENT", SCPI::isQuery, m_pSCPIInterface, clamp::cmdStatAdjustment);
+    delegate = new cSCPIDelegate(cmdParent, "ADJUSTMENT", SCPI::isQuery, m_pSCPIInterface, cmdStatAdjustment);
     m_DelegateList.append(delegate);
     connect(delegate, &cSCPIDelegate::execute, this, &cClamp::executeCommand);
 }
