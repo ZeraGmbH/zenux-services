@@ -105,6 +105,7 @@ private:
     quint32 m_nFlags; // for future purpose
     QDateTime m_AdjDateTime;
     static std::function<bool(bool&)> m_defaultAtmelEnabler;
+    static std::function<bool(bool&)> m_AlwaysEnabler;
 };
 
 #endif // CLAMP_H
