@@ -2,7 +2,6 @@
 #include "protonetcommand.h"
 #include "justdatainterface.h"
 #include "scpidelegate.h"
-#include "atmel.h"
 #include <scpi.h>
 
 JustDataRangeGainPhaseOffset::JustDataRangeGainPhaseOffset(cSCPI *scpiinterface, std::function<bool(bool&)> nonFlashWritePermission) :
@@ -234,10 +233,8 @@ QString JustDataRangeGainPhaseOffset::m_ComputeJustData(QString& sInput)
     if (cmd.isCommand(1) && (cmd.getParam(0) == ""))
     {
         bool enable;
-        if (pAtmel->getEEPROMAccessEnable(enable) == ZeraMcontrollerBase::cmddone)
-        {
-            if (enable)
-            {
+        if (m_nonFlashWritePermission(enable)) {
+            if (enable) {
                 m_pGainCorrection->cmpCoefficients();
                 m_pPhaseCorrection->cmpCoefficients();
                 m_pOffsetCorrection->cmpCoefficients();
@@ -257,14 +254,10 @@ QString JustDataRangeGainPhaseOffset::m_ComputeJustData(QString& sInput)
 QString JustDataRangeGainPhaseOffset::m_InitJustData(QString &sInput)
 {
     cSCPICommand cmd = sInput;
-
-    if (cmd.isCommand(1) && (cmd.getParam(0) == ""))
-    {
+    if (cmd.isCommand(1) && (cmd.getParam(0) == "")) {
         bool enable;
-        if (pAtmel->getEEPROMAccessEnable(enable) == ZeraMcontrollerBase::cmddone)
-        {
-            if (enable)
-            {
+        if(m_nonFlashWritePermission(enable)) {
+            if (enable) {
                 m_pGainCorrection->initJustData(1.0);
                 m_pPhaseCorrection->initJustData(0.0);
                 m_pOffsetCorrection->initJustData(0.0);

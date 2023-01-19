@@ -65,6 +65,8 @@ protected:
     virtual double getJustPhaseCorrection(double par);
     virtual double getOffsetCorrection(double par);
     virtual double getJustOffsetCorrection(double par);
+private:
+    std::function<bool(bool&)> m_nonFlashWritePermission;
 };
 
 #endif
