@@ -225,10 +225,10 @@ QString cClamp::exportXMLString(int indent)
     QDomElement typeTag = justqdom.createElement( "Sense");
     adjtag.appendChild(typeTag);
 
-    for(auto range : m_RangeList) {
+    for(auto range : qAsConst(m_RangeList)) {
         exportRangeXml(justqdom, typeTag, range);
     }
-    for(auto range : m_RangeListSecondary) {
+    for(auto range : qAsConst(m_RangeListSecondary)) {
         exportRangeXml(justqdom, typeTag, range);
     }
     return justqdom.toString(indent);
