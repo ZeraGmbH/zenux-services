@@ -26,13 +26,13 @@ class QDataStream;
 class JustDataInterface;
 
 
-class JustDataRangeGainPhaseOffset: public ScpiConnection  // alle korrekturdaten für einen bereich + status
+class JustRangeTripletOffsetGainPhase: public ScpiConnection  // alle korrekturdaten für einen bereich + status
 {
     Q_OBJECT
 
 public:
-    JustDataRangeGainPhaseOffset(cSCPI* scpiinterface, std::function<bool (bool &)> nonFlashWritePermission);
-    ~JustDataRangeGainPhaseOffset();
+    JustRangeTripletOffsetGainPhase(cSCPI* scpiinterface, std::function<bool (bool &)> nonFlashWritePermission);
+    ~JustRangeTripletOffsetGainPhase();
     virtual void initSCPIConnection(QString leadingNodes) override;
 
     JustDataInterface* m_pGainCorrection;

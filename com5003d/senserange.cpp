@@ -14,7 +14,7 @@ cSenseRange::cSenseRange(cSCPI *scpiinterface, QString name, QString alias, bool
     m_nSelCode(rselcode),
     m_nRSpec(rspec)
 {
-    m_pJustdata = new JustDataRangeGainPhaseOffset(m_pSCPIInterface, [](bool& enable){
+    m_pJustdata = new JustRangeTripletOffsetGainPhase(m_pSCPIInterface, [](bool& enable){
         return pAtmel->getEEPROMAccessEnable(enable) == ZeraMcontrollerBase::cmddone;
     });
 }
@@ -84,7 +84,7 @@ quint8 cSenseRange::getSelCode()
 }
 
 
-JustDataRangeGainPhaseOffset *cSenseRange::getJustData()
+JustRangeTripletOffsetGainPhase *cSenseRange::getJustData()
 {
     return m_pJustdata;
 }
