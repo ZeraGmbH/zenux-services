@@ -4,7 +4,7 @@
 #include "justdatainterface.h"
 
 cClampJustData::cClampJustData(cSCPI *scpiinterface, cSenseRange *cascadedRange, double cvRatio, std::function<bool(bool&)> nonFlashWritePermission)  :
-    JustDataRangeGainPhaseOffset(scpiinterface, nonFlashWritePermission), m_pFirstStageRange(cascadedRange), m_cvRatio(cvRatio)
+    JustRangeTripletOffsetGainPhase(scpiinterface, nonFlashWritePermission), m_pFirstStageRange(cascadedRange), m_cvRatio(cvRatio)
 {   
 }
 

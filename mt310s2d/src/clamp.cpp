@@ -171,7 +171,7 @@ bool cClamp::importAdjData(QDataStream &stream)
             range->getJustData()->Deserialize(stream);
         }
         else {
-            JustDataRangeGainPhaseOffset *dummy = new JustDataRangeGainPhaseOffset(m_pSCPIInterface, m_defaultAtmelEnabler); // if we did not find this range....something has changed
+            JustRangeTripletOffsetGainPhase *dummy = new JustRangeTripletOffsetGainPhase(m_pSCPIInterface, m_defaultAtmelEnabler); // if we did not find this range....something has changed
             dummy->Deserialize(stream); // we read the data from stream to keep it in flow
             delete dummy;
         }

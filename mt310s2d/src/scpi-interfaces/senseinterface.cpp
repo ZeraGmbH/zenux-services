@@ -382,7 +382,7 @@ bool cSenseInterface::importAdjData(QDataStream &stream)
             }
         }
         if (!done) {
-            JustDataRangeGainPhaseOffset* dummy; // if we could not find the owner of that data
+            JustRangeTripletOffsetGainPhase* dummy; // if we could not find the owner of that data
             dummy = CreateJustScpiInterfaceWithAtmelPermission();
             dummy->Deserialize(stream); // we read the data from stream to keep it in flow
             delete dummy;
@@ -828,9 +828,9 @@ QString cSenseInterface::handleScpiReadAdjStatus(QString &sInput)
     }
 }
 
-JustDataRangeGainPhaseOffset *cSenseInterface::CreateJustScpiInterfaceWithAtmelPermission()
+JustRangeTripletOffsetGainPhase *cSenseInterface::CreateJustScpiInterfaceWithAtmelPermission()
 {
-    return new JustDataRangeGainPhaseOffset(m_pSCPIInterface, [](bool& enable){
+    return new JustRangeTripletOffsetGainPhase(m_pSCPIInterface, [](bool& enable){
         return pAtmel->getEEPROMAccessEnable(enable) == ZeraMcontrollerBase::cmddone;
     });
 }

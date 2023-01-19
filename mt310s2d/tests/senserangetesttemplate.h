@@ -12,7 +12,7 @@ protected:
     void _cleanup();
 
     cSCPI *scpi;
-    JustDataRangeGainPhaseOffset *justData;
+    JustRangeTripletOffsetGainPhase *justData;
     cSenseRange *testRange;
 };
 
