@@ -5,7 +5,8 @@
 #include <scpi.h>
 
 JustDataRangeGainPhaseOffset::JustDataRangeGainPhaseOffset(cSCPI *scpiinterface, std::function<bool(bool&)> nonFlashWritePermission) :
-    ScpiConnection(scpiinterface)
+    ScpiConnection(scpiinterface),
+    m_nonFlashWritePermission(nonFlashWritePermission)
 {
     m_pGainCorrection = new JustDataInterface({m_pSCPIInterface, GainCorrOrder, 1.0, nonFlashWritePermission, 6});
     m_pPhaseCorrection = new JustDataInterface({m_pSCPIInterface, PhaseCorrOrder, 0.0, nonFlashWritePermission, 6});
@@ -229,9 +230,7 @@ QString JustDataRangeGainPhaseOffset::m_ReadStatus(QString& sInput)
 QString JustDataRangeGainPhaseOffset::m_ComputeJustData(QString& sInput)
 {
     cSCPICommand cmd = sInput;
-
-    if (cmd.isCommand(1) && (cmd.getParam(0) == ""))
-    {
+    if (cmd.isCommand(1) && (cmd.getParam(0) == "")) {
         bool enable;
         if (m_nonFlashWritePermission(enable)) {
             if (enable) {

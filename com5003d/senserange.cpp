@@ -1,9 +1,6 @@
-#include <scpicommand.h>
-
 #include "senserange.h"
 #include "scpidelegate.h"
-#include "protonetcommand.h"
-
+#include "atmel.h"
 
 cSenseRange::cSenseRange(cSCPI *scpiinterface, QString name, QString alias, bool avail, double rValue, double rejection, double ovrejection, double adcrejection, quint8 rselcode, quint8 rspec) :
     ScpiConnection(scpiinterface),
@@ -17,7 +14,9 @@ cSenseRange::cSenseRange(cSCPI *scpiinterface, QString name, QString alias, bool
     m_nSelCode(rselcode),
     m_nRSpec(rspec)
 {
-    m_pJustdata = new JustDataRangeGainPhaseOffset(m_pSCPIInterface);
+    m_pJustdata = new JustDataRangeGainPhaseOffset(m_pSCPIInterface, [](bool& enable){
+        return pAtmel->getEEPROMAccessEnable(enable) == ZeraMcontrollerBase::cmddone;
+    });
 }
 
 
