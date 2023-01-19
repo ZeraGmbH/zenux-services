@@ -16,7 +16,7 @@ class cClampJustData: public JustDataRangeGainPhaseOffset
     Q_OBJECT
 
 public:
-    cClampJustData(cSCPI* scpiinterface, cSenseRange* cascadedRange, double cvRatio);
+    cClampJustData(cSCPI* scpiinterface, cSenseRange* cascadedRange, double cvRatio, std::function<bool (bool &)> nonFlashWritePermission);
 
 protected:
     virtual double getGainCorrection(double par) override;
