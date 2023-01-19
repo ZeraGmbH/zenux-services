@@ -1,11 +1,12 @@
 #ifndef ATMEL_H
 #define ATMEL_H
 
+#include <atmeliseeaccessenable.h>
 #include <atmelreadversioninterface.h>
 #include <zera_mcontroller_base.h>
 #include <QString>
 
-class cATMEL : public ZeraMcontrollerBase, public AtmelReadVersionInterface
+class cATMEL : public ZeraMcontrollerBase, public AtmelReadVersionInterface, public AtmelIsEEAccessEnable
 {
 public:
     cATMEL(QString devnode, quint8 adr, quint8 debuglevel);
@@ -28,7 +29,7 @@ public:
 
     atmelRM readRange(quint8 channel, quint8& range);
     atmelRM setRange(quint8 channel, quint8 range);
-    atmelRM getEEPROMAccessEnable(bool& enable);
+    atmelRM getEEPROMAccessEnable(bool& enable) override;
     atmelRM readSamplingRange(quint8& srange);
     atmelRM setSamplingRange(quint8 );
     atmelRM setMeasMode(quint8 mmode);
