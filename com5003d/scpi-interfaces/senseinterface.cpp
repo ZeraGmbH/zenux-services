@@ -285,7 +285,9 @@ bool cSenseInterface::importAdjData(QString &s, QDataStream &stream)
             }
         }
 
-        JustDataRangeGainPhaseOffset dummy(m_pSCPIInterface); // if the data was for SENSE but we didn't find channel or range
+        JustDataRangeGainPhaseOffset dummy(m_pSCPIInterface, [](bool& enable) {
+            return pAtmel->getEEPROMAccessEnable(enable) == ZeraMcontrollerBase::cmddone;
+        }); // if the data was for SENSE but we didn't find channel or range
         dummy.Deserialize(stream); // we read the data from stream to keep it in flow
         return true;
     }
