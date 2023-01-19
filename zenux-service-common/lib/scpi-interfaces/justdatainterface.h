@@ -22,7 +22,7 @@ public:
         cSCPI *scpiinterface;
         int order;
         double init;
-        bool(*checkPermission)(bool &enable);
+        std::function<bool(bool &)> checkPermission;
         int digits;
     };
     JustDataInterface(TJustDataParam param);
@@ -45,7 +45,7 @@ public:
 protected slots:
     virtual void executeCommand(int cmdCode, cProtonetCommand* protoCmd) override;
 protected:
-    bool(*m_checkPermission)(bool &enable);
+    std::function<bool(bool &)> m_checkPermission;
 private:
     quint8 m_nStatus;
     double* m_pCoefficient; // size of data depends on order
