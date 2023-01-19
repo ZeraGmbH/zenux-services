@@ -1,6 +1,7 @@
 #ifndef ATMEL_H
 #define ATMEL_H
 
+#include <atmelreadversioninterface.h>
 #include <QString>
 #include <intelhexfileio.h>
 #include <crcutils.h>
@@ -8,7 +9,7 @@
 #include <protocol_zera_hard.h>
 #include <zera_mcontroller_base.h>
 
-class cATMEL : public ZeraMcontrollerBase
+class cATMEL : public ZeraMcontrollerBase, public AtmelReadVersionInterface
 {
 public:
     cATMEL(QString devnode, quint8 adr, quint8 debuglevel);
@@ -18,7 +19,7 @@ public:
     atmelRM readDeviceName(QString& answer);
     atmelRM readPCBVersion(QString& answer);
     atmelRM writePCBVersion(QString& sVersion);
-    atmelRM readCTRLVersion(QString& answer);
+    atmelRM readCTRLVersion(QString& answer) override;
     atmelRM readLCAVersion(QString& answer);
     atmelRM startBootLoader();
     atmelRM readChannelStatus(quint8 channel, quint8& stat);
