@@ -420,7 +420,8 @@ std::function<bool(bool&)> cClamp::m_defaultAtmelEnabler = [] (bool &enable) {
     return pAtmel->getEEPROMAccessEnable(enable) == ZeraMcontrollerBase::cmddone;
 };
 
-std::function<bool(bool&)> cClamp::m_AlwaysEnabler = [] (bool &) {
+std::function<bool(bool&)> cClamp::m_AlwaysEnabler = [] (bool &enable) {
+    enable = true;
     return true;
 };
 
