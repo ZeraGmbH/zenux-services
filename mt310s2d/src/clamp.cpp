@@ -417,7 +417,7 @@ ClampTypes cClamp::readClampType()
 }
 
 std::function<bool(bool&)> cClamp::m_defaultAtmelEnabler = [] (bool &enable) {
-    return pAtmel->getEEPROMAccessEnable(enable) == ZeraMcontrollerBase::cmddone;
+    return pAtmel->hasPermission(enable);
 };
 
 std::function<bool(bool&)> cClamp::m_AlwaysEnabler = [] (bool &enable) {

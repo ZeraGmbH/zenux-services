@@ -77,8 +77,7 @@ quint8 cStatusInterface::getAuthorizationStatus()
     bool enable;
 
     ret  = 0;
-    if (pAtmel->getEEPROMAccessEnable(enable) == ZeraMcontrollerBase::cmddone)
-    {
+    if (pAtmel->hasPermission(enable)) {
         if (enable)
             ret = 1;
     }

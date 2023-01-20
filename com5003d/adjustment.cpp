@@ -180,7 +180,7 @@ bool cAdjustment::importJDataFlash()
     QString qs = QString(s);
 
     bool enable = false;
-    pAtmel->getEEPROMAccessEnable(enable);
+    pAtmel->hasPermission(enable);
 
     QString sDV = m_pSystemInfo->getDeviceVersion();
     if (qs != sDV) {

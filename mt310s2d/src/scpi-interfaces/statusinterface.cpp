@@ -69,20 +69,11 @@ quint8 cStatusInterface::getDeviceStatus()
 
 quint8 cStatusInterface::getAuthorizationStatus()
 {
-    quint8 ret;
+    quint8 ret = 0;
     bool enable;
-
-    ret  = 0;
-    if (pAtmel->getEEPROMAccessEnable(enable) == ZeraMcontrollerBase::cmddone)
-    {
+    if (pAtmel->hasPermission(enable)) {
         if (enable)
             ret = 1;
     }
-
     return ret;
 }
-
-
-
-
-

@@ -1,12 +1,12 @@
 #ifndef ATMEL_H
 #define ATMEL_H
 
-#include <atmeliseeaccessenable.h>
-#include <atmelreadversioninterface.h>
+#include "atmelpermissiontemplate.h"
+#include "atmelreadversioninterface.h"
 #include <zera_mcontroller_base.h>
 #include <QString>
 
-class cATMEL : public ZeraMcontrollerBase, public AtmelReadVersionInterface, public AtmelIsEEAccessEnable
+class cATMEL : public ZeraMcontrollerBase, public AtmelReadVersionInterface, public AtmelPermissionTemplate
 {
 public:
     cATMEL(QString devnode, quint8 adr, quint8 debuglevel);

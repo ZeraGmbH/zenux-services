@@ -305,7 +305,7 @@ bool cSenseInterface::importAdjData(QDataStream &stream)
     QString qs = QString(s);
 
     bool enable = false;
-    pAtmel->getEEPROMAccessEnable(enable);
+    pAtmel->hasPermission(enable);
 
     QString sDV = m_pSystemInfo->getDeviceVersion();
     if (qs != sDV) {
@@ -831,7 +831,7 @@ QString cSenseInterface::handleScpiReadAdjStatus(QString &sInput)
 JustRangeTripletOffsetGainPhase *cSenseInterface::CreateJustScpiInterfaceWithAtmelPermission()
 {
     return new JustRangeTripletOffsetGainPhase(m_pSCPIInterface, [](bool& enable){
-        return pAtmel->getEEPROMAccessEnable(enable) == ZeraMcontrollerBase::cmddone;
+        return pAtmel->hasPermission(enable);
     });
 }
 
