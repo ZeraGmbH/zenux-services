@@ -1,6 +1,6 @@
 #include "atmelpermissiontemplate.h"
 
-bool AtmelPermissionTemplate::hasPermission(bool &permission)
+bool AtmelPermissionTemplate::hasPermission(bool &allow)
 {
-    return getEEPROMAccessEnable(permission) == ZeraMcontrollerBase::cmddone;
+    return getEEPROMAccessEnable(allow) == ZeraMcontrollerBase::cmddone;
 }

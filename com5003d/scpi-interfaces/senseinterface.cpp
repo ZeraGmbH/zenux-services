@@ -9,6 +9,7 @@
 #include "adjflash.h"
 #include "protonetcommand.h"
 #include "atmel.h"
+#include "permissionfunctions.h"
 #include "ethsettings.h"
 #include "sensesettings.h"
 #include <xmlsettings.h>
@@ -18,9 +19,6 @@
 #include <QDomDocument>
 #include <QDomText>
 #include <QDebug>
-
-
-extern cATMEL* pAtmel;
 
 cSenseInterface::cSenseInterface(cCOM5003dServer *server) :
     cResource(server->getSCPIInterface())
@@ -286,7 +284,7 @@ bool cSenseInterface::importAdjData(QString &s, QDataStream &stream)
         }
 
         JustRangeTripletOffsetGainPhase dummy(m_pSCPIInterface, [](bool& enable) {
-            return pAtmel->hasPermission(enable);
+            return PermissionFunctions::allowAlways(enable);
         }); // if the data was for SENSE but we didn't find channel or range
         dummy.Deserialize(stream); // we read the data from stream to keep it in flow
         return true;
