@@ -1,6 +1,7 @@
 #include "senserange.h"
 #include "scpidelegate.h"
 #include "atmel.h"
+#include "permissionfunctions.h"
 
 cSenseRange::cSenseRange(cSCPI *scpiinterface, QString name, QString alias, bool avail, double rValue, double rejection, double ovrejection, double adcrejection, quint8 rselcode, quint8 rspec) :
     ScpiConnection(scpiinterface),
@@ -14,9 +15,7 @@ cSenseRange::cSenseRange(cSCPI *scpiinterface, QString name, QString alias, bool
     m_nSelCode(rselcode),
     m_nRSpec(rspec)
 {
-    m_pJustdata = new JustRangeTripletOffsetGainPhase(m_pSCPIInterface, [](bool& enable){
-        return pAtmel->hasPermission(enable);
-    });
+    m_pJustdata = new JustRangeTripletOffsetGainPhase(m_pSCPIInterface, PermissionFunctions::checkControllerPin);
 }
 
 

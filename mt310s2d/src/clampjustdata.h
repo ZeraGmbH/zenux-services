@@ -3,6 +3,7 @@
 
 #include "mt310s2justdata.h"
 #include "senserange.h"
+#include "permissionfunctions.h"
 
 // a clamp range consists of 2 stages . 1st the clamp itself and 2nd a voltage input range
 // assigned to the clamp. so we need an interface for the clamp adjustment data (same as
@@ -16,7 +17,10 @@ class cClampJustData: public JustRangeTripletOffsetGainPhase
     Q_OBJECT
 
 public:
-    cClampJustData(cSCPI* scpiinterface, cSenseRange* cascadedRange, double cvRatio, std::function<bool (bool &)> nonFlashWritePermission);
+    cClampJustData(cSCPI* scpiinterface,
+                   cSenseRange* cascadedRange,
+                   double cvRatio,
+                   std::function<bool (bool &)> nonFlashWritePermission = PermissionFunctions::checkControllerPin);
 
 protected:
     virtual double getGainCorrection(double par) override;

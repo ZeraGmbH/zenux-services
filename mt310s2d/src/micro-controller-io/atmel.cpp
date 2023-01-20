@@ -1,10 +1,10 @@
-#include <syslog.h>
-#include <crcutils.h>
-
 #include "mt310s2dglobal.h"
 #include "i2cutils.h"
 #include "atmel.h"
 #include "atmelerrorlog.h"
+#include "permissionfunctions.h"
+#include <syslog.h>
+#include <crcutils.h>
 
 enum hw_cmdcode
 {
@@ -48,6 +48,7 @@ enum hw_cmdcode
 cATMEL::cATMEL(QString devnode, quint8 adr, quint8 debuglevel) :
     ZeraMcontrollerBase(devnode, adr, debuglevel)
 {
+    PermissionFunctions::setPermissionPinController(this);
 }
 
 

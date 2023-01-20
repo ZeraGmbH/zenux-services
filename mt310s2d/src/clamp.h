@@ -85,8 +85,6 @@ private:
     quint8 m_nType; // 0 is undefined type
     quint32 m_nFlags; // for future purpose
     QDateTime m_AdjDateTime;
-    static std::function<bool(bool&)> m_defaultAtmelEnabler;
-    static std::function<bool(bool&)> m_AlwaysEnabler;
 };
 
 #endif // CLAMP_H
