@@ -20,7 +20,7 @@ public:
     cClampJustData(cSCPI* scpiinterface,
                    cSenseRange* cascadedRange,
                    double cvRatio,
-                   FuncPermissionCheck nonFlashWritePermission = PermissionFunctions::checkControllerPin);
+                   PermissionStructAdj permission = PermissionStructAdj());
 
 protected:
     virtual double getGainCorrection(double par) override;

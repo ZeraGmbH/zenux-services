@@ -16,4 +16,13 @@ private:
     static AtmelPermissionTemplate *m_controller;
 };
 
+struct PermissionStructAdj
+{
+    FuncPermissionCheck funcAllowAdjInit = PermissionFunctions::checkControllerPin;
+    FuncPermissionCheck funcAllowAdjOffset = PermissionFunctions::checkControllerPin;
+    FuncPermissionCheck funcAllowAdjGain = PermissionFunctions::checkControllerPin;
+    FuncPermissionCheck funcAllowAdjPhase = PermissionFunctions::checkControllerPin;
+    FuncPermissionCheck funcAllowAdjCompute = PermissionFunctions::checkControllerPin;
+};
+
 #endif // PERMISSIONFUNCTIONS_H

@@ -32,7 +32,7 @@ class JustRangeTripletOffsetGainPhase: public ScpiConnection  // alle korrekturd
     Q_OBJECT
 
 public:
-    JustRangeTripletOffsetGainPhase(cSCPI* scpiinterface, FuncPermissionCheck nonFlashWritePermission);
+    JustRangeTripletOffsetGainPhase(cSCPI* scpiinterface, PermissionStructAdj permissions = PermissionStructAdj());
     ~JustRangeTripletOffsetGainPhase();
     virtual void initSCPIConnection(QString leadingNodes) override;
 
@@ -58,7 +58,7 @@ protected:
     QString mReadJustOffsetCorrection(QString&sInput);
     QString m_ReadStatus(QString& sInput);
     QString m_ComputeJustData(QString& sInput);
-    QString m_InitJustData(QString& sInput);
+    QString m_InitJustData(QString& sInput); // done in Adjustmentmodule - left for compatibility
 
     virtual double getGainCorrection(double par);
     virtual double getJustGainCorrection(double par);
@@ -67,7 +67,7 @@ protected:
     virtual double getOffsetCorrection(double par);
     virtual double getJustOffsetCorrection(double par);
 private:
-    std::function<bool(bool&)> m_nonFlashWritePermission;
+    PermissionStructAdj m_permissions;
 };
 
 #endif
