@@ -830,9 +830,7 @@ QString cSenseInterface::handleScpiReadAdjStatus(QString &sInput)
 
 JustRangeTripletOffsetGainPhase *cSenseInterface::CreateJustScpiInterfaceWithAtmelPermission()
 {
-    return new JustRangeTripletOffsetGainPhase(m_pSCPIInterface, [](bool& enable){
-        return pAtmel->hasPermission(enable);
-    });
+    return new JustRangeTripletOffsetGainPhase(m_pSCPIInterface);
 }
 
 void cSenseInterface::setNotifierSenseMMode()

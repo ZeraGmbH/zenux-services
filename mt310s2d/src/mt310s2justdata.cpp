@@ -4,13 +4,13 @@
 #include "scpidelegate.h"
 #include <scpi.h>
 
-JustRangeTripletOffsetGainPhase::JustRangeTripletOffsetGainPhase(cSCPI *scpiinterface, FuncPermissionCheck nonFlashWritePermission) :
+JustRangeTripletOffsetGainPhase::JustRangeTripletOffsetGainPhase(cSCPI *scpiinterface, PermissionStructAdj permissions) :
     ScpiConnection(scpiinterface),
-    m_nonFlashWritePermission(nonFlashWritePermission)
+    m_permissions(permissions)
 {
-    m_pGainCorrection = new JustDataInterface({m_pSCPIInterface, GainCorrOrder, 1.0, nonFlashWritePermission, 6});
-    m_pPhaseCorrection = new JustDataInterface({m_pSCPIInterface, PhaseCorrOrder, 0.0, nonFlashWritePermission, 6});
-    m_pOffsetCorrection =  new JustDataInterface({m_pSCPIInterface, OffsetCorrOrder, 0.0, nonFlashWritePermission, 6});
+    m_pGainCorrection = new JustDataInterface({m_pSCPIInterface, GainCorrOrder, 1.0, permissions.funcAllowAdjGain, 6});
+    m_pPhaseCorrection = new JustDataInterface({m_pSCPIInterface, PhaseCorrOrder, 0.0, permissions.funcAllowAdjPhase, 6});
+    m_pOffsetCorrection =  new JustDataInterface({m_pSCPIInterface, OffsetCorrOrder, 0.0, permissions.funcAllowAdjOffset, 6});
 }
 
 JustRangeTripletOffsetGainPhase::~JustRangeTripletOffsetGainPhase()
@@ -208,7 +208,7 @@ QString JustRangeTripletOffsetGainPhase::m_ComputeJustData(QString& sInput)
     cSCPICommand cmd = sInput;
     if(cmd.isCommand(1) && (cmd.getParam(0) == "")) {
         bool enable;
-        if(m_nonFlashWritePermission(enable)) {
+        if(m_permissions.funcAllowAdjCompute(enable)) {
             if (enable) {
                 m_pGainCorrection->cmpCoefficients();
                 m_pPhaseCorrection->cmpCoefficients();
@@ -230,7 +230,7 @@ QString JustRangeTripletOffsetGainPhase::m_InitJustData(QString &sInput)
     cSCPICommand cmd = sInput;
     if (cmd.isCommand(1) && (cmd.getParam(0) == "")) {
         bool enable;
-        if(m_nonFlashWritePermission(enable)) {
+        if(m_permissions.funcAllowAdjInit(enable)) {
             if (enable) {
                 m_pGainCorrection->initJustData(1.0);
                 m_pPhaseCorrection->initJustData(0.0);
