@@ -2,6 +2,7 @@
 #define MT310S2JUSTDATA_H
 
 #include "scpiconnection.h"
+#include "permissionfunctions.h"
 
 enum DirectJustCommands
 {
@@ -31,7 +32,7 @@ class JustRangeTripletOffsetGainPhase: public ScpiConnection  // alle korrekturd
     Q_OBJECT
 
 public:
-    JustRangeTripletOffsetGainPhase(cSCPI* scpiinterface, std::function<bool (bool &)> nonFlashWritePermission);
+    JustRangeTripletOffsetGainPhase(cSCPI* scpiinterface, FuncPermissionCheck nonFlashWritePermission);
     ~JustRangeTripletOffsetGainPhase();
     virtual void initSCPIConnection(QString leadingNodes) override;
 

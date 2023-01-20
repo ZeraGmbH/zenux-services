@@ -4,7 +4,7 @@
 #include "scpidelegate.h"
 #include <scpi.h>
 
-JustRangeTripletOffsetGainPhase::JustRangeTripletOffsetGainPhase(cSCPI *scpiinterface, std::function<bool (bool &)> nonFlashWritePermission) :
+JustRangeTripletOffsetGainPhase::JustRangeTripletOffsetGainPhase(cSCPI *scpiinterface, FuncPermissionCheck nonFlashWritePermission) :
     ScpiConnection(scpiinterface),
     m_nonFlashWritePermission(nonFlashWritePermission)
 {

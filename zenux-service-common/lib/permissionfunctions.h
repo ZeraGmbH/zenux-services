@@ -4,12 +4,14 @@
 #include "atmelpermissiontemplate.h"
 #include <functional>
 
+typedef std::function<bool (bool &)> FuncPermissionCheck;
+
 class PermissionFunctions
 {
 public:
     static void setPermissionPinController(AtmelPermissionTemplate *controller);
-    const static std::function<bool (bool &)> checkControllerPin;
-    const static std::function<bool (bool &)> allowAlways;
+    const static FuncPermissionCheck checkControllerPin;
+    const static FuncPermissionCheck allowAlways;
 private:
     static AtmelPermissionTemplate *m_controller;
 };
