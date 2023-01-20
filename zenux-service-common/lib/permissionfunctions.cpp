@@ -2,12 +2,12 @@
 
 AtmelPermissionTemplate *PermissionFunctions::m_controller = nullptr;
 
-const std::function<bool (bool &)> PermissionFunctions::checkControllerPin =
+const FuncPermissionCheck PermissionFunctions::checkControllerPin =
     [](bool &allow) {
         return m_controller->hasPermission(allow);
     };
 
-const std::function<bool (bool &)> PermissionFunctions::allowAlways =
+const FuncPermissionCheck PermissionFunctions::allowAlways =
     [](bool &allow) {
         allow = true;
         return true;
