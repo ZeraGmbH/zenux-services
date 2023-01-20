@@ -15,7 +15,7 @@ cSenseRange::cSenseRange(cSCPI *scpiinterface, QString name, QString alias, bool
     m_nRSpec(rspec)
 {
     m_pJustdata = new JustRangeTripletOffsetGainPhase(m_pSCPIInterface, [](bool& enable){
-        return pAtmel->getEEPROMAccessEnable(enable) == ZeraMcontrollerBase::cmddone;
+        return pAtmel->hasPermission(enable);
     });
 }
 

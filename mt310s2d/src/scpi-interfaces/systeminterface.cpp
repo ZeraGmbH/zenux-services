@@ -361,11 +361,10 @@ QString cSystemInterface::m_LoadEEProm(QString &sInput)
 QString cSystemInterface::m_AdjFlashWrite(QString &sInput)
 {
     cSCPICommand cmd = sInput;
-    bool enable;
-
     if (cmd.isCommand(1) && (cmd.getParam(0) == ""))
     {
-        if (pAtmel->getEEPROMAccessEnable(enable) == ZeraMcontrollerBase::cmddone)
+        bool enable;
+        if (pAtmel->hasPermission(enable))
         {
             if (enable)
             {
@@ -414,7 +413,7 @@ QString cSystemInterface::m_AdjXmlImportExport(QString &sInput)
     else
     {
         bool enable;
-        if (pAtmel->getEEPROMAccessEnable(enable) == ZeraMcontrollerBase::cmddone)
+        if (pAtmel->hasPermission(enable))
         {
             if (enable)
             {
@@ -465,7 +464,7 @@ QString cSystemInterface::m_AdjXMLRead(QString &sInput)
     if (cmd.isCommand(1))
     {
         bool enable;
-        if (pAtmel->getEEPROMAccessEnable(enable) == ZeraMcontrollerBase::cmddone)
+        if (pAtmel->hasPermission(enable))
         {
             if (enable)
             {

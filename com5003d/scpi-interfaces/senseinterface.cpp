@@ -286,7 +286,7 @@ bool cSenseInterface::importAdjData(QString &s, QDataStream &stream)
         }
 
         JustRangeTripletOffsetGainPhase dummy(m_pSCPIInterface, [](bool& enable) {
-            return pAtmel->getEEPROMAccessEnable(enable) == ZeraMcontrollerBase::cmddone;
+            return pAtmel->hasPermission(enable);
         }); // if the data was for SENSE but we didn't find channel or range
         dummy.Deserialize(stream); // we read the data from stream to keep it in flow
         return true;
@@ -673,7 +673,7 @@ QString cSenseInterface::m_InitSenseAdjData(QString &sInput)
     // cmd.isCommand(0) is not correct but we leave it for compatibility
     {
         bool enable;
-        if (pAtmel->getEEPROMAccessEnable(enable) == ZeraMcontrollerBase::cmddone)
+        if (pAtmel->hasPermission(enable))
         {
             if (enable)
             {
@@ -702,7 +702,7 @@ QString cSenseInterface::m_ComputeSenseAdjData(QString &sInput)
     {
 
         bool enable;
-        if (pAtmel->getEEPROMAccessEnable(enable) == ZeraMcontrollerBase::cmddone)
+        if (pAtmel->hasPermission(enable))
         {
             if (enable)
             {

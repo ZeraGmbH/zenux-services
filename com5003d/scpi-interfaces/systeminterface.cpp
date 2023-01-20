@@ -362,7 +362,7 @@ QString cSystemInterface::m_AdjFlashWrite(QString &sInput)
     if (cmd.isCommand(1) && (cmd.getParam(0) == ""))
     {
         bool enable;
-        if (pAtmel->getEEPROMAccessEnable(enable) == ZeraMcontrollerBase::cmddone)
+        if (pAtmel->hasPermission(enable))
         {
             if (enable)
             {
@@ -427,7 +427,7 @@ QString cSystemInterface::m_AdjXMLRead(QString &sInput)
     if (cmd.isCommand(1))
     {
         bool enable = false;
-        pAtmel->getEEPROMAccessEnable(enable);
+        pAtmel->hasPermission(enable);
         if (enable)
         {
             QString filename = cmd.getParam(0);

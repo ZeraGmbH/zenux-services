@@ -132,7 +132,7 @@ QString cClampInterface::writeAllClamps(QString &sInput)
     if (cmd.isCommand(1) && (cmd.getParam(0) == "")) {
         if (m_clampHash.count() > 0) {
             bool enable;
-            if (pAtmel->getEEPROMAccessEnable(enable) == ZeraMcontrollerBase::cmddone) {
+            if (pAtmel->hasPermission(enable)) {
                 if (enable) {
                     bool done = true;
                     for(auto clamp : m_clampHash) {
@@ -178,7 +178,7 @@ QString cClampInterface::importExportAllClamps(QString &sInput)
         QString answer;
         bool err = false;
         bool enable;
-        if (pAtmel->getEEPROMAccessEnable(enable) == ZeraMcontrollerBase::cmddone) {
+        if (pAtmel->hasPermission(enable)) {
             if (enable) {
                 QString allXML = cmd.getParam(); // we fetch all input
                 while (allXML[0] == QChar(' ')) { // we remove all leading blanks
