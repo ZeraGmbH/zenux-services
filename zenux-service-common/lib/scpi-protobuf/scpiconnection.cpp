@@ -23,3 +23,9 @@ void ScpiConnection::removeSCPIConnections()
         }
     }
 }
+
+void ScpiConnection::ensureTrailingColonOnNonEmptyParentNodes(QString &leadingNodes)
+{
+    if(!leadingNodes.isEmpty() && !leadingNodes.endsWith(":"))
+        leadingNodes.append(":");
+}
