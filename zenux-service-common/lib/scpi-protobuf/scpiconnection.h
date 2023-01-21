@@ -22,7 +22,6 @@ protected:
     cSCPI* m_pSCPIInterface;
     QList<cSCPIDelegate*> m_DelegateList;
 protected slots:
-    virtual void executeCommand(int, QString&, QString&);
     virtual void executeCommand(int cmdCode, cProtonetCommand* protoCmd) = 0;
 };
 

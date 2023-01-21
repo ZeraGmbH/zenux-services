@@ -23,7 +23,3 @@ void ScpiConnection::removeSCPIConnections()
         }
     }
 }
-
-void ScpiConnection::executeCommand(int, QString&, QString&)
-{
-}
