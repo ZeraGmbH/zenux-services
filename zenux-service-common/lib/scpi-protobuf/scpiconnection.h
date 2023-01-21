@@ -19,6 +19,7 @@ signals:
     void cmdExecutionDone(cProtonetCommand* protoCmd);
 protected:
     void removeSCPIConnections();
+    void ensureTrailingColonOnNonEmptyParentNodes(QString &leadingNodes);
     cSCPI* m_pSCPIInterface;
     QList<cSCPIDelegate*> m_DelegateList;
 protected slots:
