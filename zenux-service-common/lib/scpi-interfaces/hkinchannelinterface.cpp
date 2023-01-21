@@ -17,8 +17,7 @@ HkInChannelInterface::HkInChannelInterface(cSCPI *scpiinterface, QString descrip
 
 void HkInChannelInterface::initSCPIConnection(QString leadingNodes)
 {
-    if (leadingNodes != "")
-        leadingNodes += ":";
+    ensureTrailingColonOnNonEmptyParentNodes(leadingNodes);
     cSCPIDelegate* delegate;
     delegate = new cSCPIDelegate(QString("%1%2").arg(leadingNodes).arg(m_sName),"ALIAS", SCPI::isQuery, m_pSCPIInterface, cmdAlias);
     m_DelegateList.append(delegate);

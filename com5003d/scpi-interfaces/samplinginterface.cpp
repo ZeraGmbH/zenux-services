@@ -45,11 +45,8 @@ cSamplingInterface::cSamplingInterface(cCOM5003dServer *server) :
 
 void cSamplingInterface::initSCPIConnection(QString leadingNodes)
 {
+    ensureTrailingColonOnNonEmptyParentNodes(leadingNodes);
     cSCPIDelegate* delegate;
-
-    if (leadingNodes != "")
-        leadingNodes += ":";
-
     delegate = new cSCPIDelegate(QString("%1SAMPLE").arg(leadingNodes),"VERSION", SCPI::isQuery, m_pSCPIInterface, SamplingSystem::cmdVersion);
     m_DelegateList.append(delegate);
     connect(delegate, &cSCPIDelegate::execute, this, &cSamplingInterface::executeCommand);

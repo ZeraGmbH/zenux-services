@@ -47,11 +47,8 @@ cECalculatorInterface::~cECalculatorInterface()
 
 void cECalculatorInterface::initSCPIConnection(QString leadingNodes)
 {
+    ensureTrailingColonOnNonEmptyParentNodes(leadingNodes);
     cSCPIDelegate* delegate;
-
-    if (leadingNodes != "")
-        leadingNodes += ":";
-
     delegate = new cSCPIDelegate(QString("%1ECALCULATOR").arg(leadingNodes),"VERSION",SCPI::isQuery,m_pSCPIInterface, ECalcSystem::cmdVersion);
     m_DelegateList.append(delegate);
     connect(delegate, &cSCPIDelegate::execute, this, &cECalculatorInterface::executeCommand);

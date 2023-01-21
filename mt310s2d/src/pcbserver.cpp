@@ -32,8 +32,7 @@ cPCBServer::cPCBServer(QString name, QString version) :
 
 void cPCBServer::initSCPIConnection(QString leadingNodes)
 {
-    if (leadingNodes != "")
-        leadingNodes += ":";
+    ensureTrailingColonOnNonEmptyParentNodes(leadingNodes);
     cSCPIDelegate* delegate;
     delegate = new cSCPIDelegate(QString("%1SERVER").arg(leadingNodes),"REGISTER",SCPI::isCmdwP, m_pSCPIInterface, PCBServer::cmdRegister);
     m_DelegateList.append(delegate);

@@ -15,11 +15,8 @@ cSampleRange::cSampleRange(cSCPI *scpiinterface, QString name, quint16 srate, qu
 
 void cSampleRange::initSCPIConnection(QString leadingNodes)
 {
+    ensureTrailingColonOnNonEmptyParentNodes(leadingNodes);
     cSCPIDelegate* delegate;
-
-    if (leadingNodes != "")
-        leadingNodes += ":";
-
     delegate = new cSCPIDelegate(QString("%1%2").arg(leadingNodes).arg(m_sName),"SRATE", SCPI::isQuery, m_pSCPIInterface, SampleRangeSamples);
     m_DelegateList.append(delegate);
     connect(delegate, &cSCPIDelegate::execute, this, &cSampleRange::executeCommand);

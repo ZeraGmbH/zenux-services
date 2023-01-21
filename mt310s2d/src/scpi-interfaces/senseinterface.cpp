@@ -141,10 +141,9 @@ cSenseInterface::~cSenseInterface()
 
 void cSenseInterface::initSCPIConnection(QString leadingNodes)
 {
-    if (leadingNodes != "") {
-        leadingNodes += ":";
-    }
-    cSCPIDelegate* delegate = new cSCPIDelegate(QString("%1SENSE").arg(leadingNodes),"VERSION",SCPI::isQuery, m_pSCPIInterface, SenseSystem::cmdVersion);
+    ensureTrailingColonOnNonEmptyParentNodes(leadingNodes);
+    cSCPIDelegate* delegate;
+    delegate = new cSCPIDelegate(QString("%1SENSE").arg(leadingNodes),"VERSION",SCPI::isQuery, m_pSCPIInterface, SenseSystem::cmdVersion);
     m_DelegateList.append(delegate);
     connect(delegate, &cSCPIDelegate::execute, this, &cSenseInterface::executeCommand);
     delegate = new cSCPIDelegate(QString("%1SENSE").arg(leadingNodes),"MMODE",SCPI::isQuery | SCPI::isCmdwP , m_pSCPIInterface, SenseSystem::cmdMMode);
