@@ -31,8 +31,7 @@ FOutGroupResourceAndInterface::~FOutGroupResourceAndInterface()
 
 void FOutGroupResourceAndInterface::initSCPIConnection(QString leadingNodes)
 {
-    if (leadingNodes != "")
-        leadingNodes += ":";
+    ensureTrailingColonOnNonEmptyParentNodes(leadingNodes);
     cSCPIDelegate* delegate;
     delegate = new cSCPIDelegate(QString("%1SOURCE").arg(leadingNodes),"VERSION",SCPI::isQuery, m_pSCPIInterface, cmdVersion);
     m_DelegateList.append(delegate);

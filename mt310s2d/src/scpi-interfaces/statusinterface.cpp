@@ -15,8 +15,7 @@ cStatusInterface::cStatusInterface(cMT310S2dServer* server) :
 
 void cStatusInterface::initSCPIConnection(QString leadingNodes)
 {
-    if (leadingNodes != "")
-        leadingNodes += ":";
+    ensureTrailingColonOnNonEmptyParentNodes(leadingNodes);
     cSCPIDelegate* delegate;
     delegate = new cSCPIDelegate(QString("%1STATUS").arg(leadingNodes),"DEVICE",SCPI::isQuery, m_pSCPIInterface, StatusSystem::cmdDevice);
     m_DelegateList.append(delegate);

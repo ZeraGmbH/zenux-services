@@ -35,12 +35,12 @@ JustDataInterface::~JustDataInterface()
 
 void JustDataInterface::initSCPIConnection(QString leadingNodes)
 {
-    if (leadingNodes != "")
-        leadingNodes += ":";
     cSCPIDelegate* delegate;
     delegate = new cSCPIDelegate(QString("%1").arg(leadingNodes), "STATUS", SCPI::isCmdwP || SCPI::isQuery, m_pSCPIInterface, JustStatus);
     m_DelegateList.append(delegate);
     connect(delegate, &cSCPIDelegate::execute, this, &JustDataInterface::executeCommand);
+
+    ensureTrailingColonOnNonEmptyParentNodes(leadingNodes); // upper lines do not expect trailing ':' - we should use lists for leading nodes...
     delegate = new cSCPIDelegate(QString("%1COEFFICIENT").arg(leadingNodes), "0", SCPI::isCmdwP || SCPI::isQuery, m_pSCPIInterface, JustCoefficient0);
     m_DelegateList.append(delegate);
     connect(delegate, &cSCPIDelegate::execute, this, &JustDataInterface::executeCommand);

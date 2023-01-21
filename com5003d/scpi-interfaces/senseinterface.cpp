@@ -154,11 +154,8 @@ cSenseInterface::~cSenseInterface()
 
 void cSenseInterface::initSCPIConnection(QString leadingNodes)
 {
+    ensureTrailingColonOnNonEmptyParentNodes(leadingNodes);
     cSCPIDelegate* delegate;
-
-    if (leadingNodes != "")
-        leadingNodes += ":";
-
     delegate = new cSCPIDelegate(QString("%1SENSE").arg(leadingNodes),"VERSION",SCPI::isQuery,m_pSCPIInterface, SenseSystem::cmdVersion);
     m_DelegateList.append(delegate);
     connect(delegate, &cSCPIDelegate::execute, this, &cSenseInterface::executeCommand);

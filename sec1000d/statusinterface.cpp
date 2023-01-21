@@ -10,11 +10,8 @@ cStatusInterface::cStatusInterface() :
 
 void cStatusInterface::initSCPIConnection(QString leadingNodes)
 {
+    ensureTrailingColonOnNonEmptyParentNodes(leadingNodes);
     cSCPIDelegate* delegate;
-
-    if (leadingNodes != "")
-        leadingNodes += ":";
-
     delegate = new cSCPIDelegate(QString("%1STATUS").arg(leadingNodes),"DEVICE",SCPI::isQuery, m_pSCPIInterface, StatusSystem::cmdDevice);
     m_DelegateList.append(delegate);
     connect(delegate, &cSCPIDelegate::execute, this, &cStatusInterface::executeCommand);

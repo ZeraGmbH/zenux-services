@@ -26,8 +26,7 @@ ScInGroupResourceAndInterface::~ScInGroupResourceAndInterface()
 
 void ScInGroupResourceAndInterface::initSCPIConnection(QString leadingNodes)
 {
-    if (leadingNodes != "")
-        leadingNodes += ":";
+    ensureTrailingColonOnNonEmptyParentNodes(leadingNodes);
     cSCPIDelegate* delegate;
     delegate = new cSCPIDelegate(QString("%1SCHEAD").arg(leadingNodes),"VERSION",SCPI::isQuery, m_pSCPIInterface, cmdVersion);
     m_DelegateList.append(delegate);

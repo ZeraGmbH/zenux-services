@@ -47,11 +47,8 @@ cECalculatorChannel::~cECalculatorChannel()
 
 void cECalculatorChannel::initSCPIConnection(QString leadingNodes)
 {
+    ensureTrailingColonOnNonEmptyParentNodes(leadingNodes);
     cSCPIDelegate* delegate;
-
-    if (leadingNodes != "")
-        leadingNodes += ":";
-
     delegate = new cSCPIDelegate(QString("%1%2").arg(leadingNodes).arg(m_sName), QString("R%1").arg(ECALCREG::CMD), SCPI::isCmdwP | SCPI::isQuery, m_pSCPIInterface, ECalcChannel::cmdRegister);
     m_DelegateList.append(delegate);
     connect(delegate, &cSCPIDelegate::execute, this, &cECalculatorChannel::executeCommand);

@@ -22,8 +22,7 @@ JustRangeTripletOffsetGainPhase::~JustRangeTripletOffsetGainPhase()
 
 void JustRangeTripletOffsetGainPhase::initSCPIConnection(QString leadingNodes)
 {
-    if (leadingNodes != "")
-        leadingNodes += ":";
+    ensureTrailingColonOnNonEmptyParentNodes(leadingNodes);
     cSCPIDelegate* delegate;
     delegate = new cSCPIDelegate(QString("%1CORRECTION").arg(leadingNodes), "GAIN", SCPI::CmdwP , m_pSCPIInterface, DirectGain);
     m_DelegateList.append(delegate);

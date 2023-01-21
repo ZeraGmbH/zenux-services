@@ -39,8 +39,7 @@ cSamplingInterface::cSamplingInterface(cMT310S2dServer* server) :
 
 void cSamplingInterface::initSCPIConnection(QString leadingNodes)
 {
-    if (leadingNodes != "")
-        leadingNodes += ":";
+    ensureTrailingColonOnNonEmptyParentNodes(leadingNodes);
     cSCPIDelegate* delegate;
     delegate = new cSCPIDelegate(QString("%1SAMPLE").arg(leadingNodes),"VERSION", SCPI::isQuery, m_pSCPIInterface, SamplingSystem::cmdVersion);
     m_DelegateList.append(delegate);
