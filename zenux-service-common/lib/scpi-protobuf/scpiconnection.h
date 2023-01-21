@@ -2,9 +2,9 @@
 #define SCPICONNECTION_H
 
 #include "scpidelegate.h"
-#include <QList>
 #include "notificationstring.h"
 #include "notificationvalue.h"
+#include <QList>
 
 class ScpiConnection: public QObject // pure virtual base class for scpi model interfaces
 {
