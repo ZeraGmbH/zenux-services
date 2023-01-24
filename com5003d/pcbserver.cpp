@@ -3,15 +3,14 @@
 #include "resource.h"
 #include "scpiconnection.h"
 #include "ethsettings.h"
-#include <xiqnetpeer.h>
 #include "notzeronumgen.h"
+#include <xiqnetpeer.h>
 #include <xmlconfigreader.h>
 #include <xiqnetserver.h>
 #include <scpi.h>
 #include <scpisingletonfactory.h>
 #include <fcntl.h>
 #include <unistd.h>
-#include <netmessages.pb.h>
 #include <QtDebug>
 #include <QFile>
 #include <QByteArray>
@@ -21,8 +20,8 @@
 #include <QTcpServer>
 #include <QDataStream>
 
-cPCBServer::cPCBServer(QString name, QString version)
-    : ScpiConnection(ScpiSingletonFactory::getScpiObj(name)),
+cPCBServer::cPCBServer(QString name, QString version) :
+    ScpiConnection(ScpiSingletonFactory::getScpiObj(name)),
     m_sServerName(name),
     m_sServerVersion(version)
 {

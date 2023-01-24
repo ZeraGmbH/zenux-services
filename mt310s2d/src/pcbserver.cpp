@@ -24,8 +24,6 @@ cPCBServer::cPCBServer(QString name, QString version) :
     ScpiConnection(ScpiSingletonFactory::getScpiObj(name)),
     m_sServerName(name),
     m_sServerVersion(version)
-
-
 {
     myXMLConfigReader = new Zera::XMLConfig::cReader();
 }
