@@ -60,11 +60,11 @@ private:
     void doUnregisterNotifier(XiQNetPeer *peer, const QByteArray &clientID = QByteArray());
 
 private slots:
-    virtual void establishNewConnection(XiQNetPeer* newClient);
-    void executeCommandProto(std::shared_ptr<google::protobuf::Message> cmd);
-    virtual void establishNewNotifier(NotificationValue *notifier);
-    virtual void asyncHandler(quint32 irqreg);
-    virtual void notifyPeerConnectionClosed();
+    void onEstablishNewConnection(XiQNetPeer* newClient);
+    void onExecuteCommandProto(std::shared_ptr<google::protobuf::Message> cmd);
+    void onEstablishNewNotifier(NotificationValue *notifier);
+    void onNotifierChanged(quint32 irqreg);
+    void onNotifyPeerConnectionClosed();
 };
 
 #endif // PCBSERVER_H

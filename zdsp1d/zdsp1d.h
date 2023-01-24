@@ -235,9 +235,9 @@ private:
     QTimer m_retryTimer;
 
 private slots:
-    virtual void establishNewConnection(XiQNetPeer* newClient);
+    virtual void onEstablishNewConnection(XiQNetPeer* newClient);
     virtual void deleteConnection();
-    void executeCommandProto(std::shared_ptr<google::protobuf::Message> cmd);
+    void onExecuteCommandProto(std::shared_ptr<google::protobuf::Message> cmd);
 
     void setSCPIConnection();
     virtual void SCPIInput();

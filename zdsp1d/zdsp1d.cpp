@@ -832,7 +832,7 @@ void cZDSP1Server::doSetupServer()
 
     myProtonetServer =  new XiQNetServer(this);
     myProtonetServer->setDefaultWrapper(&m_ProtobufWrapper);
-    connect(myProtonetServer, &XiQNetServer::sigClientConnected, this, &cZDSP1Server::establishNewConnection);
+    connect(myProtonetServer, &XiQNetServer::sigClientConnected, this, &cZDSP1Server::onEstablishNewConnection);
     myProtonetServer->startServer(m_pETHSettings->getPort(EthSettings::protobufserver)); // and can start the server now
 
     if (m_pETHSettings->isSCPIactive())
@@ -2266,9 +2266,9 @@ cZDSP1Client* cZDSP1Server::GetClient(XiQNetPeer *peer)
 }
 
 
-void cZDSP1Server::establishNewConnection(XiQNetPeer *newClient)
+void cZDSP1Server::onEstablishNewConnection(XiQNetPeer *newClient)
 {
-    connect(newClient, &XiQNetPeer::sigMessageReceived, this, &cZDSP1Server::executeCommandProto);
+    connect(newClient, &XiQNetPeer::sigMessageReceived, this, &cZDSP1Server::onExecuteCommandProto);
     connect(newClient, &XiQNetPeer::sigConnectionClosed, this, &cZDSP1Server::deleteConnection);
     AddClient(newClient); // we additionally add the client to our list
 }
@@ -2281,7 +2281,7 @@ void cZDSP1Server::deleteConnection()
 }
 
 
-void cZDSP1Server::executeCommandProto(std::shared_ptr<google::protobuf::Message> cmd)
+void cZDSP1Server::onExecuteCommandProto(std::shared_ptr<google::protobuf::Message> cmd)
 {
     QString m_sInput, m_sOutput;
     std::shared_ptr<ProtobufMessage::NetMessage> protobufCommand = nullptr;
