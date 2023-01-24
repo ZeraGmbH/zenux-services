@@ -1,7 +1,7 @@
 #include "adjustment.h"
 #include "statusinterface.h"
 #include "protonetcommand.h"
-#include "atmel.h"
+#include "permissionfunctions.h"
 #include <scpi.h>
 
 cStatusInterface::cStatusInterface(cSCPI *scpiInterface, AdjustmentStatusInterface *adjustmentStatusInterface) :
@@ -55,9 +55,8 @@ void cStatusInterface::executeCommand(int cmdCode, cProtonetCommand *protoCmd)
 
 quint8 cStatusInterface::getDeviceStatus()
 {
-    QString s;
-
-    if (pAtmel->readDeviceName(s) == ZeraMcontrollerBase::cmddone) // no problem reading from atmel
+    bool enable;
+    if (PermissionFunctions::checkControllerPin(enable)) // no problem reading from atmel
         return 1; // means device available
     else
         return 0;
@@ -68,7 +67,7 @@ quint8 cStatusInterface::getAuthorizationStatus()
 {
     quint8 ret = 0;
     bool enable;
-    if (pAtmel->hasPermission(enable)) {
+    if (PermissionFunctions::checkControllerPin(enable)) {
         if (enable)
             ret = 1;
     }
