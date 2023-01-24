@@ -1,4 +1,3 @@
-#include "adjustment.h"
 #include "statusinterface.h"
 #include "protonetcommand.h"
 #include "permissionfunctions.h"

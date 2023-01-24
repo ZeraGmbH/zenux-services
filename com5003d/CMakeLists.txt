@@ -2,7 +2,6 @@ set(SOURCES
     micro-controller-io/atmel.cpp
     scpi-interfaces/samplinginterface.cpp
     scpi-interfaces/senseinterface.cpp
-    scpi-interfaces/statusinterface.cpp
     scpi-interfaces/systeminterface.cpp
     settings/i2csettings.cpp
     settings/sensesettings.cpp
@@ -21,7 +20,6 @@ set(HEADER
     micro-controller-io/atmel.h
     scpi-interfaces/samplinginterface.h
     scpi-interfaces/senseinterface.h
-    scpi-interfaces/statusinterface.h
     scpi-interfaces/systeminterface.h
     settings/i2csettings.h
     settings/sensesettings.h
