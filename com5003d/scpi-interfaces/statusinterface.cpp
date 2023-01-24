@@ -4,9 +4,9 @@
 #include "atmel.h"
 #include <scpi.h>
 
-cStatusInterface::cStatusInterface(cCOM5003dServer* server) :
-    ScpiConnection(server->getSCPIInterface()),
-    m_pMyServer(server)
+cStatusInterface::cStatusInterface(cSCPI *scpiInterface, AdjustmentStatusInterface *adjustmentStatusInterface) :
+    ScpiConnection(scpiInterface),
+    m_adjustmentStatusInterface(adjustmentStatusInterface)
 {
 }
 
@@ -38,7 +38,7 @@ void cStatusInterface::executeCommand(int cmdCode, cProtonetCommand *protoCmd)
             protoCmd->m_sOutput = QString("%1").arg(getDeviceStatus());
             break; // StatusDevice
         case StatusSystem::cmdAdjustment:
-            protoCmd->m_sOutput = QString("%1").arg(m_pMyServer->m_pAdjHandler->getAdjustmentStatus());
+            protoCmd->m_sOutput = QString("%1").arg(m_adjustmentStatusInterface->getAdjustmentStatus());
             break; // StatusAdjustment
         case StatusSystem::cmdAuthorization:
             protoCmd->m_sOutput = QString("%1").arg(getAuthorizationStatus());
