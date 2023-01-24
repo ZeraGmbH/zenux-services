@@ -54,7 +54,7 @@ void cPCBServer::setupServer()
 {
     myServer = new XiQNetServer(this); // our working (talking) horse
     myServer->setDefaultWrapper(&m_ProtobufWrapper);
-    connect(myServer,&XiQNetServer::sigClientConnected,this,&cPCBServer::establishNewConnection);
+    connect(myServer,&XiQNetServer::sigClientConnected,this,&cPCBServer::onEstablishNewConnection);
 }
 
 void cPCBServer::executeCommand(int cmdCode, cProtonetCommand *protoCmd)
@@ -150,7 +150,7 @@ void cPCBServer::registerNotifier(cProtonetCommand *protoCmd)
             NotificationStructWithValue notData;
             notData.netPeer = protoCmd->m_pPeer;
             notData.clientID = protoCmd->m_clientId;
-            connect(notData.netPeer, &XiQNetPeer::sigConnectionClosed, this, &cPCBServer::notifyPeerConnectionClosed);
+            connect(notData.netPeer, &XiQNetPeer::sigConnectionClosed, this, &cPCBServer::onNotifyPeerConnectionClosed);
             m_notifierRegisterNext.append(notData); // we wait for a notifier signal
 
             cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
@@ -199,13 +199,13 @@ void cPCBServer::doUnregisterNotifier(XiQNetPeer* peer, const QByteArray &client
     }
 }
 
-void cPCBServer::establishNewConnection(XiQNetPeer *newClient)
+void cPCBServer::onEstablishNewConnection(XiQNetPeer *newClient)
 {
-    connect(newClient, &XiQNetPeer::sigMessageReceived,this, &cPCBServer::executeCommandProto);
+    connect(newClient, &XiQNetPeer::sigMessageReceived,this, &cPCBServer::onExecuteCommandProto);
 }
 
 
-void cPCBServer::executeCommandProto(std::shared_ptr<google::protobuf::Message> cmd)
+void cPCBServer::onExecuteCommandProto(std::shared_ptr<google::protobuf::Message> cmd)
 {
     cSCPIObject* scpiObject;
     XiQNetPeer* peer = qobject_cast<XiQNetPeer*>(sender());
@@ -259,7 +259,7 @@ void cPCBServer::executeCommandProto(std::shared_ptr<google::protobuf::Message> 
     }
 }
 
-void cPCBServer::establishNewNotifier(NotificationValue *notifier)
+void cPCBServer::onEstablishNewNotifier(NotificationValue *notifier)
 {
     if (m_notifierRegisterNext.count() > 0) // if we're waiting for notifier
     {
@@ -267,11 +267,11 @@ void cPCBServer::establishNewNotifier(NotificationValue *notifier)
         NotificationStructWithValue notData = m_notifierRegisterNext.takeFirst(); // we pick the notification data
         notData.notValue = notifier;
         m_notifierRegisterList.append(notData); //
-        connect(notifier, &NotificationValue::risingEdge, this, &cPCBServer::asyncHandler);
+        connect(notifier, &NotificationValue::risingEdge, this, &cPCBServer::onNotifierChanged);
     }
 }
 
-void cPCBServer::asyncHandler(quint32 irqreg)
+void cPCBServer::onNotifierChanged(quint32 irqreg)
 {
     NotificationValue* notifier = qobject_cast<NotificationValue*>(sender());
     if (m_notifierRegisterList.count() > 0) {
@@ -307,7 +307,7 @@ void cPCBServer::asyncHandler(quint32 irqreg)
     }
 }
 
-void cPCBServer::notifyPeerConnectionClosed()
+void cPCBServer::onNotifyPeerConnectionClosed()
 {
     XiQNetPeer *peer = qobject_cast<XiQNetPeer*>(QObject::sender());
     doUnregisterNotifier(peer);
@@ -318,7 +318,7 @@ void cPCBServer::initSCPIConnections()
     for (int i = 0; i < scpiConnectionList.count(); i++)
     {
         scpiConnectionList.at(i)->initSCPIConnection(""); // we have our interface
-        connect(scpiConnectionList.at(i), &ScpiConnection::valNotifier, this, &cPCBServer::establishNewNotifier);
+        connect(scpiConnectionList.at(i), &ScpiConnection::valNotifier, this, &cPCBServer::onEstablishNewNotifier);
         connect(scpiConnectionList.at(i), &ScpiConnection::cmdExecutionDone, this, &cPCBServer::sendAnswerProto);
     }
 }

@@ -67,11 +67,11 @@ private:
     QList<NotificationStructWithStringAndId> m_notifierRegisterNext;
     QList<NotificationStructWithStringAndId> m_notifierRegisterList;
 private slots:
-    virtual void establishNewConnection(XiQNetPeer* newClient);
-    void executeCommandProto(std::shared_ptr<google::protobuf::Message> cmd);
-    virtual void establishNewNotifier(NotificationString* notifier);
-    virtual void asyncHandler();
-    virtual void notifyPeerConnectionClosed();
+    void onEstablishNewConnection(XiQNetPeer* newClient);
+    void onExecuteCommandProto(std::shared_ptr<google::protobuf::Message> cmd);
+    void onEstablishNewNotifier(NotificationString* notifier);
+    void onNotifierChanged();
+    void onNotifyPeerConnectionClosed();
 };
 
 #endif // PCBSERVER_H
