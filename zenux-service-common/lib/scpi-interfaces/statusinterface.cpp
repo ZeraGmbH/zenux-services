@@ -44,6 +44,7 @@ void cStatusInterface::executeCommand(int cmdCode, cProtonetCommand *protoCmd)
             protoCmd->m_sOutput = QString("%1").arg(m_adjustmentStatusInterface->getAdjustmentStatus());
             break;
         case cmdAuthorization:
+            emit strNotifier(&m_notifierAutorization);
             protoCmd->m_sOutput = getAuthorizationStatus();
             break;
         }
@@ -66,9 +67,10 @@ QString cStatusInterface::getDeviceStatus()
 
 QString cStatusInterface::getAuthorizationStatus()
 {
-    quint8 status = 0;
+    QString status = "0";
     bool enable;
     if (PermissionFunctions::checkControllerPin(enable) && enable)
-        status = 1;
-    return QString("%1").arg(status);
+        status = "1";
+    m_notifierAutorization = status;
+    return status;
 }
