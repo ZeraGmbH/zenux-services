@@ -17,6 +17,7 @@ private:
     QString getDeviceStatus();
     QString getAuthorizationStatus();
     AdjustmentStatusInterface *m_adjustmentStatusInterface;
+    NotificationString m_notifierAutorization;
 };
 
 #endif // STATUSINTERFACE_H
