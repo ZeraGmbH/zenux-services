@@ -38,13 +38,13 @@ void cStatusInterface::executeCommand(int cmdCode, cProtonetCommand *protoCmd)
         switch (cmdCode)
         {
         case cmdDevice:
-            protoCmd->m_sOutput = QString("%1").arg(getDeviceStatus());
+            protoCmd->m_sOutput = getDeviceStatus();
             break;
         case cmdAdjustment:
             protoCmd->m_sOutput = QString("%1").arg(m_adjustmentStatusInterface->getAdjustmentStatus());
             break;
         case cmdAuthorization:
-            protoCmd->m_sOutput = QString("%1").arg(getAuthorizationStatus());
+            protoCmd->m_sOutput = getAuthorizationStatus();
             break;
         }
     }
@@ -55,20 +55,20 @@ void cStatusInterface::executeCommand(int cmdCode, cProtonetCommand *protoCmd)
         emit cmdExecutionDone(protoCmd);
 }
 
-quint8 cStatusInterface::getDeviceStatus()
+QString cStatusInterface::getDeviceStatus()
 {
     bool enable;
     if (PermissionFunctions::checkControllerPin(enable)) // no problem reading from atmel
-        return 1; // means device available
+        return "1"; // means device available
     else
-        return 0;
+        return "0";
 }
 
-quint8 cStatusInterface::getAuthorizationStatus()
+QString cStatusInterface::getAuthorizationStatus()
 {
-    quint8 ret = 0;
+    quint8 status = 0;
     bool enable;
     if (PermissionFunctions::checkControllerPin(enable) && enable)
-        ret = 1;
-    return ret;
+        status = 1;
+    return QString("%1").arg(status);
 }
