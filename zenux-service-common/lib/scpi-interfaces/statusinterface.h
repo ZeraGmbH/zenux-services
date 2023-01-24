@@ -14,8 +14,8 @@ public:
 protected slots:
     virtual void executeCommand(int cmdCode, cProtonetCommand* protoCmd) override;
 private:
-    quint8 getDeviceStatus();
-    quint8 getAuthorizationStatus();
+    QString getDeviceStatus();
+    QString getAuthorizationStatus();
     AdjustmentStatusInterface *m_adjustmentStatusInterface;
 };
 
