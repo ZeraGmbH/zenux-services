@@ -1,11 +1,8 @@
 #include "adjustment.h"
 #include "statusinterface.h"
 #include "protonetcommand.h"
-#include "micro-controller-io/atmel.h"
+#include "atmel.h"
 #include <scpi.h>
-
-extern cATMEL* pAtmel;
-
 
 cStatusInterface::cStatusInterface(cCOM5003dServer* server) :
     ScpiConnection(server->getSCPIInterface()),
@@ -18,7 +15,7 @@ void cStatusInterface::initSCPIConnection(QString leadingNodes)
 {
     ensureTrailingColonOnNonEmptyParentNodes(leadingNodes);
     cSCPIDelegate* delegate;
-    delegate = new cSCPIDelegate(QString("%1STATUS").arg(leadingNodes),"DEVICE",SCPI::isQuery,m_pSCPIInterface, StatusSystem::cmdDevice);
+    delegate = new cSCPIDelegate(QString("%1STATUS").arg(leadingNodes),"DEVICE",SCPI::isQuery, m_pSCPIInterface, StatusSystem::cmdDevice);
     m_DelegateList.append(delegate);
     connect(delegate, &cSCPIDelegate::execute, this, &cStatusInterface::executeCommand);
     delegate = new cSCPIDelegate(QString("%1STATUS").arg(leadingNodes),"ADJUSTMENT", SCPI::isQuery, m_pSCPIInterface, StatusSystem::cmdAdjustment);
@@ -33,7 +30,6 @@ void cStatusInterface::initSCPIConnection(QString leadingNodes)
 void cStatusInterface::executeCommand(int cmdCode, cProtonetCommand *protoCmd)
 {
     cSCPICommand cmd = protoCmd->m_sInput;
-
     if (cmd.isQuery())
     {
         switch (cmdCode)
@@ -70,14 +66,11 @@ quint8 cStatusInterface::getDeviceStatus()
 
 quint8 cStatusInterface::getAuthorizationStatus()
 {
-    quint8 ret;
+    quint8 ret = 0;
     bool enable;
-
-    ret  = 0;
     if (pAtmel->hasPermission(enable)) {
         if (enable)
             ret = 1;
     }
-
     return ret;
 }
