@@ -257,7 +257,7 @@ void cMT310S2dServer::doSetupServer()
             cPCBServer::setupServer(); // here our scpi interface gets instanciated, we need this for further steps
 
             scpiConnectionList.append(this); // the server itself has some commands
-            scpiConnectionList.append(m_pStatusInterface = new cStatusInterface(this));
+            scpiConnectionList.append(m_pStatusInterface = new cStatusInterface(getSCPIInterface(), m_pAdjHandler));
             scpiConnectionList.append(m_pSystemInterface = new cSystemInterface(this));
             scpiConnectionList.append(m_pSenseInterface = new cSenseInterface(this));
             scpiConnectionList.append(m_pSamplingInterface = new cSamplingInterface(this));

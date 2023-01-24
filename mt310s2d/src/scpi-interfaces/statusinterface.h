@@ -1,10 +1,9 @@
 #ifndef STATUSINTERFACE_H
 #define STATUSINTERFACE_H
 
-#include "mt310s2d.h"
 #include "scpiconnection.h"
-#include <QObject>
-#include <QList>
+#include "adjustmentstatusinterface.h"
+#include <scpi.h>
 
 namespace StatusSystem
 {
@@ -22,16 +21,16 @@ class cStatusInterface: public ScpiConnection
     Q_OBJECT
 
 public:
-    cStatusInterface(cMT310S2dServer *server);
+    cStatusInterface(cSCPI *scpiInterface, AdjustmentStatusInterface *adjustmentStatusInterface);
     virtual void initSCPIConnection(QString leadingNodes) override;
 
 protected slots:
     virtual void executeCommand(int cmdCode, cProtonetCommand* protoCmd) override;
 
 private:
-    cMT310S2dServer* m_pMyServer;
     quint8 getDeviceStatus();
     quint8 getAuthorizationStatus();
+    AdjustmentStatusInterface *m_adjustmentStatusInterface;
 };
 
 #endif // STATUSINTERFACE_H

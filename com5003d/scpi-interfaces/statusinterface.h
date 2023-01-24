@@ -1,10 +1,9 @@
 #ifndef STATUSINTERFACE_H
 #define STATUSINTERFACE_H
 
-#include "com5003d.h"
 #include "scpiconnection.h"
-#include <QObject>
-#include <QList>
+#include "adjustmentstatusinterface.h"
+#include <scpi.h>
 
 namespace StatusSystem
 {
@@ -22,14 +21,14 @@ class cStatusInterface: public ScpiConnection
     Q_OBJECT
 
 public:
-    cStatusInterface(cCOM5003dServer *server);
+    cStatusInterface(cSCPI *scpiInterface, AdjustmentStatusInterface *adjustmentStatusInterface);
     virtual void initSCPIConnection(QString leadingNodes) override;
 
 protected slots:
     virtual void executeCommand(int cmdCode, cProtonetCommand* protoCmd) override;
 
 private:
-    cCOM5003dServer* m_pMyServer;
+    AdjustmentStatusInterface *m_adjustmentStatusInterface;
     quint8 getDeviceStatus();
     quint8 getAuthorizationStatus();
 };
