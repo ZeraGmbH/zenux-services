@@ -16,15 +16,6 @@
 #include <QTcpSocket>
 #include <QByteArray>
 
-namespace PCBServer
-{
-enum commands
-{
-    cmdRegister,
-    cmdUnregister
-};
-}
-
 class cPCBServer: public ScpiConnection
 {
     Q_OBJECT

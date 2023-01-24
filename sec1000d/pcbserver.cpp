@@ -20,6 +20,12 @@
 #include <QTcpSocket>
 #include <QDataStream>
 
+enum commands
+{
+    cmdRegister,
+    cmdUnregister
+};
+
 cPCBServer::cPCBServer(QString name, QString version) :
     ScpiConnection(ScpiSingletonFactory::getScpiObj(name)),
     m_sServerName(name),
@@ -32,10 +38,10 @@ void cPCBServer::initSCPIConnection(QString leadingNodes)
 {
     ensureTrailingColonOnNonEmptyParentNodes(leadingNodes);
     cSCPIDelegate* delegate;
-    delegate = new cSCPIDelegate(QString("%1SERVER").arg(leadingNodes), "REGISTER", SCPI::isCmdwP, m_pSCPIInterface, PCBServer::cmdRegister);
+    delegate = new cSCPIDelegate(QString("%1SERVER").arg(leadingNodes), "REGISTER", SCPI::isCmdwP, m_pSCPIInterface, cmdRegister);
     m_DelegateList.append(delegate);
     connect(delegate, &cSCPIDelegate::execute, this, &cPCBServer::executeCommand);
-    delegate = new cSCPIDelegate(QString("%1SERVER").arg(leadingNodes), "UNREGISTER",SCPI::isQuery | SCPI::isCmd, m_pSCPIInterface, PCBServer::cmdUnregister);
+    delegate = new cSCPIDelegate(QString("%1SERVER").arg(leadingNodes), "UNREGISTER",SCPI::isQuery | SCPI::isCmd, m_pSCPIInterface, cmdUnregister);
     m_DelegateList.append(delegate);
     connect(delegate, &cSCPIDelegate::execute, this, &cPCBServer::executeCommand);
 }
@@ -61,10 +67,10 @@ void cPCBServer::executeCommand(int cmdCode, cProtonetCommand *protoCmd)
 {
     switch (cmdCode)
     {
-    case PCBServer::cmdRegister:
+    case cmdRegister:
         registerNotifier(protoCmd);
         break;
-    case PCBServer::cmdUnregister:
+    case cmdUnregister:
         unregisterNotifier(protoCmd);
         break;
     }
