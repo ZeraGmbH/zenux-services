@@ -3,7 +3,8 @@
 
 #include "senserange.h"
 #include "notificationstring.h"
-#include "settings/sensesettings.h"
+#include "sensesettings.h"
+#include "adjustmentstatusinterface.h"
 #include <QList>
 
 namespace SenseChannel
@@ -27,7 +28,7 @@ enum Commands
 class ScpiConnection;
 class cSenseInterface;
 
-class cSenseChannel : public ScpiConnection
+class cSenseChannel : public ScpiConnection, public AdjustmentStatusInterface
 {
     Q_OBJECT
 
@@ -43,7 +44,7 @@ public:
 
     cSenseRange* getRange(QString& name);
 
-    quint8 getAdjustmentStatus();
+    quint8 getAdjustmentStatus() override;
 
     QString& getName();
     QString& getAlias();

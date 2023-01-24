@@ -31,7 +31,7 @@ public:
     virtual bool importAdjData(QDomNode& node);
     void addAdjFlashObject(cAdjFlash* obj);
     void addAdjXMLObject(cAdjXML* obj);
-    quint8 getAdjustmentStatus();
+    quint8 getAdjustmentStatus() override;
     quint16 getChecksum();
 
 private:

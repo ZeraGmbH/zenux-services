@@ -2,11 +2,12 @@
 #define ADJFLASH_H
 
 #include "i2cmuxer.h"
+#include "adjustmentstatusinterface.h"
 #include <QByteArray>
 #include <QString>
 #include <QDataStream>
 
-class cAdjFlash
+class cAdjFlash : public AdjustmentStatusInterface
 {
 public:
     cAdjFlash(){}
@@ -15,7 +16,6 @@ public:
     bool importAdjFlash();
     bool resetAdjFlash();
 
-    virtual quint8 getAdjustmentStatus() = 0;
     quint16 getChecksum();
 protected:
     virtual void exportAdjData(QDataStream& stream) = 0; // the derived class exports adjdata to qdatastream

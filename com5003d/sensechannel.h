@@ -1,12 +1,12 @@
 #ifndef SENSECHANNEL_H
 #define SENSECHANNEL_H
 
-#include <QObject>
-#include <QList>
-
 #include "senserange.h"
 #include "notificationstring.h"
-#include "settings/sensesettings.h"
+#include "sensesettings.h"
+#include "adjustmentstatusinterface.h"
+#include <QObject>
+#include <QList>
 
 namespace SenseChannel
 {
@@ -35,7 +35,7 @@ enum MMode
 class ScpiConnection;
 
 
-class cSenseChannel : public ScpiConnection
+class cSenseChannel : public ScpiConnection, public AdjustmentStatusInterface
 {
     Q_OBJECT
 
@@ -48,7 +48,7 @@ public:
     QList<cSenseRange*>& getRangeList();
     cSenseRange* getRange(QString& name);
 
-    quint8 getAdjustmentStatus();
+    quint8 getAdjustmentStatus() override;
 
     QString& getName();
     QString& getAlias();
