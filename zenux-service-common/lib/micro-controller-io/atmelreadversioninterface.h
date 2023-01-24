@@ -6,6 +6,7 @@
 class AtmelReadVersionInterface
 {
 public:
+    virtual ~AtmelReadVersionInterface() = default;
     virtual ZeraMcontrollerBase::atmelRM readCTRLVersion(QString& answer) = 0;
 };
 
