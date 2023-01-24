@@ -3,7 +3,6 @@
 
 #include "com5003d.h"
 #include "scpiconnection.h"
-#include "scpidelegate.h"
 #include <QObject>
 #include <QList>
 
@@ -17,10 +16,6 @@ enum StatusCommands
     cmdAuthorization
 };
 }
-
-
-class cAdjustment;
-
 
 class cStatusInterface: public ScpiConnection
 {
