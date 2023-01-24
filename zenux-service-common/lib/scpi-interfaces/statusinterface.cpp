@@ -3,45 +3,49 @@
 #include "permissionfunctions.h"
 #include <scpi.h>
 
+enum StatusCommands
+{
+    cmdDevice,
+    cmdAdjustment,
+    cmdAuthorization
+};
+
 cStatusInterface::cStatusInterface(cSCPI *scpiInterface, AdjustmentStatusInterface *adjustmentStatusInterface) :
     ScpiConnection(scpiInterface),
     m_adjustmentStatusInterface(adjustmentStatusInterface)
 {
 }
 
-
 void cStatusInterface::initSCPIConnection(QString leadingNodes)
 {
     ensureTrailingColonOnNonEmptyParentNodes(leadingNodes);
     cSCPIDelegate* delegate;
-    delegate = new cSCPIDelegate(QString("%1STATUS").arg(leadingNodes),"DEVICE",SCPI::isQuery, m_pSCPIInterface, StatusSystem::cmdDevice);
+    delegate = new cSCPIDelegate(QString("%1STATUS").arg(leadingNodes),"DEVICE",SCPI::isQuery, m_pSCPIInterface, cmdDevice);
     m_DelegateList.append(delegate);
     connect(delegate, &cSCPIDelegate::execute, this, &cStatusInterface::executeCommand);
-    delegate = new cSCPIDelegate(QString("%1STATUS").arg(leadingNodes),"ADJUSTMENT", SCPI::isQuery, m_pSCPIInterface, StatusSystem::cmdAdjustment);
+    delegate = new cSCPIDelegate(QString("%1STATUS").arg(leadingNodes),"ADJUSTMENT", SCPI::isQuery, m_pSCPIInterface, cmdAdjustment);
     m_DelegateList.append(delegate);
     connect(delegate, &cSCPIDelegate::execute, this, &cStatusInterface::executeCommand);
-    delegate = new cSCPIDelegate(QString("%1STATUS").arg(leadingNodes),"AUTHORIZATION", SCPI::isQuery, m_pSCPIInterface, StatusSystem::cmdAuthorization);
+    delegate = new cSCPIDelegate(QString("%1STATUS").arg(leadingNodes),"AUTHORIZATION", SCPI::isQuery, m_pSCPIInterface, cmdAuthorization);
     m_DelegateList.append(delegate);
     connect(delegate, &cSCPIDelegate::execute, this, &cStatusInterface::executeCommand);
 }
 
-
 void cStatusInterface::executeCommand(int cmdCode, cProtonetCommand *protoCmd)
 {
     cSCPICommand cmd = protoCmd->m_sInput;
-    if (cmd.isQuery())
-    {
+    if (cmd.isQuery()) {
         switch (cmdCode)
         {
-        case StatusSystem::cmdDevice:
+        case cmdDevice:
             protoCmd->m_sOutput = QString("%1").arg(getDeviceStatus());
-            break; // StatusDevice
-        case StatusSystem::cmdAdjustment:
+            break;
+        case cmdAdjustment:
             protoCmd->m_sOutput = QString("%1").arg(m_adjustmentStatusInterface->getAdjustmentStatus());
-            break; // StatusAdjustment
-        case StatusSystem::cmdAuthorization:
+            break;
+        case cmdAuthorization:
             protoCmd->m_sOutput = QString("%1").arg(getAuthorizationStatus());
-            break; // StatusAuthorization
+            break;
         }
     }
     else
@@ -50,7 +54,6 @@ void cStatusInterface::executeCommand(int cmdCode, cProtonetCommand *protoCmd)
     if (protoCmd->m_bwithOutput)
         emit cmdExecutionDone(protoCmd);
 }
-
 
 quint8 cStatusInterface::getDeviceStatus()
 {
@@ -61,14 +64,11 @@ quint8 cStatusInterface::getDeviceStatus()
         return 0;
 }
 
-
 quint8 cStatusInterface::getAuthorizationStatus()
 {
     quint8 ret = 0;
     bool enable;
-    if (PermissionFunctions::checkControllerPin(enable)) {
-        if (enable)
-            ret = 1;
-    }
+    if (PermissionFunctions::checkControllerPin(enable) && enable)
+        ret = 1;
     return ret;
 }
