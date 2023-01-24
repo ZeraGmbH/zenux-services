@@ -1,11 +1,11 @@
 #ifndef SENSERANGE_H
 #define SENSERANGE_H
 
-#include <QObject>
-#include <scpi.h>
-
 #include "scpiconnection.h"
 #include "com5003justdata.h"
+#include "adjustmentstatusinterface.h"
+#include <scpi.h>
+#include <QObject>
 
 namespace SenseRange
 {
@@ -29,7 +29,7 @@ enum Commands
 
 class cATMEL;
 
-class cSenseRange:public ScpiConnection
+class cSenseRange : public ScpiConnection, public AdjustmentStatusInterface
 {
     Q_OBJECT
 
@@ -46,7 +46,7 @@ public:
                 quint8 rspec);
     ~cSenseRange();
     virtual void initSCPIConnection(QString leadingNodes) override;
-    quint8 getAdjustmentStatus();
+    quint8 getAdjustmentStatus() override;
 
     QString& getName();
     double getUrvalue();
