@@ -6,7 +6,6 @@ set(SOURCES
     src/scpi-interfaces/emobinterface.cpp
     src/scpi-interfaces/samplinginterface.cpp
     src/scpi-interfaces/senseinterface.cpp
-    src/scpi-interfaces/statusinterface.cpp
     src/scpi-interfaces/systeminterface.cpp
     src/settings/ctrlsettings.cpp
     src/settings/i2csettings.cpp
@@ -33,7 +32,6 @@ set(HEADER
     src/scpi-interfaces/emobinterface.h
     src/scpi-interfaces/samplinginterface.h
     src/scpi-interfaces/senseinterface.h
-    src/scpi-interfaces/statusinterface.h
     src/scpi-interfaces/systeminterface.h
     src/settings/ctrlsettings.h
     src/settings/i2csettings.h
