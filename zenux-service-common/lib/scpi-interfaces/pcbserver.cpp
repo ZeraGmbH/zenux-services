@@ -247,7 +247,7 @@ void cPCBServer::executeCommandProto(std::shared_ptr<google::protobuf::Message> 
 {
     cSCPIObject* scpiObject;
     XiQNetPeer* peer = qobject_cast<XiQNetPeer*>(sender());
-    std::shared_ptr<ProtobufMessage::NetMessage> protobufCommand = std::static_pointer_cast<ProtobufMessage::NetMessage>(cmd);;
+    std::shared_ptr<ProtobufMessage::NetMessage> protobufCommand = std::static_pointer_cast<ProtobufMessage::NetMessage>(cmd);
     if ( (protobufCommand != nullptr) && (peer != nullptr)) {
         if (protobufCommand->has_clientid()) {
             QByteArray clientId = QByteArray(protobufCommand->clientid().data(), protobufCommand->clientid().size());

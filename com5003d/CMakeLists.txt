@@ -8,7 +8,6 @@ set(SOURCES
     main.cpp
     com5003d.cpp
     com5003justdata.cpp
-    pcbserver.cpp
     samplerange.cpp
     senserange.cpp
     sensechannel.cpp
@@ -26,7 +25,6 @@ set(HEADER
     com5003d.h
     com5003justdata.h
     com5003scpi.h
-    pcbserver.h
     com5003dglobal.h
     samplerange.h
     senserange.h
