@@ -6,6 +6,7 @@
 class AtmelPermissionTemplate
 {
 public:
+    virtual ~AtmelPermissionTemplate() = default;
     virtual ZeraMcontrollerBase::atmelRM getEEPROMAccessEnable(bool &enable) = 0;
     bool /*success*/ hasPermission(bool &allow);
 };
