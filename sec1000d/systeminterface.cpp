@@ -20,25 +20,12 @@ cSystemInterface::cSystemInterface(cSEC1000dServer *server, cSystemInfo *sInfo) 
 void cSystemInterface::initSCPIConnection(QString leadingNodes)
 {
     ensureTrailingColonOnNonEmptyParentNodes(leadingNodes);
-    cSCPIDelegate* delegate;
-    delegate = new cSCPIDelegate(QString("%1SYSTEM:VERSION").arg(leadingNodes),"SERVER", SCPI::isQuery, m_pSCPIInterface, SystemSystem::cmdVersionServer);
-    m_DelegateList.append(delegate);
-    connect(delegate, &cSCPIDelegate::execute, this, &cSystemInterface::executeCommand);
-    delegate = new cSCPIDelegate(QString("%1SYSTEM:VERSION").arg(leadingNodes),"DEVICE", SCPI::isQuery, m_pSCPIInterface, SystemSystem::cmdVersionDevice);
-    m_DelegateList.append(delegate);
-    connect(delegate, &cSCPIDelegate::execute, this, &cSystemInterface::executeCommand);
-    delegate = new cSCPIDelegate(QString("%1SYSTEM:VERSION").arg(leadingNodes), "PCB", SCPI::isQuery | SCPI::isCmdwP, m_pSCPIInterface, SystemSystem::cmdVersionPCB);
-    m_DelegateList.append(delegate);
-    connect(delegate, &cSCPIDelegate::execute, this, &cSystemInterface::executeCommand);
-    delegate = new cSCPIDelegate(QString("%1SYSTEM:VERSION").arg(leadingNodes), "FPGA", SCPI::isQuery, m_pSCPIInterface, SystemSystem::cmdVersionFPGA);
-    m_DelegateList.append(delegate);
-    connect(delegate, &cSCPIDelegate::execute, this, &cSystemInterface::executeCommand);
-    delegate = new cSCPIDelegate(QString("%1SYSTEM").arg(leadingNodes), "SERIAL", SCPI::isQuery | SCPI::isCmdwP , m_pSCPIInterface, SystemSystem::cmdSerialNumber);
-    m_DelegateList.append(delegate);
-    connect(delegate, &cSCPIDelegate::execute, this, &cSystemInterface::executeCommand);
-    delegate = new cSCPIDelegate(QString("%1SYSTEM:INTERFACE").arg(leadingNodes), "READ", SCPI::isQuery, m_pSCPIInterface, SystemSystem::cmdInterfaceRead);
-    m_DelegateList.append(delegate);
-    connect(delegate, &cSCPIDelegate::execute, this, &cSystemInterface::executeCommand);
+    addDelegate(new cSCPIDelegate(QString("%1SYSTEM:VERSION").arg(leadingNodes),"SERVER", SCPI::isQuery, m_pSCPIInterface, SystemSystem::cmdVersionServer));
+    addDelegate(new cSCPIDelegate(QString("%1SYSTEM:VERSION").arg(leadingNodes),"DEVICE", SCPI::isQuery, m_pSCPIInterface, SystemSystem::cmdVersionDevice));
+    addDelegate(new cSCPIDelegate(QString("%1SYSTEM:VERSION").arg(leadingNodes), "PCB", SCPI::isQuery | SCPI::isCmdwP, m_pSCPIInterface, SystemSystem::cmdVersionPCB));
+    addDelegate(new cSCPIDelegate(QString("%1SYSTEM:VERSION").arg(leadingNodes), "FPGA", SCPI::isQuery, m_pSCPIInterface, SystemSystem::cmdVersionFPGA));
+    addDelegate(new cSCPIDelegate(QString("%1SYSTEM").arg(leadingNodes), "SERIAL", SCPI::isQuery | SCPI::isCmdwP , m_pSCPIInterface, SystemSystem::cmdSerialNumber));
+    addDelegate(new cSCPIDelegate(QString("%1SYSTEM:INTERFACE").arg(leadingNodes), "READ", SCPI::isQuery, m_pSCPIInterface, SystemSystem::cmdInterfaceRead));
 }
 
 
