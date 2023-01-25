@@ -11,9 +11,7 @@ EmobInterface::EmobInterface(cI2CSettings *i2cSettings, cSCPI *pSCPIInterface) :
 void EmobInterface::initSCPIConnection(QString leadingNodes)
 {
     ensureTrailingColonOnNonEmptyParentNodes(leadingNodes);
-    cSCPIDelegate* delegate = new cSCPIDelegate(QString("%1SYSTEM:EMOB:CHANNEL").arg(leadingNodes),"CATALOG",SCPI::isQuery, m_pSCPIInterface, cmdChannelCat);
-    m_DelegateList.append(delegate);
-    connect(delegate, &cSCPIDelegate::execute, this, &EmobInterface::executeCommand);
+    addDelegate(new cSCPIDelegate(QString("%1SYSTEM:EMOB:CHANNEL").arg(leadingNodes),"CATALOG",SCPI::isQuery, m_pSCPIInterface, cmdChannelCat));
 }
 
 void EmobInterface::actualizeClampStatus(quint16 devConnectedMask)
