@@ -56,9 +56,9 @@ void cSamplingInterface::initSCPIConnection(QString leadingNodes)
     addDelegate(new cSCPIDelegate(QString("%1SAMPLE:%2:RANGE").arg(leadingNodes).arg(m_sName),"CATALOG", SCPI::isQuery, m_pSCPIInterface, SamplingSystem::cmdChannelRangeCat));
     addDelegate(new cSCPIDelegate(QString("%1SAMPLE:%2").arg(leadingNodes).arg(m_sName),"PLL", SCPI::isQuery | SCPI::isCmdwP , m_pSCPIInterface, SamplingSystem::cmdPLL));
     addDelegate(new cSCPIDelegate(QString("%1SAMPLE:%2:PLL").arg(leadingNodes).arg(m_sName),"CATALOG", SCPI::isQuery, m_pSCPIInterface, SamplingSystem::cmdPLLCat));
-    for (int i = 0; i < m_SampleRangeList.count(); i++) {
-        connect(m_SampleRangeList.at(i), &ScpiConnection::cmdExecutionDone, this, &ScpiConnection::cmdExecutionDone);
-        m_SampleRangeList.at(i)->initSCPIConnection(QString("%1SAMPLE:%2").arg(leadingNodes).arg(m_sName));
+    for(auto range : qAsConst(m_SampleRangeList)) {
+        connect(range, &ScpiConnection::cmdExecutionDone, this, &ScpiConnection::cmdExecutionDone);
+        range->initSCPIConnection(QString("%1SAMPLE:%2").arg(leadingNodes).arg(m_sName));
     }
 }
 
