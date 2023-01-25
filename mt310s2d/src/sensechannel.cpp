@@ -21,7 +21,7 @@ cSenseChannel::cSenseChannel(cSCPI* scpiinterface, QString description, QString 
 
 cSenseChannel::~cSenseChannel()
 {
-    for(auto range : m_RangeList) {
+    for(auto range : qAsConst(m_RangeList)) {
         delete range;
     }
 }
@@ -58,7 +58,7 @@ void cSenseChannel::initSCPIConnection(QString leadingNodes)
     m_DelegateList.append(delegate);
     connect(delegate, &cSCPIDelegate::execute, this, &cSenseChannel::executeCommand);
 
-    for(auto range : m_RangeList) {
+    for(auto range : qAsConst(m_RangeList)) {
         connect(range, &ScpiConnection::cmdExecutionDone, this, &ScpiConnection::cmdExecutionDone);
         range->initSCPIConnection(QString("%1%2").arg(leadingNodes).arg(m_sName));
     }
@@ -131,7 +131,7 @@ void cSenseChannel::removeRangeList(QList<cSenseRange *> &list)
 
 cSenseRange *cSenseChannel::getRange(QString &name)
 {
-    for(auto range : m_RangeList) {
+    for(auto range : qAsConst(m_RangeList)) {
         if(range->getName() == name) {
             return range;
         }
@@ -180,7 +180,7 @@ void cSenseChannel::setUnit(QString &s)
 void cSenseChannel::setMMode(int m)
 {
     m_nMMode = m;
-    for(auto range : m_RangeList) {
+    for(auto range : qAsConst(m_RangeList)) {
         range->setMMode(m);
     }
     notifierSenseChannelRangeCat.forceTrigger(); // better we would ask for changed avail ranges and then trigger !!!
@@ -194,14 +194,14 @@ bool cSenseChannel::isAvail()
 
 void cSenseChannel::initJustData()
 {
-    for(auto range : m_RangeList) {
+    for(auto range : qAsConst(m_RangeList)) {
         range->initJustData();
     }
 }
 
 void cSenseChannel::computeJustData()
 {
-    for(auto range : m_RangeList) {
+    for(auto range : qAsConst(m_RangeList)) {
         range->computeJustData();
     }
 }
@@ -290,7 +290,7 @@ void cSenseChannel::setNotifierSenseChannelRange()
 {
     quint8 rSelCode;
     if ( pAtmel->readRange(m_nCtrlChannel, rSelCode) == ZeraMcontrollerBase::cmddone ) {
-        for(auto range : m_RangeList) {
+        for(auto range : qAsConst(m_RangeList)) {
             if ( (range->getSelCode() == rSelCode) && (range->isAvail())) {
                 notifierSenseChannelRange = range->getName();
                 break;
@@ -339,7 +339,7 @@ QString cSenseChannel::m_ReadUrvalue(QString &sInput)
 {
     cSCPICommand cmd = sInput;
     if (cmd.isQuery()) {
-        for(auto range : m_RangeList) {
+        for(auto range : qAsConst(m_RangeList)) {
             if (range->getName() == notifierSenseChannelRange.getString()) {
                 return QString("%1").arg(range->getUrvalue());
             }
