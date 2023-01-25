@@ -36,33 +36,33 @@ JustDataInterface::~JustDataInterface()
 void JustDataInterface::initSCPIConnection(QString leadingNodes)
 {
     cSCPIDelegate* delegate;
-    delegate = new cSCPIDelegate(QString("%1").arg(leadingNodes), "STATUS", SCPI::isCmdwP || SCPI::isQuery, m_pSCPIInterface, JustStatus);
+    delegate = new cSCPIDelegate(QString("%1").arg(leadingNodes), "STATUS", SCPI::isCmdwP | SCPI::isQuery, m_pSCPIInterface, JustStatus);
     m_DelegateList.append(delegate);
     connect(delegate, &cSCPIDelegate::execute, this, &JustDataInterface::executeCommand);
 
     ensureTrailingColonOnNonEmptyParentNodes(leadingNodes); // upper lines do not expect trailing ':' - we should use lists for leading nodes...
-    delegate = new cSCPIDelegate(QString("%1COEFFICIENT").arg(leadingNodes), "0", SCPI::isCmdwP || SCPI::isQuery, m_pSCPIInterface, JustCoefficient0);
+    delegate = new cSCPIDelegate(QString("%1COEFFICIENT").arg(leadingNodes), "0", SCPI::isCmdwP | SCPI::isQuery, m_pSCPIInterface, JustCoefficient0);
     m_DelegateList.append(delegate);
     connect(delegate, &cSCPIDelegate::execute, this, &JustDataInterface::executeCommand);
-    delegate = new cSCPIDelegate(QString("%1COEFFICIENT").arg(leadingNodes), "1", SCPI::isCmdwP || SCPI::isQuery, m_pSCPIInterface, JustCoefficient1);
+    delegate = new cSCPIDelegate(QString("%1COEFFICIENT").arg(leadingNodes), "1", SCPI::isCmdwP | SCPI::isQuery, m_pSCPIInterface, JustCoefficient1);
     m_DelegateList.append(delegate);
     connect(delegate, &cSCPIDelegate::execute, this, &JustDataInterface::executeCommand);
-    delegate = new cSCPIDelegate(QString("%1COEFFICIENT").arg(leadingNodes), "2", SCPI::isCmdwP || SCPI::isQuery, m_pSCPIInterface, JustCoefficient2);
+    delegate = new cSCPIDelegate(QString("%1COEFFICIENT").arg(leadingNodes), "2", SCPI::isCmdwP | SCPI::isQuery, m_pSCPIInterface, JustCoefficient2);
     m_DelegateList.append(delegate);
     connect(delegate, &cSCPIDelegate::execute, this, &JustDataInterface::executeCommand);
-    delegate = new cSCPIDelegate(QString("%1COEFFICIENT").arg(leadingNodes), "3", SCPI::isCmdwP || SCPI::isQuery, m_pSCPIInterface, JustCoefficient3);
+    delegate = new cSCPIDelegate(QString("%1COEFFICIENT").arg(leadingNodes), "3", SCPI::isCmdwP | SCPI::isQuery, m_pSCPIInterface, JustCoefficient3);
     m_DelegateList.append(delegate);
     connect(delegate, &cSCPIDelegate::execute, this, &JustDataInterface::executeCommand);
-    delegate = new cSCPIDelegate(QString("%1NODE").arg(leadingNodes), "0", SCPI::isCmdwP || SCPI::isQuery, m_pSCPIInterface, JustNode0);
+    delegate = new cSCPIDelegate(QString("%1NODE").arg(leadingNodes), "0", SCPI::isCmdwP | SCPI::isQuery, m_pSCPIInterface, JustNode0);
     m_DelegateList.append(delegate);
     connect(delegate, &cSCPIDelegate::execute, this, &JustDataInterface::executeCommand);
-    delegate = new cSCPIDelegate(QString("%1NODE").arg(leadingNodes), "1", SCPI::isCmdwP || SCPI::isQuery, m_pSCPIInterface, JustNode1);
+    delegate = new cSCPIDelegate(QString("%1NODE").arg(leadingNodes), "1", SCPI::isCmdwP | SCPI::isQuery, m_pSCPIInterface, JustNode1);
     m_DelegateList.append(delegate);
     connect(delegate, &cSCPIDelegate::execute, this, &JustDataInterface::executeCommand);
-    delegate = new cSCPIDelegate(QString("%1NODE").arg(leadingNodes), "2", SCPI::isCmdwP || SCPI::isQuery, m_pSCPIInterface, JustNode2);
+    delegate = new cSCPIDelegate(QString("%1NODE").arg(leadingNodes), "2", SCPI::isCmdwP | SCPI::isQuery, m_pSCPIInterface, JustNode2);
     m_DelegateList.append(delegate);
     connect(delegate, &cSCPIDelegate::execute, this, &JustDataInterface::executeCommand);
-    delegate = new cSCPIDelegate(QString("%1NODE").arg(leadingNodes), "3", SCPI::isCmdwP || SCPI::isQuery, m_pSCPIInterface, JustNode3);
+    delegate = new cSCPIDelegate(QString("%1NODE").arg(leadingNodes), "3", SCPI::isCmdwP | SCPI::isQuery, m_pSCPIInterface, JustNode3);
     m_DelegateList.append(delegate);
     connect(delegate, &cSCPIDelegate::execute, this, &JustDataInterface::executeCommand);
 }
