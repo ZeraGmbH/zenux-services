@@ -56,7 +56,7 @@ public:
     void computeJustData();
 
 protected:
-    void executeCommand(int cmdCode, cProtonetCommand* protoCmd) override;
+    void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
     QString m_ReadRangeType(QString& sInput);
     QString m_ReadRangeAlias(QString& sInput);
     QString m_ReadRangeAvail(QString& sInput);

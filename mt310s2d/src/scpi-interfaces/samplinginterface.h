@@ -35,7 +35,7 @@ public:
     virtual void registerResource(RMConnection *rmConnection, quint16 port) override;
     virtual void unregisterResource(RMConnection *rmConnection) override;
 protected:
-    void executeCommand(int cmdCode, cProtonetCommand* protoCmd) override;
+    void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
 private:
     void setNotifierSampleChannelRange();
     QString m_ReadVersion(QString& sInput);

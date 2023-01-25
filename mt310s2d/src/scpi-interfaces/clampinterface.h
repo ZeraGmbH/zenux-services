@@ -30,7 +30,7 @@ public:
     void actualizeClampStatus(quint16 devConnectedMask);
 
 protected:
-    void executeCommand(int cmdCode, cProtonetCommand* protoCmd) override;
+    void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
 private:
     void generateAndNotifyClampChannelList();
     QString readClampChannelCatalog(QString& sInput);

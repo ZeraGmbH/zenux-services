@@ -24,7 +24,7 @@ void cStatusInterface::initSCPIConnection(QString leadingNodes)
     addDelegate(new cSCPIDelegate(QString("%1STATUS").arg(leadingNodes),"AUTHORIZATION", SCPI::isQuery, m_pSCPIInterface, cmdAuthorization));
 }
 
-void cStatusInterface::executeCommand(int cmdCode, cProtonetCommand *protoCmd)
+void cStatusInterface::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
 {
     cSCPICommand cmd = protoCmd->m_sInput;
     if (cmd.isQuery()) {

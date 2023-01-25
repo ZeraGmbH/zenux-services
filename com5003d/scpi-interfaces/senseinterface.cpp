@@ -196,7 +196,7 @@ quint8 cSenseInterface::getAdjustmentStatus()
 }
 
 
-void cSenseInterface::executeCommand(int cmdCode, cProtonetCommand *protoCmd)
+void cSenseInterface::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
 {
     switch (cmdCode)
     {

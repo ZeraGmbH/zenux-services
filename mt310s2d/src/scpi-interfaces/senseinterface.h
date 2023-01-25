@@ -61,7 +61,7 @@ protected:
     void exportAdjData(QDataStream& stream) override;
     bool importAdjData(QDataStream& stream) override;
     bool importXMLDocument(QDomDocument* qdomdoc) override;
-    void executeCommand(int cmdCode, cProtonetCommand* protoCmd) override;
+    void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
 private:
     cMT310S2dServer* m_pMyServer;
     cSystemInfo* m_pSystemInfo;

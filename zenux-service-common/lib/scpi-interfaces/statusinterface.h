@@ -12,7 +12,7 @@ public:
     cStatusInterface(cSCPI *scpiInterface, AdjustmentStatusInterface *adjustmentStatusInterface);
     virtual void initSCPIConnection(QString leadingNodes) override;
 protected:
-    void executeCommand(int cmdCode, cProtonetCommand* protoCmd) override;
+    void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
 private:
     QString getDeviceStatus();
     QString getAuthorizationStatus();

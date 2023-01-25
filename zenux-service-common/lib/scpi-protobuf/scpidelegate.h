@@ -16,7 +16,7 @@ public:
     virtual bool executeSCPI(cProtonetCommand* protoCmd);
     QString getCommand();
 signals:
-    void execute(int cmdCode, cProtonetCommand* protoCmd);
+    void sigExecuteProtoScpi(int cmdCode, cProtonetCommand* protoCmd);
 private:
     quint16 m_nCmdCode;
     QString m_sCommand;

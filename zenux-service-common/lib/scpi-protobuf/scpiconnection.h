@@ -18,14 +18,14 @@ signals:
     void valNotifier(NotificationValue* notifier);
     void cmdExecutionDone(cProtonetCommand* protoCmd);
 protected:
-    virtual void executeCommand(int cmdCode, cProtonetCommand* protoCmd) = 0;
+    virtual void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) = 0;
     void removeSCPIConnections();
     void ensureTrailingColonOnNonEmptyParentNodes(QString &leadingNodes);
     void addDelegate(cSCPIDelegate *delegate);
     cSCPI* m_pSCPIInterface;
     QList<cSCPIDelegate*> m_DelegateList;
 private slots:
-    void onExecCommand(int cmdCode, cProtonetCommand* protoCmd);
+    void onExecuteProtoScpi(int cmdCode, cProtonetCommand* protoCmd);
 };
 
 #endif // SCPICONNECTION_H

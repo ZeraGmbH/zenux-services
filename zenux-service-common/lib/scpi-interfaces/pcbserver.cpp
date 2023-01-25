@@ -68,7 +68,7 @@ void cPCBServer::setupServer()
     }
 }
 
-void cPCBServer::executeCommand(int cmdCode, cProtonetCommand *protoCmd)
+void cPCBServer::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
 {
     switch (cmdCode)
     {

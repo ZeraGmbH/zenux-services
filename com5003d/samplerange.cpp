@@ -38,7 +38,7 @@ quint16 cSampleRange::getSRate()
 }
 
 
-void cSampleRange::executeCommand(int cmdCode, cProtonetCommand *protoCmd)
+void cSampleRange::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
 {
     switch (cmdCode)
     {

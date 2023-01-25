@@ -9,7 +9,7 @@ cSCPIDelegate::cSCPIDelegate(QString cmdParent, QString cmd, quint8 type, cSCPI 
 
 bool cSCPIDelegate::executeSCPI(cProtonetCommand *protoCmd)
 {
-    emit execute(m_nCmdCode, protoCmd);
+    emit sigExecuteProtoScpi(m_nCmdCode, protoCmd);
     return true;
 }
 

@@ -47,7 +47,7 @@ void HkInGroupResourceAndInterface::unregisterResource(RMConnection *rmConnectio
         unregister1Resource(rmConnection, NotZeroNumGen::getMsgNr(), QString("HKEY;%1;").arg(channel->getName()));
 }
 
-void HkInGroupResourceAndInterface::executeCommand(int cmdCode, cProtonetCommand *protoCmd)
+void HkInGroupResourceAndInterface::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
 {
     switch (cmdCode)
     {

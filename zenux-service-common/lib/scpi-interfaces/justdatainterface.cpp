@@ -48,7 +48,7 @@ void JustDataInterface::initSCPIConnection(QString leadingNodes)
     addDelegate(new cSCPIDelegate(QString("%1NODE").arg(leadingNodes), "3", SCPI::isCmdwP | SCPI::isQuery, m_pSCPIInterface, JustNode3));
 }
 
-void JustDataInterface::executeCommand(int cmdCode, cProtonetCommand *protoCmd)
+void JustDataInterface::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
 {
     switch (cmdCode)
     {

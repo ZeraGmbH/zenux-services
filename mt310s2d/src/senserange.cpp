@@ -106,7 +106,7 @@ void cSenseRange::computeJustData()
 }
 
 
-void cSenseRange::executeCommand(int cmdCode, cProtonetCommand *protoCmd)
+void cSenseRange::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
 {
     switch (cmdCode)
     {

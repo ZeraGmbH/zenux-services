@@ -26,7 +26,7 @@ public slots:
     void sendAnswerProto(cProtonetCommand* protoCmd);
 protected:
     void initSCPIConnections();
-    void executeCommand(int cmdCode, cProtonetCommand* protoCmd) override;
+    void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
     XiQNetServer* myServer; // the real server that does the communication job
     XiQNetWrapper m_ProtobufWrapper;
     Zera::XMLConfig::cReader* myXMLConfigReader; // the xml configurator

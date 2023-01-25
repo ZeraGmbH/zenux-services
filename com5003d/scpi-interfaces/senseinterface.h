@@ -63,7 +63,7 @@ public:
     virtual void unregisterResource(RMConnection *rmConnection) override;
 
 protected:
-    void executeCommand(int cmdCode, cProtonetCommand* protoCmd) override;
+    void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
 
 private:
     cCOM5003dServer* m_pMyServer;

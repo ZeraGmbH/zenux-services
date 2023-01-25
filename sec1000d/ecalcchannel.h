@@ -71,7 +71,7 @@ public:
     void m_resetInterrupt(quint8 interrupt);
 
 protected:
-    virtual void executeCommand(int cmdCode, cProtonetCommand* protoCmd) override;
+    virtual void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
 
 private:
     cSEC1000dServer* m_pMyServer;
