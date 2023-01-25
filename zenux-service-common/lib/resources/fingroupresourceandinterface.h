@@ -19,8 +19,8 @@ public:
     virtual void initSCPIConnection(QString leadingNodes) override;
     virtual void registerResource(RMConnection *rmConnection, quint16 port) override;
     virtual void unregisterResource(RMConnection *rmConnection) override;
-protected slots:
-    virtual void executeCommand(int cmdCode, cProtonetCommand* protoCmd) override;
+protected:
+    void executeCommand(int cmdCode, cProtonetCommand* protoCmd) override;
 private:
     QString readVersion(QString& sInput);
     QString readChannelCatalog(QString& sInput);

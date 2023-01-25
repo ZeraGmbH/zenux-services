@@ -21,8 +21,8 @@ public:
     quint8 getSelCode();
     quint16 getSRate();
 
-protected slots:
-    virtual void executeCommand(int cmdCode, cProtonetCommand* protoCmd) override;
+protected:
+    void executeCommand(int cmdCode, cProtonetCommand* protoCmd) override;
 
 private:
     QString m_sName;

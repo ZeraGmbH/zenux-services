@@ -46,8 +46,8 @@ public:
     virtual void unregisterResource(RMConnection *rmConnection) override;
     QList<cECalculatorChannel*> getECalcChannelList();
 
-protected slots:
-    virtual void executeCommand(int cmdCode, cProtonetCommand* protoCmd) override;
+protected:
+    void executeCommand(int cmdCode, cProtonetCommand* protoCmd) override;
 
 private:
     cSEC1000dServer* m_pMyServer;

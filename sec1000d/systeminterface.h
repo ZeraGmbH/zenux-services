@@ -28,10 +28,8 @@ class cSystemInterface: public ScpiConnection
 public:
     cSystemInterface(cSEC1000dServer* server, cSystemInfo* sInfo);
     virtual void initSCPIConnection(QString leadingNodes) override;
-
-protected slots:
-    virtual void executeCommand(int cmdCode, cProtonetCommand* protoCmd) override;
-
+protected:
+    void executeCommand(int cmdCode, cProtonetCommand* protoCmd) override;
 private:
     cSEC1000dServer* m_pMyServer;
     cSystemInfo* m_pSystemInfo;

@@ -15,11 +15,11 @@ public:
     const QString Version = "V1.00";
     HkInGroupResourceAndInterface(cSCPI *scpiInterface, HkInSettings *settings);
     ~HkInGroupResourceAndInterface();
-    virtual void initSCPIConnection(QString leadingNodes) override;
-    virtual void registerResource(RMConnection *rmConnection, quint16 port) override;
-    virtual void unregisterResource(RMConnection *rmConnection) override;
-protected slots:
-    virtual void executeCommand(int cmdCode, cProtonetCommand* protoCmd) override;
+    void initSCPIConnection(QString leadingNodes) override;
+    void registerResource(RMConnection *rmConnection, quint16 port) override;
+    void unregisterResource(RMConnection *rmConnection) override;
+protected:
+    void executeCommand(int cmdCode, cProtonetCommand* protoCmd) override;
 private:
     QString readVersion(QString& sInput);
     QString readChannelCatalog(QString& sInput);

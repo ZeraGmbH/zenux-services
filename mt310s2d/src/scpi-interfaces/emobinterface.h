@@ -18,7 +18,7 @@ public:
     EmobInterface(cI2CSettings *i2cSettings, cSCPI* pSCPIInterface);
     void initSCPIConnection(QString leadingNodes) override;
     void actualizeClampStatus(quint16 devConnectedMask);
-protected slots:
+protected:
     void executeCommand(int cmdCode, cProtonetCommand* protoCmd) override;
 private:
     QString readChannelCatalog(QString scpiCmd);

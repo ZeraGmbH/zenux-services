@@ -38,13 +38,11 @@ public:
     virtual QString exportXMLString(int indent = 1) override;
     bool importXMLDocument(QDomDocument *qdomdoc, bool ignoreType);
 
-protected slots:
-    virtual void executeCommand(int cmdCode, cProtonetCommand* protoCmd) override;
-
 protected:
-    virtual void exportAdjData(QDataStream& stream) override;
-    virtual bool importAdjData(QDataStream& stream) override;
-    virtual bool importXMLDocument(QDomDocument* qdomdoc) override;
+    void executeCommand(int cmdCode, cProtonetCommand* protoCmd) override;
+    void exportAdjData(QDataStream& stream) override;
+    bool importAdjData(QDataStream& stream) override;
+    bool importXMLDocument(QDomDocument* qdomdoc) override;
 
 private:
     void initClamp(quint8 type);

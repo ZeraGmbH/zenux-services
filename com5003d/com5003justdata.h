@@ -47,10 +47,8 @@ public:
     void initJustData();
     void computeJustData();
 
-protected slots:
-    virtual void executeCommand(int cmdCode, cProtonetCommand* protoCmd) override;
-
 protected:
+    void executeCommand(int cmdCode, cProtonetCommand* protoCmd) override;
     QString scpiGetGainCorrection(const QString &scpiInput);
     QString mReadJustGainCorrection(QString&sInput);
     QString mReadPhaseCorrection(QString&sInput);

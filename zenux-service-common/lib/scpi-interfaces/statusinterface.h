@@ -11,8 +11,8 @@ class cStatusInterface: public ScpiConnection
 public:
     cStatusInterface(cSCPI *scpiInterface, AdjustmentStatusInterface *adjustmentStatusInterface);
     virtual void initSCPIConnection(QString leadingNodes) override;
-protected slots:
-    virtual void executeCommand(int cmdCode, cProtonetCommand* protoCmd) override;
+protected:
+    void executeCommand(int cmdCode, cProtonetCommand* protoCmd) override;
 private:
     QString getDeviceStatus();
     QString getAuthorizationStatus();

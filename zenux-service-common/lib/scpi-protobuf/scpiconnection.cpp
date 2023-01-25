@@ -34,5 +34,10 @@ void ScpiConnection::ensureTrailingColonOnNonEmptyParentNodes(QString &leadingNo
 void ScpiConnection::addDelegate(cSCPIDelegate *delegate)
 {
     m_DelegateList.append(delegate);
-    connect(delegate, &cSCPIDelegate::execute, this, &ScpiConnection::executeCommand);
+    connect(delegate, &cSCPIDelegate::execute, this, &ScpiConnection::onExecCommand);
+}
+
+void ScpiConnection::onExecCommand(int cmdCode, cProtonetCommand *protoCmd)
+{
+    executeCommand(cmdCode, protoCmd);
 }

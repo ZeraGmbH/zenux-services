@@ -70,7 +70,7 @@ public:
     void m_StopErrorCalculator();
     void m_resetInterrupt(quint8 interrupt);
 
-protected slots:
+protected:
     virtual void executeCommand(int cmdCode, cProtonetCommand* protoCmd) override;
 
 private:
