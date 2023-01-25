@@ -38,37 +38,16 @@ cSenseChannel::~cSenseChannel()
 void cSenseChannel::initSCPIConnection(QString leadingNodes)
 {
     ensureTrailingColonOnNonEmptyParentNodes(leadingNodes);
-    cSCPIDelegate* delegate;
-    delegate = new cSCPIDelegate(QString("%1%2").arg(leadingNodes).arg(m_sName),"ALIAS", SCPI::isQuery, m_pSCPIInterface, SenseChannel::cmdAlias);
-    m_DelegateList.append(delegate);
-    connect(delegate, &cSCPIDelegate::execute, this, &cSenseChannel::executeCommand);
-    delegate = new cSCPIDelegate(QString("%1%2").arg(leadingNodes).arg(m_sName),"TYPE", SCPI::isQuery, m_pSCPIInterface, SenseChannel::cmdType);
-    m_DelegateList.append(delegate);
-    connect(delegate, &cSCPIDelegate::execute, this, &cSenseChannel::executeCommand);
-    delegate = new cSCPIDelegate(QString("%1%2").arg(leadingNodes).arg(m_sName),"UNIT", SCPI::isQuery, m_pSCPIInterface, SenseChannel::cmdUnit);
-    m_DelegateList.append(delegate);
-    connect(delegate, &cSCPIDelegate::execute, this, &cSenseChannel::executeCommand);
-    delegate = new cSCPIDelegate(QString("%1%2").arg(leadingNodes).arg(m_sName),"DSPCHANNEL", SCPI::isQuery, m_pSCPIInterface, SenseChannel::cmdDspChannel);
-    m_DelegateList.append(delegate);
-    connect(delegate, &cSCPIDelegate::execute, this, &cSenseChannel::executeCommand);
-    delegate = new cSCPIDelegate(QString("%1%2").arg(leadingNodes).arg(m_sName),"STATUS", SCPI::isQuery, m_pSCPIInterface, SenseChannel::cmdStatus);
-    m_DelegateList.append(delegate);
-    connect(delegate, &cSCPIDelegate::execute, this, &cSenseChannel::executeCommand);
-    delegate = new cSCPIDelegate(QString("%1%2:STATUS").arg(leadingNodes).arg(m_sName),"RESET", SCPI::isCmd, m_pSCPIInterface, SenseChannel::cmdStatusReset);
-    m_DelegateList.append(delegate);
-    connect(delegate, &cSCPIDelegate::execute, this, &cSenseChannel::executeCommand);
-    delegate = new cSCPIDelegate(QString("%1%2").arg(leadingNodes).arg(m_sName),"RANGE", SCPI::isQuery | SCPI::isCmdwP, m_pSCPIInterface, SenseChannel::cmdRange);
-    m_DelegateList.append(delegate);
-    connect(delegate, &cSCPIDelegate::execute, this, &cSenseChannel::executeCommand);
-    delegate = new cSCPIDelegate(QString("%1%2").arg(leadingNodes).arg(m_sName),"URVALUE", SCPI::isQuery, m_pSCPIInterface, SenseChannel::cmdUrvalue);
-    m_DelegateList.append(delegate);
-    connect(delegate, &cSCPIDelegate::execute, this, &cSenseChannel::executeCommand);
-    delegate = new cSCPIDelegate(QString("%1%2:RANGE").arg(leadingNodes).arg(m_sName),"CATALOG", SCPI::isQuery, m_pSCPIInterface, SenseChannel::cmdRangeCat);
-    m_DelegateList.append(delegate);
-    connect(delegate, &cSCPIDelegate::execute, this, &cSenseChannel::executeCommand);
-
-    for (int i = 0;i < m_RangeList.count(); i++)
-    {
+    addDelegate(new cSCPIDelegate(QString("%1%2").arg(leadingNodes).arg(m_sName),"ALIAS", SCPI::isQuery, m_pSCPIInterface, SenseChannel::cmdAlias));
+    addDelegate(new cSCPIDelegate(QString("%1%2").arg(leadingNodes).arg(m_sName),"TYPE", SCPI::isQuery, m_pSCPIInterface, SenseChannel::cmdType));
+    addDelegate(new cSCPIDelegate(QString("%1%2").arg(leadingNodes).arg(m_sName),"UNIT", SCPI::isQuery, m_pSCPIInterface, SenseChannel::cmdUnit));
+    addDelegate(new cSCPIDelegate(QString("%1%2").arg(leadingNodes).arg(m_sName),"DSPCHANNEL", SCPI::isQuery, m_pSCPIInterface, SenseChannel::cmdDspChannel));
+    addDelegate(new cSCPIDelegate(QString("%1%2").arg(leadingNodes).arg(m_sName),"STATUS", SCPI::isQuery, m_pSCPIInterface, SenseChannel::cmdStatus));
+    addDelegate(new cSCPIDelegate(QString("%1%2:STATUS").arg(leadingNodes).arg(m_sName),"RESET", SCPI::isCmd, m_pSCPIInterface, SenseChannel::cmdStatusReset));
+    addDelegate(new cSCPIDelegate(QString("%1%2").arg(leadingNodes).arg(m_sName),"RANGE", SCPI::isQuery | SCPI::isCmdwP, m_pSCPIInterface, SenseChannel::cmdRange));
+    addDelegate(new cSCPIDelegate(QString("%1%2").arg(leadingNodes).arg(m_sName),"URVALUE", SCPI::isQuery, m_pSCPIInterface, SenseChannel::cmdUrvalue));
+    addDelegate(new cSCPIDelegate(QString("%1%2:RANGE").arg(leadingNodes).arg(m_sName),"CATALOG", SCPI::isQuery, m_pSCPIInterface, SenseChannel::cmdRangeCat));
+    for (int i = 0;i < m_RangeList.count(); i++) {
         connect(m_RangeList.at(i), &ScpiConnection::cmdExecutionDone, this, &ScpiConnection::cmdExecutionDone);
         m_RangeList.at(i)->initSCPIConnection(QString("%1%2").arg(leadingNodes).arg(m_sName));
     }
