@@ -32,31 +32,14 @@ FOutChannelInterface::FOutChannelInterface(cSCPI *scpiinterface, QString descrip
 void FOutChannelInterface::initSCPIConnection(QString leadingNodes)
 {
     ensureTrailingColonOnNonEmptyParentNodes(leadingNodes);
-    cSCPIDelegate* delegate;
-    delegate = new cSCPIDelegate(QString("%1%2").arg(leadingNodes).arg(m_sName),"ALIAS", SCPI::isQuery, m_pSCPIInterface, cmdAlias);
-    m_DelegateList.append(delegate);
-    connect(delegate, &cSCPIDelegate::execute, this, &FOutChannelInterface::executeCommand);
-    delegate = new cSCPIDelegate(QString("%1%2").arg(leadingNodes).arg(m_sName),"TYPE", SCPI::isQuery, m_pSCPIInterface, cmdType);
-    m_DelegateList.append(delegate);
-    connect(delegate, &cSCPIDelegate::execute, this, &FOutChannelInterface::executeCommand);
-    delegate = new cSCPIDelegate(QString("%1%2").arg(leadingNodes).arg(m_sName),"DSPSERVER", SCPI::isQuery, m_pSCPIInterface, cmdDspServer);
-    m_DelegateList.append(delegate);
-    connect(delegate, &cSCPIDelegate::execute, this, &FOutChannelInterface::executeCommand);
-    delegate = new cSCPIDelegate(QString("%1%2").arg(leadingNodes).arg(m_sName),"DSPCHANNEL", SCPI::isQuery, m_pSCPIInterface, cmdDspChannel);
-    m_DelegateList.append(delegate);
-    connect(delegate, &cSCPIDelegate::execute, this, &FOutChannelInterface::executeCommand);
-    delegate = new cSCPIDelegate(QString("%1%2").arg(leadingNodes).arg(m_sName),"STATUS", SCPI::isQuery, m_pSCPIInterface, cmdStatus);
-    m_DelegateList.append(delegate);
-    connect(delegate, &cSCPIDelegate::execute, this, &FOutChannelInterface::executeCommand);
-    delegate = new cSCPIDelegate(QString("%1%2").arg(leadingNodes).arg(m_sName),"FFACTOR", SCPI::isQuery, m_pSCPIInterface, cmdFormFactor);
-    m_DelegateList.append(delegate);
-    connect(delegate, &cSCPIDelegate::execute, this, &FOutChannelInterface::executeCommand);
-    delegate = new cSCPIDelegate(QString("%1%2").arg(leadingNodes).arg(m_sName),"CONSTANT", SCPI::isQuery | SCPI::isCmdwP , m_pSCPIInterface, cmdConstant);
-    m_DelegateList.append(delegate);
-    connect(delegate, &cSCPIDelegate::execute, this, &FOutChannelInterface::executeCommand);
-    delegate = new cSCPIDelegate(QString("%1%2").arg(leadingNodes).arg(m_sName),"POWTYPE", SCPI::isQuery | SCPI::isCmdwP , m_pSCPIInterface, cmdPowtype);
-    m_DelegateList.append(delegate);
-    connect(delegate, &cSCPIDelegate::execute, this, &FOutChannelInterface::executeCommand);
+    addDelegate(new cSCPIDelegate(QString("%1%2").arg(leadingNodes).arg(m_sName),"ALIAS", SCPI::isQuery, m_pSCPIInterface, cmdAlias));
+    addDelegate(new cSCPIDelegate(QString("%1%2").arg(leadingNodes).arg(m_sName),"TYPE", SCPI::isQuery, m_pSCPIInterface, cmdType));
+    addDelegate(new cSCPIDelegate(QString("%1%2").arg(leadingNodes).arg(m_sName),"DSPSERVER", SCPI::isQuery, m_pSCPIInterface, cmdDspServer));
+    addDelegate(new cSCPIDelegate(QString("%1%2").arg(leadingNodes).arg(m_sName),"DSPCHANNEL", SCPI::isQuery, m_pSCPIInterface, cmdDspChannel));
+    addDelegate(new cSCPIDelegate(QString("%1%2").arg(leadingNodes).arg(m_sName),"STATUS", SCPI::isQuery, m_pSCPIInterface, cmdStatus));
+    addDelegate(new cSCPIDelegate(QString("%1%2").arg(leadingNodes).arg(m_sName),"FFACTOR", SCPI::isQuery, m_pSCPIInterface, cmdFormFactor));
+    addDelegate(new cSCPIDelegate(QString("%1%2").arg(leadingNodes).arg(m_sName),"CONSTANT", SCPI::isQuery | SCPI::isCmdwP , m_pSCPIInterface, cmdConstant));
+    addDelegate(new cSCPIDelegate(QString("%1%2").arg(leadingNodes).arg(m_sName),"POWTYPE", SCPI::isQuery | SCPI::isCmdwP , m_pSCPIInterface, cmdPowtype));
 }
 
 void FOutChannelInterface::executeCommand(int cmdCode, cProtonetCommand *protoCmd)
