@@ -43,7 +43,7 @@ public:
     quint8 getStatus();
     void initJustData(double init); // for initialization of justdata
 protected:
-    void executeCommand(int cmdCode, cProtonetCommand* protoCmd) override;
+    void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
     std::function<bool(bool &)> m_checkPermission;
 private:
     quint8 m_nStatus;

@@ -29,7 +29,7 @@ void cSystemInterface::initSCPIConnection(QString leadingNodes)
 }
 
 
-void cSystemInterface::executeCommand(int cmdCode, cProtonetCommand *protoCmd)
+void cSystemInterface::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
 {
     switch (cmdCode)
     {

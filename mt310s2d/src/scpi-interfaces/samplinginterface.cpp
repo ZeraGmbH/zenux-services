@@ -66,7 +66,7 @@ void cSamplingInterface::unregisterResource(RMConnection *rmConnection)
     unregister1Resource(rmConnection, NotZeroNumGen::getMsgNr(), QString("SAMPLE;%1;").arg(m_sName));
 }
 
-void cSamplingInterface::executeCommand(int cmdCode, cProtonetCommand *protoCmd)
+void cSamplingInterface::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
 {
     switch (cmdCode)
     {

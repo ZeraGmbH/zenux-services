@@ -48,7 +48,7 @@ public:
     void computeJustData();
 
 protected:
-    void executeCommand(int cmdCode, cProtonetCommand* protoCmd) override;
+    void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
     virtual double getGainCorrection(double par);
     virtual double getJustGainCorrection(double par);
     virtual double getPhaseCorrection(double par);

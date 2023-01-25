@@ -42,7 +42,7 @@ void FOutChannelInterface::initSCPIConnection(QString leadingNodes)
     addDelegate(new cSCPIDelegate(QString("%1%2").arg(leadingNodes).arg(m_sName),"POWTYPE", SCPI::isQuery | SCPI::isCmdwP , m_pSCPIInterface, cmdPowtype));
 }
 
-void FOutChannelInterface::executeCommand(int cmdCode, cProtonetCommand *protoCmd)
+void FOutChannelInterface::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
 {
     switch (cmdCode)
     {

@@ -59,7 +59,7 @@ public:
     void computeJustData();
 
 protected:
-    void executeCommand(int cmdCode, cProtonetCommand* protoCmd) override;
+    void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
 
 private:
     QString m_sName; // the channels name m0...

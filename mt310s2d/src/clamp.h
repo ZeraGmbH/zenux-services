@@ -39,7 +39,7 @@ public:
     bool importXMLDocument(QDomDocument *qdomdoc, bool ignoreType);
 
 protected:
-    void executeCommand(int cmdCode, cProtonetCommand* protoCmd) override;
+    void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
     void exportAdjData(QDataStream& stream) override;
     bool importAdjData(QDataStream& stream) override;
     bool importXMLDocument(QDomDocument* qdomdoc) override;

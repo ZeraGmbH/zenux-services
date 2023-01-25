@@ -41,7 +41,7 @@ void JustRangeTripletOffsetGainPhase::initSCPIConnection(QString leadingNodes)
     m_pOffsetCorrection->initSCPIConnection(QString("%1CORRECTION:OFFSET").arg(leadingNodes));
 }
 
-void JustRangeTripletOffsetGainPhase::executeCommand(int cmdCode, cProtonetCommand *protoCmd)
+void JustRangeTripletOffsetGainPhase::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
 {
     switch (cmdCode)
     {

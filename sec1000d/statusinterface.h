@@ -24,7 +24,7 @@ public:
     cStatusInterface();
     virtual void initSCPIConnection(QString leadingNodes) override;
 protected:
-    void executeCommand(int cmdCode, cProtonetCommand* protoCmd) override;
+    void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
 private:
     quint16 getDeviceStatus();
 };

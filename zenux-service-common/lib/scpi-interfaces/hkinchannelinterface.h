@@ -15,7 +15,7 @@ public:
     QString& getDescription();
     bool isAvail();
 protected:
-    void executeCommand(int cmdCode, cProtonetCommand* protoCmd) override;
+    void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
 private:
     QString readAlias(QString& sInput);
     QString readChannelStatus(QString& sInput);

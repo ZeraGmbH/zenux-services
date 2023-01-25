@@ -61,7 +61,7 @@ void cECalculatorInterface::initSCPIConnection(QString leadingNodes)
 }
 
 
-void cECalculatorInterface::executeCommand(int cmdCode, cProtonetCommand *protoCmd)
+void cECalculatorInterface::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
 {
     switch (cmdCode)
     {

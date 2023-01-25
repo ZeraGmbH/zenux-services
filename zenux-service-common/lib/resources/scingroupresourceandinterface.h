@@ -19,7 +19,7 @@ public:
     void registerResource(RMConnection *rmConnection, quint16 port) override;
     void unregisterResource(RMConnection *rmConnection) override;
 protected:
-    void executeCommand(int cmdCode, cProtonetCommand* protoCmd) override;
+    void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
 private:
     QString m_ReadVersion(QString& sInput);
     QString m_ReadChannelCatalog(QString& sInput);

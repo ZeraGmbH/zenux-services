@@ -48,7 +48,7 @@ public:
     void computeJustData();
 
 protected:
-    void executeCommand(int cmdCode, cProtonetCommand* protoCmd) override;
+    void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
     QString scpiGetGainCorrection(const QString &scpiInput);
     QString mReadJustGainCorrection(QString&sInput);
     QString mReadPhaseCorrection(QString&sInput);

@@ -47,7 +47,7 @@ public:
     QList<cECalculatorChannel*> getECalcChannelList();
 
 protected:
-    void executeCommand(int cmdCode, cProtonetCommand* protoCmd) override;
+    void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
 
 private:
     cSEC1000dServer* m_pMyServer;

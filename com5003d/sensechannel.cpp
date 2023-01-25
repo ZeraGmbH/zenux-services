@@ -54,7 +54,7 @@ void cSenseChannel::initSCPIConnection(QString leadingNodes)
 }
 
 
-void cSenseChannel::executeCommand(int cmdCode, cProtonetCommand *protoCmd)
+void cSenseChannel::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
 {
     switch (cmdCode)
     {

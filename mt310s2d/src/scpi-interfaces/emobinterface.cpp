@@ -19,7 +19,7 @@ void EmobInterface::actualizeClampStatus(quint16 devConnectedMask)
 
 }
 
-void EmobInterface::executeCommand(int cmdCode, cProtonetCommand *protoCmd)
+void EmobInterface::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
 {
     switch (cmdCode)
     {

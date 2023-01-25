@@ -48,7 +48,7 @@ void ScInGroupResourceAndInterface::unregisterResource(RMConnection *rmConnectio
         unregister1Resource(rmConnection, NotZeroNumGen::getMsgNr(), QString("SCHEAD;%1;").arg(channel->getName()));
 }
 
-void ScInGroupResourceAndInterface::executeCommand(int cmdCode, cProtonetCommand *protoCmd)
+void ScInGroupResourceAndInterface::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
 {
     switch (cmdCode)
     {

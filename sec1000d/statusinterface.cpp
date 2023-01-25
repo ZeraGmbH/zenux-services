@@ -15,7 +15,7 @@ void cStatusInterface::initSCPIConnection(QString leadingNodes)
 }
 
 
-void cStatusInterface::executeCommand(int cmdCode, cProtonetCommand *protoCmd)
+void cStatusInterface::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
 {
     cSCPICommand cmd = protoCmd->m_sInput;
 

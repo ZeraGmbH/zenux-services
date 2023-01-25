@@ -83,7 +83,7 @@ QString cClamp::getSerial()
     return m_sSerial;
 }
 
-void cClamp::executeCommand(int cmdCode, cProtonetCommand *protoCmd)
+void cClamp::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
 {
     switch (cmdCode) {
     case cmdSerial:

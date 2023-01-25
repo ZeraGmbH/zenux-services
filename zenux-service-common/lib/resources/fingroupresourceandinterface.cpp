@@ -55,7 +55,7 @@ void FInGroupResourceAndInterface::unregisterResource(RMConnection *rmConnection
         unregister1Resource(rmConnection, NotZeroNumGen::getMsgNr(), QString("FRQINPUT;%1;").arg(channel->getName()));
 }
 
-void FInGroupResourceAndInterface::executeCommand(int cmdCode, cProtonetCommand *protoCmd)
+void FInGroupResourceAndInterface::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
 {
     switch (cmdCode)
     {

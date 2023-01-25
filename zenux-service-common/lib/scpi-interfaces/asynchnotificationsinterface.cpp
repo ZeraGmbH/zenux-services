@@ -19,7 +19,7 @@ void AsynchNotificationsInterface::initSCPIConnection(QString leadingNodes)
     addDelegate(new cSCPIDelegate(QString("%1SERVER").arg(leadingNodes), "UNREGISTER", SCPI::isCmdwP, m_pSCPIInterface, cmdUnregister));
 }
 
-void AsynchNotificationsInterface::executeCommand(int cmdCode, cProtonetCommand *protoCmd)
+void AsynchNotificationsInterface::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
 {
 
 }

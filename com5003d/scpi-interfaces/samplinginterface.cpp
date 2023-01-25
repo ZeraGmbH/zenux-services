@@ -75,7 +75,7 @@ void cSamplingInterface::unregisterResource(RMConnection *rmConnection)
 }
 
 
-void cSamplingInterface::executeCommand(int cmdCode, cProtonetCommand *protoCmd)
+void cSamplingInterface::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
 {
     switch (cmdCode)
     {
