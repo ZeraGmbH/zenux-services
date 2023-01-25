@@ -133,7 +133,7 @@ cSenseInterface::cSenseInterface(cMT310S2dServer *server) :
 
 cSenseInterface::~cSenseInterface()
 {
-    for(auto channel : m_ChannelList) {
+    for(auto channel : qAsConst(m_ChannelList)) {
         delete channel;
     }
     m_ChannelList.clear();
@@ -164,7 +164,7 @@ void cSenseInterface::initSCPIConnection(QString leadingNodes)
     delegate = new cSCPIDelegate(QString("%1SENSE:CORRECTION").arg(leadingNodes),"COMPUTE", SCPI::isCmd, m_pSCPIInterface, SenseSystem::computeAdjData);
     m_DelegateList.append(delegate);
     connect(delegate, &cSCPIDelegate::execute, this, &cSenseInterface::executeCommand);
-    for(auto channel : m_ChannelList) {
+    for(auto channel : qAsConst(m_ChannelList)) {
         // we also must connect the signals for notification and for output
         connect(channel, &ScpiConnection::strNotifier, this, &ScpiConnection::strNotifier);
         connect(channel, &ScpiConnection::cmdExecutionDone, this, &ScpiConnection::cmdExecutionDone);
@@ -179,7 +179,7 @@ void cSenseInterface::initSCPIConnection(QString leadingNodes)
 cSenseChannel *cSenseInterface::getChannel(QString &name)
 {
     cSenseChannel *channelFound = nullptr;
-    for(auto channel : m_ChannelList) {
+    for(auto channel : qAsConst(m_ChannelList)) {
         if(channel->getName() == name) {
             channelFound = channel;
             break;
@@ -191,7 +191,7 @@ cSenseChannel *cSenseInterface::getChannel(QString &name)
 QString cSenseInterface::getChannelSystemName(quint16 ctrlChannel)
 {
     QString nameFound;
-    for(auto channel : m_ChannelList) {
+    for(auto channel : qAsConst(m_ChannelList)) {
         if(channel->getCtrlChannel() == ctrlChannel) {
             nameFound = channel->getName();
             break;
@@ -399,7 +399,7 @@ void cSenseInterface::exportAdjData(QDataStream &stream)
     stream << m_pSystemInfo->getDeviceVersion().toStdString().c_str(); // geräte name versionsnummern ...
     stream << m_pSystemInfo->getSerialNumber().toStdString().c_str(); // seriennummer
     stream << QDateTime::currentDateTime().toString(Qt::TextDate).toStdString().c_str(); // datum,uhrzeit
-    for(auto channel : m_ChannelList) {
+    for(auto channel : qAsConst(m_ChannelList)) {
         for(auto range : channel->getRangeList()) {
             if ((range->getMMask() & SenseSystem::Direct)> 0)
             {
@@ -461,7 +461,7 @@ QString cSenseInterface::exportXMLString(int indent)
     QDomElement typeTag = justqdom.createElement( "Sense");
     adjtag.appendChild(typeTag);
 
-    for(auto channel : m_ChannelList) {
+    for(auto channel : qAsConst(m_ChannelList)) {
         QDomText t;
         QDomElement chtag = justqdom.createElement( "Channel" );
         typeTag.appendChild( chtag );
@@ -542,7 +542,7 @@ QString cSenseInterface::exportXMLString(int indent)
 
 void cSenseInterface::m_ComputeSenseAdjData()
 {
-    for(auto channel : m_ChannelList) {
+    for(auto channel : qAsConst(m_ChannelList)) {
         channel->computeJustData();
     }
 }
@@ -691,7 +691,7 @@ bool cSenseInterface::importXMLDocument(QDomDocument* qdomdoc) // n steht auf ei
 void cSenseInterface::registerResource(RMConnection *rmConnection, quint16 port)
 {
     msgNrList.clear();
-    for(auto channel : m_ChannelList) {
+    for(auto channel : qAsConst(m_ChannelList)) {
         register1Resource(rmConnection, NotZeroNumGen::getMsgNr(), QString("SENSE;%1;1;%2;%3;")
                          .arg(channel->getName())
                          .arg(channel->getDescription())
@@ -707,7 +707,7 @@ void cSenseInterface::registerResource(RMConnection *rmConnection, quint16 port)
 void cSenseInterface::unregisterResource(RMConnection *rmConnection)
 {
     msgNrList.clear();
-    for(auto channel : m_ChannelList) {
+    for(auto channel : qAsConst(m_ChannelList)) {
         unregister1Resource(rmConnection, NotZeroNumGen::getMsgNr(), QString("SENSE;%1;")
                          .arg(channel->getName()));
     }
@@ -793,7 +793,7 @@ QString cSenseInterface::m_InitSenseAdjData(QString &sInput)
     cSCPICommand cmd = sInput;
     // cmd.isCommand(0) is not correct but we leave it for compatibility
     if ( cmd.isCommand(0) || (cmd.isCommand(1) && (cmd.getParam(0) == ""))) {
-        for(auto channel : m_ChannelList) {
+        for(auto channel : qAsConst(m_ChannelList)) {
             channel->initJustData();
         }
         return SCPI::scpiAnswer[SCPI::ack];
@@ -856,7 +856,7 @@ bool cSenseInterface::setSenseMode(QString sMode)
         quint8 mode;
         mode = m_MModeHash[sMode];
         pAtmel->setMeasMode((mode >> 1) & 1); // set the atmels mode here...atmel only knows ac and hf
-        for(auto channel : m_ChannelList) {
+        for(auto channel : qAsConst(m_ChannelList)) {
             channel->setMMode(mode);
         }
         m_sMMode = sMode;
