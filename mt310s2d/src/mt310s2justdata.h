@@ -47,10 +47,15 @@ public:
     void initJustData();
     void computeJustData();
 
-protected slots:
-    virtual void executeCommand(int cmdCode, cProtonetCommand* protoCmd) override;
-
 protected:
+    void executeCommand(int cmdCode, cProtonetCommand* protoCmd) override;
+    virtual double getGainCorrection(double par);
+    virtual double getJustGainCorrection(double par);
+    virtual double getPhaseCorrection(double par);
+    virtual double getJustPhaseCorrection(double par);
+    virtual double getOffsetCorrection(double par);
+    virtual double getJustOffsetCorrection(double par);
+
     QString scpiGetGainCorrection(const QString &scpiInput);
     QString mReadJustGainCorrection(QString&sInput);
     QString mReadPhaseCorrection(QString&sInput);
@@ -61,12 +66,6 @@ protected:
     QString m_ComputeJustData(QString& sInput);
     QString m_InitJustData(QString& sInput); // done in Adjustmentmodule - left for compatibility
 
-    virtual double getGainCorrection(double par);
-    virtual double getJustGainCorrection(double par);
-    virtual double getPhaseCorrection(double par);
-    virtual double getJustPhaseCorrection(double par);
-    virtual double getOffsetCorrection(double par);
-    virtual double getJustOffsetCorrection(double par);
 private:
     PermissionStructAdj m_permissions;
 };

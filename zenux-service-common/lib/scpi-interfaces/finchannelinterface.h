@@ -14,8 +14,8 @@ public:
     QString& getAlias();
     QString& getDescription();
     bool isAvail();
-protected slots:
-    virtual void executeCommand(int cmdCode, cProtonetCommand* protoCmd) override;
+protected:
+    void executeCommand(int cmdCode, cProtonetCommand* protoCmd) override;
 private:
     QString readAlias(QString& sInput);
     QString readChannelStatus(QString& sInput);

@@ -20,14 +20,11 @@ enum StatusCommands
 class cStatusInterface: public ScpiConnection
 {
     Q_OBJECT
-
 public:
     cStatusInterface();
     virtual void initSCPIConnection(QString leadingNodes) override;
-
-protected slots:
-    virtual void executeCommand(int cmdCode, cProtonetCommand* protoCmd) override;
-
+protected:
+    void executeCommand(int cmdCode, cProtonetCommand* protoCmd) override;
 private:
     quint16 getDeviceStatus();
 };

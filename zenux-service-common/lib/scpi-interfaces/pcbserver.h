@@ -28,8 +28,15 @@ public:
     EthSettings* m_pETHSettings;
 public slots:
     void sendAnswerProto(cProtonetCommand* protoCmd);
+protected slots:
+    virtual void doConfiguration() = 0; // all servers must configure
+    virtual void setupServer(); // all servers must setup
+    virtual void setSCPIConnection();
+    virtual void SCPIInput();
+    virtual void SCPIdisconnect();
 protected:
     void initSCPIConnections();
+    void executeCommand(int cmdCode, cProtonetCommand* protoCmd) override;
     XiQNetServer* myServer; // the real server that does the communication job
     XiQNetWrapper m_ProtobufWrapper;
     Zera::XMLConfig::cReader* myXMLConfigReader; // the xml configurator
@@ -38,13 +45,6 @@ protected:
     QList<cResource*> resourceList;
     QTcpServer* m_pSCPIServer;
     QTcpSocket* m_pSCPISocket;
-protected slots:
-    virtual void doConfiguration() = 0; // all servers must configure
-    virtual void setupServer(); // all servers must setup
-    virtual void executeCommand(int cmdCode, cProtonetCommand* protoCmd) override;
-    virtual void setSCPIConnection();
-    virtual void SCPIInput();
-    virtual void SCPIdisconnect();
 private:
     QString m_sServerName;
     QString m_sServerVersion;

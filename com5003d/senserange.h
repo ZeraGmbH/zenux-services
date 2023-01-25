@@ -58,8 +58,8 @@ public:
     void initJustData();
     void computeJustData();
 
-protected slots:
-    virtual void executeCommand(int cmdCode, cProtonetCommand* protoCmd) override;
+protected:
+    void executeCommand(int cmdCode, cProtonetCommand* protoCmd) override;
 
 private:
     cATMEL* m_pATMEL;

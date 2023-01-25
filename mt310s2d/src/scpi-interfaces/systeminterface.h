@@ -42,8 +42,8 @@ public:
     cSystemInterface(cMT310S2dServer* server);
     virtual void initSCPIConnection(QString leadingNodes) override;
 
-protected slots:
-    virtual void executeCommand(int cmdCode, cProtonetCommand* protoCmd) override;
+protected:
+    void executeCommand(int cmdCode, cProtonetCommand* protoCmd) override;
 
 private:
     cMT310S2dServer* m_pMyServer;

@@ -55,10 +55,16 @@ public:
     void initJustData();
     void computeJustData();
 
-protected slots:
-    virtual void executeCommand(int cmdCode, cProtonetCommand* protoCmd) override;
-
 protected:
+    void executeCommand(int cmdCode, cProtonetCommand* protoCmd) override;
+    QString m_ReadRangeType(QString& sInput);
+    QString m_ReadRangeAlias(QString& sInput);
+    QString m_ReadRangeAvail(QString& sInput);
+    QString m_ReadRangeValue(QString& sInput);
+    QString m_ReadRangeRejection(QString& sInput);
+    QString m_ReadRangeOVRejection(QString& sInput);
+    QString m_ReadRangeADWRejection(QString& sInput);
+
     QString m_sName; // the range name
     QString m_sAlias; // the range alias name
     bool m_bAvail; // range io avail or not
@@ -69,15 +75,6 @@ protected:
     quint8 m_nSelCode; // selection code
     quint16 m_nMMask; // the possible measuring modes for this range
     quint8 m_nMMode; // the actual measuring mode
-
-    QString m_ReadRangeType(QString& sInput);
-    QString m_ReadRangeAlias(QString& sInput);
-    QString m_ReadRangeAvail(QString& sInput);
-    QString m_ReadRangeValue(QString& sInput);
-    QString m_ReadRangeRejection(QString& sInput);
-    QString m_ReadRangeOVRejection(QString& sInput);
-    QString m_ReadRangeADWRejection(QString& sInput);
-
     JustRangeTripletOffsetGainPhase* m_pJustdata;
 
 };
