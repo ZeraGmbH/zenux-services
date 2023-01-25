@@ -155,37 +155,18 @@ cSenseInterface::~cSenseInterface()
 void cSenseInterface::initSCPIConnection(QString leadingNodes)
 {
     ensureTrailingColonOnNonEmptyParentNodes(leadingNodes);
-    cSCPIDelegate* delegate;
-    delegate = new cSCPIDelegate(QString("%1SENSE").arg(leadingNodes),"VERSION",SCPI::isQuery,m_pSCPIInterface, SenseSystem::cmdVersion);
-    m_DelegateList.append(delegate);
-    connect(delegate, &cSCPIDelegate::execute, this, &cSenseInterface::executeCommand);
-    delegate = new cSCPIDelegate(QString("%1SENSE").arg(leadingNodes),"MMODE",SCPI::isQuery | SCPI::isCmdwP ,m_pSCPIInterface, SenseSystem::cmdMMode);
-    m_DelegateList.append(delegate);
-    connect(delegate, &cSCPIDelegate::execute, this, &cSenseInterface::executeCommand);
-    delegate = new cSCPIDelegate(QString("%1SENSE:MMODE").arg(leadingNodes),"CATALOG",SCPI::isQuery,m_pSCPIInterface, SenseSystem::cmdMModeCat );
-    m_DelegateList.append(delegate);
-    connect(delegate, &cSCPIDelegate::execute, this, &cSenseInterface::executeCommand);
-    delegate = new cSCPIDelegate(QString("%1SENSE:CHANNEL").arg(leadingNodes),"CATALOG", SCPI::isQuery, m_pSCPIInterface, SenseSystem::cmdChannelCat);
-    m_DelegateList.append(delegate);
-    connect(delegate, &cSCPIDelegate::execute, this, &cSenseInterface::executeCommand);
-    delegate = new cSCPIDelegate(QString("%1SENSE:GROUP").arg(leadingNodes),"CATALOG", SCPI::isQuery, m_pSCPIInterface, SenseSystem::cmdGroupCat);
-    m_DelegateList.append(delegate);
-    connect(delegate, &cSCPIDelegate::execute, this, &cSenseInterface::executeCommand);
-    delegate = new cSCPIDelegate(QString("%1SENSE:CORRECTION").arg(leadingNodes),"INIT", SCPI::isCmd, m_pSCPIInterface, SenseSystem::initAdjData);
-    m_DelegateList.append(delegate);
-    connect(delegate, &cSCPIDelegate::execute, this, &cSenseInterface::executeCommand);
-    delegate = new cSCPIDelegate(QString("%1SENSE:CORRECTION").arg(leadingNodes),"COMPUTE", SCPI::isCmd, m_pSCPIInterface, SenseSystem::computeAdjData);
-    m_DelegateList.append(delegate);
-    connect(delegate, &cSCPIDelegate::execute, this, &cSenseInterface::executeCommand);
-
-
-    for (int i = 0; i < m_ChannelList.count(); i++)
-    {
+    addDelegate(new cSCPIDelegate(QString("%1SENSE").arg(leadingNodes),"VERSION",SCPI::isQuery,m_pSCPIInterface, SenseSystem::cmdVersion));
+    addDelegate(new cSCPIDelegate(QString("%1SENSE").arg(leadingNodes),"MMODE",SCPI::isQuery | SCPI::isCmdwP ,m_pSCPIInterface, SenseSystem::cmdMMode));
+    addDelegate(new cSCPIDelegate(QString("%1SENSE:MMODE").arg(leadingNodes),"CATALOG",SCPI::isQuery,m_pSCPIInterface, SenseSystem::cmdMModeCat));
+    addDelegate(new cSCPIDelegate(QString("%1SENSE:CHANNEL").arg(leadingNodes),"CATALOG", SCPI::isQuery, m_pSCPIInterface, SenseSystem::cmdChannelCat));
+    addDelegate(new cSCPIDelegate(QString("%1SENSE:GROUP").arg(leadingNodes),"CATALOG", SCPI::isQuery, m_pSCPIInterface, SenseSystem::cmdGroupCat));
+    addDelegate(new cSCPIDelegate(QString("%1SENSE:CORRECTION").arg(leadingNodes),"INIT", SCPI::isCmd, m_pSCPIInterface, SenseSystem::initAdjData));
+    addDelegate(new cSCPIDelegate(QString("%1SENSE:CORRECTION").arg(leadingNodes),"COMPUTE", SCPI::isCmd, m_pSCPIInterface, SenseSystem::computeAdjData));
+    for(auto channel : qAsConst(m_ChannelList)) {
         // we also must connect the signals for notification and for output
-        connect(m_ChannelList.at(i), &ScpiConnection::strNotifier, this, &ScpiConnection::strNotifier);
-        connect(m_ChannelList.at(i), &ScpiConnection::cmdExecutionDone, this, &ScpiConnection::cmdExecutionDone);
-
-        m_ChannelList.at(i)->initSCPIConnection(QString("%1SENSE").arg(leadingNodes));
+        connect(channel, &ScpiConnection::strNotifier, this, &ScpiConnection::strNotifier);
+        connect(channel, &ScpiConnection::cmdExecutionDone, this, &ScpiConnection::cmdExecutionDone);
+        channel->initSCPIConnection(QString("%1SENSE").arg(leadingNodes));
     }
 }
 
