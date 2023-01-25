@@ -19,16 +19,9 @@ cStatusInterface::cStatusInterface(cSCPI *scpiInterface, AdjustmentStatusInterfa
 void cStatusInterface::initSCPIConnection(QString leadingNodes)
 {
     ensureTrailingColonOnNonEmptyParentNodes(leadingNodes);
-    cSCPIDelegate* delegate;
-    delegate = new cSCPIDelegate(QString("%1STATUS").arg(leadingNodes),"DEVICE",SCPI::isQuery, m_pSCPIInterface, cmdDevice);
-    m_DelegateList.append(delegate);
-    connect(delegate, &cSCPIDelegate::execute, this, &cStatusInterface::executeCommand);
-    delegate = new cSCPIDelegate(QString("%1STATUS").arg(leadingNodes),"ADJUSTMENT", SCPI::isQuery, m_pSCPIInterface, cmdAdjustment);
-    m_DelegateList.append(delegate);
-    connect(delegate, &cSCPIDelegate::execute, this, &cStatusInterface::executeCommand);
-    delegate = new cSCPIDelegate(QString("%1STATUS").arg(leadingNodes),"AUTHORIZATION", SCPI::isQuery, m_pSCPIInterface, cmdAuthorization);
-    m_DelegateList.append(delegate);
-    connect(delegate, &cSCPIDelegate::execute, this, &cStatusInterface::executeCommand);
+    addDelegate(new cSCPIDelegate(QString("%1STATUS").arg(leadingNodes),"DEVICE",SCPI::isQuery, m_pSCPIInterface, cmdDevice));
+    addDelegate(new cSCPIDelegate(QString("%1STATUS").arg(leadingNodes),"ADJUSTMENT", SCPI::isQuery, m_pSCPIInterface, cmdAdjustment));
+    addDelegate(new cSCPIDelegate(QString("%1STATUS").arg(leadingNodes),"AUTHORIZATION", SCPI::isQuery, m_pSCPIInterface, cmdAuthorization));
 }
 
 void cStatusInterface::executeCommand(int cmdCode, cProtonetCommand *protoCmd)
