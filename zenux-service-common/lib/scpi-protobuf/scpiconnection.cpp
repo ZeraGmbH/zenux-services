@@ -30,3 +30,9 @@ void ScpiConnection::ensureTrailingColonOnNonEmptyParentNodes(QString &leadingNo
     if(!leadingNodes.isEmpty() && !leadingNodes.endsWith(":"))
         leadingNodes.append(":");
 }
+
+void ScpiConnection::addDelegate(cSCPIDelegate *delegate)
+{
+    m_DelegateList.append(delegate);
+    connect(delegate, &cSCPIDelegate::execute, this, &ScpiConnection::executeCommand);
+}

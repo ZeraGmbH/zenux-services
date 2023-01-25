@@ -20,6 +20,7 @@ signals:
 protected:
     void removeSCPIConnections();
     void ensureTrailingColonOnNonEmptyParentNodes(QString &leadingNodes);
+    void addDelegate(cSCPIDelegate *delegate);
     cSCPI* m_pSCPIInterface;
     QList<cSCPIDelegate*> m_DelegateList;
 protected slots:
