@@ -8,10 +8,6 @@ ScpiConnection::ScpiConnection(cSCPI *scpiInterface)
 ScpiConnection::~ScpiConnection()
 {
     removeSCPIConnections();
-    for (int i = 0; i < m_DelegateList.count(); i++) {
-        cSCPIDelegate* ptr = m_DelegateList.at(i);
-        delete ptr;
-    }
 }
 
 void ScpiConnection::removeSCPIConnections()
@@ -22,6 +18,11 @@ void ScpiConnection::removeSCPIConnections()
             m_pSCPIInterface->delSCPICmds(ptr->getCommand());
         }
     }
+    for (int i = 0; i < m_DelegateList.count(); i++) {
+        cSCPIDelegate* ptr = m_DelegateList.at(i);
+        delete ptr;
+    }
+    m_DelegateList.clear();
 }
 
 void ScpiConnection::ensureTrailingColonOnNonEmptyParentNodes(QString &leadingNodes)
