@@ -49,6 +49,7 @@ function(SETUP_TESTS)
         target_link_libraries(${_testname}
             PUBLIC
             senserangetesttemplate
+            zenuxservicecommon-testlib
             )
     endforeach()
 endfunction()

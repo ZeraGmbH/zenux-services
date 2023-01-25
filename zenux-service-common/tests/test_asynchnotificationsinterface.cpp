@@ -1,4 +1,5 @@
 #include "test_asynchnotificationsinterface.h"
+#include "asynchnotificationsinterfacetest.h"
 #include "asynchnotificationsinterface.h"
 #include "scpidelegate.h"
 #include <QTest>
@@ -24,4 +25,19 @@ void test_asynchnotificationsinterface::findScpiUnregisterObject()
     testInterface.initSCPIConnection("");
     cSCPIObject *scpiObject = m_scpiInterface->getSCPIObject("SERVER:UNREGISTER");
     QVERIFY(scpiObject);
+}
+
+void test_asynchnotificationsinterface::expectTwoDelegates()
+{
+    AsynchNotificationsInterfaceTest testInterface(m_scpiInterface.get());
+    testInterface.initSCPIConnection("");
+    QCOMPARE(testInterface.getDelegateCount(), 2);
+}
+
+void test_asynchnotificationsinterface::removeScpiConnection()
+{
+    AsynchNotificationsInterfaceTest testInterface(m_scpiInterface.get());
+    testInterface.initSCPIConnection("");
+    testInterface.removeSCPIConnectionsTest();
+    QCOMPARE(testInterface.getDelegateCount(), 0);
 }
