@@ -650,49 +650,24 @@ void cClamp::addSystAdjInterface()
 
 void cClamp::addSystAdjInterfaceChannel(QString channelName)
 {
-    QString cmdParent;
-    cSCPIDelegate* delegate;
-
-    cmdParent = QString("SYSTEM:CLAMP:%1").arg(channelName);
-    delegate = new cSCPIDelegate(cmdParent, "SERIALNUMBER", SCPI::isQuery | SCPI::isCmdwP, m_pSCPIInterface, cmdSerial);
-    m_DelegateList.append(delegate);
-    connect(delegate, &cSCPIDelegate::execute, this, &cClamp::executeCommand);
-    delegate = new cSCPIDelegate(cmdParent, "VERSION", SCPI::isQuery | SCPI::isCmdwP, m_pSCPIInterface, cmdVersion);
-    m_DelegateList.append(delegate);
-    connect(delegate, &cSCPIDelegate::execute, this, &cClamp::executeCommand);
-    delegate = new cSCPIDelegate(cmdParent, "TYPE",SCPI::isQuery | SCPI::isCmdwP, m_pSCPIInterface, cmdType);
-    m_DelegateList.append(delegate);
-    connect(delegate, &cSCPIDelegate::execute, this, &cClamp::executeCommand);
-    delegate = new cSCPIDelegate(cmdParent, "NAME",SCPI::isQuery, m_pSCPIInterface, cmdName );
-    m_DelegateList.append(delegate);
-    connect(delegate, &cSCPIDelegate::execute, this, &cClamp::executeCommand);
+    QString cmdParent = QString("SYSTEM:CLAMP:%1").arg(channelName);
+    addDelegate(new cSCPIDelegate(cmdParent, "SERIALNUMBER", SCPI::isQuery | SCPI::isCmdwP, m_pSCPIInterface, cmdSerial));
+    addDelegate(new cSCPIDelegate(cmdParent, "VERSION", SCPI::isQuery | SCPI::isCmdwP, m_pSCPIInterface, cmdVersion));
+    addDelegate(new cSCPIDelegate(cmdParent, "TYPE",SCPI::isQuery | SCPI::isCmdwP, m_pSCPIInterface, cmdType));
+    addDelegate(new cSCPIDelegate(cmdParent, "NAME",SCPI::isQuery, m_pSCPIInterface, cmdName));
 
     cmdParent = QString("SYSTEM:ADJUSTMENT:CLAMP:%1:FLASH").arg(channelName);
-    delegate = new cSCPIDelegate(cmdParent,"WRITE", SCPI::isCmd, m_pSCPIInterface, cmdFlashWrite);
-    m_DelegateList.append(delegate);
-    connect(delegate, &cSCPIDelegate::execute, this, &cClamp::executeCommand);
-    delegate = new cSCPIDelegate(cmdParent,"READ", SCPI::isCmd, m_pSCPIInterface, cmdFlashRead);
-    m_DelegateList.append(delegate);
-    connect(delegate, &cSCPIDelegate::execute, this, &cClamp::executeCommand);
-    delegate = new cSCPIDelegate(cmdParent,"CHKSUM", SCPI::isQuery, m_pSCPIInterface, cmdChksum);
-    m_DelegateList.append(delegate);
-    connect(delegate, &cSCPIDelegate::execute, this, &cClamp::executeCommand);
-    delegate = new cSCPIDelegate(cmdParent,"RESET", SCPI::isCmd, m_pSCPIInterface, cmdFlashReset);
-    m_DelegateList.append(delegate);
-    connect(delegate, &cSCPIDelegate::execute, this, &cClamp::executeCommand);
+    addDelegate(new cSCPIDelegate(cmdParent,"WRITE", SCPI::isCmd, m_pSCPIInterface, cmdFlashWrite));
+    addDelegate(new cSCPIDelegate(cmdParent,"READ", SCPI::isCmd, m_pSCPIInterface, cmdFlashRead));
+    addDelegate(new cSCPIDelegate(cmdParent,"CHKSUM", SCPI::isQuery, m_pSCPIInterface, cmdChksum));
+    addDelegate(new cSCPIDelegate(cmdParent,"RESET", SCPI::isCmd, m_pSCPIInterface, cmdFlashReset));
 
     cmdParent = QString("SYSTEM:ADJUSTMENT:CLAMP:%1:XML").arg(channelName);
-    delegate = new cSCPIDelegate(cmdParent,"WRITE", SCPI::isCmd, m_pSCPIInterface, cmdXMLWrite);
-    m_DelegateList.append(delegate);
-    connect(delegate, &cSCPIDelegate::execute, this, &cClamp::executeCommand);
-    delegate = new cSCPIDelegate(cmdParent,"READ", SCPI::isCmd, m_pSCPIInterface, cmdXMLRead);
-    m_DelegateList.append(delegate);
-    connect(delegate, &cSCPIDelegate::execute, this, &cClamp::executeCommand);
+    addDelegate(new cSCPIDelegate(cmdParent,"WRITE", SCPI::isCmd, m_pSCPIInterface, cmdXMLWrite));
+    addDelegate(new cSCPIDelegate(cmdParent,"READ", SCPI::isCmd, m_pSCPIInterface, cmdXMLRead));
 
     cmdParent = QString("STATUS:CLAMP:%1").arg(channelName);
-    delegate = new cSCPIDelegate(cmdParent, "ADJUSTMENT", SCPI::isQuery, m_pSCPIInterface, cmdStatAdjustment);
-    m_DelegateList.append(delegate);
-    connect(delegate, &cSCPIDelegate::execute, this, &cClamp::executeCommand);
+    addDelegate(new cSCPIDelegate(cmdParent, "ADJUSTMENT", SCPI::isQuery, m_pSCPIInterface, cmdStatAdjustment));
 }
 
 cSenseRange* cClamp::getRange(QString name)
