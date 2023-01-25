@@ -135,7 +135,7 @@ void cClamp::exportAdjData(QDataStream &stream)
     stream << m_sSerial; //  serial
     stream << m_AdjDateTime.toString(Qt::TextDate); // date, time
     QString spec;
-    for(auto range : m_RangeList) {
+    for(auto range : qAsConst(m_RangeList)) {
         spec = range->getName();
         stream << spec;
         range->getJustData()->Serialize(stream);
@@ -698,7 +698,7 @@ void cClamp::addSystAdjInterfaceChannel(QString channelName)
 cSenseRange* cClamp::getRange(QString name)
 {
     cSenseRange* rangeFound = nullptr;
-    for(auto range : m_RangeList) {
+    for(auto range : qAsConst(m_RangeList)) {
         if (range->getName() == name) {
             rangeFound = range;
             break;
