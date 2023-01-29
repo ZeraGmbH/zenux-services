@@ -2,13 +2,6 @@
 #define SAMPLERANGE_H
 
 #include "scpiconnection.h"
-#include <scpi.h>
-#include <QString>
-
-enum SampleRangeCommands
-{
-    SampleRangeSamples
-};
 
 class cSampleRange: public ScpiConnection
 {
@@ -22,7 +15,7 @@ public:
 protected:
     void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
 private:
-    QString m_ReadSRate(QString &sInput);
+    QString readSRate(QString &sInput);
     QString m_sName;
     quint16 m_nSRate;
     quint8 m_nSelCode; // selection code
