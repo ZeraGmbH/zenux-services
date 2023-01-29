@@ -8,7 +8,6 @@ set(SOURCES
     main.cpp
     com5003d.cpp
     com5003justdata.cpp
-    samplerange.cpp
     senserange.cpp
     sensechannel.cpp
     adjustment.cpp
@@ -26,7 +25,6 @@ set(HEADER
     com5003justdata.h
     com5003scpi.h
     com5003dglobal.h
-    samplerange.h
     senserange.h
     sensechannel.h
     adjflash.h
