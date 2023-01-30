@@ -3,6 +3,7 @@
 
 #include "scpiconnection.h"
 #include "adjustmentstatusinterface.h"
+#include "timerperiodicqt.h"
 #include <scpi.h>
 
 class cStatusInterface: public ScpiConnection
@@ -18,6 +19,7 @@ private:
     QString getAuthorizationStatus();
     AdjustmentStatusInterface *m_adjustmentStatusInterface;
     NotificationString m_notifierAutorization;
+    TimerTemplateQtPtr m_periodicTimer;
 };
 
 #endif // STATUSINTERFACE_H
