@@ -21,6 +21,7 @@ find_package(SCPI REQUIRED)
 find_package(xiqnet REQUIRED)
 find_package(ZeraClasses REQUIRED)
 find_package(zeraprotobuf REQUIRED)
+find_package(ZenuxCore REQUIRED)
 
 if(${useSystemd})
     find_package(PkgConfig REQUIRED)

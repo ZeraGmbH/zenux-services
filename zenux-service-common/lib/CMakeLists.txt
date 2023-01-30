@@ -33,6 +33,7 @@ target_link_libraries(zenuxservicecommon
     Zera::zera-xmlconfig
     Zera::zera-math
     Zera::zera-i2c-devices
+    Zera::zera-timers
     # ask linker to help us finding unresolved symbols
     "-Wl,--no-undefined"
     )

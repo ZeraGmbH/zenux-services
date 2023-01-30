@@ -1,7 +1,10 @@
 #include "statusinterface.h"
 #include "protonetcommand.h"
 #include "permissionfunctions.h"
+#include <timerfactoryqt.h>
 #include <scpi.h>
+
+constexpr int AUTH_POLLING_PERIOD = 1000;
 
 enum StatusCommands
 {
@@ -14,6 +17,8 @@ cStatusInterface::cStatusInterface(cSCPI *scpiInterface, AdjustmentStatusInterfa
     ScpiConnection(scpiInterface),
     m_adjustmentStatusInterface(adjustmentStatusInterface)
 {
+    m_periodicTimer = TimerFactoryQt::createPeriodic(AUTH_POLLING_PERIOD);
+    connect(m_periodicTimer.get(), &TimerTemplateQt::sigExpired, this, &cStatusInterface::getAuthorizationStatus);
 }
 
 void cStatusInterface::initSCPIConnection(QString leadingNodes)
@@ -39,6 +44,7 @@ void cStatusInterface::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
         case cmdAuthorization:
             emit strNotifier(&m_notifierAutorization);
             protoCmd->m_sOutput = getAuthorizationStatus();
+            m_periodicTimer->start();
             break;
         }
     }
