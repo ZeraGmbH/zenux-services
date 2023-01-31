@@ -73,3 +73,9 @@ QString cStatusInterface::getAuthorizationStatus()
     m_notifierAutorization = status;
     return status;
 }
+
+void cStatusInterface::onNotifierUnregistered(NotificationString *notifier)
+{
+    if(&m_notifierAutorization==notifier)
+        m_periodicTimer->stop();
+}
