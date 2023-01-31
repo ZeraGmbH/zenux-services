@@ -20,6 +20,8 @@ private:
     AdjustmentStatusInterface *m_adjustmentStatusInterface;
     NotificationString m_notifierAutorization;
     TimerTemplateQtPtr m_periodicTimer;
+private slots:
+    void onNotifierUnregistered(NotificationString* notifier) override;
 };
 
 #endif // STATUSINTERFACE_H

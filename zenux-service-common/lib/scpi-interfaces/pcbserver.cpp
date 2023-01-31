@@ -231,6 +231,7 @@ void cPCBServer::doUnregisterNotifier(XiQNetPeer* peer, const QByteArray &client
             if(peer == notData.netPeer) {
                 // we found the client
                 if(clientID.isEmpty() || notData.clientId.isEmpty() || (notData.clientId == clientID)) {
+                    emit notifierUnregistred(m_notifierRegisterList.at(i).notString);
                     m_notifierRegisterList.removeAt(i);
                 }
             }
@@ -361,5 +362,6 @@ void cPCBServer::initSCPIConnections()
         scpiConnectionList.at(i)->initSCPIConnection(""); // we have our interface
         connect(scpiConnectionList.at(i), &ScpiConnection::strNotifier, this, &cPCBServer::onEstablishNewNotifier);
         connect(scpiConnectionList.at(i), &ScpiConnection::cmdExecutionDone, this, &cPCBServer::sendAnswerProto);
+        connect(this, &cPCBServer::notifierUnregistred, scpiConnectionList.at(i), &ScpiConnection::onNotifierUnregistered);
     }
 }

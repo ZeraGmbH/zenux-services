@@ -64,6 +64,8 @@ private slots:
     void onEstablishNewNotifier(NotificationString* notifier);
     void onNotifierChanged();
     void onNotifyPeerConnectionClosed();
+signals:
+    void notifierUnregistred(NotificationString* notifier);
 };
 
 #endif // PCBSERVER_H
