@@ -26,6 +26,8 @@ public:
     QString& getVersion();
 
     EthSettings* m_pETHSettings;
+    virtual void sendNotificationToClient(NotificationStructWithStringAndId notData);
+
 public slots:
     void sendAnswerProto(cProtonetCommand* protoCmd);
 protected slots:

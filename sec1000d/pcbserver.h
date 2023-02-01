@@ -22,6 +22,8 @@ public:
     virtual void initSCPIConnection(QString leadingNodes) override;
     QString& getName();
     QString& getVersion();
+    virtual void sendNotificationToClient(NotificationStructWithValue notData, quint32 irqreg);
+    
 public slots:
     void sendAnswerProto(cProtonetCommand* protoCmd);
 protected:
