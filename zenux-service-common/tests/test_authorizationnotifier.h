@@ -10,8 +10,12 @@ class test_authorizationnotifier : public QObject
     Q_OBJECT
 private slots:
     void init();
-    void findScpiObject();
-    void scpiEmptyNotifier();
+
+    void findPCBServerScpiObject();
+    void findStatusInterfaceScpiObject();
+
+    void executeAuthorizationQuery();
+    void executeRegisterNotifier();
 private:
     std::unique_ptr<PCBTestServer> m_pcbServerTest;
 };
