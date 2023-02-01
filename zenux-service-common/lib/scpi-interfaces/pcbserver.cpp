@@ -8,7 +8,6 @@
 #include <xmlconfigreader.h>
 #include <xiqnetserver.h>
 #include <scpi.h>
-#include <scpisingletonfactory.h>
 #include <fcntl.h>
 #include <unistd.h>
 #include <QtDebug>
@@ -26,8 +25,8 @@ enum commands
     cmdUnregister
 };
 
-cPCBServer::cPCBServer(QString name, QString version) :
-    ScpiConnection(ScpiSingletonFactory::getScpiObj(name)),
+cPCBServer::cPCBServer(QString name, QString version, cSCPI *scpiInterface) :
+    ScpiConnection(scpiInterface),
     m_sServerName(name),
     m_sServerVersion(version)
 {
