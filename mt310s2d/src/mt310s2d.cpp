@@ -26,6 +26,7 @@
 #include "scinsettings.h"
 #include "sensesettings.h"
 #include "foutsettings.h"
+#include <scpisingletonfactory.h>
 #include <xmlconfigreader.h>
 #include <xiqnetserver.h>
 #include <QSocketNotifier>
@@ -62,7 +63,7 @@ cATMELSysCtrl* pAtmelSys; // we take a static object for atmel connection
 cATMEL* pAtmel; // we take a static object for atmel connection
 
 cMT310S2dServer::cMT310S2dServer() :
-    cPCBServer(ServerName, ServerVersion)
+    cPCBServer(ServerName, ServerVersion, ScpiSingletonFactory::getScpiObj(ServerName))
 {
     m_pDebugSettings = nullptr;
     m_pETHSettings = nullptr;

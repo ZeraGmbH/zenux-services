@@ -19,7 +19,7 @@ class cPCBServer: public ScpiConnection
 {
     Q_OBJECT
 public:
-    explicit cPCBServer(QString name, QString version);
+    explicit cPCBServer(QString name, QString version, cSCPI *scpiInterface);
     void initSCPIConnection(QString leadingNodes) override;
     cSCPI* getSCPIInterface();
     QString& getName();

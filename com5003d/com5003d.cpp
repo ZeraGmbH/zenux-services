@@ -38,6 +38,7 @@
 #include "samplingsettings.h"
 #include "foutsettings.h"
 #include "scinsettings.h"
+#include <scpisingletonfactory.h>
 
 #ifdef SYSTEMD_NOTIFICATION
 #include <systemd/sd-daemon.h>
@@ -46,7 +47,7 @@
 cATMEL* pAtmel; // we take a static object for atmel connection
 
 cCOM5003dServer::cCOM5003dServer() :
-    cPCBServer(ServerName, ServerVersion)
+    cPCBServer(ServerName, ServerVersion, ScpiSingletonFactory::getScpiObj(ServerName))
 {
     m_pDebugSettings = nullptr;
     m_pETHSettings = nullptr;
