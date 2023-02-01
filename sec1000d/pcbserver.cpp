@@ -274,37 +274,42 @@ void cPCBServer::onEstablishNewNotifier(NotificationValue *notifier)
     }
 }
 
+void cPCBServer::sendNotificationToClient(NotificationStructWithValue notData, quint32 irqreg)
+{
+    QString s = QString("IRQ:%1").arg(irqreg);
+    if (notData.clientID.isEmpty()) { // old style communication
+        QByteArray block;
+        QDataStream out(&block, QIODevice::WriteOnly);
+        out.setVersion(QDataStream::Qt_4_0);
+        out << (qint32)0;
+
+        out << s.toUtf8();
+        out.device()->seek(0);
+        out << (qint32)(block.size() - sizeof(qint32));
+
+        notData.netPeer->getTcpSocket()->write(block);
+    }
+    else {
+        ProtobufMessage::NetMessage protobufIntMessage;
+        ProtobufMessage::NetMessage::NetReply *intMessage = protobufIntMessage.mutable_reply();
+        intMessage->set_body(s.toStdString());
+        intMessage->set_rtype(ProtobufMessage::NetMessage_NetReply_ReplyType_ACK);
+        QByteArray id = notData.clientID;
+        protobufIntMessage.set_clientid(id, id.count());
+        protobufIntMessage.set_messagenr(0); // interrupt
+        notData.netPeer->sendMessage(protobufIntMessage);
+    }
+}
+
 void cPCBServer::onNotifierChanged(quint32 irqreg)
 {
     NotificationValue* notifier = qobject_cast<NotificationValue*>(sender());
     if (m_notifierRegisterList.count() > 0) {
-        ProtobufMessage::NetMessage protobufIntMessage;
         if (m_notifierRegisterList.count() > 0)
             for (int i = 0; i < m_notifierRegisterList.count(); i++) {
                 NotificationStructWithValue notData = m_notifierRegisterList.at(i);
                 if (notData.notValue == notifier) {
-                    QString s = QString("IRQ:%1").arg(irqreg);
-                    if (notData.clientID.isEmpty()) { // old style communication
-                        QByteArray block;
-                        QDataStream out(&block, QIODevice::WriteOnly);
-                        out.setVersion(QDataStream::Qt_4_0);
-                        out << (qint32)0;
-
-                        out << s.toUtf8();
-                        out.device()->seek(0);
-                        out << (qint32)(block.size() - sizeof(qint32));
-
-                        notData.netPeer->getTcpSocket()->write(block);
-                    }
-                    else {
-                        ProtobufMessage::NetMessage::NetReply *intMessage = protobufIntMessage.mutable_reply();
-                        intMessage->set_body(s.toStdString());
-                        intMessage->set_rtype(ProtobufMessage::NetMessage_NetReply_ReplyType_ACK);
-                        QByteArray id = notData.clientID;
-                        protobufIntMessage.set_clientid(id, id.count());
-                        protobufIntMessage.set_messagenr(0); // interrupt
-                        notData.netPeer->sendMessage(protobufIntMessage);
-                    }
+                    sendNotificationToClient(notData, irqreg);
                 }
             }
     }
