@@ -316,7 +316,6 @@ void cPCBServer::onNotifierChanged()
             for (int i = 0; i < m_notifierRegisterList.count(); i++) {
                 NotificationStructWithStringAndId notData = m_notifierRegisterList.at(i);
                 if (notData.notString == notifier) {
-                    ProtobufMessage::NetMessage::NetReply *intMessage = protobufIntMessage.mutable_reply();
                     QString s = QString("Notify:%1").arg(notData.notifierId);
                     if (notData.clientId.isEmpty()) { // old style communication
                         QByteArray block;
@@ -331,6 +330,7 @@ void cPCBServer::onNotifierChanged()
                         notData.netPeer->getTcpSocket()->write(block);
                     }
                     else {
+                        ProtobufMessage::NetMessage::NetReply *intMessage = protobufIntMessage.mutable_reply();
                         intMessage->set_body(s.toStdString());
                         intMessage->set_rtype(ProtobufMessage::NetMessage_NetReply_ReplyType_ACK);
                         QByteArray id = notData.clientId;
