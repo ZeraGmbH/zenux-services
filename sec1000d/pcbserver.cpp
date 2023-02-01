@@ -223,7 +223,8 @@ void cPCBServer::onExecuteCommandProto(std::shared_ptr<google::protobuf::Message
                 ProtobufMessage::NetMessage::ScpiCommand scpiCmd = protobufCommand->scpi();
                 m_sInput = QString::fromStdString(scpiCmd.command()) +  " " + QString::fromStdString(scpiCmd.parameter());
                 cProtonetCommand* protoCmd;
-                if ( (scpiObject =  m_pSCPIInterface->getSCPIObject(m_sInput)) != 0) {
+                scpiObject =  m_pSCPIInterface->getSCPIObject(m_sInput);
+                if (scpiObject) {
                     protoCmd = new cProtonetCommand(peer, true, true, clientId, messageNr, m_sInput, scpiObject->getType());
                     cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
                     if (!scpiDelegate->executeSCPI(protoCmd)) {
@@ -243,7 +244,8 @@ void cPCBServer::onExecuteCommandProto(std::shared_ptr<google::protobuf::Message
             m_sInput =  QString::fromStdString(protobufCommand->scpi().command());
             QByteArray clientId = QByteArray(); // we set an empty byte array
             cProtonetCommand* protoCmd;
-            if ( (scpiObject =  m_pSCPIInterface->getSCPIObject(m_sInput)) != 0) {
+            scpiObject =  m_pSCPIInterface->getSCPIObject(m_sInput);
+            if (scpiObject) {
                 protoCmd = new cProtonetCommand(peer, false, true, clientId, 0, m_sInput, scpiObject->getType());
                 cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
                 if (!scpiDelegate->executeSCPI(protoCmd)) {
