@@ -13,7 +13,7 @@ private slots:
     void findScpiObject();
     void scpiEmptyNotifier();
 private:
-    std::unique_ptr<PCBTestServer> PCBServerTest;
+    std::unique_ptr<PCBTestServer> m_pcbServerTest;
 };
 
 #endif // TEST_AUTHORIZATIONNOTIFIER_H

@@ -7,9 +7,10 @@
 class PCBTestServer : public cPCBServer
 {
 public:
-    PCBTestServer(QString name, QString version);
+    PCBTestServer(QString name, QString version, cSCPI *scpiInterface);
+    ~PCBTestServer();
 private slots:
-    void doConfiguration();
+    void doConfiguration() override;
 private:
     cStatusInterface *m_pStatusInterface;
     AdjustmentStatusInterface *m_adjustmentStatusNull;

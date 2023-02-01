@@ -1,17 +1,18 @@
 #include "test_authorizationnotifier.h"
+#include <scpisingletonfactory.h>
 #include <QTest>
 
 QTEST_MAIN(test_authorizationnotifier);
 
 void test_authorizationnotifier::init()
 {
-    PCBServerTest = std::make_unique<PCBTestServer>("foo", "0");
-    PCBServerTest->initSCPIConnection("");
+    cSCPI *scpiInterface = new cSCPI("foo");
+    m_pcbServerTest = std::make_unique<PCBTestServer>("foo", "0", scpiInterface);
 }
 
 void test_authorizationnotifier::findScpiObject()
 {
-    cSCPI *m_scpiInterface = PCBServerTest->getSCPIInterface();
+    cSCPI *m_scpiInterface = m_pcbServerTest->getSCPIInterface();
     cSCPIObject *scpiObject = m_scpiInterface->getSCPIObject("SERVER:REGISTER");
     QVERIFY(scpiObject);
 }
@@ -19,7 +20,7 @@ void test_authorizationnotifier::findScpiObject()
 void test_authorizationnotifier::scpiEmptyNotifier()
 {
     QString registerNotifierCommand = QString("SERVER:REGISTER");
-    cSCPIObject* scpiObject = PCBServerTest->getSCPIInterface()->getSCPIObject(registerNotifierCommand);
+    cSCPIObject* scpiObject = m_pcbServerTest->getSCPIInterface()->getSCPIObject(registerNotifierCommand);
     QVERIFY(scpiObject);
 
     QString statusAuthorizationCommand = QString("STATUS:AUTHORIZATION?");
