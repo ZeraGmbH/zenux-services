@@ -1,5 +1,6 @@
 #include "pcbtestserver.h"
 #include "adjustmentstatusnull.h"
+#include "permissionfunctions.h"
 
 PCBTestServer::PCBTestServer(QString name, QString version, cSCPI *scpiInterface) :
     cPCBServer(name, version, scpiInterface)
@@ -8,6 +9,8 @@ PCBTestServer::PCBTestServer(QString name, QString version, cSCPI *scpiInterface
     scpiConnectionList.append(this);
     scpiConnectionList.append(m_pStatusInterface = new cStatusInterface(getSCPIInterface(), m_adjustmentStatusNull));
     initSCPIConnections();
+    atmel = new MockAtmel();
+    PermissionFunctions::setPermissionPinController(atmel);
 }
 
 PCBTestServer::~PCBTestServer()

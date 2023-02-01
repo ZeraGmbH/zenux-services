@@ -3,6 +3,7 @@
 
 #include "pcbserver.h"
 #include "statusinterface.h"
+#include "mockatmel.h"
 
 class PCBTestServer : public cPCBServer
 {
@@ -14,6 +15,7 @@ private slots:
 private:
     cStatusInterface *m_pStatusInterface;
     AdjustmentStatusInterface *m_adjustmentStatusNull;
+    MockAtmel *atmel;
 };
 
 #endif // PCBTESTSERVER_H
