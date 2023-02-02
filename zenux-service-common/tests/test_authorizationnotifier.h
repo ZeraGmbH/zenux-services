@@ -16,6 +16,7 @@ private slots:
 
     void executeAuthorizationQuery();
     void executeRegisterNotifier();
+    void getNotiferIdAndAuthoStatus();
 private:
     std::unique_ptr<PCBTestServer> m_pcbServerTest;
 };

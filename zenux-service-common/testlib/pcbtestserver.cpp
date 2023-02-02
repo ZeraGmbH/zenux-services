@@ -21,7 +21,7 @@ PCBTestServer::~PCBTestServer()
 
 void PCBTestServer::sendNotificationToClient(NotificationStructWithStringAndId notData)
 {
-    QString s = QString("Notify:%1").arg(notData.notifierId);
+    emit notificationSent(notData.notifierId);
 }
 
 void PCBTestServer::doConfiguration()
