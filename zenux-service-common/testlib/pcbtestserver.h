@@ -9,7 +9,7 @@ class PCBTestServer : public cPCBServer
 {
     Q_OBJECT
 public:
-    PCBTestServer(QString name, QString version, cSCPI *scpiInterface);
+    PCBTestServer(QString name, QString version, cSCPI *scpiInterface, MockAtmel *atmel);
     ~PCBTestServer();
     void sendNotificationToClient(NotificationStructWithStringAndId notData) override;
 signals:
@@ -19,7 +19,6 @@ private slots:
 private:
     cStatusInterface *m_pStatusInterface;
     AdjustmentStatusInterface *m_adjustmentStatusNull;
-    MockAtmel *atmel;
 };
 
 #endif // PCBTESTSERVER_H
