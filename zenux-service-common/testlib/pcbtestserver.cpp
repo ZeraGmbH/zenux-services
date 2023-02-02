@@ -19,6 +19,11 @@ PCBTestServer::~PCBTestServer()
     if (m_pStatusInterface) delete m_pStatusInterface;
 }
 
+void PCBTestServer::sendNotificationToClient(NotificationStructWithStringAndId notData)
+{
+    QString s = QString("Notify:%1").arg(notData.notifierId);
+}
+
 void PCBTestServer::doConfiguration()
 {
 }

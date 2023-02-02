@@ -27,25 +27,23 @@ void test_authorizationnotifier::findStatusInterfaceScpiObject()
 void test_authorizationnotifier::executeAuthorizationQuery()
 {
      QString statusAuthorizationCommand = QString("STATUS:AUTHORIZATION?");
-     cSCPIObject* scpiObject = m_pcbServerTest->getSCPIInterface()->getSCPIObject(statusAuthorizationCommand);
-
      cProtonetCommand* protoCmd = new cProtonetCommand(0, false, false, QByteArray(), 0, statusAuthorizationCommand);
+
+     cSCPIObject* scpiObject = m_pcbServerTest->getSCPIInterface()->getSCPIObject(statusAuthorizationCommand);
      cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
      QVERIFY(scpiDelegate->executeSCPI(protoCmd));
      QCOMPARE(protoCmd->m_sOutput, "1");
 }
 
-
 void test_authorizationnotifier::executeRegisterNotifier()
 {
     QString registerNotifierCommand = QString("SERVER:REGISTER");
-    cSCPIObject* scpiObject = m_pcbServerTest->getSCPIInterface()->getSCPIObject(registerNotifierCommand);
-
     QString statusAuthorizationCommand = QString("STATUS:AUTHORIZATION?");
-    QString scpiAuthorizationQuery = QString("%1 %2;%3;").arg(registerNotifierCommand).arg(statusAuthorizationCommand).arg(1);
-    cProtonetCommand* protoCmd = new cProtonetCommand(0, false, true, QByteArray(), 0, scpiAuthorizationQuery);
+    quint16 notifierId = 1;
+    QString scpiAuthorizationQuery = QString("%1 %2;%3;").arg(registerNotifierCommand).arg(statusAuthorizationCommand).arg(notifierId);
+    cProtonetCommand* protoCmd = new cProtonetCommand(nullptr, false, false, QByteArray(), 0, scpiAuthorizationQuery);
+
+    cSCPIObject* scpiObject = m_pcbServerTest->getSCPIInterface()->getSCPIObject(registerNotifierCommand);
     cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
-    //QVERIFY(scpiDelegate->executeSCPI(protoCmd));
+    QVERIFY(scpiDelegate->executeSCPI(protoCmd));
 }
-
-

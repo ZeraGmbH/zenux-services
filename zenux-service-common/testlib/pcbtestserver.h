@@ -10,6 +10,7 @@ class PCBTestServer : public cPCBServer
 public:
     PCBTestServer(QString name, QString version, cSCPI *scpiInterface);
     ~PCBTestServer();
+    void sendNotificationToClient(NotificationStructWithStringAndId notData) override;
 private slots:
     void doConfiguration() override;
 private:
