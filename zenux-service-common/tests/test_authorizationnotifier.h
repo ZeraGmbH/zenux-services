@@ -10,15 +10,17 @@ class test_authorizationnotifier : public QObject
     Q_OBJECT
 private slots:
     void init();
+    void cleanup();
 
     void findPCBServerScpiObject();
     void findStatusInterfaceScpiObject();
 
-    void executeAuthorizationQuery();
-    void executeRegisterNotifier();
-    void getNotiferIdAndAuthoStatus();
+    void getInitialAuthoStatus();
+    void getNotiferId();
+    void authoStatusChangedToOne();
 private:
     std::unique_ptr<PCBTestServer> m_pcbServerTest;
+    MockAtmel *atmel;
 };
 
 #endif // TEST_AUTHORIZATIONNOTIFIER_H
