@@ -41,6 +41,16 @@ void test_authorizationnotifier::unregisterNotifier()
     scpiDelegate->executeSCPI(protoCmd);
 }
 
+QString test_authorizationnotifier::getAuthoStatus()
+{
+    cProtonetCommand* protoCmd = new cProtonetCommand(0, false, false, QByteArray(), 0, statusAuthorizationCommand);
+
+    cSCPIObject* scpiObject = m_pcbServerTest->getSCPIInterface()->getSCPIObject(statusAuthorizationCommand);
+    cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
+    scpiDelegate->executeSCPI(protoCmd);
+    return protoCmd->m_sOutput;
+}
+
 void test_authorizationnotifier::findPCBServerScpiObject()
 {
     cSCPI *m_scpiInterface = m_pcbServerTest->getSCPIInterface();
@@ -56,12 +66,7 @@ void test_authorizationnotifier::findStatusInterfaceScpiObject()
 
 void test_authorizationnotifier::getInitialAuthoStatus()
 {
-     cProtonetCommand* protoCmd = new cProtonetCommand(0, false, false, QByteArray(), 0, statusAuthorizationCommand);
-
-     cSCPIObject* scpiObject = m_pcbServerTest->getSCPIInterface()->getSCPIObject(statusAuthorizationCommand);
-     cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
-     QVERIFY(scpiDelegate->executeSCPI(protoCmd));
-     QCOMPARE(protoCmd->m_sOutput, "0");
+     QCOMPARE(getAuthoStatus(), "0");
 }
 
 void test_authorizationnotifier::getNotiferId()
@@ -89,12 +94,7 @@ void test_authorizationnotifier::authoStatusChangedToOne()
     QVERIFY(spy.wait(1500));
 
     //read status
-    cProtonetCommand* protoCmd = new cProtonetCommand(0, false, false, QByteArray(), 0, statusAuthorizationCommand);
-    cSCPIObject* scpiObject = m_pcbServerTest->getSCPIInterface()->getSCPIObject(statusAuthorizationCommand);
-    cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
-    scpiDelegate->executeSCPI(protoCmd);
-    QString new_status = protoCmd->m_sOutput;
-    QCOMPARE(new_status, "1");
+     QCOMPARE(getAuthoStatus(), "1");
 }
 
 void test_authorizationnotifier::authoStatusChangedToZero()
@@ -107,12 +107,7 @@ void test_authorizationnotifier::authoStatusChangedToZero()
     m_atmel->accessDisableAfter(100);
     QVERIFY(spy.wait(1500));
 
-    cProtonetCommand* protoCmd = new cProtonetCommand(0, false, false, QByteArray(), 0, statusAuthorizationCommand);
-    cSCPIObject* scpiObject = m_pcbServerTest->getSCPIInterface()->getSCPIObject(statusAuthorizationCommand);
-    cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
-    scpiDelegate->executeSCPI(protoCmd);
-    QString new_status = protoCmd->m_sOutput;
-    QCOMPARE(new_status, "0");
+     QCOMPARE(getAuthoStatus(), "0");
 }
 
 void test_authorizationnotifier::unregisteredNotifierAuthoStatusChangedToOne()
