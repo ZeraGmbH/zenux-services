@@ -4,7 +4,7 @@
 #include <timerfactoryqt.h>
 #include <scpi.h>
 
-constexpr int AUTH_POLLING_PERIOD = 1000;
+constexpr int AUTH_POLLING_PERIOD_MS = 1000;
 
 enum StatusCommands
 {
@@ -17,7 +17,7 @@ cStatusInterface::cStatusInterface(cSCPI *scpiInterface, AdjustmentStatusInterfa
     ScpiConnection(scpiInterface),
     m_adjustmentStatusInterface(adjustmentStatusInterface)
 {
-    m_periodicTimer = TimerFactoryQt::createPeriodic(AUTH_POLLING_PERIOD);
+    m_periodicTimer = TimerFactoryQt::createPeriodic(AUTH_POLLING_PERIOD_MS);
     connect(m_periodicTimer.get(), &TimerTemplateQt::sigExpired, this, &cStatusInterface::getAuthorizationStatus);
 }
 
