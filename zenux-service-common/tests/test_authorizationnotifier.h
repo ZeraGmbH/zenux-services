@@ -20,7 +20,11 @@ private slots:
 
     void authoStatusChangedToOne();
     void authoStatusChangedToZero();
+
+    void unregisteredNotifierAuthoStatusChangedToOne();
 private:
+    void registerNotifier();
+    void unregisterNotifier();
     std::unique_ptr<PCBTestServer> m_pcbServerTest;
     MockAtmel *m_atmel;
 };
