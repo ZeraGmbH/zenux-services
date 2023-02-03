@@ -17,10 +17,12 @@ private slots:
 
     void getInitialAuthoStatus();
     void getNotiferId();
+
     void authoStatusChangedToOne();
+    void authoStatusChangedToZero();
 private:
     std::unique_ptr<PCBTestServer> m_pcbServerTest;
-    MockAtmel *atmel;
+    MockAtmel *m_atmel;
 };
 
 #endif // TEST_AUTHORIZATIONNOTIFIER_H
