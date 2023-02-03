@@ -43,6 +43,10 @@ void ScpiConnection::onExecuteProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
     executeProtoScpi(cmdCode, protoCmd);
 }
 
+void ScpiConnection::onNotifierRegistered(NotificationString *notifier)
+{
+}
+
 void ScpiConnection::onNotifierUnregistered(NotificationString *notifier)
 {
 }

@@ -84,7 +84,7 @@ void test_authorizationnotifier::getNotiferId()
     QCOMPARE(result, NOTIFICATION_ID);
 }
 
-void test_authorizationnotifier::authoStatusChangedToOne()
+void test_authorizationnotifier::notifyAuthoStatusChangedToOne()
 {
     registerNotifier();
     QSignalSpy spy(m_pcbServerTest.get(), &PCBTestServer::notificationSent);
@@ -94,10 +94,10 @@ void test_authorizationnotifier::authoStatusChangedToOne()
     QVERIFY(spy.wait(1500));
 
     //read status
-     QCOMPARE(getAuthoStatus(), "1");
+    QCOMPARE(getAuthoStatus(), "1");
 }
 
-void test_authorizationnotifier::authoStatusChangedToZero()
+void test_authorizationnotifier::notifyAuthoStatusChangedToZero()
 {
     registerNotifier();
     QSignalSpy spy(m_pcbServerTest.get(), &PCBTestServer::notificationSent);
@@ -107,7 +107,7 @@ void test_authorizationnotifier::authoStatusChangedToZero()
     m_atmel->accessDisableAfter(100);
     QVERIFY(spy.wait(1500));
 
-     QCOMPARE(getAuthoStatus(), "0");
+    QCOMPARE(getAuthoStatus(), "0");
 }
 
 void test_authorizationnotifier::unregisteredNotifierAuthoStatusChangedToOne()
@@ -118,4 +118,14 @@ void test_authorizationnotifier::unregisteredNotifierAuthoStatusChangedToOne()
     m_atmel->accessEnableAfter(10);
     spy.wait(1000);
     QCOMPARE(spy.count(), 0);
+}
+
+void test_authorizationnotifier::noNotificationAuthoStatusChangedToOne()
+{
+    QSignalSpy spy(m_pcbServerTest.get(), &PCBTestServer::notificationSent);
+    QCOMPARE(getAuthoStatus(), "0");
+    m_atmel->accessEnableAfter(10);
+    spy.wait(1000);
+    QCOMPARE(spy.count(), 0);
+    QCOMPARE(getAuthoStatus(), "1");
 }

@@ -18,10 +18,11 @@ private slots:
     void getInitialAuthoStatus();
     void getNotiferId();
 
-    void authoStatusChangedToOne();
-    void authoStatusChangedToZero();
+    void notifyAuthoStatusChangedToOne();
+    void notifyAuthoStatusChangedToZero();
 
     void unregisteredNotifierAuthoStatusChangedToOne();
+    void noNotificationAuthoStatusChangedToOne();
 private:
     void registerNotifier();
     void unregisterNotifier();
