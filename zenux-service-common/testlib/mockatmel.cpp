@@ -15,3 +15,12 @@ void MockAtmel::accessEnableAfter(int time)
     });
     m_accessTimer->start();
 }
+
+void MockAtmel::accessDisableAfter(int time)
+{
+    m_accessTimer = TimerFactoryQt::createSingleShot(time);
+    connect(m_accessTimer.get(), &TimerTemplateQt::sigExpired, [&]{
+        m_enable = false;
+    });
+    m_accessTimer->start();
+}
