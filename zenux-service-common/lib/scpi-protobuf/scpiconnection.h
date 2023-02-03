@@ -18,6 +18,7 @@ signals:
     void valNotifier(NotificationValue* notifier);
     void cmdExecutionDone(cProtonetCommand* protoCmd);
 public slots:
+    virtual void onNotifierRegistered(NotificationString* notifier);
     virtual void onNotifierUnregistered(NotificationString* notifier);
 protected:
     virtual void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) = 0;

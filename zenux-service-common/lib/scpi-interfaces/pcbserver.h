@@ -65,6 +65,7 @@ private slots:
     void onNotifierChanged();
     void onNotifyPeerConnectionClosed();
 signals:
+    void notifierRegistred(NotificationString* notifier);
     void notifierUnregistred(NotificationString* notifier);
 };
 

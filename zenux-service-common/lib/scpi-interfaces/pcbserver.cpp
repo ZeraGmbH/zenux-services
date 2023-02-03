@@ -305,6 +305,7 @@ void cPCBServer::onEstablishNewNotifier(NotificationString *notifier)
         notData.notString = notifier;
         m_notifierRegisterList.append(notData); //
         connect(notifier, &NotificationString::valueChanged, this, &cPCBServer::onNotifierChanged);
+        emit notifierRegistred(notifier);
     }
 }
 
@@ -362,6 +363,7 @@ void cPCBServer::initSCPIConnections()
         scpiConnectionList.at(i)->initSCPIConnection(""); // we have our interface
         connect(scpiConnectionList.at(i), &ScpiConnection::strNotifier, this, &cPCBServer::onEstablishNewNotifier);
         connect(scpiConnectionList.at(i), &ScpiConnection::cmdExecutionDone, this, &cPCBServer::sendAnswerProto);
+        connect(this, &cPCBServer::notifierRegistred, scpiConnectionList.at(i), &ScpiConnection::onNotifierRegistered);
         connect(this, &cPCBServer::notifierUnregistred, scpiConnectionList.at(i), &ScpiConnection::onNotifierUnregistered);
     }
 }

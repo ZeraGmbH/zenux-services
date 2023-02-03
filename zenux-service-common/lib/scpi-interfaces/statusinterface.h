@@ -21,6 +21,7 @@ private:
     NotificationString m_notifierAutorization;
     TimerTemplateQtPtr m_periodicTimer;
 private slots:
+    void onNotifierRegistered(NotificationString* notifier) override;
     void onNotifierUnregistered(NotificationString* notifier) override;
 };
 

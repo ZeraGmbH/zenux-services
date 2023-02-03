@@ -44,7 +44,6 @@ void cStatusInterface::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
         case cmdAuthorization:
             emit strNotifier(&m_notifierAutorization);
             protoCmd->m_sOutput = getAuthorizationStatus();
-            m_periodicTimer->start();
             break;
         }
     }
@@ -74,8 +73,15 @@ QString cStatusInterface::getAuthorizationStatus()
     return status;
 }
 
+void cStatusInterface::onNotifierRegistered(NotificationString *notifier)
+{
+    if(&m_notifierAutorization==notifier)
+        m_periodicTimer->start();
+}
+
 void cStatusInterface::onNotifierUnregistered(NotificationString *notifier)
 {
     if(&m_notifierAutorization==notifier)
         m_periodicTimer->stop();
 }
+
