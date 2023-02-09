@@ -51,6 +51,7 @@ function(SETUP_TESTS)
             PUBLIC
             senserangetesttemplate
             zenuxservicecommon-testlib
+            Zera::zera-timers-testlib
             )
     endforeach()
 endfunction()

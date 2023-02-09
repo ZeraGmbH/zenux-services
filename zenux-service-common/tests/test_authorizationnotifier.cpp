@@ -1,5 +1,7 @@
 #include "test_authorizationnotifier.h"
 #include <scpisingletonfactory.h>
+#include <timerfactoryqtfortest.h>
+#include <timemachinefortest.h>
 #include <QTest>
 #include <QSignalSpy>
 
@@ -16,6 +18,7 @@ void test_authorizationnotifier::init()
     cSCPI *scpiInterface = new cSCPI("foo");
     m_atmel = new MockAtmel();
     m_pcbServerTest = std::make_unique<PCBTestServer>("foo", "0", scpiInterface, m_atmel);
+    TimerFactoryQtForTest::enableTest();
 }
 
 void test_authorizationnotifier::cleanup()
@@ -91,7 +94,8 @@ void test_authorizationnotifier::notifyAuthoStatusEnabled()
 
     m_atmel->accessEnableAfter(100);
     //catch the notification
-    QVERIFY(spy.wait(1500));
+    TimeMachineForTest::getInstance()->processTimers(1500);
+    QCOMPARE(spy.count(), 1);
 
     //read status
     QCOMPARE(getAuthoStatus(), "1");
@@ -103,9 +107,11 @@ void test_authorizationnotifier::notifyAuthoStatusEnabledDisabled()
     QSignalSpy spy(m_pcbServerTest.get(), &PCBTestServer::notificationSent);
 
     m_atmel->accessEnableAfter(100);
-    QVERIFY(spy.wait(1500));
+    TimeMachineForTest::getInstance()->processTimers(1500);
+    QCOMPARE(spy.count(), 1);
     m_atmel->accessDisableAfter(100);
-    QVERIFY(spy.wait(1500));
+    TimeMachineForTest::getInstance()->processTimers(1500);
+    QCOMPARE(spy.count(), 2);
 
     QCOMPARE(getAuthoStatus(), "0");
 }
@@ -116,7 +122,7 @@ void test_authorizationnotifier::unregisteredNotifierAuthoStatusEnabled()
     unregisterNotifier();
     QSignalSpy spy(m_pcbServerTest.get(), &PCBTestServer::notificationSent);
     m_atmel->accessEnableAfter(10);
-    spy.wait(1000);
+    TimeMachineForTest::getInstance()->processTimers(1000);
     QCOMPARE(spy.count(), 0);
 }
 
@@ -125,7 +131,7 @@ void test_authorizationnotifier::noNotificationAuthoStatusEnabled()
     QSignalSpy spy(m_pcbServerTest.get(), &PCBTestServer::notificationSent);
     QCOMPARE(getAuthoStatus(), "0");
     m_atmel->accessEnableAfter(10);
-    spy.wait(1000);
+    TimeMachineForTest::getInstance()->processTimers(1000);
     QCOMPARE(spy.count(), 0);
     QCOMPARE(getAuthoStatus(), "1");
 }
