@@ -5,11 +5,14 @@
 #include <QByteArray>
 #include <memory>
 
-struct ScpiNotificationSubscriber
+class ScpiNotificationSubscriber
 {
-    XiQNetPeer *netPeer;
-    QByteArray clientId;
-    quint16 notifierId;
+public:
+    ScpiNotificationSubscriber(XiQNetPeer *netPeer, QByteArray clientId, quint16 notifierId);
+    ~ScpiNotificationSubscriber();
+    XiQNetPeer *m_netPeer;
+    QByteArray m_clientId;
+    quint16 m_notifierId;
 };
 
 typedef std::unique_ptr<ScpiNotificationSubscriber> ScpiNotificationSubscriberPtr;
