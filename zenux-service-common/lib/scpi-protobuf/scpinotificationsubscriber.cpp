@@ -11,3 +11,10 @@ ScpiNotificationSubscriber::~ScpiNotificationSubscriber()
 {
     if(m_netPeer) delete m_netPeer;
 }
+
+bool operator ==(const ScpiNotificationSubscriber &subscriber1, const ScpiNotificationSubscriber &subscriber2)
+{
+    return(subscriber1.m_clientId == subscriber2.m_clientId &&
+           subscriber1.m_netPeer == subscriber2.m_netPeer &&
+           subscriber1.m_notifierId == subscriber2.m_notifierId);
+}
