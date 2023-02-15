@@ -1,6 +1,6 @@
 #include "scpinotificationsubscriberhandler.h"
 
-bool ScpiNotificationSubscriberHandler::addSubscriber(const ScpiNotificationSubscriber &subscriber)
+bool ScpiNotificationSubscriberHandler::addSubscriber(ScpiNotificationSubscriber subscriber)
 {
     bool ok = false;
     if(!m_subscriberVector.contains(subscriber)){
@@ -10,7 +10,7 @@ bool ScpiNotificationSubscriberHandler::addSubscriber(const ScpiNotificationSubs
     return ok;
 }
 
-bool ScpiNotificationSubscriberHandler::removeSubscriber(const ScpiNotificationSubscriber &subscriber)
+bool ScpiNotificationSubscriberHandler::removeSubscriber(ScpiNotificationSubscriber subscriber)
 {
     bool ok = false;
     if(m_subscriberVector.contains(subscriber)){
