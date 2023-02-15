@@ -17,3 +17,8 @@ QString cSCPIDelegate::getCommand()
 {
     return m_sCommand;
 }
+
+void cSCPIDelegate::addNotificationSubscriber(const ScpiNotificationSubscriber &subscriber)
+{
+    m_notificationsHandler.addSubscriber(subscriber);
+}
