@@ -22,3 +22,8 @@ void cSCPIDelegate::addNotificationSubscriber(const ScpiNotificationSubscriber &
 {
     m_notificationsHandler.addSubscriber(subscriber);
 }
+
+void cSCPIDelegate::removeAllNotificationSubscribers(XiQNetPeer *netPeer)
+{
+    m_notificationsHandler.removeAllSubscribersFromAPeer(netPeer);
+}

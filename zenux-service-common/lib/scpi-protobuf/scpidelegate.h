@@ -17,6 +17,7 @@ public:
     virtual bool executeSCPI(cProtonetCommand* protoCmd);
     QString getCommand();
     void addNotificationSubscriber(const ScpiNotificationSubscriber &subscriber);
+    void removeAllNotificationSubscribers(XiQNetPeer *netPeer);
 signals:
     void sigExecuteProtoScpi(int cmdCode, cProtonetCommand* protoCmd);
 private:
