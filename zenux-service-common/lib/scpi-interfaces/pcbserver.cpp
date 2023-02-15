@@ -180,6 +180,33 @@ void cPCBServer::SCPIdisconnect()
     disconnect(m_pSCPISocket, 0, 0, 0); // we disconnect everything
 }
 
+void cPCBServer::onSendNotification(ScpiNotificationSubscriber subscriber)
+{
+    QString s = QString("Notify:%1").arg(subscriber.m_notifierId);
+    if (subscriber.m_clientId.isEmpty()) { // old style communication
+        QByteArray block;
+        QDataStream out(&block, QIODevice::WriteOnly);
+        out.setVersion(QDataStream::Qt_4_0);
+        out << (qint32)0;
+
+        out << s.toUtf8();
+        out.device()->seek(0);
+        out << (qint32)(block.size() - sizeof(qint32));
+
+        subscriber.m_netPeer->getTcpSocket()->write(block);
+    }
+    else {
+        ProtobufMessage::NetMessage protobufIntMessage;
+        ProtobufMessage::NetMessage::NetReply *intMessage = protobufIntMessage.mutable_reply();
+        intMessage->set_body(s.toStdString());
+        intMessage->set_rtype(ProtobufMessage::NetMessage_NetReply_ReplyType_ACK);
+        QByteArray id = subscriber.m_clientId;
+        protobufIntMessage.set_clientid(id, id.count());
+        protobufIntMessage.set_messagenr(0); // interrupt
+        subscriber.m_netPeer->sendMessage(protobufIntMessage);
+    }
+}
+
 void cPCBServer::registerNotifier(cProtonetCommand *protoCmd)
 {
     cSCPICommand cmd = protoCmd->m_sInput;
@@ -366,5 +393,6 @@ void cPCBServer::initSCPIConnections()
         connect(scpiConnectionList.at(i), &ScpiConnection::cmdExecutionDone, this, &cPCBServer::sendAnswerProto);
         connect(this, &cPCBServer::notifierRegistred, scpiConnectionList.at(i), &ScpiConnection::onNotifierRegistered);
         connect(this, &cPCBServer::notifierUnregistred, scpiConnectionList.at(i), &ScpiConnection::onNotifierUnregistered);
+        connect(scpiConnectionList.at(i), &ScpiConnection::sendNotification, this, &cPCBServer::onSendNotification);
     }
 }

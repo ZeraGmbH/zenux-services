@@ -36,6 +36,7 @@ protected slots:
     virtual void setSCPIConnection();
     virtual void SCPIInput();
     virtual void SCPIdisconnect();
+    virtual void onSendNotification(ScpiNotificationSubscriber subscriber);
 protected:
     void initSCPIConnections();
     void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
