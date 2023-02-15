@@ -16,12 +16,14 @@ private slots:
     void removeNonAddedSubscriber();
     void addSubscriberTwice();
 
-    void addTwoSubscribers();
+    void addTwoSubscribersDifferentNetPeer();
+    void addTwoSubscribersSameNetPeer();
+    void addAndRemoveSubscribersFromSamePeer();
 
 private:
     ScpiNotificationSubscriberHandler *m_notificationHandler;
     std::unique_ptr<ScpiNotificationSubscriber> m_subscriberA;
-    std::unique_ptr<ScpiNotificationSubscriber> m_subscriberB;
+    XiQNetPeer* m_netPeer;
 };
 
 #endif // TEST_NOTIFICATIONSUBSCRIBER_H
