@@ -16,9 +16,12 @@ private slots:
     void removeNonAddedSubscriber();
     void addSubscriberTwice();
 
+    void addTwoSubscribers();
+
 private:
     ScpiNotificationSubscriberHandler *m_notificationHandler;
-    std::unique_ptr<ScpiNotificationSubscriber> m_subscriber;
+    std::unique_ptr<ScpiNotificationSubscriber> m_subscriberA;
+    std::unique_ptr<ScpiNotificationSubscriber> m_subscriberB;
 };
 
 #endif // TEST_NOTIFICATIONSUBSCRIBER_H

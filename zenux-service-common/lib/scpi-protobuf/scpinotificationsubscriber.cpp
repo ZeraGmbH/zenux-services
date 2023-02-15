@@ -9,7 +9,6 @@ ScpiNotificationSubscriber::ScpiNotificationSubscriber(XiQNetPeer *netPeer, QByt
 
 ScpiNotificationSubscriber::~ScpiNotificationSubscriber()
 {
-    if(m_netPeer) delete m_netPeer;
 }
 
 bool operator ==(const ScpiNotificationSubscriber &subscriber1, const ScpiNotificationSubscriber &subscriber2)
