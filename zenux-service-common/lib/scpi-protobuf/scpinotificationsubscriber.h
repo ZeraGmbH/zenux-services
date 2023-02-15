@@ -11,6 +11,7 @@ class ScpiNotificationSubscriber
 public:
     ScpiNotificationSubscriber(XiQNetPeer *netPeer, QByteArray clientId, quint16 notifierId);
     ~ScpiNotificationSubscriber();
+    XiQNetPeer *getXiQNetPeer();
 private:
     XiQNetPeer *m_netPeer;
     QByteArray m_clientId;

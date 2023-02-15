@@ -9,6 +9,7 @@ class ScpiNotificationSubscriberHandler
 public:
     bool addSubscriber(ScpiNotificationSubscriber subscriber);
     bool removeSubscriber(ScpiNotificationSubscriber subscriber);
+    void removeAllSubscribersFromAPeer(XiQNetPeer *netPeer);
     int getTotalSubscribers();
 private:
     QVector<ScpiNotificationSubscriber> m_subscriberVector;
