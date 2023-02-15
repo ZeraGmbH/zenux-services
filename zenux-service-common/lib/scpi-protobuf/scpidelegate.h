@@ -20,6 +20,7 @@ public:
     QString getCommand();
     void addNotificationSubscriber(const ScpiNotificationSubscriber &subscriber);
     void removeAllNotificationSubscribers(XiQNetPeer *netPeer);
+    NotificationString *getNotificationString();
 public slots:
     void notifyAllSubscribers();
 signals:
