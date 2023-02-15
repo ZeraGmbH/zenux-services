@@ -5,6 +5,7 @@ cSCPIDelegate::cSCPIDelegate(QString cmdParent, QString cmd, quint8 type, cSCPI 
 {
     m_sCommand = QString("%1:%2").arg(cmdParent, cmd);
     scpiInterface->insertScpiCmd(cmdParent.split(":"), this);
+    connect(&m_notificationString, &NotificationString::valueChanged, this, &cSCPIDelegate::notifyAllSubscribers);
 }
 
 bool cSCPIDelegate::executeSCPI(cProtonetCommand *protoCmd)
@@ -26,4 +27,11 @@ void cSCPIDelegate::addNotificationSubscriber(const ScpiNotificationSubscriber &
 void cSCPIDelegate::removeAllNotificationSubscribers(XiQNetPeer *netPeer)
 {
     m_notificationsHandler.removeAllSubscribersFromAPeer(netPeer);
+}
+
+void cSCPIDelegate::notifyAllSubscribers()
+{
+    for(int i = 0; i < m_notificationsHandler.getTotalSubscribers(); i++) {
+        emit notify(m_notificationsHandler.getSubscriber(i));
+    }
 }

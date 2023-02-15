@@ -4,6 +4,7 @@
 #include "scpiobject.h"
 #include "protonetcommand.h"
 #include "scpinotificationsubscriberhandler.h"
+#include "notificationstring.h"
 #include <scpi.h>
 #include <QObject>
 #include <QString>
@@ -18,12 +19,16 @@ public:
     QString getCommand();
     void addNotificationSubscriber(const ScpiNotificationSubscriber &subscriber);
     void removeAllNotificationSubscribers(XiQNetPeer *netPeer);
+public slots:
+    void notifyAllSubscribers();
 signals:
     void sigExecuteProtoScpi(int cmdCode, cProtonetCommand* protoCmd);
+    void notify(ScpiNotificationSubscriber subscriber);
 private:
     quint16 m_nCmdCode;
     QString m_sCommand;
     ScpiNotificationSubscriberHandler m_notificationsHandler;
+    NotificationString m_notificationString;
 };
 
 #endif // SCPIDELEGATE_H

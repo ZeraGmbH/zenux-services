@@ -33,3 +33,8 @@ int ScpiNotificationSubscriberHandler::getTotalSubscribers()
 {
     return m_subscriberVector.size();
 }
+
+ScpiNotificationSubscriber ScpiNotificationSubscriberHandler::getSubscriber(int index)
+{
+    return m_subscriberVector.at(index);
+}

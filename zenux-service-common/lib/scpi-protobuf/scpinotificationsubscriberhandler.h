@@ -11,6 +11,7 @@ public:
     bool removeSubscriber(ScpiNotificationSubscriber subscriber);
     void removeAllSubscribersFromAPeer(XiQNetPeer *netPeer);
     int getTotalSubscribers();
+    ScpiNotificationSubscriber getSubscriber(int index);
 private:
     QVector<ScpiNotificationSubscriber> m_subscriberVector;
 };
