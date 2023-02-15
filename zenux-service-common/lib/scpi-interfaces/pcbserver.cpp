@@ -198,12 +198,8 @@ void cPCBServer::registerNotifier(cProtonetCommand *protoCmd)
             cProtonetCommand* procmd = new cProtonetCommand(protoCmd);
             procmd->m_bwithOutput = false;
             procmd->m_sInput = query;
-            if(!scpiDelegate->executeSCPI(procmd)) {
-                protoCmd->m_sOutput = SCPI::scpiAnswer[SCPI::nak];
-                m_notifierRegisterNext.pop_back();
-            }
-            else
-                protoCmd->m_sOutput = SCPI::scpiAnswer[SCPI::ack]; // we overwrite the query's output here
+            scpiDelegate->executeSCPI(procmd);
+            protoCmd->m_sOutput = SCPI::scpiAnswer[SCPI::ack]; // we overwrite the query's output here
         }
         else
             protoCmd->m_sOutput = SCPI::scpiAnswer[SCPI::nak];
