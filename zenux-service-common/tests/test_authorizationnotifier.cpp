@@ -93,11 +93,8 @@ void test_authorizationnotifier::notifyAuthoStatusEnabled()
     QSignalSpy spy(m_pcbServerTest.get(), &PCBTestServer::notificationSent);
 
     m_atmel->accessEnableAfter(100);
-    //catch the notification
     TimeMachineForTest::getInstance()->processTimers(1500);
     QCOMPARE(spy.count(), 1);
-
-    //read status
     QCOMPARE(getAuthoStatus(), "1");
 }
 

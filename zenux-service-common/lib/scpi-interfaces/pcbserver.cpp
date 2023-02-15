@@ -225,10 +225,11 @@ void cPCBServer::registerNotifier(cProtonetCommand *protoCmd)
             cProtonetCommand* procmd = new cProtonetCommand(protoCmd);
             procmd->m_bwithOutput = false;
             procmd->m_sInput = query;
-            scpiDelegate->executeSCPI(procmd);
             ScpiNotificationSubscriber subscriber(protoCmd->m_pPeer, protoCmd->m_clientId, cmd.getParam(1).toInt());
             scpiDelegate->addNotificationSubscriber(subscriber);
+            scpiDelegate->executeSCPI(procmd);
             protoCmd->m_sOutput = SCPI::scpiAnswer[SCPI::ack]; // we overwrite the query's output here
+            emit notifierRegistred(scpiDelegate->getNotificationString());
         }
         else
             protoCmd->m_sOutput = SCPI::scpiAnswer[SCPI::nak];

@@ -35,6 +35,11 @@ void cSCPIDelegate::removeAllNotificationSubscribers(XiQNetPeer *netPeer)
     m_notificationsHandler.removeAllSubscribersFromAPeer(netPeer);
 }
 
+NotificationString *cSCPIDelegate::getNotificationString()
+{
+    return m_notificationString;
+}
+
 void cSCPIDelegate::notifyAllSubscribers()
 {
     for(int i = 0; i < m_notificationsHandler.getTotalSubscribers(); i++) {
