@@ -5,7 +5,13 @@ cSCPIDelegate::cSCPIDelegate(QString cmdParent, QString cmd, quint8 type, cSCPI 
 {
     m_sCommand = QString("%1:%2").arg(cmdParent, cmd);
     scpiInterface->insertScpiCmd(cmdParent.split(":"), this);
-    connect(&m_notificationString, &NotificationString::valueChanged, this, &cSCPIDelegate::notifyAllSubscribers);
+    connect(m_notificationString, &NotificationString::valueChanged, this, &cSCPIDelegate::notifyAllSubscribers);
+}
+
+cSCPIDelegate::cSCPIDelegate(QString cmdParent, QString cmd, quint8 type, cSCPI *scpiInterface, quint16 cmdCode, NotificationString *notificationString) :
+    cSCPIDelegate(cmdParent, cmd, type, scpiInterface, cmdCode)
+{
+    m_notificationString = notificationString;
 }
 
 bool cSCPIDelegate::executeSCPI(cProtonetCommand *protoCmd)
