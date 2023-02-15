@@ -23,7 +23,7 @@ bool ScpiNotificationSubscriberHandler::removeSubscriber(ScpiNotificationSubscri
 void ScpiNotificationSubscriberHandler::removeAllSubscribersFromAPeer(XiQNetPeer *netPeer)
 {
     for(auto subscriber : qAsConst(m_subscriberVector)) {
-        if (subscriber.getXiQNetPeer() == netPeer) {
+        if (subscriber.m_netPeer == netPeer) {
             m_subscriberVector.removeOne(subscriber);
         }
     }

@@ -7,15 +7,6 @@ ScpiNotificationSubscriber::ScpiNotificationSubscriber(XiQNetPeer *netPeer, QByt
 {
 }
 
-ScpiNotificationSubscriber::~ScpiNotificationSubscriber()
-{
-}
-
-XiQNetPeer *ScpiNotificationSubscriber::getXiQNetPeer()
-{
-    return m_netPeer;
-}
-
 bool operator ==(const ScpiNotificationSubscriber &subscriber1, const ScpiNotificationSubscriber &subscriber2)
 {
     return(subscriber1.m_clientId == subscriber2.m_clientId &&

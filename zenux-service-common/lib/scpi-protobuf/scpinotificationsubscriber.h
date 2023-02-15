@@ -10,9 +10,6 @@ class ScpiNotificationSubscriber
     friend bool operator == (const ScpiNotificationSubscriber &subscriber1, const ScpiNotificationSubscriber &subscriber2);
 public:
     ScpiNotificationSubscriber(XiQNetPeer *netPeer, QByteArray clientId, quint16 notifierId);
-    ~ScpiNotificationSubscriber();
-    XiQNetPeer *getXiQNetPeer();
-private:
     XiQNetPeer *m_netPeer;
     QByteArray m_clientId;
     quint16 m_notifierId;
