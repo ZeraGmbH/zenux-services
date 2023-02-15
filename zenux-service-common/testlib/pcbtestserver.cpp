@@ -26,3 +26,8 @@ void PCBTestServer::sendNotificationToClient(NotificationStructWithStringAndId n
 void PCBTestServer::doConfiguration()
 {
 }
+
+void PCBTestServer::onSendNotification(ScpiNotificationSubscriber subscriber)
+{
+    emit notificationSent(subscriber.m_notifierId);
+}

@@ -16,6 +16,7 @@ signals:
     void notificationSent(qint16 notifierId);
 private slots:
     void doConfiguration() override;
+    void onSendNotification(ScpiNotificationSubscriber subscriber) override;
 private:
     cStatusInterface *m_pStatusInterface;
     AdjustmentStatusInterface *m_adjustmentStatusNull;
