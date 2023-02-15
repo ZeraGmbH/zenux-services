@@ -42,7 +42,6 @@ void cStatusInterface::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
             protoCmd->m_sOutput = QString("%1").arg(m_adjustmentStatusInterface->getAdjustmentStatus());
             break;
         case cmdAuthorization:
-            emit strNotifier(&m_notifierAutorization);
             protoCmd->m_sOutput = getAuthorizationStatus();
             break;
         }

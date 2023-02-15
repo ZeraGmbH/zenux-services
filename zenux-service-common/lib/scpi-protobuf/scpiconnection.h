@@ -18,6 +18,7 @@ signals:
     void strNotifier(NotificationString* notifier);
     void valNotifier(NotificationValue* notifier);
     void cmdExecutionDone(cProtonetCommand* protoCmd);
+    void sendNotification(ScpiNotificationSubscriber subscriber);
 public slots:
     virtual void onNotifierRegistered(NotificationString* notifier);
     virtual void onNotifierUnregistered(NotificationString* notifier);
