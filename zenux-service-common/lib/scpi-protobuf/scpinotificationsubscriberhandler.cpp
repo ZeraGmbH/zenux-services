@@ -1,9 +1,5 @@
 #include "scpinotificationsubscriberhandler.h"
 
-ScpiNotificationSubscriberHandler::ScpiNotificationSubscriberHandler()
-{
-}
-
 bool ScpiNotificationSubscriberHandler::addSubscriber(const ScpiNotificationSubscriber &subscriber)
 {
     bool ok = false;

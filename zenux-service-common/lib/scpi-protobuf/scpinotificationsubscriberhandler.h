@@ -7,7 +7,6 @@
 class ScpiNotificationSubscriberHandler
 {
 public:
-    ScpiNotificationSubscriberHandler();
     bool addSubscriber(const ScpiNotificationSubscriber &subscriber);
     bool removeSubscriber(const ScpiNotificationSubscriber &subscriber);
     int getTotalSubscribers();
