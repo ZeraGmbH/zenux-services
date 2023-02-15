@@ -7,8 +7,8 @@
 class ScpiNotificationSubscriberHandler
 {
 public:
-    bool addSubscriber(const ScpiNotificationSubscriber &subscriber);
-    bool removeSubscriber(const ScpiNotificationSubscriber &subscriber);
+    bool addSubscriber(ScpiNotificationSubscriber subscriber);
+    bool removeSubscriber(ScpiNotificationSubscriber subscriber);
     int getTotalSubscribers();
 private:
     QVector<ScpiNotificationSubscriber> m_subscriberVector;
