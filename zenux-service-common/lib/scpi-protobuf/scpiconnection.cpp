@@ -10,6 +10,13 @@ ScpiConnection::~ScpiConnection()
     removeSCPIConnections();
 }
 
+void ScpiConnection::removeAllScpiNotificationSubscribers(XiQNetPeer *netPeer)
+{
+    for (int i = 0; i < m_DelegateList.count(); i++) {
+        m_DelegateList.at(i)->removeAllNotificationSubscribers(netPeer);
+    }
+}
+
 void ScpiConnection::removeSCPIConnections()
 {
     if(m_pSCPIInterface) {
