@@ -244,6 +244,7 @@ void cPCBServer::unregisterNotifier(cProtonetCommand *protoCmd)
         for (int i = 0; i < scpiConnectionList.count(); i++) {
             scpiConnectionList.at(i)->removeAllScpiNotificationSubscribers(protoCmd->m_pPeer);
         }
+        emit notifierUnregistred();
         protoCmd->m_sOutput = SCPI::scpiAnswer[SCPI::ack];
     }
     else
@@ -260,7 +261,7 @@ void cPCBServer::doUnregisterNotifier(XiQNetPeer* peer, const QByteArray &client
             if(peer == notData.netPeer) {
                 // we found the client
                 if(clientID.isEmpty() || notData.clientId.isEmpty() || (notData.clientId == clientID)) {
-                    emit notifierUnregistred(m_notifierRegisterList.at(i).notString);
+                    emit notifierUnregistred();
                     m_notifierRegisterList.removeAt(i);
                 }
             }

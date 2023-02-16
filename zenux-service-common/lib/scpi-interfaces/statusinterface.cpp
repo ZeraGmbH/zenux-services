@@ -78,9 +78,8 @@ void cStatusInterface::onNotifierRegistered(NotificationString *notifier)
         m_periodicTimer->start();
 }
 
-void cStatusInterface::onNotifierUnregistered(NotificationString *notifier)
+void cStatusInterface::onNotifierUnregistered()
 {
-    if(&m_notifierAutorization==notifier)
-        m_periodicTimer->stop();
+    m_periodicTimer->stop();
 }
 
