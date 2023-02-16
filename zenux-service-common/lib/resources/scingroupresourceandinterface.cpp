@@ -30,7 +30,7 @@ void ScInGroupResourceAndInterface::initSCPIConnection(QString leadingNodes)
     addDelegate(QString("%1SCHEAD").arg(leadingNodes),"VERSION",SCPI::isQuery, m_pSCPIInterface, cmdVersion);
     addDelegate(QString("%1SCHEAD:CHANNEL").arg(leadingNodes),"CATALOG", SCPI::isQuery, m_pSCPIInterface, cmdChannelCat);
     for(auto channel : qAsConst(m_ChannelList)) {
-        connect(channel, &ScpiConnection::strNotifier, this, &ScpiConnection::strNotifier);
+        connect(channel, &ScpiConnection::sendNotification, this, &ScpiConnection::sendNotification);
         connect(channel, &ScpiConnection::cmdExecutionDone, this, &ScpiConnection::cmdExecutionDone);
         channel->initSCPIConnection(QString("%1SCHEAD").arg(leadingNodes));
     }

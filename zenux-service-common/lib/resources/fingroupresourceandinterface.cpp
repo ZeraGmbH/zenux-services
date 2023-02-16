@@ -37,7 +37,7 @@ void FInGroupResourceAndInterface::initSCPIConnection(QString leadingNodes)
     addDelegate(QString("%1FRQINPUT").arg(leadingNodes),"VERSION",SCPI::isQuery, m_pSCPIInterface, cmdVersion);
     addDelegate(QString("%1FRQINPUT:CHANNEL").arg(leadingNodes),"CATALOG", SCPI::isQuery, m_pSCPIInterface, cmdChannelCat);
     for (auto channel : qAsConst(m_ChannelList)) {
-        connect(channel, &ScpiConnection::strNotifier, this, &ScpiConnection::strNotifier);
+        connect(channel, &ScpiConnection::sendNotification, this, &ScpiConnection::sendNotification);
         connect(channel, SIGNAL(cmdExecutionDone(cProtonetCommand*)), this, SIGNAL(cmdExecutionDone(cProtonetCommand*)));
         channel->initSCPIConnection(QString("%1FRQINPUT").arg(leadingNodes));
     }
