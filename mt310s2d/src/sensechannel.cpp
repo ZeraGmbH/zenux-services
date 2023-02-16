@@ -35,9 +35,9 @@ void cSenseChannel::initSCPIConnection(QString leadingNodes)
     addDelegate(QString("%1%2").arg(leadingNodes).arg(m_sName),"DSPCHANNEL", SCPI::isQuery, m_pSCPIInterface, SenseChannel::cmdDspChannel);
     addDelegate(QString("%1%2").arg(leadingNodes).arg(m_sName),"STATUS", SCPI::isQuery, m_pSCPIInterface, SenseChannel::cmdStatus);
     addDelegate(QString("%1%2:STATUS").arg(leadingNodes).arg(m_sName),"RESET", SCPI::isCmd, m_pSCPIInterface, SenseChannel::cmdStatusReset);
-    addDelegate(QString("%1%2").arg(leadingNodes).arg(m_sName),"RANGE", SCPI::isQuery | SCPI::isCmdwP, m_pSCPIInterface, SenseChannel::cmdRange);
+    addDelegateWithNotificationString(QString("%1%2").arg(leadingNodes).arg(m_sName),"RANGE", SCPI::isQuery | SCPI::isCmdwP, m_pSCPIInterface, SenseChannel::cmdRange, &notifierSenseChannelRange);
     addDelegate(QString("%1%2").arg(leadingNodes).arg(m_sName),"URVALUE", SCPI::isQuery, m_pSCPIInterface, SenseChannel::cmdUrvalue);
-    addDelegate(QString("%1%2:RANGE").arg(leadingNodes).arg(m_sName),"CATALOG", SCPI::isQuery, m_pSCPIInterface, SenseChannel::cmdRangeCat);
+    addDelegateWithNotificationString(QString("%1%2:RANGE").arg(leadingNodes).arg(m_sName),"CATALOG", SCPI::isQuery, m_pSCPIInterface, SenseChannel::cmdRangeCat, &notifierSenseChannelRangeCat);
     for(auto range : qAsConst(m_RangeList)) {
         connect(range, &ScpiConnection::cmdExecutionDone, this, &ScpiConnection::cmdExecutionDone);
         range->initSCPIConnection(QString("%1%2").arg(leadingNodes).arg(m_sName));
@@ -285,7 +285,6 @@ QString cSenseChannel::m_ReadWriteRange(QString &sInput)
     quint8 mode;
     if ( pAtmel->readMeasMode(mode) == ZeraMcontrollerBase::cmddone ) {
         if (cmd.isQuery()) {
-            emit strNotifier(&notifierSenseChannelRange); // we only return the already known range name
             return notifierSenseChannelRange.getString();
         }
         else {
@@ -332,7 +331,6 @@ QString cSenseChannel::m_ReadRangeCatalog(QString &sInput)
 {
     cSCPICommand cmd = sInput;
     if (cmd.isQuery()) {
-        emit strNotifier(&notifierSenseChannelRangeCat);
         return notifierSenseChannelRangeCat.getString();
     }
     return SCPI::scpiAnswer[SCPI::nak];
