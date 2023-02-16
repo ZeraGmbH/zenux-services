@@ -21,19 +21,14 @@ void test_notificationsubscriber::addAndRemoveSubscriber()
 {
     m_notificationHandler->addSubscriber(*m_subscriberA);
     QCOMPARE(m_notificationHandler->getTotalSubscribers(), 1);
-    QVERIFY(m_notificationHandler->removeSubscriber(*m_subscriberA));
+    m_notificationHandler->removeAllSubscribersFromAPeer(nullptr);
     QCOMPARE(m_notificationHandler->getTotalSubscribers(), 0);
-}
-
-void test_notificationsubscriber::removeNonAddedSubscriber()
-{
-    QVERIFY(!m_notificationHandler->removeSubscriber(*m_subscriberA));
 }
 
 void test_notificationsubscriber::addSubscriberTwice()
 {
     m_notificationHandler->addSubscriber(*m_subscriberA);
-    QVERIFY(!m_notificationHandler->addSubscriber(*m_subscriberA));
+    m_notificationHandler->addSubscriber(*m_subscriberA);
     QCOMPARE(m_notificationHandler->getTotalSubscribers(), 1);
 }
 
