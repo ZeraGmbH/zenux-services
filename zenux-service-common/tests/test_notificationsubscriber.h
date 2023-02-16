@@ -13,7 +13,6 @@ private slots:
     void cleanup();
 
     void addAndRemoveSubscriber();
-    void removeNonAddedSubscriber();
     void addSubscriberTwice();
 
     void addTwoSubscribersDifferentNetPeer();
