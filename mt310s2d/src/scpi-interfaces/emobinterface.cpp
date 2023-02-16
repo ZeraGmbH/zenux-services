@@ -11,7 +11,7 @@ EmobInterface::EmobInterface(cI2CSettings *i2cSettings, cSCPI *pSCPIInterface) :
 void EmobInterface::initSCPIConnection(QString leadingNodes)
 {
     ensureTrailingColonOnNonEmptyParentNodes(leadingNodes);
-    addDelegate(QString("%1SYSTEM:EMOB:CHANNEL").arg(leadingNodes),"CATALOG",SCPI::isQuery, m_pSCPIInterface, cmdChannelCat);
+    addDelegateWithNotificationString(QString("%1SYSTEM:EMOB:CHANNEL").arg(leadingNodes),"CATALOG",SCPI::isQuery, m_pSCPIInterface, cmdChannelCat, &m_notifierChannelList);
 }
 
 void EmobInterface::actualizeClampStatus(quint16 devConnectedMask)
@@ -39,7 +39,6 @@ QString EmobInterface::readChannelCatalog(QString scpiCmd)
 {
     cSCPICommand cmd = scpiCmd;
     if (cmd.isQuery()) {
-        emit strNotifier(&m_notifierChannelList); // enable async notification on change
         return m_notifierChannelList.getString();
     }
     else {
