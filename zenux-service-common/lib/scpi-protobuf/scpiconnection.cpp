@@ -62,6 +62,6 @@ void ScpiConnection::onNotifierRegistered(NotificationString *notifier)
 {
 }
 
-void ScpiConnection::onNotifierUnregistered(NotificationString *notifier)
+void ScpiConnection::onNotifierUnregistered()
 {
 }

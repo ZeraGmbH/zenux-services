@@ -21,7 +21,7 @@ signals:
     void sendNotification(ScpiNotificationSubscriber subscriber);
 public slots:
     virtual void onNotifierRegistered(NotificationString* notifier);
-    virtual void onNotifierUnregistered(NotificationString* notifier);
+    virtual void onNotifierUnregistered();
 protected:
     virtual void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) = 0;
     void removeSCPIConnections();
