@@ -11,7 +11,6 @@ class PCBTestServer : public cPCBServer
 public:
     PCBTestServer(QString name, QString version, cSCPI *scpiInterface, MockAtmel *atmel);
     ~PCBTestServer();
-    void sendNotificationToClient(NotificationStructWithStringAndId notData) override;
 signals:
     void notificationSent(qint16 notifierId);
 private slots:

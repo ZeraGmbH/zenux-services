@@ -26,7 +26,6 @@ public:
     QString& getVersion();
 
     EthSettings* m_pETHSettings;
-    virtual void sendNotificationToClient(NotificationStructWithStringAndId notData);
 
 public slots:
     void sendAnswerProto(cProtonetCommand* protoCmd);
@@ -62,8 +61,6 @@ private:
 private slots:
     void onEstablishNewConnection(XiQNetPeer* newClient);
     void onExecuteCommandProto(std::shared_ptr<google::protobuf::Message> cmd);
-    void onEstablishNewNotifier(NotificationString* notifier);
-    void onNotifierChanged();
     void onNotifyPeerConnectionClosed();
 signals:
     void notifierRegistred(NotificationString* notifier);
