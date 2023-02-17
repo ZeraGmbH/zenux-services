@@ -1,17 +1,12 @@
 #include "scpidelegate.h"
 
-cSCPIDelegate::cSCPIDelegate(QString cmdParent, QString cmd, quint8 type, cSCPI *scpiInterface, quint16 cmdCode)
-    :cSCPIObject(cmd, type), m_nCmdCode(cmdCode)
+cSCPIDelegate::cSCPIDelegate(QString cmdParent, QString cmd, quint8 type, cSCPI *scpiInterface, quint16 cmdCode, NotificationString *notificationString)
+    :cSCPIObject(cmd, type), m_nCmdCode(cmdCode), m_notificationString(notificationString)
 {
     m_sCommand = QString("%1:%2").arg(cmdParent, cmd);
     scpiInterface->insertScpiCmd(cmdParent.split(":"), this);
-}
-
-cSCPIDelegate::cSCPIDelegate(QString cmdParent, QString cmd, quint8 type, cSCPI *scpiInterface, quint16 cmdCode, NotificationString *notificationString) :
-    cSCPIDelegate(cmdParent, cmd, type, scpiInterface, cmdCode)
-{
-    m_notificationString = notificationString;
-    connect(m_notificationString, &NotificationString::valueChanged, this, &cSCPIDelegate::notifyAllSubscribers);
+    if (m_notificationString)
+        connect(m_notificationString, &NotificationString::valueChanged, this, &cSCPIDelegate::notifyAllSubscribers);
 }
 
 bool cSCPIDelegate::executeSCPI(cProtonetCommand *protoCmd)
