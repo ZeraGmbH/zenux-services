@@ -38,14 +38,7 @@ void ScpiConnection::ensureTrailingColonOnNonEmptyParentNodes(QString &leadingNo
         leadingNodes.append(":");
 }
 
-void ScpiConnection::addDelegate(QString cmdParent, QString cmd, quint8 type, cSCPI *scpiInterface, quint16 cmdCode)
-{
-    cSCPIDelegate *delegate = new cSCPIDelegate(cmdParent, cmd, type, scpiInterface, cmdCode);
-    m_DelegateList.append(delegate);
-    connect(delegate, &cSCPIDelegate::sigExecuteProtoScpi, this, &ScpiConnection::onExecuteProtoScpi);
-}
-
-void ScpiConnection::addDelegateWithNotificationString(QString cmdParent, QString cmd, quint8 type, cSCPI *scpiInterface, quint16 cmdCode, NotificationString *notificationString)
+void ScpiConnection::addDelegate(QString cmdParent, QString cmd, quint8 type, cSCPI *scpiInterface, quint16 cmdCode, NotificationString *notificationString)
 {
     cSCPIDelegate *delegate = new cSCPIDelegate(cmdParent, cmd, type, scpiInterface, cmdCode, notificationString);
     m_DelegateList.append(delegate);
