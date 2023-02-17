@@ -7,11 +7,13 @@ void ScpiNotificationSubscriberHandler::addSubscriber(ScpiNotificationSubscriber
     }
 }
 
-void ScpiNotificationSubscriberHandler::removeAllSubscribersFromAPeer(XiQNetPeer *netPeer)
+void ScpiNotificationSubscriberHandler::removeAllSubscribers(XiQNetPeer *netPeer, QByteArray clientId)
 {
-    for(auto subscriber : qAsConst(m_subscriberVector)) {
-        if (subscriber.m_netPeer == netPeer) {
-            m_subscriberVector.removeOne(subscriber);
+    for(int i = m_subscriberVector.size() - 1; i >= 0; i--) {
+        if (m_subscriberVector.at(i).m_netPeer == netPeer) {
+            if ( clientId.isEmpty() || m_subscriberVector.at(i).m_clientId.isEmpty() || (m_subscriberVector.at(i).m_clientId == clientId)) {
+                m_subscriberVector.remove(i);
+            }
         }
     }
 }

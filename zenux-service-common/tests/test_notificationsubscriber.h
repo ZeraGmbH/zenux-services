@@ -17,11 +17,14 @@ private slots:
 
     void addTwoSubscribersDifferentNetPeer();
     void addTwoSubscribersSameNetPeer();
-    void addAndRemoveSubscribersFromSamePeer();
+
+    void addAndRemoveSubscribersSamePeerSameClientID();
+    void addAndRemoveSubscribersSamePeerDifferentClientID();
+    void addAndRemoveSubscribersSamePeerEmptyClientID();
+    void removeSubscribersEmptyClientIDPassed();
 
 private:
     ScpiNotificationSubscriberHandler *m_notificationHandler;
-    std::unique_ptr<ScpiNotificationSubscriber> m_subscriberA;
     XiQNetPeer* m_netPeer;
 };
 

@@ -242,7 +242,7 @@ void cPCBServer::unregisterNotifier(cProtonetCommand *protoCmd)
     if(cmd.isCommand(1) && (cmd.getParam(0) == "") ) {
         doUnregisterNotifier(protoCmd->m_pPeer, protoCmd->m_clientId);
         for (int i = 0; i < scpiConnectionList.count(); i++) {
-            scpiConnectionList.at(i)->removeAllScpiNotificationSubscribers(protoCmd->m_pPeer);
+            scpiConnectionList.at(i)->removeAllScpiNotificationSubscribers(protoCmd->m_pPeer, protoCmd->m_clientId);
         }
         emit notifierUnregistred();
         protoCmd->m_sOutput = SCPI::scpiAnswer[SCPI::ack];

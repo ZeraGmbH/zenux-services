@@ -8,7 +8,7 @@ class ScpiNotificationSubscriberHandler
 {
 public:
     void addSubscriber(ScpiNotificationSubscriber subscriber);
-    void removeAllSubscribersFromAPeer(XiQNetPeer *netPeer);
+    void removeAllSubscribers(XiQNetPeer *netPeer, QByteArray clientId);
     int getTotalSubscribers();
     ScpiNotificationSubscriber getSubscriber(int index);
 private:
