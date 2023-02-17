@@ -214,13 +214,7 @@ void cPCBServer::registerNotifier(cProtonetCommand *protoCmd)
         QString query = cmd.getParam(0);
         cSCPIObject* scpiObject = m_pSCPIInterface->getSCPIObject(query);
         if(scpiObject) {
-            NotificationStructWithStringAndId notData;
-            notData.netPeer = protoCmd->m_pPeer;
-            notData.clientId = protoCmd->m_clientId;
-            notData.notifierId = cmd.getParam(1).toInt();
-            connect(notData.netPeer, &XiQNetPeer::sigConnectionClosed, this, &cPCBServer::onNotifyPeerConnectionClosed);
-            m_notifierRegisterNext.append(notData); // we wait for a notifier signal
-
+            connect( protoCmd->m_pPeer, &XiQNetPeer::sigConnectionClosed, this, &cPCBServer::onNotifyPeerConnectionClosed);
             cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
             cProtonetCommand* procmd = new cProtonetCommand(protoCmd);
             procmd->m_bwithOutput = false;
@@ -241,10 +235,6 @@ void cPCBServer::unregisterNotifier(cProtonetCommand *protoCmd)
     cSCPICommand cmd = protoCmd->m_sInput;
     if(cmd.isCommand(1) && (cmd.getParam(0) == "") ) {
         doUnregisterNotifier(protoCmd->m_pPeer, protoCmd->m_clientId);
-        for (int i = 0; i < scpiConnectionList.count(); i++) {
-            scpiConnectionList.at(i)->removeAllScpiNotificationSubscribers(protoCmd->m_pPeer, protoCmd->m_clientId);
-        }
-        emit notifierUnregistred();
         protoCmd->m_sOutput = SCPI::scpiAnswer[SCPI::ack];
     }
     else
@@ -253,20 +243,10 @@ void cPCBServer::unregisterNotifier(cProtonetCommand *protoCmd)
 
 void cPCBServer::doUnregisterNotifier(XiQNetPeer* peer, const QByteArray &clientID)
 {
-    if(m_notifierRegisterList.count() > 0) {
-        // we have to remove all notifiers for this client and or clientId
-        // iterate backwards so removals do not confuse our loop
-        for(int i = m_notifierRegisterList.count()-1; i >= 0; i--) {
-            NotificationStructWithStringAndId notData = m_notifierRegisterList.at(i);
-            if(peer == notData.netPeer) {
-                // we found the client
-                if(clientID.isEmpty() || notData.clientId.isEmpty() || (notData.clientId == clientID)) {
-                    emit notifierUnregistred();
-                    m_notifierRegisterList.removeAt(i);
-                }
-            }
-        }
+    for (int i = 0; i < scpiConnectionList.count(); i++) {
+        scpiConnectionList.at(i)->removeAllScpiNotificationSubscribers(peer, clientID);
     }
+    emit notifierUnregistred();
 }
 
 void cPCBServer::onEstablishNewConnection(XiQNetPeer *newClient)
