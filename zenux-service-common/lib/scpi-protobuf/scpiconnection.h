@@ -13,7 +13,7 @@ public:
     ScpiConnection(cSCPI* scpiInterface);
     virtual ~ScpiConnection();
     virtual void initSCPIConnection(QString leadingNodes) = 0;
-    void removeAllScpiNotificationSubscribers(XiQNetPeer *netPeer);
+    void removeAllScpiNotificationSubscribers(XiQNetPeer *netPeer, QByteArray clientId);
 signals:
     void strNotifier(NotificationString* notifier);
     void valNotifier(NotificationValue* notifier);

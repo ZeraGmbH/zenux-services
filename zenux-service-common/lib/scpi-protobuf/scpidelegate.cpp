@@ -30,9 +30,9 @@ void cSCPIDelegate::addNotificationSubscriber(const ScpiNotificationSubscriber &
     m_notificationsHandler.addSubscriber(subscriber);
 }
 
-void cSCPIDelegate::removeAllNotificationSubscribers(XiQNetPeer *netPeer)
+void cSCPIDelegate::removeAllNotificationSubscribers(XiQNetPeer *netPeer, QByteArray clientId)
 {
-    m_notificationsHandler.removeAllSubscribersFromAPeer(netPeer);
+    m_notificationsHandler.removeAllSubscribers(netPeer, clientId);
 }
 
 NotificationString *cSCPIDelegate::getNotificationString()
