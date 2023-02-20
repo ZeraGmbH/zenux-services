@@ -13,5 +13,12 @@ void AccumulatorInterface::initSCPIConnection(QString leadingNodes)
 
 void AccumulatorInterface::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
 {
-
+    switch (cmdCode)
+    {
+    case accumulatorCommands::cmdStatus:
+        protoCmd->m_sOutput = "0";
+        break;
+    }
+    if (protoCmd->m_bwithOutput)
+        emit cmdExecutionDone(protoCmd);
 }
