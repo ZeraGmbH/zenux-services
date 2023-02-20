@@ -16,4 +16,5 @@ target_link_libraries(senserangetesttemplate
 
 SETUP_TESTS(
     test_senserange
+    test_accumulatorinterface
     )
