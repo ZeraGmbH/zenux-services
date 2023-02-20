@@ -7,6 +7,7 @@ set(SOURCES
     src/scpi-interfaces/samplinginterface.cpp
     src/scpi-interfaces/senseinterface.cpp
     src/scpi-interfaces/systeminterface.cpp
+    src/scpi-interfaces/accumulatorinterface.cpp
     src/settings/ctrlsettings.cpp
     src/settings/i2csettings.cpp
     src/settings/sensesettings.cpp
@@ -31,6 +32,7 @@ set(HEADER
     src/scpi-interfaces/samplinginterface.h
     src/scpi-interfaces/senseinterface.h
     src/scpi-interfaces/systeminterface.h
+    src/scpi-interfaces/accumulatorinterface.h
     src/settings/ctrlsettings.h
     src/settings/i2csettings.h
     src/settings/sensesettings.h
