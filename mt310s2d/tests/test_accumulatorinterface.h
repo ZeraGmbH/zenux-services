@@ -14,6 +14,7 @@ private slots:
 
     void findObject();
     void readAccumulatorStatus();
+
 private:
     std::unique_ptr<cSCPI> m_scpiInterface;
     AccumulatorInterface *m_accumulator;

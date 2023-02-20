@@ -14,6 +14,9 @@ public:
     void initSCPIConnection(QString leadingNodes) override;
 protected:
     void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
+private:
+    QString getAccumulatorStatus();
+    quint16 m_status = 0;
 };
 
 #endif // ACCUMULATORINTERFACE_H
