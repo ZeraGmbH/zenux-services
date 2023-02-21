@@ -1,13 +1,13 @@
-#ifndef ATMELREADVERSIONINTERFACE_H
-#define ATMELREADVERSIONINTERFACE_H
+#ifndef ATMELCOMMON_H
+#define ATMELCOMMON_H
 
 #include <zera_mcontroller_base.h>
 
-class AtmelReadVersionInterface
+class AtmelCommon
 {
 public:
-    virtual ~AtmelReadVersionInterface() = default;
+    virtual ~AtmelCommon() = default;
     virtual ZeraMcontrollerBase::atmelRM readCTRLVersion(QString& answer) = 0;
 };
 
-#endif // ATMELREADVERSIONINTERFACE_H
+#endif // ATMELCOMMON_H
