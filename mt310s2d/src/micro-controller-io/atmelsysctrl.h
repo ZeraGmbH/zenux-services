@@ -6,7 +6,7 @@
 #include <zera_mcontroller_base.h>
 #include <QString>
 
-class cATMELSysCtrl : public ZeraMcontrollerBase, public AtmelReadVersionInterface
+class cATMELSysCtrl : public ZeraMcontrollerBase, public AtmelCommon
 {
 public:
     cATMELSysCtrl(QString devnode, quint8 adr, quint8 debuglevel);
