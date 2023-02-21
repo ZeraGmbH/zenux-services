@@ -58,6 +58,14 @@ enum atmelInterrupts
     clampstatusInterrupt
 };
 
+enum atmelSysCntrlInterrupts
+{
+    logMessageInterrupt,
+    deviceErrorInterrup,
+    extensionPackInterrupt,
+    accumulatorInterrupt
+};
+
 // wenn MT310S2DDEBUG -> kein fork()
 // #define MT310S2DDEBUG 1
 

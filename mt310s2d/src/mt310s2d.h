@@ -13,6 +13,7 @@
 #include "finsettings.h"
 #include "foutsettings.h"
 #include "samplingsettings.h"
+#include "accumulatorinterface.h"
 #include <QTimer>
 
 class QStateMachine;
@@ -61,11 +62,13 @@ public:
     cAdjustment* m_pAdjHandler;
     RMConnection* m_pRMConnection;
     cClampInterface* m_pClampInterface;
+    AccumulatorInterface* m_accumulatorInterface;
 
     int DevFileDescriptorCtrl; // kerneltreiber wird nur 1x geöffnet und dann gehalten
     int DevFileDescriptorMsg;
 
     quint16 m_atmelInterruptMask = 0;
+    quint16 m_atmelSysCntrlInterruptMask = 0;
 
 signals:
     void abortInit();
@@ -90,6 +93,7 @@ private:
     int MessageDevOpen();
     void SetFASync();
     void enableClampInterrupt();
+    void enableAccumulatorInterrupt();
     void updateI2cDevicesConnected();
 
 private slots:
