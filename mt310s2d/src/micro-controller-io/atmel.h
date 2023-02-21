@@ -23,7 +23,6 @@ public:
     atmelRM readCriticalStatus(quint16& stat);
     atmelRM resetCriticalStatus(quint16 stat);
     atmelRM readClampStatus(quint16& stat);
-    atmelRM readAccumulatorStatus(quint16& stat);
 
     atmelRM writeIntMask(quint16 mask);
     atmelRM readIntMask(quint16& mask);
