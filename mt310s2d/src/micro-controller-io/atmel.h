@@ -2,7 +2,7 @@
 #define ATMEL_H
 
 #include "atmelpermissiontemplate.h"
-#include "atmelreadversioninterface.h"
+#include "atmelcommon.h"
 #include <zera_mcontroller_base.h>
 #include <QString>
 
