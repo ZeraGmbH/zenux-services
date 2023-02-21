@@ -80,7 +80,7 @@ target_include_directories(mt310s2d-lib
 
 if(${Systemd_FOUND})
     target_link_libraries(mt310s2d-lib
-        PUBLIC
+        PRIVATE
         systemd
     )
 endif()

@@ -81,6 +81,7 @@ cMT310S2dServer::cMT310S2dServer() :
     m_pSystemInfo = nullptr;
     m_pAdjHandler = nullptr;
     m_pRMConnection = nullptr;
+    m_accumulatorInterface = nullptr;
 
     m_pInitializationMachine = new QStateMachine(this);
 
@@ -143,6 +144,7 @@ cMT310S2dServer::~cMT310S2dServer()
     if (m_pSystemInfo) delete m_pSystemInfo;
     if (m_pAdjHandler) delete m_pAdjHandler;
     if (m_pRMConnection) delete m_pRMConnection;
+    if (m_accumulatorInterface) delete m_accumulatorInterface;
 }
 
 void cMT310S2dServer::doConfiguration()
@@ -267,6 +269,7 @@ void cMT310S2dServer::doSetupServer()
             scpiConnectionList.append(m_pSCHeadInterface = new ScInGroupResourceAndInterface(getSCPIInterface(), m_pSCHeadSettings));
             scpiConnectionList.append(m_hkInInterface = new HkInGroupResourceAndInterface(getSCPIInterface(), m_hkInSettings));
             scpiConnectionList.append(m_pClampInterface = new cClampInterface(this));
+            scpiConnectionList.append(m_accumulatorInterface = new AccumulatorInterface(getSCPIInterface(), pAtmelSys));
 
             resourceList.append(m_pSenseInterface); // all our resources
             resourceList.append(m_pSamplingInterface);
@@ -295,6 +298,7 @@ void cMT310S2dServer::doSetupServer()
 
             SetFASync();
             enableClampInterrupt();
+            enableAccumulatorInterrupt();
 
             // our resource mananager connection must be opened after configuration is done
             m_pRMConnection = new RMConnection(m_pETHSettings->getRMIPadr(), m_pETHSettings->getPort(EthSettings::resourcemanager), m_pDebugSettings->getDebugLevel());
@@ -395,6 +399,17 @@ void cMT310S2dServer::enableClampInterrupt()
     }
 }
 
+void cMT310S2dServer::enableAccumulatorInterrupt()
+{
+    quint16 maskToAdd = (1 << accumulatorInterrupt);
+    if(pAtmelSys->writeIntMask(m_atmelSysCntrlInterruptMask | maskToAdd) == ZeraMcontrollerBase::cmddone) {
+        m_atmelSysCntrlInterruptMask |= maskToAdd;
+    }
+    else {
+        qWarning("Could not enable accumulator interrupt!");
+    }
+}
+
 void cMT310S2dServer::updateI2cDevicesConnected()
 {
     quint16 clStat;
@@ -433,6 +448,20 @@ void cMT310S2dServer::MTIntHandler(int)
     }
     else {
         qWarning("cMT310S2dServer::MTIntHandler: pAtmel->readCriticalStatus failed - cannot actualize clamp status!");
+    }
+
+    if ( pAtmelSys->readCriticalStatus(stat) == ZeraMcontrollerBase::cmddone ) {
+        if ((stat & (1 << accumulatorInterrupt)) > 0) {
+            pAtmelSys->resetCriticalStatus(stat & (1 << accumulatorInterrupt));
+            m_accumulatorInterface->getAccumulatorStatus();
+        }
+        quint16 knownMaskBits = (1 << accumulatorInterrupt);
+        if((stat & ~knownMaskBits) > 0) {
+            qWarning("cMT310S2dServer::MTIntHandler: unknown bits in critical status mask: %04x!", stat);
+        }
+    }
+    else {
+        qWarning("cMT310S2dServer::MTIntHandler: pAtmelSys->readCriticalStatus failed!");
     }
 
     // here we must add the handling for message interrupts sent by fpga device
