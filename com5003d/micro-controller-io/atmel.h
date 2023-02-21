@@ -10,7 +10,7 @@
 #include <protocol_zera_hard.h>
 #include <zera_mcontroller_base.h>
 
-class cATMEL : public ZeraMcontrollerBase, public AtmelCommon, public AtmelPermissionTemplate
+class cATMEL : public AtmelCommon, public AtmelPermissionTemplate
 {
 public:
     cATMEL(QString devnode, quint8 adr, quint8 debuglevel);

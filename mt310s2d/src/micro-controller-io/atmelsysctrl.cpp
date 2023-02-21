@@ -13,7 +13,7 @@ enum hw_cmdcode
 
 
 cATMELSysCtrl::cATMELSysCtrl(QString devnode, quint8 adr, quint8 debuglevel) :
-    ZeraMcontrollerBase(devnode, adr, debuglevel)
+    AtmelCommon(devnode, adr, debuglevel)
 {
 }
 

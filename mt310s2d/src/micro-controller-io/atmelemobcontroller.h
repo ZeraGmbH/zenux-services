@@ -3,7 +3,7 @@
 
 #include <atmelcommon.h>
 
-class AtmelEmobController : public ZeraMcontrollerBase, public AtmelCommon
+class AtmelEmobController : public AtmelCommon
 {
 public:
     AtmelEmobController(QString devnode, quint8 adr, quint8 debuglevel);
