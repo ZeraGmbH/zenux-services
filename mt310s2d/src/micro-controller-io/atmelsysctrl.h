@@ -12,6 +12,7 @@ public:
     cATMELSysCtrl(QString devnode, quint8 adr, quint8 debuglevel);
 
     atmelRM readCTRLVersion(QString& answer) override;
+    atmelRM readAccumulatorStatus(quint16& stat);
 };
 
 extern cATMELSysCtrl* pAtmelSys;
