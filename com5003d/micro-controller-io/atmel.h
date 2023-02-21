@@ -2,7 +2,7 @@
 #define ATMEL_H
 
 #include "atmelpermissiontemplate.h"
-#include "atmelreadversioninterface.h"
+#include "atmelcommon.h"
 #include <QString>
 #include <intelhexfileio.h>
 #include <crcutils.h>

@@ -1,7 +1,7 @@
 #ifndef ATMELATMELSYS_H
 #define ATMELATMELSYS_H
 
-#include <atmelreadversioninterface.h>
+#include <atmelcommon.h>
 #include <intelhexfileio.h>
 #include <zera_mcontroller_base.h>
 #include <QString>

@@ -1,7 +1,7 @@
 #ifndef ATMELEMOBCONTROLLER_H
 #define ATMELEMOBCONTROLLER_H
 
-#include <atmelreadversioninterface.h>
+#include <atmelcommon.h>
 
 class AtmelEmobController : public ZeraMcontrollerBase, public AtmelReadVersionInterface
 {
