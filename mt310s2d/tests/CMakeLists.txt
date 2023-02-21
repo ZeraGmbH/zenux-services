@@ -12,6 +12,7 @@ target_link_libraries(senserangetesttemplate
     PUBLIC
     Qt5::Test
     mt310s2d-lib
+    mt310s2d-lib-testlib
     )
 
 SETUP_TESTS(

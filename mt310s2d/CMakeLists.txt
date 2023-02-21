@@ -131,4 +131,5 @@ if(${useSystemd})
         )
 endif()
 
+add_subdirectory(testlib)
 add_subdirectory(tests)
