@@ -3,10 +3,12 @@
 
 #include <zera_mcontroller_base.h>
 
-class AtmelCommon
+class AtmelCommon : public ZeraMcontrollerBase
 {
 public:
+    AtmelCommon(QString devnode, quint8 adr, quint8 debuglevel);
     virtual ~AtmelCommon() = default;
+
     virtual ZeraMcontrollerBase::atmelRM readCTRLVersion(QString& answer) = 0;
 };
 

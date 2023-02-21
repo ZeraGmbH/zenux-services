@@ -45,7 +45,7 @@ enum hw_cmdcode
 
 
 cATMEL::cATMEL(QString devnode, quint8 adr, quint8 debuglevel) :
-    ZeraMcontrollerBase(devnode, adr, debuglevel)
+    AtmelCommon(devnode, adr, debuglevel)
 {
     PermissionFunctions::setPermissionPinController(this);
 }
