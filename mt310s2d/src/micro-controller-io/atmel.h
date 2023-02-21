@@ -24,9 +24,6 @@ public:
     atmelRM resetCriticalStatus(quint16 stat);
     atmelRM readClampStatus(quint16& stat);
 
-    atmelRM writeIntMask(quint16 mask);
-    atmelRM readIntMask(quint16& mask);
-
     atmelRM readRange(quint8 channel, quint8& range);
     atmelRM setRange(quint8 channel, quint8 range);
     atmelRM getEEPROMAccessEnable(bool& enable) override;
