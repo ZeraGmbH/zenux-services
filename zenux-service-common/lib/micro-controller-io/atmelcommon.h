@@ -9,9 +9,11 @@ public:
     AtmelCommon(QString devnode, quint8 adr, quint8 debuglevel);
     virtual ~AtmelCommon() = default;
 
-    virtual ZeraMcontrollerBase::atmelRM readCTRLVersion(QString& answer) = 0;
-    ZeraMcontrollerBase::atmelRM writeIntMask(quint16 mask);
-    ZeraMcontrollerBase::atmelRM readIntMask(quint16& mask);
+    virtual atmelRM readCTRLVersion(QString& answer) = 0;
+    atmelRM writeIntMask(quint16 mask);
+    atmelRM readIntMask(quint16& mask);
+    atmelRM readCriticalStatus(quint16& stat);
+    atmelRM resetCriticalStatus(quint16 stat);
 };
 
 #endif // ATMELCOMMON_H
