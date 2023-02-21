@@ -17,7 +17,7 @@ public:
 protected:
     void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
 private:
-    quint16 m_status = 0;
+    NotificationString m_accumulatorStatus;
     cATMELSysCtrl *m_atmelSysCntrl;
 };
 
