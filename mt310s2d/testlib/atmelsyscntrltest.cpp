@@ -5,7 +5,7 @@ AtmelSysCntrlTest::AtmelSysCntrlTest(QString devnode, quint8 adr, quint8 debugle
 {
 }
 
-ZeraMcontrollerBase::atmelRM AtmelSysCntrlTest::readAccumulatorStatus(quint16 &stat)
+ZeraMcontrollerBase::atmelRM AtmelSysCntrlTest::readAccumulatorStatus(quint8 &stat)
 {
     return ZeraMcontrollerBase::atmelRM::cmddone;
 }

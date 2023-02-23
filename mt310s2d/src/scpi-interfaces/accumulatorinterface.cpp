@@ -1,6 +1,6 @@
 #include "accumulatorinterface.h"
 
-constexpr quint16 ERROR = 0x80;
+constexpr quint8 ERROR = 0x80;
 
 AccumulatorInterface::AccumulatorInterface(cSCPI *scpiInterface, cATMELSysCtrl *atmelSysCntrl) :
     ScpiConnection(scpiInterface),
@@ -28,7 +28,7 @@ void AccumulatorInterface::executeProtoScpi(int cmdCode, cProtonetCommand *proto
 
 QString AccumulatorInterface::getAccumulatorStatus()
 {
-    quint16 status = 0;
+    quint8 status = 0;
     if(m_atmelSysCntrl->readAccumulatorStatus(status) == ZeraMcontrollerBase::atmelRM::cmddone){
         m_accumulatorStatus = QString::number(status);
     }
