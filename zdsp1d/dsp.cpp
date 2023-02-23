@@ -98,7 +98,7 @@
  
 /* #define DspCmd_TestVCSkipEQ(_Adr1,Wert) {(33<<16)+_Adr1,Wert} */ 
 /* testet eine variable(_Adr1) auf Gleichheit mit der Konstanten Wert */ 
-/* wenn ungleich wird der nächste befehl geskippt */ 
+/* wenn gleich wird der nächste befehl geskippt */
 /* #define DspCmd_TestVCSkipGT(_Adr1,Wert) {(34<<16)+_Adr1,Wert} */ 
 /* testet eine variable(_Adr1) auf grösser mit der Konstanten Wert */ 
 /* wenn kleiner,gleich wird der nächste befehl geskippt */ 
