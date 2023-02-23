@@ -23,7 +23,7 @@ ZeraMcontrollerBase::atmelRM cATMELSysCtrl::readCTRLVersion(QString& answer)
     return readVariableLenText(hwGetCtrlVersion, answer);
 }
 
-ZeraMcontrollerBase::atmelRM cATMELSysCtrl::readAccumulatorStatus(quint16 &stat)
+ZeraMcontrollerBase::atmelRM cATMELSysCtrl::readAccumulatorStatus(quint8 &stat)
 {
     ZeraMcontrollerBase::atmelRM cmdStatus = cmdexecfault;
     quint8 answ[2];
