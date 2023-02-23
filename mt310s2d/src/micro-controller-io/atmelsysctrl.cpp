@@ -8,7 +8,7 @@
 enum hw_cmdcode
 {
     hwGetCtrlVersion = 0x0003,
-    hwGetAccumulatorStatus = 0x0204,
+    hwGetAccumulatorStatus = 0x0210,
 };
 
 
