@@ -2,6 +2,7 @@
 #define TEST_AUTHORIZATIONNOTIFIER_H
 
 #include "pcbtestserver.h"
+#include "statusinterface.h"
 #include <memory.h>
 #include <QObject>
 
@@ -29,6 +30,7 @@ private:
     QString getAuthoStatus();
     std::unique_ptr<PCBTestServer> m_pcbServerTest;
     MockAtmel *m_atmel;
+    AdjustmentStatusInterface *m_adjustmentStatusNull;
 };
 
 #endif // TEST_AUTHORIZATIONNOTIFIER_H

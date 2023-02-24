@@ -1,11 +1,12 @@
 #include "test_authorizationnotifier.h"
+#include "adjustmentstatusnull.h"
 #include <scpisingletonfactory.h>
 #include <timerfactoryqtfortest.h>
 #include <timemachinefortest.h>
 #include <QTest>
 #include <QSignalSpy>
 
-QTEST_MAIN(test_authorizationnotifier);
+QTEST_MAIN(test_authorizationnotifier)
 
 static const char *statusAuthorizationCommand = "STATUS:AUTHORIZATION?";
 static const char *registerNotifierCommand = "SERVER:REGISTER";
@@ -18,11 +19,15 @@ void test_authorizationnotifier::init()
     cSCPI *scpiInterface = new cSCPI("foo");
     m_atmel = new MockAtmel();
     m_pcbServerTest = std::make_unique<PCBTestServer>("foo", "0", scpiInterface, m_atmel);
+    m_adjustmentStatusNull = new AdjustmentStatusNull();
+    m_pcbServerTest->insertScpiConnection(new cStatusInterface(m_pcbServerTest->getSCPIInterface(), m_adjustmentStatusNull));
+    m_pcbServerTest->initTestSCPIConnections();
     TimerFactoryQtForTest::enableTest();
 }
 
 void test_authorizationnotifier::cleanup()
 {
+    if (m_adjustmentStatusNull) delete m_adjustmentStatusNull;
     delete m_atmel;
 }
 

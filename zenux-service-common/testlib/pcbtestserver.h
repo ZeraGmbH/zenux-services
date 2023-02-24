@@ -2,7 +2,6 @@
 #define PCBTESTSERVER_H
 
 #include "pcbserver.h"
-#include "statusinterface.h"
 #include "mockatmel.h"
 
 class PCBTestServer : public cPCBServer
@@ -11,14 +10,13 @@ class PCBTestServer : public cPCBServer
 public:
     PCBTestServer(QString name, QString version, cSCPI *scpiInterface, MockAtmel *atmel);
     ~PCBTestServer();
+    void insertScpiConnection(ScpiConnection *scpiConnection);
+    void initTestSCPIConnections();
 signals:
     void notificationSent(qint16 notifierId);
 private slots:
     void doConfiguration() override;
     void onSendNotification(ScpiNotificationSubscriber subscriber) override;
-private:
-    cStatusInterface *m_pStatusInterface;
-    AdjustmentStatusInterface *m_adjustmentStatusNull;
 };
 
 #endif // PCBTESTSERVER_H
