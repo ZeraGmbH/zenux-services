@@ -12,6 +12,8 @@ public:
     ~PCBTestServer();
     void insertScpiConnection(ScpiConnection *scpiConnection);
     void initTestSCPIConnections();
+    void registerNotifier(QString inputCmd, int notifierId);
+    void unregisterNotifier();
 signals:
     void notificationSent(qint16 notifierId);
 private slots:
