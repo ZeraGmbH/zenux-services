@@ -35,6 +35,11 @@ NotificationString *cSCPIDelegate::getNotificationString()
     return m_notificationString;
 }
 
+int cSCPIDelegate::getTotalSubscribers()
+{
+    return m_notificationsHandler.getTotalSubscribers();
+}
+
 void cSCPIDelegate::notifyAllSubscribers()
 {
     for(int i = 0; i < m_notificationsHandler.getTotalSubscribers(); i++) {

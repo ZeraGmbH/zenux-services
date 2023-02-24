@@ -20,6 +20,7 @@ public:
     void addNotificationSubscriber(const ScpiNotificationSubscriber &subscriber);
     void removeAllNotificationSubscribers(XiQNetPeer *netPeer, QByteArray clientId);
     NotificationString *getNotificationString();
+    int getTotalSubscribers();
 public slots:
     void notifyAllSubscribers();
 signals:
