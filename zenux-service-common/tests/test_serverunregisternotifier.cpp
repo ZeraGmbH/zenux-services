@@ -1,5 +1,7 @@
 #include "statusinterface.h"
+#include "accumulatorinterface.h"
 #include "test_serverunregisternotifier.h"
+#include "atmelsyscntrltest.h"
 #include <QTest>
 
 QTEST_MAIN(test_serverunregisternotifier)
@@ -7,6 +9,7 @@ QTEST_MAIN(test_serverunregisternotifier)
 static const char *registerNotifierCommand = "SERVER:REGISTER";
 static const char *unregisterNotifierCommand = "SERVER:UNREGISTER";
 static const char *statusAuthorizationCommand = "STATUS:AUTHORIZATION?";
+static const char *accumulatorStatusCommand ="SYSTEM:ACCUMULATOR:STATUS?";
 
 constexpr quint16 NOTIFICATION_ID = 1;
 
@@ -23,22 +26,10 @@ void test_serverunregisternotifier::cleanup()
     if(m_adjustmentStatusNull) delete m_adjustmentStatusNull;
 }
 
-void test_serverunregisternotifier::registerNotifier(QString inputCmd)
+cSCPIDelegate *test_serverunregisternotifier::getDelegate(QString cmd)
 {
-    QString scpiAuthorizationQuery = QString("%1 %2;%3;").arg(registerNotifierCommand).arg(inputCmd).arg(NOTIFICATION_ID);
-    cProtonetCommand* protoCmd = new cProtonetCommand(nullptr, false, false, QByteArray(), 0, scpiAuthorizationQuery);
-    cSCPIObject* scpiObject = m_pcbServerTest->getSCPIInterface()->getSCPIObject(registerNotifierCommand);
-    cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
-    scpiDelegate->executeSCPI(protoCmd);
-}
-
-void test_serverunregisternotifier::unregisterNotifier()
-{
-    QString scpiAuthorizationQuery = QString("%1 %2;").arg(unregisterNotifierCommand).arg("");
-    cProtonetCommand* protoCmd = new cProtonetCommand(nullptr, false, false, QByteArray(), 0, scpiAuthorizationQuery);
-    cSCPIObject* scpiObject = m_pcbServerTest->getSCPIInterface()->getSCPIObject(unregisterNotifierCommand);
-    cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
-    scpiDelegate->executeSCPI(protoCmd);
+    cSCPIObject* scpiObject = m_pcbServerTest->getSCPIInterface()->getSCPIObject(cmd);
+    return static_cast<cSCPIDelegate*>(scpiObject);
 }
 
 void test_serverunregisternotifier::oneScpiConnection()
@@ -46,11 +37,30 @@ void test_serverunregisternotifier::oneScpiConnection()
     m_adjustmentStatusNull = new AdjustmentStatusNull();
     m_pcbServerTest->insertScpiConnection(new cStatusInterface(m_pcbServerTest->getSCPIInterface(), m_adjustmentStatusNull));
     m_pcbServerTest->initTestSCPIConnections();
-    registerNotifier(statusAuthorizationCommand);
-    cSCPIObject* scpiObject = m_pcbServerTest->getSCPIInterface()->getSCPIObject(statusAuthorizationCommand);
-    cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
-    QCOMPARE(scpiDelegate->getTotalSubscribers(), 1);
-    unregisterNotifier();
-    QCOMPARE(scpiDelegate->getTotalSubscribers(), 0);
+    m_pcbServerTest->registerNotifier(statusAuthorizationCommand, NOTIFICATION_ID);
+    QCOMPARE(getDelegate(statusAuthorizationCommand)->getTotalSubscribers(), 1);
+    m_pcbServerTest->unregisterNotifier();
+    QCOMPARE(getDelegate(statusAuthorizationCommand)->getTotalSubscribers(), 0);
 }
+
+void test_serverunregisternotifier::twoScpiConnections()
+{
+    m_adjustmentStatusNull = new AdjustmentStatusNull();
+    m_pcbServerTest->insertScpiConnection(new cStatusInterface(m_pcbServerTest->getSCPIInterface(), m_adjustmentStatusNull));
+
+    AtmelSysCntrlTest atmelSysCtrl("", 0, 0);
+    m_pcbServerTest->insertScpiConnection(new AccumulatorInterface(m_pcbServerTest->getSCPIInterface(), &atmelSysCtrl));
+
+    m_pcbServerTest->initTestSCPIConnections();
+    m_pcbServerTest->registerNotifier(statusAuthorizationCommand, NOTIFICATION_ID);
+    m_pcbServerTest->registerNotifier(accumulatorStatusCommand, NOTIFICATION_ID);
+    QCOMPARE(getDelegate(statusAuthorizationCommand)->getTotalSubscribers(), 1);
+    QCOMPARE(getDelegate(accumulatorStatusCommand)->getTotalSubscribers(), 1);
+    m_pcbServerTest->unregisterNotifier();
+    QCOMPARE(getDelegate(statusAuthorizationCommand)->getTotalSubscribers(), 0);
+    QCOMPARE(getDelegate(accumulatorStatusCommand)->getTotalSubscribers(), 0);
+}
+
+//SERV:REG AUTHO:STAT?
+//SERV:UNRE
 

@@ -15,13 +15,13 @@ private slots:
     void cleanup();
 
     void oneScpiConnection();
+    void twoScpiConnections();
+
 private:
-    void registerNotifier(QString inputCmd);
-    void unregisterNotifier();
+    cSCPIDelegate* getDelegate(QString cmd);
     std::unique_ptr<PCBTestServer> m_pcbServerTest;
     MockAtmel *m_atmel;
     AdjustmentStatusNull *m_adjustmentStatusNull;
-
 };
 
 #endif // TEST_SERVERUNREGISTERNOTIFIER_H
