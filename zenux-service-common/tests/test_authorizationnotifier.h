@@ -25,8 +25,6 @@ private slots:
     void unregisteredNotifierAuthoStatusEnabled();
     void noNotificationAuthoStatusEnabled();
 private:
-    void registerNotifier();
-    void unregisterNotifier();
     QString getAuthoStatus();
     std::unique_ptr<PCBTestServer> m_pcbServerTest;
     MockAtmel *m_atmel;
