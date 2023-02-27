@@ -220,7 +220,7 @@ void cPCBServer::registerNotifier(cProtonetCommand *protoCmd)
             procmd->m_bwithOutput = false;
             procmd->m_sInput = query;
             ScpiNotificationSubscriber subscriber(protoCmd->m_pPeer, protoCmd->m_clientId, cmd.getParam(1).toInt());
-            scpiDelegate->addNotificationSubscriber(subscriber);
+            scpiDelegate->getScpiNotificationSubscriberHandler().addSubscriber(subscriber);
             scpiDelegate->executeSCPI(procmd);
             qInfo("Subscriber requested for cmd %s : Peer %i, clientId %s, NotifierID %i",
                   qPrintable(query), subscriber.m_netPeer, qPrintable(subscriber.m_clientId), subscriber.m_notifierId);

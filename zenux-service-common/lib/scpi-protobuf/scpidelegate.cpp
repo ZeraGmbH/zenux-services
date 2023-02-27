@@ -20,24 +20,14 @@ QString cSCPIDelegate::getCommand()
     return m_sCommand;
 }
 
-void cSCPIDelegate::addNotificationSubscriber(const ScpiNotificationSubscriber &subscriber)
-{
-    m_notificationsHandler.addSubscriber(subscriber);
-}
-
-void cSCPIDelegate::removeAllNotificationSubscribers(XiQNetPeer *netPeer, QByteArray clientId)
-{
-    m_notificationsHandler.removeAllSubscribers(netPeer, clientId);
-}
-
 NotificationString *cSCPIDelegate::getNotificationString()
 {
     return m_notificationString;
 }
 
-int cSCPIDelegate::getTotalSubscribers()
+ScpiNotificationSubscriberHandler &cSCPIDelegate::getScpiNotificationSubscriberHandler()
 {
-    return m_notificationsHandler.getTotalSubscribers();
+    return m_notificationsHandler;
 }
 
 void cSCPIDelegate::notifyAllSubscribers()

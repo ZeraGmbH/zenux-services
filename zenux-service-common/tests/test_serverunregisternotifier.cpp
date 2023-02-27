@@ -42,9 +42,9 @@ void test_serverunregisternotifier::oneScpiConnection()
     m_pcbServerTest->insertScpiConnection(new cStatusInterface(m_pcbServerTest->getSCPIInterface(), m_adjustmentStatusNull.get()));
     m_pcbServerTest->initTestSCPIConnections();
     m_pcbServerTest->registerNotifier(statusAuthorizationCommand, NOTIFICATION_ID);
-    QCOMPARE(getDelegate(statusAuthorizationCommand)->getTotalSubscribers(), 1);
+    QCOMPARE(getDelegate(statusAuthorizationCommand)->getScpiNotificationSubscriberHandler().getTotalSubscribers(), 1);
     m_pcbServerTest->unregisterNotifier();
-    QCOMPARE(getDelegate(statusAuthorizationCommand)->getTotalSubscribers(), 0);
+    QCOMPARE(getDelegate(statusAuthorizationCommand)->getScpiNotificationSubscriberHandler().getTotalSubscribers(), 0);
 }
 
 void test_serverunregisternotifier::twoScpiConnections()
@@ -57,11 +57,11 @@ void test_serverunregisternotifier::twoScpiConnections()
     m_pcbServerTest->initTestSCPIConnections();
     m_pcbServerTest->registerNotifier(statusAuthorizationCommand, NOTIFICATION_ID);
     m_pcbServerTest->registerNotifier(accumulatorStatusCommand, NOTIFICATION_ID);
-    QCOMPARE(getDelegate(statusAuthorizationCommand)->getTotalSubscribers(), 1);
-    QCOMPARE(getDelegate(accumulatorStatusCommand)->getTotalSubscribers(), 1);
+    QCOMPARE(getDelegate(statusAuthorizationCommand)->getScpiNotificationSubscriberHandler().getTotalSubscribers(), 1);
+    QCOMPARE(getDelegate(accumulatorStatusCommand)->getScpiNotificationSubscriberHandler().getTotalSubscribers(), 1);
     m_pcbServerTest->unregisterNotifier();
-    QCOMPARE(getDelegate(statusAuthorizationCommand)->getTotalSubscribers(), 0);
-    QCOMPARE(getDelegate(accumulatorStatusCommand)->getTotalSubscribers(), 0);
+    QCOMPARE(getDelegate(statusAuthorizationCommand)->getScpiNotificationSubscriberHandler().getTotalSubscribers(), 0);
+    QCOMPARE(getDelegate(accumulatorStatusCommand)->getScpiNotificationSubscriberHandler().getTotalSubscribers(), 0);
 }
 
 void test_serverunregisternotifier::mtConfigLoaded()
@@ -76,11 +76,11 @@ void test_serverunregisternotifier::scpiConnectionWithInternalScpiConnections()
     m_pcbServerTest->initTestSCPIConnections();
 
     m_pcbServerTest->registerNotifier("SOURCE:fo1:CONSTANT?", NOTIFICATION_ID);
-    QCOMPARE(getDelegate("SOURCE:fo1:CONSTANT?")->getTotalSubscribers(), 1);
+    QCOMPARE(getDelegate("SOURCE:fo1:CONSTANT?")->getScpiNotificationSubscriberHandler().getTotalSubscribers(), 1);
     m_pcbServerTest->registerNotifier("SOURCE:fo3:CONSTANT?", NOTIFICATION_ID);
-    QCOMPARE(getDelegate("SOURCE:fo3:CONSTANT?")->getTotalSubscribers(), 1);
+    QCOMPARE(getDelegate("SOURCE:fo3:CONSTANT?")->getScpiNotificationSubscriberHandler().getTotalSubscribers(), 1);
 
     m_pcbServerTest->unregisterNotifier();
-    QCOMPARE(getDelegate("SOURCE:fo1:CONSTANT?")->getTotalSubscribers(), 0);
-    QCOMPARE(getDelegate("SOURCE:fo3:CONSTANT?")->getTotalSubscribers(), 0);
+    QCOMPARE(getDelegate("SOURCE:fo1:CONSTANT?")->getScpiNotificationSubscriberHandler().getTotalSubscribers(), 0);
+    QCOMPARE(getDelegate("SOURCE:fo3:CONSTANT?")->getScpiNotificationSubscriberHandler().getTotalSubscribers(), 0);
 }
