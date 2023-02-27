@@ -10,13 +10,6 @@ ScpiConnection::~ScpiConnection()
     removeSCPIConnections();
 }
 
-void ScpiConnection::removeAllScpiNotificationSubscribers(XiQNetPeer *netPeer, QByteArray clientId)
-{
-    for (int i = 0; i < m_DelegateList.count(); i++) {
-        m_DelegateList.at(i)->removeAllNotificationSubscribers(netPeer, clientId);
-    }
-}
-
 void ScpiConnection::removeSCPIConnections()
 {
     if(m_pSCPIInterface) {
@@ -57,4 +50,12 @@ void ScpiConnection::onNotifierRegistered(NotificationString *notifier)
 
 void ScpiConnection::onNotifierUnregistered()
 {
+}
+
+void ScpiConnection::onRemoveSubscribers(XiQNetPeer *peer, const QByteArray &clientID)
+{
+    for (int i = 0; i < m_DelegateList.count(); i++) {
+        m_DelegateList.at(i)->removeAllNotificationSubscribers(peer, clientID);
+    }
+    emit continueRemovingSubscribers(peer, clientID);
 }
