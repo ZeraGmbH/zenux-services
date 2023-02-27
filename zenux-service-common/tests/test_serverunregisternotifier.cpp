@@ -2,12 +2,11 @@
 #include "accumulatorinterface.h"
 #include "test_serverunregisternotifier.h"
 #include "atmelsyscntrltest.h"
+#include "foutgroupresourceandinterface.h"
 #include <QTest>
 
 QTEST_MAIN(test_serverunregisternotifier)
 
-static const char *registerNotifierCommand = "SERVER:REGISTER";
-static const char *unregisterNotifierCommand = "SERVER:UNREGISTER";
 static const char *statusAuthorizationCommand = "STATUS:AUTHORIZATION?";
 static const char *accumulatorStatusCommand ="SYSTEM:ACCUMULATOR:STATUS?";
 
@@ -71,6 +70,17 @@ void test_serverunregisternotifier::mtConfigLoaded()
     QCOMPARE(chSettings.size(), 4);
 }
 
-//SERV:REG AUTHO:STAT?
-//SERV:UNRE
+void test_serverunregisternotifier::scpiConnectionWithInternalScpiConnections()
+{
+    m_pcbServerTest->insertScpiConnection(new FOutGroupResourceAndInterface(m_pcbServerTest->getSCPIInterface(), m_settings.get()));
+    m_pcbServerTest->initTestSCPIConnections();
 
+    m_pcbServerTest->registerNotifier("SOURCE:fo1:CONSTANT?", NOTIFICATION_ID);
+    QCOMPARE(getDelegate("SOURCE:fo1:CONSTANT?")->getTotalSubscribers(), 1);
+    m_pcbServerTest->registerNotifier("SOURCE:fo3:CONSTANT?", NOTIFICATION_ID);
+    QCOMPARE(getDelegate("SOURCE:fo3:CONSTANT?")->getTotalSubscribers(), 1);
+
+    m_pcbServerTest->unregisterNotifier();
+    QCOMPARE(getDelegate("SOURCE:fo1:CONSTANT?")->getTotalSubscribers(), 0);
+    QCOMPARE(getDelegate("SOURCE:fo3:CONSTANT?")->getTotalSubscribers(), 0);
+}

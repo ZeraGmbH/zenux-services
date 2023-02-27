@@ -37,6 +37,7 @@ void FOutGroupResourceAndInterface::initSCPIConnection(QString leadingNodes)
     for(auto channel : qAsConst(m_ChannelList)) {
         connect(channel, &ScpiConnection::sendNotification, this, &ScpiConnection::sendNotification);
         connect(channel, &ScpiConnection::cmdExecutionDone, this, &ScpiConnection::cmdExecutionDone);
+        connect(this, &ScpiConnection::continueRemovingSubscribers, channel, &ScpiConnection::onRemoveSubscribers);
         channel->initSCPIConnection(QString("%1SOURCE").arg(leadingNodes));
     }
 }

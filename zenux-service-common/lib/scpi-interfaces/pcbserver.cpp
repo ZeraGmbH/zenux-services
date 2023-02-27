@@ -246,9 +246,7 @@ void cPCBServer::unregisterNotifier(cProtonetCommand *protoCmd)
 void cPCBServer::doUnregisterNotifier(XiQNetPeer* peer, const QByteArray &clientID)
 {
     qInfo("Unregistering : Peer %i, clientId %s", peer, qPrintable(clientID));
-    for (int i = 0; i < scpiConnectionList.count(); i++) {
-        scpiConnectionList.at(i)->removeAllScpiNotificationSubscribers(peer, clientID);
-    }
+    emit removeSubscribers(peer, clientID);
     emit notifierUnregistred();
 }
 
@@ -324,5 +322,6 @@ void cPCBServer::initSCPIConnections()
         connect(scpiConnectionList.at(i), &ScpiConnection::cmdExecutionDone, this, &cPCBServer::sendAnswerProto);
         connect(this, &cPCBServer::notifierRegistred, scpiConnectionList.at(i), &ScpiConnection::onNotifierRegistered);
         connect(this, &cPCBServer::notifierUnregistred, scpiConnectionList.at(i), &ScpiConnection::onNotifierUnregistered);
+        connect(this, &cPCBServer::removeSubscribers, scpiConnectionList.at(i), &ScpiConnection::onRemoveSubscribers);
     }
 }
