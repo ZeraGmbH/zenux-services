@@ -13,17 +13,23 @@ static const char *accumulatorStatusCommand ="SYSTEM:ACCUMULATOR:STATUS?";
 
 constexpr quint16 NOTIFICATION_ID = 1;
 
-void test_serverunregisternotifier::init()
+test_serverunregisternotifier::test_serverunregisternotifier() :
+    m_scpiInterface("foo")
 {
-    cSCPI *scpiInterface = new cSCPI("foo");
-    m_atmel = new MockAtmel();
-    m_pcbServerTest = std::make_unique<PCBTestServer>("foo", "0", scpiInterface, m_atmel);
 }
 
-void test_serverunregisternotifier::cleanup()
+void test_serverunregisternotifier::init()
 {
-    if(m_atmel) delete m_atmel;
-    if(m_adjustmentStatusNull) delete m_adjustmentStatusNull;
+    m_atmel = std::make_unique<MockAtmel>();
+    m_adjustmentStatusNull = std::make_unique<AdjustmentStatusNull>();
+    m_pcbServerTest = std::make_unique<PCBTestServer>("foo", "0", &m_scpiInterface, m_atmel.get());
+
+    m_xmlConfigReader = std::make_unique<Zera::XMLConfig::cReader>();
+    m_settings = std::make_unique<FOutSettings>(m_xmlConfigReader.get());
+    connect(m_xmlConfigReader.get(), &Zera::XMLConfig::cReader::valueChanged,
+            m_settings.get(), &FOutSettings::configXMLInfo);
+    m_xmlConfigReader->loadSchema(QStringLiteral(CONFIG_PATH) + "/" + "mt310s2d.xsd");
+    m_xmlConfigReader->loadXMLFile(QStringLiteral(CONFIG_PATH) + "/" + "mt310s2d.xml");
 }
 
 cSCPIDelegate *test_serverunregisternotifier::getDelegate(QString cmd)
@@ -34,8 +40,7 @@ cSCPIDelegate *test_serverunregisternotifier::getDelegate(QString cmd)
 
 void test_serverunregisternotifier::oneScpiConnection()
 {
-    m_adjustmentStatusNull = new AdjustmentStatusNull();
-    m_pcbServerTest->insertScpiConnection(new cStatusInterface(m_pcbServerTest->getSCPIInterface(), m_adjustmentStatusNull));
+    m_pcbServerTest->insertScpiConnection(new cStatusInterface(m_pcbServerTest->getSCPIInterface(), m_adjustmentStatusNull.get()));
     m_pcbServerTest->initTestSCPIConnections();
     m_pcbServerTest->registerNotifier(statusAuthorizationCommand, NOTIFICATION_ID);
     QCOMPARE(getDelegate(statusAuthorizationCommand)->getTotalSubscribers(), 1);
@@ -45,8 +50,7 @@ void test_serverunregisternotifier::oneScpiConnection()
 
 void test_serverunregisternotifier::twoScpiConnections()
 {
-    m_adjustmentStatusNull = new AdjustmentStatusNull();
-    m_pcbServerTest->insertScpiConnection(new cStatusInterface(m_pcbServerTest->getSCPIInterface(), m_adjustmentStatusNull));
+    m_pcbServerTest->insertScpiConnection(new cStatusInterface(m_pcbServerTest->getSCPIInterface(), m_adjustmentStatusNull.get()));
 
     AtmelSysCntrlTest atmelSysCtrl("", 0, 0);
     m_pcbServerTest->insertScpiConnection(new AccumulatorInterface(m_pcbServerTest->getSCPIInterface(), &atmelSysCtrl));
@@ -59,6 +63,12 @@ void test_serverunregisternotifier::twoScpiConnections()
     m_pcbServerTest->unregisterNotifier();
     QCOMPARE(getDelegate(statusAuthorizationCommand)->getTotalSubscribers(), 0);
     QCOMPARE(getDelegate(accumulatorStatusCommand)->getTotalSubscribers(), 0);
+}
+
+void test_serverunregisternotifier::mtConfigLoaded()
+{
+    QList<FOutSettings::ChannelSettings*>& chSettings =  m_settings->getChannelSettings();
+    QCOMPARE(chSettings.size(), 4);
 }
 
 //SERV:REG AUTHO:STAT?
