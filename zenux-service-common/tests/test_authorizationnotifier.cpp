@@ -31,24 +31,6 @@ void test_authorizationnotifier::cleanup()
     delete m_atmel;
 }
 
-void test_authorizationnotifier::registerNotifier()
-{
-    QString scpiAuthorizationQuery = QString("%1 %2;%3;").arg(registerNotifierCommand).arg(statusAuthorizationCommand).arg(NOTIFICATION_ID);
-    cProtonetCommand* protoCmd = new cProtonetCommand(nullptr, false, false, QByteArray(), 0, scpiAuthorizationQuery);
-    cSCPIObject* scpiObject = m_pcbServerTest->getSCPIInterface()->getSCPIObject(registerNotifierCommand);
-    cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
-    scpiDelegate->executeSCPI(protoCmd);
-}
-
-void test_authorizationnotifier::unregisterNotifier()
-{
-    QString scpiAuthorizationQuery = QString("%1 %2;").arg(unregisterNotifierCommand).arg("");
-    cProtonetCommand* protoCmd = new cProtonetCommand(nullptr, false, false, QByteArray(), 0, scpiAuthorizationQuery);
-    cSCPIObject* scpiObject = m_pcbServerTest->getSCPIInterface()->getSCPIObject(unregisterNotifierCommand);
-    cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
-    scpiDelegate->executeSCPI(protoCmd);
-}
-
 QString test_authorizationnotifier::getAuthoStatus()
 {
     cProtonetCommand* protoCmd = new cProtonetCommand(0, false, false, QByteArray(), 0, statusAuthorizationCommand);
@@ -94,7 +76,7 @@ void test_authorizationnotifier::getNotiferId()
 
 void test_authorizationnotifier::notifyAuthoStatusEnabled()
 {
-    registerNotifier();
+    m_pcbServerTest->registerNotifier(statusAuthorizationCommand, NOTIFICATION_ID);
     QSignalSpy spy(m_pcbServerTest.get(), &PCBTestServer::notificationSent);
 
     m_atmel->accessEnableAfter(100);
@@ -105,7 +87,7 @@ void test_authorizationnotifier::notifyAuthoStatusEnabled()
 
 void test_authorizationnotifier::notifyAuthoStatusEnabledDisabled()
 {
-    registerNotifier();
+    m_pcbServerTest->registerNotifier(statusAuthorizationCommand, NOTIFICATION_ID);
     QSignalSpy spy(m_pcbServerTest.get(), &PCBTestServer::notificationSent);
 
     m_atmel->accessEnableAfter(100);
@@ -120,8 +102,8 @@ void test_authorizationnotifier::notifyAuthoStatusEnabledDisabled()
 
 void test_authorizationnotifier::unregisteredNotifierAuthoStatusEnabled()
 {
-    registerNotifier();
-    unregisterNotifier();
+    m_pcbServerTest->registerNotifier(statusAuthorizationCommand, NOTIFICATION_ID);
+    m_pcbServerTest->unregisterNotifier();
     QSignalSpy spy(m_pcbServerTest.get(), &PCBTestServer::notificationSent);
     m_atmel->accessEnableAfter(10);
     TimeMachineForTest::getInstance()->processTimers(1000);
