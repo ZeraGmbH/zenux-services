@@ -27,6 +27,7 @@ void cStatusInterface::initSCPIConnection(QString leadingNodes)
     addDelegate(QString("%1STATUS").arg(leadingNodes),"DEVICE",SCPI::isQuery, m_pSCPIInterface, cmdDevice);
     addDelegate(QString("%1STATUS").arg(leadingNodes),"ADJUSTMENT", SCPI::isQuery, m_pSCPIInterface, cmdAdjustment);
     addDelegate(QString("%1STATUS").arg(leadingNodes),"AUTHORIZATION", SCPI::isQuery, m_pSCPIInterface, cmdAuthorization, &m_notifierAutorization);
+    connect(this, &ScpiConnection::removingSubscribers, this, &cStatusInterface::onNotifierUnregistered);
 }
 
 void cStatusInterface::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)

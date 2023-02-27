@@ -166,7 +166,7 @@ void cSenseInterface::initSCPIConnection(QString leadingNodes)
         // we also must connect the signals for notification and for output
         connect(channel, &ScpiConnection::sendNotification, this, &ScpiConnection::sendNotification);
         connect(channel, &ScpiConnection::cmdExecutionDone, this, &ScpiConnection::cmdExecutionDone);
-        connect(this, &ScpiConnection::continueRemovingSubscribers, channel, &ScpiConnection::onRemoveSubscribers);
+        connect(this, &ScpiConnection::removingSubscribers, channel, &ScpiConnection::onRemoveSubscribers);
         channel->initSCPIConnection(QString("%1SENSE").arg(leadingNodes));
     }
 }

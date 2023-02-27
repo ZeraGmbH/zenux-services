@@ -247,7 +247,6 @@ void cPCBServer::doUnregisterNotifier(XiQNetPeer* peer, const QByteArray &client
 {
     qInfo("Unregistering : Peer %i, clientId %s", peer, qPrintable(clientID));
     emit removeSubscribers(peer, clientID);
-    emit notifierUnregistred();
 }
 
 void cPCBServer::onEstablishNewConnection(XiQNetPeer *newClient)
@@ -321,7 +320,6 @@ void cPCBServer::initSCPIConnections()
         connect(scpiConnectionList.at(i), &ScpiConnection::sendNotification, this, &cPCBServer::onSendNotification);
         connect(scpiConnectionList.at(i), &ScpiConnection::cmdExecutionDone, this, &cPCBServer::sendAnswerProto);
         connect(this, &cPCBServer::notifierRegistred, scpiConnectionList.at(i), &ScpiConnection::onNotifierRegistered);
-        connect(this, &cPCBServer::notifierUnregistred, scpiConnectionList.at(i), &ScpiConnection::onNotifierUnregistered);
         connect(this, &cPCBServer::removeSubscribers, scpiConnectionList.at(i), &ScpiConnection::onRemoveSubscribers);
     }
 }

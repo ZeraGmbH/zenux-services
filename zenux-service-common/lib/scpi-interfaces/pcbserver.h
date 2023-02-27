@@ -64,7 +64,6 @@ private slots:
     void onNotifyPeerConnectionClosed();
 signals:
     void notifierRegistred(NotificationString* notifier);
-    void notifierUnregistred();
     void removeSubscribers(XiQNetPeer* peer, const QByteArray &clientID);
 };
 
