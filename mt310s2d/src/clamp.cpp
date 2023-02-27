@@ -52,6 +52,7 @@ cClamp::cClamp(cMT310S2dServer *server, QString channelName, quint8 ctrlChannel,
     // we need an adjustment interface in whatever state the clamp connected is
     addSystAdjInterface();
     connect(this, &ScpiConnection::cmdExecutionDone, server, &cPCBServer::sendAnswerProto);
+    connect(server, &cPCBServer::removeSubscribers, this, &ScpiConnection::onRemoveSubscribers);
     if (type != undefined) {
         importAdjFlash();
         addSense();
