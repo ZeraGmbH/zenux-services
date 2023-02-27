@@ -56,8 +56,6 @@ private:
     void registerNotifier(cProtonetCommand* protoCmd); // registeres 1 notifier per command
     void unregisterNotifier(cProtonetCommand *protoCmd); // unregisters all notifiers
     void doUnregisterNotifier(XiQNetPeer *peer, const QByteArray &clientID = QByteArray());
-    QList<NotificationStructWithStringAndId> m_notifierRegisterNext;
-    QList<NotificationStructWithStringAndId> m_notifierRegisterList;
 private slots:
     void onEstablishNewConnection(XiQNetPeer* newClient);
     void onExecuteCommandProto(std::shared_ptr<google::protobuf::Message> cmd);
