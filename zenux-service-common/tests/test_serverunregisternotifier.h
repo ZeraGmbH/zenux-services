@@ -4,24 +4,33 @@
 #include "mockatmel.h"
 #include "pcbtestserver.h"
 #include "adjustmentstatusnull.h"
+#include "foutsettings.h"
 #include <memory>
 #include <QObject>
 
 class test_serverunregisternotifier : public QObject
 {
     Q_OBJECT
+public:
+    test_serverunregisternotifier();
 private slots:
     void init();
-    void cleanup();
 
     void oneScpiConnection();
     void twoScpiConnections();
 
+    void mtConfigLoaded();
+
 private:
     cSCPIDelegate* getDelegate(QString cmd);
+
+    cSCPI m_scpiInterface;
     std::unique_ptr<PCBTestServer> m_pcbServerTest;
-    MockAtmel *m_atmel;
-    AdjustmentStatusNull *m_adjustmentStatusNull;
+    std::unique_ptr<MockAtmel> m_atmel;
+    std::unique_ptr<AdjustmentStatusNull> m_adjustmentStatusNull;
+
+    std::unique_ptr<Zera::XMLConfig::cReader> m_xmlConfigReader;
+    std::unique_ptr<FOutSettings> m_settings;
 };
 
 #endif // TEST_SERVERUNREGISTERNOTIFIER_H

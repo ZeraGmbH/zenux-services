@@ -1,3 +1,5 @@
+add_definitions(-DCONFIG_PATH="${CMAKE_CURRENT_SOURCE_DIR}/../../mt310s2d/configs")
+
 SETUP_TESTS(
     test_justdata
     test_asynchnotificationsinterface
