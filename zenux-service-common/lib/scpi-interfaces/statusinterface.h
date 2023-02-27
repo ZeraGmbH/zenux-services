@@ -22,7 +22,7 @@ private:
     TimerTemplateQtPtr m_periodicTimer;
 private slots:
     void onNotifierRegistered(NotificationString* notifier) override;
-    void onNotifierUnregistered() override;
+    void onNotifierUnregistered();
 };
 
 #endif // STATUSINTERFACE_H

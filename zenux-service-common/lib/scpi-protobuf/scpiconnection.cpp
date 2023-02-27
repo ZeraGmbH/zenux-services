@@ -48,14 +48,10 @@ void ScpiConnection::onNotifierRegistered(NotificationString *notifier)
 {
 }
 
-void ScpiConnection::onNotifierUnregistered()
-{
-}
-
 void ScpiConnection::onRemoveSubscribers(XiQNetPeer *peer, const QByteArray &clientID)
 {
     for (int i = 0; i < m_DelegateList.count(); i++) {
         m_DelegateList.at(i)->getScpiNotificationSubscriberHandler().removeAllSubscribers(peer, clientID);
     }
-    emit continueRemovingSubscribers(peer, clientID);
+    emit removingSubscribers(peer, clientID);
 }
