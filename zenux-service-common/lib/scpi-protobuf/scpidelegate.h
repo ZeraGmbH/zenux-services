@@ -17,10 +17,8 @@ public:
     virtual bool executeSCPI(const QString&, QString&) override { return false; }
     virtual bool executeSCPI(cProtonetCommand* protoCmd);
     QString getCommand();
-    void addNotificationSubscriber(const ScpiNotificationSubscriber &subscriber);
-    void removeAllNotificationSubscribers(XiQNetPeer *netPeer, QByteArray clientId);
     NotificationString *getNotificationString();
-    int getTotalSubscribers();
+    ScpiNotificationSubscriberHandler &getScpiNotificationSubscriberHandler();
 public slots:
     void notifyAllSubscribers();
 signals:
