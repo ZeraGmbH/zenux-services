@@ -12,6 +12,7 @@ void AccumulatorInterface::initSCPIConnection(QString leadingNodes)
 {
     ensureTrailingColonOnNonEmptyParentNodes(leadingNodes);
     addDelegate(QString("%1SYSTEM:ACCUMULATOR").arg(leadingNodes),"STATUS",SCPI::isQuery, m_pSCPIInterface, accumulatorCommands::cmdStatus, &m_accumulatorStatus);
+    addDelegate(QString("%1SYSTEM:ACCUMULATOR").arg(leadingNodes),"SOC",SCPI::isQuery, m_pSCPIInterface, accumulatorCommands::cmdSoc, &m_accumulatorSoc);
 }
 
 void AccumulatorInterface::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
@@ -20,6 +21,9 @@ void AccumulatorInterface::executeProtoScpi(int cmdCode, cProtonetCommand *proto
     {
     case accumulatorCommands::cmdStatus:
         protoCmd->m_sOutput = getAccumulatorStatus();
+        break;
+    case accumulatorCommands::cmdSoc:
+        protoCmd->m_sOutput = getAccumulatorSoc();
         break;
     }
     if (protoCmd->m_bwithOutput)
@@ -36,4 +40,16 @@ QString AccumulatorInterface::getAccumulatorStatus()
         m_accumulatorStatus = QString::number(ERROR);
     }
     return m_accumulatorStatus.getString();
+}
+
+QString AccumulatorInterface::getAccumulatorSoc()
+{
+    quint8 charge = 0;
+    if(m_atmelSysCntrl->readAccumulatorSoc(charge) == ZeraMcontrollerBase::atmelRM::cmddone){
+        m_accumulatorSoc = QString::number(charge);
+    }
+    else{
+        m_accumulatorSoc = QString::number(ERROR);
+    }
+    return m_accumulatorSoc.getString();
 }

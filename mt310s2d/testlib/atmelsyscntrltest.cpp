@@ -9,3 +9,9 @@ ZeraMcontrollerBase::atmelRM AtmelSysCntrlTest::readAccumulatorStatus(quint8 &st
 {
     return ZeraMcontrollerBase::atmelRM::cmddone;
 }
+
+ZeraMcontrollerBase::atmelRM AtmelSysCntrlTest::readAccumulatorSoc(quint8 &charge)
+{
+    charge = 37;
+    return ZeraMcontrollerBase::atmelRM::cmddone;
+}
