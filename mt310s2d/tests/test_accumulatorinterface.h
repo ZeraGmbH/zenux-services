@@ -13,8 +13,9 @@ private slots:
     void init();
     void cleanup();
 
-    void findObject();
+    void findObjects();
     void readAccumulatorStatus();
+    void readAccumulatorSoc();
 
 private:
     std::unique_ptr<cSCPI> m_scpiInterface;

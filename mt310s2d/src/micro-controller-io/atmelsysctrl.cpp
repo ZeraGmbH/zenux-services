@@ -9,6 +9,7 @@ enum hw_cmdcode
 {
     hwGetCtrlVersion = 0x0003,
     hwGetAccumulatorStatus = 0x0210,
+    hwGetAccumulatorSoc = 0x0211
 };
 
 
@@ -25,13 +26,27 @@ ZeraMcontrollerBase::atmelRM cATMELSysCtrl::readCTRLVersion(QString& answer)
 
 ZeraMcontrollerBase::atmelRM cATMELSysCtrl::readAccumulatorStatus(quint8 &stat)
 {
-    ZeraMcontrollerBase::atmelRM cmdStatus = cmdexecfault;
+    ZeraMcontrollerBase::atmelRM ret = cmdexecfault;
     quint8 answ[2];
     hw_cmd CMD(hwGetAccumulatorStatus, 0, nullptr, 0);
     writeCommand(&CMD, answ, 2);
     if(getLastErrorMask() == 0) {
          stat = answ[0];
-         cmdStatus = cmddone;
+         ret = cmddone;
     }
-    return cmdStatus;
+    return ret;
+}
+
+ZeraMcontrollerBase::atmelRM cATMELSysCtrl::readAccumulatorSoc(quint8 &charge)
+{
+    ZeraMcontrollerBase::atmelRM ret = cmdexecfault;
+    quint8 answ[2];
+    hw_cmd CMD(hwGetAccumulatorSoc, 0, nullptr, 0);
+    writeCommand(&CMD, answ, 2);
+    if(getLastErrorMask() == 0) {
+         charge = answ[0];
+         ret = cmddone;
+    }
+    return ret;
+
 }

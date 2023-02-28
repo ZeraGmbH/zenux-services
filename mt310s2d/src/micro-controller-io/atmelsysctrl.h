@@ -13,6 +13,7 @@ public:
 
     atmelRM readCTRLVersion(QString& answer) override;
     virtual atmelRM readAccumulatorStatus(quint8& stat);
+    virtual atmelRM readAccumulatorSoc(quint8& charge);
 };
 
 extern cATMELSysCtrl* pAtmelSys;

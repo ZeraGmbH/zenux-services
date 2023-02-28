@@ -4,6 +4,7 @@
 QTEST_MAIN(test_accumulatorinterface);
 
 static const char *systemAccumulatorStatus ="SYSTEM:ACCUMULATOR:STATUS?";
+static const char *systemAccumulatorSoc ="SYSTEM:ACCUMULATOR:SOC?";
 
 void test_accumulatorinterface::init()
 {
@@ -19,9 +20,10 @@ void test_accumulatorinterface::cleanup()
     delete m_atmelSysCntrl;
 }
 
-void test_accumulatorinterface::findObject()
+void test_accumulatorinterface::findObjects()
 {
     QVERIFY(m_scpiInterface->getSCPIObject(systemAccumulatorStatus));
+    QVERIFY(m_scpiInterface->getSCPIObject(systemAccumulatorSoc));
 }
 
 void test_accumulatorinterface::readAccumulatorStatus()
@@ -31,4 +33,13 @@ void test_accumulatorinterface::readAccumulatorStatus()
     cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
     scpiDelegate->executeSCPI(protoCmd.get());
     QCOMPARE(protoCmd->m_sOutput, "0");
+}
+
+void test_accumulatorinterface::readAccumulatorSoc()
+{
+    std::unique_ptr<cProtonetCommand> protoCmd = std::make_unique<cProtonetCommand>(nullptr, false, false, QByteArray(), 0, systemAccumulatorSoc);
+    cSCPIObject* scpiObject = m_scpiInterface->getSCPIObject(systemAccumulatorSoc);
+    cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
+    scpiDelegate->executeSCPI(protoCmd.get());
+    QCOMPARE(protoCmd->m_sOutput, "37");
 }
