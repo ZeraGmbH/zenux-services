@@ -222,8 +222,6 @@ void cPCBServer::registerNotifier(cProtonetCommand *protoCmd)
             ScpiNotificationSubscriber subscriber(protoCmd->m_pPeer, protoCmd->m_clientId, cmd.getParam(1).toInt());
             scpiDelegate->getScpiNotificationSubscriberHandler().addSubscriber(subscriber);
             scpiDelegate->executeSCPI(procmd);
-            qInfo("Subscriber requested for cmd %s : Peer %i, clientId %s, NotifierID %i",
-                  qPrintable(query), subscriber.m_netPeer, qPrintable(subscriber.m_clientId), subscriber.m_notifierId);
             protoCmd->m_sOutput = SCPI::scpiAnswer[SCPI::ack]; // we overwrite the query's output here
             emit notifierRegistred(scpiDelegate->getNotificationString());
         }
@@ -245,7 +243,6 @@ void cPCBServer::unregisterNotifier(cProtonetCommand *protoCmd)
 
 void cPCBServer::doUnregisterNotifier(XiQNetPeer* peer, const QByteArray &clientID)
 {
-    qInfo("Unregistering : Peer %i, clientId %s", peer, qPrintable(clientID));
     emit removeSubscribers(peer, clientID);
 }
 
