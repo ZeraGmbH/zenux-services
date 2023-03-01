@@ -26,10 +26,10 @@ void AccumulatorInterface::executeProtoScpi(int cmdCode, cProtonetCommand *proto
     switch (cmdCode)
     {
     case accumulatorCommands::cmdStatus:
-        protoCmd->m_sOutput = getAccumulatorStatus();
+        protoCmd->m_sOutput = m_accumulatorStatus.getString();
         break;
     case accumulatorCommands::cmdSoc:
-        protoCmd->m_sOutput = getAccumulatorSoc();
+        protoCmd->m_sOutput = m_accumulatorSoc.getString();
         break;
     }
     if (protoCmd->m_bwithOutput)

@@ -20,7 +20,7 @@ private slots:
 private:
     std::unique_ptr<cSCPI> m_scpiInterface;
     AccumulatorInterface *m_accumulator;
-    AtmelSysCntrlTest *m_atmelSysCntrl;
+    std::unique_ptr<AtmelSysCntrlTest> m_atmelSysCntrl;
 };
 
 #endif // TEST_ACCUMULATORINTERFACE_H
