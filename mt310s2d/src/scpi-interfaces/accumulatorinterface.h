@@ -2,6 +2,7 @@
 #define ACCUMULATORINTERFACE_H
 
 #include "atmelsysctrl.h"
+#include "timerperiodicqt.h"
 #include <scpiconnection.h>
 
 enum accumulatorCommands{
@@ -22,6 +23,7 @@ private:
     NotificationString m_accumulatorStatus;
     NotificationString m_accumulatorSoc;
     cATMELSysCtrl *m_atmelSysCntrl;
+    TimerTemplateQtPtr m_pollingTimer;
 };
 
 #endif // ACCUMULATORINTERFACE_H
