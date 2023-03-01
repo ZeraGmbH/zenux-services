@@ -1,11 +1,17 @@
 #include "accumulatorinterface.h"
+#include "timerfactoryqt.h"
 
 constexpr quint8 ERROR = 0x80;
+constexpr int ACCU_POLLING_PERIOD_MS = 1000;
 
 AccumulatorInterface::AccumulatorInterface(cSCPI *scpiInterface, cATMELSysCtrl *atmelSysCntrl) :
     ScpiConnection(scpiInterface),
     m_atmelSysCntrl(atmelSysCntrl)
 {
+    m_pollingTimer = TimerFactoryQt::createPeriodic(ACCU_POLLING_PERIOD_MS);
+    connect(m_pollingTimer.get(), &TimerTemplateQt::sigExpired, this, &AccumulatorInterface::getAccumulatorSoc);
+    connect(m_pollingTimer.get(), &TimerTemplateQt::sigExpired, this, &AccumulatorInterface::getAccumulatorStatus);
+    m_pollingTimer->start();
 }
 
 void AccumulatorInterface::initSCPIConnection(QString leadingNodes)
