@@ -36,6 +36,7 @@ void cSystemInterface::initSCPIConnection(QString leadingNodes)
     addDelegate(QString("%1SYSTEM:ADJUSTMENT:XML").arg(leadingNodes), "READ", SCPI::isCmdwP, m_pSCPIInterface, SystemSystem::cmdAdjXMLRead);
     addDelegate(QString("%1SYSTEM:ADJUSTMENT:FLASH").arg(leadingNodes), "CHKSUM", SCPI::isQuery, m_pSCPIInterface, SystemSystem::cmdAdjFlashChksum);
     addDelegate(QString("%1SYSTEM:INTERFACE").arg(leadingNodes), "READ", SCPI::isQuery, m_pSCPIInterface, SystemSystem::cmdInterfaceRead);
+    addDelegate(QString("%1SYSTEM").arg(leadingNodes),"TESTMODE",SCPI::isCmdwP, m_pSCPIInterface, SystemSystem::cmdTestMode);
 }
 
 
@@ -93,6 +94,9 @@ void cSystemInterface::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
         break;
     case SystemSystem::cmdInterfaceRead:
         protoCmd->m_sOutput = m_InterfaceRead(protoCmd->m_sInput);
+        break;
+    case SystemSystem::cmdTestMode:
+        protoCmd->m_sOutput = testMode(protoCmd->m_sInput);
         break;
     }
 
@@ -473,6 +477,13 @@ QString cSystemInterface::m_InterfaceRead(QString &sInput)
     }
     else
         return SCPI::scpiAnswer[SCPI::nak];
+}
+
+QString cSystemInterface::testMode(QString &Input)
+{
+    cSCPICommand cmd = Input;
+    quint32 modeBits = cmd.getParam(0).toUInt();
+    return pAtmelSys->enableTestMode(modeBits)==ZeraMcontrollerBase::cmddone ? SCPI::scpiAnswer[SCPI::ack] : SCPI::scpiAnswer[SCPI::errexec];
 }
 
 
