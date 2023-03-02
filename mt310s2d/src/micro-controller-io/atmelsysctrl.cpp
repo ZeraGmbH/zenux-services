@@ -8,8 +8,9 @@
 enum hw_cmdcode
 {
     hwGetCtrlVersion = 0x0003,
+    hwSetTestModes = 0x0042,
     hwGetAccumulatorStatus = 0x0210,
-    hwGetAccumulatorSoc = 0x0211
+    hwGetAccumulatorSoc = 0x0211,
 };
 
 
@@ -49,4 +50,16 @@ ZeraMcontrollerBase::atmelRM cATMELSysCtrl::readAccumulatorSoc(quint8 &charge)
     }
     return ret;
 
+}
+
+ZeraMcontrollerBase::atmelRM cATMELSysCtrl::enableTestMode(qint32 testBits)
+{
+    quint8 PAR[4];
+    PAR[0] = (testBits >> 24) & 255;
+    PAR[1] = (testBits >> 16) & 255;
+    PAR[2] = (testBits >> 8) & 255;
+    PAR[3] = testBits & 255;
+    hw_cmd CMD(hwSetTestModes, 0, PAR, 4);
+    writeCommand(&CMD);
+    return getLastErrorMask() == 0 ? cmddone : cmdexecfault;
 }

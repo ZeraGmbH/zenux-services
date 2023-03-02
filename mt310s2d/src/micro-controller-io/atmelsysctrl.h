@@ -14,6 +14,7 @@ public:
     atmelRM readCTRLVersion(QString& answer) override;
     virtual atmelRM readAccumulatorStatus(quint8& stat);
     virtual atmelRM readAccumulatorSoc(quint8& charge);
+    atmelRM enableTestMode(qint32 testBits);
 };
 
 extern cATMELSysCtrl* pAtmelSys;
