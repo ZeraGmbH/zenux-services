@@ -11,6 +11,7 @@ set(SOURCES
     src/settings/ctrlsettings.cpp
     src/settings/i2csettings.cpp
     src/settings/sensesettings.cpp
+    src/settings/accumulatorsettings.cpp
     src/senserange.cpp
     src/sensechannel.cpp
     src/adjustment.cpp
@@ -36,6 +37,7 @@ set(HEADER
     src/settings/ctrlsettings.h
     src/settings/i2csettings.h
     src/settings/sensesettings.h
+    src/settings/accumulatorsettings.h
     src/senserange.h
     src/sensechannel.h
     src/adjflash.h

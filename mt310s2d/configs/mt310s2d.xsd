@@ -308,7 +308,20 @@
                                 </xs:sequence>
                             </xs:complexType>
                         </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
 
+            <xs:element name="scpiconnection">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="accumulator">
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:element name="avail" type="xs:boolean"/>
+                                 </xs:sequence>
+                             </xs:complexType>
+                        </xs:element>
                     </xs:sequence>
                 </xs:complexType>
             </xs:element>
@@ -316,4 +329,4 @@
     </xs:complexType>
 </xs:element>
 
-</xs:schema> 
+</xs:schema>
