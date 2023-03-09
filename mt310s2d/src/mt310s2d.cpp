@@ -130,6 +130,7 @@ cMT310S2dServer::~cMT310S2dServer()
     if (m_foutSettings) delete m_foutSettings;
     if (m_finSettings) delete m_finSettings;
     if (m_pSCHeadSettings) delete m_pSCHeadSettings;
+    if (m_accumulatorSettings) delete m_accumulatorSettings;
     if (pAtmelSys) delete pAtmelSys;
     if (pAtmel) delete pAtmel;
     if (m_pAtmelWatcher) delete m_pAtmelWatcher;
@@ -197,6 +198,8 @@ void cMT310S2dServer::doConfiguration()
                 connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pSCHeadSettings,&ScInSettings::configXMLInfo);
                 m_hkInSettings = new HkInSettings(myXMLConfigReader);
                 connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_hkInSettings,&HkInSettings::configXMLInfo);
+                m_accumulatorSettings = new accumulatorSettings(myXMLConfigReader);
+                connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_accumulatorSettings,&accumulatorSettings::configXMLInfo);
 
 
                 QString s = args.at(1);
@@ -269,7 +272,7 @@ void cMT310S2dServer::doSetupServer()
             scpiConnectionList.append(m_pSCHeadInterface = new ScInGroupResourceAndInterface(getSCPIInterface(), m_pSCHeadSettings));
             scpiConnectionList.append(m_hkInInterface = new HkInGroupResourceAndInterface(getSCPIInterface(), m_hkInSettings));
             scpiConnectionList.append(m_pClampInterface = new cClampInterface(this));
-            scpiConnectionList.append(m_accumulatorInterface = new AccumulatorInterface(getSCPIInterface(), pAtmelSys));
+            scpiConnectionList.append(m_accumulatorInterface = new AccumulatorInterface(getSCPIInterface(), pAtmelSys, m_accumulatorSettings));
 
             resourceList.append(m_pSenseInterface); // all our resources
             resourceList.append(m_pSamplingInterface);
