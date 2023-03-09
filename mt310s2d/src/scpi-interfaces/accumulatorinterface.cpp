@@ -4,10 +4,13 @@
 constexpr quint8 ERROR = 0x80;
 constexpr int ACCU_POLLING_PERIOD_MS = 1000;
 
-AccumulatorInterface::AccumulatorInterface(cSCPI *scpiInterface, cATMELSysCtrl *atmelSysCntrl) :
+AccumulatorInterface::AccumulatorInterface(cSCPI *scpiInterface, cATMELSysCtrl *atmelSysCntrl, accumulatorSettings *settings) :
     ScpiConnection(scpiInterface),
     m_atmelSysCntrl(atmelSysCntrl)
 {
+    QList<accumulatorSettings::BatterySettings *> batterySettings;
+    batterySettings = settings->getBatterySettings();
+
     m_pollingTimer = TimerFactoryQt::createPeriodic(ACCU_POLLING_PERIOD_MS);
     connect(m_pollingTimer.get(), &TimerTemplateQt::sigExpired, this, &AccumulatorInterface::getAccumulatorSoc);
     connect(m_pollingTimer.get(), &TimerTemplateQt::sigExpired, this, &AccumulatorInterface::getAccumulatorStatus);

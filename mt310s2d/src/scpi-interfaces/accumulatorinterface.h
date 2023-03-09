@@ -3,6 +3,7 @@
 
 #include "atmelsysctrl.h"
 #include "timerperiodicqt.h"
+#include "accumulatorsettings.h"
 #include <scpiconnection.h>
 
 enum accumulatorCommands{
@@ -13,7 +14,7 @@ enum accumulatorCommands{
 class AccumulatorInterface : public ScpiConnection
 {
 public:
-    AccumulatorInterface(cSCPI* scpiInterface, cATMELSysCtrl *atmelSysCntrl);
+    AccumulatorInterface(cSCPI* scpiInterface, cATMELSysCtrl *atmelSysCntrl, accumulatorSettings* settings=nullptr);
     void initSCPIConnection(QString leadingNodes) override;
     QString getAccumulatorStatus();
     QString getAccumulatorSoc();

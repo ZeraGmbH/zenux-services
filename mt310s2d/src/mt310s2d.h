@@ -13,6 +13,7 @@
 #include "finsettings.h"
 #include "foutsettings.h"
 #include "samplingsettings.h"
+#include "accumulatorsettings.h"
 #include "accumulatorinterface.h"
 #include <QTimer>
 
@@ -51,6 +52,7 @@ public:
     FInSettings* m_finSettings;
     FOutSettings* m_foutSettings;
     SamplingSettings* m_pSamplingSettings;
+    accumulatorSettings* m_accumulatorSettings;
     cSystemInterface* m_pSystemInterface;
     cSenseInterface* m_pSenseInterface;
     cSamplingInterface* m_pSamplingInterface;
