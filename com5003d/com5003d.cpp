@@ -206,7 +206,7 @@ void cCOM5003dServer::doConfiguration()
 
 void cCOM5003dServer::programAtmelFlash()
 {
-    cATMEL::init(m_pI2CSettings->getDeviceNode(), m_pI2CSettings->getI2CAdress(i2cSettings::atmel), m_pDebugSettings->getDebugLevel());
+    Atmel::init(m_pI2CSettings->getDeviceNode(), m_pI2CSettings->getI2CAdress(i2cSettings::atmel), m_pDebugSettings->getDebugLevel());
 
     QFile atmelFile(atmelFlashfilePath);
     if (atmelFile.exists())
@@ -277,12 +277,12 @@ void cCOM5003dServer::programAtmelFlash()
             if (IntelHexData.ReadHexFile(atmelFlashfilePath))
             {
                syslog(LOG_INFO,"Writing %s to atmel...\n", atmelFlashfilePath);
-               if (cATMEL::getInstance().loadFlash(IntelHexData) == ZeraMcontrollerBase::cmddone)
+               if (Atmel::getInstance().loadFlash(IntelHexData) == ZeraMcontrollerBase::cmddone)
                {
                    syslog(LOG_INFO,"Programming atmel passed\n");
 
                    // we must restart atmel now
-                   if (cATMEL::getInstance().startProgram() == ZeraMcontrollerBase::cmddone)
+                   if (Atmel::getInstance().startProgram() == ZeraMcontrollerBase::cmddone)
                    {
                        syslog(LOG_INFO,"Restart atmel after programming done\n");
                        // once the job is done, we remove the file
@@ -331,7 +331,7 @@ void cCOM5003dServer::doWait4Atmel()
 
 void cCOM5003dServer::doSetupServer()
 {
-    cATMEL::getInstance().setPLLChannel(1); // default channel m0 for pll control
+    Atmel::getInstance().setPLLChannel(1); // default channel m0 for pll control
     m_pSystemInfo = new cSystemInfo();
     m_pAdjHandler = new cAdjustment(m_pSystemInfo, m_pI2CSettings->getDeviceNode(), m_pI2CSettings->getI2CAdress(i2cSettings::flash) );
 

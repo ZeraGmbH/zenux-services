@@ -221,7 +221,7 @@ void cMT310S2dServer::doWait4Atmel()
 {
     // a singletom for atmel would be nice...
     pAtmelSys = new cATMELSysCtrl(m_pI2CSettings->getDeviceNode(), m_pI2CSettings->getI2CAdress(i2cSettings::atmelsys), m_pDebugSettings->getDebugLevel());
-    cATMEL::init(m_pI2CSettings->getDeviceNode(), m_pI2CSettings->getI2CAdress(i2cSettings::atmel), m_pDebugSettings->getDebugLevel());
+    Atmel::init(m_pI2CSettings->getDeviceNode(), m_pI2CSettings->getI2CAdress(i2cSettings::atmel), m_pDebugSettings->getDebugLevel());
     m_pAtmelWatcher = new cAtmelWatcher(m_pDebugSettings->getDebugLevel(), m_pCtrlSettings->getDeviceNode(), 10000, 100);
 
     m_nerror = atmelError; // we preset error
@@ -251,7 +251,7 @@ void cMT310S2dServer::doSetupServer()
         }
         else
         {
-            cATMEL::getInstance().setPLLChannel(1); // default channel m0 for pll control
+            Atmel::getInstance().setPLLChannel(1); // default channel m0 for pll control
             m_pSystemInfo = new cSystemInfo();
             m_pAdjHandler = new cAdjustment(this);
 
@@ -390,7 +390,7 @@ void cMT310S2dServer::SetFASync()
 void cMT310S2dServer::enableClampInterrupt()
 {
     quint16 maskToAdd = (1 << clampstatusInterrupt);
-    if(cATMEL::getInstance().writeIntMask(m_atmelInterruptMask | maskToAdd) == ZeraMcontrollerBase::cmddone) {
+    if(Atmel::getInstance().writeIntMask(m_atmelInterruptMask | maskToAdd) == ZeraMcontrollerBase::cmddone) {
         m_atmelInterruptMask |= maskToAdd;
     }
     else {
@@ -412,7 +412,7 @@ void cMT310S2dServer::enableAccumulatorInterrupt()
 void cMT310S2dServer::updateI2cDevicesConnected()
 {
     quint16 clStat;
-    if ( cATMEL::getInstance().readClampStatus(clStat) == ZeraMcontrollerBase::cmddone) {
+    if ( Atmel::getInstance().readClampStatus(clStat) == ZeraMcontrollerBase::cmddone) {
         qInfo("Devices connected mask read: 0x%02X", clStat);
         m_pClampInterface->actualizeClampStatus(clStat);
     }
@@ -430,14 +430,14 @@ void cMT310S2dServer::MTIntHandler(int)
 
     read(pipeFD[0], buf, 1); // first we read the pipe
 
-    if ( cATMEL::getInstance().readCriticalStatus(stat) == ZeraMcontrollerBase::cmddone ) {
+    if ( Atmel::getInstance().readCriticalStatus(stat) == ZeraMcontrollerBase::cmddone ) {
         if ((stat & (1 << clampstatusInterrupt)) > 0) {
             // we must reset clamp status before handling the interrupt
             // because system may emit more interrupts so we might think
             // we must handle them too....but atualizeClampStatus uses
             // global variable for the clamp status -> so this might fail
             // with unexpected behaviour.
-            cATMEL::getInstance().resetCriticalStatus(stat & (1 << clampstatusInterrupt));
+            Atmel::getInstance().resetCriticalStatus(stat & (1 << clampstatusInterrupt));
             updateI2cDevicesConnected();
         }
         quint16 knownMaskBits = (1 << clampstatusInterrupt);
@@ -446,7 +446,7 @@ void cMT310S2dServer::MTIntHandler(int)
         }
     }
     else {
-        qWarning("cMT310S2dServer::MTIntHandler: cATMEL::getInstance().readCriticalStatus failed - cannot actualize clamp status!");
+        qWarning("cMT310S2dServer::MTIntHandler: Atmel::getInstance().readCriticalStatus failed - cannot actualize clamp status!");
     }
 
     // here we must add the handling for message interrupts sent by fpga device

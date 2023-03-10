@@ -288,7 +288,7 @@ bool cSenseInterface::importAdjData(QDataStream &stream)
     QString qs = QString(s);
 
     bool enable = false;
-    cATMEL::getInstance().hasPermission(enable);
+    Atmel::getInstance().hasPermission(enable);
 
     QString sDV = m_pSystemInfo->getDeviceVersion();
     if (qs != sDV) {
@@ -837,7 +837,7 @@ bool cSenseInterface::setSenseMode(QString sMode)
     if (m_MModeHash.contains(sMode)) {
         quint8 mode;
         mode = m_MModeHash[sMode];
-        cATMEL::getInstance().setMeasMode((mode >> 1) & 1); // set the atmels mode here...atmel only knows ac and hf
+        Atmel::getInstance().setMeasMode((mode >> 1) & 1); // set the atmels mode here...atmel only knows ac and hf
         for(auto channel : qAsConst(m_ChannelList)) {
             channel->setMMode(mode);
         }

@@ -27,7 +27,7 @@ enum Commands
 };
 }
 
-class cATMEL;
+class Atmel;
 
 class cSenseRange : public ScpiConnection, public AdjustmentStatusInterface
 {
@@ -62,7 +62,7 @@ protected:
     void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
 
 private:
-    cATMEL* m_pATMEL;
+    Atmel* m_pATMEL;
     QString m_sName; // the range name
     QString m_sAlias; // the range alias name
     bool m_bAvail; // range io avail or not
