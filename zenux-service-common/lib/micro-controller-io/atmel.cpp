@@ -1,4 +1,3 @@
-#include "mt310s2dglobal.h"
 #include "i2cutils.h"
 #include "atmel.h"
 #include "atmelerrorlog.h"
