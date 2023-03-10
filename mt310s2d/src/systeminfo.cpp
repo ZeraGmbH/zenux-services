@@ -12,12 +12,12 @@ cSystemInfo::cSystemInfo()
 void cSystemInfo::getSystemInfo()
 {
     int rm = ZeraMcontrollerBase::cmddone;
-    rm |= pAtmel->readDeviceName(m_sDeviceName);
-    rm |= pAtmel->readPCBVersion(m_sPCBVersion);
-    rm |= pAtmel->readLCAVersion(m_sLCAVersion);
+    rm |= cATMEL::getInstance().readDeviceName(m_sDeviceName);
+    rm |= cATMEL::getInstance().readPCBVersion(m_sPCBVersion);
+    rm |= cATMEL::getInstance().readLCAVersion(m_sLCAVersion);
     rm |= pAtmelSys->readCTRLVersion(m_sSysCTRLVersion);
-    rm |= pAtmel->readCTRLVersion(m_sCTRLVersion);
-    rm |= pAtmel->readSerialNumber(m_sSerialNumber);
+    rm |= cATMEL::getInstance().readCTRLVersion(m_sCTRLVersion);
+    rm |= cATMEL::getInstance().readSerialNumber(m_sSerialNumber);
     m_bRead = (rm == ZeraMcontrollerBase::cmddone);
 }
 

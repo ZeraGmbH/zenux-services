@@ -27,7 +27,7 @@ cSenseInterface::cSenseInterface(cCOM5003dServer *server) :
 
     m_pMyServer = server;
     m_nMMode = SenseSystem::modeAC; // default ac measurement
-    pAtmel->setMeasMode(m_nMMode); // set the atmels mode too
+    cATMEL::getInstance().setMeasMode(m_nMMode); // set the atmels mode too
     setNotifierSenseMMode();
 
     QList<SenseSystem::cChannelSettings*> channelSettings;
@@ -645,7 +645,7 @@ QString cSenseInterface::m_InitSenseAdjData(QString &sInput)
     // cmd.isCommand(0) is not correct but we leave it for compatibility
     {
         bool enable;
-        if (pAtmel->hasPermission(enable))
+        if (cATMEL::getInstance().hasPermission(enable))
         {
             if (enable)
             {
@@ -674,7 +674,7 @@ QString cSenseInterface::m_ComputeSenseAdjData(QString &sInput)
     {
 
         bool enable;
-        if (pAtmel->hasPermission(enable))
+        if (cATMEL::getInstance().hasPermission(enable))
         {
             if (enable)
             {
@@ -747,7 +747,7 @@ void cSenseInterface::registerSense()
         }
     }
 
-    pAtmel->setMeasMode(m_nMMode); // set the atmels mode too
+    cATMEL::getInstance().setMeasMode(m_nMMode); // set the atmels mode too
 
     // here we do the rest of reconfiguring
     for (i = 0; i < m_ChannelList.count(); i++) // for each channel

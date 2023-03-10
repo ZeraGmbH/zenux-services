@@ -9,8 +9,6 @@
 #include "protonetcommand.h"
 #include "micro-controller-io/atmel.h"
 
-extern cATMEL* pAtmel;
-
 cSystemInterface::cSystemInterface(cCOM5003dServer *server) :
     ScpiConnection(server->getSCPIInterface()),
     m_pMyServer(server)
@@ -166,7 +164,7 @@ QString cSystemInterface::m_ReadWritePCBVersion(QString &sInput)
         if (cmd.isCommand(1))
         {
             QString Version = cmd.getParam(0);
-            ret = pAtmel->writePCBVersion(Version);
+            ret = cATMEL::getInstance().writePCBVersion(Version);
             m_pMyServer->m_pSystemInfo->getSystemInfo(); // read back info
         }
 
@@ -232,7 +230,7 @@ QString cSystemInterface::m_ReadWriteSerialNumber(QString &sInput)
         if (cmd.isCommand(1))
         {
             QString Serial = cmd.getParam(0);
-            ret = pAtmel->writeSerialNumber(Serial);
+            ret = cATMEL::getInstance().writeSerialNumber(Serial);
             m_pMyServer->m_pSystemInfo->getSystemInfo(); // read back info
         }
 
@@ -251,7 +249,7 @@ QString cSystemInterface::m_StartControlerBootloader(QString& sInput)
 
     if (cmd.isCommand(1) && (cmd.getParam(0) == ""))
     {
-        ret = pAtmel->startBootLoader();
+        ret = cATMEL::getInstance().startBootLoader();
     }
     m_genAnswer(ret, s);
     return s;
@@ -266,7 +264,7 @@ QString cSystemInterface::m_StartControlerProgram(QString &sInput)
 
     if (cmd.isCommand(1) && (cmd.getParam(0) == ""))
     {
-        ret = pAtmel->startProgram();
+        ret = cATMEL::getInstance().startProgram();
     }
     m_genAnswer(ret, s);
     return s;
@@ -285,7 +283,7 @@ QString cSystemInterface::m_LoadFlash(QString &sInput)
         cIntelHexFileIO IntelHexData;
         if (IntelHexData.ReadHexFile(filename))
         {
-           ret = pAtmel->loadFlash(IntelHexData);
+           ret = cATMEL::getInstance().loadFlash(IntelHexData);
         }
         else
             ret = ZeraMcontrollerBase::cmdexecfault;
@@ -307,7 +305,7 @@ QString cSystemInterface::m_LoadEEProm(QString &sInput)
         cIntelHexFileIO IntelHexData;
         if (IntelHexData.ReadHexFile(filename))
         {
-            ret = pAtmel->loadEEprom(IntelHexData);
+            ret = cATMEL::getInstance().loadEEprom(IntelHexData);
         }
         else
             ret = ZeraMcontrollerBase::cmdexecfault;
@@ -326,7 +324,7 @@ QString cSystemInterface::m_AdjFlashWrite(QString &sInput)
     if (cmd.isCommand(1) && (cmd.getParam(0) == ""))
     {
         bool enable;
-        if (pAtmel->hasPermission(enable))
+        if (cATMEL::getInstance().hasPermission(enable))
         {
             if (enable)
             {
@@ -391,7 +389,7 @@ QString cSystemInterface::m_AdjXMLRead(QString &sInput)
     if (cmd.isCommand(1))
     {
         bool enable = false;
-        pAtmel->hasPermission(enable);
+        cATMEL::getInstance().hasPermission(enable);
         if (enable)
         {
             QString filename = cmd.getParam(0);

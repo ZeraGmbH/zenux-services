@@ -10,9 +10,6 @@
 #include "micro-controller-io/atmel.h"
 #include "settings/sensesettings.h"
 
-extern cATMEL* pAtmel;
-
-
 cSenseChannel::cSenseChannel(cSCPI *scpiinterface, QString description, QString unit, SenseSystem::cChannelSettings *cSettings, quint8 nr) :
     ScpiConnection(scpiinterface),
     m_sDescription(description), m_sUnit(unit)
@@ -245,7 +242,7 @@ QString cSenseChannel::m_ReadChannelStatus(QString &sInput)
 
     if (cmd.isQuery())
     {
-        if ( pAtmel->readCriticalStatus(status) == ZeraMcontrollerBase::cmddone )
+        if ( cATMEL::getInstance().readCriticalStatus(status) == ZeraMcontrollerBase::cmddone )
         {
             quint32 r;
             r = ((m_bAvail) ? 0 : 1 << 31);
@@ -267,7 +264,7 @@ QString cSenseChannel::m_StatusReset(QString &sInput)
 
     if (cmd.isCommand(1) && (cmd.getParam(0) == ""))
     {
-        if ( pAtmel->resetCriticalStatus((quint16)(1 << m_nOverloadBit)) == ZeraMcontrollerBase::cmddone )
+        if ( cATMEL::getInstance().resetCriticalStatus((quint16)(1 << m_nOverloadBit)) == ZeraMcontrollerBase::cmddone )
             return SCPI::scpiAnswer[SCPI::ack];
         else
             return SCPI::scpiAnswer[SCPI::errexec];
@@ -281,11 +278,11 @@ void cSenseChannel::setNotifierSenseChannelRange()
 {
     quint8 mode, range;
 
-    if ( pAtmel->readMeasMode(mode) == ZeraMcontrollerBase::cmddone )
+    if ( cATMEL::getInstance().readMeasMode(mode) == ZeraMcontrollerBase::cmddone )
     {
         if (mode == SenseChannel::modeAC) // wir sind im normalberieb
         {
-            if ( pAtmel->readRange(m_nCtrlChannel, range) == ZeraMcontrollerBase::cmddone )
+            if ( cATMEL::getInstance().readRange(m_nCtrlChannel, range) == ZeraMcontrollerBase::cmddone )
             {
                 int i;
                 for (i = 0; i < m_RangeList.count(); i++)
@@ -313,7 +310,7 @@ QString cSenseChannel::m_ReadWriteRange(QString &sInput)
     quint8 mode;
     cSCPICommand cmd = sInput;
 
-    if ( pAtmel->readMeasMode(mode) == ZeraMcontrollerBase::cmddone )
+    if ( cATMEL::getInstance().readMeasMode(mode) == ZeraMcontrollerBase::cmddone )
     {
         if (cmd.isQuery())
         {
@@ -334,7 +331,7 @@ QString cSenseChannel::m_ReadWriteRange(QString &sInput)
                     // we know this range and it's available
                     if (m_nMMode == SenseChannel::modeAC)
                     {
-                        if ( pAtmel->setRange(m_nCtrlChannel, m_RangeList.at(i)->getSelCode()) == ZeraMcontrollerBase::cmddone)
+                        if ( cATMEL::getInstance().setRange(m_nCtrlChannel, m_RangeList.at(i)->getSelCode()) == ZeraMcontrollerBase::cmddone)
                         {
                             notifierSenseChannelRange = rng;
                             return SCPI::scpiAnswer[SCPI::ack];
@@ -347,12 +344,12 @@ QString cSenseChannel::m_ReadWriteRange(QString &sInput)
                         if (m_RangeList.at(i)->getName() == "R0V")
                         {
                             notifierSenseChannelRange = "R0V";
-                            pAtmel->setMeasMode(1);
+                            cATMEL::getInstance().setMeasMode(1);
                         }
                         else
                         {
                             notifierSenseChannelRange = "R10V";
-                            pAtmel->setMeasMode(2);
+                            cATMEL::getInstance().setMeasMode(2);
                         }
 
                         return SCPI::scpiAnswer[SCPI::ack];
