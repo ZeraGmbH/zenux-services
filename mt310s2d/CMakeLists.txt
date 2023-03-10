@@ -1,5 +1,4 @@
 set(SOURCES
-    src/micro-controller-io/atmel.cpp
     src/micro-controller-io/atmelemobcontroller.cpp
     src/micro-controller-io/atmelsysctrl.cpp
     src/scpi-interfaces/clampinterface.cpp
@@ -26,7 +25,6 @@ set(SOURCES
 
 set(HEADER
     src/micro-controller-io/atmelemobcontroller.h
-    src/micro-controller-io/atmel.h
     src/micro-controller-io/atmelsysctrl.h
     src/scpi-interfaces/clampinterface.h
     src/scpi-interfaces/emobinterface.h

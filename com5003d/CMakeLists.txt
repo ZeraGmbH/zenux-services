@@ -1,5 +1,4 @@
 set(SOURCES
-    micro-controller-io/atmel.cpp
     scpi-interfaces/samplinginterface.cpp
     scpi-interfaces/senseinterface.cpp
     scpi-interfaces/systeminterface.cpp
@@ -15,7 +14,6 @@ set(SOURCES
     )
 
 set(HEADER
-    micro-controller-io/atmel.h
     scpi-interfaces/samplinginterface.h
     scpi-interfaces/senseinterface.h
     scpi-interfaces/systeminterface.h
