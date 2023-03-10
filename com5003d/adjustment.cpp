@@ -180,7 +180,7 @@ bool cAdjustment::importJDataFlash()
     QString qs = QString(s);
 
     bool enable = false;
-    cATMEL::getInstance().hasPermission(enable);
+    Atmel::getInstance().hasPermission(enable);
 
     QString sDV = m_pSystemInfo->getDeviceVersion();
     if (qs != sDV) {

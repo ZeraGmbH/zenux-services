@@ -122,7 +122,7 @@ QString cClampInterface::writeAllClamps(QString &sInput)
     if (cmd.isCommand(1) && (cmd.getParam(0) == "")) {
         if (m_clampHash.count() > 0) {
             bool enable;
-            if (cATMEL::getInstance().hasPermission(enable)) {
+            if (Atmel::getInstance().hasPermission(enable)) {
                 if (enable) {
                     bool done = true;
                     for(auto clamp : m_clampHash) {
@@ -168,7 +168,7 @@ QString cClampInterface::importExportAllClamps(QString &sInput)
         QString answer;
         bool err = false;
         bool enable;
-        if (cATMEL::getInstance().hasPermission(enable)) {
+        if (Atmel::getInstance().hasPermission(enable)) {
             if (enable) {
                 QString allXML = cmd.getParam(); // we fetch all input
                 while (allXML[0] == QChar(' ')) { // we remove all leading blanks

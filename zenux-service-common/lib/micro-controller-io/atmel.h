@@ -6,11 +6,11 @@
 #include <zera_mcontroller_base.h>
 #include <QString>
 
-class cATMEL : public AtmelCommon, public AtmelPermissionTemplate
+class Atmel : public AtmelCommon, public AtmelPermissionTemplate
 {
 public:
     static void init(QString devnode, quint8 adr, quint8 debuglevel);
-    static cATMEL &getInstance();
+    static Atmel &getInstance();
 
     atmelRM readSerialNumber(QString& answer);
     atmelRM writeSerialNumber(QString &sNumber);
@@ -33,7 +33,7 @@ public:
     atmelRM setPLLChannel(quint8 chn);
     atmelRM readPLLChannel(quint8& chn);
 private:
-    cATMEL(QString devnode, quint8 adr, quint8 debuglevel);
+    Atmel(QString devnode, quint8 adr, quint8 debuglevel);
     static QString m_devnode;
     static quint8 m_adr;
     static quint8 m_debuglevel;

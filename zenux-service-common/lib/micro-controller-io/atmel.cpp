@@ -39,39 +39,39 @@ enum hw_cmdcode
     hwGetStatus = 0x1103
 };
 
-QString cATMEL::m_devnode = QString();
-quint8 cATMEL::m_adr = 0;
-quint8 cATMEL::m_debuglevel = 0;
+QString Atmel::m_devnode = QString();
+quint8 Atmel::m_adr = 0;
+quint8 Atmel::m_debuglevel = 0;
 
-void cATMEL::init(QString devnode, quint8 adr, quint8 debuglevel)
+void Atmel::init(QString devnode, quint8 adr, quint8 debuglevel)
 {
     m_devnode = devnode;
     m_adr = adr;
     m_debuglevel = debuglevel;
 }
 
-cATMEL &cATMEL::getInstance() {
+Atmel &Atmel::getInstance() {
     if(m_devnode.isEmpty() && m_adr == 0) {
-        syslog(LOG_ERR, "cATMEL::getInstance called before init.");
+        syslog(LOG_ERR, "Atmel::getInstance called before init.");
     }
-    static cATMEL cATMELInstance(m_devnode, m_adr, m_debuglevel);
+    static Atmel cATMELInstance(m_devnode, m_adr, m_debuglevel);
     return cATMELInstance;
 }
 
-cATMEL::cATMEL(QString devnode, quint8 adr, quint8 debuglevel) :
+Atmel::Atmel(QString devnode, quint8 adr, quint8 debuglevel) :
     AtmelCommon(devnode, adr, debuglevel)
 {
     PermissionFunctions::setPermissionPinController(this);
 }
 
 
-ZeraMcontrollerBase::atmelRM cATMEL::readSerialNumber(QString& answer)
+ZeraMcontrollerBase::atmelRM Atmel::readSerialNumber(QString& answer)
 {
     return readVariableLenText(hwGetSerialNr, answer);
 }
 
 
-ZeraMcontrollerBase::atmelRM cATMEL::writeSerialNumber(QString &sNumber)
+ZeraMcontrollerBase::atmelRM Atmel::writeSerialNumber(QString &sNumber)
 {
     ZeraMcontrollerBase::atmelRM ret;
     quint16 len = static_cast<quint16>(sNumber.length());
@@ -88,19 +88,19 @@ ZeraMcontrollerBase::atmelRM cATMEL::writeSerialNumber(QString &sNumber)
 }
 
 
-ZeraMcontrollerBase::atmelRM cATMEL::readDeviceName(QString& answer)
+ZeraMcontrollerBase::atmelRM Atmel::readDeviceName(QString& answer)
 {
     return readVariableLenText(hwGetDevName, answer);
 }
 
 
-ZeraMcontrollerBase::atmelRM cATMEL::readPCBVersion(QString& answer)
+ZeraMcontrollerBase::atmelRM Atmel::readPCBVersion(QString& answer)
 {
     return readVariableLenText(hwGetPCBVersion, answer);
 }
 
 
-ZeraMcontrollerBase::atmelRM cATMEL::writePCBVersion(QString &sVersion)
+ZeraMcontrollerBase::atmelRM Atmel::writePCBVersion(QString &sVersion)
 {
     ZeraMcontrollerBase::atmelRM ret;
     quint16 len = static_cast<quint16>(sVersion.length());
@@ -117,19 +117,19 @@ ZeraMcontrollerBase::atmelRM cATMEL::writePCBVersion(QString &sVersion)
 }
 
 
-ZeraMcontrollerBase::atmelRM cATMEL::readCTRLVersion(QString& answer)
+ZeraMcontrollerBase::atmelRM Atmel::readCTRLVersion(QString& answer)
 {
     return readVariableLenText(hwGetCtrlVersion, answer);
 }
 
 
-ZeraMcontrollerBase::atmelRM cATMEL::readLCAVersion(QString& answer)
+ZeraMcontrollerBase::atmelRM Atmel::readLCAVersion(QString& answer)
 {
     return readVariableLenText(hwGetLCAVersion, answer);
 }
 
 
-ZeraMcontrollerBase::atmelRM cATMEL::startBootLoader()
+ZeraMcontrollerBase::atmelRM Atmel::startBootLoader()
 {
     hw_cmd CMD(hwStartBootloader, 0, nullptr, 0);
     writeCommand(&CMD);
@@ -137,7 +137,7 @@ ZeraMcontrollerBase::atmelRM cATMEL::startBootLoader()
 }
 
 
-ZeraMcontrollerBase::atmelRM cATMEL::readChannelStatus(quint8 channel, quint8 &stat)
+ZeraMcontrollerBase::atmelRM Atmel::readChannelStatus(quint8 channel, quint8 &stat)
 {
     ZeraMcontrollerBase::atmelRM ret = cmdexecfault;
     quint8 answ[2];
@@ -150,7 +150,7 @@ ZeraMcontrollerBase::atmelRM cATMEL::readChannelStatus(quint8 channel, quint8 &s
     return ret;
 }
 
-ZeraMcontrollerBase::atmelRM cATMEL::readClampStatus(quint16 &stat)
+ZeraMcontrollerBase::atmelRM Atmel::readClampStatus(quint16 &stat)
 {
     ZeraMcontrollerBase::atmelRM ret = cmdexecfault;
     quint8 answ[2];
@@ -163,7 +163,7 @@ ZeraMcontrollerBase::atmelRM cATMEL::readClampStatus(quint16 &stat)
     return ret;
 }
 
-ZeraMcontrollerBase::atmelRM cATMEL::readRange(quint8 channel, quint8 &range)
+ZeraMcontrollerBase::atmelRM Atmel::readRange(quint8 channel, quint8 &range)
 {
     ZeraMcontrollerBase::atmelRM ret = cmdexecfault;
     hw_cmd CMD(hwGetRange, channel, nullptr, 0);
@@ -179,7 +179,7 @@ ZeraMcontrollerBase::atmelRM cATMEL::readRange(quint8 channel, quint8 &range)
 }
 
 
-ZeraMcontrollerBase::atmelRM cATMEL::setRange(quint8 channel, quint8 range)
+ZeraMcontrollerBase::atmelRM Atmel::setRange(quint8 channel, quint8 range)
 {
     hw_cmd CMD(hwSetRange, channel, &range, 1);
     writeCommand(&CMD);
@@ -189,7 +189,7 @@ ZeraMcontrollerBase::atmelRM cATMEL::setRange(quint8 channel, quint8 range)
 }
 
 
-ZeraMcontrollerBase::atmelRM cATMEL::getEEPROMAccessEnable(bool &enable)
+ZeraMcontrollerBase::atmelRM Atmel::getEEPROMAccessEnable(bool &enable)
 {
     ZeraMcontrollerBase::atmelRM ret = cmdexecfault;
     enable = false; // default
@@ -204,20 +204,20 @@ ZeraMcontrollerBase::atmelRM cATMEL::getEEPROMAccessEnable(bool &enable)
 }
 
 
-ZeraMcontrollerBase::atmelRM cATMEL::readSamplingRange(quint8 &srange)
+ZeraMcontrollerBase::atmelRM Atmel::readSamplingRange(quint8 &srange)
 {
     srange = 0;
     return cmddone;
 }
 
 
-ZeraMcontrollerBase::atmelRM cATMEL::setSamplingRange(quint8)
+ZeraMcontrollerBase::atmelRM Atmel::setSamplingRange(quint8)
 {
     return cmddone;
 }
 
 
-ZeraMcontrollerBase::atmelRM cATMEL::setMeasMode(quint8 mmode)
+ZeraMcontrollerBase::atmelRM Atmel::setMeasMode(quint8 mmode)
 {
     hw_cmd CMD(hwSetMode, 0, &mmode, 1);
     writeCommand(&CMD);
@@ -225,7 +225,7 @@ ZeraMcontrollerBase::atmelRM cATMEL::setMeasMode(quint8 mmode)
 }
 
 
-ZeraMcontrollerBase::atmelRM cATMEL::readMeasMode(quint8 &mmode)
+ZeraMcontrollerBase::atmelRM Atmel::readMeasMode(quint8 &mmode)
 {
     ZeraMcontrollerBase::atmelRM ret = cmdexecfault;
     mmode = 0; // default AC
@@ -240,7 +240,7 @@ ZeraMcontrollerBase::atmelRM cATMEL::readMeasMode(quint8 &mmode)
 }
 
 
-ZeraMcontrollerBase::atmelRM cATMEL::setPLLChannel(quint8 chn)
+ZeraMcontrollerBase::atmelRM Atmel::setPLLChannel(quint8 chn)
 {
     hw_cmd CMD(hwSetPLLChannel, 0, &chn, 1);
     writeCommand(&CMD);
@@ -248,7 +248,7 @@ ZeraMcontrollerBase::atmelRM cATMEL::setPLLChannel(quint8 chn)
 }
 
 
-ZeraMcontrollerBase::atmelRM cATMEL::readPLLChannel(quint8& chn)
+ZeraMcontrollerBase::atmelRM Atmel::readPLLChannel(quint8& chn)
 {
     ZeraMcontrollerBase::atmelRM ret = cmdexecfault;
     chn = 0; // default AC
