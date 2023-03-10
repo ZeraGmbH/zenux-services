@@ -25,8 +25,6 @@ public:
     atmelRM readLCAVersion(QString& answer);
     atmelRM startBootLoader();
     atmelRM readChannelStatus(quint8 channel, quint8& stat);
-    atmelRM readCriticalStatus(quint16& stat);
-    atmelRM resetCriticalStatus(quint16 stat);
     atmelRM readRange(quint8 channel, quint8& range);
     atmelRM setRange(quint8 channel, quint8 range);
     atmelRM getEEPROMAccessEnable(bool& enable) override;
