@@ -19,11 +19,6 @@ enum hw_cmdcode
 
     hwGetInfStat  = 0x0100,
 
-    hwGetCritStat = 0x0200,
-    hwResetCritStat = 0x0201,
-    hwSetIntMask = 0x0202,
-    hwGetIntMask = 0x0203,
-
     hwSetSeqMask = 0x1000,
     hwGetSeqMask = 0x1001,
     hwSetPLLChannel = 0x1002,
@@ -153,32 +148,6 @@ ZeraMcontrollerBase::atmelRM cATMEL::readChannelStatus(quint8 channel, quint8 &s
     }
     return ret;
 }
-
-
-ZeraMcontrollerBase::atmelRM cATMEL::readCriticalStatus(quint16 &stat)
-{
-    ZeraMcontrollerBase::atmelRM ret = cmdexecfault;
-    quint8 answ[3];
-    hw_cmd CMD(hwGetCritStat, 0, nullptr, 0);
-    writeCommand(&CMD, answ, 3);
-    if(getLastErrorMask() == 0) {
-         stat = (static_cast<quint16>(answ[0]) << 8) + answ[1];
-         ret = cmddone;
-    }
-    return ret;
-}
-
-
-ZeraMcontrollerBase::atmelRM cATMEL::resetCriticalStatus(quint16 stat)
-{
-    quint8 PAR[2];
-    PAR[0] = (stat >> 8) & 255;
-    PAR[1] = stat & 255;
-    hw_cmd CMD(hwResetCritStat, 0, PAR, 2);
-    writeCommand(&CMD);
-    return getLastErrorMask() == 0 ? cmddone : cmdexecfault;
-}
-
 
 ZeraMcontrollerBase::atmelRM cATMEL::readRange(quint8 channel, quint8 &range)
 {
