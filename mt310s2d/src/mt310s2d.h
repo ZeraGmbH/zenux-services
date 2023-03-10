@@ -15,6 +15,7 @@
 #include "samplingsettings.h"
 #include "accumulatorsettings.h"
 #include "accumulatorinterface.h"
+#include "mt310s2systeminfo.h"
 #include <QTimer>
 
 class QStateMachine;
@@ -27,7 +28,6 @@ class FOutGroupResourceAndInterface;
 class FInGroupResourceAndInterface;
 class ScInGroupResourceAndInterface;
 class HkInGroupResourceAndInterface;
-class cSystemInfo;
 class cAdjustment;
 class cAtmelWatcher;
 class QSocketNotifier;
@@ -60,7 +60,7 @@ public:
     FInGroupResourceAndInterface* m_pFRQInputInterface;
     ScInGroupResourceAndInterface* m_pSCHeadInterface;
     HkInGroupResourceAndInterface* m_hkInInterface;
-    cSystemInfo* m_pSystemInfo;
+    Mt310s2SystemInfo* m_pSystemInfo;
     cAdjustment* m_pAdjHandler;
     RMConnection* m_pRMConnection;
     cClampInterface* m_pClampInterface;

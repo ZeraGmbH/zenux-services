@@ -10,7 +10,6 @@ set(SOURCES
     senserange.cpp
     sensechannel.cpp
     adjustment.cpp
-    systeminfo.cpp
     )
 
 set(HEADER
@@ -28,7 +27,6 @@ set(HEADER
     adjflash.h
     adjxml.h
     adjustment.h
-    systeminfo.h
     )
 
 set(CONFIG_FILES

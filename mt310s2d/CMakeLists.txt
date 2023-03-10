@@ -14,7 +14,7 @@ set(SOURCES
     src/senserange.cpp
     src/sensechannel.cpp
     src/adjustment.cpp
-    src/systeminfo.cpp
+    src/mt310s2systeminfo.cpp
     src/clampjustdata.cpp
     src/adjflash.cpp
     src/clamp.cpp
@@ -41,7 +41,7 @@ set(HEADER
     src/adjflash.h
     src/adjxml.h
     src/adjustment.h
-    src/systeminfo.h
+    src/mt310s2systeminfo.h
     src/clampjustdata.h
     src/clamp.h
     src/mt310s2d.h
