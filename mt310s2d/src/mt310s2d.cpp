@@ -60,7 +60,6 @@ static struct sigaction mySigAction;
 
 
 cATMELSysCtrl* pAtmelSys; // we take a static object for atmel connection
-cATMEL* pAtmel; // we take a static object for atmel connection
 
 cMT310S2dServer::cMT310S2dServer() :
     cPCBServer(ServerName, ServerVersion, ScpiSingletonFactory::getScpiObj(ServerName))
@@ -72,7 +71,6 @@ cMT310S2dServer::cMT310S2dServer() :
     m_pCtrlSettings  = nullptr;
     m_pSenseSettings = nullptr;
     pAtmelSys = nullptr;
-    pAtmel = nullptr;
     m_pAtmelWatcher = nullptr;
     m_pStatusInterface = nullptr;
     m_pSystemInterface = nullptr;
@@ -132,7 +130,6 @@ cMT310S2dServer::~cMT310S2dServer()
     if (m_pSCHeadSettings) delete m_pSCHeadSettings;
     if (m_accumulatorSettings) delete m_accumulatorSettings;
     if (pAtmelSys) delete pAtmelSys;
-    if (pAtmel) delete pAtmel;
     if (m_pAtmelWatcher) delete m_pAtmelWatcher;
     if (m_pStatusInterface) delete m_pStatusInterface;
     if (m_pSystemInterface) delete m_pSystemInterface;
@@ -224,7 +221,7 @@ void cMT310S2dServer::doWait4Atmel()
 {
     // a singletom for atmel would be nice...
     pAtmelSys = new cATMELSysCtrl(m_pI2CSettings->getDeviceNode(), m_pI2CSettings->getI2CAdress(i2cSettings::atmelsys), m_pDebugSettings->getDebugLevel());
-    pAtmel = new cATMEL(m_pI2CSettings->getDeviceNode(), m_pI2CSettings->getI2CAdress(i2cSettings::atmel), m_pDebugSettings->getDebugLevel());
+    cATMEL::init(m_pI2CSettings->getDeviceNode(), m_pI2CSettings->getI2CAdress(i2cSettings::atmel), m_pDebugSettings->getDebugLevel());
     m_pAtmelWatcher = new cAtmelWatcher(m_pDebugSettings->getDebugLevel(), m_pCtrlSettings->getDeviceNode(), 10000, 100);
 
     m_nerror = atmelError; // we preset error
@@ -254,7 +251,7 @@ void cMT310S2dServer::doSetupServer()
         }
         else
         {
-            pAtmel->setPLLChannel(1); // default channel m0 for pll control
+            cATMEL::getInstance().setPLLChannel(1); // default channel m0 for pll control
             m_pSystemInfo = new cSystemInfo();
             m_pAdjHandler = new cAdjustment(this);
 
@@ -393,7 +390,7 @@ void cMT310S2dServer::SetFASync()
 void cMT310S2dServer::enableClampInterrupt()
 {
     quint16 maskToAdd = (1 << clampstatusInterrupt);
-    if(pAtmel->writeIntMask(m_atmelInterruptMask | maskToAdd) == ZeraMcontrollerBase::cmddone) {
+    if(cATMEL::getInstance().writeIntMask(m_atmelInterruptMask | maskToAdd) == ZeraMcontrollerBase::cmddone) {
         m_atmelInterruptMask |= maskToAdd;
     }
     else {
@@ -415,7 +412,7 @@ void cMT310S2dServer::enableAccumulatorInterrupt()
 void cMT310S2dServer::updateI2cDevicesConnected()
 {
     quint16 clStat;
-    if ( pAtmel->readClampStatus(clStat) == ZeraMcontrollerBase::cmddone) {
+    if ( cATMEL::getInstance().readClampStatus(clStat) == ZeraMcontrollerBase::cmddone) {
         qInfo("Devices connected mask read: 0x%02X", clStat);
         m_pClampInterface->actualizeClampStatus(clStat);
     }
@@ -433,14 +430,14 @@ void cMT310S2dServer::MTIntHandler(int)
 
     read(pipeFD[0], buf, 1); // first we read the pipe
 
-    if ( pAtmel->readCriticalStatus(stat) == ZeraMcontrollerBase::cmddone ) {
+    if ( cATMEL::getInstance().readCriticalStatus(stat) == ZeraMcontrollerBase::cmddone ) {
         if ((stat & (1 << clampstatusInterrupt)) > 0) {
             // we must reset clamp status before handling the interrupt
             // because system may emit more interrupts so we might think
             // we must handle them too....but atualizeClampStatus uses
             // global variable for the clamp status -> so this might fail
             // with unexpected behaviour.
-            pAtmel->resetCriticalStatus(stat & (1 << clampstatusInterrupt));
+            cATMEL::getInstance().resetCriticalStatus(stat & (1 << clampstatusInterrupt));
             updateI2cDevicesConnected();
         }
         quint16 knownMaskBits = (1 << clampstatusInterrupt);
@@ -449,7 +446,7 @@ void cMT310S2dServer::MTIntHandler(int)
         }
     }
     else {
-        qWarning("cMT310S2dServer::MTIntHandler: pAtmel->readCriticalStatus failed - cannot actualize clamp status!");
+        qWarning("cMT310S2dServer::MTIntHandler: cATMEL::getInstance().readCriticalStatus failed - cannot actualize clamp status!");
     }
 
     // here we must add the handling for message interrupts sent by fpga device

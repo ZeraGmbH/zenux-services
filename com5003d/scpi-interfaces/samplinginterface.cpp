@@ -11,8 +11,6 @@
 #include "samplingsettings.h"
 #include "notzeronumgen.h"
 
-extern cATMEL* pAtmel;
-
 cSamplingInterface::cSamplingInterface(cCOM5003dServer *server) :
     cResource(server->getSCPIInterface()),
     m_pMyServer(server)
@@ -38,7 +36,7 @@ cSamplingInterface::cSamplingInterface(cCOM5003dServer *server) :
     m_SampleRangeList.append(new cSampleRange(m_pSCPIInterface, "F50Hz", 504, 0));
     m_SampleRangeList.append(new cSampleRange(m_pSCPIInterface, "F20Hz", 720, 1));
 
-    pAtmel->setSamplingRange(0); // default we set 50Hz 504 samples
+    cATMEL::getInstance().setSamplingRange(0); // default we set 50Hz 504 samples
     setNotifierSampleChannelRange(); // we must intialize our setting (notifier)
 }
 
@@ -213,7 +211,7 @@ QString cSamplingInterface::m_ReadWriteSamplingRange(QString &sInput)
                 if (m_SampleRangeList.at(i)->getName() == srng)
                     break;
             if (i < m_SampleRangeList.count())
-                if ( pAtmel->setSamplingRange(m_SampleRangeList.at(i)->getSelCode()) == ZeraMcontrollerBase::cmddone)
+                if ( cATMEL::getInstance().setSamplingRange(m_SampleRangeList.at(i)->getSelCode()) == ZeraMcontrollerBase::cmddone)
                 {
                     setNotifierSampleChannelRange();
                     return SCPI::scpiAnswer[SCPI::ack];
@@ -260,7 +258,7 @@ QString cSamplingInterface::m_ReadWritePLL(QString &sInput)
 
     if (cmd.isQuery())
     {
-        if (pAtmel->readPLLChannel(pll) == ZeraMcontrollerBase::cmddone)
+        if (cATMEL::getInstance().readPLLChannel(pll) == ZeraMcontrollerBase::cmddone)
         {
             if (pll < 7) // then everything is ok
                 return m_pllChannelList.at(pll);
@@ -275,7 +273,7 @@ QString cSamplingInterface::m_ReadWritePLL(QString &sInput)
             QString pllchn = cmd.getParam(0);
             pll = m_pllChannelList.indexOf(pllchn);
 
-            if (pAtmel->setPLLChannel(pll) == ZeraMcontrollerBase::cmddone)
+            if (cATMEL::getInstance().setPLLChannel(pll) == ZeraMcontrollerBase::cmddone)
                 return SCPI::scpiAnswer[SCPI::ack];
             else
                 return SCPI::scpiAnswer[SCPI::errexec];
@@ -310,7 +308,7 @@ void cSamplingInterface::setNotifierSampleChannelRange()
     int i;
     quint8 sRange;
 
-    if (pAtmel->readSamplingRange(sRange) == ZeraMcontrollerBase::cmddone)
+    if (cATMEL::getInstance().readSamplingRange(sRange) == ZeraMcontrollerBase::cmddone)
     {
         for (i = 0; i < m_SampleRangeList.count(); i++)
             if (m_SampleRangeList.at(i)->getSelCode() == sRange)

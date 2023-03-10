@@ -44,8 +44,6 @@
 #include <systemd/sd-daemon.h>
 #endif
 
-cATMEL* pAtmel; // we take a static object for atmel connection
-
 cCOM5003dServer::cCOM5003dServer() :
     cPCBServer(ServerName, ServerVersion, ScpiSingletonFactory::getScpiObj(ServerName))
 {
@@ -54,7 +52,6 @@ cCOM5003dServer::cCOM5003dServer() :
     m_pI2CSettings = nullptr;
     m_pFPGASettings = nullptr;
     m_pSenseSettings = nullptr;
-    pAtmel = nullptr;
     m_pAtmelWatcher = nullptr;
     m_pStatusInterface = nullptr;
     m_pSystemInterface = nullptr;
@@ -112,7 +109,6 @@ cCOM5003dServer::~cCOM5003dServer()
     if (m_foutSettings) delete m_foutSettings;
     if (m_finSettings) delete m_finSettings;
     if (m_pSCHeadSettings) delete m_pSCHeadSettings;
-    if (pAtmel) delete pAtmel;
     if (m_pAtmelWatcher) delete m_pAtmelWatcher;
     if (m_pStatusInterface) delete m_pStatusInterface;
     if (m_pSystemInterface) delete m_pSystemInterface;
@@ -210,7 +206,7 @@ void cCOM5003dServer::doConfiguration()
 
 void cCOM5003dServer::programAtmelFlash()
 {
-    pAtmel = new cATMEL(m_pI2CSettings->getDeviceNode(), m_pI2CSettings->getI2CAdress(i2cSettings::atmel), m_pDebugSettings->getDebugLevel());
+    cATMEL::init(m_pI2CSettings->getDeviceNode(), m_pI2CSettings->getI2CAdress(i2cSettings::atmel), m_pDebugSettings->getDebugLevel());
 
     QFile atmelFile(atmelFlashfilePath);
     if (atmelFile.exists())
@@ -281,12 +277,12 @@ void cCOM5003dServer::programAtmelFlash()
             if (IntelHexData.ReadHexFile(atmelFlashfilePath))
             {
                syslog(LOG_INFO,"Writing %s to atmel...\n", atmelFlashfilePath);
-               if (pAtmel->loadFlash(IntelHexData) == ZeraMcontrollerBase::cmddone)
+               if (cATMEL::getInstance().loadFlash(IntelHexData) == ZeraMcontrollerBase::cmddone)
                {
                    syslog(LOG_INFO,"Programming atmel passed\n");
 
                    // we must restart atmel now
-                   if (pAtmel->startProgram() == ZeraMcontrollerBase::cmddone)
+                   if (cATMEL::getInstance().startProgram() == ZeraMcontrollerBase::cmddone)
                    {
                        syslog(LOG_INFO,"Restart atmel after programming done\n");
                        // once the job is done, we remove the file
@@ -335,7 +331,7 @@ void cCOM5003dServer::doWait4Atmel()
 
 void cCOM5003dServer::doSetupServer()
 {
-    pAtmel->setPLLChannel(1); // default channel m0 for pll control
+    cATMEL::getInstance().setPLLChannel(1); // default channel m0 for pll control
     m_pSystemInfo = new cSystemInfo();
     m_pAdjHandler = new cAdjustment(m_pSystemInfo, m_pI2CSettings->getDeviceNode(), m_pI2CSettings->getI2CAdress(i2cSettings::flash) );
 

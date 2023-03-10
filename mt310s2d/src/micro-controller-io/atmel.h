@@ -9,7 +9,8 @@
 class cATMEL : public AtmelCommon, public AtmelPermissionTemplate
 {
 public:
-    cATMEL(QString devnode, quint8 adr, quint8 debuglevel);
+    static void init(QString devnode, quint8 adr, quint8 debuglevel);
+    static cATMEL &getInstance();
 
     atmelRM readSerialNumber(QString& answer);
     atmelRM writeSerialNumber(QString &sNumber);
@@ -31,8 +32,11 @@ public:
     atmelRM readMeasMode(quint8& mmode);
     atmelRM setPLLChannel(quint8 chn);
     atmelRM readPLLChannel(quint8& chn);
+private:
+    cATMEL(QString devnode, quint8 adr, quint8 debuglevel);
+    static QString m_devnode;
+    static quint8 m_adr;
+    static quint8 m_debuglevel;
 };
-
-extern cATMEL* pAtmel;
 
 #endif // ATMEL_H

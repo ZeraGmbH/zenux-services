@@ -40,6 +40,24 @@ enum hw_cmdcode
     hwGetStatus = 0x1103
 };
 
+QString cATMEL::m_devnode = QString();
+quint8 cATMEL::m_adr = 0;
+quint8 cATMEL::m_debuglevel = 0;
+
+void cATMEL::init(QString devnode, quint8 adr, quint8 debuglevel)
+{
+    m_devnode = devnode;
+    m_adr = adr;
+    m_debuglevel = debuglevel;
+}
+
+cATMEL &cATMEL::getInstance() {
+    if(m_devnode.isEmpty() && m_adr == 0) {
+        syslog(LOG_ERR, "cATMEL::getInstance called before init.");
+    }
+    static cATMEL cATMELInstance(m_devnode, m_adr, m_debuglevel);
+    return cATMELInstance;
+}
 
 cATMEL::cATMEL(QString devnode, quint8 adr, quint8 debuglevel) :
     AtmelCommon(devnode, adr, debuglevel)
