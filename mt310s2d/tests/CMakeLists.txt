@@ -1,3 +1,5 @@
+add_definitions(-DCONFIG_PATH="${CMAKE_CURRENT_SOURCE_DIR}/../../mt310s2d/configs")
+
 add_library(senserangetesttemplate STATIC
     senserangetesttemplate.cpp
     senserangetesttemplate.h

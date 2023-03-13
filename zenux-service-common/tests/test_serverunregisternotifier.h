@@ -5,6 +5,7 @@
 #include "pcbtestserver.h"
 #include "adjustmentstatusnull.h"
 #include "foutsettings.h"
+#include "accumulatorinterface.h"
 #include <memory>
 #include <QObject>
 
@@ -31,7 +32,8 @@ private:
     std::unique_ptr<AdjustmentStatusNull> m_adjustmentStatusNull;
 
     std::unique_ptr<Zera::XMLConfig::cReader> m_xmlConfigReader;
-    std::unique_ptr<FOutSettings> m_settings;
+    std::unique_ptr<FOutSettings> m_foutSettings;
+    std::unique_ptr<accumulatorSettings> m_accSettings;
 };
 
 #endif // TEST_SERVERUNREGISTERNOTIFIER_H
