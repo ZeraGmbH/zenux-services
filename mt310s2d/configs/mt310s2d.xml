@@ -178,10 +178,10 @@
 
 </resource>
 
-<scpiconnection>
+<interface>
     <accumulator>
-        <avail> true </avail>
+        <avail>true</avail>
     </accumulator>
-</scpiconnection>
+</interface>
 
 </serviceconfig>

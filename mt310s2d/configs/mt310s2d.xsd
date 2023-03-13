@@ -312,7 +312,7 @@
                 </xs:complexType>
             </xs:element>
 
-            <xs:element name="scpiconnection">
+            <xs:element name="interface">
                 <xs:complexType>
                     <xs:sequence>
                         <xs:element name="accumulator">
