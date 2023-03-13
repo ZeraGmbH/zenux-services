@@ -13,7 +13,15 @@ void test_accumulatorinterface::init()
     TimerFactoryQtForTest::enableTest();
     m_scpiInterface = std::make_unique<cSCPI>("");
     m_atmelSysCntrl = std::make_unique<AtmelSysCntrlTest>("", 0, 0);
-    m_accumulator = new AccumulatorInterface(m_scpiInterface.get(), m_atmelSysCntrl.get());
+
+    m_xmlConfigReader = std::make_unique<Zera::XMLConfig::cReader>();
+    m_settings = std::make_unique<accumulatorSettings>(m_xmlConfigReader.get());
+    connect(m_xmlConfigReader.get(), &Zera::XMLConfig::cReader::valueChanged,
+            m_settings.get(), &accumulatorSettings::configXMLInfo);
+    m_xmlConfigReader->loadSchema(QStringLiteral(CONFIG_PATH) + "/" + "mt310s2d.xsd");
+    m_xmlConfigReader->loadXMLFile(QStringLiteral(CONFIG_PATH) + "/" + "mt310s2d.xml");
+
+    m_accumulator = new AccumulatorInterface(m_scpiInterface.get(), m_atmelSysCntrl.get(), m_settings.get());
     m_accumulator->initSCPIConnection("");
 }
 
