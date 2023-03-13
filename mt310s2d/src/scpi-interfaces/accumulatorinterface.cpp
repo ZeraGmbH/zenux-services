@@ -8,13 +8,11 @@ AccumulatorInterface::AccumulatorInterface(cSCPI *scpiInterface, cATMELSysCtrl *
     ScpiConnection(scpiInterface),
     m_atmelSysCntrl(atmelSysCntrl)
 {
-    QList<accumulatorSettings::BatterySettings *> batterySettings;
-    batterySettings = settings->getBatterySettings();
-
     m_pollingTimer = TimerFactoryQt::createPeriodic(ACCU_POLLING_PERIOD_MS);
     connect(m_pollingTimer.get(), &TimerTemplateQt::sigExpired, this, &AccumulatorInterface::getAccumulatorSoc);
     connect(m_pollingTimer.get(), &TimerTemplateQt::sigExpired, this, &AccumulatorInterface::getAccumulatorStatus);
-    m_pollingTimer->start();
+    if(settings->isAvailable())
+        m_pollingTimer->start();
 }
 
 void AccumulatorInterface::initSCPIConnection(QString leadingNodes)

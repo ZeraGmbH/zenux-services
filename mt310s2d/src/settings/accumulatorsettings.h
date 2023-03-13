@@ -6,17 +6,13 @@
 class accumulatorSettings : public XMLSettings
 {
 public:
-    struct BatterySettings
-    {
-        bool m_bAvail;
-    };
     accumulatorSettings(Zera::XMLConfig::cReader *xmlread);
     ~accumulatorSettings();
-    QList<BatterySettings*>& getBatterySettings();
+    bool isAvailable();
 public slots:
     virtual void configXMLInfo(QString key);
 private:
-    QList<BatterySettings*> m_BatterySettingsList;
+    bool m_bAvail;
 };
 
 #endif // ACCUMULATORSETTINGS_H
