@@ -52,7 +52,7 @@ public:
     FInSettings* m_finSettings;
     FOutSettings* m_foutSettings;
     SamplingSettings* m_pSamplingSettings;
-    accumulatorSettings* m_accumulatorSettings;
+    AccumulatorSettings* m_accumulatorSettings;
     cSystemInterface* m_pSystemInterface;
     cSenseInterface* m_pSenseInterface;
     cSamplingInterface* m_pSamplingInterface;

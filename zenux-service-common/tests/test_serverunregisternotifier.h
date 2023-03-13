@@ -33,7 +33,7 @@ private:
 
     std::unique_ptr<Zera::XMLConfig::cReader> m_xmlConfigReader;
     std::unique_ptr<FOutSettings> m_foutSettings;
-    std::unique_ptr<accumulatorSettings> m_accSettings;
+    std::unique_ptr<AccumulatorSettings> m_accSettings;
 };
 
 #endif // TEST_SERVERUNREGISTERNOTIFIER_H
