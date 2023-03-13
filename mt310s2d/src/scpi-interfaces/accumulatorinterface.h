@@ -14,7 +14,7 @@ enum accumulatorCommands{
 class AccumulatorInterface : public ScpiConnection
 {
 public:
-    AccumulatorInterface(cSCPI* scpiInterface, cATMELSysCtrl *atmelSysCntrl, accumulatorSettings* settings);
+    AccumulatorInterface(cSCPI* scpiInterface, cATMELSysCtrl *atmelSysCntrl, AccumulatorSettings* settings);
     void initSCPIConnection(QString leadingNodes) override;
     QString getAccumulatorStatus();
     QString getAccumulatorSoc();

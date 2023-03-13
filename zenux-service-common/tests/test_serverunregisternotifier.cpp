@@ -25,8 +25,8 @@ void test_serverunregisternotifier::init()
     m_xmlConfigReader = std::make_unique<Zera::XMLConfig::cReader>();
     m_foutSettings = std::make_unique<FOutSettings>(m_xmlConfigReader.get());
     connect(m_xmlConfigReader.get(), &Zera::XMLConfig::cReader::valueChanged, m_foutSettings.get(), &FOutSettings::configXMLInfo);
-    m_accSettings = std::make_unique<accumulatorSettings>(m_xmlConfigReader.get());
-    connect(m_xmlConfigReader.get(), &Zera::XMLConfig::cReader::valueChanged, m_accSettings.get(), &accumulatorSettings::configXMLInfo);
+    m_accSettings = std::make_unique<AccumulatorSettings>(m_xmlConfigReader.get());
+    connect(m_xmlConfigReader.get(), &Zera::XMLConfig::cReader::valueChanged, m_accSettings.get(), &AccumulatorSettings::configXMLInfo);
     m_xmlConfigReader->loadSchema(QStringLiteral(CONFIG_PATH) + "/" + "mt310s2d.xsd");
     m_xmlConfigReader->loadXMLFile(QStringLiteral(CONFIG_PATH) + "/" + "mt310s2d.xml");
 }

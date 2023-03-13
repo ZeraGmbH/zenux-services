@@ -3,11 +3,11 @@
 
 #include <xmlsettings.h>
 
-class accumulatorSettings : public XMLSettings
+class AccumulatorSettings : public XMLSettings
 {
 public:
-    accumulatorSettings(Zera::XMLConfig::cReader *xmlread);
-    ~accumulatorSettings();
+    AccumulatorSettings(Zera::XMLConfig::cReader *xmlread);
+    ~AccumulatorSettings();
     bool isAvailable();
 public slots:
     virtual void configXMLInfo(QString key);

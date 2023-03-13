@@ -198,8 +198,8 @@ void cMT310S2dServer::doConfiguration()
                 connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pSCHeadSettings,&ScInSettings::configXMLInfo);
                 m_hkInSettings = new HkInSettings(myXMLConfigReader);
                 connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_hkInSettings,&HkInSettings::configXMLInfo);
-                m_accumulatorSettings = new accumulatorSettings(myXMLConfigReader);
-                connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_accumulatorSettings,&accumulatorSettings::configXMLInfo);
+                m_accumulatorSettings = new AccumulatorSettings(myXMLConfigReader);
+                connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_accumulatorSettings,&AccumulatorSettings::configXMLInfo);
 
 
                 QString s = args.at(1);
