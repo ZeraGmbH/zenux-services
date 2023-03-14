@@ -15,13 +15,13 @@ void test_accumulatorinterface::init()
     m_atmelSysCntrl = std::make_unique<AtmelSysCntrlTest>("", 0, 0);
 
     m_xmlConfigReader = std::make_unique<Zera::XMLConfig::cReader>();
-    m_settings = std::make_unique<AccumulatorSettings>(m_xmlConfigReader.get());
+    m_accuSettings = std::make_unique<AccumulatorSettings>(m_xmlConfigReader.get());
     connect(m_xmlConfigReader.get(), &Zera::XMLConfig::cReader::valueChanged,
-            m_settings.get(), &AccumulatorSettings::configXMLInfo);
+            m_accuSettings.get(), &AccumulatorSettings::configXMLInfo);
     m_xmlConfigReader->loadSchema(QStringLiteral(CONFIG_PATH) + "/" + "mt310s2d.xsd");
     m_xmlConfigReader->loadXMLFile(QStringLiteral(CONFIG_PATH) + "/" + "mt310s2d.xml");
 
-    m_accumulator = new AccumulatorInterface(m_scpiInterface.get(), m_atmelSysCntrl.get(), m_settings.get());
+    m_accumulator = new AccumulatorInterface(m_scpiInterface.get(), m_atmelSysCntrl.get(), m_accuSettings.get());
     m_accumulator->initSCPIConnection("");
 }
 
@@ -43,7 +43,10 @@ void test_accumulatorinterface::readAccumulatorStatus()
     cSCPIObject* scpiObject = m_scpiInterface->getSCPIObject(systemAccumulatorStatus);
     cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
     scpiDelegate->executeSCPI(protoCmd.get());
-    QCOMPARE(protoCmd->m_sOutput, "0");
+    if(m_accuSettings->isAvailable())
+        QCOMPARE(protoCmd->m_sOutput, "0");
+    else
+        QCOMPARE(protoCmd->m_sOutput, "");
 }
 
 void test_accumulatorinterface::readAccumulatorSoc()
@@ -53,5 +56,8 @@ void test_accumulatorinterface::readAccumulatorSoc()
     cSCPIObject* scpiObject = m_scpiInterface->getSCPIObject(systemAccumulatorSoc);
     cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
     scpiDelegate->executeSCPI(protoCmd.get());
-    QCOMPARE(protoCmd->m_sOutput, "37");
+    if(m_accuSettings->isAvailable())
+        QCOMPARE(protoCmd->m_sOutput, "37");
+    else
+        QCOMPARE(protoCmd->m_sOutput, "");
 }
