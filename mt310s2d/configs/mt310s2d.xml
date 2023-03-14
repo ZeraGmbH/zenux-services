@@ -180,7 +180,7 @@
 
 <interface>
     <accumulator>
-        <avail>true</avail>
+        <avail>false</avail>
     </accumulator>
 </interface>
 
