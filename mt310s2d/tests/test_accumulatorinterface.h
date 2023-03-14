@@ -23,7 +23,7 @@ private:
     std::unique_ptr<AtmelSysCntrlTest> m_atmelSysCntrl;
 
     std::unique_ptr<Zera::XMLConfig::cReader> m_xmlConfigReader;
-    std::unique_ptr<AccumulatorSettings> m_settings;
+    std::unique_ptr<AccumulatorSettings> m_accuSettings;
 };
 
 #endif // TEST_ACCUMULATORINTERFACE_H
