@@ -10,6 +10,7 @@ public:
     virtual ~AtmelCommon() = default;
 
     virtual atmelRM readCTRLVersion(QString& answer) = 0;
+    virtual atmelRM readPCBVersion(QString& answer) = 0;
     atmelRM writeIntMask(quint16 mask);
     atmelRM readIntMask(quint16& mask);
     atmelRM readCriticalStatus(quint16& stat);
