@@ -8,6 +8,7 @@
 #include "micro-controller-io/atmel.h"
 #include <scpi.h>
 #include <scpicommand.h>
+#include <QJsonObject>
 
 cSystemInterface::cSystemInterface(cMT310S2dServer *server) :
     ScpiConnection(server->getSCPIInterface()),
@@ -191,8 +192,7 @@ QString cSystemInterface::m_ReadCTRLVersion(QString &sInput)
     if (cmd.isQuery())
     {
         if (m_pMyServer->m_pSystemInfo->dataRead())
-            return m_pMyServer->m_pSystemInfo->getSysCTRLVersion() + QStringLiteral(" / ") +
-                    m_pMyServer->m_pSystemInfo->getCTRLVersion();
+            return getSoftwareVersion().toJson(QJsonDocument::Compact);
         else
             return SCPI::scpiAnswer[SCPI::errexec];
     }
@@ -486,6 +486,14 @@ QString cSystemInterface::testMode(QString &Input)
     return pAtmelSys->enableTestMode(modeBits)==ZeraMcontrollerBase::cmddone ? SCPI::scpiAnswer[SCPI::ack] : SCPI::scpiAnswer[SCPI::errexec];
 }
 
+QJsonDocument cSystemInterface::getSoftwareVersion()
+{
+    QJsonObject object;
+    object.insert("Relay version", QJsonValue::fromVariant(m_pMyServer->m_pSystemInfo->getSysCTRLVersion()));
+    object.insert("Controller version", QJsonValue::fromVariant(m_pMyServer->m_pSystemInfo->getCTRLVersion()));
+    QJsonDocument doc(object);
+    return doc;
+}
 
 void cSystemInterface::m_genAnswer(int select, QString &answer)
 {
@@ -502,6 +510,3 @@ void cSystemInterface::m_genAnswer(int select, QString &answer)
         break;
     }
 }
-
-
-
