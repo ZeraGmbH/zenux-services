@@ -4,6 +4,7 @@
 #include "scpiconnection.h"
 #include <QObject>
 #include <QList>
+#include <QJsonDocument>
 
 namespace SystemSystem
 {
@@ -67,6 +68,7 @@ private:
     QString m_AdjFlashChksum(QString& sInput);
     QString m_InterfaceRead(QString& sInput);
     QString testMode(QString &Input);
+    QJsonDocument getSoftwareVersion();
 
     void m_genAnswer(int select, QString& answer);
 };
