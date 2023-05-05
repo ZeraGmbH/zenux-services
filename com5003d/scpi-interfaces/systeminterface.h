@@ -6,6 +6,7 @@
 #include "systeminfo.h"
 #include "adjustment.h"
 #include <QList>
+#include <QJsonDocument>
 
 namespace SystemSystem
 {
@@ -61,6 +62,7 @@ private:
     QString m_AdjXMLRead(QString& sInput);
     QString m_AdjFlashChksum(QString& sInput);
     QString m_InterfaceRead(QString& sInput);
+    QJsonDocument getSoftwareVersion();
 
     void m_genAnswer(int select, QString& answer);
 };

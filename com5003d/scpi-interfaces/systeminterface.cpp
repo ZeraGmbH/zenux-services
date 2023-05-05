@@ -1,5 +1,6 @@
 #include <scpi.h>
 #include <scpicommand.h>
+#include <QJsonObject>
 
 #include "com5003d.h"
 #include "adjustment.h"
@@ -183,7 +184,7 @@ QString cSystemInterface::m_ReadCTRLVersion(QString &sInput)
     if (cmd.isQuery())
     {
         if (m_pMyServer->m_pSystemInfo->dataRead())
-            return m_pMyServer->m_pSystemInfo->getCTRLVersion();
+            return getSoftwareVersion().toJson(QJsonDocument::Compact);
         else
             return SCPI::scpiAnswer[SCPI::errexec];
     }
@@ -434,6 +435,13 @@ QString cSystemInterface::m_InterfaceRead(QString &sInput)
         return SCPI::scpiAnswer[SCPI::nak];
 }
 
+QJsonDocument cSystemInterface::getSoftwareVersion()
+{
+    QJsonObject object;
+    object.insert("Controller version", QJsonValue::fromVariant(m_pMyServer->m_pSystemInfo->getCTRLVersion()));
+    QJsonDocument doc(object);
+    return doc;
+}
 
 void cSystemInterface::m_genAnswer(int select, QString &answer)
 {
