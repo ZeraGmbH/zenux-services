@@ -8,6 +8,7 @@
 enum hw_cmdcode
 {
     hwGetCtrlVersion = 0x0003,
+    hwGetPCBVersion = 0x0005,
     hwSetTestModes = 0x0042,
     hwGetAccumulatorStatus = 0x0210,
     hwGetAccumulatorSoc = 0x0211,
@@ -23,6 +24,11 @@ cATMELSysCtrl::cATMELSysCtrl(QString devnode, quint8 adr, quint8 debuglevel) :
 ZeraMcontrollerBase::atmelRM cATMELSysCtrl::readCTRLVersion(QString& answer)
 {
     return readVariableLenText(hwGetCtrlVersion, answer);
+}
+
+ZeraMcontrollerBase::atmelRM cATMELSysCtrl::readPCBVersion(QString &answer)
+{
+    return readVariableLenText(hwGetPCBVersion, answer);
 }
 
 ZeraMcontrollerBase::atmelRM cATMELSysCtrl::readAccumulatorStatus(quint8 &stat)

@@ -15,7 +15,7 @@ public:
     atmelRM readSerialNumber(QString& answer);
     atmelRM writeSerialNumber(QString &sNumber);
     atmelRM readDeviceName(QString& answer);
-    atmelRM readPCBVersion(QString& answer);
+    atmelRM readPCBVersion(QString& answer) override;
     atmelRM writePCBVersion(QString& sVersion);
     atmelRM readCTRLVersion(QString& answer) override;
     atmelRM readLCAVersion(QString& answer);
