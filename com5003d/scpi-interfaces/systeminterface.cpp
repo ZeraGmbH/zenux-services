@@ -438,7 +438,7 @@ QString cSystemInterface::m_InterfaceRead(QString &sInput)
 QJsonDocument cSystemInterface::getSoftwareVersion()
 {
     QJsonObject object;
-    object.insert("Controller version", QJsonValue::fromVariant(m_pMyServer->m_pSystemInfo->getCTRLVersion()));
+    object.insert("Relay version", QJsonValue::fromVariant(m_pMyServer->m_pSystemInfo->getCTRLVersion()));
     QJsonDocument doc(object);
     return doc;
 }
