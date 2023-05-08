@@ -489,8 +489,8 @@ QString cSystemInterface::testMode(QString &Input)
 QJsonDocument cSystemInterface::getSoftwareVersion()
 {
     QJsonObject object;
-    object.insert("Relay version", QJsonValue::fromVariant(m_pMyServer->m_pSystemInfo->getSysCTRLVersion()));
-    object.insert("Controller version", QJsonValue::fromVariant(m_pMyServer->m_pSystemInfo->getCTRLVersion()));
+    object.insert("SysController version", QJsonValue::fromVariant(m_pMyServer->m_pSystemInfo->getSysCTRLVersion()));
+    object.insert("Relay version", QJsonValue::fromVariant(m_pMyServer->m_pSystemInfo->getCTRLVersion()));
     QJsonDocument doc(object);
     return doc;
 }
