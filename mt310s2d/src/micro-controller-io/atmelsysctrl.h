@@ -2,11 +2,12 @@
 #define ATMELATMELSYS_H
 
 #include <atmelcommon.h>
+#include <atmelcommonversions.h>
 #include <intelhexfileio.h>
 #include <zera_mcontroller_base.h>
 #include <QString>
 
-class cATMELSysCtrl : public AtmelCommon
+class cATMELSysCtrl : public AtmelCommon, public AtmelCommonVersions
 {
 public:
     cATMELSysCtrl(QString devnode, quint8 adr, quint8 debuglevel);
