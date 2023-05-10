@@ -3,10 +3,11 @@
 
 #include "atmelpermissiontemplate.h"
 #include "atmelcommon.h"
+#include "atmelcommonversions.h"
 #include <zera_mcontroller_base.h>
 #include <QString>
 
-class Atmel : public AtmelCommon, public AtmelPermissionTemplate
+class Atmel : public AtmelCommon, public AtmelCommonVersions, public AtmelPermissionTemplate
 {
 public:
     static void init(QString devnode, quint8 adr, quint8 debuglevel);
