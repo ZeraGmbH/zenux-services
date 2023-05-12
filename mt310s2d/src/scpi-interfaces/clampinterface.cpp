@@ -5,7 +5,7 @@
 #include "protonetcommand.h"
 #include "micro-controller-io/atmel.h"
 #include "settings/i2csettings.h"
-#include "atmeli2cmultiplexerfactory.h"
+#include <i2cmultiplexerfactory.h>
 #include <scpi.h>
 #include <i2cutils.h>
 #include <i2cmuxerscopedonoff.h>
@@ -38,7 +38,7 @@ void cClampInterface::actualizeClampStatus(quint16 devConnectedMask)
                 continue;
             }
             if ((m_nClampStatus & bmask) == 0) {
-                I2cMuxerInterface::Ptr i2cMuxer = AtmelI2cMultiplexerFactory::createClampMuxer(m_pMyServer->m_pI2CSettings->getDeviceNode(), m_pMyServer->m_pI2CSettings->getI2CAdress(i2cSettings::flashmux),ctrlChannel);
+                I2cMuxerInterface::Ptr i2cMuxer = I2cMultiplexerFactory::createClampMuxer(m_pMyServer->m_pI2CSettings->getDeviceNode(), m_pMyServer->m_pI2CSettings->getI2CAdress(i2cSettings::flashmux),ctrlChannel);
                 I2cMuxerScopedOnOff i2cMuxOnOff(i2cMuxer);
                 QString i2cDevNode = m_pMyServer->m_pI2CSettings->getDeviceNode();
                 int i2cAddress = m_pMyServer->m_pI2CSettings->getI2CAdress(i2cSettings::clampflash);
