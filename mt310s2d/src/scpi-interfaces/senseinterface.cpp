@@ -15,6 +15,7 @@
 #include "i2csettings.h"
 #include "sensesettings.h"
 #include "notzeronumgen.h"
+#include "atmeli2cmultiplexerfactory.h"
 #include <xmlsettings.h>
 #include <QList>
 #include <QStringList>
@@ -30,7 +31,7 @@ cSenseInterface::cSenseInterface(cMT310S2dServer *server) :
     cResource(server->getSCPIInterface()),
     cAdjFlash(server->m_pI2CSettings->getDeviceNode(),
               server->m_pI2CSettings->getI2CAdress(i2cSettings::flash),
-              server->m_pI2CSettings->createNullMuxer()),
+              AtmelI2cMultiplexerFactory::createNullMuxer()),
     m_pMyServer(server),
     m_pSystemInfo(server->m_pSystemInfo)
 {

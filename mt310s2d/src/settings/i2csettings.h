@@ -35,8 +35,6 @@ public:
     cI2CSettings(Zera::XMLConfig::cReader *xmlread);
     quint8 getI2CAdress(i2cSettings::member member);
     QString& getDeviceNode();
-    I2cMuxerInterface::Ptr createClampMuxer(quint8 ctrlChannel);
-    I2cMuxerInterface::Ptr createNullMuxer();
 public slots:
     virtual void configXMLInfo(QString key);
 private:
