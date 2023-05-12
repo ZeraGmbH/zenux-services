@@ -50,17 +50,6 @@ QString& cI2CSettings::getDeviceNode()
     return m_sDeviceNode;
 }
 
-I2cMuxerInterface::Ptr cI2CSettings::createClampMuxer(quint8 ctrlChannel)
-{
-    int i2cAddressMux = getI2CAdress(i2cSettings::flashmux);
-    return I2cMuxerInterface::Ptr(new I2cMuxer(m_sDeviceNode, i2cAddressMux, (ctrlChannel-4) | 8, 0));
-}
-
-I2cMuxerInterface::Ptr cI2CSettings::createNullMuxer()
-{
-    return I2cMuxerInterface::Ptr(new I2cMuxerNull());
-}
-
 void cI2CSettings::configXMLInfo(QString key)
 {
     if (m_pXMLReader && m_ConfigXMLMap.contains(key)) {
