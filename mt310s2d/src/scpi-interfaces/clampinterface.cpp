@@ -35,9 +35,8 @@ void cClampInterface::actualizeClampStatus(quint16 devConnectedMask)
         quint16 bmask = 1 << (ctrlChannel-constFirstChannelOffset);
         if ((clChange & bmask) > 0) {
             QString channelName = m_pSenseInterface->getChannelSystemName(ctrlChannel);
-            if(channelName.isEmpty()) {
+            if(channelName.isEmpty())
                 continue;
-            }
             if ((m_nClampStatus & bmask) == 0) {
                 // see ADW 5859 schematics: Channels are
                 // 0: not connected
@@ -67,9 +66,8 @@ void cClampInterface::actualizeClampStatus(quint16 devConnectedMask)
                     }
                     generateAndNotifyClampChannelList();
                 }
-                else {
+                else
                     qInfo("Not a clamp channel \"%s\"/%i", qPrintable(channelName), ctrlChannel);
-                }
             }
             else {
                 // a clamp is not connected
@@ -85,9 +83,8 @@ void cClampInterface::actualizeClampStatus(quint16 devConnectedMask)
                     generateAndNotifyClampChannelList();
                     delete clamp;
                 }
-                else {
+                else
                     qWarning("Clamp \"%s\"/%i to remove not found!", qPrintable(channelName), ctrlChannel);
-                }
             }
         }
     }
