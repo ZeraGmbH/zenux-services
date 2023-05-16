@@ -53,6 +53,7 @@
             <alias1>UL1</alias1>
             <ctrlchannel>1</ctrlchannel>
             <dspchannel>0</dspchannel>
+            <pluggedbit>-1</pluggedbit>
             <overloadbit>-1</overloadbit>
             <avail>true</avail>
         </m0>
@@ -60,6 +61,7 @@
             <alias1>UL2</alias1>
             <ctrlchannel>2</ctrlchannel>
             <dspchannel>2</dspchannel>
+            <pluggedbit>-1</pluggedbit>
             <overloadbit>-1</overloadbit>
             <avail>true</avail>
         </m1>
@@ -67,6 +69,7 @@
             <alias1>UL3</alias1>
             <ctrlchannel>3</ctrlchannel>
             <dspchannel>4</dspchannel>
+            <pluggedbit>-1</pluggedbit>
             <overloadbit>-1</overloadbit>
             <avail>true</avail>
         </m2>
@@ -74,6 +77,7 @@
             <alias1>IL1</alias1>
             <ctrlchannel>5</ctrlchannel>
             <dspchannel>1</dspchannel>
+            <pluggedbit>4</pluggedbit>
             <overloadbit>0</overloadbit>
             <avail>true</avail>
         </m3>
@@ -81,6 +85,7 @@
             <alias1>IL2</alias1>
             <ctrlchannel>6</ctrlchannel>
             <dspchannel>3</dspchannel>
+            <pluggedbit>5</pluggedbit>
             <overloadbit>1</overloadbit>
             <avail>true</avail>
         </m4>
@@ -88,6 +93,7 @@
             <alias1>IL3</alias1>
             <ctrlchannel>7</ctrlchannel>
             <dspchannel>5</dspchannel>
+            <pluggedbit>6</pluggedbit>
             <overloadbit>2</overloadbit>
             <avail>true</avail>
         </m5>
@@ -102,6 +108,7 @@
             <alias1>IAUX</alias1>
             <ctrlchannel>8</ctrlchannel>
             <dspchannel>7</dspchannel>
+            <pluggedbit>7</pluggedbit>
             <overloadbit>3</overloadbit>
             <avail>true</avail>
         </m7>
