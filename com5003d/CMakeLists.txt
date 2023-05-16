@@ -3,7 +3,6 @@ set(SOURCES
     scpi-interfaces/senseinterface.cpp
     scpi-interfaces/systeminterface.cpp
     settings/i2csettings.cpp
-    settings/sensesettings.cpp
     main.cpp
     com5003d.cpp
     com5003justdata.cpp
@@ -17,7 +16,6 @@ set(HEADER
     scpi-interfaces/senseinterface.h
     scpi-interfaces/systeminterface.h
     settings/i2csettings.h
-    settings/sensesettings.h
     com5003d.h
     com5003justdata.h
     com5003scpi.h
