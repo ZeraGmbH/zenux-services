@@ -1,10 +1,10 @@
 #include "sensesettings.h"
 #include <xmlconfigreader.h>
 
-cSenseSettings::cSenseSettings(Zera::XMLConfig::cReader *xmlread)
+cSenseSettings::cSenseSettings(Zera::XMLConfig::cReader *xmlread, int channelCount)
 {
     m_pXMLReader = xmlread;
-    for (int i = 0; i < 8; i++) {
+    for (int i = 0; i < channelCount; i++) {
         m_ChannelSettingsList.append(new SenseSystem::cChannelSettings);
         m_ConfigXMLMap[QString("serviceconfig:resource:sense:m%1:alias1").arg(i)] = SenseSystem::cfg0Alias1 + i;
         m_ConfigXMLMap[QString("serviceconfig:resource:sense:m%1:alias2").arg(i)] = SenseSystem::cfg0Alias2 + i;
@@ -55,6 +55,31 @@ void cSenseSettings::configXMLInfo(QString key)
             break;
         case SenseSystem::cfg7Alias1:
             m_ChannelSettingsList.at(7)->m_sAlias1 = m_pXMLReader->getValue(key);
+            break;
+
+        case SenseSystem::cfg0Alias2:
+            m_ChannelSettingsList.at(0)->m_sAlias2 = m_pXMLReader->getValue(key);
+            break;
+        case SenseSystem::cfg1Alias2:
+            m_ChannelSettingsList.at(1)->m_sAlias2 = m_pXMLReader->getValue(key);
+            break;
+        case SenseSystem::cfg2Alias2:
+            m_ChannelSettingsList.at(2)->m_sAlias2 = m_pXMLReader->getValue(key);
+            break;
+        case SenseSystem::cfg3Alias2:
+            m_ChannelSettingsList.at(3)->m_sAlias2 = m_pXMLReader->getValue(key);
+            break;
+        case SenseSystem::cfg4Alias2:
+            m_ChannelSettingsList.at(4)->m_sAlias2 = m_pXMLReader->getValue(key);
+            break;
+        case SenseSystem::cfg5Alias2:
+            m_ChannelSettingsList.at(5)->m_sAlias2 = m_pXMLReader->getValue(key);
+            break;
+        case SenseSystem::cfg6Alias2:
+            m_ChannelSettingsList.at(6)->m_sAlias2 = m_pXMLReader->getValue(key);
+            break;
+        case SenseSystem::cfg7Alias2:
+            m_ChannelSettingsList.at(7)->m_sAlias2 = m_pXMLReader->getValue(key);
             break;
 
         case SenseSystem::cfg0ctrlchannel:

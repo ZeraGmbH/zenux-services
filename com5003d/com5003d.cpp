@@ -161,7 +161,7 @@ void cCOM5003dServer::doConfiguration()
             connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pI2CSettings,&cI2CSettings::configXMLInfo);
             m_pFPGASettings = new FPGASettings(myXMLConfigReader, xmlConfigTopNode);
             connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pFPGASettings,&FPGASettings::configXMLInfo);
-            m_pSenseSettings = new cSenseSettings(myXMLConfigReader);
+            m_pSenseSettings = new cSenseSettings(myXMLConfigReader, 6);
             connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pSenseSettings,&cSenseSettings::configXMLInfo);
             m_foutSettings = new FOutSettings(myXMLConfigReader);
             connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_foutSettings,&FOutSettings::configXMLInfo);

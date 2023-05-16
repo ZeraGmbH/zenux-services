@@ -76,7 +76,7 @@ class cSenseSettings : public XMLSettings
 {
     Q_OBJECT
 public:
-    cSenseSettings(Zera::XMLConfig::cReader *xmlread);
+    cSenseSettings(Zera::XMLConfig::cReader *xmlread, int channelCount);
     virtual ~cSenseSettings();
     QList<SenseSystem::cChannelSettings*>& getChannelSettings();
 public slots:
