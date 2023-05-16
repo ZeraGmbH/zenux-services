@@ -10,6 +10,7 @@ cSenseSettings::cSenseSettings(Zera::XMLConfig::cReader *xmlread, int channelCou
         m_ConfigXMLMap[QString("serviceconfig:resource:sense:m%1:alias2").arg(i)] = SenseSystem::cfg0Alias2 + i;
         m_ConfigXMLMap[QString("serviceconfig:resource:sense:m%1:ctrlchannel").arg(i)] = SenseSystem::cfg0ctrlchannel + i;
         m_ConfigXMLMap[QString("serviceconfig:resource:sense:m%1:dspchannel").arg(i)] = SenseSystem::cfg0dspchannel + i;
+        m_ConfigXMLMap[QString("serviceconfig:resource:sense:m%1:pluggedbit").arg(i)] = SenseSystem::cfg0pluggedbit + i;
         m_ConfigXMLMap[QString("serviceconfig:resource:sense:m%1:overloadbit").arg(i)] = SenseSystem::cfg0overloadbit + i;
 
         m_ConfigXMLMap[QString("serviceconfig:resource:sense:m%1:avail").arg(i)] = SenseSystem::cfg0avail + i;
@@ -130,6 +131,31 @@ void cSenseSettings::configXMLInfo(QString key)
             break;
         case SenseSystem::cfg7dspchannel:
             m_ChannelSettingsList.at(7)->m_nDspChannel  =  m_pXMLReader->getValue(key).toInt();
+            break;
+
+        case SenseSystem::cfg0pluggedbit:
+            m_ChannelSettingsList.at(0)->m_nPluggedBit  =  m_pXMLReader->getValue(key).toInt();
+            break;
+        case SenseSystem::cfg1pluggedbit:
+            m_ChannelSettingsList.at(1)->m_nPluggedBit  =  m_pXMLReader->getValue(key).toInt();
+            break;
+        case SenseSystem::cfg2pluggedbit:
+            m_ChannelSettingsList.at(2)->m_nPluggedBit  =  m_pXMLReader->getValue(key).toInt();
+            break;
+        case SenseSystem::cfg3pluggedbit:
+            m_ChannelSettingsList.at(3)->m_nPluggedBit  =  m_pXMLReader->getValue(key).toInt();
+            break;
+        case SenseSystem::cfg4pluggedbit:
+            m_ChannelSettingsList.at(4)->m_nPluggedBit  =  m_pXMLReader->getValue(key).toInt();
+            break;
+        case SenseSystem::cfg5pluggedbit:
+            m_ChannelSettingsList.at(5)->m_nPluggedBit  =  m_pXMLReader->getValue(key).toInt();
+            break;
+        case SenseSystem::cfg6pluggedbit:
+            m_ChannelSettingsList.at(6)->m_nPluggedBit  =  m_pXMLReader->getValue(key).toInt();
+            break;
+        case SenseSystem::cfg7pluggedbit:
+            m_ChannelSettingsList.at(7)->m_nPluggedBit  =  m_pXMLReader->getValue(key).toInt();
             break;
 
         case SenseSystem::cfg0overloadbit:

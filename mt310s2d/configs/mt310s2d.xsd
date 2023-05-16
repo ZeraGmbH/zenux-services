@@ -61,7 +61,7 @@
 </xs:simpleType>
 
 
-<xs:simpleType name="overloadbittype">
+<xs:simpleType name="ctrlbittype">
     <xs:restriction base="xs:integer">
         <xs:maxInclusive value='15'/>
         <xs:minInclusive value='-1'/>
@@ -186,7 +186,8 @@
         <xs:element name="alias1" type="xs:string"/>
         <xs:element name="ctrlchannel" type="ctrlchanneltype"/>
         <xs:element name="dspchannel" type="dspinputchanneltype"/>
-        <xs:element name="overloadbit" type="overloadbittype"/>
+        <xs:element name="pluggedbit" type="ctrlbittype" minOccurs="0" maxOccurs="1"/>
+        <xs:element name="overloadbit" type="ctrlbittype"/>
         <xs:element name="avail" type="xs:boolean"/>
     </xs:sequence>
 </xs:complexType>
