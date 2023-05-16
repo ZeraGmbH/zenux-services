@@ -16,6 +16,15 @@ namespace SenseSystem
         cfg6Alias1,
         cfg7Alias1,
 
+        cfg0Alias2,
+        cfg1Alias2,
+        cfg2Alias2,
+        cfg3Alias2,
+        cfg4Alias2,
+        cfg5Alias2,
+        cfg6Alias2,
+        cfg7Alias2,
+
         cfg0ctrlchannel,
         cfg1ctrlchannel,
         cfg2ctrlchannel,
@@ -54,7 +63,8 @@ namespace SenseSystem
     };
     struct cChannelSettings // what we want to get configured
     {
-        QString m_sAlias; // the alias names for measuring channels
+        QString m_sAlias1; // the alias names for measuring channels
+        QString m_sAlias2;
         quint8 m_nCtrlChannel; // where to control the channel
         quint8 m_nDspChannel; // where to find the channel's sampled data
         qint8 m_nOverloadBit; // where to find overload condition in critical status
