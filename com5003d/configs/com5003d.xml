@@ -21,7 +21,6 @@
             <node>/dev/i2c-0</node>
         </device>
         <adress>
-            <master>32</master>
             <atmel>33</atmel>
             <flash>80</flash>
         </adress>
