@@ -10,8 +10,9 @@ namespace i2cSettings
 {
 enum member
 {
-    atmelsys,
     atmel,
+    atmelsys,
+    atmelemob,
     flashmux,
     flash,
     clampflash
@@ -20,8 +21,10 @@ enum member
 enum configstate
 {
     SetDevNode,
-    SetAtmelSysAdr,
+
     SetAtmelAdr,
+    SetAtmelSysAdr,
+    SetAtmelEmob,
     SetFlashMuxAdr,
     SetFlashAdr,
     SetClampFlashAdr
@@ -39,7 +42,12 @@ public slots:
     virtual void configXMLInfo(QString key);
 private:
     QString m_sDeviceNode;
-    quint8 m_nAtmelSysAdr, m_nAtmelAdr, m_nFlashMuxAdr, m_nFlashAdr, m_nClampFlashAdr;
+    quint8 m_nAtmelAdr;
+    quint8 m_nAtmelSysAdr;
+    quint8 m_nAtmelEmob;
+    quint8 m_nFlashMuxAdr;
+    quint8 m_nFlashAdr;
+    quint8 m_nClampFlashAdr;
 };
 
 

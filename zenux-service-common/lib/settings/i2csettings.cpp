@@ -4,6 +4,7 @@
 #define defaultI2CDeviceNode "/dev/i2c-0"
 #define defaultI2CAtmelAdress 0x21
 #define defaultI2CSysAtmelAdress 0x22
+#define defaultI2CEmobAtmelAdress 0x23
 #define defaultI2CFlashMuxAdress 0x71
 #define defaultI2CFlashAdress 0x50
 #define defaultI2CClampFlashAdr 0x51
@@ -12,13 +13,15 @@ cI2CSettings::cI2CSettings(Zera::XMLConfig::cReader *xmlread)
 {
     m_pXMLReader = xmlread;
     m_ConfigXMLMap["serviceconfig:connectivity:i2c:device:node"] = i2cSettings::SetDevNode;
-    m_ConfigXMLMap["serviceconfig:connectivity:i2c-systemctrl:adress:atmel"] = i2cSettings::SetAtmelSysAdr;
     m_ConfigXMLMap["serviceconfig:connectivity:i2c:adress:atmel"] = i2cSettings::SetAtmelAdr;
+    m_ConfigXMLMap["serviceconfig:connectivity:i2c:adress:atmelsys"] = i2cSettings::SetAtmelSysAdr;
+    m_ConfigXMLMap["serviceconfig:connectivity:i2c:adress:atmelemob"] = i2cSettings::SetAtmelEmob;
     m_ConfigXMLMap["serviceconfig:connectivity:i2c:adress:clampmux"] = i2cSettings::SetFlashMuxAdr;
     m_ConfigXMLMap["serviceconfig:connectivity:i2c:adress:flash"] = i2cSettings::SetFlashAdr;
     m_ConfigXMLMap["serviceconfig:connectivity:i2c:adress:clampflash"] = i2cSettings::SetClampFlashAdr;
     m_sDeviceNode = defaultI2CDeviceNode;
     m_nAtmelSysAdr = defaultI2CSysAtmelAdress;
+    m_nAtmelEmob = defaultI2CEmobAtmelAdress;
     m_nAtmelAdr = defaultI2CAtmelAdress;
     m_nFlashMuxAdr = defaultI2CFlashMuxAdress;
     m_nFlashAdr = defaultI2CFlashAdress;
@@ -30,11 +33,14 @@ quint8 cI2CSettings::getI2CAdress(i2cSettings::member member)
     quint8 r;
     switch (member)
     {
+    case i2cSettings::atmel:
+        r = m_nAtmelAdr;
+        break;
     case i2cSettings::atmelsys:
         r = m_nAtmelSysAdr;
         break;
-    case i2cSettings::atmel:
-        r = m_nAtmelAdr;
+    case i2cSettings::atmelemob:
+        r = m_nAtmelEmob;
         break;
     case i2cSettings::flashmux:
         r = m_nFlashMuxAdr;
@@ -65,6 +71,9 @@ void cI2CSettings::configXMLInfo(QString key)
             break;
         case i2cSettings::SetAtmelSysAdr:
             m_nAtmelSysAdr = m_pXMLReader->getValue(key).toInt();
+            break;
+        case i2cSettings::SetAtmelEmob:
+            m_nAtmelEmob = m_pXMLReader->getValue(key).toInt();
             break;
         case i2cSettings::SetAtmelAdr:
             m_nAtmelAdr = m_pXMLReader->getValue(key).toInt();
