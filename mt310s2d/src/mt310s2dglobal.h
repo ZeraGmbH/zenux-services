@@ -20,13 +20,7 @@ enum DebugLevel {NoDebug, DebugLevel1, DebugLevel2, DebugLevel3 = 4, MaxDebugLev
 #define MaxClients 30
 #define defaultDebugLevel NoDebug
 #define defaultCTRLDeviceNode "/dev/zFPGA1ctrl"
-#define defaultI2CDeviceNode "/dev/i2c-3"
 #define defaultProtoBufServerPort 6307
-#define defaultI2CSysAtmelAdress 0x22
-#define defaultI2CAtmelAdress 0x21
-#define defaultI2CFlashMuxAdress 0x71
-#define defaultI2CFlashAdress 0x50
-#define defaultI2CClampFlashAdr 0x51
 #define defaultXSDFile "/etc/zera/mt310s2d/mt310s2d.xsd"
 
 enum ServerErrors

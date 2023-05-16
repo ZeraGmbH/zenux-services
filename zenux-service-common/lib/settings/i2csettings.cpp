@@ -1,7 +1,12 @@
 #include "i2csettings.h"
-#include "mt310s2dglobal.h"
 #include <xmlconfigreader.h>
-#include <i2cmuxernull.h>
+
+#define defaultI2CDeviceNode "/dev/i2c-0"
+#define defaultI2CAtmelAdress 0x21
+#define defaultI2CSysAtmelAdress 0x22
+#define defaultI2CFlashMuxAdress 0x71
+#define defaultI2CFlashAdress 0x50
+#define defaultI2CClampFlashAdr 0x51
 
 cI2CSettings::cI2CSettings(Zera::XMLConfig::cReader *xmlread)
 {

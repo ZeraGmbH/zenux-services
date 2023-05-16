@@ -6,7 +6,6 @@ set(SOURCES
     src/scpi-interfaces/systeminterface.cpp
     src/scpi-interfaces/accumulatorinterface.cpp
     src/settings/ctrlsettings.cpp
-    src/settings/i2csettings.cpp
     src/settings/accumulatorsettings.cpp
     src/senserange.cpp
     src/sensechannel.cpp
@@ -28,7 +27,6 @@ set(HEADER
     src/scpi-interfaces/systeminterface.h
     src/scpi-interfaces/accumulatorinterface.h
     src/settings/ctrlsettings.h
-    src/settings/i2csettings.h
     src/settings/accumulatorsettings.h
     src/senserange.h
     src/sensechannel.h
