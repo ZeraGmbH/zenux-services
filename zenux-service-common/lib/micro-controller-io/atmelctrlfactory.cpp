@@ -1,12 +1,12 @@
 #include "atmelctrlfactory.h"
 
-std::function<AtmelCommonVersionsPtr(QString, quint8, quint8, quint8)> AtmelCtrlFactory::m_emobCreateFunction =
-        [](QString devnode, quint8 adr, quint8 ctrlChannelForMux, quint8 debuglevel)
+std::function<AtmelCommonVersionsPtr(QString, quint8, quint8, quint8, quint8)> AtmelCtrlFactory::m_emobCreateFunction =
+        [](QString devnode, quint8 adrCtrl, quint8 adrMux, quint8 ctrlChannel, quint8 debuglevel)
 {
-    return std::make_shared<AtmelEmobCtrl>(devnode, adr, ctrlChannelForMux, debuglevel);
+    return std::make_shared<AtmelEmobCtrl>(devnode, adrCtrl, adrMux, ctrlChannel, debuglevel);
 };
 
-std::shared_ptr<AtmelCommonVersions> AtmelCtrlFactory::createEmobCtrl(QString devnode, quint8 adr, quint8 ctrlChannelForMux, quint8 debuglevel)
+std::shared_ptr<AtmelCommonVersions> AtmelCtrlFactory::createEmobCtrl(QString devnode, quint8 adrCtrl, quint8 adrMux, quint8 muxChannel, quint8 debuglevel)
 {
-    return m_emobCreateFunction(devnode, adr, ctrlChannelForMux, debuglevel);
+    return m_emobCreateFunction(devnode, adrCtrl, adrMux, muxChannel, debuglevel);
 }

@@ -3,8 +3,8 @@
 
 void AtmelCtrlFactoryForTest::enableTest()
 {
-    m_emobCreateFunction = [](QString devnode, quint8 adr, quint8 ctrlChannelForMux, quint8 debuglevel)
+    m_emobCreateFunction = [](QString devnode, quint8 adrCtrl, quint8 adrMux, quint8 channelMux, quint8 debuglevel)
     {
-        return std::make_shared<AtmelEmobCtrlForTest>(devnode, adr, ctrlChannelForMux, debuglevel);
+        return std::make_shared<AtmelEmobCtrlForTest>(devnode, adrCtrl, adrMux, channelMux, debuglevel);
     };
 }

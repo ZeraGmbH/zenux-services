@@ -10,7 +10,7 @@
 class AtmelEmobCtrl : public ZeraMcontrollerBase, public AtmelCommonVersions
 {
 public:
-    AtmelEmobCtrl(QString devnode, quint8 adr, quint8 ctrlChannelForMux, quint8 debuglevel);
+    AtmelEmobCtrl(QString devnode, quint8 adrCtrl, quint8 adrMux, quint8 muxChannel, quint8 debuglevel);
     virtual ~AtmelEmobCtrl() = default;
     atmelRM readCTRLVersion(QString& answer) override;
     atmelRM readPCBVersion(QString& answer) override;
