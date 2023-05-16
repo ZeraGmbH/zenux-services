@@ -16,20 +16,14 @@
         </port>
         <scpiactive>1</scpiactive>
     </ethernet>
-    <i2c-systemctrl>
-        <device>
-            <node>/dev/i2c-0</node>
-        </device>
-        <adress>
-            <atmel>34</atmel>
-        </adress>
-    </i2c-systemctrl>
     <i2c>
         <device>
             <node>/dev/i2c-0</node>
         </device>
         <adress>
             <atmel>33</atmel>
+            <atmelsys>34</atmelsys>
+            <atmelemob>35</atmelemob>
             <clampmux>113</clampmux>
             <flash>80</flash>
             <clampflash>81</clampflash>

@@ -104,27 +104,6 @@
             </xs:complexType>
         </xs:element>
 
-        <xs:element name="i2c-systemctrl">
-            <xs:complexType>
-                <xs:sequence>
-                    <xs:element name="device">
-                        <xs:complexType>
-                            <xs:sequence>
-                                <xs:element name="node" type="nodetype"/>
-                            </xs:sequence>
-                        </xs:complexType>
-                    </xs:element>
-                    <xs:element name="adress">
-                        <xs:complexType>
-                            <xs:sequence>
-                                <xs:element name="atmel" type="i2cadresstype"/>
-                            </xs:sequence>
-                        </xs:complexType>
-                    </xs:element>
-                </xs:sequence>
-            </xs:complexType>
-        </xs:element>
-
         <xs:element name="i2c">
             <xs:complexType>
                 <xs:sequence>
@@ -139,6 +118,8 @@
                         <xs:complexType>
                             <xs:sequence>
                                 <xs:element name="atmel" type="i2cadresstype"/>
+                                <xs:element name="atmelsys" type="i2cadresstype"/>
+                                <xs:element name="atmelemob" type="i2cadresstype"/>
                                 <xs:element name="clampmux" type="i2cadresstype"/>
                                 <xs:element name="flash" type="i2cadresstype"/>
                                 <xs:element name="clampflash" type="i2cadresstype"/>
