@@ -1,13 +1,11 @@
 #include "sensesettings.h"
-#include <xmlsettings.h>
+#include <xmlconfigreader.h>
 
 cSenseSettings::cSenseSettings(Zera::XMLConfig::cReader *xmlread)
 {
     m_pXMLReader = xmlread;
-    SenseSystem::cChannelSettings *settings;
-    for (int i = 0; i < 6; i++)
-    {
-        m_ChannelSettingsList.append(settings = new SenseSystem::cChannelSettings);
+    for (int i = 0; i < 6; i++) {
+        m_ChannelSettingsList.append(new SenseSystem::cChannelSettings);
         m_ConfigXMLMap[QString("serviceconfig:resource:sense:m%1:alias1").arg(i)] = SenseSystem::cfg0Alias1 + i;
         m_ConfigXMLMap[QString("serviceconfig:resource:sense:m%1:alias2").arg(i)] = SenseSystem::cfg0Alias2 + i;
         m_ConfigXMLMap[QString("serviceconfig:resource:sense:m%1:ctrlchannel").arg(i)] = SenseSystem::cfg0ctrlchannel + i;
@@ -18,19 +16,16 @@ cSenseSettings::cSenseSettings(Zera::XMLConfig::cReader *xmlread)
     }
 }
 
-
 cSenseSettings::~cSenseSettings()
 {
-    for (int i = 0; i < m_ChannelSettingsList.count(); i++)
-        delete m_ChannelSettingsList.at(i);
+    for(auto channel : qAsConst(m_ChannelSettingsList))
+        delete channel;
 }
-
 
 QList<SenseSystem::cChannelSettings*> &cSenseSettings::getChannelSettings()
 {
     return m_ChannelSettingsList;
 }
-
 
 void cSenseSettings::configXMLInfo(QString key)
 {
@@ -38,41 +33,41 @@ void cSenseSettings::configXMLInfo(QString key)
         switch (m_ConfigXMLMap[key])
         {
         case SenseSystem::cfg0Alias1:
-            m_ChannelSettingsList.at(0)->m_sAlias[0] = m_pXMLReader->getValue(key);
+            m_ChannelSettingsList.at(0)->m_sAlias1 = m_pXMLReader->getValue(key);
             break;
         case SenseSystem::cfg1Alias1:
-            m_ChannelSettingsList.at(1)->m_sAlias[0] = m_pXMLReader->getValue(key);
+            m_ChannelSettingsList.at(1)->m_sAlias1 = m_pXMLReader->getValue(key);
             break;
         case SenseSystem::cfg2Alias1:
-            m_ChannelSettingsList.at(2)->m_sAlias[0] = m_pXMLReader->getValue(key);
+            m_ChannelSettingsList.at(2)->m_sAlias1 = m_pXMLReader->getValue(key);
             break;
         case SenseSystem::cfg3Alias1:
-            m_ChannelSettingsList.at(3)->m_sAlias[0] = m_pXMLReader->getValue(key);
+            m_ChannelSettingsList.at(3)->m_sAlias1 = m_pXMLReader->getValue(key);
             break;
         case SenseSystem::cfg4Alias1:
-            m_ChannelSettingsList.at(4)->m_sAlias[0] = m_pXMLReader->getValue(key);
+            m_ChannelSettingsList.at(4)->m_sAlias1 = m_pXMLReader->getValue(key);
             break;
         case SenseSystem::cfg5Alias1:
-            m_ChannelSettingsList.at(5)->m_sAlias[0] = m_pXMLReader->getValue(key);
+            m_ChannelSettingsList.at(5)->m_sAlias1 = m_pXMLReader->getValue(key);
             break;
 
         case SenseSystem::cfg0Alias2:
-            m_ChannelSettingsList.at(0)->m_sAlias[1] = m_pXMLReader->getValue(key);
+            m_ChannelSettingsList.at(0)->m_sAlias2 = m_pXMLReader->getValue(key);
             break;
         case SenseSystem::cfg1Alias2:
-            m_ChannelSettingsList.at(1)->m_sAlias[1] = m_pXMLReader->getValue(key);
+            m_ChannelSettingsList.at(1)->m_sAlias2 = m_pXMLReader->getValue(key);
             break;
         case SenseSystem::cfg2Alias2:
-            m_ChannelSettingsList.at(2)->m_sAlias[1] = m_pXMLReader->getValue(key);
+            m_ChannelSettingsList.at(2)->m_sAlias2 = m_pXMLReader->getValue(key);
             break;
         case SenseSystem::cfg3Alias2:
-            m_ChannelSettingsList.at(3)->m_sAlias[1] = m_pXMLReader->getValue(key);
+            m_ChannelSettingsList.at(3)->m_sAlias2 = m_pXMLReader->getValue(key);
             break;
         case SenseSystem::cfg4Alias2:
-            m_ChannelSettingsList.at(4)->m_sAlias[1] = m_pXMLReader->getValue(key);
+            m_ChannelSettingsList.at(4)->m_sAlias2 = m_pXMLReader->getValue(key);
             break;
         case SenseSystem::cfg5Alias2:
-            m_ChannelSettingsList.at(5)->m_sAlias[1] = m_pXMLReader->getValue(key);
+            m_ChannelSettingsList.at(5)->m_sAlias2 = m_pXMLReader->getValue(key);
             break;
 
         case SenseSystem::cfg0ctrlchannel:

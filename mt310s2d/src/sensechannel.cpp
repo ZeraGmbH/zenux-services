@@ -12,7 +12,7 @@ cSenseChannel::cSenseChannel(cSCPI* scpiinterface, QString description, QString 
     m_sUnit(unit)
 {
     m_sName = QString("m%1").arg(nr);
-    m_sAlias = cSettings->m_sAlias;
+    m_sAlias = cSettings->m_sAlias1;
     m_nCtrlChannel = cSettings->m_nCtrlChannel;
     m_nDspChannel = cSettings->m_nDspChannel;
     m_nOverloadBit = cSettings->m_nOverloadBit;
