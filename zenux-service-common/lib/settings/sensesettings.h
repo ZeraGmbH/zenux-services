@@ -43,6 +43,15 @@ namespace SenseSystem
         cfg6dspchannel,
         cfg7dspchannel,
 
+        cfg0pluggedbit,
+        cfg1pluggedbit,
+        cfg2pluggedbit,
+        cfg3pluggedbit,
+        cfg4pluggedbit,
+        cfg5pluggedbit,
+        cfg6pluggedbit,
+        cfg7pluggedbit,
+
         cfg0overloadbit,
         cfg1overloadbit,
         cfg2overloadbit,
@@ -67,6 +76,7 @@ namespace SenseSystem
         QString m_sAlias2;
         quint8 m_nCtrlChannel; // where to control the channel
         quint8 m_nDspChannel; // where to find the channel's sampled data
+        quint8 m_nPluggedBit; // plug in/out externals (as clamps) bitmask bitno
         qint8 m_nOverloadBit; // where to find overload condition in critical status
         bool avail; // is this channel available ?
     };
