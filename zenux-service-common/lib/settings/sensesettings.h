@@ -76,7 +76,7 @@ namespace SenseSystem
         QString m_sAlias2;
         quint8 m_nCtrlChannel; // where to control the channel
         quint8 m_nDspChannel; // where to find the channel's sampled data
-        quint8 m_nPluggedBit; // plug in/out externals (as clamps) bitmask bitno
+        qint8 m_nPluggedBit; // plug in/out externals (as clamps) bitmask bitno
         qint8 m_nOverloadBit; // where to find overload condition in critical status
         bool avail; // is this channel available ?
     };
@@ -89,9 +89,11 @@ public:
     cSenseSettings(Zera::XMLConfig::cReader *xmlread, int channelCount);
     virtual ~cSenseSettings();
     QList<SenseSystem::cChannelSettings*>& getChannelSettings();
+    qint8 getPluggedBit(int ctrlChannelNo);
 public slots:
     virtual void configXMLInfo(QString key);
 private:
+    SenseSystem::cChannelSettings* findChannelSetting(int ctrlChannelNo);
     QList<SenseSystem::cChannelSettings*> m_ChannelSettingsList;
 };
 
