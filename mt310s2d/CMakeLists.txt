@@ -41,21 +41,7 @@ set(HEADER
     src/mt310s2justdata.h
     )
 
-set(CONFIG_FILES
-    ${CMAKE_CURRENT_SOURCE_DIR}/configs/mt310s2d.xml
-)
-set(CONFIG_VALIDATOR
-    ${CMAKE_CURRENT_SOURCE_DIR}/configs/mt310s2d.xsd
-)
-
 SET_SERVICE_ENV(mt310s2d)
-
-# check for valid config files / display in qt-creator
-add_custom_target(mt310s2d-configs ALL
-    DEPENDS ${CONFIG_VALIDATOR} ${CONFIG_FILES}
-    SOURCES ${CONFIG_VALIDATOR} ${CONFIG_FILES}
-    COMMAND xmllint --noout --schema ${CONFIG_VALIDATOR} ${CONFIG_FILES}
-    )
 
 
 add_library(mt310s2d-lib STATIC
@@ -104,11 +90,6 @@ install(TARGETS mt310s2d
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
     )
 
-install(
-    FILES ${CONFIG_FILES} ${CONFIG_VALIDATOR}
-    DESTINATION ${CMAKE_INSTALL_SYSCONFDIR}/zera/mt310s2d
-    )
-
 if(${useSystemd})
     set(SYSTEMD_UNITS
         systemd/mt310s2d.service
@@ -125,5 +106,6 @@ if(${useSystemd})
         )
 endif()
 
+add_subdirectory(configs)
 add_subdirectory(testlib)
 add_subdirectory(tests)
