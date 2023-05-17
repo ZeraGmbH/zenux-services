@@ -27,21 +27,6 @@ set(HEADER
 
 SET_SERVICE_ENV(com5003d)
 
-set(CONFIG_FILES
-    ${CMAKE_CURRENT_SOURCE_DIR}/configs/com5003d.xml
-    )
-set(CONFIG_VALIDATOR
-    ${CMAKE_CURRENT_SOURCE_DIR}/configs/com5003d.xsd
-    )
-
-# check for valid config files / display in qt-creator
-add_custom_target(com5003d-configs ALL
-    DEPENDS ${CONFIG_VALIDATOR} ${CONFIG_FILES}
-    SOURCES ${CONFIG_VALIDATOR} ${CONFIG_FILES}
-    COMMAND xmllint --noout --schema ${CONFIG_VALIDATOR} ${CONFIG_FILES}
-    )
-
-
 add_library(com5003d-lib STATIC
     ${HEADER}
     ${SOURCES}
@@ -88,11 +73,6 @@ install(TARGETS com5003d
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
     )
 
-install(
-    FILES ${CONFIG_FILES} ${CONFIG_VALIDATOR}
-    DESTINATION ${CMAKE_INSTALL_SYSCONFDIR}/zera/com5003d
-    )
-
 if(${useSystemd})
     set(SYSTEMD_UNITS
         systemd/com5003d.service
@@ -109,4 +89,5 @@ if(${useSystemd})
         )
 endif()
 
+add_subdirectory(configs)
 add_subdirectory(tests)
