@@ -1,14 +1,6 @@
 #include "i2csettings.h"
 #include <xmlconfigreader.h>
 
-#define defaultI2CDeviceNode "/dev/i2c-0"
-#define defaultI2CAtmelAdress 0x21
-#define defaultI2CSysAtmelAdress 0x22
-#define defaultI2CEmobAtmelAdress 0x23
-#define defaultI2CFlashMuxAdress 0x71
-#define defaultI2CFlashAdress 0x50
-#define defaultI2CClampFlashAdr 0x51
-
 cI2CSettings::cI2CSettings(Zera::XMLConfig::cReader *xmlread)
 {
     m_pXMLReader = xmlread;
@@ -19,13 +11,6 @@ cI2CSettings::cI2CSettings(Zera::XMLConfig::cReader *xmlread)
     m_ConfigXMLMap["serviceconfig:connectivity:i2c:adress:clampmux"] = i2cSettings::SetFlashMuxAdr;
     m_ConfigXMLMap["serviceconfig:connectivity:i2c:adress:flash"] = i2cSettings::SetFlashAdr;
     m_ConfigXMLMap["serviceconfig:connectivity:i2c:adress:clampflash"] = i2cSettings::SetClampFlashAdr;
-    m_sDeviceNode = defaultI2CDeviceNode;
-    m_nAtmelSysAdr = defaultI2CSysAtmelAdress;
-    m_nAtmelEmob = defaultI2CEmobAtmelAdress;
-    m_nAtmelAdr = defaultI2CAtmelAdress;
-    m_nFlashMuxAdr = defaultI2CFlashMuxAdress;
-    m_nFlashAdr = defaultI2CFlashAdress;
-    m_nClampFlashAdr = defaultI2CClampFlashAdr;
 }
 
 quint8 cI2CSettings::getI2CAdress(i2cSettings::member member)
