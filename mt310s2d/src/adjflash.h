@@ -1,8 +1,8 @@
 #ifndef ADJFLASH_H
 #define ADJFLASH_H
 
-#include "i2cmuxer.h"
 #include "adjustmentstatusinterface.h"
+#include <i2cmuxerinterface.h>
 #include <QByteArray>
 #include <QString>
 #include <QDataStream>

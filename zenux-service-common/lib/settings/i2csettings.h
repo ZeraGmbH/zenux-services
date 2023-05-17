@@ -2,7 +2,6 @@
 #define I2CSETTINGS_H
 
 #include <xmlsettings.h>
-#include <i2cmuxer.h>
 #include <QObject>
 #include <QString>
 
