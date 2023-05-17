@@ -76,6 +76,12 @@
     </xs:restriction>
 </xs:simpleType>
 
+<xs:simpleType name="muxchanneltype">
+    <xs:restriction base="xs:integer">
+        <xs:maxInclusive value='7'/>
+        <xs:minInclusive value='-1'/>
+    </xs:restriction>
+</xs:simpleType>
 
 <xs:complexType name="connectivitytype">
     <xs:sequence>
@@ -168,6 +174,7 @@
         <xs:element name="ctrlchannel" type="ctrlchanneltype"/>
         <xs:element name="dspchannel" type="dspinputchanneltype"/>
         <xs:element name="pluggedbit" type="ctrlbittype" minOccurs="0" maxOccurs="1"/>
+        <xs:element name="muxchannel" type="muxchanneltype" minOccurs="0" maxOccurs="1"/>
         <xs:element name="overloadbit" type="ctrlbittype"/>
         <xs:element name="avail" type="xs:boolean"/>
     </xs:sequence>

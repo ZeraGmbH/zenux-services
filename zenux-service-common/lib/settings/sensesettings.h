@@ -52,6 +52,15 @@ namespace SenseSystem
         cfg6pluggedbit,
         cfg7pluggedbit,
 
+        cfg0muxchannelno,
+        cfg1muxchannelno,
+        cfg2muxchannelno,
+        cfg3muxchannelno,
+        cfg4muxchannelno,
+        cfg5muxchannelno,
+        cfg6muxchannelno,
+        cfg7muxchannelno,
+
         cfg0overloadbit,
         cfg1overloadbit,
         cfg2overloadbit,
@@ -72,13 +81,14 @@ namespace SenseSystem
     };
     struct cChannelSettings // what we want to get configured
     {
-        QString m_sAlias1; // the alias names for measuring channels
+        QString m_sAlias1;     // the alias names for measuring channels
         QString m_sAlias2;
         quint8 m_nCtrlChannel; // where to control the channel
-        quint8 m_nDspChannel; // where to find the channel's sampled data
-        qint8 m_nPluggedBit; // plug in/out externals (as clamps) bitmask bitno
-        qint8 m_nOverloadBit; // where to find overload condition in critical status
-        bool avail; // is this channel available ?
+        quint8 m_nDspChannel;  // where to find the channel's sampled data
+        qint8 m_nPluggedBit;   // plug in/out externals (as clamps) bitmask bitno
+        qint8 m_nMuxChannelNo; // I2c mulpiplexer channel (-1 if not multiplexed)
+        qint8 m_nOverloadBit;  // where to find overload condition in critical status
+        bool avail;            // is this channel available ?
     };
 }
 
@@ -90,6 +100,7 @@ public:
     virtual ~cSenseSettings();
     QList<SenseSystem::cChannelSettings*>& getChannelSettings();
     qint8 getPluggedBit(int ctrlChannelNo);
+    qint8 getMuxChannelNo(int ctrlChannelNo);
 public slots:
     virtual void configXMLInfo(QString key);
 private:

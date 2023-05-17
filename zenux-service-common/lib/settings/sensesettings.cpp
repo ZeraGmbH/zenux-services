@@ -11,6 +11,7 @@ cSenseSettings::cSenseSettings(Zera::XMLConfig::cReader *xmlread, int channelCou
         m_ConfigXMLMap[QString("serviceconfig:resource:sense:m%1:ctrlchannel").arg(i)] = SenseSystem::cfg0ctrlchannel + i;
         m_ConfigXMLMap[QString("serviceconfig:resource:sense:m%1:dspchannel").arg(i)] = SenseSystem::cfg0dspchannel + i;
         m_ConfigXMLMap[QString("serviceconfig:resource:sense:m%1:pluggedbit").arg(i)] = SenseSystem::cfg0pluggedbit + i;
+        m_ConfigXMLMap[QString("serviceconfig:resource:sense:m%1:muxchannel").arg(i)] = SenseSystem::cfg0muxchannelno + i;
         m_ConfigXMLMap[QString("serviceconfig:resource:sense:m%1:overloadbit").arg(i)] = SenseSystem::cfg0overloadbit + i;
 
         m_ConfigXMLMap[QString("serviceconfig:resource:sense:m%1:avail").arg(i)] = SenseSystem::cfg0avail + i;
@@ -35,6 +36,15 @@ qint8 cSenseSettings::getPluggedBit(int ctrlChannelNo)
     if(channel)
         bitNo = channel->m_nPluggedBit;
     return bitNo;
+}
+
+qint8 cSenseSettings::getMuxChannelNo(int ctrlChannelNo)
+{
+    qint8 muxChannelNo = -1;
+    SenseSystem::cChannelSettings* channel = findChannelSetting(ctrlChannelNo);
+    if(channel)
+        muxChannelNo = channel->m_nMuxChannelNo;
+    return muxChannelNo;
 }
 
 void cSenseSettings::configXMLInfo(QString key)
@@ -165,6 +175,31 @@ void cSenseSettings::configXMLInfo(QString key)
             break;
         case SenseSystem::cfg7pluggedbit:
             m_ChannelSettingsList.at(7)->m_nPluggedBit  =  m_pXMLReader->getValue(key).toInt();
+            break;
+
+        case SenseSystem::cfg0muxchannelno:
+            m_ChannelSettingsList.at(0)->m_nMuxChannelNo =  m_pXMLReader->getValue(key).toInt();
+            break;
+        case SenseSystem::cfg1muxchannelno:
+            m_ChannelSettingsList.at(1)->m_nMuxChannelNo =  m_pXMLReader->getValue(key).toInt();
+            break;
+        case SenseSystem::cfg2muxchannelno:
+            m_ChannelSettingsList.at(2)->m_nMuxChannelNo =  m_pXMLReader->getValue(key).toInt();
+            break;
+        case SenseSystem::cfg3muxchannelno:
+            m_ChannelSettingsList.at(3)->m_nMuxChannelNo =  m_pXMLReader->getValue(key).toInt();
+            break;
+        case SenseSystem::cfg4muxchannelno:
+            m_ChannelSettingsList.at(4)->m_nMuxChannelNo =  m_pXMLReader->getValue(key).toInt();
+            break;
+        case SenseSystem::cfg5muxchannelno:
+            m_ChannelSettingsList.at(5)->m_nMuxChannelNo =  m_pXMLReader->getValue(key).toInt();
+            break;
+        case SenseSystem::cfg6muxchannelno:
+            m_ChannelSettingsList.at(6)->m_nMuxChannelNo =  m_pXMLReader->getValue(key).toInt();
+            break;
+        case SenseSystem::cfg7muxchannelno:
+            m_ChannelSettingsList.at(7)->m_nMuxChannelNo =  m_pXMLReader->getValue(key).toInt();
             break;
 
         case SenseSystem::cfg0overloadbit:

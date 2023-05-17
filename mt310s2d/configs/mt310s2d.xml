@@ -48,6 +48,7 @@
             <ctrlchannel>1</ctrlchannel>
             <dspchannel>0</dspchannel>
             <pluggedbit>-1</pluggedbit>
+            <muxchannel>-1</muxchannel>
             <overloadbit>-1</overloadbit>
             <avail>true</avail>
         </m0>
@@ -56,6 +57,7 @@
             <ctrlchannel>2</ctrlchannel>
             <dspchannel>2</dspchannel>
             <pluggedbit>-1</pluggedbit>
+            <muxchannel>-1</muxchannel>
             <overloadbit>-1</overloadbit>
             <avail>true</avail>
         </m1>
@@ -64,6 +66,7 @@
             <ctrlchannel>3</ctrlchannel>
             <dspchannel>4</dspchannel>
             <pluggedbit>-1</pluggedbit>
+            <muxchannel>-1</muxchannel>
             <overloadbit>-1</overloadbit>
             <avail>true</avail>
         </m2>
@@ -72,6 +75,7 @@
             <ctrlchannel>5</ctrlchannel>
             <dspchannel>1</dspchannel>
             <pluggedbit>4</pluggedbit>
+            <muxchannel>1</muxchannel>
             <overloadbit>0</overloadbit>
             <avail>true</avail>
         </m3>
@@ -80,6 +84,7 @@
             <ctrlchannel>6</ctrlchannel>
             <dspchannel>3</dspchannel>
             <pluggedbit>5</pluggedbit>
+            <muxchannel>2</muxchannel>
             <overloadbit>1</overloadbit>
             <avail>true</avail>
         </m4>
@@ -88,6 +93,7 @@
             <ctrlchannel>7</ctrlchannel>
             <dspchannel>5</dspchannel>
             <pluggedbit>6</pluggedbit>
+            <muxchannel>3</muxchannel>
             <overloadbit>2</overloadbit>
             <avail>true</avail>
         </m5>
@@ -95,6 +101,7 @@
             <alias1>UAUX</alias1>
             <ctrlchannel>4</ctrlchannel>
             <dspchannel>6</dspchannel>
+            <muxchannel>-1</muxchannel>
             <overloadbit>-1</overloadbit>
             <avail>true</avail>
         </m6>
@@ -103,6 +110,7 @@
             <ctrlchannel>8</ctrlchannel>
             <dspchannel>7</dspchannel>
             <pluggedbit>7</pluggedbit>
+            <muxchannel>4</muxchannel>
             <overloadbit>3</overloadbit>
             <avail>true</avail>
         </m7>
