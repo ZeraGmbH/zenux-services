@@ -8,7 +8,6 @@ QTEST_MAIN(test_sec1000_config_load)
 void test_sec1000_config_load::fileFound()
 {
     QFile tmpXmlConfigFile(QStringLiteral(CONFIG_SOURCES_SEC1000D) + "/" + "sec1000d.xml");
-    qInfo("%s", qPrintable(tmpXmlConfigFile.fileName()));
     QVERIFY(tmpXmlConfigFile.exists());
 }
 
