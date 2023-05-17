@@ -24,27 +24,9 @@ cSenseSettings::~cSenseSettings()
         delete channel;
 }
 
-QList<SenseSystem::cChannelSettings*> &cSenseSettings::getChannelSettings()
+const QList<SenseSystem::cChannelSettings*> &cSenseSettings::getChannelSettings() const
 {
     return m_ChannelSettingsList;
-}
-
-qint8 cSenseSettings::getPluggedBit(int ctrlChannelNo)
-{
-    qint8 bitNo = -1;
-    SenseSystem::cChannelSettings* channel = findChannelSetting(ctrlChannelNo);
-    if(channel)
-        bitNo = channel->m_nPluggedBit;
-    return bitNo;
-}
-
-qint8 cSenseSettings::getMuxChannelNo(int ctrlChannelNo)
-{
-    qint8 muxChannelNo = -1;
-    SenseSystem::cChannelSettings* channel = findChannelSetting(ctrlChannelNo);
-    if(channel)
-        muxChannelNo = channel->m_nMuxChannelNo;
-    return muxChannelNo;
 }
 
 void cSenseSettings::configXMLInfo(QString key)
@@ -253,16 +235,4 @@ void cSenseSettings::configXMLInfo(QString key)
             break;
         }
     }
-}
-
-SenseSystem::cChannelSettings *cSenseSettings::findChannelSetting(int ctrlChannelNo)
-{
-    SenseSystem::cChannelSettings *setting = nullptr;
-    for(auto channelSetting : qAsConst(m_ChannelSettingsList)) {
-        if(channelSetting->m_nCtrlChannel == ctrlChannelNo) {
-            setting = channelSetting;
-            break;
-        }
-    }
-    return setting;
 }

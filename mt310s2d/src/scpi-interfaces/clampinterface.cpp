@@ -26,69 +26,70 @@ void cClampInterface::initSCPIConnection(QString leadingNodes)
     addDelegate(QString("%1SYSTEM:ADJUSTMENT:CLAMP").arg(leadingNodes),"XML",SCPI::isQuery | SCPI::isCmdwP, m_pSCPIInterface, ClampSystem::cmdClampImportExport);
 }
 
+void cClampInterface::handleClampConnected(QString channelName, const SenseSystem::cChannelSettings *chSettings, quint16 bmask, int phaseCount)
+{
+    int ctrlChannel = chSettings->m_nCtrlChannel;
+    I2cMuxerInterface::Ptr i2cMuxer = I2cMultiplexerFactory::createPCA9547Muxer(m_pMyServer->m_pI2CSettings->getDeviceNode(),
+                                                                                m_pMyServer->m_pI2CSettings->getI2CAdress(i2cSettings::flashmux),
+                                                                                chSettings->m_nMuxChannelNo);
+    I2cMuxerScopedOnOff i2cMuxOnOff(i2cMuxer);
+    QString i2cDevNode = m_pMyServer->m_pI2CSettings->getDeviceNode();
+    int i2cAddress = m_pMyServer->m_pI2CSettings->getI2CAdress(i2cSettings::clampflash);
+    if(I2cPing(i2cDevNode, i2cAddress)) { // ignore other than flash
+        m_nClampStatus |= bmask;
+        int ctlChannelSecondary = ctrlChannel-phaseCount; // assumption - hope we find better
+        cClamp* clamp = new cClamp(m_pMyServer, channelName, ctrlChannel, i2cMuxer, ctlChannelSecondary);
+        m_clampHash[channelName] = clamp;
+        qInfo("Add clamp channel \"%s\"/%i", qPrintable(channelName), ctrlChannel);
+        QString channelNameSecondary = m_pSenseInterface->getChannelSystemName(ctlChannelSecondary);
+        if(!m_clampHash[channelName]->getChannelNameSecondary().isEmpty()) {
+            m_clampSecondarySet.insert(channelNameSecondary);
+            qInfo("Added voltage clamp channel \"%s\"/%i", qPrintable(channelNameSecondary), ctlChannelSecondary);
+        }
+        generateAndNotifyClampChannelList();
+    }
+    else
+        qInfo("Not a clamp channel \"%s\"/%i", qPrintable(channelName), ctrlChannel);
+}
+
+void cClampInterface::handleClampDisconnected(QString channelName, const SenseSystem::cChannelSettings *chSettings, quint16 bmask)
+{
+    int ctrlChannel = chSettings->m_nCtrlChannel;
+    if (m_clampHash.contains(channelName)) {
+        m_nClampStatus &= (~bmask);
+        cClamp* clamp = m_clampHash.take(channelName);
+        qInfo("Remove clamp channel \"%s\"/%i", qPrintable(channelName), ctrlChannel);
+        QString channelNameSecondary = clamp->getChannelNameSecondary();
+        if(!channelNameSecondary.isEmpty())
+            m_clampSecondarySet.remove(channelNameSecondary);
+        generateAndNotifyClampChannelList();
+        delete clamp;
+    }
+    else
+        qWarning("Clamp \"%s\"/%i to remove not found!", qPrintable(channelName), ctrlChannel);
+}
+
 void cClampInterface::actualizeClampStatus(quint16 devConnectedMask)
 {
     quint16 clChange = devConnectedMask ^ m_nClampStatus; // now we know which clamps changed
-    constexpr int constFirstChannelOffset = 1;
-    constexpr int constVoltageAndChannelCount = 4; // 1/2/3/AUX
-    for (int ctrlChannel=constFirstChannelOffset; ctrlChannel <= 2*constVoltageAndChannelCount; ++ctrlChannel) { // U1/U2/U3/UAUX / I1/I2/I3/IAUX
-        qint8 plugBitNo = m_pMyServer->m_pSenseSettings->getPluggedBit(ctrlChannel);
-        quint16 bmask = 0;
-        if(plugBitNo >= 0)
-            bmask = (1 << plugBitNo);
-        if ((clChange & bmask) > 0) {
-            QString channelName = m_pSenseInterface->getChannelSystemName(ctrlChannel);
-            if(channelName.isEmpty())
-                continue;
-            if ((m_nClampStatus & bmask) == 0) {
-                // see ADW 5859 schematics: Channels are
-                // 0: not connected
-                // 1. IL1
-                // 2. IL2
-                // 3. IL3
-                // 4. IAUX
-                int muxChannel = ctrlChannel-constVoltageAndChannelCount; // ctrlChannel starts on 1!!!
-                I2cMuxerInterface::Ptr i2cMuxer = I2cMultiplexerFactory::createPCA9547Muxer(m_pMyServer->m_pI2CSettings->getDeviceNode(),
-                                                                                            m_pMyServer->m_pI2CSettings->getI2CAdress(i2cSettings::flashmux),
-                                                                                            muxChannel);
-                I2cMuxerScopedOnOff i2cMuxOnOff(i2cMuxer);
-                QString i2cDevNode = m_pMyServer->m_pI2CSettings->getDeviceNode();
-                int i2cAddress = m_pMyServer->m_pI2CSettings->getI2CAdress(i2cSettings::clampflash);
+    const auto channelsSettings = m_pMyServer->m_pSenseSettings->getChannelSettings();
+    for(const auto channelSettings : channelsSettings) {
+        int ctrlChannel = channelSettings->m_nCtrlChannel;
 
-                if(I2cPing(i2cDevNode, i2cAddress)) { // ignore other than flash
-                    // a clamp is connected perhaps it was actually connected
-                    m_nClampStatus |= bmask;
-                    int ctlChannelSecondary = ctrlChannel-constVoltageAndChannelCount;
-                    cClamp* clamp = new cClamp(m_pMyServer, channelName, ctrlChannel, i2cMuxer, ctlChannelSecondary);
-                    m_clampHash[channelName] = clamp;
-                    qInfo("Add clamp channel \"%s\"/%i", qPrintable(channelName), ctrlChannel);
-                    QString channelNameSecondary = m_pSenseInterface->getChannelSystemName(ctlChannelSecondary);
-                    if(!m_clampHash[channelName]->getChannelNameSecondary().isEmpty()) {
-                        m_clampSecondarySet.insert(channelNameSecondary);
-                        qInfo("Added voltage clamp channel \"%s\"/%i", qPrintable(channelNameSecondary), ctlChannelSecondary);
-                    }
-                    generateAndNotifyClampChannelList();
-                }
-                else
-                    qInfo("Not a clamp channel \"%s\"/%i", qPrintable(channelName), ctrlChannel);
-            }
-            else {
-                // a clamp is not connected
-                if (m_clampHash.contains(channelName)) {
-                    // if we already have a clamp on this place it was actually disconnected
-                    m_nClampStatus &= (~bmask);
-                    cClamp* clamp = m_clampHash.take(channelName);
-                    qInfo("Remove clamp channel \"%s\"/%i", qPrintable(channelName), ctrlChannel);
-                    QString channelNameSecondary = clamp->getChannelNameSecondary();
-                    if(!channelNameSecondary.isEmpty()) {
-                        m_clampSecondarySet.remove(channelNameSecondary);
-                    }
-                    generateAndNotifyClampChannelList();
-                    delete clamp;
-                }
-                else
-                    qWarning("Clamp \"%s\"/%i to remove not found!", qPrintable(channelName), ctrlChannel);
-            }
+        QString channelName = m_pSenseInterface->getChannelSystemName(ctrlChannel); // sense interface can change name (REF)!
+        if(channelName.isEmpty())
+            continue;
+
+        qint8 plugBitNo = channelSettings->m_nPluggedBit;
+        if(plugBitNo < 0)
+            continue;
+
+        quint16 bmask = (1 << plugBitNo);
+        if ((clChange & bmask) > 0) {
+            if ((m_nClampStatus & bmask) == 0)
+                handleClampConnected(channelName, channelSettings, bmask, channelsSettings.size()/2);
+            else
+                handleClampDisconnected(channelName, channelSettings, bmask);
         }
     }
 }
