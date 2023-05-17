@@ -24,19 +24,7 @@ set(HEADER
     inputsettings.h 
     )
 
-set(CONFIG_FILES
-    ${CMAKE_CURRENT_SOURCE_DIR}/configs/sec1000d.xml
-)
-set(CONFIG_VALIDATOR
-    ${CMAKE_CURRENT_SOURCE_DIR}/configs/sec1000d.xsd
-)
-
-# check for valid config files / display in qt-creator
-add_custom_target(sec1000d-configs ALL
-    DEPENDS ${CONFIG_VALIDATOR} ${CONFIG_FILES}
-    SOURCES ${CONFIG_VALIDATOR} ${CONFIG_FILES}
-    COMMAND xmllint --noout --schema ${CONFIG_VALIDATOR} ${CONFIG_FILES}
-    )
+SET_SERVICE_ENV(sec1000d)
 
 add_library(sec1000d-lib STATIC
     ${HEADER}
@@ -78,11 +66,6 @@ install(TARGETS sec1000d
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
     )
 
-install(
-    FILES ${CONFIG_FILES} ${CONFIG_VALIDATOR}
-    DESTINATION ${CMAKE_INSTALL_SYSCONFDIR}/zera/sec1000d
-    )
-
 if(${useSystemd})
     set(SYSTEMD_UNITS
         systemd/sec1000d.service
@@ -99,3 +82,4 @@ if(${useSystemd})
         )
 endif()
 
+add_subdirectory(configs)
