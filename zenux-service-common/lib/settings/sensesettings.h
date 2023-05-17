@@ -98,13 +98,10 @@ class cSenseSettings : public XMLSettings
 public:
     cSenseSettings(Zera::XMLConfig::cReader *xmlread, int channelCount);
     virtual ~cSenseSettings();
-    QList<SenseSystem::cChannelSettings*>& getChannelSettings();
-    qint8 getPluggedBit(int ctrlChannelNo);
-    qint8 getMuxChannelNo(int ctrlChannelNo);
+    const QList<SenseSystem::cChannelSettings*>& getChannelSettings() const;
 public slots:
     virtual void configXMLInfo(QString key);
 private:
-    SenseSystem::cChannelSettings* findChannelSetting(int ctrlChannelNo);
     QList<SenseSystem::cChannelSettings*> m_ChannelSettingsList;
 };
 

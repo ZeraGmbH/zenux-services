@@ -28,7 +28,6 @@ public:
     cClampInterface(cMT310S2dServer *server);
     virtual void initSCPIConnection(QString leadingNodes) override;
     void actualizeClampStatus(quint16 devConnectedMask);
-
 protected:
     void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
 private:
@@ -36,6 +35,8 @@ private:
     QString readClampChannelCatalog(QString& sInput);
     QString writeAllClamps(QString& sInput);
     QString importExportAllClamps(QString& sInput);
+    void handleClampDisconnected(QString channelName, const SenseSystem::cChannelSettings *chSettings, quint16 bmask);
+    void handleClampConnected(QString channelName, const SenseSystem::cChannelSettings *chSettings, quint16 bmask, int phaseCount);
 
     cMT310S2dServer *m_pMyServer;
     cSenseInterface *m_pSenseInterface;
