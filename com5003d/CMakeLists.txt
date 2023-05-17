@@ -25,6 +25,8 @@ set(HEADER
     adjustment.h
     )
 
+SET_SERVICE_ENV(com5003d)
+
 set(CONFIG_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/configs/com5003d.xml
     )
@@ -106,3 +108,5 @@ if(${useSystemd})
         DESTINATION ${SYSTEMD_UNIT_INSTALL_PATH}
         )
 endif()
+
+add_subdirectory(tests)
