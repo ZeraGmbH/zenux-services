@@ -83,3 +83,4 @@ if(${useSystemd})
 endif()
 
 add_subdirectory(configs)
+add_subdirectory(tests)
