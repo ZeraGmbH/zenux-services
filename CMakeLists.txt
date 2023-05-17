@@ -31,6 +31,22 @@ if(${useSystemd})
     get_filename_component(SYSTEMD_UNIT_INSTALL_PATH "${CMAKE_INSTALL_PREFIX}/../lib/systemd/system" ABSOLUTE)
 endif()
 
+macro(SET_SERVICE_ENV SERVICE_NAME)
+    set(SERVICE_CONFIG_PATH "${CMAKE_CURRENT_SOURCE_DIR}/configs")
+
+    # Pass source paths to configs for tests. This is module-global to allow e.g
+    # scpimodule running tests with other modules
+    string(TOUPPER ${SERVICE_NAME} SERVICE_NAME_UPPER)
+    add_compile_definitions(CONFIG_SOURCES_${SERVICE_NAME_UPPER}="${SERVICE_CONFIG_PATH}")
+
+    # xml-schema resources are required by modules and tests. If we put resource into
+    # our library both would need some call of Q_INIT_RESOURCE. So publish resource
+    # location and compile in where needed.
+
+    # xsd are (not yet) inresource
+    #set(XML_SCHEMA_RESOURCE_${SERVICE_NAME} ${SERVICE_CONFIG_PATH}/xml-schema.qrc)
+endmacro()
+
 enable_testing()
 # Inspired by
 # https://github.com/KDAB/kdabtv/blob/master/Qt-Widgets-and-more/UnitTests/Tests/CMakeLists.txt
