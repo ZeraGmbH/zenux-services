@@ -21,6 +21,7 @@ add_custom_target(zdsp1d-configs ALL
     COMMAND xmllint --noout --schema ${CONFIG_VALIDATOR} ${CONFIG_FILES}
     )
 
+SET_SERVICE_ENV(zdsp1d)
 
 add_library(zdsp1d-lib STATIC
     ${HEADER}
@@ -84,3 +85,5 @@ if(${useSystemd})
         DESTINATION ${SYSTEMD_UNIT_INSTALL_PATH}
         )
 endif()
+
+add_subdirectory(tests)
