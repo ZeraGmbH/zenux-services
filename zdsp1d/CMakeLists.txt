@@ -7,20 +7,6 @@ file(GLOB HEADER
     *.h  
     )
 
-set(CONFIG_FILES
-    ${CMAKE_CURRENT_SOURCE_DIR}/configs/zdsp1d.xml
-)
-set(CONFIG_VALIDATOR
-    ${CMAKE_CURRENT_SOURCE_DIR}/configs/zdsp1d.xsd
-)
-
-# check for valid config files / display in qt-creator
-add_custom_target(zdsp1d-configs ALL
-    DEPENDS ${CONFIG_VALIDATOR} ${CONFIG_FILES}
-    SOURCES ${CONFIG_VALIDATOR} ${CONFIG_FILES}
-    COMMAND xmllint --noout --schema ${CONFIG_VALIDATOR} ${CONFIG_FILES}
-    )
-
 SET_SERVICE_ENV(zdsp1d)
 
 add_library(zdsp1d-lib STATIC
@@ -65,11 +51,6 @@ install(TARGETS zdsp1d
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
     )
 
-install(
-    FILES ${CONFIG_FILES} ${CONFIG_VALIDATOR}
-    DESTINATION ${CMAKE_INSTALL_SYSCONFDIR}/zera/zdsp1d
-    )
-
 if(${useSystemd})
     set(SYSTEMD_UNITS
         systemd/zdsp1d.service
@@ -86,4 +67,5 @@ if(${useSystemd})
         )
 endif()
 
+add_subdirectory(configs)
 add_subdirectory(tests)
