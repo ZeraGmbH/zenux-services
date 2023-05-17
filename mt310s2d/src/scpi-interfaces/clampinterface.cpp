@@ -32,7 +32,10 @@ void cClampInterface::actualizeClampStatus(quint16 devConnectedMask)
     constexpr int constFirstChannelOffset = 1;
     constexpr int constVoltageAndChannelCount = 4; // 1/2/3/AUX
     for (int ctrlChannel=constFirstChannelOffset; ctrlChannel <= 2*constVoltageAndChannelCount; ++ctrlChannel) { // U1/U2/U3/UAUX / I1/I2/I3/IAUX
-        quint16 bmask = 1 << (ctrlChannel-constFirstChannelOffset);
+        qint8 plugBitNo = m_pMyServer->m_pSenseSettings->getPluggedBit(ctrlChannel);
+        quint16 bmask = 0;
+        if(plugBitNo >= 0)
+            bmask = (1 << plugBitNo);
         if ((clChange & bmask) > 0) {
             QString channelName = m_pSenseInterface->getChannelSystemName(ctrlChannel);
             if(channelName.isEmpty())
