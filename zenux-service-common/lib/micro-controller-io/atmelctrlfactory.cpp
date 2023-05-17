@@ -6,7 +6,7 @@ std::function<AtmelCommonVersionsPtr(QString, quint8, quint8, quint8, quint8)> A
     return std::make_shared<AtmelEmobCtrl>(devnode, adrCtrl, adrMux, ctrlChannel, debuglevel);
 };
 
-std::shared_ptr<AtmelCommonVersions> AtmelCtrlFactory::createEmobCtrl(QString devnode, quint8 adrCtrl, quint8 adrMux, quint8 muxChannel, quint8 debuglevel)
+AtmelCommonVersionsPtr AtmelCtrlFactory::createEmobCtrl(QString devnode, quint8 adrCtrl, quint8 adrMux, quint8 muxChannel, quint8 debuglevel)
 {
     return m_emobCreateFunction(devnode, adrCtrl, adrMux, muxChannel, debuglevel);
 }
