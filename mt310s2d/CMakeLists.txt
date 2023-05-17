@@ -48,6 +48,8 @@ set(CONFIG_VALIDATOR
     ${CMAKE_CURRENT_SOURCE_DIR}/configs/mt310s2d.xsd
 )
 
+SET_SERVICE_ENV(mt310s2d)
+
 # check for valid config files / display in qt-creator
 add_custom_target(mt310s2d-configs ALL
     DEPENDS ${CONFIG_VALIDATOR} ${CONFIG_FILES}

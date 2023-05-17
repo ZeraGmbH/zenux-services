@@ -20,4 +20,5 @@ target_link_libraries(senserangetesttemplate
 SETUP_TESTS(
     test_senserange
     test_accumulatorinterface
+    test_mt310s2_config_load
     )
