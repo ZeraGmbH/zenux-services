@@ -8,7 +8,6 @@ QTEST_MAIN(test_com5003_config_load)
 void test_com5003_config_load::fileFound()
 {
     QFile tmpXmlConfigFile(QStringLiteral(CONFIG_SOURCES_COM5003D) + "/" + "com5003d.xml");
-    qInfo("%s", qPrintable(tmpXmlConfigFile.fileName()));
     QVERIFY(tmpXmlConfigFile.exists());
 }
 
