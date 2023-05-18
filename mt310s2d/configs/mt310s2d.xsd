@@ -173,7 +173,7 @@
         <xs:element name="alias1" type="xs:string"/>
         <xs:element name="ctrlchannel" type="ctrlchanneltype"/>
         <xs:element name="dspchannel" type="dspinputchanneltype"/>
-        <xs:element name="pluggedbit" type="ctrlbittype" minOccurs="0" maxOccurs="1"/>
+        <xs:element name="pluggedbit" type="ctrlbittype"/>
         <xs:element name="muxchannel" type="muxchanneltype" minOccurs="0" maxOccurs="1"/>
         <xs:element name="overloadbit" type="ctrlbittype"/>
         <xs:element name="avail" type="xs:boolean"/>
