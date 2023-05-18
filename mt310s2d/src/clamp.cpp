@@ -33,12 +33,12 @@ cClamp::cClamp() :
 
 cClamp::cClamp(cMT310S2dServer *server, QString channelName, quint8 ctrlChannel, I2cMuxerInterface::Ptr i2cMuxer, quint8 ctrlChannelSecondary) :
     cAdjFlash(server->m_pI2CSettings->getDeviceNode(),
-              server->m_pI2CSettings->getI2CAdress(i2cSettings::clampflash),
+              server->m_pI2CSettings->getI2CAdress(i2cSettings::clampFlashI2cAddress),
               i2cMuxer),
     ScpiConnection(server->getSCPIInterface()),
     m_pSenseInterface(server->m_pSenseInterface),
     m_sChannelName(channelName),
-    m_i2cMuxAdress(server->m_pI2CSettings->getI2CAdress(i2cSettings::flashmux)),
+    m_i2cMuxAdress(server->m_pI2CSettings->getI2CAdress(i2cSettings::muxerI2cAddress)),
     m_nCtrlChannel(ctrlChannel),
     m_nCtrlChannelSecondary(ctrlChannelSecondary)
 {

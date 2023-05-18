@@ -9,12 +9,12 @@ namespace i2cSettings
 {
 enum member
 {
-    atmel,
-    atmelsys,
-    atmelemob,
-    flashmux,
-    flash,
-    clampflash
+    relaisCtrlI2cAddress,
+    sysCtrlI2cAddress,
+    emobCtrlI2cAddress,
+    muxerI2cAddress,
+    flashlI2cAddress,
+    clampFlashI2cAddress
 };
 
 enum configstate
