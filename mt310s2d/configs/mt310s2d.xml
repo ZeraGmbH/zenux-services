@@ -101,6 +101,7 @@
             <alias1>UAUX</alias1>
             <ctrlchannel>4</ctrlchannel>
             <dspchannel>6</dspchannel>
+            <pluggedbit>-1</pluggedbit>
             <muxchannel>-1</muxchannel>
             <overloadbit>-1</overloadbit>
             <avail>true</avail>
