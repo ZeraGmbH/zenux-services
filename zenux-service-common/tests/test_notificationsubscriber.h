@@ -2,7 +2,6 @@
 #define TEST_NOTIFICATIONSUBSCRIBER_H
 
 #include "scpinotificationsubscriberhandler.h"
-#include <QObject>
 #include <memory>
 
 class test_notificationsubscriber: public QObject

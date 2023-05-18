@@ -1,7 +1,6 @@
 #ifndef ZDSP1D_H
 #define ZDSP1D_H
 
-#include <QObject>
 #include <QList>
 #include <QString>
 #include <QStringList>

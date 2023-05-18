@@ -7,7 +7,6 @@
 #include "foutsettings.h"
 #include "accumulatorinterface.h"
 #include <memory>
-#include <QObject>
 
 class test_serverunregisternotifier : public QObject
 {

@@ -4,7 +4,6 @@
 #include "scpiconnection.h"
 #include "ecalcsettings.h"
 #include "notificationvalue.h"
-#include <QObject>
 #include <QList>
 #include <QByteArray>
 

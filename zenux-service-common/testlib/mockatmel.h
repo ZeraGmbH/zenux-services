@@ -2,7 +2,6 @@
 #define MOCKATMEL_H
 
 #include <timertemplateqt.h>
-#include <QObject>
 #include <atmelpermissiontemplate.h>
 
 class MockAtmel : public AtmelPermissionTemplate, public QObject
