@@ -6,4 +6,5 @@ SETUP_TESTS(
     test_authorizationnotifier
     test_notificationsubscriber
     test_serverunregisternotifier
+    test_hotpluggablecontrollercontainer
     )
