@@ -7,8 +7,6 @@ file(GLOB HEADER
     *.h  
     )
 
-SET_SERVICE_ENV(zdsp1d)
-
 add_library(zdsp1d-lib STATIC
     ${HEADER}
     ${SOURCES}
