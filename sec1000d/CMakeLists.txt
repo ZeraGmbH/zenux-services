@@ -24,8 +24,6 @@ set(HEADER
     inputsettings.h 
     )
 
-SET_SERVICE_ENV(sec1000d)
-
 add_library(sec1000d-lib STATIC
     ${HEADER}
     ${SOURCES}

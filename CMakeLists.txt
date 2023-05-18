@@ -32,7 +32,7 @@ if(${useSystemd})
 endif()
 
 macro(SET_SERVICE_ENV SERVICE_NAME)
-    set(SERVICE_CONFIG_PATH "${CMAKE_CURRENT_SOURCE_DIR}/configs")
+    set(SERVICE_CONFIG_PATH "${CMAKE_CURRENT_SOURCE_DIR}/${SERVICE_NAME}/configs")
 
     # Pass source paths to configs for tests. This is module-global to allow e.g
     # scpimodule running tests with other modules
@@ -46,6 +46,11 @@ macro(SET_SERVICE_ENV SERVICE_NAME)
     # xsd are (not yet) inresource
     #set(XML_SCHEMA_RESOURCE_${SERVICE_NAME} ${SERVICE_CONFIG_PATH}/xml-schema.qrc)
 endmacro()
+
+SET_SERVICE_ENV(com5003d)
+SET_SERVICE_ENV(mt310s2d)
+SET_SERVICE_ENV(sec1000d)
+SET_SERVICE_ENV(zdsp1d)
 
 enable_testing()
 # Inspired by

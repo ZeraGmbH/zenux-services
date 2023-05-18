@@ -25,8 +25,6 @@ set(HEADER
     adjustment.h
     )
 
-SET_SERVICE_ENV(com5003d)
-
 add_library(com5003d-lib STATIC
     ${HEADER}
     ${SOURCES}

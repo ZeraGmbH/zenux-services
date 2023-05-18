@@ -41,9 +41,6 @@ set(HEADER
     src/mt310s2justdata.h
     )
 
-SET_SERVICE_ENV(mt310s2d)
-
-
 add_library(mt310s2d-lib STATIC
     ${HEADER}
     ${SOURCES}
