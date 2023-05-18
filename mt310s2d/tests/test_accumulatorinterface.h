@@ -3,7 +3,6 @@
 
 #include "accumulatorinterface.h"
 #include "atmelsyscntrltest.h"
-#include <QObject>
 #include <memory>
 
 class test_accumulatorinterface : public QObject

@@ -6,7 +6,6 @@
 #include "finchannelinterface.h"
 #include "finsettings.h"
 #include <scpi.h>
-#include <QObject>
 #include <QList>
 
 class FInGroupResourceAndInterface : public cResource

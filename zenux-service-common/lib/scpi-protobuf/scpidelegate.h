@@ -6,7 +6,6 @@
 #include "scpinotificationsubscriberhandler.h"
 #include "notificationstring.h"
 #include <scpi.h>
-#include <QObject>
 #include <QString>
 
 class cSCPIDelegate: public QObject, public cSCPIObject

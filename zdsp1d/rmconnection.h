@@ -1,7 +1,6 @@
 #ifndef RMCONNECTION_H
 #define RMCONNECTION_H
 
-#include <QObject>
 #include <QAbstractSocket>
 #include <xiqnetwrapper.h>
 

@@ -4,7 +4,6 @@
 #include "pcbtestserver.h"
 #include "statusinterface.h"
 #include <memory.h>
-#include <QObject>
 
 class test_authorizationnotifier : public QObject
 {

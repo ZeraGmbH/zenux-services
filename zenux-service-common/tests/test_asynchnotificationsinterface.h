@@ -2,7 +2,6 @@
 #define TEST_ASYNCHNOTIFICATIONSINTERFACE_H
 
 #include <scpi.h>
-#include <QObject>
 #include <memory>
 
 class test_asynchnotificationsinterface : public QObject

@@ -7,7 +7,6 @@
 #include "scpiconnection.h"
 #include "sensechannel.h"
 #include "notificationstring.h"
-#include <QObject>
 #include <QList>
 #include <QStateMachine>
 #include <QState>

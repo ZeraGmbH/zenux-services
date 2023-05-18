@@ -5,7 +5,6 @@
 #include "com5003justdata.h"
 #include "adjustmentstatusinterface.h"
 #include <scpi.h>
-#include <QObject>
 
 namespace SenseRange
 {

@@ -4,7 +4,6 @@
 #include "sec1000d.h"
 #include "scpiconnection.h"
 #include "scpidelegate.h"
-#include <QObject>
 #include <QString>
 
 namespace StatusSystem

@@ -5,7 +5,6 @@
 #include "notificationstring.h"
 #include "sensesettings.h"
 #include "adjustmentstatusinterface.h"
-#include <QObject>
 #include <QList>
 
 namespace SenseChannel

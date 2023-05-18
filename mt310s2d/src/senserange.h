@@ -5,7 +5,6 @@
 #include "mt310s2justdata.h"
 #include "adjustmentstatusinterface.h"
 #include <scpi.h>
-#include <QObject>
 
 namespace SenseRange
 {

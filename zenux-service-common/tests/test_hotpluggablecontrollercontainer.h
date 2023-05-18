@@ -2,7 +2,6 @@
 #define TEST_HOTPLUGGABLECONTROLLERCONTAINER_H
 
 #include "sensesettings.h"
-#include <QObject>
 
 class test_hotpluggablecontrollercontainer : public QObject
 {

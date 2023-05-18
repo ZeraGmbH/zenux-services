@@ -6,7 +6,6 @@
 #include "ecalcchannel.h"
 #include "notificationvalue.h"
 #include "ethsettingssec.h"
-#include <QObject>
 #include <QList>
 #include <QHash>
 

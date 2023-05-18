@@ -2,7 +2,6 @@
 #define SYSTEMINTERFACE_H
 
 #include "scpiconnection.h"
-#include <QObject>
 #include <QList>
 #include <QJsonDocument>
 
