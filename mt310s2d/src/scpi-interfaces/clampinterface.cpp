@@ -30,11 +30,11 @@ void cClampInterface::handleClampConnected(QString channelName, const SenseSyste
 {
     int ctrlChannel = chSettings->m_nCtrlChannel;
     I2cMuxerInterface::Ptr i2cMuxer = I2cMultiplexerFactory::createPCA9547Muxer(m_pMyServer->m_pI2CSettings->getDeviceNode(),
-                                                                                m_pMyServer->m_pI2CSettings->getI2CAdress(i2cSettings::flashmux),
+                                                                                m_pMyServer->m_pI2CSettings->getI2CAdress(i2cSettings::muxerI2cAddress),
                                                                                 chSettings->m_nMuxChannelNo);
     I2cMuxerScopedOnOff i2cMuxOnOff(i2cMuxer);
     QString i2cDevNode = m_pMyServer->m_pI2CSettings->getDeviceNode();
-    int i2cAddress = m_pMyServer->m_pI2CSettings->getI2CAdress(i2cSettings::clampflash);
+    int i2cAddress = m_pMyServer->m_pI2CSettings->getI2CAdress(i2cSettings::clampFlashI2cAddress);
     if(I2cPing(i2cDevNode, i2cAddress)) { // ignore other than flash
         m_nClampStatus |= bmask;
         int ctlChannelSecondary = ctrlChannel-phaseCount; // assumption - hope we find better

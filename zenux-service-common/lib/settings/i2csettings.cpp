@@ -18,22 +18,22 @@ quint8 cI2CSettings::getI2CAdress(i2cSettings::member member)
     quint8 r;
     switch (member)
     {
-    case i2cSettings::atmel:
+    case i2cSettings::relaisCtrlI2cAddress:
         r = m_nAtmelAdr;
         break;
-    case i2cSettings::atmelsys:
+    case i2cSettings::sysCtrlI2cAddress:
         r = m_nAtmelSysAdr;
         break;
-    case i2cSettings::atmelemob:
+    case i2cSettings::emobCtrlI2cAddress:
         r = m_nAtmelEmob;
         break;
-    case i2cSettings::flashmux:
+    case i2cSettings::muxerI2cAddress:
         r = m_nFlashMuxAdr;
         break;
-    case i2cSettings::flash:
+    case i2cSettings::flashlI2cAddress:
         r = m_nFlashAdr;
         break;
-    case i2cSettings::clampflash:
+    case i2cSettings::clampFlashI2cAddress:
         r = m_nClampFlashAdr;
         break;
     }
