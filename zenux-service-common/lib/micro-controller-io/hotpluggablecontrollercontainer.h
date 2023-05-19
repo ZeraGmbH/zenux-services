@@ -19,7 +19,7 @@ private:
     quint8 m_i2cAdrCtrl;
     quint8 m_i2cAdrMux;
     quint8 m_debuglevel;
-    QMap<int /* BitNo in pluggable channel mask */, AtmelCommonVersionsPtr> m_Controllers;
+    QMap<int /* ctrlChannel */, AtmelCommonVersionsPtr> m_Controllers;
 };
 
 #endif // HOTPLUGGABLECONTROLLERCONTAINER_H
