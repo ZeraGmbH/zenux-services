@@ -5,7 +5,6 @@
 #include <memory>
 #include <atmelcommon.h>
 #include <atmelcommonversions.h>
-#include <zeramcontrollerbootloaderstopper.h>
 #include <i2cmultiplexerfactory.h>
 
 class AtmelEmobCtrl : public AtmelCommonVersions
@@ -18,7 +17,6 @@ private:
     ZeraMcontrollerIoPtr m_i2cCtrl;
     quint8 m_ctrlChannel;
     I2cMuxerInterface::Ptr m_i2cMuxer;
-    ZeraMControllerBootloaderStopper m_bootloaderStopper;
 };
 
 #endif // ATMELEMOBCTRL_H
