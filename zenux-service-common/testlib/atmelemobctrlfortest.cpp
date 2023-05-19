@@ -2,13 +2,11 @@
 
 int AtmelEmobCtrlForTest::m_instanceCount = 0;
 
-AtmelEmobCtrlForTest::AtmelEmobCtrlForTest(QString devnode, quint8 adrCtrl, quint8 adrMux, quint8 muxChannel, quint8 debuglevel) :
-    AtmelEmobCtrl(devnode, adrCtrl, adrMux, muxChannel, debuglevel),
+AtmelEmobCtrlForTest::AtmelEmobCtrlForTest(ZeraMcontrollerBasePtr i2cCtrl, QString devnode, quint8 adrMux, quint8 muxChannel) :
+    AtmelEmobCtrl(i2cCtrl, devnode, adrMux, muxChannel),
     m_devnode(devnode),
-    m_adrCtrl(adrCtrl),
     m_adrMux(adrMux),
-    m_muxChannel(muxChannel),
-    m_debuglevel(debuglevel)
+    m_muxChannel(muxChannel)
 {
     m_instanceCount++;
 }
@@ -21,6 +19,11 @@ AtmelEmobCtrlForTest::~AtmelEmobCtrlForTest()
 QString AtmelEmobCtrlForTest::getDevnode()
 {
     return m_devnode;
+}
+
+void AtmelEmobCtrlForTest::setAdrCtrl(quint8 adrCtrl)
+{
+    m_adrCtrl = adrCtrl;
 }
 
 quint8 AtmelEmobCtrlForTest::getAdrCtrl()
@@ -36,6 +39,11 @@ quint8 AtmelEmobCtrlForTest::getAdrMux()
 quint8 AtmelEmobCtrlForTest::getMuxChannel()
 {
     return m_muxChannel;
+}
+
+void AtmelEmobCtrlForTest::setDebuglevel(quint8 level)
+{
+    m_debuglevel = level;
 }
 
 quint8 AtmelEmobCtrlForTest::getDebuglevel()

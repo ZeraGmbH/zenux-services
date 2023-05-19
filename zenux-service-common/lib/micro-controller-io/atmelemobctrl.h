@@ -7,14 +7,14 @@
 #include <atmelcommonversions.h>
 #include <i2cmultiplexerfactory.h>
 
-class AtmelEmobCtrl : public ZeraMcontrollerBase, public AtmelCommonVersions
+class AtmelEmobCtrl : public AtmelCommonVersions
 {
 public:
-    AtmelEmobCtrl(QString devnode, quint8 adrCtrl, quint8 adrMux, quint8 muxChannel, quint8 debuglevel);
-    virtual ~AtmelEmobCtrl() = default;
-    atmelRM readCTRLVersion(QString& answer) override;
-    atmelRM readPCBVersion(QString& answer) override;
+    AtmelEmobCtrl(ZeraMcontrollerBasePtr i2cCtrl, QString devnode, quint8 adrMux, quint8 muxChannel);
+    ZeraMcontrollerBase::atmelRM readCTRLVersion(QString& answer) override;
+    ZeraMcontrollerBase::atmelRM readPCBVersion(QString& answer) override;
 private:
+    ZeraMcontrollerBasePtr m_i2cCtrl;
     quint8 m_ctrlChannel;
     I2cMuxerInterface::Ptr m_i2cMuxer;
 };
