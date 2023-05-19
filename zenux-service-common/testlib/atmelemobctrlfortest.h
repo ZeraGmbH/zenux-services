@@ -6,12 +6,14 @@
 class AtmelEmobCtrlForTest : public AtmelEmobCtrl
 {
 public:
-    AtmelEmobCtrlForTest(QString devnode, quint8 adrCtrl, quint8 adrMux, quint8 muxChannel, quint8 debuglevel);
+    AtmelEmobCtrlForTest(ZeraMcontrollerBasePtr i2cCtrl, QString devnode, quint8 adrMux, quint8 muxChannel);
     virtual ~AtmelEmobCtrlForTest();
     QString getDevnode();
+    void setAdrCtrl(quint8 adrCtrl);
     quint8 getAdrCtrl();
     quint8 getAdrMux();
     quint8 getMuxChannel();
+    void setDebuglevel(quint8 level);
     quint8 getDebuglevel();
     static int getInstanceCount();
 private:
