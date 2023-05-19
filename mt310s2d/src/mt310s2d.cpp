@@ -260,7 +260,12 @@ void cMT310S2dServer::doSetupServer()
 
             scpiConnectionList.append(this); // the server itself has some commands
             scpiConnectionList.append(m_pStatusInterface = new cStatusInterface(getSCPIInterface(), m_pAdjHandler));
-            scpiConnectionList.append(m_pSystemInterface = new cSystemInterface(this));
+            std::unique_ptr<HotPluggableControllerContainer> emobControllerContainer =
+                    std::make_unique<HotPluggableControllerContainer>(m_sCtrlDeviceNode,
+                                                                      m_pI2CSettings->getI2CAdress(i2cSettings::emobCtrlI2cAddress),
+                                                                      m_pI2CSettings->getI2CAdress(i2cSettings::muxerI2cAddress),
+                                                                      m_pDebugSettings->getDebugLevel());
+            scpiConnectionList.append(m_pSystemInterface = new cSystemInterface(this, std::move(emobControllerContainer)));
             scpiConnectionList.append(m_pSenseInterface = new cSenseInterface(this));
             scpiConnectionList.append(m_pSamplingInterface = new cSamplingInterface(this));
             scpiConnectionList.append(m_pSourceInterface = new FOutGroupResourceAndInterface(getSCPIInterface(), m_foutSettings));
@@ -414,6 +419,7 @@ void cMT310S2dServer::updateI2cDevicesConnected()
     if ( Atmel::getInstance().readClampStatus(clStat) == ZeraMControllerIo::cmddone) {
         qInfo("Devices connected mask read: 0x%02X", clStat);
         m_pClampInterface->actualizeClampStatus(clStat);
+        m_pSystemInterface->actualizeContollers(clStat);
     }
     else {
         qWarning("Devices connected mask read failed");
