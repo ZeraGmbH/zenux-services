@@ -389,7 +389,7 @@ void cMT310S2dServer::SetFASync()
 void cMT310S2dServer::enableClampInterrupt()
 {
     quint16 maskToAdd = (1 << clampstatusInterrupt);
-    if(Atmel::getInstance().writeIntMask(m_atmelInterruptMask | maskToAdd) == ZeraMcontrollerBase::cmddone) {
+    if(Atmel::getInstance().writeIntMask(m_atmelInterruptMask | maskToAdd) == ZeraMControllerIo::cmddone) {
         m_atmelInterruptMask |= maskToAdd;
     }
     else {
@@ -400,7 +400,7 @@ void cMT310S2dServer::enableClampInterrupt()
 void cMT310S2dServer::enableAccumulatorInterrupt()
 {
     quint16 maskToAdd = (1 << accumulatorInterrupt);
-    if(pAtmelSys->writeIntMask(m_atmelSysCntrlInterruptMask | maskToAdd) == ZeraMcontrollerBase::cmddone) {
+    if(pAtmelSys->writeIntMask(m_atmelSysCntrlInterruptMask | maskToAdd) == ZeraMControllerIo::cmddone) {
         m_atmelSysCntrlInterruptMask |= maskToAdd;
     }
     else {
@@ -411,7 +411,7 @@ void cMT310S2dServer::enableAccumulatorInterrupt()
 void cMT310S2dServer::updateI2cDevicesConnected()
 {
     quint16 clStat;
-    if ( Atmel::getInstance().readClampStatus(clStat) == ZeraMcontrollerBase::cmddone) {
+    if ( Atmel::getInstance().readClampStatus(clStat) == ZeraMControllerIo::cmddone) {
         qInfo("Devices connected mask read: 0x%02X", clStat);
         m_pClampInterface->actualizeClampStatus(clStat);
     }
@@ -429,7 +429,7 @@ void cMT310S2dServer::MTIntHandler(int)
 
     read(pipeFD[0], buf, 1); // first we read the pipe
 
-    if ( Atmel::getInstance().readCriticalStatus(stat) == ZeraMcontrollerBase::cmddone ) {
+    if ( Atmel::getInstance().readCriticalStatus(stat) == ZeraMControllerIo::cmddone ) {
         if ((stat & (1 << clampstatusInterrupt)) > 0) {
             // we must reset clamp status before handling the interrupt
             // because system may emit more interrupts so we might think

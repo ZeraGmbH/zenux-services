@@ -1,13 +1,13 @@
 #ifndef ATMELPERMISSIONTEMPLATE_H
 #define ATMELPERMISSIONTEMPLATE_H
 
-#include <zera_mcontroller_base.h>
+#include <zeramcontrollerio.h>
 
 class AtmelPermissionTemplate
 {
 public:
     virtual ~AtmelPermissionTemplate() = default;
-    virtual ZeraMcontrollerBase::atmelRM getEEPROMAccessEnable(bool &enable) = 0;
+    virtual ZeraMControllerIo::atmelRM getEEPROMAccessEnable(bool &enable) = 0;
     bool /*success*/ hasPermission(bool &allow);
 };
 

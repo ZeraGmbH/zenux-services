@@ -7,7 +7,7 @@
 class MockAtmel : public AtmelPermissionTemplate, public QObject
 {
 public:
-    ZeraMcontrollerBase::atmelRM getEEPROMAccessEnable(bool &enable) override;
+    ZeraMControllerIo::atmelRM getEEPROMAccessEnable(bool &enable) override;
     void accessEnableAfter(int timeoutMs);
     void accessDisableAfter(int timeoutMs);
 private:

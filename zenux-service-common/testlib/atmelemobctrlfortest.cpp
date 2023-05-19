@@ -2,7 +2,7 @@
 
 int AtmelEmobCtrlForTest::m_instanceCount = 0;
 
-AtmelEmobCtrlForTest::AtmelEmobCtrlForTest(ZeraMcontrollerBasePtr i2cCtrl, QString devnode, quint8 adrMux, quint8 muxChannel) :
+AtmelEmobCtrlForTest::AtmelEmobCtrlForTest(ZeraMcontrollerIoPtr i2cCtrl, QString devnode, quint8 adrMux, quint8 muxChannel) :
     AtmelEmobCtrl(i2cCtrl, devnode, adrMux, muxChannel),
     m_devnode(devnode),
     m_adrMux(adrMux),

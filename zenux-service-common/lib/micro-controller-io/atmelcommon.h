@@ -1,9 +1,9 @@
 #ifndef ATMELCOMMON_H
 #define ATMELCOMMON_H
 
-#include <zera_mcontroller_base.h>
+#include <zeramcontrollerio.h>
 
-class AtmelCommon : public ZeraMcontrollerBase
+class AtmelCommon : public ZeraMControllerIo
 {
 public:
     AtmelCommon(QString devnode, quint8 adr, quint8 debuglevel);

@@ -65,15 +65,15 @@ Atmel::Atmel(QString devnode, quint8 adr, quint8 debuglevel) :
 }
 
 
-ZeraMcontrollerBase::atmelRM Atmel::readSerialNumber(QString& answer)
+ZeraMControllerIo::atmelRM Atmel::readSerialNumber(QString& answer)
 {
     return readVariableLenText(hwGetSerialNr, answer);
 }
 
 
-ZeraMcontrollerBase::atmelRM Atmel::writeSerialNumber(QString &sNumber)
+ZeraMControllerIo::atmelRM Atmel::writeSerialNumber(QString &sNumber)
 {
-    ZeraMcontrollerBase::atmelRM ret;
+    ZeraMControllerIo::atmelRM ret;
     quint16 len = static_cast<quint16>(sNumber.length());
     if ( (len<1) || (len>24)) {
         ret = cmdfault;
@@ -88,21 +88,21 @@ ZeraMcontrollerBase::atmelRM Atmel::writeSerialNumber(QString &sNumber)
 }
 
 
-ZeraMcontrollerBase::atmelRM Atmel::readDeviceName(QString& answer)
+ZeraMControllerIo::atmelRM Atmel::readDeviceName(QString& answer)
 {
     return readVariableLenText(hwGetDevName, answer);
 }
 
 
-ZeraMcontrollerBase::atmelRM Atmel::readPCBVersion(QString& answer)
+ZeraMControllerIo::atmelRM Atmel::readPCBVersion(QString& answer)
 {
     return readVariableLenText(hwGetPCBVersion, answer);
 }
 
 
-ZeraMcontrollerBase::atmelRM Atmel::writePCBVersion(QString &sVersion)
+ZeraMControllerIo::atmelRM Atmel::writePCBVersion(QString &sVersion)
 {
-    ZeraMcontrollerBase::atmelRM ret;
+    ZeraMControllerIo::atmelRM ret;
     quint16 len = static_cast<quint16>(sVersion.length());
     if (len<1 || len>24) {
         ret = cmdfault;
@@ -117,19 +117,19 @@ ZeraMcontrollerBase::atmelRM Atmel::writePCBVersion(QString &sVersion)
 }
 
 
-ZeraMcontrollerBase::atmelRM Atmel::readCTRLVersion(QString& answer)
+ZeraMControllerIo::atmelRM Atmel::readCTRLVersion(QString& answer)
 {
     return readVariableLenText(hwGetCtrlVersion, answer);
 }
 
 
-ZeraMcontrollerBase::atmelRM Atmel::readLCAVersion(QString& answer)
+ZeraMControllerIo::atmelRM Atmel::readLCAVersion(QString& answer)
 {
     return readVariableLenText(hwGetLCAVersion, answer);
 }
 
 
-ZeraMcontrollerBase::atmelRM Atmel::startBootLoader()
+ZeraMControllerIo::atmelRM Atmel::startBootLoader()
 {
     hw_cmd CMD(hwStartBootloader, 0, nullptr, 0);
     writeCommand(&CMD);
@@ -137,9 +137,9 @@ ZeraMcontrollerBase::atmelRM Atmel::startBootLoader()
 }
 
 
-ZeraMcontrollerBase::atmelRM Atmel::readChannelStatus(quint8 channel, quint8 &stat)
+ZeraMControllerIo::atmelRM Atmel::readChannelStatus(quint8 channel, quint8 &stat)
 {
-    ZeraMcontrollerBase::atmelRM ret = cmdexecfault;
+    ZeraMControllerIo::atmelRM ret = cmdexecfault;
     quint8 answ[2];
     hw_cmd CMD (hwGetStatus, channel, nullptr, 0);
     writeCommand(&CMD, answ, 2);
@@ -150,9 +150,9 @@ ZeraMcontrollerBase::atmelRM Atmel::readChannelStatus(quint8 channel, quint8 &st
     return ret;
 }
 
-ZeraMcontrollerBase::atmelRM Atmel::readClampStatus(quint16 &stat)
+ZeraMControllerIo::atmelRM Atmel::readClampStatus(quint16 &stat)
 {
-    ZeraMcontrollerBase::atmelRM ret = cmdexecfault;
+    ZeraMControllerIo::atmelRM ret = cmdexecfault;
     quint8 answ[2];
     hw_cmd CMD(hwGetClampStatus, 0, nullptr, 0);
     writeCommand(&CMD, answ, 2);
@@ -163,9 +163,9 @@ ZeraMcontrollerBase::atmelRM Atmel::readClampStatus(quint16 &stat)
     return ret;
 }
 
-ZeraMcontrollerBase::atmelRM Atmel::readRange(quint8 channel, quint8 &range)
+ZeraMControllerIo::atmelRM Atmel::readRange(quint8 channel, quint8 &range)
 {
-    ZeraMcontrollerBase::atmelRM ret = cmdexecfault;
+    ZeraMControllerIo::atmelRM ret = cmdexecfault;
     hw_cmd CMD(hwGetRange, channel, nullptr, 0);
     quint8 answ[2];
     writeCommand(&CMD, answ, 2);
@@ -179,7 +179,7 @@ ZeraMcontrollerBase::atmelRM Atmel::readRange(quint8 channel, quint8 &range)
 }
 
 
-ZeraMcontrollerBase::atmelRM Atmel::setRange(quint8 channel, quint8 range)
+ZeraMControllerIo::atmelRM Atmel::setRange(quint8 channel, quint8 range)
 {
     hw_cmd CMD(hwSetRange, channel, &range, 1);
     writeCommand(&CMD);
@@ -189,9 +189,9 @@ ZeraMcontrollerBase::atmelRM Atmel::setRange(quint8 channel, quint8 range)
 }
 
 
-ZeraMcontrollerBase::atmelRM Atmel::getEEPROMAccessEnable(bool &enable)
+ZeraMControllerIo::atmelRM Atmel::getEEPROMAccessEnable(bool &enable)
 {
-    ZeraMcontrollerBase::atmelRM ret = cmdexecfault;
+    ZeraMControllerIo::atmelRM ret = cmdexecfault;
     enable = false; // default
     hw_cmd CMD(hwGetFlashWriteAccess, 0, nullptr, 0);
     quint8 answ[2];
@@ -204,20 +204,20 @@ ZeraMcontrollerBase::atmelRM Atmel::getEEPROMAccessEnable(bool &enable)
 }
 
 
-ZeraMcontrollerBase::atmelRM Atmel::readSamplingRange(quint8 &srange)
+ZeraMControllerIo::atmelRM Atmel::readSamplingRange(quint8 &srange)
 {
     srange = 0;
     return cmddone;
 }
 
 
-ZeraMcontrollerBase::atmelRM Atmel::setSamplingRange(quint8)
+ZeraMControllerIo::atmelRM Atmel::setSamplingRange(quint8)
 {
     return cmddone;
 }
 
 
-ZeraMcontrollerBase::atmelRM Atmel::setMeasMode(quint8 mmode)
+ZeraMControllerIo::atmelRM Atmel::setMeasMode(quint8 mmode)
 {
     hw_cmd CMD(hwSetMode, 0, &mmode, 1);
     writeCommand(&CMD);
@@ -225,9 +225,9 @@ ZeraMcontrollerBase::atmelRM Atmel::setMeasMode(quint8 mmode)
 }
 
 
-ZeraMcontrollerBase::atmelRM Atmel::readMeasMode(quint8 &mmode)
+ZeraMControllerIo::atmelRM Atmel::readMeasMode(quint8 &mmode)
 {
-    ZeraMcontrollerBase::atmelRM ret = cmdexecfault;
+    ZeraMControllerIo::atmelRM ret = cmdexecfault;
     mmode = 0; // default AC
     hw_cmd CMD(hwGetMode, 0, nullptr, 0);
     quint8 answ[2];
@@ -240,7 +240,7 @@ ZeraMcontrollerBase::atmelRM Atmel::readMeasMode(quint8 &mmode)
 }
 
 
-ZeraMcontrollerBase::atmelRM Atmel::setPLLChannel(quint8 chn)
+ZeraMControllerIo::atmelRM Atmel::setPLLChannel(quint8 chn)
 {
     hw_cmd CMD(hwSetPLLChannel, 0, &chn, 1);
     writeCommand(&CMD);
@@ -248,9 +248,9 @@ ZeraMcontrollerBase::atmelRM Atmel::setPLLChannel(quint8 chn)
 }
 
 
-ZeraMcontrollerBase::atmelRM Atmel::readPLLChannel(quint8& chn)
+ZeraMControllerIo::atmelRM Atmel::readPLLChannel(quint8& chn)
 {
-    ZeraMcontrollerBase::atmelRM ret = cmdexecfault;
+    ZeraMControllerIo::atmelRM ret = cmdexecfault;
     chn = 0; // default AC
     hw_cmd CMD(hwGetPLLChannel, 0, nullptr, 0);
     quint8 answ[2];

@@ -12,7 +12,7 @@ Mt310s2SystemInfo::Mt310s2SystemInfo() :
 void Mt310s2SystemInfo::getSystemInfo()
 {
     int rm = pAtmelSys->readCTRLVersion(m_sSysCTRLVersion);
-    m_bRead = (rm == ZeraMcontrollerBase::cmddone);
+    m_bRead = (rm == ZeraMControllerIo::cmddone);
 }
 
 bool Mt310s2SystemInfo::dataRead()

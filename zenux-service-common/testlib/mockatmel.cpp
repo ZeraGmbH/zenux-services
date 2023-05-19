@@ -1,10 +1,10 @@
 #include <timerfactoryqt.h>
 #include "mockatmel.h"
 
-ZeraMcontrollerBase::atmelRM MockAtmel::getEEPROMAccessEnable(bool &enable)
+ZeraMControllerIo::atmelRM MockAtmel::getEEPROMAccessEnable(bool &enable)
 {
     enable = m_enable;
-    return ZeraMcontrollerBase::cmddone;
+    return ZeraMControllerIo::cmddone;
 }
 
 void MockAtmel::accessEnableAfter(int timeoutMs)

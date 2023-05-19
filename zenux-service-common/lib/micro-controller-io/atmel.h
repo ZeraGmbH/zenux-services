@@ -4,7 +4,7 @@
 #include "atmelpermissiontemplate.h"
 #include "atmelcommon.h"
 #include "atmelcommonversions.h"
-#include <zera_mcontroller_base.h>
+#include <zeramcontrollerio.h>
 #include <QString>
 
 class Atmel : public AtmelCommon, public AtmelCommonVersions, public AtmelPermissionTemplate

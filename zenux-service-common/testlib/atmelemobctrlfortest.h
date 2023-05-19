@@ -6,7 +6,7 @@
 class AtmelEmobCtrlForTest : public AtmelEmobCtrl
 {
 public:
-    AtmelEmobCtrlForTest(ZeraMcontrollerBasePtr i2cCtrl, QString devnode, quint8 adrMux, quint8 muxChannel);
+    AtmelEmobCtrlForTest(ZeraMcontrollerIoPtr i2cCtrl, QString devnode, quint8 adrMux, quint8 muxChannel);
     virtual ~AtmelEmobCtrlForTest();
     QString getDevnode();
     void setAdrCtrl(quint8 adrCtrl);

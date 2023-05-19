@@ -277,12 +277,12 @@ void cCOM5003dServer::programAtmelFlash()
             if (IntelHexData.ReadHexFile(atmelFlashfilePath))
             {
                syslog(LOG_INFO,"Writing %s to atmel...\n", atmelFlashfilePath);
-               if (Atmel::getInstance().bootloaderLoadFlash(IntelHexData) == ZeraMcontrollerBase::cmddone)
+               if (Atmel::getInstance().bootloaderLoadFlash(IntelHexData) == ZeraMControllerIo::cmddone)
                {
                    syslog(LOG_INFO,"Programming atmel passed\n");
 
                    // we must restart atmel now
-                   if (Atmel::getInstance().bootloaderStartProgram() == ZeraMcontrollerBase::cmddone)
+                   if (Atmel::getInstance().bootloaderStartProgram() == ZeraMControllerIo::cmddone)
                    {
                        syslog(LOG_INFO,"Restart atmel after programming done\n");
                        // once the job is done, we remove the file
