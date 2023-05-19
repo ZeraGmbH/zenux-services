@@ -2,5 +2,5 @@
 
 bool AtmelPermissionTemplate::hasPermission(bool &allow)
 {
-    return getEEPROMAccessEnable(allow) == ZeraMcontrollerBase::cmddone;
+    return getEEPROMAccessEnable(allow) == ZeraMControllerIo::cmddone;
 }

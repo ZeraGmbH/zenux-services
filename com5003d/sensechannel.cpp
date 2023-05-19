@@ -242,7 +242,7 @@ QString cSenseChannel::m_ReadChannelStatus(QString &sInput)
 
     if (cmd.isQuery())
     {
-        if ( Atmel::getInstance().readCriticalStatus(status) == ZeraMcontrollerBase::cmddone )
+        if ( Atmel::getInstance().readCriticalStatus(status) == ZeraMControllerIo::cmddone )
         {
             quint32 r;
             r = ((m_bAvail) ? 0 : 1 << 31);
@@ -264,7 +264,7 @@ QString cSenseChannel::m_StatusReset(QString &sInput)
 
     if (cmd.isCommand(1) && (cmd.getParam(0) == ""))
     {
-        if ( Atmel::getInstance().resetCriticalStatus((quint16)(1 << m_nOverloadBit)) == ZeraMcontrollerBase::cmddone )
+        if ( Atmel::getInstance().resetCriticalStatus((quint16)(1 << m_nOverloadBit)) == ZeraMControllerIo::cmddone )
             return SCPI::scpiAnswer[SCPI::ack];
         else
             return SCPI::scpiAnswer[SCPI::errexec];
@@ -278,11 +278,11 @@ void cSenseChannel::setNotifierSenseChannelRange()
 {
     quint8 mode, range;
 
-    if ( Atmel::getInstance().readMeasMode(mode) == ZeraMcontrollerBase::cmddone )
+    if ( Atmel::getInstance().readMeasMode(mode) == ZeraMControllerIo::cmddone )
     {
         if (mode == SenseChannel::modeAC) // wir sind im normalberieb
         {
-            if ( Atmel::getInstance().readRange(m_nCtrlChannel, range) == ZeraMcontrollerBase::cmddone )
+            if ( Atmel::getInstance().readRange(m_nCtrlChannel, range) == ZeraMControllerIo::cmddone )
             {
                 int i;
                 for (i = 0; i < m_RangeList.count(); i++)
@@ -310,7 +310,7 @@ QString cSenseChannel::m_ReadWriteRange(QString &sInput)
     quint8 mode;
     cSCPICommand cmd = sInput;
 
-    if ( Atmel::getInstance().readMeasMode(mode) == ZeraMcontrollerBase::cmddone )
+    if ( Atmel::getInstance().readMeasMode(mode) == ZeraMControllerIo::cmddone )
     {
         if (cmd.isQuery())
         {
@@ -331,7 +331,7 @@ QString cSenseChannel::m_ReadWriteRange(QString &sInput)
                     // we know this range and it's available
                     if (m_nMMode == SenseChannel::modeAC)
                     {
-                        if ( Atmel::getInstance().setRange(m_nCtrlChannel, m_RangeList.at(i)->getSelCode()) == ZeraMcontrollerBase::cmddone)
+                        if ( Atmel::getInstance().setRange(m_nCtrlChannel, m_RangeList.at(i)->getSelCode()) == ZeraMControllerIo::cmddone)
                         {
                             notifierSenseChannelRange = rng;
                             return SCPI::scpiAnswer[SCPI::ack];

@@ -10,13 +10,13 @@ cSystemInfo::cSystemInfo()
 
 void cSystemInfo::getSystemInfo()
 {
-    int rm = ZeraMcontrollerBase::cmddone;
+    int rm = ZeraMControllerIo::cmddone;
     rm |= Atmel::getInstance().readDeviceName(m_sDeviceName);
     rm |= Atmel::getInstance().readPCBVersion(m_sPCBVersion);
     rm |= Atmel::getInstance().readLCAVersion(m_sLCAVersion);
     rm |= Atmel::getInstance().readCTRLVersion(m_sCTRLVersion);
     rm |= Atmel::getInstance().readSerialNumber(m_sSerialNumber);
-    m_bRead = (rm == ZeraMcontrollerBase::cmddone);
+    m_bRead = (rm == ZeraMControllerIo::cmddone);
 }
 
 

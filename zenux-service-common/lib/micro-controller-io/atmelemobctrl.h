@@ -10,11 +10,11 @@
 class AtmelEmobCtrl : public AtmelCommonVersions
 {
 public:
-    AtmelEmobCtrl(ZeraMcontrollerBasePtr i2cCtrl, QString devnode, quint8 adrMux, quint8 muxChannel);
-    ZeraMcontrollerBase::atmelRM readCTRLVersion(QString& answer) override;
-    ZeraMcontrollerBase::atmelRM readPCBVersion(QString& answer) override;
+    AtmelEmobCtrl(ZeraMcontrollerIoPtr i2cCtrl, QString devnode, quint8 adrMux, quint8 muxChannel);
+    ZeraMControllerIo::atmelRM readCTRLVersion(QString& answer) override;
+    ZeraMControllerIo::atmelRM readPCBVersion(QString& answer) override;
 private:
-    ZeraMcontrollerBasePtr m_i2cCtrl;
+    ZeraMcontrollerIoPtr m_i2cCtrl;
     quint8 m_ctrlChannel;
     I2cMuxerInterface::Ptr m_i2cMuxer;
 };

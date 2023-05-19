@@ -181,7 +181,7 @@ QString cSamplingInterface::m_ReadWriteSamplingRange(QString &sInput)
                 }
             }
             if (i < m_SampleRangeList.count()) {
-                if ( Atmel::getInstance().setSamplingRange(m_SampleRangeList.at(i)->getSelCode()) == ZeraMcontrollerBase::cmddone) {
+                if ( Atmel::getInstance().setSamplingRange(m_SampleRangeList.at(i)->getSelCode()) == ZeraMControllerIo::cmddone) {
                     setNotifierSampleChannelRange();
                     return SCPI::scpiAnswer[SCPI::ack];
                 }
@@ -228,7 +228,7 @@ QString cSamplingInterface::m_ReadWritePLL(QString &sInput)
 
     if (cmd.isQuery())
     {
-        if (Atmel::getInstance().readPLLChannel(pll) == ZeraMcontrollerBase::cmddone)
+        if (Atmel::getInstance().readPLLChannel(pll) == ZeraMControllerIo::cmddone)
         {
             if (pll < 8) // then everything is ok
                 return m_pllChannelList.at(pll);
@@ -243,7 +243,7 @@ QString cSamplingInterface::m_ReadWritePLL(QString &sInput)
             QString pllchn = cmd.getParam(0);
             pll = m_pllChannelList.indexOf(pllchn);
 
-            if (Atmel::getInstance().setPLLChannel(pll) == ZeraMcontrollerBase::cmddone)
+            if (Atmel::getInstance().setPLLChannel(pll) == ZeraMControllerIo::cmddone)
                 return SCPI::scpiAnswer[SCPI::ack];
             else
                 return SCPI::scpiAnswer[SCPI::errexec];
@@ -269,7 +269,7 @@ void cSamplingInterface::setNotifierSampleChannelRange()
     int i;
     quint8 sRange;
 
-    if (Atmel::getInstance().readSamplingRange(sRange) == ZeraMcontrollerBase::cmddone)
+    if (Atmel::getInstance().readSamplingRange(sRange) == ZeraMControllerIo::cmddone)
     {
         for (i = 0; i < m_SampleRangeList.count(); i++)
             if (m_SampleRangeList.at(i)->getSelCode() == sRange)

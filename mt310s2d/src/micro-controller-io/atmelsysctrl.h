@@ -4,7 +4,7 @@
 #include <atmelcommon.h>
 #include <atmelcommonversions.h>
 #include <intelhexfileio.h>
-#include <zera_mcontroller_base.h>
+#include <zeramcontrollerio.h>
 #include <QString>
 
 class cATMELSysCtrl : public AtmelCommon, public AtmelCommonVersions

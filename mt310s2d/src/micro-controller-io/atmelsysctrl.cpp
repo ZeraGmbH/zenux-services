@@ -21,19 +21,19 @@ cATMELSysCtrl::cATMELSysCtrl(QString devnode, quint8 adr, quint8 debuglevel) :
 }
 
 
-ZeraMcontrollerBase::atmelRM cATMELSysCtrl::readCTRLVersion(QString& answer)
+ZeraMControllerIo::atmelRM cATMELSysCtrl::readCTRLVersion(QString& answer)
 {
     return readVariableLenText(hwGetCtrlVersion, answer);
 }
 
-ZeraMcontrollerBase::atmelRM cATMELSysCtrl::readPCBVersion(QString &answer)
+ZeraMControllerIo::atmelRM cATMELSysCtrl::readPCBVersion(QString &answer)
 {
     return readVariableLenText(hwGetPCBVersion, answer);
 }
 
-ZeraMcontrollerBase::atmelRM cATMELSysCtrl::readAccumulatorStatus(quint8 &stat)
+ZeraMControllerIo::atmelRM cATMELSysCtrl::readAccumulatorStatus(quint8 &stat)
 {
-    ZeraMcontrollerBase::atmelRM ret = cmdexecfault;
+    ZeraMControllerIo::atmelRM ret = cmdexecfault;
     quint8 answ[2];
     hw_cmd CMD(hwGetAccumulatorStatus, 0, nullptr, 0);
     writeCommand(&CMD, answ, 2);
@@ -44,9 +44,9 @@ ZeraMcontrollerBase::atmelRM cATMELSysCtrl::readAccumulatorStatus(quint8 &stat)
     return ret;
 }
 
-ZeraMcontrollerBase::atmelRM cATMELSysCtrl::readAccumulatorSoc(quint8 &charge)
+ZeraMControllerIo::atmelRM cATMELSysCtrl::readAccumulatorSoc(quint8 &charge)
 {
-    ZeraMcontrollerBase::atmelRM ret = cmdexecfault;
+    ZeraMControllerIo::atmelRM ret = cmdexecfault;
     quint8 answ[2];
     hw_cmd CMD(hwGetAccumulatorSoc, 0, nullptr, 0);
     writeCommand(&CMD, answ, 2);
@@ -58,7 +58,7 @@ ZeraMcontrollerBase::atmelRM cATMELSysCtrl::readAccumulatorSoc(quint8 &charge)
 
 }
 
-ZeraMcontrollerBase::atmelRM cATMELSysCtrl::enableTestMode(qint32 testBits)
+ZeraMControllerIo::atmelRM cATMELSysCtrl::enableTestMode(qint32 testBits)
 {
     quint8 PAR[4];
     PAR[0] = (testBits >> 24) & 255;

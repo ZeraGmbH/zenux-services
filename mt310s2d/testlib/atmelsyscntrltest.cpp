@@ -5,13 +5,13 @@ AtmelSysCntrlTest::AtmelSysCntrlTest(QString devnode, quint8 adr, quint8 debugle
 {
 }
 
-ZeraMcontrollerBase::atmelRM AtmelSysCntrlTest::readAccumulatorStatus(quint8 &stat)
+ZeraMControllerIo::atmelRM AtmelSysCntrlTest::readAccumulatorStatus(quint8 &stat)
 {
-    return ZeraMcontrollerBase::atmelRM::cmddone;
+    return ZeraMControllerIo::atmelRM::cmddone;
 }
 
-ZeraMcontrollerBase::atmelRM AtmelSysCntrlTest::readAccumulatorSoc(quint8 &charge)
+ZeraMControllerIo::atmelRM AtmelSysCntrlTest::readAccumulatorSoc(quint8 &charge)
 {
     charge = 37;
-    return ZeraMcontrollerBase::atmelRM::cmddone;
+    return ZeraMControllerIo::atmelRM::cmddone;
 }

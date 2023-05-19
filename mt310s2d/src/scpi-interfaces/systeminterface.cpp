@@ -158,7 +158,7 @@ QString cSystemInterface::m_ReadDeviceName(QString& sInput)
 QString cSystemInterface::m_ReadWritePCBVersion(QString &sInput)
 {
     QString s;
-    int ret = ZeraMcontrollerBase::cmdfault;
+    int ret = ZeraMControllerIo::cmdfault;
     cSCPICommand cmd = sInput;
 
     if (cmd.isQuery())
@@ -221,7 +221,7 @@ QString cSystemInterface::m_ReadFPGAVersion(QString &sInput)
 
 QString cSystemInterface::m_ReadWriteSerialNumber(QString &sInput)
 {
-    ZeraMcontrollerBase::atmelRM ret = ZeraMcontrollerBase::cmdfault;
+    ZeraMControllerIo::atmelRM ret = ZeraMControllerIo::cmdfault;
     QString s;
     cSCPICommand cmd = sInput;
 
@@ -253,7 +253,7 @@ QString cSystemInterface::m_ReadWriteSerialNumber(QString &sInput)
 QString cSystemInterface::m_StartControlerBootloader(QString& sInput)
 {
     QString s;
-    int ret = ZeraMcontrollerBase::cmdfault;
+    int ret = ZeraMControllerIo::cmdfault;
     cSCPICommand cmd = sInput;
 
     if (cmd.isCommand(1) && (cmd.getParam(0) == ""))
@@ -268,7 +268,7 @@ QString cSystemInterface::m_StartControlerBootloader(QString& sInput)
 QString cSystemInterface::m_StartControlerProgram(QString &sInput)
 {
     QString s;
-    int ret = ZeraMcontrollerBase::cmdfault;
+    int ret = ZeraMControllerIo::cmdfault;
     cSCPICommand cmd = sInput;
 
     if (cmd.isCommand(1) && (cmd.getParam(0) == ""))
@@ -283,7 +283,7 @@ QString cSystemInterface::m_StartControlerProgram(QString &sInput)
 QString cSystemInterface::m_LoadFlash(QString &sInput)
 {
     QString s;
-    int ret = ZeraMcontrollerBase::cmdfault;
+    int ret = ZeraMControllerIo::cmdfault;
     cSCPICommand cmd = sInput;
 
     if (cmd.isCommand(1))
@@ -295,7 +295,7 @@ QString cSystemInterface::m_LoadFlash(QString &sInput)
            ret = Atmel::getInstance().bootloaderLoadFlash(IntelHexData);
         }
         else
-            ret = ZeraMcontrollerBase::cmdexecfault;
+            ret = ZeraMControllerIo::cmdexecfault;
     }
     m_genAnswer(ret, s);
     return s;
@@ -317,7 +317,7 @@ QString cSystemInterface::m_LoadEEProm(QString &sInput)
             ret = Atmel::getInstance().bootloaderLoadEEprom(IntelHexData);
         }
         else
-            ret = ZeraMcontrollerBase::cmdexecfault;
+            ret = ZeraMControllerIo::cmdexecfault;
     }
     m_genAnswer(ret, s);
     return s;
@@ -483,7 +483,7 @@ QString cSystemInterface::testMode(QString &Input)
 {
     cSCPICommand cmd = Input;
     quint32 modeBits = cmd.getParam(0).toUInt();
-    return pAtmelSys->enableTestMode(modeBits)==ZeraMcontrollerBase::cmddone ? SCPI::scpiAnswer[SCPI::ack] : SCPI::scpiAnswer[SCPI::errexec];
+    return pAtmelSys->enableTestMode(modeBits)==ZeraMControllerIo::cmddone ? SCPI::scpiAnswer[SCPI::ack] : SCPI::scpiAnswer[SCPI::errexec];
 }
 
 QJsonDocument cSystemInterface::getSoftwareVersion()
@@ -499,13 +499,13 @@ void cSystemInterface::m_genAnswer(int select, QString &answer)
 {
     switch (select)
     {
-    case ZeraMcontrollerBase::cmddone:
+    case ZeraMControllerIo::cmddone:
         answer = SCPI::scpiAnswer[SCPI::ack];
         break;
-    case ZeraMcontrollerBase::cmdfault:
+    case ZeraMControllerIo::cmdfault:
         answer = SCPI::scpiAnswer[SCPI::nak];
         break;
-    case ZeraMcontrollerBase::cmdexecfault:
+    case ZeraMControllerIo::cmdexecfault:
         answer = SCPI::scpiAnswer[SCPI::errexec];
         break;
     }

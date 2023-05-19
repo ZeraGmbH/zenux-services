@@ -40,7 +40,7 @@ void AccumulatorInterface::executeProtoScpi(int cmdCode, cProtonetCommand *proto
 QString AccumulatorInterface::getAccumulatorStatus()
 {
     quint8 status = 0;
-    if(m_atmelSysCntrl->readAccumulatorStatus(status) == ZeraMcontrollerBase::atmelRM::cmddone){
+    if(m_atmelSysCntrl->readAccumulatorStatus(status) == ZeraMControllerIo::atmelRM::cmddone){
         m_accumulatorStatus = QString::number(status);
     }
     else{
@@ -52,7 +52,7 @@ QString AccumulatorInterface::getAccumulatorStatus()
 QString AccumulatorInterface::getAccumulatorSoc()
 {
     quint8 charge = 0;
-    if(m_atmelSysCntrl->readAccumulatorSoc(charge) == ZeraMcontrollerBase::atmelRM::cmddone){
+    if(m_atmelSysCntrl->readAccumulatorSoc(charge) == ZeraMControllerIo::atmelRM::cmddone){
         m_accumulatorSoc = QString::number(charge);
     }
     else{
