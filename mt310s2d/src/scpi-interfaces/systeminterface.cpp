@@ -273,7 +273,7 @@ QString cSystemInterface::m_StartControlerProgram(QString &sInput)
 
     if (cmd.isCommand(1) && (cmd.getParam(0) == ""))
     {
-        ret = Atmel::getInstance().startProgram();
+        ret = Atmel::getInstance().bootloaderStartProgram();
     }
     m_genAnswer(ret, s);
     return s;
@@ -292,7 +292,7 @@ QString cSystemInterface::m_LoadFlash(QString &sInput)
         cIntelHexFileIO IntelHexData;
         if (IntelHexData.ReadHexFile(filename))
         {
-           ret = Atmel::getInstance().loadFlash(IntelHexData);
+           ret = Atmel::getInstance().bootloaderLoadFlash(IntelHexData);
         }
         else
             ret = ZeraMcontrollerBase::cmdexecfault;
@@ -314,7 +314,7 @@ QString cSystemInterface::m_LoadEEProm(QString &sInput)
         cIntelHexFileIO IntelHexData;
         if (IntelHexData.ReadHexFile(filename))
         {
-            ret = Atmel::getInstance().loadEEprom(IntelHexData);
+            ret = Atmel::getInstance().bootloaderLoadEEprom(IntelHexData);
         }
         else
             ret = ZeraMcontrollerBase::cmdexecfault;
