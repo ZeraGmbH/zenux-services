@@ -16,6 +16,12 @@ AtmelEmobCtrlForTest::~AtmelEmobCtrlForTest()
     m_instanceCount--;
 }
 
+ZeraMControllerIo::atmelRM AtmelEmobCtrlForTest::readCTRLVersion(QString &answer)
+{
+    answer = "EMOB test";
+    return ZeraMControllerIo::cmddone;
+}
+
 QString AtmelEmobCtrlForTest::getDevnode()
 {
     return m_devnode;
