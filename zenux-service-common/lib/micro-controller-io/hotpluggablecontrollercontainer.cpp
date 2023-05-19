@@ -52,6 +52,7 @@ QVector<AtmelCommonVersionsPtr> HotPluggableControllerContainer::getCurrentContr
 
 void HotPluggableControllerContainer::onBootloaderStoppAssumed(int ctrlChannel)
 {
+    qInfo("Bootloader stop / application start assumed for channel %i", ctrlChannel);
     if(m_pendingBootloaderStoppers.contains(ctrlChannel)) {
         AtmelCommonVersionsPtr ctrl = AtmelCtrlFactory::createEmobCtrl(
                     m_i2cDevNodeName,
