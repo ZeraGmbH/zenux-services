@@ -139,12 +139,10 @@ QString cClampInterface::writeAllClamps(QString &sInput)
             if (Atmel::getInstance().hasPermission(enable)) {
                 if (enable) {
                     bool done = true;
-                    for(auto clamp : m_clampHash) {
+                    for(auto clamp : qAsConst(m_clampHash))
                         done = done && clamp->exportAdjFlash();
-                    }
-                    if (!done) {
+                    if (!done)
                         return SCPI::scpiAnswer[SCPI::errexec];
-                    }
                 }
                 else {
                     return SCPI::scpiAnswer[SCPI::erraut];
@@ -166,7 +164,7 @@ QString cClampInterface::importExportAllClamps(QString &sInput)
     cSCPICommand cmd = sInput;
     if (cmd.isQuery()) {
         QString xmlTotal;
-        for(auto clamp : m_clampHash) {
+        for(auto clamp : qAsConst(m_clampHash)) {
             QString xmlClamp = clamp->exportXMLString(-1);
             xmlClamp.replace("\n","");
             xmlTotal.append(xmlClamp);
