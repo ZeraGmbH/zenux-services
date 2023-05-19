@@ -254,8 +254,6 @@ void cMT310S2dServer::doSetupServer()
             m_pSystemInfo = new Mt310s2SystemInfo();
             m_pAdjHandler = new cAdjustment(this);
 
-            //m_pSystemInfo, m_pI2CSettings->getDeviceNode(), m_pDebugSettings->getDebugLevel(), m_pI2CSettings->getI2CAdress(i2cSettings::flash)
-
             cPCBServer::setupServer(); // here our scpi interface gets instanciated, we need this for further steps
 
             scpiConnectionList.append(this); // the server itself has some commands
