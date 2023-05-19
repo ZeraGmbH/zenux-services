@@ -30,10 +30,10 @@ void test_hotpluggablecontrollercontainer::initNoController()
 void test_hotpluggablecontrollercontainer::mt310s2AllVoltageNotPluggable()
 {
     HotPluggableControllerContainer container(QString(), 0, 0, 0);
-    container.actualizeEmobControllers(&m_senseSettings, (1<<0));
-    container.actualizeEmobControllers(&m_senseSettings, (1<<1));
-    container.actualizeEmobControllers(&m_senseSettings, (1<<2));
-    container.actualizeEmobControllers(&m_senseSettings, (1<<3));
+    container.startActualizeEmobControllers(&m_senseSettings, (1<<0));
+    container.startActualizeEmobControllers(&m_senseSettings, (1<<1));
+    container.startActualizeEmobControllers(&m_senseSettings, (1<<2));
+    container.startActualizeEmobControllers(&m_senseSettings, (1<<3));
     QVector<AtmelCommonVersionsPtr> controllers = container.getCurrentControllers();
     QCOMPARE(controllers.size(), 0);
 }
@@ -41,7 +41,7 @@ void test_hotpluggablecontrollercontainer::mt310s2AllVoltageNotPluggable()
 void test_hotpluggablecontrollercontainer::mt310s2AddI1()
 {
     HotPluggableControllerContainer container(QString(), 0, 0, 0);
-    container.actualizeEmobControllers(&m_senseSettings, (1<<4));
+    container.startActualizeEmobControllers(&m_senseSettings, (1<<4));
     QVector<AtmelCommonVersionsPtr> controllers = container.getCurrentControllers();
     QCOMPARE(controllers.size(), 1);
 
@@ -50,7 +50,7 @@ void test_hotpluggablecontrollercontainer::mt310s2AddI1()
 void test_hotpluggablecontrollercontainer::mt310s2AddI1I2()
 {
     HotPluggableControllerContainer container(QString(), 0, 0, 0);
-    container.actualizeEmobControllers(&m_senseSettings, (1<<4) | (1<<5));
+    container.startActualizeEmobControllers(&m_senseSettings, (1<<4) | (1<<5));
     QVector<AtmelCommonVersionsPtr> controllers = container.getCurrentControllers();
     QCOMPARE(controllers.size(), 2);
 }
@@ -58,8 +58,8 @@ void test_hotpluggablecontrollercontainer::mt310s2AddI1I2()
 void test_hotpluggablecontrollercontainer::mt310s2AddI1Twice()
 {
     HotPluggableControllerContainer container(QString(), 0, 0, 0);
-    container.actualizeEmobControllers(&m_senseSettings, (1<<4));
-    container.actualizeEmobControllers(&m_senseSettings, (1<<4));
+    container.startActualizeEmobControllers(&m_senseSettings, (1<<4));
+    container.startActualizeEmobControllers(&m_senseSettings, (1<<4));
     QVector<AtmelCommonVersionsPtr> controllers = container.getCurrentControllers();
     QCOMPARE(controllers.size(), 1);
     QCOMPARE(AtmelEmobCtrlForTest::getInstanceCount(), 1);
@@ -68,8 +68,8 @@ void test_hotpluggablecontrollercontainer::mt310s2AddI1Twice()
 void test_hotpluggablecontrollercontainer::mt310s2AddI1I2AddI1()
 {
     HotPluggableControllerContainer container(QString(), 0, 0, 0);
-    container.actualizeEmobControllers(&m_senseSettings, (1<<4) | (1<<5));
-    container.actualizeEmobControllers(&m_senseSettings, (1<<4));
+    container.startActualizeEmobControllers(&m_senseSettings, (1<<4) | (1<<5));
+    container.startActualizeEmobControllers(&m_senseSettings, (1<<4));
     QVector<AtmelCommonVersionsPtr> controllers = container.getCurrentControllers();
     QCOMPARE(controllers.size(), 1);
     QCOMPARE(AtmelEmobCtrlForTest::getInstanceCount(), 1);
@@ -78,7 +78,7 @@ void test_hotpluggablecontrollercontainer::mt310s2AddI1I2AddI1()
 void test_hotpluggablecontrollercontainer::mt310s2AddI1CheckI2cSettings()
 {
     HotPluggableControllerContainer container("foo", 1, 2, 3);
-    container.actualizeEmobControllers(&m_senseSettings, (1<<4));
+    container.startActualizeEmobControllers(&m_senseSettings, (1<<4));
     QVector<AtmelCommonVersionsPtr> controllers = container.getCurrentControllers();
     QCOMPARE(controllers.size(), 1);
     AtmelEmobCtrlForTest* ctrl = static_cast<AtmelEmobCtrlForTest*>(controllers[0].get());
@@ -91,7 +91,7 @@ void test_hotpluggablecontrollercontainer::mt310s2AddI1CheckI2cSettings()
 void test_hotpluggablecontrollercontainer::mt310s2AddI1I2I3IAuxCheckMuxSettings()
 {
     HotPluggableControllerContainer container("foo", 1, 2, 3);
-    container.actualizeEmobControllers(&m_senseSettings, (1<<4) | (1<<5) | (1<<6) | (1<<7));
+    container.startActualizeEmobControllers(&m_senseSettings, (1<<4) | (1<<5) | (1<<6) | (1<<7));
     QVector<AtmelCommonVersionsPtr> controllers = container.getCurrentControllers();
     QCOMPARE(controllers.size(), 4);
     AtmelEmobCtrlForTest* ctrlI1 = static_cast<AtmelEmobCtrlForTest*>(controllers[0].get());
