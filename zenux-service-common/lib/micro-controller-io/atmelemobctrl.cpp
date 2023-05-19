@@ -16,11 +16,13 @@ AtmelEmobCtrl::AtmelEmobCtrl(ZeraMcontrollerBasePtr i2cCtrl, QString devnode, qu
 ZeraMcontrollerBase::atmelRM AtmelEmobCtrl::readCTRLVersion(QString &answer)
 {
     I2cMuxerScopedOnOff i2cMuxerEnabled(m_i2cMuxer);
+    m_i2cCtrl->bootloaderStartProgram();
     return m_i2cCtrl->readVariableLenText(hwGetCtrlVersion, answer);
 }
 
 ZeraMcontrollerBase::atmelRM AtmelEmobCtrl::readPCBVersion(QString &answer)
 {
     I2cMuxerScopedOnOff i2cMuxerEnabled(m_i2cMuxer);
+    m_i2cCtrl->bootloaderStartProgram();
     return m_i2cCtrl->readVariableLenText(hwGetPCBVersion, answer);
 }
