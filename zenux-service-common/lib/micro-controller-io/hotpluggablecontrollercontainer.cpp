@@ -22,12 +22,16 @@ void HotPluggableControllerContainer::actualizeEmobControllers(const cSenseSetti
 
         quint16 bmask = (1 << plugBitNo);
         if (bitmaskAvailable & bmask) {
-            m_Controllers[ctrlChannel] = AtmelCtrlFactory::createEmobCtrl(
+            AtmelCommonVersionsPtr ctrl = AtmelCtrlFactory::createEmobCtrl(
                         m_i2cDevNodeName,
                         m_i2cAdrCtrl,
                         m_i2cAdrMux,
                         channelSettings->m_nMuxChannelNo,
                         m_debuglevel);
+            QString version;
+            ZeraMControllerIo::atmelRM result = ctrl->readCTRLVersion(version);
+            if(result == ZeraMControllerIo::cmddone && !version.isEmpty())
+                m_Controllers[ctrlChannel] = ctrl;
         }
         else
             m_Controllers.remove(ctrlChannel);
