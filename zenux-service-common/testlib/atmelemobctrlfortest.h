@@ -8,6 +8,7 @@ class AtmelEmobCtrlForTest : public AtmelEmobCtrl
 public:
     AtmelEmobCtrlForTest(ZeraMcontrollerIoPtr i2cCtrl, QString devnode, quint8 adrMux, quint8 muxChannel);
     virtual ~AtmelEmobCtrlForTest();
+    ZeraMControllerIo::atmelRM readCTRLVersion(QString& answer) override;
     QString getDevnode();
     void setAdrCtrl(quint8 adrCtrl);
     quint8 getAdrCtrl();
