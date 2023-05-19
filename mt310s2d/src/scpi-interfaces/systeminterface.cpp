@@ -10,9 +10,10 @@
 #include <scpicommand.h>
 #include <QJsonObject>
 
-cSystemInterface::cSystemInterface(cMT310S2dServer *server) :
+cSystemInterface::cSystemInterface(cMT310S2dServer *server, std::unique_ptr<HotPluggableControllerContainer> hotPluggableControllerContainer) :
     ScpiConnection(server->getSCPIInterface()),
-    m_pMyServer(server)
+    m_pMyServer(server),
+    m_hotPluggableControllerContainer(std::move(hotPluggableControllerContainer))
 {
 }
 
@@ -38,6 +39,12 @@ void cSystemInterface::initSCPIConnection(QString leadingNodes)
     addDelegate(QString("%1SYSTEM:ADJUSTMENT:FLASH").arg(leadingNodes), "CHKSUM", SCPI::isQuery, m_pSCPIInterface, SystemSystem::cmdAdjFlashChksum);
     addDelegate(QString("%1SYSTEM:INTERFACE").arg(leadingNodes), "READ", SCPI::isQuery, m_pSCPIInterface, SystemSystem::cmdInterfaceRead);
     addDelegate(QString("%1SYSTEM").arg(leadingNodes),"TESTMODE",SCPI::isCmdwP, m_pSCPIInterface, SystemSystem::cmdTestMode);
+}
+
+void cSystemInterface::actualizeContollers(quint16 bitmaskAvailable)
+{
+    m_hotPluggableControllerContainer->actualizeEmobControllers(m_pMyServer->m_pSenseSettings,
+                                                                bitmaskAvailable);
 }
 
 
@@ -491,6 +498,12 @@ QJsonDocument cSystemInterface::getSoftwareVersion()
     QJsonObject object;
     object.insert("SysController version", QJsonValue::fromVariant(m_pMyServer->m_pSystemInfo->getSysCTRLVersion()));
     object.insert("Relay version", QJsonValue::fromVariant(m_pMyServer->m_pSystemInfo->getCTRLVersion()));
+    QVector<AtmelCommonVersionsPtr> hotpluggableControllers = m_hotPluggableControllerContainer->getCurrentControllers();
+    for(auto controller : hotpluggableControllers) {
+        QString version;
+        controller->readCTRLVersion(version);
+        object.insert("EmobController version", QJsonValue::fromVariant(version));
+    }
     QJsonDocument doc(object);
     return doc;
 }

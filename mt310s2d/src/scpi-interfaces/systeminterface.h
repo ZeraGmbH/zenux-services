@@ -2,8 +2,10 @@
 #define SYSTEMINTERFACE_H
 
 #include "scpiconnection.h"
+#include "hotpluggablecontrollercontainer.h"
 #include <QList>
 #include <QJsonDocument>
+#include <memory>
 
 namespace SystemSystem
 {
@@ -40,14 +42,16 @@ class cSystemInterface: public ScpiConnection
     Q_OBJECT
 
 public:
-    cSystemInterface(cMT310S2dServer* server);
+    cSystemInterface(cMT310S2dServer* server, std::unique_ptr<HotPluggableControllerContainer> hotPluggableControllerContainer);
     virtual void initSCPIConnection(QString leadingNodes) override;
+    void actualizeContollers(quint16 bitmaskAvailable);
 
 protected:
     void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
 
 private:
     cMT310S2dServer* m_pMyServer;
+    std::unique_ptr<HotPluggableControllerContainer> m_hotPluggableControllerContainer;
     QString m_ReadServerVersion(QString& sInput);
     QString m_ReadDeviceVersion(QString& sInput);
     QString m_ReadDeviceName(QString& sInput);
