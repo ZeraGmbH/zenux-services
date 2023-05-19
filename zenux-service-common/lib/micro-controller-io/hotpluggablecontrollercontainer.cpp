@@ -39,7 +39,7 @@ void HotPluggableControllerContainer::tryStartAddingController(int ctrlChannel, 
     connect(bootStopper.get(), &ZeraMControllerBootloaderStopper::sigAssumeBootloaderStopped,
             this, &HotPluggableControllerContainer::onBootloaderStoppAssumed);
     m_pendingBootloaderStoppers[ctrlChannel] = PendingChannelInfo{ bootStopper, channelSettings->m_nMuxChannelNo };
-    bootStopper->stopBootloader();
+    bootStopper->stopBootloader(10000);
 }
 
 QVector<AtmelCommonVersionsPtr> HotPluggableControllerContainer::getCurrentControllers()
