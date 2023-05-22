@@ -33,7 +33,7 @@ protected:
 private:
     cSEC1000dServer* m_pMyServer;
     cSystemInfo* m_pSystemInfo;
-    QString m_ReadServerVersion(QString& sInput);
+    QString scpiReadServerVersion(QString& sInput);
     QString m_ReadDeviceVersion(QString& sInput);
     QString m_ReadDeviceName(QString& sInput);
     QString m_ReadWritePCBVersion(QString& sInput);
