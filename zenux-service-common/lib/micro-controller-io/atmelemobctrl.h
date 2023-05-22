@@ -17,6 +17,9 @@ private:
     ZeraMcontrollerIoPtr m_i2cCtrl;
     quint8 m_ctrlChannel;
     I2cMuxerInterface::Ptr m_i2cMuxer;
+
+    QString m_ctrlVersion;
+    QString m_pcbVersion;
 };
 
 #endif // ATMELEMOBCTRL_H
