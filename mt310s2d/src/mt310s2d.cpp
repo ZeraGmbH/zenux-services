@@ -258,7 +258,7 @@ void cMT310S2dServer::doSetupServer()
 
             scpiConnectionList.append(this); // the server itself has some commands
             scpiConnectionList.append(m_pStatusInterface = new cStatusInterface(getSCPIInterface(), m_pAdjHandler));
-            std::unique_ptr<HotPluggableControllerContainer> emobControllerContainer =
+            HotPluggableControllerContainerPtr emobControllerContainer =
                     std::make_unique<HotPluggableControllerContainer>(m_pI2CSettings->getDeviceNode(),
                                                                       m_pI2CSettings->getI2CAdress(i2cSettings::emobCtrlI2cAddress),
                                                                       m_pI2CSettings->getI2CAdress(i2cSettings::muxerI2cAddress),

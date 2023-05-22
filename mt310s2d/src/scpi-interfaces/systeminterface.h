@@ -42,7 +42,7 @@ class cSystemInterface: public ScpiConnection
     Q_OBJECT
 
 public:
-    cSystemInterface(cMT310S2dServer* server, std::unique_ptr<HotPluggableControllerContainer> hotPluggableControllerContainer);
+    cSystemInterface(cMT310S2dServer* server, HotPluggableControllerContainerPtr hotPluggableControllerContainer);
     virtual void initSCPIConnection(QString leadingNodes) override;
     void actualizeContollers(quint16 bitmaskAvailable);
 
@@ -75,7 +75,7 @@ private:
     void m_genAnswer(int select, QString& answer);
 
     cMT310S2dServer* m_pMyServer;
-    std::unique_ptr<HotPluggableControllerContainer> m_hotPluggableControllerContainer;
+    HotPluggableControllerContainerPtr m_hotPluggableControllerContainer;
 };
 
 
