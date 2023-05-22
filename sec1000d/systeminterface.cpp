@@ -34,7 +34,7 @@ void cSystemInterface::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
     switch (cmdCode)
     {
     case SystemSystem::cmdVersionServer:
-        protoCmd->m_sOutput = m_ReadServerVersion(protoCmd->m_sInput);
+        protoCmd->m_sOutput = scpiReadServerVersion(protoCmd->m_sInput);
         break;
     case SystemSystem::cmdVersionDevice:
         protoCmd->m_sOutput = m_ReadDeviceVersion(protoCmd->m_sInput);
@@ -58,7 +58,7 @@ void cSystemInterface::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
 }
 
 
-QString cSystemInterface::m_ReadServerVersion(QString &sInput)
+QString cSystemInterface::scpiReadServerVersion(QString &sInput)
 {
     QString s;
     cSCPICommand cmd = sInput;

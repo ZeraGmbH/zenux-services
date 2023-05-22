@@ -44,12 +44,13 @@ protected:
     void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
 
 private:
-    cCOM5003dServer* m_pMyServer;
-    QString m_ReadServerVersion(QString& sInput);
+    QString scpiReadServerVersion(QString& sInput);
+    QString scpiReadAllCTRLVersions(QString& sInput);
+    QString getAllCtrlVersionsJson();
+
     QString m_ReadDeviceVersion(QString& sInput);
     QString m_ReadDeviceName(QString& sInput);
     QString m_ReadWritePCBVersion(QString& sInput);
-    QString m_ReadCTRLVersion(QString& sInput);
     QString m_ReadFPGAVersion(QString& sInput);
     QString m_ReadWriteSerialNumber(QString& sInput);
     QString m_StartControlerBootloader(QString& sInput);
@@ -62,9 +63,10 @@ private:
     QString m_AdjXMLRead(QString& sInput);
     QString m_AdjFlashChksum(QString& sInput);
     QString m_InterfaceRead(QString& sInput);
-    QJsonDocument getSoftwareVersion();
 
     void m_genAnswer(int select, QString& answer);
+
+    cCOM5003dServer* m_pMyServer;
 };
 
 

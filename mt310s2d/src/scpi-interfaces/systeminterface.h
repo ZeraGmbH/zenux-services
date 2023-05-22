@@ -50,13 +50,13 @@ protected:
     void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
 
 private:
-    cMT310S2dServer* m_pMyServer;
-    std::unique_ptr<HotPluggableControllerContainer> m_hotPluggableControllerContainer;
-    QString m_ReadServerVersion(QString& sInput);
+    QString scpiReadServerVersion(QString& sInput);
+    QString scpiReadAllCTRLVersions(QString& sInput);
+    QString getAllCtrlVersionsJson();
+
     QString m_ReadDeviceVersion(QString& sInput);
     QString m_ReadDeviceName(QString& sInput);
     QString m_ReadWritePCBVersion(QString& sInput);
-    QString m_ReadCTRLVersion(QString& sInput);
     QString m_ReadFPGAVersion(QString& sInput);
     QString m_ReadWriteSerialNumber(QString& sInput);
     QString m_StartControlerBootloader(QString& sInput);
@@ -71,9 +71,11 @@ private:
     QString m_AdjFlashChksum(QString& sInput);
     QString m_InterfaceRead(QString& sInput);
     QString testMode(QString &Input);
-    QJsonDocument getSoftwareVersion();
 
     void m_genAnswer(int select, QString& answer);
+
+    cMT310S2dServer* m_pMyServer;
+    std::unique_ptr<HotPluggableControllerContainer> m_hotPluggableControllerContainer;
 };
 
 

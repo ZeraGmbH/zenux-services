@@ -44,7 +44,7 @@ void cSystemInterface::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
     switch (cmdCode)
     {
     case SystemSystem::cmdVersionServer:
-        protoCmd->m_sOutput = m_ReadServerVersion(protoCmd->m_sInput);
+        protoCmd->m_sOutput = scpiReadServerVersion(protoCmd->m_sInput);
         break;
     case SystemSystem::cmdVersionDevice:
         protoCmd->m_sOutput = m_ReadDeviceVersion(protoCmd->m_sInput);
@@ -53,7 +53,7 @@ void cSystemInterface::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
         protoCmd->m_sOutput = m_ReadWritePCBVersion(protoCmd->m_sInput);
         break;
     case SystemSystem::cmdVersionCTRL:
-        protoCmd->m_sOutput = m_ReadCTRLVersion(protoCmd->m_sInput);
+        protoCmd->m_sOutput = scpiReadAllCTRLVersions(protoCmd->m_sInput);
         break;
     case SystemSystem::cmdVersionFPGA:
         protoCmd->m_sOutput = m_ReadFPGAVersion(protoCmd->m_sInput);
@@ -98,7 +98,7 @@ void cSystemInterface::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
 }
 
 
-QString cSystemInterface::m_ReadServerVersion(QString &sInput)
+QString cSystemInterface::scpiReadServerVersion(QString &sInput)
 {
     QString s;
     cSCPICommand cmd = sInput;
@@ -176,19 +176,15 @@ QString cSystemInterface::m_ReadWritePCBVersion(QString &sInput)
 }
 
 
-QString cSystemInterface::m_ReadCTRLVersion(QString &sInput)
+QString cSystemInterface::scpiReadAllCTRLVersions(QString &sInput)
 {
-    QString s;
     cSCPICommand cmd = sInput;
-
-    if (cmd.isQuery())
-    {
+    if (cmd.isQuery()) {
         if (m_pMyServer->m_pSystemInfo->dataRead())
-            return getSoftwareVersion().toJson(QJsonDocument::Compact);
+            return getAllCtrlVersionsJson();
         else
             return SCPI::scpiAnswer[SCPI::errexec];
     }
-
     else
         return SCPI::scpiAnswer[SCPI::nak];
 }
@@ -435,12 +431,12 @@ QString cSystemInterface::m_InterfaceRead(QString &sInput)
         return SCPI::scpiAnswer[SCPI::nak];
 }
 
-QJsonDocument cSystemInterface::getSoftwareVersion()
+QString cSystemInterface::getAllCtrlVersionsJson()
 {
     QJsonObject object;
     object.insert("Relay version", QJsonValue::fromVariant(m_pMyServer->m_pSystemInfo->getCTRLVersion()));
     QJsonDocument doc(object);
-    return doc;
+    return doc.toJson(QJsonDocument::Compact);
 }
 
 void cSystemInterface::m_genAnswer(int select, QString &answer)
