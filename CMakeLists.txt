@@ -73,6 +73,7 @@ function(SETUP_TESTS)
             senserangetesttemplate
             zenuxservicecommon-testlib
             Zera::zera-timers-testlib
+            Zera::zera-i2c-devices-testlib
             )
     endforeach()
 endfunction()

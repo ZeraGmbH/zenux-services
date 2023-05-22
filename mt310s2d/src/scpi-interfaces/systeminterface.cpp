@@ -43,8 +43,9 @@ void cSystemInterface::initSCPIConnection(QString leadingNodes)
 
 void cSystemInterface::actualizeContollers(quint16 bitmaskAvailable)
 {
-    m_hotPluggableControllerContainer->startActualizeEmobControllers(m_pMyServer->m_pSenseSettings,
-                                                                     bitmaskAvailable);
+    m_hotPluggableControllerContainer->startActualizeEmobControllers(bitmaskAvailable,
+                                                                     m_pMyServer->m_pSenseSettings,
+                                                                     10000);
 }
 
 
