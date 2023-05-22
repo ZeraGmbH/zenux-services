@@ -1,6 +1,7 @@
 #include "hotpluggablecontrollercontainer.h"
 #include "atmelctrlfactory.h"
 #include "atmelemobctrl.h"
+#include <zeramcontrollerbootloaderstopperfactory.h>
 #include <i2cmuxerscopedonoff.h>
 
 HotPluggableControllerContainer::HotPluggableControllerContainer(QString i2cDevNodeName, quint8 i2cAdrCtrl, quint8 i2cAdrMux, quint8 debuglevel) :
@@ -11,7 +12,7 @@ HotPluggableControllerContainer::HotPluggableControllerContainer(QString i2cDevN
 {
 }
 
-void HotPluggableControllerContainer::startActualizeEmobControllers(const cSenseSettings* senseSettings, quint16 bitmaskAvailable)
+void HotPluggableControllerContainer::startActualizeEmobControllers(quint16 bitmaskAvailable, const cSenseSettings* senseSettings, int msWaitForApplicationStart)
 {
     const auto channelsSettings = senseSettings->getChannelSettings();
     for(const auto channelSettings : channelsSettings) {
@@ -20,26 +21,30 @@ void HotPluggableControllerContainer::startActualizeEmobControllers(const cSense
         if(plugBitNo < 0)
             continue;
         quint16 bmask = (1 << plugBitNo);
-        if (bitmaskAvailable & bmask)
-            tryStartAddingController(ctrlChannel, channelSettings);
+        if (bitmaskAvailable & bmask) {
+            if(!m_pendingBootloaderStoppers.contains(ctrlChannel) && !m_Controllers.contains(ctrlChannel))
+                startAddingController(ctrlChannel, channelSettings, msWaitForApplicationStart);
+        }
         else {
-            m_Controllers.remove(ctrlChannel);
-            emit sigControllersChanged();
+            if(m_pendingBootloaderStoppers.contains(ctrlChannel))
+                m_pendingBootloaderStoppers.remove(ctrlChannel);
+            if(m_Controllers.contains(ctrlChannel)) {
+                m_Controllers.remove(ctrlChannel);
+                emit sigControllersChanged();
+            }
         }
     }
 }
 
-void HotPluggableControllerContainer::tryStartAddingController(int ctrlChannel, SenseSystem::cChannelSettings* channelSettings)
+void HotPluggableControllerContainer::startAddingController(int ctrlChannel, SenseSystem::cChannelSettings* channelSettings, int msWaitForApplicationStart)
 {
-    if(m_Controllers.contains(ctrlChannel))
-        return;
     I2cMuxerScopedOnOff i2cMuxer(I2cMultiplexerFactory::createPCA9547Muxer(m_i2cDevNodeName, m_i2cAdrMux, channelSettings->m_nMuxChannelNo));
     ZeraMcontrollerIoPtr i2cCtrl = std::make_shared<ZeraMControllerIo>(m_i2cDevNodeName, m_i2cAdrCtrl, m_debuglevel);
-    std::shared_ptr<ZeraMControllerBootloaderStopper> bootStopper = std::make_shared<ZeraMControllerBootloaderStopper>(i2cCtrl, ctrlChannel);
+    ZeraMControllerBootloaderStopperPtr bootStopper = ZeraMControllerBootloaderStopperFactory::createBootloaderStopper(i2cCtrl, ctrlChannel);
     connect(bootStopper.get(), &ZeraMControllerBootloaderStopper::sigAssumeBootloaderStopped,
             this, &HotPluggableControllerContainer::onBootloaderStoppAssumed);
     m_pendingBootloaderStoppers[ctrlChannel] = PendingChannelInfo{ bootStopper, channelSettings->m_nMuxChannelNo };
-    bootStopper->stopBootloader(10000);
+    bootStopper->stopBootloader(msWaitForApplicationStart);
 }
 
 QVector<AtmelCommonVersionsPtr> HotPluggableControllerContainer::getCurrentControllers()

@@ -18,6 +18,13 @@ private slots:
     void mt310s2AddI1I2AddI1();
     void mt310s2AddI1CheckI2cSettings();
     void mt310s2AddI1I2I3IAuxCheckMuxSettings();
+    void mt310s2AddI1CheckSignals();
+    void mt310s2AddI1I2CheckSignalsImmediate();
+    void mt310s2AddI1I2CheckSignalsDelayed();
+    void mt310s2AddI1AndRemoveBeforeFinish();
+    void mt310s2AddI1AndAddI2BeforeFinish();
+
+
 private:
     Zera::XMLConfig::cReader m_configReader;
     cSenseSettings m_senseSettings;
