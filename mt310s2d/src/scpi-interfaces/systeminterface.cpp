@@ -10,7 +10,7 @@
 #include <scpicommand.h>
 #include <QJsonObject>
 
-cSystemInterface::cSystemInterface(cMT310S2dServer *server, std::unique_ptr<HotPluggableControllerContainer> hotPluggableControllerContainer) :
+cSystemInterface::cSystemInterface(cMT310S2dServer *server, HotPluggableControllerContainerPtr hotPluggableControllerContainer) :
     ScpiConnection(server->getSCPIInterface()),
     m_pMyServer(server),
     m_hotPluggableControllerContainer(std::move(hotPluggableControllerContainer))

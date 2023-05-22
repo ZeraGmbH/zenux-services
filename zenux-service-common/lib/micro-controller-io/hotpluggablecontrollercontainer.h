@@ -36,4 +36,6 @@ private:
     QMap<int /* ctrlChannel */, PendingChannelInfo> m_pendingBootloaderStoppers;
 };
 
+typedef std::unique_ptr<HotPluggableControllerContainer> HotPluggableControllerContainerPtr;
+
 #endif // HOTPLUGGABLECONTROLLERCONTAINER_H
