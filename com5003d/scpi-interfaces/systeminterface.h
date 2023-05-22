@@ -46,7 +46,7 @@ protected:
 private:
     QString scpiReadServerVersion(QString& sInput);
     QString scpiReadAllCTRLVersions(QString& sInput);
-    QString getAllCtrlVersionsJson();
+    void updateAllCtrlVersionsJson();
 
     QString m_ReadDeviceVersion(QString& sInput);
     QString m_ReadDeviceName(QString& sInput);
@@ -67,6 +67,7 @@ private:
     void m_genAnswer(int select, QString& answer);
 
     cCOM5003dServer* m_pMyServer;
+    NotificationString m_allCtrlVersion;
 };
 
 

@@ -48,11 +48,12 @@ public:
 
 protected:
     void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
-
+private slots:
+    void onHotPluggableContainersChanged();
 private:
     QString scpiReadServerVersion(QString& sInput);
     QString scpiReadAllCTRLVersions(QString& sInput);
-    QString getAllCtrlVersionsJson();
+    void updateAllCtrlVersionsJson();
 
     QString m_ReadDeviceVersion(QString& sInput);
     QString m_ReadDeviceName(QString& sInput);
@@ -76,6 +77,7 @@ private:
 
     cMT310S2dServer* m_pMyServer;
     HotPluggableControllerContainerPtr m_hotPluggableControllerContainer;
+    NotificationString m_allCtrlVersion;
 };
 
 

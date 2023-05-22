@@ -23,7 +23,7 @@ void cSystemInterface::initSCPIConnection(QString leadingNodes)
     addDelegate(QString("%1SYSTEM:VERSION").arg(leadingNodes),"SERVER", SCPI::isQuery, m_pSCPIInterface, SystemSystem::cmdVersionServer);
     addDelegate(QString("%1SYSTEM:VERSION").arg(leadingNodes),"DEVICE", SCPI::isQuery, m_pSCPIInterface, SystemSystem::cmdVersionDevice);
     addDelegate(QString("%1SYSTEM:VERSION").arg(leadingNodes), "PCB", SCPI::isQuery | SCPI::isCmdwP, m_pSCPIInterface, SystemSystem::cmdVersionPCB);
-    addDelegate(QString("%1SYSTEM:VERSION").arg(leadingNodes), "CTRL", SCPI::isQuery, m_pSCPIInterface, SystemSystem::cmdVersionCTRL);
+    addDelegate(QString("%1SYSTEM:VERSION").arg(leadingNodes), "CTRL", SCPI::isQuery, m_pSCPIInterface, SystemSystem::cmdVersionCTRL, &m_allCtrlVersion);
     addDelegate(QString("%1SYSTEM:VERSION").arg(leadingNodes), "FPGA", SCPI::isQuery, m_pSCPIInterface, SystemSystem::cmdVersionFPGA);
     addDelegate(QString("%1SYSTEM").arg(leadingNodes), "SERIAL", SCPI::isQuery | SCPI::isCmdwP , m_pSCPIInterface, SystemSystem::cmdSerialNumber);
     addDelegate(QString("%1SYSTEM:UPDATE:CONTROLER").arg(leadingNodes), "BOOTLOADER", SCPI::isCmd, m_pSCPIInterface, SystemSystem::cmdUpdateControlerBootloader);
@@ -180,8 +180,10 @@ QString cSystemInterface::scpiReadAllCTRLVersions(QString &sInput)
 {
     cSCPICommand cmd = sInput;
     if (cmd.isQuery()) {
-        if (m_pMyServer->m_pSystemInfo->dataRead())
-            return getAllCtrlVersionsJson();
+        if (m_pMyServer->m_pSystemInfo->dataRead()) {
+            updateAllCtrlVersionsJson();
+            return m_allCtrlVersion.getString();
+        }
         else
             return SCPI::scpiAnswer[SCPI::errexec];
     }
@@ -431,12 +433,12 @@ QString cSystemInterface::m_InterfaceRead(QString &sInput)
         return SCPI::scpiAnswer[SCPI::nak];
 }
 
-QString cSystemInterface::getAllCtrlVersionsJson()
+void cSystemInterface::updateAllCtrlVersionsJson()
 {
     QJsonObject object;
     object.insert("Relay version", QJsonValue::fromVariant(m_pMyServer->m_pSystemInfo->getCTRLVersion()));
     QJsonDocument doc(object);
-    return doc.toJson(QJsonDocument::Compact);
+    m_allCtrlVersion = doc.toJson(QJsonDocument::Compact);
 }
 
 void cSystemInterface::m_genAnswer(int select, QString &answer)
