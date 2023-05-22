@@ -15,6 +15,9 @@ cSystemInterface::cSystemInterface(cMT310S2dServer *server, HotPluggableControll
     m_pMyServer(server),
     m_hotPluggableControllerContainer(std::move(hotPluggableControllerContainer))
 {
+    if(m_hotPluggableControllerContainer)
+        connect(m_hotPluggableControllerContainer.get(), &HotPluggableControllerContainer::sigControllersChanged,
+                this, &cSystemInterface::onHotPluggableContainersChanged);
 }
 
 
@@ -24,7 +27,7 @@ void cSystemInterface::initSCPIConnection(QString leadingNodes)
     addDelegate(QString("%1SYSTEM:VERSION").arg(leadingNodes),"SERVER", SCPI::isQuery, m_pSCPIInterface, SystemSystem::cmdVersionServer);
     addDelegate(QString("%1SYSTEM:VERSION").arg(leadingNodes),"DEVICE", SCPI::isQuery, m_pSCPIInterface, SystemSystem::cmdVersionDevice);
     addDelegate(QString("%1SYSTEM:VERSION").arg(leadingNodes), "PCB", SCPI::isQuery | SCPI::isCmdwP, m_pSCPIInterface, SystemSystem::cmdVersionPCB);
-    addDelegate(QString("%1SYSTEM:VERSION").arg(leadingNodes), "CTRL", SCPI::isQuery, m_pSCPIInterface, SystemSystem::cmdVersionCTRL);
+    addDelegate(QString("%1SYSTEM:VERSION").arg(leadingNodes), "CTRL", SCPI::isQuery, m_pSCPIInterface, SystemSystem::cmdVersionCTRL, &m_allCtrlVersion);
     addDelegate(QString("%1SYSTEM:VERSION").arg(leadingNodes), "FPGA", SCPI::isQuery, m_pSCPIInterface, SystemSystem::cmdVersionFPGA);
     addDelegate(QString("%1SYSTEM").arg(leadingNodes), "SERIAL", SCPI::isQuery | SCPI::isCmdwP , m_pSCPIInterface, SystemSystem::cmdSerialNumber);
     addDelegate(QString("%1SYSTEM:UPDATE:CONTROLER").arg(leadingNodes), "BOOTLOADER", SCPI::isCmd, m_pSCPIInterface, SystemSystem::cmdUpdateControlerBootloader);
@@ -113,6 +116,11 @@ void cSystemInterface::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
         emit cmdExecutionDone(protoCmd);
 }
 
+void cSystemInterface::onHotPluggableContainersChanged()
+{
+    updateAllCtrlVersionsJson();
+}
+
 
 QString cSystemInterface::scpiReadServerVersion(QString &sInput)
 {
@@ -196,8 +204,10 @@ QString cSystemInterface::scpiReadAllCTRLVersions(QString &sInput)
 {
     cSCPICommand cmd = sInput;
     if (cmd.isQuery()) {
-        if (m_pMyServer->m_pSystemInfo->dataRead())
-            return getAllCtrlVersionsJson();
+        if (m_pMyServer->m_pSystemInfo->dataRead()) {
+            updateAllCtrlVersionsJson();
+            return m_allCtrlVersion.getString();
+        }
         else
             return SCPI::scpiAnswer[SCPI::errexec];
     }
@@ -490,7 +500,7 @@ QString cSystemInterface::testMode(QString &Input)
     return pAtmelSys->enableTestMode(modeBits)==ZeraMControllerIo::cmddone ? SCPI::scpiAnswer[SCPI::ack] : SCPI::scpiAnswer[SCPI::errexec];
 }
 
-QString cSystemInterface::getAllCtrlVersionsJson()
+void cSystemInterface::updateAllCtrlVersionsJson()
 {
     QJsonObject object;
     object.insert("SysController version", QJsonValue::fromVariant(m_pMyServer->m_pSystemInfo->getSysCTRLVersion()));
@@ -502,7 +512,7 @@ QString cSystemInterface::getAllCtrlVersionsJson()
         object.insert("EmobController version", QJsonValue::fromVariant(version));
     }
     QJsonDocument doc(object);
-    return doc.toJson(QJsonDocument::Compact);
+    m_allCtrlVersion = doc.toJson(QJsonDocument::Compact);
 }
 
 void cSystemInterface::m_genAnswer(int select, QString &answer)
