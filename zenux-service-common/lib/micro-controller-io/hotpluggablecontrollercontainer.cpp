@@ -57,7 +57,8 @@ QVector<AtmelCommonVersionsPtr> HotPluggableControllerContainer::getCurrentContr
 
 void HotPluggableControllerContainer::onBootloaderStoppAssumed(int ctrlChannel)
 {
-    qInfo("Bootloader stop / application start assumed for channel %i", ctrlChannel);
+    qInfo("Bootloader stopped. Assume application started for channel %i", ctrlChannel);
+    qInfo("Try communication to controller channel %i by version read...", ctrlChannel);
     if(m_pendingBootloaderStoppers.contains(ctrlChannel)) {
         AtmelCommonVersionsPtr ctrl = AtmelCtrlFactory::createEmobCtrl(
                     m_i2cDevNodeName,
@@ -69,9 +70,12 @@ void HotPluggableControllerContainer::onBootloaderStoppAssumed(int ctrlChannel)
         QString version;
         ZeraMControllerIo::atmelRM result = ctrl->readCTRLVersion(version);
         if(result == ZeraMControllerIo::cmddone && !version.isEmpty()) {
+            qInfo("Version read for channel %i - add controller", ctrlChannel);
             m_Controllers[ctrlChannel] = ctrl;
             emit sigControllersChanged();
         }
+        else
+            qWarning("Version read for channel %i failed - assume no controller added", ctrlChannel);
     }
 }
 
