@@ -15,12 +15,22 @@ AtmelEmobCtrl::AtmelEmobCtrl(ZeraMcontrollerIoPtr i2cCtrl, QString devnode, quin
 
 ZeraMControllerIo::atmelRM AtmelEmobCtrl::readCTRLVersion(QString &answer)
 {
-    I2cMuxerScopedOnOff i2cMuxerEnabled(m_i2cMuxer);
-    return m_i2cCtrl->readVariableLenText(hwGetCtrlVersion, answer);
+    ZeraMControllerIo::atmelRM ret = ZeraMControllerIoTemplate::cmddone;
+    if(m_ctrlVersion.isEmpty()) {
+        I2cMuxerScopedOnOff i2cMuxerEnabled(m_i2cMuxer);
+        ret = m_i2cCtrl->readVariableLenText(hwGetCtrlVersion, m_ctrlVersion);
+    }
+    answer = m_ctrlVersion;
+    return ret;
 }
 
 ZeraMControllerIo::atmelRM AtmelEmobCtrl::readPCBVersion(QString &answer)
 {
-    I2cMuxerScopedOnOff i2cMuxerEnabled(m_i2cMuxer);
-    return m_i2cCtrl->readVariableLenText(hwGetPCBVersion, answer);
+    ZeraMControllerIo::atmelRM ret = ZeraMControllerIoTemplate::cmddone;
+    if(m_pcbVersion.isEmpty()) {
+        I2cMuxerScopedOnOff i2cMuxerEnabled(m_i2cMuxer);
+        ret = m_i2cCtrl->readVariableLenText(hwGetPCBVersion, m_pcbVersion);
+    }
+    answer = m_pcbVersion;
+    return ret;
 }
