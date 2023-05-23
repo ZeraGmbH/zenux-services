@@ -436,7 +436,7 @@ QString cSystemInterface::m_InterfaceRead(QString &sInput)
 void cSystemInterface::updateAllCtrlVersionsJson()
 {
     QJsonObject object;
-    object.insert("Relay version", QJsonValue::fromVariant(m_pMyServer->m_pSystemInfo->getCTRLVersion()));
+    object.insert("Relay controller version", QJsonValue::fromVariant(m_pMyServer->m_pSystemInfo->getCTRLVersion()));
     QJsonDocument doc(object);
     m_allCtrlVersion = doc.toJson(QJsonDocument::Compact);
 }
