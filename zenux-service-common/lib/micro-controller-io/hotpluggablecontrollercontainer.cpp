@@ -26,9 +26,12 @@ void HotPluggableControllerContainer::startActualizeEmobControllers(quint16 bitm
                 startAddingController(ctrlChannel, channelSettings, msWaitForApplicationStart);
         }
         else {
-            if(m_pendingBootloaderStoppers.contains(ctrlChannel))
+            if(m_pendingBootloaderStoppers.contains(ctrlChannel)) {
+                qInfo("Remove pending/not yet booted controller on channel %i", ctrlChannel);
                 m_pendingBootloaderStoppers.remove(ctrlChannel);
+            }
             if(m_Controllers.contains(ctrlChannel)) {
+                qInfo("Remove controller on channel %i", ctrlChannel);
                 m_Controllers.remove(ctrlChannel);
                 emit sigControllersChanged();
             }
@@ -70,7 +73,7 @@ void HotPluggableControllerContainer::onBootloaderStoppAssumed(int ctrlChannel)
         QString version;
         ZeraMControllerIo::atmelRM result = ctrl->readCTRLVersion(version);
         if(result == ZeraMControllerIo::cmddone && !version.isEmpty()) {
-            qInfo("Version read for channel %i - add controller", ctrlChannel);
+            qInfo("Version %s read for channel %i - add controller", qPrintable(version), ctrlChannel);
             m_Controllers[ctrlChannel] = ctrl;
             emit sigControllersChanged();
         }
