@@ -54,6 +54,7 @@ private:
     QString scpiReadServerVersion(QString& sInput);
     QString scpiReadAllCTRLVersions(QString& sInput);
     void updateAllCtrlVersionsJson();
+    void readAllPCBsVersion();
 
     QString m_ReadDeviceVersion(QString& sInput);
     QString m_ReadDeviceName(QString& sInput);
@@ -78,6 +79,7 @@ private:
     cMT310S2dServer* m_pMyServer;
     HotPluggableControllerContainerPtr m_hotPluggableControllerContainer;
     NotificationString m_allCtrlVersion;
+    NotificationString m_allPCBVersion;
 };
 
 

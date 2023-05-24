@@ -26,7 +26,7 @@ void cSystemInterface::initSCPIConnection(QString leadingNodes)
     ensureTrailingColonOnNonEmptyParentNodes(leadingNodes);
     addDelegate(QString("%1SYSTEM:VERSION").arg(leadingNodes),"SERVER", SCPI::isQuery, m_pSCPIInterface, SystemSystem::cmdVersionServer);
     addDelegate(QString("%1SYSTEM:VERSION").arg(leadingNodes),"DEVICE", SCPI::isQuery, m_pSCPIInterface, SystemSystem::cmdVersionDevice);
-    addDelegate(QString("%1SYSTEM:VERSION").arg(leadingNodes), "PCB", SCPI::isQuery | SCPI::isCmdwP, m_pSCPIInterface, SystemSystem::cmdVersionPCB);
+    addDelegate(QString("%1SYSTEM:VERSION").arg(leadingNodes), "PCB", SCPI::isQuery | SCPI::isCmdwP, m_pSCPIInterface, SystemSystem::cmdVersionPCB, &m_allPCBVersion);
     addDelegate(QString("%1SYSTEM:VERSION").arg(leadingNodes), "CTRL", SCPI::isQuery, m_pSCPIInterface, SystemSystem::cmdVersionCTRL, &m_allCtrlVersion);
     addDelegate(QString("%1SYSTEM:VERSION").arg(leadingNodes), "FPGA", SCPI::isQuery, m_pSCPIInterface, SystemSystem::cmdVersionFPGA);
     addDelegate(QString("%1SYSTEM").arg(leadingNodes), "SERIAL", SCPI::isQuery | SCPI::isCmdwP , m_pSCPIInterface, SystemSystem::cmdSerialNumber);
@@ -119,6 +119,7 @@ void cSystemInterface::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
 void cSystemInterface::onHotPluggableContainersChanged()
 {
     updateAllCtrlVersionsJson();
+    readAllPCBsVersion();
 }
 
 
@@ -179,8 +180,10 @@ QString cSystemInterface::m_ReadWritePCBVersion(QString &sInput)
 
     if (cmd.isQuery())
     {
-        if (m_pMyServer->m_pSystemInfo->dataRead())
-            s = m_pMyServer->m_pSystemInfo->getPCBVersion();
+        if (m_pMyServer->m_pSystemInfo->dataRead()) {
+            readAllPCBsVersion();
+            s = m_allPCBVersion.getString();
+        }
         else
             s = SCPI::scpiAnswer[SCPI::errexec];
     }
@@ -513,6 +516,20 @@ void cSystemInterface::updateAllCtrlVersionsJson()
     }
     QJsonDocument doc(object);
     m_allCtrlVersion = doc.toJson(QJsonDocument::Compact);
+}
+
+void cSystemInterface::readAllPCBsVersion()
+{
+    QJsonObject object;
+    object.insert("PCB version", QJsonValue::fromVariant(m_pMyServer->m_pSystemInfo->getPCBVersion()));
+    QVector<AtmelCommonVersionsPtr> hotpluggableControllers = m_hotPluggableControllerContainer->getCurrentControllers();
+    for(auto controller : hotpluggableControllers) {
+        QString version;
+        controller->readPCBVersion(version);
+        object.insert("Emob PCB version", QJsonValue::fromVariant(version));
+    }
+    QJsonDocument doc(object);
+    m_allPCBVersion = doc.toJson(QJsonDocument::Compact);
 }
 
 void cSystemInterface::m_genAnswer(int select, QString &answer)
