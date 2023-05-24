@@ -47,6 +47,7 @@ private:
     QString scpiReadServerVersion(QString& sInput);
     QString scpiReadAllCTRLVersions(QString& sInput);
     void updateAllCtrlVersionsJson();
+    void readAllPCBsVersion();
 
     QString m_ReadDeviceVersion(QString& sInput);
     QString m_ReadDeviceName(QString& sInput);
@@ -68,6 +69,7 @@ private:
 
     cCOM5003dServer* m_pMyServer;
     NotificationString m_allCtrlVersion;
+    NotificationString m_allPCBVersion;
 };
 
 
