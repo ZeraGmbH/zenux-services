@@ -11,9 +11,11 @@ public:
     void getSystemInfo(); // here we fetch all system info
     bool dataRead(); // false if we were not able to read required information
     QString& getSysCTRLVersion();
+    QString& getSysPCBVersion();
 
 private:
     bool m_bRead; // we keep in mind whether we could read the information
     QString m_sSysCTRLVersion;
+    QString m_sSysPCBVersion;
 };
 #endif // MT310S2SYSTEMINFO_H

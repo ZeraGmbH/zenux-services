@@ -522,6 +522,7 @@ void cSystemInterface::readAllPCBsVersion()
 {
     QJsonObject object;
     object.insert("PCB version", QJsonValue::fromVariant(m_pMyServer->m_pSystemInfo->getPCBVersion()));
+    object.insert("PCB version info", QJsonValue::fromVariant(m_pMyServer->m_pSystemInfo->getSysPCBVersion()));
     QVector<AtmelCommonVersionsPtr> hotpluggableControllers = m_hotPluggableControllerContainer->getCurrentControllers();
     for(auto controller : hotpluggableControllers) {
         QString version;
