@@ -506,8 +506,8 @@ QString cSystemInterface::testMode(QString &Input)
 void cSystemInterface::updateAllCtrlVersionsJson()
 {
     QJsonObject object;
-    object.insert("System controller version", QJsonValue::fromVariant(m_pMyServer->m_pSystemInfo->getSysCTRLVersion()));
     object.insert("Relay controller version", QJsonValue::fromVariant(m_pMyServer->m_pSystemInfo->getCTRLVersion()));
+    object.insert("System controller version", QJsonValue::fromVariant(m_pMyServer->m_pSystemInfo->getSysCTRLVersion()));
     QVector<AtmelCommonVersionsPtr> hotpluggableControllers = m_hotPluggableControllerContainer->getCurrentControllers();
     for(auto controller : hotpluggableControllers) {
         QString version;
