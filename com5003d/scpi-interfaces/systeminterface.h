@@ -47,7 +47,7 @@ private:
     QString scpiReadServerVersion(QString& sInput);
     QString scpiReadAllCTRLVersions(QString& sInput);
     void updateAllCtrlVersionsJson();
-    void readAllPCBsVersion();
+    void updateAllPCBsVersion();
 
     QString m_ReadDeviceVersion(QString& sInput);
     QString m_ReadDeviceName(QString& sInput);
