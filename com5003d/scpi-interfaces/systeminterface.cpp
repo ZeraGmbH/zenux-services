@@ -156,7 +156,7 @@ QString cSystemInterface::m_ReadWritePCBVersion(QString &sInput)
     if (cmd.isQuery())
     {
         if (m_pMyServer->m_pSystemInfo->dataRead()) {
-            readAllPCBsVersion();
+            updateAllPCBsVersion();
             s = m_allPCBVersion.getString();
         }
         else
@@ -443,7 +443,7 @@ void cSystemInterface::updateAllCtrlVersionsJson()
     m_allCtrlVersion = doc.toJson(QJsonDocument::Compact);
 }
 
-void cSystemInterface::readAllPCBsVersion()
+void cSystemInterface::updateAllPCBsVersion()
 {
     QJsonObject object;
     object.insert("PCB version", QJsonValue::fromVariant(m_pMyServer->m_pSystemInfo->getPCBVersion()));
