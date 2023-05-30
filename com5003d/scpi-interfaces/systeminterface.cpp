@@ -446,7 +446,7 @@ void cSystemInterface::updateAllCtrlVersionsJson()
 void cSystemInterface::updateAllPCBsVersion()
 {
     QJsonObject object;
-    object.insert("PCB version", QJsonValue::fromVariant(m_pMyServer->m_pSystemInfo->getPCBVersion()));
+    object.insert("Relay PCB version", QJsonValue::fromVariant(m_pMyServer->m_pSystemInfo->getPCBVersion()));
     QJsonDocument doc(object);
     m_allPCBVersion = doc.toJson(QJsonDocument::Compact);
 }
