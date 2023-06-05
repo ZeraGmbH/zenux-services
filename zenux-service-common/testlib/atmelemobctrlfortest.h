@@ -6,7 +6,7 @@
 class AtmelEmobCtrlForTest : public AtmelEmobCtrl
 {
 public:
-    AtmelEmobCtrlForTest(ZeraMcontrollerIoPtr i2cCtrl, QString devnode, quint8 adrMux, quint8 muxChannel);
+    AtmelEmobCtrlForTest(ZeraMcontrollerIoPtr i2cCtrl, QString devnode, quint8 adrMux, quint8 muxChannel, bool responding);
     virtual ~AtmelEmobCtrlForTest();
     ZeraMControllerIo::atmelRM readCTRLVersion(QString& answer) override;
     QString getDevnode();
@@ -23,6 +23,7 @@ private:
     quint8 m_adrMux;
     quint8 m_muxChannel;
     quint8 m_debuglevel;
+    bool m_responding;
     static int m_instanceCount;
 };
 

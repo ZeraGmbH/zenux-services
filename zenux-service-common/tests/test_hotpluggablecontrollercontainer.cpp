@@ -21,7 +21,6 @@ test_hotpluggablecontrollercontainer::test_hotpluggablecontrollercontainer() :
 
 void test_hotpluggablecontrollercontainer::initTestCase()
 {
-    AtmelCtrlFactoryForTest::enableTest();
     TimerFactoryQtForTest::enableTest();
 }
 
@@ -45,6 +44,7 @@ void test_hotpluggablecontrollercontainer::mt310s2AllVoltageNotPluggable()
 
 void test_hotpluggablecontrollercontainer::mt310s2AddI1()
 {
+    AtmelCtrlFactoryForTest::prepareNextTestControllers(QVector<bool>() << true);
     HotPluggableControllerContainer container(QString(), 0, 0, 0);
     container.startActualizeEmobControllers((1<<4), &m_senseSettings, 1000);
     QVector<AtmelCommonVersionsPtr> controllers = container.getCurrentControllers();
@@ -54,6 +54,7 @@ void test_hotpluggablecontrollercontainer::mt310s2AddI1()
 
 void test_hotpluggablecontrollercontainer::mt310s2AddI1I2()
 {
+    AtmelCtrlFactoryForTest::prepareNextTestControllers(QVector<bool>() << true << true);
     HotPluggableControllerContainer container(QString(), 0, 0, 0);
     container.startActualizeEmobControllers((1<<4) | (1<<5), &m_senseSettings, 1000);
     QVector<AtmelCommonVersionsPtr> controllers = container.getCurrentControllers();
@@ -62,6 +63,7 @@ void test_hotpluggablecontrollercontainer::mt310s2AddI1I2()
 
 void test_hotpluggablecontrollercontainer::mt310s2AddI1Twice()
 {
+    AtmelCtrlFactoryForTest::prepareNextTestControllers(QVector<bool>() << true);
     HotPluggableControllerContainer container(QString(), 0, 0, 0);
     container.startActualizeEmobControllers((1<<4), &m_senseSettings, 1000);
     container.startActualizeEmobControllers((1<<4), &m_senseSettings, 1000);
@@ -72,6 +74,7 @@ void test_hotpluggablecontrollercontainer::mt310s2AddI1Twice()
 
 void test_hotpluggablecontrollercontainer::mt310s2AddI1I2AddI1()
 {
+    AtmelCtrlFactoryForTest::prepareNextTestControllers(QVector<bool>() << true);
     HotPluggableControllerContainer container(QString(), 0, 0, 0);
     container.startActualizeEmobControllers((1<<4) | (1<<5), &m_senseSettings, 1000);
     container.startActualizeEmobControllers((1<<4), &m_senseSettings, 1000);
@@ -82,6 +85,7 @@ void test_hotpluggablecontrollercontainer::mt310s2AddI1I2AddI1()
 
 void test_hotpluggablecontrollercontainer::mt310s2AddI1CheckI2cSettings()
 {
+    AtmelCtrlFactoryForTest::prepareNextTestControllers(QVector<bool>() << true);
     HotPluggableControllerContainer container("foo", 1, 2, 3);
     container.startActualizeEmobControllers((1<<4), &m_senseSettings, 1000);
     QVector<AtmelCommonVersionsPtr> controllers = container.getCurrentControllers();
@@ -95,6 +99,7 @@ void test_hotpluggablecontrollercontainer::mt310s2AddI1CheckI2cSettings()
 
 void test_hotpluggablecontrollercontainer::mt310s2AddI1I2I3IAuxCheckMuxSettings()
 {
+    AtmelCtrlFactoryForTest::prepareNextTestControllers(QVector<bool>() << true << true << true << true);
     HotPluggableControllerContainer container("foo", 1, 2, 3);
     container.startActualizeEmobControllers((1<<4) | (1<<5) | (1<<6) | (1<<7), &m_senseSettings, 1000);
     QVector<AtmelCommonVersionsPtr> controllers = container.getCurrentControllers();
@@ -111,6 +116,7 @@ void test_hotpluggablecontrollercontainer::mt310s2AddI1I2I3IAuxCheckMuxSettings(
 
 void test_hotpluggablecontrollercontainer::mt310s2AddI1CheckSignals()
 {
+    AtmelCtrlFactoryForTest::prepareNextTestControllers(QVector<bool>() << true);
     QVector<bool> immediateSequence = QVector<bool>() << false;
     ZeraMControllerBootloaderStopperFactoryForTest::setBootoaderAssumeAppStartedImmediates(immediateSequence);
 
@@ -127,6 +133,7 @@ void test_hotpluggablecontrollercontainer::mt310s2AddI1CheckSignals()
 
 void test_hotpluggablecontrollercontainer::mt310s2AddI1I2CheckSignalsImmediate()
 {
+    AtmelCtrlFactoryForTest::prepareNextTestControllers(QVector<bool>() << true << true);
     QVector<bool> immediateSequence = QVector<bool>() << true << true;
     ZeraMControllerBootloaderStopperFactoryForTest::setBootoaderAssumeAppStartedImmediates(immediateSequence);
 
@@ -142,6 +149,7 @@ void test_hotpluggablecontrollercontainer::mt310s2AddI1I2CheckSignalsImmediate()
 
 void test_hotpluggablecontrollercontainer::mt310s2AddI1I2CheckSignalsDelayed()
 {
+    AtmelCtrlFactoryForTest::prepareNextTestControllers(QVector<bool>() << true << true);
     QVector<bool> immediateSequence = QVector<bool>() << false << false;
     ZeraMControllerBootloaderStopperFactoryForTest::setBootoaderAssumeAppStartedImmediates(immediateSequence);
 
@@ -177,6 +185,7 @@ void test_hotpluggablecontrollercontainer::mt310s2AddI1AndRemoveBeforeFinish()
 
 void test_hotpluggablecontrollercontainer::mt310s2AddI1AndAddI2BeforeFinish()
 {
+    AtmelCtrlFactoryForTest::prepareNextTestControllers(QVector<bool>() << true << true);
     QVector<bool> immediateSequence = QVector<bool>() << false << false;
     ZeraMControllerBootloaderStopperFactoryForTest::setBootoaderAssumeAppStartedImmediates(immediateSequence);
 
