@@ -117,8 +117,7 @@ void test_hotpluggablecontrollercontainer::mt310s2AddI1I2I3IAuxCheckMuxSettings(
 void test_hotpluggablecontrollercontainer::mt310s2AddI1CheckSignals()
 {
     AtmelCtrlFactoryForTest::prepareNextTestControllers(QVector<bool>() << true);
-    QVector<bool> immediateSequence = QVector<bool>() << false;
-    ZeraMControllerBootloaderStopperFactoryForTest::setBootoaderAssumeAppStartedImmediates(immediateSequence);
+    ZeraMControllerBootloaderStopperFactoryForTest::setBootoaderAssumeAppStartedImmediates(QVector<bool>() << false);
 
     HotPluggableControllerContainer container(QString(), 0, 0, 0);
     QSignalSpy spy(&container, &HotPluggableControllerContainer::sigControllersChanged);
@@ -134,8 +133,7 @@ void test_hotpluggablecontrollercontainer::mt310s2AddI1CheckSignals()
 void test_hotpluggablecontrollercontainer::mt310s2AddI1I2CheckSignalsImmediate()
 {
     AtmelCtrlFactoryForTest::prepareNextTestControllers(QVector<bool>() << true << true);
-    QVector<bool> immediateSequence = QVector<bool>() << true << true;
-    ZeraMControllerBootloaderStopperFactoryForTest::setBootoaderAssumeAppStartedImmediates(immediateSequence);
+    ZeraMControllerBootloaderStopperFactoryForTest::setBootoaderAssumeAppStartedImmediates(QVector<bool>() << true << true);
 
     HotPluggableControllerContainer container(QString(), 0, 0, 0);
     QSignalSpy spy(&container, &HotPluggableControllerContainer::sigControllersChanged);
@@ -150,8 +148,7 @@ void test_hotpluggablecontrollercontainer::mt310s2AddI1I2CheckSignalsImmediate()
 void test_hotpluggablecontrollercontainer::mt310s2AddI1I2CheckSignalsDelayed()
 {
     AtmelCtrlFactoryForTest::prepareNextTestControllers(QVector<bool>() << true << true);
-    QVector<bool> immediateSequence = QVector<bool>() << false << false;
-    ZeraMControllerBootloaderStopperFactoryForTest::setBootoaderAssumeAppStartedImmediates(immediateSequence);
+    ZeraMControllerBootloaderStopperFactoryForTest::setBootoaderAssumeAppStartedImmediates(QVector<bool>() << false << false);
 
     HotPluggableControllerContainer container(QString(), 0, 0, 0);
     QSignalSpy spy(&container, &HotPluggableControllerContainer::sigControllersChanged);
@@ -167,8 +164,7 @@ void test_hotpluggablecontrollercontainer::mt310s2AddI1I2CheckSignalsDelayed()
 
 void test_hotpluggablecontrollercontainer::mt310s2AddI1AndRemoveBeforeFinish()
 {
-    QVector<bool> immediateSequence = QVector<bool>() << false;
-    ZeraMControllerBootloaderStopperFactoryForTest::setBootoaderAssumeAppStartedImmediates(immediateSequence);
+    ZeraMControllerBootloaderStopperFactoryForTest::setBootoaderAssumeAppStartedImmediates(QVector<bool>() << false);
 
     HotPluggableControllerContainer container(QString(), 0, 0, 0);
     QSignalSpy spy(&container, &HotPluggableControllerContainer::sigControllersChanged);
@@ -186,8 +182,7 @@ void test_hotpluggablecontrollercontainer::mt310s2AddI1AndRemoveBeforeFinish()
 void test_hotpluggablecontrollercontainer::mt310s2AddI1AndAddI2BeforeFinish()
 {
     AtmelCtrlFactoryForTest::prepareNextTestControllers(QVector<bool>() << true << true);
-    QVector<bool> immediateSequence = QVector<bool>() << false << false;
-    ZeraMControllerBootloaderStopperFactoryForTest::setBootoaderAssumeAppStartedImmediates(immediateSequence);
+    ZeraMControllerBootloaderStopperFactoryForTest::setBootoaderAssumeAppStartedImmediates(QVector<bool>() << false << false);
 
     HotPluggableControllerContainer container(QString(), 0, 0, 0);
     QSignalSpy spy(&container, &HotPluggableControllerContainer::sigControllersChanged);
