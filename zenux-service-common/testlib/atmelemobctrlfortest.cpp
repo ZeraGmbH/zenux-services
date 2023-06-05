@@ -2,11 +2,12 @@
 
 int AtmelEmobCtrlForTest::m_instanceCount = 0;
 
-AtmelEmobCtrlForTest::AtmelEmobCtrlForTest(ZeraMcontrollerIoPtr i2cCtrl, QString devnode, quint8 adrMux, quint8 muxChannel) :
+AtmelEmobCtrlForTest::AtmelEmobCtrlForTest(ZeraMcontrollerIoPtr i2cCtrl, QString devnode, quint8 adrMux, quint8 muxChannel, bool responding) :
     AtmelEmobCtrl(i2cCtrl, devnode, adrMux, muxChannel),
     m_devnode(devnode),
     m_adrMux(adrMux),
-    m_muxChannel(muxChannel)
+    m_muxChannel(muxChannel),
+    m_responding(responding)
 {
     m_instanceCount++;
 }
@@ -18,8 +19,12 @@ AtmelEmobCtrlForTest::~AtmelEmobCtrlForTest()
 
 ZeraMControllerIo::atmelRM AtmelEmobCtrlForTest::readCTRLVersion(QString &answer)
 {
-    answer = "EMOB test";
-    return ZeraMControllerIo::cmddone;
+    if(m_responding) {
+        answer = "EMOB test";
+        return ZeraMControllerIo::cmddone;
+    }
+    else
+        return ZeraMControllerIo::cmdexecfault;
 }
 
 QString AtmelEmobCtrlForTest::getDevnode()

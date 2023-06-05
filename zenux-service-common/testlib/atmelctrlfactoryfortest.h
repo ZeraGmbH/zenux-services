@@ -6,7 +6,9 @@
 class AtmelCtrlFactoryForTest : public AtmelCtrlFactory
 {
 public:
-    static void enableTest();
+    static void prepareNextTestControllers(QVector<bool> responding);
+private:
+    static QVector<bool> m_respondingControllers;
 };
 
 #endif // ATMELCTRLFACTORYFORTEST_H
