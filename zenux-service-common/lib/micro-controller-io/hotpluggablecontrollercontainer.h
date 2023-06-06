@@ -19,7 +19,7 @@ public:
 signals:
     void sigControllersChanged();
 private slots:
-    void onBootloaderStoppAssumed(int ctrlChannel);
+    void onBootloaderStopAssumed(int ctrlChannel);
 private:
     void startAddingController(int ctrlChannel, SenseSystem::cChannelSettings* channelSettings, int msWaitForApplicationStart);
 

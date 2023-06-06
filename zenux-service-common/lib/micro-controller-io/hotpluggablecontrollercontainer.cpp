@@ -22,7 +22,8 @@ void HotPluggableControllerContainer::startActualizeEmobControllers(quint16 bitm
             continue;
         quint16 bmask = (1 << plugBitNo);
         if (bitmaskAvailable & bmask) {
-            if(!m_pendingBootloaderStoppers.contains(ctrlChannel) && !m_Controllers.contains(ctrlChannel))
+            if(!m_pendingBootloaderStoppers.contains(ctrlChannel) &&
+               !m_Controllers.contains(ctrlChannel))
                 startAddingController(ctrlChannel, channelSettings, msWaitForApplicationStart);
         }
         else {
@@ -45,7 +46,7 @@ void HotPluggableControllerContainer::startAddingController(int ctrlChannel, Sen
     ZeraMcontrollerIoPtr i2cCtrl = std::make_shared<ZeraMControllerIo>(m_i2cDevNodeName, m_i2cAdrCtrl, m_debuglevel);
     ZeraMControllerBootloaderStopperPtr bootStopper = ZeraMControllerBootloaderStopperFactory::createBootloaderStopper(i2cCtrl, ctrlChannel);
     connect(bootStopper.get(), &ZeraMControllerBootloaderStopper::sigAssumeBootloaderStopped,
-            this, &HotPluggableControllerContainer::onBootloaderStoppAssumed);
+            this, &HotPluggableControllerContainer::onBootloaderStopAssumed);
     m_pendingBootloaderStoppers[ctrlChannel] = PendingChannelInfo{ bootStopper, channelSettings->m_nMuxChannelNo };
     bootStopper->stopBootloader(msWaitForApplicationStart);
 }
@@ -58,7 +59,7 @@ QVector<AtmelCommonVersionsPtr> HotPluggableControllerContainer::getCurrentContr
     return controllers;
 }
 
-void HotPluggableControllerContainer::onBootloaderStoppAssumed(int ctrlChannel)
+void HotPluggableControllerContainer::onBootloaderStopAssumed(int ctrlChannel)
 {
     qInfo("Bootloader stopped. Assume application started for channel %i", ctrlChannel);
     qInfo("Try communication to controller channel %i by version read...", ctrlChannel);
