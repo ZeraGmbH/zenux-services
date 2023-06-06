@@ -6,6 +6,7 @@
 #include "sensesettings.h"
 #include <zeramcontrollerbootloaderstopper.h>
 #include <QMap>
+#include <QSet>
 #include <QVector>
 #include <memory>
 
@@ -22,6 +23,7 @@ private slots:
     void onBootloaderStopAssumed(int ctrlChannel);
 private:
     void startAddingController(int ctrlChannel, SenseSystem::cChannelSettings* channelSettings, int msWaitForApplicationStart);
+    bool isChannelKnown(int ctrlChannel);
 
     QString m_i2cDevNodeName;
     quint8 m_i2cAdrCtrl;
@@ -34,6 +36,7 @@ private:
         qint8 m_nMuxChannelNo;
     };
     QMap<int /* ctrlChannel */, PendingChannelInfo> m_pendingBootloaderStoppers;
+    QSet<int /* ctrlChannel */> m_ChannelsWithoutController; /* e.g clamps */
 };
 
 typedef std::unique_ptr<HotPluggableControllerContainer> HotPluggableControllerContainerPtr;
