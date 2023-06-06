@@ -23,6 +23,7 @@ private slots:
     void mt310s2AddI1I2CheckSignalsDelayed();
     void mt310s2AddI1AndRemoveBeforeFinish();
     void mt310s2AddI1AndAddI2BeforeFinish();
+    void mt310s2AddClampNoController();
 
 
 private:

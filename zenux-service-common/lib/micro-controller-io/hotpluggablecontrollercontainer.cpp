@@ -22,11 +22,14 @@ void HotPluggableControllerContainer::startActualizeEmobControllers(quint16 bitm
             continue;
         quint16 bmask = (1 << plugBitNo);
         if (bitmaskAvailable & bmask) {
-            if(!m_pendingBootloaderStoppers.contains(ctrlChannel) &&
-               !m_Controllers.contains(ctrlChannel))
+            if(!isChannelKnown(ctrlChannel))
                 startAddingController(ctrlChannel, channelSettings, msWaitForApplicationStart);
         }
         else {
+            if(m_ChannelsWithoutController.contains(ctrlChannel)) {
+                qInfo("Remove no-controller (clamp) on channel %i", ctrlChannel);
+                m_ChannelsWithoutController.remove(ctrlChannel);
+            }
             if(m_pendingBootloaderStoppers.contains(ctrlChannel)) {
                 qInfo("Remove pending/not yet booted controller on channel %i", ctrlChannel);
                 m_pendingBootloaderStoppers.remove(ctrlChannel);
@@ -49,6 +52,14 @@ void HotPluggableControllerContainer::startAddingController(int ctrlChannel, Sen
             this, &HotPluggableControllerContainer::onBootloaderStopAssumed);
     m_pendingBootloaderStoppers[ctrlChannel] = PendingChannelInfo{ bootStopper, channelSettings->m_nMuxChannelNo };
     bootStopper->stopBootloader(msWaitForApplicationStart);
+}
+
+bool HotPluggableControllerContainer::isChannelKnown(int ctrlChannel)
+{
+    return
+            m_pendingBootloaderStoppers.contains(ctrlChannel) ||
+            m_Controllers.contains(ctrlChannel) ||
+            m_ChannelsWithoutController.contains(ctrlChannel);
 }
 
 QVector<AtmelCommonVersionsPtr> HotPluggableControllerContainer::getCurrentControllers()
@@ -78,8 +89,10 @@ void HotPluggableControllerContainer::onBootloaderStopAssumed(int ctrlChannel)
             m_Controllers[ctrlChannel] = ctrl;
             emit sigControllersChanged();
         }
-        else
-            qWarning("Version read for channel %i failed - assume no controller added", ctrlChannel);
+        else {
+            qInfo("No version for channel %i - assume no controller (clamp)", ctrlChannel);
+            m_ChannelsWithoutController.insert(ctrlChannel);
+        }
     }
 }
 

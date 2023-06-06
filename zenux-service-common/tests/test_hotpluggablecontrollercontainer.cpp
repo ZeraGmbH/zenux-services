@@ -206,3 +206,49 @@ void test_hotpluggablecontrollercontainer::mt310s2AddI1AndAddI2BeforeFinish()
 
     QCOMPARE(ZeraMControllerBootloaderStopperFactoryForTest::checkEmpty(), true);
 }
+
+void test_hotpluggablecontrollercontainer::mt310s2AddClampNoController()
+{
+    HotPluggableControllerContainer container(QString(), 0, 0, 0);
+    QSignalSpy spy(&container, &HotPluggableControllerContainer::sigControllersChanged);
+
+    // add clamp only
+    AtmelCtrlFactoryForTest::prepareNextTestControllers(QVector<bool>() << false);
+    ZeraMControllerBootloaderStopperFactoryForTest::setBootoaderAssumeAppStartedImmediates(QVector<bool>() << true);
+    container.startActualizeEmobControllers((1<<4), &m_senseSettings, 1000);
+    TimeMachineForTest::getInstance()->processTimers(1000);
+    QCOMPARE(spy.count(), 0);
+    QCOMPARE(AtmelEmobCtrlForTest::getInstanceCount(), 0);
+
+    // add emob to clamp
+    AtmelCtrlFactoryForTest::prepareNextTestControllers(QVector<bool>() << true); // we expect clamp known => no version query
+    ZeraMControllerBootloaderStopperFactoryForTest::setBootoaderAssumeAppStartedImmediates(QVector<bool>() << true); // same
+    container.startActualizeEmobControllers((1<<4) | (1<<5), &m_senseSettings, 1000);
+    TimeMachineForTest::getInstance()->processTimers(1000);
+    QCOMPARE(spy.count(), 1);
+    spy.clear();
+    QCOMPARE(AtmelEmobCtrlForTest::getInstanceCount(), 1);
+
+    // remove clamp
+    container.startActualizeEmobControllers((1<<5), &m_senseSettings, 1000);
+    TimeMachineForTest::getInstance()->processTimers(1000);
+    QCOMPARE(spy.count(), 0);
+    QCOMPARE(AtmelEmobCtrlForTest::getInstanceCount(), 1);
+
+    // remove emob
+    container.startActualizeEmobControllers(0, &m_senseSettings, 1000);
+    TimeMachineForTest::getInstance()->processTimers(1000);
+    QCOMPARE(spy.count(), 1);
+    spy.clear();
+    QCOMPARE(AtmelEmobCtrlForTest::getInstanceCount(), 0);
+
+    // add clamp & emob only
+    AtmelCtrlFactoryForTest::prepareNextTestControllers(QVector<bool>() << false << true);
+    ZeraMControllerBootloaderStopperFactoryForTest::setBootoaderAssumeAppStartedImmediates(QVector<bool>() << true << true);
+    container.startActualizeEmobControllers((1<<4) | (1<<5), &m_senseSettings, 1000);
+    TimeMachineForTest::getInstance()->processTimers(1000);
+    QCOMPARE(spy.count(), 1);
+    QCOMPARE(AtmelEmobCtrlForTest::getInstanceCount(), 1);
+
+    QCOMPARE(ZeraMControllerBootloaderStopperFactoryForTest::checkEmpty(), true);
+}
