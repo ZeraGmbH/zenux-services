@@ -8,7 +8,7 @@ QTEST_MAIN(test_asynchnotificationsinterface);
 
 void test_asynchnotificationsinterface::init()
 {
-    m_scpiInterface = std::make_unique<cSCPI>("foo");
+    m_scpiInterface = std::make_unique<cSCPI>();
 }
 
 void test_asynchnotificationsinterface::findScpiRegisterObject()

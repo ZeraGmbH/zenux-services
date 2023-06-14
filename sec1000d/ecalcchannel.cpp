@@ -19,7 +19,7 @@
 extern void SigHandler(int);
 
 cECalculatorChannel::cECalculatorChannel(cSEC1000dServer* server, cECalculatorSettings* esettings, FPGASettings* fsettings, cInputSettings *inpsettings, quint16 nr) :
-    ScpiConnection(ScpiSingletonFactory::getScpiObj(ServerName)),
+    ScpiConnection(ScpiSingletonFactory::getScpiObj()),
     m_pMyServer(server),
     m_pecalcsettings(esettings),
     m_pFPGASettings(fsettings),

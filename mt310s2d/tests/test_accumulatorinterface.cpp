@@ -11,7 +11,7 @@ static const char *systemAccumulatorSoc ="SYSTEM:ACCUMULATOR:SOC?";
 void test_accumulatorinterface::init()
 {
     TimerFactoryQtForTest::enableTest();
-    m_scpiInterface = std::make_unique<cSCPI>("");
+    m_scpiInterface = std::make_unique<cSCPI>();
     m_atmelSysCntrl = std::make_unique<AtmelSysCntrlTest>("", 0, 0);
 
     m_xmlConfigReader = std::make_unique<Zera::XMLConfig::cReader>();

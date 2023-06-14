@@ -45,7 +45,7 @@
 #endif
 
 cCOM5003dServer::cCOM5003dServer() :
-    cPCBServer(ServerName, ServerVersion, ScpiSingletonFactory::getScpiObj(ServerName))
+    cPCBServer(ServerName, ServerVersion, ScpiSingletonFactory::getScpiObj())
 {
     m_pDebugSettings = nullptr;
     m_pETHSettings = nullptr;
