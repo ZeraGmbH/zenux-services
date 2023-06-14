@@ -8,7 +8,7 @@ static constexpr int digits = 4;
 
 void test_justdata::init()
 {
-    scpi = new cSCPI("foo");
+    scpi = new cSCPI();
     justData = new JustDataInterface({scpi, 5, 0.1, [] (bool &enable) { enable =true; return true;}, digits});
     justData->initSCPIConnection("sens:m0:8V:corr:offset");
 }

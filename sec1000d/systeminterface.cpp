@@ -10,7 +10,7 @@
 
 
 cSystemInterface::cSystemInterface(cSEC1000dServer *server, cSystemInfo *sInfo) :
-    ScpiConnection(ScpiSingletonFactory::getScpiObj(ServerName)),
+    ScpiConnection(ScpiSingletonFactory::getScpiObj()),
     m_pMyServer(server),
     m_pSystemInfo(sInfo)
 {
@@ -191,7 +191,7 @@ QString cSystemInterface::m_InterfaceRead(QString &sInput)
     if (cmd.isQuery())
     {
         QString s;
-        ScpiSingletonFactory::getScpiObj(ServerName)->exportSCPIModelXML(s);
+        ScpiSingletonFactory::getScpiObj()->exportSCPIModelXML(s);
         return s;
     }
     else

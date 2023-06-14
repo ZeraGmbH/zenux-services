@@ -11,8 +11,7 @@ static const char *accumulatorStatusCommand ="SYSTEM:ACCUMULATOR:STATUS?";
 
 constexpr quint16 NOTIFICATION_ID = 1;
 
-test_serverunregisternotifier::test_serverunregisternotifier() :
-    m_scpiInterface("foo")
+test_serverunregisternotifier::test_serverunregisternotifier()
 {
 }
 

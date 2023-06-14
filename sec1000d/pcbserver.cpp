@@ -27,7 +27,7 @@ enum commands
 };
 
 cPCBServer::cPCBServer(QString name, QString version) :
-    ScpiConnection(ScpiSingletonFactory::getScpiObj(name)),
+    ScpiConnection(ScpiSingletonFactory::getScpiObj()),
     m_sServerName(name),
     m_sServerVersion(version)
 {

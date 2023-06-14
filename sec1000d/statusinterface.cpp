@@ -4,7 +4,7 @@
 #include "scpisingletonfactory.h"
 
 cStatusInterface::cStatusInterface() :
-    ScpiConnection(ScpiSingletonFactory::getScpiObj(ServerName))
+    ScpiConnection(ScpiSingletonFactory::getScpiObj())
 {
 }
 
