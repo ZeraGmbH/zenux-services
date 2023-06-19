@@ -581,12 +581,47 @@ void cClamp::initClamp(quint8 type)
         m_RangeList.append(new cSenseRange(m_pSCPIInterface, "C200mA", "C200mA", true, 0.2, 2013266.0, 2013266.0 * 1.25, 8388607.0, 0x12, dcCommonMask | SenseSystem::Clamp, clampJustData));
         clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("5mV")), 500.0, permissionsOffsetAllowedAlways);
         m_RangeList.append(new cSenseRange(m_pSCPIInterface, "C100mA", "C100mA", true, 0.1, 2013266.0, 2013266.0 * 1.25, 8388607.0, 0x13, dcCommonMask | SenseSystem::Clamp, clampJustData));
+        // U
         createLEM1000VRanges(permissionsOffsetAllowedAlways, dcCommonMask);
         break;
     case CL1000VDC: // LEM U only
         createLEM1000VRanges(permissionsOffsetAllowedAlways, dcCommonMask);
         break;
+
+    case CL8ADC1000VDC: // TESLA U+I 8A/1000V
+        // I
+        clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("1V")), 30.0, permissionsOffsetAllowedAlways);
+        m_RangeList.append(new cSenseRange(m_pSCPIInterface, "C8A", "C8A", true, 8.0, 3024625.0, 3024625.0 * 1.25, 8388607.0, 0x0C, dcCommonMask | SenseSystem::Clamp, clampJustData));
+        clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("500mV")), 30.0, permissionsOffsetAllowedAlways);
+        m_RangeList.append(new cSenseRange(m_pSCPIInterface, "C4A", "C4A", true, 4.0, 3780781.0, 3780781.0 * 1.25, 8388607.0, 0x0D, dcCommonMask | SenseSystem::Clamp, clampJustData));
+        clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("200mV")), 30.0, permissionsOffsetAllowedAlways);
+        m_RangeList.append(new cSenseRange(m_pSCPIInterface, "C2A", "C2A", true, 2.0, 3579139.0, 3579139.0 * 1.25, 8388607.0, 0x0E, dcCommonMask | SenseSystem::Clamp, clampJustData));
+        clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("100mV")), 30.0, permissionsOffsetAllowedAlways);
+        m_RangeList.append(new cSenseRange(m_pSCPIInterface, "C800mA", "C800mA", true, 0.8, 3579139.0, 3579139.0 * 1.25, 8388607.0, 0x0F, dcCommonMask | SenseSystem::Clamp, clampJustData));
+        clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("50mV")), 30.0, permissionsOffsetAllowedAlways);
+        m_RangeList.append(new cSenseRange(m_pSCPIInterface, "C400mA", "C400mA", true, 0.4, 3579139.0, 3579139.0 * 1.25, 8388607.0, 0x10, dcCommonMask | SenseSystem::Clamp, clampJustData));
+        // U
+        createLEM1000VRanges(permissionsOffsetAllowedAlways, dcCommonMask);
+        break;
+    case CL800ADC1000VDC: // TESLA U+I 800A/1000V
+        // I
+        clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("2V")), 1500.0, permissionsOffsetAllowedAlways);
+        m_RangeList.append(new cSenseRange(m_pSCPIInterface, "C800A", "C800A", true, 800.0, 3024625.0, 3024625.0 * 1.25, 8388607.0, 0x0B, dcCommonMask | SenseSystem::Clamp, clampJustData));
+        clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("1V")), 1500.0, permissionsOffsetAllowedAlways);
+        m_RangeList.append(new cSenseRange(m_pSCPIInterface, "C400A", "C400A", true, 400.0, 3024625.0, 3024625.0 * 1.25, 8388607.0, 0x0C, dcCommonMask | SenseSystem::Clamp, clampJustData));
+        clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("500mV")), 1500.0, permissionsOffsetAllowedAlways);
+        m_RangeList.append(new cSenseRange(m_pSCPIInterface, "C200A", "C200A", true, 200.0, 3780781.0, 3780781.0 * 1.25, 8388607.0, 0x0D, dcCommonMask | SenseSystem::Clamp, clampJustData));
+        clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("200mV")), 1500.0, permissionsOffsetAllowedAlways);
+        m_RangeList.append(new cSenseRange(m_pSCPIInterface, "C80A", "C80A", true, 80.0, 2863312.0, 2863312.0 * 1.25, 8388607.0, 0x0E, dcCommonMask | SenseSystem::Clamp, clampJustData));
+        clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("100mV")), 1500.0, permissionsOffsetAllowedAlways);
+        m_RangeList.append(new cSenseRange(m_pSCPIInterface, "C40A", "C40A", true, 40.0, 3579139.0, 3579139.0 * 1.25, 8388607.0, 0x0F, dcCommonMask | SenseSystem::Clamp, clampJustData));
+        clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("50mV")), 1500.0, permissionsOffsetAllowedAlways);
+        m_RangeList.append(new cSenseRange(m_pSCPIInterface, "C20A", "C20A", true, 20.0, 3579139.0, 3579139.0 * 1.25, 8388607.0, 0x10, dcCommonMask | SenseSystem::Clamp, clampJustData));
+        // U
+        createLEM1000VRanges(permissionsOffsetAllowedAlways, dcCommonMask);
+        break;
     }
+
 }
 
 QString cClamp::getClampTypeName(quint8 type)
@@ -620,6 +655,12 @@ QString cClamp::getClampTypeName(quint8 type)
         break;
     case CL1000VDC:
         CLName = QString("CL1000VDC");
+        break;
+    case CL8ADC1000VDC:
+        CLName = QString("CL8ADC1000VDC");
+        break;
+    case CL800ADC1000VDC:
+        CLName = QString("CL800ADC1000VDC");
         break;
     default:
         CLName = QString("Undefined");

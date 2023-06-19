@@ -21,6 +21,9 @@ enum ClampTypes
     CL200ADC1000VDC,
     CL1000VDC,
 
+    CL8ADC1000VDC,
+    CL800ADC1000VDC,
+
     anzCL
 };
 
