@@ -8,7 +8,7 @@
 #include <QDateTime>
 #include <QDomElement>
 
-enum ClampTypes
+enum ClampTypes // APPEND NEW TYPES AT BOTTOM
 {
     undefined,
     CL120A,
