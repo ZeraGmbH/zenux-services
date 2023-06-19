@@ -416,6 +416,13 @@ ClampTypes cClamp::readClampType()
     return undefined;
 }
 
+void cClamp::createLEM1000VRanges(PermissionStructAdj &permissionsOffsetAllowedAlways, quint16 dcCommonMask)
+{
+    m_sChannelNameSecondary = m_pSenseInterface->getChannelSystemName(m_nCtrlChannelSecondary);
+    cClampJustData* clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelNameSecondary, QString("8V")), 118.6, permissionsOffsetAllowedAlways);
+    m_RangeListSecondary.append(new cSenseRange(m_pSCPIInterface, "C1000V", "C1000V", true, 1000.0, 3535110.0, 3535110.0 * 1.25, 8388607.0, 0x01 /*8V*/, dcCommonMask | SenseSystem::Clamp, clampJustData));
+}
+
 void cClamp::initClamp(quint8 type)
 {
     m_nType = type;
@@ -574,11 +581,10 @@ void cClamp::initClamp(quint8 type)
         m_RangeList.append(new cSenseRange(m_pSCPIInterface, "C200mA", "C200mA", true, 0.2, 2013266.0, 2013266.0 * 1.25, 8388607.0, 0x12, dcCommonMask | SenseSystem::Clamp, clampJustData));
         clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("5mV")), 500.0, permissionsOffsetAllowedAlways);
         m_RangeList.append(new cSenseRange(m_pSCPIInterface, "C100mA", "C100mA", true, 0.1, 2013266.0, 2013266.0 * 1.25, 8388607.0, 0x13, dcCommonMask | SenseSystem::Clamp, clampJustData));
-        [[fallthrough]];
+        createLEM1000VRanges(permissionsOffsetAllowedAlways, dcCommonMask);
+        break;
     case CL1000VDC: // LEM U only
-        m_sChannelNameSecondary = m_pSenseInterface->getChannelSystemName(m_nCtrlChannelSecondary);
-        cClampJustData* clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelNameSecondary, QString("8V")), 118.6, permissionsOffsetAllowedAlways);
-        m_RangeListSecondary.append(new cSenseRange(m_pSCPIInterface, "C1000V", "C1000V", true, 1000.0, 3535110.0, 3535110.0 * 1.25, 8388607.0, 0x01 /*8V*/, dcCommonMask | SenseSystem::Clamp, clampJustData));
+        createLEM1000VRanges(permissionsOffsetAllowedAlways, dcCommonMask);
         break;
     }
 }

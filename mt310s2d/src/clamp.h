@@ -50,6 +50,7 @@ private:
     void addSenseInterface();
     void addSystAdjInterface();
     void addSystAdjInterfaceChannel(QString channelName);
+    void createLEM1000VRanges(PermissionStructAdj &permissionsOffsetAllowedAlways, quint16 dcCommonMask);
     static QString getClampTypeName(quint8 type);
     cSenseRange* getRange(QString name);
     ClampTypes readClampType();
