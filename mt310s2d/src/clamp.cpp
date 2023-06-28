@@ -606,7 +606,7 @@ void cClamp::initClamp(quint8 type)
     case CL800ADC1000VDC: // TESLA U+I 800A/1000V
         // I
         clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("2V")), 1500.0, permissionsOffsetAllowedAlways);
-        m_RangeList.append(new cSenseRange(m_pSCPIInterface, "C800A", "C800A", true, 800.0, 3024625.0, 3024625.0 * 1.25, 8388607.0, 0x0B, dcCommonMask | SenseSystem::Clamp, clampJustData));
+        m_RangeList.append(new cSenseRange(m_pSCPIInterface, "C800A", "C800A", true, 800.0, 3024625.0, 3024625.0 * 1.30, 8388607.0, 0x0B, dcCommonMask | SenseSystem::Clamp, clampJustData));
         clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("1V")), 1500.0, permissionsOffsetAllowedAlways);
         m_RangeList.append(new cSenseRange(m_pSCPIInterface, "C400A", "C400A", true, 400.0, 3024625.0, 3024625.0 * 1.25, 8388607.0, 0x0C, dcCommonMask | SenseSystem::Clamp, clampJustData));
         clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("500mV")), 1500.0, permissionsOffsetAllowedAlways);
