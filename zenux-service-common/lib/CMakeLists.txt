@@ -28,7 +28,7 @@ add_library(zenuxservicecommon SHARED
 target_link_libraries(zenuxservicecommon
     PUBLIC
     Qt5::Core
-    VeinMeta::xiqnet
+    Zera::xiqnet
     Zera::SCPI
     Zera::zera-xmlconfig
     Zera::zera-math
