@@ -69,7 +69,7 @@ target_link_libraries(mt310s2d-lib
     Qt5::Network
     Zera::zera-xmlconfig
     Zera::zera-i2c-devices
-    VeinMeta::zeraprotobuf
+    Zera::zeraprotobuf
     zenuxservicecommon
     )
 

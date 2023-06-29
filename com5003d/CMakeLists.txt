@@ -53,7 +53,7 @@ target_link_libraries(com5003d-lib
     Qt5::Network
     Zera::zera-xmlconfig
     Zera::zera-i2c-devices
-    VeinMeta::zeraprotobuf
+    Zera::zeraprotobuf
     zenuxservicecommon
     )
 
