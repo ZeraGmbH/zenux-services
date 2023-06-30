@@ -18,8 +18,9 @@ option(useSystemd "Using libsystemd" ON)
 
 find_package(Qt5 COMPONENTS Core Xml Network Test CONFIG REQUIRED)
 find_package(SCPI REQUIRED)
-find_package(ZeraClasses REQUIRED)
 find_package(ZenuxCore REQUIRED)
+find_package(ZeraMicroController REQUIRED)
+find_package(VeinFramework REQUIRED)
 
 if(${useSystemd})
     find_package(PkgConfig REQUIRED)
