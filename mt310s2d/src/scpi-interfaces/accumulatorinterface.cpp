@@ -1,3 +1,4 @@
+#include <QFile>
 #include "accumulatorinterface.h"
 #include "timerfactoryqt.h"
 
@@ -11,6 +12,9 @@ AccumulatorInterface::AccumulatorInterface(cSCPI *scpiInterface, cATMELSysCtrl *
     m_pollingTimer = TimerFactoryQt::createPeriodic(ACCU_POLLING_PERIOD_MS);
     connect(m_pollingTimer.get(), &TimerTemplateQt::sigExpired, this, &AccumulatorInterface::getAccumulatorSoc);
     connect(m_pollingTimer.get(), &TimerTemplateQt::sigExpired, this, &AccumulatorInterface::getAccumulatorStatus);
+    connect(m_pollingTimer.get(), &TimerTemplateQt::sigExpired, this, &AccumulatorInterface::setCpuTemperatur);
+    //sendCpuTemperatur(quint16 cpuTemp)
+
     if(settings->isAvailable())
         m_pollingTimer->start();
 }
@@ -60,3 +64,42 @@ QString AccumulatorInterface::getAccumulatorSoc()
     }
     return m_accumulatorSoc.getString();
 }
+
+QString AccumulatorInterface::setCpuTemperatur()        // sends cyclic (1000ms) on I2C
+{
+    quint16 temperature = 34567;
+    bool readTemp = false;
+
+    QString fileName = {"/sys/class/thermal/thermal_zone0/temp"};
+    QFile temperatureFile(fileName);
+    //if(QFile::exists(temperatureFile))  // is: does not work ???
+    if(temperatureFile.open(QFile::ReadOnly | QFile::Text))
+    {
+        qInfo("can open temp file");
+        QString cpuTempStr = temperatureFile.readAll();
+        temperatureFile.close();
+        readTemp = true;
+        temperature = cpuTempStr.toInt(&readTemp);
+        if(!readTemp)
+            qWarning("Conversion failed");
+        else
+            qInfo("CPU-Temp: %s", qPrintable(cpuTempStr));
+    }
+    else
+        qWarning("Error opening temp-file");
+
+    if (readTemp)
+    {
+        if(m_atmelSysCntrl->sendCpuTemperatur(temperature) == ZeraMControllerIo::atmelRM::cmddone){
+            m_CpuTemperatur = QString::number(temperature);
+        }
+        else{
+            m_CpuTemperatur = QString::number(ERROR);
+        }
+        return m_CpuTemperatur.getString();
+    }
+    return("ERROR");
+}
+
+
+

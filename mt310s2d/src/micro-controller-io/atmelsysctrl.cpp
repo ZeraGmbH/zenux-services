@@ -12,6 +12,7 @@ enum hw_cmdcode
     hwSetTestModes = 0x0042,
     hwGetAccumulatorStatus = 0x0210,
     hwGetAccumulatorSoc = 0x0211,
+    hwSetCpuTemperature = 0x0802,
 };
 
 
@@ -68,4 +69,14 @@ ZeraMControllerIo::atmelRM cATMELSysCtrl::enableTestMode(qint32 testBits)
     hw_cmd CMD(hwSetTestModes, 0, PAR, 4);
     writeCommand(&CMD);
     return getLastErrorMask() == 0 ? cmddone : cmdexecfault;
+}
+
+ZeraMControllerIo::atmelRM cATMELSysCtrl::sendCpuTemperatur(quint16 cpuTemp)
+{
+    quint8 PAR[2];
+    PAR[0] = (cpuTemp >> 8) & 255;
+    PAR[1] = (cpuTemp & 255);
+    hw_cmd CMD(hwSetCpuTemperature, 0, PAR, 2);
+    writeCommand(&CMD);
+    return (getLastErrorMask() == 0 ? cmddone : cmdexecfault);
 }
