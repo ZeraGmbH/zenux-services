@@ -70,7 +70,6 @@ QString AccumulatorInterface::setCpuTemperatur()        // sends cyclic (1000ms)
     quint16 temperature = 34567;
     bool readTemp = false;
 
-    /*
     QString fileName = {"/sys/class/thermal/thermal_zone0/temp"};
     QFile temperatureFile(fileName);
     //if(QFile::exists(temperatureFile))  // is: does not work ???
@@ -88,7 +87,7 @@ QString AccumulatorInterface::setCpuTemperatur()        // sends cyclic (1000ms)
     }
     else
         qWarning("Error opening temp-file");
-    */
+
     readTemp = true;
 
 
