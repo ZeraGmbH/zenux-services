@@ -87,6 +87,8 @@ QString AccumulatorInterface::setCpuTemperatur()        // sends cyclic (1000ms)
                 temperature += 100;
                 syslog(LOG_ERR, "Conversion failed");
             }
+            else
+                syslog(LOG_INFO, "Succesfull temp read and convert");
         }
         else
         {
@@ -100,7 +102,7 @@ QString AccumulatorInterface::setCpuTemperatur()        // sends cyclic (1000ms)
         syslog(LOG_ERR, "Error file does not exist");
     }
 
-    readTemp = true;        // only for test....
+    // readTemp = true;        // only for test....
 
     if (readTemp)
     {
