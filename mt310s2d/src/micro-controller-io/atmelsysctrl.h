@@ -17,7 +17,7 @@ public:
     virtual atmelRM readAccumulatorStatus(quint8& stat);
     virtual atmelRM readAccumulatorSoc(quint8& charge);
     atmelRM enableTestMode(qint32 testBits);
-    atmelRM sendCpuTemperatur(quint16 cpuTemp);
+    atmelRM sendCpuTemperatur(quint32& cpuTemp);
 };
 
 extern cATMELSysCtrl* pAtmelSys;

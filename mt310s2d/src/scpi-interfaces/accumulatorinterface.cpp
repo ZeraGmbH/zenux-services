@@ -1,4 +1,5 @@
 #include <QFile>
+#include <syslog.h>
 #include "accumulatorinterface.h"
 #include "timerfactoryqt.h"
 
@@ -67,29 +68,39 @@ QString AccumulatorInterface::getAccumulatorSoc()
 
 QString AccumulatorInterface::setCpuTemperatur()        // sends cyclic (1000ms) on I2C
 {
-    quint16 temperature = 34567;
+    quint32 temperature = 100000;                       // unit: milli-Grad°
     bool readTemp = false;
 
     QString fileName = {"/sys/class/thermal/thermal_zone0/temp"};
     QFile temperatureFile(fileName);
-    //if(QFile::exists(temperatureFile))  // is: does not work ???
-    if(temperatureFile.open(QFile::ReadOnly | QFile::Text))
+    if(temperatureFile.exists())
     {
-        qInfo("can open temp file");
-        QString cpuTempStr = temperatureFile.readAll();
-        temperatureFile.close();
-        readTemp = true;
-        temperature = cpuTempStr.toInt(&readTemp);
-        if(!readTemp)
-            qWarning("Conversion failed");
+        if(temperatureFile.open(QFile::ReadOnly | QFile::Text))
+        {
+            temperature += 10;
+            QString cpuTempStr = temperatureFile.readAll();
+            temperatureFile.close();
+            readTemp = true;
+            temperature = cpuTempStr.toInt(&readTemp);
+            if(!readTemp)
+            {
+                temperature += 100;
+                syslog(LOG_ERR, "Conversion failed");
+            }
+        }
         else
-            qInfo("CPU-Temp: %s", qPrintable(cpuTempStr));
+        {
+            temperature += 10;
+            syslog(LOG_ERR, "Error opening temp-file");
+        }
     }
     else
-        qWarning("Error opening temp-file");
+    {
+        temperature += 1;
+        syslog(LOG_ERR, "Error file does not exist");
+    }
 
-    readTemp = true;
-
+    readTemp = true;        // only for test....
 
     if (readTemp)
     {
@@ -99,7 +110,7 @@ QString AccumulatorInterface::setCpuTemperatur()        // sends cyclic (1000ms)
         else{
             m_CpuTemperatur = QString::number(ERROR);
         }
-        return m_CpuTemperatur.getString();
+        return m_CpuTemperatur;
     }
     return("ERROR");
 }

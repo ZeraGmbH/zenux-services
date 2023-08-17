@@ -24,7 +24,7 @@ protected:
 private:
     NotificationString m_accumulatorStatus;
     NotificationString m_accumulatorSoc;
-    NotificationString m_CpuTemperatur; // is: ???
+    QString m_CpuTemperatur;
     cATMELSysCtrl *m_atmelSysCntrl;
     TimerTemplateQtPtr m_pollingTimer;
 };
