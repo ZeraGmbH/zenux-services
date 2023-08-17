@@ -71,7 +71,7 @@ ZeraMControllerIo::atmelRM cATMELSysCtrl::enableTestMode(qint32 testBits)
     return getLastErrorMask() == 0 ? cmddone : cmdexecfault;
 }
 
-ZeraMControllerIo::atmelRM cATMELSysCtrl::sendCpuTemperatur(quint32 cpuTemp)
+ZeraMControllerIo::atmelRM cATMELSysCtrl::sendCpuTemperatur(quint32 &cpuTemp)
 {
     quint8 PAR[4];
     PAR[0] = (cpuTemp >> 24) & 255;
