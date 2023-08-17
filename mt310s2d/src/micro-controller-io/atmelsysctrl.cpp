@@ -76,8 +76,8 @@ ZeraMControllerIo::atmelRM cATMELSysCtrl::sendCpuTemperatur(quint32 &cpuTemp)
     quint8 PAR[4];
     PAR[0] = (cpuTemp >> 24) & 255;
     PAR[1] = (cpuTemp >> 16) & 255;
-    PAR[0] = (cpuTemp >> 8)  & 255;
-    PAR[1] = (cpuTemp & 255);
+    PAR[2] = (cpuTemp >> 8)  & 255;
+    PAR[3] = (cpuTemp & 255);
     hw_cmd CMD(hwSetCpuTemperature, 0, PAR, 4);
     writeCommand(&CMD);
     return (getLastErrorMask() == 0 ? cmddone : cmdexecfault);
