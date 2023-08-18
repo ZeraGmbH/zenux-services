@@ -1,5 +1,4 @@
 #include <QFile>
-#include <syslog.h>
 #include "accumulatorinterface.h"
 #include "timerfactoryqt.h"
 
@@ -14,7 +13,6 @@ AccumulatorInterface::AccumulatorInterface(cSCPI *scpiInterface, cATMELSysCtrl *
     connect(m_pollingTimer.get(), &TimerTemplateQt::sigExpired, this, &AccumulatorInterface::getAccumulatorSoc);
     connect(m_pollingTimer.get(), &TimerTemplateQt::sigExpired, this, &AccumulatorInterface::getAccumulatorStatus);
     connect(m_pollingTimer.get(), &TimerTemplateQt::sigExpired, this, &AccumulatorInterface::setCpuTemperatur);
-    //sendCpuTemperatur(quint16 cpuTemp)
 
     if(settings->isAvailable())
         m_pollingTimer->start();
@@ -66,9 +64,9 @@ QString AccumulatorInterface::getAccumulatorSoc()
     return m_accumulatorSoc.getString();
 }
 
-QString AccumulatorInterface::setCpuTemperatur()        // sends cyclic (1000ms) on I2C
+QString AccumulatorInterface::setCpuTemperatur()
 {
-    quint32 temperature = 100000;                       // unit: milli-Grad°
+    quint32 temperature = 0;                       // in milli-degree
     bool readTemp = false;
 
     QString fileName = {"/sys/class/thermal/thermal_zone0/temp"};
@@ -77,45 +75,27 @@ QString AccumulatorInterface::setCpuTemperatur()        // sends cyclic (1000ms)
     {
         if(temperatureFile.open(QFile::ReadOnly | QFile::Text))
         {
-            temperature += 10;
             QString cpuTempStr = temperatureFile.readAll();
             temperatureFile.close();
-            readTemp = true;
             temperature = cpuTempStr.toInt(&readTemp);
             if(!readTemp)
-            {
-                temperature += 100;
-                syslog(LOG_ERR, "Conversion failed");
-            }
-            else
-                syslog(LOG_INFO, "Succesfull temp read and convert");
+                qWarning("Conversion failed");
         }
         else
-        {
-            temperature += 10;
-            syslog(LOG_ERR, "Error opening temp-file");
-        }
+            qWarning("Error opening temp-file");
     }
     else
     {
-        temperature += 1;
-        syslog(LOG_ERR, "Error file does not exist");
+        qWarning("Error file does not exist");
     }
-
-    // readTemp = true;        // only for test....
 
     if (readTemp)
     {
-        if(m_atmelSysCntrl->sendCpuTemperatur(temperature) == ZeraMControllerIo::atmelRM::cmddone){
+        if(m_atmelSysCntrl->sendCpuTemperatur(temperature) == ZeraMControllerIo::atmelRM::cmddone)
             m_CpuTemperatur = QString::number(temperature);
-        }
-        else{
+        else
             m_CpuTemperatur = QString::number(ERROR);
-        }
         return m_CpuTemperatur;
     }
     return("ERROR");
 }
-
-
-
