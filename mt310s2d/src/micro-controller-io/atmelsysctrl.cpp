@@ -12,7 +12,7 @@ enum hw_cmdcode
     hwSetTestModes = 0x0042,
     hwGetAccumulatorStatus = 0x0210,
     hwGetAccumulatorSoc = 0x0211,
-    hwSetCpuTemperature = 0x0802,
+    hwSetCpuTemperature = 0x2050,
 };
 
 
