@@ -24,6 +24,8 @@ enum ClampTypes // APPEND NEW TYPES AT BOTTOM
     CL8ADC1000VDC,
     CL800ADC1000VDC,
 
+    EMOB500DC,
+
     anzCL
 };
 
