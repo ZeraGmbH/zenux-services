@@ -620,6 +620,21 @@ void cClamp::initClamp(quint8 type)
         // U
         createLEM1000VRanges(permissionsOffsetAllowedAlways, dcCommonMask);
         break;
+    case EMOB500DC:
+        // I
+        clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("5V")), 2000.0);
+        m_RangeList.append(new cSenseRange(m_pSCPIInterface, "C500A", "C500A", true, 500.0, 3145728.0, 3145728.0 * 1.25, 8388607.0, 0x0A, dcCommonMask | SenseSystem::Clamp, clampJustData));
+        clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("500mV")), 2000.0);
+        m_RangeList.append(new cSenseRange(m_pSCPIInterface, "C50A", "C50A", true, 50.0, 2658362.0, 2658362.0 * 1.25, 8388607.0, 0x0D, dcCommonMask | SenseSystem::Clamp, clampJustData));
+        clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("50mV")), 2000.0);
+        m_RangeList.append(new cSenseRange(m_pSCPIInterface, "C5A", "C5A", true, 5.0, 2516582.0, 2516582.0 * 1.25, 8388607.0, 0x10, dcCommonMask | SenseSystem::Clamp, clampJustData));
+
+        // This clamp has a secondary channnel U
+        m_sChannelNameSecondary = m_pSenseInterface->getChannelSystemName(m_nCtrlChannelSecondary);
+        clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelNameSecondary, QString("8V")), 121.0);
+        m_RangeListSecondary.append(new cSenseRange(m_pSCPIInterface, "C1000V", "C1000V", true, 1000.0, 3466367.0, 3466367.0 * 1.25, 8388607.0, 1 /*8V*/, dcCommonMask | SenseSystem::Clamp, clampJustData));
+
+        break;
     }
 
 }
@@ -661,6 +676,9 @@ QString cClamp::getClampTypeName(quint8 type)
         break;
     case CL800ADC1000VDC:
         CLName = QString("CL800ADC1000VDC");
+        break;
+    case EMOB500DC:
+        CLName = QString("EMOB500DC");
         break;
     default:
         CLName = QString("Undefined");
