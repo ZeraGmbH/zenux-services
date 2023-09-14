@@ -66,4 +66,7 @@ if(${useSystemd})
 endif()
 
 add_subdirectory(configs)
-add_subdirectory(tests)
+
+if(NOT SKIP_UNITTESTS)
+    add_subdirectory(tests)
+endif()
