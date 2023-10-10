@@ -16,7 +16,6 @@ cSystemInterface::cSystemInterface(cCOM5003dServer *server) :
 {
 }
 
-
 void cSystemInterface::initSCPIConnection(QString leadingNodes)
 {
     ensureTrailingColonOnNonEmptyParentNodes(leadingNodes);
