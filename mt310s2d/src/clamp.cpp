@@ -2,7 +2,6 @@
 #include "adjustment.h"
 #include "justdatainterface.h"
 #include "mt310s2d.h"
-#include "mt310s2dglobal.h"
 #include "senserange.h"
 #include "clampjustdata.h"
 #include "protonetcommand.h"
@@ -141,7 +140,7 @@ void cClamp::exportAdjData(QDataStream &stream)
         stream << spec;
         range->getJustData()->Serialize(stream);
     }
-    for(auto range : m_RangeListSecondary) {
+    for(auto range : qAsConst(m_RangeListSecondary)) {
         spec = range->getName();
         stream << spec;
         range->getJustData()->Serialize(stream);
@@ -391,9 +390,9 @@ quint8 cClamp::getAdjustmentStatus()
     }
 
     quint8 stat = 255;
-    for(auto range : m_RangeList)
+    for(auto range : qAsConst(m_RangeList))
         stat &= range->getAdjustmentStatus();
-    for(auto range : m_RangeListSecondary)
+    for(auto range : qAsConst(m_RangeListSecondary))
         stat &= range->getAdjustmentStatus();
     if ((stat & JustDataInterface::Justified)== 0)
         return Adjustment::notAdjusted;
@@ -696,11 +695,11 @@ void cClamp::addSense()
 
 void cClamp::addSenseInterface()
 {
-    for(cSenseRange *range : m_RangeList) {
+    for(cSenseRange *range : qAsConst(m_RangeList)) {
         range->initSCPIConnection(QString("SENSE:%1").arg(m_sChannelName));
         connect(range, &cSenseRange::cmdExecutionDone, this, &cClamp::cmdExecutionDone);
     }
-    for(cSenseRange *range : m_RangeListSecondary) {
+    for(cSenseRange *range : qAsConst(m_RangeListSecondary)) {
         range->initSCPIConnection(QString("SENSE:%1").arg(m_sChannelNameSecondary));
         connect(range, &cSenseRange::cmdExecutionDone, this, &cClamp::cmdExecutionDone);
     }
@@ -746,7 +745,7 @@ cSenseRange* cClamp::getRange(QString name)
         }
     }
     if(!rangeFound) {
-        for(auto range : m_RangeListSecondary) {
+        for(auto range : qAsConst(m_RangeListSecondary)) {
             if (range->getName() == name) {
                 rangeFound = range;
                 break;
@@ -766,11 +765,11 @@ void cClamp::removeAllRanges()
         }
     }
     // then we delete them what automatically destroys their interfaces
-    for(auto* range : m_RangeList) {
+    for(auto* range : qAsConst(m_RangeList)) {
         delete range; // the cSenseRange objects will also remove their interfaces including that for adjustment data
     }
     m_RangeList.clear();
-    for(auto* range : m_RangeListSecondary) {
+    for(auto* range : qAsConst(m_RangeListSecondary)) {
         delete range;
     }
     m_RangeListSecondary.clear();
