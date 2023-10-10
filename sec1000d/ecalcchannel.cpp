@@ -138,20 +138,17 @@ void cECalculatorChannel::setIntReg(quint8 reg)
 
 void cECalculatorChannel::m_ReadWriteRegister(cProtonetCommand *protoCmd)
 {
-    QString par, cmdStr;
     bool ok;
-    quint8 regInd;
     quint32 reg;
 
     cSCPICommand cmd = protoCmd->m_sInput;
-    cmdStr = cmd.getCommandStr();
-    par = cmdStr.section(':',2,2);
+    QString cmdStr = cmd.getCommandStr();
+    QString par = cmdStr.section(':',2,2);
     par.remove(QChar('r'), Qt::CaseInsensitive);
     par.remove(QChar('?'));
-    regInd = par.toInt(&ok);
+    quint8 regInd = par.toInt(&ok);
 
-    if ( ((protoCmd->m_nSCPIType & SCPI::isQuery) != 0) && cmd.isQuery() )
-    {
+    if ( ((protoCmd->m_nSCPIType & SCPI::isQuery) != 0) && cmd.isQuery() ) {
         switch (regInd)
         {
             case ECALCREG::INTREG:
@@ -177,52 +174,38 @@ void cECalculatorChannel::m_ReadWriteRegister(cProtonetCommand *protoCmd)
             protoCmd->m_sOutput =  QString("%1").arg(reg);
         }
     }
-
-    else
-
-        if ( ((protoCmd->m_nSCPIType & SCPI::isCmdwP) !=0) && cmd.isCommand(1) )
-        {
-            if (protoCmd->m_clientId == m_ClientId) // authorized ?
+    else if ( ((protoCmd->m_nSCPIType & SCPI::isCmdwP) !=0) && cmd.isCommand(1) ) {
+        if (protoCmd->m_clientId == m_ClientId) { // authorized ?
+            par = cmd.getParam(0);
+            reg = par.toULong(&ok);
+            if (ok)
             {
-                par = cmd.getParam(0);
-                reg = par.toULong(&ok);
-                if (ok)
-                {
-                    lseek(m_pMyServer->DevFileDescriptor, m_nMyAdress + (regInd << 2), 0);
-                    write(m_pMyServer->DevFileDescriptor,(char*) &reg, 4);
-                    protoCmd->m_sOutput = SCPI::scpiAnswer[SCPI::ack];
-                }
-                else
-                    protoCmd->m_sOutput = SCPI::scpiAnswer[SCPI::nak];
+                lseek(m_pMyServer->DevFileDescriptor, m_nMyAdress + (regInd << 2), 0);
+                write(m_pMyServer->DevFileDescriptor,(char*) &reg, 4);
+                protoCmd->m_sOutput = SCPI::scpiAnswer[SCPI::ack];
             }
             else
-                protoCmd->m_sOutput = SCPI::scpiAnswer[SCPI::erraut];
+                protoCmd->m_sOutput = SCPI::scpiAnswer[SCPI::nak];
         }
-
         else
-
-            protoCmd->m_sOutput = SCPI::scpiAnswer[SCPI::nak];
+            protoCmd->m_sOutput = SCPI::scpiAnswer[SCPI::erraut];
+    }
+    else
+        protoCmd->m_sOutput = SCPI::scpiAnswer[SCPI::nak];
 }
-
 
 void cECalculatorChannel::m_setSync(cProtonetCommand *protoCmd)
 {
     cSCPICommand cmd = protoCmd->m_sInput;
-    if (cmd.isCommand(1))
-    {
-        if (protoCmd->m_clientId == m_ClientId) // authorized ?
-        {
-            QString par;
-            par = cmd.getParam(0);
+    if (cmd.isCommand(1)) {
+        if (protoCmd->m_clientId == m_ClientId) { // authorized ?
+            QString par = cmd.getParam(0);
             protoCmd->m_sOutput = SCPI::scpiAnswer[SCPI::errval]; // preset
-            if (par.contains("ec"))
-            {
-                bool ok;
-                quint32 chnIndex;
+            if (par.contains("ec")) {
                 par.remove(baseChnName);
-                chnIndex = par.toULong(&ok);
-                if (ok && (chnIndex <= m_pecalcsettings->getNumber()) )
-                {
+                bool ok;
+                quint32 chnIndex = par.toULong(&ok);
+                if (ok && (chnIndex <= m_pecalcsettings->getNumber()) ) {
                     quint32 reg;
                     lseek(m_pMyServer->DevFileDescriptor, m_nMyAdress + (ECALCREG::CONF << 2), 0);
                     read(m_pMyServer->DevFileDescriptor,(char*) &reg, 4);
@@ -239,20 +222,14 @@ void cECalculatorChannel::m_setSync(cProtonetCommand *protoCmd)
         protoCmd->m_sOutput = SCPI::scpiAnswer[SCPI::nak];
 }
 
-
 void cECalculatorChannel::m_setMux(cProtonetCommand *protoCmd)
 {
     cSCPICommand cmd = protoCmd->m_sInput;
-    if (cmd.isCommand(1))
-    {
-        if (protoCmd->m_clientId == m_ClientId) // authorized ?
-        {
-            QString par;
-            par = cmd.getParam(0);
+    if (cmd.isCommand(1)) {
+        if (protoCmd->m_clientId == m_ClientId) { // authorized ?
+            QString par = cmd.getParam(0);
             protoCmd->m_sOutput = SCPI::scpiAnswer[SCPI::errval]; // preset
-
-            if (m_pInputSettings->hasInput(par))
-            {
+            if (m_pInputSettings->hasInput(par)) {
                 quint32 reg;
                 lseek(m_pMyServer->DevFileDescriptor, m_nMyAdress + (ECALCREG::CONF << 2), 0);
                 read(m_pMyServer->DevFileDescriptor,(char*) &reg, 4);
@@ -268,22 +245,16 @@ void cECalculatorChannel::m_setMux(cProtonetCommand *protoCmd)
         protoCmd->m_sOutput = SCPI::scpiAnswer[SCPI::nak];
 }
 
-
 void cECalculatorChannel::m_setCmdId(cProtonetCommand *protoCmd)
 {
     cSCPICommand cmd = protoCmd->m_sInput;
-    if (cmd.isCommand(1))
-    {
-        if (protoCmd->m_clientId == m_ClientId) // authorized ?
-        {
-            bool ok;
-            quint32 cmdId;
-            QString par;
-            par = cmd.getParam(0);
+    if (cmd.isCommand(1)) {
+        if (protoCmd->m_clientId == m_ClientId) { // authorized ?
+            QString par = cmd.getParam(0);
             protoCmd->m_sOutput = SCPI::scpiAnswer[SCPI::errval]; // preset
-            cmdId = par.toULong(&ok);
-            if (ok && (cmdId < 3) )
-            {
+            bool ok;
+            quint32 cmdId = par.toULong(&ok);
+            if (ok && (cmdId < 3) ) {
                 quint32 reg;
                 lseek(m_pMyServer->DevFileDescriptor, m_nMyAdress + (ECALCREG::CONF << 2), 0);
                 read(m_pMyServer->DevFileDescriptor,(char*) &reg, 4);
@@ -299,14 +270,11 @@ void cECalculatorChannel::m_setCmdId(cProtonetCommand *protoCmd)
         protoCmd->m_sOutput = SCPI::scpiAnswer[SCPI::nak];
 }
 
-
 void cECalculatorChannel::m_start(cProtonetCommand *protoCmd)
 {
     cSCPICommand cmd = protoCmd->m_sInput;
-    if (cmd.isCommand(0))
-    {
-        if (protoCmd->m_clientId == m_ClientId) // authorized ?
-        {
+    if (cmd.isCommand(0)) {
+        if (protoCmd->m_clientId == m_ClientId) { // authorized ?
             quint32 reg;
             lseek(m_pMyServer->DevFileDescriptor, m_nMyAdress + (ECALCREG::CMD << 2), 0);
             //read(m_pMyServer->DevFileDescriptor,(char*) &reg, 4);
@@ -326,10 +294,8 @@ void cECalculatorChannel::m_start(cProtonetCommand *protoCmd)
 void cECalculatorChannel::m_stop(cProtonetCommand *protoCmd)
 {
     cSCPICommand cmd = protoCmd->m_sInput;
-    if (cmd.isCommand(0))
-    {
-        if (protoCmd->m_clientId == m_ClientId) // authorized ?
-        {
+    if (cmd.isCommand(0)) {
+        if (protoCmd->m_clientId == m_ClientId) { // authorized ?
             m_StopErrorCalculator();
             protoCmd->m_sOutput = SCPI::scpiAnswer[SCPI::ack];
         }
@@ -340,22 +306,15 @@ void cECalculatorChannel::m_stop(cProtonetCommand *protoCmd)
         protoCmd->m_sOutput = SCPI::scpiAnswer[SCPI::nak];
 }
 
-
 void cECalculatorChannel::m_resetInt(cProtonetCommand *protoCmd)
 {
-    bool ok;
     cSCPICommand cmd = protoCmd->m_sInput;
-    QString par;
-    quint32 interrupt;
-
-    if (cmd.isCommand(1))
-    {
-        if (protoCmd->m_clientId == m_ClientId) // authorized ?
-        {
-            par = cmd.getParam(0);
-            interrupt = par.toULong(&ok);
-            if (ok)
-            {
+    if (cmd.isCommand(1)) {
+        if (protoCmd->m_clientId == m_ClientId) { // authorized ?
+            QString par = cmd.getParam(0);
+            bool ok;
+            quint32 interrupt = par.toULong(&ok);
+            if(ok) {
                 m_resetInterrupt(interrupt);
                 SigHandler(0); // we do so as if the interrupt handler had seen another edge
             }
@@ -369,7 +328,6 @@ void cECalculatorChannel::m_resetInt(cProtonetCommand *protoCmd)
         protoCmd->m_sOutput = SCPI::scpiAnswer[SCPI::nak];
 
 }
-
 
 void cECalculatorChannel::m_StopErrorCalculator()
 {
