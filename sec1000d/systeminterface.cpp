@@ -8,14 +8,12 @@
 #include "scpidelegate.h"
 #include <scpisingletonfactory.h>
 
-
 cSystemInterface::cSystemInterface(cSEC1000dServer *server, cSystemInfo *sInfo) :
     ScpiConnection(ScpiSingletonFactory::getScpiObj()),
     m_pMyServer(server),
     m_pSystemInfo(sInfo)
 {
 }
-
 
 void cSystemInterface::initSCPIConnection(QString leadingNodes)
 {
@@ -27,7 +25,6 @@ void cSystemInterface::initSCPIConnection(QString leadingNodes)
     addDelegate(QString("%1SYSTEM").arg(leadingNodes), "SERIAL", SCPI::isQuery | SCPI::isCmdwP , m_pSCPIInterface, SystemSystem::cmdSerialNumber);
     addDelegate(QString("%1SYSTEM:INTERFACE").arg(leadingNodes), "READ", SCPI::isQuery, m_pSCPIInterface, SystemSystem::cmdInterfaceRead);
 }
-
 
 void cSystemInterface::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
 {
@@ -52,7 +49,6 @@ void cSystemInterface::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
         protoCmd->m_sOutput = m_InterfaceRead(protoCmd->m_sInput);
         break;
     }
-
     if (protoCmd->m_bwithOutput)
         emit cmdExecutionDone(protoCmd);
 }
@@ -62,14 +58,10 @@ QString cSystemInterface::scpiReadServerVersion(QString &sInput)
 {
     QString s;
     cSCPICommand cmd = sInput;
-
     if ( cmd.isQuery() )
-    {
         s = m_pMyServer->getVersion();
-    }
     else
         s = SCPI::scpiAnswer[SCPI::nak];
-
     return s;
 }
 
@@ -77,9 +69,7 @@ QString cSystemInterface::scpiReadServerVersion(QString &sInput)
 QString cSystemInterface::m_ReadDeviceVersion(QString &sInput)
 {
     cSCPICommand cmd = sInput;
-
-    if (cmd.isQuery())
-    {
+    if (cmd.isQuery()) {
         if (m_pSystemInfo->dataRead())
             return m_pSystemInfo->getDeviceVersion();
         else
@@ -92,11 +82,8 @@ QString cSystemInterface::m_ReadDeviceVersion(QString &sInput)
 
 QString cSystemInterface::m_ReadDeviceName(QString& sInput)
 {
-    QString s;
     cSCPICommand cmd = sInput;
-
-    if (cmd.isQuery())
-    {
+    if (cmd.isQuery()) {
         if (m_pSystemInfo->dataRead())
             return m_pSystemInfo->getDeviceName();
         else
@@ -111,19 +98,15 @@ QString cSystemInterface::m_ReadWritePCBVersion(QString &sInput)
 {
     QString s;
     cSCPICommand cmd = sInput;
-
-    if (cmd.isQuery())
-    {
+    if (cmd.isQuery()) {
         if (m_pSystemInfo->dataRead())
             s = m_pSystemInfo->getPCBVersion();
         else
             s = SCPI::scpiAnswer[SCPI::errexec];
     }
-    else
-    {
-        if (cmd.isCommand(1))
-        {
-            QString Version = cmd.getParam(0);
+    else {
+        if (cmd.isCommand(1)) {
+            //QString Version = cmd.getParam(0);
             // todo write here the pcb version
             m_pSystemInfo->getSystemInfo(); // read back info
             s = SCPI::scpiAnswer[SCPI::ack];
@@ -131,47 +114,35 @@ QString cSystemInterface::m_ReadWritePCBVersion(QString &sInput)
         else
             s = SCPI::scpiAnswer[SCPI::nak];
     }
-
     return s;
 }
-
 
 QString cSystemInterface::m_ReadFPGAVersion(QString &sInput)
 {
     cSCPICommand cmd = sInput;
-
-    if (cmd.isQuery())
-    {
+    if (cmd.isQuery()) {
         if (m_pSystemInfo->dataRead())
             return m_pSystemInfo->getLCAVersion();
         else
             return SCPI::scpiAnswer[SCPI::errexec];
     }
-
     else
         return SCPI::scpiAnswer[SCPI::nak];
 }
-
 
 QString cSystemInterface::m_ReadWriteSerialNumber(QString &sInput)
 {
     QString s;
     cSCPICommand cmd = sInput;
-
-    if (cmd.isQuery())
-    {
-        {
-            if (m_pSystemInfo->dataRead())
-                s = m_pSystemInfo->getSerialNumber();
-            else
-                s = SCPI::scpiAnswer[SCPI::errexec];
-        }
+    if (cmd.isQuery()) {
+        if (m_pSystemInfo->dataRead())
+            s = m_pSystemInfo->getSerialNumber();
+        else
+            s = SCPI::scpiAnswer[SCPI::errexec];
     }
-    else
-    {
-        if (cmd.isCommand(1))
-        {
-            QString Serial = cmd.getParam(0);
+    else {
+        if (cmd.isCommand(1)) {
+            //QString Serial = cmd.getParam(0);
             // todo write the serial number
             m_pSystemInfo->getSystemInfo(); // read back info
             s = SCPI::scpiAnswer[SCPI::ack];
@@ -179,17 +150,13 @@ QString cSystemInterface::m_ReadWriteSerialNumber(QString &sInput)
         else
             s = SCPI::scpiAnswer[SCPI::nak];
     }
-
     return s;
 }
-
 
 QString cSystemInterface::m_InterfaceRead(QString &sInput)
 {
     cSCPICommand cmd = sInput;
-
-    if (cmd.isQuery())
-    {
+    if (cmd.isQuery()) {
         QString s;
         ScpiSingletonFactory::getScpiObj()->exportSCPIModelXML(s);
         return s;
@@ -197,7 +164,3 @@ QString cSystemInterface::m_InterfaceRead(QString &sInput)
     else
         return SCPI::scpiAnswer[SCPI::nak];
 }
-
-
-
-
