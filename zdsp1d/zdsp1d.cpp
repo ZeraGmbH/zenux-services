@@ -454,15 +454,13 @@ bool cZDSP1Client::DspVar(QString& s,int& ir)
 { // einen int (32bit) wert lesen
 
     bool ret = false;
-    QByteArray *ba = new QByteArray();
+    QByteArray ba;
     QString ss = QString("%1,1").arg(s);
-    if ( DspVarRead(ss,ba) != 0)
+    if ( DspVarRead(ss, &ba) != 0)
     { // 1 wort ab name (s) lesen
-        ir = *((int*) (ba->data()));
+        ir = *((int*) (ba.data()));
         ret = true;
     }
-    delete ba;
-
     return ret;
 }
 
@@ -470,19 +468,18 @@ bool cZDSP1Client::DspVar(QString& s,int& ir)
 bool cZDSP1Client::DspVar(QString& s,float& fr)
 { // eine float wert lesen
     bool ret = false;
-    QByteArray *ba = new QByteArray();
+    QByteArray ba;
     QString ss = QString("%1,1").arg(s);
-    if ( DspVarRead(ss,ba) != 0)
+    if ( DspVarRead(ss, &ba) != 0)
     {  // 1 wort ab name(s) lesen
-        fr = *((float*) (ba->data()));
+        fr = *((float*) (ba.data()));
         ret = true;
     }
-    delete ba;
     return ret;
 }
 
 
-sDspVar* cZDSP1Client::DspVarRead(QString& s,QByteArray* ba)
+sDspVar* cZDSP1Client::DspVarRead(QString& s, QByteArray* ba)
 {
     bool ok;
 
@@ -533,7 +530,7 @@ QString& cZDSP1Client::DspVarListRead(QString& s)
     sOutput="";
     QTextStream ts( &sOutput, QIODevice::WriteOnly );
     ts.setRealNumberPrecision(8);
-    QByteArray *ba = new QByteArray();
+    QByteArray ba;
 
     for (int i=0;;i++)
     {
@@ -544,15 +541,15 @@ QString& cZDSP1Client::DspVarListRead(QString& s)
         }
 
         sDspVar *DspVar;
-        if ( (DspVar = DspVarRead(vs,ba)) == 0) break; // fehler aufgetreten
+        if ( (DspVar = DspVarRead(vs, &ba)) == 0) break; // fehler aufgetreten
 
-        int n = ba->size()/4;
+        int n = ba.size()/4;
         if (Encryption)
         {
-            n=ba->size();
+            n = ba.size();
             char* c;
             sOutput +=QString("%1%2").arg(DspVar->Name).arg(":");
-            sOutput += QString(c = qSEncryption((char*)(ba->data()),n));
+            sOutput += QString(c = qSEncryption((char*)(ba.data()),n));
             delete c;
         }
         else
@@ -561,20 +558,19 @@ QString& cZDSP1Client::DspVarListRead(QString& s)
             switch (DspVar->type)
             {
             case eInt :{
-                ulong *ul = (ulong*) ba->data();
+                ulong *ul = (ulong*) ba.data();
                 for (int j = 0; j < n-1; j++,ul++) ts << (*ul) << "," ;
                 ts << *ul << ";" ;
                 break;}
             case eUnknown:
             case eFloat :{
-                float *f = (float*) ba->data();
+                float *f = (float*) ba.data();
                 for (int j = 0; j < n-1; j++,f++) ts << (*f) << "," ;
                 ts << *f << ";" ;
                 break;}
             }
         };
     }
-    delete ba;
     if (!ok) sOutput=ERREXECString;
     return sOutput;
 }
@@ -1265,7 +1261,7 @@ QString cZDSP1Server::mGetPCBSerialNumber()
 QString cZDSP1Server::mCommand2Dsp(QString& qs)
 {
     // we need a client to do the job
-    cZDSP1Client* cl = new cZDSP1Client(0, 0, this);
+    cZDSP1Client cl(0, 0, this);
 
     do
     {
@@ -1273,7 +1269,7 @@ QString cZDSP1Server::mCommand2Dsp(QString& qs)
         int ack;
 
         QString ss;
-        if (! cl->DspVar( ss ="DSPACK",ack)) break;
+        if (! cl.DspVar( ss ="DSPACK",ack)) break;
 
         if ( ack ==  InProgress)
         {
@@ -1283,20 +1279,18 @@ QString cZDSP1Server::mCommand2Dsp(QString& qs)
 
         if ( ack ==  CmdTimeout)
         {
-            cl->DspVarWrite(ss = "DSPACK,0;");
+            cl.DspVarWrite(ss = "DSPACK,0;");
             Answer = ERRTIMOString;
             break;
         }
 
-        if (! cl->DspVarWrite(ss = "DSPACK,0;") ) break; // reset acknowledge
-        if (! cl->DspVarWrite(qs)) break; // kommando und parameter -> dsp
+        if (! cl.DspVarWrite(ss = "DSPACK,0;") ) break; // reset acknowledge
+        if (! cl.DspVarWrite(qs)) break; // kommando und parameter -> dsp
 
         ioctl(DevFileDescriptor,ADSP_INT_REQ); // interrupt beim dsp auslösen
         Answer = ACKString; // sofort fertig melden ....sync. muss die applikation
 
     } while (0);
-
-    delete cl;
 
     return Answer;
 }
@@ -1361,7 +1355,7 @@ QString cZDSP1Server::mGetCommEncryption()
 QString cZDSP1Server::mSetEN61850SourceAdr(QChar* s)
 {
     int i;
-    QByteArray* ba = new(QByteArray);
+    QByteArray ba;
     QString ss(s);
     ushort adr[6];
     bool ok;
@@ -1379,10 +1373,10 @@ QString cZDSP1Server::mSetEN61850SourceAdr(QChar* s)
         Answer = ERREXECString; // vorbesetzen
         QString as;
         cZDSP1Client* cl = GetClient(ActSock);
-        if (!cl->DspVarRead(as = "ETHDESTSOURCEADRESS,3",ba)) break;
+        if (!cl->DspVarRead(as = "ETHDESTSOURCEADRESS,3", &ba)) break;
         else
         {
-            ulong* pardsp = (ulong*) ba->data();
+            ulong* pardsp = (ulong*) ba.data();
             pardsp[1] &= 0xFFFF0000; // die oberen bits behalten wir weil dest adr
             pardsp[1] = pardsp[1] | (adr[0] << 8) | adr[1];
             pardsp[2] = 0;
@@ -1390,7 +1384,6 @@ QString cZDSP1Server::mSetEN61850SourceAdr(QChar* s)
             mCommand2Dsp(as = QString("DSPCMDPAR,6,%1,%2,%3;").arg(pardsp[0]).arg(pardsp[1]).arg(pardsp[2])); // setzt answer schon
         }
     } while(0);
-    delete ba;
 
     return Answer;
 }
@@ -1399,7 +1392,7 @@ QString cZDSP1Server::mSetEN61850SourceAdr(QChar* s)
 QString cZDSP1Server::mSetEN61850DestAdr(QChar *s)
 {
     int i;
-    QByteArray* ba = new(QByteArray);
+    QByteArray ba;
     QString ss(s);
     ushort adr[6]; // 2 * 4 werte reservieren
     bool ok;
@@ -1417,10 +1410,10 @@ QString cZDSP1Server::mSetEN61850DestAdr(QChar *s)
         Answer = ERREXECString; // vorbesetzen
         QString as;
         cZDSP1Client* cl = GetClient(ActSock);
-        if (!cl->DspVarRead(as = "ETHDESTSOURCEADRESS,3",ba)) break;
+        if (!cl->DspVarRead(as = "ETHDESTSOURCEADRESS,3", &ba)) break;
         else
         {
-            ulong* pardsp = (ulong*) ba->data();
+            ulong* pardsp = (ulong*) ba.data();
             pardsp[0] = 0;
             for (i = 0;i<4;i++) pardsp[0] = (pardsp[0] << 8) +adr[i];
             pardsp[1] &= 0xFFFF; // die unteren bits behalten wir weil source adr
@@ -1429,7 +1422,6 @@ QString cZDSP1Server::mSetEN61850DestAdr(QChar *s)
         }
     } while(0);
 
-    delete ba;
     return Answer;
 }
 
@@ -1449,22 +1441,18 @@ QString cZDSP1Server::mSetEN61850EthTypeAppId(QChar *s)
 
 QString cZDSP1Server::mGetEN61850EthTypeAppId()
 {
-    QByteArray* ba = new(QByteArray);
+    QByteArray ba;
     QString as;
     cZDSP1Client* cl = GetClient(ActSock);
-    if (cl->DspVarRead(as = "ETHTYPEAPPID,1",ba))
+    if (cl->DspVarRead(as = "ETHTYPEAPPID,1", &ba))
     {
-        ulong *dataCount = (ulong*) ba->data(); // data zeigt auf 1*4 byte
+        ulong *dataCount = (ulong*) ba.data(); // data zeigt auf 1*4 byte
         Answer = "";
         QTextStream ts( &Answer, QIODevice::WriteOnly );
         ts << dataCount[0];
     }
     else
-    {
         Answer = ERREXECString;
-    }
-    delete ba;
-
     return Answer;
 }
 
@@ -1484,12 +1472,12 @@ QString cZDSP1Server::mSetEN61850PriorityTagged(QChar *s)
 
 QString cZDSP1Server::mGetEN61850PriorityTagged()
 {
-    QByteArray* ba = new(QByteArray);
+    QByteArray ba;
     QString as;
     cZDSP1Client* cl = GetClient(ActSock);
-    if (cl->DspVarRead(as = "ETHPRIORITYTAGGED,1",ba))
+    if (cl->DspVarRead(as = "ETHPRIORITYTAGGED,1", &ba))
     {
-        ulong *dataCount = (ulong*) ba->data(); // data zeigt auf 1*4 byte
+        ulong *dataCount = (ulong*) ba.data(); // data zeigt auf 1*4 byte
         Answer = "";
         QTextStream ts( &Answer, QIODevice::WriteOnly );
         ts << dataCount[0];
@@ -1498,10 +1486,7 @@ QString cZDSP1Server::mGetEN61850PriorityTagged()
     {
         Answer = ERREXECString;
     }
-    delete ba;
-
     return Answer;
-
 }
 
 
@@ -1513,31 +1498,25 @@ QString cZDSP1Server::mSetEN61850EthSync(QChar *s)
         Answer = ERREXECString;
     else
         Answer = ACKString;
-
     return Answer;
 }
 
 
 QString cZDSP1Server::mGetEN61850EthSync()
 {
-    QByteArray* ba = new(QByteArray);
+    QByteArray ba;
     QString as;
     cZDSP1Client* cl = GetClient(ActSock);
-    if (cl->DspVarRead(as = "SYNCASDU,1",ba))
+    if (cl->DspVarRead(as = "SYNCASDU,1", &ba))
     {
-        ulong *dataCount = (ulong*) ba->data(); // data zeigt auf 1*4 byte
+        ulong *dataCount = (ulong*) ba.data(); // data zeigt auf 1*4 byte
         Answer = "";
         QTextStream ts( &Answer, QIODevice::WriteOnly );
         ts << dataCount[0];
     }
     else
-    {
         Answer = ERREXECString;
-    }
-    delete ba;
-
     return Answer;
-
 }
 
 
@@ -1557,22 +1536,18 @@ QString cZDSP1Server::mSetEN61850DataCount(QChar *s)
 
 QString cZDSP1Server::mGetEN61850DataCount()
 {
-    QByteArray* ba = new(QByteArray);
+    QByteArray ba;
     QString as;
     cZDSP1Client* cl = GetClient(ActSock);
-    if (cl->DspVarRead(as = "ETHDATACOUNT,2",ba))
+    if (cl->DspVarRead(as = "ETHDATACOUNT,2", &ba))
     {
-        ulong *dataCount = (ulong*) ba->data(); // data zeigt auf 2*4 byte
+        ulong *dataCount = (ulong*) ba.data(); // data zeigt auf 2*4 byte
         Answer = "";
         QTextStream ts( &Answer, QIODevice::WriteOnly );
         ts << dataCount[0] << "," << dataCount[1];
     }
     else
-    {
         Answer = ERREXECString;
-    }
-    delete ba;
-
     return Answer;
 }
 
@@ -1592,34 +1567,30 @@ QString cZDSP1Server::mSetEN61850SyncLostCount(QChar *s)
 
 QString cZDSP1Server::mGetEN61850SyncLostCount()
 {
-    QByteArray* ba = new(QByteArray);
+    QByteArray ba;
     QString as;
     cZDSP1Client* cl = GetClient(ActSock);
-    if (cl->DspVarRead(as = "ETHSYNCLOSTCOUNT,1",ba))
+    if (cl->DspVarRead(as = "ETHSYNCLOSTCOUNT,1", &ba))
     {
-        ulong *dataCount = (ulong*) ba->data(); // data zeigt auf 1*4 byte
+        ulong *dataCount = (ulong*) ba.data(); // data zeigt auf 1*4 byte
         Answer = "";
         QTextStream ts( &Answer, QIODevice::WriteOnly );
         ts << dataCount[0];
     }
     else
-    {
         Answer = ERREXECString;
-    }
-    delete ba;
-
     return Answer;
 }
 
 
 QString cZDSP1Server::mGetEN61850SourceAdr()
 {
-    QByteArray* ba = new(QByteArray);
+    QByteArray ba;
     QString as;
     cZDSP1Client* cl = GetClient(ActSock);
-    if (cl->DspVarRead(as = "ETHDESTSOURCEADRESS,3",ba))
+    if (cl->DspVarRead(as = "ETHDESTSOURCEADRESS,3", &ba))
     {
-        ulong* AdrByte = (ulong*) ba->data(); // data zeigt auf 3*4 byte
+        ulong* AdrByte = (ulong*) ba.data(); // data zeigt auf 3*4 byte
         ushort adr[6];  // dest, source address  sind je 6 byte
         int i;
         for (i = 0;i < 2;i++) adr[i] = ( AdrByte[1] >> ((1-i) * 8) ) & 0xFF;  // dsp byte order
@@ -1630,23 +1601,19 @@ QString cZDSP1Server::mGetEN61850SourceAdr()
         ts << adr[i] << ";";
     }
     else
-    {
         Answer = ERREXECString;
-    }
-    delete ba;
-
     return Answer;
 }
 
 
 QString cZDSP1Server::mGetEN61850DestAdr()
 {
-    QByteArray* ba = new(QByteArray);
+    QByteArray ba;
     QString as;
     cZDSP1Client* cl = GetClient(ActSock);
-    if (cl->DspVarRead(as = "ETHDESTSOURCEADRESS,3",ba))
+    if (cl->DspVarRead(as = "ETHDESTSOURCEADRESS,3", &ba))
     {
-        ulong* AdrByte = (ulong*) ba->data(); // data zeigt auf 3*4 byte
+        ulong* AdrByte = (ulong*) ba.data(); // data zeigt auf 3*4 byte
         ushort adr[6];  // dest, source address  sind je 6 byte
         int i;
         for (i = 0;i < 4;i++) adr[i] = ( AdrByte[0] >> ((3-i) * 8) ) & 0xFF;  // dsp byte order
@@ -1657,11 +1624,7 @@ QString cZDSP1Server::mGetEN61850DestAdr()
         ts << adr[i] << ";";
     }
     else
-    {
         Answer = ERREXECString;
-    }
-    delete ba;
-
     return Answer;
 }
 
