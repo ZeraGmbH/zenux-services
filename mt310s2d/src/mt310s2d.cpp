@@ -302,7 +302,7 @@ void cMT310S2dServer::doSetupServer()
             enableClampInterrupt();
 
             // our resource mananager connection must be opened after configuration is done
-            m_pRMConnection = new RMConnection(m_pETHSettings->getRMIPadr(), m_pETHSettings->getPort(EthSettings::resourcemanager), m_pDebugSettings->getDebugLevel());
+            m_pRMConnection = new RMConnection(m_pETHSettings->getRMIPadr(), m_pETHSettings->getPort(EthSettings::resourcemanager));
             //connect(m_pRMConnection, SIGNAL(connectionRMError()), this, SIGNAL(abortInit()));
             // so we must complete our state machine here
             m_nRetryRMConnect = 100;
