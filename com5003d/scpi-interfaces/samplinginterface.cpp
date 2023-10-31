@@ -1,11 +1,6 @@
-#include <QString>
-#include <QList>
-#include <scpi.h>
-
-#include "protonetcommand.h"
+#include "samplinginterface.h"
 #include "scpiconnection.h"
 #include "samplerange.h"
-#include "samplinginterface.h"
 #include "com5003d.h"
 #include "atmel.h"
 #include "samplingsettings.h"

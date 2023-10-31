@@ -1,5 +1,4 @@
 #include "samplinginterface.h"
-#include "protonetcommand.h"
 #include "scpiconnection.h"
 #include "samplerange.h"
 #include "mt310s2d.h"
