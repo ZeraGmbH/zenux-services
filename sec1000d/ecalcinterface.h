@@ -5,7 +5,7 @@
 #include "scpiconnection.h"
 #include "ecalcchannel.h"
 #include "notificationvalue.h"
-#include "ethsettingssec.h"
+#include "ethsettings.h"
 #include <QList>
 #include <QHash>
 
@@ -38,7 +38,7 @@ class cECalculatorInterface : public cResource
     Q_OBJECT
 
 public:
-    cECalculatorInterface(cSEC1000dServer* server, EthSettingsSec* ethsettings, cECalculatorSettings* ecalcSettings, FPGASettings* fpgasettings, cInputSettings* inputsettings);
+    cECalculatorInterface(cSEC1000dServer* server, EthSettings* ethsettings, cECalculatorSettings* ecalcSettings, FPGASettings* fpgasettings, cInputSettings* inputsettings);
     ~cECalculatorInterface();
     void initSCPIConnection(QString leadingNodes) override;
     virtual void registerResource(RMConnection *rmConnection, quint16 port) override;
@@ -50,7 +50,7 @@ protected:
 
 private:
     cSEC1000dServer* m_pMyServer;
-    EthSettingsSec* m_pETHsettings;
+    EthSettings* m_pETHsettings;
     cECalculatorSettings* m_pecalcsettings;
     FPGASettings* m_pFPGASettings;
     cInputSettings* m_pInputSettings;

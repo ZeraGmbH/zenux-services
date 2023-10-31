@@ -5,7 +5,7 @@
 
 #include "pcbserver.h"
 #include "rmconnection.h"
-#include "ethsettingssec.h"
+#include "ethsettings.h"
 
 class QStateMachine;
 class QState;
@@ -31,7 +31,7 @@ public:
 
     cDebugSettings* m_pDebugSettings;
     FPGASettings* m_pFPGASettings;
-    EthSettingsSec* m_pETHSettings;
+    EthSettings* m_pETHSettings;
     cECalculatorSettings* m_pECalcSettings;
     cInputSettings* m_pInputSettings;
 
