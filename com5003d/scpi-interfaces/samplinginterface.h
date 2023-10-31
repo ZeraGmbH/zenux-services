@@ -1,11 +1,9 @@
 #ifndef SAMPLINGINTERFACE_H
 #define SAMPLINGINTERFACE_H
 
-#include "com5003d.h"
-#include "scpiconnection.h"
 #include "samplerange.h"
 #include "resource.h"
-#include <QList>
+#include "samplingsettings.h"
 #include <QStringList>
 
 namespace SamplingSystem
@@ -30,7 +28,7 @@ class cSamplingInterface: public cResource
 {
     Q_OBJECT
 public:
-    cSamplingInterface(cCOM5003dServer* server);
+    cSamplingInterface(cSCPI *scpiInterface, SamplingSettings *samplingSettings);
     virtual void initSCPIConnection(QString leadingNodes) override;
     virtual void registerResource(RMConnection *rmConnection, quint16 port) override;
     virtual void unregisterResource(RMConnection *rmConnection) override;
@@ -49,7 +47,6 @@ private:
     QString m_ReadWritePLL(QString& sInput);
     QString m_ReadPLLCatalog(QString& sInput);
 
-    cCOM5003dServer *m_pMyServer;
     quint16 m_nType;
     QString m_sVersion;
     QString m_sAlias;
