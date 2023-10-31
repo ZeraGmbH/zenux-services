@@ -361,7 +361,8 @@ void cCOM5003dServer::doSetupServer()
     initSCPIConnections();
 
     myServer->startServer(m_pETHSettings->getPort(EthSettings::protobufserver)); // and can start the server now
-    m_pSCPIServer->listen(QHostAddress::AnyIPv4, m_pETHSettings->getPort(EthSettings::scpiserver));
+    if(m_pETHSettings->isSCPIactive())
+        m_pSCPIServer->listen(QHostAddress::AnyIPv4, m_pETHSettings->getPort(EthSettings::scpiserver));
 
     // our resource mananager connection must be opened after configuration is done
     m_pRMConnection = new RMConnection(m_pETHSettings->getRMIPadr(), m_pETHSettings->getPort(EthSettings::resourcemanager));
