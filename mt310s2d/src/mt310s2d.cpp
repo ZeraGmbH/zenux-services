@@ -64,7 +64,6 @@ cMT310S2dServer::cMT310S2dServer() :
     cPCBServer(ServerName, ServerVersion, ScpiSingletonFactory::getScpiObj())
 {
     m_pDebugSettings = nullptr;
-    m_pETHSettings = nullptr;
     m_pI2CSettings = nullptr;
     m_pFPGASettings = nullptr;
     m_pCtrlSettings  = nullptr;
@@ -96,7 +95,7 @@ cMT310S2dServer::cMT310S2dServer() :
 
     stateCONF->setInitialState(statexmlConfiguration);
 
-    statexmlConfiguration->addTransition(myXMLConfigReader, SIGNAL(finishedParsingXML(bool)), statewait4Atmel);
+    statexmlConfiguration->addTransition(&m_xmlConfigReader, SIGNAL(finishedParsingXML(bool)), statewait4Atmel);
     statewait4Atmel->addTransition(this, SIGNAL(atmelRunning()), statesetupServer);
     statesetupServer->addTransition(this, SIGNAL(serverSetup()), stateconnect2RM);
 
@@ -119,7 +118,6 @@ cMT310S2dServer::cMT310S2dServer() :
 cMT310S2dServer::~cMT310S2dServer()
 {
     if (m_pDebugSettings) delete m_pDebugSettings;
-    if (m_pETHSettings) delete m_pETHSettings;
     if (m_pI2CSettings) delete m_pI2CSettings;
     if (m_pFPGASettings) delete m_pFPGASettings;
     if (m_pCtrlSettings) delete m_pCtrlSettings;
@@ -168,40 +166,38 @@ void cMT310S2dServer::doConfiguration()
             m_pNotifier = new QSocketNotifier(pipeFD[0], QSocketNotifier::Read, this);
             connect(m_pNotifier, &QSocketNotifier::activated, this, &cMT310S2dServer::MTIntHandler);
 
-            if (myXMLConfigReader->loadSchema(defaultXSDFile))
-            {
+            if (m_xmlConfigReader.loadSchema(defaultXSDFile)) {
                 QString xmlConfigTopNode = "serviceconfig";
                 // we want to initialize all settings first
-                m_pDebugSettings = new cDebugSettings(myXMLConfigReader, xmlConfigTopNode);
-                connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pDebugSettings,&cDebugSettings::configXMLInfo);
-                m_pETHSettings = new EthSettings(myXMLConfigReader);
-                connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pETHSettings,&EthSettings::configXMLInfo);
-                m_pI2CSettings = new cI2CSettings(myXMLConfigReader);
-                connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pI2CSettings,&cI2CSettings::configXMLInfo);
-                m_pFPGASettings = new FPGASettings(myXMLConfigReader, xmlConfigTopNode);
-                connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pFPGASettings,&FPGASettings::configXMLInfo);
-                m_pCtrlSettings = new cCtrlSettings(myXMLConfigReader);
-                connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pCtrlSettings,&cCtrlSettings::configXMLInfo);
-                m_pSenseSettings = new cSenseSettings(myXMLConfigReader, 8);
-                connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pSenseSettings,&cSenseSettings::configXMLInfo);
-                m_foutSettings = new FOutSettings(myXMLConfigReader);
-                connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_foutSettings,&FOutSettings::configXMLInfo);
-                m_pSamplingSettings = new SamplingSettings(myXMLConfigReader);
-                connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pSamplingSettings,&SamplingSettings::configXMLInfo);
-                m_finSettings = new FInSettings(myXMLConfigReader);
-                connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_finSettings,&FInSettings::configXMLInfo);
-                m_pSCHeadSettings = new ScInSettings(myXMLConfigReader);
-                connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pSCHeadSettings,&ScInSettings::configXMLInfo);
-                m_hkInSettings = new HkInSettings(myXMLConfigReader);
-                connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_hkInSettings,&HkInSettings::configXMLInfo);
-                m_accumulatorSettings = new AccumulatorSettings(myXMLConfigReader);
-                connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_accumulatorSettings,&AccumulatorSettings::configXMLInfo);
+                m_pDebugSettings = new cDebugSettings(&m_xmlConfigReader, xmlConfigTopNode);
+                connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_pDebugSettings, &cDebugSettings::configXMLInfo);
+                connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, &m_ethSettings, &EthSettings::configXMLInfo);
+                m_pI2CSettings = new cI2CSettings(&m_xmlConfigReader);
+                connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_pI2CSettings, &cI2CSettings::configXMLInfo);
+                m_pFPGASettings = new FPGASettings(&m_xmlConfigReader, xmlConfigTopNode);
+                connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_pFPGASettings, &FPGASettings::configXMLInfo);
+                m_pCtrlSettings = new cCtrlSettings(&m_xmlConfigReader);
+                connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_pCtrlSettings, &cCtrlSettings::configXMLInfo);
+                m_pSenseSettings = new cSenseSettings(&m_xmlConfigReader, 8);
+                connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_pSenseSettings, &cSenseSettings::configXMLInfo);
+                m_foutSettings = new FOutSettings(&m_xmlConfigReader);
+                connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_foutSettings, &FOutSettings::configXMLInfo);
+                m_pSamplingSettings = new SamplingSettings(&m_xmlConfigReader);
+                connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_pSamplingSettings, &SamplingSettings::configXMLInfo);
+                m_finSettings = new FInSettings(&m_xmlConfigReader);
+                connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_finSettings, &FInSettings::configXMLInfo);
+                m_pSCHeadSettings = new ScInSettings(&m_xmlConfigReader);
+                connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_pSCHeadSettings, &ScInSettings::configXMLInfo);
+                m_hkInSettings = new HkInSettings(&m_xmlConfigReader);
+                connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_hkInSettings, &HkInSettings::configXMLInfo);
+                m_accumulatorSettings = new AccumulatorSettings(&m_xmlConfigReader);
+                connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_accumulatorSettings, &AccumulatorSettings::configXMLInfo);
 
 
                 QString s = args.at(1);
                 qDebug() << s;
 
-                if (!myXMLConfigReader->loadXMLFile(s)) {
+                if (!m_xmlConfigReader.loadXMLFile(s)) {
                     m_nerror = xmlfileError;
                     emit abortInit();
                 }
@@ -289,9 +285,9 @@ void cMT310S2dServer::doSetupServer()
             // after init. we once poll the devices connected at power up
             updateI2cDevicesConnected();
 
-            myServer->startServer(m_pETHSettings->getPort(EthSettings::protobufserver)); // and can start the server now
-            if(m_pETHSettings->isSCPIactive())
-                m_pSCPIServer->listen(QHostAddress::AnyIPv4, m_pETHSettings->getPort(EthSettings::scpiserver));
+            myServer->startServer(m_ethSettings.getPort(EthSettings::protobufserver)); // and can start the server now
+            if(m_ethSettings.isSCPIactive())
+                m_pSCPIServer->listen(QHostAddress::AnyIPv4, m_ethSettings.getPort(EthSettings::scpiserver));
 
             mySigAction.sa_handler = &SigHandler; // setup signal handler
             sigemptyset(&mySigAction.sa_mask);
@@ -303,7 +299,7 @@ void cMT310S2dServer::doSetupServer()
             enableClampInterrupt();
 
             // our resource mananager connection must be opened after configuration is done
-            m_pRMConnection = new RMConnection(m_pETHSettings->getRMIPadr(), m_pETHSettings->getPort(EthSettings::resourcemanager));
+            m_pRMConnection = new RMConnection(m_ethSettings.getRMIPadr(), m_ethSettings.getPort(EthSettings::resourcemanager));
             //connect(m_pRMConnection, SIGNAL(connectionRMError()), this, SIGNAL(abortInit()));
             // so we must complete our state machine here
             m_nRetryRMConnect = 100;
@@ -350,7 +346,7 @@ void cMT310S2dServer::doIdentAndRegister()
     {
         cResource *res = resourceList.at(i);
         connect(m_pRMConnection, SIGNAL(rmAck(quint32)), res, SLOT(resourceManagerAck(quint32)) );
-        res->registerResource(m_pRMConnection, m_pETHSettings->getPort(EthSettings::protobufserver));
+        res->registerResource(m_pRMConnection, m_ethSettings.getPort(EthSettings::protobufserver));
     }
 #ifdef SYSTEMD_NOTIFICATION
     sd_notify(0, "READY=1");
