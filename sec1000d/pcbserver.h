@@ -18,8 +18,9 @@ class cPCBServer: public ScpiConnection
 {
     Q_OBJECT
 public:
-    explicit cPCBServer(QString name, QString version);
-    virtual void initSCPIConnection(QString leadingNodes) override;
+    explicit cPCBServer(QString name, QString version, cSCPI *scpiInterface);
+    void initSCPIConnection(QString leadingNodes) override;
+    cSCPI *getSCPIInterface();
     QString& getName();
     QString& getVersion();
     virtual void sendNotificationToClient(NotificationStructWithValue notData, quint32 irqreg);

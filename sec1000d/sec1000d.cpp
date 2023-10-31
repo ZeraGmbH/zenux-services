@@ -28,6 +28,7 @@
 #include "systeminfo.h"
 #include "ecalcinterface.h"
 #include "rmconnection.h"
+#include <scpisingletonfactory.h>
 
 #ifdef SYSTEMD_NOTIFICATION
 #include <systemd/sd-daemon.h>
@@ -49,7 +50,7 @@ struct sigaction mySigAction;
 
 
 cSEC1000dServer::cSEC1000dServer() :
-    cPCBServer(ServerName, ServerVersion)
+    cPCBServer(ServerName, ServerVersion, ScpiSingletonFactory::getScpiObj())
 {
     m_pDebugSettings = 0;
     m_pETHSettings = 0;
