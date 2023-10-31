@@ -758,7 +758,7 @@ void cSenseInterface::registerSense()
             list.at(j)->setAvail( !list.at(j)->getAvail()); // we only toggle the ranges avail
 
     }
-    registerResource(m_pMyServer->m_pRMConnection, m_pMyServer->m_pETHSettings->getPort(EthSettings::protobufserver));
+    registerResource(m_pMyServer->m_pRMConnection, m_pMyServer->m_ethSettings.getPort(EthSettings::protobufserver));
 }
 
 
