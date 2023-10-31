@@ -290,7 +290,8 @@ void cMT310S2dServer::doSetupServer()
             updateI2cDevicesConnected();
 
             myServer->startServer(m_pETHSettings->getPort(EthSettings::protobufserver)); // and can start the server now
-            m_pSCPIServer->listen(QHostAddress::AnyIPv4, m_pETHSettings->getPort(EthSettings::scpiserver));
+            if(m_pETHSettings->isSCPIactive())
+                m_pSCPIServer->listen(QHostAddress::AnyIPv4, m_pETHSettings->getPort(EthSettings::scpiserver));
 
             mySigAction.sa_handler = &SigHandler; // setup signal handler
             sigemptyset(&mySigAction.sa_mask);
