@@ -259,11 +259,8 @@ QString cSamplingInterface::m_ReadWritePLL(QString &sInput)
     if (cmd.isQuery())
     {
         if (Atmel::getInstance().readPLLChannel(pll) == ZeraMControllerIo::cmddone)
-        {
-            if (pll < 7) // then everything is ok
+            if (pll < m_pllChannelList.count())
                 return m_pllChannelList.at(pll);
-        }
-
         return SCPI::scpiAnswer[SCPI::errexec];
     }
     else
