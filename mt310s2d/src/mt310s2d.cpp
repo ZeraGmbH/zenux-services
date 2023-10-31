@@ -261,7 +261,7 @@ void cMT310S2dServer::doSetupServer()
                                                                       m_pDebugSettings->getDebugLevel());
             scpiConnectionList.append(m_pSystemInterface = new cSystemInterface(this, std::move(emobControllerContainer)));
             scpiConnectionList.append(m_pSenseInterface = new cSenseInterface(this));
-            scpiConnectionList.append(m_pSamplingInterface = new cSamplingInterface(this));
+            scpiConnectionList.append(m_pSamplingInterface = new cSamplingInterface(getSCPIInterface(), m_pSamplingSettings));
             scpiConnectionList.append(m_pSourceInterface = new FOutGroupResourceAndInterface(getSCPIInterface(), m_foutSettings));
             scpiConnectionList.append(m_pFRQInputInterface = new FInGroupResourceAndInterface(getSCPIInterface(), m_finSettings));
             scpiConnectionList.append(m_pSCHeadInterface = new ScInGroupResourceAndInterface(getSCPIInterface(), m_pSCHeadSettings));

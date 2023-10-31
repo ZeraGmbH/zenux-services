@@ -1,14 +1,12 @@
 #include "samplinginterface.h"
 #include "scpiconnection.h"
 #include "samplerange.h"
-#include "mt310s2d.h"
 #include "atmel.h"
 #include "samplingsettings.h"
 #include "notzeronumgen.h"
 
-cSamplingInterface::cSamplingInterface(cMT310S2dServer* server) :
-    cResource(server->getSCPIInterface()),
-    m_pMyServer(server)
+cSamplingInterface::cSamplingInterface(cSCPI *scpiInterface, SamplingSettings* samplingSettings) :
+    cResource(scpiInterface)
 {
     m_pllChannelList.append("m0");
     m_pllChannelList.append("m1");
@@ -20,7 +18,7 @@ cSamplingInterface::cSamplingInterface(cMT310S2dServer* server) :
     m_pllChannelList.append("m7");
 
     QList<SamplingSettings::ChannelSettings*> channelSettings;
-    channelSettings = m_pMyServer->m_pSamplingSettings->getChannelSettings();
+    channelSettings = samplingSettings->getChannelSettings();
 
     m_sName = "s0";
     m_sDescription = "Samplingsytem base frequency 10Hz..400Hz";
