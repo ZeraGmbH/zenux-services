@@ -17,9 +17,7 @@ cSamplingInterface::cSamplingInterface(cSCPI *scpiInterface, SamplingSettings* s
     m_pllChannelList.append("m5");
     m_pllChannelList.append("m7");
 
-    QList<SamplingSettings::ChannelSettings*> channelSettings;
-    channelSettings = samplingSettings->getChannelSettings();
-
+    QList<SamplingSettings::ChannelSettings*> channelSettings = samplingSettings->getChannelSettings();
     m_sName = "s0";
     m_sDescription = "Samplingsytem base frequency 10Hz..400Hz";
     m_sAlias = channelSettings.at(0)->m_sAlias;
@@ -106,9 +104,8 @@ void cSamplingInterface::executeProtoScpi(int cmdCode, cProtonetCommand *protoCm
 QString cSamplingInterface::m_ReadVersion(QString &sInput)
 {
     cSCPICommand cmd = sInput;
-    if (cmd.isQuery()) {
+    if (cmd.isQuery())
         return m_sVersion;
-    }
     return SCPI::scpiAnswer[SCPI::nak];
 }
 
@@ -118,9 +115,8 @@ QString cSamplingInterface::m_ReadSampleRate(QString &sInput)
     if (cmd.isQuery()) {
         QString s = notifierSampleChannelRange.getString(); // our actual sample channels range
         for(int i = 0; i < m_SampleRangeList.count(); i++) {
-            if (m_SampleRangeList.at(i)->getName() == s) {
+            if (m_SampleRangeList.at(i)->getName() == s)
                 return QString("%1").arg(m_SampleRangeList.at(i)->getSRate());
-            }
         }
     }
     return SCPI::scpiAnswer[SCPI::nak];
@@ -145,12 +141,10 @@ QString cSamplingInterface::m_ReadAlias(QString &sInput)
 QString cSamplingInterface::m_ReadType(QString &sInput)
 {
     cSCPICommand cmd = sInput;
-    if (cmd.isQuery()) {
+    if (cmd.isQuery())
         return QString("%1").arg(m_nType);
-    }
     return SCPI::scpiAnswer[SCPI::nak];
 }
-
 
 QString cSamplingInterface::m_ReadStatus(QString &sInput)
 {
@@ -165,106 +159,79 @@ QString cSamplingInterface::m_ReadStatus(QString &sInput)
 QString cSamplingInterface::m_ReadWriteSamplingRange(QString &sInput)
 {
     cSCPICommand cmd = sInput;
-    if (cmd.isQuery()) {
+    if (cmd.isQuery())
         return notifierSampleChannelRange.getString();
-    }
     else {
         if (cmd.isCommand(1)) {
             QString srng = cmd.getParam(0);
             int i;
-            for  (i = 0; i < m_SampleRangeList.count(); i++) {
-                if (m_SampleRangeList.at(i)->getName() == srng) {
+            for (i = 0; i < m_SampleRangeList.count(); i++)
+                if (m_SampleRangeList.at(i)->getName() == srng)
                     break;
-                }
-            }
             if (i < m_SampleRangeList.count()) {
                 if ( Atmel::getInstance().setSamplingRange(m_SampleRangeList.at(i)->getSelCode()) == ZeraMControllerIo::cmddone) {
                     setNotifierSampleChannelRange();
                     return SCPI::scpiAnswer[SCPI::ack];
                 }
-                else {
+                else
                     return SCPI::scpiAnswer[SCPI::errexec];
-                }
             }
-            else {
+            else
                 return SCPI::scpiAnswer[SCPI::nak];
-            }
         }
-        else {
+        else
             return SCPI::scpiAnswer[SCPI::nak];
-        }
     }
 }
-
 
 QString cSamplingInterface::m_ReadSamplingRangeCatalog(QString &sInput)
 {
     cSCPICommand cmd = sInput;
     if (cmd.isQuery()) {
-        int i, n;
-        QString s;
-
-        n = m_SampleRangeList.count();
-        s = m_SampleRangeList.at(0)->getName();
-
-        if (n > 1)
-            for (i = 1; i < n; i++)
-                s = s + ";" + m_SampleRangeList.at(i)->getName();
-
-        return s;
+        QStringList rangeNames;
+        for(const auto &samplerange : qAsConst(m_SampleRangeList))
+            rangeNames.append(samplerange->getName());
+        return rangeNames.join(";");
     }
-    else
-        return SCPI::scpiAnswer[SCPI::nak];
+    return SCPI::scpiAnswer[SCPI::nak];
 }
-
 
 QString cSamplingInterface::m_ReadWritePLL(QString &sInput)
 {
     quint8 pll;
     cSCPICommand cmd = sInput;
-
-    if (cmd.isQuery())
-    {
+    if (cmd.isQuery()) {
         if (Atmel::getInstance().readPLLChannel(pll) == ZeraMControllerIo::cmddone)
             if (pll < m_pllChannelList.count())
                 return m_pllChannelList.at(pll);
         return SCPI::scpiAnswer[SCPI::errexec];
     }
-    else
-    {
-        if (cmd.isCommand(1))
-        {
+    else {
+        if (cmd.isCommand(1)) {
             QString pllchn = cmd.getParam(0);
             pll = m_pllChannelList.indexOf(pllchn);
-
             if (Atmel::getInstance().setPLLChannel(pll) == ZeraMControllerIo::cmddone)
                 return SCPI::scpiAnswer[SCPI::ack];
             else
                 return SCPI::scpiAnswer[SCPI::errexec];
         }
-
         return SCPI::scpiAnswer[SCPI::nak];
     }
 }
 
-
 QString cSamplingInterface::m_ReadPLLCatalog(QString &sInput)
 {
     cSCPICommand cmd = sInput;
-    if (cmd.isQuery()) {
+    if (cmd.isQuery())
         return m_pllChannelList.join(";");
-    }
     return SCPI::scpiAnswer[SCPI::nak];
 }
 
-
 void cSamplingInterface::setNotifierSampleChannelRange()
 {
-    int i;
     quint8 sRange;
-
-    if (Atmel::getInstance().readSamplingRange(sRange) == ZeraMControllerIo::cmddone)
-    {
+    if (Atmel::getInstance().readSamplingRange(sRange) == ZeraMControllerIo::cmddone) {
+        int i;
         for (i = 0; i < m_SampleRangeList.count(); i++)
             if (m_SampleRangeList.at(i)->getSelCode() == sRange)
                 break;
@@ -273,8 +240,3 @@ void cSamplingInterface::setNotifierSampleChannelRange()
     else
         notifierSampleChannelRange = m_SampleRangeList.at(0)->getName();
 }
-
-
-
-
-
