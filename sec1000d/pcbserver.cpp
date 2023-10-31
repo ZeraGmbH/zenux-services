@@ -1,9 +1,6 @@
-#include "protonetcommand.h"
-#include "resource.h"
-#include "scpiconnection.h"
-#include "scpisingletonfactory.h"
 #include "pcbserver.h"
-#include "notzeronumgen.h"
+#include "protonetcommand.h"
+#include "scpiconnection.h"
 #include <xiqnetpeer.h>
 #include <xmlconfigreader.h>
 #include <xiqnetserver.h>
@@ -26,8 +23,8 @@ enum commands
     cmdUnregister
 };
 
-cPCBServer::cPCBServer(QString name, QString version) :
-    ScpiConnection(ScpiSingletonFactory::getScpiObj()),
+cPCBServer::cPCBServer(QString name, QString version, cSCPI *scpiInterface) :
+    ScpiConnection(scpiInterface),
     m_sServerName(name),
     m_sServerVersion(version)
 {
@@ -38,7 +35,12 @@ void cPCBServer::initSCPIConnection(QString leadingNodes)
 {
     ensureTrailingColonOnNonEmptyParentNodes(leadingNodes);
     addDelegate(QString("%1SERVER").arg(leadingNodes), "REGISTER", SCPI::isCmdwP, m_pSCPIInterface, cmdRegister);
-    addDelegate(QString("%1SERVER").arg(leadingNodes), "UNREGISTER",SCPI::isQuery | SCPI::isCmd, m_pSCPIInterface, cmdUnregister);
+    addDelegate(QString("%1SERVER").arg(leadingNodes), "UNREGISTER", SCPI::isQuery | SCPI::isCmd, m_pSCPIInterface, cmdUnregister);
+}
+
+cSCPI *cPCBServer::getSCPIInterface()
+{
+    return m_pSCPIInterface;
 }
 
 QString &cPCBServer::getName()
@@ -69,7 +71,6 @@ void cPCBServer::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
         unregisterNotifier(protoCmd);
         break;
     }
-
     if (protoCmd->m_bwithOutput)
         emit cmdExecutionDone(protoCmd);
 }
