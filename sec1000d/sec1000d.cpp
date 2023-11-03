@@ -17,7 +17,6 @@
 
 #include "sec1000dglobal.h"
 #include "sec1000d.h"
-#include "pcbserver.h"
 #include "debugsettings.h"
 #include "ethsettings.h"
 #include "fpgasettings.h"
@@ -76,7 +75,7 @@ cSEC1000dServer::cSEC1000dServer() :
     stateSendRMIdentandRegister = new QState(stateCONF); // we send ident. to rm and register our resources
     stateCONF->setInitialState(statexmlConfiguration);
 
-    statexmlConfiguration->addTransition(&m_XMLConfigReader, SIGNAL(finishedParsingXML(bool)), statesetupServer);
+    statexmlConfiguration->addTransition(&m_xmlConfigReader, SIGNAL(finishedParsingXML(bool)), statesetupServer);
     statesetupServer->addTransition(this, SIGNAL(serverSetup()), stateconnect2RM);
     m_pInitializationMachine->addState(stateCONF);
     m_pInitializationMachine->addState(stateFINISH);
@@ -134,24 +133,24 @@ void cSEC1000dServer::doConfiguration()
             fcntl( pipeFD[0], F_SETFL, O_NONBLOCK);
             m_pNotifier = new QSocketNotifier(pipeFD[0], QSocketNotifier::Read, this);
             connect(m_pNotifier, &QSocketNotifier::activated, this, &cSEC1000dServer::SECIntHandler);
-            if (m_XMLConfigReader.loadSchema(defaultXSDFile))
+            if (m_xmlConfigReader.loadSchema(defaultXSDFile))
             {
                 QString xmlConfigTopNode = "serviceconfig";
                 // we want to initialize all settings first
-                m_pDebugSettings = new cDebugSettings(&m_XMLConfigReader, xmlConfigTopNode);
-                connect(&m_XMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pDebugSettings,&cDebugSettings::configXMLInfo);
-                connect(&m_XMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,&m_ethSettings,&EthSettings::configXMLInfo);
-                m_pFPGASettings = new FPGASettings(&m_XMLConfigReader, xmlConfigTopNode);
-                connect(&m_XMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pFPGASettings,&FPGASettings::configXMLInfo);
-                m_pECalcSettings = new cECalculatorSettings(&m_XMLConfigReader);
-                connect(&m_XMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pECalcSettings,&cECalculatorSettings::configXMLInfo);
-                m_pInputSettings = new cInputSettings(&m_XMLConfigReader);
-                connect(&m_XMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pInputSettings,&cInputSettings::configXMLInfo);
+                m_pDebugSettings = new cDebugSettings(&m_xmlConfigReader, xmlConfigTopNode);
+                connect(&m_xmlConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pDebugSettings,&cDebugSettings::configXMLInfo);
+                connect(&m_xmlConfigReader,&Zera::XMLConfig::cReader::valueChanged,&m_ethSettings,&EthSettings::configXMLInfo);
+                m_pFPGASettings = new FPGASettings(&m_xmlConfigReader, xmlConfigTopNode);
+                connect(&m_xmlConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pFPGASettings,&FPGASettings::configXMLInfo);
+                m_pECalcSettings = new cECalculatorSettings(&m_xmlConfigReader);
+                connect(&m_xmlConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pECalcSettings,&cECalculatorSettings::configXMLInfo);
+                m_pInputSettings = new cInputSettings(&m_xmlConfigReader);
+                connect(&m_xmlConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pInputSettings,&cInputSettings::configXMLInfo);
 
                 QString s = args.at(1);
                 qDebug() << s;
 
-                if(!m_XMLConfigReader.loadXMLFile(s)) {
+                if(!m_xmlConfigReader.loadXMLFile(s)) {
                     m_nerror = xmlfileError;
                     emit abortInit();
                 }
