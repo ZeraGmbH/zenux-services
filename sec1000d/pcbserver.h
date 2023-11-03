@@ -32,7 +32,7 @@ protected:
     void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
     XiQNetServer* myServer; // the real server that does the communication job
     XiQNetWrapper m_ProtobufWrapper;
-    Zera::XMLConfig::cReader* myXMLConfigReader; // the xml configurator
+    Zera::XMLConfig::cReader m_XMLConfigReader; // the xml configurator
     QString m_sConfigurationPath;
     QList<ScpiConnection*> scpiConnectionList; // a list of all scpi connections
     QList<cResource*> resourceList;

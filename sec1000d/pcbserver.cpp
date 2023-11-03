@@ -28,7 +28,6 @@ cPCBServer::cPCBServer(QString name, QString version, cSCPI *scpiInterface) :
     m_sServerName(name),
     m_sServerVersion(version)
 {
-    myXMLConfigReader = new Zera::XMLConfig::cReader();
 }
 
 void cPCBServer::initSCPIConnection(QString leadingNodes)
