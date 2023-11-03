@@ -1,7 +1,6 @@
 set(SOURCES
     main.cpp
     sec1000d.cpp
-    pcbserver.cpp
     statusinterface.cpp
     systeminterface.cpp
     systeminfo.cpp
@@ -13,7 +12,6 @@ set(SOURCES
 
 set(HEADER
     sec1000d.h
-    pcbserver.h
     sec1000dglobal.h
     statusinterface.h
     systeminterface.h
