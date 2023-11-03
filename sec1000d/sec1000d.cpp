@@ -53,7 +53,6 @@ cSEC1000dServer::cSEC1000dServer() :
     cPCBServer(ServerName, ServerVersion, ScpiSingletonFactory::getScpiObj())
 {
     m_pDebugSettings = 0;
-    m_pETHSettings = 0;
     m_pFPGASettings = 0;
     m_pECalcSettings = 0;
     m_pInputSettings = 0;
@@ -97,7 +96,6 @@ cSEC1000dServer::cSEC1000dServer() :
 cSEC1000dServer::~cSEC1000dServer()
 {
     if (m_pDebugSettings) delete m_pDebugSettings;
-    if (m_pETHSettings) delete m_pETHSettings;
     if (m_pFPGASettings) delete m_pFPGASettings;
     if (m_pECalcSettings) delete m_pECalcSettings;
     if (m_pInputSettings) delete m_pInputSettings;
@@ -142,8 +140,7 @@ void cSEC1000dServer::doConfiguration()
                 // we want to initialize all settings first
                 m_pDebugSettings = new cDebugSettings(&m_XMLConfigReader, xmlConfigTopNode);
                 connect(&m_XMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pDebugSettings,&cDebugSettings::configXMLInfo);
-                m_pETHSettings = new EthSettings(&m_XMLConfigReader);
-                connect(&m_XMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pETHSettings,&EthSettings::configXMLInfo);
+                connect(&m_XMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,&m_ethSettings,&EthSettings::configXMLInfo);
                 m_pFPGASettings = new FPGASettings(&m_XMLConfigReader, xmlConfigTopNode);
                 connect(&m_XMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pFPGASettings,&FPGASettings::configXMLInfo);
                 m_pECalcSettings = new cECalculatorSettings(&m_XMLConfigReader);
@@ -189,7 +186,7 @@ void cSEC1000dServer::doSetupServer()
         scpiConnectionList.append(this); // the server itself has some commands
         scpiConnectionList.append(m_pStatusInterface = new cStatusInterface());
         scpiConnectionList.append(m_pSystemInterface = new cSystemInterface(this, m_pSystemInfo));
-        scpiConnectionList.append(m_pECalculatorInterface = new cECalculatorInterface(this, m_pETHSettings, m_pECalcSettings, m_pFPGASettings, m_pInputSettings));
+        scpiConnectionList.append(m_pECalculatorInterface = new cECalculatorInterface(this, &m_ethSettings, m_pECalcSettings, m_pFPGASettings, m_pInputSettings));
 
         resourceList.append(m_pECalculatorInterface); // all our resources
         m_ECalculatorChannelList = m_pECalculatorInterface->getECalcChannelList(); // we use this list in interrupt service
@@ -199,7 +196,7 @@ void cSEC1000dServer::doSetupServer()
 
         initSCPIConnections();
 
-        myServer->startServer(m_pETHSettings->getPort(EthSettings::protobufserver)); // and can start the server now
+        myServer->startServer(m_ethSettings.getPort(EthSettings::protobufserver)); // and can start the server now
 
         mySigAction.sa_handler = &SigHandler; // signal handler einrichten
         sigemptyset(&mySigAction.sa_mask);
@@ -208,7 +205,7 @@ void cSEC1000dServer::doSetupServer()
         sigaction(SIGIO, &mySigAction, NULL); // handler für sigio definieren
         SetFASync();
         // our resource mananager connection must be opened after configuration is done
-        m_pRMConnection = new RMConnection(m_pETHSettings->getRMIPadr(), m_pETHSettings->getPort(EthSettings::resourcemanager));
+        m_pRMConnection = new RMConnection(m_ethSettings.getRMIPadr(), m_ethSettings.getPort(EthSettings::resourcemanager));
         //connect(m_pRMConnection, SIGNAL(connectionRMError()), this, SIGNAL(abortInit()));
         // so we must complete our state machine here
         m_nRetryRMConnect = 100;
@@ -255,7 +252,7 @@ void cSEC1000dServer::doIdentAndRegister()
     {
         cResource *res = resourceList.at(i);
         connect(m_pRMConnection, SIGNAL(rmAck(quint32)), res, SLOT(resourceManagerAck(quint32)) );
-        res->registerResource(m_pRMConnection, m_pETHSettings->getPort(EthSettings::protobufserver));
+        res->registerResource(m_pRMConnection, m_ethSettings.getPort(EthSettings::protobufserver));
     }
 
 #ifdef SYSTEMD_NOTIFICATION

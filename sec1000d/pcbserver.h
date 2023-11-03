@@ -4,6 +4,7 @@
 #include "scpiconnection.h"
 #include "notificationstructwithvalue.h"
 #include "resource.h"
+#include "ethsettings.h"
 #include <scpi.h>
 #include <xiqnetwrapper.h>
 #include <netmessages.pb.h>
@@ -24,7 +25,9 @@ public:
     QString& getName();
     QString& getVersion();
     virtual void sendNotificationToClient(NotificationStructWithValue notData, quint32 irqreg);
-    
+
+    EthSettings m_ethSettings;
+
 public slots:
     void sendAnswerProto(cProtonetCommand* protoCmd);
 protected:
