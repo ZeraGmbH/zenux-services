@@ -31,7 +31,6 @@ public:
 
     cDebugSettings* m_pDebugSettings;
     FPGASettings* m_pFPGASettings;
-    EthSettings* m_pETHSettings;
     cECalculatorSettings* m_pECalcSettings;
     cInputSettings* m_pInputSettings;
 

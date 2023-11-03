@@ -25,6 +25,7 @@ enum commands
 
 cPCBServer::cPCBServer(QString name, QString version, cSCPI *scpiInterface) :
     ScpiConnection(scpiInterface),
+    m_ethSettings(&m_XMLConfigReader),
     m_sServerName(name),
     m_sServerVersion(version)
 {
