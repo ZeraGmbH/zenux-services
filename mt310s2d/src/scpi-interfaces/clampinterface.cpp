@@ -4,7 +4,7 @@
 #include "senseinterface.h"
 #include "protonetcommand.h"
 #include "micro-controller-io/atmel.h"
-#include "settings/i2csettings.h"
+#include "i2csettings.h"
 #include <i2cmultiplexerfactory.h>
 #include <scpi.h>
 #include <i2cutils.h>
