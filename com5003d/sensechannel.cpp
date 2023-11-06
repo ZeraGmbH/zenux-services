@@ -8,7 +8,7 @@
 #include "sensechannel.h"
 #include "protonetcommand.h"
 #include "micro-controller-io/atmel.h"
-#include "settings/sensesettings.h"
+#include "sensesettings.h"
 
 cSenseChannel::cSenseChannel(cSCPI *scpiinterface, QString description, QString unit, SenseSystem::cChannelSettings *cSettings, quint8 nr) :
     ScpiConnection(scpiinterface),

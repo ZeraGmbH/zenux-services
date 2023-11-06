@@ -5,7 +5,6 @@ file(GLOB HEADERS
     ${CMAKE_CURRENT_SOURCE_DIR}/resources/*.h
     ${CMAKE_CURRENT_SOURCE_DIR}/scpi-interfaces/*.h
     ${CMAKE_CURRENT_SOURCE_DIR}/scpi-protobuf/*.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/settings/*.h
     )
 
 file(GLOB SOURCES 
@@ -15,7 +14,6 @@ file(GLOB SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/resources/*.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/scpi-interfaces/*.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/scpi-protobuf/*.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/settings/*.cpp
     )
 
 add_library(zenuxservicecommon SHARED
