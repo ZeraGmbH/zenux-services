@@ -46,10 +46,10 @@ void SigHandler(int)
 
 struct sigaction mySigAction;
 // sigset_t mySigmask, origSigmask;
-
+static ServerParams params {ServerName, ServerVersion, defaultXSDFile};
 
 cSEC1000dServer::cSEC1000dServer() :
-    cPCBServer(ServerName, ServerVersion, ScpiSingletonFactory::getScpiObj())
+    cPCBServer(params, ScpiSingletonFactory::getScpiObj())
 {
     m_pDebugSettings = 0;
     m_pFPGASettings = 0;

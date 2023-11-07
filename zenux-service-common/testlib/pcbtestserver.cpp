@@ -1,8 +1,8 @@
 #include "pcbtestserver.h"
 #include "permissionfunctions.h"
 
-PCBTestServer::PCBTestServer(QString name, QString version, cSCPI *scpiInterface, MockAtmel *atmel) :
-    cPCBServer(name, version, scpiInterface)
+PCBTestServer::PCBTestServer(ServerParams params, cSCPI *scpiInterface, MockAtmel *atmel) :
+    cPCBServer(params, scpiInterface)
 {
     scpiConnectionList.append(this);
     PermissionFunctions::setPermissionPinController(atmel);

@@ -8,7 +8,7 @@ class PCBTestServer : public cPCBServer
 {
     Q_OBJECT
 public:
-    PCBTestServer(QString name, QString version, cSCPI *scpiInterface, MockAtmel *atmel);
+    PCBTestServer(ServerParams params, cSCPI *scpiInterface, MockAtmel *atmel);
     ~PCBTestServer();
     void insertScpiConnection(ScpiConnection *scpiConnection);
     void initTestSCPIConnections();
