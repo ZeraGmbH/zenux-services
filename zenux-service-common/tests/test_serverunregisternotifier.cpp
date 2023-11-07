@@ -17,7 +17,7 @@ test_serverunregisternotifier::test_serverunregisternotifier()
 
 void test_serverunregisternotifier::init()
 {
-    static ServerParams params {"foo", "0", QStringLiteral(CONFIG_PATH) + "/" + "mt310s2d.xsd"};
+    static ServerParams params {"foo", "0", QStringLiteral(CONFIG_SOURCES_MT310S2D) + "/" + "mt310s2d.xsd"};
 
     m_atmel = std::make_unique<MockAtmel>();
     m_adjustmentStatusNull = std::make_unique<AdjustmentStatusNull>();
@@ -29,7 +29,7 @@ void test_serverunregisternotifier::init()
     m_accSettings = std::make_unique<AccumulatorSettings>(m_xmlConfigReader.get());
     connect(m_xmlConfigReader.get(), &Zera::XMLConfig::cReader::valueChanged, m_accSettings.get(), &AccumulatorSettings::configXMLInfo);
     m_xmlConfigReader->loadSchema(params.xsdFile);
-    m_xmlConfigReader->loadXMLFile(QStringLiteral(CONFIG_PATH) + "/" + "mt310s2d.xml");
+    m_xmlConfigReader->loadXMLFile(QStringLiteral(CONFIG_SOURCES_MT310S2D) + "/" + "mt310s2d.xml");
 }
 
 cSCPIDelegate *test_serverunregisternotifier::getDelegate(QString cmd)
