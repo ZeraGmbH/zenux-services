@@ -20,6 +20,7 @@ struct ServerParams
     QString name;
     QString version;
     QString xsdFile;
+    QString xmlFile;
 };
 
 class cPCBServer: public ScpiConnection

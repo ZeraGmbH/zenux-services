@@ -59,7 +59,7 @@ static struct sigaction mySigAction;
 
 
 cATMELSysCtrl* pAtmelSys; // we take a static object for atmel connection
-static ServerParams params {ServerName, ServerVersion, defaultXSDFile};
+static ServerParams params {ServerName, ServerVersion, defaultXSDFile, "/etc/zera/mt310s2d/mt310s2d.xml"};
 
 cMT310S2dServer::cMT310S2dServer() :
     cPCBServer(params, ScpiSingletonFactory::getScpiObj())
