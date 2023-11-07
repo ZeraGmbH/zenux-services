@@ -70,22 +70,22 @@ cSEC1000dServer::cSEC1000dServer() :
 
     QState* statexmlConfiguration = new QState(stateCONF); // we configure our server with xml file
     QState* statesetupServer = new QState(stateCONF); // we setup our server now
-    stateconnect2RM = new QState(stateCONF); // we connect to resource manager
-    stateconnect2RMError = new QState(stateCONF);
-    stateSendRMIdentandRegister = new QState(stateCONF); // we send ident. to rm and register our resources
+    m_stateconnect2RM = new QState(stateCONF); // we connect to resource manager
+    m_stateconnect2RMError = new QState(stateCONF);
+    m_stateSendRMIdentAndRegister = new QState(stateCONF); // we send ident. to rm and register our resources
     stateCONF->setInitialState(statexmlConfiguration);
 
     statexmlConfiguration->addTransition(&m_xmlConfigReader, SIGNAL(finishedParsingXML(bool)), statesetupServer);
-    statesetupServer->addTransition(this, SIGNAL(serverSetup()), stateconnect2RM);
+    statesetupServer->addTransition(this, SIGNAL(serverSetup()), m_stateconnect2RM);
     m_pInitializationMachine->addState(stateCONF);
     m_pInitializationMachine->addState(stateFINISH);
     m_pInitializationMachine->setInitialState(stateCONF);
 
     QObject::connect(statexmlConfiguration, &QAbstractState::entered, this, &cSEC1000dServer::doConfiguration);
     QObject::connect(statesetupServer, &QAbstractState::entered, this, &cSEC1000dServer::doSetupServer);
-    QObject::connect(stateconnect2RM, &QAbstractState::entered, this, &cSEC1000dServer::doConnect2RM);
-    QObject::connect(stateconnect2RMError, &QAbstractState::entered, this, &cSEC1000dServer::connect2RMError);
-    QObject::connect(stateSendRMIdentandRegister, &QAbstractState::entered, this, &cSEC1000dServer::doIdentAndRegister);
+    QObject::connect(m_stateconnect2RM, &QAbstractState::entered, this, &cSEC1000dServer::doConnect2RM);
+    QObject::connect(m_stateconnect2RMError, &QAbstractState::entered, this, &cSEC1000dServer::connect2RMError);
+    QObject::connect(m_stateSendRMIdentAndRegister, &QAbstractState::entered, this, &cSEC1000dServer::doIdentAndRegister);
     QObject::connect(stateFINISH, &QAbstractState::entered, this, &cSEC1000dServer::doCloseServer);
 
     m_pInitializationMachine->start();
@@ -207,13 +207,13 @@ void cSEC1000dServer::doSetupServer()
         m_pRMConnection = new RMConnection(m_ethSettings.getRMIPadr(), m_ethSettings.getPort(EthSettings::resourcemanager));
         //connect(m_pRMConnection, SIGNAL(connectionRMError()), this, SIGNAL(abortInit()));
         // so we must complete our state machine here
-        m_nRetryRMConnect = 100;
+        m_retryRMConnect = 100;
         m_retryTimer.setSingleShot(true);
         connect(&m_retryTimer, &QTimer::timeout, this, &cSEC1000dServer::serverSetup);
 
-        stateconnect2RM->addTransition(m_pRMConnection, SIGNAL(connected()), stateSendRMIdentandRegister);
-        stateconnect2RM->addTransition(m_pRMConnection, SIGNAL(connectionRMError()), stateconnect2RMError);
-        stateconnect2RMError->addTransition(this, SIGNAL(serverSetup()), stateconnect2RM);
+        m_stateconnect2RM->addTransition(m_pRMConnection, SIGNAL(connected()), m_stateSendRMIdentAndRegister);
+        m_stateconnect2RM->addTransition(m_pRMConnection, SIGNAL(connectionRMError()), m_stateconnect2RMError);
+        m_stateconnect2RMError->addTransition(this, SIGNAL(serverSetup()), m_stateconnect2RM);
 
         emit serverSetup(); // so we enter state machine's next state
     }
@@ -235,8 +235,8 @@ void cSEC1000dServer::doConnect2RM()
 
 void cSEC1000dServer::connect2RMError()
 {
-    m_nRetryRMConnect--;
-    if (m_nRetryRMConnect == 0)
+    m_retryRMConnect--;
+    if (m_retryRMConnect == 0)
         emit abortInit();
     else
         m_retryTimer.start(200);

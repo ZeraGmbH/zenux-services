@@ -81,12 +81,12 @@ signals:
 
 private:
     QStateMachine* m_pInitializationMachine;
-    QState* stateconnect2RM;
-    QState* stateconnect2RMError;
-    QState* stateSendRMIdentandRegister;
+    QState* m_stateconnect2RM;
+    QState* m_stateconnect2RMError;
+    QState* m_stateSendRMIdentAndRegister;
     cAtmelWatcher* m_pAtmelWatcher;
     quint8 m_nerror;
-    int m_nRetryRMConnect;
+    int m_retryRMConnect;
     QTimer m_retryTimer;
     QSocketNotifier* m_pNotifier;
     QString m_sCtrlDeviceNode;
