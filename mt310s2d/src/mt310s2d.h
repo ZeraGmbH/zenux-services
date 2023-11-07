@@ -56,7 +56,7 @@ public:
     cSystemInterface* m_pSystemInterface;
     cSenseInterface* m_pSenseInterface;
     cSamplingInterface* m_pSamplingInterface;
-    FOutGroupResourceAndInterface* m_pSourceInterface;
+    FOutGroupResourceAndInterface* m_foutInterface;
     FInGroupResourceAndInterface* m_pFRQInputInterface;
     ScInGroupResourceAndInterface* m_pSCHeadInterface;
     HkInGroupResourceAndInterface* m_hkInInterface;

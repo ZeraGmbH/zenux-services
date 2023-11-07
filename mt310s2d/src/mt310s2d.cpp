@@ -133,7 +133,7 @@ cMT310S2dServer::~cMT310S2dServer()
     if (m_pSystemInterface) delete m_pSystemInterface;
     if (m_pSenseInterface) delete m_pSenseInterface;
     if (m_pClampInterface) delete m_pClampInterface;
-    if (m_pSourceInterface) delete m_pSourceInterface;
+    if (m_foutInterface) delete m_foutInterface;
     if (m_pFRQInputInterface) delete m_pFRQInputInterface;
     if (m_pSCHeadInterface) delete m_pSCHeadInterface;
     if (m_hkInInterface) delete m_hkInInterface;
@@ -263,7 +263,7 @@ void cMT310S2dServer::doSetupServer()
             scpiConnectionList.append(m_pSystemInterface = new cSystemInterface(this, std::move(emobControllerContainer)));
             scpiConnectionList.append(m_pSenseInterface = new cSenseInterface(this));
             scpiConnectionList.append(m_pSamplingInterface = new cSamplingInterface(getSCPIInterface(), m_pSamplingSettings));
-            scpiConnectionList.append(m_pSourceInterface = new FOutGroupResourceAndInterface(getSCPIInterface(), m_foutSettings));
+            scpiConnectionList.append(m_foutInterface = new FOutGroupResourceAndInterface(getSCPIInterface(), m_foutSettings));
             scpiConnectionList.append(m_pFRQInputInterface = new FInGroupResourceAndInterface(getSCPIInterface(), m_finSettings));
             scpiConnectionList.append(m_pSCHeadInterface = new ScInGroupResourceAndInterface(getSCPIInterface(), m_pSCHeadSettings));
             scpiConnectionList.append(m_hkInInterface = new HkInGroupResourceAndInterface(getSCPIInterface(), m_hkInSettings));
@@ -272,7 +272,7 @@ void cMT310S2dServer::doSetupServer()
 
             resourceList.append(m_pSenseInterface); // all our resources
             resourceList.append(m_pSamplingInterface);
-            resourceList.append(m_pSourceInterface);
+            resourceList.append(m_foutInterface);
             resourceList.append(m_pFRQInputInterface);
             resourceList.append(m_pSCHeadInterface);
             resourceList.append(m_hkInInterface);
