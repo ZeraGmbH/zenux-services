@@ -21,18 +21,6 @@ enum DebugLevel {NoDebug, DebugLevel1, DebugLevel2, DebugLevel3 = 4, MaxDebugLev
 #define atmelResetBit 16
 #define defaultTMaxAtmel 10000
 
-enum ServerErrors
-{
-    noError,
-    forkError,
-    parameterError,
-    xsdfileError,
-    xmlfileError,
-    atmelError,
-    rmConnectionError,
-    atmelProgError
-};
-
 // wenn COM5003DDEBUG -> kein fork()
 // #define COM5003DDEBUG 1
 

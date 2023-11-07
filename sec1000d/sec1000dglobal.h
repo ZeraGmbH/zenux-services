@@ -18,18 +18,6 @@ enum DebugLevel {NoDebug, DebugLevel1, DebugLevel2, DebugLevel3 = 4, MaxDebugLev
 #define defaultDebugLevel NoDebug
 #define defaultXSDFile "/etc/zera/sec1000d/sec1000d.xsd"
 
-enum ServerErrors
-{
-    noError,
-    forkError,
-    parameterError,
-    pipeError,
-    xsdfileError,
-    xmlfileError,
-    secDeviceError,
-    rmConnectionError
-};
-
 // wenn SEC1000DDEBUG -> kein fork()
 //#define SEC1000DDEBUG 1
 

@@ -23,22 +23,6 @@ enum DebugLevel {NoDebug, DebugLevel1, DebugLevel2, DebugLevel3 = 4, MaxDebugLev
 #define defaultProtoBufServerPort 6307
 #define defaultXSDFile "/etc/zera/mt310s2d/mt310s2d.xsd"
 
-enum ServerErrors
-{
-    noError,
-    forkError,
-    parameterError,
-    pipeError,
-    xsdfileError,
-    xmlfileError,
-    atmelError,
-    ctrlDeviceError,
-    fpgaDeviceError,
-    rmConnectionError,
-    atmelProgError
-};
-
-
 enum atmelInterrupts
 {
     overloadInterrupt_I1,
