@@ -46,7 +46,7 @@ void SigHandler(int)
 
 struct sigaction mySigAction;
 // sigset_t mySigmask, origSigmask;
-static ServerParams params {ServerName, ServerVersion, defaultXSDFile};
+static ServerParams params {ServerName, ServerVersion, defaultXSDFile, "/etc/zera/sec1000d/sec1000d.xml"};
 
 cSEC1000dServer::cSEC1000dServer() :
     cPCBServer(params, ScpiSingletonFactory::getScpiObj())

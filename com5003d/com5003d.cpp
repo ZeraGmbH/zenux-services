@@ -44,7 +44,7 @@
 #include <systemd/sd-daemon.h>
 #endif
 
-static ServerParams params {ServerName, ServerVersion, defaultXSDFile};
+static ServerParams params {ServerName, ServerVersion, defaultXSDFile, "/etc/zera/com5003d/com5003d.xml"};
 
 cCOM5003dServer::cCOM5003dServer() :
     cPCBServer(params, ScpiSingletonFactory::getScpiObj())

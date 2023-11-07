@@ -16,7 +16,7 @@ constexpr quint16 NOTIFICATION_ID = 1;
 
 void test_authorizationnotifier::init()
 {
-    static ServerParams params {"foo", "0", QStringLiteral(CONFIG_SOURCES_MT310S2D) + "/" + "mt310s2d.xsd"};
+    static ServerParams params {"foo", "0", QStringLiteral(CONFIG_SOURCES_MT310S2D) + "/" + "mt310s2d.xsd", QStringLiteral(CONFIG_SOURCES_MT310S2D) + "/" + "mt310s2d.xml"};
     cSCPI *scpiInterface = new cSCPI();
     m_atmel = new MockAtmel();
     m_pcbServerTest = std::make_unique<PCBTestServer>(params, scpiInterface, m_atmel);
