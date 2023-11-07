@@ -59,9 +59,10 @@ static struct sigaction mySigAction;
 
 
 cATMELSysCtrl* pAtmelSys; // we take a static object for atmel connection
+static ServerParams params {ServerName, ServerVersion, defaultXSDFile};
 
 cMT310S2dServer::cMT310S2dServer() :
-    cPCBServer(ServerName, ServerVersion, ScpiSingletonFactory::getScpiObj())
+    cPCBServer(params, ScpiSingletonFactory::getScpiObj())
 {
     m_pDebugSettings = nullptr;
     m_pI2CSettings = nullptr;

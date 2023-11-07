@@ -44,8 +44,10 @@
 #include <systemd/sd-daemon.h>
 #endif
 
+static ServerParams params {ServerName, ServerVersion, defaultXSDFile};
+
 cCOM5003dServer::cCOM5003dServer() :
-    cPCBServer(ServerName, ServerVersion, ScpiSingletonFactory::getScpiObj())
+    cPCBServer(params, ScpiSingletonFactory::getScpiObj())
 {
     m_pDebugSettings = nullptr;
     m_pI2CSettings = nullptr;
