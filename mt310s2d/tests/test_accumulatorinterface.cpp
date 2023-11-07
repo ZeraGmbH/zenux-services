@@ -18,8 +18,8 @@ void test_accumulatorinterface::init()
     m_accuSettings = std::make_unique<AccumulatorSettings>(m_xmlConfigReader.get());
     connect(m_xmlConfigReader.get(), &Zera::XMLConfig::cReader::valueChanged,
             m_accuSettings.get(), &AccumulatorSettings::configXMLInfo);
-    m_xmlConfigReader->loadSchema(QStringLiteral(CONFIG_PATH) + "/" + "mt310s2d.xsd");
-    m_xmlConfigReader->loadXMLFile(QStringLiteral(CONFIG_PATH) + "/" + "mt310s2d.xml");
+    m_xmlConfigReader->loadSchema(QStringLiteral(CONFIG_SOURCES_MT310S2D) + "/" + "mt310s2d.xsd");
+    m_xmlConfigReader->loadXMLFile(QStringLiteral(CONFIG_SOURCES_MT310S2D) + "/" + "mt310s2d.xml");
 
     m_accumulator = new AccumulatorInterface(m_scpiInterface.get(), m_atmelSysCntrl.get(), m_accuSettings.get());
     m_accumulator->initSCPIConnection("");
