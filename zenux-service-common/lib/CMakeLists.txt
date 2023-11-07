@@ -1,19 +1,23 @@
 file(GLOB HEADERS
     ${CMAKE_CURRENT_SOURCE_DIR}/*.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/async-notifications/*.h
     ${CMAKE_CURRENT_SOURCE_DIR}/meas-channels/*.h
     ${CMAKE_CURRENT_SOURCE_DIR}/micro-controller-io/*.h
     ${CMAKE_CURRENT_SOURCE_DIR}/resources/*.h
     ${CMAKE_CURRENT_SOURCE_DIR}/scpi-interfaces/*.h
     ${CMAKE_CURRENT_SOURCE_DIR}/scpi-protobuf/*.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/settings/*.h
     )
 
 file(GLOB SOURCES 
     ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/async-notifications/*.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/meas-channels/*.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/micro-controller-io/*.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/resources/*.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/scpi-interfaces/*.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/scpi-protobuf/*.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/settings/*.cpp
     )
 
 add_library(zenuxservicecommon SHARED
@@ -30,7 +34,6 @@ target_link_libraries(zenuxservicecommon
     Zera::zera-math
     Zera::zera-i2c-devices
     Zera::zera-timers
-    Zera::service-common-code
     # ask linker to help us finding unresolved symbols
     "-Wl,--no-undefined"
     )
@@ -41,6 +44,7 @@ target_include_directories(zenuxservicecommon
     $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/zenuxservicecommon>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/async-notifications>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/meas-channels>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/micro-controller-io>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/resources>
