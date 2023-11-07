@@ -23,6 +23,22 @@ struct ServerParams
     QString xmlFile;
 };
 
+enum ServerErrors
+{
+    noError,
+    forkError,
+    parameterError,
+    pipeError,
+    xsdfileError,
+    xmlfileError,
+    atmelError,
+    ctrlDeviceError,
+    fpgaDeviceError,
+    rmConnectionError,
+    atmelProgError,
+    secDeviceError
+};
+
 class cPCBServer: public ScpiConnection
 {
     Q_OBJECT
