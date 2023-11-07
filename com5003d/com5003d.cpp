@@ -331,7 +331,7 @@ void cCOM5003dServer::doSetupServer()
     m_pSystemInfo = new cSystemInfo();
     m_pAdjHandler = new cAdjustment(m_pSystemInfo, m_pI2CSettings->getDeviceNode(), m_pI2CSettings->getI2CAdress(i2cSettings::flashlI2cAddress) );
 
-    cPCBServer::setupServer(); // here our scpi interface gets instanciated, we need this for further steps
+    setupServer(); // here our scpi interface gets instanciated, we need this for further steps
 
     scpiConnectionList.append(this); // the server itself has some commands
     scpiConnectionList.append(m_pStatusInterface = new cStatusInterface(getSCPIInterface(), m_pAdjHandler));
