@@ -54,12 +54,12 @@ public slots:
     void sendAnswerProto(cProtonetCommand* protoCmd);
 protected slots:
     virtual void doConfiguration() = 0; // all servers must configure
-    virtual void setupServer(); // all servers must setup
     virtual void setSCPIConnection();
     virtual void SCPIInput();
     virtual void SCPIdisconnect();
     virtual void onSendNotification(ScpiNotificationSubscriber subscriber);
 protected:
+    void setupServer();
     void initSCPIConnections();
     void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
     ServerParams m_params;

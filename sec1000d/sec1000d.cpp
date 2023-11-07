@@ -180,7 +180,7 @@ void cSEC1000dServer::doSetupServer()
     {
         m_pSystemInfo = new cSystemInfo();
 
-        cPCBServer::setupServer(); // here our scpi interface gets instanciated, we need this for further steps
+        setupServer(); // here our scpi interface gets instanciated, we need this for further steps
 
         scpiConnectionList.append(this); // the server itself has some commands
         scpiConnectionList.append(m_pStatusInterface = new cStatusInterface());
