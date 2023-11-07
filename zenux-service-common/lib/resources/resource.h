@@ -16,12 +16,12 @@ public:
     virtual void unregisterResource(RMConnection *rmConnection) = 0;
 signals:
     void registerRdy(); // we emit signal when all register or unregister action is done
+public slots:
+    void resourceManagerAck(quint32 msgnr);
 protected:
     QList<quint32> msgNrList;
     void register1Resource(RMConnection *rmConnection, quint32 msgnr, QString registerParameter);
     void unregister1Resource(RMConnection *rmConnection, quint32 msgnr, QString unregisterParameter);
-protected slots:
-    void resourceManagerAck(quint32 msgnr);
 };
 
 #endif // RESOURCE_H

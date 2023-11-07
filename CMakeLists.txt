@@ -74,6 +74,7 @@ function(SETUP_TESTS)
             zenuxservicecommon-testlib
             Zera::zera-timers-testlib
             Zera::zera-i2c-devices-testlib
+            Zera::resman-lib
             )
     endforeach()
 endfunction()

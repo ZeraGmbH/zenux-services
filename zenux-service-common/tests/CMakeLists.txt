@@ -4,4 +4,5 @@ SETUP_TESTS(
     test_notificationsubscriber
     test_serverunregisternotifier
     test_hotpluggablecontrollercontainer
+    test_servicemock
     )
