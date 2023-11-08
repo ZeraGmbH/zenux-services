@@ -264,6 +264,11 @@ quint32 cPCBInterface::setOffsetNode(QString chnName, QString rngName, int nr, d
 
 }
 
+quint32 cPCBInterface::getSourceCat()
+{
+    Q_D(cPCBInterface);
+    return d->transparentCommand("SOURCE:CHANNEL:CATALOG?");
+}
 
 quint32 cPCBInterface::getAliasSample(QString chnName)
 {

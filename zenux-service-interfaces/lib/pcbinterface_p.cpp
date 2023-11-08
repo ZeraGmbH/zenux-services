@@ -405,9 +405,6 @@ quint32 cPCBInterfacePrivate::setOffsetNode(QString chnName, QString rngName, in
     return msgnr;
 }
 
-
-
-
 quint32 cPCBInterfacePrivate::getAliasSource(QString chnName)
 {
     QString cmd;

@@ -54,6 +54,7 @@ public:
     virtual quint32 setPhaseNode(QString chnName, QString rngName, int nr, double corr, double at); // node nr, correction, loadpoint = frequency
     virtual quint32 setOffsetNode(QString chnName, QString rngName, int nr, double corr, double at); // node nr, correction, loadpoint
 
+
     // all commands to sample interface
     virtual quint32 getAliasSample(QString chnName); // qstring
     virtual quint32 getSampleRate(); // int the actual set sampling rate
@@ -62,6 +63,7 @@ public:
     virtual quint32 setPLLChannel(QString samplechnName, QString pllchnName);
 
     // all commands to source interface
+    quint32 getSourceCat();
     virtual quint32 getAliasSource(QString chnName); // qstring
     virtual quint32 getDSPChannelSource(QString chnName); // int
     virtual quint32 getFormFactorSource(QString chnName); // double
