@@ -36,7 +36,6 @@
 cSEC1000dServer* SECServer;
 int pipeFD[2];
 char pipeBuf[2] = "I";
-//int anzInt = 0;
 
 void SigHandler(int)
 {
@@ -161,16 +160,12 @@ void cSEC1000dServer::doConfiguration()
                 emit abortInit();
             }
         }
-
     }
 }
 
-
 void cSEC1000dServer::doSetupServer()
 {
-
     m_sSECDeviceNode = m_pFPGASettings->getDeviceNode(); // we try to open the sec device
-
     if (SECDevOpen() < 0)
     {
         m_nerror = secDeviceError; // and finish if not possible
@@ -219,19 +214,16 @@ void cSEC1000dServer::doSetupServer()
     }
 }
 
-
 void cSEC1000dServer::doCloseServer()
 {
     QCoreApplication::instance()->exit(m_nerror);
 }
-
 
 void cSEC1000dServer::doConnect2RM()
 {
     m_nerror = rmConnectionError; // preset error condition
     m_pRMConnection->connect2RM();
 }
-
 
 void cSEC1000dServer::connect2RMError()
 {
@@ -241,7 +233,6 @@ void cSEC1000dServer::connect2RMError()
     else
         m_retryTimer.start(200);
 }
-
 
 void cSEC1000dServer::doIdentAndRegister()
 {
@@ -257,19 +248,15 @@ void cSEC1000dServer::doIdentAndRegister()
 #ifdef SYSTEMD_NOTIFICATION
     sd_notify(0, "READY=1");
 #endif
-
 }
-
 
 int cSEC1000dServer::SECDevOpen()
 {
-    if ( (DevFileDescriptor = open(m_sSECDeviceNode.toLatin1().data(), O_RDWR)) < 0 )
-    {
-        if (DEBUG1)  syslog(LOG_ERR,"error opening sec device: %s\n",m_pFPGASettings->getDeviceNode().toLatin1().data());
-    }
+    DevFileDescriptor = open(m_sSECDeviceNode.toLatin1().data(), O_RDWR);
+    if (DevFileDescriptor < 0)
+        qWarning("Error opening sec device: %s", qPrintable(m_pFPGASettings->getDeviceNode()));
     return DevFileDescriptor;
 }
-
 
 void cSEC1000dServer::SetFASync()
 {
@@ -277,7 +264,6 @@ void cSEC1000dServer::SetFASync()
     int oflags = fcntl(DevFileDescriptor, F_GETFL);
     fcntl(DevFileDescriptor, F_SETFL, oflags | FASYNC); // async. benachrichtung (sigio) einschalten
 }
-
 
 void cSEC1000dServer::SECIntHandler(int)
 { // behandelt den sec interrupt
