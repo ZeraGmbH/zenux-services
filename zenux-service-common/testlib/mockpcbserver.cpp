@@ -2,9 +2,8 @@
 #include "scpisingletonfactory.h"
 #include <QFinalState>
 
-MockPcbServer::MockPcbServer(QString serviceName, QList<TResourceWithSettings> resourceWithSettings) :
-    cPCBServer(createParams(serviceName), ScpiSingletonFactory::getScpiObj()),
-    m_resourceWithSettings(resourceWithSettings)
+MockPcbServer::MockPcbServer(QString serviceName) :
+    cPCBServer(createParams(serviceName), ScpiSingletonFactory::getScpiObj())
 {
     m_pInitializationMachine = new QStateMachine(this);
 
@@ -37,6 +36,16 @@ MockPcbServer::~MockPcbServer()
     if (m_pRMConnection) delete m_pRMConnection;
 }
 
+void MockPcbServer::setResourcesWithConfig(QList<TResourceWithSettings> resourceWithSettings)
+{
+    m_resourceWithSettings = resourceWithSettings;
+}
+
+Zera::XMLConfig::cReader *MockPcbServer::getConfigReader()
+{
+    return &m_xmlConfigReader;
+}
+
 ServerParams MockPcbServer::createParams(QString serviceName)
 {
     ServerParams params {
@@ -65,7 +74,7 @@ void MockPcbServer::doConfiguration()
                 &m_ethSettings, &EthSettings::configXMLInfo);
         for(const auto &resSetting : qAsConst(m_resourceWithSettings))
             connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged,
-                    resSetting.settings.get(), &XMLSettings::configXMLInfo);
+                    resSetting.settings, &XMLSettings::configXMLInfo);
         if (!m_xmlConfigReader.loadXMLFile(m_params.xmlFile))
             qFatal("Could not load xml config file");
     }
@@ -78,8 +87,8 @@ void MockPcbServer::doSetupServer()
     setupServer();
     scpiConnectionList.append(this); // the server itself has some commands
     for(const auto &resSetting : qAsConst(m_resourceWithSettings)) {
-        scpiConnectionList.append(resSetting.resource.get());
-        resourceList.append(resSetting.resource.get());
+        scpiConnectionList.append(resSetting.resource);
+        resourceList.append(resSetting.resource);
     }
     initSCPIConnections();
 

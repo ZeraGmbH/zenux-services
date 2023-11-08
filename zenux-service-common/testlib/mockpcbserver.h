@@ -6,21 +6,21 @@
 #include <QStateMachine>
 #include <memory.h>
 
-typedef std::shared_ptr<XMLSettings> XMLSettingsPtr;
-typedef std::shared_ptr<cResource> ResourcePtr;
 struct TResourceWithSettings
 {
-    XMLSettingsPtr settings;
-    ResourcePtr resource;
+    XMLSettings *settings;
+    cResource *resource;
 };
+typedef QList<TResourceWithSettings> ResourceSettingsList;
 
 class MockPcbServer : public cPCBServer
 {
     Q_OBJECT
 public:
-    MockPcbServer(QString serviceName, QList<TResourceWithSettings> resourceWithSettings);
+    MockPcbServer(QString serviceName);
     ~MockPcbServer();
-    static ServerParams createParams(QString serviceName);
+    void setResourcesWithConfig(QList<TResourceWithSettings> resourceWithSettings);
+    Zera::XMLConfig::cReader *getConfigReader();
     void start();
     bool areAllResourcesConnected();
 signals:
@@ -33,6 +33,7 @@ private slots:
     void doIdentAndRegister();
     void onResourceRegisterRdy();
 private:
+    static ServerParams createParams(QString serviceName);
     QList<TResourceWithSettings> m_resourceWithSettings;
     int m_resourcesToConnect = 0;
     bool m_resourcesRegistered = false;
