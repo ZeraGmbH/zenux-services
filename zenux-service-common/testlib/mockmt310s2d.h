@@ -21,7 +21,6 @@ private slots:
     void doSetupServer();
     void doConnect2RM();
     void doIdentAndRegister();
-    void onSetupComplete();
     void onResourceRegisterRdy();
 private:
     int m_resourcesToConnect = 0;

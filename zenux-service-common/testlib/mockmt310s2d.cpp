@@ -35,7 +35,6 @@ MockMt310s2d::MockMt310s2d() :
     QObject::connect(statesetupServer, &QAbstractState::entered, this, &MockMt310s2d::doSetupServer);
     QObject::connect(m_stateconnect2RM, &QAbstractState::entered, this, &MockMt310s2d::doConnect2RM);
     QObject::connect(m_stateSendRMIdentAndRegister, &QAbstractState::entered, this, &MockMt310s2d::doIdentAndRegister);
-    QObject::connect(stateFINISH, &QAbstractState::entered, this, &MockMt310s2d::onSetupComplete);
 }
 
 MockMt310s2d::~MockMt310s2d()
@@ -107,11 +106,6 @@ void MockMt310s2d::doIdentAndRegister()
         connect(res, &cResource::registerRdy, this, &MockMt310s2d::onResourceRegisterRdy);
         res->registerResource(m_pRMConnection, m_ethSettings.getPort(EthSettings::protobufserver));
     }
-}
-
-void MockMt310s2d::onSetupComplete()
-{
-
 }
 
 void MockMt310s2d::onResourceRegisterRdy()
