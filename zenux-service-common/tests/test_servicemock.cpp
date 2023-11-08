@@ -1,5 +1,6 @@
 #include "test_servicemock.h"
 #include "mockpcbserver.h"
+#include "resmanrunfacade.h"
 #include "foutgroupresourceandinterface.h"
 #include "proxy.h"
 #include "pcbinterface.h"
@@ -12,12 +13,12 @@ QTEST_MAIN(test_servicemock)
 
 void test_servicemock::init()
 {
-    m_resMan = std::make_shared<ResmanRunFacade>();
     feedEventLoop();
 }
 
 void test_servicemock::runMockMt310s2d()
 {
+    ResmanRunFacade resman;
     MockPcbServer mock("mt310s2d");
     FOutSettings foutSettings(mock.getConfigReader());
     FOutGroupResourceAndInterface foutResource(mock.getSCPIInterface(), &foutSettings);
@@ -32,6 +33,7 @@ void test_servicemock::runMockMt310s2d()
 
 void test_servicemock::connectMt310s2d()
 {
+    ResmanRunFacade resman;
     MockPcbServer mock("mt310s2d");
     FOutSettings foutSettings(mock.getConfigReader());
     FOutGroupResourceAndInterface foutResource(mock.getSCPIInterface(), &foutSettings);
@@ -54,6 +56,7 @@ void test_servicemock::connectMt310s2d()
 
 void test_servicemock::connectInvalidIpMt310s2d()
 {
+    ResmanRunFacade resman;
     MockPcbServer mock("mt310s2d");
     FOutSettings foutSettings(mock.getConfigReader());
     FOutGroupResourceAndInterface foutResource(mock.getSCPIInterface(), &foutSettings);
@@ -76,6 +79,7 @@ void test_servicemock::connectInvalidIpMt310s2d()
 
 void test_servicemock::getFoutCatMt310s2d()
 {
+    ResmanRunFacade resman;
     MockPcbServer mock("mt310s2d");
     FOutSettings foutSettings(mock.getConfigReader());
     FOutGroupResourceAndInterface foutResource(mock.getSCPIInterface(), &foutSettings);
