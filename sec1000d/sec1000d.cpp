@@ -186,7 +186,6 @@ void cSEC1000dServer::doSetupServer()
         m_ECalculatorChannelList = m_pECalculatorInterface->getECalcChannelList(); // we use this list in interrupt service
 
         SECServer = this;
-        m_nDebugLevel = m_pDebugSettings->getDebugLevel();
 
         initSCPIConnections();
 
