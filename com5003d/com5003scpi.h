@@ -28,8 +28,6 @@ enum SCPICmdType  {	nixCmd, // 0 is nix
 			GetI2CMasterAdress,
 			GetI2CSlaveAdress,
 			GetI2CDeviceNode,
-			SetDebugLevel,
-			GetDebugLevel,
 			GetDeviceVersion,
 			GetServerVersion,
 			

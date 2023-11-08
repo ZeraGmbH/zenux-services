@@ -3,12 +3,6 @@
 #ifndef MT310S2DGLOBAL_H
 #define MT310S2DGLOBAL_H
 
-enum DebugLevel {NoDebug, DebugLevel1, DebugLevel2, DebugLevel3 = 4, MaxDebugLevel = 7};
-
-#define DEBUG1 (m_nDebugLevel & 1) // alle fehlermeldungen loggen
-#define DEBUG2 (m_nDebugLevel & 2) // alle i2c aktivitäten loggen
-#define DEBUG3 (m_nDebugLevel & 4) // alle client an-,abmeldungen
-
 #define CheckSumOffset 56
 
 // 28.08.2018 v1.01 erste lauffähige version mit geändertem netzwerk zugang systemctl zdsp1d.socket
