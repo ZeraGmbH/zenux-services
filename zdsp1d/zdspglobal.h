@@ -54,11 +54,6 @@
 #define InpBufSize 4096
 #define defaultXSDFile "/etc/zera/zdsp1d/zdsp1d.xsd"
 
-#define MaxDebugLevel 7
-#define DEBUG1 (m_nDebugLevel & 1) // alle fehlermeldungen loggen
-#define DEBUG2 (m_nDebugLevel & 2) // alle i2c aktivitäten loggen
-#define DEBUG3 (m_nDebugLevel & 4) // alle client an-,abmeldungen
-
 enum ServerErrors
 {
     noError,
@@ -73,8 +68,5 @@ enum ServerErrors
     dspSetSamplingError,
     rmConnectionError
 };
-
-// wenn ZDSP1DDEBUG -> kein fork()
-//#define ZDSP1DDEBUG 1
 
 #endif
