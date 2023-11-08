@@ -8,6 +8,7 @@ QTEST_MAIN(test_servicemock)
 void test_servicemock::init()
 {
     m_resMan = std::make_shared<ResmanRunFacade>();
+    feedEventLoop();
 }
 
 void test_servicemock::runMockMt310s2d()
