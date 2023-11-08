@@ -723,7 +723,7 @@ cZDSP1Server::cZDSP1Server()
     stateCONF->setInitialState(statexmlConfiguration);
 
     statexmlConfiguration->addTransition(myXMLConfigReader, SIGNAL(finishedParsingXML(bool)), statesetupServer);
-    statesetupServer->addTransition(this, SIGNAL(serverSetup()), m_stateconnect2RM);
+    statesetupServer->addTransition(this, SIGNAL(sigServerIsSetUp()), m_stateconnect2RM);
 
     m_pInitializationMachine->addState(stateCONF);
     m_pInitializationMachine->addState(stateFINISH);
@@ -856,7 +856,7 @@ void cZDSP1Server::doSetupServer()
         SetFASync();
         m_retryRMConnect = 100;
         m_retryTimer.setSingleShot(true);
-        connect(&m_retryTimer, &QTimer::timeout, this, &cZDSP1Server::serverSetup);
+        connect(&m_retryTimer, &QTimer::timeout, this, &cZDSP1Server::sigServerIsSetUp);
 
         if (setDspType()) // interrogate the mounted dsp device type and bootfile match
         {
@@ -870,8 +870,8 @@ void cZDSP1Server::doSetupServer()
                         m_pRMConnection = new cRMConnection(m_pETHSettings->getRMIPadr(), m_pETHSettings->getPort(EthSettings::resourcemanager), m_pDebugSettings->getDebugLevel());
                         m_stateconnect2RM->addTransition(m_pRMConnection, SIGNAL(connected()), m_stateSendRMIdentAndRegister);
                         m_stateconnect2RM->addTransition(m_pRMConnection, SIGNAL(connectionRMError()), m_stateconnect2RMError);
-                        m_stateconnect2RMError->addTransition(this, SIGNAL(serverSetup()), m_stateconnect2RM);
-                        emit serverSetup(); // so we enter state machine's next state
+                        m_stateconnect2RMError->addTransition(this, SIGNAL(sigServerIsSetUp()), m_stateconnect2RM);
+                        emit sigServerIsSetUp(); // so we enter state machine's next state
                     }
                     else
                     {
@@ -891,8 +891,8 @@ void cZDSP1Server::doSetupServer()
                 m_pRMConnection = new cRMConnection(m_pETHSettings->getRMIPadr(), m_pETHSettings->getPort(EthSettings::resourcemanager), m_pDebugSettings->getDebugLevel());
                 m_stateconnect2RM->addTransition(m_pRMConnection, SIGNAL(connected()), m_stateSendRMIdentAndRegister);
                 m_stateconnect2RM->addTransition(m_pRMConnection, SIGNAL(connectionRMError()), m_stateconnect2RMError);
-                m_stateconnect2RMError->addTransition(this, SIGNAL(serverSetup()), m_stateconnect2RM);
-                emit serverSetup(); // so we enter state machine's next state
+                m_stateconnect2RMError->addTransition(this, SIGNAL(sigServerIsSetUp()), m_stateconnect2RM);
+                emit sigServerIsSetUp(); // so we enter state machine's next state
 
             }
         }

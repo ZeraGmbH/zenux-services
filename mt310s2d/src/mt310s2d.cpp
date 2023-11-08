@@ -98,7 +98,7 @@ cMT310S2dServer::cMT310S2dServer() :
 
     statexmlConfiguration->addTransition(&m_xmlConfigReader, SIGNAL(finishedParsingXML(bool)), statewait4Atmel);
     statewait4Atmel->addTransition(this, SIGNAL(atmelRunning()), statesetupServer);
-    statesetupServer->addTransition(this, SIGNAL(serverSetup()), m_stateconnect2RM);
+    statesetupServer->addTransition(this, SIGNAL(sigServerIsSetUp()), m_stateconnect2RM);
 
     m_pInitializationMachine->addState(stateCONF);
     m_pInitializationMachine->addState(stateFINISH);
@@ -305,13 +305,13 @@ void cMT310S2dServer::doSetupServer()
             // so we must complete our state machine here
             m_retryRMConnect = 100;
             m_retryTimer.setSingleShot(true);
-            connect(&m_retryTimer, &QTimer::timeout, this, &cMT310S2dServer::serverSetup);
+            connect(&m_retryTimer, &QTimer::timeout, this, &cMT310S2dServer::sigServerIsSetUp);
 
             m_stateconnect2RM->addTransition(m_pRMConnection, SIGNAL(connected()), m_stateSendRMIdentAndRegister);
             m_stateconnect2RM->addTransition(m_pRMConnection, SIGNAL(connectionRMError()), m_stateconnect2RMError);
-            m_stateconnect2RMError->addTransition(this, SIGNAL(serverSetup()), m_stateconnect2RM);
+            m_stateconnect2RMError->addTransition(this, SIGNAL(sigServerIsSetUp()), m_stateconnect2RM);
 
-            emit serverSetup(); // so we enter state machine's next state
+            emit sigServerIsSetUp(); // so we enter state machine's next state
         }
 }
 
