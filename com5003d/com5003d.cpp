@@ -81,7 +81,7 @@ cCOM5003dServer::cCOM5003dServer() :
     statexmlConfiguration->addTransition(&m_xmlConfigReader, SIGNAL(finishedParsingXML(bool)), stateprogAtmel);
     stateprogAtmel->addTransition(this, SIGNAL(atmelProgrammed()), statewait4Atmel);
     statewait4Atmel->addTransition(this, SIGNAL(atmelRunning()), statesetupServer);
-    statesetupServer->addTransition(this, SIGNAL(serverSetup()), m_stateconnect2RM);
+    statesetupServer->addTransition(this, SIGNAL(sigServerIsSetUp()), m_stateconnect2RM);
 
     m_pInitializationMachine->addState(stateCONF);
     m_pInitializationMachine->addState(stateFINISH);
@@ -366,13 +366,13 @@ void cCOM5003dServer::doSetupServer()
     // so we must complete our state machine here
     m_retryRMConnect = 100;
     m_retryTimer.setSingleShot(true);
-    connect(&m_retryTimer, &QTimer::timeout, this, &cCOM5003dServer::serverSetup);
+    connect(&m_retryTimer, &QTimer::timeout, this, &cCOM5003dServer::sigServerIsSetUp);
 
     m_stateconnect2RM->addTransition(m_pRMConnection, SIGNAL(connected()), m_stateSendRMIdentAndRegister);
     m_stateconnect2RM->addTransition(m_pRMConnection, SIGNAL(connectionRMError()), m_stateconnect2RMError);
-    m_stateconnect2RMError->addTransition(this, SIGNAL(serverSetup()), m_stateconnect2RM);
+    m_stateconnect2RMError->addTransition(this, SIGNAL(sigServerIsSetUp()), m_stateconnect2RM);
 
-    emit serverSetup(); // so we enter state machine's next state
+    emit sigServerIsSetUp(); // so we enter state machine's next state
 }
 
 

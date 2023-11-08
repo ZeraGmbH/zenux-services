@@ -122,7 +122,7 @@ public:
     cDSPSettings* m_pDspSettings;
 
 signals:
-    void serverSetup();
+    void sigServerIsSetUp();
     void abortInit();
 
 private:

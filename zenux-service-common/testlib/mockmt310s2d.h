@@ -14,7 +14,7 @@ public:
     void start();
     bool areAllResourcesConnected();
 signals:
-    void serverSetup();
+    void sigServerIsSetUp();
 
 private slots:
     void doConfiguration();

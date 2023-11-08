@@ -76,7 +76,7 @@ cSEC1000dServer::cSEC1000dServer() :
     stateCONF->setInitialState(statexmlConfiguration);
 
     statexmlConfiguration->addTransition(&m_xmlConfigReader, SIGNAL(finishedParsingXML(bool)), statesetupServer);
-    statesetupServer->addTransition(this, SIGNAL(serverSetup()), m_stateconnect2RM);
+    statesetupServer->addTransition(this, SIGNAL(sigServerIsSetUp()), m_stateconnect2RM);
     m_pInitializationMachine->addState(stateCONF);
     m_pInitializationMachine->addState(stateFINISH);
     m_pInitializationMachine->setInitialState(stateCONF);
@@ -209,13 +209,13 @@ void cSEC1000dServer::doSetupServer()
         // so we must complete our state machine here
         m_retryRMConnect = 100;
         m_retryTimer.setSingleShot(true);
-        connect(&m_retryTimer, &QTimer::timeout, this, &cSEC1000dServer::serverSetup);
+        connect(&m_retryTimer, &QTimer::timeout, this, &cSEC1000dServer::sigServerIsSetUp);
 
         m_stateconnect2RM->addTransition(m_pRMConnection, SIGNAL(connected()), m_stateSendRMIdentAndRegister);
         m_stateconnect2RM->addTransition(m_pRMConnection, SIGNAL(connectionRMError()), m_stateconnect2RMError);
-        m_stateconnect2RMError->addTransition(this, SIGNAL(serverSetup()), m_stateconnect2RM);
+        m_stateconnect2RMError->addTransition(this, SIGNAL(sigServerIsSetUp()), m_stateconnect2RM);
 
-        emit serverSetup(); // so we enter state machine's next state
+        emit sigServerIsSetUp(); // so we enter state machine's next state
     }
 }
 

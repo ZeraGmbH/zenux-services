@@ -47,7 +47,7 @@ signals:
     void abortInit();
     void confStarting();
     void confFinished();
-    void serverSetup();
+    void sigServerIsSetUp();
 
 private:
     QStateMachine* m_pInitializationMachine;

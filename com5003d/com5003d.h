@@ -65,7 +65,7 @@ signals:
     void confFinished();
     void atmelProgrammed();
     void atmelRunning();
-    void serverSetup();
+    void sigServerIsSetUp();
 
 private:
     QStateMachine* m_pInitializationMachine;

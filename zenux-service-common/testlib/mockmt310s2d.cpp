@@ -25,7 +25,7 @@ MockMt310s2d::MockMt310s2d() :
     stateCONF->setInitialState(statexmlConfiguration);
 
     statexmlConfiguration->addTransition(&m_xmlConfigReader, &Zera::XMLConfig::cReader::finishedParsingXML, statesetupServer);
-    statesetupServer->addTransition(this, &MockMt310s2d::serverSetup, m_stateconnect2RM);
+    statesetupServer->addTransition(this, &MockMt310s2d::sigServerIsSetUp, m_stateconnect2RM);
 
     m_pInitializationMachine->addState(stateCONF);
     m_pInitializationMachine->addState(stateFINISH);
@@ -89,7 +89,7 @@ void MockMt310s2d::doSetupServer()
     m_pRMConnection = new RMConnection(m_ethSettings.getRMIPadr(), m_ethSettings.getPort(EthSettings::resourcemanager));
     m_stateconnect2RM->addTransition(m_pRMConnection, &RMConnection::connected, m_stateSendRMIdentAndRegister);
 
-    emit serverSetup(); // so we enter state machine's next state
+    emit sigServerIsSetUp(); // so we enter state machine's next state
 }
 
 void MockMt310s2d::doConnect2RM()
