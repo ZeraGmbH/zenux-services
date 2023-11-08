@@ -12,6 +12,8 @@ private slots:
     void init();
     void runMockMt310s2d();
     void connectMt310s2d();
+    void connectInvalidIpMt310s2d();
+    void getFoutCatMt310s2d();
 private:
     void feedEventLoop();
     std::shared_ptr<ResmanRunFacade> m_resMan;
