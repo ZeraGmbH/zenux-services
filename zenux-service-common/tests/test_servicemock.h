@@ -11,6 +11,7 @@ class test_servicemock : public QObject
 private slots:
     void init();
     void runMockMt310s2d();
+    void connectMt310s2d();
 private:
     void feedEventLoop();
     std::shared_ptr<ResmanRunFacade> m_resMan;
