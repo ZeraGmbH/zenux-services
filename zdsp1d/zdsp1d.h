@@ -107,7 +107,6 @@ public:
 
     int SetBootPath(const char*);
     int SetDeviceNode(char*);
-    int SetDebugLevel(const char*);
 
     int DspDevRead(int, char*, int);
     int DspDevWrite(int, char*, int);
@@ -115,7 +114,6 @@ public:
     int DspDevOpen();
 
     int DevFileDescriptor; // kerneltreiber wird nur 1x geöffnet und dann gehalten
-    int m_nDebugLevel;
 
     cDebugSettings* m_pDebugSettings;
     EthSettings* m_pETHSettings;
