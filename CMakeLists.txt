@@ -13,6 +13,8 @@ set(PROJECT_VERSION "${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT
 include(FeatureSummary)
 include(GNUInstallDirs)
 include(GenerateExportHeader)
+include(CMakePackageConfigHelpers)
+include(FindPkgConfig)
 
 option(useSystemd "Using libsystemd" ON)
 
@@ -85,5 +87,26 @@ add_subdirectory(scripts)
 add_subdirectory(sec1000d)
 add_subdirectory(zdsp1d)
 add_subdirectory(zenux-service-common)
+add_subdirectory(zenux-service-interfaces)
+
+write_basic_package_version_file(
+    ZenuxServicesConfigVersion.cmake
+    VERSION ${PACKAGE_VERSION}
+    COMPATIBILITY SameMajorVersion
+    )
+
+configure_file(ZenuxServicesConfig.cmake.in ZenuxServicesConfig.cmake @ONLY)
+
+install(FILES
+    "${CMAKE_CURRENT_BINARY_DIR}/ZenuxServicesConfig.cmake"
+    "${CMAKE_CURRENT_BINARY_DIR}/ZenuxServicesConfigVersion.cmake"
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/ZenuxServices
+    )
+
+install(EXPORT ZenuxServicesExport
+    FILE ZenuxServicesTargets.cmake
+    NAMESPACE Zera::
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/ZenuxServices
+    )
 
 feature_summary(WHAT ALL FATAL_ON_MISSING_REQUIRED_PACKAGES)
