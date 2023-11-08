@@ -86,9 +86,7 @@ bool cAdjustment::exportJDataFlash()
         syslog(LOG_ERR,"error writing flashmemory\n");
         return false; // fehler beim flash schreiben
    }
-
    importJDataFlash();
-
    return true;
 }
 

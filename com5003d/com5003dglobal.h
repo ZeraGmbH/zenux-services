@@ -15,7 +15,4 @@
 #define atmelResetBit 16
 #define defaultTMaxAtmel 10000
 
-// wenn COM5003DDEBUG -> kein fork()
-// #define COM5003DDEBUG 1
-
 #endif
