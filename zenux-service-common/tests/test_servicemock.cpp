@@ -1,5 +1,6 @@
 #include "test_servicemock.h"
-#include "mockmt310s2d.h"
+#include "mockpcbserver.h"
+#include "foutgroupresourceandinterface.h"
 #include "proxy.h"
 #include "pcbinterface.h"
 #include "reply.h"
@@ -17,16 +18,28 @@ void test_servicemock::init()
 
 void test_servicemock::runMockMt310s2d()
 {
-    MockMt310s2d mtMockService;
-    mtMockService.start();
+    MockPcbServer mock("mt310s2d");
+    FOutSettings foutSettings(mock.getConfigReader());
+    FOutGroupResourceAndInterface foutResource(mock.getSCPIInterface(), &foutSettings);
+    ResourceSettingsList resourcesWithConfig;
+    resourcesWithConfig.append({&foutSettings, &foutResource});
+    mock.setResourcesWithConfig(resourcesWithConfig);
+
+    mock.start();
     feedEventLoop();
-    QVERIFY(mtMockService.areAllResourcesConnected());
+    QVERIFY(mock.areAllResourcesConnected());
 }
 
 void test_servicemock::connectMt310s2d()
 {
-    MockMt310s2d mtMockService;
-    mtMockService.start();
+    MockPcbServer mock("mt310s2d");
+    FOutSettings foutSettings(mock.getConfigReader());
+    FOutGroupResourceAndInterface foutResource(mock.getSCPIInterface(), &foutSettings);
+    ResourceSettingsList resourcesWithConfig;
+    resourcesWithConfig.append({&foutSettings, &foutResource});
+    mock.setResourcesWithConfig(resourcesWithConfig);
+
+    mock.start();
     feedEventLoop();
 
     Zera::ProxyClientPtr pcbClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307);
@@ -41,8 +54,14 @@ void test_servicemock::connectMt310s2d()
 
 void test_servicemock::connectInvalidIpMt310s2d()
 {
-    MockMt310s2d mtMockService;
-    mtMockService.start();
+    MockPcbServer mock("mt310s2d");
+    FOutSettings foutSettings(mock.getConfigReader());
+    FOutGroupResourceAndInterface foutResource(mock.getSCPIInterface(), &foutSettings);
+    ResourceSettingsList resourcesWithConfig;
+    resourcesWithConfig.append({&foutSettings, &foutResource});
+    mock.setResourcesWithConfig(resourcesWithConfig);
+
+    mock.start();
     feedEventLoop();
 
     Zera::ProxyClientPtr pcbClient = Zera::Proxy::getInstance()->getConnectionSmart("128.0.0.1", 6307);
@@ -57,8 +76,14 @@ void test_servicemock::connectInvalidIpMt310s2d()
 
 void test_servicemock::getFoutCatMt310s2d()
 {
-    MockMt310s2d mtMockService;
-    mtMockService.start();
+    MockPcbServer mock("mt310s2d");
+    FOutSettings foutSettings(mock.getConfigReader());
+    FOutGroupResourceAndInterface foutResource(mock.getSCPIInterface(), &foutSettings);
+    ResourceSettingsList resourcesWithConfig;
+    resourcesWithConfig.append({&foutSettings, &foutResource});
+    mock.setResourcesWithConfig(resourcesWithConfig);
+
+    mock.start();
     feedEventLoop();
 
     Zera::ProxyClientPtr pcbClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307);
