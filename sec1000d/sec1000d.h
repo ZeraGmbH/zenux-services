@@ -41,7 +41,6 @@ public:
     RMConnection* m_pRMConnection;
 
     int DevFileDescriptor; // kerneltreiber wird nur 1x geöffnet und dann gehalten
-    int m_nDebugLevel;
 
 signals:
     void abortInit();

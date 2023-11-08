@@ -12,7 +12,4 @@
 #define defaultDebugLevel NoDebug
 #define defaultXSDFile "/etc/zera/sec1000d/sec1000d.xsd"
 
-// wenn SEC1000DDEBUG -> kein fork()
-//#define SEC1000DDEBUG 1
-
 #endif
