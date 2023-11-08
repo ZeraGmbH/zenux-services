@@ -38,7 +38,4 @@ enum atmelSysCntrlInterrupts
     accumulatorInterrupt
 };
 
-// wenn MT310S2DDEBUG -> kein fork()
-// #define MT310S2DDEBUG 1
-
 #endif
