@@ -1,30 +1,23 @@
+#include "secinputsettings.h"
 #include <xmlconfigreader.h>
 
-#include "inputsettings.h"
-
-
-cInputSettings::cInputSettings(Zera::XMLConfig::cReader *xmlread)
+SecInputSettings::SecInputSettings(Zera::XMLConfig::cReader *xmlread)
 {
     m_pXMLReader = xmlread;
-
     m_ConfigXMLMap[QString("serviceconfig:connectivity:inputs:n")] = InputSettings::setnumber;
-    // for the inputs we generate new entries dynamically
 }
 
-
-bool cInputSettings::hasInput(QString name)
+bool SecInputSettings::hasInput(QString name)
 {
-   return muxInfoHash.contains(name);
+    return muxInfoHash.contains(name);
 }
 
-
-qint8 cInputSettings::mux(QString name)
+qint8 SecInputSettings::mux(QString name)
 {
     return muxInfoHash[name];
 }
 
-
-void cInputSettings::configXMLInfo(QString key)
+void SecInputSettings::configXMLInfo(QString key)
 {
     if (m_ConfigXMLMap.contains(key)) {
         int cmd = m_ConfigXMLMap[key];
@@ -44,8 +37,8 @@ void cInputSettings::configXMLInfo(QString key)
             if (cmd >= InputSettings::setinputname1 && cmd < InputSettings::setinputname1 + 32)
                 actName = m_pXMLReader->getValue(key);
             else if (cmd >= InputSettings::setinputmuxer1 && cmd < InputSettings::setinputmuxer1 + 32) {
-                    quint8 mux = m_pXMLReader->getValue(key).toInt();
-                    muxInfoHash[actName] = mux;
+                quint8 mux = m_pXMLReader->getValue(key).toInt();
+                muxInfoHash[actName] = mux;
             }
         }
         }

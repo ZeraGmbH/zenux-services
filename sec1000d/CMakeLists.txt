@@ -7,7 +7,6 @@ set(SOURCES
     ecalcsettings.cpp
     ecalcinterface.cpp
     ecalcchannel.cpp
-    inputsettings.cpp
     )
 
 set(HEADER
@@ -19,7 +18,6 @@ set(HEADER
     ecalcsettings.h
     ecalcinterface.h
     ecalcchannel.h
-    inputsettings.h 
     )
 
 add_library(sec1000d-lib STATIC

@@ -1,5 +1,5 @@
-#ifndef INPUTSETTINGS
-#define INPUTSETTINGS
+#ifndef SECINPUTSETTINGS
+#define SECINPUTSETTINGS
 
 #include <xmlsettings.h>
 #include <QHash>
@@ -20,12 +20,12 @@ struct cInputInfo
     quint8 m_nMux;
 };
 
-class cInputSettings : public XMLSettings
+class SecInputSettings : public XMLSettings
 {
     Q_OBJECT
 
 public:
-    cInputSettings(Zera::XMLConfig::cReader *xmlread);
+    SecInputSettings(Zera::XMLConfig::cReader *xmlread);
 
     bool hasInput(QString name);
     qint8 mux(QString name);
@@ -39,5 +39,5 @@ private:
     QHash<QString, quint8> muxInfoHash;
 };
 
-#endif // INPUTSETTINGS
+#endif // SECINPUTSETTINGS
 

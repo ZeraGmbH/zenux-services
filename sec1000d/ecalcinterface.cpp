@@ -8,7 +8,7 @@
 #include <scpi.h>
 #include <xmlsettings.h>
 
-cECalculatorInterface::cECalculatorInterface(cSEC1000dServer* server, EthSettings* ethsettings, cECalculatorSettings* ecalcSettings, FPGASettings* fpgasettings, cInputSettings *inputsettings) :
+cECalculatorInterface::cECalculatorInterface(cSEC1000dServer* server, EthSettings* ethsettings, cECalculatorSettings* ecalcSettings, FPGASettings* fpgasettings, SecInputSettings *inputsettings) :
     cResource(ScpiSingletonFactory::getScpiObj()),
     m_pMyServer(server),
     m_pETHsettings(ethsettings),
