@@ -27,7 +27,7 @@ enum Commands
 
 class cSEC1000dServer;
 class cECalculatorChannel;
-class cECalculatorSettings;
+class SecCalculatorSettings;
 class FPGASettings;
 class SecInputSettings;
 class cProtonetCommand;
@@ -38,7 +38,7 @@ class cECalculatorInterface : public cResource
     Q_OBJECT
 
 public:
-    cECalculatorInterface(cSEC1000dServer* server, EthSettings* ethsettings, cECalculatorSettings* ecalcSettings, FPGASettings* fpgasettings, SecInputSettings* inputsettings);
+    cECalculatorInterface(cSEC1000dServer* server, EthSettings* ethsettings, SecCalculatorSettings* ecalcSettings, FPGASettings* fpgasettings, SecInputSettings* inputsettings);
     ~cECalculatorInterface();
     void initSCPIConnection(QString leadingNodes) override;
     virtual void registerResource(RMConnection *rmConnection, quint16 port) override;
@@ -51,7 +51,7 @@ protected:
 private:
     cSEC1000dServer* m_pMyServer;
     EthSettings* m_pETHsettings;
-    cECalculatorSettings* m_pecalcsettings;
+    SecCalculatorSettings* m_pecalcsettings;
     FPGASettings* m_pFPGASettings;
     SecInputSettings* m_pInputSettings;
 

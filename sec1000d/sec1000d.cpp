@@ -20,7 +20,7 @@
 #include "debugsettings.h"
 #include "ethsettings.h"
 #include "fpgasettings.h"
-#include "ecalcsettings.h"
+#include "seccalcsettings.h"
 #include "secinputsettings.h"
 #include "statusinterface.h"
 #include "systeminterface.h"
@@ -141,8 +141,8 @@ void cSEC1000dServer::doConfiguration()
                 connect(&m_xmlConfigReader,&Zera::XMLConfig::cReader::valueChanged,&m_ethSettings,&EthSettings::configXMLInfo);
                 m_pFPGASettings = new FPGASettings(&m_xmlConfigReader, xmlConfigTopNode);
                 connect(&m_xmlConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pFPGASettings,&FPGASettings::configXMLInfo);
-                m_pECalcSettings = new cECalculatorSettings(&m_xmlConfigReader);
-                connect(&m_xmlConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pECalcSettings,&cECalculatorSettings::configXMLInfo);
+                m_pECalcSettings = new SecCalculatorSettings(&m_xmlConfigReader);
+                connect(&m_xmlConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pECalcSettings,&SecCalculatorSettings::configXMLInfo);
                 m_pInputSettings = new SecInputSettings(&m_xmlConfigReader);
                 connect(&m_xmlConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pInputSettings,&SecInputSettings::configXMLInfo);
 

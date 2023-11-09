@@ -4,7 +4,6 @@ set(SOURCES
     statusinterface.cpp
     systeminterface.cpp
     systeminfo.cpp
-    ecalcsettings.cpp
     ecalcinterface.cpp
     ecalcchannel.cpp
     )
@@ -15,7 +14,6 @@ set(HEADER
     statusinterface.h
     systeminterface.h
     systeminfo.h
-    ecalcsettings.h
     ecalcinterface.h
     ecalcchannel.h
     )

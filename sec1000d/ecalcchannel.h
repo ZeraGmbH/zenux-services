@@ -2,7 +2,7 @@
 #define ECALCCHANNEL_H
 
 #include "scpiconnection.h"
-#include "ecalcsettings.h"
+#include "seccalcsettings.h"
 #include "notificationvalue.h"
 #include <QList>
 #include <QByteArray>
@@ -45,7 +45,7 @@ enum Commands
 }
 
 class cSEC1000dServer;
-class cECalculatorSettings;
+class SecCalculatorSettings;
 class FPGASettings;
 class SecInputSettings;
 class cProtonetCommand;
@@ -55,7 +55,7 @@ class cECalculatorChannel : public ScpiConnection
     Q_OBJECT
 
 public:
-    cECalculatorChannel(cSEC1000dServer* server, cECalculatorSettings* esettings, FPGASettings* fsettings, SecInputSettings* inpsettings, quint16 nr);
+    cECalculatorChannel(cSEC1000dServer* server, SecCalculatorSettings* esettings, FPGASettings* fsettings, SecInputSettings* inpsettings, quint16 nr);
     ~cECalculatorChannel();
     virtual void initSCPIConnection(QString leadingNodes) override;
 
@@ -74,7 +74,7 @@ protected:
 
 private:
     cSEC1000dServer* m_pMyServer;
-    cECalculatorSettings* m_pecalcsettings;
+    SecCalculatorSettings* m_pecalcsettings;
     FPGASettings* m_pFPGASettings;
     SecInputSettings* m_pInputSettings;
     quint16 m_nNr;
