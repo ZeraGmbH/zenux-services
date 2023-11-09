@@ -16,11 +16,9 @@ void test_servicemock::runMockMt310s2d()
     ResmanRunFacade resman;
     MockPcbServer mock("mt310s2d");
     FOutSettings foutSettings(mock.getConfigReader());
+    mock.setXmlSettings(QList<XMLSettings*>() << &foutSettings);
     FOutGroupResourceAndInterface foutResource(mock.getSCPIInterface(), &foutSettings);
-    ResourceSettingsList resourcesWithConfig;
-    resourcesWithConfig.append({QList<XMLSettings*>() << &foutSettings, &foutResource});
-    mock.setResourcesWithConfig(resourcesWithConfig);
-
+    mock.setResources(QList<cResource*>() << &foutResource);
     mock.start();
     feedEventLoop();
     QVERIFY(mock.areAllResourcesConnected());
@@ -31,10 +29,9 @@ void test_servicemock::connectMt310s2d()
     ResmanRunFacade resman;
     MockPcbServer mock("mt310s2d");
     FOutSettings foutSettings(mock.getConfigReader());
+    mock.setXmlSettings(QList<XMLSettings*>() << &foutSettings);
     FOutGroupResourceAndInterface foutResource(mock.getSCPIInterface(), &foutSettings);
-    ResourceSettingsList resourcesWithConfig;
-    resourcesWithConfig.append({QList<XMLSettings*>() << &foutSettings, &foutResource});
-    mock.setResourcesWithConfig(resourcesWithConfig);
+    mock.setResources(QList<cResource*>() << &foutResource);
 
     mock.start();
     feedEventLoop();
@@ -54,10 +51,9 @@ void test_servicemock::connectInvalidIpMt310s2d()
     ResmanRunFacade resman;
     MockPcbServer mock("mt310s2d");
     FOutSettings foutSettings(mock.getConfigReader());
+    mock.setXmlSettings(QList<XMLSettings*>() << &foutSettings);
     FOutGroupResourceAndInterface foutResource(mock.getSCPIInterface(), &foutSettings);
-    ResourceSettingsList resourcesWithConfig;
-    resourcesWithConfig.append({QList<XMLSettings*>() << &foutSettings, &foutResource});
-    mock.setResourcesWithConfig(resourcesWithConfig);
+    mock.setResources(QList<cResource*>() << &foutResource);
 
     mock.start();
     feedEventLoop();
@@ -77,10 +73,9 @@ void test_servicemock::getFoutCatMt310s2d()
     ResmanRunFacade resman;
     MockPcbServer mock("mt310s2d");
     FOutSettings foutSettings(mock.getConfigReader());
+    mock.setXmlSettings(QList<XMLSettings*>() << &foutSettings);
     FOutGroupResourceAndInterface foutResource(mock.getSCPIInterface(), &foutSettings);
-    ResourceSettingsList resourcesWithConfig;
-    resourcesWithConfig.append({QList<XMLSettings*>() << &foutSettings, &foutResource});
-    mock.setResourcesWithConfig(resourcesWithConfig);
+    mock.setResources(QList<cResource*>() << &foutResource);
 
     mock.start();
     feedEventLoop();
@@ -107,10 +102,9 @@ void test_servicemock::getFoutCatCom5003d()
     ResmanRunFacade resman;
     MockPcbServer mock("com5003d");
     FOutSettings foutSettings(mock.getConfigReader());
+    mock.setXmlSettings(QList<XMLSettings*>() << &foutSettings);
     FOutGroupResourceAndInterface foutResource(mock.getSCPIInterface(), &foutSettings);
-    ResourceSettingsList resourcesWithConfig;
-    resourcesWithConfig.append({QList<XMLSettings*>() << &foutSettings, &foutResource});
-    mock.setResourcesWithConfig(resourcesWithConfig);
+    mock.setResources(QList<cResource*>() << &foutResource);
 
     mock.start();
     feedEventLoop();

@@ -10,21 +10,18 @@ MockPcbServer::MockPcbServer(QString serviceName) :
     QState* stateCONF = new QState();
     QFinalState* stateFINISH = new QFinalState();
 
-    QState* statexmlConfiguration = new QState(stateCONF);
     QState* statesetupServer = new QState(stateCONF);
     m_stateconnect2RM = new QState(stateCONF);
     m_stateSendRMIdentAndRegister = new QState(stateCONF); // we send ident. to rm and register our resources
 
-    stateCONF->setInitialState(statexmlConfiguration);
+    stateCONF->setInitialState(statesetupServer);
 
-    statexmlConfiguration->addTransition(&m_xmlConfigReader, &Zera::XMLConfig::cReader::finishedParsingXML, statesetupServer);
     statesetupServer->addTransition(this, &MockPcbServer::sigServerIsSetUp, m_stateconnect2RM);
 
     m_pInitializationMachine->addState(stateCONF);
     m_pInitializationMachine->addState(stateFINISH);
     m_pInitializationMachine->setInitialState(stateCONF);
 
-    QObject::connect(statexmlConfiguration, &QAbstractState::entered, this, &MockPcbServer::doConfiguration);
     QObject::connect(statesetupServer, &QAbstractState::entered, this, &MockPcbServer::doSetupServer);
     QObject::connect(m_stateconnect2RM, &QAbstractState::entered, this, &MockPcbServer::doConnect2RM);
     QObject::connect(m_stateSendRMIdentAndRegister, &QAbstractState::entered, this, &MockPcbServer::doIdentAndRegister);
@@ -36,9 +33,15 @@ MockPcbServer::~MockPcbServer()
     if (m_pRMConnection) delete m_pRMConnection;
 }
 
-void MockPcbServer::setResourcesWithConfig(QList<TResourceWithSettings> resourceWithSettings)
+void MockPcbServer::setXmlSettings(XmlSettingsList xmlSettings)
 {
-    m_resourceWithSettings = resourceWithSettings;
+    m_xmlSettings = xmlSettings;
+    doConfiguration();
+}
+
+void MockPcbServer::setResources(ResourcesList resources)
+{
+    m_resources = resources;
 }
 
 Zera::XMLConfig::cReader *MockPcbServer::getConfigReader()
@@ -83,11 +86,9 @@ void MockPcbServer::doConfiguration()
     if (m_xmlConfigReader.loadSchema(m_params.xsdFile)) {
         connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged,
                 &m_ethSettings, &EthSettings::configXMLInfo);
-        for(const auto &resSetting : qAsConst(m_resourceWithSettings)) {
-            for (const auto &setting : qAsConst(resSetting.settings))
-                connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged,
-                        setting, &XMLSettings::configXMLInfo);
-        }
+        for (const auto &setting : qAsConst(m_xmlSettings))
+            connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged,
+                    setting, &XMLSettings::configXMLInfo);
         if (!m_xmlConfigReader.loadXMLFile(m_params.xmlFile))
             qFatal("Could not load xml config file");
     }
@@ -99,9 +100,9 @@ void MockPcbServer::doSetupServer()
 {
     setupServer();
     scpiConnectionList.append(this); // the server itself has some commands
-    for(const auto &resSetting : qAsConst(m_resourceWithSettings)) {
-        scpiConnectionList.append(resSetting.resource);
-        resourceList.append(resSetting.resource);
+    for(const auto &resource : qAsConst(m_resources)) {
+        scpiConnectionList.append(resource);
+        resourceList.append(resource);
     }
     initSCPIConnections();
 
