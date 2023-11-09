@@ -11,11 +11,6 @@
 
 QTEST_MAIN(test_servicemock)
 
-void test_servicemock::init()
-{
-    feedEventLoop();
-}
-
 void test_servicemock::runMockMt310s2d()
 {
     ResmanRunFacade resman;

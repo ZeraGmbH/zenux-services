@@ -8,7 +8,6 @@ class test_servicemock : public QObject
 {
     Q_OBJECT
 private slots:
-    void init();
     void runMockMt310s2d();
     void connectMt310s2d();
     void connectInvalidIpMt310s2d();
