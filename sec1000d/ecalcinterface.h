@@ -2,12 +2,15 @@
 #define ECALCINTERFACE_H
 
 #include "resource.h"
-#include "scpiconnection.h"
-#include "ecalcchannel.h"
-#include "notificationvalue.h"
+#include "secchannel.h"
 #include "ethsettings.h"
+#include "seccalcsettings.h"
+#include "secinputsettings.h"
+#include "fpgasettings.h"
+#include "protonetcommand.h"
 #include <QList>
 #include <QHash>
+#include <functional>
 
 namespace ECalcSystem
 {
@@ -25,31 +28,27 @@ enum Commands
 
 }
 
-class cSEC1000dServer;
-class cECalculatorChannel;
-class SecCalculatorSettings;
-class FPGASettings;
-class SecInputSettings;
-class cProtonetCommand;
-
-
 class cECalculatorInterface : public cResource
 {
     Q_OBJECT
 
 public:
-    cECalculatorInterface(cSEC1000dServer* server, EthSettings* ethsettings, SecCalculatorSettings* ecalcSettings, FPGASettings* fpgasettings, SecInputSettings* inputsettings);
+    cECalculatorInterface(int devFileDescriptor,
+                          EthSettings* ethsettings,
+                          SecCalculatorSettings* ecalcSettings,
+                          FPGASettings* fpgasettings,
+                          SecInputSettings* inputsettings,
+                          std::function<void(int)> funcSigHandler);
     ~cECalculatorInterface();
     void initSCPIConnection(QString leadingNodes) override;
     virtual void registerResource(RMConnection *rmConnection, quint16 port) override;
     virtual void unregisterResource(RMConnection *rmConnection) override;
-    QList<cECalculatorChannel*> getECalcChannelList();
+    QList<SecChannel*> getECalcChannelList();
 
 protected:
     void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
 
 private:
-    cSEC1000dServer* m_pMyServer;
     EthSettings* m_pETHsettings;
     SecCalculatorSettings* m_pecalcsettings;
     FPGASettings* m_pFPGASettings;
@@ -57,8 +56,8 @@ private:
 
     QString m_sVersion;
 
-    QList<cECalculatorChannel*> m_ECalculatorChannelList;
-    QHash<QString,cECalculatorChannel*> m_ECalculatorChannelHash;
+    QList<SecChannel*> m_ECalculatorChannelList;
+    QHash<QString,SecChannel*> m_ECalculatorChannelHash;
     QHash<QByteArray, QString> m_ClientECalcHash; // we hold the set ecalculators by clientid
 
     QString m_ReadVersion(QString& sInput);

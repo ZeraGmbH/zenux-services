@@ -5,7 +5,6 @@ set(SOURCES
     systeminterface.cpp
     systeminfo.cpp
     ecalcinterface.cpp
-    ecalcchannel.cpp
     )
 
 set(HEADER
@@ -15,7 +14,6 @@ set(HEADER
     systeminterface.h
     systeminfo.h
     ecalcinterface.h
-    ecalcchannel.h
     )
 
 add_library(sec1000d-lib STATIC

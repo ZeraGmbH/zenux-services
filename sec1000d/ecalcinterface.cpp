@@ -1,16 +1,16 @@
 #include "ecalcinterface.h"
-#include "sec1000dglobal.h"
 #include "scpiconnection.h"
-#include "sec1000d.h"
-#include "protonetcommand.h"
 #include "scpisingletonfactory.h"
 #include "notzeronumgen.h"
 #include <scpi.h>
-#include <xmlsettings.h>
 
-cECalculatorInterface::cECalculatorInterface(cSEC1000dServer* server, EthSettings* ethsettings, SecCalculatorSettings* ecalcSettings, FPGASettings* fpgasettings, SecInputSettings *inputsettings) :
+cECalculatorInterface::cECalculatorInterface(int devFileDescriptor,
+                                             EthSettings* ethsettings,
+                                             SecCalculatorSettings* ecalcSettings,
+                                             FPGASettings* fpgasettings,
+                                             SecInputSettings *inputsettings,
+                                             std::function<void (int)> funcSigHandler) :
     cResource(ScpiSingletonFactory::getScpiObj()),
-    m_pMyServer(server),
     m_pETHsettings(ethsettings),
     m_pecalcsettings(ecalcSettings),
     m_pFPGASettings(fpgasettings),
@@ -20,21 +20,19 @@ cECalculatorInterface::cECalculatorInterface(cSEC1000dServer* server, EthSetting
 
     // first we create the configured number of error calculators and attach them into a hash table for better access
     int n = m_pecalcsettings->getNumber();
-    for (int i = 0; i < n; i++ )
-    {
-        cECalculatorChannel* eChan = new cECalculatorChannel(m_pMyServer, m_pecalcsettings, m_pFPGASettings, m_pInputSettings, i);
+    for (int i = 0; i < n; i++ ) {
+        SecChannel* eChan = new SecChannel(devFileDescriptor, m_pecalcsettings, m_pFPGASettings, m_pInputSettings, i, funcSigHandler);
         m_ECalculatorChannelList.append(eChan); // we have a list for seq. access
         m_ECalculatorChannelHash[eChan->getName()] = eChan; // and a hash for access by channel name
         m_ECalculatorChannelList.at(i)->m_StopErrorCalculator(); // initially we stop all ec's
-        m_ECalculatorChannelList.at(i)->m_resetInterrupt(0xF); // and reset all interrupts
-
+        m_ECalculatorChannelList.at(i)->resetInterrupt(0xF); // and reset all interrupts
     }
 }
 
 
 cECalculatorInterface::~cECalculatorInterface()
 {
-    cECalculatorChannel* cptr;
+    SecChannel* cptr;
 
     int n = m_ECalculatorChannelList.count();
     for (int i = 0; i < n; i++)
@@ -107,7 +105,7 @@ void cECalculatorInterface::unregisterResource(RMConnection *rmConnection)
 }
 
 
-QList<cECalculatorChannel *> cECalculatorInterface::getECalcChannelList()
+QList<SecChannel *> cECalculatorInterface::getECalcChannelList()
 {
     return m_ECalculatorChannelList;
 }
@@ -153,7 +151,7 @@ void cECalculatorInterface::m_SetChannels(cProtonetCommand *protoCmd)
        if (ok && (n > 0) && (n < 5)) // we accept 1 .. 4 ecalc requests
        {
            QString s;
-           QList<cECalculatorChannel*> selEChannels;
+           QList<SecChannel*> selEChannels;
 
            int m = m_ECalculatorChannelList.count();
            for (int i = 0; i < m; i++)

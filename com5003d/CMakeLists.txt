@@ -2,7 +2,6 @@ set(SOURCES
     scpi-interfaces/samplinginterface.cpp
     scpi-interfaces/senseinterface.cpp
     scpi-interfaces/systeminterface.cpp
-    main.cpp
     com5003d.cpp
     com5003justdata.cpp
     senserange.cpp

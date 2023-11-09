@@ -17,7 +17,7 @@ class SecInputSettings;
 class cStatusInterface;
 class cSystemInterface;
 class cECalculatorInterface;
-class cECalculatorChannel;
+class SecChannel;
 class cSystemInfo;
 
 
@@ -57,7 +57,7 @@ private:
     int m_retryRMConnect;
     QTimer m_retryTimer;
     QString m_sSECDeviceNode;
-    QList<cECalculatorChannel*> m_ECalculatorChannelList;
+    QList<SecChannel*> m_ECalculatorChannelList;
     QSocketNotifier* m_pNotifier;
     int SECDevOpen();
     void SetFASync();
