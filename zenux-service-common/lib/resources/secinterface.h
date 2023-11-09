@@ -5,7 +5,6 @@
 #include "secchannel.h"
 #include "seccalcsettings.h"
 #include "secinputsettings.h"
-#include "fpgasettings.h"
 #include "protonetcommand.h"
 #include <QList>
 #include <QHash>
@@ -34,7 +33,6 @@ class SecInterface : public cResource
 public:
     SecInterface(int devFileDescriptor,
                  SecCalculatorSettings* ecalcSettings,
-                 FPGASettings* fpgasettings,
                  SecInputSettings* inputsettings,
                  std::function<void(int)> funcSigHandler);
     ~SecInterface();
@@ -48,7 +46,6 @@ protected:
 
 private:
     SecCalculatorSettings* m_pecalcsettings;
-    FPGASettings* m_pFPGASettings;
     SecInputSettings* m_pInputSettings;
 
     QString m_sVersion;

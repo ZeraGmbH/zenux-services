@@ -4,7 +4,6 @@
 #include "scpiconnection.h"
 #include "secinputsettings.h"
 #include "seccalcsettings.h"
-#include "fpgasettings.h"
 #include "notificationvalue.h"
 #include "protonetcommand.h"
 #include <QList>
@@ -54,7 +53,6 @@ class SecChannel : public ScpiConnection
 public:
     SecChannel(int devFileDescriptor,
                SecCalculatorSettings* esettings,
-               FPGASettings* fsettings,
                SecInputSettings* inpsettings,
                quint16 nr,
                std::function<void(int)> funcSigHandler);
@@ -76,7 +74,6 @@ protected:
 private:
     int m_devFileDescriptor;
     SecCalculatorSettings* m_pecalcsettings;
-    FPGASettings* m_pFPGASettings;
     SecInputSettings* m_pInputSettings;
     quint16 m_nNr;
     quint32 m_nBaseAdress;

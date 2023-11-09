@@ -7,17 +7,15 @@
 
 #include "scpiconnection.h"
 #include "secchannel.h"
-#include "fpgasettings.h"
 #include "secinputsettings.h"
 #include "protonetcommand.h"
 #include "scpisingletonfactory.h"
 #include <unistd.h>
 
-SecChannel::SecChannel(int devFileDescriptor, SecCalculatorSettings* esettings, FPGASettings* fsettings, SecInputSettings *inpsettings, quint16 nr, std::function<void (int)> funcSigHandler) :
+SecChannel::SecChannel(int devFileDescriptor, SecCalculatorSettings* esettings, SecInputSettings *inpsettings, quint16 nr, std::function<void (int)> funcSigHandler) :
     ScpiConnection(ScpiSingletonFactory::getScpiObj()),
     m_devFileDescriptor(devFileDescriptor),
     m_pecalcsettings(esettings),
-    m_pFPGASettings(fsettings),
     m_pInputSettings(inpsettings),
     m_nNr(nr),
     m_funcSigHandler(funcSigHandler)
