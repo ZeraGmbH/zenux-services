@@ -1,5 +1,5 @@
-#ifndef SECINTERFACE_H
-#define SECINTERFACE_H
+#ifndef SECGROUPRESOURCEANDINTERFACE_H
+#define SECGROUPRESOURCEANDINTERFACE_H
 
 #include "resource.h"
 #include "secchannel.h"
@@ -26,16 +26,16 @@ enum Commands
 
 }
 
-class SecInterface : public cResource
+class SecGroupResourceAndInterface : public cResource
 {
     Q_OBJECT
 
 public:
-    SecInterface(int devFileDescriptor,
-                 SecCalculatorSettings* ecalcSettings,
-                 SecInputSettings* inputsettings,
-                 std::function<void(int)> funcSigHandler);
-    ~SecInterface();
+    SecGroupResourceAndInterface(int devFileDescriptor,
+                                 SecCalculatorSettings* ecalcSettings,
+                                 SecInputSettings* inputsettings,
+                                 std::function<void(int)> funcSigHandler);
+    ~SecGroupResourceAndInterface();
     void initSCPIConnection(QString leadingNodes) override;
     virtual void registerResource(RMConnection *rmConnection, quint16 port) override;
     virtual void unregisterResource(RMConnection *rmConnection) override;
@@ -60,4 +60,4 @@ private:
     void m_FreeChannels(cProtonetCommand *protoCmd);
 };
 
-#endif // SECINTERFACE_H
+#endif // SECGROUPRESOURCEANDINTERFACE_H
