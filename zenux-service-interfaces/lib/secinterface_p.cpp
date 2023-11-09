@@ -22,6 +22,12 @@ void cSECInterfacePrivate::setClient(Zera::ProxyClient *client)
     connect(m_pClient, &Zera::ProxyClient::tcpError, this, &cSECInterfacePrivate::receiveError);
 }
 
+void cSECInterfacePrivate::setClientSmart(ProxyClientPtr client)
+{
+    m_clientSmart = client;
+    setClient(client.get());
+}
+
 
 quint32 cSECInterfacePrivate::setECalcUnit(int n)
 {
