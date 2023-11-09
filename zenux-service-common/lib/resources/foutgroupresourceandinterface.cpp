@@ -86,12 +86,10 @@ QString FOutGroupResourceAndInterface::readSourceChannelCatalog(QString &sInput)
 {
     cSCPICommand cmd = sInput;
     if (cmd.isQuery()) {
-        int i;
-        QString s;
-        for (i = 0; i < m_ChannelList.count()-1; i++ )
-            s += m_ChannelList.at(i)->getName() + ";";
-        s += m_ChannelList.at(i)->getName();
-        return s;
+        QStringList channelList;
+        for(const auto &channel : qAsConst(m_ChannelList))
+            channelList.append(channel->getName());
+        return channelList.join(";");
     }
     else
         return SCPI::scpiAnswer[SCPI::nak];
