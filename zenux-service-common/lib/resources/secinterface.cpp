@@ -6,12 +6,10 @@
 
 SecInterface::SecInterface(int devFileDescriptor,
                                SecCalculatorSettings* ecalcSettings,
-                               FPGASettings* fpgasettings,
                                SecInputSettings *inputsettings,
                                std::function<void (int)> funcSigHandler) :
     cResource(ScpiSingletonFactory::getScpiObj()),
     m_pecalcsettings(ecalcSettings),
-    m_pFPGASettings(fpgasettings),
     m_pInputSettings(inputsettings)
 {
     m_sVersion = ECalcSystem::Version;
@@ -19,7 +17,7 @@ SecInterface::SecInterface(int devFileDescriptor,
     // first we create the configured number of error calculators and attach them into a hash table for better access
     int n = m_pecalcsettings->getNumber();
     for (int i = 0; i < n; i++ ) {
-        SecChannel* eChan = new SecChannel(devFileDescriptor, m_pecalcsettings, m_pFPGASettings, m_pInputSettings, i, funcSigHandler);
+        SecChannel* eChan = new SecChannel(devFileDescriptor, m_pecalcsettings, m_pInputSettings, i, funcSigHandler);
         m_ECalculatorChannelList.append(eChan); // we have a list for seq. access
         m_ECalculatorChannelHash[eChan->getName()] = eChan; // and a hash for access by channel name
         m_ECalculatorChannelList.at(i)->m_StopErrorCalculator(); // initially we stop all ec's
