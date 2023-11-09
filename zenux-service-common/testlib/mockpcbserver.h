@@ -8,7 +8,7 @@
 
 struct TResourceWithSettings
 {
-    XMLSettings *settings;
+    QList<XMLSettings*> settings;
     cResource *resource;
 };
 typedef QList<TResourceWithSettings> ResourceSettingsList;

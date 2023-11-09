@@ -83,9 +83,11 @@ void MockPcbServer::doConfiguration()
     if (m_xmlConfigReader.loadSchema(m_params.xsdFile)) {
         connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged,
                 &m_ethSettings, &EthSettings::configXMLInfo);
-        for(const auto &resSetting : qAsConst(m_resourceWithSettings))
-            connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged,
-                    resSetting.settings, &XMLSettings::configXMLInfo);
+        for(const auto &resSetting : qAsConst(m_resourceWithSettings)) {
+            for (const auto &setting : qAsConst(resSetting.settings))
+                connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged,
+                        setting, &XMLSettings::configXMLInfo);
+        }
         if (!m_xmlConfigReader.loadXMLFile(m_params.xmlFile))
             qFatal("Could not load xml config file");
     }
