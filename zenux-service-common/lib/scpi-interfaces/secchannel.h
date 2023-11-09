@@ -23,15 +23,6 @@
 #define impout_en 22
 #define cnt2carry 23
 
-
-namespace ECALCREG {
-    enum { CMD, CONF, STATUS, INTMASK, INTREG, MTCNTin, MTCNTfin, MTCNTact, MTPULSin = 12, MTPAUSEin, MTPULS, MTPAUSE};
-}
-
-namespace ECALCCMDID {
-    enum { COUNTEDGE = 1, COUNTRESET, ERRORMEASMASTER, ERRORMEASSLAVE};
-}
-
 namespace ECalcChannel
 {
 enum Commands
