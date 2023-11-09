@@ -26,6 +26,12 @@ void cSECInterface::setClientSmart(ProxyClientPtr client)
     return d->setClientSmart(client);
 }
 
+quint32 cSECInterface::getChannelCatalog()
+{
+    Q_D(cSECInterface);
+    return d->transparentCommand("ECALCULATOR:CHANNEL:CATALOG?");
+}
+
 
 quint32 cSECInterface::setECalcUnit(int n)
 {

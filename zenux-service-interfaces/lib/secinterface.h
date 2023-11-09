@@ -52,6 +52,7 @@ public:
     virtual ~cSECInterface();
     void setClient(Zera::ProxyClient *client);
     void setClientSmart(Zera::ProxyClientPtr client);
+    quint32 getChannelCatalog();
     virtual quint32 setECalcUnit(int n); // we want n eclac units, answer is the names of them
     virtual quint32 freeECalcUnits(); // free all the units the client had set
     virtual quint32 writeRegister(QString chnname, quint8 reg, quint32 value); // transp. register access
