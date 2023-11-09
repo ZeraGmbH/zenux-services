@@ -12,6 +12,14 @@
 #include "scpisingletonfactory.h"
 #include <unistd.h>
 
+namespace ECALCREG {
+enum { CMD, CONF, STATUS, INTMASK, INTREG, MTCNTin, MTCNTfin, MTCNTact, MTPULSin = 12, MTPAUSEin, MTPULS, MTPAUSE};
+}
+
+namespace ECALCCMDID {
+enum { COUNTEDGE = 1, COUNTRESET, ERRORMEASMASTER, ERRORMEASSLAVE};
+}
+
 SecChannel::SecChannel(int devFileDescriptor, SecCalculatorSettings* esettings, SecInputSettings *inpsettings, quint16 nr, std::function<void (int)> funcSigHandler) :
     ScpiConnection(ScpiSingletonFactory::getScpiObj()),
     m_devFileDescriptor(devFileDescriptor),
