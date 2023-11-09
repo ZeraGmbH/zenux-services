@@ -21,7 +21,7 @@
 #include "ethsettings.h"
 #include "fpgasettings.h"
 #include "ecalcsettings.h"
-#include "inputsettings.h"
+#include "secinputsettings.h"
 #include "statusinterface.h"
 #include "systeminterface.h"
 #include "systeminfo.h"
@@ -143,8 +143,8 @@ void cSEC1000dServer::doConfiguration()
                 connect(&m_xmlConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pFPGASettings,&FPGASettings::configXMLInfo);
                 m_pECalcSettings = new cECalculatorSettings(&m_xmlConfigReader);
                 connect(&m_xmlConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pECalcSettings,&cECalculatorSettings::configXMLInfo);
-                m_pInputSettings = new cInputSettings(&m_xmlConfigReader);
-                connect(&m_xmlConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pInputSettings,&cInputSettings::configXMLInfo);
+                m_pInputSettings = new SecInputSettings(&m_xmlConfigReader);
+                connect(&m_xmlConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pInputSettings,&SecInputSettings::configXMLInfo);
 
                 QString s = args.at(1);
                 qDebug() << s;

@@ -29,7 +29,7 @@ class cSEC1000dServer;
 class cECalculatorChannel;
 class cECalculatorSettings;
 class FPGASettings;
-class cInputSettings;
+class SecInputSettings;
 class cProtonetCommand;
 
 
@@ -38,7 +38,7 @@ class cECalculatorInterface : public cResource
     Q_OBJECT
 
 public:
-    cECalculatorInterface(cSEC1000dServer* server, EthSettings* ethsettings, cECalculatorSettings* ecalcSettings, FPGASettings* fpgasettings, cInputSettings* inputsettings);
+    cECalculatorInterface(cSEC1000dServer* server, EthSettings* ethsettings, cECalculatorSettings* ecalcSettings, FPGASettings* fpgasettings, SecInputSettings* inputsettings);
     ~cECalculatorInterface();
     void initSCPIConnection(QString leadingNodes) override;
     virtual void registerResource(RMConnection *rmConnection, quint16 port) override;
@@ -53,7 +53,7 @@ private:
     EthSettings* m_pETHsettings;
     cECalculatorSettings* m_pecalcsettings;
     FPGASettings* m_pFPGASettings;
-    cInputSettings* m_pInputSettings;
+    SecInputSettings* m_pInputSettings;
 
     QString m_sVersion;
 

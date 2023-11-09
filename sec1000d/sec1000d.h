@@ -13,7 +13,7 @@ class QSocketNotifier;
 class cDebugSettings;
 class FPGASettings;
 class cECalculatorSettings;
-class cInputSettings;
+class SecInputSettings;
 class cStatusInterface;
 class cSystemInterface;
 class cECalculatorInterface;
@@ -32,7 +32,7 @@ public:
     cDebugSettings* m_pDebugSettings;
     FPGASettings* m_pFPGASettings;
     cECalculatorSettings* m_pECalcSettings;
-    cInputSettings* m_pInputSettings;
+    SecInputSettings* m_pInputSettings;
 
     cStatusInterface* m_pStatusInterface;
     cSystemInterface* m_pSystemInterface;

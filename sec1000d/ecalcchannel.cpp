@@ -12,13 +12,13 @@
 #include "scpiconnection.h"
 #include "ecalcchannel.h"
 #include "fpgasettings.h"
-#include "inputsettings.h"
+#include "secinputsettings.h"
 #include "protonetcommand.h"
 #include "scpisingletonfactory.h"
 
 extern void SigHandler(int);
 
-cECalculatorChannel::cECalculatorChannel(cSEC1000dServer* server, cECalculatorSettings* esettings, FPGASettings* fsettings, cInputSettings *inpsettings, quint16 nr) :
+cECalculatorChannel::cECalculatorChannel(cSEC1000dServer* server, cECalculatorSettings* esettings, FPGASettings* fsettings, SecInputSettings *inpsettings, quint16 nr) :
     ScpiConnection(ScpiSingletonFactory::getScpiObj()),
     m_pMyServer(server),
     m_pecalcsettings(esettings),
