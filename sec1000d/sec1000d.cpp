@@ -180,7 +180,6 @@ void cSEC1000dServer::doSetupServer()
         scpiConnectionList.append(m_pStatusInterface = new cStatusInterface());
         scpiConnectionList.append(m_pSystemInterface = new cSystemInterface(this, m_pSystemInfo));
         scpiConnectionList.append(m_pECalculatorInterface = new SecInterface(DevFileDescriptor,
-                                                                             &m_ethSettings,
                                                                              m_pECalcSettings,
                                                                              m_pFPGASettings,
                                                                              m_pInputSettings,
