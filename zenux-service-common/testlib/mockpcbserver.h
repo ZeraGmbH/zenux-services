@@ -6,12 +6,8 @@
 #include <QStateMachine>
 #include <memory.h>
 
-struct TResourceWithSettings
-{
-    QList<XMLSettings*> settings;
-    cResource *resource;
-};
-typedef QList<TResourceWithSettings> ResourceSettingsList;
+typedef QList<XMLSettings*> XmlSettingsList;
+typedef QList<cResource*> ResourcesList;
 
 class MockPcbServer : public cPCBServer
 {
@@ -19,8 +15,9 @@ class MockPcbServer : public cPCBServer
 public:
     MockPcbServer(QString serviceName);
     ~MockPcbServer();
-    void setResourcesWithConfig(QList<TResourceWithSettings> resourceWithSettings);
     Zera::XMLConfig::cReader *getConfigReader();
+    void setXmlSettings(XmlSettingsList xmlSettings);
+    void setResources(ResourcesList resources);
     void start();
     bool areAllResourcesConnected();
 signals:
@@ -34,7 +31,8 @@ private slots:
     void onResourceRegisterRdy();
 private:
     static ServerParams createParams(QString serviceName);
-    QList<TResourceWithSettings> m_resourceWithSettings;
+    XmlSettingsList m_xmlSettings;
+    ResourcesList m_resources;
     int m_resourcesToConnect = 0;
     bool m_resourcesRegistered = false;
     QStateMachine* m_pInitializationMachine = nullptr;
