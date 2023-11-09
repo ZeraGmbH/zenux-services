@@ -5,10 +5,10 @@ enum debugconfigstate
     setdebuglevel
 };
 
-cDebugSettings::cDebugSettings(Zera::XMLConfig::cReader *xmlread, QString topXmlNode)
+cDebugSettings::cDebugSettings(Zera::XMLConfig::cReader *xmlread)
 {
     m_pXMLReader=xmlread;
-    m_ConfigXMLMap[topXmlNode + ":connectivity:debuglevel"] = setdebuglevel;
+    m_ConfigXMLMap["serviceconfig:connectivity:debuglevel"] = setdebuglevel;
 }
 
 quint8 cDebugSettings::getDebugLevel()

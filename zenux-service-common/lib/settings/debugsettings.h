@@ -7,7 +7,7 @@ class cDebugSettings: public XMLSettings
 {
     Q_OBJECT
 public:
-    cDebugSettings(Zera::XMLConfig::cReader *xmlread, QString topXmlNode);
+    cDebugSettings(Zera::XMLConfig::cReader *xmlread);
     quint8 getDebugLevel();
 public slots:
     virtual void configXMLInfo(QString key) override;

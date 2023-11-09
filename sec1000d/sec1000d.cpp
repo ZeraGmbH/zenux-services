@@ -134,12 +134,11 @@ void cSEC1000dServer::doConfiguration()
             connect(m_pNotifier, &QSocketNotifier::activated, this, &cSEC1000dServer::SECIntHandler);
             if (m_xmlConfigReader.loadSchema(defaultXSDFile))
             {
-                QString xmlConfigTopNode = "serviceconfig";
                 // we want to initialize all settings first
-                m_pDebugSettings = new cDebugSettings(&m_xmlConfigReader, xmlConfigTopNode);
+                m_pDebugSettings = new cDebugSettings(&m_xmlConfigReader);
                 connect(&m_xmlConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pDebugSettings,&cDebugSettings::configXMLInfo);
                 connect(&m_xmlConfigReader,&Zera::XMLConfig::cReader::valueChanged,&m_ethSettings,&EthSettings::configXMLInfo);
-                m_pFPGASettings = new FPGASettings(&m_xmlConfigReader, xmlConfigTopNode);
+                m_pFPGASettings = new FPGASettings(&m_xmlConfigReader);
                 connect(&m_xmlConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pFPGASettings,&FPGASettings::configXMLInfo);
                 m_pECalcSettings = new SecCalculatorSettings(&m_xmlConfigReader);
                 connect(&m_xmlConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pECalcSettings,&SecCalculatorSettings::configXMLInfo);

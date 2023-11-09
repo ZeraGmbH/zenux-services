@@ -168,14 +168,13 @@ void cMT310S2dServer::doConfiguration()
             connect(m_pNotifier, &QSocketNotifier::activated, this, &cMT310S2dServer::MTIntHandler);
 
             if (m_xmlConfigReader.loadSchema(defaultXSDFile)) {
-                QString xmlConfigTopNode = "serviceconfig";
                 // we want to initialize all settings first
-                m_pDebugSettings = new cDebugSettings(&m_xmlConfigReader, xmlConfigTopNode);
+                m_pDebugSettings = new cDebugSettings(&m_xmlConfigReader);
                 connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_pDebugSettings, &cDebugSettings::configXMLInfo);
                 connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, &m_ethSettings, &EthSettings::configXMLInfo);
                 m_pI2CSettings = new cI2CSettings(&m_xmlConfigReader);
                 connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_pI2CSettings, &cI2CSettings::configXMLInfo);
-                m_pFPGASettings = new FPGASettings(&m_xmlConfigReader, xmlConfigTopNode);
+                m_pFPGASettings = new FPGASettings(&m_xmlConfigReader);
                 connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_pFPGASettings, &FPGASettings::configXMLInfo);
                 m_pCtrlSettings = new cCtrlSettings(&m_xmlConfigReader);
                 connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_pCtrlSettings, &cCtrlSettings::configXMLInfo);

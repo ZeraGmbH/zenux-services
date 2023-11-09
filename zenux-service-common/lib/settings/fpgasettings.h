@@ -7,7 +7,7 @@ class FPGASettings : public XMLSettings
 {
     Q_OBJECT
 public:
-    FPGASettings(Zera::XMLConfig::cReader *xmlread, QString topXmlNode);
+    FPGASettings(Zera::XMLConfig::cReader *xmlread);
     QString& getDeviceNode();
 public slots:
     virtual void configXMLInfo(QString key);

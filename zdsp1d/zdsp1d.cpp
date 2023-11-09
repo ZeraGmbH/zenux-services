@@ -785,8 +785,7 @@ void cZDSP1Server::doConfiguration()
             if (myXMLConfigReader->loadSchema(defaultXSDFile))
             {
                 // we want to initialize all settings first
-                QString xmlConfigTopNode = "serviceconfig";
-                m_pDebugSettings = new cDebugSettings(myXMLConfigReader, xmlConfigTopNode);
+                m_pDebugSettings = new cDebugSettings(myXMLConfigReader);
                 connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pDebugSettings,&cDebugSettings::configXMLInfo);
                 m_pETHSettings = new EthSettings(myXMLConfigReader);
                 connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pETHSettings,&EthSettings::configXMLInfo);
