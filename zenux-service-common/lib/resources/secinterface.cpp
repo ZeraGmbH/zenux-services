@@ -5,13 +5,11 @@
 #include <scpi.h>
 
 SecInterface::SecInterface(int devFileDescriptor,
-                                             EthSettings* ethsettings,
-                                             SecCalculatorSettings* ecalcSettings,
-                                             FPGASettings* fpgasettings,
-                                             SecInputSettings *inputsettings,
-                                             std::function<void (int)> funcSigHandler) :
+                               SecCalculatorSettings* ecalcSettings,
+                               FPGASettings* fpgasettings,
+                               SecInputSettings *inputsettings,
+                               std::function<void (int)> funcSigHandler) :
     cResource(ScpiSingletonFactory::getScpiObj()),
-    m_pETHsettings(ethsettings),
     m_pecalcsettings(ecalcSettings),
     m_pFPGASettings(fpgasettings),
     m_pInputSettings(inputsettings)

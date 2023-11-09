@@ -3,7 +3,6 @@
 
 #include "resource.h"
 #include "secchannel.h"
-#include "ethsettings.h"
 #include "seccalcsettings.h"
 #include "secinputsettings.h"
 #include "fpgasettings.h"
@@ -34,7 +33,6 @@ class SecInterface : public cResource
 
 public:
     SecInterface(int devFileDescriptor,
-                 EthSettings* ethsettings,
                  SecCalculatorSettings* ecalcSettings,
                  FPGASettings* fpgasettings,
                  SecInputSettings* inputsettings,
@@ -49,7 +47,6 @@ protected:
     void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
 
 private:
-    EthSettings* m_pETHsettings;
     SecCalculatorSettings* m_pecalcsettings;
     FPGASettings* m_pFPGASettings;
     SecInputSettings* m_pInputSettings;
