@@ -160,6 +160,21 @@ quint32 cSECInterfacePrivate::unregisterNotifiers()
     return msgnr;
 }
 
+quint32 cSECInterfacePrivate::transparentCommand(QString cmd)
+{
+    quint32 msgnr;
+    QList<QString> sl;
+
+    sl = cmd.split(' ');
+    if (sl.count() <= 1)
+        msgnr = sendCommand(cmd);
+    else
+        msgnr = sendCommand(sl.at(0), sl.at(1));
+
+    m_MsgNrCmdList[msgnr] = SEC::transparentcommand;
+    return msgnr;
+}
+
 
 void cSECInterfacePrivate::receiveAnswer(std::shared_ptr<ProtobufMessage::NetMessage> message)
 {
@@ -196,8 +211,10 @@ void cSECInterfacePrivate::receiveAnswer(std::shared_ptr<ProtobufMessage::NetMes
         case SEC::regnotifier:
         case SEC::unregnotifier:
         case SEC::intacknowledge:
+        case SEC::transparentcommand:
             emit q->serverAnswer(lmsgnr, lreply, VariantConverter::returnString(lmsg));
             break;
+
         }
     }
 }

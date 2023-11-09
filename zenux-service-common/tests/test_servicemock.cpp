@@ -2,8 +2,10 @@
 #include "mockpcbserver.h"
 #include "resmanrunfacade.h"
 #include "foutgroupresourceandinterface.h"
+#include "secgroupresourceandinterface.h"
 #include "proxy.h"
 #include "pcbinterface.h"
+#include "secinterface.h"
 #include "reply.h"
 #include <QAbstractEventDispatcher>
 #include <QSignalSpy>
@@ -124,6 +126,37 @@ void test_servicemock::getFoutCatCom5003d()
     QCOMPARE(responseSpy[0][0], QVariant(msgNr));
     QCOMPARE(responseSpy[0][1], QVariant(ack));
     QCOMPARE(responseSpy[0][2], QVariant("fo0;fo1;fo2;fo3"));
+}
+
+void test_servicemock::getChannelCatSec1000d()
+{
+    ResmanRunFacade resman;
+    MockPcbServer mock("sec1000d");
+
+    SecCalculatorSettings secSettings(mock.getConfigReader());
+    SecInputSettings secInputSettings(mock.getConfigReader());
+    mock.setXmlSettings(QList<XMLSettings*>() << &secSettings << &secInputSettings);
+    SecGroupResourceAndInterface secInterface(-1, &secSettings, &secInputSettings, nullptr);
+    mock.setResources(QList<cResource*>() << &secInterface);
+
+    mock.start();
+    feedEventLoop();
+
+    Zera::ProxyClientPtr secClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6305);
+    Zera::cSECInterface secIFace;
+    secIFace.setClientSmart(secClient);
+
+    Zera::Proxy::getInstance()->startConnectionSmart(secClient);
+    feedEventLoop();
+
+    QSignalSpy responseSpy(&secIFace, &Zera::cSECInterface::serverAnswer);
+    int msgNr = secIFace.getChannelCatalog();
+    feedEventLoop();
+
+    QCOMPARE(responseSpy.count(), 1);
+    QCOMPARE(responseSpy[0][0], QVariant(msgNr));
+    QCOMPARE(responseSpy[0][1], QVariant(ack));
+    QCOMPARE(responseSpy[0][2], QVariant("ec0;ec1;ec2;ec3;ec4;ec5;ec6;ec7;"));
 }
 
 void test_servicemock::feedEventLoop()

@@ -22,7 +22,8 @@ enum seccommands
     stopecalc,
     regnotifier,
     unregnotifier,
-    intacknowledge
+    intacknowledge,
+    transparentcommand
 };
 }
 
@@ -49,6 +50,9 @@ public:
 
     virtual quint32 registerNotifier(QString query); // register for notification on change
     virtual quint32 unregisterNotifiers(); // unregister from all notifications
+
+    // sending a transparent command
+    virtual quint32 transparentCommand(QString cmd);
 
 protected slots:
     void receiveAnswer(std::shared_ptr<ProtobufMessage::NetMessage> message) override;
