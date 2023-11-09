@@ -34,6 +34,7 @@ class cSECInterfacePrivate: public cInterfacePrivate
 public:
     cSECInterfacePrivate(cSECInterface* iface);
     virtual void setClient(Zera::ProxyClient *client);
+    virtual void setClientSmart(Zera::ProxyClientPtr client);
     virtual quint32 setECalcUnit(int n); // we want n eclac units, answer is the names of them
     virtual quint32 freeECalcUnits(); // free all the units the client had set
     virtual quint32 writeRegister(QString chnname, quint8 reg, quint32 value); // transp. register access
@@ -56,6 +57,7 @@ protected slots:
 private:
     Q_DECLARE_PUBLIC(cSECInterface)
     cSECInterface *q_ptr;
+    Zera::ProxyClientPtr m_clientSmart;
 };
 
 }

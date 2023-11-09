@@ -20,6 +20,12 @@ void cSECInterface::setClient(Zera::ProxyClient *client)
     return d->setClient(client);
 }
 
+void cSECInterface::setClientSmart(ProxyClientPtr client)
+{
+    Q_D(cSECInterface);
+    return d->setClientSmart(client);
+}
+
 
 quint32 cSECInterface::setECalcUnit(int n)
 {
