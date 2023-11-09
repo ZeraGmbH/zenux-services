@@ -12,6 +12,7 @@ private slots:
     void connectMt310s2d();
     void connectInvalidIpMt310s2d();
     void getFoutCatMt310s2d();
+    void getFoutCatCom5003d();
 private:
     void feedEventLoop();
 };

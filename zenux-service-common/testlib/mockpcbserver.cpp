@@ -48,11 +48,22 @@ Zera::XMLConfig::cReader *MockPcbServer::getConfigReader()
 
 ServerParams MockPcbServer::createParams(QString serviceName)
 {
+    QString configPath;
+    if(serviceName == "com5003d")
+        configPath = QStringLiteral(CONFIG_SOURCES_COM5003D);
+    else if(serviceName == "mt310s2d")
+        configPath = QStringLiteral(CONFIG_SOURCES_MT310S2D);
+    else if(serviceName == "sec1000d")
+        configPath = QStringLiteral(CONFIG_SOURCES_SEC1000D);
+    else if(serviceName == "zdsp1d") // ooh that is far from mockable yet...
+        configPath = QStringLiteral(CONFIG_SOURCES_ZDSP1D);
+    else
+        qFatal("Cannot mock service: %s", qPrintable(serviceName));
     ServerParams params {
         QStringLiteral("Mock") + serviceName,
         "V42.0",
-        QStringLiteral(CONFIG_SOURCES_MT310S2D) + "/" + serviceName + ".xsd",
-        QStringLiteral(CONFIG_SOURCES_MT310S2D) + "/" + serviceName + ".xml"
+        configPath + "/" + serviceName + ".xsd",
+        configPath + "/" + serviceName + ".xml"
     };
     return params;
 }

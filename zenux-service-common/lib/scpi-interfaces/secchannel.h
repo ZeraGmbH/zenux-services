@@ -1,11 +1,15 @@
-#ifndef ECALCCHANNEL_H
-#define ECALCCHANNEL_H
+#ifndef SECCHANNEL_H
+#define SECCHANNEL_H
 
 #include "scpiconnection.h"
+#include "secinputsettings.h"
 #include "seccalcsettings.h"
+#include "fpgasettings.h"
 #include "notificationvalue.h"
+#include "protonetcommand.h"
 #include <QList>
 #include <QByteArray>
+#include <functional>
 
 #define baseChnName "ec"
 
@@ -44,19 +48,17 @@ enum Commands
 
 }
 
-class cSEC1000dServer;
-class SecCalculatorSettings;
-class FPGASettings;
-class SecInputSettings;
-class cProtonetCommand;
-
-class cECalculatorChannel : public ScpiConnection
+class SecChannel : public ScpiConnection
 {
     Q_OBJECT
-
 public:
-    cECalculatorChannel(cSEC1000dServer* server, SecCalculatorSettings* esettings, FPGASettings* fsettings, SecInputSettings* inpsettings, quint16 nr);
-    ~cECalculatorChannel();
+    SecChannel(int devFileDescriptor,
+               SecCalculatorSettings* esettings,
+               FPGASettings* fsettings,
+               SecInputSettings* inpsettings,
+               quint16 nr,
+               std::function<void(int)> funcSigHandler);
+    ~SecChannel();
     virtual void initSCPIConnection(QString leadingNodes) override;
 
     QString& getName();
@@ -64,16 +66,15 @@ public:
     bool set(QByteArray id);
     void free();
     void setIntReg(quint8 reg);
-    //void clrIntReg(quint8 reg);
 
     void m_StopErrorCalculator();
-    void m_resetInterrupt(quint8 interrupt);
+    void resetInterrupt(quint8 interrupt);
 
 protected:
     virtual void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
 
 private:
-    cSEC1000dServer* m_pMyServer;
+    int m_devFileDescriptor;
     SecCalculatorSettings* m_pecalcsettings;
     FPGASettings* m_pFPGASettings;
     SecInputSettings* m_pInputSettings;
@@ -95,7 +96,8 @@ private:
     void m_resetInt(cProtonetCommand* protoCmd);
 
     NotificationValue notifierECalcChannelIntReg;
+    std::function<void(int)> m_funcSigHandler;
 
 };
 
-#endif // ECALCCHANNEL_H
+#endif // SECCHANNEL_H
