@@ -1,5 +1,5 @@
-#ifndef ECALCSETTINGS_H
-#define ECALCSETTINGS_H
+#ifndef SECCALCSETTINGS_H
+#define SECCALCSETTINGS_H
 
 #include <xmlsettings.h>
 
@@ -14,12 +14,12 @@ enum configstate
 };
 }
 
-class cECalculatorSettings : public XMLSettings
+class SecCalculatorSettings : public XMLSettings
 {
     Q_OBJECT
 public:
-    cECalculatorSettings(Zera::XMLConfig::cReader *xmlread);
-    virtual ~cECalculatorSettings();
+    SecCalculatorSettings(Zera::XMLConfig::cReader *xmlread);
+    virtual ~SecCalculatorSettings();
     quint16 getNumber(); // here we ask for the number of error calculator units
     quint32 getBaseAdress(); // our base adress
     quint32 getIrqAdress(); // our base adress
@@ -33,5 +33,4 @@ private:
     quint32 m_nECalcUnitIrqAdress;
 };
 
-
-#endif // ECALCSETTINGS_H
+#endif // SECCALCSETTINGS_H

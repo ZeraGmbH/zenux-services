@@ -1,7 +1,7 @@
-#include "ecalcsettings.h"
+#include "seccalcsettings.h"
 #include <xmlconfigreader.h>
 
-cECalculatorSettings::cECalculatorSettings(Zera::XMLConfig::cReader *xmlread)
+SecCalculatorSettings::SecCalculatorSettings(Zera::XMLConfig::cReader *xmlread)
 {
     m_pXMLReader = xmlread;
 
@@ -10,26 +10,26 @@ cECalculatorSettings::cECalculatorSettings(Zera::XMLConfig::cReader *xmlread)
     m_ConfigXMLMap[QString("serviceconfig:resource:ecalcchannel:irqbase")] = ECalculatorSystem::setirqadress;
 }
 
-cECalculatorSettings::~cECalculatorSettings()
+SecCalculatorSettings::~SecCalculatorSettings()
 {
 }
 
-quint16 cECalculatorSettings::getNumber()
+quint16 SecCalculatorSettings::getNumber()
 {
    return m_nECalcUnits;
 }
 
-quint32 cECalculatorSettings::getBaseAdress()
+quint32 SecCalculatorSettings::getBaseAdress()
 {
     return m_nECalcUnitBaseAddress;
 }
 
-quint32 cECalculatorSettings::getIrqAdress()
+quint32 SecCalculatorSettings::getIrqAdress()
 {
     return m_nECalcUnitIrqAdress;
 }
 
-void cECalculatorSettings::configXMLInfo(QString key)
+void SecCalculatorSettings::configXMLInfo(QString key)
 {
     if (m_ConfigXMLMap.contains(key)) {
         switch (m_ConfigXMLMap[key])
