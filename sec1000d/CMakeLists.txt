@@ -4,7 +4,6 @@ set(SOURCES
     statusinterface.cpp
     systeminterface.cpp
     systeminfo.cpp
-    ecalcinterface.cpp
     )
 
 set(HEADER
@@ -13,7 +12,6 @@ set(HEADER
     statusinterface.h
     systeminterface.h
     systeminfo.h
-    ecalcinterface.h
     )
 
 add_library(sec1000d-lib STATIC

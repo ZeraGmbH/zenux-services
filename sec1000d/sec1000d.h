@@ -16,7 +16,7 @@ class SecCalculatorSettings;
 class SecInputSettings;
 class cStatusInterface;
 class cSystemInterface;
-class cECalculatorInterface;
+class SecInterface;
 class SecChannel;
 class cSystemInfo;
 
@@ -36,7 +36,7 @@ public:
 
     cStatusInterface* m_pStatusInterface;
     cSystemInterface* m_pSystemInterface;
-    cECalculatorInterface* m_pECalculatorInterface;
+    SecInterface* m_pECalculatorInterface;
     cSystemInfo* m_pSystemInfo;
     RMConnection* m_pRMConnection;
 

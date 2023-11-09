@@ -1,5 +1,5 @@
-#ifndef ECALCINTERFACE_H
-#define ECALCINTERFACE_H
+#ifndef SECINTERFACE_H
+#define SECINTERFACE_H
 
 #include "resource.h"
 #include "secchannel.h"
@@ -28,18 +28,18 @@ enum Commands
 
 }
 
-class cECalculatorInterface : public cResource
+class SecInterface : public cResource
 {
     Q_OBJECT
 
 public:
-    cECalculatorInterface(int devFileDescriptor,
-                          EthSettings* ethsettings,
-                          SecCalculatorSettings* ecalcSettings,
-                          FPGASettings* fpgasettings,
-                          SecInputSettings* inputsettings,
-                          std::function<void(int)> funcSigHandler);
-    ~cECalculatorInterface();
+    SecInterface(int devFileDescriptor,
+                 EthSettings* ethsettings,
+                 SecCalculatorSettings* ecalcSettings,
+                 FPGASettings* fpgasettings,
+                 SecInputSettings* inputsettings,
+                 std::function<void(int)> funcSigHandler);
+    ~SecInterface();
     void initSCPIConnection(QString leadingNodes) override;
     virtual void registerResource(RMConnection *rmConnection, quint16 port) override;
     virtual void unregisterResource(RMConnection *rmConnection) override;
@@ -66,4 +66,4 @@ private:
     void m_FreeChannels(cProtonetCommand *protoCmd);
 };
 
-#endif // ECALCINTERFACE_H
+#endif // SECINTERFACE_H

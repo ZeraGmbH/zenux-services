@@ -25,7 +25,7 @@
 #include "statusinterface.h"
 #include "systeminterface.h"
 #include "systeminfo.h"
-#include "ecalcinterface.h"
+#include "secinterface.h"
 #include "rmconnection.h"
 #include <scpisingletonfactory.h>
 
@@ -180,12 +180,12 @@ void cSEC1000dServer::doSetupServer()
         scpiConnectionList.append(this); // the server itself has some commands
         scpiConnectionList.append(m_pStatusInterface = new cStatusInterface());
         scpiConnectionList.append(m_pSystemInterface = new cSystemInterface(this, m_pSystemInfo));
-        scpiConnectionList.append(m_pECalculatorInterface = new cECalculatorInterface(DevFileDescriptor,
-                                                                                      &m_ethSettings,
-                                                                                      m_pECalcSettings,
-                                                                                      m_pFPGASettings,
-                                                                                      m_pInputSettings,
-                                                                                      SigHandler));
+        scpiConnectionList.append(m_pECalculatorInterface = new SecInterface(DevFileDescriptor,
+                                                                             &m_ethSettings,
+                                                                             m_pECalcSettings,
+                                                                             m_pFPGASettings,
+                                                                             m_pInputSettings,
+                                                                             SigHandler));
 
         resourceList.append(m_pECalculatorInterface); // all our resources
         m_ECalculatorChannelList = m_pECalculatorInterface->getECalcChannelList(); // we use this list in interrupt service

@@ -1,10 +1,10 @@
-#include "ecalcinterface.h"
+#include "secinterface.h"
 #include "scpiconnection.h"
 #include "scpisingletonfactory.h"
 #include "notzeronumgen.h"
 #include <scpi.h>
 
-cECalculatorInterface::cECalculatorInterface(int devFileDescriptor,
+SecInterface::SecInterface(int devFileDescriptor,
                                              EthSettings* ethsettings,
                                              SecCalculatorSettings* ecalcSettings,
                                              FPGASettings* fpgasettings,
@@ -30,7 +30,7 @@ cECalculatorInterface::cECalculatorInterface(int devFileDescriptor,
 }
 
 
-cECalculatorInterface::~cECalculatorInterface()
+SecInterface::~SecInterface()
 {
     SecChannel* cptr;
 
@@ -43,7 +43,7 @@ cECalculatorInterface::~cECalculatorInterface()
 }
 
 
-void cECalculatorInterface::initSCPIConnection(QString leadingNodes)
+void SecInterface::initSCPIConnection(QString leadingNodes)
 {
     ensureTrailingColonOnNonEmptyParentNodes(leadingNodes);
     addDelegate(QString("%1ECALCULATOR").arg(leadingNodes),"VERSION",SCPI::isQuery,m_pSCPIInterface, ECalcSystem::cmdVersion);
@@ -59,7 +59,7 @@ void cECalculatorInterface::initSCPIConnection(QString leadingNodes)
 }
 
 
-void cECalculatorInterface::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
+void SecInterface::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
 {
     switch (cmdCode)
     {
@@ -88,7 +88,7 @@ void cECalculatorInterface::executeProtoScpi(int cmdCode, cProtonetCommand *prot
 }
 
 
-void cECalculatorInterface::registerResource(RMConnection *rmConnection, quint16 port)
+void SecInterface::registerResource(RMConnection *rmConnection, quint16 port)
 {
     // we register all our error calculator units as resources
     register1Resource(rmConnection, NotZeroNumGen::getMsgNr(), QString("SEC1;ECALCULATOR;%1;%2;%3;")
@@ -99,19 +99,19 @@ void cECalculatorInterface::registerResource(RMConnection *rmConnection, quint16
 }
 
 
-void cECalculatorInterface::unregisterResource(RMConnection *rmConnection)
+void SecInterface::unregisterResource(RMConnection *rmConnection)
 {
     unregister1Resource(rmConnection, NotZeroNumGen::getMsgNr(), QString("SEC1;ECALCULATOR;"));
 }
 
 
-QList<SecChannel *> cECalculatorInterface::getECalcChannelList()
+QList<SecChannel *> SecInterface::getECalcChannelList()
 {
     return m_ECalculatorChannelList;
 }
 
 
-QString cECalculatorInterface::m_ReadVersion(QString &sInput)
+QString SecInterface::m_ReadVersion(QString &sInput)
 {
     cSCPICommand cmd = sInput;
 
@@ -122,7 +122,7 @@ QString cECalculatorInterface::m_ReadVersion(QString &sInput)
 }
 
 
-QString cECalculatorInterface::m_ReadECalculatorChannelCatalog(QString &sInput)
+QString SecInterface::m_ReadECalculatorChannelCatalog(QString &sInput)
 {
     cSCPICommand cmd = sInput;
 
@@ -140,7 +140,7 @@ QString cECalculatorInterface::m_ReadECalculatorChannelCatalog(QString &sInput)
 }
 
 
-void cECalculatorInterface::m_SetChannels(cProtonetCommand *protoCmd)
+void SecInterface::m_SetChannels(cProtonetCommand *protoCmd)
 {
     cSCPICommand cmd = protoCmd->m_sInput;
 
@@ -185,7 +185,7 @@ void cECalculatorInterface::m_SetChannels(cProtonetCommand *protoCmd)
 }
 
 
-void cECalculatorInterface::m_FreeChannels(cProtonetCommand *protoCmd)
+void SecInterface::m_FreeChannels(cProtonetCommand *protoCmd)
 {
     cSCPICommand cmd = protoCmd->m_sInput;
 
