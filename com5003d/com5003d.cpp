@@ -151,13 +151,12 @@ void cCOM5003dServer::doConfiguration()
             write(m_nFPGAfd, &sigStart, 4);
 
             // we want to initialize all settings first
-            QString xmlConfigTopNode = "serviceconfig";
-            m_pDebugSettings = new cDebugSettings(&m_xmlConfigReader, xmlConfigTopNode);
+            m_pDebugSettings = new cDebugSettings(&m_xmlConfigReader);
             connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_pDebugSettings,&cDebugSettings::configXMLInfo);
             connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, &m_ethSettings, &EthSettings::configXMLInfo);
             m_pI2CSettings = new cI2CSettings(&m_xmlConfigReader);
             connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_pI2CSettings,&cI2CSettings::configXMLInfo);
-            m_pFPGASettings = new FPGASettings(&m_xmlConfigReader, xmlConfigTopNode);
+            m_pFPGASettings = new FPGASettings(&m_xmlConfigReader);
             connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_pFPGASettings, &FPGASettings::configXMLInfo);
             m_pSenseSettings = new cSenseSettings(&m_xmlConfigReader, 6);
             connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_pSenseSettings, &cSenseSettings::configXMLInfo);

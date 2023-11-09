@@ -5,10 +5,10 @@ enum configstate
     setFPGADevNode
 };
 
-FPGASettings::FPGASettings(Zera::XMLConfig::cReader *xmlread, QString topXmlNode)
+FPGASettings::FPGASettings(Zera::XMLConfig::cReader *xmlread)
 {
     m_pXMLReader = xmlread;
-    m_ConfigXMLMap[topXmlNode + ":connectivity:fpga:device:node"] = setFPGADevNode;
+    m_ConfigXMLMap["serviceconfig:connectivity:fpga:device:node"] = setFPGADevNode;
 }
 
 QString& FPGASettings::getDeviceNode()
