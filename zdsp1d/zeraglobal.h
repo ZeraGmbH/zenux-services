@@ -15,9 +15,4 @@
 #define ERREXECString "errexec" // fehler bei der ausführung eines kommandos
 #define ERRTIMOString "errtimo" // timeout bei der ausführung eines kommandos
 
-// mögliche statusbits eines messkanals (erweiterbar)
-//---------------------------------------------------------------------
-// ein range ist RangeVirtuell wenn er nur zu linearisierungszwecken verwendet werden soll
-enum SenseRangeStatus {RangeJustified=1, RangeDefect=2, RangeVirtuell=4 } ; // mehr gibt es erstmal nicht
-
 #endif
