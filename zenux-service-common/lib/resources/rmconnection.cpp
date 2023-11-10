@@ -53,8 +53,7 @@ void RMConnection::responseHandler(std::shared_ptr<google::protobuf::Message> re
     answer = std::static_pointer_cast<ProtobufMessage::NetMessage>(response);
     if (answer != nullptr) {
         if ( !(answer->has_reply() && answer->reply().rtype() == answer->reply().ACK)) {
-            QByteArray ba = m_sCommand.toLocal8Bit();
-            qWarning("command: %s, was not acknowledged", ba.data());
+            qWarning("command: %s, was not acknowledged", qPrintable(m_sCommand));
             emit connectionRMError();
         }
         else {

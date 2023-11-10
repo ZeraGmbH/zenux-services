@@ -14,7 +14,6 @@ public:
     RMConnection(QString ipadr, quint16 port);
     void connect2RM();
     void SendIdent(QString ident);
-public slots:
     void SendCommand(QString& cmd, QString &par, quint32 msgnr);
     void SendCommand(QString &cmd, QString &par);
 private:
