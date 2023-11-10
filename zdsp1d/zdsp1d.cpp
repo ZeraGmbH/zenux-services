@@ -2182,9 +2182,6 @@ void cZDSP1Server::onExecuteCommandProto(std::shared_ptr<google::protobuf::Messa
             if (m_sOutput.contains(ERRVALString))
                 Answer->set_rtype(ProtobufMessage::NetMessage_NetReply_ReplyType_ERROR);
             else
-            if (m_sOutput.contains(ERRXMLString))
-                Answer->set_rtype(ProtobufMessage::NetMessage_NetReply_ReplyType_ERROR);
-            else
             if (m_sOutput.contains(ERRPATHString))
                 Answer->set_rtype(ProtobufMessage::NetMessage_NetReply_ReplyType_ERROR);
             else
