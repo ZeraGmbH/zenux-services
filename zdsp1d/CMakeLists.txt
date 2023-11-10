@@ -4,7 +4,6 @@ set(SOURCES
     dsp.cpp
     dspsettings.cpp
     parse.cpp
-    rmconnection.cpp
     scpi.cpp
     zdsp1d.cpp
     zhserver.cpp
@@ -17,7 +16,6 @@ set(HEADER
     dsp1scpi.h
     dspsettings.h
     parse.h
-    rmconnection.h
     scpi.h
     zdsp1d.h
     zdspglobal.h

@@ -31,6 +31,16 @@ void RMConnection::SendCommand(QString &cmd, QString &par, quint32 msgnr)
     m_pResourceManagerClient->sendMessage(message);
 }
 
+void RMConnection::SendCommand(QString &cmd, QString &par)
+{
+    m_sCommand = cmd;
+    ProtobufMessage::NetMessage envelope;
+    ProtobufMessage::NetMessage::ScpiCommand* message = envelope.mutable_scpi();
+    message->set_command(cmd.toStdString());
+    message->set_parameter(par.toStdString());
+    m_pResourceManagerClient->sendMessage(envelope);
+}
+
 void RMConnection::tcpErrorHandler(QAbstractSocket::SocketError errorCode)
 {
     qCritical("tcp socket error resource manager port: %d",errorCode);
