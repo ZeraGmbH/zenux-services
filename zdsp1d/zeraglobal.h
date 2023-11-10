@@ -15,11 +15,6 @@
 #define ERREXECString "errexec" // fehler bei der ausführung eines kommandos
 #define ERRTIMOString "errtimo" // timeout bei der ausführung eines kommandos
 
-// mögliche messwertypen, werden genutzt rauszufinden ob eine vom messkanal geforderte eigenschaft verfügbar ist 
-// ein bereich kann u.U. mehrere 
-//-----------------------------------------------------------------------------------------------------------------------------------------------------------
-enum SenseMeasType {Uabs=1, Iabs=2, Udiff=4, Idiff=8, ECT=16}; 
-
 // mögliche statusbits eines messkanals (erweiterbar)
 //---------------------------------------------------------------------
 // ein range ist RangeVirtuell wenn er nur zu linearisierungszwecken verwendet werden soll
