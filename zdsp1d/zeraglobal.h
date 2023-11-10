@@ -9,6 +9,5 @@
 #define ERRVALString "errval" // kommando verstanden, parameter jedoch fehlerhaft
 #define ERRPATHString "errpath" // falsche pfad angabe bzw. pfad existiert nicht
 #define ERREXECString "errexec" // fehler bei der ausführung eines kommandos
-#define ERRTIMOString "errtimo" // timeout bei der ausführung eines kommandos
 
 #endif

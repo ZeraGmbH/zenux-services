@@ -108,8 +108,6 @@ void cPCBServer::sendAnswerProto(cProtonetCommand *protoCmd)
                 Answer->set_rtype(ProtobufMessage::NetMessage_NetReply_ReplyType_ERROR);
             else if (output.contains(SCPI::scpiAnswer[SCPI::errexec]))
                 Answer->set_rtype(ProtobufMessage::NetMessage_NetReply_ReplyType_ERROR);
-            else if (output.contains(SCPI::scpiAnswer[SCPI::errtimo]))
-                Answer->set_rtype(ProtobufMessage::NetMessage_NetReply_ReplyType_ERROR);
             else
                 Answer->set_rtype(ProtobufMessage::NetMessage_NetReply_ReplyType_ACK);
 

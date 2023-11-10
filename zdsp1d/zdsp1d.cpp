@@ -1237,13 +1237,6 @@ QString cZDSP1Server::mCommand2Dsp(QString& qs)
             break;
         }
 
-        if ( ack ==  CmdTimeout)
-        {
-            cl.DspVarWrite(ss = "DSPACK,0;");
-            Answer = ERRTIMOString;
-            break;
-        }
-
         if (! cl.DspVarWrite(ss = "DSPACK,0;") ) break; // reset acknowledge
         if (! cl.DspVarWrite(qs)) break; // kommando und parameter -> dsp
 
@@ -2180,9 +2173,6 @@ void cZDSP1Server::onExecuteCommandProto(std::shared_ptr<google::protobuf::Messa
                 Answer->set_rtype(ProtobufMessage::NetMessage_NetReply_ReplyType_ERROR);
             else
             if (m_sOutput.contains(ERREXECString))
-                Answer->set_rtype(ProtobufMessage::NetMessage_NetReply_ReplyType_ERROR);
-            else
-            if (m_sOutput.contains(ERRTIMOString))
                 Answer->set_rtype(ProtobufMessage::NetMessage_NetReply_ReplyType_ERROR);
             else
                 Answer->set_rtype(ProtobufMessage::NetMessage_NetReply_ReplyType_ACK);
