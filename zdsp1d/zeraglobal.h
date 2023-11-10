@@ -20,7 +20,4 @@
 // ein range ist RangeVirtuell wenn er nur zu linearisierungszwecken verwendet werden soll
 enum SenseRangeStatus {RangeJustified=1, RangeDefect=2, RangeVirtuell=4 } ; // mehr gibt es erstmal nicht
 
-
-enum SenseChannelStatus { ChannelNormalOperation=0, ChannelBusy=1, ChannelOverload=2 } ;
-
 #endif
