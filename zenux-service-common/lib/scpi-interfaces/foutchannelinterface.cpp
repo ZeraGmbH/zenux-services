@@ -1,4 +1,5 @@
 #include "foutchannelinterface.h"
+#include "zscpi_response_definitions.h"
 
 enum Commands
 {
@@ -106,7 +107,7 @@ QString FOutChannelInterface::readAlias(QString &sInput)
     if (cmd.isQuery())
         return m_sAlias;
     else
-        return SCPI::scpiAnswer[SCPI::nak];
+        return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 QString FOutChannelInterface::readType(QString &sInput)
@@ -115,7 +116,7 @@ QString FOutChannelInterface::readType(QString &sInput)
     if (cmd.isQuery())
         return QString("%1").arg(m_nType);
     else
-        return SCPI::scpiAnswer[SCPI::nak];
+        return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 QString FOutChannelInterface::readDspServer(QString &sInput)
@@ -124,7 +125,7 @@ QString FOutChannelInterface::readDspServer(QString &sInput)
     if (cmd.isQuery())
         return QString("%1").arg(m_nDspServer);
     else
-        return SCPI::scpiAnswer[SCPI::nak];
+        return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 QString FOutChannelInterface::readDspChannel(QString &sInput)
@@ -133,7 +134,7 @@ QString FOutChannelInterface::readDspChannel(QString &sInput)
     if (cmd.isQuery())
         return QString("%1").arg(m_nDspChannel);
     else
-        return SCPI::scpiAnswer[SCPI::nak];
+        return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 QString FOutChannelInterface::readChannelStatus(QString &sInput)
@@ -145,7 +146,7 @@ QString FOutChannelInterface::readChannelStatus(QString &sInput)
             return QString("%1").arg(r);
     }
     else
-        return SCPI::scpiAnswer[SCPI::nak];
+        return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 QString FOutChannelInterface::readFFactor(QString &sInput)
@@ -154,7 +155,7 @@ QString FOutChannelInterface::readFFactor(QString &sInput)
     if (cmd.isQuery())
         return QString("%1").arg(m_fFormFactor);
     else
-        return SCPI::scpiAnswer[SCPI::nak];
+        return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 QString FOutChannelInterface::readWriteConstant(QString &sInput)
@@ -166,10 +167,10 @@ QString FOutChannelInterface::readWriteConstant(QString &sInput)
     else if (cmd.isCommand(1)) {
         QString constant = cmd.getParam(0);
         notifierConstant = constant;
-        return SCPI::scpiAnswer[SCPI::ack];
+        return ZSCPI::scpiAnswer[ZSCPI::ack];
     }
     else
-        return SCPI::scpiAnswer[SCPI::nak];
+        return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 QString FOutChannelInterface::readWritePowerType(QString &sInput)
@@ -181,8 +182,8 @@ QString FOutChannelInterface::readWritePowerType(QString &sInput)
     else if (cmd.isCommand(1)) {
         QString powertype = cmd.getParam(0);
         notifierPowerType = powertype;
-        return SCPI::scpiAnswer[SCPI::ack];
+        return ZSCPI::scpiAnswer[ZSCPI::ack];
     }
     else
-        return SCPI::scpiAnswer[SCPI::nak];
+        return ZSCPI::scpiAnswer[ZSCPI::nak];
 }

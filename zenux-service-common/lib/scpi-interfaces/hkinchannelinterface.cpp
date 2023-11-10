@@ -1,4 +1,5 @@
 #include "hkinchannelinterface.h"
+#include "zscpi_response_definitions.h"
 
 enum Commands
 {
@@ -63,7 +64,7 @@ QString HkInChannelInterface::readAlias(QString &sInput)
     if (cmd.isQuery())
         return m_sAlias;
     else
-        return SCPI::scpiAnswer[SCPI::nak];
+        return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 
@@ -75,6 +76,6 @@ QString HkInChannelInterface::readChannelStatus(QString &sInput)
         return QString("%1").arg(r);
     }
     else
-        return SCPI::scpiAnswer[SCPI::nak];
+        return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 

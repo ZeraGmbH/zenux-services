@@ -1,8 +1,5 @@
 #include "pcbserver.h"
-#include "protonetcommand.h"
-#include <xiqnetpeer.h>
-#include <xmlconfigreader.h>
-#include <xiqnetserver.h>
+#include "zscpi_response_definitions.h"
 #include <scpi.h>
 #include <fcntl.h>
 #include <unistd.h>
@@ -92,21 +89,21 @@ void cPCBServer::sendAnswerProto(cProtonetCommand *protoCmd)
             // dependent on rtype caller can see ack, nak, error
             // in case of error the body has to be analyzed for details
             QString output = protoCmd->m_sOutput;
-            if (output.contains(SCPI::scpiAnswer[SCPI::ack]))
+            if (output.contains(ZSCPI::scpiAnswer[ZSCPI::ack]))
                 Answer->set_rtype(ProtobufMessage::NetMessage_NetReply_ReplyType_ACK);
-            else if (output.contains(SCPI::scpiAnswer[SCPI::nak]))
+            else if (output.contains(ZSCPI::scpiAnswer[ZSCPI::nak]))
                 Answer->set_rtype(ProtobufMessage::NetMessage_NetReply_ReplyType_NACK);
-            else if (output.contains(SCPI::scpiAnswer[SCPI::busy]))
+            else if (output.contains(ZSCPI::scpiAnswer[ZSCPI::busy]))
                 Answer->set_rtype(ProtobufMessage::NetMessage_NetReply_ReplyType_ERROR);
-            else if (output.contains(SCPI::scpiAnswer[SCPI::erraut]))
+            else if (output.contains(ZSCPI::scpiAnswer[ZSCPI::erraut]))
                 Answer->set_rtype(ProtobufMessage::NetMessage_NetReply_ReplyType_ERROR);
-            else if (output.contains(SCPI::scpiAnswer[SCPI::errval]))
+            else if (output.contains(ZSCPI::scpiAnswer[ZSCPI::errval]))
                 Answer->set_rtype(ProtobufMessage::NetMessage_NetReply_ReplyType_ERROR);
-            else if (output.contains(SCPI::scpiAnswer[SCPI::errxml]))
+            else if (output.contains(ZSCPI::scpiAnswer[ZSCPI::errxml]))
                 Answer->set_rtype(ProtobufMessage::NetMessage_NetReply_ReplyType_ERROR);
-            else if (output.contains(SCPI::scpiAnswer[SCPI::errpath]))
+            else if (output.contains(ZSCPI::scpiAnswer[ZSCPI::errpath]))
                 Answer->set_rtype(ProtobufMessage::NetMessage_NetReply_ReplyType_ERROR);
-            else if (output.contains(SCPI::scpiAnswer[SCPI::errexec]))
+            else if (output.contains(ZSCPI::scpiAnswer[ZSCPI::errexec]))
                 Answer->set_rtype(ProtobufMessage::NetMessage_NetReply_ReplyType_ERROR);
             else
                 Answer->set_rtype(ProtobufMessage::NetMessage_NetReply_ReplyType_ACK);
@@ -154,12 +151,12 @@ void cPCBServer::SCPIInput()
     if(scpiObject) {
         cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
         if (!scpiDelegate->executeSCPI(protoCmd)) {
-            protoCmd->m_sOutput = SCPI::scpiAnswer[SCPI::nak];
+            protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::nak];
             emit cmdExecutionDone(protoCmd);
         }
     }
     else {
-        protoCmd->m_sOutput = SCPI::scpiAnswer[SCPI::nak];
+        protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::nak];
         emit cmdExecutionDone(protoCmd);
     }
 }
@@ -194,14 +191,14 @@ void cPCBServer::registerNotifier(cProtonetCommand *protoCmd)
             procmd->m_bwithOutput = false;
             procmd->m_sInput = query;
             if (!scpiDelegate->executeSCPI(procmd)) {
-                protoCmd->m_sOutput = SCPI::scpiAnswer[SCPI::nak];
+                protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::nak];
                 m_notifierRegisterNext.pop_back();
             }
             else
-                protoCmd->m_sOutput = SCPI::scpiAnswer[SCPI::ack]; // we overwrite the query's output here
+                protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::ack]; // we overwrite the query's output here
         }
         else
-            protoCmd->m_sOutput = SCPI::scpiAnswer[SCPI::nak];
+            protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::nak];
     }
     else if(cmd.isCommand(2)) {// mt310s2/com5003 service receives registerNotifier with 2 params
         QString query = cmd.getParam(0);
@@ -215,11 +212,11 @@ void cPCBServer::registerNotifier(cProtonetCommand *protoCmd)
             ScpiNotificationSubscriber subscriber(protoCmd->m_pPeer, protoCmd->m_clientId, cmd.getParam(1).toInt());
             scpiDelegate->getScpiNotificationSubscriberHandler().addSubscriber(subscriber);
             scpiDelegate->executeSCPI(procmd);
-            protoCmd->m_sOutput = SCPI::scpiAnswer[SCPI::ack]; // we overwrite the query's output here
+            protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::ack]; // we overwrite the query's output here
             emit notifierRegistred(scpiDelegate->getNotificationString());
         }
         else
-            protoCmd->m_sOutput = SCPI::scpiAnswer[SCPI::nak];
+            protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::nak];
     }
 }
 
@@ -228,10 +225,10 @@ void cPCBServer::unregisterNotifier(cProtonetCommand *protoCmd)
     cSCPICommand cmd = protoCmd->m_sInput;
     if(cmd.isCommand(1) && (cmd.getParam(0) == "") ) {
         doUnregisterNotifier(protoCmd->m_pPeer, protoCmd->m_clientId);
-        protoCmd->m_sOutput = SCPI::scpiAnswer[SCPI::ack];
+        protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::ack];
     }
     else
-        protoCmd->m_sOutput = SCPI::scpiAnswer[SCPI::nak];
+        protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 void cPCBServer::doUnregisterNotifier(XiQNetPeer* peer, const QByteArray &clientID)
@@ -279,13 +276,13 @@ void cPCBServer::onExecuteCommandProto(std::shared_ptr<google::protobuf::Message
                     protoCmd = new cProtonetCommand(peer, true, true, clientId, messageNr, m_sInput, scpiObject->getType());
                     cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
                     if (!scpiDelegate->executeSCPI(protoCmd)) {
-                        protoCmd->m_sOutput = SCPI::scpiAnswer[SCPI::nak];
+                        protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::nak];
                         emit cmdExecutionDone(protoCmd);
                     }
                 }
                 else {
                     protoCmd = new cProtonetCommand(peer, true, true, clientId, messageNr, m_sInput);
-                    protoCmd->m_sOutput = SCPI::scpiAnswer[SCPI::nak];
+                    protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::nak];
                     emit cmdExecutionDone(protoCmd);
                 }
                 // we get a signal when a command is finished and send answer then
@@ -300,13 +297,13 @@ void cPCBServer::onExecuteCommandProto(std::shared_ptr<google::protobuf::Message
                 protoCmd = new cProtonetCommand(peer, false, true, clientId, 0, m_sInput, scpiObject->getType());
                 cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
                 if (!scpiDelegate->executeSCPI(protoCmd)) {
-                    protoCmd->m_sOutput = SCPI::scpiAnswer[SCPI::nak];
+                    protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::nak];
                     emit cmdExecutionDone(protoCmd);
                 }
             }
             else {
                 protoCmd = new cProtonetCommand(peer, false, true, clientId, 0, m_sInput, 0);
-                protoCmd->m_sOutput = SCPI::scpiAnswer[SCPI::nak];
+                protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::nak];
                 emit cmdExecutionDone(protoCmd);
             }
         }

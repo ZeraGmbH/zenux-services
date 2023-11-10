@@ -1,4 +1,5 @@
 #include "justdatainterface.h"
+#include "zscpi_response_definitions.h"
 #include <gaussmatrix.h>
 #include <gaussnode.h>
 #include <math.h>
@@ -98,18 +99,18 @@ QString JustDataInterface::m_ReadWriteStatus(QString &sInput)
                 quint8 par = spar.toInt(&ok);
                 if (ok) {
                     m_nStatus = par;
-                    return SCPI::scpiAnswer[SCPI::ack];
+                    return ZSCPI::scpiAnswer[ZSCPI::ack];
                 }
                 else
-                    return SCPI::scpiAnswer[SCPI::errval];
+                    return ZSCPI::scpiAnswer[ZSCPI::errval];
             }
             else
-                return SCPI::scpiAnswer[SCPI::erraut];
+                return ZSCPI::scpiAnswer[ZSCPI::erraut];
         }
         else
-            return SCPI::scpiAnswer[SCPI::errexec];
+            return ZSCPI::scpiAnswer[ZSCPI::errexec];
     }
-    return SCPI::scpiAnswer[SCPI::nak];
+    return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 QString JustDataInterface::m_ReadWriteJustCoeeficient(QString &sInput, quint8 index)
@@ -126,18 +127,18 @@ QString JustDataInterface::m_ReadWriteJustCoeeficient(QString &sInput, quint8 in
                 double par = spar.toDouble(&ok);
                 if (ok) {
                     setCoefficient(index, par);
-                    return SCPI::scpiAnswer[SCPI::ack];
+                    return ZSCPI::scpiAnswer[ZSCPI::ack];
                 }
                 else
-                    return SCPI::scpiAnswer[SCPI::errval];
+                    return ZSCPI::scpiAnswer[ZSCPI::errval];
             }
             else
-                return SCPI::scpiAnswer[SCPI::erraut];
+                return ZSCPI::scpiAnswer[ZSCPI::erraut];
         }
         else
-            return SCPI::scpiAnswer[SCPI::errexec];
+            return ZSCPI::scpiAnswer[ZSCPI::errexec];
     }
-    return SCPI::scpiAnswer[SCPI::nak];
+    return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 
@@ -161,18 +162,18 @@ QString JustDataInterface::m_ReadWriteJustNode(QString &sInput, quint8 index)
                 {
                     cJustNode jn = cJustNode(par0,par1);
                     setNode(index, jn);
-                    return SCPI::scpiAnswer[SCPI::ack];
+                    return ZSCPI::scpiAnswer[ZSCPI::ack];
                 }
                 else
-                    return SCPI::scpiAnswer[SCPI::errval];
+                    return ZSCPI::scpiAnswer[ZSCPI::errval];
             }
             else
-                return SCPI::scpiAnswer[SCPI::erraut];
+                return ZSCPI::scpiAnswer[ZSCPI::erraut];
         }
         else
-            return SCPI::scpiAnswer[SCPI::errexec];
+            return ZSCPI::scpiAnswer[ZSCPI::errexec];
     }
-    return SCPI::scpiAnswer[SCPI::nak];
+    return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 

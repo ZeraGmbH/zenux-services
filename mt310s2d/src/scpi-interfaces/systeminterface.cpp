@@ -1,11 +1,10 @@
 #include "mt310s2d.h"
-#include "adjustment.h"
-#include "scpidelegate.h"
 #include "systeminfo.h"
 #include "systeminterface.h"
 #include "senseinterface.h"
 #include "protonetcommand.h"
 #include "micro-controller-io/atmel.h"
+#include "zscpi_response_definitions.h"
 #include <scpi.h>
 #include <scpicommand.h>
 #include <QJsonObject>
@@ -133,7 +132,7 @@ QString cSystemInterface::scpiReadServerVersion(QString &sInput)
         s = m_pMyServer->getVersion();
     }
     else
-        s = SCPI::scpiAnswer[SCPI::nak];
+        s = ZSCPI::scpiAnswer[ZSCPI::nak];
 
     return s;
 }
@@ -148,10 +147,10 @@ QString cSystemInterface::m_ReadDeviceVersion(QString &sInput)
         if (m_pMyServer->m_pSystemInfo->dataRead())
             return m_pMyServer->m_pSystemInfo->getDeviceVersion();
         else
-            return SCPI::scpiAnswer[SCPI::errexec];
+            return ZSCPI::scpiAnswer[ZSCPI::errexec];
     }
     else
-        return SCPI::scpiAnswer[SCPI::nak];
+        return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 
@@ -165,10 +164,10 @@ QString cSystemInterface::m_ReadDeviceName(QString& sInput)
         if (m_pMyServer->m_pSystemInfo->dataRead())
             return m_pMyServer->m_pSystemInfo->getDeviceName();
         else
-            return SCPI::scpiAnswer[SCPI::errexec];
+            return ZSCPI::scpiAnswer[ZSCPI::errexec];
     }
     else
-        return SCPI::scpiAnswer[SCPI::nak];
+        return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 
@@ -185,7 +184,7 @@ QString cSystemInterface::m_ReadWritePCBVersion(QString &sInput)
             s = m_allPCBVersion.getString();
         }
         else
-            s = SCPI::scpiAnswer[SCPI::errexec];
+            s = ZSCPI::scpiAnswer[ZSCPI::errexec];
     }
     else
     {
@@ -212,10 +211,10 @@ QString cSystemInterface::scpiReadAllCTRLVersions(QString &sInput)
             return m_allCtrlVersion.getString();
         }
         else
-            return SCPI::scpiAnswer[SCPI::errexec];
+            return ZSCPI::scpiAnswer[ZSCPI::errexec];
     }
     else
-        return SCPI::scpiAnswer[SCPI::nak];
+        return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 
@@ -228,11 +227,11 @@ QString cSystemInterface::m_ReadFPGAVersion(QString &sInput)
         if (m_pMyServer->m_pSystemInfo->dataRead())
             return m_pMyServer->m_pSystemInfo->getLCAVersion();
         else
-            return SCPI::scpiAnswer[SCPI::errexec];
+            return ZSCPI::scpiAnswer[ZSCPI::errexec];
     }
 
     else
-        return SCPI::scpiAnswer[SCPI::nak];
+        return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 
@@ -248,7 +247,7 @@ QString cSystemInterface::m_ReadWriteSerialNumber(QString &sInput)
             if (m_pMyServer->m_pSystemInfo->dataRead())
                 s = m_pMyServer->m_pSystemInfo->getSerialNumber();
             else
-                s = SCPI::scpiAnswer[SCPI::errexec];
+                s = ZSCPI::scpiAnswer[ZSCPI::errexec];
         }
     }
     else
@@ -352,18 +351,18 @@ QString cSystemInterface::m_AdjFlashWrite(QString &sInput)
             if (enable)
             {
                 if (m_pMyServer->m_pSenseInterface->exportAdjFlash())
-                    return SCPI::scpiAnswer[SCPI::ack];
+                    return ZSCPI::scpiAnswer[ZSCPI::ack];
                 else
-                    return SCPI::scpiAnswer[SCPI::errexec];
+                    return ZSCPI::scpiAnswer[ZSCPI::errexec];
             }
             else
-                return SCPI::scpiAnswer[SCPI::erraut];
+                return ZSCPI::scpiAnswer[ZSCPI::erraut];
         }
         else
-            return SCPI::scpiAnswer[SCPI::errexec];
+            return ZSCPI::scpiAnswer[ZSCPI::errexec];
     }
 
-    return SCPI::scpiAnswer[SCPI::nak];
+    return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 
@@ -374,12 +373,12 @@ QString cSystemInterface::m_AdjFlashRead(QString &sInput)
     if (cmd.isCommand(1) && (cmd.getParam(0) == ""))
     {
         if (m_pMyServer->m_pSenseInterface->importAdjFlash())
-            return SCPI::scpiAnswer[SCPI::ack];
+            return ZSCPI::scpiAnswer[ZSCPI::ack];
         else
-            return SCPI::scpiAnswer[SCPI::errexec];
+            return ZSCPI::scpiAnswer[ZSCPI::errexec];
     }
 
-    return SCPI::scpiAnswer[SCPI::nak];
+    return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 
@@ -402,21 +401,21 @@ QString cSystemInterface::m_AdjXmlImportExport(QString &sInput)
             {
                 QString XML = cmd.getParam();
                 if (!m_pMyServer->m_pSenseInterface->importAdjXMLString(XML))
-                    s = SCPI::errxml;
+                    s = ZSCPI::errxml;
                 else
                 {
                     m_pMyServer->m_pSenseInterface->m_ComputeSenseAdjData();
                     if (!m_pMyServer->m_pSenseInterface->exportAdjFlash())
-                        s = SCPI::scpiAnswer[SCPI::errexec];
+                        s = ZSCPI::scpiAnswer[ZSCPI::errexec];
                     else
-                        s = SCPI::scpiAnswer[SCPI::ack];
+                        s = ZSCPI::scpiAnswer[ZSCPI::ack];
                 }
             }
             else
-                s = SCPI::scpiAnswer[SCPI::erraut];
+                s = ZSCPI::scpiAnswer[ZSCPI::erraut];
         }
         else
-            s = SCPI::scpiAnswer[SCPI::errexec];
+            s = ZSCPI::scpiAnswer[ZSCPI::errexec];
     }
 
     return s;
@@ -431,12 +430,12 @@ QString cSystemInterface::m_AdjXMLWrite(QString &sInput)
     {
         QString filename = cmd.getParam(0);
         if (m_pMyServer->m_pSenseInterface->exportAdjXML(filename))
-            return SCPI::scpiAnswer[SCPI::ack];
+            return ZSCPI::scpiAnswer[ZSCPI::ack];
         else
-            return SCPI::scpiAnswer[SCPI::errexec];
+            return ZSCPI::scpiAnswer[ZSCPI::errexec];
     }
     else
-        return SCPI::scpiAnswer[SCPI::nak];
+        return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 
@@ -453,18 +452,18 @@ QString cSystemInterface::m_AdjXMLRead(QString &sInput)
             {
                 QString filename = cmd.getParam(0);
                 if (m_pMyServer->m_pSenseInterface->importAdjXML(filename))
-                    return SCPI::scpiAnswer[SCPI::ack];
+                    return ZSCPI::scpiAnswer[ZSCPI::ack];
                 else
-                    return SCPI::scpiAnswer[SCPI::errexec];
+                    return ZSCPI::scpiAnswer[ZSCPI::errexec];
             }
             else
-                return SCPI::scpiAnswer[SCPI::erraut];
+                return ZSCPI::scpiAnswer[ZSCPI::erraut];
         }
         else
-            return SCPI::scpiAnswer[SCPI::errexec];
+            return ZSCPI::scpiAnswer[ZSCPI::errexec];
     }
 
-    return SCPI::scpiAnswer[SCPI::nak];
+    return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 
@@ -478,7 +477,7 @@ QString cSystemInterface::m_AdjFlashChksum(QString &sInput)
         return s;
     }
     else
-        return SCPI::scpiAnswer[SCPI::nak];
+        return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 
@@ -493,14 +492,14 @@ QString cSystemInterface::m_InterfaceRead(QString &sInput)
         return s;
     }
     else
-        return SCPI::scpiAnswer[SCPI::nak];
+        return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 QString cSystemInterface::testMode(QString &Input)
 {
     cSCPICommand cmd = Input;
     quint32 modeBits = cmd.getParam(0).toUInt();
-    return pAtmelSys->enableTestMode(modeBits)==ZeraMControllerIo::cmddone ? SCPI::scpiAnswer[SCPI::ack] : SCPI::scpiAnswer[SCPI::errexec];
+    return pAtmelSys->enableTestMode(modeBits)==ZeraMControllerIo::cmddone ? ZSCPI::scpiAnswer[ZSCPI::ack] : ZSCPI::scpiAnswer[ZSCPI::errexec];
 }
 
 void cSystemInterface::updateAllCtrlVersionsJson()
@@ -538,13 +537,13 @@ void cSystemInterface::m_genAnswer(int select, QString &answer)
     switch (select)
     {
     case ZeraMControllerIo::cmddone:
-        answer = SCPI::scpiAnswer[SCPI::ack];
+        answer = ZSCPI::scpiAnswer[ZSCPI::ack];
         break;
     case ZeraMControllerIo::cmdfault:
-        answer = SCPI::scpiAnswer[SCPI::nak];
+        answer = ZSCPI::scpiAnswer[ZSCPI::nak];
         break;
     case ZeraMControllerIo::cmdexecfault:
-        answer = SCPI::scpiAnswer[SCPI::errexec];
+        answer = ZSCPI::scpiAnswer[ZSCPI::errexec];
         break;
     }
 }

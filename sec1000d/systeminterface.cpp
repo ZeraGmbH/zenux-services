@@ -1,11 +1,10 @@
 #include "systeminterface.h"
 #include "sec1000d.h"
-#include "sec1000dglobal.h"
 #include "systeminfo.h"
+#include "zscpi_response_definitions.h"
 #include "protonetcommand.h"
 #include <scpi.h>
 #include <scpicommand.h>
-#include "scpidelegate.h"
 #include <scpisingletonfactory.h>
 
 cSystemInterface::cSystemInterface(cSEC1000dServer *server, cSystemInfo *sInfo) :
@@ -61,7 +60,7 @@ QString cSystemInterface::scpiReadServerVersion(QString &sInput)
     if ( cmd.isQuery() )
         s = m_pMyServer->getVersion();
     else
-        s = SCPI::scpiAnswer[SCPI::nak];
+        s = ZSCPI::scpiAnswer[ZSCPI::nak];
     return s;
 }
 
@@ -73,10 +72,10 @@ QString cSystemInterface::m_ReadDeviceVersion(QString &sInput)
         if (m_pSystemInfo->dataRead())
             return m_pSystemInfo->getDeviceVersion();
         else
-            return SCPI::scpiAnswer[SCPI::errexec];
+            return ZSCPI::scpiAnswer[ZSCPI::errexec];
     }
     else
-        return SCPI::scpiAnswer[SCPI::nak];
+        return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 
@@ -87,10 +86,10 @@ QString cSystemInterface::m_ReadDeviceName(QString& sInput)
         if (m_pSystemInfo->dataRead())
             return m_pSystemInfo->getDeviceName();
         else
-            return SCPI::scpiAnswer[SCPI::errexec];
+            return ZSCPI::scpiAnswer[ZSCPI::errexec];
     }
     else
-        return SCPI::scpiAnswer[SCPI::nak];
+        return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 
@@ -102,17 +101,17 @@ QString cSystemInterface::m_ReadWritePCBVersion(QString &sInput)
         if (m_pSystemInfo->dataRead())
             s = m_pSystemInfo->getPCBVersion();
         else
-            s = SCPI::scpiAnswer[SCPI::errexec];
+            s = ZSCPI::scpiAnswer[ZSCPI::errexec];
     }
     else {
         if (cmd.isCommand(1)) {
             //QString Version = cmd.getParam(0);
             // todo write here the pcb version
             m_pSystemInfo->getSystemInfo(); // read back info
-            s = SCPI::scpiAnswer[SCPI::ack];
+            s = ZSCPI::scpiAnswer[ZSCPI::ack];
         }
         else
-            s = SCPI::scpiAnswer[SCPI::nak];
+            s = ZSCPI::scpiAnswer[ZSCPI::nak];
     }
     return s;
 }
@@ -124,10 +123,10 @@ QString cSystemInterface::m_ReadFPGAVersion(QString &sInput)
         if (m_pSystemInfo->dataRead())
             return m_pSystemInfo->getLCAVersion();
         else
-            return SCPI::scpiAnswer[SCPI::errexec];
+            return ZSCPI::scpiAnswer[ZSCPI::errexec];
     }
     else
-        return SCPI::scpiAnswer[SCPI::nak];
+        return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 QString cSystemInterface::m_ReadWriteSerialNumber(QString &sInput)
@@ -138,17 +137,17 @@ QString cSystemInterface::m_ReadWriteSerialNumber(QString &sInput)
         if (m_pSystemInfo->dataRead())
             s = m_pSystemInfo->getSerialNumber();
         else
-            s = SCPI::scpiAnswer[SCPI::errexec];
+            s = ZSCPI::scpiAnswer[ZSCPI::errexec];
     }
     else {
         if (cmd.isCommand(1)) {
             //QString Serial = cmd.getParam(0);
             // todo write the serial number
             m_pSystemInfo->getSystemInfo(); // read back info
-            s = SCPI::scpiAnswer[SCPI::ack];
+            s = ZSCPI::scpiAnswer[ZSCPI::ack];
         }
         else
-            s = SCPI::scpiAnswer[SCPI::nak];
+            s = ZSCPI::scpiAnswer[ZSCPI::nak];
     }
     return s;
 }
@@ -162,5 +161,5 @@ QString cSystemInterface::m_InterfaceRead(QString &sInput)
         return s;
     }
     else
-        return SCPI::scpiAnswer[SCPI::nak];
+        return ZSCPI::scpiAnswer[ZSCPI::nak];
 }

@@ -4,6 +4,7 @@
 #include "atmel.h"
 #include "samplingsettings.h"
 #include "notzeronumgen.h"
+#include "zscpi_response_definitions.h"
 
 cSamplingInterface::cSamplingInterface(cSCPI *scpiInterface, SamplingSettings* samplingSettings) :
     cResource(scpiInterface)
@@ -105,7 +106,7 @@ QString cSamplingInterface::m_ReadVersion(QString &sInput)
     cSCPICommand cmd = sInput;
     if (cmd.isQuery())
         return m_sVersion;
-    return SCPI::scpiAnswer[SCPI::nak];
+    return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 QString cSamplingInterface::m_ReadSampleRate(QString &sInput)
@@ -118,7 +119,7 @@ QString cSamplingInterface::m_ReadSampleRate(QString &sInput)
                 return QString("%1").arg(m_SampleRangeList.at(i)->getSRate());
         }
     }
-    return SCPI::scpiAnswer[SCPI::nak];
+    return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 QString cSamplingInterface::m_ReadSamplingChannelCatalog(QString &sInput)
@@ -126,7 +127,7 @@ QString cSamplingInterface::m_ReadSamplingChannelCatalog(QString &sInput)
     cSCPICommand cmd = sInput;
     if (cmd.isQuery())
         return m_sName; // we only have 1 channel
-    return SCPI::scpiAnswer[SCPI::nak];
+    return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 QString cSamplingInterface::m_ReadAlias(QString &sInput)
@@ -134,7 +135,7 @@ QString cSamplingInterface::m_ReadAlias(QString &sInput)
     cSCPICommand cmd = sInput;
     if (cmd.isQuery())
         return QString("%1").arg(m_sAlias);
-    return SCPI::scpiAnswer[SCPI::nak];
+    return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 QString cSamplingInterface::m_ReadType(QString &sInput)
@@ -142,7 +143,7 @@ QString cSamplingInterface::m_ReadType(QString &sInput)
     cSCPICommand cmd = sInput;
     if (cmd.isQuery())
         return QString("%1").arg(m_nType);
-    return SCPI::scpiAnswer[SCPI::nak];
+    return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 QString cSamplingInterface::m_ReadStatus(QString &sInput)
@@ -152,7 +153,7 @@ QString cSamplingInterface::m_ReadStatus(QString &sInput)
         quint32 r = (m_bAvail) ? 0 : 1 << 31;
         return QString("%1").arg(r);
     }
-    return SCPI::scpiAnswer[SCPI::nak];
+    return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 QString cSamplingInterface::m_ReadWriteSamplingRange(QString &sInput)
@@ -170,16 +171,16 @@ QString cSamplingInterface::m_ReadWriteSamplingRange(QString &sInput)
             if (i < m_SampleRangeList.count()) {
                 if ( Atmel::getInstance().setSamplingRange(m_SampleRangeList.at(i)->getSelCode()) == ZeraMControllerIo::cmddone) {
                     setNotifierSampleChannelRange();
-                    return SCPI::scpiAnswer[SCPI::ack];
+                    return ZSCPI::scpiAnswer[ZSCPI::ack];
                 }
                 else
-                    return SCPI::scpiAnswer[SCPI::errexec];
+                    return ZSCPI::scpiAnswer[ZSCPI::errexec];
             }
             else
-                return SCPI::scpiAnswer[SCPI::nak];
+                return ZSCPI::scpiAnswer[ZSCPI::nak];
         }
         else
-            return SCPI::scpiAnswer[SCPI::nak];
+            return ZSCPI::scpiAnswer[ZSCPI::nak];
     }
 }
 
@@ -192,7 +193,7 @@ QString cSamplingInterface::m_ReadSamplingRangeCatalog(QString &sInput)
             rangeNames.append(samplerange->getName());
         return rangeNames.join(";");
     }
-    return SCPI::scpiAnswer[SCPI::nak];
+    return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 QString cSamplingInterface::m_ReadWritePLL(QString &sInput)
@@ -203,18 +204,18 @@ QString cSamplingInterface::m_ReadWritePLL(QString &sInput)
         if (Atmel::getInstance().readPLLChannel(pll) == ZeraMControllerIo::cmddone)
             if (pll < m_pllChannelList.count())
                 return m_pllChannelList.at(pll);
-        return SCPI::scpiAnswer[SCPI::errexec];
+        return ZSCPI::scpiAnswer[ZSCPI::errexec];
     }
     else {
         if (cmd.isCommand(1)) {
             QString pllchn = cmd.getParam(0);
             pll = m_pllChannelList.indexOf(pllchn);
             if (Atmel::getInstance().setPLLChannel(pll) == ZeraMControllerIo::cmddone)
-                return SCPI::scpiAnswer[SCPI::ack];
+                return ZSCPI::scpiAnswer[ZSCPI::ack];
             else
-                return SCPI::scpiAnswer[SCPI::errexec];
+                return ZSCPI::scpiAnswer[ZSCPI::errexec];
         }
-        return SCPI::scpiAnswer[SCPI::nak];
+        return ZSCPI::scpiAnswer[ZSCPI::nak];
     }
 }
 
@@ -223,7 +224,7 @@ QString cSamplingInterface::m_ReadPLLCatalog(QString &sInput)
     cSCPICommand cmd = sInput;
     if (cmd.isQuery())
         return m_pllChannelList.join(";");
-    return SCPI::scpiAnswer[SCPI::nak];
+    return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 void cSamplingInterface::setNotifierSampleChannelRange()

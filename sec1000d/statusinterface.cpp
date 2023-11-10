@@ -1,5 +1,5 @@
 #include "statusinterface.h"
-#include "sec1000dglobal.h"
+#include "zscpi_response_definitions.h"
 #include "protonetcommand.h"
 #include "scpisingletonfactory.h"
 
@@ -29,7 +29,7 @@ void cStatusInterface::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
         }
     }
     else
-        protoCmd->m_sOutput = SCPI::scpiAnswer[SCPI::nak];
+        protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::nak];
 
     if (protoCmd->m_bwithOutput)
         emit cmdExecutionDone(protoCmd);

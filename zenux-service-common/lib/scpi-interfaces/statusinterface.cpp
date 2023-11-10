@@ -2,6 +2,7 @@
 #include "protonetcommand.h"
 #include "permissionfunctions.h"
 #include <timerfactoryqt.h>
+#include "zscpi_response_definitions.h"
 #include <scpi.h>
 
 constexpr int AUTH_POLLING_PERIOD_MS = 1000;
@@ -48,7 +49,7 @@ void cStatusInterface::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
         }
     }
     else
-        protoCmd->m_sOutput = SCPI::scpiAnswer[SCPI::nak];
+        protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::nak];
 
     if (protoCmd->m_bwithOutput)
         emit cmdExecutionDone(protoCmd);

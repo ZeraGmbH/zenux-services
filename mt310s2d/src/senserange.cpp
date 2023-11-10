@@ -1,10 +1,9 @@
-#include <scpi.h>
-#include <scpicommand.h>
-
 #include "senserange.h"
 #include "mt310s2justdata.h"
-#include "scpidelegate.h"
 #include "protonetcommand.h"
+#include "zscpi_response_definitions.h"
+#include <scpi.h>
+#include <scpicommand.h>
 
 
 cSenseRange::cSenseRange(cSCPI *scpiinterface, QString name, QString alias, bool avail, double rValue, double rejection, double ovrejection, double adcrejection, quint8 rselcode, quint16 mmask, JustRangeTripletOffsetGainPhase* justdata) :
@@ -145,7 +144,7 @@ QString cSenseRange::m_ReadRangeType(QString &sInput)
     if (cmd.isQuery())
         return QString("%1").arg(m_nMMask); // we return mmode mask and sensortype here
     else
-        return SCPI::scpiAnswer[SCPI::nak];
+        return ZSCPI::scpiAnswer[ZSCPI::nak];
 
 }
 
@@ -157,7 +156,7 @@ QString cSenseRange::m_ReadRangeAlias(QString &sInput)
     if (cmd.isQuery())
         return m_sAlias;
     else
-        return SCPI::scpiAnswer[SCPI::nak];
+        return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 
@@ -173,7 +172,7 @@ QString cSenseRange::m_ReadRangeAvail(QString &sInput)
             return "0";
     }
     else
-        return SCPI::scpiAnswer[SCPI::nak];
+        return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 
@@ -184,7 +183,7 @@ QString cSenseRange::m_ReadRangeValue(QString &sInput)
     if (cmd.isQuery())
         return QString("%1").arg(m_fRValue);
     else
-        return SCPI::scpiAnswer[SCPI::nak];
+        return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 
@@ -195,7 +194,7 @@ QString cSenseRange::m_ReadRangeRejection(QString &sInput)
     if (cmd.isQuery())
         return QString("%1").arg(m_fRejection, 0, 'g', 8);
     else
-        return SCPI::scpiAnswer[SCPI::nak];
+        return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 
@@ -206,7 +205,7 @@ QString cSenseRange::m_ReadRangeOVRejection(QString &sInput)
     if (cmd.isQuery())
         return QString("%1").arg(m_fOVRejection, 0, 'g', 8);
     else
-        return SCPI::scpiAnswer[SCPI::nak];
+        return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 
@@ -217,6 +216,6 @@ QString cSenseRange::m_ReadRangeADWRejection(QString &sInput)
     if (cmd.isQuery())
         return QString("%1").arg(m_fADCRejection, 0, 'g', 8);
     else
-        return SCPI::scpiAnswer[SCPI::nak];
+        return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
