@@ -5,6 +5,7 @@
 #include "protonetcommand.h"
 #include "micro-controller-io/atmel.h"
 #include "i2csettings.h"
+#include "zscpi_response_definitions.h"
 #include <i2cmultiplexerfactory.h>
 #include <scpi.h>
 #include <i2cutils.h>
@@ -126,7 +127,7 @@ QString cClampInterface::readClampChannelCatalog(QString &sInput)
         return m_notifierClampChannelList.getString();
     }
     else {
-        return SCPI::scpiAnswer[SCPI::nak];
+        return ZSCPI::scpiAnswer[ZSCPI::nak];
     }
 }
 
@@ -142,20 +143,20 @@ QString cClampInterface::writeAllClamps(QString &sInput)
                     for(auto clamp : qAsConst(m_clampHash))
                         done = done && clamp->exportAdjFlash();
                     if (!done)
-                        return SCPI::scpiAnswer[SCPI::errexec];
+                        return ZSCPI::scpiAnswer[ZSCPI::errexec];
                 }
                 else {
-                    return SCPI::scpiAnswer[SCPI::erraut];
+                    return ZSCPI::scpiAnswer[ZSCPI::erraut];
                 }
             }
             else {
-                return SCPI::scpiAnswer[SCPI::errexec];
+                return ZSCPI::scpiAnswer[ZSCPI::errexec];
             }
         }
-        return SCPI::scpiAnswer[SCPI::ack]; // we return ack even in case there is no clamp because nothing went wrong
+        return ZSCPI::scpiAnswer[ZSCPI::ack]; // we return ack even in case there is no clamp because nothing went wrong
     }
     else {
-        return SCPI::scpiAnswer[SCPI::nak];
+        return ZSCPI::scpiAnswer[ZSCPI::nak];
     }
 }
 
@@ -192,7 +193,7 @@ QString cClampInterface::importExportAllClamps(QString &sInput)
                 int anzClampTemp = m_clampHash.count();
                 if ( !((anzXML > 0) && (anzClampTemp > 0)) ) {
                     err = true;
-                    answer = SCPI::scpiAnswer[SCPI::errxml];
+                    answer = ZSCPI::scpiAnswer[ZSCPI::errxml];
                 }
                 if (!err) {
                     for (int i = 0; (i < anzXML) && (anzClampTemp > 0); i++) {
@@ -201,7 +202,7 @@ QString cClampInterface::importExportAllClamps(QString &sInput)
                         XML = sep + sl.at(i);
                         if ( !justqdom.setContent(XML) ) {
                             err = true;
-                            answer = SCPI::scpiAnswer[SCPI::errxml];
+                            answer = ZSCPI::scpiAnswer[ZSCPI::errxml];
                             break;
                         }
                         cClamp tmpClamp;
@@ -233,14 +234,14 @@ QString cClampInterface::importExportAllClamps(QString &sInput)
                                 // command. we compute a little bit to much but this doesn't matter at all
                                 if (!pClamp4Use->exportAdjFlash()) {// and then we program the clamp
                                     err = true;
-                                    answer = SCPI::scpiAnswer[SCPI::errexec];
+                                    answer = ZSCPI::scpiAnswer[ZSCPI::errexec];
                                     break;
                                 }
                             }
                         }
                         else {
                             err = true;
-                            answer = SCPI::scpiAnswer[SCPI::errxml];
+                            answer = ZSCPI::scpiAnswer[ZSCPI::errxml];
                             break;
                         }
                     }
@@ -248,15 +249,15 @@ QString cClampInterface::importExportAllClamps(QString &sInput)
             }
             else {
                 err = true;
-                answer = SCPI::scpiAnswer[SCPI::erraut];
+                answer = ZSCPI::scpiAnswer[ZSCPI::erraut];
             }
         }
         else {
             err = true;
-            answer = SCPI::scpiAnswer[SCPI::errexec];
+            answer = ZSCPI::scpiAnswer[ZSCPI::errexec];
         }
         if (!err) {
-            answer = SCPI::scpiAnswer[SCPI::ack];
+            answer = ZSCPI::scpiAnswer[ZSCPI::ack];
         }
         return answer;
     }

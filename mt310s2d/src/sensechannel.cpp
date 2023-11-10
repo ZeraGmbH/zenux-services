@@ -1,7 +1,7 @@
 #include "senserange.h"
 #include "scpiconnection.h"
 #include "sensechannel.h"
-#include "protonetcommand.h"
+#include "zscpi_response_definitions.h"
 #include <scpi.h>
 #include <scpicommand.h>
 #include "micro-controller-io/atmel.h"
@@ -192,7 +192,7 @@ QString cSenseChannel::m_ReadAlias(QString &sInput)
     if (cmd.isQuery()) {
         return getAlias();
     }
-    return SCPI::scpiAnswer[SCPI::nak];
+    return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 QString cSenseChannel::m_ReadType(QString &sInput)
@@ -201,7 +201,7 @@ QString cSenseChannel::m_ReadType(QString &sInput)
     if (cmd.isQuery()) {
         return QString("0");
     }
-    return SCPI::scpiAnswer[SCPI::nak];
+    return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 
@@ -211,7 +211,7 @@ QString cSenseChannel::m_ReadUnit(QString &sInput)
     if (cmd.isQuery()) {
         return m_sUnit;
     }
-    return SCPI::scpiAnswer[SCPI::nak];
+    return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 
@@ -221,7 +221,7 @@ QString cSenseChannel::m_ReadDspChannel(QString &sInput)
     if (cmd.isQuery()) {
         return QString("%1").arg(m_nDspChannel);
     }
-    return SCPI::scpiAnswer[SCPI::nak];
+    return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 
@@ -241,10 +241,10 @@ QString cSenseChannel::m_ReadChannelStatus(QString &sInput)
             return QString("%1").arg(r);
         }
         else {
-            return SCPI::scpiAnswer[SCPI::errexec];
+            return ZSCPI::scpiAnswer[ZSCPI::errexec];
         }
     }
-    return SCPI::scpiAnswer[SCPI::nak];
+    return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 QString cSenseChannel::m_StatusReset(QString &sInput)
@@ -253,17 +253,17 @@ QString cSenseChannel::m_StatusReset(QString &sInput)
     if (cmd.isCommand(1) && (cmd.getParam(0) == "")) {
         if (m_nOverloadBit >= 0)  {
             if ( Atmel::getInstance().resetCriticalStatus((quint16)(1 << m_nOverloadBit)) == ZeraMControllerIo::cmddone ) {
-                return SCPI::scpiAnswer[SCPI::ack];
+                return ZSCPI::scpiAnswer[ZSCPI::ack];
             }
             else {
-                return SCPI::scpiAnswer[SCPI::errexec];
+                return ZSCPI::scpiAnswer[ZSCPI::errexec];
             }
         }
         else {
-            return SCPI::scpiAnswer[SCPI::ack];
+            return ZSCPI::scpiAnswer[ZSCPI::ack];
         }
     }
-    return SCPI::scpiAnswer[SCPI::nak];
+    return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 void cSenseChannel::setNotifierSenseChannelRange()
@@ -301,17 +301,17 @@ QString cSenseChannel::m_ReadWriteRange(QString &sInput)
                     // we know this range and it's available
                     if ( Atmel::getInstance().setRange(m_nCtrlChannel, m_RangeList.at(i)->getSelCode()) == ZeraMControllerIo::cmddone) {
                         notifierSenseChannelRange = rng;
-                        return SCPI::scpiAnswer[SCPI::ack];
+                        return ZSCPI::scpiAnswer[ZSCPI::ack];
                     }
                     else {
-                        return SCPI::scpiAnswer[SCPI::errexec];
+                        return ZSCPI::scpiAnswer[ZSCPI::errexec];
                     }
                 }
             }
-            return SCPI::scpiAnswer[SCPI::nak];
+            return ZSCPI::scpiAnswer[ZSCPI::nak];
         }
     }
-    return SCPI::scpiAnswer[SCPI::errexec];
+    return ZSCPI::scpiAnswer[ZSCPI::errexec];
 }
 
 QString cSenseChannel::m_ReadUrvalue(QString &sInput)
@@ -324,7 +324,7 @@ QString cSenseChannel::m_ReadUrvalue(QString &sInput)
             }
         }
     }
-    return SCPI::scpiAnswer[SCPI::nak];
+    return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 QString cSenseChannel::m_ReadRangeCatalog(QString &sInput)
@@ -333,7 +333,7 @@ QString cSenseChannel::m_ReadRangeCatalog(QString &sInput)
     if (cmd.isQuery()) {
         return notifierSenseChannelRangeCat.getString();
     }
-    return SCPI::scpiAnswer[SCPI::nak];
+    return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 void cSenseChannel::setNotifierSenseChannelRangeCat()

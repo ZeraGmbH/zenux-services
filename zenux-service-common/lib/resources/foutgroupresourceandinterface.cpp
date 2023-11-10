@@ -1,4 +1,5 @@
 #include "foutgroupresourceandinterface.h"
+#include "zscpi_response_definitions.h"
 #include "notzeronumgen.h"
 
 enum Commands
@@ -79,7 +80,7 @@ QString FOutGroupResourceAndInterface::readVersion(QString &sInput)
     if (cmd.isQuery())
         return Version;
     else
-        return SCPI::scpiAnswer[SCPI::nak];
+        return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 QString FOutGroupResourceAndInterface::readSourceChannelCatalog(QString &sInput)
@@ -92,5 +93,5 @@ QString FOutGroupResourceAndInterface::readSourceChannelCatalog(QString &sInput)
         return channelList.join(";");
     }
     else
-        return SCPI::scpiAnswer[SCPI::nak];
+        return ZSCPI::scpiAnswer[ZSCPI::nak];
 }

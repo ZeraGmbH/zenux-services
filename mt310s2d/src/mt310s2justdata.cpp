@@ -1,7 +1,7 @@
 #include "mt310s2justdata.h"
 #include "protonetcommand.h"
 #include "justdatainterface.h"
-#include "scpidelegate.h"
+#include "zscpi_response_definitions.h"
 #include <scpi.h>
 
 JustRangeTripletOffsetGainPhase::JustRangeTripletOffsetGainPhase(cSCPI *scpiinterface, PermissionStructAdj permissions) :
@@ -87,10 +87,10 @@ QString JustRangeTripletOffsetGainPhase::scpiGetGainCorrection(const QString &sc
         if (ok)
             return QString("%1").arg(getGainCorrection(par));
         else
-            return SCPI::scpiAnswer[SCPI::errval];
+            return ZSCPI::scpiAnswer[ZSCPI::errval];
     }
     else
-        return SCPI::scpiAnswer[SCPI::nak];
+        return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 QString JustRangeTripletOffsetGainPhase::mReadJustGainCorrection(QString &sInput)
@@ -103,10 +103,10 @@ QString JustRangeTripletOffsetGainPhase::mReadJustGainCorrection(QString &sInput
         if (ok)
             return QString("%1").arg(getJustGainCorrection(par));
         else
-            return SCPI::scpiAnswer[SCPI::errval];
+            return ZSCPI::scpiAnswer[ZSCPI::errval];
     }
     else
-        return SCPI::scpiAnswer[SCPI::nak];
+        return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 QString JustRangeTripletOffsetGainPhase::mReadPhaseCorrection(QString& sInput)
@@ -119,10 +119,10 @@ QString JustRangeTripletOffsetGainPhase::mReadPhaseCorrection(QString& sInput)
         if (ok)
             return QString("%1").arg(getPhaseCorrection(par));
         else
-            return SCPI::scpiAnswer[SCPI::errval];
+            return ZSCPI::scpiAnswer[ZSCPI::errval];
     }
     else
-        return SCPI::scpiAnswer[SCPI::nak];
+        return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 QString JustRangeTripletOffsetGainPhase::mReadJustPhaseCorrection(QString &sInput)
@@ -135,10 +135,10 @@ QString JustRangeTripletOffsetGainPhase::mReadJustPhaseCorrection(QString &sInpu
         if (ok)
             return QString("%1").arg(getJustPhaseCorrection(par));
         else
-            return SCPI::scpiAnswer[SCPI::errval];
+            return ZSCPI::scpiAnswer[ZSCPI::errval];
     }
     else
-        return SCPI::scpiAnswer[SCPI::nak];
+        return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 QString JustRangeTripletOffsetGainPhase::mReadOffsetCorrection(QString& sInput)
@@ -151,10 +151,10 @@ QString JustRangeTripletOffsetGainPhase::mReadOffsetCorrection(QString& sInput)
         if (ok)
             return QString("%1").arg(getOffsetCorrection(par));
         else
-            return SCPI::scpiAnswer[SCPI::errval];
+            return ZSCPI::scpiAnswer[ZSCPI::errval];
     }
     else
-        return SCPI::scpiAnswer[SCPI::nak];
+        return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 QString JustRangeTripletOffsetGainPhase::mReadJustOffsetCorrection(QString &sInput)
@@ -167,10 +167,10 @@ QString JustRangeTripletOffsetGainPhase::mReadJustOffsetCorrection(QString &sInp
         if (ok)
             return QString("%1").arg(getJustOffsetCorrection(par));
         else
-            return SCPI::scpiAnswer[SCPI::errval];
+            return ZSCPI::scpiAnswer[ZSCPI::errval];
     }
     else
-        return SCPI::scpiAnswer[SCPI::nak];
+        return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 QString JustRangeTripletOffsetGainPhase::m_ReadStatus(QString& sInput)
@@ -180,7 +180,7 @@ QString JustRangeTripletOffsetGainPhase::m_ReadStatus(QString& sInput)
         return QString("%1").arg(getAdjustmentStatus());
     }
     else
-        return SCPI::scpiAnswer[SCPI::nak];
+        return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 QString JustRangeTripletOffsetGainPhase::m_ComputeJustData(QString& sInput)
@@ -193,16 +193,16 @@ QString JustRangeTripletOffsetGainPhase::m_ComputeJustData(QString& sInput)
                 m_pGainCorrection->cmpCoefficients();
                 m_pPhaseCorrection->cmpCoefficients();
                 m_pOffsetCorrection->cmpCoefficients();
-                return SCPI::scpiAnswer[SCPI::ack];
+                return ZSCPI::scpiAnswer[ZSCPI::ack];
             }
             else
-                return SCPI::scpiAnswer[SCPI::erraut];
+                return ZSCPI::scpiAnswer[ZSCPI::erraut];
         }
         else
-            return SCPI::scpiAnswer[SCPI::errexec];
+            return ZSCPI::scpiAnswer[ZSCPI::errexec];
     }
     else
-        return SCPI::scpiAnswer[SCPI::nak];
+        return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 QString JustRangeTripletOffsetGainPhase::m_InitJustData(QString &sInput)
@@ -215,16 +215,16 @@ QString JustRangeTripletOffsetGainPhase::m_InitJustData(QString &sInput)
                 m_pGainCorrection->initJustData(1.0);
                 m_pPhaseCorrection->initJustData(0.0);
                 m_pOffsetCorrection->initJustData(0.0);
-                return SCPI::scpiAnswer[SCPI::ack];
+                return ZSCPI::scpiAnswer[ZSCPI::ack];
             }
             else
-                return SCPI::scpiAnswer[SCPI::erraut];
+                return ZSCPI::scpiAnswer[ZSCPI::erraut];
         }
         else
-            return SCPI::scpiAnswer[SCPI::errexec];
+            return ZSCPI::scpiAnswer[ZSCPI::errexec];
     }
     else
-        return SCPI::scpiAnswer[SCPI::nak];
+        return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 void JustRangeTripletOffsetGainPhase::Serialize(QDataStream& qds)  // zum schreiben aller justagedaten in flashspeicher

@@ -12,16 +12,14 @@
 #include "scpiconnection.h"
 #include "resource.h"
 #include "atmel.h"
+#include "zscpi_response_definitions.h"
 #include "i2csettings.h"
 #include "sensesettings.h"
 #include "notzeronumgen.h"
 #include <i2cmultiplexerfactory.h>
 #include <xmlsettings.h>
-#include <QList>
 #include <QStringList>
-#include <QDomElement>
 #include <QDomDocument>
-#include <QDomText>
 #include <QDateTime>
 #include <QDebug>
 #include <QFile>
@@ -705,7 +703,7 @@ QString cSenseInterface::m_ReadVersion(QString &sInput)
         return m_sVersion;
     }
     else {
-        return SCPI::scpiAnswer[SCPI::nak];
+        return ZSCPI::scpiAnswer[ZSCPI::nak];
     }
 }
 
@@ -722,14 +720,14 @@ void cSenseInterface::m_ReadWriteMMode(cProtonetCommand *protoCmd)
         if (cmd.isCommand(1)) {
             QString mode = cmd.getParam(0);
             if (setSenseMode(mode)) {
-                protoCmd->m_sOutput = SCPI::scpiAnswer[SCPI::ack];
+                protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::ack];
             }
             else {
-                protoCmd->m_sOutput = SCPI::scpiAnswer[SCPI::nak];
+                protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::nak];
             }
         }
         else {
-            protoCmd->m_sOutput = SCPI::scpiAnswer[SCPI::nak];
+            protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::nak];
         }
         if (protoCmd->m_bwithOutput) {
             emit cmdExecutionDone(protoCmd);
@@ -744,7 +742,7 @@ QString cSenseInterface::m_ReadMModeCatalog(QString &sInput)
         return m_MModeHash.keys().join(";");
     }
     else {
-        return SCPI::scpiAnswer[SCPI::nak];
+        return ZSCPI::scpiAnswer[ZSCPI::nak];
     }
 }
 
@@ -755,7 +753,7 @@ QString cSenseInterface::m_ReadSenseChannelCatalog(QString &sInput)
         return notifierSenseChannelCat.getString();
     }
     else {
-        return SCPI::scpiAnswer[SCPI::nak];
+        return ZSCPI::scpiAnswer[ZSCPI::nak];
     }
 }
 
@@ -767,7 +765,7 @@ QString cSenseInterface::m_ReadSenseGroupCatalog(QString &sInput)
         return s;
     }
     else {
-        return SCPI::scpiAnswer[SCPI::nak];
+        return ZSCPI::scpiAnswer[ZSCPI::nak];
     }
 }
 
@@ -779,10 +777,10 @@ QString cSenseInterface::m_InitSenseAdjData(QString &sInput)
         for(auto channel : qAsConst(m_ChannelList)) {
             channel->initJustData();
         }
-        return SCPI::scpiAnswer[SCPI::ack];
+        return ZSCPI::scpiAnswer[ZSCPI::ack];
     }
     else {
-        return SCPI::scpiAnswer[SCPI::nak];
+        return ZSCPI::scpiAnswer[ZSCPI::nak];
     }
 }
 
@@ -792,10 +790,10 @@ QString cSenseInterface::m_ComputeSenseAdjData(QString& sInput)
     // cmd.isCommand(0) is not correct but we leave it for compatibility
     if ( cmd.isCommand(0) || (cmd.isCommand(1) && (cmd.getParam(0) == ""))) {
         m_ComputeSenseAdjData();
-        return SCPI::scpiAnswer[SCPI::ack];
+        return ZSCPI::scpiAnswer[ZSCPI::ack];
     }
     else {
-        return SCPI::scpiAnswer[SCPI::nak];
+        return ZSCPI::scpiAnswer[ZSCPI::nak];
     }
 }
 
@@ -806,7 +804,7 @@ QString cSenseInterface::handleScpiReadAdjStatus(QString &sInput)
         return  QString("%1").arg(getAdjustmentStatus());
     }
     else {
-        return SCPI::scpiAnswer[SCPI::nak];
+        return ZSCPI::scpiAnswer[ZSCPI::nak];
     }
 }
 

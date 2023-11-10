@@ -10,9 +10,9 @@
 #include "protonetcommand.h"
 #include "atmel.h"
 #include "permissionfunctions.h"
-#include "ethsettings.h"
 #include "sensesettings.h"
 #include <xmlsettings.h>
+#include "zscpi_response_definitions.h"
 #include <QList>
 #include <QStringList>
 #include <QDomElement>
@@ -515,7 +515,7 @@ QString cSenseInterface::m_ReadVersion(QString &sInput)
     if (cmd.isQuery())
         return m_sVersion;
     else
-        return SCPI::scpiAnswer[SCPI::nak];
+        return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 
@@ -540,7 +540,7 @@ void cSenseInterface::m_ReadWriteMModeVersion(cProtonetCommand *protoCmd)
 
             if (mode == SenseSystem::sMMode[SenseSystem::modeAC] )
             {
-                protoCmd->m_sOutput = SCPI::scpiAnswer[SCPI::ack];
+                protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::ack];
                 m_nMMode = SenseSystem::modeAC;
                 if (oldMode != m_nMMode)
                 {
@@ -557,7 +557,7 @@ void cSenseInterface::m_ReadWriteMModeVersion(cProtonetCommand *protoCmd)
 
             if (mode == SenseSystem::sMMode[SenseSystem::modeREF] )
             {
-                protoCmd->m_sOutput = SCPI::scpiAnswer[SCPI::ack];
+                protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::ack];
                 m_nMMode = SenseSystem::modeREF;
                 if (oldMode != m_nMMode)
                 {
@@ -570,7 +570,7 @@ void cSenseInterface::m_ReadWriteMModeVersion(cProtonetCommand *protoCmd)
 
             else
             {
-                protoCmd->m_sOutput = SCPI::scpiAnswer[SCPI::nak];
+                protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::nak];
                 if (protoCmd->m_bwithOutput)
                     emit cmdExecutionDone(protoCmd);
             }
@@ -578,7 +578,7 @@ void cSenseInterface::m_ReadWriteMModeVersion(cProtonetCommand *protoCmd)
 
         else
         {
-            protoCmd->m_sOutput = SCPI::scpiAnswer[SCPI::nak];
+            protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::nak];
             if (protoCmd->m_bwithOutput)
                 emit cmdExecutionDone(protoCmd);
         }
@@ -600,7 +600,7 @@ QString cSenseInterface::m_ReadMModeCatalog(QString &sInput)
         return s;
     }
     else
-        return SCPI::scpiAnswer[SCPI::nak];
+        return ZSCPI::scpiAnswer[ZSCPI::nak];
 
 }
 
@@ -614,7 +614,7 @@ QString cSenseInterface::m_ReadSenseChannelCatalog(QString &sInput)
         return notifierSenseChannelCat.getString();
     }
     else
-        return SCPI::scpiAnswer[SCPI::nak];
+        return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 
@@ -633,7 +633,7 @@ QString cSenseInterface::m_ReadSenseGroupCatalog(QString &sInput)
         return s;
     }
     else
-        return SCPI::scpiAnswer[SCPI::nak];
+        return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 
@@ -652,16 +652,16 @@ QString cSenseInterface::m_InitSenseAdjData(QString &sInput)
                 for (int i = 0; i < m_ChannelList.count(); i++)
                     m_ChannelList.at(i)->initJustData();
 
-                return SCPI::scpiAnswer[SCPI::ack];
+                return ZSCPI::scpiAnswer[ZSCPI::ack];
             }
             else
-                return SCPI::scpiAnswer[SCPI::erraut];
+                return ZSCPI::scpiAnswer[ZSCPI::erraut];
         }
         else
-            return SCPI::scpiAnswer[SCPI::errexec];
+            return ZSCPI::scpiAnswer[ZSCPI::errexec];
     }
     else
-        return SCPI::scpiAnswer[SCPI::nak];
+        return ZSCPI::scpiAnswer[ZSCPI::nak];
 
 }
 
@@ -680,16 +680,16 @@ QString cSenseInterface::m_ComputeSenseAdjData(QString &sInput)
             {
                 for (int i = 0; i < m_ChannelList.count(); i++)
                     m_ChannelList.at(i)->computeJustData();
-                return SCPI::scpiAnswer[SCPI::ack];
+                return ZSCPI::scpiAnswer[ZSCPI::ack];
             }
             else
-               return SCPI::scpiAnswer[SCPI::erraut];
+               return ZSCPI::scpiAnswer[ZSCPI::erraut];
         }
         else
-            return SCPI::scpiAnswer[SCPI::errexec];
+            return ZSCPI::scpiAnswer[ZSCPI::errexec];
     }
     else
-        return SCPI::scpiAnswer[SCPI::nak];
+        return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 

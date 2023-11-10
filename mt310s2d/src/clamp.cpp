@@ -4,8 +4,8 @@
 #include "mt310s2d.h"
 #include "senserange.h"
 #include "clampjustdata.h"
-#include "protonetcommand.h"
 #include "i2csettings.h"
+#include "zscpi_response_definitions.h"
 #include <syslog.h>
 #include <i2cutils.h>
 #include <i2cmuxerscopedonoff.h>
@@ -853,14 +853,14 @@ QString cClamp::handleScpiReadWriteSerial(QString& scpiCmdStr)
             QString serial = cmd.getParam(0);
             if (serial.length() <= 10) {
                 m_sSerial = serial;
-                answer = SCPI::scpiAnswer[SCPI::ack];
+                answer = ZSCPI::scpiAnswer[ZSCPI::ack];
             }
             else {
-                answer = SCPI::scpiAnswer[SCPI::errval];
+                answer = ZSCPI::scpiAnswer[ZSCPI::errval];
             }
         }
         else {
-            answer = SCPI::scpiAnswer[SCPI::nak];
+            answer = ZSCPI::scpiAnswer[ZSCPI::nak];
         }
     }
     return answer;
@@ -879,14 +879,14 @@ QString cClamp::handleScpiReadWriteVersion(QString &scpiCmdStr)
             QString version = cmd.getParam(0);
             if (version.length() == 4) {
                 m_sVersion = version;
-                answer = SCPI::scpiAnswer[SCPI::ack];
+                answer = ZSCPI::scpiAnswer[ZSCPI::ack];
             }
             else {
-                answer = SCPI::scpiAnswer[SCPI::errval];
+                answer = ZSCPI::scpiAnswer[ZSCPI::errval];
             }
         }
         else {
-            answer = SCPI::scpiAnswer[SCPI::nak];
+            answer = ZSCPI::scpiAnswer[ZSCPI::nak];
         }
     }
     return answer;
@@ -910,18 +910,18 @@ QString cClamp::handleScpiReadWriteType(QString& scpiCmdStr)
                 if (exportAdjFlash()) {
                     addSense();
                     addSenseInterface();
-                    answer = SCPI::scpiAnswer[SCPI::ack];
+                    answer = ZSCPI::scpiAnswer[ZSCPI::ack];
                 }
                 else {
-                    answer = SCPI::scpiAnswer[SCPI::errexec];
+                    answer = ZSCPI::scpiAnswer[ZSCPI::errexec];
                 }
             }
             else {
-                answer = SCPI::scpiAnswer[SCPI::errval];
+                answer = ZSCPI::scpiAnswer[ZSCPI::errval];
             }
         }
         else {
-            answer = SCPI::scpiAnswer[SCPI::nak];
+            answer = ZSCPI::scpiAnswer[ZSCPI::nak];
         }
     }
     return answer;
@@ -935,7 +935,7 @@ QString cClamp::handleScpiReadName(QString& scpiCmdStr)
         answer = getClampTypeName(m_nType);
     }
     else {
-        answer = SCPI::scpiAnswer[SCPI::nak];
+        answer = ZSCPI::scpiAnswer[ZSCPI::nak];
     }
     return answer;
 }
@@ -946,14 +946,14 @@ QString cClamp::handleScpiWriteFlash(QString& scpiCmdStr)
     cSCPICommand cmd = scpiCmdStr;
     if (cmd.isCommand(1) && (cmd.getParam(0) == "")) {
         if (exportAdjFlash()) {
-            answer = SCPI::scpiAnswer[SCPI::ack];
+            answer = ZSCPI::scpiAnswer[ZSCPI::ack];
         }
         else {
-            answer = SCPI::scpiAnswer[SCPI::errexec];
+            answer = ZSCPI::scpiAnswer[ZSCPI::errexec];
         }
     }
     else {
-        answer = SCPI::scpiAnswer[SCPI::nak];
+        answer = ZSCPI::scpiAnswer[ZSCPI::nak];
     }
     return answer;
 }
@@ -965,14 +965,14 @@ QString cClamp::handleScpiReadFlash(QString& scpiCmdStr)
     if (cmd.isCommand(1) && (cmd.getParam(0) == "")) {
         if (readClampType() == m_nType) { // we first look whether the type matches
             importAdjFlash();
-            answer = SCPI::scpiAnswer[SCPI::ack];
+            answer = ZSCPI::scpiAnswer[ZSCPI::ack];
         }
         else {
-            answer = SCPI::scpiAnswer[SCPI::errexec];
+            answer = ZSCPI::scpiAnswer[ZSCPI::errexec];
         }
     }
     else {
-        answer = SCPI::scpiAnswer[SCPI::nak];
+        answer = ZSCPI::scpiAnswer[ZSCPI::nak];
     }
     return answer;
 }
@@ -983,14 +983,14 @@ QString cClamp::handleScpiResetFlash(QString &scpiCmdStr)
     cSCPICommand cmd = scpiCmdStr;
     if (cmd.isCommand(1) && (cmd.getParam(0) == "")) {
         if (resetAdjFlash()) {
-            answer = SCPI::scpiAnswer[SCPI::ack];
+            answer = ZSCPI::scpiAnswer[ZSCPI::ack];
         }
         else {
-            answer = SCPI::scpiAnswer[SCPI::errexec];
+            answer = ZSCPI::scpiAnswer[ZSCPI::errexec];
         }
     }
     else {
-        answer = SCPI::scpiAnswer[SCPI::nak];
+        answer = ZSCPI::scpiAnswer[ZSCPI::nak];
     }
     return answer;
 }
@@ -1003,7 +1003,7 @@ QString cClamp::handleScpiReadChksum(QString& scpiCmdStr)
         answer = QString("0x%1").arg(getChecksum(),0,16); // hex output
     }
     else {
-        answer = SCPI::scpiAnswer[SCPI::nak];
+        answer = ZSCPI::scpiAnswer[ZSCPI::nak];
     }
     return answer;
 }
@@ -1015,14 +1015,14 @@ QString cClamp::handleScpiWriteXML(QString &scpiCmdStr)
     if (cmd.isCommand(1)) {
         QString filename = cmd.getParam(0);
         if (exportAdjXML(filename)) {
-            answer = SCPI::scpiAnswer[SCPI::ack];
+            answer = ZSCPI::scpiAnswer[ZSCPI::ack];
         }
         else {
-            answer = SCPI::scpiAnswer[SCPI::errexec];
+            answer = ZSCPI::scpiAnswer[ZSCPI::errexec];
         }
     }
     else {
-        answer = SCPI::scpiAnswer[SCPI::nak];
+        answer = ZSCPI::scpiAnswer[ZSCPI::nak];
     }
     return answer;
 }
@@ -1034,14 +1034,14 @@ QString cClamp::handleScpiReadXML(QString &scpiCmdStr)
     if (cmd.isCommand(1)) {
         QString filename = cmd.getParam(0);
         if (importAdjXML(filename)) {
-            answer = SCPI::scpiAnswer[SCPI::ack];
+            answer = ZSCPI::scpiAnswer[ZSCPI::ack];
         }
         else {
-            answer = SCPI::scpiAnswer[SCPI::errexec];
+            answer = ZSCPI::scpiAnswer[ZSCPI::errexec];
         }
     }
     else {
-        answer = SCPI::scpiAnswer[SCPI::nak];
+        answer = ZSCPI::scpiAnswer[ZSCPI::nak];
     }
     return answer;
 }
@@ -1054,7 +1054,7 @@ QString cClamp::handleScpiReadAdjStatus(QString &scpiCmdStr)
         answer = QString("%1").arg(getAdjustmentStatus()); // hex output
     }
     else {
-        answer = SCPI::scpiAnswer[SCPI::nak];
+        answer = ZSCPI::scpiAnswer[ZSCPI::nak];
     }
     return answer;
 }

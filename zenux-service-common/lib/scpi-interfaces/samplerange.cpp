@@ -1,4 +1,5 @@
 #include "samplerange.h"
+#include "zscpi_response_definitions.h"
 
 enum SampleRangeCommands
 {
@@ -52,5 +53,5 @@ QString cSampleRange::readSRate(QString &sInput)
     if (cmd.isQuery())
         return QString("%1").arg(m_nSRate);
     else
-        return SCPI::scpiAnswer[SCPI::nak];
+        return ZSCPI::scpiAnswer[ZSCPI::nak];
 }

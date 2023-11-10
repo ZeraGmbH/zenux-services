@@ -1,4 +1,5 @@
 #include "scinchannelinterface.h"
+#include "zscpi_response_definitions.h"
 
 enum Commands
 {
@@ -63,7 +64,7 @@ QString ScInChannelInterface::m_ReadAlias(QString &sInput)
     if (cmd.isQuery())
         return m_sAlias;
     else
-        return SCPI::scpiAnswer[SCPI::nak];
+        return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 QString ScInChannelInterface::m_ReadChannelStatus(QString &sInput)
@@ -74,5 +75,5 @@ QString ScInChannelInterface::m_ReadChannelStatus(QString &sInput)
         return QString("%1").arg(r);
     }
     else
-        return SCPI::scpiAnswer[SCPI::nak];
+        return ZSCPI::scpiAnswer[ZSCPI::nak];
 }

@@ -1,15 +1,14 @@
-
-#include <QList>
-#include <QString>
-
-#include <scpi.h>
-#include <scpicommand.h>
-
+#include "zscpi_response_definitions.h"
 #include "scpiconnection.h"
 #include "secchannel.h"
 #include "secinputsettings.h"
 #include "protonetcommand.h"
 #include "scpisingletonfactory.h"
+#include "zscpi_response_definitions.h"
+#include <scpi.h>
+#include <scpicommand.h>
+#include <QList>
+#include <QString>
 #include <unistd.h>
 
 namespace ECALCREG {
@@ -184,16 +183,16 @@ void SecChannel::m_ReadWriteRegister(cProtonetCommand *protoCmd)
             {
                 lseek(m_devFileDescriptor, m_nMyAdress + (regInd << 2), 0);
                 write(m_devFileDescriptor,(char*) &reg, 4);
-                protoCmd->m_sOutput = SCPI::scpiAnswer[SCPI::ack];
+                protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::ack];
             }
             else
-                protoCmd->m_sOutput = SCPI::scpiAnswer[SCPI::nak];
+                protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::nak];
         }
         else
-            protoCmd->m_sOutput = SCPI::scpiAnswer[SCPI::erraut];
+            protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::erraut];
     }
     else
-        protoCmd->m_sOutput = SCPI::scpiAnswer[SCPI::nak];
+        protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 void SecChannel::m_setSync(cProtonetCommand *protoCmd)
@@ -202,7 +201,7 @@ void SecChannel::m_setSync(cProtonetCommand *protoCmd)
     if (cmd.isCommand(1)) {
         if (protoCmd->m_clientId == m_ClientId) { // authorized ?
             QString par = cmd.getParam(0);
-            protoCmd->m_sOutput = SCPI::scpiAnswer[SCPI::errval]; // preset
+            protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::errval]; // preset
             if (par.contains("ec")) {
                 par.remove(baseChnName);
                 bool ok;
@@ -213,15 +212,15 @@ void SecChannel::m_setSync(cProtonetCommand *protoCmd)
                     read(m_devFileDescriptor,(char*) &reg, 4);
                     reg = (reg & 0xFFFFFF00) | (chnIndex+1);
                     write(m_devFileDescriptor,(char*) &reg, 4);
-                    protoCmd->m_sOutput = SCPI::scpiAnswer[SCPI::ack];
+                    protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::ack];
                 }
             }
         }
         else
-           protoCmd->m_sOutput = SCPI::scpiAnswer[SCPI::erraut];
+           protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::erraut];
     }
     else
-        protoCmd->m_sOutput = SCPI::scpiAnswer[SCPI::nak];
+        protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 void SecChannel::m_setMux(cProtonetCommand *protoCmd)
@@ -230,21 +229,21 @@ void SecChannel::m_setMux(cProtonetCommand *protoCmd)
     if (cmd.isCommand(1)) {
         if (protoCmd->m_clientId == m_ClientId) { // authorized ?
             QString par = cmd.getParam(0);
-            protoCmd->m_sOutput = SCPI::scpiAnswer[SCPI::errval]; // preset
+            protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::errval]; // preset
             if (m_pInputSettings->hasInput(par)) {
                 quint32 reg;
                 lseek(m_devFileDescriptor, m_nMyAdress + (ECALCREG::CONF << 2), 0);
                 read(m_devFileDescriptor,(char*) &reg, 4);
                 reg = (reg & 0xFFFF83FF) | (m_pInputSettings->mux(par) << 10);
                 write(m_devFileDescriptor,(char*) &reg, 4);
-                protoCmd->m_sOutput = SCPI::scpiAnswer[SCPI::ack];
+                protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::ack];
             }
         }
         else
-           protoCmd->m_sOutput = SCPI::scpiAnswer[SCPI::erraut];
+           protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::erraut];
     }
     else
-        protoCmd->m_sOutput = SCPI::scpiAnswer[SCPI::nak];
+        protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 void SecChannel::m_setCmdId(cProtonetCommand *protoCmd)
@@ -253,7 +252,7 @@ void SecChannel::m_setCmdId(cProtonetCommand *protoCmd)
     if (cmd.isCommand(1)) {
         if (protoCmd->m_clientId == m_ClientId) { // authorized ?
             QString par = cmd.getParam(0);
-            protoCmd->m_sOutput = SCPI::scpiAnswer[SCPI::errval]; // preset
+            protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::errval]; // preset
             bool ok;
             quint32 cmdId = par.toULong(&ok);
             if (ok && (cmdId < 3) ) {
@@ -262,14 +261,14 @@ void SecChannel::m_setCmdId(cProtonetCommand *protoCmd)
                 read(m_devFileDescriptor,(char*) &reg, 4);
                 reg = (reg & 0x00007CFF) | CMDIDList.at(cmdId);
                 write(m_devFileDescriptor,(char*) &reg, 4);
-                protoCmd->m_sOutput = SCPI::scpiAnswer[SCPI::ack];
+                protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::ack];
             }
         }
         else
-           protoCmd->m_sOutput = SCPI::scpiAnswer[SCPI::erraut];
+           protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::erraut];
     }
     else
-        protoCmd->m_sOutput = SCPI::scpiAnswer[SCPI::nak];
+        protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 void SecChannel::m_start(cProtonetCommand *protoCmd)
@@ -283,13 +282,13 @@ void SecChannel::m_start(cProtonetCommand *protoCmd)
             //reg = (reg & 0xFFFFFF3F) | 0x80;
             reg = 0x80;
             write(m_devFileDescriptor,(char*) &reg, 4);
-            protoCmd->m_sOutput = SCPI::scpiAnswer[SCPI::ack];
+            protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::ack];
         }
         else
-           protoCmd->m_sOutput = SCPI::scpiAnswer[SCPI::erraut];
+           protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::erraut];
     }
     else
-        protoCmd->m_sOutput = SCPI::scpiAnswer[SCPI::nak];
+        protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 
@@ -299,13 +298,13 @@ void SecChannel::m_stop(cProtonetCommand *protoCmd)
     if (cmd.isCommand(0)) {
         if (protoCmd->m_clientId == m_ClientId) { // authorized ?
             m_StopErrorCalculator();
-            protoCmd->m_sOutput = SCPI::scpiAnswer[SCPI::ack];
+            protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::ack];
         }
         else
-           protoCmd->m_sOutput = SCPI::scpiAnswer[SCPI::erraut];
+           protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::erraut];
     }
     else
-        protoCmd->m_sOutput = SCPI::scpiAnswer[SCPI::nak];
+        protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 void SecChannel::m_resetInt(cProtonetCommand *protoCmd)
@@ -321,13 +320,13 @@ void SecChannel::m_resetInt(cProtonetCommand *protoCmd)
                 m_funcSigHandler(0); // we do so as if the interrupt handler had seen another edge
             }
             else
-                protoCmd->m_sOutput = SCPI::scpiAnswer[SCPI::nak];
+                protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::nak];
         }
         else
-            protoCmd->m_sOutput = SCPI::scpiAnswer[SCPI::erraut];
+            protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::erraut];
     }
     else
-        protoCmd->m_sOutput = SCPI::scpiAnswer[SCPI::nak];
+        protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::nak];
 
 }
 

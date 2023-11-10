@@ -1,6 +1,7 @@
 #include "secgroupresourceandinterface.h"
 #include "scpiconnection.h"
 #include "scpisingletonfactory.h"
+#include "zscpi_response_definitions.h"
 #include "notzeronumgen.h"
 #include <scpi.h>
 
@@ -114,7 +115,7 @@ QString SecGroupResourceAndInterface::m_ReadVersion(QString &sInput)
     if (cmd.isQuery())
         return m_sVersion;
     else
-        return SCPI::scpiAnswer[SCPI::nak];
+        return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 
@@ -132,7 +133,7 @@ QString SecGroupResourceAndInterface::m_ReadECalculatorChannelCatalog(QString &s
         return s;
     }
     else
-        return SCPI::scpiAnswer[SCPI::nak];
+        return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 
@@ -170,13 +171,13 @@ void SecGroupResourceAndInterface::m_SetChannels(cProtonetCommand *protoCmd)
                    selEChannels.at(i)->set(id);
            }
            else
-               protoCmd->m_sOutput = SCPI::scpiAnswer[SCPI::busy];
+               protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::busy];
        }
        else
-           protoCmd->m_sOutput = SCPI::scpiAnswer[SCPI::nak];
+           protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::nak];
     }
     else
-        protoCmd->m_sOutput = SCPI::scpiAnswer[SCPI::nak];
+        protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::nak];
 
 }
 
@@ -185,7 +186,7 @@ void SecGroupResourceAndInterface::m_FreeChannels(cProtonetCommand *protoCmd)
 {
     cSCPICommand cmd = protoCmd->m_sInput;
 
-    protoCmd->m_sOutput = SCPI::scpiAnswer[SCPI::nak]; // preset
+    protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::nak]; // preset
 
     if (cmd.isCommand(0))
     {
@@ -199,7 +200,7 @@ void SecGroupResourceAndInterface::m_FreeChannels(cProtonetCommand *protoCmd)
                if (m_ECalculatorChannelHash.contains(key))
                    m_ECalculatorChannelHash[key]->free();
            }
-           protoCmd->m_sOutput = SCPI::scpiAnswer[SCPI::ack];
+           protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::ack];
        }
     }
 }

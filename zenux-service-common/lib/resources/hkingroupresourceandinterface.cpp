@@ -1,4 +1,5 @@
 #include "hkingroupresourceandinterface.h"
+#include "zscpi_response_definitions.h"
 #include "notzeronumgen.h"
 
 enum Commands
@@ -67,7 +68,7 @@ QString HkInGroupResourceAndInterface::readVersion(QString &sInput)
     cSCPICommand cmd = sInput;
     if (cmd.isQuery())
         return Version;
-    return SCPI::scpiAnswer[SCPI::nak];
+    return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 QString HkInGroupResourceAndInterface::readChannelCatalog(QString &sInput)
@@ -81,5 +82,5 @@ QString HkInGroupResourceAndInterface::readChannelCatalog(QString &sInput)
         s += m_ChannelList.at(i)->getName();
         return s;
     }
-    return SCPI::scpiAnswer[SCPI::nak];
+    return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
