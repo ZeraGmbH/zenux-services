@@ -8,7 +8,7 @@
 // Serial Port Interface,  Serial Interface, DSP Ctrl Register, what ?, the device name
 enum IOCTL {SPI, Serial, DSPCtrl, DSPStat, DSPCfg, VersionNr, MagicId};
 
-enum DspAcks {NBusy, InProgress, CmdError, ParError, CmdDone, CmdTimeout}; 
+enum DspAcks {NBusy, InProgress, CmdError, ParError, CmdDone};
 
 const int MAGIC_ID21262 = 0xAA55BB44;
 const int MAGIC_ID21362 = 0xAA55CC33;
