@@ -16,6 +16,7 @@ public:
     void SendIdent(QString ident);
 public slots:
     void SendCommand(QString& cmd, QString &par, quint32 msgnr);
+    void SendCommand(QString &cmd, QString &par);
 private:
     QString m_sIPAdr;
     quint16 m_nPort;

@@ -226,7 +226,7 @@ private:
     QState* m_stateconnect2RM;
     QState* m_stateconnect2RMError;
     QState* m_stateSendRMIdentAndRegister;
-    cRMConnection* m_pRMConnection;
+    RMConnection* m_pRMConnection;
 
     int m_retryRMConnect;
     QTimer m_retryTimer;
