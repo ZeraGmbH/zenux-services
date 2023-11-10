@@ -1,5 +1,4 @@
 set(SOURCES
-    main.cpp
     sec1000d.cpp
     statusinterface.cpp
     systeminterface.cpp

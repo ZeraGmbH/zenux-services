@@ -1,10 +1,28 @@
-file(GLOB SOURCES
-    *.cpp 
+set(SOURCES
+    cmdinterpret.cpp
+    cmds.cpp
+    dsp.cpp
+    dspsettings.cpp
+    parse.cpp
+    rmconnection.cpp
+    scpi.cpp
+    zdsp1d.cpp
+    zhserver.cpp
     )
 
 
-file(GLOB HEADER
-    *.h  
+set(HEADER
+    cmdinterpret.h
+    dsp.h
+    dsp1scpi.h
+    dspsettings.h
+    parse.h
+    rmconnection.h
+    scpi.h
+    zdsp1d.h
+    zdspglobal.h
+    zeraglobal.h
+    zhserver.h
     )
 
 add_library(zdsp1d-lib STATIC
