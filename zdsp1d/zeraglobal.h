@@ -7,7 +7,6 @@
 #define NACKString "nak"  // not acknowledge (kommando nicht verstanden)
 #define BUSYString "busy" // was wohl (kommando verstanden, device jedoch busy)
 #define ERRCONString "errcon"  // error connection (kommando verstanden, keine verbindung zum device) 
-#define ERRAUTString "erraut" // error autorisierung (kommando verstanden, client hat aber keine berechtigung)
 #define ERRVALString "errval" // kommando verstanden, parameter jedoch fehlerhaft
 #define ERRPATHString "errpath" // falsche pfad angabe bzw. pfad existiert nicht
 #define ERREXECString "errexec" // fehler bei der ausführung eines kommandos
