@@ -98,8 +98,6 @@ void cPCBServer::sendAnswerProto(cProtonetCommand *protoCmd)
                 Answer->set_rtype(ProtobufMessage::NetMessage_NetReply_ReplyType_NACK);
             else if (output.contains(SCPI::scpiAnswer[SCPI::busy]))
                 Answer->set_rtype(ProtobufMessage::NetMessage_NetReply_ReplyType_ERROR);
-            else if (output.contains(SCPI::scpiAnswer[SCPI::errcon]))
-                Answer->set_rtype(ProtobufMessage::NetMessage_NetReply_ReplyType_ERROR);
             else if (output.contains(SCPI::scpiAnswer[SCPI::erraut]))
                 Answer->set_rtype(ProtobufMessage::NetMessage_NetReply_ReplyType_ERROR);
             else if (output.contains(SCPI::scpiAnswer[SCPI::errval]))
