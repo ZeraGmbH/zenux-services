@@ -10,7 +10,6 @@
 #define ERRAUTString "erraut" // error autorisierung (kommando verstanden, client hat aber keine berechtigung)
 #define ERRVALString "errval" // kommando verstanden, parameter jedoch fehlerhaft
 #define ERRXMLString "errxml" // die verwendete xml datei war fehlerhaft
-#define ERRMMEMString "errmmem" // fehler massenspeicher
 #define ERRPATHString "errpath" // falsche pfad angabe bzw. pfad existiert nicht
 #define ERREXECString "errexec" // fehler bei der ausführung eines kommandos
 #define ERRTIMOString "errtimo" // timeout bei der ausführung eines kommandos
