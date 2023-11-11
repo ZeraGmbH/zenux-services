@@ -355,7 +355,7 @@ void cCOM5003dServer::doSetupServer()
 
     initSCPIConnections();
 
-    myServer->startServer(m_ethSettings.getPort(EthSettings::protobufserver)); // and can start the server now
+    m_myServer->startServer(m_ethSettings.getPort(EthSettings::protobufserver)); // and can start the server now
     if(m_ethSettings.isSCPIactive())
         m_pSCPIServer->listen(QHostAddress::AnyIPv4, m_ethSettings.getPort(EthSettings::scpiserver));
 

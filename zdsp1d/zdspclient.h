@@ -36,30 +36,29 @@ public:
     QList<cDspCmd>& GetDspCmdList(); // damit der server die komplette liste aller clients
     QList<cDspCmd>& GetDspIntCmdList(); // an den dsp übertragen kann
     int getSocket();
+
     cDspVarResolver DspVarResolver; // zum auflösen der variablen aus kommandos
-    int sock; // socket für den die verbindung besteht
     XiQNetPeer* m_pNetClient; // our network client
 
 private:
     void init(int socket, XiQNetPeer *netclient, cZDSP1Server* server);
-    cZDSP1Server* myServer;
-    bool m_bActive;
     bool GenCmdList(QString&, QList<cDspCmd>& ,QString&,ulong,ulong);
     bool syntaxCheck(QString&);
-
-    int Encryption;
     char* qSEncryption(char*,int );
+
+    cZDSP1Server* m_myServer;
+    int m_socket; // socket für den die verbindung besteht
+    bool m_bActive;
+    int Encryption;
     QString sOutput;
     QString m_sCmdListDef; // kommando liste defintion
     QString m_sIntCmdListDef; // interrupt kommando  liste defintion
 
-    //    ulong m_nStartAdr; // die absolute adresse an der ein variablen "block" im dsp steht
-    //    int m_nlen; // länge des gesamten datenblocks (in float bzw. long)
     QList<cDspClientVar> m_DspVarList; // liste mit variablen beschreibungen
     QList<cDspCmd> m_DspCmdList; // liste mit dsp kommandos (periodisch)
     QList<cDspCmd>  m_DspIntCmdList; // liste mit dsp kommandos (interrupt)
-    QVector<sDspVar> varArray; // array von sDspVar
-    sMemSection msec; // eine memory section für den DspVarResolver für die variablen des clients
+    QVector<sDspVar> m_dspVarArray; // array von sDspVar
+    sMemSection m_memorySection; // eine memory section für den DspVarResolver für die variablen des clients
 
 };
 #endif // ZDSPCLIENT_H

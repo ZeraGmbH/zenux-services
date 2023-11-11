@@ -16,20 +16,20 @@ cZDSP1Client::cZDSP1Client(int socket, XiQNetPeer* netclient, cZDSP1Server* serv
 
 void cZDSP1Client::init(int socket, XiQNetPeer *netclient, cZDSP1Server *server)
 {
-    sock = socket;
+    m_socket = socket;
     m_pNetClient = netclient;
     m_sCmdListDef = m_sIntCmdListDef = "Empty"; // alle listen default leer
     cDspCmd DspCmd;
     m_DspCmdList.append(DspCmd);
     m_DspIntCmdList.append(DspCmd);
-    myServer = server;
+    m_myServer = server;
     DspVarResolver.addSection( &dm32DspWorkspace);
     DspVarResolver.addSection( &dm32DialogWorkSpace);
     DspVarResolver.addSection( &dm32UserWorkSpace);
     DspVarResolver.addSection( &dm32CmdList);
     DspVarResolver.addSection( &symbConsts1);
-    DspVarResolver.addSection( &msec);
-    msec.StartAdr = msec.n = 0; msec.Section = userSection;
+    DspVarResolver.addSection( &m_memorySection);
+    m_memorySection.StartAdr = m_memorySection.n = 0; m_memorySection.Section = userSection;
     DspVarResolver.setVarHash(); // wir setzen die hashtabelle und initialisieren diese
 
     Encryption = 0; // es werden alle var. abfragen im klartext gesendet
@@ -76,22 +76,22 @@ QString& cZDSP1Client::SetRavList(QString& s)
         }
     }
 
-    msec.n = m_DspVarList.count();
+    m_memorySection.n = m_DspVarList.count();
 
-    if (msec.n > 0)
+    if (m_memorySection.n > 0)
     { // wir haben mindestens 1 variable
-        varArray.resize(msec.n);
+        m_dspVarArray.resize(m_memorySection.n);
 
-        for (i = 0;i < msec.n; i++)
+        for (i = 0;i < m_memorySection.n; i++)
         { // und machen diese dem resolver zugänglich
-            varArray[i].Name = m_DspVarList[i].name();
-            varArray[i].size = m_DspVarList[i].size();
-            varArray[i].offs = m_DspVarList[i].offs();
-            varArray[i].type = (dType)m_DspVarList[i].type();
-            varArray[i].segment = (segmentType)m_DspVarList[i].segment();
+            m_dspVarArray[i].Name = m_DspVarList[i].name();
+            m_dspVarArray[i].size = m_DspVarList[i].size();
+            m_dspVarArray[i].offs = m_DspVarList[i].offs();
+            m_dspVarArray[i].type = (dType)m_DspVarList[i].type();
+            m_dspVarArray[i].segment = (segmentType)m_DspVarList[i].segment();
         }
 
-        msec.DspVar = varArray.data();
+        m_memorySection.DspVar = m_dspVarArray.data();
     }
 
     DspVarResolver.setVarHash(); // wir setzen die hashtabelle neu
@@ -211,7 +211,7 @@ cDspCmd cZDSP1Client::GenDspCmd(QString& scmd,bool* ok, ulong umo, ulong globals
             t &= sSearch.isEmpty();
             if (t) {
                 lcmd = cDspCmd(dspcmd->CmdCode, (ushort)par[0], (ushort)par[1]);
-                if (dspcmd->modify) lcmd.w[1] = (lcmd.w[1] & 0xFFFF) | (sock << 16);
+                if (dspcmd->modify) lcmd.w[1] = (lcmd.w[1] & 0xFFFF) | (m_socket << 16);
             }
             *ok = t;
             return lcmd;
@@ -232,7 +232,7 @@ cDspCmd cZDSP1Client::GenDspCmd(QString& scmd,bool* ok, ulong umo, ulong globals
             if (t)
             {
                 lcmd = cDspCmd( dspcmd->CmdCode, (ushort)par[0], (ushort)par[1], (ushort)par[2]);
-                if (dspcmd->modify) lcmd.w[1] = (lcmd.w[1] & 0xFFFF) | (sock << 16);
+                if (dspcmd->modify) lcmd.w[1] = (lcmd.w[1] & 0xFFFF) | (m_socket << 16);
             }
 
             *ok = t;
@@ -291,19 +291,19 @@ ulong cZDSP1Client::setStartAdr(ulong sa, ulong globalmemstart)
     ulong usermemsize, globalmemsize;
 
     usermemsize = globalmemsize = 0;
-    msec.StartAdr = sa;
+    m_memorySection.StartAdr = sa;
 
-    for (int i = 0; i < msec.n; i++)
+    for (int i = 0; i < m_memorySection.n; i++)
     {
-        if (msec.DspVar[i].segment == localSegment)
+        if (m_memorySection.DspVar[i].segment == localSegment)
         {
-            msec.DspVar[i].adr = sa + usermemsize; // we need the adress for reading back data
-            usermemsize += msec.DspVar[i].size;
+            m_memorySection.DspVar[i].adr = sa + usermemsize; // we need the adress for reading back data
+            usermemsize += m_memorySection.DspVar[i].size;
         }
         else
         {
-            msec.DspVar[i].adr = globalmemstart+globalmemsize;
-            globalmemsize += msec.DspVar[i].size;
+            m_memorySection.DspVar[i].adr = globalmemstart+globalmemsize;
+            globalmemsize += m_memorySection.DspVar[i].size;
         }
     }
     return usermemsize;
@@ -358,7 +358,7 @@ QList<cDspCmd> &cZDSP1Client::GetDspIntCmdList()
 
 int cZDSP1Client::getSocket()
 {
-    return sock;
+    return m_socket;
 }
 
 
@@ -424,8 +424,8 @@ sDspVar* cZDSP1Client::DspVarRead(QString& s, QByteArray* ba)
 
 
 
-    int fd = myServer->DevFileDescriptor;
-    if ( (myServer->DspDevSeek(fd, DspVar->adr) >= 0) && (myServer->DspDevRead(fd, ba->data(), n*4 ) >= 0) )
+    int fd = m_myServer->DevFileDescriptor;
+    if ( (m_myServer->DspDevSeek(fd, DspVar->adr) >= 0) && (m_myServer->DspDevRead(fd, ba->data(), n*4 ) >= 0) )
     {
         return DspVar; // dev.  seek und dev. read ok
     }
@@ -515,7 +515,7 @@ bool cZDSP1Client::DspVarWrite(QString& s)
 {
     const int gran = 10; // immer 10 elemente allokieren
     bool ok=false;
-    int fd = myServer->DevFileDescriptor;
+    int fd = m_myServer->DevFileDescriptor;
 
     for (int i=0;;i++)
     {
@@ -599,8 +599,8 @@ bool cZDSP1Client::DspVarWrite(QString& s)
 
         if (!ok2) break;
         if (n>0) {
-            if (myServer->DspDevSeek(fd, adr) < 0) break; // file positionieren
-            if (myServer->DspDevWrite(fd, ba.data(), n*4 ) < 0) break; // fehler beim schreiben
+            if (m_myServer->DspDevSeek(fd, adr) < 0) break; // file positionieren
+            if (m_myServer->DspDevWrite(fd, ba.data(), n*4 ) < 0) break; // fehler beim schreiben
         }
     }
     return ok;

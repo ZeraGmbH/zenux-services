@@ -49,9 +49,9 @@ QString &cPCBServer::getVersion()
 
 void cPCBServer::setupServer()
 {
-    myServer = new XiQNetServer(this); // our working (talking) horse
-    myServer->setDefaultWrapper(&m_ProtobufWrapper);
-    connect(myServer,&XiQNetServer::sigClientConnected,this,&cPCBServer::onEstablishNewConnection);
+    m_myServer = new XiQNetServer(this); // our working (talking) horse
+    m_myServer->setDefaultWrapper(&m_ProtobufWrapper);
+    connect(m_myServer,&XiQNetServer::sigClientConnected,this,&cPCBServer::onEstablishNewConnection);
     if(m_ethSettings.isSCPIactive()) {
         m_pSCPIServer = new QTcpServer();
         m_pSCPIServer->setMaxPendingConnections(1); // we only accept 1 client to connect

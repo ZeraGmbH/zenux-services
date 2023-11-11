@@ -63,7 +63,7 @@ protected:
     void initSCPIConnections();
     void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
     ServerParams m_params;
-    XiQNetServer* myServer; // the real server that does the communication job
+    XiQNetServer* m_myServer; // the real server that does the communication job
     XiQNetWrapper m_ProtobufWrapper;
     Zera::XMLConfig::cReader m_xmlConfigReader;
     QString m_sConfigurationPath;
