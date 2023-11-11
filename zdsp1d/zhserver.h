@@ -13,7 +13,7 @@
 #include <QStringList>
 #include <QString>
 
-#include "scpi.h"
+#include "scpi-zdsp.h"
 #include "dsp1scpi.h"
 #include "cmdinterpret.h"
 

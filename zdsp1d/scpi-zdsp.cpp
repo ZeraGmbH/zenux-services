@@ -2,7 +2,7 @@
 
 #include <qstring.h>
 
-#include "scpi.h"
+#include "scpi-zdsp.h"
 #include "parse.h"
 
 

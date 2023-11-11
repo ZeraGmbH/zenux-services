@@ -3,7 +3,7 @@
 // scpi nodes, commands und , queries für den 
 // bearbeitenden kommando interpreter definiert
 
-#include "scpi.h" // für scpi knoten
+#include "scpi-zdsp.h" // für scpi knoten
 #include "dsp1scpi.h" // scpi erweiterung
 
 // die vollständige scpi kommando liste

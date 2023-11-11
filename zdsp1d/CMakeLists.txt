@@ -3,7 +3,7 @@ set(SOURCES
     cmds.cpp
     dsp.cpp
     parse.cpp
-    scpi.cpp
+    scpi-zdsp.cpp
     zdsp1d.cpp
     zhserver.cpp
     )
@@ -14,7 +14,7 @@ set(HEADER
     dsp.h
     dsp1scpi.h
     parse.h
-    scpi.h
+    scpi-zdsp.h
     zdsp1d.h
     zdspglobal.h
     zeraglobal.h
@@ -27,8 +27,8 @@ add_library(zdsp1d-lib STATIC
     )
 
 target_include_directories(zdsp1d-lib
-    PRIVATE
-    ${CMAKE_CURRENT_SOURCE_DIR}
+    PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
     )
 
 if(${Systemd_FOUND})

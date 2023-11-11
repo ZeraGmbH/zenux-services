@@ -66,8 +66,8 @@ enum SCPICmdType  {	nixCmd, // 0 is nix
 class cbIFace { // call back interface 
 public:    
     virtual ~cbIFace(){}; // rein virtuell
-    virtual QString SCPICmd( SCPICmdType, QChar*) = 0;
-    virtual QString SCPIQuery( SCPICmdType) = 0;
+    virtual QString SCPICmd(SCPICmdType cmdEnum, QChar* scpi) = 0;
+    virtual QString SCPIQuery(SCPICmdType cmdEnum) = 0;
 };
 
 #endif
