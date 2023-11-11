@@ -18,7 +18,6 @@ cNodeSCPI* System;
                             cNodeSCPI* SystemDspTest;
 	                        cNodeSCPI* SystemDspReset;
 	                        cNodeSCPI* SystemDspBoot;
-                            cNodeSCPI* SystemDspBootPath;
 				cNodeSCPI* SystemDspBootExecute;
 		          cNodeSCPI* SystemDspSampling;	
 		          cNodeSCPI* SystemDspMaxima;
@@ -120,8 +119,7 @@ cNode* InitCmdTree()
     SystemDspMaxima=new cNodeSCPI("MAXIMA",isNode,SystemDspTrigger,SystemDspMaximaReset,nixCmd,nixCmd);
     SystemDspSampling=new cNodeSCPI("SAMPLING",isQuery | isCommand,SystemDspMaxima,NULL,SetSamplingSystem,GetSamplingSystem);
     SystemDspBootExecute=new cNodeSCPI("EXECUTE",isCommand,NULL,NULL,BootDsp,nixCmd);
-    SystemDspBootPath=new cNodeSCPI("PATH",isQuery | isCommand,SystemDspBootExecute,NULL,SetDspBootPath,GetDspBootPath);
-    SystemDspBoot=new cNodeSCPI("BOOT",isNode,SystemDspSampling,SystemDspBootPath,nixCmd,nixCmd);
+    SystemDspBoot=new cNodeSCPI("BOOT",isNode,SystemDspSampling,SystemDspBootExecute,nixCmd,nixCmd);
     SystemDspReset=new cNodeSCPI("RESET",isCommand,SystemDspBoot,NULL,ResetDsp,nixCmd);
     SystemDspTest=new cNodeSCPI("TEST",isCommand,SystemDspReset,NULL,TestDsp,nixCmd);
     SystemDsp=new cNodeSCPI("DSP",isNode,SystemSerNr,SystemDspTest,nixCmd,nixCmd);

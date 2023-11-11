@@ -29,8 +29,6 @@ enum SCPICmdType  {	nixCmd, // 0 is nix
             TestDsp,
 			ResetDsp,
 			BootDsp,
-			SetDspBootPath,
-			GetDspBootPath,
 			GetPCBSerialNumber,
 			GetDeviceVersion,
 			GetServerVersion,  

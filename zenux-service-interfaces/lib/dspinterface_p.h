@@ -52,7 +52,6 @@ public:
     virtual void setClient(Zera::ProxyClient *client);
     virtual quint32 bootDsp();
     virtual quint32 resetDsp();
-    virtual quint32 setDSPBootPath(QString path);
     virtual quint32 setSamplingSystem(int chncount, int samp_per, int samp_mper); // nmuber of channels, samples/signalperiod, samples/measperiod
     virtual quint32 varList2Dsp(); // send the var-list to dsp server
     virtual quint32 cmdList2Dsp(); // send cyclic command list to the dsp server

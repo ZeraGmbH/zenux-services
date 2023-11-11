@@ -35,13 +35,6 @@ quint32 cDSPInterface::resetDsp()
 }
 
 
-quint32 cDSPInterface::setDSPBootPath(QString path)
-{
-    Q_D(cDSPInterface);
-    return d->setDSPBootPath(path);
-}
-
-
 quint32 cDSPInterface::setSamplingSystem(int chncount, int samp_per, int samp_mper)
 {
     Q_D(cDSPInterface);

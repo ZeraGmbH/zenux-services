@@ -1195,23 +1195,6 @@ int cZDSP1Server::SetBootPath(const char * s)
         return 1;
 }
 
-QString cZDSP1Server::mSetDspBootPath(QChar *s)
-{
-    QString par = pCmdInterpreter->m_pParser->GetKeyword(&s); // holt den parameter aus dem kommando
-    if ( SetBootPath(par.toLatin1().data()) )
-        Answer = ERRPATHString;
-    else
-        Answer = ACKString;
-    return Answer;
-}
-
-
-QString cZDSP1Server::mGetDspBootPath()
-{
-    return m_sDspBootPath;
-}
-
-
 QString cZDSP1Server::mGetPCBSerialNumber()
 {
     return m_sDspSerialNumber;
@@ -2312,7 +2295,6 @@ QString cZDSP1Server::SCPICmd(SCPICmdType cmd, QChar *s)
     case    TestDsp:            return mTestDsp(s);
     case 	ResetDsp:           return mResetDsp(s);
     case	BootDsp:            return mBootDsp(s);
-    case 	SetDspBootPath:     return mSetDspBootPath(s);
     case 	SetRavList: 		return mSetRavList(s);
     case 	SetCmdList: 		return mSetCmdList(s);
     case   SetCmdIntList: 		return mSetCmdIntList(s);
@@ -2346,7 +2328,6 @@ QString cZDSP1Server::SCPIQuery( SCPICmdType cmd)
 {
     switch ((int)cmd)
     {
-    case 		GetDspBootPath: 		return mGetDspBootPath();
     case 		GetPCBSerialNumber: 	return mGetPCBSerialNumber();
     case 		GetDeviceVersion:		return mGetDeviceVersion();
     case 		GetServerVersion: 		return mGetServerVersion();
