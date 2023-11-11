@@ -43,7 +43,7 @@ cNode* cNodeZHServer::TestNode(cCmdInterpreter* ci,QChar** inp)
         }
     }
 
-    if (m_nNodeStat == isUnknown) return (pNextNode); // zum prüfen des nächsten knoten ( solange != NULL gehts weiter )
+    if (m_nNodeStat == isUnknown) return (m_pNextNode); // zum prüfen des nächsten knoten ( solange != NULL gehts weiter )
     *inp=tinp; // hinter dem schlüsselwort gehts weiter
     
     char c = ci->m_pParser->GetChar(inp).toLatin1();
@@ -51,17 +51,17 @@ cNode* cNodeZHServer::TestNode(cCmdInterpreter* ci,QChar** inp)
     switch (c)
     {
     case ':' 	: // es ist ein knoten
-        if (nNodeDef & isNode) {
+        if (m_nNodeDef & isNode) {
             m_nNodeStat |= isNode; // es darf einer sein
             if (m_nQuery) ci->m_pcbIFace->SCPIQuery(m_nQuery); // in abhängigkeit vom knoten muss noch was passieren (z.b. einen nachfolgenden knoten umbauen)
-            return (pNewLevelNode); // dann return nächsten level ( d.h. es geht weiter )
+            return (m_pNewLevelNode); // dann return nächsten level ( d.h. es geht weiter )
         }
         else return (NULL); // es darf keiner sein -> fertig !!!
     case '?'	: // es ist eine query
-        m_nNodeStat |= (nNodeDef & isQuery); // gesetzt wenn es eine sein darf
+        m_nNodeStat |= (m_nNodeDef & isQuery); // gesetzt wenn es eine sein darf
         return (NULL); // -> fertig !!!
     default		: // es ist ein command
-        m_nNodeStat |= (nNodeDef & isCommand); // gesetzt wenn es eines sein darf
+        m_nNodeStat |= (m_nNodeDef & isCommand); // gesetzt wenn es eines sein darf
         *inp=tinp; // lass dem Kommando das zeichen (reparsen)
         return (NULL);
     }

@@ -40,51 +40,48 @@ const QString cSCPIString::ScpiAbreviation (const QString& s)
     return(t);
 }
     
-// konstruktor, nNodedef, pNextNode, pNewLevelNode, m_pCmd, m_pQuery
-cNode::cNode(int ns,cNode* n1,cNode* n2,SCPICmdType cmd,SCPICmdType query)
+cNode::cNode(int nNodedef, cNode* pNextNode, cNode* n2, SCPICmdType cmd, SCPICmdType Query)
 {
-    nNodeDef = ns;
-    pNextNode = n1;
-    pNewLevelNode = n2;
+    m_nNodeDef = nNodedef;
+    m_pNextNode = pNextNode;
+    m_pNewLevelNode = n2;
     m_nCmd = cmd;
-    m_nQuery = query;
+    m_nQuery = Query;
 }
 
-// konstruktor, sNodeName, nNodedef, pNextNode, pNewLevelNode, m_pCmd, m_pQuery
-cNodeSCPI::cNodeSCPI (const char* s,int ns,cNode* n1,cNode* n2,SCPICmdType cmd,SCPICmdType query)
-    :cNode(ns,n1,n2,cmd,query)
+cNodeSCPI::cNodeSCPI (const char* sNodeName, int nNodedef, cNode* pNextNode, cNode* pNewLevelNode, SCPICmdType Cmd, SCPICmdType Query) :
+    cNode(nNodedef, pNextNode, pNewLevelNode, Cmd, Query)
 {
-    
-    sNodeName=s;
+    m_sNodeName=sNodeName;
 }
 
 
-cNode* cNodeSCPI::TestNode(cCmdInterpreter* ci, QChar **inp)
+cNode* cNodeSCPI::TestNode(cCmdInterpreter* cmdInterpreter, QChar **inputline)
 {
-    QChar* tinp=*inp; // zeiger kopieren
-    QString stmp=ci->m_pParser->GetKeyword(&tinp); // lässt das nächste schlüsselwort vom parser lesen ( der ist static)
+    QChar* tinp=*inputline; // zeiger kopieren
+    QString stmp=cmdInterpreter->m_pParser->GetKeyword(&tinp); // lässt das nächste schlüsselwort vom parser lesen ( der ist static)
     m_nNodeStat=isUnknown; // erst mal unbekannt
-    if (sNodeName != stmp) return (pNextNode); // zum prüfen des nächsten knoten ( solange != NULL gehts weiter )
+    if (m_sNodeName != stmp) return (m_pNextNode); // zum prüfen des nächsten knoten ( solange != NULL gehts weiter )
     m_nNodeStat |= isKnown;
-    *inp=tinp; // hinter dem schlüsselwort gehts weiter
+    *inputline=tinp; // hinter dem schlüsselwort gehts weiter
     
-    char c = ci->m_pParser->GetChar(inp).toLatin1();
+    char c = cmdInterpreter->m_pParser->GetChar(inputline).toLatin1();
     switch (c)
     {
     case ':' 	: // es ist ein knoten
-        if (nNodeDef & isNode)
+        if (m_nNodeDef & isNode)
         {
             m_nNodeStat |= isNode; // es darf einer sein
-            return (pNewLevelNode); // dann return nächsten level ( d.h. es geht weiter )
+            return (m_pNewLevelNode); // dann return nächsten level ( d.h. es geht weiter )
         }
         else
             return (NULL); // es darf keiner sein -> fertig !!!
     case '?'	: // es ist eine query
-        m_nNodeStat |= (nNodeDef & isQuery); // gesetzt wenn es eine sein darf
+        m_nNodeStat |= (m_nNodeDef & isQuery); // gesetzt wenn es eine sein darf
         return (NULL); // -> fertig !!!
     default		: // es ist ein command
-        m_nNodeStat |= (nNodeDef & isCommand); // gesetzt wenn es eines sein darf
-        *inp=tinp; // lass dem Kommando das zeichen (reparsen)
+        m_nNodeStat |= (m_nNodeDef & isCommand); // gesetzt wenn es eines sein darf
+        *inputline=tinp; // lass dem Kommando das zeichen (reparsen)
         return (NULL);
     }
 }
