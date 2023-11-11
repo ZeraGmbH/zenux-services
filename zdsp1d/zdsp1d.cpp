@@ -1,9 +1,20 @@
 // implementation des eigenlichen servers zdsp1(d)
 
 #include "zdspclient.h"
-
-
-
+#include "zeraglobal.h"
+#include "zdspglobal.h"
+#include "zhserver.h"
+#include "zdsp1d.h"
+#include "dsp.h"
+#include "parse-zdsp.h"
+#include <QDebug>
+#include <QCoreApplication>
+#include <QFinalState>
+#include <QDataStream>
+#include <QFile>
+#include <QTcpSocket>
+#include <QTcpServer>
+#include <QTextStream>
 #include <sys/types.h>
 #include <sys/time.h>
 #include <sys/socket.h>
@@ -19,38 +30,6 @@
 #include <fcntl.h>
 #include <unistd.h>
 
-#include <QDebug>
-#include <QCoreApplication>
-#include <xmlconfigreader.h>
-#include <QStateMachine>
-#include <QState>
-#include <QFinalState>
-#include <QString>
-#include <QStringList>
-#include <QMap>
-#include <QDataStream>
-#include <QFile>
-#include <qbuffer.h>
-#include <QTcpSocket>
-#include <QTcpServer>
-#include <QCryptographicHash>
-
-#include <QTextStream>
-#include <xiqnetserver.h>
-#include <xiqnetpeer.h>
-#include <netmessages.pb.h>
-
-#include "zeraglobal.h"
-#include "zdspglobal.h"
-#include "zhserver.h"
-#include "zdsp1d.h"
-#include "dsp.h"
-#include "parse-zdsp.h"
-#include "debugsettings.h"
-#include "dspsettings.h"
-#include "ethsettings.h"
-#include "rmconnection.h"
-
 #ifdef SYSTEMD_NOTIFICATION
 #include <systemd/sd-daemon.h>
 #endif
@@ -63,7 +42,6 @@
 #define ADSP_INT_ENABLE _IOR(ADSP_IOC_MAGIC,4,char*)
 #define ADSP_INT_DISABLE _IOR(ADSP_IOC_MAGIC,5,char*)
 #define IO_READ _IOR(ADSP_IOC_MAGIC,6,char*)
-
 
 extern sMemSection dm32DspWorkspace;
 extern sMemSection dm32DialogWorkSpace;
