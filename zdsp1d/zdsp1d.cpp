@@ -567,18 +567,6 @@ QString cZDSP1Server::mBootDsp(QChar *)
     return Answer;
 }
 
-int cZDSP1Server::SetBootPath(const char * s)
-{
-    QString par = s;
-    QFile bp(par);
-    if ( bp.exists() ) {
-        m_sDspBootPath = par;
-        return 0;
-    }
-    else
-        return 1;
-}
-
 QString cZDSP1Server::mGetPCBSerialNumber()
 {
     return m_sDspSerialNumber;
