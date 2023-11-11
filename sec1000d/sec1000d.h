@@ -40,8 +40,6 @@ public:
     cSystemInfo* m_pSystemInfo;
     RMConnection* m_pRMConnection;
 
-    int DevFileDescriptor; // kerneltreiber wird nur 1x geöffnet und dann gehalten
-
 signals:
     void abortInit();
     void confStarting();
@@ -49,6 +47,7 @@ signals:
     void sigServerIsSetUp();
 
 private:
+    int m_devFileDescriptor; // kerneltreiber wird nur 1x geöffnet und dann gehalten
     QStateMachine* m_pInitializationMachine;
     QState* m_stateconnect2RM;
     QState* m_stateconnect2RMError;

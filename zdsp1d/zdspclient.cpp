@@ -424,11 +424,8 @@ sDspVar* cZDSP1Client::DspVarRead(QString& s, QByteArray* ba)
 
 
 
-    int fd = m_myServer->DevFileDescriptor;
-    if ( (m_myServer->DspDevSeek(fd, DspVar->adr) >= 0) && (m_myServer->DspDevRead(fd, ba->data(), n*4 ) >= 0) )
-    {
+    if ( (m_myServer->DspDevSeek(DspVar->adr) >= 0) && (m_myServer->DspDevRead(ba->data(), n*4 ) >= 0) )
         return DspVar; // dev.  seek und dev. read ok
-    }
 
     return 0; // sonst fehler
 }
@@ -515,7 +512,6 @@ bool cZDSP1Client::DspVarWrite(QString& s)
 {
     const int gran = 10; // immer 10 elemente allokieren
     bool ok=false;
-    int fd = m_myServer->DevFileDescriptor;
 
     for (int i=0;;i++)
     {
@@ -599,8 +595,8 @@ bool cZDSP1Client::DspVarWrite(QString& s)
 
         if (!ok2) break;
         if (n>0) {
-            if (m_myServer->DspDevSeek(fd, adr) < 0) break; // file positionieren
-            if (m_myServer->DspDevWrite(fd, ba.data(), n*4 ) < 0) break; // fehler beim schreiben
+            if (m_myServer->DspDevSeek(adr) < 0) break; // file positionieren
+            if (m_myServer->DspDevWrite(ba.data(), n*4 ) < 0) break; // fehler beim schreiben
         }
     }
     return ok;

@@ -41,12 +41,10 @@ public:
     int SetBootPath(const char*);
     int SetDeviceNode(char*);
 
-    int DspDevRead(int, char*, int);
-    int DspDevWrite(int, char*, int);
-    int DspDevSeek(int,ulong);
     int DspDevOpen();
-
-    int DevFileDescriptor; // kerneltreiber wird nur 1x geöffnet und dann gehalten
+    int DspDevRead(char* buf, int len);
+    int DspDevWrite(char* buf,int len);
+    int DspDevSeek(ulong adr);
 
     cDebugSettings* m_pDebugSettings;
     EthSettings* m_pETHSettings;
@@ -57,6 +55,7 @@ signals:
     void abortInit();
 
 private:
+    int m_devFileDescriptor; // kerneltreiber wird nur 1x geöffnet und dann gehalten
     XiQNetServer* myProtonetServer; // the real server that does the communication job
     XiQNetWrapper m_ProtobufWrapper;
     quint16 m_nSocketIdentifier; // we will use this instead of real sockets, because protobuf extension clientId
