@@ -53,15 +53,15 @@ private:
     int m_devFileDescriptor; // kerneltreiber wird nur 1x geöffnet und dann gehalten
     XiQNetServer* myProtonetServer; // the real server that does the communication job
     XiQNetWrapper m_ProtobufWrapper;
-    quint16 m_nSocketIdentifier; // we will use this instead of real sockets, because protobuf extension clientId
+    quint16 m_nSocketIdentifier = 0; // we will use this instead of real sockets, because protobuf extension clientId
     QHash<QByteArray, cZDSP1Client*> m_zdspdClientHash;
     QHash<cZDSP1Client*, QByteArray> m_clientIDHash; // liste der clientID's für die dspclients die über protobuf erzeugt wurden
     QTcpServer* m_pSCPIServer;
     QTcpSocket* m_pSCPISocket;
     cZDSP1Client* m_pSCPIClient;
-    cDebugSettings* m_pDebugSettings;
-    EthSettings* m_pETHSettings;
-    cDSPSettings* m_pDspSettings;
+    cDebugSettings* m_pDebugSettings = nullptr;
+    EthSettings* m_pETHSettings = nullptr;
+    cDSPSettings* m_pDspSettings = nullptr;
 
     quint8 m_nerror;
     uchar ActivatedCmdList;
