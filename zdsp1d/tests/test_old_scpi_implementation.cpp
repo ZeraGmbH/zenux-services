@@ -10,7 +10,7 @@ extern cNode* InitCmdTree();
 
 void test_old_scpi_implementation::query()
 {
-    cParse parser;
+    cParseZdsp parser;
     ScpiCallbackMock scpiMock(&parser);
     cCmdInterpreter cmdInterpreter(&scpiMock, InitCmdTree(), &parser);
     QString scpi("SYSTEM:VERSION:DEVICE?");
@@ -22,7 +22,7 @@ void test_old_scpi_implementation::query()
 
 void test_old_scpi_implementation::cmd()
 {
-    cParse parser;
+    cParseZdsp parser;
     ScpiCallbackMock scpiMock(&parser);
     cCmdInterpreter cmdInterpreter(&scpiMock, InitCmdTree(), &parser);
     QString scpi("SYSTEM:DSP:SAMPLING A,B,C;");

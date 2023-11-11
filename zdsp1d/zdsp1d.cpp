@@ -41,7 +41,7 @@
 #include "zhserver.h"
 #include "zdsp1d.h"
 #include "dsp.h"
-#include "parse.h"
+#include "parse-zdsp.h"
 #include "debugsettings.h"
 #include "dspsettings.h"
 #include "ethsettings.h"
@@ -240,7 +240,7 @@ bool cZDSP1Client::syntaxCheck(QString& s)
 
 cDspCmd cZDSP1Client::GenDspCmd(QString& scmd,bool* ok, ulong umo, ulong globalstartadr)
 {
-    cParse CmdParser;
+    cParseZdsp CmdParser;
     CmdParser.SetDelimiter("(,)"); // setze die trennzeichen für den parser
     CmdParser.SetWhiteSpace(" (,)");
 
@@ -810,7 +810,7 @@ void cZDSP1Server::doConfiguration()
 
 void cZDSP1Server::doSetupServer()
 {
-    cParse* parser=new(cParse); // das ist der parser
+    cParseZdsp* parser=new(cParseZdsp); // das ist der parser
     pCmdInterpreter=new cCmdInterpreter(this,InitCmdTree(),parser); // das ist der kommando interpreter
 
     m_sDspDeviceVersion = m_sDspSerialNumber = "Unknown"; // kennen wir erst mal nicht

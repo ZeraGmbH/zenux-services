@@ -8,7 +8,7 @@
 #include "cmdinterpret.h"
 
 
-cCmdInterpreter::cCmdInterpreter(cbIFace* cb, cNode* r, cParse* p)
+cCmdInterpreter::cCmdInterpreter(cbIFace* cb, cNode* r, cParseZdsp* p)
     :m_pcbIFace(cb), m_pParser(p), m_pRootCmd(r)
 {
 }

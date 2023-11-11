@@ -1,8 +1,6 @@
-// implementation für keyword parser
+#include "parse-zdsp.h"
 
-#include "parse.h"
-
-const QString cParse::GetKeyword(QChar **s)
+const QString cParseZdsp::GetKeyword(QChar **s)
 {
     QString ls = "";
     QChar tc=GetChar(s);
@@ -20,7 +18,7 @@ const QString cParse::GetKeyword(QChar **s)
     return(ls); // schlüsselwort ohne delimiter
 }
 
-QChar cParse::GetChar(QChar** s)
+QChar cParseZdsp::GetChar(QChar** s)
 {
     QChar tc=0;
     if (!(**s).isNull())
@@ -35,7 +33,7 @@ QChar cParse::GetChar(QChar** s)
     return(tc); // return = 0 oder zeichen != whitespace
 }
 
-const QString cParse::SetDelimiter(const QString s)
+const QString cParseZdsp::SetDelimiter(const QString s)
 {
     QString r = delimiter; 
     delimiter = s;
@@ -43,7 +41,7 @@ const QString cParse::SetDelimiter(const QString s)
     return(r); // gib alten delimiter zurück (man weiss ja nie)
 }
 
-const QString cParse::SetWhiteSpace(const QString s)
+const QString cParseZdsp::SetWhiteSpace(const QString s)
 {
     QString r = whitespace;
     whitespace = s;
