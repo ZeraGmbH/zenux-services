@@ -46,10 +46,6 @@ public:
     int DspDevWrite(char* buf,int len);
     int DspDevSeek(ulong adr);
 
-    cDebugSettings* m_pDebugSettings;
-    EthSettings* m_pETHSettings;
-    cDSPSettings* m_pDspSettings;
-
 signals:
     void sigServerIsSetUp();
     void abortInit();
@@ -64,6 +60,9 @@ private:
     QTcpServer* m_pSCPIServer;
     QTcpSocket* m_pSCPISocket;
     cZDSP1Client* m_pSCPIClient;
+    cDebugSettings* m_pDebugSettings;
+    EthSettings* m_pETHSettings;
+    cDSPSettings* m_pDspSettings;
 
     quint8 m_nerror;
     uchar ActivatedCmdList;
