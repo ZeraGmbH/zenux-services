@@ -56,8 +56,12 @@ target_include_directories(zenuxservicecommon
 set_target_properties(zenuxservicecommon PROPERTIES VERSION ${PROJECT_VERSION})
 set_target_properties(zenuxservicecommon PROPERTIES SOVERSION ${PROJECT_VERSION_MAJOR})
 
-generate_export_header(zenuxservicecommon)
+install(TARGETS zenuxservicecommon
+    EXPORT ZenuxServicesExport
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    )
 
+generate_export_header(zenuxservicecommon)
 install(FILES
     ${CMAKE_CURRENT_BINARY_DIR}/zenuxservicecommon_export.h
     DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/zenuxservicecommon
@@ -67,10 +71,5 @@ export(TARGETS zenuxservicecommon FILE ZenuxServicesTargets.cmake)
 install(
     FILES ${HEADERS}
     DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/zenuxservicecommon
-    )
-
-install(TARGETS zenuxservicecommon
-    EXPORT ZenuxServicesExport
-    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     )
 
