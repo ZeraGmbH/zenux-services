@@ -1,37 +1,25 @@
 #ifndef ZDSP1D_H
 #define ZDSP1D_H
 
-#include <QList>
-#include <QString>
+#include "dsp1scpi.h"
+#include "zhserver.h"
+#include "rmconnection.h"
+#include "debugsettings.h"
+#include "ethsettings.h"
+#include "dspsettings.h"
+#include <xiqnetserver.h>
+#include <xiqnetwrapper.h>
 #include <QStringList>
 #include <QSocketNotifier>
 #include <QByteArray>
 #include <QTimer>
-#include <QMap>
 #include <QHash>
 #include <QVector>
-#include <xiqnetserver.h>
-#include <xiqnetwrapper.h>
-
-#include "dsp1scpi.h"
-#include "zhserver.h"
-#include "rmconnection.h"
-#include "ethsettings.h"
-
+#include <QStateMachine>
 
 class cZDSP1Client;
 
 typedef QVector<float> tDspMemArray;
-
-class QByteArray;
-class QStateMachine;
-class QState;
-class cZDSP1Server; // forward
-class cDebugSettings;
-class cDSPSettings;
-class QTcpServer;
-class QTcpSocket;
-
 
 
 class cZDSP1Server: public QObject, public cZHServer, public cbIFace {
