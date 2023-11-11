@@ -103,7 +103,7 @@ cSEC1000dServer::~cSEC1000dServer()
     if (m_pSystemInfo) delete m_pSystemInfo;
     if (m_pRMConnection) delete m_pRMConnection;
 
-    close(DevFileDescriptor); // close dev.
+    close(m_devFileDescriptor); // close dev.
     close(pipeFD[0]);
     close(pipeFD[1]);
 }
@@ -179,7 +179,7 @@ void cSEC1000dServer::doSetupServer()
         scpiConnectionList.append(this); // the server itself has some commands
         scpiConnectionList.append(m_pStatusInterface = new cStatusInterface());
         scpiConnectionList.append(m_pSystemInterface = new cSystemInterface(this, m_pSystemInfo));
-        scpiConnectionList.append(m_pECalculatorInterface = new SecGroupResourceAndInterface(DevFileDescriptor,
+        scpiConnectionList.append(m_pECalculatorInterface = new SecGroupResourceAndInterface(m_devFileDescriptor,
                                                                                              m_pECalcSettings,
                                                                                              m_pInputSettings,
                                                                                              SigHandler));
@@ -253,17 +253,17 @@ void cSEC1000dServer::doIdentAndRegister()
 
 int cSEC1000dServer::SECDevOpen()
 {
-    DevFileDescriptor = open(m_sSECDeviceNode.toLatin1().data(), O_RDWR);
-    if (DevFileDescriptor < 0)
+    m_devFileDescriptor = open(m_sSECDeviceNode.toLatin1().data(), O_RDWR);
+    if (m_devFileDescriptor < 0)
         qWarning("Error opening sec device: %s", qPrintable(m_pFPGASettings->getDeviceNode()));
-    return DevFileDescriptor;
+    return m_devFileDescriptor;
 }
 
 void cSEC1000dServer::SetFASync()
 {
-    fcntl(DevFileDescriptor, F_SETOWN, getpid()); // wir sind "besitzer" des device
-    int oflags = fcntl(DevFileDescriptor, F_GETFL);
-    fcntl(DevFileDescriptor, F_SETFL, oflags | FASYNC); // async. benachrichtung (sigio) einschalten
+    fcntl(m_devFileDescriptor, F_SETOWN, getpid()); // wir sind "besitzer" des device
+    int oflags = fcntl(m_devFileDescriptor, F_GETFL);
+    fcntl(m_devFileDescriptor, F_SETFL, oflags | FASYNC); // async. benachrichtung (sigio) einschalten
 }
 
 void cSEC1000dServer::SECIntHandler(int)
@@ -279,8 +279,8 @@ void cSEC1000dServer::SECIntHandler(int)
     n /= 2; // so we have to read 4 bytes for 8 entities -> (/ 2)
     QByteArray interruptREGS(n, 0);
     // first word is interrupt collection word
-    lseek(DevFileDescriptor, m_pECalcSettings->getIrqAdress()+4, 0); // so the dedicated words have +4 offset
-    read(DevFileDescriptor, interruptREGS.data(), n);
+    lseek(m_devFileDescriptor, m_pECalcSettings->getIrqAdress()+4, 0); // so the dedicated words have +4 offset
+    read(m_devFileDescriptor, interruptREGS.data(), n);
 
     for (int i = 0; i < n; i++)
     {

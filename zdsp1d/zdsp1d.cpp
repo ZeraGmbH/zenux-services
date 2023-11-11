@@ -137,7 +137,7 @@ cZDSP1Server::~cZDSP1Server()
 
     resetDsp(); // we reset the dsp when we close the server
 
-    close(DevFileDescriptor); // close dev.
+    close(m_devFileDescriptor); // close dev.
     close(pipeFD[0]);
     close(pipeFD[1]);
 }
@@ -339,30 +339,30 @@ void cZDSP1Server::doIdentAndRegister()
 
 int cZDSP1Server::DspDevOpen()
 {
-    if ( (DevFileDescriptor = open(m_sDspDeviceNode.toLatin1().data(), O_RDWR)) < 0 )
+    if ( (m_devFileDescriptor = open(m_sDspDeviceNode.toLatin1().data(), O_RDWR)) < 0 )
         qWarning("Error opening dsp device: %s", qPrintable(m_sDspDeviceNode));
-    return DevFileDescriptor;
+    return m_devFileDescriptor;
 }
 
-int cZDSP1Server::DspDevSeek(int fd, ulong adr)
+int cZDSP1Server::DspDevSeek(ulong adr)
 {
-    int r = lseek(fd, adr, 0);
+    int r = lseek(m_devFileDescriptor, adr, 0);
     if (r < 0)
         qWarning("Error positioning dsp device: %s", qPrintable(m_sDspDeviceNode));
     return r;
 }
 
-int cZDSP1Server::DspDevWrite(int fd,char* buf,int len)
+int cZDSP1Server::DspDevWrite(char* buf, int len)
 {
-    int r = write(fd, buf, len);
+    int r = write(m_devFileDescriptor, buf, len);
     if (r <0 )
         qWarning("Error writing dsp device: %s", qPrintable(m_sDspDeviceNode));
     return r;
 }
 
-int cZDSP1Server::DspDevRead(int fd,char* buf,int len)
+int cZDSP1Server::DspDevRead(char* buf, int len)
 {
-    int r = read(fd, buf, len);
+    int r = read(m_devFileDescriptor, buf, len);
     if (r < 0 )
         qWarning("Error reading dsp device: %s", qPrintable(m_sDspDeviceNode));
     return r;
@@ -446,25 +446,25 @@ QString cZDSP1Server::mTestDsp(QChar* s)
                 ulong adr = cl->DspVarResolver.adr(sadr) ;
                 for (i=0; i< nr; i++)
                 {
-                    if (DspDevSeek(DevFileDescriptor, adr) < 0)
+                    if (DspDevSeek(adr) < 0)
                     {
                         Answer = QString("Test write/read dsp data, dev seek fault");
                         break; // file positionieren
                     }
 
-                    if (DspDevWrite(DevFileDescriptor, ba.data(), n*4 ) < 0)
+                    if (DspDevWrite(ba.data(), n*4 ) < 0)
                     {
                         Answer = QString("Test write/read dsp data, dev write fault");
                         break; // fehler beim schreiben
                     }
 
-                    if (DspDevSeek(DevFileDescriptor, adr) < 0)
+                    if (DspDevSeek(adr) < 0)
                     {
                         Answer = QString("Test write/read dsp data, dev seek fault");
                         break; // file positionieren
                     }
 
-                    if (DspDevRead(DevFileDescriptor, ba2.data(), n*4) < 0)
+                    if (DspDevRead(ba2.data(), n*4) < 0)
                     {
                         Answer = QString("Test write/read dsp data, dev read fault");
                         break; // fehler beim schreiben
@@ -478,7 +478,7 @@ QString cZDSP1Server::mTestDsp(QChar* s)
                             bw = ba[j]; // das geschriebene byte
                             br = ba2[j]; // das gelesene byte
                             faultadr = adr + j;
-                            DspDevRead(DevFileDescriptor, ba2.data(), n*4);
+                            DspDevRead(ba2.data(), n*4);
                             br2 = ba2[j];
                             err = true;
                         }
@@ -510,7 +510,7 @@ QString cZDSP1Server::mTestDsp(QChar* s)
 
 bool cZDSP1Server::resetDsp()
 {
-    int r = ioctl(DevFileDescriptor,ADSP_RESET); // und reset
+    int r = ioctl(m_devFileDescriptor,ADSP_RESET); // und reset
     if ( r < 0 ) {
         qWarning("error %d reset dsp device: %s", r, qPrintable(m_sDspDeviceNode));
         Answer = ERREXECString; // fehler bei der ausführung
@@ -536,7 +536,7 @@ bool cZDSP1Server::bootDsp()
     }
     QByteArray BootMem = f.readAll();
     f.close();
-    int r = ioctl(DevFileDescriptor,ADSP_BOOT,BootMem.data()); // und booten
+    int r = ioctl(m_devFileDescriptor,ADSP_BOOT,BootMem.data()); // und booten
     if ( r < 0 ) {
         qWarning("error %d booting dsp device: %s", r, qPrintable(m_sDspDeviceNode));
         Answer = ERREXECString; // fehler bei der ausführung
@@ -607,7 +607,7 @@ QString cZDSP1Server::mCommand2Dsp(QString& qs)
         if (! cl.DspVarWrite(ss = "DSPACK,0;") ) break; // reset acknowledge
         if (! cl.DspVarWrite(qs)) break; // kommando und parameter -> dsp
 
-        ioctl(DevFileDescriptor,ADSP_INT_REQ); // interrupt beim dsp auslösen
+        ioctl(m_devFileDescriptor,ADSP_INT_REQ); // interrupt beim dsp auslösen
         Answer = ACKString; // sofort fertig melden ....sync. muss die applikation
 
     } while (0);
@@ -1016,7 +1016,7 @@ int cZDSP1Server::SetDeviceNode(char* s)
 
 QString cZDSP1Server::mGetDeviceVersion()
 {
-    int r = ioctl(DevFileDescriptor,IO_READ,VersionNr);
+    int r = ioctl(m_devFileDescriptor,IO_READ,VersionNr);
     if ( r < 0 ) {
         qWarning("Error %d reading device version: %s", r, qPrintable(m_sDspDeviceNode));
         Answer = ERREXECString; // fehler bei der ausführung
@@ -1234,17 +1234,17 @@ bool cZDSP1Server::LoadDSProgram()
     cZDSP1Client* client = new cZDSP1Client(0, 0, this); // dummyClient einrichten zum laden der kette
 
     ulong offset = client->DspVarResolver.adr(s) ;
-    if (DspDevSeek(DevFileDescriptor, offset) < 0 )  // startadr im treiber setzen
+    if (DspDevSeek(offset) < 0 )  // startadr im treiber setzen
         return false;
 
-    if (DspDevWrite(DevFileDescriptor, CmdMem.data(), CmdMem.size()) < 0)
+    if (DspDevWrite(CmdMem.data(), CmdMem.size()) < 0)
         return false;
 
     offset = client->DspVarResolver.adr(s2) ;
-    if (DspDevSeek(DevFileDescriptor, offset) < 0 )  // startsadr im treiber setzen
+    if (DspDevSeek(offset) < 0 )  // startsadr im treiber setzen
         return false;
 
-    if (DspDevWrite( DevFileDescriptor, CmdIntMem.data(), CmdIntMem.size()) < 0)
+    if (DspDevWrite(CmdIntMem.data(), CmdIntMem.size()) < 0)
         return false;
 
     QString ss;
@@ -1417,7 +1417,7 @@ bool cZDSP1Server::setDspType()
 
 int cZDSP1Server::readMagicId()
 {
-    return ioctl(DevFileDescriptor, IO_READ, MagicId);
+    return ioctl(m_devFileDescriptor, IO_READ, MagicId);
 }
 
 bool cZDSP1Server::Test4HWPresent()
@@ -1428,7 +1428,7 @@ bool cZDSP1Server::Test4HWPresent()
 
 bool cZDSP1Server::Test4DspRunning()
 {
-    int r = ioctl(DevFileDescriptor,IO_READ,DSPStat);
+    int r = ioctl(m_devFileDescriptor,IO_READ,DSPStat);
     return ((r & DSP_RUNNING) > 0);
 }
 
@@ -1602,9 +1602,9 @@ void cZDSP1Server::SCPIdisconnect()
 
 void cZDSP1Server::SetFASync()
 {
-    fcntl(DevFileDescriptor, F_SETOWN, getpid()); // wir sind "besitzer" des device
-    int oflags = fcntl(DevFileDescriptor, F_GETFL);
-    fcntl(DevFileDescriptor, F_SETFL, oflags | FASYNC); // async. benachrichtung (sigio) einschalten
+    fcntl(m_devFileDescriptor, F_SETOWN, getpid()); // wir sind "besitzer" des device
+    int oflags = fcntl(m_devFileDescriptor, F_GETFL);
+    fcntl(m_devFileDescriptor, F_SETFL, oflags | FASYNC); // async. benachrichtung (sigio) einschalten
 }
 
 cZDSP1Client* cZDSP1Server::AddClient(XiQNetPeer* m_pNetClient)
