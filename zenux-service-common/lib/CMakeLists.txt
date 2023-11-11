@@ -63,8 +63,14 @@ install(FILES
     DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/zenuxservicecommon
     )
 
+export(TARGETS zenuxservicecommon FILE ZenuxServicesTargets.cmake)
+install(
+    FILES ${HEADERS}
+    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/zenuxservicecommon
+    )
+
 install(TARGETS zenuxservicecommon
-    EXPORT zenuxservicecommonExport
+    EXPORT ZenuxServicesExport
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     )
 
