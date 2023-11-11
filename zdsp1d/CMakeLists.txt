@@ -2,7 +2,6 @@ set(SOURCES
     cmdinterpret.cpp
     cmds.cpp
     dsp.cpp
-    dspsettings.cpp
     parse.cpp
     scpi.cpp
     zdsp1d.cpp
@@ -14,7 +13,6 @@ set(HEADER
     cmdinterpret.h
     dsp.h
     dsp1scpi.h
-    dspsettings.h
     parse.h
     scpi.h
     zdsp1d.h
