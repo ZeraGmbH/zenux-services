@@ -18,20 +18,6 @@
 #include "cmdinterpret.h"
 
 
-namespace Zera
-{
-    namespace Net
-    {
-        class cServer;
-        class cClient;
-    }
-    namespace XMLConfig
-    {
-        class cReader;
-    }
-}
-
-
 class cNodeZHServer: public cNode {
 public:
     cNodeZHServer(QStringList*,QString*,int,cNode*,cNode*,SCPICmdType,SCPICmdType); 
