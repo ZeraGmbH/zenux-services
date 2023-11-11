@@ -75,6 +75,7 @@ function(SETUP_TESTS)
             senserangetesttemplate
             zenuxservicecommon-testlib
             service-interfaces
+            zdsp1d-testlib
             Zera::zera-timers-testlib
             Zera::zera-i2c-devices-testlib
             Zera::resman-lib
