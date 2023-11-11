@@ -152,8 +152,6 @@ private:
     QString mTestDsp(QChar *);
     QString mResetDsp(QChar*);
     QString mBootDsp(QChar*);
-    QString mSetDspBootPath(QChar*);
-    QString mGetDspBootPath();
     QString mGetPCBSerialNumber();
     QString mGetDeviceVersion();
     QString mGetServerVersion();

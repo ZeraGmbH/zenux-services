@@ -101,7 +101,7 @@ void cPCBServer::sendAnswerProto(cProtonetCommand *protoCmd)
                 Answer->set_rtype(ProtobufMessage::NetMessage_NetReply_ReplyType_ERROR);
             else if (output.contains(ZSCPI::scpiAnswer[ZSCPI::errxml]))
                 Answer->set_rtype(ProtobufMessage::NetMessage_NetReply_ReplyType_ERROR);
-            else if (output.contains(ZSCPI::scpiAnswer[ZSCPI::errpath]))
+            else if (output.contains(ZSCPI::scpiAnswer[ZSCPI::errpath])) // for zdspd only -> remove
                 Answer->set_rtype(ProtobufMessage::NetMessage_NetReply_ReplyType_ERROR);
             else if (output.contains(ZSCPI::scpiAnswer[ZSCPI::errexec]))
                 Answer->set_rtype(ProtobufMessage::NetMessage_NetReply_ReplyType_ERROR);

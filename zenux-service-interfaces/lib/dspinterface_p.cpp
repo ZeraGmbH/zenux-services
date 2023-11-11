@@ -46,17 +46,6 @@ quint32 cDSPInterfacePrivate::resetDsp()
 }
 
 
-quint32 cDSPInterfacePrivate::setDSPBootPath(QString path)
-{
-    QString cmd;
-    quint32 msgnr;
-
-    msgnr = sendCommand(cmd = QString("SYST:DSP:BOOT:PATH"), path);
-    m_MsgNrCmdList[msgnr] = setbootpath;
-    return msgnr;
-}
-
-
 quint32 cDSPInterfacePrivate::setSamplingSystem(int chncount, int samp_per, int samp_mper)
 {
     QString cmd, par;
