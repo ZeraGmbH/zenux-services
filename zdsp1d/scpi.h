@@ -27,32 +27,30 @@ private:
 
 enum tNodeSpec {isUnknown=0, isKnown=1, isNode=2, isCommand=4, isQuery=8} ;
 
-class cNode { // rein virtuelle basisklasse 
+class cNode
+{ // rein virtuelle basisklasse
 public:
-//    cNode (int,cNode*,cNode*,void(cCmdInterpreter*,char*),void(cCmdInterpreter*)); // konstruktor, nNodedef, pNextNode, pNewLevelNode, m_pCmd, m_pQuery
-    cNode (int,cNode*,cNode*,SCPICmdType,SCPICmdType); // konstruktor, nNodedef, pNextNode, pNewLevelNode, Cmd, Query
+    cNode(int nNodedef, cNode* pNextNode, cNode* pNewLevelNode, SCPICmdType Cmd,SCPICmdType Query);
     virtual ~cNode(){};
-    virtual cNode* TestNode(cCmdInterpreter*,QChar**)=0; // zeiger, zeiger, zeiger auf zeiger auf inputzeile, testet den knoten
+    virtual cNode* TestNode(cCmdInterpreter* cmdInterpreter, QChar** inputline)=0;
     int m_nNodeStat; // ergebnis des parse durchlaufes
-//    void (*m_pCmd) (cCmdInterpreter*,char*); // kommando bearbeiten, output -> kommando interpreter, zeiger auf den parser und input string
     SCPICmdType m_nCmd;
     SCPICmdType m_nQuery;
-//    void (*m_pQuery) (cCmdInterpreter*); // query bearbeiten, output -> kommando interpreter
 protected:    
-    cNode* pNextNode; // nächster knoten im selben level
-    cNode* pNewLevelNode; // nachfolge knoten im nächsten level;
-    int nNodeDef; // definiert was der knoten sein darf
+    cNode* m_pNextNode; // nächster knoten im selben level
+    cNode* m_pNewLevelNode; // nachfolge knoten im nächsten level;
+    int m_nNodeDef; // definiert was der knoten sein darf
 };
 
 
-class cNodeSCPI: public cNode {
+class cNodeSCPI: public cNode
+{
 public:
-    cNodeSCPI (const char*,int,cNode*,cNode*,SCPICmdType,SCPICmdType); 
+    cNodeSCPI (const char* sNodeName, int nNodedef, cNode* pNextNode, cNode* pNewLevelNode, SCPICmdType Cmd, SCPICmdType Query);
     virtual  ~cNodeSCPI(){};
-    // konstruktor, sNodeName, nNodedef, pNextNode, pNewLevelNode, Cmd, Query
-    virtual cNode* TestNode(cCmdInterpreter*,QChar**); // zeiger, zeiger auf zeiger auf inputzeile, testet den knoten
+    virtual cNode* TestNode(cCmdInterpreter* cmdInterpreter, QChar** inputline);
 private:
-    cSCPIString sNodeName; // name des knoten
+    cSCPIString m_sNodeName; // name des knoten
 };
     
 #endif
