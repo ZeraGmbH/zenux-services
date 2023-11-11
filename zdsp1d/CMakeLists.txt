@@ -5,6 +5,7 @@ set(SOURCES
     parse-zdsp.cpp
     scpi-zdsp.cpp
     zdsp1d.cpp
+    zdspclient.cpp
     zhserver.cpp
     )
 
@@ -18,6 +19,7 @@ set(HEADER
     zdsp1d.h
     zdspglobal.h
     zeraglobal.h
+    zdspclient.h
     zhserver.h
     )
 
