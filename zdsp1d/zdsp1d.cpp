@@ -1453,7 +1453,7 @@ cZDSP1Client* cZDSP1Server::GetClient(int s)
     if (clientlist.count() > 0) {
         for (int i = 0; i < clientlist.count(); i++) {
             cZDSP1Client* client = clientlist.at(i);
-            if (client->sock == s)
+            if (client->getSocket() == s)
                 return client;
         }
     }

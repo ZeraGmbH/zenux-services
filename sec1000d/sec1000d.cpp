@@ -191,7 +191,7 @@ void cSEC1000dServer::doSetupServer()
 
         initSCPIConnections();
 
-        myServer->startServer(m_ethSettings.getPort(EthSettings::protobufserver)); // and can start the server now
+        m_myServer->startServer(m_ethSettings.getPort(EthSettings::protobufserver)); // and can start the server now
 
         mySigAction.sa_handler = &SigHandler; // signal handler einrichten
         sigemptyset(&mySigAction.sa_mask);
