@@ -1,6 +1,6 @@
 #include "scpicallbackmock.h"
 
-ScpiCallbackMock::ScpiCallbackMock(cParse* parser) :
+ScpiCallbackMock::ScpiCallbackMock(cParseZdsp* parser) :
     m_parser(parser)
 {
 }

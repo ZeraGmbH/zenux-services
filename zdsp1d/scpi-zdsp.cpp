@@ -3,7 +3,7 @@
 #include <qstring.h>
 
 #include "scpi-zdsp.h"
-#include "parse.h"
+#include "parse-zdsp.h"
 
 
 bool cSCPIString::operator == (const QString& s)

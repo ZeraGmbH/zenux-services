@@ -1,7 +1,7 @@
 #ifndef DSP_H
 #define DSP_H
 
-#include "parse.h"
+#include "parse-zdsp.h"
 #include <QHash>
 
 // enum zum lesen von dsp port adressen über ioctl
@@ -79,7 +79,7 @@ public:
 
 private:
     QHash<QString, sDspVar*> mVarHash;
-    cParse VarParser;
+    cParseZdsp VarParser;
 //    sDspVar *SearchedVar; // zeiger auf die gesuchte variable;
 //    long offs(QString&, sMemSection**, int *);
     void initMemsection(sMemSection* psec); // zum initialisieren einer memory section
