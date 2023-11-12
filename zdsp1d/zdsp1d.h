@@ -38,8 +38,6 @@ public:
 
     void SetFASync(); // async. benachrichtung einschalten
 
-    int SetDeviceNode(char*);
-
     int DspDevOpen();
     int DspDevRead(char* buf, int len);
     int DspDevWrite(char* buf,int len);

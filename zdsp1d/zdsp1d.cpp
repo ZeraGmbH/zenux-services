@@ -865,17 +865,6 @@ QString cZDSP1Server::mResetMaxima(QChar *)
     return mCommand2Dsp(ss =  QString("DSPCMDPAR,3;"));
 }
 
-int cZDSP1Server::SetDeviceNode(char* s)
-{ // nur beim start zu setzen, nicht während des ablaufs
-    QString devn = s;
-    QFile dn(devn);
-    if (dn.exists()) {
-        m_sDspDeviceNode = devn;
-        return 0;
-    }
-    else return 1;
-}
-
 QString cZDSP1Server::mGetDeviceVersion()
 {
     int r = ioctl(m_devFileDescriptor,IO_READ,VersionNr);
