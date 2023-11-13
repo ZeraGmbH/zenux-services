@@ -8,7 +8,6 @@ class FAsyncHandler
 {
 public:
     FAsyncHandler();
-    virtual ~FAsyncHandler();
     QSocketNotifier *getNotifier(int deviceFileDescriptor);
 private:
     static void setupSigHandler(int deviceFileDescriptor);

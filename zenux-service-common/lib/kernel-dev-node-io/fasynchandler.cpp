@@ -1,34 +1,39 @@
 #include "fasynchandler.h"
 #include <QSet>
+#include <functional>
 #include <unistd.h>
 #include <fcntl.h>
 
 static constexpr int readEndOfPipe = 0;
 static constexpr int writeEndOfPipe = 1;
 
-static int pipeFD[2];
+//static int pipeFD[2];
 static bool signalHandlerEstablished = false;
+
+static constexpr int maxNotifiers = 8;
+
+struct TPipeDescriptors
+{
+    int pipeFileDescriptors[2];
+};
+TPipeDescriptors pipes[maxNotifiers];
 
 FAsyncHandler::FAsyncHandler()
 {
 }
 
-FAsyncHandler::~FAsyncHandler()
+template<int A>
+void tsigHandler(int)
 {
-}
-
-void sigHandler(int)
-{
-    write(pipeFD[writeEndOfPipe], "I", 1);
+    write(pipes[A].pipeFileDescriptors[writeEndOfPipe], "I", 1);
 }
 
 void FAsyncHandler::setupSigHandler(int deviceFileDescriptor)
 {
     if(!signalHandlerEstablished) {
-        pipe(pipeFD);
 
         struct sigaction sigAction;
-        sigAction.sa_handler = &sigHandler;
+        sigAction.sa_handler = &tsigHandler<0>;
         sigemptyset(&sigAction.sa_mask);
         sigAction.sa_flags = SA_RESTART;
         sigAction.sa_restorer = nullptr;
