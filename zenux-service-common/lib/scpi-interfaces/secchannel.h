@@ -10,19 +10,6 @@
 #include <QByteArray>
 #include <functional>
 
-#define baseChnName "ec"
-
-// some bit definitions
-#define en_n 8
-#define en_p 9
-#define direction 15
-#define bitSingle 16
-#define sssto 17 // sync steuerung stop ?
-#define ssarm 19 // sync steuerung (sorry hardware is german) arm
-#define imp_en 21
-#define impout_en 22
-#define cnt2carry 23
-
 namespace ECalcChannel
 {
 enum Commands
@@ -86,6 +73,16 @@ private:
     NotificationValue notifierECalcChannelIntReg;
     std::function<void(int)> m_funcSigHandler;
 
+    static constexpr const char* baseChnName = "ec";
+    static constexpr int en_n = 8;
+    static constexpr int en_p = 9;
+    static constexpr int direction = 15;
+    static constexpr int bitSingle = 16;
+    static constexpr int sssto = 17;
+    static constexpr int ssarm = 19;
+    static constexpr int imp_en = 21;
+    static constexpr int impout_en = 22;
+    static constexpr int cnt2carry = 23;
 };
 
 #endif // SECCHANNEL_H
