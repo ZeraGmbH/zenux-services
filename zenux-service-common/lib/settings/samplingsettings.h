@@ -10,6 +10,7 @@ public:
     {
         QString m_sAlias; // the channels alias
         bool m_bAvail; // is this channel available ?
+        QStringList m_pllChannels;
     };
     SamplingSettings(Zera::XMLConfig::cReader *xmlread);
     ~SamplingSettings();

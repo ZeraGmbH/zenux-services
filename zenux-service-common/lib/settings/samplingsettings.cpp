@@ -3,7 +3,8 @@
 enum configstate
 {
     cfgAlias,
-    cfgAvail
+    cfgAvail,
+    cfgPllChannels
 };
 
 SamplingSettings::SamplingSettings(Zera::XMLConfig::cReader *xmlread)
@@ -14,6 +15,7 @@ SamplingSettings::SamplingSettings(Zera::XMLConfig::cReader *xmlread)
 
     m_ConfigXMLMap["serviceconfig:resource:sample:s0:alias"] = cfgAlias;
     m_ConfigXMLMap["serviceconfig:resource:sample:s0:avail"] = cfgAvail;
+    m_ConfigXMLMap["serviceconfig:resource:sample:s0:pllchannels"] = cfgPllChannels;
 }
 
 SamplingSettings::~SamplingSettings()
@@ -38,6 +40,8 @@ void SamplingSettings::configXMLInfo(QString key)
         case cfgAvail:
             m_ChannelSettingsList.at(0)->m_bAvail = (m_pXMLReader->getValue(key) == "true");
             break;
+        case cfgPllChannels:
+            m_ChannelSettingsList.at(0)->m_pllChannels = QStringList(m_pXMLReader->getValue(key).split(','));
         }
     }
 }
