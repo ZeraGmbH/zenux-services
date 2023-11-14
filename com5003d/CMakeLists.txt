@@ -1,5 +1,4 @@
 set(SOURCES
-    scpi-interfaces/samplinginterface.cpp
     scpi-interfaces/senseinterface.cpp
     scpi-interfaces/systeminterface.cpp
     com5003d.cpp
@@ -10,7 +9,6 @@ set(SOURCES
     )
 
 set(HEADER
-    scpi-interfaces/samplinginterface.h
     scpi-interfaces/senseinterface.h
     scpi-interfaces/systeminterface.h
     com5003d.h

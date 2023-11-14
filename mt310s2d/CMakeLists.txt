@@ -1,7 +1,6 @@
 set(SOURCES
     src/micro-controller-io/atmelsysctrl.cpp
     src/scpi-interfaces/clampinterface.cpp
-    src/scpi-interfaces/samplinginterface.cpp
     src/scpi-interfaces/senseinterface.cpp
     src/scpi-interfaces/systeminterface.cpp
     src/scpi-interfaces/accumulatorinterface.cpp
@@ -22,7 +21,6 @@ set(SOURCES
 set(HEADER
     src/micro-controller-io/atmelsysctrl.h
     src/scpi-interfaces/clampinterface.h
-    src/scpi-interfaces/samplinginterface.h
     src/scpi-interfaces/senseinterface.h
     src/scpi-interfaces/systeminterface.h
     src/scpi-interfaces/accumulatorinterface.h

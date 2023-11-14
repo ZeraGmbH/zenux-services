@@ -9,15 +9,11 @@
 cSamplingInterface::cSamplingInterface(cSCPI *scpiInterface, SamplingSettings* samplingSettings) :
     cResource(scpiInterface)
 {
-    m_pllChannelList.append("0");
-    m_pllChannelList.append("m0");
-    m_pllChannelList.append("m1");
-    m_pllChannelList.append("m2");
-    m_pllChannelList.append("m3");
-    m_pllChannelList.append("m4");
-    m_pllChannelList.append("m5");
-
     QList<SamplingSettings::ChannelSettings*> channelSettings = samplingSettings->getChannelSettings();
+    for (const QString &pllChannel : qAsConst(channelSettings.at(0)->m_pllChannels)) {
+        m_pllChannelList.append(pllChannel);
+    }
+
     m_sName = "s0";
     m_sDescription = "Samplingsytem base frequency 10Hz..400Hz";
     m_sAlias = channelSettings.at(0)->m_sAlias;
@@ -96,10 +92,10 @@ void cSamplingInterface::executeProtoScpi(int cmdCode, cProtonetCommand *protoCm
         protoCmd->m_sOutput = m_ReadPLLCatalog(protoCmd->m_sInput);
         break;
     }
-    if (protoCmd->m_bwithOutput)
+    if (protoCmd->m_bwithOutput) {
         emit cmdExecutionDone(protoCmd);
+    }
 }
-
 
 QString cSamplingInterface::m_ReadVersion(QString &sInput)
 {
