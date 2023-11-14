@@ -5,4 +5,5 @@ SETUP_TESTS(
     test_serverunregisternotifier
     test_hotpluggablecontrollercontainer
     test_servicemock
+    test_interprocessnotifier
     )

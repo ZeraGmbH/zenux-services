@@ -12,11 +12,12 @@ static bool signalHandlerEstablished = false;
 
 static constexpr int maxNotifiers = 8;
 
-struct TPipeDescriptors
+struct TInterProcessPipe
 {
     int pipeFileDescriptors[2];
 };
-TPipeDescriptors pipes[maxNotifiers];
+TInterProcessPipe pipes[maxNotifiers];
+
 
 FAsyncHandler::FAsyncHandler()
 {
@@ -31,6 +32,7 @@ void tsigHandler(int)
 void FAsyncHandler::setupSigHandler(int deviceFileDescriptor)
 {
     if(!signalHandlerEstablished) {
+        // TODO establish pipe
 
         struct sigaction sigAction;
         sigAction.sa_handler = &tsigHandler<0>;
