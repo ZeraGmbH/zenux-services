@@ -42,15 +42,13 @@
 #include <systemd/sd-daemon.h>
 #endif
 
-
 static cMT310S2dServer* MTServer;
+
 static int pipeFD[2];
-static char pipeFDBuf[2] = "I";
 
 void SigHandler(int)
 {
-    if (MTServer->m_pDebugSettings->getDebugLevel() & 2) syslog(LOG_INFO,"mt interrupt received\n");
-        write(pipeFD[1], pipeFDBuf, 1);
+    write(pipeFD[1], "I", 1);
 }
 
 
@@ -425,11 +423,10 @@ void cMT310S2dServer::updateI2cDevicesConnected()
 void cMT310S2dServer::MTIntHandler(int)
 {// handles clamp interrupt sent by the controler
 
-    char buf[2];
+    char dummy[2];
+    read(pipeFD[0], dummy, 1); // first we read the pipe
+
     quint16 stat = 0;
-
-    read(pipeFD[0], buf, 1); // first we read the pipe
-
     if ( Atmel::getInstance().readCriticalStatus(stat) == ZeraMControllerIo::cmddone ) {
         if ((stat & (1 << clampstatusInterrupt)) > 0) {
             // we must reset clamp status before handling the interrupt

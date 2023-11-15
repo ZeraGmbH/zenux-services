@@ -34,13 +34,12 @@
 #endif
 
 cSEC1000dServer* SECServer;
+
 int pipeFD[2];
-char pipeBuf[2] = "I";
 
 void SigHandler(int)
 {
-    if (SECServer->m_pDebugSettings->getDebugLevel() & 2) syslog(LOG_INFO,"sec interrupt received\n");
-    write(pipeFD[1], pipeBuf, 1);
+    write(pipeFD[1], "I", 1);
 }
 
 struct sigaction mySigAction;
@@ -269,9 +268,8 @@ void cSEC1000dServer::SetFASync()
 void cSEC1000dServer::SECIntHandler(int)
 { // behandelt den sec interrupt
 
-    char buf[2];
-
-    read(pipeFD[0], buf, 1); // first we read the pipe
+    char dummy[2];
+    read(pipeFD[0], dummy, 1); // first we read the pipe
 
     int n = m_ECalculatorChannelList.count(); // the number of error calculator entities
     // 8 error calc entities share 1 32 bit data word for interrupts
