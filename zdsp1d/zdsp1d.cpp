@@ -117,11 +117,9 @@ cZDSP1Server::~cZDSP1Server()
     delete m_pDebugSettings;
     delete  m_pETHSettings;
     delete m_pDspSettings;
-    if (clientlist.count() > 0)
-        for (int i = 0; i < clientlist.count(); i++) {
-            cZDSP1Client* cl = clientlist.at(i);
-            delete cl;
-        }
+    for (int i = 0; i < clientlist.count(); i++)
+        delete clientlist.at(i);
+
     resetDsp(); // we reset the dsp when we close the server
     close(m_devFileDescriptor); // close dev.
     close(pipeFD[0]);
@@ -336,13 +334,13 @@ QString cZDSP1Server::mTestDsp(QChar* s)
             tstart = true;
     }
     if (tstart == true) {
-        int i,j;
         int errcount = 0;
         switch (tmode)
         {
             case 0:
-                for (i=0; i<nr; i++) {
+                for (int i=0; i<nr; i++) {
                     mResetDsp(s);
+                    int j;
                     for (j=0; j< 100; j++) {
                         usleep(1000);
                         if (Test4DspRunning() == false)
@@ -363,7 +361,6 @@ QString cZDSP1Server::mTestDsp(QChar* s)
             case 1:
                 const int n = 10000;
                 int i,j;
-                bool err;
                 ulong faultadr;
                 int bw, br, br2;
                 QByteArray ba; // wir werden 10000 floats in das array schreiben
@@ -395,7 +392,7 @@ QString cZDSP1Server::mTestDsp(QChar* s)
                         Answer = QString("Test write/read dsp data, dev read fault");
                         break; // fehler beim schreiben
                     }
-                    err = false;
+                    bool err = false;
                     for (j=0; j<n*4; j++) {
                         if (ba[j] != ba2[j]) {
                             bw = ba[j]; // das geschriebene byte
@@ -986,10 +983,9 @@ void cZDSP1Server::DspIntHandler(int)
         client->DspVarWrite(s = QString("CTRLACK,%1;").arg(CmdDone)); // jetzt in jedem fall acknowledge
     }
     else {
-        cZDSP1Client *dummyClient = new cZDSP1Client(0, 0, this); // dummyClient einrichten
+        cZDSP1Client dummyClient(0, 0, this); // dummyClient einrichten
         QString s = QString("CTRLACK,%1;").arg(CmdDone);
-        dummyClient->DspVarWrite(s); // und rücksetzen
-        delete dummyClient;
+        dummyClient.DspVarWrite(s); // und rücksetzen
     }
 }
 
@@ -1006,13 +1002,13 @@ bool cZDSP1Server::BuildDSProgram(QString &errs)
     mds1.setByteOrder(QDataStream::LittleEndian);
     QDataStream mds2 ( &CmdIntMem, QIODevice::Unbuffered | QIODevice::ReadWrite );
     mds2.setByteOrder(QDataStream::LittleEndian);
-    cZDSP1Client* client;
+
     cDspCmd cmd;
     QString s;
 
     if (clientlist.count() > 0) {
+        cZDSP1Client* client = clientlist.at(0);
         s =  QString( "DSPMEMOFFSET(%1)" ).arg(dm32DspWorkspace.StartAdr);
-        client = clientlist.at(0);
         cmd = client->GenDspCmd(s, &ok, 0, 0);
         mds1 << cmd;
         for (int i = 0; i < clientlist.count(); i++) {
@@ -1041,14 +1037,11 @@ bool cZDSP1Server::BuildDSProgram(QString &errs)
         mds1 << cmd;
     }
 
-    client = new cZDSP1Client(0, 0, this); // dummyClient einrichten damit was jetzt kommt noch
-
+    cZDSP1Client dummyClient(0, 0, this); // dummyClient einrichten damit was jetzt kommt noch
     s =  QString( "INVALID()"); // funktioniert selbst wenn wenn wir keinen mehr haben
-    cmd = client->GenDspCmd(s, &ok, 0, 0);
+    cmd = dummyClient.GenDspCmd(s, &ok, 0, 0);
     mds1 << cmd; // kommando listen ende
     mds2 << cmd;
-
-    delete client;
 
     return true;
 }
@@ -1069,16 +1062,16 @@ bool cZDSP1Server::LoadDSProgram()
         s2 = QString("ALTINTCMDLIST");
     };
 
-    cZDSP1Client* client = new cZDSP1Client(0, 0, this); // dummyClient einrichten zum laden der kette
+    cZDSP1Client dummyClient(0, 0, this); // dummyClient einrichten zum laden der kette
 
-    ulong offset = client->DspVarResolver.adr(s) ;
+    ulong offset = dummyClient.DspVarResolver.adr(s) ;
     if (DspDevSeek(offset) < 0 )  // startadr im treiber setzen
         return false;
 
     if (DspDevWrite(CmdMem.data(), CmdMem.size()) < 0)
         return false;
 
-    offset = client->DspVarResolver.adr(s2) ;
+    offset = dummyClient.DspVarResolver.adr(s2) ;
     if (DspDevSeek(offset) < 0 )  // startsadr im treiber setzen
         return false;
 
@@ -1088,7 +1081,6 @@ bool cZDSP1Server::LoadDSProgram()
     QString ss;
     mCommand2Dsp(ss = QString("DSPCMDPAR,7,%1;").arg(ActivatedCmdList));
     // dem dsp die neue liste mitteilen
-    delete client;
     return true;
 }
 
