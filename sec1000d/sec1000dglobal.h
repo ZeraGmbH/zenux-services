@@ -10,6 +10,5 @@
 #define ServerVersion "V1.00"
 #define MaxClients 80
 #define defaultDebugLevel NoDebug
-#define defaultXSDFile "/etc/zera/sec1000d/sec1000d.xsd"
 
 #endif

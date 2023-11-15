@@ -44,7 +44,7 @@ void SigHandler(int)
 
 struct sigaction mySigAction;
 // sigset_t mySigmask, origSigmask;
-static ServerParams params {ServerName, ServerVersion, defaultXSDFile, "/etc/zera/sec1000d/sec1000d.xml"};
+static ServerParams params {ServerName, ServerVersion, "/etc/zera/sec1000d/sec1000d.xsd", "/etc/zera/sec1000d/sec1000d.xml"};
 
 cSEC1000dServer::cSEC1000dServer() :
     cPCBServer(params, ScpiSingletonFactory::getScpiObj())
@@ -119,7 +119,7 @@ void cSEC1000dServer::doConfiguration()
         fcntl( pipeFD[0], F_SETFL, O_NONBLOCK);
         m_pNotifier = new QSocketNotifier(pipeFD[0], QSocketNotifier::Read, this);
         connect(m_pNotifier, &QSocketNotifier::activated, this, &cSEC1000dServer::SECIntHandler);
-        if (m_xmlConfigReader.loadSchema(defaultXSDFile)) {
+        if (m_xmlConfigReader.loadSchema(params.xsdFile)) {
             // we want to initialize all settings first
             m_pDebugSettings = new cDebugSettings(&m_xmlConfigReader);
             connect(&m_xmlConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pDebugSettings,&cDebugSettings::configXMLInfo);
