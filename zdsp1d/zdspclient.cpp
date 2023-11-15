@@ -134,7 +134,10 @@ bool cZDSP1Client::syntaxCheck(QString& s)
 {
     int openPos = s.indexOf('(');
     int closePos = s.indexOf(')');
-    return openPos > 0 && closePos>openPos;
+    bool ok = openPos > 0 && closePos>openPos;
+    if(!ok)
+        qWarning("Invalid command syntax: '%s'", qPrintable(s));
+    return ok;
 }
 
 cDspCmd cZDSP1Client::GenDspCmd(QString& scmd,bool* ok, ulong umo, ulong globalstartadr)
