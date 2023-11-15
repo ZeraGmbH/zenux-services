@@ -110,53 +110,35 @@ cSEC1000dServer::~cSEC1000dServer()
 
 void cSEC1000dServer::doConfiguration()
 {
-    QStringList args;
-
-    args = QCoreApplication::instance()->arguments();
-    if (args.count() != 2) // we want exactly 1 parameter
-    {
-        m_nerror = parameterError;
+    if ( pipe(pipeFD) == -1 ) {
+        m_nerror = pipeError;
         emit abortInit();
     }
-    else
-    {
-        if ( pipe(pipeFD) == -1 )
-        {
-            m_nerror = pipeError;
-            emit abortInit();
-        }
-        else
-        {
-            fcntl( pipeFD[1], F_SETFL, O_NONBLOCK);
-            fcntl( pipeFD[0], F_SETFL, O_NONBLOCK);
-            m_pNotifier = new QSocketNotifier(pipeFD[0], QSocketNotifier::Read, this);
-            connect(m_pNotifier, &QSocketNotifier::activated, this, &cSEC1000dServer::SECIntHandler);
-            if (m_xmlConfigReader.loadSchema(defaultXSDFile))
-            {
-                // we want to initialize all settings first
-                m_pDebugSettings = new cDebugSettings(&m_xmlConfigReader);
-                connect(&m_xmlConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pDebugSettings,&cDebugSettings::configXMLInfo);
-                connect(&m_xmlConfigReader,&Zera::XMLConfig::cReader::valueChanged,&m_ethSettings,&EthSettings::configXMLInfo);
-                m_pFPGASettings = new FPGASettings(&m_xmlConfigReader);
-                connect(&m_xmlConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pFPGASettings,&FPGASettings::configXMLInfo);
-                m_pECalcSettings = new SecCalculatorSettings(&m_xmlConfigReader);
-                connect(&m_xmlConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pECalcSettings,&SecCalculatorSettings::configXMLInfo);
-                m_pInputSettings = new SecInputSettings(&m_xmlConfigReader);
-                connect(&m_xmlConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pInputSettings,&SecInputSettings::configXMLInfo);
+    else {
+        fcntl( pipeFD[1], F_SETFL, O_NONBLOCK);
+        fcntl( pipeFD[0], F_SETFL, O_NONBLOCK);
+        m_pNotifier = new QSocketNotifier(pipeFD[0], QSocketNotifier::Read, this);
+        connect(m_pNotifier, &QSocketNotifier::activated, this, &cSEC1000dServer::SECIntHandler);
+        if (m_xmlConfigReader.loadSchema(defaultXSDFile)) {
+            // we want to initialize all settings first
+            m_pDebugSettings = new cDebugSettings(&m_xmlConfigReader);
+            connect(&m_xmlConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pDebugSettings,&cDebugSettings::configXMLInfo);
+            connect(&m_xmlConfigReader,&Zera::XMLConfig::cReader::valueChanged,&m_ethSettings,&EthSettings::configXMLInfo);
+            m_pFPGASettings = new FPGASettings(&m_xmlConfigReader);
+            connect(&m_xmlConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pFPGASettings,&FPGASettings::configXMLInfo);
+            m_pECalcSettings = new SecCalculatorSettings(&m_xmlConfigReader);
+            connect(&m_xmlConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pECalcSettings,&SecCalculatorSettings::configXMLInfo);
+            m_pInputSettings = new SecInputSettings(&m_xmlConfigReader);
+            connect(&m_xmlConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pInputSettings,&SecInputSettings::configXMLInfo);
 
-                QString s = args.at(1);
-                qDebug() << s;
-
-                if(!m_xmlConfigReader.loadXMLFile(s)) {
-                    m_nerror = xmlfileError;
-                    emit abortInit();
-                }
-            }
-            else
-            {
-                m_nerror = xsdfileError;
+            if(!m_xmlConfigReader.loadXMLFile(params.xmlFile)) {
+                m_nerror = xmlfileError;
                 emit abortInit();
             }
+        }
+        else {
+            m_nerror = xsdfileError;
+            emit abortInit();
         }
     }
 }
@@ -280,8 +262,7 @@ void cSEC1000dServer::SECIntHandler(int)
     lseek(m_devFileDescriptor, m_pECalcSettings->getIrqAdress()+4, 0); // so the dedicated words have +4 offset
     read(m_devFileDescriptor, interruptREGS.data(), n);
 
-    for (int i = 0; i < n; i++)
-    {
+    for (int i = 0; i < n; i++) {
         quint8 irq = interruptREGS[i];
         m_ECalculatorChannelList.at(i*2)->setIntReg(irq & 0xF); // this will cause notifier to be thrown
         m_ECalculatorChannelList.at(i*2+1)->setIntReg((irq >> 4) & 0xF);
