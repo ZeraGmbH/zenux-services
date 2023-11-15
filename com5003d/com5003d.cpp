@@ -44,7 +44,7 @@
 #include <systemd/sd-daemon.h>
 #endif
 
-static ServerParams params {ServerName, ServerVersion, defaultXSDFile, "/etc/zera/com5003d/com5003d.xml"};
+static ServerParams params {ServerName, ServerVersion, "/etc/zera/com5003d/com5003d.xsd", "/etc/zera/com5003d/com5003d.xml"};
 
 cCOM5003dServer::cCOM5003dServer() :
     cPCBServer(params, ScpiSingletonFactory::getScpiObj())
@@ -122,80 +122,58 @@ cCOM5003dServer::~cCOM5003dServer()
     if (m_pRMConnection) delete m_pRMConnection;
 }
 
-
 void cCOM5003dServer::doConfiguration()
 {
-    QStringList args;
+    m_nFPGAfd = open("/dev/zFPGA1reg",O_RDWR);
+    lseek(m_nFPGAfd,0x0,0);
+    quint32 sigStart = 0;
+    write(m_nFPGAfd, &sigStart, 4);
+    sigStart = 1;
+    write(m_nFPGAfd, &sigStart, 4);
 
-    quint32 sigStart;
-
-    args = QCoreApplication::instance()->arguments();
-    if (args.count() != 2) // we want exactly 1 parameter
-    {
-        m_nerror = parameterError;
-        emit abortInit();
-    }
-    else
-    {
-
-        m_nFPGAfd = open("/dev/zFPGA1reg",O_RDWR);
-        lseek(m_nFPGAfd,0x0,0);
+    if (m_xmlConfigReader.loadSchema(params.xsdFile)) {
         sigStart = 0;
         write(m_nFPGAfd, &sigStart, 4);
+
+        // we want to initialize all settings first
+        m_pDebugSettings = new cDebugSettings(&m_xmlConfigReader);
+        connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_pDebugSettings,&cDebugSettings::configXMLInfo);
+        connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, &m_ethSettings, &EthSettings::configXMLInfo);
+        m_pI2CSettings = new cI2CSettings(&m_xmlConfigReader);
+        connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_pI2CSettings,&cI2CSettings::configXMLInfo);
+        m_pFPGASettings = new FPGASettings(&m_xmlConfigReader);
+        connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_pFPGASettings, &FPGASettings::configXMLInfo);
+        m_pSenseSettings = new cSenseSettings(&m_xmlConfigReader, 6);
+        connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_pSenseSettings, &cSenseSettings::configXMLInfo);
+        m_foutSettings = new FOutSettings(&m_xmlConfigReader);
+        connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_foutSettings, &FOutSettings::configXMLInfo);
+        m_pSamplingSettings = new SamplingSettings(&m_xmlConfigReader);
+        connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_pSamplingSettings, &SamplingSettings::configXMLInfo);
+        m_finSettings = new FInSettings(&m_xmlConfigReader);
+        connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_finSettings, &FInSettings::configXMLInfo);
+        m_pSCHeadSettings = new ScInSettings(&m_xmlConfigReader);
+        connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_pSCHeadSettings, &ScInSettings::configXMLInfo);
+        m_hkInSettings = new HkInSettings(&m_xmlConfigReader);
+        connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_hkInSettings, &HkInSettings::configXMLInfo);
+
         sigStart = 1;
         write(m_nFPGAfd, &sigStart, 4);
-
-        if (m_xmlConfigReader.loadSchema(defaultXSDFile))
-        {
+        if (m_xmlConfigReader.loadXMLFile(params.xmlFile)) {
             sigStart = 0;
             write(m_nFPGAfd, &sigStart, 4);
-
-            // we want to initialize all settings first
-            m_pDebugSettings = new cDebugSettings(&m_xmlConfigReader);
-            connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_pDebugSettings,&cDebugSettings::configXMLInfo);
-            connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, &m_ethSettings, &EthSettings::configXMLInfo);
-            m_pI2CSettings = new cI2CSettings(&m_xmlConfigReader);
-            connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_pI2CSettings,&cI2CSettings::configXMLInfo);
-            m_pFPGASettings = new FPGASettings(&m_xmlConfigReader);
-            connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_pFPGASettings, &FPGASettings::configXMLInfo);
-            m_pSenseSettings = new cSenseSettings(&m_xmlConfigReader, 6);
-            connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_pSenseSettings, &cSenseSettings::configXMLInfo);
-            m_foutSettings = new FOutSettings(&m_xmlConfigReader);
-            connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_foutSettings, &FOutSettings::configXMLInfo);
-            m_pSamplingSettings = new SamplingSettings(&m_xmlConfigReader);
-            connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_pSamplingSettings, &SamplingSettings::configXMLInfo);
-            m_finSettings = new FInSettings(&m_xmlConfigReader);
-            connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_finSettings, &FInSettings::configXMLInfo);
-            m_pSCHeadSettings = new ScInSettings(&m_xmlConfigReader);
-            connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_pSCHeadSettings, &ScInSettings::configXMLInfo);
-            m_hkInSettings = new HkInSettings(&m_xmlConfigReader);
-            connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_hkInSettings, &HkInSettings::configXMLInfo);
-
-            QString s = args.at(1);
-            qDebug() << s;
-
-            sigStart = 1;
-            write(m_nFPGAfd, &sigStart, 4);
-            if (m_xmlConfigReader.loadXMLFile(s)) { // the first parameter should be the filename
-                sigStart = 0;
-                write(m_nFPGAfd, &sigStart, 4);
-                // xmlfile ok -> nothing to do .. the configreader will emit all configuration
-                // signals and after this the finishedparsingXML signal
-            }
-            else {
-                m_nerror = xmlfileError;
-                emit abortInit();
-            }
+            // xmlfile ok -> nothing to do .. the configreader will emit all configuration
+            // signals and after this the finishedparsingXML signal
         }
-        else
-        {
-            m_nerror = xsdfileError;
+        else {
+            m_nerror = xmlfileError;
             emit abortInit();
         }
-
-        close(m_nFPGAfd);
-
     }
+    else {
+        m_nerror = xsdfileError;
+        emit abortInit();
+    }
+    close(m_nFPGAfd);
 }
 
 
