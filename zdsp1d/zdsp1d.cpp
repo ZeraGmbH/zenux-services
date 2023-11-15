@@ -7,6 +7,7 @@
 #include "zdsp1d.h"
 #include "dsp.h"
 #include "parse-zdsp.h"
+#include "pcbserver.h"
 #include <QDebug>
 #include <QCoreApplication>
 #include <QFinalState>
@@ -76,6 +77,7 @@ void SigHandler(int)
 struct sigaction mySigAction;
 // sigset_t mySigmask, origSigmask;
 
+static ServerParams params {ServerName, ServerVersion, "/etc/zera/zdsp1d/zdsp1d.xsd", "/etc/zera/zdsp1d/zdsp1d.xml"};
 
 cZDSP1Server::cZDSP1Server()
 {
@@ -128,40 +130,32 @@ cZDSP1Server::~cZDSP1Server()
 
 void cZDSP1Server::doConfiguration()
 {
-    QStringList args = QCoreApplication::instance()->arguments();
-    if (args.count() != 2) { // we want exactly 1 parameter
-        m_nerror = parameterError;
+    if ( pipe(pipeFD) == -1 ) {
+        m_nerror = pipeError;
         emit abortInit();
     }
     else {
-        if ( pipe(pipeFD) == -1 ) {
-            m_nerror = pipeError;
-            emit abortInit();
-        }
-        else {
-            fcntl( pipeFD[1], F_SETFL, O_NONBLOCK);
-            fcntl( pipeFD[0], F_SETFL, O_NONBLOCK);
-            m_pNotifier = new QSocketNotifier(pipeFD[0], QSocketNotifier::Read, this);
-            connect(m_pNotifier, &QSocketNotifier::activated, this, &cZDSP1Server::DspIntHandler);
-            if (myXMLConfigReader->loadSchema(defaultXSDFile)) {
-                // we want to initialize all settings first
-                m_pDebugSettings = new cDebugSettings(myXMLConfigReader);
-                connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pDebugSettings,&cDebugSettings::configXMLInfo);
-                m_pETHSettings = new EthSettings(myXMLConfigReader);
-                connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pETHSettings,&EthSettings::configXMLInfo);
-                m_pDspSettings = new cDSPSettings(myXMLConfigReader);
-                connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pDspSettings,&cDSPSettings::configXMLInfo);
+        fcntl( pipeFD[1], F_SETFL, O_NONBLOCK);
+        fcntl( pipeFD[0], F_SETFL, O_NONBLOCK);
+        m_pNotifier = new QSocketNotifier(pipeFD[0], QSocketNotifier::Read, this);
+        connect(m_pNotifier, &QSocketNotifier::activated, this, &cZDSP1Server::DspIntHandler);
+        if (myXMLConfigReader->loadSchema(params.xsdFile)) {
+            // we want to initialize all settings first
+            m_pDebugSettings = new cDebugSettings(myXMLConfigReader);
+            connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pDebugSettings,&cDebugSettings::configXMLInfo);
+            m_pETHSettings = new EthSettings(myXMLConfigReader);
+            connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pETHSettings,&EthSettings::configXMLInfo);
+            m_pDspSettings = new cDSPSettings(myXMLConfigReader);
+            connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pDspSettings,&cDSPSettings::configXMLInfo);
 
-                QString s = args.at(1);
-                if(!myXMLConfigReader->loadXMLFile(s)) {
-                    m_nerror = xmlfileError;
-                    emit abortInit();
-                }
-            }
-            else {
-                m_nerror = xsdfileError;
+            if(!myXMLConfigReader->loadXMLFile(params.xmlFile)) {
+                m_nerror = xmlfileError;
                 emit abortInit();
             }
+        }
+        else {
+            m_nerror = xsdfileError;
+            emit abortInit();
         }
     }
 }

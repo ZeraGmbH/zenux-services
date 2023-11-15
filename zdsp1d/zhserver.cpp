@@ -20,8 +20,8 @@ class cNode;
 
 cZHServer::cZHServer()
 {
-    sSoftwareVersion = QString("%1 %2").arg(ServerBasisName).arg(ServerVersion);
-    sServerName = ServerBasisName;
+    sSoftwareVersion = QString("%1 %2").arg(ServerName).arg(ServerVersion);
+    sServerName = ServerName;
 }
 
 

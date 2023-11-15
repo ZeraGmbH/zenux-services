@@ -1,17 +1,15 @@
+#include "zdsp1d.h"
+#include "zdspglobal.h"
+#include "pcbserver.h"
 #include <iostream>
 #include <syslog.h>
 #include <fcntl.h>
 #include <unistd.h>
-#include <stdio.h>
 #include <QCoreApplication>
-#include <qstring.h>
-
-#include "zdsp1d.h"
-#include "zdspglobal.h"
 
 int main( int argc, char *argv[] )
 {
-    openlog(ServerBasisName, LOG_PID, LOG_DAEMON); // verbindung zum syslogd aufnehmen
+    openlog(ServerName, LOG_PID, LOG_DAEMON); // verbindung zum syslogd aufnehmen
 
     QCoreApplication* app = new QCoreApplication (argc, argv);
     cZDSP1Server* zdsp1d = new cZDSP1Server(); // this is our server

@@ -5,7 +5,7 @@ Requires=dev-zFPGA1dsp1.device
 After=dev-zFPGA1dsp1.device
 
 [Service]
-ExecStart=/usr/bin/zdsp1d /etc/zera/zdsp1d/zdsp1d.xml
+ExecStart=/usr/bin/zdsp1d
 Type=notify
 User=zera-services
 NoNewPrivileges=true
