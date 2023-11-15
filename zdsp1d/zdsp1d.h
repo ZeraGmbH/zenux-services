@@ -10,7 +10,6 @@
 #include <xiqnetserver.h>
 #include <xiqnetwrapper.h>
 #include <QStringList>
-#include <QSocketNotifier>
 #include <QByteArray>
 #include <QTimer>
 #include <QHash>
@@ -66,7 +65,6 @@ private:
     QByteArray CmdMem; // unsere dsp programm listen
     QByteArray CmdIntMem;
     QList<cZDSP1Client*> clientlist; // liste aller clients
-    QSocketNotifier* m_pNotifier;
 
     ulong UserWorkSpaceGlobalSegmentAdr;
 
@@ -166,7 +164,7 @@ private slots:
     virtual void SCPIInput();
     virtual void SCPIdisconnect();
 
-    void DspIntHandler(int);
+    void DspIntHandler();
     void doConfiguration();
     void doSetupServer();
     void doCloseServer();

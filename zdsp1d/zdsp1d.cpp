@@ -7,6 +7,7 @@
 #include "zdsp1d.h"
 #include "dsp.h"
 #include "parse-zdsp.h"
+#include "interprocessnotifier.h"
 #include <QDebug>
 #include <QCoreApplication>
 #include <QFinalState>
@@ -65,13 +66,11 @@ static char dspnrunning[12]= "not running";
 
 /* globaler zeiger auf  "den"  server und eine signal behandlungsroutine */
 cZDSP1Server* DSPServer;
-int pipeFD[2];
-char pipeBuf[2] = "I";
-//int anzInt = 0;
 
+InterProcessNotifier interruptNotifier;
 void SigHandler(int)
 {
-    write(pipeFD[1], pipeBuf, 1);
+    interruptNotifier.sendSignal();
 }
 
 
@@ -126,8 +125,7 @@ cZDSP1Server::~cZDSP1Server()
         }
     resetDsp(); // we reset the dsp when we close the server
     close(m_devFileDescriptor); // close dev.
-    close(pipeFD[0]);
-    close(pipeFD[1]);
+    interruptNotifier.close();
 }
 
 void cZDSP1Server::doConfiguration()
@@ -138,15 +136,12 @@ void cZDSP1Server::doConfiguration()
         emit abortInit();
     }
     else {
-        if ( pipe(pipeFD) == -1 ) {
+        if (!interruptNotifier.open()) {
             m_nerror = pipeError;
             emit abortInit();
         }
         else {
-            fcntl( pipeFD[1], F_SETFL, O_NONBLOCK);
-            fcntl( pipeFD[0], F_SETFL, O_NONBLOCK);
-            m_pNotifier = new QSocketNotifier(pipeFD[0], QSocketNotifier::Read, this);
-            connect(m_pNotifier, &QSocketNotifier::activated, this, &cZDSP1Server::DspIntHandler);
+            connect(&interruptNotifier, &InterProcessNotifier::sigSignal, this, &cZDSP1Server::DspIntHandler);
             if (myXMLConfigReader->loadSchema(defaultXSDFile)) {
                 // we want to initialize all settings first
                 m_pDebugSettings = new cDebugSettings(myXMLConfigReader);
@@ -936,10 +931,8 @@ QDataStream& operator<<(QDataStream& ds,cDspCmd c)
     return ds;
 }
 
-void cZDSP1Server::DspIntHandler(int)
+void cZDSP1Server::DspIntHandler()
 {
-    char buf[2];
-    read(pipeFD[0], buf, 1); // first we read the pipe
     cZDSP1Client *client,*client2;
     if ((!clientlist.isEmpty()) && (client = clientlist.first()) !=0) { // wenn vorhanden nutzen wir immer den 1. client zum lesen
         QByteArray ba;
