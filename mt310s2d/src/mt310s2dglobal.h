@@ -15,7 +15,6 @@
 #define defaultDebugLevel NoDebug
 #define defaultCTRLDeviceNode "/dev/zFPGA1ctrl"
 #define defaultProtoBufServerPort 6307
-#define defaultXSDFile "/etc/zera/mt310s2d/mt310s2d.xsd"
 
 enum atmelInterrupts
 {

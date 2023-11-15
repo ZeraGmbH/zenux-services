@@ -14,7 +14,7 @@ Requires=dev-i2c\x2d0.device
 After=dev-i2c\x2d0.device
 
 [Service]
-ExecStart=/usr/bin/mt310s2d /etc/zera/mt310s2d/mt310s2d.xml
+ExecStart=/usr/bin/mt310s2d
 Type=notify
 User=zera-services
 NoNewPrivileges=true
