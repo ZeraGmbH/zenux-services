@@ -140,24 +140,28 @@ bool cZDSP1Client::syntaxCheck(QString& s)
     return ok;
 }
 
-cDspCmd cZDSP1Client::GenDspCmd(QString& scmd,bool* ok, ulong umo, ulong globalstartadr)
+cDspCmd cZDSP1Client::GenDspCmd(QString& scmd, bool* ok, ulong umo, ulong globalstartadr)
 {
     cParseZdsp CmdParser;
     CmdParser.SetDelimiter("(,)"); // setze die trennzeichen für den parser
     CmdParser.SetWhiteSpace(" (,)");
-
+    if(!syntaxCheck(scmd)) {
+        *ok = false;
+        return cDspCmd();
+    }
     QChar* cmds = scmd.data(); // zeiger auf den C-string von scmd
-    sDspCmd *dspcmd;
-    cDspCmd lcmd, cmd;
     QString sSearch = CmdParser.GetKeyword(&cmds); // das 1. keyword muss ein befehlscode sein
-    if ( ((dspcmd = findDspCmd(sSearch)) != NULL ) && syntaxCheck(scmd) )
+    sDspCmd *dspcmd = findDspCmd(sSearch);
+    if (dspcmd)
     { // bekannter befehlscode ?
         switch (dspcmd->CmdClass) {
         case CMD: // nur kommandowort, kein parameter
         {
             sSearch = CmdParser.GetKeyword(&cmds);
             *ok = sSearch.isEmpty(); // hier darf nichts stehen
-            if (*ok) lcmd = cDspCmd(dspcmd->CmdCode);
+            cDspCmd lcmd;
+            if (*ok)
+                lcmd = cDspCmd(dspcmd->CmdCode);
             return lcmd;
         }
         case CMD1i16: // kommandowort, ein parameter
@@ -168,7 +172,9 @@ cDspCmd cZDSP1Client::GenDspCmd(QString& scmd,bool* ok, ulong umo, ulong globals
             t &= ( (par = DspVarResolver.offs(sSearch, umo,globalstartadr)) > -1); // -1 ist fehlerbedingung
             sSearch = CmdParser.GetKeyword(&cmds);
             t &= sSearch.isEmpty();
-            if (t) lcmd = cDspCmd(dspcmd->CmdCode,(ushort)par);
+            cDspCmd lcmd;
+            if (t)
+                lcmd = cDspCmd(dspcmd->CmdCode,(ushort)par);
             *ok = t;
             return lcmd;
         }
@@ -176,13 +182,13 @@ cDspCmd cZDSP1Client::GenDspCmd(QString& scmd,bool* ok, ulong umo, ulong globals
         {
             short par[2];
             bool t = true;
-            for (int i=0; i<2; i++)
-            {
+            for (int i=0; i<2; i++) {
                 sSearch = CmdParser.GetKeyword(&cmds);
                 t &= ( (par[i] = DspVarResolver.offs(sSearch, umo,globalstartadr)) > -1);
             }
             sSearch = CmdParser.GetKeyword(&cmds);
             t &= sSearch.isEmpty();
+            cDspCmd lcmd;
             if (t) {
                 lcmd = cDspCmd(dspcmd->CmdCode, (ushort)par[0], (ushort)par[1]);
                 if (dspcmd->modify) lcmd.w[1] = (lcmd.w[1] & 0xFFFF) | (m_socket << 16);
@@ -194,33 +200,30 @@ cDspCmd cZDSP1Client::GenDspCmd(QString& scmd,bool* ok, ulong umo, ulong globals
         {
             short par[3];
             bool t = true;
-            int i;
-            for (i=0; i<3; i++)
-            {
+            for (int i=0; i<3; i++) {
                 sSearch = CmdParser.GetKeyword(&cmds);
-
                 t &= ( (par[i] = DspVarResolver.offs(sSearch, umo,globalstartadr)) > -1);
             }
             sSearch = CmdParser.GetKeyword(&cmds);
             t &= sSearch.isEmpty();
-            if (t)
-            {
+            cDspCmd lcmd;
+            if (t) {
                 lcmd = cDspCmd( dspcmd->CmdCode, (ushort)par[0], (ushort)par[1], (ushort)par[2]);
                 if (dspcmd->modify) lcmd.w[1] = (lcmd.w[1] & 0xFFFF) | (m_socket << 16);
             }
-
             *ok = t;
             return lcmd;
         }
         case CMD1i32:
         {
             long par;
-            bool t;
             sSearch = CmdParser.GetKeyword(&cmds);
-            t = ( (par = DspVarResolver.offs(sSearch,umo,globalstartadr)) > -1);
+            bool t = ( (par = DspVarResolver.offs(sSearch,umo,globalstartadr)) > -1);
             sSearch = CmdParser.GetKeyword(&cmds);
             t &= sSearch.isEmpty();
-            if (t) lcmd = cDspCmd(dspcmd->CmdCode,(ulong)par);
+            cDspCmd lcmd;
+            if (t)
+                lcmd = cDspCmd(dspcmd->CmdCode,(ulong)par);
             *ok = t;
             return lcmd;
         }
@@ -228,14 +231,16 @@ cDspCmd cZDSP1Client::GenDspCmd(QString& scmd,bool* ok, ulong umo, ulong globals
         {
             short par1;
             long par2 = 0;
-            bool t;
             sSearch = CmdParser.GetKeyword(&cmds);
             *ok = ( (par1 = DspVarResolver.offs(sSearch,umo,globalstartadr)) > -1); // -1 ist fehlerbedingung
+            cDspCmd lcmd;
             if (!(*ok))
                 return lcmd; // wenn fehler -> fertig
             sSearch = CmdParser.GetKeyword(&cmds);
+            bool t;
             par2 = sSearch.toLong(&t); // test auf integer
-            if (!t) par2 = sSearch.toLong(&t,16); // test auf hex
+            if (!t)
+                par2 = sSearch.toLong(&t,16); // test auf hex
             if (!t)  {
                 float tf = sSearch.toFloat(&t);
                 long* pl = (long*) &tf;
@@ -243,14 +248,15 @@ cDspCmd cZDSP1Client::GenDspCmd(QString& scmd,bool* ok, ulong umo, ulong globals
             }
             sSearch = CmdParser.GetKeyword(&cmds);
             t &= sSearch.isEmpty();
-            if (t) lcmd = cDspCmd(dspcmd->CmdCode,(ushort)par1,(ulong)par2);
+            if (t)
+                lcmd = cDspCmd(dspcmd->CmdCode,(ushort)par1,(ulong)par2);
             *ok = t;
             return lcmd;
         }
         }
     }
     *ok = false;
-    return cmd;
+    return cDspCmd();
 }
 
 
