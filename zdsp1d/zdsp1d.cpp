@@ -62,16 +62,14 @@ static char dsprunning[8] = "running";
 static char dspnrunning[12]= "not running";
 
 
-
 /* globaler zeiger auf  "den"  server und eine signal behandlungsroutine */
 cZDSP1Server* DSPServer;
+
 int pipeFD[2];
-char pipeBuf[2] = "I";
-//int anzInt = 0;
 
 void SigHandler(int)
 {
-    write(pipeFD[1], pipeBuf, 1);
+    write(pipeFD[1], "I", 1);
 }
 
 
@@ -938,10 +936,11 @@ QDataStream& operator<<(QDataStream& ds,cDspCmd c)
 
 void cZDSP1Server::DspIntHandler(int)
 {
-    char buf[2];
-    read(pipeFD[0], buf, 1); // first we read the pipe
-    cZDSP1Client *client,*client2;
-    if ((!clientlist.isEmpty()) && (client = clientlist.first()) !=0) { // wenn vorhanden nutzen wir immer den 1. client zum lesen
+    char dummy[2];
+    read(pipeFD[0], dummy, 1); // first we read the pipe
+
+    if (!clientlist.isEmpty()) { // wenn vorhanden nutzen wir immer den 1. client zum lesen
+        cZDSP1Client *client = clientlist.first();
         QByteArray ba;
         QString s = "CTRLCMDPAR,20";
         if (client->DspVarRead(s, &ba)) { // 20 worte lesen
@@ -949,7 +948,8 @@ void cZDSP1Server::DspIntHandler(int)
             int n = pardsp[0]; // anzahl der interrupts
             for (int i = 1; i < (n+1); i++) {
                 int process = pardsp[i] >> 16;
-                if ((client2 = GetClient(process)) !=0) { // gibts den client noch, der den interrupt haben wollte
+                cZDSP1Client *client2 = GetClient(process);
+                if (client2) { // gibts den client noch, der den interrupt haben wollte
                     s = QString("DSPINT:%1").arg(pardsp[i] & 0xFFFF);
                     if (m_clientIDHash.contains(client2)) { // es war ein client der über protobuf (clientid) angelegt wurde
                         ProtobufMessage::NetMessage protobufIntMessage;
@@ -974,10 +974,8 @@ void cZDSP1Server::DspIntHandler(int)
                         out.device()->seek(0);
                         out << (qint32)(block.size() - sizeof(qint32));
 
-                        XiQNetPeer* pNetclient;
-                        pNetclient = client2->m_pNetClient;
-
-                        if (pNetclient == 0)
+                        XiQNetPeer* pNetclient = client2->m_pNetClient;
+                        if (pNetclient == nullptr)
                             m_pSCPISocket->write(block);
                         else
                             pNetclient->getTcpSocket()->write(block);
