@@ -51,13 +51,12 @@ void SigHandler(int)
     write(pipeFD[1], "I", 1);
 }
 
-
 static struct sigaction mySigAction;
 // sigset_t mySigmask, origSigmask;
 
 
-cATMELSysCtrl* pAtmelSys; // we take a static object for atmel connection
-static ServerParams params {ServerName, ServerVersion, defaultXSDFile, "/etc/zera/mt310s2d/mt310s2d.xml"};
+cATMELSysCtrl* pAtmelSys;
+static ServerParams params {ServerName, ServerVersion, "/etc/zera/mt310s2d/mt310s2d.xsd", "/etc/zera/mt310s2d/mt310s2d.xml"};
 
 cMT310S2dServer::cMT310S2dServer() :
     cPCBServer(params, ScpiSingletonFactory::getScpiObj())
@@ -143,68 +142,50 @@ cMT310S2dServer::~cMT310S2dServer()
 
 void cMT310S2dServer::doConfiguration()
 {
-    QStringList args;
-
-    args = QCoreApplication::instance()->arguments();
-    if (args.count() != 2) // we want exactly 1 parameter
-    {
-        m_nerror = parameterError;
+    if ( pipe(pipeFD) == -1) {
+        m_nerror = pipeError;
         emit abortInit();
     }
-    else
-    {
-        if ( pipe(pipeFD) == -1)
-        {
-            m_nerror = pipeError;
-            emit abortInit();
-        }
-        else
-        {
-            fcntl( pipeFD[1], F_SETFL, O_NONBLOCK);
-            fcntl( pipeFD[0], F_SETFL, O_NONBLOCK);
-            m_pNotifier = new QSocketNotifier(pipeFD[0], QSocketNotifier::Read, this);
-            connect(m_pNotifier, &QSocketNotifier::activated, this, &cMT310S2dServer::MTIntHandler);
+    else {
+        fcntl( pipeFD[1], F_SETFL, O_NONBLOCK);
+        fcntl( pipeFD[0], F_SETFL, O_NONBLOCK);
+        m_pNotifier = new QSocketNotifier(pipeFD[0], QSocketNotifier::Read, this);
+        connect(m_pNotifier, &QSocketNotifier::activated, this, &cMT310S2dServer::MTIntHandler);
 
-            if (m_xmlConfigReader.loadSchema(defaultXSDFile)) {
-                // we want to initialize all settings first
-                m_pDebugSettings = new cDebugSettings(&m_xmlConfigReader);
-                connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_pDebugSettings, &cDebugSettings::configXMLInfo);
-                connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, &m_ethSettings, &EthSettings::configXMLInfo);
-                m_pI2CSettings = new cI2CSettings(&m_xmlConfigReader);
-                connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_pI2CSettings, &cI2CSettings::configXMLInfo);
-                m_pFPGASettings = new FPGASettings(&m_xmlConfigReader);
-                connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_pFPGASettings, &FPGASettings::configXMLInfo);
-                m_pCtrlSettings = new cCtrlSettings(&m_xmlConfigReader);
-                connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_pCtrlSettings, &cCtrlSettings::configXMLInfo);
-                m_pSenseSettings = new cSenseSettings(&m_xmlConfigReader, 8);
-                connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_pSenseSettings, &cSenseSettings::configXMLInfo);
-                m_foutSettings = new FOutSettings(&m_xmlConfigReader);
-                connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_foutSettings, &FOutSettings::configXMLInfo);
-                m_pSamplingSettings = new SamplingSettings(&m_xmlConfigReader);
-                connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_pSamplingSettings, &SamplingSettings::configXMLInfo);
-                m_finSettings = new FInSettings(&m_xmlConfigReader);
-                connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_finSettings, &FInSettings::configXMLInfo);
-                m_pSCHeadSettings = new ScInSettings(&m_xmlConfigReader);
-                connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_pSCHeadSettings, &ScInSettings::configXMLInfo);
-                m_hkInSettings = new HkInSettings(&m_xmlConfigReader);
-                connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_hkInSettings, &HkInSettings::configXMLInfo);
-                m_accumulatorSettings = new AccumulatorSettings(&m_xmlConfigReader);
-                connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_accumulatorSettings, &AccumulatorSettings::configXMLInfo);
+        if (m_xmlConfigReader.loadSchema(params.xsdFile)) {
+            // we want to initialize all settings first
+            m_pDebugSettings = new cDebugSettings(&m_xmlConfigReader);
+            connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_pDebugSettings, &cDebugSettings::configXMLInfo);
+            connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, &m_ethSettings, &EthSettings::configXMLInfo);
+            m_pI2CSettings = new cI2CSettings(&m_xmlConfigReader);
+            connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_pI2CSettings, &cI2CSettings::configXMLInfo);
+            m_pFPGASettings = new FPGASettings(&m_xmlConfigReader);
+            connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_pFPGASettings, &FPGASettings::configXMLInfo);
+            m_pCtrlSettings = new cCtrlSettings(&m_xmlConfigReader);
+            connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_pCtrlSettings, &cCtrlSettings::configXMLInfo);
+            m_pSenseSettings = new cSenseSettings(&m_xmlConfigReader, 8);
+            connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_pSenseSettings, &cSenseSettings::configXMLInfo);
+            m_foutSettings = new FOutSettings(&m_xmlConfigReader);
+            connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_foutSettings, &FOutSettings::configXMLInfo);
+            m_pSamplingSettings = new SamplingSettings(&m_xmlConfigReader);
+            connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_pSamplingSettings, &SamplingSettings::configXMLInfo);
+            m_finSettings = new FInSettings(&m_xmlConfigReader);
+            connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_finSettings, &FInSettings::configXMLInfo);
+            m_pSCHeadSettings = new ScInSettings(&m_xmlConfigReader);
+            connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_pSCHeadSettings, &ScInSettings::configXMLInfo);
+            m_hkInSettings = new HkInSettings(&m_xmlConfigReader);
+            connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_hkInSettings, &HkInSettings::configXMLInfo);
+            m_accumulatorSettings = new AccumulatorSettings(&m_xmlConfigReader);
+            connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_accumulatorSettings, &AccumulatorSettings::configXMLInfo);
 
-
-                QString s = args.at(1);
-                qDebug() << s;
-
-                if (!m_xmlConfigReader.loadXMLFile(s)) {
-                    m_nerror = xmlfileError;
-                    emit abortInit();
-                }
-            }
-            else
-            {
-                m_nerror = xsdfileError;
+            if (!m_xmlConfigReader.loadXMLFile(params.xmlFile)) {
+                m_nerror = xmlfileError;
                 emit abortInit();
             }
+        }
+        else {
+            m_nerror = xsdfileError;
+            emit abortInit();
         }
     }
 }
@@ -442,18 +423,8 @@ void cMT310S2dServer::MTIntHandler(int)
             qWarning("cMT310S2dServer::MTIntHandler: unknown bits in critical status mask: %04x!", stat);
         }
     }
-    else {
+    else
         qWarning("cMT310S2dServer::MTIntHandler: Atmel::getInstance().readCriticalStatus failed - cannot actualize clamp status!");
-    }
-
-    // here we must add the handling for message interrupts sent by fpga device
-    /*if (false)
-    {
-        QString message;
-        message = QString("Error");
-        qFatal(message.toLatin1());
-        qWarning(message.toLatin1());
-    }*/
 }
 
 
