@@ -110,34 +110,32 @@ QString& cZDSP1Client::SetCmdListDef(QString& s)
 {
     m_sCmdListDef = s;
     sOutput = ACKString; // ist erstmal ok, wird später beim SET kommando geprüft
-    return (sOutput);
+    return sOutput;
 }
 
 QString& cZDSP1Client::GetCmdListDef()
 {
-    return (m_sCmdListDef);
+    return m_sCmdListDef;
 }
 
 QString& cZDSP1Client::SetCmdIntListDef(QString& s)
 {
     m_sIntCmdListDef = s;
     sOutput = ACKString; // ist erstmal ok, wird später beim SET kommando geprüft
-    return (sOutput);
+    return sOutput;
 }
 
 QString& cZDSP1Client::GetCmdIntListDef()
 {
-    return (m_sIntCmdListDef);
+    return m_sIntCmdListDef;
 }
 
 bool cZDSP1Client::syntaxCheck(QString& s)
 {
-    int p1,p2=-1;
-    bool ok = ( (((p1 = s.indexOf('(')) > 0) && ((p2 = s.indexOf(')')) > 0)) || (p2>p1) );
-    // bool ok = ( (((p1 = s.find('(')) > 0) && ((p2 = s.find(')')) > 0)) || (p2>p1) );
-    return ok;
+    int openPos = s.indexOf('(');
+    int closePos = s.indexOf(')');
+    return openPos > 0 && closePos>openPos;
 }
-
 
 cDspCmd cZDSP1Client::GenDspCmd(QString& scmd,bool* ok, ulong umo, ulong globalstartadr)
 {
