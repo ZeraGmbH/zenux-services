@@ -5,11 +5,9 @@
 
 #include "pcbserver.h"
 #include "rmconnection.h"
-#include "ethsettings.h"
 
 class QStateMachine;
 class QState;
-class QSocketNotifier;
 class cDebugSettings;
 class FPGASettings;
 class SecCalculatorSettings;
@@ -57,12 +55,11 @@ private:
     QTimer m_retryTimer;
     QString m_sSECDeviceNode;
     QList<SecChannel*> m_ECalculatorChannelList;
-    QSocketNotifier* m_pNotifier;
     int SECDevOpen();
     void SetFASync();
 
 private slots:
-    void SECIntHandler(int);
+    void SECIntHandler();
     void doConfiguration();
     void doSetupServer();
     void doCloseServer();

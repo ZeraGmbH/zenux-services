@@ -1,20 +1,3 @@
-#include <unistd.h>
-#include <fcntl.h>
-#include <syslog.h>
-#include <signal.h>
-
-#include <QStateMachine>
-#include <QState>
-#include <QFinalState>
-#include <QStringList>
-#include <QDebug>
-#include <QByteArray>
-#include <QCoreApplication>
-#include <QSocketNotifier>
-
-#include <xiqnetserver.h>
-#include <xmlconfigreader.h>
-
 #include "sec1000dglobal.h"
 #include "sec1000d.h"
 #include "debugsettings.h"
@@ -27,24 +10,37 @@
 #include "systeminfo.h"
 #include "secgroupresourceandinterface.h"
 #include "rmconnection.h"
+#include "interprocessnotifier.h"
+#include <xiqnetserver.h>
+#include <xmlconfigreader.h>
 #include <scpisingletonfactory.h>
+#include <QStateMachine>
+#include <QState>
+#include <QFinalState>
+#include <QStringList>
+#include <QDebug>
+#include <QByteArray>
+#include <QCoreApplication>
+#include <unistd.h>
+#include <fcntl.h>
+#include <syslog.h>
+#include <signal.h>
 
 #ifdef SYSTEMD_NOTIFICATION
 #include <systemd/sd-daemon.h>
 #endif
 
 cSEC1000dServer* SECServer;
-int pipeFD[2];
-char pipeBuf[2] = "I";
 
+InterProcessNotifier interruptNotifier;
 void SigHandler(int)
 {
-    if (SECServer->m_pDebugSettings->getDebugLevel() & 2) syslog(LOG_INFO,"sec interrupt received\n");
-    write(pipeFD[1], pipeBuf, 1);
+    interruptNotifier.sendSignal();
 }
 
 struct sigaction mySigAction;
 // sigset_t mySigmask, origSigmask;
+
 static ServerParams params {ServerName, ServerVersion, defaultXSDFile, "/etc/zera/sec1000d/sec1000d.xml"};
 
 cSEC1000dServer::cSEC1000dServer() :
@@ -104,8 +100,7 @@ cSEC1000dServer::~cSEC1000dServer()
     if (m_pRMConnection) delete m_pRMConnection;
 
     close(m_devFileDescriptor); // close dev.
-    close(pipeFD[0]);
-    close(pipeFD[1]);
+    interruptNotifier.close();
 }
 
 
@@ -119,21 +114,14 @@ void cSEC1000dServer::doConfiguration()
         m_nerror = parameterError;
         emit abortInit();
     }
-    else
-    {
-        if ( pipe(pipeFD) == -1 )
-        {
+    else {
+        if (!interruptNotifier.open()) {
             m_nerror = pipeError;
             emit abortInit();
         }
-        else
-        {
-            fcntl( pipeFD[1], F_SETFL, O_NONBLOCK);
-            fcntl( pipeFD[0], F_SETFL, O_NONBLOCK);
-            m_pNotifier = new QSocketNotifier(pipeFD[0], QSocketNotifier::Read, this);
-            connect(m_pNotifier, &QSocketNotifier::activated, this, &cSEC1000dServer::SECIntHandler);
-            if (m_xmlConfigReader.loadSchema(defaultXSDFile))
-            {
+        else {
+            connect(&interruptNotifier, &InterProcessNotifier::sigSignal, this, &cSEC1000dServer::SECIntHandler);
+            if (m_xmlConfigReader.loadSchema(defaultXSDFile)) {
                 // we want to initialize all settings first
                 m_pDebugSettings = new cDebugSettings(&m_xmlConfigReader);
                 connect(&m_xmlConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pDebugSettings,&cDebugSettings::configXMLInfo);
@@ -266,13 +254,8 @@ void cSEC1000dServer::SetFASync()
     fcntl(m_devFileDescriptor, F_SETFL, oflags | FASYNC); // async. benachrichtung (sigio) einschalten
 }
 
-void cSEC1000dServer::SECIntHandler(int)
+void cSEC1000dServer::SECIntHandler()
 { // behandelt den sec interrupt
-
-    char buf[2];
-
-    read(pipeFD[0], buf, 1); // first we read the pipe
-
     int n = m_ECalculatorChannelList.count(); // the number of error calculator entities
     // 8 error calc entities share 1 32 bit data word for interrupts
 
