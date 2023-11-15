@@ -38,96 +38,73 @@ void cZDSP1Client::init(int socket, XiQNetPeer *netclient, cZDSP1Server *server)
 
 QString& cZDSP1Client::SetRavList(QString& s)
 {
-    int i;
-    int localOffset, globaloffset;
-
-    i = localOffset = globaloffset = 0;
-    m_DspVarList.clear(); // liste löschen
-
+    m_DspVarList.clear();
     sOutput = ACKString;
-    if (!s.isEmpty())
-    {
-        cDspClientVar v;
-        for (i=0;;i++)
-        {
-            QString t = s.section(';',i,i); // alle teil strings bearbeiten
-            if (t.isEmpty()) break; // dann sind wir fertig
-            if ( v.Init(t) )
-            {
-                if (v.segment() == localSegment)
-                {
-                    v.SetOffs(localOffset);
-                    localOffset += v.size();
+    if (!s.isEmpty()) {
+        cDspClientVar dspVar;
+        int localOffset = 0;
+        int globaloffset = 0;
+        for (int i=0; ; i++) {
+            QString section = s.section(';', i, i); // alle teil strings bearbeiten
+            if (section.isEmpty())
+                break;
+            if ( dspVar.Init(section) ) {
+                if (dspVar.segment() == localSegment) {
+                    dspVar.SetOffs(localOffset);
+                    localOffset += dspVar.size();
                 }
-                else
-                {
-                    v.SetOffs(globaloffset);
-                    globaloffset += v.size();
+                else {
+                    dspVar.SetOffs(globaloffset);
+                    globaloffset += dspVar.size();
                 }
-
-                m_DspVarList.append(v);
+                m_DspVarList.append(dspVar);
             }
-            else
-            { // fehlerfall
-                m_DspVarList.clear(); // liste löschen
+            else { // fehlerfall
+                m_DspVarList.clear();
                 sOutput = NACKString;
                 break;
             }
         }
     }
-
     m_memorySection.n = m_DspVarList.count();
-
-    if (m_memorySection.n > 0)
-    { // wir haben mindestens 1 variable
+    if (m_memorySection.n > 0) { // wir haben mindestens 1 variable
         m_dspVarArray.resize(m_memorySection.n);
-
-        for (i = 0;i < m_memorySection.n; i++)
-        { // und machen diese dem resolver zugänglich
+        for (int i = 0;i < m_memorySection.n; i++) { // und machen diese dem resolver zugänglich
             m_dspVarArray[i].Name = m_DspVarList[i].name();
             m_dspVarArray[i].size = m_DspVarList[i].size();
             m_dspVarArray[i].offs = m_DspVarList[i].offs();
             m_dspVarArray[i].type = (dType)m_DspVarList[i].type();
             m_dspVarArray[i].segment = (segmentType)m_DspVarList[i].segment();
         }
-
         m_memorySection.DspVar = m_dspVarArray.data();
     }
-
     DspVarResolver.setVarHash(); // wir setzen die hashtabelle neu
-
     return (sOutput);
 }
-
 
 QString& cZDSP1Client::GetRavList()
 {
     sOutput = "";
     QTextStream ts( &sOutput, QIODevice::WriteOnly );
-    if ( !m_DspVarList.empty() )
-    {
+    if ( !m_DspVarList.empty() ) {
         QList<cDspClientVar>::iterator it;
         for ( it = m_DspVarList.begin(); it != m_DspVarList.end(); ++it )
-        {
             ts << (*it).name() << ',' << (*it).size() << ';';
-        }
     }
-    else ts << "Empty";
+    else
+        ts << "Empty";
     return(sOutput);
 }
-
 
 int cZDSP1Client::GetEncryption()
 {
     return(Encryption);
 }
 
-
 void cZDSP1Client::SetEncryption(int i)
 {
-    Encryption=i;
+    Encryption = i;
 }
-
 
 QString& cZDSP1Client::SetCmdListDef(QString& s)
 {
@@ -136,12 +113,10 @@ QString& cZDSP1Client::SetCmdListDef(QString& s)
     return (sOutput);
 }
 
-
 QString& cZDSP1Client::GetCmdListDef()
 {
     return (m_sCmdListDef);
 }
-
 
 QString& cZDSP1Client::SetCmdIntListDef(QString& s)
 {
@@ -150,12 +125,10 @@ QString& cZDSP1Client::SetCmdIntListDef(QString& s)
     return (sOutput);
 }
 
-
 QString& cZDSP1Client::GetCmdIntListDef()
 {
     return (m_sIntCmdListDef);
 }
-
 
 bool cZDSP1Client::syntaxCheck(QString& s)
 {
