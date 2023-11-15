@@ -30,7 +30,6 @@ class ScInGroupResourceAndInterface;
 class HkInGroupResourceAndInterface;
 class cAdjustment;
 class cAtmelWatcher;
-class QSocketNotifier;
 class cClampInterface;
 
 class cMT310S2dServer: public cPCBServer
@@ -88,7 +87,6 @@ private:
     quint8 m_nerror;
     int m_retryRMConnect;
     QTimer m_retryTimer;
-    QSocketNotifier* m_pNotifier;
     QString m_sCtrlDeviceNode;
     QString m_sMessageDeviceNode;
     int CtrlDevOpen();
@@ -99,7 +97,7 @@ private:
     void updateI2cDevicesConnected();
 
 private slots:
-    void MTIntHandler(int);
+    void MTIntHandler();
     void doConfiguration();
     void doWait4Atmel();
     void doSetupServer();

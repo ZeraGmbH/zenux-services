@@ -25,10 +25,10 @@
 #include "scinsettings.h"
 #include "sensesettings.h"
 #include "foutsettings.h"
+#include "interprocessnotifier.h"
 #include <scpisingletonfactory.h>
 #include <xmlconfigreader.h>
 #include <xiqnetserver.h>
-#include <QSocketNotifier>
 #include <QCoreApplication>
 #include <QStateMachine>
 #include <QState>
@@ -42,17 +42,13 @@
 #include <systemd/sd-daemon.h>
 #endif
 
-
 static cMT310S2dServer* MTServer;
-static int pipeFD[2];
-static char pipeFDBuf[2] = "I";
 
+InterProcessNotifier interruptNotifier;
 void SigHandler(int)
 {
-    if (MTServer->m_pDebugSettings->getDebugLevel() & 2) syslog(LOG_INFO,"mt interrupt received\n");
-        write(pipeFD[1], pipeFDBuf, 1);
+    interruptNotifier.sendSignal();
 }
-
 
 static struct sigaction mySigAction;
 // sigset_t mySigmask, origSigmask;
@@ -141,6 +137,7 @@ cMT310S2dServer::~cMT310S2dServer()
     if (m_pAdjHandler) delete m_pAdjHandler;
     if (m_pRMConnection) delete m_pRMConnection;
     if (m_accumulatorInterface) delete m_accumulatorInterface;
+    interruptNotifier.close();
 }
 
 void cMT310S2dServer::doConfiguration()
@@ -153,20 +150,13 @@ void cMT310S2dServer::doConfiguration()
         m_nerror = parameterError;
         emit abortInit();
     }
-    else
-    {
-        if ( pipe(pipeFD) == -1)
-        {
+    else {
+        if (!interruptNotifier.open()) {
             m_nerror = pipeError;
             emit abortInit();
         }
-        else
-        {
-            fcntl( pipeFD[1], F_SETFL, O_NONBLOCK);
-            fcntl( pipeFD[0], F_SETFL, O_NONBLOCK);
-            m_pNotifier = new QSocketNotifier(pipeFD[0], QSocketNotifier::Read, this);
-            connect(m_pNotifier, &QSocketNotifier::activated, this, &cMT310S2dServer::MTIntHandler);
-
+        else {
+            connect(&interruptNotifier, &InterProcessNotifier::sigSignal, this, &cMT310S2dServer::MTIntHandler);
             if (m_xmlConfigReader.loadSchema(defaultXSDFile)) {
                 // we want to initialize all settings first
                 m_pDebugSettings = new cDebugSettings(&m_xmlConfigReader);
@@ -422,14 +412,9 @@ void cMT310S2dServer::updateI2cDevicesConnected()
 }
 
 
-void cMT310S2dServer::MTIntHandler(int)
+void cMT310S2dServer::MTIntHandler()
 {// handles clamp interrupt sent by the controler
-
-    char buf[2];
     quint16 stat = 0;
-
-    read(pipeFD[0], buf, 1); // first we read the pipe
-
     if ( Atmel::getInstance().readCriticalStatus(stat) == ZeraMControllerIo::cmddone ) {
         if ((stat & (1 << clampstatusInterrupt)) > 0) {
             // we must reset clamp status before handling the interrupt
