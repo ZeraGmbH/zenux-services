@@ -36,6 +36,10 @@ enum ServerErrors
     fpgaDeviceError,
     rmConnectionError,
     atmelProgError,
+    dspDeviceError,
+    dspBootFileError,
+    dspBootError,
+    dspSetSamplingError,
     secDeviceError
 };
 
