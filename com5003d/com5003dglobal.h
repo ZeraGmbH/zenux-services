@@ -10,7 +10,6 @@
 #define ServerVersion "V1.00"
 #define MaxClients 30
 #define defaultDebugLevel NoDebug
-#define defaultXSDFile "/etc/zera/com5003d/com5003d.xsd"
 #define atmelFlashfilePath "/opt/zera/bin/atmel-com5003.hex"
 #define atmelResetBit 16
 #define defaultTMaxAtmel 10000

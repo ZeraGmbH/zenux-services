@@ -14,7 +14,7 @@ Requires=dev-i2c\x2d0.device
 After=dev-i2c\x2d0.device
 
 [Service]
-ExecStart=/usr/bin/com5003d /etc/zera/com5003d/com5003d.xml
+ExecStart=/usr/bin/com5003d
 Type=notify
 User=zera-services
 NoNewPrivileges=true
