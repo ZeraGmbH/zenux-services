@@ -20,6 +20,8 @@ int main( int argc, char *argv[] )
     QCoreApplication* app = new QCoreApplication (argc, argv);
     cMT310S2dServer* mt310s2d = new cMT310S2dServer(); // this is our server
 
+    qInfo(ServerName " started");
+
     int r = app->exec();
     if (r == parameterError)
         qCritical("Abort, wrong parameter count\n") ;

@@ -14,6 +14,8 @@ int main( int argc, char *argv[] )
     QCoreApplication* app = new QCoreApplication (argc, argv);
     cZDSP1Server* zdsp1d = new cZDSP1Server(); // this is our server
 
+    qInfo(ServerName " started");
+
     int r =  app->exec();
     if (r == parameterError)
         syslog(LOG_EMERG,"Abort, wrong parameter count\n") ;
