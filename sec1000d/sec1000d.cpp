@@ -36,10 +36,11 @@
 cSEC1000dServer* SECServer;
 
 int pipeFD[2];
+static char pipeFDBuf[2] = "I";
 
 void SigHandler(int)
 {
-    write(pipeFD[1], "I", 1);
+    write(pipeFD[1], pipeFDBuf, 1);
 }
 
 struct sigaction mySigAction;
