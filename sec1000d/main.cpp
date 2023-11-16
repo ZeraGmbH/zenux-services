@@ -20,6 +20,8 @@ int main( int argc, char *argv[] )
     QCoreApplication* app = new QCoreApplication (argc, argv);
     cSEC1000dServer* sec5003d=new cSEC1000dServer(); // this is our server
 
+    qInfo(ServerName " started");
+
     int r = app->exec();
     if (r == parameterError)
         syslog(LOG_EMERG,"Abort, wrong parameter count\n") ;
