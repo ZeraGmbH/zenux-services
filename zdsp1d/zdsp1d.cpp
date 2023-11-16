@@ -67,10 +67,9 @@ static char dspnrunning[12]= "not running";
 cZDSP1Server* DSPServer;
 
 int pipeFD[2];
-static char pipeFDBuf[2] = "I";
-
 void SigHandler(int)
 {
+    const static char pipeFDBuf[2] = "I";
     write(pipeFD[1], pipeFDBuf, 1);
 }
 
