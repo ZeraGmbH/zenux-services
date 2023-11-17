@@ -2,9 +2,8 @@
 #include "mockpcbserver.h"
 #include "mockmt310s2d.h"
 #include "mocksec1000d.h"
+#include "mockcom5003d.h"
 #include "resmanrunfacade.h"
-#include "foutgroupresourceandinterface.h"
-#include "secgroupresourceandinterface.h"
 #include "proxy.h"
 #include "pcbinterface.h"
 #include "secinterface.h"
@@ -81,13 +80,7 @@ void test_servicemock::getFoutCatMt310s2d()
 void test_servicemock::getFoutCatCom5003d()
 {
     ResmanRunFacade resman;
-    MockPcbServer mock("com5003d");
-    FOutSettings foutSettings(mock.getConfigReader());
-    mock.setXmlSettings(XmlSettingsList{&foutSettings});
-    FOutGroupResourceAndInterface foutResource(mock.getSCPIInterface(), &foutSettings);
-    mock.setResources(ResourcesList{&foutResource});
-
-    mock.start();
+    MockCom5003d mockCom5003d;
     feedEventLoop();
 
     Zera::ProxyClientPtr pcbClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307);
