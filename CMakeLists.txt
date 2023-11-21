@@ -33,7 +33,8 @@ if(${useSystemd})
     get_filename_component(SYSTEMD_UNIT_INSTALL_PATH "${CMAKE_INSTALL_PREFIX}/../lib/systemd/system" ABSOLUTE)
 endif()
 
-add_compile_definitions(SERVICE_CONFIG_INSTALL_DIR="${CMAKE_INSTALL_PREFIX}/../")
+set(OE_INSTALL_ROOT "" CACHE STRING "OE build install root - add 'add_definitions' only on test code")
+add_compile_definitions(SERVICE_CONFIG_INSTALL_DIR="${OE_INSTALL_ROOT}/${CMAKE_INSTALL_PREFIX}/../")
 
 macro(SET_SERVICE_ENV SERVICE_NAME)
     set(SERVICE_CONFIG_PATH "${CMAKE_CURRENT_SOURCE_DIR}/${SERVICE_NAME}/configs")
