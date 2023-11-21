@@ -6,9 +6,14 @@ file(GLOB HEADER
     ${CMAKE_CURRENT_SOURCE_DIR}/*.h
     )
 
+file(GLOB RESOURCES
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../*/configs/*.qrc
+    )
+
 add_library(zenuxservicecommon-demolib STATIC
     ${SOURCES}
     ${HEADER}
+    ${RESOURCES}
 )
 
 target_include_directories(zenuxservicecommon-demolib

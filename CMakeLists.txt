@@ -33,9 +33,6 @@ if(${useSystemd})
     get_filename_component(SYSTEMD_UNIT_INSTALL_PATH "${CMAKE_INSTALL_PREFIX}/../lib/systemd/system" ABSOLUTE)
 endif()
 
-set(OE_INSTALL_ROOT "" CACHE STRING "OE build install root - add 'add_definitions' only on test code")
-add_compile_definitions(SERVICE_CONFIG_INSTALL_DIR="${OE_INSTALL_ROOT}/${CMAKE_INSTALL_PREFIX}/../")
-
 macro(SET_SERVICE_ENV SERVICE_NAME)
     set(SERVICE_CONFIG_PATH "${CMAKE_CURRENT_SOURCE_DIR}/${SERVICE_NAME}/configs")
     set(SERVICE_CONFIG_TARGET_DIR "/etc/zera/${SERVICE_NAME}/")
@@ -45,13 +42,6 @@ macro(SET_SERVICE_ENV SERVICE_NAME)
     string(TOUPPER ${SERVICE_NAME} SERVICE_NAME_UPPER)
     add_compile_definitions(CONFIG_SOURCES_${SERVICE_NAME_UPPER}="${SERVICE_CONFIG_PATH}")
     add_compile_definitions(CONFIG_TARGET_DIR_${SERVICE_NAME_UPPER}="${SERVICE_CONFIG_TARGET_DIR}")
-
-    # xml-schema resources are required by modules and tests. If we put resource into
-    # our library both would need some call of Q_INIT_RESOURCE. So publish resource
-    # location and compile in where needed.
-
-    # xsd are (not yet) inresource
-    #set(XML_SCHEMA_RESOURCE_${SERVICE_NAME} ${SERVICE_CONFIG_PATH}/xml-schema.qrc)
 endmacro()
 
 SET_SERVICE_ENV(com5003d)

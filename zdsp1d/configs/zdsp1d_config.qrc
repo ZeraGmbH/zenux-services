@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>zdsp1d.xml</file>
+        <file>zdsp1d.xsd</file>
+    </qresource>
+</RCC>

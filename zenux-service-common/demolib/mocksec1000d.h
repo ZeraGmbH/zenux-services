@@ -8,7 +8,7 @@
 class MockSec1000d : public MockPcbServer
 {
 public:
-    MockSec1000d(QString sysrootDir);
+    MockSec1000d();
 private:
     std::unique_ptr<SecCalculatorSettings> m_secSettings;
     std::unique_ptr<SecInputSettings> m_secInputSettings;

@@ -3,8 +3,8 @@
 #include <QFinalState>
 #include <QDir>
 
-MockPcbServer::MockPcbServer(QString serviceName, QString sysrootDir) :
-    cPCBServer(createParams(serviceName, sysrootDir), ScpiSingletonFactory::getScpiObj())
+MockPcbServer::MockPcbServer(QString serviceName) :
+    cPCBServer(createParams(serviceName), ScpiSingletonFactory::getScpiObj())
 {
     m_pInitializationMachine = new QStateMachine(this);
 
@@ -50,24 +50,25 @@ Zera::XMLConfig::cReader *MockPcbServer::getConfigReader()
     return &m_xmlConfigReader;
 }
 
-ServerParams MockPcbServer::createParams(QString serviceName, QString sysrootDir)
+ServerParams MockPcbServer::createParams(QString serviceName)
 {
-    QString configPath;
+    QString xsdName = ":/" + serviceName + ".xsd";
+    QString xmlName = ":/" + serviceName + ".xml";
     if(serviceName == "com5003d")
-        configPath =  sysrootDir + QStringLiteral(CONFIG_TARGET_DIR_COM5003D);
+        Q_INIT_RESOURCE(com5003d_config);
     else if(serviceName == "mt310s2d")
-        configPath =  sysrootDir + QStringLiteral(CONFIG_TARGET_DIR_MT310S2D);
+        Q_INIT_RESOURCE(mt310s2d_config);
     else if(serviceName == "sec1000d")
-        configPath =  sysrootDir + QStringLiteral(CONFIG_TARGET_DIR_SEC1000D);
+        Q_INIT_RESOURCE(sec1000d_config);
     else if(serviceName == "zdsp1d") // ooh that is far from mockable yet...
-        configPath =  sysrootDir + QStringLiteral(CONFIG_TARGET_DIR_ZDSP1D);
+        Q_INIT_RESOURCE(zdsp1d_config);
     else
         qFatal("Cannot mock service: %s", qPrintable(serviceName));
     ServerParams params {
         QStringLiteral("Mock") + serviceName,
         "V42.0",
-        QDir::cleanPath(configPath + "/" + serviceName + ".xsd"),
-        QDir::cleanPath(configPath + "/" + serviceName + ".xml")
+        xsdName,
+        xmlName
     };
     return params;
 }
