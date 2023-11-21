@@ -11,7 +11,7 @@
 class MockCom5003d : public MockPcbServer
 {
 public:
-    MockCom5003d(QString sysrootDir);
+    MockCom5003d();
 private:
     std::unique_ptr<FOutSettings> m_foutSettings;
     std::unique_ptr<HkInSettings> m_hkInSettings;

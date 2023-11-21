@@ -1,7 +1,7 @@
 #include "mocksec1000d.h"
 
-MockSec1000d::MockSec1000d(QString sysrootDir) :
-    MockPcbServer("sec1000d", sysrootDir)
+MockSec1000d::MockSec1000d() :
+    MockPcbServer("sec1000d")
 {
     m_secSettings = std::make_unique<SecCalculatorSettings>(getConfigReader());
     m_secInputSettings = std::make_unique<SecInputSettings>(getConfigReader());

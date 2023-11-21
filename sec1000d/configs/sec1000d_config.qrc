@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>sec1000d.xml</file>
+        <file>sec1000d.xsd</file>
+    </qresource>
+</RCC>

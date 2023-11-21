@@ -1,7 +1,7 @@
 #include "mockcom5003d.h"
 
-MockCom5003d::MockCom5003d(QString sysrootDir) :
-    MockPcbServer("com5003d", sysrootDir)
+MockCom5003d::MockCom5003d() :
+    MockPcbServer("com5003d")
 {
     m_foutSettings = std::make_unique<FOutSettings>(getConfigReader());
     m_hkInSettings = std::make_unique<HkInSettings>(getConfigReader());

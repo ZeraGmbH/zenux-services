@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>mt310s2d.xml</file>
+        <file>mt310s2d.xsd</file>
+    </qresource>
+</RCC>

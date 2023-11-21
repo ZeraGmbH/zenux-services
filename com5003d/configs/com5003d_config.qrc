@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>com5003d.xml</file>
+        <file>com5003d.xsd</file>
+    </qresource>
+</RCC>
