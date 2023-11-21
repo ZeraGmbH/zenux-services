@@ -1,7 +1,7 @@
 #include "mockmt310s2d.h"
 
-MockMt310s2d::MockMt310s2d() :
-    MockPcbServer("mt310s2d")
+MockMt310s2d::MockMt310s2d(QString sysrootDir) :
+    MockPcbServer("mt310s2d", sysrootDir)
 {
     m_foutSettings = std::make_unique<FOutSettings>(getConfigReader());
     m_hkInSettings = std::make_unique<HkInSettings>(getConfigReader());

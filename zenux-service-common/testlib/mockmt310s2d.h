@@ -11,7 +11,7 @@
 class MockMt310s2d : public MockPcbServer
 {
 public:
-    MockMt310s2d();
+    MockMt310s2d(QString sysrootDir);
 
 private:
     std::unique_ptr<FOutSettings> m_foutSettings;

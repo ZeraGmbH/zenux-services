@@ -17,7 +17,7 @@ QTEST_MAIN(test_servicemock)
 void test_servicemock::runMockMt310s2d()
 {
     ResmanRunFacade resman;
-    MockMt310s2d mockMt310s2d;
+    MockMt310s2d mockMt310s2d(SERVICE_CONFIG_INSTALL_DIR);
     feedEventLoop();
     QVERIFY(mockMt310s2d.areAllResourcesConnected());
 }
@@ -25,7 +25,7 @@ void test_servicemock::runMockMt310s2d()
 void test_servicemock::connectMt310s2d()
 {
     ResmanRunFacade resman;
-    MockMt310s2d mockMt310s2d;
+    MockMt310s2d mockMt310s2d(SERVICE_CONFIG_INSTALL_DIR);
     feedEventLoop();
 
     Zera::ProxyClientPtr pcbClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307);
@@ -41,7 +41,7 @@ void test_servicemock::connectMt310s2d()
 void test_servicemock::connectInvalidIpMt310s2d()
 {
     ResmanRunFacade resman;
-    MockMt310s2d mockMt310s2d;
+    MockMt310s2d mockMt310s2d(SERVICE_CONFIG_INSTALL_DIR);
     feedEventLoop();
 
     Zera::ProxyClientPtr pcbClient = Zera::Proxy::getInstance()->getConnectionSmart("128.0.0.1", 6307);
@@ -57,7 +57,7 @@ void test_servicemock::connectInvalidIpMt310s2d()
 void test_servicemock::getFoutCatMt310s2d()
 {
     ResmanRunFacade resman;
-    MockMt310s2d mockMt310s2d;
+    MockMt310s2d mockMt310s2d(SERVICE_CONFIG_INSTALL_DIR);
     feedEventLoop();
 
     Zera::ProxyClientPtr pcbClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307);
@@ -80,7 +80,7 @@ void test_servicemock::getFoutCatMt310s2d()
 void test_servicemock::getFoutCatCom5003d()
 {
     ResmanRunFacade resman;
-    MockCom5003d mockCom5003d;
+    MockCom5003d mockCom5003d(SERVICE_CONFIG_INSTALL_DIR);
     feedEventLoop();
 
     Zera::ProxyClientPtr pcbClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307);
@@ -103,7 +103,7 @@ void test_servicemock::getFoutCatCom5003d()
 void test_servicemock::getChannelCatSec1000d()
 {
     ResmanRunFacade resman;
-    MockSec1000d mockSec1000d;
+    MockSec1000d mockSec1000d(SERVICE_CONFIG_INSTALL_DIR);
     feedEventLoop();
 
     Zera::ProxyClientPtr secClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6305);

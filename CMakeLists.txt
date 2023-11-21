@@ -33,13 +33,17 @@ if(${useSystemd})
     get_filename_component(SYSTEMD_UNIT_INSTALL_PATH "${CMAKE_INSTALL_PREFIX}/../lib/systemd/system" ABSOLUTE)
 endif()
 
+add_compile_definitions(SERVICE_CONFIG_INSTALL_DIR="${CMAKE_INSTALL_PREFIX}/../")
+
 macro(SET_SERVICE_ENV SERVICE_NAME)
     set(SERVICE_CONFIG_PATH "${CMAKE_CURRENT_SOURCE_DIR}/${SERVICE_NAME}/configs")
+    set(SERVICE_CONFIG_TARGET_DIR "/etc/zera/${SERVICE_NAME}/")
 
     # Pass source paths to configs for tests. This is module-global to allow e.g
     # scpimodule running tests with other modules
     string(TOUPPER ${SERVICE_NAME} SERVICE_NAME_UPPER)
     add_compile_definitions(CONFIG_SOURCES_${SERVICE_NAME_UPPER}="${SERVICE_CONFIG_PATH}")
+    add_compile_definitions(CONFIG_TARGET_DIR_${SERVICE_NAME_UPPER}="${SERVICE_CONFIG_TARGET_DIR}")
 
     # xml-schema resources are required by modules and tests. If we put resource into
     # our library both would need some call of Q_INIT_RESOURCE. So publish resource
