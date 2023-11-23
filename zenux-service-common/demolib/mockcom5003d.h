@@ -2,6 +2,7 @@
 #define MOCKCOM5003D_H
 
 #include "mockpcbserver.h"
+#include "fingroupresourceandinterface.h"
 #include "foutgroupresourceandinterface.h"
 #include "hkingroupresourceandinterface.h"
 #include "scingroupresourceandinterface.h"
@@ -13,10 +14,12 @@ class MockCom5003d : public MockPcbServer
 public:
     MockCom5003d();
 private:
+    std::unique_ptr<FInSettings> m_finSettings;
     std::unique_ptr<FOutSettings> m_foutSettings;
     std::unique_ptr<HkInSettings> m_hkInSettings;
     std::unique_ptr<ScInSettings> m_scInSettings;
     std::unique_ptr<SamplingSettings> m_samplingSettings;
+    std::unique_ptr<FInGroupResourceAndInterface> m_finResource;
     std::unique_ptr<FOutGroupResourceAndInterface> m_foutResource;
     std::unique_ptr<HkInGroupResourceAndInterface> m_hkInResource;
     std::unique_ptr<ScInGroupResourceAndInterface> m_scInResource;
