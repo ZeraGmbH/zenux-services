@@ -1,7 +1,7 @@
 #ifndef DSPVARRESOLVER_H
 #define DSPVARRESOLVER_H
 
-#include "parse-zdsp.h"
+#include "dspvarparser.h"
 #include <QString>
 #include <QHash>
 
@@ -39,7 +39,7 @@ public:
 
 private:
     QHash<QString, TDspVar*> m_varHash;
-    cParseZdsp VarParser;
+    DspVarParser VarParser;
     void initMemsection(TMemSection* psec); // zum initialisieren einer memory section
     void setQHash(TMemSection* psec); // zum setzen der qhash
     QList<TMemSection*> MemSectionList;

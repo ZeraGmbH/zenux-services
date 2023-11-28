@@ -1,6 +1,6 @@
-#include "parse-zdsp.h"
+#include "dspvarparser.h"
 
-const QString cParseZdsp::GetKeyword(QChar **s)
+const QString DspVarParser::GetKeyword(QChar **s)
 {
     QString ls = "";
     QChar tc=GetChar(s);
@@ -18,7 +18,7 @@ const QString cParseZdsp::GetKeyword(QChar **s)
     return(ls); // schlüsselwort ohne delimiter
 }
 
-QChar cParseZdsp::GetChar(QChar** s)
+QChar DspVarParser::GetChar(QChar** s)
 {
     QChar tc=0;
     if (!(**s).isNull())
@@ -33,7 +33,7 @@ QChar cParseZdsp::GetChar(QChar** s)
     return(tc); // return = 0 oder zeichen != whitespace
 }
 
-const QString cParseZdsp::SetDelimiter(const QString s)
+const QString DspVarParser::SetDelimiter(const QString s)
 {
     QString r = delimiter; 
     delimiter = s;
@@ -41,7 +41,7 @@ const QString cParseZdsp::SetDelimiter(const QString s)
     return(r); // gib alten delimiter zurück (man weiss ja nie)
 }
 
-const QString cParseZdsp::SetWhiteSpace(const QString s)
+const QString DspVarParser::SetWhiteSpace(const QString s)
 {
     QString r = whitespace;
     whitespace = s;

@@ -142,7 +142,7 @@ bool cZDSP1Client::syntaxCheck(QString& s)
 
 cDspCmd cZDSP1Client::GenDspCmd(QString& scmd, bool* ok, ulong umo, ulong globalstartadr)
 {
-    cParseZdsp CmdParser;
+    DspVarParser CmdParser;
     CmdParser.SetDelimiter("(,)"); // setze die trennzeichen für den parser
     CmdParser.SetWhiteSpace(" (,)");
     if(!syntaxCheck(scmd)) {

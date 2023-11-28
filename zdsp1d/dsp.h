@@ -1,7 +1,7 @@
 #ifndef DSP_H
 #define DSP_H
 
-#include "parse-zdsp.h"
+#include "dspvarparser.h"
 #include <QHash>
 
 // enum zum lesen von dsp port adressen über ioctl
