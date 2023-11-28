@@ -6,7 +6,7 @@
 #include "zhserver.h"
 #include "zdsp1d.h"
 #include "dsp.h"
-#include "parse-zdsp.h"
+#include "dspvarparser.h"
 #include "pcbserver.h"
 #include <QDebug>
 #include <QCoreApplication>
@@ -163,7 +163,7 @@ void cZDSP1Server::doConfiguration()
 
 void cZDSP1Server::doSetupServer()
 {
-    cParseZdsp* parser = new(cParseZdsp); // das ist der parser
+    DspVarParser* parser = new(DspVarParser); // das ist der parser
     pCmdInterpreter=new cCmdInterpreter(this,InitCmdTree(), parser); // das ist der kommando interpreter
     m_sDspDeviceVersion = m_sDspSerialNumber = "Unknown"; // kennen wir erst mal nicht
     m_sDspBootPath = m_pDspSettings->getBootFile();

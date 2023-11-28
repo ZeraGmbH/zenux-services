@@ -3,9 +3,10 @@
 
 #include <QString>
 
-class cParseZdsp { // sucht nach zusammenhängenden wörtern mit frei wählbaren delimitern und whitespaces
+class DspVarParser
+{ // sucht nach zusammenhängenden wörtern mit frei wählbaren delimitern und whitespaces
 public:
-    cParseZdsp() {delimiter = " :?;"; whitespace = " ";} // setzt default delimiter, whitespace
+    DspVarParser() {delimiter = " :?;"; whitespace = " ";} // setzt default delimiter, whitespace
     const QString GetKeyword(QChar**); // liesst nächstes schlüsselwort aus string
     QChar GetChar(QChar **); // liesst das nächste zeichen aus string
     const QString SetDelimiter(const QString s);

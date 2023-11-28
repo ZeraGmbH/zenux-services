@@ -2,13 +2,13 @@
 #define SCPICALLBACKMOCK_H
 
 #include "dsp1scpi.h"
-#include "parse-zdsp.h"
+#include "dspvarparser.h"
 #include <QList>
 
 class ScpiCallbackMock : public cbIFace
 {
 public:
-    ScpiCallbackMock(cParseZdsp* parser);
+    ScpiCallbackMock(DspVarParser* parser);
     QString SCPICmd(SCPICmdType cmdEnum, QChar* scpi) override;
     QString SCPIQuery(SCPICmdType cmdEnum) override;
 
@@ -19,7 +19,7 @@ public:
     };
     QList<TCommand> m_commandsReceived;
     QList<SCPICmdType> m_queriesReceived;
-    cParseZdsp* m_parser;
+    DspVarParser* m_parser;
 };
 
 #endif // SCPICALLBACKMOCK_H
