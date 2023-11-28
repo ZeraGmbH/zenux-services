@@ -44,14 +44,14 @@
 #define ADSP_INT_DISABLE _IOR(ADSP_IOC_MAGIC,5,char*)
 #define IO_READ _IOR(ADSP_IOC_MAGIC,6,char*)
 
-extern sMemSection dm32DspWorkspace;
-extern sMemSection dm32DialogWorkSpace;
-extern sMemSection dm32UserWorkSpace;
-extern sMemSection dm32CmdList;
-extern sMemSection symbConsts1;
+extern TMemSection dm32DspWorkspace;
+extern TMemSection dm32DialogWorkSpace;
+extern TMemSection dm32UserWorkSpace;
+extern TMemSection dm32CmdList;
+extern TMemSection symbConsts1;
 
-extern sDspVar CmdListVar;
-extern sDspVar UserWorkSpaceVar;
+extern TDspVar CmdListVar;
+extern TDspVar UserWorkSpaceVar;
 
 extern cNode* InitCmdTree();
 
@@ -264,7 +264,7 @@ void cZDSP1Server::doIdentAndRegister()
     m_pRMConnection->SendCommand(cmd = QString("RESOURCE:ADD"), par = QString("DSP;DSP1;;ADSP Signal Processor;%1;")
                                  .arg(port));
 
-    sDspVar* pDspVar = &CmdListVar;
+    TDspVar* pDspVar = &CmdListVar;
     m_pRMConnection->SendCommand(cmd = QString("RESOURCE:ADD"), par = QString("DSP1;PGRMEMI;%1;DSP ProgramMemory(Interrupt);%2;")
                                  .arg(pDspVar->size)
                                  .arg(port));
@@ -368,7 +368,7 @@ QString cZDSP1Server::mTestDsp(QChar* s)
                 }
                 cZDSP1Client* cl = GetClient(ActSock);
                 QString sadr  = "UWSPACE";
-                ulong adr = cl->DspVarResolver.adr(sadr) ;
+                ulong adr = cl->m_dspVarResolver.adr(sadr) ;
                 for (i=0; i< nr; i++) {
                     if (DspDevSeek(adr) < 0) {
                         Answer = QString("Test write/read dsp data, dev seek fault");
@@ -1058,14 +1058,14 @@ bool cZDSP1Server::LoadDSProgram()
 
     cZDSP1Client dummyClient(0, 0, this); // dummyClient einrichten zum laden der kette
 
-    ulong offset = dummyClient.DspVarResolver.adr(s) ;
+    ulong offset = dummyClient.m_dspVarResolver.adr(s) ;
     if (DspDevSeek(offset) < 0 )  // startadr im treiber setzen
         return false;
 
     if (DspDevWrite(CmdMem.data(), CmdMem.size()) < 0)
         return false;
 
-    offset = dummyClient.DspVarResolver.adr(s2) ;
+    offset = dummyClient.m_dspVarResolver.adr(s2) ;
     if (DspDevSeek(offset) < 0 )  // startsadr im treiber setzen
         return false;
 
@@ -1186,7 +1186,7 @@ bool cZDSP1Server::setDspType()
             dm32UserWorkSpace.StartAdr = dm32UserWorkSpaceBase21362;
             dm32CmdList.StartAdr = dm32CmdListBase21362;
 
-            sDspVar* pDspVar = &CmdListVar;
+            TDspVar* pDspVar = &CmdListVar;
 
             pDspVar->size = IntCmdListLen21362; pDspVar++;
             pDspVar->size = CmdListLen21362; pDspVar++;

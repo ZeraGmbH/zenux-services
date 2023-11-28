@@ -44,55 +44,11 @@ struct sDspCmd { // wird zum ausdekodieren der dsp kommandos benötigt
 };
     
 sDspCmd* findDspCmd(QString&);
-enum dType { eInt, eFloat, eUnknown};
-
-enum sectionType { systemSection, userSection};
-enum segmentType { localSegment, globalSegment};
-
-struct sDspVar { // dient ebenfalls der dekodierung 
-    QString Name; // name der variablen
-    ushort size;  // anzahl worte
-    dType type; // 
-    ulong adr; // die abs. adresse auf welcher sich die variable befindet
-    ulong offs; // der offset innerhalb der memory section
-    segmentType segment; // segment info, nur relevant für client sections
-};
-
-
-struct sMemSection { // beschreibt eine dsp memory section
-    sectionType Section;
-    long StartAdr;
-    int n; // anzahl der sdspvar elemente
-    sDspVar *DspVar;
-};
-
-
-class cDspVarResolver { // der löst die Variablen anhand der memsections und namen auf 
-public:
-    cDspVarResolver();
-    void setVarHash();
-    void addSection(sMemSection*); // sections werden im konstruktor erstmal fest eingebunden
-    long offs(QString&, ulong, ulong); // gibt die offs. adresse einer variablen zurück, -1 wenn es die variable nicht gibt, zum generiren der dsp kommandos
-    long adr(QString&); // gibt die abs. adresse einer variablen im dsp zurück, -1 wenn es die variable nicht gibt, zum schreiben in den dsp
-    sDspVar* vadr(QString&); //  gibt einen zeiger auf sDspVar zurück, zum lesen von daten aus dem dsp
-    int type(QString &s);
-
-private:
-    QHash<QString, sDspVar*> mVarHash;
-    cParseZdsp VarParser;
-//    sDspVar *SearchedVar; // zeiger auf die gesuchte variable;
-//    long offs(QString&, sMemSection**, int *);
-    void initMemsection(sMemSection* psec); // zum initialisieren einer memory section
-    void setQHash(sMemSection* psec); // zum setzen der qhash
-//    sMemSection *sec;
-    QList<sMemSection*> MemSectionList;
-};
-
 
 class cDspClientVar { // zur verwaltung der dsp variablen auf client/server ebene
 public:
     cDspClientVar();
-    bool Init(QString&); // legt eine variable an 
+    bool Init(QString&); // legt eine variable an
     QString& name();
     void SetOffs(long);
     int size();
@@ -100,14 +56,13 @@ public:
     ulong offs();
     int segment();
 
-private:    
+private:
     QString m_sName; // eine dsp variable hat einen namen
     int m_nOffsAdr; // hat eine rel. start adresse
     int m_nSize; // und eine anzahl von elementen
     int m_nType; // der typ der variablen (efloat oder eint)
     int m_nSegment; //
 };
-
 
 class cDspCmd { // hält einen 64bit dsp befehl incl. parameter 
 public:
