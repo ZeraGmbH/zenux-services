@@ -2,6 +2,7 @@ set(SOURCES
     cmdinterpret.cpp
     cmds.cpp
     dsp.cpp
+    dspvarclientperspective.cpp
     dspvarparser.cpp
     dspvarresolver.cpp
     scpi-zdsp.cpp
@@ -14,6 +15,7 @@ set(HEADER
     cmdinterpret.h
     dsp.h
     dsp1scpi.h
+    dspvarclientperspective.h
     dspvarparser.h
     dspvarresolver.h
     scpi-zdsp.h
