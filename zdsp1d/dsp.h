@@ -45,25 +45,6 @@ struct sDspCmd { // wird zum ausdekodieren der dsp kommandos benötigt
     
 sDspCmd* findDspCmd(QString&);
 
-class cDspClientVar { // zur verwaltung der dsp variablen auf client/server ebene
-public:
-    cDspClientVar();
-    bool Init(QString&); // legt eine variable an
-    QString& name();
-    void SetOffs(long);
-    int size();
-    int type();
-    ulong offs();
-    int segment();
-
-private:
-    QString m_sName; // eine dsp variable hat einen namen
-    int m_nOffsAdr; // hat eine rel. start adresse
-    int m_nSize; // und eine anzahl von elementen
-    int m_nType; // der typ der variablen (efloat oder eint)
-    int m_nSegment; //
-};
-
 class cDspCmd { // hält einen 64bit dsp befehl incl. parameter 
 public:
     cDspCmd(){w[0]=0;w[1]=0;}; 

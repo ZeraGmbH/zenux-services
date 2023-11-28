@@ -3,6 +3,7 @@
 
 #include "dsp.h"
 #include "dspvarresolver.h"
+#include "dspvarclientperspective.h"
 #include <xiqnetpeer.h>
 
 class cZDSP1Server;
@@ -55,7 +56,7 @@ private:
     QString m_sCmdListDef; // kommando liste defintion
     QString m_sIntCmdListDef; // interrupt kommando  liste defintion
 
-    QList<cDspClientVar> m_DspVarList; // liste mit variablen beschreibungen
+    QList<DspVarClientPerspective> m_DspVarList; // liste mit variablen beschreibungen
     QList<cDspCmd> m_DspCmdList; // liste mit dsp kommandos (periodisch)
     QList<cDspCmd>  m_DspIntCmdList; // liste mit dsp kommandos (interrupt)
     QVector<TDspVar> m_dspVarArray; // array von TDspVar

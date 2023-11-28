@@ -41,7 +41,7 @@ QString& cZDSP1Client::SetRavList(QString& s)
     m_DspVarList.clear();
     sOutput = ACKString;
     if (!s.isEmpty()) {
-        cDspClientVar getDspVar;
+        DspVarClientPerspective getDspVar;
         int localOffset = 0;
         int globaloffset = 0;
         for (int i=0; ; i++) {
@@ -87,7 +87,7 @@ QString& cZDSP1Client::GetRavList()
     sOutput = "";
     QTextStream ts( &sOutput, QIODevice::WriteOnly );
     if ( !m_DspVarList.empty() ) {
-        QList<cDspClientVar>::iterator it;
+        QList<DspVarClientPerspective>::iterator it;
         for ( it = m_DspVarList.begin(); it != m_DspVarList.end(); ++it )
             ts << (*it).name() << ',' << (*it).size() << ';';
     }
@@ -350,7 +350,7 @@ QString& cZDSP1Client::readActValues(QString& s)
     { // sonderfall liste leer -> alle messwerte lesen
         for (int i = 0; i < m_DspVarList.count(); i++)
         {
-            cDspClientVar Var = m_DspVarList.at(i);
+            DspVarClientPerspective Var = m_DspVarList.at(i);
             par += QString("%1,%2;").arg(Var.name()).arg(Var.size());
         }
     }
