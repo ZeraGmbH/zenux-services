@@ -16,6 +16,7 @@ set(HEADER
     dsp.h
     dsp1scpi.h
     dspvarclientperspective.h
+    dspvardefinitions.h
     dspvarparser.h
     dspvarresolver.h
     scpi-zdsp.h
