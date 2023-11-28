@@ -1,5 +1,5 @@
 #include "dspvarclientperspective.h"
-#include "dspvarresolver.h"
+#include "dspvardefinitions.h"
 
 DspVarClientPerspective::DspVarClientPerspective() :
     m_nSize(0)

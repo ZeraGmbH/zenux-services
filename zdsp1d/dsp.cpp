@@ -1,6 +1,5 @@
 #include "dsp.h"
-#include "dspvarresolver.h"
-#include "zdspclient.h"
+#include "dspvardefinitions.h"
 
 // alle angaben aus dsp assembler programm 
 /*--------------------------- user basics -----------------------------------*/ 
