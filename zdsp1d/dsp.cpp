@@ -1,4 +1,6 @@
-// implementation dsp kommando klasse
+#include "dsp.h"
+#include "dspvarresolver.h"
+#include "zdspclient.h"
 
 // alle angaben aus dsp assembler programm 
 /*--------------------------- user basics -----------------------------------*/ 
@@ -130,7 +132,6 @@
 /* #define DspCmd_SetPort(_Adr1,_Dat) {(43<<16),_Adr1<<16+_Dat} */ 
 /* schreibt über ParallelPort die Daten _Dat auf Adresse _Adr */ 
 
-#include "dsp.h"
 
 static sDspCmd DspCmd[78] =
 
@@ -232,7 +233,7 @@ sDspCmd* findDspCmd(QString& s)
 }
 
 
-sDspVar DspWorkspaceVar[15] =
+TDspVar DspWorkspaceVar[15] =
 { {"FREQENCY",1,eFloat,0,0, localSegment},            // 1 wert gemessene frequenz
 {"FREQUENCYVALUE",4,eFloat,0,0, localSegment},        // 4 werte f. freq. ausgänge
 {"MAXIMUMSAMPLE",32,eFloat,0,0, localSegment},        // 32 werte maximumspeicher
@@ -251,14 +252,14 @@ sDspVar DspWorkspaceVar[15] =
 
 
 
-sMemSection dm32DspWorkspace = {
+TMemSection dm32DspWorkspace = {
     Section: systemSection,
     StartAdr		: dm32DspWorkSpaceBase21262,
 	n 		: 15,
 	DspVar		: DspWorkspaceVar };
 	
 
-sDspVar DialogWorkSpaceVar[21] =
+TDspVar DialogWorkSpaceVar[21] =
 {{"DSPCMDPAR",10,eInt,0,0, localSegment},		    // 10 werte cmds, paramter ... ctrl -> dsp
 {"DSPACK",1,eInt,0,0, localSegment},			    // semaphore ackn. dsp -> cntr.
 {"CTRLCMDPAR",20,eInt,0,0, localSegment},		    // 20 werte cmds, paramter ... dsp -> ctrl
@@ -282,39 +283,39 @@ sDspVar DialogWorkSpaceVar[21] =
 {"SUBDC",1,eInt,0,0, localSegment}};                // 32 bit 1/kanal wenn gesetzt -> subdc wenn copydata, copydiff
 
 
-sMemSection dm32DialogWorkSpace = {
+TMemSection dm32DialogWorkSpace = {
     Section: systemSection,
     StartAdr		: dm32DialogWorkSpaceBase21262,
     n		: 21,
 	DspVar		: DialogWorkSpaceVar };
 
 
-sDspVar UserWorkSpaceVar[1] =
+TDspVar UserWorkSpaceVar[1] =
 {{"UWSPACE",uwSpaceSize21262,eFloat,0,0, localSegment}};
 
 
-sMemSection dm32UserWorkSpace = {
+TMemSection dm32UserWorkSpace = {
     Section: systemSection,
     StartAdr		: dm32UserWorkSpaceBase21262,
 	n 		: 1,
     DspVar		: UserWorkSpaceVar };
 
 
-sDspVar CmdListVar[4] =
+TDspVar CmdListVar[4] =
 {{"INTCMDLIST",IntCmdListLen21262,eInt,0,0, localSegment},      // interrupt kommando
 {"CMDLIST",CmdListLen21262,eInt,0,0, localSegment},             // cycl. kommando liste
 {"ALTINTCMDLIST",IntCmdListLen21262,eInt,0,0, localSegment},    //alternative kommando listen
 {"ALTCMDLIST",CmdListLen21262,eInt,0,0, localSegment}};
 
 
-sMemSection dm32CmdList = {
+TMemSection dm32CmdList = {
     Section: systemSection,
     StartAdr		: dm32CmdListBase21262,
 	n 		: 4,
 	DspVar		: CmdListVar };
 
 
-sDspVar ChannelNr[32] =
+TDspVar ChannelNr[32] =
 {{"CH0",1,eInt,0,0,localSegment}, {"CH1",1,eInt,0,0,localSegment},
  {"CH2",1,eInt,0,0,localSegment}, {"CH3",1,eInt,0,0,localSegment},
  {"CH4",1,eInt,0,0,localSegment}, {"CH5",1,eInt,0,0,localSegment},
@@ -333,7 +334,7 @@ sDspVar ChannelNr[32] =
  {"CH30",1,eInt,0,0,localSegment}, {"CH31",1,eInt,0,0,localSegment}};
 
 
-sMemSection symbConsts1 = {
+TMemSection symbConsts1 = {
     Section: systemSection,
     StartAdr		: 0,
     n 		: 32,
@@ -419,169 +420,6 @@ void cDspClientVar::SetOffs(long o)
 {
     m_nOffsAdr = o;
 }
-
-
-cDspVarResolver::cDspVarResolver()
-{
-    mVarHash.clear();
-    VarParser.SetDelimiter("(,+,-,)"); // setze die trennzeichen für den parser
-    VarParser.SetWhiteSpace(" (,)");
-}
-
-
-void cDspVarResolver::setVarHash()
-{
-    mVarHash.clear();
-    for (int i = 0; i < MemSectionList.count(); i++)
-    {
-        initMemsection(MemSectionList.at(i));
-        setQHash(MemSectionList.at(i));
-    }
-}
-
-
-void cDspVarResolver::addSection(sMemSection* sec)
-{
-    MemSectionList.append(sec);
-}
-
-
-void cDspVarResolver::initMemsection(sMemSection *psec)
-{
-    if (psec->Section == systemSection) // wir initialisieren nur system sections
-    {
-        long offs = 0;
-        for (int i = 0; i< (psec->n); i++)
-        {
-            psec->DspVar[i].offs = offs;
-            psec->DspVar[i].adr = psec->StartAdr + offs;
-            offs += psec->DspVar[i].size;
-        }
-    }
-
-}
-
-
-void cDspVarResolver::setQHash(sMemSection* psec) // zum setzen der qhash
-{
-    for (int i = 0; i< (psec->n); i++)
-        mVarHash[psec->DspVar[i].Name] = &(psec->DspVar[i]);
-}
-
-
-long cDspVarResolver::offs(QString& s, ulong umo, ulong globalstartadr)
-{
-    long offset;
-    bool ok;
-    QString ts = s.toUpper();
-    QChar* cts = ts.data();
-    QString sSearch=VarParser.GetKeyword(&cts); // der namen der variable, die gesucht ist
-    if (mVarHash.contains(sSearch))
-    {
-        ulong retoffs;
-        sDspVar* pDspVar = mVarHash.value(sSearch);
-        retoffs = pDspVar->offs;
-
-        ts = ts.remove(' ');
-        ts = ts.remove(sSearch); // name raus
-        if (ts.length() > 0)
-        { // wenn noch was da, dann muss das ein +/- offset sein
-            offset = ts.toLong(&ok,10); // prüfen auf dez. konstante
-            if (ok)
-                retoffs += offset;
-            else
-            {
-                offset = ts.toLong(&ok,16); // mal hex versuchen
-                if (ok)
-                    retoffs += offset;
-                else
-                    return -1; // sonst ist das ein fehler
-            }
-        }
-
-        if (pDspVar->segment == globalSegment) // wenn daten im globalen segment liegen
-            retoffs += (globalstartadr - umo);
-
-        return retoffs;
-    }
-
-    offset = s.toLong(&ok,10); // prüfen auf dez. konstante
-    if (ok)
-        return offset;
-
-    offset = s.toLong(&ok,16); // mal hex versuchen
-    if (ok)
-        return offset;
-
-    return -1;
-}
-
-
-long cDspVarResolver::adr(QString& s)
-{
-    long offset, adress;
-    bool ok;
-    QString ts = s.toUpper();
-    QChar* cts = ts.data();
-    QString sSearch=VarParser.GetKeyword(&cts); // der namen der variable, die gesucht ist
-    if (mVarHash.contains(sSearch))
-    {
-        sDspVar* pDspVar = mVarHash.value(sSearch);
-        ts = ts.remove(' ');
-        ts = ts.remove(sSearch); // name raus
-        if (ts.length() > 0)
-        { // wenn noch was da, dann muss das ein +/- offset sein
-            offset = ts.toLong(&ok,10); // prüfen auf dez. konstante
-            if (ok)
-                return pDspVar->adr + offset;
-
-            offset = ts.toLong(&ok,16); // mal hex versuchen
-            if (ok)
-                return pDspVar->adr +offset;
-
-            return -1; // sonst ist das ein fehler
-        }
-
-        return pDspVar->adr;
-    }
-
-    adress = s.toLong(&ok,10); // prüfen auf dez. konstante
-    if (ok)
-        return adress;
-
-    adress = s.toLong(&ok,16); // mal hex versuchen
-    if (ok)
-        return adress;
-
-    return -1;
-}
-
-
-sDspVar* cDspVarResolver::vadr(QString& s)
-{
-    QString ts = s.toUpper();
-    QChar* cts = ts.data();
-    QString sSearch=VarParser.GetKeyword(&cts);
-
-    if (mVarHash.contains(sSearch))
-        return mVarHash.value(sSearch);
-    else
-        return 0;
-}
-
-
-int cDspVarResolver::type(QString &s)
-{
-    QString ts = s.toUpper();
-    QChar* cts = ts.data();
-    QString sSearch=VarParser.GetKeyword(&cts);
-
-    if (mVarHash.contains(sSearch))
-        return mVarHash.value(sSearch)->type;
-    else
-        return eUnknown;
-}
-
 
 cDspCmd::cDspCmd(const unsigned short CMD) // nur befehl 16bit
 {

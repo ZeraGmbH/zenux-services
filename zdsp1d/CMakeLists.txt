@@ -2,6 +2,7 @@ set(SOURCES
     cmdinterpret.cpp
     cmds.cpp
     dsp.cpp
+    dspvarresolver.cpp
     parse-zdsp.cpp
     scpi-zdsp.cpp
     zdsp1d.cpp
@@ -9,11 +10,11 @@ set(SOURCES
     zhserver.cpp
     )
 
-
 set(HEADER
     cmdinterpret.h
     dsp.h
     dsp1scpi.h
+    dspvarresolver.h
     parse-zdsp.h
     scpi-zdsp.h
     zdsp1d.h
