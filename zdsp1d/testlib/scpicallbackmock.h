@@ -1,7 +1,7 @@
 #ifndef SCPICALLBACKMOCK_H
 #define SCPICALLBACKMOCK_H
 
-#include "dsp1scpi.h"
+#include "scpicmds.h"
 #include "dspvarparser.h"
 #include <QList>
 

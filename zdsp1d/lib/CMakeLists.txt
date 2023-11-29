@@ -16,8 +16,8 @@ set(HEADER
     dsp-memory-management/dspvarparser.h
     dsp-memory-management/dspvarresolver.h
     dsp.h
-    dsp1scpi.h
     scpicmdinterpreter.h
+    scpicmds.h
     scpi-zdsp.h
     zdspserver.h
     zeraglobal.h

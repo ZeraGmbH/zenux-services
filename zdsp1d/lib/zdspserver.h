@@ -2,7 +2,7 @@
 #define ZDSP1D_H
 
 #include "scpicmdinterpreter.h"
-#include "dsp1scpi.h"
+#include "scpicmds.h"
 #include "rmconnection.h"
 #include "debugsettings.h"
 #include "ethsettings.h"
