@@ -153,7 +153,7 @@ void ZDspServer::doConfiguration()
             }
         }
         else {
-            m_nerror = xsdfileError;
+            qCritical("Abort, xsd file error\n");
             emit abortInit();
         }
     }
