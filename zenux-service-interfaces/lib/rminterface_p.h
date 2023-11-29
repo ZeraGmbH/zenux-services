@@ -32,14 +32,14 @@ public:
     cRMInterfacePrivate(cRMInterface* iface);
     void setClient(Zera::ProxyClient *client);
     void setClientSmart(Zera::ProxyClientPtr client);
-    virtual quint32 rmIdent(QString name);
-    virtual quint32 addResource(QString type, QString name, int n, QString description, quint16 port);
-    virtual quint32 removeResource(QString type, QString name);
-    virtual quint32 getResourceTypes();
-    virtual quint32 getResources(QString type);
-    virtual quint32 getResourceInfo(QString type, QString name);
-    virtual quint32 setResource(QString type, QString name, int n);
-    virtual quint32 freeResource(QString type, QString name);
+    quint32 rmIdent(QString name);
+    quint32 addResource(QString type, QString name, int n, QString description, quint16 port);
+    quint32 removeResource(QString type, QString name);
+    quint32 getResourceTypes();
+    quint32 getResources(QString type);
+    quint32 getResourceInfo(QString type, QString name);
+    quint32 setResource(QString type, QString name, int n);
+    quint32 freeResource(QString type, QString name);
 
 protected slots:
     void receiveAnswer(std::shared_ptr<ProtobufMessage::NetMessage> message) override;
