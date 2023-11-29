@@ -3,6 +3,7 @@
 #include "mockmt310s2d.h"
 #include "mocksec1000d.h"
 #include "mockcom5003d.h"
+#include "mockzdsp1d.h"
 #include "resmanrunfacade.h"
 #include "proxy.h"
 #include "pcbinterface.h"
@@ -121,6 +122,22 @@ void test_servicemock::getChannelCatSec1000d()
     QCOMPARE(responseSpy[0][0], QVariant(msgNr));
     QCOMPARE(responseSpy[0][1], QVariant(ack));
     QCOMPARE(responseSpy[0][2], QVariant("ec0;ec1;ec2;ec3;ec4;ec5;ec6;ec7;"));
+}
+
+void test_servicemock::runMockZdsp1d()
+{
+    ResmanRunFacade resman;
+    MockZdsp1d mockZdsp1d;
+    feedEventLoop();
+
+    Zera::ProxyClientPtr pcbClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6310);
+    Zera::cPCBInterface pcbIFace;
+    pcbIFace.setClientSmart(pcbClient);
+
+    QSignalSpy connectSpy(pcbClient.get(), &Zera::ProxyClient::connected);
+    Zera::Proxy::getInstance()->startConnectionSmart(pcbClient);
+    feedEventLoop();
+    QCOMPARE(connectSpy.count(), 1);
 }
 
 void test_servicemock::feedEventLoop()

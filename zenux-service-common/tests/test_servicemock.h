@@ -14,6 +14,7 @@ private slots:
     void getFoutCatMt310s2d();
     void getFoutCatCom5003d();
     void getChannelCatSec1000d();
+    void runMockZdsp1d();
 private:
     void feedEventLoop();
 };
