@@ -23,8 +23,6 @@ int main( int argc, char *argv[] )
     qInfo(ServerName " started");
 
     int r = app->exec();
-    if (r == parameterError)
-        qCritical("Abort, wrong parameter count\n") ;
     if (r == pipeError)
         qCritical( "Abort, could not open pipe\n");
     if (r == xsdfileError)
