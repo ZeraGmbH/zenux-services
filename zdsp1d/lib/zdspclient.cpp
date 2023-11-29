@@ -1,5 +1,5 @@
 #include "zdspclient.h"
-#include "zdsp1d.h"
+#include "zdspserver.h"
 #include "zeraglobal.h"
 #include <QDataStream>
 
@@ -9,12 +9,12 @@ extern TMemSection dm32UserWorkSpace;
 extern TMemSection dm32CmdList;
 extern TMemSection symbConsts1;
 
-cZDSP1Client::cZDSP1Client(int socket, XiQNetPeer* netclient, cZDSP1Server* server)
+cZDSP1Client::cZDSP1Client(int socket, XiQNetPeer* netclient, ZDspServer* server)
 {
     init(socket, netclient, server);
 }
 
-void cZDSP1Client::init(int socket, XiQNetPeer *netclient, cZDSP1Server *server)
+void cZDSP1Client::init(int socket, XiQNetPeer *netclient, ZDspServer *server)
 {
     m_socket = socket;
     m_pNetClient = netclient;

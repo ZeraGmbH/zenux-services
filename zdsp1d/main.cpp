@@ -1,4 +1,4 @@
-#include "zdsp1d.h"
+#include "zdspserver.h"
 #include "zdspglobal.h"
 #include "pcbserver.h"
 #include <iostream>
@@ -12,7 +12,7 @@ int main( int argc, char *argv[] )
     openlog(ServerName, LOG_PID, LOG_DAEMON); // verbindung zum syslogd aufnehmen
 
     QCoreApplication* app = new QCoreApplication (argc, argv);
-    cZDSP1Server* zdsp1d = new cZDSP1Server(); // this is our server
+    ZDspServer* zdsp1d = new ZDspServer(); // this is our server
 
     qInfo(ServerName " started");
 

@@ -6,7 +6,7 @@ set(SOURCES
     dsp.cpp
     scpicmds.cpp
     scpi-zdsp.cpp
-    zdsp1d.cpp
+    zdspserver.cpp
     zdspclient.cpp
     zhserver.cpp
     )
@@ -20,7 +20,7 @@ set(HEADER
     dsp.h
     dsp1scpi.h
     scpi-zdsp.h
-    zdsp1d.h
+    zdspserver.h
     zdspglobal.h
     zeraglobal.h
     zdspclient.h
