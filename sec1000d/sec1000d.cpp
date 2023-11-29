@@ -146,9 +146,8 @@ void cSEC1000dServer::doConfiguration()
 void cSEC1000dServer::doSetupServer()
 {
     m_sSECDeviceNode = m_pFPGASettings->getDeviceNode(); // we try to open the sec device
-    if (SECDevOpen() < 0)
-    {
-        m_nerror = secDeviceError; // and finish if not possible
+    if (SECDevOpen() < 0) {
+        qCritical("Abort, could not poen device node %s", qPrintable(m_sSECDeviceNode));
         emit abortInit();
     }
     else

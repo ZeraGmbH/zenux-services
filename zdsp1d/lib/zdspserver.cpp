@@ -182,7 +182,7 @@ void ZDspServer::doSetupServer()
     }
     m_sDspDeviceNode = m_pDspSettings->getDeviceNode(); // we try to open the dsp device
     if (DspDevOpen() < 0) {
-        m_nerror = dspDeviceError; // and finish if not possible
+        qCritical("Abort: Could not dsp device node '%s", qPrintable(m_sDspDeviceNode));
         emit abortInit();
     }
     else {
@@ -208,12 +208,12 @@ void ZDspServer::doSetupServer()
                         emit sigServerIsSetUp(); // so we enter state machine's next state
                     }
                     else {
-                        m_nerror = dspSetSamplingError;
+                        qCritical("Abort, dsp device set sampling system error");
                         emit abortInit();
                     }
                 }
                 else {
-                    m_nerror = dspBootError;
+                    qCritical("Abort, dsp device boot error");
                     emit abortInit();
                 }
             }
@@ -226,7 +226,7 @@ void ZDspServer::doSetupServer()
             }
         }
         else {
-            m_nerror = dspBootFileError;
+            qCritical("Abort, dsp device and bootfile mismatch");
             emit abortInit();
         }
     }

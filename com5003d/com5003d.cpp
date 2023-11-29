@@ -192,16 +192,13 @@ void cCOM5003dServer::programAtmelFlash()
         devNode = m_pFPGASettings->getDeviceNode();
         syslog(LOG_INFO,"Starting programming atmel flash\n");
 
-        if ( (fd = open(devNode.toLatin1().data(),O_RDWR)) < 0 )
-        {
+        if ( (fd = open(devNode.toLatin1().data(),O_RDWR)) < 0 ) {
             syslog(LOG_ERR,"error opening fpga device: %s\n",devNode.toLatin1().data());
             emit abortInit();
         }
-        else
-        {
+        else {
             quint32 pcbTestReg;
-            if ( lseek(fd,0xffc,0) < 0 )
-            {
+            if ( lseek(fd,0xffc,0) < 0 ) {
                 syslog(LOG_ERR,"error positioning fpga device: %s\n", devNode.toLatin1().data());
                 syslog(LOG_ERR,"Programming atmel failed\n");
                 close(fd);

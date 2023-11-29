@@ -26,16 +26,9 @@ struct ServerParams
 enum ServerErrors
 {
     noError,
-    atmelError,
-    ctrlDeviceError,
-    fpgaDeviceError,
     rmConnectionError,
+    atmelError,
     atmelProgError,
-    dspDeviceError,
-    dspBootFileError,
-    dspBootError,
-    dspSetSamplingError,
-    secDeviceError
 };
 
 class cPCBServer: public ScpiConnection

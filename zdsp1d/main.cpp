@@ -14,14 +14,6 @@ int main( int argc, char *argv[] )
     qInfo(ServerName " started");
 
     int r =  app->exec();
-    if (r == dspDeviceError)
-        qCritical("Abort, dsp device not found") ;
-    if (r == dspBootError)
-        qCritical("Abort, dsp device boot error") ;
-    if (r == dspBootFileError)
-        qCritical("Abort, dsp device and bootfile mismatch") ;
-    if (r == dspSetSamplingError)
-        qCritical("Abort, dsp device set sampling system error") ;
     if (r == rmConnectionError)
         qCritical("Abort, resourcemanager connection error") ;
 
