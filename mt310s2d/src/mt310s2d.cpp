@@ -214,13 +214,12 @@ void cMT310S2dServer::doSetupServer()
 
     if (CtrlDevOpen() < 0)
     {
-        m_nerror = ctrlDeviceError; // and finish if not possible
+        qCritical("Abort: Could not open control device '%s'", qPrintable(m_sCtrlDeviceNode));
         emit abortInit();
     }
     else
-        if (MessageDevOpen() < 0)
-        {
-            m_nerror = fpgaDeviceError;
+        if (MessageDevOpen() < 0) {
+            qCritical("Abort: Could not open message device '%s'", qPrintable(m_sMessageDeviceNode));
             emit abortInit();
         }
         else
