@@ -28,6 +28,7 @@ class cSEC1000dServer: public cPCBServer
 public:
     explicit cSEC1000dServer();
     ~cSEC1000dServer();
+    QString getServerVersion();
 
     cDebugSettings* m_pDebugSettings;
     FPGASettings* m_pFPGASettings;

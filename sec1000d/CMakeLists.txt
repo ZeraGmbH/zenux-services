@@ -7,7 +7,6 @@ set(SOURCES
 
 set(HEADER
     sec1000d.h
-    sec1000dglobal.h
     statusinterface.h
     systeminterface.h
     systeminfo.h
