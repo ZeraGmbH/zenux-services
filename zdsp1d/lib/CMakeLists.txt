@@ -3,8 +3,8 @@ set(SOURCES
     dsp-memory-management/dspvarparser.cpp
     dsp-memory-management/dspvarresolver.cpp
     cmdinterpret.cpp
-    cmds.cpp
     dsp.cpp
+    scpicmds.cpp
     scpi-zdsp.cpp
     zdsp1d.cpp
     zdspclient.cpp
