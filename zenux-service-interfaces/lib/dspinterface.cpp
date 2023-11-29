@@ -20,6 +20,12 @@ void cDSPInterface::setClient(Zera::ProxyClient *client)
     return d->setClient(client);
 }
 
+void cDSPInterface::setClientSmart(ProxyClientPtr client)
+{
+    Q_D(cDSPInterface);
+    return d->setClientSmart(client);
+}
+
 
 quint32 cDSPInterface::bootDsp()
 {

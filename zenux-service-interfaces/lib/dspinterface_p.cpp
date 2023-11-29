@@ -19,6 +19,12 @@ void cDSPInterfacePrivate::setClient(Zera::ProxyClient *client)
     connect(m_pClient, &Zera::ProxyClient::tcpError, this, &cDSPInterfacePrivate::receiveError);
 }
 
+void cDSPInterfacePrivate::setClientSmart(ProxyClientPtr client)
+{
+    m_clientSmart = client;
+    setClient(client.get());
+}
+
 /////////////////////////////////////////////////////////////////////////////////////////
 // Hint: to find server SCPI implementation, search for last node name in 'long' comments
 /////////////////////////////////////////////////////////////////////////////////////////

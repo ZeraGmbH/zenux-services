@@ -50,6 +50,7 @@ class cDSPInterfacePrivate: public cInterfacePrivate
 public:
     cDSPInterfacePrivate(cDSPInterface* iface);
     void setClient(Zera::ProxyClient *client);
+    void setClientSmart(Zera::ProxyClientPtr client);
     quint32 setSamplingSystem(int chncount, int samp_per, int samp_mper); // nmuber of channels, samples/signalperiod, samples/measperiod
     quint32 varList2Dsp(); // send the var-list to dsp server
     quint32 cmdList2Dsp(); // send cyclic command list to the dsp server
@@ -94,6 +95,7 @@ protected slots:
 private:
     Q_DECLARE_PUBLIC(cDSPInterface)
     cDSPInterface *q_ptr;
+    Zera::ProxyClientPtr m_clientSmart;
 
     QStringList CycCmdList, IntCmdList;
     QList<cDspMeasData*> m_DspMemoryDataList; // eine liste mit zeigern auf dsp speicher
