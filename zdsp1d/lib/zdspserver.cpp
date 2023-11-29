@@ -26,7 +26,6 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <iostream>
-#include <syslog.h>
 #include <signal.h>
 #include <fcntl.h>
 #include <unistd.h>
