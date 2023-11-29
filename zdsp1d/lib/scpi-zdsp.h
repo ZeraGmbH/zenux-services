@@ -7,7 +7,7 @@
 #include <qstring.h>
 #include <qstringlist.h>
 
-#include "dsp1scpi.h"
+#include "scpicmds.h"
 #include "scpicmdinterpreter.h"
 
 class cSCPIString: public QString {

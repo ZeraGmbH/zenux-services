@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <qstring.h>
 #include "zeraglobal.h"
-#include "dsp1scpi.h"
+#include "scpicmds.h"
 #include "scpi-zdsp.h"
 #include "scpicmdinterpreter.h"
 

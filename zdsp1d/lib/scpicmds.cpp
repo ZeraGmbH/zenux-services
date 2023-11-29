@@ -4,7 +4,7 @@
 // bearbeitenden kommando interpreter definiert
 
 #include "scpi-zdsp.h" // für scpi knoten
-#include "dsp1scpi.h" // scpi erweiterung
+#include "scpicmds.h" // scpi erweiterung
 
 // die vollständige scpi kommando liste
 
