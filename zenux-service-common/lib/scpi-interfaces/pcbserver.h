@@ -27,7 +27,6 @@ enum ServerErrors
 {
     noError,
     forkError,
-    parameterError,
     pipeError,
     xsdfileError,
     xmlfileError,
