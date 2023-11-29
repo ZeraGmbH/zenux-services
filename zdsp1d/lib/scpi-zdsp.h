@@ -1,8 +1,8 @@
 // header datei für scpi parser
 // start 20.12.06 Peter Lohmer
 
-#ifndef SCPI_H
-#define SCPI_H
+#ifndef SCPIZDSP_H
+#define SCPIZDSP_H
 
 #include <qstring.h>
 #include <qstringlist.h>

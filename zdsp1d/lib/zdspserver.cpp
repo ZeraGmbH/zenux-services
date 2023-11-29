@@ -3,10 +3,10 @@
 #include "zdspclient.h"
 #include "zeraglobal.h"
 #include "zdspglobal.h"
-#include "zhserver.h"
 #include "zdspserver.h"
 #include "dsp.h"
 #include "dspvarparser.h"
+#include "scpi-zdsp.h"
 #include "pcbserver.h"
 #include <QDebug>
 #include <QCoreApplication>
@@ -164,7 +164,7 @@ void ZDspServer::doConfiguration()
 void ZDspServer::doSetupServer()
 {
     DspVarParser* parser = new(DspVarParser); // das ist der parser
-    pCmdInterpreter=new cCmdInterpreter(this,InitCmdTree(), parser); // das ist der kommando interpreter
+    m_cmdInterpreter = new cCmdInterpreter(this, InitCmdTree(), parser); // das ist der kommando interpreter
     m_sDspDeviceVersion = m_sDspSerialNumber = "Unknown"; // kennen wir erst mal nicht
     m_sDspBootPath = m_pDspSettings->getBootFile();
     DSPServer = this;
@@ -255,7 +255,7 @@ void ZDspServer::connect2RMError()
 
 void ZDspServer::doIdentAndRegister()
 {
-    m_pRMConnection->SendIdent(sServerName);
+    m_pRMConnection->SendIdent(ServerName);
 
     quint32 port = m_pETHSettings->getPort(EthSettings::protobufserver);
 
@@ -316,13 +316,13 @@ int ZDspServer::DspDevRead(char* buf, int len)
 
 QString ZDspServer::mTestDsp(QChar* s)
 {
-    QString par = pCmdInterpreter->m_pParser->GetKeyword(&s); // holt den parameter aus dem kommando
+    QString par = m_cmdInterpreter->m_pParser->GetKeyword(&s); // holt den parameter aus dem kommando
     bool ok;
     int tmode = par.toInt(&ok);
     int nr = 0;
     bool tstart = false;
     if ((ok) && ( (tmode>=0) && (tmode<2) )) {
-        par = pCmdInterpreter->m_pParser->GetKeyword(&s);
+        par = m_cmdInterpreter->m_pParser->GetKeyword(&s);
         nr=par.toInt(&ok);
         if ((ok) && ( (nr>=0) && (nr<1000) ))
             tstart = true;
@@ -366,7 +366,7 @@ QString ZDspServer::mTestDsp(QChar* s)
                     ba[i] = byte;
                     byte = (byte +1) % 256;
                 }
-                cZDSP1Client* cl = GetClient(ActSock);
+                cZDSP1Client* cl = GetClient(m_actualSocket);
                 QString sadr  = "UWSPACE";
                 ulong adr = cl->m_dspVarResolver.adr(sadr) ;
                 for (i=0; i< nr; i++) {
@@ -516,11 +516,11 @@ QString ZDspServer::mSetSamplingSystem(QChar *s)
 QString ZDspServer::mSetCommEncryption(QChar *s)
 {
     bool ok;
-    QString par = pCmdInterpreter->m_pParser->GetKeyword(&s); // holt den parameter aus dem kommando
+    QString par = m_cmdInterpreter->m_pParser->GetKeyword(&s); // holt den parameter aus dem kommando
     int enc=par.toInt(&ok);
     if ((ok) && ( (enc==0) || (enc==1) ))
     {
-        cZDSP1Client* cl = GetClient(ActSock);
+        cZDSP1Client* cl = GetClient(m_actualSocket);
         cl->SetEncryption(enc);
         Answer = ACKString; // acknowledge
     }
@@ -537,7 +537,7 @@ QString ZDspServer::mGetSamplingSystem()
         Answer = ERREXECString;
         int n, ss, sm;
 
-        cZDSP1Client* cl = GetClient(ActSock);
+        cZDSP1Client* cl = GetClient(m_actualSocket);
 
         QString s;
         if (! cl->DspVar(s = "NCHANNELS",n)) break;
@@ -552,7 +552,7 @@ QString ZDspServer::mGetSamplingSystem()
 
 QString ZDspServer::mGetCommEncryption()
 {
-    cZDSP1Client* cl = GetClient(ActSock);
+    cZDSP1Client* cl = GetClient(m_actualSocket);
     Answer = QString::number(cl->GetEncryption());
 
     return Answer;
@@ -578,7 +578,7 @@ QString ZDspServer::mSetEN61850SourceAdr(QChar* s)
     {
         Answer = ERREXECString; // vorbesetzen
         QString as;
-        cZDSP1Client* cl = GetClient(ActSock);
+        cZDSP1Client* cl = GetClient(m_actualSocket);
         if (!cl->DspVarRead(as = "ETHDESTSOURCEADRESS,3", &ba)) break;
         else
         {
@@ -611,7 +611,7 @@ QString ZDspServer::mSetEN61850DestAdr(QChar *s)
     else
         do {
             Answer = ERREXECString; // vorbesetzen
-            cZDSP1Client* cl = GetClient(ActSock);
+            cZDSP1Client* cl = GetClient(m_actualSocket);
             QString as;
             QByteArray ba;
             if (!cl->DspVarRead(as = "ETHDESTSOURCEADRESS,3", &ba))
@@ -631,7 +631,7 @@ QString ZDspServer::mSetEN61850DestAdr(QChar *s)
 QString ZDspServer::mSetEN61850EthTypeAppId(QChar *s)
 {
     QString ss;
-    cZDSP1Client* cl = GetClient(ActSock);
+    cZDSP1Client* cl = GetClient(m_actualSocket);
     if (! cl->DspVarWrite(ss = QString("ETHTYPEAPPID,%1;").arg(QString(s))) )
         Answer = ERREXECString;
     else
@@ -643,7 +643,7 @@ QString ZDspServer::mGetEN61850EthTypeAppId()
 {
     QByteArray ba;
     QString as;
-    cZDSP1Client* cl = GetClient(ActSock);
+    cZDSP1Client* cl = GetClient(m_actualSocket);
     if (cl->DspVarRead(as = "ETHTYPEAPPID,1", &ba)) {
         ulong *dataCount = (ulong*) ba.data(); // data zeigt auf 1*4 byte
         Answer = "";
@@ -658,7 +658,7 @@ QString ZDspServer::mGetEN61850EthTypeAppId()
 QString ZDspServer::mSetEN61850PriorityTagged(QChar *s)
 {
     QString ss;
-    cZDSP1Client* cl = GetClient(ActSock);
+    cZDSP1Client* cl = GetClient(m_actualSocket);
     if (! cl->DspVarWrite(ss = QString("ETHPRIORITYTAGGED,%1;").arg(QString(s))) )
         Answer = ERREXECString;
     else
@@ -670,7 +670,7 @@ QString ZDspServer::mGetEN61850PriorityTagged()
 {
     QByteArray ba;
     QString as;
-    cZDSP1Client* cl = GetClient(ActSock);
+    cZDSP1Client* cl = GetClient(m_actualSocket);
     if (cl->DspVarRead(as = "ETHPRIORITYTAGGED,1", &ba)) {
         ulong *dataCount = (ulong*) ba.data(); // data zeigt auf 1*4 byte
         Answer = "";
@@ -686,7 +686,7 @@ QString ZDspServer::mGetEN61850PriorityTagged()
 QString ZDspServer::mSetEN61850EthSync(QChar *s)
 {
     QString ss;
-    cZDSP1Client* cl = GetClient(ActSock);
+    cZDSP1Client* cl = GetClient(m_actualSocket);
     if (! cl->DspVarWrite(ss = QString("SYNCASDU,%1;").arg(QString(s))) )
         Answer = ERREXECString;
     else
@@ -698,7 +698,7 @@ QString ZDspServer::mGetEN61850EthSync()
 {
     QByteArray ba;
     QString as;
-    cZDSP1Client* cl = GetClient(ActSock);
+    cZDSP1Client* cl = GetClient(m_actualSocket);
     if (cl->DspVarRead(as = "SYNCASDU,1", &ba)) {
         ulong *dataCount = (ulong*) ba.data(); // data zeigt auf 1*4 byte
         Answer = "";
@@ -713,7 +713,7 @@ QString ZDspServer::mGetEN61850EthSync()
 QString ZDspServer::mSetEN61850DataCount(QChar *s)
 {
     QString ss;
-    cZDSP1Client* cl = GetClient(ActSock);
+    cZDSP1Client* cl = GetClient(m_actualSocket);
     if (! cl->DspVarWrite(ss = QString("ETHDATACOUNT,%1;").arg(QString(s))) )
         Answer = ERREXECString;
     else
@@ -726,7 +726,7 @@ QString ZDspServer::mGetEN61850DataCount()
 {
     QByteArray ba;
     QString as;
-    cZDSP1Client* cl = GetClient(ActSock);
+    cZDSP1Client* cl = GetClient(m_actualSocket);
     if (cl->DspVarRead(as = "ETHDATACOUNT,2", &ba)) {
         ulong *dataCount = (ulong*) ba.data(); // data zeigt auf 2*4 byte
         Answer = "";
@@ -741,7 +741,7 @@ QString ZDspServer::mGetEN61850DataCount()
 QString ZDspServer::mSetEN61850SyncLostCount(QChar *s)
 {
     QString ss;
-    cZDSP1Client* cl = GetClient(ActSock);
+    cZDSP1Client* cl = GetClient(m_actualSocket);
     if (! cl->DspVarWrite(ss = QString("ETHSYNCLOSTCOUNT,%1;").arg(QString(s))) )
         Answer = ERREXECString;
     else
@@ -754,7 +754,7 @@ QString ZDspServer::mGetEN61850SyncLostCount()
 {
     QByteArray ba;
     QString as;
-    cZDSP1Client* cl = GetClient(ActSock);
+    cZDSP1Client* cl = GetClient(m_actualSocket);
     if (cl->DspVarRead(as = "ETHSYNCLOSTCOUNT,1", &ba))
     {
         ulong *dataCount = (ulong*) ba.data(); // data zeigt auf 1*4 byte
@@ -771,7 +771,7 @@ QString ZDspServer::mGetEN61850SourceAdr()
 {
     QByteArray ba;
     QString as;
-    cZDSP1Client* cl = GetClient(ActSock);
+    cZDSP1Client* cl = GetClient(m_actualSocket);
     if (cl->DspVarRead(as = "ETHDESTSOURCEADRESS,3", &ba)) {
         ulong* AdrByte = (ulong*) ba.data(); // data zeigt auf 3*4 byte
         ushort adr[6];  // dest, source address  sind je 6 byte
@@ -790,7 +790,7 @@ QString ZDspServer::mGetEN61850SourceAdr()
 
 QString ZDspServer::mGetEN61850DestAdr()
 {
-    cZDSP1Client* cl = GetClient(ActSock);
+    cZDSP1Client* cl = GetClient(m_actualSocket);
     QByteArray ba;
     QString as;
     if (cl->DspVarRead(as = "ETHDESTSOURCEADRESS,3", &ba)) {
@@ -813,7 +813,7 @@ QString ZDspServer::mSetDspCommandStat(QChar *s)
 {
     Answer = ERREXECString;
     QString ss;
-    cZDSP1Client* cl = GetClient(ActSock);
+    cZDSP1Client* cl = GetClient(m_actualSocket);
     if (! cl->DspVarWrite(ss = QString("DSPACK,%1;").arg(QString(s))) )
         Answer = ERREXECString;
     else
@@ -824,7 +824,7 @@ QString ZDspServer::mSetDspCommandStat(QChar *s)
 QString ZDspServer::mGetDspCommandStat()
 {
     int stat;
-    cZDSP1Client* cl = GetClient(ActSock);
+    cZDSP1Client* cl = GetClient(m_actualSocket);
     QString s;
     if (! cl->DspVar(s = "DSPACK",stat))
         Answer = ERREXECString;
@@ -837,7 +837,7 @@ QString ZDspServer::mTriggerIntListHKSK(QChar *s)
 {
     QString ss(s);
     ulong par = ss.toULong();
-    par = (par & 0xFFFF )| (ActSock << 16);
+    par = (par & 0xFFFF )| (m_actualSocket << 16);
     return mCommand2Dsp(ss = QString("DSPCMDPAR,4,%1;").arg(par)); // liste mit prozessNr u. HKSK
 }
 
@@ -862,7 +862,7 @@ QString ZDspServer::mGetDeviceVersion()
         Answer = ERREXECString; // fehler bei der ausführung
         return Answer.toLatin1().data();
     }
-    cZDSP1Client* cl = GetClient(ActSock);
+    cZDSP1Client* cl = GetClient(m_actualSocket);
     QString p = "VNR,1;";
     p = cl->DspVarListRead(p);  // ab "VNR"  1 wort lesen
     p = p.section(':',1,1);
@@ -874,7 +874,7 @@ QString ZDspServer::mGetDeviceVersion()
 
 QString ZDspServer::mGetServerVersion()
 {
-    return sSoftwareVersion;
+    return QString("%1 %2").arg(ServerName, ServerVersion);;
 }
 
 QString ZDspServer::mGetDspStatus()
@@ -897,7 +897,7 @@ QString ZDspServer::mGetDeviceStatus()
 
 QString ZDspServer::mGetDeviceLoadAct()
 {
-    cZDSP1Client* cl = GetClient(ActSock);
+    cZDSP1Client* cl = GetClient(m_actualSocket);
     QString p = "BUSY,1;";
     Answer = cl->DspVarListRead(p);  // ab "BUSY"  1 wort lesen
     return Answer;
@@ -905,7 +905,7 @@ QString ZDspServer::mGetDeviceLoadAct()
 
 QString ZDspServer::mGetDeviceLoadMax()
 {
-    cZDSP1Client* cl = GetClient(ActSock);
+    cZDSP1Client* cl = GetClient(m_actualSocket);
     QString p = "BUSYMAX,1;";
     Answer = cl->DspVarListRead(p);  // ab "BUSYMAX"  1 wort lesen
     return Answer;
@@ -913,7 +913,7 @@ QString ZDspServer::mGetDeviceLoadMax()
 
 QString ZDspServer::mResetDeviceLoadMax()
 {
-    cZDSP1Client* cl = GetClient(ActSock);
+    cZDSP1Client* cl = GetClient(m_actualSocket);
     QString p = "BUSYMAX,0.0";
     Answer = cl->DspVarWriteRM(p);
     return Answer;
@@ -1081,7 +1081,7 @@ bool ZDspServer::LoadDSProgram()
 QString ZDspServer::mUnloadCmdList(QChar *)
 {
     QString error;
-    cZDSP1Client* cl = GetClient(ActSock);
+    cZDSP1Client* cl = GetClient(m_actualSocket);
     cl->SetActive(false);
     BuildDSProgram(error); // wir bauen neu
     if (!LoadDSProgram()) // und laden
@@ -1094,7 +1094,7 @@ QString ZDspServer::mUnloadCmdList(QChar *)
 QString ZDspServer::mLoadCmdList(QChar *)
 {
     static int count = 0;
-    cZDSP1Client* cl = GetClient(ActSock);
+    cZDSP1Client* cl = GetClient(m_actualSocket);
     QString errs;
     cl->SetActive(true);
     if (BuildDSProgram(errs)) { // die cmdlisten und die variablen waren schlüssig
@@ -1117,14 +1117,14 @@ QString ZDspServer::mLoadCmdList(QChar *)
 QString ZDspServer::setRawActualValueList(QChar *s)
 {
     QString qs(s);
-    cZDSP1Client* cl = GetClient(ActSock);
+    cZDSP1Client* cl = GetClient(m_actualSocket);
     Answer  = cl->setRawActualValueList(qs);
     return Answer;
 }
 
 QString ZDspServer::getRawActualValueList()
 {
-    cZDSP1Client* cl = GetClient(ActSock);
+    cZDSP1Client* cl = GetClient(m_actualSocket);
     Answer = cl->getRawActualValueList();
     return Answer;
 }
@@ -1132,14 +1132,14 @@ QString ZDspServer::getRawActualValueList()
 QString ZDspServer::mSetCmdIntList(QChar *s)
 {
     QString par(s);
-    cZDSP1Client* cl = GetClient(ActSock);
+    cZDSP1Client* cl = GetClient(m_actualSocket);
     Answer = cl->SetCmdIntListDef(par);
     return Answer;
 }
 
 QString ZDspServer::mGetCmdIntList()
 {
-    cZDSP1Client* cl = GetClient(ActSock);
+    cZDSP1Client* cl = GetClient(m_actualSocket);
     Answer = cl->GetCmdIntListDef();
     return Answer;
 }
@@ -1147,14 +1147,14 @@ QString ZDspServer::mGetCmdIntList()
 QString ZDspServer::mSetCmdList(QChar *s)
 {
     QString par(s);
-    cZDSP1Client* cl = GetClient(ActSock);
+    cZDSP1Client* cl = GetClient(m_actualSocket);
     Answer = cl->SetCmdListDef(par);
     return Answer;
 }
 
 QString ZDspServer::mGetCmdList()
 {
-    cZDSP1Client* cl = GetClient(ActSock);
+    cZDSP1Client* cl = GetClient(m_actualSocket);
     Answer = cl->GetCmdListDef();
     return Answer;
 }
@@ -1163,7 +1163,7 @@ QString ZDspServer::mGetCmdList()
 QString ZDspServer::mMeasure(QChar *s)
 {
     QString par(s); // holt den parameter aus dem kommando
-    cZDSP1Client* cl = GetClient(ActSock);
+    cZDSP1Client* cl = GetClient(m_actualSocket);
     Answer = cl->readActValues(par);
     return Answer;
 }
@@ -1239,7 +1239,7 @@ bool ZDspServer::Test4DspRunning()
 QString ZDspServer::mDspMemoryRead(QChar* s)
 {
     QString par(s);
-    cZDSP1Client* cl = GetClient(ActSock);
+    cZDSP1Client* cl = GetClient(m_actualSocket);
     Answer = cl->DspVarListRead(par);
     return Answer;
 }
@@ -1247,7 +1247,7 @@ QString ZDspServer::mDspMemoryRead(QChar* s)
 QString ZDspServer::mDspMemoryWrite(QChar* s)
 {
     QString par(s);
-    cZDSP1Client* cl = GetClient(ActSock);
+    cZDSP1Client* cl = GetClient(m_actualSocket);
     Answer = cl->DspVarWriteRM(par);
     return Answer;
 }
@@ -1310,9 +1310,9 @@ void ZDspServer::onExecuteCommandProto(std::shared_ptr<google::protobuf::Message
                 m_clientIDHash[zdspclient] = clientId; // we need this list in case of interrupts
             }
 
-            ActSock = m_zdspdClientHash[clientId]->getSocket(); // we set the actual socket (identifier) we have to work on
+            m_actualSocket = m_zdspdClientHash[clientId]->getSocket(); // we set the actual socket (identifier) we have to work on
             QString input = QString::fromStdString(scpiCmd.command()) +  " " + QString::fromStdString(scpiCmd.parameter());
-            QString output = pCmdInterpreter->CmdExecute(input);
+            QString output = m_cmdInterpreter->CmdExecute(input);
 
             ProtobufMessage::NetMessage protobufAnswer;
             ProtobufMessage::NetMessage::NetReply *Answer = protobufAnswer.mutable_reply();
@@ -1346,10 +1346,10 @@ void ZDspServer::onExecuteCommandProto(std::shared_ptr<google::protobuf::Message
             client->sendMessage(protobufAnswer);
         }
         else {
-            ActSock = GetClient(client)->getSocket();
+            m_actualSocket = GetClient(client)->getSocket();
 
             QString input =  QString::fromStdString(protobufCommand->scpi().command());
-            QString output = pCmdInterpreter->CmdExecute(input);
+            QString output = m_cmdInterpreter->CmdExecute(input);
 
             QByteArray block;
             QDataStream out(&block, QIODevice::WriteOnly);
@@ -1380,7 +1380,7 @@ void ZDspServer::SCPIInput()
         m_sInput += m_pSCPISocket->readLine();
     m_sInput.remove('\r'); // we remove cr lf
     m_sInput.remove('\n');
-    QString m_sOutput = pCmdInterpreter->CmdExecute(m_sInput) + "\n";
+    QString m_sOutput = m_cmdInterpreter->CmdExecute(m_sInput) + "\n";
     QByteArray ba = m_sOutput.toLatin1();
     m_pSCPISocket->write(ba);
 }
