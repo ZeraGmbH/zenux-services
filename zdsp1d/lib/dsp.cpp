@@ -250,6 +250,13 @@ TDspVar DspWorkspaceVar[15] =
 {"TMCH0",1,eFloat,0,0, localSegment}};                // periodendauer messsignal kanal0
 
 
+static constexpr int dm32DspWorkSpaceBase21262 = 0x82800;
+static constexpr int dm32DialogWorkSpaceBase21262 = 0x83800;
+static constexpr int dm32UserWorkSpaceBase21262 = 0x84800;
+static constexpr int dm32CmdListBase21262 = 0x84000;
+static constexpr int CmdListLen21262 = 896;
+static constexpr int IntCmdListLen21262 = 128;
+static constexpr int uwSpaceSize21262 = 14335;
 
 TMemSection dm32DspWorkspace = {
     Section: systemSection,
