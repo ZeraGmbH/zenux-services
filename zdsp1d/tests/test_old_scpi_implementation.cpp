@@ -1,6 +1,6 @@
 #include "test_old_scpi_implementation.h"
 #include "scpi-zdsp.h"
-#include "cmdinterpret.h"
+#include "scpicmdinterpreter.h"
 #include "scpicallbackmock.h"
 #include <QTest>
 
@@ -12,7 +12,7 @@ void test_old_scpi_implementation::query()
 {
     DspVarParser parser;
     ScpiCallbackMock scpiMock(&parser);
-    cCmdInterpreter cmdInterpreter(&scpiMock, InitCmdTree(), &parser);
+    ScpiCmdInterpreter cmdInterpreter(&scpiMock, InitCmdTree(), &parser);
     QString scpi("SYSTEM:VERSION:DEVICE?");
     cmdInterpreter.CmdExecute(scpi);
 
@@ -24,7 +24,7 @@ void test_old_scpi_implementation::cmd()
 {
     DspVarParser parser;
     ScpiCallbackMock scpiMock(&parser);
-    cCmdInterpreter cmdInterpreter(&scpiMock, InitCmdTree(), &parser);
+    ScpiCmdInterpreter cmdInterpreter(&scpiMock, InitCmdTree(), &parser);
     QString scpi("SYSTEM:DSP:SAMPLING A,B,C;");
     cmdInterpreter.CmdExecute(scpi);
 
