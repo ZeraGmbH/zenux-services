@@ -1,4 +1,5 @@
 #include "test_servicemock.h"
+#include "dspinterface.h"
 #include "mockpcbserver.h"
 #include "mockmt310s2d.h"
 #include "mocksec1000d.h"
@@ -8,6 +9,7 @@
 #include "proxy.h"
 #include "pcbinterface.h"
 #include "secinterface.h"
+#include "dspinterface.h"
 #include "reply.h"
 #include <QAbstractEventDispatcher>
 #include <QSignalSpy>
@@ -130,12 +132,12 @@ void test_servicemock::runMockZdsp1d()
     MockZdsp1d mockZdsp1d;
     feedEventLoop();
 
-    Zera::ProxyClientPtr pcbClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6310);
-    Zera::cPCBInterface pcbIFace;
-    pcbIFace.setClientSmart(pcbClient);
+    Zera::ProxyClientPtr dspClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6310);
+    Zera::cDSPInterface dspIFace;
+    dspIFace.setClientSmart(dspClient);
 
-    QSignalSpy connectSpy(pcbClient.get(), &Zera::ProxyClient::connected);
-    Zera::Proxy::getInstance()->startConnectionSmart(pcbClient);
+    QSignalSpy connectSpy(dspClient.get(), &Zera::ProxyClient::connected);
+    Zera::Proxy::getInstance()->startConnectionSmart(dspClient);
     feedEventLoop();
     QCOMPARE(connectSpy.count(), 1);
 }
