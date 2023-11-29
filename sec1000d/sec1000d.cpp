@@ -15,7 +15,6 @@
 #include <xiqnetserver.h>
 #include <xmlconfigreader.h>
 
-#include "sec1000dglobal.h"
 #include "sec1000d.h"
 #include "debugsettings.h"
 #include "ethsettings.h"
@@ -28,10 +27,12 @@
 #include "secgroupresourceandinterface.h"
 #include "rmconnection.h"
 #include <scpisingletonfactory.h>
-
 #ifdef SYSTEMD_NOTIFICATION
 #include <systemd/sd-daemon.h>
 #endif
+
+#define ServerName "sec1000d"
+#define ServerVersion "V1.00"
 
 cSEC1000dServer* SECServer;
 
@@ -107,6 +108,10 @@ cSEC1000dServer::~cSEC1000dServer()
     close(pipeFD[1]);
 }
 
+QString cSEC1000dServer::getServerVersion()
+{
+    return QString("%1 %2").arg(ServerName, ServerVersion);;
+}
 
 void cSEC1000dServer::doConfiguration()
 {
