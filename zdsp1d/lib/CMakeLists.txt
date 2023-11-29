@@ -1,10 +1,10 @@
 set(SOURCES
+    dsp-memory-management/dspvarclientperspective.cpp
+    dsp-memory-management/dspvarparser.cpp
+    dsp-memory-management/dspvarresolver.cpp
     cmdinterpret.cpp
     cmds.cpp
     dsp.cpp
-    dspvarclientperspective.cpp
-    dspvarparser.cpp
-    dspvarresolver.cpp
     scpi-zdsp.cpp
     zdsp1d.cpp
     zdspclient.cpp
@@ -12,13 +12,13 @@ set(SOURCES
     )
 
 set(HEADER
+    dsp-memory-management/dspvarclientperspective.h
+    dsp-memory-management/dspvardefinitions.h
+    dsp-memory-management/dspvarparser.h
+    dsp-memory-management/dspvarresolver.h
     cmdinterpret.h
     dsp.h
     dsp1scpi.h
-    dspvarclientperspective.h
-    dspvardefinitions.h
-    dspvarparser.h
-    dspvarresolver.h
     scpi-zdsp.h
     zdsp1d.h
     zdspglobal.h
@@ -35,6 +35,7 @@ add_library(zdsp1d-lib STATIC
 target_include_directories(zdsp1d-lib
     PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/dsp-memory-management>
     )
 
 if(${Systemd_FOUND})
