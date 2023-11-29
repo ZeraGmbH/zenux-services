@@ -1,7 +1,7 @@
 #ifndef ZDSP1D_H
 #define ZDSP1D_H
 
-#include "cmdinterpret.h"
+#include "scpicmdinterpreter.h"
 #include "dsp1scpi.h"
 #include "rmconnection.h"
 #include "debugsettings.h"
@@ -51,7 +51,7 @@ signals:
 
 private:
     int m_devFileDescriptor; // kerneltreiber wird nur 1x geöffnet und dann gehalten
-    cCmdInterpreter* m_cmdInterpreter = nullptr;
+    ScpiCmdInterpreter* m_cmdInterpreter = nullptr;
     XiQNetServer* myProtonetServer; // the real server that does the communication job
     XiQNetWrapper m_ProtobufWrapper;
     quint16 m_nSocketIdentifier = 0; // we will use this instead of real sockets, because protobuf extension clientId

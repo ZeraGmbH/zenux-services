@@ -1,14 +1,15 @@
-#ifndef KINTERPRETER_H
-#define KINTERPRETER_H
+#ifndef SCPICMDINTERPRETER_H
+#define SCPICMDINTERPRETER_H
 
 #include "dspvarparser.h"
 
 class cNode;
 class cbIFace;
 
-class cCmdInterpreter { // interpretiert einen inputstring und führt kommando aus (scpi)
+class ScpiCmdInterpreter
+{
 public:
-    cCmdInterpreter(cbIFace* cb, cNode* r, DspVarParser *p);
+    ScpiCmdInterpreter(cbIFace* pcbIFace, cNode* r, DspVarParser *parser);
     QString& CmdExecute(QString& sinput);
     cbIFace* m_pcbIFace; // pointer auf call back interface
     DspVarParser* m_pParser;
@@ -18,4 +19,3 @@ private:
 };
 
 #endif
-

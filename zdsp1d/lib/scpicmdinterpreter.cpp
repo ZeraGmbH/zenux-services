@@ -1,20 +1,18 @@
-// kommando interpreter für scpi kommandolisten
-
 #include <stdlib.h>
 #include <qstring.h>
 #include "zeraglobal.h"
 #include "dsp1scpi.h"
 #include "scpi-zdsp.h"
-#include "cmdinterpret.h"
+#include "scpicmdinterpreter.h"
 
-
-cCmdInterpreter::cCmdInterpreter(cbIFace* cb, cNode* r, DspVarParser* p)
-    :m_pcbIFace(cb), m_pParser(p), m_pRootCmd(r)
+ScpiCmdInterpreter::ScpiCmdInterpreter(cbIFace* pcbIFace, cNode* r, DspVarParser* parser) :
+    m_pcbIFace(pcbIFace),
+    m_pParser(parser),
+    m_pRootCmd(r)
 {
 }
 
-
-QString &cCmdInterpreter::CmdExecute(QString &sinput)
+QString &ScpiCmdInterpreter::CmdExecute(QString &sinput)
 {
     Answer = ACKString;
 
@@ -31,9 +29,14 @@ QString &cCmdInterpreter::CmdExecute(QString &sinput)
         } while ( (actNode = actNode->TestNode(this,&CmdString)) );
         switch ( prevNode->m_nNodeStat )
         {
-        case (isKnown | isCommand) : Answer = m_pcbIFace->SCPICmd(prevNode->m_nCmd,CmdString);break;
-        case (isKnown | isQuery) : Answer =  m_pcbIFace->SCPIQuery(prevNode->m_nQuery);break;
-        default: Answer = NACKString;
+        case (isKnown | isCommand) :
+            Answer = m_pcbIFace->SCPICmd(prevNode->m_nCmd,CmdString);
+            break;
+        case (isKnown | isQuery) :
+            Answer =  m_pcbIFace->SCPIQuery(prevNode->m_nQuery);
+            break;
+        default:
+            Answer = NACKString;
         };
     }
     return (Answer);

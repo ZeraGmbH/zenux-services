@@ -2,8 +2,8 @@ set(SOURCES
     dsp-memory-management/dspvarclientperspective.cpp
     dsp-memory-management/dspvarparser.cpp
     dsp-memory-management/dspvarresolver.cpp
-    cmdinterpret.cpp
     dsp.cpp
+    scpicmdinterpreter.cpp
     scpicmds.cpp
     scpi-zdsp.cpp
     zdspserver.cpp
@@ -15,9 +15,9 @@ set(HEADER
     dsp-memory-management/dspvardefinitions.h
     dsp-memory-management/dspvarparser.h
     dsp-memory-management/dspvarresolver.h
-    cmdinterpret.h
     dsp.h
     dsp1scpi.h
+    scpicmdinterpreter.h
     scpi-zdsp.h
     zdspserver.h
     zeraglobal.h

@@ -56,7 +56,7 @@ cNodeSCPI::cNodeSCPI (const char* sNodeName, int nNodedef, cNode* pNextNode, cNo
 }
 
 
-cNode* cNodeSCPI::TestNode(cCmdInterpreter* cmdInterpreter, QChar **inputline)
+cNode* cNodeSCPI::TestNode(ScpiCmdInterpreter* cmdInterpreter, QChar **inputline)
 {
     QChar* tinp=*inputline; // zeiger kopieren
     QString stmp=cmdInterpreter->m_pParser->GetKeyword(&tinp); // lässt das nächste schlüsselwort vom parser lesen ( der ist static)

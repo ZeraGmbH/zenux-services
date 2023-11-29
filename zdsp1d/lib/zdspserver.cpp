@@ -165,7 +165,7 @@ void ZDspServer::doConfiguration()
 void ZDspServer::doSetupServer()
 {
     DspVarParser* parser = new(DspVarParser); // das ist der parser
-    m_cmdInterpreter = new cCmdInterpreter(this, InitCmdTree(), parser); // das ist der kommando interpreter
+    m_cmdInterpreter = new ScpiCmdInterpreter(this, InitCmdTree(), parser); // das ist der kommando interpreter
     m_sDspDeviceVersion = m_sDspSerialNumber = "Unknown"; // kennen wir erst mal nicht
     m_sDspBootPath = m_pDspSettings->getBootFile();
     DSPServer = this;

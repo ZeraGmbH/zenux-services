@@ -8,7 +8,7 @@
 #include <qstringlist.h>
 
 #include "dsp1scpi.h"
-#include "cmdinterpret.h"
+#include "scpicmdinterpreter.h"
 
 class cSCPIString: public QString {
 public:    
@@ -32,7 +32,7 @@ class cNode
 public:
     cNode(int nNodedef, cNode* pNextNode, cNode* pNewLevelNode, SCPICmdType Cmd,SCPICmdType Query);
     virtual ~cNode(){};
-    virtual cNode* TestNode(cCmdInterpreter* cmdInterpreter, QChar** inputline)=0;
+    virtual cNode* TestNode(ScpiCmdInterpreter* cmdInterpreter, QChar** inputline)=0;
     int m_nNodeStat; // ergebnis des parse durchlaufes
     SCPICmdType m_nCmd;
     SCPICmdType m_nQuery;
@@ -48,7 +48,7 @@ class cNodeSCPI: public cNode
 public:
     cNodeSCPI (const char* sNodeName, int nNodedef, cNode* pNextNode, cNode* pNewLevelNode, SCPICmdType Cmd, SCPICmdType Query);
     virtual  ~cNodeSCPI(){};
-    virtual cNode* TestNode(cCmdInterpreter* cmdInterpreter, QChar** inputline);
+    virtual cNode* TestNode(ScpiCmdInterpreter* cmdInterpreter, QChar** inputline);
 private:
     cSCPIString m_sNodeName; // name des knoten
 };
