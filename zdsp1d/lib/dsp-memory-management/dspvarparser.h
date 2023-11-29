@@ -3,11 +3,14 @@
 
 #include <QString>
 
+// TODO: Move to zera-scpi's Parse
+
 class DspVarParser
-{ // sucht nach zusammenhängenden wörtern mit frei wählbaren delimitern und whitespaces
+{
 public:
-    DspVarParser() {delimiter = " :?;"; whitespace = " ";} // setzt default delimiter, whitespace
+    DspVarParser();
     const QString GetKeyword(QChar**); // liesst nächstes schlüsselwort aus string
+
     QChar GetChar(QChar **); // liesst das nächste zeichen aus string
     const QString SetDelimiter(const QString s);
     const QString SetWhiteSpace(const QString s);
