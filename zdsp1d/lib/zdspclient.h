@@ -15,8 +15,8 @@ public:
     cZDSP1Client(int socket, XiQNetPeer *netclient, cZDSP1Server *server);
     ~cZDSP1Client(){} //  allokierten speicher ggf. freigeben
 
-    QString& SetRavList(QString&);
-    QString& GetRavList();
+    QString& setRawActualValueList(QString&);
+    QString& getRawActualValueList();
     QString& SetCmdListDef(QString& );
     QString& GetCmdListDef();
     QString& SetCmdIntListDef(QString&);
@@ -56,7 +56,7 @@ private:
     QString m_sCmdListDef; // kommando liste defintion
     QString m_sIntCmdListDef; // interrupt kommando  liste defintion
 
-    QList<DspVarClientPerspective> m_DspVarList; // liste mit variablen beschreibungen
+    QList<DspVarClientPerspective> m_dspRawActualValueVarList; // liste mit variablen beschreibungen
     QList<cDspCmd> m_DspCmdList; // liste mit dsp kommandos (periodisch)
     QList<cDspCmd>  m_DspIntCmdList; // liste mit dsp kommandos (interrupt)
     QVector<TDspVar> m_dspVarArray; // array von TDspVar
