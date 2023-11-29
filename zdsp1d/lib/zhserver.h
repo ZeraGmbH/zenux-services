@@ -16,7 +16,6 @@ class cZHServer
 {
 public:
     cZHServer();
-    cZHServer(cCmdInterpreter*);
     virtual ~cZHServer();
     QString& GetSoftwareVersion();
 
