@@ -8,7 +8,6 @@ set(SOURCES
     scpi-zdsp.cpp
     zdspserver.cpp
     zdspclient.cpp
-    zhserver.cpp
     )
 
 set(HEADER
@@ -24,7 +23,6 @@ set(HEADER
     zdspglobal.h
     zeraglobal.h
     zdspclient.h
-    zhserver.h
     )
 
 add_library(zdsp1d-lib STATIC
