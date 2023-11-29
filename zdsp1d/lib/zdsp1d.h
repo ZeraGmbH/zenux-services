@@ -119,8 +119,8 @@ private:
 
     QString mUnloadCmdList(QChar*);
     QString mLoadCmdList(QChar*);
-    QString mSetRavList(QChar*);
-    QString mGetRavList();
+    QString setRawActualValueList(QChar*);
+    QString getRawActualValueList();
     QString mSetCmdIntList(QChar*);
     QString mGetCmdIntList();
     QString mSetCmdList(QChar*);

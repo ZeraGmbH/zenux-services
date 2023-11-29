@@ -59,18 +59,14 @@ quint32 cDSPInterfacePrivate::setSamplingSystem(int chncount, int samp_per, int 
 
 quint32 cDSPInterfacePrivate::varList2Dsp() // the complete list has several partial lists
 {
-    QString vlist, cmd;
-    quint32 msgnr;
-
+    QString vlist;
     QTextStream ts(&vlist, QIODevice::WriteOnly);
     cDspMeasData* pDspMeasData;
-    for (int i = 0; i < m_DspMemoryDataList.count(); i++)
-    {
+    for (int i = 0; i < m_DspMemoryDataList.count(); i++) {
         pDspMeasData = m_DspMemoryDataList.at(i);
         ts << pDspMeasData->VarList(DSPDATA::vDspParam | DSPDATA::vDspTemp | DSPDATA::vDspResult | DSPDATA::vDspTempGlobal, true);
     }
-
-    msgnr = sendCommand(cmd = QString("MEAS:LIST:RAVL"), vlist);
+    quint32 msgnr = sendCommand(QString("MEAS:LIST:RAVL"), vlist); // long: RAVLIST
     m_MsgNrCmdList[msgnr] = varlist2dsp;
     return msgnr;
 }

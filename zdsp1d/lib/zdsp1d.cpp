@@ -1114,18 +1114,18 @@ QString cZDSP1Server::mLoadCmdList(QChar *)
     return Answer;
 }
 
-QString cZDSP1Server::mSetRavList(QChar *s)
+QString cZDSP1Server::setRawActualValueList(QChar *s)
 {
     QString qs(s);
     cZDSP1Client* cl = GetClient(ActSock);
-    Answer  = cl->SetRavList(qs);
+    Answer  = cl->setRawActualValueList(qs);
     return Answer;
 }
 
-QString cZDSP1Server::mGetRavList()
+QString cZDSP1Server::getRawActualValueList()
 {
     cZDSP1Client* cl = GetClient(ActSock);
-    Answer = cl->GetRavList();
+    Answer = cl->getRawActualValueList();
     return Answer;
 }
 
@@ -1446,7 +1446,7 @@ QString cZDSP1Server::SCPICmd(SCPICmdType cmd, QChar *s)
     case    TestDsp:            return mTestDsp(s);
     case 	ResetDsp:           return mResetDsp(s);
     case	BootDsp:            return mBootDsp(s);
-    case 	SetRavList: 		return mSetRavList(s);
+    case 	SetRavList: 		return setRawActualValueList(s);
     case 	SetCmdList: 		return mSetCmdList(s);
     case   SetCmdIntList: 		return mSetCmdIntList(s);
     case 	Measure:            return mMeasure(s);
@@ -1485,7 +1485,7 @@ QString cZDSP1Server::SCPIQuery( SCPICmdType cmd)
     case 		GetDeviceLoadAct: 	return mGetDeviceLoadAct();
     case		GetDspStatus:		return mGetDspStatus();
     case 		GetDeviceStatus: 		return mGetDeviceStatus();
-    case 		GetRavList: 		return mGetRavList();
+    case 		GetRavList: 		return getRawActualValueList();
     case 		GetCmdIntList: 		return mGetCmdIntList();
     case 		GetCmdList: 		return mGetCmdList();
     case		GetSamplingSystem:	return mGetSamplingSystem();
