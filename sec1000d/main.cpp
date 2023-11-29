@@ -23,8 +23,6 @@ int main( int argc, char *argv[] )
     qInfo(ServerName " started");
 
     int r = app->exec();
-    if (r == pipeError)
-        syslog(LOG_EMERG,"Abort, could not open pipe\n") ;
     if (r == xsdfileError)
         syslog(LOG_EMERG,"Abort, xsd file error\n") ;
     if (r == xmlfileError)

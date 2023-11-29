@@ -130,7 +130,7 @@ ZDspServer::~ZDspServer()
 void ZDspServer::doConfiguration()
 {
     if ( pipe(pipeFD) == -1 ) {
-        m_nerror = pipeError;
+        qCritical("Abort, could not open pipe");
         emit abortInit();
     }
     else {
