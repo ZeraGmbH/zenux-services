@@ -28,6 +28,7 @@ class ZDspServer: public QObject, public cbIFace
 public:
     ZDspServer();
     virtual ~ZDspServer();
+    QString getServerVersion();
     virtual cZDSP1Client* AddClient(XiQNetPeer *m_pNetClient); // fügt einen client hinzu
     virtual void DelClient(XiQNetPeer *netClient); // entfernt einen client
     virtual void DelClient(QByteArray clientId);
@@ -85,7 +86,6 @@ private:
     QString mBootDsp(QChar*);
     QString mGetPCBSerialNumber();
     QString mGetDeviceVersion();
-    QString mGetServerVersion();
     QString mSetSamplingSystem(QChar*);
     QString mGetSamplingSystem();
     QString mSetCommEncryption(QChar*);

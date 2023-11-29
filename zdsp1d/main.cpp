@@ -1,5 +1,4 @@
 #include "zdspserver.h"
-#include "zdspglobal.h"
 #include "pcbserver.h"
 #include <iostream>
 #include <fcntl.h>
@@ -10,8 +9,7 @@ int main( int argc, char *argv[] )
 {
     QCoreApplication* app = new QCoreApplication (argc, argv);
     ZDspServer* zdsp1d = new ZDspServer(); // this is our server
-
-    qInfo(ServerName " started");
+    qInfo("%s started", qPrintable(zdsp1d->getServerVersion()));
 
     int r =  app->exec();
     if (r == rmConnectionError)
