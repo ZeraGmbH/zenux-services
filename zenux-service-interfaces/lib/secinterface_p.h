@@ -34,25 +34,25 @@ class cSECInterfacePrivate: public cInterfacePrivate
     Q_OBJECT
 public:
     cSECInterfacePrivate(cSECInterface* iface);
-    virtual void setClient(Zera::ProxyClient *client);
-    virtual void setClientSmart(Zera::ProxyClientPtr client);
-    virtual quint32 setECalcUnit(int n); // we want n eclac units, answer is the names of them
-    virtual quint32 freeECalcUnits(); // free all the units the client had set
-    virtual quint32 writeRegister(QString chnname, quint8 reg, quint32 value); // transp. register access
-    virtual quint32 readRegister(QString chnname, quint8 reg);
+    void setClient(Zera::ProxyClient *client);
+    void setClientSmart(Zera::ProxyClientPtr client);
+    quint32 setECalcUnit(int n); // we want n eclac units, answer is the names of them
+    quint32 freeECalcUnits(); // free all the units the client had set
+    quint32 writeRegister(QString chnname, quint8 reg, quint32 value); // transp. register access
+    quint32 readRegister(QString chnname, quint8 reg);
 
-    virtual quint32 setSync(QString chnname, QString syncChn);
-    virtual quint32 setMux(QString chnname, QString inpname);
-    virtual quint32 setCmdid(QString chnname, quint8 cmdid);
-    virtual quint32 start(QString chnname);
-    virtual quint32 stop(QString chnname);
-    virtual quint32 intAck(QString chnname, quint8 interrupt);
+    quint32 setSync(QString chnname, QString syncChn);
+    quint32 setMux(QString chnname, QString inpname);
+    quint32 setCmdid(QString chnname, quint8 cmdid);
+    quint32 start(QString chnname);
+    quint32 stop(QString chnname);
+    quint32 intAck(QString chnname, quint8 interrupt);
 
-    virtual quint32 registerNotifier(QString query); // register for notification on change
-    virtual quint32 unregisterNotifiers(); // unregister from all notifications
+    quint32 registerNotifier(QString query); // register for notification on change
+    quint32 unregisterNotifiers(); // unregister from all notifications
 
     // sending a transparent command
-    virtual quint32 transparentCommand(QString cmd);
+    quint32 transparentCommand(QString cmd);
 
 protected slots:
     void receiveAnswer(std::shared_ptr<ProtobufMessage::NetMessage> message) override;
