@@ -22,11 +22,12 @@ class cZDSP1Client;
 typedef QVector<float> tDspMemArray;
 
 
-class cZDSP1Server: public QObject, public cZHServer, public cbIFace {
+class ZDspServer: public QObject, public cZHServer, public cbIFace
+{
     Q_OBJECT
 public:
-    cZDSP1Server();
-    virtual ~cZDSP1Server();
+    ZDspServer();
+    virtual ~ZDspServer();
     virtual cZDSP1Client* AddClient(XiQNetPeer *m_pNetClient); // fügt einen client hinzu
     virtual void DelClient(XiQNetPeer *netClient); // entfernt einen client
     virtual void DelClient(QByteArray clientId);

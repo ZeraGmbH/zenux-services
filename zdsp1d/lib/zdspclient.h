@@ -6,13 +6,13 @@
 #include "dspvarclientperspective.h"
 #include <xiqnetpeer.h>
 
-class cZDSP1Server;
+class ZDspServer;
 
 class cZDSP1Client
 {
 public:
     cZDSP1Client(){}
-    cZDSP1Client(int socket, XiQNetPeer *netclient, cZDSP1Server *server);
+    cZDSP1Client(int socket, XiQNetPeer *netclient, ZDspServer *server);
     ~cZDSP1Client(){} //  allokierten speicher ggf. freigeben
 
     QString& setRawActualValueList(QString&);
@@ -43,12 +43,12 @@ public:
     XiQNetPeer* m_pNetClient; // our network client
 
 private:
-    void init(int socket, XiQNetPeer *netclient, cZDSP1Server* server);
+    void init(int socket, XiQNetPeer *netclient, ZDspServer* server);
     bool GenCmdList(QString&, QList<cDspCmd>& ,QString&,ulong,ulong);
     bool syntaxCheck(QString&);
     char* qSEncryption(char*,int );
 
-    cZDSP1Server* m_myServer;
+    ZDspServer* m_myServer;
     int m_socket; // socket für den die verbindung besteht
     bool m_bActive;
     int Encryption;
