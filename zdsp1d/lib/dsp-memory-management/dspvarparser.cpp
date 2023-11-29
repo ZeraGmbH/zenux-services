@@ -1,5 +1,10 @@
 #include "dspvarparser.h"
 
+DspVarParser::DspVarParser() {
+    delimiter = " :?;";
+    whitespace = " ";
+}
+
 const QString DspVarParser::GetKeyword(QChar **s)
 {
     QString ls = "";
