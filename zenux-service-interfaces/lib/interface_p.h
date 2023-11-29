@@ -28,7 +28,7 @@ protected:
     quint32 sendCommand(QString cmd, QString par);
 
     QHash<quint32, int> m_MsgNrCmdList;
-    Zera::ProxyClient *m_pClient;
+    Zera::ProxyClient *m_pClient = nullptr;
 protected slots:
     virtual void receiveAnswer(std::shared_ptr<ProtobufMessage::NetMessage> message) = 0;
     virtual void receiveError(QAbstractSocket::SocketError errorCode) = 0;
