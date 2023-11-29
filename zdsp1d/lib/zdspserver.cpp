@@ -148,12 +148,12 @@ void ZDspServer::doConfiguration()
             connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pDspSettings,&cDSPSettings::configXMLInfo);
 
             if(!myXMLConfigReader->loadXMLFile(params.xmlFile)) {
-                m_nerror = xmlfileError;
+                qCritical("Abort: Could not open xml file '%s", qPrintable(params.xmlFile));
                 emit abortInit();
             }
         }
         else {
-            qCritical("Abort, xsd file error\n");
+            qCritical("Abort: Could not open xsd file '%s", qPrintable(params.xsdFile));
             emit abortInit();
         }
     }

@@ -179,12 +179,12 @@ void cMT310S2dServer::doConfiguration()
             connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_accumulatorSettings, &AccumulatorSettings::configXMLInfo);
 
             if (!m_xmlConfigReader.loadXMLFile(params.xmlFile)) {
-                m_nerror = xmlfileError;
+                qCritical("Abort: Could not open xml file '%s", qPrintable(params.xmlFile));
                 emit abortInit();
             }
         }
         else {
-            qCritical("Abort, xsd file error\n");
+            qCritical("Abort: Could not open xsd file '%s", qPrintable(params.xsdFile));
             emit abortInit();
         }
     }

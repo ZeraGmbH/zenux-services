@@ -23,14 +23,12 @@ int main( int argc, char *argv[] )
     qInfo(ServerName " started");
 
     int r = app->exec();
-    if (r == xmlfileError)
-        qCritical("Abort, xml file error\n") ;
     if (r == atmelError)
-        qCritical("Abort, atmel not running\n") ;
+        qCritical("Abort, atmel not running") ;
     if (r == rmConnectionError)
-        qCritical("Abort, resourcemanager connection error\n") ;
+        qCritical("Abort, resourcemanager connection error") ;
     if (r == atmelProgError)
-        qCritical("Abort, atmel flash program error\n") ;
+        qCritical("Abort, atmel flash program error") ;
 
     syslog(LOG_INFO,"com5003d server child process terminated ret = %d\n", r);
     delete com5003d;

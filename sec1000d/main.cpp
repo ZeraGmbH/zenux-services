@@ -23,8 +23,6 @@ int main( int argc, char *argv[] )
     qInfo(ServerName " started");
 
     int r = app->exec();
-    if (r == xmlfileError)
-        syslog(LOG_EMERG,"Abort, xml file error\n") ;
     if (r == secDeviceError)
         syslog(LOG_EMERG,"Abort, sec device not found\n") ;
     if (r == rmConnectionError)

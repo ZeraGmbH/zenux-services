@@ -26,7 +26,6 @@ struct ServerParams
 enum ServerErrors
 {
     noError,
-    xmlfileError,
     atmelError,
     ctrlDeviceError,
     fpgaDeviceError,

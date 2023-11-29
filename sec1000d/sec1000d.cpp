@@ -132,12 +132,12 @@ void cSEC1000dServer::doConfiguration()
             connect(&m_xmlConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pInputSettings,&SecInputSettings::configXMLInfo);
 
             if(!m_xmlConfigReader.loadXMLFile(params.xmlFile)) {
-                m_nerror = xmlfileError;
+                qCritical("Abort: Could not open xml file '%s", qPrintable(params.xmlFile));
                 emit abortInit();
             }
         }
         else {
-            qCritical("Abort, xsd file error\n");
+            qCritical("Abort: Could not open xsd file '%s", qPrintable(params.xsdFile));
             emit abortInit();
         }
     }
