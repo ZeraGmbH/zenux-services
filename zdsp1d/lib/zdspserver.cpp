@@ -2,7 +2,6 @@
 
 #include "zdspclient.h"
 #include "zeraglobal.h"
-#include "zdspglobal.h"
 #include "zdspserver.h"
 #include "dsp.h"
 #include "dspvarparser.h"
@@ -29,10 +28,12 @@
 #include <signal.h>
 #include <fcntl.h>
 #include <unistd.h>
-
 #ifdef SYSTEMD_NOTIFICATION
 #include <systemd/sd-daemon.h>
 #endif
+
+#define ServerName "zdsp1d"
+#define ServerVersion "V1.11"
 
 #define ADSP_IOC_MAGIC 'a'
 /* ioctl commands */
@@ -75,6 +76,7 @@ void SigHandler(int)
 
 struct sigaction mySigAction;
 // sigset_t mySigmask, origSigmask;
+
 
 static ServerParams params {ServerName, ServerVersion, "/etc/zera/zdsp1d/zdsp1d.xsd", "/etc/zera/zdsp1d/zdsp1d.xml"};
 
@@ -871,7 +873,7 @@ QString ZDspServer::mGetDeviceVersion()
     return m_sDspDeviceVersion;
 }
 
-QString ZDspServer::mGetServerVersion()
+QString ZDspServer::getServerVersion()
 {
     return QString("%1 %2").arg(ServerName, ServerVersion);;
 }
@@ -1493,7 +1495,7 @@ QString ZDspServer::SCPIQuery( SCPICmdType cmd)
     {
     case 		GetPCBSerialNumber: 	return mGetPCBSerialNumber();
     case 		GetDeviceVersion:		return mGetDeviceVersion();
-    case 		GetServerVersion: 		return mGetServerVersion();
+    case 		GetServerVersion: 		return getServerVersion();
     case		GetDeviceLoadMax: 	return mGetDeviceLoadMax();
     case 		GetDeviceLoadAct: 	return mGetDeviceLoadAct();
     case		GetDspStatus:		return mGetDspStatus();

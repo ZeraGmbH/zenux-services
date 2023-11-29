@@ -20,7 +20,6 @@ set(HEADER
     dsp1scpi.h
     scpi-zdsp.h
     zdspserver.h
-    zdspglobal.h
     zeraglobal.h
     zdspclient.h
     )
