@@ -23,8 +23,6 @@ int main( int argc, char *argv[] )
     qInfo(ServerName " started");
 
     int r = app->exec();
-    if (r == xsdfileError)
-        syslog(LOG_EMERG,"Abort, xsd file error\n") ;
     if (r == xmlfileError)
         syslog(LOG_EMERG,"Abort, xml file error\n") ;
     if (r == secDeviceError)

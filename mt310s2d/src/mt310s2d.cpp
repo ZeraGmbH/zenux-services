@@ -184,7 +184,7 @@ void cMT310S2dServer::doConfiguration()
             }
         }
         else {
-            m_nerror = xsdfileError;
+            qCritical("Abort, xsd file error\n");
             emit abortInit();
         }
     }
