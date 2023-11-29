@@ -53,21 +53,6 @@ install(TARGETS sec1000d
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
     )
 
-if(${useSystemd})
-    set(SYSTEMD_UNITS
-        systemd/sec1000d.service
-        systemd/sec1000d.socket
-        )
-    add_custom_target(sec1000d-systemd-units ALL
-        DEPENDS ${SYSTEMD_UNITS}
-        SOURCES ${SYSTEMD_UNITS}
-        COMMAND echo "Install systemd units..."
-        )
-    install(
-        FILES ${SYSTEMD_UNITS}
-        DESTINATION ${SYSTEMD_UNIT_INSTALL_PATH}
-        )
-endif()
-
 add_subdirectory(configs)
+add_subdirectory(systemd)
 add_subdirectory(tests)
