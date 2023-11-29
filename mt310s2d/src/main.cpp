@@ -23,8 +23,6 @@ int main( int argc, char *argv[] )
     qInfo(ServerName " started");
 
     int r = app->exec();
-    if (r == pipeError)
-        qCritical( "Abort, could not open pipe\n");
     if (r == xsdfileError)
         qCritical("Abort, xsd file error\n") ;
     if (r == xmlfileError)

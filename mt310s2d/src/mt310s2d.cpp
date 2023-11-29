@@ -143,7 +143,7 @@ cMT310S2dServer::~cMT310S2dServer()
 void cMT310S2dServer::doConfiguration()
 {
     if ( pipe(pipeFD) == -1) {
-        m_nerror = pipeError;
+        qCritical("Abort, could not open pipe");
         emit abortInit();
     }
     else {
