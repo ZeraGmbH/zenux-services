@@ -176,6 +176,8 @@ void cCOM5003dServer::doConfiguration()
     close(m_nFPGAfd);
 }
 
+#define atmelResetBit 16
+#define atmelFlashfilePath "/opt/zera/bin/atmel-com5003.hex"
 
 void cCOM5003dServer::programAtmelFlash()
 {
