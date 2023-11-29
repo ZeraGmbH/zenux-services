@@ -10,29 +10,6 @@ enum IOCTL {SPI, Serial, DSPCtrl, DSPStat, DSPCfg, VersionNr, MagicId};
 
 enum DspAcks {NBusy, InProgress, CmdError, ParError, CmdDone};
 
-const int MAGIC_ID21262 = 0xAA55BB44;
-const int MAGIC_ID21362 = 0xAA55CC33;
-const int DSP_RUNNING = 0x80;
-
-const int dm32DspWorkSpaceBase21262 = 0x82800;
-const int dm32DspWorkSpaceBase21362 = 0xE0800;
-const int dm32DialogWorkSpaceBase21262 = 0x83800;
-const int dm32DialogWorkSpaceBase21362 = 0xE1800;
-const int dm32UserWorkSpaceBase21262 = 0x84800;
-const int dm32UserWorkSpaceBase21362 = 0x98180;
-const int dm32UserWorkSpaceGlobal21262 = 0x87000;
-const int dm32UserWorkSpaceGlobal21362 = 0x9F000;
-const int dm32CmdListBase21262 = 0x84000;
-const int dm32CmdListBase21362 = 0xE2000;
-
-const int CmdListLen21262 = 896;
-const int CmdListLen21362 = 3584;
-const int IntCmdListLen21262 = 128;
-const int IntCmdListLen21362 = 512;
-
-const int uwSpaceSize21262 = 14335;
-const int uwSpaceSize21362 = 32383;
-
 enum CmdType { CMD, CMD1i16, CMD2i16, CMD3i16 ,CMD1i32 , CMD1i161fi32 };
 // 1fi32 kann 1 float oder 1 integer sein
 

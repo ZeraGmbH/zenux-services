@@ -1168,6 +1168,20 @@ QString cZDSP1Server::mMeasure(QChar *s)
     return Answer;
 }
 
+static constexpr int DSP_RUNNING = 0x80;
+
+static constexpr int MAGIC_ID21262 = 0xAA55BB44;
+static constexpr int MAGIC_ID21362 = 0xAA55CC33;
+static constexpr int dm32DspWorkSpaceBase21362 = 0xE0800;
+static constexpr int dm32UserWorkSpaceGlobal21262 = 0x87000;
+static constexpr int dm32UserWorkSpaceGlobal21362 = 0x9F000;
+static constexpr int dm32DialogWorkSpaceBase21362 = 0xE1800;
+static constexpr int dm32UserWorkSpaceBase21362 = 0x98180;
+static constexpr int dm32CmdListBase21362 = 0xE2000;
+static constexpr int CmdListLen21362 = 3584;
+static constexpr int IntCmdListLen21362 = 512;
+static constexpr int uwSpaceSize21362 = 32383;
+
 bool cZDSP1Server::setDspType()
 {
     int r = readMagicId();
