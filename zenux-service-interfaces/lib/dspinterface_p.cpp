@@ -5,12 +5,10 @@
 
 namespace Zera {
 
-cDSPInterfacePrivate::cDSPInterfacePrivate(cDSPInterface *iface)
-    :q_ptr(iface)
+cDSPInterfacePrivate::cDSPInterfacePrivate(cDSPInterface *iface) :
+    q_ptr(iface)
 {
-    m_pClient = 0;
 }
-
 
 void cDSPInterfacePrivate::setClient(Zera::ProxyClient *client)
 {
@@ -21,41 +19,30 @@ void cDSPInterfacePrivate::setClient(Zera::ProxyClient *client)
     connect(m_pClient, &Zera::ProxyClient::tcpError, this, &cDSPInterfacePrivate::receiveError);
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////
+// Hint: to find server SCPI implementation, search for last node name in 'long' comments
+/////////////////////////////////////////////////////////////////////////////////////////
 
 quint32 cDSPInterfacePrivate::bootDsp()
 {
-    QString cmd;
-    quint32 msgnr;
-
-    msgnr = sendCommand(cmd = QString("SYST:DSP:BOOT:EXEC"));
+    quint32 msgnr = sendCommand(QString("SYST:DSP:BOOT:EXEC")); // long SYSTEM:DSP:BOOT:EXECUTE
     m_MsgNrCmdList[msgnr] = bootdsp;
     return msgnr;
-
-
 }
-
 
 quint32 cDSPInterfacePrivate::resetDsp()
 {
-    QString cmd;
-    quint32 msgnr;
-
-    msgnr = sendCommand(cmd = QString("SYST:DSP:RES"));
+    quint32 msgnr = sendCommand(QString("SYST:DSP:RES")); // long SYSTEM:DSP:RESET
     m_MsgNrCmdList[msgnr] = resetdsp;
     return msgnr;
 }
 
-
 quint32 cDSPInterfacePrivate::setSamplingSystem(int chncount, int samp_per, int samp_mper)
 {
-    QString cmd, par;
-    quint32 msgnr;
-
-    msgnr = sendCommand(cmd = QString("SYST:DSP:SAMP"), par = QString("%1,%2,%3").arg(chncount).arg(samp_per).arg(samp_mper));
+    quint32 msgnr = sendCommand(QString("SYST:DSP:SAMP"), QString("%1,%2,%3").arg(chncount).arg(samp_per).arg(samp_mper)); // long SYSTEM:DSP:SAMPLING
     m_MsgNrCmdList[msgnr] = setsamplingsystem;
     return msgnr;
 }
-
 
 quint32 cDSPInterfacePrivate::varList2Dsp() // the complete list has several partial lists
 {
@@ -66,53 +53,42 @@ quint32 cDSPInterfacePrivate::varList2Dsp() // the complete list has several par
         pDspMeasData = m_DspMemoryDataList.at(i);
         ts << pDspMeasData->VarList(DSPDATA::vDspParam | DSPDATA::vDspTemp | DSPDATA::vDspResult | DSPDATA::vDspTempGlobal, true);
     }
-    quint32 msgnr = sendCommand(QString("MEAS:LIST:RAVL"), vlist); // long: RAVLIST
+    quint32 msgnr = sendCommand(QString("MEAS:LIST:RAVL"), vlist); // long: MEASURE:LIST:RAVLIST
     m_MsgNrCmdList[msgnr] = varlist2dsp;
     return msgnr;
 }
 
-
 quint32 cDSPInterfacePrivate::cmdList2Dsp()
 {
-    QString plist, cmd;
-    quint32 msgnr;
-
+    QString plist;
     QTextStream ts( &plist, QIODevice::WriteOnly );
     for ( QStringList::Iterator it = CycCmdList.begin(); it != CycCmdList.end(); ++it )
         ts << *it << ";" ;
-
-    msgnr = sendCommand(cmd = QString("MEAS:LIST:CYCL"), plist);
+    quint32 msgnr = sendCommand(QString("MEAS:LIST:CYCL"), plist); // long: MEASURE:LIST:CYCLIST
     m_MsgNrCmdList[msgnr] = cmdlist2dsp;
     return msgnr;
 }
 
-
 quint32 cDSPInterfacePrivate::intList2Dsp()
 {
-    QString plist, cmd;
-    quint32 msgnr;
-
+    QString plist;
     QTextStream ts( &plist, QIODevice::WriteOnly );
     for ( QStringList::Iterator it = IntCmdList.begin(); it != IntCmdList.end(); ++it )
         ts << *it << ";" ;
-
-    msgnr = sendCommand(cmd = QString("MEAS:LIST:INTL"), plist);
+    quint32 msgnr = sendCommand(QString("MEAS:LIST:INTL"), plist); // long: MEASURE:LIST:INTLIST
     m_MsgNrCmdList[msgnr] = intlist2dsp;
     return msgnr;
 }
-
 
 int cDSPInterfacePrivate::cmdListCount()
 {
     return CycCmdList.count();
 }
 
-
 int cDSPInterfacePrivate::intListCount()
 {
     return IntCmdList.count();
 }
-
 
 void cDSPInterfacePrivate::clearCmdList()
 {
@@ -120,29 +96,23 @@ void cDSPInterfacePrivate::clearCmdList()
     IntCmdList.clear();
 }
 
-
 void cDSPInterfacePrivate::clearMemLists()
 {
     while ( !m_DspMemoryDataList.isEmpty() )
         delete m_DspMemoryDataList.takeFirst();
 }
 
-
 quint32 cDSPInterfacePrivate::setSignalRouting(tRouting *routingtab)
 {
-    QString cmd, par;
-    quint32 msgnr;
-
+    QString par;
     QTextStream ts(&par, QIODevice::WriteOnly);
     ts << "ETHROUTINGTAB";
     for (uint i = 0; i < (sizeof(tRouting)/sizeof(quint32)); i++)
         ts << "," << routingtab[i];
-
-    msgnr = sendCommand(cmd = QString("MEM:WRIT"), par);
+    quint32 msgnr = sendCommand(QString("MEM:WRIT"), par); // long: MEMORY:WRITE ETHROUTINGTAB,...
     m_MsgNrCmdList[msgnr] = setsignalrouting;
     return msgnr;
 }
-
 
 quint32 cDSPInterfacePrivate::setDsp61850PriorityTagged(quint32 priotag)
 {
