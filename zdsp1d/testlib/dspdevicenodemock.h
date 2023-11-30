@@ -9,13 +9,13 @@ public:
     DspDeviceNodeMock(int dspMagicId);
     int open(QString devNodeFileName) override;
     void close() override;
-    bool bootDsp(QString bootFileName, QString &cmdAnswer) override;
+    bool dspReset(QString &cmdAnswer) override;
+    bool dspBoot(QString bootFileName, QString &cmdAnswer) override;
     int lseek(ulong adr) override;
     int write(const char* buf, int len) override;
     int read(char* buf, int len) override;
-    void setFasync() override;
-    int ioctlDspReset() override;
-    int ioctlDspRequestInt() override;
+    void enableFasync() override;
+    int dspRequestInt() override;
     int ioctlDspIoRead(unsigned long arg) override;
 private:
     int m_dspMagicId;
