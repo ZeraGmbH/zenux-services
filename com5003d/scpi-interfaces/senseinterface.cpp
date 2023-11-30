@@ -48,23 +48,6 @@ cSenseInterface::cSenseInterface(cCOM5003dServer *server) :
     pChannel = new cSenseChannel(m_pSCPIInterface, SenseSystem::sCurrentChannelDescription,"A", channelSettings.at(5), 5);
     m_ChannelList.append(pChannel);
 
-    // no it doesn't have, the above will be changed if necessary
-    // and 6 reference channels
-    /*
-    pChannel = new cSenseChannel("Reference channel 0..10V DC","V", channelSettings.at(6), 6);
-    m_ChannelList.append(pChannel);
-    pChannel = new cSenseChannel("Reference channel 0..10V DC","V", channelSettings.at(7), 7);
-    m_ChannelList.append(pChannel);
-    pChannel = new cSenseChannel("Reference channel 0..10V DC","V", channelSettings.at(8), 8);
-    m_ChannelList.append(pChannel);
-    pChannel = new cSenseChannel("Reference channel 0..10V DC","V", channelSettings.at(9), 9);
-    m_ChannelList.append(pChannel);
-    pChannel = new cSenseChannel("Reference channel 0..10V DC","V", channelSettings.at(10), 10);
-    m_ChannelList.append(pChannel);
-    pChannel = new cSenseChannel("Reference channel 0..10V DC","V", channelSettings.at(11), 11);
-    m_ChannelList.append(pChannel);
-    */
-
     QList<cSenseRange*> rngList;
 
     for (i = 0; i < 3; i++)
@@ -108,17 +91,6 @@ cSenseInterface::cSenseInterface(cCOM5003dServer *server) :
 
         m_ChannelList.at(i)->setRangeList(rngList);
     }
-
-    /*
-    for (i = 6; i < 12; i++)
-    {
-        rngList.clear();
-        rngList.append(new cSenseRange("0V",10.0,5005789.0, 14, SenseRange::Phys));
-        rngList.append(new cSenseRange("10V",10.0,5005789.0, 15, SenseRange::Phys));
-
-        m_ChannelList.at(i)->setRangeList(rngList);
-    }
-    */
 
     setNotifierSenseChannelCat(); // only prepared for !!! since we don't have hot plug for measuring channels yet
     m_sVersion = SenseSystem::Version;
@@ -761,7 +733,6 @@ void cSenseInterface::registerSense()
     registerResource(m_pMyServer->m_pRMConnection, m_pMyServer->m_ethSettings.getPort(EthSettings::protobufserver));
 }
 
-
 void cSenseInterface::notifySense()
 {
     setNotifierSenseMMode(); // we set the notifier synchron after all resources are registered again
@@ -770,20 +741,3 @@ void cSenseInterface::notifySense()
     if (protoCmd->m_bwithOutput)
         emit cmdExecutionDone(protoCmd);
 }
-
-
-/*
-void cSenseInterface::registerResource(QDataStream &stream)
-{
-    for (int i = 0; i < m_ChannelList.count(); i++)
-        if (m_ChannelList.at(i)->isAvail() )
-            stream << QString("RESOURCE:ADD SENSE;%1;;%2").arg(m_ChannelList.at(i)->getName()
-                                                               .arg((m_ChannelList.at(i)->getDescription());
-}
-*/
-
-
-
-
-
-
