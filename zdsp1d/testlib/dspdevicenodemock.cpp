@@ -1,6 +1,5 @@
 #include "dspdevicenodemock.h"
 #include "dspdevicenode.h"
-#include "zeraglobal.h"
 
 DspDeviceNodeMock::DspDeviceNodeMock(int dspMagicId) :
     m_dspMagicId(dspMagicId)
@@ -22,10 +21,9 @@ bool DspDeviceNodeMock::dspReset()
     return true;
 }
 
-bool DspDeviceNodeMock::dspBoot(QString bootFileName, QString &cmdAnswer)
+bool DspDeviceNodeMock::dspBoot(QString bootFileName)
 {
     Q_UNUSED(bootFileName)
-    cmdAnswer = ACKString;
     return true;
 }
 

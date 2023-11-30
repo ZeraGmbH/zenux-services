@@ -421,7 +421,12 @@ QString ZDspServer::mResetDsp(QChar*)
 
 bool ZDspServer::bootDsp()
 {
-    return m_dspDevNode->dspBoot(m_sDspBootPath, Answer);
+    bool ok = m_dspDevNode->dspBoot(m_sDspBootPath);
+    if(ok)
+        Answer = ACKString;
+    else
+        Answer = ERREXECString;
+    return ok;
 }
 
 bool ZDspServer::setSamplingSystem()
@@ -1298,9 +1303,6 @@ void ZDspServer::onExecuteCommandProto(std::shared_ptr<google::protobuf::Message
                 Answer->set_rtype(ProtobufMessage::NetMessage_NetReply_ReplyType_ERROR);
             else
             if (output.contains(ERRVALString))
-                Answer->set_rtype(ProtobufMessage::NetMessage_NetReply_ReplyType_ERROR);
-            else
-            if (output.contains(ERRPATHString))
                 Answer->set_rtype(ProtobufMessage::NetMessage_NetReply_ReplyType_ERROR);
             else
             if (output.contains(ERREXECString))
