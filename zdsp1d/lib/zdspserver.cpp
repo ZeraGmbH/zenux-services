@@ -7,26 +7,19 @@
 #include "dspvarparser.h"
 #include "scpi-zdsp.h"
 #include "pcbserver.h"
+#include "dspdevicenodeaccessinterface.h"
 #include <QDebug>
 #include <QCoreApplication>
 #include <QFinalState>
 #include <QDataStream>
 #include <QFile>
-#include <QTcpSocket>
 #include <QTcpServer>
 #include <QTextStream>
-#include <sys/types.h>
-#include <sys/time.h>
-#include <sys/socket.h>
-#include <sys/select.h>
 #include <sys/ioctl.h>
 #include <netdb.h>
 #include <netinet/in.h>
-#include <sys/stat.h>
 #include <fcntl.h>
-#include <iostream>
 #include <signal.h>
-#include <fcntl.h>
 #include <unistd.h>
 #ifdef SYSTEMD_NOTIFICATION
 #include <systemd/sd-daemon.h>
@@ -34,15 +27,6 @@
 
 #define ServerName "zdsp1d"
 #define ServerVersion "V1.11"
-
-#define ADSP_IOC_MAGIC 'a'
-/* ioctl commands */
-#define ADSP_RESET _IOR(ADSP_IOC_MAGIC,1,char*)
-#define ADSP_BOOT _IOR(ADSP_IOC_MAGIC,2,char*)
-#define ADSP_INT_REQ _IOR(ADSP_IOC_MAGIC,3,char*)
-#define ADSP_INT_ENABLE _IOR(ADSP_IOC_MAGIC,4,char*)
-#define ADSP_INT_DISABLE _IOR(ADSP_IOC_MAGIC,5,char*)
-#define IO_READ _IOR(ADSP_IOC_MAGIC,6,char*)
 
 extern TMemSection dm32DspWorkspace;
 extern TMemSection dm32DialogWorkSpace;
@@ -80,8 +64,9 @@ struct sigaction mySigAction;
 
 ServerParams ZDspServer::defaultParams {ServerName, ServerVersion, "/etc/zera/zdsp1d/zdsp1d.xsd", "/etc/zera/zdsp1d/zdsp1d.xml"};
 
-ZDspServer::ZDspServer(ServerParams params) :
-    m_params(params)
+ZDspServer::ZDspServer(DspDeviceNodeInterfaceUPtr dspDevNode, ServerParams params) :
+    m_params(params),
+    m_dspDevNode(std::move(dspDevNode))
 {
     m_pInitializationMachine = new QStateMachine(this);
     myXMLConfigReader = new Zera::XMLConfig::cReader();
@@ -125,7 +110,7 @@ ZDspServer::~ZDspServer()
         delete clientlist.at(i);
 
     resetDsp(); // we reset the dsp when we close the server
-    close(m_devFileDescriptor); // close dev.
+    m_dspDevNode->close();
     close(pipeFD[0]);
     close(pipeFD[1]);
 }
@@ -287,14 +272,15 @@ void ZDspServer::doIdentAndRegister()
 
 int ZDspServer::DspDevOpen()
 {
-    if ( (m_devFileDescriptor = open(m_sDspDeviceNode.toLatin1().data(), O_RDWR)) < 0 )
+    int descriptor = m_dspDevNode->open(m_sDspDeviceNode.toLatin1().data());
+    if (descriptor  < 0 )
         qWarning("Error opening dsp device: %s", qPrintable(m_sDspDeviceNode));
-    return m_devFileDescriptor;
+    return descriptor;
 }
 
 int ZDspServer::DspDevSeek(ulong adr)
 {
-    int r = lseek(m_devFileDescriptor, adr, 0);
+    int r = m_dspDevNode->lseek(adr);
     if (r < 0)
         qWarning("Error positioning dsp device: %s", qPrintable(m_sDspDeviceNode));
     return r;
@@ -302,7 +288,7 @@ int ZDspServer::DspDevSeek(ulong adr)
 
 int ZDspServer::DspDevWrite(char* buf, int len)
 {
-    int r = write(m_devFileDescriptor, buf, len);
+    int r = m_dspDevNode->write(buf, len);
     if (r <0 )
         qWarning("Error writing dsp device: %s", qPrintable(m_sDspDeviceNode));
     return r;
@@ -310,7 +296,7 @@ int ZDspServer::DspDevWrite(char* buf, int len)
 
 int ZDspServer::DspDevRead(char* buf, int len)
 {
-    int r = read(m_devFileDescriptor, buf, len);
+    int r = m_dspDevNode->read(buf, len);
     if (r < 0 )
         qWarning("Error reading dsp device: %s", qPrintable(m_sDspDeviceNode));
     return r;
@@ -418,7 +404,7 @@ QString ZDspServer::mTestDsp(QChar* s)
 
 bool ZDspServer::resetDsp()
 {
-    int r = ioctl(m_devFileDescriptor,ADSP_RESET); // und reset
+    int r = m_dspDevNode->ioctlDspReset(); // und reset
     if ( r < 0 ) {
         qWarning("error %d reset dsp device: %s", r, qPrintable(m_sDspDeviceNode));
         Answer = ERREXECString; // fehler bei der ausführung
@@ -444,7 +430,7 @@ bool ZDspServer::bootDsp()
     }
     QByteArray BootMem = f.readAll();
     f.close();
-    int r = ioctl(m_devFileDescriptor,ADSP_BOOT,BootMem.data()); // und booten
+    int r = m_dspDevNode->ioctlDspBoot(BootMem.data()); // und booten
     if ( r < 0 ) {
         qWarning("error %d booting dsp device: %s", r, qPrintable(m_sDspDeviceNode));
         Answer = ERREXECString; // fehler bei der ausführung
@@ -501,7 +487,7 @@ QString ZDspServer::mCommand2Dsp(QString& qs)
         if (! cl.DspVarWrite(ss = "DSPACK,0;") ) break; // reset acknowledge
         if (! cl.DspVarWrite(qs)) break; // kommando und parameter -> dsp
 
-        ioctl(m_devFileDescriptor,ADSP_INT_REQ); // interrupt beim dsp auslösen
+        m_dspDevNode->ioctlDspRequestInt(); // interrupt beim dsp auslösen
         Answer = ACKString; // sofort fertig melden ....sync. muss die applikation
 
     } while (0);
@@ -858,7 +844,7 @@ QString ZDspServer::mResetMaxima(QChar *)
 
 QString ZDspServer::mGetDeviceVersion()
 {
-    int r = ioctl(m_devFileDescriptor,IO_READ,VersionNr);
+    int r = m_dspDevNode->ioctlDspIoRead(VersionNr);
     if ( r < 0 ) {
         qWarning("Error %d reading device version: %s", r, qPrintable(m_sDspDeviceNode));
         Answer = ERREXECString; // fehler bei der ausführung
@@ -1223,7 +1209,7 @@ bool ZDspServer::setDspType()
 
 int ZDspServer::readMagicId()
 {
-    return ioctl(m_devFileDescriptor, IO_READ, MagicId);
+    return m_dspDevNode->ioctlDspIoRead(MagicId);
 }
 
 bool ZDspServer::Test4HWPresent()
@@ -1234,7 +1220,7 @@ bool ZDspServer::Test4HWPresent()
 
 bool ZDspServer::Test4DspRunning()
 {
-    int r = ioctl(m_devFileDescriptor,IO_READ,DSPStat);
+    int r = m_dspDevNode->ioctlDspIoRead(DSPStat);
     return ((r & DSP_RUNNING) > 0);
 }
 
@@ -1395,9 +1381,7 @@ void ZDspServer::SCPIdisconnect()
 
 void ZDspServer::SetFASync()
 {
-    fcntl(m_devFileDescriptor, F_SETOWN, getpid()); // wir sind "besitzer" des device
-    int oflags = fcntl(m_devFileDescriptor, F_GETFL);
-    fcntl(m_devFileDescriptor, F_SETFL, oflags | FASYNC); // async. benachrichtung (sigio) einschalten
+    m_dspDevNode->setFasync();
 }
 
 cZDSP1Client* ZDspServer::AddClient(XiQNetPeer* m_pNetClient)
