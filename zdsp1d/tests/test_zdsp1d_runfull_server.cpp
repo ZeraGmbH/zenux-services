@@ -18,7 +18,7 @@ void test_zdsp1d_runfull_server::startProductionServerToSeeFailingMessages()
 
 void test_zdsp1d_runfull_server::startMockedServer()
 {
-    DspDeviceNodeInterfaceUPtr dspDeviceNode = std::make_unique<DspDeviceNodeMock>();
+    DspDeviceNodeInterfaceUPtr dspDeviceNode = std::make_unique<DspDeviceNodeMock>(DspDeviceNode::MAGIC_ID21362);
     ZDspServer server(std::move(dspDeviceNode), MockPcbServer::createParams("zdsp1d"));
     feedEventLoop();
 }

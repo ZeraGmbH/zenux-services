@@ -4,10 +4,6 @@
 #include "dspvarparser.h"
 #include <QHash>
 
-// enum zum lesen von dsp port adressen über ioctl
-// Serial Port Interface,  Serial Interface, DSP Ctrl Register, what ?, the device name
-enum IOCTL {SPI, Serial, DSPCtrl, DSPStat, DSPCfg, VersionNr, MagicId};
-
 enum DspAcks {NBusy, InProgress, CmdError, ParError, CmdDone};
 
 enum CmdType { CMD, CMD1i16, CMD2i16, CMD3i16 ,CMD1i32 , CMD1i161fi32 };

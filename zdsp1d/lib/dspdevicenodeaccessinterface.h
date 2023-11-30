@@ -10,6 +10,7 @@ public:
     ~DspDeviceNodeInterface() = default;
     virtual int open(QString devNodeFileName) = 0;
     virtual void close() = 0;
+    virtual bool bootDsp(QString bootFileName, QString &cmdAnswer) = 0;
     virtual int lseek(ulong adr) = 0;
     virtual int write(const char* buf, int len) = 0;
     virtual int read(char* buf, int len) = 0;
