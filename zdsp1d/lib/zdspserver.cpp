@@ -403,7 +403,14 @@ QString ZDspServer::mTestDsp(QChar* s)
 
 bool ZDspServer::resetDsp()
 {
-    return m_dspDevNode->dspReset(Answer);
+    bool ok = m_dspDevNode->dspReset();
+    if(ok)
+        Answer = ACKString;
+    else {
+        qCritical("Error on dsp device reset");
+        Answer = ERREXECString;
+    }
+    return ok;
 }
 
 QString ZDspServer::mResetDsp(QChar*)

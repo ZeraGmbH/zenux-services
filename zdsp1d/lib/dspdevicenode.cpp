@@ -41,16 +41,9 @@ bool DspDeviceNode::dspBoot(QString bootFileName, QString &cmdAnswer)
     return true;
 }
 
-bool DspDeviceNode::dspReset(QString &cmdAnswer)
+bool DspDeviceNode::dspReset()
 {
-    int r = ioctlDspReset(); // und reset
-    if ( r < 0 ) {
-        qWarning("error %d reset dsp device: %s", r, qPrintable(m_devNodeFileName));
-        cmdAnswer = ERREXECString; // fehler bei der ausführung
-        return false;
-    }
-    cmdAnswer = ACKString;
-    return true;
+    return ioctlDspReset() >= 0;
 }
 
 int DspDeviceNode::lseek(ulong adr)
