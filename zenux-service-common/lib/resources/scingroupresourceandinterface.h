@@ -2,7 +2,6 @@
 #define SHEADINTERFACE_H
 
 #include "resource.h"
-#include "scpiconnection.h"
 #include "scinchannelinterface.h"
 #include "scinsettings.h"
 #include <scpi.h>
