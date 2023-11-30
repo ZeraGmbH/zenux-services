@@ -17,7 +17,13 @@ void DspDeviceNodeMock::close()
 {
 }
 
-bool DspDeviceNodeMock::bootDsp(QString bootFileName, QString &cmdAnswer)
+bool DspDeviceNodeMock::dspReset(QString &cmdAnswer)
+{
+    cmdAnswer = ACKString;
+    return true;
+}
+
+bool DspDeviceNodeMock::dspBoot(QString bootFileName, QString &cmdAnswer)
 {
     Q_UNUSED(bootFileName)
     cmdAnswer = ACKString;
@@ -44,16 +50,11 @@ int DspDeviceNodeMock::read(char *buf, int len)
     return 0;
 }
 
-void DspDeviceNodeMock::setFasync()
+void DspDeviceNodeMock::enableFasync()
 {
 }
 
-int DspDeviceNodeMock::ioctlDspReset()
-{
-    return 0;
-}
-
-int DspDeviceNodeMock::ioctlDspRequestInt()
+int DspDeviceNodeMock::dspRequestInt()
 {
     return 0;
 }

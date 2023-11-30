@@ -21,7 +21,7 @@ void DspDeviceNode::close()
     m_devFileDescriptor = -1;
 }
 
-bool DspDeviceNode::bootDsp(QString bootFileName, QString &cmdAnswer)
+bool DspDeviceNode::dspBoot(QString bootFileName, QString &cmdAnswer)
 {
     QFile f (bootFileName);
     if (!f.open(QIODevice::Unbuffered | QIODevice::ReadOnly)) {
@@ -34,6 +34,18 @@ bool DspDeviceNode::bootDsp(QString bootFileName, QString &cmdAnswer)
     int r = ioctlDspBoot(BootMem.data()); // und booten
     if ( r < 0 ) {
         qWarning("error %d booting dsp device: %s", r, qPrintable(m_devNodeFileName));
+        cmdAnswer = ERREXECString; // fehler bei der ausführung
+        return false;
+    }
+    cmdAnswer = ACKString;
+    return true;
+}
+
+bool DspDeviceNode::dspReset(QString &cmdAnswer)
+{
+    int r = ioctlDspReset(); // und reset
+    if ( r < 0 ) {
+        qWarning("error %d reset dsp device: %s", r, qPrintable(m_devNodeFileName));
         cmdAnswer = ERREXECString; // fehler bei der ausführung
         return false;
     }
@@ -56,7 +68,7 @@ int DspDeviceNode::read(char *buf, int len)
     return ::read(m_devFileDescriptor, buf, len);
 }
 
-void DspDeviceNode::setFasync()
+void DspDeviceNode::enableFasync()
 {
     fcntl(m_devFileDescriptor, F_SETOWN, getpid()); // wir sind "besitzer" des device
     int oflags = fcntl(m_devFileDescriptor, F_GETFL);
@@ -81,7 +93,7 @@ int DspDeviceNode::ioctlDspBoot(const char *firmwareData)
     return ioctl(m_devFileDescriptor, ADSP_BOOT, firmwareData);
 }
 
-int DspDeviceNode::ioctlDspRequestInt()
+int DspDeviceNode::dspRequestInt()
 {
     return ioctl(m_devFileDescriptor, ADSP_INT_REQ);
 }

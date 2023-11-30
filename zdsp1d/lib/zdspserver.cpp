@@ -178,7 +178,7 @@ void ZDspServer::doSetupServer()
         mySigAction. sa_flags = SA_RESTART;
         mySigAction.sa_restorer = NULL;
         sigaction(SIGIO, &mySigAction, NULL); // handler für sigio definieren
-        SetFASync();
+        m_dspDevNode->enableFasync();
         m_retryRMConnect = 100;
         m_retryTimer.setSingleShot(true);
         connect(&m_retryTimer, &QTimer::timeout, this, &ZDspServer::sigServerIsSetUp);
@@ -403,14 +403,7 @@ QString ZDspServer::mTestDsp(QChar* s)
 
 bool ZDspServer::resetDsp()
 {
-    int r = m_dspDevNode->ioctlDspReset(); // und reset
-    if ( r < 0 ) {
-        qWarning("error %d reset dsp device: %s", r, qPrintable(m_sDspDeviceNode));
-        Answer = ERREXECString; // fehler bei der ausführung
-        return false;
-    }
-    Answer = ACKString;
-    return true;
+    return m_dspDevNode->dspReset(Answer);
 }
 
 QString ZDspServer::mResetDsp(QChar*)
@@ -421,7 +414,7 @@ QString ZDspServer::mResetDsp(QChar*)
 
 bool ZDspServer::bootDsp()
 {
-    return m_dspDevNode->bootDsp(m_sDspBootPath, Answer);
+    return m_dspDevNode->dspBoot(m_sDspBootPath, Answer);
 }
 
 bool ZDspServer::setSamplingSystem()
@@ -471,7 +464,7 @@ QString ZDspServer::mCommand2Dsp(QString& qs)
         if (! cl.DspVarWrite(ss = "DSPACK,0;") ) break; // reset acknowledge
         if (! cl.DspVarWrite(qs)) break; // kommando und parameter -> dsp
 
-        m_dspDevNode->ioctlDspRequestInt(); // interrupt beim dsp auslösen
+        m_dspDevNode->dspRequestInt(); // interrupt beim dsp auslösen
         Answer = ACKString; // sofort fertig melden ....sync. muss die applikation
 
     } while (0);
@@ -1358,11 +1351,6 @@ void ZDspServer::SCPIdisconnect()
 {
     disconnect(m_pSCPISocket, 0, 0, 0); // we disconnect everything
     DelSCPIClient();
-}
-
-void ZDspServer::SetFASync()
-{
-    m_dspDevNode->setFasync();
 }
 
 cZDSP1Client* ZDspServer::AddClient(XiQNetPeer* m_pNetClient)

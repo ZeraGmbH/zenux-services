@@ -40,8 +40,6 @@ public:
     virtual QString SCPICmd( SCPICmdType, QChar*);
     virtual QString SCPIQuery( SCPICmdType);
 
-    void SetFASync(); // async. benachrichtung einschalten
-
     int DspDevOpen();
     int DspDevRead(char* buf, int len);
     int DspDevWrite(char* buf,int len);
