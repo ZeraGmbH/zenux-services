@@ -53,12 +53,6 @@ int DspDeviceNodeMock::ioctlDspReset()
     return 0;
 }
 
-int DspDeviceNodeMock::ioctlDspBoot(const char *firmwareData)
-{
-    Q_UNUSED(firmwareData)
-    return 0;
-}
-
 int DspDeviceNodeMock::ioctlDspRequestInt()
 {
     return 0;

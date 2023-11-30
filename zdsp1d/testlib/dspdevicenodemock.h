@@ -15,7 +15,6 @@ public:
     int read(char* buf, int len) override;
     void setFasync() override;
     int ioctlDspReset() override;
-    int ioctlDspBoot(const char* firmwareData) override;
     int ioctlDspRequestInt() override;
     int ioctlDspIoRead(unsigned long arg) override;
 private:
