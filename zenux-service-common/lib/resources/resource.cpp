@@ -7,10 +7,6 @@ cResource::cResource(cSCPI *scpiInterface) :
 {
 }
 
-cResource::~cResource()
-{
-}
-
 void cResource::register1Resource(RMConnection *rmConnection, quint32 msgnr, QString registerParameter)
 {
     QString cmd = QString("RESOURCE:ADD");

@@ -11,7 +11,7 @@ class cResource: public ScpiConnection
     Q_OBJECT
 public:
     cResource(cSCPI *scpiInterface);
-    virtual ~cResource();
+    virtual ~cResource() = default;
     virtual void registerResource(RMConnection *rmConnection, quint16 port) = 0;
     virtual void unregisterResource(RMConnection *rmConnection) = 0;
 signals:
