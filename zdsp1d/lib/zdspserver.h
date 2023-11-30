@@ -8,6 +8,7 @@
 #include "debugsettings.h"
 #include "ethsettings.h"
 #include "dspsettings.h"
+#include "dspdevicenodeaccessinterface.h"
 #include <xiqnetserver.h>
 #include <xiqnetwrapper.h>
 #include <QStringList>
@@ -27,7 +28,7 @@ class ZDspServer: public QObject, public cbIFace
 {
     Q_OBJECT
 public:
-    ZDspServer(ServerParams params = defaultParams);
+    ZDspServer(DspDeviceNodeInterfaceUPtr dspDevNode, ServerParams params = defaultParams);
     virtual ~ZDspServer();
     QString getServerVersion();
     virtual cZDSP1Client* AddClient(XiQNetPeer *m_pNetClient); // fügt einen client hinzu
@@ -53,7 +54,7 @@ signals:
 private:
     static ServerParams defaultParams;
     ServerParams m_params;
-    int m_devFileDescriptor; // kerneltreiber wird nur 1x geöffnet und dann gehalten
+    DspDeviceNodeInterfaceUPtr m_dspDevNode;
     ScpiCmdInterpreter* m_cmdInterpreter = nullptr;
     XiQNetServer* myProtonetServer; // the real server that does the communication job
     XiQNetWrapper m_ProtobufWrapper;

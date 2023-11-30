@@ -1,14 +1,14 @@
 #include "zdspserver.h"
 #include "pcbserver.h"
-#include <iostream>
-#include <fcntl.h>
-#include <unistd.h>
+#include "dspdevicenode.h"
 #include <QCoreApplication>
+#include <memory>
 
 int main( int argc, char *argv[] )
 {
     QCoreApplication* app = new QCoreApplication (argc, argv);
-    ZDspServer* zdsp1d = new ZDspServer(); // this is our server
+    DspDeviceNodeInterfaceUPtr dspDeviceNode = std::make_unique<DspDeviceNode>();
+    ZDspServer* zdsp1d = new ZDspServer(std::move(dspDeviceNode)); // this is our server
     qInfo("%s started", qPrintable(zdsp1d->getServerVersion()));
 
     int r =  app->exec();
