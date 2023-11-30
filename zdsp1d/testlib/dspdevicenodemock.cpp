@@ -17,9 +17,8 @@ void DspDeviceNodeMock::close()
 {
 }
 
-bool DspDeviceNodeMock::dspReset(QString &cmdAnswer)
+bool DspDeviceNodeMock::dspReset()
 {
-    cmdAnswer = ACKString;
     return true;
 }
 
