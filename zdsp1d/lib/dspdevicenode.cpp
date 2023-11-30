@@ -1,5 +1,4 @@
 #include "dspdevicenode.h"
-#include "zeraglobal.h"
 #include <QFile>
 #include <fcntl.h>
 #include <unistd.h>
@@ -21,24 +20,22 @@ void DspDeviceNode::close()
     m_devFileDescriptor = -1;
 }
 
-bool DspDeviceNode::dspBoot(QString bootFileName, QString &cmdAnswer)
+bool DspDeviceNode::dspBoot(QString bootFileName)
 {
+    // We should not report errors here but this is an exception
+    // since there are two transactions
     QFile f (bootFileName);
     if (!f.open(QIODevice::Unbuffered | QIODevice::ReadOnly)) {
-        qWarning("error opening dsp boot file: %s", qPrintable(bootFileName));
-        cmdAnswer = ERRPATHString;
+        qCritical("Error opening dsp boot file: %s", qPrintable(bootFileName));
         return false;
     }
     QByteArray BootMem = f.readAll();
     f.close();
-    int r = ioctlDspBoot(BootMem.data()); // und booten
-    if ( r < 0 ) {
-        qWarning("error %d booting dsp device: %s", r, qPrintable(m_devNodeFileName));
-        cmdAnswer = ERREXECString; // fehler bei der ausführung
-        return false;
-    }
-    cmdAnswer = ACKString;
-    return true;
+
+    int r = ioctlDspBoot(BootMem.data());
+    if(r < 0)
+        qCritical("Error %d booting dsp device: %s", r, qPrintable(m_devNodeFileName));
+    return r >= 0;
 }
 
 bool DspDeviceNode::dspReset()

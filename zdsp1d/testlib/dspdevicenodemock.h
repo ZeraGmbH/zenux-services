@@ -10,7 +10,7 @@ public:
     int open(QString devNodeFileName) override;
     void close() override;
     bool dspReset() override;
-    bool dspBoot(QString bootFileName, QString &cmdAnswer) override;
+    bool dspBoot(QString bootFileName) override;
     int lseek(ulong adr) override;
     int write(const char* buf, int len) override;
     int read(char* buf, int len) override;
