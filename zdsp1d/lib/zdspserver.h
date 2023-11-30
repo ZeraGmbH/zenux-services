@@ -2,6 +2,7 @@
 #define ZDSP1D_H
 
 #include "scpicmdinterpreter.h"
+#include "pcbserver.h"
 #include "scpicmds.h"
 #include "rmconnection.h"
 #include "debugsettings.h"
@@ -26,7 +27,7 @@ class ZDspServer: public QObject, public cbIFace
 {
     Q_OBJECT
 public:
-    ZDspServer();
+    ZDspServer(ServerParams params = defaultParams);
     virtual ~ZDspServer();
     QString getServerVersion();
     virtual cZDSP1Client* AddClient(XiQNetPeer *m_pNetClient); // fügt einen client hinzu
@@ -50,6 +51,8 @@ signals:
     void abortInit();
 
 private:
+    static ServerParams defaultParams;
+    ServerParams m_params;
     int m_devFileDescriptor; // kerneltreiber wird nur 1x geöffnet und dann gehalten
     ScpiCmdInterpreter* m_cmdInterpreter = nullptr;
     XiQNetServer* myProtonetServer; // the real server that does the communication job

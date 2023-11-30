@@ -13,6 +13,7 @@ class MockPcbServer : public cPCBServer
 {
     Q_OBJECT
 public:
+    static ServerParams createParams(QString serviceName);
     MockPcbServer(QString serviceName);
     ~MockPcbServer();
     Zera::XMLConfig::cReader *getConfigReader();
@@ -30,7 +31,6 @@ private slots:
     void doIdentAndRegister();
     void onResourceRegisterRdy();
 private:
-    static ServerParams createParams(QString serviceName);
     XmlSettingsList m_xmlSettings;
     ResourcesList m_resources;
     int m_resourcesToConnect = 0;

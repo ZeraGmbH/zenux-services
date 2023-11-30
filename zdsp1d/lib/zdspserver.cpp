@@ -78,9 +78,10 @@ struct sigaction mySigAction;
 // sigset_t mySigmask, origSigmask;
 
 
-static ServerParams params {ServerName, ServerVersion, "/etc/zera/zdsp1d/zdsp1d.xsd", "/etc/zera/zdsp1d/zdsp1d.xml"};
+ServerParams ZDspServer::defaultParams {ServerName, ServerVersion, "/etc/zera/zdsp1d/zdsp1d.xsd", "/etc/zera/zdsp1d/zdsp1d.xml"};
 
-ZDspServer::ZDspServer()
+ZDspServer::ZDspServer(ServerParams params) :
+    m_params(params)
 {
     m_pInitializationMachine = new QStateMachine(this);
     myXMLConfigReader = new Zera::XMLConfig::cReader();
@@ -140,7 +141,7 @@ void ZDspServer::doConfiguration()
         fcntl( pipeFD[0], F_SETFL, O_NONBLOCK);
         m_pNotifier = new QSocketNotifier(pipeFD[0], QSocketNotifier::Read, this);
         connect(m_pNotifier, &QSocketNotifier::activated, this, &ZDspServer::DspIntHandler);
-        if (myXMLConfigReader->loadSchema(params.xsdFile)) {
+        if (myXMLConfigReader->loadSchema(m_params.xsdFile)) {
             // we want to initialize all settings first
             m_pDebugSettings = new cDebugSettings(myXMLConfigReader);
             connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pDebugSettings,&cDebugSettings::configXMLInfo);
@@ -149,13 +150,13 @@ void ZDspServer::doConfiguration()
             m_pDspSettings = new cDSPSettings(myXMLConfigReader);
             connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pDspSettings,&cDSPSettings::configXMLInfo);
 
-            if(!myXMLConfigReader->loadXMLFile(params.xmlFile)) {
-                qCritical("Abort: Could not open xml file '%s", qPrintable(params.xmlFile));
+            if(!myXMLConfigReader->loadXMLFile(m_params.xmlFile)) {
+                qCritical("Abort: Could not open xml file '%s", qPrintable(m_params.xmlFile));
                 emit abortInit();
             }
         }
         else {
-            qCritical("Abort: Could not open xsd file '%s", qPrintable(params.xsdFile));
+            qCritical("Abort: Could not open xsd file '%s", qPrintable(m_params.xsdFile));
             emit abortInit();
         }
     }
@@ -184,7 +185,7 @@ void ZDspServer::doSetupServer()
     }
     m_sDspDeviceNode = m_pDspSettings->getDeviceNode(); // we try to open the dsp device
     if (DspDevOpen() < 0) {
-        qCritical("Abort: Could not dsp device node '%s", qPrintable(m_sDspDeviceNode));
+        qCritical("Abort: Could not open dsp device node '%s", qPrintable(m_sDspDeviceNode));
         emit abortInit();
     }
     else {
