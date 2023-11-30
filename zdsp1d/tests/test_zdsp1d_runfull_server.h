@@ -7,7 +7,8 @@ class test_zdsp1d_runfull_server : public QObject
 {
     Q_OBJECT
 private slots:
-    void startServer();
+    void startProductionServerToSeeFailingMessages();
+    void startMockedServer();
 private:
     void feedEventLoop();
 };
