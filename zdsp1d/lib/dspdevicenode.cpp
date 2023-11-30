@@ -1,11 +1,17 @@
 #include "dspdevicenode.h"
+#include "zeraglobal.h"
+#include <QFile>
 #include <fcntl.h>
 #include <unistd.h>
 #include <sys/ioctl.h>
 
+const int DspDeviceNode::MAGIC_ID21262 = 0xAA55BB44;
+const int DspDeviceNode::MAGIC_ID21362 = 0xAA55CC33;
+
 int DspDeviceNode::open(QString devNodeFileName)
 {
     m_devFileDescriptor = ::open(devNodeFileName.toLatin1().data(), O_RDWR);
+    m_devNodeFileName = devNodeFileName;
     return m_devFileDescriptor;
 }
 
@@ -13,6 +19,26 @@ void DspDeviceNode::close()
 {
     ::close(m_devFileDescriptor);
     m_devFileDescriptor = -1;
+}
+
+bool DspDeviceNode::bootDsp(QString bootFileName, QString &cmdAnswer)
+{
+    QFile f (bootFileName);
+    if (!f.open(QIODevice::Unbuffered | QIODevice::ReadOnly)) {
+        qWarning("error opening dsp boot file: %s", qPrintable(bootFileName));
+        cmdAnswer = ERRPATHString;
+        return false;
+    }
+    QByteArray BootMem = f.readAll();
+    f.close();
+    int r = ioctlDspBoot(BootMem.data()); // und booten
+    if ( r < 0 ) {
+        qWarning("error %d booting dsp device: %s", r, qPrintable(m_devNodeFileName));
+        cmdAnswer = ERREXECString; // fehler bei der ausführung
+        return false;
+    }
+    cmdAnswer = ACKString;
+    return true;
 }
 
 int DspDeviceNode::lseek(ulong adr)

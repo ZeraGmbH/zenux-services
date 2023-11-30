@@ -1,4 +1,11 @@
 #include "dspdevicenodemock.h"
+#include "dspdevicenode.h"
+#include "zeraglobal.h"
+
+DspDeviceNodeMock::DspDeviceNodeMock(int dspMagicId) :
+    m_dspMagicId(dspMagicId)
+{
+}
 
 int DspDeviceNodeMock::open(QString devNodeFileName)
 {
@@ -8,6 +15,13 @@ int DspDeviceNodeMock::open(QString devNodeFileName)
 
 void DspDeviceNodeMock::close()
 {
+}
+
+bool DspDeviceNodeMock::bootDsp(QString bootFileName, QString &cmdAnswer)
+{
+    Q_UNUSED(bootFileName)
+    cmdAnswer = ACKString;
+    return true;
 }
 
 int DspDeviceNodeMock::lseek(ulong adr)
@@ -52,5 +66,7 @@ int DspDeviceNodeMock::ioctlDspRequestInt()
 
 int DspDeviceNodeMock::ioctlDspIoRead(unsigned long arg)
 {
+    if(arg == DspDeviceNode::MagicId)
+        return m_dspMagicId;
     return 0;
 }

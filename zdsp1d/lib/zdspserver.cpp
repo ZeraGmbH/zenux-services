@@ -7,12 +7,11 @@
 #include "dspvarparser.h"
 #include "scpi-zdsp.h"
 #include "pcbserver.h"
-#include "dspdevicenodeaccessinterface.h"
+#include "dspdevicenode.h"
 #include <QDebug>
 #include <QCoreApplication>
 #include <QFinalState>
 #include <QDataStream>
-#include <QFile>
 #include <QTcpServer>
 #include <QTextStream>
 #include <sys/ioctl.h>
@@ -422,22 +421,7 @@ QString ZDspServer::mResetDsp(QChar*)
 
 bool ZDspServer::bootDsp()
 {
-    QFile f (m_sDspBootPath);
-    if (!f.open(QIODevice::Unbuffered | QIODevice::ReadOnly)) {
-        qWarning("error opening dsp boot file: %s", qPrintable(m_sDspBootPath));
-        Answer = ERRPATHString;
-        return false;
-    }
-    QByteArray BootMem = f.readAll();
-    f.close();
-    int r = m_dspDevNode->ioctlDspBoot(BootMem.data()); // und booten
-    if ( r < 0 ) {
-        qWarning("error %d booting dsp device: %s", r, qPrintable(m_sDspDeviceNode));
-        Answer = ERREXECString; // fehler bei der ausführung
-        return false;
-    }
-    Answer = ACKString;
-    return true;
+    return m_dspDevNode->bootDsp(m_sDspBootPath, Answer);
 }
 
 bool ZDspServer::setSamplingSystem()
@@ -844,7 +828,7 @@ QString ZDspServer::mResetMaxima(QChar *)
 
 QString ZDspServer::mGetDeviceVersion()
 {
-    int r = m_dspDevNode->ioctlDspIoRead(VersionNr);
+    int r = m_dspDevNode->ioctlDspIoRead(DspDeviceNode::VersionNr);
     if ( r < 0 ) {
         qWarning("Error %d reading device version: %s", r, qPrintable(m_sDspDeviceNode));
         Answer = ERREXECString; // fehler bei der ausführung
@@ -1158,8 +1142,6 @@ QString ZDspServer::mMeasure(QChar *s)
 
 static constexpr int DSP_RUNNING = 0x80;
 
-static constexpr int MAGIC_ID21262 = 0xAA55BB44;
-static constexpr int MAGIC_ID21362 = 0xAA55CC33;
 static constexpr int dm32DspWorkSpaceBase21362 = 0xE0800;
 static constexpr int dm32UserWorkSpaceGlobal21262 = 0x87000;
 static constexpr int dm32UserWorkSpaceGlobal21362 = 0x9F000;
@@ -1173,13 +1155,12 @@ static constexpr int uwSpaceSize21362 = 32383;
 bool ZDspServer::setDspType()
 {
     int r = readMagicId();
-    if ( r == MAGIC_ID21262 ) {
+    if ( r == DspDeviceNode::MAGIC_ID21262 ) {
         UserWorkSpaceGlobalSegmentAdr = dm32UserWorkSpaceGlobal21262;
         return m_sDspBootPath.contains("zdsp21262.ldr");
         // adressen im dsp stehen für adsp21262 default richtig
     }
-    else
-    if ( r == MAGIC_ID21362) {
+    else if ( r == DspDeviceNode::MAGIC_ID21362) {
         UserWorkSpaceGlobalSegmentAdr = dm32UserWorkSpaceGlobal21362;
         if (m_sDspBootPath.contains("zdsp21362.ldr")) {
             // für adsp21362 schreiben wir die adressen um
@@ -1209,18 +1190,18 @@ bool ZDspServer::setDspType()
 
 int ZDspServer::readMagicId()
 {
-    return m_dspDevNode->ioctlDspIoRead(MagicId);
+    return m_dspDevNode->ioctlDspIoRead(DspDeviceNode::MagicId);
 }
 
 bool ZDspServer::Test4HWPresent()
 {
     int r = readMagicId();
-    return ( (r == MAGIC_ID21262) || (r == MAGIC_ID21362));
+    return ( (r == DspDeviceNode::MAGIC_ID21262) || (r == DspDeviceNode::MAGIC_ID21362));
 }
 
 bool ZDspServer::Test4DspRunning()
 {
-    int r = m_dspDevNode->ioctlDspIoRead(DSPStat);
+    int r = m_dspDevNode->ioctlDspIoRead(DspDeviceNode::DSPStat);
     return ((r & DSP_RUNNING) > 0);
 }
 
