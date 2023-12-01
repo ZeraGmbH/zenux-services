@@ -1,7 +1,7 @@
 file(GLOB HEADERS
     ${CMAKE_CURRENT_SOURCE_DIR}/*.h
     ${CMAKE_CURRENT_SOURCE_DIR}/async-notifications/*.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/kernel-dev-node-io/*.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/device-nodes/*.h
     ${CMAKE_CURRENT_SOURCE_DIR}/meas-channels/*.h
     ${CMAKE_CURRENT_SOURCE_DIR}/micro-controller-io/*.h
     ${CMAKE_CURRENT_SOURCE_DIR}/resources/*.h
@@ -13,7 +13,7 @@ file(GLOB HEADERS
 file(GLOB SOURCES 
     ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/async-notifications/*.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/kernel-dev-node-io/*.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/device-nodes/*.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/meas-channels/*.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/micro-controller-io/*.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/resources/*.cpp
@@ -47,7 +47,7 @@ target_include_directories(zenuxservicecommon
     $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/async-notifications>
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/kernel-dev-node-io>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/device-nodes>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/meas-channels>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/micro-controller-io>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/resources>
