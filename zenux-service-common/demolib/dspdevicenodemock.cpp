@@ -1,5 +1,4 @@
 #include "dspdevicenodemock.h"
-#include "dspdevicenode.h"
 
 DspDeviceNodeMock::DspDeviceNodeMock(int dspMagicId) :
     m_dspMagicId(dspMagicId)
@@ -56,9 +55,17 @@ int DspDeviceNodeMock::dspRequestInt()
     return 0;
 }
 
-int DspDeviceNodeMock::ioctlDspIoRead(unsigned long arg)
+int DspDeviceNodeMock::dspGetMagicId()
 {
-    if(arg == DspDeviceNode::MagicId)
-        return m_dspMagicId;
+    return m_dspMagicId;
+}
+
+bool DspDeviceNodeMock::dspIsRunning()
+{
+    return true;
+}
+
+int DspDeviceNodeMock::lcaRawVersion()
+{
     return 0;
 }

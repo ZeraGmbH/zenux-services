@@ -828,7 +828,7 @@ QString ZDspServer::mResetMaxima(QChar *)
 QString ZDspServer::getLcaAndDspVersion()
 {
     // LCA
-    int rawLcaVersion = m_dspDevNode->ioctlDspIoRead(DspDeviceNode::VersionNr);
+    int rawLcaVersion = m_dspDevNode->lcaRawVersion();
     if ( rawLcaVersion < 0 ) {
         qWarning("Error %d reading device version: %s", rawLcaVersion, qPrintable(m_sDspDeviceNode));
         return ZSCPI::scpiAnswer[ZSCPI::errexec]; // fehler bei der ausführung
@@ -1139,7 +1139,6 @@ QString ZDspServer::mMeasure(QChar *s)
     return Answer;
 }
 
-static constexpr int DSP_RUNNING = 0x80;
 
 static constexpr int dm32DspWorkSpaceBase21362 = 0xE0800;
 static constexpr int dm32UserWorkSpaceGlobal21262 = 0x87000;
@@ -1189,7 +1188,7 @@ bool ZDspServer::setDspType()
 
 int ZDspServer::readMagicId()
 {
-    return m_dspDevNode->ioctlDspIoRead(DspDeviceNode::MagicId);
+    return m_dspDevNode->dspGetMagicId();
 }
 
 bool ZDspServer::Test4HWPresent()
@@ -1200,8 +1199,7 @@ bool ZDspServer::Test4HWPresent()
 
 bool ZDspServer::Test4DspRunning()
 {
-    int r = m_dspDevNode->ioctlDspIoRead(DspDeviceNode::DSPStat);
-    return ((r & DSP_RUNNING) > 0);
+    return m_dspDevNode->dspIsRunning();
 }
 
 QString ZDspServer::mDspMemoryRead(QChar* s)
