@@ -87,7 +87,7 @@ private:
     QString mResetDsp(QChar*);
     QString mBootDsp(QChar*);
     QString mGetPCBSerialNumber();
-    QString mGetDeviceVersion();
+    QString getLcaAndDspVersion();
     QString mSetSamplingSystem(QChar*);
     QString mGetSamplingSystem();
     QString mSetCommEncryption(QChar*);
@@ -145,7 +145,6 @@ private:
     bool Test4DspRunning();
     cZDSP1Client* GetClient(int s);
     cZDSP1Client* GetClient(XiQNetPeer* peer);
-    QString m_sDspDeviceVersion; // version der hardware
     QString m_sDspSerialNumber; // seriennummer der hardware
     QString m_sDspDeviceNode; // für den zugriff zur hardware
     QString m_sDspBootPath;

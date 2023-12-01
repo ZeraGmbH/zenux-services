@@ -146,7 +146,7 @@ void ZDspServer::doSetupServer()
 {
     DspVarParser* parser = new(DspVarParser); // das ist der parser
     m_cmdInterpreter = new ScpiCmdInterpreter(this, InitCmdTree(), parser); // das ist der kommando interpreter
-    m_sDspDeviceVersion = m_sDspSerialNumber = "Unknown"; // kennen wir erst mal nicht
+    m_sDspSerialNumber = "Unknown"; // kennen wir erst mal nicht
     m_sDspBootPath = m_pDspSettings->getBootFile();
     ActivatedCmdList = 0; // der derzeit aktuelle kommando listen satz (0,1)
 
@@ -825,22 +825,22 @@ QString ZDspServer::mResetMaxima(QChar *)
     return mCommand2Dsp(ss =  QString("DSPCMDPAR,3;"));
 }
 
-QString ZDspServer::mGetDeviceVersion()
+QString ZDspServer::getLcaAndDspVersion()
 {
-    int r = m_dspDevNode->ioctlDspIoRead(DspDeviceNode::VersionNr);
-    if ( r < 0 ) {
-        qWarning("Error %d reading device version: %s", r, qPrintable(m_sDspDeviceNode));
-        Answer = ZSCPI::scpiAnswer[ZSCPI::errexec]; // fehler bei der ausführung
-        return Answer.toLatin1().data();
+    // LCA
+    int rawLcaVersion = m_dspDevNode->ioctlDspIoRead(DspDeviceNode::VersionNr);
+    if ( rawLcaVersion < 0 ) {
+        qWarning("Error %d reading device version: %s", rawLcaVersion, qPrintable(m_sDspDeviceNode));
+        return ZSCPI::scpiAnswer[ZSCPI::errexec]; // fehler bei der ausführung
     }
-    cZDSP1Client* cl = GetClient(m_actualSocket);
+    // DSP
+    cZDSP1Client* client = GetClient(m_actualSocket);
     QString p = "VNR,1;";
-    p = cl->DspVarListRead(p);  // ab "VNR"  1 wort lesen
+    p = client->DspVarListRead(p);  // ab "VNR"  1 wort lesen
     p = p.section(':',1,1);
     p = p.remove(';');
-    double d = p.toDouble();
-    m_sDspDeviceVersion = QString("DSPLCA: V%1.%2;DSP V%3").arg((r >>8) & 0xff).arg(r & 0xff).arg(d,0,'f',2);
-    return m_sDspDeviceVersion;
+    double dspVersionFloat = p.toDouble();
+    return QString("DSPLCA: V%1.%2;DSP V%3").arg((rawLcaVersion >>8) & 0xff).arg(rawLcaVersion & 0xff).arg(dspVersionFloat, 0, 'f', 2);;
 }
 
 QString ZDspServer::getServerVersion()
@@ -1451,7 +1451,7 @@ QString ZDspServer::SCPIQuery( SCPICmdType cmd)
     switch ((int)cmd)
     {
     case 		GetPCBSerialNumber: 	return mGetPCBSerialNumber();
-    case 		GetDeviceVersion:		return mGetDeviceVersion();
+    case 		GetDeviceVersion:		return getLcaAndDspVersion();
     case 		GetServerVersion: 		return getServerVersion();
     case		GetDeviceLoadMax: 	return mGetDeviceLoadMax();
     case 		GetDeviceLoadAct: 	return mGetDeviceLoadAct();
