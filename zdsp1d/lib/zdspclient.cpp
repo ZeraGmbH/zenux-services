@@ -389,20 +389,19 @@ bool cZDSP1Client::DspVar(QString& s,float& fr)
 
 TDspVar* cZDSP1Client::DspVarRead(QString& s, QByteArray* ba)
 {
-    bool ok;
-
     QString name = s.section(",",0,0);
     TDspVar *DspVar;
 
-    if ( (DspVar = m_dspVarResolver.getDspVar(name)) == 0) return 0; // fehler, den namen gibt es nicht
+    if ( (DspVar = m_dspVarResolver.getDspVar(name)) == 0)
+        return nullptr; // fehler, den namen gibt es nicht
 
     QString p = s.section(",",1,1);
+    bool ok;
     int n = p.toInt(&ok);
-    if (!ok || (n<1) ) return 0; // fehler in der anzahl der elemente
+    if (!ok || (n<1) )
+        return nullptr; // fehler in der anzahl der elemente
 
     ba->resize(4*n);
-
-
 
     if ( (m_myServer->DspDevSeek(DspVar->adr) >= 0) && (m_myServer->DspDevRead(ba->data(), n*4 ) >= 0) )
         return DspVar; // dev.  seek und dev. read ok
@@ -417,12 +416,9 @@ char* cZDSP1Client::qSEncryption(char* ch,int n )
     short* tm2=new short[n+1]; // sind dopp elt soviele bytes wie in ba (+2)
     tm1=(char*) tm2; // zeiger um daten an string zu koppeln
     char c;
-    for (int j=0;j<n;j++,ch++)
-    {
+    for (int j=0;j<n;j++,ch++) {
         c=*ch;
         *tm2++ = (((c << 4) | c) & 0x0F0F) | 0x3030;
-        //  *tm2++=((c>>4) & 0xF) | 0x30;
-        //  *tm2++=(c & 0xF) | 0x30;
     }
     *tm2='!'; // delimiter ! weil ; in daten sein kann . die 0 als abschluss ist hier drin ....ich weiß
     return tm1;
@@ -576,10 +572,13 @@ bool cZDSP1Client::DspVarWrite(QString& s)
             }
         }
 
-        if (!ok2) break;
+        if (!ok2)
+            break;
         if (n>0) {
-            if (m_myServer->DspDevSeek(adr) < 0) break; // file positionieren
-            if (m_myServer->DspDevWrite(ba.data(), n*4 ) < 0) break; // fehler beim schreiben
+            if (m_myServer->DspDevSeek(adr) < 0)
+                break; // file positionieren
+            if (m_myServer->DspDevWrite(ba.data(), n*4 ) < 0)
+                break; // fehler beim schreiben
         }
     }
     return ok;
