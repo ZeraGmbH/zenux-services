@@ -1,6 +1,5 @@
 #include "zdspclient.h"
 #include "zdspserver.h"
-#include "zeraglobal.h"
 #include "zscpi_response_definitions.h"
 #include <QDataStream>
 
@@ -477,7 +476,8 @@ QString& cZDSP1Client::DspVarListRead(QString& s)
             }
         };
     }
-    if (!ok) sOutput=ERREXECString;
+    if (!ok)
+        sOutput = ZSCPI::scpiAnswer[ZSCPI::errexec];
     return sOutput;
 }
 
@@ -487,7 +487,7 @@ QString cZDSP1Client::DspVarWriteRM(QString& s)
     if ( DspVarWrite(s) )
         return ZSCPI::scpiAnswer[ZSCPI::ack];
     else
-        return ERREXECString;
+        return ZSCPI::scpiAnswer[ZSCPI::errexec];
 }
 
 
