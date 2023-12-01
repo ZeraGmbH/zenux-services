@@ -16,7 +16,6 @@ private slots:
     void getDspLcaVersion();
     void getServerVersion();
 private:
-    void feedEventLoop();
     std::unique_ptr<ResmanRunFacade> m_resman;
     std::unique_ptr<MockZdsp1d> m_zsdp1d;
 };

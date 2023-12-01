@@ -2,7 +2,7 @@
 #include "proxy.h"
 #include "dspinterface.h"
 #include "reply.h"
-#include <QAbstractEventDispatcher>
+#include <timemachineobject.h>
 #include <QSignalSpy>
 #include <QTest>
 
@@ -16,17 +16,17 @@ void test_mockservice_zdsp1d::initTestCase()
 void test_mockservice_zdsp1d::init()
 {
     m_resman = std::make_unique<ResmanRunFacade>();
-    feedEventLoop();
+    TimeMachineObject::feedEventLoop();
     m_zsdp1d = std::make_unique<MockZdsp1d>();
-    feedEventLoop();
+    TimeMachineObject::feedEventLoop();
 }
 
 void test_mockservice_zdsp1d::cleanup()
 {
     m_zsdp1d = nullptr;
-    feedEventLoop();
+    TimeMachineObject::feedEventLoop();
     m_resman = nullptr;
-    feedEventLoop();
+    TimeMachineObject::feedEventLoop();
 }
 
 void test_mockservice_zdsp1d::getDspLcaVersion()
@@ -36,11 +36,11 @@ void test_mockservice_zdsp1d::getDspLcaVersion()
     dspIFace.setClientSmart(dspClient);
 
     Zera::Proxy::getInstance()->startConnectionSmart(dspClient);
-    feedEventLoop();
+    TimeMachineObject::feedEventLoop();
 
     QSignalSpy responseSpy(&dspIFace, &Zera::cDSPInterface::serverAnswer);
     int msgNr = dspIFace.readDeviceVersion();
-    feedEventLoop();
+    TimeMachineObject::feedEventLoop();
 
     QCOMPARE(responseSpy.count(), 1);
     QCOMPARE(responseSpy[0][0], QVariant(msgNr));
@@ -55,19 +55,14 @@ void test_mockservice_zdsp1d::getServerVersion()
     dspIFace.setClientSmart(dspClient);
 
     Zera::Proxy::getInstance()->startConnectionSmart(dspClient);
-    feedEventLoop();
+    TimeMachineObject::feedEventLoop();
 
     QSignalSpy responseSpy(&dspIFace, &Zera::cDSPInterface::serverAnswer);
     int msgNr = dspIFace.readServerVersion();
-    feedEventLoop();
+    TimeMachineObject::feedEventLoop();
 
     QCOMPARE(responseSpy.count(), 1);
     QCOMPARE(responseSpy[0][0], QVariant(msgNr));
     QCOMPARE(responseSpy[0][1], QVariant(ack));
     QCOMPARE(responseSpy[0][2], QVariant("zdsp1d V1.11"));
-}
-
-void test_mockservice_zdsp1d::feedEventLoop()
-{
-    while(QCoreApplication::eventDispatcher()->processEvents(QEventLoop::AllEvents));
 }

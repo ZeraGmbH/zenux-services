@@ -11,8 +11,6 @@ private slots:
     void connectServer();
     void connectInvalidIp();
     void getFoutCat();
-private:
-    void feedEventLoop();
 };
 
 #endif // TEST_MOCKSERVICE_MT310S2D_H
