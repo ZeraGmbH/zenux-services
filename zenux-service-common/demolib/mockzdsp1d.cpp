@@ -1,12 +1,8 @@
 #include "mockzdsp1d.h"
+#include "mockpcbserver.h"
+#include "dspdevicenodemock.h"
 
-MockZdsp1d::MockZdsp1d() :
-    MockPcbServer("zdsp1d")
+MockZdsp1d::MockZdsp1d(int dspMagicId) :
+    ZDspServer(std::make_unique<DspDeviceNodeMock>(dspMagicId), MockPcbServer::createParams("zdsp1d"))
 {
-    m_dspSettings = std::make_unique<cDSPSettings>(getConfigReader());
-    setXmlSettings(XmlSettingsList{m_dspSettings.get()});
-
-    // zdsp1d resources are to be implemented
-
-    start();
 }

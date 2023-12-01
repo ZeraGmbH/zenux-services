@@ -52,3 +52,23 @@ target_link_libraries(zdsp1d-lib
     Zera::zera-xmlconfig
     zenuxservicecommon
     )
+
+set_target_properties(zdsp1d-lib PROPERTIES VERSION ${PROJECT_VERSION})
+set_target_properties(zdsp1d-lib PROPERTIES SOVERSION ${PROJECT_VERSION_MAJOR})
+
+generate_export_header(zdsp1d-lib)
+install(FILES
+    ${CMAKE_CURRENT_BINARY_DIR}/zdsp1d-lib_export.h
+    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/zdsp1d-lib
+    )
+
+export(TARGETS zdsp1d-lib NAMESPACE Zera:: FILE ZenuxServicesTargets.cmake)
+install(TARGETS zdsp1d-lib
+    EXPORT ZenuxServicesExport
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    )
+
+install(
+    FILES ${HEADER}
+    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/zdsp1d-lib
+    )

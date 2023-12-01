@@ -1,16 +1,15 @@
 #ifndef MOCKZDSP1D_H
 #define MOCKZDSP1D_H
 
-#include "mockpcbserver.h"
-#include "dspsettings.h"
+#include "zdspserver.h"
+#include "dspdevicenode.h"
 #include <memory>
 
-class MockZdsp1d : public MockPcbServer
+class MockZdsp1d : public ZDspServer
 {
 public:
-    MockZdsp1d();
+    MockZdsp1d(int dspMagicId = DspDeviceNode::MAGIC_ID21362);
 private:
-    std::unique_ptr<cDSPSettings> m_dspSettings;
 };
 
 #endif // MOCKZDSP1D_H
