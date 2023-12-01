@@ -88,6 +88,28 @@ int DspDeviceNode::dspRequestInt()
     return ioctl(m_devFileDescriptor, ADSP_INT_REQ);
 }
 
+// enum zum lesen von dsp port adressen über ioctl
+// Serial Port Interface,  Serial Interface, DSP Ctrl Register, what ?, the device name
+enum IOCTL {SPI, Serial, DSPCtrl, DSPStat, DSPCfg, VersionNr, MagicId};
+
+int DspDeviceNode::dspGetMagicId()
+{
+    return ioctlDspIoRead(MagicId);
+}
+
+bool DspDeviceNode::dspIsRunning()
+{
+    constexpr int DSP_RUNNING = 0x80;
+    int r = ioctlDspIoRead(DSPStat);
+    return ((r & DSP_RUNNING) > 0);
+
+}
+
+int DspDeviceNode::lcaRawVersion()
+{
+    return ioctlDspIoRead(VersionNr);
+}
+
 int DspDeviceNode::ioctlDspIoRead(unsigned long arg)
 {
     return ioctl(m_devFileDescriptor, IO_READ, arg);
