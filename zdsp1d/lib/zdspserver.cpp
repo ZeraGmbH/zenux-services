@@ -14,7 +14,6 @@
 #include <QDataStream>
 #include <QTcpServer>
 #include <QTextStream>
-#include <sys/ioctl.h>
 #include <fcntl.h>
 #include <signal.h>
 #include <unistd.h>
@@ -43,9 +42,6 @@ static char devnavail[10]= "not avail";
 static char dsprunning[8] = "running";
 static char dspnrunning[12]= "not running";
 
-
-/* globaler zeiger auf  "den"  server und eine signal behandlungsroutine */
-ZDspServer* DSPServer;
 
 int pipeFD[2];
 void SigHandler(int)
@@ -151,7 +147,6 @@ void ZDspServer::doSetupServer()
     m_cmdInterpreter = new ScpiCmdInterpreter(this, InitCmdTree(), parser); // das ist der kommando interpreter
     m_sDspDeviceVersion = m_sDspSerialNumber = "Unknown"; // kennen wir erst mal nicht
     m_sDspBootPath = m_pDspSettings->getBootFile();
-    DSPServer = this;
     ActivatedCmdList = 0; // der derzeit aktuelle kommando listen satz (0,1)
 
     myProtonetServer =  new XiQNetServer(this);
