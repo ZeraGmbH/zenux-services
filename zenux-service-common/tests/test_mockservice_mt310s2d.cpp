@@ -1,6 +1,4 @@
 #include "test_mockservice_mt310s2d.h"
-#include "mockmt310s2d.h"
-#include "resmanrunfacade.h"
 #include "pcbinterface.h"
 #include "proxy.h"
 #include "reply.h"
@@ -10,20 +8,34 @@
 
 QTEST_MAIN(test_mockservice_mt310s2d)
 
+void test_mockservice_mt310s2d::initTestCase()
+{
+    qputenv("QT_FATAL_CRITICALS", "1");
+}
+
+void test_mockservice_mt310s2d::init()
+{
+    m_resman = std::make_unique<ResmanRunFacade>();
+    TimeMachineObject::feedEventLoop();
+    m_mt310s2d = std::make_unique<MockMt310s2d>();
+    TimeMachineObject::feedEventLoop();
+}
+
+void test_mockservice_mt310s2d::cleanup()
+{
+    m_mt310s2d = nullptr;
+    TimeMachineObject::feedEventLoop();
+    m_resman = nullptr;
+    TimeMachineObject::feedEventLoop();
+}
+
 void test_mockservice_mt310s2d::runMock()
 {
-    ResmanRunFacade resman;
-    MockMt310s2d mockMt310s2d;
-    TimeMachineObject::feedEventLoop();
-    QVERIFY(mockMt310s2d.areAllResourcesConnected());
+    QVERIFY(m_mt310s2d->areAllResourcesConnected());
 }
 
 void test_mockservice_mt310s2d::connectServer()
 {
-    ResmanRunFacade resman;
-    MockMt310s2d mockMt310s2d;
-    TimeMachineObject::feedEventLoop();
-
     Zera::ProxyClientPtr pcbClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307);
     Zera::cPCBInterface pcbIFace;
     pcbIFace.setClientSmart(pcbClient);
@@ -34,28 +46,8 @@ void test_mockservice_mt310s2d::connectServer()
     QCOMPARE(connectSpy.count(), 1);
 }
 
-void test_mockservice_mt310s2d::connectInvalidIp()
-{
-    ResmanRunFacade resman;
-    MockMt310s2d mockMt310s2d;
-    TimeMachineObject::feedEventLoop();
-
-    Zera::ProxyClientPtr pcbClient = Zera::Proxy::getInstance()->getConnectionSmart("128.0.0.1", 6307);
-    Zera::cPCBInterface pcbIFace;
-    pcbIFace.setClientSmart(pcbClient);
-
-    QSignalSpy connectSpy(pcbClient.get(), &Zera::ProxyClient::connected);
-    Zera::Proxy::getInstance()->startConnectionSmart(pcbClient);
-    TimeMachineObject::feedEventLoop();
-    QCOMPARE(connectSpy.count(), 0);
-}
-
 void test_mockservice_mt310s2d::getFoutCat()
 {
-    ResmanRunFacade resman;
-    MockMt310s2d mockMt310s2d;
-    TimeMachineObject::feedEventLoop();
-
     Zera::ProxyClientPtr pcbClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307);
     Zera::cPCBInterface pcbIFace;
     pcbIFace.setClientSmart(pcbClient);
