@@ -22,7 +22,6 @@ set(HEADER
     scpicmds.h
     scpi-zdsp.h
     zdspserver.h
-    zeraglobal.h
     zdspclient.h
     )
 

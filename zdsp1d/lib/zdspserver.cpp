@@ -1,7 +1,6 @@
 // implementation des eigenlichen servers zdsp1(d)
 
 #include "zdspclient.h"
-#include "zeraglobal.h"
 #include "zdspserver.h"
 #include "dsp.h"
 #include "dspvarparser.h"
@@ -16,8 +15,6 @@
 #include <QTcpServer>
 #include <QTextStream>
 #include <sys/ioctl.h>
-#include <netdb.h>
-#include <netinet/in.h>
 #include <fcntl.h>
 #include <signal.h>
 #include <unistd.h>
@@ -398,7 +395,7 @@ QString ZDspServer::mTestDsp(QChar* s)
         }
     }
     else
-        Answer = ERRVALString; // fehler wert
+        Answer = ZSCPI::scpiAnswer[ZSCPI::errval]; // fehler wert
     return Answer;
 }
 
@@ -409,7 +406,7 @@ bool ZDspServer::resetDsp()
         Answer = ZSCPI::scpiAnswer[ZSCPI::ack];
     else {
         qCritical("Error on dsp device reset");
-        Answer = ERREXECString;
+        Answer = ZSCPI::scpiAnswer[ZSCPI::errexec];
     }
     return ok;
 }
@@ -426,7 +423,7 @@ bool ZDspServer::bootDsp()
     if(ok)
         Answer = ZSCPI::scpiAnswer[ZSCPI::ack];
     else
-        Answer = ERREXECString;
+        Answer = ZSCPI::scpiAnswer[ZSCPI::errexec];
     return ok;
 }
 
@@ -462,7 +459,7 @@ QString ZDspServer::mCommand2Dsp(QString& qs)
     cZDSP1Client cl(0, 0, this);
     do
     {
-        Answer = ERREXECString;
+        Answer = ZSCPI::scpiAnswer[ZSCPI::errexec];
         int ack;
 
         QString ss;
@@ -470,7 +467,7 @@ QString ZDspServer::mCommand2Dsp(QString& qs)
 
         if ( ack ==  InProgress)
         {
-            Answer = BUSYString;
+            Answer = ZSCPI::scpiAnswer[ZSCPI::busy];
             break;
         }
 
@@ -496,14 +493,13 @@ QString ZDspServer::mSetCommEncryption(QChar *s)
     bool ok;
     QString par = m_cmdInterpreter->m_pParser->GetKeyword(&s); // holt den parameter aus dem kommando
     int enc=par.toInt(&ok);
-    if ((ok) && ( (enc==0) || (enc==1) ))
-    {
+    if ((ok) && ( (enc==0) || (enc==1) )) {
         cZDSP1Client* cl = GetClient(m_actualSocket);
         cl->SetEncryption(enc);
         Answer = ZSCPI::scpiAnswer[ZSCPI::ack]; // acknowledge
     }
     else
-        Answer = ERRVALString; // fehler wert
+        Answer = ZSCPI::scpiAnswer[ZSCPI::errval]; // fehler wert
 
     return Answer;
 }
@@ -512,7 +508,7 @@ QString ZDspServer::mGetSamplingSystem()
 {
     do
     {
-        Answer = ERREXECString;
+        Answer = ZSCPI::scpiAnswer[ZSCPI::errexec];
         int n, ss, sm;
 
         cZDSP1Client* cl = GetClient(m_actualSocket);
@@ -555,7 +551,7 @@ QString ZDspServer::mSetEN61850SourceAdr(QChar* s)
     else
         do
     {
-        Answer = ERREXECString; // vorbesetzen
+        Answer = ZSCPI::scpiAnswer[ZSCPI::errexec]; // vorbesetzen
         QString as;
         cZDSP1Client* cl = GetClient(m_actualSocket);
         if (!cl->DspVarRead(as = "ETHDESTSOURCEADRESS,3", &ba)) break;
@@ -589,7 +585,7 @@ QString ZDspServer::mSetEN61850DestAdr(QChar *s)
         Answer = ZSCPI::scpiAnswer[ZSCPI::nak];
     else
         do {
-            Answer = ERREXECString; // vorbesetzen
+            Answer = ZSCPI::scpiAnswer[ZSCPI::errexec]; // vorbesetzen
             cZDSP1Client* cl = GetClient(m_actualSocket);
             QString as;
             QByteArray ba;
@@ -612,7 +608,7 @@ QString ZDspServer::mSetEN61850EthTypeAppId(QChar *s)
     QString ss;
     cZDSP1Client* cl = GetClient(m_actualSocket);
     if (! cl->DspVarWrite(ss = QString("ETHTYPEAPPID,%1;").arg(QString(s))) )
-        Answer = ERREXECString;
+        Answer = ZSCPI::scpiAnswer[ZSCPI::errexec];
     else
         Answer = ZSCPI::scpiAnswer[ZSCPI::ack];
     return Answer;
@@ -630,7 +626,7 @@ QString ZDspServer::mGetEN61850EthTypeAppId()
         ts << dataCount[0];
     }
     else
-        Answer = ERREXECString;
+        Answer = ZSCPI::scpiAnswer[ZSCPI::errexec];
     return Answer;
 }
 
@@ -639,7 +635,7 @@ QString ZDspServer::mSetEN61850PriorityTagged(QChar *s)
     QString ss;
     cZDSP1Client* cl = GetClient(m_actualSocket);
     if (! cl->DspVarWrite(ss = QString("ETHPRIORITYTAGGED,%1;").arg(QString(s))) )
-        Answer = ERREXECString;
+        Answer = ZSCPI::scpiAnswer[ZSCPI::errexec];
     else
         Answer = ZSCPI::scpiAnswer[ZSCPI::ack];
     return Answer;
@@ -657,7 +653,7 @@ QString ZDspServer::mGetEN61850PriorityTagged()
         ts << dataCount[0];
     }
     else
-        Answer = ERREXECString;
+        Answer = ZSCPI::scpiAnswer[ZSCPI::errexec];
     return Answer;
 }
 
@@ -667,7 +663,7 @@ QString ZDspServer::mSetEN61850EthSync(QChar *s)
     QString ss;
     cZDSP1Client* cl = GetClient(m_actualSocket);
     if (! cl->DspVarWrite(ss = QString("SYNCASDU,%1;").arg(QString(s))) )
-        Answer = ERREXECString;
+        Answer = ZSCPI::scpiAnswer[ZSCPI::errexec];
     else
         Answer = ZSCPI::scpiAnswer[ZSCPI::ack];
     return Answer;
@@ -685,7 +681,7 @@ QString ZDspServer::mGetEN61850EthSync()
         ts << dataCount[0];
     }
     else
-        Answer = ERREXECString;
+        Answer = ZSCPI::scpiAnswer[ZSCPI::errexec];
     return Answer;
 }
 
@@ -694,7 +690,7 @@ QString ZDspServer::mSetEN61850DataCount(QChar *s)
     QString ss;
     cZDSP1Client* cl = GetClient(m_actualSocket);
     if (! cl->DspVarWrite(ss = QString("ETHDATACOUNT,%1;").arg(QString(s))) )
-        Answer = ERREXECString;
+        Answer = ZSCPI::scpiAnswer[ZSCPI::errexec];
     else
         Answer = ZSCPI::scpiAnswer[ZSCPI::ack];
 
@@ -713,7 +709,7 @@ QString ZDspServer::mGetEN61850DataCount()
         ts << dataCount[0] << "," << dataCount[1];
     }
     else
-        Answer = ERREXECString;
+        Answer = ZSCPI::scpiAnswer[ZSCPI::errexec];
     return Answer;
 }
 
@@ -722,7 +718,7 @@ QString ZDspServer::mSetEN61850SyncLostCount(QChar *s)
     QString ss;
     cZDSP1Client* cl = GetClient(m_actualSocket);
     if (! cl->DspVarWrite(ss = QString("ETHSYNCLOSTCOUNT,%1;").arg(QString(s))) )
-        Answer = ERREXECString;
+        Answer = ZSCPI::scpiAnswer[ZSCPI::errexec];
     else
         Answer = ZSCPI::scpiAnswer[ZSCPI::ack];
 
@@ -742,7 +738,7 @@ QString ZDspServer::mGetEN61850SyncLostCount()
         ts << dataCount[0];
     }
     else
-        Answer = ERREXECString;
+        Answer = ZSCPI::scpiAnswer[ZSCPI::errexec];
     return Answer;
 }
 
@@ -763,7 +759,7 @@ QString ZDspServer::mGetEN61850SourceAdr()
         ts << adr[i] << ";";
     }
     else
-        Answer = ERREXECString;
+        Answer = ZSCPI::scpiAnswer[ZSCPI::errexec];
     return Answer;
 }
 
@@ -784,17 +780,17 @@ QString ZDspServer::mGetEN61850DestAdr()
         ts << adr[i] << ";";
     }
     else
-        Answer = ERREXECString;
+        Answer = ZSCPI::scpiAnswer[ZSCPI::errexec];
     return Answer;
 }
 
 QString ZDspServer::mSetDspCommandStat(QChar *s)
 {
-    Answer = ERREXECString;
+    Answer = ZSCPI::scpiAnswer[ZSCPI::errexec];
     QString ss;
     cZDSP1Client* cl = GetClient(m_actualSocket);
     if (! cl->DspVarWrite(ss = QString("DSPACK,%1;").arg(QString(s))) )
-        Answer = ERREXECString;
+        Answer = ZSCPI::scpiAnswer[ZSCPI::errexec];
     else
         Answer = ZSCPI::scpiAnswer[ZSCPI::ack];
     return Answer;
@@ -806,7 +802,7 @@ QString ZDspServer::mGetDspCommandStat()
     cZDSP1Client* cl = GetClient(m_actualSocket);
     QString s;
     if (! cl->DspVar(s = "DSPACK",stat))
-        Answer = ERREXECString;
+        Answer = ZSCPI::scpiAnswer[ZSCPI::errexec];
     else
         Answer = QString("%1").arg(stat);
     return Answer;
@@ -838,7 +834,7 @@ QString ZDspServer::mGetDeviceVersion()
     int r = m_dspDevNode->ioctlDspIoRead(DspDeviceNode::VersionNr);
     if ( r < 0 ) {
         qWarning("Error %d reading device version: %s", r, qPrintable(m_sDspDeviceNode));
-        Answer = ERREXECString; // fehler bei der ausführung
+        Answer = ZSCPI::scpiAnswer[ZSCPI::errexec]; // fehler bei der ausführung
         return Answer.toLatin1().data();
     }
     cZDSP1Client* cl = GetClient(m_actualSocket);
@@ -1064,7 +1060,7 @@ QString ZDspServer::mUnloadCmdList(QChar *)
     cl->SetActive(false);
     BuildDSProgram(error); // wir bauen neu
     if (!LoadDSProgram()) // und laden
-        Answer = ERREXECString;
+        Answer = ZSCPI::scpiAnswer[ZSCPI::errexec];
     else
         Answer = ZSCPI::scpiAnswer[ZSCPI::ack];
     return Answer;
@@ -1078,7 +1074,7 @@ QString ZDspServer::mLoadCmdList(QChar *)
     cl->SetActive(true);
     if (BuildDSProgram(errs)) { // die cmdlisten und die variablen waren schlüssig
         if (!LoadDSProgram()) {
-            Answer = ERREXECString;
+            Answer = ZSCPI::scpiAnswer[ZSCPI::errexec];
             cl->SetActive(false);
         }
         else
@@ -1086,7 +1082,7 @@ QString ZDspServer::mLoadCmdList(QChar *)
     }
     else {
         cl->SetActive(false);
-        Answer = QString("%1 %2").arg(ERRVALString).arg(errs); // das "fehlerhafte" kommando anhängen
+        Answer = QString("%1 %2").arg(ZSCPI::scpiAnswer[ZSCPI::errval]).arg(errs); // das "fehlerhafte" kommando anhängen
     }
     count++;
     qDebug() << QString("LoadCmdList(%1)").arg(count);
@@ -1301,13 +1297,13 @@ void ZDspServer::onExecuteCommandProto(std::shared_ptr<google::protobuf::Message
             if (output.contains(ZSCPI::scpiAnswer[ZSCPI::nak]))
                 Answer->set_rtype(ProtobufMessage::NetMessage_NetReply_ReplyType_NACK);
             else
-            if (output.contains(BUSYString))
+            if (output.contains(ZSCPI::scpiAnswer[ZSCPI::busy]))
                 Answer->set_rtype(ProtobufMessage::NetMessage_NetReply_ReplyType_ERROR);
             else
-            if (output.contains(ERRVALString))
+            if (output.contains(ZSCPI::scpiAnswer[ZSCPI::errval]))
                 Answer->set_rtype(ProtobufMessage::NetMessage_NetReply_ReplyType_ERROR);
             else
-            if (output.contains(ERREXECString))
+            if (output.contains(ZSCPI::scpiAnswer[ZSCPI::errexec]))
                 Answer->set_rtype(ProtobufMessage::NetMessage_NetReply_ReplyType_ERROR);
             else
                 Answer->set_rtype(ProtobufMessage::NetMessage_NetReply_ReplyType_ACK);
