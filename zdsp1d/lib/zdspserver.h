@@ -59,8 +59,8 @@ private:
     quint16 m_nSocketIdentifier = 0; // we will use this instead of real sockets, because protobuf extension clientId
     QHash<QByteArray, cZDSP1Client*> m_zdspdClientHash;
     QHash<cZDSP1Client*, QByteArray> m_clientIDHash; // liste der clientID's für die dspclients die über protobuf erzeugt wurden
-    QTcpServer* m_pSCPIServer;
-    QTcpSocket* m_pSCPISocket;
+    QTcpServer* m_pSCPIServer = nullptr;
+    QTcpSocket* m_pSCPISocket = nullptr;
     cZDSP1Client* m_pSCPIClient;
     cDebugSettings* m_pDebugSettings = nullptr;
     EthSettings* m_pETHSettings = nullptr;
@@ -157,7 +157,7 @@ private:
     QState* m_stateconnect2RM;
     QState* m_stateconnect2RMError;
     QState* m_stateSendRMIdentAndRegister;
-    RMConnection* m_pRMConnection;
+    RMConnection* m_pRMConnection = nullptr;
 
     int m_retryRMConnect;
     QTimer m_retryTimer;
