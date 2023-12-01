@@ -33,7 +33,7 @@ public:
     bool DspVar(QString&,int&); // einen int (32bit) wert lesen
     bool DspVar(QString&,float&); // eine float wert lesen
     TDspVar* DspVarRead(QString&,QByteArray*); // lesen dsp variable;  name , länge stehen im parameter string; werte im anschluss im qbytearray
-    const char* DspVarWriteRM(QString&); // dito schreiben mit rückmeldung
+    QString DspVarWriteRM(QString&); // dito schreiben mit rückmeldung
     bool DspVarWrite(QString&);  // schreiben  true wenn ok
     QList<cDspCmd>& GetDspCmdList(); // damit der server die komplette liste aller clients
     QList<cDspCmd>& GetDspIntCmdList(); // an den dsp übertragen kann
