@@ -4,13 +4,19 @@ RMConnection::RMConnection(QString ipadr, quint16 port) :
     m_sIPAdr(ipadr),
     m_nPort(port)
 {
-    m_pResourceManagerClient = nullptr;
+}
+
+RMConnection::~RMConnection()
+{
+    delete m_pResourceManagerClient;
 }
 
 void RMConnection::connect2RM()
 {
-    if (m_pResourceManagerClient) // in case we try to
+    if (m_pResourceManagerClient) {
         delete m_pResourceManagerClient;
+        qCritical("RMConnection::connect2RM called with connection open!");
+    }
     m_pResourceManagerClient = new XiQNetPeer(this);
     m_pResourceManagerClient->setWrapper(&m_ProtobufWrapper);
     connect(m_pResourceManagerClient, &XiQNetPeer::sigSocketError, this, &RMConnection::tcpErrorHandler);

@@ -12,6 +12,7 @@ class RMConnection: public QObject
     Q_OBJECT
 public:
     RMConnection(QString ipadr, quint16 port);
+    virtual ~RMConnection();
     void connect2RM();
     void SendIdent(QString ident);
     void SendCommand(QString& cmd, QString &par, quint32 msgnr);
@@ -20,7 +21,7 @@ private:
     QString m_sIPAdr;
     quint16 m_nPort;
     QString m_sCommand;
-    XiQNetPeer* m_pResourceManagerClient;
+    XiQNetPeer* m_pResourceManagerClient = nullptr;
     XiQNetWrapper m_ProtobufWrapper;
 private slots:
     void tcpErrorHandler(QAbstractSocket::SocketError errorCode);
