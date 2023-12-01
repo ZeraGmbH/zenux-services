@@ -1,8 +1,5 @@
-#include "test_zdsp1d_runfull_server.h"
-#include "zdspserver.h"
-#include "mockpcbserver.h"
-#include "dspdevicenode.h"
-#include "dspdevicenodemock.h"
+#include "test_mockservice_zdsp1d.h"
+#include "mockzdsp1d.h"
 #include "resmanrunfacade.h"
 #include "proxy.h"
 #include "dspinterface.h"
@@ -11,23 +8,14 @@
 #include <QSignalSpy>
 #include <QTest>
 
-QTEST_MAIN(test_zdsp1d_runfull_server)
+QTEST_MAIN(test_mockservice_zdsp1d)
 
-
-void test_zdsp1d_runfull_server::startProductionServerToSeeFailingMessages()
-{
-    DspDeviceNodeInterfaceUPtr dspDeviceNode = std::make_unique<DspDeviceNode>();
-    ZDspServer server(std::move(dspDeviceNode), MockPcbServer::createParams("zdsp1d"));
-    feedEventLoop();
-}
-
-void test_zdsp1d_runfull_server::startMockedServer()
+void test_mockservice_zdsp1d::getVersion()
 {
     ResmanRunFacade resman;
     feedEventLoop();
 
-    DspDeviceNodeInterfaceUPtr dspDeviceNode = std::make_unique<DspDeviceNodeMock>(DspDeviceNode::MAGIC_ID21362);
-    ZDspServer server(std::move(dspDeviceNode), MockPcbServer::createParams("zdsp1d"));
+    MockZdsp1d zdsp1d;
     feedEventLoop();
 
     Zera::ProxyClientPtr dspClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6310);
@@ -47,7 +35,7 @@ void test_zdsp1d_runfull_server::startMockedServer()
     QCOMPARE(responseSpy[0][2], QVariant("DSPLCA: V0.0;DSP V0.00"));
 }
 
-void test_zdsp1d_runfull_server::feedEventLoop()
+void test_mockservice_zdsp1d::feedEventLoop()
 {
     while(QCoreApplication::eventDispatcher()->processEvents(QEventLoop::AllEvents));
 }

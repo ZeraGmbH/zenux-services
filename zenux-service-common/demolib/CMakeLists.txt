@@ -26,6 +26,7 @@ target_link_libraries(zenuxservicecommon-demolib
     PUBLIC
     Qt5::Core
     zenuxservicecommon
+    zdsp1d-lib
 )
 
 set_target_properties(zenuxservicecommon-demolib PROPERTIES VERSION ${PROJECT_VERSION})
