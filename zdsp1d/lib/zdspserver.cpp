@@ -101,7 +101,8 @@ ZDspServer::~ZDspServer()
     delete m_pDspSettings;
     for (int i = 0; i < clientlist.count(); i++)
         delete clientlist.at(i);
-
+    delete m_pRMConnection;
+    delete m_pSCPIServer;
     resetDsp(); // we reset the dsp when we close the server
     m_dspDevNode->close();
     close(pipeFD[0]);
