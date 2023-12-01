@@ -3,6 +3,7 @@ set(SOURCES
     dsp-memory-management/dspvarparser.cpp
     dsp-memory-management/dspvarresolver.cpp
     dsp.cpp
+    dspsettings.cpp
     scpicmdinterpreter.cpp
     scpicmds.cpp
     scpi-zdsp.cpp
@@ -16,6 +17,7 @@ set(HEADER
     dsp-memory-management/dspvarparser.h
     dsp-memory-management/dspvarresolver.h
     dsp.h
+    dspsettings.h
     scpicmdinterpreter.h
     scpicmds.h
     scpi-zdsp.h
