@@ -1,6 +1,7 @@
 #include "zdspclient.h"
 #include "zdspserver.h"
 #include "zeraglobal.h"
+#include "zscpi_response_definitions.h"
 #include <QDataStream>
 
 extern TMemSection dm32DspWorkspace;
@@ -39,7 +40,7 @@ void cZDSP1Client::init(int socket, XiQNetPeer *netclient, ZDspServer *server)
 QString& cZDSP1Client::setRawActualValueList(QString& s)
 {
     m_dspRawActualValueVarList.clear();
-    sOutput = ACKString;
+    sOutput = ZSCPI::scpiAnswer[ZSCPI::ack];
     if (!s.isEmpty()) {
         DspVarClientPerspective getDspVar;
         int localOffset = 0;
@@ -61,7 +62,7 @@ QString& cZDSP1Client::setRawActualValueList(QString& s)
             }
             else { // fehlerfall
                 m_dspRawActualValueVarList.clear();
-                sOutput = NACKString;
+                sOutput = ZSCPI::scpiAnswer[ZSCPI::nak];
                 break;
             }
         }
@@ -109,7 +110,7 @@ void cZDSP1Client::SetEncryption(int i)
 QString& cZDSP1Client::SetCmdListDef(QString& s)
 {
     m_sCmdListDef = s;
-    sOutput = ACKString; // ist erstmal ok, wird später beim SET kommando geprüft
+    sOutput = ZSCPI::scpiAnswer[ZSCPI::ack]; // ist erstmal ok, wird später beim SET kommando geprüft
     return sOutput;
 }
 
@@ -121,7 +122,7 @@ QString& cZDSP1Client::GetCmdListDef()
 QString& cZDSP1Client::SetCmdIntListDef(QString& s)
 {
     m_sIntCmdListDef = s;
-    sOutput = ACKString; // ist erstmal ok, wird später beim SET kommando geprüft
+    sOutput = ZSCPI::scpiAnswer[ZSCPI::ack]; // ist erstmal ok, wird später beim SET kommando geprüft
     return sOutput;
 }
 
@@ -481,10 +482,12 @@ QString& cZDSP1Client::DspVarListRead(QString& s)
 }
 
 
-const char* cZDSP1Client::DspVarWriteRM(QString& s)
+QString cZDSP1Client::DspVarWriteRM(QString& s)
 {
-    if ( DspVarWrite(s) ) return ACKString;
-    else return ERREXECString;
+    if ( DspVarWrite(s) )
+        return ZSCPI::scpiAnswer[ZSCPI::ack];
+    else
+        return ERREXECString;
 }
 
 

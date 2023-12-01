@@ -1,9 +1,9 @@
 #include <stdlib.h>
 #include <qstring.h>
-#include "zeraglobal.h"
 #include "scpicmds.h"
 #include "scpi-zdsp.h"
 #include "scpicmdinterpreter.h"
+#include "zscpi_response_definitions.h"
 
 ScpiCmdInterpreter::ScpiCmdInterpreter(cbIFace* pcbIFace, cNode* r, DspVarParser* parser) :
     m_pcbIFace(pcbIFace),
@@ -14,7 +14,7 @@ ScpiCmdInterpreter::ScpiCmdInterpreter(cbIFace* pcbIFace, cNode* r, DspVarParser
 
 QString &ScpiCmdInterpreter::CmdExecute(QString &sinput)
 {
-    Answer = ACKString;
+    Answer = ZSCPI::scpiAnswer[ZSCPI::ack];
 
     QChar* input = sinput.data();
 
@@ -36,7 +36,7 @@ QString &ScpiCmdInterpreter::CmdExecute(QString &sinput)
             Answer =  m_pcbIFace->SCPIQuery(prevNode->m_nQuery);
             break;
         default:
-            Answer = NACKString;
+            Answer = ZSCPI::scpiAnswer[ZSCPI::nak];
         };
     }
     return (Answer);
