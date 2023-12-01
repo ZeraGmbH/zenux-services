@@ -1,6 +1,4 @@
 #include "test_mockservice_sec1000d.h"
-#include "mocksec1000d.h"
-#include "resmanrunfacade.h"
 #include "proxy.h"
 #include "secinterface.h"
 #include "reply.h"
@@ -10,12 +8,29 @@
 
 QTEST_MAIN(test_mockservice_sec1000d)
 
+void test_mockservice_sec1000d::initTestCase()
+{
+    qputenv("QT_FATAL_CRITICALS", "1");
+}
+
+void test_mockservice_sec1000d::init()
+{
+    m_resman = std::make_unique<ResmanRunFacade>();
+    TimeMachineObject::feedEventLoop();
+    m_sec1000d = std::make_unique<MockSec1000d>();
+    TimeMachineObject::feedEventLoop();
+}
+
+void test_mockservice_sec1000d::cleanup()
+{
+    m_sec1000d = nullptr;
+    TimeMachineObject::feedEventLoop();
+    m_resman = nullptr;
+    TimeMachineObject::feedEventLoop();
+}
+
 void test_mockservice_sec1000d::getChannelCatSec1000d()
 {
-    ResmanRunFacade resman;
-    MockSec1000d mockSec1000d;
-    TimeMachineObject::feedEventLoop();
-
     Zera::ProxyClientPtr secClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6305);
     Zera::cSECInterface secIFace;
     secIFace.setClientSmart(secClient);
