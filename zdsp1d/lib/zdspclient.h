@@ -12,7 +12,7 @@ class cZDSP1Client
 {
 public:
     cZDSP1Client(){}
-    cZDSP1Client(int socket, XiQNetPeer *netclient, ZDspServer *server);
+    cZDSP1Client(int socket, XiQNetPeer *netclient);
     ~cZDSP1Client(){} //  allokierten speicher ggf. freigeben
 
     QString& setRawActualValueList(QString&);
@@ -43,12 +43,11 @@ public:
     XiQNetPeer* m_pNetClient; // our network client
 
 private:
-    void init(int socket, XiQNetPeer *netclient, ZDspServer* server);
+    void init(int socket, XiQNetPeer *netclient);
     bool GenCmdList(QString&, QList<cDspCmd>& ,QString&,ulong,ulong);
     bool syntaxCheck(QString&);
     char* qSEncryption(char*,int );
 
-    ZDspServer* m_myServer;
     int m_socket; // socket für den die verbindung besteht
     bool m_bActive;
     int Encryption;

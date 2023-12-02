@@ -39,11 +39,6 @@ public:
     virtual QString SCPICmd( SCPICmdType, QChar*);
     virtual QString SCPIQuery( SCPICmdType);
 
-    int DspDevOpen();
-    int DspDevRead(char* buf, int len);
-    int DspDevWrite(char* buf,int len);
-    int DspDevSeek(ulong adr);
-
 signals:
     void sigServerIsSetUp();
     void abortInit();
@@ -144,7 +139,6 @@ private:
     cZDSP1Client* GetClient(int s);
     cZDSP1Client* GetClient(XiQNetPeer* peer);
     QString m_sDspSerialNumber; // seriennummer der hardware
-    QString m_sDspDeviceNode; // für den zugriff zur hardware
     QString m_sDspBootPath;
     Zera::XMLConfig::cReader* myXMLConfigReader;
 

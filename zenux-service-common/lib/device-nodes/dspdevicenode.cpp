@@ -9,8 +9,10 @@ const int DspDeviceNode::MAGIC_ID21362 = 0xAA55CC33;
 
 int DspDeviceNode::open(QString devNodeFileName)
 {
-    m_devFileDescriptor = ::open(devNodeFileName.toLatin1().data(), O_RDWR);
     m_devNodeFileName = devNodeFileName;
+    m_devFileDescriptor = ::open(devNodeFileName.toLatin1().data(), O_RDWR);
+    if (m_devFileDescriptor  < 0)
+        qCritical("Error opening dsp device: %s", qPrintable(m_devNodeFileName));
     return m_devFileDescriptor;
 }
 
@@ -22,8 +24,6 @@ void DspDeviceNode::close()
 
 bool DspDeviceNode::dspBoot(QString bootFileName)
 {
-    // We should not report errors here but this is an exception
-    // since there are two transactions
     QFile f (bootFileName);
     if (!f.open(QIODevice::Unbuffered | QIODevice::ReadOnly)) {
         qCritical("Error opening dsp boot file: %s", qPrintable(bootFileName));
@@ -45,17 +45,26 @@ bool DspDeviceNode::dspReset()
 
 int DspDeviceNode::lseek(ulong adr)
 {
-    return ::lseek(m_devFileDescriptor, adr, 0);
+    int r = ::lseek(m_devFileDescriptor, adr, 0);
+    if (r < 0)
+        qCritical("Error positioning dsp device: %s", qPrintable(m_devNodeFileName));
+    return r;
 }
 
 int DspDeviceNode::write(const char *buf, int len)
 {
-    return ::write(m_devFileDescriptor, buf, len);
+    int r = ::write(m_devFileDescriptor, buf, len);
+    if (r < 0)
+        qCritical("Error writing dsp device: %s", qPrintable(m_devNodeFileName));
+    return r;
 }
 
 int DspDeviceNode::read(char *buf, int len)
 {
-    return ::read(m_devFileDescriptor, buf, len);
+    int r = ::read(m_devFileDescriptor, buf, len);
+    if (r < 0)
+        qCritical("Error reading dsp device: %s", qPrintable(m_devNodeFileName));
+    return r;
 }
 
 void DspDeviceNode::enableFasync()
@@ -107,7 +116,10 @@ bool DspDeviceNode::dspIsRunning()
 
 int DspDeviceNode::lcaRawVersion()
 {
-    return ioctlDspIoRead(VersionNr);
+    int rawLcaVersion = ioctlDspIoRead(VersionNr);
+    if (rawLcaVersion < 0)
+        qCritical("Error %d reading device version: %s", rawLcaVersion, qPrintable(m_devNodeFileName));
+    return rawLcaVersion;
 }
 
 int DspDeviceNode::ioctlDspIoRead(unsigned long arg)

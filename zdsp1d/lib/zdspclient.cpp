@@ -1,5 +1,5 @@
 #include "zdspclient.h"
-#include "zdspserver.h"
+#include "dspdevicenodesingleton.h"
 #include "zscpi_response_definitions.h"
 #include <QDataStream>
 
@@ -9,12 +9,12 @@ extern TMemSection dm32UserWorkSpace;
 extern TMemSection dm32CmdList;
 extern TMemSection symbConsts1;
 
-cZDSP1Client::cZDSP1Client(int socket, XiQNetPeer* netclient, ZDspServer* server)
+cZDSP1Client::cZDSP1Client(int socket, XiQNetPeer* netclient)
 {
-    init(socket, netclient, server);
+    init(socket, netclient);
 }
 
-void cZDSP1Client::init(int socket, XiQNetPeer *netclient, ZDspServer *server)
+void cZDSP1Client::init(int socket, XiQNetPeer *netclient)
 {
     m_socket = socket;
     m_pNetClient = netclient;
@@ -22,7 +22,6 @@ void cZDSP1Client::init(int socket, XiQNetPeer *netclient, ZDspServer *server)
     cDspCmd DspCmd;
     m_DspCmdList.append(DspCmd);
     m_DspIntCmdList.append(DspCmd);
-    m_myServer = server;
     m_dspVarResolver.addSection( &dm32DspWorkspace);
     m_dspVarResolver.addSection( &dm32DialogWorkSpace);
     m_dspVarResolver.addSection( &dm32UserWorkSpace);
@@ -136,7 +135,7 @@ bool cZDSP1Client::syntaxCheck(QString& s)
     int closePos = s.indexOf(')');
     bool ok = openPos > 0 && closePos>openPos;
     if(!ok)
-        qWarning("Invalid command syntax: '%s'", qPrintable(s));
+        qCritical("Invalid command syntax: '%s'", qPrintable(s));
     return ok;
 }
 
@@ -403,7 +402,7 @@ TDspVar* cZDSP1Client::DspVarRead(QString& s, QByteArray* ba)
 
     ba->resize(4*n);
 
-    if ( (m_myServer->DspDevSeek(DspVar->adr) >= 0) && (m_myServer->DspDevRead(ba->data(), n*4 ) >= 0) )
+    if ( (DspDeviceNodeSingleton::getInstance()->lseek(DspVar->adr) >= 0) && (DspDeviceNodeSingleton::getInstance()->read(ba->data(), n*4 ) >= 0) )
         return DspVar; // dev.  seek und dev. read ok
 
     return 0; // sonst fehler
@@ -575,9 +574,9 @@ bool cZDSP1Client::DspVarWrite(QString& s)
         if (!ok2)
             break;
         if (n>0) {
-            if (m_myServer->DspDevSeek(adr) < 0)
+            if (DspDeviceNodeSingleton::getInstance()->lseek(adr) < 0)
                 break; // file positionieren
-            if (m_myServer->DspDevWrite(ba.data(), n*4 ) < 0)
+            if (DspDeviceNodeSingleton::getInstance()->write(ba.data(), n*4 ) < 0)
                 break; // fehler beim schreiben
         }
     }
