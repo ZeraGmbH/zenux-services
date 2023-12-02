@@ -7,6 +7,7 @@
 #include "scpi-zdsp.h"
 #include "pcbserver.h"
 #include "dspdevicenode.h"
+#include "dspdevicenodesingleton.h"
 #include "zscpi_response_definitions.h"
 #include <QDebug>
 #include <QCoreApplication>
@@ -57,9 +58,8 @@ struct sigaction mySigAction;
 
 ServerParams ZDspServer::defaultParams {ServerName, ServerVersion, "/etc/zera/zdsp1d/zdsp1d.xsd", "/etc/zera/zdsp1d/zdsp1d.xml"};
 
-ZDspServer::ZDspServer(DspDeviceNodeInterfaceUPtr dspDevNode, ServerParams params) :
-    m_params(params),
-    m_dspDevNode(std::move(dspDevNode))
+ZDspServer::ZDspServer(ServerParams params) :
+    m_params(params)
 {
     m_pInitializationMachine = new QStateMachine(this);
     myXMLConfigReader = new Zera::XMLConfig::cReader();
@@ -104,7 +104,7 @@ ZDspServer::~ZDspServer()
     delete m_pRMConnection;
     delete m_pSCPIServer;
     resetDsp(); // we reset the dsp when we close the server
-    m_dspDevNode->close();
+    DspDeviceNodeSingleton::getInstance()->close();
     close(pipeFD[0]);
     close(pipeFD[1]);
 }
@@ -172,7 +172,7 @@ void ZDspServer::doSetupServer()
         mySigAction. sa_flags = SA_RESTART;
         mySigAction.sa_restorer = NULL;
         sigaction(SIGIO, &mySigAction, NULL); // handler für sigio definieren
-        m_dspDevNode->enableFasync();
+        DspDeviceNodeSingleton::getInstance()->enableFasync();
         m_retryRMConnect = 100;
         m_retryTimer.setSingleShot(true);
         connect(&m_retryTimer, &QTimer::timeout, this, &ZDspServer::sigServerIsSetUp);
@@ -265,7 +265,7 @@ void ZDspServer::doIdentAndRegister()
 
 int ZDspServer::DspDevOpen()
 {
-    int descriptor = m_dspDevNode->open(m_sDspDeviceNode.toLatin1().data());
+    int descriptor = DspDeviceNodeSingleton::getInstance()->open(m_sDspDeviceNode.toLatin1().data());
     if (descriptor  < 0 )
         qWarning("Error opening dsp device: %s", qPrintable(m_sDspDeviceNode));
     return descriptor;
@@ -273,7 +273,7 @@ int ZDspServer::DspDevOpen()
 
 int ZDspServer::DspDevSeek(ulong adr)
 {
-    int r = m_dspDevNode->lseek(adr);
+    int r = DspDeviceNodeSingleton::getInstance()->lseek(adr);
     if (r < 0)
         qWarning("Error positioning dsp device: %s", qPrintable(m_sDspDeviceNode));
     return r;
@@ -281,7 +281,7 @@ int ZDspServer::DspDevSeek(ulong adr)
 
 int ZDspServer::DspDevWrite(char* buf, int len)
 {
-    int r = m_dspDevNode->write(buf, len);
+    int r = DspDeviceNodeSingleton::getInstance()->write(buf, len);
     if (r <0 )
         qWarning("Error writing dsp device: %s", qPrintable(m_sDspDeviceNode));
     return r;
@@ -289,7 +289,7 @@ int ZDspServer::DspDevWrite(char* buf, int len)
 
 int ZDspServer::DspDevRead(char* buf, int len)
 {
-    int r = m_dspDevNode->read(buf, len);
+    int r = DspDeviceNodeSingleton::getInstance()->read(buf, len);
     if (r < 0 )
         qWarning("Error reading dsp device: %s", qPrintable(m_sDspDeviceNode));
     return r;
@@ -397,7 +397,7 @@ QString ZDspServer::mTestDsp(QChar* s)
 
 bool ZDspServer::resetDsp()
 {
-    bool ok = m_dspDevNode->dspReset();
+    bool ok = DspDeviceNodeSingleton::getInstance()->dspReset();
     if(ok)
         Answer = ZSCPI::scpiAnswer[ZSCPI::ack];
     else {
@@ -415,7 +415,7 @@ QString ZDspServer::mResetDsp(QChar*)
 
 bool ZDspServer::bootDsp()
 {
-    bool ok = m_dspDevNode->dspBoot(m_sDspBootPath);
+    bool ok = DspDeviceNodeSingleton::getInstance()->dspBoot(m_sDspBootPath);
     if(ok)
         Answer = ZSCPI::scpiAnswer[ZSCPI::ack];
     else
@@ -470,7 +470,7 @@ QString ZDspServer::mCommand2Dsp(QString& qs)
         if (! cl.DspVarWrite(ss = "DSPACK,0;") ) break; // reset acknowledge
         if (! cl.DspVarWrite(qs)) break; // kommando und parameter -> dsp
 
-        m_dspDevNode->dspRequestInt(); // interrupt beim dsp auslösen
+        DspDeviceNodeSingleton::getInstance()->dspRequestInt(); // interrupt beim dsp auslösen
         Answer = ZSCPI::scpiAnswer[ZSCPI::ack]; // sofort fertig melden ....sync. muss die applikation
 
     } while (0);
@@ -828,7 +828,7 @@ QString ZDspServer::mResetMaxima(QChar *)
 QString ZDspServer::getLcaAndDspVersion()
 {
     // LCA
-    int rawLcaVersion = m_dspDevNode->lcaRawVersion();
+    int rawLcaVersion = DspDeviceNodeSingleton::getInstance()->lcaRawVersion();
     if ( rawLcaVersion < 0 ) {
         qWarning("Error %d reading device version: %s", rawLcaVersion, qPrintable(m_sDspDeviceNode));
         return ZSCPI::scpiAnswer[ZSCPI::errexec]; // fehler bei der ausführung
@@ -1188,7 +1188,7 @@ bool ZDspServer::setDspType()
 
 int ZDspServer::readMagicId()
 {
-    return m_dspDevNode->dspGetMagicId();
+    return DspDeviceNodeSingleton::getInstance()->dspGetMagicId();
 }
 
 bool ZDspServer::Test4HWPresent()
@@ -1199,7 +1199,7 @@ bool ZDspServer::Test4HWPresent()
 
 bool ZDspServer::Test4DspRunning()
 {
-    return m_dspDevNode->dspIsRunning();
+    return DspDeviceNodeSingleton::getInstance()->dspIsRunning();
 }
 
 QString ZDspServer::mDspMemoryRead(QChar* s)
