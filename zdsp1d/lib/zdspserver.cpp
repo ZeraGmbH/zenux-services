@@ -758,7 +758,7 @@ QString ZDspServer::mGetDspCommandStat()
 {
     int stat;
     cZDSP1Client* cl = GetClient(m_actualSocket);
-    if (! cl->readDspVarInt("DSPACK", stat))
+    if (!cl->readDspVarInt("DSPACK", stat))
         Answer = ZSCPI::scpiAnswer[ZSCPI::errexec];
     else
         Answer = QString("%1").arg(stat);
