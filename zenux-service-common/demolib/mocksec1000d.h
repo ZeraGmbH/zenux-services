@@ -1,18 +1,12 @@
 #ifndef MOCKSEC1000D_H
 #define MOCKSEC1000D_H
 
-#include "mockpcbserver.h"
-#include "secgroupresourceandinterface.h"
-#include <memory>
+#include "sec1000d.h"
 
-class MockSec1000d : public MockPcbServer
+class MockSec1000d : public cSEC1000dServer
 {
 public:
     MockSec1000d();
-private:
-    std::unique_ptr<SecCalculatorSettings> m_secSettings;
-    std::unique_ptr<SecInputSettings> m_secInputSettings;
-    std::unique_ptr<SecGroupResourceAndInterface> m_secResource;
 };
 
 #endif // MOCKSEC1000D_H

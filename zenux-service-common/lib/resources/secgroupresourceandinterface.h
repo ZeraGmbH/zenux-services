@@ -31,8 +31,7 @@ class SecGroupResourceAndInterface : public cResource
     Q_OBJECT
 
 public:
-    SecGroupResourceAndInterface(int devFileDescriptor,
-                                 SecCalculatorSettings* ecalcSettings,
+    SecGroupResourceAndInterface(SecCalculatorSettings* ecalcSettings,
                                  SecInputSettings* inputsettings,
                                  std::function<void(int)> funcSigHandler);
     ~SecGroupResourceAndInterface();

@@ -1,11 +1,9 @@
 #ifndef SEC1000D_H
 #define SEC1000D_H
 
-#include <QTimer>
-
 #include "pcbserver.h"
 #include "rmconnection.h"
-#include "ethsettings.h"
+#include <QTimer>
 
 class QStateMachine;
 class QState;
@@ -26,7 +24,7 @@ class cSEC1000dServer: public cPCBServer
     Q_OBJECT
 
 public:
-    explicit cSEC1000dServer();
+    explicit cSEC1000dServer(ServerParams params = defaultParams);
     ~cSEC1000dServer();
     QString getServerVersion();
 
@@ -48,7 +46,8 @@ signals:
     void sigServerIsSetUp();
 
 private:
-    int m_devFileDescriptor; // kerneltreiber wird nur 1x geöffnet und dann gehalten
+    static ServerParams defaultParams;
+    ServerParams m_params;
     QStateMachine* m_pInitializationMachine;
     QState* m_stateconnect2RM;
     QState* m_stateconnect2RMError;
@@ -56,11 +55,8 @@ private:
     quint8 m_nerror;
     int m_retryRMConnect;
     QTimer m_retryTimer;
-    QString m_sSECDeviceNode;
     QList<SecChannel*> m_ECalculatorChannelList;
     QSocketNotifier* m_pNotifier;
-    int SECDevOpen();
-    void SetFASync();
 
 private slots:
     void SECIntHandler(int);
