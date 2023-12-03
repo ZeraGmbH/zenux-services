@@ -24,11 +24,11 @@ public:
     void SetEncryption(int);
     int GetEncryption();
     bool GenCmdLists(QString&, ulong, ulong); // baut die cmdlisten  für den dsp zusammen wenn fehler -> false
-    cDspCmd GenDspCmd(QString&, bool*, ulong, ulong); // generiert ein dsp kommando aus einem string
+    cDspCmd GenDspCmd(QString cmd, bool* ok, ulong userMemoryOffset, ulong globalstartadr); // generiert ein dsp kommando aus einem string
     QString &readActValues(QString&); // liess die messergebnisse (liste)
     bool isActive();
     void SetActive(bool); // merkt sich in m_bActive ob diese liste aktiv ist
-    ulong setStartAdr(ulong, ulong); // zum relokalisieren der userdaten
+    ulong setStartAdr(ulong startAdress, ulong globalMemStart); // zum relokalisieren der userdaten
     QString &DspVarListRead(QString&); // lesen dsp daten ganze Liste
     bool readDspVarInt(QString varName, int& intval); // einen int (32bit) wert lesen
     TDspVar* DspVarRead(QString nameLen, QByteArray* varRead); // lesen dsp variable;  name , länge stehen im parameter string; werte im anschluss im qbytearray

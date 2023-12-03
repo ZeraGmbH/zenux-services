@@ -139,16 +139,16 @@ bool cZDSP1Client::syntaxCheck(QString& s)
     return ok;
 }
 
-cDspCmd cZDSP1Client::GenDspCmd(QString& scmd, bool* ok, ulong umo, ulong globalstartadr)
+cDspCmd cZDSP1Client::GenDspCmd(QString cmd, bool* ok, ulong userMemoryOffset, ulong globalstartadr)
 {
     DspVarParser CmdParser;
     CmdParser.SetDelimiter("(,)"); // setze die trennzeichen für den parser
     CmdParser.SetWhiteSpace(" (,)");
-    if(!syntaxCheck(scmd)) {
+    if(!syntaxCheck(cmd)) {
         *ok = false;
         return cDspCmd();
     }
-    QChar* cmds = scmd.data(); // zeiger auf den C-string von scmd
+    QChar* cmds = cmd.data();
     QString sSearch = CmdParser.GetKeyword(&cmds); // das 1. keyword muss ein befehlscode sein
     sDspCmd *dspcmd = findDspCmd(sSearch);
     if (dspcmd)
@@ -168,7 +168,7 @@ cDspCmd cZDSP1Client::GenDspCmd(QString& scmd, bool* ok, ulong umo, ulong global
             short par;
             bool t = true;
             sSearch = CmdParser.GetKeyword(&cmds);
-            t &= ( (par = m_dspVarResolver.offs(sSearch, umo,globalstartadr)) > -1); // -1 ist fehlerbedingung
+            t &= ( (par = m_dspVarResolver.offs(sSearch, userMemoryOffset, globalstartadr)) > -1); // -1 ist fehlerbedingung
             sSearch = CmdParser.GetKeyword(&cmds);
             t &= sSearch.isEmpty();
             cDspCmd lcmd;
@@ -183,7 +183,7 @@ cDspCmd cZDSP1Client::GenDspCmd(QString& scmd, bool* ok, ulong umo, ulong global
             bool t = true;
             for (int i=0; i<2; i++) {
                 sSearch = CmdParser.GetKeyword(&cmds);
-                t &= ( (par[i] = m_dspVarResolver.offs(sSearch, umo,globalstartadr)) > -1);
+                t &= ( (par[i] = m_dspVarResolver.offs(sSearch, userMemoryOffset, globalstartadr)) > -1);
             }
             sSearch = CmdParser.GetKeyword(&cmds);
             t &= sSearch.isEmpty();
@@ -201,7 +201,7 @@ cDspCmd cZDSP1Client::GenDspCmd(QString& scmd, bool* ok, ulong umo, ulong global
             bool t = true;
             for (int i=0; i<3; i++) {
                 sSearch = CmdParser.GetKeyword(&cmds);
-                t &= ( (par[i] = m_dspVarResolver.offs(sSearch, umo,globalstartadr)) > -1);
+                t &= ( (par[i] = m_dspVarResolver.offs(sSearch, userMemoryOffset, globalstartadr)) > -1);
             }
             sSearch = CmdParser.GetKeyword(&cmds);
             t &= sSearch.isEmpty();
@@ -217,7 +217,7 @@ cDspCmd cZDSP1Client::GenDspCmd(QString& scmd, bool* ok, ulong umo, ulong global
         {
             long par;
             sSearch = CmdParser.GetKeyword(&cmds);
-            bool t = ( (par = m_dspVarResolver.offs(sSearch,umo,globalstartadr)) > -1);
+            bool t = ( (par = m_dspVarResolver.offs(sSearch, userMemoryOffset, globalstartadr)) > -1);
             sSearch = CmdParser.GetKeyword(&cmds);
             t &= sSearch.isEmpty();
             cDspCmd lcmd;
@@ -231,7 +231,7 @@ cDspCmd cZDSP1Client::GenDspCmd(QString& scmd, bool* ok, ulong umo, ulong global
             short par1;
             long par2 = 0;
             sSearch = CmdParser.GetKeyword(&cmds);
-            *ok = ( (par1 = m_dspVarResolver.offs(sSearch,umo,globalstartadr)) > -1); // -1 ist fehlerbedingung
+            *ok = ( (par1 = m_dspVarResolver.offs(sSearch, userMemoryOffset, globalstartadr)) > -1); // -1 ist fehlerbedingung
             cDspCmd lcmd;
             if (!(*ok))
                 return lcmd; // wenn fehler -> fertig
@@ -265,23 +265,23 @@ void cZDSP1Client::SetActive(bool b)
 }
 
 
-ulong cZDSP1Client::setStartAdr(ulong sa, ulong globalmemstart)
+ulong cZDSP1Client::setStartAdr(ulong startAdress, ulong globalMemStart)
 {
     ulong usermemsize, globalmemsize;
 
     usermemsize = globalmemsize = 0;
-    m_memorySection.StartAdr = sa;
+    m_memorySection.StartAdr = startAdress;
 
     for (int i = 0; i < m_memorySection.n; i++)
     {
         if (m_memorySection.DspVar[i].segment == localSegment)
         {
-            m_memorySection.DspVar[i].adr = sa + usermemsize; // we need the adress for reading back data
+            m_memorySection.DspVar[i].adr = startAdress + usermemsize; // we need the adress for reading back data
             usermemsize += m_memorySection.DspVar[i].size;
         }
         else
         {
-            m_memorySection.DspVar[i].adr = globalmemstart+globalmemsize;
+            m_memorySection.DspVar[i].adr = globalMemStart+globalmemsize;
             globalmemsize += m_memorySection.DspVar[i].size;
         }
     }
