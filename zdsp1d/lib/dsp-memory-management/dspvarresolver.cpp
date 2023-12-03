@@ -3,8 +3,8 @@
 DspVarResolver::DspVarResolver()
 {
     m_varHash.clear();
-    VarParser.SetDelimiter("(,+,-,)"); // setze die trennzeichen für den parser
-    VarParser.SetWhiteSpace(" (,)");
+    m_varParser.SetDelimiter("(,+,-,)"); // setze die trennzeichen für den parser
+    m_varParser.SetWhiteSpace(" (,)");
 }
 
 void DspVarResolver::setVarHash()
@@ -42,8 +42,8 @@ void DspVarResolver::setQHash(TMemSection* psec) // zum setzen der qhash
 long DspVarResolver::offs(const QString& varNameOrValue, ulong umo, ulong globalstartadr)
 {
     QString ts = varNameOrValue.toUpper();
-    QChar* cts = ts.data();
-    QString sSearch = VarParser.GetKeyword(&cts); // der namen der variable, die gesucht ist
+    const QChar* cts = ts.data();
+    QString sSearch = m_varParser.GetKeyword(&cts); // der namen der variable, die gesucht ist
     if (m_varHash.contains(sSearch)) {
         ulong retoffs;
         TDspVar* pDspVar = m_varHash.value(sSearch);
@@ -86,8 +86,8 @@ long DspVarResolver::offs(const QString& varNameOrValue, ulong umo, ulong global
 long DspVarResolver::adr(QString& varNameOrValue)
 {
     QString ts = varNameOrValue.toUpper();
-    QChar* cts = ts.data();
-    QString sSearch = VarParser.GetKeyword(&cts); // der namen der variable, die gesucht ist
+    const QChar* cts = ts.data();
+    QString sSearch = m_varParser.GetKeyword(&cts); // der namen der variable, die gesucht ist
     if (m_varHash.contains(sSearch)) {
         TDspVar* pDspVar = m_varHash.value(sSearch);
         ts = ts.remove(' ');
@@ -122,8 +122,8 @@ long DspVarResolver::adr(QString& varNameOrValue)
 TDspVar* DspVarResolver::getDspVar(const QString &varName)
 {
     QString ts = varName.toUpper();
-    QChar* cts = ts.data();
-    QString sSearch = VarParser.GetKeyword(&cts);
+    const QChar* cts = ts.data();
+    QString sSearch = m_varParser.GetKeyword(&cts);
 
     if (m_varHash.contains(sSearch))
         return m_varHash.value(sSearch);
@@ -134,8 +134,8 @@ TDspVar* DspVarResolver::getDspVar(const QString &varName)
 int DspVarResolver::type(const QString &varName)
 {
     QString ts = varName.toUpper();
-    QChar* cts = ts.data();
-    QString sSearch = VarParser.GetKeyword(&cts);
+    const QChar* cts = ts.data();
+    QString sSearch = m_varParser.GetKeyword(&cts);
     if (m_varHash.contains(sSearch))
         return m_varHash.value(sSearch)->type;
     else
