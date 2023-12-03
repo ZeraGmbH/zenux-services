@@ -357,51 +357,51 @@ QString& cZDSP1Client::readActValues(QString& s)
 }
 
 
-bool cZDSP1Client::DspVar(QString& s, int& ir)
+bool cZDSP1Client::readDspVarInt(QString varName, int& intval)
 { // einen int (32bit) wert lesen
     bool ret = false;
     QByteArray ba;
-    QString ss = QString("%1,1").arg(s);
+    QString ss = QString("%1,1").arg(varName);
     if ( DspVarRead(ss, &ba) != 0) {
         // 1 wort ab name (s) lesen
-        ir = *((int*) (ba.data()));
+        intval = *((int*) (ba.data()));
         ret = true;
     }
     return ret;
 }
 
 
-bool cZDSP1Client::DspVar(QString& s, float& fr)
+bool cZDSP1Client::readDspVarFloat(QString varName, float& floatVal)
 { // eine float wert lesen
     bool ret = false;
     QByteArray ba;
-    QString ss = QString("%1,1").arg(s);
+    QString ss = QString("%1,1").arg(varName);
     if ( DspVarRead(ss, &ba) != 0) {
         // 1 wort ab name(s) lesen
-        fr = *((float*) (ba.data()));
+        floatVal = *((float*) (ba.data()));
         ret = true;
     }
     return ret;
 }
 
 
-TDspVar* cZDSP1Client::DspVarRead(QString& s, QByteArray* ba)
+TDspVar* cZDSP1Client::DspVarRead(QString nameLen, QByteArray* varRead)
 {
-    QString name = s.section(",",0,0);
+    QString name = nameLen.section(",",0,0);
     TDspVar *DspVar;
 
     if ( (DspVar = m_dspVarResolver.getDspVar(name)) == 0)
         return nullptr; // fehler, den namen gibt es nicht
 
-    QString p = s.section(",",1,1);
+    QString p = nameLen.section(",",1,1);
     bool ok;
     int n = p.toInt(&ok);
     if (!ok || (n<1) )
         return nullptr; // fehler in der anzahl der elemente
 
-    ba->resize(4*n);
+    varRead->resize(4*n);
 
-    if ( (DspDeviceNodeSingleton::getInstance()->lseek(DspVar->adr) >= 0) && (DspDeviceNodeSingleton::getInstance()->read(ba->data(), n*4 ) >= 0) )
+    if ( (DspDeviceNodeSingleton::getInstance()->lseek(DspVar->adr) >= 0) && (DspDeviceNodeSingleton::getInstance()->read(varRead->data(), n*4 ) >= 0) )
         return DspVar; // dev.  seek und dev. read ok
 
     return 0; // sonst fehler
@@ -485,7 +485,7 @@ QString cZDSP1Client::DspVarWriteRM(QString& s)
 }
 
 
-bool cZDSP1Client::DspVarWrite(QString& s)
+bool cZDSP1Client::DspVarWrite(QString s)
 {
     const int gran = 10; // immer 10 elemente allokieren
     bool ok = false;
