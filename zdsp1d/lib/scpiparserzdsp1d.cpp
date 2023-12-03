@@ -1,11 +1,11 @@
-#include "dspvarparser.h"
+#include "scpiparserzdsp1d.h"
 
-DspVarParser::DspVarParser() {
+ScpiParserZdsp1d::ScpiParserZdsp1d() {
     delimiter = " :?;";
     whitespace = " ";
 }
 
-const QString DspVarParser::GetKeyword(QChar **s)
+const QString ScpiParserZdsp1d::GetKeyword(QChar **s)
 {
     QString ls = "";
     QChar tc=GetChar(s);
@@ -23,7 +23,7 @@ const QString DspVarParser::GetKeyword(QChar **s)
     return(ls); // schlüsselwort ohne delimiter
 }
 
-QChar DspVarParser::GetChar(QChar** s)
+QChar ScpiParserZdsp1d::GetChar(QChar** s)
 {
     QChar tc=0;
     if (!(**s).isNull())

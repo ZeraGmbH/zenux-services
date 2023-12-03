@@ -1,9 +1,8 @@
 // implementation des eigenlichen servers zdsp1(d)
 
-#include "zdspclient.h"
 #include "zdspserver.h"
+#include "zdspclient.h"
 #include "dsp.h"
-#include "dspvarparser.h"
 #include "scpi-zdsp.h"
 #include "pcbserver.h"
 #include "dspdevicenode.h"
@@ -144,7 +143,7 @@ void ZDspServer::doConfiguration()
 
 void ZDspServer::doSetupServer()
 {
-    DspVarParser* parser = new(DspVarParser); // das ist der parser
+    ScpiParserZdsp1d* parser = new(ScpiParserZdsp1d); // das ist der parser
     m_cmdInterpreter = new ScpiCmdInterpreter(this, InitCmdTree(), parser); // das ist der kommando interpreter
     m_sDspSerialNumber = "Unknown"; // kennen wir erst mal nicht
     m_sDspBootPath = m_pDspSettings->getBootFile();

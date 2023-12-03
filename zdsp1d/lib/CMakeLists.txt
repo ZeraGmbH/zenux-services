@@ -1,11 +1,11 @@
 set(SOURCES
     dsp-memory-management/dspvarclientperspective.cpp
-    dsp-memory-management/dspvarparser.cpp
     dsp-memory-management/dspvarresolver.cpp
     dsp.cpp
     dspsettings.cpp
     scpicmdinterpreter.cpp
     scpicmds.cpp
+    scpiparserzdsp1d.cpp
     scpi-zdsp.cpp
     zdspserver.cpp
     zdspclient.cpp
@@ -14,12 +14,12 @@ set(SOURCES
 set(HEADER
     dsp-memory-management/dspvarclientperspective.h
     dsp-memory-management/dspvardefinitions.h
-    dsp-memory-management/dspvarparser.h
     dsp-memory-management/dspvarresolver.h
     dsp.h
     dspsettings.h
     scpicmdinterpreter.h
     scpicmds.h
+    scpiparserzdsp1d.h
     scpi-zdsp.h
     zdspserver.h
     zdspclient.h
