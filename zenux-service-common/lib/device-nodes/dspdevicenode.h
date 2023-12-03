@@ -19,10 +19,11 @@ public:
     int lcaRawVersion() override;
 
     int lseek(ulong adr) override;
-    int write(const char* buf, int len) override;
+    bool write(ulong adr, const char* buf, int len) override;
     int read(char* buf, int len) override;
     void enableFasync() override;
 private:
+    int _write(const char* buf, int len);
     int ioctlDspIoRead(unsigned long arg);
     int ioctlDspReset();
     int ioctlDspBoot(const char* firmwareData);

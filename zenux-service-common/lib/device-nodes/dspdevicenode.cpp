@@ -51,7 +51,14 @@ int DspDeviceNode::lseek(ulong adr)
     return r;
 }
 
-int DspDeviceNode::write(const char *buf, int len)
+bool DspDeviceNode::write(ulong adr, const char *buf, int len)
+{
+    if(lseek(adr) >= 0 && _write(buf, len) >= 0)
+        return true;
+    return false;
+}
+
+int DspDeviceNode::_write(const char *buf, int len)
 {
     int r = ::write(m_devFileDescriptor, buf, len);
     if (r < 0)

@@ -319,11 +319,7 @@ QString ZDspServer::mTestDsp(QChar* s)
                 QString sadr  = "UWSPACE";
                 ulong adr = cl->m_dspVarResolver.adr(sadr) ;
                 for (i=0; i< nr; i++) {
-                    if (DspDeviceNodeSingleton::getInstance()->lseek(adr) < 0) {
-                        Answer = QString("Test write/read dsp data, dev seek fault");
-                        break; // file positionieren
-                    }
-                    if (DspDeviceNodeSingleton::getInstance()->write(ba.data(), n*4 ) < 0) {
+                    if(!DspDeviceNodeSingleton::getInstance()->write(adr, ba.data(), n*4 )) {
                         Answer = QString("Test write/read dsp data, dev write fault");
                         break; // fehler beim schreiben
                     }
@@ -393,12 +389,10 @@ bool ZDspServer::bootDsp()
 
 bool ZDspServer::setSamplingSystem()
 {
-    QString ss;
-    for (int i = 0; i < 10; i++) // we try max. 10 times to set .... this should work
-    {
-        mCommand2Dsp(ss = QString("DSPCMDPAR,2,%1,%2,%3;").arg(m_pDspSettings->getChannelNr())
-                                                                     .arg(m_pDspSettings->getSamplesSignalPeriod())
-                                                                     .arg(m_pDspSettings->getsamplesMeasurePeriod()));
+    for (int i = 0; i < 10; i++) { // we try max. 10 times to set .... this should work
+        mCommand2Dsp(QString("DSPCMDPAR,2,%1,%2,%3;").arg(m_pDspSettings->getChannelNr())
+                                                     .arg(m_pDspSettings->getSamplesSignalPeriod())
+                                                     .arg(m_pDspSettings->getsamplesMeasurePeriod()));
         if (Answer == ZSCPI::scpiAnswer[ZSCPI::ack])
             return true;
         usleep(10000); // give dsp a bit time before next try
@@ -417,7 +411,7 @@ QString ZDspServer::mGetPCBSerialNumber()
     return m_sDspSerialNumber;
 }
 
-QString ZDspServer::mCommand2Dsp(QString& qs)
+QString ZDspServer::mCommand2Dsp(QString qs)
 {
     // we need a client to do the job
     cZDSP1Client cl(0, 0);
@@ -427,16 +421,18 @@ QString ZDspServer::mCommand2Dsp(QString& qs)
         int ack;
 
         QString ss;
-        if (! cl.DspVar( ss ="DSPACK",ack)) break;
+        if (! cl.DspVar( ss ="DSPACK",ack))
+            break;
 
-        if ( ack ==  InProgress)
-        {
+        if ( ack ==  InProgress) {
             Answer = ZSCPI::scpiAnswer[ZSCPI::busy];
             break;
         }
 
-        if (! cl.DspVarWrite(ss = "DSPACK,0;") ) break; // reset acknowledge
-        if (! cl.DspVarWrite(qs)) break; // kommando und parameter -> dsp
+        if (! cl.DspVarWrite(ss = "DSPACK,0;") )
+            break; // reset acknowledge
+        if (! cl.DspVarWrite(qs))
+            break; // kommando und parameter -> dsp
 
         DspDeviceNodeSingleton::getInstance()->dspRequestInt(); // interrupt beim dsp auslösen
         Answer = ZSCPI::scpiAnswer[ZSCPI::ack]; // sofort fertig melden ....sync. muss die applikation
@@ -447,9 +443,7 @@ QString ZDspServer::mCommand2Dsp(QString& qs)
 
 QString ZDspServer::mSetSamplingSystem(QChar *s)
 {
-    QString ss;
-
-    return mCommand2Dsp(ss = QString("DSPCMDPAR,2,%1;").arg(QString(s)));
+    return mCommand2Dsp(QString("DSPCMDPAR,2,%1;").arg(QString(s)));
 }
 
 QString ZDspServer::mSetCommEncryption(QChar *s)
@@ -519,14 +513,14 @@ QString ZDspServer::mSetEN61850SourceAdr(QChar* s)
         QString as;
         cZDSP1Client* cl = GetClient(m_actualSocket);
         if (!cl->DspVarRead(as = "ETHDESTSOURCEADRESS,3", &ba)) break;
-        else
-        {
+        else {
             ulong* pardsp = (ulong*) ba.data();
             pardsp[1] &= 0xFFFF0000; // die oberen bits behalten wir weil dest adr
             pardsp[1] = pardsp[1] | (adr[0] << 8) | adr[1];
             pardsp[2] = 0;
-            for (i = 2;i<6;i++) pardsp[2] = (pardsp[2] << 8) + adr[i];
-            mCommand2Dsp(as = QString("DSPCMDPAR,6,%1,%2,%3;").arg(pardsp[0]).arg(pardsp[1]).arg(pardsp[2])); // setzt answer schon
+            for (i = 2;i<6;i++)
+                pardsp[2] = (pardsp[2] << 8) + adr[i];
+            mCommand2Dsp(QString("DSPCMDPAR,6,%1,%2,%3;").arg(pardsp[0]).arg(pardsp[1]).arg(pardsp[2])); // setzt answer schon
         }
     } while(0);
 
@@ -561,7 +555,7 @@ QString ZDspServer::mSetEN61850DestAdr(QChar *s)
                 for (i = 0;i<4;i++) pardsp[0] = (pardsp[0] << 8) +adr[i];
                 pardsp[1] &= 0xFFFF; // die unteren bits behalten wir weil source adr
                 pardsp[1] = pardsp[1] | (adr[4] << 24) | (adr[5] << 16);
-                mCommand2Dsp(as = QString("DSPCMDPAR,6,%1,%2,%3;").arg(pardsp[0]).arg(pardsp[1]).arg(pardsp[2]));
+                mCommand2Dsp(QString("DSPCMDPAR,6,%1,%2,%3;").arg(pardsp[0]).arg(pardsp[1]).arg(pardsp[2]));
             }
         } while(0);
     return Answer;
@@ -777,20 +771,18 @@ QString ZDspServer::mTriggerIntListHKSK(QChar *s)
     QString ss(s);
     ulong par = ss.toULong();
     par = (par & 0xFFFF )| (m_actualSocket << 16);
-    return mCommand2Dsp(ss = QString("DSPCMDPAR,4,%1;").arg(par)); // liste mit prozessNr u. HKSK
+    return mCommand2Dsp(QString("DSPCMDPAR,4,%1;").arg(par)); // liste mit prozessNr u. HKSK
 }
 
 QString ZDspServer::mTriggerIntListALL(QChar *)
 {
-    QString ss;
-    return mCommand2Dsp(ss = QString("DSPCMDPAR,1;"));
+    return mCommand2Dsp(QString("DSPCMDPAR,1;"));
 }
 
 
 QString ZDspServer::mResetMaxima(QChar *)
 {
-    QString ss;
-    return mCommand2Dsp(ss =  QString("DSPCMDPAR,3;"));
+    return mCommand2Dsp(QString("DSPCMDPAR,3;"));
 }
 
 QString ZDspServer::getLcaAndDspVersion()
@@ -996,22 +988,15 @@ bool ZDspServer::LoadDSProgram()
     cZDSP1Client dummyClient(0, 0); // dummyClient einrichten zum laden der kette
 
     ulong offset = dummyClient.m_dspVarResolver.adr(s) ;
-    if (DspDeviceNodeSingleton::getInstance()->lseek(offset) < 0 )  // startadr im treiber setzen
-        return false;
-
-    if (DspDeviceNodeSingleton::getInstance()->write(CmdMem.data(), CmdMem.size()) < 0)
+    if(!DspDeviceNodeSingleton::getInstance()->write(offset, CmdMem.data(), CmdMem.size()))
         return false;
 
     offset = dummyClient.m_dspVarResolver.adr(s2) ;
-    if (DspDeviceNodeSingleton::getInstance()->lseek(offset) < 0 )  // startsadr im treiber setzen
+    if (!DspDeviceNodeSingleton::getInstance()->write(offset, CmdIntMem.data(), CmdIntMem.size()))
         return false;
 
-    if (DspDeviceNodeSingleton::getInstance()->write(CmdIntMem.data(), CmdIntMem.size()) < 0)
-        return false;
-
-    QString ss;
-    mCommand2Dsp(ss = QString("DSPCMDPAR,7,%1;").arg(ActivatedCmdList));
     // dem dsp die neue liste mitteilen
+    mCommand2Dsp(QString("DSPCMDPAR,7,%1;").arg(ActivatedCmdList));
     return true;
 }
 

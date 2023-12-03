@@ -357,14 +357,13 @@ QString& cZDSP1Client::readActValues(QString& s)
 }
 
 
-bool cZDSP1Client::DspVar(QString& s,int& ir)
+bool cZDSP1Client::DspVar(QString& s, int& ir)
 { // einen int (32bit) wert lesen
-
     bool ret = false;
     QByteArray ba;
     QString ss = QString("%1,1").arg(s);
-    if ( DspVarRead(ss, &ba) != 0)
-    { // 1 wort ab name (s) lesen
+    if ( DspVarRead(ss, &ba) != 0) {
+        // 1 wort ab name (s) lesen
         ir = *((int*) (ba.data()));
         ret = true;
     }
@@ -372,13 +371,13 @@ bool cZDSP1Client::DspVar(QString& s,int& ir)
 }
 
 
-bool cZDSP1Client::DspVar(QString& s,float& fr)
+bool cZDSP1Client::DspVar(QString& s, float& fr)
 { // eine float wert lesen
     bool ret = false;
     QByteArray ba;
     QString ss = QString("%1,1").arg(s);
-    if ( DspVarRead(ss, &ba) != 0)
-    {  // 1 wort ab name(s) lesen
+    if ( DspVarRead(ss, &ba) != 0) {
+        // 1 wort ab name(s) lesen
         fr = *((float*) (ba.data()));
         ret = true;
     }
@@ -489,96 +488,87 @@ QString cZDSP1Client::DspVarWriteRM(QString& s)
 bool cZDSP1Client::DspVarWrite(QString& s)
 {
     const int gran = 10; // immer 10 elemente allokieren
-    bool ok=false;
+    bool ok = false;
 
-    for (int i=0;;i++)
-    {
+    for (int i=0;;i++) {
         QString vs = s.section(";",i,i);
-        if (vs.isEmpty())
-        {
+        if (vs.isEmpty()) {
             ok = true;
             break; // dann sind wir fertig
         }
         QString name = vs.section(",",0,0);
-        long adr;
-
-        if ( (adr = m_dspVarResolver.adr(name) ) == -1) break; // fehler, den namen gibt es nicht
+        long adr = m_dspVarResolver.adr(name);
+        if (adr == -1)
+            break; // fehler, den namen gibt es nicht
 
         int n,alloc;
         n = alloc = 0; // keine elemente
 
         QByteArray ba;
-        QDataStream bas ( &ba, QIODevice::Unbuffered | QIODevice::ReadWrite );
+        QDataStream bas (&ba, QIODevice::Unbuffered | QIODevice::ReadWrite);
         bas.setByteOrder(QDataStream::LittleEndian);
         bas.setFloatingPointPrecision(QDataStream::SinglePrecision);
-        bool ok2 = true;
-        int type;
-        type = m_dspVarResolver.type(name);
-        if (type == eUnknown)
-        {
-            for (int j=1;;j++)
-            {
+        bool toNumberConvertOk = true;
+
+        int type = m_dspVarResolver.type(name);
+        if (type == eUnknown) {
+            for (int j=1;;j++) {
                 QString p = vs.section(",",j,j);
-                if (p.isEmpty()) break;
-                if (++n > alloc)
-                {
+                if (p.isEmpty())
+                    break;
+                if (++n > alloc) {
                     alloc += gran;
                     ba.resize(alloc*4);
                 }
-                qint32 vl = p.toLong(&ok2); // test auf long
-                if (ok2) bas << vl;
+                qint32 vl = p.toLong(&toNumberConvertOk); // test auf long
+                if (toNumberConvertOk)
+                    bas << vl;
                 else {
-                    quint32 vul = p.toULong(&ok2); // test auf ulong
-                    if (ok2) bas << vul;
+                    quint32 vul = p.toULong(&toNumberConvertOk); // test auf ulong
+                    if (toNumberConvertOk)
+                        bas << vul;
                     else {
-                        float vf = p.toFloat(&ok2); // test auf float
-                        if (ok2) bas << vf;
+                        float vf = p.toFloat(&toNumberConvertOk); // test auf float
+                        if (toNumberConvertOk)
+                            bas << vf;
                     }
                 }
-                if (!ok2) break;
+                if(!toNumberConvertOk)
+                    break;
             }
         }
-        else
-        {
-            for (int j=1;;j++)
-            {
-                QString p = vs.section(",",j,j);
-                if (p.isEmpty()) break;
-                if (++n > alloc)
-                {
+        else {
+            for (int j=1;;j++) {
+                QString p = vs.section(",", j, j);
+                if (p.isEmpty())
+                    break;
+                if (++n > alloc) {
                     alloc += gran;
                     ba.resize(alloc*4);
                 }
-
-                if (type == eInt)
-                {
-                    qint32 vl = p.toLong(&ok2); // test auf long
-                    if (ok2)
+                if (type == eInt) {
+                    qint32 vl = p.toLong(&toNumberConvertOk); // test auf long
+                    if (toNumberConvertOk)
                         bas << vl;
-                    else
-                    {
-                        quint32 vul = p.toULong(&ok2); // test auf ulong
-                        if (ok2) bas << vul;
+                    else {
+                        quint32 vul = p.toULong(&toNumberConvertOk); // test auf ulong
+                        if (toNumberConvertOk)
+                            bas << vul;
                     }
                 }
-                else
-                {
-                    float vf = p.toFloat(&ok2); // test auf float
-                    if (ok2)
+                else {
+                    float vf = p.toFloat(&toNumberConvertOk); // test auf float
+                    if (toNumberConvertOk)
                         bas << vf;
                 }
-                if (!ok2) break;
+                if (!toNumberConvertOk)
+                    break;
             }
         }
-
-        if (!ok2)
+        if (!toNumberConvertOk)
             break;
-        if (n>0) {
-            if (DspDeviceNodeSingleton::getInstance()->lseek(adr) < 0)
-                break; // file positionieren
-            if (DspDeviceNodeSingleton::getInstance()->write(ba.data(), n*4 ) < 0)
-                break; // fehler beim schreiben
-        }
+        if (n > 0 && !DspDeviceNodeSingleton::getInstance()->write(adr, ba.data(), n*4 ))
+            break;
     }
     return ok;
 }

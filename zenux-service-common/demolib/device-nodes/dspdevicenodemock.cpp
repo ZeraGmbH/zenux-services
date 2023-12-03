@@ -32,11 +32,12 @@ int DspDeviceNodeMock::lseek(ulong adr)
     return 0;
 }
 
-int DspDeviceNodeMock::write(const char *buf, int len)
+bool DspDeviceNodeMock::write(ulong adr, const char *buf, int len)
 {
+    Q_UNUSED(adr)
     Q_UNUSED(buf)
     Q_UNUSED(len)
-    return 0;
+    return true;
 }
 
 int DspDeviceNodeMock::read(char *buf, int len)
