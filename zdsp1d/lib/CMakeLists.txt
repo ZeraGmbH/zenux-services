@@ -32,6 +32,7 @@ add_library(zdsp1d-lib STATIC
 
 target_include_directories(zdsp1d-lib
     PUBLIC
+    $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/zdsp1d-lib>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/dsp-memory-management>
     )
@@ -56,12 +57,6 @@ target_link_libraries(zdsp1d-lib
 
 set_target_properties(zdsp1d-lib PROPERTIES VERSION ${PROJECT_VERSION})
 set_target_properties(zdsp1d-lib PROPERTIES SOVERSION ${PROJECT_VERSION_MAJOR})
-
-generate_export_header(zdsp1d-lib)
-install(FILES
-    ${CMAKE_CURRENT_BINARY_DIR}/zdsp1d-lib_export.h
-    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/zdsp1d-lib
-    )
 
 export(TARGETS zdsp1d-lib NAMESPACE Zera:: FILE ZenuxServicesTargets.cmake)
 install(TARGETS zdsp1d-lib

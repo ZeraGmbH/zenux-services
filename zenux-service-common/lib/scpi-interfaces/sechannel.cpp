@@ -1,10 +1,10 @@
+#include "secchannel.h"
 #include "zscpi_response_definitions.h"
 #include "scpiconnection.h"
-#include "secchannel.h"
 #include "secinputsettings.h"
 #include "protonetcommand.h"
 #include "scpisingletonfactory.h"
-#include "zscpi_response_definitions.h"
+#include "secdevicenodesingleton.h"
 #include <scpi.h>
 #include <scpicommand.h>
 #include <QList>
@@ -19,9 +19,8 @@ namespace ECALCCMDID {
 enum { COUNTEDGE = 1, COUNTRESET, ERRORMEASMASTER, ERRORMEASSLAVE};
 }
 
-SecChannel::SecChannel(int devFileDescriptor, SecCalculatorSettings* esettings, SecInputSettings *inpsettings, quint16 nr, std::function<void (int)> funcSigHandler) :
+SecChannel::SecChannel(SecCalculatorSettings* esettings, SecInputSettings *inpsettings, quint16 nr, std::function<void (int)> funcSigHandler) :
     ScpiConnection(ScpiSingletonFactory::getScpiObj()),
-    m_devFileDescriptor(devFileDescriptor),
     m_pecalcsettings(esettings),
     m_pInputSettings(inpsettings),
     m_nNr(nr),
@@ -170,9 +169,10 @@ void SecChannel::m_ReadWriteRegister(cProtonetCommand *protoCmd)
             //case ECALCREG::MTPAUSE:
 
             default:
-            lseek(m_devFileDescriptor, m_nMyAdress + (regInd << 2), 0);
-            read(m_devFileDescriptor,(char*) &reg, 4);
-            protoCmd->m_sOutput =  QString("%1").arg(reg);
+                SecDeviceNodeSingleton::getInstance()->lseek(m_nMyAdress + (regInd << 2));
+                SecDeviceNodeSingleton::getInstance()->read((char*) &reg, 4);
+                protoCmd->m_sOutput =  QString("%1").arg(reg);
+                break;
         }
     }
     else if ( ((protoCmd->m_nSCPIType & SCPI::isCmdwP) !=0) && cmd.isCommand(1) ) {
@@ -181,8 +181,8 @@ void SecChannel::m_ReadWriteRegister(cProtonetCommand *protoCmd)
             reg = par.toULong(&ok);
             if (ok)
             {
-                lseek(m_devFileDescriptor, m_nMyAdress + (regInd << 2), 0);
-                write(m_devFileDescriptor,(char*) &reg, 4);
+                SecDeviceNodeSingleton::getInstance()->lseek(m_nMyAdress + (regInd << 2));
+                SecDeviceNodeSingleton::getInstance()->write((char*) &reg, 4);
                 protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::ack];
             }
             else
@@ -208,10 +208,10 @@ void SecChannel::m_setSync(cProtonetCommand *protoCmd)
                 quint32 chnIndex = par.toULong(&ok);
                 if (ok && (chnIndex <= m_pecalcsettings->getNumber()) ) {
                     quint32 reg;
-                    lseek(m_devFileDescriptor, m_nMyAdress + (ECALCREG::CONF << 2), 0);
-                    read(m_devFileDescriptor,(char*) &reg, 4);
+                    SecDeviceNodeSingleton::getInstance()->lseek(m_nMyAdress + (ECALCREG::CONF << 2));
+                    SecDeviceNodeSingleton::getInstance()->read((char*) &reg, 4);
                     reg = (reg & 0xFFFFFF00) | (chnIndex+1);
-                    write(m_devFileDescriptor,(char*) &reg, 4);
+                    SecDeviceNodeSingleton::getInstance()->write((char*) &reg, 4);
                     protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::ack];
                 }
             }
@@ -232,10 +232,10 @@ void SecChannel::m_setMux(cProtonetCommand *protoCmd)
             protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::errval]; // preset
             if (m_pInputSettings->hasInput(par)) {
                 quint32 reg;
-                lseek(m_devFileDescriptor, m_nMyAdress + (ECALCREG::CONF << 2), 0);
-                read(m_devFileDescriptor,(char*) &reg, 4);
+                SecDeviceNodeSingleton::getInstance()->lseek(m_nMyAdress + (ECALCREG::CONF << 2));
+                SecDeviceNodeSingleton::getInstance()->read((char*) &reg, 4);
                 reg = (reg & 0xFFFF83FF) | (m_pInputSettings->mux(par) << 10);
-                write(m_devFileDescriptor,(char*) &reg, 4);
+                SecDeviceNodeSingleton::getInstance()->write((char*) &reg, 4);
                 protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::ack];
             }
         }
@@ -257,10 +257,10 @@ void SecChannel::m_setCmdId(cProtonetCommand *protoCmd)
             quint32 cmdId = par.toULong(&ok);
             if (ok && (cmdId < 3) ) {
                 quint32 reg;
-                lseek(m_devFileDescriptor, m_nMyAdress + (ECALCREG::CONF << 2), 0);
-                read(m_devFileDescriptor,(char*) &reg, 4);
+                SecDeviceNodeSingleton::getInstance()->lseek(m_nMyAdress + (ECALCREG::CONF << 2));
+                SecDeviceNodeSingleton::getInstance()->read((char*) &reg, 4);
                 reg = (reg & 0x00007CFF) | CMDIDList.at(cmdId);
-                write(m_devFileDescriptor,(char*) &reg, 4);
+                SecDeviceNodeSingleton::getInstance()->write((char*) &reg, 4);
                 protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::ack];
             }
         }
@@ -277,11 +277,11 @@ void SecChannel::m_start(cProtonetCommand *protoCmd)
     if (cmd.isCommand(0)) {
         if (protoCmd->m_clientId == m_ClientId) { // authorized ?
             quint32 reg;
-            lseek(m_devFileDescriptor, m_nMyAdress + (ECALCREG::CMD << 2), 0);
-            //read(m_devFileDescriptor,(char*) &reg, 4);
+            SecDeviceNodeSingleton::getInstance()->lseek(m_nMyAdress + (ECALCREG::CMD << 2));
+            //SecDeviceNodeSingleton::getInstance()->read((char*) &reg, 4);
             //reg = (reg & 0xFFFFFF3F) | 0x80;
             reg = 0x80;
-            write(m_devFileDescriptor,(char*) &reg, 4);
+            SecDeviceNodeSingleton::getInstance()->write((char*) &reg, 4);
             protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::ack];
         }
         else
@@ -334,14 +334,14 @@ void SecChannel::m_StopErrorCalculator()
 {
     quint32 reg;
 
-    lseek(m_devFileDescriptor, m_nMyAdress + (ECALCREG::CMD << 2), 0);
+    SecDeviceNodeSingleton::getInstance()->lseek(m_nMyAdress + (ECALCREG::CMD << 2));
     //read(m_devFileDescriptor,(char*) &reg, 4);
     //reg = (reg & 0xFFFFFF3F) | 0x40;
     reg = 0x40;
-    write(m_devFileDescriptor,(char*) &reg, 4);
+    SecDeviceNodeSingleton::getInstance()->write((char*) &reg, 4);
     // we must reset the stop bit in command register because ecalculator will never start
     reg = 0x0;
-    write(m_devFileDescriptor,(char*) &reg, 4);
+    SecDeviceNodeSingleton::getInstance()->write((char*) &reg, 4);
 }
 
 
@@ -350,10 +350,8 @@ void SecChannel::resetInterrupt(quint8 interrupt)
     quint32 reg;
 
     notifierECalcChannelIntReg.clrValue(interrupt);
-    lseek(m_devFileDescriptor, m_nMyAdress + (ECALCREG::INTREG << 2), 0);
-    read(m_devFileDescriptor,(char*) &reg, 4);
+    SecDeviceNodeSingleton::getInstance()->lseek(m_nMyAdress + (ECALCREG::INTREG << 2));
+    SecDeviceNodeSingleton::getInstance()->read((char*) &reg, 4);
     reg = (reg & 0xF) & ~interrupt;
-    write(m_devFileDescriptor,(char*) &reg, 4);
+    SecDeviceNodeSingleton::getInstance()->write((char*) &reg, 4);
 }
-
-

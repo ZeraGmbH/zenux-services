@@ -3,7 +3,6 @@
 
 #include "zdspserver.h"
 #include "dspdevicenode.h"
-#include <memory>
 
 class MockZdsp1d : public ZDspServer
 {

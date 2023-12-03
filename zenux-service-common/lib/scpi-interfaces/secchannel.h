@@ -29,8 +29,7 @@ class SecChannel : public ScpiConnection
 {
     Q_OBJECT
 public:
-    SecChannel(int devFileDescriptor,
-               SecCalculatorSettings* esettings,
+    SecChannel(SecCalculatorSettings* esettings,
                SecInputSettings* inpsettings,
                quint16 nr,
                std::function<void(int)> funcSigHandler);
@@ -50,7 +49,6 @@ protected:
     virtual void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
 
 private:
-    int m_devFileDescriptor;
     SecCalculatorSettings* m_pecalcsettings;
     SecInputSettings* m_pInputSettings;
     quint16 m_nNr;

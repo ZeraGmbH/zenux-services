@@ -1,20 +1,4 @@
-#include <unistd.h>
-#include <fcntl.h>
-#include <syslog.h>
-#include <signal.h>
-
-#include <QStateMachine>
-#include <QState>
-#include <QFinalState>
-#include <QStringList>
-#include <QDebug>
-#include <QByteArray>
-#include <QCoreApplication>
-#include <QSocketNotifier>
-
-#include <xiqnetserver.h>
-#include <xmlconfigreader.h>
-
+#include "secdevicenodesingleton.h"
 #include "sec1000d.h"
 #include "debugsettings.h"
 #include "ethsettings.h"
@@ -27,6 +11,19 @@
 #include "secgroupresourceandinterface.h"
 #include "rmconnection.h"
 #include <scpisingletonfactory.h>
+#include <xiqnetserver.h>
+#include <xmlconfigreader.h>
+#include <QStateMachine>
+#include <QState>
+#include <QFinalState>
+#include <QStringList>
+#include <QDebug>
+#include <QByteArray>
+#include <QCoreApplication>
+#include <QSocketNotifier>
+#include <unistd.h>
+#include <fcntl.h>
+#include <signal.h>
 #ifdef SYSTEMD_NOTIFICATION
 #include <systemd/sd-daemon.h>
 #endif
@@ -45,10 +42,13 @@ void SigHandler(int)
 
 struct sigaction mySigAction;
 // sigset_t mySigmask, origSigmask;
-static ServerParams params {ServerName, ServerVersion, "/etc/zera/sec1000d/sec1000d.xsd", "/etc/zera/sec1000d/sec1000d.xml"};
 
-cSEC1000dServer::cSEC1000dServer() :
-    cPCBServer(params, ScpiSingletonFactory::getScpiObj())
+
+ServerParams cSEC1000dServer::defaultParams{ServerName, ServerVersion, "/etc/zera/sec1000d/sec1000d.xsd", "/etc/zera/sec1000d/sec1000d.xml"};
+
+cSEC1000dServer::cSEC1000dServer(ServerParams params) :
+    cPCBServer(params, ScpiSingletonFactory::getScpiObj()),
+    m_params(params)
 {
     m_pDebugSettings = 0;
     m_pFPGASettings = 0;
@@ -103,7 +103,7 @@ cSEC1000dServer::~cSEC1000dServer()
     if (m_pSystemInfo) delete m_pSystemInfo;
     if (m_pRMConnection) delete m_pRMConnection;
 
-    close(m_devFileDescriptor); // close dev.
+    SecDeviceNodeSingleton::getInstance()->close();
     close(pipeFD[0]);
     close(pipeFD[1]);
 }
@@ -124,7 +124,7 @@ void cSEC1000dServer::doConfiguration()
         fcntl( pipeFD[0], F_SETFL, O_NONBLOCK);
         m_pNotifier = new QSocketNotifier(pipeFD[0], QSocketNotifier::Read, this);
         connect(m_pNotifier, &QSocketNotifier::activated, this, &cSEC1000dServer::SECIntHandler);
-        if (m_xmlConfigReader.loadSchema(params.xsdFile)) {
+        if (m_xmlConfigReader.loadSchema(m_params.xsdFile)) {
             // we want to initialize all settings first
             m_pDebugSettings = new cDebugSettings(&m_xmlConfigReader);
             connect(&m_xmlConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pDebugSettings,&cDebugSettings::configXMLInfo);
@@ -136,13 +136,13 @@ void cSEC1000dServer::doConfiguration()
             m_pInputSettings = new SecInputSettings(&m_xmlConfigReader);
             connect(&m_xmlConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pInputSettings,&SecInputSettings::configXMLInfo);
 
-            if(!m_xmlConfigReader.loadXMLFile(params.xmlFile)) {
-                qCritical("Abort: Could not open xml file '%s", qPrintable(params.xmlFile));
+            if(!m_xmlConfigReader.loadXMLFile(m_params.xmlFile)) {
+                qCritical("Abort: Could not open xml file '%s", qPrintable(m_params.xmlFile));
                 emit abortInit();
             }
         }
         else {
-            qCritical("Abort: Could not open xsd file '%s", qPrintable(params.xsdFile));
+            qCritical("Abort: Could not open xsd file '%s", qPrintable(m_params.xsdFile));
             emit abortInit();
         }
     }
@@ -150,9 +150,9 @@ void cSEC1000dServer::doConfiguration()
 
 void cSEC1000dServer::doSetupServer()
 {
-    m_sSECDeviceNode = m_pFPGASettings->getDeviceNode(); // we try to open the sec device
-    if (SECDevOpen() < 0) {
-        qCritical("Abort, could not poen device node %s", qPrintable(m_sSECDeviceNode));
+    QString deviceNodeName = m_pFPGASettings->getDeviceNode(); // we try to open the sec device
+    if (SecDeviceNodeSingleton::getInstance()->open(deviceNodeName) < 0) {
+        qCritical("Abort, could not poen device node %s", qPrintable(deviceNodeName));
         emit abortInit();
     }
     else
@@ -164,8 +164,7 @@ void cSEC1000dServer::doSetupServer()
         scpiConnectionList.append(this); // the server itself has some commands
         scpiConnectionList.append(m_pStatusInterface = new cStatusInterface());
         scpiConnectionList.append(m_pSystemInterface = new cSystemInterface(this, m_pSystemInfo));
-        scpiConnectionList.append(m_pECalculatorInterface = new SecGroupResourceAndInterface(m_devFileDescriptor,
-                                                                                             m_pECalcSettings,
+        scpiConnectionList.append(m_pECalculatorInterface = new SecGroupResourceAndInterface(m_pECalcSettings,
                                                                                              m_pInputSettings,
                                                                                              SigHandler));
 
@@ -183,7 +182,7 @@ void cSEC1000dServer::doSetupServer()
         mySigAction. sa_flags = SA_RESTART;
         mySigAction.sa_restorer = NULL;
         sigaction(SIGIO, &mySigAction, NULL); // handler für sigio definieren
-        SetFASync();
+        SecDeviceNodeSingleton::getInstance()->enableFasync();
         // our resource mananager connection must be opened after configuration is done
         m_pRMConnection = new RMConnection(m_ethSettings.getRMIPadr(), m_ethSettings.getPort(EthSettings::resourcemanager));
         //connect(m_pRMConnection, SIGNAL(connectionRMError()), this, SIGNAL(abortInit()));
@@ -236,21 +235,6 @@ void cSEC1000dServer::doIdentAndRegister()
 #endif
 }
 
-int cSEC1000dServer::SECDevOpen()
-{
-    m_devFileDescriptor = open(m_sSECDeviceNode.toLatin1().data(), O_RDWR);
-    if (m_devFileDescriptor < 0)
-        qWarning("Error opening sec device: %s", qPrintable(m_pFPGASettings->getDeviceNode()));
-    return m_devFileDescriptor;
-}
-
-void cSEC1000dServer::SetFASync()
-{
-    fcntl(m_devFileDescriptor, F_SETOWN, getpid()); // wir sind "besitzer" des device
-    int oflags = fcntl(m_devFileDescriptor, F_GETFL);
-    fcntl(m_devFileDescriptor, F_SETFL, oflags | FASYNC); // async. benachrichtung (sigio) einschalten
-}
-
 void cSEC1000dServer::SECIntHandler(int)
 { // behandelt den sec interrupt
 
@@ -263,8 +247,8 @@ void cSEC1000dServer::SECIntHandler(int)
     n /= 2; // so we have to read 4 bytes for 8 entities -> (/ 2)
     QByteArray interruptREGS(n, 0);
     // first word is interrupt collection word
-    lseek(m_devFileDescriptor, m_pECalcSettings->getIrqAdress()+4, 0); // so the dedicated words have +4 offset
-    read(m_devFileDescriptor, interruptREGS.data(), n);
+    SecDeviceNodeSingleton::getInstance()->lseek(m_pECalcSettings->getIrqAdress()+4); // so the dedicated words have +4 offset
+    SecDeviceNodeSingleton::getInstance()->read(interruptREGS.data(), n);
 
     for (int i = 0; i < n; i++) {
         quint8 irq = interruptREGS[i];
