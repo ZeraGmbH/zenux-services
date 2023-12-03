@@ -1,7 +1,7 @@
 #ifndef DSPDEVICENODESINGLETON_H
 #define DSPDEVICENODESINGLETON_H
 
-#include "dspdevicenodeaccessinterface.h"
+#include "dspdevicenodeinterface.h"
 #include <functional>
 
 class DspDeviceNodeSingleton
