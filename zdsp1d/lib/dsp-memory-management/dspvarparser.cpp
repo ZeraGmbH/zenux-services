@@ -37,19 +37,3 @@ QChar DspVarParser::GetChar(QChar** s)
 
     return(tc); // return = 0 oder zeichen != whitespace
 }
-
-const QString DspVarParser::SetDelimiter(const QString s)
-{
-    QString r = delimiter; 
-    delimiter = s;
-
-    return(r); // gib alten delimiter zurück (man weiss ja nie)
-}
-
-const QString DspVarParser::SetWhiteSpace(const QString s)
-{
-    QString r = whitespace;
-    whitespace = s;
-
-    return(r); // whitespace zurück
-}
