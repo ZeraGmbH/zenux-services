@@ -5,7 +5,7 @@
 #include "scpicmdinterpreter.h"
 #include "zscpi_response_definitions.h"
 
-ScpiCmdInterpreter::ScpiCmdInterpreter(cbIFace* pcbIFace, cNode* r, DspVarParser* parser) :
+ScpiCmdInterpreter::ScpiCmdInterpreter(cbIFace* pcbIFace, cNode* r, ScpiParserZdsp1d* parser) :
     m_pcbIFace(pcbIFace),
     m_pParser(parser),
     m_pRootCmd(r)

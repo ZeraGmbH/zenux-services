@@ -1,10 +1,5 @@
-// implementation scpi
-
-#include <qstring.h>
-
 #include "scpi-zdsp.h"
-#include "dspvarparser.h"
-
+#include <QString>
 
 bool cSCPIString::operator == (const QString& s)
 {

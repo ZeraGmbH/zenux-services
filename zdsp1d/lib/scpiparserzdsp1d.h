@@ -1,14 +1,14 @@
-#ifndef PARSE_ZDSP_H
-#define PARSE_ZDSP_H
+#ifndef SCPIPARSER_ZDSP1D_H
+#define SCPIPARSER_ZDSP1D_H
 
 #include <QString>
 
 // TODO: Move to zera-scpi's Parse
 
-class DspVarParser
+class ScpiParserZdsp1d
 {
 public:
-    DspVarParser();
+    ScpiParserZdsp1d();
     const QString GetKeyword(QChar**); // liesst nächstes schlüsselwort aus string
 
     QChar GetChar(QChar **); // liesst das nächste zeichen aus string

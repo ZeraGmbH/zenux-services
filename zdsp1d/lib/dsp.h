@@ -1,7 +1,6 @@
 #ifndef DSP_H
 #define DSP_H
 
-#include "dspvarparser.h"
 #include <QHash>
 
 enum DspAcks {NBusy, InProgress, CmdError, ParError, CmdDone};
