@@ -916,7 +916,7 @@ bool ZDspServer::BuildDSProgram(QString &errs)
 {
     // die programmlisten aller aktiven clients zusammen bauen
     bool ok;
-    ulong umo = dm32UserWorkSpace.StartAdr; // usermememory offset
+    ulong userMemoryOffset = dm32UserWorkSpace.StartAdr;
 
     CmdMem.clear();
     CmdIntMem.clear();
@@ -936,15 +936,15 @@ bool ZDspServer::BuildDSProgram(QString &errs)
         for (int i = 0; i < clientlist.count(); i++) {
             client = clientlist.at(i);
             if (client->isActive()) {
-                s =  QString( "USERMEMOFFSET(%1)" ).arg(umo);
+                s =  QString( "USERMEMOFFSET(%1)" ).arg(userMemoryOffset);
                 cmd = client->GenDspCmd(s, &ok, 0, 0);
                 mds1 << cmd;
                 mds2 << cmd;
 
-                if (!client->GenCmdLists(errs, umo, UserWorkSpaceGlobalSegmentAdr))
+                if (!client->GenCmdLists(errs, userMemoryOffset, UserWorkSpaceGlobalSegmentAdr))
                     return false;
 
-                umo += client->setStartAdr(umo, UserWorkSpaceGlobalSegmentAdr); // relokalisieren der daten im dsp
+                userMemoryOffset += client->setStartAdr(userMemoryOffset, UserWorkSpaceGlobalSegmentAdr); // relokalisieren der daten im dsp
 
                 QList<cDspCmd> cmdl = client->GetDspCmdList();
                 for (int j = 0; j < cmdl.size(); j++ ) mds1 << cmdl[j]; // cycl. liste
