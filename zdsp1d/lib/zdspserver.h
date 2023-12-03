@@ -74,7 +74,7 @@ private:
     bool setSamplingSystem();
 
     // die routinen für das system modell
-    QString mCommand2Dsp(QString&); // indirekt für system modell
+    QString mCommand2Dsp(QString); // indirekt für system modell
 
     QString mTestDsp(QChar *);
     QString mResetDsp(QChar*);

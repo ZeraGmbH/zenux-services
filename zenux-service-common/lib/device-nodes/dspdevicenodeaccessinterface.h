@@ -18,7 +18,7 @@ public:
     virtual int lcaRawVersion() = 0;
 
     virtual int lseek(ulong adr) = 0;
-    virtual int write(const char* buf, int len) = 0;
+    virtual bool write(ulong adr, const char* buf, int len) = 0;
     virtual int read(char* buf, int len) = 0;
     virtual void enableFasync() = 0;
 };
