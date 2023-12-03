@@ -31,7 +31,6 @@ public:
     ulong setStartAdr(ulong, ulong); // zum relokalisieren der userdaten
     QString &DspVarListRead(QString&); // lesen dsp daten ganze Liste
     bool readDspVarInt(QString varName, int& intval); // einen int (32bit) wert lesen
-    bool readDspVarFloat(QString varName, float& floatVal); // eine float wert lesen
     TDspVar* DspVarRead(QString nameLen, QByteArray* varRead); // lesen dsp variable;  name , länge stehen im parameter string; werte im anschluss im qbytearray
     bool DspVarWrite(QString);  // schreiben  true wenn ok
     QString DspVarWriteRM(QString&); // dito schreiben mit rückmeldung

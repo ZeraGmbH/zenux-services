@@ -371,20 +371,6 @@ bool cZDSP1Client::readDspVarInt(QString varName, int& intval)
 }
 
 
-bool cZDSP1Client::readDspVarFloat(QString varName, float& floatVal)
-{ // eine float wert lesen
-    bool ret = false;
-    QByteArray ba;
-    QString ss = QString("%1,1").arg(varName);
-    if ( DspVarRead(ss, &ba) != 0) {
-        // 1 wort ab name(s) lesen
-        floatVal = *((float*) (ba.data()));
-        ret = true;
-    }
-    return ret;
-}
-
-
 TDspVar* cZDSP1Client::DspVarRead(QString nameLen, QByteArray* varRead)
 {
     QString name = nameLen.section(",",0,0);
