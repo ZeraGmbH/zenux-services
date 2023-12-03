@@ -30,11 +30,11 @@ public:
     void SetActive(bool); // merkt sich in m_bActive ob diese liste aktiv ist
     ulong setStartAdr(ulong, ulong); // zum relokalisieren der userdaten
     QString &DspVarListRead(QString&); // lesen dsp daten ganze Liste
-    bool DspVar(QString&,int&); // einen int (32bit) wert lesen
-    bool DspVar(QString&,float&); // eine float wert lesen
-    TDspVar* DspVarRead(QString&,QByteArray*); // lesen dsp variable;  name , länge stehen im parameter string; werte im anschluss im qbytearray
+    bool readDspVarInt(QString varName, int& intval); // einen int (32bit) wert lesen
+    bool readDspVarFloat(QString varName, float& floatVal); // eine float wert lesen
+    TDspVar* DspVarRead(QString nameLen, QByteArray* varRead); // lesen dsp variable;  name , länge stehen im parameter string; werte im anschluss im qbytearray
+    bool DspVarWrite(QString);  // schreiben  true wenn ok
     QString DspVarWriteRM(QString&); // dito schreiben mit rückmeldung
-    bool DspVarWrite(QString&);  // schreiben  true wenn ok
     QList<cDspCmd>& GetDspCmdList(); // damit der server die komplette liste aller clients
     QList<cDspCmd>& GetDspIntCmdList(); // an den dsp übertragen kann
     int getSocket();

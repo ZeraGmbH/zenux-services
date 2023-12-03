@@ -419,9 +419,7 @@ QString ZDspServer::mCommand2Dsp(QString qs)
     {
         Answer = ZSCPI::scpiAnswer[ZSCPI::errexec];
         int ack;
-
-        QString ss;
-        if (! cl.DspVar( ss ="DSPACK",ack))
+        if (! cl.readDspVarInt("DSPACK", ack))
             break;
 
         if ( ack ==  InProgress) {
@@ -429,7 +427,7 @@ QString ZDspServer::mCommand2Dsp(QString qs)
             break;
         }
 
-        if (! cl.DspVarWrite(ss = "DSPACK,0;") )
+        if (! cl.DspVarWrite("DSPACK,0;") )
             break; // reset acknowledge
         if (! cl.DspVarWrite(qs))
             break; // kommando und parameter -> dsp
@@ -471,10 +469,12 @@ QString ZDspServer::mGetSamplingSystem()
 
         cZDSP1Client* cl = GetClient(m_actualSocket);
 
-        QString s;
-        if (! cl->DspVar(s = "NCHANNELS",n)) break;
-        if (! cl->DspVar(s = "NSPERIOD",ss)) break;
-        if (! cl->DspVar(s = "NSMEAS",sm)) break;
+        if (!cl->readDspVarInt("NCHANNELS", n))
+            break;
+        if (!cl->readDspVarInt("NSPERIOD", ss))
+            break;
+        if (!cl->readDspVarInt("NSMEAS", sm))
+            break;
 
         Answer = QString("%1,%2,%3").arg(n).arg(ss).arg(sm);
     } while (0);
@@ -758,8 +758,7 @@ QString ZDspServer::mGetDspCommandStat()
 {
     int stat;
     cZDSP1Client* cl = GetClient(m_actualSocket);
-    QString s;
-    if (! cl->DspVar(s = "DSPACK",stat))
+    if (! cl->readDspVarInt("DSPACK", stat))
         Answer = ZSCPI::scpiAnswer[ZSCPI::errexec];
     else
         Answer = QString("%1").arg(stat);
