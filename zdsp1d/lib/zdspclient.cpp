@@ -1,6 +1,7 @@
 #include "zdspclient.h"
 #include "dspdevicenodesingleton.h"
 #include "zscpi_response_definitions.h"
+#include <parse.h>
 #include <QDataStream>
 
 extern TMemSection dm32DspWorkspace;
@@ -141,14 +142,14 @@ bool cZDSP1Client::syntaxCheck(QString& s)
 
 cDspCmd cZDSP1Client::GenDspCmd(QString cmd, bool* ok, ulong userMemoryOffset, ulong globalstartadr)
 {
-    DspVarParser CmdParser;
+    cParse CmdParser;
     CmdParser.SetDelimiter("(,)"); // setze die trennzeichen für den parser
     CmdParser.SetWhiteSpace(" (,)");
     if(!syntaxCheck(cmd)) {
         *ok = false;
         return cDspCmd();
     }
-    QChar* cmds = cmd.data();
+    const QChar* cmds = cmd.data();
     QString sSearch = CmdParser.GetKeyword(&cmds); // das 1. keyword muss ein befehlscode sein
     sDspCmd *dspcmd = findDspCmd(sSearch);
     if (dspcmd)
