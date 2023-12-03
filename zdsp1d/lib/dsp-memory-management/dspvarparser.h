@@ -12,8 +12,6 @@ public:
     const QString GetKeyword(QChar**); // liesst nächstes schlüsselwort aus string
 
     QChar GetChar(QChar **); // liesst das nächste zeichen aus string
-    const QString SetDelimiter(const QString s);
-    const QString SetWhiteSpace(const QString s);
 private:
     QString delimiter;
     QString whitespace;
