@@ -203,9 +203,3 @@ void SecGroupResourceAndInterface::m_FreeChannels(cProtonetCommand *protoCmd)
        }
     }
 }
-
-
-
-
-
-
