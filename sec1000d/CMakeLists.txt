@@ -1,4 +1,8 @@
 set(SOURCES
+    resources/secgroupresourceandinterface.cpp
+    scpi-interfaces/secchannel.cpp
+    settings/seccalcsettings.cpp
+    settings/secinputsettings.cpp
     sec1000d.cpp
     statusinterface.cpp
     systeminterface.cpp
@@ -6,6 +10,10 @@ set(SOURCES
     )
 
 set(HEADER
+    resources/secgroupresourceandinterface.h
+    scpi-interfaces/secchannel.h
+    settings/seccalcsettings.h
+    settings/secinputsettings.h
     sec1000d.h
     statusinterface.h
     systeminterface.h
@@ -20,6 +28,9 @@ add_library(sec1000d-lib STATIC
 target_include_directories(sec1000d-lib
     PUBLIC
     $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/sec1000d-lib>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/resources>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/scpi-interfaces>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/settings>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
     )
 
