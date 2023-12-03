@@ -1,7 +1,7 @@
 #ifndef DSPDEVICENODE_H
 #define DSPDEVICENODE_H
 
-#include "dspdevicenodeaccessinterface.h"
+#include "dspdevicenodeinterface.h"
 
 class DspDeviceNode : public DspDeviceNodeInterface
 {

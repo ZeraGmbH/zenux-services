@@ -1,7 +1,7 @@
 #ifndef DSPDEVICENODEMOCK_H
 #define DSPDEVICENODEMOCK_H
 
-#include "dspdevicenodeaccessinterface.h"
+#include "dspdevicenodeinterface.h"
 
 class DspDeviceNodeMock : public DspDeviceNodeInterface
 {

@@ -1,5 +1,5 @@
-#ifndef DSPDEVICENODEACCESSINTERFACE_H
-#define DSPDEVICENODEACCESSINTERFACE_H
+#ifndef DSPDEVICENODEINTERFACE_H
+#define DSPDEVICENODEINTERFACE_H
 
 #include <QString>
 #include <memory>
@@ -25,4 +25,4 @@ public:
 
 typedef std::unique_ptr<DspDeviceNodeInterface> DspDeviceNodeInterfaceUPtr;
 
-#endif // DSPDEVICENODEACCESSINTERFACE_H
+#endif // DSPDEVICENODEINTERFACE_H

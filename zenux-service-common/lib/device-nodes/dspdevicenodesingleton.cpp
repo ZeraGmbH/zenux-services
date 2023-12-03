@@ -3,7 +3,6 @@
 
 DspDeviceNodeInterfaceUPtr DspDeviceNodeSingleton::m_instance;
 
-
 std::function<DspDeviceNodeInterfaceUPtr()> DspDeviceNodeSingleton::m_createFunction = []() {
     return std::make_unique<DspDeviceNode>();
 };
