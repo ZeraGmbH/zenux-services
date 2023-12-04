@@ -26,6 +26,7 @@ protected:
     ProxyClient* getConnection(QString ipadress, quint16 port);
     ProxyClientPtr getConnectionSmart(QString ipadress, quint16 port);
     void startConnection(ProxyClientPrivate *client);
+    void deletePeerAndItsClients(QString ipadress, quint16 port);
     bool releaseConnection(ProxyClientPrivate *client);
     static Proxy* singletonInstance;
     Proxy *q_ptr;

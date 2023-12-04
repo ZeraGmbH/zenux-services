@@ -252,6 +252,7 @@ void cPCBServer::doUnregisterNotifier(XiQNetPeer* peer, const QByteArray &client
 void cPCBServer::onEstablishNewConnection(XiQNetPeer *newClient)
 {
     connect(newClient, &XiQNetPeer::sigMessageReceived, this, &cPCBServer::onExecuteCommandProto);
+    connect(newClient, &XiQNetPeer::sigConnectionClosed, this, &cPCBServer::peerDisconnected);
 }
 
 void cPCBServer::onExecuteCommandProto(std::shared_ptr<google::protobuf::Message> cmd)

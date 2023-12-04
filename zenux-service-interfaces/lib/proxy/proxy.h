@@ -18,6 +18,7 @@ public:
     void startConnection(ProxyClient *client);
     void startConnectionSmart(ProxyClientPtr client);
     bool releaseConnection(ProxyClient* client);
+    void deletePeerAndItsClients(QString ipadress, quint16 port);
 protected:
     explicit Proxy(QObject* parent = 0);
     ~Proxy();

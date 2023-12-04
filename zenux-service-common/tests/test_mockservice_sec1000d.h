@@ -15,6 +15,7 @@ private slots:
     void cleanup();
 
     void getChannelCatSec1000d();
+    void connectClientThenRemoveIt();
 private:
     std::unique_ptr<ResmanRunFacade> m_resman;
     std::unique_ptr<MockSec1000d> m_sec1000d;

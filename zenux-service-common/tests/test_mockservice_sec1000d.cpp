@@ -47,3 +47,17 @@ void test_mockservice_sec1000d::getChannelCatSec1000d()
     QCOMPARE(responseSpy[0][1], QVariant(ack));
     QCOMPARE(responseSpy[0][2], QVariant("ec0;ec1;ec2;ec3;ec4;ec5;ec6;ec7;"));
 }
+
+void test_mockservice_sec1000d::connectClientThenRemoveIt()
+{
+    Zera::ProxyClientPtr secClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6305);
+    Zera::cSECInterface secIFace;
+    secIFace.setClientSmart(secClient);
+    Zera::Proxy::getInstance()->startConnectionSmart(secClient);
+    TimeMachineObject::feedEventLoop();
+
+    QSignalSpy clientDisconnectionSpy(m_sec1000d.get(), &MockSec1000d::peerDisconnected);
+    Zera::Proxy::getInstance()->deletePeerAndItsClients("127.0.0.1", 6305);
+    TimeMachineObject::feedEventLoop();
+    QCOMPARE(clientDisconnectionSpy.count(), 1);
+}

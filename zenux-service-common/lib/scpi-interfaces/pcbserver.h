@@ -82,6 +82,7 @@ private slots:
 signals:
     void notifierRegistred(NotificationString* notifier);
     void removeSubscribers(XiQNetPeer* peer, const QByteArray &clientID);
+    void peerDisconnected();
 };
 
 #endif // PCBSERVER_H

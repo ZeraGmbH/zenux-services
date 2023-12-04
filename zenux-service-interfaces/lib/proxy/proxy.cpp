@@ -40,6 +40,12 @@ bool Proxy::releaseConnection(ProxyClient *client)
     return d->releaseConnection((ProxyClientPrivate*) client);
 }
 
+void Proxy::deletePeerAndItsClients(QString ipadress, quint16 port)
+{
+    Q_D(Proxy);
+    d->deletePeerAndItsClients(ipadress, port);
+}
+
 Proxy::Proxy(QObject *parent):
     d_ptr(new Zera::ProxyPrivate(this))
 {

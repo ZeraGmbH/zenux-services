@@ -49,6 +49,21 @@ void ProxyPrivate::startConnection(ProxyClientPrivate *client)
         peer->startProxyConnection(connection->m_sIP, connection->m_nPort);
 }
 
+void ProxyPrivate::deletePeerAndItsClients(QString ipadress, quint16 port)
+{
+    ProxyNetPeer *proxyPeer = getProxyNetPeer(ipadress, port);
+    if(proxyPeer) {
+        QList<ProxyClientPrivate*> clientsToBeDeleted;
+        for(ProxyConnection *connection : qAsConst(m_ConnectionHash)) {
+            if(connection->m_pNetClient == proxyPeer && !clientsToBeDeleted.contains(m_ConnectionHash.key(connection)))
+                clientsToBeDeleted.append(m_ConnectionHash.key(connection));
+        }
+        for(int i = clientsToBeDeleted.count() - 1; i >= 0; i--)
+            releaseConnection(clientsToBeDeleted.at(i));
+        delete proxyPeer;
+    }
+}
+
 bool ProxyPrivate::releaseConnection(ProxyClientPrivate *client)
 {
     if(m_ConnectionHash.contains(client)) {
