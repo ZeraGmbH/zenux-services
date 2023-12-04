@@ -9,7 +9,7 @@ AccumulatorInterface::AccumulatorInterface(cSCPI *scpiInterface, cATMELSysCtrl *
     m_atmelSysCntrl(atmelSysCntrl)
 {
     m_pollingTimer = TimerFactoryQt::createPeriodic(ACCU_POLLING_PERIOD_MS);
-    connect(m_pollingTimer.get(), &TimerTemplateQt::sigExpired, this, &AccumulatorInterface::getAccumulatorSoc);
+    connect(m_pollingTimer.get(), &TimerTemplateQt::sigExpired, this, &AccumulatorInterface::getAccuStateOfCharge);
     connect(m_pollingTimer.get(), &TimerTemplateQt::sigExpired, this, &AccumulatorInterface::getAccumulatorStatus);
     if(settings->isAvailable())
         m_pollingTimer->start();
@@ -19,7 +19,7 @@ void AccumulatorInterface::initSCPIConnection(QString leadingNodes)
 {
     ensureTrailingColonOnNonEmptyParentNodes(leadingNodes);
     addDelegate(QString("%1SYSTEM:ACCUMULATOR").arg(leadingNodes),"STATUS",SCPI::isQuery, m_pSCPIInterface, accumulatorCommands::cmdStatus, &m_accumulatorStatus);
-    addDelegate(QString("%1SYSTEM:ACCUMULATOR").arg(leadingNodes),"SOC",SCPI::isQuery, m_pSCPIInterface, accumulatorCommands::cmdSoc, &m_accumulatorSoc);
+    addDelegate(QString("%1SYSTEM:ACCUMULATOR").arg(leadingNodes),"SOC",SCPI::isQuery, m_pSCPIInterface, accumulatorCommands::cmdAccuStateOfCharge, &m_accuStateOfCharge);
 }
 
 void AccumulatorInterface::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
@@ -29,8 +29,8 @@ void AccumulatorInterface::executeProtoScpi(int cmdCode, cProtonetCommand *proto
     case accumulatorCommands::cmdStatus:
         protoCmd->m_sOutput = m_accumulatorStatus.getString();
         break;
-    case accumulatorCommands::cmdSoc:
-        protoCmd->m_sOutput = m_accumulatorSoc.getString();
+    case accumulatorCommands::cmdAccuStateOfCharge:
+        protoCmd->m_sOutput = m_accuStateOfCharge.getString();
         break;
     }
     if (protoCmd->m_bwithOutput)
@@ -49,14 +49,14 @@ QString AccumulatorInterface::getAccumulatorStatus()
     return m_accumulatorStatus.getString();
 }
 
-QString AccumulatorInterface::getAccumulatorSoc()
+QString AccumulatorInterface::getAccuStateOfCharge()
 {
     quint8 charge = 0;
-    if(m_atmelSysCntrl->readAccumulatorSoc(charge) == ZeraMControllerIo::atmelRM::cmddone){
-        m_accumulatorSoc = QString::number(charge);
+    if(m_atmelSysCntrl->readAccuStateOfCharge(charge) == ZeraMControllerIo::atmelRM::cmddone){
+        m_accuStateOfCharge = QString::number(charge);
     }
     else{
-        m_accumulatorSoc = QString::number(ERROR);
+        m_accuStateOfCharge = QString::number(ERROR);
     }
-    return m_accumulatorSoc.getString();
+    return m_accuStateOfCharge.getString();
 }

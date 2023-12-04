@@ -656,7 +656,7 @@ quint32 cPCBInterfacePrivate::getAccumulatorStatus()
     return msgnr;
 }
 
-quint32 cPCBInterfacePrivate::getAccumulatorSoc()
+quint32 cPCBInterfacePrivate::getAccuStateOfCharge()
 {
     QString cmd;
     quint32 msgnr;

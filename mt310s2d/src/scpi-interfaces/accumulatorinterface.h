@@ -8,7 +8,7 @@
 
 enum accumulatorCommands{
     cmdStatus,
-    cmdSoc
+    cmdAccuStateOfCharge
 };
 
 class AccumulatorInterface : public ScpiConnection
@@ -17,12 +17,12 @@ public:
     AccumulatorInterface(cSCPI* scpiInterface, cATMELSysCtrl *atmelSysCntrl, AccumulatorSettings* settings);
     void initSCPIConnection(QString leadingNodes) override;
     QString getAccumulatorStatus();
-    QString getAccumulatorSoc();
+    QString getAccuStateOfCharge();
 protected:
     void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
 private:
     NotificationString m_accumulatorStatus;
-    NotificationString m_accumulatorSoc;
+    NotificationString m_accuStateOfCharge;
     cATMELSysCtrl *m_atmelSysCntrl;
     TimerTemplateQtPtr m_pollingTimer;
 };

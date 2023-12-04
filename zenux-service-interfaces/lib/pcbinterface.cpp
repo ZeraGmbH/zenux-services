@@ -373,10 +373,10 @@ quint32 cPCBInterface::getAccumulatorStatus()
     return d->getAccumulatorStatus();
 }
 
-quint32 cPCBInterface::getAccumulatorSoc()
+quint32 cPCBInterface::getAccuStateOfCharge()
 {
     Q_D(cPCBInterface);
-    return d->getAccumulatorSoc();
+    return d->getAccuStateOfCharge();
 }
 
 

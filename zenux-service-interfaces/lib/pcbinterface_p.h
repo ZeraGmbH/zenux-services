@@ -177,7 +177,7 @@ public:
 
     // all commands to accumulator interface
     quint32 getAccumulatorStatus();
-    quint32 getAccumulatorSoc();
+    quint32 getAccuStateOfCharge();
 
     // sending a transparent command
     quint32 transparentCommand(QString cmd);

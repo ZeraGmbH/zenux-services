@@ -11,7 +11,7 @@ enum hw_cmdcode
     hwGetPCBVersion = 0x0005,
     hwSetTestModes = 0x0042,
     hwGetAccumulatorStatus = 0x0210,
-    hwGetAccumulatorSoc = 0x0211,
+    hwGetAccuStateOfCharge = 0x0211,
 };
 
 
@@ -44,11 +44,11 @@ ZeraMControllerIo::atmelRM cATMELSysCtrl::readAccumulatorStatus(quint8 &stat)
     return ret;
 }
 
-ZeraMControllerIo::atmelRM cATMELSysCtrl::readAccumulatorSoc(quint8 &charge)
+ZeraMControllerIo::atmelRM cATMELSysCtrl::readAccuStateOfCharge(quint8 &charge)
 {
     ZeraMControllerIo::atmelRM ret = cmdexecfault;
     quint8 answ[2];
-    hw_cmd CMD(hwGetAccumulatorSoc, 0, nullptr, 0);
+    hw_cmd CMD(hwGetAccuStateOfCharge, 0, nullptr, 0);
     writeCommand(&CMD, answ, 2);
     if(getLastErrorMask() == 0) {
          charge = answ[0];

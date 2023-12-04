@@ -15,7 +15,7 @@ public:
     atmelRM readCTRLVersion(QString& answer) override;
     atmelRM readPCBVersion(QString& answer) override;
     virtual atmelRM readAccumulatorStatus(quint8& stat);
-    virtual atmelRM readAccumulatorSoc(quint8& charge);
+    virtual atmelRM readAccuStateOfCharge(quint8& charge);
     atmelRM enableTestMode(qint32 testBits);
 };
 

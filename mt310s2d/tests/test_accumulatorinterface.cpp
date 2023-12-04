@@ -49,7 +49,7 @@ void test_accumulatorinterface::readAccumulatorStatus()
         QCOMPARE(protoCmd->m_sOutput, "");
 }
 
-void test_accumulatorinterface::readAccumulatorSoc()
+void test_accumulatorinterface::readAccuStateOfCharge()
 {
     TimeMachineForTest::getInstance()->processTimers(1500);
     std::unique_ptr<cProtonetCommand> protoCmd = std::make_unique<cProtonetCommand>(nullptr, false, false, QByteArray(), 0, systemAccumulatorSoc);
