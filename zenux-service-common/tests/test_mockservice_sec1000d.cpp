@@ -18,12 +18,6 @@ void test_mockservice_sec1000d::init()
     TimeMachineObject::feedEventLoop();
     m_sec1000d = std::make_unique<MockSec1000d>();
     TimeMachineObject::feedEventLoop();
-
-    Zera::ProxyClientPtr secClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6305);
-    m_secIFace = std::make_unique<Zera::cSECInterface>();
-    m_secIFace->setClientSmart(secClient);
-    Zera::Proxy::getInstance()->startConnectionSmart(secClient);
-    TimeMachineObject::feedEventLoop();
 }
 
 void test_mockservice_sec1000d::cleanup()
@@ -35,8 +29,18 @@ void test_mockservice_sec1000d::cleanup()
     m_secIFace = nullptr;
 }
 
+void test_mockservice_sec1000d::createSecClientInterface()
+{
+    Zera::ProxyClientPtr secClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6305);
+    m_secIFace = std::make_unique<Zera::cSECInterface>();
+    m_secIFace->setClientSmart(secClient);
+    Zera::Proxy::getInstance()->startConnectionSmart(secClient);
+    TimeMachineObject::feedEventLoop();
+}
+
 void test_mockservice_sec1000d::getChannelCatSec1000d()
 {
+    createSecClientInterface();
     QSignalSpy responseSpy(m_secIFace.get(), &Zera::cSECInterface::serverAnswer);
     int msgNr = m_secIFace->getChannelCatalog();
     TimeMachineObject::feedEventLoop();
@@ -49,6 +53,7 @@ void test_mockservice_sec1000d::getChannelCatSec1000d()
 
 void test_mockservice_sec1000d::connectClientThenRemoveIt()
 {
+    createSecClientInterface();
     QSignalSpy clientDisconnectionSpy(m_sec1000d.get(), &MockSec1000d::peerDisconnected);
     Zera::Proxy::getInstance()->deletePeerAndItsClients("127.0.0.1", 6305);
     TimeMachineObject::feedEventLoop();
