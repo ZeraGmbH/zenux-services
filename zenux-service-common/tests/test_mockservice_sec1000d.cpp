@@ -1,6 +1,5 @@
 #include "test_mockservice_sec1000d.h"
 #include "proxy.h"
-#include "secinterface.h"
 #include "reply.h"
 #include <timemachineobject.h>
 #include <QSignalSpy>
@@ -19,6 +18,12 @@ void test_mockservice_sec1000d::init()
     TimeMachineObject::feedEventLoop();
     m_sec1000d = std::make_unique<MockSec1000d>();
     TimeMachineObject::feedEventLoop();
+
+    Zera::ProxyClientPtr secClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6305);
+    m_secIFace = std::make_unique<Zera::cSECInterface>();
+    m_secIFace->setClientSmart(secClient);
+    Zera::Proxy::getInstance()->startConnectionSmart(secClient);
+    TimeMachineObject::feedEventLoop();
 }
 
 void test_mockservice_sec1000d::cleanup()
@@ -27,19 +32,13 @@ void test_mockservice_sec1000d::cleanup()
     TimeMachineObject::feedEventLoop();
     m_resman = nullptr;
     TimeMachineObject::feedEventLoop();
+    m_secIFace = nullptr;
 }
 
 void test_mockservice_sec1000d::getChannelCatSec1000d()
 {
-    Zera::ProxyClientPtr secClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6305);
-    Zera::cSECInterface secIFace;
-    secIFace.setClientSmart(secClient);
-
-    Zera::Proxy::getInstance()->startConnectionSmart(secClient);
-    TimeMachineObject::feedEventLoop();
-
-    QSignalSpy responseSpy(&secIFace, &Zera::cSECInterface::serverAnswer);
-    int msgNr = secIFace.getChannelCatalog();
+    QSignalSpy responseSpy(m_secIFace.get(), &Zera::cSECInterface::serverAnswer);
+    int msgNr = m_secIFace->getChannelCatalog();
     TimeMachineObject::feedEventLoop();
 
     QCOMPARE(responseSpy.count(), 1);
@@ -50,12 +49,6 @@ void test_mockservice_sec1000d::getChannelCatSec1000d()
 
 void test_mockservice_sec1000d::connectClientThenRemoveIt()
 {
-    Zera::ProxyClientPtr secClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6305);
-    Zera::cSECInterface secIFace;
-    secIFace.setClientSmart(secClient);
-    Zera::Proxy::getInstance()->startConnectionSmart(secClient);
-    TimeMachineObject::feedEventLoop();
-
     QSignalSpy clientDisconnectionSpy(m_sec1000d.get(), &MockSec1000d::peerDisconnected);
     Zera::Proxy::getInstance()->deletePeerAndItsClients("127.0.0.1", 6305);
     TimeMachineObject::feedEventLoop();

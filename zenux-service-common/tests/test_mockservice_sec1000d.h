@@ -3,6 +3,7 @@
 
 #include "mocksec1000d.h"
 #include "resmanrunfacade.h"
+#include "secinterface.h"
 #include <QObject>
 #include <memory>
 
@@ -19,6 +20,7 @@ private slots:
 private:
     std::unique_ptr<ResmanRunFacade> m_resman;
     std::unique_ptr<MockSec1000d> m_sec1000d;
+    std::unique_ptr<Zera::cSECInterface> m_secIFace;
 };
 
 #endif // TEST_MOCKSERVICE_SEC1000D_H
