@@ -6,7 +6,6 @@
 #include "clampjustdata.h"
 #include "i2csettings.h"
 #include "zscpi_response_definitions.h"
-#include <syslog.h>
 #include <i2cutils.h>
 #include <i2cmuxerscopedonoff.h>
 
@@ -237,8 +236,8 @@ bool cClamp::importXMLDocument(QDomDocument *qdomdoc, bool ignoreType)
 {
     QDateTime DateTime;
     QDomDocumentType TheDocType = qdomdoc->doctype ();
-    if  (TheDocType.name() != QString("ClampAdjustmentData")) {
-        syslog(LOG_ERR,"justdata import, wrong xml documentype\n");
+    if(TheDocType.name() != QString("ClampAdjustmentData")) {
+        qCritical("justdata import, wrong xml documentype");
         return false;
     }
 
@@ -254,7 +253,7 @@ bool cClamp::importXMLDocument(QDomDocument *qdomdoc, bool ignoreType)
         QDomNode qdNode = nl.item(i);
         QDomElement qdElem = qdNode.toElement();
         if ( qdElem.isNull() ) {
-            syslog(LOG_ERR,"justdata import, format error in xml file\n");
+            qCritical("Justdata import, format error in xml file");
             return false;
         }
         QString tName = qdElem.tagName();
@@ -265,7 +264,7 @@ bool cClamp::importXMLDocument(QDomDocument *qdomdoc, bool ignoreType)
             else {
                 TypeOK = qdElem.text() == getClampTypeName(m_nType);
                 if (!TypeOK) {
-                    syslog(LOG_ERR,"justdata import, wrong type information in xml file\n");
+                    qCritical("Justdata import, wrong type information in xml file");
                     return false;
                 }
             }
@@ -362,12 +361,12 @@ bool cClamp::importXMLDocument(QDomDocument *qdomdoc, bool ignoreType)
                 }
             }
             else {
-                syslog(LOG_ERR,"justdata import, xml file contains strange data\n");
+                qCritical("Justdata import, xml file contains strange data");
                 return false;
             }
         }
         else {
-            syslog(LOG_ERR,"justdata import, xml file contains strange data\n");
+            qCritical("justdata import, xml file contains strange data");
             return false;
         }
     }
