@@ -488,4 +488,3 @@ quint16 cAdjustment::getChecksum()
 {
     return m_nChecksum;
 }
-
