@@ -16,7 +16,7 @@ private slots:
     void cleanup();
 
     void getChannelCatSec1000d();
-    void connectClientThenRemoveIt();
+    void freeSecResourcesWhenClientDisconnects();
 private:
     void createSecClientInterface();
     std::unique_ptr<ResmanRunFacade> m_resman;

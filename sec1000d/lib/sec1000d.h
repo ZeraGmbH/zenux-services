@@ -66,6 +66,7 @@ private slots:
     void doConnect2RM();
     void connect2RMError();
     void doIdentAndRegister();
+    void onPeerDisconnected();
 };
 
 

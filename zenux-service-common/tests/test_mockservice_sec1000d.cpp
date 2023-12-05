@@ -51,11 +51,27 @@ void test_mockservice_sec1000d::getChannelCatSec1000d()
     QCOMPARE(responseSpy[0][2], QVariant("ec0;ec1;ec2;ec3;ec4;ec5;ec6;ec7;"));
 }
 
-void test_mockservice_sec1000d::connectClientThenRemoveIt()
+void test_mockservice_sec1000d::freeSecResourcesWhenClientDisconnects()
 {
     createSecClientInterface();
-    QSignalSpy clientDisconnectionSpy(m_sec1000d.get(), &MockSec1000d::peerDisconnected);
+    QSignalSpy responseSpy1(m_secIFace.get(), &Zera::cSECInterface::serverAnswer);
+    m_secIFace->setECalcUnit(4); //max 4 can be set at a time
+    TimeMachineObject::feedEventLoop();
+    QCOMPARE(responseSpy1.count(), 1);
+    QCOMPARE(responseSpy1[0][1], QVariant(ack));
+
+    m_secIFace->setECalcUnit(4);
+    TimeMachineObject::feedEventLoop();
+    QCOMPARE(responseSpy1.count(), 2);
+    QCOMPARE(responseSpy1[1][1], QVariant(ack));
+
     Zera::Proxy::getInstance()->deletePeerAndItsClients("127.0.0.1", 6305);
     TimeMachineObject::feedEventLoop();
-    QCOMPARE(clientDisconnectionSpy.count(), 1);
+
+    createSecClientInterface();
+    QSignalSpy responseSpy2(m_secIFace.get(), &Zera::cSECInterface::serverAnswer);
+    m_secIFace->setECalcUnit(4);
+    TimeMachineObject::feedEventLoop();
+    QCOMPARE(responseSpy2.count(), 1);
+    QCOMPARE(responseSpy2[0][1], QVariant(ack));
 }

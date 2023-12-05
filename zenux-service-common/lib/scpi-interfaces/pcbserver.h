@@ -50,6 +50,7 @@ protected slots:
     virtual void SCPIInput();
     virtual void SCPIdisconnect();
     virtual void onSendNotification(ScpiNotificationSubscriber subscriber);
+    virtual void onPeerDisconnected();
 protected:
     void setupServer();
     void initSCPIConnections();
@@ -82,7 +83,6 @@ private slots:
 signals:
     void notifierRegistred(NotificationString* notifier);
     void removeSubscribers(XiQNetPeer* peer, const QByteArray &clientID);
-    void peerDisconnected();
 };
 
 #endif // PCBSERVER_H
