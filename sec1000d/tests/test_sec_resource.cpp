@@ -3,6 +3,7 @@
 #include "scpisingletonfactory.h"
 #include <timemachineobject.h>
 #include <QTest>
+#include <QList>
 
 QTEST_MAIN(test_sec_resource)
 
@@ -41,6 +42,15 @@ void test_sec_resource::setSecChannelsForAClient()
     cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
     scpiDelegate->executeSCPI(&protoCmd);
     QCOMPARE(protoCmd.m_sOutput, "ec0;ec1;ec2;ec3;");
+    QStringList channelsSet = protoCmd.m_sOutput.split(";");
+
+    QList<SecChannel*> secChannels = m_secResource->getECalcChannelList();
+    for(SecChannel *secCh : secChannels) {
+        if(channelsSet.contains(secCh->getName()))
+            QVERIFY(!secCh->isfree());
+        else
+            QVERIFY(secCh->isfree());
+    }
 }
 
 void test_sec_resource::setAndFreeSecChannelsForAClient()
@@ -56,9 +66,13 @@ void test_sec_resource::setAndFreeSecChannelsForAClient()
     scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
     scpiDelegate->executeSCPI(&protoCmd);
     QCOMPARE(protoCmd.m_sOutput, "ack");
+
+    QList<SecChannel*> secChannels = m_secResource->getECalcChannelList();
+    for(SecChannel *secCh : secChannels)
+        QVERIFY(secCh->isfree());
 }
 
-void test_sec_resource::setSecChannelsForMultipleClients()
+void test_sec_resource::setSecChannelsForMultipleClientsFreeOneClient()
 {
     cProtonetCommand protoCmd(0, true, false, QByteArray(1,'1'), 0, setTwoResourcesCommand);
     cSCPIObject* scpiObject = ScpiSingletonFactory::getScpiObj()->getSCPIObject(setTwoResourcesCommand);
@@ -76,4 +90,21 @@ void test_sec_resource::setSecChannelsForMultipleClients()
     scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
     scpiDelegate->executeSCPI(&protoCmd);
     QCOMPARE(protoCmd.m_sOutput, "ec4;ec5;ec6;ec7;");
+
+    QStringList channelsToBeFreed = protoCmd.m_sOutput.split(";"); //set in previous command
+    protoCmd.m_clientId = QByteArray(1, '3');
+    protoCmd.m_sInput = freeResourcesCommand;
+    scpiObject = ScpiSingletonFactory::getScpiObj()->getSCPIObject(freeResourcesCommand);
+    scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
+    scpiDelegate->executeSCPI(&protoCmd);
+    QCOMPARE(protoCmd.m_sOutput, "ack");
+
+    QList<SecChannel*> secChannels = m_secResource->getECalcChannelList();
+    for(SecChannel *secCh : secChannels) {
+        if(channelsToBeFreed.contains(secCh->getName()))
+            QVERIFY(secCh->isfree());
+        else
+            QVERIFY(!secCh->isfree());
+    }
+
 }
