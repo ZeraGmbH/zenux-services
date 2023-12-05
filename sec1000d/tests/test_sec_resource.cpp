@@ -35,9 +35,9 @@ void test_sec_resource::cleanup()
     TimeMachineObject::feedEventLoop();
 }
 
-QString test_sec_resource::sendScpiCommand(QByteArray clientID, QString cmd)
+QString test_sec_resource::sendScpiCommand(XiQNetPeer *peer, QByteArray clientID, QString cmd)
 {
-    cProtonetCommand protoCmd(0, false, false, clientID, 0, cmd);
+    cProtonetCommand protoCmd(peer, false, false, clientID, 0, cmd);
     cSCPIObject* scpiObject = ScpiSingletonFactory::getScpiObj()->getSCPIObject(cmd);
     cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
     scpiDelegate->executeSCPI(&protoCmd);
@@ -46,7 +46,7 @@ QString test_sec_resource::sendScpiCommand(QByteArray clientID, QString cmd)
 
 void test_sec_resource::setSecChannelsForAClient()
 {
-    QString returnString = sendScpiCommand(QByteArray(), setFourResourcesCommand);
+    QString returnString = sendScpiCommand(nullptr, QByteArray(), setFourResourcesCommand);
     QCOMPARE(returnString, "ec0;ec1;ec2;ec3;");
     QStringList channelsSet = returnString.split(";");
 
@@ -61,8 +61,8 @@ void test_sec_resource::setSecChannelsForAClient()
 
 void test_sec_resource::setAndFreeSecChannelsForAClient()
 {
-    sendScpiCommand(QByteArray(), setFourResourcesCommand);
-    QString returnString = sendScpiCommand(QByteArray(), freeResourcesCommand);
+    sendScpiCommand(nullptr, QByteArray(), setFourResourcesCommand);
+    QString returnString = sendScpiCommand(nullptr, QByteArray(), freeResourcesCommand);
     QCOMPARE(returnString, "ack");
 
     QList<SecChannel*> secChannels = m_secResource->getECalcChannelList();
@@ -72,17 +72,17 @@ void test_sec_resource::setAndFreeSecChannelsForAClient()
 
 void test_sec_resource::setSecChannelsForMultipleClientsFreeOneClient()
 {
-    QString returnString = sendScpiCommand(QByteArray(1, '1'), setTwoResourcesCommand);
+    QString returnString = sendScpiCommand(nullptr, QByteArray(1, '1'), setTwoResourcesCommand);
     QCOMPARE(returnString, "ec0;ec1;");
 
-    returnString = sendScpiCommand(QByteArray(1, '2'), setTwoResourcesCommand);
+    returnString = sendScpiCommand(nullptr, QByteArray(1, '2'), setTwoResourcesCommand);
     QCOMPARE(returnString, "ec2;ec3;");
 
-    returnString = sendScpiCommand(QByteArray(1, '3'), setFourResourcesCommand);
+    returnString = sendScpiCommand(nullptr, QByteArray(1, '3'), setFourResourcesCommand);
     QCOMPARE(returnString, "ec4;ec5;ec6;ec7;");
     QStringList channelsToBeFreed = returnString.split(";");
 
-    sendScpiCommand(QByteArray(1, '3'), freeResourcesCommand);
+    sendScpiCommand(nullptr, QByteArray(1, '3'), freeResourcesCommand);
 
     QList<SecChannel*> secChannels = m_secResource->getECalcChannelList();
     for(SecChannel *secCh : secChannels) {
@@ -93,3 +93,45 @@ void test_sec_resource::setSecChannelsForMultipleClientsFreeOneClient()
     }
 }
 
+void test_sec_resource::setSecChannelsForMultipleClientsOnePeerFreePeer()
+{
+    XiQNetPeer peer;
+    sendScpiCommand(&peer, QByteArray(1, '1'), setFourResourcesCommand);
+    sendScpiCommand(&peer, QByteArray(1, '2'), setFourResourcesCommand);
+    QVERIFY(m_secResource->freeChannelsForThisPeer(&peer));
+    QList<SecChannel*> secChannels = m_secResource->getECalcChannelList();
+    for(SecChannel *secCh : secChannels)
+        QVERIFY(secCh->isfree());
+}
+
+void test_sec_resource::setSecChannelsForMultipleClientsMultiplePeersFreeOnePeer()
+{
+    XiQNetPeer peer;
+    sendScpiCommand(&peer, QByteArray(1, '1'), setTwoResourcesCommand);
+    sendScpiCommand(&peer, QByteArray(1, '2'), setTwoResourcesCommand);
+
+    XiQNetPeer peer1;
+    QString channelsSet = sendScpiCommand(&peer1, QByteArray(1, '3'), setTwoResourcesCommand);
+    channelsSet.append(sendScpiCommand(&peer1, QByteArray(1, '4'), setTwoResourcesCommand));
+
+    QVERIFY(m_secResource->freeChannelsForThisPeer(&peer1));
+
+    QStringList channelsToBeFreed = channelsSet.split(";");
+    QList<SecChannel*> secChannels = m_secResource->getECalcChannelList();
+    for(SecChannel *secCh : secChannels) {
+        if(channelsToBeFreed.contains(secCh->getName()))
+            QVERIFY(secCh->isfree());
+        else
+            QVERIFY(!secCh->isfree());
+    }
+}
+
+void test_sec_resource::freeChannelsFromInvalidPeer()
+{
+    XiQNetPeer peer;
+    sendScpiCommand(&peer, QByteArray(1, '1'), setTwoResourcesCommand);
+    sendScpiCommand(&peer, QByteArray(1, '2'), setTwoResourcesCommand);
+
+    XiQNetPeer peer1;
+    QVERIFY(m_secResource->freeChannelsForThisPeer(&peer1)); //because no channels were set
+}
