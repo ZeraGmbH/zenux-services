@@ -106,6 +106,14 @@ QList<SecChannel *> SecGroupResourceAndInterface::getECalcChannelList()
     return m_ECalculatorChannelList;
 }
 
+bool SecGroupResourceAndInterface::freeChannelsForThisPeer(XiQNetPeer *peer)
+{
+    bool result = true;
+    for(const QByteArray &client: m_peerClientsHash[peer])
+        if(!freeChannelsFromAClient(client))
+            result = false;
+    return result;
+}
 
 QString SecGroupResourceAndInterface::m_ReadVersion(QString &sInput)
 {
@@ -166,6 +174,8 @@ void SecGroupResourceAndInterface::m_SetChannels(cProtonetCommand *protoCmd)
                protoCmd->m_sOutput = s;
                QByteArray id = protoCmd->m_clientId;
                m_ClientECalcHash[id] = s;
+               if(!m_peerClientsHash[protoCmd->m_pPeer].contains(id))
+                   m_peerClientsHash[protoCmd->m_pPeer].append(id);
                for (int i = 0; i < selEChannels.count(); i++)
                    selEChannels.at(i)->set(id);
            }
@@ -184,22 +194,28 @@ void SecGroupResourceAndInterface::m_SetChannels(cProtonetCommand *protoCmd)
 void SecGroupResourceAndInterface::m_FreeChannels(cProtonetCommand *protoCmd)
 {
     cSCPICommand cmd = protoCmd->m_sInput;
-
     protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::nak]; // preset
-
     if (cmd.isCommand(0))
     {
-       if (m_ClientECalcHash.contains(protoCmd->m_clientId))
-       {
-           QStringList sl = m_ClientECalcHash[protoCmd->m_clientId].split(";");
-           for (int i = 0; i < sl.count(); i++)
-           {
-               QString key;
-               key = sl.at(i);
-               if (m_ECalculatorChannelHash.contains(key))
-                   m_ECalculatorChannelHash[key]->free();
-           }
+       if (freeChannelsFromAClient(protoCmd->m_clientId))
            protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::ack];
-       }
     }
+}
+
+bool SecGroupResourceAndInterface::freeChannelsFromAClient(QByteArray clientID)
+{
+    bool result = false;
+    if (m_ClientECalcHash.contains(clientID))
+    {
+       QStringList sl = m_ClientECalcHash[clientID].split(";");
+       for (int i = 0; i < sl.count(); i++)
+       {
+           QString key;
+           key = sl.at(i);
+           if (m_ECalculatorChannelHash.contains(key))
+               m_ECalculatorChannelHash[key]->free();
+       }
+       result = true;
+    }
+    return result;
 }
