@@ -389,10 +389,3 @@ void cCOM5003dServer::doIdentAndRegister()
     sd_notify(0, "READY=1");
 #endif
 }
-
-
-
-
-
-
-

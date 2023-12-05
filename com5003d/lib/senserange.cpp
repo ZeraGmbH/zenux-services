@@ -209,4 +209,3 @@ QString cSenseRange::m_ReadRangeADCRejection(QString& sInput)
     else
         return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
-
