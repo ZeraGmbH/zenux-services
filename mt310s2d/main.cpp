@@ -1,25 +1,14 @@
-// test programm scpi parser
-
-#include <iostream>
-#include <syslog.h>
-#include <fcntl.h>
-#include <unistd.h>
-#include <stdio.h>
-#include <QCoreApplication>
-#include <QTextCodec>
-#include "mt310s2dglobal.h"
 #include "mt310s2d.h"
-
-
+#include "mt310s2dglobal.h"
+#include <QCoreApplication>
+#include <syslog.h>
 
 int main( int argc, char *argv[] )
 {
-
-    openlog(ServerName, LOG_PID, LOG_DAEMON); // open connection to syslogd
+    openlog(ServerName, LOG_PID, LOG_DAEMON); // we are still using it
 
     QCoreApplication* app = new QCoreApplication (argc, argv);
     cMT310S2dServer* mt310s2d = new cMT310S2dServer(); // this is our server
-
     qInfo(ServerName " started");
 
     int r = app->exec();
