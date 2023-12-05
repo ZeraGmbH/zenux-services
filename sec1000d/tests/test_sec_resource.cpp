@@ -8,6 +8,7 @@ QTEST_MAIN(test_sec_resource)
 
 static const char *setTwoResourcesCommand = "ECALCULATOR:SET 2;";
 static const char *setFourResourcesCommand = "ECALCULATOR:SET 4;";
+static const char *freeResourcesCommand = "ECALCULATOR:FREE";
 
 void test_sec_resource::init()
 {
@@ -35,14 +36,41 @@ void test_sec_resource::cleanup()
 
 void test_sec_resource::setSecChannelsForAClient()
 {
-    cProtonetCommand protoCmd(0, false, false, QByteArray(), 0, setTwoResourcesCommand);
+    cProtonetCommand protoCmd(0, false, false, QByteArray(), 0, setFourResourcesCommand);
+    cSCPIObject* scpiObject = ScpiSingletonFactory::getScpiObj()->getSCPIObject(setFourResourcesCommand);
+    cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
+    scpiDelegate->executeSCPI(&protoCmd);
+    QCOMPARE(protoCmd.m_sOutput, "ec0;ec1;ec2;ec3;");
+}
+
+void test_sec_resource::setAndFreeSecChannelsForAClient()
+{
+    cProtonetCommand protoCmd(0, false, false, QByteArray(), 0, setFourResourcesCommand);
+    cSCPIObject* scpiObject = ScpiSingletonFactory::getScpiObj()->getSCPIObject(setFourResourcesCommand);
+    cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
+    scpiDelegate->executeSCPI(&protoCmd);
+    QCOMPARE(protoCmd.m_sOutput, "ec0;ec1;ec2;ec3;");
+
+    protoCmd.m_sInput = freeResourcesCommand;
+    scpiObject = ScpiSingletonFactory::getScpiObj()->getSCPIObject(freeResourcesCommand);
+    scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
+    scpiDelegate->executeSCPI(&protoCmd);
+    QCOMPARE(protoCmd.m_sOutput, "ack");
+}
+
+void test_sec_resource::setSecChannelsForMultipleClients()
+{
+    cProtonetCommand protoCmd(0, true, false, QByteArray(1,'1'), 0, setTwoResourcesCommand);
     cSCPIObject* scpiObject = ScpiSingletonFactory::getScpiObj()->getSCPIObject(setTwoResourcesCommand);
     cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
     scpiDelegate->executeSCPI(&protoCmd);
     QCOMPARE(protoCmd.m_sOutput, "ec0;ec1;");
+
+    protoCmd.m_clientId = QByteArray(1, '2');
     scpiDelegate->executeSCPI(&protoCmd);
     QCOMPARE(protoCmd.m_sOutput, "ec2;ec3;");
 
+    protoCmd.m_clientId = QByteArray(1, '3');
     protoCmd.m_sInput = setFourResourcesCommand;
     scpiObject = ScpiSingletonFactory::getScpiObj()->getSCPIObject(setFourResourcesCommand);
     scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);

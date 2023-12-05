@@ -13,6 +13,8 @@ private slots:
     void cleanup();
 
     void setSecChannelsForAClient();
+    void setAndFreeSecChannelsForAClient();
+    void setSecChannelsForMultipleClients();
 private:
     std::unique_ptr<Zera::XMLConfig::cReader> m_xmlConfigReader;
     std::unique_ptr<SecCalculatorSettings> m_ecalcSettings;
