@@ -35,14 +35,20 @@ void test_sec_resource::cleanup()
     TimeMachineObject::feedEventLoop();
 }
 
-void test_sec_resource::setSecChannelsForAClient()
+QString test_sec_resource::sendScpiCommand(QByteArray clientID, QString cmd)
 {
-    cProtonetCommand protoCmd(0, false, false, QByteArray(), 0, setFourResourcesCommand);
-    cSCPIObject* scpiObject = ScpiSingletonFactory::getScpiObj()->getSCPIObject(setFourResourcesCommand);
+    cProtonetCommand protoCmd(0, false, false, clientID, 0, cmd);
+    cSCPIObject* scpiObject = ScpiSingletonFactory::getScpiObj()->getSCPIObject(cmd);
     cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
     scpiDelegate->executeSCPI(&protoCmd);
-    QCOMPARE(protoCmd.m_sOutput, "ec0;ec1;ec2;ec3;");
-    QStringList channelsSet = protoCmd.m_sOutput.split(";");
+    return protoCmd.m_sOutput;
+}
+
+void test_sec_resource::setSecChannelsForAClient()
+{
+    QString returnString = sendScpiCommand(QByteArray(), setFourResourcesCommand);
+    QCOMPARE(returnString, "ec0;ec1;ec2;ec3;");
+    QStringList channelsSet = returnString.split(";");
 
     QList<SecChannel*> secChannels = m_secResource->getECalcChannelList();
     for(SecChannel *secCh : secChannels) {
@@ -55,17 +61,9 @@ void test_sec_resource::setSecChannelsForAClient()
 
 void test_sec_resource::setAndFreeSecChannelsForAClient()
 {
-    cProtonetCommand protoCmd(0, false, false, QByteArray(), 0, setFourResourcesCommand);
-    cSCPIObject* scpiObject = ScpiSingletonFactory::getScpiObj()->getSCPIObject(setFourResourcesCommand);
-    cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
-    scpiDelegate->executeSCPI(&protoCmd);
-    QCOMPARE(protoCmd.m_sOutput, "ec0;ec1;ec2;ec3;");
-
-    protoCmd.m_sInput = freeResourcesCommand;
-    scpiObject = ScpiSingletonFactory::getScpiObj()->getSCPIObject(freeResourcesCommand);
-    scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
-    scpiDelegate->executeSCPI(&protoCmd);
-    QCOMPARE(protoCmd.m_sOutput, "ack");
+    sendScpiCommand(QByteArray(), setFourResourcesCommand);
+    QString returnString = sendScpiCommand(QByteArray(), freeResourcesCommand);
+    QCOMPARE(returnString, "ack");
 
     QList<SecChannel*> secChannels = m_secResource->getECalcChannelList();
     for(SecChannel *secCh : secChannels)
@@ -74,30 +72,17 @@ void test_sec_resource::setAndFreeSecChannelsForAClient()
 
 void test_sec_resource::setSecChannelsForMultipleClientsFreeOneClient()
 {
-    cProtonetCommand protoCmd(0, true, false, QByteArray(1,'1'), 0, setTwoResourcesCommand);
-    cSCPIObject* scpiObject = ScpiSingletonFactory::getScpiObj()->getSCPIObject(setTwoResourcesCommand);
-    cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
-    scpiDelegate->executeSCPI(&protoCmd);
-    QCOMPARE(protoCmd.m_sOutput, "ec0;ec1;");
+    QString returnString = sendScpiCommand(QByteArray(1, '1'), setTwoResourcesCommand);
+    QCOMPARE(returnString, "ec0;ec1;");
 
-    protoCmd.m_clientId = QByteArray(1, '2');
-    scpiDelegate->executeSCPI(&protoCmd);
-    QCOMPARE(protoCmd.m_sOutput, "ec2;ec3;");
+    returnString = sendScpiCommand(QByteArray(1, '2'), setTwoResourcesCommand);
+    QCOMPARE(returnString, "ec2;ec3;");
 
-    protoCmd.m_clientId = QByteArray(1, '3');
-    protoCmd.m_sInput = setFourResourcesCommand;
-    scpiObject = ScpiSingletonFactory::getScpiObj()->getSCPIObject(setFourResourcesCommand);
-    scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
-    scpiDelegate->executeSCPI(&protoCmd);
-    QCOMPARE(protoCmd.m_sOutput, "ec4;ec5;ec6;ec7;");
+    returnString = sendScpiCommand(QByteArray(1, '3'), setFourResourcesCommand);
+    QCOMPARE(returnString, "ec4;ec5;ec6;ec7;");
+    QStringList channelsToBeFreed = returnString.split(";");
 
-    QStringList channelsToBeFreed = protoCmd.m_sOutput.split(";"); //set in previous command
-    protoCmd.m_clientId = QByteArray(1, '3');
-    protoCmd.m_sInput = freeResourcesCommand;
-    scpiObject = ScpiSingletonFactory::getScpiObj()->getSCPIObject(freeResourcesCommand);
-    scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
-    scpiDelegate->executeSCPI(&protoCmd);
-    QCOMPARE(protoCmd.m_sOutput, "ack");
+    sendScpiCommand(QByteArray(1, '3'), freeResourcesCommand);
 
     QList<SecChannel*> secChannels = m_secResource->getECalcChannelList();
     for(SecChannel *secCh : secChannels) {
@@ -106,5 +91,5 @@ void test_sec_resource::setSecChannelsForMultipleClientsFreeOneClient()
         else
             QVERIFY(!secCh->isfree());
     }
-
 }
+
