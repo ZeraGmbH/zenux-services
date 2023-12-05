@@ -1,78 +1,5 @@
-set(SOURCES
-    src/micro-controller-io/atmelsysctrl.cpp
-    src/scpi-interfaces/clampinterface.cpp
-    src/scpi-interfaces/senseinterface.cpp
-    src/scpi-interfaces/systeminterface.cpp
-    src/scpi-interfaces/accumulatorinterface.cpp
-    src/settings/ctrlsettings.cpp
-    src/settings/accumulatorsettings.cpp
-    src/senserange.cpp
-    src/sensechannel.cpp
-    src/adjustment.cpp
-    src/mt310s2systeminfo.cpp
-    src/clampjustdata.cpp
-    src/adjflash.cpp
-    src/clamp.cpp
-    src/adjxml.cpp
-    src/mt310s2d.cpp
-    src/mt310s2justdata.cpp
-    )
-
-set(HEADER
-    src/micro-controller-io/atmelsysctrl.h
-    src/scpi-interfaces/clampinterface.h
-    src/scpi-interfaces/senseinterface.h
-    src/scpi-interfaces/systeminterface.h
-    src/scpi-interfaces/accumulatorinterface.h
-    src/settings/ctrlsettings.h
-    src/settings/accumulatorsettings.h
-    src/senserange.h
-    src/sensechannel.h
-    src/adjflash.h
-    src/adjxml.h
-    src/adjustment.h
-    src/mt310s2systeminfo.h
-    src/clampjustdata.h
-    src/clamp.h
-    src/mt310s2d.h
-    src/mt310s2dglobal.h
-    src/mt310s2justdata.h
-    )
-
-add_library(mt310s2d-lib STATIC
-    ${HEADER}
-    ${SOURCES}
-    )
-
-target_include_directories(mt310s2d-lib
-    PUBLIC
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/micro-controller-io>
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/scpi-interfaces>
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/settings>
-    )
-
-if(${Systemd_FOUND})
-    target_link_libraries(mt310s2d-lib
-        PRIVATE
-        systemd
-    )
-endif()
-
-target_link_libraries(mt310s2d-lib
-    PUBLIC
-    Qt5::Core
-    Qt5::Xml
-    Qt5::Network
-    Zera::zera-xmlconfig
-    Zera::zera-i2c-devices
-    Zera::zeraprotobuf
-    zenuxservicecommon
-    )
-
 add_executable(mt310s2d
-    src/main.cpp
+    main.cpp
     )
 
 target_link_libraries(mt310s2d
@@ -86,6 +13,7 @@ install(TARGETS mt310s2d
     )
 
 add_subdirectory(configs)
+add_subdirectory(lib)
 add_subdirectory(systemd)
 add_subdirectory(testlib)
 add_subdirectory(tests)
