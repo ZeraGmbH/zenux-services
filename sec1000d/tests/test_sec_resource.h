@@ -16,6 +16,7 @@ private slots:
     void setAndFreeSecChannelsForAClient();
     void setSecChannelsForMultipleClientsFreeOneClient();
 private:
+    QString sendScpiCommand(QByteArray clientID, QString cmd);
     std::unique_ptr<Zera::XMLConfig::cReader> m_xmlConfigReader;
     std::unique_ptr<SecCalculatorSettings> m_ecalcSettings;
     std::unique_ptr<SecInputSettings> m_inputSettings;
