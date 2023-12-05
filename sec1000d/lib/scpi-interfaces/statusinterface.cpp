@@ -40,8 +40,3 @@ quint16 cStatusInterface::getDeviceStatus()
 {
     return 1; // device is present per default
 }
-
-
-
-
-
