@@ -1,22 +1,22 @@
 set(SOURCES
     resources/secgroupresourceandinterface.cpp
     scpi-interfaces/secchannel.cpp
+    scpi-interfaces/statusinterface.cpp
+    scpi-interfaces/systeminterface.cpp
     settings/seccalcsettings.cpp
     settings/secinputsettings.cpp
     sec1000d.cpp
-    statusinterface.cpp
-    systeminterface.cpp
     systeminfo.cpp
     )
 
 set(HEADER
     resources/secgroupresourceandinterface.h
     scpi-interfaces/secchannel.h
+    scpi-interfaces/statusinterface.h
+    scpi-interfaces/systeminterface.h
     settings/seccalcsettings.h
     settings/secinputsettings.h
     sec1000d.h
-    statusinterface.h
-    systeminterface.h
     systeminfo.h
     )
 
