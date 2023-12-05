@@ -70,3 +70,16 @@ target_link_libraries(mt310s2d-lib
     zenuxservicecommon
     )
 
+set_target_properties(mt310s2d-lib PROPERTIES VERSION ${PROJECT_VERSION})
+set_target_properties(mt310s2d-lib PROPERTIES SOVERSION ${PROJECT_VERSION_MAJOR})
+
+export(TARGETS mt310s2d-lib NAMESPACE Zera:: FILE ZenuxServicesTargets.cmake)
+install(TARGETS mt310s2d-lib
+    EXPORT ZenuxServicesExport
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    )
+
+install(
+    FILES ${HEADER}
+    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/mt310s2d-lib
+    )

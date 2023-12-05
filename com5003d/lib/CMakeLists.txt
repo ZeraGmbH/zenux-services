@@ -51,3 +51,16 @@ target_link_libraries(com5003d-lib
     zenuxservicecommon
     )
 
+set_target_properties(com5003d-lib PROPERTIES VERSION ${PROJECT_VERSION})
+set_target_properties(com5003d-lib PROPERTIES SOVERSION ${PROJECT_VERSION_MAJOR})
+
+export(TARGETS com5003d-lib NAMESPACE Zera:: FILE ZenuxServicesTargets.cmake)
+install(TARGETS com5003d-lib
+    EXPORT ZenuxServicesExport
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    )
+
+install(
+    FILES ${HEADER}
+    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/com5003d-lib
+    )
