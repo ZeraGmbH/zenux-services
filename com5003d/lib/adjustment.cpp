@@ -15,8 +15,6 @@
 #include <QDomNodeList>
 #include <QFile>
 #include <QDateTime>
-#include <syslog.h>
-
 
 cAdjustment::cAdjustment(cSystemInfo* sInfo, QString &devNode, quint8 adr)
     :m_pSystemInfo(sInfo), m_sDeviceNode(devNode), m_nI2CAdr(adr)
@@ -81,9 +79,8 @@ bool cAdjustment::exportJDataFlash()
 
    cF24LC256* Flash = new cF24LC256(m_sDeviceNode, m_nI2CAdr);
    int written = Flash->WriteData(ba.data(),ba.size(),0);
-   if ( (count - written) > 0)
-   {
-        syslog(LOG_ERR,"error writing flashmemory\n");
+   if ( (count - written) > 0) {
+        qCritical("Error writing flashmemory");
         return false; // fehler beim flash schreiben
    }
    importJDataFlash();
@@ -100,7 +97,7 @@ bool cAdjustment::importJDataFlash()
     QByteArray ba(6, 0); // byte array for length and checksum
     cF24LC256* Flash = new cF24LC256(m_sDeviceNode, m_nI2CAdr);
     if ( (6 - Flash->ReadData(ba.data(),6,0)) >0 ) {
-        syslog(LOG_ERR,"error reading flashmemory\n");
+        qCritical("Error reading flashmemory");
         delete Flash;
         return(false); // lesefehler
     }
@@ -110,10 +107,9 @@ bool cAdjustment::importJDataFlash()
     uint count;
     quint16 chksumCMP = 0;
     bastream >> count >> m_nChecksum; // länge der flashdaten u. checksumme
-    // syslog(LOG_ERR,"flash length is %d, chksum is %d\n",count, m_nChecksum);
     uint flashSize = static_cast<uint>(Flash->size());
     if ( count > flashSize ) {
-        syslog(LOG_ERR,"error reading flashmemory, count %i > flash %i\n",
+        qCritical("Error reading flashmemory, count %i > flash %i",
                count, flashSize);
         delete Flash;
         return(false); // lesefehler
@@ -121,7 +117,7 @@ bool cAdjustment::importJDataFlash()
 
     QByteArray ba2(count, 0); // byte array zur aufnahme der gesamten daten
     if ( (count - Flash->ReadData(ba2.data(),count,0)) >0 ) {
-        syslog(LOG_ERR,"error reading flashmemory\n");
+        qCritical("Error reading flashmemory");
         delete Flash;
         return(false); // lesefehler
     }
@@ -139,9 +135,8 @@ bool cAdjustment::importJDataFlash()
     mem.write(ca); // 0 setzen der checksumme
 
     chksumCMP = qChecksum(ba2.data(),ba2.size());
-    // syslog(LOG_ERR,"computed flash chksum is %d\n",chksumCMP);
     if (chksumCMP != m_nChecksum) {
-        syslog(LOG_ERR,"invalid checksum encountered reading flashmemory: expected 0x%04X / found 0x%04X\n",
+        qCritical("Invalid checksum encountered reading flashmemory: expected 0x%04X / found 0x%04X",
                chksumCMP, m_nChecksum);
         return(false); // daten fehlerhaft
     }
@@ -157,7 +152,7 @@ bool cAdjustment::importJDataFlash()
 
     ba2stream >> s; //
     if (QString(s) != "ServerVersion") {
-        syslog(LOG_ERR,"flashmemory read, ServerVersion not found\n");
+        qCritical("Flashmemory read, ServerVersion not found");
         return false; // datensatz falsch
     }
 
@@ -168,7 +163,7 @@ bool cAdjustment::importJDataFlash()
 
     QString sysDevName = m_pSystemInfo->getDeviceName();
     if (QString(s) != sysDevName) {
-        syslog(LOG_ERR,"flashmemory read, contains wrong pcb name: flash %s / µC %s\n",
+        qCritical("Flashmemory read, contains wrong pcb name: flash %s / µC %s",
                s, qPrintable(sysDevName));
         return false; // wrong pcb name
     }
@@ -203,7 +198,7 @@ bool cAdjustment::importJDataFlash()
 
         if (qs != sDV)
         {
-            syslog(LOG_ERR,"flashmemory read, contains wrong versionnumber: flash %s / µC %s\n",
+            qCritical("Flashmemory read, contains wrong versionnumber: flash %s / µC %s",
                    qPrintable(qs), qPrintable(sDV));
             m_nAdjStatus += Adjustment::wrongVERS;
             if (!enable) {
@@ -216,7 +211,7 @@ bool cAdjustment::importJDataFlash()
     QString sysSerNo = m_pSystemInfo->getSerialNumber();
     if (QString(s) != sysSerNo)
     {
-        syslog(LOG_ERR,"flashmemory read, contains wrong serialnumber: flash %s / µC: %s\n",
+        qCritical("Flashmemory read, contains wrong serialnumber: flash %s / µC: %s",
                s, qPrintable(sysSerNo));
         m_nAdjStatus += Adjustment::wrongSNR;
         if (!enable) {
@@ -236,7 +231,7 @@ bool cAdjustment::importJDataFlash()
         }
         if (!done)
         {
-            syslog(LOG_ERR,"flashmemory read, contains strange data\n");
+            qCritical("Flashmemory read, contains strange data");
             return false;
         }
     }
@@ -254,7 +249,7 @@ bool cAdjustment::exportJDataXML(QString &file)
     QFile adjfile(filename);
     if ( !adjfile.open( QIODevice::WriteOnly ) )
     {
-        syslog(LOG_ERR,"justdata export, could not open xml file\n");
+        qCritical("Justdata export, could not open xml file");
         return false;
     }
 
@@ -320,7 +315,7 @@ bool cAdjustment::importAdjXML(QString &file)
     QFile adjfile(filename);
     if ( !adjfile.open( QIODevice::ReadOnly ) )
     {
-        syslog(LOG_ERR,"justdata import, could not open xml file\n");
+        qCritical("Justdata import, could not open xml file");
         return false;
     }
 
@@ -328,7 +323,7 @@ bool cAdjustment::importAdjXML(QString &file)
     if ( !justdata.setContent( &adjfile ) )
     {
         adjfile.close();
-        syslog(LOG_ERR,"justdata import, format error in xml file\n");
+        qCritical("Justdata import, format error in xml file");
         return false;
     }
 
@@ -338,7 +333,7 @@ bool cAdjustment::importAdjXML(QString &file)
 
     if  (TheDocType.name() != QString("%1AdjustmentData").arg(LeiterkartenName))
     {
-        syslog(LOG_ERR,"justdata import, wrong xml documentype\n");
+        qCritical("Justdata import, wrong xml documentype");
         return false;
     }
 
@@ -356,7 +351,7 @@ bool cAdjustment::importAdjXML(QString &file)
         QDomElement e = n.toElement();
         if ( e.isNull() )
         {
-            syslog(LOG_ERR,"justdata import, format error in xml file\n");
+            qCritical("Justdata import, format error in xml file");
             return false;
         }
 
@@ -365,7 +360,7 @@ bool cAdjustment::importAdjXML(QString &file)
         {
             if (  !(SerialNrOK = (e.text() == m_pSystemInfo->getSerialNumber() )) )
             {
-               syslog(LOG_ERR,"justdata import, wrong serialnumber in xml file\n");
+               qCritical("Justdata import, wrong serialnumber in xml file");
                return false;
             }
 
@@ -377,7 +372,7 @@ bool cAdjustment::importAdjXML(QString &file)
         {
            if ( ! ( VersionNrOK= (e.text() == m_pSystemInfo->getDeviceVersion()) ) )
            {
-               syslog(LOG_ERR,"justdata import, wrong versionnumber in xml file\n");
+               qCritical("Justdata import, wrong versionnumber in xml file");
                return false;
            }
 
@@ -422,7 +417,7 @@ bool cAdjustment::importAdjXML(QString &file)
 
                     if (!done)
                     {
-                        syslog(LOG_ERR,"justdata import, xml file contains strange data\n");
+                        qCritical("Justdata import, xml file contains strange data");
                         return false;
                     }
 
@@ -430,7 +425,7 @@ bool cAdjustment::importAdjXML(QString &file)
             }
             else
             {
-                syslog(LOG_ERR,"justdata import, xml file contains strange data\n");
+                qCritical("Justdata import, xml file contains strange data");
                 return false;
             }
         }
