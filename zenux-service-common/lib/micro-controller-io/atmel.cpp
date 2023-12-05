@@ -1,6 +1,5 @@
 #include "i2cutils.h"
 #include "atmel.h"
-#include "atmelerrorlog.h"
 #include "permissionfunctions.h"
 #include <syslog.h>
 #include <crcutils.h>
@@ -165,16 +164,16 @@ ZeraMControllerIo::atmelRM Atmel::readClampStatus(quint16 &stat)
 
 ZeraMControllerIo::atmelRM Atmel::readRange(quint8 channel, quint8 &range)
 {
-    ZeraMControllerIo::atmelRM ret = cmdexecfault;
     hw_cmd CMD(hwGetRange, channel, nullptr, 0);
     quint8 answ[2];
     writeCommand(&CMD, answ, 2);
     quint32 errorMask = getLastErrorMask();
-    AtmelErrorLog::logReadRange(channel, errorMask);
-    if(errorMask == 0) {
+    ZeraMControllerIo::atmelRM ret = errorMask == 0 ? cmddone : cmdexecfault;
+    if(ret == cmddone)
         range = answ[0];
-        ret = cmddone;
-    }
+    else
+        qWarning("ReadRange failed with ch: %i / mask: %8X failed!",
+                 channel, errorMask);
     return ret;
 }
 
@@ -184,8 +183,11 @@ ZeraMControllerIo::atmelRM Atmel::setRange(quint8 channel, quint8 range)
     hw_cmd CMD(hwSetRange, channel, &range, 1);
     writeCommand(&CMD);
     quint32 errorMask = getLastErrorMask();
-    AtmelErrorLog::logSetRange(channel, range, errorMask);
-    return errorMask == 0 ? cmddone : cmdexecfault;
+    ZeraMControllerIo::atmelRM ret = errorMask == 0 ? cmddone : cmdexecfault;
+    if(ret != cmddone)
+        qWarning("SetRange failed with ch: %i / rng: %i / mask: %8X failed!",
+                 channel, range, errorMask);
+    return ret;
 }
 
 
