@@ -56,10 +56,11 @@ static struct sigaction mySigAction;
 
 
 cATMELSysCtrl* pAtmelSys;
-static ServerParams params {ServerName, ServerVersion, "/etc/zera/mt310s2d/mt310s2d.xsd", "/etc/zera/mt310s2d/mt310s2d.xml"};
+ServerParams cMT310S2dServer::defaultParams {ServerName, ServerVersion, "/etc/zera/mt310s2d/mt310s2d.xsd", "/etc/zera/mt310s2d/mt310s2d.xml"};
 
-cMT310S2dServer::cMT310S2dServer() :
-    cPCBServer(params, ScpiSingletonFactory::getScpiObj())
+cMT310S2dServer::cMT310S2dServer(ServerParams params) :
+    cPCBServer(params, ScpiSingletonFactory::getScpiObj()),
+    m_params(params)
 {
     m_pDebugSettings = nullptr;
     m_pI2CSettings = nullptr;
@@ -152,7 +153,7 @@ void cMT310S2dServer::doConfiguration()
         m_pNotifier = new QSocketNotifier(pipeFD[0], QSocketNotifier::Read, this);
         connect(m_pNotifier, &QSocketNotifier::activated, this, &cMT310S2dServer::MTIntHandler);
 
-        if (m_xmlConfigReader.loadSchema(params.xsdFile)) {
+        if (m_xmlConfigReader.loadSchema(m_params.xsdFile)) {
             // we want to initialize all settings first
             m_pDebugSettings = new cDebugSettings(&m_xmlConfigReader);
             connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_pDebugSettings, &cDebugSettings::configXMLInfo);
@@ -178,13 +179,13 @@ void cMT310S2dServer::doConfiguration()
             m_accumulatorSettings = new AccumulatorSettings(&m_xmlConfigReader);
             connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_accumulatorSettings, &AccumulatorSettings::configXMLInfo);
 
-            if (!m_xmlConfigReader.loadXMLFile(params.xmlFile)) {
-                qCritical("Abort: Could not open xml file '%s", qPrintable(params.xmlFile));
+            if (!m_xmlConfigReader.loadXMLFile(m_params.xmlFile)) {
+                qCritical("Abort: Could not open xml file '%s", qPrintable(m_params.xmlFile));
                 emit abortInit();
             }
         }
         else {
-            qCritical("Abort: Could not open xsd file '%s", qPrintable(params.xsdFile));
+            qCritical("Abort: Could not open xsd file '%s", qPrintable(m_params.xsdFile));
             emit abortInit();
         }
     }
