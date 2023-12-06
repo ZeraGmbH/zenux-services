@@ -66,8 +66,6 @@ public:
     cClampInterface* m_pClampInterface;
     AccumulatorInterface* m_accumulatorInterface;
 
-    int DevFileDescriptorMsg;
-
     quint16 m_atmelInterruptMask = 0;
     quint16 m_atmelSysCntrlInterruptMask = 0;
 
@@ -90,8 +88,6 @@ private:
     int m_retryRMConnect;
     QTimer m_retryTimer;
     QSocketNotifier* m_pNotifier;
-    QString m_sMessageDeviceNode;
-    int MessageDevOpen();
     void SetFASync();
     void enableClampInterrupt();
     void enableAccumulatorInterrupt();

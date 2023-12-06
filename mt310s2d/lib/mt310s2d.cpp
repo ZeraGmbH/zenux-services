@@ -26,6 +26,7 @@
 #include "sensesettings.h"
 #include "foutsettings.h"
 #include "pcbdevicenodectrlsingleton.h"
+#include "pcbdevicenodemessagesingleton.h"
 #include <scpisingletonfactory.h>
 #include <xmlconfigreader.h>
 #include <xiqnetserver.h>
@@ -213,9 +214,9 @@ void cMT310S2dServer::doSetupServer()
         emit abortInit();
     }
     else {
-        m_sMessageDeviceNode = m_pFPGASettings->getDeviceNode();
-        if (MessageDevOpen() < 0) {
-            qCritical("Abort: Could not open message device '%s'", qPrintable(m_sMessageDeviceNode));
+        QString messageDeviceNodeName = m_pFPGASettings->getDeviceNode();
+        if (PcbDeviceNodeMessageSingleton::getInstance()->open(messageDeviceNodeName) < 0) {
+            qCritical("Abort: Could not open message device '%s'", qPrintable(messageDeviceNodeName));
             emit abortInit();
         }
         else
@@ -329,22 +330,9 @@ void cMT310S2dServer::doIdentAndRegister()
 }
 
 
-int cMT310S2dServer::MessageDevOpen()
-{
-    if ( (DevFileDescriptorMsg = open(m_sMessageDeviceNode.toLatin1().data(), O_RDWR)) < 0 )
-    {
-        if (m_pDebugSettings->getDebugLevel() & 1)  syslog(LOG_ERR,"error opening ctrl device: %s\n",m_pFPGASettings->getDeviceNode().toLatin1().data());
-    }
-    return DevFileDescriptorMsg;
-}
-
-
 void cMT310S2dServer::SetFASync()
 {
-    fcntl(DevFileDescriptorMsg, F_SETOWN, getpid()); // wir sind "besitzer" des device
-    int oflags = fcntl(DevFileDescriptorMsg, F_GETFL);
-    fcntl(DevFileDescriptorMsg, F_SETFL, oflags | FASYNC); // async. benachrichtung (sigio) einschalten
-
+    PcbDeviceNodeMessageSingleton::getInstance()->enableFasync();
     PcbDeviceNodeCtrlSingleton::getInstance()->enableFasync();
 }
 
