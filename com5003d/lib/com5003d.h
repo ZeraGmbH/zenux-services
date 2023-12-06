@@ -34,7 +34,7 @@ class cCOM5003dServer: public cPCBServer
     Q_OBJECT
 
 public:
-    explicit cCOM5003dServer();
+    explicit cCOM5003dServer(ServerParams params = defaultParams);
     ~cCOM5003dServer();
 
     cDebugSettings* m_pDebugSettings;
@@ -68,6 +68,8 @@ signals:
     void sigServerIsSetUp();
 
 private:
+    static ServerParams defaultParams;
+    ServerParams m_params;
     QStateMachine* m_pInitializationMachine;
     QState* m_stateconnect2RM;
     QState* m_stateconnect2RMError;

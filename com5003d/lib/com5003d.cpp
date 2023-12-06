@@ -44,10 +44,11 @@
 #include <systemd/sd-daemon.h>
 #endif
 
-static ServerParams params {ServerName, ServerVersion, "/etc/zera/com5003d/com5003d.xsd", "/etc/zera/com5003d/com5003d.xml"};
+ServerParams cCOM5003dServer::defaultParams {ServerName, ServerVersion, "/etc/zera/com5003d/com5003d.xsd", "/etc/zera/com5003d/com5003d.xml"};
 
-cCOM5003dServer::cCOM5003dServer() :
-    cPCBServer(params, ScpiSingletonFactory::getScpiObj())
+cCOM5003dServer::cCOM5003dServer(ServerParams params) :
+    cPCBServer(params, ScpiSingletonFactory::getScpiObj()),
+    m_params(params)
 {
     m_pDebugSettings = nullptr;
     m_pI2CSettings = nullptr;
@@ -131,7 +132,7 @@ void cCOM5003dServer::doConfiguration()
     sigStart = 1;
     write(m_nFPGAfd, &sigStart, 4);
 
-    if (m_xmlConfigReader.loadSchema(params.xsdFile)) {
+    if (m_xmlConfigReader.loadSchema(m_params.xsdFile)) {
         sigStart = 0;
         write(m_nFPGAfd, &sigStart, 4);
 
@@ -158,19 +159,19 @@ void cCOM5003dServer::doConfiguration()
 
         sigStart = 1;
         write(m_nFPGAfd, &sigStart, 4);
-        if (m_xmlConfigReader.loadXMLFile(params.xmlFile)) {
+        if (m_xmlConfigReader.loadXMLFile(m_params.xmlFile)) {
             sigStart = 0;
             write(m_nFPGAfd, &sigStart, 4);
             // xmlfile ok -> nothing to do .. the configreader will emit all configuration
             // signals and after this the finishedparsingXML signal
         }
         else {
-            qCritical("Abort: Could not open xml file '%s", qPrintable(params.xmlFile));
+            qCritical("Abort: Could not open xml file '%s", qPrintable(m_params.xmlFile));
             emit abortInit();
         }
     }
     else {
-        qCritical("Abort: Could not open xsd file '%s", qPrintable(params.xsdFile));
+        qCritical("Abort: Could not open xsd file '%s", qPrintable(m_params.xsdFile));
         emit abortInit();
     }
     close(m_nFPGAfd);
