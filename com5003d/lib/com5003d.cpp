@@ -181,7 +181,7 @@ void cCOM5003dServer::doConfiguration()
 
 void cCOM5003dServer::programAtmelFlash()
 {
-    Atmel::init(m_pI2CSettings->getDeviceNode(), m_pI2CSettings->getI2CAdress(i2cSettings::relaisCtrlI2cAddress), m_pDebugSettings->getDebugLevel());
+    Atmel::setInstanceParams(m_pI2CSettings->getDeviceNode(), m_pI2CSettings->getI2CAdress(i2cSettings::relaisCtrlI2cAddress), m_pDebugSettings->getDebugLevel());
 
     QFile atmelFile(atmelFlashfilePath);
     if (atmelFile.exists())

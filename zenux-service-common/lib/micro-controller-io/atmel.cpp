@@ -42,7 +42,7 @@ QString Atmel::m_devnode = QString();
 quint8 Atmel::m_adr = 0;
 quint8 Atmel::m_debuglevel = 0;
 
-void Atmel::init(QString devnode, quint8 adr, quint8 debuglevel)
+void Atmel::setInstanceParams(QString devnode, quint8 adr, quint8 debuglevel)
 {
     m_devnode = devnode;
     m_adr = adr;
