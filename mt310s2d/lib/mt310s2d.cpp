@@ -197,7 +197,7 @@ void cMT310S2dServer::doWait4Atmel()
     // a singletom for atmel would be nice...
     pAtmelSys = new cATMELSysCtrl(m_pI2CSettings->getDeviceNode(), m_pI2CSettings->getI2CAdress(i2cSettings::sysCtrlI2cAddress), m_pDebugSettings->getDebugLevel());
     Atmel::setInstanceParams(m_pI2CSettings->getDeviceNode(), m_pI2CSettings->getI2CAdress(i2cSettings::relaisCtrlI2cAddress), m_pDebugSettings->getDebugLevel());
-    m_pAtmelWatcher = new cAtmelWatcher(m_pDebugSettings->getDebugLevel(), m_pCtrlSettings->getDeviceNode(), 10000, 100);
+    m_pAtmelWatcher = new cAtmelWatcher(m_pCtrlSettings->getDeviceNode());
 
     m_nerror = atmelError; // we preset error
     connect(m_pAtmelWatcher,&cAtmelWatcher::timeout,this,&cMT310S2dServer::abortInit);
