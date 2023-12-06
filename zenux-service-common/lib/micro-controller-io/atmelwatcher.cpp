@@ -3,14 +3,14 @@
 #include <unistd.h>
 #include <fcntl.h>
 
-cAtmelWatcher::cAtmelWatcher(quint8 dlevel, QString devNode, int timeout, int tperiod)
-    :m_sDeviceNode(devNode), m_nDebugLevel(dlevel)
+cAtmelWatcher::cAtmelWatcher(QString devNode) :
+    m_sDeviceNode(devNode)
 {
     m_TimerTO.setSingleShot(true);
-    m_TimerTO.setInterval(timeout);
+    m_TimerTO.setInterval(10000);
     connect(&m_TimerTO, &QTimer::timeout, this, &cAtmelWatcher::doTimeout);
     m_TimerPeriod.setSingleShot(false);
-    m_TimerPeriod.setInterval(tperiod);
+    m_TimerPeriod.setInterval(100);
 }
 
 void cAtmelWatcher::start()
