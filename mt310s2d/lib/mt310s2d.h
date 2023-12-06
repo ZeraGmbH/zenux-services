@@ -38,7 +38,7 @@ class cMT310S2dServer: public cPCBServer
     Q_OBJECT
 
 public:
-    explicit cMT310S2dServer();
+    explicit cMT310S2dServer(ServerParams params = defaultParams);
     ~cMT310S2dServer();
 
     cDebugSettings* m_pDebugSettings;
@@ -80,6 +80,8 @@ signals:
     void sigServerIsSetUp();
 
 private:
+    static ServerParams defaultParams;
+    ServerParams m_params;
     QStateMachine* m_pInitializationMachine;
     QState* m_stateconnect2RM;
     QState* m_stateconnect2RMError;
