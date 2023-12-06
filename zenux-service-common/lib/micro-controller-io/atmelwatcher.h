@@ -1,19 +1,17 @@
 #ifndef ATMELWATCHER_H
 #define ATMELWATCHER_H
 
+#include "atmelwatcherinterface.h"
 #include <QTimer>
 #include <QString>
 
-class cAtmelWatcher: public QObject
+class cAtmelWatcher: public AtmelWatcherInterface
 {
     Q_OBJECT
 public:
     cAtmelWatcher(quint8 dlevel, QString devNode, int timeout, int tperiod);
 public slots:
-    void start();
-signals:
-    void timeout();
-    void running();
+    void start() override;
 private:
     QString m_sDeviceNode;
     QTimer m_TimerTO;
