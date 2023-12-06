@@ -7,7 +7,6 @@ std::function<DspDeviceNodeInterfaceUPtr()> DspDeviceNodeSingleton::m_createFunc
     return std::make_unique<DspDeviceNode>();
 };
 
-
 DspDeviceNodeInterface *DspDeviceNodeSingleton::getInstance()
 {
     if(m_instance == nullptr)

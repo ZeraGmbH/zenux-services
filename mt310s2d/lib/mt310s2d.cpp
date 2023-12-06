@@ -25,6 +25,7 @@
 #include "scinsettings.h"
 #include "sensesettings.h"
 #include "foutsettings.h"
+#include "pcbdevicenodectrlsingleton.h"
 #include <scpisingletonfactory.h>
 #include <xmlconfigreader.h>
 #include <xiqnetserver.h>
@@ -41,8 +42,6 @@
 #ifdef SYSTEMD_NOTIFICATION
 #include <systemd/sd-daemon.h>
 #endif
-
-static cMT310S2dServer* MTServer;
 
 static int pipeFD[2];
 void SigHandler(int)
@@ -208,17 +207,13 @@ void cMT310S2dServer::doWait4Atmel()
 
 void cMT310S2dServer::doSetupServer()
 {
-    m_sCtrlDeviceNode = m_pCtrlSettings->getDeviceNode(); // we try to open the ctrl device
-    m_sMessageDeviceNode = m_pFPGASettings->getDeviceNode();
-
-    MTServer = this;
-
-    if (CtrlDevOpen() < 0)
-    {
-        qCritical("Abort: Could not open control device '%s'", qPrintable(m_sCtrlDeviceNode));
+    QString ctrlDeviceNodeName = m_pCtrlSettings->getDeviceNode(); // we try to open the ctrl device
+    if (PcbDeviceNodeCtrlSingleton::getInstance()->open(ctrlDeviceNodeName) < 0) {
+        qCritical("Abort: Could not open control device '%s'", qPrintable(ctrlDeviceNodeName));
         emit abortInit();
     }
-    else
+    else {
+        m_sMessageDeviceNode = m_pFPGASettings->getDeviceNode();
         if (MessageDevOpen() < 0) {
             qCritical("Abort: Could not open message device '%s'", qPrintable(m_sMessageDeviceNode));
             emit abortInit();
@@ -291,6 +286,7 @@ void cMT310S2dServer::doSetupServer()
 
             emit sigServerIsSetUp(); // so we enter state machine's next state
         }
+    }
 }
 
 
@@ -333,16 +329,6 @@ void cMT310S2dServer::doIdentAndRegister()
 }
 
 
-int cMT310S2dServer::CtrlDevOpen()
-{
-    if ( (DevFileDescriptorCtrl = open(m_sCtrlDeviceNode.toLatin1().data(), O_RDWR)) < 0 )
-    {
-        if (m_pDebugSettings->getDebugLevel() & 1)  syslog(LOG_ERR,"error opening ctrl device: %s\n",m_pCtrlSettings->getDeviceNode().toLatin1().data());
-    }
-    return DevFileDescriptorCtrl;
-}
-
-
 int cMT310S2dServer::MessageDevOpen()
 {
     if ( (DevFileDescriptorMsg = open(m_sMessageDeviceNode.toLatin1().data(), O_RDWR)) < 0 )
@@ -359,9 +345,7 @@ void cMT310S2dServer::SetFASync()
     int oflags = fcntl(DevFileDescriptorMsg, F_GETFL);
     fcntl(DevFileDescriptorMsg, F_SETFL, oflags | FASYNC); // async. benachrichtung (sigio) einschalten
 
-    fcntl(DevFileDescriptorCtrl, F_SETOWN, getpid());
-    oflags = fcntl(DevFileDescriptorCtrl, F_GETFL);
-    fcntl(DevFileDescriptorCtrl, F_SETFL, oflags | FASYNC);
+    PcbDeviceNodeCtrlSingleton::getInstance()->enableFasync();
 }
 
 

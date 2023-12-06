@@ -66,7 +66,6 @@ public:
     cClampInterface* m_pClampInterface;
     AccumulatorInterface* m_accumulatorInterface;
 
-    int DevFileDescriptorCtrl; // kerneltreiber wird nur 1x geöffnet und dann gehalten
     int DevFileDescriptorMsg;
 
     quint16 m_atmelInterruptMask = 0;
@@ -91,9 +90,7 @@ private:
     int m_retryRMConnect;
     QTimer m_retryTimer;
     QSocketNotifier* m_pNotifier;
-    QString m_sCtrlDeviceNode;
     QString m_sMessageDeviceNode;
-    int CtrlDevOpen();
     int MessageDevOpen();
     void SetFASync();
     void enableClampInterrupt();

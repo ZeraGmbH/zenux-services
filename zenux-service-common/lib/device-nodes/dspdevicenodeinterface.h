@@ -7,7 +7,7 @@
 class DspDeviceNodeInterface
 {
 public:
-    ~DspDeviceNodeInterface() = default;
+    virtual ~DspDeviceNodeInterface() = default;
     virtual int open(QString devNodeFileName) = 0;
     virtual void close() = 0;
     virtual bool dspReset() = 0;
