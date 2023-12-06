@@ -20,7 +20,6 @@ public:
     void setXmlSettings(XmlSettingsList xmlSettings);
     void setResources(ResourcesList resources);
     void start();
-    bool areAllResourcesConnected();
 signals:
     void sigServerIsSetUp();
 
@@ -29,12 +28,10 @@ private slots:
     void doSetupServer();
     void doConnect2RM();
     void doIdentAndRegister();
-    void onResourceRegisterRdy();
 private:
     XmlSettingsList m_xmlSettings;
     ResourcesList m_resources;
     int m_resourcesToConnect = 0;
-    bool m_resourcesRegistered = false;
     QStateMachine* m_pInitializationMachine = nullptr;
     QState* m_stateconnect2RM = nullptr;
     QState* m_stateSendRMIdentAndRegister = nullptr;

@@ -78,11 +78,6 @@ void MockPcbServer::start()
     m_pInitializationMachine->start();
 }
 
-bool MockPcbServer::areAllResourcesConnected()
-{
-    return m_resourcesRegistered;
-}
-
 void MockPcbServer::doConfiguration()
 {
     if (m_xmlConfigReader.loadSchema(m_params.xsdFile)) {
@@ -126,18 +121,9 @@ void MockPcbServer::doConnect2RM()
 void MockPcbServer::doIdentAndRegister()
 {
     m_pRMConnection->SendIdent(getName());
-    m_resourcesToConnect = resourceList.count();
-    for (int i = 0; i < m_resourcesToConnect; i++) {
+    for (int i = 0; i < resourceList.count(); i++) {
         cResource *res = resourceList.at(i);
         connect(m_pRMConnection, &RMConnection::rmAck, res, &cResource::resourceManagerAck);
-        connect(res, &cResource::registerRdy, this, &MockPcbServer::onResourceRegisterRdy);
         res->registerResource(m_pRMConnection, m_ethSettings.getPort(EthSettings::protobufserver));
     }
-}
-
-void MockPcbServer::onResourceRegisterRdy()
-{
-    m_resourcesToConnect--;
-    if(m_resourcesToConnect == 0)
-        m_resourcesRegistered = true;
 }
