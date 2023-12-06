@@ -16,6 +16,7 @@
 #include "accumulatorsettings.h"
 #include "accumulatorinterface.h"
 #include "mt310s2systeminfo.h"
+#include "atmelwatcherinterface.h"
 #include <QTimer>
 
 class QStateMachine;
@@ -29,7 +30,6 @@ class FInGroupResourceAndInterface;
 class ScInGroupResourceAndInterface;
 class HkInGroupResourceAndInterface;
 class cAdjustment;
-class cAtmelWatcher;
 class QSocketNotifier;
 class cClampInterface;
 
@@ -86,7 +86,7 @@ private:
     QState* m_stateconnect2RM;
     QState* m_stateconnect2RMError;
     QState* m_stateSendRMIdentAndRegister;
-    cAtmelWatcher* m_pAtmelWatcher;
+    AtmelWatcherInterfacePrt m_atmelWatcher;
     quint8 m_nerror;
     int m_retryRMConnect;
     QTimer m_retryTimer;
