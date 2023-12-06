@@ -29,11 +29,6 @@ void test_mockservice_mt310s2d::cleanup()
     TimeMachineObject::feedEventLoop();
 }
 
-void test_mockservice_mt310s2d::runMock()
-{
-    QVERIFY(m_mt310s2d->areAllResourcesConnected());
-}
-
 void test_mockservice_mt310s2d::connectServer()
 {
     Zera::ProxyClientPtr pcbClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307);

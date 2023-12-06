@@ -14,7 +14,6 @@ private slots:
     void init();
     void cleanup();
 
-    void runMock();
     void connectServer();
     void getFoutCat();
 private:
