@@ -10,7 +10,7 @@
 class Atmel : public AtmelCommon, public AtmelCommonVersions, public AtmelPermissionTemplate
 {
 public:
-    static void init(QString devnode, quint8 adr, quint8 debuglevel);
+    static void setInstanceParams(QString devnode, quint8 adr, quint8 debuglevel);
     static Atmel &getInstance();
 
     atmelRM readSerialNumber(QString& answer);
