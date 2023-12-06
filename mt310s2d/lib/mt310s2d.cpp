@@ -4,7 +4,7 @@
 #include "rmconnection.h"
 #include "atmelsysctrl.h"
 #include "atmel.h"
-#include "atmelwatcher.h"
+#include "atmelctrlfactory.h"
 #include "clampinterface.h"
 #include "fingroupresourceandinterface.h"
 #include "hkingroupresourceandinterface.h"
@@ -68,7 +68,6 @@ cMT310S2dServer::cMT310S2dServer(ServerParams params) :
     m_pCtrlSettings  = nullptr;
     m_pSenseSettings = nullptr;
     pAtmelSys = nullptr;
-    m_pAtmelWatcher = nullptr;
     m_pStatusInterface = nullptr;
     m_pSystemInterface = nullptr;
     m_pSenseInterface = nullptr;
@@ -126,7 +125,6 @@ cMT310S2dServer::~cMT310S2dServer()
     if (m_pSCHeadSettings) delete m_pSCHeadSettings;
     if (m_accumulatorSettings) delete m_accumulatorSettings;
     if (pAtmelSys) delete pAtmelSys;
-    if (m_pAtmelWatcher) delete m_pAtmelWatcher;
     if (m_pStatusInterface) delete m_pStatusInterface;
     if (m_pSystemInterface) delete m_pSystemInterface;
     if (m_pSenseInterface) delete m_pSenseInterface;
@@ -197,12 +195,14 @@ void cMT310S2dServer::doWait4Atmel()
     // a singletom for atmel would be nice...
     pAtmelSys = new cATMELSysCtrl(m_pI2CSettings->getDeviceNode(), m_pI2CSettings->getI2CAdress(i2cSettings::sysCtrlI2cAddress), m_pDebugSettings->getDebugLevel());
     Atmel::setInstanceParams(m_pI2CSettings->getDeviceNode(), m_pI2CSettings->getI2CAdress(i2cSettings::relaisCtrlI2cAddress), m_pDebugSettings->getDebugLevel());
-    m_pAtmelWatcher = new cAtmelWatcher(m_pCtrlSettings->getDeviceNode());
+    m_atmelWatcher = AtmelCtrlFactory::createAtmelWatcher(m_pCtrlSettings->getDeviceNode());
 
     m_nerror = atmelError; // we preset error
-    connect(m_pAtmelWatcher,&cAtmelWatcher::timeout,this,&cMT310S2dServer::abortInit);
-    connect(m_pAtmelWatcher,&cAtmelWatcher::running,this,&cMT310S2dServer::atmelRunning);
-    m_pAtmelWatcher->start();
+    connect(m_atmelWatcher.get(), &AtmelWatcherInterface::sigTimeout,
+            this, &cMT310S2dServer::abortInit);
+    connect(m_atmelWatcher.get(), &AtmelWatcherInterface::sigRunning,
+            this, &cMT310S2dServer::atmelRunning);
+    m_atmelWatcher->start();
 }
 
 

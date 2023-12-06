@@ -49,7 +49,7 @@ void cAtmelWatcher::doAtmelTest()
                     m_TimerPeriod.disconnect(SIGNAL(timeout()));
                     m_TimerTO.stop();
                     m_TimerPeriod.stop();
-                    emit running();
+                    emit sigRunning();
                 }
             }
         }
@@ -61,5 +61,5 @@ void cAtmelWatcher::doTimeout()
     qCritical("Atmel did not start within timeout");
     m_TimerPeriod.disconnect(SIGNAL(timeout()));
     m_TimerPeriod.stop();
-    emit timeout();
+    emit sigTimeout();
 }

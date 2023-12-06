@@ -2,6 +2,7 @@
 #define ATMELWATCHERINTERFACE_H
 
 #include <QObject>
+#include <memory>
 
 class AtmelWatcherInterface : public QObject
 {
@@ -9,8 +10,10 @@ class AtmelWatcherInterface : public QObject
 public slots:
     virtual void start() = 0;
 signals:
-    void timeout();
-    void running();
+    void sigTimeout();
+    void sigRunning();
 };
+
+typedef std::unique_ptr<AtmelWatcherInterface> AtmelWatcherInterfacePrt;
 
 #endif // ATMELWATCHERINTERFACE_H

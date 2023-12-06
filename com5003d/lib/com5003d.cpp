@@ -19,7 +19,7 @@
 #include "adjustment.h"
 #include "rmconnection.h"
 #include "atmel.h"
-#include "atmelwatcher.h"
+#include "atmelctrlfactory.h"
 #include "fingroupresourceandinterface.h"
 #include "hkingroupresourceandinterface.h"
 #include "samplinginterface.h"
@@ -54,7 +54,6 @@ cCOM5003dServer::cCOM5003dServer(ServerParams params) :
     m_pI2CSettings = nullptr;
     m_pFPGASettings = nullptr;
     m_pSenseSettings = nullptr;
-    m_pAtmelWatcher = nullptr;
     m_pStatusInterface = nullptr;
     m_pSystemInterface = nullptr;
     m_pSenseInterface = nullptr;
@@ -110,7 +109,6 @@ cCOM5003dServer::~cCOM5003dServer()
     if (m_foutSettings) delete m_foutSettings;
     if (m_finSettings) delete m_finSettings;
     if (m_pSCHeadSettings) delete m_pSCHeadSettings;
-    if (m_pAtmelWatcher) delete m_pAtmelWatcher;
     if (m_pStatusInterface) delete m_pStatusInterface;
     if (m_pSystemInterface) delete m_pSystemInterface;
     if (m_pSenseInterface) delete m_pSenseInterface;
@@ -293,12 +291,13 @@ void cCOM5003dServer::programAtmelFlash()
 
 void cCOM5003dServer::doWait4Atmel()
 {
-    m_pAtmelWatcher = new cAtmelWatcher(m_pFPGASettings->getDeviceNode());
-
+    m_atmelWatcher = AtmelCtrlFactory::createAtmelWatcher(m_pFPGASettings->getDeviceNode());
     m_nerror = atmelError; // we preset error
-    connect(m_pAtmelWatcher,&cAtmelWatcher::timeout,this,&cCOM5003dServer::abortInit);
-    connect(m_pAtmelWatcher,&cAtmelWatcher::running,this,&cCOM5003dServer::atmelRunning);
-    m_pAtmelWatcher->start();
+    connect(m_atmelWatcher.get(), &AtmelWatcherInterface::sigTimeout,
+            this, &cCOM5003dServer::abortInit);
+    connect(m_atmelWatcher.get(), &AtmelWatcherInterface::sigRunning,
+            this, &cCOM5003dServer::atmelRunning);
+    m_atmelWatcher->start();
 }
 
 
