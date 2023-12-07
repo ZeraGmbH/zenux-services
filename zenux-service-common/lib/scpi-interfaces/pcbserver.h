@@ -50,6 +50,7 @@ protected slots:
     virtual void SCPIInput();
     virtual void SCPIdisconnect();
     virtual void onSendNotification(ScpiNotificationSubscriber subscriber);
+    virtual void onPeerDisconnected();
 protected:
     void setupServer();
     void initSCPIConnections();
