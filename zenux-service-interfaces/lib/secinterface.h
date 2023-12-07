@@ -77,6 +77,8 @@ private:
     cSECInterfacePrivate *d_ptr;
 };
 
+typedef std::unique_ptr<cSECInterface> cSECInterfacePtr;
+
 }
 
 #endif // SECINTERFACE_H

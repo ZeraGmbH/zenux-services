@@ -1,6 +1,4 @@
 #include "test_mockservice_sec1000d.h"
-#include "proxy.h"
-#include "secinterface.h"
 #include "reply.h"
 #include <timemachineobject.h>
 #include <QSignalSpy>
@@ -19,6 +17,7 @@ void test_mockservice_sec1000d::init()
     TimeMachineObject::feedEventLoop();
     m_sec1000d = std::make_unique<MockSec1000d>();
     TimeMachineObject::feedEventLoop();
+    m_proxy = std::make_unique<ProxyForTest>();
 }
 
 void test_mockservice_sec1000d::cleanup()
@@ -27,19 +26,24 @@ void test_mockservice_sec1000d::cleanup()
     TimeMachineObject::feedEventLoop();
     m_resman = nullptr;
     TimeMachineObject::feedEventLoop();
+    m_proxy = nullptr;
+}
+
+Zera::cSECInterfacePtr test_mockservice_sec1000d::getSecInterface()
+{
+    Zera::cSECInterfacePtr secInterface = std::make_unique<Zera::cSECInterface>();
+    Zera::ProxyClientPtr secClient = m_proxy->getConnectionSmart("127.0.0.1", 6305);
+    secInterface->setClientSmart(secClient);
+    m_proxy->startConnectionSmart(secClient);
+    TimeMachineObject::feedEventLoop();
+    return secInterface;
 }
 
 void test_mockservice_sec1000d::getChannelCatSec1000d()
 {
-    Zera::ProxyClientPtr secClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6305);
-    Zera::cSECInterface secIFace;
-    secIFace.setClientSmart(secClient);
-
-    Zera::Proxy::getInstance()->startConnectionSmart(secClient);
-    TimeMachineObject::feedEventLoop();
-
-    QSignalSpy responseSpy(&secIFace, &Zera::cSECInterface::serverAnswer);
-    int msgNr = secIFace.getChannelCatalog();
+    Zera::cSECInterfacePtr secInterface = getSecInterface();
+    QSignalSpy responseSpy(secInterface.get(), &Zera::cSECInterface::serverAnswer);
+    int msgNr = secInterface->getChannelCatalog();
     TimeMachineObject::feedEventLoop();
 
     QCOMPARE(responseSpy.count(), 1);
