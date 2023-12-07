@@ -17,6 +17,7 @@ private slots:
     void cleanup();
 
     void getChannelCatSec1000d();
+    void freeSecResourcesWhenClientDisconnects();
 private:
     Zera::cSECInterfacePtr getSecInterface();
     std::unique_ptr<ResmanRunFacade> m_resman;
