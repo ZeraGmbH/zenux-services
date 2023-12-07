@@ -71,6 +71,7 @@ function(SETUP_TESTS)
             zenuxservicecommon-testlib
             zenuxservicecommon-demolib
             service-interfaces
+            service-interfaces-testlib
             zdsp1d-testlib
             Zera::zera-timers-testlib
             Zera::zera-i2c-devices-testlib

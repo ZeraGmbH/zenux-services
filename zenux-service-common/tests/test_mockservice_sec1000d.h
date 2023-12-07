@@ -3,6 +3,8 @@
 
 #include "mocksec1000d.h"
 #include "resmanrunfacade.h"
+#include "proxyfortest.h"
+#include "secinterface.h"
 #include <QObject>
 #include <memory>
 
@@ -16,8 +18,10 @@ private slots:
 
     void getChannelCatSec1000d();
 private:
+    Zera::cSECInterfacePtr getSecInterface();
     std::unique_ptr<ResmanRunFacade> m_resman;
     std::unique_ptr<MockSec1000d> m_sec1000d;
+    std::unique_ptr<ProxyForTest> m_proxy;
 };
 
 #endif // TEST_MOCKSERVICE_SEC1000D_H
