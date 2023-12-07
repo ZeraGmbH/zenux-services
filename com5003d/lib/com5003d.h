@@ -38,7 +38,7 @@ public:
     ~cCOM5003dServer();
 
     cDebugSettings* m_pDebugSettings;
-    FPGASettings* m_pFPGASettings;
+    FPGASettings* m_fpgaCtrlSettings;
     cStatusInterface* m_pStatusInterface;
     cI2CSettings* m_pI2CSettings;
     cSenseSettings* m_pSenseSettings;
