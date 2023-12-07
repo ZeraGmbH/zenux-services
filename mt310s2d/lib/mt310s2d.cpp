@@ -64,8 +64,8 @@ cMT310S2dServer::cMT310S2dServer(ServerParams params) :
 {
     m_pDebugSettings = nullptr;
     m_pI2CSettings = nullptr;
-    m_pFPGASettings = nullptr;
-    m_pCtrlSettings  = nullptr;
+    m_fpgaMsgSettings = nullptr;
+    m_fpgaCtrlSettings  = nullptr;
     m_pSenseSettings = nullptr;
     pAtmelSys = nullptr;
     m_pStatusInterface = nullptr;
@@ -117,8 +117,8 @@ cMT310S2dServer::~cMT310S2dServer()
 {
     if (m_pDebugSettings) delete m_pDebugSettings;
     if (m_pI2CSettings) delete m_pI2CSettings;
-    if (m_pFPGASettings) delete m_pFPGASettings;
-    if (m_pCtrlSettings) delete m_pCtrlSettings;
+    if (m_fpgaMsgSettings) delete m_fpgaMsgSettings;
+    if (m_fpgaCtrlSettings) delete m_fpgaCtrlSettings;
     if (m_pSenseSettings) delete m_pSenseSettings;
     if (m_foutSettings) delete m_foutSettings;
     if (m_finSettings) delete m_finSettings;
@@ -158,10 +158,10 @@ void cMT310S2dServer::doConfiguration()
             connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, &m_ethSettings, &EthSettings::configXMLInfo);
             m_pI2CSettings = new cI2CSettings(&m_xmlConfigReader);
             connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_pI2CSettings, &cI2CSettings::configXMLInfo);
-            m_pFPGASettings = new FPGASettings(&m_xmlConfigReader);
-            connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_pFPGASettings, &FPGASettings::configXMLInfo);
-            m_pCtrlSettings = new cCtrlSettings(&m_xmlConfigReader);
-            connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_pCtrlSettings, &cCtrlSettings::configXMLInfo);
+            m_fpgaMsgSettings = new FPGASettings(&m_xmlConfigReader);
+            connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_fpgaMsgSettings, &FPGASettings::configXMLInfo);
+            m_fpgaCtrlSettings = new cCtrlSettings(&m_xmlConfigReader);
+            connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_fpgaCtrlSettings, &cCtrlSettings::configXMLInfo);
             m_pSenseSettings = new cSenseSettings(&m_xmlConfigReader, 8);
             connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_pSenseSettings, &cSenseSettings::configXMLInfo);
             m_foutSettings = new FOutSettings(&m_xmlConfigReader);
@@ -195,7 +195,7 @@ void cMT310S2dServer::doWait4Atmel()
     // a singletom for atmel would be nice...
     pAtmelSys = new cATMELSysCtrl(m_pI2CSettings->getDeviceNode(), m_pI2CSettings->getI2CAdress(i2cSettings::sysCtrlI2cAddress), m_pDebugSettings->getDebugLevel());
     Atmel::setInstanceParams(m_pI2CSettings->getDeviceNode(), m_pI2CSettings->getI2CAdress(i2cSettings::relaisCtrlI2cAddress), m_pDebugSettings->getDebugLevel());
-    m_atmelWatcher = AtmelCtrlFactory::createAtmelWatcher(m_pCtrlSettings->getDeviceNode());
+    m_atmelWatcher = AtmelCtrlFactory::createAtmelWatcher(m_fpgaCtrlSettings->getDeviceNode());
 
     m_nerror = atmelError; // we preset error
     connect(m_atmelWatcher.get(), &AtmelWatcherInterface::sigTimeout,
@@ -208,13 +208,13 @@ void cMT310S2dServer::doWait4Atmel()
 
 void cMT310S2dServer::doSetupServer()
 {
-    QString ctrlDeviceNodeName = m_pCtrlSettings->getDeviceNode(); // we try to open the ctrl device
+    QString ctrlDeviceNodeName = m_fpgaCtrlSettings->getDeviceNode(); // we try to open the ctrl device
     if (PcbDeviceNodeCtrlSingleton::getInstance()->open(ctrlDeviceNodeName) < 0) {
         qCritical("Abort: Could not open control device '%s'", qPrintable(ctrlDeviceNodeName));
         emit abortInit();
     }
     else {
-        QString messageDeviceNodeName = m_pFPGASettings->getDeviceNode();
+        QString messageDeviceNodeName = m_fpgaMsgSettings->getDeviceNode();
         if (PcbDeviceNodeMessageSingleton::getInstance()->open(messageDeviceNodeName) < 0) {
             qCritical("Abort: Could not open message device '%s'", qPrintable(messageDeviceNodeName));
             emit abortInit();

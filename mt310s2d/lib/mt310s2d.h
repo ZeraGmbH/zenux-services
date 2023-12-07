@@ -42,8 +42,8 @@ public:
     ~cMT310S2dServer();
 
     cDebugSettings* m_pDebugSettings;
-    FPGASettings* m_pFPGASettings;
-    cCtrlSettings* m_pCtrlSettings;
+    FPGASettings* m_fpgaMsgSettings;
+    cCtrlSettings* m_fpgaCtrlSettings;
     cStatusInterface* m_pStatusInterface;
     cI2CSettings* m_pI2CSettings;
     cSenseSettings* m_pSenseSettings;
