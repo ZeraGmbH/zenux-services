@@ -172,6 +172,10 @@ void cPCBServer::onSendNotification(ScpiNotificationSubscriber subscriber)
     sendNotificationToClient(notificationMsg, subscriber.m_clientId, subscriber.m_netPeer);
 }
 
+void cPCBServer::onPeerDisconnected()
+{
+}
+
 void cPCBServer::registerNotifier(cProtonetCommand *protoCmd)
 {
     cSCPICommand cmd = protoCmd->m_sInput;
@@ -252,6 +256,7 @@ void cPCBServer::doUnregisterNotifier(XiQNetPeer* peer, const QByteArray &client
 void cPCBServer::onEstablishNewConnection(XiQNetPeer *newClient)
 {
     connect(newClient, &XiQNetPeer::sigMessageReceived, this, &cPCBServer::onExecuteCommandProto);
+    connect(newClient, &XiQNetPeer::sigConnectionClosed, this, &cPCBServer::onPeerDisconnected);
 }
 
 void cPCBServer::onExecuteCommandProto(std::shared_ptr<google::protobuf::Message> cmd)
