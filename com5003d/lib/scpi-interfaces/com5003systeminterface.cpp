@@ -1,7 +1,7 @@
-#include "systeminterface.h"
+#include "com5003systeminterface.h"
 #include "zscpi_response_definitions.h"
 #include "com5003d.h"
-#include "adjustment.h"
+#include "com5003adjustment.h"
 #include "systeminfo.h"
 #include "protonetcommand.h"
 #include "micro-controller-io/atmel.h"
@@ -9,13 +9,13 @@
 #include <scpicommand.h>
 #include <QJsonObject>
 
-cSystemInterface::cSystemInterface(cCOM5003dServer *server) :
+Com5003SystemInterface::Com5003SystemInterface(cCOM5003dServer *server) :
     ScpiConnection(server->getSCPIInterface()),
     m_pMyServer(server)
 {
 }
 
-void cSystemInterface::initSCPIConnection(QString leadingNodes)
+void Com5003SystemInterface::initSCPIConnection(QString leadingNodes)
 {
     ensureTrailingColonOnNonEmptyParentNodes(leadingNodes);
     addDelegate(QString("%1SYSTEM:VERSION").arg(leadingNodes),"SERVER", SCPI::isQuery, m_pSCPIInterface, SystemSystem::cmdVersionServer);
@@ -37,7 +37,7 @@ void cSystemInterface::initSCPIConnection(QString leadingNodes)
 }
 
 
-void cSystemInterface::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
+void Com5003SystemInterface::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
 {
     switch (cmdCode)
     {
@@ -96,7 +96,7 @@ void cSystemInterface::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
 }
 
 
-QString cSystemInterface::scpiReadServerVersion(QString &sInput)
+QString Com5003SystemInterface::scpiReadServerVersion(QString &sInput)
 {
     QString s;
     cSCPICommand cmd = sInput;
@@ -112,7 +112,7 @@ QString cSystemInterface::scpiReadServerVersion(QString &sInput)
 }
 
 
-QString cSystemInterface::m_ReadDeviceVersion(QString &sInput)
+QString Com5003SystemInterface::m_ReadDeviceVersion(QString &sInput)
 {
     cSCPICommand cmd = sInput;
 
@@ -128,7 +128,7 @@ QString cSystemInterface::m_ReadDeviceVersion(QString &sInput)
 }
 
 
-QString cSystemInterface::m_ReadDeviceName(QString& sInput)
+QString Com5003SystemInterface::m_ReadDeviceName(QString& sInput)
 {
     QString s;
     cSCPICommand cmd = sInput;
@@ -145,7 +145,7 @@ QString cSystemInterface::m_ReadDeviceName(QString& sInput)
 }
 
 
-QString cSystemInterface::m_ReadWritePCBVersion(QString &sInput)
+QString Com5003SystemInterface::m_ReadWritePCBVersion(QString &sInput)
 {
     QString s;
     int ret = ZeraMControllerIo::cmdfault;
@@ -176,7 +176,7 @@ QString cSystemInterface::m_ReadWritePCBVersion(QString &sInput)
 }
 
 
-QString cSystemInterface::scpiReadAllCTRLVersions(QString &sInput)
+QString Com5003SystemInterface::scpiReadAllCTRLVersions(QString &sInput)
 {
     cSCPICommand cmd = sInput;
     if (cmd.isQuery()) {
@@ -192,7 +192,7 @@ QString cSystemInterface::scpiReadAllCTRLVersions(QString &sInput)
 }
 
 
-QString cSystemInterface::m_ReadFPGAVersion(QString &sInput)
+QString Com5003SystemInterface::m_ReadFPGAVersion(QString &sInput)
 {
     cSCPICommand cmd = sInput;
 
@@ -209,7 +209,7 @@ QString cSystemInterface::m_ReadFPGAVersion(QString &sInput)
 }
 
 
-QString cSystemInterface::m_ReadWriteSerialNumber(QString &sInput)
+QString Com5003SystemInterface::m_ReadWriteSerialNumber(QString &sInput)
 {
     ZeraMControllerIo::atmelRM ret = ZeraMControllerIo::cmdfault;
     QString s;
@@ -240,7 +240,7 @@ QString cSystemInterface::m_ReadWriteSerialNumber(QString &sInput)
 }
 
 
-QString cSystemInterface::m_StartControlerBootloader(QString& sInput)
+QString Com5003SystemInterface::m_StartControlerBootloader(QString& sInput)
 {
     QString s;
     int ret = ZeraMControllerIo::cmdfault;
@@ -255,7 +255,7 @@ QString cSystemInterface::m_StartControlerBootloader(QString& sInput)
 }
 
 
-QString cSystemInterface::m_StartControlerProgram(QString &sInput)
+QString Com5003SystemInterface::m_StartControlerProgram(QString &sInput)
 {
     QString s;
     int ret = ZeraMControllerIo::cmdfault;
@@ -270,7 +270,7 @@ QString cSystemInterface::m_StartControlerProgram(QString &sInput)
 }
 
 
-QString cSystemInterface::m_LoadFlash(QString &sInput)
+QString Com5003SystemInterface::m_LoadFlash(QString &sInput)
 {
     QString s;
     int ret = ZeraMControllerIo::cmdfault;
@@ -292,7 +292,7 @@ QString cSystemInterface::m_LoadFlash(QString &sInput)
 }
 
 
-QString cSystemInterface::m_LoadEEProm(QString &sInput)
+QString Com5003SystemInterface::m_LoadEEProm(QString &sInput)
 {
     QString s;
     int ret = 1;
@@ -314,7 +314,7 @@ QString cSystemInterface::m_LoadEEProm(QString &sInput)
 }
 
 
-QString cSystemInterface::m_AdjFlashWrite(QString &sInput)
+QString Com5003SystemInterface::m_AdjFlashWrite(QString &sInput)
 {
     QString s;
     int ret = ZeraMControllerIo::cmdfault;
@@ -342,7 +342,7 @@ QString cSystemInterface::m_AdjFlashWrite(QString &sInput)
 }
 
 
-QString cSystemInterface::m_AdjFlashRead(QString &sInput)
+QString Com5003SystemInterface::m_AdjFlashRead(QString &sInput)
 {
     QString s;
     int ret = ZeraMControllerIo::cmdfault;
@@ -360,7 +360,7 @@ QString cSystemInterface::m_AdjFlashRead(QString &sInput)
 }
 
 
-QString cSystemInterface::m_AdjXMLWrite(QString &sInput)
+QString Com5003SystemInterface::m_AdjXMLWrite(QString &sInput)
 {
     QString s;
     int ret = ZeraMControllerIo::cmdfault;
@@ -379,7 +379,7 @@ QString cSystemInterface::m_AdjXMLWrite(QString &sInput)
 }
 
 
-QString cSystemInterface::m_AdjXMLRead(QString &sInput)
+QString Com5003SystemInterface::m_AdjXMLRead(QString &sInput)
 {
     QString s;
     int ret = ZeraMControllerIo::cmdfault;
@@ -405,7 +405,7 @@ QString cSystemInterface::m_AdjXMLRead(QString &sInput)
 }
 
 
-QString cSystemInterface::m_AdjFlashChksum(QString &sInput)
+QString Com5003SystemInterface::m_AdjFlashChksum(QString &sInput)
 {
     cSCPICommand cmd = sInput;
 
@@ -419,7 +419,7 @@ QString cSystemInterface::m_AdjFlashChksum(QString &sInput)
 }
 
 
-QString cSystemInterface::m_InterfaceRead(QString &sInput)
+QString Com5003SystemInterface::m_InterfaceRead(QString &sInput)
 {
     cSCPICommand cmd = sInput;
 
@@ -433,7 +433,7 @@ QString cSystemInterface::m_InterfaceRead(QString &sInput)
         return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-void cSystemInterface::updateAllCtrlVersionsJson()
+void Com5003SystemInterface::updateAllCtrlVersionsJson()
 {
     QJsonObject object;
     object.insert("Relay controller version", QJsonValue::fromVariant(m_pMyServer->m_pSystemInfo->getCTRLVersion()));
@@ -441,7 +441,7 @@ void cSystemInterface::updateAllCtrlVersionsJson()
     m_allCtrlVersion = doc.toJson(QJsonDocument::Compact);
 }
 
-void cSystemInterface::updateAllPCBsVersion()
+void Com5003SystemInterface::updateAllPCBsVersion()
 {
     QJsonObject object;
     object.insert("Relay PCB version", QJsonValue::fromVariant(m_pMyServer->m_pSystemInfo->getPCBVersion()));
@@ -449,7 +449,7 @@ void cSystemInterface::updateAllPCBsVersion()
     m_allPCBVersion = doc.toJson(QJsonDocument::Compact);
 }
 
-void cSystemInterface::m_genAnswer(int select, QString &answer)
+void Com5003SystemInterface::m_genAnswer(int select, QString &answer)
 {
     switch (select)
     {

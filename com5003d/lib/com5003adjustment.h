@@ -1,8 +1,8 @@
 #ifndef ADJUSTMENT_H
 #define ADJUSTMENT_H
 
-#include "adjxml.h"
-#include "adjflash.h"
+#include "com5003adjxml.h"
+#include "com5003adjflash.h"
 #include "systeminfo.h"
 #include <QString>
 #include <QList>
@@ -18,25 +18,25 @@ enum jDataStatus
 };
 }
 
-class cAdjustment: public cAdjXML
+class Com5003Adjustment: public Com5003AdjXML
 {
 public:
-    cAdjustment(cSystemInfo* sInfo, QString& devNode, quint8 adr); //
-    virtual ~cAdjustment();
+    Com5003Adjustment(cSystemInfo* sInfo, QString& devNode, quint8 adr); //
+    virtual ~Com5003Adjustment();
     bool exportJDataFlash();
     bool importJDataFlash();
     bool exportJDataXML(QString& file);
     bool importAdjXML(QString& file);
     virtual void exportAdjData(QDomDocument& doc, QDomElement& qde);
     virtual bool importAdjData(QDomNode& node);
-    void addAdjFlashObject(cAdjFlash* obj);
-    void addAdjXMLObject(cAdjXML* obj);
+    void addAdjFlashObject(Com5003AdjFlash* obj);
+    void addAdjXMLObject(Com5003AdjXML* obj);
     quint8 getAdjustmentStatus() override;
     quint16 getChecksum();
 
 private:
-    QList<cAdjFlash*> m_AdjFlashList;
-    QList<cAdjXML*> m_AdjXMLList;
+    QList<Com5003AdjFlash*> m_AdjFlashList;
+    QList<Com5003AdjXML*> m_AdjXMLList;
     cSystemInfo* m_pSystemInfo;
     QString m_sDeviceNode;
     quint8 m_nI2CAdr;

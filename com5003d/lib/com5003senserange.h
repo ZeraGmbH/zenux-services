@@ -28,12 +28,12 @@ enum Commands
 
 class Atmel;
 
-class cSenseRange : public ScpiConnection, public AdjustmentStatusInterface
+class Com5003SenseRange : public ScpiConnection, public AdjustmentStatusInterface
 {
     Q_OBJECT
 
 public:
-    cSenseRange(cSCPI *scpiinterface,
+    Com5003SenseRange(cSCPI *scpiinterface,
                 QString name,
                 QString alias,
                 bool avail,
@@ -43,7 +43,7 @@ public:
                 double adcrejection,
                 quint8 rselcode,
                 quint8 rspec);
-    ~cSenseRange();
+    ~Com5003SenseRange();
     virtual void initSCPIConnection(QString leadingNodes) override;
     quint8 getAdjustmentStatus() override;
 

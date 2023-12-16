@@ -18,15 +18,15 @@
 class QStateMachine;
 class QState;
 class cStatusInterface;
-class cSystemInterface;
-class cSenseInterface;
+class Com5003SystemInterface;
+class Com5003SenseInterface;
 class cSamplingInterface;
 class FOutGroupResourceAndInterface;
 class FInGroupResourceAndInterface;
 class ScInGroupResourceAndInterface;
 class HkInGroupResourceAndInterface;
 class cSystemInfo;
-class cAdjustment;
+class Com5003Adjustment;
 
 
 class cCOM5003dServer: public cPCBServer
@@ -47,15 +47,15 @@ public:
     FInSettings* m_finSettings;
     FOutSettings* m_foutSettings;
     SamplingSettings* m_pSamplingSettings;
-    cSystemInterface* m_pSystemInterface;
-    cSenseInterface* m_pSenseInterface;
+    Com5003SystemInterface* m_pSystemInterface;
+    Com5003SenseInterface* m_pSenseInterface;
     cSamplingInterface* m_pSamplingInterface;
     FOutGroupResourceAndInterface* m_foutInterface;
     FInGroupResourceAndInterface* m_pFRQInputInterface;
     ScInGroupResourceAndInterface* m_pSCHeadInterface;
     HkInGroupResourceAndInterface* m_hkInInterface;
     cSystemInfo* m_pSystemInfo;
-    cAdjustment* m_pAdjHandler;
+    Com5003Adjustment* m_pAdjHandler;
     RMConnection* m_pRMConnection;
 
 

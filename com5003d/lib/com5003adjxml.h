@@ -7,7 +7,7 @@ class QDomElement;
 class QDomDocument;
 class QDomNode;
 
-class cAdjXML : public AdjustmentStatusInterface
+class Com5003AdjXML : public AdjustmentStatusInterface
 {
 public:
     virtual void exportAdjData(QDomDocument& doc, QDomElement& qde) = 0; // the derived class exports adjdata beneath qdomelement

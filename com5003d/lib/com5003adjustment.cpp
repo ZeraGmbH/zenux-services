@@ -1,10 +1,10 @@
 #include "com5003dglobal.h"
-#include "adjflash.h"
+#include "com5003adjflash.h"
 #include "justdatainterface.h"
-#include "adjxml.h"
+#include "com5003adjxml.h"
 #include "systeminfo.h"
-#include "adjustment.h"
-#include "micro-controller-io/atmel.h"
+#include "com5003adjustment.h"
+#include "atmel.h"
 #include <F24LC256.h>
 #include <QByteArray>
 #include <QBuffer>
@@ -16,19 +16,19 @@
 #include <QFile>
 #include <QDateTime>
 
-cAdjustment::cAdjustment(cSystemInfo* sInfo, QString &devNode, quint8 adr)
+Com5003Adjustment::Com5003Adjustment(cSystemInfo* sInfo, QString &devNode, quint8 adr)
     :m_pSystemInfo(sInfo), m_sDeviceNode(devNode), m_nI2CAdr(adr)
 {
     m_AdjXMLList.append(this);
 }
 
 
-cAdjustment::~cAdjustment()
+Com5003Adjustment::~Com5003Adjustment()
 {
 }
 
 
-bool cAdjustment::exportJDataFlash()
+bool Com5003Adjustment::exportJDataFlash()
 {
    quint32 count=0;
    m_nChecksum = 0;
@@ -89,7 +89,7 @@ bool cAdjustment::exportJDataFlash()
 
 
 
-bool cAdjustment::importJDataFlash()
+bool Com5003Adjustment::importJDataFlash()
 {
     QDateTime DateTime;
     m_nAdjStatus = 0; // status reset
@@ -240,7 +240,7 @@ bool cAdjustment::importJDataFlash()
 }
 
 
-bool cAdjustment::exportJDataXML(QString &file)
+bool Com5003Adjustment::exportJDataXML(QString &file)
 {
     QDateTime DateTime;
 
@@ -306,7 +306,7 @@ bool cAdjustment::exportJDataXML(QString &file)
 }
 
 
-bool cAdjustment::importAdjXML(QString &file)
+bool Com5003Adjustment::importAdjXML(QString &file)
 {
     QDateTime DateTime;
 
@@ -436,12 +436,12 @@ bool cAdjustment::importAdjXML(QString &file)
 }
 
 
-void cAdjustment::exportAdjData(QDomDocument &doc, QDomElement &qde)
+void Com5003Adjustment::exportAdjData(QDomDocument &doc, QDomElement &qde)
 {
 }
 
 
-bool cAdjustment::importAdjData(QDomNode &node)
+bool Com5003Adjustment::importAdjData(QDomNode &node)
 {
     if (node.toElement().tagName() != "Chksum") // data not for us
         return false;
@@ -450,19 +450,19 @@ bool cAdjustment::importAdjData(QDomNode &node)
 }
 
 
-void cAdjustment::addAdjFlashObject(cAdjFlash* obj)
+void Com5003Adjustment::addAdjFlashObject(Com5003AdjFlash* obj)
 {
     m_AdjFlashList.append(obj);
 }
 
 
-void cAdjustment::addAdjXMLObject(cAdjXML* obj)
+void Com5003Adjustment::addAdjXMLObject(Com5003AdjXML* obj)
 {
     m_AdjXMLList.append(obj);
 }
 
 
-quint8 cAdjustment::getAdjustmentStatus()
+quint8 Com5003Adjustment::getAdjustmentStatus()
 {
     quint8 stat = 255;
     quint8 ret;
@@ -479,7 +479,7 @@ quint8 cAdjustment::getAdjustmentStatus()
 }
 
 
-quint16 cAdjustment::getChecksum()
+quint16 Com5003Adjustment::getChecksum()
 {
     return m_nChecksum;
 }
