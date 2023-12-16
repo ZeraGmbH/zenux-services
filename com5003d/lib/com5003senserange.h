@@ -50,7 +50,7 @@ public:
     QString& getName();
     double getUrvalue();
     quint8 getSelCode();
-    JustRangeTripletOffsetGainPhaseCom5003* getJustData();
+    Com5003JustRangeTripletOffsetGainPhase* getJustData();
     bool getAvail();
     void setAvail(bool b);
 
@@ -71,7 +71,7 @@ private:
     double m_fADCRejection; // the adc's maximum rejection
     quint8 m_nSelCode; // selection code
     quint8 m_nRSpec; // range spec (phys. or virt. range)
-    JustRangeTripletOffsetGainPhaseCom5003* m_pJustdata;
+    Com5003JustRangeTripletOffsetGainPhase* m_pJustdata;
 
     QString m_ReadRangeType(QString& sInput);
     QString m_ReadRangeAlias(QString& sInput);

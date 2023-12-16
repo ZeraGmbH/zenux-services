@@ -28,13 +28,13 @@ class QDataStream;
 class JustDataInterface;
 
 
-class JustRangeTripletOffsetGainPhaseCom5003 : public ScpiConnection, public AdjustmentStatusInterface // alle korrekturdaten für einen bereich + status
+class Com5003JustRangeTripletOffsetGainPhase : public ScpiConnection, public AdjustmentStatusInterface // alle korrekturdaten für einen bereich + status
 {
     Q_OBJECT
 
 public:
-    JustRangeTripletOffsetGainPhaseCom5003(cSCPI* scpiinterface, PermissionStructAdj permissions = PermissionStructAdj());
-    ~JustRangeTripletOffsetGainPhaseCom5003();
+    Com5003JustRangeTripletOffsetGainPhase(cSCPI* scpiinterface, PermissionStructAdj permissions = PermissionStructAdj());
+    ~Com5003JustRangeTripletOffsetGainPhase();
     virtual void initSCPIConnection(QString leadingNodes) override;
 
     JustDataInterface* m_pGainCorrection;
