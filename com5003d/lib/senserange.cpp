@@ -4,7 +4,7 @@
 
 cSenseRange::cSenseRange(cSCPI *scpiinterface,
                          QString name, QString alias,
-                         bool avail, double rValue, double rejection, double ovrejection, double adcrejection, quint8 rselcode, quint8 rspec) :
+                         bool avail, double rValue, double rejection, double ovrejection, double adcrejection, quint8 rselcode) :
     ScpiConnection(scpiinterface),
     m_sName(name),
     m_sAlias(alias),
@@ -13,8 +13,7 @@ cSenseRange::cSenseRange(cSCPI *scpiinterface,
     m_fRejection(rejection),
     m_fOVRejection(ovrejection),
     m_fADCRejection(adcrejection),
-    m_nSelCode(rselcode),
-    m_nRSpec(rspec)
+    m_nSelCode(rselcode)
 {
     m_pJustdata = new JustRangeTripletOffsetGainPhase(m_pSCPIInterface);
 }
@@ -133,7 +132,7 @@ QString cSenseRange::m_ReadRangeType(QString &sInput)
     cSCPICommand cmd = sInput;
 
     if (cmd.isQuery())
-        return QString("%1").arg(m_nRSpec); // phs. or virt.
+        return QString("%1").arg(0); // phys (virtual ranges were never more than unimplemented great ideas)
     else
         return ZSCPI::scpiAnswer[ZSCPI::nak];
 

@@ -8,12 +8,6 @@
 
 namespace SenseRange
 {
-enum Type
-{
-    Phys, // we distinguish between physical
-    Virt  // and virtual ranges
-};
-
 enum Commands
 {
     cmdType,
@@ -41,8 +35,7 @@ public:
                 double rejection,
                 double ovrejection,
                 double adcrejection,
-                quint8 rselcode,
-                quint8 rspec);
+                quint8 rselcode);
     ~cSenseRange();
     virtual void initSCPIConnection(QString leadingNodes) override;
     quint8 getAdjustmentStatus() override;
@@ -70,7 +63,6 @@ private:
     double m_fOVRejection; // overload rejection value
     double m_fADCRejection; // the adc's maximum rejection
     quint8 m_nSelCode; // selection code
-    quint8 m_nRSpec; // range spec (phys. or virt. range)
     JustRangeTripletOffsetGainPhase* m_pJustdata;
 
     QString m_ReadRangeType(QString& sInput);
