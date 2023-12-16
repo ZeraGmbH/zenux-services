@@ -67,7 +67,8 @@ function(SETUP_TESTS)
             )
         target_link_libraries(${_testname}
             PUBLIC
-            senserangetesttemplate
+            Qt5::Test
+            mt310s2d-lib-testlib
             zenuxservicecommon-testlib
             zenuxservicecommon-demolib
             service-interfaces
