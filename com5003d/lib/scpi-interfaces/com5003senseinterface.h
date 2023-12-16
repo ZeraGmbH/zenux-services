@@ -1,11 +1,11 @@
 #ifndef SENSEINTERFACE_H
 #define SENSEINTERFACE_H
 
-#include "adjflash.h"
-#include "adjxml.h"
+#include "com5003adjflash.h"
+#include "com5003adjxml.h"
 #include "resource.h"
 #include "scpiconnection.h"
-#include "sensechannel.h"
+#include "com5003sensechannel.h"
 #include "notificationstring.h"
 #include <QList>
 #include <QStateMachine>
@@ -44,15 +44,15 @@ const QString sMMode[2] = {"AC", "REF"};
 
 class cCOM5003dServer;
 
-class cSenseInterface : public cResource, public cAdjFlash, public cAdjXML
+class Com5003SenseInterface : public cResource, public Com5003AdjFlash, public Com5003AdjXML
 {
     Q_OBJECT
 
 public:
-    cSenseInterface(cCOM5003dServer* server);
-    ~cSenseInterface();
+    Com5003SenseInterface(cCOM5003dServer* server);
+    ~Com5003SenseInterface();
     virtual void initSCPIConnection(QString leadingNodes) override;
-    cSenseChannel* getChannel(QString& name);
+    Com5003SenseChannel* getChannel(QString& name);
     quint8 getAdjustmentStatus() override; // we return 0 if not adj. else 1
     virtual void exportAdjData(QDataStream& stream) override;
     virtual bool importAdjData(QString& s, QDataStream& stream) override;
@@ -66,7 +66,7 @@ protected:
 
 private:
     cCOM5003dServer* m_pMyServer;
-    QList<cSenseChannel*> m_ChannelList;
+    QList<Com5003SenseChannel*> m_ChannelList;
     QString m_sVersion;
     quint8 m_nMMode;
 

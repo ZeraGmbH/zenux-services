@@ -3,8 +3,6 @@
 
 #include "com5003d.h"
 #include "scpiconnection.h"
-#include "systeminfo.h"
-#include "adjustment.h"
 #include <QList>
 #include <QJsonDocument>
 
@@ -32,12 +30,12 @@ enum SystemCommands
 };
 }
 
-class cSystemInterface: public ScpiConnection
+class Com5003SystemInterface: public ScpiConnection
 {
     Q_OBJECT
 
 public:
-    cSystemInterface(cCOM5003dServer* server);
+    Com5003SystemInterface(cCOM5003dServer* server);
     virtual void initSCPIConnection(QString leadingNodes) override;
 
 protected:

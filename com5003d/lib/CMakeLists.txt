@@ -1,25 +1,13 @@
-set(SOURCES
-    scpi-interfaces/senseinterface.cpp
-    scpi-interfaces/systeminterface.cpp
-    com5003d.cpp
-    com5003justdata.cpp
-    senserange.cpp
-    sensechannel.cpp
-    adjustment.cpp
+file(GLOB SOURCES
+    *.cpp
+    scpi-interfaces/*.cpp
+    settings/*.cpp
     )
 
-set(HEADER
-    scpi-interfaces/senseinterface.h
-    scpi-interfaces/systeminterface.h
-    com5003d.h
-    com5003justdata.h
-    com5003scpi.h
-    com5003dglobal.h
-    senserange.h
-    sensechannel.h
-    adjflash.h
-    adjxml.h
-    adjustment.h
+file(GLOB HEADER
+    *.h
+    scpi-interfaces/*.h
+    settings/*.h
     )
 
 add_library(com5003d-lib STATIC

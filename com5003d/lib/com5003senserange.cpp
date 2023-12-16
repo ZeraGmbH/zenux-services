@@ -1,8 +1,8 @@
-#include "senserange.h"
+#include "com5003senserange.h"
 #include "permissionfunctions.h"
 #include "zscpi_response_definitions.h"
 
-cSenseRange::cSenseRange(cSCPI *scpiinterface,
+Com5003SenseRange::Com5003SenseRange(cSCPI *scpiinterface,
                          QString name, QString alias,
                          bool avail, double rValue, double rejection, double ovrejection, double adcrejection, quint8 rselcode, quint8 rspec) :
     ScpiConnection(scpiinterface),
@@ -20,13 +20,13 @@ cSenseRange::cSenseRange(cSCPI *scpiinterface,
 }
 
 
-cSenseRange::~cSenseRange()
+Com5003SenseRange::~Com5003SenseRange()
 {
     delete m_pJustdata;
 }
 
 
-void cSenseRange::initSCPIConnection(QString leadingNodes)
+void Com5003SenseRange::initSCPIConnection(QString leadingNodes)
 {
     ensureTrailingColonOnNonEmptyParentNodes(leadingNodes);
     addDelegate(QString("%1%2").arg(leadingNodes).arg(m_sName),"TYPE",SCPI::isQuery,m_pSCPIInterface, SenseRange::cmdType);
@@ -42,61 +42,61 @@ void cSenseRange::initSCPIConnection(QString leadingNodes)
 }
 
 
-quint8 cSenseRange::getAdjustmentStatus()
+quint8 Com5003SenseRange::getAdjustmentStatus()
 {
     return m_pJustdata->getAdjustmentStatus();
 }
 
 
-QString &cSenseRange::getName()
+QString &Com5003SenseRange::getName()
 {
     return m_sName;
 }
 
 
-double cSenseRange::getUrvalue()
+double Com5003SenseRange::getUrvalue()
 {
     return m_fRValue;
 }
 
 
-quint8 cSenseRange::getSelCode()
+quint8 Com5003SenseRange::getSelCode()
 {
     return m_nSelCode;
 }
 
 
-JustRangeTripletOffsetGainPhaseCom5003 *cSenseRange::getJustData()
+JustRangeTripletOffsetGainPhaseCom5003 *Com5003SenseRange::getJustData()
 {
     return m_pJustdata;
 }
 
 
-bool cSenseRange::getAvail()
+bool Com5003SenseRange::getAvail()
 {
     return m_bAvail;
 }
 
 
-void cSenseRange::setAvail(bool b)
+void Com5003SenseRange::setAvail(bool b)
 {
     m_bAvail = b;
 }
 
 
-void cSenseRange::initJustData()
+void Com5003SenseRange::initJustData()
 {
     m_pJustdata->initJustData();
 }
 
 
-void cSenseRange::computeJustData()
+void Com5003SenseRange::computeJustData()
 {
     m_pJustdata->computeJustData();
 }
 
 
-void cSenseRange::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
+void Com5003SenseRange::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
 {
     switch (cmdCode)
     {
@@ -128,7 +128,7 @@ void cSenseRange::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
 }
 
 
-QString cSenseRange::m_ReadRangeType(QString &sInput)
+QString Com5003SenseRange::m_ReadRangeType(QString &sInput)
 {
     cSCPICommand cmd = sInput;
 
@@ -140,7 +140,7 @@ QString cSenseRange::m_ReadRangeType(QString &sInput)
 }
 
 
-QString cSenseRange::m_ReadRangeAlias(QString &sInput)
+QString Com5003SenseRange::m_ReadRangeAlias(QString &sInput)
 {
     cSCPICommand cmd = sInput;
 
@@ -151,7 +151,7 @@ QString cSenseRange::m_ReadRangeAlias(QString &sInput)
 }
 
 
-QString cSenseRange::m_ReadRangeAvail(QString &sInput)
+QString Com5003SenseRange::m_ReadRangeAvail(QString &sInput)
 {
     cSCPICommand cmd = sInput;
 
@@ -167,7 +167,7 @@ QString cSenseRange::m_ReadRangeAvail(QString &sInput)
 }
 
 
-QString cSenseRange::m_ReadRangeValue(QString &sInput)
+QString Com5003SenseRange::m_ReadRangeValue(QString &sInput)
 {
     cSCPICommand cmd = sInput;
 
@@ -178,7 +178,7 @@ QString cSenseRange::m_ReadRangeValue(QString &sInput)
 }
 
 
-QString cSenseRange::m_ReadRangeRejection(QString &sInput)
+QString Com5003SenseRange::m_ReadRangeRejection(QString &sInput)
 {
     cSCPICommand cmd = sInput;
 
@@ -189,7 +189,7 @@ QString cSenseRange::m_ReadRangeRejection(QString &sInput)
 }
 
 
-QString cSenseRange::m_ReadRangeOVRejection(QString &sInput)
+QString Com5003SenseRange::m_ReadRangeOVRejection(QString &sInput)
 {
     cSCPICommand cmd = sInput;
 
@@ -200,7 +200,7 @@ QString cSenseRange::m_ReadRangeOVRejection(QString &sInput)
 }
 
 
-QString cSenseRange::m_ReadRangeADCRejection(QString& sInput)
+QString Com5003SenseRange::m_ReadRangeADCRejection(QString& sInput)
 {
     cSCPICommand cmd = sInput;
 

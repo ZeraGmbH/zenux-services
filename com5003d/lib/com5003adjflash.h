@@ -5,7 +5,7 @@
 #include <QDataStream>
 #include <QString>
 
-class cAdjFlash : public AdjustmentStatusInterface
+class Com5003AdjFlash : public AdjustmentStatusInterface
 {
 public:
     virtual void exportAdjData(QDataStream& stream) = 0; // the derived class exports adjdata to qdatastream

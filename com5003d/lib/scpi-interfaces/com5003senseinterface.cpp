@@ -1,12 +1,12 @@
 #include "scpiconnection.h"
 #include "resource.h"
 #include "notzeronumgen.h"
-#include "senseinterface.h"
+#include "com5003senseinterface.h"
 #include "com5003d.h"
 #include "justdatainterface.h"
-#include "sensechannel.h"
-#include "senserange.h"
-#include "adjflash.h"
+#include "com5003sensechannel.h"
+#include "com5003senserange.h"
+#include "com5003adjflash.h"
 #include "protonetcommand.h"
 #include "atmel.h"
 #include "permissionfunctions.h"
@@ -20,7 +20,7 @@
 #include <QDomText>
 #include <QDebug>
 
-cSenseInterface::cSenseInterface(cCOM5003dServer *server) :
+Com5003SenseInterface::Com5003SenseInterface(cCOM5003dServer *server) :
     cResource(server->getSCPIInterface())
 {
     int i;
@@ -34,60 +34,60 @@ cSenseInterface::cSenseInterface(cCOM5003dServer *server) :
     channelSettings = server->m_pSenseSettings->getChannelSettings();
 
     // default our sense has 3 voltage and 3 current measuring channels
-    cSenseChannel* pChannel;
-    pChannel = new cSenseChannel(m_pSCPIInterface, SenseSystem::sVoltageChannelDescription,"V", channelSettings.at(0), 0);
+    Com5003SenseChannel* pChannel;
+    pChannel = new Com5003SenseChannel(m_pSCPIInterface, SenseSystem::sVoltageChannelDescription,"V", channelSettings.at(0), 0);
     m_ChannelList.append(pChannel);
-    pChannel = new cSenseChannel(m_pSCPIInterface, SenseSystem::sVoltageChannelDescription,"V", channelSettings.at(1), 1);
+    pChannel = new Com5003SenseChannel(m_pSCPIInterface, SenseSystem::sVoltageChannelDescription,"V", channelSettings.at(1), 1);
     m_ChannelList.append(pChannel);
-    pChannel = new cSenseChannel(m_pSCPIInterface, SenseSystem::sVoltageChannelDescription,"V", channelSettings.at(2), 2);
+    pChannel = new Com5003SenseChannel(m_pSCPIInterface, SenseSystem::sVoltageChannelDescription,"V", channelSettings.at(2), 2);
     m_ChannelList.append(pChannel);
-    pChannel = new cSenseChannel(m_pSCPIInterface, SenseSystem::sCurrentChannelDescription,"A", channelSettings.at(3), 3);
+    pChannel = new Com5003SenseChannel(m_pSCPIInterface, SenseSystem::sCurrentChannelDescription,"A", channelSettings.at(3), 3);
     m_ChannelList.append(pChannel);
-    pChannel = new cSenseChannel(m_pSCPIInterface, SenseSystem::sCurrentChannelDescription,"A", channelSettings.at(4), 4);
+    pChannel = new Com5003SenseChannel(m_pSCPIInterface, SenseSystem::sCurrentChannelDescription,"A", channelSettings.at(4), 4);
     m_ChannelList.append(pChannel);
-    pChannel = new cSenseChannel(m_pSCPIInterface, SenseSystem::sCurrentChannelDescription,"A", channelSettings.at(5), 5);
+    pChannel = new Com5003SenseChannel(m_pSCPIInterface, SenseSystem::sCurrentChannelDescription,"A", channelSettings.at(5), 5);
     m_ChannelList.append(pChannel);
 
-    QList<cSenseRange*> rngList;
+    QList<Com5003SenseRange*> rngList;
 
     for (i = 0; i < 3; i++)
     {
         rngList.clear();
-        rngList.append(new cSenseRange(m_pSCPIInterface, "480V", "480V", true, 480.0, 4712563.0, 5890704.0, 8388607.0, 0, SenseRange::Phys));
-        rngList.append(new cSenseRange(m_pSCPIInterface, "240V", "240V", true, 240.0, 4712563.0, 5890704.0, 8388607.0, 1, SenseRange::Phys));
-        rngList.append(new cSenseRange(m_pSCPIInterface, "120V", "120V", true, 120.0, 4712563.0, 5890704.0, 8388607.0, 2, SenseRange::Phys));
-        rngList.append(new cSenseRange(m_pSCPIInterface, "60V" , "60V" , true, 60.0 , 4712563.0, 5890704.0, 8388607.0, 3, SenseRange::Phys));
+        rngList.append(new Com5003SenseRange(m_pSCPIInterface, "480V", "480V", true, 480.0, 4712563.0, 5890704.0, 8388607.0, 0, SenseRange::Phys));
+        rngList.append(new Com5003SenseRange(m_pSCPIInterface, "240V", "240V", true, 240.0, 4712563.0, 5890704.0, 8388607.0, 1, SenseRange::Phys));
+        rngList.append(new Com5003SenseRange(m_pSCPIInterface, "120V", "120V", true, 120.0, 4712563.0, 5890704.0, 8388607.0, 2, SenseRange::Phys));
+        rngList.append(new Com5003SenseRange(m_pSCPIInterface, "60V" , "60V" , true, 60.0 , 4712563.0, 5890704.0, 8388607.0, 3, SenseRange::Phys));
 
-        rngList.append(new cSenseRange(m_pSCPIInterface, "12V" , "12V" , true, 12.0 , 3887864.8, 4859831.0, 8388607.0, 4, SenseRange::Phys));
-        rngList.append(new cSenseRange(m_pSCPIInterface, "5V"  , "5V"  , true, 5.0  , 4516206.0, 5645258.0, 8388607.0, 5, SenseRange::Phys));
+        rngList.append(new Com5003SenseRange(m_pSCPIInterface, "12V" , "12V" , true, 12.0 , 3887864.8, 4859831.0, 8388607.0, 4, SenseRange::Phys));
+        rngList.append(new Com5003SenseRange(m_pSCPIInterface, "5V"  , "5V"  , true, 5.0  , 4516206.0, 5645258.0, 8388607.0, 5, SenseRange::Phys));
 
-        rngList.append(new cSenseRange(m_pSCPIInterface, "R0V" , "R0V" , false,  9.0, 3839668.2, 5332873.0, 8388607.0, 14, SenseRange::Phys));
-        rngList.append(new cSenseRange(m_pSCPIInterface, "R10V", "R10V", false, 10.0, 4266298.0, 5332873.0, 8388607.0, 15, SenseRange::Phys));
+        rngList.append(new Com5003SenseRange(m_pSCPIInterface, "R0V" , "R0V" , false,  9.0, 3839668.2, 5332873.0, 8388607.0, 14, SenseRange::Phys));
+        rngList.append(new Com5003SenseRange(m_pSCPIInterface, "R10V", "R10V", false, 10.0, 4266298.0, 5332873.0, 8388607.0, 15, SenseRange::Phys));
         m_ChannelList.at(i)->setRangeList(rngList);
     }
 
     for (i = 3; i < 6; i++)
     {
         rngList.clear();
-        rngList.append(new cSenseRange(m_pSCPIInterface, "200A" ,"200A" , true, 200.0,6257236.0, 5256077.0, 8388607.0, 0 , SenseRange::Phys));
-        rngList.append(new cSenseRange(m_pSCPIInterface, "100A" ,"100A" , true, 100.0,4692928.0, 5866160.0, 8388607.0, 1 , SenseRange::Phys));
-        rngList.append(new cSenseRange(m_pSCPIInterface, "50A"  ,"50A"  , true,  50.0,4692928.0, 5866160.0, 8388607.0, 2 , SenseRange::Phys));
-        rngList.append(new cSenseRange(m_pSCPIInterface, "25A"  ,"25A"  , true, 25.0 ,4692928.0, 5866160.0, 8388607.0, 3 , SenseRange::Phys));
-        rngList.append(new cSenseRange(m_pSCPIInterface, "10A"  ,"10A"  , true, 10.0 ,4692928.0, 5866160.0, 8388607.0, 4 , SenseRange::Phys));
-        rngList.append(new cSenseRange(m_pSCPIInterface, "5A"    ,"5A"  , true,  5.0 ,4692928.0, 5866160.0, 8388607.0, 5 , SenseRange::Phys));
+        rngList.append(new Com5003SenseRange(m_pSCPIInterface, "200A" ,"200A" , true, 200.0,6257236.0, 5256077.0, 8388607.0, 0 , SenseRange::Phys));
+        rngList.append(new Com5003SenseRange(m_pSCPIInterface, "100A" ,"100A" , true, 100.0,4692928.0, 5866160.0, 8388607.0, 1 , SenseRange::Phys));
+        rngList.append(new Com5003SenseRange(m_pSCPIInterface, "50A"  ,"50A"  , true,  50.0,4692928.0, 5866160.0, 8388607.0, 2 , SenseRange::Phys));
+        rngList.append(new Com5003SenseRange(m_pSCPIInterface, "25A"  ,"25A"  , true, 25.0 ,4692928.0, 5866160.0, 8388607.0, 3 , SenseRange::Phys));
+        rngList.append(new Com5003SenseRange(m_pSCPIInterface, "10A"  ,"10A"  , true, 10.0 ,4692928.0, 5866160.0, 8388607.0, 4 , SenseRange::Phys));
+        rngList.append(new Com5003SenseRange(m_pSCPIInterface, "5A"    ,"5A"  , true,  5.0 ,4692928.0, 5866160.0, 8388607.0, 5 , SenseRange::Phys));
 
-        rngList.append(new cSenseRange(m_pSCPIInterface, "2.5A" ,"2.5A" , true, 2.5  ,4692928.0, 5866160.0, 8388607.0, 6 , SenseRange::Phys));
-        rngList.append(new cSenseRange(m_pSCPIInterface, "1.0A" ,"1.0A" , true, 1.0  ,4692928.0, 5866160.0, 8388607.0, 7 , SenseRange::Phys));
-        rngList.append(new cSenseRange(m_pSCPIInterface, "500mA","500mA", true, 0.5  ,4692928.0, 5866160.0, 8388607.0, 8 , SenseRange::Phys));
-        rngList.append(new cSenseRange(m_pSCPIInterface, "250mA","250mA", true, 0.25 ,4692928.0, 5866160.0, 8388607.0, 9 , SenseRange::Phys));
-        rngList.append(new cSenseRange(m_pSCPIInterface, "100mA","100mA", true, 0.1  ,4692928.0, 5866160.0, 8388607.0,10 , SenseRange::Phys));
-        rngList.append(new cSenseRange(m_pSCPIInterface, "50mA" ,"50mA" , true, 0.05 ,4692928.0, 5866160.0, 8388607.0,11, SenseRange::Phys));
-        rngList.append(new cSenseRange(m_pSCPIInterface, "25mA" ,"25mA" , true, 0.025,4692928.0, 5866160.0, 8388607.0,12, SenseRange::Phys));
-        rngList.append(new cSenseRange(m_pSCPIInterface, "10mA" ,"10mA" , true, 0.01 ,4692928.0, 5866160.0, 8388607.0,13, SenseRange::Phys));
-        rngList.append(new cSenseRange(m_pSCPIInterface, "5mA"  ,"5mA"  , true, 0.005,4692928.0, 5866160.0, 8388607.0,14, SenseRange::Phys));
+        rngList.append(new Com5003SenseRange(m_pSCPIInterface, "2.5A" ,"2.5A" , true, 2.5  ,4692928.0, 5866160.0, 8388607.0, 6 , SenseRange::Phys));
+        rngList.append(new Com5003SenseRange(m_pSCPIInterface, "1.0A" ,"1.0A" , true, 1.0  ,4692928.0, 5866160.0, 8388607.0, 7 , SenseRange::Phys));
+        rngList.append(new Com5003SenseRange(m_pSCPIInterface, "500mA","500mA", true, 0.5  ,4692928.0, 5866160.0, 8388607.0, 8 , SenseRange::Phys));
+        rngList.append(new Com5003SenseRange(m_pSCPIInterface, "250mA","250mA", true, 0.25 ,4692928.0, 5866160.0, 8388607.0, 9 , SenseRange::Phys));
+        rngList.append(new Com5003SenseRange(m_pSCPIInterface, "100mA","100mA", true, 0.1  ,4692928.0, 5866160.0, 8388607.0,10 , SenseRange::Phys));
+        rngList.append(new Com5003SenseRange(m_pSCPIInterface, "50mA" ,"50mA" , true, 0.05 ,4692928.0, 5866160.0, 8388607.0,11, SenseRange::Phys));
+        rngList.append(new Com5003SenseRange(m_pSCPIInterface, "25mA" ,"25mA" , true, 0.025,4692928.0, 5866160.0, 8388607.0,12, SenseRange::Phys));
+        rngList.append(new Com5003SenseRange(m_pSCPIInterface, "10mA" ,"10mA" , true, 0.01 ,4692928.0, 5866160.0, 8388607.0,13, SenseRange::Phys));
+        rngList.append(new Com5003SenseRange(m_pSCPIInterface, "5mA"  ,"5mA"  , true, 0.005,4692928.0, 5866160.0, 8388607.0,14, SenseRange::Phys));
 
-        rngList.append(new cSenseRange(m_pSCPIInterface, "R0V" , "R0V" , false,  9.0, 3839668.2, 5332873.0, 8388607.0,15, SenseRange::Phys));
-        rngList.append(new cSenseRange(m_pSCPIInterface, "R10V", "R10V", false, 10.0, 4266298.0, 5332873.0, 8388607.0,16, SenseRange::Phys));
+        rngList.append(new Com5003SenseRange(m_pSCPIInterface, "R0V" , "R0V" , false,  9.0, 3839668.2, 5332873.0, 8388607.0,15, SenseRange::Phys));
+        rngList.append(new Com5003SenseRange(m_pSCPIInterface, "R10V", "R10V", false, 10.0, 4266298.0, 5332873.0, 8388607.0,16, SenseRange::Phys));
 
         m_ChannelList.at(i)->setRangeList(rngList);
     }
@@ -105,16 +105,16 @@ cSenseInterface::cSenseInterface(cCOM5003dServer *server) :
     m_ChangeSenseModeMachine.addState(&m_RegisterSenseState);
     m_ChangeSenseModeMachine.addState(&m_NotifySenseState);
     m_ChangeSenseModeMachine.setInitialState(&m_UnregisterSenseState);
-    connect(&m_UnregisterSenseState, &QAbstractState::entered, this, &cSenseInterface::unregisterSense);
-    connect(&m_RegisterSenseState, &QAbstractState::entered, this, &cSenseInterface::registerSense);
-    connect(&m_NotifySenseState, &QAbstractState::entered, this, &cSenseInterface::notifySense);
+    connect(&m_UnregisterSenseState, &QAbstractState::entered, this, &Com5003SenseInterface::unregisterSense);
+    connect(&m_RegisterSenseState, &QAbstractState::entered, this, &Com5003SenseInterface::registerSense);
+    connect(&m_NotifySenseState, &QAbstractState::entered, this, &Com5003SenseInterface::notifySense);
 }
 
 
-cSenseInterface::~cSenseInterface()
+Com5003SenseInterface::~Com5003SenseInterface()
 {
     int i;
-    cSenseChannel* cptr;
+    Com5003SenseChannel* cptr;
 
     for (i = 0; i < m_ChannelList.count(); i++)
     {
@@ -124,7 +124,7 @@ cSenseInterface::~cSenseInterface()
 }
 
 
-void cSenseInterface::initSCPIConnection(QString leadingNodes)
+void Com5003SenseInterface::initSCPIConnection(QString leadingNodes)
 {
     ensureTrailingColonOnNonEmptyParentNodes(leadingNodes);
     addDelegate(QString("%1SENSE").arg(leadingNodes),"VERSION",SCPI::isQuery,m_pSCPIInterface, SenseSystem::cmdVersion);
@@ -144,7 +144,7 @@ void cSenseInterface::initSCPIConnection(QString leadingNodes)
 }
 
 
-cSenseChannel *cSenseInterface::getChannel(QString &name)
+Com5003SenseChannel *Com5003SenseInterface::getChannel(QString &name)
 {
     int i;
 
@@ -159,7 +159,7 @@ cSenseChannel *cSenseInterface::getChannel(QString &name)
 }
 
 
-quint8 cSenseInterface::getAdjustmentStatus()
+quint8 Com5003SenseInterface::getAdjustmentStatus()
 {
     quint8 adj = 255;
     for (int i = 0; i < m_ChannelList.count(); i++)
@@ -169,7 +169,7 @@ quint8 cSenseInterface::getAdjustmentStatus()
 }
 
 
-void cSenseInterface::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
+void Com5003SenseInterface::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
 {
     switch (cmdCode)
     {
@@ -215,17 +215,17 @@ void cSenseInterface::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
 }
 
 
-bool cSenseInterface::importAdjData(QString &s, QDataStream &stream)
+bool Com5003SenseInterface::importAdjData(QString &s, QDataStream &stream)
 {
     QStringList spec;
     spec = s.split(':');
     if (spec.at(0) == "SENSE" )
     {
-        cSenseChannel* chn;
+        Com5003SenseChannel* chn;
         QString s = spec.at(1);
         if ((chn = getChannel(s)) != 0)
         {
-            cSenseRange* rng;
+            Com5003SenseRange* rng;
             s = spec.at(2);
             if ((rng = chn->getRange(s)) != 0)
             {
@@ -243,11 +243,11 @@ bool cSenseInterface::importAdjData(QString &s, QDataStream &stream)
 }
 
 
-void cSenseInterface::exportAdjData(QDataStream &stream)
+void Com5003SenseInterface::exportAdjData(QDataStream &stream)
 {
     for (int i = 0; i < m_ChannelList.count(); i++)
     {
-        QList<cSenseRange*> list = m_ChannelList.at(i)->getRangeList();
+        QList<Com5003SenseRange*> list = m_ChannelList.at(i)->getRangeList();
         QString spec;
 
         for (int j = 0; j < list.count(); j ++)
@@ -264,7 +264,7 @@ void cSenseInterface::exportAdjData(QDataStream &stream)
 }
 
 
-void cSenseInterface::exportAdjData(QDomDocument& doc, QDomElement& qde)
+void Com5003SenseInterface::exportAdjData(QDomDocument& doc, QDomElement& qde)
 {
     QDomElement typeTag = doc.createElement( "Sense");
     qde.appendChild(typeTag);
@@ -279,10 +279,10 @@ void cSenseInterface::exportAdjData(QDomDocument& doc, QDomElement& qde)
         t = doc.createTextNode(m_ChannelList.at(i)->getName());
         nametag.appendChild( t );
 
-        QList<cSenseRange*> list = m_ChannelList.at(i)->getRangeList();
+        QList<Com5003SenseRange*> list = m_ChannelList.at(i)->getRangeList();
         for (int j = 0; j < list.count(); j++)
         {
-            cSenseRange* rng = list.at(j);
+            Com5003SenseRange* rng = list.at(j);
 
             QDomElement rtag = doc.createElement( "Range" );
             chtag.appendChild( rtag );
@@ -351,7 +351,7 @@ void cSenseInterface::exportAdjData(QDomDocument& doc, QDomElement& qde)
 }
 
 
-bool cSenseInterface::importAdjData(QDomNode& node) // n steht auf einem element dessen tagname channel ist
+bool Com5003SenseInterface::importAdjData(QDomNode& node) // n steht auf einem element dessen tagname channel ist
 {
     qDebug() << node.toElement().tagName();
     if (node.toElement().tagName() != "Sense") // data not for us
@@ -366,8 +366,8 @@ bool cSenseInterface::importAdjData(QDomNode& node) // n steht auf einem element
         QDomNodeList nl2 = chnNode.childNodes();
         for (qint32 j = 0; j < nl2.length(); j++)
         {
-            cSenseChannel* chnPtr;
-            cSenseRange* rngPtr;
+            Com5003SenseChannel* chnPtr;
+            Com5003SenseRange* rngPtr;
             QString Name;
 
             QDomNode ChannelJustNode = nl2.item(j);
@@ -446,9 +446,9 @@ bool cSenseInterface::importAdjData(QDomNode& node) // n steht auf einem element
 }
 
 
-void cSenseInterface::registerResource(RMConnection *rmConnection, quint16 port)
+void Com5003SenseInterface::registerResource(RMConnection *rmConnection, quint16 port)
 {
-    cSenseChannel* pChannel;
+    Com5003SenseChannel* pChannel;
     msgNrList.clear();
     for (int i = 0; i < 6; i++)
     {
@@ -467,9 +467,9 @@ void cSenseInterface::registerResource(RMConnection *rmConnection, quint16 port)
 }
 
 
-void cSenseInterface::unregisterResource(RMConnection *rmConnection)
+void Com5003SenseInterface::unregisterResource(RMConnection *rmConnection)
 {
-    cSenseChannel* pChannel;
+    Com5003SenseChannel* pChannel;
     msgNrList.clear();
     for (int i = 0; i < 6; i++)
     {
@@ -480,7 +480,7 @@ void cSenseInterface::unregisterResource(RMConnection *rmConnection)
 }
 
 
-QString cSenseInterface::m_ReadVersion(QString &sInput)
+QString Com5003SenseInterface::m_ReadVersion(QString &sInput)
 {
     cSCPICommand cmd = sInput;
 
@@ -491,7 +491,7 @@ QString cSenseInterface::m_ReadVersion(QString &sInput)
 }
 
 
-void cSenseInterface::m_ReadWriteMModeVersion(cProtonetCommand *protoCmd)
+void Com5003SenseInterface::m_ReadWriteMModeVersion(cProtonetCommand *protoCmd)
 {
     cSCPICommand cmd = protoCmd->m_sInput;
 
@@ -558,7 +558,7 @@ void cSenseInterface::m_ReadWriteMModeVersion(cProtonetCommand *protoCmd)
 }
 
 
-QString cSenseInterface::m_ReadMModeCatalog(QString &sInput)
+QString Com5003SenseInterface::m_ReadMModeCatalog(QString &sInput)
 {
     cSCPICommand cmd = sInput;
 
@@ -577,7 +577,7 @@ QString cSenseInterface::m_ReadMModeCatalog(QString &sInput)
 }
 
 
-QString cSenseInterface::m_ReadSenseChannelCatalog(QString &sInput)
+QString Com5003SenseInterface::m_ReadSenseChannelCatalog(QString &sInput)
 {
     cSCPICommand cmd = sInput;
 
@@ -590,7 +590,7 @@ QString cSenseInterface::m_ReadSenseChannelCatalog(QString &sInput)
 }
 
 
-QString cSenseInterface::m_ReadSenseGroupCatalog(QString &sInput)
+QString Com5003SenseInterface::m_ReadSenseGroupCatalog(QString &sInput)
 {
     cSCPICommand cmd = sInput;
 
@@ -609,7 +609,7 @@ QString cSenseInterface::m_ReadSenseGroupCatalog(QString &sInput)
 }
 
 
-QString cSenseInterface::m_InitSenseAdjData(QString &sInput)
+QString Com5003SenseInterface::m_InitSenseAdjData(QString &sInput)
 {
     cSCPICommand cmd = sInput;
 
@@ -638,7 +638,7 @@ QString cSenseInterface::m_InitSenseAdjData(QString &sInput)
 }
 
 
-QString cSenseInterface::m_ComputeSenseAdjData(QString &sInput)
+QString Com5003SenseInterface::m_ComputeSenseAdjData(QString &sInput)
 {
     cSCPICommand cmd = sInput;
 
@@ -665,13 +665,13 @@ QString cSenseInterface::m_ComputeSenseAdjData(QString &sInput)
 }
 
 
-void cSenseInterface::setNotifierSenseMMode()
+void Com5003SenseInterface::setNotifierSenseMMode()
 {
     notifierSenseMMode = SenseSystem::sMMode[m_nMMode];
 }
 
 
-void cSenseInterface::setNotifierSenseChannelCat()
+void Com5003SenseInterface::setNotifierSenseChannelCat()
 {
     int i;
     QString s;
@@ -682,13 +682,13 @@ void cSenseInterface::setNotifierSenseChannelCat()
 }
 
 
-void cSenseInterface::unregisterSense()
+void Com5003SenseInterface::unregisterSense()
 {
     unregisterResource(m_pMyServer->m_pRMConnection);
 }
 
 
-void cSenseInterface::registerSense()
+void Com5003SenseInterface::registerSense()
 {
     QString s;
     qint32 i;
@@ -725,7 +725,7 @@ void cSenseInterface::registerSense()
     for (i = 0; i < m_ChannelList.count(); i++) // for each channel
     {
         m_ChannelList.at(i)->setMMode(m_nMMode); // this indirectly changes the channnels alias
-        QList<cSenseRange*> list = m_ChannelList.at(i)->getRangeList();
+        QList<Com5003SenseRange*> list = m_ChannelList.at(i)->getRangeList();
         for (int j = 0; j < list.count(); j++ )
             list.at(j)->setAvail( !list.at(j)->getAvail()); // we only toggle the ranges avail
 
@@ -733,7 +733,7 @@ void cSenseInterface::registerSense()
     registerResource(m_pMyServer->m_pRMConnection, m_pMyServer->m_ethSettings.getPort(EthSettings::protobufserver));
 }
 
-void cSenseInterface::notifySense()
+void Com5003SenseInterface::notifySense()
 {
     setNotifierSenseMMode(); // we set the notifier synchron after all resources are registered again
     cProtonetCommand *protoCmd;

@@ -16,7 +16,7 @@
 #include "com5003d.h"
 #include "pcbserver.h"
 #include "systeminfo.h"
-#include "adjustment.h"
+#include "com5003adjustment.h"
 #include "rmconnection.h"
 #include "atmel.h"
 #include "atmelctrlfactory.h"
@@ -24,10 +24,10 @@
 #include "hkingroupresourceandinterface.h"
 #include "samplinginterface.h"
 #include "scingroupresourceandinterface.h"
-#include "senseinterface.h"
+#include "com5003senseinterface.h"
 #include "foutgroupresourceandinterface.h"
 #include "statusinterface.h"
-#include "systeminterface.h"
+#include "com5003systeminterface.h"
 #include "debugsettings.h"
 #include "ethsettings.h"
 #include "finsettings.h"
@@ -305,14 +305,14 @@ void cCOM5003dServer::doSetupServer()
 {
     Atmel::getInstance().setPLLChannel(1); // default channel m0 for pll control
     m_pSystemInfo = new cSystemInfo();
-    m_pAdjHandler = new cAdjustment(m_pSystemInfo, m_pI2CSettings->getDeviceNode(), m_pI2CSettings->getI2CAdress(i2cSettings::flashlI2cAddress) );
+    m_pAdjHandler = new Com5003Adjustment(m_pSystemInfo, m_pI2CSettings->getDeviceNode(), m_pI2CSettings->getI2CAdress(i2cSettings::flashlI2cAddress) );
 
     setupServer(); // here our scpi interface gets instanciated, we need this for further steps
 
     scpiConnectionList.append(this); // the server itself has some commands
     scpiConnectionList.append(m_pStatusInterface = new cStatusInterface(getSCPIInterface(), m_pAdjHandler));
-    scpiConnectionList.append(m_pSystemInterface = new cSystemInterface(this));
-    scpiConnectionList.append(m_pSenseInterface = new cSenseInterface(this));
+    scpiConnectionList.append(m_pSystemInterface = new Com5003SystemInterface(this));
+    scpiConnectionList.append(m_pSenseInterface = new Com5003SenseInterface(this));
     scpiConnectionList.append(m_pSamplingInterface = new cSamplingInterface(getSCPIInterface(), m_pSamplingSettings));
     scpiConnectionList.append(m_foutInterface = new FOutGroupResourceAndInterface(getSCPIInterface(), m_foutSettings));
     scpiConnectionList.append(m_pFRQInputInterface = new FInGroupResourceAndInterface(getSCPIInterface(), m_finSettings));

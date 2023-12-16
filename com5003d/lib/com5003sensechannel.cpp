@@ -1,4 +1,4 @@
-#include "sensechannel.h"
+#include "com5003sensechannel.h"
 #include "sensesettings.h"
 #include "micro-controller-io/atmel.h"
 #include "zscpi_response_definitions.h"
@@ -6,10 +6,10 @@
 #include <QString>
 #include <scpi.h>
 #include <scpicommand.h>
-#include "senserange.h"
+#include "com5003senserange.h"
 #include "scpiconnection.h"
 
-cSenseChannel::cSenseChannel(cSCPI *scpiinterface, QString description, QString unit, SenseSystem::cChannelSettings *cSettings, quint8 nr) :
+Com5003SenseChannel::Com5003SenseChannel(cSCPI *scpiinterface, QString description, QString unit, SenseSystem::cChannelSettings *cSettings, quint8 nr) :
     ScpiConnection(scpiinterface),
     m_sDescription(description), m_sUnit(unit)
 {
@@ -24,14 +24,14 @@ cSenseChannel::cSenseChannel(cSCPI *scpiinterface, QString description, QString 
 }
 
 
-cSenseChannel::~cSenseChannel()
+Com5003SenseChannel::~Com5003SenseChannel()
 {
     for (int i = 0; i < m_RangeList.count(); i++)
         delete m_RangeList.at(i);
 }
 
 
-void cSenseChannel::initSCPIConnection(QString leadingNodes)
+void Com5003SenseChannel::initSCPIConnection(QString leadingNodes)
 {
     ensureTrailingColonOnNonEmptyParentNodes(leadingNodes);
     addDelegate(QString("%1%2").arg(leadingNodes).arg(m_sName),"ALIAS", SCPI::isQuery, m_pSCPIInterface, SenseChannel::cmdAlias);
@@ -50,7 +50,7 @@ void cSenseChannel::initSCPIConnection(QString leadingNodes)
 }
 
 
-void cSenseChannel::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
+void Com5003SenseChannel::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
 {
     switch (cmdCode)
     {
@@ -89,7 +89,7 @@ void cSenseChannel::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
 }
 
 
-void cSenseChannel::setRangeList(QList<cSenseRange*> &list)
+void Com5003SenseChannel::setRangeList(QList<Com5003SenseRange*> &list)
 {
     m_RangeList = list;
     setNotifierSenseChannelRangeCat();
@@ -97,13 +97,13 @@ void cSenseChannel::setRangeList(QList<cSenseRange*> &list)
 }
 
 
-QList<cSenseRange *> &cSenseChannel::getRangeList()
+QList<Com5003SenseRange *> &Com5003SenseChannel::getRangeList()
 {
     return m_RangeList;
 }
 
 
-cSenseRange *cSenseChannel::getRange(QString &name)
+Com5003SenseRange *Com5003SenseChannel::getRange(QString &name)
 {
     int i;
     for (i = 0; i < m_RangeList.count(); i++)
@@ -117,7 +117,7 @@ cSenseRange *cSenseChannel::getRange(QString &name)
 }
 
 
-quint8 cSenseChannel::getAdjustmentStatus()
+quint8 Com5003SenseChannel::getAdjustmentStatus()
 {
     quint8 adj = 255;
     for(auto range : qAsConst(m_RangeList))
@@ -126,13 +126,13 @@ quint8 cSenseChannel::getAdjustmentStatus()
 }
 
 
-QString &cSenseChannel::getName()
+QString &Com5003SenseChannel::getName()
 {
     return m_sName;
 }
 
 
-QString &cSenseChannel::getAlias()
+QString &Com5003SenseChannel::getAlias()
 {
     if (m_nMMode == 0)
         return m_sAlias[0];
@@ -141,51 +141,51 @@ QString &cSenseChannel::getAlias()
 }
 
 
-QString &cSenseChannel::getDescription()
+QString &Com5003SenseChannel::getDescription()
 {
     return m_sDescription;
 }
 
 
-void cSenseChannel::setDescription(const QString &s)
+void Com5003SenseChannel::setDescription(const QString &s)
 {
     m_sDescription = s;
 }
 
 
-void cSenseChannel::setUnit(QString &s)
+void Com5003SenseChannel::setUnit(QString &s)
 {
     m_sUnit = s;
 }
 
 
-void cSenseChannel::setMMode(int m)
+void Com5003SenseChannel::setMMode(int m)
 {
     m_nMMode = m;
 }
 
 
-bool cSenseChannel::isAvail()
+bool Com5003SenseChannel::isAvail()
 {
     return m_bAvail;
 }
 
 
-void cSenseChannel::initJustData()
+void Com5003SenseChannel::initJustData()
 {
     for (int i = 0; i < m_RangeList.count(); i++)
         m_RangeList.at(i)->initJustData();
 }
 
 
-void cSenseChannel::computeJustData()
+void Com5003SenseChannel::computeJustData()
 {
     for (int i = 0; i < m_RangeList.count(); i++)
         m_RangeList.at(i)->computeJustData();
 }
 
 
-QString cSenseChannel::m_ReadAlias(QString &sInput)
+QString Com5003SenseChannel::m_ReadAlias(QString &sInput)
 {
     cSCPICommand cmd = sInput;
 
@@ -201,7 +201,7 @@ QString cSenseChannel::m_ReadAlias(QString &sInput)
 }
 
 
-QString cSenseChannel::m_ReadType(QString &sInput)
+QString Com5003SenseChannel::m_ReadType(QString &sInput)
 {
     cSCPICommand cmd = sInput;
 
@@ -212,7 +212,7 @@ QString cSenseChannel::m_ReadType(QString &sInput)
 }
 
 
-QString cSenseChannel::m_ReadUnit(QString &sInput)
+QString Com5003SenseChannel::m_ReadUnit(QString &sInput)
 {
     cSCPICommand cmd = sInput;
 
@@ -223,7 +223,7 @@ QString cSenseChannel::m_ReadUnit(QString &sInput)
 }
 
 
-QString cSenseChannel::m_ReadDspChannel(QString &sInput)
+QString Com5003SenseChannel::m_ReadDspChannel(QString &sInput)
 {
     cSCPICommand cmd = sInput;
 
@@ -234,7 +234,7 @@ QString cSenseChannel::m_ReadDspChannel(QString &sInput)
 }
 
 
-QString cSenseChannel::m_ReadChannelStatus(QString &sInput)
+QString Com5003SenseChannel::m_ReadChannelStatus(QString &sInput)
 {
     quint16 status;
     cSCPICommand cmd = sInput;
@@ -257,7 +257,7 @@ QString cSenseChannel::m_ReadChannelStatus(QString &sInput)
 }
 
 
-QString cSenseChannel::m_StatusReset(QString &sInput)
+QString Com5003SenseChannel::m_StatusReset(QString &sInput)
 {
     cSCPICommand cmd = sInput;
 
@@ -273,7 +273,7 @@ QString cSenseChannel::m_StatusReset(QString &sInput)
 }
 
 
-void cSenseChannel::setNotifierSenseChannelRange()
+void Com5003SenseChannel::setNotifierSenseChannelRange()
 {
     quint8 mode, range;
 
@@ -303,7 +303,7 @@ void cSenseChannel::setNotifierSenseChannelRange()
 }
 
 
-QString cSenseChannel::m_ReadWriteRange(QString &sInput)
+QString Com5003SenseChannel::m_ReadWriteRange(QString &sInput)
 {
     int i;
     quint8 mode;
@@ -368,7 +368,7 @@ QString cSenseChannel::m_ReadWriteRange(QString &sInput)
 }
 
 
-QString cSenseChannel::m_ReadUrvalue(QString &sInput)
+QString Com5003SenseChannel::m_ReadUrvalue(QString &sInput)
 {
     cSCPICommand cmd = sInput;
 
@@ -386,7 +386,7 @@ QString cSenseChannel::m_ReadUrvalue(QString &sInput)
 }
 
 
-QString cSenseChannel::m_ReadRangeCatalog(QString &sInput)
+QString Com5003SenseChannel::m_ReadRangeCatalog(QString &sInput)
 {
     cSCPICommand cmd = sInput;
 
@@ -399,7 +399,7 @@ QString cSenseChannel::m_ReadRangeCatalog(QString &sInput)
 }
 
 
-void cSenseChannel::setNotifierSenseChannelRangeCat()
+void Com5003SenseChannel::setNotifierSenseChannelRangeCat()
 {
     int i;
     QString s;
