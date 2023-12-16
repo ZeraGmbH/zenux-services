@@ -234,7 +234,7 @@ bool Com5003SenseInterface::importAdjData(QString &s, QDataStream &stream)
             }
         }
 
-        JustRangeTripletOffsetGainPhaseCom5003 dummy(m_pSCPIInterface); // if the data was for SENSE but we didn't find channel or range
+        Com5003JustRangeTripletOffsetGainPhase dummy(m_pSCPIInterface); // if the data was for SENSE but we didn't find channel or range
         dummy.Deserialize(stream); // we read the data from stream to keep it in flow
         return true;
     }
