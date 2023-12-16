@@ -38,7 +38,7 @@ public:
                 double adcrejection,
                 quint8 rselcode,
                 quint16 mmask,
-                JustRangeTripletOffsetGainPhase* justdata);
+                JustRangeTripletOffsetGainPhaseMt310s2* justdata);
     ~cSenseRange();
     virtual void initSCPIConnection(QString leadingNodes) override;
     quint8 getAdjustmentStatus() override;
@@ -47,7 +47,7 @@ public:
     double getUrvalue();
     quint8 getSelCode();
     quint16 getMMask();
-    JustRangeTripletOffsetGainPhase* getJustData();
+    JustRangeTripletOffsetGainPhaseMt310s2* getJustData();
     bool isAvail();
     void setMMode(int m);
 
@@ -74,7 +74,7 @@ protected:
     quint8 m_nSelCode; // selection code
     quint16 m_nMMask; // the possible measuring modes for this range
     quint8 m_nMMode; // the actual measuring mode
-    JustRangeTripletOffsetGainPhase* m_pJustdata;
+    JustRangeTripletOffsetGainPhaseMt310s2* m_pJustdata;
 
 };
 

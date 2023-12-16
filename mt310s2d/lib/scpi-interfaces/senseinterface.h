@@ -82,7 +82,7 @@ private:
     QString m_InitSenseAdjData(QString& sInput);
     QString m_ComputeSenseAdjData(QString& sInput);
     QString handleScpiReadAdjStatus(QString& sInput);
-    JustRangeTripletOffsetGainPhase* CreateJustScpiInterfaceWithAtmelPermission();
+    JustRangeTripletOffsetGainPhaseMt310s2* CreateJustScpiInterfaceWithAtmelPermission();
 
     NotificationString notifierSenseMMode;
     NotificationString notifierSenseChannelCat;

@@ -364,7 +364,7 @@ bool cSenseInterface::importAdjData(QDataStream &stream)
             }
         }
         if (!done) {
-            JustRangeTripletOffsetGainPhase* dummy; // if we could not find the owner of that data
+            JustRangeTripletOffsetGainPhaseMt310s2* dummy; // if we could not find the owner of that data
             dummy = CreateJustScpiInterfaceWithAtmelPermission();
             dummy->Deserialize(stream); // we read the data from stream to keep it in flow
             delete dummy;
@@ -808,9 +808,9 @@ QString cSenseInterface::handleScpiReadAdjStatus(QString &sInput)
     }
 }
 
-JustRangeTripletOffsetGainPhase *cSenseInterface::CreateJustScpiInterfaceWithAtmelPermission()
+JustRangeTripletOffsetGainPhaseMt310s2 *cSenseInterface::CreateJustScpiInterfaceWithAtmelPermission()
 {
-    return new JustRangeTripletOffsetGainPhase(m_pSCPIInterface);
+    return new JustRangeTripletOffsetGainPhaseMt310s2(m_pSCPIInterface);
 }
 
 void cSenseInterface::setNotifierSenseMMode()
