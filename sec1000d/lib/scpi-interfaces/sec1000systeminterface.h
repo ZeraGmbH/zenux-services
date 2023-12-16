@@ -17,22 +17,21 @@ enum SystemCommands
 };
 }
 
-class cSystemInfo;
+class Sec1000SystemInfo;
 class cSEC1000dServer;
-class cAdjustment;
 
 class cSystemInterface: public ScpiConnection
 {
     Q_OBJECT
 
 public:
-    cSystemInterface(cSEC1000dServer* server, cSystemInfo* sInfo);
+    cSystemInterface(cSEC1000dServer* server, Sec1000SystemInfo* sInfo);
     virtual void initSCPIConnection(QString leadingNodes) override;
 protected:
     void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
 private:
     cSEC1000dServer* m_pMyServer;
-    cSystemInfo* m_pSystemInfo;
+    Sec1000SystemInfo* m_pSystemInfo;
     QString scpiReadServerVersion(QString& sInput);
     QString m_ReadDeviceVersion(QString& sInput);
     QString m_ReadDeviceName(QString& sInput);

@@ -3,10 +3,10 @@
 
 #include <QString>
 
-class cSystemInfo
+class Sec1000SystemInfo
 {
 public:
-    cSystemInfo();
+    Sec1000SystemInfo();
     void getSystemInfo(); // here we fetch all system info
     bool dataRead(); // false if we were not able to read required information
     QString getDeviceVersion();

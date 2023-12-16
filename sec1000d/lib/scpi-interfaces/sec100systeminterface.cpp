@@ -1,13 +1,13 @@
-#include "systeminterface.h"
+#include "sec1000systeminterface.h"
 #include "sec1000d.h"
-#include "systeminfo.h"
+#include "sec1000systeminfo.h"
 #include "zscpi_response_definitions.h"
 #include "protonetcommand.h"
 #include <scpi.h>
 #include <scpicommand.h>
 #include <scpisingletonfactory.h>
 
-cSystemInterface::cSystemInterface(cSEC1000dServer *server, cSystemInfo *sInfo) :
+cSystemInterface::cSystemInterface(cSEC1000dServer *server, Sec1000SystemInfo *sInfo) :
     ScpiConnection(ScpiSingletonFactory::getScpiObj()),
     m_pMyServer(server),
     m_pSystemInfo(sInfo)

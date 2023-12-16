@@ -16,11 +16,11 @@ enum StatusCommands
 }
 
 
-class cStatusInterface: public ScpiConnection
+class Sec1000StatusInterface: public ScpiConnection
 {
     Q_OBJECT
 public:
-    cStatusInterface();
+    Sec1000StatusInterface();
     virtual void initSCPIConnection(QString leadingNodes) override;
 protected:
     void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
