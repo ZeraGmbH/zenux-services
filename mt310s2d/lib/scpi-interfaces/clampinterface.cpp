@@ -1,7 +1,7 @@
 #include "clampinterface.h"
 #include "mt310s2d.h"
 #include "clamp.h"
-#include "senseinterface.h"
+#include "mt310s2senseinterface.h"
 #include "protonetcommand.h"
 #include "micro-controller-io/atmel.h"
 #include "i2csettings.h"

@@ -5,10 +5,10 @@
 
 class QDomDocument;
 
-class cAdjXML
+class Mt310s2AdjXML
 {
 public:
-    cAdjXML();
+    Mt310s2AdjXML();
 
     virtual bool exportAdjXML(QString file);
     virtual bool importAdjXML(QString file);

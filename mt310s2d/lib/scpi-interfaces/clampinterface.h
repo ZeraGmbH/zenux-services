@@ -3,7 +3,7 @@
 
 #include "scpiconnection.h"
 #include "notificationstring.h"
-#include "senseinterface.h"
+#include "mt310s2senseinterface.h"
 #include <QHash>
 #include <QSet>
 
@@ -39,7 +39,7 @@ private:
     void handleClampConnected(QString channelName, const SenseSystem::cChannelSettings *chSettings, quint16 bmask, int phaseCount);
 
     cMT310S2dServer *m_pMyServer;
-    cSenseInterface *m_pSenseInterface;
+    Mt310s2SenseInterface *m_pSenseInterface;
     NotificationString m_notifierClampChannelList;
     quint16 m_nClampStatus;
     QHash<QString, cClamp*> m_clampHash;

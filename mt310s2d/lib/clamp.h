@@ -1,9 +1,9 @@
 #ifndef CLAMP_H
 #define CLAMP_H
 
-#include "adjflash.h"
-#include "adjxml.h"
-#include "senseinterface.h"
+#include "mt310s2adjflash.h"
+#include "mt310s2adjxml.h"
+#include "mt310s2senseinterface.h"
 #include <QList>
 #include <QDateTime>
 #include <QDomElement>
@@ -29,7 +29,7 @@ enum ClampTypes // APPEND NEW TYPES AT BOTTOM
     anzCL
 };
 
-class cClamp: public cAdjFlash, public cAdjXML, public ScpiConnection
+class cClamp: public Mt310s2AdjFlash, public Mt310s2AdjXML, public ScpiConnection
 {
 public:
     cClamp();
@@ -57,10 +57,10 @@ private:
     void addSystAdjInterfaceChannel(QString channelName);
     void createLEM1000VRanges(PermissionStructAdj &permissionsOffsetAllowedAlways, quint16 dcCommonMask);
     static QString getClampTypeName(quint8 type);
-    cSenseRange* getRange(QString name);
+    Mt310s2SenseRange* getRange(QString name);
     ClampTypes readClampType();
     void removeAllRanges();
-    void exportRangeXml(QDomDocument &justqdom, QDomElement &typeTag, cSenseRange *range);
+    void exportRangeXml(QDomDocument &justqdom, QDomElement &typeTag, Mt310s2SenseRange *range);
 
     QString handleScpiReadWriteSerial(QString &scpiCmdStr);
     QString handleScpiReadWriteVersion(QString &scpiCmdStr);
@@ -74,11 +74,11 @@ private:
     QString handleScpiReadXML(QString &scpiCmdStr);
     QString handleScpiReadAdjStatus(QString &scpiCmdStr);
 
-    cSenseInterface *m_pSenseInterface = nullptr;
+    Mt310s2SenseInterface *m_pSenseInterface = nullptr;
 
-    QList<cSenseRange*> m_RangeList;
+    QList<Mt310s2SenseRange*> m_RangeList;
     QString m_sChannelName;
-    QList<cSenseRange*> m_RangeListSecondary;
+    QList<Mt310s2SenseRange*> m_RangeListSecondary;
     QString m_sChannelNameSecondary;
 
     ushort m_i2cMuxAdress;

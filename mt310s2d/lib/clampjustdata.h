@@ -2,7 +2,7 @@
 #define CLAMPJUSTDATA
 
 #include "mt310s2justdata.h"
-#include "senserange.h"
+#include "mt310s2senserange.h"
 #include "permissionfunctions.h"
 
 // a clamp range consists of 2 stages . 1st the clamp itself and 2nd a voltage input range
@@ -12,13 +12,13 @@
 
 class cSCPI;
 
-class cClampJustData: public JustRangeTripletOffsetGainPhaseMt310s2
+class cClampJustData: public Mt310s2JustRangeTripletOffsetGainPhase
 {
     Q_OBJECT
 
 public:
     cClampJustData(cSCPI* scpiinterface,
-                   cSenseRange* cascadedRange,
+                   Mt310s2SenseRange* cascadedRange,
                    double cvRatio,
                    PermissionStructAdj permission = PermissionStructAdj());
 
@@ -31,7 +31,7 @@ protected:
     virtual double getJustOffsetCorrection(double par) override;
 
 private:
-    cSenseRange* m_pFirstStageRange; //
+    Mt310s2SenseRange* m_pFirstStageRange; //
     double m_cvRatio;
 };
 

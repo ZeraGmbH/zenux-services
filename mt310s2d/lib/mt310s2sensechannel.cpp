@@ -1,12 +1,12 @@
-#include "senserange.h"
+#include "mt310s2senserange.h"
 #include "scpiconnection.h"
-#include "sensechannel.h"
+#include "mt310s2sensechannel.h"
 #include "zscpi_response_definitions.h"
 #include <scpi.h>
 #include <scpicommand.h>
 #include "micro-controller-io/atmel.h"
 
-cSenseChannel::cSenseChannel(cSCPI* scpiinterface, QString description, QString unit, SenseSystem::cChannelSettings *cSettings, quint8 nr) :
+Mt310s2SenseChannel::Mt310s2SenseChannel(cSCPI* scpiinterface, QString description, QString unit, SenseSystem::cChannelSettings *cSettings, quint8 nr) :
     ScpiConnection(scpiinterface),
     m_sDescription(description),
     m_sUnit(unit)
@@ -19,14 +19,14 @@ cSenseChannel::cSenseChannel(cSCPI* scpiinterface, QString description, QString 
     m_bAvail = cSettings->avail;
 }
 
-cSenseChannel::~cSenseChannel()
+Mt310s2SenseChannel::~Mt310s2SenseChannel()
 {
     for(auto range : qAsConst(m_RangeList)) {
         delete range;
     }
 }
 
-void cSenseChannel::initSCPIConnection(QString leadingNodes)
+void Mt310s2SenseChannel::initSCPIConnection(QString leadingNodes)
 {
     ensureTrailingColonOnNonEmptyParentNodes(leadingNodes);
     addDelegate(QString("%1%2").arg(leadingNodes).arg(m_sName),"ALIAS", SCPI::isQuery, m_pSCPIInterface, SenseChannel::cmdAlias);
@@ -44,7 +44,7 @@ void cSenseChannel::initSCPIConnection(QString leadingNodes)
     }
 }
 
-void cSenseChannel::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
+void Mt310s2SenseChannel::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
 {
     switch (cmdCode)
     {
@@ -81,19 +81,19 @@ void cSenseChannel::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
     }
 }
 
-void cSenseChannel::setRangeList(QList<cSenseRange*> &list)
+void Mt310s2SenseChannel::setRangeList(QList<Mt310s2SenseRange*> &list)
 {
     m_RangeList = list;
     setNotifierSenseChannelRangeCat();
     setNotifierSenseChannelRange();
 }
 
-QList<cSenseRange *> &cSenseChannel::getRangeList()
+QList<Mt310s2SenseRange *> &Mt310s2SenseChannel::getRangeList()
 {
     return m_RangeList;
 }
 
-void cSenseChannel::addRangeList(QList<cSenseRange *> &list)
+void Mt310s2SenseChannel::addRangeList(QList<Mt310s2SenseRange *> &list)
 {
     for(auto range : list) {
         m_RangeList.append(range);
@@ -101,7 +101,7 @@ void cSenseChannel::addRangeList(QList<cSenseRange *> &list)
     setNotifierSenseChannelRangeCat();
 }
 
-void cSenseChannel::removeRangeList(QList<cSenseRange *> &list)
+void Mt310s2SenseChannel::removeRangeList(QList<Mt310s2SenseRange *> &list)
 {
     for(auto range : list) {
         m_RangeList.removeOne(range);
@@ -109,7 +109,7 @@ void cSenseChannel::removeRangeList(QList<cSenseRange *> &list)
     setNotifierSenseChannelRangeCat();
 }
 
-cSenseRange *cSenseChannel::getRange(QString &name)
+Mt310s2SenseRange *Mt310s2SenseChannel::getRange(QString &name)
 {
     for(auto range : qAsConst(m_RangeList)) {
         if(range->getName() == name) {
@@ -119,7 +119,7 @@ cSenseRange *cSenseChannel::getRange(QString &name)
     return nullptr;
 }
 
-quint8 cSenseChannel::getAdjustmentStatus()
+quint8 Mt310s2SenseChannel::getAdjustmentStatus()
 {
     quint8 adj = 255;
     for(auto range : qAsConst(m_RangeList))
@@ -127,37 +127,37 @@ quint8 cSenseChannel::getAdjustmentStatus()
     return adj;
 }
 
-QString &cSenseChannel::getName()
+QString &Mt310s2SenseChannel::getName()
 {
     return m_sName;
 }
 
-QString &cSenseChannel::getAlias()
+QString &Mt310s2SenseChannel::getAlias()
 {
     return m_sAlias;
 }
 
-QString &cSenseChannel::getDescription()
+QString &Mt310s2SenseChannel::getDescription()
 {
     return m_sDescription;
 }
 
-quint8 cSenseChannel::getCtrlChannel()
+quint8 Mt310s2SenseChannel::getCtrlChannel()
 {
     return m_nCtrlChannel;
 }
 
-void cSenseChannel::setDescription(const QString &s)
+void Mt310s2SenseChannel::setDescription(const QString &s)
 {
     m_sDescription = s;
 }
 
-void cSenseChannel::setUnit(QString &s)
+void Mt310s2SenseChannel::setUnit(QString &s)
 {
     m_sUnit = s;
 }
 
-void cSenseChannel::setMMode(int m)
+void Mt310s2SenseChannel::setMMode(int m)
 {
     m_nMMode = m;
     for(auto range : qAsConst(m_RangeList)) {
@@ -167,26 +167,26 @@ void cSenseChannel::setMMode(int m)
     // but we can do this later
 }
 
-bool cSenseChannel::isAvail()
+bool Mt310s2SenseChannel::isAvail()
 {
     return m_bAvail;
 }
 
-void cSenseChannel::initJustData()
+void Mt310s2SenseChannel::initJustData()
 {
     for(auto range : qAsConst(m_RangeList)) {
         range->initJustData();
     }
 }
 
-void cSenseChannel::computeJustData()
+void Mt310s2SenseChannel::computeJustData()
 {
     for(auto range : qAsConst(m_RangeList)) {
         range->computeJustData();
     }
 }
 
-QString cSenseChannel::m_ReadAlias(QString &sInput)
+QString Mt310s2SenseChannel::m_ReadAlias(QString &sInput)
 {
     cSCPICommand cmd = sInput;
     if (cmd.isQuery()) {
@@ -195,7 +195,7 @@ QString cSenseChannel::m_ReadAlias(QString &sInput)
     return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-QString cSenseChannel::m_ReadType(QString &sInput)
+QString Mt310s2SenseChannel::m_ReadType(QString &sInput)
 {
     cSCPICommand cmd = sInput;
     if (cmd.isQuery()) {
@@ -205,7 +205,7 @@ QString cSenseChannel::m_ReadType(QString &sInput)
 }
 
 
-QString cSenseChannel::m_ReadUnit(QString &sInput)
+QString Mt310s2SenseChannel::m_ReadUnit(QString &sInput)
 {
     cSCPICommand cmd = sInput;
     if (cmd.isQuery()) {
@@ -215,7 +215,7 @@ QString cSenseChannel::m_ReadUnit(QString &sInput)
 }
 
 
-QString cSenseChannel::m_ReadDspChannel(QString &sInput)
+QString Mt310s2SenseChannel::m_ReadDspChannel(QString &sInput)
 {
     cSCPICommand cmd = sInput;
     if (cmd.isQuery()) {
@@ -225,7 +225,7 @@ QString cSenseChannel::m_ReadDspChannel(QString &sInput)
 }
 
 
-QString cSenseChannel::m_ReadChannelStatus(QString &sInput)
+QString Mt310s2SenseChannel::m_ReadChannelStatus(QString &sInput)
 {
     cSCPICommand cmd = sInput;
     if (cmd.isQuery()) {
@@ -247,7 +247,7 @@ QString cSenseChannel::m_ReadChannelStatus(QString &sInput)
     return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-QString cSenseChannel::m_StatusReset(QString &sInput)
+QString Mt310s2SenseChannel::m_StatusReset(QString &sInput)
 {
     cSCPICommand cmd = sInput;
     if (cmd.isCommand(1) && (cmd.getParam(0) == "")) {
@@ -266,7 +266,7 @@ QString cSenseChannel::m_StatusReset(QString &sInput)
     return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-void cSenseChannel::setNotifierSenseChannelRange()
+void Mt310s2SenseChannel::setNotifierSenseChannelRange()
 {
     quint8 rSelCode;
     if ( Atmel::getInstance().readRange(m_nCtrlChannel, rSelCode) == ZeraMControllerIo::cmddone ) {
@@ -279,7 +279,7 @@ void cSenseChannel::setNotifierSenseChannelRange()
     }
 }
 
-QString cSenseChannel::m_ReadWriteRange(QString &sInput)
+QString Mt310s2SenseChannel::m_ReadWriteRange(QString &sInput)
 {
     cSCPICommand cmd = sInput;
     quint8 mode;
@@ -314,7 +314,7 @@ QString cSenseChannel::m_ReadWriteRange(QString &sInput)
     return ZSCPI::scpiAnswer[ZSCPI::errexec];
 }
 
-QString cSenseChannel::m_ReadUrvalue(QString &sInput)
+QString Mt310s2SenseChannel::m_ReadUrvalue(QString &sInput)
 {
     cSCPICommand cmd = sInput;
     if (cmd.isQuery()) {
@@ -327,7 +327,7 @@ QString cSenseChannel::m_ReadUrvalue(QString &sInput)
     return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-QString cSenseChannel::m_ReadRangeCatalog(QString &sInput)
+QString Mt310s2SenseChannel::m_ReadRangeCatalog(QString &sInput)
 {
     cSCPICommand cmd = sInput;
     if (cmd.isQuery()) {
@@ -336,7 +336,7 @@ QString cSenseChannel::m_ReadRangeCatalog(QString &sInput)
     return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-void cSenseChannel::setNotifierSenseChannelRangeCat()
+void Mt310s2SenseChannel::setNotifierSenseChannelRangeCat()
 {
     int i;
     QString s;

@@ -1,6 +1,6 @@
 #include "mt310s2d.h"
 #include "mt310s2dglobal.h"
-#include "adjustment.h"
+#include "mt310s2adjustment.h"
 #include "rmconnection.h"
 #include "atmelsysctrl.h"
 #include "atmel.h"
@@ -10,10 +10,10 @@
 #include "hkingroupresourceandinterface.h"
 #include "samplinginterface.h"
 #include "scingroupresourceandinterface.h"
-#include "senseinterface.h"
+#include "mt310s2senseinterface.h"
 #include "foutgroupresourceandinterface.h"
 #include "statusinterface.h"
-#include "systeminterface.h"
+#include "mt310s2systeminterface.h"
 #include "ctrlsettings.h"
 #include "debugsettings.h"
 #include "ethsettings.h"
@@ -223,7 +223,7 @@ void cMT310S2dServer::doSetupServer()
         {
             Atmel::getInstance().setPLLChannel(1); // default channel m0 for pll control
             m_pSystemInfo = new Mt310s2SystemInfo();
-            m_pAdjHandler = new cAdjustment(this);
+            m_pAdjHandler = new Mt310s2Adjustment(this);
 
             setupServer(); // here our scpi interface gets instanciated, we need this for further steps
 
@@ -234,8 +234,8 @@ void cMT310S2dServer::doSetupServer()
                                                                       m_pI2CSettings->getI2CAdress(i2cSettings::emobCtrlI2cAddress),
                                                                       m_pI2CSettings->getI2CAdress(i2cSettings::muxerI2cAddress),
                                                                       m_pDebugSettings->getDebugLevel());
-            scpiConnectionList.append(m_pSystemInterface = new cSystemInterface(this, std::move(emobControllerContainer)));
-            scpiConnectionList.append(m_pSenseInterface = new cSenseInterface(this));
+            scpiConnectionList.append(m_pSystemInterface = new Mt310s2SystemInterface(this, std::move(emobControllerContainer)));
+            scpiConnectionList.append(m_pSenseInterface = new Mt310s2SenseInterface(this));
             scpiConnectionList.append(m_pSamplingInterface = new cSamplingInterface(getSCPIInterface(), m_pSamplingSettings));
             scpiConnectionList.append(m_foutInterface = new FOutGroupResourceAndInterface(getSCPIInterface(), m_foutSettings));
             scpiConnectionList.append(m_pFRQInputInterface = new FInGroupResourceAndInterface(getSCPIInterface(), m_finSettings));

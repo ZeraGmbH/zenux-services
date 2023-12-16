@@ -23,12 +23,12 @@ enum Commands
 class cMTJustData;
 class cSCPI;
 
-class cSenseRange: public ScpiConnection, public AdjustmentStatusInterface
+class Mt310s2SenseRange: public ScpiConnection, public AdjustmentStatusInterface
 {
     Q_OBJECT
 
 public:
-    cSenseRange(cSCPI* scpiinterface,
+    Mt310s2SenseRange(cSCPI* scpiinterface,
                 QString name,
                 QString alias,
                 bool avail,
@@ -38,8 +38,8 @@ public:
                 double adcrejection,
                 quint8 rselcode,
                 quint16 mmask,
-                JustRangeTripletOffsetGainPhaseMt310s2* justdata);
-    ~cSenseRange();
+                Mt310s2JustRangeTripletOffsetGainPhase* justdata);
+    ~Mt310s2SenseRange();
     virtual void initSCPIConnection(QString leadingNodes) override;
     quint8 getAdjustmentStatus() override;
 
@@ -47,7 +47,7 @@ public:
     double getUrvalue();
     quint8 getSelCode();
     quint16 getMMask();
-    JustRangeTripletOffsetGainPhaseMt310s2* getJustData();
+    Mt310s2JustRangeTripletOffsetGainPhase* getJustData();
     bool isAvail();
     void setMMode(int m);
 
@@ -74,7 +74,7 @@ protected:
     quint8 m_nSelCode; // selection code
     quint16 m_nMMask; // the possible measuring modes for this range
     quint8 m_nMMode; // the actual measuring mode
-    JustRangeTripletOffsetGainPhaseMt310s2* m_pJustdata;
+    Mt310s2JustRangeTripletOffsetGainPhase* m_pJustdata;
 
 };
 
