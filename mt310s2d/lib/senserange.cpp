@@ -6,7 +6,7 @@
 #include <scpicommand.h>
 
 
-cSenseRange::cSenseRange(cSCPI *scpiinterface, QString name, QString alias, bool avail, double rValue, double rejection, double ovrejection, double adcrejection, quint8 rselcode, quint16 mmask, JustRangeTripletOffsetGainPhase* justdata) :
+cSenseRange::cSenseRange(cSCPI *scpiinterface, QString name, QString alias, bool avail, double rValue, double rejection, double ovrejection, double adcrejection, quint8 rselcode, quint16 mmask, JustRangeTripletOffsetGainPhaseMt310s2* justdata) :
     ScpiConnection(scpiinterface),
     m_sName(name),
     m_sAlias(alias),
@@ -74,7 +74,7 @@ quint16 cSenseRange::getMMask()
 }
 
 
-JustRangeTripletOffsetGainPhase *cSenseRange::getJustData()
+JustRangeTripletOffsetGainPhaseMt310s2 *cSenseRange::getJustData()
 {
     return m_pJustdata;
 }

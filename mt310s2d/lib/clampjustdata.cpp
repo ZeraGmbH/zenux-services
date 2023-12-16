@@ -4,7 +4,7 @@
 #include "justdatainterface.h"
 
 cClampJustData::cClampJustData(cSCPI *scpiinterface, cSenseRange *cascadedRange, double cvRatio, PermissionStructAdj permission)  :
-    JustRangeTripletOffsetGainPhase(scpiinterface, permission), m_pFirstStageRange(cascadedRange), m_cvRatio(cvRatio)
+    JustRangeTripletOffsetGainPhaseMt310s2(scpiinterface, permission), m_pFirstStageRange(cascadedRange), m_cvRatio(cvRatio)
 {   
 }
 

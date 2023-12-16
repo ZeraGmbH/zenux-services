@@ -16,7 +16,7 @@ cSenseRange::cSenseRange(cSCPI *scpiinterface,
     m_nSelCode(rselcode),
     m_nRSpec(rspec)
 {
-    m_pJustdata = new JustRangeTripletOffsetGainPhase(m_pSCPIInterface);
+    m_pJustdata = new JustRangeTripletOffsetGainPhaseCom5003(m_pSCPIInterface);
 }
 
 
@@ -66,7 +66,7 @@ quint8 cSenseRange::getSelCode()
 }
 
 
-JustRangeTripletOffsetGainPhase *cSenseRange::getJustData()
+JustRangeTripletOffsetGainPhaseCom5003 *cSenseRange::getJustData()
 {
     return m_pJustdata;
 }

@@ -12,7 +12,7 @@
 
 class cSCPI;
 
-class cClampJustData: public JustRangeTripletOffsetGainPhase
+class cClampJustData: public JustRangeTripletOffsetGainPhaseMt310s2
 {
     Q_OBJECT
 
