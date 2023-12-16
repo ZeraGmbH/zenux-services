@@ -1,23 +1,15 @@
-set(SOURCES
-    resources/secgroupresourceandinterface.cpp
-    scpi-interfaces/secchannel.cpp
-    scpi-interfaces/statusinterface.cpp
-    scpi-interfaces/systeminterface.cpp
-    settings/seccalcsettings.cpp
-    settings/secinputsettings.cpp
-    sec1000d.cpp
-    systeminfo.cpp
+file(GLOB SOURCES
+    *.cpp
+    resources/*.cpp
+    scpi-interfaces/*.cpp
+    settings/*.cpp
     )
 
-set(HEADER
-    resources/secgroupresourceandinterface.h
-    scpi-interfaces/secchannel.h
-    scpi-interfaces/statusinterface.h
-    scpi-interfaces/systeminterface.h
-    settings/seccalcsettings.h
-    settings/secinputsettings.h
-    sec1000d.h
-    systeminfo.h
+file(GLOB HEADER
+    *.h
+    resources/*.h
+    scpi-interfaces/*.h
+    settings/*.h
     )
 
 add_library(sec1000d-lib STATIC

@@ -1,25 +1,25 @@
-#include "systeminfo.h"
+#include "sec1000systeminfo.h"
 
-cSystemInfo::cSystemInfo()
+Sec1000SystemInfo::Sec1000SystemInfo()
 {
     m_sDeviceName = m_sPCBVersion = m_sLCAVersion = m_sSerialNumber = "Unknown";
     getSystemInfo();
 }
 
 
-void cSystemInfo::getSystemInfo()
+void Sec1000SystemInfo::getSystemInfo()
 {
     m_bRead = true;
 }
 
 
-bool cSystemInfo::dataRead()
+bool Sec1000SystemInfo::dataRead()
 {
     return m_bRead;
 }
 
 
-QString cSystemInfo::getDeviceVersion()
+QString Sec1000SystemInfo::getDeviceVersion()
 {
     QString s = QString ("DEVICE: %1;PCB: %2;LCA: %3")
             .arg(m_sDeviceName)
@@ -29,25 +29,25 @@ QString cSystemInfo::getDeviceVersion()
 }
 
 
-QString &cSystemInfo::getDeviceName()
+QString &Sec1000SystemInfo::getDeviceName()
 {
     return m_sDeviceName;
 }
 
 
-QString &cSystemInfo::getPCBVersion()
+QString &Sec1000SystemInfo::getPCBVersion()
 {
     return m_sPCBVersion;
 }
 
 
-QString &cSystemInfo::getLCAVersion()
+QString &Sec1000SystemInfo::getLCAVersion()
 {
     return m_sLCAVersion;
 }
 
 
-QString &cSystemInfo::getSerialNumber()
+QString &Sec1000SystemInfo::getSerialNumber()
 {
     return m_sSerialNumber;
 }

@@ -5,9 +5,9 @@
 #include "fpgasettings.h"
 #include "seccalcsettings.h"
 #include "secinputsettings.h"
-#include "statusinterface.h"
-#include "systeminterface.h"
-#include "systeminfo.h"
+#include "sec1000statusinterface.h"
+#include "sec1000systeminterface.h"
+#include "sec1000systeminfo.h"
 #include "secgroupresourceandinterface.h"
 #include "rmconnection.h"
 #include <scpisingletonfactory.h>
@@ -157,12 +157,12 @@ void cSEC1000dServer::doSetupServer()
     }
     else
     {
-        m_pSystemInfo = new cSystemInfo();
+        m_pSystemInfo = new Sec1000SystemInfo();
 
         setupServer(); // here our scpi interface gets instanciated, we need this for further steps
 
         scpiConnectionList.append(this); // the server itself has some commands
-        scpiConnectionList.append(m_pStatusInterface = new cStatusInterface());
+        scpiConnectionList.append(m_pStatusInterface = new Sec1000StatusInterface());
         scpiConnectionList.append(m_pSystemInterface = new cSystemInterface(this, m_pSystemInfo));
         scpiConnectionList.append(m_pECalculatorInterface = new SecGroupResourceAndInterface(m_pECalcSettings,
                                                                                              m_pInputSettings,

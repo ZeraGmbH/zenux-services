@@ -12,11 +12,11 @@ class cDebugSettings;
 class FPGASettings;
 class SecCalculatorSettings;
 class SecInputSettings;
-class cStatusInterface;
+class Sec1000StatusInterface;
 class cSystemInterface;
 class SecGroupResourceAndInterface;
 class SecChannel;
-class cSystemInfo;
+class Sec1000SystemInfo;
 
 
 class cSEC1000dServer: public cPCBServer
@@ -33,10 +33,10 @@ public:
     SecCalculatorSettings* m_pECalcSettings;
     SecInputSettings* m_pInputSettings;
 
-    cStatusInterface* m_pStatusInterface;
+    Sec1000StatusInterface* m_pStatusInterface;
     cSystemInterface* m_pSystemInterface;
     SecGroupResourceAndInterface* m_pECalculatorInterface;
-    cSystemInfo* m_pSystemInfo;
+    Sec1000SystemInfo* m_pSystemInfo;
     RMConnection* m_pRMConnection;
 
 signals:
