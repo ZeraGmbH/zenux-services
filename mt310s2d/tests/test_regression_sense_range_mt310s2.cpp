@@ -1,5 +1,5 @@
 #include "test_regression_sense_range_mt310s2.h"
-#include "senseinterface.h"
+#include "mt310s2senseinterface.h"
 #include <QTest>
 
 QTEST_MAIN(test_regression_sense_range_mt310s2);
@@ -7,8 +7,8 @@ QTEST_MAIN(test_regression_sense_range_mt310s2);
 void test_regression_sense_range_mt310s2::init()
 {
     m_scpi = new cSCPI;
-    m_justData = new JustRangeTripletOffsetGainPhaseMt310s2(m_scpi); // range deletes
-    m_range = new cSenseRange(m_scpi,
+    m_justData = new Mt310s2JustRangeTripletOffsetGainPhase(m_scpi); // range deletes
+    m_range = new Mt310s2SenseRange(m_scpi,
                               "250V",
                               "250AliasV",
                               true,

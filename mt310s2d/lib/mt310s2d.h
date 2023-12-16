@@ -22,14 +22,14 @@
 class QStateMachine;
 class QState;
 class cStatusInterface;
-class cSystemInterface;
-class cSenseInterface;
+class Mt310s2SystemInterface;
+class Mt310s2SenseInterface;
 class cSamplingInterface;
 class FOutGroupResourceAndInterface;
 class FInGroupResourceAndInterface;
 class ScInGroupResourceAndInterface;
 class HkInGroupResourceAndInterface;
-class cAdjustment;
+class Mt310s2Adjustment;
 class QSocketNotifier;
 class cClampInterface;
 
@@ -53,15 +53,15 @@ public:
     FOutSettings* m_foutSettings;
     SamplingSettings* m_pSamplingSettings;
     AccumulatorSettings* m_accumulatorSettings;
-    cSystemInterface* m_pSystemInterface;
-    cSenseInterface* m_pSenseInterface;
+    Mt310s2SystemInterface* m_pSystemInterface;
+    Mt310s2SenseInterface* m_pSenseInterface;
     cSamplingInterface* m_pSamplingInterface;
     FOutGroupResourceAndInterface* m_foutInterface;
     FInGroupResourceAndInterface* m_pFRQInputInterface;
     ScInGroupResourceAndInterface* m_pSCHeadInterface;
     HkInGroupResourceAndInterface* m_hkInInterface;
     Mt310s2SystemInfo* m_pSystemInfo;
-    cAdjustment* m_pAdjHandler;
+    Mt310s2Adjustment* m_pAdjHandler;
     RMConnection* m_pRMConnection;
     cClampInterface* m_pClampInterface;
     AccumulatorInterface* m_accumulatorInterface;

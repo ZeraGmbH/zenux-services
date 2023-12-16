@@ -7,11 +7,11 @@
 #include <QString>
 #include <QDataStream>
 
-class cAdjFlash : public AdjustmentStatusInterface
+class Mt310s2AdjFlash : public AdjustmentStatusInterface
 {
 public:
-    cAdjFlash(){}
-    cAdjFlash(QString devnode, quint8 i2cadr, I2cMuxerInterface::Ptr i2cMuxer);
+    Mt310s2AdjFlash(){}
+    Mt310s2AdjFlash(QString devnode, quint8 i2cadr, I2cMuxerInterface::Ptr i2cMuxer);
     bool exportAdjFlash();
     bool importAdjFlash();
     bool resetAdjFlash();

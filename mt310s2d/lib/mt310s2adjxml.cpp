@@ -1,17 +1,13 @@
+#include "mt310s2adjxml.h"
 #include <QFile>
 #include <QDomDocument>
 #include <QTextStream>
 
-#include "adjxml.h"
-#include "mt310s2dglobal.h"
-
-
-cAdjXML::cAdjXML()
+Mt310s2AdjXML::Mt310s2AdjXML()
 {
 }
 
-
-bool cAdjXML::exportAdjXML(QString file)
+bool Mt310s2AdjXML::exportAdjXML(QString file)
 {
     QString filename = file + ".xml";
 
@@ -33,7 +29,7 @@ bool cAdjXML::exportAdjXML(QString file)
 }
 
 
-bool cAdjXML::importAdjXML(QString file)
+bool Mt310s2AdjXML::importAdjXML(QString file)
 {
     QString filename = file + ".xml";
 
@@ -58,7 +54,7 @@ bool cAdjXML::importAdjXML(QString file)
 }
 
 
-bool cAdjXML::importAdjXMLString(QString &xml)
+bool Mt310s2AdjXML::importAdjXMLString(QString &xml)
 {
     QDomDocument justqdom( "TheDocument" );
     if ( !justqdom.setContent(xml) )

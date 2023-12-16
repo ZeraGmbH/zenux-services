@@ -1,7 +1,7 @@
 #ifndef SENSECHANNEL_H
 #define SENSECHANNEL_H
 
-#include "senserange.h"
+#include "mt310s2senserange.h"
 #include "notificationstring.h"
 #include "sensesettings.h"
 #include "adjustmentstatusinterface.h"
@@ -26,23 +26,23 @@ enum Commands
 
 
 class ScpiConnection;
-class cSenseInterface;
+class Mt310s2SenseInterface;
 
-class cSenseChannel : public ScpiConnection, public AdjustmentStatusInterface
+class Mt310s2SenseChannel : public ScpiConnection, public AdjustmentStatusInterface
 {
     Q_OBJECT
 
 public:
-    cSenseChannel(cSCPI* scpiinterface, QString description, QString unit, SenseSystem::cChannelSettings* cSettings, quint8 nr);
-    ~cSenseChannel();
+    Mt310s2SenseChannel(cSCPI* scpiinterface, QString description, QString unit, SenseSystem::cChannelSettings* cSettings, quint8 nr);
+    ~Mt310s2SenseChannel();
     virtual void initSCPIConnection(QString leadingNodes) override;
 
-    void setRangeList(QList<cSenseRange*>& list);
-    QList<cSenseRange*>& getRangeList();
-    void addRangeList(QList<cSenseRange*>& list);
-    void removeRangeList(QList<cSenseRange*>& list);
+    void setRangeList(QList<Mt310s2SenseRange*>& list);
+    QList<Mt310s2SenseRange*>& getRangeList();
+    void addRangeList(QList<Mt310s2SenseRange*>& list);
+    void removeRangeList(QList<Mt310s2SenseRange*>& list);
 
-    cSenseRange* getRange(QString& name);
+    Mt310s2SenseRange* getRange(QString& name);
 
     quint8 getAdjustmentStatus() override;
 
@@ -70,7 +70,7 @@ private:
     quint8 m_nDspChannel; // where to find the channel's sampled data
     qint8 m_nOverloadBit;
     bool m_bAvail; // is this channel available ?
-    QList<cSenseRange*> m_RangeList;
+    QList<Mt310s2SenseRange*> m_RangeList;
     quint8 m_nMMode;
 
     QString m_ReadAlias(QString& sInput);

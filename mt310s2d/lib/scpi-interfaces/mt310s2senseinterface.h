@@ -2,11 +2,10 @@
 #define SENSEINTERFACE_H
 
 #include "mt310s2d.h"
-#include "adjflash.h"
-#include "adjxml.h"
+#include "mt310s2adjflash.h"
+#include "mt310s2adjxml.h"
 #include "resource.h"
-#include "scpiconnection.h"
-#include "sensechannel.h"
+#include "mt310s2sensechannel.h"
 #include "systeminfo.h"
 #include <QList>
 #include <QHash>
@@ -42,16 +41,16 @@ namespace SenseSystem
     const QString sMeasuringModeDescription = "Measuring mode switch AC,HF,ADJ";
 }
 
-class cSenseInterface : public cResource, public cAdjFlash, public cAdjXML
+class Mt310s2SenseInterface : public cResource, public Mt310s2AdjFlash, public Mt310s2AdjXML
 {
     Q_OBJECT
 public:
-    cSenseInterface(cMT310S2dServer *server);
-    ~cSenseInterface();
+    Mt310s2SenseInterface(cMT310S2dServer *server);
+    ~Mt310s2SenseInterface();
     virtual void initSCPIConnection(QString leadingNoMModedes) override;
-    cSenseChannel* getChannel(QString& name);
+    Mt310s2SenseChannel* getChannel(QString& name);
     QString getChannelSystemName(quint16 ctrlChannel);
-    cSenseRange* getRange(QString channelName, QString rangeName);
+    Mt310s2SenseRange* getRange(QString channelName, QString rangeName);
     virtual quint8 getAdjustmentStatus() override; // we return 0 if adj. otherwise  1 +2 +4
     virtual void registerResource(RMConnection *rmConnection, quint16 port) override;
     virtual void unregisterResource(RMConnection *rmConnection) override;
@@ -66,7 +65,7 @@ private:
     cMT310S2dServer* m_pMyServer;
     cSystemInfo* m_pSystemInfo;
 
-    QList<cSenseChannel*> m_ChannelList;
+    QList<Mt310s2SenseChannel*> m_ChannelList;
     QString m_sVersion;
     QString m_sMMode;
     QHash<QString,quint8> m_MModeHash;
@@ -82,7 +81,7 @@ private:
     QString m_InitSenseAdjData(QString& sInput);
     QString m_ComputeSenseAdjData(QString& sInput);
     QString handleScpiReadAdjStatus(QString& sInput);
-    JustRangeTripletOffsetGainPhaseMt310s2* CreateJustScpiInterfaceWithAtmelPermission();
+    Mt310s2JustRangeTripletOffsetGainPhase* CreateJustScpiInterfaceWithAtmelPermission();
 
     NotificationString notifierSenseMMode;
     NotificationString notifierSenseChannelCat;

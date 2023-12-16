@@ -4,7 +4,7 @@
 #include "zscpi_response_definitions.h"
 #include <scpi.h>
 
-JustRangeTripletOffsetGainPhaseMt310s2::JustRangeTripletOffsetGainPhaseMt310s2(cSCPI *scpiinterface, PermissionStructAdj permissions) :
+Mt310s2JustRangeTripletOffsetGainPhase::Mt310s2JustRangeTripletOffsetGainPhase(cSCPI *scpiinterface, PermissionStructAdj permissions) :
     ScpiConnection(scpiinterface),
     m_permissions(permissions)
 {
@@ -13,14 +13,14 @@ JustRangeTripletOffsetGainPhaseMt310s2::JustRangeTripletOffsetGainPhaseMt310s2(c
     m_pOffsetCorrection =  new JustDataInterface({m_pSCPIInterface, OffsetCorrOrder, 0.0, permissions.funcAllowAdjOffset, 6});
 }
 
-JustRangeTripletOffsetGainPhaseMt310s2::~JustRangeTripletOffsetGainPhaseMt310s2()
+Mt310s2JustRangeTripletOffsetGainPhase::~Mt310s2JustRangeTripletOffsetGainPhase()
 {
     delete m_pGainCorrection;
     delete m_pPhaseCorrection;
     delete m_pOffsetCorrection;
 }
 
-void JustRangeTripletOffsetGainPhaseMt310s2::initSCPIConnection(QString leadingNodes)
+void Mt310s2JustRangeTripletOffsetGainPhase::initSCPIConnection(QString leadingNodes)
 {
     ensureTrailingColonOnNonEmptyParentNodes(leadingNodes);
     addDelegate(QString("%1CORRECTION").arg(leadingNodes), "GAIN", SCPI::CmdwP , m_pSCPIInterface, DirectGain);
@@ -41,7 +41,7 @@ void JustRangeTripletOffsetGainPhaseMt310s2::initSCPIConnection(QString leadingN
     m_pOffsetCorrection->initSCPIConnection(QString("%1CORRECTION:OFFSET").arg(leadingNodes));
 }
 
-void JustRangeTripletOffsetGainPhaseMt310s2::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
+void Mt310s2JustRangeTripletOffsetGainPhase::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
 {
     switch (cmdCode)
     {
@@ -77,7 +77,7 @@ void JustRangeTripletOffsetGainPhaseMt310s2::executeProtoScpi(int cmdCode, cProt
         emit cmdExecutionDone(protoCmd);
 }
 
-QString JustRangeTripletOffsetGainPhaseMt310s2::scpiGetGainCorrection(const QString &scpiInput)
+QString Mt310s2JustRangeTripletOffsetGainPhase::scpiGetGainCorrection(const QString &scpiInput)
 {
     cSCPICommand cmd = scpiInput;
     if (cmd.isQuery(1)) {
@@ -93,7 +93,7 @@ QString JustRangeTripletOffsetGainPhaseMt310s2::scpiGetGainCorrection(const QStr
         return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-QString JustRangeTripletOffsetGainPhaseMt310s2::mReadJustGainCorrection(QString &sInput)
+QString Mt310s2JustRangeTripletOffsetGainPhase::mReadJustGainCorrection(QString &sInput)
 {
     cSCPICommand cmd = sInput;
     if (cmd.isQuery(1)) {
@@ -109,7 +109,7 @@ QString JustRangeTripletOffsetGainPhaseMt310s2::mReadJustGainCorrection(QString 
         return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-QString JustRangeTripletOffsetGainPhaseMt310s2::mReadPhaseCorrection(QString& sInput)
+QString Mt310s2JustRangeTripletOffsetGainPhase::mReadPhaseCorrection(QString& sInput)
 {
     cSCPICommand cmd = sInput;
     if (cmd.isQuery(1)) {
@@ -125,7 +125,7 @@ QString JustRangeTripletOffsetGainPhaseMt310s2::mReadPhaseCorrection(QString& sI
         return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-QString JustRangeTripletOffsetGainPhaseMt310s2::mReadJustPhaseCorrection(QString &sInput)
+QString Mt310s2JustRangeTripletOffsetGainPhase::mReadJustPhaseCorrection(QString &sInput)
 {
     cSCPICommand cmd = sInput;
     if (cmd.isQuery(1)) {
@@ -141,7 +141,7 @@ QString JustRangeTripletOffsetGainPhaseMt310s2::mReadJustPhaseCorrection(QString
         return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-QString JustRangeTripletOffsetGainPhaseMt310s2::mReadOffsetCorrection(QString& sInput)
+QString Mt310s2JustRangeTripletOffsetGainPhase::mReadOffsetCorrection(QString& sInput)
 {
     cSCPICommand cmd = sInput;
     if (cmd.isQuery(1)) {
@@ -157,7 +157,7 @@ QString JustRangeTripletOffsetGainPhaseMt310s2::mReadOffsetCorrection(QString& s
         return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-QString JustRangeTripletOffsetGainPhaseMt310s2::mReadJustOffsetCorrection(QString &sInput)
+QString Mt310s2JustRangeTripletOffsetGainPhase::mReadJustOffsetCorrection(QString &sInput)
 {
     cSCPICommand cmd = sInput;
     if (cmd.isQuery(1)) {
@@ -173,7 +173,7 @@ QString JustRangeTripletOffsetGainPhaseMt310s2::mReadJustOffsetCorrection(QStrin
         return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-QString JustRangeTripletOffsetGainPhaseMt310s2::m_ReadStatus(QString& sInput)
+QString Mt310s2JustRangeTripletOffsetGainPhase::m_ReadStatus(QString& sInput)
 {
     cSCPICommand cmd = sInput;
     if (cmd.isQuery()) {
@@ -183,7 +183,7 @@ QString JustRangeTripletOffsetGainPhaseMt310s2::m_ReadStatus(QString& sInput)
         return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-QString JustRangeTripletOffsetGainPhaseMt310s2::m_ComputeJustData(QString& sInput)
+QString Mt310s2JustRangeTripletOffsetGainPhase::m_ComputeJustData(QString& sInput)
 {
     cSCPICommand cmd = sInput;
     if(cmd.isCommand(1) && (cmd.getParam(0) == "")) {
@@ -205,7 +205,7 @@ QString JustRangeTripletOffsetGainPhaseMt310s2::m_ComputeJustData(QString& sInpu
         return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-QString JustRangeTripletOffsetGainPhaseMt310s2::m_InitJustData(QString &sInput)
+QString Mt310s2JustRangeTripletOffsetGainPhase::m_InitJustData(QString &sInput)
 {
     cSCPICommand cmd = sInput;
     if (cmd.isCommand(1) && (cmd.getParam(0) == "")) {
@@ -227,66 +227,66 @@ QString JustRangeTripletOffsetGainPhaseMt310s2::m_InitJustData(QString &sInput)
         return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-void JustRangeTripletOffsetGainPhaseMt310s2::Serialize(QDataStream& qds)  // zum schreiben aller justagedaten in flashspeicher
+void Mt310s2JustRangeTripletOffsetGainPhase::Serialize(QDataStream& qds)  // zum schreiben aller justagedaten in flashspeicher
 {
     m_pGainCorrection->Serialize(qds);
     m_pPhaseCorrection->Serialize(qds);
     m_pOffsetCorrection->Serialize(qds);
 }
 
-void JustRangeTripletOffsetGainPhaseMt310s2::Deserialize(QDataStream& qds) // zum lesen aller justagedaten aus flashspeicher
+void Mt310s2JustRangeTripletOffsetGainPhase::Deserialize(QDataStream& qds) // zum lesen aller justagedaten aus flashspeicher
 {
     m_pGainCorrection->Deserialize(qds);
     m_pPhaseCorrection->Deserialize(qds);
     m_pOffsetCorrection->Deserialize(qds);
 }
 
-quint8 JustRangeTripletOffsetGainPhaseMt310s2::getAdjustmentStatus()
+quint8 Mt310s2JustRangeTripletOffsetGainPhase::getAdjustmentStatus()
 {
     return m_pGainCorrection->getStatus() & m_pPhaseCorrection->getStatus() & m_pOffsetCorrection->getStatus();
 
 }
 
-void JustRangeTripletOffsetGainPhaseMt310s2::initJustData()
+void Mt310s2JustRangeTripletOffsetGainPhase::initJustData()
 {
     m_pGainCorrection->initJustData(1.0);
     m_pPhaseCorrection->initJustData(0.0);
     m_pOffsetCorrection->initJustData(0.0);
 }
 
-void JustRangeTripletOffsetGainPhaseMt310s2::computeJustData()
+void Mt310s2JustRangeTripletOffsetGainPhase::computeJustData()
 {
     m_pGainCorrection->cmpCoefficients();
     m_pPhaseCorrection->cmpCoefficients();
     m_pOffsetCorrection->cmpCoefficients();
 }
 
-double JustRangeTripletOffsetGainPhaseMt310s2::getGainCorrection(double par)
+double Mt310s2JustRangeTripletOffsetGainPhase::getGainCorrection(double par)
 {
     return m_pGainCorrection->getCorrection(par);
 }
 
-double JustRangeTripletOffsetGainPhaseMt310s2::getJustGainCorrection(double par)
+double Mt310s2JustRangeTripletOffsetGainPhase::getJustGainCorrection(double par)
 {
     return m_pGainCorrection->getCorrection(par);
 }
 
-double JustRangeTripletOffsetGainPhaseMt310s2::getPhaseCorrection(double par)
+double Mt310s2JustRangeTripletOffsetGainPhase::getPhaseCorrection(double par)
 {
     return m_pPhaseCorrection->getCorrection(par);
 }
 
-double JustRangeTripletOffsetGainPhaseMt310s2::getJustPhaseCorrection(double par)
+double Mt310s2JustRangeTripletOffsetGainPhase::getJustPhaseCorrection(double par)
 {
     return m_pPhaseCorrection->getCorrection(par);
 }
 
-double JustRangeTripletOffsetGainPhaseMt310s2::getOffsetCorrection(double par)
+double Mt310s2JustRangeTripletOffsetGainPhase::getOffsetCorrection(double par)
 {
     return m_pOffsetCorrection->getCorrection(par);
 }
 
-double JustRangeTripletOffsetGainPhaseMt310s2::getJustOffsetCorrection(double par)
+double Mt310s2JustRangeTripletOffsetGainPhase::getJustOffsetCorrection(double par)
 {
     return m_pOffsetCorrection->getCorrection(par);
 }

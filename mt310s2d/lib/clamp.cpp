@@ -1,8 +1,8 @@
 #include "clamp.h"
-#include "adjustment.h"
+#include "mt310s2adjustment.h"
 #include "justdatainterface.h"
 #include "mt310s2d.h"
-#include "senserange.h"
+#include "mt310s2senserange.h"
 #include "clampjustdata.h"
 #include "i2csettings.h"
 #include "zscpi_response_definitions.h"
@@ -30,7 +30,7 @@ cClamp::cClamp() :
 }
 
 cClamp::cClamp(cMT310S2dServer *server, QString channelName, quint8 ctrlChannel, I2cMuxerInterface::Ptr i2cMuxer, quint8 ctrlChannelSecondary) :
-    cAdjFlash(server->m_pI2CSettings->getDeviceNode(),
+    Mt310s2AdjFlash(server->m_pI2CSettings->getDeviceNode(),
               server->m_pI2CSettings->getI2CAdress(i2cSettings::clampFlashI2cAddress),
               i2cMuxer),
     ScpiConnection(server->getSCPIInterface()),
@@ -163,13 +163,13 @@ bool cClamp::importAdjData(QDataStream &stream)
     while (!stream.atEnd()) {
         QString rngName;
         stream >> rngName;
-        cSenseRange* range = getRange(rngName);
+        Mt310s2SenseRange* range = getRange(rngName);
         if (range != 0) {
             n++;
             range->getJustData()->Deserialize(stream);
         }
         else {
-            JustRangeTripletOffsetGainPhaseMt310s2 *dummy = new JustRangeTripletOffsetGainPhaseMt310s2(m_pSCPIInterface); // if we did not find this range....something has changed
+            Mt310s2JustRangeTripletOffsetGainPhase *dummy = new Mt310s2JustRangeTripletOffsetGainPhase(m_pSCPIInterface); // if we did not find this range....something has changed
             dummy->Deserialize(stream); // we read the data from stream to keep it in flow
             delete dummy;
         }
@@ -298,7 +298,7 @@ bool cClamp::importXMLDocument(QDomDocument *qdomdoc, bool ignoreType)
 
                         done = true;
                         QDomNodeList sensNl = qdNode.childNodes(); // we iterate over all ranges
-                        cSenseRange* rngPtr = nullptr;
+                        Mt310s2SenseRange* rngPtr = nullptr;
                         for (qint32 j = 0; j < sensNl.length(); j++) {
                             QString Name;
 
@@ -418,7 +418,7 @@ void cClamp::createLEM1000VRanges(PermissionStructAdj &permissionsOffsetAllowedA
 {
     m_sChannelNameSecondary = m_pSenseInterface->getChannelSystemName(m_nCtrlChannelSecondary);
     cClampJustData* clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelNameSecondary, QString("8V")), 118.6, permissionsOffsetAllowedAlways);
-    m_RangeListSecondary.append(new cSenseRange(m_pSCPIInterface, "C1000V", "C1000V", true, 1000.0, 3535110.0, 3535110.0 * 1.25, 8388607.0, 0x01 /*8V*/, dcCommonMask | SenseSystem::Clamp, clampJustData));
+    m_RangeListSecondary.append(new Mt310s2SenseRange(m_pSCPIInterface, "C1000V", "C1000V", true, 1000.0, 3535110.0, 3535110.0 * 1.25, 8388607.0, 0x01 /*8V*/, dcCommonMask | SenseSystem::Clamp, clampJustData));
 }
 
 void cClamp::initClamp(quint8 type)
@@ -437,148 +437,148 @@ void cClamp::initClamp(quint8 type)
     {
     case CL120A:
         clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("2V")), 48.0);
-        m_RangeList.append(new cSenseRange(m_pSCPIInterface,  "C100A",  "C100A", true, 100.0, 2953735.0, 3692169.0, 8388607.0, 11, SenseSystem::modeAC | SenseSystem::Clamp, clampJustData));
+        m_RangeList.append(new Mt310s2SenseRange(m_pSCPIInterface,  "C100A",  "C100A", true, 100.0, 2953735.0, 3692169.0, 8388607.0, 11, SenseSystem::modeAC | SenseSystem::Clamp, clampJustData));
         clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("1V")), 48.0);
-        m_RangeList.append(new cSenseRange(m_pSCPIInterface,   "C50A",   "C50A", true,  50.0, 2953735.0, 3692169.0, 8388607.0, 12, SenseSystem::modeAC | SenseSystem::Clamp, clampJustData));
+        m_RangeList.append(new Mt310s2SenseRange(m_pSCPIInterface,   "C50A",   "C50A", true,  50.0, 2953735.0, 3692169.0, 8388607.0, 12, SenseSystem::modeAC | SenseSystem::Clamp, clampJustData));
         clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("200mV")), 48.0);
-        m_RangeList.append(new cSenseRange(m_pSCPIInterface,   "C10A",   "C10A", true,  10.0, 2796203.0, 3495254.0, 8388607.0, 14, SenseSystem::modeAC | SenseSystem::Clamp, clampJustData));
+        m_RangeList.append(new Mt310s2SenseRange(m_pSCPIInterface,   "C10A",   "C10A", true,  10.0, 2796203.0, 3495254.0, 8388607.0, 14, SenseSystem::modeAC | SenseSystem::Clamp, clampJustData));
         clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("100mV")), 48.0);
-        m_RangeList.append(new cSenseRange(m_pSCPIInterface,    "C5A",    "C5A", true,   5.0, 3495253.0, 4369066.0, 8388607.0, 15, SenseSystem::modeAC | SenseSystem::Clamp, clampJustData));
+        m_RangeList.append(new Mt310s2SenseRange(m_pSCPIInterface,    "C5A",    "C5A", true,   5.0, 3495253.0, 4369066.0, 8388607.0, 15, SenseSystem::modeAC | SenseSystem::Clamp, clampJustData));
         clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("20mV")), 48.0);
-        m_RangeList.append(new cSenseRange(m_pSCPIInterface,    "C1A",    "C1A", true,   1.0, 2796203.0, 3495254.0, 8388607.0, 17, SenseSystem::modeAC | SenseSystem::Clamp, clampJustData));
+        m_RangeList.append(new Mt310s2SenseRange(m_pSCPIInterface,    "C1A",    "C1A", true,   1.0, 2796203.0, 3495254.0, 8388607.0, 17, SenseSystem::modeAC | SenseSystem::Clamp, clampJustData));
         clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("10mV")), 48.0);
-        m_RangeList.append(new cSenseRange(m_pSCPIInterface, "C500mA", "C500mA", true,   0.5, 3495253.0, 4369066.0, 8388607.0, 18, SenseSystem::modeAC | SenseSystem::Clamp, clampJustData));
+        m_RangeList.append(new Mt310s2SenseRange(m_pSCPIInterface, "C500mA", "C500mA", true,   0.5, 3495253.0, 4369066.0, 8388607.0, 18, SenseSystem::modeAC | SenseSystem::Clamp, clampJustData));
         clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("2mV")), 48.0);
-        m_RangeList.append(new cSenseRange(m_pSCPIInterface, "C100mA", "C100mA", true,   0.1, 2796203.0, 3495254.0, 8388607.0, 20, SenseSystem::modeAC | SenseSystem::Clamp, clampJustData));
+        m_RangeList.append(new Mt310s2SenseRange(m_pSCPIInterface, "C100mA", "C100mA", true,   0.1, 2796203.0, 3495254.0, 8388607.0, 20, SenseSystem::modeAC | SenseSystem::Clamp, clampJustData));
         clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("2mV")), 48.0);
-        m_RangeList.append(new cSenseRange(m_pSCPIInterface,  "C50mA",  "C50mA", true,  0.05, 1398101.0, 1747626.0, 8388607.0, 20, SenseSystem::modeAC | SenseSystem::Clamp, clampJustData));
+        m_RangeList.append(new Mt310s2SenseRange(m_pSCPIInterface,  "C50mA",  "C50mA", true,  0.05, 1398101.0, 1747626.0, 8388607.0, 20, SenseSystem::modeAC | SenseSystem::Clamp, clampJustData));
         clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("2mV")), 48.0);
-        m_RangeList.append(new cSenseRange(m_pSCPIInterface,  "C10mA",  "C10mA", true,  0.01,  279620.0,  349525.0, 8388607.0, 20, SenseSystem::modeAC | SenseSystem::Clamp, clampJustData));
+        m_RangeList.append(new Mt310s2SenseRange(m_pSCPIInterface,  "C10mA",  "C10mA", true,  0.01,  279620.0,  349525.0, 8388607.0, 20, SenseSystem::modeAC | SenseSystem::Clamp, clampJustData));
 
         break;
 
     case CL300A:
         clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("5V")), 120.0);
-        m_RangeList.append(new cSenseRange(m_pSCPIInterface,  "C300A",  "C300A", true, 300.0, 2097152.0, 2097152.0, 8388607.0, 10, SenseSystem::modeAC | SenseSystem::Clamp, clampJustData));
+        m_RangeList.append(new Mt310s2SenseRange(m_pSCPIInterface,  "C300A",  "C300A", true, 300.0, 2097152.0, 2097152.0, 8388607.0, 10, SenseSystem::modeAC | SenseSystem::Clamp, clampJustData));
         clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("2V")), 120.0);
-        m_RangeList.append(new cSenseRange(m_pSCPIInterface,  "C150A",  "C150A", true, 150.0, 1772241.0, 2215302.0, 8388607.0, 11, SenseSystem::modeAC | SenseSystem::Clamp, clampJustData));
+        m_RangeList.append(new Mt310s2SenseRange(m_pSCPIInterface,  "C150A",  "C150A", true, 150.0, 1772241.0, 2215302.0, 8388607.0, 11, SenseSystem::modeAC | SenseSystem::Clamp, clampJustData));
         clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("500mV")), 120.0);
-        m_RangeList.append(new cSenseRange(m_pSCPIInterface,   "C30A",   "C30A", true,  30.0, 1772241.0, 2215302.0, 8388607.0, 13, SenseSystem::modeAC | SenseSystem::Clamp, clampJustData));
+        m_RangeList.append(new Mt310s2SenseRange(m_pSCPIInterface,   "C30A",   "C30A", true,  30.0, 1772241.0, 2215302.0, 8388607.0, 13, SenseSystem::modeAC | SenseSystem::Clamp, clampJustData));
         clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("200mV")), 120.0);
-        m_RangeList.append(new cSenseRange(m_pSCPIInterface,   "C15A",   "C15A", true,  15.0, 1677722.0, 2097153.0, 8388607.0, 14, SenseSystem::modeAC | SenseSystem::Clamp, clampJustData));
+        m_RangeList.append(new Mt310s2SenseRange(m_pSCPIInterface,   "C15A",   "C15A", true,  15.0, 1677722.0, 2097153.0, 8388607.0, 14, SenseSystem::modeAC | SenseSystem::Clamp, clampJustData));
         clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("50mV")), 120.0);
-        m_RangeList.append(new cSenseRange(m_pSCPIInterface,    "C3A",    "C3A", true,   3.0, 1677722.0, 2097153.0, 8388607.0, 16, SenseSystem::modeAC | SenseSystem::Clamp, clampJustData));
+        m_RangeList.append(new Mt310s2SenseRange(m_pSCPIInterface,    "C3A",    "C3A", true,   3.0, 1677722.0, 2097153.0, 8388607.0, 16, SenseSystem::modeAC | SenseSystem::Clamp, clampJustData));
         clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("20mV")), 120.0);
-        m_RangeList.append(new cSenseRange(m_pSCPIInterface,  "C1.5A",  "C1.5A", true,   1.5, 1677722.0, 2097153.0, 8388607.0, 17, SenseSystem::modeAC | SenseSystem::Clamp, clampJustData));
+        m_RangeList.append(new Mt310s2SenseRange(m_pSCPIInterface,  "C1.5A",  "C1.5A", true,   1.5, 1677722.0, 2097153.0, 8388607.0, 17, SenseSystem::modeAC | SenseSystem::Clamp, clampJustData));
         clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("5mV")), 120.0);
-        m_RangeList.append(new cSenseRange(m_pSCPIInterface, "C300mA", "C300mA", true,   0.3, 1677722.0, 2097153.0, 8388607.0, 19, SenseSystem::modeAC | SenseSystem::Clamp, clampJustData));
+        m_RangeList.append(new Mt310s2SenseRange(m_pSCPIInterface, "C300mA", "C300mA", true,   0.3, 1677722.0, 2097153.0, 8388607.0, 19, SenseSystem::modeAC | SenseSystem::Clamp, clampJustData));
         clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("2mV")), 120.0);
-        m_RangeList.append(new cSenseRange(m_pSCPIInterface, "C150mA", "C150mA", true,  0.15, 1677722.0, 2097153.0, 8388607.0, 20, SenseSystem::modeAC | SenseSystem::Clamp, clampJustData));
+        m_RangeList.append(new Mt310s2SenseRange(m_pSCPIInterface, "C150mA", "C150mA", true,  0.15, 1677722.0, 2097153.0, 8388607.0, 20, SenseSystem::modeAC | SenseSystem::Clamp, clampJustData));
 
         break;
 
     case CL1000A:
         clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("1V")), 1200.0);
-        m_RangeList.append(new cSenseRange(m_pSCPIInterface, "C1000A", "C1000A", true, 1000.0, 2362988.0, 2362988.0, 8388607.0, 12, SenseSystem::modeAC | SenseSystem::Clamp, clampJustData));
+        m_RangeList.append(new Mt310s2SenseRange(m_pSCPIInterface, "C1000A", "C1000A", true, 1000.0, 2362988.0, 2362988.0, 8388607.0, 12, SenseSystem::modeAC | SenseSystem::Clamp, clampJustData));
         clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("500mV")), 1200.0);
-        m_RangeList.append(new cSenseRange(m_pSCPIInterface,  "C300A",  "C300A", true,  300.0, 1772241.0, 2215302.0, 8388607.0, 13, SenseSystem::modeAC | SenseSystem::Clamp, clampJustData));
+        m_RangeList.append(new Mt310s2SenseRange(m_pSCPIInterface,  "C300A",  "C300A", true,  300.0, 1772241.0, 2215302.0, 8388607.0, 13, SenseSystem::modeAC | SenseSystem::Clamp, clampJustData));
         clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("100mV")), 1200.0);
-        m_RangeList.append(new cSenseRange(m_pSCPIInterface,  "C100A",  "C100A", true,  100.0, 2796203.0, 3495254.0, 8388607.0, 15, SenseSystem::modeAC | SenseSystem::Clamp, clampJustData));
+        m_RangeList.append(new Mt310s2SenseRange(m_pSCPIInterface,  "C100A",  "C100A", true,  100.0, 2796203.0, 3495254.0, 8388607.0, 15, SenseSystem::modeAC | SenseSystem::Clamp, clampJustData));
         clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("50mV")), 1200.0);
-        m_RangeList.append(new cSenseRange(m_pSCPIInterface,   "C30A",   "C30A", true,   30.0, 1677722.0, 2097153.0, 8388607.0, 16, SenseSystem::modeAC | SenseSystem::Clamp, clampJustData));
+        m_RangeList.append(new Mt310s2SenseRange(m_pSCPIInterface,   "C30A",   "C30A", true,   30.0, 1677722.0, 2097153.0, 8388607.0, 16, SenseSystem::modeAC | SenseSystem::Clamp, clampJustData));
         clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("10mV")), 1200.0);
-        m_RangeList.append(new cSenseRange(m_pSCPIInterface,   "C10A",   "C10A", true,   10.0, 2796203.0, 3495254.0, 8388607.0, 18, SenseSystem::modeAC | SenseSystem::Clamp, clampJustData));
+        m_RangeList.append(new Mt310s2SenseRange(m_pSCPIInterface,   "C10A",   "C10A", true,   10.0, 2796203.0, 3495254.0, 8388607.0, 18, SenseSystem::modeAC | SenseSystem::Clamp, clampJustData));
         clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("5mV")), 1200.0);
-        m_RangeList.append(new cSenseRange(m_pSCPIInterface,    "C3A",    "C3A", true,    3.0, 1677722.0, 2097153.0, 8388607.0, 19, SenseSystem::modeAC | SenseSystem::Clamp, clampJustData));
+        m_RangeList.append(new Mt310s2SenseRange(m_pSCPIInterface,    "C3A",    "C3A", true,    3.0, 1677722.0, 2097153.0, 8388607.0, 19, SenseSystem::modeAC | SenseSystem::Clamp, clampJustData));
         clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("2mV")), 1200.0);
-        m_RangeList.append(new cSenseRange(m_pSCPIInterface,    "C1A",    "C1A", true,    1.0, 1118481.0, 1398109.0, 8388607.0, 20, SenseSystem::modeAC | SenseSystem::Clamp, clampJustData));
+        m_RangeList.append(new Mt310s2SenseRange(m_pSCPIInterface,    "C1A",    "C1A", true,    1.0, 1118481.0, 1398109.0, 8388607.0, 20, SenseSystem::modeAC | SenseSystem::Clamp, clampJustData));
         clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("2mV")), 1200.0);
-        m_RangeList.append(new cSenseRange(m_pSCPIInterface, "C300mA", "C300mA", true,    0.3,  335544.0,  419430.0, 8388607.0, 20, SenseSystem::modeAC | SenseSystem::Clamp, clampJustData));
+        m_RangeList.append(new Mt310s2SenseRange(m_pSCPIInterface, "C300mA", "C300mA", true,    0.3,  335544.0,  419430.0, 8388607.0, 20, SenseSystem::modeAC | SenseSystem::Clamp, clampJustData));
 
         break;
 
     case EMOB32:
         clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("2V")), 1000.0);
-        m_RangeList.append(new cSenseRange(m_pSCPIInterface, "C50A", "C50A", true, 50.0, 1772241.0, 2215301.0, 8388607.0, 11, SenseSystem::modeAC | SenseSystem::Clamp, clampJustData));
+        m_RangeList.append(new Mt310s2SenseRange(m_pSCPIInterface, "C50A", "C50A", true, 50.0, 1772241.0, 2215301.0, 8388607.0, 11, SenseSystem::modeAC | SenseSystem::Clamp, clampJustData));
         clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("500mV")), 1000.0);
-        m_RangeList.append(new cSenseRange(m_pSCPIInterface, "C10A", "C10A", true, 10.0, 1772241.0, 2215301.0, 8388607.0, 13, SenseSystem::modeAC | SenseSystem::Clamp, clampJustData));
+        m_RangeList.append(new Mt310s2SenseRange(m_pSCPIInterface, "C10A", "C10A", true, 10.0, 1772241.0, 2215301.0, 8388607.0, 13, SenseSystem::modeAC | SenseSystem::Clamp, clampJustData));
         clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("200mV")), 1000.0);
-        m_RangeList.append(new cSenseRange(m_pSCPIInterface,  "C5A",  "C5A", true,  5.0, 1677722.0, 2097152.0, 8388607.0, 14, SenseSystem::modeAC | SenseSystem::Clamp, clampJustData));
+        m_RangeList.append(new Mt310s2SenseRange(m_pSCPIInterface,  "C5A",  "C5A", true,  5.0, 1677722.0, 2097152.0, 8388607.0, 14, SenseSystem::modeAC | SenseSystem::Clamp, clampJustData));
         clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("50mV")), 1000.0);
-        m_RangeList.append(new cSenseRange(m_pSCPIInterface,  "C1A",  "C1A", true,  1.0, 1677722.0, 2097152.0, 8388607.0, 16, SenseSystem::modeAC | SenseSystem::Clamp, clampJustData));
+        m_RangeList.append(new Mt310s2SenseRange(m_pSCPIInterface,  "C1A",  "C1A", true,  1.0, 1677722.0, 2097152.0, 8388607.0, 16, SenseSystem::modeAC | SenseSystem::Clamp, clampJustData));
         clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("20mV")), 1000.0);
-        m_RangeList.append(new cSenseRange(m_pSCPIInterface, "C500mA", "C500mA", true, 0.5, 1677722.0, 2097152.0, 8388607.0, 17, SenseSystem::modeAC | SenseSystem::Clamp, clampJustData));
+        m_RangeList.append(new Mt310s2SenseRange(m_pSCPIInterface, "C500mA", "C500mA", true, 0.5, 1677722.0, 2097152.0, 8388607.0, 17, SenseSystem::modeAC | SenseSystem::Clamp, clampJustData));
         clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("5mV")), 1000.0);
-        m_RangeList.append(new cSenseRange(m_pSCPIInterface, "C100mA", "C100mA", true, 0.1, 1677722.0, 2097152.0, 8388607.0, 19, SenseSystem::modeAC | SenseSystem::Clamp, clampJustData));
+        m_RangeList.append(new Mt310s2SenseRange(m_pSCPIInterface, "C100mA", "C100mA", true, 0.1, 1677722.0, 2097152.0, 8388607.0, 19, SenseSystem::modeAC | SenseSystem::Clamp, clampJustData));
         clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("2mV")), 1000.0);
-        m_RangeList.append(new cSenseRange(m_pSCPIInterface, "C50mA", "C50mA", true, 0.05, 1677722.0, 2097152.0, 8388607.0, 20, SenseSystem::modeAC | SenseSystem::Clamp, clampJustData));
+        m_RangeList.append(new Mt310s2SenseRange(m_pSCPIInterface, "C50mA", "C50mA", true, 0.05, 1677722.0, 2097152.0, 8388607.0, 20, SenseSystem::modeAC | SenseSystem::Clamp, clampJustData));
 
         break;
     case EMOB200DC:
         // I
         clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("5V")), 1000.0);
-        m_RangeList.append(new cSenseRange(m_pSCPIInterface, "C200A", "C200A", true, 200.0, 2516582.0, 2516582.0 * 1.25, 8388607.0, 0x0A, dcCommonMask | SenseSystem::Clamp, clampJustData));
+        m_RangeList.append(new Mt310s2SenseRange(m_pSCPIInterface, "C200A", "C200A", true, 200.0, 2516582.0, 2516582.0 * 1.25, 8388607.0, 0x0A, dcCommonMask | SenseSystem::Clamp, clampJustData));
         clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("500mV")), 1000.0);
-        m_RangeList.append(new cSenseRange(m_pSCPIInterface, "C20A", "C20A", true, 20.0, 2126689.0, 2126689.0 * 1.25, 8388607.0, 0x0D, dcCommonMask | SenseSystem::Clamp, clampJustData));
+        m_RangeList.append(new Mt310s2SenseRange(m_pSCPIInterface, "C20A", "C20A", true, 20.0, 2126689.0, 2126689.0 * 1.25, 8388607.0, 0x0D, dcCommonMask | SenseSystem::Clamp, clampJustData));
         clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("50mV")), 1000.0);
-        m_RangeList.append(new cSenseRange(m_pSCPIInterface, "C2A", "C2A", true, 2.0, 2013266.0, 2013266.0 * 1.25, 8388607.0, 0x10, dcCommonMask | SenseSystem::Clamp, clampJustData));
+        m_RangeList.append(new Mt310s2SenseRange(m_pSCPIInterface, "C2A", "C2A", true, 2.0, 2013266.0, 2013266.0 * 1.25, 8388607.0, 0x10, dcCommonMask | SenseSystem::Clamp, clampJustData));
 
         // This clamp has a secondary channnel U
         m_sChannelNameSecondary = m_pSenseInterface->getChannelSystemName(m_nCtrlChannelSecondary);
         clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelNameSecondary, QString("8V")), 121.0);
-        m_RangeListSecondary.append(new cSenseRange(m_pSCPIInterface, "C1000V", "C1000V", true, 1000.0, 3466367.0, 3466367.0 * 1.25, 8388607.0, 1 /*8V*/, dcCommonMask | SenseSystem::Clamp, clampJustData));
+        m_RangeListSecondary.append(new Mt310s2SenseRange(m_pSCPIInterface, "C1000V", "C1000V", true, 1000.0, 3466367.0, 3466367.0 * 1.25, 8388607.0, 1 /*8V*/, dcCommonMask | SenseSystem::Clamp, clampJustData));
 
         break;
     case EMOB80:
         clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("5V")), 1000.0);
-        m_RangeList.append(new cSenseRange(m_pSCPIInterface, "C100A", "C100A", true, 100.0, 2097152.0, 2621440.0, 8388607.0, 10, SenseSystem::modeAC | SenseSystem::Clamp, clampJustData));
+        m_RangeList.append(new Mt310s2SenseRange(m_pSCPIInterface, "C100A", "C100A", true, 100.0, 2097152.0, 2621440.0, 8388607.0, 10, SenseSystem::modeAC | SenseSystem::Clamp, clampJustData));
         clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("2V")), 1000.0);
-        m_RangeList.append(new cSenseRange(m_pSCPIInterface, "C50A", "C50A", true, 50.0, 1772241.0, 2215301.0, 8388607.0, 11, SenseSystem::modeAC | SenseSystem::Clamp, clampJustData));
+        m_RangeList.append(new Mt310s2SenseRange(m_pSCPIInterface, "C50A", "C50A", true, 50.0, 1772241.0, 2215301.0, 8388607.0, 11, SenseSystem::modeAC | SenseSystem::Clamp, clampJustData));
         clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("500mV")), 1000.0);
-        m_RangeList.append(new cSenseRange(m_pSCPIInterface, "C10A", "C10A", true, 10.0, 1772241.0, 2215301.0, 8388607.0, 13, SenseSystem::modeAC | SenseSystem::Clamp, clampJustData));
+        m_RangeList.append(new Mt310s2SenseRange(m_pSCPIInterface, "C10A", "C10A", true, 10.0, 1772241.0, 2215301.0, 8388607.0, 13, SenseSystem::modeAC | SenseSystem::Clamp, clampJustData));
         clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("200mV")), 1000.0);
-        m_RangeList.append(new cSenseRange(m_pSCPIInterface,  "C5A",  "C5A", true,  5.0, 1677722.0, 2097152.0, 8388607.0, 14, SenseSystem::modeAC | SenseSystem::Clamp, clampJustData));
+        m_RangeList.append(new Mt310s2SenseRange(m_pSCPIInterface,  "C5A",  "C5A", true,  5.0, 1677722.0, 2097152.0, 8388607.0, 14, SenseSystem::modeAC | SenseSystem::Clamp, clampJustData));
         clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("50mV")), 1000.0);
-        m_RangeList.append(new cSenseRange(m_pSCPIInterface,  "C1A",  "C1A", true,  1.0, 1677722.0, 2097152.0, 8388607.0, 16, SenseSystem::modeAC | SenseSystem::Clamp, clampJustData));
+        m_RangeList.append(new Mt310s2SenseRange(m_pSCPIInterface,  "C1A",  "C1A", true,  1.0, 1677722.0, 2097152.0, 8388607.0, 16, SenseSystem::modeAC | SenseSystem::Clamp, clampJustData));
         clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("20mV")), 1000.0);
-        m_RangeList.append(new cSenseRange(m_pSCPIInterface, "C500mA", "C500mA", true, 0.5, 1677722.0, 2097152.0, 8388607.0, 17, SenseSystem::modeAC | SenseSystem::Clamp, clampJustData));
+        m_RangeList.append(new Mt310s2SenseRange(m_pSCPIInterface, "C500mA", "C500mA", true, 0.5, 1677722.0, 2097152.0, 8388607.0, 17, SenseSystem::modeAC | SenseSystem::Clamp, clampJustData));
         clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("5mV")), 1000.0);
-        m_RangeList.append(new cSenseRange(m_pSCPIInterface, "C100mA", "C100mA", true, 0.1, 1677722.0, 2097152.0, 8388607.0, 19, SenseSystem::modeAC | SenseSystem::Clamp, clampJustData));
+        m_RangeList.append(new Mt310s2SenseRange(m_pSCPIInterface, "C100mA", "C100mA", true, 0.1, 1677722.0, 2097152.0, 8388607.0, 19, SenseSystem::modeAC | SenseSystem::Clamp, clampJustData));
         clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("2mV")), 1000.0);
-        m_RangeList.append(new cSenseRange(m_pSCPIInterface, "C50mA", "C50mA", true, 0.05, 1677722.0, 2097152.0, 8388607.0, 20, SenseSystem::modeAC | SenseSystem::Clamp, clampJustData));
+        m_RangeList.append(new Mt310s2SenseRange(m_pSCPIInterface, "C50mA", "C50mA", true, 0.05, 1677722.0, 2097152.0, 8388607.0, 20, SenseSystem::modeAC | SenseSystem::Clamp, clampJustData));
         break;
     case RC3000:
         clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("5V")), 1000.0);
-        m_RangeList.append(new cSenseRange(m_pSCPIInterface, "C3000A", "C3000A", true, 3000.0, 2516582.0, 2516582.0, 8388607.0, 10, SenseSystem::modeAC | SenseSystem::Clamp, clampJustData));
+        m_RangeList.append(new Mt310s2SenseRange(m_pSCPIInterface, "C3000A", "C3000A", true, 3000.0, 2516582.0, 2516582.0, 8388607.0, 10, SenseSystem::modeAC | SenseSystem::Clamp, clampJustData));
         clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("500mV")), 1000.0);
-        m_RangeList.append(new cSenseRange(m_pSCPIInterface, "C300A", "C300A", true, 300.0, 2126689.0, 2126689.0 * 1.25, 8388607.0, 13, SenseSystem::modeAC | SenseSystem::Clamp, clampJustData));
+        m_RangeList.append(new Mt310s2SenseRange(m_pSCPIInterface, "C300A", "C300A", true, 300.0, 2126689.0, 2126689.0 * 1.25, 8388607.0, 13, SenseSystem::modeAC | SenseSystem::Clamp, clampJustData));
         clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("50mV")), 1000.0);
-        m_RangeList.append(new cSenseRange(m_pSCPIInterface, "C30A", "C30A", true, 30.0, 2013266.0, 2013266.0 * 1.25, 8388607.0, 16, SenseSystem::modeAC | SenseSystem::Clamp, clampJustData));
+        m_RangeList.append(new Mt310s2SenseRange(m_pSCPIInterface, "C30A", "C30A", true, 30.0, 2013266.0, 2013266.0 * 1.25, 8388607.0, 16, SenseSystem::modeAC | SenseSystem::Clamp, clampJustData));
         break;
     case CL200ADC1000VDC: // LEM U+I
         // I
         clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("8V")), 500.0, permissionsOffsetAllowedAlways);
-        m_RangeList.append(new cSenseRange(m_pSCPIInterface, "C200A", "C200A", true, 200.0, 2516582.0, 2516582.0 * 1.25, 8388607.0, 0x09, dcCommonMask | SenseSystem::Clamp, clampJustData));
+        m_RangeList.append(new Mt310s2SenseRange(m_pSCPIInterface, "C200A", "C200A", true, 200.0, 2516582.0, 2516582.0 * 1.25, 8388607.0, 0x09, dcCommonMask | SenseSystem::Clamp, clampJustData));
         clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("5V")), 500.0, permissionsOffsetAllowedAlways);
-        m_RangeList.append(new cSenseRange(m_pSCPIInterface, "C100A", "C100A", true, 100.0, 2516582.0, 2516582.0 * 1.25, 8388607.0, 0x0A, dcCommonMask | SenseSystem::Clamp, clampJustData));
+        m_RangeList.append(new Mt310s2SenseRange(m_pSCPIInterface, "C100A", "C100A", true, 100.0, 2516582.0, 2516582.0 * 1.25, 8388607.0, 0x0A, dcCommonMask | SenseSystem::Clamp, clampJustData));
         clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("2V")), 500.0, permissionsOffsetAllowedAlways);
-        m_RangeList.append(new cSenseRange(m_pSCPIInterface, "C50A", "C50A", true, 50.0, 2126689.0, 2126689.0 * 1.25, 8388607.0, 0x0B, dcCommonMask | SenseSystem::Clamp, clampJustData));
+        m_RangeList.append(new Mt310s2SenseRange(m_pSCPIInterface, "C50A", "C50A", true, 50.0, 2126689.0, 2126689.0 * 1.25, 8388607.0, 0x0B, dcCommonMask | SenseSystem::Clamp, clampJustData));
         clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("1V")), 500.0, permissionsOffsetAllowedAlways);
-        m_RangeList.append(new cSenseRange(m_pSCPIInterface, "C20A", "C20A", true, 20.0, 1701351.0, 1701351.0 * 1.25, 8388607.0, 0x0C, dcCommonMask | SenseSystem::Clamp, clampJustData));
+        m_RangeList.append(new Mt310s2SenseRange(m_pSCPIInterface, "C20A", "C20A", true, 20.0, 1701351.0, 1701351.0 * 1.25, 8388607.0, 0x0C, dcCommonMask | SenseSystem::Clamp, clampJustData));
         clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("500mV")), 500.0, permissionsOffsetAllowedAlways);
-        m_RangeList.append(new cSenseRange(m_pSCPIInterface, "C10A", "C10A", true, 10.0, 2126689.0, 2126689.0 * 1.25, 8388607.0, 0x0D, dcCommonMask | SenseSystem::Clamp, clampJustData));
+        m_RangeList.append(new Mt310s2SenseRange(m_pSCPIInterface, "C10A", "C10A", true, 10.0, 2126689.0, 2126689.0 * 1.25, 8388607.0, 0x0D, dcCommonMask | SenseSystem::Clamp, clampJustData));
         clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("200mV")), 500.0, permissionsOffsetAllowedAlways);
-        m_RangeList.append(new cSenseRange(m_pSCPIInterface, "C5A", "C5A", true, 5.0, 2013266.0, 2013266.0 * 1.25, 8388607.0, 0x0E, dcCommonMask | SenseSystem::Clamp, clampJustData));
+        m_RangeList.append(new Mt310s2SenseRange(m_pSCPIInterface, "C5A", "C5A", true, 5.0, 2013266.0, 2013266.0 * 1.25, 8388607.0, 0x0E, dcCommonMask | SenseSystem::Clamp, clampJustData));
         clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("100mV")), 500.0, permissionsOffsetAllowedAlways);
-        m_RangeList.append(new cSenseRange(m_pSCPIInterface, "C2A", "C2A", true, 2.0, 2013266.0, 2013266.0 * 1.25, 8388607.0, 0x0F, dcCommonMask | SenseSystem::Clamp, clampJustData));
+        m_RangeList.append(new Mt310s2SenseRange(m_pSCPIInterface, "C2A", "C2A", true, 2.0, 2013266.0, 2013266.0 * 1.25, 8388607.0, 0x0F, dcCommonMask | SenseSystem::Clamp, clampJustData));
         clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("50mV")), 500.0, permissionsOffsetAllowedAlways);
-        m_RangeList.append(new cSenseRange(m_pSCPIInterface, "C1A", "C1A", true, 1.0, 2013266.0, 2013266.0 * 1.25, 8388607.0, 0x10, dcCommonMask | SenseSystem::Clamp, clampJustData));
+        m_RangeList.append(new Mt310s2SenseRange(m_pSCPIInterface, "C1A", "C1A", true, 1.0, 2013266.0, 2013266.0 * 1.25, 8388607.0, 0x10, dcCommonMask | SenseSystem::Clamp, clampJustData));
         clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("20mV")), 500.0, permissionsOffsetAllowedAlways);
-        m_RangeList.append(new cSenseRange(m_pSCPIInterface, "C500mA", "C500mA", true, 0.5, 2013266.0, 2013266.0 * 1.25, 8388607.0, 0x11, dcCommonMask | SenseSystem::Clamp, clampJustData));
+        m_RangeList.append(new Mt310s2SenseRange(m_pSCPIInterface, "C500mA", "C500mA", true, 0.5, 2013266.0, 2013266.0 * 1.25, 8388607.0, 0x11, dcCommonMask | SenseSystem::Clamp, clampJustData));
         clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("10mV")), 500.0, permissionsOffsetAllowedAlways);
-        m_RangeList.append(new cSenseRange(m_pSCPIInterface, "C200mA", "C200mA", true, 0.2, 2013266.0, 2013266.0 * 1.25, 8388607.0, 0x12, dcCommonMask | SenseSystem::Clamp, clampJustData));
+        m_RangeList.append(new Mt310s2SenseRange(m_pSCPIInterface, "C200mA", "C200mA", true, 0.2, 2013266.0, 2013266.0 * 1.25, 8388607.0, 0x12, dcCommonMask | SenseSystem::Clamp, clampJustData));
         clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("5mV")), 500.0, permissionsOffsetAllowedAlways);
-        m_RangeList.append(new cSenseRange(m_pSCPIInterface, "C100mA", "C100mA", true, 0.1, 2013266.0, 2013266.0 * 1.25, 8388607.0, 0x13, dcCommonMask | SenseSystem::Clamp, clampJustData));
+        m_RangeList.append(new Mt310s2SenseRange(m_pSCPIInterface, "C100mA", "C100mA", true, 0.1, 2013266.0, 2013266.0 * 1.25, 8388607.0, 0x13, dcCommonMask | SenseSystem::Clamp, clampJustData));
         // U
         createLEM1000VRanges(permissionsOffsetAllowedAlways, dcCommonMask);
         break;
@@ -589,48 +589,48 @@ void cClamp::initClamp(quint8 type)
     case CL8ADC1000VDC: // TESLA U+I 8A/1000V
         // I
         clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("1V")), 30.0, permissionsOffsetAllowedAlways);
-        m_RangeList.append(new cSenseRange(m_pSCPIInterface, "C8A", "C8A", true, 8.0, 3024625.0, 3024625.0 * 1.25, 8388607.0, 0x0C, dcCommonMask | SenseSystem::Clamp, clampJustData));
+        m_RangeList.append(new Mt310s2SenseRange(m_pSCPIInterface, "C8A", "C8A", true, 8.0, 3024625.0, 3024625.0 * 1.25, 8388607.0, 0x0C, dcCommonMask | SenseSystem::Clamp, clampJustData));
         clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("500mV")), 30.0, permissionsOffsetAllowedAlways);
-        m_RangeList.append(new cSenseRange(m_pSCPIInterface, "C4A", "C4A", true, 4.0, 3780781.0, 3780781.0 * 1.25, 8388607.0, 0x0D, dcCommonMask | SenseSystem::Clamp, clampJustData));
+        m_RangeList.append(new Mt310s2SenseRange(m_pSCPIInterface, "C4A", "C4A", true, 4.0, 3780781.0, 3780781.0 * 1.25, 8388607.0, 0x0D, dcCommonMask | SenseSystem::Clamp, clampJustData));
         clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("200mV")), 30.0, permissionsOffsetAllowedAlways);
-        m_RangeList.append(new cSenseRange(m_pSCPIInterface, "C2A", "C2A", true, 2.0, 3579139.0, 3579139.0 * 1.25, 8388607.0, 0x0E, dcCommonMask | SenseSystem::Clamp, clampJustData));
+        m_RangeList.append(new Mt310s2SenseRange(m_pSCPIInterface, "C2A", "C2A", true, 2.0, 3579139.0, 3579139.0 * 1.25, 8388607.0, 0x0E, dcCommonMask | SenseSystem::Clamp, clampJustData));
         clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("100mV")), 30.0, permissionsOffsetAllowedAlways);
-        m_RangeList.append(new cSenseRange(m_pSCPIInterface, "C800mA", "C800mA", true, 0.8, 3579139.0, 3579139.0 * 1.25, 8388607.0, 0x0F, dcCommonMask | SenseSystem::Clamp, clampJustData));
+        m_RangeList.append(new Mt310s2SenseRange(m_pSCPIInterface, "C800mA", "C800mA", true, 0.8, 3579139.0, 3579139.0 * 1.25, 8388607.0, 0x0F, dcCommonMask | SenseSystem::Clamp, clampJustData));
         clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("50mV")), 30.0, permissionsOffsetAllowedAlways);
-        m_RangeList.append(new cSenseRange(m_pSCPIInterface, "C400mA", "C400mA", true, 0.4, 3579139.0, 3579139.0 * 1.25, 8388607.0, 0x10, dcCommonMask | SenseSystem::Clamp, clampJustData));
+        m_RangeList.append(new Mt310s2SenseRange(m_pSCPIInterface, "C400mA", "C400mA", true, 0.4, 3579139.0, 3579139.0 * 1.25, 8388607.0, 0x10, dcCommonMask | SenseSystem::Clamp, clampJustData));
         // U
         createLEM1000VRanges(permissionsOffsetAllowedAlways, dcCommonMask);
         break;
     case CL800ADC1000VDC: // TESLA U+I 800A/1000V
         // I
         clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("2V")), 1500.0, permissionsOffsetAllowedAlways);
-        m_RangeList.append(new cSenseRange(m_pSCPIInterface, "C800A", "C800A", true, 800.0, 3024625.0, 3024625.0 * 1.30, 8388607.0, 0x0B, dcCommonMask | SenseSystem::Clamp, clampJustData));
+        m_RangeList.append(new Mt310s2SenseRange(m_pSCPIInterface, "C800A", "C800A", true, 800.0, 3024625.0, 3024625.0 * 1.30, 8388607.0, 0x0B, dcCommonMask | SenseSystem::Clamp, clampJustData));
         clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("1V")), 1500.0, permissionsOffsetAllowedAlways);
-        m_RangeList.append(new cSenseRange(m_pSCPIInterface, "C400A", "C400A", true, 400.0, 3024625.0, 3024625.0 * 1.25, 8388607.0, 0x0C, dcCommonMask | SenseSystem::Clamp, clampJustData));
+        m_RangeList.append(new Mt310s2SenseRange(m_pSCPIInterface, "C400A", "C400A", true, 400.0, 3024625.0, 3024625.0 * 1.25, 8388607.0, 0x0C, dcCommonMask | SenseSystem::Clamp, clampJustData));
         clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("500mV")), 1500.0, permissionsOffsetAllowedAlways);
-        m_RangeList.append(new cSenseRange(m_pSCPIInterface, "C200A", "C200A", true, 200.0, 3780781.0, 3780781.0 * 1.25, 8388607.0, 0x0D, dcCommonMask | SenseSystem::Clamp, clampJustData));
+        m_RangeList.append(new Mt310s2SenseRange(m_pSCPIInterface, "C200A", "C200A", true, 200.0, 3780781.0, 3780781.0 * 1.25, 8388607.0, 0x0D, dcCommonMask | SenseSystem::Clamp, clampJustData));
         clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("200mV")), 1500.0, permissionsOffsetAllowedAlways);
-        m_RangeList.append(new cSenseRange(m_pSCPIInterface, "C80A", "C80A", true, 80.0, 2863312.0, 2863312.0 * 1.25, 8388607.0, 0x0E, dcCommonMask | SenseSystem::Clamp, clampJustData));
+        m_RangeList.append(new Mt310s2SenseRange(m_pSCPIInterface, "C80A", "C80A", true, 80.0, 2863312.0, 2863312.0 * 1.25, 8388607.0, 0x0E, dcCommonMask | SenseSystem::Clamp, clampJustData));
         clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("100mV")), 1500.0, permissionsOffsetAllowedAlways);
-        m_RangeList.append(new cSenseRange(m_pSCPIInterface, "C40A", "C40A", true, 40.0, 3579139.0, 3579139.0 * 1.25, 8388607.0, 0x0F, dcCommonMask | SenseSystem::Clamp, clampJustData));
+        m_RangeList.append(new Mt310s2SenseRange(m_pSCPIInterface, "C40A", "C40A", true, 40.0, 3579139.0, 3579139.0 * 1.25, 8388607.0, 0x0F, dcCommonMask | SenseSystem::Clamp, clampJustData));
         clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("50mV")), 1500.0, permissionsOffsetAllowedAlways);
-        m_RangeList.append(new cSenseRange(m_pSCPIInterface, "C20A", "C20A", true, 20.0, 3579139.0, 3579139.0 * 1.25, 8388607.0, 0x10, dcCommonMask | SenseSystem::Clamp, clampJustData));
+        m_RangeList.append(new Mt310s2SenseRange(m_pSCPIInterface, "C20A", "C20A", true, 20.0, 3579139.0, 3579139.0 * 1.25, 8388607.0, 0x10, dcCommonMask | SenseSystem::Clamp, clampJustData));
         // U
         createLEM1000VRanges(permissionsOffsetAllowedAlways, dcCommonMask);
         break;
     case EMOB500DC:
         // I
         clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("5V")), 2000.0);
-        m_RangeList.append(new cSenseRange(m_pSCPIInterface, "C500A", "C500A", true, 500.0, 3145728.0, 3145728.0 * 1.25, 8388607.0, 0x0A, dcCommonMask | SenseSystem::Clamp, clampJustData));
+        m_RangeList.append(new Mt310s2SenseRange(m_pSCPIInterface, "C500A", "C500A", true, 500.0, 3145728.0, 3145728.0 * 1.25, 8388607.0, 0x0A, dcCommonMask | SenseSystem::Clamp, clampJustData));
         clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("500mV")), 2000.0);
-        m_RangeList.append(new cSenseRange(m_pSCPIInterface, "C50A", "C50A", true, 50.0, 2658362.0, 2658362.0 * 1.25, 8388607.0, 0x0D, dcCommonMask | SenseSystem::Clamp, clampJustData));
+        m_RangeList.append(new Mt310s2SenseRange(m_pSCPIInterface, "C50A", "C50A", true, 50.0, 2658362.0, 2658362.0 * 1.25, 8388607.0, 0x0D, dcCommonMask | SenseSystem::Clamp, clampJustData));
         clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("50mV")), 2000.0);
-        m_RangeList.append(new cSenseRange(m_pSCPIInterface, "C5A", "C5A", true, 5.0, 2516582.0, 2516582.0 * 1.25, 8388607.0, 0x10, dcCommonMask | SenseSystem::Clamp, clampJustData));
+        m_RangeList.append(new Mt310s2SenseRange(m_pSCPIInterface, "C5A", "C5A", true, 5.0, 2516582.0, 2516582.0 * 1.25, 8388607.0, 0x10, dcCommonMask | SenseSystem::Clamp, clampJustData));
 
         // This clamp has a secondary channnel U
         m_sChannelNameSecondary = m_pSenseInterface->getChannelSystemName(m_nCtrlChannelSecondary);
         clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelNameSecondary, QString("8V")), 121.0);
-        m_RangeListSecondary.append(new cSenseRange(m_pSCPIInterface, "C1000V", "C1000V", true, 1000.0, 3466367.0, 3466367.0 * 1.25, 8388607.0, 1 /*8V*/, dcCommonMask | SenseSystem::Clamp, clampJustData));
+        m_RangeListSecondary.append(new Mt310s2SenseRange(m_pSCPIInterface, "C1000V", "C1000V", true, 1000.0, 3466367.0, 3466367.0 * 1.25, 8388607.0, 1 /*8V*/, dcCommonMask | SenseSystem::Clamp, clampJustData));
 
         break;
     }
@@ -694,13 +694,13 @@ void cClamp::addSense()
 
 void cClamp::addSenseInterface()
 {
-    for(cSenseRange *range : qAsConst(m_RangeList)) {
+    for(Mt310s2SenseRange *range : qAsConst(m_RangeList)) {
         range->initSCPIConnection(QString("SENSE:%1").arg(m_sChannelName));
-        connect(range, &cSenseRange::cmdExecutionDone, this, &cClamp::cmdExecutionDone);
+        connect(range, &Mt310s2SenseRange::cmdExecutionDone, this, &cClamp::cmdExecutionDone);
     }
-    for(cSenseRange *range : qAsConst(m_RangeListSecondary)) {
+    for(Mt310s2SenseRange *range : qAsConst(m_RangeListSecondary)) {
         range->initSCPIConnection(QString("SENSE:%1").arg(m_sChannelNameSecondary));
-        connect(range, &cSenseRange::cmdExecutionDone, this, &cClamp::cmdExecutionDone);
+        connect(range, &Mt310s2SenseRange::cmdExecutionDone, this, &cClamp::cmdExecutionDone);
     }
 }
 
@@ -734,9 +734,9 @@ void cClamp::addSystAdjInterfaceChannel(QString channelName)
     addDelegate(cmdParent, "ADJUSTMENT", SCPI::isQuery, m_pSCPIInterface, cmdStatAdjustment);
 }
 
-cSenseRange* cClamp::getRange(QString name)
+Mt310s2SenseRange* cClamp::getRange(QString name)
 {
-    cSenseRange* rangeFound = nullptr;
+    Mt310s2SenseRange* rangeFound = nullptr;
     for(auto range : qAsConst(m_RangeList)) {
         if (range->getName() == name) {
             rangeFound = range;
@@ -765,7 +765,7 @@ void cClamp::removeAllRanges()
     }
     // then we delete them what automatically destroys their interfaces
     for(auto* range : qAsConst(m_RangeList)) {
-        delete range; // the cSenseRange objects will also remove their interfaces including that for adjustment data
+        delete range; // the Mt310s2SenseRange objects will also remove their interfaces including that for adjustment data
     }
     m_RangeList.clear();
     for(auto* range : qAsConst(m_RangeListSecondary)) {
@@ -774,7 +774,7 @@ void cClamp::removeAllRanges()
     m_RangeListSecondary.clear();
 }
 
-void cClamp::exportRangeXml(QDomDocument &justqdom, QDomElement &typeTag, cSenseRange *range)
+void cClamp::exportRangeXml(QDomDocument &justqdom, QDomElement &typeTag, Mt310s2SenseRange *range)
 {
     QDomElement rtag = justqdom.createElement( "Range" );
     typeTag.appendChild( rtag );

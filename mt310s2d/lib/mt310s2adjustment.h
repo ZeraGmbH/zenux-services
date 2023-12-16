@@ -2,7 +2,7 @@
 #define ADJUSTMENT_H
 
 #include "mt310s2d.h"
-#include "adjflash.h"
+#include "mt310s2adjflash.h"
 #include "adjustmentstatusinterface.h"
 #include <QList>
 #include <QString>
@@ -18,17 +18,17 @@ enum jDataStatus
 };
 }
 
-class cAdjustment : public AdjustmentStatusInterface
+class Mt310s2Adjustment : public AdjustmentStatusInterface
 {
 public:
-    cAdjustment(cMT310S2dServer* server);
-    void addAdjFlashObject(cAdjFlash* obj);
-    void removeAdjFlashObject(cAdjFlash* obj);
+    Mt310s2Adjustment(cMT310S2dServer* server);
+    void addAdjFlashObject(Mt310s2AdjFlash* obj);
+    void removeAdjFlashObject(Mt310s2AdjFlash* obj);
     quint8 getAdjustmentStatus() override;
 
 private:
     cMT310S2dServer* m_pMyServer;
-    QList<cAdjFlash*> m_AdjFlashList;
+    QList<Mt310s2AdjFlash*> m_AdjFlashList;
 };
 
 #endif // ADJUSTMENT_H

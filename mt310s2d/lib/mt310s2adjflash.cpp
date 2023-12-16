@@ -1,18 +1,17 @@
-#include "adjflash.h"
-#include "mt310s2dglobal.h"
+#include "mt310s2adjflash.h"
 #include <QBuffer>
 #include <syslog.h>
 #include <F24LC256.h>
 #include <i2cmuxerscopedonoff.h>
 
-cAdjFlash::cAdjFlash(QString devnode, quint8 i2cadr, I2cMuxerInterface::Ptr i2cMuxer) :
+Mt310s2AdjFlash::Mt310s2AdjFlash(QString devnode, quint8 i2cadr, I2cMuxerInterface::Ptr i2cMuxer) :
     m_sDeviceNode(devnode),
     m_nI2CAdr(i2cadr),
     m_i2cMuxer(i2cMuxer)
 {
 }
 
-bool cAdjFlash::exportAdjFlash()
+bool Mt310s2AdjFlash::exportAdjFlash()
 {
     bool ret;
     QByteArray ba;
@@ -33,7 +32,7 @@ bool cAdjFlash::exportAdjFlash()
 }
 
 
-bool cAdjFlash::importAdjFlash()
+bool Mt310s2AdjFlash::importAdjFlash()
 {
     I2cMuxerScopedOnOff i2cMuxOnOff(m_i2cMuxer);
     QByteArray ba;
@@ -45,7 +44,7 @@ bool cAdjFlash::importAdjFlash()
     return false;
 }
 
-bool cAdjFlash::resetAdjFlash()
+bool Mt310s2AdjFlash::resetAdjFlash()
 {
     I2cMuxerScopedOnOff i2cMuxOnOff(m_i2cMuxer);
     cF24LC256 flash(m_sDeviceNode, m_nI2CAdr);
@@ -53,7 +52,7 @@ bool cAdjFlash::resetAdjFlash()
 }
 
 
-void cAdjFlash::setAdjCountChecksum(QByteArray &ba)
+void Mt310s2AdjFlash::setAdjCountChecksum(QByteArray &ba)
 {
     quint32 count;
 
@@ -84,7 +83,7 @@ void cAdjFlash::setAdjCountChecksum(QByteArray &ba)
 }
 
 
-bool cAdjFlash::writeFlash(QByteArray &ba)
+bool Mt310s2AdjFlash::writeFlash(QByteArray &ba)
 {
     int count, written;
 
@@ -99,13 +98,13 @@ bool cAdjFlash::writeFlash(QByteArray &ba)
     return true;
 }
 
-quint16 cAdjFlash::getChecksum()
+quint16 Mt310s2AdjFlash::getChecksum()
 {
     return m_nChecksum;
 }
 
 
-bool cAdjFlash::readFlash(QByteArray &ba)
+bool Mt310s2AdjFlash::readFlash(QByteArray &ba)
 {
     cF24LC256 Flash(m_sDeviceNode, m_nI2CAdr);
 

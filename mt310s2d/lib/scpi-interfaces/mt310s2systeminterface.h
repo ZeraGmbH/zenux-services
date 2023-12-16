@@ -33,16 +33,14 @@ enum SystemCommands
 };
 }
 
-
 class cMT310S2dServer;
-class adjFlash;
 
-class cSystemInterface: public ScpiConnection
+class Mt310s2SystemInterface: public ScpiConnection
 {
     Q_OBJECT
 
 public:
-    cSystemInterface(cMT310S2dServer* server, HotPluggableControllerContainerPtr hotPluggableControllerContainer);
+    Mt310s2SystemInterface(cMT310S2dServer* server, HotPluggableControllerContainerPtr hotPluggableControllerContainer);
     virtual void initSCPIConnection(QString leadingNodes) override;
     void actualizeContollers(quint16 bitmaskAvailable);
 

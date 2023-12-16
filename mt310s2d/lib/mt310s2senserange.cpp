@@ -1,4 +1,4 @@
-#include "senserange.h"
+#include "mt310s2senserange.h"
 #include "mt310s2justdata.h"
 #include "protonetcommand.h"
 #include "zscpi_response_definitions.h"
@@ -6,7 +6,7 @@
 #include <scpicommand.h>
 
 
-cSenseRange::cSenseRange(cSCPI *scpiinterface, QString name, QString alias, bool avail, double rValue, double rejection, double ovrejection, double adcrejection, quint8 rselcode, quint16 mmask, JustRangeTripletOffsetGainPhaseMt310s2* justdata) :
+Mt310s2SenseRange::Mt310s2SenseRange(cSCPI *scpiinterface, QString name, QString alias, bool avail, double rValue, double rejection, double ovrejection, double adcrejection, quint8 rselcode, quint16 mmask, Mt310s2JustRangeTripletOffsetGainPhase* justdata) :
     ScpiConnection(scpiinterface),
     m_sName(name),
     m_sAlias(alias),
@@ -22,13 +22,13 @@ cSenseRange::cSenseRange(cSCPI *scpiinterface, QString name, QString alias, bool
 }
 
 
-cSenseRange::~cSenseRange()
+Mt310s2SenseRange::~Mt310s2SenseRange()
 {
     delete m_pJustdata;
 }
 
 
-void cSenseRange::initSCPIConnection(QString leadingNodes)
+void Mt310s2SenseRange::initSCPIConnection(QString leadingNodes)
 {
     ensureTrailingColonOnNonEmptyParentNodes(leadingNodes);
     addDelegate(QString("%1%2").arg(leadingNodes).arg(m_sName),"TYPE",SCPI::isQuery, m_pSCPIInterface, SenseRange::cmdType);
@@ -44,68 +44,68 @@ void cSenseRange::initSCPIConnection(QString leadingNodes)
 }
 
 
-quint8 cSenseRange::getAdjustmentStatus()
+quint8 Mt310s2SenseRange::getAdjustmentStatus()
 {
     return m_pJustdata->getAdjustmentStatus();
 }
 
 
-QString &cSenseRange::getName()
+QString &Mt310s2SenseRange::getName()
 {
     return m_sName;
 }
 
 
-double cSenseRange::getUrvalue()
+double Mt310s2SenseRange::getUrvalue()
 {
     return m_fRValue;
 }
 
 
-quint8 cSenseRange::getSelCode()
+quint8 Mt310s2SenseRange::getSelCode()
 {
     return m_nSelCode;
 }
 
 
-quint16 cSenseRange::getMMask()
+quint16 Mt310s2SenseRange::getMMask()
 {
     return m_nMMask;
 }
 
 
-JustRangeTripletOffsetGainPhaseMt310s2 *cSenseRange::getJustData()
+Mt310s2JustRangeTripletOffsetGainPhase *Mt310s2SenseRange::getJustData()
 {
     return m_pJustdata;
 }
 
 
-bool cSenseRange::isAvail()
+bool Mt310s2SenseRange::isAvail()
 {
     return m_bAvail;
 }
 
 
-void cSenseRange::setMMode(int m)
+void Mt310s2SenseRange::setMMode(int m)
 {
     m_nMMode = m;
     m_bAvail = ((m_nMMask & m_nMMode) > 0);
 }
 
 
-void cSenseRange::initJustData()
+void Mt310s2SenseRange::initJustData()
 {
     m_pJustdata->initJustData();
 }
 
 
-void cSenseRange::computeJustData()
+void Mt310s2SenseRange::computeJustData()
 {
     m_pJustdata->computeJustData();
 }
 
 
-void cSenseRange::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
+void Mt310s2SenseRange::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
 {
     switch (cmdCode)
     {
@@ -137,7 +137,7 @@ void cSenseRange::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
 }
 
 
-QString cSenseRange::m_ReadRangeType(QString &sInput)
+QString Mt310s2SenseRange::m_ReadRangeType(QString &sInput)
 {
     cSCPICommand cmd = sInput;
 
@@ -149,7 +149,7 @@ QString cSenseRange::m_ReadRangeType(QString &sInput)
 }
 
 
-QString cSenseRange::m_ReadRangeAlias(QString &sInput)
+QString Mt310s2SenseRange::m_ReadRangeAlias(QString &sInput)
 {
     cSCPICommand cmd = sInput;
 
@@ -160,7 +160,7 @@ QString cSenseRange::m_ReadRangeAlias(QString &sInput)
 }
 
 
-QString cSenseRange::m_ReadRangeAvail(QString &sInput)
+QString Mt310s2SenseRange::m_ReadRangeAvail(QString &sInput)
 {
     cSCPICommand cmd = sInput;
 
@@ -176,7 +176,7 @@ QString cSenseRange::m_ReadRangeAvail(QString &sInput)
 }
 
 
-QString cSenseRange::m_ReadRangeValue(QString &sInput)
+QString Mt310s2SenseRange::m_ReadRangeValue(QString &sInput)
 {
     cSCPICommand cmd = sInput;
 
@@ -187,7 +187,7 @@ QString cSenseRange::m_ReadRangeValue(QString &sInput)
 }
 
 
-QString cSenseRange::m_ReadRangeRejection(QString &sInput)
+QString Mt310s2SenseRange::m_ReadRangeRejection(QString &sInput)
 {
     cSCPICommand cmd = sInput;
 
@@ -198,7 +198,7 @@ QString cSenseRange::m_ReadRangeRejection(QString &sInput)
 }
 
 
-QString cSenseRange::m_ReadRangeOVRejection(QString &sInput)
+QString Mt310s2SenseRange::m_ReadRangeOVRejection(QString &sInput)
 {
     cSCPICommand cmd = sInput;
 
@@ -209,7 +209,7 @@ QString cSenseRange::m_ReadRangeOVRejection(QString &sInput)
 }
 
 
-QString cSenseRange::m_ReadRangeADWRejection(QString &sInput)
+QString Mt310s2SenseRange::m_ReadRangeADWRejection(QString &sInput)
 {
     cSCPICommand cmd = sInput;
 
