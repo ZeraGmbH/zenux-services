@@ -1,12 +1,9 @@
+#include "mt310s2systeminterface.h"
 #include "mt310s2d.h"
 #include "systeminfo.h"
-#include "mt310s2systeminterface.h"
 #include "mt310s2senseinterface.h"
-#include "protonetcommand.h"
 #include "micro-controller-io/atmel.h"
 #include "zscpi_response_definitions.h"
-#include <scpi.h>
-#include <scpicommand.h>
 #include <QJsonObject>
 
 Mt310s2SystemInterface::Mt310s2SystemInterface(cMT310S2dServer *server, HotPluggableControllerContainerPtr hotPluggableControllerContainer) :
