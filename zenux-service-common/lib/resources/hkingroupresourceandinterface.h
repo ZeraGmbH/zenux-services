@@ -17,7 +17,6 @@ public:
     ~HkInGroupResourceAndInterface();
     void initSCPIConnection(QString leadingNodes) override;
     void registerResource(RMConnection *rmConnection, quint16 port) override;
-    void unregisterResource(RMConnection *rmConnection) override;
 protected:
     void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
 private:
