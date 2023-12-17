@@ -13,8 +13,7 @@ Com5003SenseRange::Com5003SenseRange(cSCPI *scpiinterface,
     m_fRejection(rejection),
     m_fOVRejection(ovrejection),
     m_fADCRejection(adcrejection),
-    m_nSelCode(rselcode),
-    m_nRSpec(SenseRange::Phys)
+    m_nSelCode(rselcode)
 {
     m_pJustdata = new Com5003JustRangeTripletOffsetGainPhase(m_pSCPIInterface);
 }
@@ -131,9 +130,10 @@ void Com5003SenseRange::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd
 QString Com5003SenseRange::m_ReadRangeType(QString &sInput)
 {
     cSCPICommand cmd = sInput;
-
     if (cmd.isQuery())
-        return QString("%1").arg(m_nRSpec); // phs. or virt.
+        // fix phys for compatibility
+        // virtual ranges were never more than unimplemented great ideas
+        return QString("%1").arg(0);
     else
         return ZSCPI::scpiAnswer[ZSCPI::nak];
 
