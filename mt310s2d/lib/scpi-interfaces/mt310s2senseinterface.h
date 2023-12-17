@@ -1,9 +1,10 @@
 #ifndef SENSEINTERFACE_H
 #define SENSEINTERFACE_H
 
-#include "mt310s2d.h"
+#include "i2csettings.h"
 #include "mt310s2adjflash.h"
 #include "mt310s2adjxml.h"
+#include "mt310s2systeminfo.h"
 #include "resource.h"
 #include "mt310s2sensechannel.h"
 #include "systeminfo.h"
@@ -45,7 +46,7 @@ class Mt310s2SenseInterface : public cResource, public Mt310s2AdjFlash, public M
 {
     Q_OBJECT
 public:
-    Mt310s2SenseInterface(cMT310S2dServer *server);
+    Mt310s2SenseInterface(cSCPI *scpiInterface, cI2CSettings *i2cSettings, cSenseSettings *senseSettings, Mt310s2SystemInfo *systemInfo);
     ~Mt310s2SenseInterface();
     virtual void initSCPIConnection(QString leadingNoMModedes) override;
     Mt310s2SenseChannel* getChannel(QString& name);
