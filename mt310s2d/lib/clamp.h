@@ -3,6 +3,7 @@
 
 #include "mt310s2adjflash.h"
 #include "mt310s2adjxml.h"
+#include "mt310s2d.h"
 #include "mt310s2senseinterface.h"
 #include <QList>
 #include <QDateTime>

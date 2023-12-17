@@ -25,12 +25,12 @@
 #include <QFile>
 #include <syslog.h>
 
-Mt310s2SenseInterface::Mt310s2SenseInterface(cMT310S2dServer *server) :
-    cResource(server->getSCPIInterface()),
-    Mt310s2AdjFlash(server->m_pI2CSettings->getDeviceNode(),
-              server->m_pI2CSettings->getI2CAdress(i2cSettings::flashlI2cAddress),
+Mt310s2SenseInterface::Mt310s2SenseInterface(cSCPI *scpiInterface, cI2CSettings* i2cSettings, cSenseSettings* senseSettings, Mt310s2SystemInfo* systemInfo) :
+    cResource(scpiInterface),
+    Mt310s2AdjFlash(i2cSettings->getDeviceNode(),
+              i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress),
               I2cMultiplexerFactory::createNullMuxer()),
-    m_pSystemInfo(server->m_pSystemInfo)
+    m_pSystemInfo(systemInfo)
 {
     // Init with bad defaults so coder's bugs pop up
     m_nVersionStatus = Adjustment::wrongVERS;
@@ -41,7 +41,7 @@ Mt310s2SenseInterface::Mt310s2SenseInterface(cMT310S2dServer *server) :
     m_MModeHash["ADJ"]   = SenseSystem::modeADJ;
 
     QList<SenseSystem::cChannelSettings*> channelSettings;
-    channelSettings = server->m_pSenseSettings->getChannelSettings();
+    channelSettings = senseSettings->getChannelSettings();
 
     // for com5003 our sense had 3 voltage and 3 current measuring channels
     // for mt310 we need 4 voltage and 4 current measuring channels
