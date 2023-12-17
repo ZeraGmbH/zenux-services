@@ -46,7 +46,11 @@ void test_regression_sense_range_mt310s2::checkAlias()
 
 void test_regression_sense_range_mt310s2::checkAvail()
 {
-    QCOMPARE(m_range->isAvail(), true);
+    QCOMPARE(m_range->getAvail(), true);
+    m_range->setAvail(false);
+    QCOMPARE(m_range->getAvail(), false);
+    m_range->setAvail(true);
+    QCOMPARE(m_range->getAvail(), true);
 
     QString scpiAvailQuery = "SENSE:m0:250V:AVAIL?";
     cSCPIObject *scpiObject = m_scpi->getSCPIObject(scpiAvailQuery);
@@ -55,6 +59,14 @@ void test_regression_sense_range_mt310s2::checkAvail()
     cSCPIDelegate *scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
     scpiDelegate->executeSCPI(protoCmd);
     QCOMPARE((protoCmd->m_sOutput), "1");
+
+    QString scpiAvailCmd = "SENSE:m0:250V:AVAIL 0;";
+    scpiObject = m_scpi->getSCPIObject(scpiAvailCmd);
+    QVERIFY(scpiObject != nullptr);
+    protoCmd = new cProtonetCommand(0, false, true, QByteArray(), 0, scpiAvailCmd);
+    scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
+    scpiDelegate->executeSCPI(protoCmd);
+    QCOMPARE((protoCmd->m_sOutput), "nak");
 }
 
 void test_regression_sense_range_mt310s2::checkUrValue()

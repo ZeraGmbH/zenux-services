@@ -271,7 +271,7 @@ void Mt310s2SenseChannel::setNotifierSenseChannelRange()
     quint8 rSelCode;
     if ( Atmel::getInstance().readRange(m_nCtrlChannel, rSelCode) == ZeraMControllerIo::cmddone ) {
         for(auto range : qAsConst(m_RangeList)) {
-            if ( (range->getSelCode() == rSelCode) && (range->isAvail())) {
+            if ( (range->getSelCode() == rSelCode) && (range->getAvail())) {
                 notifierSenseChannelRange = range->getName();
                 break;
             }
@@ -297,7 +297,7 @@ QString Mt310s2SenseChannel::m_ReadWriteRange(QString &sInput)
                         break;
                     }
                 }
-                if ( (i < anz) && (m_RangeList.at(i)->isAvail()) ) {
+                if ( (i < anz) && (m_RangeList.at(i)->getAvail()) ) {
                     // we know this range and it's available
                     if ( Atmel::getInstance().setRange(m_nCtrlChannel, m_RangeList.at(i)->getSelCode()) == ZeraMControllerIo::cmddone) {
                         notifierSenseChannelRange = rng;

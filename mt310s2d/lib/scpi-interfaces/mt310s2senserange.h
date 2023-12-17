@@ -37,12 +37,8 @@ public:
     virtual void initSCPIConnection(QString leadingNodes) override;
     quint8 getAdjustmentStatus() override;
 
-    QString& getName();
-    double getUrvalue();
-    quint8 getSelCode();
     quint16 getMMask();
     Mt310s2JustRangeTripletOffsetGainPhase* getJustData();
-    bool isAvail();
     void setMMode(int m);
 
     void initJustData();
@@ -58,7 +54,7 @@ protected:
     QString m_ReadRangeOVRejection(QString& sInput);
     QString m_ReadRangeADWRejection(QString& sInput);
 
-    quint16 m_nMMask; // the possible measuring modes for this range
+    const quint16 m_nMMask; // the possible measuring modes for this range
     quint8 m_nMMode; // the actual measuring mode
     Mt310s2JustRangeTripletOffsetGainPhase* m_pJustdata;
 

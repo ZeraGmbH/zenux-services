@@ -37,12 +37,7 @@ public:
     virtual void initSCPIConnection(QString leadingNodes) override;
     quint8 getAdjustmentStatus() override;
 
-    QString& getName();
-    double getUrvalue();
-    quint8 getSelCode();
     Com5003JustRangeTripletOffsetGainPhase* getJustData();
-    bool getAvail();
-    void setAvail(bool b);
 
     void initJustData();
     void computeJustData();
