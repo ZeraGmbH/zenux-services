@@ -11,10 +11,10 @@ void test_regression_sense_range_com5003::init()
                                     "240V",
                                     "240AliasV",
                                     true,
-                                    1.1,
-                                    2.2,
-                                    3.3,
-                                    4.4,
+                                    11111.11111,
+                                    22222.22222,
+                                    33333.33333,
+                                    44444.44444,
                                     5);
     m_range->initSCPIConnection("SENSE:m0");
 }
@@ -83,7 +83,7 @@ void test_regression_sense_range_com5003::checkAvail()
 
 void test_regression_sense_range_com5003::checkUrValue()
 {
-    QCOMPARE(m_range->getUpperRangevalue(), 1.1);
+    QCOMPARE(m_range->getUpperRangevalue(), 11111.11111);
 
     QString scpiUrValueQuery = "SENSE:m0:240V:URVALUE?";
     cSCPIObject *scpiObject = m_scpi->getSCPIObject(scpiUrValueQuery);
@@ -91,7 +91,7 @@ void test_regression_sense_range_com5003::checkUrValue()
     cProtonetCommand *protoCmd = new cProtonetCommand(0, false, true, QByteArray(), 0, scpiUrValueQuery);
     cSCPIDelegate *scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
     scpiDelegate->executeSCPI(protoCmd);
-    QCOMPARE((protoCmd->m_sOutput), "1.1");
+    QCOMPARE((protoCmd->m_sOutput), "11111.1");
 
     QString scpiUrValueCmd = "SENSE:m0:240V:URVALUE 42";
     scpiObject = m_scpi->getSCPIObject(scpiUrValueCmd);
@@ -110,7 +110,15 @@ void test_regression_sense_range_com5003::checkRejection()
     cProtonetCommand *protoCmd = new cProtonetCommand(0, false, true, QByteArray(), 0, scpiRejectionQuery);
     cSCPIDelegate *scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
     scpiDelegate->executeSCPI(protoCmd);
-    QCOMPARE((protoCmd->m_sOutput), "2.2");
+    QCOMPARE((protoCmd->m_sOutput), "22222.2");
+
+    QString scpiRejectionCmd = "SENSE:m0:240V:REJECTION 42";
+    scpiObject = m_scpi->getSCPIObject(scpiRejectionCmd);
+    QVERIFY(scpiObject != nullptr);
+    protoCmd = new cProtonetCommand(0, false, true, QByteArray(), 0, scpiRejectionCmd);
+    scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
+    scpiDelegate->executeSCPI(protoCmd);
+    QCOMPARE((protoCmd->m_sOutput), ZSCPI::scpiAnswer[ZSCPI::nak]);
 }
 
 void test_regression_sense_range_com5003::checkOvRejection()
@@ -121,7 +129,7 @@ void test_regression_sense_range_com5003::checkOvRejection()
     cProtonetCommand *protoCmd = new cProtonetCommand(0, false, true, QByteArray(), 0, scpiOvRejectionQuery);
     cSCPIDelegate *scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
     scpiDelegate->executeSCPI(protoCmd);
-    QCOMPARE((protoCmd->m_sOutput), "3.3");
+    QCOMPARE((protoCmd->m_sOutput), "33333.3");
 }
 
 void test_regression_sense_range_com5003::checkAdcRejection()
@@ -132,7 +140,7 @@ void test_regression_sense_range_com5003::checkAdcRejection()
     cProtonetCommand *protoCmd = new cProtonetCommand(0, false, true, QByteArray(), 0, scpiAdcRejectionQuery);
     cSCPIDelegate *scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
     scpiDelegate->executeSCPI(protoCmd);
-    QCOMPARE((protoCmd->m_sOutput), "4.4");
+    QCOMPARE((protoCmd->m_sOutput), "44444.4");
 }
 
 void test_regression_sense_range_com5003::checkAtmelSelectionCode()
