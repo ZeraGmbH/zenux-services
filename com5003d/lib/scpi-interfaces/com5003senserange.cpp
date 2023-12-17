@@ -53,40 +53,9 @@ quint8 Com5003SenseRange::getAdjustmentStatus()
     return m_pJustdata->getAdjustmentStatus();
 }
 
-
-QString &Com5003SenseRange::getName()
-{
-    return m_sName;
-}
-
-
-double Com5003SenseRange::getUrvalue()
-{
-    return m_fRValue;
-}
-
-
-quint8 Com5003SenseRange::getSelCode()
-{
-    return m_nSelCode;
-}
-
-
 Com5003JustRangeTripletOffsetGainPhase *Com5003SenseRange::getJustData()
 {
     return m_pJustdata;
-}
-
-
-bool Com5003SenseRange::getAvail()
-{
-    return m_bAvail;
-}
-
-
-void Com5003SenseRange::setAvail(bool b)
-{
-    m_bAvail = b;
 }
 
 

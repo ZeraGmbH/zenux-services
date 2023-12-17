@@ -60,24 +60,6 @@ quint8 Mt310s2SenseRange::getAdjustmentStatus()
 }
 
 
-QString &Mt310s2SenseRange::getName()
-{
-    return m_sName;
-}
-
-
-double Mt310s2SenseRange::getUrvalue()
-{
-    return m_fRValue;
-}
-
-
-quint8 Mt310s2SenseRange::getSelCode()
-{
-    return m_nSelCode;
-}
-
-
 quint16 Mt310s2SenseRange::getMMask()
 {
     return m_nMMask;
@@ -89,31 +71,21 @@ Mt310s2JustRangeTripletOffsetGainPhase *Mt310s2SenseRange::getJustData()
     return m_pJustdata;
 }
 
-
-bool Mt310s2SenseRange::isAvail()
-{
-    return m_bAvail;
-}
-
-
 void Mt310s2SenseRange::setMMode(int m)
 {
     m_nMMode = m;
     m_bAvail = ((m_nMMask & m_nMMode) > 0);
 }
 
-
 void Mt310s2SenseRange::initJustData()
 {
     m_pJustdata->initJustData();
 }
 
-
 void Mt310s2SenseRange::computeJustData()
 {
     m_pJustdata->computeJustData();
 }
-
 
 void Mt310s2SenseRange::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
 {
@@ -146,7 +118,6 @@ void Mt310s2SenseRange::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd
         emit cmdExecutionDone(protoCmd);
 }
 
-
 QString Mt310s2SenseRange::m_ReadRangeType(QString &sInput)
 {
     cSCPICommand cmd = sInput;
@@ -158,11 +129,9 @@ QString Mt310s2SenseRange::m_ReadRangeType(QString &sInput)
 
 }
 
-
 QString Mt310s2SenseRange::m_ReadRangeAlias(QString &sInput)
 {
     cSCPICommand cmd = sInput;
-
     if (cmd.isQuery())
         return m_sAlias;
     else

@@ -20,3 +20,28 @@ SenseRangeCommon::SenseRangeCommon(cSCPI *scpiInterface,
     m_nSelCode(rselcode)
 {
 }
+
+QString &SenseRangeCommon::getName()
+{
+    return m_sName;
+}
+
+double SenseRangeCommon::getUrvalue() const
+{
+    return m_fRValue;
+}
+
+quint8 SenseRangeCommon::getSelCode() const
+{
+    return m_nSelCode;
+}
+
+bool SenseRangeCommon::getAvail() const
+{
+    return m_bAvail;
+}
+
+void SenseRangeCommon::setAvail(bool avail)
+{
+    m_bAvail = avail;
+}

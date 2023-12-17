@@ -17,15 +17,20 @@ public:
                      double ovrejection,
                      double adcrejection,
                      quint8 rselcode);
+    QString &getName(); // Ooohh - there are pointer kept
+    double getUrvalue() const;
+    quint8 getSelCode() const;
+    bool getAvail() const;
+    void setAvail(bool avail); // It is just for Com5003 - do we need this really?
 protected:
     QString m_sName; // the range name
-    QString m_sAlias; // the range alias name
+    const QString m_sAlias; // the range alias name
     bool m_bAvail; // range io avail or not
-    double m_fRValue; // upper range value
-    double m_fRejection; // 100% rejection value
-    double m_fOVRejection; // overload rejection value
-    double m_fADCRejection; // the adc's maximum rejection
-    quint8 m_nSelCode; // selection code
+    const double m_fRValue; // upper range value
+    const double m_fRejection; // 100% rejection value
+    const double m_fOVRejection; // overload rejection value
+    const double m_fADCRejection; // the adc's maximum rejection
+    const quint8 m_nSelCode; // selection code
 };
 
 #endif // SENSERANGECOMMON_H
