@@ -1,5 +1,6 @@
 #include "test_regression_sense_range_mt310s2.h"
 #include "mt310s2senseinterface.h"
+#include "zscpi_response_definitions.h"
 #include <QTest>
 
 QTEST_MAIN(test_regression_sense_range_mt310s2);
@@ -42,6 +43,14 @@ void test_regression_sense_range_mt310s2::checkAlias()
     cSCPIDelegate *scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
     scpiDelegate->executeSCPI(protoCmd);
     QCOMPARE((protoCmd->m_sOutput), "250AliasV");
+
+    QString scpiAliasCmd = "SENSE:m0:250V:ALIAS FOO;";
+    scpiObject = m_scpi->getSCPIObject(scpiAliasCmd);
+    QVERIFY(scpiObject != nullptr);
+    protoCmd = new cProtonetCommand(0, false, true, QByteArray(), 0, scpiAliasCmd);
+    scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
+    scpiDelegate->executeSCPI(protoCmd);
+    QCOMPARE((protoCmd->m_sOutput), ZSCPI::scpiAnswer[ZSCPI::nak]);
 }
 
 void test_regression_sense_range_mt310s2::checkAvail()
@@ -66,7 +75,7 @@ void test_regression_sense_range_mt310s2::checkAvail()
     protoCmd = new cProtonetCommand(0, false, true, QByteArray(), 0, scpiAvailCmd);
     scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
     scpiDelegate->executeSCPI(protoCmd);
-    QCOMPARE((protoCmd->m_sOutput), "nak");
+    QCOMPARE((protoCmd->m_sOutput), ZSCPI::scpiAnswer[ZSCPI::nak]);
 }
 
 void test_regression_sense_range_mt310s2::checkUrValue()
