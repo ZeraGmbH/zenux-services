@@ -33,7 +33,6 @@ public:
 protected:
     void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
     QString m_ReadRangeType(QString& sInput);
-    QString m_ReadRangeAvail(QString& sInput);
     QString m_ReadRangeValue(QString& sInput);
     QString m_ReadRangeRejection(QString& sInput);
     QString m_ReadRangeOVRejection(QString& sInput);

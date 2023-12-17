@@ -26,6 +26,7 @@ void SenseRangeCommon::initSCPIConnection(QString leadingNodes)
 {
     ensureTrailingColonOnNonEmptyParentNodes(leadingNodes);
     addDelegate(QString("%1%2").arg(leadingNodes, m_sName), "ALIAS", SCPI::isQuery, m_pSCPIInterface, SenseRange::cmdAlias);
+    addDelegate(QString("%1%2").arg(leadingNodes, m_sName), "AVAIL", SCPI::isQuery, m_pSCPIInterface, SenseRange::cmdAvail);
 }
 
 QString &SenseRangeCommon::getName()
@@ -58,6 +59,15 @@ QString SenseRangeCommon::handeScpiRangeAlias(QString &sInput)
     cSCPICommand cmd = sInput;
     if (cmd.isQuery())
         return m_sAlias;
+    else
+        return ZSCPI::scpiAnswer[ZSCPI::nak];
+}
+
+QString SenseRangeCommon::handeScpiRangeAvail(QString &sInput)
+{
+    cSCPICommand cmd = sInput;
+    if (cmd.isQuery())
+        return m_bAvail ? "1" : "0";
     else
         return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
