@@ -62,7 +62,6 @@ protected:
     bool importXMLDocument(QDomDocument* qdomdoc) override;
     void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
 private:
-    cMT310S2dServer* m_pMyServer;
     cSystemInfo* m_pSystemInfo;
 
     QList<Mt310s2SenseChannel*> m_ChannelList;

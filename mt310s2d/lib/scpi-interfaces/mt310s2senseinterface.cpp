@@ -30,7 +30,6 @@ Mt310s2SenseInterface::Mt310s2SenseInterface(cMT310S2dServer *server) :
     Mt310s2AdjFlash(server->m_pI2CSettings->getDeviceNode(),
               server->m_pI2CSettings->getI2CAdress(i2cSettings::flashlI2cAddress),
               I2cMultiplexerFactory::createNullMuxer()),
-    m_pMyServer(server),
     m_pSystemInfo(server->m_pSystemInfo)
 {
     // Init with bad defaults so coder's bugs pop up
