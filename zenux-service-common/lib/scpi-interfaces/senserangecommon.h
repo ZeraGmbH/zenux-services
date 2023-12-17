@@ -39,6 +39,7 @@ public:
     void setAvail(bool avail); // It is just for Com5003 - do we need this really?
 protected:
     QString handeScpiRangeAlias(QString& sInput);
+    QString handeScpiRangeAvail(QString& sInput);
 
 
     QString m_sName; // the range name
