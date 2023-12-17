@@ -4,20 +4,6 @@
 #include "senserangecommon.h"
 #include "mt310s2justdata.h"
 
-namespace SenseRange
-{
-enum Commands
-{
-    cmdType,
-    cmdAlias,
-    cmdAvail,
-    cmdValue,
-    cmdRejection,
-    cmdOVRejection,
-    cmdADWRejection
-};
-}
-
 class Mt310s2SenseRange: public SenseRangeCommon
 {
     Q_OBJECT

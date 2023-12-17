@@ -4,19 +4,6 @@
 #include "senserangecommon.h"
 #include "com5003justdata.h"
 
-namespace SenseRange
-{
-enum Commands
-{
-    cmdType,
-    cmdAlias,
-    cmdAvail,
-    cmdValue,
-    cmdRejection,
-    cmdOVRejection,
-    cmdADCRejection
-};
-}
 
 class Atmel;
 

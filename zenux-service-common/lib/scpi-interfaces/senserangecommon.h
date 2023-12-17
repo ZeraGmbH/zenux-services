@@ -4,6 +4,20 @@
 #include "scpiconnection.h"
 #include "adjustmentstatusinterface.h"
 
+namespace SenseRange
+{
+enum Commands
+{
+    cmdType,
+    cmdAlias,
+    cmdAvail,
+    cmdValue,
+    cmdRejection,
+    cmdOVRejection,
+    cmdADCRejection
+};
+}
+
 class SenseRangeCommon : public ScpiConnection, public AdjustmentStatusInterface
 {
     Q_OBJECT

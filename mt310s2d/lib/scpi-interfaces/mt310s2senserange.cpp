@@ -47,7 +47,7 @@ void Mt310s2SenseRange::initSCPIConnection(QString leadingNodes)
     addDelegate(QString("%1%2").arg(leadingNodes).arg(m_sName),"URVALUE",SCPI::isQuery, m_pSCPIInterface, SenseRange::cmdValue);
     addDelegate(QString("%1%2").arg(leadingNodes).arg(m_sName),"REJECTION",SCPI::isQuery, m_pSCPIInterface, SenseRange::cmdRejection);
     addDelegate(QString("%1%2").arg(leadingNodes).arg(m_sName),"OVREJECTION",SCPI::isQuery, m_pSCPIInterface, SenseRange::cmdOVRejection);
-    addDelegate(QString("%1%2").arg(leadingNodes).arg(m_sName),"ADCREJECTION",SCPI::isQuery, m_pSCPIInterface, SenseRange::cmdADWRejection);
+    addDelegate(QString("%1%2").arg(leadingNodes).arg(m_sName),"ADCREJECTION",SCPI::isQuery, m_pSCPIInterface, SenseRange::cmdADCRejection);
 
     connect(m_pJustdata, &ScpiConnection::cmdExecutionDone, this, &ScpiConnection::cmdExecutionDone);
     m_pJustdata->initSCPIConnection(QString("%1%2").arg(leadingNodes).arg(m_sName));
@@ -109,7 +109,7 @@ void Mt310s2SenseRange::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd
     case SenseRange::cmdOVRejection:
         protoCmd->m_sOutput = m_ReadRangeOVRejection(protoCmd->m_sInput);
         break;
-    case SenseRange::cmdADWRejection:
+    case SenseRange::cmdADCRejection:
         protoCmd->m_sOutput = m_ReadRangeADWRejection(protoCmd->m_sInput);
         break;
     }
