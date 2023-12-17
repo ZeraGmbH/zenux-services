@@ -31,7 +31,6 @@ public:
     cSamplingInterface(cSCPI *scpiInterface, SamplingSettings *samplingSettings);
     virtual void initSCPIConnection(QString leadingNodes) override;
     virtual void registerResource(RMConnection *rmConnection, quint16 port) override;
-    virtual void unregisterResource(RMConnection *rmConnection) override;
 protected:
     void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
 private:

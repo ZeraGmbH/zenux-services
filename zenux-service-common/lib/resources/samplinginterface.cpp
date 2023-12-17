@@ -52,11 +52,6 @@ void cSamplingInterface::registerResource(RMConnection *rmConnection, quint16 po
     register1Resource(rmConnection, NotZeroNumGen::getMsgNr(), QString("SAMPLE;%1;1;%2;%3;").arg(m_sName).arg(m_sDescription).arg(port));
 }
 
-void cSamplingInterface::unregisterResource(RMConnection *rmConnection)
-{
-    unregister1Resource(rmConnection, NotZeroNumGen::getMsgNr(), QString("SAMPLE;%1;").arg(m_sName));
-}
-
 void cSamplingInterface::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
 {
     switch (cmdCode)

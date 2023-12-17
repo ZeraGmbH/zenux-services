@@ -13,7 +13,6 @@ public:
     cResource(cSCPI *scpiInterface);
     virtual ~cResource() = default;
     virtual void registerResource(RMConnection *rmConnection, quint16 port) = 0;
-    virtual void unregisterResource(RMConnection *rmConnection) = 0;
 signals:
     void registerRdy(); // we emit signal when all register or unregister action is done
 public slots:

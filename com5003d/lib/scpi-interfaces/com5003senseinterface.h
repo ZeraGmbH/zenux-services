@@ -59,7 +59,6 @@ public:
     virtual void exportAdjData(QDomDocument& doc, QDomElement& qde) override; // the derived class exports adjdata beneath qdomelement
     virtual bool importAdjData(QDomNode& node) override;
     virtual void registerResource(RMConnection *rmConnection, quint16 port) override;
-    virtual void unregisterResource(RMConnection *rmConnection) override;
 
 protected:
     void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;

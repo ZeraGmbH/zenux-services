@@ -54,7 +54,6 @@ public:
     Mt310s2SenseRange* getRange(QString channelName, QString rangeName);
     virtual quint8 getAdjustmentStatus() override; // we return 0 if adj. otherwise  1 +2 +4
     virtual void registerResource(RMConnection *rmConnection, quint16 port) override;
-    virtual void unregisterResource(RMConnection *rmConnection) override;
     virtual QString exportXMLString(int indent = 1) override;
     void m_ComputeSenseAdjData();
 protected:

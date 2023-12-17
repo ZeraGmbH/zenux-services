@@ -95,12 +95,6 @@ void SecGroupResourceAndInterface::registerResource(RMConnection *rmConnection, 
 }
 
 
-void SecGroupResourceAndInterface::unregisterResource(RMConnection *rmConnection)
-{
-    unregister1Resource(rmConnection, NotZeroNumGen::getMsgNr(), QString("SEC1;ECALCULATOR;"));
-}
-
-
 QList<SecChannel *> SecGroupResourceAndInterface::getECalcChannelList()
 {
     return m_ECalculatorChannelList;

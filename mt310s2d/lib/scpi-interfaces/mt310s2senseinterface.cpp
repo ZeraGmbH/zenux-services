@@ -686,15 +686,6 @@ void Mt310s2SenseInterface::registerResource(RMConnection *rmConnection, quint16
 
 }
 
-void Mt310s2SenseInterface::unregisterResource(RMConnection *rmConnection)
-{
-    msgNrList.clear();
-    for(auto channel : qAsConst(m_ChannelList)) {
-        unregister1Resource(rmConnection, NotZeroNumGen::getMsgNr(), QString("SENSE;%1;")
-                         .arg(channel->getName()));
-    }
-}
-
 QString Mt310s2SenseInterface::m_ReadVersion(QString &sInput)
 {
     cSCPICommand cmd = sInput;

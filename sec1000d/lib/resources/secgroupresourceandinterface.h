@@ -37,7 +37,6 @@ public:
     ~SecGroupResourceAndInterface();
     void initSCPIConnection(QString leadingNodes) override;
     virtual void registerResource(RMConnection *rmConnection, quint16 port) override;
-    virtual void unregisterResource(RMConnection *rmConnection) override;
     QList<SecChannel*> getECalcChannelList();
     bool freeChannelsForThisPeer(XiQNetPeer *peer);
 protected:

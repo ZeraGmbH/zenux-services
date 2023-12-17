@@ -42,12 +42,6 @@ void HkInGroupResourceAndInterface::registerResource(RMConnection *rmConnection,
         register1Resource(rmConnection, NotZeroNumGen::getMsgNr(), QString("HKEY;%1;1;%2;%3;").arg(channel->getName()).arg(channel->getDescription()).arg(port));
 }
 
-void HkInGroupResourceAndInterface::unregisterResource(RMConnection *rmConnection)
-{
-    for(auto channel : qAsConst(m_ChannelList))
-        unregister1Resource(rmConnection, NotZeroNumGen::getMsgNr(), QString("HKEY;%1;").arg(channel->getName()));
-}
-
 void HkInGroupResourceAndInterface::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
 {
     switch (cmdCode)

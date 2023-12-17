@@ -467,19 +467,6 @@ void Com5003SenseInterface::registerResource(RMConnection *rmConnection, quint16
 }
 
 
-void Com5003SenseInterface::unregisterResource(RMConnection *rmConnection)
-{
-    Com5003SenseChannel* pChannel;
-    msgNrList.clear();
-    for (int i = 0; i < 6; i++)
-    {
-        pChannel = m_ChannelList.at(i);
-        unregister1Resource(rmConnection, NotZeroNumGen::getMsgNr(), QString("SENSE;%1;")
-                         .arg(pChannel->getName()));
-    }
-}
-
-
 QString Com5003SenseInterface::m_ReadVersion(QString &sInput)
 {
     cSCPICommand cmd = sInput;
@@ -684,7 +671,14 @@ void Com5003SenseInterface::setNotifierSenseChannelCat()
 
 void Com5003SenseInterface::unregisterSense()
 {
-    unregisterResource(m_pMyServer->m_pRMConnection);
+    Com5003SenseChannel* pChannel;
+    msgNrList.clear();
+    for (int i = 0; i < 6; i++)
+    {
+        pChannel = m_ChannelList.at(i);
+        unregister1Resource(m_pMyServer->m_pRMConnection, NotZeroNumGen::getMsgNr(), QString("SENSE;%1;")
+                                                                         .arg(pChannel->getName()));
+    }
 }
 
 
