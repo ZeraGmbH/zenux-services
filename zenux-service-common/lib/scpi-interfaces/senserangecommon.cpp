@@ -1,4 +1,5 @@
 #include "senserangecommon.h"
+#include "zscpi_response_definitions.h"
 
 SenseRangeCommon::SenseRangeCommon(cSCPI *scpiInterface,
                                    QString name,
@@ -19,6 +20,12 @@ SenseRangeCommon::SenseRangeCommon(cSCPI *scpiInterface,
     m_fADCRejection(adcrejection),
     m_nSelCode(rselcode)
 {
+}
+
+void SenseRangeCommon::initSCPIConnection(QString leadingNodes)
+{
+    ensureTrailingColonOnNonEmptyParentNodes(leadingNodes);
+    addDelegate(QString("%1%2").arg(leadingNodes, m_sName), "ALIAS", SCPI::isQuery, m_pSCPIInterface, SenseRange::cmdAlias);
 }
 
 QString &SenseRangeCommon::getName()
@@ -44,4 +51,13 @@ bool SenseRangeCommon::getAvail() const
 void SenseRangeCommon::setAvail(bool avail)
 {
     m_bAvail = avail;
+}
+
+QString SenseRangeCommon::handeScpiRangeAlias(QString &sInput)
+{
+    cSCPICommand cmd = sInput;
+    if (cmd.isQuery())
+        return m_sAlias;
+    else
+        return ZSCPI::scpiAnswer[ZSCPI::nak];
 }

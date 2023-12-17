@@ -31,12 +31,16 @@ public:
                      double ovrejection,
                      double adcrejection,
                      quint8 rselcode);
+    void initSCPIConnection(QString leadingNodes) override;
     QString &getName(); // Ooohh - there are pointer kept
     double getUrvalue() const;
     quint8 getSelCode() const;
     bool getAvail() const;
     void setAvail(bool avail); // It is just for Com5003 - do we need this really?
 protected:
+    QString handeScpiRangeAlias(QString& sInput);
+
+
     QString m_sName; // the range name
     const QString m_sAlias; // the range alias name
     bool m_bAvail; // range io avail or not

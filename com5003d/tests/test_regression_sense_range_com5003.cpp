@@ -1,5 +1,5 @@
 #include "test_regression_sense_range_com5003.h"
-#include "com5003senseinterface.h"
+#include "zscpi_response_definitions.h"
 #include <QTest>
 
 QTEST_MAIN(test_regression_sense_range_com5003);
@@ -40,6 +40,13 @@ void test_regression_sense_range_com5003::checkAlias()
     scpiDelegate->executeSCPI(protoCmd);
     QCOMPARE((protoCmd->m_sOutput), "240AliasV");
 
+    QString scpiAliasCmd = "SENSE:m0:240V:ALIAS FOO;";
+    scpiObject = m_scpi->getSCPIObject(scpiAliasCmd);
+    QVERIFY(scpiObject != nullptr);
+    protoCmd = new cProtonetCommand(0, false, true, QByteArray(), 0, scpiAliasCmd);
+    scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
+    scpiDelegate->executeSCPI(protoCmd);
+    QCOMPARE((protoCmd->m_sOutput), ZSCPI::scpiAnswer[ZSCPI::nak]);
 }
 
 void test_regression_sense_range_com5003::checkAvail()
@@ -64,7 +71,7 @@ void test_regression_sense_range_com5003::checkAvail()
     protoCmd = new cProtonetCommand(0, false, true, QByteArray(), 0, scpiAvailCmd);
     scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
     scpiDelegate->executeSCPI(protoCmd);
-    QCOMPARE((protoCmd->m_sOutput), "nak");
+    QCOMPARE((protoCmd->m_sOutput), ZSCPI::scpiAnswer[ZSCPI::nak]);
 }
 
 void test_regression_sense_range_com5003::checkUrValue()
