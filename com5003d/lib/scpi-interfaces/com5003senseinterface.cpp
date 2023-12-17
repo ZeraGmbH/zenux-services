@@ -2,7 +2,6 @@
 #include "resource.h"
 #include "notzeronumgen.h"
 #include "com5003senseinterface.h"
-#include "com5003d.h"
 #include "justdatainterface.h"
 #include "com5003sensechannel.h"
 #include "com5003senserange.h"
@@ -20,18 +19,17 @@
 #include <QDomText>
 #include <QDebug>
 
-Com5003SenseInterface::Com5003SenseInterface(cCOM5003dServer *server) :
-    cResource(server->getSCPIInterface())
+Com5003SenseInterface::Com5003SenseInterface(cSCPI *scpiInterface, RMConnection* rmConnection, EthSettings *ethSettings, cSenseSettings *senseSettings) :
+    cResource(scpiInterface),
+    m_rmConnection(rmConnection),
+    m_ethSettings(ethSettings)
 {
-    int i;
-
-    m_pMyServer = server;
     m_nMMode = SenseSystem::modeAC; // default ac measurement
     Atmel::getInstance().setMeasMode(m_nMMode); // set the atmels mode too
     setNotifierSenseMMode();
 
     QList<SenseSystem::cChannelSettings*> channelSettings;
-    channelSettings = server->m_pSenseSettings->getChannelSettings();
+    channelSettings = senseSettings->getChannelSettings();
 
     // default our sense has 3 voltage and 3 current measuring channels
     Com5003SenseChannel* pChannel;
@@ -50,6 +48,7 @@ Com5003SenseInterface::Com5003SenseInterface(cCOM5003dServer *server) :
 
     QList<Com5003SenseRange*> rngList;
 
+    int i;
     for (i = 0; i < 3; i++)
     {
         rngList.clear();
@@ -676,7 +675,7 @@ void Com5003SenseInterface::unregisterSense()
     for (int i = 0; i < 6; i++)
     {
         pChannel = m_ChannelList.at(i);
-        unregister1Resource(m_pMyServer->m_pRMConnection, NotZeroNumGen::getMsgNr(), QString("SENSE;%1;")
+        unregister1Resource(m_rmConnection, NotZeroNumGen::getMsgNr(), QString("SENSE;%1;")
                                                                          .arg(pChannel->getName()));
     }
 }
@@ -724,7 +723,7 @@ void Com5003SenseInterface::registerSense()
             list.at(j)->setAvail( !list.at(j)->getAvail()); // we only toggle the ranges avail
 
     }
-    registerResource(m_pMyServer->m_pRMConnection, m_pMyServer->m_ethSettings.getPort(EthSettings::protobufserver));
+    registerResource(m_rmConnection, m_ethSettings->getPort(EthSettings::protobufserver));
 }
 
 void Com5003SenseInterface::notifySense()

@@ -4,7 +4,7 @@
 #include "com5003adjflash.h"
 #include "com5003adjxml.h"
 #include "resource.h"
-#include "scpiconnection.h"
+#include "ethsettings.h"
 #include "com5003sensechannel.h"
 #include "notificationstring.h"
 #include <QList>
@@ -42,14 +42,12 @@ const QString sMeasuringModeDescription = "Measuring mode switch AC,REF";
 const QString sMMode[2] = {"AC", "REF"};
 }
 
-class cCOM5003dServer;
-
 class Com5003SenseInterface : public cResource, public Com5003AdjFlash, public Com5003AdjXML
 {
     Q_OBJECT
 
 public:
-    Com5003SenseInterface(cCOM5003dServer* server);
+    Com5003SenseInterface(cSCPI *scpiInterface, RMConnection* rmConnection, EthSettings* ethSettings, cSenseSettings* senseSettings);
     ~Com5003SenseInterface();
     virtual void initSCPIConnection(QString leadingNodes) override;
     Com5003SenseChannel* getChannel(QString& name);
@@ -64,7 +62,8 @@ protected:
     void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
 
 private:
-    cCOM5003dServer* m_pMyServer;
+    RMConnection* m_rmConnection;
+    EthSettings* m_ethSettings;
     QList<Com5003SenseChannel*> m_ChannelList;
     QString m_sVersion;
     quint8 m_nMMode;
@@ -93,8 +92,6 @@ private slots:
     void unregisterSense();
     void registerSense();
     void notifySense();
-
-
 };
 
 #endif // SENSEINTERFACE_H
