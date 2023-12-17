@@ -6,21 +6,31 @@
 #include <scpicommand.h>
 
 
-Mt310s2SenseRange::Mt310s2SenseRange(cSCPI *scpiinterface, QString name, QString alias, bool avail, double rValue, double rejection, double ovrejection, double adcrejection, quint8 rselcode, quint16 mmask, Mt310s2JustRangeTripletOffsetGainPhase* justdata) :
-    ScpiConnection(scpiinterface),
-    m_sName(name),
-    m_sAlias(alias),
-    m_bAvail(avail),
-    m_fRValue(rValue),
-    m_fRejection(rejection),
-    m_fOVRejection(ovrejection),
-    m_fADCRejection(adcrejection),
-    m_nSelCode(rselcode),
+Mt310s2SenseRange::Mt310s2SenseRange(cSCPI *scpiinterface,
+                                     QString name,
+                                     QString alias,
+                                     bool avail,
+                                     double rValue,
+                                     double rejection,
+                                     double ovrejection,
+                                     double adcrejection,
+                                     quint8 rselcode,
+                                     quint16 mmask,
+                                     Mt310s2JustRangeTripletOffsetGainPhase* justdata) :
+    SenseRangeCommon(
+        scpiinterface,
+        name,
+        alias,
+        avail,
+        rValue,
+        rejection,
+        ovrejection,
+        adcrejection,
+        rselcode),
     m_nMMask(mmask),
     m_pJustdata(justdata)
 {
 }
-
 
 Mt310s2SenseRange::~Mt310s2SenseRange()
 {

@@ -3,17 +3,24 @@
 #include "zscpi_response_definitions.h"
 
 Com5003SenseRange::Com5003SenseRange(cSCPI *scpiinterface,
-                         QString name, QString alias,
-                         bool avail, double rValue, double rejection, double ovrejection, double adcrejection, quint8 rselcode) :
-    ScpiConnection(scpiinterface),
-    m_sName(name),
-    m_sAlias(alias),
-    m_bAvail(avail),
-    m_fRValue(rValue),
-    m_fRejection(rejection),
-    m_fOVRejection(ovrejection),
-    m_fADCRejection(adcrejection),
-    m_nSelCode(rselcode)
+                                     QString name,
+                                     QString alias,
+                                     bool avail,
+                                     double rValue,
+                                     double rejection,
+                                     double ovrejection,
+                                     double adcrejection,
+                                     quint8 rselcode) :
+    SenseRangeCommon(
+        scpiinterface,
+        name,
+        alias,
+        avail,
+        rValue,
+        rejection,
+        ovrejection,
+        adcrejection,
+        rselcode)
 {
     m_pJustdata = new Com5003JustRangeTripletOffsetGainPhase(m_pSCPIInterface);
 }

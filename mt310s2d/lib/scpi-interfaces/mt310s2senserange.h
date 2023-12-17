@@ -1,10 +1,8 @@
 #ifndef SENSERANGE_H
 #define SENSERANGE_H
 
-#include "scpiconnection.h"
+#include "senserangecommon.h"
 #include "mt310s2justdata.h"
-#include "adjustmentstatusinterface.h"
-#include <scpi.h>
 
 namespace SenseRange
 {
@@ -20,25 +18,21 @@ enum Commands
 };
 }
 
-class cMTJustData;
-class cSCPI;
-
-class Mt310s2SenseRange: public ScpiConnection, public AdjustmentStatusInterface
+class Mt310s2SenseRange: public SenseRangeCommon
 {
     Q_OBJECT
-
 public:
     Mt310s2SenseRange(cSCPI* scpiinterface,
-                QString name,
-                QString alias,
-                bool avail,
-                double rValue,
-                double rejection,
-                double ovrejection,
-                double adcrejection,
-                quint8 rselcode,
-                quint16 mmask,
-                Mt310s2JustRangeTripletOffsetGainPhase* justdata);
+                      QString name,
+                      QString alias,
+                      bool avail,
+                      double rValue,
+                      double rejection,
+                      double ovrejection,
+                      double adcrejection,
+                      quint8 rselcode,
+                      quint16 mmask,
+                      Mt310s2JustRangeTripletOffsetGainPhase* justdata);
     ~Mt310s2SenseRange();
     virtual void initSCPIConnection(QString leadingNodes) override;
     quint8 getAdjustmentStatus() override;
@@ -64,14 +58,6 @@ protected:
     QString m_ReadRangeOVRejection(QString& sInput);
     QString m_ReadRangeADWRejection(QString& sInput);
 
-    QString m_sName; // the range name
-    QString m_sAlias; // the range alias name
-    bool m_bAvail; // range io avail or not
-    double m_fRValue; // upper range value
-    double m_fRejection; // 100% rejection value
-    double m_fOVRejection; // overload rejection value
-    double m_fADCRejection; // the adc's maximum rejection
-    quint8 m_nSelCode; // selection code
     quint16 m_nMMask; // the possible measuring modes for this range
     quint8 m_nMMode; // the actual measuring mode
     Mt310s2JustRangeTripletOffsetGainPhase* m_pJustdata;

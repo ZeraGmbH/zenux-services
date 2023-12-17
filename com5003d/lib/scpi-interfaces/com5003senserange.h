@@ -1,10 +1,8 @@
 #ifndef SENSERANGE_H
 #define SENSERANGE_H
 
-#include "scpiconnection.h"
+#include "senserangecommon.h"
 #include "com5003justdata.h"
-#include "adjustmentstatusinterface.h"
-#include <scpi.h>
 
 namespace SenseRange
 {
@@ -22,10 +20,9 @@ enum Commands
 
 class Atmel;
 
-class Com5003SenseRange : public ScpiConnection, public AdjustmentStatusInterface
+class Com5003SenseRange : public SenseRangeCommon
 {
     Q_OBJECT
-
 public:
     Com5003SenseRange(cSCPI *scpiinterface,
                 QString name,
@@ -55,14 +52,6 @@ protected:
 
 private:
     Atmel* m_pATMEL;
-    QString m_sName; // the range name
-    QString m_sAlias; // the range alias name
-    bool m_bAvail; // range io avail or not
-    double m_fRValue; // upper range value
-    double m_fRejection; // 100% rejection value
-    double m_fOVRejection; // overload rejection value
-    double m_fADCRejection; // the adc's maximum rejection
-    quint8 m_nSelCode; // selection code
     Com5003JustRangeTripletOffsetGainPhase* m_pJustdata;
 
     QString m_ReadRangeType(QString& sInput);
