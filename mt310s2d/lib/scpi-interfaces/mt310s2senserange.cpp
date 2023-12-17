@@ -43,7 +43,6 @@ void Mt310s2SenseRange::initSCPIConnection(QString leadingNodes)
     SenseRangeCommon::initSCPIConnection(leadingNodes);
     ensureTrailingColonOnNonEmptyParentNodes(leadingNodes);
     addDelegate(QString("%1%2").arg(leadingNodes).arg(m_sName),"TYPE",SCPI::isQuery, m_pSCPIInterface, SenseRange::cmdType);
-    addDelegate(QString("%1%2").arg(leadingNodes).arg(m_sName),"URVALUE",SCPI::isQuery, m_pSCPIInterface, SenseRange::cmdValue);
     addDelegate(QString("%1%2").arg(leadingNodes).arg(m_sName),"REJECTION",SCPI::isQuery, m_pSCPIInterface, SenseRange::cmdRejection);
     addDelegate(QString("%1%2").arg(leadingNodes).arg(m_sName),"OVREJECTION",SCPI::isQuery, m_pSCPIInterface, SenseRange::cmdOVRejection);
     addDelegate(QString("%1%2").arg(leadingNodes).arg(m_sName),"ADCREJECTION",SCPI::isQuery, m_pSCPIInterface, SenseRange::cmdADCRejection);
@@ -99,8 +98,8 @@ void Mt310s2SenseRange::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd
     case SenseRange::cmdAvail:
         protoCmd->m_sOutput = handeScpiRangeAvail(protoCmd->m_sInput);
         break;
-    case SenseRange::cmdValue:
-        protoCmd->m_sOutput = m_ReadRangeValue(protoCmd->m_sInput);
+    case SenseRange::cmdUpperRangeValue:
+        protoCmd->m_sOutput = handeScpiRangeUpperRangeValue(protoCmd->m_sInput);
         break;
     case SenseRange::cmdRejection:
         protoCmd->m_sOutput = m_ReadRangeRejection(protoCmd->m_sInput);
@@ -127,17 +126,6 @@ QString Mt310s2SenseRange::m_ReadRangeType(QString &sInput)
         return ZSCPI::scpiAnswer[ZSCPI::nak];
 
 }
-
-QString Mt310s2SenseRange::m_ReadRangeValue(QString &sInput)
-{
-    cSCPICommand cmd = sInput;
-
-    if (cmd.isQuery())
-        return QString("%1").arg(m_fRValue);
-    else
-        return ZSCPI::scpiAnswer[ZSCPI::nak];
-}
-
 
 QString Mt310s2SenseRange::m_ReadRangeRejection(QString &sInput)
 {

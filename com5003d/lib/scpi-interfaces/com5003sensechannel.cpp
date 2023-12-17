@@ -378,7 +378,7 @@ QString Com5003SenseChannel::m_ReadUrvalue(QString &sInput)
         for (i = 0; i < m_RangeList.count(); i++)
             if (m_RangeList.at(i)->getName() == notifierSenseChannelRange.getString())
                 break;
-        return QString("%1").arg(m_RangeList.at(i)->getUrvalue());
+        return QString("%1").arg(m_RangeList.at(i)->getUpperRangevalue());
     }
 
     else

@@ -37,7 +37,6 @@ private:
     Com5003JustRangeTripletOffsetGainPhase* m_pJustdata;
 
     QString m_ReadRangeType(QString& sInput);
-    QString m_ReadRangeValue(QString& sInput);
     QString m_ReadRangeRejection(QString& sInput);
     QString m_ReadRangeOVRejection(QString& sInput);
     QString m_ReadRangeADCRejection(QString& sInput);
