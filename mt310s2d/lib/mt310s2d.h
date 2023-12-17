@@ -17,10 +17,9 @@
 #include "accumulatorinterface.h"
 #include "mt310s2systeminfo.h"
 #include "atmelwatcherinterface.h"
+#include <QStateMachine>
 #include <QTimer>
 
-class QStateMachine;
-class QState;
 class cStatusInterface;
 class Mt310s2SystemInterface;
 class Mt310s2SenseInterface;
@@ -36,38 +35,13 @@ class cClampInterface;
 class cMT310S2dServer: public cPCBServer
 {
     Q_OBJECT
-
 public:
     explicit cMT310S2dServer(ServerParams params = defaultParams);
     ~cMT310S2dServer();
 
-    cDebugSettings* m_pDebugSettings;
-    FPGASettings* m_fpgaMsgSettings;
-    cCtrlSettings* m_fpgaCtrlSettings;
-    cStatusInterface* m_pStatusInterface;
-    cI2CSettings* m_pI2CSettings;
-    cSenseSettings* m_pSenseSettings;
-    HkInSettings* m_hkInSettings;
-    ScInSettings* m_pSCHeadSettings;
-    FInSettings* m_finSettings;
-    FOutSettings* m_foutSettings;
-    SamplingSettings* m_pSamplingSettings;
-    AccumulatorSettings* m_accumulatorSettings;
-    Mt310s2SystemInterface* m_pSystemInterface;
-    Mt310s2SenseInterface* m_pSenseInterface;
-    cSamplingInterface* m_pSamplingInterface;
-    FOutGroupResourceAndInterface* m_foutInterface;
-    FInGroupResourceAndInterface* m_pFRQInputInterface;
-    ScInGroupResourceAndInterface* m_pSCHeadInterface;
-    HkInGroupResourceAndInterface* m_hkInInterface;
     Mt310s2SystemInfo* m_pSystemInfo;
-    Mt310s2Adjustment* m_pAdjHandler;
-    RMConnection* m_pRMConnection;
-    cClampInterface* m_pClampInterface;
-    AccumulatorInterface* m_accumulatorInterface;
-
-    quint16 m_atmelInterruptMask = 0;
-    quint16 m_atmelSysCntrlInterruptMask = 0;
+    cSenseSettings* m_pSenseSettings;
+    Mt310s2SenseInterface* m_pSenseInterface;
 
 signals:
     void abortInit();
@@ -75,23 +49,6 @@ signals:
     void confFinished();
     void atmelRunning();
     void sigServerIsSetUp();
-
-private:
-    static ServerParams defaultParams;
-    ServerParams m_params;
-    QStateMachine* m_pInitializationMachine;
-    QState* m_stateconnect2RM;
-    QState* m_stateconnect2RMError;
-    QState* m_stateSendRMIdentAndRegister;
-    AtmelWatcherInterfacePrt m_atmelWatcher;
-    quint8 m_nerror;
-    int m_retryRMConnect;
-    QTimer m_retryTimer;
-    QSocketNotifier* m_pNotifier;
-    void SetFASync();
-    void enableClampInterrupt();
-    void enableAccumulatorInterrupt();
-    void updateI2cDevicesConnected();
 
 private slots:
     void MTIntHandler(int);
@@ -102,6 +59,49 @@ private slots:
     void doConnect2RM();
     void connect2RMError();
     void doIdentAndRegister();
+private:
+    void SetFASync();
+    void enableClampInterrupt();
+    void enableAccumulatorInterrupt();
+    void updateI2cDevicesConnected();
+
+    static ServerParams defaultParams;
+    ServerParams m_params;
+
+    cDebugSettings* m_pDebugSettings;
+    FPGASettings* m_fpgaMsgSettings;
+    cCtrlSettings* m_fpgaCtrlSettings;
+    cStatusInterface* m_pStatusInterface;
+    cI2CSettings* m_pI2CSettings;
+    HkInSettings* m_hkInSettings;
+    ScInSettings* m_pSCHeadSettings;
+    FInSettings* m_finSettings;
+    FOutSettings* m_foutSettings;
+    SamplingSettings* m_pSamplingSettings;
+    AccumulatorSettings* m_accumulatorSettings;
+    Mt310s2SystemInterface* m_pSystemInterface;
+    cSamplingInterface* m_pSamplingInterface;
+    FOutGroupResourceAndInterface* m_foutInterface;
+    FInGroupResourceAndInterface* m_pFRQInputInterface;
+    ScInGroupResourceAndInterface* m_pSCHeadInterface;
+    HkInGroupResourceAndInterface* m_hkInInterface;
+    Mt310s2Adjustment* m_pAdjHandler;
+    RMConnection* m_pRMConnection;
+    cClampInterface* m_pClampInterface;
+    AccumulatorInterface* m_accumulatorInterface;
+
+    quint16 m_atmelInterruptMask = 0;
+    quint16 m_atmelSysCntrlInterruptMask = 0;
+
+    QStateMachine* m_pInitializationMachine;
+    QState* m_stateconnect2RM;
+    QState* m_stateconnect2RMError;
+    QState* m_stateSendRMIdentAndRegister;
+    AtmelWatcherInterfacePrt m_atmelWatcher;
+    quint8 m_nerror;
+    int m_retryRMConnect;
+    QTimer m_retryTimer;
+    QSocketNotifier* m_pNotifier;
 };
 
 

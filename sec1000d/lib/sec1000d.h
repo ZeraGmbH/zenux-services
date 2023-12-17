@@ -28,6 +28,25 @@ public:
     ~cSEC1000dServer();
     QString getServerVersion();
 
+signals:
+    void abortInit();
+    void confStarting();
+    void confFinished();
+    void sigServerIsSetUp();
+
+private slots:
+    void SECIntHandler(int);
+    void doConfiguration();
+    void doSetupServer();
+    void doCloseServer();
+    void doConnect2RM();
+    void connect2RMError();
+    void doIdentAndRegister();
+    void onPeerDisconnected();
+private:
+    static ServerParams defaultParams;
+    ServerParams m_params;
+
     cDebugSettings* m_pDebugSettings;
     FPGASettings* m_pFPGASettings;
     SecCalculatorSettings* m_pECalcSettings;
@@ -39,15 +58,6 @@ public:
     Sec1000SystemInfo* m_pSystemInfo;
     RMConnection* m_pRMConnection;
 
-signals:
-    void abortInit();
-    void confStarting();
-    void confFinished();
-    void sigServerIsSetUp();
-
-private:
-    static ServerParams defaultParams;
-    ServerParams m_params;
     QStateMachine* m_pInitializationMachine;
     QState* m_stateconnect2RM;
     QState* m_stateconnect2RMError;
@@ -58,15 +68,6 @@ private:
     QList<SecChannel*> m_ECalculatorChannelList;
     QSocketNotifier* m_pNotifier;
 
-private slots:
-    void SECIntHandler(int);
-    void doConfiguration();
-    void doSetupServer();
-    void doCloseServer();
-    void doConnect2RM();
-    void connect2RMError();
-    void doIdentAndRegister();
-    void onPeerDisconnected();
 };
 
 

@@ -37,6 +37,30 @@ public:
     explicit cCOM5003dServer(ServerParams params = defaultParams);
     ~cCOM5003dServer();
 
+    cSystemInfo* m_pSystemInfo;
+    Com5003Adjustment* m_pAdjHandler;
+
+signals:
+    void abortInit();
+    void confStarting();
+    void confFinished();
+    void atmelProgrammed();
+    void atmelRunning();
+    void sigServerIsSetUp();
+
+private slots:
+    void doConfiguration();
+    void programAtmelFlash();
+    void doWait4Atmel();
+    void doSetupServer();
+    void doCloseServer();
+    void doConnect2RM();
+    void connect2RMError();
+    void doIdentAndRegister();
+private:
+    static ServerParams defaultParams;
+    ServerParams m_params;
+
     cDebugSettings* m_pDebugSettings;
     FPGASettings* m_fpgaCtrlSettings;
     cStatusInterface* m_pStatusInterface;
@@ -54,22 +78,8 @@ public:
     FInGroupResourceAndInterface* m_pFRQInputInterface;
     ScInGroupResourceAndInterface* m_pSCHeadInterface;
     HkInGroupResourceAndInterface* m_hkInInterface;
-    cSystemInfo* m_pSystemInfo;
-    Com5003Adjustment* m_pAdjHandler;
     RMConnection* m_pRMConnection;
 
-
-signals:
-    void abortInit();
-    void confStarting();
-    void confFinished();
-    void atmelProgrammed();
-    void atmelRunning();
-    void sigServerIsSetUp();
-
-private:
-    static ServerParams defaultParams;
-    ServerParams m_params;
     QStateMachine* m_pInitializationMachine;
     QState* m_stateconnect2RM;
     QState* m_stateconnect2RMError;
@@ -80,15 +90,6 @@ private:
     int m_retryRMConnect;
     QTimer m_retryTimer;
 
-private slots:
-    void doConfiguration();
-    void programAtmelFlash();
-    void doWait4Atmel();
-    void doSetupServer();
-    void doCloseServer();
-    void doConnect2RM();
-    void connect2RMError();
-    void doIdentAndRegister();
 };
 
 

@@ -1,7 +1,6 @@
 #include "clamp.h"
 #include "mt310s2adjustment.h"
 #include "justdatainterface.h"
-#include "mt310s2d.h"
 #include "mt310s2senserange.h"
 #include "clampjustdata.h"
 #include "i2csettings.h"
