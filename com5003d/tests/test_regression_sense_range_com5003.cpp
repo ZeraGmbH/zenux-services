@@ -15,8 +15,7 @@ void test_regression_sense_range_com5003::init()
                                     2.2,
                                     3.3,
                                     4.4,
-                                    5,
-                                    SenseRange::Phys);
+                                    5);
     m_range->initSCPIConnection("SENSE:m0");
 }
 

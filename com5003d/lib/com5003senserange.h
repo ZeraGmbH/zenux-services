@@ -40,8 +40,7 @@ public:
                 double rejection,
                 double ovrejection,
                 double adcrejection,
-                quint8 rselcode,
-                quint8 rspec);
+                quint8 rselcode);
     ~Com5003SenseRange();
     virtual void initSCPIConnection(QString leadingNodes) override;
     quint8 getAdjustmentStatus() override;

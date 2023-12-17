@@ -4,7 +4,7 @@
 
 Com5003SenseRange::Com5003SenseRange(cSCPI *scpiinterface,
                          QString name, QString alias,
-                         bool avail, double rValue, double rejection, double ovrejection, double adcrejection, quint8 rselcode, quint8 rspec) :
+                         bool avail, double rValue, double rejection, double ovrejection, double adcrejection, quint8 rselcode) :
     ScpiConnection(scpiinterface),
     m_sName(name),
     m_sAlias(alias),
@@ -14,7 +14,7 @@ Com5003SenseRange::Com5003SenseRange(cSCPI *scpiinterface,
     m_fOVRejection(ovrejection),
     m_fADCRejection(adcrejection),
     m_nSelCode(rselcode),
-    m_nRSpec(rspec)
+    m_nRSpec(SenseRange::Phys)
 {
     m_pJustdata = new Com5003JustRangeTripletOffsetGainPhase(m_pSCPIInterface);
 }
