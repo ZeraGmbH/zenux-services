@@ -55,6 +55,27 @@ void SenseRangeCommon::setAvail(bool avail)
     m_bAvail = avail;
 }
 
+bool SenseRangeCommon::execScpi(int cmdCode, cProtonetCommand *protoCmd)
+{
+    bool handled = false;
+    switch (cmdCode)
+    {
+    case SenseRange::cmdAlias:
+        handled = true;
+        protoCmd->m_sOutput = handeScpiRangeAlias(protoCmd->m_sInput);
+        break;
+    case SenseRange::cmdAvail:
+        handled = true;
+        protoCmd->m_sOutput = handeScpiRangeAvail(protoCmd->m_sInput);
+        break;
+    case SenseRange::cmdUpperRangeValue:
+        handled = true;
+        protoCmd->m_sOutput = handeScpiRangeUpperRangeValue(protoCmd->m_sInput);
+        break;
+    }
+    return handled;
+}
+
 QString SenseRangeCommon::handeScpiRangeAlias(QString &sInput)
 {
     cSCPICommand cmd = sInput;

@@ -25,26 +25,25 @@ Com5003SenseRange::Com5003SenseRange(cSCPI *scpiinterface,
     m_pJustdata = new Com5003JustRangeTripletOffsetGainPhase(m_pSCPIInterface);
 }
 
-
 Com5003SenseRange::~Com5003SenseRange()
 {
     delete m_pJustdata;
 }
 
-
 void Com5003SenseRange::initSCPIConnection(QString leadingNodes)
 {
     SenseRangeCommon::initSCPIConnection(leadingNodes);
+
+    // the following are different from Mt310s2 so not yet ready to move to common
     ensureTrailingColonOnNonEmptyParentNodes(leadingNodes);
-    addDelegate(QString("%1%2").arg(leadingNodes).arg(m_sName),"TYPE",SCPI::isQuery,m_pSCPIInterface, SenseRange::cmdType);
-    addDelegate(QString("%1%2").arg(leadingNodes).arg(m_sName),"REJECTION",SCPI::isQuery,m_pSCPIInterface, SenseRange::cmdRejection);
-    addDelegate(QString("%1%2").arg(leadingNodes).arg(m_sName),"OVREJECTION",SCPI::isQuery,m_pSCPIInterface, SenseRange::cmdOVRejection);
-    addDelegate(QString("%1%2").arg(leadingNodes).arg(m_sName),"ADCREJECTION",SCPI::isQuery,m_pSCPIInterface, SenseRange::cmdADCRejection);
+    addDelegate(QString("%1%2").arg(leadingNodes, m_sName), "TYPE", SCPI::isQuery, m_pSCPIInterface, SenseRange::cmdType);
+    addDelegate(QString("%1%2").arg(leadingNodes, m_sName), "REJECTION", SCPI::isQuery, m_pSCPIInterface, SenseRange::cmdRejection);
+    addDelegate(QString("%1%2").arg(leadingNodes, m_sName), "OVREJECTION", SCPI::isQuery, m_pSCPIInterface, SenseRange::cmdOVRejection);
+    addDelegate(QString("%1%2").arg(leadingNodes, m_sName), "ADCREJECTION", SCPI::isQuery, m_pSCPIInterface, SenseRange::cmdADCRejection);
 
     connect(m_pJustdata, &ScpiConnection::cmdExecutionDone, this, &ScpiConnection::cmdExecutionDone);
     m_pJustdata->initSCPIConnection(QString("%1%2").arg(leadingNodes).arg(m_sName));
 }
-
 
 quint8 Com5003SenseRange::getAdjustmentStatus()
 {
@@ -56,50 +55,39 @@ Com5003JustRangeTripletOffsetGainPhase *Com5003SenseRange::getJustData()
     return m_pJustdata;
 }
 
-
 void Com5003SenseRange::initJustData()
 {
     m_pJustdata->initJustData();
 }
-
 
 void Com5003SenseRange::computeJustData()
 {
     m_pJustdata->computeJustData();
 }
 
-
 void Com5003SenseRange::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
 {
-    switch (cmdCode)
-    {
-    case SenseRange::cmdType:
-        protoCmd->m_sOutput = m_ReadRangeType(protoCmd->m_sInput);
-        break;
-    case SenseRange::cmdAlias:
-        protoCmd->m_sOutput = handeScpiRangeAlias(protoCmd->m_sInput);
-        break;
-    case SenseRange::cmdAvail:
-        protoCmd->m_sOutput = handeScpiRangeAvail(protoCmd->m_sInput);
-        break;
-    case SenseRange::cmdUpperRangeValue:
-        protoCmd->m_sOutput = handeScpiRangeUpperRangeValue(protoCmd->m_sInput);
-        break;
-    case SenseRange::cmdRejection:
-        protoCmd->m_sOutput = m_ReadRangeRejection(protoCmd->m_sInput);
-        break;
-    case SenseRange::cmdOVRejection:
-        protoCmd->m_sOutput = m_ReadRangeOVRejection(protoCmd->m_sInput);
-        break;
-    case SenseRange::cmdADCRejection:
-        protoCmd->m_sOutput = m_ReadRangeADCRejection(protoCmd->m_sInput);
-        break;
+    if(!execScpi(cmdCode, protoCmd)) {
+        // the following are different from Mt310s2 so not yet ready to move to common
+        switch (cmdCode)
+        {
+        case SenseRange::cmdType:
+            protoCmd->m_sOutput = m_ReadRangeType(protoCmd->m_sInput);
+            break;
+        case SenseRange::cmdRejection:
+            protoCmd->m_sOutput = m_ReadRangeRejection(protoCmd->m_sInput);
+            break;
+        case SenseRange::cmdOVRejection:
+            protoCmd->m_sOutput = m_ReadRangeOVRejection(protoCmd->m_sInput);
+            break;
+        case SenseRange::cmdADCRejection:
+            protoCmd->m_sOutput = m_ReadRangeADCRejection(protoCmd->m_sInput);
+            break;
+        }
     }
-
     if (protoCmd->m_bwithOutput)
         emit cmdExecutionDone(protoCmd);
 }
-
 
 QString Com5003SenseRange::m_ReadRangeType(QString &sInput)
 {
@@ -110,7 +98,6 @@ QString Com5003SenseRange::m_ReadRangeType(QString &sInput)
         return QString("%1").arg(0);
     else
         return ZSCPI::scpiAnswer[ZSCPI::nak];
-
 }
 
 QString Com5003SenseRange::m_ReadRangeRejection(QString &sInput)
@@ -123,7 +110,6 @@ QString Com5003SenseRange::m_ReadRangeRejection(QString &sInput)
         return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-
 QString Com5003SenseRange::m_ReadRangeOVRejection(QString &sInput)
 {
     cSCPICommand cmd = sInput;
@@ -133,7 +119,6 @@ QString Com5003SenseRange::m_ReadRangeOVRejection(QString &sInput)
     else
         return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
-
 
 QString Com5003SenseRange::m_ReadRangeADCRejection(QString& sInput)
 {

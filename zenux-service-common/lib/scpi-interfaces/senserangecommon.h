@@ -38,9 +38,8 @@ public:
     bool getAvail() const;
     void setAvail(bool avail); // It is just for Com5003 - do we need this really?
 protected:
-    QString handeScpiRangeAlias(QString& sInput);
-    QString handeScpiRangeAvail(QString& sInput);
-    QString handeScpiRangeUpperRangeValue(QString& sInput);
+    // As long as sub-classes implement executeProtoScpi we cannot override
+    bool execScpi(int cmdCode, cProtonetCommand* protoCmd);
 
     QString m_sName; // the range name
     const QString m_sAlias; // the range alias name
@@ -50,6 +49,10 @@ protected:
     const double m_fOVRejection; // overload rejection value
     const double m_fADCRejection; // the adc's maximum rejection
     const quint8 m_nSelCode; // selection code
+private:
+    QString handeScpiRangeAlias(QString& sInput);
+    QString handeScpiRangeAvail(QString& sInput);
+    QString handeScpiRangeUpperRangeValue(QString& sInput);
 };
 
 #endif // SENSERANGECOMMON_H
