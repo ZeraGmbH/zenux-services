@@ -11,7 +11,6 @@ namespace SenseRange
 enum Type
 {
     Phys, // we distinguish between physical
-    Virt  // and virtual ranges
 };
 
 enum Commands
