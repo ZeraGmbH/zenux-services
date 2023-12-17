@@ -241,7 +241,7 @@ void cMT310S2dServer::doSetupServer()
             scpiConnectionList.append(m_pFRQInputInterface = new FInGroupResourceAndInterface(getSCPIInterface(), m_finSettings));
             scpiConnectionList.append(m_pSCHeadInterface = new ScInGroupResourceAndInterface(getSCPIInterface(), m_pSCHeadSettings));
             scpiConnectionList.append(m_hkInInterface = new HkInGroupResourceAndInterface(getSCPIInterface(), m_hkInSettings));
-            scpiConnectionList.append(m_pClampInterface = new cClampInterface(this));
+            scpiConnectionList.append(m_pClampInterface = new cClampInterface(this, m_pI2CSettings, m_pSenseSettings, m_pSenseInterface));
             scpiConnectionList.append(m_accumulatorInterface = new AccumulatorInterface(getSCPIInterface(), pAtmelSys, m_accumulatorSettings));
 
             resourceList.append(m_pSenseInterface); // all our resources

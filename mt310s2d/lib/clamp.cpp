@@ -29,14 +29,20 @@ cClamp::cClamp() :
 {
 }
 
-cClamp::cClamp(cMT310S2dServer *server, QString channelName, quint8 ctrlChannel, I2cMuxerInterface::Ptr i2cMuxer, quint8 ctrlChannelSecondary) :
-    Mt310s2AdjFlash(server->m_pI2CSettings->getDeviceNode(),
-              server->m_pI2CSettings->getI2CAdress(i2cSettings::clampFlashI2cAddress),
-              i2cMuxer),
+cClamp::cClamp(cPCBServer *server,
+               cI2CSettings *i2cSettings,
+               Mt310s2SenseInterface *senseInterface,
+               QString channelName,
+               quint8 ctrlChannel,
+               I2cMuxerInterface::Ptr i2cMuxer,
+               quint8 ctrlChannelSecondary) :
+    Mt310s2AdjFlash(i2cSettings->getDeviceNode(),
+                    i2cSettings->getI2CAdress(i2cSettings::clampFlashI2cAddress),
+                    i2cMuxer),
     ScpiConnection(server->getSCPIInterface()),
-    m_pSenseInterface(server->m_pSenseInterface),
+    m_pSenseInterface(senseInterface),
     m_sChannelName(channelName),
-    m_i2cMuxAdress(server->m_pI2CSettings->getI2CAdress(i2cSettings::muxerI2cAddress)),
+    m_i2cMuxAdress(i2cSettings->getI2CAdress(i2cSettings::muxerI2cAddress)),
     m_nCtrlChannel(ctrlChannel),
     m_nCtrlChannelSecondary(ctrlChannelSecondary)
 {
@@ -49,8 +55,12 @@ cClamp::cClamp(cMT310S2dServer *server, QString channelName, quint8 ctrlChannel,
     initClamp(type);
     // we need an adjustment interface in whatever state the clamp connected is
     addSystAdjInterface();
+
+    // This blocks us from getting free of server
+    // Problem: clamps are generated dynamically all other interfaces are setup once
     connect(this, &ScpiConnection::cmdExecutionDone, server, &cPCBServer::sendAnswerProto);
     connect(server, &cPCBServer::removeSubscribers, this, &ScpiConnection::onRemoveSubscribers);
+
     if (type != undefined) {
         importAdjFlash();
         addSense();
