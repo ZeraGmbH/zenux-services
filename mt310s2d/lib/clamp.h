@@ -1,9 +1,9 @@
 #ifndef CLAMP_H
 #define CLAMP_H
 
+#include "pcbserver.h"
 #include "mt310s2adjflash.h"
 #include "mt310s2adjxml.h"
-#include "mt310s2d.h"
 #include "mt310s2senseinterface.h"
 #include <QList>
 #include <QDateTime>
@@ -34,7 +34,13 @@ class cClamp: public Mt310s2AdjFlash, public Mt310s2AdjXML, public ScpiConnectio
 {
 public:
     cClamp();
-    cClamp(cMT310S2dServer *server, QString channelName, quint8 ctrlChannel, I2cMuxerInterface::Ptr i2cMuxer, quint8 ctrlChannelSecondary);
+    cClamp(cPCBServer *server,
+           cI2CSettings *i2cSettings,
+           Mt310s2SenseInterface *senseInterface,
+           QString channelName,
+           quint8 ctrlChannel,
+           I2cMuxerInterface::Ptr i2cMuxer,
+           quint8 ctrlChannelSecondary);
     virtual ~cClamp();
     virtual quint8 getAdjustmentStatus() override;
     virtual void initSCPIConnection(QString) override;

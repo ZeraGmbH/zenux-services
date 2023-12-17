@@ -31,7 +31,7 @@ enum ServerErrors
     atmelProgError,
 };
 
-class cPCBServer: public ScpiConnection
+class cPCBServer : public ScpiConnection
 {
     Q_OBJECT
 public:

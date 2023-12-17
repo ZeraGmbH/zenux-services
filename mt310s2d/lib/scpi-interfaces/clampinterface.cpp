@@ -1,20 +1,19 @@
 #include "clampinterface.h"
-#include "mt310s2d.h"
 #include "clamp.h"
 #include "mt310s2senseinterface.h"
-#include "protonetcommand.h"
 #include "micro-controller-io/atmel.h"
 #include "i2csettings.h"
 #include "zscpi_response_definitions.h"
 #include <i2cmultiplexerfactory.h>
-#include <scpi.h>
 #include <i2cutils.h>
 #include <i2cmuxerscopedonoff.h>
 
-cClampInterface::cClampInterface(cMT310S2dServer *server) :
+cClampInterface::cClampInterface(cPCBServer *server, cI2CSettings *i2cSettings, cSenseSettings *senseSettings, Mt310s2SenseInterface *senseInterface) :
     ScpiConnection(server->getSCPIInterface()),
     m_pMyServer(server),
-    m_pSenseInterface(server->m_pSenseInterface)
+    m_i2cSettings(i2cSettings),
+    m_senseSettings(senseSettings),
+    m_pSenseInterface(senseInterface)
 {
     m_nClampStatus = 0;
 }
@@ -30,16 +29,16 @@ void cClampInterface::initSCPIConnection(QString leadingNodes)
 void cClampInterface::handleClampConnected(QString channelName, const SenseSystem::cChannelSettings *chSettings, quint16 bmask, int phaseCount)
 {
     int ctrlChannel = chSettings->m_nCtrlChannel;
-    I2cMuxerInterface::Ptr i2cMuxer = I2cMultiplexerFactory::createPCA9547Muxer(m_pMyServer->m_pI2CSettings->getDeviceNode(),
-                                                                                m_pMyServer->m_pI2CSettings->getI2CAdress(i2cSettings::muxerI2cAddress),
+    I2cMuxerInterface::Ptr i2cMuxer = I2cMultiplexerFactory::createPCA9547Muxer(m_i2cSettings->getDeviceNode(),
+                                                                                m_i2cSettings->getI2CAdress(i2cSettings::muxerI2cAddress),
                                                                                 chSettings->m_nMuxChannelNo);
     I2cMuxerScopedOnOff i2cMuxOnOff(i2cMuxer);
-    QString i2cDevNode = m_pMyServer->m_pI2CSettings->getDeviceNode();
-    int i2cAddress = m_pMyServer->m_pI2CSettings->getI2CAdress(i2cSettings::clampFlashI2cAddress);
+    QString i2cDevNode = m_i2cSettings->getDeviceNode();
+    int i2cAddress = m_i2cSettings->getI2CAdress(i2cSettings::clampFlashI2cAddress);
     if(I2cPing(i2cDevNode, i2cAddress)) { // ignore other than flash
         m_nClampStatus |= bmask;
         int ctlChannelSecondary = ctrlChannel-phaseCount; // assumption - hope we find better
-        cClamp* clamp = new cClamp(m_pMyServer, channelName, ctrlChannel, i2cMuxer, ctlChannelSecondary);
+        cClamp* clamp = new cClamp(m_pMyServer, m_i2cSettings, m_pSenseInterface, channelName, ctrlChannel, i2cMuxer, ctlChannelSecondary);
         m_clampHash[channelName] = clamp;
         qInfo("Add clamp channel \"%s\"/%i", qPrintable(channelName), ctrlChannel);
         QString channelNameSecondary = m_pSenseInterface->getChannelSystemName(ctlChannelSecondary);
@@ -73,7 +72,7 @@ void cClampInterface::handleClampDisconnected(QString channelName, const SenseSy
 void cClampInterface::actualizeClampStatus(quint16 devConnectedMask)
 {
     quint16 clChange = devConnectedMask ^ m_nClampStatus; // now we know which clamps changed
-    const auto channelsSettings = m_pMyServer->m_pSenseSettings->getChannelSettings();
+    const auto channelsSettings = m_senseSettings->getChannelSettings();
     for(const auto channelSettings : channelsSettings) {
         int ctrlChannel = channelSettings->m_nCtrlChannel;
 

@@ -2,6 +2,7 @@
 #define CLAMPINTERFACE
 
 #include "scpiconnection.h"
+#include "pcbserver.h"
 #include "notificationstring.h"
 #include "mt310s2senseinterface.h"
 #include <QHash>
@@ -9,7 +10,6 @@
 
 // here we hold the clamps that are hotplugged to the system
 
-class cMT310S2dServer;
 class cClamp;
 
 namespace ClampSystem
@@ -25,7 +25,7 @@ enum ClampCommands
 class cClampInterface: public ScpiConnection
 {
 public:
-    cClampInterface(cMT310S2dServer *server);
+    cClampInterface(cPCBServer *server, cI2CSettings *i2cSettings, cSenseSettings *senseSettings, Mt310s2SenseInterface *senseInterface);
     virtual void initSCPIConnection(QString leadingNodes) override;
     void actualizeClampStatus(quint16 devConnectedMask);
 protected:
@@ -38,7 +38,9 @@ private:
     void handleClampDisconnected(QString channelName, const SenseSystem::cChannelSettings *chSettings, quint16 bmask);
     void handleClampConnected(QString channelName, const SenseSystem::cChannelSettings *chSettings, quint16 bmask, int phaseCount);
 
-    cMT310S2dServer *m_pMyServer;
+    cPCBServer *m_pMyServer;
+    cI2CSettings *m_i2cSettings;
+    cSenseSettings *m_senseSettings;
     Mt310s2SenseInterface *m_pSenseInterface;
     NotificationString m_notifierClampChannelList;
     quint16 m_nClampStatus;
