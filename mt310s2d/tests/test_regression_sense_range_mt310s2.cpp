@@ -87,7 +87,7 @@ void test_regression_sense_range_mt310s2::checkAvail()
 
 void test_regression_sense_range_mt310s2::checkUrValue()
 {
-    QCOMPARE(m_range->getUrvalue(), 1.1);
+    QCOMPARE(m_range->getUpperRangevalue(), 1.1);
 
     QString scpiUrValueQuery = "SENSE:m0:250V:URVALUE?";
     cSCPIObject *scpiObject = m_scpi->getSCPIObject(scpiUrValueQuery);
@@ -96,6 +96,14 @@ void test_regression_sense_range_mt310s2::checkUrValue()
     cSCPIDelegate *scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
     scpiDelegate->executeSCPI(protoCmd);
     QCOMPARE((protoCmd->m_sOutput), "1.1");
+
+    QString scpiUrValueCmd = "SENSE:m0:250V:URVALUE 42";
+    scpiObject = m_scpi->getSCPIObject(scpiUrValueCmd);
+    QVERIFY(scpiObject != nullptr);
+    protoCmd = new cProtonetCommand(0, false, true, QByteArray(), 0, scpiUrValueCmd);
+    scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
+    scpiDelegate->executeSCPI(protoCmd);
+    QCOMPARE((protoCmd->m_sOutput), ZSCPI::scpiAnswer[ZSCPI::nak]);
 }
 
 void test_regression_sense_range_mt310s2::checkRejection()

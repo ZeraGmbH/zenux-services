@@ -320,7 +320,7 @@ QString Mt310s2SenseChannel::m_ReadUrvalue(QString &sInput)
     if (cmd.isQuery()) {
         for(auto range : qAsConst(m_RangeList)) {
             if (range->getName() == notifierSenseChannelRange.getString()) {
-                return QString("%1").arg(range->getUrvalue());
+                return QString("%1").arg(range->getUpperRangevalue());
             }
         }
     }
