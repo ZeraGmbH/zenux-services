@@ -8,11 +8,6 @@
 
 namespace SenseRange
 {
-enum Type
-{
-    Phys, // we distinguish between physical
-};
-
 enum Commands
 {
     cmdType,
@@ -68,7 +63,6 @@ private:
     double m_fOVRejection; // overload rejection value
     double m_fADCRejection; // the adc's maximum rejection
     quint8 m_nSelCode; // selection code
-    quint8 m_nRSpec; // range spec (phys. or virt. range)
     Com5003JustRangeTripletOffsetGainPhase* m_pJustdata;
 
     QString m_ReadRangeType(QString& sInput);
