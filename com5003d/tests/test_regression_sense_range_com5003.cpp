@@ -130,6 +130,14 @@ void test_regression_sense_range_com5003::checkOvRejection()
     cSCPIDelegate *scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
     scpiDelegate->executeSCPI(protoCmd);
     QCOMPARE((protoCmd->m_sOutput), "33333.3");
+
+    QString scpiOvRejectionCmd = "SENSE:m0:240V:OVREJECTION 42";
+    scpiObject = m_scpi->getSCPIObject(scpiOvRejectionCmd);
+    QVERIFY(scpiObject != nullptr);
+    protoCmd = new cProtonetCommand(0, false, true, QByteArray(), 0, scpiOvRejectionCmd);
+    scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
+    scpiDelegate->executeSCPI(protoCmd);
+    QCOMPARE((protoCmd->m_sOutput), ZSCPI::scpiAnswer[ZSCPI::nak]);
 }
 
 void test_regression_sense_range_com5003::checkAdcRejection()
@@ -141,6 +149,14 @@ void test_regression_sense_range_com5003::checkAdcRejection()
     cSCPIDelegate *scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
     scpiDelegate->executeSCPI(protoCmd);
     QCOMPARE((protoCmd->m_sOutput), "44444.4");
+
+    QString scpiAdcRejectionCmd = "SENSE:m0:240V:ADCREJECTION 42";
+    scpiObject = m_scpi->getSCPIObject(scpiAdcRejectionCmd);
+    QVERIFY(scpiObject != nullptr);
+    protoCmd = new cProtonetCommand(0, false, true, QByteArray(), 0, scpiAdcRejectionCmd);
+    scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
+    scpiDelegate->executeSCPI(protoCmd);
+    QCOMPARE((protoCmd->m_sOutput), ZSCPI::scpiAnswer[ZSCPI::nak]);
 }
 
 void test_regression_sense_range_com5003::checkAtmelSelectionCode()
@@ -157,4 +173,12 @@ void test_regression_sense_range_com5003::checkTypeOrMask()
     cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
     scpiDelegate->executeSCPI(protoCmd);
     QCOMPARE((protoCmd->m_sOutput), QString("%1").arg(0)); // was SenseRange::Phys - all ranges have that
+
+    QString scpiRejectionCmd = "SENSE:m0:240V:TYPE 1";
+    scpiObject = m_scpi->getSCPIObject(scpiRejectionCmd);
+    QVERIFY(scpiObject != nullptr);
+    protoCmd = new cProtonetCommand(0, false, true, QByteArray(), 0, scpiRejectionCmd);
+    scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
+    scpiDelegate->executeSCPI(protoCmd);
+    QCOMPARE((protoCmd->m_sOutput),ZSCPI::scpiAnswer[ZSCPI::nak]);
 }

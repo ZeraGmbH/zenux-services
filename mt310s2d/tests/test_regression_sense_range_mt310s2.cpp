@@ -136,6 +136,14 @@ void test_regression_sense_range_mt310s2::checkOvRejection()
     cSCPIDelegate *scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
     scpiDelegate->executeSCPI(protoCmd);
     QCOMPARE((protoCmd->m_sOutput), "33333.333");
+
+    QString scpiOvRejectionCmd = "SENSE:m0:250V:OVREJECTION 42";
+    scpiObject = m_scpi->getSCPIObject(scpiOvRejectionCmd);
+    QVERIFY(scpiObject != nullptr);
+    protoCmd = new cProtonetCommand(0, false, true, QByteArray(), 0, scpiOvRejectionCmd);
+    scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
+    scpiDelegate->executeSCPI(protoCmd);
+    QCOMPARE((protoCmd->m_sOutput), ZSCPI::scpiAnswer[ZSCPI::nak]);
 }
 
 void test_regression_sense_range_mt310s2::checkAdcRejection()
@@ -147,6 +155,14 @@ void test_regression_sense_range_mt310s2::checkAdcRejection()
     cSCPIDelegate *scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
     scpiDelegate->executeSCPI(protoCmd);
     QCOMPARE((protoCmd->m_sOutput), "44444.444");
+
+    QString scpiAdcRejectionCmd = "SENSE:m0:250V:ADCREJECTION 42";
+    scpiObject = m_scpi->getSCPIObject(scpiAdcRejectionCmd);
+    QVERIFY(scpiObject != nullptr);
+    protoCmd = new cProtonetCommand(0, false, true, QByteArray(), 0, scpiAdcRejectionCmd);
+    scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
+    scpiDelegate->executeSCPI(protoCmd);
+    QCOMPARE((protoCmd->m_sOutput), ZSCPI::scpiAnswer[ZSCPI::nak]);
 }
 
 void test_regression_sense_range_mt310s2::checkAtmelSelectionCode()
@@ -166,6 +182,14 @@ void test_regression_sense_range_mt310s2::checkTypeOrMask()
     cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
     scpiDelegate->executeSCPI(protoCmd);
     QCOMPARE((protoCmd->m_sOutput), QString("%1").arg(expectedMask));
+
+    QString scpiRejectionCmd = "SENSE:m0:250V:TYPE 1";
+    scpiObject = m_scpi->getSCPIObject(scpiRejectionCmd);
+    QVERIFY(scpiObject != nullptr);
+    protoCmd = new cProtonetCommand(0, false, true, QByteArray(), 0, scpiRejectionCmd);
+    scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
+    scpiDelegate->executeSCPI(protoCmd);
+    QCOMPARE((protoCmd->m_sOutput),ZSCPI::scpiAnswer[ZSCPI::nak]);
 }
 
 void test_regression_sense_range_mt310s2::checkGetJustData()
