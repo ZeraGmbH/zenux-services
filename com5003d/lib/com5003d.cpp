@@ -158,6 +158,9 @@ void cCOM5003dServer::doConfiguration()
         sigStart = 1;
         write(m_nFPGAfd, &sigStart, 4);
         if (m_xmlConfigReader.loadXMLFile(m_params.xmlFile)) {
+            Atmel::setInstanceParams(m_pI2CSettings->getDeviceNode(), m_pI2CSettings->getI2CAdress(i2cSettings::relaisCtrlI2cAddress), m_pDebugSettings->getDebugLevel());
+            m_atmelWatcher = AtmelCtrlFactory::createAtmelWatcher(m_fpgaCtrlSettings->getDeviceNode());
+
             sigStart = 0;
             write(m_nFPGAfd, &sigStart, 4);
             // xmlfile ok -> nothing to do .. the configreader will emit all configuration
@@ -180,8 +183,6 @@ void cCOM5003dServer::doConfiguration()
 
 void cCOM5003dServer::programAtmelFlash()
 {
-    Atmel::setInstanceParams(m_pI2CSettings->getDeviceNode(), m_pI2CSettings->getI2CAdress(i2cSettings::relaisCtrlI2cAddress), m_pDebugSettings->getDebugLevel());
-
     QFile atmelFile(atmelFlashfilePath);
     if (atmelFile.exists())
     {
@@ -291,7 +292,6 @@ void cCOM5003dServer::programAtmelFlash()
 
 void cCOM5003dServer::doWait4Atmel()
 {
-    m_atmelWatcher = AtmelCtrlFactory::createAtmelWatcher(m_fpgaCtrlSettings->getDeviceNode());
     m_nerror = atmelError; // we preset error
     connect(m_atmelWatcher.get(), &AtmelWatcherInterface::sigTimeout,
             this, &cCOM5003dServer::abortInit);
