@@ -23,7 +23,7 @@
 #include <QFile>
 #include <syslog.h>
 
-Mt310s2SenseInterface::Mt310s2SenseInterface(cSCPI *scpiInterface, cI2CSettings* i2cSettings, cSenseSettings* senseSettings, Mt310s2SystemInfo* systemInfo) :
+Mt310s2SenseInterface::Mt310s2SenseInterface(cSCPI *scpiInterface, cI2CSettings* i2cSettings, cSenseSettings* senseSettings, cSystemInfo *systemInfo) :
     cResource(scpiInterface),
     Mt310s2AdjFlash(i2cSettings->getDeviceNode(),
               i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress),
