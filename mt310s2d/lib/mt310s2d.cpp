@@ -177,7 +177,13 @@ void cMT310S2dServer::doConfiguration()
             m_accumulatorSettings = new AccumulatorSettings(&m_xmlConfigReader);
             connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_accumulatorSettings, &AccumulatorSettings::configXMLInfo);
 
-            if (!m_xmlConfigReader.loadXMLFile(m_params.xmlFile)) {
+            if (m_xmlConfigReader.loadXMLFile(m_params.xmlFile)) {
+                Atmel::setInstanceParams(m_pI2CSettings->getDeviceNode(), m_pI2CSettings->getI2CAdress(i2cSettings::relaisCtrlI2cAddress), m_pDebugSettings->getDebugLevel());
+                m_atmelWatcher = AtmelCtrlFactory::createAtmelWatcher(m_fpgaCtrlSettings->getDeviceNode());
+                // a singletom for atmel would be nice...
+                pAtmelSys = new cATMELSysCtrl(m_pI2CSettings->getDeviceNode(), m_pI2CSettings->getI2CAdress(i2cSettings::sysCtrlI2cAddress), m_pDebugSettings->getDebugLevel());
+            }
+            else {
                 qCritical("Abort: Could not open xml file '%s", qPrintable(m_params.xmlFile));
                 emit abortInit();
             }
@@ -192,11 +198,6 @@ void cMT310S2dServer::doConfiguration()
 
 void cMT310S2dServer::doWait4Atmel()
 {
-    // a singletom for atmel would be nice...
-    pAtmelSys = new cATMELSysCtrl(m_pI2CSettings->getDeviceNode(), m_pI2CSettings->getI2CAdress(i2cSettings::sysCtrlI2cAddress), m_pDebugSettings->getDebugLevel());
-    Atmel::setInstanceParams(m_pI2CSettings->getDeviceNode(), m_pI2CSettings->getI2CAdress(i2cSettings::relaisCtrlI2cAddress), m_pDebugSettings->getDebugLevel());
-    m_atmelWatcher = AtmelCtrlFactory::createAtmelWatcher(m_fpgaCtrlSettings->getDeviceNode());
-
     m_nerror = atmelError; // we preset error
     connect(m_atmelWatcher.get(), &AtmelWatcherInterface::sigTimeout,
             this, &cMT310S2dServer::abortInit);
