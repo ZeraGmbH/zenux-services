@@ -27,8 +27,8 @@ public:
     bool importJDataFlash();
     bool exportJDataXML(QString& file);
     bool importAdjXML(QString& file);
-    virtual void exportAdjData(QDomDocument& doc, QDomElement& qde);
-    virtual bool importAdjData(QDomNode& node);
+    virtual void exportAdjData(QDomDocument& doc, QDomElement& qde) override;
+    virtual bool importAdjData(QDomNode& node) override;
     void addAdjFlashObject(Com5003AdjFlash* obj);
     void addAdjXMLObject(Com5003AdjXML* obj);
     quint8 getAdjustmentStatus() override;
