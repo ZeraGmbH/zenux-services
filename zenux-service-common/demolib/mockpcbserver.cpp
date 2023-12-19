@@ -50,6 +50,11 @@ Zera::XMLConfig::cReader *MockPcbServer::getConfigReader()
     return &m_xmlConfigReader;
 }
 
+RMConnection *MockPcbServer::getRmConnection()
+{
+    return m_pRMConnection;
+}
+
 ServerParams MockPcbServer::createParams(QString serviceName)
 {
     QString xsdName = ":/" + serviceName + ".xsd";
