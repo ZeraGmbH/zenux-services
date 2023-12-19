@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/">
+        <file>xmlfiles/range_interface_export.xml</file>
+    </qresource>
+</RCC>
