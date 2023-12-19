@@ -25,10 +25,13 @@ public:
     virtual ~Com5003Adjustment();
     bool exportJDataFlash();
     bool importJDataFlash();
+
+    QString exportXMLString();
     bool exportJDataXML(QString& file);
     bool importAdjXML(QString& file);
     virtual void exportAdjData(QDomDocument& doc, QDomElement& qde) override;
     virtual bool importAdjData(QDomNode& node) override;
+
     void addAdjFlashObject(Com5003AdjFlash* obj);
     void addAdjXMLObject(Com5003AdjXML* obj);
     quint8 getAdjustmentStatus() override;

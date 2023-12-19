@@ -240,18 +240,9 @@ bool Com5003Adjustment::importJDataFlash()
 }
 
 
-bool Com5003Adjustment::exportJDataXML(QString &file)
+QString Com5003Adjustment::exportXMLString()
 {
     QDateTime DateTime;
-
-    QString filename = file + ".xml";
-
-    QFile adjfile(filename);
-    if ( !adjfile.open( QIODevice::WriteOnly ) )
-    {
-        qCritical("Justdata export, could not open xml file");
-        return false;
-    }
 
     QString s = QString("%1AdjustmentData").arg(LeiterkartenName);
     QDomDocument justdata (s);
@@ -299,6 +290,19 @@ bool Com5003Adjustment::exportJDataXML(QString &file)
 
     QString xml = justdata.toString();
 
+    return xml;
+}
+
+bool Com5003Adjustment::exportJDataXML(QString &file)
+{
+    QString filename = file + ".xml";
+    QFile adjfile(filename);
+    if ( !adjfile.open( QIODevice::WriteOnly ) ) {
+        qCritical("Justdata export, could not open xml file");
+        return false;
+    }
+
+    QString xml = exportXMLString();
     QTextStream stream( &adjfile );
     stream << xml;
     adjfile.close();
@@ -435,11 +439,9 @@ bool Com5003Adjustment::importAdjXML(QString &file)
     return true;
 }
 
-
 void Com5003Adjustment::exportAdjData(QDomDocument &doc, QDomElement &qde)
 {
 }
-
 
 bool Com5003Adjustment::importAdjData(QDomNode &node)
 {
@@ -449,12 +451,10 @@ bool Com5003Adjustment::importAdjData(QDomNode &node)
     return true;
 }
 
-
 void Com5003Adjustment::addAdjFlashObject(Com5003AdjFlash* obj)
 {
     m_AdjFlashList.append(obj);
 }
-
 
 void Com5003Adjustment::addAdjXMLObject(Com5003AdjXML* obj)
 {
