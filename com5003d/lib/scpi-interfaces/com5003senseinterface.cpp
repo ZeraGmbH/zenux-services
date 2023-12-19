@@ -263,10 +263,10 @@ void Com5003SenseInterface::exportAdjData(QDataStream &stream)
 }
 
 
-void Com5003SenseInterface::exportAdjData(QDomDocument& doc, QDomElement& qde)
+void Com5003SenseInterface::exportAdjData(QDomDocument& doc, QDomElement& adjtag)
 {
     QDomElement typeTag = doc.createElement( "Sense");
-    qde.appendChild(typeTag);
+    adjtag.appendChild(typeTag);
 
     for (int i = 0; i < m_ChannelList.count(); i ++)
     {
