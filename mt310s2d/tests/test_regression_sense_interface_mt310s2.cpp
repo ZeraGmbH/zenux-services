@@ -5,6 +5,7 @@
 #include "resmanrunfacade.h"
 #include "sensesettings.h"
 #include "systeminfo.h"
+#include "xmlhelperfortest.h"
 #include <timemachineobject.h>
 #include <QFile>
 #include <QRegularExpression>
@@ -25,6 +26,11 @@ private:
     std::unique_ptr<cSystemInfo> m_systemInfo;
     std::unique_ptr<Mt310s2SenseInterface> m_senseInterface;
 };
+
+// It took a while so write it down:
+// We have:
+// * Mt310s2SenseInterface (and cClampInterface) which inheriting Mt310s2AdjXML (and others)
+// * Mt310s2AdjXML is a template extending Mt310s2SenseInterface by
 
 MockForSenseInterface::MockForSenseInterface() :
     MockPcbServer("mt310s2d")
@@ -52,19 +58,18 @@ void test_regression_sense_interface_mt310s2::checkExportXml()
     ResmanRunFacade resman;
     MockForSenseInterface mock;
     TimeMachineObject::feedEventLoop();
+
     QString xmlExported = mock.getSenseInterface()->exportXMLString();
-
-    static QRegularExpression regexDate("<Date>.*<\\/Date>");
-    xmlExported = xmlExported.replace(regexDate, "<Date>nodate</Date>");
-    static QRegularExpression regexTime("<Time>.*<\\/Time>");
-    xmlExported = xmlExported.replace(regexTime, "<Time>notime</Time>");
-    static QRegularExpression regexChecksum("<Chksum>.*<\\/Chksum>");
-    xmlExported = xmlExported.replace(regexChecksum, "<Chksum>nocheck</Chksum>");
+    qInfo("Exported XML (before adjust):");
     qInfo("%s", qPrintable(xmlExported));
+    xmlExported = XmlHelperForTest::removeTimeDependentEntriesFromXml(xmlExported);
 
-    QFile xmlFile(":/xmlfiles/range_interface_export.xml");
+    QFile xmlFile(":/xmlfiles/sense_interface_export.xml");
     QVERIFY(xmlFile.open(QFile::ReadOnly));
     QString xmlExpected = xmlFile.readAll();
+    qInfo("Expected XML (before adjust):");
+    qInfo("%s", qPrintable(xmlExpected));
+    xmlExpected = XmlHelperForTest::removeTimeDependentEntriesFromXml(xmlExpected);
 
     // if this turns fragile we have to use zera-scpi's xml-compare-testlib
     QCOMPARE(xmlExported, xmlExpected);

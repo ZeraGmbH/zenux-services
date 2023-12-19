@@ -3,10 +3,10 @@
  <Type>ADW5743</Type>
  <VersionNumber>DEVICE: Unknown;PCB: Unknown;LCA: Unknown;CTRL: Unknown</VersionNumber>
  <SerialNumber>Unknown</SerialNumber>
- <Date>nodate</Date>
- <Time>notime</Time>
+ <Date>Tue Dec 19 2023</Date>
+ <Time>21:03:18</Time>
  <Adjustment>
-  <Chksum>nocheck</Chksum>
+  <Chksum>0x6d</Chksum>
   <Sense>
    <Channel>
     <Name>m0</Name>
