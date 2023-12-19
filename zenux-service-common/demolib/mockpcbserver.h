@@ -17,6 +17,7 @@ public:
     MockPcbServer(QString serviceName);
     ~MockPcbServer();
     Zera::XMLConfig::cReader *getConfigReader();
+    RMConnection* getRmConnection();
     void setXmlSettings(XmlSettingsList xmlSettings);
     void setResources(ResourcesList resources);
     void start();
