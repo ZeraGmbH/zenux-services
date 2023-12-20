@@ -581,17 +581,6 @@ quint32 cPCBInterfacePrivate::getAuthorizationStatus()
 }
 
 
-quint32 cPCBInterfacePrivate::getPCBErrorStatus()
-{
-    QString cmd;
-    quint32 msgnr;
-
-    msgnr = sendCommand(cmd = QString("STAT:PCB:ERR?"));
-    m_MsgNrCmdList[msgnr] = PCB::getpcberrorstatus;
-    return msgnr;
-}
-
-
 quint32 cPCBInterfacePrivate::getAdjustmentChksum()
 {
     QString cmd;

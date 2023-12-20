@@ -154,7 +154,6 @@ public:
     // all commands to status interface
     quint32 getAdjustmentStatus(); // int
     quint32 getAuthorizationStatus();
-    quint32 getPCBErrorStatus();
 
     // resource query more generell
     quint32 resourceAliasQuery(QString resourceType, QString resourceName);
