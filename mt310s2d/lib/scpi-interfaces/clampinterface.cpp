@@ -32,11 +32,11 @@ void cClampInterface::addClamp(int ctrlChannel, I2cMuxerInterface::Ptr i2cMuxer,
     int ctlChannelSecondary = ctrlChannel-phaseCount; // assumption - hope we find better
     cClamp* clamp = ClampFactory::createClamp(m_pMyServer, m_i2cSettings, m_pSenseInterface, channelName, ctrlChannel, i2cMuxer, ctlChannelSecondary);
     m_clampHash[channelName] = clamp;
-    qInfo("Add clamp channel \"%s\"/%i", qPrintable(channelName), ctrlChannel);
+    qInfo("Add clamp on \"%s\"", qPrintable(m_senseSettings->findChannelSettingByMxName(channelName)->m_sAlias1));
     QString channelNameSecondary = clamp->getChannelNameSecondary();
     if(!m_clampHash[channelName]->getChannelNameSecondary().isEmpty()) {
         m_clampSecondarySet.insert(channelNameSecondary);
-        qInfo("Added voltage clamp channel \"%s\"/%i", qPrintable(channelNameSecondary), ctlChannelSecondary);
+        qInfo("Add secondary clamp on \"%s\"", qPrintable(m_senseSettings->findChannelSettingByMxName(channelNameSecondary)->m_sAlias1));
     }
     generateAndNotifyClampChannelList();
 }
