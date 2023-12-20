@@ -1,5 +1,5 @@
 #include "clampinterface.h"
-#include "clamp.h"
+#include "clampfactory.h"
 #include "mt310s2senseinterface.h"
 #include "micro-controller-io/atmel.h"
 #include "i2csettings.h"
@@ -30,10 +30,10 @@ void cClampInterface::addClamp(int ctrlChannel, I2cMuxerInterface::Ptr i2cMuxer,
 {
     m_nClampStatus |= bmask;
     int ctlChannelSecondary = ctrlChannel-phaseCount; // assumption - hope we find better
-    cClamp* clamp = new cClamp(m_pMyServer, m_i2cSettings, m_pSenseInterface, channelName, ctrlChannel, i2cMuxer, ctlChannelSecondary);
+    cClamp* clamp = ClampFactory::createClamp(m_pMyServer, m_i2cSettings, m_pSenseInterface, channelName, ctrlChannel, i2cMuxer, ctlChannelSecondary);
     m_clampHash[channelName] = clamp;
     qInfo("Add clamp channel \"%s\"/%i", qPrintable(channelName), ctrlChannel);
-    QString channelNameSecondary = m_pSenseInterface->getChannelSystemName(ctlChannelSecondary);
+    QString channelNameSecondary = clamp->getChannelNameSecondary();
     if(!m_clampHash[channelName]->getChannelNameSecondary().isEmpty()) {
         m_clampSecondarySet.insert(channelNameSecondary);
         qInfo("Added voltage clamp channel \"%s\"/%i", qPrintable(channelNameSecondary), ctlChannelSecondary);

@@ -34,7 +34,8 @@ cClamp::cClamp(cPCBServer *server,
                QString channelName,
                quint8 ctrlChannel,
                I2cMuxerInterface::Ptr i2cMuxer,
-               quint8 ctrlChannelSecondary) :
+               quint8 ctrlChannelSecondary,
+               quint8 type) :
     Mt310s2AdjFlash(i2cSettings->getDeviceNode(),
                     i2cSettings->getI2CAdress(i2cSettings::clampFlashI2cAddress),
                     i2cMuxer),
@@ -45,12 +46,8 @@ cClamp::cClamp(cPCBServer *server,
     m_nCtrlChannel(ctrlChannel),
     m_nCtrlChannelSecondary(ctrlChannelSecondary)
 {
-    m_sSerial = "1234567890"; // our default serial number
-    m_sVersion = "unknown";
-    m_nFlags = 0;
-    m_nType = undefined;
-
-    quint8 type = readClampType();
+    if(type == undefined)
+        type = readClampType();
     initClamp(type);
     // we need an adjustment interface in whatever state the clamp connected is
     addSystAdjInterface();
@@ -642,7 +639,9 @@ void cClamp::initClamp(quint8 type)
         m_RangeListSecondary.append(new Mt310s2SenseRange(m_pSCPIInterface, "C1000V", "C1000V", true, 1000.0, 3466367.0, 3466367.0 * 1.25, 8388607.0, 1 /*8V*/, dcCommonMask | SenseSystem::Clamp, clampJustData));
         break;
     }
-    if(m_RangeList.isEmpty() && m_RangeListSecondary.isEmpty())
+    if(!m_RangeList.isEmpty() || !m_RangeListSecondary.isEmpty())
+        qInfo("Clamp type: %s", qPrintable(getClampTypeName(type)));
+    else
         qCritical("Unkown clamp type - no ranges set!");
 }
 

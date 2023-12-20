@@ -10,6 +10,7 @@
 #include "proxy.h"
 #include "reply.h"
 #include "pcbinterface.h"
+#include "clampfactorytest.h"
 #include <i2cmultiplexerfactory.h>
 #include <timemachineobject.h>
 #include <QFile>
@@ -55,6 +56,11 @@ MockForSenseInterface::MockForSenseInterface() :
     start();
 }
 
+
+void test_regression_sense_interface_mt310s2::initTestCase()
+{
+    ClampFactoryTest::enableTest();
+}
 
 void test_regression_sense_interface_mt310s2::checkVersionsOfSystemInterface()
 {
@@ -118,6 +124,6 @@ void test_regression_sense_interface_mt310s2::tryClamps()
     TimeMachineObject::feedEventLoop();
 
     cClampInterface* clampInterface = mock.getClampInterface();
-    clampInterface->addClamp(5, I2cMultiplexerFactory::createNullMuxer(), 1<<4, 4, "IL1"); // 5: control channel U 1234 5 -> IL1
+    clampInterface->addClamp(5, I2cMultiplexerFactory::createNullMuxer(), 1<<4, 4, "m3"); // 5: control channel U 1234 5 -> IL1
 }
 

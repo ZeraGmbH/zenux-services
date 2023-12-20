@@ -40,7 +40,8 @@ public:
            QString channelName,
            quint8 ctrlChannel,
            I2cMuxerInterface::Ptr i2cMuxer,
-           quint8 ctrlChannelSecondary);
+           quint8 ctrlChannelSecondary,
+           quint8 type = undefined);
     virtual ~cClamp();
     virtual quint8 getAdjustmentStatus() override;
     virtual void initSCPIConnection(QString) override;
@@ -91,10 +92,10 @@ private:
     ushort m_i2cMuxAdress;
     quint8 m_nCtrlChannel;
     quint8 m_nCtrlChannelSecondary;
-    QString m_sSerial;
-    QString m_sVersion;
-    quint8 m_nType; // 0 is undefined type
-    quint32 m_nFlags; // for future purpose
+    QString m_sSerial =  "1234567890"; // our default serial number
+    QString m_sVersion = "unknown";
+    quint8 m_nType = undefined;
+    quint32 m_nFlags = 0; // for future purpose
     QDateTime m_AdjDateTime;
 };
 
