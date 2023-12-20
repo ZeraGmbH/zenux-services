@@ -28,6 +28,7 @@ public:
     QString getDeviceVersion() { return m_systemInfo->getDeviceVersion(); }
     Mt310s2SenseInterface* getSenseInterface() { return m_senseInterface.get(); }
     cClampInterface* getClampInterface() { return m_clampInterface.get(); }
+    cSenseSettings* getSenseSettings() { return m_senseSettings.get(); }
 private:
     std::unique_ptr<cI2CSettings> m_i2cSettings;
     std::unique_ptr<cSenseSettings> m_senseSettings;
@@ -112,13 +113,20 @@ void test_regression_sense_interface_mt310s2::checkChannelCatalogAsExpected()
     QCOMPARE(responseSpy[0][2].toStringList(), m_channelsExpectedAllOverThePlace);
 }
 
-void test_regression_sense_interface_mt310s2::tryClamps()
+constexpr int mt310s2PhaseCount = 4; // can we get this from config please?
+
+void test_regression_sense_interface_mt310s2::addClampIL1()
 {
     ResmanRunFacade resman;
     MockForSenseInterface mock;
     TimeMachineObject::feedEventLoop();
 
     cClampInterface* clampInterface = mock.getClampInterface();
-    clampInterface->addClamp(5, I2cMultiplexerFactory::createNullMuxer(), 1<<4, 4, "m3"); // 5: control channel U 1234 5 -> IL1
+    SenseSystem::cChannelSettings *channelSetting = mock.getSenseSettings()->findChannelSettingByAlias1("IL1");
+    clampInterface->addClamp(channelSetting->m_nCtrlChannel,
+                             I2cMultiplexerFactory::createNullMuxer(),
+                             channelSetting->m_nPluggedBit,
+                             mt310s2PhaseCount,
+                             channelSetting->m_nameMx);
 }
 
