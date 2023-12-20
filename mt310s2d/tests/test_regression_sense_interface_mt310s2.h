@@ -13,7 +13,7 @@ private slots:
     void checkVersionsOfSystemInterface();
     void checkExportXml();
     void checkChannelCatalogAsExpected();
-    void tryClamps();
+    void addClampIL1();
 private:
     static QStringList m_channelsExpectedAllOverThePlace;
 };
