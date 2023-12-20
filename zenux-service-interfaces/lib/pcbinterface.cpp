@@ -491,14 +491,6 @@ quint32 cPCBInterface::getAuthorizationStatus()
     return d->getAuthorizationStatus();
 }
 
-quint32 cPCBInterface::getPCBErrorStatus()
-{
-
-    Q_D(cPCBInterface);
-    return d->getPCBErrorStatus();
-}
-
-
 quint32 cPCBInterface::resourceAliasQuery(QString resourceType, QString resourceName)
 {
     Q_D(cPCBInterface);
