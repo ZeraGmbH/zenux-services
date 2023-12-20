@@ -223,8 +223,8 @@ void cMT310S2dServer::doSetupServer()
         else
         {
             Atmel::getInstance().setPLLChannel(1); // default channel m0 for pll control
-            m_pSystemInfo = new Mt310s2SystemInfo();
-            m_pAdjHandler = new Mt310s2Adjustment(this);
+            m_pSystemInfo = new Mt310s2SystemInfo;
+            m_pAdjHandler = new Mt310s2Adjustment;
 
             setupServer(); // here our scpi interface gets instanciated, we need this for further steps
 
