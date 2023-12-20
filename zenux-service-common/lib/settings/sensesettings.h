@@ -81,6 +81,7 @@ namespace SenseSystem
     };
     struct cChannelSettings // what we want to get configured
     {
+        QString m_nameMx;      // m0, m1...
         QString m_sAlias1;     // the alias names for measuring channels
         QString m_sAlias2;
         quint8 m_nCtrlChannel; // where to control the channel
@@ -99,6 +100,8 @@ public:
     cSenseSettings(Zera::XMLConfig::cReader *xmlread, int channelCount);
     virtual ~cSenseSettings();
     const QList<SenseSystem::cChannelSettings*>& getChannelSettings() const;
+    SenseSystem::cChannelSettings* findChannelSettingByMxName(QString intMxName);
+    SenseSystem::cChannelSettings* findChannelSettingByAlias1(QString alias1);
 public slots:
     virtual void configXMLInfo(QString key);
 private:
