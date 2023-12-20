@@ -2,6 +2,7 @@
 #define TEST_REGRESSION_SENSE_INTERFACE_MT310S2_H
 
 #include <QObject>
+#include <QStringList>
 
 class test_regression_sense_interface_mt310s2 : public QObject
 {
@@ -9,6 +10,9 @@ class test_regression_sense_interface_mt310s2 : public QObject
 private slots:
     void checkVersionsOfSystemInterface();
     void checkExportXml();
+    void checkChannelCatalogAsExpected();
+private:
+    static QStringList m_channelsExpectedAllOverThePlace;
 };
 
 #endif // TEST_REGRESSION_SENSE_INTERFACE_MT310S2_H
