@@ -44,7 +44,7 @@ private:
     QString m_sDeviceNode;
     quint8 m_nI2CAdr;
     quint8 m_nAdjStatus;
-    quint16 m_nChecksum;
+    quint16 m_nChecksum = 0;
 
 };
 

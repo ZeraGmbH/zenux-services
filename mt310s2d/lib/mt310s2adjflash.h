@@ -24,7 +24,7 @@ protected:
     bool writeFlash(QByteArray& ba);
     QString m_sDeviceNode;
     quint8 m_nI2CAdr;
-    quint16 m_nChecksum;
+    quint16 m_nChecksum = 0;
     I2cMuxerInterface::Ptr m_i2cMuxer;
 private:
     void setAdjCountChecksum(QByteArray& ba);
