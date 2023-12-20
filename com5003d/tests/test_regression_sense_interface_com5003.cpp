@@ -5,8 +5,12 @@
 #include "mockpcbserver.h"
 #include "resmanrunfacade.h"
 #include "sensesettings.h"
+#include "proxy.h"
+#include "reply.h"
+#include "pcbinterface.h"
 #include <timemachineobject.h>
 #include <QRegularExpression>
+#include <QSignalSpy>
 #include <QTest>
 
 QTEST_MAIN(test_regression_sense_interface_com5003);
@@ -76,4 +80,30 @@ void test_regression_sense_interface_com5003::checkExportXml()
 
     // if this turns fragile we have to use zera-scpi's xml-compare-testlib
     QCOMPARE(xmlExported, xmlExpected);
+}
+
+QStringList test_regression_sense_interface_com5003::m_channelsExpectedAllOverThePlace = QStringList()
+                                                                                         << "m0" << "m1" << "m2" << "m3" << "m4" << "m5";
+
+void test_regression_sense_interface_com5003::checkChannelCatalogAsExpected()
+{
+    ResmanRunFacade resman;
+    MockForSenseInterface mock;
+    TimeMachineObject::feedEventLoop();
+
+    Zera::ProxyClientPtr pcbClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307);
+    Zera::cPCBInterface pcbIFace;
+    pcbIFace.setClientSmart(pcbClient);
+
+    Zera::Proxy::getInstance()->startConnectionSmart(pcbClient);
+    TimeMachineObject::feedEventLoop();
+
+    QSignalSpy responseSpy(&pcbIFace, &Zera::cPCBInterface::serverAnswer);
+    int msgNr = pcbIFace.getChannelList();
+    TimeMachineObject::feedEventLoop();
+
+    QCOMPARE(responseSpy.count(), 1);
+    QCOMPARE(responseSpy[0][0], QVariant(msgNr));
+    QCOMPARE(responseSpy[0][1], QVariant(ack));
+    QCOMPARE(responseSpy[0][2].toStringList(), m_channelsExpectedAllOverThePlace);
 }
