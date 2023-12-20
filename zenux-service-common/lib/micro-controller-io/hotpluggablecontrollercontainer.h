@@ -2,7 +2,6 @@
 #define HOTPLUGGABLECONTROLLERCONTAINER_H
 
 #include "atmelemobctrl.h"
-#include "i2csettings.h"
 #include "sensesettings.h"
 #include <zeramcontrollerbootloaderstopper.h>
 #include <QMap>
