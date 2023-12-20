@@ -36,11 +36,6 @@ private:
     std::unique_ptr<cClampInterface> m_clampInterface;
 };
 
-// It took a while so write it down:
-// We have:
-// * Mt310s2SenseInterface (and cClampInterface) which inheriting Mt310s2AdjXML (and others)
-// * Mt310s2AdjXML is a template extending Mt310s2SenseInterface by
-
 MockForSenseInterface::MockForSenseInterface() :
     MockPcbServer("mt310s2d")
 {
