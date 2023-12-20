@@ -8,6 +8,8 @@ class test_regression_sense_interface_mt310s2 : public QObject
 {
     Q_OBJECT
 private slots:
+    void initTestCase();
+
     void checkVersionsOfSystemInterface();
     void checkExportXml();
     void checkChannelCatalogAsExpected();
