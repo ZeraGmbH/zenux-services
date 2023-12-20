@@ -640,10 +640,10 @@ void cClamp::initClamp(quint8 type)
         m_sChannelNameSecondary = m_pSenseInterface->getChannelSystemName(m_nCtrlChannelSecondary);
         clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelNameSecondary, QString("8V")), 121.0);
         m_RangeListSecondary.append(new Mt310s2SenseRange(m_pSCPIInterface, "C1000V", "C1000V", true, 1000.0, 3466367.0, 3466367.0 * 1.25, 8388607.0, 1 /*8V*/, dcCommonMask | SenseSystem::Clamp, clampJustData));
-
         break;
     }
-
+    if(m_RangeList.isEmpty() && m_RangeListSecondary.isEmpty())
+        qCritical("Unkown clamp type - no ranges set!");
 }
 
 QString cClamp::getClampTypeName(quint8 type)

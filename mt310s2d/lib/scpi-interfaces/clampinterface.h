@@ -28,8 +28,11 @@ public:
     cClampInterface(cPCBServer *server, cI2CSettings *i2cSettings, cSenseSettings *senseSettings, Mt310s2SenseInterface *senseInterface);
     virtual void initSCPIConnection(QString leadingNodes) override;
     void actualizeClampStatus(quint16 devConnectedMask);
+    // lazy: public for test
+    void addClamp(int ctrlChannel, I2cMuxerInterface::Ptr i2cMuxer, quint16 bmask, int phaseCount, QString channelName);
 protected:
     void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
+
 private:
     void generateAndNotifyClampChannelList();
     QString readClampChannelCatalog(QString& sInput);

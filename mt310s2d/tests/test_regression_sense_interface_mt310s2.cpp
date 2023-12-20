@@ -1,4 +1,5 @@
 #include "test_regression_sense_interface_mt310s2.h"
+#include "clampinterface.h"
 #include "mockpcbserver.h"
 #include "i2csettings.h"
 #include "mt310s2senseinterface.h"
@@ -9,6 +10,7 @@
 #include "proxy.h"
 #include "reply.h"
 #include "pcbinterface.h"
+#include <i2cmultiplexerfactory.h>
 #include <timemachineobject.h>
 #include <QFile>
 #include <QRegularExpression>
@@ -24,11 +26,13 @@ public:
     MockForSenseInterface();
     QString getDeviceVersion() { return m_systemInfo->getDeviceVersion(); }
     Mt310s2SenseInterface* getSenseInterface() { return m_senseInterface.get(); }
+    cClampInterface* getClampInterface() { return m_clampInterface.get(); }
 private:
     std::unique_ptr<cI2CSettings> m_i2cSettings;
     std::unique_ptr<cSenseSettings> m_senseSettings;
     std::unique_ptr<cSystemInfo> m_systemInfo;
     std::unique_ptr<Mt310s2SenseInterface> m_senseInterface;
+    std::unique_ptr<cClampInterface> m_clampInterface;
 };
 
 // It took a while so write it down:
@@ -46,6 +50,7 @@ MockForSenseInterface::MockForSenseInterface() :
     m_systemInfo = std::make_unique<cSystemInfo>();
 
     m_senseInterface = std::make_unique<Mt310s2SenseInterface>(getSCPIInterface(), m_i2cSettings.get(), m_senseSettings.get(), m_systemInfo.get());
+    m_clampInterface = std::make_unique<cClampInterface>(this, m_i2cSettings.get(), m_senseSettings.get(), m_senseInterface.get());
     setResources(ResourcesList{m_senseInterface.get()});
     start();
 }
@@ -104,5 +109,15 @@ void test_regression_sense_interface_mt310s2::checkChannelCatalogAsExpected()
     QCOMPARE(responseSpy[0][0], QVariant(msgNr));
     QCOMPARE(responseSpy[0][1], QVariant(ack));
     QCOMPARE(responseSpy[0][2].toStringList(), m_channelsExpectedAllOverThePlace);
+}
+
+void test_regression_sense_interface_mt310s2::tryClamps()
+{
+    ResmanRunFacade resman;
+    MockForSenseInterface mock;
+    TimeMachineObject::feedEventLoop();
+
+    cClampInterface* clampInterface = mock.getClampInterface();
+    clampInterface->addClamp(5, I2cMultiplexerFactory::createNullMuxer(), 1<<4, 4, "IL1"); // 5: control channel U 1234 5 -> IL1
 }
 

@@ -26,6 +26,21 @@ void cClampInterface::initSCPIConnection(QString leadingNodes)
     addDelegate(QString("%1SYSTEM:ADJUSTMENT:CLAMP").arg(leadingNodes),"XML",SCPI::isQuery | SCPI::isCmdwP, m_pSCPIInterface, ClampSystem::cmdClampImportExport);
 }
 
+void cClampInterface::addClamp(int ctrlChannel, I2cMuxerInterface::Ptr i2cMuxer, quint16 bmask, int phaseCount, QString channelName)
+{
+    m_nClampStatus |= bmask;
+    int ctlChannelSecondary = ctrlChannel-phaseCount; // assumption - hope we find better
+    cClamp* clamp = new cClamp(m_pMyServer, m_i2cSettings, m_pSenseInterface, channelName, ctrlChannel, i2cMuxer, ctlChannelSecondary);
+    m_clampHash[channelName] = clamp;
+    qInfo("Add clamp channel \"%s\"/%i", qPrintable(channelName), ctrlChannel);
+    QString channelNameSecondary = m_pSenseInterface->getChannelSystemName(ctlChannelSecondary);
+    if(!m_clampHash[channelName]->getChannelNameSecondary().isEmpty()) {
+        m_clampSecondarySet.insert(channelNameSecondary);
+        qInfo("Added voltage clamp channel \"%s\"/%i", qPrintable(channelNameSecondary), ctlChannelSecondary);
+    }
+    generateAndNotifyClampChannelList();
+}
+
 void cClampInterface::handleClampConnected(QString channelName, const SenseSystem::cChannelSettings *chSettings, quint16 bmask, int phaseCount)
 {
     int ctrlChannel = chSettings->m_nCtrlChannel;
@@ -35,19 +50,8 @@ void cClampInterface::handleClampConnected(QString channelName, const SenseSyste
     I2cMuxerScopedOnOff i2cMuxOnOff(i2cMuxer);
     QString i2cDevNode = m_i2cSettings->getDeviceNode();
     int i2cAddress = m_i2cSettings->getI2CAdress(i2cSettings::clampFlashI2cAddress);
-    if(I2cPing(i2cDevNode, i2cAddress)) { // ignore other than flash
-        m_nClampStatus |= bmask;
-        int ctlChannelSecondary = ctrlChannel-phaseCount; // assumption - hope we find better
-        cClamp* clamp = new cClamp(m_pMyServer, m_i2cSettings, m_pSenseInterface, channelName, ctrlChannel, i2cMuxer, ctlChannelSecondary);
-        m_clampHash[channelName] = clamp;
-        qInfo("Add clamp channel \"%s\"/%i", qPrintable(channelName), ctrlChannel);
-        QString channelNameSecondary = m_pSenseInterface->getChannelSystemName(ctlChannelSecondary);
-        if(!m_clampHash[channelName]->getChannelNameSecondary().isEmpty()) {
-            m_clampSecondarySet.insert(channelNameSecondary);
-            qInfo("Added voltage clamp channel \"%s\"/%i", qPrintable(channelNameSecondary), ctlChannelSecondary);
-        }
-        generateAndNotifyClampChannelList();
-    }
+    if(I2cPing(i2cDevNode, i2cAddress)) // ignore other than flash
+        addClamp(ctrlChannel, i2cMuxer, bmask, phaseCount, channelName);
     else
         qInfo("Not a clamp channel \"%s\"/%i", qPrintable(channelName), ctrlChannel);
 }
