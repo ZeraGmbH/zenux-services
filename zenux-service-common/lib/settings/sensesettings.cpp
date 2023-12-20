@@ -29,6 +29,24 @@ const QList<SenseSystem::cChannelSettings*> &cSenseSettings::getChannelSettings(
     return m_ChannelSettingsList;
 }
 
+SenseSystem::cChannelSettings *cSenseSettings::findChannelSettingByMxName(QString intMxName)
+{
+    for(auto channel : qAsConst(m_ChannelSettingsList)) {
+        if(channel->m_nameMx == intMxName)
+            return channel;
+    }
+    return nullptr;
+}
+
+SenseSystem::cChannelSettings *cSenseSettings::findChannelSettingByAlias1(QString alias1)
+{
+    for(auto channel : qAsConst(m_ChannelSettingsList)) {
+        if(channel->m_sAlias1 == alias1)
+            return channel;
+    }
+    return nullptr;
+}
+
 void cSenseSettings::configXMLInfo(QString key)
 {
     if (m_ConfigXMLMap.contains(key)) {
@@ -36,27 +54,35 @@ void cSenseSettings::configXMLInfo(QString key)
         {
         case SenseSystem::cfg0Alias1:
             m_ChannelSettingsList.at(0)->m_sAlias1 = m_pXMLReader->getValue(key);
+            m_ChannelSettingsList.at(0)->m_nameMx = key.split(":")[3];
             break;
         case SenseSystem::cfg1Alias1:
             m_ChannelSettingsList.at(1)->m_sAlias1 = m_pXMLReader->getValue(key);
+            m_ChannelSettingsList.at(1)->m_nameMx = key.split(":")[3];
             break;
         case SenseSystem::cfg2Alias1:
             m_ChannelSettingsList.at(2)->m_sAlias1 = m_pXMLReader->getValue(key);
+            m_ChannelSettingsList.at(2)->m_nameMx = key.split(":")[3];
             break;
         case SenseSystem::cfg3Alias1:
             m_ChannelSettingsList.at(3)->m_sAlias1 = m_pXMLReader->getValue(key);
+            m_ChannelSettingsList.at(3)->m_nameMx = key.split(":")[3];
             break;
         case SenseSystem::cfg4Alias1:
             m_ChannelSettingsList.at(4)->m_sAlias1 = m_pXMLReader->getValue(key);
+            m_ChannelSettingsList.at(4)->m_nameMx = key.split(":")[3];
             break;
         case SenseSystem::cfg5Alias1:
             m_ChannelSettingsList.at(5)->m_sAlias1 = m_pXMLReader->getValue(key);
+            m_ChannelSettingsList.at(5)->m_nameMx = key.split(":")[3];
             break;
         case SenseSystem::cfg6Alias1:
             m_ChannelSettingsList.at(6)->m_sAlias1 = m_pXMLReader->getValue(key);
+            m_ChannelSettingsList.at(6)->m_nameMx = key.split(":")[3];
             break;
         case SenseSystem::cfg7Alias1:
             m_ChannelSettingsList.at(7)->m_sAlias1 = m_pXMLReader->getValue(key);
+            m_ChannelSettingsList.at(7)->m_nameMx = key.split(":")[3];
             break;
 
         case SenseSystem::cfg0Alias2:
