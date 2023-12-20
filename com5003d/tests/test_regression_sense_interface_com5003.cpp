@@ -63,6 +63,7 @@ void test_regression_sense_interface_com5003::checkExportXml()
     MockForSenseInterface mock;
     TimeMachineObject::feedEventLoop();
 
+    // Date time are empty. On change: see mt310s2 and add XmlHelperForTest::removeTimeDependentEntriesFromXml
     QString xmlExported = mock.getAdjustment()->exportXMLString();
     qInfo("Exported XML:");
     qInfo("%s", qPrintable(xmlExported));
