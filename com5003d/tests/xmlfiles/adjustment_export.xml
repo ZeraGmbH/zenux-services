@@ -6,7 +6,7 @@
  <Date></Date>
  <Time></Time>
  <Adjustment>
-  <Chksum>0x6269</Chksum>
+  <Chksum>0x0</Chksum>
   <Sense>
    <Channel>
     <Name>m0</Name>
