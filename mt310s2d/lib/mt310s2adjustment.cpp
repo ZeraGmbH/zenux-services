@@ -1,8 +1,7 @@
 #include "mt310s2adjustment.h"
 #include "mt310s2adjflash.h"
 
-Mt310s2Adjustment::Mt310s2Adjustment(cMT310S2dServer *server)
-    :m_pMyServer(server)
+Mt310s2Adjustment::Mt310s2Adjustment()
 {
 }
 
