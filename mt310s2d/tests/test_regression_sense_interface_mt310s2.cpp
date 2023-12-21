@@ -194,11 +194,11 @@ void test_regression_sense_interface_mt310s2::addClampIL1_CL120A()
 
     ClampFactoryTest::setTestClampType(CL120A);
     cClampInterface* clampInterface = mock.getClampInterface();
-    clampInterface->addClamp(channelSettingI->m_nCtrlChannel,
+    clampInterface->addClamp(channelSettingI->m_nameMx,
+                             channelSettingI->m_nCtrlChannel,
                              I2cMultiplexerFactory::createNullMuxer(),
                              channelSettingI->m_nPluggedBit,
-                             mt310s2PhaseCount,
-                             channelSettingI->m_nameMx);
+                             mt310s2PhaseCount);
 
     QSignalSpy responseSpyI(&pcbIFace, &Zera::cPCBInterface::serverAnswer);
     int msgNr = pcbIFace.getRangeList(channelSettingI->m_nameMx);
@@ -241,11 +241,11 @@ void test_regression_sense_interface_mt310s2::addClampIL2_CL800ADC1000VDC()
 
     ClampFactoryTest::setTestClampType(CL800ADC1000VDC);
     cClampInterface* clampInterface = mock.getClampInterface();
-    clampInterface->addClamp(channelSettingI->m_nCtrlChannel,
+    clampInterface->addClamp(channelSettingI->m_nameMx,
+                             channelSettingI->m_nCtrlChannel,
                              I2cMultiplexerFactory::createNullMuxer(),
                              channelSettingI->m_nPluggedBit,
-                             mt310s2PhaseCount,
-                             channelSettingI->m_nameMx);
+                             mt310s2PhaseCount);
 
     QSignalSpy responseSpyI(&pcbIFace, &Zera::cPCBInterface::serverAnswer);
     int msgNr = pcbIFace.getRangeList(channelSettingI->m_nameMx);
