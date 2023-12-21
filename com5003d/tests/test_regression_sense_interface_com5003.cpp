@@ -23,6 +23,7 @@ public:
     QString getDeviceVersion() { return m_systemInfo->getDeviceVersion(); }
     Com5003SenseInterface *getSenseInterface() { return m_senseInterface.get(); }
     Com5003Adjustment *getAdjustment() { return m_adjustment.get(); }
+    cSenseSettings* getSenseSettings() { return m_senseSettings.get(); }
 private:
     std::unique_ptr<cI2CSettings> m_i2cSettings;
     std::unique_ptr<cSenseSettings> m_senseSettings;
@@ -106,4 +107,66 @@ void test_regression_sense_interface_com5003::checkChannelCatalogAsExpected()
     QCOMPARE(responseSpy[0][0], QVariant(msgNr));
     QCOMPARE(responseSpy[0][1], QVariant(ack));
     QCOMPARE(responseSpy[0][2].toStringList(), m_channelsExpectedAllOverThePlace);
+}
+
+// Is that a good idea to put it on modules's to hide reference ranges???
+QStringList test_regression_sense_interface_com5003::m_rangesExpectedU = QStringList()
+                                                                         << "480V" << "240V" << "120V" << "60V" << "12V" << "5V"
+                                                                         << "R0V" << "R10V";
+
+void test_regression_sense_interface_com5003::checkRangesUL1()
+{
+    ResmanRunFacade resman;
+    MockForSenseInterface mock;
+    TimeMachineObject::feedEventLoop();
+
+    Zera::ProxyClientPtr pcbClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307);
+    Zera::cPCBInterface pcbIFace;
+    pcbIFace.setClientSmart(pcbClient);
+
+    Zera::Proxy::getInstance()->startConnectionSmart(pcbClient);
+    TimeMachineObject::feedEventLoop();
+
+    SenseSystem::cChannelSettings *channelSetting = mock.getSenseSettings()->findChannelSettingByAlias1("UL1");
+
+    QSignalSpy responseSpy(&pcbIFace, &Zera::cPCBInterface::serverAnswer);
+    int msgNr = pcbIFace.getRangeList(channelSetting->m_nameMx);
+    TimeMachineObject::feedEventLoop();
+
+    QCOMPARE(responseSpy.count(), 1);
+    QCOMPARE(responseSpy[0][0], QVariant(msgNr));
+    QCOMPARE(responseSpy[0][1], QVariant(ack));
+    QCOMPARE(responseSpy[0][2].toStringList(), m_rangesExpectedU);
+}
+
+// Is that a good idea to put it on modules's to hide reference ranges???
+QStringList test_regression_sense_interface_com5003::m_rangesExpectedI = QStringList()
+                                                                         << "200A" << "100A" << "50A" << "25A" << "10A"
+                                                                         << "5A" << "2.5A" << "1.0A"
+                                                                         << "500mA" << "250mA" << "100mA" << "50mA" << "25mA" << "10mA" << "5mA"
+                                                                         << "R0V" << "R10V";
+
+void test_regression_sense_interface_com5003::checkRangesIL1()
+{
+    ResmanRunFacade resman;
+    MockForSenseInterface mock;
+    TimeMachineObject::feedEventLoop();
+
+    Zera::ProxyClientPtr pcbClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307);
+    Zera::cPCBInterface pcbIFace;
+    pcbIFace.setClientSmart(pcbClient);
+
+    Zera::Proxy::getInstance()->startConnectionSmart(pcbClient);
+    TimeMachineObject::feedEventLoop();
+
+    SenseSystem::cChannelSettings *channelSetting = mock.getSenseSettings()->findChannelSettingByAlias1("IL1");
+
+    QSignalSpy responseSpy(&pcbIFace, &Zera::cPCBInterface::serverAnswer);
+    int msgNr = pcbIFace.getRangeList(channelSetting->m_nameMx);
+    TimeMachineObject::feedEventLoop();
+
+    QCOMPARE(responseSpy.count(), 1);
+    QCOMPARE(responseSpy[0][0], QVariant(msgNr));
+    QCOMPARE(responseSpy[0][1], QVariant(ack));
+    QCOMPARE(responseSpy[0][2].toStringList(), m_rangesExpectedI);
 }
