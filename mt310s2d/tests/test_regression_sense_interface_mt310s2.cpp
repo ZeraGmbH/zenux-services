@@ -142,7 +142,8 @@ void test_regression_sense_interface_mt310s2::checkRangesUL1()
 // Is that a good idea to put it on modules's to hide internal current (voltage) ranges???
 QStringList test_regression_sense_interface_mt310s2::m_rangesExpectedI = QStringList()
                                                                          << "10A" << "5A" << "2.5A" << "1.0A"
-                                                                         << "500mA" << "250mA" << "100mA" << "50mA" << "25mA"
+                                                                         << "500mA" << "250mA" << "100mA" << "50mA" << "25mA";
+QStringList test_regression_sense_interface_mt310s2::m_rangesExpectedI_Internal = QStringList()
                                                                          << "8V" << "5V" << "2V" << "1V"
                                                                          << "500mV" << "200mV" << "100mV" << "50mV" << "20mV" << "10mV" << "5mV" << "2mV";
 
@@ -167,7 +168,7 @@ void test_regression_sense_interface_mt310s2::checkRangesIL1()
     QCOMPARE(responseSpy.count(), 1);
     QCOMPARE(responseSpy[0][0], QVariant(msgNr));
     QCOMPARE(responseSpy[0][1], QVariant(ack));
-    QCOMPARE(responseSpy[0][2].toStringList(), m_rangesExpectedI);
+    QCOMPARE(responseSpy[0][2].toStringList(), m_rangesExpectedI + m_rangesExpectedI_Internal);
 }
 
 QStringList test_regression_sense_interface_mt310s2::m_rangesExpectedI_CL120A = QStringList()
@@ -201,7 +202,7 @@ void test_regression_sense_interface_mt310s2::addClampIL1_CL120A()
     QCOMPARE(responseSpyI.count(), 1);
     QCOMPARE(responseSpyI[0][0], QVariant(msgNr));
     QCOMPARE(responseSpyI[0][1], QVariant(ack));
-    QCOMPARE(responseSpyI[0][2].toStringList(), m_rangesExpectedI + m_rangesExpectedI_CL120A);
+    QCOMPARE(responseSpyI[0][2].toStringList(), m_rangesExpectedI + m_rangesExpectedI_Internal + m_rangesExpectedI_CL120A);
 
     QSignalSpy responseSpyU(&pcbIFace, &Zera::cPCBInterface::serverAnswer);
     msgNr = pcbIFace.getRangeList(channelSettingU->m_nameMx);
@@ -244,7 +245,7 @@ void test_regression_sense_interface_mt310s2::addClampIL2_CL800ADC1000VDC()
     QCOMPARE(responseSpyI.count(), 1);
     QCOMPARE(responseSpyI[0][0], QVariant(msgNr));
     QCOMPARE(responseSpyI[0][1], QVariant(ack));
-    QCOMPARE(responseSpyI[0][2].toStringList(), m_rangesExpectedI + m_rangesExpectedI_CL800ADC1000VDC);
+    QCOMPARE(responseSpyI[0][2].toStringList(), m_rangesExpectedI + m_rangesExpectedI_Internal + m_rangesExpectedI_CL800ADC1000VDC);
 
     QSignalSpy responseSpyU(&pcbIFace, &Zera::cPCBInterface::serverAnswer);
     msgNr = pcbIFace.getRangeList(channelSettingU->m_nameMx);
@@ -256,7 +257,10 @@ void test_regression_sense_interface_mt310s2::addClampIL2_CL800ADC1000VDC()
     QCOMPARE(responseSpyU[0][2].toStringList(), m_rangesExpectedU + m_rangesExpectedU_CL800ADC1000VDC);
 }
 
-void test_regression_sense_interface_mt310s2::addRemoveClampILAUX_CL800ADC1000VDC()
+
+QStringList test_regression_sense_interface_mt310s2::m_rangesExpectedI_DummyAux = QStringList() << "0A";
+
+void test_regression_sense_interface_mt310s2::addRemoveClampIAUX_CL800ADC1000VDC()
 {
     ResmanRunFacade resman;
     MockForSenseInterface mock;
@@ -268,8 +272,8 @@ void test_regression_sense_interface_mt310s2::addRemoveClampILAUX_CL800ADC1000VD
     Zera::Proxy::getInstance()->startConnectionSmart(pcbClient);
     TimeMachineObject::feedEventLoop();
 
-    SenseSystem::cChannelSettings *channelSettingI = mock.getSenseSettings()->findChannelSettingByAlias1("IL2");
-    SenseSystem::cChannelSettings *channelSettingU = mock.getSenseSettings()->findChannelSettingByAlias1("UL2");
+    SenseSystem::cChannelSettings *channelSettingI = mock.getSenseSettings()->findChannelSettingByAlias1("IAUX");
+    SenseSystem::cChannelSettings *channelSettingU = mock.getSenseSettings()->findChannelSettingByAlias1("UAUX");
 
     // add
     ClampFactoryTest::setTestClampType(CL800ADC1000VDC);
@@ -279,7 +283,7 @@ void test_regression_sense_interface_mt310s2::addRemoveClampILAUX_CL800ADC1000VD
     QSignalSpy responseSpyI1(&pcbIFace, &Zera::cPCBInterface::serverAnswer);
     pcbIFace.getRangeList(channelSettingI->m_nameMx);
     TimeMachineObject::feedEventLoop();
-    QCOMPARE(responseSpyI1[0][2].toStringList(), m_rangesExpectedI + m_rangesExpectedI_CL800ADC1000VDC);
+    QCOMPARE(responseSpyI1[0][2].toStringList(), m_rangesExpectedI_DummyAux + m_rangesExpectedI_Internal + m_rangesExpectedI_CL800ADC1000VDC);
 
     QSignalSpy responseSpyU1(&pcbIFace, &Zera::cPCBInterface::serverAnswer);
     pcbIFace.getRangeList(channelSettingU->m_nameMx);
@@ -296,7 +300,7 @@ void test_regression_sense_interface_mt310s2::addRemoveClampILAUX_CL800ADC1000VD
     QCOMPARE(responseSpyI.count(), 1);
     QCOMPARE(responseSpyI[0][0], QVariant(msgNr));
     QCOMPARE(responseSpyI[0][1], QVariant(ack));
-    QCOMPARE(responseSpyI[0][2].toStringList(), m_rangesExpectedI);
+    QCOMPARE(responseSpyI[0][2].toStringList(), m_rangesExpectedI_DummyAux + m_rangesExpectedI_Internal);
 
     QSignalSpy responseSpyU(&pcbIFace, &Zera::cPCBInterface::serverAnswer);
     msgNr = pcbIFace.getRangeList(channelSettingU->m_nameMx);
@@ -307,4 +311,3 @@ void test_regression_sense_interface_mt310s2::addRemoveClampILAUX_CL800ADC1000VD
     QCOMPARE(responseSpyU[0][1], QVariant(ack));
     QCOMPARE(responseSpyU[0][2].toStringList(), m_rangesExpectedU);
 }
-
