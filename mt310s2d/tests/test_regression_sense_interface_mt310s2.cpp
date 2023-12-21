@@ -87,7 +87,7 @@ void test_regression_sense_interface_mt310s2::checkExportXml()
 }
 
 QStringList test_regression_sense_interface_mt310s2::m_channelsExpectedAllOverThePlace = QStringList()
-                                                                                         << "m0" << "m1" << "m2" << "m6" << "m3" << "m4" << "m5" << "m7";
+    << "m0" << "m1" << "m2" << "m6" << "m3" << "m4" << "m5" << "m7";
 
 
 void test_regression_sense_interface_mt310s2::checkChannelCatalogAsExpected()
@@ -111,6 +111,66 @@ void test_regression_sense_interface_mt310s2::checkChannelCatalogAsExpected()
     QCOMPARE(responseSpy[0][0], QVariant(msgNr));
     QCOMPARE(responseSpy[0][1], QVariant(ack));
     QCOMPARE(responseSpy[0][2].toStringList(), m_channelsExpectedAllOverThePlace);
+}
+
+QStringList test_regression_sense_interface_mt310s2::m_rangesExpectedU = QStringList()
+    << "250V" << "8V" << "100mV";
+
+void test_regression_sense_interface_mt310s2::checkRangesUL1()
+{
+    ResmanRunFacade resman;
+    MockForSenseInterface mock;
+    TimeMachineObject::feedEventLoop();
+
+    Zera::ProxyClientPtr pcbClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307);
+    Zera::cPCBInterface pcbIFace;
+    pcbIFace.setClientSmart(pcbClient);
+
+    Zera::Proxy::getInstance()->startConnectionSmart(pcbClient);
+    TimeMachineObject::feedEventLoop();
+
+    SenseSystem::cChannelSettings *channelSetting = mock.getSenseSettings()->findChannelSettingByAlias1("UL1");
+
+    QSignalSpy responseSpy(&pcbIFace, &Zera::cPCBInterface::serverAnswer);
+    int msgNr = pcbIFace.getRangeList(channelSetting->m_nameMx);
+    TimeMachineObject::feedEventLoop();
+
+    QCOMPARE(responseSpy.count(), 1);
+    QCOMPARE(responseSpy[0][0], QVariant(msgNr));
+    QCOMPARE(responseSpy[0][1], QVariant(ack));
+    QCOMPARE(responseSpy[0][2].toStringList(), m_rangesExpectedU);
+}
+
+// Is that a good idea to put it on modules's to hide internal current (voltage) ranges???
+QStringList test_regression_sense_interface_mt310s2::m_rangesExpectedI = QStringList()
+                                                                         << "10A" << "5A" << "2.5A" << "1.0A"
+                                                                         << "500mA" << "250mA" << "100mA" << "50mA" << "25mA"
+                                                                         << "8V" << "5V" << "2V" << "1V"
+                                                                         << "500mV" << "200mV" << "100mV" << "50mV" << "20mV" << "10mV" << "5mV" << "2mV";
+
+void test_regression_sense_interface_mt310s2::checkRangesIL1()
+{
+    ResmanRunFacade resman;
+    MockForSenseInterface mock;
+    TimeMachineObject::feedEventLoop();
+
+    Zera::ProxyClientPtr pcbClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307);
+    Zera::cPCBInterface pcbIFace;
+    pcbIFace.setClientSmart(pcbClient);
+
+    Zera::Proxy::getInstance()->startConnectionSmart(pcbClient);
+    TimeMachineObject::feedEventLoop();
+
+    SenseSystem::cChannelSettings *channelSetting = mock.getSenseSettings()->findChannelSettingByAlias1("IL1");
+
+    QSignalSpy responseSpy(&pcbIFace, &Zera::cPCBInterface::serverAnswer);
+    int msgNr = pcbIFace.getRangeList(channelSetting->m_nameMx);
+    TimeMachineObject::feedEventLoop();
+
+    QCOMPARE(responseSpy.count(), 1);
+    QCOMPARE(responseSpy[0][0], QVariant(msgNr));
+    QCOMPARE(responseSpy[0][1], QVariant(ack));
+    QCOMPARE(responseSpy[0][2].toStringList(), m_rangesExpectedI);
 }
 
 constexpr int mt310s2PhaseCount = 4; // can we get this from config please?
