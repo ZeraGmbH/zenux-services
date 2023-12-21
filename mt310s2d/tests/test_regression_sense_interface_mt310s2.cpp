@@ -99,7 +99,6 @@ void test_regression_sense_interface_mt310s2::checkChannelCatalogAsExpected()
     Zera::ProxyClientPtr pcbClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307);
     Zera::cPCBInterface pcbIFace;
     pcbIFace.setClientSmart(pcbClient);
-
     Zera::Proxy::getInstance()->startConnectionSmart(pcbClient);
     TimeMachineObject::feedEventLoop();
 
@@ -125,7 +124,6 @@ void test_regression_sense_interface_mt310s2::checkRangesUL1()
     Zera::ProxyClientPtr pcbClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307);
     Zera::cPCBInterface pcbIFace;
     pcbIFace.setClientSmart(pcbClient);
-
     Zera::Proxy::getInstance()->startConnectionSmart(pcbClient);
     TimeMachineObject::feedEventLoop();
 
@@ -157,7 +155,6 @@ void test_regression_sense_interface_mt310s2::checkRangesIL1()
     Zera::ProxyClientPtr pcbClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307);
     Zera::cPCBInterface pcbIFace;
     pcbIFace.setClientSmart(pcbClient);
-
     Zera::Proxy::getInstance()->startConnectionSmart(pcbClient);
     TimeMachineObject::feedEventLoop();
 
@@ -175,18 +172,97 @@ void test_regression_sense_interface_mt310s2::checkRangesIL1()
 
 constexpr int mt310s2PhaseCount = 4; // can we get this from config please?
 
-void test_regression_sense_interface_mt310s2::addClampIL1()
+QStringList test_regression_sense_interface_mt310s2::m_rangesExpectedI_CL120A = QStringList()
+                                                                                << "C100A" << "C50A" << "C10A" << "C5A" << "C1A"
+                                                                                << "C500mA" << "C100mA" << "C50mA" << "C10mA";
+
+
+void test_regression_sense_interface_mt310s2::addClampIL1_CL120A()
 {
     ResmanRunFacade resman;
     MockForSenseInterface mock;
     TimeMachineObject::feedEventLoop();
 
+    Zera::ProxyClientPtr pcbClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307);
+    Zera::cPCBInterface pcbIFace;
+    pcbIFace.setClientSmart(pcbClient);
+    Zera::Proxy::getInstance()->startConnectionSmart(pcbClient);
+    TimeMachineObject::feedEventLoop();
+
+    SenseSystem::cChannelSettings *channelSettingI = mock.getSenseSettings()->findChannelSettingByAlias1("IL1");
+    SenseSystem::cChannelSettings *channelSettingU = mock.getSenseSettings()->findChannelSettingByAlias1("UL1");
+
+    ClampFactoryTest::setTestClampType(CL120A);
     cClampInterface* clampInterface = mock.getClampInterface();
-    SenseSystem::cChannelSettings *channelSetting = mock.getSenseSettings()->findChannelSettingByAlias1("IL1");
-    clampInterface->addClamp(channelSetting->m_nCtrlChannel,
+    clampInterface->addClamp(channelSettingI->m_nCtrlChannel,
                              I2cMultiplexerFactory::createNullMuxer(),
-                             channelSetting->m_nPluggedBit,
+                             channelSettingI->m_nPluggedBit,
                              mt310s2PhaseCount,
-                             channelSetting->m_nameMx);
+                             channelSettingI->m_nameMx);
+
+    QSignalSpy responseSpyI(&pcbIFace, &Zera::cPCBInterface::serverAnswer);
+    int msgNr = pcbIFace.getRangeList(channelSettingI->m_nameMx);
+    TimeMachineObject::feedEventLoop();
+
+    QCOMPARE(responseSpyI.count(), 1);
+    QCOMPARE(responseSpyI[0][0], QVariant(msgNr));
+    QCOMPARE(responseSpyI[0][1], QVariant(ack));
+    QCOMPARE(responseSpyI[0][2].toStringList(), m_rangesExpectedI + m_rangesExpectedI_CL120A);
+
+    QSignalSpy responseSpyU(&pcbIFace, &Zera::cPCBInterface::serverAnswer);
+    msgNr = pcbIFace.getRangeList(channelSettingU->m_nameMx);
+    TimeMachineObject::feedEventLoop();
+
+    QCOMPARE(responseSpyU.count(), 1);
+    QCOMPARE(responseSpyU[0][0], QVariant(msgNr));
+    QCOMPARE(responseSpyU[0][1], QVariant(ack));
+    QCOMPARE(responseSpyU[0][2].toStringList(), m_rangesExpectedU);
+}
+
+QStringList test_regression_sense_interface_mt310s2::m_rangesExpectedU_CL800ADC1000VDC = QStringList() << "C1000V";
+QStringList test_regression_sense_interface_mt310s2::m_rangesExpectedI_CL800ADC1000VDC = QStringList()
+                                                                                         << "C800A" << "C400A" << "C200A" << "C80A" << "C40A" << "C20A";
+
+
+void test_regression_sense_interface_mt310s2::addClampIL2_CL800ADC1000VDC()
+{
+    ResmanRunFacade resman;
+    MockForSenseInterface mock;
+    TimeMachineObject::feedEventLoop();
+
+    Zera::ProxyClientPtr pcbClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307);
+    Zera::cPCBInterface pcbIFace;
+    pcbIFace.setClientSmart(pcbClient);
+    Zera::Proxy::getInstance()->startConnectionSmart(pcbClient);
+    TimeMachineObject::feedEventLoop();
+
+    SenseSystem::cChannelSettings *channelSettingI = mock.getSenseSettings()->findChannelSettingByAlias1("IL2");
+    SenseSystem::cChannelSettings *channelSettingU = mock.getSenseSettings()->findChannelSettingByAlias1("UL2");
+
+    ClampFactoryTest::setTestClampType(CL800ADC1000VDC);
+    cClampInterface* clampInterface = mock.getClampInterface();
+    clampInterface->addClamp(channelSettingI->m_nCtrlChannel,
+                             I2cMultiplexerFactory::createNullMuxer(),
+                             channelSettingI->m_nPluggedBit,
+                             mt310s2PhaseCount,
+                             channelSettingI->m_nameMx);
+
+    QSignalSpy responseSpyI(&pcbIFace, &Zera::cPCBInterface::serverAnswer);
+    int msgNr = pcbIFace.getRangeList(channelSettingI->m_nameMx);
+    TimeMachineObject::feedEventLoop();
+
+    QCOMPARE(responseSpyI.count(), 1);
+    QCOMPARE(responseSpyI[0][0], QVariant(msgNr));
+    QCOMPARE(responseSpyI[0][1], QVariant(ack));
+    QCOMPARE(responseSpyI[0][2].toStringList(), m_rangesExpectedI + m_rangesExpectedI_CL800ADC1000VDC);
+
+    QSignalSpy responseSpyU(&pcbIFace, &Zera::cPCBInterface::serverAnswer);
+    msgNr = pcbIFace.getRangeList(channelSettingU->m_nameMx);
+    TimeMachineObject::feedEventLoop();
+
+    QCOMPARE(responseSpyU.count(), 1);
+    QCOMPARE(responseSpyU[0][0], QVariant(msgNr));
+    QCOMPARE(responseSpyU[0][1], QVariant(ack));
+    QCOMPARE(responseSpyU[0][2].toStringList(), m_rangesExpectedU + m_rangesExpectedU_CL800ADC1000VDC);
 }
 
