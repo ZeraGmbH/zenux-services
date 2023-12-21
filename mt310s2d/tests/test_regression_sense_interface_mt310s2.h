@@ -17,11 +17,13 @@ private slots:
     void checkRangesIL1();
     void addClampIL1_CL120A();
     void addClampIL2_CL800ADC1000VDC();
-    void addRemoveClampILAUX_CL800ADC1000VDC();
+    void addRemoveClampIAUX_CL800ADC1000VDC();
 private:
     static QStringList m_channelsExpectedAllOverThePlace;
     static QStringList m_rangesExpectedU;
     static QStringList m_rangesExpectedI;
+    static QStringList m_rangesExpectedI_Internal;
+    static QStringList m_rangesExpectedI_DummyAux;
     static QStringList m_rangesExpectedI_CL120A;
     static QStringList m_rangesExpectedU_CL800ADC1000VDC;
     static QStringList m_rangesExpectedI_CL800ADC1000VDC;
