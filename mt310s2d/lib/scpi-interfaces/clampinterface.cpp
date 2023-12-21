@@ -26,34 +26,37 @@ void cClampInterface::initSCPIConnection(QString leadingNodes)
     addDelegate(QString("%1SYSTEM:ADJUSTMENT:CLAMP").arg(leadingNodes),"XML",SCPI::isQuery | SCPI::isCmdwP, m_pSCPIInterface, ClampSystem::cmdClampImportExport);
 }
 
-void cClampInterface::addClamp(QString channelName, int ctrlChannel, I2cMuxerInterface::Ptr i2cMuxer, quint16 bmask, int phaseCount)
+void cClampInterface::addClamp(const SenseSystem::cChannelSettings *chSettings, I2cMuxerInterface::Ptr i2cMuxer)
 {
-    m_nClampStatus |= bmask;
-    int ctlChannelSecondary = ctrlChannel-phaseCount; // assumption - hope we find better
-    cClamp* clamp = ClampFactory::createClamp(m_pMyServer, m_i2cSettings, m_pSenseInterface, channelName, ctrlChannel, i2cMuxer, ctlChannelSecondary);
-    m_clampHash[channelName] = clamp;
-    qInfo("Add clamp on \"%s\"", qPrintable(m_senseSettings->findChannelSettingByMxName(channelName)->m_sAlias1));
+    m_nClampStatus |= (1<<chSettings->m_nPluggedBit);
+
+    // assumption - hope we find better
+    int phaseCount = m_senseSettings->getChannelSettings().size()/2;
+    int ctlChannelSecondary = chSettings->m_nCtrlChannel - phaseCount;
+
+    cClamp* clamp = ClampFactory::createClamp(m_pMyServer, m_i2cSettings, m_pSenseInterface, chSettings->m_nameMx, chSettings->m_nCtrlChannel, i2cMuxer, ctlChannelSecondary);
+    m_clampHash[chSettings->m_nameMx] = clamp;
+    qInfo("Add clamp ranges for \"%s\"", qPrintable(chSettings->m_sAlias1));
     QString channelNameSecondary = clamp->getChannelNameSecondary();
-    if(!m_clampHash[channelName]->getChannelNameSecondary().isEmpty()) {
+    if(!m_clampHash[chSettings->m_nameMx]->getChannelNameSecondary().isEmpty()) {
         m_clampSecondarySet.insert(channelNameSecondary);
-        qInfo("Add secondary clamp on \"%s\"", qPrintable(m_senseSettings->findChannelSettingByMxName(channelNameSecondary)->m_sAlias1));
+        qInfo("Add secondary clamp ranges for \"%s\"", qPrintable(m_senseSettings->findChannelSettingByMxName(channelNameSecondary)->m_sAlias1));
     }
     generateAndNotifyClampChannelList();
 }
 
-void cClampInterface::handleClampConnected(QString channelName, const SenseSystem::cChannelSettings *chSettings, quint16 bmask, int phaseCount)
+void cClampInterface::handleClampConnected(const SenseSystem::cChannelSettings *chSettings)
 {
-    int ctrlChannel = chSettings->m_nCtrlChannel;
-    I2cMuxerInterface::Ptr i2cMuxer = I2cMultiplexerFactory::createPCA9547Muxer(m_i2cSettings->getDeviceNode(),
+    QString i2cDevNode = m_i2cSettings->getDeviceNode();
+    I2cMuxerInterface::Ptr i2cMuxer = I2cMultiplexerFactory::createPCA9547Muxer(i2cDevNode,
                                                                                 m_i2cSettings->getI2CAdress(i2cSettings::muxerI2cAddress),
                                                                                 chSettings->m_nMuxChannelNo);
     I2cMuxerScopedOnOff i2cMuxOnOff(i2cMuxer);
-    QString i2cDevNode = m_i2cSettings->getDeviceNode();
     int i2cAddress = m_i2cSettings->getI2CAdress(i2cSettings::clampFlashI2cAddress);
     if(I2cPing(i2cDevNode, i2cAddress)) // ignore other than flash
-        addClamp(channelName, ctrlChannel, i2cMuxer, bmask, phaseCount);
+        addClamp(chSettings, i2cMuxer);
     else
-        qInfo("Not a clamp channel \"%s\"/%i", qPrintable(channelName), ctrlChannel);
+        qInfo("Not a clamp on %s", qPrintable(chSettings->m_sAlias1));
 }
 
 void cClampInterface::removeClamp(QString channelName, const SenseSystem::cChannelSettings *chSettings, quint16 bmask)
@@ -91,7 +94,7 @@ void cClampInterface::actualizeClampStatus(quint16 devConnectedMask)
         quint16 bmask = (1 << plugBitNo);
         if ((clChange & bmask) > 0) {
             if ((m_nClampStatus & bmask) == 0)
-                handleClampConnected(channelName, channelSettings, bmask, channelsSettings.size()/2);
+                handleClampConnected(channelSettings);
             else
                 removeClamp(channelName, channelSettings, bmask);
         }
