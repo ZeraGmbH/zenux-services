@@ -30,7 +30,6 @@ public:
     void actualizeClampStatus(quint16 devConnectedMask);
     // lazy: public for test
     void addClamp(const SenseSystem::cChannelSettings *chSettings, I2cMuxerInterface::Ptr i2cMuxer);
-    void removeClamp(QString channelName, const SenseSystem::cChannelSettings *chSettings, quint16 bmask);
 protected:
     void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
 
@@ -40,6 +39,7 @@ private:
     QString writeAllClamps(QString& sInput);
     QString importExportAllClamps(QString& sInput);
     void handleClampConnected(const SenseSystem::cChannelSettings *chSettings);
+    void handleClampDisconnected(QString channelName, const SenseSystem::cChannelSettings *chSettings, quint16 bmask);
 
     cPCBServer *m_pMyServer;
     cI2CSettings *m_i2cSettings;

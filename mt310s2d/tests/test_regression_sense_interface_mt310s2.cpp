@@ -256,3 +256,55 @@ void test_regression_sense_interface_mt310s2::addClampIL2_CL800ADC1000VDC()
     QCOMPARE(responseSpyU[0][2].toStringList(), m_rangesExpectedU + m_rangesExpectedU_CL800ADC1000VDC);
 }
 
+void test_regression_sense_interface_mt310s2::addRemoveClampILAUX_CL800ADC1000VDC()
+{
+    ResmanRunFacade resman;
+    MockForSenseInterface mock;
+    TimeMachineObject::feedEventLoop();
+
+    Zera::ProxyClientPtr pcbClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307);
+    Zera::cPCBInterface pcbIFace;
+    pcbIFace.setClientSmart(pcbClient);
+    Zera::Proxy::getInstance()->startConnectionSmart(pcbClient);
+    TimeMachineObject::feedEventLoop();
+
+    SenseSystem::cChannelSettings *channelSettingI = mock.getSenseSettings()->findChannelSettingByAlias1("IL2");
+    SenseSystem::cChannelSettings *channelSettingU = mock.getSenseSettings()->findChannelSettingByAlias1("UL2");
+
+    // add
+    ClampFactoryTest::setTestClampType(CL800ADC1000VDC);
+    cClampInterface* clampInterface = mock.getClampInterface();
+    clampInterface->addClamp(channelSettingI, I2cMultiplexerFactory::createNullMuxer());
+
+    QSignalSpy responseSpyI1(&pcbIFace, &Zera::cPCBInterface::serverAnswer);
+    pcbIFace.getRangeList(channelSettingI->m_nameMx);
+    TimeMachineObject::feedEventLoop();
+    QCOMPARE(responseSpyI1[0][2].toStringList(), m_rangesExpectedI + m_rangesExpectedI_CL800ADC1000VDC);
+
+    QSignalSpy responseSpyU1(&pcbIFace, &Zera::cPCBInterface::serverAnswer);
+    pcbIFace.getRangeList(channelSettingU->m_nameMx);
+    TimeMachineObject::feedEventLoop();
+    QCOMPARE(responseSpyU1[0][2].toStringList(), m_rangesExpectedU + m_rangesExpectedU_CL800ADC1000VDC);
+
+    // remove - to have as much production code as possible we use actualizeClampStatus
+    clampInterface->actualizeClampStatus(0);
+
+    QSignalSpy responseSpyI(&pcbIFace, &Zera::cPCBInterface::serverAnswer);
+    int msgNr = pcbIFace.getRangeList(channelSettingI->m_nameMx);
+    TimeMachineObject::feedEventLoop();
+
+    QCOMPARE(responseSpyI.count(), 1);
+    QCOMPARE(responseSpyI[0][0], QVariant(msgNr));
+    QCOMPARE(responseSpyI[0][1], QVariant(ack));
+    QCOMPARE(responseSpyI[0][2].toStringList(), m_rangesExpectedI);
+
+    QSignalSpy responseSpyU(&pcbIFace, &Zera::cPCBInterface::serverAnswer);
+    msgNr = pcbIFace.getRangeList(channelSettingU->m_nameMx);
+    TimeMachineObject::feedEventLoop();
+
+    QCOMPARE(responseSpyU.count(), 1);
+    QCOMPARE(responseSpyU[0][0], QVariant(msgNr));
+    QCOMPARE(responseSpyU[0][1], QVariant(ack));
+    QCOMPARE(responseSpyU[0][2].toStringList(), m_rangesExpectedU);
+}
+

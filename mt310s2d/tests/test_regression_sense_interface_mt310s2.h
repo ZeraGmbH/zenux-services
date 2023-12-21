@@ -17,6 +17,7 @@ private slots:
     void checkRangesIL1();
     void addClampIL1_CL120A();
     void addClampIL2_CL800ADC1000VDC();
+    void addRemoveClampILAUX_CL800ADC1000VDC();
 private:
     static QStringList m_channelsExpectedAllOverThePlace;
     static QStringList m_rangesExpectedU;

@@ -59,7 +59,7 @@ void cClampInterface::handleClampConnected(const SenseSystem::cChannelSettings *
         qInfo("Not a clamp on %s", qPrintable(chSettings->m_sAlias1));
 }
 
-void cClampInterface::removeClamp(QString channelName, const SenseSystem::cChannelSettings *chSettings, quint16 bmask)
+void cClampInterface::handleClampDisconnected(QString channelName, const SenseSystem::cChannelSettings *chSettings, quint16 bmask)
 {
     int ctrlChannel = chSettings->m_nCtrlChannel;
     if (m_clampHash.contains(channelName)) {
@@ -96,7 +96,7 @@ void cClampInterface::actualizeClampStatus(quint16 devConnectedMask)
             if ((m_nClampStatus & bmask) == 0)
                 handleClampConnected(channelSettings);
             else
-                removeClamp(channelName, channelSettings, bmask);
+                handleClampDisconnected(channelName, channelSettings, bmask);
         }
     }
 }
