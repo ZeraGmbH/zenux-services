@@ -170,8 +170,6 @@ void test_regression_sense_interface_mt310s2::checkRangesIL1()
     QCOMPARE(responseSpy[0][2].toStringList(), m_rangesExpectedI);
 }
 
-constexpr int mt310s2PhaseCount = 4; // can we get this from config please?
-
 QStringList test_regression_sense_interface_mt310s2::m_rangesExpectedI_CL120A = QStringList()
                                                                                 << "C100A" << "C50A" << "C10A" << "C5A" << "C1A"
                                                                                 << "C500mA" << "C100mA" << "C50mA" << "C10mA";
@@ -194,11 +192,7 @@ void test_regression_sense_interface_mt310s2::addClampIL1_CL120A()
 
     ClampFactoryTest::setTestClampType(CL120A);
     cClampInterface* clampInterface = mock.getClampInterface();
-    clampInterface->addClamp(channelSettingI->m_nameMx,
-                             channelSettingI->m_nCtrlChannel,
-                             I2cMultiplexerFactory::createNullMuxer(),
-                             channelSettingI->m_nPluggedBit,
-                             mt310s2PhaseCount);
+    clampInterface->addClamp(channelSettingI, I2cMultiplexerFactory::createNullMuxer());
 
     QSignalSpy responseSpyI(&pcbIFace, &Zera::cPCBInterface::serverAnswer);
     int msgNr = pcbIFace.getRangeList(channelSettingI->m_nameMx);
@@ -241,11 +235,7 @@ void test_regression_sense_interface_mt310s2::addClampIL2_CL800ADC1000VDC()
 
     ClampFactoryTest::setTestClampType(CL800ADC1000VDC);
     cClampInterface* clampInterface = mock.getClampInterface();
-    clampInterface->addClamp(channelSettingI->m_nameMx,
-                             channelSettingI->m_nCtrlChannel,
-                             I2cMultiplexerFactory::createNullMuxer(),
-                             channelSettingI->m_nPluggedBit,
-                             mt310s2PhaseCount);
+    clampInterface->addClamp(channelSettingI, I2cMultiplexerFactory::createNullMuxer());
 
     QSignalSpy responseSpyI(&pcbIFace, &Zera::cPCBInterface::serverAnswer);
     int msgNr = pcbIFace.getRangeList(channelSettingI->m_nameMx);
