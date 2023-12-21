@@ -26,7 +26,7 @@ void cClampInterface::initSCPIConnection(QString leadingNodes)
     addDelegate(QString("%1SYSTEM:ADJUSTMENT:CLAMP").arg(leadingNodes),"XML",SCPI::isQuery | SCPI::isCmdwP, m_pSCPIInterface, ClampSystem::cmdClampImportExport);
 }
 
-void cClampInterface::addClamp(int ctrlChannel, I2cMuxerInterface::Ptr i2cMuxer, quint16 bmask, int phaseCount, QString channelName)
+void cClampInterface::addClamp(QString channelName, int ctrlChannel, I2cMuxerInterface::Ptr i2cMuxer, quint16 bmask, int phaseCount)
 {
     m_nClampStatus |= bmask;
     int ctlChannelSecondary = ctrlChannel-phaseCount; // assumption - hope we find better
@@ -51,12 +51,12 @@ void cClampInterface::handleClampConnected(QString channelName, const SenseSyste
     QString i2cDevNode = m_i2cSettings->getDeviceNode();
     int i2cAddress = m_i2cSettings->getI2CAdress(i2cSettings::clampFlashI2cAddress);
     if(I2cPing(i2cDevNode, i2cAddress)) // ignore other than flash
-        addClamp(ctrlChannel, i2cMuxer, bmask, phaseCount, channelName);
+        addClamp(channelName, ctrlChannel, i2cMuxer, bmask, phaseCount);
     else
         qInfo("Not a clamp channel \"%s\"/%i", qPrintable(channelName), ctrlChannel);
 }
 
-void cClampInterface::handleClampDisconnected(QString channelName, const SenseSystem::cChannelSettings *chSettings, quint16 bmask)
+void cClampInterface::removeClamp(QString channelName, const SenseSystem::cChannelSettings *chSettings, quint16 bmask)
 {
     int ctrlChannel = chSettings->m_nCtrlChannel;
     if (m_clampHash.contains(channelName)) {
@@ -93,7 +93,7 @@ void cClampInterface::actualizeClampStatus(quint16 devConnectedMask)
             if ((m_nClampStatus & bmask) == 0)
                 handleClampConnected(channelName, channelSettings, bmask, channelsSettings.size()/2);
             else
-                handleClampDisconnected(channelName, channelSettings, bmask);
+                removeClamp(channelName, channelSettings, bmask);
         }
     }
 }

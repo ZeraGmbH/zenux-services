@@ -29,7 +29,8 @@ public:
     virtual void initSCPIConnection(QString leadingNodes) override;
     void actualizeClampStatus(quint16 devConnectedMask);
     // lazy: public for test
-    void addClamp(int ctrlChannel, I2cMuxerInterface::Ptr i2cMuxer, quint16 bmask, int phaseCount, QString channelName);
+    void addClamp(QString channelName, int ctrlChannel, I2cMuxerInterface::Ptr i2cMuxer, quint16 bmask, int phaseCount);
+    void removeClamp(QString channelName, const SenseSystem::cChannelSettings *chSettings, quint16 bmask);
 protected:
     void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
 
@@ -38,7 +39,6 @@ private:
     QString readClampChannelCatalog(QString& sInput);
     QString writeAllClamps(QString& sInput);
     QString importExportAllClamps(QString& sInput);
-    void handleClampDisconnected(QString channelName, const SenseSystem::cChannelSettings *chSettings, quint16 bmask);
     void handleClampConnected(QString channelName, const SenseSystem::cChannelSettings *chSettings, quint16 bmask, int phaseCount);
 
     cPCBServer *m_pMyServer;
