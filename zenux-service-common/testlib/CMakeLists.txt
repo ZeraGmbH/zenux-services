@@ -20,4 +20,6 @@ target_link_libraries(zenuxservicecommon-testlib
     PUBLIC
     Qt5::Core
     zenuxservicecommon
+    service-interfaces
+    Zera::zera-timers-testlib
 )
