@@ -7,5 +7,5 @@ SETUP_TESTS(
 
 target_sources(test_regression_sense_interface_mt310s2
   PRIVATE
-    xmlfiles.qrc
+    regression_data.qrc
 )

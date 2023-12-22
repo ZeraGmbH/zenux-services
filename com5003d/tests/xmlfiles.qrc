@@ -1,5 +1,0 @@
-<RCC>
-    <qresource prefix="/">
-        <file>xmlfiles/adjustment_export.xml</file>
-    </qresource>
-</RCC>

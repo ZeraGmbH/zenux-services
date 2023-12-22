@@ -1,8 +1,10 @@
 #ifndef TEST_REGRESSION_SENSE_INTERFACE_MT310S2_H
 #define TEST_REGRESSION_SENSE_INTERFACE_MT310S2_H
 
+#include "sensesettings.h"
 #include <QObject>
 #include <QStringList>
+#include <QJsonObject>
 
 class test_regression_sense_interface_mt310s2 : public QObject
 {
@@ -18,7 +20,12 @@ private slots:
     void addClampIL1_CL120A();
     void addClampIL2_CL800ADC1000VDC();
     void addRemoveClampIAUX_CL800ADC1000VDC();
+    void genJsonRejectionValuesAllClampsIL3();
+    void genJsonRejectionValuesAllClampsIAUX();
 private:
+    QString bareScpiQuery(QString scpiQuery);
+    void addRangeConstantDataToJson(QString rangeName, SenseSystem::cChannelSettings *channelSettings, QJsonObject &range);
+    void genJsonConstantValuesAllRangesI(QString channelName);
     static QStringList m_channelsExpectedAllOverThePlace;
     static QStringList m_rangesExpectedU;
     static QStringList m_rangesExpectedI;

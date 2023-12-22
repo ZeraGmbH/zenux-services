@@ -6,5 +6,5 @@ SETUP_TESTS(
 
 target_sources(test_regression_sense_interface_com5003
   PRIVATE
-    xmlfiles.qrc
+    regression_data.qrc
 )

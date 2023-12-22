@@ -4,7 +4,6 @@
 #include "i2csettings.h"
 #include "mt310s2senseinterface.h"
 #include "resmanrunfacade.h"
-#include "sensesettings.h"
 #include "systeminfo.h"
 #include "xmlhelperfortest.h"
 #include "proxy.h"
@@ -15,6 +14,8 @@
 #include <timemachineobject.h>
 #include <QFile>
 #include <QRegularExpression>
+#include <QJsonValue>
+#include <QJsonDocument>
 #include <QSignalSpy>
 #include <QTest>
 
@@ -75,7 +76,7 @@ void test_regression_sense_interface_mt310s2::checkExportXml()
     qInfo("%s", qPrintable(xmlExported));
     xmlExported = XmlHelperForTest::removeTimeDependentEntriesFromXml(xmlExported);
 
-    QFile xmlFile(":/xmlfiles/sense_interface_export.xml");
+    QFile xmlFile(":/regression_data/sense_interface_export.xml");
     QVERIFY(xmlFile.open(QFile::ReadOnly));
     QString xmlExpected = xmlFile.readAll();
     qInfo("Expected XML (before adjust):");
@@ -311,3 +312,92 @@ void test_regression_sense_interface_mt310s2::addRemoveClampIAUX_CL800ADC1000VDC
     QCOMPARE(responseSpyU[0][1], QVariant(ack));
     QCOMPARE(responseSpyU[0][2].toStringList(), m_rangesExpectedU);
 }
+
+void test_regression_sense_interface_mt310s2::genJsonRejectionValuesAllClampsIL3()
+{
+    genJsonConstantValuesAllRangesI("IL3");
+}
+
+void test_regression_sense_interface_mt310s2::genJsonRejectionValuesAllClampsIAUX()
+{
+    genJsonConstantValuesAllRangesI("IAUX");
+}
+
+
+QString test_regression_sense_interface_mt310s2::bareScpiQuery(QString bareScpiQuery)
+{
+    ProtobufMessage::NetMessage envelope;
+    ProtobufMessage::NetMessage::ScpiCommand* message = envelope.mutable_scpi();
+    message->set_command(bareScpiQuery.toStdString());
+    Zera::ProxyClientPtr proxylient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307);
+    QString bareScpiAnswer;
+    connect(proxylient.get(), &Zera::ProxyClient::answerAvailable, this, [&](std::shared_ptr<ProtobufMessage::NetMessage> message) {
+        bareScpiAnswer = QString::fromStdString(message->reply().body());
+    });
+    proxylient->transmitCommand(&envelope);
+    TimeMachineObject::feedEventLoop();
+    return bareScpiAnswer;
+}
+
+void test_regression_sense_interface_mt310s2::addRangeConstantDataToJson(QString rangeName, SenseSystem::cChannelSettings *channelSettings, QJsonObject &range)
+{
+    QString channelName = channelSettings->m_nameMx;
+
+    QString avail = bareScpiQuery(QString("SENS:%1:%2:AVA?").arg(channelName, rangeName));
+    range.insert("avail", avail);
+
+    QString urValue = bareScpiQuery(QString("SENS:%1:%2:URV?").arg(channelName, rangeName));
+    range.insert("urval", urValue);
+
+    QString rejection = bareScpiQuery(QString("SENS:%1:%2:REJ?").arg(channelName, rangeName));
+    range.insert("rejection", rejection);
+
+    QString ovRejection = bareScpiQuery(QString("SENS:%1:%2:OVR?").arg(channelName, rangeName));
+    range.insert("ovrejection", ovRejection);
+
+    QString adcRejection = bareScpiQuery(QString("SENS:%1:%2:ADCR?").arg(channelName, rangeName));
+    range.insert("adcrejection", adcRejection);
+}
+
+void test_regression_sense_interface_mt310s2::genJsonConstantValuesAllRangesI(QString channelName)
+{
+    ResmanRunFacade resman;
+    MockForSenseInterface mock;
+    TimeMachineObject::feedEventLoop();
+
+    Zera::ProxyClientPtr pcbClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307);
+    Zera::cPCBInterface pcbIFace;
+    pcbIFace.setClientSmart(pcbClient);
+    Zera::Proxy::getInstance()->startConnectionSmart(pcbClient);
+    TimeMachineObject::feedEventLoop();
+
+    SenseSystem::cChannelSettings *channelSetting = mock.getSenseSettings()->findChannelSettingByAlias1(channelName);
+    cClampInterface* clampInterface = mock.getClampInterface();
+    QJsonObject jsonAll;
+    for(int clampType=undefined+1; clampType<anzCL; clampType++) { // all clamp types
+        // add
+        ClampFactoryTest::setTestClampType(clampType);
+        clampInterface->addClamp(channelSetting, I2cMultiplexerFactory::createNullMuxer());
+        QSignalSpy responseSpyI(&pcbIFace, &Zera::cPCBInterface::serverAnswer);
+
+        pcbIFace.getRangeList(channelSetting->m_nameMx);
+        TimeMachineObject::feedEventLoop();
+
+        QJsonObject jsonRanges;
+        const QStringList ranges = responseSpyI[0][2].toStringList();
+        for(const QString &range : ranges) {
+            QJsonObject jsonRange;
+            addRangeConstantDataToJson(range, channelSetting, jsonRange);
+            jsonRanges.insert(range, jsonRange);
+        }
+
+        // remove
+        clampInterface->actualizeClampStatus(0);
+
+        jsonAll.insert(cClamp::getClampTypeName(clampType), jsonRanges);
+    }
+    QJsonDocument doc(jsonAll);
+    qInfo("----------------- rejection json generated %s -----------------", qPrintable(channelName));
+    qInfo("%s", qPrintable(doc.toJson(QJsonDocument::Indented)));
+}
+

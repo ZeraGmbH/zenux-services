@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/">
+        <file>regression_data/adjustment_export.xml</file>
+    </qresource>
+</RCC>
