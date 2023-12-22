@@ -20,4 +20,5 @@ target_link_libraries(mt310s2d-lib-testlib
     PUBLIC
     Qt5::Core
     mt310s2d-lib
+    zenuxservicecommon-demolib
 )
