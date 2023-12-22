@@ -28,10 +28,11 @@ private slots:
     void addRemoveClampIAUX_CL800ADC1000VDC();
     void genJsonRejectionValuesAllClampsIL3();
     void genJsonRejectionValuesAllClampsIAUX();
+    void genJsonRejectionValuesAllClampsUAUX();
 private:
     QString bareScpiQuery(QString scpiQuery);
     void addRangeConstantDataToJson(QString rangeName, SenseSystem::cChannelSettings *channelSettings, QJsonObject &range);
-    void genJsonConstantValuesAllRangesI(QString channelName);
+    void genJsonConstantValuesAllRangesI(QString channelName, QString channelNameAdRemoveClamps = "");
 
     std::unique_ptr<MockForSenseInterfaceMt310s2> m_mockServer;
     std::unique_ptr<ResmanRunFacade> m_resmanServer;

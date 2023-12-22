@@ -244,6 +244,11 @@ void test_regression_sense_interface_mt310s2::genJsonRejectionValuesAllClampsIAU
     genJsonConstantValuesAllRangesI("IAUX");
 }
 
+void test_regression_sense_interface_mt310s2::genJsonRejectionValuesAllClampsUAUX()
+{
+    genJsonConstantValuesAllRangesI("UAUX", "IAUX");
+}
+
 
 QString test_regression_sense_interface_mt310s2::bareScpiQuery(QString bareScpiQuery)
 {
@@ -280,15 +285,18 @@ void test_regression_sense_interface_mt310s2::addRangeConstantDataToJson(QString
     range.insert("adcrejection", adcRejection);
 }
 
-void test_regression_sense_interface_mt310s2::genJsonConstantValuesAllRangesI(QString channelName)
+void test_regression_sense_interface_mt310s2::genJsonConstantValuesAllRangesI(QString channelName, QString channelNameAdRemoveClamps)
 {
+    if(channelNameAdRemoveClamps.isEmpty())
+        channelNameAdRemoveClamps = channelName;
     SenseSystem::cChannelSettings *channelSetting = m_mockServer->getSenseSettings()->findChannelSettingByAlias1(channelName);
+    SenseSystem::cChannelSettings *channelSettingClamps = m_mockServer->getSenseSettings()->findChannelSettingByAlias1(channelNameAdRemoveClamps);
     cClampInterface* clampInterface = m_mockServer->getClampInterface();
     QJsonObject jsonAll;
     for(int clampType=undefined+1; clampType<anzCL; clampType++) { // all clamp types
         // add
         ClampFactoryTest::setTestClampType(clampType);
-        clampInterface->addClamp(channelSetting, I2cMultiplexerFactory::createNullMuxer());
+        clampInterface->addClamp(channelSettingClamps, I2cMultiplexerFactory::createNullMuxer());
         QSignalSpy responseSpyI(m_pcbIFace.get(), &Zera::cPCBInterface::serverAnswer);
 
         m_pcbIFace->getRangeList(channelSetting->m_nameMx);

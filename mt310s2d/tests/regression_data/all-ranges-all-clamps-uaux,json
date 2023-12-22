@@ -1,0 +1,320 @@
+{
+    "CL1000A": {
+        "100mV": {
+            "adcrejection": "8388607",
+            "avail": "1",
+            "ovrejection": "5033165",
+            "rejection": "4026532",
+            "urval": "0.1"
+        },
+        "250V": {
+            "adcrejection": "8388607",
+            "avail": "1",
+            "ovrejection": "5518821",
+            "rejection": "4415057",
+            "urval": "250"
+        },
+        "8V": {
+            "adcrejection": "8388607",
+            "avail": "1",
+            "ovrejection": "4194304",
+            "rejection": "3355443",
+            "urval": "8"
+        }
+    },
+    "CL1000VDC": {
+        "100mV": {
+            "adcrejection": "8388607",
+            "avail": "1",
+            "ovrejection": "5033165",
+            "rejection": "4026532",
+            "urval": "0.1"
+        },
+        "250V": {
+            "adcrejection": "8388607",
+            "avail": "1",
+            "ovrejection": "5518821",
+            "rejection": "4415057",
+            "urval": "250"
+        },
+        "8V": {
+            "adcrejection": "8388607",
+            "avail": "1",
+            "ovrejection": "4194304",
+            "rejection": "3355443",
+            "urval": "8"
+        },
+        "C1000V": {
+            "adcrejection": "8388607",
+            "avail": "1",
+            "ovrejection": "4418887.5",
+            "rejection": "3535110",
+            "urval": "1000"
+        }
+    },
+    "CL120A": {
+        "100mV": {
+            "adcrejection": "8388607",
+            "avail": "1",
+            "ovrejection": "5033165",
+            "rejection": "4026532",
+            "urval": "0.1"
+        },
+        "250V": {
+            "adcrejection": "8388607",
+            "avail": "1",
+            "ovrejection": "5518821",
+            "rejection": "4415057",
+            "urval": "250"
+        },
+        "8V": {
+            "adcrejection": "8388607",
+            "avail": "1",
+            "ovrejection": "4194304",
+            "rejection": "3355443",
+            "urval": "8"
+        }
+    },
+    "CL200ADC1000VDC": {
+        "100mV": {
+            "adcrejection": "8388607",
+            "avail": "1",
+            "ovrejection": "5033165",
+            "rejection": "4026532",
+            "urval": "0.1"
+        },
+        "250V": {
+            "adcrejection": "8388607",
+            "avail": "1",
+            "ovrejection": "5518821",
+            "rejection": "4415057",
+            "urval": "250"
+        },
+        "8V": {
+            "adcrejection": "8388607",
+            "avail": "1",
+            "ovrejection": "4194304",
+            "rejection": "3355443",
+            "urval": "8"
+        },
+        "C1000V": {
+            "adcrejection": "8388607",
+            "avail": "1",
+            "ovrejection": "4418887.5",
+            "rejection": "3535110",
+            "urval": "1000"
+        }
+    },
+    "CL300A": {
+        "100mV": {
+            "adcrejection": "8388607",
+            "avail": "1",
+            "ovrejection": "5033165",
+            "rejection": "4026532",
+            "urval": "0.1"
+        },
+        "250V": {
+            "adcrejection": "8388607",
+            "avail": "1",
+            "ovrejection": "5518821",
+            "rejection": "4415057",
+            "urval": "250"
+        },
+        "8V": {
+            "adcrejection": "8388607",
+            "avail": "1",
+            "ovrejection": "4194304",
+            "rejection": "3355443",
+            "urval": "8"
+        }
+    },
+    "CL800ADC1000VDC": {
+        "100mV": {
+            "adcrejection": "8388607",
+            "avail": "1",
+            "ovrejection": "5033165",
+            "rejection": "4026532",
+            "urval": "0.1"
+        },
+        "250V": {
+            "adcrejection": "8388607",
+            "avail": "1",
+            "ovrejection": "5518821",
+            "rejection": "4415057",
+            "urval": "250"
+        },
+        "8V": {
+            "adcrejection": "8388607",
+            "avail": "1",
+            "ovrejection": "4194304",
+            "rejection": "3355443",
+            "urval": "8"
+        },
+        "C1000V": {
+            "adcrejection": "8388607",
+            "avail": "1",
+            "ovrejection": "4418887.5",
+            "rejection": "3535110",
+            "urval": "1000"
+        }
+    },
+    "CL8ADC1000VDC": {
+        "100mV": {
+            "adcrejection": "8388607",
+            "avail": "1",
+            "ovrejection": "5033165",
+            "rejection": "4026532",
+            "urval": "0.1"
+        },
+        "250V": {
+            "adcrejection": "8388607",
+            "avail": "1",
+            "ovrejection": "5518821",
+            "rejection": "4415057",
+            "urval": "250"
+        },
+        "8V": {
+            "adcrejection": "8388607",
+            "avail": "1",
+            "ovrejection": "4194304",
+            "rejection": "3355443",
+            "urval": "8"
+        },
+        "C1000V": {
+            "adcrejection": "8388607",
+            "avail": "1",
+            "ovrejection": "4418887.5",
+            "rejection": "3535110",
+            "urval": "1000"
+        }
+    },
+    "EMOB200DC": {
+        "100mV": {
+            "adcrejection": "8388607",
+            "avail": "1",
+            "ovrejection": "5033165",
+            "rejection": "4026532",
+            "urval": "0.1"
+        },
+        "250V": {
+            "adcrejection": "8388607",
+            "avail": "1",
+            "ovrejection": "5518821",
+            "rejection": "4415057",
+            "urval": "250"
+        },
+        "8V": {
+            "adcrejection": "8388607",
+            "avail": "1",
+            "ovrejection": "4194304",
+            "rejection": "3355443",
+            "urval": "8"
+        },
+        "C1000V": {
+            "adcrejection": "8388607",
+            "avail": "1",
+            "ovrejection": "4332958.8",
+            "rejection": "3466367",
+            "urval": "1000"
+        }
+    },
+    "EMOB32": {
+        "100mV": {
+            "adcrejection": "8388607",
+            "avail": "1",
+            "ovrejection": "5033165",
+            "rejection": "4026532",
+            "urval": "0.1"
+        },
+        "250V": {
+            "adcrejection": "8388607",
+            "avail": "1",
+            "ovrejection": "5518821",
+            "rejection": "4415057",
+            "urval": "250"
+        },
+        "8V": {
+            "adcrejection": "8388607",
+            "avail": "1",
+            "ovrejection": "4194304",
+            "rejection": "3355443",
+            "urval": "8"
+        }
+    },
+    "EMOB500DC": {
+        "100mV": {
+            "adcrejection": "8388607",
+            "avail": "1",
+            "ovrejection": "5033165",
+            "rejection": "4026532",
+            "urval": "0.1"
+        },
+        "250V": {
+            "adcrejection": "8388607",
+            "avail": "1",
+            "ovrejection": "5518821",
+            "rejection": "4415057",
+            "urval": "250"
+        },
+        "8V": {
+            "adcrejection": "8388607",
+            "avail": "1",
+            "ovrejection": "4194304",
+            "rejection": "3355443",
+            "urval": "8"
+        },
+        "C1000V": {
+            "adcrejection": "8388607",
+            "avail": "1",
+            "ovrejection": "4332958.8",
+            "rejection": "3466367",
+            "urval": "1000"
+        }
+    },
+    "EMOB80": {
+        "100mV": {
+            "adcrejection": "8388607",
+            "avail": "1",
+            "ovrejection": "5033165",
+            "rejection": "4026532",
+            "urval": "0.1"
+        },
+        "250V": {
+            "adcrejection": "8388607",
+            "avail": "1",
+            "ovrejection": "5518821",
+            "rejection": "4415057",
+            "urval": "250"
+        },
+        "8V": {
+            "adcrejection": "8388607",
+            "avail": "1",
+            "ovrejection": "4194304",
+            "rejection": "3355443",
+            "urval": "8"
+        }
+    },
+    "RC3000": {
+        "100mV": {
+            "adcrejection": "8388607",
+            "avail": "1",
+            "ovrejection": "5033165",
+            "rejection": "4026532",
+            "urval": "0.1"
+        },
+        "250V": {
+            "adcrejection": "8388607",
+            "avail": "1",
+            "ovrejection": "5518821",
+            "rejection": "4415057",
+            "urval": "250"
+        },
+        "8V": {
+            "adcrejection": "8388607",
+            "avail": "1",
+            "ovrejection": "4194304",
+            "rejection": "3355443",
+            "urval": "8"
+        }
+    }
+}
