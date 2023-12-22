@@ -73,7 +73,7 @@ void test_regression_sense_interface_com5003::checkExportXml()
     qInfo("Exported XML:");
     qInfo("%s", qPrintable(xmlExported));
 
-    QFile xmlFile(":/xmlfiles/adjustment_export.xml");
+    QFile xmlFile(":/regression_data/adjustment_export.xml");
     QVERIFY(xmlFile.open(QFile::ReadOnly));
     QString xmlExpected = xmlFile.readAll();
     qInfo("Expected XML:");

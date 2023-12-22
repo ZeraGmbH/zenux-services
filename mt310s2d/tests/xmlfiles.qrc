@@ -1,5 +1,0 @@
-<RCC>
-    <qresource prefix="/">
-        <file>xmlfiles/sense_interface_export.xml</file>
-    </qresource>
-</RCC>
