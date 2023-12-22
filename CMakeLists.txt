@@ -70,6 +70,7 @@ function(SETUP_TESTS)
             Qt5::Test
             mt310s2d-lib-testlib
             com5003d-lib
+            com5003-testlib
             zenuxservicecommon-testlib
             zenuxservicecommon-demolib
             service-interfaces
