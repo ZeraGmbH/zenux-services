@@ -15,4 +15,5 @@ install(TARGETS com5003d
 add_subdirectory(configs)
 add_subdirectory(lib)
 add_subdirectory(systemd)
+add_subdirectory(testlib)
 add_subdirectory(tests)
