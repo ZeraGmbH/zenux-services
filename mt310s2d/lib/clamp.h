@@ -43,6 +43,7 @@ public:
            quint8 ctrlChannelSecondary,
            quint8 type = undefined);
     virtual ~cClamp();
+    static QString getClampTypeName(quint8 type);
     virtual quint8 getAdjustmentStatus() override;
     virtual void initSCPIConnection(QString) override;
     QString getChannelName();
@@ -64,7 +65,6 @@ private:
     void addSystAdjInterface();
     void addSystAdjInterfaceChannel(QString channelName);
     void createLEM1000VRanges(PermissionStructAdj &permissionsOffsetAllowedAlways, quint16 dcCommonMask);
-    static QString getClampTypeName(quint8 type);
     Mt310s2SenseRange* getRange(QString name);
     ClampTypes readClampType();
     void removeAllRanges();
