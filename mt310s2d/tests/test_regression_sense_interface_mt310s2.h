@@ -1,6 +1,10 @@
 #ifndef TEST_REGRESSION_SENSE_INTERFACE_MT310S2_H
 #define TEST_REGRESSION_SENSE_INTERFACE_MT310S2_H
 
+#include "mockforsenseinterfacemt310s2.h"
+#include "pcbinterface.h"
+#include "proxyclient.h"
+#include "resmanrunfacade.h"
 #include "sensesettings.h"
 #include <QObject>
 #include <QStringList>
@@ -11,6 +15,8 @@ class test_regression_sense_interface_mt310s2 : public QObject
     Q_OBJECT
 private slots:
     void initTestCase();
+    void init();
+    void cleanup();
 
     void checkVersionsOfSystemInterface();
     void checkExportXml();
@@ -26,6 +32,11 @@ private:
     QString bareScpiQuery(QString scpiQuery);
     void addRangeConstantDataToJson(QString rangeName, SenseSystem::cChannelSettings *channelSettings, QJsonObject &range);
     void genJsonConstantValuesAllRangesI(QString channelName);
+
+    std::unique_ptr<MockForSenseInterfaceMt310s2> m_mockServer;
+    std::unique_ptr<ResmanRunFacade> m_resmanServer;
+    Zera::ProxyClientPtr m_pcbClient;
+    std::unique_ptr<Zera::cPCBInterface> m_pcbIFace;
     static QStringList m_channelsExpectedAllOverThePlace;
     static QStringList m_rangesExpectedU;
     static QStringList m_rangesExpectedI;
