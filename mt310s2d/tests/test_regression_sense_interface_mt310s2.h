@@ -31,7 +31,7 @@ private slots:
     void genJsonRejectionValuesAllClampsUAUX();
 private:
     void addRangeConstantDataToJson(QString rangeName, SenseSystem::cChannelSettings *channelSettings, QJsonObject &range);
-    void genJsonConstantValuesAllRangesI(QString channelName, QString channelNameAdRemoveClamps = "");
+    void genJsonConstantValuesAllRanges(QString channelName, QString channelNameAdRemoveClamps = "");
 
     std::unique_ptr<MockForSenseInterfaceMt310s2> m_mockServer;
     std::unique_ptr<ResmanRunFacade> m_resmanServer;
