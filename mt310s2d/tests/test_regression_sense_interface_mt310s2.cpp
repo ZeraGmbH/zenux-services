@@ -3,6 +3,7 @@
 #include "mt310s2senseinterface.h"
 #include "resmanrunfacade.h"
 #include "xmlhelperfortest.h"
+#include "protobufscpitestclient.h"
 #include "proxy.h"
 #include "reply.h"
 #include "pcbinterface.h"
@@ -250,38 +251,23 @@ void test_regression_sense_interface_mt310s2::genJsonRejectionValuesAllClampsUAU
 }
 
 
-QString test_regression_sense_interface_mt310s2::bareScpiQuery(QString bareScpiQuery)
-{
-    ProtobufMessage::NetMessage envelope;
-    ProtobufMessage::NetMessage::ScpiCommand* message = envelope.mutable_scpi();
-    message->set_command(bareScpiQuery.toStdString());
-    Zera::ProxyClientPtr proxylient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307);
-    QString bareScpiAnswer;
-    connect(proxylient.get(), &Zera::ProxyClient::answerAvailable, this, [&](std::shared_ptr<ProtobufMessage::NetMessage> message) {
-        bareScpiAnswer = QString::fromStdString(message->reply().body());
-    });
-    proxylient->transmitCommand(&envelope);
-    TimeMachineObject::feedEventLoop();
-    return bareScpiAnswer;
-}
-
 void test_regression_sense_interface_mt310s2::addRangeConstantDataToJson(QString rangeName, SenseSystem::cChannelSettings *channelSettings, QJsonObject &range)
 {
     QString channelName = channelSettings->m_nameMx;
 
-    QString avail = bareScpiQuery(QString("SENS:%1:%2:AVA?").arg(channelName, rangeName));
+    QString avail = ProtobufScpiTestClient::query(QString("SENS:%1:%2:AVA?").arg(channelName, rangeName));
     range.insert("avail", avail);
 
-    QString urValue = bareScpiQuery(QString("SENS:%1:%2:URV?").arg(channelName, rangeName));
+    QString urValue = ProtobufScpiTestClient::query(QString("SENS:%1:%2:URV?").arg(channelName, rangeName));
     range.insert("urval", urValue);
 
-    QString rejection = bareScpiQuery(QString("SENS:%1:%2:REJ?").arg(channelName, rangeName));
+    QString rejection = ProtobufScpiTestClient::query(QString("SENS:%1:%2:REJ?").arg(channelName, rangeName));
     range.insert("rejection", rejection);
 
-    QString ovRejection = bareScpiQuery(QString("SENS:%1:%2:OVR?").arg(channelName, rangeName));
+    QString ovRejection = ProtobufScpiTestClient::query(QString("SENS:%1:%2:OVR?").arg(channelName, rangeName));
     range.insert("ovrejection", ovRejection);
 
-    QString adcRejection = bareScpiQuery(QString("SENS:%1:%2:ADCR?").arg(channelName, rangeName));
+    QString adcRejection = ProtobufScpiTestClient::query(QString("SENS:%1:%2:ADCR?").arg(channelName, rangeName));
     range.insert("adcrejection", adcRejection);
 }
 

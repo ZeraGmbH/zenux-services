@@ -30,7 +30,6 @@ private slots:
     void genJsonRejectionValuesAllClampsIAUX();
     void genJsonRejectionValuesAllClampsUAUX();
 private:
-    QString bareScpiQuery(QString scpiQuery);
     void addRangeConstantDataToJson(QString rangeName, SenseSystem::cChannelSettings *channelSettings, QJsonObject &range);
     void genJsonConstantValuesAllRangesI(QString channelName, QString channelNameAdRemoveClamps = "");
 
