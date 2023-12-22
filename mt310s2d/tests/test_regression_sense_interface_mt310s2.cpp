@@ -237,17 +237,17 @@ void test_regression_sense_interface_mt310s2::addRemoveClampIAUX_CL800ADC1000VDC
 
 void test_regression_sense_interface_mt310s2::genJsonRejectionValuesAllClampsIL3()
 {
-    genJsonConstantValuesAllRangesI("IL3");
+    genJsonConstantValuesAllRanges("IL3");
 }
 
 void test_regression_sense_interface_mt310s2::genJsonRejectionValuesAllClampsIAUX()
 {
-    genJsonConstantValuesAllRangesI("IAUX");
+    genJsonConstantValuesAllRanges("IAUX");
 }
 
 void test_regression_sense_interface_mt310s2::genJsonRejectionValuesAllClampsUAUX()
 {
-    genJsonConstantValuesAllRangesI("UAUX", "IAUX");
+    genJsonConstantValuesAllRanges("UAUX", "IAUX");
 }
 
 
@@ -271,7 +271,7 @@ void test_regression_sense_interface_mt310s2::addRangeConstantDataToJson(QString
     range.insert("adcrejection", adcRejection);
 }
 
-void test_regression_sense_interface_mt310s2::genJsonConstantValuesAllRangesI(QString channelName, QString channelNameAdRemoveClamps)
+void test_regression_sense_interface_mt310s2::genJsonConstantValuesAllRanges(QString channelName, QString channelNameAdRemoveClamps)
 {
     if(channelNameAdRemoveClamps.isEmpty())
         channelNameAdRemoveClamps = channelName;
