@@ -1,7 +1,8 @@
 <RCC>
     <qresource prefix="/">
+        <file>regression_data/all-ranges-all-clamps-iaux.json</file>
+        <file>regression_data/all-ranges-all-clamps-il3.json</file>
+        <file>regression_data/all-ranges-all-clamps-uaux,json</file>
         <file>regression_data/sense_interface_export.xml</file>
-        <file>regression_data/all-current-il3.json</file>
-        <file>regression_data/all-current-iaux.json</file>
     </qresource>
 </RCC>
