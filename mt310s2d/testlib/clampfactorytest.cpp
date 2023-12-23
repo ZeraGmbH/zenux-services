@@ -16,9 +16,9 @@ void ClampFactoryTest::enableTest()
     };
 }
 
-void ClampFactoryTest::setTestClampType(int clampType)
+void ClampFactoryTest::setTestClampType(int clampTypeNo)
 {
-    m_clampForTestType = clampType;
+    m_clampForTestType = clampTypeNo;
 }
 
 int ClampFactoryTest::getTestClampType()

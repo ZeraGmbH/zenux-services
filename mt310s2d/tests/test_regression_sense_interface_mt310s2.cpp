@@ -192,6 +192,30 @@ void test_regression_sense_interface_mt310s2::addRemoveClampIAUX_CL800ADC1000VDC
     QCOMPARE(responseSpyU[0][2].toStringList(), m_rangesExpectedU);
 }
 
+void test_regression_sense_interface_mt310s2::genClampIdsNamesJson()
+{
+    QJsonObject jsonAll;
+    for(int clampTypeNo=undefined+1; clampTypeNo<anzCL; clampTypeNo++) {
+        QString clampName = cClamp::getClampTypeName(clampTypeNo);
+        jsonAll.insert(RegressionHelper::getJsonNumString(clampTypeNo), clampName);
+    }
+    QJsonDocument doc(jsonAll);
+    qInfo("----------------- json id / names generated -----------------");
+    qInfo("%s", qPrintable(doc.toJson(QJsonDocument::Indented)));
+}
+
+void test_regression_sense_interface_mt310s2::checkClampIdsNames()
+{
+    QJsonObject json = loadJson(":/regression_data/clamp-id-names.json");
+    QVERIFY(!json.isEmpty());
+    int countClamps = anzCL-1; // anzCL lies!!!
+    QCOMPARE(json.count(), countClamps);
+    for(int clampTypeNo=undefined+1; clampTypeNo<anzCL; clampTypeNo++) {
+        QString jsonKey = RegressionHelper::getJsonNumString(clampTypeNo);
+        QCOMPARE(cClamp::getClampTypeName(clampTypeNo), json.value(jsonKey).toString());
+    }
+}
+
 void test_regression_sense_interface_mt310s2::genJsonRejectionValuesAllClampsIL3()
 {
     genJsonConstantValuesAllRangesForAllClamps("IL3");

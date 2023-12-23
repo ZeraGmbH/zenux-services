@@ -7,7 +7,7 @@ class ClampFactoryTest : public ClampFactory
 {
 public:
     static void enableTest();
-    static void setTestClampType(int clampType);
+    static void setTestClampType(int clampTypeNo);
     static int getTestClampType();
 private:
     static int m_clampForTestType;
