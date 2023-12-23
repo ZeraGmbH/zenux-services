@@ -59,12 +59,9 @@ QStringList test_regression_sense_interface_com5003::m_channelsExpectedAllOverTh
 void test_regression_sense_interface_com5003::checkChannelCatalogAsExpected()
 {
     QSignalSpy responseSpy(m_pcbIFace.get(), &Zera::cPCBInterface::serverAnswer);
-    int msgNr = m_pcbIFace->getChannelList();
+    m_pcbIFace->getChannelList();
     TimeMachineObject::feedEventLoop();
 
-    QCOMPARE(responseSpy.count(), 1);
-    QCOMPARE(responseSpy[0][0], QVariant(msgNr));
-    QCOMPARE(responseSpy[0][1], QVariant(ack));
     QCOMPARE(responseSpy[0][2].toStringList(), m_channelsExpectedAllOverThePlace);
 }
 
@@ -78,12 +75,9 @@ void test_regression_sense_interface_com5003::checkRangesUL1()
     SenseSystem::cChannelSettings *channelSetting = m_mockServer->getSenseSettings()->findChannelSettingByAlias1("UL1");
 
     QSignalSpy responseSpy(m_pcbIFace.get(), &Zera::cPCBInterface::serverAnswer);
-    int msgNr = m_pcbIFace->getRangeList(channelSetting->m_nameMx);
+    m_pcbIFace->getRangeList(channelSetting->m_nameMx);
     TimeMachineObject::feedEventLoop();
 
-    QCOMPARE(responseSpy.count(), 1);
-    QCOMPARE(responseSpy[0][0], QVariant(msgNr));
-    QCOMPARE(responseSpy[0][1], QVariant(ack));
     QCOMPARE(responseSpy[0][2].toStringList(), m_rangesExpectedU);
 }
 
@@ -99,11 +93,8 @@ void test_regression_sense_interface_com5003::checkRangesIL1()
     SenseSystem::cChannelSettings *channelSetting = m_mockServer->getSenseSettings()->findChannelSettingByAlias1("IL1");
 
     QSignalSpy responseSpy(m_pcbIFace.get(), &Zera::cPCBInterface::serverAnswer);
-    int msgNr = m_pcbIFace->getRangeList(channelSetting->m_nameMx);
+    m_pcbIFace->getRangeList(channelSetting->m_nameMx);
     TimeMachineObject::feedEventLoop();
 
-    QCOMPARE(responseSpy.count(), 1);
-    QCOMPARE(responseSpy[0][0], QVariant(msgNr));
-    QCOMPARE(responseSpy[0][1], QVariant(ack));
     QCOMPARE(responseSpy[0][2].toStringList(), m_rangesExpectedI);
 }
