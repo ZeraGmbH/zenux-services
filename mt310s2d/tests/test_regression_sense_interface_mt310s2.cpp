@@ -217,7 +217,7 @@ void test_regression_sense_interface_mt310s2::addClamp(int clampType, QString ch
 
 void test_regression_sense_interface_mt310s2::removeAllClamps()
 {
-    // to have as much production code as possible we use actualizeClampStatus
+    // to execute as much production code as possible we use actualizeClampStatus
     m_mockServer->getClampInterface()->actualizeClampStatus(0);
 }
 
