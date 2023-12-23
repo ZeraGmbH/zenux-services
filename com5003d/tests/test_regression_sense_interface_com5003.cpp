@@ -61,7 +61,6 @@ void test_regression_sense_interface_com5003::checkChannelCatalogAsExpected()
     QSignalSpy responseSpy(m_pcbIFace.get(), &Zera::cPCBInterface::serverAnswer);
     m_pcbIFace->getChannelList();
     TimeMachineObject::feedEventLoop();
-
     QCOMPARE(responseSpy[0][2].toStringList(), m_channelsExpectedAllOverThePlace);
 }
 
@@ -77,7 +76,6 @@ void test_regression_sense_interface_com5003::checkRangesUL1()
     QSignalSpy responseSpy(m_pcbIFace.get(), &Zera::cPCBInterface::serverAnswer);
     m_pcbIFace->getRangeList(channelSetting->m_nameMx);
     TimeMachineObject::feedEventLoop();
-
     QCOMPARE(responseSpy[0][2].toStringList(), m_rangesExpectedU);
 }
 
@@ -95,6 +93,5 @@ void test_regression_sense_interface_com5003::checkRangesIL1()
     QSignalSpy responseSpy(m_pcbIFace.get(), &Zera::cPCBInterface::serverAnswer);
     m_pcbIFace->getRangeList(channelSetting->m_nameMx);
     TimeMachineObject::feedEventLoop();
-
     QCOMPARE(responseSpy[0][2].toStringList(), m_rangesExpectedI);
 }
