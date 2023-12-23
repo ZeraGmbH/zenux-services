@@ -8,6 +8,11 @@ static const QString JsonRejectionStr = QStringLiteral("rejection");
 static const QString JsonOvRejectionStr = QStringLiteral("ovrejection");
 static const QString JsonAdcRejectionStr = QStringLiteral("adcrejection");
 
+QString RegressionHelper::getJsonNumString(int clampTypeNo)
+{
+    return "clamp_type_no_" + (QString("0000") + QString("%1").arg(clampTypeNo)).right(4);
+}
+
 void RegressionHelper::addRangeConstantDataToJson(QString rangeName, SenseSystem::cChannelSettings *channelSettings, QJsonObject &range)
 {
     QString channelName = channelSettings->m_nameMx;

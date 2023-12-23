@@ -6,6 +6,7 @@
 class RegressionHelper
 {
 public:
+    static QString getJsonNumString(int clampTypeNo);
     static void addRangeConstantDataToJson(QString rangeName, SenseSystem::cChannelSettings *channelSettings, QJsonObject &range);
     static bool compareRangeConstantDataWithJson(QJsonObject &rangeReference, QString clampName, QString rangeName, SenseSystem::cChannelSettings *channelSettings);
 private:

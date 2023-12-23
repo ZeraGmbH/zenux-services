@@ -26,6 +26,9 @@ private slots:
     void addClampIL2_CL800ADC1000VDC();
     void addRemoveClampIAUX_CL800ADC1000VDC();
 
+    void genClampIdsNamesJson();
+    void checkClampIdsNames();
+
     void genJsonRejectionValuesAllClampsIL3();
     void checkJsonRejectionValuesAllClampsIL3();
 
@@ -35,7 +38,7 @@ private slots:
     void genJsonRejectionValuesAllClampsUAUX();
     void checkJsonRejectionValuesAllClampsUAUX();
 private:
-    void addClamp(int clampType, QString channelAlias1);
+    void addClamp(int clampTypeNo, QString channelAlias1);
     void removeAllClamps();
     void genJsonConstantValuesAllRangesForAllClamps(QString channelName, QString channelNameAdRemoveClamps = "");
     bool checkJsonConstantValuesAllRangesForAllClamps(QJsonObject jsonReference, QString channelName, QString channelNameAdRemoveClamps = "");

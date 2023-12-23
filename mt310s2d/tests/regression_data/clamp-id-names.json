@@ -1,0 +1,14 @@
+{
+    "clamp_type_no_0001": "CL120A",
+    "clamp_type_no_0002": "CL300A",
+    "clamp_type_no_0003": "CL1000A",
+    "clamp_type_no_0004": "EMOB32",
+    "clamp_type_no_0005": "EMOB200DC",
+    "clamp_type_no_0006": "EMOB80",
+    "clamp_type_no_0007": "RC3000",
+    "clamp_type_no_0008": "CL200ADC1000VDC",
+    "clamp_type_no_0009": "CL1000VDC",
+    "clamp_type_no_0010": "CL8ADC1000VDC",
+    "clamp_type_no_0011": "CL800ADC1000VDC",
+    "clamp_type_no_0012": "EMOB500DC"
+}
