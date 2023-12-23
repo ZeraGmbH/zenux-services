@@ -25,13 +25,21 @@ private slots:
     void addClampIL1_CL120A();
     void addClampIL2_CL800ADC1000VDC();
     void addRemoveClampIAUX_CL800ADC1000VDC();
+
     void genJsonRejectionValuesAllClampsIL3();
+    void checkJsonRejectionValuesAllClampsIL3();
+
     void genJsonRejectionValuesAllClampsIAUX();
+    void checkJsonRejectionValuesAllClampsIAUX();
+
     void genJsonRejectionValuesAllClampsUAUX();
+    void checkJsonRejectionValuesAllClampsUAUX();
 private:
     void addClamp(int clampType, QString channelAlias1);
     void removeAllClamps();
     void genJsonConstantValuesAllRangesForAllClamps(QString channelName, QString channelNameAdRemoveClamps = "");
+    bool checkJsonConstantValuesAllRangesForAllClamps(QJsonObject jsonReference, QString channelName, QString channelNameAdRemoveClamps = "");
+    QJsonObject loadJson(QString fileName);
 
     std::unique_ptr<MockForSenseInterfaceMt310s2> m_mockServer;
     std::unique_ptr<ResmanRunFacade> m_resmanServer;
