@@ -123,20 +123,16 @@ void test_regression_sense_interface_mt310s2::addClampIL1_CL120A()
     SenseSystem::cChannelSettings *channelSettingI = m_mockServer->getSenseSettings()->findChannelSettingByAlias1("IL1");
     SenseSystem::cChannelSettings *channelSettingU = m_mockServer->getSenseSettings()->findChannelSettingByAlias1("UL1");
 
-    ClampFactoryTest::setTestClampType(CL120A);
-    cClampInterface* clampInterface = m_mockServer->getClampInterface();
-    clampInterface->addClamp(channelSettingI, I2cMultiplexerFactory::createNullMuxer());
+    addClamp(CL120A, "IL1");
 
     QSignalSpy responseSpyI(m_pcbIFace.get(), &Zera::cPCBInterface::serverAnswer);
     m_pcbIFace->getRangeList(channelSettingI->m_nameMx);
     TimeMachineObject::feedEventLoop();
-
     QCOMPARE(responseSpyI[0][2].toStringList(), m_rangesExpectedI + m_rangesExpectedI_Internal + m_rangesExpectedI_CL120A);
 
     QSignalSpy responseSpyU(m_pcbIFace.get(), &Zera::cPCBInterface::serverAnswer);
     m_pcbIFace->getRangeList(channelSettingU->m_nameMx);
     TimeMachineObject::feedEventLoop();
-
     QCOMPARE(responseSpyU[0][2].toStringList(), m_rangesExpectedU);
 }
 
@@ -150,20 +146,16 @@ void test_regression_sense_interface_mt310s2::addClampIL2_CL800ADC1000VDC()
     SenseSystem::cChannelSettings *channelSettingI = m_mockServer->getSenseSettings()->findChannelSettingByAlias1("IL2");
     SenseSystem::cChannelSettings *channelSettingU = m_mockServer->getSenseSettings()->findChannelSettingByAlias1("UL2");
 
-    ClampFactoryTest::setTestClampType(CL800ADC1000VDC);
-    cClampInterface* clampInterface = m_mockServer->getClampInterface();
-    clampInterface->addClamp(channelSettingI, I2cMultiplexerFactory::createNullMuxer());
+    addClamp(CL800ADC1000VDC, "IL2");
 
     QSignalSpy responseSpyI(m_pcbIFace.get(), &Zera::cPCBInterface::serverAnswer);
     m_pcbIFace->getRangeList(channelSettingI->m_nameMx);
     TimeMachineObject::feedEventLoop();
-
     QCOMPARE(responseSpyI[0][2].toStringList(), m_rangesExpectedI + m_rangesExpectedI_Internal + m_rangesExpectedI_CL800ADC1000VDC);
 
     QSignalSpy responseSpyU(m_pcbIFace.get(), &Zera::cPCBInterface::serverAnswer);
     m_pcbIFace->getRangeList(channelSettingU->m_nameMx);
     TimeMachineObject::feedEventLoop();
-
     QCOMPARE(responseSpyU[0][2].toStringList(), m_rangesExpectedU + m_rangesExpectedU_CL800ADC1000VDC);
 }
 
@@ -177,10 +169,10 @@ void test_regression_sense_interface_mt310s2::addRemoveClampIAUX_CL800ADC1000VDC
 
     addClamp(CL800ADC1000VDC, "IAUX");
 
-    QSignalSpy responseSpyI1(m_pcbIFace.get(), &Zera::cPCBInterface::serverAnswer);
+    QSignalSpy responseSpyIWishClamps(m_pcbIFace.get(), &Zera::cPCBInterface::serverAnswer);
     m_pcbIFace->getRangeList(channelSettingI->m_nameMx);
     TimeMachineObject::feedEventLoop();
-    QCOMPARE(responseSpyI1[0][2].toStringList(), m_rangesExpectedI_DummyAux + m_rangesExpectedI_Internal + m_rangesExpectedI_CL800ADC1000VDC);
+    QCOMPARE(responseSpyIWishClamps[0][2].toStringList(), m_rangesExpectedI_DummyAux + m_rangesExpectedI_Internal + m_rangesExpectedI_CL800ADC1000VDC);
 
     QSignalSpy responseSpyU1(m_pcbIFace.get(), &Zera::cPCBInterface::serverAnswer);
     m_pcbIFace->getRangeList(channelSettingU->m_nameMx);
@@ -192,13 +184,11 @@ void test_regression_sense_interface_mt310s2::addRemoveClampIAUX_CL800ADC1000VDC
     QSignalSpy responseSpyI(m_pcbIFace.get(), &Zera::cPCBInterface::serverAnswer);
     m_pcbIFace->getRangeList(channelSettingI->m_nameMx);
     TimeMachineObject::feedEventLoop();
-
     QCOMPARE(responseSpyI[0][2].toStringList(), m_rangesExpectedI_DummyAux + m_rangesExpectedI_Internal);
 
     QSignalSpy responseSpyU(m_pcbIFace.get(), &Zera::cPCBInterface::serverAnswer);
     m_pcbIFace->getRangeList(channelSettingU->m_nameMx);
     TimeMachineObject::feedEventLoop();
-
     QCOMPARE(responseSpyU[0][2].toStringList(), m_rangesExpectedU);
 }
 
@@ -239,13 +229,13 @@ void test_regression_sense_interface_mt310s2::genJsonConstantValuesAllRanges(QSt
     QJsonObject jsonAll;
     for(int clampType=undefined+1; clampType<anzCL; clampType++) { // all clamp types
         addClamp(clampType, channelNameAdRemoveClamps);
-        QSignalSpy responseSpyI(m_pcbIFace.get(), &Zera::cPCBInterface::serverAnswer);
 
+        QSignalSpy responseSpy(m_pcbIFace.get(), &Zera::cPCBInterface::serverAnswer);
         m_pcbIFace->getRangeList(channelSetting->m_nameMx);
         TimeMachineObject::feedEventLoop();
 
         QJsonObject jsonRanges;
-        const QStringList ranges = responseSpyI[0][2].toStringList();
+        const QStringList ranges = responseSpy[0][2].toStringList();
         for(const QString &range : ranges) {
             QJsonObject jsonRange;
             RegressionHelper::addRangeConstantDataToJson(range, channelSetting, jsonRange);
@@ -256,6 +246,6 @@ void test_regression_sense_interface_mt310s2::genJsonConstantValuesAllRanges(QSt
         jsonAll.insert(cClamp::getClampTypeName(clampType), jsonRanges);
     }
     QJsonDocument doc(jsonAll);
-    qInfo("----------------- rejection json generated %s -----------------", qPrintable(channelName));
+    qInfo("----------------- json range constants generated for %s -----------------", qPrintable(channelName));
     qInfo("%s", qPrintable(doc.toJson(QJsonDocument::Indented)));
 }
