@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/">
         <file>regression_data/adjustment_export.xml</file>
+        <file>regression_data/all-ranges-il3.json</file>
     </qresource>
 </RCC>

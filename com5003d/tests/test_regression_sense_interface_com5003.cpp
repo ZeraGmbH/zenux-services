@@ -1,9 +1,11 @@
 #include "test_regression_sense_interface_com5003.h"
 #include "proxy.h"
-#include "reply.h"
 #include "pcbinterface.h"
 #include <timemachineobject.h>
+#include "regressionhelper.h"
 #include <QRegularExpression>
+#include <QJsonValue>
+#include <QJsonDocument>
 #include <QSignalSpy>
 #include <QTest>
 
@@ -94,4 +96,89 @@ void test_regression_sense_interface_com5003::checkRangesIL1()
     m_pcbIFace->getRangeList(channelSetting->m_nameMx);
     TimeMachineObject::feedEventLoop();
     QCOMPARE(responseSpy[0][2].toStringList(), m_rangesExpectedI);
+}
+
+void test_regression_sense_interface_com5003::constantRangeValuesIL3GenJson()
+{
+    genJsonConstantValuesAllRanges("IL3");
+}
+
+void test_regression_sense_interface_com5003::constantRangeValuesIL3Check()
+{
+    QJsonObject json = loadJson(":/regression_data/all-ranges-il3.json");
+    QVERIFY(!json.isEmpty());
+    QVERIFY(checkJsonConstantValuesAllRanges(json, "IL3"));
+
+}
+
+static QString noClampJsonId = QStringLiteral("no-clamps");
+
+void test_regression_sense_interface_com5003::genJsonConstantValuesAllRanges(QString channelName)
+{
+    SenseSystem::cChannelSettings *channelSetting = m_mockServer->getSenseSettings()->findChannelSettingByAlias1(channelName);
+    QJsonObject jsonAll;
+
+    QSignalSpy responseSpy(m_pcbIFace.get(), &Zera::cPCBInterface::serverAnswer);
+    m_pcbIFace->getRangeList(channelSetting->m_nameMx);
+    TimeMachineObject::feedEventLoop();
+
+    QJsonObject jsonRanges;
+    const QStringList ranges = responseSpy[0][2].toStringList();
+    for(const QString &range : ranges) {
+        QJsonObject jsonRange;
+        RegressionHelper::addRangeConstantDataToJson(range, channelSetting, jsonRange);
+        jsonRanges.insert(range, jsonRange);
+    }
+
+    // same struture ad mt310s2 - no clamps yet
+    jsonAll.insert(noClampJsonId, jsonRanges);
+
+    QJsonDocument doc(jsonAll);
+    qInfo("----------------- json range constants generated for %s -----------------", qPrintable(channelName));
+    qInfo("%s", qPrintable(doc.toJson(QJsonDocument::Indented)));
+}
+
+bool test_regression_sense_interface_com5003::checkJsonConstantValuesAllRanges(QJsonObject jsonReference, QString channelName)
+{
+    bool allCheckOk = true;
+    SenseSystem::cChannelSettings *channelSetting = m_mockServer->getSenseSettings()->findChannelSettingByAlias1(channelName);
+
+    QSignalSpy responseSpy(m_pcbIFace.get(), &Zera::cPCBInterface::serverAnswer);
+    m_pcbIFace->getRangeList(channelSetting->m_nameMx);
+    TimeMachineObject::feedEventLoop();
+
+    if(jsonReference.contains(noClampJsonId)) {
+        QJsonObject jsonRanges = jsonReference.value(noClampJsonId).toObject();
+        if(!jsonRanges.isEmpty()) {
+            const QStringList ranges = responseSpy[0][2].toStringList();
+            if(!ranges.isEmpty()) {
+                for(const QString &range : ranges) {
+                    QJsonObject jsonRange = jsonRanges.value(range).toObject();
+                    if(!RegressionHelper::compareRangeConstantDataWithJson(jsonRange, noClampJsonId, range, channelSetting))
+                        allCheckOk = false;
+                }
+            }
+            else {
+                allCheckOk = false;
+                qCritical("No ranges returned from device for clamp \"%s\"", qPrintable(noClampJsonId));
+            }
+        }
+        else {
+            allCheckOk = false;
+            qCritical("No ranges found in reference for clamp \"%s\"", qPrintable(noClampJsonId));
+        }
+    }
+    else {
+        allCheckOk = false;
+        qCritical("Clamp \"%s\" not found in reference", qPrintable(noClampJsonId));
+    }
+    return allCheckOk;
+}
+
+QJsonObject test_regression_sense_interface_com5003::loadJson(QString fileName)
+{
+    QFile referencFile(fileName);
+    referencFile.open(QFile::ReadOnly);
+    QJsonDocument doc = QJsonDocument::fromJson(referencFile.readAll());
+    return doc.object();
 }
