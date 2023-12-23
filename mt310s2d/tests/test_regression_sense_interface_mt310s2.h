@@ -31,7 +31,7 @@ private slots:
 private:
     void addClamp(int clampType, QString channelAlias1);
     void removeAllClamps();
-    void genJsonConstantValuesAllRanges(QString channelName, QString channelNameAdRemoveClamps = "");
+    void genJsonConstantValuesAllRangesForAllClamps(QString channelName, QString channelNameAdRemoveClamps = "");
 
     std::unique_ptr<MockForSenseInterfaceMt310s2> m_mockServer;
     std::unique_ptr<ResmanRunFacade> m_resmanServer;
