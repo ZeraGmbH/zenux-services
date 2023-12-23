@@ -253,9 +253,9 @@ void test_regression_sense_interface_mt310s2::checkJsonRejectionValuesAllClampsU
 }
 
 
-void test_regression_sense_interface_mt310s2::addClamp(int clampType, QString channelAlias1)
+void test_regression_sense_interface_mt310s2::addClamp(int clampTypeNo, QString channelAlias1)
 {
-    ClampFactoryTest::setTestClampType(clampType);
+    ClampFactoryTest::setTestClampType(clampTypeNo);
     SenseSystem::cChannelSettings *channelSettingClamps = m_mockServer->getSenseSettings()->findChannelSettingByAlias1(channelAlias1);
     m_mockServer->getClampInterface()->addClamp(channelSettingClamps, I2cMultiplexerFactory::createNullMuxer());
 }
@@ -272,8 +272,8 @@ void test_regression_sense_interface_mt310s2::genJsonConstantValuesAllRangesForA
         channelNameAdRemoveClamps = channelName;
     SenseSystem::cChannelSettings *channelSetting = m_mockServer->getSenseSettings()->findChannelSettingByAlias1(channelName);
     QJsonObject jsonAll;
-    for(int clampType=undefined+1; clampType<anzCL; clampType++) { // all clamp types
-        addClamp(clampType, channelNameAdRemoveClamps);
+    for(int clampTypeNo=undefined+1; clampTypeNo<anzCL; clampTypeNo++) { // all clamp types
+        addClamp(clampTypeNo, channelNameAdRemoveClamps);
 
         QSignalSpy responseSpy(m_pcbIFace.get(), &Zera::cPCBInterface::serverAnswer);
         m_pcbIFace->getRangeList(channelSetting->m_nameMx);
@@ -288,7 +288,7 @@ void test_regression_sense_interface_mt310s2::genJsonConstantValuesAllRangesForA
         }
         removeAllClamps();
 
-        jsonAll.insert(cClamp::getClampTypeName(clampType), jsonRanges);
+        jsonAll.insert(cClamp::getClampTypeName(clampTypeNo), jsonRanges);
     }
     QJsonDocument doc(jsonAll);
     qInfo("----------------- json range constants generated for %s -----------------", qPrintable(channelName));
@@ -301,14 +301,14 @@ bool test_regression_sense_interface_mt310s2::checkJsonConstantValuesAllRangesFo
         channelNameAdRemoveClamps = channelName;
     bool allCheckOk = true;
     SenseSystem::cChannelSettings *channelSetting = m_mockServer->getSenseSettings()->findChannelSettingByAlias1(channelName);
-    for(int clampType=undefined+1; clampType<anzCL; clampType++) { // all clamp types
-        addClamp(clampType, channelNameAdRemoveClamps);
+    for(int clampTypeNo=undefined+1; clampTypeNo<anzCL; clampTypeNo++) { // all clamp types
+        addClamp(clampTypeNo, channelNameAdRemoveClamps);
 
         QSignalSpy responseSpy(m_pcbIFace.get(), &Zera::cPCBInterface::serverAnswer);
         m_pcbIFace->getRangeList(channelSetting->m_nameMx);
         TimeMachineObject::feedEventLoop();
 
-        QString clampName = cClamp::getClampTypeName(clampType);
+        QString clampName = cClamp::getClampTypeName(clampTypeNo);
         if(jsonReference.contains(clampName)) {
             QJsonObject jsonRanges = jsonReference.value(clampName).toObject();
             if(!jsonRanges.isEmpty()) {
