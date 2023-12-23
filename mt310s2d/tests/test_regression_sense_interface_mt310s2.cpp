@@ -247,7 +247,7 @@ void test_regression_sense_interface_mt310s2::genJsonRejectionValuesAllClampsUAU
 
 void test_regression_sense_interface_mt310s2::checkJsonRejectionValuesAllClampsUAUX()
 {
-    QJsonObject json = loadJson(":/regression_data/all-ranges-all-clamps-uaux,json");
+    QJsonObject json = loadJson(":/regression_data/all-ranges-all-clamps-uaux.json");
     QVERIFY(!json.isEmpty());
     QVERIFY(checkJsonConstantValuesAllRangesForAllClamps(json, "UAUX", "IAUX"));
 }
