@@ -26,17 +26,15 @@ private slots:
     void addClampIL2_CL800ADC1000VDC();
     void addRemoveClampIAUX_CL800ADC1000VDC();
 
-    void genClampIdsNamesJson();
-    void checkClampIdsNames();
+    void clampIdsNamesGenJson();
+    void clampIdsNamesCheck();
 
-    void genJsonRejectionValuesAllClampsIL3();
-    void checkJsonRejectionValuesAllClampsIL3();
-
-    void genJsonRejectionValuesAllClampsIAUX();
-    void checkJsonRejectionValuesAllClampsIAUX();
-
-    void genJsonRejectionValuesAllClampsUAUX();
-    void checkJsonRejectionValuesAllClampsUAUX();
+    void constantRangeValuesAllClampsIL3GenJson();
+    void constantRangeValuesAllClampsIL3Check();
+    void constantRangeValuesAllClampsIAUXGenJson();
+    void constantRangeValuesAllClampsIAUXCheck();
+    void constantRangeValuesAllClampsUAUXGenJson();
+    void constantRangeValuesAllClampsUAUXCheck();
 private:
     void addClamp(int clampTypeNo, QString channelAlias1);
     void removeAllClamps();

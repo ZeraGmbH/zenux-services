@@ -192,7 +192,7 @@ void test_regression_sense_interface_mt310s2::addRemoveClampIAUX_CL800ADC1000VDC
     QCOMPARE(responseSpyU[0][2].toStringList(), m_rangesExpectedU);
 }
 
-void test_regression_sense_interface_mt310s2::genClampIdsNamesJson()
+void test_regression_sense_interface_mt310s2::clampIdsNamesGenJson()
 {
     QJsonObject jsonAll;
     for(int clampTypeNo=undefined+1; clampTypeNo<anzCL; clampTypeNo++) {
@@ -204,7 +204,7 @@ void test_regression_sense_interface_mt310s2::genClampIdsNamesJson()
     qInfo("%s", qPrintable(doc.toJson(QJsonDocument::Indented)));
 }
 
-void test_regression_sense_interface_mt310s2::checkClampIdsNames()
+void test_regression_sense_interface_mt310s2::clampIdsNamesCheck()
 {
     QJsonObject json = loadJson(":/regression_data/clamp-id-names.json");
     QVERIFY(!json.isEmpty());
@@ -216,36 +216,36 @@ void test_regression_sense_interface_mt310s2::checkClampIdsNames()
     }
 }
 
-void test_regression_sense_interface_mt310s2::genJsonRejectionValuesAllClampsIL3()
+void test_regression_sense_interface_mt310s2::constantRangeValuesAllClampsIL3GenJson()
 {
     genJsonConstantValuesAllRangesForAllClamps("IL3");
 }
 
-void test_regression_sense_interface_mt310s2::checkJsonRejectionValuesAllClampsIL3()
+void test_regression_sense_interface_mt310s2::constantRangeValuesAllClampsIL3Check()
 {
     QJsonObject json = loadJson(":/regression_data/all-ranges-all-clamps-il3.json");
     QVERIFY(!json.isEmpty());
     QVERIFY(checkJsonConstantValuesAllRangesForAllClamps(json, "IL3"));
 }
 
-void test_regression_sense_interface_mt310s2::genJsonRejectionValuesAllClampsIAUX()
+void test_regression_sense_interface_mt310s2::constantRangeValuesAllClampsIAUXGenJson()
 {
     genJsonConstantValuesAllRangesForAllClamps("IAUX");
 }
 
-void test_regression_sense_interface_mt310s2::checkJsonRejectionValuesAllClampsIAUX()
+void test_regression_sense_interface_mt310s2::constantRangeValuesAllClampsIAUXCheck()
 {
     QJsonObject json = loadJson(":/regression_data/all-ranges-all-clamps-iaux.json");
     QVERIFY(!json.isEmpty());
     QVERIFY(checkJsonConstantValuesAllRangesForAllClamps(json, "IAUX"));
 }
 
-void test_regression_sense_interface_mt310s2::genJsonRejectionValuesAllClampsUAUX()
+void test_regression_sense_interface_mt310s2::constantRangeValuesAllClampsUAUXGenJson()
 {
     genJsonConstantValuesAllRangesForAllClamps("UAUX", "IAUX");
 }
 
-void test_regression_sense_interface_mt310s2::checkJsonRejectionValuesAllClampsUAUX()
+void test_regression_sense_interface_mt310s2::constantRangeValuesAllClampsUAUXCheck()
 {
     QJsonObject json = loadJson(":/regression_data/all-ranges-all-clamps-uaux.json");
     QVERIFY(!json.isEmpty());
