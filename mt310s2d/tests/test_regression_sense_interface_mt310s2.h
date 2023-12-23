@@ -5,7 +5,6 @@
 #include "pcbinterface.h"
 #include "proxyclient.h"
 #include "resmanrunfacade.h"
-#include "sensesettings.h"
 #include <QObject>
 #include <QStringList>
 #include <QJsonObject>
@@ -30,7 +29,8 @@ private slots:
     void genJsonRejectionValuesAllClampsIAUX();
     void genJsonRejectionValuesAllClampsUAUX();
 private:
-    void addRangeConstantDataToJson(QString rangeName, SenseSystem::cChannelSettings *channelSettings, QJsonObject &range);
+    void addClamp(int clampType, QString channelAlias1);
+    void removeAllClamps();
     void genJsonConstantValuesAllRanges(QString channelName, QString channelNameAdRemoveClamps = "");
 
     std::unique_ptr<MockForSenseInterfaceMt310s2> m_mockServer;
