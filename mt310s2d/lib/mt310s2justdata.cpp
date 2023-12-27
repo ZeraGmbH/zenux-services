@@ -46,38 +46,38 @@ void Mt310s2JustRangeTripletOffsetGainPhase::executeProtoScpi(int cmdCode, cProt
     switch (cmdCode)
     {
     case DirectGain:
-        protoCmd->m_sOutput = scpiGetGainCorrection(protoCmd->m_sInput);
+        protoCmd->m_sOutput = scpiQueryGainCorrection(protoCmd->m_sInput);
         break;
     case DirectJustGain:
-        protoCmd->m_sOutput = mReadJustGainCorrection(protoCmd->m_sInput);
+        protoCmd->m_sOutput = scpiQueryJustGainCorrection(protoCmd->m_sInput);
         break;
     case DirectPhase:
-        protoCmd->m_sOutput = mReadPhaseCorrection(protoCmd->m_sInput);
+        protoCmd->m_sOutput = scpiQueryPhaseCorrection(protoCmd->m_sInput);
         break;
     case DirectJustPhase:
-        protoCmd->m_sOutput = mReadJustPhaseCorrection(protoCmd->m_sInput);
+        protoCmd->m_sOutput = scpiQueryJustPhaseCorrection(protoCmd->m_sInput);
         break;
     case DirectOffset:
-        protoCmd->m_sOutput = mReadOffsetCorrection(protoCmd->m_sInput);
+        protoCmd->m_sOutput = scpiQueryOffsetCorrection(protoCmd->m_sInput);
         break;
     case DirectJustOffset:
-        protoCmd->m_sOutput = mReadJustOffsetCorrection(protoCmd->m_sInput);
+        protoCmd->m_sOutput = scpiQueryJustOffsetCorrection(protoCmd->m_sInput);
         break;
     case DirectJustStatus:
-        protoCmd->m_sOutput = m_ReadStatus(protoCmd->m_sInput);
+        protoCmd->m_sOutput = scpiQueryStatus(protoCmd->m_sInput);
         break;
     case DirectJustCompute:
-        protoCmd->m_sOutput = m_ComputeJustData(protoCmd->m_sInput);
+        protoCmd->m_sOutput = scpiCmdComputeJustData(protoCmd->m_sInput);
         break;
     case DirectJustInit:
-        protoCmd->m_sOutput = m_InitJustData(protoCmd->m_sInput);
+        protoCmd->m_sOutput = scpiCmdInitJustData(protoCmd->m_sInput);
         break;
     }
     if (protoCmd->m_bwithOutput)
         emit cmdExecutionDone(protoCmd);
 }
 
-QString Mt310s2JustRangeTripletOffsetGainPhase::scpiGetGainCorrection(const QString &scpiInput)
+QString Mt310s2JustRangeTripletOffsetGainPhase::scpiQueryGainCorrection(const QString &scpiInput)
 {
     cSCPICommand cmd = scpiInput;
     if (cmd.isQuery(1)) {
@@ -93,9 +93,9 @@ QString Mt310s2JustRangeTripletOffsetGainPhase::scpiGetGainCorrection(const QStr
         return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-QString Mt310s2JustRangeTripletOffsetGainPhase::mReadJustGainCorrection(QString &sInput)
+QString Mt310s2JustRangeTripletOffsetGainPhase::scpiQueryJustGainCorrection(QString &scpiInput)
 {
-    cSCPICommand cmd = sInput;
+    cSCPICommand cmd = scpiInput;
     if (cmd.isQuery(1)) {
         QString spar = cmd.getParam(0);
         bool ok;
@@ -109,9 +109,9 @@ QString Mt310s2JustRangeTripletOffsetGainPhase::mReadJustGainCorrection(QString 
         return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-QString Mt310s2JustRangeTripletOffsetGainPhase::mReadPhaseCorrection(QString& sInput)
+QString Mt310s2JustRangeTripletOffsetGainPhase::scpiQueryPhaseCorrection(QString& scpiInput)
 {
-    cSCPICommand cmd = sInput;
+    cSCPICommand cmd = scpiInput;
     if (cmd.isQuery(1)) {
         QString spar = cmd.getParam(0);
         bool ok;
@@ -125,9 +125,9 @@ QString Mt310s2JustRangeTripletOffsetGainPhase::mReadPhaseCorrection(QString& sI
         return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-QString Mt310s2JustRangeTripletOffsetGainPhase::mReadJustPhaseCorrection(QString &sInput)
+QString Mt310s2JustRangeTripletOffsetGainPhase::scpiQueryJustPhaseCorrection(QString &scpiInput)
 {
-    cSCPICommand cmd = sInput;
+    cSCPICommand cmd = scpiInput;
     if (cmd.isQuery(1)) {
         QString spar = cmd.getParam(0);
         bool ok;
@@ -141,9 +141,9 @@ QString Mt310s2JustRangeTripletOffsetGainPhase::mReadJustPhaseCorrection(QString
         return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-QString Mt310s2JustRangeTripletOffsetGainPhase::mReadOffsetCorrection(QString& sInput)
+QString Mt310s2JustRangeTripletOffsetGainPhase::scpiQueryOffsetCorrection(QString& scpiInput)
 {
-    cSCPICommand cmd = sInput;
+    cSCPICommand cmd = scpiInput;
     if (cmd.isQuery(1)) {
         QString spar = cmd.getParam(0);
         bool ok;
@@ -157,9 +157,9 @@ QString Mt310s2JustRangeTripletOffsetGainPhase::mReadOffsetCorrection(QString& s
         return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-QString Mt310s2JustRangeTripletOffsetGainPhase::mReadJustOffsetCorrection(QString &sInput)
+QString Mt310s2JustRangeTripletOffsetGainPhase::scpiQueryJustOffsetCorrection(QString &scpiInput)
 {
-    cSCPICommand cmd = sInput;
+    cSCPICommand cmd = scpiInput;
     if (cmd.isQuery(1)) {
         QString spar = cmd.getParam(0);
         bool ok;
@@ -173,9 +173,9 @@ QString Mt310s2JustRangeTripletOffsetGainPhase::mReadJustOffsetCorrection(QStrin
         return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-QString Mt310s2JustRangeTripletOffsetGainPhase::m_ReadStatus(QString& sInput)
+QString Mt310s2JustRangeTripletOffsetGainPhase::scpiQueryStatus(QString& scpiInput)
 {
-    cSCPICommand cmd = sInput;
+    cSCPICommand cmd = scpiInput;
     if (cmd.isQuery()) {
         return QString("%1").arg(getAdjustmentStatus());
     }
@@ -183,9 +183,9 @@ QString Mt310s2JustRangeTripletOffsetGainPhase::m_ReadStatus(QString& sInput)
         return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-QString Mt310s2JustRangeTripletOffsetGainPhase::m_ComputeJustData(QString& sInput)
+QString Mt310s2JustRangeTripletOffsetGainPhase::scpiCmdComputeJustData(QString& scpiInput)
 {
-    cSCPICommand cmd = sInput;
+    cSCPICommand cmd = scpiInput;
     if(cmd.isCommand(1) && (cmd.getParam(0) == "")) {
         bool enable;
         if(m_permissions.funcAllowAdjCompute(enable)) {
@@ -205,9 +205,9 @@ QString Mt310s2JustRangeTripletOffsetGainPhase::m_ComputeJustData(QString& sInpu
         return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-QString Mt310s2JustRangeTripletOffsetGainPhase::m_InitJustData(QString &sInput)
+QString Mt310s2JustRangeTripletOffsetGainPhase::scpiCmdInitJustData(QString &scpiInput)
 {
-    cSCPICommand cmd = sInput;
+    cSCPICommand cmd = scpiInput;
     if (cmd.isCommand(1) && (cmd.getParam(0) == "")) {
         bool enable;
         if(m_permissions.funcAllowAdjInit(enable)) {
