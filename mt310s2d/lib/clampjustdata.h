@@ -24,11 +24,8 @@ public:
 
 protected:
     virtual double getGainCorrection(double par) override;
-    virtual double getJustGainCorrection(double par) override;
     virtual double getPhaseCorrection(double par) override;
-    virtual double getJustPhaseCorrection(double par) override;
     virtual double getOffsetCorrection(double par) override;
-    virtual double getJustOffsetCorrection(double par) override;
 
 private:
     Mt310s2SenseRange* m_pFirstStageRange; //
