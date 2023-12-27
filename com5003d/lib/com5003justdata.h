@@ -56,15 +56,15 @@ protected:
     virtual double getOffsetCorrection(double par);
     virtual double getJustOffsetCorrection(double par);
 
-    QString scpiGetGainCorrection(const QString &scpiInput);
-    QString mReadJustGainCorrection(QString&sInput);
-    QString mReadPhaseCorrection(QString&sInput);
-    QString mReadJustPhaseCorrection(QString&sInput);
-    QString mReadOffsetCorrection(QString&sInput);
-    QString mReadJustOffsetCorrection(QString&sInput);
-    QString m_ReadStatus(QString& sInput);
-    QString m_ComputeJustData(QString& sInput);
-    QString m_InitJustData(QString& sInput); // done in Adjustmentmodule - left for compatibility
+    QString scpiQueryGainCorrection(const QString &scpiInput);
+    QString scpiQueryJustGainCorrection(QString &scpiInput);
+    QString scpiQueryPhaseCorrection(QString &scpiInput);
+    QString scpiQueryJustPhaseCorrection(QString &scpiInput);
+    QString scpiQueryOffsetCorrection(QString &scpiInput);
+    QString scpiQueryJustOffsetCorrection(QString &scpiInput);
+    QString scpiQueryStatus(QString &scpiInput);
+    QString scpiCmdComputeJustData(QString &scpiInput);
+    QString scpiCmdInitJustData(QString &scpiInput); // done in Adjustmentmodule - left for compatibility
 
 private:
     PermissionStructAdj m_permissions;
