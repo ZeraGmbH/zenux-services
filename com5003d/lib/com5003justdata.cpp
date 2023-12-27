@@ -95,7 +95,7 @@ QString Com5003JustRangeTripletOffsetGainPhase::scpiQueryJustGainCorrection(QStr
         bool ok;
         double par = spar.toDouble(&ok);
         if (ok)
-            return QString("%1").arg(getJustGainCorrection(par));
+            return QString("%1").arg(getGainCorrection(par));
         else
             return ZSCPI::scpiAnswer[ZSCPI::errval];
     }
@@ -127,7 +127,7 @@ QString Com5003JustRangeTripletOffsetGainPhase::scpiQueryJustPhaseCorrection(QSt
         bool ok;
         double par = spar.toDouble(&ok);
         if (ok)
-            return QString("%1").arg(getJustPhaseCorrection(par));
+            return QString("%1").arg(getPhaseCorrection(par));
         else
             return ZSCPI::scpiAnswer[ZSCPI::errval];
     }
@@ -159,7 +159,7 @@ QString Com5003JustRangeTripletOffsetGainPhase::scpiQueryJustOffsetCorrection(QS
         bool ok;
         double par = spar.toDouble(&ok);
         if (ok)
-            return QString("%1").arg(getJustOffsetCorrection(par));
+            return QString("%1").arg(getOffsetCorrection(par));
         else
             return ZSCPI::scpiAnswer[ZSCPI::errval];
     }
@@ -255,32 +255,32 @@ void Com5003JustRangeTripletOffsetGainPhase::computeJustData()
     m_pOffsetCorrection->cmpCoefficients();
 }
 
-double Com5003JustRangeTripletOffsetGainPhase::getTotalGainCorrection(double par)
+double Com5003JustRangeTripletOffsetGainPhase::getGainCorrectionTotal(double par)
 {
     return m_pGainCorrection->getCorrection(par);
 }
 
-double Com5003JustRangeTripletOffsetGainPhase::getJustGainCorrection(double par)
+double Com5003JustRangeTripletOffsetGainPhase::getGainCorrection(double par)
 {
     return m_pGainCorrection->getCorrection(par);
 }
 
-double Com5003JustRangeTripletOffsetGainPhase::getTotalPhaseCorrection(double par)
+double Com5003JustRangeTripletOffsetGainPhase::getPhaseCorrectionTotal(double par)
 {
     return m_pPhaseCorrection->getCorrection(par);
 }
 
-double Com5003JustRangeTripletOffsetGainPhase::getJustPhaseCorrection(double par)
+double Com5003JustRangeTripletOffsetGainPhase::getPhaseCorrection(double par)
 {
     return m_pPhaseCorrection->getCorrection(par);
 }
 
-double Com5003JustRangeTripletOffsetGainPhase::getTotalOffsetCorrection(double par)
+double Com5003JustRangeTripletOffsetGainPhase::getOffsetCorrectionTotal(double par)
 {
     return m_pOffsetCorrection->getCorrection(par);
 }
 
-double Com5003JustRangeTripletOffsetGainPhase::getJustOffsetCorrection(double par)
+double Com5003JustRangeTripletOffsetGainPhase::getOffsetCorrection(double par)
 {
     return m_pOffsetCorrection->getCorrection(par);
 }
