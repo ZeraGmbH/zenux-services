@@ -50,12 +50,13 @@ public:
 protected:
     void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
     virtual double getGainCorrection(double par);
-    virtual double getJustGainCorrection(double par);
+    double getJustGainCorrection(double par);
     virtual double getPhaseCorrection(double par);
-    virtual double getJustPhaseCorrection(double par);
+    double getJustPhaseCorrection(double par);
     virtual double getOffsetCorrection(double par);
-    virtual double getJustOffsetCorrection(double par);
+    double getJustOffsetCorrection(double par);
 
+private:
     QString scpiQueryGainCorrection(const QString &scpiInput);
     QString scpiQueryJustGainCorrection(QString &scpiInput);
     QString scpiQueryPhaseCorrection(QString &scpiInput);
