@@ -255,7 +255,7 @@ void Com5003JustRangeTripletOffsetGainPhase::computeJustData()
     m_pOffsetCorrection->cmpCoefficients();
 }
 
-double Com5003JustRangeTripletOffsetGainPhase::getGainCorrection(double par)
+double Com5003JustRangeTripletOffsetGainPhase::getTotalGainCorrection(double par)
 {
     return m_pGainCorrection->getCorrection(par);
 }
@@ -265,7 +265,7 @@ double Com5003JustRangeTripletOffsetGainPhase::getJustGainCorrection(double par)
     return m_pGainCorrection->getCorrection(par);
 }
 
-double Com5003JustRangeTripletOffsetGainPhase::getPhaseCorrection(double par)
+double Com5003JustRangeTripletOffsetGainPhase::getTotalPhaseCorrection(double par)
 {
     return m_pPhaseCorrection->getCorrection(par);
 }
@@ -275,7 +275,7 @@ double Com5003JustRangeTripletOffsetGainPhase::getJustPhaseCorrection(double par
     return m_pPhaseCorrection->getCorrection(par);
 }
 
-double Com5003JustRangeTripletOffsetGainPhase::getOffsetCorrection(double par)
+double Com5003JustRangeTripletOffsetGainPhase::getTotalOffsetCorrection(double par)
 {
     return m_pOffsetCorrection->getCorrection(par);
 }
