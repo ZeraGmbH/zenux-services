@@ -85,7 +85,7 @@ QString Mt310s2JustRangeTripletOffsetGainPhase::scpiQueryGainCorrection(const QS
         bool ok;
         double par = spar.toDouble(&ok);
         if (ok)
-            return QString("%1").arg(getGainCorrection(par));
+            return QString("%1").arg(getTotalGainCorrection(par));
         else
             return ZSCPI::scpiAnswer[ZSCPI::errval];
     }
@@ -117,7 +117,7 @@ QString Mt310s2JustRangeTripletOffsetGainPhase::scpiQueryPhaseCorrection(QString
         bool ok;
         double par = spar.toDouble(&ok);
         if (ok)
-            return QString("%1").arg(getPhaseCorrection(par));
+            return QString("%1").arg(getTotalPhaseCorrection(par));
         else
             return ZSCPI::scpiAnswer[ZSCPI::errval];
     }
@@ -149,7 +149,7 @@ QString Mt310s2JustRangeTripletOffsetGainPhase::scpiQueryOffsetCorrection(QStrin
         bool ok;
         double par = spar.toDouble(&ok);
         if (ok)
-            return QString("%1").arg(getOffsetCorrection(par));
+            return QString("%1").arg(getTotalOffsetCorrection(par));
         else
             return ZSCPI::scpiAnswer[ZSCPI::errval];
     }
@@ -261,7 +261,7 @@ void Mt310s2JustRangeTripletOffsetGainPhase::computeJustData()
     m_pOffsetCorrection->cmpCoefficients();
 }
 
-double Mt310s2JustRangeTripletOffsetGainPhase::getGainCorrection(double par)
+double Mt310s2JustRangeTripletOffsetGainPhase::getTotalGainCorrection(double par)
 {
     return m_pGainCorrection->getCorrection(par);
 }
@@ -271,7 +271,7 @@ double Mt310s2JustRangeTripletOffsetGainPhase::getJustGainCorrection(double par)
     return m_pGainCorrection->getCorrection(par);
 }
 
-double Mt310s2JustRangeTripletOffsetGainPhase::getPhaseCorrection(double par)
+double Mt310s2JustRangeTripletOffsetGainPhase::getTotalPhaseCorrection(double par)
 {
     return m_pPhaseCorrection->getCorrection(par);
 }
@@ -281,7 +281,7 @@ double Mt310s2JustRangeTripletOffsetGainPhase::getJustPhaseCorrection(double par
     return m_pPhaseCorrection->getCorrection(par);
 }
 
-double Mt310s2JustRangeTripletOffsetGainPhase::getOffsetCorrection(double par)
+double Mt310s2JustRangeTripletOffsetGainPhase::getTotalOffsetCorrection(double par)
 {
     return m_pOffsetCorrection->getCorrection(par);
 }

@@ -8,17 +8,17 @@ cClampJustData::cClampJustData(cSCPI *scpiinterface, Mt310s2SenseRange *cascaded
 {
 }
 
-double cClampJustData::getGainCorrection(double par)
+double cClampJustData::getTotalGainCorrection(double par)
 {
     return m_pGainCorrection->getCorrection(par) * m_pFirstStageRange->getJustData()->m_pGainCorrection->getCorrection(par / m_cvRatio);
 }
 
-double cClampJustData::getPhaseCorrection(double par)
+double cClampJustData::getTotalPhaseCorrection(double par)
 {
     return m_pPhaseCorrection->getCorrection(par) + m_pFirstStageRange->getJustData()->m_pPhaseCorrection->getCorrection(par);
 }
 
-double cClampJustData::getOffsetCorrection(double par)
+double cClampJustData::getTotalOffsetCorrection(double par)
 {
     return m_pOffsetCorrection->getCorrection(par) + m_pFirstStageRange->getJustData()->m_pOffsetCorrection->getCorrection(par / m_cvRatio);
 }

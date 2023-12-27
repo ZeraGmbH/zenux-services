@@ -23,9 +23,9 @@ public:
                    PermissionStructAdj permission = PermissionStructAdj());
 
 protected:
-    virtual double getGainCorrection(double par) override;
-    virtual double getPhaseCorrection(double par) override;
-    virtual double getOffsetCorrection(double par) override;
+    virtual double getTotalGainCorrection(double par) override;
+    virtual double getTotalPhaseCorrection(double par) override;
+    virtual double getTotalOffsetCorrection(double par) override;
 
 private:
     Mt310s2SenseRange* m_pFirstStageRange; //
