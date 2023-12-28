@@ -10,7 +10,7 @@ class Mt310s2AdjXML
 public:
     Mt310s2AdjXML();
 
-    virtual bool exportAdjXML(QString file);
+    virtual bool exportAdTojXMLFile(QString file);
     virtual bool importAdjXML(QString file);
     virtual bool importAdjXMLString(QString& xml);
 

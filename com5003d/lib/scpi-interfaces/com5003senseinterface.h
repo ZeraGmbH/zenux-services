@@ -37,8 +37,9 @@ enum MMode
 
 const QString sVoltageChannelDescription = "Measuring channel 0..480V AC";
 const QString sCurrentChannelDescription = "Measuring channel 0..160A AC";
-const QString sReferenceChannelDescription = "Reference channel 0..10V DC";
 const QString sMeasuringModeDescription = "Measuring mode switch AC,REF";
+
+const QString sReferenceChannelDescription = "Reference channel 0..10V DC";
 const QString sMMode[2] = {"AC", "REF"};
 }
 

@@ -293,7 +293,7 @@ QString Com5003Adjustment::exportXMLString()
     return xml;
 }
 
-bool Com5003Adjustment::exportJDataXML(QString &file)
+bool Com5003Adjustment::exportAdTojXMLFile(QString &file)
 {
     QString filename = file + ".xml";
     QFile adjfile(filename);
