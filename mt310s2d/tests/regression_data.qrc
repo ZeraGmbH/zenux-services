@@ -5,5 +5,8 @@
         <file>regression_data/all-ranges-all-clamps-uaux.json</file>
         <file>regression_data/clamp-id-names.json</file>
         <file>regression_data/sense_interface_export.xml</file>
+        <file>regression_data/sense_interface_export_minimal_pass.xml</file>
+        <file>regression_data/sense_interface_export_missing_type.xml</file>
+        <file>regression_data/sense_interface_export_missing_serno.xml</file>
     </qresource>
 </RCC>
