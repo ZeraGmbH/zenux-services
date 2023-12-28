@@ -24,12 +24,6 @@ void Com5003SystemInterface::initSCPIConnection(QString leadingNodes)
     addDelegate(QString("%1SYSTEM:VERSION").arg(leadingNodes), "CTRL", SCPI::isQuery, m_pSCPIInterface, SystemSystem::cmdVersionCTRL, &m_allCtrlVersion);
     addDelegate(QString("%1SYSTEM:VERSION").arg(leadingNodes), "FPGA", SCPI::isQuery, m_pSCPIInterface, SystemSystem::cmdVersionFPGA);
     addDelegate(QString("%1SYSTEM").arg(leadingNodes), "SERIAL", SCPI::isQuery | SCPI::isCmdwP , m_pSCPIInterface, SystemSystem::cmdSerialNumber);
-    // Obsolete???
-        addDelegate(QString("%1SYSTEM:UPDATE:CONTROLER").arg(leadingNodes), "BOOTLOADER", SCPI::isCmd, m_pSCPIInterface, SystemSystem::cmdUpdateControlerBootloader);
-        addDelegate(QString("%1SYSTEM:UPDATE:CONTROLER").arg(leadingNodes), "PROGRAM", SCPI::isCmd, m_pSCPIInterface, SystemSystem::cmdUpdateControlerProgram);
-        addDelegate(QString("%1SYSTEM:UPDATE:CONTROLER").arg(leadingNodes), "FLASH", SCPI::isCmdwP, m_pSCPIInterface, SystemSystem::cmdUpdateControlerFlash);
-        addDelegate(QString("%1SYSTEM:UPDATE:CONTROLER").arg(leadingNodes), "EEPROM", SCPI::isCmdwP, m_pSCPIInterface, SystemSystem::cmdUpdateControlerEEprom);
-    // End Obsolete???
     addDelegate(QString("%1SYSTEM:ADJUSTMENT:FLASH").arg(leadingNodes), "WRITE", SCPI::isCmd, m_pSCPIInterface, SystemSystem::cmdAdjFlashWrite);
     addDelegate(QString("%1SYSTEM:ADJUSTMENT:FLASH").arg(leadingNodes), "READ", SCPI::isCmd, m_pSCPIInterface, SystemSystem::cmdAdjFlashRead);
     // Obsolete??? (replace by XML read-write as mt310s2)
@@ -62,18 +56,6 @@ void Com5003SystemInterface::executeProtoScpi(int cmdCode, cProtonetCommand *pro
         break;
     case SystemSystem::cmdSerialNumber:
         protoCmd->m_sOutput = m_ReadWriteSerialNumber(protoCmd->m_sInput);
-        break;
-    case SystemSystem::cmdUpdateControlerBootloader:
-        protoCmd->m_sOutput = m_StartControlerBootloader(protoCmd->m_sInput);
-        break;
-    case SystemSystem::cmdUpdateControlerProgram:
-        protoCmd->m_sOutput = m_StartControlerProgram(protoCmd->m_sInput);
-        break;
-    case SystemSystem::cmdUpdateControlerFlash:
-        protoCmd->m_sOutput = m_LoadFlash(protoCmd->m_sInput);
-        break;
-    case SystemSystem::cmdUpdateControlerEEprom:
-        protoCmd->m_sOutput = m_LoadEEProm(protoCmd->m_sInput);
         break;
     case SystemSystem::cmdAdjFlashWrite:
         protoCmd->m_sOutput = m_AdjFlashWrite(protoCmd->m_sInput);
@@ -240,80 +222,6 @@ QString Com5003SystemInterface::m_ReadWriteSerialNumber(QString &sInput)
         m_genAnswer(ret, s);
     }
 
-    return s;
-}
-
-
-QString Com5003SystemInterface::m_StartControlerBootloader(QString& sInput)
-{
-    QString s;
-    int ret = ZeraMControllerIo::cmdfault;
-    cSCPICommand cmd = sInput;
-
-    if (cmd.isCommand(1) && (cmd.getParam(0) == ""))
-    {
-        ret = Atmel::getInstance().startBootLoader();
-    }
-    m_genAnswer(ret, s);
-    return s;
-}
-
-
-QString Com5003SystemInterface::m_StartControlerProgram(QString &sInput)
-{
-    QString s;
-    int ret = ZeraMControllerIo::cmdfault;
-    cSCPICommand cmd = sInput;
-
-    if (cmd.isCommand(1) && (cmd.getParam(0) == ""))
-    {
-        ret = Atmel::getInstance().bootloaderStartProgram();
-    }
-    m_genAnswer(ret, s);
-    return s;
-}
-
-
-QString Com5003SystemInterface::m_LoadFlash(QString &sInput)
-{
-    QString s;
-    int ret = ZeraMControllerIo::cmdfault;
-    cSCPICommand cmd = sInput;
-
-    if (cmd.isCommand(1))
-    {
-        QString filename = cmd.getParam(0);
-        cIntelHexFileIO IntelHexData;
-        if (IntelHexData.ReadHexFile(filename))
-        {
-           ret = Atmel::getInstance().bootloaderLoadFlash(IntelHexData);
-        }
-        else
-            ret = ZeraMControllerIo::cmdexecfault;
-    }
-    m_genAnswer(ret, s);
-    return s;
-}
-
-
-QString Com5003SystemInterface::m_LoadEEProm(QString &sInput)
-{
-    QString s;
-    int ret = 1;
-    cSCPICommand cmd = sInput;
-
-    if (cmd.isCommand(1))
-    {
-        QString filename = cmd.getParam(0);
-        cIntelHexFileIO IntelHexData;
-        if (IntelHexData.ReadHexFile(filename))
-        {
-            ret = Atmel::getInstance().bootloaderLoadEEprom(IntelHexData);
-        }
-        else
-            ret = ZeraMControllerIo::cmdexecfault;
-    }
-    m_genAnswer(ret, s);
     return s;
 }
 
