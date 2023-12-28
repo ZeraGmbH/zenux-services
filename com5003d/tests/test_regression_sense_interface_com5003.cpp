@@ -58,7 +58,7 @@ void test_regression_sense_interface_com5003::checkExportXml()
 void test_regression_sense_interface_com5003::checkImportXml()
 {
     QString filenameShort = ":/regression_data/adjustment_export";
-    QVERIFY(m_mockServer->getAdjustment()->importAdjXML(filenameShort));
+    QVERIFY(m_mockServer->getAdjustment()->importAdjXMLFile(filenameShort));
 }
 
 QStringList test_regression_sense_interface_com5003::m_channelsExpectedAllOverThePlace = QStringList()

@@ -310,7 +310,7 @@ bool Com5003Adjustment::exportAdTojXMLFile(QString &file)
 }
 
 
-bool Com5003Adjustment::importAdjXML(QString &file)
+bool Com5003Adjustment::importAdjXMLFile(QString &file)
 {
     QDateTime DateTime;
 

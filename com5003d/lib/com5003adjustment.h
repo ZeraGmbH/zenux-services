@@ -28,7 +28,7 @@ public:
 
     QString exportXMLString();
     bool exportAdTojXMLFile(QString& file);
-    bool importAdjXML(QString& file);
+    bool importAdjXMLFile(QString& file);
     virtual void exportAdjData(QDomDocument& doc, QDomElement& qde) override;
     virtual bool importAdjData(QDomNode& node) override;
 

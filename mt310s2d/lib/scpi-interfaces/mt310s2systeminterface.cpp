@@ -448,7 +448,7 @@ QString Mt310s2SystemInterface::m_AdjXMLRead(QString &sInput)
             if (enable)
             {
                 QString filename = cmd.getParam(0);
-                if (m_pMyServer->m_pSenseInterface->importAdjXML(filename))
+                if (m_pMyServer->m_pSenseInterface->importAdjXMLFile(filename))
                     return ZSCPI::scpiAnswer[ZSCPI::ack];
                 else
                     return ZSCPI::scpiAnswer[ZSCPI::errexec];

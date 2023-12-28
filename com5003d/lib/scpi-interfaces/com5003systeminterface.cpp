@@ -392,7 +392,7 @@ QString Com5003SystemInterface::m_AdjXMLRead(QString &sInput)
         if (enable)
         {
             QString filename = cmd.getParam(0);
-            if (m_pMyServer->m_pAdjHandler->importAdjXML(filename))
+            if (m_pMyServer->m_pAdjHandler->importAdjXMLFile(filename))
                 return ZSCPI::scpiAnswer[ZSCPI::ack];
             else
                 return ZSCPI::scpiAnswer[ZSCPI::errexec];
