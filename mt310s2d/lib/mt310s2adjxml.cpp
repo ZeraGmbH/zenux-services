@@ -7,14 +7,14 @@ Mt310s2AdjXML::Mt310s2AdjXML()
 {
 }
 
-bool Mt310s2AdjXML::exportAdjXML(QString file)
+bool Mt310s2AdjXML::exportAdTojXMLFile(QString file)
 {
     QString filename = file + ".xml";
 
     QFile adjfile(filename);
     if ( !adjfile.open( QIODevice::WriteOnly ) )
     {
-        qCritical("%s", "exportAdjXML: could not open xml file");
+        qCritical("%s", "exportAdTojXMLFile: could not open xml file");
         return false;
     }
 
