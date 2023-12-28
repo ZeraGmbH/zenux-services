@@ -312,14 +312,12 @@ bool Com5003Adjustment::exportAdTojXMLFile(QString &file)
 
 bool Com5003Adjustment::importAdjXMLFile(QString &file)
 {
-    QDateTime DateTime;
-
     QString filename = file + ".xml";
 
     QFile adjfile(filename);
     if ( !adjfile.open( QIODevice::ReadOnly ) )
     {
-        qCritical("Justdata import, could not open xml file");
+        qCritical("%s", "importAdjXMLFile: could not open xml file");
         return false;
     }
 
@@ -327,21 +325,70 @@ bool Com5003Adjustment::importAdjXMLFile(QString &file)
     if ( !justdata.setContent( &adjfile ) )
     {
         adjfile.close();
-        qCritical("Justdata import, format error in xml file");
+        qCritical("%s", "importAdjXMLFile: format error in xml file");
         return false;
     }
 
     adjfile.close();
 
-    QDomDocumentType TheDocType=justdata.doctype ();
+    return importXMLDocument(&justdata);
+}
 
-    if  (TheDocType.name() != QString("%1AdjustmentData").arg(LeiterkartenName))
-    {
+void Com5003Adjustment::exportAdjData(QDomDocument &doc, QDomElement &qde)
+{
+}
+
+bool Com5003Adjustment::importAdjData(QDomNode &node)
+{
+    if (node.toElement().tagName() != "Chksum") // data not for us
+        return false;
+    m_nChecksum = node.toElement().text().toInt();
+    return true;
+}
+
+void Com5003Adjustment::addAdjFlashObject(Com5003AdjFlash* obj)
+{
+    m_AdjFlashList.append(obj);
+}
+
+void Com5003Adjustment::addAdjXMLObject(Com5003AdjXML* obj)
+{
+    m_AdjXMLList.append(obj);
+}
+
+
+quint8 Com5003Adjustment::getAdjustmentStatus()
+{
+    quint8 stat = 255;
+    quint8 ret;
+
+    for (int i = 0; i < m_AdjFlashList.count(); i++)
+        stat &= m_AdjFlashList.at(i)->getAdjustmentStatus();
+
+    ret = m_nAdjStatus; // here we already stored ev. wrong serial or wrong version
+
+    if ((stat & JustDataInterface::Justified)== 0)
+        ret += Adjustment::notAdjusted;
+
+    return ret;
+}
+
+
+quint16 Com5003Adjustment::getChecksum()
+{
+    return m_nChecksum;
+}
+
+bool Com5003Adjustment::importXMLDocument(QDomDocument *qdomdoc)
+{
+    QDateTime DateTime; // useless - TBD
+    QDomDocumentType TheDocType = qdomdoc->doctype ();
+    if  (TheDocType.name() != QString("%1AdjustmentData").arg(LeiterkartenName)) {
         qCritical("Justdata import, wrong xml documentype");
         return false;
     }
 
-    QDomElement rootElem = justdata.documentElement();
+    QDomElement rootElem = qdomdoc->documentElement();
     QDomNodeList nl=rootElem.childNodes();
 
     bool VersionNrOK=false;
@@ -364,8 +411,8 @@ bool Com5003Adjustment::importAdjXMLFile(QString &file)
         {
             if (  !(SerialNrOK = (e.text() == m_pSystemInfo->getSerialNumber() )) )
             {
-               qCritical("Justdata import, wrong serialnumber in xml file");
-               return false;
+                qCritical("Justdata import, wrong serialnumber in xml file");
+                return false;
             }
 
         }
@@ -374,11 +421,11 @@ bool Com5003Adjustment::importAdjXMLFile(QString &file)
 
         if (tName == "VersionNumber")
         {
-           if ( ! ( VersionNrOK= (e.text() == m_pSystemInfo->getDeviceVersion()) ) )
-           {
-               qCritical("Justdata import, wrong versionnumber in xml file");
-               return false;
-           }
+            if ( ! ( VersionNrOK= (e.text() == m_pSystemInfo->getDeviceVersion()) ) )
+            {
+                qCritical("Justdata import, wrong versionnumber in xml file");
+                return false;
+            }
 
         }
 
@@ -437,49 +484,4 @@ bool Com5003Adjustment::importAdjXMLFile(QString &file)
     }
 
     return true;
-}
-
-void Com5003Adjustment::exportAdjData(QDomDocument &doc, QDomElement &qde)
-{
-}
-
-bool Com5003Adjustment::importAdjData(QDomNode &node)
-{
-    if (node.toElement().tagName() != "Chksum") // data not for us
-        return false;
-    m_nChecksum = node.toElement().text().toInt();
-    return true;
-}
-
-void Com5003Adjustment::addAdjFlashObject(Com5003AdjFlash* obj)
-{
-    m_AdjFlashList.append(obj);
-}
-
-void Com5003Adjustment::addAdjXMLObject(Com5003AdjXML* obj)
-{
-    m_AdjXMLList.append(obj);
-}
-
-
-quint8 Com5003Adjustment::getAdjustmentStatus()
-{
-    quint8 stat = 255;
-    quint8 ret;
-
-    for (int i = 0; i < m_AdjFlashList.count(); i++)
-        stat &= m_AdjFlashList.at(i)->getAdjustmentStatus();
-
-    ret = m_nAdjStatus; // here we already stored ev. wrong serial or wrong version
-
-    if ((stat & JustDataInterface::Justified)== 0)
-        ret += Adjustment::notAdjusted;
-
-    return ret;
-}
-
-
-quint16 Com5003Adjustment::getChecksum()
-{
-    return m_nChecksum;
 }
