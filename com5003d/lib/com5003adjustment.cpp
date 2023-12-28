@@ -396,92 +396,56 @@ bool Com5003Adjustment::importXMLDocument(QDomDocument *qdomdoc)
     bool DateOK=false;
     bool TimeOK=false;
 
-    for (int i=0; i<nl.length() ; i++)
-    {
+    for (int i=0; i<nl.length() ; i++) {
         QDomNode n = nl.item(i);
         QDomElement e = n.toElement();
-        if ( e.isNull() )
-        {
+        if ( e.isNull() ) {
             qCritical("Justdata import, format error in xml file");
             return false;
         }
-
         QString tName=e.tagName();
-        if (tName == "SerialNumber")
-        {
-            if (  !(SerialNrOK = (e.text() == m_pSystemInfo->getSerialNumber() )) )
-            {
+        if (tName == "SerialNumber") {
+            if (  !(SerialNrOK = (e.text() == m_pSystemInfo->getSerialNumber() )) ) {
                 qCritical("Justdata import, wrong serialnumber in xml file");
                 return false;
             }
-
         }
-
-        else
-
-        if (tName == "VersionNumber")
-        {
-            if ( ! ( VersionNrOK= (e.text() == m_pSystemInfo->getDeviceVersion()) ) )
-            {
+        else if (tName == "VersionNumber") {
+            if ( ! ( VersionNrOK= (e.text() == m_pSystemInfo->getDeviceVersion()) ) ) {
                 qCritical("Justdata import, wrong versionnumber in xml file");
                 return false;
             }
-
         }
-
-        else
-
-        if (tName=="Date")
-        {
+        else if (tName=="Date") {
             QDate d=QDate::fromString(e.text(),Qt::TextDate);
             DateTime.setDate(d);
             DateOK=true;
-
         }
-
-        else
-
-        if (tName=="Time")
-        {
+        else if (tName=="Time") {
             QTime t=QTime::fromString(e.text(),Qt::TextDate);
             DateTime.setTime(t);
             TimeOK=true;
         }
-
-        else
-
-        if (tName == "Adjustment")
-        {
-            if ( VersionNrOK && SerialNrOK && DateOK && TimeOK)
-            {
+        else if (tName == "Adjustment") {
+            if ( VersionNrOK && SerialNrOK && DateOK && TimeOK) {
                 //QDomNodeList nl2=e.elementsByTagName ("Adjustment") ;
                 QDomNodeList nl2=e.childNodes();
-                for (qint32 j=0;j<nl2.length();j++)
-                {
-                    bool done;
-
+                for (qint32 j=0;j<nl2.length();j++) {
                     n=nl2.item(j);
-                    done = false;
-
+                    bool done = false;
                     for (int i = 0; i < m_AdjXMLList.count(); i++)
                         done |= m_AdjXMLList.at(i)->importAdjData(n); // we call all participants
-
-                    if (!done)
-                    {
+                    if (!done) {
                         qCritical("Justdata import, xml file contains strange data");
                         return false;
                     }
-
                 }
             }
-            else
-            {
+            else {
                 qCritical("Justdata import, xml file contains strange data");
                 return false;
             }
         }
-
     }
-
     return true;
 }
