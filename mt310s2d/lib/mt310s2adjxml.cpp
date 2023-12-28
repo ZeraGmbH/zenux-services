@@ -29,14 +29,14 @@ bool Mt310s2AdjXML::exportAdTojXMLFile(QString file)
 }
 
 
-bool Mt310s2AdjXML::importAdjXML(QString file)
+bool Mt310s2AdjXML::importAdjXMLFile(QString file)
 {
     QString filename = file + ".xml";
 
     QFile adjfile(filename);
     if ( !adjfile.open( QIODevice::ReadOnly ) )
     {
-        qCritical("%s", "importAdjXML: could not open xml file");
+        qCritical("%s", "importAdjXMLFile: could not open xml file");
         return false;
     }
 
@@ -44,7 +44,7 @@ bool Mt310s2AdjXML::importAdjXML(QString file)
     if ( !justqdom.setContent( &adjfile ) )
     {
         adjfile.close();
-        qCritical("%s", "importAdjXML: format error in xml file");
+        qCritical("%s", "importAdjXMLFile: format error in xml file");
         return false;
     }
 

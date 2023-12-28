@@ -1040,7 +1040,7 @@ QString cClamp::handleScpiReadXML(QString &scpiCmdStr)
     cSCPICommand cmd = scpiCmdStr;
     if (cmd.isCommand(1)) {
         QString filename = cmd.getParam(0);
-        if (importAdjXML(filename)) {
+        if (importAdjXMLFile(filename)) {
             answer = ZSCPI::scpiAnswer[ZSCPI::ack];
         }
         else {
