@@ -38,6 +38,8 @@ public:
     quint16 getChecksum();
 
 private:
+    bool importXMLDocument(QDomDocument* qdomdoc);
+
     QList<Com5003AdjFlash*> m_AdjFlashList;
     QList<Com5003AdjXML*> m_AdjXMLList;
     cSystemInfo* m_pSystemInfo;

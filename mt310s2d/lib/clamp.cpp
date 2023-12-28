@@ -240,7 +240,7 @@ QString cClamp::exportXMLString(int indent)
 
 bool cClamp::importXMLDocument(QDomDocument *qdomdoc, bool ignoreType)
 {
-    QDateTime DateTime;
+    QDateTime DateTime; // useless - TBD
     QDomDocumentType TheDocType = qdomdoc->doctype ();
     if(TheDocType.name() != QString("ClampAdjustmentData")) {
         qCritical("justdata import, wrong xml documentype");
