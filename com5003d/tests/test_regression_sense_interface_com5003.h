@@ -16,6 +16,7 @@ private slots:
     void cleanup();
     void checkVersionsOfSystemInterface();
     void checkExportXml();
+    void checkImportXml();
     void checkChannelCatalogAsExpected();
     void checkRangesUL1();
     void checkRangesIL1();
