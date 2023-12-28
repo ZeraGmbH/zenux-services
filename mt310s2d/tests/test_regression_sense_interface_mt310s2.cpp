@@ -67,6 +67,12 @@ void test_regression_sense_interface_mt310s2::checkExportXml()
     QCOMPARE(xmlExported, xmlExpected);
 }
 
+void test_regression_sense_interface_mt310s2::checkImportXml()
+{
+    QString filenameShort = ":/regression_data/sense_interface_export";
+    QVERIFY(m_mockServer->getSenseInterface()->importAdjXML(filenameShort));
+}
+
 QStringList test_regression_sense_interface_mt310s2::m_channelsExpectedAllOverThePlace = QStringList()
     << "m0" << "m1" << "m2" << "m6" << "m3" << "m4" << "m5" << "m7";
 
