@@ -67,10 +67,32 @@ void test_regression_sense_interface_mt310s2::checkExportXml()
     QCOMPARE(xmlExported, xmlExpected);
 }
 
-void test_regression_sense_interface_mt310s2::checkImportXml()
+void test_regression_sense_interface_mt310s2::checkImportXmlMinimal()
+{
+    QString filenameShort = ":/regression_data/sense_interface_export_minimal_pass";
+    QVERIFY(QFile::exists(filenameShort + ".xml"));
+    QVERIFY(m_mockServer->getSenseInterface()->importAdjXMLFile(filenameShort));
+}
+
+void test_regression_sense_interface_mt310s2::checkImportXmlFull()
 {
     QString filenameShort = ":/regression_data/sense_interface_export";
+    QVERIFY(QFile::exists(filenameShort + ".xml"));
     QVERIFY(m_mockServer->getSenseInterface()->importAdjXMLFile(filenameShort));
+}
+
+void test_regression_sense_interface_mt310s2::checkImportMissingType()
+{
+    QString filenameShort = ":/regression_data/sense_interface_export_missing_type";
+    QVERIFY(QFile::exists(filenameShort + ".xml"));
+    QVERIFY(!m_mockServer->getSenseInterface()->importAdjXMLFile(filenameShort));
+}
+
+void test_regression_sense_interface_mt310s2::checkImportMissingSerNo()
+{
+    QString filenameShort = ":/regression_data/sense_interface_export_missing_serno";
+    QVERIFY(QFile::exists(filenameShort + ".xml"));
+    QVERIFY(!m_mockServer->getSenseInterface()->importAdjXMLFile(filenameShort));
 }
 
 QStringList test_regression_sense_interface_mt310s2::m_channelsExpectedAllOverThePlace = QStringList()

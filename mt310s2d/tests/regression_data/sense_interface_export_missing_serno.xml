@@ -1,0 +1,12 @@
+<!DOCTYPE PCBAdjustmentData>
+<PCB>
+ <Type>ADW5743</Type>
+ <VersionNumber>DEVICE: Unknown;PCB: Unknown;LCA: Unknown;CTRL: Unknown</VersionNumber>
+ <Date>Tue Dec 19 2023</Date>
+ <Time>21:03:18</Time>
+ <Adjustment>
+  <Chksum>0x0</Chksum>
+  <Sense>
+  </Sense>
+ </Adjustment>
+</PCB>

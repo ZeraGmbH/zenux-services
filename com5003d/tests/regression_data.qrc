@@ -1,6 +1,9 @@
 <RCC>
     <qresource prefix="/">
         <file>regression_data/adjustment_export.xml</file>
+        <file>regression_data/adjustment_export_minimal_pass.xml</file>
+        <file>regression_data/adjustment_export_missing_type.xml</file>
+        <file>regression_data/adjustment_export_missing_serno.xml</file>
         <file>regression_data/all-ranges-il3.json</file>
     </qresource>
 </RCC>

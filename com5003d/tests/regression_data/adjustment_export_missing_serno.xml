@@ -1,0 +1,12 @@
+<!DOCTYPE ADW5743AdjustmentData>
+<PCB>
+ <Type>ADW5743</Type>
+ <VersionNumber>DEVICE: Unknown;PCB: Unknown;LCA: Unknown;CTRL: Unknown</VersionNumber>
+ <Date></Date>
+ <Time></Time>
+ <Adjustment>
+  <Chksum>0x0</Chksum>
+  <Sense>
+  </Sense>
+ </Adjustment>
+</PCB>
