@@ -17,10 +17,6 @@ enum SystemCommands
     cmdVersionCTRL,
     cmdVersionFPGA,
     cmdSerialNumber,
-    cmdUpdateControlerBootloader,
-    cmdUpdateControlerProgram,
-    cmdUpdateControlerFlash,
-    cmdUpdateControlerEEprom,
     cmdAdjFlashWrite,
     cmdAdjFlashRead,
     cmdAdjXMLWrite,
@@ -52,10 +48,6 @@ private:
     QString m_ReadWritePCBVersion(QString& sInput);
     QString m_ReadFPGAVersion(QString& sInput);
     QString m_ReadWriteSerialNumber(QString& sInput);
-    QString m_StartControlerBootloader(QString& sInput);
-    QString m_StartControlerProgram(QString& sInput);
-    QString m_LoadFlash(QString& sInput);
-    QString m_LoadEEProm(QString& sInput);
     QString m_AdjFlashWrite(QString& sInput);
     QString m_AdjFlashRead(QString& sInput);
     QString m_AdjXMLWrite(QString& sInput);
