@@ -10,9 +10,9 @@ class Mt310s2AdjXML
 public:
     Mt310s2AdjXML();
 
-    virtual bool exportAdTojXMLFile(QString file);
-    virtual bool importAdjXMLFile(QString file);
-    virtual bool importAdjXMLString(QString& xml);
+    bool exportAdTojXMLFile(QString file);
+    bool importAdjXMLFile(QString file);
+    bool importAdjXMLString(QString& xml);
 
 protected:
     virtual QString exportXMLString(int indent = 1) = 0; // adjustment data xml export to string
