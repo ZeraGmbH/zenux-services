@@ -297,11 +297,10 @@ bool Com5003Adjustment::exportAdTojXMLFile(QString &file)
 {
     QString filename = file + ".xml";
     QFile adjfile(filename);
-    if ( !adjfile.open( QIODevice::WriteOnly ) ) {
+    if (!adjfile.open(QIODevice::WriteOnly)) {
         qCritical("Justdata export, could not open xml file");
         return false;
     }
-
     QString xml = exportXMLString();
     QTextStream stream( &adjfile );
     stream << xml;
@@ -309,28 +308,20 @@ bool Com5003Adjustment::exportAdTojXMLFile(QString &file)
     return true;
 }
 
-
 bool Com5003Adjustment::importAdjXMLFile(QString &file)
 {
     QString filename = file + ".xml";
-
     QFile adjfile(filename);
-    if ( !adjfile.open( QIODevice::ReadOnly ) )
-    {
-        qCritical("%s", "importAdjXMLFile: could not open xml file");
+    if(!adjfile.open(QIODevice::ReadOnly)) {
+        qCritical("ImportAdjXMLFile: could not open xml file: %s", qPrintable(filename));
         return false;
     }
-
-    QDomDocument justdata( "TheDocument" );
-    if ( !justdata.setContent( &adjfile ) )
-    {
-        adjfile.close();
-        qCritical("%s", "importAdjXMLFile: format error in xml file");
+    QDomDocument justdata("TheDocument");
+    if (!justdata.setContent(&adjfile)) {
+        qCritical("importAdjXMLFile: format error in xml file: %s", qPrintable(filename));
         return false;
     }
-
     adjfile.close();
-
     return importXMLDocument(&justdata);
 }
 
