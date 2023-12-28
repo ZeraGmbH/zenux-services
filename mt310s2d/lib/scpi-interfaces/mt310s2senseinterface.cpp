@@ -21,7 +21,6 @@
 #include <QDateTime>
 #include <QDebug>
 #include <QFile>
-#include <syslog.h>
 
 Mt310s2SenseInterface::Mt310s2SenseInterface(cSCPI *scpiInterface, cI2CSettings* i2cSettings, cSenseSettings* senseSettings, cSystemInfo *systemInfo) :
     cResource(scpiInterface),
@@ -265,7 +264,7 @@ bool Mt310s2SenseInterface::importAdjData(QDataStream &stream)
     stream.skipRawData(6); // we don't need count and chksum
     stream >> s;
     if (QString(s) != "ServerVersion") {
-        syslog(LOG_ERR,"flashmemory read, ServerVersion not found\n");
+        qCritical("Flashmemory read: ServerVersion not found");
         return false; // unexpected data
     }
 
@@ -275,7 +274,7 @@ bool Mt310s2SenseInterface::importAdjData(QDataStream &stream)
 
     QString sysDevName = m_pSystemInfo->getDeviceName();
     if (QString(s) != sysDevName) {
-        syslog(LOG_ERR,"flashmemory read, contains wrong pcb name: flash %s / µC %s\n",
+        qCritical("Flashmemory read: Wrong pcb name: flash %s / µC %s",
                s, qPrintable(sysDevName));
         return false; // wrong pcb name
     }
@@ -308,7 +307,7 @@ bool Mt310s2SenseInterface::importAdjData(QDataStream &stream)
         qs.replace(qs.section(';',3,3), ss); // CTRL: x.yy -> s
 
         if (qs != sDV) {
-            syslog(LOG_ERR,"flashmemory read, contains wrong versionnumber: flash %s / µC %s\n",
+            qCritical("Flashmemory read: Wrong versionnumber: flash %s / µC %s",
                    qPrintable(qs), qPrintable(sDV));
             m_nVersionStatus |= Adjustment::wrongVERS;
             if (!enable) {
@@ -326,7 +325,7 @@ bool Mt310s2SenseInterface::importAdjData(QDataStream &stream)
     stream >> s; // we take the serial number now
     QString sysSerNo = m_pSystemInfo->getSerialNumber();
     if (QString(s) != sysSerNo) {
-        syslog(LOG_ERR, "flashmemory read, contains wrong serialnumber flash: %s / µC: %s\n",
+        qCritical("flashmemory read, contains wrong serialnumber flash: %s / µC: %s",
                s, qPrintable(sysSerNo));
         m_nSerialStatus |= Adjustment::wrongSNR;
         if (!enable) {
@@ -531,7 +530,7 @@ bool Mt310s2SenseInterface::importXMLDocument(QDomDocument* qdomdoc) // n steht 
 {
     QDomDocumentType TheDocType = qdomdoc->doctype ();
     if  (TheDocType.name() != QString("PCBAdjustmentData")) {
-        syslog(LOG_ERR,"justdata import, wrong xml documentype\n");
+        qCritical("Justdata import: wrong xml documentype");
         return false;
     }
     QDomElement rootElem = qdomdoc->documentElement();
@@ -547,25 +546,25 @@ bool Mt310s2SenseInterface::importXMLDocument(QDomDocument* qdomdoc) // n steht 
         QDomNode qdNode = nl.item(i);
         QDomElement qdElem = qdNode.toElement();
         if ( qdElem.isNull() ) {
-            syslog(LOG_ERR,"justdata import, format error in xml file\n");
+            qCritical("Justdata import: Format error in xml file");
             return false;
         }
         QString tName = qdElem.tagName();
         if (tName == "Type") {
             if ( !(TypeOK = (qdElem.text() == QString(LeiterkartenName)))) {
-                syslog(LOG_ERR,"justdata import, wrong type information in xml file\n");
+                qCritical("Justdata import: Wrong type information");
                 return false;
             }
         }
         else if (tName == "SerialNumber") {
             if (  !(SerialNrOK = (qdElem.text() == m_pSystemInfo->getSerialNumber() )) ) {
-               syslog(LOG_ERR,"justdata import, wrong serialnumber in xml file\n");
+               qCritical("Justdata import, Wrong serialnumber");
                return false;
             }
         }
         else if (tName == "VersionNumber") {
            if ( ! ( VersionNrOK= (qdElem.text() == m_pSystemInfo->getDeviceVersion()) ) ) {
-               syslog(LOG_ERR,"justdata import, wrong versionnumber in xml file\n");
+               qCritical("Justdata import: Wrong versionnumber");
                return false;
            }
         }
@@ -656,12 +655,12 @@ bool Mt310s2SenseInterface::importXMLDocument(QDomDocument* qdomdoc) // n steht 
                 }
             }
             else {
-                syslog(LOG_ERR,"justdata import, xml file contains strange data\n");
+                qCritical("Justdata import: xml contains strange data");
                 return false;
             }
         }
         else {
-            syslog(LOG_ERR,"justdata import, xml file contains strange data\n");
+            qCritical("Justdata import: xmlcontains strange data");
             return false;
         }
     }
