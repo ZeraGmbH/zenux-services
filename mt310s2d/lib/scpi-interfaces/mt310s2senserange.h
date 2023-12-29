@@ -15,7 +15,6 @@ public:
                       double rValue,
                       double rejection,
                       double ovrejection,
-                      double adcrejection,
                       quint8 rselcode,
                       quint16 mmask,
                       Mt310s2JustRangeTripletOffsetGainPhase* justdata);

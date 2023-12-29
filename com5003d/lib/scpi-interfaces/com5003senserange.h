@@ -18,7 +18,6 @@ public:
                 double rValue,
                 double rejection,
                 double ovrejection,
-                double adcrejection,
                 quint8 rselcode);
     ~Com5003SenseRange();
     virtual void initSCPIConnection(QString leadingNodes) override;

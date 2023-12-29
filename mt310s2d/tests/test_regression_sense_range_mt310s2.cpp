@@ -16,7 +16,6 @@ void test_regression_sense_range_mt310s2::init()
                               11111.11111,
                               22222.22222,
                               33333.33333,
-                              44444.44444,
                               5,
                               SenseSystem::modeAC | SenseSystem::modeADJ | SenseSystem::Direct,
                               m_justData);
@@ -154,7 +153,7 @@ void test_regression_sense_range_mt310s2::checkAdcRejection()
     cProtonetCommand *protoCmd = new cProtonetCommand(0, false, true, QByteArray(), 0, scpiAdcRejectionQuery);
     cSCPIDelegate *scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
     scpiDelegate->executeSCPI(protoCmd);
-    QCOMPARE((protoCmd->m_sOutput), "44444.444");
+    QCOMPARE((protoCmd->m_sOutput), "8388607");
 
     QString scpiAdcRejectionCmd = "SENSE:m0:250V:ADCREJECTION 42";
     scpiObject = m_scpi->getSCPIObject(scpiAdcRejectionCmd);

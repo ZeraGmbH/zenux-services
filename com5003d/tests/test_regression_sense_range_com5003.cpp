@@ -14,7 +14,6 @@ void test_regression_sense_range_com5003::init()
                                     11111.11111,
                                     22222.22222,
                                     33333.33333,
-                                    44444.44444,
                                     5);
     m_range->initSCPIConnection("SENSE:m0");
 }
@@ -148,7 +147,7 @@ void test_regression_sense_range_com5003::checkAdcRejection()
     cProtonetCommand *protoCmd = new cProtonetCommand(0, false, true, QByteArray(), 0, scpiAdcRejectionQuery);
     cSCPIDelegate *scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
     scpiDelegate->executeSCPI(protoCmd);
-    QCOMPARE((protoCmd->m_sOutput), "44444.4");
+    QCOMPARE((protoCmd->m_sOutput), "8.38861e+06"); // we should increase accurracy...
 
     QString scpiAdcRejectionCmd = "SENSE:m0:240V:ADCREJECTION 42";
     scpiObject = m_scpi->getSCPIObject(scpiAdcRejectionCmd);

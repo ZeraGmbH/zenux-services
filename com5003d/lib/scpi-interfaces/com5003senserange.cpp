@@ -3,6 +3,7 @@
 #include "zscpi_response_definitions.h"
 
 static constexpr int rejectionScpiQueryDigitsCom5003 = 6;
+static constexpr int adcRejectionCom5003 = (1<<23) -1;
 
 Com5003SenseRange::Com5003SenseRange(cSCPI *scpiinterface,
                                      QString name,
@@ -11,7 +12,6 @@ Com5003SenseRange::Com5003SenseRange(cSCPI *scpiinterface,
                                      double rValue,
                                      double rejection,
                                      double ovrejection,
-                                     double adcrejection,
                                      quint8 rselcode) :
     SenseRangeCommon(
         scpiinterface,
@@ -21,7 +21,7 @@ Com5003SenseRange::Com5003SenseRange(cSCPI *scpiinterface,
         rValue,
         rejection,
         ovrejection,
-        adcrejection,
+        adcRejectionCom5003,
         rselcode,
         rejectionScpiQueryDigitsCom5003)
 {
