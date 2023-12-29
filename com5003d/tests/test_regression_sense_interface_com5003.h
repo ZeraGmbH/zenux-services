@@ -28,7 +28,6 @@ private slots:
     void constantRangeValuesUL3GenJson();
     void constantRangeValuesUL3Check();
 private:
-    bool checkJsonConstantValuesAllRanges(QJsonObject jsonReference, QString channelName);
     QJsonObject loadJson(QString fileName);
 
     std::unique_ptr<MockForSenseInterfaceCom5003> m_mockServer;

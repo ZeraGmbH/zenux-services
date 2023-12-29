@@ -106,7 +106,7 @@ bool RegressionHelper::compareRangeConstantDataWithJson(QJsonObject &rangeRefere
     return allOk;
 }
 
-QString RegressionHelper::noClampJsonId = QStringLiteral("no-clamps");
+static QString noClampJsonId = QStringLiteral("no-clamps");
 
 void RegressionHelper::genJsonConstantValuesAllRanges(SenseSystem::cChannelSettings *channelSetting, Zera::cPCBInterface* pcbIFace)
 {
@@ -130,6 +130,43 @@ void RegressionHelper::genJsonConstantValuesAllRanges(SenseSystem::cChannelSetti
     qInfo("----------------- json range constants generated for %s -----------------", qPrintable(channelSetting->m_sAlias1));
     qInfo("%s", qPrintable(doc.toJson(QJsonDocument::Indented)));
 }
+
+bool RegressionHelper::checkJsonConstantValuesAllRanges(QJsonObject jsonReference, SenseSystem::cChannelSettings *channelSetting, Zera::cPCBInterface* pcbIFace)
+{
+    bool allCheckOk = true;
+
+    QSignalSpy responseSpy(pcbIFace, &Zera::cPCBInterface::serverAnswer);
+    pcbIFace->getRangeList(channelSetting->m_nameMx);
+    TimeMachineObject::feedEventLoop();
+
+    if(jsonReference.contains(noClampJsonId)) {
+        QJsonObject jsonRanges = jsonReference.value(noClampJsonId).toObject();
+        if(!jsonRanges.isEmpty()) {
+            const QStringList ranges = responseSpy[0][2].toStringList();
+            if(!ranges.isEmpty()) {
+                for(const QString &range : ranges) {
+                    QJsonObject jsonRange = jsonRanges.value(range).toObject();
+                    if(!RegressionHelper::compareRangeConstantDataWithJson(jsonRange, noClampJsonId, range, channelSetting))
+                        allCheckOk = false;
+                }
+            }
+            else {
+                allCheckOk = false;
+                qCritical("No ranges returned from device for clamp \"%s\"", qPrintable(noClampJsonId));
+            }
+        }
+        else {
+            allCheckOk = false;
+            qCritical("No ranges found in reference for clamp \"%s\"", qPrintable(noClampJsonId));
+        }
+    }
+    else {
+        allCheckOk = false;
+        qCritical("Clamp \"%s\" not found in reference", qPrintable(noClampJsonId));
+    }
+    return allCheckOk;
+}
+
 
 void RegressionHelper::reportError(QString clampName, QString range, QString entry, QString expected, QString found)
 {
