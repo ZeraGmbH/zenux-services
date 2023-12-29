@@ -2,6 +2,7 @@
     "no-clamps": {
         "1.0A": {
             "adcrejection": "8.38861e+06",
+            "alias": "1.0A",
             "avail": "1",
             "ovrejection": "5.86616e+06",
             "rejection": "4.69293e+06",
@@ -9,6 +10,7 @@
         },
         "100A": {
             "adcrejection": "8.38861e+06",
+            "alias": "100A",
             "avail": "1",
             "ovrejection": "5.86616e+06",
             "rejection": "4.69293e+06",
@@ -16,6 +18,7 @@
         },
         "100mA": {
             "adcrejection": "8.38861e+06",
+            "alias": "100mA",
             "avail": "1",
             "ovrejection": "5.86616e+06",
             "rejection": "4.69293e+06",
@@ -23,6 +26,7 @@
         },
         "10A": {
             "adcrejection": "8.38861e+06",
+            "alias": "10A",
             "avail": "1",
             "ovrejection": "5.86616e+06",
             "rejection": "4.69293e+06",
@@ -30,6 +34,7 @@
         },
         "10mA": {
             "adcrejection": "8.38861e+06",
+            "alias": "10mA",
             "avail": "1",
             "ovrejection": "5.86616e+06",
             "rejection": "4.69293e+06",
@@ -37,6 +42,7 @@
         },
         "2.5A": {
             "adcrejection": "8.38861e+06",
+            "alias": "2.5A",
             "avail": "1",
             "ovrejection": "5.86616e+06",
             "rejection": "4.69293e+06",
@@ -44,6 +50,7 @@
         },
         "200A": {
             "adcrejection": "8.38861e+06",
+            "alias": "200A",
             "avail": "1",
             "ovrejection": "5.25608e+06",
             "rejection": "6.25724e+06",
@@ -51,6 +58,7 @@
         },
         "250mA": {
             "adcrejection": "8.38861e+06",
+            "alias": "250mA",
             "avail": "1",
             "ovrejection": "5.86616e+06",
             "rejection": "4.69293e+06",
@@ -58,6 +66,7 @@
         },
         "25A": {
             "adcrejection": "8.38861e+06",
+            "alias": "25A",
             "avail": "1",
             "ovrejection": "5.86616e+06",
             "rejection": "4.69293e+06",
@@ -65,6 +74,7 @@
         },
         "25mA": {
             "adcrejection": "8.38861e+06",
+            "alias": "25mA",
             "avail": "1",
             "ovrejection": "5.86616e+06",
             "rejection": "4.69293e+06",
@@ -72,6 +82,7 @@
         },
         "500mA": {
             "adcrejection": "8.38861e+06",
+            "alias": "500mA",
             "avail": "1",
             "ovrejection": "5.86616e+06",
             "rejection": "4.69293e+06",
@@ -79,6 +90,7 @@
         },
         "50A": {
             "adcrejection": "8.38861e+06",
+            "alias": "50A",
             "avail": "1",
             "ovrejection": "5.86616e+06",
             "rejection": "4.69293e+06",
@@ -86,6 +98,7 @@
         },
         "50mA": {
             "adcrejection": "8.38861e+06",
+            "alias": "50mA",
             "avail": "1",
             "ovrejection": "5.86616e+06",
             "rejection": "4.69293e+06",
@@ -93,6 +106,7 @@
         },
         "5A": {
             "adcrejection": "8.38861e+06",
+            "alias": "5A",
             "avail": "1",
             "ovrejection": "5.86616e+06",
             "rejection": "4.69293e+06",
@@ -100,6 +114,7 @@
         },
         "5mA": {
             "adcrejection": "8.38861e+06",
+            "alias": "5mA",
             "avail": "1",
             "ovrejection": "5.86616e+06",
             "rejection": "4.69293e+06",
@@ -107,6 +122,7 @@
         },
         "R0V": {
             "adcrejection": "8.38861e+06",
+            "alias": "R0V",
             "avail": "0",
             "ovrejection": "5.33287e+06",
             "rejection": "3.83967e+06",
@@ -114,6 +130,7 @@
         },
         "R10V": {
             "adcrejection": "8.38861e+06",
+            "alias": "R10V",
             "avail": "0",
             "ovrejection": "5.33287e+06",
             "rejection": "4.2663e+06",
