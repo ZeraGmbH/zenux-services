@@ -30,7 +30,8 @@ public:
                      double rejection,
                      double ovrejection,
                      double adcrejection,
-                     quint8 rselcode);
+                     quint8 rselcode,
+                     int rejectionScpiQueryDigits);
     void initSCPIConnection(QString leadingNodes) override;
     QString &getName(); // Ooohh - there are pointer kept
     double getUpperRangevalue() const;
@@ -49,10 +50,14 @@ protected:
     const double m_fOVRejection; // overload rejection value
     const double m_fADCRejection; // the adc's maximum rejection
     const quint8 m_nSelCode; // selection code
+    const int m_rejectionScpiQueryDigits;
 private:
-    QString handeScpiRangeAlias(QString& sInput);
-    QString handeScpiRangeAvail(QString& sInput);
-    QString handeScpiRangeUpperRangeValue(QString& sInput);
+    QString scpiRangeAlias(const QString& scpi) const;
+    QString scpiRangeAvail(const QString& scpi) const;
+    QString scpiRangeUpperRangeValue(const QString& scpi) const;
+    QString scpiRangeRejection(const QString& scpi) const;
+    QString scpiRangeOVRejection(const QString& scpi) const;
+    QString scpiRangeADCRejection(const QString& scpi) const;
 };
 
 #endif // SENSERANGECOMMON_H

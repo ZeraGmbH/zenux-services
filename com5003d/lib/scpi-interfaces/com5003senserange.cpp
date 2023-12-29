@@ -2,6 +2,8 @@
 #include "permissionfunctions.h"
 #include "zscpi_response_definitions.h"
 
+static constexpr int rejectionScpiQueryDigitsCom5003 = 6;
+
 Com5003SenseRange::Com5003SenseRange(cSCPI *scpiinterface,
                                      QString name,
                                      QString alias,
@@ -20,7 +22,8 @@ Com5003SenseRange::Com5003SenseRange(cSCPI *scpiinterface,
         rejection,
         ovrejection,
         adcrejection,
-        rselcode)
+        rselcode,
+        rejectionScpiQueryDigitsCom5003)
 {
     m_pJustdata = new Com5003JustRangeTripletOffsetGainPhase(m_pSCPIInterface);
 }
@@ -37,9 +40,6 @@ void Com5003SenseRange::initSCPIConnection(QString leadingNodes)
     // the following are different from Mt310s2 so not yet ready to move to common
     ensureTrailingColonOnNonEmptyParentNodes(leadingNodes);
     addDelegate(QString("%1%2").arg(leadingNodes, m_sName), "TYPE", SCPI::isQuery, m_pSCPIInterface, SenseRange::cmdType);
-    addDelegate(QString("%1%2").arg(leadingNodes, m_sName), "REJECTION", SCPI::isQuery, m_pSCPIInterface, SenseRange::cmdRejection);
-    addDelegate(QString("%1%2").arg(leadingNodes, m_sName), "OVREJECTION", SCPI::isQuery, m_pSCPIInterface, SenseRange::cmdOVRejection);
-    addDelegate(QString("%1%2").arg(leadingNodes, m_sName), "ADCREJECTION", SCPI::isQuery, m_pSCPIInterface, SenseRange::cmdADCRejection);
 
     connect(m_pJustdata, &ScpiConnection::cmdExecutionDone, this, &ScpiConnection::cmdExecutionDone);
     m_pJustdata->initSCPIConnection(QString("%1%2").arg(leadingNodes).arg(m_sName));
@@ -74,15 +74,6 @@ void Com5003SenseRange::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd
         case SenseRange::cmdType:
             protoCmd->m_sOutput = m_ReadRangeType(protoCmd->m_sInput);
             break;
-        case SenseRange::cmdRejection:
-            protoCmd->m_sOutput = m_ReadRangeRejection(protoCmd->m_sInput);
-            break;
-        case SenseRange::cmdOVRejection:
-            protoCmd->m_sOutput = m_ReadRangeOVRejection(protoCmd->m_sInput);
-            break;
-        case SenseRange::cmdADCRejection:
-            protoCmd->m_sOutput = m_ReadRangeADCRejection(protoCmd->m_sInput);
-            break;
         }
     }
     if (protoCmd->m_bwithOutput)
@@ -96,36 +87,6 @@ QString Com5003SenseRange::m_ReadRangeType(QString &sInput)
         // fix phys for compatibility
         // virtual ranges were never more than unimplemented great ideas
         return QString("%1").arg(0);
-    else
-        return ZSCPI::scpiAnswer[ZSCPI::nak];
-}
-
-QString Com5003SenseRange::m_ReadRangeRejection(QString &sInput)
-{
-    cSCPICommand cmd = sInput;
-
-    if (cmd.isQuery())
-        return QString("%1").arg(m_fRejection, 0, 'g', 6);
-    else
-        return ZSCPI::scpiAnswer[ZSCPI::nak];
-}
-
-QString Com5003SenseRange::m_ReadRangeOVRejection(QString &sInput)
-{
-    cSCPICommand cmd = sInput;
-
-    if (cmd.isQuery())
-        return QString("%1").arg(m_fOVRejection, 0, 'g', 6);
-    else
-        return ZSCPI::scpiAnswer[ZSCPI::nak];
-}
-
-QString Com5003SenseRange::m_ReadRangeADCRejection(QString& sInput)
-{
-    cSCPICommand cmd = sInput;
-
-    if (cmd.isQuery())
-        return QString("%1").arg(m_fADCRejection, 0, 'g', 6);
     else
         return ZSCPI::scpiAnswer[ZSCPI::nak];
 }

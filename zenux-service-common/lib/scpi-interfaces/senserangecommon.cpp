@@ -9,7 +9,8 @@ SenseRangeCommon::SenseRangeCommon(cSCPI *scpiInterface,
                                    double rejection,
                                    double ovrejection,
                                    double adcrejection,
-                                   quint8 rselcode) :
+                                   quint8 rselcode,
+                                   int rejectionScpiQueryDigits) :
     ScpiConnection(scpiInterface),
     m_sName(name),
     m_sAlias(alias),
@@ -18,7 +19,8 @@ SenseRangeCommon::SenseRangeCommon(cSCPI *scpiInterface,
     m_fRejection(rejection),
     m_fOVRejection(ovrejection),
     m_fADCRejection(adcrejection),
-    m_nSelCode(rselcode)
+    m_nSelCode(rselcode),
+    m_rejectionScpiQueryDigits(rejectionScpiQueryDigits)
 {
 }
 
@@ -28,6 +30,9 @@ void SenseRangeCommon::initSCPIConnection(QString leadingNodes)
     addDelegate(QString("%1%2").arg(leadingNodes, m_sName), "ALIAS", SCPI::isQuery, m_pSCPIInterface, SenseRange::cmdAlias);
     addDelegate(QString("%1%2").arg(leadingNodes, m_sName), "AVAIL", SCPI::isQuery, m_pSCPIInterface, SenseRange::cmdAvail);
     addDelegate(QString("%1%2").arg(leadingNodes, m_sName), "URVALUE", SCPI::isQuery, m_pSCPIInterface, SenseRange::cmdUpperRangeValue);
+    addDelegate(QString("%1%2").arg(leadingNodes, m_sName), "REJECTION", SCPI::isQuery, m_pSCPIInterface, SenseRange::cmdRejection);
+    addDelegate(QString("%1%2").arg(leadingNodes, m_sName), "OVREJECTION", SCPI::isQuery, m_pSCPIInterface, SenseRange::cmdOVRejection);
+    addDelegate(QString("%1%2").arg(leadingNodes, m_sName), "ADCREJECTION", SCPI::isQuery, m_pSCPIInterface, SenseRange::cmdADCRejection);
 }
 
 QString &SenseRangeCommon::getName()
@@ -62,43 +67,79 @@ bool SenseRangeCommon::execScpi(int cmdCode, cProtonetCommand *protoCmd)
     {
     case SenseRange::cmdAlias:
         handled = true;
-        protoCmd->m_sOutput = handeScpiRangeAlias(protoCmd->m_sInput);
+        protoCmd->m_sOutput = scpiRangeAlias(protoCmd->m_sInput);
         break;
     case SenseRange::cmdAvail:
         handled = true;
-        protoCmd->m_sOutput = handeScpiRangeAvail(protoCmd->m_sInput);
+        protoCmd->m_sOutput = scpiRangeAvail(protoCmd->m_sInput);
         break;
     case SenseRange::cmdUpperRangeValue:
         handled = true;
-        protoCmd->m_sOutput = handeScpiRangeUpperRangeValue(protoCmd->m_sInput);
+        protoCmd->m_sOutput = scpiRangeUpperRangeValue(protoCmd->m_sInput);
+        break;
+    case SenseRange::cmdRejection:
+        protoCmd->m_sOutput = scpiRangeRejection(protoCmd->m_sInput);
+        break;
+    case SenseRange::cmdOVRejection:
+        protoCmd->m_sOutput = scpiRangeOVRejection(protoCmd->m_sInput);
+        break;
+    case SenseRange::cmdADCRejection:
+        protoCmd->m_sOutput = scpiRangeADCRejection(protoCmd->m_sInput);
         break;
     }
     return handled;
 }
 
-QString SenseRangeCommon::handeScpiRangeAlias(QString &sInput)
+QString SenseRangeCommon::scpiRangeAlias(const QString &scpi) const
 {
-    cSCPICommand cmd = sInput;
+    cSCPICommand cmd = scpi;
     if (cmd.isQuery())
         return m_sAlias;
     else
         return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-QString SenseRangeCommon::handeScpiRangeAvail(QString &sInput)
+QString SenseRangeCommon::scpiRangeAvail(const QString &scpi) const
 {
-    cSCPICommand cmd = sInput;
+    cSCPICommand cmd = scpi;
     if (cmd.isQuery())
         return m_bAvail ? "1" : "0";
     else
         return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-QString SenseRangeCommon::handeScpiRangeUpperRangeValue(QString &sInput)
+QString SenseRangeCommon::scpiRangeUpperRangeValue(const QString &scpi) const
 {
-    cSCPICommand cmd = sInput;
+    cSCPICommand cmd = scpi;
     if (cmd.isQuery())
         return QString("%1").arg(m_upperRangeValue);
+    else
+        return ZSCPI::scpiAnswer[ZSCPI::nak];
+}
+
+QString SenseRangeCommon::scpiRangeRejection(const QString &scpi) const
+{
+    cSCPICommand cmd = scpi;
+    if (cmd.isQuery())
+        return QString("%1").arg(m_fRejection, 0, 'g', m_rejectionScpiQueryDigits);
+    else
+        return ZSCPI::scpiAnswer[ZSCPI::nak];
+}
+
+QString SenseRangeCommon::scpiRangeOVRejection(const QString &scpi) const
+{
+    cSCPICommand cmd = scpi;
+    if (cmd.isQuery())
+        return QString("%1").arg(m_fOVRejection, 0, 'g', m_rejectionScpiQueryDigits);
+    else
+        return ZSCPI::scpiAnswer[ZSCPI::nak];
+}
+
+QString SenseRangeCommon::scpiRangeADCRejection(const QString &scpi) const
+{
+    cSCPICommand cmd = scpi;
+    if (cmd.isQuery())
+        return QString("%1").arg(m_fADCRejection, 0, 'g', m_rejectionScpiQueryDigits);
     else
         return ZSCPI::scpiAnswer[ZSCPI::nak];
 }

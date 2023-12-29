@@ -33,9 +33,6 @@ public:
 protected:
     void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
     QString m_ReadRangeType(QString& sInput);
-    QString m_ReadRangeRejection(QString& sInput);
-    QString m_ReadRangeOVRejection(QString& sInput);
-    QString m_ReadRangeADWRejection(QString& sInput);
 
     const quint16 m_nMMask; // the possible measuring modes for this range
     quint8 m_nMMode; // the actual measuring mode
