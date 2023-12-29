@@ -62,6 +62,19 @@ protected:
     bool importXMLDocument(QDomDocument* qdomdoc) override;
     void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
 private:
+    QString scpiReadVersion(QString& scpi);
+    void scpiReadWriteMMode(cProtonetCommand* protoCmd);
+    QString m_ReadMModeCatalog(QString& scpi);
+    QString m_ReadSenseChannelCatalog(QString& sInput);
+    QString m_ReadSenseGroupCatalog(QString& sInput);
+    QString m_InitSenseAdjData(QString& sInput);
+    QString m_ComputeSenseAdjData(QString& sInput);
+    QString scpiReadAdjStatus(QString& sInput);
+    Mt310s2JustRangeTripletOffsetGainPhase* createJustScpiInterfaceWithAtmelPermission();
+    void setNotifierSenseMMode();
+    void setNotifierSenseChannelCat();
+    bool setSenseMode(QString sMode);
+
     cSystemInfo* m_pSystemInfo;
 
     QList<Mt310s2SenseChannel*> m_ChannelList;
@@ -72,22 +85,10 @@ private:
     quint8 m_nVersionStatus;
     quint8 m_nSerialStatus;
 
-    QString m_ReadVersion(QString& sInput);
-    void m_ReadWriteMMode(cProtonetCommand* protoCmd);
-    QString m_ReadMModeCatalog(QString& sInput);
-    QString m_ReadSenseChannelCatalog(QString& sInput);
-    QString m_ReadSenseGroupCatalog(QString& sInput);
-    QString m_InitSenseAdjData(QString& sInput);
-    QString m_ComputeSenseAdjData(QString& sInput);
-    QString handleScpiReadAdjStatus(QString& sInput);
-    Mt310s2JustRangeTripletOffsetGainPhase* CreateJustScpiInterfaceWithAtmelPermission();
 
     NotificationString notifierSenseMMode;
     NotificationString notifierSenseChannelCat;
 
-    void setNotifierSenseMMode();
-    void setNotifierSenseChannelCat();
-    bool setSenseMode(QString sMode);
 };
 
 #endif // SENSEINTERFACE_H

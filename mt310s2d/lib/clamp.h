@@ -64,23 +64,23 @@ private:
     void addSenseInterface();
     void addSystAdjInterface();
     void addSystAdjInterfaceChannel(QString channelName);
-    void createLEM1000VRanges(PermissionStructAdj &permissionsOffsetAllowedAlways, quint16 dcCommonMask);
+    void createLEM1000VRanges(const PermissionStructAdj &permissionsOffsetAllowedAlways, quint16 dcCommonMask);
     Mt310s2SenseRange* getRange(QString name);
     ClampTypes readClampType();
     void removeAllRanges();
     void exportRangeXml(QDomDocument &justqdom, QDomElement &typeTag, Mt310s2SenseRange *range);
 
-    QString handleScpiReadWriteSerial(QString &scpiCmdStr);
-    QString handleScpiReadWriteVersion(QString &scpiCmdStr);
-    QString handleScpiReadWriteType(QString &scpiCmdStr);
-    QString handleScpiReadName(QString &scpiCmdStr);
-    QString handleScpiWriteFlash(QString &scpiCmdStr);
-    QString handleScpiReadFlash(QString &scpiCmdStr);
-    QString handleScpiResetFlash(QString &scpiCmdStr);
-    QString handleScpiReadChksum(QString &scpiCmdStr);
-    QString handleScpiWriteXML(QString &scpiCmdStr);
-    QString handleScpiReadXML(QString &scpiCmdStr);
-    QString handleScpiReadAdjStatus(QString &scpiCmdStr);
+    QString scpiReadWriteSerial(QString &scpi);
+    QString scpiReadWriteVersion(QString &scpi);
+    QString scpiReadWriteType(QString &scpi);
+    QString scpiReadName(QString &scpi);
+    QString scpiWriteFlash(QString &scpi);
+    QString scpiReadFlash(QString &scpi);
+    QString scpiResetFlash(QString &scpi);
+    QString scpiReadChksum(QString &scpi);
+    QString scpiWriteXML(QString &scpi);
+    QString scpiReadXML(QString &scpi);
+    QString scpiReadAdjStatus(QString &scpi);
 
     Mt310s2SenseInterface *m_pSenseInterface = nullptr;
 
