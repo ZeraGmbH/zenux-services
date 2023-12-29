@@ -1,0 +1,76 @@
+{
+    "no-clamps": {
+        "120V": {
+            "adcrejection": "8.38861e+06",
+            "adjuststatusflags": "0",
+            "alias": "120V",
+            "avail": "1",
+            "ovrejection": "5.8907e+06",
+            "rejection": "4.71256e+06",
+            "urval": "120"
+        },
+        "12V": {
+            "adcrejection": "8.38861e+06",
+            "adjuststatusflags": "0",
+            "alias": "12V",
+            "avail": "1",
+            "ovrejection": "4.85983e+06",
+            "rejection": "3.88786e+06",
+            "urval": "12"
+        },
+        "240V": {
+            "adcrejection": "8.38861e+06",
+            "adjuststatusflags": "0",
+            "alias": "240V",
+            "avail": "1",
+            "ovrejection": "5.8907e+06",
+            "rejection": "4.71256e+06",
+            "urval": "240"
+        },
+        "480V": {
+            "adcrejection": "8.38861e+06",
+            "adjuststatusflags": "0",
+            "alias": "480V",
+            "avail": "1",
+            "ovrejection": "5.8907e+06",
+            "rejection": "4.71256e+06",
+            "urval": "480"
+        },
+        "5V": {
+            "adcrejection": "8.38861e+06",
+            "adjuststatusflags": "0",
+            "alias": "5V",
+            "avail": "1",
+            "ovrejection": "5.64526e+06",
+            "rejection": "4.51621e+06",
+            "urval": "5"
+        },
+        "60V": {
+            "adcrejection": "8.38861e+06",
+            "adjuststatusflags": "0",
+            "alias": "60V",
+            "avail": "1",
+            "ovrejection": "5.8907e+06",
+            "rejection": "4.71256e+06",
+            "urval": "60"
+        },
+        "R0V": {
+            "adcrejection": "8.38861e+06",
+            "adjuststatusflags": "0",
+            "alias": "R0V",
+            "avail": "0",
+            "ovrejection": "5.33287e+06",
+            "rejection": "3.83967e+06",
+            "urval": "9"
+        },
+        "R10V": {
+            "adcrejection": "8.38861e+06",
+            "adjuststatusflags": "0",
+            "alias": "R10V",
+            "avail": "0",
+            "ovrejection": "5.33287e+06",
+            "rejection": "4.2663e+06",
+            "urval": "10"
+        }
+    }
+}
