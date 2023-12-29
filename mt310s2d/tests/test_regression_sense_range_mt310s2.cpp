@@ -11,7 +11,6 @@ void test_regression_sense_range_mt310s2::init()
     m_justData = new Mt310s2JustRangeTripletOffsetGainPhase(m_scpi); // range deletes
     m_range = new Mt310s2SenseRange(m_scpi,
                               "250V",
-                              "250AliasV",
                               true,
                               11111.11111,
                               22222.22222,
@@ -41,7 +40,7 @@ void test_regression_sense_range_mt310s2::checkAlias()
     cProtonetCommand *protoCmd = new cProtonetCommand(0, false, true, QByteArray(), 0, scpiAliasQuery);
     cSCPIDelegate *scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
     scpiDelegate->executeSCPI(protoCmd);
-    QCOMPARE((protoCmd->m_sOutput), "250AliasV");
+    QCOMPARE((protoCmd->m_sOutput), "250V");
 
     QString scpiAliasCmd = "SENSE:m0:250V:ALIAS FOO;";
     scpiObject = m_scpi->getSCPIObject(scpiAliasCmd);

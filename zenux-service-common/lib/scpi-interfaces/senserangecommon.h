@@ -22,9 +22,11 @@ class SenseRangeCommon : public ScpiConnection, public AdjustmentStatusInterface
 {
     Q_OBJECT
 public:
+    static const char* rangeNameCurrentNull;
+    static const char* rangeAliasNull;
+
     SenseRangeCommon(cSCPI* scpiInterface,
                      QString name,
-                     QString alias,
                      bool avail,
                      double upperRangeValue, // = nominal
                      double rejection,

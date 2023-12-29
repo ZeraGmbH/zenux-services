@@ -9,7 +9,6 @@ void test_regression_sense_range_com5003::init()
     m_scpi = new cSCPI;
     m_range = new Com5003SenseRange(m_scpi,
                                     "240V",
-                                    "240AliasV",
                                     true,
                                     11111.11111,
                                     22222.22222,
@@ -37,7 +36,7 @@ void test_regression_sense_range_com5003::checkAlias()
     cProtonetCommand *protoCmd = new cProtonetCommand(0, false, true, QByteArray(), 0, scpiAliasQuery);
     cSCPIDelegate *scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
     scpiDelegate->executeSCPI(protoCmd);
-    QCOMPARE((protoCmd->m_sOutput), "240AliasV");
+    QCOMPARE((protoCmd->m_sOutput), "240V");
 
     QString scpiAliasCmd = "SENSE:m0:240V:ALIAS FOO;";
     scpiObject = m_scpi->getSCPIObject(scpiAliasCmd);

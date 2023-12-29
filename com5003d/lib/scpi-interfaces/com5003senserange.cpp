@@ -7,7 +7,6 @@ static constexpr int adcRejectionCom5003 = (1<<23) -1;
 
 Com5003SenseRange::Com5003SenseRange(cSCPI *scpiinterface,
                                      QString name,
-                                     QString alias,
                                      bool avail,
                                      double rValue,
                                      double rejection,
@@ -16,7 +15,6 @@ Com5003SenseRange::Com5003SenseRange(cSCPI *scpiinterface,
     SenseRangeCommon(
         scpiinterface,
         name,
-        alias,
         avail,
         rValue,
         rejection,
