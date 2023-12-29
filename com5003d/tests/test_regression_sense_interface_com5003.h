@@ -28,7 +28,6 @@ private slots:
     void constantRangeValuesUL3GenJson();
     void constantRangeValuesUL3Check();
 private:
-    void genJsonConstantValuesAllRanges(QString channelName);
     bool checkJsonConstantValuesAllRanges(QJsonObject jsonReference, QString channelName);
     QJsonObject loadJson(QString fileName);
 

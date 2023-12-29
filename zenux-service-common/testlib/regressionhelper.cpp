@@ -1,5 +1,8 @@
 #include "regressionhelper.h"
 #include "protobufscpitestclient.h"
+#include <timemachineobject.h>
+#include <QSignalSpy>
+#include <QJsonDocument>
 #include <QJsonObject>
 
 static const QString JsonAliasStr = QStringLiteral("alias");
@@ -101,6 +104,31 @@ bool RegressionHelper::compareRangeConstantDataWithJson(QJsonObject &rangeRefere
                   qPrintable(clampName),
                   qPrintable(rangeName));
     return allOk;
+}
+
+QString RegressionHelper::noClampJsonId = QStringLiteral("no-clamps");
+
+void RegressionHelper::genJsonConstantValuesAllRanges(SenseSystem::cChannelSettings *channelSetting, Zera::cPCBInterface* pcbIFace)
+{
+    QJsonObject jsonAll;
+
+    QSignalSpy responseSpy(pcbIFace, &Zera::cPCBInterface::serverAnswer);
+    pcbIFace->getRangeList(channelSetting->m_nameMx);
+    TimeMachineObject::feedEventLoop();
+
+    QJsonObject jsonRanges;
+    const QStringList ranges = responseSpy[0][2].toStringList();
+    for(const QString &range : ranges) {
+        QJsonObject jsonRange;
+        RegressionHelper::addRangeConstantDataToJson(range, channelSetting, jsonRange);
+        jsonRanges.insert(range, jsonRange);
+    }
+
+    jsonAll.insert(noClampJsonId, jsonRanges);
+
+    QJsonDocument doc(jsonAll);
+    qInfo("----------------- json range constants generated for %s -----------------", qPrintable(channelSetting->m_sAlias1));
+    qInfo("%s", qPrintable(doc.toJson(QJsonDocument::Indented)));
 }
 
 void RegressionHelper::reportError(QString clampName, QString range, QString entry, QString expected, QString found)
