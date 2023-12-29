@@ -45,9 +45,9 @@ void RegressionHelper::addRangeConstantDataToJson(QString rangeName, SenseSystem
     range.insert(JsonAdjustStatusFlags, adjustStatusFlags);
 }
 
-bool RegressionHelper::compareRangeConstantDataWithJson(QJsonObject &rangeReference, QString clampName, QString rangeName, SenseSystem::cChannelSettings *channelSettings)
+bool RegressionHelper::compareRangeConstantDataWithJson(QJsonObject &rangeReference, QString clampName, QString rangeName, SenseSystem::cChannelSettings *channelSetting)
 {
-    QString channelName = channelSettings->m_nameMx;
+    QString channelName = channelSetting->m_nameMx;
     bool allOk = !rangeReference.isEmpty();
     if(allOk) {
         QString alias = ProtobufScpiTestClient::query(QString("SENS:%1:%2:ALI?").arg(channelName, rangeName));

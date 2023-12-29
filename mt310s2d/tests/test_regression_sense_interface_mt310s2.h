@@ -38,9 +38,10 @@ private slots:
     void constantRangeValuesUL3GenJson();
     void constantRangeValuesUL3Check();
     void constantRangeValuesIAUXGenJson();
-    void constantRangeValuesIAUXheck();
+    void constantRangeValuesIAUXCheck();
     void constantRangeValuesUAUXGenJson();
     void constantRangeValuesUAUXCheck();
+
     void constantRangeValuesAllClampsIL3GenJson();
     void constantRangeValuesAllClampsIL3Check();
     void constantRangeValuesAllClampsIAUXGenJson();
@@ -50,8 +51,8 @@ private slots:
 private:
     void addClamp(int clampTypeNo, QString channelAlias1);
     void removeAllClamps();
-    void genJsonConstantValuesAllRangesForAllClamps(QString channelName, QString channelNameAdRemoveClamps = "");
-    bool checkJsonConstantValuesAllRangesForAllClamps(QJsonObject jsonReference, QString channelName, QString channelNameAdRemoveClamps = "");
+    void genJsonConstantValuesAllRangesForAllClamps(QString channelName, QString channelNameAdRemoveClamps);
+    bool checkJsonConstantValuesAllRangesForAllClamps(QJsonObject jsonReference, QString channelName, QString channelNameAdRemoveClamps);
     QJsonObject loadJson(QString fileName);
 
     std::unique_ptr<MockForSenseInterfaceMt310s2> m_mockServer;
