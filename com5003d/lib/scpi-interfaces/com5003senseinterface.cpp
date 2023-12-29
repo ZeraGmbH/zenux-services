@@ -52,41 +52,41 @@ Com5003SenseInterface::Com5003SenseInterface(cSCPI *scpiInterface, RMConnection*
     for (i = 0; i < 3; i++)
     {
         rngList.clear();
-        rngList.append(new Com5003SenseRange(m_pSCPIInterface, "480V", "480V", true, 480.0, 4712563.0, 5890704.0, 8388607.0, 0));
-        rngList.append(new Com5003SenseRange(m_pSCPIInterface, "240V", "240V", true, 240.0, 4712563.0, 5890704.0, 8388607.0, 1));
-        rngList.append(new Com5003SenseRange(m_pSCPIInterface, "120V", "120V", true, 120.0, 4712563.0, 5890704.0, 8388607.0, 2));
-        rngList.append(new Com5003SenseRange(m_pSCPIInterface, "60V" , "60V" , true, 60.0 , 4712563.0, 5890704.0, 8388607.0, 3));
+        rngList.append(new Com5003SenseRange(m_pSCPIInterface, "480V", "480V", true, 480.0, 4712563.0, 5890704.0, 0));
+        rngList.append(new Com5003SenseRange(m_pSCPIInterface, "240V", "240V", true, 240.0, 4712563.0, 5890704.0, 1));
+        rngList.append(new Com5003SenseRange(m_pSCPIInterface, "120V", "120V", true, 120.0, 4712563.0, 5890704.0, 2));
+        rngList.append(new Com5003SenseRange(m_pSCPIInterface, "60V" , "60V" , true, 60.0 , 4712563.0, 5890704.0, 3));
 
-        rngList.append(new Com5003SenseRange(m_pSCPIInterface, "12V" , "12V" , true, 12.0 , 3887864.8, 4859831.0, 8388607.0, 4));
-        rngList.append(new Com5003SenseRange(m_pSCPIInterface, "5V"  , "5V"  , true, 5.0  , 4516206.0, 5645258.0, 8388607.0, 5));
+        rngList.append(new Com5003SenseRange(m_pSCPIInterface, "12V" , "12V" , true, 12.0 , 3887864.8, 4859831.0, 4));
+        rngList.append(new Com5003SenseRange(m_pSCPIInterface, "5V"  , "5V"  , true, 5.0  , 4516206.0, 5645258.0, 5));
 
-        rngList.append(new Com5003SenseRange(m_pSCPIInterface, "R0V" , "R0V" , false,  9.0, 3839668.2, 5332873.0, 8388607.0, 14));
-        rngList.append(new Com5003SenseRange(m_pSCPIInterface, "R10V", "R10V", false, 10.0, 4266298.0, 5332873.0, 8388607.0, 15));
+        rngList.append(new Com5003SenseRange(m_pSCPIInterface, "R0V" , "R0V" , false,  9.0, 3839668.2, 5332873.0, 14));
+        rngList.append(new Com5003SenseRange(m_pSCPIInterface, "R10V", "R10V", false, 10.0, 4266298.0, 5332873.0, 15));
         m_ChannelList.at(i)->setRangeList(rngList);
     }
 
     for (i = 3; i < 6; i++)
     {
         rngList.clear();
-        rngList.append(new Com5003SenseRange(m_pSCPIInterface, "200A" ,"200A" , true, 200.0,6257236.0, 5256077.0, 8388607.0, 0 ));
-        rngList.append(new Com5003SenseRange(m_pSCPIInterface, "100A" ,"100A" , true, 100.0,4692928.0, 5866160.0, 8388607.0, 1 ));
-        rngList.append(new Com5003SenseRange(m_pSCPIInterface, "50A"  ,"50A"  , true,  50.0,4692928.0, 5866160.0, 8388607.0, 2 ));
-        rngList.append(new Com5003SenseRange(m_pSCPIInterface, "25A"  ,"25A"  , true, 25.0 ,4692928.0, 5866160.0, 8388607.0, 3 ));
-        rngList.append(new Com5003SenseRange(m_pSCPIInterface, "10A"  ,"10A"  , true, 10.0 ,4692928.0, 5866160.0, 8388607.0, 4 ));
-        rngList.append(new Com5003SenseRange(m_pSCPIInterface, "5A"    ,"5A"  , true,  5.0 ,4692928.0, 5866160.0, 8388607.0, 5 ));
+        rngList.append(new Com5003SenseRange(m_pSCPIInterface, "200A" ,"200A" , true, 200.0, 6257236.0, 5256077.0, 0 ));
+        rngList.append(new Com5003SenseRange(m_pSCPIInterface, "100A" ,"100A" , true, 100.0, 4692928.0, 5866160.0, 1 ));
+        rngList.append(new Com5003SenseRange(m_pSCPIInterface, "50A"  ,"50A"  , true,  50.0, 4692928.0, 5866160.0, 2 ));
+        rngList.append(new Com5003SenseRange(m_pSCPIInterface, "25A"  ,"25A"  , true, 25.0 , 4692928.0, 5866160.0, 3 ));
+        rngList.append(new Com5003SenseRange(m_pSCPIInterface, "10A"  ,"10A"  , true, 10.0 , 4692928.0, 5866160.0, 4 ));
+        rngList.append(new Com5003SenseRange(m_pSCPIInterface, "5A"    ,"5A"  , true,  5.0 , 4692928.0, 5866160.0, 5 ));
 
-        rngList.append(new Com5003SenseRange(m_pSCPIInterface, "2.5A" ,"2.5A" , true, 2.5  ,4692928.0, 5866160.0, 8388607.0, 6 ));
-        rngList.append(new Com5003SenseRange(m_pSCPIInterface, "1.0A" ,"1.0A" , true, 1.0  ,4692928.0, 5866160.0, 8388607.0, 7 ));
-        rngList.append(new Com5003SenseRange(m_pSCPIInterface, "500mA","500mA", true, 0.5  ,4692928.0, 5866160.0, 8388607.0, 8 ));
-        rngList.append(new Com5003SenseRange(m_pSCPIInterface, "250mA","250mA", true, 0.25 ,4692928.0, 5866160.0, 8388607.0, 9 ));
-        rngList.append(new Com5003SenseRange(m_pSCPIInterface, "100mA","100mA", true, 0.1  ,4692928.0, 5866160.0, 8388607.0,10 ));
-        rngList.append(new Com5003SenseRange(m_pSCPIInterface, "50mA" ,"50mA" , true, 0.05 ,4692928.0, 5866160.0, 8388607.0,11));
-        rngList.append(new Com5003SenseRange(m_pSCPIInterface, "25mA" ,"25mA" , true, 0.025,4692928.0, 5866160.0, 8388607.0,12));
-        rngList.append(new Com5003SenseRange(m_pSCPIInterface, "10mA" ,"10mA" , true, 0.01 ,4692928.0, 5866160.0, 8388607.0,13));
-        rngList.append(new Com5003SenseRange(m_pSCPIInterface, "5mA"  ,"5mA"  , true, 0.005,4692928.0, 5866160.0, 8388607.0,14));
+        rngList.append(new Com5003SenseRange(m_pSCPIInterface, "2.5A" ,"2.5A" , true, 2.5  , 4692928.0, 5866160.0, 6 ));
+        rngList.append(new Com5003SenseRange(m_pSCPIInterface, "1.0A" ,"1.0A" , true, 1.0  , 4692928.0, 5866160.0, 7 ));
+        rngList.append(new Com5003SenseRange(m_pSCPIInterface, "500mA","500mA", true, 0.5  , 4692928.0, 5866160.0, 8 ));
+        rngList.append(new Com5003SenseRange(m_pSCPIInterface, "250mA","250mA", true, 0.25 , 4692928.0, 5866160.0, 9 ));
+        rngList.append(new Com5003SenseRange(m_pSCPIInterface, "100mA","100mA", true, 0.1  , 4692928.0, 5866160.0, 10 ));
+        rngList.append(new Com5003SenseRange(m_pSCPIInterface, "50mA" ,"50mA" , true, 0.05 , 4692928.0, 5866160.0, 11));
+        rngList.append(new Com5003SenseRange(m_pSCPIInterface, "25mA" ,"25mA" , true, 0.025, 4692928.0, 5866160.0, 12));
+        rngList.append(new Com5003SenseRange(m_pSCPIInterface, "10mA" ,"10mA" , true, 0.01 , 4692928.0, 5866160.0, 13));
+        rngList.append(new Com5003SenseRange(m_pSCPIInterface, "5mA"  ,"5mA"  , true, 0.005, 4692928.0, 5866160.0, 14));
 
-        rngList.append(new Com5003SenseRange(m_pSCPIInterface, "R0V" , "R0V" , false,  9.0, 3839668.2, 5332873.0, 8388607.0,15));
-        rngList.append(new Com5003SenseRange(m_pSCPIInterface, "R10V", "R10V", false, 10.0, 4266298.0, 5332873.0, 8388607.0,16));
+        rngList.append(new Com5003SenseRange(m_pSCPIInterface, "R0V" , "R0V" , false,  9.0, 3839668.2, 5332873.0, 15));
+        rngList.append(new Com5003SenseRange(m_pSCPIInterface, "R10V", "R10V", false, 10.0, 4266298.0, 5332873.0, 16));
 
         m_ChannelList.at(i)->setRangeList(rngList);
     }

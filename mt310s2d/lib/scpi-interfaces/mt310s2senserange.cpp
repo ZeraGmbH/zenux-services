@@ -1,8 +1,10 @@
 #include "mt310s2senserange.h"
 #include "mt310s2justdata.h"
 #include "zscpi_response_definitions.h"
+#include <math.h>
 
 static constexpr int rejectionScpiQueryDigitsMt310s2 = 8;
+static constexpr int adcRejectionCom5003 = (1<<23) -1;
 
 Mt310s2SenseRange::Mt310s2SenseRange(cSCPI *scpiinterface,
                                      QString name,
@@ -11,7 +13,6 @@ Mt310s2SenseRange::Mt310s2SenseRange(cSCPI *scpiinterface,
                                      double rValue,
                                      double rejection,
                                      double ovrejection,
-                                     double adcrejection,
                                      quint8 rselcode,
                                      quint16 mmask,
                                      Mt310s2JustRangeTripletOffsetGainPhase* justdata) :
@@ -23,7 +24,7 @@ Mt310s2SenseRange::Mt310s2SenseRange(cSCPI *scpiinterface,
         rValue,
         rejection,
         ovrejection,
-        adcrejection,
+        adcRejectionCom5003,
         rselcode,
         rejectionScpiQueryDigitsMt310s2),
     m_nMMask(mmask),
