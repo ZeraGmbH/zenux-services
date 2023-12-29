@@ -278,7 +278,7 @@ void test_regression_sense_interface_mt310s2::constantRangeValuesIAUXGenJson()
     RegressionHelper::genJsonConstantValuesAllRanges(channelSetting, m_pcbIFace.get());
 }
 
-void test_regression_sense_interface_mt310s2::constantRangeValuesIAUXheck()
+void test_regression_sense_interface_mt310s2::constantRangeValuesIAUXCheck()
 {
     QJsonObject json = loadJson(":/regression_data/all-ranges-iaux.json");
     QVERIFY(!json.isEmpty());
@@ -302,26 +302,26 @@ void test_regression_sense_interface_mt310s2::constantRangeValuesUAUXCheck()
 
 void test_regression_sense_interface_mt310s2::constantRangeValuesAllClampsIL3GenJson()
 {
-    genJsonConstantValuesAllRangesForAllClamps("IL3");
+    genJsonConstantValuesAllRangesForAllClamps("IL3", "IL3");
 }
 
 void test_regression_sense_interface_mt310s2::constantRangeValuesAllClampsIL3Check()
 {
     QJsonObject json = loadJson(":/regression_data/all-ranges-all-clamps-il3.json");
     QVERIFY(!json.isEmpty());
-    QVERIFY(checkJsonConstantValuesAllRangesForAllClamps(json, "IL3"));
+    QVERIFY(checkJsonConstantValuesAllRangesForAllClamps(json, "IL3", "IL3"));
 }
 
 void test_regression_sense_interface_mt310s2::constantRangeValuesAllClampsIAUXGenJson()
 {
-    genJsonConstantValuesAllRangesForAllClamps("IAUX");
+    genJsonConstantValuesAllRangesForAllClamps("IAUX", "IAUX");
 }
 
 void test_regression_sense_interface_mt310s2::constantRangeValuesAllClampsIAUXCheck()
 {
     QJsonObject json = loadJson(":/regression_data/all-ranges-all-clamps-iaux.json");
     QVERIFY(!json.isEmpty());
-    QVERIFY(checkJsonConstantValuesAllRangesForAllClamps(json, "IAUX"));
+    QVERIFY(checkJsonConstantValuesAllRangesForAllClamps(json, "IAUX", "IAUX"));
 }
 
 void test_regression_sense_interface_mt310s2::constantRangeValuesAllClampsUAUXGenJson()
