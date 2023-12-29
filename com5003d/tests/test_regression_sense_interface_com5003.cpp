@@ -140,6 +140,18 @@ void test_regression_sense_interface_com5003::constantRangeValuesIL3Check()
 
 }
 
+void test_regression_sense_interface_com5003::constantRangeValuesUL3GenJson()
+{
+    genJsonConstantValuesAllRanges("UL3");
+}
+
+void test_regression_sense_interface_com5003::constantRangeValuesUL3Check()
+{
+    QJsonObject json = loadJson(":/regression_data/all-ranges-ul3.json");
+    QVERIFY(!json.isEmpty());
+    QVERIFY(checkJsonConstantValuesAllRanges(json, "UL3"));
+}
+
 static QString noClampJsonId = QStringLiteral("no-clamps");
 
 void test_regression_sense_interface_com5003::genJsonConstantValuesAllRanges(QString channelName)

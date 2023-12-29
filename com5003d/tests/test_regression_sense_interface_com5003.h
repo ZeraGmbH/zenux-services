@@ -25,6 +25,8 @@ private slots:
     void checkRangesIL1();
     void constantRangeValuesIL3GenJson();
     void constantRangeValuesIL3Check();
+    void constantRangeValuesUL3GenJson();
+    void constantRangeValuesUL3Check();
 private:
     void genJsonConstantValuesAllRanges(QString channelName);
     bool checkJsonConstantValuesAllRanges(QJsonObject jsonReference, QString channelName);

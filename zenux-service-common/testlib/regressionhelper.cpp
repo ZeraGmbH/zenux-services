@@ -8,6 +8,7 @@ static const QString JsonUrValStr = QStringLiteral("urval");
 static const QString JsonRejectionStr = QStringLiteral("rejection");
 static const QString JsonOvRejectionStr = QStringLiteral("ovrejection");
 static const QString JsonAdcRejectionStr = QStringLiteral("adcrejection");
+static const QString JsonAdjustStatusFlags = QStringLiteral("adjuststatusflags");
 
 QString RegressionHelper::getJsonNumString(int clampTypeNo)
 {
@@ -36,6 +37,9 @@ void RegressionHelper::addRangeConstantDataToJson(QString rangeName, SenseSystem
 
     QString adcRejection = ProtobufScpiTestClient::query(QString("SENS:%1:%2:ADCR?").arg(channelName, rangeName));
     range.insert(JsonAdcRejectionStr, adcRejection);
+
+    QString adjustStatusFlags = ProtobufScpiTestClient::query(QString("SENS:%1:%2:TYPE?").arg(channelName, rangeName));
+    range.insert(JsonAdjustStatusFlags, adjustStatusFlags);
 }
 
 bool RegressionHelper::compareRangeConstantDataWithJson(QJsonObject &rangeReference, QString clampName, QString rangeName, SenseSystem::cChannelSettings *channelSettings)
@@ -82,6 +86,13 @@ bool RegressionHelper::compareRangeConstantDataWithJson(QJsonObject &rangeRefere
         expected = rangeReference.value(JsonAdcRejectionStr).toString();
         if(adcRejection != expected) {
             reportError(clampName, rangeName, JsonAdcRejectionStr, expected, adcRejection);
+            allOk = false;
+        }
+
+        QString adjustStatusFlags = ProtobufScpiTestClient::query(QString("SENS:%1:%2:TYPE?").arg(channelName, rangeName));
+        expected = rangeReference.value(JsonAdjustStatusFlags).toString();
+        if(adjustStatusFlags != expected) {
+            reportError(clampName, rangeName, JsonAdjustStatusFlags, expected, adjustStatusFlags);
             allOk = false;
         }
     }
