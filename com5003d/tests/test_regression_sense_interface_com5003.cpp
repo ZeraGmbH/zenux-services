@@ -137,8 +137,8 @@ void test_regression_sense_interface_com5003::constantRangeValuesIL3Check()
 {
     QJsonObject json = loadJson(":/regression_data/all-ranges-il3.json");
     QVERIFY(!json.isEmpty());
-    QVERIFY(checkJsonConstantValuesAllRanges(json, "IL3"));
-
+    SenseSystem::cChannelSettings *channelSetting = m_mockServer->getSenseSettings()->findChannelSettingByAlias1("IL3");
+    QVERIFY(RegressionHelper::checkJsonConstantValuesAllRanges(json, channelSetting, m_pcbIFace.get()));
 }
 
 void test_regression_sense_interface_com5003::constantRangeValuesUL3GenJson()
@@ -151,44 +151,8 @@ void test_regression_sense_interface_com5003::constantRangeValuesUL3Check()
 {
     QJsonObject json = loadJson(":/regression_data/all-ranges-ul3.json");
     QVERIFY(!json.isEmpty());
-    QVERIFY(checkJsonConstantValuesAllRanges(json, "UL3"));
-}
-
-bool test_regression_sense_interface_com5003::checkJsonConstantValuesAllRanges(QJsonObject jsonReference, QString channelName)
-{
-    bool allCheckOk = true;
-    SenseSystem::cChannelSettings *channelSetting = m_mockServer->getSenseSettings()->findChannelSettingByAlias1(channelName);
-
-    QSignalSpy responseSpy(m_pcbIFace.get(), &Zera::cPCBInterface::serverAnswer);
-    m_pcbIFace->getRangeList(channelSetting->m_nameMx);
-    TimeMachineObject::feedEventLoop();
-
-    if(jsonReference.contains(RegressionHelper::noClampJsonId)) {
-        QJsonObject jsonRanges = jsonReference.value(RegressionHelper::noClampJsonId).toObject();
-        if(!jsonRanges.isEmpty()) {
-            const QStringList ranges = responseSpy[0][2].toStringList();
-            if(!ranges.isEmpty()) {
-                for(const QString &range : ranges) {
-                    QJsonObject jsonRange = jsonRanges.value(range).toObject();
-                    if(!RegressionHelper::compareRangeConstantDataWithJson(jsonRange, RegressionHelper::noClampJsonId, range, channelSetting))
-                        allCheckOk = false;
-                }
-            }
-            else {
-                allCheckOk = false;
-                qCritical("No ranges returned from device for clamp \"%s\"", qPrintable(RegressionHelper::noClampJsonId));
-            }
-        }
-        else {
-            allCheckOk = false;
-            qCritical("No ranges found in reference for clamp \"%s\"", qPrintable(RegressionHelper::noClampJsonId));
-        }
-    }
-    else {
-        allCheckOk = false;
-        qCritical("Clamp \"%s\" not found in reference", qPrintable(RegressionHelper::noClampJsonId));
-    }
-    return allCheckOk;
+    SenseSystem::cChannelSettings *channelSetting = m_mockServer->getSenseSettings()->findChannelSettingByAlias1("UL3");
+    QVERIFY(RegressionHelper::checkJsonConstantValuesAllRanges(json, channelSetting, m_pcbIFace.get()));
 }
 
 QJsonObject test_regression_sense_interface_com5003::loadJson(QString fileName)

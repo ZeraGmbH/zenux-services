@@ -33,6 +33,14 @@ private slots:
     void clampIdsNamesGenJson();
     void clampIdsNamesCheck();
 
+    void constantRangeValuesIL3GenJson();
+    void constantRangeValuesIL3Check();
+    void constantRangeValuesUL3GenJson();
+    void constantRangeValuesUL3Check();
+    void constantRangeValuesIAUXGenJson();
+    void constantRangeValuesIAUXheck();
+    void constantRangeValuesUAUXGenJson();
+    void constantRangeValuesUAUXCheck();
     void constantRangeValuesAllClampsIL3GenJson();
     void constantRangeValuesAllClampsIL3Check();
     void constantRangeValuesAllClampsIAUXGenJson();
