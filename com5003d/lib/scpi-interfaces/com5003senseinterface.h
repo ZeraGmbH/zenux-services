@@ -76,7 +76,7 @@ private:
     QList<cProtonetCommand*> sensemodeProtonetCmdList;
 
     QString scpiReadVersion(QString& sInput);
-    void scpiReadWriteMModeVersion(cProtonetCommand* protoCmd);
+    void scpiReadWriteMMode(cProtonetCommand* protoCmd);
     QString m_ReadMModeCatalog(QString& sInput);
     QString m_ReadSenseChannelCatalog(QString& sInput);
     QString m_ReadSenseGroupCatalog(QString& sInput);
