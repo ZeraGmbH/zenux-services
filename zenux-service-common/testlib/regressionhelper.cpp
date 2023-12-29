@@ -2,6 +2,7 @@
 #include "protobufscpitestclient.h"
 #include <QJsonObject>
 
+static const QString JsonAliasStr = QStringLiteral("alias");
 static const QString JsonAvailStr = QStringLiteral("avail");
 static const QString JsonUrValStr = QStringLiteral("urval");
 static const QString JsonRejectionStr = QStringLiteral("rejection");
@@ -18,6 +19,9 @@ void RegressionHelper::addRangeConstantDataToJson(QString rangeName, SenseSystem
     QString channelName = channelSettings->m_nameMx;
 
     // stolen from cPCBInterfacePrivate
+    QString alias = ProtobufScpiTestClient::query(QString("SENS:%1:%2:ALI?").arg(channelName, rangeName));
+    range.insert(JsonAliasStr, alias);
+
     QString avail = ProtobufScpiTestClient::query(QString("SENS:%1:%2:AVA?").arg(channelName, rangeName));
     range.insert(JsonAvailStr, avail);
 
@@ -39,8 +43,15 @@ bool RegressionHelper::compareRangeConstantDataWithJson(QJsonObject &rangeRefere
     QString channelName = channelSettings->m_nameMx;
     bool allOk = !rangeReference.isEmpty();
     if(allOk) {
+        QString alias = ProtobufScpiTestClient::query(QString("SENS:%1:%2:ALI?").arg(channelName, rangeName));
+        QString expected = rangeReference.value(JsonAliasStr).toString();
+        if(alias != expected) {
+            reportError(clampName, rangeName, JsonAliasStr, expected, alias);
+            allOk = false;
+        }
+
         QString avail = ProtobufScpiTestClient::query(QString("SENS:%1:%2:AVA?").arg(channelName, rangeName));
-        QString expected = rangeReference.value(JsonAvailStr).toString();
+        expected = rangeReference.value(JsonAvailStr).toString();
         if(avail != expected) {
             reportError(clampName, rangeName, JsonAvailStr, expected, avail);
             allOk = false;
