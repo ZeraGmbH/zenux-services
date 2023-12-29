@@ -173,12 +173,12 @@ void Com5003SenseInterface::executeProtoScpi(int cmdCode, cProtonetCommand *prot
     switch (cmdCode)
     {
     case SenseSystem::cmdVersion:
-        protoCmd->m_sOutput = m_ReadVersion(protoCmd->m_sInput);
+        protoCmd->m_sOutput = scpiReadVersion(protoCmd->m_sInput);
         if (protoCmd->m_bwithOutput)
             emit cmdExecutionDone(protoCmd);
         break;
     case SenseSystem::cmdMMode:
-        m_ReadWriteMModeVersion(protoCmd);
+        scpiReadWriteMModeVersion(protoCmd);
         // we have to start statemachine when setting
         break;
     case SenseSystem::cmdMModeCat:
@@ -466,10 +466,9 @@ void Com5003SenseInterface::registerResource(RMConnection *rmConnection, quint16
 }
 
 
-QString Com5003SenseInterface::m_ReadVersion(QString &sInput)
+QString Com5003SenseInterface::scpiReadVersion(QString &sInput)
 {
     cSCPICommand cmd = sInput;
-
     if (cmd.isQuery())
         return m_sVersion;
     else
@@ -477,65 +476,46 @@ QString Com5003SenseInterface::m_ReadVersion(QString &sInput)
 }
 
 
-void Com5003SenseInterface::m_ReadWriteMModeVersion(cProtonetCommand *protoCmd)
+void Com5003SenseInterface::scpiReadWriteMModeVersion(cProtonetCommand *protoCmd)
 {
     cSCPICommand cmd = protoCmd->m_sInput;
-
-    if (cmd.isQuery())
-    {
+    if (cmd.isQuery()) {
         //return SenseSystem::sMMode[m_nMMode];
         protoCmd->m_sOutput  = notifierSenseMMode.getString();
         if (protoCmd->m_bwithOutput)
             emit cmdExecutionDone(protoCmd);
     }
-    else
-    {
-        if (cmd.isCommand(1))
-        {
+    else {
+        if (cmd.isCommand(1)) {
             QString mode = cmd.getParam(0);
-
             quint8 oldMode = m_nMMode;
-
-            if (mode == SenseSystem::sMMode[SenseSystem::modeAC] )
-            {
+            if (mode == SenseSystem::sMMode[SenseSystem::modeAC] ) {
                 protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::ack];
                 m_nMMode = SenseSystem::modeAC;
-                if (oldMode != m_nMMode)
-                {
+                if (oldMode != m_nMMode) {
                     sensemodeProtonetCmdList.append(protoCmd);
                     m_ChangeSenseModeMachine.start(); // we emit cmdExecutionDone when statemachine is finished
                 }
                 else
                     emit cmdExecutionDone(protoCmd);
-
-
             }
-
-            else
-
-            if (mode == SenseSystem::sMMode[SenseSystem::modeREF] )
-            {
+            else if (mode == SenseSystem::sMMode[SenseSystem::modeREF] ) {
                 protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::ack];
                 m_nMMode = SenseSystem::modeREF;
-                if (oldMode != m_nMMode)
-                {
+                if (oldMode != m_nMMode) {
                     sensemodeProtonetCmdList.append(protoCmd);
                     m_ChangeSenseModeMachine.start();
                 }
                 else
                     emit cmdExecutionDone(protoCmd);
             }
-
-            else
-            {
+            else {
                 protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::nak];
                 if (protoCmd->m_bwithOutput)
                     emit cmdExecutionDone(protoCmd);
             }
         }
-
-        else
-        {
+        else {
             protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::nak];
             if (protoCmd->m_bwithOutput)
                 emit cmdExecutionDone(protoCmd);
@@ -543,15 +523,12 @@ void Com5003SenseInterface::m_ReadWriteMModeVersion(cProtonetCommand *protoCmd)
     }
 }
 
-
 QString Com5003SenseInterface::m_ReadMModeCatalog(QString &sInput)
 {
     cSCPICommand cmd = sInput;
-
-    if (cmd.isQuery())
-    {
-        int i;
+    if (cmd.isQuery()) {
         QString s;
+        int i;
         for (i = 0; i < SenseSystem::modeAnz-1; i++ )
             s += SenseSystem::sMMode[i] + ";";
         s += SenseSystem::sMMode[i];
@@ -559,54 +536,40 @@ QString Com5003SenseInterface::m_ReadMModeCatalog(QString &sInput)
     }
     else
         return ZSCPI::scpiAnswer[ZSCPI::nak];
-
 }
-
 
 QString Com5003SenseInterface::m_ReadSenseChannelCatalog(QString &sInput)
 {
     cSCPICommand cmd = sInput;
-
     if (cmd.isQuery())
-    {
         return notifierSenseChannelCat.getString();
-    }
     else
         return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-
 QString Com5003SenseInterface::m_ReadSenseGroupCatalog(QString &sInput)
 {
     cSCPICommand cmd = sInput;
-
-    if (cmd.isQuery())
-    {
+    if (cmd.isQuery()) {
         QString s;
         if ( m_nMMode == SenseSystem::modeAC )
             s = ";";
         else
             s = "m0,m1,m2;m3,m4,m5;";
-
         return s;
     }
     else
         return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-
 QString Com5003SenseInterface::m_InitSenseAdjData(QString &sInput)
 {
     cSCPICommand cmd = sInput;
-
-    if ( cmd.isCommand(0) || (cmd.isCommand(1) && (cmd.getParam(0) == "")))
     // cmd.isCommand(0) is not correct but we leave it for compatibility
-    {
+    if ( cmd.isCommand(0) || (cmd.isCommand(1) && (cmd.getParam(0) == ""))) {
         bool enable;
-        if (Atmel::getInstance().hasPermission(enable))
-        {
-            if (enable)
-            {
+        if (Atmel::getInstance().hasPermission(enable)) {
+            if (enable) {
                 for (int i = 0; i < m_ChannelList.count(); i++)
                     m_ChannelList.at(i)->initJustData();
 
@@ -620,22 +583,15 @@ QString Com5003SenseInterface::m_InitSenseAdjData(QString &sInput)
     }
     else
         return ZSCPI::scpiAnswer[ZSCPI::nak];
-
 }
-
 
 QString Com5003SenseInterface::m_ComputeSenseAdjData(QString &sInput)
 {
     cSCPICommand cmd = sInput;
-
-    if ( cmd.isCommand(1) && (cmd.getParam(0) == "") )
-    {
-
+    if ( cmd.isCommand(1) && (cmd.getParam(0) == "") ) {
         bool enable;
-        if (Atmel::getInstance().hasPermission(enable))
-        {
-            if (enable)
-            {
+        if (Atmel::getInstance().hasPermission(enable)) {
+            if (enable) {
                 for (int i = 0; i < m_ChannelList.count(); i++)
                     m_ChannelList.at(i)->computeJustData();
                 return ZSCPI::scpiAnswer[ZSCPI::ack];
@@ -650,12 +606,10 @@ QString Com5003SenseInterface::m_ComputeSenseAdjData(QString &sInput)
         return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-
 void Com5003SenseInterface::setNotifierSenseMMode()
 {
     notifierSenseMMode = SenseSystem::sMMode[m_nMMode];
 }
-
 
 void Com5003SenseInterface::setNotifierSenseChannelCat()
 {
@@ -667,28 +621,22 @@ void Com5003SenseInterface::setNotifierSenseChannelCat()
     notifierSenseChannelCat = s;
 }
 
-
 void Com5003SenseInterface::unregisterSense()
 {
     Com5003SenseChannel* pChannel;
     msgNrList.clear();
-    for (int i = 0; i < 6; i++)
-    {
+    for (int i = 0; i < 6; i++) {
         pChannel = m_ChannelList.at(i);
         unregister1Resource(m_rmConnection, NotZeroNumGen::getMsgNr(), QString("SENSE;%1;")
                                                                          .arg(pChannel->getName()));
     }
 }
 
-
 void Com5003SenseInterface::registerSense()
 {
     QString s;
-    qint32 i;
-
     // first we change the channels units and descriptions
-    if (m_nMMode == SenseSystem::modeAC)
-    {
+    if (m_nMMode == SenseSystem::modeAC) {
         m_ChannelList.at(0)->setDescription(SenseSystem::sVoltageChannelDescription);
         m_ChannelList.at(0)->setUnit(s = "V");
         m_ChannelList.at(1)->setDescription(SenseSystem::sVoltageChannelDescription);
@@ -703,9 +651,8 @@ void Com5003SenseInterface::registerSense()
         m_ChannelList.at(5)->setDescription(SenseSystem::sCurrentChannelDescription);
         m_ChannelList.at(5)->setUnit(s = "A");
     }
-    else
-    {
-        for (i = 0; i < m_ChannelList.count(); i++) // for each channel
+    else {
+        for (qint32 i = 0; i < m_ChannelList.count(); i++) // for each channel
         {
             m_ChannelList.at(i)->setDescription(SenseSystem::sReferenceChannelDescription);
             m_ChannelList.at(i)->setUnit(s = "V");
@@ -715,8 +662,7 @@ void Com5003SenseInterface::registerSense()
     Atmel::getInstance().setMeasMode(m_nMMode); // set the atmels mode too
 
     // here we do the rest of reconfiguring
-    for (i = 0; i < m_ChannelList.count(); i++) // for each channel
-    {
+    for (qint32 i = 0; i < m_ChannelList.count(); i++) {
         m_ChannelList.at(i)->setMMode(m_nMMode); // this indirectly changes the channnels alias
         QList<Com5003SenseRange*> list = m_ChannelList.at(i)->getRangeList();
         for (int j = 0; j < list.count(); j++ )

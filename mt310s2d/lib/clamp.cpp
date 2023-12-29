@@ -92,37 +92,37 @@ void cClamp::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
 {
     switch (cmdCode) {
     case cmdSerial:
-        protoCmd->m_sOutput = handleScpiReadWriteSerial(protoCmd->m_sInput);
+        protoCmd->m_sOutput = scpiReadWriteSerial(protoCmd->m_sInput);
         break;
     case cmdVersion:
-        protoCmd->m_sOutput = handleScpiReadWriteVersion(protoCmd->m_sInput);
+        protoCmd->m_sOutput = scpiReadWriteVersion(protoCmd->m_sInput);
         break;
     case cmdType:
-        protoCmd->m_sOutput = handleScpiReadWriteType(protoCmd->m_sInput);
+        protoCmd->m_sOutput = scpiReadWriteType(protoCmd->m_sInput);
         break;
     case cmdName:
-        protoCmd->m_sOutput = handleScpiReadName(protoCmd->m_sInput);
+        protoCmd->m_sOutput = scpiReadName(protoCmd->m_sInput);
         break;
     case cmdFlashWrite:
-        protoCmd->m_sOutput = handleScpiWriteFlash(protoCmd->m_sInput);
+        protoCmd->m_sOutput = scpiWriteFlash(protoCmd->m_sInput);
         break;
     case cmdFlashRead:
-        protoCmd->m_sOutput = handleScpiReadFlash(protoCmd->m_sInput);
+        protoCmd->m_sOutput = scpiReadFlash(protoCmd->m_sInput);
         break;
     case cmdFlashReset:
-        protoCmd->m_sOutput = handleScpiResetFlash(protoCmd->m_sInput);
+        protoCmd->m_sOutput = scpiResetFlash(protoCmd->m_sInput);
         break;
     case cmdChksum:
-        protoCmd->m_sOutput = handleScpiReadChksum(protoCmd->m_sInput);
+        protoCmd->m_sOutput = scpiReadChksum(protoCmd->m_sInput);
         break;
     case cmdXMLWrite:
-        protoCmd->m_sOutput = handleScpiWriteXML(protoCmd->m_sInput);
+        protoCmd->m_sOutput = scpiWriteXML(protoCmd->m_sInput);
         break;
     case cmdXMLRead:
-        protoCmd->m_sOutput = handleScpiReadXML(protoCmd->m_sInput);
+        protoCmd->m_sOutput = scpiReadXML(protoCmd->m_sInput);
         break;
     case cmdStatAdjustment:
-        protoCmd->m_sOutput = handleScpiReadAdjStatus(protoCmd->m_sInput);
+        protoCmd->m_sOutput = scpiReadAdjStatus(protoCmd->m_sInput);
         break;
     }
     if (protoCmd->m_bwithOutput) {
@@ -420,7 +420,7 @@ ClampTypes cClamp::readClampType()
     return undefined;
 }
 
-void cClamp::createLEM1000VRanges(PermissionStructAdj &permissionsOffsetAllowedAlways, quint16 dcCommonMask)
+void cClamp::createLEM1000VRanges(const PermissionStructAdj &permissionsOffsetAllowedAlways, quint16 dcCommonMask)
 {
     m_sChannelNameSecondary = m_pSenseInterface->getChannelSystemName(m_nCtrlChannelSecondary);
     cClampJustData* clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelNameSecondary, QString("8V")), 118.6, permissionsOffsetAllowedAlways);
@@ -434,7 +434,7 @@ void cClamp::initClamp(quint8 type)
     // VERY IMPORTANT:
     // We need to understand what the implementation state of modeDC is.
     // Without modeAC cold plug makes new EMOB200DC unavailable while hotplug works as expected!!!
-    quint16 dcCommonMask = SenseSystem::modeDC | SenseSystem::modeAC;
+    const quint16 dcCommonMask = SenseSystem::modeDC | SenseSystem::modeAC;
     PermissionStructAdj permissionsOffsetAllowedAlways;
     permissionsOffsetAllowedAlways.funcAllowAdjInit = PermissionFunctions::allowAlways;
     permissionsOffsetAllowedAlways.funcAllowAdjCompute = PermissionFunctions::allowAlways;
@@ -460,7 +460,6 @@ void cClamp::initClamp(quint8 type)
         m_RangeList.append(new Mt310s2SenseRange(m_pSCPIInterface,  "C50mA",  true, 0.05, 1398101.0, 1747626.0, 20, SenseSystem::modeAC | SenseSystem::Clamp, clampJustData));
         clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("2mV")), 48.0);
         m_RangeList.append(new Mt310s2SenseRange(m_pSCPIInterface,  "C10mA",  true, 0.01,  279620.0,  349525.0, 20, SenseSystem::modeAC | SenseSystem::Clamp, clampJustData));
-
         break;
 
     case CL300A:
@@ -480,7 +479,6 @@ void cClamp::initClamp(quint8 type)
         m_RangeList.append(new Mt310s2SenseRange(m_pSCPIInterface, "C300mA", true,   0.3, 1677722.0, 2097153.0, 19, SenseSystem::modeAC | SenseSystem::Clamp, clampJustData));
         clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("2mV")), 120.0);
         m_RangeList.append(new Mt310s2SenseRange(m_pSCPIInterface, "C150mA", true,  0.15, 1677722.0, 2097153.0, 20, SenseSystem::modeAC | SenseSystem::Clamp, clampJustData));
-
         break;
 
     case CL1000A:
@@ -500,7 +498,6 @@ void cClamp::initClamp(quint8 type)
         m_RangeList.append(new Mt310s2SenseRange(m_pSCPIInterface,    "C1A", true,    1.0, 1118481.0, 1398109.0, 20, SenseSystem::modeAC | SenseSystem::Clamp, clampJustData));
         clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("2mV")), 1200.0);
         m_RangeList.append(new Mt310s2SenseRange(m_pSCPIInterface, "C300mA", true,    0.3,  335544.0,  419430.0, 20, SenseSystem::modeAC | SenseSystem::Clamp, clampJustData));
-
         break;
 
     case EMOB32:
@@ -518,8 +515,8 @@ void cClamp::initClamp(quint8 type)
         m_RangeList.append(new Mt310s2SenseRange(m_pSCPIInterface, "C100mA", true,  0.1, 1677722.0, 2097152.0, 19, SenseSystem::modeAC | SenseSystem::Clamp, clampJustData));
         clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("2mV")), 1000.0);
         m_RangeList.append(new Mt310s2SenseRange(m_pSCPIInterface, "C50mA",  true, 0.05, 1677722.0, 2097152.0, 20, SenseSystem::modeAC | SenseSystem::Clamp, clampJustData));
-
         break;
+
     case EMOB200DC:
         // I
         clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("5V")), 1000.0);
@@ -533,8 +530,8 @@ void cClamp::initClamp(quint8 type)
         m_sChannelNameSecondary = m_pSenseInterface->getChannelSystemName(m_nCtrlChannelSecondary);
         clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelNameSecondary, QString("8V")), 121.0);
         m_RangeListSecondary.append(new Mt310s2SenseRange(m_pSCPIInterface, "C1000V", true, 1000.0, 3466367.0, 3466367.0 * 1.25, 1 /*8V*/, dcCommonMask | SenseSystem::Clamp, clampJustData));
-
         break;
+
     case EMOB80:
         clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("5V")), 1000.0);
         m_RangeList.append(new Mt310s2SenseRange(m_pSCPIInterface,   "C100A", true, 100.0, 2097152.0, 2621440.0, 10, SenseSystem::modeAC | SenseSystem::Clamp, clampJustData));
@@ -553,6 +550,7 @@ void cClamp::initClamp(quint8 type)
         clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("2mV")), 1000.0);
         m_RangeList.append(new Mt310s2SenseRange(m_pSCPIInterface,  "C50mA", true,   0.05, 1677722.0, 2097152.0, 20, SenseSystem::modeAC | SenseSystem::Clamp, clampJustData));
         break;
+
     case RC3000:
         clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("5V")), 1000.0);
         m_RangeList.append(new Mt310s2SenseRange(m_pSCPIInterface, "C3000A", true, 3000.0, 2516582.0, 2516582.0, 10, SenseSystem::modeAC | SenseSystem::Clamp, clampJustData));
@@ -561,6 +559,7 @@ void cClamp::initClamp(quint8 type)
         clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("50mV")), 1000.0);
         m_RangeList.append(new Mt310s2SenseRange(m_pSCPIInterface,   "C30A", true,   30.0, 2013266.0, 2013266.0 * 1.25, 16, SenseSystem::modeAC | SenseSystem::Clamp, clampJustData));
         break;
+
     case CL200ADC1000VDC: // LEM U+I
         // I
         clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("8V")), 500.0, permissionsOffsetAllowedAlways);
@@ -588,6 +587,7 @@ void cClamp::initClamp(quint8 type)
         // U
         createLEM1000VRanges(permissionsOffsetAllowedAlways, dcCommonMask);
         break;
+
     case CL1000VDC: // LEM U only
         createLEM1000VRanges(permissionsOffsetAllowedAlways, dcCommonMask);
         break;
@@ -607,6 +607,7 @@ void cClamp::initClamp(quint8 type)
         // U
         createLEM1000VRanges(permissionsOffsetAllowedAlways, dcCommonMask);
         break;
+
     case CL800ADC1000VDC: // TESLA U+I 800A/1000V
         // I
         clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("2V")), 1500.0, permissionsOffsetAllowedAlways);
@@ -624,6 +625,7 @@ void cClamp::initClamp(quint8 type)
         // U
         createLEM1000VRanges(permissionsOffsetAllowedAlways, dcCommonMask);
         break;
+
     case EMOB500DC:
         // I
         clampJustData = new cClampJustData(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelName, QString("5V")), 2000.0);
@@ -848,10 +850,10 @@ void cClamp::exportRangeXml(QDomDocument &justqdom, QDomElement &typeTag, Mt310s
     tag.appendChild(t);
 }
 
-QString cClamp::handleScpiReadWriteSerial(QString& scpiCmdStr)
+QString cClamp::scpiReadWriteSerial(QString& scpi)
 {
     QString answer;
-    cSCPICommand cmd =scpiCmdStr;
+    cSCPICommand cmd =scpi;
     if (cmd.isQuery()) {
         answer = m_sSerial;
     }
@@ -874,10 +876,10 @@ QString cClamp::handleScpiReadWriteSerial(QString& scpiCmdStr)
 }
 
 
-QString cClamp::handleScpiReadWriteVersion(QString &scpiCmdStr)
+QString cClamp::scpiReadWriteVersion(QString &scpi)
 {
     QString answer;
-    cSCPICommand cmd =scpiCmdStr;
+    cSCPICommand cmd =scpi;
     if (cmd.isQuery()) {
         answer = m_sVersion;
     }
@@ -900,10 +902,10 @@ QString cClamp::handleScpiReadWriteVersion(QString &scpiCmdStr)
 }
 
 
-QString cClamp::handleScpiReadWriteType(QString& scpiCmdStr)
+QString cClamp::scpiReadWriteType(QString& scpi)
 {
     QString answer;
-    cSCPICommand cmd =scpiCmdStr;
+    cSCPICommand cmd =scpi;
     if (cmd.isQuery()) {
         answer = QString("%1").arg(m_nType);
     }
@@ -934,10 +936,10 @@ QString cClamp::handleScpiReadWriteType(QString& scpiCmdStr)
     return answer;
 }
 
-QString cClamp::handleScpiReadName(QString& scpiCmdStr)
+QString cClamp::scpiReadName(QString& scpi)
 {
     QString answer;
-    cSCPICommand cmd =scpiCmdStr;
+    cSCPICommand cmd =scpi;
     if (cmd.isQuery()) {
         answer = getClampTypeName(m_nType);
     }
@@ -947,10 +949,10 @@ QString cClamp::handleScpiReadName(QString& scpiCmdStr)
     return answer;
 }
 
-QString cClamp::handleScpiWriteFlash(QString& scpiCmdStr)
+QString cClamp::scpiWriteFlash(QString& scpi)
 {
     QString answer;
-    cSCPICommand cmd = scpiCmdStr;
+    cSCPICommand cmd = scpi;
     if (cmd.isCommand(1) && (cmd.getParam(0) == "")) {
         if (exportAdjFlash()) {
             answer = ZSCPI::scpiAnswer[ZSCPI::ack];
@@ -965,10 +967,10 @@ QString cClamp::handleScpiWriteFlash(QString& scpiCmdStr)
     return answer;
 }
 
-QString cClamp::handleScpiReadFlash(QString& scpiCmdStr)
+QString cClamp::scpiReadFlash(QString& scpi)
 {
     QString answer;
-    cSCPICommand cmd = scpiCmdStr;
+    cSCPICommand cmd = scpi;
     if (cmd.isCommand(1) && (cmd.getParam(0) == "")) {
         if (readClampType() == m_nType) { // we first look whether the type matches
             importAdjFlash();
@@ -984,10 +986,10 @@ QString cClamp::handleScpiReadFlash(QString& scpiCmdStr)
     return answer;
 }
 
-QString cClamp::handleScpiResetFlash(QString &scpiCmdStr)
+QString cClamp::scpiResetFlash(QString &scpi)
 {
     QString answer;
-    cSCPICommand cmd = scpiCmdStr;
+    cSCPICommand cmd = scpi;
     if (cmd.isCommand(1) && (cmd.getParam(0) == "")) {
         if (resetAdjFlash()) {
             answer = ZSCPI::scpiAnswer[ZSCPI::ack];
@@ -1002,10 +1004,10 @@ QString cClamp::handleScpiResetFlash(QString &scpiCmdStr)
     return answer;
 }
 
-QString cClamp::handleScpiReadChksum(QString& scpiCmdStr)
+QString cClamp::scpiReadChksum(QString& scpi)
 {
     QString answer;
-    cSCPICommand cmd = scpiCmdStr;
+    cSCPICommand cmd = scpi;
     if (cmd.isQuery()) {
         answer = QString("0x%1").arg(getChecksum(),0,16); // hex output
     }
@@ -1015,10 +1017,10 @@ QString cClamp::handleScpiReadChksum(QString& scpiCmdStr)
     return answer;
 }
 
-QString cClamp::handleScpiWriteXML(QString &scpiCmdStr)
+QString cClamp::scpiWriteXML(QString &scpi)
 {
     QString answer;
-    cSCPICommand cmd = scpiCmdStr;
+    cSCPICommand cmd = scpi;
     if (cmd.isCommand(1)) {
         QString filename = cmd.getParam(0);
         if (exportAdTojXMLFile(filename)) {
@@ -1034,10 +1036,10 @@ QString cClamp::handleScpiWriteXML(QString &scpiCmdStr)
     return answer;
 }
 
-QString cClamp::handleScpiReadXML(QString &scpiCmdStr)
+QString cClamp::scpiReadXML(QString &scpi)
 {
     QString answer;
-    cSCPICommand cmd = scpiCmdStr;
+    cSCPICommand cmd = scpi;
     if (cmd.isCommand(1)) {
         QString filename = cmd.getParam(0);
         if (importAdjXMLFile(filename)) {
@@ -1053,10 +1055,10 @@ QString cClamp::handleScpiReadXML(QString &scpiCmdStr)
     return answer;
 }
 
-QString cClamp::handleScpiReadAdjStatus(QString &scpiCmdStr)
+QString cClamp::scpiReadAdjStatus(QString &scpi)
 {
     QString answer;
-    cSCPICommand cmd = scpiCmdStr;
+    cSCPICommand cmd = scpi;
     if (cmd.isQuery()) {
         answer = QString("%1").arg(getAdjustmentStatus()); // hex output
     }

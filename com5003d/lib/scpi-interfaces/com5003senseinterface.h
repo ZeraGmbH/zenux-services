@@ -75,8 +75,8 @@ private:
     QFinalState m_NotifySenseState;
     QList<cProtonetCommand*> sensemodeProtonetCmdList;
 
-    QString m_ReadVersion(QString& sInput);
-    void m_ReadWriteMModeVersion(cProtonetCommand* protoCmd);
+    QString scpiReadVersion(QString& sInput);
+    void scpiReadWriteMModeVersion(cProtonetCommand* protoCmd);
     QString m_ReadMModeCatalog(QString& sInput);
     QString m_ReadSenseChannelCatalog(QString& sInput);
     QString m_ReadSenseGroupCatalog(QString& sInput);
