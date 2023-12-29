@@ -1,9 +1,12 @@
 #include "senserangecommon.h"
 #include "zscpi_response_definitions.h"
 
+const char* SenseRangeCommon::rangeNameCurrentNull = "0A";
+const char* SenseRangeCommon::rangeAliasNull = "--";
+
+
 SenseRangeCommon::SenseRangeCommon(cSCPI *scpiInterface,
                                    QString name,
-                                   QString alias,
                                    bool avail,
                                    double upperRangeValue,
                                    double rejection,
@@ -13,7 +16,7 @@ SenseRangeCommon::SenseRangeCommon(cSCPI *scpiInterface,
                                    int rejectionScpiQueryDigits) :
     ScpiConnection(scpiInterface),
     m_sName(name),
-    m_sAlias(alias),
+    m_sAlias(name != rangeNameCurrentNull ? name : rangeAliasNull),
     m_bAvail(avail),
     m_upperRangeValue(upperRangeValue),
     m_fRejection(rejection),

@@ -10,7 +10,6 @@ class Mt310s2SenseRange: public SenseRangeCommon
 public:
     Mt310s2SenseRange(cSCPI* scpiinterface,
                       QString name,
-                      QString alias,
                       bool avail,
                       double rValue,
                       double rejection,

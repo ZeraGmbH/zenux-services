@@ -13,7 +13,6 @@ class Com5003SenseRange : public SenseRangeCommon
 public:
     Com5003SenseRange(cSCPI *scpiinterface,
                 QString name,
-                QString alias,
                 bool avail,
                 double rValue,
                 double rejection,
