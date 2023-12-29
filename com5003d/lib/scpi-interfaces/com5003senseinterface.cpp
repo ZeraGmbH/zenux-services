@@ -178,7 +178,7 @@ void Com5003SenseInterface::executeProtoScpi(int cmdCode, cProtonetCommand *prot
             emit cmdExecutionDone(protoCmd);
         break;
     case SenseSystem::cmdMMode:
-        scpiReadWriteMModeVersion(protoCmd);
+        scpiReadWriteMMode(protoCmd);
         // we have to start statemachine when setting
         break;
     case SenseSystem::cmdMModeCat:
@@ -476,7 +476,7 @@ QString Com5003SenseInterface::scpiReadVersion(QString &sInput)
 }
 
 
-void Com5003SenseInterface::scpiReadWriteMModeVersion(cProtonetCommand *protoCmd)
+void Com5003SenseInterface::scpiReadWriteMMode(cProtonetCommand *protoCmd)
 {
     cSCPICommand cmd = protoCmd->m_sInput;
     if (cmd.isQuery()) {
