@@ -30,9 +30,14 @@ private slots:
     void addClampIL2_CL800ADC1000VDC();
     void addRemoveClampIAUX_CL800ADC1000VDC();
 
+    // pairs of tests:
+    // * ...GenJson: Log generated json - not a real test just in case we
+    //   change behavior by will
+    // * ...Check: Compare to references stored in 'regression-data' resources
     void clampIdsNamesGenJson();
     void clampIdsNamesCheck();
 
+    // without clamps
     void constantRangeValuesIL3GenJson();
     void constantRangeValuesIL3Check();
     void constantRangeValuesUL3GenJson();
@@ -42,6 +47,11 @@ private slots:
     void constantRangeValuesUAUXGenJson();
     void constantRangeValuesUAUXCheck();
 
+    // without clamps / ADJ mode
+    void constantRangeValuesIAUXModeAdjGenJson();
+    void constantRangeValuesIAUXModeAdjCheck();
+
+    // with all clamps
     void constantRangeValuesAllClampsIL3GenJson();
     void constantRangeValuesAllClampsIL3Check();
     void constantRangeValuesAllClampsIAUXGenJson();

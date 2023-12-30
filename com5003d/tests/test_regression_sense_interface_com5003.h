@@ -23,6 +23,11 @@ private slots:
     void checkChannelCatalogAsExpected();
     void checkRangesUL1();
     void checkRangesIL1();
+
+    // pairs of tests:
+    // * ...GenJson: Log generated json - not a real test just in case we
+    //   change behavior by will
+    // * ...Check: Compare to references stored in 'regression-data' resources
     void constantRangeValuesIL3GenJson();
     void constantRangeValuesIL3Check();
     void constantRangeValuesUL3GenJson();
