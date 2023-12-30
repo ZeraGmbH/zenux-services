@@ -263,7 +263,7 @@ void Com5003SenseInterface::exportAdjData(QDataStream &stream)
 }
 
 
-void Com5003SenseInterface::exportAdjData(QDomDocument& doc, QDomElement& adjtag)
+void Com5003SenseInterface::exportAdjDataXml(QDomDocument& doc, QDomElement& adjtag)
 {
     QDomElement typeTag = doc.createElement( "Sense");
     adjtag.appendChild(typeTag);
@@ -350,7 +350,7 @@ void Com5003SenseInterface::exportAdjData(QDomDocument& doc, QDomElement& adjtag
 }
 
 
-bool Com5003SenseInterface::importAdjData(QDomNode& node) // n steht auf einem element dessen tagname channel ist
+bool Com5003SenseInterface::importAdjDataXml(QDomNode& node) // n steht auf einem element dessen tagname channel ist
 {
     qDebug() << node.toElement().tagName();
     if (node.toElement().tagName() != "Sense") // data not for us

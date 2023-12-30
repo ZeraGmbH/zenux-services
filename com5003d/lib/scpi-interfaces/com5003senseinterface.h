@@ -55,8 +55,8 @@ public:
     quint8 getAdjustmentStatus() override; // we return 0 if not adj. else 1
     virtual void exportAdjData(QDataStream& stream) override;
     virtual bool importAdjData(QString& s, QDataStream& stream) override;
-    virtual void exportAdjData(QDomDocument& doc, QDomElement& adjtag) override;
-    virtual bool importAdjData(QDomNode& node) override;
+    virtual void exportAdjDataXml(QDomDocument& doc, QDomElement& adjtag) override;
+    virtual bool importAdjDataXml(QDomNode& node) override;
     virtual void registerResource(RMConnection *rmConnection, quint16 port) override;
 
 protected:

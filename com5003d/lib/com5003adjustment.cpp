@@ -286,7 +286,7 @@ QString Com5003Adjustment::exportXMLString()
     chksumtag.appendChild(t);
 
     for (int i = 0; i < m_AdjXMLList.count(); i++)
-        m_AdjXMLList.at(i)->exportAdjData(justdata, adjtag);
+        m_AdjXMLList.at(i)->exportAdjDataXml(justdata, adjtag);
 
     QString xml = justdata.toString();
 
@@ -325,11 +325,11 @@ bool Com5003Adjustment::importAdjXMLFile(QString &file)
     return importXMLDocument(&justdata);
 }
 
-void Com5003Adjustment::exportAdjData(QDomDocument &doc, QDomElement &qde)
+void Com5003Adjustment::exportAdjDataXml(QDomDocument &doc, QDomElement &qde)
 {
 }
 
-bool Com5003Adjustment::importAdjData(QDomNode &node)
+bool Com5003Adjustment::importAdjDataXml(QDomNode &node)
 {
     if (node.toElement().tagName() != "Chksum") // data not for us
         return false;
@@ -425,7 +425,7 @@ bool Com5003Adjustment::importXMLDocument(QDomDocument *qdomdoc)
                     n=nl2.item(j);
                     bool done = false;
                     for (int i = 0; i < m_AdjXMLList.count(); i++)
-                        done |= m_AdjXMLList.at(i)->importAdjData(n); // we call all participants
+                        done |= m_AdjXMLList.at(i)->importAdjDataXml(n); // we call all participants
                     if (!done) {
                         qCritical("Justdata import, xml file contains strange data");
                         return false;
