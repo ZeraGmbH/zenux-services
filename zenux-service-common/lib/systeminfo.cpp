@@ -7,7 +7,6 @@ cSystemInfo::cSystemInfo()
     getSystemInfo();
 }
 
-
 void cSystemInfo::getSystemInfo()
 {
     int rm = ZeraMControllerIo::cmddone;
@@ -19,12 +18,10 @@ void cSystemInfo::getSystemInfo()
     m_bRead = (rm == ZeraMControllerIo::cmddone);
 }
 
-
 bool cSystemInfo::dataRead()
 {
     return m_bRead;
 }
-
 
 QString cSystemInfo::getDeviceVersion()
 {
@@ -35,39 +32,27 @@ QString cSystemInfo::getDeviceVersion()
         m_sCTRLVersion);
 }
 
-
 QString &cSystemInfo::getDeviceName()
 {
     return m_sDeviceName;
 }
-
 
 QString &cSystemInfo::getPCBVersion()
 {
     return m_sPCBVersion;
 }
 
-
 QString &cSystemInfo::getLCAVersion()
 {
     return m_sLCAVersion;
 }
-
 
 QString &cSystemInfo::getCTRLVersion()
 {
     return m_sCTRLVersion;
 }
 
-
 QString &cSystemInfo::getSerialNumber()
 {
     return m_sSerialNumber;
 }
-
-
-
-
-
-
-
