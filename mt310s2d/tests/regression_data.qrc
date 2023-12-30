@@ -3,6 +3,7 @@
         <file>regression_data/all-ranges-all-clamps-iaux.json</file>
         <file>regression_data/all-ranges-all-clamps-il3.json</file>
         <file>regression_data/all-ranges-all-clamps-uaux.json</file>
+        <file>regression_data/all-ranges-iaux-adj-mode.json</file>
         <file>regression_data/all-ranges-iaux.json</file>
         <file>regression_data/all-ranges-il3.json</file>
         <file>regression_data/all-ranges-uaux.json</file>

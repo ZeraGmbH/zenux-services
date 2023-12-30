@@ -3,6 +3,7 @@
 #include "mt310s2senseinterface.h"
 #include "xmlhelperfortest.h"
 #include "regressionhelper.h"
+#include "protobufscpitestclient.h"
 #include "proxy.h"
 #include "pcbinterface.h"
 #include "clampfactorytest.h"
@@ -297,6 +298,26 @@ void test_regression_sense_interface_mt310s2::constantRangeValuesUAUXCheck()
     QJsonObject json = loadJson(":/regression_data/all-ranges-uaux.json");
     QVERIFY(!json.isEmpty());
     SenseSystem::cChannelSettings *channelSetting = m_mockServer->getSenseSettings()->findChannelSettingByAlias1("UAUX");
+    QVERIFY(RegressionHelper::checkJsonConstantValuesAllRanges(json, channelSetting, m_pcbIFace.get()));
+}
+
+void test_regression_sense_interface_mt310s2::constantRangeValuesIAUXModeAdjGenJson()
+{
+    QString answer = ProtobufScpiTestClient::cmd("SENS:MMODE", "ADJ");
+    QCOMPARE(answer, "ack");
+
+    SenseSystem::cChannelSettings *channelSetting = m_mockServer->getSenseSettings()->findChannelSettingByAlias1("IAUX");
+    RegressionHelper::genJsonConstantValuesAllRanges(channelSetting, m_pcbIFace.get());
+}
+
+void test_regression_sense_interface_mt310s2::constantRangeValuesIAUXModeAdjCheck()
+{
+    QString answer = ProtobufScpiTestClient::cmd("SENS:MMODE", "ADJ");
+    QCOMPARE(answer, "ack");
+
+    QJsonObject json = loadJson(":/regression_data/all-ranges-iaux-adj-mode.json");
+    QVERIFY(!json.isEmpty());
+    SenseSystem::cChannelSettings *channelSetting = m_mockServer->getSenseSettings()->findChannelSettingByAlias1("IAUX");
     QVERIFY(RegressionHelper::checkJsonConstantValuesAllRanges(json, channelSetting, m_pcbIFace.get()));
 }
 
