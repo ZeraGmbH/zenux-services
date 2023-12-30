@@ -301,6 +301,26 @@ void test_regression_sense_interface_mt310s2::constantRangeValuesUAUXCheck()
     QVERIFY(RegressionHelper::checkJsonConstantValuesAllRanges(json, channelSetting, m_pcbIFace.get()));
 }
 
+void test_regression_sense_interface_mt310s2::constantRangeValuesIL3ModeAdjGenJson()
+{
+    QString answer = ProtobufScpiTestClient::cmd("SENS:MMODE", "ADJ");
+    QCOMPARE(answer, "ack");
+
+    SenseSystem::cChannelSettings *channelSetting = m_mockServer->getSenseSettings()->findChannelSettingByAlias1("IL3");
+    RegressionHelper::genJsonConstantValuesAllRanges(channelSetting, m_pcbIFace.get());
+}
+
+void test_regression_sense_interface_mt310s2::constantRangeValuesIL3ModeAdjCheck()
+{
+    QString answer = ProtobufScpiTestClient::cmd("SENS:MMODE", "ADJ");
+    QCOMPARE(answer, "ack");
+
+    QJsonObject json = loadJson(":/regression_data/all-ranges-il3-adj-mode.json");
+    QVERIFY(!json.isEmpty());
+    SenseSystem::cChannelSettings *channelSetting = m_mockServer->getSenseSettings()->findChannelSettingByAlias1("IL3");
+    QVERIFY(RegressionHelper::checkJsonConstantValuesAllRanges(json, channelSetting, m_pcbIFace.get()));
+}
+
 void test_regression_sense_interface_mt310s2::constantRangeValuesIAUXModeAdjGenJson()
 {
     QString answer = ProtobufScpiTestClient::cmd("SENS:MMODE", "ADJ");
@@ -316,6 +336,46 @@ void test_regression_sense_interface_mt310s2::constantRangeValuesIAUXModeAdjChec
     QCOMPARE(answer, "ack");
 
     QJsonObject json = loadJson(":/regression_data/all-ranges-iaux-adj-mode.json");
+    QVERIFY(!json.isEmpty());
+    SenseSystem::cChannelSettings *channelSetting = m_mockServer->getSenseSettings()->findChannelSettingByAlias1("IAUX");
+    QVERIFY(RegressionHelper::checkJsonConstantValuesAllRanges(json, channelSetting, m_pcbIFace.get()));
+}
+
+void test_regression_sense_interface_mt310s2::constantRangeValuesIL3ModeHfGenJson()
+{
+    QString answer = ProtobufScpiTestClient::cmd("SENS:MMODE", "HF");
+    QCOMPARE(answer, "ack");
+
+    SenseSystem::cChannelSettings *channelSetting = m_mockServer->getSenseSettings()->findChannelSettingByAlias1("IL3");
+    RegressionHelper::genJsonConstantValuesAllRanges(channelSetting, m_pcbIFace.get());
+}
+
+void test_regression_sense_interface_mt310s2::constantRangeValuesIL3ModeHfCheck()
+{
+    QString answer = ProtobufScpiTestClient::cmd("SENS:MMODE", "HF");
+    QCOMPARE(answer, "ack");
+
+    QJsonObject json = loadJson(":/regression_data/all-ranges-il3-hf-mode.json");
+    QVERIFY(!json.isEmpty());
+    SenseSystem::cChannelSettings *channelSetting = m_mockServer->getSenseSettings()->findChannelSettingByAlias1("IL3");
+    QVERIFY(RegressionHelper::checkJsonConstantValuesAllRanges(json, channelSetting, m_pcbIFace.get()));
+}
+
+void test_regression_sense_interface_mt310s2::constantRangeValuesIAUXModeHfGenJson()
+{
+    QString answer = ProtobufScpiTestClient::cmd("SENS:MMODE", "HF");
+    QCOMPARE(answer, "ack");
+
+    SenseSystem::cChannelSettings *channelSetting = m_mockServer->getSenseSettings()->findChannelSettingByAlias1("IAUX");
+    RegressionHelper::genJsonConstantValuesAllRanges(channelSetting, m_pcbIFace.get());
+}
+
+void test_regression_sense_interface_mt310s2::constantRangeValuesIAUXModeHfCheck()
+{
+    QString answer = ProtobufScpiTestClient::cmd("SENS:MMODE", "HF");
+    QCOMPARE(answer, "ack");
+
+    QJsonObject json = loadJson(":/regression_data/all-ranges-iaux-hf-mode.json");
     QVERIFY(!json.isEmpty());
     SenseSystem::cChannelSettings *channelSetting = m_mockServer->getSenseSettings()->findChannelSettingByAlias1("IAUX");
     QVERIFY(RegressionHelper::checkJsonConstantValuesAllRanges(json, channelSetting, m_pcbIFace.get()));
