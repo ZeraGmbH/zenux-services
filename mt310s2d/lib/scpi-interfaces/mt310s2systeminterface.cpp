@@ -1,14 +1,20 @@
 #include "mt310s2systeminterface.h"
-#include "mt310s2d.h"
 #include "systeminfo.h"
-#include "mt310s2senseinterface.h"
 #include "micro-controller-io/atmel.h"
 #include "zscpi_response_definitions.h"
 #include <QJsonObject>
 
-Mt310s2SystemInterface::Mt310s2SystemInterface(cMT310S2dServer *server, HotPluggableControllerContainerPtr hotPluggableControllerContainer) :
+Mt310s2SystemInterface::Mt310s2SystemInterface(cPCBServer *server,
+                                               Mt310s2SystemInfo *systemInfo,
+                                               cSenseSettings *senseSettings,
+                                               Mt310s2SenseInterface* senseInterface, cATMELSysCtrl *atmelSysController,
+                                               HotPluggableControllerContainerPtr hotPluggableControllerContainer) :
     ScpiConnection(server->getSCPIInterface()),
     m_pMyServer(server),
+    m_systemInfo(systemInfo),
+    m_senseSettings(senseSettings),
+    m_senseInterface(senseInterface),
+    m_atmelSysController(atmelSysController),
     m_hotPluggableControllerContainer(std::move(hotPluggableControllerContainer))
 {
     if(m_hotPluggableControllerContainer)
@@ -41,7 +47,7 @@ void Mt310s2SystemInterface::initSCPIConnection(QString leadingNodes)
 void Mt310s2SystemInterface::actualizeContollers(quint16 bitmaskAvailable)
 {
     m_hotPluggableControllerContainer->startActualizeEmobControllers(bitmaskAvailable,
-                                                                     m_pMyServer->m_pSenseSettings,
+                                                                     m_senseSettings,
                                                                      10000);
 }
 
@@ -127,8 +133,8 @@ QString Mt310s2SystemInterface::m_ReadDeviceVersion(QString &sInput)
 
     if (cmd.isQuery())
     {
-        if (m_pMyServer->m_pSystemInfo->dataRead())
-            return m_pMyServer->m_pSystemInfo->getDeviceVersion();
+        if (m_systemInfo->dataRead())
+            return m_systemInfo->getDeviceVersion();
         else
             return ZSCPI::scpiAnswer[ZSCPI::errexec];
     }
@@ -144,8 +150,8 @@ QString Mt310s2SystemInterface::m_ReadDeviceName(QString& sInput)
 
     if (cmd.isQuery())
     {
-        if (m_pMyServer->m_pSystemInfo->dataRead())
-            return m_pMyServer->m_pSystemInfo->getDeviceName();
+        if (m_systemInfo->dataRead())
+            return m_systemInfo->getDeviceName();
         else
             return ZSCPI::scpiAnswer[ZSCPI::errexec];
     }
@@ -162,7 +168,7 @@ QString Mt310s2SystemInterface::m_ReadWritePCBVersion(QString &sInput)
 
     if (cmd.isQuery())
     {
-        if (m_pMyServer->m_pSystemInfo->dataRead()) {
+        if (m_systemInfo->dataRead()) {
             updateAllPCBsVersion();
             s = m_allPCBVersion.getString();
         }
@@ -175,7 +181,7 @@ QString Mt310s2SystemInterface::m_ReadWritePCBVersion(QString &sInput)
         {
             QString Version = cmd.getParam(0);
             ret = Atmel::getInstance().writePCBVersion(Version);
-            m_pMyServer->m_pSystemInfo->getSystemInfo(); // read back info
+            m_systemInfo->getSystemInfo(); // read back info
         }
 
         m_genAnswer(ret, s);
@@ -189,7 +195,7 @@ QString Mt310s2SystemInterface::scpiReadAllCTRLVersions(QString &sInput)
 {
     cSCPICommand cmd = sInput;
     if (cmd.isQuery()) {
-        if (m_pMyServer->m_pSystemInfo->dataRead()) {
+        if (m_systemInfo->dataRead()) {
             updateAllCtrlVersionsJson();
             return m_allCtrlVersion.getString();
         }
@@ -207,8 +213,8 @@ QString Mt310s2SystemInterface::m_ReadFPGAVersion(QString &sInput)
 
     if (cmd.isQuery())
     {
-        if (m_pMyServer->m_pSystemInfo->dataRead())
-            return m_pMyServer->m_pSystemInfo->getLCAVersion();
+        if (m_systemInfo->dataRead())
+            return m_systemInfo->getLCAVersion();
         else
             return ZSCPI::scpiAnswer[ZSCPI::errexec];
     }
@@ -227,8 +233,8 @@ QString Mt310s2SystemInterface::m_ReadWriteSerialNumber(QString &sInput)
     if (cmd.isQuery())
     {
         {
-            if (m_pMyServer->m_pSystemInfo->dataRead())
-                s = m_pMyServer->m_pSystemInfo->getSerialNumber();
+            if (m_systemInfo->dataRead())
+                s = m_systemInfo->getSerialNumber();
             else
                 s = ZSCPI::scpiAnswer[ZSCPI::errexec];
         }
@@ -239,7 +245,7 @@ QString Mt310s2SystemInterface::m_ReadWriteSerialNumber(QString &sInput)
         {
             QString Serial = cmd.getParam(0);
             ret = Atmel::getInstance().writeSerialNumber(Serial);
-            m_pMyServer->m_pSystemInfo->getSystemInfo(); // read back info
+            m_systemInfo->getSystemInfo(); // read back info
         }
 
         m_genAnswer(ret, s);
@@ -259,7 +265,7 @@ QString Mt310s2SystemInterface::m_AdjFlashWrite(QString &sInput)
         {
             if (enable)
             {
-                if (m_pMyServer->m_pSenseInterface->exportAdjFlash())
+                if (m_senseInterface->exportAdjFlash())
                     return ZSCPI::scpiAnswer[ZSCPI::ack];
                 else
                     return ZSCPI::scpiAnswer[ZSCPI::errexec];
@@ -281,7 +287,7 @@ QString Mt310s2SystemInterface::m_AdjFlashRead(QString &sInput)
 
     if (cmd.isCommand(1) && (cmd.getParam(0) == ""))
     {
-        if (m_pMyServer->m_pSenseInterface->importAdjFlash())
+        if (m_senseInterface->importAdjFlash())
             return ZSCPI::scpiAnswer[ZSCPI::ack];
         else
             return ZSCPI::scpiAnswer[ZSCPI::errexec];
@@ -298,7 +304,7 @@ QString Mt310s2SystemInterface::m_AdjXmlImportExport(QString &sInput)
 
     if (cmd.isQuery())
     {
-        s = m_pMyServer->m_pSenseInterface->exportXMLString(-1);
+        s = m_senseInterface->exportXMLString(-1);
         s.replace("\n","");
     }
     else
@@ -309,12 +315,12 @@ QString Mt310s2SystemInterface::m_AdjXmlImportExport(QString &sInput)
             if (enable)
             {
                 QString XML = cmd.getParam();
-                if (!m_pMyServer->m_pSenseInterface->importAdjXMLString(XML))
+                if (!m_senseInterface->importAdjXMLString(XML))
                     s = ZSCPI::errxml;
                 else
                 {
-                    m_pMyServer->m_pSenseInterface->m_ComputeSenseAdjData();
-                    if (!m_pMyServer->m_pSenseInterface->exportAdjFlash())
+                    m_senseInterface->m_ComputeSenseAdjData();
+                    if (!m_senseInterface->exportAdjFlash())
                         s = ZSCPI::scpiAnswer[ZSCPI::errexec];
                     else
                         s = ZSCPI::scpiAnswer[ZSCPI::ack];
@@ -338,7 +344,7 @@ QString Mt310s2SystemInterface::m_AdjXMLWrite(QString &sInput)
     if (cmd.isCommand(1))
     {
         QString filename = cmd.getParam(0);
-        if (m_pMyServer->m_pSenseInterface->exportAdTojXMLFile(filename))
+        if (m_senseInterface->exportAdTojXMLFile(filename))
             return ZSCPI::scpiAnswer[ZSCPI::ack];
         else
             return ZSCPI::scpiAnswer[ZSCPI::errexec];
@@ -360,7 +366,7 @@ QString Mt310s2SystemInterface::m_AdjXMLRead(QString &sInput)
             if (enable)
             {
                 QString filename = cmd.getParam(0);
-                if (m_pMyServer->m_pSenseInterface->importAdjXMLFile(filename))
+                if (m_senseInterface->importAdjXMLFile(filename))
                     return ZSCPI::scpiAnswer[ZSCPI::ack];
                 else
                     return ZSCPI::scpiAnswer[ZSCPI::errexec];
@@ -382,7 +388,7 @@ QString Mt310s2SystemInterface::m_AdjFlashChksum(QString &sInput)
 
     if (cmd.isQuery())
     {
-        QString s = QString("0x%1").arg(m_pMyServer->m_pSenseInterface->getChecksum()); // hex output
+        QString s = QString("0x%1").arg(m_senseInterface->getChecksum()); // hex output
         return s;
     }
     else
@@ -408,14 +414,14 @@ QString Mt310s2SystemInterface::testMode(QString &Input)
 {
     cSCPICommand cmd = Input;
     quint32 modeBits = cmd.getParam(0).toUInt();
-    return pAtmelSys->enableTestMode(modeBits)==ZeraMControllerIo::cmddone ? ZSCPI::scpiAnswer[ZSCPI::ack] : ZSCPI::scpiAnswer[ZSCPI::errexec];
+    return m_atmelSysController->enableTestMode(modeBits)==ZeraMControllerIo::cmddone ? ZSCPI::scpiAnswer[ZSCPI::ack] : ZSCPI::scpiAnswer[ZSCPI::errexec];
 }
 
 void Mt310s2SystemInterface::updateAllCtrlVersionsJson()
 {
     QJsonObject object;
-    object.insert("Relay controller version", QJsonValue::fromVariant(m_pMyServer->m_pSystemInfo->getCTRLVersion()));
-    object.insert("System controller version", QJsonValue::fromVariant(m_pMyServer->m_pSystemInfo->getSysCTRLVersion()));
+    object.insert("Relay controller version", QJsonValue::fromVariant(m_systemInfo->getCTRLVersion()));
+    object.insert("System controller version", QJsonValue::fromVariant(m_systemInfo->getSysCTRLVersion()));
     QVector<AtmelCommonVersionsPtr> hotpluggableControllers = m_hotPluggableControllerContainer->getCurrentControllers();
     for(auto controller : hotpluggableControllers) {
         QString version;
@@ -429,8 +435,8 @@ void Mt310s2SystemInterface::updateAllCtrlVersionsJson()
 void Mt310s2SystemInterface::updateAllPCBsVersion()
 {
     QJsonObject object;
-    object.insert("Relay PCB version", QJsonValue::fromVariant(m_pMyServer->m_pSystemInfo->getPCBVersion()));
-    object.insert("System PCB version", QJsonValue::fromVariant(m_pMyServer->m_pSystemInfo->getSysPCBVersion()));
+    object.insert("Relay PCB version", QJsonValue::fromVariant(m_systemInfo->getPCBVersion()));
+    object.insert("System PCB version", QJsonValue::fromVariant(m_systemInfo->getSysPCBVersion()));
     QVector<AtmelCommonVersionsPtr> hotpluggableControllers = m_hotPluggableControllerContainer->getCurrentControllers();
     for(auto controller : hotpluggableControllers) {
         QString version;

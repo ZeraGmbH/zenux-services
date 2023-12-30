@@ -55,7 +55,7 @@ static struct sigaction mySigAction;
 // sigset_t mySigmask, origSigmask;
 
 
-cATMELSysCtrl* pAtmelSys;
+cATMELSysCtrl* pAtmelSys; // we need a singleton here...
 ServerParams cMT310S2dServer::defaultParams {ServerName, ServerVersion, "/etc/zera/mt310s2d/mt310s2d.xsd", "/etc/zera/mt310s2d/mt310s2d.xml"};
 
 cMT310S2dServer::cMT310S2dServer(ServerParams params) :
@@ -235,7 +235,7 @@ void cMT310S2dServer::doSetupServer()
                                                                       m_pI2CSettings->getI2CAdress(i2cSettings::emobCtrlI2cAddress),
                                                                       m_pI2CSettings->getI2CAdress(i2cSettings::muxerI2cAddress),
                                                                       m_pDebugSettings->getDebugLevel());
-            scpiConnectionList.append(m_pSystemInterface = new Mt310s2SystemInterface(this, std::move(emobControllerContainer)));
+            scpiConnectionList.append(m_pSystemInterface = new Mt310s2SystemInterface(this, m_pSystemInfo, m_pSenseSettings, m_pSenseInterface, pAtmelSys, std::move(emobControllerContainer)));
             scpiConnectionList.append(m_pSenseInterface = new Mt310s2SenseInterface(getSCPIInterface(), m_pI2CSettings, m_pSenseSettings, m_pSystemInfo));
             scpiConnectionList.append(m_pSamplingInterface = new cSamplingInterface(getSCPIInterface(), m_pSamplingSettings));
             scpiConnectionList.append(m_foutInterface = new FOutGroupResourceAndInterface(getSCPIInterface(), m_foutSettings));
