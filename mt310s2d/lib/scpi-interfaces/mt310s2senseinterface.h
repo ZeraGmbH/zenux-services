@@ -4,7 +4,6 @@
 #include "i2csettings.h"
 #include "mt310s2adjflash.h"
 #include "mt310s2adjxml.h"
-#include "mt310s2systeminfo.h"
 #include "resource.h"
 #include "mt310s2sensechannel.h"
 #include "systeminfo.h"

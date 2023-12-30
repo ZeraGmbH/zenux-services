@@ -3,6 +3,10 @@
 
 #include "scpiconnection.h"
 #include "hotpluggablecontrollercontainer.h"
+#include "pcbserver.h"
+#include "mt310s2senseinterface.h"
+#include "mt310s2systeminfo.h"
+#include "atmelsysctrl.h"
 #include <QList>
 #include <QJsonDocument>
 #include <memory>
@@ -29,14 +33,17 @@ enum SystemCommands
 };
 }
 
-class cMT310S2dServer;
-
 class Mt310s2SystemInterface: public ScpiConnection
 {
     Q_OBJECT
 
 public:
-    Mt310s2SystemInterface(cMT310S2dServer* server, HotPluggableControllerContainerPtr hotPluggableControllerContainer);
+    Mt310s2SystemInterface(cPCBServer* server,
+                           Mt310s2SystemInfo *systemInfo,
+                           cSenseSettings *senseSettings,
+                           Mt310s2SenseInterface* senseInterface,
+                           cATMELSysCtrl* atmelSysController,
+                           HotPluggableControllerContainerPtr hotPluggableControllerContainer);
     virtual void initSCPIConnection(QString leadingNodes) override;
     void actualizeContollers(quint16 bitmaskAvailable);
 
@@ -66,7 +73,11 @@ private:
 
     void m_genAnswer(int select, QString& answer);
 
-    cMT310S2dServer* m_pMyServer;
+    cPCBServer* m_pMyServer;
+    Mt310s2SystemInfo *m_systemInfo;
+    cSenseSettings *m_senseSettings;
+    Mt310s2SenseInterface* m_senseInterface;
+    cATMELSysCtrl* m_atmelSysController;
     HotPluggableControllerContainerPtr m_hotPluggableControllerContainer;
     NotificationString m_allCtrlVersion;
     NotificationString m_allPCBVersion;
