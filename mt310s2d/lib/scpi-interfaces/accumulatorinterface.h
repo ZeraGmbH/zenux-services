@@ -14,7 +14,7 @@ enum accumulatorCommands{
 class AccumulatorInterface : public ScpiConnection
 {
 public:
-    AccumulatorInterface(cSCPI* scpiInterface, cATMELSysCtrl *atmelSysCntrl, AccumulatorSettings* settings);
+    AccumulatorInterface(cSCPI* scpiInterface, std::shared_ptr<cATMELSysCtrl> systemController, AccumulatorSettings* settings);
     void initSCPIConnection(QString leadingNodes) override;
     QString getAccumulatorStatus();
     QString getAccuStateOfCharge();
@@ -23,7 +23,7 @@ protected:
 private:
     NotificationString m_accumulatorStatus;
     NotificationString m_accuStateOfCharge;
-    cATMELSysCtrl *m_atmelSysCntrl;
+    std::shared_ptr<cATMELSysCtrl> m_systemController;
     TimerTemplateQtPtr m_pollingTimer;
 };
 

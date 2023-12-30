@@ -7,14 +7,14 @@
 Mt310s2SystemInterface::Mt310s2SystemInterface(cPCBServer *server,
                                                Mt310s2SystemInfo *systemInfo,
                                                cSenseSettings *senseSettings,
-                                               Mt310s2SenseInterface* senseInterface, cATMELSysCtrl *atmelSysController,
+                                               Mt310s2SenseInterface* senseInterface, std::shared_ptr<cATMELSysCtrl> systemController,
                                                HotPluggableControllerContainerPtr hotPluggableControllerContainer) :
     ScpiConnection(server->getSCPIInterface()),
     m_pMyServer(server),
     m_systemInfo(systemInfo),
     m_senseSettings(senseSettings),
     m_senseInterface(senseInterface),
-    m_atmelSysController(atmelSysController),
+    m_systemController(systemController),
     m_hotPluggableControllerContainer(std::move(hotPluggableControllerContainer))
 {
     if(m_hotPluggableControllerContainer)
@@ -414,7 +414,7 @@ QString Mt310s2SystemInterface::testMode(QString &Input)
 {
     cSCPICommand cmd = Input;
     quint32 modeBits = cmd.getParam(0).toUInt();
-    return m_atmelSysController->enableTestMode(modeBits)==ZeraMControllerIo::cmddone ? ZSCPI::scpiAnswer[ZSCPI::ack] : ZSCPI::scpiAnswer[ZSCPI::errexec];
+    return m_systemController->enableTestMode(modeBits)==ZeraMControllerIo::cmddone ? ZSCPI::scpiAnswer[ZSCPI::ack] : ZSCPI::scpiAnswer[ZSCPI::errexec];
 }
 
 void Mt310s2SystemInterface::updateAllCtrlVersionsJson()

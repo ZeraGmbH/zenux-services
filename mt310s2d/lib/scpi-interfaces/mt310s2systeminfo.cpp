@@ -1,8 +1,8 @@
 #include "mt310s2systeminfo.h"
-#include "micro-controller-io/atmelsysctrl.h"
 
-Mt310s2SystemInfo::Mt310s2SystemInfo() :
-    cSystemInfo()
+Mt310s2SystemInfo::Mt310s2SystemInfo(std::shared_ptr<cATMELSysCtrl> systemController) :
+    cSystemInfo(),
+    m_systemController(systemController)
 {
     m_sSysCTRLVersion = m_sSysPCBVersion = "Unknown";
     getSystemInfo();
@@ -10,8 +10,8 @@ Mt310s2SystemInfo::Mt310s2SystemInfo() :
 
 void Mt310s2SystemInfo::getSystemInfo()
 {
-    int rm = pAtmelSys->readCTRLVersion(m_sSysCTRLVersion);
-    rm |= pAtmelSys->readPCBVersion(m_sSysPCBVersion);
+    int rm = m_systemController->readCTRLVersion(m_sSysCTRLVersion);
+    rm |= m_systemController->readPCBVersion(m_sSysPCBVersion);
     m_bRead = (rm == ZeraMControllerIo::cmddone);
 }
 

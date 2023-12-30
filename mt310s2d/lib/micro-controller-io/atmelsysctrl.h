@@ -19,6 +19,4 @@ public:
     atmelRM enableTestMode(qint32 testBits);
 };
 
-extern cATMELSysCtrl* pAtmelSys;
-
 #endif // ATMELATMELSYS_H

@@ -19,7 +19,7 @@ private slots:
 private:
     std::unique_ptr<cSCPI> m_scpiInterface;
     AccumulatorInterface *m_accumulator;
-    std::unique_ptr<AtmelSysCntrlTest> m_atmelSysCntrl;
+    std::shared_ptr<AtmelSysCntrlTest> m_systemController;
 
     std::unique_ptr<Zera::XMLConfig::cReader> m_xmlConfigReader;
     std::unique_ptr<AccumulatorSettings> m_accuSettings;
