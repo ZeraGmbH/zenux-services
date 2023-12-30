@@ -45,6 +45,11 @@ void MockPcbServer::setResources(ResourcesList resources)
     m_resources = resources;
 }
 
+void MockPcbServer::setScpiConnections(ScpiConnectionList scpiConnections)
+{
+    m_scpiConnecttionsAddedFromExtern = scpiConnections;
+}
+
 Zera::XMLConfig::cReader *MockPcbServer::getConfigReader()
 {
     return &m_xmlConfigReader;
@@ -106,6 +111,8 @@ void MockPcbServer::doSetupServer()
         scpiConnectionList.append(resource);
         resourceList.append(resource);
     }
+    for(const auto &scpiConnection : qAsConst(m_scpiConnecttionsAddedFromExtern))
+        scpiConnectionList.append(scpiConnection);
     initSCPIConnections();
 
     m_myServer->startServer(m_ethSettings.getPort(EthSettings::protobufserver)); // and can start the server now
