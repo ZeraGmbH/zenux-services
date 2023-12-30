@@ -28,12 +28,11 @@ bool cSystemInfo::dataRead()
 
 QString cSystemInfo::getDeviceVersion()
 {
-    QString s = QString ("DEVICE: %1;PCB: %2;LCA: %3;CTRL: %4")
-            .arg(m_sDeviceName)
-            .arg(m_sPCBVersion)
-            .arg(m_sLCAVersion)
-            .arg(m_sCTRLVersion);
-    return s;
+    return QString("DEVICE: %1;PCB: %2;LCA: %3;CTRL: %4").arg(
+        m_sDeviceName,
+        m_sPCBVersion,
+        m_sLCAVersion,
+        m_sCTRLVersion);
 }
 
 
