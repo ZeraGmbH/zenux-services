@@ -4,8 +4,11 @@
         <file>regression_data/all-ranges-all-clamps-il3.json</file>
         <file>regression_data/all-ranges-all-clamps-uaux.json</file>
         <file>regression_data/all-ranges-iaux-adj-mode.json</file>
+        <file>regression_data/all-ranges-iaux-hf-mode.json</file>
         <file>regression_data/all-ranges-iaux.json</file>
         <file>regression_data/all-ranges-il3.json</file>
+        <file>regression_data/all-ranges-il3-adj-mode.json</file>
+        <file>regression_data/all-ranges-il3-hf-mode.json</file>
         <file>regression_data/all-ranges-uaux.json</file>
         <file>regression_data/all-ranges-ul3.json</file>
         <file>regression_data/clamp-id-names.json</file>

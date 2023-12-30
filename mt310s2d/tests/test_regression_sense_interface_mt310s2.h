@@ -48,8 +48,16 @@ private slots:
     void constantRangeValuesUAUXCheck();
 
     // without clamps / ADJ mode
+    void constantRangeValuesIL3ModeAdjGenJson();
+    void constantRangeValuesIL3ModeAdjCheck();
     void constantRangeValuesIAUXModeAdjGenJson();
     void constantRangeValuesIAUXModeAdjCheck();
+
+    // without clamps / HF mode (what is that?? it just makes all ranges unavailable)
+    void constantRangeValuesIL3ModeHfGenJson();
+    void constantRangeValuesIL3ModeHfCheck();
+    void constantRangeValuesIAUXModeHfGenJson();
+    void constantRangeValuesIAUXModeHfCheck();
 
     // with all clamps
     void constantRangeValuesAllClampsIL3GenJson();
