@@ -4,6 +4,7 @@
 #include "i2csettings.h"
 #include "mockpcbserver.h"
 #include "com5003senseinterface.h"
+#include "com5003systeminterface.h"
 #include "com5003adjustment.h"
 #include <memory>
 
@@ -20,6 +21,7 @@ private:
     std::unique_ptr<cSenseSettings> m_senseSettings;
 
     std::unique_ptr<Com5003SenseInterface> m_senseInterface;
+    std::unique_ptr<Com5003SystemInterface> m_systemInterface; // for adj xml import/export
 
     std::unique_ptr<cSystemInfo> m_systemInfo;
     std::unique_ptr<Com5003Adjustment> m_adjustment;

@@ -13,10 +13,14 @@ MockForSenseInterfaceCom5003::MockForSenseInterfaceCom5003() :
 
     // no resources / scpi interfaces from here
     m_systemInfo = std::make_unique<cSystemInfo>();
+
     // On MT this is handled directly by sense interface.
     // Here we have to inject sense interface into Com5003Adjustment
     m_adjustment = std::make_unique<Com5003Adjustment>(m_systemInfo.get(), m_i2cSettings->getDeviceNode(), m_i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress));
     m_adjustment->addAdjXMLObject(m_senseInterface.get());
+
+    m_systemInterface = std::make_unique<Com5003SystemInterface>(this, m_systemInfo.get(), m_adjustment.get());
+    setScpiConnections(ScpiConnectionList{m_systemInterface.get()});
 
     start();
 }
