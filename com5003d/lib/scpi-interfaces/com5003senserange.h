@@ -4,7 +4,6 @@
 #include "senserangecommon.h"
 #include "com5003justdata.h"
 
-
 class Atmel;
 
 class Com5003SenseRange : public SenseRangeCommon
@@ -19,23 +18,17 @@ public:
                 double ovrejection,
                 quint8 rselcode);
     ~Com5003SenseRange();
-    virtual void initSCPIConnection(QString leadingNodes) override;
-    quint8 getAdjustmentStatus() override;
+    void initSCPIConnection(QString leadingNodes) override;
+    quint8 getAdjustmentStatus();
 
     Com5003JustRangeTripletOffsetGainPhase* getJustData();
 
     void initJustData();
     void computeJustData();
 
-protected:
-    void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
-
 private:
     Atmel* m_pATMEL;
     Com5003JustRangeTripletOffsetGainPhase* m_pJustdata;
-
-    QString m_ReadRangeType(QString& sInput);
 };
-
 
 #endif // SENSERANGE_H
