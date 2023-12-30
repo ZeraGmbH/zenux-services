@@ -4,9 +4,9 @@
 constexpr quint8 ERROR = 0x80;
 constexpr int ACCU_POLLING_PERIOD_MS = 1000;
 
-AccumulatorInterface::AccumulatorInterface(cSCPI *scpiInterface, cATMELSysCtrl *atmelSysCntrl, AccumulatorSettings *settings) :
+AccumulatorInterface::AccumulatorInterface(cSCPI *scpiInterface, std::shared_ptr<cATMELSysCtrl> systemController, AccumulatorSettings *settings) :
     ScpiConnection(scpiInterface),
-    m_atmelSysCntrl(atmelSysCntrl)
+    m_systemController(systemController)
 {
     m_pollingTimer = TimerFactoryQt::createPeriodic(ACCU_POLLING_PERIOD_MS);
     connect(m_pollingTimer.get(), &TimerTemplateQt::sigExpired, this, &AccumulatorInterface::getAccuStateOfCharge);
@@ -40,7 +40,7 @@ void AccumulatorInterface::executeProtoScpi(int cmdCode, cProtonetCommand *proto
 QString AccumulatorInterface::getAccumulatorStatus()
 {
     quint8 status = 0;
-    if(m_atmelSysCntrl->readAccumulatorStatus(status) == ZeraMControllerIo::atmelRM::cmddone){
+    if(m_systemController->readAccumulatorStatus(status) == ZeraMControllerIo::atmelRM::cmddone){
         m_accumulatorStatus = QString::number(status);
     }
     else{
@@ -52,7 +52,7 @@ QString AccumulatorInterface::getAccumulatorStatus()
 QString AccumulatorInterface::getAccuStateOfCharge()
 {
     quint8 charge = 0;
-    if(m_atmelSysCntrl->readAccuStateOfCharge(charge) == ZeraMControllerIo::atmelRM::cmddone){
+    if(m_systemController->readAccuStateOfCharge(charge) == ZeraMControllerIo::atmelRM::cmddone){
         m_accuStateOfCharge = QString::number(charge);
     }
     else{

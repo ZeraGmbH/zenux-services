@@ -55,7 +55,6 @@ static struct sigaction mySigAction;
 // sigset_t mySigmask, origSigmask;
 
 
-cATMELSysCtrl* pAtmelSys; // we need a singleton here...
 ServerParams cMT310S2dServer::defaultParams {ServerName, ServerVersion, "/etc/zera/mt310s2d/mt310s2d.xsd", "/etc/zera/mt310s2d/mt310s2d.xml"};
 
 cMT310S2dServer::cMT310S2dServer(ServerParams params) :
@@ -67,7 +66,6 @@ cMT310S2dServer::cMT310S2dServer(ServerParams params) :
     m_fpgaMsgSettings = nullptr;
     m_fpgaCtrlSettings  = nullptr;
     m_pSenseSettings = nullptr;
-    pAtmelSys = nullptr;
     m_pStatusInterface = nullptr;
     m_pSystemInterface = nullptr;
     m_pSenseInterface = nullptr;
@@ -124,7 +122,6 @@ cMT310S2dServer::~cMT310S2dServer()
     if (m_finSettings) delete m_finSettings;
     if (m_pSCHeadSettings) delete m_pSCHeadSettings;
     if (m_accumulatorSettings) delete m_accumulatorSettings;
-    if (pAtmelSys) delete pAtmelSys;
     if (m_pStatusInterface) delete m_pStatusInterface;
     if (m_pSystemInterface) delete m_pSystemInterface;
     if (m_pSenseInterface) delete m_pSenseInterface;
@@ -180,8 +177,7 @@ void cMT310S2dServer::doConfiguration()
             if (m_xmlConfigReader.loadXMLFile(m_params.xmlFile)) {
                 Atmel::setInstanceParams(m_pI2CSettings->getDeviceNode(), m_pI2CSettings->getI2CAdress(i2cSettings::relaisCtrlI2cAddress), m_pDebugSettings->getDebugLevel());
                 m_atmelWatcher = AtmelCtrlFactory::createAtmelWatcher(m_fpgaCtrlSettings->getDeviceNode());
-                // a singletom for atmel would be nice...
-                pAtmelSys = new cATMELSysCtrl(m_pI2CSettings->getDeviceNode(), m_pI2CSettings->getI2CAdress(i2cSettings::sysCtrlI2cAddress), m_pDebugSettings->getDebugLevel());
+                m_systemController = std::make_shared<cATMELSysCtrl>(m_pI2CSettings->getDeviceNode(), m_pI2CSettings->getI2CAdress(i2cSettings::sysCtrlI2cAddress), m_pDebugSettings->getDebugLevel());
             }
             else {
                 qCritical("Abort: Could not open xml file '%s", qPrintable(m_params.xmlFile));
@@ -223,7 +219,7 @@ void cMT310S2dServer::doSetupServer()
         else
         {
             Atmel::getInstance().setPLLChannel(1); // default channel m0 for pll control
-            m_pSystemInfo = new Mt310s2SystemInfo;
+            m_pSystemInfo = new Mt310s2SystemInfo(m_systemController);
             m_pAdjHandler = new Mt310s2Adjustment;
 
             setupServer(); // here our scpi interface gets instanciated, we need this for further steps
@@ -235,7 +231,7 @@ void cMT310S2dServer::doSetupServer()
                                                                       m_pI2CSettings->getI2CAdress(i2cSettings::emobCtrlI2cAddress),
                                                                       m_pI2CSettings->getI2CAdress(i2cSettings::muxerI2cAddress),
                                                                       m_pDebugSettings->getDebugLevel());
-            scpiConnectionList.append(m_pSystemInterface = new Mt310s2SystemInterface(this, m_pSystemInfo, m_pSenseSettings, m_pSenseInterface, pAtmelSys, std::move(emobControllerContainer)));
+            scpiConnectionList.append(m_pSystemInterface = new Mt310s2SystemInterface(this, m_pSystemInfo, m_pSenseSettings, m_pSenseInterface, m_systemController, std::move(emobControllerContainer)));
             scpiConnectionList.append(m_pSenseInterface = new Mt310s2SenseInterface(getSCPIInterface(), m_pI2CSettings, m_pSenseSettings, m_pSystemInfo));
             scpiConnectionList.append(m_pSamplingInterface = new cSamplingInterface(getSCPIInterface(), m_pSamplingSettings));
             scpiConnectionList.append(m_foutInterface = new FOutGroupResourceAndInterface(getSCPIInterface(), m_foutSettings));
@@ -243,7 +239,7 @@ void cMT310S2dServer::doSetupServer()
             scpiConnectionList.append(m_pSCHeadInterface = new ScInGroupResourceAndInterface(getSCPIInterface(), m_pSCHeadSettings));
             scpiConnectionList.append(m_hkInInterface = new HkInGroupResourceAndInterface(getSCPIInterface(), m_hkInSettings));
             scpiConnectionList.append(m_pClampInterface = new cClampInterface(this, m_pI2CSettings, m_pSenseSettings, m_pSenseInterface));
-            scpiConnectionList.append(m_accumulatorInterface = new AccumulatorInterface(getSCPIInterface(), pAtmelSys, m_accumulatorSettings));
+            scpiConnectionList.append(m_accumulatorInterface = new AccumulatorInterface(getSCPIInterface(), m_systemController, m_accumulatorSettings));
 
             resourceList.append(m_pSenseInterface); // all our resources
             resourceList.append(m_pSamplingInterface);
@@ -352,7 +348,7 @@ void cMT310S2dServer::enableClampInterrupt()
 void cMT310S2dServer::enableAccumulatorInterrupt()
 {
     quint16 maskToAdd = (1 << accumulatorInterrupt);
-    if(pAtmelSys->writeIntMask(m_atmelSysCntrlInterruptMask | maskToAdd) == ZeraMControllerIo::cmddone) {
+    if(m_systemController->writeIntMask(m_atmelSysCntrlInterruptMask | maskToAdd) == ZeraMControllerIo::cmddone) {
         m_atmelSysCntrlInterruptMask |= maskToAdd;
     }
     else {

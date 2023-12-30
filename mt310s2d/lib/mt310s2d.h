@@ -17,6 +17,7 @@
 #include "accumulatorinterface.h"
 #include "mt310s2systeminfo.h"
 #include "atmelwatcherinterface.h"
+#include <memory>
 #include <QStateMachine>
 #include <QTimer>
 
@@ -89,6 +90,7 @@ private:
     RMConnection* m_pRMConnection;
     cClampInterface* m_pClampInterface;
     AccumulatorInterface* m_accumulatorInterface;
+    std::shared_ptr<cATMELSysCtrl> m_systemController;
 
     quint16 m_atmelInterruptMask = 0;
     quint16 m_atmelSysCntrlInterruptMask = 0;
