@@ -18,25 +18,18 @@ public:
                       quint16 mmask,
                       Mt310s2JustRangeTripletOffsetGainPhase* justdata);
     ~Mt310s2SenseRange();
-    virtual void initSCPIConnection(QString leadingNodes) override;
-    quint8 getAdjustmentStatus() override;
+    void initSCPIConnection(QString leadingNodes) override;
+    quint8 getAdjustmentStatus();
 
-    quint16 getMMask();
     Mt310s2JustRangeTripletOffsetGainPhase* getJustData();
-    void setMMode(int m);
 
     void initJustData();
     void computeJustData();
 
-protected:
-    void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
-    QString m_ReadRangeType(QString& sInput);
+    void setMMode(int mode);
 
-    const quint16 m_nMMask; // the possible measuring modes for this range
-    quint8 m_nMMode; // the actual measuring mode
+private:
     Mt310s2JustRangeTripletOffsetGainPhase* m_pJustdata;
-
 };
-
 
 #endif // SENSERANGE_H

@@ -13,6 +13,7 @@ SenseRangeCommon::SenseRangeCommon(cSCPI *scpiInterface,
                                    double ovrejection,
                                    double adcrejection,
                                    quint8 rselcode,
+                                   quint32 typeFlags,
                                    int rejectionScpiQueryDigits) :
     ScpiConnection(scpiInterface),
     m_sName(name),
@@ -23,6 +24,7 @@ SenseRangeCommon::SenseRangeCommon(cSCPI *scpiInterface,
     m_fOVRejection(ovrejection),
     m_fADCRejection(adcrejection),
     m_nSelCode(rselcode),
+    m_typeFlags(typeFlags),
     m_rejectionScpiQueryDigits(rejectionScpiQueryDigits)
 {
 }
@@ -36,6 +38,7 @@ void SenseRangeCommon::initSCPIConnection(QString leadingNodes)
     addDelegate(QString("%1%2").arg(leadingNodes, m_sName), "REJECTION", SCPI::isQuery, m_pSCPIInterface, SenseRange::cmdRejection);
     addDelegate(QString("%1%2").arg(leadingNodes, m_sName), "OVREJECTION", SCPI::isQuery, m_pSCPIInterface, SenseRange::cmdOVRejection);
     addDelegate(QString("%1%2").arg(leadingNodes, m_sName), "ADCREJECTION", SCPI::isQuery, m_pSCPIInterface, SenseRange::cmdADCRejection);
+    addDelegate(QString("%1%2").arg(leadingNodes, m_sName), "TYPE", SCPI::isQuery, m_pSCPIInterface, SenseRange::cmdType);
 }
 
 QString &SenseRangeCommon::getName()
@@ -63,21 +66,22 @@ void SenseRangeCommon::setAvail(bool avail)
     m_bAvail = avail;
 }
 
-bool SenseRangeCommon::execScpi(int cmdCode, cProtonetCommand *protoCmd)
+quint16 SenseRangeCommon::getMMask()
 {
-    bool handled = false;
+    return m_typeFlags;
+}
+
+void SenseRangeCommon::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
+{
     switch (cmdCode)
     {
     case SenseRange::cmdAlias:
-        handled = true;
         protoCmd->m_sOutput = scpiRangeAlias(protoCmd->m_sInput);
         break;
     case SenseRange::cmdAvail:
-        handled = true;
         protoCmd->m_sOutput = scpiRangeAvail(protoCmd->m_sInput);
         break;
     case SenseRange::cmdUpperRangeValue:
-        handled = true;
         protoCmd->m_sOutput = scpiRangeUpperRangeValue(protoCmd->m_sInput);
         break;
     case SenseRange::cmdRejection:
@@ -89,8 +93,12 @@ bool SenseRangeCommon::execScpi(int cmdCode, cProtonetCommand *protoCmd)
     case SenseRange::cmdADCRejection:
         protoCmd->m_sOutput = scpiRangeADCRejection(protoCmd->m_sInput);
         break;
+    case SenseRange::cmdType:
+        protoCmd->m_sOutput = scpiRangeTypeFlags(protoCmd->m_sInput);
+        break;
     }
-    return handled;
+    if (protoCmd->m_bwithOutput)
+        emit cmdExecutionDone(protoCmd);
 }
 
 QString SenseRangeCommon::scpiRangeAlias(const QString &scpi) const
@@ -143,6 +151,15 @@ QString SenseRangeCommon::scpiRangeADCRejection(const QString &scpi) const
     cSCPICommand cmd = scpi;
     if (cmd.isQuery())
         return QString("%1").arg(m_fADCRejection, 0, 'g', m_rejectionScpiQueryDigits);
+    else
+        return ZSCPI::scpiAnswer[ZSCPI::nak];
+}
+
+QString SenseRangeCommon::scpiRangeTypeFlags(const QString &scpi) const
+{
+    cSCPICommand cmd = scpi;
+    if (cmd.isQuery())
+        return QString("%1").arg(m_typeFlags); // we return mmode mask and sensortype here
     else
         return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
