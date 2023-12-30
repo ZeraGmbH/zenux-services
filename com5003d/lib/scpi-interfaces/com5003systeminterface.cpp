@@ -1,7 +1,5 @@
 #include "com5003systeminterface.h"
 #include "zscpi_response_definitions.h"
-#include "com5003d.h"
-#include "com5003adjustment.h"
 #include "systeminfo.h"
 #include "protonetcommand.h"
 #include "micro-controller-io/atmel.h"
@@ -9,9 +7,11 @@
 #include <scpicommand.h>
 #include <QJsonObject>
 
-Com5003SystemInterface::Com5003SystemInterface(cCOM5003dServer *server) :
+Com5003SystemInterface::Com5003SystemInterface(cPCBServer *server, cSystemInfo *sytemInfo, Com5003Adjustment* adjustment) :
     ScpiConnection(server->getSCPIInterface()),
-    m_pMyServer(server)
+    m_pMyServer(server),
+    m_sytemInfo(sytemInfo),
+    m_adjustment(adjustment)
 {
 }
 
@@ -104,8 +104,8 @@ QString Com5003SystemInterface::m_ReadDeviceVersion(QString &sInput)
 
     if (cmd.isQuery())
     {
-        if (m_pMyServer->m_pSystemInfo->dataRead())
-            return m_pMyServer->m_pSystemInfo->getDeviceVersion();
+        if (m_sytemInfo->dataRead())
+            return m_sytemInfo->getDeviceVersion();
         else
             return ZSCPI::scpiAnswer[ZSCPI::errexec];
     }
@@ -121,8 +121,8 @@ QString Com5003SystemInterface::m_ReadDeviceName(QString& sInput)
 
     if (cmd.isQuery())
     {
-        if (m_pMyServer->m_pSystemInfo->dataRead())
-            return m_pMyServer->m_pSystemInfo->getDeviceName();
+        if (m_sytemInfo->dataRead())
+            return m_sytemInfo->getDeviceName();
         else
             return ZSCPI::scpiAnswer[ZSCPI::errexec];
     }
@@ -139,7 +139,7 @@ QString Com5003SystemInterface::m_ReadWritePCBVersion(QString &sInput)
 
     if (cmd.isQuery())
     {
-        if (m_pMyServer->m_pSystemInfo->dataRead()) {
+        if (m_sytemInfo->dataRead()) {
             updateAllPCBsVersion();
             s = m_allPCBVersion.getString();
         }
@@ -152,7 +152,7 @@ QString Com5003SystemInterface::m_ReadWritePCBVersion(QString &sInput)
         {
             QString Version = cmd.getParam(0);
             ret = Atmel::getInstance().writePCBVersion(Version);
-            m_pMyServer->m_pSystemInfo->getSystemInfo(); // read back info
+            m_sytemInfo->getSystemInfo(); // read back info
         }
 
         m_genAnswer(ret, s);
@@ -166,7 +166,7 @@ QString Com5003SystemInterface::scpiReadAllCTRLVersions(QString &sInput)
 {
     cSCPICommand cmd = sInput;
     if (cmd.isQuery()) {
-        if (m_pMyServer->m_pSystemInfo->dataRead()) {
+        if (m_sytemInfo->dataRead()) {
             updateAllCtrlVersionsJson();
             return m_allCtrlVersion.getString();
         }
@@ -184,8 +184,8 @@ QString Com5003SystemInterface::m_ReadFPGAVersion(QString &sInput)
 
     if (cmd.isQuery())
     {
-        if (m_pMyServer->m_pSystemInfo->dataRead())
-            return m_pMyServer->m_pSystemInfo->getLCAVersion();
+        if (m_sytemInfo->dataRead())
+            return m_sytemInfo->getLCAVersion();
         else
             return ZSCPI::scpiAnswer[ZSCPI::errexec];
     }
@@ -204,8 +204,8 @@ QString Com5003SystemInterface::m_ReadWriteSerialNumber(QString &sInput)
     if (cmd.isQuery())
     {
         {
-            if (m_pMyServer->m_pSystemInfo->dataRead())
-                s = m_pMyServer->m_pSystemInfo->getSerialNumber();
+            if (m_sytemInfo->dataRead())
+                s = m_sytemInfo->getSerialNumber();
             else
                 s = ZSCPI::scpiAnswer[ZSCPI::errexec];
         }
@@ -216,7 +216,7 @@ QString Com5003SystemInterface::m_ReadWriteSerialNumber(QString &sInput)
         {
             QString Serial = cmd.getParam(0);
             ret = Atmel::getInstance().writeSerialNumber(Serial);
-            m_pMyServer->m_pSystemInfo->getSystemInfo(); // read back info
+            m_sytemInfo->getSystemInfo(); // read back info
         }
 
         m_genAnswer(ret, s);
@@ -239,7 +239,7 @@ QString Com5003SystemInterface::m_AdjFlashWrite(QString &sInput)
         {
             if (enable)
             {
-                if (m_pMyServer->m_pAdjHandler->exportJDataFlash())
+                if (m_adjustment->exportJDataFlash())
                     ret = ZeraMControllerIo::cmddone;
                 else
                     ret = ZeraMControllerIo::cmdexecfault;
@@ -262,7 +262,7 @@ QString Com5003SystemInterface::m_AdjFlashRead(QString &sInput)
 
     if (cmd.isCommand(1) && (cmd.getParam(0) == ""))
     {
-        if (m_pMyServer->m_pAdjHandler->importJDataFlash())
+        if (m_adjustment->importJDataFlash())
             ret = ZeraMControllerIo::cmddone;
         else
             ret = ZeraMControllerIo::cmdexecfault;
@@ -281,7 +281,7 @@ QString Com5003SystemInterface::m_AdjXMLWrite(QString &sInput)
     if (cmd.isCommand(1))
     {
         QString filename = cmd.getParam(0);
-        if (m_pMyServer->m_pAdjHandler->exportAdTojXMLFile(filename))
+        if (m_adjustment->exportAdTojXMLFile(filename))
             ret = ZeraMControllerIo::cmddone;
         else
             ret = ZeraMControllerIo::cmdexecfault;
@@ -304,7 +304,7 @@ QString Com5003SystemInterface::m_AdjXMLRead(QString &sInput)
         if (enable)
         {
             QString filename = cmd.getParam(0);
-            if (m_pMyServer->m_pAdjHandler->importAdjXMLFile(filename))
+            if (m_adjustment->importAdjXMLFile(filename))
                 return ZSCPI::scpiAnswer[ZSCPI::ack];
             else
                 return ZSCPI::scpiAnswer[ZSCPI::errexec];
@@ -323,7 +323,7 @@ QString Com5003SystemInterface::m_AdjFlashChksum(QString &sInput)
 
     if (cmd.isQuery())
     {
-        QString s = QString("0x%1").arg(m_pMyServer->m_pAdjHandler->getChecksum(),0,16); // hex output
+        QString s = QString("0x%1").arg(m_adjustment->getChecksum(),0,16); // hex output
         return s;
     }
     else
@@ -348,7 +348,7 @@ QString Com5003SystemInterface::m_InterfaceRead(QString &sInput)
 void Com5003SystemInterface::updateAllCtrlVersionsJson()
 {
     QJsonObject object;
-    object.insert("Relay controller version", QJsonValue::fromVariant(m_pMyServer->m_pSystemInfo->getCTRLVersion()));
+    object.insert("Relay controller version", QJsonValue::fromVariant(m_sytemInfo->getCTRLVersion()));
     QJsonDocument doc(object);
     m_allCtrlVersion = doc.toJson(QJsonDocument::Compact);
 }
@@ -356,7 +356,7 @@ void Com5003SystemInterface::updateAllCtrlVersionsJson()
 void Com5003SystemInterface::updateAllPCBsVersion()
 {
     QJsonObject object;
-    object.insert("Relay PCB version", QJsonValue::fromVariant(m_pMyServer->m_pSystemInfo->getPCBVersion()));
+    object.insert("Relay PCB version", QJsonValue::fromVariant(m_sytemInfo->getPCBVersion()));
     QJsonDocument doc(object);
     m_allPCBVersion = doc.toJson(QJsonDocument::Compact);
 }

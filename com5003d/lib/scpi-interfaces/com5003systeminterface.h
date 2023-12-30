@@ -1,8 +1,9 @@
 #ifndef SYSTEMINTERFACE_H
 #define SYSTEMINTERFACE_H
 
-#include "com5003d.h"
 #include "scpiconnection.h"
+#include "com5003adjustment.h"
+#include "pcbserver.h"
 #include <QList>
 #include <QJsonDocument>
 
@@ -31,7 +32,7 @@ class Com5003SystemInterface: public ScpiConnection
     Q_OBJECT
 
 public:
-    Com5003SystemInterface(cCOM5003dServer* server);
+    Com5003SystemInterface(cPCBServer* server, cSystemInfo* sytemInfo, Com5003Adjustment* adjustment);
     virtual void initSCPIConnection(QString leadingNodes) override;
 
 protected:
@@ -57,7 +58,9 @@ private:
 
     void m_genAnswer(int select, QString& answer);
 
-    cCOM5003dServer* m_pMyServer;
+    cPCBServer* m_pMyServer;
+    cSystemInfo* m_sytemInfo;
+    Com5003Adjustment* m_adjustment;
     NotificationString m_allCtrlVersion;
     NotificationString m_allPCBVersion;
 };
