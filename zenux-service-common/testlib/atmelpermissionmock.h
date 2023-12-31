@@ -1,11 +1,12 @@
-#ifndef MOCKATMEL_H
-#define MOCKATMEL_H
+#ifndef ATMELPERMISSIONMOCK_H
+#define ATMELPERMISSIONMOCK_H
 
 #include <timertemplateqt.h>
 #include <atmelpermissiontemplate.h>
 
-class MockAtmel : public AtmelPermissionTemplate, public QObject
+class AtmelPermissionMock : public QObject, public AtmelPermissionTemplate
 {
+    Q_OBJECT
 public:
     ZeraMControllerIo::atmelRM getEEPROMAccessEnable(bool &enable) override;
     void accessEnableAfter(int timeoutMs);
@@ -15,4 +16,4 @@ private:
     TimerTemplateQtPtr m_accessTimer;
 };
 
-#endif // MOCKATMEL_H
+#endif // ATMELPERMISSIONMOCK_H

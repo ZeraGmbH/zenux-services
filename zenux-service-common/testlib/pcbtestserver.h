@@ -2,13 +2,13 @@
 #define PCBTESTSERVER_H
 
 #include "pcbserver.h"
-#include "mockatmel.h"
+#include "atmelpermissionmock.h"
 
 class PCBTestServer : public cPCBServer
 {
     Q_OBJECT
 public:
-    PCBTestServer(ServerParams params, cSCPI *scpiInterface, MockAtmel *atmel);
+    PCBTestServer(ServerParams params, cSCPI *scpiInterface, AtmelPermissionMock *atmel);
     ~PCBTestServer();
     void insertScpiConnection(ScpiConnection *scpiConnection);
     void initTestSCPIConnections();

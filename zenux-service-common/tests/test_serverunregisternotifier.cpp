@@ -19,7 +19,7 @@ void test_serverunregisternotifier::init()
 {
     static ServerParams params {"foo", "0", QStringLiteral(CONFIG_SOURCES_MT310S2D) + "/" + "mt310s2d.xsd", QStringLiteral(CONFIG_SOURCES_MT310S2D) + "/" + "mt310s2d.xml"};
 
-    m_atmel = std::make_unique<MockAtmel>();
+    m_atmel = std::make_unique<AtmelPermissionMock>();
     m_adjustmentStatusNull = std::make_unique<AdjustmentStatusNull>();
     m_pcbServerTest = std::make_unique<PCBTestServer>(params, &m_scpiInterface, m_atmel.get());
 

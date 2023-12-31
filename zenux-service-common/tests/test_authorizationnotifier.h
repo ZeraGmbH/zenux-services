@@ -26,7 +26,7 @@ private slots:
 private:
     QString getAuthoStatus();
     std::unique_ptr<PCBTestServer> m_pcbServerTest;
-    MockAtmel *m_atmel;
+    AtmelPermissionMock *m_atmel;
     AdjustmentStatusInterface *m_adjustmentStatusNull;
 };
 

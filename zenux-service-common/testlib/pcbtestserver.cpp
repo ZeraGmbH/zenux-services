@@ -1,7 +1,7 @@
 #include "pcbtestserver.h"
 #include "permissionfunctions.h"
 
-PCBTestServer::PCBTestServer(ServerParams params, cSCPI *scpiInterface, MockAtmel *atmel) :
+PCBTestServer::PCBTestServer(ServerParams params, cSCPI *scpiInterface, AtmelPermissionMock *atmel) :
     cPCBServer(params, scpiInterface)
 {
     scpiConnectionList.append(this);
