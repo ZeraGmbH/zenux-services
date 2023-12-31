@@ -2,7 +2,7 @@
 #include "proxy.h"
 #include "pcbinterface.h"
 #include <timemachineobject.h>
-#include "regressionhelper.h"
+#include "senseregressionhelper.h"
 #include <QRegularExpression>
 #include <QJsonValue>
 #include <QJsonDocument>
@@ -130,7 +130,7 @@ void test_regression_sense_interface_com5003::checkRangesIL1()
 void test_regression_sense_interface_com5003::constantRangeValuesIL3GenJson()
 {
     SenseSystem::cChannelSettings *channelSetting = m_mockServer->getSenseSettings()->findChannelSettingByAlias1("IL3");
-    RegressionHelper::genJsonConstantValuesAllRanges(channelSetting, m_pcbIFace.get());
+    SenseRegressionHelper::genJsonConstantValuesAllRanges(channelSetting, m_pcbIFace.get());
 }
 
 void test_regression_sense_interface_com5003::constantRangeValuesIL3Check()
@@ -138,13 +138,13 @@ void test_regression_sense_interface_com5003::constantRangeValuesIL3Check()
     QJsonObject json = loadJson(":/regression_data/all-ranges-il3.json");
     QVERIFY(!json.isEmpty());
     SenseSystem::cChannelSettings *channelSetting = m_mockServer->getSenseSettings()->findChannelSettingByAlias1("IL3");
-    QVERIFY(RegressionHelper::checkJsonConstantValuesAllRanges(json, channelSetting, m_pcbIFace.get()));
+    QVERIFY(SenseRegressionHelper::checkJsonConstantValuesAllRanges(json, channelSetting, m_pcbIFace.get()));
 }
 
 void test_regression_sense_interface_com5003::constantRangeValuesUL3GenJson()
 {
     SenseSystem::cChannelSettings *channelSetting = m_mockServer->getSenseSettings()->findChannelSettingByAlias1("UL3");
-    RegressionHelper::genJsonConstantValuesAllRanges(channelSetting, m_pcbIFace.get());
+    SenseRegressionHelper::genJsonConstantValuesAllRanges(channelSetting, m_pcbIFace.get());
 }
 
 void test_regression_sense_interface_com5003::constantRangeValuesUL3Check()
@@ -152,7 +152,7 @@ void test_regression_sense_interface_com5003::constantRangeValuesUL3Check()
     QJsonObject json = loadJson(":/regression_data/all-ranges-ul3.json");
     QVERIFY(!json.isEmpty());
     SenseSystem::cChannelSettings *channelSetting = m_mockServer->getSenseSettings()->findChannelSettingByAlias1("UL3");
-    QVERIFY(RegressionHelper::checkJsonConstantValuesAllRanges(json, channelSetting, m_pcbIFace.get()));
+    QVERIFY(SenseRegressionHelper::checkJsonConstantValuesAllRanges(json, channelSetting, m_pcbIFace.get()));
 }
 
 QJsonObject test_regression_sense_interface_com5003::loadJson(QString fileName)

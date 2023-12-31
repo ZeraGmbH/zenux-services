@@ -1,10 +1,10 @@
-#ifndef REGRESSIONHELPER_H
-#define REGRESSIONHELPER_H
+#ifndef SENSEREGRESSIONHELPER_H
+#define SENSEREGRESSIONHELPER_H
 
 #include "sensesettings.h"
 #include "pcbinterface.h"
 
-class RegressionHelper
+class SenseRegressionHelper
 {
 public:
     static QString getJsonNumString(int clampTypeNo);
@@ -18,4 +18,4 @@ private:
     static void reportError(QString clampName, QString range, QString entry, QString expected, QString found);
 };
 
-#endif // REGRESSIONHELPER_H
+#endif // SENSEREGRESSIONHELPER_H
