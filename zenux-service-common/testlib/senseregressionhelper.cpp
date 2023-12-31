@@ -1,4 +1,4 @@
-#include "regressionhelper.h"
+#include "senseregressionhelper.h"
 #include "scpisingletransactionblocked.h"
 #include <timemachineobject.h>
 #include <QSignalSpy>
@@ -13,12 +13,12 @@ static const QString JsonOvRejectionStr = QStringLiteral("ovrejection");
 static const QString JsonAdcRejectionStr = QStringLiteral("adcrejection");
 static const QString JsonAdjustStatusFlags = QStringLiteral("adjuststatusflags");
 
-QString RegressionHelper::getJsonNumString(int clampTypeNo)
+QString SenseRegressionHelper::getJsonNumString(int clampTypeNo)
 {
     return "clamp_type_no_" + (QString("0000") + QString("%1").arg(clampTypeNo)).right(4);
 }
 
-void RegressionHelper::addRangeConstantDataToJson(QString rangeName, SenseSystem::cChannelSettings *channelSettings, QJsonObject &range)
+void SenseRegressionHelper::addRangeConstantDataToJson(QString rangeName, SenseSystem::cChannelSettings *channelSettings, QJsonObject &range)
 {
     QString channelName = channelSettings->m_nameMx;
 
@@ -45,7 +45,7 @@ void RegressionHelper::addRangeConstantDataToJson(QString rangeName, SenseSystem
     range.insert(JsonAdjustStatusFlags, adjustStatusFlags);
 }
 
-bool RegressionHelper::compareRangeConstantDataWithJson(QJsonObject &rangeReference, QString clampName, QString rangeName, SenseSystem::cChannelSettings *channelSetting)
+bool SenseRegressionHelper::compareRangeConstantDataWithJson(QJsonObject &rangeReference, QString clampName, QString rangeName, SenseSystem::cChannelSettings *channelSetting)
 {
     QString channelName = channelSetting->m_nameMx;
     bool allOk = !rangeReference.isEmpty();
@@ -108,7 +108,7 @@ bool RegressionHelper::compareRangeConstantDataWithJson(QJsonObject &rangeRefere
 
 static QString noClampJsonId = QStringLiteral("no-clamps");
 
-void RegressionHelper::genJsonConstantValuesAllRanges(SenseSystem::cChannelSettings *channelSetting, Zera::cPCBInterface* pcbIFace)
+void SenseRegressionHelper::genJsonConstantValuesAllRanges(SenseSystem::cChannelSettings *channelSetting, Zera::cPCBInterface* pcbIFace)
 {
     QJsonObject jsonAll;
 
@@ -120,7 +120,7 @@ void RegressionHelper::genJsonConstantValuesAllRanges(SenseSystem::cChannelSetti
     const QStringList ranges = responseSpy[0][2].toStringList();
     for(const QString &range : ranges) {
         QJsonObject jsonRange;
-        RegressionHelper::addRangeConstantDataToJson(range, channelSetting, jsonRange);
+        SenseRegressionHelper::addRangeConstantDataToJson(range, channelSetting, jsonRange);
         jsonRanges.insert(range, jsonRange);
     }
 
@@ -131,7 +131,7 @@ void RegressionHelper::genJsonConstantValuesAllRanges(SenseSystem::cChannelSetti
     qInfo("%s", qPrintable(doc.toJson(QJsonDocument::Indented)));
 }
 
-bool RegressionHelper::checkJsonConstantValuesAllRanges(QJsonObject jsonReference, SenseSystem::cChannelSettings *channelSetting, Zera::cPCBInterface* pcbIFace)
+bool SenseRegressionHelper::checkJsonConstantValuesAllRanges(QJsonObject jsonReference, SenseSystem::cChannelSettings *channelSetting, Zera::cPCBInterface* pcbIFace)
 {
     bool allCheckOk = true;
 
@@ -146,7 +146,7 @@ bool RegressionHelper::checkJsonConstantValuesAllRanges(QJsonObject jsonReferenc
             if(!ranges.isEmpty()) {
                 for(const QString &range : ranges) {
                     QJsonObject jsonRange = jsonRanges.value(range).toObject();
-                    if(!RegressionHelper::compareRangeConstantDataWithJson(jsonRange, noClampJsonId, range, channelSetting))
+                    if(!SenseRegressionHelper::compareRangeConstantDataWithJson(jsonRange, noClampJsonId, range, channelSetting))
                         allCheckOk = false;
                 }
             }
@@ -168,7 +168,7 @@ bool RegressionHelper::checkJsonConstantValuesAllRanges(QJsonObject jsonReferenc
 }
 
 
-void RegressionHelper::reportError(QString clampName, QString range, QString entry, QString expected, QString found)
+void SenseRegressionHelper::reportError(QString clampName, QString range, QString entry, QString expected, QString found)
 {
     qCritical("Clamp: \"%s\" / Range: \"%s\" / Entry: \"%s\": Constant incorrect. Expected: \"%s\" / Found: \"%s\"",
               qPrintable(clampName),
