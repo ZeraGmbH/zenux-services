@@ -5,6 +5,7 @@
 #include "mt310s2senseinterface.h"
 #include "mt310s2systeminterface.h"
 #include "clampinterface.h"
+#include "atmelpermissionmock.h"
 
 class MockForSenseInterfaceMt310s2 : public MockPcbServer
 {
@@ -14,6 +15,7 @@ public:
     Mt310s2SenseInterface* getSenseInterface() { return m_senseInterface.get(); }
     cClampInterface* getClampInterface() { return m_clampInterface.get(); }
     cSenseSettings* getSenseSettings() { return m_senseSettings.get(); }
+    void enableEEPROMPermission();
 private:
     std::unique_ptr<cI2CSettings> m_i2cSettings;
     std::unique_ptr<cSenseSettings> m_senseSettings;
@@ -26,6 +28,8 @@ private:
     std::unique_ptr<cClampInterface> m_clampInterface;
 
     std::unique_ptr<Mt310s2SystemInterface> m_systemInterface; // for adj xml import/export
+
+    AtmelPermissionMock m_permissionMock;
 };
 
 #endif // MOCKFORSENSEINTERFACEMT310S2_H

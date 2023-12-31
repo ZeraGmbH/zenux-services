@@ -3,6 +3,9 @@
 MockForSenseInterfaceMt310s2::MockForSenseInterfaceMt310s2() :
     MockPcbServer("mt310s2d")
 {
+    PermissionFunctions::setPermissionPinController(&m_permissionMock);
+    enableEEPROMPermission();
+
     m_i2cSettings = std::make_unique<cI2CSettings>(getConfigReader());
     m_senseSettings = std::make_unique<cSenseSettings>(getConfigReader(), 8);
     setXmlSettings(XmlSettingsList{m_i2cSettings.get(), m_senseSettings.get()});
@@ -14,8 +17,14 @@ MockForSenseInterfaceMt310s2::MockForSenseInterfaceMt310s2() :
     m_clampInterface = std::make_unique<cClampInterface>(this, m_i2cSettings.get(), m_senseSettings.get(), m_senseInterface.get());
     setResources(ResourcesList{m_senseInterface.get()});
 
-    m_systemInterface = std::make_unique<Mt310s2SystemInterface>(this, m_systemInfo.get(), m_senseSettings.get(), m_senseInterface.get(), nullptr, nullptr);
+    m_systemInterface = std::make_unique<Mt310s2SystemInterface>(this, m_systemInfo.get(), m_senseSettings.get(), m_senseInterface.get(), m_systemController, nullptr);
 
     setScpiConnections(ScpiConnectionList{m_systemInterface.get(), m_clampInterface.get()});
+
     start();
+}
+
+void MockForSenseInterfaceMt310s2::enableEEPROMPermission()
+{
+    m_permissionMock.accessEnableAfter(0);
 }
