@@ -1,8 +1,8 @@
-#include "protobufscpitestclient.h"
+#include "scpisingletransactionblocked.h"
 #include "proxy.h"
 #include <timemachineobject.h>
 
-QString ProtobufScpiTestClient::query(QString scpiQuery)
+QString ScpiSingleTransactionBlocked::query(QString scpiQuery)
 {
     ProtobufMessage::NetMessage envelope;
     ProtobufMessage::NetMessage::ScpiCommand* message = envelope.mutable_scpi();
@@ -17,7 +17,7 @@ QString ProtobufScpiTestClient::query(QString scpiQuery)
     return bareScpiAnswer;
 }
 
-QString ProtobufScpiTestClient::cmd(QString scpiCmd, QString param)
+QString ScpiSingleTransactionBlocked::cmd(QString scpiCmd, QString param)
 {
     ProtobufMessage::NetMessage envelope;
     ProtobufMessage::NetMessage::ScpiCommand* message = envelope.mutable_scpi();

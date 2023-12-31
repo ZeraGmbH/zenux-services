@@ -3,7 +3,7 @@
 #include "mt310s2senseinterface.h"
 #include "xmlhelperfortest.h"
 #include "regressionhelper.h"
-#include "protobufscpitestclient.h"
+#include "scpisingletransactionblocked.h"
 #include "proxy.h"
 #include "pcbinterface.h"
 #include "clampfactorytest.h"
@@ -303,7 +303,7 @@ void test_regression_sense_interface_mt310s2::constantRangeValuesUAUXCheck()
 
 void test_regression_sense_interface_mt310s2::constantRangeValuesIL3ModeAdjGenJson()
 {
-    QString answer = ProtobufScpiTestClient::cmd("SENS:MMODE", "ADJ");
+    QString answer = ScpiSingleTransactionBlocked::cmd("SENS:MMODE", "ADJ");
     QCOMPARE(answer, "ack");
 
     SenseSystem::cChannelSettings *channelSetting = m_mockServer->getSenseSettings()->findChannelSettingByAlias1("IL3");
@@ -312,7 +312,7 @@ void test_regression_sense_interface_mt310s2::constantRangeValuesIL3ModeAdjGenJs
 
 void test_regression_sense_interface_mt310s2::constantRangeValuesIL3ModeAdjCheck()
 {
-    QString answer = ProtobufScpiTestClient::cmd("SENS:MMODE", "ADJ");
+    QString answer = ScpiSingleTransactionBlocked::cmd("SENS:MMODE", "ADJ");
     QCOMPARE(answer, "ack");
 
     QJsonObject json = loadJson(":/regression_data/all-ranges-il3-adj-mode.json");
@@ -323,7 +323,7 @@ void test_regression_sense_interface_mt310s2::constantRangeValuesIL3ModeAdjCheck
 
 void test_regression_sense_interface_mt310s2::constantRangeValuesIAUXModeAdjGenJson()
 {
-    QString answer = ProtobufScpiTestClient::cmd("SENS:MMODE", "ADJ");
+    QString answer = ScpiSingleTransactionBlocked::cmd("SENS:MMODE", "ADJ");
     QCOMPARE(answer, "ack");
 
     SenseSystem::cChannelSettings *channelSetting = m_mockServer->getSenseSettings()->findChannelSettingByAlias1("IAUX");
@@ -332,7 +332,7 @@ void test_regression_sense_interface_mt310s2::constantRangeValuesIAUXModeAdjGenJ
 
 void test_regression_sense_interface_mt310s2::constantRangeValuesIAUXModeAdjCheck()
 {
-    QString answer = ProtobufScpiTestClient::cmd("SENS:MMODE", "ADJ");
+    QString answer = ScpiSingleTransactionBlocked::cmd("SENS:MMODE", "ADJ");
     QCOMPARE(answer, "ack");
 
     QJsonObject json = loadJson(":/regression_data/all-ranges-iaux-adj-mode.json");
@@ -343,7 +343,7 @@ void test_regression_sense_interface_mt310s2::constantRangeValuesIAUXModeAdjChec
 
 void test_regression_sense_interface_mt310s2::constantRangeValuesIL3ModeHfGenJson()
 {
-    QString answer = ProtobufScpiTestClient::cmd("SENS:MMODE", "HF");
+    QString answer = ScpiSingleTransactionBlocked::cmd("SENS:MMODE", "HF");
     QCOMPARE(answer, "ack");
 
     SenseSystem::cChannelSettings *channelSetting = m_mockServer->getSenseSettings()->findChannelSettingByAlias1("IL3");
@@ -352,7 +352,7 @@ void test_regression_sense_interface_mt310s2::constantRangeValuesIL3ModeHfGenJso
 
 void test_regression_sense_interface_mt310s2::constantRangeValuesIL3ModeHfCheck()
 {
-    QString answer = ProtobufScpiTestClient::cmd("SENS:MMODE", "HF");
+    QString answer = ScpiSingleTransactionBlocked::cmd("SENS:MMODE", "HF");
     QCOMPARE(answer, "ack");
 
     QJsonObject json = loadJson(":/regression_data/all-ranges-il3-hf-mode.json");
@@ -363,7 +363,7 @@ void test_regression_sense_interface_mt310s2::constantRangeValuesIL3ModeHfCheck(
 
 void test_regression_sense_interface_mt310s2::constantRangeValuesIAUXModeHfGenJson()
 {
-    QString answer = ProtobufScpiTestClient::cmd("SENS:MMODE", "HF");
+    QString answer = ScpiSingleTransactionBlocked::cmd("SENS:MMODE", "HF");
     QCOMPARE(answer, "ack");
 
     SenseSystem::cChannelSettings *channelSetting = m_mockServer->getSenseSettings()->findChannelSettingByAlias1("IAUX");
@@ -372,7 +372,7 @@ void test_regression_sense_interface_mt310s2::constantRangeValuesIAUXModeHfGenJs
 
 void test_regression_sense_interface_mt310s2::constantRangeValuesIAUXModeHfCheck()
 {
-    QString answer = ProtobufScpiTestClient::cmd("SENS:MMODE", "HF");
+    QString answer = ScpiSingleTransactionBlocked::cmd("SENS:MMODE", "HF");
     QCOMPARE(answer, "ack");
 
     QJsonObject json = loadJson(":/regression_data/all-ranges-iaux-hf-mode.json");
