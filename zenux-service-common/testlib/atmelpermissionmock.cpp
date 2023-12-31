@@ -9,6 +9,10 @@ ZeraMControllerIoTemplate::atmelRM AtmelPermissionMock::getEEPROMAccessEnable(bo
 
 void AtmelPermissionMock::accessEnableAfter(int timeoutMs)
 {
+    if(timeoutMs == 0) {
+        m_enable = true;
+        return;
+    }
     m_accessTimer = TimerFactoryQt::createSingleShot(timeoutMs);
     connect(m_accessTimer.get(), &TimerTemplateQt::sigExpired, this, [&]{
         m_enable = true;
@@ -18,6 +22,10 @@ void AtmelPermissionMock::accessEnableAfter(int timeoutMs)
 
 void AtmelPermissionMock::accessDisableAfter(int timeoutMs)
 {
+    if(timeoutMs == 0) {
+        m_enable = false;
+        return;
+    }
     m_accessTimer = TimerFactoryQt::createSingleShot(timeoutMs);
     connect(m_accessTimer.get(), &TimerTemplateQt::sigExpired, this, [&]{
         m_enable = false;
