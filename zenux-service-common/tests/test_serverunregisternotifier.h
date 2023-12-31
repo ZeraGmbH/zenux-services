@@ -1,7 +1,7 @@
 #ifndef TEST_SERVERUNREGISTERNOTIFIER_H
 #define TEST_SERVERUNREGISTERNOTIFIER_H
 
-#include "mockatmel.h"
+#include "atmelpermissionmock.h"
 #include "pcbtestserver.h"
 #include "adjustmentstatusnull.h"
 #include "foutsettings.h"
@@ -27,7 +27,7 @@ private:
 
     cSCPI m_scpiInterface;
     std::unique_ptr<PCBTestServer> m_pcbServerTest;
-    std::unique_ptr<MockAtmel> m_atmel;
+    std::unique_ptr<AtmelPermissionMock> m_atmel;
     std::unique_ptr<AdjustmentStatusNull> m_adjustmentStatusNull;
 
     std::unique_ptr<Zera::XMLConfig::cReader> m_xmlConfigReader;

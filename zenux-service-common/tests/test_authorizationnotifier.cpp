@@ -18,7 +18,7 @@ void test_authorizationnotifier::init()
 {
     static ServerParams params {"foo", "0", QStringLiteral(CONFIG_SOURCES_MT310S2D) + "/" + "mt310s2d.xsd", QStringLiteral(CONFIG_SOURCES_MT310S2D) + "/" + "mt310s2d.xml"};
     cSCPI *scpiInterface = new cSCPI();
-    m_atmel = new MockAtmel();
+    m_atmel = new AtmelPermissionMock();
     m_pcbServerTest = std::make_unique<PCBTestServer>(params, scpiInterface, m_atmel);
     m_adjustmentStatusNull = new AdjustmentStatusNull();
     m_pcbServerTest->insertScpiConnection(new cStatusInterface(m_pcbServerTest->getSCPIInterface(), m_adjustmentStatusNull));
