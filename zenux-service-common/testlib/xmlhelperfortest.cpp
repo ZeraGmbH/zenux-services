@@ -1,5 +1,13 @@
 #include "xmlhelperfortest.h"
+#include <QDomDocument>
 #include <QRegularExpression>
+
+QString XmlHelperForTest::prettify(QString xml)
+{
+    QDomDocument doc;
+    doc.setContent(xml);
+    return doc.toString(4);
+}
 
 QString XmlHelperForTest::removeTimeDependentEntriesFromXml(QString xml)
 {

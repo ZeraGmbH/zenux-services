@@ -6,7 +6,12 @@ SETUP_TESTS(
     test_regression_adjustment_mt310s2
     )
 
+target_sources(test_regression_adjustment_mt310s2
+  PRIVATE
+    regression_data_adj.qrc
+)
+
 target_sources(test_regression_sense_interface_mt310s2
   PRIVATE
-    regression_data.qrc
+    regression_data_sense.qrc
 )

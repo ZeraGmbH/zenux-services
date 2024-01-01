@@ -15,6 +15,8 @@ private slots:
     void init();
     void cleanup();
 
+    void scpiGetInitialAdjXml();
+    void scpiSetPermissionQueryFail();
 private:
     std::unique_ptr<MockForSenseInterfaceMt310s2> m_mockServer;
     std::unique_ptr<ResmanRunFacade> m_resmanServer;

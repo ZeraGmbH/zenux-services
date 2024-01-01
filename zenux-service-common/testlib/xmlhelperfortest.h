@@ -6,6 +6,7 @@
 class XmlHelperForTest
 {
 public:
+    static QString prettify(QString xml);
     static QString removeTimeDependentEntriesFromXml(QString xml);
 };
 
