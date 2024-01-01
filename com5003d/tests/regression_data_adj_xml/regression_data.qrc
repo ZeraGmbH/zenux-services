@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/">
+        <file>export_inititial.xml</file>
+        <file>import_minimal_pass.xml</file>
+        <file>import_missing_serno.xml</file>
+        <file>import_missing_type.xml</file>
+    </qresource>
+</RCC>

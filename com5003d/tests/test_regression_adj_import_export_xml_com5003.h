@@ -7,12 +7,18 @@
 #include "resmanrunfacade.h"
 #include <QObject>
 
-class test_regression_adjustment_com5003 : public QObject
+class test_regression_adj_import_export_xml_com5003 : public QObject
 {
     Q_OBJECT
 private slots:
     void init();
     void cleanup();
+
+    void checkExportXml();
+    void checkImportXmlMinimal();
+    void checkImportXmlFull();
+    void checkImportMissingType();
+    void checkImportMissingSerNo();
 
 private:
     std::unique_ptr<MockForSenseInterfaceCom5003> m_mockServer;

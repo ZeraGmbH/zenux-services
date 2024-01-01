@@ -1,5 +1,0 @@
-<RCC>
-    <qresource prefix="/">
-        <file>regression_data_adj/adj_initial_export_no_clamps.xml</file>
-    </qresource>
-</RCC>

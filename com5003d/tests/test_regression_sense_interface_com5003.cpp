@@ -38,52 +38,6 @@ void test_regression_sense_interface_com5003::checkVersionsOfSystemInterface()
     QCOMPARE(m_mockServer->getDeviceVersion(), "DEVICE: Unknown;PCB: Unknown;LCA: Unknown;CTRL: Unknown");
 }
 
-void test_regression_sense_interface_com5003::checkExportXml()
-{
-    // Date time are empty. On change: see mt310s2 and add XmlHelperForTest::removeTimeDependentEntriesFromXml
-    QString xmlExported = m_mockServer->getAdjustment()->exportXMLString();
-    qInfo("Exported XML:");
-    qInfo("%s", qPrintable(xmlExported));
-
-    QFile xmlFile(":/regression_data/adjustment_export.xml");
-    QVERIFY(xmlFile.open(QFile::ReadOnly));
-    QString xmlExpected = xmlFile.readAll();
-    qInfo("Expected XML:");
-    qInfo("%s", qPrintable(xmlExpected));
-
-    // if this turns fragile we have to use zera-scpi's xml-compare-testlib
-    QCOMPARE(xmlExported, xmlExpected);
-}
-
-void test_regression_sense_interface_com5003::checkImportXmlMinimal()
-{
-    QString filenameShort = ":/regression_data/adjustment_export_minimal_pass";
-    QVERIFY(QFile::exists(filenameShort + ".xml"));
-    QVERIFY(m_mockServer->getAdjustment()->importAdjXMLFile(filenameShort));
-}
-
-void test_regression_sense_interface_com5003::checkImportXmlFull()
-{
-    QString filenameShort = ":/regression_data/adjustment_export";
-    QVERIFY(QFile::exists(filenameShort + ".xml"));
-    QVERIFY(m_mockServer->getAdjustment()->importAdjXMLFile(filenameShort));
-}
-
-void test_regression_sense_interface_com5003::checkImportMissingType()
-{
-    QString filenameShort = ":/regression_data/adjustment_export_missing_type";
-    QVERIFY(QFile::exists(filenameShort + ".xml"));
-    // Currently there is no type check -> pass
-    QVERIFY(m_mockServer->getAdjustment()->importAdjXMLFile(filenameShort));
-}
-
-void test_regression_sense_interface_com5003::checkImportMissingSerNo()
-{
-    QString filenameShort = ":/regression_data/adjustment_export_missing_serno";
-    QVERIFY(QFile::exists(filenameShort + ".xml"));
-    QVERIFY(!m_mockServer->getAdjustment()->importAdjXMLFile(filenameShort));
-}
-
 QStringList test_regression_sense_interface_com5003::m_channelsExpectedAllOverThePlace = QStringList()
                                                                                          << "m0" << "m1" << "m2" << "m3" << "m4" << "m5";
 
@@ -135,7 +89,7 @@ void test_regression_sense_interface_com5003::constantRangeValuesIL3GenJson()
 
 void test_regression_sense_interface_com5003::constantRangeValuesIL3Check()
 {
-    QJsonObject json = loadJson(":/regression_data/all-ranges-il3.json");
+    QJsonObject json = loadJson(":/all-ranges-il3.json");
     QVERIFY(!json.isEmpty());
     SenseSystem::cChannelSettings *channelSetting = m_mockServer->getSenseSettings()->findChannelSettingByAlias1("IL3");
     QVERIFY(SenseRegressionHelper::checkJsonConstantValuesAllRanges(json, channelSetting, m_pcbIFace.get()));
@@ -149,7 +103,7 @@ void test_regression_sense_interface_com5003::constantRangeValuesUL3GenJson()
 
 void test_regression_sense_interface_com5003::constantRangeValuesUL3Check()
 {
-    QJsonObject json = loadJson(":/regression_data/all-ranges-ul3.json");
+    QJsonObject json = loadJson(":/all-ranges-ul3.json");
     QVERIFY(!json.isEmpty());
     SenseSystem::cChannelSettings *channelSetting = m_mockServer->getSenseSettings()->findChannelSettingByAlias1("UL3");
     QVERIFY(SenseRegressionHelper::checkJsonConstantValuesAllRanges(json, channelSetting, m_pcbIFace.get()));
