@@ -7,13 +7,19 @@
 #include "resmanrunfacade.h"
 #include <QObject>
 
-class test_regression_adjustment_mt310s2 : public QObject
+class test_regression_adj_import_export_xml_mt310s2 : public QObject
 {
     Q_OBJECT
 private slots:
     void initTestCase();
     void init();
     void cleanup();
+
+    void checkExportXml();
+    void checkImportXmlMinimal();
+    void checkImportXmlFull();
+    void checkImportMissingType();
+    void checkImportMissingSerNo();
 
     void scpiGetInitialAdjXml();
     void scpiSetPermissionQueryFail();
