@@ -11,7 +11,7 @@ class test_regression_adj_import_export_xml_mt310s2 : public QObject
 {
     Q_OBJECT
 private slots:
-    void initTestCase();
+    void initTestCase(); // We don't test clamps yet - keep this as reminder
     void init();
     void cleanup();
 
