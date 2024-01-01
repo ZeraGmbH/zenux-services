@@ -17,7 +17,7 @@ private slots:
 
     void checkExportXml();
     void checkImportXmlMinimal();
-    void checkImportXmlFull();
+    void checkImportXmlPseudoRandom();
     void checkImportMissingType();
     void checkImportMissingSerNo();
 

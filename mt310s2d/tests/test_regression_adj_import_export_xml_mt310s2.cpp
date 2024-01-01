@@ -62,11 +62,27 @@ void test_regression_adj_import_export_xml_mt310s2::checkImportXmlMinimal()
     QVERIFY(m_mockServer->getSenseInterface()->importAdjXMLFile(filenameShort));
 }
 
-void test_regression_adj_import_export_xml_mt310s2::checkImportXmlFull()
+void test_regression_adj_import_export_xml_mt310s2::checkImportXmlPseudoRandom()
 {
-    QString filenameShort = ":/export_inititial";
+    QString xmlExportedInitial = m_mockServer->getSenseInterface()->exportXMLString();
+    xmlExportedInitial = XmlHelperForTest::removeTimeDependentEntriesFromXml(xmlExportedInitial);
+    QFile xmlFileInitial(":/export_inititial.xml");
+    QVERIFY(xmlFileInitial.open(QFile::ReadOnly));
+    QString xmlExpected = xmlFileInitial.readAll();
+    xmlExpected = XmlHelperForTest::removeTimeDependentEntriesFromXml(xmlExpected);
+    QCOMPARE(xmlExportedInitial, xmlExpected);
+
+    QString filenameShort = ":/import_modified";
     QVERIFY(QFile::exists(filenameShort + ".xml"));
     QVERIFY(m_mockServer->getSenseInterface()->importAdjXMLFile(filenameShort));
+
+    QString xmlExportedModified = m_mockServer->getSenseInterface()->exportXMLString();
+    xmlExportedModified = XmlHelperForTest::removeTimeDependentEntriesFromXml(xmlExportedModified);
+    QFile xmlFileModified(":/import_modified.xml");
+    QVERIFY(xmlFileModified.open(QFile::ReadOnly));
+    xmlExpected = xmlFileModified.readAll();
+    xmlExpected = XmlHelperForTest::removeTimeDependentEntriesFromXml(xmlExpected);
+    QCOMPARE(xmlExportedModified, xmlExpected);
 }
 
 void test_regression_adj_import_export_xml_mt310s2::checkImportMissingType()

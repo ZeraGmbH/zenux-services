@@ -4,5 +4,6 @@
         <file>import_minimal_pass.xml</file>
         <file>import_missing_serno.xml</file>
         <file>import_missing_type.xml</file>
+        <file>import_modified.xml</file>
     </qresource>
 </RCC>
