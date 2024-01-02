@@ -301,19 +301,14 @@ QString Mt310s2SystemInterface::m_AdjXmlImportExport(QString &sInput)
 {
     QString s;
     cSCPICommand cmd = sInput;
-
-    if (cmd.isQuery())
-    {
+    if (cmd.isQuery()) {
         s = m_senseInterface->exportXMLString(-1);
-        s.replace("\n","");
+        s.replace("\n", "");
     }
-    else
-    {
+    else {
         bool enable;
-        if (Atmel::getInstance().hasPermission(enable))
-        {
-            if (enable)
-            {
+        if (Atmel::getInstance().hasPermission(enable)) {
+            if (enable) {
                 QString XML = cmd.getParam();
                 if (!m_senseInterface->importAdjXMLString(XML))
                     s = ZSCPI::errxml;
@@ -332,7 +327,6 @@ QString Mt310s2SystemInterface::m_AdjXmlImportExport(QString &sInput)
         else
             s = ZSCPI::scpiAnswer[ZSCPI::errexec];
     }
-
     return s;
 }
 
