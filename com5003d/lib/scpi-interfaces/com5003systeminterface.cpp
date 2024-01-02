@@ -249,7 +249,7 @@ QString Com5003SystemInterface::m_AdjFlashWrite(QString &sInput)
         {
             if (enable)
             {
-                if (m_adjustment->exportJDataFlash())
+                if (m_adjustment->exportAdjFlash())
                     ret = ZeraMControllerIo::cmddone;
                 else
                     ret = ZeraMControllerIo::cmdexecfault;
@@ -272,7 +272,7 @@ QString Com5003SystemInterface::m_AdjFlashRead(QString &sInput)
 
     if (cmd.isCommand(1) && (cmd.getParam(0) == ""))
     {
-        if (m_adjustment->importJDataFlash())
+        if (m_adjustment->importAdjFlash())
             ret = ZeraMControllerIo::cmddone;
         else
             ret = ZeraMControllerIo::cmdexecfault;

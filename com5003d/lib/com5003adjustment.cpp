@@ -31,7 +31,7 @@ Com5003Adjustment::~Com5003Adjustment()
 }
 
 
-bool Com5003Adjustment::exportJDataFlash()
+bool Com5003Adjustment::exportAdjFlash()
 {
    quint32 count=0;
    m_nChecksum = 0;
@@ -86,13 +86,13 @@ bool Com5003Adjustment::exportJDataFlash()
         qCritical("Error writing flashmemory");
         return false; // fehler beim flash schreiben
    }
-   importJDataFlash();
+   importAdjFlash();
    return true;
 }
 
 
 
-bool Com5003Adjustment::importJDataFlash()
+bool Com5003Adjustment::importAdjFlash()
 {
     QDateTime DateTime;
     m_nAdjStatus = 0; // status reset

@@ -331,7 +331,7 @@ void cCOM5003dServer::doSetupServer()
 
     m_pAdjHandler->addAdjFlashObject(m_pSenseInterface); // we add the senseinterface to both
     m_pAdjHandler->addAdjXMLObject(m_pSenseInterface); // adjustment list (flash and xml)
-    m_pAdjHandler->importJDataFlash(); // we read adjustmentdata at least once
+    m_pAdjHandler->importAdjFlash(); // we read adjustmentdata at least once
 
     initSCPIConnections();
 
