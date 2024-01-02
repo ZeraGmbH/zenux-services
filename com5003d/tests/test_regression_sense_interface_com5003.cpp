@@ -3,6 +3,7 @@
 #include "pcbinterface.h"
 #include <timemachineobject.h>
 #include "senseregressionhelper.h"
+#include "atmel.h"
 #include <QRegularExpression>
 #include <QJsonValue>
 #include <QJsonDocument>
@@ -14,7 +15,7 @@ QTEST_MAIN(test_regression_sense_interface_com5003);
 void test_regression_sense_interface_com5003::init()
 {
     m_resmanServer = std::make_unique<ResmanRunFacade>();
-    m_mockServer = std::make_unique<MockForSenseInterfaceCom5003>();
+    m_mockServer = std::make_unique<MockForSenseInterfaceCom5003>(&Atmel::getInstance());
     TimeMachineObject::feedEventLoop();
 
     m_pcbClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307);

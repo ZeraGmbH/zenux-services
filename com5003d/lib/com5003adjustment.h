@@ -4,6 +4,7 @@
 #include "com5003adjxml.h"
 #include "com5003adjflash.h"
 #include "systeminfo.h"
+#include "atmelpermissiontemplate.h"
 #include <QString>
 #include <QList>
 
@@ -21,7 +22,7 @@ enum jDataStatus
 class Com5003Adjustment: public Com5003AdjXML
 {
 public:
-    Com5003Adjustment(cSystemInfo* sInfo, QString& devNode, quint8 adr); //
+    Com5003Adjustment(cSystemInfo* sInfo, QString& devNode, quint8 adr, AtmelPermissionTemplate *permissionQueryHandler); //
     virtual ~Com5003Adjustment();
     bool exportJDataFlash();
     bool importJDataFlash();
@@ -47,6 +48,7 @@ private:
     cSystemInfo* m_pSystemInfo;
     QString m_sDeviceNode;
     quint8 m_nI2CAdr;
+    AtmelPermissionTemplate *m_permissionQueryHandler;
     quint8 m_nAdjStatus;
     quint16 m_nChecksum = 0;
 

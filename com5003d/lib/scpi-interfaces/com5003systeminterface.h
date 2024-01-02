@@ -4,6 +4,7 @@
 #include "scpiconnection.h"
 #include "com5003adjustment.h"
 #include "pcbserver.h"
+#include "atmelpermissiontemplate.h"
 #include <QList>
 #include <QJsonDocument>
 
@@ -31,9 +32,8 @@ enum SystemCommands
 class Com5003SystemInterface: public ScpiConnection
 {
     Q_OBJECT
-
 public:
-    Com5003SystemInterface(cPCBServer* server, cSystemInfo* sytemInfo, Com5003Adjustment* adjustment);
+    Com5003SystemInterface(cPCBServer* server, cSystemInfo* sytemInfo, Com5003Adjustment* adjustment, AtmelPermissionTemplate *permissionQueryHandler);
     virtual void initSCPIConnection(QString leadingNodes) override;
 
 protected:
@@ -63,6 +63,7 @@ private:
     cPCBServer* m_pMyServer;
     cSystemInfo* m_sytemInfo;
     Com5003Adjustment* m_adjustment;
+    AtmelPermissionTemplate *m_permissionQueryHandler;
     NotificationString m_allCtrlVersion;
     NotificationString m_allPCBVersion;
 };

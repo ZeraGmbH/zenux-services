@@ -11,7 +11,7 @@
 class MockForSenseInterfaceCom5003  : public MockPcbServer
 {
 public:
-    MockForSenseInterfaceCom5003();
+    MockForSenseInterfaceCom5003(AtmelPermissionTemplate *permissionQueryHandler);
     QString getDeviceVersion() { return m_systemInfo->getDeviceVersion(); }
     Com5003SenseInterface *getSenseInterface() { return m_senseInterface.get(); }
     Com5003Adjustment *getAdjustment() { return m_adjustment.get(); }

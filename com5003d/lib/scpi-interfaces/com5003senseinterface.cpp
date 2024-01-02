@@ -19,10 +19,11 @@
 #include <QDomText>
 #include <QDebug>
 
-Com5003SenseInterface::Com5003SenseInterface(cSCPI *scpiInterface, RMConnection* rmConnection, EthSettings *ethSettings, cSenseSettings *senseSettings) :
+Com5003SenseInterface::Com5003SenseInterface(cSCPI *scpiInterface, RMConnection* rmConnection, EthSettings *ethSettings, cSenseSettings *senseSettings, AtmelPermissionTemplate *permissionQueryHandler) :
     cResource(scpiInterface),
     m_rmConnection(rmConnection),
-    m_ethSettings(ethSettings)
+    m_ethSettings(ethSettings),
+    m_permissionQueryHandler(permissionQueryHandler)
 {
     m_nMMode = SenseSystem::modeAC; // default ac measurement
     Atmel::getInstance().setMeasMode(m_nMMode); // set the atmels mode too
@@ -568,7 +569,7 @@ QString Com5003SenseInterface::m_InitSenseAdjData(QString &sInput)
     // cmd.isCommand(0) is not correct but we leave it for compatibility
     if ( cmd.isCommand(0) || (cmd.isCommand(1) && (cmd.getParam(0) == ""))) {
         bool enable;
-        if (Atmel::getInstance().hasPermission(enable)) {
+        if (m_permissionQueryHandler->hasPermission(enable)) {
             if (enable) {
                 for (int i = 0; i < m_ChannelList.count(); i++)
                     m_ChannelList.at(i)->initJustData();
@@ -590,7 +591,7 @@ QString Com5003SenseInterface::m_ComputeSenseAdjData(QString &sInput)
     cSCPICommand cmd = sInput;
     if ( cmd.isCommand(1) && (cmd.getParam(0) == "") ) {
         bool enable;
-        if (Atmel::getInstance().hasPermission(enable)) {
+        if (m_permissionQueryHandler->hasPermission(enable)) {
             if (enable) {
                 for (int i = 0; i < m_ChannelList.count(); i++)
                     m_ChannelList.at(i)->computeJustData();

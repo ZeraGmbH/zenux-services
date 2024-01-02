@@ -16,8 +16,11 @@
 #include <QFile>
 #include <QDateTime>
 
-Com5003Adjustment::Com5003Adjustment(cSystemInfo* sInfo, QString &devNode, quint8 adr)
-    :m_pSystemInfo(sInfo), m_sDeviceNode(devNode), m_nI2CAdr(adr)
+Com5003Adjustment::Com5003Adjustment(cSystemInfo* sInfo, QString &devNode, quint8 adr, AtmelPermissionTemplate *permissionQueryHandler) :
+    m_pSystemInfo(sInfo),
+    m_sDeviceNode(devNode),
+    m_nI2CAdr(adr),
+    m_permissionQueryHandler(permissionQueryHandler)
 {
     m_AdjXMLList.append(this);
 }
@@ -173,7 +176,7 @@ bool Com5003Adjustment::importJDataFlash()
     QString qs = QString(s);
 
     bool enable = false;
-    Atmel::getInstance().hasPermission(enable);
+    m_permissionQueryHandler->hasPermission(enable);
 
     QString sDV = m_pSystemInfo->getDeviceVersion();
     if (qs != sDV) {

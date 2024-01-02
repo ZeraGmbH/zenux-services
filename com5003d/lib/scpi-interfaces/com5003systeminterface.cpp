@@ -7,11 +7,12 @@
 #include <scpicommand.h>
 #include <QJsonObject>
 
-Com5003SystemInterface::Com5003SystemInterface(cPCBServer *server, cSystemInfo *sytemInfo, Com5003Adjustment* adjustment) :
+Com5003SystemInterface::Com5003SystemInterface(cPCBServer *server, cSystemInfo *sytemInfo, Com5003Adjustment* adjustment, AtmelPermissionTemplate *permissionQueryHandler) :
     ScpiConnection(server->getSCPIInterface()),
     m_pMyServer(server),
     m_sytemInfo(sytemInfo),
-    m_adjustment(adjustment)
+    m_adjustment(adjustment),
+    m_permissionQueryHandler(permissionQueryHandler)
 {
 }
 
@@ -239,7 +240,7 @@ QString Com5003SystemInterface::m_AdjFlashWrite(QString &sInput)
     if (cmd.isCommand(1) && (cmd.getParam(0) == ""))
     {
         bool enable;
-        if (Atmel::getInstance().hasPermission(enable))
+        if (m_permissionQueryHandler->hasPermission(enable))
         {
             if (enable)
             {
@@ -285,7 +286,7 @@ QString Com5003SystemInterface::m_AdjXmlImportExport(QString &sInput)
     }
     else {
         bool enable;
-        if (Atmel::getInstance().hasPermission(enable)) {
+        if (m_permissionQueryHandler->hasPermission(enable)) {
             if (enable) {
                 QString XML = cmd.getParam();
                 if (!m_adjustment->importAdjXMLString(XML))
@@ -340,7 +341,7 @@ QString Com5003SystemInterface::m_AdjXMLRead(QString &sInput)
     if (cmd.isCommand(1))
     {
         bool enable = false;
-        Atmel::getInstance().hasPermission(enable);
+        m_permissionQueryHandler->hasPermission(enable);
         if (enable)
         {
             QString filename = cmd.getParam(0);
