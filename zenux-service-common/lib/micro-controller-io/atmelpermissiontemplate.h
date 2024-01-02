@@ -2,6 +2,7 @@
 #define ATMELPERMISSIONTEMPLATE_H
 
 #include <zeramcontrollerio.h>
+#include <memory.h>
 
 class AtmelPermissionTemplate
 {
@@ -10,5 +11,7 @@ public:
     virtual ZeraMControllerIo::atmelRM getEEPROMAccessEnable(bool &enable) = 0;
     bool /*success*/ hasPermission(bool &allow);
 };
+
+typedef std::unique_ptr<AtmelPermissionTemplate> AtmelPermissionTemplatePtrU;
 
 #endif // ATMELPERMISSIONTEMPLATE_H
