@@ -22,12 +22,17 @@
 #include <QDebug>
 #include <QFile>
 
-Mt310s2SenseInterface::Mt310s2SenseInterface(cSCPI *scpiInterface, cI2CSettings* i2cSettings, cSenseSettings* senseSettings, cSystemInfo *systemInfo) :
+Mt310s2SenseInterface::Mt310s2SenseInterface(cSCPI *scpiInterface,
+                                             cI2CSettings* i2cSettings,
+                                             cSenseSettings* senseSettings,
+                                             cSystemInfo *systemInfo,
+                                             AtmelPermissionTemplate *permissionQueryHandler) :
     cResource(scpiInterface),
     Mt310s2AdjFlash(i2cSettings->getDeviceNode(),
               i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress),
               I2cMultiplexerFactory::createNullMuxer()),
-    m_pSystemInfo(systemInfo)
+    m_pSystemInfo(systemInfo),
+    m_permissionQueryHandler(permissionQueryHandler)
 {
     // Init with bad defaults so coder's bugs pop up
     m_nVersionStatus = Adjustment::wrongVERS;
@@ -283,7 +288,7 @@ bool Mt310s2SenseInterface::importAdjData(QDataStream &stream)
     QString qs = QString(s);
 
     bool enable = false;
-    Atmel::getInstance().hasPermission(enable);
+    m_permissionQueryHandler->hasPermission(enable);
 
     QString sDV = m_pSystemInfo->getDeviceVersion();
     if (qs != sDV) {

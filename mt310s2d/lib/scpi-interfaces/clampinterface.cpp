@@ -8,12 +8,17 @@
 #include <i2cutils.h>
 #include <i2cmuxerscopedonoff.h>
 
-cClampInterface::cClampInterface(cPCBServer *server, cI2CSettings *i2cSettings, cSenseSettings *senseSettings, Mt310s2SenseInterface *senseInterface) :
+cClampInterface::cClampInterface(cPCBServer *server,
+                                 cI2CSettings *i2cSettings,
+                                 cSenseSettings *senseSettings,
+                                 Mt310s2SenseInterface *senseInterface,
+                                 AtmelPermissionTemplate *permissionQueryHandler) :
     ScpiConnection(server->getSCPIInterface()),
     m_pMyServer(server),
     m_i2cSettings(i2cSettings),
     m_senseSettings(senseSettings),
-    m_pSenseInterface(senseInterface)
+    m_pSenseInterface(senseInterface),
+    m_permissionQueryHandler(permissionQueryHandler)
 {
     m_nClampStatus = 0;
 }
@@ -143,7 +148,7 @@ QString cClampInterface::writeAllClamps(QString &sInput)
     if (cmd.isCommand(1) && (cmd.getParam(0) == "")) {
         if (m_clampHash.count() > 0) {
             bool enable;
-            if (Atmel::getInstance().hasPermission(enable)) {
+            if (m_permissionQueryHandler->hasPermission(enable)) {
                 if (enable) {
                     bool done = true;
                     for(auto clamp : qAsConst(m_clampHash))
@@ -187,7 +192,7 @@ QString cClampInterface::importExportAllClamps(QString &sInput)
         QString answer;
         bool err = false;
         bool enable;
-        if (Atmel::getInstance().hasPermission(enable)) {
+        if (m_permissionQueryHandler->hasPermission(enable)) {
             if (enable) {
                 QString allXML = cmd.getParam(); // we fetch all input
                 while (allXML[0] == QChar(' ')) { // we remove all leading blanks

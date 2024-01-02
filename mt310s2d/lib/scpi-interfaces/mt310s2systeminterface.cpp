@@ -8,14 +8,16 @@ Mt310s2SystemInterface::Mt310s2SystemInterface(cPCBServer *server,
                                                Mt310s2SystemInfo *systemInfo,
                                                cSenseSettings *senseSettings,
                                                Mt310s2SenseInterface* senseInterface, std::shared_ptr<cATMELSysCtrl> systemController,
-                                               HotPluggableControllerContainerPtr hotPluggableControllerContainer) :
+                                               HotPluggableControllerContainerPtr hotPluggableControllerContainer,
+                                               AtmelPermissionTemplate *permissionQueryHandler) :
     ScpiConnection(server->getSCPIInterface()),
     m_pMyServer(server),
     m_systemInfo(systemInfo),
     m_senseSettings(senseSettings),
     m_senseInterface(senseInterface),
     m_systemController(systemController),
-    m_hotPluggableControllerContainer(std::move(hotPluggableControllerContainer))
+    m_hotPluggableControllerContainer(std::move(hotPluggableControllerContainer)),
+    m_permissionQueryHandler(permissionQueryHandler)
 {
     if(m_hotPluggableControllerContainer)
         connect(m_hotPluggableControllerContainer.get(), &HotPluggableControllerContainer::sigControllersChanged,
@@ -261,7 +263,7 @@ QString Mt310s2SystemInterface::m_AdjFlashWrite(QString &sInput)
     if (cmd.isCommand(1) && (cmd.getParam(0) == ""))
     {
         bool enable;
-        if (Atmel::getInstance().hasPermission(enable))
+        if (m_permissionQueryHandler->hasPermission(enable))
         {
             if (enable)
             {
@@ -307,7 +309,7 @@ QString Mt310s2SystemInterface::m_AdjXmlImportExport(QString &sInput)
     }
     else {
         bool enable;
-        if (Atmel::getInstance().hasPermission(enable)) {
+        if (m_permissionQueryHandler->hasPermission(enable)) {
             if (enable) {
                 QString XML = cmd.getParam();
                 if (!m_senseInterface->importAdjXMLString(XML))
@@ -355,7 +357,7 @@ QString Mt310s2SystemInterface::m_AdjXMLRead(QString &sInput)
     if (cmd.isCommand(1))
     {
         bool enable;
-        if (Atmel::getInstance().hasPermission(enable))
+        if (m_permissionQueryHandler->hasPermission(enable))
         {
             if (enable)
             {

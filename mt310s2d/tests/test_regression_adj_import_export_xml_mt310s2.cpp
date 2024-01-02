@@ -1,6 +1,7 @@
 #include "test_regression_adj_import_export_xml_mt310s2.h"
 #include "clampfactorytest.h"
 #include "proxy.h"
+#include "atmel.h"
 #include "scpisingletransactionblocked.h"
 #include "zscpi_response_definitions.h"
 #include "xmlhelperfortest.h"
@@ -18,7 +19,7 @@ void test_regression_adj_import_export_xml_mt310s2::initTestCase()
 void test_regression_adj_import_export_xml_mt310s2::init()
 {
     m_resmanServer = std::make_unique<ResmanRunFacade>();
-    m_mockServer = std::make_unique<MockForSenseInterfaceMt310s2>();
+    m_mockServer = std::make_unique<MockForSenseInterfaceMt310s2>(&Atmel::getInstance());
     TimeMachineObject::feedEventLoop();
 
     m_pcbClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307);

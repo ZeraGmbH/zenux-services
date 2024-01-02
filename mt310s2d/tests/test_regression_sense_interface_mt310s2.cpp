@@ -5,6 +5,7 @@
 #include "senseregressionhelper.h"
 #include "scpisingletransactionblocked.h"
 #include "proxy.h"
+#include "atmel.h"
 #include "pcbinterface.h"
 #include "clampfactorytest.h"
 #include <i2cmultiplexerfactory.h>
@@ -26,7 +27,7 @@ void test_regression_sense_interface_mt310s2::initTestCase()
 void test_regression_sense_interface_mt310s2::init()
 {
     m_resmanServer = std::make_unique<ResmanRunFacade>();
-    m_mockServer = std::make_unique<MockForSenseInterfaceMt310s2>();
+    m_mockServer = std::make_unique<MockForSenseInterfaceMt310s2>(&Atmel::getInstance());
     TimeMachineObject::feedEventLoop();
 
     m_pcbClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307);
