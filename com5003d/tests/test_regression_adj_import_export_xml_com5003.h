@@ -20,6 +20,8 @@ private slots:
     void checkImportMissingType();
     void checkImportMissingSerNo();
 
+    void scpiGetInitialAdjXml();
+    void scpiSetPermissionQueryFail();
 private:
     std::unique_ptr<MockForSenseInterfaceCom5003> m_mockServer;
     std::unique_ptr<ResmanRunFacade> m_resmanServer;

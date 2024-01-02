@@ -1,5 +1,8 @@
 #include "test_regression_adj_import_export_xml_com5003.h"
 #include "proxy.h"
+#include "scpisingletransactionblocked.h"
+#include "zscpi_response_definitions.h"
+#include "xmlhelperfortest.h"
 #include <timemachineobject.h>
 #include <QSignalSpy>
 #include <QTest>
@@ -84,5 +87,31 @@ void test_regression_adj_import_export_xml_com5003::checkImportMissingSerNo()
     QString filenameShort = ":/import_missing_serno";
     QVERIFY(QFile::exists(filenameShort + ".xml"));
     QVERIFY(!m_mockServer->getAdjustment()->importAdjXMLFile(filenameShort));
+}
+
+void test_regression_adj_import_export_xml_com5003::scpiGetInitialAdjXml()
+{
+    QFile xmlFile(":/export_inititial.xml");
+    QVERIFY(xmlFile.open(QFile::ReadOnly));
+    QString xmlExpected = xmlFile.readAll();
+    qInfo("Expected XML:");
+    qInfo("%s", qPrintable(xmlExpected));
+    xmlExpected = XmlHelperForTest::prettify(xmlExpected);
+    xmlExpected = XmlHelperForTest::removeTimeDependentEntriesFromXml(xmlExpected);
+
+    QString xmlExported = ScpiSingleTransactionBlocked::query("SYSTEM:ADJUSTMENT:XML?");
+    QString xmlExportedPretty = XmlHelperForTest::prettify(xmlExported);
+    qInfo("Exported XML:");
+    qInfo("%s", qPrintable(xmlExportedPretty));
+    xmlExportedPretty = XmlHelperForTest::removeTimeDependentEntriesFromXml(xmlExportedPretty);
+
+    // if this turns fragile we have to use zera-scpi's xml-compare-testlib
+    QCOMPARE(xmlExportedPretty, xmlExpected);
+}
+
+void test_regression_adj_import_export_xml_com5003::scpiSetPermissionQueryFail()
+{
+    QString ret = ScpiSingleTransactionBlocked::cmd("SYSTEM:ADJUSTMENT:XML", "foo");
+    QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::errexec]);
 }
 
