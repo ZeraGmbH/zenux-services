@@ -240,7 +240,7 @@ QString cClampInterface::importExportAllClamps(QString &sInput)
                                 else {
                                     pClamp4Use->importXMLDocument(&justqdom, false); // otherwise clamp type cannot be changed
                                 }
-                                m_pSenseInterface->m_ComputeSenseAdjData();
+                                m_pSenseInterface->computeSenseAdjData();
                                 // then we let it compute its new adjustment coefficients... we simply call senseinterface's compute
                                 // command. we compute a little bit to much but this doesn't matter at all
                                 if (!pClamp4Use->exportAdjFlash()) {// and then we program the clamp

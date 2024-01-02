@@ -80,7 +80,7 @@ public:
     virtual quint8 getAdjustmentStatus() override; // we return 0 if adj. otherwise  1 +2 +4
     virtual void registerResource(RMConnection *rmConnection, quint16 port) override;
     virtual QString exportXMLString(int indent = 1) override;
-    void m_ComputeSenseAdjData();
+    void computeSenseAdjData();
 protected:
     void exportAdjData(QDataStream& stream) override;
     bool importAdjData(QDataStream& stream) override;

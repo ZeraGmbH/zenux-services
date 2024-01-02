@@ -524,7 +524,7 @@ QString Mt310s2SenseInterface::exportXMLString(int indent)
     return justqdom.toString(indent);
 }
 
-void Mt310s2SenseInterface::m_ComputeSenseAdjData()
+void Mt310s2SenseInterface::computeSenseAdjData()
 {
     for(auto channel : qAsConst(m_ChannelList)) {
         channel->computeJustData();
@@ -777,7 +777,7 @@ QString Mt310s2SenseInterface::m_ComputeSenseAdjData(QString& sInput)
     cSCPICommand cmd = sInput;
     // cmd.isCommand(0) is not correct but we leave it for compatibility
     if ( cmd.isCommand(0) || (cmd.isCommand(1) && (cmd.getParam(0) == ""))) {
-        m_ComputeSenseAdjData();
+        computeSenseAdjData();
         return ZSCPI::scpiAnswer[ZSCPI::ack];
     }
     else {

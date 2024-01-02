@@ -316,7 +316,7 @@ QString Mt310s2SystemInterface::m_AdjXmlImportExport(QString &sInput)
                     s = ZSCPI::scpiAnswer[ZSCPI::errxml];
                 else
                 {
-                    m_senseInterface->m_ComputeSenseAdjData();
+                    m_senseInterface->computeSenseAdjData();
                     if (!m_senseInterface->exportAdjFlash())
                         s = ZSCPI::scpiAnswer[ZSCPI::errexec];
                     else
