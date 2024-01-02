@@ -14,6 +14,6 @@ signals:
     void sigRunning();
 };
 
-typedef std::unique_ptr<AtmelWatcherInterface> AtmelWatcherInterfacePrt;
+typedef std::unique_ptr<AtmelWatcherInterface> AtmelWatcherInterfacePtr;
 
 #endif // ATMELWATCHERINTERFACE_H

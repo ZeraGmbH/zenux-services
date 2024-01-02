@@ -7,7 +7,7 @@ std::function<AtmelCommonVersionsPtr(QString, quint8, quint8, quint8, quint8)> A
     return std::make_shared<AtmelEmobCtrl>(i2cCtrl, devnode, adrMux, ctrlChannel);
 };
 
-std::function<AtmelWatcherInterfacePrt(QString devnode)> AtmelCtrlFactory::m_atmelWatcherCreateFunction =
+std::function<AtmelWatcherInterfacePtr(QString devnode)> AtmelCtrlFactory::m_atmelWatcherCreateFunction =
     [](QString devnode) {
         return std::make_unique<cAtmelWatcher>(devnode);
 };
@@ -17,7 +17,7 @@ AtmelCommonVersionsPtr AtmelCtrlFactory::createEmobCtrl(QString devnode, quint8 
     return m_emobCreateFunction(devnode, adrCtrl, adrMux, muxChannel, debuglevel);
 }
 
-AtmelWatcherInterfacePrt AtmelCtrlFactory::createAtmelWatcher(QString devnode)
+AtmelWatcherInterfacePtr AtmelCtrlFactory::createAtmelWatcher(QString devnode)
 {
     return m_atmelWatcherCreateFunction(devnode);
 }
