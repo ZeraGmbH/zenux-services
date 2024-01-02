@@ -300,7 +300,7 @@ QString Com5003SystemInterface::m_AdjXmlImportExport(QString &sInput)
                 {
                     // for now
                     s = ZSCPI::scpiAnswer[ZSCPI::nak];
-                    /*m_senseInterface->m_ComputeSenseAdjData();
+                    /*m_senseInterface->computeSenseAdjData();
                     if (!m_senseInterface->exportAdjFlash())
                         s = ZSCPI::scpiAnswer[ZSCPI::errexec];
                     else

@@ -470,6 +470,13 @@ void Com5003SenseInterface::registerResource(RMConnection *rmConnection, quint16
 
 }
 
+void Com5003SenseInterface::computeSenseAdjData()
+{
+    for(auto channel : qAsConst(m_ChannelList)) {
+        channel->computeJustData();
+    }
+}
+
 
 QString Com5003SenseInterface::scpiReadVersion(QString &sInput)
 {

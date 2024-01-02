@@ -62,6 +62,7 @@ public:
     virtual void exportAdjDataXml(QDomDocument& doc, QDomElement& adjtag) override;
     virtual bool importAdjDataXml(QDomNode& node) override;
     virtual void registerResource(RMConnection *rmConnection, quint16 port) override;
+    void computeSenseAdjData();
 
 protected:
     void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
