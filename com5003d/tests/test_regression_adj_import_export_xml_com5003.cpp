@@ -10,19 +10,6 @@
 
 QTEST_MAIN(test_regression_adj_import_export_xml_com5003);
 
-void test_regression_adj_import_export_xml_com5003::init()
-{
-    m_resmanServer = std::make_unique<ResmanRunFacade>();
-    m_mockServer = std::make_unique<MockForSenseInterfaceCom5003>(&Atmel::getInstance());
-    TimeMachineObject::feedEventLoop();
-
-    m_pcbClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307);
-    m_pcbIFace = std::make_unique<Zera::cPCBInterface>();
-    m_pcbIFace->setClientSmart(m_pcbClient);
-    Zera::Proxy::getInstance()->startConnectionSmart(m_pcbClient);
-    TimeMachineObject::feedEventLoop();
-}
-
 void test_regression_adj_import_export_xml_com5003::cleanup()
 {
     m_pcbIFace = nullptr;
@@ -34,6 +21,8 @@ void test_regression_adj_import_export_xml_com5003::cleanup()
 
 void test_regression_adj_import_export_xml_com5003::directAcessFileExportXml()
 {
+    setupServers(&Atmel::getInstance());
+
     // Date time are empty. On change: see mt310s2 and add XmlHelperForTest::removeTimeDependentEntriesFromXml
     QString xmlExported = m_mockServer->getAdjustment()->exportXMLString();
     qInfo("Exported XML:");
@@ -51,6 +40,8 @@ void test_regression_adj_import_export_xml_com5003::directAcessFileExportXml()
 
 void test_regression_adj_import_export_xml_com5003::directAcessFileImportXmlMinimal()
 {
+    setupServers(&Atmel::getInstance());
+
     QString filenameShort = ":/import_minimal_pass";
     QVERIFY(QFile::exists(filenameShort + ".xml"));
     QVERIFY(m_mockServer->getAdjustment()->importAdjXMLFile(filenameShort));
@@ -58,6 +49,8 @@ void test_regression_adj_import_export_xml_com5003::directAcessFileImportXmlMini
 
 void test_regression_adj_import_export_xml_com5003::directAcessFileImportXmlPseudoRandom()
 {
+    setupServers(&Atmel::getInstance());
+
     QString xmlExportedInitial = m_mockServer->getAdjustment()->exportXMLString();
     QFile xmlFileInitial(":/export_inititial.xml");
     QVERIFY(xmlFileInitial.open(QFile::ReadOnly));
@@ -77,6 +70,8 @@ void test_regression_adj_import_export_xml_com5003::directAcessFileImportXmlPseu
 
 void test_regression_adj_import_export_xml_com5003::directAcessFileImportMissingType()
 {
+    setupServers(&Atmel::getInstance());
+
     QString filenameShort = ":/import_missing_type";
     QVERIFY(QFile::exists(filenameShort + ".xml"));
     // Currently there is no type check -> pass
@@ -85,6 +80,8 @@ void test_regression_adj_import_export_xml_com5003::directAcessFileImportMissing
 
 void test_regression_adj_import_export_xml_com5003::directAcessFileImportMissingSerNo()
 {
+    setupServers(&Atmel::getInstance());
+
     QString filenameShort = ":/import_missing_serno";
     QVERIFY(QFile::exists(filenameShort + ".xml"));
     QVERIFY(!m_mockServer->getAdjustment()->importAdjXMLFile(filenameShort));
@@ -92,6 +89,8 @@ void test_regression_adj_import_export_xml_com5003::directAcessFileImportMissing
 
 void test_regression_adj_import_export_xml_com5003::scpiExportInitialAdjXml()
 {
+    setupServers(&Atmel::getInstance());
+
     QFile xmlFile(":/export_inititial.xml");
     QVERIFY(xmlFile.open(QFile::ReadOnly));
     QString xmlExpected = xmlFile.readAll();
@@ -112,7 +111,22 @@ void test_regression_adj_import_export_xml_com5003::scpiExportInitialAdjXml()
 
 void test_regression_adj_import_export_xml_com5003::scpiImportPermissionQueryFail()
 {
+    setupServers(&Atmel::getInstance());
+
     QString ret = ScpiSingleTransactionBlocked::cmd("SYSTEM:ADJUSTMENT:XML", "foo");
     QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::errexec]);
+}
+
+void test_regression_adj_import_export_xml_com5003::setupServers(AtmelPermissionTemplate *permissionQueryHandler)
+{
+    m_resmanServer = std::make_unique<ResmanRunFacade>();
+    m_mockServer = std::make_unique<MockForSenseInterfaceCom5003>(permissionQueryHandler);
+    TimeMachineObject::feedEventLoop();
+
+    m_pcbClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307);
+    m_pcbIFace = std::make_unique<Zera::cPCBInterface>();
+    m_pcbIFace->setClientSmart(m_pcbClient);
+    Zera::Proxy::getInstance()->startConnectionSmart(m_pcbClient);
+    TimeMachineObject::feedEventLoop();
 }
 

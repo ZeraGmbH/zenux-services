@@ -12,7 +12,6 @@ class test_regression_adj_import_export_xml_mt310s2 : public QObject
     Q_OBJECT
 private slots:
     void initTestCase(); // We don't test clamps yet - keep this as reminder
-    void init();
     void cleanup();
 
     void directAcessFileExportXml();
@@ -24,6 +23,8 @@ private slots:
     void scpiExportInitialAdjXml();
     void scpiImportPermissionQueryFail();
 private:
+    void setupServers(AtmelPermissionTemplate *permissionQueryHandler);
+
     std::unique_ptr<MockForSenseInterfaceMt310s2> m_mockServer;
     std::unique_ptr<ResmanRunFacade> m_resmanServer;
     Zera::ProxyClientPtr m_pcbClient;
