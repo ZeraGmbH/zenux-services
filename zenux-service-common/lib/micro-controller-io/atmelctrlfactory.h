@@ -8,10 +8,10 @@ class AtmelCtrlFactory // TODO: Split up
 {
 public:
     static AtmelCommonVersionsPtr createEmobCtrl(QString devnode, quint8 adrCtrl, quint8 adrMux, quint8 muxChannel, quint8 debuglevel);
-    static AtmelWatcherInterfacePrt createAtmelWatcher(QString devnode);
+    static AtmelWatcherInterfacePtr createAtmelWatcher(QString devnode);
 protected:
     static std::function<AtmelCommonVersionsPtr(QString devnode, quint8 adrCtrl, quint8 adrMux, quint8 ctrlChannelForMux, quint8 debuglevel)> m_emobCreateFunction;
-    static std::function<AtmelWatcherInterfacePrt(QString devnode)> m_atmelWatcherCreateFunction;
+    static std::function<AtmelWatcherInterfacePtr(QString devnode)> m_atmelWatcherCreateFunction;
 };
 
 #endif // ATMELCTRLFACTORY_H

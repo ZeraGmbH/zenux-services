@@ -84,7 +84,7 @@ private:
     QState* m_stateconnect2RM;
     QState* m_stateconnect2RMError;
     QState* m_stateSendRMIdentAndRegister;
-    AtmelWatcherInterfacePrt m_atmelWatcher;
+    AtmelWatcherInterfacePtr m_atmelWatcher;
     quint8 m_nerror;
     int m_nFPGAfd;
     int m_retryRMConnect;
