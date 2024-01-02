@@ -25,7 +25,7 @@ void test_regression_adj_import_export_xml_mt310s2::cleanup()
     TimeMachineObject::feedEventLoop();
 }
 
-void test_regression_adj_import_export_xml_mt310s2::directAcessFileExportXml()
+void test_regression_adj_import_export_xml_mt310s2::directAcessExportXml()
 {
     setupServers(&Atmel::getInstance());
 
@@ -123,7 +123,7 @@ void test_regression_adj_import_export_xml_mt310s2::scpiImportPermissionQueryFai
 {
     setupServers(&Atmel::getInstance());
 
-    QString ret = ScpiSingleTransactionBlocked::cmd("SYSTEM:ADJUSTMENT:XML", "foo");
+    QString ret = ScpiSingleTransactionBlocked::cmdXmlParam("SYSTEM:ADJUSTMENT:XML", "foo");
     QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::errexec]);
 }
 
@@ -132,7 +132,7 @@ void test_regression_adj_import_export_xml_mt310s2::scpiImportNoPermission()
     AtmelPermissionTemplatePtrU perm = AtmelPermissionMock::createAlwaysDisabled();
     setupServers(perm.get());
 
-    QString ret = ScpiSingleTransactionBlocked::cmd("SYSTEM:ADJUSTMENT:XML", "foo");
+    QString ret = ScpiSingleTransactionBlocked::cmdXmlParam("SYSTEM:ADJUSTMENT:XML", "foo");
     QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::erraut]);
 }
 
@@ -141,8 +141,20 @@ void test_regression_adj_import_export_xml_mt310s2::scpiImportInvalidXml()
     AtmelPermissionTemplatePtrU perm = AtmelPermissionMock::createAlwaysEnabled();
     setupServers(perm.get());
 
-    QString ret = ScpiSingleTransactionBlocked::cmd("SYSTEM:ADJUSTMENT:XML", "foo");
+    QString ret = ScpiSingleTransactionBlocked::cmdXmlParam("SYSTEM:ADJUSTMENT:XML", "foo");
     QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::errxml]);
+}
+
+void test_regression_adj_import_export_xml_mt310s2::scpiImportFailFlashWrite()
+{
+    AtmelPermissionTemplatePtrU perm = AtmelPermissionMock::createAlwaysEnabled();
+    setupServers(perm.get());
+
+    QString xmlFileName = ":/import_minimal_pass.xml";
+    QString xml = XmlHelperForTest::loadXml(xmlFileName);
+
+    QString ret = ScpiSingleTransactionBlocked::cmdXmlParam("SYSTEM:ADJUSTMENT:XML", xml);
+    QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::errexec]);
 }
 
 void test_regression_adj_import_export_xml_mt310s2::setupServers(AtmelPermissionTemplate *permissionQueryHandler)

@@ -42,8 +42,10 @@ bool Mt310s2AdjXML::importAdjXMLFile(QString file)
 bool Mt310s2AdjXML::importAdjXMLString(QString &xml)
 {
     QDomDocument justqdom("TheDocument");
-    if (!justqdom.setContent(xml)) {
-        qCritical("importAdjXMLString: format error in xml");
+    QString errorMsg;
+    if (!justqdom.setContent(xml, &errorMsg)) {
+        qCritical("importAdjXMLString failed with: \"%s\"", qPrintable(errorMsg));
+        qCritical("XML received: \"%s\"", qPrintable(xml));
         return false;
     }
     return importXMLDocument(&justqdom);
