@@ -19,7 +19,7 @@ MockForSenseInterfaceCom5003::MockForSenseInterfaceCom5003(AtmelPermissionTempla
     m_adjustment = std::make_unique<Com5003Adjustment>(m_systemInfo.get(), m_i2cSettings->getDeviceNode(), m_i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress), permissionQueryHandler);
     m_adjustment->addAdjXMLObject(m_senseInterface.get());
 
-    m_systemInterface = std::make_unique<Com5003SystemInterface>(this, m_systemInfo.get(), m_adjustment.get(), permissionQueryHandler);
+    m_systemInterface = std::make_unique<Com5003SystemInterface>(this, m_systemInfo.get(), m_adjustment.get(), m_senseInterface.get(), permissionQueryHandler);
     setScpiConnections(ScpiConnectionList{m_systemInterface.get()});
 
     start();
