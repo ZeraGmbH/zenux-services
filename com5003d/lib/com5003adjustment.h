@@ -24,8 +24,8 @@ class Com5003Adjustment: public Com5003AdjXML
 public:
     Com5003Adjustment(cSystemInfo* sInfo, QString& devNode, quint8 adr, AtmelPermissionTemplate *permissionQueryHandler); //
     virtual ~Com5003Adjustment();
-    bool exportJDataFlash();
-    bool importJDataFlash();
+    bool exportAdjFlash();
+    bool importAdjFlash();
 
     QString exportXMLString(int indent = 1);
     bool exportAdTojXMLFile(QString& file);
