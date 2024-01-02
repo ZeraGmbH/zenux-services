@@ -7,11 +7,16 @@
 #include <scpicommand.h>
 #include <QJsonObject>
 
-Com5003SystemInterface::Com5003SystemInterface(cPCBServer *server, cSystemInfo *sytemInfo, Com5003Adjustment* adjustment, AtmelPermissionTemplate *permissionQueryHandler) :
+Com5003SystemInterface::Com5003SystemInterface(cPCBServer *server,
+                                               cSystemInfo *sytemInfo,
+                                               Com5003Adjustment* adjustment,
+                                               Com5003SenseInterface *senseInterface,
+                                               AtmelPermissionTemplate *permissionQueryHandler) :
     ScpiConnection(server->getSCPIInterface()),
     m_pMyServer(server),
     m_sytemInfo(sytemInfo),
     m_adjustment(adjustment),
+    m_senseInterface(senseInterface),
     m_permissionQueryHandler(permissionQueryHandler)
 {
 }
@@ -295,7 +300,6 @@ QString Com5003SystemInterface::m_AdjXmlImportExport(QString &sInput)
                 {
                     // for now
                     s = ZSCPI::scpiAnswer[ZSCPI::nak];
-
                     /*m_senseInterface->m_ComputeSenseAdjData();
                     if (!m_senseInterface->exportAdjFlash())
                         s = ZSCPI::scpiAnswer[ZSCPI::errexec];

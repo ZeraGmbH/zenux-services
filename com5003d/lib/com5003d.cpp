@@ -314,8 +314,8 @@ void cCOM5003dServer::doSetupServer()
 
     scpiConnectionList.append(this); // the server itself has some commands
     scpiConnectionList.append(m_pStatusInterface = new cStatusInterface(getSCPIInterface(), m_pAdjHandler));
-    scpiConnectionList.append(m_pSystemInterface = new Com5003SystemInterface(this, m_pSystemInfo, m_pAdjHandler, &Atmel::getInstance()));
     scpiConnectionList.append(m_pSenseInterface = new Com5003SenseInterface(getSCPIInterface(), m_pRMConnection, &m_ethSettings, m_pSenseSettings, &Atmel::getInstance()));
+    scpiConnectionList.append(m_pSystemInterface = new Com5003SystemInterface(this, m_pSystemInfo, m_pAdjHandler, m_pSenseInterface, &Atmel::getInstance()));
     scpiConnectionList.append(m_pSamplingInterface = new cSamplingInterface(getSCPIInterface(), m_pSamplingSettings));
     scpiConnectionList.append(m_foutInterface = new FOutGroupResourceAndInterface(getSCPIInterface(), m_foutSettings));
     scpiConnectionList.append(m_pFRQInputInterface = new FInGroupResourceAndInterface(getSCPIInterface(), m_finSettings));

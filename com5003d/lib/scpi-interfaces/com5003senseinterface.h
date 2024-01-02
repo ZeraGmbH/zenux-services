@@ -48,7 +48,11 @@ class Com5003SenseInterface : public cResource, public Com5003AdjFlash, public C
     Q_OBJECT
 
 public:
-    Com5003SenseInterface(cSCPI *scpiInterface, RMConnection* rmConnection, EthSettings* ethSettings, cSenseSettings* senseSettings, AtmelPermissionTemplate *permissionQueryHandler);
+    Com5003SenseInterface(cSCPI *scpiInterface,
+                          RMConnection* rmConnection,
+                          EthSettings* ethSettings,
+                          cSenseSettings* senseSettings,
+                          AtmelPermissionTemplate *permissionQueryHandler);
     ~Com5003SenseInterface();
     virtual void initSCPIConnection(QString leadingNodes) override;
     Com5003SenseChannel* getChannel(QString& name);

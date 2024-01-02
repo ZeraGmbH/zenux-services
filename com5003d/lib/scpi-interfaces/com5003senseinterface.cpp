@@ -19,7 +19,11 @@
 #include <QDomText>
 #include <QDebug>
 
-Com5003SenseInterface::Com5003SenseInterface(cSCPI *scpiInterface, RMConnection* rmConnection, EthSettings *ethSettings, cSenseSettings *senseSettings, AtmelPermissionTemplate *permissionQueryHandler) :
+Com5003SenseInterface::Com5003SenseInterface(cSCPI *scpiInterface,
+                                             RMConnection* rmConnection,
+                                             EthSettings *ethSettings,
+                                             cSenseSettings *senseSettings,
+                                             AtmelPermissionTemplate *permissionQueryHandler) :
     cResource(scpiInterface),
     m_rmConnection(rmConnection),
     m_ethSettings(ethSettings),
