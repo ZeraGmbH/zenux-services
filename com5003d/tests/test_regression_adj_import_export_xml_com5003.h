@@ -14,14 +14,14 @@ private slots:
     void init();
     void cleanup();
 
-    void checkExportXml();
-    void checkImportXmlMinimal();
-    void checkImportXmlPseudoRandom();
-    void checkImportMissingType();
-    void checkImportMissingSerNo();
+    void directAcessFileExportXml();
+    void directAcessFileImportXmlMinimal();
+    void directAcessFileImportXmlPseudoRandom();
+    void directAcessFileImportMissingType();
+    void directAcessFileImportMissingSerNo();
 
-    void scpiGetInitialAdjXml();
-    void scpiSetPermissionQueryFail();
+    void scpiExportInitialAdjXml();
+    void scpiImportPermissionQueryFail();
 private:
     std::unique_ptr<MockForSenseInterfaceCom5003> m_mockServer;
     std::unique_ptr<ResmanRunFacade> m_resmanServer;
