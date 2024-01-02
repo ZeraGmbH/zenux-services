@@ -240,7 +240,7 @@ bool Com5003Adjustment::importJDataFlash()
 }
 
 
-QString Com5003Adjustment::exportXMLString()
+QString Com5003Adjustment::exportXMLString(int indent)
 {
     QDateTime DateTime;
 
@@ -288,9 +288,7 @@ QString Com5003Adjustment::exportXMLString()
     for (int i = 0; i < m_AdjXMLList.count(); i++)
         m_AdjXMLList.at(i)->exportAdjDataXml(justdata, adjtag);
 
-    QString xml = justdata.toString();
-
-    return xml;
+    return justdata.toString(indent);
 }
 
 bool Com5003Adjustment::exportAdTojXMLFile(QString &file)
@@ -323,6 +321,16 @@ bool Com5003Adjustment::importAdjXMLFile(QString &file)
     }
     adjfile.close();
     return importXMLDocument(&justdata);
+}
+
+bool Com5003Adjustment::importAdjXMLString(QString &xml)
+{
+    QDomDocument justqdom("TheDocument");
+    if (!justqdom.setContent(xml)) {
+        qCritical("importAdjXMLString: format error in xml");
+        return false;
+    }
+    return importXMLDocument(&justqdom);
 }
 
 void Com5003Adjustment::exportAdjDataXml(QDomDocument &doc, QDomElement &qde)

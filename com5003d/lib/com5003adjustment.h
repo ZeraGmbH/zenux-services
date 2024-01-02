@@ -26,9 +26,11 @@ public:
     bool exportJDataFlash();
     bool importJDataFlash();
 
-    QString exportXMLString();
+    QString exportXMLString(int indent = 1);
     bool exportAdTojXMLFile(QString& file);
     bool importAdjXMLFile(QString& file);
+    bool importAdjXMLString(QString& xml);
+
     virtual void exportAdjDataXml(QDomDocument& doc, QDomElement& qde) override;
     virtual bool importAdjDataXml(QDomNode& node) override;
 

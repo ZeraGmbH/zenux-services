@@ -26,7 +26,8 @@ void Com5003SystemInterface::initSCPIConnection(QString leadingNodes)
     addDelegate(QString("%1SYSTEM").arg(leadingNodes), "SERIAL", SCPI::isQuery | SCPI::isCmdwP , m_pSCPIInterface, SystemSystem::cmdSerialNumber);
     addDelegate(QString("%1SYSTEM:ADJUSTMENT:FLASH").arg(leadingNodes), "WRITE", SCPI::isCmd, m_pSCPIInterface, SystemSystem::cmdAdjFlashWrite);
     addDelegate(QString("%1SYSTEM:ADJUSTMENT:FLASH").arg(leadingNodes), "READ", SCPI::isCmd, m_pSCPIInterface, SystemSystem::cmdAdjFlashRead);
-    // Obsolete??? (replace by XML read-write as mt310s2)
+    addDelegate(QString("%1SYSTEM:ADJUSTMENT").arg(leadingNodes), "XML", SCPI::isQuery | SCPI::isCmdwP, m_pSCPIInterface, SystemSystem::cmdAdjXMLImportExport);
+    // Obsolete???
         addDelegate(QString("%1SYSTEM:ADJUSTMENT:XML").arg(leadingNodes), "WRITE", SCPI::isCmdwP, m_pSCPIInterface, SystemSystem::cmdAdjXMLWrite);
         addDelegate(QString("%1SYSTEM:ADJUSTMENT:XML").arg(leadingNodes), "READ", SCPI::isCmdwP, m_pSCPIInterface, SystemSystem::cmdAdjXMLRead);
     // End Obsolete???
@@ -62,6 +63,9 @@ void Com5003SystemInterface::executeProtoScpi(int cmdCode, cProtonetCommand *pro
         break;
     case SystemSystem::cmdAdjFlashRead:
         protoCmd->m_sOutput = m_AdjFlashRead(protoCmd->m_sInput);
+        break;
+    case SystemSystem::cmdAdjXMLImportExport:
+        protoCmd->m_sOutput = m_AdjXmlImportExport(protoCmd->m_sInput);
         break;
     case SystemSystem::cmdAdjXMLWrite:
         protoCmd->m_sOutput = m_AdjXMLWrite(protoCmd->m_sInput);
@@ -268,6 +272,42 @@ QString Com5003SystemInterface::m_AdjFlashRead(QString &sInput)
             ret = ZeraMControllerIo::cmdexecfault;
     }
     m_genAnswer(ret, s);
+    return s;
+}
+
+QString Com5003SystemInterface::m_AdjXmlImportExport(QString &sInput)
+{
+    QString s;
+    cSCPICommand cmd = sInput;
+    if (cmd.isQuery()) {
+        s = m_adjustment->exportXMLString(-1);
+        s.replace("\n", "");
+    }
+    else {
+        bool enable;
+        if (Atmel::getInstance().hasPermission(enable)) {
+            if (enable) {
+                QString XML = cmd.getParam();
+                if (!m_adjustment->importAdjXMLString(XML))
+                    s = ZSCPI::errxml;
+                else
+                {
+                    // for now
+                    s = ZSCPI::scpiAnswer[ZSCPI::nak];
+
+                    /*m_senseInterface->m_ComputeSenseAdjData();
+                    if (!m_senseInterface->exportAdjFlash())
+                        s = ZSCPI::scpiAnswer[ZSCPI::errexec];
+                    else
+                        s = ZSCPI::scpiAnswer[ZSCPI::ack];*/
+                }
+            }
+            else
+                s = ZSCPI::scpiAnswer[ZSCPI::erraut];
+        }
+        else
+            s = ZSCPI::scpiAnswer[ZSCPI::errexec];
+    }
     return s;
 }
 

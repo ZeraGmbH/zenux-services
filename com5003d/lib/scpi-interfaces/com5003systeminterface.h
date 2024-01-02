@@ -20,6 +20,7 @@ enum SystemCommands
     cmdSerialNumber,
     cmdAdjFlashWrite,
     cmdAdjFlashRead,
+    cmdAdjXMLImportExport,
     cmdAdjXMLWrite,
     cmdAdjXMLRead,
     cmdAdjFlashChksum,
@@ -51,6 +52,7 @@ private:
     QString m_ReadWriteSerialNumber(QString& sInput);
     QString m_AdjFlashWrite(QString& sInput);
     QString m_AdjFlashRead(QString& sInput);
+    QString m_AdjXmlImportExport(QString& sInput);
     QString m_AdjXMLWrite(QString& sInput);
     QString m_AdjXMLRead(QString& sInput);
     QString m_AdjFlashChksum(QString& sInput);
