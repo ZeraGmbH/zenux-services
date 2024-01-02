@@ -4,6 +4,7 @@
 #include "zscpi_response_definitions.h"
 #include "xmlhelperfortest.h"
 #include "atmel.h"
+#include "atmelpermissionmock.h"
 #include <timemachineobject.h>
 #include <QSignalSpy>
 #include <QTest>
@@ -115,6 +116,24 @@ void test_regression_adj_import_export_xml_com5003::scpiImportPermissionQueryFai
 
     QString ret = ScpiSingleTransactionBlocked::cmd("SYSTEM:ADJUSTMENT:XML", "foo");
     QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::errexec]);
+}
+
+void test_regression_adj_import_export_xml_com5003::scpiImportNoPermission()
+{
+    AtmelPermissionTemplatePtrU perm = AtmelPermissionMock::createAlwaysDisabled();
+    setupServers(perm.get());
+
+    QString ret = ScpiSingleTransactionBlocked::cmd("SYSTEM:ADJUSTMENT:XML", "foo");
+    QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::erraut]);
+}
+
+void test_regression_adj_import_export_xml_com5003::scpiImportInvalidXml()
+{
+    AtmelPermissionTemplatePtrU perm = AtmelPermissionMock::createAlwaysEnabled();
+    setupServers(perm.get());
+
+    QString ret = ScpiSingleTransactionBlocked::cmd("SYSTEM:ADJUSTMENT:XML", "foo");
+    QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::errxml]);
 }
 
 void test_regression_adj_import_export_xml_com5003::setupServers(AtmelPermissionTemplate *permissionQueryHandler)

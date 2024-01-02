@@ -22,6 +22,8 @@ private slots:
 
     void scpiExportInitialAdjXml();
     void scpiImportPermissionQueryFail();
+    void scpiImportNoPermission();
+    void scpiImportInvalidXml();
 private:
     void setupServers(AtmelPermissionTemplate *permissionQueryHandler);
 

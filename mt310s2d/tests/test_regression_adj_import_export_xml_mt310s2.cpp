@@ -127,6 +127,24 @@ void test_regression_adj_import_export_xml_mt310s2::scpiImportPermissionQueryFai
     QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::errexec]);
 }
 
+void test_regression_adj_import_export_xml_mt310s2::scpiImportNoPermission()
+{
+    AtmelPermissionTemplatePtrU perm = AtmelPermissionMock::createAlwaysDisabled();
+    setupServers(perm.get());
+
+    QString ret = ScpiSingleTransactionBlocked::cmd("SYSTEM:ADJUSTMENT:XML", "foo");
+    QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::erraut]);
+}
+
+void test_regression_adj_import_export_xml_mt310s2::scpiImportInvalidXml()
+{
+    AtmelPermissionTemplatePtrU perm = AtmelPermissionMock::createAlwaysEnabled();
+    setupServers(perm.get());
+
+    QString ret = ScpiSingleTransactionBlocked::cmd("SYSTEM:ADJUSTMENT:XML", "foo");
+    QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::errxml]);
+}
+
 void test_regression_adj_import_export_xml_mt310s2::setupServers(AtmelPermissionTemplate *permissionQueryHandler)
 {
     m_resmanServer = std::make_unique<ResmanRunFacade>();

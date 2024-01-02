@@ -290,7 +290,7 @@ QString Com5003SystemInterface::m_AdjXmlImportExport(QString &sInput)
             if (enable) {
                 QString XML = cmd.getParam();
                 if (!m_adjustment->importAdjXMLString(XML))
-                    s = ZSCPI::errxml;
+                    s = ZSCPI::scpiAnswer[ZSCPI::errxml];
                 else
                 {
                     // for now

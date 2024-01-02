@@ -313,7 +313,7 @@ QString Mt310s2SystemInterface::m_AdjXmlImportExport(QString &sInput)
             if (enable) {
                 QString XML = cmd.getParam();
                 if (!m_senseInterface->importAdjXMLString(XML))
-                    s = ZSCPI::errxml;
+                    s = ZSCPI::scpiAnswer[ZSCPI::errxml];
                 else
                 {
                     m_senseInterface->m_ComputeSenseAdjData();
