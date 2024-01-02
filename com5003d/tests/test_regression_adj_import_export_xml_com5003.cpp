@@ -3,6 +3,7 @@
 #include "scpisingletransactionblocked.h"
 #include "zscpi_response_definitions.h"
 #include "xmlhelperfortest.h"
+#include "atmel.h"
 #include <timemachineobject.h>
 #include <QSignalSpy>
 #include <QTest>
@@ -12,7 +13,7 @@ QTEST_MAIN(test_regression_adj_import_export_xml_com5003);
 void test_regression_adj_import_export_xml_com5003::init()
 {
     m_resmanServer = std::make_unique<ResmanRunFacade>();
-    m_mockServer = std::make_unique<MockForSenseInterfaceCom5003>();
+    m_mockServer = std::make_unique<MockForSenseInterfaceCom5003>(&Atmel::getInstance());
     TimeMachineObject::feedEventLoop();
 
     m_pcbClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307);
