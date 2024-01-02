@@ -31,7 +31,7 @@ void test_regression_adj_import_export_xml_com5003::cleanup()
     TimeMachineObject::feedEventLoop();
 }
 
-void test_regression_adj_import_export_xml_com5003::checkExportXml()
+void test_regression_adj_import_export_xml_com5003::directAcessFileExportXml()
 {
     // Date time are empty. On change: see mt310s2 and add XmlHelperForTest::removeTimeDependentEntriesFromXml
     QString xmlExported = m_mockServer->getAdjustment()->exportXMLString();
@@ -48,14 +48,14 @@ void test_regression_adj_import_export_xml_com5003::checkExportXml()
     QCOMPARE(xmlExported, xmlExpected);
 }
 
-void test_regression_adj_import_export_xml_com5003::checkImportXmlMinimal()
+void test_regression_adj_import_export_xml_com5003::directAcessFileImportXmlMinimal()
 {
     QString filenameShort = ":/import_minimal_pass";
     QVERIFY(QFile::exists(filenameShort + ".xml"));
     QVERIFY(m_mockServer->getAdjustment()->importAdjXMLFile(filenameShort));
 }
 
-void test_regression_adj_import_export_xml_com5003::checkImportXmlPseudoRandom()
+void test_regression_adj_import_export_xml_com5003::directAcessFileImportXmlPseudoRandom()
 {
     QString xmlExportedInitial = m_mockServer->getAdjustment()->exportXMLString();
     QFile xmlFileInitial(":/export_inititial.xml");
@@ -74,7 +74,7 @@ void test_regression_adj_import_export_xml_com5003::checkImportXmlPseudoRandom()
     QCOMPARE(xmlExportedModified, xmlExpected);
 }
 
-void test_regression_adj_import_export_xml_com5003::checkImportMissingType()
+void test_regression_adj_import_export_xml_com5003::directAcessFileImportMissingType()
 {
     QString filenameShort = ":/import_missing_type";
     QVERIFY(QFile::exists(filenameShort + ".xml"));
@@ -82,14 +82,14 @@ void test_regression_adj_import_export_xml_com5003::checkImportMissingType()
     QVERIFY(m_mockServer->getAdjustment()->importAdjXMLFile(filenameShort));
 }
 
-void test_regression_adj_import_export_xml_com5003::checkImportMissingSerNo()
+void test_regression_adj_import_export_xml_com5003::directAcessFileImportMissingSerNo()
 {
     QString filenameShort = ":/import_missing_serno";
     QVERIFY(QFile::exists(filenameShort + ".xml"));
     QVERIFY(!m_mockServer->getAdjustment()->importAdjXMLFile(filenameShort));
 }
 
-void test_regression_adj_import_export_xml_com5003::scpiGetInitialAdjXml()
+void test_regression_adj_import_export_xml_com5003::scpiExportInitialAdjXml()
 {
     QFile xmlFile(":/export_inititial.xml");
     QVERIFY(xmlFile.open(QFile::ReadOnly));
@@ -109,7 +109,7 @@ void test_regression_adj_import_export_xml_com5003::scpiGetInitialAdjXml()
     QCOMPARE(xmlExportedPretty, xmlExpected);
 }
 
-void test_regression_adj_import_export_xml_com5003::scpiSetPermissionQueryFail()
+void test_regression_adj_import_export_xml_com5003::scpiImportPermissionQueryFail()
 {
     QString ret = ScpiSingleTransactionBlocked::cmd("SYSTEM:ADJUSTMENT:XML", "foo");
     QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::errexec]);
