@@ -439,7 +439,7 @@ QString Mt310s2SenseInterface::exportXMLString(int indent)
 
     QDomElement chksumtag = justqdom.createElement("Chksum");
     adjtag.appendChild(chksumtag);
-    t = justqdom.createTextNode(QString("0x%1").arg(m_nChecksum,0,16));
+    t = justqdom.createTextNode(QString("0x%1").arg(getChecksum(), 0, 16));
     chksumtag.appendChild(t);
 
     QDomElement typeTag = justqdom.createElement( "Sense");
