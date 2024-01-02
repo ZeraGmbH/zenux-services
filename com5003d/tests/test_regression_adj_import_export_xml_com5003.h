@@ -13,16 +13,19 @@ class test_regression_adj_import_export_xml_com5003 : public QObject
 private slots:
     void cleanup();
 
-    void directAcessFileExportXml();
+    void directAcessExportXml();
     void directAcessFileImportXmlMinimal();
     void directAcessFileImportXmlPseudoRandom();
     void directAcessFileImportMissingType();
     void directAcessFileImportMissingSerNo();
 
+    // there are no known users for scpi file read write - so for now just test
+    // scpi xml transfers
     void scpiExportInitialAdjXml();
     void scpiImportPermissionQueryFail();
     void scpiImportNoPermission();
     void scpiImportInvalidXml();
+    void scpiImportFailFlashWrite();
 private:
     void setupServers(AtmelPermissionTemplate *permissionQueryHandler);
 

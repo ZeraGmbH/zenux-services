@@ -1,6 +1,16 @@
 #include "xmlhelperfortest.h"
 #include <QDomDocument>
 #include <QRegularExpression>
+#include <QFile>
+
+QString XmlHelperForTest::loadXml(QString xmlFile)
+{
+    QFile file(xmlFile);
+    QDomDocument doc;
+    file.open(QFile::ReadOnly);
+    doc.setContent(&file);
+    return doc.toString(-1).replace("\n", "");
+}
 
 QString XmlHelperForTest::prettify(QString xml)
 {
