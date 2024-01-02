@@ -17,17 +17,20 @@ public:
     bool resetAdjFlash();
 
     quint16 getChecksum();
+    I2cMuxerInterface::Ptr getI2cMuxer();
 protected:
     virtual void exportAdjData(QDataStream& stream) = 0; // the derived class exports adjdata to qdatastream
     virtual bool importAdjData(QDataStream& stream) = 0; // same for import
     bool readFlash(QByteArray& ba);
-    bool writeFlash(QByteArray& ba);
-    QString m_sDeviceNode;
-    quint8 m_nI2CAdr;
-    quint16 m_nChecksum = 0;
-    I2cMuxerInterface::Ptr m_i2cMuxer;
+
 private:
     void setAdjCountChecksum(QByteArray& ba);
+    bool writeFlash(QByteArray& ba);
+
+    quint16 m_nChecksum = 0;
+    QString m_sDeviceNode;
+    quint8 m_nI2CAdr;
+    I2cMuxerInterface::Ptr m_i2cMuxer;
 };
 
 #endif // ADJFLASH_H

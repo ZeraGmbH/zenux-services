@@ -103,6 +103,11 @@ quint16 Mt310s2AdjFlash::getChecksum()
     return m_nChecksum;
 }
 
+I2cMuxerInterface::Ptr Mt310s2AdjFlash::getI2cMuxer()
+{
+    return m_i2cMuxer;
+}
+
 
 bool Mt310s2AdjFlash::readFlash(QByteArray &ba)
 {

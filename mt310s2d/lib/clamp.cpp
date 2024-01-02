@@ -223,7 +223,7 @@ QString cClamp::exportXMLString(int indent)
 
     QDomElement chksumtag = justqdom.createElement("Chksum");
     adjtag.appendChild(chksumtag);
-    t = justqdom.createTextNode(QString("0x%1").arg(m_nChecksum,0,16));
+    t = justqdom.createTextNode(QString("0x%1").arg(getChecksum(), 0, 16));
     chksumtag.appendChild(t);
 
     QDomElement typeTag = justqdom.createElement( "Sense");
@@ -407,7 +407,7 @@ quint8 cClamp::getAdjustmentStatus()
 
 ClampTypes cClamp::readClampType()
 {
-    I2cMuxerScopedOnOff i2cMuxOnOff(m_i2cMuxer);
+    I2cMuxerScopedOnOff i2cMuxOnOff(getI2cMuxer());
     QByteArray ba;
     if (readFlash(ba)) { // flash data could be read with correct chksum
         quint8 type;
