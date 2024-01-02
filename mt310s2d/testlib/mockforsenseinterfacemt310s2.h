@@ -10,7 +10,7 @@
 class MockForSenseInterfaceMt310s2 : public MockPcbServer
 {
 public:
-    MockForSenseInterfaceMt310s2();
+    MockForSenseInterfaceMt310s2(AtmelPermissionTemplate *permissionQueryHandler);
     QString getDeviceVersion() { return m_systemInfo->getDeviceVersion(); }
     Mt310s2SenseInterface* getSenseInterface() { return m_senseInterface.get(); }
     cClampInterface* getClampInterface() { return m_clampInterface.get(); }

@@ -231,14 +231,28 @@ void cMT310S2dServer::doSetupServer()
                                                                       m_pI2CSettings->getI2CAdress(i2cSettings::emobCtrlI2cAddress),
                                                                       m_pI2CSettings->getI2CAdress(i2cSettings::muxerI2cAddress),
                                                                       m_pDebugSettings->getDebugLevel());
-            scpiConnectionList.append(m_pSystemInterface = new Mt310s2SystemInterface(this, m_pSystemInfo, m_pSenseSettings, m_pSenseInterface, m_systemController, std::move(emobControllerContainer)));
-            scpiConnectionList.append(m_pSenseInterface = new Mt310s2SenseInterface(getSCPIInterface(), m_pI2CSettings, m_pSenseSettings, m_pSystemInfo));
+            scpiConnectionList.append(m_pSystemInterface = new Mt310s2SystemInterface(this,
+                                                                                      m_pSystemInfo,
+                                                                                      m_pSenseSettings,
+                                                                                      m_pSenseInterface,
+                                                                                      m_systemController,
+                                                                                      std::move(emobControllerContainer),
+                                                                                      &Atmel::getInstance()));
+            scpiConnectionList.append(m_pSenseInterface = new Mt310s2SenseInterface(getSCPIInterface(),
+                                                                                    m_pI2CSettings,
+                                                                                    m_pSenseSettings,
+                                                                                    m_pSystemInfo,
+                                                                                    &Atmel::getInstance()));
             scpiConnectionList.append(m_pSamplingInterface = new cSamplingInterface(getSCPIInterface(), m_pSamplingSettings));
             scpiConnectionList.append(m_foutInterface = new FOutGroupResourceAndInterface(getSCPIInterface(), m_foutSettings));
             scpiConnectionList.append(m_pFRQInputInterface = new FInGroupResourceAndInterface(getSCPIInterface(), m_finSettings));
             scpiConnectionList.append(m_pSCHeadInterface = new ScInGroupResourceAndInterface(getSCPIInterface(), m_pSCHeadSettings));
             scpiConnectionList.append(m_hkInInterface = new HkInGroupResourceAndInterface(getSCPIInterface(), m_hkInSettings));
-            scpiConnectionList.append(m_pClampInterface = new cClampInterface(this, m_pI2CSettings, m_pSenseSettings, m_pSenseInterface));
+            scpiConnectionList.append(m_pClampInterface = new cClampInterface(this,
+                                                                              m_pI2CSettings,
+                                                                              m_pSenseSettings,
+                                                                              m_pSenseInterface,
+                                                                              &Atmel::getInstance()));
             scpiConnectionList.append(m_accumulatorInterface = new AccumulatorInterface(getSCPIInterface(), m_systemController, m_accumulatorSettings));
 
             resourceList.append(m_pSenseInterface); // all our resources
