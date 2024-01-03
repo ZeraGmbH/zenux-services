@@ -11,7 +11,7 @@ class test_regression_adj_import_export_flash_mt310s2 : public QObject
 {
     Q_OBJECT
 private slots:
-    void initTestCase(); // We don't test clamps yet - keep this as reminder
+    void initTestCase();
     void cleanup();
 
     void directExportFlashNoMock();
@@ -20,7 +20,7 @@ private slots:
     // find a way to eliminate date-time
     // modify -> export
     // import -> check changes in XML
-    // all tests for clampts clamps / com5003
+    // all tests for clamps / com5003
 private:
     void setupServers(AtmelPermissionTemplate *permissionQueryHandler);
     bool writeFile(QString filename, QByteArray data);

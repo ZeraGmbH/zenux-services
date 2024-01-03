@@ -62,8 +62,6 @@ private slots:
     void constantRangeValuesAllClampsUAUXGenJson();
     void constantRangeValuesAllClampsUAUXCheck();
 private:
-    void addClamp(int clampTypeNo, QString channelAlias1);
-    void removeAllClamps();
     void genJsonConstantValuesAllRangesForAllClamps(QString channelName, QString channelNameAdRemoveClamps);
     bool checkJsonConstantValuesAllRangesForAllClamps(QJsonObject jsonReference, QString channelName, QString channelNameAdRemoveClamps);
     QJsonObject loadJson(QString fileName);
