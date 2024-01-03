@@ -2,6 +2,7 @@
 #include <QBuffer>
 #include <F24LC256.h>
 #include <i2cmuxerscopedonoff.h>
+#include "i2cflashiofactory.h"
 
 Mt310s2AdjFlash::Mt310s2AdjFlash(QString devnode, quint8 i2cadr, I2cMuxerInterface::Ptr i2cMuxer) :
     m_sDeviceNode(devnode),
@@ -46,8 +47,8 @@ bool Mt310s2AdjFlash::importAdjFlash()
 bool Mt310s2AdjFlash::resetAdjFlash()
 {
     I2cMuxerScopedOnOff i2cMuxOnOff(m_i2cMuxer);
-    cF24LC256 flash(m_sDeviceNode, m_nI2CAdr);
-    return flash.Reset() == flash.size();
+    I2cFlashInterfacePtrU flashIo = I2cFlashIoFactory::create24LC256(m_sDeviceNode, m_nI2CAdr);
+    return flashIo->Reset() == flashIo->size();
 }
 
 
@@ -84,12 +85,9 @@ void Mt310s2AdjFlash::setAdjCountChecksum(QByteArray &ba)
 
 bool Mt310s2AdjFlash::writeFlash(QByteArray &ba)
 {
-    int count, written;
-
-    cF24LC256 Flash(m_sDeviceNode, m_nI2CAdr);
-    count = ba.size();
-    written = Flash.WriteData(ba.data(),count,0);
-
+    int count = ba.size();
+    I2cFlashInterfacePtrU flashIo = I2cFlashIoFactory::create24LC256(m_sDeviceNode, m_nI2CAdr);
+    int written = flashIo->WriteData(ba.data(), count, 0);
     if ( (count - written) > 0) {
         qCritical("Error on flash memory write: wanted: %i / written: %i", count, written);
         return false; // fehler beim flash schreiben
@@ -107,15 +105,13 @@ I2cMuxerInterface::Ptr Mt310s2AdjFlash::getI2cMuxer()
     return m_i2cMuxer;
 }
 
-
 bool Mt310s2AdjFlash::readFlash(QByteArray &ba)
 {
-    cF24LC256 Flash(m_sDeviceNode, m_nI2CAdr);
-
     // first we try to read 6 bytes hold length (quint32) and checksum (quint16)
     const int headerLen = 6;
     ba.resize(headerLen);
-    int bytesRead = Flash.ReadData(ba.data(), headerLen, 0);
+    I2cFlashInterfacePtrU flashIo = I2cFlashIoFactory::create24LC256(m_sDeviceNode, m_nI2CAdr);
+    int bytesRead = flashIo->ReadData(ba.data(), headerLen, 0);
     if ( bytesRead != headerLen ) {
         qCritical("Error on flash read: expected: %i / read %i", headerLen, bytesRead);
         return(false); // read error
@@ -127,15 +123,15 @@ bool Mt310s2AdjFlash::readFlash(QByteArray &ba)
     quint32 count;
 
     bastream >> count >> m_nChecksum;
-    if ( count > (quint32)Flash.size() ) {
-        qCritical("Cannot read flash: size wanted: %i / available %i", count, Flash.size());
+    if ( count > (quint32)flashIo->size() ) {
+        qCritical("Cannot read flash: size wanted: %i / available %i", count, flashIo->size());
         return(false); // read error
     }
 
     ba.resize(count);
 
-    if ( (count - Flash.ReadData(ba.data(), count, 0)) > 0 ) {
-        qCritical("Error on flash read: wanted: %i / available %i", count, Flash.size());
+    if ( (count - flashIo->ReadData(ba.data(), count, 0)) > 0 ) {
+        qCritical("Error on flash read: wanted: %i / available %i", count, flashIo->size());
         return(false); // read error
     }
 
