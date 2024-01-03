@@ -16,6 +16,11 @@ private slots:
 
     void directExportFlashNoMock();
     void directExportFlash();
+
+    // find a way to eliminate date-time
+    // modify -> export
+    // import -> check changes in XML
+    // all tests for clampts clamps / com5003
 private:
     void setupServers(AtmelPermissionTemplate *permissionQueryHandler);
     bool writeFile(QString filename, QByteArray data);
