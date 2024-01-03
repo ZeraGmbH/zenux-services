@@ -1,7 +1,4 @@
 #include "test_regression_sense_interface_mt310s2.h"
-#include "clampinterface.h"
-#include "mt310s2senseinterface.h"
-#include "xmlhelperfortest.h"
 #include "senseregressionhelper.h"
 #include "scpisingletransactionblocked.h"
 #include "proxy.h"
@@ -107,7 +104,7 @@ void test_regression_sense_interface_mt310s2::addClampIL1_CL120A()
     SenseSystem::cChannelSettings *channelSettingI = m_mockServer->getSenseSettings()->findChannelSettingByAlias1("IL1");
     SenseSystem::cChannelSettings *channelSettingU = m_mockServer->getSenseSettings()->findChannelSettingByAlias1("UL1");
 
-    addClamp(CL120A, "IL1");
+    m_mockServer->addClamp(CL120A, "IL1");
 
     QSignalSpy responseSpyI(m_pcbIFace.get(), &Zera::cPCBInterface::serverAnswer);
     m_pcbIFace->getRangeList(channelSettingI->m_nameMx);
@@ -130,7 +127,7 @@ void test_regression_sense_interface_mt310s2::addClampIL2_CL800ADC1000VDC()
     SenseSystem::cChannelSettings *channelSettingI = m_mockServer->getSenseSettings()->findChannelSettingByAlias1("IL2");
     SenseSystem::cChannelSettings *channelSettingU = m_mockServer->getSenseSettings()->findChannelSettingByAlias1("UL2");
 
-    addClamp(CL800ADC1000VDC, "IL2");
+    m_mockServer->addClamp(CL800ADC1000VDC, "IL2");
 
     QSignalSpy responseSpyI(m_pcbIFace.get(), &Zera::cPCBInterface::serverAnswer);
     m_pcbIFace->getRangeList(channelSettingI->m_nameMx);
@@ -151,7 +148,7 @@ void test_regression_sense_interface_mt310s2::addRemoveClampIAUX_CL800ADC1000VDC
     SenseSystem::cChannelSettings *channelSettingI = m_mockServer->getSenseSettings()->findChannelSettingByAlias1("IAUX");
     SenseSystem::cChannelSettings *channelSettingU = m_mockServer->getSenseSettings()->findChannelSettingByAlias1("UAUX");
 
-    addClamp(CL800ADC1000VDC, "IAUX");
+    m_mockServer->addClamp(CL800ADC1000VDC, "IAUX");
 
     QSignalSpy responseSpyIWishClamps(m_pcbIFace.get(), &Zera::cPCBInterface::serverAnswer);
     m_pcbIFace->getRangeList(channelSettingI->m_nameMx);
@@ -163,7 +160,7 @@ void test_regression_sense_interface_mt310s2::addRemoveClampIAUX_CL800ADC1000VDC
     TimeMachineObject::feedEventLoop();
     QCOMPARE(responseSpyU1[0][2].toStringList(), m_rangesExpectedU + m_rangesExpectedU_CL800ADC1000VDC);
 
-    removeAllClamps();
+    m_mockServer->removeAllClamps();
 
     QSignalSpy responseSpyI(m_pcbIFace.get(), &Zera::cPCBInterface::serverAnswer);
     m_pcbIFace->getRangeList(channelSettingI->m_nameMx);
@@ -373,19 +370,6 @@ void test_regression_sense_interface_mt310s2::constantRangeValuesAllClampsUAUXCh
 }
 
 
-void test_regression_sense_interface_mt310s2::addClamp(int clampTypeNo, QString channelAlias1)
-{
-    ClampFactoryTest::setTestClampType(clampTypeNo);
-    SenseSystem::cChannelSettings *channelSettingClamps = m_mockServer->getSenseSettings()->findChannelSettingByAlias1(channelAlias1);
-    m_mockServer->getClampInterface()->addClamp(channelSettingClamps, I2cMultiplexerFactory::createNullMuxer());
-}
-
-void test_regression_sense_interface_mt310s2::removeAllClamps()
-{
-    // to execute as much production code as possible we use actualizeClampStatus
-    m_mockServer->getClampInterface()->actualizeClampStatus(0);
-}
-
 void test_regression_sense_interface_mt310s2::genJsonConstantValuesAllRangesForAllClamps(QString channelName, QString channelNameAdRemoveClamps)
 {
     if(channelNameAdRemoveClamps.isEmpty())
@@ -393,7 +377,7 @@ void test_regression_sense_interface_mt310s2::genJsonConstantValuesAllRangesForA
     SenseSystem::cChannelSettings *channelSetting = m_mockServer->getSenseSettings()->findChannelSettingByAlias1(channelName);
     QJsonObject jsonAll;
     for(int clampTypeNo=undefined+1; clampTypeNo<anzCL; clampTypeNo++) { // all clamp types
-        addClamp(clampTypeNo, channelNameAdRemoveClamps);
+        m_mockServer->addClamp(clampTypeNo, channelNameAdRemoveClamps);
 
         QSignalSpy responseSpy(m_pcbIFace.get(), &Zera::cPCBInterface::serverAnswer);
         m_pcbIFace->getRangeList(channelSetting->m_nameMx);
@@ -406,7 +390,7 @@ void test_regression_sense_interface_mt310s2::genJsonConstantValuesAllRangesForA
             SenseRegressionHelper::addRangeConstantDataToJson(range, channelSetting, jsonRange);
             jsonRanges.insert(range, jsonRange);
         }
-        removeAllClamps();
+        m_mockServer->removeAllClamps();
 
         jsonAll.insert(cClamp::getClampTypeName(clampTypeNo), jsonRanges);
     }
@@ -422,7 +406,7 @@ bool test_regression_sense_interface_mt310s2::checkJsonConstantValuesAllRangesFo
     bool allCheckOk = true;
     SenseSystem::cChannelSettings *channelSetting = m_mockServer->getSenseSettings()->findChannelSettingByAlias1(channelName);
     for(int clampTypeNo=undefined+1; clampTypeNo<anzCL; clampTypeNo++) { // all clamp types
-        addClamp(clampTypeNo, channelNameAdRemoveClamps);
+        m_mockServer->addClamp(clampTypeNo, channelNameAdRemoveClamps);
 
         QSignalSpy responseSpy(m_pcbIFace.get(), &Zera::cPCBInterface::serverAnswer);
         m_pcbIFace->getRangeList(channelSetting->m_nameMx);
@@ -454,7 +438,7 @@ bool test_regression_sense_interface_mt310s2::checkJsonConstantValuesAllRangesFo
             allCheckOk = false;
             qCritical("Clamp \"%s\" not found in reference", qPrintable(clampName));
         }
-        removeAllClamps();
+        m_mockServer->removeAllClamps();
     }
     return allCheckOk;
 }

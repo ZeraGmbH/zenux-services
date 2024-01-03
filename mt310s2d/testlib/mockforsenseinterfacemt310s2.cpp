@@ -1,4 +1,5 @@
 #include "mockforsenseinterfacemt310s2.h"
+#include "clampfactorytest.h"
 
 MockForSenseInterfaceMt310s2::MockForSenseInterfaceMt310s2(AtmelPermissionTemplate *permissionQueryHandler) :
     MockPcbServer("mt310s2d")
@@ -41,4 +42,17 @@ MockForSenseInterfaceMt310s2::MockForSenseInterfaceMt310s2(AtmelPermissionTempla
 void MockForSenseInterfaceMt310s2::enableEEPROMPermission()
 {
     m_permissionMock.accessEnableAfter(0);
+}
+
+void MockForSenseInterfaceMt310s2::addClamp(int clampTypeNo, QString channelAlias1)
+{
+    ClampFactoryTest::setTestClampType(clampTypeNo);
+    SenseSystem::cChannelSettings *channelSettingClamps = getSenseSettings()->findChannelSettingByAlias1(channelAlias1);
+    getClampInterface()->addClamp(channelSettingClamps, I2cMultiplexerFactory::createNullMuxer());
+}
+
+void MockForSenseInterfaceMt310s2::removeAllClamps()
+{
+    // to execute as much production code as possible we use actualizeClampStatus
+    getClampInterface()->actualizeClampStatus(0);
 }
