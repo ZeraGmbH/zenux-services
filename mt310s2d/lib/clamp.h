@@ -89,7 +89,6 @@ private:
     QList<Mt310s2SenseRange*> m_RangeListSecondary;
     QString m_sChannelNameSecondary;
 
-    ushort m_i2cMuxAdress;
     quint8 m_nCtrlChannel;
     quint8 m_nCtrlChannelSecondary;
     QString m_sSerial =  "1234567890"; // our default serial number
