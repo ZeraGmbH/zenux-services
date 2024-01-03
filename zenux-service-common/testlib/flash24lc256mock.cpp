@@ -19,24 +19,26 @@ int Flash24LC256Mock::WriteData(char *data, ushort count, ushort adr)
 {
     if(adr != 0)
         qFatal("Address other than 0 is not yet supported!");
+    if(count > sizeFlash)
+        qFatal("Cannot write data of length %i / max is %i", count, sizeFlash);
 
-    int toWrite = std::min(size(), int(count));
     QByteArray &flashEntry = m_flashData[m_devNode][m_i2cAddr];
-    for(int i=0; i<toWrite; i++)
+    for(int i=0; i<count; i++)
         flashEntry[i] = data[i];
-    return toWrite;
+    return count;
 }
 
 int Flash24LC256Mock::ReadData(char *data, ushort count, ushort adr)
 {
     if(adr != 0)
         qFatal("Address other than 0 is not yet supported!");
+    if(count > sizeFlash)
+        qFatal("Cannot read data of length %i / max is %i", count, sizeFlash);
 
-    int toRead = std::min(size(), int(count));
     const QByteArray flashEntry = m_flashData[m_devNode][m_i2cAddr];
-    for(int i=0; i<toRead; i++)
+    for(int i=0; i<count; i++)
         data[i] = flashEntry[i];
-    return toRead;
+    return count;
 }
 
 int Flash24LC256Mock::Reset()
