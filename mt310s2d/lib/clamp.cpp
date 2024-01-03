@@ -42,7 +42,6 @@ cClamp::cClamp(cPCBServer *server,
     ScpiConnection(server->getSCPIInterface()),
     m_pSenseInterface(senseInterface),
     m_sChannelName(channelName),
-    m_i2cMuxAdress(i2cSettings->getI2CAdress(i2cSettings::muxerI2cAddress)),
     m_nCtrlChannel(ctrlChannel),
     m_nCtrlChannelSecondary(ctrlChannelSecondary)
 {
