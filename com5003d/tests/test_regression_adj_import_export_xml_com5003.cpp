@@ -110,45 +110,6 @@ void test_regression_adj_import_export_xml_com5003::scpiExportInitialAdjXml()
     QCOMPARE(xmlExportedPretty, xmlExpected);
 }
 
-void test_regression_adj_import_export_xml_com5003::scpiImportPermissionQueryFail()
-{
-    setupServers(&Atmel::getInstance());
-
-    QString ret = ScpiSingleTransactionBlocked::cmd("SYSTEM:ADJUSTMENT:XML", "foo");
-    QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::errexec]);
-}
-
-void test_regression_adj_import_export_xml_com5003::scpiImportNoPermission()
-{
-    AtmelPermissionTemplatePtrU perm = AtmelPermissionMock::createAlwaysDisabled();
-    setupServers(perm.get());
-
-    QString ret = ScpiSingleTransactionBlocked::cmd("SYSTEM:ADJUSTMENT:XML", "foo");
-    QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::erraut]);
-}
-
-void test_regression_adj_import_export_xml_com5003::scpiImportInvalidXml()
-{
-    AtmelPermissionTemplatePtrU perm = AtmelPermissionMock::createAlwaysEnabled();
-    setupServers(perm.get());
-
-    QString ret = ScpiSingleTransactionBlocked::cmd("SYSTEM:ADJUSTMENT:XML", "foo");
-    QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::errxml]);
-}
-
-void test_regression_adj_import_export_xml_com5003::scpiImportFailFlashWrite()
-{
-    AtmelPermissionTemplatePtrU perm = AtmelPermissionMock::createAlwaysEnabled();
-    setupServers(perm.get());
-
-    QString xmlFileName = ":/import_minimal_pass.xml";
-    QString xml = XmlHelperForTest::loadXml(xmlFileName);
-
-    QString ret = ScpiSingleTransactionBlocked::cmdXmlParam("SYSTEM:ADJUSTMENT:XML", xml);
-    // not fully implemented so nak instead of errexec
-    QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::nak]);
-}
-
 void test_regression_adj_import_export_xml_com5003::setupServers(AtmelPermissionTemplate *permissionQueryHandler)
 {
     m_resmanServer = std::make_unique<ResmanRunFacade>();

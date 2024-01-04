@@ -4,6 +4,7 @@
 #include "com5003adjxml.h"
 #include "systeminfo.h"
 #include "com5003adjustment.h"
+#include "i2cflashiofactory.h"
 #include <F24LC256.h>
 #include <QByteArray>
 #include <QBuffer>
@@ -78,8 +79,8 @@ bool Com5003Adjustment::exportAdjFlash(QDateTime dateTimeWrite)
 
     mem.close(); // wird nicht mehr benötigt
 
-    cF24LC256* Flash = new cF24LC256(m_sDeviceNode, m_nI2CAdr);
-    int written = Flash->WriteData(ba.data(),ba.size(),0);
+    I2cFlashInterfacePtrU flashIo = I2cFlashIoFactory::create24LC256(m_sDeviceNode, m_nI2CAdr);
+    int written = flashIo->WriteData(ba.data(), ba.size(), 0);
     if ( (count - written) > 0) {
         qCritical("Error writing flashmemory");
         return false; // fehler beim flash schreiben
@@ -94,10 +95,9 @@ bool Com5003Adjustment::importAdjFlash()
     m_nAdjStatus = 0; // status reset
 
     QByteArray ba(6, 0); // byte array for length and checksum
-    cF24LC256* Flash = new cF24LC256(m_sDeviceNode, m_nI2CAdr);
-    if ( (6 - Flash->ReadData(ba.data(),6,0)) >0 ) {
+    I2cFlashInterfacePtrU flashIo = I2cFlashIoFactory::create24LC256(m_sDeviceNode, m_nI2CAdr);
+    if ( (6 - flashIo->ReadData(ba.data(),6,0)) >0 ) {
         qCritical("Error reading flashmemory");
-        delete Flash;
         return(false); // lesefehler
     }
 
@@ -106,18 +106,16 @@ bool Com5003Adjustment::importAdjFlash()
     uint count;
     quint16 chksumCMP = 0;
     bastream >> count >> m_nChecksum; // länge der flashdaten u. checksumme
-    uint flashSize = static_cast<uint>(Flash->size());
+    uint flashSize = static_cast<uint>(flashIo->size());
     if ( count > flashSize ) {
         qCritical("Error reading flashmemory, count %i > flash %i",
                   count, flashSize);
-        delete Flash;
         return(false); // lesefehler
     }
 
     QByteArray ba2(count, 0); // byte array zur aufnahme der gesamten daten
-    if ( (count - Flash->ReadData(ba2.data(),count,0)) >0 ) {
+    if ( (count - flashIo->ReadData(ba2.data(),count,0)) >0 ) {
         qCritical("Error reading flashmemory");
-        delete Flash;
         return(false); // lesefehler
     }
 

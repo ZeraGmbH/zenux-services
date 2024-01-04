@@ -18,8 +18,6 @@ public:
     cSenseSettings *getSenseSettings() { return m_senseSettings.get(); }
     cI2CSettings *getI2cSettings() { return m_i2cSettings.get(); }
 
-    void enableEEPROMPermission();
-
     void addClamp(int clampTypeNo, QString channelAlias1);
     void removeAllClamps();
 

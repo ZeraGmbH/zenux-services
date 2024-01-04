@@ -296,15 +296,12 @@ QString Com5003SystemInterface::m_AdjXmlImportExport(QString &sInput)
                 QString XML = cmd.getParam();
                 if (!m_adjustment->importAdjXMLString(XML))
                     s = ZSCPI::scpiAnswer[ZSCPI::errxml];
-                else
-                {
-                    // for now
-                    s = ZSCPI::scpiAnswer[ZSCPI::nak];
-                    /*m_senseInterface->computeSenseAdjData();
-                    if (!m_senseInterface->exportAdjFlash())
+                else {
+                    m_senseInterface->computeSenseAdjData();
+                    if (!m_adjustment->exportAdjFlash(QDateTime::currentDateTime()))
                         s = ZSCPI::scpiAnswer[ZSCPI::errexec];
                     else
-                        s = ZSCPI::scpiAnswer[ZSCPI::ack];*/
+                        s = ZSCPI::scpiAnswer[ZSCPI::ack];
                 }
             }
             else
