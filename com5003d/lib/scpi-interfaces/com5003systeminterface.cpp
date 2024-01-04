@@ -249,7 +249,7 @@ QString Com5003SystemInterface::m_AdjFlashWrite(QString &sInput)
         {
             if (enable)
             {
-                if (m_adjustment->exportAdjFlash())
+                if (m_adjustment->exportAdjFlash(QDateTime::currentDateTime()))
                     ret = ZeraMControllerIo::cmddone;
                 else
                     ret = ZeraMControllerIo::cmdexecfault;

@@ -247,8 +247,9 @@ bool Com5003SenseInterface::importAdjData(QString &s, QDataStream &stream)
 }
 
 
-void Com5003SenseInterface::exportAdjData(QDataStream &stream)
+void Com5003SenseInterface::exportAdjData(QDataStream &stream, QDateTime dateTimeWrite)
 {
+    Q_UNUSED(dateTimeWrite)
     for (int i = 0; i < m_ChannelList.count(); i++)
     {
         QList<Com5003SenseRange*> list = m_ChannelList.at(i)->getRangeList();
