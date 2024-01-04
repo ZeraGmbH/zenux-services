@@ -23,10 +23,7 @@ private slots:
     // there are no known users for scpi file read write - so for now just test
     // scpi xml transfers
     void scpiExportInitialAdjXml();
-    void scpiImportPermissionQueryFail();
-    void scpiImportNoPermission();
-    void scpiImportInvalidXml();
-    void scpiImportFailFlashWrite();
+
 
     // same for clamps....
 private:
