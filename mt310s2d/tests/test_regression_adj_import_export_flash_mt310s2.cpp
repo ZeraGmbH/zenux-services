@@ -47,7 +47,6 @@ void test_regression_adj_import_export_flash_mt310s2::directExportFlash()
     QVERIFY(!dataWritten.isEmpty());
     QVERIFY(writeFile("/tmp/export_flash_internal_initial", dataWritten));
 
-    // Hmm we have again this date time problem here
     QByteArray dataReference = readFile(":/export_flash_internal_initial");
     QCOMPARE(dataWritten, dataReference);
 }

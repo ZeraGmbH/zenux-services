@@ -17,7 +17,6 @@ private slots:
     void directExportFlashNoMock();
     void directExportFlash();
 
-    // find a way to eliminate date-time
     // modify -> export
     // import -> check changes in XML
     // all tests for clamps / com5003
