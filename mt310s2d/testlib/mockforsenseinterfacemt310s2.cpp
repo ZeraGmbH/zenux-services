@@ -4,8 +4,8 @@
 MockForSenseInterfaceMt310s2::MockForSenseInterfaceMt310s2(AtmelPermissionTemplate *permissionQueryHandler) :
     MockPcbServer("mt310s2d")
 {
-    PermissionFunctions::setPermissionPinController(&m_permissionMock);
-    enableEEPROMPermission();
+    // TODO
+    //m_pAdjHandler->addAdjFlashObject(m_pSenseInterface);
 
     m_i2cSettings = std::make_unique<cI2CSettings>(getConfigReader());
     m_senseSettings = std::make_unique<cSenseSettings>(getConfigReader(), 8);
@@ -37,11 +37,6 @@ MockForSenseInterfaceMt310s2::MockForSenseInterfaceMt310s2(AtmelPermissionTempla
     setScpiConnections(ScpiConnectionList{m_systemInterface.get(), m_clampInterface.get()});
 
     start();
-}
-
-void MockForSenseInterfaceMt310s2::enableEEPROMPermission()
-{
-    m_permissionMock.accessEnableAfter(0);
 }
 
 void MockForSenseInterfaceMt310s2::addClamp(int clampTypeNo, QString channelAlias1)

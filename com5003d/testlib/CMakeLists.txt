@@ -20,4 +20,5 @@ target_link_libraries(com5003-testlib
     PUBLIC
     com5003d-lib
     zenuxservicecommon-demolib
+    zenuxservicecommon-testlib
 )

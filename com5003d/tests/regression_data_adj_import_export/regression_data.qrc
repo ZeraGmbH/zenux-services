@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/">
+        <file>export_flash_internal_initial</file>
         <file>export_inititial.xml</file>
         <file>import_minimal_pass.xml</file>
         <file>import_missing_serno.xml</file>
