@@ -1,7 +1,6 @@
 #include "test_regression_adj_import_export_flash_mt310s2.h"
 #include "clampfactorytest.h"
 #include "proxy.h"
-#include "atmel.h"
 #include "i2cflashiofactoryfortest.h"
 #include "flash24lc256mock.h"
 #include "scpisingletransactionblocked.h"

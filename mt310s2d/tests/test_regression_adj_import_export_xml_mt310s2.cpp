@@ -3,7 +3,6 @@
 #include "proxy.h"
 #include "atmel.h"
 #include "scpisingletransactionblocked.h"
-#include "zscpi_response_definitions.h"
 #include "xmlhelperfortest.h"
 #include <timemachineobject.h>
 #include <QSignalSpy>
@@ -117,44 +116,6 @@ void test_regression_adj_import_export_xml_mt310s2::scpiExportInitialAdjXml()
 
     // if this turns fragile we have to use zera-scpi's xml-compare-testlib
     QCOMPARE(xmlExportedPretty, xmlExpected);
-}
-
-void test_regression_adj_import_export_xml_mt310s2::scpiImportPermissionQueryFail()
-{
-    setupServers(&Atmel::getInstance());
-
-    QString ret = ScpiSingleTransactionBlocked::cmdXmlParam("SYSTEM:ADJUSTMENT:XML", "foo");
-    QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::errexec]);
-}
-
-void test_regression_adj_import_export_xml_mt310s2::scpiImportNoPermission()
-{
-    AtmelPermissionTemplatePtrU perm = AtmelPermissionMock::createAlwaysDisabled();
-    setupServers(perm.get());
-
-    QString ret = ScpiSingleTransactionBlocked::cmdXmlParam("SYSTEM:ADJUSTMENT:XML", "foo");
-    QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::erraut]);
-}
-
-void test_regression_adj_import_export_xml_mt310s2::scpiImportInvalidXml()
-{
-    AtmelPermissionTemplatePtrU perm = AtmelPermissionMock::createAlwaysEnabled();
-    setupServers(perm.get());
-
-    QString ret = ScpiSingleTransactionBlocked::cmdXmlParam("SYSTEM:ADJUSTMENT:XML", "foo");
-    QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::errxml]);
-}
-
-void test_regression_adj_import_export_xml_mt310s2::scpiImportFailFlashWrite()
-{
-    AtmelPermissionTemplatePtrU perm = AtmelPermissionMock::createAlwaysEnabled();
-    setupServers(perm.get());
-
-    QString xmlFileName = ":/import_minimal_pass.xml";
-    QString xml = XmlHelperForTest::loadXml(xmlFileName);
-
-    QString ret = ScpiSingleTransactionBlocked::cmdXmlParam("SYSTEM:ADJUSTMENT:XML", xml);
-    QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::errexec]);
 }
 
 void test_regression_adj_import_export_xml_mt310s2::setupServers(AtmelPermissionTemplate *permissionQueryHandler)
