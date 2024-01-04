@@ -129,9 +129,9 @@ void cClamp::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
     }
 }
 
-void cClamp::exportAdjData(QDataStream &stream)
+void cClamp::exportAdjData(QDataStream &stream, QDateTime dateTimeWrite)
 {
-    m_AdjDateTime = QDateTime::currentDateTime();
+    m_AdjDateTime = dateTimeWrite;
     stream << m_nType;
     stream << m_nFlags;
     stream << getClampTypeName(m_nType); // for sake of compatibilty
@@ -915,7 +915,7 @@ QString cClamp::scpiReadWriteType(QString& scpi)
             if ( (type > undefined) && (type < anzCL)) {
                 removeAllRanges();
                 initClamp(type);
-                if (exportAdjFlash()) {
+                if (exportAdjFlash(QDateTime::currentDateTime())) {
                     addSense();
                     addSenseInterface();
                     answer = ZSCPI::scpiAnswer[ZSCPI::ack];
@@ -953,7 +953,7 @@ QString cClamp::scpiWriteFlash(QString& scpi)
     QString answer;
     cSCPICommand cmd = scpi;
     if (cmd.isCommand(1) && (cmd.getParam(0) == "")) {
-        if (exportAdjFlash()) {
+        if (exportAdjFlash(QDateTime::currentDateTime())) {
             answer = ZSCPI::scpiAnswer[ZSCPI::ack];
         }
         else {

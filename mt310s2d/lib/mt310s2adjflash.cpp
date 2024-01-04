@@ -11,7 +11,7 @@ Mt310s2AdjFlash::Mt310s2AdjFlash(QString devnode, quint8 i2cadr, I2cMuxerInterfa
 {
 }
 
-bool Mt310s2AdjFlash::exportAdjFlash()
+bool Mt310s2AdjFlash::exportAdjFlash(QDateTime dateTimeWrite)
 {
     bool ret;
     QByteArray ba;
@@ -24,7 +24,7 @@ bool Mt310s2AdjFlash::exportAdjFlash()
     stream << count; // first we write place holders for count and chksum this is the same for each adjflash object
     stream << chksum;
 
-    exportAdjData(stream);
+    exportAdjData(stream, dateTimeWrite);
     setAdjCountChecksum(ba);
     I2cMuxerScopedOnOff i2cMuxOnOff(m_i2cMuxer);
     ret = writeFlash(ba);

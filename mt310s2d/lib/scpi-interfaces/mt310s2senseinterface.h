@@ -82,7 +82,7 @@ public:
     virtual QString exportXMLString(int indent = 1) override;
     void computeSenseAdjData();
 protected:
-    void exportAdjData(QDataStream& stream) override;
+    void exportAdjData(QDataStream& stream, QDateTime dateTimeWrite) override;
     bool importAdjData(QDataStream& stream) override;
     bool importXMLDocument(QDomDocument* qdomdoc) override;
     void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
