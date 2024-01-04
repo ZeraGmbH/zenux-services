@@ -3,6 +3,7 @@
 static constexpr int sizeFlash = 32768;
 
 QHash<QString, QHash<short, QByteArray>> Flash24LC256Mock::m_flashData;
+QHash<QString, QHash<short, int>> Flash24LC256Mock::m_flashDataWriteCounts;
 
 Flash24LC256Mock::Flash24LC256Mock(QString devNode, short i2cAddr) :
     m_devNode(devNode),
@@ -25,6 +26,7 @@ int Flash24LC256Mock::WriteData(char *data, ushort count, ushort adr)
     QByteArray &flashEntry = m_flashData[m_devNode][m_i2cAddr];
     for(int i=0; i<count; i++)
         flashEntry[i] = data[i];
+    m_flashDataWriteCounts[m_devNode][m_i2cAddr]++;
     return count;
 }
 
@@ -55,6 +57,7 @@ int Flash24LC256Mock::size()
 void Flash24LC256Mock::cleanAll()
 {
     m_flashData.clear();
+    m_flashDataWriteCounts.clear();
 }
 
 QByteArray Flash24LC256Mock::getData(QString devNode, short adr)
@@ -64,6 +67,11 @@ QByteArray Flash24LC256Mock::getData(QString devNode, short adr)
         if(m_flashData[devNode].contains(adr))
             ret = m_flashData[devNode][adr];
     return ret;
+}
+
+int Flash24LC256Mock::getWriteCount(QString devNode, short adr)
+{
+    return m_flashDataWriteCounts[devNode][adr];
 }
 
 void Flash24LC256Mock::doReset()
