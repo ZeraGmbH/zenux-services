@@ -4,7 +4,6 @@
 #include "com5003adjxml.h"
 #include "systeminfo.h"
 #include "com5003adjustment.h"
-#include "atmel.h"
 #include <F24LC256.h>
 #include <QByteArray>
 #include <QBuffer>
@@ -25,73 +24,69 @@ Com5003Adjustment::Com5003Adjustment(cSystemInfo* sInfo, QString &devNode, quint
     m_AdjXMLList.append(this);
 }
 
-
 Com5003Adjustment::~Com5003Adjustment()
 {
 }
 
-
 bool Com5003Adjustment::exportAdjFlash(QDateTime dateTimeWrite)
 {
     Q_UNUSED(dateTimeWrite)
-   quint32 count=0;
-   m_nChecksum = 0;
-   QByteArray ba;
+    quint32 count=0;
+    m_nChecksum = 0;
+    QByteArray ba;
 
-   QDataStream stream(&ba,QIODevice::ReadWrite);
-   stream.setVersion(QDataStream::Qt_5_4);
+    QDataStream stream(&ba,QIODevice::ReadWrite);
+    stream.setVersion(QDataStream::Qt_5_4);
 
-   QDateTime DateTime; // useless TBD
+    QDateTime DateTime; // useless TBD
 
-   stream << count;
-   stream << m_nChecksum; // checksumme
+    stream << count;
+    stream << m_nChecksum; // checksumme
 
-   // ab version v1.02
-   stream << "ServerVersion";
-   stream << ServerVersion;
+    // ab version v1.02
+    stream << "ServerVersion";
+    stream << ServerVersion;
 
-   stream << m_pSystemInfo->getDeviceName().toStdString().c_str(); // leiterkarten name aus atmel gelesen
-   stream << m_pSystemInfo->getDeviceVersion().toStdString().c_str(); // geräte name versionsnummern ...
-   stream << m_pSystemInfo->getSerialNumber().toStdString().c_str(); // seriennummer
-   stream << DateTime.toString(Qt::TextDate).toStdString().c_str(); // datum,uhrzeit
-   for (int i = 0; i < m_AdjFlashList.count(); i++)
-       m_AdjFlashList.at(i)->exportAdjData(stream, DateTime);
+    stream << m_pSystemInfo->getDeviceName().toStdString().c_str(); // leiterkarten name aus atmel gelesen
+    stream << m_pSystemInfo->getDeviceVersion().toStdString().c_str(); // geräte name versionsnummern ...
+    stream << m_pSystemInfo->getSerialNumber().toStdString().c_str(); // seriennummer
+    stream << DateTime.toString(Qt::TextDate).toStdString().c_str(); // datum,uhrzeit
+    for (int i = 0; i < m_AdjFlashList.count(); i++)
+        m_AdjFlashList.at(i)->exportAdjData(stream, DateTime);
 
-   count = ba.count(); // um die länge zu bestimmen
-   QByteArray ca(6, 0); // qbyte array mit 6 bytes
+    count = ba.count(); // um die länge zu bestimmen
+    QByteArray ca(6, 0); // qbyte array mit 6 bytes
 
-   QDataStream castream( &ca, QIODevice::WriteOnly );
-   castream.setVersion(QDataStream::Qt_5_4);
+    QDataStream castream( &ca, QIODevice::WriteOnly );
+    castream.setVersion(QDataStream::Qt_5_4);
 
-   castream << count << m_nChecksum;
+    castream << count << m_nChecksum;
 
-   QBuffer mem(&ba);
-   mem.open(QIODevice::ReadWrite);
-   mem.seek(0); // qbuffer auf den anfang positionieren
-   mem.write(ca); // überschreibt die länge + checksumme (noch 0)
+    QBuffer mem(&ba);
+    mem.open(QIODevice::ReadWrite);
+    mem.seek(0); // qbuffer auf den anfang positionieren
+    mem.write(ca); // überschreibt die länge + checksumme (noch 0)
 
-   m_nChecksum = qChecksum(ba.data(),ba.size()); // +crc-16
-   QDataStream castream2( &ca, QIODevice::WriteOnly );
-   castream2.setVersion(QDataStream::Qt_5_4);
+    m_nChecksum = qChecksum(ba.data(),ba.size()); // +crc-16
+    QDataStream castream2( &ca, QIODevice::WriteOnly );
+    castream2.setVersion(QDataStream::Qt_5_4);
 
-   castream2 << count << m_nChecksum;
+    castream2 << count << m_nChecksum;
 
-   mem.seek(0);
-   mem.write(ca); // überschreibt die länge und jetzt die richtige checksumme
+    mem.seek(0);
+    mem.write(ca); // überschreibt die länge und jetzt die richtige checksumme
 
-   mem.close(); // wird nicht mehr benötigt
+    mem.close(); // wird nicht mehr benötigt
 
-   cF24LC256* Flash = new cF24LC256(m_sDeviceNode, m_nI2CAdr);
-   int written = Flash->WriteData(ba.data(),ba.size(),0);
-   if ( (count - written) > 0) {
+    cF24LC256* Flash = new cF24LC256(m_sDeviceNode, m_nI2CAdr);
+    int written = Flash->WriteData(ba.data(),ba.size(),0);
+    if ( (count - written) > 0) {
         qCritical("Error writing flashmemory");
         return false; // fehler beim flash schreiben
-   }
-   importAdjFlash();
-   return true;
+    }
+    importAdjFlash();
+    return true;
 }
-
-
 
 bool Com5003Adjustment::importAdjFlash()
 {
@@ -114,7 +109,7 @@ bool Com5003Adjustment::importAdjFlash()
     uint flashSize = static_cast<uint>(Flash->size());
     if ( count > flashSize ) {
         qCritical("Error reading flashmemory, count %i > flash %i",
-               count, flashSize);
+                  count, flashSize);
         delete Flash;
         return(false); // lesefehler
     }
@@ -141,7 +136,7 @@ bool Com5003Adjustment::importAdjFlash()
     chksumCMP = qChecksum(ba2.data(),ba2.size());
     if (chksumCMP != m_nChecksum) {
         qCritical("Invalid checksum encountered reading flashmemory: expected 0x%04X / found 0x%04X",
-               chksumCMP, m_nChecksum);
+                  chksumCMP, m_nChecksum);
         return(false); // daten fehlerhaft
     }
 
@@ -168,7 +163,7 @@ bool Com5003Adjustment::importAdjFlash()
     QString sysDevName = m_pSystemInfo->getDeviceName();
     if (QString(s) != sysDevName) {
         qCritical("Flashmemory read, contains wrong pcb name: flash %s / µC %s",
-               s, qPrintable(sysDevName));
+                  s, qPrintable(sysDevName));
         return false; // wrong pcb name
     }
 
@@ -203,7 +198,7 @@ bool Com5003Adjustment::importAdjFlash()
         if (qs != sDV)
         {
             qCritical("Flashmemory read, contains wrong versionnumber: flash %s / µC %s",
-                   qPrintable(qs), qPrintable(sDV));
+                      qPrintable(qs), qPrintable(sDV));
             m_nAdjStatus += Adjustment::wrongVERS;
             if (!enable) {
                 return false; // wrong version number
@@ -216,7 +211,7 @@ bool Com5003Adjustment::importAdjFlash()
     if (QString(s) != sysSerNo)
     {
         qCritical("Flashmemory read, contains wrong serialnumber: flash %s / µC: %s",
-               s, qPrintable(sysSerNo));
+                  s, qPrintable(sysSerNo));
         m_nAdjStatus += Adjustment::wrongSNR;
         if (!enable) {
             return false; // wrong serial number
@@ -242,7 +237,6 @@ bool Com5003Adjustment::importAdjFlash()
 
     return(true);
 }
-
 
 QString Com5003Adjustment::exportXMLString(int indent)
 {
