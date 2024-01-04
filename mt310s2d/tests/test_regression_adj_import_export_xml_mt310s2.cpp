@@ -33,7 +33,7 @@ void test_regression_adj_import_export_xml_mt310s2::directAcessExportXml()
     qInfo("%s", qPrintable(xmlExported));
     xmlExported = XmlHelperForTest::removeTimeDependentEntriesFromXml(xmlExported);
 
-    QFile xmlFile(":/export_inititial.xml");
+    QFile xmlFile(":/export_internal_initial.xml");
     QVERIFY(xmlFile.open(QFile::ReadOnly));
     QString xmlExpected = xmlFile.readAll();
     qInfo("Expected XML (before adjust):");
@@ -59,7 +59,7 @@ void test_regression_adj_import_export_xml_mt310s2::directAcessFileImportXmlPseu
 
     QString xmlExportedInitial = m_mockServer->getSenseInterface()->exportXMLString();
     xmlExportedInitial = XmlHelperForTest::removeTimeDependentEntriesFromXml(xmlExportedInitial);
-    QFile xmlFileInitial(":/export_inititial.xml");
+    QFile xmlFileInitial(":/export_internal_initial.xml");
     QVERIFY(xmlFileInitial.open(QFile::ReadOnly));
     QString xmlExpected = xmlFileInitial.readAll();
     xmlExpected = XmlHelperForTest::removeTimeDependentEntriesFromXml(xmlExpected);
@@ -100,7 +100,7 @@ void test_regression_adj_import_export_xml_mt310s2::scpiExportInitialAdjXml()
 {
     setupServers(&Atmel::getInstance());
 
-    QFile xmlFile(":/export_inititial.xml");
+    QFile xmlFile(":/export_internal_initial.xml");
     QVERIFY(xmlFile.open(QFile::ReadOnly));
     QString xmlExpected = xmlFile.readAll();
     qInfo("Expected XML:");

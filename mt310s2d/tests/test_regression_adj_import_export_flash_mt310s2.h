@@ -16,7 +16,8 @@ private slots:
     void cleanup();
 
     void directExportFlashNoMock();
-    void directExportFlash();
+    void directExportFlashGen();
+    void directExportFlashCheckReference();
     void scpiWriteFlashInitial();
 
     // modify -> export

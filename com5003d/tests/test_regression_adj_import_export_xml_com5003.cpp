@@ -29,7 +29,7 @@ void test_regression_adj_import_export_xml_com5003::directAcessExportXml()
     qInfo("Exported XML:");
     qInfo("%s", qPrintable(xmlExported));
 
-    QFile xmlFile(":/export_inititial.xml");
+    QFile xmlFile(":/export_internal_initial.xml");
     QVERIFY(xmlFile.open(QFile::ReadOnly));
     QString xmlExpected = xmlFile.readAll();
     qInfo("Expected XML:");
@@ -53,7 +53,7 @@ void test_regression_adj_import_export_xml_com5003::directAcessFileImportXmlPseu
     setupServers(&Atmel::getInstance());
 
     QString xmlExportedInitial = m_mockServer->getAdjustment()->exportXMLString();
-    QFile xmlFileInitial(":/export_inititial.xml");
+    QFile xmlFileInitial(":/export_internal_initial.xml");
     QVERIFY(xmlFileInitial.open(QFile::ReadOnly));
     QString xmlExpected = xmlFileInitial.readAll();
     QCOMPARE(xmlExportedInitial, xmlExpected);
@@ -92,7 +92,7 @@ void test_regression_adj_import_export_xml_com5003::scpiExportInitialAdjXml()
 {
     setupServers(&Atmel::getInstance());
 
-    QFile xmlFile(":/export_inititial.xml");
+    QFile xmlFile(":/export_internal_initial.xml");
     QVERIFY(xmlFile.open(QFile::ReadOnly));
     QString xmlExpected = xmlFile.readAll();
     qInfo("Expected XML:");
