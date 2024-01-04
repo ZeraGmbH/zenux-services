@@ -15,11 +15,13 @@ public:
 
     static void cleanAll();
     static QByteArray getData(QString devNode, short adr);
+    static int getWriteCount(QString devNode, short adr);
 private:
     void doReset();
     QString m_devNode;
     short m_i2cAddr;
     static QHash<QString, QHash<short, QByteArray>> m_flashData;
+    static QHash<QString, QHash<short, int>> m_flashDataWriteCounts;
 };
 
 #endif // FLASH24LC256MOCK_H
