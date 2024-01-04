@@ -267,7 +267,7 @@ QString Mt310s2SystemInterface::m_AdjFlashWrite(QString &sInput)
         {
             if (enable)
             {
-                if (m_senseInterface->exportAdjFlash())
+                if (m_senseInterface->exportAdjFlash(QDateTime::currentDateTime()))
                     return ZSCPI::scpiAnswer[ZSCPI::ack];
                 else
                     return ZSCPI::scpiAnswer[ZSCPI::errexec];
@@ -317,7 +317,7 @@ QString Mt310s2SystemInterface::m_AdjXmlImportExport(QString &sInput)
                 else
                 {
                     m_senseInterface->computeSenseAdjData();
-                    if (!m_senseInterface->exportAdjFlash())
+                    if (!m_senseInterface->exportAdjFlash(QDateTime::currentDateTime()))
                         s = ZSCPI::scpiAnswer[ZSCPI::errexec];
                     else
                         s = ZSCPI::scpiAnswer[ZSCPI::ack];

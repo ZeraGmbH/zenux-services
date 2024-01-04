@@ -374,7 +374,7 @@ bool Mt310s2SenseInterface::importAdjData(QDataStream &stream)
     return (true);
 }
 
-void Mt310s2SenseInterface::exportAdjData(QDataStream &stream)
+void Mt310s2SenseInterface::exportAdjData(QDataStream &stream, QDateTime dateTimeWrite)
 {
     // ab version v1.02
     stream << "ServerVersion";
@@ -382,7 +382,7 @@ void Mt310s2SenseInterface::exportAdjData(QDataStream &stream)
     stream << m_pSystemInfo->getDeviceName().toStdString().c_str(); // leiterkarten name aus atmel gelesen
     stream << m_pSystemInfo->getDeviceVersion().toStdString().c_str(); // geräte name versionsnummern ...
     stream << m_pSystemInfo->getSerialNumber().toStdString().c_str(); // seriennummer
-    stream << QDateTime::currentDateTime().toString(Qt::TextDate).toStdString().c_str(); // datum,uhrzeit
+    stream << dateTimeWrite.toString(Qt::TextDate).toStdString().c_str(); // datum,uhrzeit
     for(auto channel : qAsConst(m_ChannelList)) {
         for(auto range : channel->getRangeList()) {
             if ((range->getMMask() & SenseSystem::Direct)> 0)

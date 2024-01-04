@@ -10,6 +10,8 @@
 
 QTEST_MAIN(test_regression_adj_import_export_flash_mt310s2);
 
+static const QDateTime refTime = QDateTime::fromSecsSinceEpoch(0, Qt::UTC);
+
 void test_regression_adj_import_export_flash_mt310s2::initTestCase()
 {
     ClampFactoryTest::enableTest();
@@ -29,7 +31,7 @@ void test_regression_adj_import_export_flash_mt310s2::directExportFlashNoMock()
     I2cFlashIoFactoryForTest::disableMockFlash();
     setupServers(&Atmel::getInstance());
 
-    QVERIFY(!m_mockServer->getSenseInterface()->exportAdjFlash());
+    QVERIFY(!m_mockServer->getSenseInterface()->exportAdjFlash(refTime));
 }
 
 void test_regression_adj_import_export_flash_mt310s2::directExportFlash()
@@ -38,7 +40,7 @@ void test_regression_adj_import_export_flash_mt310s2::directExportFlash()
     Flash24LC256Mock::cleanAll();
     setupServers(&Atmel::getInstance());
 
-    QVERIFY(m_mockServer->getSenseInterface()->exportAdjFlash());
+    QVERIFY(m_mockServer->getSenseInterface()->exportAdjFlash(refTime));
     cI2CSettings *i2cSettings = m_mockServer->getI2cSettings();
     QByteArray dataWritten = Flash24LC256Mock::getData(i2cSettings->getDeviceNode(),
                                                        i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress));
@@ -46,8 +48,8 @@ void test_regression_adj_import_export_flash_mt310s2::directExportFlash()
     QVERIFY(writeFile("/tmp/export_flash_internal_initial", dataWritten));
 
     // Hmm we have again this date time problem here
-    /*QByteArray dataReference = readFile(":/export_flash_internal_initial");
-    QCOMPARE(dataWritten, dataReference);*/
+    QByteArray dataReference = readFile(":/export_flash_internal_initial");
+    QCOMPARE(dataWritten, dataReference);
 }
 
 void test_regression_adj_import_export_flash_mt310s2::setupServers(AtmelPermissionTemplate *permissionQueryHandler)
