@@ -42,16 +42,23 @@ void test_regression_adj_import_export_flash_mt310s2::directExportFlashNoMock()
     QVERIFY(!m_mockServer->getSenseInterface()->exportAdjFlash(refTime));
 }
 
-void test_regression_adj_import_export_flash_mt310s2::directExportFlash()
+void test_regression_adj_import_export_flash_mt310s2::directExportFlashGen()
 {
     QVERIFY(m_mockServer->getSenseInterface()->exportAdjFlash(refTime));
     cI2CSettings *i2cSettings = m_mockServer->getI2cSettings();
     QByteArray dataWritten = Flash24LC256Mock::getData(i2cSettings->getDeviceNode(),
                                                        i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress));
     QVERIFY(!dataWritten.isEmpty());
-    QVERIFY(writeFile("/tmp/export_flash_internal_initial", dataWritten));
+    QVERIFY(writeFile("/tmp/export_internal_initial.eeprom", dataWritten));
+}
 
-    QByteArray dataReference = readFile(":/export_flash_internal_initial");
+void test_regression_adj_import_export_flash_mt310s2::directExportFlashCheckReference()
+{
+    QVERIFY(m_mockServer->getSenseInterface()->exportAdjFlash(refTime));
+    cI2CSettings *i2cSettings = m_mockServer->getI2cSettings();
+    QByteArray dataWritten = Flash24LC256Mock::getData(i2cSettings->getDeviceNode(),
+                                                       i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress));
+    QByteArray dataReference = readFile(":/export_internal_initial.eeprom");
     QCOMPARE(dataWritten, dataReference);
 }
 
@@ -72,7 +79,7 @@ void test_regression_adj_import_export_flash_mt310s2::scpiWriteFlashInitial()
     QVERIFY(m_mockServer->getSenseInterface()->exportAdjFlash(refTime));
     QCOMPARE(Flash24LC256Mock::getWriteCount(devNode, i2cAddress), 2);
     QByteArray dataWritten = Flash24LC256Mock::getData(devNode, i2cAddress);
-    QByteArray dataReference = readFile(":/export_flash_internal_initial");
+    QByteArray dataReference = readFile(":/export_internal_initial.eeprom");
     QCOMPARE(dataWritten, dataReference);
 }
 
