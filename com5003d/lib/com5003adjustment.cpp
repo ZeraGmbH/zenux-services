@@ -31,8 +31,9 @@ Com5003Adjustment::~Com5003Adjustment()
 }
 
 
-bool Com5003Adjustment::exportAdjFlash()
+bool Com5003Adjustment::exportAdjFlash(QDateTime dateTimeWrite)
 {
+    Q_UNUSED(dateTimeWrite)
    quint32 count=0;
    m_nChecksum = 0;
    QByteArray ba;
@@ -40,7 +41,7 @@ bool Com5003Adjustment::exportAdjFlash()
    QDataStream stream(&ba,QIODevice::ReadWrite);
    stream.setVersion(QDataStream::Qt_5_4);
 
-   QDateTime DateTime;
+   QDateTime DateTime; // useless TBD
 
    stream << count;
    stream << m_nChecksum; // checksumme
@@ -54,7 +55,7 @@ bool Com5003Adjustment::exportAdjFlash()
    stream << m_pSystemInfo->getSerialNumber().toStdString().c_str(); // seriennummer
    stream << DateTime.toString(Qt::TextDate).toStdString().c_str(); // datum,uhrzeit
    for (int i = 0; i < m_AdjFlashList.count(); i++)
-       m_AdjFlashList.at(i)->exportAdjData(stream);
+       m_AdjFlashList.at(i)->exportAdjData(stream, DateTime);
 
    count = ba.count(); // um die länge zu bestimmen
    QByteArray ca(6, 0); // qbyte array mit 6 bytes
