@@ -12,10 +12,12 @@ class test_regression_adj_import_export_flash_mt310s2 : public QObject
     Q_OBJECT
 private slots:
     void initTestCase();
+    void init();
     void cleanup();
 
     void directExportFlashNoMock();
     void directExportFlash();
+    void scpiWriteFlashInitial();
 
     // modify -> export
     // import -> check changes in XML
@@ -29,6 +31,7 @@ private:
     std::unique_ptr<ResmanRunFacade> m_resmanServer;
     Zera::ProxyClientPtr m_pcbClient;
     std::unique_ptr<Zera::cPCBInterface> m_pcbIFace;
+    AtmelPermissionTemplatePtrU m_permissionMock;
 };
 
 #endif // TEST_REGRESSION_ADJ_IMPORT_EXPORT_FLASH_MT310S2_H

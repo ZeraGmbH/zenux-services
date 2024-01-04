@@ -4,6 +4,8 @@
 #include "atmel.h"
 #include "i2cflashiofactoryfortest.h"
 #include "flash24lc256mock.h"
+#include "scpisingletransactionblocked.h"
+#include "zscpi_response_definitions.h"
 #include <timemachineobject.h>
 #include <QSignalSpy>
 #include <QTest>
@@ -15,6 +17,15 @@ static const QDateTime refTime = QDateTime::fromSecsSinceEpoch(0, Qt::UTC);
 void test_regression_adj_import_export_flash_mt310s2::initTestCase()
 {
     ClampFactoryTest::enableTest();
+    // permission tests are done in test_regression_adj_import_export_xml_<device>
+    m_permissionMock = AtmelPermissionMock::createAlwaysEnabled();
+}
+
+void test_regression_adj_import_export_flash_mt310s2::init()
+{
+    Flash24LC256Mock::cleanAll();
+    I2cFlashIoFactoryForTest::enableMockFlash();
+    setupServers(m_permissionMock.get());
 }
 
 void test_regression_adj_import_export_flash_mt310s2::cleanup()
@@ -29,17 +40,11 @@ void test_regression_adj_import_export_flash_mt310s2::cleanup()
 void test_regression_adj_import_export_flash_mt310s2::directExportFlashNoMock()
 {
     I2cFlashIoFactoryForTest::disableMockFlash();
-    setupServers(&Atmel::getInstance());
-
     QVERIFY(!m_mockServer->getSenseInterface()->exportAdjFlash(refTime));
 }
 
 void test_regression_adj_import_export_flash_mt310s2::directExportFlash()
 {
-    I2cFlashIoFactoryForTest::enableMockFlash();
-    Flash24LC256Mock::cleanAll();
-    setupServers(&Atmel::getInstance());
-
     QVERIFY(m_mockServer->getSenseInterface()->exportAdjFlash(refTime));
     cI2CSettings *i2cSettings = m_mockServer->getI2cSettings();
     QByteArray dataWritten = Flash24LC256Mock::getData(i2cSettings->getDeviceNode(),
@@ -47,6 +52,27 @@ void test_regression_adj_import_export_flash_mt310s2::directExportFlash()
     QVERIFY(!dataWritten.isEmpty());
     QVERIFY(writeFile("/tmp/export_flash_internal_initial", dataWritten));
 
+    QByteArray dataReference = readFile(":/export_flash_internal_initial");
+    QCOMPARE(dataWritten, dataReference);
+}
+
+void test_regression_adj_import_export_flash_mt310s2::scpiWriteFlashInitial()
+{
+    QString ret = ScpiSingleTransactionBlocked::cmd("SYSTEM:ADJUSTMENT:FLASH:WRITE", "");
+    QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::ack]);
+
+    cI2CSettings *i2cSettings = m_mockServer->getI2cSettings();
+    QString devNode = i2cSettings->getDeviceNode();
+    short i2cAddress = i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress);
+
+    // SCPI write flash sets current date so we cannot compare it
+    // Check if at least a write happened
+    QCOMPARE(Flash24LC256Mock::getWriteCount(devNode, i2cAddress), 1);
+
+    // and do a second write with known time
+    QVERIFY(m_mockServer->getSenseInterface()->exportAdjFlash(refTime));
+    QCOMPARE(Flash24LC256Mock::getWriteCount(devNode, i2cAddress), 2);
+    QByteArray dataWritten = Flash24LC256Mock::getData(devNode, i2cAddress);
     QByteArray dataReference = readFile(":/export_flash_internal_initial");
     QCOMPARE(dataWritten, dataReference);
 }
