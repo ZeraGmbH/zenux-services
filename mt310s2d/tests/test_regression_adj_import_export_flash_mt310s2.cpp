@@ -5,6 +5,7 @@
 #include "flash24lc256mock.h"
 #include "scpisingletransactionblocked.h"
 #include "zscpi_response_definitions.h"
+#include "xmlhelperfortest.h"
 #include <timemachineobject.h>
 #include <QSignalSpy>
 #include <QTest>
@@ -81,6 +82,69 @@ void test_regression_adj_import_export_flash_mt310s2::scpiWriteFlashInitial()
     QByteArray dataWritten = Flash24LC256Mock::getData(devNode, i2cAddress);
     QByteArray dataReference = readFile(":/export_internal_initial.eeprom");
     QCOMPARE(dataWritten, dataReference);
+}
+
+void test_regression_adj_import_export_flash_mt310s2::scpiWriteRandomFileAndFlashGen()
+{
+    QString filenameShort = ":/import_modified";
+    QVERIFY(QFile::exists(filenameShort + ".xml"));
+    QString ret = ScpiSingleTransactionBlocked::cmd("SYSTEM:ADJUSTMENT:XML:READ", filenameShort);
+    QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::ack]);
+    ret = ScpiSingleTransactionBlocked::cmd("SYSTEM:ADJUSTMENT:FLASH:WRITE", "");
+    QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::ack]);
+
+    cI2CSettings *i2cSettings = m_mockServer->getI2cSettings();
+    QByteArray dataWritten = Flash24LC256Mock::getData(i2cSettings->getDeviceNode(),
+                                                       i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress));
+    QVERIFY(!dataWritten.isEmpty());
+    QVERIFY(writeFile("/tmp/export_internal_modified.eeprom", dataWritten));
+}
+
+void test_regression_adj_import_export_flash_mt310s2::scpiWriteRandomFileFlashWriteFlashReadExportXmlAndCheck()
+{
+    QString filenameShort = ":/import_modified";
+    QString ret = ScpiSingleTransactionBlocked::cmd("SYSTEM:ADJUSTMENT:XML:READ", filenameShort);
+    QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::ack]);
+    ret = ScpiSingleTransactionBlocked::cmd("SYSTEM:ADJUSTMENT:FLASH:WRITE", "");
+    QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::ack]);
+    ret = ScpiSingleTransactionBlocked::cmd("SYSTEM:ADJUSTMENT:FLASH:READ", "");
+    QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::ack]);
+
+    QString xmlExported = XmlHelperForTest::prepareForCompare(ScpiSingleTransactionBlocked::query("SYSTEM:ADJUSTMENT:XML?"));
+
+    QFile xmlFile(":/import_modified.xml");
+    QVERIFY(xmlFile.open(QFile::ReadOnly));
+    QString xmlExpected = XmlHelperForTest::prepareForCompare(xmlFile.readAll());
+
+    qInfo("Exported XML:");
+    qInfo("%s", qPrintable(xmlExported));
+    qInfo("Expected XML:");
+    qInfo("%s", qPrintable(xmlExpected));
+    QCOMPARE(xmlExported, xmlExpected);
+}
+
+void test_regression_adj_import_export_flash_mt310s2::loadRandomToEEpromWriteToFlashExportXmlAndCheck()
+{
+    cI2CSettings *i2cSettings = m_mockServer->getI2cSettings();
+    Flash24LC256Mock flashMock(i2cSettings->getDeviceNode(), i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress));
+    QByteArray eepromContent = readFile(":/export_internal_modified.eeprom");
+    QVERIFY(!eepromContent.isEmpty());
+    flashMock.WriteData(eepromContent.data(), eepromContent.length(), 0);
+
+    QString ret = ScpiSingleTransactionBlocked::cmd("SYSTEM:ADJUSTMENT:FLASH:READ", "");
+    QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::ack]);
+
+    QString xmlExported = XmlHelperForTest::prepareForCompare(ScpiSingleTransactionBlocked::query("SYSTEM:ADJUSTMENT:XML?"));
+
+    QFile xmlFile(":/import_modified.xml");
+    QVERIFY(xmlFile.open(QFile::ReadOnly));
+    QString xmlExpected = XmlHelperForTest::prepareForCompare(xmlFile.readAll());
+
+    qInfo("Exported XML:");
+    qInfo("%s", qPrintable(xmlExported));
+    qInfo("Expected XML:");
+    qInfo("%s", qPrintable(xmlExpected));
+    QCOMPARE(xmlExported, xmlExpected);
 }
 
 void test_regression_adj_import_export_flash_mt310s2::setupServers(AtmelPermissionTemplate *permissionQueryHandler)

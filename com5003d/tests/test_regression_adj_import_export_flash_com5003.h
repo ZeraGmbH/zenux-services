@@ -20,9 +20,10 @@ private slots:
     void directExportFlashCheckReference();
     void scpiWriteFlashInitial();
 
-    // modify -> export
-    // import -> check changes in XML
-    // all tests for clamps / com5003
+    void scpiWriteRandomFileAndFlashGen();
+    void scpiWriteRandomFileFlashWriteFlashReadExportXmlAndCheck();
+    void loadRandomToEEpromWriteToFlashExportXmlAndCheck();
+
 private:
     void setupServers(AtmelPermissionTemplate *permissionQueryHandler);
     bool writeFile(QString filename, QByteArray data);
