@@ -5,6 +5,7 @@ SETUP_TESTS(
     test_regression_adj_import_export_xml_com5003
     test_regression_adj_import_export_eeprom_com5003
     test_regression_adj_import_permission_com5003
+    test_regression_adj_scpi_query_format_com5003
     )
 
 target_sources(test_regression_adj_import_export_xml_com5003
@@ -27,3 +28,7 @@ target_sources(test_regression_sense_interface_com5003
     regression_data_sense_constants/regression_data.qrc
 )
 
+target_sources(test_regression_adj_scpi_query_format_com5003
+  PRIVATE
+    regression_data_adj_scpi_format/regression_data.qrc
+)
