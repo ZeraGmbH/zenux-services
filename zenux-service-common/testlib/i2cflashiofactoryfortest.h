@@ -1,9 +1,9 @@
 #ifndef I2CFLASHIOFACTORYFORTEST_H
 #define I2CFLASHIOFACTORYFORTEST_H
 
-#include <i2cflashiofactory.h>
+#include <i2ceepromiofactory.h>
 
-class I2cFlashIoFactoryForTest : public I2cFlashIoFactory
+class I2cFlashIoFactoryForTest : public I2cEEpromIoFactory
 {
 public:
     static void enableMockFlash();

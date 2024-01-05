@@ -25,7 +25,7 @@ file(GLOB SOURCES
 add_library(zenuxservicecommon SHARED
     ${HEADERS}
     ${SOURCES}
-    )
+)
 
 target_link_libraries(zenuxservicecommon
     PUBLIC

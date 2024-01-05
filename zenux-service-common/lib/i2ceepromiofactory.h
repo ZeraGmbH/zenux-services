@@ -1,11 +1,11 @@
-#ifndef I2CFLASHIOFACTORY_H
-#define I2CFLASHIOFACTORY_H
+#ifndef I2CEEPROMIOFACTORY_H
+#define I2CEEPROMIOFACTORY_H
 
 #include "i2cflashinterface.h"
 #include <QString>
 #include <functional>
 
-class I2cFlashIoFactory
+class I2cEEpromIoFactory
 {
 public:
     static I2cFlashInterfacePtrU create24LC256(QString devNode, short i2cAddr);
@@ -14,4 +14,4 @@ protected:
     static std::function<I2cFlashInterfacePtrU(QString devNode, short i2cAddr)> m_cresteFunction;
 };
 
-#endif // I2CFLASHIOFACTORY_H
+#endif // I2CEEPROMIOFACTORY_H
