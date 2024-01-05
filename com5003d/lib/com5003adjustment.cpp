@@ -4,7 +4,7 @@
 #include "com5003adjxml.h"
 #include "systeminfo.h"
 #include "com5003adjustment.h"
-#include "i2cflashiofactory.h"
+#include "i2ceepromiofactory.h"
 #include <F24LC256.h>
 #include <QByteArray>
 #include <QBuffer>
@@ -78,8 +78,8 @@ bool Com5003Adjustment::exportAdjFlash(QDateTime dateTimeWrite)
     mem.write(ca); // überschreibt die länge und jetzt die richtige checksumme
 
     mem.close(); // wird nicht mehr benötigt
-
-    I2cFlashInterfacePtrU flashIo = I2cFlashIoFactory::create24LC256(m_sDeviceNode, m_nI2CAdr);
+    
+    I2cFlashInterfacePtrU flashIo = I2cEEpromIoFactory::create24LC256(m_sDeviceNode, m_nI2CAdr);
     int written = flashIo->WriteData(ba.data(), ba.size(), 0);
     if ( (count - written) > 0) {
         qCritical("Error writing flashmemory");
@@ -95,7 +95,7 @@ bool Com5003Adjustment::importAdjFlash()
     m_nAdjStatus = 0; // status reset
 
     QByteArray ba(6, 0); // byte array for length and checksum
-    I2cFlashInterfacePtrU flashIo = I2cFlashIoFactory::create24LC256(m_sDeviceNode, m_nI2CAdr);
+    I2cFlashInterfacePtrU flashIo = I2cEEpromIoFactory::create24LC256(m_sDeviceNode, m_nI2CAdr);
     if ( (6 - flashIo->ReadData(ba.data(),6,0)) >0 ) {
         qCritical("Error reading flashmemory");
         return(false); // lesefehler

@@ -1,4 +1,4 @@
-#include "test_regression_adj_import_export_flash_mt310s2.h"
+#include "test_regression_adj_import_export_eeprom_mt310s2.h"
 #include "clampfactorytest.h"
 #include "proxy.h"
 #include "i2cflashiofactoryfortest.h"
@@ -10,25 +10,25 @@
 #include <QSignalSpy>
 #include <QTest>
 
-QTEST_MAIN(test_regression_adj_import_export_flash_mt310s2);
+QTEST_MAIN(test_regression_adj_import_export_eeprom_mt310s2);
 
 static const QDateTime refTime = QDateTime::fromSecsSinceEpoch(0, Qt::UTC);
 
-void test_regression_adj_import_export_flash_mt310s2::initTestCase()
+void test_regression_adj_import_export_eeprom_mt310s2::initTestCase()
 {
     ClampFactoryTest::enableTest();
     // permission tests are done in test_regression_adj_import_export_xml_<device>
     m_permissionMock = AtmelPermissionMock::createAlwaysEnabled();
 }
 
-void test_regression_adj_import_export_flash_mt310s2::init()
+void test_regression_adj_import_export_eeprom_mt310s2::init()
 {
     Flash24LC256Mock::cleanAll();
     I2cFlashIoFactoryForTest::enableMockFlash();
     setupServers(m_permissionMock.get());
 }
 
-void test_regression_adj_import_export_flash_mt310s2::cleanup()
+void test_regression_adj_import_export_eeprom_mt310s2::cleanup()
 {
     m_pcbIFace = nullptr;
     m_pcbClient = nullptr;
@@ -37,13 +37,13 @@ void test_regression_adj_import_export_flash_mt310s2::cleanup()
     TimeMachineObject::feedEventLoop();
 }
 
-void test_regression_adj_import_export_flash_mt310s2::directExportFlashNoMock()
+void test_regression_adj_import_export_eeprom_mt310s2::directExportFlashNoMock()
 {
     I2cFlashIoFactoryForTest::disableMockFlash();
     QVERIFY(!m_mockServer->getSenseInterface()->exportAdjFlash(refTime));
 }
 
-void test_regression_adj_import_export_flash_mt310s2::directExportFlashGen()
+void test_regression_adj_import_export_eeprom_mt310s2::directExportFlashGen()
 {
     QVERIFY(m_mockServer->getSenseInterface()->exportAdjFlash(refTime));
     cI2CSettings *i2cSettings = m_mockServer->getI2cSettings();
@@ -53,7 +53,7 @@ void test_regression_adj_import_export_flash_mt310s2::directExportFlashGen()
     QVERIFY(writeFile("/tmp/export_internal_initial.eeprom", dataWritten));
 }
 
-void test_regression_adj_import_export_flash_mt310s2::directExportFlashCheckReference()
+void test_regression_adj_import_export_eeprom_mt310s2::directExportFlashCheckReference()
 {
     QVERIFY(m_mockServer->getSenseInterface()->exportAdjFlash(refTime));
     cI2CSettings *i2cSettings = m_mockServer->getI2cSettings();
@@ -63,7 +63,7 @@ void test_regression_adj_import_export_flash_mt310s2::directExportFlashCheckRefe
     QCOMPARE(dataWritten, dataReference);
 }
 
-void test_regression_adj_import_export_flash_mt310s2::scpiWriteFlashInitial()
+void test_regression_adj_import_export_eeprom_mt310s2::scpiWriteFlashInitial()
 {
     QString ret = ScpiSingleTransactionBlocked::cmd("SYSTEM:ADJUSTMENT:FLASH:WRITE", "");
     QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::ack]);
@@ -84,7 +84,7 @@ void test_regression_adj_import_export_flash_mt310s2::scpiWriteFlashInitial()
     QCOMPARE(dataWritten, dataReference);
 }
 
-void test_regression_adj_import_export_flash_mt310s2::scpiWriteRandomFileAndFlashGen()
+void test_regression_adj_import_export_eeprom_mt310s2::scpiWriteRandomFileAndFlashGen()
 {
     QString filenameShort = ":/import_modified";
     QVERIFY(QFile::exists(filenameShort + ".xml"));
@@ -100,7 +100,7 @@ void test_regression_adj_import_export_flash_mt310s2::scpiWriteRandomFileAndFlas
     QVERIFY(writeFile("/tmp/export_internal_modified.eeprom", dataWritten));
 }
 
-void test_regression_adj_import_export_flash_mt310s2::scpiWriteRandomFileFlashWriteFlashReadExportXmlAndCheck()
+void test_regression_adj_import_export_eeprom_mt310s2::scpiWriteRandomFileFlashWriteFlashReadExportXmlAndCheck()
 {
     QString filenameShort = ":/import_modified";
     QString ret = ScpiSingleTransactionBlocked::cmd("SYSTEM:ADJUSTMENT:XML:READ", filenameShort);
@@ -123,7 +123,7 @@ void test_regression_adj_import_export_flash_mt310s2::scpiWriteRandomFileFlashWr
     QCOMPARE(xmlExported, xmlExpected);
 }
 
-void test_regression_adj_import_export_flash_mt310s2::loadRandomToEEpromWriteToFlashExportXmlAndCheck()
+void test_regression_adj_import_export_eeprom_mt310s2::loadRandomToEEpromWriteToFlashExportXmlAndCheck()
 {
     cI2CSettings *i2cSettings = m_mockServer->getI2cSettings();
     Flash24LC256Mock flashMock(i2cSettings->getDeviceNode(), i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress));
@@ -147,7 +147,7 @@ void test_regression_adj_import_export_flash_mt310s2::loadRandomToEEpromWriteToF
     QCOMPARE(xmlExported, xmlExpected);
 }
 
-void test_regression_adj_import_export_flash_mt310s2::setupServers(AtmelPermissionTemplate *permissionQueryHandler)
+void test_regression_adj_import_export_eeprom_mt310s2::setupServers(AtmelPermissionTemplate *permissionQueryHandler)
 {
     m_resmanServer = std::make_unique<ResmanRunFacade>();
     m_mockServer = std::make_unique<MockForSenseInterfaceMt310s2>(permissionQueryHandler);
@@ -160,7 +160,7 @@ void test_regression_adj_import_export_flash_mt310s2::setupServers(AtmelPermissi
     TimeMachineObject::feedEventLoop();
 }
 
-bool test_regression_adj_import_export_flash_mt310s2::writeFile(QString filename, QByteArray data)
+bool test_regression_adj_import_export_eeprom_mt310s2::writeFile(QString filename, QByteArray data)
 {
     QFile file(filename);
     if(file.open(QIODevice::WriteOnly))
@@ -168,7 +168,7 @@ bool test_regression_adj_import_export_flash_mt310s2::writeFile(QString filename
     return false;
 }
 
-QByteArray test_regression_adj_import_export_flash_mt310s2::readFile(QString filename)
+QByteArray test_regression_adj_import_export_eeprom_mt310s2::readFile(QString filename)
 {
     QFile file(filename);
     if(file.open(QIODevice::ReadOnly))
