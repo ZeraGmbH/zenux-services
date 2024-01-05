@@ -7,12 +7,12 @@
 
 enum DirectJustCommands
 {
-    DirectGain,
-    DirectJustGain,
-    DirectPhase,
-    DirectJustPhase,
-    DirectOffset,
-    DirectJustOffset,
+    GainTotal,
+    GainSingle,
+    PhaseTotal,
+    PhaseSingle,
+    OffsetTotal,
+    OffsetSingle,
     DirectJustStatus,
     DirectJustCompute,
     DirectJustInit

@@ -23,12 +23,12 @@ Com5003JustRangeTripletOffsetGainPhase::~Com5003JustRangeTripletOffsetGainPhase(
 void Com5003JustRangeTripletOffsetGainPhase::initSCPIConnection(QString leadingNodes)
 {
     ensureTrailingColonOnNonEmptyParentNodes(leadingNodes);
-    addDelegate(QString("%1CORRECTION").arg(leadingNodes), "GAIN", SCPI::CmdwP , m_pSCPIInterface, DirectGain);
-    addDelegate(QString("%1CORRECTION").arg(leadingNodes), "ADJGAIN", SCPI::CmdwP , m_pSCPIInterface, DirectJustGain);
-    addDelegate(QString("%1CORRECTION").arg(leadingNodes), "PHASE", SCPI::isCmdwP, m_pSCPIInterface, DirectPhase);
-    addDelegate(QString("%1CORRECTION").arg(leadingNodes), "ADJPHASE", SCPI::isCmdwP, m_pSCPIInterface, DirectJustPhase);
-    addDelegate(QString("%1CORRECTION").arg(leadingNodes), "OFFSET", SCPI::isCmdwP, m_pSCPIInterface, DirectOffset);
-    addDelegate(QString("%1CORRECTION").arg(leadingNodes), "ADJOFFSET", SCPI::isCmdwP, m_pSCPIInterface, DirectJustOffset);
+    addDelegate(QString("%1CORRECTION").arg(leadingNodes), "GAIN", SCPI::CmdwP , m_pSCPIInterface, GainTotal);
+    addDelegate(QString("%1CORRECTION").arg(leadingNodes), "ADJGAIN", SCPI::CmdwP , m_pSCPIInterface, GainSingle);
+    addDelegate(QString("%1CORRECTION").arg(leadingNodes), "PHASE", SCPI::isCmdwP, m_pSCPIInterface, PhaseTotal);
+    addDelegate(QString("%1CORRECTION").arg(leadingNodes), "ADJPHASE", SCPI::isCmdwP, m_pSCPIInterface, PhaseSingle);
+    addDelegate(QString("%1CORRECTION").arg(leadingNodes), "OFFSET", SCPI::isCmdwP, m_pSCPIInterface, OffsetTotal);
+    addDelegate(QString("%1CORRECTION").arg(leadingNodes), "ADJOFFSET", SCPI::isCmdwP, m_pSCPIInterface, OffsetSingle);
     addDelegate(QString("%1CORRECTION").arg(leadingNodes), "STATUS", SCPI::isQuery, m_pSCPIInterface, DirectJustStatus);
     addDelegate(QString("%1CORRECTION").arg(leadingNodes), "COMPUTE", SCPI::isCmdwP, m_pSCPIInterface, DirectJustCompute);
     addDelegate(QString("%1CORRECTION").arg(leadingNodes), "INIT", SCPI::isCmdwP, m_pSCPIInterface, DirectJustInit);
@@ -45,16 +45,16 @@ void Com5003JustRangeTripletOffsetGainPhase::executeProtoScpi(int cmdCode, cProt
 {
     switch (cmdCode)
     {
-    case DirectGain:
-    case DirectJustGain:
+    case GainTotal:
+    case GainSingle:
         protoCmd->m_sOutput = scpiQueryGainCorrectionTotal(protoCmd->m_sInput);
         break;
-    case DirectPhase:
-    case DirectJustPhase:
+    case PhaseTotal:
+    case PhaseSingle:
         protoCmd->m_sOutput = scpiQueryPhaseCorrectionTotal(protoCmd->m_sInput);
         break;
-    case DirectOffset:
-    case DirectJustOffset:
+    case OffsetTotal:
+    case OffsetSingle:
         protoCmd->m_sOutput = scpiQueryOffsetCorrectionTotal(protoCmd->m_sInput);
         break;
     case DirectJustStatus:
