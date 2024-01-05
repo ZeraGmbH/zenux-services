@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/">
+        <file>import_scpi_format.xml</file>
+    </qresource>
+</RCC>
