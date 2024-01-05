@@ -79,7 +79,7 @@ QString Com5003JustRangeTripletOffsetGainPhase::scpiQueryGainCorrectionTotal(con
         bool ok;
         double par = spar.toDouble(&ok);
         if (ok)
-            return QString("%1").arg(m_pGainCorrection->getCorrection(par),0,'f',8);
+            return QString("%1").arg(getGainCorrectionTotal(par),0,'f',8);
         else
             return ZSCPI::scpiAnswer[ZSCPI::errval];
     }
@@ -111,7 +111,7 @@ QString Com5003JustRangeTripletOffsetGainPhase::scpiQueryPhaseCorrectionTotal(QS
         bool ok;
         double par = spar.toDouble(&ok);
         if (ok)
-            return QString("%1").arg(m_pPhaseCorrection->getCorrection(par),0,'f',7);
+            return QString("%1").arg(getPhaseCorrectionTotal(par),0,'f',7);
         else
             return ZSCPI::scpiAnswer[ZSCPI::errval];
     }
@@ -143,7 +143,7 @@ QString Com5003JustRangeTripletOffsetGainPhase::scpiQueryOffsetCorrectionTotal(Q
         bool ok;
         double par = spar.toDouble(&ok);
         if (ok)
-            return QString("%1").arg(m_pOffsetCorrection->getCorrection(par),0,'f',8);
+            return QString("%1").arg(getOffsetCorrectionTotal(par),0,'f',8);
         else
             return ZSCPI::scpiAnswer[ZSCPI::errval];
     }
