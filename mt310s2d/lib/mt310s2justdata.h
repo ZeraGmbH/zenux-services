@@ -49,20 +49,20 @@ public:
 
 protected:
     void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
-    double getGainCorrection(double par);
-    double getPhaseCorrection(double par);
-    double getOffsetCorrection(double par);
+    double getGainCorrectionSingle(double par);
+    double getPhaseCorrectionSingle(double par);
+    double getOffsetCorrectionSingle(double par);
     virtual double getGainCorrectionTotal(double par);
     virtual double getPhaseCorrectionTotal(double par);
     virtual double getOffsetCorrectionTotal(double par);
 
 private:
-    QString scpiQueryGainCorrection(const QString &scpiInput);
-    QString scpiQueryJustGainCorrection(QString &scpiInput);
-    QString scpiQueryPhaseCorrection(QString &scpiInput);
-    QString scpiQueryJustPhaseCorrection(QString &scpiInput);
-    QString scpiQueryOffsetCorrection(QString &scpiInput);
-    QString scpiQueryJustOffsetCorrection(QString &scpiInput);
+    QString scpiQueryGainCorrectionTotal(const QString &scpiInput);
+    QString scpiQueryGainCorrectionSingle(QString &scpiInput);
+    QString scpiQueryPhaseCorrectionTotal(QString &scpiInput);
+    QString scpiQueryPhaseCorrectionSingle(QString &scpiInput);
+    QString scpiQueryOffsetCorrectionTotal(QString &scpiInput);
+    QString scpiQueryOffsetCorrectionSingle(QString &scpiInput);
     QString scpiQueryStatus(QString &scpiInput);
     QString scpiCmdComputeJustData(QString &scpiInput);
     QString scpiCmdInitJustData(QString &scpiInput); // done in Adjustmentmodule - left for compatibility
