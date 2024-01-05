@@ -47,15 +47,15 @@ void Com5003JustRangeTripletOffsetGainPhase::executeProtoScpi(int cmdCode, cProt
     {
     case DirectGain:
     case DirectJustGain:
-        protoCmd->m_sOutput = scpiQueryGainCorrection(protoCmd->m_sInput);
+        protoCmd->m_sOutput = scpiQueryGainCorrectionTotal(protoCmd->m_sInput);
         break;
     case DirectPhase:
     case DirectJustPhase:
-        protoCmd->m_sOutput = scpiQueryPhaseCorrection(protoCmd->m_sInput);
+        protoCmd->m_sOutput = scpiQueryPhaseCorrectionTotal(protoCmd->m_sInput);
         break;
     case DirectOffset:
     case DirectJustOffset:
-        protoCmd->m_sOutput = scpiQueryOffsetCorrection(protoCmd->m_sInput);
+        protoCmd->m_sOutput = scpiQueryOffsetCorrectionTotal(protoCmd->m_sInput);
         break;
     case DirectJustStatus:
         protoCmd->m_sOutput = scpiQueryStatus(protoCmd->m_sInput);
@@ -71,7 +71,7 @@ void Com5003JustRangeTripletOffsetGainPhase::executeProtoScpi(int cmdCode, cProt
         emit cmdExecutionDone(protoCmd);
 }
 
-QString Com5003JustRangeTripletOffsetGainPhase::scpiQueryGainCorrection(const QString &scpiInput)
+QString Com5003JustRangeTripletOffsetGainPhase::scpiQueryGainCorrectionTotal(const QString &scpiInput)
 {
     cSCPICommand cmd = scpiInput;
     if (cmd.isQuery(1)) {
@@ -87,7 +87,7 @@ QString Com5003JustRangeTripletOffsetGainPhase::scpiQueryGainCorrection(const QS
         return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-QString Com5003JustRangeTripletOffsetGainPhase::scpiQueryJustGainCorrection(QString &scpiInput)
+QString Com5003JustRangeTripletOffsetGainPhase::scpiQueryGainCorrectionSingle(QString &scpiInput)
 {
     cSCPICommand cmd = scpiInput;
     if (cmd.isQuery(1)) {
@@ -95,7 +95,7 @@ QString Com5003JustRangeTripletOffsetGainPhase::scpiQueryJustGainCorrection(QStr
         bool ok;
         double par = spar.toDouble(&ok);
         if (ok)
-            return QString("%1").arg(getGainCorrection(par));
+            return QString("%1").arg(getGainCorrectionSingle(par));
         else
             return ZSCPI::scpiAnswer[ZSCPI::errval];
     }
@@ -103,7 +103,7 @@ QString Com5003JustRangeTripletOffsetGainPhase::scpiQueryJustGainCorrection(QStr
         return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-QString Com5003JustRangeTripletOffsetGainPhase::scpiQueryPhaseCorrection(QString& scpiInput)
+QString Com5003JustRangeTripletOffsetGainPhase::scpiQueryPhaseCorrectionTotal(QString& scpiInput)
 {
     cSCPICommand cmd = scpiInput;
     if (cmd.isQuery(1)) {
@@ -119,7 +119,7 @@ QString Com5003JustRangeTripletOffsetGainPhase::scpiQueryPhaseCorrection(QString
         return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-QString Com5003JustRangeTripletOffsetGainPhase::scpiQueryJustPhaseCorrection(QString &scpiInput)
+QString Com5003JustRangeTripletOffsetGainPhase::scpiQueryPhaseCorrectionSingle(QString &scpiInput)
 {
     cSCPICommand cmd = scpiInput;
     if (cmd.isQuery(1)) {
@@ -127,7 +127,7 @@ QString Com5003JustRangeTripletOffsetGainPhase::scpiQueryJustPhaseCorrection(QSt
         bool ok;
         double par = spar.toDouble(&ok);
         if (ok)
-            return QString("%1").arg(getPhaseCorrection(par));
+            return QString("%1").arg(getPhaseCorrectionSingle(par));
         else
             return ZSCPI::scpiAnswer[ZSCPI::errval];
     }
@@ -135,7 +135,7 @@ QString Com5003JustRangeTripletOffsetGainPhase::scpiQueryJustPhaseCorrection(QSt
         return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-QString Com5003JustRangeTripletOffsetGainPhase::scpiQueryOffsetCorrection(QString& scpiInput)
+QString Com5003JustRangeTripletOffsetGainPhase::scpiQueryOffsetCorrectionTotal(QString& scpiInput)
 {
     cSCPICommand cmd = scpiInput;
     if (cmd.isQuery(1)) {
@@ -151,7 +151,7 @@ QString Com5003JustRangeTripletOffsetGainPhase::scpiQueryOffsetCorrection(QStrin
         return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-QString Com5003JustRangeTripletOffsetGainPhase::scpiQueryJustOffsetCorrection(QString &scpiInput)
+QString Com5003JustRangeTripletOffsetGainPhase::scpiQueryOffsetCorrectionSingle(QString &scpiInput)
 {
     cSCPICommand cmd = scpiInput;
     if (cmd.isQuery(1)) {
@@ -159,7 +159,7 @@ QString Com5003JustRangeTripletOffsetGainPhase::scpiQueryJustOffsetCorrection(QS
         bool ok;
         double par = spar.toDouble(&ok);
         if (ok)
-            return QString("%1").arg(getOffsetCorrection(par));
+            return QString("%1").arg(getOffsetCorrectionSingle(par));
         else
             return ZSCPI::scpiAnswer[ZSCPI::errval];
     }
@@ -260,7 +260,7 @@ double Com5003JustRangeTripletOffsetGainPhase::getGainCorrectionTotal(double par
     return m_pGainCorrection->getCorrection(par);
 }
 
-double Com5003JustRangeTripletOffsetGainPhase::getGainCorrection(double par)
+double Com5003JustRangeTripletOffsetGainPhase::getGainCorrectionSingle(double par)
 {
     return m_pGainCorrection->getCorrection(par);
 }
@@ -270,7 +270,7 @@ double Com5003JustRangeTripletOffsetGainPhase::getPhaseCorrectionTotal(double pa
     return m_pPhaseCorrection->getCorrection(par);
 }
 
-double Com5003JustRangeTripletOffsetGainPhase::getPhaseCorrection(double par)
+double Com5003JustRangeTripletOffsetGainPhase::getPhaseCorrectionSingle(double par)
 {
     return m_pPhaseCorrection->getCorrection(par);
 }
@@ -280,7 +280,7 @@ double Com5003JustRangeTripletOffsetGainPhase::getOffsetCorrectionTotal(double p
     return m_pOffsetCorrection->getCorrection(par);
 }
 
-double Com5003JustRangeTripletOffsetGainPhase::getOffsetCorrection(double par)
+double Com5003JustRangeTripletOffsetGainPhase::getOffsetCorrectionSingle(double par)
 {
     return m_pOffsetCorrection->getCorrection(par);
 }
