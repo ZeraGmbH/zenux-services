@@ -14,17 +14,17 @@
     <Name>240V</Name>
     <Gain>
      <Status>0</Status>
-     <Coefficients>11111111.11111111;0.0;0.0;0.0;</Coefficients>
+     <Coefficients>11111111.11111111111111;0.0;0.0;0.0;</Coefficients>
      <Nodes>1.000000;0.000000;1.000000;0.000000;1.000000;0.000000;1.000000;0.000000;</Nodes>
     </Gain>
     <Phase>
      <Status>0</Status>
-     <Coefficients>11111111.11111111;0.0;0.0;0.0;</Coefficients>
+     <Coefficients>22222222.22222222222222;0.0;0.0;0.0;</Coefficients>
      <Nodes>1.000000;0.000000;1.000000;0.000000;1.000000;0.000000;1.000000;0.000000;</Nodes>
     </Phase>
     <Offset>
      <Status>0</Status>
-     <Coefficients>11111111.11111111;0.0;0.0;0.0;</Coefficients>
+     <Coefficients>33333333.3333333333333;0.0;0.0;0.0;</Coefficients>
      <Nodes>1.000000;0.000000;1.000000;0.000000;1.000000;0.000000;1.000000;0.000000;</Nodes>
     </Offset>
    </Range>
@@ -40,12 +40,12 @@
     </Gain>
     <Phase>
      <Status>0</Status>
-     <Coefficients>0.11111111111111111;0.0;0.0;0.0;</Coefficients>
+     <Coefficients>0.22222222222222222;0.0;0.0;0.0;</Coefficients>
      <Nodes>1.000000;0.000000;1.000000;0.000000;1.000000;0.000000;1.000000;0.000000;</Nodes>
     </Phase>
     <Offset>
      <Status>0</Status>
-     <Coefficients>0.11111111111111111;0.0;0.0;0.0;</Coefficients>
+     <Coefficients>0.33333333333333333;0.0;0.0;0.0;</Coefficients>
      <Nodes>1.000000;0.000000;1.000000;0.000000;1.000000;0.000000;1.000000;0.000000;</Nodes>
     </Offset>
    </Range>
@@ -61,12 +61,12 @@
     </Gain>
     <Phase>
      <Status>0</Status>
-     <Coefficients>11.11111111111111111;0.0;0.0;0.0;</Coefficients>
+     <Coefficients>22.22222222222222222;0.0;0.0;0.0;</Coefficients>
      <Nodes>1.000000;0.000000;1.000000;0.000000;1.000000;0.000000;1.000000;0.000000;</Nodes>
     </Phase>
     <Offset>
      <Status>0</Status>
-     <Coefficients>11.11111111111111111;0.0;0.0;0.0;</Coefficients>
+     <Coefficients>33.33333333333333333;0.0;0.0;0.0;</Coefficients>
      <Nodes>1.000000;0.000000;1.000000;0.000000;1.000000;0.000000;1.000000;0.000000;</Nodes>
     </Offset>
    </Range>

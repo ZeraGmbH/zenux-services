@@ -16,6 +16,11 @@ private slots:
     void cleanup();
 
     void queryGainCorrectionSingle();
+    void queryGainCorrectionTotal();
+    void queryPhaseCorrectionSingle();
+    void queryPhaseCorrectionTotal();
+    void queryOffsetCorrectionSingle();
+    void queryOffsetCorrectionTotal();
 
 private:
     void setupServers(AtmelPermissionTemplate *permissionQueryHandler);

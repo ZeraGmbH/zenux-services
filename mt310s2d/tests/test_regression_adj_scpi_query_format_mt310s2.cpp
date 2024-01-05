@@ -40,18 +40,67 @@ void test_regression_adj_scpi_query_format_mt310s2::cleanup()
 void test_regression_adj_scpi_query_format_mt310s2::queryGainCorrectionSingle()
 {
     QString adjustedValue;
+    adjustedValue = ScpiSingleTransactionBlocked::cmd("SENS:m0:250V:CORR:ADJGAIN?", "1");
+    QCOMPARE(adjustedValue, "1.11111e+07");
+    adjustedValue = ScpiSingleTransactionBlocked::cmd("SENS:m1:250V:CORR:ADJGAIN?", "1");
+    QCOMPARE(adjustedValue, "0.111111");
+    adjustedValue = ScpiSingleTransactionBlocked::cmd("SENS:m2:250V:CORR:ADJGAIN?", "1");
+    QCOMPARE(adjustedValue, "11.1111");
+}
 
-    adjustedValue = ScpiSingleTransactionBlocked::cmd("SENS:m0:250V:CORR:ADJG?", "1");
-    qInfo("%s", qPrintable(adjustedValue));
+void test_regression_adj_scpi_query_format_mt310s2::queryGainCorrectionTotal()
+{
+    QString adjustedValue;
+    adjustedValue = ScpiSingleTransactionBlocked::cmd("SENS:m0:250V:CORR:GAIN?", "1");
+    QCOMPARE(adjustedValue, "1.11111e+07");
+    adjustedValue = ScpiSingleTransactionBlocked::cmd("SENS:m1:250V:CORR:GAIN?", "1");
+    QCOMPARE(adjustedValue, "0.111111");
+    adjustedValue = ScpiSingleTransactionBlocked::cmd("SENS:m2:250V:CORR:GAIN?", "1");
+    QCOMPARE(adjustedValue, "11.1111");
+}
 
-    adjustedValue = ScpiSingleTransactionBlocked::cmd("SENS:m1:250V:CORR:ADJG?", "1");
-    qInfo("%s", qPrintable(adjustedValue));
+void test_regression_adj_scpi_query_format_mt310s2::queryPhaseCorrectionSingle()
+{
+    QString adjustedValue;
+    adjustedValue = ScpiSingleTransactionBlocked::cmd("SENS:m0:250V:CORR:ADJPHASE?", "1");
+    QCOMPARE(adjustedValue, "2.22222e+07");
+    adjustedValue = ScpiSingleTransactionBlocked::cmd("SENS:m1:250V:CORR:ADJPHASE?", "1");
+    QCOMPARE(adjustedValue, "0.222222");
+    adjustedValue = ScpiSingleTransactionBlocked::cmd("SENS:m2:250V:CORR:ADJPHASE?", "1");
+    QCOMPARE(adjustedValue, "22.2222");
+}
 
-    adjustedValue = ScpiSingleTransactionBlocked::cmd("SENS:m2:250V:CORR:ADJG?", "1");
-    qInfo("%s", qPrintable(adjustedValue));
+void test_regression_adj_scpi_query_format_mt310s2::queryPhaseCorrectionTotal()
+{
+    QString adjustedValue;
+    adjustedValue = ScpiSingleTransactionBlocked::cmd("SENS:m0:250V:CORR:PHASE?", "1");
+    QCOMPARE(adjustedValue, "2.22222e+07");
+    adjustedValue = ScpiSingleTransactionBlocked::cmd("SENS:m1:250V:CORR:PHASE?", "1");
+    QCOMPARE(adjustedValue, "0.222222");
+    adjustedValue = ScpiSingleTransactionBlocked::cmd("SENS:m2:250V:CORR:PHASE?", "1");
+    QCOMPARE(adjustedValue, "22.2222");
+}
 
-    // no assertions yet - we are investigating....
-    //QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::ack]);
+void test_regression_adj_scpi_query_format_mt310s2::queryOffsetCorrectionSingle()
+{
+    QString adjustedValue;
+    adjustedValue = ScpiSingleTransactionBlocked::cmd("SENS:m0:250V:CORR:ADJOFFSET?", "1");
+    QCOMPARE(adjustedValue, "3.33333e+07");
+    adjustedValue = ScpiSingleTransactionBlocked::cmd("SENS:m1:250V:CORR:ADJOFFSET?", "1");
+    QCOMPARE(adjustedValue, "0.333333");
+    adjustedValue = ScpiSingleTransactionBlocked::cmd("SENS:m2:250V:CORR:ADJOFFSET?", "1");
+    QCOMPARE(adjustedValue, "33.3333");
+}
+
+void test_regression_adj_scpi_query_format_mt310s2::queryOffsetCorrectionTotal()
+{
+    QString adjustedValue;
+    adjustedValue = ScpiSingleTransactionBlocked::cmd("SENS:m0:250V:CORR:OFFSET?", "1");
+    QCOMPARE(adjustedValue, "3.33333e+07");
+    adjustedValue = ScpiSingleTransactionBlocked::cmd("SENS:m1:250V:CORR:OFFSET?", "1");
+    QCOMPARE(adjustedValue, "0.333333");
+    adjustedValue = ScpiSingleTransactionBlocked::cmd("SENS:m2:250V:CORR:OFFSET?", "1");
+    QCOMPARE(adjustedValue, "33.3333");
 }
 
 void test_regression_adj_scpi_query_format_mt310s2::setupServers(AtmelPermissionTemplate *permissionQueryHandler)
