@@ -22,6 +22,12 @@ private slots:
     void queryOffsetCorrectionSingle();
     void queryOffsetCorrectionTotal();
 
+    void queryGainCoefficients();
+    void queryGainNodes();
+    void queryPhaseCoefficients();
+    void queryPhaseNodes();
+    void queryOffsetCoefficients();
+    void queryOffsetNodes();
 private:
     void setupServers(AtmelPermissionTemplate *permissionQueryHandler);
 
