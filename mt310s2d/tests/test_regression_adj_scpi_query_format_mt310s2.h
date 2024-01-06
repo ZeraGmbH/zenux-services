@@ -15,11 +15,19 @@ private slots:
     void init();
     void cleanup();
 
+    void queryGainCorrectionSingleGen();
     void queryGainCorrectionSingle();
+    void queryGainCorrectionTotalGen();
     void queryGainCorrectionTotal();
+
+    void queryPhaseCorrectionSingleGen();
     void queryPhaseCorrectionSingle();
+    void queryPhaseCorrectionTotalGen();
     void queryPhaseCorrectionTotal();
+
+    void queryOffsetCorrectionSingleGen();
     void queryOffsetCorrectionSingle();
+    void queryOffsetCorrectionTotalGen();
     void queryOffsetCorrectionTotal();
 
     void queryGainCoefficients();
