@@ -1,14 +1,13 @@
+#include "com5003senseinterface.h"
+#include "rangeadjustmentinterface.h"
 #include "scpiconnection.h"
 #include "resource.h"
 #include "notzeronumgen.h"
-#include "com5003senseinterface.h"
 #include "justdatainterface.h"
 #include "com5003sensechannel.h"
 #include "com5003senserange.h"
-#include "com5003adjflash.h"
 #include "protonetcommand.h"
 #include "atmel.h"
-#include "permissionfunctions.h"
 #include "sensesettings.h"
 #include <xmlsettings.h>
 #include "zscpi_response_definitions.h"
@@ -238,7 +237,7 @@ bool Com5003SenseInterface::importAdjData(QString &s, QDataStream &stream)
             }
         }
 
-        Com5003JustRangeTripletOffsetGainPhase dummy(m_pSCPIInterface); // if the data was for SENSE but we didn't find channel or range
+        RangeAdjustmentInterface dummy(m_pSCPIInterface, AdjustScpiValueFormatterFactory::createCom5003AdjFormatter()); // if the data was for SENSE but we didn't find channel or range
         dummy.Deserialize(stream); // we read the data from stream to keep it in flow
         return true;
     }

@@ -1,5 +1,4 @@
 #include "com5003senserange.h"
-#include "permissionfunctions.h"
 
 static constexpr int rejectionScpiQueryDigitsCom5003 = 6;
 static constexpr int adcRejectionCom5003 = (1<<23) -1;
@@ -23,7 +22,7 @@ Com5003SenseRange::Com5003SenseRange(cSCPI *scpiinterface,
         0, // no flags used in COM5003 implementation yet
         rejectionScpiQueryDigitsCom5003)
 {
-    m_pJustdata = new Com5003JustRangeTripletOffsetGainPhase(m_pSCPIInterface);
+    m_pJustdata = new RangeAdjustmentInterface(m_pSCPIInterface, AdjustScpiValueFormatterFactory::createCom5003AdjFormatter());
 }
 
 Com5003SenseRange::~Com5003SenseRange()
@@ -44,7 +43,7 @@ quint8 Com5003SenseRange::getAdjustmentStatus()
     return m_pJustdata->getAdjustmentStatus();
 }
 
-Com5003JustRangeTripletOffsetGainPhase *Com5003SenseRange::getJustData()
+RangeAdjustmentInterface *Com5003SenseRange::getJustData()
 {
     return m_pJustdata;
 }

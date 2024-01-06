@@ -2,7 +2,7 @@
 #define SENSERANGE_H
 
 #include "senserangecommon.h"
-#include "com5003justdata.h"
+#include "rangeadjustmentinterface.h"
 
 class Atmel;
 
@@ -21,14 +21,14 @@ public:
     void initSCPIConnection(QString leadingNodes) override;
     quint8 getAdjustmentStatus();
 
-    Com5003JustRangeTripletOffsetGainPhase* getJustData();
+    RangeAdjustmentInterface *getJustData();
 
     void initJustData();
     void computeJustData();
 
 private:
     Atmel* m_pATMEL;
-    Com5003JustRangeTripletOffsetGainPhase* m_pJustdata;
+    RangeAdjustmentInterface* m_pJustdata;
 };
 
 #endif // SENSERANGE_H
