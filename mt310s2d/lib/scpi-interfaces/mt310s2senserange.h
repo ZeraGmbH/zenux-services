@@ -1,8 +1,8 @@
 #ifndef SENSERANGE_H
 #define SENSERANGE_H
 
+#include "rangeadjustmentinterface.h"
 #include "senserangecommon.h"
-#include "mt310s2justdata.h"
 
 class Mt310s2SenseRange: public SenseRangeCommon
 {
@@ -16,12 +16,12 @@ public:
                       double ovrejection,
                       quint8 rselcode,
                       quint16 mmask,
-                      Mt310s2JustRangeTripletOffsetGainPhase* justdata);
+                      RangeAdjustmentInterface* justdata);
     ~Mt310s2SenseRange();
     void initSCPIConnection(QString leadingNodes) override;
     quint8 getAdjustmentStatus();
 
-    Mt310s2JustRangeTripletOffsetGainPhase* getJustData();
+    RangeAdjustmentInterface* getJustData();
 
     void initJustData();
     void computeJustData();
@@ -29,7 +29,7 @@ public:
     void setMMode(int mode);
 
 private:
-    Mt310s2JustRangeTripletOffsetGainPhase* m_pJustdata;
+    RangeAdjustmentInterface* m_pJustdata;
 };
 
 #endif // SENSERANGE_H

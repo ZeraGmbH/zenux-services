@@ -1,5 +1,5 @@
 #include "mt310s2senserange.h"
-#include "mt310s2justdata.h"
+#include "rangeadjustmentinterface.h"
 #include <math.h>
 
 static constexpr int rejectionScpiQueryDigitsMt310s2 = 8;
@@ -13,7 +13,7 @@ Mt310s2SenseRange::Mt310s2SenseRange(cSCPI *scpiinterface,
                                      double ovrejection,
                                      quint8 rselcode,
                                      quint16 mmask,
-                                     Mt310s2JustRangeTripletOffsetGainPhase* justdata) :
+                                     RangeAdjustmentInterface* justdata) :
     SenseRangeCommon(
         scpiinterface,
         name,
@@ -48,7 +48,7 @@ quint8 Mt310s2SenseRange::getAdjustmentStatus()
     return m_pJustdata->getAdjustmentStatus();
 }
 
-Mt310s2JustRangeTripletOffsetGainPhase *Mt310s2SenseRange::getJustData()
+RangeAdjustmentInterface *Mt310s2SenseRange::getJustData()
 {
     return m_pJustdata;
 }

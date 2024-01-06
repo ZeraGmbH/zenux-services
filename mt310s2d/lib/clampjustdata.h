@@ -1,7 +1,7 @@
 #ifndef CLAMPJUSTDATA
 #define CLAMPJUSTDATA
 
-#include "mt310s2justdata.h"
+#include "rangeadjustmentinterface.h"
 #include "mt310s2senserange.h"
 #include "permissionfunctions.h"
 
@@ -12,7 +12,7 @@
 
 class cSCPI;
 
-class cClampJustData: public Mt310s2JustRangeTripletOffsetGainPhase
+class cClampJustData: public RangeAdjustmentInterface
 {
     Q_OBJECT
 

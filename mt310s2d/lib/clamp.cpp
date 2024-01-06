@@ -4,6 +4,7 @@
 #include "mt310s2senserange.h"
 #include "clampjustdata.h"
 #include "i2csettings.h"
+#include "rangeadjustmentinterface.h"
 #include "zscpi_response_definitions.h"
 #include <i2cutils.h>
 #include <i2cmuxerscopedonoff.h>
@@ -174,7 +175,7 @@ bool cClamp::importAdjData(QDataStream &stream)
             range->getJustData()->Deserialize(stream);
         }
         else {
-            Mt310s2JustRangeTripletOffsetGainPhase *dummy = new Mt310s2JustRangeTripletOffsetGainPhase(m_pSCPIInterface); // if we did not find this range....something has changed
+            RangeAdjustmentInterface *dummy = new RangeAdjustmentInterface(m_pSCPIInterface, AdjustScpiValueFormatterFactory::createMt310s2AdjFormatter()); // if we did not find this range....something has changed
             dummy->Deserialize(stream); // we read the data from stream to keep it in flow
             delete dummy;
         }
