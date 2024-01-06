@@ -2,11 +2,11 @@
 #include "mt310s2dglobal.h"
 #include "mt310s2adjustment.h"
 #include "justdatainterface.h"
-#include "mt310s2justdata.h"
 #include "mt310s2sensechannel.h"
 #include "mt310s2senserange.h"
 #include "mt310s2adjflash.h"
 #include "protonetcommand.h"
+#include "rangeadjustmentinterface.h"
 #include "scpiconnection.h"
 #include "resource.h"
 #include "atmel.h"
@@ -365,7 +365,7 @@ bool Mt310s2SenseInterface::importAdjData(QDataStream &stream)
             }
         }
         if (!done) {
-            Mt310s2JustRangeTripletOffsetGainPhase* dummy; // if we could not find the owner of that data
+            RangeAdjustmentInterface* dummy; // if we could not find the owner of that data
             dummy = createJustScpiInterfaceWithAtmelPermission();
             dummy->Deserialize(stream); // we read the data from stream to keep it in flow
             delete dummy;
@@ -796,9 +796,9 @@ QString Mt310s2SenseInterface::scpiReadAdjStatus(QString &sInput)
     }
 }
 
-Mt310s2JustRangeTripletOffsetGainPhase *Mt310s2SenseInterface::createJustScpiInterfaceWithAtmelPermission()
+RangeAdjustmentInterface *Mt310s2SenseInterface::createJustScpiInterfaceWithAtmelPermission()
 {
-    return new Mt310s2JustRangeTripletOffsetGainPhase(m_pSCPIInterface);
+    return new RangeAdjustmentInterface(m_pSCPIInterface, AdjustScpiValueFormatterFactory::createMt310s2AdjFormatter());
 }
 
 void Mt310s2SenseInterface::setNotifierSenseMMode()

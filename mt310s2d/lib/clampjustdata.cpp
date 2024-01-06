@@ -1,10 +1,12 @@
-#include <scpi.h>
-
 #include "clampjustdata.h"
-#include "justdatainterface.h"
 
-cClampJustData::cClampJustData(cSCPI *scpiinterface, Mt310s2SenseRange *cascadedRange, double cvRatio, PermissionStructAdj permission)  :
-    Mt310s2JustRangeTripletOffsetGainPhase(scpiinterface, permission), m_pFirstStageRange(cascadedRange), m_cvRatio(cvRatio)
+cClampJustData::cClampJustData(cSCPI *scpiinterface,
+                               Mt310s2SenseRange *cascadedRange,
+                               double cvRatio,
+                               PermissionStructAdj permission)  :
+    RangeAdjustmentInterface(scpiinterface, AdjustScpiValueFormatterFactory::createMt310s2AdjFormatter(), permission),
+    m_pFirstStageRange(cascadedRange),
+    m_cvRatio(cvRatio)
 {
 }
 

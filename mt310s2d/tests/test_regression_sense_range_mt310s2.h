@@ -23,7 +23,7 @@ private slots:
     void checkGetJustData();
 private:
     cSCPI *m_scpi;
-    Mt310s2JustRangeTripletOffsetGainPhase *m_justData;
+    RangeAdjustmentInterface *m_justData;
     Mt310s2SenseRange *m_range;
 };
 

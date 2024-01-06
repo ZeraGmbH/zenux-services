@@ -8,7 +8,7 @@ QTEST_MAIN(test_regression_sense_range_mt310s2);
 void test_regression_sense_range_mt310s2::init()
 {
     m_scpi = new cSCPI;
-    m_justData = new Mt310s2JustRangeTripletOffsetGainPhase(m_scpi); // range deletes
+    m_justData = new RangeAdjustmentInterface(m_scpi, AdjustScpiValueFormatterFactory::createMt310s2AdjFormatter()); // range deletes
     m_range = new Mt310s2SenseRange(m_scpi,
                               "250V",
                               true,
