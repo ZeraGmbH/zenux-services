@@ -16,6 +16,7 @@ std::unique_ptr<AdjustScpiValueFormatter> AdjustScpiValueFormatterFactory::creat
     adjustmentFormatter->m_offsetScpiFormatter = [](double val) {
         return QString("%1").arg(val);
     };
+    adjustmentFormatter->m_correctionExportDigits = 6;
     return adjustmentFormatter;
 }
 
@@ -31,6 +32,7 @@ std::unique_ptr<AdjustScpiValueFormatter> AdjustScpiValueFormatterFactory::creat
     adjustmentFormatter->m_offsetScpiFormatter = [](double val) {
         return QString("%1").arg(val, 0, 'f', 8);
     };
+    adjustmentFormatter->m_correctionExportDigits = 8;
     return adjustmentFormatter;
 }
 
@@ -59,9 +61,9 @@ RangeAdjustmentInterface::RangeAdjustmentInterface(cSCPI *scpiinterface,
     m_scpiQueryFormatter(std::move(adjustmentFormatter)),
     m_permissions(permissions)
 {
-    m_pGainCorrection = new JustDataInterface({m_pSCPIInterface, GainCorrOrder, 1.0, permissions.funcAllowAdjGain, 6});
-    m_pPhaseCorrection = new JustDataInterface({m_pSCPIInterface, PhaseCorrOrder, 0.0, permissions.funcAllowAdjPhase, 6});
-    m_pOffsetCorrection =  new JustDataInterface({m_pSCPIInterface, OffsetCorrOrder, 0.0, permissions.funcAllowAdjOffset, 6});
+    m_pGainCorrection = new JustDataInterface({m_pSCPIInterface, GainCorrOrder, 1.0, permissions.funcAllowAdjGain, m_scpiQueryFormatter->m_correctionExportDigits});
+    m_pPhaseCorrection = new JustDataInterface({m_pSCPIInterface, PhaseCorrOrder, 0.0, permissions.funcAllowAdjPhase, m_scpiQueryFormatter->m_correctionExportDigits});
+    m_pOffsetCorrection =  new JustDataInterface({m_pSCPIInterface, OffsetCorrOrder, 0.0, permissions.funcAllowAdjOffset, m_scpiQueryFormatter->m_correctionExportDigits});
 }
 
 RangeAdjustmentInterface::~RangeAdjustmentInterface()

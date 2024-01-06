@@ -16,6 +16,7 @@ struct AdjustScpiValueFormatter
     std::function<QString(double)> m_gainScpiFormatter;
     std::function<QString(double)> m_phaseScpiFormatter;
     std::function<QString(double)> m_offsetScpiFormatter;
+    int m_correctionExportDigits;
 };
 
 class AdjustScpiValueFormatterFactory
