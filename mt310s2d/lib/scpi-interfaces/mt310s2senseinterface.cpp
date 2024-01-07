@@ -592,17 +592,8 @@ bool Mt310s2SenseInterface::importXMLDocument(QDomDocument* qdomdoc) // n steht 
                                                 rngPtr = chnPtr->getRange(Name);
                                             }
                                             JustDataInterface* pJustData = nullptr;
-                                            if (rngPtr != nullptr) {
-                                                if (tName == "Gain") {
-                                                    pJustData = rngPtr->getJustData()->m_pGainCorrection;
-                                                }
-                                                if (tName == "Phase") {
-                                                    pJustData = rngPtr->getJustData()->m_pPhaseCorrection;
-                                                }
-                                                if (tName == "Offset") {
-                                                    pJustData = rngPtr->getJustData()->m_pOffsetCorrection;
-                                                }
-                                            }
+                                            if (rngPtr != nullptr)
+                                                pJustData = rngPtr->getJustData()->getAdjInterface(tName);
                                             if (pJustData) {
                                                 QDomNodeList jdataNl = RangeJustNode.childNodes();
                                                 for (qint32 k = 0; k < jdataNl.count(); k++) {
