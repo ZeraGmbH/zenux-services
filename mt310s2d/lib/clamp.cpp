@@ -786,68 +786,37 @@ void cClamp::removeAllRanges()
 
 void cClamp::exportRangeXml(QDomDocument &justqdom, QDomElement &typeTag, Mt310s2SenseRange *range)
 {
-    QDomElement rtag = justqdom.createElement( "Range" );
+    QDomElement rtag = justqdom.createElement("Range");
     typeTag.appendChild( rtag );
 
-    QDomElement nametag = justqdom.createElement( "Name" );
+    QDomElement nametag = justqdom.createElement("Name");
     rtag.appendChild(nametag);
 
     QDomText t = justqdom.createTextNode(range->getName());
     nametag.appendChild( t );
 
-    QDomElement gpotag = justqdom.createElement( "Gain" );
-    rtag.appendChild(gpotag);
-    QDomElement tag = justqdom.createElement( "Status" );
-    QString jdata = range->getJustData()->m_pGainCorrection->SerializeStatus();
-    t = justqdom.createTextNode(jdata);
-    gpotag.appendChild(tag);
-    tag.appendChild(t);
-    tag = justqdom.createElement( "Coefficients" );
-    gpotag.appendChild(tag);
-    jdata = range->getJustData()->m_pGainCorrection->SerializeCoefficients();
-    t = justqdom.createTextNode(jdata);
-    tag.appendChild(t);
-    tag = justqdom.createElement( "Nodes" );
-    gpotag.appendChild(tag);
-    jdata = range->getJustData()->m_pGainCorrection->SerializeNodes();
-    t = justqdom.createTextNode(jdata);
-    tag.appendChild(t);
-
-    gpotag = justqdom.createElement( "Phase" );
-    rtag.appendChild(gpotag);
-    tag = justqdom.createElement( "Status" );
-    jdata = range->getJustData()->m_pPhaseCorrection->SerializeStatus();
-    t = justqdom.createTextNode(jdata);
-    tag.appendChild(t);
-    gpotag.appendChild(tag);
-    tag = justqdom.createElement( "Coefficients" );
-    gpotag.appendChild(tag);
-    jdata = range->getJustData()->m_pPhaseCorrection->SerializeCoefficients();
-    t = justqdom.createTextNode(jdata);
-    tag.appendChild(t);
-    tag = justqdom.createElement( "Nodes" );
-    gpotag.appendChild(tag);
-    jdata = range->getJustData()->m_pPhaseCorrection->SerializeNodes();
-    t = justqdom.createTextNode(jdata);
-    tag.appendChild(t);
-
-    gpotag = justqdom.createElement( "Offset" );
-    rtag.appendChild(gpotag);
-    tag = justqdom.createElement( "Status" );
-    jdata = range->getJustData()->m_pOffsetCorrection->SerializeStatus();
-    t = justqdom.createTextNode(jdata);
-    tag.appendChild(t);
-    gpotag.appendChild(tag);
-    tag = justqdom.createElement( "Coefficients" );
-    gpotag.appendChild(tag);
-    jdata = range->getJustData()->m_pOffsetCorrection->SerializeCoefficients();
-    t = justqdom.createTextNode(jdata);
-    tag.appendChild(t);
-    tag = justqdom.createElement( "Nodes" );
-    gpotag.appendChild(tag);
-    jdata = range->getJustData()->m_pOffsetCorrection->SerializeNodes();
-    t = justqdom.createTextNode(jdata);
-    tag.appendChild(t);
+    QDomElement gpotag;
+    const QStringList listAdjTypes = QStringList() << "Gain" << "Phase" << "Offset";
+    for(const auto &adjType : listAdjTypes) {
+        gpotag = justqdom.createElement(adjType);
+        rtag.appendChild(gpotag);
+        JustDataInterface* adjDataInterface = range->getJustData()->getAdjInterface(adjType);
+        QDomElement tag = justqdom.createElement("Status");
+        QString jdata = adjDataInterface->SerializeStatus();
+        t = justqdom.createTextNode(jdata);
+        gpotag.appendChild(tag);
+        tag.appendChild(t);
+        tag = justqdom.createElement("Coefficients");
+        gpotag.appendChild(tag);
+        jdata = adjDataInterface->SerializeCoefficients();
+        t = justqdom.createTextNode(jdata);
+        tag.appendChild(t);
+        tag = justqdom.createElement("Nodes");
+        gpotag.appendChild(tag);
+        jdata = adjDataInterface->SerializeNodes();
+        t = justqdom.createTextNode(jdata);
+        tag.appendChild(t);
+    }
 }
 
 QString cClamp::scpiReadWriteSerial(QString& scpi)
