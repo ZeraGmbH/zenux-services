@@ -35,6 +35,7 @@ public:
                              PermissionStructAdj permissions = PermissionStructAdj());
     virtual ~RangeAdjustmentInterface();
     virtual void initSCPIConnection(QString leadingNodes) override;
+    JustDataInterface* getAdjInterface(QString name);
 
     JustDataInterface* m_pGainCorrection;
     JustDataInterface* m_pPhaseCorrection; 

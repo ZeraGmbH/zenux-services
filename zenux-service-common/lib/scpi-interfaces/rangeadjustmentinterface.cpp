@@ -94,6 +94,18 @@ void RangeAdjustmentInterface::initSCPIConnection(QString leadingNodes)
     m_pOffsetCorrection->initSCPIConnection(QString("%1CORRECTION:OFFSET").arg(leadingNodes));
 }
 
+JustDataInterface *RangeAdjustmentInterface::getAdjInterface(QString name)
+{
+    if(name == "Gain")
+        return m_pGainCorrection;
+    if(name == "Phase")
+        return m_pPhaseCorrection;
+    if(name == "Offset")
+        return m_pOffsetCorrection;
+    qCritical("RangeAdjustmentInterface::getAdjInterface name '%s' not found", qPrintable(name));
+    return nullptr;
+}
+
 void RangeAdjustmentInterface::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
 {
     switch (cmdCode)
