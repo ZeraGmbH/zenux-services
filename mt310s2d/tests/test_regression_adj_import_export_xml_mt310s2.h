@@ -24,8 +24,9 @@ private slots:
     // scpi xml transfers
     void scpiExportInitialAdjXml();
 
-
     // same for clamps....
+    void directAcessExportXmlClamps();
+
 private:
     void setupServers(AtmelPermissionTemplate *permissionQueryHandler);
 

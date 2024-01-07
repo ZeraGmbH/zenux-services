@@ -118,6 +118,33 @@ void test_regression_adj_import_export_xml_mt310s2::scpiExportInitialAdjXml()
     QCOMPARE(xmlExportedPretty, xmlExpected);
 }
 
+void test_regression_adj_import_export_xml_mt310s2::directAcessExportXmlClamps()
+{
+    setupServers(&Atmel::getInstance());
+
+    m_mockServer->addClamp(CL120A, "IL1");
+    m_mockServer->addClamp(EMOB32, "IL2");
+    m_mockServer->addClamp(EMOB200DC, "IL3");
+    m_mockServer->addClamp(CL200ADC1000VDC, "IAUX");
+
+    QFile xmlFile(":/export_clamp_initial.xml");
+    QVERIFY(xmlFile.open(QFile::ReadOnly));
+    QString xmlExpected = xmlFile.readAll();
+    qInfo("Expected XML:");
+    qInfo("%s", qPrintable(xmlExpected));
+    xmlExpected = XmlHelperForTest::prettify(xmlExpected);
+    xmlExpected = XmlHelperForTest::removeTimeDependentEntriesFromXml(xmlExpected);
+
+    QString xmlExported = ScpiSingleTransactionBlocked::query("SYSTEM:ADJUSTMENT:CLAMP:XML?");
+    QString xmlExportedPretty = XmlHelperForTest::prettify(xmlExported);
+    qInfo("Exported XML:");
+    qInfo("%s", qPrintable(xmlExportedPretty));
+    xmlExportedPretty = XmlHelperForTest::removeTimeDependentEntriesFromXml(xmlExportedPretty);
+
+    // if this turns fragile we have to use zera-scpi's xml-compare-testlib
+    QCOMPARE(xmlExportedPretty, xmlExpected);
+}
+
 void test_regression_adj_import_export_xml_mt310s2::setupServers(AtmelPermissionTemplate *permissionQueryHandler)
 {
     m_resmanServer = std::make_unique<ResmanRunFacade>();
