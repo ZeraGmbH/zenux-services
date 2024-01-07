@@ -14,9 +14,27 @@ QString XmlHelperForTest::loadXml(QString xmlFile)
 
 QString XmlHelperForTest::prettify(QString xml)
 {
-    QDomDocument doc;
-    doc.setContent(xml);
-    return doc.toString(4);
+    const QString multiDocSeparator = "<!DOCTYPE";
+    QStringList listXmlQuickAndDirty = xml.split(multiDocSeparator, Qt::SkipEmptyParts);
+
+    QMap<QString, QString> sorted;
+    for(QString xmlSingle : listXmlQuickAndDirty) {
+        xmlSingle = multiDocSeparator + xmlSingle;
+        QDomDocument doc;
+        doc.setContent(xmlSingle);
+        QDomNodeList elemList = doc.elementsByTagName("Type");
+        Q_ASSERT(elemList.count() == 1);
+        QString typeName = elemList.at(0).toElement().text();
+        sorted[typeName] = xmlSingle;
+    }
+
+    QString prettyTotal;
+    for(auto iter=sorted.cbegin(); iter!=sorted.cend(); iter++) {
+        QDomDocument doc;
+        doc.setContent(iter.value());
+        prettyTotal += doc.toString(4);
+    }
+    return prettyTotal;
 }
 
 QString XmlHelperForTest::prepareForCompare(QString xml)
