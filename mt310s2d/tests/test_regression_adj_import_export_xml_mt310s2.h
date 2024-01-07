@@ -19,13 +19,13 @@ private slots:
     void directAcessFileImportXmlPseudoRandom();
     void directAcessFileImportMissingType();
     void directAcessFileImportMissingSerNo();
-
     // there are no known users for scpi file read write - so for now just test
     // scpi xml transfers
     void scpiExportInitialAdjXml();
 
-    // same for clamps....
+    // clamps
     void directAcessExportXmlClamps();
+    void scpiExportInitialAdjXmlClamps();
 
 private:
     void setupServers(AtmelPermissionTemplate *permissionQueryHandler);
