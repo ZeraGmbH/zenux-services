@@ -572,10 +572,8 @@ bool Mt310s2SenseInterface::importXMLDocument(QDomDocument* qdomdoc) // n steht 
                                 QDomNode ChannelJustNode = chnEntryNl.item(j);
                                 qdElem = ChannelJustNode.toElement();
                                 QString tName = qdElem.tagName();
-                                qDebug() << tName;
                                 if (tName == "Name") {
                                     Name = qdElem.text();
-                                    qDebug() << Name;
                                     chnPtr = getChannel(Name);
                                 }
                                 else if (tName == "Range") {
@@ -585,10 +583,8 @@ bool Mt310s2SenseInterface::importXMLDocument(QDomDocument* qdomdoc) // n steht 
                                             QDomNode RangeJustNode = chnJustNl.item(k);
                                             qdElem = RangeJustNode.toElement();
                                             tName = qdElem.tagName();
-                                            qDebug() << tName;
                                             if (tName == "Name") {
                                                 Name = qdElem.text();
-                                                qDebug() << Name;
                                                 rngPtr = chnPtr->getRange(Name);
                                             }
                                             JustDataInterface* pJustData = nullptr;
