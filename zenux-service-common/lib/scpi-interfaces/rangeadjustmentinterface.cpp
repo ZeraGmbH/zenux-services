@@ -95,7 +95,6 @@ JustDataInterface *RangeAdjustmentInterface::getAdjInterface(QString name)
         return &m_phaseCorrection;
     if(name == "Offset")
         return &m_offsetCorrection;
-    qCritical("RangeAdjustmentInterface::getAdjInterface name '%s' not found", qPrintable(name));
     return nullptr;
 }
 
