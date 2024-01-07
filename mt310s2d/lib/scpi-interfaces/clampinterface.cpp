@@ -50,6 +50,16 @@ void cClampInterface::addClamp(const SenseSystem::cChannelSettings *chSettings, 
     generateAndNotifyClampChannelList();
 }
 
+QString cClampInterface::exportXMLString(int indent)
+{
+    QString xmlTotal;
+    for(auto clamp : qAsConst(m_clampHash)) {
+        QString xmlClamp = clamp->exportXMLString(indent);
+        xmlTotal.append(xmlClamp);
+    }
+    return xmlTotal;
+}
+
 void cClampInterface::handleClampConnected(const SenseSystem::cChannelSettings *chSettings)
 {
     QString i2cDevNode = m_i2cSettings->getDeviceNode();
@@ -175,15 +185,8 @@ QString cClampInterface::writeAllClamps(QString &sInput)
 QString cClampInterface::importExportAllClamps(QString &sInput)
 {
     cSCPICommand cmd = sInput;
-    if (cmd.isQuery()) {
-        QString xmlTotal;
-        for(auto clamp : qAsConst(m_clampHash)) {
-            QString xmlClamp = clamp->exportXMLString(-1);
-            xmlClamp.replace("\n","");
-            xmlTotal.append(xmlClamp);
-        }
-        return xmlTotal;
-    }
+    if (cmd.isQuery())
+        return exportXMLString(-1).replace("\n", "");
     else {
         // here we got 1 to n concenated xml document's that we want distribute to connected clamps.
         // if we got more than 1 xml document we first check if we have the correct clamps connected

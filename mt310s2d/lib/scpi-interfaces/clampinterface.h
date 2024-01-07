@@ -34,6 +34,7 @@ public:
     void actualizeClampStatus(quint16 devConnectedMask);
     // lazy: public for test
     void addClamp(const SenseSystem::cChannelSettings *chSettings, I2cMuxerInterface::Ptr i2cMuxer);
+    QString exportXMLString(int indent = 1);
 protected:
     void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
 
