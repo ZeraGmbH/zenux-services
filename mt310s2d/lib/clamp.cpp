@@ -329,17 +329,8 @@ bool cClamp::importXMLDocument(QDomDocument *qdomdoc, bool ignoreType)
                                     }
 
                                     JustDataInterface* pJustData = nullptr;
-                                    if (rngPtr != 0) {
-                                        if (tName == "Gain") {
-                                            pJustData = rngPtr->getJustData()->m_pGainCorrection;
-                                        }
-                                        else if (tName == "Phase") {
-                                            pJustData = rngPtr->getJustData()->m_pPhaseCorrection;
-                                        }
-                                        else if (tName == "Offset") {
-                                            pJustData = rngPtr->getJustData()->m_pOffsetCorrection;
-                                        }
-                                    }
+                                    if (rngPtr != 0)
+                                        pJustData = rngPtr->getJustData()->getAdjInterface(tName);
                                     if (pJustData) {
                                         QDomNodeList jdataNl = RangeJustNode.childNodes();
                                         for (qint32 k = 0; k < jdataNl.count(); k++) {

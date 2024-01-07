@@ -33,14 +33,13 @@ public:
     RangeAdjustmentInterface(cSCPI* scpiinterface,
                              std::unique_ptr<AdjustScpiValueFormatter> adjustmentFormatter,
                              PermissionStructAdj permissions = PermissionStructAdj());
-    virtual ~RangeAdjustmentInterface();
     virtual void initSCPIConnection(QString leadingNodes) override;
     JustDataInterface* getAdjInterface(QString name);
 
-    JustDataInterface* m_pGainCorrection;
-    JustDataInterface* m_pPhaseCorrection; 
-    JustDataInterface* m_pOffsetCorrection;
-    
+    double getGainCorrectionSingle(double par);
+    double getPhaseCorrectionSingle(double par);
+    double getOffsetCorrectionSingle(double par);
+
     void Serialize(QDataStream&); // zum schreiben aller justagedaten in flashspeicher
     void Deserialize(QDataStream&); // zum lesen aller justagedaten aus flashspeicher
     quint8 getAdjustmentStatus() override;
@@ -49,9 +48,6 @@ public:
 
 protected:
     void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
-    double getGainCorrectionSingle(double par);
-    double getPhaseCorrectionSingle(double par);
-    double getOffsetCorrectionSingle(double par);
     virtual double getGainCorrectionTotal(double par);
     virtual double getPhaseCorrectionTotal(double par);
     virtual double getOffsetCorrectionTotal(double par);
@@ -67,6 +63,9 @@ private:
     QString scpiCmdComputeJustData(QString &scpiInput);
     QString scpiCmdInitJustData(QString &scpiInput); // done in Adjustmentmodule - left for compatibility
 
+    JustDataInterface m_gainCorrection;
+    JustDataInterface m_phaseCorrection;
+    JustDataInterface m_offsetCorrection;
     std::unique_ptr<AdjustScpiValueFormatter> m_scpiQueryFormatter;
     PermissionStructAdj m_permissions;
 };

@@ -58,19 +58,12 @@ RangeAdjustmentInterface::RangeAdjustmentInterface(cSCPI *scpiinterface,
                                                    std::unique_ptr<AdjustScpiValueFormatter> adjustmentFormatter,
                                                    PermissionStructAdj permissions) :
     ScpiConnection(scpiinterface),
+    m_gainCorrection({m_pSCPIInterface, GainCorrOrder, 1.0, permissions.funcAllowAdjGain, adjustmentFormatter->m_correctionExportDigits}),
+    m_phaseCorrection({m_pSCPIInterface, PhaseCorrOrder, 0.0, permissions.funcAllowAdjPhase, adjustmentFormatter->m_correctionExportDigits}),
+    m_offsetCorrection({m_pSCPIInterface, OffsetCorrOrder, 0.0, permissions.funcAllowAdjOffset, adjustmentFormatter->m_correctionExportDigits}),
     m_scpiQueryFormatter(std::move(adjustmentFormatter)),
     m_permissions(permissions)
 {
-    m_pGainCorrection = new JustDataInterface({m_pSCPIInterface, GainCorrOrder, 1.0, permissions.funcAllowAdjGain, m_scpiQueryFormatter->m_correctionExportDigits});
-    m_pPhaseCorrection = new JustDataInterface({m_pSCPIInterface, PhaseCorrOrder, 0.0, permissions.funcAllowAdjPhase, m_scpiQueryFormatter->m_correctionExportDigits});
-    m_pOffsetCorrection =  new JustDataInterface({m_pSCPIInterface, OffsetCorrOrder, 0.0, permissions.funcAllowAdjOffset, m_scpiQueryFormatter->m_correctionExportDigits});
-}
-
-RangeAdjustmentInterface::~RangeAdjustmentInterface()
-{
-    delete m_pGainCorrection;
-    delete m_pPhaseCorrection;
-    delete m_pOffsetCorrection;
 }
 
 void RangeAdjustmentInterface::initSCPIConnection(QString leadingNodes)
@@ -86,22 +79,22 @@ void RangeAdjustmentInterface::initSCPIConnection(QString leadingNodes)
     addDelegate(QString("%1CORRECTION").arg(leadingNodes), "COMPUTE", SCPI::isCmdwP, m_pSCPIInterface, DirectJustCompute);
     addDelegate(QString("%1CORRECTION").arg(leadingNodes), "INIT", SCPI::isCmdwP, m_pSCPIInterface, DirectJustInit);
 
-    connect(m_pGainCorrection, &ScpiConnection::cmdExecutionDone, this, &ScpiConnection::cmdExecutionDone);
-    m_pGainCorrection->initSCPIConnection(QString("%1CORRECTION:GAIN").arg(leadingNodes));
-    connect(m_pPhaseCorrection, &ScpiConnection::cmdExecutionDone, this, &ScpiConnection::cmdExecutionDone);
-    m_pPhaseCorrection->initSCPIConnection(QString("%1CORRECTION:PHASE").arg(leadingNodes));
-    connect(m_pOffsetCorrection, &ScpiConnection::cmdExecutionDone, this, &ScpiConnection::cmdExecutionDone);
-    m_pOffsetCorrection->initSCPIConnection(QString("%1CORRECTION:OFFSET").arg(leadingNodes));
+    connect(&m_gainCorrection, &ScpiConnection::cmdExecutionDone, this, &ScpiConnection::cmdExecutionDone);
+    m_gainCorrection.initSCPIConnection(QString("%1CORRECTION:GAIN").arg(leadingNodes));
+    connect(&m_phaseCorrection, &ScpiConnection::cmdExecutionDone, this, &ScpiConnection::cmdExecutionDone);
+    m_phaseCorrection.initSCPIConnection(QString("%1CORRECTION:PHASE").arg(leadingNodes));
+    connect(&m_offsetCorrection, &ScpiConnection::cmdExecutionDone, this, &ScpiConnection::cmdExecutionDone);
+    m_offsetCorrection.initSCPIConnection(QString("%1CORRECTION:OFFSET").arg(leadingNodes));
 }
 
 JustDataInterface *RangeAdjustmentInterface::getAdjInterface(QString name)
 {
     if(name == "Gain")
-        return m_pGainCorrection;
+        return &m_gainCorrection;
     if(name == "Phase")
-        return m_pPhaseCorrection;
+        return &m_phaseCorrection;
     if(name == "Offset")
-        return m_pOffsetCorrection;
+        return &m_offsetCorrection;
     qCritical("RangeAdjustmentInterface::getAdjInterface name '%s' not found", qPrintable(name));
     return nullptr;
 }
@@ -255,9 +248,9 @@ QString RangeAdjustmentInterface::scpiCmdComputeJustData(QString& scpiInput)
         bool enable;
         if(m_permissions.funcAllowAdjCompute(enable)) {
             if (enable) {
-                m_pGainCorrection->cmpCoefficients();
-                m_pPhaseCorrection->cmpCoefficients();
-                m_pOffsetCorrection->cmpCoefficients();
+                m_gainCorrection.cmpCoefficients();
+                m_phaseCorrection.cmpCoefficients();
+                m_offsetCorrection.cmpCoefficients();
                 return ZSCPI::scpiAnswer[ZSCPI::ack];
             }
             else
@@ -277,9 +270,9 @@ QString RangeAdjustmentInterface::scpiCmdInitJustData(QString &scpiInput)
         bool enable;
         if(m_permissions.funcAllowAdjInit(enable)) {
             if (enable) {
-                m_pGainCorrection->initJustData(1.0);
-                m_pPhaseCorrection->initJustData(0.0);
-                m_pOffsetCorrection->initJustData(0.0);
+                m_gainCorrection.initJustData(1.0);
+                m_phaseCorrection.initJustData(0.0);
+                m_offsetCorrection.initJustData(0.0);
                 return ZSCPI::scpiAnswer[ZSCPI::ack];
             }
             else
@@ -294,64 +287,64 @@ QString RangeAdjustmentInterface::scpiCmdInitJustData(QString &scpiInput)
 
 void RangeAdjustmentInterface::Serialize(QDataStream& qds)  // zum schreiben aller justagedaten in flashspeicher
 {
-    m_pGainCorrection->Serialize(qds);
-    m_pPhaseCorrection->Serialize(qds);
-    m_pOffsetCorrection->Serialize(qds);
+    m_gainCorrection.Serialize(qds);
+    m_phaseCorrection.Serialize(qds);
+    m_offsetCorrection.Serialize(qds);
 }
 
 void RangeAdjustmentInterface::Deserialize(QDataStream& qds) // zum lesen aller justagedaten aus flashspeicher
 {
-    m_pGainCorrection->Deserialize(qds);
-    m_pPhaseCorrection->Deserialize(qds);
-    m_pOffsetCorrection->Deserialize(qds);
+    m_gainCorrection.Deserialize(qds);
+    m_phaseCorrection.Deserialize(qds);
+    m_offsetCorrection.Deserialize(qds);
 }
 
 quint8 RangeAdjustmentInterface::getAdjustmentStatus()
 {
-    return m_pGainCorrection->getStatus() & m_pPhaseCorrection->getStatus() & m_pOffsetCorrection->getStatus();
+    return m_gainCorrection.getStatus() & m_phaseCorrection.getStatus() & m_offsetCorrection.getStatus();
 
 }
 
 void RangeAdjustmentInterface::initJustData()
 {
-    m_pGainCorrection->initJustData(1.0);
-    m_pPhaseCorrection->initJustData(0.0);
-    m_pOffsetCorrection->initJustData(0.0);
+    m_gainCorrection.initJustData(1.0);
+    m_phaseCorrection.initJustData(0.0);
+    m_offsetCorrection.initJustData(0.0);
 }
 
 void RangeAdjustmentInterface::computeJustData()
 {
-    m_pGainCorrection->cmpCoefficients();
-    m_pPhaseCorrection->cmpCoefficients();
-    m_pOffsetCorrection->cmpCoefficients();
+    m_gainCorrection.cmpCoefficients();
+    m_phaseCorrection.cmpCoefficients();
+    m_offsetCorrection.cmpCoefficients();
 }
 
 double RangeAdjustmentInterface::getGainCorrectionTotal(double par)
 {
-    return m_pGainCorrection->getCorrection(par);
+    return m_gainCorrection.getCorrection(par);
 }
 
 double RangeAdjustmentInterface::getGainCorrectionSingle(double par)
 {
-    return m_pGainCorrection->getCorrection(par);
+    return m_gainCorrection.getCorrection(par);
 }
 
 double RangeAdjustmentInterface::getPhaseCorrectionTotal(double par)
 {
-    return m_pPhaseCorrection->getCorrection(par);
+    return m_phaseCorrection.getCorrection(par);
 }
 
 double RangeAdjustmentInterface::getPhaseCorrectionSingle(double par)
 {
-    return m_pPhaseCorrection->getCorrection(par);
+    return m_phaseCorrection.getCorrection(par);
 }
 
 double RangeAdjustmentInterface::getOffsetCorrectionTotal(double par)
 {
-    return m_pOffsetCorrection->getCorrection(par);
+    return m_offsetCorrection.getCorrection(par);
 }
 
 double RangeAdjustmentInterface::getOffsetCorrectionSingle(double par)
 {
-    return m_pOffsetCorrection->getCorrection(par);
+    return m_offsetCorrection.getCorrection(par);
 }
