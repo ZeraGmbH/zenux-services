@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/">
+        <file>export_clamp_initial.xml</file>
         <file>export_internal_initial.eeprom</file>
         <file>export_internal_initial.xml</file>
         <file>export_internal_modified.eeprom</file>
