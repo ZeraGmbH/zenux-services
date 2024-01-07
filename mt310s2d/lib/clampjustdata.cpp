@@ -12,15 +12,15 @@ cClampJustData::cClampJustData(cSCPI *scpiinterface,
 
 double cClampJustData::getGainCorrectionTotal(double par)
 {
-    return m_pGainCorrection->getCorrection(par) * m_pFirstStageRange->getJustData()->m_pGainCorrection->getCorrection(par / m_cvRatio);
+    return getGainCorrectionSingle(par) * m_pFirstStageRange->getJustData()->getGainCorrectionSingle(par / m_cvRatio);
 }
 
 double cClampJustData::getPhaseCorrectionTotal(double par)
 {
-    return m_pPhaseCorrection->getCorrection(par) + m_pFirstStageRange->getJustData()->m_pPhaseCorrection->getCorrection(par);
+    return getPhaseCorrectionSingle(par) + m_pFirstStageRange->getJustData()->getPhaseCorrectionSingle(par);
 }
 
 double cClampJustData::getOffsetCorrectionTotal(double par)
 {
-    return m_pOffsetCorrection->getCorrection(par) + m_pFirstStageRange->getJustData()->m_pOffsetCorrection->getCorrection(par / m_cvRatio);
+    return getOffsetCorrectionSingle(par) + m_pFirstStageRange->getJustData()->getOffsetCorrectionSingle(par / m_cvRatio);
 }
