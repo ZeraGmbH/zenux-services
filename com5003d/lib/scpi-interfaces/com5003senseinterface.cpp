@@ -323,79 +323,46 @@ void Com5003SenseInterface::exportAdjDataXml(QDomDocument& doc, QDomElement& adj
 
 bool Com5003SenseInterface::importAdjDataXml(QDomNode& node) // n steht auf einem element dessen tagname channel ist
 {
-    qDebug() << node.toElement().tagName();
     if (node.toElement().tagName() != "Sense") // data not for us
         return false;
 
     QDomNodeList nl=node.childNodes(); // we have a list our channels entries now
 
-    for (qint32 i = 0; i < nl.length(); i++)
-    {
+    for (qint32 i = 0; i < nl.length(); i++) {
         QDomNode chnNode = nl.item(i); // we iterate over all channels from xml file
 
-        QDomNodeList nl2 = chnNode.childNodes();
-        for (qint32 j = 0; j < nl2.length(); j++)
-        {
-            Com5003SenseChannel* chnPtr;
-            Com5003SenseRange* rngPtr;
+        QDomNodeList adjChildNl = chnNode.childNodes();
+        Com5003SenseChannel* chnPtr = nullptr;
+        Com5003SenseRange* rngPtr = nullptr;
+        for (qint32 j = 0; j < adjChildNl.length(); j++) {
             QString Name;
-
-            QDomNode ChannelJustNode = nl2.item(j);
-            QDomElement e=ChannelJustNode.toElement();
+            QDomNode ChannelJustNode = adjChildNl.item(j);
+            QDomElement e = ChannelJustNode.toElement();
             QString tName=e.tagName();
-            qDebug() << tName;
-
-            if (tName == "Name")
-            {
-                Name=e.text();
-                qDebug() << Name;
+            if (tName == "Name") {
+                Name = e.text();
                 chnPtr = getChannel(Name);
             }
-
-            if (tName == "Range")
-            {
-                if (chnPtr != 0) // if we know this channel
-                {
-                    QDomNodeList nl3 = ChannelJustNode.childNodes();
-
-                    for (qint32 k = 0; k < nl3.length(); k++)
-                    {
-                        QDomNode RangeJustNode = nl3.item(k);
-
+            if (tName == "Range") {
+                if (chnPtr != 0) { // if we know this channel
+                    QDomNodeList chnJustNl = ChannelJustNode.childNodes();
+                    for (qint32 k = 0; k < chnJustNl.length(); k++) {
+                        QDomNode RangeJustNode = chnJustNl.item(k);
                         e = RangeJustNode.toElement();
                         tName = e.tagName();
-                        qDebug() << tName;
-
-                        if (tName == "Name")
-                        {
-                            Name=e.text();
-                            qDebug() << Name;
+                        if (tName == "Name") {
+                            Name = e.text();
                             rngPtr = chnPtr->getRange(Name);
                         }
-
-                        JustDataInterface* pJustData = 0;
-
-                        if (rngPtr != 0)
-                        {
-                            if (tName == "Gain")
-                                pJustData = rngPtr->getJustData()->m_pGainCorrection;
-
-                            if (tName == "Phase")
-                                pJustData = rngPtr->getJustData()->m_pPhaseCorrection;
-
-                            if (tName == "Offset")
-                                pJustData = rngPtr->getJustData()->m_pOffsetCorrection;
-                        }
-
-                        if (pJustData)
-                        {
-                            QDomNodeList nl4 = RangeJustNode.childNodes();
-                            for (qint32 k = 0; k < nl4.count(); k++)
-                            {
-                                QDomNode jTypeNode = nl4.item(k);
+                        JustDataInterface* pJustData = nullptr;
+                        if (rngPtr != nullptr)
+                            pJustData = rngPtr->getJustData()->getAdjInterface(tName);
+                        if (pJustData) {
+                            QDomNodeList jdataNl = RangeJustNode.childNodes();
+                            for (qint32 k = 0; k < jdataNl.count(); k++) {
+                                QDomNode jTypeNode = jdataNl.item(k);
                                 QString jTypeName = jTypeNode.toElement().tagName();
                                 QString jdata = jTypeNode.toElement().text();
-
                                 if (jTypeName == "Status")
                                     pJustData->DeserializeStatus(jdata);
 
