@@ -2,14 +2,11 @@
 #define ADJXML_H
 
 #include <QString>
-
-class QDomDocument;
+#include <QDomDocument>
 
 class Mt310s2AdjXML
 {
 public:
-    Mt310s2AdjXML();
-
     bool exportAdTojXMLFile(QString file);
     bool importAdjXMLFile(QString file);
     bool importAdjXMLString(QString& xml);
