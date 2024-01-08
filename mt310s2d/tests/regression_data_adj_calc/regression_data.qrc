@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>import_clamp.xml</file>
+        <file>import_internal.xml</file>
+    </qresource>
+</RCC>
