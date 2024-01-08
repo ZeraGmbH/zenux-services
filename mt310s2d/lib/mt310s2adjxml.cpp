@@ -1,11 +1,6 @@
 #include "mt310s2adjxml.h"
 #include <QFile>
-#include <QDomDocument>
 #include <QTextStream>
-
-Mt310s2AdjXML::Mt310s2AdjXML()
-{
-}
 
 bool Mt310s2AdjXML::exportAdTojXMLFile(QString file)
 {
