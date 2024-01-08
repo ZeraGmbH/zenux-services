@@ -35,6 +35,8 @@ public:
     // lazy: public for test
     void addClamp(const SenseSystem::cChannelSettings *chSettings, I2cMuxerInterface::Ptr i2cMuxer);
     QString exportXMLString(int indent = 1);
+    QString importClampXmls(QString allXML, bool computeAndExport);
+
 protected:
     void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
 

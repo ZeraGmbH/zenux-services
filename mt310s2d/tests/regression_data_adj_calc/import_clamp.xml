@@ -1,0 +1,25 @@
+<!DOCTYPE ClampAdjustmentData>
+<CLAMP>
+    <Type>CL200ADC1000VDC</Type>
+    <VersionNumber>unknown</VersionNumber>
+    <SerialNumber>1234567890</SerialNumber>
+    <Date>Sun Jan 7 2024</Date>
+    <Time>16:55:01</Time>
+    <Adjustment>
+        <Chksum>0x0</Chksum>
+        <Sense>
+            <Range>
+                <Name>C200A</Name>
+                <Gain>
+                    <Coefficients>5;6;7;0;</Coefficients>
+                </Gain>
+                <Phase>
+                    <Coefficients>6;7;8;0;</Coefficients>
+                </Phase>
+                <Offset>
+                    <Coefficients>7;8;9;0;</Coefficients>
+                </Offset>
+            </Range>
+        </Sense>
+    </Adjustment>
+</CLAMP>

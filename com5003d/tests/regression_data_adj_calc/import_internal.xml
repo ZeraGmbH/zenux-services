@@ -1,0 +1,28 @@
+<!DOCTYPE ADW5743AdjustmentData>
+<PCB>
+ <Type>ADW5743</Type>
+ <VersionNumber>DEVICE: Unknown;PCB: Unknown;LCA: Unknown;CTRL: Unknown</VersionNumber>
+ <SerialNumber>Unknown</SerialNumber>
+ <Date>Tue Dec 19 2023</Date>
+ <Time>21:03:18</Time>
+ <Adjustment>
+  <Chksum>0x0</Chksum>
+  <Sense>
+   <Channel>
+    <Name>m0</Name>
+    <Range>
+     <Name>240V</Name>
+     <Gain>
+      <Coefficients>2;3;4;0;</Coefficients>
+     </Gain>
+     <Phase>
+      <Coefficients>3;4;5;0;</Coefficients>
+     </Phase>
+     <Offset>
+      <Coefficients>4;5;6;0;</Coefficients>
+     </Offset>
+    </Range>
+   </Channel>
+  </Sense>
+ </Adjustment>
+</PCB>

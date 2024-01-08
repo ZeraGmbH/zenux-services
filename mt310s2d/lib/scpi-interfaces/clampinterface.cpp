@@ -1,7 +1,6 @@
 #include "clampinterface.h"
 #include "clampfactory.h"
 #include "mt310s2senseinterface.h"
-#include "micro-controller-io/atmel.h"
 #include "i2csettings.h"
 #include "zscpi_response_definitions.h"
 #include <i2cmultiplexerfactory.h>
@@ -182,98 +181,82 @@ QString cClampInterface::writeAllClamps(QString &sInput)
     }
 }
 
+QString cClampInterface::importClampXmls(QString allXML, bool computeAndExport)
+{
+    // here we got 1 to n concenated xml document's that we want distribute to connected clamps.
+    // if we got more than 1 xml document we first check if we have the correct clamps connected
+    // we do this using the serial numbers
+    // if we only have 1 clamp and 1 xml document we accept this document and take the data for
+    // initialzing. so this function can be used by testing field to set up new clamps :-)
+    QString sep = "<!DOCTYPE";
+    QStringList sl = allXML.split(sep, Qt::SkipEmptyParts);
+    int anzXML = sl.count();
+    int anzClampTemp = m_clampHash.count();
+    if ( !((anzXML > 0) && (anzClampTemp > 0)) )
+        return ZSCPI::scpiAnswer[ZSCPI::errxml];
+
+    for (int i = 0; i < anzXML && anzClampTemp > 0; i++) {
+        QDomDocument justqdom("TheDocument");
+        QString XML = sep + sl.at(i);
+        if (!justqdom.setContent(XML) )
+            return ZSCPI::scpiAnswer[ZSCPI::errxml];
+        cClamp tmpClamp;
+        if (tmpClamp.importXMLDocument(&justqdom,true)) {
+            cClamp *pClamp, *pClamp4Use;
+            int anzSNR = 0;
+            QList<QString> keylist = m_clampHash.keys();
+            int anzClamps = keylist.count();
+            for (int j = 0; j < anzClamps; j++) {
+                pClamp = m_clampHash[keylist.at(j)];
+                if (pClamp->getSerial() == tmpClamp.getSerial()) {
+                    pClamp4Use = pClamp;
+                    anzSNR++;
+                }
+            }
+            // see huge comment above
+            if ( (anzSNR == 1) || ( (anzSNR == 0) && (anzXML == 1) && (anzClamps == 1)) ) {
+                // we have 1 matching serial number or one document/clamp
+                anzClampTemp--;
+                if (anzSNR == 0) {
+                    pClamp4Use = pClamp;
+                    pClamp4Use->importXMLDocument(&justqdom, true); // if we only have 1 xml and 1 clamp we accept all information
+                }
+                else
+                    pClamp4Use->importXMLDocument(&justqdom, false); // otherwise clamp type cannot be changed
+                if(computeAndExport) {
+                    m_pSenseInterface->computeSenseAdjData();
+                    // then we let it compute its new adjustment coefficients... we simply call senseinterface's compute
+                    // command. we compute a little bit to much but this doesn't matter at all
+                    if (!pClamp4Use->exportAdjFlash(QDateTime::currentDateTime())) // and then we program the clamp
+                        return ZSCPI::scpiAnswer[ZSCPI::errexec];
+                }
+            }
+        }
+        else
+            return ZSCPI::scpiAnswer[ZSCPI::errxml];
+    }
+    return ZSCPI::scpiAnswer[ZSCPI::ack];
+}
+
 QString cClampInterface::importExportAllClamps(QString &sInput)
 {
     cSCPICommand cmd = sInput;
     if (cmd.isQuery())
         return exportXMLString(-1).replace("\n", "");
     else {
-        // here we got 1 to n concenated xml document's that we want distribute to connected clamps.
-        // if we got more than 1 xml document we first check if we have the correct clamps connected
-        // we do this using the serial numbers
-        // if we only have 1 clamp and 1 xml document we accept this document and take the data for
-        // initialzing. so this function can be used by testing field to set up new clamps :-)
-        QString answer;
-        bool err = false;
         bool enable;
         if (m_permissionQueryHandler->hasPermission(enable)) {
             if (enable) {
                 QString allXML = cmd.getParam(); // we fetch all input
-                while (allXML[0] == QChar(' ')) { // we remove all leading blanks
+                while (allXML[0] == QChar(' ')) // we remove all leading blanks
                     allXML.remove(0,1);
-                }
-                QString sep = "<!DOCTYPE";
-                QStringList sl = allXML.split(sep, Qt::SkipEmptyParts);
-                int anzXML = sl.count();
-                int anzClampTemp = m_clampHash.count();
-                if ( !((anzXML > 0) && (anzClampTemp > 0)) ) {
-                    err = true;
-                    answer = ZSCPI::scpiAnswer[ZSCPI::errxml];
-                }
-                if (!err) {
-                    for (int i = 0; (i < anzXML) && (anzClampTemp > 0); i++) {
-                        QString XML;
-                        QDomDocument justqdom( "TheDocument" );
-                        XML = sep + sl.at(i);
-                        if ( !justqdom.setContent(XML) ) {
-                            err = true;
-                            answer = ZSCPI::scpiAnswer[ZSCPI::errxml];
-                            break;
-                        }
-                        cClamp tmpClamp;
-                        if (tmpClamp.importXMLDocument(&justqdom,true)) {
-                            cClamp *pClamp, *pClamp4Use;
-                            int anzSNR = 0;
-                            QList<QString> keylist = m_clampHash.keys();
-                            int anzClamps = keylist.count();
-                            for (int j = 0; j < anzClamps; j++) {
-                                pClamp = m_clampHash[keylist.at(j)];
-                                if (pClamp->getSerial() == tmpClamp.getSerial()) {
-                                    pClamp4Use = pClamp;
-                                    anzSNR++;
-                                }
-                            }
-                            // see huge comment above
-                            if ( (anzSNR == 1) || ( (anzSNR == 0) && (anzXML == 1) && (anzClamps == 1)) ) {
-                                // we have 1 matching serial number or one document/clamp
-                                anzClampTemp--;
-                                if (anzSNR == 0) {
-                                    pClamp4Use = pClamp;
-                                    pClamp4Use->importXMLDocument(&justqdom, true); // if we only have 1 xml and 1 clamp we accept all information
-                                }
-                                else {
-                                    pClamp4Use->importXMLDocument(&justqdom, false); // otherwise clamp type cannot be changed
-                                }
-                                m_pSenseInterface->computeSenseAdjData();
-                                // then we let it compute its new adjustment coefficients... we simply call senseinterface's compute
-                                // command. we compute a little bit to much but this doesn't matter at all
-                                if (!pClamp4Use->exportAdjFlash(QDateTime::currentDateTime())) {// and then we program the clamp
-                                    err = true;
-                                    answer = ZSCPI::scpiAnswer[ZSCPI::errexec];
-                                    break;
-                                }
-                            }
-                        }
-                        else {
-                            err = true;
-                            answer = ZSCPI::scpiAnswer[ZSCPI::errxml];
-                            break;
-                        }
-                    }
-                }
+                return importClampXmls(allXML, true);
             }
-            else {
-                err = true;
-                answer = ZSCPI::scpiAnswer[ZSCPI::erraut];
-            }
+            else
+                return ZSCPI::scpiAnswer[ZSCPI::erraut];
         }
-        else {
-            err = true;
-            answer = ZSCPI::scpiAnswer[ZSCPI::errexec];
-        }
-        if (!err) {
-            answer = ZSCPI::scpiAnswer[ZSCPI::ack];
-        }
-        return answer;
+        else
+            return ZSCPI::scpiAnswer[ZSCPI::errexec];
+        return ZSCPI::scpiAnswer[ZSCPI::ack];
     }
 }
