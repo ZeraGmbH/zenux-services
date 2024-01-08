@@ -1,5 +1,5 @@
 #include "com5003senseinterface.h"
-#include "rangeadjustmentinterface.h"
+#include "rangeadjinterface.h"
 #include "scpiconnection.h"
 #include "resource.h"
 #include "notzeronumgen.h"
@@ -237,7 +237,7 @@ bool Com5003SenseInterface::importAdjData(QString &s, QDataStream &stream)
             }
         }
 
-        RangeAdjustmentInterface dummy(m_pSCPIInterface, AdjustScpiValueFormatterFactory::createCom5003AdjFormatter()); // if the data was for SENSE but we didn't find channel or range
+        RangeAdjInterface dummy(m_pSCPIInterface, AdjustScpiValueFormatterFactory::createCom5003AdjFormatter()); // if the data was for SENSE but we didn't find channel or range
         dummy.Deserialize(stream); // we read the data from stream to keep it in flow
         return true;
     }

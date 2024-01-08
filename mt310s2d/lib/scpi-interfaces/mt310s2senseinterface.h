@@ -4,7 +4,7 @@
 #include "i2csettings.h"
 #include "mt310s2adjflash.h"
 #include "mt310s2adjxml.h"
-#include "rangeadjustmentinterface.h"
+#include "rangeadjinterface.h"
 #include "resource.h"
 #include "mt310s2sensechannel.h"
 #include "systeminfo.h"
@@ -96,7 +96,7 @@ private:
     QString m_InitSenseAdjData(QString& sInput);
     QString m_ComputeSenseAdjData(QString& sInput);
     QString scpiReadAdjStatus(QString& sInput);
-    RangeAdjustmentInterface* createJustScpiInterfaceWithAtmelPermission();
+    RangeAdjInterface* createJustScpiInterfaceWithAtmelPermission();
     void setNotifierSenseMMode();
     void setNotifierSenseChannelCat();
     bool setSenseMode(QString sMode);

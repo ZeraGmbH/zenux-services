@@ -23,7 +23,7 @@ private slots:
     void checkGetJustData();
 private:
     cSCPI *m_scpi;
-    RangeAdjustmentInterface *m_justData;
+    RangeAdjInterface *m_justData;
     Mt310s2SenseRange *m_range;
 };
 
