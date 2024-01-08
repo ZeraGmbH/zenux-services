@@ -1,7 +1,7 @@
 #include "clampjustdata.h"
 
 cClampJustData::cClampJustData(cSCPI *scpiinterface,
-                               Mt310s2SenseRange *cascadedRange,
+                               SenseRangeCommon *cascadedRange,
                                double cvRatio,
                                PermissionStructAdj permission)  :
     RangeAdjustmentInterface(scpiinterface, AdjustScpiValueFormatterFactory::createMt310s2AdjFormatter(), permission),
