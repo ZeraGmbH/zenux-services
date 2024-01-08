@@ -1,6 +1,7 @@
 #include "com5003dglobal.h"
 #include "com5003adjflash.h"
 #include "justdatainterface.h"
+#include "adjeepromtools.h"
 #include "com5003adjxml.h"
 #include "systeminfo.h"
 #include "com5003adjustment.h"
@@ -78,7 +79,7 @@ bool Com5003Adjustment::exportAdjFlash(QDateTime dateTimeWrite)
     mem.write(ca); // überschreibt die länge und jetzt die richtige checksumme
 
     mem.close(); // wird nicht mehr benötigt
-    
+
     I2cFlashInterfacePtrU flashIo = I2cEEpromIoFactory::create24LC256(m_sDeviceNode, m_nI2CAdr);
     int written = flashIo->WriteData(ba.data(), ba.size(), 0);
     if ( (count - written) > 0) {
@@ -165,44 +166,10 @@ bool Com5003Adjustment::importAdjFlash()
         return false; // wrong pcb name
     }
 
-    ba2stream >> s;
-
-    QString qs = QString(s);
+    ba2stream >> s; // we take the device version now
 
     bool enable = false;
     m_permissionQueryHandler->hasPermission(enable);
-
-    QString sDV = m_pSystemInfo->getDeviceVersion();
-    if (qs != sDV) {
-        // test ob sich nur die hinteren nummern der lca bzw. ctrl version geändert haben
-        // indem die hinteren stellen der nummern aus sDeviceVersion nach s übertragen werden
-        // und anschliessend nochmal verglichen wird
-
-        QString ss, sd, ss2, sd2;
-        ss = qs.section(';',2,2); // LCA: x.xx
-        ss2 = '.' +ss.section('.',1,1); // .xx
-        sd = m_pSystemInfo->getDeviceVersion().section(';',2,2); // LCA: x.yy
-        sd2 = '.' +sd.section('.',1,1); // .yy
-        ss.replace(ss2,sd2); // tausch .xx durch .yy
-        qs.replace(qs.section(';',2,2), ss); // LCA: x.yy -> s
-
-        ss = qs.section(';',3,3); // CTRL: x.xx
-        ss2 = '.' +ss.section('.',1,1); // .xx
-        sd = m_pSystemInfo->getDeviceVersion().section(';',3,3); // CTRL: x.yy
-        sd2 = '.' +sd.section('.',1,1); // .yy
-        ss.replace(ss2,sd2); // tausch .xx durch .yy
-        qs.replace(qs.section(';',3,3), ss); // CTRL: x.yy -> s
-
-        if (qs != sDV)
-        {
-            qCritical("Flashmemory read, contains wrong versionnumber: flash %s / µC %s",
-                      qPrintable(qs), qPrintable(sDV));
-            m_nAdjStatus += Adjustment::wrongVERS;
-            if (!enable) {
-                return false; // wrong version number
-            }
-        }
-    }
 
     ba2stream >> s;
     QString sysSerNo = m_pSystemInfo->getSerialNumber();

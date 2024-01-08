@@ -1,5 +1,5 @@
 #include "clamp.h"
-#include "mt310s2adjustment.h"
+#include "adjeepromtools.h"
 #include "justdatainterface.h"
 #include "mt310s2senserange.h"
 #include "rangeadjclamps.h"

@@ -109,7 +109,6 @@ private:
     QString m_sMMode;
     QHash<QString,quint8> m_MModeHash;
 
-    quint8 m_nVersionStatus;
     quint8 m_nSerialStatus;
 
 

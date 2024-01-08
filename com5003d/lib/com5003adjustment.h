@@ -8,17 +8,6 @@
 #include <QString>
 #include <QList>
 
-namespace Adjustment
-{
-enum jDataStatus
-{
-    adjusted,
-    notAdjusted,
-    wrongVERS = 2,
-    wrongSNR = 4
-};
-}
-
 class Com5003Adjustment: public Com5003AdjXML
 {
 public:
