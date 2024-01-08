@@ -15,7 +15,6 @@ class test_regression_sense_interface_mt310s2 : public QObject
 private slots:
     void initTestCase();
     void init();
-    void cleanup();
 
     void checkVersionsOfSystemInterface();
     void checkChannelCatalogAsExpected();

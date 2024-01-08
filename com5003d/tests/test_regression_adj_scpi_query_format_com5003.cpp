@@ -13,14 +13,9 @@ static const QDateTime refTime = QDateTime::fromSecsSinceEpoch(0, Qt::UTC);
 
 void test_regression_adj_scpi_query_format_com5003::initTestCase()
 {
+    I2cFlashIoFactoryForTest::enableMockFlash();
     // permission tests are done in test_regression_adj_import_export_xml_<device>
     m_permissionMock = AtmelPermissionMock::createAlwaysEnabled();
-}
-
-void test_regression_adj_scpi_query_format_com5003::init()
-{
-    Flash24LC256Mock::cleanAll();
-    I2cFlashIoFactoryForTest::enableMockFlash();
     setupServers(m_permissionMock.get());
 
     QString filenameShort = ":/import_scpi_format";
@@ -28,13 +23,9 @@ void test_regression_adj_scpi_query_format_com5003::init()
     QVERIFY(m_mockServer->getAdjustment()->importAdjXMLFile(filenameShort));
 }
 
-void test_regression_adj_scpi_query_format_com5003::cleanup()
+void test_regression_adj_scpi_query_format_com5003::init()
 {
-    m_pcbIFace = nullptr;
-    m_pcbClient = nullptr;
-    m_mockServer = nullptr;
-    m_resmanServer = nullptr;
-    TimeMachineObject::feedEventLoop();
+    Flash24LC256Mock::cleanAll();
 }
 
 void test_regression_adj_scpi_query_format_com5003::queryGainCorrectionSingleGen()

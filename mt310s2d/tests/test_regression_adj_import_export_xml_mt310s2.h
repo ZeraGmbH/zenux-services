@@ -34,6 +34,7 @@ private:
     std::unique_ptr<ResmanRunFacade> m_resmanServer;
     Zera::ProxyClientPtr m_pcbClient;
     std::unique_ptr<Zera::cPCBInterface> m_pcbIFace;
+    AtmelPermissionTemplatePtrU m_permissionMock;
 };
 
 #endif // TEST_REGRESSION_ADJUSTMENT_MT310S2_H

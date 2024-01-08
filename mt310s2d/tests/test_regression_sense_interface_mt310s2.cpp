@@ -19,10 +19,6 @@ QTEST_MAIN(test_regression_sense_interface_mt310s2);
 void test_regression_sense_interface_mt310s2::initTestCase()
 {
     ClampFactoryTest::enableTest();
-}
-
-void test_regression_sense_interface_mt310s2::init()
-{
     m_resmanServer = std::make_unique<ResmanRunFacade>();
     m_mockServer = std::make_unique<MockForSenseInterfaceMt310s2>(&Atmel::getInstance());
     TimeMachineObject::feedEventLoop();
@@ -34,13 +30,9 @@ void test_regression_sense_interface_mt310s2::init()
     TimeMachineObject::feedEventLoop();
 }
 
-void test_regression_sense_interface_mt310s2::cleanup()
+void test_regression_sense_interface_mt310s2::init()
 {
-    m_pcbIFace = nullptr;
-    m_pcbClient = nullptr;
-    m_mockServer = nullptr;
-    m_resmanServer = nullptr;
-    TimeMachineObject::feedEventLoop();
+    ScpiSingleTransactionBlocked::cmd("SENS:MMODE", "AC");
 }
 
 void test_regression_sense_interface_mt310s2::checkVersionsOfSystemInterface()
