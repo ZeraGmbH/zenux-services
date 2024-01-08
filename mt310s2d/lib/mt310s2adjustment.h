@@ -6,16 +6,6 @@
 #include <QList>
 #include <QString>
 
-namespace Adjustment
-{
-enum jDataStatus
-{
-    adjusted,
-    notAdjusted,
-    wrongVERS = 2,
-    wrongSNR = 4
-};
-}
 
 class Mt310s2Adjustment : public AdjustmentStatusInterface
 {

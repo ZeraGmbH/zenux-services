@@ -1,7 +1,7 @@
 #include "mt310s2senseinterface.h"
 #include "mt310s2dglobal.h"
-#include "mt310s2adjustment.h"
 #include "justdatainterface.h"
+#include "adjeepromtools.h"
 #include "mt310s2sensechannel.h"
 #include "mt310s2senserange.h"
 #include "mt310s2adjflash.h"
@@ -35,7 +35,6 @@ Mt310s2SenseInterface::Mt310s2SenseInterface(cSCPI *scpiInterface,
     m_permissionQueryHandler(permissionQueryHandler)
 {
     // Init with bad defaults so coder's bugs pop up
-    m_nVersionStatus = Adjustment::wrongVERS;
     m_nSerialStatus = Adjustment::wrongSNR;
 
     m_MModeHash["AC"]   = SenseSystem::modeAC;
@@ -207,7 +206,7 @@ quint8 Mt310s2SenseInterface::getAdjustmentStatus()
         }
     }
     // if we read wrong serial or version we are not adjusted in any case
-    quint8 sernoVersionStatusMask = m_nSerialStatus | m_nVersionStatus;
+    quint8 sernoVersionStatusMask = m_nSerialStatus;
     if (sernoVersionStatusMask != 0) {
         adjustmentStatusMask = Adjustment::notAdjusted;
         adjustmentStatusMask |= sernoVersionStatusMask;
@@ -285,47 +284,9 @@ bool Mt310s2SenseInterface::importAdjData(QDataStream &stream)
     }
 
     stream >> s; // we take the device version now
-    QString qs = QString(s);
 
     bool enable = false;
     m_permissionQueryHandler->hasPermission(enable);
-
-    QString sDV = m_pSystemInfo->getDeviceVersion();
-    if (qs != sDV) {
-        // test ob sich nur die hinteren nummern der lca bzw. ctrl version geändert haben
-        // indem die hinteren stellen der nummern aus sDeviceVersion nach s übertragen werden
-        // und anschliessend nochmal verglichen wird
-
-        QString ss, sd, ss2, sd2;
-        ss = qs.section(';',2,2); // LCA: x.xx
-        ss2 = '.' +ss.section('.',1,1); // .xx
-        sd = m_pSystemInfo->getDeviceVersion().section(';',2,2); // LCA: x.yy
-        sd2 = '.' +sd.section('.',1,1); // .yy
-        ss.replace(ss2,sd2); // tausch .xx durch .yy
-        qs.replace(qs.section(';',2,2), ss); // LCA: x.yy -> s
-
-        ss = qs.section(';',3,3); // CTRL: x.xx
-        ss2 = '.' +ss.section('.',1,1); // .xx
-        sd = m_pSystemInfo->getDeviceVersion().section(';',3,3); // CTRL: x.yy
-        sd2 = '.' +sd.section('.',1,1); // .yy
-        ss.replace(ss2,sd2); // tausch .xx durch .yy
-        qs.replace(qs.section(';',3,3), ss); // CTRL: x.yy -> s
-
-        if (qs != sDV) {
-            qCritical("Flashmemory read: Wrong versionnumber: flash %s / µC %s",
-                   qPrintable(qs), qPrintable(sDV));
-            m_nVersionStatus |= Adjustment::wrongVERS;
-            if (!enable) {
-                return false; // wrong version number
-            }
-        }
-        else {
-            m_nVersionStatus = 0; // ok
-        }
-    }
-    else { // version full match
-        m_nVersionStatus = 0; // ok
-    }
 
     stream >> s; // we take the serial number now
     QString sysSerNo = m_pSystemInfo->getSerialNumber();
