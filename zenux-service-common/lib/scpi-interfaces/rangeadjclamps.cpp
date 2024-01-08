@@ -1,26 +1,26 @@
-#include "clampjustdata.h"
+#include "rangeadjclamps.h"
 
-cClampJustData::cClampJustData(cSCPI *scpiinterface,
+RangeAdjClamps::RangeAdjClamps(cSCPI *scpiinterface,
                                SenseRangeCommon *cascadedRange,
                                double cvRatio,
                                PermissionStructAdj permission)  :
-    RangeAdjustmentInterface(scpiinterface, AdjustScpiValueFormatterFactory::createMt310s2AdjFormatter(), permission),
+    RangeAdjInterface(scpiinterface, AdjustScpiValueFormatterFactory::createMt310s2AdjFormatter(), permission),
     m_pFirstStageRange(cascadedRange),
     m_cvRatio(cvRatio)
 {
 }
 
-double cClampJustData::getGainCorrectionTotal(double par)
+double RangeAdjClamps::getGainCorrectionTotal(double par)
 {
     return getGainCorrectionSingle(par) * m_pFirstStageRange->getJustData()->getGainCorrectionSingle(par / m_cvRatio);
 }
 
-double cClampJustData::getPhaseCorrectionTotal(double par)
+double RangeAdjClamps::getPhaseCorrectionTotal(double par)
 {
     return getPhaseCorrectionSingle(par) + m_pFirstStageRange->getJustData()->getPhaseCorrectionSingle(par);
 }
 
-double cClampJustData::getOffsetCorrectionTotal(double par)
+double RangeAdjClamps::getOffsetCorrectionTotal(double par)
 {
     return getOffsetCorrectionSingle(par) + m_pFirstStageRange->getJustData()->getOffsetCorrectionSingle(par / m_cvRatio);
 }

@@ -1,5 +1,5 @@
-#ifndef RANGEADJUSTMENTINTERFACE_H
-#define RANGEADJUSTMENTINTERFACE_H
+#ifndef RANGEADJINTERFACE_H
+#define RANGEADJINTERFACE_H
 
 #include "scpiconnection.h"
 #include "permissionfunctions.h"
@@ -26,11 +26,11 @@ public:
     static std::unique_ptr<AdjustScpiValueFormatter> createCom5003AdjFormatter();
 };
 
-class RangeAdjustmentInterface : public ScpiConnection, public AdjustmentStatusInterface
+class RangeAdjInterface : public ScpiConnection, public AdjustmentStatusInterface
 {
     Q_OBJECT
 public:
-    RangeAdjustmentInterface(cSCPI* scpiinterface,
+    RangeAdjInterface(cSCPI* scpiinterface,
                              std::unique_ptr<AdjustScpiValueFormatter> adjustmentFormatter,
                              PermissionStructAdj permissions = PermissionStructAdj());
     virtual void initSCPIConnection(QString leadingNodes) override;

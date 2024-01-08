@@ -15,7 +15,7 @@ public:
                       double ovrejection,
                       quint8 rselcode,
                       quint16 mmask,
-                      RangeAdjustmentInterface* justdata);
+                      RangeAdjInterface* justdata);
     void setMMode(int mode);
 };
 

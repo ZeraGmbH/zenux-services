@@ -20,7 +20,7 @@ Com5003SenseRange::Com5003SenseRange(cSCPI *scpiinterface,
         adcRejectionCom5003,
         rselcode,
         0, // no flags used in COM5003 implementation yet
-        new RangeAdjustmentInterface(scpiinterface, AdjustScpiValueFormatterFactory::createCom5003AdjFormatter()),
+        new RangeAdjInterface(scpiinterface, AdjustScpiValueFormatterFactory::createCom5003AdjFormatter()),
         rejectionScpiQueryDigitsCom5003)
 {
 }

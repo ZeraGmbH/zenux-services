@@ -14,7 +14,7 @@ SenseRangeCommon::SenseRangeCommon(cSCPI *scpiInterface,
                                    double adcrejection,
                                    quint8 rselcode,
                                    quint32 typeFlags,
-                                   RangeAdjustmentInterface *justdata,
+                                   RangeAdjInterface *justdata,
                                    int rejectionScpiQueryDigits) :
     ScpiConnection(scpiInterface),
     m_bAvail(avail),
@@ -86,7 +86,7 @@ quint8 SenseRangeCommon::getAdjustmentStatus()
     return m_justdata->getAdjustmentStatus();
 }
 
-RangeAdjustmentInterface *SenseRangeCommon::getJustData()
+RangeAdjInterface *SenseRangeCommon::getJustData()
 {
     return m_justdata;
 }
