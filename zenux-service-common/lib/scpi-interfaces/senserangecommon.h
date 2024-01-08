@@ -2,6 +2,7 @@
 #define SENSERANGECOMMON_H
 
 #include "scpiconnection.h"
+#include "rangeadjustmentinterface.h"
 
 namespace SenseRange
 {
@@ -33,7 +34,9 @@ public:
                      double adcrejection,
                      quint8 rselcode,
                      quint32 typeFlags,
+                     RangeAdjustmentInterface* justdata,
                      int rejectionScpiQueryDigits);
+    virtual ~SenseRangeCommon();
     void initSCPIConnection(QString leadingNodes) override;
     QString &getName(); // Ooohh - there are pointer kept
     double getUpperRangevalue() const;
@@ -41,6 +44,12 @@ public:
     bool getAvail() const;
     void setAvail(bool avail); // It is just for Com5003 - do we need this really?
     quint16 getMMask();
+
+    quint8 getAdjustmentStatus();
+    RangeAdjustmentInterface *getJustData();
+    void initJustData();
+    void computeJustData();
+
 protected:
     bool m_bAvail; // range io avail or not
 private:
@@ -62,6 +71,7 @@ private:
     const quint8 m_nSelCode; // selection code
     const quint32 m_typeFlags;
     const int m_rejectionScpiQueryDigits;
+    RangeAdjustmentInterface* m_justdata;
 };
 
 #endif // SENSERANGECOMMON_H

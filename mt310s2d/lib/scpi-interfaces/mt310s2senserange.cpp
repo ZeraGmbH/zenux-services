@@ -24,46 +24,12 @@ Mt310s2SenseRange::Mt310s2SenseRange(cSCPI *scpiinterface,
         adcRejectionCom5003,
         rselcode,
         mmask,
-        rejectionScpiQueryDigitsMt310s2),
-    m_pJustdata(justdata)
+        justdata,
+        rejectionScpiQueryDigitsMt310s2)
 {
-}
-
-Mt310s2SenseRange::~Mt310s2SenseRange()
-{
-    delete m_pJustdata;
-}
-
-void Mt310s2SenseRange::initSCPIConnection(QString leadingNodes)
-{
-    SenseRangeCommon::initSCPIConnection(leadingNodes);
-
-    ensureTrailingColonOnNonEmptyParentNodes(leadingNodes);
-    connect(m_pJustdata, &ScpiConnection::cmdExecutionDone, this, &ScpiConnection::cmdExecutionDone);
-    m_pJustdata->initSCPIConnection(QString("%1%2").arg(leadingNodes).arg(getName()));
-}
-
-quint8 Mt310s2SenseRange::getAdjustmentStatus()
-{
-    return m_pJustdata->getAdjustmentStatus();
-}
-
-RangeAdjustmentInterface *Mt310s2SenseRange::getJustData()
-{
-    return m_pJustdata;
 }
 
 void Mt310s2SenseRange::setMMode(int mode)
 {
     m_bAvail = ((getMMask() & mode) > 0);
-}
-
-void Mt310s2SenseRange::initJustData()
-{
-    m_pJustdata->initJustData();
-}
-
-void Mt310s2SenseRange::computeJustData()
-{
-    m_pJustdata->computeJustData();
 }

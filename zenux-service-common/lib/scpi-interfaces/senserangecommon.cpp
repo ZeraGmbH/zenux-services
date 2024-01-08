@@ -14,6 +14,7 @@ SenseRangeCommon::SenseRangeCommon(cSCPI *scpiInterface,
                                    double adcrejection,
                                    quint8 rselcode,
                                    quint32 typeFlags,
+                                   RangeAdjustmentInterface *justdata,
                                    int rejectionScpiQueryDigits) :
     ScpiConnection(scpiInterface),
     m_bAvail(avail),
@@ -25,8 +26,14 @@ SenseRangeCommon::SenseRangeCommon(cSCPI *scpiInterface,
     m_fADCRejection(adcrejection),
     m_nSelCode(rselcode),
     m_typeFlags(typeFlags),
-    m_rejectionScpiQueryDigits(rejectionScpiQueryDigits)
+    m_rejectionScpiQueryDigits(rejectionScpiQueryDigits),
+    m_justdata(justdata)
 {
+}
+
+SenseRangeCommon::~SenseRangeCommon()
+{
+    delete m_justdata;
 }
 
 void SenseRangeCommon::initSCPIConnection(QString leadingNodes)
@@ -39,6 +46,9 @@ void SenseRangeCommon::initSCPIConnection(QString leadingNodes)
     addDelegate(QString("%1%2").arg(leadingNodes, m_sName), "OVREJECTION", SCPI::isQuery, m_pSCPIInterface, SenseRange::cmdOVRejection);
     addDelegate(QString("%1%2").arg(leadingNodes, m_sName), "ADCREJECTION", SCPI::isQuery, m_pSCPIInterface, SenseRange::cmdADCRejection);
     addDelegate(QString("%1%2").arg(leadingNodes, m_sName), "TYPE", SCPI::isQuery, m_pSCPIInterface, SenseRange::cmdType);
+
+    connect(m_justdata, &ScpiConnection::cmdExecutionDone, this, &ScpiConnection::cmdExecutionDone);
+    m_justdata->initSCPIConnection(QString("%1%2").arg(leadingNodes).arg(getName()));
 }
 
 QString &SenseRangeCommon::getName()
@@ -69,6 +79,26 @@ void SenseRangeCommon::setAvail(bool avail)
 quint16 SenseRangeCommon::getMMask()
 {
     return m_typeFlags;
+}
+
+quint8 SenseRangeCommon::getAdjustmentStatus()
+{
+    return m_justdata->getAdjustmentStatus();
+}
+
+RangeAdjustmentInterface *SenseRangeCommon::getJustData()
+{
+    return m_justdata;
+}
+
+void SenseRangeCommon::initJustData()
+{
+    m_justdata->initJustData();
+}
+
+void SenseRangeCommon::computeJustData()
+{
+    m_justdata->computeJustData();
 }
 
 void SenseRangeCommon::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
