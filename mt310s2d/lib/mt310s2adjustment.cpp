@@ -1,18 +1,18 @@
 #include "mt310s2adjustment.h"
-#include "mt310s2adjflash.h"
+#include "adjustmenteeprom.h"
 
 Mt310s2Adjustment::Mt310s2Adjustment()
 {
 }
 
 
-void Mt310s2Adjustment::addAdjFlashObject(Mt310s2AdjFlash* obj)
+void Mt310s2Adjustment::addAdjFlashObject(AdjustmentEeprom* obj)
 {
     m_AdjFlashList.append(obj);
 }
 
 
-void Mt310s2Adjustment::removeAdjFlashObject(Mt310s2AdjFlash *obj)
+void Mt310s2Adjustment::removeAdjFlashObject(AdjustmentEeprom *obj)
 {
     m_AdjFlashList.removeOne(obj);
 }

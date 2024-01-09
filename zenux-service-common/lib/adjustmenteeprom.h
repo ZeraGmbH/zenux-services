@@ -8,11 +8,11 @@
 #include <QDataStream>
 #include <QDateTime>
 
-class Mt310s2AdjFlash : public AdjustmentStatusInterface
+class AdjustmentEeprom : public AdjustmentStatusInterface
 {
 public:
-    Mt310s2AdjFlash(){}
-    Mt310s2AdjFlash(QString devnode, quint8 i2cadr, I2cMuxerInterface::Ptr i2cMuxer);
+    AdjustmentEeprom(){}
+    AdjustmentEeprom(QString devnode, quint8 i2cadr, I2cMuxerInterface::Ptr i2cMuxer);
     bool exportAdjFlash(QDateTime dateTimeWrite);
     bool importAdjFlash();
     bool resetAdjFlash();

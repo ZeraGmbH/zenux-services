@@ -37,7 +37,7 @@ cClamp::cClamp(cPCBServer *server,
                I2cMuxerInterface::Ptr i2cMuxer,
                quint8 ctrlChannelSecondary,
                quint8 type) :
-    Mt310s2AdjFlash(i2cSettings->getDeviceNode(),
+    AdjustmentEeprom(i2cSettings->getDeviceNode(),
                     i2cSettings->getI2CAdress(i2cSettings::clampFlashI2cAddress),
                     i2cMuxer),
     ScpiConnection(server->getSCPIInterface()),

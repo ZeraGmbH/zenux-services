@@ -2,7 +2,7 @@
 #define SENSEINTERFACE_H
 
 #include "i2csettings.h"
-#include "mt310s2adjflash.h"
+#include "adjustmenteeprom.h"
 #include "adjustmentxmlimportexporttemplate.h"
 #include "rangeadjinterface.h"
 #include "resource.h"
@@ -64,7 +64,7 @@ namespace SenseSystem
     const QString sMeasuringModeDescription = "Measuring mode switch AC,HF,ADJ";
 }
 
-class Mt310s2SenseInterface : public cResource, public Mt310s2AdjFlash, public AdjustmentXmlImportExportTemplate
+class Mt310s2SenseInterface : public cResource, public AdjustmentEeprom, public AdjustmentXmlImportExportTemplate
 {
     Q_OBJECT
 public:

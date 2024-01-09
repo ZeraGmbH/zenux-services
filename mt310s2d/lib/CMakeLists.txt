@@ -15,7 +15,7 @@ file(GLOB HEADER
 add_library(mt310s2d-lib STATIC
     ${HEADER}
     ${SOURCES}
-    )
+)
 
 target_include_directories(mt310s2d-lib
     PUBLIC
