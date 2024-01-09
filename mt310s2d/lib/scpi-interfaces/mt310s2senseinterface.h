@@ -64,7 +64,7 @@ namespace SenseSystem
     const QString sMeasuringModeDescription = "Measuring mode switch AC,HF,ADJ";
 }
 
-class Mt310s2SenseInterface : public cResource, public AdjustmentEeprom, public AdjustmentXmlImportExportTemplate
+class Mt310s2SenseInterface : public cResource, public AdjustmentEeprom, public AdjustmentXmlImportExportTemplate, public AdjustmentStatusInterface
 {
     Q_OBJECT
 public:

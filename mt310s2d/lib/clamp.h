@@ -30,7 +30,7 @@ enum ClampTypes // APPEND NEW TYPES AT BOTTOM
     anzCL
 };
 
-class cClamp: public AdjustmentEeprom, public AdjustmentXmlImportExportTemplate, public ScpiConnection
+class cClamp: public AdjustmentEeprom, public AdjustmentXmlImportExportTemplate, public ScpiConnection, public AdjustmentStatusInterface
 {
 public:
     cClamp();

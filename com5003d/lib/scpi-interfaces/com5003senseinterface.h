@@ -45,7 +45,7 @@ const QString sReferenceChannelDescription = "Reference channel 0..10V DC";
 const QString sMMode[2] = {"AC", "REF"};
 }
 
-class Com5003SenseInterface : public cResource, public AdjustmentEeprom, public AdjustmentXmlImportExportTemplate
+class Com5003SenseInterface : public cResource, public AdjustmentEeprom, public AdjustmentXmlImportExportTemplate, public AdjustmentStatusInterface
 {
     Q_OBJECT
 public:

@@ -8,7 +8,7 @@
 #include <QDataStream>
 #include <QDateTime>
 
-class AdjustmentEeprom : public AdjustmentStatusInterface
+class AdjustmentEeprom
 {
 public:
     AdjustmentEeprom(){}
