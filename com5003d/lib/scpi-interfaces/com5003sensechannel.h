@@ -34,7 +34,7 @@ enum MMode
 class ScpiConnection;
 
 
-class Com5003SenseChannel : public ScpiConnection, public AdjustmentStatusInterface
+class Com5003SenseChannel : public ScpiConnection
 {
     Q_OBJECT
 
@@ -47,7 +47,7 @@ public:
     QList<Com5003SenseRange*>& getRangeList();
     Com5003SenseRange* getRange(QString& name);
 
-    quint8 getAdjustmentStatus() override;
+    quint8 getAdjustmentStatus80Mask();
 
     QString& getName();
     QString& getAlias();

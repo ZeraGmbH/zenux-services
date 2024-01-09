@@ -81,9 +81,9 @@ quint16 SenseRangeCommon::getMMask()
     return m_typeFlags;
 }
 
-quint8 SenseRangeCommon::getAdjustmentStatus()
+quint8 SenseRangeCommon::getAdjustmentStatus80Mask()
 {
-    return m_justdata->getAdjustmentStatus();
+    return m_justdata->getAdjustmentStatus80Mask();
 }
 
 RangeAdjInterface *SenseRangeCommon::getJustData()

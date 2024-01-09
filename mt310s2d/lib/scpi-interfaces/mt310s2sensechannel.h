@@ -28,7 +28,7 @@ enum Commands
 class ScpiConnection;
 class Mt310s2SenseInterface;
 
-class Mt310s2SenseChannel : public ScpiConnection, public AdjustmentStatusInterface
+class Mt310s2SenseChannel : public ScpiConnection
 {
     Q_OBJECT
 
@@ -44,7 +44,7 @@ public:
 
     Mt310s2SenseRange* getRange(QString& name);
 
-    quint8 getAdjustmentStatus() override;
+    quint8 getAdjustmentStatus80Mask();
 
     QString& getName();
     QString& getAlias();

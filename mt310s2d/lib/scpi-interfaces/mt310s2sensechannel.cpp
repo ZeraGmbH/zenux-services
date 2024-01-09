@@ -119,11 +119,11 @@ Mt310s2SenseRange *Mt310s2SenseChannel::getRange(QString &name)
     return nullptr;
 }
 
-quint8 Mt310s2SenseChannel::getAdjustmentStatus()
+quint8 Mt310s2SenseChannel::getAdjustmentStatus80Mask()
 {
     quint8 adj = 255;
     for(auto range : qAsConst(m_RangeList))
-        adj &= range->getAdjustmentStatus();
+        adj &= range->getAdjustmentStatus80Mask();
     return adj;
 }
 

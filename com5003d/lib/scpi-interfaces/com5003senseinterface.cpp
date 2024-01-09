@@ -178,7 +178,7 @@ quint8 Com5003SenseInterface::getAdjustmentStatus()
     quint8 adjustmentStatusMask = Adjustment::adjusted;
     // Loop adjustment state for all channels
     for(auto channel : qAsConst(m_ChannelList)) {
-        quint8 channelFlags = channel->getAdjustmentStatus();
+        quint8 channelFlags = channel->getAdjustmentStatus80Mask();
         // Currently there is one flag in channel flags only
         if((channelFlags & JustDataInterface::Justified)== 0) {
             adjustmentStatusMask = Adjustment::notAdjusted;

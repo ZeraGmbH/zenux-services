@@ -26,7 +26,7 @@ public:
     static std::unique_ptr<AdjustScpiValueFormatter> createCom5003AdjFormatter();
 };
 
-class RangeAdjInterface : public ScpiConnection, public AdjustmentStatusInterface
+class RangeAdjInterface : public ScpiConnection
 {
     Q_OBJECT
 public:
@@ -42,7 +42,7 @@ public:
 
     void Serialize(QDataStream&); // zum schreiben aller justagedaten in flashspeicher
     void Deserialize(QDataStream&); // zum lesen aller justagedaten aus flashspeicher
-    quint8 getAdjustmentStatus() override;
+    quint8 getAdjustmentStatus80Mask();
     void initJustData();
     void computeJustData();
 
