@@ -1,6 +1,6 @@
 #include "mt310s2d.h"
 #include "mt310s2dglobal.h"
-#include "mt310s2adjustment.h"
+#include "adjustmenteepromcontainer.h"
 #include "rmconnection.h"
 #include "atmelsysctrl.h"
 #include "atmel.h"
@@ -220,7 +220,7 @@ void cMT310S2dServer::doSetupServer()
         {
             Atmel::getInstance().setPLLChannel(1); // default channel m0 for pll control
             m_pSystemInfo = new Mt310s2SystemInfo(m_systemController);
-            m_pAdjHandler = new Mt310s2Adjustment;
+            m_pAdjHandler = new AdjustmentEepromContainer;
 
             setupServer(); // here our scpi interface gets instanciated, we need this for further steps
 

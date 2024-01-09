@@ -7,10 +7,10 @@
 #include <QString>
 
 
-class Mt310s2Adjustment : public AdjustmentStatusInterface
+class AdjustmentEepromContainer : public AdjustmentStatusInterface
 {
 public:
-    Mt310s2Adjustment();
+    AdjustmentEepromContainer();
     void addAdjFlashObject(AdjustmentEeprom* obj);
     void removeAdjFlashObject(AdjustmentEeprom* obj);
     quint8 getAdjustmentStatus() override;
