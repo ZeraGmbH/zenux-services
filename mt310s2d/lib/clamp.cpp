@@ -387,9 +387,9 @@ quint8 cClamp::getAdjustmentStatus()
 
     quint8 stat = 255;
     for(auto range : qAsConst(m_RangeList))
-        stat &= range->getAdjustmentStatus();
+        stat &= range->getAdjustmentStatus80Mask();
     for(auto range : qAsConst(m_RangeListSecondary))
-        stat &= range->getAdjustmentStatus();
+        stat &= range->getAdjustmentStatus80Mask();
     if ((stat & JustDataInterface::Justified)== 0)
         return Adjustment::notAdjusted;
     else

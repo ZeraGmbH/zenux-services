@@ -117,11 +117,11 @@ Com5003SenseRange *Com5003SenseChannel::getRange(QString &name)
 }
 
 
-quint8 Com5003SenseChannel::getAdjustmentStatus()
+quint8 Com5003SenseChannel::getAdjustmentStatus80Mask()
 {
     quint8 adj = 255;
     for(auto range : qAsConst(m_RangeList))
-        adj &= range->getAdjustmentStatus();
+        adj &= range->getAdjustmentStatus80Mask();
     return adj;
 }
 

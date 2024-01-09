@@ -234,7 +234,7 @@ QString RangeAdjInterface::scpiQueryStatus(QString& scpiInput)
 {
     cSCPICommand cmd = scpiInput;
     if (cmd.isQuery()) {
-        return QString("%1").arg(getAdjustmentStatus());
+        return QString("%1").arg(getAdjustmentStatus80Mask());
     }
     else
         return ZSCPI::scpiAnswer[ZSCPI::nak];
@@ -298,7 +298,7 @@ void RangeAdjInterface::Deserialize(QDataStream& qds) // zum lesen aller justage
     m_offsetCorrection.Deserialize(qds);
 }
 
-quint8 RangeAdjInterface::getAdjustmentStatus()
+quint8 RangeAdjInterface::getAdjustmentStatus80Mask()
 {
     return m_gainCorrection.getStatus() & m_phaseCorrection.getStatus() & m_offsetCorrection.getStatus();
 

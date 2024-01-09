@@ -194,5 +194,5 @@ void test_regression_sense_range_mt310s2::checkGetJustData()
 {
     QCOMPARE(m_range->getJustData(), m_justData);
     // 0: Interesting but testing just data is to be done somewhere else
-    QCOMPARE(m_range->getAdjustmentStatus(), 0);
+    QCOMPARE(m_range->getAdjustmentStatus80Mask(), 0);
 }

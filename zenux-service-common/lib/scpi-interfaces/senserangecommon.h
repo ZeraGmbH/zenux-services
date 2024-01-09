@@ -45,7 +45,7 @@ public:
     void setAvail(bool avail); // It is just for Com5003 - do we need this really?
     quint16 getMMask();
 
-    quint8 getAdjustmentStatus();
+    quint8 getAdjustmentStatus80Mask();
     RangeAdjInterface *getJustData();
     void initJustData();
     void computeJustData();
