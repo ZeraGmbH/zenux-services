@@ -29,7 +29,6 @@ class FOutGroupResourceAndInterface;
 class FInGroupResourceAndInterface;
 class ScInGroupResourceAndInterface;
 class HkInGroupResourceAndInterface;
-class AdjustmentEepromContainer;
 class QSocketNotifier;
 class cClampInterface;
 
@@ -86,7 +85,6 @@ private:
     FInGroupResourceAndInterface* m_pFRQInputInterface;
     ScInGroupResourceAndInterface* m_pSCHeadInterface;
     HkInGroupResourceAndInterface* m_hkInInterface;
-    AdjustmentEepromContainer* m_pAdjHandler;
     RMConnection* m_pRMConnection;
     cClampInterface* m_pClampInterface;
     AccumulatorInterface* m_accumulatorInterface;

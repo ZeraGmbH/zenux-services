@@ -18,11 +18,7 @@ MockForSenseInterfaceCom5003::MockForSenseInterfaceCom5003(AtmelPermissionTempla
                                                                permissionQueryHandler);
     setResources(ResourcesList{m_senseInterface.get()});
 
-    // TODO???
-    //m_pAdjHandler->addAdjFlashObject(m_pSenseInterface.get);
-
     // no resources / scpi interfaces from here
-
     m_systemInterface = std::make_unique<Com5003SystemInterface>(this, m_systemInfo.get(), m_senseInterface.get(), permissionQueryHandler);
     setScpiConnections(ScpiConnectionList{m_systemInterface.get()});
 
