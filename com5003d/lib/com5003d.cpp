@@ -57,7 +57,6 @@ cCOM5003dServer::cCOM5003dServer(ServerParams params) :
     m_pSystemInterface = nullptr;
     m_pSenseInterface = nullptr;
     m_pSystemInfo = nullptr;
-    m_pAdjHandler = nullptr;
     m_pRMConnection = nullptr;
 
     m_pInitializationMachine = new QStateMachine(this);
@@ -116,7 +115,6 @@ cCOM5003dServer::~cCOM5003dServer()
     if (m_pSCHeadInterface) delete m_pSCHeadInterface;
     if (m_hkInInterface) delete m_hkInInterface;
     if (m_pSystemInfo) delete m_pSystemInfo;
-    if (m_pAdjHandler) delete m_pAdjHandler;
     if (m_pRMConnection) delete m_pRMConnection;
 }
 
@@ -304,7 +302,6 @@ void cCOM5003dServer::doSetupServer()
 {
     Atmel::getInstance().setPLLChannel(1); // default channel m0 for pll control
     m_pSystemInfo = new cSystemInfo();
-    m_pAdjHandler = new AdjustmentEepromContainer;
 
     setupServer(); // here our scpi interface gets instanciated, we need this for further steps
 
@@ -312,7 +309,7 @@ void cCOM5003dServer::doSetupServer()
     m_pRMConnection = new RMConnection(m_ethSettings.getRMIPadr(), m_ethSettings.getPort(EthSettings::resourcemanager));
 
     scpiConnectionList.append(this); // the server itself has some commands
-    scpiConnectionList.append(m_pStatusInterface = new cStatusInterface(getSCPIInterface(), m_pAdjHandler));
+    scpiConnectionList.append(m_pStatusInterface = new cStatusInterface(getSCPIInterface(), m_pSenseInterface));
     scpiConnectionList.append(m_pSenseInterface = new Com5003SenseInterface(getSCPIInterface(),
                                                                             m_pI2CSettings,
                                                                             m_pRMConnection,
@@ -334,7 +331,6 @@ void cCOM5003dServer::doSetupServer()
     resourceList.append(m_pSCHeadInterface);
     resourceList.append(m_hkInInterface);
 
-    m_pAdjHandler->addAdjFlashObject(m_pSenseInterface);
     m_pSenseInterface->importAdjFlash(); // we read adjustmentdata at least once
 
     initSCPIConnections();

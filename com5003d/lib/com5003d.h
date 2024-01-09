@@ -13,7 +13,6 @@
 #include "foutsettings.h"
 #include "samplingsettings.h"
 #include "atmelwatcherinterface.h"
-#include "adjustmenteepromcontainer.h"
 #include <QTimer>
 
 class QStateMachine;
@@ -38,7 +37,6 @@ public:
     ~cCOM5003dServer();
 
     cSystemInfo* m_pSystemInfo;
-    AdjustmentEepromContainer* m_pAdjHandler;
 
 signals:
     void abortInit();

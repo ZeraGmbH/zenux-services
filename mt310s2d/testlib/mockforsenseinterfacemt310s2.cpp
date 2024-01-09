@@ -17,8 +17,6 @@ MockForSenseInterfaceMt310s2::MockForSenseInterfaceMt310s2(AtmelPermissionTempla
                                                                m_senseSettings.get(),
                                                                m_systemInfo.get(),
                                                                permissionQueryHandler);
-    // TODO???
-    //m_pAdjHandler->addAdjFlashObject(m_pSenseInterface.get);
     m_clampInterface = std::make_unique<cClampInterface>(this,
                                                          m_i2cSettings.get(),
                                                          m_senseSettings.get(),

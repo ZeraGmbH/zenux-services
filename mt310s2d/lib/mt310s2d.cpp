@@ -1,6 +1,5 @@
 #include "mt310s2d.h"
 #include "mt310s2dglobal.h"
-#include "adjustmenteepromcontainer.h"
 #include "rmconnection.h"
 #include "atmelsysctrl.h"
 #include "atmel.h"
@@ -71,7 +70,6 @@ cMT310S2dServer::cMT310S2dServer(ServerParams params) :
     m_pSenseInterface = nullptr;
     m_pClampInterface = nullptr;
     m_pSystemInfo = nullptr;
-    m_pAdjHandler = nullptr;
     m_pRMConnection = nullptr;
     m_accumulatorInterface = nullptr;
 
@@ -131,7 +129,6 @@ cMT310S2dServer::~cMT310S2dServer()
     if (m_pSCHeadInterface) delete m_pSCHeadInterface;
     if (m_hkInInterface) delete m_hkInInterface;
     if (m_pSystemInfo) delete m_pSystemInfo;
-    if (m_pAdjHandler) delete m_pAdjHandler;
     if (m_pRMConnection) delete m_pRMConnection;
     if (m_accumulatorInterface) delete m_accumulatorInterface;
 }
@@ -220,12 +217,11 @@ void cMT310S2dServer::doSetupServer()
         {
             Atmel::getInstance().setPLLChannel(1); // default channel m0 for pll control
             m_pSystemInfo = new Mt310s2SystemInfo(m_systemController);
-            m_pAdjHandler = new AdjustmentEepromContainer;
 
             setupServer(); // here our scpi interface gets instanciated, we need this for further steps
 
             scpiConnectionList.append(this); // the server itself has some commands
-            scpiConnectionList.append(m_pStatusInterface = new cStatusInterface(getSCPIInterface(), m_pAdjHandler));
+            scpiConnectionList.append(m_pStatusInterface = new cStatusInterface(getSCPIInterface(), m_pSenseInterface));
             HotPluggableControllerContainerPtr emobControllerContainer =
                     std::make_unique<HotPluggableControllerContainer>(m_pI2CSettings->getDeviceNode(),
                                                                       m_pI2CSettings->getI2CAdress(i2cSettings::emobCtrlI2cAddress),
@@ -263,7 +259,6 @@ void cMT310S2dServer::doSetupServer()
             resourceList.append(m_hkInInterface);
 
 
-            m_pAdjHandler->addAdjFlashObject(m_pSenseInterface);
             m_pSenseInterface->importAdjFlash(); // we read adjustmentdata at least once
 
             initSCPIConnections();
