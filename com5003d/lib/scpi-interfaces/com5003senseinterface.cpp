@@ -1,4 +1,6 @@
 #include "com5003senseinterface.h"
+#include "adjeepromtools.h"
+#include "com5003dglobal.h"
 #include "rangeadjinterface.h"
 #include "scpiconnection.h"
 #include "resource.h"
@@ -9,6 +11,7 @@
 #include "protonetcommand.h"
 #include "atmel.h"
 #include "sensesettings.h"
+#include <i2cmultiplexerfactory.h>
 #include <xmlsettings.h>
 #include "zscpi_response_definitions.h"
 #include <QList>
@@ -19,15 +22,23 @@
 #include <QDebug>
 
 Com5003SenseInterface::Com5003SenseInterface(cSCPI *scpiInterface,
+                                             cI2CSettings *i2cSettings,
                                              RMConnection* rmConnection,
                                              EthSettings *ethSettings,
-                                             cSenseSettings *senseSettings,
+                                             cSenseSettings *senseSettings, cSystemInfo *systemInfo,
                                              AtmelPermissionTemplate *permissionQueryHandler) :
     cResource(scpiInterface),
+    AdjustmentEeprom(i2cSettings->getDeviceNode(),
+                     i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress),
+                     I2cMultiplexerFactory::createNullMuxer()),
     m_rmConnection(rmConnection),
     m_ethSettings(ethSettings),
+    m_systemInfo(systemInfo),
     m_permissionQueryHandler(permissionQueryHandler)
 {
+    // Init with bad defaults so coder's bugs pop up
+    m_nSerialStatus = Adjustment::wrongSNR;
+
     m_nMMode = SenseSystem::modeAC; // default ac measurement
     Atmel::getInstance().setMeasMode(m_nMMode); // set the atmels mode too
     setNotifierSenseMMode();
@@ -164,11 +175,23 @@ Com5003SenseChannel *Com5003SenseInterface::getChannel(QString &name)
 
 quint8 Com5003SenseInterface::getAdjustmentStatus()
 {
-    quint8 adj = 255;
-    for (int i = 0; i < m_ChannelList.count(); i++)
-        adj &= m_ChannelList.at(i)->getAdjustmentStatus();
-
-    return adj;
+    quint8 adjustmentStatusMask = Adjustment::adjusted;
+    // Loop adjustment state for all channels
+    for(auto channel : qAsConst(m_ChannelList)) {
+        quint8 channelFlags = channel->getAdjustmentStatus();
+        // Currently there is one flag in channel flags only
+        if((channelFlags & JustDataInterface::Justified)== 0) {
+            adjustmentStatusMask = Adjustment::notAdjusted;
+            break;
+        }
+    }
+    // if we read wrong serial or version we are not adjusted in any case
+    quint8 sernoVersionStatusMask = m_nSerialStatus;
+    if (sernoVersionStatusMask != 0) {
+        adjustmentStatusMask = Adjustment::notAdjusted;
+        adjustmentStatusMask |= sernoVersionStatusMask;
+    }
+    return adjustmentStatusMask;
 }
 
 
@@ -213,173 +236,205 @@ void Com5003SenseInterface::executeProtoScpi(int cmdCode, cProtonetCommand *prot
         break;
         break;
     }
-
-
 }
 
 
-bool Com5003SenseInterface::importAdjData(QString &s, QDataStream &stream)
+bool Com5003SenseInterface::importAdjData(QDataStream &stream)
 {
-    QStringList spec;
-    spec = s.split(':');
-    if (spec.at(0) == "SENSE" )
-    {
-        Com5003SenseChannel* chn;
-        QString s = spec.at(1);
-        if ((chn = getChannel(s)) != 0)
-        {
-            Com5003SenseRange* rng;
-            s = spec.at(2);
-            if ((rng = chn->getRange(s)) != 0)
-            {
-                rng->getJustData()->Deserialize(stream);
-                return true;
+    char flashdata[200];
+    char* s = flashdata;
+
+    stream.skipRawData(6); // we don't need count and chksum
+    stream >> s;
+    if (QString(s) != "ServerVersion") {
+        qCritical("Flashmemory read: ServerVersion not found");
+        return false; // unexpected data
+    }
+
+    stream >> s;
+    QString SVersion = QString(s);
+    stream >> s; // we take the device name
+
+    QString sysDevName = m_systemInfo->getDeviceName();
+    if (QString(s) != sysDevName) {
+        qCritical("Flashmemory read: Wrong pcb name: flash %s / µC %s",
+                  s, qPrintable(sysDevName));
+        return false; // wrong pcb name
+    }
+
+    stream >> s; // we take the device version now
+
+    bool enable = false;
+    m_permissionQueryHandler->hasPermission(enable);
+
+    stream >> s; // we take the serial number now
+    QString sysSerNo = m_systemInfo->getSerialNumber();
+    if (QString(s) != sysSerNo) {
+        qCritical("Flashmemory read, contains wrong serialnumber: flash %s / µC: %s",
+                  s, qPrintable(sysSerNo));
+        m_nSerialStatus |= Adjustment::wrongSNR;
+        if (!enable) {
+            return false; // wrong serial number
+        }
+    }
+    else {
+        m_nSerialStatus = 0; // ok
+    }
+
+    stream >> s;
+    QDateTime DateTime = QDateTime::fromString(QString(s),Qt::TextDate); // datum und uhrzeit übernehmen
+    while (!stream.atEnd()) {
+        bool done;
+        stream >> s;
+        QString  JDataSpecs = s; // Type:Channel:Range
+
+        QStringList spec;
+        spec = JDataSpecs.split(':');
+
+        done = false;
+        if (spec.at(0) == "SENSE" ) {
+            Com5003SenseChannel* chn;
+            QString s = spec.at(1);
+            if ((chn = getChannel(s)) != nullptr) {
+                s = spec.at(2);
+                Com5003SenseRange* rng = chn->getRange(s);
+                if (rng != nullptr) {
+                    rng->getJustData()->Deserialize(stream);
+                    done = true;
+                }
             }
         }
-
-        RangeAdjInterface dummy(m_pSCPIInterface, AdjustScpiValueFormatterFactory::createCom5003AdjFormatter()); // if the data was for SENSE but we didn't find channel or range
-        dummy.Deserialize(stream); // we read the data from stream to keep it in flow
-        return true;
+        if (!done) {
+            RangeAdjInterface* dummy; // if we could not find the owner of that data
+            dummy = createJustScpiInterfaceWithAtmelPermission();
+            dummy->Deserialize(stream); // we read the data from stream to keep it in flow
+            delete dummy;
+        }
     }
-    else
-        return false;
+    return (true);
+}
+
+QString Com5003SenseInterface::exportXMLString(int indent)
+{
+    QDomDocument justqdom(QString("%1AdjustmentData").arg(LeiterkartenName));
+
+    QDomElement pcbtag = justqdom.createElement("PCB");
+    justqdom.appendChild( pcbtag );
+
+    QDomElement tag = justqdom.createElement( "Type" );
+    pcbtag.appendChild( tag );
+    QDomText t = justqdom.createTextNode(LeiterkartenName);
+    tag.appendChild( t );
+
+    tag = justqdom.createElement("VersionNumber");
+    pcbtag.appendChild( tag );
+    t = justqdom.createTextNode(m_systemInfo->getDeviceVersion() );
+    tag.appendChild( t );
+
+    tag = justqdom.createElement("SerialNumber");
+    pcbtag.appendChild( tag );
+    t = justqdom.createTextNode(m_systemInfo->getSerialNumber());
+    tag.appendChild( t );
+
+    tag = justqdom.createElement("Date");
+    pcbtag.appendChild( tag );
+    QDateTime currDateTime = QDateTime::currentDateTime();
+    QDate d = currDateTime.date();
+    t = justqdom.createTextNode(d.toString(Qt::TextDate));
+    tag.appendChild( t );
+
+    tag = justqdom.createElement("Time");
+    pcbtag.appendChild( tag );
+    QTime ti = currDateTime.time();
+    t = justqdom.createTextNode(ti.toString(Qt::TextDate));
+    tag.appendChild( t );
+
+    QDomElement adjtag = justqdom.createElement("Adjustment");
+    pcbtag.appendChild( adjtag );
+
+    QDomElement chksumtag = justqdom.createElement("Chksum");
+    adjtag.appendChild(chksumtag);
+    t = justqdom.createTextNode(QString("0x%1").arg(getChecksum(), 0, 16));
+    chksumtag.appendChild(t);
+
+    QDomElement typeTag = justqdom.createElement("Sense");
+    adjtag.appendChild(typeTag);
+
+    for(auto channel : qAsConst(m_ChannelList)) {
+        QDomText t;
+        QDomElement chtag = justqdom.createElement("Channel");
+        typeTag.appendChild( chtag );
+        QDomElement nametag = justqdom.createElement("Name");
+        chtag.appendChild(nametag);
+        t = justqdom.createTextNode(channel->getName());
+        nametag.appendChild( t );
+
+        for(auto range : qAsConst(channel->getRangeList())) {
+            // This was stolen from MT and that just stores direct ranges (no clamp ranges)
+            // Once COM supports clamps, we have to revisit
+            if (true) {
+                QDomElement rtag = justqdom.createElement("Range");
+                chtag.appendChild( rtag );
+
+                nametag = justqdom.createElement("Name");
+                rtag.appendChild(nametag);
+
+                t = justqdom.createTextNode(range->getName());
+                nametag.appendChild( t );
+
+                QDomElement gpotag;
+                const QStringList listAdjTypes = QStringList() << "Gain" << "Phase" << "Offset";
+                for(const auto &adjType : listAdjTypes) {
+                    gpotag = justqdom.createElement(adjType);
+                    rtag.appendChild(gpotag);
+                    JustDataInterface* adjDataInterface = range->getJustData()->getAdjInterface(adjType);
+                    QDomElement tag = justqdom.createElement("Status");
+                    QString jdata = adjDataInterface->SerializeStatus();
+                    t = justqdom.createTextNode(jdata);
+                    gpotag.appendChild(tag);
+                    tag.appendChild(t);
+                    tag = justqdom.createElement("Coefficients");
+                    gpotag.appendChild(tag);
+                    jdata = adjDataInterface->SerializeCoefficients();
+                    t = justqdom.createTextNode(jdata);
+                    tag.appendChild(t);
+                    tag = justqdom.createElement("Nodes");
+                    gpotag.appendChild(tag);
+                    jdata = adjDataInterface->SerializeNodes();
+                    t = justqdom.createTextNode(jdata);
+                    tag.appendChild(t);
+                }
+            }
+        }
+    }
+    return justqdom.toString(indent);
 }
 
 
 void Com5003SenseInterface::exportAdjData(QDataStream &stream, QDateTime dateTimeWrite)
 {
-    Q_UNUSED(dateTimeWrite)
-    for (int i = 0; i < m_ChannelList.count(); i++)
-    {
-        QList<Com5003SenseRange*> list = m_ChannelList.at(i)->getRangeList();
-        QString spec;
+    // ab version v1.02
+    stream << "ServerVersion";
+    stream << ServerVersion;
+    stream << m_systemInfo->getDeviceName().toStdString().c_str(); // leiterkarten name aus atmel gelesen
+    stream << m_systemInfo->getDeviceVersion().toStdString().c_str(); // geräte name versionsnummern ...
+    stream << m_systemInfo->getSerialNumber().toStdString().c_str(); // seriennummer
+    stream << dateTimeWrite.toString(Qt::TextDate).toStdString().c_str(); // datum,uhrzeit
+    for(auto channel : qAsConst(m_ChannelList)) {
+        for(auto range : channel->getRangeList()) {
+            // This was stolen from MT and that just stores direct ranges (no clamp ranges)
+            // Once COM supports clamps, we have to revisit
+            if (true) {
+                QString spec = QString("%1:%2:%3")
+                                   .arg("SENSE")
+                                   .arg(channel->getName())
+                                   .arg(range->getName());
 
-        for (int j = 0; j < list.count(); j ++)
-        {
-             spec = QString("%1:%2:%3")
-                 .arg("SENSE")
-                 .arg(m_ChannelList.at(i)->getName())
-                 .arg(list.at(j)->getName());
-
-             stream << spec.toLatin1();
-             list.at(j)->getJustData()->Serialize(stream);
-        }
-    }
-}
-
-
-void Com5003SenseInterface::exportAdjDataXml(QDomDocument& doc, QDomElement& adjtag)
-{
-    QDomElement typeTag = doc.createElement("Sense");
-    adjtag.appendChild(typeTag);
-    for (int i = 0; i < m_ChannelList.count(); i ++) {
-        QDomText t;
-        QDomElement chtag = doc.createElement("Channel");
-        typeTag.appendChild( chtag );
-        QDomElement nametag = doc.createElement("Name");
-        chtag.appendChild(nametag);
-        t = doc.createTextNode(m_ChannelList.at(i)->getName());
-        nametag.appendChild( t );
-
-        QList<Com5003SenseRange*> list = m_ChannelList.at(i)->getRangeList();
-        for (int j = 0; j < list.count(); j++) {
-            Com5003SenseRange* rng = list.at(j);
-
-            QDomElement rtag = doc.createElement("Range");
-            chtag.appendChild(rtag);
-
-            nametag = doc.createElement("Name");
-            rtag.appendChild(nametag);
-
-            t = doc.createTextNode(list.at(j)->getName());
-            nametag.appendChild( t );
-
-            QDomElement gpotag;
-            const QStringList listAdjTypes = QStringList() << "Gain" << "Phase" << "Offset";
-            for(const auto &adjType : listAdjTypes) {
-                gpotag = doc.createElement(adjType);
-                rtag.appendChild(gpotag);
-                JustDataInterface* adjDataInterface = rng->getJustData()->getAdjInterface(adjType);
-                QDomElement tag = doc.createElement("Status");
-                QString jdata = adjDataInterface->SerializeStatus();
-                t = doc.createTextNode(jdata);
-                gpotag.appendChild(tag);
-                tag.appendChild(t);
-                tag = doc.createElement("Coefficients");
-                gpotag.appendChild(tag);
-                jdata = adjDataInterface->SerializeCoefficients();
-                t = doc.createTextNode(jdata);
-                tag.appendChild(t);
-                tag = doc.createElement("Nodes");
-                gpotag.appendChild(tag);
-                jdata = adjDataInterface->SerializeNodes();
-                t = doc.createTextNode(jdata);
-                tag.appendChild(t);
+                stream << spec.toLatin1();
+                range->getJustData()->Serialize(stream);
             }
         }
     }
-}
-
-
-bool Com5003SenseInterface::importAdjDataXml(QDomNode& node) // n steht auf einem element dessen tagname channel ist
-{
-    if (node.toElement().tagName() != "Sense") // data not for us
-        return false;
-
-    QDomNodeList nl=node.childNodes(); // we have a list our channels entries now
-
-    for (qint32 i = 0; i < nl.length(); i++) {
-        QDomNode chnNode = nl.item(i); // we iterate over all channels from xml file
-
-        QDomNodeList adjChildNl = chnNode.childNodes();
-        Com5003SenseChannel* chnPtr = nullptr;
-        Com5003SenseRange* rngPtr = nullptr;
-        for (qint32 j = 0; j < adjChildNl.length(); j++) {
-            QString Name;
-            QDomNode ChannelJustNode = adjChildNl.item(j);
-            QDomElement e = ChannelJustNode.toElement();
-            QString tName=e.tagName();
-            if (tName == "Name") {
-                Name = e.text();
-                chnPtr = getChannel(Name);
-            }
-            if (tName == "Range") {
-                if (chnPtr != 0) { // if we know this channel
-                    QDomNodeList chnJustNl = ChannelJustNode.childNodes();
-                    for (qint32 k = 0; k < chnJustNl.length(); k++) {
-                        QDomNode RangeJustNode = chnJustNl.item(k);
-                        e = RangeJustNode.toElement();
-                        tName = e.tagName();
-                        if (tName == "Name") {
-                            Name = e.text();
-                            rngPtr = chnPtr->getRange(Name);
-                        }
-                        JustDataInterface* pJustData = nullptr;
-                        if (rngPtr != nullptr)
-                            pJustData = rngPtr->getJustData()->getAdjInterface(tName);
-                        if (pJustData) {
-                            QDomNodeList jdataNl = RangeJustNode.childNodes();
-                            for (qint32 k = 0; k < jdataNl.count(); k++) {
-                                QDomNode jTypeNode = jdataNl.item(k);
-                                QString jTypeName = jTypeNode.toElement().tagName();
-                                QString jdata = jTypeNode.toElement().text();
-                                if (jTypeName == "Status")
-                                    pJustData->DeserializeStatus(jdata);
-
-                                if (jTypeName == "Coefficients")
-                                    pJustData->DeserializeCoefficients(jdata);
-
-                                if (jTypeName == "Nodes")
-                                    pJustData->DeserializeNodes(jdata);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    return true;
 }
 
 
@@ -409,6 +464,135 @@ void Com5003SenseInterface::computeSenseAdjData()
         channel->computeJustData();
     }
 }
+
+bool Com5003SenseInterface::importXMLDocument(QDomDocument *qdomdoc)
+{
+    QDateTime DateTime; // useless - TBD
+    QDomDocumentType TheDocType = qdomdoc->doctype ();
+    if  (TheDocType.name() != QString("%1AdjustmentData").arg(LeiterkartenName)) {
+        qCritical("Justdata import, wrong xml documentype");
+        return false;
+    }
+
+    QDomElement rootElem = qdomdoc->documentElement();
+    QDomNodeList nl = rootElem.childNodes();
+    bool TypeOK = false;
+    bool VersionNrOK = false;
+    bool SerialNrOK = false;
+    bool DateOK = false;
+    bool TimeOK = false;
+    bool ChksumOK = false;
+    bool SenseOK = false;
+    for (int i = 0; i < nl.length() ; i++) {
+        QDomNode qdNode = nl.item(i);
+        QDomElement qdElem = qdNode.toElement();
+        if ( qdElem.isNull() ) {
+            qCritical("Justdata import: Format error in xml file");
+            return false;
+        }
+        QString tName = qdElem.tagName();
+        if (tName == "Type") {
+            if ( !(TypeOK = (qdElem.text() == QString(LeiterkartenName)))) {
+                qCritical("Justdata import: Wrong type information");
+                return false;
+            }
+        }
+        else if (tName == "SerialNumber") {
+            if (  !(SerialNrOK = (qdElem.text() == m_systemInfo->getSerialNumber() )) ) {
+                qCritical("Justdata import, Wrong serialnumber");
+                return false;
+            }
+        }
+        else if (tName == "VersionNumber") {
+            if ( ! ( VersionNrOK= (qdElem.text() == m_systemInfo->getDeviceVersion()) ) ) {
+                qCritical("Justdata import: Wrong versionnumber");
+                return false;
+            }
+        }
+        else if (tName=="Date") {
+            QDate d = QDate::fromString(qdElem.text(),Qt::TextDate);
+            DateOK = d.isValid();
+        }
+        else if (tName=="Time") {
+            QTime t = QTime::fromString(qdElem.text(),Qt::TextDate);
+            TimeOK = t.isValid();
+        }
+        else if (tName == "Adjustment") {
+            if ( VersionNrOK && SerialNrOK && DateOK && TimeOK && TypeOK) {
+                QDomNodeList adjChildNl = qdElem.childNodes();
+                for (qint32 j = 0; j < adjChildNl.length(); j++) {
+                    qdNode = adjChildNl.item(j);
+                    QString tagName = qdNode.toElement().tagName();
+                    if (tagName == "Chksum") {
+                        ChksumOK = true; // we don't read it actually because if something was changed outside ....
+                    }
+                    else if (qdNode.toElement().tagName() == "Sense") {
+                        SenseOK = true;
+                        QDomNodeList channelNl = qdNode.childNodes(); // we have a list our channels entries now
+                        for (qint32 i = 0; i < channelNl.length(); i++) {
+                            QDomNode chnNode = channelNl.item(i); // we iterate over all channels from xml file
+                            QDomNodeList chnEntryNl = chnNode.childNodes();
+                            Com5003SenseChannel* chnPtr = nullptr;
+                            Com5003SenseRange* rngPtr = nullptr;
+                            for (qint32 j = 0; j < chnEntryNl.length(); j++) {
+                                QString Name;
+                                QDomNode ChannelJustNode = chnEntryNl.item(j);
+                                qdElem = ChannelJustNode.toElement();
+                                QString tName = qdElem.tagName();
+                                if (tName == "Name") {
+                                    Name = qdElem.text();
+                                    chnPtr = getChannel(Name);
+                                }
+                                else if (tName == "Range") {
+                                    if (chnPtr) { // if we know this channel
+                                        QDomNodeList chnJustNl = ChannelJustNode.childNodes();
+                                        for (qint32 k = 0; k < chnJustNl.length(); k++) {
+                                            QDomNode RangeJustNode = chnJustNl.item(k);
+                                            qdElem = RangeJustNode.toElement();
+                                            tName = qdElem.tagName();
+                                            if (tName == "Name") {
+                                                Name = qdElem.text();
+                                                rngPtr = chnPtr->getRange(Name);
+                                            }
+                                            JustDataInterface* pJustData = nullptr;
+                                            if (rngPtr != nullptr)
+                                                pJustData = rngPtr->getJustData()->getAdjInterface(tName);
+                                            if (pJustData) {
+                                                QDomNodeList jdataNl = RangeJustNode.childNodes();
+                                                for (qint32 k = 0; k < jdataNl.count(); k++) {
+                                                    QDomNode jTypeNode = jdataNl.item(k);
+                                                    QString jTypeName = jTypeNode.toElement().tagName();
+                                                    QString jdata = jTypeNode.toElement().text();
+                                                    if (jTypeName == "Status") {
+                                                        pJustData->DeserializeStatus(jdata);
+                                                    }
+                                                    if (jTypeName == "Coefficients") {
+                                                        pJustData->DeserializeCoefficients(jdata);
+                                                    }
+                                                    if (jTypeName == "Nodes") {
+                                                        pJustData->DeserializeNodes(jdata);
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            else {
+                qCritical("Justdata import: xml contains strange data");
+                return false;
+            }
+        }
+        else {
+            qCritical("Justdata import: xmlcontains strange data");
+            return false;
+        }
+    }
+    return ChksumOK && SenseOK;}
 
 
 QString Com5003SenseInterface::scpiReadVersion(QString &sInput)
@@ -549,6 +733,11 @@ QString Com5003SenseInterface::m_ComputeSenseAdjData(QString &sInput)
     }
     else
         return ZSCPI::scpiAnswer[ZSCPI::nak];
+}
+
+RangeAdjInterface *Com5003SenseInterface::createJustScpiInterfaceWithAtmelPermission()
+{
+    return new RangeAdjInterface(m_pSCPIInterface, AdjustScpiValueFormatterFactory::createCom5003AdjFormatter());
 }
 
 void Com5003SenseInterface::setNotifierSenseMMode()

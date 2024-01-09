@@ -1,10 +1,8 @@
 #include "test_regression_adj_import_export_xml_com5003.h"
 #include "proxy.h"
 #include "scpisingletransactionblocked.h"
-#include "zscpi_response_definitions.h"
 #include "xmlhelperfortest.h"
 #include "atmel.h"
-#include "atmelpermissionmock.h"
 #include <timemachineobject.h>
 #include <QSignalSpy>
 #include <QTest>
@@ -24,16 +22,17 @@ void test_regression_adj_import_export_xml_com5003::directAcessExportXml()
 {
     setupServers(&Atmel::getInstance());
 
-    // Date time are empty. On change: see mt310s2 and add XmlHelperForTest::removeTimeDependentEntriesFromXml
-    QString xmlExported = m_mockServer->getAdjustment()->exportXMLString();
-    qInfo("Exported XML:");
+    QString xmlExported = m_mockServer->getSenseInterface()->exportXMLString();
+    qInfo("Exported XML (before adjust):");
     qInfo("%s", qPrintable(xmlExported));
+    xmlExported = XmlHelperForTest::removeTimeDependentEntriesFromXml(xmlExported);
 
     QFile xmlFile(":/export_internal_initial.xml");
     QVERIFY(xmlFile.open(QFile::ReadOnly));
     QString xmlExpected = xmlFile.readAll();
-    qInfo("Expected XML:");
+    qInfo("Expected XML (before adjust):");
     qInfo("%s", qPrintable(xmlExpected));
+    xmlExpected = XmlHelperForTest::removeTimeDependentEntriesFromXml(xmlExpected);
 
     // if this turns fragile we have to use zera-scpi's xml-compare-testlib
     QCOMPARE(xmlExported, xmlExpected);
@@ -45,27 +44,31 @@ void test_regression_adj_import_export_xml_com5003::directAcessFileImportXmlMini
 
     QString filenameShort = ":/import_minimal_pass";
     QVERIFY(QFile::exists(filenameShort + ".xml"));
-    QVERIFY(m_mockServer->getAdjustment()->importAdjXMLFile(filenameShort));
+    QVERIFY(m_mockServer->getSenseInterface()->importAdjXMLFile(filenameShort));
 }
 
 void test_regression_adj_import_export_xml_com5003::directAcessFileImportXmlPseudoRandom()
 {
     setupServers(&Atmel::getInstance());
 
-    QString xmlExportedInitial = m_mockServer->getAdjustment()->exportXMLString();
+    QString xmlExportedInitial = m_mockServer->getSenseInterface()->exportXMLString();
+    xmlExportedInitial = XmlHelperForTest::removeTimeDependentEntriesFromXml(xmlExportedInitial);
     QFile xmlFileInitial(":/export_internal_initial.xml");
     QVERIFY(xmlFileInitial.open(QFile::ReadOnly));
     QString xmlExpected = xmlFileInitial.readAll();
+    xmlExpected = XmlHelperForTest::removeTimeDependentEntriesFromXml(xmlExpected);
     QCOMPARE(xmlExportedInitial, xmlExpected);
 
     QString filenameShort = ":/import_modified";
     QVERIFY(QFile::exists(filenameShort + ".xml"));
-    QVERIFY(m_mockServer->getAdjustment()->importAdjXMLFile(filenameShort));
+    QVERIFY(m_mockServer->getSenseInterface()->importAdjXMLFile(filenameShort));
 
-    QString xmlExportedModified = m_mockServer->getAdjustment()->exportXMLString();
+    QString xmlExportedModified = m_mockServer->getSenseInterface()->exportXMLString();
+    xmlExportedModified = XmlHelperForTest::removeTimeDependentEntriesFromXml(xmlExportedModified);
     QFile xmlFileModified(":/import_modified.xml");
     QVERIFY(xmlFileModified.open(QFile::ReadOnly));
     xmlExpected = xmlFileModified.readAll();
+    xmlExpected = XmlHelperForTest::removeTimeDependentEntriesFromXml(xmlExpected);
     QCOMPARE(xmlExportedModified, xmlExpected);
 }
 
@@ -75,8 +78,7 @@ void test_regression_adj_import_export_xml_com5003::directAcessFileImportMissing
 
     QString filenameShort = ":/import_missing_type";
     QVERIFY(QFile::exists(filenameShort + ".xml"));
-    // Currently there is no type check -> pass
-    QVERIFY(m_mockServer->getAdjustment()->importAdjXMLFile(filenameShort));
+    QVERIFY(!m_mockServer->getSenseInterface()->importAdjXMLFile(filenameShort));
 }
 
 void test_regression_adj_import_export_xml_com5003::directAcessFileImportMissingSerNo()
@@ -85,7 +87,7 @@ void test_regression_adj_import_export_xml_com5003::directAcessFileImportMissing
 
     QString filenameShort = ":/import_missing_serno";
     QVERIFY(QFile::exists(filenameShort + ".xml"));
-    QVERIFY(!m_mockServer->getAdjustment()->importAdjXMLFile(filenameShort));
+    QVERIFY(!m_mockServer->getSenseInterface()->importAdjXMLFile(filenameShort));
 }
 
 void test_regression_adj_import_export_xml_com5003::scpiExportInitialAdjXml()

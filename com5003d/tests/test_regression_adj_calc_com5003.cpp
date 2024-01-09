@@ -3,7 +3,6 @@
 #include "i2cflashiofactoryfortest.h"
 #include "flash24lc256mock.h"
 #include "scpisingletransactionblocked.h"
-#include "zscpi_response_definitions.h"
 #include <timemachineobject.h>
 #include <QSignalSpy>
 #include <QTest>
@@ -19,7 +18,7 @@ void test_regression_adj_calc_com5003::initTestCase()
 
     QString filenameShort = ":/import_internal";
     QVERIFY(QFile::exists(filenameShort + ".xml"));
-    QVERIFY(m_mockServer->getAdjustment()->importAdjXMLFile(filenameShort));
+    QVERIFY(m_mockServer->getSenseInterface()->importAdjXMLFile(filenameShort));
 
     m_valueFormatter = AdjustScpiValueFormatterFactory::createCom5003AdjFormatter();
 }

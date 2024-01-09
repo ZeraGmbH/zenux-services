@@ -16,7 +16,6 @@
 #include "com5003d.h"
 #include "pcbserver.h"
 #include "systeminfo.h"
-#include "com5003adjustment.h"
 #include "rmconnection.h"
 #include "atmel.h"
 #include "atmelctrlfactory.h"
@@ -305,7 +304,7 @@ void cCOM5003dServer::doSetupServer()
 {
     Atmel::getInstance().setPLLChannel(1); // default channel m0 for pll control
     m_pSystemInfo = new cSystemInfo();
-    m_pAdjHandler = new Com5003Adjustment(m_pSystemInfo, m_pI2CSettings->getDeviceNode(), m_pI2CSettings->getI2CAdress(i2cSettings::flashlI2cAddress), &Atmel::getInstance());
+    m_pAdjHandler = new AdjustmentEepromContainer;
 
     setupServer(); // here our scpi interface gets instanciated, we need this for further steps
 
@@ -314,8 +313,14 @@ void cCOM5003dServer::doSetupServer()
 
     scpiConnectionList.append(this); // the server itself has some commands
     scpiConnectionList.append(m_pStatusInterface = new cStatusInterface(getSCPIInterface(), m_pAdjHandler));
-    scpiConnectionList.append(m_pSenseInterface = new Com5003SenseInterface(getSCPIInterface(), m_pRMConnection, &m_ethSettings, m_pSenseSettings, &Atmel::getInstance()));
-    scpiConnectionList.append(m_pSystemInterface = new Com5003SystemInterface(this, m_pSystemInfo, m_pAdjHandler, m_pSenseInterface, &Atmel::getInstance()));
+    scpiConnectionList.append(m_pSenseInterface = new Com5003SenseInterface(getSCPIInterface(),
+                                                                            m_pI2CSettings,
+                                                                            m_pRMConnection,
+                                                                            &m_ethSettings,
+                                                                            m_pSenseSettings,
+                                                                            m_pSystemInfo,
+                                                                            &Atmel::getInstance()));
+    scpiConnectionList.append(m_pSystemInterface = new Com5003SystemInterface(this, m_pSystemInfo, m_pSenseInterface, &Atmel::getInstance()));
     scpiConnectionList.append(m_pSamplingInterface = new cSamplingInterface(getSCPIInterface(), m_pSamplingSettings));
     scpiConnectionList.append(m_foutInterface = new FOutGroupResourceAndInterface(getSCPIInterface(), m_foutSettings));
     scpiConnectionList.append(m_pFRQInputInterface = new FInGroupResourceAndInterface(getSCPIInterface(), m_finSettings));
@@ -329,9 +334,8 @@ void cCOM5003dServer::doSetupServer()
     resourceList.append(m_pSCHeadInterface);
     resourceList.append(m_hkInInterface);
 
-    m_pAdjHandler->addAdjFlashObject(m_pSenseInterface); // we add the senseinterface to both
-    m_pAdjHandler->addAdjXMLObject(m_pSenseInterface); // adjustment list (flash and xml)
-    m_pAdjHandler->importAdjFlash(); // we read adjustmentdata at least once
+    m_pAdjHandler->addAdjFlashObject(m_pSenseInterface);
+    m_pSenseInterface->importAdjFlash(); // we read adjustmentdata at least once
 
     initSCPIConnections();
 

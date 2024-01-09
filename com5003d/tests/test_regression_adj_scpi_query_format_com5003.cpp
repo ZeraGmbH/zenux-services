@@ -20,7 +20,7 @@ void test_regression_adj_scpi_query_format_com5003::initTestCase()
 
     QString filenameShort = ":/import_scpi_format";
     QVERIFY(QFile::exists(filenameShort + ".xml"));
-    QVERIFY(m_mockServer->getAdjustment()->importAdjXMLFile(filenameShort));
+    QVERIFY(m_mockServer->getSenseInterface()->importAdjXMLFile(filenameShort));
 }
 
 void test_regression_adj_scpi_query_format_com5003::init()
