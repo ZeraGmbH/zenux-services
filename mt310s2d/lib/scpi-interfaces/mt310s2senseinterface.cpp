@@ -4,7 +4,7 @@
 #include "adjeepromtools.h"
 #include "mt310s2sensechannel.h"
 #include "mt310s2senserange.h"
-#include "mt310s2adjflash.h"
+#include "adjustmenteeprom.h"
 #include "protonetcommand.h"
 #include "rangeadjinterface.h"
 #include "scpiconnection.h"
@@ -28,7 +28,7 @@ Mt310s2SenseInterface::Mt310s2SenseInterface(cSCPI *scpiInterface,
                                              cSystemInfo *systemInfo,
                                              AtmelPermissionTemplate *permissionQueryHandler) :
     cResource(scpiInterface),
-    Mt310s2AdjFlash(i2cSettings->getDeviceNode(),
+    AdjustmentEeprom(i2cSettings->getDeviceNode(),
               i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress),
               I2cMultiplexerFactory::createNullMuxer()),
     m_pSystemInfo(systemInfo),

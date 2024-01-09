@@ -1,17 +1,17 @@
-#include "mt310s2adjflash.h"
+#include "adjustmenteeprom.h"
 #include <QBuffer>
 #include <F24LC256.h>
 #include <i2cmuxerscopedonoff.h>
 #include "i2ceepromiofactory.h"
 
-Mt310s2AdjFlash::Mt310s2AdjFlash(QString devnode, quint8 i2cadr, I2cMuxerInterface::Ptr i2cMuxer) :
+AdjustmentEeprom::AdjustmentEeprom(QString devnode, quint8 i2cadr, I2cMuxerInterface::Ptr i2cMuxer) :
     m_sDeviceNode(devnode),
     m_nI2CAdr(i2cadr),
     m_i2cMuxer(i2cMuxer)
 {
 }
 
-bool Mt310s2AdjFlash::exportAdjFlash(QDateTime dateTimeWrite)
+bool AdjustmentEeprom::exportAdjFlash(QDateTime dateTimeWrite)
 {
     bool ret;
     QByteArray ba;
@@ -32,7 +32,7 @@ bool Mt310s2AdjFlash::exportAdjFlash(QDateTime dateTimeWrite)
 }
 
 
-bool Mt310s2AdjFlash::importAdjFlash()
+bool AdjustmentEeprom::importAdjFlash()
 {
     I2cMuxerScopedOnOff i2cMuxOnOff(m_i2cMuxer);
     QByteArray ba;
@@ -44,7 +44,7 @@ bool Mt310s2AdjFlash::importAdjFlash()
     return false;
 }
 
-bool Mt310s2AdjFlash::resetAdjFlash()
+bool AdjustmentEeprom::resetAdjFlash()
 {
     I2cMuxerScopedOnOff i2cMuxOnOff(m_i2cMuxer);
     I2cFlashInterfacePtrU flashIo = I2cEEpromIoFactory::create24LC256(m_sDeviceNode, m_nI2CAdr);
@@ -52,7 +52,7 @@ bool Mt310s2AdjFlash::resetAdjFlash()
 }
 
 
-void Mt310s2AdjFlash::setAdjCountChecksum(QByteArray &ba)
+void AdjustmentEeprom::setAdjCountChecksum(QByteArray &ba)
 {
     quint32 count;
 
@@ -83,7 +83,7 @@ void Mt310s2AdjFlash::setAdjCountChecksum(QByteArray &ba)
 }
 
 
-bool Mt310s2AdjFlash::writeFlash(QByteArray &ba)
+bool AdjustmentEeprom::writeFlash(QByteArray &ba)
 {
     int count = ba.size();
     I2cFlashInterfacePtrU flashIo = I2cEEpromIoFactory::create24LC256(m_sDeviceNode, m_nI2CAdr);
@@ -95,17 +95,17 @@ bool Mt310s2AdjFlash::writeFlash(QByteArray &ba)
     return true;
 }
 
-quint16 Mt310s2AdjFlash::getChecksum()
+quint16 AdjustmentEeprom::getChecksum()
 {
     return m_nChecksum;
 }
 
-I2cMuxerInterface::Ptr Mt310s2AdjFlash::getI2cMuxer()
+I2cMuxerInterface::Ptr AdjustmentEeprom::getI2cMuxer()
 {
     return m_i2cMuxer;
 }
 
-bool Mt310s2AdjFlash::readFlash(QByteArray &ba)
+bool AdjustmentEeprom::readFlash(QByteArray &ba)
 {
     // first we try to read 6 bytes hold length (quint32) and checksum (quint16)
     const int headerLen = 6;
