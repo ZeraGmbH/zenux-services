@@ -3,7 +3,6 @@
 
 #include "com5003senseinterface.h"
 #include "scpiconnection.h"
-#include "com5003adjustment.h"
 #include "pcbserver.h"
 #include "atmelpermissiontemplate.h"
 #include <QList>
@@ -36,7 +35,6 @@ class Com5003SystemInterface: public ScpiConnection
 public:
     Com5003SystemInterface(cPCBServer* server,
                            cSystemInfo* sytemInfo,
-                           Com5003Adjustment* adjustment,
                            Com5003SenseInterface *senseInterface,
                            AtmelPermissionTemplate *permissionQueryHandler);
     virtual void initSCPIConnection(QString leadingNodes) override;
@@ -67,7 +65,6 @@ private:
 
     cPCBServer* m_pMyServer;
     cSystemInfo* m_sytemInfo;
-    Com5003Adjustment* m_adjustment;
     Com5003SenseInterface *m_senseInterface;
     AtmelPermissionTemplate *m_permissionQueryHandler;
     NotificationString m_allCtrlVersion;

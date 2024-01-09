@@ -346,8 +346,7 @@ void Mt310s2SenseInterface::exportAdjData(QDataStream &stream, QDateTime dateTim
     stream << dateTimeWrite.toString(Qt::TextDate).toStdString().c_str(); // datum,uhrzeit
     for(auto channel : qAsConst(m_ChannelList)) {
         for(auto range : channel->getRangeList()) {
-            if ((range->getMMask() & SenseSystem::Direct)> 0)
-            {
+            if ((range->getMMask() & SenseSystem::Direct)> 0) {
                 QString spec = QString("%1:%2:%3")
                      .arg("SENSE")
                      .arg(channel->getName())

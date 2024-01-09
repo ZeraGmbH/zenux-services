@@ -38,12 +38,12 @@ void test_regression_adj_import_export_eeprom_com5003::cleanup()
 void test_regression_adj_import_export_eeprom_com5003::directExportFlashNoMock()
 {
     I2cFlashIoFactoryForTest::disableMockFlash();
-    QVERIFY(!m_mockServer->getAdjustment()->exportAdjFlash(refTime));
+    QVERIFY(!m_mockServer->getSenseInterface()->exportAdjFlash(refTime));
 }
 
 void test_regression_adj_import_export_eeprom_com5003::directExportFlashGen()
 {
-    QVERIFY(m_mockServer->getAdjustment()->exportAdjFlash(refTime));
+    QVERIFY(m_mockServer->getSenseInterface()->exportAdjFlash(refTime));
     cI2CSettings *i2cSettings = m_mockServer->getI2cSettings();
     QByteArray dataWritten = Flash24LC256Mock::getData(i2cSettings->getDeviceNode(),
                                                        i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress));
@@ -53,7 +53,7 @@ void test_regression_adj_import_export_eeprom_com5003::directExportFlashGen()
 
 void test_regression_adj_import_export_eeprom_com5003::directExportFlashCheckReference()
 {
-    QVERIFY(m_mockServer->getAdjustment()->exportAdjFlash(refTime));
+    QVERIFY(m_mockServer->getSenseInterface()->exportAdjFlash(refTime));
     cI2CSettings *i2cSettings = m_mockServer->getI2cSettings();
     QByteArray dataWritten = Flash24LC256Mock::getData(i2cSettings->getDeviceNode(),
                                                        i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress));
@@ -75,7 +75,7 @@ void test_regression_adj_import_export_eeprom_com5003::scpiWriteFlashInitial()
     QCOMPARE(Flash24LC256Mock::getWriteCount(devNode, i2cAddress), 1);
 
     // and do a second write with known time
-    QVERIFY(m_mockServer->getAdjustment()->exportAdjFlash(refTime));
+    QVERIFY(m_mockServer->getSenseInterface()->exportAdjFlash(refTime));
     QCOMPARE(Flash24LC256Mock::getWriteCount(devNode, i2cAddress), 2);
     QByteArray dataWritten = Flash24LC256Mock::getData(devNode, i2cAddress);
     QByteArray dataReference = readFile(":/export_internal_initial.eeprom");
@@ -121,11 +121,35 @@ void test_regression_adj_import_export_eeprom_com5003::scpiWriteRandomFileFlashW
     QCOMPARE(xmlExported, xmlExpected);
 }
 
-void test_regression_adj_import_export_eeprom_com5003::loadRandomToEEpromWriteToFlashExportXmlAndCheck()
+void test_regression_adj_import_export_eeprom_com5003::loadOriginalInvalidDateTimeRandomToEEpromWriteToFlashExportXmlAndCheck()
 {
     cI2CSettings *i2cSettings = m_mockServer->getI2cSettings();
     Flash24LC256Mock flashMock(i2cSettings->getDeviceNode(), i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress));
     QByteArray eepromContent = readFile(":/export_internal_modified.eeprom");
+    QVERIFY(!eepromContent.isEmpty());
+    flashMock.WriteData(eepromContent.data(), eepromContent.length(), 0);
+
+    QString ret = ScpiSingleTransactionBlocked::cmd("SYSTEM:ADJUSTMENT:FLASH:READ", "");
+    QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::ack]);
+
+    QString xmlExported = XmlHelperForTest::prepareForCompare(ScpiSingleTransactionBlocked::query("SYSTEM:ADJUSTMENT:XML?"));
+
+    QFile xmlFile(":/import_modified.xml");
+    QVERIFY(xmlFile.open(QFile::ReadOnly));
+    QString xmlExpected = XmlHelperForTest::prepareForCompare(xmlFile.readAll());
+
+    qInfo("Exported XML:");
+    qInfo("%s", qPrintable(xmlExported));
+    qInfo("Expected XML:");
+    qInfo("%s", qPrintable(xmlExpected));
+    QCOMPARE(xmlExported, xmlExpected);
+}
+
+void test_regression_adj_import_export_eeprom_com5003::loadValidDateTimeRandomToEEpromWriteToFlashExportXmlAndCheck()
+{
+    cI2CSettings *i2cSettings = m_mockServer->getI2cSettings();
+    Flash24LC256Mock flashMock(i2cSettings->getDeviceNode(), i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress));
+    QByteArray eepromContent = readFile(":/export_internal_modified_with_date_time.eeprom");
     QVERIFY(!eepromContent.isEmpty());
     flashMock.WriteData(eepromContent.data(), eepromContent.length(), 0);
 

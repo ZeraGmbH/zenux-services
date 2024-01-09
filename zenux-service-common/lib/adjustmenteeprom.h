@@ -1,5 +1,5 @@
-#ifndef ADJFLASH_H
-#define ADJFLASH_H
+#ifndef ADJUSTMENTEEPROM_H
+#define ADJUSTMENTEEPROM_H
 
 #include "adjustmentstatusinterface.h"
 #include <i2cmuxerinterface.h>
@@ -34,4 +34,4 @@ private:
     I2cMuxerInterface::Ptr m_i2cMuxer;
 };
 
-#endif // ADJFLASH_H
+#endif // ADJUSTMENTEEPROM_H

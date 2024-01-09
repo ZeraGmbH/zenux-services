@@ -13,6 +13,7 @@
 #include "foutsettings.h"
 #include "samplingsettings.h"
 #include "atmelwatcherinterface.h"
+#include "adjustmenteepromcontainer.h"
 #include <QTimer>
 
 class QStateMachine;
@@ -26,7 +27,6 @@ class FInGroupResourceAndInterface;
 class ScInGroupResourceAndInterface;
 class HkInGroupResourceAndInterface;
 class cSystemInfo;
-class Com5003Adjustment;
 
 
 class cCOM5003dServer: public cPCBServer
@@ -38,7 +38,7 @@ public:
     ~cCOM5003dServer();
 
     cSystemInfo* m_pSystemInfo;
-    Com5003Adjustment* m_pAdjHandler;
+    AdjustmentEepromContainer* m_pAdjHandler;
 
 signals:
     void abortInit();

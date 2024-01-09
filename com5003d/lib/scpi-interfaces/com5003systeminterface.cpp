@@ -9,13 +9,11 @@
 
 Com5003SystemInterface::Com5003SystemInterface(cPCBServer *server,
                                                cSystemInfo *sytemInfo,
-                                               Com5003Adjustment* adjustment,
                                                Com5003SenseInterface *senseInterface,
                                                AtmelPermissionTemplate *permissionQueryHandler) :
     ScpiConnection(server->getSCPIInterface()),
     m_pMyServer(server),
     m_sytemInfo(sytemInfo),
-    m_adjustment(adjustment),
     m_senseInterface(senseInterface),
     m_permissionQueryHandler(permissionQueryHandler)
 {
@@ -249,7 +247,7 @@ QString Com5003SystemInterface::m_AdjFlashWrite(QString &sInput)
         {
             if (enable)
             {
-                if (m_adjustment->exportAdjFlash(QDateTime::currentDateTime()))
+                if (m_senseInterface->exportAdjFlash(QDateTime::currentDateTime()))
                     ret = ZeraMControllerIo::cmddone;
                 else
                     ret = ZeraMControllerIo::cmdexecfault;
@@ -272,7 +270,7 @@ QString Com5003SystemInterface::m_AdjFlashRead(QString &sInput)
 
     if (cmd.isCommand(1) && (cmd.getParam(0) == ""))
     {
-        if (m_adjustment->importAdjFlash())
+        if (m_senseInterface->importAdjFlash())
             ret = ZeraMControllerIo::cmddone;
         else
             ret = ZeraMControllerIo::cmdexecfault;
@@ -286,7 +284,7 @@ QString Com5003SystemInterface::m_AdjXmlImportExport(QString &sInput)
     QString s;
     cSCPICommand cmd = sInput;
     if (cmd.isQuery()) {
-        s = m_adjustment->exportXMLString(-1);
+        s = m_senseInterface->exportXMLString(-1);
         s.replace("\n", "");
     }
     else {
@@ -294,11 +292,11 @@ QString Com5003SystemInterface::m_AdjXmlImportExport(QString &sInput)
         if (m_permissionQueryHandler->hasPermission(enable)) {
             if (enable) {
                 QString XML = cmd.getParam();
-                if (!m_adjustment->importAdjXMLString(XML))
+                if (!m_senseInterface->importAdjXMLString(XML))
                     s = ZSCPI::scpiAnswer[ZSCPI::errxml];
                 else {
                     m_senseInterface->computeSenseAdjData();
-                    if (!m_adjustment->exportAdjFlash(QDateTime::currentDateTime()))
+                    if (!m_senseInterface->exportAdjFlash(QDateTime::currentDateTime()))
                         s = ZSCPI::scpiAnswer[ZSCPI::errexec];
                     else
                         s = ZSCPI::scpiAnswer[ZSCPI::ack];
@@ -323,7 +321,7 @@ QString Com5003SystemInterface::m_AdjXMLWrite(QString &sInput)
     if (cmd.isCommand(1))
     {
         QString filename = cmd.getParam(0);
-        if (m_adjustment->exportAdTojXMLFile(filename))
+        if (m_senseInterface->exportAdTojXMLFile(filename))
             ret = ZeraMControllerIo::cmddone;
         else
             ret = ZeraMControllerIo::cmdexecfault;
@@ -335,18 +333,13 @@ QString Com5003SystemInterface::m_AdjXMLWrite(QString &sInput)
 
 QString Com5003SystemInterface::m_AdjXMLRead(QString &sInput)
 {
-    QString s;
-    int ret = ZeraMControllerIo::cmdfault;
     cSCPICommand cmd = sInput;
-
-    if (cmd.isCommand(1))
-    {
+    if (cmd.isCommand(1)) {
         bool enable = false;
         m_permissionQueryHandler->hasPermission(enable);
-        if (enable)
-        {
+        if (enable) {
             QString filename = cmd.getParam(0);
-            if (m_adjustment->importAdjXMLFile(filename))
+            if (m_senseInterface->importAdjXMLFile(filename))
                 return ZSCPI::scpiAnswer[ZSCPI::ack];
             else
                 return ZSCPI::scpiAnswer[ZSCPI::errexec];
@@ -354,7 +347,6 @@ QString Com5003SystemInterface::m_AdjXMLRead(QString &sInput)
         else
             return ZSCPI::scpiAnswer[ZSCPI::erraut];
     }
-
     return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
@@ -365,7 +357,7 @@ QString Com5003SystemInterface::m_AdjFlashChksum(QString &sInput)
 
     if (cmd.isQuery())
     {
-        QString s = QString("0x%1").arg(m_adjustment->getChecksum(),0,16); // hex output
+        QString s = QString("0x%1").arg(m_senseInterface->getChecksum(),0,16); // hex output
         return s;
     }
     else

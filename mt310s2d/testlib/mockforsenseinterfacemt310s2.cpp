@@ -4,8 +4,6 @@
 MockForSenseInterfaceMt310s2::MockForSenseInterfaceMt310s2(AtmelPermissionTemplate *permissionQueryHandler) :
     MockPcbServer("mt310s2d")
 {
-    // TODO
-    //m_pAdjHandler->addAdjFlashObject(m_pSenseInterface);
 
     m_i2cSettings = std::make_unique<cI2CSettings>(getConfigReader());
     m_senseSettings = std::make_unique<cSenseSettings>(getConfigReader(), 8);
@@ -19,6 +17,8 @@ MockForSenseInterfaceMt310s2::MockForSenseInterfaceMt310s2(AtmelPermissionTempla
                                                                m_senseSettings.get(),
                                                                m_systemInfo.get(),
                                                                permissionQueryHandler);
+    // TODO???
+    //m_pAdjHandler->addAdjFlashObject(m_pSenseInterface.get);
     m_clampInterface = std::make_unique<cClampInterface>(this,
                                                          m_i2cSettings.get(),
                                                          m_senseSettings.get(),

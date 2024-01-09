@@ -22,7 +22,10 @@ private slots:
 
     void scpiWriteRandomFileAndFlashGen();
     void scpiWriteRandomFileFlashWriteFlashReadExportXmlAndCheck();
-    void loadRandomToEEpromWriteToFlashExportXmlAndCheck();
+
+    // initial version saved invalid date time (up to ZENUX 4.4.3)
+    void loadOriginalInvalidDateTimeRandomToEEpromWriteToFlashExportXmlAndCheck();
+    void loadValidDateTimeRandomToEEpromWriteToFlashExportXmlAndCheck();
 
 private:
     void setupServers(AtmelPermissionTemplate *permissionQueryHandler);
