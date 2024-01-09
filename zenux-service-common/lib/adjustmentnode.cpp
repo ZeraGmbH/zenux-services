@@ -1,28 +1,23 @@
+#include "adjustmentnode.h"
 #include <QDataStream>
 #include <QString>
 
-#include "justnode.h"
-
-
-cJustNode::cJustNode(double corr, double arg)
+AdjustmentNode::AdjustmentNode(double corr, double arg)
     :m_fCorrection(corr),m_fArgument(arg)
 {
 }
 
-
-void cJustNode::Serialize(QDataStream& qds)
+void AdjustmentNode::Serialize(QDataStream& qds)
 {
     qds << m_fCorrection << m_fArgument;
 }
 
-
-void cJustNode::Deserialize(QDataStream& qds)
+void AdjustmentNode::Deserialize(QDataStream& qds)
 {
     qds >> m_fCorrection >> m_fArgument;
 }
 
-
-QString cJustNode::Serialize(int digits)
+QString AdjustmentNode::Serialize(int digits)
 {
     QString s;
     s = QString("%1;%2;").arg(m_fCorrection,0,'f',digits)
@@ -30,41 +25,35 @@ QString cJustNode::Serialize(int digits)
     return s;
 }
 
-
-void cJustNode::Deserialize(const QString& s)
+void AdjustmentNode::Deserialize(const QString& s)
 {
     m_fCorrection = s.section( ';',0,0).toDouble();
     m_fArgument = s.section( ';',1,1).toDouble();
 }
 
-
-cJustNode& cJustNode::operator = (const cJustNode& jn)
+AdjustmentNode& AdjustmentNode::operator = (const AdjustmentNode& jn)
 {
     m_fCorrection = jn.m_fCorrection;
     m_fArgument = jn.m_fArgument;
     return (*this);
 }
 
-
-void cJustNode::setCorrection(double value)
+void AdjustmentNode::setCorrection(double value)
 {
     m_fCorrection = value;
 }
 
-double cJustNode::getCorrection()
+double AdjustmentNode::getCorrection()
 {
     return m_fCorrection;
 }
 
-
-void cJustNode::setArgument(double value)
+void AdjustmentNode::setArgument(double value)
 {
    m_fArgument = value;
 }
 
-
-double cJustNode::getArgument()
+double AdjustmentNode::getArgument()
 {
     return m_fArgument;
 }
-

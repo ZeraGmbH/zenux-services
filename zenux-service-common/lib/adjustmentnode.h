@@ -1,5 +1,5 @@
-#ifndef JUSTNODE_H
-#define JUSTNODE_H
+#ifndef ADJUTMENTNODE_H
+#define ADJUTMENTNODE_H
 
 #include <QDataStream>
 #include <QString>
@@ -7,16 +7,16 @@
 // an adjustmentnode (datapoint) consists of the data point's value and the data point's argument
 // it can serialize and deserialize itself to a qdatastream
 
-class cJustNode { // stützspunkt kann sich serialisieren und besteht aus stützwert (correction) und argument
+class AdjustmentNode { // stützspunkt kann sich serialisieren und besteht aus stützwert (correction) und argument
 public:
-    cJustNode(double corr, double arg);
-    cJustNode(){};
-    ~cJustNode(){};
+    AdjustmentNode(double corr, double arg);
+    AdjustmentNode(){};
+    ~AdjustmentNode(){};
     void Serialize(QDataStream&);
     void Deserialize(QDataStream&);
     QString Serialize(int digits);
     void Deserialize(const QString&);
-    cJustNode& operator = (const cJustNode&);
+    AdjustmentNode& operator = (const AdjustmentNode&);
     void setCorrection(double value);
     double getCorrection();
     void setArgument(double value);
@@ -27,4 +27,4 @@ private:
     double m_fArgument;
 };
 
-#endif // JUSTNODE_H
+#endif // ADJUTMENTNODE_H

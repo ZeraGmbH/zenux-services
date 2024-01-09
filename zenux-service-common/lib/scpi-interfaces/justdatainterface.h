@@ -2,7 +2,7 @@
 #define JUSTDATAINTERFACE_H
 
 #include "scpiconnection.h"
-#include <justnode.h>
+#include "adjustmentnode.h"
 #include <QDataStream>
 #include <QString>
 
@@ -48,16 +48,16 @@ protected:
 private:
     quint8 m_nStatus;
     double* m_pCoefficient; // size of data depends on order
-    cJustNode* m_pJustNode; // same
+    AdjustmentNode* m_pJustNode; // same
     int m_nOrder; // we notice order
     int m_digits;
 
     QString m_ReadWriteStatus(QString& sInput);
     QString m_ReadWriteJustCoeeficient(QString& sInput, quint8 index);
     QString m_ReadWriteJustNode(QString& sInput, quint8 index);
-
-    bool setNode(int index, cJustNode jn); // !!! setting node sequence is relevant !!!
-    cJustNode* getNode(int index); // can be read back
+    
+    bool setNode(int index, AdjustmentNode jn); // !!! setting node sequence is relevant !!!
+    AdjustmentNode* getNode(int index); // can be read back
     bool setCoefficient(int index, double); // !!! setting coefficient also is sequence relevant !!!
     double getCoefficient(int index);
 };
