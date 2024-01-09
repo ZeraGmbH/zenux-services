@@ -24,7 +24,7 @@ JustDataInterface::JustDataInterface(TJustDataParam param) :
     m_digits(param.digits)
 {
     m_pCoefficient = new double[param.order+1];
-    m_pJustNode = new cJustNode[param.order+1];
+    m_pJustNode = new AdjustmentNode[param.order+1];
     initJustData(param.init);
 }
 
@@ -160,7 +160,7 @@ QString JustDataInterface::m_ReadWriteJustNode(QString &sInput, quint8 index)
                 double par1 = spar.toDouble(&ok1);
                 if (ok0 && ok1)
                 {
-                    cJustNode jn = cJustNode(par0,par1);
+                    AdjustmentNode jn = AdjustmentNode(par0,par1);
                     setNode(index, jn);
                     return ZSCPI::scpiAnswer[ZSCPI::ack];
                 }
@@ -238,7 +238,7 @@ void JustDataInterface::DeserializeNodes(const QString& s)
 }
 
 
-bool JustDataInterface::setNode(int index, cJustNode jn) // // !!! setting node sequence is relevant !!!
+bool JustDataInterface::setNode(int index, AdjustmentNode jn) // // !!! setting node sequence is relevant !!!
 {
     if (index < m_nOrder+1) {
         for (int i = index; i < m_nOrder+1; i++)
@@ -248,7 +248,7 @@ bool JustDataInterface::setNode(int index, cJustNode jn) // // !!! setting node 
     return false;
 }
 
-cJustNode* JustDataInterface::getNode(int index) // can be read back
+AdjustmentNode* JustDataInterface::getNode(int index) // can be read back
 {
     return &m_pJustNode[index];
 }
@@ -310,7 +310,7 @@ quint8 JustDataInterface::getStatus()
 
 void JustDataInterface::initJustData(double init)
 {
-    setNode(0 , cJustNode(init,0.0)); // setting the 1st node and all following
+    setNode(0 , AdjustmentNode(init,0.0)); // setting the 1st node and all following
     cmpCoefficients();
     m_nStatus = 0;
 }
