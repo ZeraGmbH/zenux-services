@@ -291,7 +291,7 @@ bool Mt310s2SenseInterface::importAdjData(QDataStream &stream)
     stream >> s; // we take the serial number now
     QString sysSerNo = m_pSystemInfo->getSerialNumber();
     if (QString(s) != sysSerNo) {
-        qCritical("flashmemory read, contains wrong serialnumber flash: %s / µC: %s",
+        qCritical("Flashmemory read, contains wrong serialnumber flash: %s / µC: %s",
                s, qPrintable(sysSerNo));
         m_nSerialStatus |= Adjustment::wrongSNR;
         if (!enable) {
@@ -364,7 +364,7 @@ QString Mt310s2SenseInterface::exportXMLString(int indent)
 {
     QDomDocument justqdom (QStringLiteral("PCBAdjustmentData"));
 
-    QDomElement pcbtag = justqdom.createElement( "PCB" );
+    QDomElement pcbtag = justqdom.createElement("PCB");
     justqdom.appendChild( pcbtag );
 
     QDomElement tag = justqdom.createElement( "Type" );

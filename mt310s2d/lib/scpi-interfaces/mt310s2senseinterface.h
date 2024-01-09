@@ -80,7 +80,7 @@ public:
     Mt310s2SenseRange* getRange(QString channelName, QString rangeName);
     virtual quint8 getAdjustmentStatus() override; // we return 0 if adj. otherwise  1 +2 +4
     virtual void registerResource(RMConnection *rmConnection, quint16 port) override;
-    virtual QString exportXMLString(int indent = 1) override;
+    QString exportXMLString(int indent = 1) override;
     void computeSenseAdjData();
 protected:
     void exportAdjData(QDataStream& stream, QDateTime dateTimeWrite) override;
@@ -111,10 +111,8 @@ private:
 
     quint8 m_nSerialStatus;
 
-
     NotificationString notifierSenseMMode;
     NotificationString notifierSenseChannelCat;
-
 };
 
 #endif // SENSEINTERFACE_H
