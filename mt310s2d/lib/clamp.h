@@ -30,7 +30,7 @@ enum ClampTypes // APPEND NEW TYPES AT BOTTOM
     anzCL
 };
 
-class cClamp: public AdjustmentEeprom, public AdjustmentXmlImportExportTemplate, public ScpiConnection, public AdjustmentStatusInterface
+class cClamp: public AdjustmentEeprom, public AdjustmentXmlImportExportTemplate, public ScpiConnection
 {
 public:
     cClamp();
@@ -44,7 +44,6 @@ public:
            quint8 type = undefined);
     virtual ~cClamp();
     static QString getClampTypeName(quint8 type);
-    virtual quint8 getAdjustmentStatus() override;
     virtual void initSCPIConnection(QString) override;
     QString getChannelName();
     QString getChannelNameSecondary();
@@ -69,6 +68,7 @@ private:
     ClampTypes readClampType();
     void removeAllRanges();
     void exportRangeXml(QDomDocument &justqdom, QDomElement &typeTag, Mt310s2SenseRange *range);
+    quint8 getAdjStatus();
 
     QString scpiReadWriteSerial(QString &scpi);
     QString scpiReadWriteVersion(QString &scpi);
