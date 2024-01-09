@@ -3,7 +3,7 @@
 
 #include "pcbserver.h"
 #include "mt310s2adjflash.h"
-#include "mt310s2adjxml.h"
+#include "adjustmentxmlimportexporttemplate.h"
 #include "mt310s2senseinterface.h"
 #include <QList>
 #include <QDateTime>
@@ -30,7 +30,7 @@ enum ClampTypes // APPEND NEW TYPES AT BOTTOM
     anzCL
 };
 
-class cClamp: public Mt310s2AdjFlash, public Mt310s2AdjXML, public ScpiConnection
+class cClamp: public Mt310s2AdjFlash, public AdjustmentXmlImportExportTemplate, public ScpiConnection
 {
 public:
     cClamp();

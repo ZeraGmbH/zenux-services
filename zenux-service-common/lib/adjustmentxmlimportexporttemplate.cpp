@@ -1,8 +1,8 @@
-#include "mt310s2adjxml.h"
+#include "adjustmentxmlimportexporttemplate.h"
 #include <QFile>
 #include <QTextStream>
 
-bool Mt310s2AdjXML::exportAdTojXMLFile(QString file)
+bool AdjustmentXmlImportExportTemplate::exportAdTojXMLFile(QString file)
 {
     QString filename = file + ".xml";
     QFile adjfile(filename);
@@ -17,7 +17,7 @@ bool Mt310s2AdjXML::exportAdTojXMLFile(QString file)
     return true;
 }
 
-bool Mt310s2AdjXML::importAdjXMLFile(QString file)
+bool AdjustmentXmlImportExportTemplate::importAdjXMLFile(QString file)
 {
     QString filename = file + ".xml";
     QFile adjfile(filename);
@@ -34,7 +34,7 @@ bool Mt310s2AdjXML::importAdjXMLFile(QString file)
     return importXMLDocument(&justqdom);
 }
 
-bool Mt310s2AdjXML::importAdjXMLString(QString &xml)
+bool AdjustmentXmlImportExportTemplate::importAdjXMLString(QString &xml)
 {
     QDomDocument justqdom("TheDocument");
     QString errorMsg;

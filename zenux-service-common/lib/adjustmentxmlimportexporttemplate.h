@@ -1,10 +1,10 @@
-#ifndef ADJXML_H
-#define ADJXML_H
+#ifndef ADJUSTMENTXMLIMPORTEXPORTTEMPLATE_H
+#define ADJUSTMENTXMLIMPORTEXPORTTEMPLATE_H
 
 #include <QString>
 #include <QDomDocument>
 
-class Mt310s2AdjXML
+class AdjustmentXmlImportExportTemplate
 {
 public:
     bool exportAdTojXMLFile(QString file);
@@ -12,8 +12,8 @@ public:
     bool importAdjXMLString(QString& xml);
 
 protected:
-    virtual QString exportXMLString(int indent = 1) = 0; // adjustment data xml export to string
+    virtual QString exportXMLString(int indent = 1) = 0;
     virtual bool importXMLDocument(QDomDocument* qdomdoc) = 0;
 };
 
-#endif // ADJXML_H
+#endif // ADJUSTMENTXMLIMPORTEXPORTTEMPLATE_H
