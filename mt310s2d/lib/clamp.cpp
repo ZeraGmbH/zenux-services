@@ -375,7 +375,7 @@ bool cClamp::importXMLDocument(QDomDocument *qdomdoc)
     return importXMLDocument(qdomdoc, false);
 }
 
-quint8 cClamp::getAdjustmentStatus()
+quint8 cClamp::getAdjStatus()
 {
     // Out of order clamps - e.g with non-working EEPROM
     // have an empty range list. To avoid reporting them
@@ -731,6 +731,7 @@ void cClamp::addSystAdjInterfaceChannel(QString channelName)
     addDelegate(cmdParent,"WRITE", SCPI::isCmd, m_pSCPIInterface, cmdXMLWrite);
     addDelegate(cmdParent,"READ", SCPI::isCmd, m_pSCPIInterface, cmdXMLRead);
 
+    // Do we need this really? There ws hoplug indication introduced long time ago
     cmdParent = QString("STATUS:CLAMP:%1").arg(channelName);
     addDelegate(cmdParent, "ADJUSTMENT", SCPI::isQuery, m_pSCPIInterface, cmdStatAdjustment);
 }
@@ -1020,7 +1021,7 @@ QString cClamp::scpiReadAdjStatus(QString &scpi)
     QString answer;
     cSCPICommand cmd = scpi;
     if (cmd.isQuery()) {
-        answer = QString("%1").arg(getAdjustmentStatus()); // hex output
+        answer = QString("%1").arg(getAdjStatus()); // hex output
     }
     else {
         answer = ZSCPI::scpiAnswer[ZSCPI::nak];
