@@ -3,7 +3,7 @@
 #include "rmconnection.h"
 #include "atmelsysctrl.h"
 #include "atmel.h"
-#include "atmelctrlfactory.h"
+#include "atmelctrlfactorystatic.h"
 #include "clampinterface.h"
 #include "fingroupresourceandinterface.h"
 #include "hkingroupresourceandinterface.h"
@@ -173,7 +173,7 @@ void cMT310S2dServer::doConfiguration()
 
             if (m_xmlConfigReader.loadXMLFile(m_params.xmlFile)) {
                 Atmel::setInstanceParams(m_pI2CSettings->getDeviceNode(), m_pI2CSettings->getI2CAdress(i2cSettings::relaisCtrlI2cAddress), m_pDebugSettings->getDebugLevel());
-                m_atmelWatcher = AtmelCtrlFactory::createAtmelWatcher(m_fpgaCtrlSettings->getDeviceNode());
+                m_atmelWatcher = AtmelCtrlFactoryStatic::createAtmelWatcher(m_fpgaCtrlSettings->getDeviceNode());
                 m_systemController = std::make_shared<cATMELSysCtrl>(m_pI2CSettings->getDeviceNode(), m_pI2CSettings->getI2CAdress(i2cSettings::sysCtrlI2cAddress), m_pDebugSettings->getDebugLevel());
             }
             else {
