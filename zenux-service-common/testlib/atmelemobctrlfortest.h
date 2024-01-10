@@ -1,9 +1,9 @@
 #ifndef ATMELEMOBCTRLFORTEST_H
 #define ATMELEMOBCTRLFORTEST_H
 
-#include <atmelemobctrl.h>
+#include <atmelctrlemob.h>
 
-class AtmelEmobCtrlForTest : public AtmelEmobCtrl
+class AtmelEmobCtrlForTest : public AtmelCtrlEmob
 {
 public:
     AtmelEmobCtrlForTest(ZeraMcontrollerIoPtr i2cCtrl, QString devnode, quint8 adrMux, quint8 muxChannel, bool responding);

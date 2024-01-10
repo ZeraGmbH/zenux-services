@@ -1,6 +1,6 @@
 #include "hotpluggablecontrollercontainer.h"
 #include "atmelctrlfactorystatic.h"
-#include "atmelemobctrl.h"
+#include "atmelctrlemob.h"
 #include <zeramcontrollerbootloaderstopperfactory.h>
 #include <i2cmuxerscopedonoff.h>
 
@@ -62,9 +62,9 @@ bool HotPluggableControllerContainer::isChannelKnown(int ctrlChannel)
             m_ChannelsWithoutController.contains(ctrlChannel);
 }
 
-QVector<AtmelCommonVersionsPtr> HotPluggableControllerContainer::getCurrentControllers()
+QVector<AtmelCommonVersionsPtrS> HotPluggableControllerContainer::getCurrentControllers()
 {
-    QVector<AtmelCommonVersionsPtr> controllers;
+    QVector<AtmelCommonVersionsPtrS> controllers;
     for(const auto &ctrl : qAsConst(m_Controllers))
         controllers.append(ctrl);
     return controllers;
@@ -74,7 +74,7 @@ void HotPluggableControllerContainer::onBootloaderStopAssumed(int ctrlChannel)
 {
     qInfo("Bootloader stopped or not available. Try controller version read on channel %i...", ctrlChannel);
     if(m_pendingBootloaderStoppers.contains(ctrlChannel)) {
-        AtmelCommonVersionsPtr ctrl = AtmelCtrlFactoryStatic::getEmobCtrl(
+        AtmelCommonVersionsPtrS ctrl = AtmelCtrlFactoryStatic::getEmobCtrl(
                     m_i2cDevNodeName,
                     m_i2cAdrCtrl,
                     m_i2cAdrMux,

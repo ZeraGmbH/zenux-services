@@ -1,5 +1,5 @@
-#ifndef ATMELATMELSYS_H
-#define ATMELATMELSYS_H
+#ifndef ATMELCTRLSSYSTEM_H
+#define ATMELCTRLSSYSTEM_H
 
 #include <atmelcommon.h>
 #include <atmelcommonversions.h>
@@ -7,10 +7,10 @@
 #include <zeramcontrollerio.h>
 #include <QString>
 
-class cATMELSysCtrl : public AtmelCommon, public AtmelCommonVersions
+class AtmelCtrlSystem : public AtmelCommon, public AtmelCommonVersions
 {
 public:
-    cATMELSysCtrl(QString devnode, quint8 adr, quint8 debuglevel);
+    AtmelCtrlSystem(QString devnode, quint8 adr, quint8 debuglevel);
 
     atmelRM readCTRLVersion(QString& answer) override;
     atmelRM readPCBVersion(QString& answer) override;
@@ -19,4 +19,4 @@ public:
     atmelRM enableTestMode(qint32 testBits);
 };
 
-#endif // ATMELATMELSYS_H
+#endif // ATMELCTRLSSYSTEM_H

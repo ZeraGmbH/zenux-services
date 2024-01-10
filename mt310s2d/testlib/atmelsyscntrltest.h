@@ -1,9 +1,9 @@
 #ifndef ATMELSYSCNTRLTEST_H
 #define ATMELSYSCNTRLTEST_H
 
-#include "atmelsysctrl.h"
+#include "atmelctrlsystem.h"
 
-class AtmelSysCntrlTest : public cATMELSysCtrl
+class AtmelSysCntrlTest : public AtmelCtrlSystem
 {
 public:
     AtmelSysCntrlTest(QString devnode, quint8 adr, quint8 debuglevel);

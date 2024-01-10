@@ -7,7 +7,7 @@
 Mt310s2SystemInterface::Mt310s2SystemInterface(cPCBServer *server,
                                                Mt310s2SystemInfo *systemInfo,
                                                cSenseSettings *senseSettings,
-                                               Mt310s2SenseInterface* senseInterface, std::shared_ptr<cATMELSysCtrl> systemController,
+                                               Mt310s2SenseInterface* senseInterface, std::shared_ptr<AtmelCtrlSystem> systemController,
                                                HotPluggableControllerContainerPtr hotPluggableControllerContainer,
                                                AtmelPermissionTemplate *permissionQueryHandler) :
     ScpiConnection(server->getSCPIInterface()),
@@ -418,7 +418,7 @@ void Mt310s2SystemInterface::updateAllCtrlVersionsJson()
     QJsonObject object;
     object.insert("Relay controller version", QJsonValue::fromVariant(m_systemInfo->getCTRLVersion()));
     object.insert("System controller version", QJsonValue::fromVariant(m_systemInfo->getSysCTRLVersion()));
-    QVector<AtmelCommonVersionsPtr> hotpluggableControllers = m_hotPluggableControllerContainer->getCurrentControllers();
+    QVector<AtmelCommonVersionsPtrS> hotpluggableControllers = m_hotPluggableControllerContainer->getCurrentControllers();
     for(auto controller : hotpluggableControllers) {
         QString version;
         controller->readCTRLVersion(version);
@@ -433,7 +433,7 @@ void Mt310s2SystemInterface::updateAllPCBsVersion()
     QJsonObject object;
     object.insert("Relay PCB version", QJsonValue::fromVariant(m_systemInfo->getPCBVersion()));
     object.insert("System PCB version", QJsonValue::fromVariant(m_systemInfo->getSysPCBVersion()));
-    QVector<AtmelCommonVersionsPtr> hotpluggableControllers = m_hotPluggableControllerContainer->getCurrentControllers();
+    QVector<AtmelCommonVersionsPtrS> hotpluggableControllers = m_hotPluggableControllerContainer->getCurrentControllers();
     for(auto controller : hotpluggableControllers) {
         QString version;
         controller->readPCBVersion(version);

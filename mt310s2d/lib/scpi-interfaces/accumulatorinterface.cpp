@@ -4,7 +4,7 @@
 constexpr quint8 ERROR = 0x80;
 constexpr int ACCU_POLLING_PERIOD_MS = 1000;
 
-AccumulatorInterface::AccumulatorInterface(cSCPI *scpiInterface, std::shared_ptr<cATMELSysCtrl> systemController, AccumulatorSettings *settings) :
+AccumulatorInterface::AccumulatorInterface(cSCPI *scpiInterface, std::shared_ptr<AtmelCtrlSystem> systemController, AccumulatorSettings *settings) :
     ScpiConnection(scpiInterface),
     m_systemController(systemController)
 {

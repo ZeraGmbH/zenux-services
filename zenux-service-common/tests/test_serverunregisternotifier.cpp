@@ -51,8 +51,8 @@ void test_serverunregisternotifier::oneScpiConnection()
 void test_serverunregisternotifier::twoScpiConnections()
 {
     m_pcbServerTest->insertScpiConnection(new cStatusInterface(m_pcbServerTest->getSCPIInterface(), m_adjustmentStatusNull.get()));
-
-    std::shared_ptr<cATMELSysCtrl> systemControllerTest = std::make_shared<AtmelSysCntrlTest>("", 0, 0);
+    
+    std::shared_ptr<AtmelCtrlSystem> systemControllerTest = std::make_shared<AtmelSysCntrlTest>("", 0, 0);
     m_pcbServerTest->insertScpiConnection(new AccumulatorInterface(m_pcbServerTest->getSCPIInterface(), systemControllerTest, m_accSettings.get()));
 
     m_pcbServerTest->initTestSCPIConnections();

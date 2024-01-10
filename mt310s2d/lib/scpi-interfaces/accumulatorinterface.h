@@ -1,7 +1,7 @@
 #ifndef ACCUMULATORINTERFACE_H
 #define ACCUMULATORINTERFACE_H
 
-#include "atmelsysctrl.h"
+#include "atmelctrlsystem.h"
 #include "timerperiodicqt.h"
 #include "accumulatorsettings.h"
 #include <scpiconnection.h>
@@ -14,7 +14,7 @@ enum accumulatorCommands{
 class AccumulatorInterface : public ScpiConnection
 {
 public:
-    AccumulatorInterface(cSCPI* scpiInterface, std::shared_ptr<cATMELSysCtrl> systemController, AccumulatorSettings* settings);
+    AccumulatorInterface(cSCPI* scpiInterface, std::shared_ptr<AtmelCtrlSystem> systemController, AccumulatorSettings* settings);
     void initSCPIConnection(QString leadingNodes) override;
     QString getAccumulatorStatus();
     QString getAccuStateOfCharge();
@@ -23,7 +23,7 @@ protected:
 private:
     NotificationString m_accumulatorStatus;
     NotificationString m_accuStateOfCharge;
-    std::shared_ptr<cATMELSysCtrl> m_systemController;
+    std::shared_ptr<AtmelCtrlSystem> m_systemController;
     TimerTemplateQtPtr m_pollingTimer;
 };
 

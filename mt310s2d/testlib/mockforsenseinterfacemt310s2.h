@@ -24,8 +24,8 @@ public:
 private:
     std::unique_ptr<cI2CSettings> m_i2cSettings;
     std::unique_ptr<cSenseSettings> m_senseSettings;
-
-    std::shared_ptr<cATMELSysCtrl> m_systemController;
+    
+    std::shared_ptr<AtmelCtrlSystem> m_systemController;
 
     std::unique_ptr<Mt310s2SystemInfo> m_systemInfo;
 
