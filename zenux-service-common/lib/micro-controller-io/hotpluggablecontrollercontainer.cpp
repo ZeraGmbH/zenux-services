@@ -1,5 +1,5 @@
 #include "hotpluggablecontrollercontainer.h"
-#include "atmelctrlfactory.h"
+#include "atmelctrlfactorystatic.h"
 #include "atmelemobctrl.h"
 #include <zeramcontrollerbootloaderstopperfactory.h>
 #include <i2cmuxerscopedonoff.h>
@@ -74,7 +74,7 @@ void HotPluggableControllerContainer::onBootloaderStopAssumed(int ctrlChannel)
 {
     qInfo("Bootloader stopped or not available. Try controller version read on channel %i...", ctrlChannel);
     if(m_pendingBootloaderStoppers.contains(ctrlChannel)) {
-        AtmelCommonVersionsPtr ctrl = AtmelCtrlFactory::createEmobCtrl(
+        AtmelCommonVersionsPtr ctrl = AtmelCtrlFactoryStatic::getEmobCtrl(
                     m_i2cDevNodeName,
                     m_i2cAdrCtrl,
                     m_i2cAdrMux,

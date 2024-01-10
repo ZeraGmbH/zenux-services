@@ -1,9 +1,9 @@
 #ifndef ATMELCTRLFACTORYFORTEST_H
 #define ATMELCTRLFACTORYFORTEST_H
 
-#include "atmelctrlfactory.h"
+#include "atmelctrlfactorystatic.h"
 
-class AtmelCtrlFactoryForTest : public AtmelCtrlFactory
+class AtmelCtrlFactoryForTest : public AtmelCtrlFactoryStatic
 {
 public:
     static void prepareNextTestControllers(QVector<bool> responding);

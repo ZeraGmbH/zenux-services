@@ -18,7 +18,7 @@
 #include "systeminfo.h"
 #include "rmconnection.h"
 #include "atmel.h"
-#include "atmelctrlfactory.h"
+#include "atmelctrlfactorystatic.h"
 #include "fingroupresourceandinterface.h"
 #include "hkingroupresourceandinterface.h"
 #include "samplinginterface.h"
@@ -156,7 +156,7 @@ void cCOM5003dServer::doConfiguration()
         write(m_nFPGAfd, &sigStart, 4);
         if (m_xmlConfigReader.loadXMLFile(m_params.xmlFile)) {
             Atmel::setInstanceParams(m_pI2CSettings->getDeviceNode(), m_pI2CSettings->getI2CAdress(i2cSettings::relaisCtrlI2cAddress), m_pDebugSettings->getDebugLevel());
-            m_atmelWatcher = AtmelCtrlFactory::createAtmelWatcher(m_fpgaCtrlSettings->getDeviceNode());
+            m_atmelWatcher = AtmelCtrlFactoryStatic::createAtmelWatcher(m_fpgaCtrlSettings->getDeviceNode());
 
             sigStart = 0;
             write(m_nFPGAfd, &sigStart, 4);
