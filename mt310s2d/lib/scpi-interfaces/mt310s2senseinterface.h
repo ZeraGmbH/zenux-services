@@ -78,15 +78,19 @@ public:
     Mt310s2SenseChannel* getChannel(QString& name);
     QString getChannelSystemName(quint16 ctrlChannel);
     Mt310s2SenseRange* getRange(QString channelName, QString rangeName);
-    virtual quint8 getAdjustmentStatus() override; // we return 0 if adj. otherwise  1 +2 +4
-    virtual void registerResource(RMConnection *rmConnection, quint16 port) override;
+    quint8 getAdjustmentStatus() override;
+
     QString exportXMLString(int indent = 1) override;
+
+    void registerResource(RMConnection *rmConnection, quint16 port) override;
     void computeSenseAdjData();
+
 protected:
     void exportAdjData(QDataStream& stream, QDateTime dateTimeWrite) override;
     bool importAdjData(QDataStream& stream) override;
     bool importXMLDocument(QDomDocument* qdomdoc) override;
     void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
+
 private:
     QString scpiReadVersion(QString& scpi);
     void scpiReadWriteMMode(cProtonetCommand* protoCmd);
@@ -106,13 +110,14 @@ private:
 
     QList<Mt310s2SenseChannel*> m_ChannelList;
     QString m_sVersion;
-    QString m_sMMode;
-    QHash<QString,quint8> m_MModeHash;
 
     quint8 m_nSerialStatus;
 
     NotificationString notifierSenseMMode;
     NotificationString notifierSenseChannelCat;
+
+    QString m_sMMode;
+    QHash<QString,quint8> m_MModeHash;
 };
 
 #endif // SENSEINTERFACE_H

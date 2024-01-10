@@ -59,16 +59,16 @@ public:
     ~Com5003SenseInterface();
     virtual void initSCPIConnection(QString leadingNodes) override;
     Com5003SenseChannel* getChannel(QString& name);
-    quint8 getAdjustmentStatus() override; // we return 0 if not adj. else 1
-    virtual void exportAdjData(QDataStream& stream, QDateTime dateTimeWrite) override;
-    virtual bool importAdjData(QDataStream& stream) override;
+    quint8 getAdjustmentStatus() override;
 
     QString exportXMLString(int indent = 1) override;
 
-    virtual void registerResource(RMConnection *rmConnection, quint16 port) override;
+    void registerResource(RMConnection *rmConnection, quint16 port) override;
     void computeSenseAdjData();
 
 protected:
+    void exportAdjData(QDataStream& stream, QDateTime dateTimeWrite) override;
+    bool importAdjData(QDataStream& stream) override;
     bool importXMLDocument(QDomDocument* qdomdoc) override;
     void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
 
@@ -78,20 +78,6 @@ private slots:
     void notifySense();
 
 private:
-    RMConnection* m_rmConnection;
-    EthSettings* m_ethSettings;
-    cSystemInfo *m_systemInfo;
-    AtmelPermissionTemplate *m_permissionQueryHandler;
-    QList<Com5003SenseChannel*> m_ChannelList;
-    QString m_sVersion;
-    quint8 m_nMMode;
-
-    QStateMachine m_ChangeSenseModeMachine;
-    QState m_UnregisterSenseState;
-    QState m_RegisterSenseState;
-    QFinalState m_NotifySenseState;
-    QList<cProtonetCommand*> sensemodeProtonetCmdList;
-
     QString scpiReadVersion(QString& sInput);
     void scpiReadWriteMMode(cProtonetCommand* protoCmd);
     QString m_ReadMModeCatalog(QString& sInput);
@@ -103,10 +89,28 @@ private:
     void setNotifierSenseMMode();
     void setNotifierSenseChannelCat();
 
+    cSystemInfo *m_systemInfo;
+    AtmelPermissionTemplate *m_permissionQueryHandler;
+
+    QList<Com5003SenseChannel*> m_ChannelList;
+    QString m_sVersion;
+    quint8 m_nMMode;
+
     quint8 m_nSerialStatus;
 
     NotificationString notifierSenseMMode;
     NotificationString notifierSenseChannelCat;
+
+    // COM specifics
+    RMConnection* m_rmConnection;
+    EthSettings* m_ethSettings;
+
+    QHash<QString,quint8> m_MModeHash;
+    QStateMachine m_ChangeSenseModeMachine;
+    QState m_UnregisterSenseState;
+    QState m_RegisterSenseState;
+    QFinalState m_NotifySenseState;
+    QList<cProtonetCommand*> sensemodeProtonetCmdList;
 };
 
 #endif // SENSEINTERFACE_H

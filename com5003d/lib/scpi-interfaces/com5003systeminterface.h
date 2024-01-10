@@ -71,5 +71,4 @@ private:
     NotificationString m_allPCBVersion;
 };
 
-
 #endif // SYSTEMINTERFACE_H
