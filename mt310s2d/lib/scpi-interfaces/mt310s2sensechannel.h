@@ -4,7 +4,6 @@
 #include "mt310s2senserange.h"
 #include "notificationstring.h"
 #include "sensesettings.h"
-#include "adjustmentstatusinterface.h"
 #include <QList>
 
 namespace SenseChannel
@@ -23,10 +22,6 @@ enum Commands
 };
 
 }
-
-
-class ScpiConnection;
-class Mt310s2SenseInterface;
 
 class Mt310s2SenseChannel : public ScpiConnection
 {
@@ -89,7 +84,6 @@ private:
 
     void setNotifierSenseChannelRangeCat();
     void setNotifierSenseChannelRange();
-
 };
 
 #endif // SENSECHANNEL_H

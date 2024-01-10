@@ -4,7 +4,6 @@
 #include "com5003senserange.h"
 #include "notificationstring.h"
 #include "sensesettings.h"
-#include "adjustmentstatusinterface.h"
 #include <QList>
 
 namespace SenseChannel
@@ -27,12 +26,7 @@ enum MMode
     modeAC,
     modeREF,
 };
-
 }
-
-
-class ScpiConnection;
-
 
 class Com5003SenseChannel : public ScpiConnection
 {
@@ -91,7 +85,6 @@ private:
 
     void setNotifierSenseChannelRangeCat();
     void setNotifierSenseChannelRange();
-
 };
 
 #endif // SENSECHANNEL_H
