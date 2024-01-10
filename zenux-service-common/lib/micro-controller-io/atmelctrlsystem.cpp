@@ -1,9 +1,8 @@
 #include <syslog.h>
 #include <crcutils.h>
 
-#include "mt310s2dglobal.h"
 #include "i2cutils.h"
-#include "atmelsysctrl.h"
+#include "atmelctrlsystem.h"
 
 enum hw_cmdcode
 {
@@ -15,23 +14,23 @@ enum hw_cmdcode
 };
 
 
-cATMELSysCtrl::cATMELSysCtrl(QString devnode, quint8 adr, quint8 debuglevel) :
+AtmelCtrlSystem::AtmelCtrlSystem(QString devnode, quint8 adr, quint8 debuglevel) :
     AtmelCommon(devnode, adr, debuglevel)
 {
 }
 
 
-ZeraMControllerIo::atmelRM cATMELSysCtrl::readCTRLVersion(QString& answer)
+ZeraMControllerIo::atmelRM AtmelCtrlSystem::readCTRLVersion(QString& answer)
 {
     return readVariableLenText(hwGetCtrlVersion, answer);
 }
 
-ZeraMControllerIo::atmelRM cATMELSysCtrl::readPCBVersion(QString &answer)
+ZeraMControllerIo::atmelRM AtmelCtrlSystem::readPCBVersion(QString &answer)
 {
     return readVariableLenText(hwGetPCBVersion, answer);
 }
 
-ZeraMControllerIo::atmelRM cATMELSysCtrl::readAccumulatorStatus(quint8 &stat)
+ZeraMControllerIo::atmelRM AtmelCtrlSystem::readAccumulatorStatus(quint8 &stat)
 {
     ZeraMControllerIo::atmelRM ret = cmdexecfault;
     quint8 answ[2];
@@ -44,7 +43,7 @@ ZeraMControllerIo::atmelRM cATMELSysCtrl::readAccumulatorStatus(quint8 &stat)
     return ret;
 }
 
-ZeraMControllerIo::atmelRM cATMELSysCtrl::readAccuStateOfCharge(quint8 &charge)
+ZeraMControllerIo::atmelRM AtmelCtrlSystem::readAccuStateOfCharge(quint8 &charge)
 {
     ZeraMControllerIo::atmelRM ret = cmdexecfault;
     quint8 answ[2];
@@ -58,7 +57,7 @@ ZeraMControllerIo::atmelRM cATMELSysCtrl::readAccuStateOfCharge(quint8 &charge)
 
 }
 
-ZeraMControllerIo::atmelRM cATMELSysCtrl::enableTestMode(qint32 testBits)
+ZeraMControllerIo::atmelRM AtmelCtrlSystem::enableTestMode(qint32 testBits)
 {
     quint8 PAR[4];
     PAR[0] = (testBits >> 24) & 255;

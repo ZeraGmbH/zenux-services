@@ -1,4 +1,4 @@
-#include "atmelemobctrl.h"
+#include "atmelctrlemob.h"
 #include "i2cmuxerscopedonoff.h"
 
 enum hw_cmdcode
@@ -7,13 +7,13 @@ enum hw_cmdcode
     hwGetPCBVersion = 0x0005,
 };
 
-AtmelEmobCtrl::AtmelEmobCtrl(ZeraMcontrollerIoPtr i2cCtrl, QString devnode, quint8 adrMux, quint8 muxChannel) :
+AtmelCtrlEmob::AtmelCtrlEmob(ZeraMcontrollerIoPtr i2cCtrl, QString devnode, quint8 adrMux, quint8 muxChannel) :
     m_i2cCtrl(i2cCtrl),
     m_i2cMuxer(I2cMultiplexerFactory::createPCA9547Muxer(devnode, adrMux, muxChannel))
 {
 }
 
-ZeraMControllerIo::atmelRM AtmelEmobCtrl::readCTRLVersion(QString &answer)
+ZeraMControllerIo::atmelRM AtmelCtrlEmob::readCTRLVersion(QString &answer)
 {
     ZeraMControllerIo::atmelRM ret = ZeraMControllerIoTemplate::cmddone;
     if(m_ctrlVersion.isEmpty()) {
@@ -24,7 +24,7 @@ ZeraMControllerIo::atmelRM AtmelEmobCtrl::readCTRLVersion(QString &answer)
     return ret;
 }
 
-ZeraMControllerIo::atmelRM AtmelEmobCtrl::readPCBVersion(QString &answer)
+ZeraMControllerIo::atmelRM AtmelCtrlEmob::readPCBVersion(QString &answer)
 {
     ZeraMControllerIo::atmelRM ret = ZeraMControllerIoTemplate::cmddone;
     if(m_pcbVersion.isEmpty()) {

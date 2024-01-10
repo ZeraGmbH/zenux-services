@@ -6,7 +6,7 @@
 #include "pcbserver.h"
 #include "mt310s2senseinterface.h"
 #include "mt310s2systeminfo.h"
-#include "atmelsysctrl.h"
+#include "atmelctrlsystem.h"
 #include <QList>
 #include <QJsonDocument>
 #include <memory>
@@ -42,7 +42,7 @@ public:
                            Mt310s2SystemInfo *systemInfo,
                            cSenseSettings *senseSettings,
                            Mt310s2SenseInterface* senseInterface,
-                           std::shared_ptr<cATMELSysCtrl> systemController,
+                           std::shared_ptr<AtmelCtrlSystem> systemController,
                            HotPluggableControllerContainerPtr hotPluggableControllerContainer,
                            AtmelPermissionTemplate *permissionQueryHandler);
     virtual void initSCPIConnection(QString leadingNodes) override;
@@ -78,7 +78,7 @@ private:
     Mt310s2SystemInfo *m_systemInfo;
     cSenseSettings *m_senseSettings;
     Mt310s2SenseInterface* m_senseInterface;
-    std::shared_ptr<cATMELSysCtrl> m_systemController;
+    std::shared_ptr<AtmelCtrlSystem> m_systemController;
     HotPluggableControllerContainerPtr m_hotPluggableControllerContainer;
     AtmelPermissionTemplate *m_permissionQueryHandler;
 

@@ -1,6 +1,6 @@
 #include "mt310s2systeminfo.h"
 
-Mt310s2SystemInfo::Mt310s2SystemInfo(std::shared_ptr<cATMELSysCtrl> systemController) :
+Mt310s2SystemInfo::Mt310s2SystemInfo(std::shared_ptr<AtmelCtrlSystem> systemController) :
     cSystemInfo(),
     m_systemController(systemController)
 {

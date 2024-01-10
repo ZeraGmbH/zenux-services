@@ -1,7 +1,7 @@
 #include "mt310s2d.h"
 #include "mt310s2dglobal.h"
 #include "rmconnection.h"
-#include "atmelsysctrl.h"
+#include "atmelctrlsystem.h"
 #include "atmel.h"
 #include "atmelctrlfactorystatic.h"
 #include "clampinterface.h"
@@ -174,7 +174,7 @@ void cMT310S2dServer::doConfiguration()
             if (m_xmlConfigReader.loadXMLFile(m_params.xmlFile)) {
                 Atmel::setInstanceParams(m_pI2CSettings->getDeviceNode(), m_pI2CSettings->getI2CAdress(i2cSettings::relaisCtrlI2cAddress), m_pDebugSettings->getDebugLevel());
                 m_atmelWatcher = AtmelCtrlFactoryStatic::createAtmelWatcher(m_fpgaCtrlSettings->getDeviceNode());
-                m_systemController = std::make_shared<cATMELSysCtrl>(m_pI2CSettings->getDeviceNode(), m_pI2CSettings->getI2CAdress(i2cSettings::sysCtrlI2cAddress), m_pDebugSettings->getDebugLevel());
+                m_systemController = std::make_shared<AtmelCtrlSystem>(m_pI2CSettings->getDeviceNode(), m_pI2CSettings->getI2CAdress(i2cSettings::sysCtrlI2cAddress), m_pDebugSettings->getDebugLevel());
             }
             else {
                 qCritical("Abort: Could not open xml file '%s", qPrintable(m_params.xmlFile));

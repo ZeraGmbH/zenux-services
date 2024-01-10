@@ -1,7 +1,7 @@
 #include "atmelsyscntrltest.h"
 
 AtmelSysCntrlTest::AtmelSysCntrlTest(QString devnode, quint8 adr, quint8 debuglevel) :
-    cATMELSysCtrl(devnode, adr, debuglevel)
+    AtmelCtrlSystem(devnode, adr, debuglevel)
 {
 }
 

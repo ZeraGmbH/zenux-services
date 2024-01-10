@@ -13,6 +13,7 @@ public:
     virtual ZeraMControllerIo::atmelRM readPCBVersion(QString& answer) = 0;
 };
 
-typedef std::shared_ptr<AtmelCommonVersions> AtmelCommonVersionsPtr;
+typedef std::shared_ptr<AtmelCommonVersions> AtmelCommonVersionsPtrS;
+typedef std::unique_ptr<AtmelCommonVersions> AtmelCommonVersionsPtrU;
 
 #endif // ATMELCOMMONVERSIONS_H

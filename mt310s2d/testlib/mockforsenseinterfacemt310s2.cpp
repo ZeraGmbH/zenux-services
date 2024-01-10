@@ -8,8 +8,8 @@ MockForSenseInterfaceMt310s2::MockForSenseInterfaceMt310s2(AtmelPermissionTempla
     m_i2cSettings = std::make_unique<cI2CSettings>(getConfigReader());
     m_senseSettings = std::make_unique<cSenseSettings>(getConfigReader(), 8);
     setXmlSettings(XmlSettingsList{m_i2cSettings.get(), m_senseSettings.get()});
-
-    m_systemController = std::make_shared<cATMELSysCtrl>(m_i2cSettings->getDeviceNode(), m_i2cSettings->getI2CAdress(i2cSettings::sysCtrlI2cAddress), 0);
+    
+    m_systemController = std::make_shared<AtmelCtrlSystem>(m_i2cSettings->getDeviceNode(), m_i2cSettings->getI2CAdress(i2cSettings::sysCtrlI2cAddress), 0);
     m_systemInfo = std::make_unique<Mt310s2SystemInfo>(m_systemController);
 
     m_senseInterface = std::make_unique<Mt310s2SenseInterface>(getSCPIInterface(),
