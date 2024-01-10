@@ -32,27 +32,27 @@ QString cSystemInfo::getDeviceVersion()
         m_sCTRLVersion);
 }
 
-QString &cSystemInfo::getDeviceName()
+QString cSystemInfo::getDeviceName()
 {
     return m_sDeviceName;
 }
 
-QString &cSystemInfo::getPCBVersion()
+QString cSystemInfo::getPCBVersion()
 {
     return m_sPCBVersion;
 }
 
-QString &cSystemInfo::getLCAVersion()
+QString cSystemInfo::getLCAVersion()
 {
     return m_sLCAVersion;
 }
 
-QString &cSystemInfo::getCTRLVersion()
+QString cSystemInfo::getCTRLVersion()
 {
     return m_sCTRLVersion;
 }
 
-QString &cSystemInfo::getSerialNumber()
+QString cSystemInfo::getSerialNumber()
 {
     return m_sSerialNumber;
 }
