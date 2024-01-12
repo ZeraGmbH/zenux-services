@@ -26,15 +26,15 @@ Com5003SenseInterface::Com5003SenseInterface(cSCPI *scpiInterface,
                                              RMConnection* rmConnection,
                                              EthSettings *ethSettings,
                                              cSenseSettings *senseSettings, cSystemInfo *systemInfo,
-                                             AtmelPermissionTemplate *permissionQueryHandler) :
+                                             AtmelCtrlFactoryInterfacePrt ctrlFactory) :
     cResource(scpiInterface),
     AdjustmentEeprom(i2cSettings->getDeviceNode(),
                      i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress),
                      I2cMultiplexerFactory::createNullMuxer()),
-    m_rmConnection(rmConnection),
-    m_ethSettings(ethSettings),
     m_systemInfo(systemInfo),
-    m_permissionQueryHandler(permissionQueryHandler)
+    m_ctrlFactory(ctrlFactory),
+    m_rmConnection(rmConnection),
+    m_ethSettings(ethSettings)
 {
     // Init with bad defaults so coder's bugs pop up
     m_nSerialStatus = Adjustment::wrongSNR;
@@ -265,8 +265,10 @@ bool Com5003SenseInterface::importAdjData(QDataStream &stream)
     stream >> s; // we take the device version now
 
     bool enable = false;
-    m_permissionQueryHandler->hasPermission(enable);
+    m_ctrlFactory->getPermissionCheckController()->hasPermission(enable);
 
+
+    // TODO: tests version number change will not cause error on adjustment
     stream >> s; // we take the serial number now
     QString sysSerNo = m_systemInfo->getSerialNumber();
     if (QString(s) != sysSerNo) {
@@ -697,7 +699,7 @@ QString Com5003SenseInterface::m_InitSenseAdjData(QString &sInput)
     // cmd.isCommand(0) is not correct but we leave it for compatibility
     if ( cmd.isCommand(0) || (cmd.isCommand(1) && (cmd.getParam(0) == ""))) {
         bool enable;
-        if (m_permissionQueryHandler->hasPermission(enable)) {
+        if (m_ctrlFactory->getPermissionCheckController()->hasPermission(enable)) {
             if (enable) {
                 for (int i = 0; i < m_ChannelList.count(); i++)
                     m_ChannelList.at(i)->initJustData();
@@ -719,7 +721,7 @@ QString Com5003SenseInterface::m_ComputeSenseAdjData(QString &sInput)
     cSCPICommand cmd = sInput;
     if ( cmd.isCommand(1) && (cmd.getParam(0) == "") ) {
         bool enable;
-        if (m_permissionQueryHandler->hasPermission(enable)) {
+        if (m_ctrlFactory->getPermissionCheckController()->hasPermission(enable)) {
             if (enable) {
                 for (int i = 0; i < m_ChannelList.count(); i++)
                     m_ChannelList.at(i)->computeJustData();

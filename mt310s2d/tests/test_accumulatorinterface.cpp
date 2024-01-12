@@ -1,4 +1,5 @@
 #include "test_accumulatorinterface.h"
+#include "mockatmelctrlfactory.h"
 #include <timerfactoryqtfortest.h>
 #include <timemachinefortest.h>
 #include <QTest>
@@ -12,7 +13,6 @@ void test_accumulatorinterface::init()
 {
     TimerFactoryQtForTest::enableTest();
     m_scpiInterface = std::make_unique<cSCPI>();
-    m_systemController = std::make_shared<AtmelSysCntrlTest>("", 0, 0);
 
     m_xmlConfigReader = std::make_unique<Zera::XMLConfig::cReader>();
     m_accuSettings = std::make_unique<AccumulatorSettings>(m_xmlConfigReader.get());
@@ -21,7 +21,7 @@ void test_accumulatorinterface::init()
     m_xmlConfigReader->loadSchema(QStringLiteral(CONFIG_SOURCES_MT310S2D) + "/" + "mt310s2d.xsd");
     m_xmlConfigReader->loadXMLFile(QStringLiteral(CONFIG_SOURCES_MT310S2D) + "/" + "mt310s2d.xml");
 
-    m_accumulator = new AccumulatorInterface(m_scpiInterface.get(), m_systemController, m_accuSettings.get());
+    m_accumulator = new AccumulatorInterface(m_scpiInterface.get(), m_accuSettings.get(), std::make_shared<MockAtmelCtrlFactory>(true));
     m_accumulator->initSCPIConnection("");
 }
 

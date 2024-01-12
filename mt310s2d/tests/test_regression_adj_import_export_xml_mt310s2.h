@@ -12,6 +12,7 @@ class test_regression_adj_import_export_xml_mt310s2 : public QObject
     Q_OBJECT
 private slots:
     void initTestCase(); // We don't test clamps yet - keep this as reminder
+    void init();
     void cleanup();
 
     void directAcessExportXml();
@@ -28,7 +29,7 @@ private slots:
     void scpiExportInitialAdjXmlClamps();
 
 private:
-    void setupServers(AtmelPermissionTemplate *permissionQueryHandler);
+    void setupServers();
 
     std::unique_ptr<MockForSenseInterfaceMt310s2> m_mockServer;
     std::unique_ptr<ResmanRunFacade> m_resmanServer;

@@ -4,7 +4,7 @@
 #include <QString>
 #include <memory>
 #include <atmelcommon.h>
-#include <atmelcommonversions.h>
+#include <atmelcommon.h>
 #include <i2cmultiplexerfactory.h>
 
 class AtmelCtrlEmob : public AtmelCommonVersions

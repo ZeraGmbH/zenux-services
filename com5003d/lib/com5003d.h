@@ -1,6 +1,7 @@
 #ifndef COM5003D_H
 #define COM5003D_H
 
+#include "atmelctrlfactoryinterface.h"
 #include "pcbserver.h"
 #include "rmconnection.h"
 #include "debugsettings.h"
@@ -56,8 +57,11 @@ private slots:
     void connect2RMError();
     void doIdentAndRegister();
 private:
+    void setupMicroControllerIo();
+
     static ServerParams defaultParams;
     ServerParams m_params;
+    AtmelCtrlFactoryInterfacePrt m_ctrlFactory;
 
     cDebugSettings* m_pDebugSettings;
     FPGASettings* m_fpgaCtrlSettings;
@@ -87,7 +91,6 @@ private:
     int m_nFPGAfd;
     int m_retryRMConnect;
     QTimer m_retryTimer;
-
 };
 
 

@@ -1,18 +1,15 @@
-#ifndef ATMELCTRLFACTORY_H
-#define ATMELCTRLFACTORY_H
+#ifndef MOCKATMELCTRLFACTORY_H
+#define MOCKATMELCTRLFACTORY_H
 
 #include "atmelctrlfactoryinterface.h"
-#include "i2csettings.h"
 
-class AtmelCtrlFactory : public AtmelCtrlFactoryInterface
+class MockAtmelCtrlFactory : public AtmelCtrlFactoryInterface
 {
 public:
-    AtmelCtrlFactory(cI2CSettings *i2cSettings);
+    MockAtmelCtrlFactory(bool initialPermission);
     AtmelPermissionTemplatePtrU getPermissionCheckController() override;
     AtmelCommonVersionsPtrU getCommonVersionController(ControllerTypes ctrlType, quint8 muxChannel = -1) override;
     AtmelAccumulatorHandlerPtrU getAccumulatorController() override;
-private:
-    cI2CSettings *m_i2cSettings;
 };
 
-#endif // ATMELCTRLFACTORY_H
+#endif // MOCKATMELCTRLFACTORY_H

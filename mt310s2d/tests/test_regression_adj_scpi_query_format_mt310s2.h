@@ -36,13 +36,12 @@ private slots:
     void queryOffsetCoefficients();
     void queryOffsetNodes();
 private:
-    void setupServers(AtmelPermissionTemplate *permissionQueryHandler);
+    void setupServers();
 
     std::unique_ptr<MockForSenseInterfaceMt310s2> m_mockServer;
     std::unique_ptr<ResmanRunFacade> m_resmanServer;
     Zera::ProxyClientPtr m_pcbClient;
     std::unique_ptr<Zera::cPCBInterface> m_pcbIFace;
-    AtmelPermissionTemplatePtrU m_permissionMock;
 };
 
 #endif // TEST_REGRESSION_ADJ_SCPI_QUERY_FORMAT_MT310S2_H

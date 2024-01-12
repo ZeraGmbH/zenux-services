@@ -26,13 +26,13 @@ Mt310s2SenseInterface::Mt310s2SenseInterface(cSCPI *scpiInterface,
                                              cI2CSettings* i2cSettings,
                                              cSenseSettings* senseSettings,
                                              cSystemInfo *systemInfo,
-                                             AtmelPermissionTemplate *permissionQueryHandler) :
+                                             AtmelCtrlFactoryInterfacePrt ctrlFactory) :
     cResource(scpiInterface),
     AdjustmentEeprom(i2cSettings->getDeviceNode(),
               i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress),
               I2cMultiplexerFactory::createNullMuxer()),
     m_pSystemInfo(systemInfo),
-    m_permissionQueryHandler(permissionQueryHandler)
+    m_ctrlFactory(ctrlFactory)
 {
     // Init with bad defaults so coder's bugs pop up
     m_nSerialStatus = Adjustment::wrongSNR;
@@ -286,7 +286,7 @@ bool Mt310s2SenseInterface::importAdjData(QDataStream &stream)
     stream >> s; // we take the device version now
 
     bool enable = false;
-    m_permissionQueryHandler->hasPermission(enable);
+    m_ctrlFactory->getPermissionCheckController()->hasPermission(enable);
 
     stream >> s; // we take the serial number now
     QString sysSerNo = m_pSystemInfo->getSerialNumber();

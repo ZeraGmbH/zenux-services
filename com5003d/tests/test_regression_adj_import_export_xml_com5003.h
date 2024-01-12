@@ -11,6 +11,7 @@ class test_regression_adj_import_export_xml_com5003 : public QObject
 {
     Q_OBJECT
 private slots:
+    void init();
     void cleanup();
 
     void directAcessExportXml();
@@ -23,7 +24,7 @@ private slots:
     // scpi xml transfers
     void scpiExportInitialAdjXml();
 private:
-    void setupServers(AtmelPermissionTemplate *permissionQueryHandler);
+    void setupServers();
 
     std::unique_ptr<MockForSenseInterfaceCom5003> m_mockServer;
     std::unique_ptr<ResmanRunFacade> m_resmanServer;

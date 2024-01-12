@@ -36,13 +36,12 @@ private slots:
     void queryOffsetCoefficients();
     void queryOffsetNodes();
 private:
-    void setupServers(AtmelPermissionTemplate *permissionQueryHandler);
+    void setupServers();
 
     std::unique_ptr<MockForSenseInterfaceCom5003> m_mockServer;
     std::unique_ptr<ResmanRunFacade> m_resmanServer;
     Zera::ProxyClientPtr m_pcbClient;
     std::unique_ptr<Zera::cPCBInterface> m_pcbIFace;
-    AtmelPermissionTemplatePtrU m_permissionMock;
 };
 
 #endif // TEST_REGRESSION_ADJ_SCPI_QUERY_FORMAT_COM5003_H

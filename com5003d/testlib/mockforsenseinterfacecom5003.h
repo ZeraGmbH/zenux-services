@@ -5,13 +5,13 @@
 #include "mockpcbserver.h"
 #include "com5003senseinterface.h"
 #include "com5003systeminterface.h"
-#include "atmelpermissionmock.h"
+#include "atmelctrlfactoryinterface.h"
 #include <memory>
 
 class MockForSenseInterfaceCom5003  : public MockPcbServer
 {
 public:
-    MockForSenseInterfaceCom5003(AtmelPermissionTemplate *permissionQueryHandler);
+    MockForSenseInterfaceCom5003(AtmelCtrlFactoryInterfacePrt ctrlFactory);
     QString getDeviceVersion() { return m_systemInfo->getDeviceVersion(); }
     Com5003SenseInterface *getSenseInterface() { return m_senseInterface.get(); }
     cSenseSettings* getSenseSettings() { return m_senseSettings.get(); }
@@ -25,8 +25,6 @@ private:
     std::unique_ptr<Com5003SystemInterface> m_systemInterface; // for adj xml import/export
 
     std::unique_ptr<cSystemInfo> m_systemInfo;
-
-    AtmelPermissionMock m_permissionMock;
 };
 
 #endif // MOCKFORSENSEINTERFACECOM5003_H

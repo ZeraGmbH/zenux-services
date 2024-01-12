@@ -1,7 +1,7 @@
 #include "mt310s2d.h"
+#include "atmelctrlfactory.h"
 #include "mt310s2dglobal.h"
 #include "rmconnection.h"
-#include "atmelctrlsystem.h"
 #include "atmel.h"
 #include "atmelctrlfactorystatic.h"
 #include "clampinterface.h"
@@ -133,6 +133,14 @@ cMT310S2dServer::~cMT310S2dServer()
     if (m_accumulatorInterface) delete m_accumulatorInterface;
 }
 
+void cMT310S2dServer::setupMicroControllerIo()
+{
+    m_ctrlFactory = std::make_shared<AtmelCtrlFactory>(m_pI2CSettings);
+    PermissionFunctions::setPermissionCtrlFactory(m_ctrlFactory);
+    Atmel::setInstanceParams(m_pI2CSettings->getDeviceNode(), m_pI2CSettings->getI2CAdress(i2cSettings::relaisCtrlI2cAddress), m_pDebugSettings->getDebugLevel());
+    m_atmelWatcher = AtmelCtrlFactoryStatic::createAtmelWatcher(m_fpgaCtrlSettings->getDeviceNode());
+}
+
 void cMT310S2dServer::doConfiguration()
 {
     if ( pipe(pipeFD) == -1) {
@@ -171,11 +179,8 @@ void cMT310S2dServer::doConfiguration()
             m_accumulatorSettings = new AccumulatorSettings(&m_xmlConfigReader);
             connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_accumulatorSettings, &AccumulatorSettings::configXMLInfo);
 
-            if (m_xmlConfigReader.loadXMLFile(m_params.xmlFile)) {
-                Atmel::setInstanceParams(m_pI2CSettings->getDeviceNode(), m_pI2CSettings->getI2CAdress(i2cSettings::relaisCtrlI2cAddress), m_pDebugSettings->getDebugLevel());
-                m_atmelWatcher = AtmelCtrlFactoryStatic::createAtmelWatcher(m_fpgaCtrlSettings->getDeviceNode());
-                m_systemController = std::make_shared<AtmelCtrlSystem>(m_pI2CSettings->getDeviceNode(), m_pI2CSettings->getI2CAdress(i2cSettings::sysCtrlI2cAddress), m_pDebugSettings->getDebugLevel());
-            }
+            if (m_xmlConfigReader.loadXMLFile(m_params.xmlFile))
+                setupMicroControllerIo();
             else {
                 qCritical("Abort: Could not open xml file '%s", qPrintable(m_params.xmlFile));
                 emit abortInit();
@@ -216,29 +221,28 @@ void cMT310S2dServer::doSetupServer()
         else
         {
             Atmel::getInstance().setPLLChannel(1); // default channel m0 for pll control
-            m_pSystemInfo = new Mt310s2SystemInfo(m_systemController);
+            m_pSystemInfo = new Mt310s2SystemInfo(m_ctrlFactory);
 
             setupServer(); // here our scpi interface gets instanciated, we need this for further steps
 
             scpiConnectionList.append(this); // the server itself has some commands
-            scpiConnectionList.append(m_pStatusInterface = new cStatusInterface(getSCPIInterface(), m_pSenseInterface));
+            scpiConnectionList.append(m_pSenseInterface = new Mt310s2SenseInterface(getSCPIInterface(),
+                                                                                    m_pI2CSettings,
+                                                                                    m_pSenseSettings,
+                                                                                    m_pSystemInfo,
+                                                                                    m_ctrlFactory));
+            scpiConnectionList.append(m_pStatusInterface = new cStatusInterface(getSCPIInterface(), m_pSenseInterface, m_ctrlFactory));
             HotPluggableControllerContainerPtr emobControllerContainer =
                     std::make_unique<HotPluggableControllerContainer>(m_pI2CSettings->getDeviceNode(),
                                                                       m_pI2CSettings->getI2CAdress(i2cSettings::emobCtrlI2cAddress),
                                                                       m_pI2CSettings->getI2CAdress(i2cSettings::muxerI2cAddress),
                                                                       m_pDebugSettings->getDebugLevel());
-            scpiConnectionList.append(m_pSenseInterface = new Mt310s2SenseInterface(getSCPIInterface(),
-                                                                                    m_pI2CSettings,
-                                                                                    m_pSenseSettings,
-                                                                                    m_pSystemInfo,
-                                                                                    &Atmel::getInstance()));
             scpiConnectionList.append(m_pSystemInterface = new Mt310s2SystemInterface(this,
                                                                                       m_pSystemInfo,
                                                                                       m_pSenseSettings,
                                                                                       m_pSenseInterface,
-                                                                                      m_systemController,
-                                                                                      std::move(emobControllerContainer),
-                                                                                      &Atmel::getInstance()));
+                                                                                      m_ctrlFactory,
+                                                                                      std::move(emobControllerContainer)));
             scpiConnectionList.append(m_pSamplingInterface = new cSamplingInterface(getSCPIInterface(), m_pSamplingSettings));
             scpiConnectionList.append(m_foutInterface = new FOutGroupResourceAndInterface(getSCPIInterface(), m_foutSettings));
             scpiConnectionList.append(m_pFRQInputInterface = new FInGroupResourceAndInterface(getSCPIInterface(), m_finSettings));
@@ -248,8 +252,8 @@ void cMT310S2dServer::doSetupServer()
                                                                               m_pI2CSettings,
                                                                               m_pSenseSettings,
                                                                               m_pSenseInterface,
-                                                                              &Atmel::getInstance()));
-            scpiConnectionList.append(m_accumulatorInterface = new AccumulatorInterface(getSCPIInterface(), m_systemController, m_accumulatorSettings));
+                                                                              m_ctrlFactory));
+            scpiConnectionList.append(m_accumulatorInterface = new AccumulatorInterface(getSCPIInterface(), m_accumulatorSettings, m_ctrlFactory));
 
             resourceList.append(m_pSenseInterface); // all our resources
             resourceList.append(m_pSamplingInterface);

@@ -2,19 +2,21 @@
 #define ATMELPERMISSIONMOCK_H
 
 #include <timertemplateqt.h>
-#include <atmelpermissiontemplate.h>
+#include "atmelcommon.h"
 
 class AtmelPermissionMock : public QObject, public AtmelPermissionTemplate
 {
     Q_OBJECT
 public:
-    static AtmelPermissionTemplatePtrU createAlwaysEnabled();
-    static AtmelPermissionTemplatePtrU createAlwaysDisabled();
+    static AtmelPermissionTemplatePtrU create();
+    static void setPermission(bool permission);
+
     ZeraMControllerIo::atmelRM getEEPROMAccessEnable(bool &enable) override;
+
     void accessEnableAfter(int timeoutMs);
     void accessDisableAfter(int timeoutMs);
 private:
-    bool m_enable = false;
+    static bool m_permission; // static: simul singleton behavior / TOOD move behavior to MockAtmelCtrlFactory
     TimerTemplateQtPtr m_accessTimer;
 };
 

@@ -7,17 +7,16 @@
 Mt310s2SystemInterface::Mt310s2SystemInterface(cPCBServer *server,
                                                Mt310s2SystemInfo *systemInfo,
                                                cSenseSettings *senseSettings,
-                                               Mt310s2SenseInterface* senseInterface, std::shared_ptr<AtmelCtrlSystem> systemController,
-                                               HotPluggableControllerContainerPtr hotPluggableControllerContainer,
-                                               AtmelPermissionTemplate *permissionQueryHandler) :
+                                               Mt310s2SenseInterface* senseInterface,
+                                               AtmelCtrlFactoryInterfacePrt ctrlFactory,
+                                               HotPluggableControllerContainerPtr hotPluggableControllerContainer) :
     ScpiConnection(server->getSCPIInterface()),
     m_pMyServer(server),
     m_systemInfo(systemInfo),
     m_senseSettings(senseSettings),
     m_senseInterface(senseInterface),
-    m_systemController(systemController),
-    m_hotPluggableControllerContainer(std::move(hotPluggableControllerContainer)),
-    m_permissionQueryHandler(permissionQueryHandler)
+    m_ctrlFactory(ctrlFactory),
+    m_hotPluggableControllerContainer(std::move(hotPluggableControllerContainer))
 {
     if(m_hotPluggableControllerContainer)
         connect(m_hotPluggableControllerContainer.get(), &HotPluggableControllerContainer::sigControllersChanged,
@@ -263,7 +262,7 @@ QString Mt310s2SystemInterface::m_AdjFlashWrite(QString &sInput)
     if (cmd.isCommand(1) && (cmd.getParam(0) == ""))
     {
         bool enable;
-        if (m_permissionQueryHandler->hasPermission(enable))
+        if (m_ctrlFactory->getPermissionCheckController()->hasPermission(enable))
         {
             if (enable)
             {
@@ -309,7 +308,7 @@ QString Mt310s2SystemInterface::m_AdjXmlImportExport(QString &sInput)
     }
     else {
         bool enable;
-        if (m_permissionQueryHandler->hasPermission(enable)) {
+        if (m_ctrlFactory->getPermissionCheckController()->hasPermission(enable)) {
             if (enable) {
                 QString XML = cmd.getParam();
                 if (!m_senseInterface->importAdjXMLString(XML))
@@ -357,7 +356,7 @@ QString Mt310s2SystemInterface::m_AdjXMLRead(QString &sInput)
     if (cmd.isCommand(1))
     {
         bool enable;
-        if (m_permissionQueryHandler->hasPermission(enable))
+        if (m_ctrlFactory->getPermissionCheckController()->hasPermission(enable))
         {
             if (enable)
             {
@@ -410,7 +409,7 @@ QString Mt310s2SystemInterface::testMode(QString &Input)
 {
     cSCPICommand cmd = Input;
     quint32 modeBits = cmd.getParam(0).toUInt();
-    return m_systemController->enableTestMode(modeBits)==ZeraMControllerIo::cmddone ? ZSCPI::scpiAnswer[ZSCPI::ack] : ZSCPI::scpiAnswer[ZSCPI::errexec];
+    return m_ctrlFactory->getAccumulatorController()->enableTestMode(modeBits)==ZeraMControllerIo::cmddone ? ZSCPI::scpiAnswer[ZSCPI::ack] : ZSCPI::scpiAnswer[ZSCPI::errexec];
 }
 
 void Mt310s2SystemInterface::updateAllCtrlVersionsJson()

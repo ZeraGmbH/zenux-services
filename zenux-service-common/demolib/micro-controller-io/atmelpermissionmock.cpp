@@ -1,35 +1,33 @@
 #include "atmelpermissionmock.h"
 #include <timerfactoryqt.h>
 
-AtmelPermissionTemplatePtrU AtmelPermissionMock::createAlwaysEnabled()
+bool AtmelPermissionMock::m_permission = false;
+
+AtmelPermissionTemplatePtrU AtmelPermissionMock::create()
 {
-    std::unique_ptr<AtmelPermissionMock> ptr = std::make_unique<AtmelPermissionMock>();
-    ptr->accessEnableAfter(0);
-    return ptr;
+    return std::make_unique<AtmelPermissionMock>();
 }
 
-AtmelPermissionTemplatePtrU AtmelPermissionMock::createAlwaysDisabled()
+void AtmelPermissionMock::setPermission(bool permission)
 {
-    std::unique_ptr<AtmelPermissionMock> ptr = std::make_unique<AtmelPermissionMock>();
-    ptr->accessDisableAfter(0);
-    return ptr;
+    m_permission = permission;
 }
 
 ZeraMControllerIoTemplate::atmelRM AtmelPermissionMock::getEEPROMAccessEnable(bool &enable)
 {
-    enable = m_enable;
+    enable = m_permission;
     return ZeraMControllerIo::cmddone;
 }
 
 void AtmelPermissionMock::accessEnableAfter(int timeoutMs)
 {
     if(timeoutMs == 0) {
-        m_enable = true;
+        m_permission = true;
         return;
     }
     m_accessTimer = TimerFactoryQt::createSingleShot(timeoutMs);
     connect(m_accessTimer.get(), &TimerTemplateQt::sigExpired, this, [&]{
-        m_enable = true;
+        m_permission = true;
     });
     m_accessTimer->start();
 }
@@ -37,12 +35,12 @@ void AtmelPermissionMock::accessEnableAfter(int timeoutMs)
 void AtmelPermissionMock::accessDisableAfter(int timeoutMs)
 {
     if(timeoutMs == 0) {
-        m_enable = false;
+        m_permission = false;
         return;
     }
     m_accessTimer = TimerFactoryQt::createSingleShot(timeoutMs);
     connect(m_accessTimer.get(), &TimerTemplateQt::sigExpired, this, [&]{
-        m_enable = false;
+        m_permission = false;
     });
     m_accessTimer->start();
 }

@@ -1,7 +1,6 @@
 #ifndef TEST_REGRESSION_ADJ_CALC_MT310S2_H
 #define TEST_REGRESSION_ADJ_CALC_MT310S2_H
 
-#include "atmelpermissiontemplate.h"
 #include "mockforsenseinterfacemt310s2.h"
 #include "pcbinterface.h"
 #include "proxyclient.h"
@@ -35,7 +34,7 @@ private slots:
     void offsetAdjValueSingleClamp();
     void offsetAdjValueTotalClamp();
 private:
-    void setupServers(AtmelPermissionTemplate *permissionQueryHandler);
+    void setupServers();
     void addClamp();
     QString readFile(QString filename);
     double calcAdjValue(double value, double coeff0, double coeff1, double coeff2);
@@ -44,7 +43,6 @@ private:
     std::unique_ptr<ResmanRunFacade> m_resmanServer;
     Zera::ProxyClientPtr m_pcbClient;
     std::unique_ptr<Zera::cPCBInterface> m_pcbIFace;
-    AtmelPermissionTemplatePtrU m_permissionMock;
     std::unique_ptr<AdjustScpiValueFormatter> m_valueFormatter;
 };
 

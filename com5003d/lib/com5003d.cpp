@@ -12,6 +12,7 @@
 #include <fcntl.h>
 #include <syslog.h>
 
+#include "atmelctrlfactory.h"
 #include "com5003dglobal.h"
 #include "com5003d.h"
 #include "pcbserver.h"
@@ -118,6 +119,14 @@ cCOM5003dServer::~cCOM5003dServer()
     if (m_pRMConnection) delete m_pRMConnection;
 }
 
+void cCOM5003dServer::setupMicroControllerIo()
+{
+    m_ctrlFactory = std::make_shared<AtmelCtrlFactory>(m_pI2CSettings);
+    PermissionFunctions::setPermissionCtrlFactory(m_ctrlFactory);
+    Atmel::setInstanceParams(m_pI2CSettings->getDeviceNode(), m_pI2CSettings->getI2CAdress(i2cSettings::relaisCtrlI2cAddress), m_pDebugSettings->getDebugLevel());
+    m_atmelWatcher = AtmelCtrlFactoryStatic::createAtmelWatcher(m_fpgaCtrlSettings->getDeviceNode());
+}
+
 void cCOM5003dServer::doConfiguration()
 {
     m_nFPGAfd = open("/dev/zFPGA1reg",O_RDWR);
@@ -155,8 +164,7 @@ void cCOM5003dServer::doConfiguration()
         sigStart = 1;
         write(m_nFPGAfd, &sigStart, 4);
         if (m_xmlConfigReader.loadXMLFile(m_params.xmlFile)) {
-            Atmel::setInstanceParams(m_pI2CSettings->getDeviceNode(), m_pI2CSettings->getI2CAdress(i2cSettings::relaisCtrlI2cAddress), m_pDebugSettings->getDebugLevel());
-            m_atmelWatcher = AtmelCtrlFactoryStatic::createAtmelWatcher(m_fpgaCtrlSettings->getDeviceNode());
+            setupMicroControllerIo();
 
             sigStart = 0;
             write(m_nFPGAfd, &sigStart, 4);
@@ -301,7 +309,7 @@ void cCOM5003dServer::doWait4Atmel()
 void cCOM5003dServer::doSetupServer()
 {
     Atmel::getInstance().setPLLChannel(1); // default channel m0 for pll control
-    m_pSystemInfo = new cSystemInfo();
+    m_pSystemInfo = new cSystemInfo(m_ctrlFactory);
 
     setupServer(); // here our scpi interface gets instanciated, we need this for further steps
 
@@ -309,15 +317,15 @@ void cCOM5003dServer::doSetupServer()
     m_pRMConnection = new RMConnection(m_ethSettings.getRMIPadr(), m_ethSettings.getPort(EthSettings::resourcemanager));
 
     scpiConnectionList.append(this); // the server itself has some commands
-    scpiConnectionList.append(m_pStatusInterface = new cStatusInterface(getSCPIInterface(), m_pSenseInterface));
     scpiConnectionList.append(m_pSenseInterface = new Com5003SenseInterface(getSCPIInterface(),
                                                                             m_pI2CSettings,
                                                                             m_pRMConnection,
                                                                             &m_ethSettings,
                                                                             m_pSenseSettings,
                                                                             m_pSystemInfo,
-                                                                            &Atmel::getInstance()));
-    scpiConnectionList.append(m_pSystemInterface = new Com5003SystemInterface(this, m_pSystemInfo, m_pSenseInterface, &Atmel::getInstance()));
+                                                                            m_ctrlFactory));
+    scpiConnectionList.append(m_pStatusInterface = new cStatusInterface(getSCPIInterface(), m_pSenseInterface, m_ctrlFactory));
+    scpiConnectionList.append(m_pSystemInterface = new Com5003SystemInterface(this, m_pSystemInfo, m_pSenseInterface, m_ctrlFactory));
     scpiConnectionList.append(m_pSamplingInterface = new cSamplingInterface(getSCPIInterface(), m_pSamplingSettings));
     scpiConnectionList.append(m_foutInterface = new FOutGroupResourceAndInterface(getSCPIInterface(), m_foutSettings));
     scpiConnectionList.append(m_pFRQInputInterface = new FInGroupResourceAndInterface(getSCPIInterface(), m_finSettings));

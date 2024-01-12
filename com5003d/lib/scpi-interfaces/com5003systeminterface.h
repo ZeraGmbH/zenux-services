@@ -4,7 +4,7 @@
 #include "com5003senseinterface.h"
 #include "scpiconnection.h"
 #include "pcbserver.h"
-#include "atmelpermissiontemplate.h"
+#include "atmelcommon.h"
 #include <QList>
 #include <QJsonDocument>
 
@@ -36,7 +36,7 @@ public:
     Com5003SystemInterface(cPCBServer* server,
                            cSystemInfo* sytemInfo,
                            Com5003SenseInterface *senseInterface,
-                           AtmelPermissionTemplate *permissionQueryHandler);
+                           AtmelCtrlFactoryInterfacePrt ctrlFactory);
     virtual void initSCPIConnection(QString leadingNodes) override;
 
 protected:
@@ -66,7 +66,7 @@ private:
     cPCBServer* m_pMyServer;
     cSystemInfo* m_sytemInfo;
     Com5003SenseInterface *m_senseInterface;
-    AtmelPermissionTemplate *m_permissionQueryHandler;
+    AtmelCtrlFactoryInterfacePrt m_ctrlFactory;
     NotificationString m_allCtrlVersion;
     NotificationString m_allPCBVersion;
 };

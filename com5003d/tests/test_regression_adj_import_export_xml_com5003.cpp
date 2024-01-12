@@ -2,12 +2,17 @@
 #include "proxy.h"
 #include "scpisingletransactionblocked.h"
 #include "xmlhelperfortest.h"
-#include "atmel.h"
+#include "mockatmelctrlfactory.h"
 #include <timemachineobject.h>
 #include <QSignalSpy>
 #include <QTest>
 
 QTEST_MAIN(test_regression_adj_import_export_xml_com5003);
+
+void test_regression_adj_import_export_xml_com5003::init()
+{
+    setupServers();
+}
 
 void test_regression_adj_import_export_xml_com5003::cleanup()
 {
@@ -20,8 +25,6 @@ void test_regression_adj_import_export_xml_com5003::cleanup()
 
 void test_regression_adj_import_export_xml_com5003::directAcessExportXml()
 {
-    setupServers(&Atmel::getInstance());
-
     QString xmlExported = m_mockServer->getSenseInterface()->exportXMLString();
     qInfo("Exported XML (before adjust):");
     qInfo("%s", qPrintable(xmlExported));
@@ -40,8 +43,6 @@ void test_regression_adj_import_export_xml_com5003::directAcessExportXml()
 
 void test_regression_adj_import_export_xml_com5003::directAcessFileImportXmlMinimal()
 {
-    setupServers(&Atmel::getInstance());
-
     QString filenameShort = ":/import_minimal_pass";
     QVERIFY(QFile::exists(filenameShort + ".xml"));
     QVERIFY(m_mockServer->getSenseInterface()->importAdjXMLFile(filenameShort));
@@ -49,8 +50,6 @@ void test_regression_adj_import_export_xml_com5003::directAcessFileImportXmlMini
 
 void test_regression_adj_import_export_xml_com5003::directAcessFileImportXmlPseudoRandom()
 {
-    setupServers(&Atmel::getInstance());
-
     QString xmlExportedInitial = m_mockServer->getSenseInterface()->exportXMLString();
     xmlExportedInitial = XmlHelperForTest::removeTimeDependentEntriesFromXml(xmlExportedInitial);
     QFile xmlFileInitial(":/export_internal_initial.xml");
@@ -74,8 +73,6 @@ void test_regression_adj_import_export_xml_com5003::directAcessFileImportXmlPseu
 
 void test_regression_adj_import_export_xml_com5003::directAcessFileImportMissingType()
 {
-    setupServers(&Atmel::getInstance());
-
     QString filenameShort = ":/import_missing_type";
     QVERIFY(QFile::exists(filenameShort + ".xml"));
     QVERIFY(!m_mockServer->getSenseInterface()->importAdjXMLFile(filenameShort));
@@ -83,8 +80,6 @@ void test_regression_adj_import_export_xml_com5003::directAcessFileImportMissing
 
 void test_regression_adj_import_export_xml_com5003::directAcessFileImportMissingSerNo()
 {
-    setupServers(&Atmel::getInstance());
-
     QString filenameShort = ":/import_missing_serno";
     QVERIFY(QFile::exists(filenameShort + ".xml"));
     QVERIFY(!m_mockServer->getSenseInterface()->importAdjXMLFile(filenameShort));
@@ -92,8 +87,6 @@ void test_regression_adj_import_export_xml_com5003::directAcessFileImportMissing
 
 void test_regression_adj_import_export_xml_com5003::scpiExportInitialAdjXml()
 {
-    setupServers(&Atmel::getInstance());
-
     QFile xmlFile(":/export_internal_initial.xml");
     QVERIFY(xmlFile.open(QFile::ReadOnly));
     QString xmlExpected = xmlFile.readAll();
@@ -112,10 +105,10 @@ void test_regression_adj_import_export_xml_com5003::scpiExportInitialAdjXml()
     QCOMPARE(xmlExportedPretty, xmlExpected);
 }
 
-void test_regression_adj_import_export_xml_com5003::setupServers(AtmelPermissionTemplate *permissionQueryHandler)
+void test_regression_adj_import_export_xml_com5003::setupServers()
 {
     m_resmanServer = std::make_unique<ResmanRunFacade>();
-    m_mockServer = std::make_unique<MockForSenseInterfaceCom5003>(permissionQueryHandler);
+    m_mockServer = std::make_unique<MockForSenseInterfaceCom5003>(std::make_shared<MockAtmelCtrlFactory>(true));
     TimeMachineObject::feedEventLoop();
 
     m_pcbClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307);
@@ -124,4 +117,3 @@ void test_regression_adj_import_export_xml_com5003::setupServers(AtmelPermission
     Zera::Proxy::getInstance()->startConnectionSmart(m_pcbClient);
     TimeMachineObject::feedEventLoop();
 }
-
