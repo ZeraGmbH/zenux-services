@@ -17,7 +17,7 @@ public:
     static QByteArray getData(QString devNode, short adr);
     static int getWriteCount(QString devNode, short adr);
 private:
-    void doReset();
+    void doReset(int size);
     QString m_devNode;
     short m_i2cAddr;
     static QHash<QString, QHash<short, QByteArray>> m_flashData;

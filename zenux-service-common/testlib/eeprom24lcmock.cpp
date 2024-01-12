@@ -13,7 +13,7 @@ EEprom24LCMock::EEprom24LCMock(QString devNode, short i2cAddr) :
         return;
     if(m_flashData[devNode].contains(i2cAddr))
         return;
-    doReset();
+    doReset(sizeFlash);
 }
 
 int EEprom24LCMock::WriteData(char *data, ushort count, ushort adr)
@@ -23,6 +23,7 @@ int EEprom24LCMock::WriteData(char *data, ushort count, ushort adr)
     if(count > sizeFlash)
         qFatal("Cannot write data of length %i / max is %i", count, sizeFlash);
 
+    doReset(count);
     QByteArray &flashEntry = m_flashData[m_devNode][m_i2cAddr];
     for(int i=0; i<count; i++)
         flashEntry[i] = data[i];
@@ -45,7 +46,7 @@ int EEprom24LCMock::ReadData(char *data, ushort count, ushort adr)
 
 int EEprom24LCMock::Reset()
 {
-    doReset();
+    doReset(0);
     return size();
 }
 
@@ -74,7 +75,7 @@ int EEprom24LCMock::getWriteCount(QString devNode, short adr)
     return m_flashDataWriteCounts[devNode][adr];
 }
 
-void EEprom24LCMock::doReset()
+void EEprom24LCMock::doReset(int size)
 {
-    m_flashData[m_devNode][m_i2cAddr] = QByteArray(sizeFlash, 0xff);
+    m_flashData[m_devNode][m_i2cAddr] = QByteArray(size, 0xff);
 }
