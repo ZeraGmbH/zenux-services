@@ -1,7 +1,7 @@
 #include "mt310s2systeminfo.h"
 
 Mt310s2SystemInfo::Mt310s2SystemInfo(AtmelCtrlFactoryInterfacePrt ctrlFactory) :
-    cSystemInfo(ctrlFactory),
+    SystemInfo(ctrlFactory),
     m_ctrlFactory(ctrlFactory)
 {
     m_sSysCTRLVersion = m_sSysPCBVersion = "Unknown";
@@ -18,7 +18,7 @@ void Mt310s2SystemInfo::getSystemInfo()
 
 bool Mt310s2SystemInfo::dataRead()
 {
-    return m_bRead && cSystemInfo::dataRead();
+    return m_bRead && SystemInfo::dataRead();
 }
 
 QString &Mt310s2SystemInfo::getSysCTRLVersion()

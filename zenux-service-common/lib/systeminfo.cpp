@@ -1,14 +1,14 @@
 #include "systeminfo.h"
 #include "micro-controller-io/atmel.h"
 
-cSystemInfo::cSystemInfo(AtmelCtrlFactoryInterfacePrt ctrlFactory) :
+SystemInfo::SystemInfo(AtmelCtrlFactoryInterfacePrt ctrlFactory) :
     m_ctrlFactory(ctrlFactory)
 {
     m_sDeviceName = m_sPCBVersion = m_sLCAVersion = m_sCTRLVersion = m_sSerialNumber = "Unknown";
     getSystemInfo();
 }
 
-void cSystemInfo::getSystemInfo()
+void SystemInfo::getSystemInfo()
 {
     AtmelCommonVersionsPtrU controller = m_ctrlFactory->getCommonVersionController(AtmelCtrlFactoryInterface::CTRL_TYPE_RELAIS);
     int rm = ZeraMControllerIo::cmddone;
@@ -20,12 +20,12 @@ void cSystemInfo::getSystemInfo()
     m_bRead = (rm == ZeraMControllerIo::cmddone);
 }
 
-bool cSystemInfo::dataRead()
+bool SystemInfo::dataRead()
 {
     return m_bRead;
 }
 
-QString cSystemInfo::getDeviceVersion()
+QString SystemInfo::getDeviceVersion()
 {
     return QString("DEVICE: %1;PCB: %2;LCA: %3;CTRL: %4").arg(
         m_sDeviceName,
@@ -34,27 +34,27 @@ QString cSystemInfo::getDeviceVersion()
         m_sCTRLVersion);
 }
 
-QString cSystemInfo::getDeviceName()
+QString SystemInfo::getDeviceName()
 {
     return m_sDeviceName;
 }
 
-QString cSystemInfo::getPCBVersion()
+QString SystemInfo::getPCBVersion()
 {
     return m_sPCBVersion;
 }
 
-QString cSystemInfo::getLCAVersion()
+QString SystemInfo::getLCAVersion()
 {
     return m_sLCAVersion;
 }
 
-QString cSystemInfo::getCTRLVersion()
+QString SystemInfo::getCTRLVersion()
 {
     return m_sCTRLVersion;
 }
 
-QString cSystemInfo::getSerialNumber()
+QString SystemInfo::getSerialNumber()
 {
     return m_sSerialNumber;
 }

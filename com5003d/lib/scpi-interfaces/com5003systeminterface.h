@@ -34,7 +34,7 @@ class Com5003SystemInterface: public ScpiConnection
     Q_OBJECT
 public:
     Com5003SystemInterface(cPCBServer* server,
-                           cSystemInfo* sytemInfo,
+                           SystemInfo* sytemInfo,
                            Com5003SenseInterface *senseInterface,
                            AtmelCtrlFactoryInterfacePrt ctrlFactory);
     virtual void initSCPIConnection(QString leadingNodes) override;
@@ -64,7 +64,7 @@ private:
     void m_genAnswer(int select, QString& answer);
 
     cPCBServer* m_pMyServer;
-    cSystemInfo* m_sytemInfo;
+    SystemInfo* m_sytemInfo;
     Com5003SenseInterface *m_senseInterface;
     AtmelCtrlFactoryInterfacePrt m_ctrlFactory;
     NotificationString m_allCtrlVersion;

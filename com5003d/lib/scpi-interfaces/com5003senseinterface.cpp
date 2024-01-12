@@ -25,7 +25,7 @@ Com5003SenseInterface::Com5003SenseInterface(cSCPI *scpiInterface,
                                              cI2CSettings *i2cSettings,
                                              RMConnection* rmConnection,
                                              EthSettings *ethSettings,
-                                             cSenseSettings *senseSettings, cSystemInfo *systemInfo,
+                                             cSenseSettings *senseSettings, SystemInfo *systemInfo,
                                              AtmelCtrlFactoryInterfacePrt ctrlFactory) :
     cResource(scpiInterface),
     AdjustmentEeprom(i2cSettings->getDeviceNode(),

@@ -25,7 +25,7 @@
 Mt310s2SenseInterface::Mt310s2SenseInterface(cSCPI *scpiInterface,
                                              cI2CSettings* i2cSettings,
                                              cSenseSettings* senseSettings,
-                                             cSystemInfo *systemInfo,
+                                             SystemInfo *systemInfo,
                                              AtmelCtrlFactoryInterfacePrt ctrlFactory) :
     cResource(scpiInterface),
     AdjustmentEeprom(i2cSettings->getDeviceNode(),

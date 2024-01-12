@@ -54,7 +54,7 @@ public:
                           RMConnection* rmConnection,
                           EthSettings* ethSettings,
                           cSenseSettings* senseSettings,
-                          cSystemInfo *systemInfo,
+                          SystemInfo *systemInfo,
                           AtmelCtrlFactoryInterfacePrt ctrlFactory);
     ~Com5003SenseInterface();
     virtual void initSCPIConnection(QString leadingNodes) override;
@@ -89,7 +89,7 @@ private:
     void setNotifierSenseMMode();
     void setNotifierSenseChannelCat();
 
-    cSystemInfo *m_systemInfo;
+    SystemInfo *m_systemInfo;
     AtmelCtrlFactoryInterfacePrt m_ctrlFactory;
 
     QList<Com5003SenseChannel*> m_ChannelList;

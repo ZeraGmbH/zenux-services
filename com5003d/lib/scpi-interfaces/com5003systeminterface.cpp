@@ -8,7 +8,7 @@
 #include <QJsonObject>
 
 Com5003SystemInterface::Com5003SystemInterface(cPCBServer *server,
-                                               cSystemInfo *sytemInfo,
+                                               SystemInfo *sytemInfo,
                                                Com5003SenseInterface *senseInterface,
                                                AtmelCtrlFactoryInterfacePrt ctrlFactory) :
     ScpiConnection(server->getSCPIInterface()),
