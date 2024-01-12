@@ -4,10 +4,10 @@
 #include "atmelctrlfactoryinterface.h"
 #include <QString>
 
-class cSystemInfo
+class SystemInfo
 {
 public:
-    cSystemInfo(AtmelCtrlFactoryInterfacePrt ctrlFactory);
+    SystemInfo(AtmelCtrlFactoryInterfacePrt ctrlFactory);
     void getSystemInfo(); // here we fetch all system info
     bool dataRead(); // false if we were not able to read required information
     QString getDeviceVersion();

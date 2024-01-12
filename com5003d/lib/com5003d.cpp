@@ -309,7 +309,7 @@ void cCOM5003dServer::doWait4Atmel()
 void cCOM5003dServer::doSetupServer()
 {
     Atmel::getInstance().setPLLChannel(1); // default channel m0 for pll control
-    m_pSystemInfo = new cSystemInfo(m_ctrlFactory);
+    m_pSystemInfo = new SystemInfo(m_ctrlFactory);
 
     setupServer(); // here our scpi interface gets instanciated, we need this for further steps
 

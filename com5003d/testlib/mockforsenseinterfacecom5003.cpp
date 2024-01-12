@@ -4,7 +4,7 @@ MockForSenseInterfaceCom5003::MockForSenseInterfaceCom5003(AtmelCtrlFactoryInter
     MockPcbServer("com5003d")
 {
     m_i2cSettings = std::make_unique<cI2CSettings>(getConfigReader());
-    m_systemInfo = std::make_unique<cSystemInfo>(ctrlFactory);
+    m_systemInfo = std::make_unique<SystemInfo>(ctrlFactory);
 
     m_senseSettings = std::make_unique<cSenseSettings>(getConfigReader(), 8);
     setXmlSettings(XmlSettingsList{m_i2cSettings.get(), m_senseSettings.get()});

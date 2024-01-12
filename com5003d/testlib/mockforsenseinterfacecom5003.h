@@ -24,7 +24,7 @@ private:
     std::unique_ptr<Com5003SenseInterface> m_senseInterface;
     std::unique_ptr<Com5003SystemInterface> m_systemInterface; // for adj xml import/export
 
-    std::unique_ptr<cSystemInfo> m_systemInfo;
+    std::unique_ptr<SystemInfo> m_systemInfo;
 };
 
 #endif // MOCKFORSENSEINTERFACECOM5003_H

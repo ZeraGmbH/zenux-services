@@ -26,7 +26,7 @@ class FOutGroupResourceAndInterface;
 class FInGroupResourceAndInterface;
 class ScInGroupResourceAndInterface;
 class HkInGroupResourceAndInterface;
-class cSystemInfo;
+class SystemInfo;
 
 
 class cCOM5003dServer: public cPCBServer
@@ -37,7 +37,7 @@ public:
     explicit cCOM5003dServer(ServerParams params = defaultParams);
     ~cCOM5003dServer();
 
-    cSystemInfo* m_pSystemInfo;
+    SystemInfo* m_pSystemInfo;
 
 signals:
     void abortInit();

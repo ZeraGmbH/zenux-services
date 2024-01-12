@@ -71,7 +71,7 @@ public:
     Mt310s2SenseInterface(cSCPI *scpiInterface,
                           cI2CSettings *i2cSettings,
                           cSenseSettings *senseSettings,
-                          cSystemInfo *systemInfo,
+                          SystemInfo *systemInfo,
                           AtmelCtrlFactoryInterfacePrt ctrlFactory);
     ~Mt310s2SenseInterface();
     virtual void initSCPIConnection(QString leadingNoMModedes) override;
@@ -105,7 +105,7 @@ private:
     void setNotifierSenseChannelCat();
     bool setSenseMode(QString sMode);
 
-    cSystemInfo* m_pSystemInfo;
+    SystemInfo* m_pSystemInfo;
     AtmelCtrlFactoryInterfacePrt m_ctrlFactory;
 
     QList<Mt310s2SenseChannel*> m_ChannelList;

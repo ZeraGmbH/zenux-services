@@ -5,7 +5,7 @@
 #include <memory>
 #include <QString>
 
-class Mt310s2SystemInfo : public cSystemInfo
+class Mt310s2SystemInfo : public SystemInfo
 {
 public:
     Mt310s2SystemInfo(AtmelCtrlFactoryInterfacePrt ctrlFactory);
