@@ -269,7 +269,7 @@ bool Mt310s2SenseInterface::importAdjData(QDataStream &stream)
     stream >> s;
     if (QString(s) != "ServerVersion") {
         qCritical("Flashmemory read: ServerVersion not found");
-        return false; // unexpected data
+        return false;
     }
 
     stream >> s;
@@ -280,7 +280,7 @@ bool Mt310s2SenseInterface::importAdjData(QDataStream &stream)
     if (QString(s) != sysDevName) {
         qCritical("Flashmemory read: Wrong pcb name: flash %s / µC %s",
                s, qPrintable(sysDevName));
-        return false; // wrong pcb name
+        return false;
     }
 
     stream >> s; // we take the device version now
@@ -326,9 +326,9 @@ bool Mt310s2SenseInterface::importAdjData(QDataStream &stream)
             }
         }
         if (!done) {
-            RangeAdjInterface* dummy; // if we could not find the owner of that data
-            dummy = createJustScpiInterfaceWithAtmelPermission();
-            dummy->Deserialize(stream); // we read the data from stream to keep it in flow
+            // owner of data read not found: read dummy to keep serialization in sync
+            RangeAdjInterface* dummy = createJustScpiInterfaceWithAtmelPermission();
+            dummy->Deserialize(stream);
             delete dummy;
         }
     }

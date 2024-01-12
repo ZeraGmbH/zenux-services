@@ -248,7 +248,7 @@ bool Com5003SenseInterface::importAdjData(QDataStream &stream)
     stream >> s;
     if (QString(s) != "ServerVersion") {
         qCritical("Flashmemory read: ServerVersion not found");
-        return false; // unexpected data
+        return false;
     }
 
     stream >> s;
@@ -267,8 +267,6 @@ bool Com5003SenseInterface::importAdjData(QDataStream &stream)
     bool enable = false;
     m_ctrlFactory->getPermissionCheckController()->hasPermission(enable);
 
-
-    // TODO: tests version number change will not cause error on adjustment
     stream >> s; // we take the serial number now
     QString sysSerNo = m_systemInfo->getSerialNumber();
     if (QString(s) != sysSerNo) {
@@ -307,9 +305,9 @@ bool Com5003SenseInterface::importAdjData(QDataStream &stream)
             }
         }
         if (!done) {
-            RangeAdjInterface* dummy; // if we could not find the owner of that data
-            dummy = createJustScpiInterfaceWithAtmelPermission();
-            dummy->Deserialize(stream); // we read the data from stream to keep it in flow
+            // owner of data read not found: read dummy to keep serialization in sync
+            RangeAdjInterface* dummy = createJustScpiInterfaceWithAtmelPermission();
+            dummy->Deserialize(stream);
             delete dummy;
         }
     }

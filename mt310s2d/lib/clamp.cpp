@@ -175,7 +175,8 @@ bool cClamp::importAdjData(QDataStream &stream)
             range->getJustData()->Deserialize(stream);
         }
         else {
-            RangeAdjInterface *dummy = new RangeAdjInterface(m_pSCPIInterface, AdjustScpiValueFormatterFactory::createMt310s2AdjFormatter()); // if we did not find this range....something has changed
+            // range not found: read dummy to keep serialization in sync
+            RangeAdjInterface *dummy = new RangeAdjInterface(m_pSCPIInterface, AdjustScpiValueFormatterFactory::createMt310s2AdjFormatter());
             dummy->Deserialize(stream); // we read the data from stream to keep it in flow
             delete dummy;
         }
@@ -400,7 +401,7 @@ ClampTypes cClamp::readClampType()
 {
     I2cMuxerScopedOnOff i2cMuxOnOff(getI2cMuxer());
     QByteArray ba;
-    if (readFlash(ba)) { // flash data could be read with correct chksum
+    if (readEepromChecksumValidated(ba)) {
         quint8 type;
         QDataStream stream(&ba, QIODevice::ReadWrite);
         stream.setVersion(QDataStream::Qt_5_4);
