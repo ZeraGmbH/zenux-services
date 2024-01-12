@@ -21,12 +21,12 @@ bool Mt310s2SystemInfo::dataRead()
     return m_bRead && SystemInfo::dataRead();
 }
 
-QString &Mt310s2SystemInfo::getSysCTRLVersion()
+QString Mt310s2SystemInfo::getSysCTRLVersion()
 {
     return m_sSysCTRLVersion;
 }
 
-QString &Mt310s2SystemInfo::getSysPCBVersion()
+QString Mt310s2SystemInfo::getSysPCBVersion()
 {
     return m_sSysPCBVersion;
 }
