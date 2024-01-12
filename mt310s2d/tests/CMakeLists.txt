@@ -8,6 +8,7 @@ SETUP_TESTS(
     test_regression_adj_import_permission_mt310s2
     test_regression_adj_scpi_query_format_mt310s2
     test_regression_adj_calc_mt310s2
+    test_adj_deny_import_mt310s2
     )
 
 target_sources(test_regression_adj_import_export_xml_mt310s2
@@ -38,4 +39,9 @@ target_sources(test_regression_adj_scpi_query_format_mt310s2
 target_sources(test_regression_adj_calc_mt310s2
   PRIVATE
     regression_data_adj_calc/regression_data.qrc
+)
+
+target_sources(test_adj_deny_import_mt310s2
+  PRIVATE
+    regression_data_adj_import_export/regression_data.qrc
 )

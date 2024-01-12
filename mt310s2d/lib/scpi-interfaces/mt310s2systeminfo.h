@@ -11,8 +11,8 @@ public:
     Mt310s2SystemInfo(AtmelCtrlFactoryInterfacePrt ctrlFactory);
     void getSystemInfo(); // here we fetch all system info
     bool dataRead(); // false if we were not able to read required information
-    QString getSysCTRLVersion();
-    QString getSysPCBVersion();
+    virtual QString getSysCTRLVersion();
+    virtual QString getSysPCBVersion();
 
 private:
     AtmelCtrlFactoryInterfacePrt m_ctrlFactory;
