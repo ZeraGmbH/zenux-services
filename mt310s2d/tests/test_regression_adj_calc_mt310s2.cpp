@@ -4,7 +4,7 @@
 #include "mockatmelctrlfactory.h"
 #include "proxy.h"
 #include "i2cflashiofactoryfortest.h"
-#include "flash24lc256mock.h"
+#include "eeprom24lcmock.h"
 #include "scpisingletransactionblocked.h"
 #include "zscpi_response_definitions.h"
 #include <timemachineobject.h>
@@ -28,7 +28,7 @@ void test_regression_adj_calc_mt310s2::initTestCase()
 
 void test_regression_adj_calc_mt310s2::cleanup()
 {
-    Flash24LC256Mock::cleanAll();
+    EEprom24LCMock::cleanAll();
     m_mockServer->removeAllClamps();
 }
 

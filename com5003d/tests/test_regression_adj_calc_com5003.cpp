@@ -2,7 +2,7 @@
 #include "mockatmelctrlfactory.h"
 #include "proxy.h"
 #include "i2cflashiofactoryfortest.h"
-#include "flash24lc256mock.h"
+#include "eeprom24lcmock.h"
 #include "scpisingletransactionblocked.h"
 #include <timemachineobject.h>
 #include <QSignalSpy>
@@ -24,7 +24,7 @@ void test_regression_adj_calc_com5003::initTestCase()
 
 void test_regression_adj_calc_com5003::cleanup()
 {
-    Flash24LC256Mock::cleanAll();
+    EEprom24LCMock::cleanAll();
 }
 
 static constexpr double val = 2.0;

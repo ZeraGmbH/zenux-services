@@ -1,11 +1,11 @@
-#include "flash24lc256mock.h"
+#include "eeprom24lcmock.h"
 
 static constexpr int sizeFlash = 32768;
 
-QHash<QString, QHash<short, QByteArray>> Flash24LC256Mock::m_flashData;
-QHash<QString, QHash<short, int>> Flash24LC256Mock::m_flashDataWriteCounts;
+QHash<QString, QHash<short, QByteArray>> EEprom24LCMock::m_flashData;
+QHash<QString, QHash<short, int>> EEprom24LCMock::m_flashDataWriteCounts;
 
-Flash24LC256Mock::Flash24LC256Mock(QString devNode, short i2cAddr) :
+EEprom24LCMock::EEprom24LCMock(QString devNode, short i2cAddr) :
     m_devNode(devNode),
     m_i2cAddr(i2cAddr)
 {
@@ -16,7 +16,7 @@ Flash24LC256Mock::Flash24LC256Mock(QString devNode, short i2cAddr) :
     doReset();
 }
 
-int Flash24LC256Mock::WriteData(char *data, ushort count, ushort adr)
+int EEprom24LCMock::WriteData(char *data, ushort count, ushort adr)
 {
     if(adr != 0)
         qFatal("Address other than 0 is not yet supported!");
@@ -30,7 +30,7 @@ int Flash24LC256Mock::WriteData(char *data, ushort count, ushort adr)
     return count;
 }
 
-int Flash24LC256Mock::ReadData(char *data, ushort count, ushort adr)
+int EEprom24LCMock::ReadData(char *data, ushort count, ushort adr)
 {
     if(adr != 0)
         qFatal("Address other than 0 is not yet supported!");
@@ -43,24 +43,24 @@ int Flash24LC256Mock::ReadData(char *data, ushort count, ushort adr)
     return count;
 }
 
-int Flash24LC256Mock::Reset()
+int EEprom24LCMock::Reset()
 {
     doReset();
     return size();
 }
 
-int Flash24LC256Mock::size()
+int EEprom24LCMock::size()
 {
     return sizeFlash;
 }
 
-void Flash24LC256Mock::cleanAll()
+void EEprom24LCMock::cleanAll()
 {
     m_flashData.clear();
     m_flashDataWriteCounts.clear();
 }
 
-QByteArray Flash24LC256Mock::getData(QString devNode, short adr)
+QByteArray EEprom24LCMock::getData(QString devNode, short adr)
 {
     QByteArray ret;
     if(m_flashData.contains(devNode))
@@ -69,12 +69,12 @@ QByteArray Flash24LC256Mock::getData(QString devNode, short adr)
     return ret;
 }
 
-int Flash24LC256Mock::getWriteCount(QString devNode, short adr)
+int EEprom24LCMock::getWriteCount(QString devNode, short adr)
 {
     return m_flashDataWriteCounts[devNode][adr];
 }
 
-void Flash24LC256Mock::doReset()
+void EEprom24LCMock::doReset()
 {
     m_flashData[m_devNode][m_i2cAddr] = QByteArray(sizeFlash, 0xff);
 }

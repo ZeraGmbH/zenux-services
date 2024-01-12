@@ -1,10 +1,10 @@
 #include "i2cflashiofactoryfortest.h"
-#include "flash24lc256mock.h"
+#include "eeprom24lcmock.h"
 
 void I2cFlashIoFactoryForTest::enableMockFlash()
 {
     m_cresteFunction = [](QString devNode, short i2cAddr) {
-        return std::make_unique<Flash24LC256Mock>(devNode, i2cAddr);
+        return std::make_unique<EEprom24LCMock>(devNode, i2cAddr);
     };
 }
 

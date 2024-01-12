@@ -3,7 +3,7 @@
 #include "mt310s2systeminfomock.h"
 #include "proxy.h"
 #include "i2cflashiofactoryfortest.h"
-#include "flash24lc256mock.h"
+#include "eeprom24lcmock.h"
 #include "scpisingletransactionblocked.h"
 #include "zscpi_response_definitions.h"
 #include "xmlhelperfortest.h"
@@ -14,7 +14,7 @@ QTEST_MAIN(test_adj_deny_import_mt310s2);
 
 void test_adj_deny_import_mt310s2::init()
 {
-    Flash24LC256Mock::cleanAll();
+    EEprom24LCMock::cleanAll();
     I2cFlashIoFactoryForTest::enableMockFlash();
     setupServers();
 }
@@ -32,10 +32,10 @@ void test_adj_deny_import_mt310s2::loadEEpromWithStoredNamesAndVersions()
 {
     // This is mostly to set-up our mock SystemInfo
     cI2CSettings *i2cSettings = m_mockServer->getI2cSettings();
-    Flash24LC256Mock flashMock(i2cSettings->getDeviceNode(), i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress));
+    EEprom24LCMock eepromMock(i2cSettings->getDeviceNode(), i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress));
     QByteArray eepromContent = readFile(":/export_internal_modified.eeprom");
     QVERIFY(!eepromContent.isEmpty());
-    flashMock.WriteData(eepromContent.data(), eepromContent.length(), 0);
+    eepromMock.WriteData(eepromContent.data(), eepromContent.length(), 0);
 
     QString ret = ScpiSingleTransactionBlocked::cmd("SYSTEM:ADJUSTMENT:FLASH:READ", "");
     QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::ack]);
@@ -58,10 +58,10 @@ void test_adj_deny_import_mt310s2::loadEEpromAndDenyDifferentDeviceName()
     static_cast<Mt310s2SystemInfoMock*>(m_mockServer->getSystemInfo())->setDeviceName("Foo");
 
     cI2CSettings *i2cSettings = m_mockServer->getI2cSettings();
-    Flash24LC256Mock flashMock(i2cSettings->getDeviceNode(), i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress));
+    EEprom24LCMock eepromMock(i2cSettings->getDeviceNode(), i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress));
     QByteArray eepromContent = readFile(":/export_internal_modified.eeprom");
     QVERIFY(!eepromContent.isEmpty());
-    flashMock.WriteData(eepromContent.data(), eepromContent.length(), 0);
+    eepromMock.WriteData(eepromContent.data(), eepromContent.length(), 0);
 
     QString ret = ScpiSingleTransactionBlocked::cmd("SYSTEM:ADJUSTMENT:FLASH:READ", "");
     QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::errexec]);
