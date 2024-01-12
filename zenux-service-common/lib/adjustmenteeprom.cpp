@@ -36,7 +36,7 @@ bool AdjustmentEeprom::importAdjFlash()
 {
     I2cMuxerScopedOnOff i2cMuxOnOff(m_i2cMuxer);
     QByteArray ba;
-    if (readFlash(ba)) { // if we could read data with correct chksum
+    if (readEepromChecksumValidated(ba)) {
         QDataStream stream(&ba, QIODevice::ReadOnly);
         stream.setVersion(QDataStream::Qt_5_4);
         return importAdjData(stream);
@@ -105,7 +105,7 @@ I2cMuxerInterface::Ptr AdjustmentEeprom::getI2cMuxer()
     return m_i2cMuxer;
 }
 
-bool AdjustmentEeprom::readFlash(QByteArray &ba)
+bool AdjustmentEeprom::readEepromChecksumValidated(QByteArray &ba)
 {
     // first we try to read 6 bytes hold length (quint32) and checksum (quint16)
     const int headerLen = 6;
@@ -121,7 +121,6 @@ bool AdjustmentEeprom::readFlash(QByteArray &ba)
     bastream.setVersion(QDataStream::Qt_5_4);
 
     quint32 count;
-
     bastream >> count >> m_nChecksum;
     if ( count > (quint32)flashIo->size() ) {
         qCritical("Cannot read flash: size wanted: %i / available %i", count, flashIo->size());
@@ -129,9 +128,10 @@ bool AdjustmentEeprom::readFlash(QByteArray &ba)
     }
 
     ba.resize(count);
-
-    if ( (count - flashIo->ReadData(ba.data(), count, 0)) > 0 ) {
-        qCritical("Error on flash read: wanted: %i / available %i", count, flashIo->size());
+    quint32 sizeRead = flashIo->ReadData(ba.data(), count, 0);
+    if (sizeRead < count) {
+        qCritical("Error on flash read: wanted: %i / available %i / got %i",
+                  count, flashIo->size(), sizeRead);
         return(false); // read error
     }
 

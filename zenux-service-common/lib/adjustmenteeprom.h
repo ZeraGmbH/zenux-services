@@ -22,7 +22,7 @@ public:
 protected:
     virtual void exportAdjData(QDataStream& stream, QDateTime dateTimeWrite) = 0; // the derived class exports adjdata to qdatastream
     virtual bool importAdjData(QDataStream& stream) = 0; // same for import
-    bool readFlash(QByteArray& ba);
+    bool readEepromChecksumValidated(QByteArray& ba);
 
 private:
     void setAdjCountChecksum(QByteArray& ba);
