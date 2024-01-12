@@ -354,17 +354,6 @@ void cMT310S2dServer::enableClampInterrupt()
     }
 }
 
-void cMT310S2dServer::enableAccumulatorInterrupt()
-{
-    quint16 maskToAdd = (1 << accumulatorInterrupt);
-    if(m_systemController->writeIntMask(m_atmelSysCntrlInterruptMask | maskToAdd) == ZeraMControllerIo::cmddone) {
-        m_atmelSysCntrlInterruptMask |= maskToAdd;
-    }
-    else {
-        qWarning("Could not enable accumulator interrupt!");
-    }
-}
-
 void cMT310S2dServer::updateI2cDevicesConnected()
 {
     quint16 clStat;

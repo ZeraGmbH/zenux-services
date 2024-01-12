@@ -62,7 +62,6 @@ private slots:
 private:
     void SetFASync();
     void enableClampInterrupt();
-    void enableAccumulatorInterrupt();
     void updateI2cDevicesConnected();
 
     static ServerParams defaultParams;
