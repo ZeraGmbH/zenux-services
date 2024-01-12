@@ -1,7 +1,7 @@
 #include "test_regression_adj_scpi_query_format_mt310s2.h"
 #include "proxy.h"
 #include "i2cflashiofactoryfortest.h"
-#include "flash24lc256mock.h"
+#include "eeprom24lcmock.h"
 #include "scpisingletransactionblocked.h"
 #include "mockatmelctrlfactory.h"
 #include <timemachineobject.h>
@@ -24,7 +24,7 @@ void test_regression_adj_scpi_query_format_mt310s2::initTestCase()
 
 void test_regression_adj_scpi_query_format_mt310s2::init()
 {
-    Flash24LC256Mock::cleanAll();
+    EEprom24LCMock::cleanAll();
 }
 
 void test_regression_adj_scpi_query_format_mt310s2::queryGainCorrectionSingleGen()
