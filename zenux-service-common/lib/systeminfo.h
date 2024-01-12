@@ -1,21 +1,21 @@
 #ifndef SYSTEMINFO_H
 #define SYSTEMINFO_H
 
+#include "systeminfointerface.h"
 #include "atmelctrlfactoryinterface.h"
-#include <QString>
 
-class SystemInfo
+class SystemInfo : public SystemInfoInterface
 {
 public:
     SystemInfo(AtmelCtrlFactoryInterfacePrt ctrlFactory);
     void getSystemInfo(); // here we fetch all system info
     bool dataRead(); // false if we were not able to read required information
-    QString getDeviceVersion();
-    QString getDeviceName();
-    QString getPCBVersion();
-    QString getLCAVersion();
-    QString getCTRLVersion();
-    QString getSerialNumber();
+    QString getDeviceVersion() override;
+    QString getDeviceName() override;
+    QString getPCBVersion() override;
+    QString getLCAVersion() override;
+    QString getCTRLVersion() override;
+    QString getSerialNumber() override;
 
 private:
     AtmelCtrlFactoryInterfacePrt m_ctrlFactory;
