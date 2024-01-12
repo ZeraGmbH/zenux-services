@@ -11,13 +11,13 @@ cClampInterface::cClampInterface(cPCBServer *server,
                                  cI2CSettings *i2cSettings,
                                  cSenseSettings *senseSettings,
                                  Mt310s2SenseInterface *senseInterface,
-                                 AtmelPermissionTemplate *permissionQueryHandler) :
+                                 AtmelCtrlFactoryInterfacePrt ctrlFactory) :
     ScpiConnection(server->getSCPIInterface()),
     m_pMyServer(server),
     m_i2cSettings(i2cSettings),
     m_senseSettings(senseSettings),
     m_pSenseInterface(senseInterface),
-    m_permissionQueryHandler(permissionQueryHandler)
+    m_ctrlFactory(ctrlFactory)
 {
     m_nClampStatus = 0;
 }
@@ -157,7 +157,7 @@ QString cClampInterface::writeAllClamps(QString &sInput)
     if (cmd.isCommand(1) && (cmd.getParam(0) == "")) {
         if (m_clampHash.count() > 0) {
             bool enable;
-            if (m_permissionQueryHandler->hasPermission(enable)) {
+            if (m_ctrlFactory->getPermissionCheckController()->hasPermission(enable)) {
                 if (enable) {
                     bool done = true;
                     QDateTime now = QDateTime::currentDateTime();
@@ -245,7 +245,7 @@ QString cClampInterface::importExportAllClamps(QString &sInput)
         return exportXMLString(-1).replace("\n", "");
     else {
         bool enable;
-        if (m_permissionQueryHandler->hasPermission(enable)) {
+        if (m_ctrlFactory->getPermissionCheckController()->hasPermission(enable)) {
             if (enable) {
                 QString allXML = cmd.getParam(); // we fetch all input
                 while (allXML[0] == QChar(' ')) // we remove all leading blanks

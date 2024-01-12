@@ -1,7 +1,7 @@
 #ifndef TEST_REGRESSION_ADJ_CALC_COM5003_H
 #define TEST_REGRESSION_ADJ_CALC_COM5003_H
 
-#include "atmelpermissiontemplate.h"
+#include "atmelcommon.h"
 #include "mockforsenseinterfacecom5003.h"
 #include "pcbinterface.h"
 #include "proxyclient.h"
@@ -26,7 +26,7 @@ private slots:
     void offsetAdjValueTotal();
 
 private:
-    void setupServers(AtmelPermissionTemplate *permissionQueryHandler);
+    void setupServers();
     double calcAdjValue(double value, double coeff0, double coeff1, double coeff2);
 
     std::unique_ptr<MockForSenseInterfaceCom5003> m_mockServer;

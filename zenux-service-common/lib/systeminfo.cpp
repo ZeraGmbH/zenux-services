@@ -1,7 +1,8 @@
 #include "systeminfo.h"
 #include "micro-controller-io/atmel.h"
 
-cSystemInfo::cSystemInfo()
+cSystemInfo::cSystemInfo(AtmelCtrlFactoryInterfacePrt ctrlFactory) :
+    m_ctrlFactory(ctrlFactory)
 {
     m_sDeviceName = m_sPCBVersion = m_sLCAVersion = m_sCTRLVersion = m_sSerialNumber = "Unknown";
     getSystemInfo();
@@ -9,11 +10,12 @@ cSystemInfo::cSystemInfo()
 
 void cSystemInfo::getSystemInfo()
 {
+    AtmelCommonVersionsPtrU controller = m_ctrlFactory->getCommonVersionController(AtmelCtrlFactoryInterface::CTRL_TYPE_RELAIS);
     int rm = ZeraMControllerIo::cmddone;
     rm |= Atmel::getInstance().readDeviceName(m_sDeviceName);
-    rm |= Atmel::getInstance().readPCBVersion(m_sPCBVersion);
+    rm |= controller->readPCBVersion(m_sPCBVersion);
     rm |= Atmel::getInstance().readLCAVersion(m_sLCAVersion);
-    rm |= Atmel::getInstance().readCTRLVersion(m_sCTRLVersion);
+    rm |= controller->readCTRLVersion(m_sCTRLVersion);
     rm |= Atmel::getInstance().readSerialNumber(m_sSerialNumber);
     m_bRead = (rm == ZeraMControllerIo::cmddone);
 }

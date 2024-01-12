@@ -1,5 +1,8 @@
 #include "test_authorizationnotifier.h"
 #include "adjustmentstatusnull.h"
+#include "statusinterface.h"
+#include "mockatmelctrlfactory.h"
+#include "atmelpermissionmock.h"
 #include <scpisingletonfactory.h>
 #include <timerfactoryqtfortest.h>
 #include <timemachinefortest.h>
@@ -14,22 +17,28 @@ static const char *unregisterNotifierCommand = "SERVER:UNREGISTER";
 
 constexpr quint16 NOTIFICATION_ID = 1;
 
+void test_authorizationnotifier::initTestCase()
+{
+    TimerFactoryQtForTest::enableTest();
+}
+
 void test_authorizationnotifier::init()
 {
     static ServerParams params {"foo", "0", QStringLiteral(CONFIG_SOURCES_MT310S2D) + "/" + "mt310s2d.xsd", QStringLiteral(CONFIG_SOURCES_MT310S2D) + "/" + "mt310s2d.xml"};
     cSCPI *scpiInterface = new cSCPI();
-    m_atmel = new AtmelPermissionMock();
-    m_pcbServerTest = std::make_unique<PCBTestServer>(params, scpiInterface, m_atmel);
+    AtmelCtrlFactoryInterfacePrt ctrlFactory = std::make_shared<MockAtmelCtrlFactory>(false);
+
+    m_atmelPermissionPtrU = ctrlFactory->getPermissionCheckController();
+    m_pcbServerTest = std::make_unique<PCBTestServer>(params, scpiInterface, ctrlFactory);
     m_adjustmentStatusNull = new AdjustmentStatusNull();
-    m_pcbServerTest->insertScpiConnection(new cStatusInterface(m_pcbServerTest->getSCPIInterface(), m_adjustmentStatusNull));
+    m_pcbServerTest->insertScpiConnection(new cStatusInterface(m_pcbServerTest->getSCPIInterface(), m_adjustmentStatusNull, ctrlFactory));
     m_pcbServerTest->initTestSCPIConnections();
-    TimerFactoryQtForTest::enableTest();
 }
 
 void test_authorizationnotifier::cleanup()
 {
-    if (m_adjustmentStatusNull) delete m_adjustmentStatusNull;
-    delete m_atmel;
+    m_pcbServerTest = nullptr;
+    delete m_adjustmentStatusNull;
 }
 
 QString test_authorizationnotifier::getAuthoStatus()
@@ -80,7 +89,7 @@ void test_authorizationnotifier::notifyAuthoStatusEnabled()
     m_pcbServerTest->registerNotifier(statusAuthorizationCommand, NOTIFICATION_ID);
     QSignalSpy spy(m_pcbServerTest.get(), &PCBTestServer::notificationSent);
 
-    m_atmel->accessEnableAfter(100);
+    static_cast<AtmelPermissionMock*>(m_atmelPermissionPtrU.get())->accessEnableAfter(100);
     TimeMachineForTest::getInstance()->processTimers(1500);
     QCOMPARE(spy.count(), 1);
     QCOMPARE(getAuthoStatus(), "1");
@@ -91,10 +100,10 @@ void test_authorizationnotifier::notifyAuthoStatusEnabledDisabled()
     m_pcbServerTest->registerNotifier(statusAuthorizationCommand, NOTIFICATION_ID);
     QSignalSpy spy(m_pcbServerTest.get(), &PCBTestServer::notificationSent);
 
-    m_atmel->accessEnableAfter(100);
+    static_cast<AtmelPermissionMock*>(m_atmelPermissionPtrU.get())->accessEnableAfter(100);
     TimeMachineForTest::getInstance()->processTimers(1500);
     QCOMPARE(spy.count(), 1);
-    m_atmel->accessDisableAfter(100);
+    static_cast<AtmelPermissionMock*>(m_atmelPermissionPtrU.get())->accessDisableAfter(100);
     TimeMachineForTest::getInstance()->processTimers(1500);
     QCOMPARE(spy.count(), 2);
 
@@ -106,7 +115,7 @@ void test_authorizationnotifier::unregisteredNotifierAuthoStatusEnabled()
     m_pcbServerTest->registerNotifier(statusAuthorizationCommand, NOTIFICATION_ID);
     m_pcbServerTest->unregisterNotifier();
     QSignalSpy spy(m_pcbServerTest.get(), &PCBTestServer::notificationSent);
-    m_atmel->accessEnableAfter(10);
+    static_cast<AtmelPermissionMock*>(m_atmelPermissionPtrU.get())->accessEnableAfter(10);
     TimeMachineForTest::getInstance()->processTimers(1000);
     QCOMPARE(spy.count(), 0);
 }
@@ -115,7 +124,7 @@ void test_authorizationnotifier::noNotificationAuthoStatusEnabled()
 {
     QSignalSpy spy(m_pcbServerTest.get(), &PCBTestServer::notificationSent);
     QCOMPARE(getAuthoStatus(), "0");
-    m_atmel->accessEnableAfter(10);
+    static_cast<AtmelPermissionMock*>(m_atmelPermissionPtrU.get())->accessEnableAfter(10);
     TimeMachineForTest::getInstance()->processTimers(1000);
     QCOMPARE(spy.count(), 0);
     QCOMPARE(getAuthoStatus(), "1");

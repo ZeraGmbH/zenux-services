@@ -1,4 +1,5 @@
 #include "test_regression_adj_calc_com5003.h"
+#include "mockatmelctrlfactory.h"
 #include "proxy.h"
 #include "i2cflashiofactoryfortest.h"
 #include "flash24lc256mock.h"
@@ -11,10 +12,8 @@ QTEST_MAIN(test_regression_adj_calc_com5003);
 
 void test_regression_adj_calc_com5003::initTestCase()
 {
-    // permission tests are done in test_regression_adj_import_export_xml_<device>
-    m_permissionMock = AtmelPermissionMock::createAlwaysEnabled();
     I2cFlashIoFactoryForTest::enableMockFlash();
-    setupServers(m_permissionMock.get());
+    setupServers();
 
     QString filenameShort = ":/import_internal";
     QVERIFY(QFile::exists(filenameShort + ".xml"));
@@ -78,10 +77,10 @@ void test_regression_adj_calc_com5003::offsetAdjValueTotal()
     QCOMPARE(adjustedValue.toDouble(), calcAdjValue(val, offsetXmlCoeff0, offsetXmlCoeff1, offsetXmlCoeff2));
 }
 
-void test_regression_adj_calc_com5003::setupServers(AtmelPermissionTemplate *permissionQueryHandler)
+void test_regression_adj_calc_com5003::setupServers()
 {
     m_resmanServer = std::make_unique<ResmanRunFacade>();
-    m_mockServer = std::make_unique<MockForSenseInterfaceCom5003>(permissionQueryHandler);
+    m_mockServer = std::make_unique<MockForSenseInterfaceCom5003>(std::make_shared<MockAtmelCtrlFactory>(true));
     TimeMachineObject::feedEventLoop();
 
     m_pcbClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307);

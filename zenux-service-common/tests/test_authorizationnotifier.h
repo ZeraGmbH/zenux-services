@@ -2,13 +2,14 @@
 #define TEST_AUTHORIZATIONNOTIFIER_H
 
 #include "pcbtestserver.h"
-#include "statusinterface.h"
+#include "adjustmentstatusinterface.h"
 #include <memory.h>
 
 class test_authorizationnotifier : public QObject
 {
     Q_OBJECT
 private slots:
+    void initTestCase();
     void init();
     void cleanup();
 
@@ -26,7 +27,7 @@ private slots:
 private:
     QString getAuthoStatus();
     std::unique_ptr<PCBTestServer> m_pcbServerTest;
-    AtmelPermissionMock *m_atmel;
+    AtmelPermissionTemplatePtrU m_atmelPermissionPtrU;
     AdjustmentStatusInterface *m_adjustmentStatusNull;
 };
 

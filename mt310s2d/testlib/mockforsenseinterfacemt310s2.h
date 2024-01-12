@@ -5,12 +5,12 @@
 #include "mt310s2senseinterface.h"
 #include "mt310s2systeminterface.h"
 #include "clampinterface.h"
-#include "atmelpermissionmock.h"
+#include "atmelctrlfactoryinterface.h"
 
 class MockForSenseInterfaceMt310s2 : public MockPcbServer
 {
 public:
-    MockForSenseInterfaceMt310s2(AtmelPermissionTemplate *permissionQueryHandler);
+    MockForSenseInterfaceMt310s2(AtmelCtrlFactoryInterfacePrt ctrlFactory);
     QString getDeviceVersion() { return m_systemInfo->getDeviceVersion(); }
 
     Mt310s2SenseInterface *getSenseInterface() { return m_senseInterface.get(); }
@@ -25,16 +25,12 @@ private:
     std::unique_ptr<cI2CSettings> m_i2cSettings;
     std::unique_ptr<cSenseSettings> m_senseSettings;
     
-    std::shared_ptr<AtmelCtrlSystem> m_systemController;
-
     std::unique_ptr<Mt310s2SystemInfo> m_systemInfo;
 
     std::unique_ptr<Mt310s2SenseInterface> m_senseInterface;
     std::unique_ptr<cClampInterface> m_clampInterface;
 
     std::unique_ptr<Mt310s2SystemInterface> m_systemInterface; // for adj xml import/export
-
-    AtmelPermissionMock m_permissionMock;
 };
 
 #endif // MOCKFORSENSEINTERFACEMT310S2_H

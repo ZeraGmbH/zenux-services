@@ -1,11 +1,11 @@
 #include "pcbtestserver.h"
 #include "permissionfunctions.h"
 
-PCBTestServer::PCBTestServer(ServerParams params, cSCPI *scpiInterface, AtmelPermissionMock *atmel) :
+PCBTestServer::PCBTestServer(ServerParams params, cSCPI *scpiInterface, AtmelCtrlFactoryInterfacePrt ctrlFactory) :
     cPCBServer(params, scpiInterface)
 {
     scpiConnectionList.append(this);
-    PermissionFunctions::setPermissionPinController(atmel);
+    PermissionFunctions::setPermissionCtrlFactory(ctrlFactory);
 }
 
 PCBTestServer::~PCBTestServer()

@@ -1,5 +1,6 @@
 #include "test_regression_adj_import_export_eeprom_mt310s2.h"
 #include "clampfactorytest.h"
+#include "mockatmelctrlfactory.h"
 #include "proxy.h"
 #include "i2cflashiofactoryfortest.h"
 #include "flash24lc256mock.h"
@@ -17,15 +18,13 @@ static const QDateTime refTime = QDateTime::fromSecsSinceEpoch(0, Qt::UTC);
 void test_regression_adj_import_export_eeprom_mt310s2::initTestCase()
 {
     ClampFactoryTest::enableTest();
-    // permission tests are done in test_regression_adj_import_export_xml_<device>
-    m_permissionMock = AtmelPermissionMock::createAlwaysEnabled();
 }
 
 void test_regression_adj_import_export_eeprom_mt310s2::init()
 {
     Flash24LC256Mock::cleanAll();
     I2cFlashIoFactoryForTest::enableMockFlash();
-    setupServers(m_permissionMock.get());
+    setupServers();
 }
 
 void test_regression_adj_import_export_eeprom_mt310s2::cleanup()
@@ -147,10 +146,10 @@ void test_regression_adj_import_export_eeprom_mt310s2::loadRandomToEEpromWriteTo
     QCOMPARE(xmlExported, xmlExpected);
 }
 
-void test_regression_adj_import_export_eeprom_mt310s2::setupServers(AtmelPermissionTemplate *permissionQueryHandler)
+void test_regression_adj_import_export_eeprom_mt310s2::setupServers()
 {
     m_resmanServer = std::make_unique<ResmanRunFacade>();
-    m_mockServer = std::make_unique<MockForSenseInterfaceMt310s2>(permissionQueryHandler);
+    m_mockServer = std::make_unique<MockForSenseInterfaceMt310s2>(std::make_shared<MockAtmelCtrlFactory>(true));
     TimeMachineObject::feedEventLoop();
 
     m_pcbClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307);

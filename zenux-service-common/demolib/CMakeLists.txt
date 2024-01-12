@@ -1,10 +1,12 @@
 file(GLOB SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/device-nodes/*.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/micro-controller-io/*.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp
     )
 
 file(GLOB HEADER
     ${CMAKE_CURRENT_SOURCE_DIR}/device-nodes/*.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/micro-controller-io/*.h
     ${CMAKE_CURRENT_SOURCE_DIR}/*.h
     )
 
@@ -21,6 +23,7 @@ add_library(zenuxservicecommon-demolib STATIC
 target_include_directories(zenuxservicecommon-demolib
     PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/device-nodes>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/micro-controller-io>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
     $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/zenuxservicecommon-demolib>
     )

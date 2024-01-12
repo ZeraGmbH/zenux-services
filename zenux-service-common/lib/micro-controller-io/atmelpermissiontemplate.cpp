@@ -1,4 +1,4 @@
-#include "atmelpermissiontemplate.h"
+#include "atmelcommon.h"
 
 bool AtmelPermissionTemplate::hasPermission(bool &allow)
 {

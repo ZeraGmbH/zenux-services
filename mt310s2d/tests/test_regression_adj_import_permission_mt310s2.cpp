@@ -1,6 +1,7 @@
 #include "test_regression_adj_import_permission_mt310s2.h"
+#include "atmelctrlfactory.h"
+#include "mockatmelctrlfactory.h"
 #include "proxy.h"
-#include "atmel.h"
 #include "scpisingletransactionblocked.h"
 #include "zscpi_response_definitions.h"
 #include "xmlhelperfortest.h"
@@ -22,7 +23,9 @@ void test_regression_adj_import_permission_mt310s2::cleanup()
 
 void test_regression_adj_import_permission_mt310s2::scpiImportPermissionQueryFail()
 {
-    setupServers(&Atmel::getInstance());
+    Zera::XMLConfig::cReader dummyReader;
+    cI2CSettings i2cSettings(&dummyReader);
+    setupServers(std::make_shared<AtmelCtrlFactory>(&i2cSettings));
 
     QString ret = ScpiSingleTransactionBlocked::cmdXmlParam("SYSTEM:ADJUSTMENT:XML", "foo");
     QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::errexec]);
@@ -30,8 +33,7 @@ void test_regression_adj_import_permission_mt310s2::scpiImportPermissionQueryFai
 
 void test_regression_adj_import_permission_mt310s2::scpiImportNoPermission()
 {
-    AtmelPermissionTemplatePtrU perm = AtmelPermissionMock::createAlwaysDisabled();
-    setupServers(perm.get());
+    setupServers(std::make_shared<MockAtmelCtrlFactory>(false));
 
     QString ret = ScpiSingleTransactionBlocked::cmdXmlParam("SYSTEM:ADJUSTMENT:XML", "foo");
     QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::erraut]);
@@ -39,8 +41,7 @@ void test_regression_adj_import_permission_mt310s2::scpiImportNoPermission()
 
 void test_regression_adj_import_permission_mt310s2::scpiImportInvalidXml()
 {
-    AtmelPermissionTemplatePtrU perm = AtmelPermissionMock::createAlwaysEnabled();
-    setupServers(perm.get());
+    setupServers(std::make_shared<MockAtmelCtrlFactory>(true));
 
     QString ret = ScpiSingleTransactionBlocked::cmdXmlParam("SYSTEM:ADJUSTMENT:XML", "foo");
     QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::errxml]);
@@ -48,8 +49,7 @@ void test_regression_adj_import_permission_mt310s2::scpiImportInvalidXml()
 
 void test_regression_adj_import_permission_mt310s2::scpiImportFailFlashWrite()
 {
-    AtmelPermissionTemplatePtrU perm = AtmelPermissionMock::createAlwaysEnabled();
-    setupServers(perm.get());
+    setupServers(std::make_shared<MockAtmelCtrlFactory>(true));
 
     QString xmlFileName = ":/import_minimal_pass.xml";
     QString xml = XmlHelperForTest::loadXml(xmlFileName);
@@ -62,8 +62,7 @@ void test_regression_adj_import_permission_mt310s2::scpiImportFailFlashWrite()
 void test_regression_adj_import_permission_mt310s2::scpiImportPassFlashWrite()
 {
     I2cFlashIoFactoryForTest::enableMockFlash();
-    AtmelPermissionTemplatePtrU perm = AtmelPermissionMock::createAlwaysEnabled();
-    setupServers(perm.get());
+    setupServers(std::make_shared<MockAtmelCtrlFactory>(true));
 
     QString xmlFileName = ":/import_minimal_pass.xml";
     QString xml = XmlHelperForTest::loadXml(xmlFileName);
@@ -73,10 +72,10 @@ void test_regression_adj_import_permission_mt310s2::scpiImportPassFlashWrite()
     QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::ack]);
 }
 
-void test_regression_adj_import_permission_mt310s2::setupServers(AtmelPermissionTemplate *permissionQueryHandler)
+void test_regression_adj_import_permission_mt310s2::setupServers(AtmelCtrlFactoryInterfacePrt ctrlFactory)
 {
     m_resmanServer = std::make_unique<ResmanRunFacade>();
-    m_mockServer = std::make_unique<MockForSenseInterfaceMt310s2>(permissionQueryHandler);
+    m_mockServer = std::make_unique<MockForSenseInterfaceMt310s2>(ctrlFactory);
     TimeMachineObject::feedEventLoop();
 
     m_pcbClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307);

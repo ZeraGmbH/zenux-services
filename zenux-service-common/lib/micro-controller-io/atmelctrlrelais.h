@@ -1,20 +1,20 @@
-#ifndef ATMEL_H
-#define ATMEL_H
+#ifndef ATMELCTRLRELAIS_H
+#define ATMELCTRLRELAIS_H
 
 #include "atmelcommon.h"
 #include <zeramcontrollerio.h>
 #include <QString>
 
-class Atmel : public AtmelCommon, public AtmelPermissionTemplate
+class AtmelCtrlRelais : public AtmelCommon, public AtmelCommonVersions, public AtmelPermissionTemplate
 {
 public:
-    static void setInstanceParams(QString devnode, quint8 adr, quint8 debuglevel);
-    static Atmel &getInstance();
-
+    AtmelCtrlRelais(QString devnode, quint8 adr, quint8 debuglevel);
     atmelRM readSerialNumber(QString& answer);
     atmelRM writeSerialNumber(QString &sNumber);
     atmelRM readDeviceName(QString& answer);
+    atmelRM readPCBVersion(QString& answer) override;
     atmelRM writePCBVersion(QString& sVersion);
+    atmelRM readCTRLVersion(QString& answer) override;
     atmelRM readLCAVersion(QString& answer);
     atmelRM startBootLoader();
     atmelRM readChannelStatus(quint8 channel, quint8& stat);
@@ -43,10 +43,9 @@ public:
     atmelRM setPLLChannel(quint8 chn);
     atmelRM readPLLChannel(quint8& chn);
 private:
-    Atmel(QString devnode, quint8 adr, quint8 debuglevel);
     static QString m_devnode;
     static quint8 m_adr;
     static quint8 m_debuglevel;
 };
 
-#endif // ATMEL_H
+#endif // ATMELCTRLRELAIS_H

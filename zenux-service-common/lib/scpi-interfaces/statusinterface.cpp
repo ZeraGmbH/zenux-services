@@ -1,6 +1,5 @@
 #include "statusinterface.h"
 #include "protonetcommand.h"
-#include "permissionfunctions.h"
 #include <timerfactoryqt.h>
 #include "zscpi_response_definitions.h"
 #include <scpi.h>
@@ -14,9 +13,10 @@ enum StatusCommands
     cmdAuthorization
 };
 
-cStatusInterface::cStatusInterface(cSCPI *scpiInterface, AdjustmentStatusInterface *adjustmentStatusInterface) :
+cStatusInterface::cStatusInterface(cSCPI *scpiInterface, AdjustmentStatusInterface *adjustmentStatusInterface, AtmelCtrlFactoryInterfacePrt ctrlFactory) :
     ScpiConnection(scpiInterface),
-    m_adjustmentStatusInterface(adjustmentStatusInterface)
+    m_adjustmentStatusInterface(adjustmentStatusInterface),
+    m_ctrlFactory(ctrlFactory)
 {
     m_periodicTimer = TimerFactoryQt::createPeriodic(AUTH_POLLING_PERIOD_MS);
     connect(m_periodicTimer.get(), &TimerTemplateQt::sigExpired, this, &cStatusInterface::getAuthorizationStatus);
@@ -38,7 +38,7 @@ void cStatusInterface::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
         switch (cmdCode)
         {
         case cmdDevice:
-            protoCmd->m_sOutput = getDeviceStatus();
+            protoCmd->m_sOutput = getControllerAvail();
             break;
         case cmdAdjustment:
             protoCmd->m_sOutput = QString("%1").arg(m_adjustmentStatusInterface->getAdjustmentStatus());
@@ -55,10 +55,10 @@ void cStatusInterface::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
         emit cmdExecutionDone(protoCmd);
 }
 
-QString cStatusInterface::getDeviceStatus()
+QString cStatusInterface::getControllerAvail()
 {
-    bool enable;
-    if (PermissionFunctions::checkControllerPin(enable)) // no problem reading from atmel
+    bool dummy;
+    if (m_ctrlFactory->getPermissionCheckController()->hasPermission(dummy)) // no problem reading from atmel
         return "1"; // means device available
     else
         return "0";
@@ -68,7 +68,7 @@ QString cStatusInterface::getAuthorizationStatus()
 {
     QString status = "0";
     bool enable;
-    if (PermissionFunctions::checkControllerPin(enable) && enable)
+    if (m_ctrlFactory->getPermissionCheckController()->hasPermission(enable) && enable)
         status = "1";
     m_notifierAutorization = status;
     return status;

@@ -42,9 +42,8 @@ public:
                            Mt310s2SystemInfo *systemInfo,
                            cSenseSettings *senseSettings,
                            Mt310s2SenseInterface* senseInterface,
-                           std::shared_ptr<AtmelCtrlSystem> systemController,
-                           HotPluggableControllerContainerPtr hotPluggableControllerContainer,
-                           AtmelPermissionTemplate *permissionQueryHandler);
+                           AtmelCtrlFactoryInterfacePrt ctrlFactory,
+                           HotPluggableControllerContainerPtr hotPluggableControllerContainer);
     virtual void initSCPIConnection(QString leadingNodes) override;
     void actualizeContollers(quint16 bitmaskAvailable);
 
@@ -78,9 +77,8 @@ private:
     Mt310s2SystemInfo *m_systemInfo;
     cSenseSettings *m_senseSettings;
     Mt310s2SenseInterface* m_senseInterface;
-    std::shared_ptr<AtmelCtrlSystem> m_systemController;
+    AtmelCtrlFactoryInterfacePrt m_ctrlFactory;
     HotPluggableControllerContainerPtr m_hotPluggableControllerContainer;
-    AtmelPermissionTemplate *m_permissionQueryHandler;
 
     NotificationString m_allCtrlVersion;
     NotificationString m_allPCBVersion;

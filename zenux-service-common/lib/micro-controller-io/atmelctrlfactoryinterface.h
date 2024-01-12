@@ -1,13 +1,23 @@
 #ifndef ATMELCTRLFACTORYINTERFACE_H
 #define ATMELCTRLFACTORYINTERFACE_H
 
-#include "i2csettings.h"
-#include "atmelcommonversions.h"
+#include "atmelcommon.h"
+#include <memory>
 
 class AtmelCtrlFactoryInterface
 {
 public:
-    virtual AtmelCommonVersionsPtrS getVersionInfoGetter(i2cSettings::member ctrlType) = 0;
+    enum ControllerTypes
+    {
+        CTRL_TYPE_RELAIS,
+        CTRL_TYPE_SYSTEM,
+        CTRL_TYPE_EMOB
+    };
+    virtual AtmelPermissionTemplatePtrU getPermissionCheckController() = 0;
+    virtual AtmelCommonVersionsPtrU getCommonVersionController(ControllerTypes ctrlType, quint8 muxChannel = -1) = 0;
+    virtual AtmelAccumulatorHandlerPtrU getAccumulatorController() = 0;
 };
+
+typedef std::shared_ptr<AtmelCtrlFactoryInterface> AtmelCtrlFactoryInterfacePrt;
 
 #endif // ATMELCTRLFACTORYINTERFACE_H

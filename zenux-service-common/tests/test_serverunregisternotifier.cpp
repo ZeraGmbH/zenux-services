@@ -1,6 +1,7 @@
 #include "statusinterface.h"
 #include "test_serverunregisternotifier.h"
-#include "atmelsyscntrltest.h"
+#include "mockatmelctrlfactory.h"
+#include "accumulatorinterface.h"
 #include "foutgroupresourceandinterface.h"
 #include <QTest>
 
@@ -11,17 +12,13 @@ static const char *accumulatorStatusCommand ="SYSTEM:ACCUMULATOR:STATUS?";
 
 constexpr quint16 NOTIFICATION_ID = 1;
 
-test_serverunregisternotifier::test_serverunregisternotifier()
-{
-}
-
 void test_serverunregisternotifier::init()
 {
     static ServerParams params {"foo", "0", QStringLiteral(CONFIG_SOURCES_MT310S2D) + "/" + "mt310s2d.xsd", QStringLiteral(CONFIG_SOURCES_MT310S2D) + "/" + "mt310s2d.xml"};
 
-    m_atmel = std::make_unique<AtmelPermissionMock>();
     m_adjustmentStatusNull = std::make_unique<AdjustmentStatusNull>();
-    m_pcbServerTest = std::make_unique<PCBTestServer>(params, &m_scpiInterface, m_atmel.get());
+    m_ctrlFactory = std::make_shared<MockAtmelCtrlFactory>(true);
+    m_pcbServerTest = std::make_unique<PCBTestServer>(params, &m_scpiInterface, m_ctrlFactory);
 
     m_xmlConfigReader = std::make_unique<Zera::XMLConfig::cReader>();
     m_foutSettings = std::make_unique<FOutSettings>(m_xmlConfigReader.get());
@@ -40,8 +37,9 @@ cSCPIDelegate *test_serverunregisternotifier::getDelegate(QString cmd)
 
 void test_serverunregisternotifier::oneScpiConnection()
 {
-    m_pcbServerTest->insertScpiConnection(new cStatusInterface(m_pcbServerTest->getSCPIInterface(), m_adjustmentStatusNull.get()));
+    m_pcbServerTest->insertScpiConnection(new cStatusInterface(m_pcbServerTest->getSCPIInterface(), m_adjustmentStatusNull.get(), m_ctrlFactory));
     m_pcbServerTest->initTestSCPIConnections();
+
     m_pcbServerTest->registerNotifier(statusAuthorizationCommand, NOTIFICATION_ID);
     QCOMPARE(getDelegate(statusAuthorizationCommand)->getScpiNotificationSubscriberHandler().getTotalSubscribers(), 1);
     m_pcbServerTest->unregisterNotifier();
@@ -50,12 +48,10 @@ void test_serverunregisternotifier::oneScpiConnection()
 
 void test_serverunregisternotifier::twoScpiConnections()
 {
-    m_pcbServerTest->insertScpiConnection(new cStatusInterface(m_pcbServerTest->getSCPIInterface(), m_adjustmentStatusNull.get()));
-    
-    std::shared_ptr<AtmelCtrlSystem> systemControllerTest = std::make_shared<AtmelSysCntrlTest>("", 0, 0);
-    m_pcbServerTest->insertScpiConnection(new AccumulatorInterface(m_pcbServerTest->getSCPIInterface(), systemControllerTest, m_accSettings.get()));
-
+    m_pcbServerTest->insertScpiConnection(new cStatusInterface(m_pcbServerTest->getSCPIInterface(), m_adjustmentStatusNull.get(), m_ctrlFactory));
+    m_pcbServerTest->insertScpiConnection(new AccumulatorInterface(m_pcbServerTest->getSCPIInterface(), m_accSettings.get(), m_ctrlFactory));
     m_pcbServerTest->initTestSCPIConnections();
+
     m_pcbServerTest->registerNotifier(statusAuthorizationCommand, NOTIFICATION_ID);
     m_pcbServerTest->registerNotifier(accumulatorStatusCommand, NOTIFICATION_ID);
     QCOMPARE(getDelegate(statusAuthorizationCommand)->getScpiNotificationSubscriberHandler().getTotalSubscribers(), 1);

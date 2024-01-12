@@ -1,6 +1,7 @@
 #include "test_regression_adj_calc_mt310s2.h"
 #include "clampfactorytest.h"
 #include "clamp.h"
+#include "mockatmelctrlfactory.h"
 #include "proxy.h"
 #include "i2cflashiofactoryfortest.h"
 #include "flash24lc256mock.h"
@@ -15,10 +16,8 @@ QTEST_MAIN(test_regression_adj_calc_mt310s2);
 void test_regression_adj_calc_mt310s2::initTestCase()
 {
     ClampFactoryTest::enableTest();
-    // permission tests are done in test_regression_adj_import_export_xml_<device>
-    m_permissionMock = AtmelPermissionMock::createAlwaysEnabled();
     I2cFlashIoFactoryForTest::enableMockFlash();
-    setupServers(m_permissionMock.get());
+    setupServers();
 
     QString filenameShort = ":/import_internal";
     QVERIFY(QFile::exists(filenameShort + ".xml"));
@@ -150,10 +149,10 @@ void test_regression_adj_calc_mt310s2::offsetAdjValueTotalClamp()
     QCOMPARE(adjustedValue, adjTotal);
 }
 
-void test_regression_adj_calc_mt310s2::setupServers(AtmelPermissionTemplate *permissionQueryHandler)
+void test_regression_adj_calc_mt310s2::setupServers()
 {
     m_resmanServer = std::make_unique<ResmanRunFacade>();
-    m_mockServer = std::make_unique<MockForSenseInterfaceMt310s2>(permissionQueryHandler);
+    m_mockServer = std::make_unique<MockForSenseInterfaceMt310s2>(std::make_shared<MockAtmelCtrlFactory>(true));
     TimeMachineObject::feedEventLoop();
 
     m_pcbClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307);

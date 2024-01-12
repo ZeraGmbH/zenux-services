@@ -10,12 +10,12 @@
 Com5003SystemInterface::Com5003SystemInterface(cPCBServer *server,
                                                cSystemInfo *sytemInfo,
                                                Com5003SenseInterface *senseInterface,
-                                               AtmelPermissionTemplate *permissionQueryHandler) :
+                                               AtmelCtrlFactoryInterfacePrt ctrlFactory) :
     ScpiConnection(server->getSCPIInterface()),
     m_pMyServer(server),
     m_sytemInfo(sytemInfo),
     m_senseInterface(senseInterface),
-    m_permissionQueryHandler(permissionQueryHandler)
+    m_ctrlFactory(ctrlFactory)
 {
 }
 
@@ -243,7 +243,7 @@ QString Com5003SystemInterface::m_AdjFlashWrite(QString &sInput)
     if (cmd.isCommand(1) && (cmd.getParam(0) == ""))
     {
         bool enable;
-        if (m_permissionQueryHandler->hasPermission(enable))
+        if (m_ctrlFactory->getPermissionCheckController()->hasPermission(enable))
         {
             if (enable)
             {
@@ -289,7 +289,7 @@ QString Com5003SystemInterface::m_AdjXmlImportExport(QString &sInput)
     }
     else {
         bool enable;
-        if (m_permissionQueryHandler->hasPermission(enable)) {
+        if (m_ctrlFactory->getPermissionCheckController()->hasPermission(enable)) {
             if (enable) {
                 QString XML = cmd.getParam();
                 if (!m_senseInterface->importAdjXMLString(XML))
@@ -336,7 +336,7 @@ QString Com5003SystemInterface::m_AdjXMLRead(QString &sInput)
     cSCPICommand cmd = sInput;
     if (cmd.isCommand(1)) {
         bool enable = false;
-        m_permissionQueryHandler->hasPermission(enable);
+        m_ctrlFactory->getPermissionCheckController()->hasPermission(enable);
         if (enable) {
             QString filename = cmd.getParam(0);
             if (m_senseInterface->importAdjXMLFile(filename))

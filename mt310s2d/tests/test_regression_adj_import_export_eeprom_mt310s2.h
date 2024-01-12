@@ -26,7 +26,7 @@ private slots:
 
     // all tests for clamps
 private:
-    void setupServers(AtmelPermissionTemplate *permissionQueryHandler);
+    void setupServers();
     bool writeFile(QString filename, QByteArray data);
     QByteArray readFile(QString filename);
 
@@ -34,7 +34,6 @@ private:
     std::unique_ptr<ResmanRunFacade> m_resmanServer;
     Zera::ProxyClientPtr m_pcbClient;
     std::unique_ptr<Zera::cPCBInterface> m_pcbIFace;
-    AtmelPermissionTemplatePtrU m_permissionMock;
 };
 
 #endif // TEST_REGRESSION_ADJ_IMPORT_EXPORT_EEPROM_MT310S2_H

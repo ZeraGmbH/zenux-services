@@ -19,7 +19,7 @@ private slots:
     void scpiImportFailFlashWrite();
     void scpiImportPassFlashWrite();
 private:
-    void setupServers(AtmelPermissionTemplate *permissionQueryHandler);
+    void setupServers(AtmelCtrlFactoryInterfacePrt ctrlFactory);
 
     std::unique_ptr<MockForSenseInterfaceCom5003> m_mockServer;
     std::unique_ptr<ResmanRunFacade> m_resmanServer;
