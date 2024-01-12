@@ -90,7 +90,7 @@ void test_regression_adj_import_export_eeprom_com5003::scpiWriteRandomFileAndFla
     QByteArray dataWritten = EEprom24LCMock::getData(i2cSettings->getDeviceNode(),
                                                        i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress));
     QVERIFY(!dataWritten.isEmpty());
-    QVERIFY(writeFile("/tmp/export_internal_modified.eeprom", dataWritten));
+    QVERIFY(writeFile("/tmp/export_internal_modified_with_date_time.eeprom", dataWritten));
 }
 
 void test_regression_adj_import_export_eeprom_com5003::scpiWriteRandomFileFlashWriteFlashReadExportXmlAndCheck()
