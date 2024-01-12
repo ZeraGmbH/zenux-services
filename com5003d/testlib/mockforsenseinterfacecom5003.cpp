@@ -1,10 +1,14 @@
 #include "mockforsenseinterfacecom5003.h"
+#include "systeminfomock.h"
 
-MockForSenseInterfaceCom5003::MockForSenseInterfaceCom5003(AtmelCtrlFactoryInterfacePrt ctrlFactory) :
+MockForSenseInterfaceCom5003::MockForSenseInterfaceCom5003(AtmelCtrlFactoryInterfacePrt ctrlFactory, bool systemInfoMock) :
     MockPcbServer("com5003d")
 {
     m_i2cSettings = std::make_unique<cI2CSettings>(getConfigReader());
-    m_systemInfo = std::make_unique<SystemInfo>(ctrlFactory);
+    if(systemInfoMock)
+        m_systemInfo = std::make_unique<SystemInfoMock>(ctrlFactory);
+    else
+        m_systemInfo = std::make_unique<SystemInfo>(ctrlFactory);
 
     m_senseSettings = std::make_unique<cSenseSettings>(getConfigReader(), 8);
     setXmlSettings(XmlSettingsList{m_i2cSettings.get(), m_senseSettings.get()});
