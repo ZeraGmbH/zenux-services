@@ -37,8 +37,6 @@ public:
     explicit cCOM5003dServer(ServerParams params = defaultParams);
     ~cCOM5003dServer();
 
-    SystemInfo* m_pSystemInfo;
-
 signals:
     void abortInit();
     void confStarting();
@@ -63,16 +61,20 @@ private:
     ServerParams m_params;
     AtmelCtrlFactoryInterfacePrt m_ctrlFactory;
 
+    SystemInfo* m_pSystemInfo;
+
     cDebugSettings* m_pDebugSettings;
-    FPGASettings* m_fpgaCtrlSettings;
+    cSenseSettings* m_pSenseSettings;
     cStatusInterface* m_pStatusInterface;
     cI2CSettings* m_pI2CSettings;
-    cSenseSettings* m_pSenseSettings;
     HkInSettings* m_hkInSettings;
     ScInSettings* m_pSCHeadSettings;
     FInSettings* m_finSettings;
     FOutSettings* m_foutSettings;
     SamplingSettings* m_pSamplingSettings;
+    // COM specifics
+    FPGASettings* m_fpgaCtrlSettings;
+
     Com5003SystemInterface* m_pSystemInterface;
     Com5003SenseInterface* m_pSenseInterface;
     cSamplingInterface* m_pSamplingInterface;
