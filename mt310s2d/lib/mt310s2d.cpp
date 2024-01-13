@@ -60,19 +60,6 @@ cMT310S2dServer::cMT310S2dServer(ServerParams params) :
     cPCBServer(params, ScpiSingletonFactory::getScpiObj()),
     m_params(params)
 {
-    m_pDebugSettings = nullptr;
-    m_pI2CSettings = nullptr;
-    m_fpgaMsgSettings = nullptr;
-    m_fpgaCtrlSettings  = nullptr;
-    m_pSenseSettings = nullptr;
-    m_pStatusInterface = nullptr;
-    m_pSystemInterface = nullptr;
-    m_pSenseInterface = nullptr;
-    m_pClampInterface = nullptr;
-    m_pSystemInfo = nullptr;
-    m_pRMConnection = nullptr;
-    m_accumulatorInterface = nullptr;
-
     m_pInitializationMachine = new QStateMachine(this);
 
     QState* stateCONF = new QState(); // we start from here
@@ -108,29 +95,28 @@ cMT310S2dServer::cMT310S2dServer(ServerParams params) :
     m_pInitializationMachine->start();
 }
 
-
 cMT310S2dServer::~cMT310S2dServer()
 {
-    if (m_pDebugSettings) delete m_pDebugSettings;
-    if (m_pI2CSettings) delete m_pI2CSettings;
-    if (m_fpgaMsgSettings) delete m_fpgaMsgSettings;
-    if (m_fpgaCtrlSettings) delete m_fpgaCtrlSettings;
-    if (m_pSenseSettings) delete m_pSenseSettings;
-    if (m_foutSettings) delete m_foutSettings;
-    if (m_finSettings) delete m_finSettings;
-    if (m_pSCHeadSettings) delete m_pSCHeadSettings;
-    if (m_accumulatorSettings) delete m_accumulatorSettings;
-    if (m_pStatusInterface) delete m_pStatusInterface;
-    if (m_pSystemInterface) delete m_pSystemInterface;
-    if (m_pSenseInterface) delete m_pSenseInterface;
-    if (m_pClampInterface) delete m_pClampInterface;
-    if (m_foutInterface) delete m_foutInterface;
-    if (m_pFRQInputInterface) delete m_pFRQInputInterface;
-    if (m_pSCHeadInterface) delete m_pSCHeadInterface;
-    if (m_hkInInterface) delete m_hkInInterface;
-    if (m_pSystemInfo) delete m_pSystemInfo;
-    if (m_pRMConnection) delete m_pRMConnection;
-    if (m_accumulatorInterface) delete m_accumulatorInterface;
+    delete m_pDebugSettings;
+    delete m_pI2CSettings;
+    delete m_fpgaMsgSettings;
+    delete m_fpgaCtrlSettings;
+    delete m_pSenseSettings;
+    delete m_foutSettings;
+    delete m_finSettings;
+    delete m_pSCHeadSettings;
+    delete m_accumulatorSettings;
+    delete m_pStatusInterface;
+    delete m_pSystemInterface;
+    delete m_pSenseInterface;
+    delete m_pClampInterface;
+    delete m_foutInterface;
+    delete m_pFRQInputInterface;
+    delete m_pSCHeadInterface;
+    delete m_hkInInterface;
+    delete m_pSystemInfo;
+    delete m_pRMConnection;
+    delete m_accumulatorInterface;
 }
 
 void cMT310S2dServer::setupMicroControllerIo()

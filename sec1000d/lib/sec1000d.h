@@ -47,26 +47,26 @@ private:
     static ServerParams defaultParams;
     ServerParams m_params;
 
-    cDebugSettings* m_pDebugSettings;
-    FPGASettings* m_pFPGASettings;
-    SecCalculatorSettings* m_pECalcSettings;
-    SecInputSettings* m_pInputSettings;
+    cDebugSettings* m_pDebugSettings = nullptr;
+    FPGASettings* m_pFPGASettings = nullptr;
+    SecCalculatorSettings* m_pECalcSettings = nullptr;
+    SecInputSettings* m_pInputSettings = nullptr;
 
-    Sec1000StatusInterface* m_pStatusInterface;
-    cSystemInterface* m_pSystemInterface;
-    SecGroupResourceAndInterface* m_pECalculatorInterface;
-    Sec1000SystemInfo* m_pSystemInfo;
-    RMConnection* m_pRMConnection;
+    Sec1000StatusInterface* m_pStatusInterface = nullptr;
+    cSystemInterface* m_pSystemInterface = nullptr;
+    SecGroupResourceAndInterface* m_pECalculatorInterface = nullptr;
+    Sec1000SystemInfo* m_pSystemInfo = nullptr;
+    RMConnection* m_pRMConnection = nullptr;
 
-    QStateMachine* m_pInitializationMachine;
-    QState* m_stateconnect2RM;
-    QState* m_stateconnect2RMError;
-    QState* m_stateSendRMIdentAndRegister;
+    QStateMachine* m_pInitializationMachine = nullptr;
+    QState* m_stateconnect2RM = nullptr;
+    QState* m_stateconnect2RMError = nullptr;
+    QState* m_stateSendRMIdentAndRegister = nullptr;
     quint8 m_nerror;
     int m_retryRMConnect;
     QTimer m_retryTimer;
     QList<SecChannel*> m_ECalculatorChannelList;
-    QSocketNotifier* m_pNotifier;
+    QSocketNotifier* m_pNotifier = nullptr;
 
 };
 
