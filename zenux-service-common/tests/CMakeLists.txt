@@ -10,5 +10,6 @@ SETUP_TESTS(
     test_mockservice_sec1000d
     test_mockservice_zdsp1d
     test_sense_settings
+    test_fpga_settings_regression
     )
 
