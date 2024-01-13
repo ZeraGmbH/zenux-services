@@ -7,6 +7,7 @@ class SystemInfo
 {
 public:
     SystemInfo(AtmelCtrlFactoryInterfacePrt ctrlFactory);
+    virtual ~SystemInfo() = default;
     void getSystemInfo(); // here we fetch all system info
     bool dataRead(); // false if we were not able to read required information
     QString getDeviceVersion();
