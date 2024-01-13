@@ -119,12 +119,22 @@ cMT310S2dServer::~cMT310S2dServer()
     delete m_accumulatorInterface;
 }
 
+QString cMT310S2dServer::getCtrlDeviceNode()
+{
+    return m_fpgaCtrlSettings->getDeviceNode();
+}
+
+QString cMT310S2dServer::getMsgDeviceNode()
+{
+    return m_fpgaMsgSettings->getDeviceNode();
+}
+
 void cMT310S2dServer::setupMicroControllerIo()
 {
     m_ctrlFactory = std::make_shared<AtmelCtrlFactory>(m_pI2CSettings);
     PermissionFunctions::setPermissionCtrlFactory(m_ctrlFactory);
     Atmel::setInstanceParams(m_pI2CSettings->getDeviceNode(), m_pI2CSettings->getI2CAdress(i2cSettings::relaisCtrlI2cAddress), m_pDebugSettings->getDebugLevel());
-    m_atmelWatcher = AtmelCtrlFactoryStatic::createAtmelWatcher(m_fpgaCtrlSettings->getDeviceNode());
+    m_atmelWatcher = AtmelCtrlFactoryStatic::createAtmelWatcher(getCtrlDeviceNode());
 }
 
 void cMT310S2dServer::doConfiguration()
@@ -193,7 +203,7 @@ void cMT310S2dServer::doWait4Atmel()
 
 void cMT310S2dServer::doSetupServer()
 {
-    QString ctrlDeviceNodeName = m_fpgaCtrlSettings->getDeviceNode(); // we try to open the ctrl device
+    QString ctrlDeviceNodeName = getCtrlDeviceNode(); // we try to open the ctrl device
     if (PcbDeviceNodeCtrlSingleton::getInstance()->open(ctrlDeviceNodeName) < 0) {
         qCritical("Abort: Could not open control device '%s'", qPrintable(ctrlDeviceNodeName));
         emit abortInit();

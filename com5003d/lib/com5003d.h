@@ -36,6 +36,7 @@ class cCOM5003dServer: public cPCBServer
 public:
     explicit cCOM5003dServer(ServerParams params = defaultParams);
     ~cCOM5003dServer();
+    QString getCtrlDeviceNode();
 
 signals:
     void abortInit();

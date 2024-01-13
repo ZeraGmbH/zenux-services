@@ -109,16 +109,23 @@ cCOM5003dServer::~cCOM5003dServer()
     delete m_pRMConnection;
 }
 
+QString cCOM5003dServer::getCtrlDeviceNode()
+{
+    return m_fpgaCtrlSettings->getDeviceNode();
+}
+
 void cCOM5003dServer::setupMicroControllerIo()
 {
     m_ctrlFactory = std::make_shared<AtmelCtrlFactory>(m_pI2CSettings);
     PermissionFunctions::setPermissionCtrlFactory(m_ctrlFactory);
     Atmel::setInstanceParams(m_pI2CSettings->getDeviceNode(), m_pI2CSettings->getI2CAdress(i2cSettings::relaisCtrlI2cAddress), m_pDebugSettings->getDebugLevel());
-    m_atmelWatcher = AtmelCtrlFactoryStatic::createAtmelWatcher(m_fpgaCtrlSettings->getDeviceNode());
+    m_atmelWatcher = AtmelCtrlFactoryStatic::createAtmelWatcher(getCtrlDeviceNode());
 }
 
 void cCOM5003dServer::doConfiguration()
 {
+    // What is this m_nFPGAfd I/O???
+    // Once known and still needed: Use getCtrlDeviceNode()
     m_nFPGAfd = open("/dev/zFPGA1reg",O_RDWR);
     lseek(m_nFPGAfd,0x0,0);
     quint32 sigStart = 0;
@@ -186,7 +193,7 @@ void cCOM5003dServer::programAtmelFlash()
 
         m_nerror = atmelProgError; // preset error
 
-        devNode = m_fpgaCtrlSettings->getDeviceNode();
+        devNode = getCtrlDeviceNode();
         syslog(LOG_INFO,"Starting programming atmel flash\n");
 
         if ( (fd = open(devNode.toLatin1().data(),O_RDWR)) < 0 ) {
