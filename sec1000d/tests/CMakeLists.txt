@@ -1,4 +1,4 @@
 SETUP_TESTS(
-    test_sec1000_config_load
+    test_config_load_sec1000
     test_sec_resource
     )

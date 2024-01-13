@@ -1,5 +1,5 @@
 SETUP_TESTS(
-    test_zdsp1_config_load
+    test_config_load_zdsp1
     test_old_scpi_implementation
     )
 

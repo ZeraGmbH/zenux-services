@@ -30,7 +30,7 @@ namespace SenseSystem
         // This is protection of intellectual property by obscurity at it's best.
         // To shed some light see:
         //
-        // * test_regression_sense_interface_mt310s2: all the tests with mode setting
+        // * test_sense_regression_interface_mt310s2: all the tests with mode setting
         // * Mt310s2SenseInterface::Mt310s2SenseInterface on setup of m_MModeHash
         // * Mt310s2SenseRange::setMMode for sense range (de)activation
         // * Mt310s2SenseInterface::setSenseMode to see some nasty bitmanipulation
