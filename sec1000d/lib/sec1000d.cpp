@@ -33,14 +33,14 @@
 
 cSEC1000dServer* SECServer;
 
-int pipeFD[2];
+int pipeFileDescriptorSec1000[2];
 static void SigHandler(int)
 {
     const static char pipeFDBuf[2] = "I";
-    write(pipeFD[1], pipeFDBuf, 1);
+    write(pipeFileDescriptorSec1000[1], pipeFDBuf, 1);
 }
 
-struct sigaction mySigAction;
+struct sigaction sigActionSec1000;
 // sigset_t mySigmask, origSigmask;
 
 
@@ -94,8 +94,8 @@ cSEC1000dServer::~cSEC1000dServer()
     delete m_pRMConnection;
 
     SecDeviceNodeSingleton::getInstance()->close();
-    close(pipeFD[0]);
-    close(pipeFD[1]);
+    close(pipeFileDescriptorSec1000[0]);
+    close(pipeFileDescriptorSec1000[1]);
 }
 
 QString cSEC1000dServer::getServerVersion()
@@ -105,14 +105,14 @@ QString cSEC1000dServer::getServerVersion()
 
 void cSEC1000dServer::doConfiguration()
 {
-    if ( pipe(pipeFD) == -1 ) {
+    if ( pipe(pipeFileDescriptorSec1000) == -1 ) {
         qCritical("Abort, could not open pipe");
         emit abortInit();
     }
     else {
-        fcntl( pipeFD[1], F_SETFL, O_NONBLOCK);
-        fcntl( pipeFD[0], F_SETFL, O_NONBLOCK);
-        m_pNotifier = new QSocketNotifier(pipeFD[0], QSocketNotifier::Read, this);
+        fcntl( pipeFileDescriptorSec1000[1], F_SETFL, O_NONBLOCK);
+        fcntl( pipeFileDescriptorSec1000[0], F_SETFL, O_NONBLOCK);
+        m_pNotifier = new QSocketNotifier(pipeFileDescriptorSec1000[0], QSocketNotifier::Read, this);
         connect(m_pNotifier, &QSocketNotifier::activated, this, &cSEC1000dServer::SECIntHandler);
         if (m_xmlConfigReader.loadSchema(m_params.xsdFile)) {
             // we want to initialize all settings first
@@ -167,11 +167,11 @@ void cSEC1000dServer::doSetupServer()
 
         m_myServer->startServer(m_ethSettings.getPort(EthSettings::protobufserver)); // and can start the server now
 
-        mySigAction.sa_handler = &SigHandler; // signal handler einrichten
-        sigemptyset(&mySigAction.sa_mask);
-        mySigAction. sa_flags = SA_RESTART;
-        mySigAction.sa_restorer = NULL;
-        sigaction(SIGIO, &mySigAction, NULL); // handler für sigio definieren
+        sigActionSec1000.sa_handler = &SigHandler; // signal handler einrichten
+        sigemptyset(&sigActionSec1000.sa_mask);
+        sigActionSec1000. sa_flags = SA_RESTART;
+        sigActionSec1000.sa_restorer = NULL;
+        sigaction(SIGIO, &sigActionSec1000, NULL); // handler für sigio definieren
         SecDeviceNodeSingleton::getInstance()->enableFasync();
         // our resource mananager connection must be opened after configuration is done
         m_pRMConnection = new RMConnection(m_ethSettings.getRMIPadr(), m_ethSettings.getPort(EthSettings::resourcemanager));
@@ -236,7 +236,7 @@ void cSEC1000dServer::SECIntHandler(int)
 { // behandelt den sec interrupt
 
     char dummy[2];
-    read(pipeFD[0], dummy, 1); // first we read the pipe
+    read(pipeFileDescriptorSec1000[0], dummy, 1); // first we read the pipe
 
     int n = m_ECalculatorChannelList.count(); // the number of error calculator entities
     // 8 error calc entities share 1 32 bit data word for interrupts
