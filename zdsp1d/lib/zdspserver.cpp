@@ -43,15 +43,15 @@ static char dsprunning[8] = "running";
 static char dspnrunning[12]= "not running";
 
 
-int pipeFD[2];
+int pipeFileDescriptorZdsp1[2];
 static void SigHandler(int)
 {
     const static char pipeFDBuf[2] = "I";
-    write(pipeFD[1], pipeFDBuf, 1);
+    write(pipeFileDescriptorZdsp1[1], pipeFDBuf, 1);
 }
 
 
-struct sigaction mySigAction;
+struct sigaction sigActionZdsp1;
 // sigset_t mySigmask, origSigmask;
 
 
@@ -104,20 +104,20 @@ ZDspServer::~ZDspServer()
     delete m_pSCPIServer;
     resetDsp(); // we reset the dsp when we close the server
     DspDeviceNodeSingleton::getInstance()->close();
-    close(pipeFD[0]);
-    close(pipeFD[1]);
+    close(pipeFileDescriptorZdsp1[0]);
+    close(pipeFileDescriptorZdsp1[1]);
 }
 
 void ZDspServer::doConfiguration()
 {
-    if ( pipe(pipeFD) == -1 ) {
+    if ( pipe(pipeFileDescriptorZdsp1) == -1 ) {
         qCritical("Abort, could not open pipe");
         emit abortInit();
     }
     else {
-        fcntl( pipeFD[1], F_SETFL, O_NONBLOCK);
-        fcntl( pipeFD[0], F_SETFL, O_NONBLOCK);
-        m_pNotifier = new QSocketNotifier(pipeFD[0], QSocketNotifier::Read, this);
+        fcntl( pipeFileDescriptorZdsp1[1], F_SETFL, O_NONBLOCK);
+        fcntl( pipeFileDescriptorZdsp1[0], F_SETFL, O_NONBLOCK);
+        m_pNotifier = new QSocketNotifier(pipeFileDescriptorZdsp1[0], QSocketNotifier::Read, this);
         connect(m_pNotifier, &QSocketNotifier::activated, this, &ZDspServer::DspIntHandler);
         if (myXMLConfigReader->loadSchema(m_params.xsdFile)) {
             // we want to initialize all settings first
@@ -166,11 +166,11 @@ void ZDspServer::doSetupServer()
         emit abortInit();
     }
     else {
-        mySigAction.sa_handler = &SigHandler; // signal handler einrichten
-        sigemptyset(&mySigAction.sa_mask);
-        mySigAction. sa_flags = SA_RESTART;
-        mySigAction.sa_restorer = NULL;
-        sigaction(SIGIO, &mySigAction, NULL); // handler für sigio definieren
+        sigActionZdsp1.sa_handler = &SigHandler; // signal handler einrichten
+        sigemptyset(&sigActionZdsp1.sa_mask);
+        sigActionZdsp1. sa_flags = SA_RESTART;
+        sigActionZdsp1.sa_restorer = NULL;
+        sigaction(SIGIO, &sigActionZdsp1, NULL); // handler für sigio definieren
         DspDeviceNodeSingleton::getInstance()->enableFasync();
         m_retryRMConnect = 100;
         m_retryTimer.setSingleShot(true);
@@ -855,7 +855,7 @@ QDataStream& operator<<(QDataStream& ds,cDspCmd c)
 void ZDspServer::DspIntHandler(int)
 {
     char dummy[2];
-    read(pipeFD[0], dummy, 1); // first we read the pipe
+    read(pipeFileDescriptorZdsp1[0], dummy, 1); // first we read the pipe
 
     if (!clientlist.isEmpty()) { // wenn vorhanden nutzen wir immer den 1. client zum lesen
         cZDSP1Client *client = clientlist.first();

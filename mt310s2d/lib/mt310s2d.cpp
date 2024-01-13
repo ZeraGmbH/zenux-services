@@ -43,14 +43,14 @@
 #include <systemd/sd-daemon.h>
 #endif
 
-static int pipeFD[2];
+static int pipeFileDescriptorMt310s2[2];
 static void SigHandler(int)
 {
     const static char pipeFDBuf[2] = "I";
-    write(pipeFD[1], pipeFDBuf, 1);
+    write(pipeFileDescriptorMt310s2[1], pipeFDBuf, 1);
 }
 
-static struct sigaction mySigAction;
+static struct sigaction sigActionMt310s2;
 // sigset_t mySigmask, origSigmask;
 
 
@@ -129,14 +129,14 @@ void cMT310S2dServer::setupMicroControllerIo()
 
 void cMT310S2dServer::doConfiguration()
 {
-    if ( pipe(pipeFD) == -1) {
+    if ( pipe(pipeFileDescriptorMt310s2) == -1) {
         qCritical("Abort, could not open pipe");
         emit abortInit();
     }
     else {
-        fcntl( pipeFD[1], F_SETFL, O_NONBLOCK);
-        fcntl( pipeFD[0], F_SETFL, O_NONBLOCK);
-        m_pNotifier = new QSocketNotifier(pipeFD[0], QSocketNotifier::Read, this);
+        fcntl( pipeFileDescriptorMt310s2[1], F_SETFL, O_NONBLOCK);
+        fcntl( pipeFileDescriptorMt310s2[0], F_SETFL, O_NONBLOCK);
+        m_pNotifier = new QSocketNotifier(pipeFileDescriptorMt310s2[0], QSocketNotifier::Read, this);
         connect(m_pNotifier, &QSocketNotifier::activated, this, &cMT310S2dServer::MTIntHandler);
 
         if (m_xmlConfigReader.loadSchema(m_params.xsdFile)) {
@@ -260,11 +260,11 @@ void cMT310S2dServer::doSetupServer()
             if(m_ethSettings.isSCPIactive())
                 m_pSCPIServer->listen(QHostAddress::AnyIPv4, m_ethSettings.getPort(EthSettings::scpiserver));
 
-            mySigAction.sa_handler = &SigHandler; // setup signal handler
-            sigemptyset(&mySigAction.sa_mask);
-            mySigAction. sa_flags = SA_RESTART;
-            mySigAction.sa_restorer = nullptr;
-            sigaction(SIGIO, &mySigAction, nullptr); // set handler for sigio
+            sigActionMt310s2.sa_handler = &SigHandler; // setup signal handler
+            sigemptyset(&sigActionMt310s2.sa_mask);
+            sigActionMt310s2. sa_flags = SA_RESTART;
+            sigActionMt310s2.sa_restorer = nullptr;
+            sigaction(SIGIO, &sigActionMt310s2, nullptr); // set handler for sigio
 
             SetFASync();
             enableClampInterrupt();
@@ -362,7 +362,7 @@ void cMT310S2dServer::MTIntHandler(int)
 {// handles clamp interrupt sent by the controler
 
     char dummy[2];
-    read(pipeFD[0], dummy, 1); // first we read the pipe
+    read(pipeFileDescriptorMt310s2[0], dummy, 1); // first we read the pipe
 
     quint16 stat = 0;
     if ( Atmel::getInstance().readCriticalStatus(stat) == ZeraMControllerIo::cmddone ) {
