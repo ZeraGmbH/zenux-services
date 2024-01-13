@@ -50,16 +50,6 @@ cSEC1000dServer::cSEC1000dServer(ServerParams params) :
     cPCBServer(params, ScpiSingletonFactory::getScpiObj()),
     m_params(params)
 {
-    m_pDebugSettings = 0;
-    m_pFPGASettings = 0;
-    m_pECalcSettings = 0;
-    m_pInputSettings = 0;
-    m_pStatusInterface = 0;
-    m_pSystemInterface = 0;
-    m_pECalculatorInterface = 0;
-    m_pSystemInfo = 0;
-    m_pRMConnection = 0;
-
     m_pInitializationMachine = new QStateMachine(this);
 
     QState* stateCONF = new QState(); // we start from here
@@ -93,15 +83,15 @@ cSEC1000dServer::cSEC1000dServer(ServerParams params) :
 
 cSEC1000dServer::~cSEC1000dServer()
 {
-    if (m_pDebugSettings) delete m_pDebugSettings;
-    if (m_pFPGASettings) delete m_pFPGASettings;
-    if (m_pECalcSettings) delete m_pECalcSettings;
-    if (m_pInputSettings) delete m_pInputSettings;
-    if (m_pStatusInterface) delete m_pStatusInterface;
-    if (m_pSystemInterface) delete m_pSystemInterface;
-    if (m_pECalculatorInterface) delete m_pECalculatorInterface;
-    if (m_pSystemInfo) delete m_pSystemInfo;
-    if (m_pRMConnection) delete m_pRMConnection;
+    delete m_pDebugSettings;
+    delete m_pFPGASettings;
+    delete m_pECalcSettings;
+    delete m_pInputSettings;
+    delete m_pStatusInterface;
+    delete m_pSystemInterface;
+    delete m_pECalculatorInterface;
+    delete m_pSystemInfo;
+    delete m_pRMConnection;
 
     SecDeviceNodeSingleton::getInstance()->close();
     close(pipeFD[0]);

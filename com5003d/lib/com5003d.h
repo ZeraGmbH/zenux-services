@@ -61,33 +61,33 @@ private:
     ServerParams m_params;
     AtmelCtrlFactoryInterfacePrt m_ctrlFactory;
 
-    SystemInfo* m_pSystemInfo;
+    SystemInfo* m_pSystemInfo = nullptr;
 
-    cDebugSettings* m_pDebugSettings;
-    cSenseSettings* m_pSenseSettings;
-    cStatusInterface* m_pStatusInterface;
-    cI2CSettings* m_pI2CSettings;
-    HkInSettings* m_hkInSettings;
-    ScInSettings* m_pSCHeadSettings;
-    FInSettings* m_finSettings;
-    FOutSettings* m_foutSettings;
-    SamplingSettings* m_pSamplingSettings;
+    cDebugSettings* m_pDebugSettings = nullptr;
+    cSenseSettings* m_pSenseSettings = nullptr;
+    cStatusInterface* m_pStatusInterface = nullptr;
+    cI2CSettings* m_pI2CSettings = nullptr;
+    HkInSettings* m_hkInSettings = nullptr;
+    ScInSettings* m_pSCHeadSettings = nullptr;
+    FInSettings* m_finSettings = nullptr;
+    FOutSettings* m_foutSettings = nullptr;
+    SamplingSettings* m_pSamplingSettings = nullptr;
     // COM specifics
-    FPGASettings* m_fpgaCtrlSettings;
+    FPGASettings* m_fpgaCtrlSettings = nullptr;
 
-    Com5003SystemInterface* m_pSystemInterface;
-    Com5003SenseInterface* m_pSenseInterface;
-    cSamplingInterface* m_pSamplingInterface;
-    FOutGroupResourceAndInterface* m_foutInterface;
-    FInGroupResourceAndInterface* m_pFRQInputInterface;
-    ScInGroupResourceAndInterface* m_pSCHeadInterface;
-    HkInGroupResourceAndInterface* m_hkInInterface;
-    RMConnection* m_pRMConnection;
+    Com5003SystemInterface* m_pSystemInterface = nullptr;
+    Com5003SenseInterface* m_pSenseInterface = nullptr;
+    cSamplingInterface* m_pSamplingInterface = nullptr;
+    FOutGroupResourceAndInterface* m_foutInterface = nullptr;
+    FInGroupResourceAndInterface* m_pFRQInputInterface = nullptr;
+    ScInGroupResourceAndInterface* m_pSCHeadInterface = nullptr;
+    HkInGroupResourceAndInterface* m_hkInInterface = nullptr;
+    RMConnection* m_pRMConnection = nullptr;
 
-    QStateMachine* m_pInitializationMachine;
-    QState* m_stateconnect2RM;
-    QState* m_stateconnect2RMError;
-    QState* m_stateSendRMIdentAndRegister;
+    QStateMachine* m_pInitializationMachine = nullptr;
+    QState* m_stateconnect2RM = nullptr;
+    QState* m_stateconnect2RMError = nullptr;
+    QState* m_stateSendRMIdentAndRegister = nullptr;
     AtmelWatcherInterfacePtr m_atmelWatcher;
     quint8 m_nerror;
     int m_nFPGAfd;

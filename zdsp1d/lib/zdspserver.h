@@ -55,9 +55,11 @@ private:
     QTcpServer* m_pSCPIServer = nullptr;
     QTcpSocket* m_pSCPISocket = nullptr;
     cZDSP1Client* m_pSCPIClient;
+
     cDebugSettings* m_pDebugSettings = nullptr;
     EthSettings* m_pETHSettings = nullptr;
     cDSPSettings* m_pDspSettings = nullptr;
+
     int m_actualSocket; // der aktive socket im Execute
 
     quint8 m_nerror;
