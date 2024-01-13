@@ -34,7 +34,7 @@
 cSEC1000dServer* SECServer;
 
 int pipeFD[2];
-void SigHandler(int)
+static void SigHandler(int)
 {
     const static char pipeFDBuf[2] = "I";
     write(pipeFD[1], pipeFDBuf, 1);
