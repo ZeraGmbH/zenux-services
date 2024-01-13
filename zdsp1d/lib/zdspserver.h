@@ -30,6 +30,8 @@ public:
     ZDspServer(ServerParams params = defaultParams);
     virtual ~ZDspServer();
     QString getServerVersion();
+    QString getDspDeviceNode();
+
     virtual cZDSP1Client* AddClient(XiQNetPeer *m_pNetClient); // fügt einen client hinzu
     virtual void DelClient(XiQNetPeer *netClient); // entfernt einen client
     virtual void DelClient(QByteArray clientId);

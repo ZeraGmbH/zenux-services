@@ -27,6 +27,7 @@ public:
     explicit cSEC1000dServer(ServerParams params = defaultParams);
     ~cSEC1000dServer();
     QString getServerVersion();
+    QString getEcDeviceNode();
 
 signals:
     void abortInit();

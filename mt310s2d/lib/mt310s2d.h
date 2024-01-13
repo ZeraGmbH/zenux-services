@@ -38,6 +38,8 @@ class cMT310S2dServer: public cPCBServer
 public:
     explicit cMT310S2dServer(ServerParams params = defaultParams);
     ~cMT310S2dServer();
+    QString getCtrlDeviceNode();
+    QString getMsgDeviceNode();
 public slots:
 
 signals:

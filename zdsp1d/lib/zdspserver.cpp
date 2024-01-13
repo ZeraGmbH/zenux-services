@@ -160,7 +160,7 @@ void ZDspServer::doSetupServer()
         connect(m_pSCPIServer, &QTcpServer::newConnection, this, &ZDspServer::setSCPIConnection);
         m_pSCPIServer->listen(QHostAddress::AnyIPv4, m_pETHSettings->getPort(EthSettings::scpiserver));
     }
-    QString dspDevNodeName = m_pDspSettings->getDeviceNode(); // we try to open the dsp device
+    QString dspDevNodeName = getDspDeviceNode(); // we try to open the dsp device
     if (DspDeviceNodeSingleton::getInstance()->open(dspDevNodeName) < 0) {
         qCritical("Abort: Could not open dsp device node '%s", qPrintable(dspDevNodeName));
         emit abortInit();
@@ -802,6 +802,11 @@ QString ZDspServer::getLcaAndDspVersion()
 QString ZDspServer::getServerVersion()
 {
     return QString("%1 %2").arg(ServerName, ServerVersion);;
+}
+
+QString ZDspServer::getDspDeviceNode()
+{
+    return m_pDspSettings->getDeviceNode();
 }
 
 QString ZDspServer::mGetDspStatus()
