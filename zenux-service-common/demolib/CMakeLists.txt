@@ -32,6 +32,8 @@ target_link_libraries(zenuxservicecommon-demolib
     PUBLIC
     Qt5::Core
     zenuxservicecommon
+    mt310s2d-lib
+    com5003d-lib
     sec1000d-lib
     zdsp1d-lib
 )
