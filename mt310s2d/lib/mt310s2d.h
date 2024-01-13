@@ -38,10 +38,7 @@ class cMT310S2dServer: public cPCBServer
 public:
     explicit cMT310S2dServer(ServerParams params = defaultParams);
     ~cMT310S2dServer();
-
-    Mt310s2SystemInfo* m_pSystemInfo;
-    cSenseSettings* m_pSenseSettings;
-    Mt310s2SenseInterface* m_pSenseInterface;
+public slots:
 
 signals:
     void abortInit();
@@ -69,9 +66,10 @@ private:
     ServerParams m_params;
     AtmelCtrlFactoryInterfacePrt m_ctrlFactory;
 
+    Mt310s2SystemInfo* m_pSystemInfo;
+
     cDebugSettings* m_pDebugSettings;
-    FPGASettings* m_fpgaMsgSettings;
-    cCtrlSettings* m_fpgaCtrlSettings;
+    cSenseSettings* m_pSenseSettings;
     cStatusInterface* m_pStatusInterface;
     cI2CSettings* m_pI2CSettings;
     HkInSettings* m_hkInSettings;
@@ -79,8 +77,13 @@ private:
     FInSettings* m_finSettings;
     FOutSettings* m_foutSettings;
     SamplingSettings* m_pSamplingSettings;
+    // Mt310s2 specifics
+    cCtrlSettings* m_fpgaCtrlSettings;
+    FPGASettings* m_fpgaMsgSettings;
     AccumulatorSettings* m_accumulatorSettings;
+
     Mt310s2SystemInterface* m_pSystemInterface;
+    Mt310s2SenseInterface* m_pSenseInterface;
     cSamplingInterface* m_pSamplingInterface;
     FOutGroupResourceAndInterface* m_foutInterface;
     FInGroupResourceAndInterface* m_pFRQInputInterface;
