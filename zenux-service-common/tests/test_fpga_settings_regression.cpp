@@ -4,6 +4,7 @@
 #include "sec1000d.h"
 #include "zdspserver.h"
 #include "mockpcbserver.h"
+#include "mockatmelctrlfactory.h"
 #include "pcbdevicenodectrlsingletonmock.h"
 #include "pcbdevicenodemessagesingletonmock.h"
 #include "secdevicenodesingletonmock.h"
@@ -30,7 +31,10 @@ void test_fpga_settings_regression::mt310s2d()
 {
     PcbDeviceNodeCtrlSingletonMock::enableMock();
     PcbDeviceNodeMessageSingletonMock::enableMock();
-    cMT310S2dServer server(MockPcbServer::createParams("mt310s2d"));
+
+    ServerParams params = MockPcbServer::createParams("mt310s2d");
+    std::shared_ptr<SettingsForDeviceServer> settings = std::make_shared<SettingsForDeviceServer>(params);
+    cMT310S2dServer server(settings, std::make_shared<MockAtmelCtrlFactory>(true), params);
     TimeMachineObject::feedEventLoop();
 
     QCOMPARE(server.getCtrlDeviceNode(), "/dev/zFPGA1reg");

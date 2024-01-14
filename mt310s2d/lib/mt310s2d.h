@@ -3,9 +3,8 @@
 
 #include "pcbserver.h"
 #include "rmconnection.h"
+#include "settingsfordeviceserver.h"
 #include "debugsettings.h"
-#include "fpgasettings.h"
-#include "i2csettings.h"
 #include "sensesettings.h"
 #include "hkinsettings.h"
 #include "scinsettings.h"
@@ -35,10 +34,13 @@ class cMT310S2dServer: public cPCBServer
 {
     Q_OBJECT
 public:
-    explicit cMT310S2dServer(ServerParams params = defaultParams);
+    explicit cMT310S2dServer(std::shared_ptr<SettingsForDeviceServer> settings,
+                             AtmelCtrlFactoryInterfacePrt ctrlFactory,
+                             ServerParams params = defaultParams);
     ~cMT310S2dServer();
     QString getCtrlDeviceNode();
     QString getMsgDeviceNode();
+    static const ServerParams defaultParams;
 public slots:
 
 signals:
@@ -57,14 +59,15 @@ private slots:
     void doConnect2RM();
     void connect2RMError();
     void doIdentAndRegister();
+
 private:
     void SetFASync();
     void enableClampInterrupt();
     void updateI2cDevicesConnected();
     void setupMicroControllerIo();
 
-    static ServerParams defaultParams;
     ServerParams m_params;
+    std::shared_ptr<SettingsForDeviceServer> m_settings;
     AtmelCtrlFactoryInterfacePrt m_ctrlFactory;
 
     Mt310s2SystemInfo* m_pSystemInfo = nullptr;
@@ -72,13 +75,11 @@ private:
     cDebugSettings* m_pDebugSettings = nullptr;
     cSenseSettings* m_pSenseSettings = nullptr;
     cStatusInterface* m_pStatusInterface = nullptr;
-    cI2CSettings* m_pI2CSettings = nullptr;
     HkInSettings* m_hkInSettings = nullptr;
     ScInSettings* m_pSCHeadSettings = nullptr;
     FInSettings* m_finSettings = nullptr;
     FOutSettings* m_foutSettings = nullptr;
     SamplingSettings* m_pSamplingSettings = nullptr;
-    FPGASettings* m_fpgaSettings = nullptr;
     // Mt310s2 specifics
     AccumulatorSettings* m_accumulatorSettings = nullptr;
 

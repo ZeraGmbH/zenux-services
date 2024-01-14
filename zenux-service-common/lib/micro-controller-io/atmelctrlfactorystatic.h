@@ -8,6 +8,7 @@ class AtmelCtrlFactoryStatic // TODO: Split up
 {
 public:
     static AtmelCommonVersionsPtrS getEmobCtrl(QString devnode, quint8 adrCtrl, quint8 adrMux, quint8 muxChannel, quint8 debuglevel);
+    //   TODO Move to AtmelCtrlFactory(Interface)
     static AtmelWatcherInterfacePtr createAtmelWatcher(QString devnode);
 protected:
     static std::function<AtmelCommonVersionsPtrS(QString devnode, quint8 adrCtrl, quint8 adrMux, quint8 ctrlChannelForMux, quint8 debuglevel)> m_emobCreateFunction;
