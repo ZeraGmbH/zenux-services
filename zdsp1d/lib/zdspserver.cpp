@@ -96,7 +96,8 @@ ZDspServer::ZDspServer(ServerParams params) :
 ZDspServer::~ZDspServer()
 {
     delete m_pDebugSettings;
-    delete  m_pETHSettings;
+    delete m_pETHSettings;
+    delete m_fpgaSettings;
     delete m_pDspSettings;
     for (int i = 0; i < clientlist.count(); i++)
         delete clientlist.at(i);
@@ -125,6 +126,8 @@ void ZDspServer::doConfiguration()
             connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pDebugSettings,&cDebugSettings::configXMLInfo);
             m_pETHSettings = new EthSettings(myXMLConfigReader);
             connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pETHSettings,&EthSettings::configXMLInfo);
+            m_fpgaSettings = new FPGASettings(myXMLConfigReader);
+            connect(myXMLConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_fpgaSettings, &FPGASettings::configXMLInfo);
             m_pDspSettings = new cDSPSettings(myXMLConfigReader);
             connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pDspSettings,&cDSPSettings::configXMLInfo);
 
@@ -806,7 +809,7 @@ QString ZDspServer::getServerVersion()
 
 QString ZDspServer::getDspDeviceNode()
 {
-    return m_pDspSettings->getDeviceNode();
+    return m_fpgaSettings->getDspDeviceNode();
 }
 
 QString ZDspServer::mGetDspStatus()

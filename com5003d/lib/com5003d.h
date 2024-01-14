@@ -73,8 +73,7 @@ private:
     FInSettings* m_finSettings = nullptr;
     FOutSettings* m_foutSettings = nullptr;
     SamplingSettings* m_pSamplingSettings = nullptr;
-    // COM specifics
-    FPGASettings* m_fpgaCtrlSettings = nullptr;
+    FPGASettings* m_fpgaSettings = nullptr;
 
     Com5003SystemInterface* m_pSystemInterface = nullptr;
     Com5003SenseInterface* m_pSenseInterface = nullptr;

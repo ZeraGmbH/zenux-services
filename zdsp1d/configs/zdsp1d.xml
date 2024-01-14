@@ -15,11 +15,9 @@
 			</port>
                         <scpiactive>1</scpiactive>
 		</ethernet>
-		<dsp>
-			<device> 
-				<node>/dev/zFPGA1dsp1</node>
-			</device>
-		</dsp>		
+                <fpga>
+                        <dsp_device_node>/dev/zFPGA1dsp1</dsp_device_node>
+                </fpga>
 	</connectivity>
 
         <dspsettings>

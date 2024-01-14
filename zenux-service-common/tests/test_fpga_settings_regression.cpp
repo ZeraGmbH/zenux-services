@@ -43,10 +43,10 @@ void test_fpga_settings_regression::sec1000d()
     cSEC1000dServer server(MockPcbServer::createParams("sec1000d"));
     TimeMachineObject::feedEventLoop();
 
-    QCOMPARE(server.getEcDeviceNode(), "/dev/zFPGA1ec");
+    QCOMPARE(server.getSecDeviceNode(), "/dev/zFPGA1ec");
 }
 
-void test_fpga_settings_regression::zdsp1dd()
+void test_fpga_settings_regression::zdsp1d()
 {
     DspDeviceNodeSingletonMock::enableMock();
     ZDspServer server(MockPcbServer::createParams("zdsp1d"));
