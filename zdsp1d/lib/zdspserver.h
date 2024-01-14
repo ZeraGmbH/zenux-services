@@ -59,7 +59,6 @@ private:
     QTcpSocket* m_pSCPISocket = nullptr;
     cZDSP1Client* m_pSCPIClient;
 
-    cDebugSettings* m_pDebugSettings = nullptr;
     EthSettings* m_pETHSettings = nullptr;
     FPGASettings* m_fpgaSettings = nullptr;
     cDSPSettings* m_pDspSettings = nullptr;
