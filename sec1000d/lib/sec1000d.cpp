@@ -83,7 +83,6 @@ cSEC1000dServer::cSEC1000dServer(ServerParams params) :
 
 cSEC1000dServer::~cSEC1000dServer()
 {
-    delete m_pDebugSettings;
     delete m_pFPGASettings;
     delete m_pECalcSettings;
     delete m_pInputSettings;
@@ -121,8 +120,6 @@ void cSEC1000dServer::doConfiguration()
         connect(m_pNotifier, &QSocketNotifier::activated, this, &cSEC1000dServer::SECIntHandler);
         if (m_xmlConfigReader.loadSchema(m_params.xsdFile)) {
             // we want to initialize all settings first
-            m_pDebugSettings = new cDebugSettings(&m_xmlConfigReader);
-            connect(&m_xmlConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pDebugSettings,&cDebugSettings::configXMLInfo);
             connect(&m_xmlConfigReader,&Zera::XMLConfig::cReader::valueChanged,&m_ethSettings,&EthSettings::configXMLInfo);
             m_pFPGASettings = new FPGASettings(&m_xmlConfigReader);
             connect(&m_xmlConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pFPGASettings,&FPGASettings::configXMLInfo);
