@@ -95,7 +95,6 @@ ZDspServer::ZDspServer(ServerParams params) :
 
 ZDspServer::~ZDspServer()
 {
-    delete m_pDebugSettings;
     delete m_pETHSettings;
     delete m_fpgaSettings;
     delete m_pDspSettings;
@@ -122,8 +121,6 @@ void ZDspServer::doConfiguration()
         connect(m_pNotifier, &QSocketNotifier::activated, this, &ZDspServer::DspIntHandler);
         if (myXMLConfigReader->loadSchema(m_params.xsdFile)) {
             // we want to initialize all settings first
-            m_pDebugSettings = new cDebugSettings(myXMLConfigReader);
-            connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pDebugSettings,&cDebugSettings::configXMLInfo);
             m_pETHSettings = new EthSettings(myXMLConfigReader);
             connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pETHSettings,&EthSettings::configXMLInfo);
             m_fpgaSettings = new FPGASettings(myXMLConfigReader);
