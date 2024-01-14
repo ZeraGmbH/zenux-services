@@ -5,7 +5,6 @@
 #include "rmconnection.h"
 #include "debugsettings.h"
 #include "fpgasettings.h"
-#include "ctrlsettings.h"
 #include "i2csettings.h"
 #include "sensesettings.h"
 #include "hkinsettings.h"
@@ -79,9 +78,8 @@ private:
     FInSettings* m_finSettings = nullptr;
     FOutSettings* m_foutSettings = nullptr;
     SamplingSettings* m_pSamplingSettings = nullptr;
+    FPGASettings* m_fpgaSettings = nullptr;
     // Mt310s2 specifics
-    cCtrlSettings* m_fpgaCtrlSettings = nullptr;
-    FPGASettings* m_fpgaMsgSettings = nullptr;
     AccumulatorSettings* m_accumulatorSettings = nullptr;
 
     Mt310s2SystemInterface* m_pSystemInterface = nullptr;

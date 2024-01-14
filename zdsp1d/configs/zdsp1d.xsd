@@ -63,18 +63,12 @@
 				</xs:complexType>	
 			</xs:element>
 			
-			<xs:element name="dsp">
-				<xs:complexType>
-					<xs:sequence>
-						<xs:element name="device">
-							<xs:complexType>
-								<xs:sequence>
-									<xs:element name="node" type="nodetype"/>
-								</xs:sequence>
-							</xs:complexType>	
-						</xs:element>
-					</xs:sequence>	
-				</xs:complexType>		
+                        <xs:element name="fpga">
+                                <xs:complexType>
+                                        <xs:sequence>
+                                                <xs:element name="dsp_device_node" type="nodetype"/>
+                                        </xs:sequence>
+                                </xs:complexType>
 			</xs:element>
 			
 		</xs:sequence>

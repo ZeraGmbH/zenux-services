@@ -16,9 +16,7 @@
             <scpiactive>0</scpiactive>
         </ethernet>
         <fpga>
-            <device>
-                <node>/dev/zFPGA1ec</node>
-            </device>
+            <sec_device_node>/dev/zFPGA1ec</sec_device_node>
         </fpga>
         <inputs>
             <n>11</n>

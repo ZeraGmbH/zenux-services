@@ -3,13 +3,13 @@
 
 #include "pcbserver.h"
 #include "rmconnection.h"
+#include "fpgasettings.h"
 #include <QTimer>
 
 class QStateMachine;
 class QState;
 class QSocketNotifier;
 class cDebugSettings;
-class FPGASettings;
 class SecCalculatorSettings;
 class SecInputSettings;
 class Sec1000StatusInterface;
@@ -27,7 +27,7 @@ public:
     explicit cSEC1000dServer(ServerParams params = defaultParams);
     ~cSEC1000dServer();
     QString getServerVersion();
-    QString getEcDeviceNode();
+    QString getSecDeviceNode();
 
 signals:
     void abortInit();

@@ -103,9 +103,9 @@ QString cSEC1000dServer::getServerVersion()
     return QString("%1 %2").arg(ServerName, ServerVersion);;
 }
 
-QString cSEC1000dServer::getEcDeviceNode()
+QString cSEC1000dServer::getSecDeviceNode()
 {
-    return m_pFPGASettings->getDeviceNode();
+    return m_pFPGASettings->getSecDeviceNode();
 }
 
 void cSEC1000dServer::doConfiguration()
@@ -145,7 +145,7 @@ void cSEC1000dServer::doConfiguration()
 
 void cSEC1000dServer::doSetupServer()
 {
-    QString deviceNodeName = getEcDeviceNode(); // we try to open the sec device
+    QString deviceNodeName = getSecDeviceNode(); // we try to open the sec device
     if (SecDeviceNodeSingleton::getInstance()->open(deviceNodeName) < 0) {
         qCritical("Abort, could not poen device node %s", qPrintable(deviceNodeName));
         emit abortInit();

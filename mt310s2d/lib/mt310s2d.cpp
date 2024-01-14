@@ -13,7 +13,6 @@
 #include "foutgroupresourceandinterface.h"
 #include "statusinterface.h"
 #include "mt310s2systeminterface.h"
-#include "ctrlsettings.h"
 #include "debugsettings.h"
 #include "ethsettings.h"
 #include "finsettings.h"
@@ -99,8 +98,7 @@ cMT310S2dServer::~cMT310S2dServer()
 {
     delete m_pDebugSettings;
     delete m_pI2CSettings;
-    delete m_fpgaMsgSettings;
-    delete m_fpgaCtrlSettings;
+    delete m_fpgaSettings;
     delete m_pSenseSettings;
     delete m_foutSettings;
     delete m_finSettings;
@@ -121,12 +119,12 @@ cMT310S2dServer::~cMT310S2dServer()
 
 QString cMT310S2dServer::getCtrlDeviceNode()
 {
-    return m_fpgaCtrlSettings->getDeviceNode();
+    return m_fpgaSettings->getCtrlDeviceNode();
 }
 
 QString cMT310S2dServer::getMsgDeviceNode()
 {
-    return m_fpgaMsgSettings->getDeviceNode();
+    return m_fpgaSettings->getMsgDeviceNode();
 }
 
 void cMT310S2dServer::setupMicroControllerIo()
@@ -156,10 +154,8 @@ void cMT310S2dServer::doConfiguration()
             connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, &m_ethSettings, &EthSettings::configXMLInfo);
             m_pI2CSettings = new cI2CSettings(&m_xmlConfigReader);
             connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_pI2CSettings, &cI2CSettings::configXMLInfo);
-            m_fpgaMsgSettings = new FPGASettings(&m_xmlConfigReader);
-            connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_fpgaMsgSettings, &FPGASettings::configXMLInfo);
-            m_fpgaCtrlSettings = new cCtrlSettings(&m_xmlConfigReader);
-            connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_fpgaCtrlSettings, &cCtrlSettings::configXMLInfo);
+            m_fpgaSettings = new FPGASettings(&m_xmlConfigReader);
+            connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_fpgaSettings, &FPGASettings::configXMLInfo);
             m_pSenseSettings = new cSenseSettings(&m_xmlConfigReader, 8);
             connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_pSenseSettings, &cSenseSettings::configXMLInfo);
             m_foutSettings = new FOutSettings(&m_xmlConfigReader);
@@ -209,7 +205,7 @@ void cMT310S2dServer::doSetupServer()
         emit abortInit();
     }
     else {
-        QString messageDeviceNodeName = m_fpgaMsgSettings->getDeviceNode();
+        QString messageDeviceNodeName = getMsgDeviceNode();
         if (PcbDeviceNodeMessageSingleton::getInstance()->open(messageDeviceNodeName) < 0) {
             qCritical("Abort: Could not open message device '%s'", qPrintable(messageDeviceNodeName));
             emit abortInit();

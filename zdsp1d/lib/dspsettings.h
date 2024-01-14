@@ -7,7 +7,6 @@ namespace DSPSettings
 {
     enum configstate
     {
-        setDSPDevNode,
         setDSPBootfile,
         setDSPBoot,
         setDSPChannelNr,
@@ -22,7 +21,6 @@ class cDSPSettings : public XMLSettings
 
 public:
     cDSPSettings(Zera::XMLConfig::cReader *xmlread);
-    QString& getDeviceNode();
     QString& getBootFile();
     quint8 getChannelNr();
     bool isBoot();

@@ -1,6 +1,7 @@
 #ifndef ZDSP1D_H
 #define ZDSP1D_H
 
+#include "fpgasettings.h"
 #include "scpicmdinterpreter.h"
 #include "pcbserver.h"
 #include "scpicmds.h"
@@ -60,6 +61,7 @@ private:
 
     cDebugSettings* m_pDebugSettings = nullptr;
     EthSettings* m_pETHSettings = nullptr;
+    FPGASettings* m_fpgaSettings = nullptr;
     cDSPSettings* m_pDspSettings = nullptr;
 
     int m_actualSocket; // der aktive socket im Execute

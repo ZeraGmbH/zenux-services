@@ -4,17 +4,11 @@
 cDSPSettings::cDSPSettings(Zera::XMLConfig::cReader *xmlread)
 {
     m_pXMLReader = xmlread;
-    m_ConfigXMLMap["serviceconfig:connectivity:dsp:device:node"] = DSPSettings::setDSPDevNode;
     m_ConfigXMLMap["serviceconfig:dspsettings:bootfile"] = DSPSettings::setDSPBootfile;
     m_ConfigXMLMap["serviceconfig:dspsettings:boot"] = DSPSettings::setDSPBoot;
     m_ConfigXMLMap["serviceconfig:dspsettings:samplingsystem:channels"] = DSPSettings::setDSPChannelNr;
     m_ConfigXMLMap["serviceconfig:dspsettings:samplingsystem:signalperiod"] = DSPSettings::setDSPSignalPeriod;
     m_ConfigXMLMap["serviceconfig:dspsettings:samplingsystem:measureperiod"] = DSPSettings::setDSPMeasPeriod;
-}
-
-QString& cDSPSettings::getDeviceNode()
-{
-    return m_sDeviceNode;
 }
 
 QString &cDSPSettings::getBootFile()
@@ -47,9 +41,6 @@ void cDSPSettings::configXMLInfo(QString key)
     if (m_ConfigXMLMap.contains(key)) {
         switch (m_ConfigXMLMap[key])
         {
-        case DSPSettings::setDSPDevNode:
-            m_sDeviceNode = m_pXMLReader->getValue(key);
-            break;
         case DSPSettings::setDSPBootfile:
             m_sBootFile = m_pXMLReader->getValue(key);
             break;
