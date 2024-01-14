@@ -48,7 +48,6 @@ private:
     static ServerParams defaultParams;
     ServerParams m_params;
 
-    cDebugSettings* m_pDebugSettings = nullptr;
     FPGASettings* m_pFPGASettings = nullptr;
     SecCalculatorSettings* m_pECalcSettings = nullptr;
     SecInputSettings* m_pInputSettings = nullptr;
