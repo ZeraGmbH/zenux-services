@@ -1,5 +1,4 @@
 #include "mt310s2d.h"
-#include "atmelctrlfactory.h"
 #include "mt310s2dglobal.h"
 #include "rmconnection.h"
 #include "atmel.h"
@@ -53,11 +52,13 @@ static struct sigaction sigActionMt310s2;
 // sigset_t mySigmask, origSigmask;
 
 
-ServerParams cMT310S2dServer::defaultParams {ServerName, ServerVersion, "/etc/zera/mt310s2d/mt310s2d.xsd", "/etc/zera/mt310s2d/mt310s2d.xml"};
+const ServerParams cMT310S2dServer::defaultParams {ServerName, ServerVersion, "/etc/zera/mt310s2d/mt310s2d.xsd", "/etc/zera/mt310s2d/mt310s2d.xml"};
 
-cMT310S2dServer::cMT310S2dServer(ServerParams params) :
+cMT310S2dServer::cMT310S2dServer(std::shared_ptr<SettingsForDeviceServer> settings, AtmelCtrlFactoryInterfacePrt ctrlFactory, ServerParams params) :
     cPCBServer(params, ScpiSingletonFactory::getScpiObj()),
-    m_params(params)
+    m_params(params),
+    m_settings(settings),
+    m_ctrlFactory(ctrlFactory)
 {
     m_pInitializationMachine = new QStateMachine(this);
 
@@ -97,8 +98,6 @@ cMT310S2dServer::cMT310S2dServer(ServerParams params) :
 cMT310S2dServer::~cMT310S2dServer()
 {
     delete m_pDebugSettings;
-    delete m_pI2CSettings;
-    delete m_fpgaSettings;
     delete m_pSenseSettings;
     delete m_foutSettings;
     delete m_finSettings;
@@ -119,19 +118,19 @@ cMT310S2dServer::~cMT310S2dServer()
 
 QString cMT310S2dServer::getCtrlDeviceNode()
 {
-    return m_fpgaSettings->getCtrlDeviceNode();
+    return m_settings->getFpgaSettings()->getCtrlDeviceNode();
 }
 
 QString cMT310S2dServer::getMsgDeviceNode()
 {
-    return m_fpgaSettings->getMsgDeviceNode();
+    return m_settings->getFpgaSettings()->getMsgDeviceNode();
 }
 
 void cMT310S2dServer::setupMicroControllerIo()
 {
-    m_ctrlFactory = std::make_shared<AtmelCtrlFactory>(m_pI2CSettings);
     PermissionFunctions::setPermissionCtrlFactory(m_ctrlFactory);
-    Atmel::setInstanceParams(m_pI2CSettings->getDeviceNode(), m_pI2CSettings->getI2CAdress(i2cSettings::relaisCtrlI2cAddress), m_pDebugSettings->getDebugLevel());
+    cI2CSettings *i2cSettings = m_settings->getI2cSettings();
+    Atmel::setInstanceParams(i2cSettings->getDeviceNode(), i2cSettings->getI2CAdress(i2cSettings::relaisCtrlI2cAddress), m_pDebugSettings->getDebugLevel());
     m_atmelWatcher = AtmelCtrlFactoryStatic::createAtmelWatcher(getCtrlDeviceNode());
 }
 
@@ -152,10 +151,6 @@ void cMT310S2dServer::doConfiguration()
             m_pDebugSettings = new cDebugSettings(&m_xmlConfigReader);
             connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_pDebugSettings, &cDebugSettings::configXMLInfo);
             connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, &m_ethSettings, &EthSettings::configXMLInfo);
-            m_pI2CSettings = new cI2CSettings(&m_xmlConfigReader);
-            connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_pI2CSettings, &cI2CSettings::configXMLInfo);
-            m_fpgaSettings = new FPGASettings(&m_xmlConfigReader);
-            connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_fpgaSettings, &FPGASettings::configXMLInfo);
             m_pSenseSettings = new cSenseSettings(&m_xmlConfigReader, 8);
             connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_pSenseSettings, &cSenseSettings::configXMLInfo);
             m_foutSettings = new FOutSettings(&m_xmlConfigReader);
@@ -218,16 +213,17 @@ void cMT310S2dServer::doSetupServer()
             setupServer(); // here our scpi interface gets instanciated, we need this for further steps
 
             scpiConnectionList.append(this); // the server itself has some commands
+            cI2CSettings *i2cSettings = m_settings->getI2cSettings();
             scpiConnectionList.append(m_pSenseInterface = new Mt310s2SenseInterface(getSCPIInterface(),
-                                                                                    m_pI2CSettings,
+                                                                                    i2cSettings,
                                                                                     m_pSenseSettings,
                                                                                     m_pSystemInfo,
                                                                                     m_ctrlFactory));
             scpiConnectionList.append(m_pStatusInterface = new cStatusInterface(getSCPIInterface(), m_pSenseInterface, m_ctrlFactory));
             HotPluggableControllerContainerPtr emobControllerContainer =
-                    std::make_unique<HotPluggableControllerContainer>(m_pI2CSettings->getDeviceNode(),
-                                                                      m_pI2CSettings->getI2CAdress(i2cSettings::emobCtrlI2cAddress),
-                                                                      m_pI2CSettings->getI2CAdress(i2cSettings::muxerI2cAddress),
+                    std::make_unique<HotPluggableControllerContainer>(i2cSettings->getDeviceNode(),
+                                                                      i2cSettings->getI2CAdress(i2cSettings::emobCtrlI2cAddress),
+                                                                      i2cSettings->getI2CAdress(i2cSettings::muxerI2cAddress),
                                                                       m_pDebugSettings->getDebugLevel());
             scpiConnectionList.append(m_pSystemInterface = new Mt310s2SystemInterface(this,
                                                                                       m_pSystemInfo,
@@ -241,7 +237,7 @@ void cMT310S2dServer::doSetupServer()
             scpiConnectionList.append(m_pSCHeadInterface = new ScInGroupResourceAndInterface(getSCPIInterface(), m_pSCHeadSettings));
             scpiConnectionList.append(m_hkInInterface = new HkInGroupResourceAndInterface(getSCPIInterface(), m_hkInSettings));
             scpiConnectionList.append(m_pClampInterface = new cClampInterface(this,
-                                                                              m_pI2CSettings,
+                                                                              i2cSettings,
                                                                               m_pSenseSettings,
                                                                               m_pSenseInterface,
                                                                               m_ctrlFactory));
