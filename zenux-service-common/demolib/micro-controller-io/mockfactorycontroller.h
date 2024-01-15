@@ -13,6 +13,7 @@ public:
     AtmelDeviceIdentificationDataU getDeviceIdentificationController() override;
     AtmelAccumulatorHandlerPtrU getAccumulatorController() override;
     AtmelRangesPtrU getRangesController() override;
+    virtual AtmelMModesPtrU getMModeController() override;
 private:
     struct TPersitentControllerData
     {

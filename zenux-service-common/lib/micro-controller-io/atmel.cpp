@@ -96,29 +96,6 @@ ZeraMControllerIo::atmelRM Atmel::readClampStatus(quint16 &stat)
     return ret;
 }
 
-ZeraMControllerIo::atmelRM Atmel::setMeasMode(quint8 mmode)
-{
-    hw_cmd CMD(hwSetMode, 0, &mmode, 1);
-    writeCommand(&CMD);
-    return getLastErrorMask() == 0 ? cmddone : cmdexecfault;
-}
-
-
-ZeraMControllerIo::atmelRM Atmel::readMeasMode(quint8 &mmode)
-{
-    ZeraMControllerIo::atmelRM ret = cmdexecfault;
-    mmode = 0; // default AC
-    hw_cmd CMD(hwGetMode, 0, nullptr, 0);
-    quint8 answ[2];
-    writeCommand(&CMD, answ, 2);
-    if(getLastErrorMask() == 0) {
-        mmode = answ[0];
-        ret = cmddone;
-    }
-    return ret;
-}
-
-
 ZeraMControllerIo::atmelRM Atmel::setPLLChannel(quint8 chn)
 {
     hw_cmd CMD(hwSetPLLChannel, 0, &chn, 1);

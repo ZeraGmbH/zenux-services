@@ -284,7 +284,7 @@ void Com5003SenseChannel::setNotifierSenseChannelRange()
 {
     quint8 mode, range;
 
-    if ( Atmel::getInstance().readMeasMode(mode) == ZeraMControllerIo::cmddone )
+    if (m_ctrlFactory->getMModeController()->readMeasMode(mode) == ZeraMControllerIo::cmddone )
     {
         if (mode == SenseChannel::modeAC) // wir sind im normalberieb
         {
@@ -316,7 +316,7 @@ QString Com5003SenseChannel::m_ReadWriteRange(QString &sInput)
     quint8 mode;
     cSCPICommand cmd = sInput;
 
-    if ( Atmel::getInstance().readMeasMode(mode) == ZeraMControllerIo::cmddone )
+    if (m_ctrlFactory->getMModeController()->readMeasMode(mode) == ZeraMControllerIo::cmddone )
     {
         if (cmd.isQuery())
         {
@@ -350,12 +350,12 @@ QString Com5003SenseChannel::m_ReadWriteRange(QString &sInput)
                         if (m_RangeList.at(i)->getName() == "R0V")
                         {
                             notifierSenseChannelRange = "R0V";
-                            Atmel::getInstance().setMeasMode(1);
+                            m_ctrlFactory->getMModeController()->setMeasMode(1);
                         }
                         else
                         {
                             notifierSenseChannelRange = "R10V";
-                            Atmel::getInstance().setMeasMode(2);
+                            m_ctrlFactory->getMModeController()->setMeasMode(2);
                         }
 
                         return ZSCPI::scpiAnswer[ZSCPI::ack];

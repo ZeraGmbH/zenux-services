@@ -59,6 +59,15 @@ public:
 };
 typedef std::unique_ptr<AtmelRanges> AtmelRangesPtrU;
 
+class AtmelMModes
+{
+public:
+    virtual ~AtmelMModes() = default;
+    virtual AtmelCommon::atmelRM setMeasMode(quint8 mmode) = 0;
+    virtual AtmelCommon::atmelRM readMeasMode(quint8& mmode) = 0;
+};
+typedef std::unique_ptr<AtmelMModes> AtmelMModesPtrU;
+
 
 class AtmelAccumulatorHandler
 {
