@@ -2,7 +2,7 @@
 #include "adjustmentstatusnull.h"
 #include "statusinterface.h"
 #include "mockatmelctrlfactory.h"
-#include "atmelpermissionmock.h"
+#include "mockatmelpermission.h"
 #include <scpisingletonfactory.h>
 #include <timerfactoryqtfortest.h>
 #include <timemachinefortest.h>
@@ -89,7 +89,7 @@ void test_authorizationnotifier::notifyAuthoStatusEnabled()
     m_pcbServerTest->registerNotifier(statusAuthorizationCommand, NOTIFICATION_ID);
     QSignalSpy spy(m_pcbServerTest.get(), &PCBTestServer::notificationSent);
 
-    static_cast<AtmelPermissionMock*>(m_atmelPermissionPtrU.get())->accessEnableAfter(100);
+    static_cast<MockAtmelPermission*>(m_atmelPermissionPtrU.get())->accessEnableAfter(100);
     TimeMachineForTest::getInstance()->processTimers(1500);
     QCOMPARE(spy.count(), 1);
     QCOMPARE(getAuthoStatus(), "1");
@@ -100,10 +100,10 @@ void test_authorizationnotifier::notifyAuthoStatusEnabledDisabled()
     m_pcbServerTest->registerNotifier(statusAuthorizationCommand, NOTIFICATION_ID);
     QSignalSpy spy(m_pcbServerTest.get(), &PCBTestServer::notificationSent);
 
-    static_cast<AtmelPermissionMock*>(m_atmelPermissionPtrU.get())->accessEnableAfter(100);
+    static_cast<MockAtmelPermission*>(m_atmelPermissionPtrU.get())->accessEnableAfter(100);
     TimeMachineForTest::getInstance()->processTimers(1500);
     QCOMPARE(spy.count(), 1);
-    static_cast<AtmelPermissionMock*>(m_atmelPermissionPtrU.get())->accessDisableAfter(100);
+    static_cast<MockAtmelPermission*>(m_atmelPermissionPtrU.get())->accessDisableAfter(100);
     TimeMachineForTest::getInstance()->processTimers(1500);
     QCOMPARE(spy.count(), 2);
 
@@ -115,7 +115,7 @@ void test_authorizationnotifier::unregisteredNotifierAuthoStatusEnabled()
     m_pcbServerTest->registerNotifier(statusAuthorizationCommand, NOTIFICATION_ID);
     m_pcbServerTest->unregisterNotifier();
     QSignalSpy spy(m_pcbServerTest.get(), &PCBTestServer::notificationSent);
-    static_cast<AtmelPermissionMock*>(m_atmelPermissionPtrU.get())->accessEnableAfter(10);
+    static_cast<MockAtmelPermission*>(m_atmelPermissionPtrU.get())->accessEnableAfter(10);
     TimeMachineForTest::getInstance()->processTimers(1000);
     QCOMPARE(spy.count(), 0);
 }
@@ -124,7 +124,7 @@ void test_authorizationnotifier::noNotificationAuthoStatusEnabled()
 {
     QSignalSpy spy(m_pcbServerTest.get(), &PCBTestServer::notificationSent);
     QCOMPARE(getAuthoStatus(), "0");
-    static_cast<AtmelPermissionMock*>(m_atmelPermissionPtrU.get())->accessEnableAfter(10);
+    static_cast<MockAtmelPermission*>(m_atmelPermissionPtrU.get())->accessEnableAfter(10);
     TimeMachineForTest::getInstance()->processTimers(1000);
     QCOMPARE(spy.count(), 0);
     QCOMPARE(getAuthoStatus(), "1");
