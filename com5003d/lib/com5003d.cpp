@@ -19,7 +19,6 @@
 #include "systeminfo.h"
 #include "rmconnection.h"
 #include "atmel.h"
-#include "atmelctrlfactorystatic.h"
 #include "fingroupresourceandinterface.h"
 #include "hkingroupresourceandinterface.h"
 #include "samplinginterface.h"

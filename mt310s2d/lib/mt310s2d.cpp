@@ -2,7 +2,6 @@
 #include "mt310s2dglobal.h"
 #include "rmconnection.h"
 #include "atmel.h"
-#include "atmelctrlfactorystatic.h"
 #include "clampinterface.h"
 #include "fingroupresourceandinterface.h"
 #include "hkingroupresourceandinterface.h"
