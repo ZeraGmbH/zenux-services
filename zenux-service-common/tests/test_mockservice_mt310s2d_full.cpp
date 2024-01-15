@@ -1,8 +1,6 @@
 #include "test_mockservice_mt310s2d_full.h"
 #include "pcbinterface.h"
 #include "proxy.h"
-#include "mockatmelctrlfactory.h"
-#include "mockpcbserver.h"
 #include "reply.h"
 #include <timemachineobject.h>
 #include "scpisingletransactionblocked.h"
@@ -20,8 +18,7 @@ void test_mockservice_mt310s2d_full::initTestCase()
 void test_mockservice_mt310s2d_full::init()
 {
     m_resman = std::make_unique<ResmanRunFacade>();
-    std::shared_ptr<SettingsForDeviceServer> settings = std::make_shared<SettingsForDeviceServer>(MockPcbServer::createParams("mt310s2d"));
-    m_mt310s2d = std::make_unique<MockMt310s2dFull>(settings, std::make_shared<MockAtmelCtrlFactory>(true));
+    m_mt310s2d = std::make_unique<MockMt310s2dFull>();
     TimeMachineObject::feedEventLoop();
 
     m_pcbClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307);
