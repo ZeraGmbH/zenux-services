@@ -5,17 +5,20 @@
 #include <zeramcontrollerio.h>
 #include <QString>
 
-class AtmelCtrlRelais : public AtmelCommon, public AtmelCommonVersions, public AtmelPermissionTemplate
+class AtmelCtrlRelais : public AtmelCommon,
+                        public AtmelCommonVersions,
+                        public AtmelDeviceIdentificationData,
+                        public AtmelPermissionTemplate
 {
 public:
     AtmelCtrlRelais(QString devnode, quint8 adr, quint8 debuglevel);
-    atmelRM readSerialNumber(QString& answer);
-    atmelRM writeSerialNumber(QString &sNumber);
-    atmelRM readDeviceName(QString& answer);
+    atmelRM readSerialNumber(QString& answer) override;
+    atmelRM writeSerialNumber(QString &sNumber) override;
+    atmelRM readDeviceName(QString& answer) override;
     atmelRM readPCBVersion(QString& answer) override;
     atmelRM writePCBVersion(QString& sVersion);
     atmelRM readCTRLVersion(QString& answer) override;
-    atmelRM readLCAVersion(QString& answer);
+    atmelRM readLCAVersion(QString& answer) override;
     atmelRM startBootLoader();
     atmelRM readChannelStatus(quint8 channel, quint8& stat);
     atmelRM readClampStatus(quint16& stat);
