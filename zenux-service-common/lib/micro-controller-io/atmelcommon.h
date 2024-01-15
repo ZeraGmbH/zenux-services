@@ -27,6 +27,16 @@ public:
 typedef std::shared_ptr<AtmelCommonVersions> AtmelCommonVersionsPtrS;
 typedef std::unique_ptr<AtmelCommonVersions> AtmelCommonVersionsPtrU;
 
+class AtmelDeviceIdentificationData
+{
+public:
+    virtual ~AtmelDeviceIdentificationData() = default;
+    virtual AtmelCommon::atmelRM readDeviceName(QString& answer) = 0;
+    virtual AtmelCommon::atmelRM readSerialNumber(QString& answer) = 0;
+    virtual AtmelCommon::atmelRM writeSerialNumber(QString &sNumber) = 0;
+    virtual AtmelCommon::atmelRM readLCAVersion(QString& answer) = 0;
+};
+
 
 class AtmelPermissionTemplate
 {
