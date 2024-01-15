@@ -1,6 +1,5 @@
 #include "i2cutils.h"
 #include "atmel.h"
-#include "permissionfunctions.h"
 #include <syslog.h>
 #include <crcutils.h>
 
@@ -192,18 +191,6 @@ ZeraMControllerIo::atmelRM Atmel::getEEPROMAccessEnable(bool &enable)
     return ret;
 }
 
-
-ZeraMControllerIo::atmelRM Atmel::readSamplingRange(quint8 &srange)
-{
-    srange = 0;
-    return cmddone;
-}
-
-
-ZeraMControllerIo::atmelRM Atmel::setSamplingRange(quint8)
-{
-    return cmddone;
-}
 
 
 ZeraMControllerIo::atmelRM Atmel::setMeasMode(quint8 mmode)

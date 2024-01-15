@@ -23,8 +23,6 @@ public:
     atmelRM readRange(quint8 channel, quint8& range);
     atmelRM setRange(quint8 channel, quint8 range);
     atmelRM getEEPROMAccessEnable(bool& enable) override;
-    atmelRM readSamplingRange(quint8& srange);
-    atmelRM setSamplingRange(quint8 );
 
     /* mmode COM5003:
     enum enMeasurementModes

@@ -186,19 +186,6 @@ ZeraMControllerIo::atmelRM AtmelCtrlRelais::getEEPROMAccessEnable(bool &enable)
 }
 
 
-ZeraMControllerIo::atmelRM AtmelCtrlRelais::readSamplingRange(quint8 &srange)
-{
-    srange = 0;
-    return cmddone;
-}
-
-
-ZeraMControllerIo::atmelRM AtmelCtrlRelais::setSamplingRange(quint8)
-{
-    return cmddone;
-}
-
-
 ZeraMControllerIo::atmelRM AtmelCtrlRelais::setMeasMode(quint8 mmode)
 {
     hw_cmd CMD(hwSetMode, 0, &mmode, 1);

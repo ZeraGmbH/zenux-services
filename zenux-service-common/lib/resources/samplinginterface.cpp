@@ -21,10 +21,9 @@ cSamplingInterface::cSamplingInterface(cSCPI *scpiInterface, SamplingSettings* s
     m_sVersion = SamplingSystem::Version;
     m_nType = 0;
 
+    // There is no change on sampling range supported: Can this go??
     m_SampleRangeList.append(new cSampleRange(m_pSCPIInterface, "F50Hz", 504, 0));
     m_SampleRangeList.append(new cSampleRange(m_pSCPIInterface, "F20Hz", 720, 1));
-
-    Atmel::getInstance().setSamplingRange(0); // default we set 50Hz 504 samples
     setNotifierSampleChannelRange(); // we must intialize our setting (notifier)
 }
 
@@ -100,19 +99,6 @@ QString cSamplingInterface::m_ReadVersion(QString &sInput)
     return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-QString cSamplingInterface::m_ReadSampleRate(QString &sInput)
-{
-    cSCPICommand cmd = sInput;
-    if (cmd.isQuery()) {
-        QString s = notifierSampleChannelRange.getString(); // our actual sample channels range
-        for(int i = 0; i < m_SampleRangeList.count(); i++) {
-            if (m_SampleRangeList.at(i)->getName() == s)
-                return QString("%1").arg(m_SampleRangeList.at(i)->getSRate());
-        }
-    }
-    return ZSCPI::scpiAnswer[ZSCPI::nak];
-}
-
 QString cSamplingInterface::m_ReadSamplingChannelCatalog(QString &sInput)
 {
     cSCPICommand cmd = sInput;
@@ -147,6 +133,7 @@ QString cSamplingInterface::m_ReadStatus(QString &sInput)
     return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
+// Is this art or can we litter it?
 QString cSamplingInterface::m_ReadWriteSamplingRange(QString &sInput)
 {
     cSCPICommand cmd = sInput;
@@ -160,12 +147,8 @@ QString cSamplingInterface::m_ReadWriteSamplingRange(QString &sInput)
                 if (m_SampleRangeList.at(i)->getName() == srng)
                     break;
             if (i < m_SampleRangeList.count()) {
-                if ( Atmel::getInstance().setSamplingRange(m_SampleRangeList.at(i)->getSelCode()) == ZeraMControllerIo::cmddone) {
-                    setNotifierSampleChannelRange();
-                    return ZSCPI::scpiAnswer[ZSCPI::ack];
-                }
-                else
-                    return ZSCPI::scpiAnswer[ZSCPI::errexec];
+                setNotifierSampleChannelRange();
+                return ZSCPI::scpiAnswer[ZSCPI::ack];
             }
             else
                 return ZSCPI::scpiAnswer[ZSCPI::nak];
@@ -175,6 +158,21 @@ QString cSamplingInterface::m_ReadWriteSamplingRange(QString &sInput)
     }
 }
 
+// And another: Is this art or can we litter it?
+QString cSamplingInterface::m_ReadSampleRate(QString &sInput)
+{
+    cSCPICommand cmd = sInput;
+    if (cmd.isQuery()) {
+        QString s = notifierSampleChannelRange.getString(); // our actual sample channels range
+        for(int i = 0; i < m_SampleRangeList.count(); i++) {
+            if (m_SampleRangeList.at(i)->getName() == s)
+                return QString("%1").arg(m_SampleRangeList.at(i)->getSRate());
+        }
+    }
+    return ZSCPI::scpiAnswer[ZSCPI::nak];
+}
+
+// This lies and is there for compatibility?
 QString cSamplingInterface::m_ReadSamplingRangeCatalog(QString &sInput)
 {
     cSCPICommand cmd = sInput;
@@ -185,6 +183,21 @@ QString cSamplingInterface::m_ReadSamplingRangeCatalog(QString &sInput)
         return rangeNames.join(";");
     }
     return ZSCPI::scpiAnswer[ZSCPI::nak];
+}
+
+// Looks odd but this code is a leftover and we are not yet prepared to remove
+// it completely. Background: Commands to change sampling range were just noop
+// most likely inherited from WM3000 where we had different samling frequencies
+// But who knows...
+void cSamplingInterface::setNotifierSampleChannelRange()
+{
+    quint8 sRange = 0;
+    for (int i = 0; i < m_SampleRangeList.count(); i++) {
+        if (m_SampleRangeList.at(i)->getSelCode() == sRange) {
+            notifierSampleChannelRange = m_SampleRangeList.at(i)->getName();
+            return;
+        }
+    }
 }
 
 QString cSamplingInterface::m_ReadWritePLL(QString &sInput)
@@ -218,16 +231,3 @@ QString cSamplingInterface::m_ReadPLLCatalog(QString &sInput)
     return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-void cSamplingInterface::setNotifierSampleChannelRange()
-{
-    quint8 sRange;
-    if (Atmel::getInstance().readSamplingRange(sRange) == ZeraMControllerIo::cmddone) {
-        int i;
-        for (i = 0; i < m_SampleRangeList.count(); i++)
-            if (m_SampleRangeList.at(i)->getSelCode() == sRange)
-                break;
-        notifierSampleChannelRange = m_SampleRangeList.at(i)->getName();
-    }
-    else
-        notifierSampleChannelRange = m_SampleRangeList.at(0)->getName();
-}
