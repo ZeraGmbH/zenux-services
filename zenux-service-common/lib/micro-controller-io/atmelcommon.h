@@ -50,6 +50,16 @@ public:
 typedef std::unique_ptr<AtmelPermissionTemplate> AtmelPermissionTemplatePtrU;
 
 
+class AtmelRanges
+{
+public:
+    virtual ~AtmelRanges() = default;
+    virtual AtmelCommon::atmelRM readRange(quint8 channel, quint8& range) = 0;
+    virtual AtmelCommon::atmelRM setRange(quint8 channel, quint8 range) = 0;
+};
+typedef std::unique_ptr<AtmelRanges> AtmelRangesPtrU;
+
+
 class AtmelAccumulatorHandler
 {
 public:

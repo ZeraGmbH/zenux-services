@@ -8,7 +8,8 @@
 class AtmelCtrlRelais : public AtmelCommon,
                         public AtmelCommonVersions,
                         public AtmelDeviceIdentificationData,
-                        public AtmelPermissionTemplate
+                        public AtmelPermissionTemplate,
+                        public AtmelRanges
 {
 public:
     AtmelCtrlRelais(QString devnode, quint8 adr, quint8 debuglevel);
@@ -23,8 +24,8 @@ public:
     atmelRM readChannelStatus(quint8 channel, quint8& stat);
     atmelRM readClampStatus(quint16& stat);
 
-    atmelRM readRange(quint8 channel, quint8& range);
-    atmelRM setRange(quint8 channel, quint8 range);
+    atmelRM readRange(quint8 channel, quint8& range) override;
+    atmelRM setRange(quint8 channel, quint8 range) override;
     atmelRM getEEPROMAccessEnable(bool& enable) override;
 
     /* mmode COM5003:

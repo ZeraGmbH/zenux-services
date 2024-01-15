@@ -96,35 +96,6 @@ ZeraMControllerIo::atmelRM Atmel::readClampStatus(quint16 &stat)
     return ret;
 }
 
-ZeraMControllerIo::atmelRM Atmel::readRange(quint8 channel, quint8 &range)
-{
-    hw_cmd CMD(hwGetRange, channel, nullptr, 0);
-    quint8 answ[2];
-    writeCommand(&CMD, answ, 2);
-    quint32 errorMask = getLastErrorMask();
-    ZeraMControllerIo::atmelRM ret = errorMask == 0 ? cmddone : cmdexecfault;
-    if(ret == cmddone)
-        range = answ[0];
-    else
-        qWarning("ReadRange failed with ch: %i / mask: %8X failed!",
-                 channel, errorMask);
-    return ret;
-}
-
-
-ZeraMControllerIo::atmelRM Atmel::setRange(quint8 channel, quint8 range)
-{
-    hw_cmd CMD(hwSetRange, channel, &range, 1);
-    writeCommand(&CMD);
-    quint32 errorMask = getLastErrorMask();
-    ZeraMControllerIo::atmelRM ret = errorMask == 0 ? cmddone : cmdexecfault;
-    if(ret != cmddone)
-        qWarning("SetRange failed with ch: %i / rng: %i / mask: %8X failed!",
-                 channel, range, errorMask);
-    return ret;
-}
-
-
 ZeraMControllerIo::atmelRM Atmel::setMeasMode(quint8 mmode)
 {
     hw_cmd CMD(hwSetMode, 0, &mmode, 1);

@@ -4,6 +4,7 @@
 #include "mockatmelpermission.h"
 #include "mockatmelaccumulatorhandler.h"
 #include "mockatmeldeviceidentificationdata.h"
+#include "mockatmelranges.h"
 
 MockFactoryController::TPersitentControllerData MockFactoryController::m_persitentData;
 
@@ -41,4 +42,9 @@ AtmelDeviceIdentificationDataU MockFactoryController::getDeviceIdentificationCon
 AtmelAccumulatorHandlerPtrU MockFactoryController::getAccumulatorController()
 {
     return std::make_unique<MockAtmelAccumulatorHandler>();
+}
+
+AtmelRangesPtrU MockFactoryController::getRangesController()
+{
+    return std::make_unique<MockAtmelRanges>();
 }
