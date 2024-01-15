@@ -125,22 +125,6 @@ ZeraMControllerIo::atmelRM Atmel::setRange(quint8 channel, quint8 range)
 }
 
 
-ZeraMControllerIo::atmelRM Atmel::getEEPROMAccessEnable(bool &enable)
-{
-    ZeraMControllerIo::atmelRM ret = cmdexecfault;
-    enable = false; // default
-    hw_cmd CMD(hwGetFlashWriteAccess, 0, nullptr, 0);
-    quint8 answ[2];
-    writeCommand(&CMD, answ, 2);
-    if(getLastErrorMask() == 0) {
-        enable = (answ[0] != 0);
-        ret = cmddone;
-    }
-    return ret;
-}
-
-
-
 ZeraMControllerIo::atmelRM Atmel::setMeasMode(quint8 mmode)
 {
     hw_cmd CMD(hwSetMode, 0, &mmode, 1);

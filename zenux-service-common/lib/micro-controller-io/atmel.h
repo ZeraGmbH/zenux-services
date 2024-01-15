@@ -5,7 +5,7 @@
 #include <zeramcontrollerio.h>
 #include <QString>
 
-class Atmel : public AtmelCommon, public AtmelPermissionTemplate
+class Atmel : public AtmelCommon
 {
 public:
     static void setInstanceParams(QString devnode, quint8 adr, quint8 debuglevel);
@@ -17,7 +17,6 @@ public:
 
     atmelRM readRange(quint8 channel, quint8& range);
     atmelRM setRange(quint8 channel, quint8 range);
-    atmelRM getEEPROMAccessEnable(bool& enable) override;
 
     /* mmode COM5003:
     enum enMeasurementModes
