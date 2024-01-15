@@ -1,13 +1,18 @@
 #include "atmelctrlfactory.h"
 #include "atmelctrlrelais.h"
 #include "atmelctrlsystem.h"
-//#include "atmelctrlemob.h"
+#include "atmelwatcher.h"
 
 constexpr int defaultDebugLevel = 1;
 
 AtmelCtrlFactory::AtmelCtrlFactory(cI2CSettings *i2cSettings) :
     m_i2cSettings(i2cSettings)
 {
+}
+
+AtmelWatcherInterfacePtr AtmelCtrlFactory::createAtmelWatcher(QString devnode)
+{
+    return std::make_unique<cAtmelWatcher>(devnode);
 }
 
 AtmelPermissionTemplatePtrU AtmelCtrlFactory::getPermissionCheckController()
