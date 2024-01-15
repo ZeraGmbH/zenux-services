@@ -1,4 +1,5 @@
 #include "mockatmelctrlfactory.h"
+#include "atmelwatchermock.h"
 #include "mockatmelcommonversions.h"
 #include "atmelpermissionmock.h"
 #include "mockatmelaccumulatorhandler.h"
@@ -6,6 +7,12 @@
 MockAtmelCtrlFactory::MockAtmelCtrlFactory(bool initialPermission)
 {
     AtmelPermissionMock::setPermission(initialPermission);
+}
+
+AtmelWatcherInterfacePtr MockAtmelCtrlFactory::createAtmelWatcher(QString devnode)
+{
+    Q_UNUSED(devnode)
+    return std::make_unique<AtmelWatcherMock>();
 }
 
 AtmelPermissionTemplatePtrU MockAtmelCtrlFactory::getPermissionCheckController()

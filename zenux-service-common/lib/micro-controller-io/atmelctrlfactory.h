@@ -8,6 +8,7 @@ class AtmelCtrlFactory : public AtmelCtrlFactoryInterface
 {
 public:
     AtmelCtrlFactory(cI2CSettings *i2cSettings);
+    AtmelWatcherInterfacePtr createAtmelWatcher(QString devnode) override;
     AtmelPermissionTemplatePtrU getPermissionCheckController() override;
     AtmelCommonVersionsPtrU getCommonVersionController(ControllerTypes ctrlType, quint8 muxChannel = -1) override;
     AtmelAccumulatorHandlerPtrU getAccumulatorController() override;

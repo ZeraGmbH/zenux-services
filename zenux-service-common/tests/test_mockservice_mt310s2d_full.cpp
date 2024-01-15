@@ -40,5 +40,5 @@ void test_mockservice_mt310s2d_full::connectServer()
     QSignalSpy connectSpy(pcbClient.get(), &Zera::ProxyClient::connected);
     Zera::Proxy::getInstance()->startConnectionSmart(pcbClient);
     TimeMachineObject::feedEventLoop();
-    //QCOMPARE(connectSpy.count(), 1);
+    QCOMPARE(connectSpy.count(), 1);
 }

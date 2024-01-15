@@ -2,6 +2,7 @@
 #define ATMELCTRLFACTORYINTERFACE_H
 
 #include "atmelcommon.h"
+#include "atmelwatcherinterface.h"
 #include <memory>
 
 class AtmelCtrlFactoryInterface
@@ -13,6 +14,7 @@ public:
         CTRL_TYPE_SYSTEM,
         CTRL_TYPE_EMOB
     };
+    virtual AtmelWatcherInterfacePtr createAtmelWatcher(QString devnode) = 0;
     virtual AtmelPermissionTemplatePtrU getPermissionCheckController() = 0;
     virtual AtmelCommonVersionsPtrU getCommonVersionController(ControllerTypes ctrlType, quint8 muxChannel = -1) = 0;
     virtual AtmelAccumulatorHandlerPtrU getAccumulatorController() = 0;

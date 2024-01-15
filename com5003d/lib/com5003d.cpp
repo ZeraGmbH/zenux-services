@@ -119,7 +119,7 @@ void cCOM5003dServer::setupMicroControllerIo()
     m_ctrlFactory = std::make_shared<AtmelCtrlFactory>(m_pI2CSettings);
     PermissionFunctions::setPermissionCtrlFactory(m_ctrlFactory);
     Atmel::setInstanceParams(m_pI2CSettings->getDeviceNode(), m_pI2CSettings->getI2CAdress(i2cSettings::relaisCtrlI2cAddress), m_pDebugSettings->getDebugLevel());
-    m_atmelWatcher = AtmelCtrlFactoryStatic::createAtmelWatcher(getCtrlDeviceNode());
+    m_atmelWatcher = m_ctrlFactory->createAtmelWatcher(getCtrlDeviceNode());
 }
 
 void cCOM5003dServer::doConfiguration()
