@@ -18,6 +18,11 @@ SettingsForDeviceServer::SettingsForDeviceServer(ServerParams params) :
         qFatal("Abort: Could not open xml file '%s", qPrintable(m_params.xmlFile));
 }
 
+ServerParams SettingsForDeviceServer::getServerParams()
+{
+    return m_params;
+}
+
 cI2CSettings *SettingsForDeviceServer::getI2cSettings()
 {
     return &m_i2cSettings;

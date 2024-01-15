@@ -35,8 +35,7 @@ class cMT310S2dServer: public cPCBServer
     Q_OBJECT
 public:
     explicit cMT310S2dServer(std::shared_ptr<SettingsForDeviceServer> settings,
-                             AtmelCtrlFactoryInterfacePrt ctrlFactory,
-                             ServerParams params = defaultParams);
+                             AtmelCtrlFactoryInterfacePrt ctrlFactory);
     ~cMT310S2dServer();
     QString getCtrlDeviceNode();
     QString getMsgDeviceNode();
@@ -66,7 +65,6 @@ private:
     void updateI2cDevicesConnected();
     void setupMicroControllerIo();
 
-    ServerParams m_params;
     std::shared_ptr<SettingsForDeviceServer> m_settings;
     AtmelCtrlFactoryInterfacePrt m_ctrlFactory;
 
