@@ -62,12 +62,6 @@ Atmel::Atmel(QString devnode, quint8 adr, quint8 debuglevel) :
 }
 
 
-ZeraMControllerIo::atmelRM Atmel::readDeviceName(QString& answer)
-{
-    return readVariableLenText(hwGetDevName, answer);
-}
-
-
 ZeraMControllerIo::atmelRM Atmel::startBootLoader()
 {
     hw_cmd CMD(hwStartBootloader, 0, nullptr, 0);

@@ -11,7 +11,6 @@ public:
     static void setInstanceParams(QString devnode, quint8 adr, quint8 debuglevel);
     static Atmel &getInstance();
 
-    atmelRM readDeviceName(QString& answer);
     atmelRM startBootLoader();
     atmelRM readChannelStatus(quint8 channel, quint8& stat);
     atmelRM readClampStatus(quint16& stat);
