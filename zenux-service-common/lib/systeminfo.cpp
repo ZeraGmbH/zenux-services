@@ -1,7 +1,7 @@
 #include "systeminfo.h"
 #include "micro-controller-io/atmel.h"
 
-SystemInfo::SystemInfo(AtmelCtrlFactoryInterfacePrt ctrlFactory) :
+SystemInfo::SystemInfo(FactoryControllerAbstractPtr ctrlFactory) :
     m_ctrlFactory(ctrlFactory)
 {
     m_sDeviceName = m_sPCBVersion = m_sLCAVersion = m_sCTRLVersion = m_sSerialNumber = "Unknown";
@@ -10,7 +10,7 @@ SystemInfo::SystemInfo(AtmelCtrlFactoryInterfacePrt ctrlFactory) :
 
 void SystemInfo::getSystemInfo()
 {
-    AtmelCommonVersionsPtrU controller = m_ctrlFactory->getCommonVersionController(AtmelCtrlFactoryInterface::CTRL_TYPE_RELAIS);
+    AtmelCommonVersionsPtrU controller = m_ctrlFactory->getCommonVersionController(FactoryControllerAbstract::CTRL_TYPE_RELAIS);
     AtmelDeviceIdentificationDataU idController = m_ctrlFactory->getDeviceIdentificationController();
     int rm = ZeraMControllerIo::cmddone;
     rm |= idController->readDeviceName(m_sDeviceName);

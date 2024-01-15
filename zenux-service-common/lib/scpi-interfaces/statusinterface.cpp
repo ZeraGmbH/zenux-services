@@ -13,7 +13,7 @@ enum StatusCommands
     cmdAuthorization
 };
 
-cStatusInterface::cStatusInterface(cSCPI *scpiInterface, AdjustmentStatusInterface *adjustmentStatusInterface, AtmelCtrlFactoryInterfacePrt ctrlFactory) :
+cStatusInterface::cStatusInterface(cSCPI *scpiInterface, AdjustmentStatusInterface *adjustmentStatusInterface, FactoryControllerAbstractPtr ctrlFactory) :
     ScpiConnection(scpiInterface),
     m_adjustmentStatusInterface(adjustmentStatusInterface),
     m_ctrlFactory(ctrlFactory)

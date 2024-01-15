@@ -9,7 +9,7 @@
 Com5003SystemInterface::Com5003SystemInterface(cPCBServer *server,
                                                SystemInfo *sytemInfo,
                                                Com5003SenseInterface *senseInterface,
-                                               AtmelCtrlFactoryInterfacePrt ctrlFactory) :
+                                               FactoryControllerAbstractPtr ctrlFactory) :
     ScpiConnection(server->getSCPIInterface()),
     m_pMyServer(server),
     m_sytemInfo(sytemInfo),

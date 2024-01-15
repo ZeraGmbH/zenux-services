@@ -6,7 +6,7 @@
 class SystemInfoMock : public SystemInfo
 {
 public:
-    SystemInfoMock(AtmelCtrlFactoryInterfacePrt ctrlFactory);
+    SystemInfoMock(FactoryControllerAbstractPtr ctrlFactory);
     QString getDeviceName() override;
     QString getPCBVersion() override;
     QString getLCAVersion() override;

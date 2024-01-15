@@ -1,5 +1,5 @@
 #include "test_sec_resource.h"
-#include "secdevicenodesingletonmock.h"
+#include "mocksecdevicenodesingleton.h"
 #include "scpisingletonfactory.h"
 #include <timemachineobject.h>
 #include <QTest>
@@ -13,7 +13,7 @@ static const char *freeResourcesCommand = "ECALCULATOR:FREE";
 
 void test_sec_resource::init()
 {
-    SecDeviceNodeSingletonMock::enableMock();
+    MockSecDeviceNodeSingleton::enableMock();
     m_xmlConfigReader = std::make_unique<Zera::XMLConfig::cReader>();
     m_xmlConfigReader->loadSchema(QStringLiteral(CONFIG_SOURCES_SEC1000D) + "/" + "sec1000d.xsd");
     m_ecalcSettings = std::make_unique<SecCalculatorSettings>(m_xmlConfigReader.get());

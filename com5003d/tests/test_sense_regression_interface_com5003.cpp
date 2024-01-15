@@ -1,5 +1,5 @@
 #include "test_sense_regression_interface_com5003.h"
-#include "mockatmelctrlfactory.h"
+#include "mockfactorycontroller.h"
 #include "proxy.h"
 #include "pcbinterface.h"
 #include <timemachineobject.h>
@@ -15,7 +15,7 @@ QTEST_MAIN(test_sense_regression_interface_com5003);
 void test_sense_regression_interface_com5003::initTestCase()
 {
     m_resmanServer = std::make_unique<ResmanRunFacade>();
-    m_mockServer = std::make_unique<MockForSenseInterfaceCom5003>(std::make_shared<MockAtmelCtrlFactory>(true));
+    m_mockServer = std::make_unique<MockForSenseInterfaceCom5003>(std::make_shared<MockFactoryController>(true));
     TimeMachineObject::feedEventLoop();
 
     m_pcbClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307);

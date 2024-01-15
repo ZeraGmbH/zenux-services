@@ -6,7 +6,7 @@
 class Mt310s2SystemInfoMock : public Mt310s2SystemInfo
 {
 public:
-    Mt310s2SystemInfoMock(AtmelCtrlFactoryInterfacePrt ctrlFactory);
+    Mt310s2SystemInfoMock(FactoryControllerAbstractPtr ctrlFactory);
 
     QString getDeviceName() override;
     QString getPCBVersion() override;

@@ -25,7 +25,7 @@ private:
     cSCPI m_scpiInterface;
     std::unique_ptr<PCBTestServer> m_pcbServerTest;
     std::unique_ptr<AdjustmentStatusNull> m_adjustmentStatusNull;
-    AtmelCtrlFactoryInterfacePrt m_ctrlFactory;
+    FactoryControllerAbstractPtr m_ctrlFactory;
 
     std::unique_ptr<Zera::XMLConfig::cReader> m_xmlConfigReader;
     std::unique_ptr<FOutSettings> m_foutSettings;

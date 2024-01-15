@@ -1,5 +1,5 @@
 #include "test_adj_regression_scpi_query_format_com5003.h"
-#include "mockatmelctrlfactory.h"
+#include "mockfactorycontroller.h"
 #include "proxy.h"
 #include "mocki2ceepromiofactory.h"
 #include "mockeeprom24lc.h"
@@ -265,7 +265,7 @@ void test_adj_regression_scpi_query_format_com5003::queryOffsetNodes()
 void test_adj_regression_scpi_query_format_com5003::setupServers()
 {
     m_resmanServer = std::make_unique<ResmanRunFacade>();
-    m_mockServer = std::make_unique<MockForSenseInterfaceCom5003>(std::make_shared<MockAtmelCtrlFactory>(true));
+    m_mockServer = std::make_unique<MockForSenseInterfaceCom5003>(std::make_shared<MockFactoryController>(true));
     TimeMachineObject::feedEventLoop();
 
     m_pcbClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307);

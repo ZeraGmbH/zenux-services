@@ -1,6 +1,6 @@
 #include "systeminfomock.h"
 
-SystemInfoMock::SystemInfoMock(AtmelCtrlFactoryInterfacePrt ctrlFactory) :
+SystemInfoMock::SystemInfoMock(FactoryControllerAbstractPtr ctrlFactory) :
     SystemInfo(ctrlFactory)
 {
 }

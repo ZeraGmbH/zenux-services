@@ -5,13 +5,13 @@
 #include "mockpcbserver.h"
 #include "com5003senseinterface.h"
 #include "com5003systeminterface.h"
-#include "atmelctrlfactoryinterface.h"
+#include "factorycontrollerabstract.h"
 #include <memory>
 
 class MockForSenseInterfaceCom5003  : public MockPcbServer
 {
 public:
-    MockForSenseInterfaceCom5003(AtmelCtrlFactoryInterfacePrt ctrlFactory, bool systemInfoMock = false);
+    MockForSenseInterfaceCom5003(FactoryControllerAbstractPtr ctrlFactory, bool systemInfoMock = false);
     QString getDeviceVersion() { return m_systemInfo->getDeviceVersion(); }
     Com5003SenseInterface *getSenseInterface() { return m_senseInterface.get(); }
     cSenseSettings* getSenseSettings() { return m_senseSettings.get(); }

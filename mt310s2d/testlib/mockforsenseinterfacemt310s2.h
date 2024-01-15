@@ -5,12 +5,12 @@
 #include "mt310s2senseinterface.h"
 #include "mt310s2systeminterface.h"
 #include "clampinterface.h"
-#include "atmelctrlfactoryinterface.h"
+#include "factorycontrollerabstract.h"
 
 class MockForSenseInterfaceMt310s2 : public MockPcbServer
 {
 public:
-    MockForSenseInterfaceMt310s2(AtmelCtrlFactoryInterfacePrt ctrlFactory, bool systemInfoMock = false);
+    MockForSenseInterfaceMt310s2(FactoryControllerAbstractPtr ctrlFactory, bool systemInfoMock = false);
     QString getDeviceVersion() { return m_systemInfo->getDeviceVersion(); }
 
     Mt310s2SenseInterface *getSenseInterface() { return m_senseInterface.get(); }

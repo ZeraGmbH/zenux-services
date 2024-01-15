@@ -26,7 +26,7 @@ Com5003SenseInterface::Com5003SenseInterface(cSCPI *scpiInterface,
                                              RMConnection* rmConnection,
                                              EthSettings *ethSettings,
                                              cSenseSettings *senseSettings, SystemInfo *systemInfo,
-                                             AtmelCtrlFactoryInterfacePrt ctrlFactory) :
+                                             FactoryControllerAbstractPtr ctrlFactory) :
     cResource(scpiInterface),
     AdjustmentEeprom(i2cSettings->getDeviceNode(),
                      i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress),

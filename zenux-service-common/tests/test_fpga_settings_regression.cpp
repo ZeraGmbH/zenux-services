@@ -4,11 +4,11 @@
 #include "sec1000d.h"
 #include "zdspserver.h"
 #include "mockpcbserver.h"
-#include "mockatmelctrlfactory.h"
-#include "pcbdevicenodectrlsingletonmock.h"
-#include "pcbdevicenodemessagesingletonmock.h"
-#include "secdevicenodesingletonmock.h"
-#include "dspdevicenodesingletonmock.h"
+#include "mockfactorycontroller.h"
+#include "mockpcbdevicenodectrlsingleton.h"
+#include "mockpcbdevicenodemessagesingleton.h"
+#include "mocksecdevicenodesingleton.h"
+#include "mockdspdevicenodesingleton.h"
 #include <timemachineobject.h>
 #include <QTest>
 
@@ -20,7 +20,7 @@ QTEST_MAIN(test_fpga_settings_regression)
 
 void test_fpga_settings_regression::com5003d()
 {
-    PcbDeviceNodeCtrlSingletonMock::enableMock();
+    MockPcbDeviceNodeCtrlSingleton::enableMock();
     cCOM5003dServer server(MockPcbServer::createParams("com5003d"));
     TimeMachineObject::feedEventLoop();
 
@@ -29,12 +29,12 @@ void test_fpga_settings_regression::com5003d()
 
 void test_fpga_settings_regression::mt310s2d()
 {
-    PcbDeviceNodeCtrlSingletonMock::enableMock();
-    PcbDeviceNodeMessageSingletonMock::enableMock();
+    MockPcbDeviceNodeCtrlSingleton::enableMock();
+    MockPcbDeviceNodeMessageSingleton::enableMock();
 
     ServerParams params = MockPcbServer::createParams("mt310s2d");
     std::shared_ptr<SettingsForDeviceServer> settings = std::make_shared<SettingsForDeviceServer>(params);
-    cMT310S2dServer server(settings, std::make_shared<MockAtmelCtrlFactory>(true));
+    cMT310S2dServer server(settings, std::make_shared<MockFactoryController>(true));
     TimeMachineObject::feedEventLoop();
 
     QCOMPARE(server.getCtrlDeviceNode(), "/dev/zFPGA1reg");
@@ -43,7 +43,7 @@ void test_fpga_settings_regression::mt310s2d()
 
 void test_fpga_settings_regression::sec1000d()
 {
-    SecDeviceNodeSingletonMock::enableMock();
+    MockSecDeviceNodeSingleton::enableMock();
     cSEC1000dServer server(MockPcbServer::createParams("sec1000d"));
     TimeMachineObject::feedEventLoop();
 
@@ -52,7 +52,7 @@ void test_fpga_settings_regression::sec1000d()
 
 void test_fpga_settings_regression::zdsp1d()
 {
-    DspDeviceNodeSingletonMock::enableMock();
+    MockDspDeviceNodeSingleton::enableMock();
     ZDspServer server(MockPcbServer::createParams("zdsp1d"));
     TimeMachineObject::feedEventLoop();
 

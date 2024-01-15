@@ -1,9 +1,9 @@
-#ifndef SECDEVICENODEMOCK_H
-#define SECDEVICENODEMOCK_H
+#ifndef MOCKSECDEVICENODE_H
+#define MOCKSECDEVICENODE_H
 
-#include <secdevicenodeinterface.h>
+#include <secdevicenodeabstract.h>
 
-class SecDeviceNodeMock : public SecDeviceNodeInterface
+class MockSecDeviceNode : public SecDeviceNodeAbstract
 {
 public:
     int open(QString devNodeFileName) override;
@@ -15,4 +15,4 @@ public:
     void enableFasync() override;
 };
 
-#endif // SECDEVICENODEMOCK_H
+#endif // MOCKSECDEVICENODE_H

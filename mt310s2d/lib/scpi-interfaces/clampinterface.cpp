@@ -11,7 +11,7 @@ cClampInterface::cClampInterface(cPCBServer *server,
                                  cI2CSettings *i2cSettings,
                                  cSenseSettings *senseSettings,
                                  Mt310s2SenseInterface *senseInterface,
-                                 AtmelCtrlFactoryInterfacePrt ctrlFactory) :
+                                 FactoryControllerAbstractPtr ctrlFactory) :
     ScpiConnection(server->getSCPIInterface()),
     m_pMyServer(server),
     m_i2cSettings(i2cSettings),

@@ -1,11 +1,11 @@
-#ifndef ATMELCTRLFACTORYINTERFACE_H
-#define ATMELCTRLFACTORYINTERFACE_H
+#ifndef FACTORYCONTROLLERABSTRACT_H
+#define FACTORYCONTROLLERABSTRACT_H
 
 #include "atmelcommon.h"
 #include "atmelwatcherinterface.h"
 #include <memory>
 
-class AtmelCtrlFactoryInterface
+class FactoryControllerAbstract
 {
 public:
     enum ControllerTypes
@@ -21,6 +21,6 @@ public:
     virtual AtmelAccumulatorHandlerPtrU getAccumulatorController() = 0;
 };
 
-typedef std::shared_ptr<AtmelCtrlFactoryInterface> AtmelCtrlFactoryInterfacePrt;
+typedef std::shared_ptr<FactoryControllerAbstract> FactoryControllerAbstractPtr;
 
-#endif // ATMELCTRLFACTORYINTERFACE_H
+#endif // FACTORYCONTROLLERABSTRACT_H

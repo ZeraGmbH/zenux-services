@@ -1,13 +1,13 @@
-#ifndef ATMELCTRLFACTORY_H
-#define ATMELCTRLFACTORY_H
+#ifndef FACTORYCONTROLLERATMEL_H
+#define FACTORYCONTROLLERATMEL_H
 
-#include "atmelctrlfactoryinterface.h"
+#include "factorycontrollerabstract.h"
 #include "i2csettings.h"
 
-class AtmelCtrlFactory : public AtmelCtrlFactoryInterface
+class FactoryControllerAtmel : public FactoryControllerAbstract
 {
 public:
-    AtmelCtrlFactory(cI2CSettings *i2cSettings);
+    FactoryControllerAtmel(cI2CSettings *i2cSettings);
     AtmelWatcherInterfacePtr createAtmelWatcher(QString devnode) override;
     AtmelPermissionTemplatePtrU getPermissionCheckController() override;
     AtmelCommonVersionsPtrU getCommonVersionController(ControllerTypes ctrlType, quint8 muxChannel = -1) override;
@@ -17,4 +17,4 @@ private:
     cI2CSettings *m_i2cSettings;
 };
 
-#endif // ATMELCTRLFACTORY_H
+#endif // FACTORYCONTROLLERATMEL_H
