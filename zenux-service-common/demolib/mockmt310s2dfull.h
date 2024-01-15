@@ -3,11 +3,12 @@
 
 #include "mt310s2d.h"
 
-class MockMt310s2dFull : public cMT310S2dServer
+class MockMt310s2dFull
 {
-    Q_OBJECT
 public:
-    MockMt310s2dFull(std::shared_ptr<SettingsForDeviceServer> settings, AtmelCtrlFactoryInterfacePrt ctrlFactory);
+    MockMt310s2dFull();
+private:
+    std::unique_ptr<cMT310S2dServer> m_server;
 };
 
 #endif // MOCKMT310S2DFULL_H
