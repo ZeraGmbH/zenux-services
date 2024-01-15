@@ -1,16 +1,9 @@
 #include "atmelpermissionmock.h"
 #include <timerfactoryqt.h>
 
-bool AtmelPermissionMock::m_permission = false;
-
-AtmelPermissionTemplatePtrU AtmelPermissionMock::create()
+AtmelPermissionMock::AtmelPermissionMock(bool &permission) :
+    m_permission(permission)
 {
-    return std::make_unique<AtmelPermissionMock>();
-}
-
-void AtmelPermissionMock::setPermission(bool permission)
-{
-    m_permission = permission;
 }
 
 ZeraMControllerIoTemplate::atmelRM AtmelPermissionMock::getEEPROMAccessEnable(bool &enable)

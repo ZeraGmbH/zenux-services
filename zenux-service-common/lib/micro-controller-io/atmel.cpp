@@ -62,55 +62,9 @@ Atmel::Atmel(QString devnode, quint8 adr, quint8 debuglevel) :
 }
 
 
-ZeraMControllerIo::atmelRM Atmel::readSerialNumber(QString& answer)
-{
-    return readVariableLenText(hwGetSerialNr, answer);
-}
-
-
-ZeraMControllerIo::atmelRM Atmel::writeSerialNumber(QString &sNumber)
-{
-    ZeraMControllerIo::atmelRM ret;
-    quint16 len = static_cast<quint16>(sNumber.length());
-    if ( (len<1) || (len>24)) {
-        ret = cmdfault;
-    }
-    else {
-        QByteArray ba = sNumber.toLatin1();
-        hw_cmd CMD(hwSetSerialNr, 0, reinterpret_cast<quint8*>(ba.data()), len);
-        writeCommand(&CMD);
-        ret = getLastErrorMask() == 0 ? cmddone : cmdexecfault;
-    }
-    return ret;
-}
-
-
 ZeraMControllerIo::atmelRM Atmel::readDeviceName(QString& answer)
 {
     return readVariableLenText(hwGetDevName, answer);
-}
-
-
-ZeraMControllerIo::atmelRM Atmel::writePCBVersion(QString &sVersion)
-{
-    ZeraMControllerIo::atmelRM ret;
-    quint16 len = static_cast<quint16>(sVersion.length());
-    if (len<1 || len>24) {
-        ret = cmdfault;
-    }
-    else {
-        QByteArray ba = sVersion.toLatin1();
-        hw_cmd CMD(hwSetPCBVersion, 0, reinterpret_cast<quint8*>(ba.data()), len);
-        writeCommand(&CMD);
-        ret = getLastErrorMask() == 0 ? cmddone : cmdexecfault;
-    }
-    return ret;
-}
-
-
-ZeraMControllerIo::atmelRM Atmel::readLCAVersion(QString& answer)
-{
-    return readVariableLenText(hwGetLCAVersion, answer);
 }
 
 
