@@ -1,13 +1,13 @@
-#ifndef EEPROM24LCMOCK_H
-#define EEPROM24LCMOCK_H
+#ifndef MOCKEEPROM24LC_H
+#define MOCKEEPROM24LC_H
 
 #include <i2cflashinterface.h>
 #include <QHash>
 
-class EEprom24LCMock : public I2cFlashInterface
+class MockEEprom24LC : public I2cFlashInterface
 {
 public:
-    EEprom24LCMock(QString devNode, short i2cAddr);
+    MockEEprom24LC(QString devNode, short i2cAddr);
     int WriteData(char* data, ushort count, ushort adr) override;
     int ReadData(char* data, ushort count, ushort adr) override;
     virtual int Reset() override;
@@ -26,4 +26,4 @@ private:
     static QHash<QString, QHash<short, bool>> m_returnReducedDataSizeOnRead;
 };
 
-#endif // EEPROM24LCMOCK_H
+#endif // MOCKEEPROM24LC_H

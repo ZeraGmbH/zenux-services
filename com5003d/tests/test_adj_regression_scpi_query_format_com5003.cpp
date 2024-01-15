@@ -1,8 +1,8 @@
 #include "test_adj_regression_scpi_query_format_com5003.h"
 #include "mockatmelctrlfactory.h"
 #include "proxy.h"
-#include "i2cflashiofactoryfortest.h"
-#include "eeprom24lcmock.h"
+#include "mocki2ceepromiofactory.h"
+#include "mockeeprom24lc.h"
 #include "scpisingletransactionblocked.h"
 #include <timemachineobject.h>
 #include <QSignalSpy>
@@ -14,7 +14,7 @@ static const QDateTime refTime = QDateTime::fromSecsSinceEpoch(0, Qt::UTC);
 
 void test_adj_regression_scpi_query_format_com5003::initTestCase()
 {
-    I2cFlashIoFactoryForTest::enableMockFlash();
+    MockI2cEEpromIoFactory::enableMock();
     setupServers();
 
     QString filenameShort = ":/import_scpi_format";
@@ -24,7 +24,7 @@ void test_adj_regression_scpi_query_format_com5003::initTestCase()
 
 void test_adj_regression_scpi_query_format_com5003::init()
 {
-    EEprom24LCMock::cleanAll();
+    MockEEprom24LC::cleanAll();
 }
 
 void test_adj_regression_scpi_query_format_com5003::queryGainCorrectionSingleGen()

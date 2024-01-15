@@ -2,8 +2,8 @@
 #include "mockatmelctrlfactory.h"
 #include "systeminfomock.h"
 #include "proxy.h"
-#include "i2cflashiofactoryfortest.h"
-#include "eeprom24lcmock.h"
+#include "mocki2ceepromiofactory.h"
+#include "mockeeprom24lc.h"
 #include "scpisingletransactionblocked.h"
 #include "zscpi_response_definitions.h"
 #include "xmlhelperfortest.h"
@@ -14,8 +14,8 @@ QTEST_MAIN(test_adj_deny_import_com5003);
 
 void test_adj_deny_import_com5003::init()
 {
-    EEprom24LCMock::cleanAll();
-    I2cFlashIoFactoryForTest::enableMockFlash();
+    MockEEprom24LC::cleanAll();
+    MockI2cEEpromIoFactory::enableMock();
     setupServers();
 }
 
@@ -32,7 +32,7 @@ void test_adj_deny_import_com5003::loadEEpromWithStoredNamesAndVersions()
 {
     // This is mostly to set-up our mock SystemInfo
     cI2CSettings *i2cSettings = m_mockServer->getI2cSettings();
-    EEprom24LCMock eepromMock(i2cSettings->getDeviceNode(), i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress));
+    MockEEprom24LC eepromMock(i2cSettings->getDeviceNode(), i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress));
     QByteArray eepromContent = readFile(":/export_internal_modified.eeprom");
     QVERIFY(!eepromContent.isEmpty());
     eepromMock.WriteData(eepromContent.data(), eepromContent.length(), 0);
@@ -58,7 +58,7 @@ void test_adj_deny_import_com5003::loadEEpromAndDenyDifferentDeviceName()
     static_cast<SystemInfoMock*>(m_mockServer->getSystemInfo())->setDeviceName("Foo");
 
     cI2CSettings *i2cSettings = m_mockServer->getI2cSettings();
-    EEprom24LCMock eepromMock(i2cSettings->getDeviceNode(), i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress));
+    MockEEprom24LC eepromMock(i2cSettings->getDeviceNode(), i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress));
     QByteArray eepromContent = readFile(":/export_internal_modified.eeprom");
     QVERIFY(!eepromContent.isEmpty());
     eepromMock.WriteData(eepromContent.data(), eepromContent.length(), 0);

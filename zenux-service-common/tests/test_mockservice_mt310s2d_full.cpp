@@ -55,7 +55,7 @@ void test_mockservice_mt310s2d_full::smokeTestSystemInterface()
 {
     // That caused biseceting sessions: system interface uses uninitialized sense interface
     QString ret = ScpiSingleTransactionBlocked::cmd("SYSTEM:ADJUSTMENT:FLASH:WRITE", "");
-    QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::errexec]); // no flash mock yet
+    QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::ack]);
 }
 
 void test_mockservice_mt310s2d_full::smokeTestStatusInterface()

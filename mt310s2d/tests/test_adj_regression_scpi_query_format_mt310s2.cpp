@@ -1,7 +1,7 @@
 #include "test_adj_regression_scpi_query_format_mt310s2.h"
 #include "proxy.h"
-#include "i2cflashiofactoryfortest.h"
-#include "eeprom24lcmock.h"
+#include "mocki2ceepromiofactory.h"
+#include "mockeeprom24lc.h"
 #include "scpisingletransactionblocked.h"
 #include "mockatmelctrlfactory.h"
 #include <timemachineobject.h>
@@ -14,7 +14,7 @@ static const QDateTime refTime = QDateTime::fromSecsSinceEpoch(0, Qt::UTC);
 
 void test_adj_regression_scpi_query_format_mt310s2::initTestCase()
 {
-    I2cFlashIoFactoryForTest::enableMockFlash();
+    MockI2cEEpromIoFactory::enableMock();
     setupServers();
 
     QString filenameShort = ":/import_scpi_format";
@@ -24,7 +24,7 @@ void test_adj_regression_scpi_query_format_mt310s2::initTestCase()
 
 void test_adj_regression_scpi_query_format_mt310s2::init()
 {
-    EEprom24LCMock::cleanAll();
+    MockEEprom24LC::cleanAll();
 }
 
 void test_adj_regression_scpi_query_format_mt310s2::queryGainCorrectionSingleGen()

@@ -1,13 +1,13 @@
-#ifndef ATMELEMOBCTRLFORTEST_H
-#define ATMELEMOBCTRLFORTEST_H
+#ifndef ATMELCTRLEMOBFORTEST_H
+#define ATMELCTRLEMOBFORTEST_H
 
 #include <atmelctrlemob.h>
 
-class AtmelEmobCtrlForTest : public AtmelCtrlEmob
+class AtmelCtrlEmobForTest : public AtmelCtrlEmob
 {
 public:
-    AtmelEmobCtrlForTest(ZeraMcontrollerIoPtr i2cCtrl, QString devnode, quint8 adrMux, quint8 muxChannel, bool responding);
-    virtual ~AtmelEmobCtrlForTest();
+    AtmelCtrlEmobForTest(ZeraMcontrollerIoPtr i2cCtrl, QString devnode, quint8 adrMux, quint8 muxChannel, bool responding);
+    virtual ~AtmelCtrlEmobForTest();
     ZeraMControllerIo::atmelRM readCTRLVersion(QString& answer) override;
     QString getDevnode();
     void setAdrCtrl(quint8 adrCtrl);
@@ -27,4 +27,4 @@ private:
     static int m_instanceCount;
 };
 
-#endif // ATMELEMOBCTRLFORTEST_H
+#endif // ATMELCTRLEMOBFORTEST_H
