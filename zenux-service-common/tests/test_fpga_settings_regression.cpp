@@ -34,7 +34,7 @@ void test_fpga_settings_regression::mt310s2d()
 
     ServerParams params = MockPcbServer::createParams("mt310s2d");
     std::shared_ptr<SettingsForDeviceServer> settings = std::make_shared<SettingsForDeviceServer>(params);
-    cMT310S2dServer server(settings, std::make_shared<MockAtmelCtrlFactory>(true), params);
+    cMT310S2dServer server(settings, std::make_shared<MockAtmelCtrlFactory>(true));
     TimeMachineObject::feedEventLoop();
 
     QCOMPARE(server.getCtrlDeviceNode(), "/dev/zFPGA1reg");

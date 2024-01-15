@@ -11,6 +11,7 @@ class SettingsForDeviceServer : public QObject
     Q_OBJECT
 public:
     explicit SettingsForDeviceServer(ServerParams params);
+    ServerParams getServerParams();
     cI2CSettings *getI2cSettings();
     FPGASettings *getFpgaSettings();
 private:

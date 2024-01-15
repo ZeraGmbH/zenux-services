@@ -13,5 +13,5 @@ MockMt310s2dFull::MockMt310s2dFull()
 
     ServerParams params = MockPcbServer::createParams("mt310s2d");
     std::shared_ptr<SettingsForDeviceServer> settings = std::make_shared<SettingsForDeviceServer>(params);
-    m_server = std::make_unique<cMT310S2dServer>(settings, std::make_shared<MockAtmelCtrlFactory>(true), params);
+    m_server = std::make_unique<cMT310S2dServer>(settings, std::make_shared<MockAtmelCtrlFactory>(true));
 }
