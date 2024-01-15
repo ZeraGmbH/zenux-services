@@ -5,6 +5,7 @@
 #include "mockatmelaccumulatorhandler.h"
 #include "mockatmeldeviceidentificationdata.h"
 #include "mockatmelranges.h"
+#include "mockatmelmmodes.h"
 
 MockFactoryController::TPersitentControllerData MockFactoryController::m_persitentData;
 
@@ -47,4 +48,9 @@ AtmelAccumulatorHandlerPtrU MockFactoryController::getAccumulatorController()
 AtmelRangesPtrU MockFactoryController::getRangesController()
 {
     return std::make_unique<MockAtmelRanges>();
+}
+
+AtmelMModesPtrU MockFactoryController::getMModeController()
+{
+    return std::make_unique<MockAtmelMModes>();
 }

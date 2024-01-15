@@ -284,7 +284,7 @@ QString Mt310s2SenseChannel::m_ReadWriteRange(QString &sInput)
 {
     cSCPICommand cmd = sInput;
     quint8 mode;
-    if ( Atmel::getInstance().readMeasMode(mode) == ZeraMControllerIo::cmddone ) {
+    if (m_ctrlFactory->getMModeController()->readMeasMode(mode) == ZeraMControllerIo::cmddone ) {
         if (cmd.isQuery()) {
             return notifierSenseChannelRange.getString();
         }

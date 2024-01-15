@@ -9,7 +9,8 @@ class AtmelCtrlRelais : public AtmelCommon,
                         public AtmelCommonVersions,
                         public AtmelDeviceIdentificationData,
                         public AtmelPermissionTemplate,
-                        public AtmelRanges
+                        public AtmelRanges,
+                        public AtmelMModes
 {
 public:
     AtmelCtrlRelais(QString devnode, quint8 adr, quint8 debuglevel);
@@ -39,8 +40,8 @@ public:
     };
      * see https://github.com/ZeraGmbH/atmel-com5003/blob/1664607ebdd8938c479f182c48bac8afe901918c/Control_Relais.h#L17
      */
-    atmelRM setMeasMode(quint8 mmode);
-    atmelRM readMeasMode(quint8& mmode);
+    atmelRM setMeasMode(quint8 mmode) override;
+    atmelRM readMeasMode(quint8& mmode) override;
 
     atmelRM setPLLChannel(quint8 chn);
     atmelRM readPLLChannel(quint8& chn);

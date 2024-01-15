@@ -9,7 +9,6 @@
 #include "rangeadjinterface.h"
 #include "scpiconnection.h"
 #include "resource.h"
-#include "atmel.h"
 #include "zscpi_response_definitions.h"
 #include "i2csettings.h"
 #include "sensesettings.h"
@@ -740,7 +739,7 @@ bool Mt310s2SenseInterface::setSenseMode(QString sMode)
     if (m_MModeHash.contains(sMode)) {
         quint8 mode;
         mode = m_MModeHash[sMode];
-        Atmel::getInstance().setMeasMode((mode >> 1) & 1); // set the atmels mode here...atmel only knows ac and hf
+        m_ctrlFactory->getMModeController()->setMeasMode((mode >> 1) & 1); // set the atmels mode here...atmel only knows ac and hf
         for(auto channel : qAsConst(m_ChannelList)) {
             channel->setMMode(mode);
         }

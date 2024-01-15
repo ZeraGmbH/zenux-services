@@ -15,6 +15,7 @@ public:
     AtmelDeviceIdentificationDataU getDeviceIdentificationController() override;
     AtmelAccumulatorHandlerPtrU getAccumulatorController() override;
     AtmelRangesPtrU getRangesController() override;
+    AtmelMModesPtrU getMModeController() override;
 private:
     cI2CSettings *m_i2cSettings;
 };

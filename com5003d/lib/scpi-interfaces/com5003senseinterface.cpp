@@ -9,7 +9,6 @@
 #include "com5003sensechannel.h"
 #include "com5003senserange.h"
 #include "protonetcommand.h"
-#include "atmel.h"
 #include "sensesettings.h"
 #include <i2cmultiplexerfactory.h>
 #include <xmlsettings.h>
@@ -40,7 +39,7 @@ Com5003SenseInterface::Com5003SenseInterface(cSCPI *scpiInterface,
     m_nSerialStatus = Adjustment::wrongSNR;
 
     m_nMMode = SenseSystem::modeAC; // default ac measurement
-    Atmel::getInstance().setMeasMode(m_nMMode); // set the atmels mode too
+    m_ctrlFactory->getMModeController()->setMeasMode(m_nMMode); // set the atmels mode too
     setNotifierSenseMMode();
 
     QList<SenseSystem::cChannelSettings*> channelSettings;
@@ -793,7 +792,7 @@ void Com5003SenseInterface::registerSense()
         }
     }
 
-    Atmel::getInstance().setMeasMode(m_nMMode); // set the atmels mode too
+    m_ctrlFactory->getMModeController()->setMeasMode(m_nMMode); // set the atmels mode too
 
     // here we do the rest of reconfiguring
     for (qint32 i = 0; i < m_ChannelList.count(); i++) {
