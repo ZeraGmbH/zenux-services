@@ -17,6 +17,7 @@ add_library(com5003d-lib STATIC
 
 target_include_directories(com5003d-lib
     PUBLIC
+    $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/com5003d-lib>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/scpi-interfaces>
     )
