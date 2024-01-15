@@ -1,6 +1,6 @@
-#include "atmelwatchermock.h"
+#include "mockatmelwatcher.h"
 
-void AtmelWatcherMock::start()
+void MockAtmelWatcher::start()
 {
     QMetaObject::invokeMethod(this,
                               "sigRunning",

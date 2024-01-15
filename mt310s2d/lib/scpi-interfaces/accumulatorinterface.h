@@ -2,7 +2,6 @@
 #define ACCUMULATORINTERFACE_H
 
 #include "atmelctrlfactoryinterface.h"
-#include "atmelctrlsystem.h"
 #include "timertemplateqt.h"
 #include "accumulatorsettings.h"
 #include <scpiconnection.h>
