@@ -55,3 +55,8 @@ AtmelAccumulatorHandlerPtrU FactoryControllerAtmel::getAccumulatorController()
 {
     return std::make_unique<AtmelCtrlSystem>(m_i2cSettings->getDeviceNode(), m_i2cSettings->getI2CAdress(i2cSettings::sysCtrlI2cAddress), defaultDebugLevel);
 }
+
+AtmelRangesPtrU FactoryControllerAtmel::getRangesController()
+{
+    return std::make_unique<AtmelCtrlRelais>(m_i2cSettings->getDeviceNode(), m_i2cSettings->getI2CAdress(i2cSettings::relaisCtrlI2cAddress), defaultDebugLevel);
+}

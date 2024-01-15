@@ -9,9 +9,16 @@
 #include "com5003senserange.h"
 #include "scpiconnection.h"
 
-Com5003SenseChannel::Com5003SenseChannel(cSCPI *scpiinterface, QString description, QString unit, SenseSystem::cChannelSettings *cSettings, quint8 nr) :
+Com5003SenseChannel::Com5003SenseChannel(cSCPI *scpiinterface,
+                                         QString description,
+                                         QString unit,
+                                         SenseSystem::cChannelSettings *cSettings,
+                                         quint8 nr,
+                                         FactoryControllerAbstractPtr ctrlFactory) :
     ScpiConnection(scpiinterface),
-    m_sDescription(description), m_sUnit(unit)
+    m_ctrlFactory(ctrlFactory),
+    m_sDescription(description),
+    m_sUnit(unit)
 {
     m_sName = QString("m%1").arg(nr);
     m_sAlias[0] = cSettings->m_sAlias1;
@@ -281,7 +288,7 @@ void Com5003SenseChannel::setNotifierSenseChannelRange()
     {
         if (mode == SenseChannel::modeAC) // wir sind im normalberieb
         {
-            if ( Atmel::getInstance().readRange(m_nCtrlChannel, range) == ZeraMControllerIo::cmddone )
+            if (m_ctrlFactory->getRangesController()->readRange(m_nCtrlChannel, range) == ZeraMControllerIo::cmddone )
             {
                 int i;
                 for (i = 0; i < m_RangeList.count(); i++)
@@ -330,7 +337,7 @@ QString Com5003SenseChannel::m_ReadWriteRange(QString &sInput)
                     // we know this range and it's available
                     if (m_nMMode == SenseChannel::modeAC)
                     {
-                        if ( Atmel::getInstance().setRange(m_nCtrlChannel, m_RangeList.at(i)->getSelCode()) == ZeraMControllerIo::cmddone)
+                        if (m_ctrlFactory->getRangesController()->setRange(m_nCtrlChannel, m_RangeList.at(i)->getSelCode()) == ZeraMControllerIo::cmddone)
                         {
                             notifierSenseChannelRange = rng;
                             return ZSCPI::scpiAnswer[ZSCPI::ack];

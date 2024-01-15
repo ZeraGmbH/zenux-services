@@ -28,7 +28,12 @@ class Mt310s2SenseChannel : public ScpiConnection
     Q_OBJECT
 
 public:
-    Mt310s2SenseChannel(cSCPI* scpiinterface, QString description, QString unit, SenseSystem::cChannelSettings* cSettings, quint8 nr);
+    Mt310s2SenseChannel(cSCPI* scpiinterface,
+                        QString description,
+                        QString unit,
+                        SenseSystem::cChannelSettings* cSettings,
+                        quint8 nr,
+                        FactoryControllerAbstractPtr ctrlFactory);
     ~Mt310s2SenseChannel();
     virtual void initSCPIConnection(QString leadingNodes) override;
 
@@ -57,6 +62,7 @@ protected:
     void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
 
 private:
+    FactoryControllerAbstractPtr m_ctrlFactory;
     QString m_sName; // the channels name m0...
     QString m_sAlias; // the channel's alias name for example UL1
     QString m_sDescription; // the channel's brief description

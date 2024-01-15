@@ -33,7 +33,12 @@ class Com5003SenseChannel : public ScpiConnection
     Q_OBJECT
 
 public:
-    Com5003SenseChannel(cSCPI* scpiinterface, QString description, QString unit, SenseSystem::cChannelSettings* cSettings, quint8 nr);
+    Com5003SenseChannel(cSCPI* scpiinterface,
+                        QString description,
+                        QString unit,
+                        SenseSystem::cChannelSettings* cSettings,
+                        quint8 nr,
+                        FactoryControllerAbstractPtr ctrlFactory);
     ~Com5003SenseChannel();
     virtual void initSCPIConnection(QString leadingNodes) override;
 
@@ -58,6 +63,7 @@ protected:
     void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
 
 private:
+    FactoryControllerAbstractPtr m_ctrlFactory;
     QString m_sName; // the channels name m0...
     QString m_sAlias[2]; // the channel's alias name for example UL1 alternativ REF1
     QString m_sDescription; // the channel's brief description

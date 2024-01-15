@@ -47,22 +47,22 @@ Mt310s2SenseInterface::Mt310s2SenseInterface(cSCPI *scpiInterface,
     // for com5003 our sense had 3 voltage and 3 current measuring channels
     // for mt310 we need 4 voltage and 4 current measuring channels
     Mt310s2SenseChannel* pChannel;
-    pChannel = new Mt310s2SenseChannel(m_pSCPIInterface, SenseSystem::sVoltageChannelDescription,"V", channelSettings.at(0), 0);
+    pChannel = new Mt310s2SenseChannel(m_pSCPIInterface, SenseSystem::sVoltageChannelDescription,"V", channelSettings.at(0), 0, m_ctrlFactory);
     m_ChannelList.append(pChannel);
-    pChannel = new Mt310s2SenseChannel(m_pSCPIInterface, SenseSystem::sVoltageChannelDescription,"V", channelSettings.at(1), 1);
+    pChannel = new Mt310s2SenseChannel(m_pSCPIInterface, SenseSystem::sVoltageChannelDescription,"V", channelSettings.at(1), 1, m_ctrlFactory);
     m_ChannelList.append(pChannel);
-    pChannel = new Mt310s2SenseChannel(m_pSCPIInterface, SenseSystem::sVoltageChannelDescription,"V", channelSettings.at(2), 2);
+    pChannel = new Mt310s2SenseChannel(m_pSCPIInterface, SenseSystem::sVoltageChannelDescription,"V", channelSettings.at(2), 2, m_ctrlFactory);
     m_ChannelList.append(pChannel);
-    pChannel = new Mt310s2SenseChannel(m_pSCPIInterface, SenseSystem::sVoltageChannelDescription,"V", channelSettings.at(6), 6);
+    pChannel = new Mt310s2SenseChannel(m_pSCPIInterface, SenseSystem::sVoltageChannelDescription,"V", channelSettings.at(6), 6, m_ctrlFactory);
     m_ChannelList.append(pChannel);
 
-    pChannel = new Mt310s2SenseChannel(m_pSCPIInterface, SenseSystem::sCurrentChannelDescription,"A", channelSettings.at(3), 3);
+    pChannel = new Mt310s2SenseChannel(m_pSCPIInterface, SenseSystem::sCurrentChannelDescription,"A", channelSettings.at(3), 3, m_ctrlFactory);
     m_ChannelList.append(pChannel);
-    pChannel = new Mt310s2SenseChannel(m_pSCPIInterface, SenseSystem::sCurrentChannelDescription,"A", channelSettings.at(4), 4);
+    pChannel = new Mt310s2SenseChannel(m_pSCPIInterface, SenseSystem::sCurrentChannelDescription,"A", channelSettings.at(4), 4, m_ctrlFactory);
     m_ChannelList.append(pChannel);
-    pChannel = new Mt310s2SenseChannel(m_pSCPIInterface, SenseSystem::sCurrentChannelDescription,"A", channelSettings.at(5), 5);
+    pChannel = new Mt310s2SenseChannel(m_pSCPIInterface, SenseSystem::sCurrentChannelDescription,"A", channelSettings.at(5), 5, m_ctrlFactory);
     m_ChannelList.append(pChannel);
-    pChannel = new Mt310s2SenseChannel(m_pSCPIInterface, SenseSystem::sCurrentChannelDescription,"A", channelSettings.at(7), 7);
+    pChannel = new Mt310s2SenseChannel(m_pSCPIInterface, SenseSystem::sCurrentChannelDescription,"A", channelSettings.at(7), 7, m_ctrlFactory);
     m_ChannelList.append(pChannel);
 
     QList<Mt310s2SenseRange*> rngList;

@@ -6,8 +6,9 @@
 #include <scpicommand.h>
 #include "micro-controller-io/atmel.h"
 
-Mt310s2SenseChannel::Mt310s2SenseChannel(cSCPI* scpiinterface, QString description, QString unit, SenseSystem::cChannelSettings *cSettings, quint8 nr) :
+Mt310s2SenseChannel::Mt310s2SenseChannel(cSCPI* scpiinterface, QString description, QString unit, SenseSystem::cChannelSettings *cSettings, quint8 nr, FactoryControllerAbstractPtr ctrlFactory) :
     ScpiConnection(scpiinterface),
+    m_ctrlFactory(ctrlFactory),
     m_sDescription(description),
     m_sUnit(unit)
 {
@@ -269,7 +270,7 @@ QString Mt310s2SenseChannel::m_StatusReset(QString &sInput)
 void Mt310s2SenseChannel::setNotifierSenseChannelRange()
 {
     quint8 rSelCode;
-    if ( Atmel::getInstance().readRange(m_nCtrlChannel, rSelCode) == ZeraMControllerIo::cmddone ) {
+    if (m_ctrlFactory->getRangesController()->readRange(m_nCtrlChannel, rSelCode) == ZeraMControllerIo::cmddone ) {
         for(auto range : qAsConst(m_RangeList)) {
             if ( (range->getSelCode() == rSelCode) && (range->getAvail())) {
                 notifierSenseChannelRange = range->getName();
@@ -299,7 +300,7 @@ QString Mt310s2SenseChannel::m_ReadWriteRange(QString &sInput)
                 }
                 if ( (i < anz) && (m_RangeList.at(i)->getAvail()) ) {
                     // we know this range and it's available
-                    if ( Atmel::getInstance().setRange(m_nCtrlChannel, m_RangeList.at(i)->getSelCode()) == ZeraMControllerIo::cmddone) {
+                    if (m_ctrlFactory->getRangesController()->setRange(m_nCtrlChannel, m_RangeList.at(i)->getSelCode()) == ZeraMControllerIo::cmddone) {
                         notifierSenseChannelRange = rng;
                         return ZSCPI::scpiAnswer[ZSCPI::ack];
                     }

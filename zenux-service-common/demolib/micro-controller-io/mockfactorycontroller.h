@@ -12,6 +12,7 @@ public:
     AtmelCommonVersionsPtrU getCommonVersionController(ControllerTypes ctrlType, quint8 muxChannel = -1) override;
     AtmelDeviceIdentificationDataU getDeviceIdentificationController() override;
     AtmelAccumulatorHandlerPtrU getAccumulatorController() override;
+    AtmelRangesPtrU getRangesController() override;
 private:
     struct TPersitentControllerData
     {
