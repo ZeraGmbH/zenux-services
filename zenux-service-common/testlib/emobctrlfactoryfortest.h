@@ -1,9 +1,9 @@
 #ifndef EMOBCTRLFACTORYFORTEST_H
 #define EMOBCTRLFACTORYFORTEST_H
 
-#include "emobctrlfactory.h"
+#include "factoryemobctrl.h"
 
-class EmobCtrlFactoryForTest : public EmobCtrlFactory
+class EmobCtrlFactoryForTest : public FactoryEmobCtrl
 {
 public:
     static void prepareNextTestControllers(QVector<bool> responding);

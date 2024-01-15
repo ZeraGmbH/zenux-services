@@ -36,7 +36,7 @@ public:
     Com5003SystemInterface(cPCBServer* server,
                            SystemInfo* sytemInfo,
                            Com5003SenseInterface *senseInterface,
-                           AtmelCtrlFactoryInterfacePrt ctrlFactory);
+                           FactoryControllerAbstractPtr ctrlFactory);
     virtual void initSCPIConnection(QString leadingNodes) override;
 
 protected:
@@ -66,7 +66,7 @@ private:
     cPCBServer* m_pMyServer;
     SystemInfo* m_sytemInfo;
     Com5003SenseInterface *m_senseInterface;
-    AtmelCtrlFactoryInterfacePrt m_ctrlFactory;
+    FactoryControllerAbstractPtr m_ctrlFactory;
     NotificationString m_allCtrlVersion;
     NotificationString m_allPCBVersion;
 };

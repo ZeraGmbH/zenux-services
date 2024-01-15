@@ -1,7 +1,7 @@
 #ifndef COM5003D_H
 #define COM5003D_H
 
-#include "atmelctrlfactoryinterface.h"
+#include "factorycontrollerabstract.h"
 #include "pcbserver.h"
 #include "rmconnection.h"
 #include "debugsettings.h"
@@ -60,7 +60,7 @@ private:
 
     static ServerParams defaultParams;
     ServerParams m_params;
-    AtmelCtrlFactoryInterfacePrt m_ctrlFactory;
+    FactoryControllerAbstractPtr m_ctrlFactory;
 
     SystemInfo* m_pSystemInfo = nullptr;
 

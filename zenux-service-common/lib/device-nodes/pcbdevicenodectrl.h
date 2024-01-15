@@ -1,11 +1,11 @@
 #ifndef PCBDEVICENODECTRL_H
 #define PCBDEVICENODECTRL_H
 
-#include "pcbdevicenodectrlinterface.h"
+#include "pcbdevicenodectrlabstract.h"
 #include <fcntl.h>
 #include <unistd.h>
 
-class PcbDeviceNodeCtrl : public PcbDeviceNodeCtrlInterface
+class PcbDeviceNodeCtrl : public PcbDeviceNodeCtrlAbstract
 {
 public:
     int open(QString devNodeFileName) override;

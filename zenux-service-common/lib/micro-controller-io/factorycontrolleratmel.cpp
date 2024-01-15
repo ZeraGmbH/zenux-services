@@ -1,26 +1,26 @@
-#include "atmelctrlfactory.h"
+#include "factorycontrolleratmel.h"
 #include "atmelctrlrelais.h"
 #include "atmelctrlsystem.h"
 #include "atmelwatcher.h"
 
 constexpr int defaultDebugLevel = 1;
 
-AtmelCtrlFactory::AtmelCtrlFactory(cI2CSettings *i2cSettings) :
+FactoryControllerAtmel::FactoryControllerAtmel(cI2CSettings *i2cSettings) :
     m_i2cSettings(i2cSettings)
 {
 }
 
-AtmelWatcherInterfacePtr AtmelCtrlFactory::createAtmelWatcher(QString devnode)
+AtmelWatcherInterfacePtr FactoryControllerAtmel::createAtmelWatcher(QString devnode)
 {
     return std::make_unique<cAtmelWatcher>(devnode);
 }
 
-AtmelPermissionTemplatePtrU AtmelCtrlFactory::getPermissionCheckController()
+AtmelPermissionTemplatePtrU FactoryControllerAtmel::getPermissionCheckController()
 {
     return std::make_unique<AtmelCtrlRelais>(m_i2cSettings->getDeviceNode(), m_i2cSettings->getI2CAdress(i2cSettings::relaisCtrlI2cAddress), defaultDebugLevel);
 }
 
-AtmelCommonVersionsPtrU AtmelCtrlFactory::getCommonVersionController(ControllerTypes ctrlType, quint8 muxChannel)
+AtmelCommonVersionsPtrU FactoryControllerAtmel::getCommonVersionController(ControllerTypes ctrlType, quint8 muxChannel)
 {
     switch(ctrlType) {
     case CTRL_TYPE_RELAIS:
@@ -46,12 +46,12 @@ AtmelCommonVersionsPtrU AtmelCtrlFactory::getCommonVersionController(ControllerT
     }
 }
 
-AtmelDeviceIdentificationDataU AtmelCtrlFactory::getDeviceIdentificationController()
+AtmelDeviceIdentificationDataU FactoryControllerAtmel::getDeviceIdentificationController()
 {
     return std::make_unique<AtmelCtrlRelais>(m_i2cSettings->getDeviceNode(), m_i2cSettings->getI2CAdress(i2cSettings::relaisCtrlI2cAddress), defaultDebugLevel);
 }
 
-AtmelAccumulatorHandlerPtrU AtmelCtrlFactory::getAccumulatorController()
+AtmelAccumulatorHandlerPtrU FactoryControllerAtmel::getAccumulatorController()
 {
     return std::make_unique<AtmelCtrlSystem>(m_i2cSettings->getDeviceNode(), m_i2cSettings->getI2CAdress(i2cSettings::sysCtrlI2cAddress), defaultDebugLevel);
 }

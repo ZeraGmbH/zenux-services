@@ -1,17 +1,17 @@
 #ifndef PCBDEVICENODECTRLSINGLETON_H
 #define PCBDEVICENODECTRLSINGLETON_H
 
-#include "pcbdevicenodectrlinterface.h"
+#include "pcbdevicenodectrlabstract.h"
 #include <functional>
 
 class PcbDeviceNodeCtrlSingleton
 {
 public:
-    static PcbDeviceNodeCtrlInterface *getInstance();
+    static PcbDeviceNodeCtrlAbstract *getInstance();
 protected:
-    static std::function<PcbDeviceNodeCtrlInterfaceUPtr()> m_createFunction;
+    static std::function<PcbDeviceNodeCtrlAbstractPtr()> m_createFunction;
 private:
-    static PcbDeviceNodeCtrlInterfaceUPtr m_instance;
+    static PcbDeviceNodeCtrlAbstractPtr m_instance;
 };
 
 #endif // PCBDEVICENODECTRLSINGLETON_H

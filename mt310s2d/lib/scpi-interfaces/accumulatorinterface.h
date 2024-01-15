@@ -1,7 +1,7 @@
 #ifndef ACCUMULATORINTERFACE_H
 #define ACCUMULATORINTERFACE_H
 
-#include "atmelctrlfactoryinterface.h"
+#include "factorycontrollerabstract.h"
 #include "timertemplateqt.h"
 #include "accumulatorsettings.h"
 #include <scpiconnection.h>
@@ -14,7 +14,7 @@ enum accumulatorCommands{
 class AccumulatorInterface : public ScpiConnection
 {
 public:
-    AccumulatorInterface(cSCPI* scpiInterface, AccumulatorSettings* settings, AtmelCtrlFactoryInterfacePrt ctrlFactory);
+    AccumulatorInterface(cSCPI* scpiInterface, AccumulatorSettings* settings, FactoryControllerAbstractPtr ctrlFactory);
     void initSCPIConnection(QString leadingNodes) override;
     QString getAccumulatorStatus();
     QString getAccuStateOfCharge();
@@ -23,7 +23,7 @@ protected:
 private:
     NotificationString m_accumulatorStatus;
     NotificationString m_accuStateOfCharge;
-    AtmelCtrlFactoryInterfacePrt m_ctrlFactory;
+    FactoryControllerAbstractPtr m_ctrlFactory;
     TimerTemplateQtPtr m_pollingTimer;
 };
 

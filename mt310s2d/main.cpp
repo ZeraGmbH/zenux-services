@@ -1,6 +1,6 @@
 #include "mt310s2d.h"
 #include "mt310s2dglobal.h"
-#include "atmelctrlfactory.h"
+#include "factorycontrolleratmel.h"
 #include <QCoreApplication>
 #include <syslog.h>
 
@@ -11,7 +11,7 @@ int main( int argc, char *argv[] )
     QCoreApplication* app = new QCoreApplication (argc, argv);
 
     std::shared_ptr<SettingsForDeviceServer> settings = std::make_shared<SettingsForDeviceServer>(cMT310S2dServer::defaultParams);
-    std::shared_ptr<AtmelCtrlFactory> ctrlFactory = std::make_shared<AtmelCtrlFactory>(settings->getI2cSettings());
+    std::shared_ptr<FactoryControllerAtmel> ctrlFactory = std::make_shared<FactoryControllerAtmel>(settings->getI2cSettings());
     cMT310S2dServer* mt310s2d = new cMT310S2dServer(std::move(settings), ctrlFactory); // this is our server
     qInfo(ServerName " started");
 

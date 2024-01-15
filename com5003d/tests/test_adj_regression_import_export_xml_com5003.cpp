@@ -2,7 +2,7 @@
 #include "proxy.h"
 #include "scpisingletransactionblocked.h"
 #include "xmlhelperfortest.h"
-#include "mockatmelctrlfactory.h"
+#include "mockfactorycontroller.h"
 #include <timemachineobject.h>
 #include <QSignalSpy>
 #include <QTest>
@@ -108,7 +108,7 @@ void test_adj_regression_import_export_xml_com5003::scpiExportInitialAdjXml()
 void test_adj_regression_import_export_xml_com5003::setupServers()
 {
     m_resmanServer = std::make_unique<ResmanRunFacade>();
-    m_mockServer = std::make_unique<MockForSenseInterfaceCom5003>(std::make_shared<MockAtmelCtrlFactory>(true));
+    m_mockServer = std::make_unique<MockForSenseInterfaceCom5003>(std::make_shared<MockFactoryController>(true));
     TimeMachineObject::feedEventLoop();
 
     m_pcbClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307);

@@ -1,17 +1,17 @@
 #ifndef DSPDEVICENODESINGLETON_H
 #define DSPDEVICENODESINGLETON_H
 
-#include "dspdevicenodeinterface.h"
+#include "dspdevicenodeabstract.h"
 #include <functional>
 
 class DspDeviceNodeSingleton
 {
 public:
-    static DspDeviceNodeInterface *getInstance();
+    static DspDeviceNodeAbstract *getInstance();
 protected:
-    static std::function<DspDeviceNodeInterfaceUPtr()> m_createFunction;
+    static std::function<DspDeviceNodeAbstractPtr()> m_createFunction;
 private:
-    static DspDeviceNodeInterfaceUPtr m_instance;
+    static DspDeviceNodeAbstractPtr m_instance;
 };
 
 #endif // DSPDEVICENODESINGLETON_H

@@ -1,17 +1,17 @@
 #ifndef PCBDEVICENODEMESSAGESINGLETON_H
 #define PCBDEVICENODEMESSAGESINGLETON_H
 
-#include "pcbdevicenodemessageinterface.h"
+#include "pcbdevicenodemessageabstract.h"
 #include <functional>
 
 class PcbDeviceNodeMessageSingleton
 {
 public:
-    static PcbDeviceNodeMessageInterface *getInstance();
+    static PcbDeviceNodeMessageAbstract *getInstance();
 protected:
-    static std::function<PcbDeviceNodeMessageInterfaceUPtr()> m_createFunction;
+    static std::function<PcbDeviceNodeMessageAbstractPtr()> m_createFunction;
 private:
-    static PcbDeviceNodeMessageInterfaceUPtr m_instance;
+    static PcbDeviceNodeMessageAbstractPtr m_instance;
 };
 
 #endif // PCBDEVICENODEMESSAGESINGLETON_H

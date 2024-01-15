@@ -1,12 +1,12 @@
-#ifndef MOCKATMELCTRLFACTORY_H
-#define MOCKATMELCTRLFACTORY_H
+#ifndef MOCKFACTORYCONTROLLER_H
+#define MOCKFACTORYCONTROLLER_H
 
-#include "atmelctrlfactoryinterface.h"
+#include "factorycontrollerabstract.h"
 
-class MockAtmelCtrlFactory : public AtmelCtrlFactoryInterface
+class MockFactoryController : public FactoryControllerAbstract
 {
 public:
-    MockAtmelCtrlFactory(bool initialPermission);
+    MockFactoryController(bool initialPermission);
     AtmelWatcherInterfacePtr createAtmelWatcher(QString devnode) override;
     AtmelPermissionTemplatePtrU getPermissionCheckController() override;
     AtmelCommonVersionsPtrU getCommonVersionController(ControllerTypes ctrlType, quint8 muxChannel = -1) override;
@@ -24,4 +24,4 @@ private:
     static TPersitentControllerData m_persitentData;
 };
 
-#endif // MOCKATMELCTRLFACTORY_H
+#endif // MOCKFACTORYCONTROLLER_H

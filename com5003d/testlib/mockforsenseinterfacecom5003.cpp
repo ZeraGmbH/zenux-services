@@ -1,7 +1,7 @@
 #include "mockforsenseinterfacecom5003.h"
 #include "systeminfomock.h"
 
-MockForSenseInterfaceCom5003::MockForSenseInterfaceCom5003(AtmelCtrlFactoryInterfacePrt ctrlFactory, bool systemInfoMock) :
+MockForSenseInterfaceCom5003::MockForSenseInterfaceCom5003(FactoryControllerAbstractPtr ctrlFactory, bool systemInfoMock) :
     MockPcbServer("com5003d")
 {
     m_i2cSettings = std::make_unique<cI2CSettings>(getConfigReader());

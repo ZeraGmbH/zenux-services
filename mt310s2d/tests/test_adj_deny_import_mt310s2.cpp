@@ -1,5 +1,5 @@
 #include "test_adj_deny_import_mt310s2.h"
-#include "mockatmelctrlfactory.h"
+#include "mockfactorycontroller.h"
 #include "mt310s2systeminfomock.h"
 #include "proxy.h"
 #include "mocki2ceepromiofactory.h"
@@ -70,7 +70,7 @@ void test_adj_deny_import_mt310s2::loadEEpromAndDenyDifferentDeviceName()
 void test_adj_deny_import_mt310s2::setupServers()
 {
     m_resmanServer = std::make_unique<ResmanRunFacade>();
-    m_mockServer = std::make_unique<MockForSenseInterfaceMt310s2>(std::make_shared<MockAtmelCtrlFactory>(true),
+    m_mockServer = std::make_unique<MockForSenseInterfaceMt310s2>(std::make_shared<MockFactoryController>(true),
                                                                   true);
     TimeMachineObject::feedEventLoop();
 

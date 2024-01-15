@@ -1,5 +1,5 @@
 #include "test_adj_deny_import_com5003.h"
-#include "mockatmelctrlfactory.h"
+#include "mockfactorycontroller.h"
 #include "systeminfomock.h"
 #include "proxy.h"
 #include "mocki2ceepromiofactory.h"
@@ -70,7 +70,7 @@ void test_adj_deny_import_com5003::loadEEpromAndDenyDifferentDeviceName()
 void test_adj_deny_import_com5003::setupServers()
 {
     m_resmanServer = std::make_unique<ResmanRunFacade>();
-    m_mockServer = std::make_unique<MockForSenseInterfaceCom5003>(std::make_shared<MockAtmelCtrlFactory>(true),
+    m_mockServer = std::make_unique<MockForSenseInterfaceCom5003>(std::make_shared<MockFactoryController>(true),
                                                                   true);
     TimeMachineObject::feedEventLoop();
 

@@ -1,7 +1,7 @@
 #include "pcbtestserver.h"
 #include "permissionfunctions.h"
 
-PCBTestServer::PCBTestServer(ServerParams params, cSCPI *scpiInterface, AtmelCtrlFactoryInterfacePrt ctrlFactory) :
+PCBTestServer::PCBTestServer(ServerParams params, cSCPI *scpiInterface, FactoryControllerAbstractPtr ctrlFactory) :
     cPCBServer(params, scpiInterface)
 {
     scpiConnectionList.append(this);

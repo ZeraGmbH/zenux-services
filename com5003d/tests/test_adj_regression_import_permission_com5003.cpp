@@ -1,6 +1,6 @@
 #include "test_adj_regression_import_permission_com5003.h"
-#include "atmelctrlfactory.h"
-#include "mockatmelctrlfactory.h"
+#include "factorycontrolleratmel.h"
+#include "mockfactorycontroller.h"
 #include "proxy.h"
 #include "scpisingletransactionblocked.h"
 #include "zscpi_response_definitions.h"
@@ -25,7 +25,7 @@ void test_adj_regression_import_permission_com5003::scpiImportPermissionQueryFai
 {
     Zera::XMLConfig::cReader dummyReader;
     cI2CSettings i2cSettings(&dummyReader);
-    setupServers(std::make_shared<AtmelCtrlFactory>(&i2cSettings));
+    setupServers(std::make_shared<FactoryControllerAtmel>(&i2cSettings));
 
     QString ret = ScpiSingleTransactionBlocked::cmd("SYSTEM:ADJUSTMENT:XML", "foo");
     QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::errexec]);
@@ -33,7 +33,7 @@ void test_adj_regression_import_permission_com5003::scpiImportPermissionQueryFai
 
 void test_adj_regression_import_permission_com5003::scpiImportNoPermission()
 {
-    setupServers(std::make_shared<MockAtmelCtrlFactory>(false));
+    setupServers(std::make_shared<MockFactoryController>(false));
 
     QString ret = ScpiSingleTransactionBlocked::cmdXmlParam("SYSTEM:ADJUSTMENT:XML", "foo");
     QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::erraut]);
@@ -41,7 +41,7 @@ void test_adj_regression_import_permission_com5003::scpiImportNoPermission()
 
 void test_adj_regression_import_permission_com5003::scpiImportInvalidXml()
 {
-    setupServers(std::make_shared<MockAtmelCtrlFactory>(true));
+    setupServers(std::make_shared<MockFactoryController>(true));
 
     QString ret = ScpiSingleTransactionBlocked::cmdXmlParam("SYSTEM:ADJUSTMENT:XML", "foo");
     QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::errxml]);
@@ -49,7 +49,7 @@ void test_adj_regression_import_permission_com5003::scpiImportInvalidXml()
 
 void test_adj_regression_import_permission_com5003::scpiImportFailFlashWrite()
 {
-    setupServers(std::make_shared<MockAtmelCtrlFactory>(true));
+    setupServers(std::make_shared<MockFactoryController>(true));
 
     QString xmlFileName = ":/import_minimal_pass.xml";
     QString xml = XmlHelperForTest::loadXml(xmlFileName);
@@ -62,7 +62,7 @@ void test_adj_regression_import_permission_com5003::scpiImportFailFlashWrite()
 void test_adj_regression_import_permission_com5003::scpiImportPassFlashWrite()
 {
     MockI2cEEpromIoFactory::enableMock();
-    setupServers(std::make_shared<MockAtmelCtrlFactory>(true));
+    setupServers(std::make_shared<MockFactoryController>(true));
 
     QString xmlFileName = ":/import_minimal_pass.xml";
     QString xml = XmlHelperForTest::loadXml(xmlFileName);
@@ -72,7 +72,7 @@ void test_adj_regression_import_permission_com5003::scpiImportPassFlashWrite()
     QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::ack]);
 }
 
-void test_adj_regression_import_permission_com5003::setupServers(AtmelCtrlFactoryInterfacePrt ctrlFactory)
+void test_adj_regression_import_permission_com5003::setupServers(FactoryControllerAbstractPtr ctrlFactory)
 {
     m_resmanServer = std::make_unique<ResmanRunFacade>();
     m_mockServer = std::make_unique<MockForSenseInterfaceCom5003>(ctrlFactory);

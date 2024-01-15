@@ -1,9 +1,9 @@
 #ifndef PCBDEVICENODEMESSAGE_H
 #define PCBDEVICENODEMESSAGE_H
 
-#include "pcbdevicenodemessageinterface.h"
+#include "pcbdevicenodemessageabstract.h"
 
-class PcbDeviceNodeMessage : public PcbDeviceNodeMessageInterface
+class PcbDeviceNodeMessage : public PcbDeviceNodeMessageAbstract
 {
 public:
     int open(QString devNodeFileName) override;

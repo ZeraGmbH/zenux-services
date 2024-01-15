@@ -2,7 +2,7 @@
 #include "clampfactorytest.h"
 #include "mt310s2systeminfomock.h"
 
-MockForSenseInterfaceMt310s2::MockForSenseInterfaceMt310s2(AtmelCtrlFactoryInterfacePrt ctrlFactory, bool systemInfoMock) :
+MockForSenseInterfaceMt310s2::MockForSenseInterfaceMt310s2(FactoryControllerAbstractPtr ctrlFactory, bool systemInfoMock) :
     MockPcbServer("mt310s2d")
 {
     m_i2cSettings = std::make_unique<cI2CSettings>(getConfigReader());

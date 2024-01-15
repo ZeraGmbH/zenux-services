@@ -3,7 +3,7 @@
 
 #include "scpiconnection.h"
 #include "adjustmentstatusinterface.h"
-#include "atmelctrlfactoryinterface.h"
+#include "factorycontrollerabstract.h"
 #include "timertemplateqt.h"
 #include <scpi.h>
 
@@ -11,7 +11,7 @@ class cStatusInterface: public ScpiConnection
 {
     Q_OBJECT
 public:
-    cStatusInterface(cSCPI *scpiInterface, AdjustmentStatusInterface *adjustmentStatusInterface, AtmelCtrlFactoryInterfacePrt ctrlFactory);
+    cStatusInterface(cSCPI *scpiInterface, AdjustmentStatusInterface *adjustmentStatusInterface, FactoryControllerAbstractPtr ctrlFactory);
     virtual void initSCPIConnection(QString leadingNodes) override;
 protected:
     void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
@@ -19,7 +19,7 @@ private:
     QString getControllerAvail();
     QString getAuthorizationStatus();
     AdjustmentStatusInterface *m_adjustmentStatusInterface;
-    AtmelCtrlFactoryInterfacePrt m_ctrlFactory;
+    FactoryControllerAbstractPtr m_ctrlFactory;
     NotificationString m_notifierAutorization;
     TimerTemplateQtPtr m_periodicTimer;
 private slots:

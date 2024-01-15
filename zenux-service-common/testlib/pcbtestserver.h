@@ -2,13 +2,13 @@
 #define PCBTESTSERVER_H
 
 #include "pcbserver.h"
-#include "atmelctrlfactoryinterface.h"
+#include "factorycontrollerabstract.h"
 
 class PCBTestServer : public cPCBServer
 {
     Q_OBJECT
 public:
-    PCBTestServer(ServerParams params, cSCPI *scpiInterface, AtmelCtrlFactoryInterfacePrt ctrlFactory);
+    PCBTestServer(ServerParams params, cSCPI *scpiInterface, FactoryControllerAbstractPtr ctrlFactory);
     ~PCBTestServer();
     void insertScpiConnection(ScpiConnection *scpiConnection);
     void initTestSCPIConnections();

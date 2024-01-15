@@ -1,6 +1,6 @@
 #include "permissionfunctions.h"
 
-AtmelCtrlFactoryInterfacePrt PermissionFunctions::m_ctrlFactory;
+FactoryControllerAbstractPtr PermissionFunctions::m_ctrlFactory;
 
 const FuncPermissionCheck PermissionFunctions::checkControllerPin =
     [](bool &allow) {
@@ -13,7 +13,7 @@ const FuncPermissionCheck PermissionFunctions::allowAlways =
         return true;
 };
 
-void PermissionFunctions::setPermissionCtrlFactory(AtmelCtrlFactoryInterfacePrt ctrlFactory)
+void PermissionFunctions::setPermissionCtrlFactory(FactoryControllerAbstractPtr ctrlFactory)
 {
     m_ctrlFactory = ctrlFactory;
 }

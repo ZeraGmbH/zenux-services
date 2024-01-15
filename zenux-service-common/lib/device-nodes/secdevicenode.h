@@ -1,9 +1,9 @@
 #ifndef SECDEVICENODE_H
 #define SECDEVICENODE_H
 
-#include "secdevicenodeinterface.h"
+#include "secdevicenodeabstract.h"
 
-class SecDeviceNode : public SecDeviceNodeInterface
+class SecDeviceNode : public SecDeviceNodeAbstract
 {
 public:
     int open(QString devNodeFileName) override;
