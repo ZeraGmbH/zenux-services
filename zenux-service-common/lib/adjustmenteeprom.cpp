@@ -123,7 +123,7 @@ bool AdjustmentEeprom::readEepromChecksumValidated(QByteArray &ba)
     quint32 count;
     bastream >> count >> m_nChecksum;
     if ( count > (quint32)flashIo->size() ) {
-        qCritical("Cannot read flash: size wanted: %i / available %i", count, flashIo->size());
+        qWarning("EEPROM size wanted: %u is larger than available %i - fresh EEPROM?", count, flashIo->size());
         return(false); // read error
     }
 

@@ -3,8 +3,8 @@
 #include "clamp.h"
 #include "mockatmelctrlfactory.h"
 #include "proxy.h"
-#include "i2cflashiofactoryfortest.h"
-#include "eeprom24lcmock.h"
+#include "mocki2ceepromiofactory.h"
+#include "mockeeprom24lc.h"
 #include "scpisingletransactionblocked.h"
 #include "zscpi_response_definitions.h"
 #include <timemachineobject.h>
@@ -16,7 +16,7 @@ QTEST_MAIN(test_adj_regression_calc_mt310s2);
 void test_adj_regression_calc_mt310s2::initTestCase()
 {
     ClampFactoryTest::enableTest();
-    I2cFlashIoFactoryForTest::enableMockFlash();
+    MockI2cEEpromIoFactory::enableMock();
     setupServers();
 
     QString filenameShort = ":/import_internal";
@@ -28,7 +28,7 @@ void test_adj_regression_calc_mt310s2::initTestCase()
 
 void test_adj_regression_calc_mt310s2::cleanup()
 {
-    EEprom24LCMock::cleanAll();
+    MockEEprom24LC::cleanAll();
     m_mockServer->removeAllClamps();
 }
 

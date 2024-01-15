@@ -1,8 +1,8 @@
 #include "test_adj_regression_calc_com5003.h"
 #include "mockatmelctrlfactory.h"
 #include "proxy.h"
-#include "i2cflashiofactoryfortest.h"
-#include "eeprom24lcmock.h"
+#include "mocki2ceepromiofactory.h"
+#include "mockeeprom24lc.h"
 #include "scpisingletransactionblocked.h"
 #include <timemachineobject.h>
 #include <QSignalSpy>
@@ -12,7 +12,7 @@ QTEST_MAIN(test_adj_regression_calc_com5003);
 
 void test_adj_regression_calc_com5003::initTestCase()
 {
-    I2cFlashIoFactoryForTest::enableMockFlash();
+    MockI2cEEpromIoFactory::enableMock();
     setupServers();
 
     QString filenameShort = ":/import_internal";
@@ -24,7 +24,7 @@ void test_adj_regression_calc_com5003::initTestCase()
 
 void test_adj_regression_calc_com5003::cleanup()
 {
-    EEprom24LCMock::cleanAll();
+    MockEEprom24LC::cleanAll();
 }
 
 static constexpr double val = 2.0;

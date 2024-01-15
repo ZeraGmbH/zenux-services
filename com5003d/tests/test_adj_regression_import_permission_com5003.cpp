@@ -5,7 +5,7 @@
 #include "scpisingletransactionblocked.h"
 #include "zscpi_response_definitions.h"
 #include "xmlhelperfortest.h"
-#include "i2cflashiofactoryfortest.h"
+#include "mocki2ceepromiofactory.h"
 #include <timemachineobject.h>
 #include <QSignalSpy>
 #include <QTest>
@@ -61,7 +61,7 @@ void test_adj_regression_import_permission_com5003::scpiImportFailFlashWrite()
 
 void test_adj_regression_import_permission_com5003::scpiImportPassFlashWrite()
 {
-    I2cFlashIoFactoryForTest::enableMockFlash();
+    MockI2cEEpromIoFactory::enableMock();
     setupServers(std::make_shared<MockAtmelCtrlFactory>(true));
 
     QString xmlFileName = ":/import_minimal_pass.xml";

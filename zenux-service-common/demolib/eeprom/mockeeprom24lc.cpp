@@ -1,12 +1,12 @@
-#include "eeprom24lcmock.h"
+#include "mockeeprom24lc.h"
 
 static constexpr int sizeFlash = 32768;
 
-QHash<QString, QHash<short, QByteArray>> EEprom24LCMock::m_flashData;
-QHash<QString, QHash<short, int>>        EEprom24LCMock::m_flashDataWriteCounts;
-QHash<QString, QHash<short, bool>>       EEprom24LCMock::m_returnReducedDataSizeOnRead;
+QHash<QString, QHash<short, QByteArray>> MockEEprom24LC::m_flashData;
+QHash<QString, QHash<short, int>>        MockEEprom24LC::m_flashDataWriteCounts;
+QHash<QString, QHash<short, bool>>       MockEEprom24LC::m_returnReducedDataSizeOnRead;
 
-EEprom24LCMock::EEprom24LCMock(QString devNode, short i2cAddr) :
+MockEEprom24LC::MockEEprom24LC(QString devNode, short i2cAddr) :
     m_devNode(devNode),
     m_i2cAddr(i2cAddr)
 {
@@ -17,7 +17,7 @@ EEprom24LCMock::EEprom24LCMock(QString devNode, short i2cAddr) :
     doReset(sizeFlash);
 }
 
-int EEprom24LCMock::WriteData(char *data, ushort count, ushort adr)
+int MockEEprom24LC::WriteData(char *data, ushort count, ushort adr)
 {
     if(adr != 0)
         qFatal("Address other than 0 is not yet supported!");
@@ -32,7 +32,7 @@ int EEprom24LCMock::WriteData(char *data, ushort count, ushort adr)
     return count;
 }
 
-int EEprom24LCMock::ReadData(char *data, ushort count, ushort adr)
+int MockEEprom24LC::ReadData(char *data, ushort count, ushort adr)
 {
     if(adr != 0)
         qFatal("Address other than 0 is not yet supported!");
@@ -47,30 +47,30 @@ int EEprom24LCMock::ReadData(char *data, ushort count, ushort adr)
     return reduceCount ? reducedCount: count;
 }
 
-int EEprom24LCMock::Reset()
+int MockEEprom24LC::Reset()
 {
     doReset(0);
     return size();
 }
 
-int EEprom24LCMock::size()
+int MockEEprom24LC::size()
 {
     return sizeFlash;
 }
 
-void EEprom24LCMock::returnReduceCountOnErrorRead()
+void MockEEprom24LC::returnReduceCountOnErrorRead()
 {
     m_returnReducedDataSizeOnRead[m_devNode][m_i2cAddr] = true;
 }
 
-void EEprom24LCMock::cleanAll()
+void MockEEprom24LC::cleanAll()
 {
     m_flashData.clear();
     m_flashDataWriteCounts.clear();
     m_returnReducedDataSizeOnRead.clear();
 }
 
-QByteArray EEprom24LCMock::getData(QString devNode, short adr)
+QByteArray MockEEprom24LC::getData(QString devNode, short adr)
 {
     QByteArray ret;
     if(m_flashData.contains(devNode))
@@ -79,12 +79,12 @@ QByteArray EEprom24LCMock::getData(QString devNode, short adr)
     return ret;
 }
 
-int EEprom24LCMock::getWriteCount(QString devNode, short adr)
+int MockEEprom24LC::getWriteCount(QString devNode, short adr)
 {
     return m_flashDataWriteCounts[devNode][adr];
 }
 
-void EEprom24LCMock::doReset(int size)
+void MockEEprom24LC::doReset(int size)
 {
     m_flashData[m_devNode][m_i2cAddr] = QByteArray(size, 0xff);
 }
