@@ -8,15 +8,14 @@ class AtmelPermissionMock : public QObject, public AtmelPermissionTemplate
 {
     Q_OBJECT
 public:
-    static AtmelPermissionTemplatePtrU create();
-    static void setPermission(bool permission);
+    AtmelPermissionMock(bool &permission);
 
     ZeraMControllerIo::atmelRM getEEPROMAccessEnable(bool &enable) override;
 
     void accessEnableAfter(int timeoutMs);
     void accessDisableAfter(int timeoutMs);
 private:
-    static bool m_permission; // static: simul singleton behavior / TOOD move behavior to MockAtmelCtrlFactory
+    bool &m_permission;
     TimerTemplateQtPtr m_accessTimer;
 };
 

@@ -35,7 +35,9 @@ public:
     virtual AtmelCommon::atmelRM readSerialNumber(QString& answer) = 0;
     virtual AtmelCommon::atmelRM writeSerialNumber(QString &sNumber) = 0;
     virtual AtmelCommon::atmelRM readLCAVersion(QString& answer) = 0;
+    virtual AtmelCommon::atmelRM writePCBVersion(QString& sVersion) = 0; // only relais controller for now
 };
+typedef std::unique_ptr<AtmelDeviceIdentificationData> AtmelDeviceIdentificationDataU;
 
 
 class AtmelPermissionTemplate

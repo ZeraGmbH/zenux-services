@@ -11,12 +11,13 @@ SystemInfo::SystemInfo(AtmelCtrlFactoryInterfacePrt ctrlFactory) :
 void SystemInfo::getSystemInfo()
 {
     AtmelCommonVersionsPtrU controller = m_ctrlFactory->getCommonVersionController(AtmelCtrlFactoryInterface::CTRL_TYPE_RELAIS);
+    AtmelDeviceIdentificationDataU idController = m_ctrlFactory->getDeviceIdentificationController();
     int rm = ZeraMControllerIo::cmddone;
-    rm |= Atmel::getInstance().readDeviceName(m_sDeviceName);
+    rm |= idController->readDeviceName(m_sDeviceName);
     rm |= controller->readPCBVersion(m_sPCBVersion);
-    rm |= Atmel::getInstance().readLCAVersion(m_sLCAVersion);
+    rm |= idController->readLCAVersion(m_sLCAVersion);
     rm |= controller->readCTRLVersion(m_sCTRLVersion);
-    rm |= Atmel::getInstance().readSerialNumber(m_sSerialNumber);
+    rm |= idController->readSerialNumber(m_sSerialNumber);
     m_bRead = (rm == ZeraMControllerIo::cmddone);
 }
 

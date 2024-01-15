@@ -1,6 +1,5 @@
 #include "mt310s2systeminterface.h"
 #include "systeminfo.h"
-#include "micro-controller-io/atmel.h"
 #include "zscpi_response_definitions.h"
 #include <QJsonObject>
 
@@ -181,7 +180,7 @@ QString Mt310s2SystemInterface::m_ReadWritePCBVersion(QString &sInput)
         if (cmd.isCommand(1))
         {
             QString Version = cmd.getParam(0);
-            ret = Atmel::getInstance().writePCBVersion(Version);
+            ret = m_ctrlFactory->getDeviceIdentificationController()->writePCBVersion(Version);
             m_systemInfo->getSystemInfo(); // read back info
         }
 
@@ -245,7 +244,7 @@ QString Mt310s2SystemInterface::m_ReadWriteSerialNumber(QString &sInput)
         if (cmd.isCommand(1))
         {
             QString Serial = cmd.getParam(0);
-            ret = Atmel::getInstance().writeSerialNumber(Serial);
+            ret = m_ctrlFactory->getDeviceIdentificationController()->writeSerialNumber(Serial);
             m_systemInfo->getSystemInfo(); // read back info
         }
 

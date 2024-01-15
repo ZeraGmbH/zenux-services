@@ -17,6 +17,7 @@ public:
     virtual AtmelWatcherInterfacePtr createAtmelWatcher(QString devnode) = 0;
     virtual AtmelPermissionTemplatePtrU getPermissionCheckController() = 0;
     virtual AtmelCommonVersionsPtrU getCommonVersionController(ControllerTypes ctrlType, quint8 muxChannel = -1) = 0;
+    virtual AtmelDeviceIdentificationDataU getDeviceIdentificationController() = 0;
     virtual AtmelAccumulatorHandlerPtrU getAccumulatorController() = 0;
 };
 
