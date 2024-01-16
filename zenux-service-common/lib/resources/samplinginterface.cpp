@@ -6,8 +6,9 @@
 #include "notzeronumgen.h"
 #include "zscpi_response_definitions.h"
 
-cSamplingInterface::cSamplingInterface(cSCPI *scpiInterface, SamplingSettings* samplingSettings) :
-    cResource(scpiInterface)
+cSamplingInterface::cSamplingInterface(cSCPI *scpiInterface, SamplingSettings* samplingSettings, FactoryControllerAbstractPtr ctrlFactory) :
+    cResource(scpiInterface),
+    m_ctrlFactory(ctrlFactory)
 {
     QList<SamplingSettings::ChannelSettings*> channelSettings = samplingSettings->getChannelSettings();
     for (const QString &pllChannel : qAsConst(channelSettings.at(0)->m_pllChannels)) {
@@ -205,7 +206,7 @@ QString cSamplingInterface::m_ReadWritePLL(QString &sInput)
     quint8 pll;
     cSCPICommand cmd = sInput;
     if (cmd.isQuery()) {
-        if (Atmel::getInstance().readPLLChannel(pll) == ZeraMControllerIo::cmddone)
+        if (m_ctrlFactory->getPllController()->readPLLChannel(pll) == ZeraMControllerIo::cmddone)
             if (pll < m_pllChannelList.count())
                 return m_pllChannelList.at(pll);
         return ZSCPI::scpiAnswer[ZSCPI::errexec];
@@ -214,7 +215,7 @@ QString cSamplingInterface::m_ReadWritePLL(QString &sInput)
         if (cmd.isCommand(1)) {
             QString pllchn = cmd.getParam(0);
             pll = m_pllChannelList.indexOf(pllchn);
-            if (Atmel::getInstance().setPLLChannel(pll) == ZeraMControllerIo::cmddone)
+            if (m_ctrlFactory->getPllController()->setPLLChannel(pll) == ZeraMControllerIo::cmddone)
                 return ZSCPI::scpiAnswer[ZSCPI::ack];
             else
                 return ZSCPI::scpiAnswer[ZSCPI::errexec];

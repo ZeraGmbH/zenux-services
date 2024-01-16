@@ -205,7 +205,7 @@ void cMT310S2dServer::doSetupServer()
         }
         else
         {
-            Atmel::getInstance().setPLLChannel(1); // default channel m0 for pll control
+            m_ctrlFactory->getPllController()->setPLLChannel(1); // default channel m0 for pll control
             m_pSystemInfo = new Mt310s2SystemInfo(m_ctrlFactory);
 
             setupServer(); // here our scpi interface gets instanciated, we need this for further steps
@@ -229,7 +229,7 @@ void cMT310S2dServer::doSetupServer()
                                                                                       m_pSenseInterface,
                                                                                       m_ctrlFactory,
                                                                                       std::move(emobControllerContainer)));
-            scpiConnectionList.append(m_pSamplingInterface = new cSamplingInterface(getSCPIInterface(), m_pSamplingSettings));
+            scpiConnectionList.append(m_pSamplingInterface = new cSamplingInterface(getSCPIInterface(), m_pSamplingSettings, m_ctrlFactory));
             scpiConnectionList.append(m_foutInterface = new FOutGroupResourceAndInterface(getSCPIInterface(), m_foutSettings));
             scpiConnectionList.append(m_pFRQInputInterface = new FInGroupResourceAndInterface(getSCPIInterface(), m_finSettings));
             scpiConnectionList.append(m_pSCHeadInterface = new ScInGroupResourceAndInterface(getSCPIInterface(), m_pSCHeadSettings));

@@ -4,6 +4,7 @@
 #include "samplerange.h"
 #include "resource.h"
 #include "samplingsettings.h"
+#include "factorycontrollerabstract.h"
 #include <QStringList>
 
 namespace SamplingSystem
@@ -28,7 +29,7 @@ class cSamplingInterface: public cResource
 {
     Q_OBJECT
 public:
-    cSamplingInterface(cSCPI *scpiInterface, SamplingSettings *samplingSettings);
+    cSamplingInterface(cSCPI *scpiInterface, SamplingSettings *samplingSettings, FactoryControllerAbstractPtr ctrlFactory);
     virtual void initSCPIConnection(QString leadingNodes) override;
     virtual void registerResource(RMConnection *rmConnection, quint16 port) override;
 protected:
@@ -46,6 +47,7 @@ private:
     QString m_ReadWritePLL(QString& sInput);
     QString m_ReadPLLCatalog(QString& sInput);
 
+    FactoryControllerAbstractPtr m_ctrlFactory;
     quint16 m_nType;
     QString m_sVersion;
     QString m_sAlias;

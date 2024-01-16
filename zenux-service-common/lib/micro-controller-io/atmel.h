@@ -15,8 +15,6 @@ public:
     atmelRM readChannelStatus(quint8 channel, quint8& stat);
     atmelRM readClampStatus(quint16& stat);
 
-    atmelRM setPLLChannel(quint8 chn);
-    atmelRM readPLLChannel(quint8& chn);
 private:
     Atmel(QString devnode, quint8 adr, quint8 debuglevel);
     static QString m_devnode;
