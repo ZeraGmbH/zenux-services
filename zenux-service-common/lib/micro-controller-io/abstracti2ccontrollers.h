@@ -79,6 +79,7 @@ typedef std::unique_ptr<AtmelPll> AtmelPllPtrU;
 class AtmelAccumulatorHandler
 {
 public:
+    virtual ~AtmelAccumulatorHandler() = default;
     virtual ZeraMControllerIo::atmelRM readAccumulatorStatus(quint8& stat) = 0;
     virtual ZeraMControllerIo::atmelRM readAccuStateOfCharge(quint8& charge) = 0;
     // This should go soon!!!
