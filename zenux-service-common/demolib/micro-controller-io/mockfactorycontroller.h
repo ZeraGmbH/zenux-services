@@ -13,7 +13,8 @@ public:
     AtmelDeviceIdentificationDataU getDeviceIdentificationController() override;
     AtmelAccumulatorHandlerPtrU getAccumulatorController() override;
     AtmelRangesPtrU getRangesController() override;
-    virtual AtmelMModesPtrU getMModeController() override;
+    AtmelMModesPtrU getMModeController() override;
+    AtmelPllPtrU getPllController() override;
 private:
     struct TPersitentControllerData
     {
@@ -22,6 +23,8 @@ private:
         QString m_serialNumber = "Unknown";
         QString m_LCAVersion = "Unknown";
         QString m_writablePcbVersion = "Unknown";
+
+        quint8 m_pllChannel = 0;
     };
     static TPersitentControllerData m_persitentData;
 };

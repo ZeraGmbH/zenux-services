@@ -1,6 +1,4 @@
 #include "factorycontrolleratmel.h"
-#include "atmelctrlrelais.h"
-#include "atmelctrlsystem.h"
 #include "atmelwatcher.h"
 
 constexpr int defaultDebugLevel = 1;
@@ -17,17 +15,17 @@ AtmelWatcherInterfacePtr FactoryControllerAtmel::createAtmelWatcher(QString devn
 
 AtmelPermissionTemplatePtrU FactoryControllerAtmel::getPermissionCheckController()
 {
-    return std::make_unique<AtmelCtrlRelais>(m_i2cSettings->getDeviceNode(), m_i2cSettings->getI2CAdress(i2cSettings::relaisCtrlI2cAddress), defaultDebugLevel);
+    return getRelaisController();
 }
 
 AtmelCommonVersionsPtrU FactoryControllerAtmel::getCommonVersionController(ControllerTypes ctrlType, quint8 muxChannel)
 {
     switch(ctrlType) {
     case CTRL_TYPE_RELAIS:
-        return std::make_unique<AtmelCtrlRelais>(m_i2cSettings->getDeviceNode(), m_i2cSettings->getI2CAdress(i2cSettings::relaisCtrlI2cAddress), defaultDebugLevel);
+        return getRelaisController();
 
     case CTRL_TYPE_SYSTEM:
-        return std::make_unique<AtmelCtrlSystem>(m_i2cSettings->getDeviceNode(), m_i2cSettings->getI2CAdress(i2cSettings::sysCtrlI2cAddress), defaultDebugLevel);
+        return getSystemController();
         break;
 
     /* not tested yet
@@ -48,7 +46,7 @@ AtmelCommonVersionsPtrU FactoryControllerAtmel::getCommonVersionController(Contr
 
 AtmelDeviceIdentificationDataU FactoryControllerAtmel::getDeviceIdentificationController()
 {
-    return std::make_unique<AtmelCtrlRelais>(m_i2cSettings->getDeviceNode(), m_i2cSettings->getI2CAdress(i2cSettings::relaisCtrlI2cAddress), defaultDebugLevel);
+    return getRelaisController();
 }
 
 AtmelAccumulatorHandlerPtrU FactoryControllerAtmel::getAccumulatorController()
@@ -58,10 +56,25 @@ AtmelAccumulatorHandlerPtrU FactoryControllerAtmel::getAccumulatorController()
 
 AtmelRangesPtrU FactoryControllerAtmel::getRangesController()
 {
-    return std::make_unique<AtmelCtrlRelais>(m_i2cSettings->getDeviceNode(), m_i2cSettings->getI2CAdress(i2cSettings::relaisCtrlI2cAddress), defaultDebugLevel);
+    return getRelaisController();
 }
 
 AtmelMModesPtrU FactoryControllerAtmel::getMModeController()
 {
+    return getRelaisController();
+}
+
+AtmelPllPtrU FactoryControllerAtmel::getPllController()
+{
+    return getRelaisController();
+}
+
+std::unique_ptr<AtmelCtrlRelais> FactoryControllerAtmel::getRelaisController()
+{
     return std::make_unique<AtmelCtrlRelais>(m_i2cSettings->getDeviceNode(), m_i2cSettings->getI2CAdress(i2cSettings::relaisCtrlI2cAddress), defaultDebugLevel);
+}
+
+std::unique_ptr<AtmelCtrlSystem> FactoryControllerAtmel::getSystemController()
+{
+    return std::make_unique<AtmelCtrlSystem>(m_i2cSettings->getDeviceNode(), m_i2cSettings->getI2CAdress(i2cSettings::sysCtrlI2cAddress), defaultDebugLevel);
 }
