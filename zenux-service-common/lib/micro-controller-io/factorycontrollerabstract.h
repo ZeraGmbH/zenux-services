@@ -14,7 +14,9 @@ public:
         CTRL_TYPE_SYSTEM,
         CTRL_TYPE_EMOB
     };
-    virtual AtmelWatcherInterfacePtr createAtmelWatcher(QString devnode) = 0;
+    virtual AtmelWatcherInterfacePtr createAtmelWatcher(QString devnode) = 0; // this is more a device-node thingy...
+
+    virtual AtmelCriticalStatusPtr getCriticalStatusController() = 0;
     virtual AtmelPermissionTemplatePtrU getPermissionCheckController() = 0;
     virtual AtmelCommonVersionsPtrU getCommonVersionController(ControllerTypes ctrlType, quint8 muxChannel = -1) = 0;
     virtual AtmelDeviceIdentificationDataU getDeviceIdentificationController() = 0;

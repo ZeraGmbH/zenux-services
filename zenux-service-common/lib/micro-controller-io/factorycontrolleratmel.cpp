@@ -8,6 +8,11 @@ FactoryControllerAtmel::FactoryControllerAtmel(cI2CSettings *i2cSettings) :
 {
 }
 
+AtmelCriticalStatusPtr FactoryControllerAtmel::getCriticalStatusController()
+{
+    return getRelaisController();
+}
+
 AtmelWatcherInterfacePtr FactoryControllerAtmel::createAtmelWatcher(QString devnode)
 {
     return std::make_unique<cAtmelWatcher>(devnode);

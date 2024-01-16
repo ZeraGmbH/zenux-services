@@ -12,6 +12,7 @@ public:
     FactoryControllerAtmel(cI2CSettings *i2cSettings);
 
     AtmelWatcherInterfacePtr createAtmelWatcher(QString devnode) override;
+    AtmelCriticalStatusPtr getCriticalStatusController() override;
     AtmelPermissionTemplatePtrU getPermissionCheckController() override;
     AtmelCommonVersionsPtrU getCommonVersionController(ControllerTypes ctrlType, quint8 muxChannel = -1) override;
     AtmelDeviceIdentificationDataU getDeviceIdentificationController() override;
