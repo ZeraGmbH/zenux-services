@@ -95,25 +95,3 @@ ZeraMControllerIo::atmelRM Atmel::readClampStatus(quint16 &stat)
     }
     return ret;
 }
-
-ZeraMControllerIo::atmelRM Atmel::setPLLChannel(quint8 chn)
-{
-    hw_cmd CMD(hwSetPLLChannel, 0, &chn, 1);
-    writeCommand(&CMD);
-    return getLastErrorMask() == 0 ? cmddone : cmdexecfault;
-}
-
-
-ZeraMControllerIo::atmelRM Atmel::readPLLChannel(quint8& chn)
-{
-    ZeraMControllerIo::atmelRM ret = cmdexecfault;
-    chn = 0; // default AC
-    hw_cmd CMD(hwGetPLLChannel, 0, nullptr, 0);
-    quint8 answ[2];
-    writeCommand(&CMD, answ, 2);
-    if(getLastErrorMask() == 0) {
-        chn = answ[0];
-        ret = cmddone;
-    }
-    return ret;
-}

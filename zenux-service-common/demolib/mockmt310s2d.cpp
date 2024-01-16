@@ -1,4 +1,5 @@
 #include "mockmt310s2d.h"
+#include "mockfactorycontroller.h"
 
 MockMt310s2d::MockMt310s2d() :
     MockPcbServer("mt310s2d")
@@ -14,7 +15,7 @@ MockMt310s2d::MockMt310s2d() :
     m_foutResource = std::make_unique<FOutGroupResourceAndInterface>(getSCPIInterface(), m_foutSettings.get());
     m_hkInResource = std::make_unique<HkInGroupResourceAndInterface>(getSCPIInterface(), m_hkInSettings.get());
     m_scInResource = std::make_unique<ScInGroupResourceAndInterface>(getSCPIInterface(), m_scInSettings.get());
-    m_samplingInterface = std::make_unique<cSamplingInterface>(getSCPIInterface(), m_samplingSettings.get());
+    m_samplingInterface = std::make_unique<cSamplingInterface>(getSCPIInterface(), m_samplingSettings.get(), std::make_shared<MockFactoryController>(true));
     setResources(ResourcesList{m_finResource.get(), m_foutResource.get(), m_hkInResource.get(), m_scInResource.get(), m_samplingInterface.get()});
     start();
 }
