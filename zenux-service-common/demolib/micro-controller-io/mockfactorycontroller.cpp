@@ -1,6 +1,7 @@
 #include "mockfactorycontroller.h"
 #include "mockatmelwatcher.h"
 #include "mockatmelcommonversions.h"
+#include "mockatmelcriticalstatus.h"
 #include "mockatmelpermission.h"
 #include "mockatmelaccumulatorhandler.h"
 #include "mockatmeldeviceidentificationdata.h"
@@ -19,6 +20,12 @@ AtmelWatcherInterfacePtr MockFactoryController::createAtmelWatcher(QString devno
 {
     Q_UNUSED(devnode)
     return std::make_unique<MockAtmelWatcher>();
+}
+
+AtmelCriticalStatusPtr MockFactoryController::getCriticalStatusController()
+{
+    return std::make_unique<MockAtmelCriticalStatus>(m_persitentData.m_criticalStatus,
+                                                     m_persitentData.m_criticalStatusMask);
 }
 
 AtmelPermissionTemplatePtrU MockFactoryController::getPermissionCheckController()
