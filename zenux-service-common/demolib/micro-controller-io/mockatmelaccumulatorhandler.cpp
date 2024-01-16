@@ -11,7 +11,7 @@ ZeraMControllerIoTemplate::atmelRM MockAtmelAccumulatorHandler::readAccumulatorS
 
 ZeraMControllerIoTemplate::atmelRM MockAtmelAccumulatorHandler::readAccuStateOfCharge(quint8 &charge)
 {
-    Q_UNUSED(charge)
+    charge = 37;
     return ZeraMControllerIoTemplate::cmddone;
 }
 
