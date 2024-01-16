@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>accu_disabled.xml</file>
+        <file>accu_enabled.xml</file>
+    </qresource>
+</RCC>

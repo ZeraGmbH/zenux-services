@@ -14,10 +14,14 @@ private slots:
     void init();
     void cleanup();
 
-    void readAccumulatorStatus();
-    void readAccuStateOfCharge();
+    void readAccumulatorStatusAccuDisabled();
+    void readAccumulatorStatusAccuEnabled();
+
+    void readAccuStateOfChargeAccuDisabled();
+    void readAccuStateOfChargeAccuEnabled();
 
 private:
+    void setupServers(QString configFileXml);
     std::unique_ptr<ResmanRunFacade> m_resman;
     std::unique_ptr<MockMt310s2dFull> m_mt310s2d;
     Zera::ProxyClientPtr m_pcbClient;
