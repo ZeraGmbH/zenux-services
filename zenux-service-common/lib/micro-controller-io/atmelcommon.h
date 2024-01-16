@@ -69,6 +69,15 @@ public:
 typedef std::unique_ptr<AtmelMModes> AtmelMModesPtrU;
 
 
+class AtmelPll
+{
+public:
+    virtual ~AtmelPll() = default;
+    virtual AtmelCommon::atmelRM setPLLChannel(quint8 chn) = 0;
+    virtual AtmelCommon::atmelRM readPLLChannel(quint8& chn) = 0;
+};
+typedef std::unique_ptr<AtmelPll> AtmelPllPtrU;
+
 class AtmelAccumulatorHandler
 {
 public:

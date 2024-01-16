@@ -21,6 +21,7 @@ public:
     virtual AtmelAccumulatorHandlerPtrU getAccumulatorController() = 0;
     virtual AtmelRangesPtrU getRangesController() = 0;
     virtual AtmelMModesPtrU getMModeController() = 0;
+    virtual AtmelPllPtrU getPllController() = 0;
 };
 
 typedef std::shared_ptr<FactoryControllerAbstract> FactoryControllerAbstractPtr;

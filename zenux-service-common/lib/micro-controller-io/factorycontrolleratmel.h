@@ -3,6 +3,8 @@
 
 #include "factorycontrollerabstract.h"
 #include "i2csettings.h"
+#include "atmelctrlrelais.h"
+#include "atmelctrlsystem.h"
 
 class FactoryControllerAtmel : public FactoryControllerAbstract
 {
@@ -16,7 +18,10 @@ public:
     AtmelAccumulatorHandlerPtrU getAccumulatorController() override;
     AtmelRangesPtrU getRangesController() override;
     AtmelMModesPtrU getMModeController() override;
+    AtmelPllPtrU getPllController() override;
 private:
+    std::unique_ptr<AtmelCtrlRelais> getRelaisController();
+    std::unique_ptr<AtmelCtrlSystem> getSystemController();
     cI2CSettings *m_i2cSettings;
 };
 
