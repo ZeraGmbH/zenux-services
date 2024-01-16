@@ -46,3 +46,8 @@ target_sources(test_adj_deny_import_mt310s2
   PRIVATE
     regression_data_adj_import_export/regression_data.qrc
 )
+
+target_sources(test_accumulatorinterface_mock
+  PRIVATE
+    regression_data_accumulator/regression_data.qrc
+)
