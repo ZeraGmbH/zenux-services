@@ -9,6 +9,7 @@ SETUP_TESTS(
     test_adj_regression_scpi_query_format_mt310s2
     test_adj_regression_calc_mt310s2
     test_adj_deny_import_mt310s2
+    test_accumulatorinterface_mock
     )
 
 target_sources(test_adj_regression_import_export_xml_mt310s2
