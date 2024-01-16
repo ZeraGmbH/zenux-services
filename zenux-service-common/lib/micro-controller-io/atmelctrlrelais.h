@@ -1,11 +1,11 @@
 #ifndef ATMELCTRLRELAIS_H
 #define ATMELCTRLRELAIS_H
 
-#include "atmelcommon.h"
+#include "atmelbaseimplementation.h"
 #include <zeramcontrollerio.h>
 #include <QString>
 
-class AtmelCtrlRelais : public AtmelCommon,
+class AtmelCtrlRelais : public AtmelBaseImplementation,
                         public AtmelCommonVersions,
                         public AtmelDeviceIdentificationData,
                         public AtmelPermissionTemplate,

@@ -1,4 +1,4 @@
-#include "atmelcommon.h"
+#include "abstracti2ccontrollers.h"
 
 bool AtmelPermissionTemplate::hasPermission(bool &allow)
 {

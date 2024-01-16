@@ -1,7 +1,7 @@
 #ifndef MOCKATMELCOMMONVERSIONS_H
 #define MOCKATMELCOMMONVERSIONS_H
 
-#include <atmelcommon.h>
+#include "abstracti2ccontrollers.h"
 
 class MockAtmelCommonVersions : public AtmelCommonVersions
 {

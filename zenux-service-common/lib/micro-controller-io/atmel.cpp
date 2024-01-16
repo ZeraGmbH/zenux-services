@@ -57,7 +57,7 @@ Atmel &Atmel::getInstance() {
 }
 
 Atmel::Atmel(QString devnode, quint8 adr, quint8 debuglevel) :
-    AtmelCommon(devnode, adr, debuglevel)
+    AtmelBaseImplementation(devnode, adr, debuglevel)
 {
 }
 

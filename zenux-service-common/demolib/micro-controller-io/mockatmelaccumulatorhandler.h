@@ -1,7 +1,7 @@
 #ifndef MOCKATMELACCUMULATORHANDLER_H
 #define MOCKATMELACCUMULATORHANDLER_H
 
-#include "atmelcommon.h"
+#include "abstracti2ccontrollers.h"
 
 class MockAtmelAccumulatorHandler : public AtmelAccumulatorHandler
 {

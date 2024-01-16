@@ -4,7 +4,6 @@
 #include "com5003senseinterface.h"
 #include "scpiconnection.h"
 #include "pcbserver.h"
-#include "atmelcommon.h"
 #include <QList>
 #include <QJsonDocument>
 

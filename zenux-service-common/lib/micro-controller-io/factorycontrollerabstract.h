@@ -1,7 +1,7 @@
 #ifndef FACTORYCONTROLLERABSTRACT_H
 #define FACTORYCONTROLLERABSTRACT_H
 
-#include "atmelcommon.h"
+#include "abstracti2ccontrollers.h"
 #include "atmelwatcherinterface.h"
 #include <memory>
 

@@ -1,8 +1,8 @@
 #ifndef MOCKATMELPERMISSION_H
 #define MOCKATMELPERMISSION_H
 
+#include "abstracti2ccontrollers.h"
 #include <timertemplateqt.h>
-#include "atmelcommon.h"
 
 class MockAtmelPermission : public QObject, public AtmelPermissionTemplate
 {

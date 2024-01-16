@@ -1,7 +1,6 @@
 #ifndef TEST_REGRESSION_ADJ_CALC_COM5003_H
 #define TEST_REGRESSION_ADJ_CALC_COM5003_H
 
-#include "atmelcommon.h"
 #include "mockforsenseinterfacecom5003.h"
 #include "pcbinterface.h"
 #include "proxyclient.h"
