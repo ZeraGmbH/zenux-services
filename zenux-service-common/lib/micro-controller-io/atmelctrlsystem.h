@@ -1,13 +1,12 @@
 #ifndef ATMELCTRLSSYSTEM_H
 #define ATMELCTRLSSYSTEM_H
 
-#include <atmelcommon.h>
-#include <atmelcommon.h>
+#include "atmelbaseimplementation.h"
 #include <intelhexfileio.h>
 #include <zeramcontrollerio.h>
 #include <QString>
 
-class AtmelCtrlSystem : public AtmelCommon, public AtmelCommonVersions, public AtmelAccumulatorHandler
+class AtmelCtrlSystem : public AtmelBaseImplementation, public AtmelCommonVersions, public AtmelAccumulatorHandler
 {
 public:
     AtmelCtrlSystem(QString devnode, quint8 adr, quint8 debuglevel);

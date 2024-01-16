@@ -1,14 +1,14 @@
 #ifndef MOCKATMELRANGES_H
 #define MOCKATMELRANGES_H
 
-#include "atmelcommon.h"
+#include "abstracti2ccontrollers.h"
 
 class MockAtmelRanges : public AtmelRanges
 {
 public:
     MockAtmelRanges();
-    AtmelCommon::atmelRM readRange(quint8 channel, quint8& range) override;
-    AtmelCommon::atmelRM setRange(quint8 channel, quint8 range) override;
+    ZeraMControllerIo::atmelRM readRange(quint8 channel, quint8& range) override;
+    ZeraMControllerIo::atmelRM setRange(quint8 channel, quint8 range) override;
 };
 
 #endif // MOCKATMELRANGES_H

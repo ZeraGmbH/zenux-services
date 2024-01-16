@@ -1,4 +1,4 @@
-#include "atmelcommon.h"
+#include "atmelbaseimplementation.h"
 
 enum hw_cmdcode
 {
@@ -8,12 +8,12 @@ enum hw_cmdcode
     hwGetIntMask = 0x0203
 };
 
-AtmelCommon::AtmelCommon(QString devnode, quint8 adr, quint8 debuglevel) :
+AtmelBaseImplementation::AtmelBaseImplementation(QString devnode, quint8 adr, quint8 debuglevel) :
     ZeraMControllerIo(devnode, adr, debuglevel)
 {
 }
 
-ZeraMControllerIo::atmelRM AtmelCommon::writeIntMask(quint16 mask)
+ZeraMControllerIo::atmelRM AtmelBaseImplementation::writeIntMask(quint16 mask)
 {
     quint8 PAR[2];
     PAR[0] = (mask >> 8) & 255;
@@ -23,7 +23,7 @@ ZeraMControllerIo::atmelRM AtmelCommon::writeIntMask(quint16 mask)
     return getLastErrorMask() == 0 ? cmddone : cmdexecfault;
 }
 
-ZeraMControllerIo::atmelRM AtmelCommon::readIntMask(quint16 &mask)
+ZeraMControllerIo::atmelRM AtmelBaseImplementation::readIntMask(quint16 &mask)
 {
     ZeraMControllerIo::atmelRM ret = cmdexecfault;
     quint8 answ[3];
@@ -36,7 +36,7 @@ ZeraMControllerIo::atmelRM AtmelCommon::readIntMask(quint16 &mask)
     return ret;
 }
 
-ZeraMControllerIo::atmelRM AtmelCommon::readCriticalStatus(quint16 &stat)
+ZeraMControllerIo::atmelRM AtmelBaseImplementation::readCriticalStatus(quint16 &stat)
 {
     ZeraMControllerIo::atmelRM ret = cmdexecfault;
     quint8 answ[3];
@@ -49,7 +49,7 @@ ZeraMControllerIo::atmelRM AtmelCommon::readCriticalStatus(quint16 &stat)
     return ret;
 }
 
-ZeraMControllerIo::atmelRM AtmelCommon::resetCriticalStatus(quint16 stat)
+ZeraMControllerIo::atmelRM AtmelBaseImplementation::resetCriticalStatus(quint16 stat)
 {
     quint8 PAR[2];
     PAR[0] = (stat >> 8) & 255;

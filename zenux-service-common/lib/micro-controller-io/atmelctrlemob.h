@@ -1,10 +1,9 @@
 #ifndef ATMELEMOBCTRL_H
 #define ATMELEMOBCTRL_H
 
+#include "abstracti2ccontrollers.h"
 #include <QString>
 #include <memory>
-#include <atmelcommon.h>
-#include <atmelcommon.h>
 #include <i2cmultiplexerfactory.h>
 
 class AtmelCtrlEmob : public AtmelCommonVersions
