@@ -35,7 +35,7 @@ class cClamp: public AdjustmentEeprom, public AdjustmentXmlImportExportTemplate,
 public:
     cClamp();
     cClamp(cPCBServer *server,
-           cI2CSettings *i2cSettings,
+           I2cSettings *i2cSettings,
            Mt310s2SenseInterface *senseInterface,
            QString channelName,
            quint8 ctrlChannel,

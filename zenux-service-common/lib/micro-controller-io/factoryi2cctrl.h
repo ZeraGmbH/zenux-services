@@ -7,7 +7,7 @@
 class FactoryI2cCtrl : public AbstractFactoryI2cCtrl
 {
 public:
-    FactoryI2cCtrl(cI2CSettings *i2cSettings);
+    FactoryI2cCtrl(I2cSettings *i2cSettings);
 
     AtmelWatcherInterfacePtr createAtmelWatcher(QString devnode) override;
     I2cCtrlCriticalStatusPtr getCriticalStatusController() override;
@@ -25,7 +25,7 @@ private:
     quint8 getSystemCtrlI2cAddress();
     quint8 getEmobCtrlI2cAddress();
     quint8 getEmobMuxI2cAddress();
-    cI2CSettings *m_i2cSettings;
+    I2cSettings *m_i2cSettings;
 };
 
 #endif // FACTORYI2CCTRL_H

@@ -1,7 +1,7 @@
 #include "i2csettingsfortest.h"
 
 I2cSettingsForTest::I2cSettingsForTest(Zera::XMLConfig::cReader *xmlread) :
-    cI2CSettings(xmlread)
+    I2cSettings(xmlread)
 {
 }
 

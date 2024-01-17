@@ -31,7 +31,7 @@ void test_adj_deny_import_mt310s2::cleanup()
 void test_adj_deny_import_mt310s2::loadEEpromWithStoredNamesAndVersions()
 {
     // This is mostly to set-up our mock SystemInfo
-    cI2CSettings *i2cSettings = m_mockServer->getI2cSettings();
+    I2cSettings *i2cSettings = m_mockServer->getI2cSettings();
     MockEEprom24LC eepromMock(i2cSettings->getDeviceNode(), i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress));
     QByteArray eepromContent = readFile(":/export_internal_modified.eeprom");
     QVERIFY(!eepromContent.isEmpty());
@@ -57,7 +57,7 @@ void test_adj_deny_import_mt310s2::loadEEpromAndDenyDifferentDeviceName()
 {
     static_cast<Mt310s2SystemInfoMock*>(m_mockServer->getSystemInfo())->setDeviceName("Foo");
 
-    cI2CSettings *i2cSettings = m_mockServer->getI2cSettings();
+    I2cSettings *i2cSettings = m_mockServer->getI2cSettings();
     MockEEprom24LC eepromMock(i2cSettings->getDeviceNode(), i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress));
     QByteArray eepromContent = readFile(":/export_internal_modified.eeprom");
     QVERIFY(!eepromContent.isEmpty());

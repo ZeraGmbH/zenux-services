@@ -208,7 +208,7 @@ void cMT310S2dServer::doSetupServer()
             setupServer(); // here our scpi interface gets instanciated, we need this for further steps
 
             scpiConnectionList.append(this); // the server itself has some commands
-            cI2CSettings *i2cSettings = m_settings->getI2cSettings();
+            I2cSettings *i2cSettings = m_settings->getI2cSettings();
             scpiConnectionList.append(m_pSenseInterface = new Mt310s2SenseInterface(getSCPIInterface(),
                                                                                     i2cSettings,
                                                                                     m_pSenseSettings,

@@ -45,7 +45,7 @@ void test_adj_regression_import_export_eeprom_mt310s2::directExportFlashNoMock()
 void test_adj_regression_import_export_eeprom_mt310s2::directExportFlashGen()
 {
     QVERIFY(m_mockServer->getSenseInterface()->exportAdjFlash(refTime));
-    cI2CSettings *i2cSettings = m_mockServer->getI2cSettings();
+    I2cSettings *i2cSettings = m_mockServer->getI2cSettings();
     QByteArray dataWritten = MockEEprom24LC::getData(i2cSettings->getDeviceNode(),
                                                        i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress));
     QVERIFY(!dataWritten.isEmpty());
@@ -55,7 +55,7 @@ void test_adj_regression_import_export_eeprom_mt310s2::directExportFlashGen()
 void test_adj_regression_import_export_eeprom_mt310s2::directExportFlashCheckReference()
 {
     QVERIFY(m_mockServer->getSenseInterface()->exportAdjFlash(refTime));
-    cI2CSettings *i2cSettings = m_mockServer->getI2cSettings();
+    I2cSettings *i2cSettings = m_mockServer->getI2cSettings();
     QByteArray dataWritten = MockEEprom24LC::getData(i2cSettings->getDeviceNode(),
                                                        i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress));
     QByteArray dataReference = readFile(":/export_internal_initial.eeprom");
@@ -67,7 +67,7 @@ void test_adj_regression_import_export_eeprom_mt310s2::scpiWriteFlashInitial()
     QString ret = ScpiSingleTransactionBlocked::cmd("SYSTEM:ADJUSTMENT:FLASH:WRITE", "");
     QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::ack]);
 
-    cI2CSettings *i2cSettings = m_mockServer->getI2cSettings();
+    I2cSettings *i2cSettings = m_mockServer->getI2cSettings();
     QString devNode = i2cSettings->getDeviceNode();
     short i2cAddress = i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress);
 
@@ -92,7 +92,7 @@ void test_adj_regression_import_export_eeprom_mt310s2::scpiWriteRandomFileAndFla
     ret = ScpiSingleTransactionBlocked::cmd("SYSTEM:ADJUSTMENT:FLASH:WRITE", "");
     QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::ack]);
 
-    cI2CSettings *i2cSettings = m_mockServer->getI2cSettings();
+    I2cSettings *i2cSettings = m_mockServer->getI2cSettings();
     QByteArray dataWritten = MockEEprom24LC::getData(i2cSettings->getDeviceNode(),
                                                        i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress));
     QVERIFY(!dataWritten.isEmpty());
@@ -124,7 +124,7 @@ void test_adj_regression_import_export_eeprom_mt310s2::scpiWriteRandomFileFlashW
 
 void test_adj_regression_import_export_eeprom_mt310s2::loadRandomToEEpromWriteToFlashExportXmlAndCheck()
 {
-    cI2CSettings *i2cSettings = m_mockServer->getI2cSettings();
+    I2cSettings *i2cSettings = m_mockServer->getI2cSettings();
     MockEEprom24LC eepromMock(i2cSettings->getDeviceNode(), i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress));
     QByteArray eepromContent = readFile(":/export_internal_modified.eeprom");
     QVERIFY(!eepromContent.isEmpty());

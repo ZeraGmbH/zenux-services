@@ -3,7 +3,7 @@
 
 #include "i2csettings.h"
 
-class I2cSettingsForTest : public cI2CSettings
+class I2cSettingsForTest : public I2cSettings
 {
 public:
     I2cSettingsForTest(Zera::XMLConfig::cReader *xmlread);

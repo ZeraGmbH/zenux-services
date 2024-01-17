@@ -50,7 +50,7 @@ class Com5003SenseInterface : public cResource, public AdjustmentEeprom, public 
     Q_OBJECT
 public:
     Com5003SenseInterface(cSCPI *scpiInterface,
-                          cI2CSettings* i2cSettings,
+                          I2cSettings* i2cSettings,
                           RMConnection* rmConnection,
                           EthSettings* ethSettings,
                           cSenseSettings* senseSettings,

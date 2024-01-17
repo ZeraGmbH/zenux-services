@@ -14,7 +14,7 @@ class HotPluggableControllerContainer : public QObject
 {
     Q_OBJECT
 public:
-    HotPluggableControllerContainer(cI2CSettings *i2cSettings, quint8 debuglevel);
+    HotPluggableControllerContainer(I2cSettings *i2cSettings, quint8 debuglevel);
     void startActualizeEmobControllers(quint16 bitmaskAvailable, const cSenseSettings* senseSettings, int msWaitForApplicationStart);
     QVector<I2cCtrlCommonVersionsPtrShared> getCurrentControllers();
 signals:
@@ -25,7 +25,7 @@ private:
     void startAddingController(int ctrlChannel, SenseSystem::cChannelSettings* channelSettings, int msWaitForApplicationStart);
     bool isChannelKnown(int ctrlChannel);
 
-    cI2CSettings *m_i2cSettings;
+    I2cSettings *m_i2cSettings;
     quint8 m_debuglevel;
     QMap<int /* ctrlChannel */, I2cCtrlCommonVersionsPtrShared> m_Controllers;
     struct PendingChannelInfo

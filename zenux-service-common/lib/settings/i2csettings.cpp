@@ -1,7 +1,7 @@
 #include "i2csettings.h"
 #include <xmlconfigreader.h>
 
-cI2CSettings::cI2CSettings(Zera::XMLConfig::cReader *xmlread)
+I2cSettings::I2cSettings(Zera::XMLConfig::cReader *xmlread)
 {
     m_pXMLReader = xmlread;
     m_ConfigXMLMap["serviceconfig:connectivity:i2c:device:node"] = i2cSettings::SetDevNode;
@@ -13,7 +13,7 @@ cI2CSettings::cI2CSettings(Zera::XMLConfig::cReader *xmlread)
     m_ConfigXMLMap["serviceconfig:connectivity:i2c:adress:clampflash"] = i2cSettings::SetClampFlashAdr;
 }
 
-quint8 cI2CSettings::getI2CAdress(i2cSettings::member member)
+quint8 I2cSettings::getI2CAdress(i2cSettings::member member)
 {
     quint8 r;
     switch (member)
@@ -41,12 +41,12 @@ quint8 cI2CSettings::getI2CAdress(i2cSettings::member member)
 }
 
 
-QString& cI2CSettings::getDeviceNode()
+QString& I2cSettings::getDeviceNode()
 {
     return m_sDeviceNode;
 }
 
-void cI2CSettings::configXMLInfo(QString key)
+void I2cSettings::configXMLInfo(QString key)
 {
     if (m_pXMLReader && m_ConfigXMLMap.contains(key)) {
         switch (m_ConfigXMLMap[key])

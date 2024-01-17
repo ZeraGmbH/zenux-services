@@ -24,7 +24,7 @@ void test_adj_regression_import_permission_com5003::cleanup()
 void test_adj_regression_import_permission_com5003::scpiImportPermissionQueryFail()
 {
     Zera::XMLConfig::cReader dummyReader;
-    cI2CSettings i2cSettings(&dummyReader);
+    I2cSettings i2cSettings(&dummyReader);
     setupServers(std::make_shared<FactoryI2cCtrl>(&i2cSettings));
 
     QString ret = ScpiSingleTransactionBlocked::cmd("SYSTEM:ADJUSTMENT:XML", "foo");

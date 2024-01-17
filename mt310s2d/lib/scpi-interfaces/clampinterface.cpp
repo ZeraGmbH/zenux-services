@@ -8,7 +8,7 @@
 #include <i2cmuxerscopedonoff.h>
 
 cClampInterface::cClampInterface(cPCBServer *server,
-                                 cI2CSettings *i2cSettings,
+                                 I2cSettings *i2cSettings,
                                  cSenseSettings *senseSettings,
                                  Mt310s2SenseInterface *senseInterface,
                                  FactoryControllerAbstractPtr ctrlFactory) :
