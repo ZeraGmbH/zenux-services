@@ -22,7 +22,6 @@ public:
     atmelRM writePCBVersion(QString& sVersion) override;
     atmelRM readCTRLVersion(QString& answer) override;
     atmelRM readLCAVersion(QString& answer) override;
-    atmelRM startBootLoader();
     atmelRM readChannelStatus(quint8 channel, quint8& stat);
 
     atmelRM readRange(quint8 channel, quint8& range) override;

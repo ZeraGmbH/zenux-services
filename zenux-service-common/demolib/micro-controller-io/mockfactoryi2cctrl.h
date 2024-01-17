@@ -17,6 +17,7 @@ public:
     I2cCtrlMModePtr getMModeController() override;
     I2cCtrlPllPtr getPllController() override;
     I2cCtrlClampStatusPtr getClampStatusController() override;
+    I2cCtrlBootloaderPtr getBootloaderController() override;
 private:
     struct TPersitentControllerData
     {

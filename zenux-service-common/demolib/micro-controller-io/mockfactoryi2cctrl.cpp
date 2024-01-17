@@ -1,5 +1,6 @@
 #include "mockfactoryi2cctrl.h"
 #include "mockatmelwatcher.h"
+#include "mocki2cctrlbootloader.h"
 #include "mocki2cctrlcommonversions.h"
 #include "mocki2cctrlcriticalstatus.h"
 #include "mocki2cctrleeprompermission.h"
@@ -72,4 +73,9 @@ I2cCtrlPllPtr MockFactoryI2cCtrl::getPllController()
 I2cCtrlClampStatusPtr MockFactoryI2cCtrl::getClampStatusController()
 {
     return std::make_unique<MockI2cCtrlClampStatus>();
+}
+
+I2cCtrlBootloaderPtr MockFactoryI2cCtrl::getBootloaderController()
+{
+    return std::make_unique<MockI2cCtrlBootloader>();
 }
