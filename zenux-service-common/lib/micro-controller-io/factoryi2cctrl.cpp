@@ -39,7 +39,7 @@ I2cCtrlCommonVersionsPtrUnique FactoryI2cCtrl::getCommonVersionController(Contro
         return std::make_unique<I2cCtrlCommonVersions>(m_i2cSettings->getDeviceNode(), m_i2cSettings->getI2CAdress(i2cSettings::relaisCtrlI2cAddress), defaultDebugLevel);
 
     case CTRL_TYPE_SYSTEM:
-        return getSystemController();
+        return std::make_unique<I2cCtrlCommonVersions>(m_i2cSettings->getDeviceNode(), m_i2cSettings->getI2CAdress(i2cSettings::sysCtrlI2cAddress), defaultDebugLevel);
         break;
 
     /* not tested yet

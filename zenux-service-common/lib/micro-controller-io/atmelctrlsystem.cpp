@@ -6,8 +6,6 @@
 
 enum hw_cmdcode
 {
-    hwGetCtrlVersion = 0x0003,
-    hwGetPCBVersion = 0x0005,
     hwSetTestModes = 0x0042,
     hwGetAccumulatorStatus = 0x0210,
     hwGetAccuStateOfCharge = 0x0211,
@@ -19,16 +17,6 @@ AtmelCtrlSystem::AtmelCtrlSystem(QString devnode, quint8 adr, quint8 debuglevel)
 {
 }
 
-
-ZeraMControllerIo::atmelRM AtmelCtrlSystem::readCTRLVersion(QString& answer)
-{
-    return readVariableLenText(hwGetCtrlVersion, answer);
-}
-
-ZeraMControllerIo::atmelRM AtmelCtrlSystem::readPCBVersion(QString &answer)
-{
-    return readVariableLenText(hwGetPCBVersion, answer);
-}
 
 ZeraMControllerIo::atmelRM AtmelCtrlSystem::readAccumulatorStatus(quint8 &stat)
 {
