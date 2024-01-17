@@ -381,7 +381,7 @@ void cMT310S2dServer::MTIntHandler(int)
         }
     }
     else
-        qWarning("cMT310S2dServer::MTIntHandler: Atmel::getInstance().readCriticalStatus failed - cannot actualize clamp status!");
+        qWarning("cMT310S2dServer::MTIntHandler: readCriticalStatus failed - cannot actualize clamp status!");
 }
 
 
