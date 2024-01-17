@@ -23,8 +23,6 @@ enum hw_cmdcode
     hwGetSeqMask = 0x1001,
     hwSetPLLChannel = 0x1002,
     hwGetPLLChannel = 0x1003,
-    hwSetMode = 0x1004,
-    hwGetMode = 0x1005,
     hwSetFrequency = 0x1006,
     hwGetFrequency = 0x1007,
     hwSetSRate = 0x1008,
@@ -65,29 +63,6 @@ ZeraMControllerIo::atmelRM AtmelCtrlRelais::readChannelStatus(quint8 channel, qu
     }
     return ret;
 }
-
-ZeraMControllerIo::atmelRM AtmelCtrlRelais::setMeasMode(quint8 mmode)
-{
-    hw_cmd CMD(hwSetMode, 0, &mmode, 1);
-    writeCommand(&CMD);
-    return getLastErrorMask() == 0 ? cmddone : cmdexecfault;
-}
-
-
-ZeraMControllerIo::atmelRM AtmelCtrlRelais::readMeasMode(quint8 &mmode)
-{
-    ZeraMControllerIo::atmelRM ret = cmdexecfault;
-    mmode = 0; // default AC
-    hw_cmd CMD(hwGetMode, 0, nullptr, 0);
-    quint8 answ[2];
-    writeCommand(&CMD, answ, 2);
-    if(getLastErrorMask() == 0) {
-        mmode = answ[0];
-        ret = cmddone;
-    }
-    return ret;
-}
-
 
 ZeraMControllerIo::atmelRM AtmelCtrlRelais::setPLLChannel(quint8 chn)
 {
