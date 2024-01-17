@@ -3,7 +3,6 @@
 
 #include "abstractfactoryi2cctrl.h"
 #include "i2csettings.h"
-#include "atmelctrlsystem.h"
 
 class FactoryI2cCtrl : public AbstractFactoryI2cCtrl
 {
