@@ -1,11 +1,10 @@
 #ifndef ATMEL_H
 #define ATMEL_H
 
-#include "atmelbaseimplementation.h"
 #include <zeramcontrollerio.h>
 #include <QString>
 
-class Atmel : public AtmelBaseImplementation
+class Atmel : public ZeraMControllerIo
 {
 public:
     static void setInstanceParams(QString devnode, quint8 adr, quint8 debuglevel);

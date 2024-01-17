@@ -1,11 +1,11 @@
 #ifndef ATMELCTRLRELAIS_H
 #define ATMELCTRLRELAIS_H
 
-#include "atmelbaseimplementation.h"
+#include "abstracti2ccontrollers.h"
 #include <zeramcontrollerio.h>
 #include <QString>
 
-class AtmelCtrlRelais : public AtmelBaseImplementation,
+class AtmelCtrlRelais : public ZeraMControllerIo,
                         public AbstractI2cCtrlCommonVersions,
                         public AbstractI2cCtrlDeviceIdentificationData,
                         public AbstractI2cCtrlEepromPermission,

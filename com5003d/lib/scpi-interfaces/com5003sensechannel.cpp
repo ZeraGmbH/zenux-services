@@ -248,7 +248,7 @@ QString Com5003SenseChannel::m_ReadChannelStatus(QString &sInput)
 
     if (cmd.isQuery())
     {
-        if ( Atmel::getInstance().readCriticalStatus(status) == ZeraMControllerIo::cmddone )
+        if (m_ctrlFactory->getCriticalStatusController()->readCriticalStatus(status) == ZeraMControllerIo::cmddone )
         {
             quint32 r;
             r = ((m_bAvail) ? 0 : 1 << 31);
@@ -270,7 +270,7 @@ QString Com5003SenseChannel::m_StatusReset(QString &sInput)
 
     if (cmd.isCommand(1) && (cmd.getParam(0) == ""))
     {
-        if ( Atmel::getInstance().resetCriticalStatus((quint16)(1 << m_nOverloadBit)) == ZeraMControllerIo::cmddone )
+        if (m_ctrlFactory->getCriticalStatusController()->resetCriticalStatus((quint16)(1 << m_nOverloadBit)) == ZeraMControllerIo::cmddone )
             return ZSCPI::scpiAnswer[ZSCPI::ack];
         else
             return ZSCPI::scpiAnswer[ZSCPI::errexec];

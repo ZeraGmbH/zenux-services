@@ -39,7 +39,7 @@ enum hw_cmdcode
 };
 
 AtmelCtrlRelais::AtmelCtrlRelais(QString devnode, quint8 adr, quint8 debuglevel) :
-    AtmelBaseImplementation(devnode, adr, debuglevel)
+    ZeraMControllerIo(devnode, adr, debuglevel)
 {
 }
 

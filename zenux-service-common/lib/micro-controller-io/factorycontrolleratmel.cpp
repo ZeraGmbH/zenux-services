@@ -1,5 +1,6 @@
 #include "factorycontrolleratmel.h"
 #include "atmelwatcher.h"
+#include "i2cctrlcriticalstatus.h"
 
 constexpr int defaultDebugLevel = 1;
 
@@ -10,7 +11,7 @@ FactoryControllerAtmel::FactoryControllerAtmel(cI2CSettings *i2cSettings) :
 
 AtmelCriticalStatusPtr FactoryControllerAtmel::getCriticalStatusController()
 {
-    return getRelaisController();
+    return std::make_unique<I2cCtrlCriticalStatus>(m_i2cSettings->getDeviceNode(), m_i2cSettings->getI2CAdress(i2cSettings::relaisCtrlI2cAddress), defaultDebugLevel);
 }
 
 AtmelWatcherInterfacePtr FactoryControllerAtmel::createAtmelWatcher(QString devnode)

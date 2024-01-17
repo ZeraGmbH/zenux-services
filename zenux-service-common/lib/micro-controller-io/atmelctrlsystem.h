@@ -1,12 +1,12 @@
 #ifndef ATMELCTRLSSYSTEM_H
 #define ATMELCTRLSSYSTEM_H
 
-#include "atmelbaseimplementation.h"
+#include "abstracti2ccontrollers.h"
 #include <intelhexfileio.h>
 #include <zeramcontrollerio.h>
 #include <QString>
 
-class AtmelCtrlSystem : public AtmelBaseImplementation, public AbstractI2cCtrlCommonVersions, public AbstractI2cCtrlAccumulator
+class AtmelCtrlSystem : public ZeraMControllerIo, public AbstractI2cCtrlCommonVersions, public AbstractI2cCtrlAccumulator
 {
 public:
     AtmelCtrlSystem(QString devnode, quint8 adr, quint8 debuglevel);
