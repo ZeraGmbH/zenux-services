@@ -1,5 +1,6 @@
 #include "factoryi2cctrl.h"
 #include "atmelwatcher.h"
+#include "i2cctrlclampstatus.h"
 #include "i2cctrlcriticalstatus.h"
 
 constexpr int defaultDebugLevel = 1;
@@ -73,6 +74,11 @@ I2cCtrlMModePtr FactoryI2cCtrl::getMModeController()
 I2cCtrlPllPtr FactoryI2cCtrl::getPllController()
 {
     return getRelaisController();
+}
+
+I2cCtrlClampStatusPtr FactoryI2cCtrl::getClampStatusController()
+{
+    return std::make_unique<I2cCtrlClampStatus>(m_i2cSettings->getDeviceNode(), m_i2cSettings->getI2CAdress(i2cSettings::relaisCtrlI2cAddress), defaultDebugLevel);
 }
 
 std::unique_ptr<AtmelCtrlRelais> FactoryI2cCtrl::getRelaisController()

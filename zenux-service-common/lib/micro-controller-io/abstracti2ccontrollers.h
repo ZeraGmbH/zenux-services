@@ -88,4 +88,13 @@ public:
 
 typedef std::unique_ptr<AbstractI2cCtrlAccumulator> I2cCtrlAccumulatorPtr;
 
+class AbstractI2cCtrlClampStatus
+{
+public:
+    virtual ~AbstractI2cCtrlClampStatus() = default;
+    virtual ZeraMControllerIo::atmelRM readClampStatus(quint16& stat) = 0;
+};
+
+typedef std::unique_ptr<AbstractI2cCtrlClampStatus> I2cCtrlClampStatusPtr;
+
 #endif // ABSTRACTCONTROLLERS_H

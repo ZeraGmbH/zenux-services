@@ -12,7 +12,6 @@ public:
 
     atmelRM startBootLoader();
     atmelRM readChannelStatus(quint8 channel, quint8& stat);
-    atmelRM readClampStatus(quint16& stat);
 
 private:
     Atmel(QString devnode, quint8 adr, quint8 debuglevel);
