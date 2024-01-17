@@ -347,7 +347,7 @@ void cMT310S2dServer::enableClampInterrupt()
 void cMT310S2dServer::updateI2cDevicesConnected()
 {
     quint16 clStat;
-    if ( Atmel::getInstance().readClampStatus(clStat) == ZeraMControllerIo::cmddone) {
+    if (m_ctrlFactory->getClampStatusController()->readClampStatus(clStat) == ZeraMControllerIo::cmddone) {
         qInfo("Devices connected mask read: 0x%02X", clStat);
         m_pClampInterface->actualizeClampStatus(clStat);
         m_pSystemInterface->actualizeContollers(clStat);

@@ -129,19 +129,6 @@ ZeraMControllerIo::atmelRM AtmelCtrlRelais::readChannelStatus(quint8 channel, qu
     return ret;
 }
 
-ZeraMControllerIo::atmelRM AtmelCtrlRelais::readClampStatus(quint16 &stat)
-{
-    ZeraMControllerIo::atmelRM ret = cmdexecfault;
-    quint8 answ[2];
-    hw_cmd CMD(hwGetClampStatus, 0, nullptr, 0);
-    writeCommand(&CMD, answ, 2);
-    if(getLastErrorMask() == 0) {
-         stat = answ[0];
-         ret = cmddone;
-    }
-    return ret;
-}
-
 ZeraMControllerIo::atmelRM AtmelCtrlRelais::readRange(quint8 channel, quint8 &range)
 {
     hw_cmd CMD(hwGetRange, channel, nullptr, 0);

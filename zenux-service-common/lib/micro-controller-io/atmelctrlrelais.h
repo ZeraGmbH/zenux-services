@@ -24,7 +24,6 @@ public:
     atmelRM readLCAVersion(QString& answer) override;
     atmelRM startBootLoader();
     atmelRM readChannelStatus(quint8 channel, quint8& stat);
-    atmelRM readClampStatus(quint16& stat);
 
     atmelRM readRange(quint8 channel, quint8& range) override;
     atmelRM setRange(quint8 channel, quint8 range) override;

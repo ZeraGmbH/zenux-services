@@ -82,16 +82,3 @@ ZeraMControllerIo::atmelRM Atmel::readChannelStatus(quint8 channel, quint8 &stat
     }
     return ret;
 }
-
-ZeraMControllerIo::atmelRM Atmel::readClampStatus(quint16 &stat)
-{
-    ZeraMControllerIo::atmelRM ret = cmdexecfault;
-    quint8 answ[2];
-    hw_cmd CMD(hwGetClampStatus, 0, nullptr, 0);
-    writeCommand(&CMD, answ, 2);
-    if(getLastErrorMask() == 0) {
-         stat = answ[0];
-         ret = cmddone;
-    }
-    return ret;
-}
