@@ -1,6 +1,7 @@
 #include "mockforsenseinterfacemt310s2.h"
 #include "clampfactorytest.h"
 #include "mt310s2systeminfomock.h"
+#include <i2cmultiplexerfactory.h>
 
 MockForSenseInterfaceMt310s2::MockForSenseInterfaceMt310s2(FactoryControllerAbstractPtr ctrlFactory, bool systemInfoMock) :
     MockPcbServer("mt310s2d")

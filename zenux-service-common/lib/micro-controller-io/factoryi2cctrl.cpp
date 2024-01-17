@@ -4,6 +4,7 @@
 #include "i2cctrlbootloader.h"
 #include "i2cctrlclampstatus.h"
 #include "i2cctrlcommonversions.h"
+#include "i2cctrlcommonversionsemob.h"
 #include "i2cctrlcriticalstatus.h"
 #include "i2cctrldeviceidentificationdata.h"
 #include "i2cctrleeprompermission.h"
@@ -43,16 +44,11 @@ I2cCtrlCommonVersionsPtrUnique FactoryI2cCtrl::getCommonVersionController(Contro
         return std::make_unique<I2cCtrlCommonVersions>(m_i2cSettings->getDeviceNode(), getSystemCtrlI2cAddress(), defaultDebugLevel);
         break;
 
-    /* not tested yet
-    case CTRL_TYPE_EMOB: {
-        ZeraMcontrollerIoPtr i2cCtrl = std::make_shared<ZeraMControllerIo>(m_i2cSettings->getDeviceNode(),
-                                                                           m_i2cSettings->getI2CAdress(i2cSettings::emobCtrlI2cAddress),
-                                                                           defaultDebugLevel);
-        return std::make_unique<AtmelCtrlEmob>(i2cCtrl,
-                                               m_i2cSettings->getDeviceNode(),
-                                               m_i2cSettings->getI2CAdress(i2cSettings::muxerI2cAddress),
-                                               muxChannel);
-    }*/
+    case CTRL_TYPE_EMOB:
+        return std::make_unique<I2cCtrlCommonVersionsEmob>(m_i2cSettings->getDeviceNode(), getEmobCtrlI2cAddress(),
+                                                           getEmobMuxI2cAddress(), muxChannel,
+                                                           defaultDebugLevel);
+        break;
     default:
         qFatal("Controller type %i does not support AbstractI2cCtrlCommonVersions", ctrlType);
         return nullptr;
@@ -102,4 +98,14 @@ quint8 FactoryI2cCtrl::getRelaisCtrlI2cAddress()
 quint8 FactoryI2cCtrl::getSystemCtrlI2cAddress()
 {
     return m_i2cSettings->getI2CAdress(i2cSettings::sysCtrlI2cAddress);
+}
+
+quint8 FactoryI2cCtrl::getEmobCtrlI2cAddress()
+{
+    return m_i2cSettings->getI2CAdress(i2cSettings::emobCtrlI2cAddress);
+}
+
+quint8 FactoryI2cCtrl::getEmobMuxI2cAddress()
+{
+    return m_i2cSettings->getI2CAdress(i2cSettings::muxerI2cAddress);
 }

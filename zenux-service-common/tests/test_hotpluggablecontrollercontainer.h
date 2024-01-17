@@ -1,6 +1,7 @@
 #ifndef TEST_HOTPLUGGABLECONTROLLERCONTAINER_H
 #define TEST_HOTPLUGGABLECONTROLLERCONTAINER_H
 
+#include "i2csettingsfortest.h"
 #include "sensesettings.h"
 
 class test_hotpluggablecontrollercontainer : public QObject
@@ -28,6 +29,7 @@ private slots:
 
 private:
     Zera::XMLConfig::cReader m_configReader;
+    I2cSettingsForTest m_i2cSettings;
     cSenseSettings m_senseSettings;
 };
 
