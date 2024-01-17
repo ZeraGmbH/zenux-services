@@ -2,7 +2,7 @@
 #define ABSTRACTFACTORYI2CCTRL_H
 
 #include "abstracti2ccontrollers.h"
-#include "atmelwatcherinterface.h"
+#include "abstractctrlheartbeatwait.h"
 #include <memory>
 
 class AbstractFactoryI2cCtrl
@@ -14,7 +14,7 @@ public:
         CTRL_TYPE_SYSTEM,
         CTRL_TYPE_EMOB
     };
-    virtual AtmelWatcherInterfacePtr createAtmelWatcher(QString devnode) = 0; // this is more a device-node thingy...
+    virtual AbstractCtrlHeartbeatWaitPtr createCtrlHeartbeatWait(QString devnode) = 0; // this is more a device-node thingy...
 
     virtual I2cCtrlCriticalStatusPtr getCriticalStatusController() = 0;
     virtual I2cCtrlEepromPermissionPtr getPermissionCheckController() = 0;

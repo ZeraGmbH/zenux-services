@@ -7,7 +7,7 @@ class MockFactoryI2cCtrl : public AbstractFactoryI2cCtrl
 {
 public:
     MockFactoryI2cCtrl(bool initialPermission);
-    AtmelWatcherInterfacePtr createAtmelWatcher(QString devnode) override;
+    AbstractCtrlHeartbeatWaitPtr createCtrlHeartbeatWait(QString devnode) override;
     I2cCtrlCriticalStatusPtr getCriticalStatusController() override;
     I2cCtrlEepromPermissionPtr getPermissionCheckController() override;
     I2cCtrlCommonVersionsPtrUnique getCommonVersionController(ControllerTypes ctrlType, quint8 muxChannel = -1) override;

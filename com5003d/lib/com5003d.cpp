@@ -113,7 +113,7 @@ QString cCOM5003dServer::getCtrlDeviceNode()
 void cCOM5003dServer::setupMicroControllerIo()
 {
     PermissionFunctions::setPermissionCtrlFactory(m_ctrlFactory);
-    m_atmelWatcher = m_ctrlFactory->createAtmelWatcher(getCtrlDeviceNode());
+    m_ctrlHeartbeatWait = m_ctrlFactory->createCtrlHeartbeatWait(getCtrlDeviceNode());
 }
 
 void cCOM5003dServer::doConfiguration()
@@ -287,11 +287,11 @@ void cCOM5003dServer::programAtmelFlash()
 void cCOM5003dServer::doWait4Atmel()
 {
     m_nerror = atmelError; // we preset error
-    connect(m_atmelWatcher.get(), &AtmelWatcherInterface::sigTimeout,
+    connect(m_ctrlHeartbeatWait.get(), &AbstractCtrlHeartbeatWait::sigTimeout,
             this, &cCOM5003dServer::abortInit);
-    connect(m_atmelWatcher.get(), &AtmelWatcherInterface::sigRunning,
+    connect(m_ctrlHeartbeatWait.get(), &AbstractCtrlHeartbeatWait::sigRunning,
             this, &cCOM5003dServer::atmelRunning);
-    m_atmelWatcher->start();
+    m_ctrlHeartbeatWait->start();
 }
 
 

@@ -1,27 +1,27 @@
-#include "atmelwatcher.h"
+#include "ctrlheartbeatwait.h"
 #include <QTimer>
 #include <unistd.h>
 #include <fcntl.h>
 
-cAtmelWatcher::cAtmelWatcher(QString devNode) :
+CtrlHeartbeatWait::CtrlHeartbeatWait(QString devNode) :
     m_sDeviceNode(devNode)
 {
     m_TimerTO.setSingleShot(true);
     m_TimerTO.setInterval(10000);
-    connect(&m_TimerTO, &QTimer::timeout, this, &cAtmelWatcher::doTimeout);
+    connect(&m_TimerTO, &QTimer::timeout, this, &CtrlHeartbeatWait::doTimeout);
     m_TimerPeriod.setSingleShot(false);
     m_TimerPeriod.setInterval(100);
 }
 
-void cAtmelWatcher::start()
+void CtrlHeartbeatWait::start()
 {
     qInfo("Atmel run-detection started");
     m_TimerTO.start();
     m_TimerPeriod.start();
-    connect(&m_TimerPeriod, &QTimer::timeout, this, &cAtmelWatcher::doAtmelTest);
+    connect(&m_TimerPeriod, &QTimer::timeout, this, &CtrlHeartbeatWait::doAtmelTest);
 }
 
-void cAtmelWatcher::doAtmelTest()
+void CtrlHeartbeatWait::doAtmelTest()
 {
     QByteArray ba = m_sDeviceNode.toLatin1();
     int ret = (fd = open(ba.data(),O_RDWR));
@@ -56,7 +56,7 @@ void cAtmelWatcher::doAtmelTest()
     }
 }
 
-void cAtmelWatcher::doTimeout()
+void CtrlHeartbeatWait::doTimeout()
 {
     qCritical("Atmel did not start within timeout");
     m_TimerPeriod.disconnect(SIGNAL(timeout()));

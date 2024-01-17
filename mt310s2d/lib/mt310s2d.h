@@ -14,7 +14,7 @@
 #include "accumulatorsettings.h"
 #include "accumulatorinterface.h"
 #include "mt310s2systeminfo.h"
-#include "atmelwatcherinterface.h"
+#include "abstractctrlheartbeatwait.h"
 #include <memory>
 #include <QStateMachine>
 #include <QTimer>
@@ -99,7 +99,7 @@ private:
     QState* m_stateconnect2RM = nullptr;
     QState* m_stateconnect2RMError = nullptr;
     QState* m_stateSendRMIdentAndRegister = nullptr;
-    AtmelWatcherInterfacePtr m_atmelWatcher;
+    AbstractCtrlHeartbeatWaitPtr m_ctrlHeartbeatWait;
     quint8 m_nerror;
     int m_retryRMConnect;
     QTimer m_retryTimer;

@@ -1,15 +1,15 @@
-#ifndef ATMELWATCHER_H
-#define ATMELWATCHER_H
+#ifndef CTRLHEARTBEATWAIT_H
+#define CTRLHEARTBEATWAIT_H
 
-#include "atmelwatcherinterface.h"
+#include "abstractctrlheartbeatwait.h"
 #include <QTimer>
 #include <QString>
 
-class cAtmelWatcher: public AtmelWatcherInterface
+class CtrlHeartbeatWait : public AbstractCtrlHeartbeatWait
 {
     Q_OBJECT
 public:
-    cAtmelWatcher(QString devNode);
+    CtrlHeartbeatWait(QString devNode);
 public slots:
     void start() override;
 private:
@@ -22,4 +22,4 @@ private slots:
     void doAtmelTest();
 };
 
-#endif // ATMELWATCHER_H
+#endif // CTRLHEARTBEATWAIT_H

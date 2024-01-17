@@ -126,7 +126,7 @@ QString cMT310S2dServer::getMsgDeviceNode()
 void cMT310S2dServer::setupMicroControllerIo()
 {
     PermissionFunctions::setPermissionCtrlFactory(m_ctrlFactory);
-    m_atmelWatcher = m_ctrlFactory->createAtmelWatcher(getCtrlDeviceNode());
+    m_ctrlHeartbeatWait = m_ctrlFactory->createCtrlHeartbeatWait(getCtrlDeviceNode());
 }
 
 void cMT310S2dServer::doConfiguration()
@@ -179,11 +179,11 @@ void cMT310S2dServer::doConfiguration()
 void cMT310S2dServer::doWait4Atmel()
 {
     m_nerror = atmelError; // we preset error
-    connect(m_atmelWatcher.get(), &AtmelWatcherInterface::sigTimeout,
+    connect(m_ctrlHeartbeatWait.get(), &AbstractCtrlHeartbeatWait::sigTimeout,
             this, &cMT310S2dServer::abortInit);
-    connect(m_atmelWatcher.get(), &AtmelWatcherInterface::sigRunning,
+    connect(m_ctrlHeartbeatWait.get(), &AbstractCtrlHeartbeatWait::sigRunning,
             this, &cMT310S2dServer::atmelRunning);
-    m_atmelWatcher->start();
+    m_ctrlHeartbeatWait->start();
 }
 
 

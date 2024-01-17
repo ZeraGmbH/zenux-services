@@ -1,5 +1,5 @@
 #include "mockfactoryi2cctrl.h"
-#include "mockatmelwatcher.h"
+#include "mockctrlheartbeatwait.h"
 #include "mocki2cctrlbootloader.h"
 #include "mocki2cctrlcommonversions.h"
 #include "mocki2cctrlcriticalstatus.h"
@@ -18,10 +18,10 @@ MockFactoryI2cCtrl::MockFactoryI2cCtrl(bool initialPermission)
     m_persitentData.m_permission = initialPermission;
 }
 
-AtmelWatcherInterfacePtr MockFactoryI2cCtrl::createAtmelWatcher(QString devnode)
+AbstractCtrlHeartbeatWaitPtr MockFactoryI2cCtrl::createCtrlHeartbeatWait(QString devnode)
 {
     Q_UNUSED(devnode)
-    return std::make_unique<MockAtmelWatcher>();
+    return std::make_unique<MockCtrlHeartbeatWait>();
 }
 
 I2cCtrlCriticalStatusPtr MockFactoryI2cCtrl::getCriticalStatusController()
