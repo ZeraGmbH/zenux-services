@@ -1,6 +1,6 @@
 #include "statusinterface.h"
 #include "test_serverunregisternotifier.h"
-#include "mockfactorycontroller.h"
+#include "mockfactoryi2cctrl.h"
 #include "accumulatorinterface.h"
 #include "foutgroupresourceandinterface.h"
 #include <QTest>
@@ -17,7 +17,7 @@ void test_serverunregisternotifier::init()
     static ServerParams params {"foo", "0", QStringLiteral(CONFIG_SOURCES_MT310S2D) + "/" + "mt310s2d.xsd", QStringLiteral(CONFIG_SOURCES_MT310S2D) + "/" + "mt310s2d.xml"};
 
     m_adjustmentStatusNull = std::make_unique<AdjustmentStatusNull>();
-    m_ctrlFactory = std::make_shared<MockFactoryController>(true);
+    m_ctrlFactory = std::make_shared<MockFactoryI2cCtrl>(true);
     m_pcbServerTest = std::make_unique<PCBTestServer>(params, &m_scpiInterface, m_ctrlFactory);
 
     m_xmlConfigReader = std::make_unique<Zera::XMLConfig::cReader>();

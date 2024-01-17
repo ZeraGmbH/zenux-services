@@ -1,6 +1,6 @@
-#include "mockatmeldeviceidentificationdata.h"
+#include "mocki2cctrldeviceidentificationdata.h"
 
-MockAtmelDeviceIdentificationData::MockAtmelDeviceIdentificationData(QString &deviceName,
+MockI2cCtrlDeviceIdentificationData::MockI2cCtrlDeviceIdentificationData(QString &deviceName,
                                                                      QString &serialNumber,
                                                                      QString &LCAVersion,
                                                                      QString &writablePcbVersion) :
@@ -11,31 +11,31 @@ MockAtmelDeviceIdentificationData::MockAtmelDeviceIdentificationData(QString &de
 {
 }
 
-ZeraMControllerIoTemplate::atmelRM MockAtmelDeviceIdentificationData::readDeviceName(QString &answer)
+ZeraMControllerIoTemplate::atmelRM MockI2cCtrlDeviceIdentificationData::readDeviceName(QString &answer)
 {
     answer = m_deviceName;
     return ZeraMControllerIo::cmddone;
 }
 
-ZeraMControllerIoTemplate::atmelRM MockAtmelDeviceIdentificationData::readSerialNumber(QString &answer)
+ZeraMControllerIoTemplate::atmelRM MockI2cCtrlDeviceIdentificationData::readSerialNumber(QString &answer)
 {
     answer = m_serialNumber;
     return ZeraMControllerIo::cmddone;
 }
 
-ZeraMControllerIoTemplate::atmelRM MockAtmelDeviceIdentificationData::writeSerialNumber(QString &sNumber)
+ZeraMControllerIoTemplate::atmelRM MockI2cCtrlDeviceIdentificationData::writeSerialNumber(QString &sNumber)
 {
     m_serialNumber = sNumber;
     return ZeraMControllerIo::cmddone;
 }
 
-ZeraMControllerIoTemplate::atmelRM MockAtmelDeviceIdentificationData::readLCAVersion(QString &answer)
+ZeraMControllerIoTemplate::atmelRM MockI2cCtrlDeviceIdentificationData::readLCAVersion(QString &answer)
 {
     answer = m_LCAVersion;
     return ZeraMControllerIo::cmddone;
 }
 
-ZeraMControllerIoTemplate::atmelRM MockAtmelDeviceIdentificationData::writePCBVersion(QString &sVersion)
+ZeraMControllerIoTemplate::atmelRM MockI2cCtrlDeviceIdentificationData::writePCBVersion(QString &sVersion)
 {
     m_writablePcbVersion = sVersion;
     return ZeraMControllerIo::cmddone;

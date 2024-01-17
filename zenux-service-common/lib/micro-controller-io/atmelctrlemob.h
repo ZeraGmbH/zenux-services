@@ -6,7 +6,7 @@
 #include <memory>
 #include <i2cmultiplexerfactory.h>
 
-class AtmelCtrlEmob : public AtmelCommonVersions
+class AtmelCtrlEmob : public AbstractI2cCtrlCommonVersions
 {
 public:
     AtmelCtrlEmob(ZeraMcontrollerIoPtr i2cCtrl, QString devnode, quint8 adrMux, quint8 muxChannel);

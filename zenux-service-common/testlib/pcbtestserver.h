@@ -2,7 +2,7 @@
 #define PCBTESTSERVER_H
 
 #include "pcbserver.h"
-#include "factorycontrollerabstract.h"
+#include "abstractfactoryi2cctrl.h"
 
 class PCBTestServer : public cPCBServer
 {

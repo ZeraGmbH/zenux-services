@@ -4,7 +4,7 @@
 #include "samplerange.h"
 #include "resource.h"
 #include "samplingsettings.h"
-#include "factorycontrollerabstract.h"
+#include "abstractfactoryi2cctrl.h"
 #include <QStringList>
 
 namespace SamplingSystem

@@ -1,7 +1,7 @@
 #ifndef ACCUMULATORINTERFACE_H
 #define ACCUMULATORINTERFACE_H
 
-#include "factorycontrollerabstract.h"
+#include "abstractfactoryi2cctrl.h"
 #include "timertemplateqt.h"
 #include "accumulatorsettings.h"
 #include <scpiconnection.h>

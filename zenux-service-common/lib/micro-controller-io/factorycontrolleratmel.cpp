@@ -44,7 +44,7 @@ AtmelCommonVersionsPtrU FactoryControllerAtmel::getCommonVersionController(Contr
                                                muxChannel);
     }*/
     default:
-        qFatal("Controller type %i does not support AtmelCommonVersions", ctrlType);
+        qFatal("Controller type %i does not support AbstractI2cCtrlCommonVersions", ctrlType);
         return nullptr;
     }
 }

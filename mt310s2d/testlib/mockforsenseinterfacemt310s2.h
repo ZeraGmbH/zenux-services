@@ -5,7 +5,7 @@
 #include "mt310s2senseinterface.h"
 #include "mt310s2systeminterface.h"
 #include "clampinterface.h"
-#include "factorycontrollerabstract.h"
+#include "abstractfactoryi2cctrl.h"
 
 class MockForSenseInterfaceMt310s2 : public MockPcbServer
 {

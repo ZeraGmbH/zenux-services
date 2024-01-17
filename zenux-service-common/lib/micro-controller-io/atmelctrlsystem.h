@@ -6,7 +6,7 @@
 #include <zeramcontrollerio.h>
 #include <QString>
 
-class AtmelCtrlSystem : public AtmelBaseImplementation, public AtmelCommonVersions, public AtmelAccumulatorHandler
+class AtmelCtrlSystem : public AtmelBaseImplementation, public AbstractI2cCtrlCommonVersions, public AbstractI2cCtrlAccumulator
 {
 public:
     AtmelCtrlSystem(QString devnode, quint8 adr, quint8 debuglevel);

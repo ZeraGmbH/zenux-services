@@ -1,5 +1,5 @@
 #include "test_sense_regression_interface_mt310s2.h"
-#include "mockfactorycontroller.h"
+#include "mockfactoryi2cctrl.h"
 #include "senseregressionhelper.h"
 #include "scpisingletransactionblocked.h"
 #include "proxy.h"
@@ -20,7 +20,7 @@ void test_sense_regression_interface_mt310s2::initTestCase()
 {
     ClampFactoryTest::enableTest();
     m_resmanServer = std::make_unique<ResmanRunFacade>();
-    m_mockServer = std::make_unique<MockForSenseInterfaceMt310s2>(std::make_shared<MockFactoryController>(true));
+    m_mockServer = std::make_unique<MockForSenseInterfaceMt310s2>(std::make_shared<MockFactoryI2cCtrl>(true));
     TimeMachineObject::feedEventLoop();
 
     m_pcbClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307);

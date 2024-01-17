@@ -1,14 +1,14 @@
-#ifndef MOCKATMELRANGES_H
-#define MOCKATMELRANGES_H
+#ifndef MOCKI2CCTRLRANGES_H
+#define MOCKI2CCTRLRANGES_H
 
 #include "abstracti2ccontrollers.h"
 
-class MockAtmelRanges : public AtmelRanges
+class MockI2cCtrlRanges : public AbstractI2cCtrlRanges
 {
 public:
-    MockAtmelRanges();
+    MockI2cCtrlRanges();
     ZeraMControllerIo::atmelRM readRange(quint8 channel, quint8& range) override;
     ZeraMControllerIo::atmelRM setRange(quint8 channel, quint8 range) override;
 };
 
-#endif // MOCKATMELRANGES_H
+#endif // MOCKI2CCTRLRANGES_H

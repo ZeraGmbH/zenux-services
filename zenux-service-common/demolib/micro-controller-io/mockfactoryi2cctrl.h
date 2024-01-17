@@ -1,12 +1,12 @@
-#ifndef MOCKFACTORYCONTROLLER_H
-#define MOCKFACTORYCONTROLLER_H
+#ifndef MOCKFACTORYI2CCTRL_H
+#define MOCKFACTORYI2CCTRL_H
 
-#include "factorycontrollerabstract.h"
+#include "abstractfactoryi2cctrl.h"
 
-class MockFactoryController : public FactoryControllerAbstract
+class MockFactoryI2cCtrl : public AbstractFactoryI2cCtrl
 {
 public:
-    MockFactoryController(bool initialPermission);
+    MockFactoryI2cCtrl(bool initialPermission);
     AtmelWatcherInterfacePtr createAtmelWatcher(QString devnode) override;
     AtmelCriticalStatusPtr getCriticalStatusController() override;
     AtmelPermissionTemplatePtrU getPermissionCheckController() override;
@@ -32,4 +32,4 @@ private:
     static TPersitentControllerData m_persitentData;
 };
 
-#endif // MOCKFACTORYCONTROLLER_H
+#endif // MOCKFACTORYI2CCTRL_H

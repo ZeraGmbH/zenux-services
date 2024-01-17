@@ -1,11 +1,11 @@
-#ifndef FACTORYCONTROLLERABSTRACT_H
-#define FACTORYCONTROLLERABSTRACT_H
+#ifndef ABSTRACTFACTORYI2CCTRL_H
+#define ABSTRACTFACTORYI2CCTRL_H
 
 #include "abstracti2ccontrollers.h"
 #include "atmelwatcherinterface.h"
 #include <memory>
 
-class FactoryControllerAbstract
+class AbstractFactoryI2cCtrl
 {
 public:
     enum ControllerTypes
@@ -26,6 +26,6 @@ public:
     virtual AtmelPllPtrU getPllController() = 0;
 };
 
-typedef std::shared_ptr<FactoryControllerAbstract> FactoryControllerAbstractPtr;
+typedef std::shared_ptr<AbstractFactoryI2cCtrl> FactoryControllerAbstractPtr;
 
-#endif // FACTORYCONTROLLERABSTRACT_H
+#endif // ABSTRACTFACTORYI2CCTRL_H

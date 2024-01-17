@@ -1,13 +1,13 @@
-#ifndef MOCKATMELCRITICALSTATUS_H
-#define MOCKATMELCRITICALSTATUS_H
+#ifndef MOCKI2CCTRLCRITICALSTATUS_H
+#define MOCKI2CCTRLCRITICALSTATUS_H
 
 #include "abstracti2ccontrollers.h"
 
-class MockAtmelCriticalStatus : public AtmelCriticalStatus
+class MockI2cCtrlCriticalStatus : public AbstractI2cCtrlCriticalStatus
 {
 public:
     // TODO: critical status handling / interrupts
-    MockAtmelCriticalStatus(quint16 &criticalStatus, quint16 &criticalStatusMask);
+    MockI2cCtrlCriticalStatus(quint16 &criticalStatus, quint16 &criticalStatusMask);
     ZeraMControllerIo::atmelRM writeIntMask(quint16 criticalStatusMask) override;
     ZeraMControllerIo::atmelRM readIntMask(quint16& criticalStatusMask) override;
     ZeraMControllerIo::atmelRM readCriticalStatus(quint16& stat) override;
@@ -17,4 +17,4 @@ private:
     quint16 &m_criticalStatusMask;
 };
 
-#endif // MOCKATMELCRITICALSTATUS_H
+#endif // MOCKI2CCTRLCRITICALSTATUS_H

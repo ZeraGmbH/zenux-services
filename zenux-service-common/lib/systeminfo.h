@@ -1,7 +1,7 @@
 #ifndef SYSTEMINFO_H
 #define SYSTEMINFO_H
 
-#include "factorycontrollerabstract.h"
+#include "abstractfactoryi2cctrl.h"
 
 class SystemInfo
 {

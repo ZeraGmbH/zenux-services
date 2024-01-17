@@ -1,12 +1,12 @@
 #ifndef FACTORYCONTROLLERATMEL_H
 #define FACTORYCONTROLLERATMEL_H
 
-#include "factorycontrollerabstract.h"
+#include "abstractfactoryi2cctrl.h"
 #include "i2csettings.h"
 #include "atmelctrlrelais.h"
 #include "atmelctrlsystem.h"
 
-class FactoryControllerAtmel : public FactoryControllerAbstract
+class FactoryControllerAtmel : public AbstractFactoryI2cCtrl
 {
 public:
     FactoryControllerAtmel(cI2CSettings *i2cSettings);

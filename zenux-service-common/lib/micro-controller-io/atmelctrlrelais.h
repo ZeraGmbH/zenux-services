@@ -6,12 +6,12 @@
 #include <QString>
 
 class AtmelCtrlRelais : public AtmelBaseImplementation,
-                        public AtmelCommonVersions,
-                        public AtmelDeviceIdentificationData,
-                        public AtmelPermissionTemplate,
-                        public AtmelRanges,
-                        public AtmelMModes,
-                        public AtmelPll
+                        public AbstractI2cCtrlCommonVersions,
+                        public AbstractI2cCtrlDeviceIdentificationData,
+                        public AbstractI2cCtrlEepromPermission,
+                        public AbstractI2cCtrlRanges,
+                        public AbstractI2cCtrlMMode,
+                        public AbstractI2cCtrlPll
 {
 public:
     AtmelCtrlRelais(QString devnode, quint8 adr, quint8 debuglevel);

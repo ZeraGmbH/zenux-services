@@ -1,5 +1,5 @@
 #include "test_accumulatorinterface.h"
-#include "mockfactorycontroller.h"
+#include "mockfactoryi2cctrl.h"
 #include <timerfactoryqtfortest.h>
 #include <timemachinefortest.h>
 #include <QTest>
@@ -21,7 +21,7 @@ void test_accumulatorinterface::init()
     m_xmlConfigReader->loadSchema(QStringLiteral(CONFIG_SOURCES_MT310S2D) + "/" + "mt310s2d.xsd");
     m_xmlConfigReader->loadXMLFile(QStringLiteral(CONFIG_SOURCES_MT310S2D) + "/" + "mt310s2d.xml");
     
-    m_accumulator = new AccumulatorInterface(m_scpiInterface.get(), m_accuSettings.get(), std::make_shared<MockFactoryController>(true));
+    m_accumulator = new AccumulatorInterface(m_scpiInterface.get(), m_accuSettings.get(), std::make_shared<MockFactoryI2cCtrl>(true));
     m_accumulator->initSCPIConnection("");
 }
 

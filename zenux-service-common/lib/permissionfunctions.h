@@ -1,7 +1,7 @@
 #ifndef PERMISSIONFUNCTIONS_H
 #define PERMISSIONFUNCTIONS_H
 
-#include "factorycontrollerabstract.h"
+#include "abstractfactoryi2cctrl.h"
 #include <functional>
 
 typedef std::function<bool (bool &)> FuncPermissionCheck;

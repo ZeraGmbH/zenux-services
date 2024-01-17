@@ -1,7 +1,7 @@
 #ifndef COM5003D_H
 #define COM5003D_H
 
-#include "factorycontrollerabstract.h"
+#include "abstractfactoryi2cctrl.h"
 #include "pcbserver.h"
 #include "rmconnection.h"
 #include "debugsettings.h"
