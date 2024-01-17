@@ -22,7 +22,8 @@ public:
     I2cCtrlClampStatusPtr getClampStatusController() override;
     I2cCtrlBootloaderPtr getBootloaderController() override;
 private:
-    std::unique_ptr<AtmelCtrlSystem> getSystemController();
+    quint8 getRelaisCtrlI2cAddress();
+    quint8 getSystemCtrlI2cAddress();
     cI2CSettings *m_i2cSettings;
 };
 
