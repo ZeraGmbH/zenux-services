@@ -4,7 +4,6 @@
 #include "zscpi_response_definitions.h"
 #include <scpi.h>
 #include <scpicommand.h>
-#include "micro-controller-io/atmel.h"
 
 Mt310s2SenseChannel::Mt310s2SenseChannel(cSCPI* scpiinterface, QString description, QString unit, SenseSystem::cChannelSettings *cSettings, quint8 nr, FactoryControllerAbstractPtr ctrlFactory) :
     ScpiConnection(scpiinterface),
@@ -231,7 +230,7 @@ QString Mt310s2SenseChannel::m_ReadChannelStatus(QString &sInput)
     cSCPICommand cmd = sInput;
     if (cmd.isQuery()) {
         quint16 status;
-        if ( Atmel::getInstance().readCriticalStatus(status) == ZeraMControllerIo::cmddone ) {
+        if (m_ctrlFactory->getCriticalStatusController()->readCriticalStatus(status) == ZeraMControllerIo::cmddone ) {
             quint32 r;
             r = ((m_bAvail) ? 0 : 1 << 31);
             if (m_nOverloadBit >= 0) { // perhaps this channel has no overload bit
@@ -253,7 +252,7 @@ QString Mt310s2SenseChannel::m_StatusReset(QString &sInput)
     cSCPICommand cmd = sInput;
     if (cmd.isCommand(1) && (cmd.getParam(0) == "")) {
         if (m_nOverloadBit >= 0)  {
-            if ( Atmel::getInstance().resetCriticalStatus((quint16)(1 << m_nOverloadBit)) == ZeraMControllerIo::cmddone ) {
+            if (m_ctrlFactory->getCriticalStatusController()->resetCriticalStatus((quint16)(1 << m_nOverloadBit)) == ZeraMControllerIo::cmddone ) {
                 return ZSCPI::scpiAnswer[ZSCPI::ack];
             }
             else {

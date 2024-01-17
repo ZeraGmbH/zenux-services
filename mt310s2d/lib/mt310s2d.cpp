@@ -336,7 +336,7 @@ void cMT310S2dServer::SetFASync()
 void cMT310S2dServer::enableClampInterrupt()
 {
     quint16 maskToAdd = (1 << clampstatusInterrupt);
-    if(Atmel::getInstance().writeIntMask(m_atmelInterruptMask | maskToAdd) == ZeraMControllerIo::cmddone) {
+    if(m_ctrlFactory->getCriticalStatusController()->writeIntMask(m_atmelInterruptMask | maskToAdd) == ZeraMControllerIo::cmddone) {
         m_atmelInterruptMask |= maskToAdd;
     }
     else {
@@ -365,14 +365,14 @@ void cMT310S2dServer::MTIntHandler(int)
     read(pipeFileDescriptorMt310s2[0], dummy, 1); // first we read the pipe
 
     quint16 stat = 0;
-    if ( Atmel::getInstance().readCriticalStatus(stat) == ZeraMControllerIo::cmddone ) {
+    if (m_ctrlFactory->getCriticalStatusController()->readCriticalStatus(stat) == ZeraMControllerIo::cmddone ) {
         if ((stat & (1 << clampstatusInterrupt)) > 0) {
             // we must reset clamp status before handling the interrupt
             // because system may emit more interrupts so we might think
             // we must handle them too....but atualizeClampStatus uses
             // global variable for the clamp status -> so this might fail
             // with unexpected behaviour.
-            Atmel::getInstance().resetCriticalStatus(stat & (1 << clampstatusInterrupt));
+            m_ctrlFactory->getCriticalStatusController()->resetCriticalStatus(stat & (1 << clampstatusInterrupt));
             updateI2cDevicesConnected();
         }
         quint16 knownMaskBits = (1 << clampstatusInterrupt);
