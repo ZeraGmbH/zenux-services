@@ -1,5 +1,6 @@
 #include "factoryi2cctrl.h"
 #include "atmelwatcher.h"
+#include "i2cctrlaccumulator.h"
 #include "i2cctrlbootloader.h"
 #include "i2cctrlclampstatus.h"
 #include "i2cctrlcommonversions.h"
@@ -65,7 +66,7 @@ I2cCtrlDeviceIdentificationDataPtr FactoryI2cCtrl::getDeviceIdentificationContro
 
 I2cCtrlAccumulatorPtr FactoryI2cCtrl::getAccumulatorController()
 {
-    return std::make_unique<AtmelCtrlSystem>(m_i2cSettings->getDeviceNode(), getSystemCtrlI2cAddress(), defaultDebugLevel);
+    return std::make_unique<I2cCtrlAccumulator>(m_i2cSettings->getDeviceNode(), getSystemCtrlI2cAddress(), defaultDebugLevel);
 }
 
 I2cCtrlRangesPtr FactoryI2cCtrl::getRangesController()

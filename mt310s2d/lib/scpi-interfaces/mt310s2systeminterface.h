@@ -6,7 +6,6 @@
 #include "pcbserver.h"
 #include "mt310s2senseinterface.h"
 #include "mt310s2systeminfo.h"
-#include "atmelctrlsystem.h"
 #include <QList>
 #include <QJsonDocument>
 #include <memory>
