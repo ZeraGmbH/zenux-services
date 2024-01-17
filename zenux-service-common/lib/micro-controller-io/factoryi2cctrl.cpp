@@ -2,6 +2,7 @@
 #include "atmelwatcher.h"
 #include "i2cctrlbootloader.h"
 #include "i2cctrlclampstatus.h"
+#include "i2cctrlcommonversions.h"
 #include "i2cctrlcriticalstatus.h"
 #include "i2cctrldeviceidentificationdata.h"
 #include "i2cctrleeprompermission.h"
@@ -35,7 +36,7 @@ I2cCtrlCommonVersionsPtrUnique FactoryI2cCtrl::getCommonVersionController(Contro
 {
     switch(ctrlType) {
     case CTRL_TYPE_RELAIS:
-        return getRelaisController();
+        return std::make_unique<I2cCtrlCommonVersions>(m_i2cSettings->getDeviceNode(), m_i2cSettings->getI2CAdress(i2cSettings::relaisCtrlI2cAddress), defaultDebugLevel);
 
     case CTRL_TYPE_SYSTEM:
         return getSystemController();
@@ -90,11 +91,6 @@ I2cCtrlClampStatusPtr FactoryI2cCtrl::getClampStatusController()
 I2cCtrlBootloaderPtr FactoryI2cCtrl::getBootloaderController()
 {
     return std::make_unique<I2cCtrlBootloader>(m_i2cSettings->getDeviceNode(), m_i2cSettings->getI2CAdress(i2cSettings::relaisCtrlI2cAddress), defaultDebugLevel);
-}
-
-std::unique_ptr<AtmelCtrlRelais> FactoryI2cCtrl::getRelaisController()
-{
-    return std::make_unique<AtmelCtrlRelais>(m_i2cSettings->getDeviceNode(), m_i2cSettings->getI2CAdress(i2cSettings::relaisCtrlI2cAddress), defaultDebugLevel);
 }
 
 std::unique_ptr<AtmelCtrlSystem> FactoryI2cCtrl::getSystemController()

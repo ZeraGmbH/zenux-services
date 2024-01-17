@@ -3,7 +3,6 @@
 
 #include "abstractfactoryi2cctrl.h"
 #include "i2csettings.h"
-#include "atmelctrlrelais.h"
 #include "atmelctrlsystem.h"
 
 class FactoryI2cCtrl : public AbstractFactoryI2cCtrl
@@ -23,7 +22,6 @@ public:
     I2cCtrlClampStatusPtr getClampStatusController() override;
     I2cCtrlBootloaderPtr getBootloaderController() override;
 private:
-    std::unique_ptr<AtmelCtrlRelais> getRelaisController();
     std::unique_ptr<AtmelCtrlSystem> getSystemController();
     cI2CSettings *m_i2cSettings;
 };
