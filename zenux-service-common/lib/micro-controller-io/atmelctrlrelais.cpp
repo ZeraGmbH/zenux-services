@@ -30,7 +30,6 @@ enum hw_cmdcode
     hwSetSRate = 0x1008,
     hwGetSRate = 0x1009,
     hwGetPCBTemp = 0x100A,
-    hwGetFlashWriteAccess=0x100B,
 
     hwSetRange = 0x1100,
     hwGetRange = 0x1101,
@@ -94,21 +93,6 @@ ZeraMControllerIo::atmelRM AtmelCtrlRelais::setRange(quint8 channel, quint8 rang
     if(ret != cmddone)
         qWarning("SetRange failed with ch: %i / rng: %i / mask: %8X failed!",
                  channel, range, errorMask);
-    return ret;
-}
-
-
-ZeraMControllerIo::atmelRM AtmelCtrlRelais::getEEPROMAccessEnable(bool &enable)
-{
-    ZeraMControllerIo::atmelRM ret = cmdexecfault;
-    enable = false; // default
-    hw_cmd CMD(hwGetFlashWriteAccess, 0, nullptr, 0);
-    quint8 answ[2];
-    writeCommand(&CMD, answ, 2);
-    if(getLastErrorMask() == 0) {
-        enable = (answ[0] != 0);
-        ret = cmddone;
-    }
     return ret;
 }
 

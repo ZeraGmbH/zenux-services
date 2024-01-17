@@ -4,6 +4,7 @@
 #include "i2cctrlclampstatus.h"
 #include "i2cctrlcriticalstatus.h"
 #include "i2cctrldeviceidentificationdata.h"
+#include "i2cctrleeprompermission.h"
 
 constexpr int defaultDebugLevel = 1;
 
@@ -24,7 +25,7 @@ AtmelWatcherInterfacePtr FactoryI2cCtrl::createAtmelWatcher(QString devnode)
 
 I2cCtrlEepromPermissionPtr FactoryI2cCtrl::getPermissionCheckController()
 {
-    return getRelaisController();
+    return std::make_unique<I2cCtrlEepromPermission>(m_i2cSettings->getDeviceNode(), m_i2cSettings->getI2CAdress(i2cSettings::relaisCtrlI2cAddress), defaultDebugLevel);
 }
 
 I2cCtrlCommonVersionsPtrUnique FactoryI2cCtrl::getCommonVersionController(ControllerTypes ctrlType, quint8 muxChannel)
