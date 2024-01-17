@@ -21,7 +21,7 @@
 #include <QDebug>
 
 Com5003SenseInterface::Com5003SenseInterface(cSCPI *scpiInterface,
-                                             cI2CSettings *i2cSettings,
+                                             I2cSettings *i2cSettings,
                                              RMConnection* rmConnection,
                                              EthSettings *ethSettings,
                                              cSenseSettings *senseSettings, SystemInfo *systemInfo,

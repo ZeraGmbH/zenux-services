@@ -9,7 +9,7 @@ SettingsForDeviceServer::SettingsForDeviceServer(ServerParams params) :
         qFatal("Abort: Could not open xsd file '%s", qPrintable(m_params.xsdFile));
 
     connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged,
-            &m_i2cSettings, &cI2CSettings::configXMLInfo);
+            &m_i2cSettings, &I2cSettings::configXMLInfo);
     connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged,
             &m_fpgaSettings, &FPGASettings::configXMLInfo);
 
@@ -23,7 +23,7 @@ ServerParams SettingsForDeviceServer::getServerParams()
     return m_params;
 }
 
-cI2CSettings *SettingsForDeviceServer::getI2cSettings()
+I2cSettings *SettingsForDeviceServer::getI2cSettings()
 {
     return &m_i2cSettings;
 }

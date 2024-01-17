@@ -12,12 +12,12 @@ class SettingsForDeviceServer : public QObject
 public:
     explicit SettingsForDeviceServer(ServerParams params);
     ServerParams getServerParams();
-    cI2CSettings *getI2cSettings();
+    I2cSettings *getI2cSettings();
     FPGASettings *getFpgaSettings();
 private:
     ServerParams m_params;
     Zera::XMLConfig::cReader m_xmlConfigReader;
-    cI2CSettings m_i2cSettings;
+    I2cSettings m_i2cSettings;
     FPGASettings m_fpgaSettings;
 };
 

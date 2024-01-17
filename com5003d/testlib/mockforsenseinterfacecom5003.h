@@ -15,11 +15,11 @@ public:
     QString getDeviceVersion() { return m_systemInfo->getDeviceVersion(); }
     Com5003SenseInterface *getSenseInterface() { return m_senseInterface.get(); }
     cSenseSettings* getSenseSettings() { return m_senseSettings.get(); }
-    cI2CSettings *getI2cSettings() { return m_i2cSettings.get(); }
+    I2cSettings *getI2cSettings() { return m_i2cSettings.get(); }
     SystemInfo* getSystemInfo() { return m_systemInfo.get(); }
 
 private:
-    std::unique_ptr<cI2CSettings> m_i2cSettings;
+    std::unique_ptr<I2cSettings> m_i2cSettings;
     std::unique_ptr<cSenseSettings> m_senseSettings;
 
     std::unique_ptr<Com5003SenseInterface> m_senseInterface;

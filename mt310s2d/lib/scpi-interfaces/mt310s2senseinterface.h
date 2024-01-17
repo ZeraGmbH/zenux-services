@@ -69,7 +69,7 @@ class Mt310s2SenseInterface : public cResource, public AdjustmentEeprom, public 
     Q_OBJECT
 public:
     Mt310s2SenseInterface(cSCPI *scpiInterface,
-                          cI2CSettings *i2cSettings,
+                          I2cSettings *i2cSettings,
                           cSenseSettings *senseSettings,
                           SystemInfo *systemInfo,
                           FactoryControllerAbstractPtr ctrlFactory);

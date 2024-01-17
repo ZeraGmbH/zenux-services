@@ -14,7 +14,7 @@
 
 constexpr int defaultDebugLevel = 1;
 
-FactoryI2cCtrl::FactoryI2cCtrl(cI2CSettings *i2cSettings) :
+FactoryI2cCtrl::FactoryI2cCtrl(I2cSettings *i2cSettings) :
     m_i2cSettings(i2cSettings)
 {
 }

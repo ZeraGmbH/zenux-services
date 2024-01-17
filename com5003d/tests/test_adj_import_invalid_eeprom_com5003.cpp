@@ -31,7 +31,7 @@ void test_adj_import_invalid_eeprom_com5003::cleanup()
 
 void test_adj_import_invalid_eeprom_com5003::importEmptyData()
 {
-    cI2CSettings *i2cSettings = m_mockServer->getI2cSettings();
+    I2cSettings *i2cSettings = m_mockServer->getI2cSettings();
     MockEEprom24LC eepromMock(i2cSettings->getDeviceNode(), i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress));
 
     QString ret = ScpiSingleTransactionBlocked::cmd("SYSTEM:ADJUSTMENT:FLASH:READ", "");
@@ -40,7 +40,7 @@ void test_adj_import_invalid_eeprom_com5003::importEmptyData()
 
 void test_adj_import_invalid_eeprom_com5003::importIncompleteData()
 {
-    cI2CSettings *i2cSettings = m_mockServer->getI2cSettings();
+    I2cSettings *i2cSettings = m_mockServer->getI2cSettings();
     MockEEprom24LC eepromMock(i2cSettings->getDeviceNode(), i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress));
     QByteArray eepromContent = readFile(":/export_internal_modified.eeprom");
     QVERIFY(!eepromContent.isEmpty());

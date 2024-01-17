@@ -22,7 +22,7 @@
 #include <QFile>
 
 Mt310s2SenseInterface::Mt310s2SenseInterface(cSCPI *scpiInterface,
-                                             cI2CSettings* i2cSettings,
+                                             I2cSettings* i2cSettings,
                                              cSenseSettings* senseSettings,
                                              SystemInfo *systemInfo,
                                              FactoryControllerAbstractPtr ctrlFactory) :

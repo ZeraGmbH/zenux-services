@@ -15,7 +15,7 @@ test_hotpluggablecontrollercontainer::test_hotpluggablecontrollercontainer() :
     m_senseSettings(&m_configReader, 8 /*mt310s2*/)
 {
     connect(&m_configReader, &Zera::XMLConfig::cReader::valueChanged,
-            &m_i2cSettings, &cI2CSettings::configXMLInfo);
+            &m_i2cSettings, &I2cSettings::configXMLInfo);
     connect(&m_configReader, &Zera::XMLConfig::cReader::valueChanged,
             &m_senseSettings, &cSenseSettings::configXMLInfo);
     m_configReader.loadSchema(QStringLiteral(CONFIG_SOURCES_MT310S2D) + "/" + "mt310s2d.xsd");

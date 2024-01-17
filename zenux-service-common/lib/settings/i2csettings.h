@@ -29,11 +29,11 @@ enum configstate
 };
 }
 
-class cI2CSettings : public XMLSettings
+class I2cSettings : public XMLSettings
 {
     Q_OBJECT
 public:
-    cI2CSettings(Zera::XMLConfig::cReader *xmlread);
+    I2cSettings(Zera::XMLConfig::cReader *xmlread);
     quint8 getI2CAdress(i2cSettings::member member);
     QString& getDeviceNode();
 public slots:
