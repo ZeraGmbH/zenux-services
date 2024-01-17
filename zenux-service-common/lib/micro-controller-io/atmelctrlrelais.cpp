@@ -31,8 +31,6 @@ enum hw_cmdcode
     hwGetSRate = 0x1009,
     hwGetPCBTemp = 0x100A,
 
-    hwSetRange = 0x1100,
-    hwGetRange = 0x1101,
     hwGetOVRRange = 0x1102,
     hwGetStatus = 0x1103
 };
@@ -67,35 +65,6 @@ ZeraMControllerIo::atmelRM AtmelCtrlRelais::readChannelStatus(quint8 channel, qu
     }
     return ret;
 }
-
-ZeraMControllerIo::atmelRM AtmelCtrlRelais::readRange(quint8 channel, quint8 &range)
-{
-    hw_cmd CMD(hwGetRange, channel, nullptr, 0);
-    quint8 answ[2];
-    writeCommand(&CMD, answ, 2);
-    quint32 errorMask = getLastErrorMask();
-    ZeraMControllerIo::atmelRM ret = errorMask == 0 ? cmddone : cmdexecfault;
-    if(ret == cmddone)
-        range = answ[0];
-    else
-        qWarning("ReadRange failed with ch: %i / mask: %8X failed!",
-                 channel, errorMask);
-    return ret;
-}
-
-
-ZeraMControllerIo::atmelRM AtmelCtrlRelais::setRange(quint8 channel, quint8 range)
-{
-    hw_cmd CMD(hwSetRange, channel, &range, 1);
-    writeCommand(&CMD);
-    quint32 errorMask = getLastErrorMask();
-    ZeraMControllerIo::atmelRM ret = errorMask == 0 ? cmddone : cmdexecfault;
-    if(ret != cmddone)
-        qWarning("SetRange failed with ch: %i / rng: %i / mask: %8X failed!",
-                 channel, range, errorMask);
-    return ret;
-}
-
 
 ZeraMControllerIo::atmelRM AtmelCtrlRelais::setMeasMode(quint8 mmode)
 {

@@ -7,7 +7,6 @@
 
 class AtmelCtrlRelais : public ZeraMControllerIo,
                         public AbstractI2cCtrlCommonVersions,
-                        public AbstractI2cCtrlRanges,
                         public AbstractI2cCtrlMMode,
                         public AbstractI2cCtrlPll
 {
@@ -16,9 +15,6 @@ public:
     atmelRM readPCBVersion(QString& answer) override;
     atmelRM readCTRLVersion(QString& answer) override;
     atmelRM readChannelStatus(quint8 channel, quint8& stat);
-
-    atmelRM readRange(quint8 channel, quint8& range) override;
-    atmelRM setRange(quint8 channel, quint8 range) override;
 
     /* mmode COM5003:
     enum enMeasurementModes
