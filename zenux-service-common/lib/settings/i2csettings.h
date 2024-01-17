@@ -38,7 +38,7 @@ public:
     QString& getDeviceNode();
 public slots:
     virtual void configXMLInfo(QString key);
-private:
+protected:
     QString m_sDeviceNode;
     quint8 m_nAtmelAdr;
     quint8 m_nAtmelSysAdr;

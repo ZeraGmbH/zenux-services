@@ -23,6 +23,8 @@ public:
 private:
     quint8 getRelaisCtrlI2cAddress();
     quint8 getSystemCtrlI2cAddress();
+    quint8 getEmobCtrlI2cAddress();
+    quint8 getEmobMuxI2cAddress();
     cI2CSettings *m_i2cSettings;
 };
 

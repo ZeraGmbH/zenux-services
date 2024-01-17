@@ -1,7 +1,8 @@
 #ifndef HOTPLUGGABLECONTROLLERCONTAINER_H
 #define HOTPLUGGABLECONTROLLERCONTAINER_H
 
-#include "atmelctrlemob.h"
+#include "abstracti2ccontrollers.h"
+#include "i2csettings.h"
 #include "sensesettings.h"
 #include <zeramcontrollerbootloaderstopper.h>
 #include <QMap>
@@ -13,7 +14,7 @@ class HotPluggableControllerContainer : public QObject
 {
     Q_OBJECT
 public:
-    HotPluggableControllerContainer(QString i2cDevNodeName, quint8 i2cAdrCtrl, quint8 i2cAdrMux, quint8 debuglevel);
+    HotPluggableControllerContainer(cI2CSettings *i2cSettings, quint8 debuglevel);
     void startActualizeEmobControllers(quint16 bitmaskAvailable, const cSenseSettings* senseSettings, int msWaitForApplicationStart);
     QVector<I2cCtrlCommonVersionsPtrShared> getCurrentControllers();
 signals:
@@ -24,9 +25,7 @@ private:
     void startAddingController(int ctrlChannel, SenseSystem::cChannelSettings* channelSettings, int msWaitForApplicationStart);
     bool isChannelKnown(int ctrlChannel);
 
-    QString m_i2cDevNodeName;
-    quint8 m_i2cAdrCtrl;
-    quint8 m_i2cAdrMux;
+    cI2CSettings *m_i2cSettings;
     quint8 m_debuglevel;
     QMap<int /* ctrlChannel */, I2cCtrlCommonVersionsPtrShared> m_Controllers;
     struct PendingChannelInfo

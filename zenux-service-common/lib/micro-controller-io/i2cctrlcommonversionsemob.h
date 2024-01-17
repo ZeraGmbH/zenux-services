@@ -7,7 +7,9 @@
 class I2cCtrlCommonVersionsEmob : public AbstractI2cCtrlCommonVersions
 {
 public:
-    I2cCtrlCommonVersionsEmob(QString deviceNodeName, quint8 i2cAddress, quint8 i2cAddressMux, quint8 muxChannel, quint8 debugLevel);
+    I2cCtrlCommonVersionsEmob(QString deviceNodeName, quint8 i2cAddress,
+                              quint8 i2cAddressMux, quint8 muxChannel,
+                              quint8 debugLevel);
     ZeraMControllerIo::atmelRM readPCBVersion(QString& answer) override;
     ZeraMControllerIo::atmelRM readCTRLVersion(QString& answer) override;
 private:
