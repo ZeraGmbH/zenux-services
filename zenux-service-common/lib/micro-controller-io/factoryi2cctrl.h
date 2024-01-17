@@ -1,12 +1,16 @@
-#ifndef MOCKFACTORYI2CCTRL_H
-#define MOCKFACTORYI2CCTRL_H
+#ifndef FACTORYI2CCTRL_H
+#define FACTORYI2CCTRL_H
 
 #include "abstractfactoryi2cctrl.h"
+#include "i2csettings.h"
+#include "atmelctrlrelais.h"
+#include "atmelctrlsystem.h"
 
-class MockFactoryI2cCtrl : public AbstractFactoryI2cCtrl
+class FactoryI2cCtrl : public AbstractFactoryI2cCtrl
 {
 public:
-    MockFactoryI2cCtrl(bool initialPermission);
+    FactoryI2cCtrl(cI2CSettings *i2cSettings);
+
     AtmelWatcherInterfacePtr createAtmelWatcher(QString devnode) override;
     I2cCtrlCriticalStatusPtr getCriticalStatusController() override;
     I2cCtrlEepromPermissionPtr getPermissionCheckController() override;
@@ -17,19 +21,9 @@ public:
     I2cCtrlMModePtr getMModeController() override;
     I2cCtrlPllPtr getPllController() override;
 private:
-    struct TPersitentControllerData
-    {
-        bool m_permission = false;
-        quint16 m_criticalStatus = 0;
-        quint16 m_criticalStatusMask = 0;
-        QString m_deviceName = "Unknown";
-        QString m_serialNumber = "Unknown";
-        QString m_LCAVersion = "Unknown";
-        QString m_writablePcbVersion = "Unknown";
-
-        quint8 m_pllChannel = 0;
-    };
-    static TPersitentControllerData m_persitentData;
+    std::unique_ptr<AtmelCtrlRelais> getRelaisController();
+    std::unique_ptr<AtmelCtrlSystem> getSystemController();
+    cI2CSettings *m_i2cSettings;
 };
 
-#endif // MOCKFACTORYI2CCTRL_H
+#endif // FACTORYI2CCTRL_H

@@ -416,7 +416,7 @@ void Mt310s2SystemInterface::updateAllCtrlVersionsJson()
     QJsonObject object;
     object.insert("Relay controller version", QJsonValue::fromVariant(m_systemInfo->getCTRLVersion()));
     object.insert("System controller version", QJsonValue::fromVariant(m_systemInfo->getSysCTRLVersion()));
-    QVector<AtmelCommonVersionsPtrS> hotpluggableControllers = m_hotPluggableControllerContainer->getCurrentControllers();
+    QVector<I2cCtrlCommonVersionsPtrShared> hotpluggableControllers = m_hotPluggableControllerContainer->getCurrentControllers();
     for(auto controller : hotpluggableControllers) {
         QString version;
         controller->readCTRLVersion(version);
@@ -431,7 +431,7 @@ void Mt310s2SystemInterface::updateAllPCBsVersion()
     QJsonObject object;
     object.insert("Relay PCB version", QJsonValue::fromVariant(m_systemInfo->getPCBVersion()));
     object.insert("System PCB version", QJsonValue::fromVariant(m_systemInfo->getSysPCBVersion()));
-    QVector<AtmelCommonVersionsPtrS> hotpluggableControllers = m_hotPluggableControllerContainer->getCurrentControllers();
+    QVector<I2cCtrlCommonVersionsPtrShared> hotpluggableControllers = m_hotPluggableControllerContainer->getCurrentControllers();
     for(auto controller : hotpluggableControllers) {
         QString version;
         controller->readPCBVersion(version);
