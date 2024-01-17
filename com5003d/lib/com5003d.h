@@ -12,7 +12,7 @@
 #include "finsettings.h"
 #include "foutsettings.h"
 #include "samplingsettings.h"
-#include "atmelwatcherinterface.h"
+#include "abstractctrlheartbeatwait.h"
 #include "settingsfordeviceserver.h"
 #include <QTimer>
 
@@ -88,7 +88,7 @@ private:
     QState* m_stateconnect2RM = nullptr;
     QState* m_stateconnect2RMError = nullptr;
     QState* m_stateSendRMIdentAndRegister = nullptr;
-    AtmelWatcherInterfacePtr m_atmelWatcher;
+    AbstractCtrlHeartbeatWaitPtr m_ctrlHeartbeatWait;
     quint8 m_nerror;
     int m_nFPGAfd;
     int m_retryRMConnect;

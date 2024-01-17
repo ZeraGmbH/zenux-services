@@ -1,6 +1,6 @@
-#include "mockatmelwatcher.h"
+#include "mockctrlheartbeatwait.h"
 
-void MockAtmelWatcher::start()
+void MockCtrlHeartbeatWait::start()
 {
     QMetaObject::invokeMethod(this,
                               "sigRunning",

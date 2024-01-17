@@ -1,9 +1,9 @@
 #ifndef MOCKATMELWATCHER_H
 #define MOCKATMELWATCHER_H
 
-#include <atmelwatcherinterface.h>
+#include <abstractctrlheartbeatwait.h>
 
-class MockAtmelWatcher : public AtmelWatcherInterface
+class MockCtrlHeartbeatWait : public AbstractCtrlHeartbeatWait
 {
     Q_OBJECT
 public slots:

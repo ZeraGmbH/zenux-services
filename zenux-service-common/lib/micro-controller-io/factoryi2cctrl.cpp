@@ -1,5 +1,5 @@
 #include "factoryi2cctrl.h"
-#include "atmelwatcher.h"
+#include "ctrlheartbeatwait.h"
 #include "i2cctrlaccumulator.h"
 #include "i2cctrlbootloader.h"
 #include "i2cctrlclampstatus.h"
@@ -24,9 +24,9 @@ I2cCtrlCriticalStatusPtr FactoryI2cCtrl::getCriticalStatusController()
     return std::make_unique<I2cCtrlCriticalStatus>(m_i2cSettings->getDeviceNode(), getRelaisCtrlI2cAddress(), defaultDebugLevel);
 }
 
-AtmelWatcherInterfacePtr FactoryI2cCtrl::createAtmelWatcher(QString devnode)
+AbstractCtrlHeartbeatWaitPtr FactoryI2cCtrl::createCtrlHeartbeatWait(QString devnode)
 {
-    return std::make_unique<cAtmelWatcher>(devnode);
+    return std::make_unique<CtrlHeartbeatWait>(devnode);
 }
 
 I2cCtrlEepromPermissionPtr FactoryI2cCtrl::getPermissionCheckController()
