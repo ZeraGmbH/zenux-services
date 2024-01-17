@@ -21,7 +21,11 @@ QTEST_MAIN(test_fpga_settings_regression)
 void test_fpga_settings_regression::com5003d()
 {
     MockPcbDeviceNodeCtrlSingleton::enableMock();
-    cCOM5003dServer server(MockPcbServer::createParams("com5003d"));
+
+    ServerParams params = MockPcbServer::createParams("com5003d");
+    std::shared_ptr<SettingsForDeviceServer> settings = std::make_shared<SettingsForDeviceServer>(params);
+
+    cCOM5003dServer server(settings, std::make_shared<MockFactoryI2cCtrl>(true));
     TimeMachineObject::feedEventLoop();
 
     QCOMPARE(server.getCtrlDeviceNode(), "/dev/zFPGA1reg");
@@ -34,6 +38,7 @@ void test_fpga_settings_regression::mt310s2d()
 
     ServerParams params = MockPcbServer::createParams("mt310s2d");
     std::shared_ptr<SettingsForDeviceServer> settings = std::make_shared<SettingsForDeviceServer>(params);
+
     cMT310S2dServer server(settings, std::make_shared<MockFactoryI2cCtrl>(true));
     TimeMachineObject::feedEventLoop();
 

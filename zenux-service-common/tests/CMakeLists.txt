@@ -5,6 +5,7 @@ SETUP_TESTS(
     test_serverunregisternotifier
     test_hotpluggablecontrollercontainer
     test_mockservice_com5003d
+    test_mockservice_com5003d_full
     test_mockservice_mt310s2d
     test_mockservice_mt310s2d_full
     test_mockservice_sec1000d
