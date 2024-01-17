@@ -1,6 +1,5 @@
 #include "com5003sensechannel.h"
 #include "sensesettings.h"
-#include "micro-controller-io/atmel.h"
 #include "zscpi_response_definitions.h"
 #include <QList>
 #include <QString>

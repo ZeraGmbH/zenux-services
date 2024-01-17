@@ -1,5 +1,4 @@
 #include "systeminfo.h"
-#include "micro-controller-io/atmel.h"
 
 SystemInfo::SystemInfo(FactoryControllerAbstractPtr ctrlFactory) :
     m_ctrlFactory(ctrlFactory)

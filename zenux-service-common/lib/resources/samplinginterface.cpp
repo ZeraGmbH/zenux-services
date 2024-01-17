@@ -1,7 +1,6 @@
 #include "samplinginterface.h"
 #include "scpiconnection.h"
 #include "samplerange.h"
-#include "atmel.h"
 #include "samplingsettings.h"
 #include "notzeronumgen.h"
 #include "zscpi_response_definitions.h"
