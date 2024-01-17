@@ -21,6 +21,7 @@ public:
     I2cCtrlMModePtr getMModeController() override;
     I2cCtrlPllPtr getPllController() override;
     I2cCtrlClampStatusPtr getClampStatusController() override;
+    I2cCtrlBootloaderPtr getBootloaderController() override;
 private:
     std::unique_ptr<AtmelCtrlRelais> getRelaisController();
     std::unique_ptr<AtmelCtrlSystem> getSystemController();

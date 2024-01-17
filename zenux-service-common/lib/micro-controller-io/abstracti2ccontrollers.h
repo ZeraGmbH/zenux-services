@@ -85,7 +85,6 @@ public:
     // This should go soon!!!
     virtual ZeraMControllerIo::atmelRM enableTestMode(qint32 testBits) = 0;
 };
-
 typedef std::unique_ptr<AbstractI2cCtrlAccumulator> I2cCtrlAccumulatorPtr;
 
 class AbstractI2cCtrlClampStatus
@@ -94,7 +93,15 @@ public:
     virtual ~AbstractI2cCtrlClampStatus() = default;
     virtual ZeraMControllerIo::atmelRM readClampStatus(quint16& stat) = 0;
 };
-
 typedef std::unique_ptr<AbstractI2cCtrlClampStatus> I2cCtrlClampStatusPtr;
+
+class AbstractI2cCtrlBootloader
+{
+public:
+    virtual ~AbstractI2cCtrlBootloader() = default;
+    virtual ZeraMControllerIo::atmelRM bootloaderStartProgram() = 0;
+    virtual ZeraMControllerIo::atmelRM bootloaderLoadFlash(cIntelHexFileIO& ihxFIO) = 0;
+};
+typedef std::unique_ptr<AbstractI2cCtrlBootloader> I2cCtrlBootloaderPtr;
 
 #endif // ABSTRACTCONTROLLERS_H

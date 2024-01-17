@@ -108,14 +108,6 @@ ZeraMControllerIo::atmelRM AtmelCtrlRelais::readLCAVersion(QString& answer)
 }
 
 
-ZeraMControllerIo::atmelRM AtmelCtrlRelais::startBootLoader()
-{
-    hw_cmd CMD(hwStartBootloader, 0, nullptr, 0);
-    writeCommand(&CMD);
-    return getLastErrorMask() == 0 ? cmddone : cmdexecfault;
-}
-
-
 ZeraMControllerIo::atmelRM AtmelCtrlRelais::readChannelStatus(quint8 channel, quint8 &stat)
 {
     ZeraMControllerIo::atmelRM ret = cmdexecfault;
