@@ -3,7 +3,7 @@
 
 #include "scpiconnection.h"
 #include "adjustmentstatusinterface.h"
-#include "factorycontrollerabstract.h"
+#include "abstractfactoryi2cctrl.h"
 #include "timertemplateqt.h"
 #include <scpi.h>
 

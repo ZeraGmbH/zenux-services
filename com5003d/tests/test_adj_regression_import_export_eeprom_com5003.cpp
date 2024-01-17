@@ -1,5 +1,5 @@
 #include "test_adj_regression_import_export_eeprom_com5003.h"
-#include "mockfactorycontroller.h"
+#include "mockfactoryi2cctrl.h"
 #include "proxy.h"
 #include "mocki2ceepromiofactory.h"
 #include "mockeeprom24lc.h"
@@ -167,7 +167,7 @@ void test_adj_regression_import_export_eeprom_com5003::loadValidDateTimeRandomTo
 void test_adj_regression_import_export_eeprom_com5003::setupServers()
 {
     m_resmanServer = std::make_unique<ResmanRunFacade>();
-    m_mockServer = std::make_unique<MockForSenseInterfaceCom5003>(std::make_shared<MockFactoryController>(true));
+    m_mockServer = std::make_unique<MockForSenseInterfaceCom5003>(std::make_shared<MockFactoryI2cCtrl>(true));
     TimeMachineObject::feedEventLoop();
 
     m_pcbClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307);

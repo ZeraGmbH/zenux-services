@@ -4,7 +4,7 @@
 #include "sec1000d.h"
 #include "zdspserver.h"
 #include "mockpcbserver.h"
-#include "mockfactorycontroller.h"
+#include "mockfactoryi2cctrl.h"
 #include "mockpcbdevicenodectrlsingleton.h"
 #include "mockpcbdevicenodemessagesingleton.h"
 #include "mocksecdevicenodesingleton.h"
@@ -34,7 +34,7 @@ void test_fpga_settings_regression::mt310s2d()
 
     ServerParams params = MockPcbServer::createParams("mt310s2d");
     std::shared_ptr<SettingsForDeviceServer> settings = std::make_shared<SettingsForDeviceServer>(params);
-    cMT310S2dServer server(settings, std::make_shared<MockFactoryController>(true));
+    cMT310S2dServer server(settings, std::make_shared<MockFactoryI2cCtrl>(true));
     TimeMachineObject::feedEventLoop();
 
     QCOMPARE(server.getCtrlDeviceNode(), "/dev/zFPGA1reg");

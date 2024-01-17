@@ -1,16 +1,16 @@
-#ifndef MOCKATMELPLL_H
-#define MOCKATMELPLL_H
+#ifndef MOCKI2CCTRLPLL_H
+#define MOCKI2CCTRLPLL_H
 
 #include "abstracti2ccontrollers.h"
 
-class MockAtmelPll : public AtmelPll
+class MockI2cCtrlPll : public AbstractI2cCtrlPll
 {
 public:
-    MockAtmelPll(quint8& pllChannel);
+    MockI2cCtrlPll(quint8& pllChannel);
     ZeraMControllerIo::atmelRM setPLLChannel(quint8 chn) override;
     ZeraMControllerIo::atmelRM readPLLChannel(quint8& chn) override;
 private:
     quint8& m_pllChannel;
 };
 
-#endif // MOCKATMELPLL_H
+#endif // MOCKI2CCTRLPLL_H

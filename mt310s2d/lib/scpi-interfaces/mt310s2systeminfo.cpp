@@ -10,7 +10,7 @@ Mt310s2SystemInfo::Mt310s2SystemInfo(FactoryControllerAbstractPtr ctrlFactory) :
 
 void Mt310s2SystemInfo::getSystemInfo()
 {
-    AtmelCommonVersionsPtrU controller = m_ctrlFactory->getCommonVersionController(FactoryControllerAbstract::CTRL_TYPE_SYSTEM);
+    AtmelCommonVersionsPtrU controller = m_ctrlFactory->getCommonVersionController(AbstractFactoryI2cCtrl::CTRL_TYPE_SYSTEM);
     int rm = controller->readCTRLVersion(m_sSysCTRLVersion);
     rm |= controller->readPCBVersion(m_sSysPCBVersion);
     m_bRead = (rm == ZeraMControllerIo::cmddone);

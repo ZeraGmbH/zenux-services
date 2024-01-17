@@ -5,7 +5,7 @@
 #include "mockpcbserver.h"
 #include "com5003senseinterface.h"
 #include "com5003systeminterface.h"
-#include "factorycontrollerabstract.h"
+#include "abstractfactoryi2cctrl.h"
 #include <memory>
 
 class MockForSenseInterfaceCom5003  : public MockPcbServer

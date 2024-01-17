@@ -1,14 +1,14 @@
-#ifndef MOCKATMELMMODES_H
-#define MOCKATMELMMODES_H
+#ifndef MOCKI2CCTRLMMODE_H
+#define MOCKI2CCTRLMMODE_H
 
 #include "abstracti2ccontrollers.h"
 
-class MockAtmelMModes : public AtmelMModes
+class MockI2cCtrlMMode : public AbstractI2cCtrlMMode
 {
 public:
-    MockAtmelMModes();
+    MockI2cCtrlMMode();
     ZeraMControllerIo::atmelRM setMeasMode(quint8 mmode) override;
     ZeraMControllerIo::atmelRM readMeasMode(quint8& mmode) override;
 };
 
-#endif // MOCKATMELMMODES_H
+#endif // MOCKI2CCTRLMMODE_H

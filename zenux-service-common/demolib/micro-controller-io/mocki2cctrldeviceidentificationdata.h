@@ -1,12 +1,12 @@
-#ifndef MOCKATMELDEVICEIDENTIFICATIONDATA_H
-#define MOCKATMELDEVICEIDENTIFICATIONDATA_H
+#ifndef MOCKI2CCTRLDEVICEIDENTIFICATIONDATA_H
+#define MOCKI2CCTRLDEVICEIDENTIFICATIONDATA_H
 
 #include "abstracti2ccontrollers.h"
 
-class MockAtmelDeviceIdentificationData : public AtmelDeviceIdentificationData
+class MockI2cCtrlDeviceIdentificationData : public AbstractI2cCtrlDeviceIdentificationData
 {
 public:
-    MockAtmelDeviceIdentificationData(QString &deviceName, QString &serialNumber, QString &LCAVersion, QString &writablePcbVersion);
+    MockI2cCtrlDeviceIdentificationData(QString &deviceName, QString &serialNumber, QString &LCAVersion, QString &writablePcbVersion);
     ZeraMControllerIo::atmelRM readDeviceName(QString& answer) override;
     ZeraMControllerIo::atmelRM readSerialNumber(QString& answer) override;
     ZeraMControllerIo::atmelRM writeSerialNumber(QString &sNumber) override;
@@ -19,4 +19,4 @@ private:
     QString &m_writablePcbVersion;
 };
 
-#endif // MOCKATMELDEVICEIDENTIFICATIONDATA_H
+#endif // MOCKI2CCTRLDEVICEIDENTIFICATIONDATA_H

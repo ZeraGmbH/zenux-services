@@ -3,7 +3,7 @@
 
 #include "abstracti2ccontrollers.h"
 
-class AtmelBaseImplementation : public ZeraMControllerIo, public AtmelCriticalStatus
+class AtmelBaseImplementation : public ZeraMControllerIo, public AbstractI2cCtrlCriticalStatus
 {
 public:
     AtmelBaseImplementation(QString devnode, quint8 adr, quint8 debuglevel);

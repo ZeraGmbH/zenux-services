@@ -1,18 +1,18 @@
-#include "mockatmelpermission.h"
+#include "mocki2cctrleeprompermission.h"
 #include <timerfactoryqt.h>
 
-MockAtmelPermission::MockAtmelPermission(bool &permission) :
+MockI2cCtrlEepromPermission::MockI2cCtrlEepromPermission(bool &permission) :
     m_permission(permission)
 {
 }
 
-ZeraMControllerIoTemplate::atmelRM MockAtmelPermission::getEEPROMAccessEnable(bool &enable)
+ZeraMControllerIoTemplate::atmelRM MockI2cCtrlEepromPermission::getEEPROMAccessEnable(bool &enable)
 {
     enable = m_permission;
     return ZeraMControllerIo::cmddone;
 }
 
-void MockAtmelPermission::accessEnableAfter(int timeoutMs)
+void MockI2cCtrlEepromPermission::accessEnableAfter(int timeoutMs)
 {
     if(timeoutMs == 0) {
         m_permission = true;
@@ -25,7 +25,7 @@ void MockAtmelPermission::accessEnableAfter(int timeoutMs)
     m_accessTimer->start();
 }
 
-void MockAtmelPermission::accessDisableAfter(int timeoutMs)
+void MockI2cCtrlEepromPermission::accessDisableAfter(int timeoutMs)
 {
     if(timeoutMs == 0) {
         m_permission = false;
