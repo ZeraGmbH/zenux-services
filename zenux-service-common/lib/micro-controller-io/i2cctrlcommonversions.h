@@ -9,7 +9,6 @@ public:
     I2cCtrlCommonVersions(QString deviceNodeName, quint8 i2cAddress, quint8 debugLevel);
     ZeraMControllerIo::atmelRM readPCBVersion(QString& answer) override;
     ZeraMControllerIo::atmelRM readCTRLVersion(QString& answer) override;
-    ZeraMControllerIo::atmelRM readChannelStatus(quint8 channel, quint8& stat);
 private:
     ZeraMControllerIo m_ctrlIo;
 };
