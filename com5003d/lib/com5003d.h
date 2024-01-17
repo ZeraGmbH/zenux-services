@@ -6,7 +6,6 @@
 #include "rmconnection.h"
 #include "debugsettings.h"
 #include "fpgasettings.h"
-#include "i2csettings.h"
 #include "sensesettings.h"
 #include "hkinsettings.h"
 #include "scinsettings.h"
@@ -14,6 +13,7 @@
 #include "foutsettings.h"
 #include "samplingsettings.h"
 #include "atmelwatcherinterface.h"
+#include "settingsfordeviceserver.h"
 #include <QTimer>
 
 class QStateMachine;
@@ -34,9 +34,11 @@ class cCOM5003dServer: public cPCBServer
     Q_OBJECT
 
 public:
-    explicit cCOM5003dServer(ServerParams params = defaultParams);
+    explicit cCOM5003dServer(std::shared_ptr<SettingsForDeviceServer> settings,
+                             FactoryControllerAbstractPtr ctrlFactory);
     ~cCOM5003dServer();
     QString getCtrlDeviceNode();
+    static ServerParams defaultParams;
 
 signals:
     void abortInit();
@@ -58,8 +60,7 @@ private slots:
 private:
     void setupMicroControllerIo();
 
-    static ServerParams defaultParams;
-    ServerParams m_params;
+    std::shared_ptr<SettingsForDeviceServer> m_settings;
     FactoryControllerAbstractPtr m_ctrlFactory;
 
     SystemInfo* m_pSystemInfo = nullptr;
@@ -67,7 +68,6 @@ private:
     cDebugSettings* m_pDebugSettings = nullptr;
     cSenseSettings* m_pSenseSettings = nullptr;
     cStatusInterface* m_pStatusInterface = nullptr;
-    cI2CSettings* m_pI2CSettings = nullptr;
     HkInSettings* m_hkInSettings = nullptr;
     ScInSettings* m_pSCHeadSettings = nullptr;
     FInSettings* m_finSettings = nullptr;

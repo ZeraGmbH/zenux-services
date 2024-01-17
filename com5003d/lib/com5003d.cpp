@@ -12,7 +12,6 @@
 #include <fcntl.h>
 #include <syslog.h>
 
-#include "factoryi2cctrl.h"
 #include "com5003dglobal.h"
 #include "com5003d.h"
 #include "pcbserver.h"
@@ -32,7 +31,6 @@
 #include "finsettings.h"
 #include "fpgasettings.h"
 #include "hkinsettings.h"
-#include "i2csettings.h"
 #include "sensesettings.h"
 #include "samplingsettings.h"
 #include "foutsettings.h"
@@ -45,9 +43,10 @@
 
 ServerParams cCOM5003dServer::defaultParams {ServerName, ServerVersion, "/etc/zera/com5003d/com5003d.xsd", "/etc/zera/com5003d/com5003d.xml"};
 
-cCOM5003dServer::cCOM5003dServer(ServerParams params) :
-    cPCBServer(params, ScpiSingletonFactory::getScpiObj()),
-    m_params(params)
+cCOM5003dServer::cCOM5003dServer(std::shared_ptr<SettingsForDeviceServer> settings, FactoryControllerAbstractPtr ctrlFactory) :
+    cPCBServer(settings->getServerParams(), ScpiSingletonFactory::getScpiObj()),
+    m_settings(settings),
+    m_ctrlFactory(ctrlFactory)
 {
     m_pInitializationMachine = new QStateMachine(this);
 
@@ -91,7 +90,6 @@ cCOM5003dServer::cCOM5003dServer(ServerParams params) :
 cCOM5003dServer::~cCOM5003dServer()
 {
     delete m_pDebugSettings;
-    delete m_pI2CSettings;
     delete m_fpgaSettings;
     delete m_pSenseSettings;
     delete m_foutSettings;
@@ -115,9 +113,7 @@ QString cCOM5003dServer::getCtrlDeviceNode()
 
 void cCOM5003dServer::setupMicroControllerIo()
 {
-    m_ctrlFactory = std::make_shared<FactoryI2cCtrl>(m_pI2CSettings);
     PermissionFunctions::setPermissionCtrlFactory(m_ctrlFactory);
-    Atmel::setInstanceParams(m_pI2CSettings->getDeviceNode(), m_pI2CSettings->getI2CAdress(i2cSettings::relaisCtrlI2cAddress), m_pDebugSettings->getDebugLevel());
     m_atmelWatcher = m_ctrlFactory->createAtmelWatcher(getCtrlDeviceNode());
 }
 
@@ -140,8 +136,6 @@ void cCOM5003dServer::doConfiguration()
         m_pDebugSettings = new cDebugSettings(&m_xmlConfigReader);
         connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_pDebugSettings,&cDebugSettings::configXMLInfo);
         connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, &m_ethSettings, &EthSettings::configXMLInfo);
-        m_pI2CSettings = new cI2CSettings(&m_xmlConfigReader);
-        connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_pI2CSettings,&cI2CSettings::configXMLInfo);
         m_fpgaSettings = new FPGASettings(&m_xmlConfigReader);
         connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_fpgaSettings, &FPGASettings::configXMLInfo);
         m_pSenseSettings = new cSenseSettings(&m_xmlConfigReader, 6);
@@ -250,12 +244,12 @@ void cCOM5003dServer::programAtmelFlash()
             if (IntelHexData.ReadHexFile(atmelFlashfilePath))
             {
                syslog(LOG_INFO,"Writing %s to atmel...\n", atmelFlashfilePath);
-               if (Atmel::getInstance().bootloaderLoadFlash(IntelHexData) == ZeraMControllerIo::cmddone)
+                if (m_ctrlFactory->getBootloaderController()->bootloaderLoadFlash(IntelHexData) == ZeraMControllerIo::cmddone)
                {
                    syslog(LOG_INFO,"Programming atmel passed\n");
 
                    // we must restart atmel now
-                   if (Atmel::getInstance().bootloaderStartProgram() == ZeraMControllerIo::cmddone)
+                   if (m_ctrlFactory->getBootloaderController()->bootloaderStartProgram() == ZeraMControllerIo::cmddone)
                    {
                        syslog(LOG_INFO,"Restart atmel after programming done\n");
                        // once the job is done, we remove the file
@@ -314,7 +308,7 @@ void cCOM5003dServer::doSetupServer()
 
     scpiConnectionList.append(this); // the server itself has some commands
     scpiConnectionList.append(m_pSenseInterface = new Com5003SenseInterface(getSCPIInterface(),
-                                                                            m_pI2CSettings,
+                                                                            m_settings->getI2cSettings(),
                                                                             m_pRMConnection,
                                                                             &m_ethSettings,
                                                                             m_pSenseSettings,
