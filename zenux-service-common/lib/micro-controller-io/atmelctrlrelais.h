@@ -6,8 +6,7 @@
 #include <QString>
 
 class AtmelCtrlRelais : public ZeraMControllerIo,
-                        public AbstractI2cCtrlCommonVersions,
-                        public AbstractI2cCtrlPll
+                        public AbstractI2cCtrlCommonVersions
 {
 public:
     AtmelCtrlRelais(QString devnode, quint8 adr, quint8 debuglevel);
@@ -15,8 +14,6 @@ public:
     atmelRM readCTRLVersion(QString& answer) override;
     atmelRM readChannelStatus(quint8 channel, quint8& stat);
 
-    atmelRM setPLLChannel(quint8 chn) override;
-    atmelRM readPLLChannel(quint8& chn) override;
 private:
     static QString m_devnode;
     static quint8 m_adr;

@@ -6,6 +6,7 @@
 #include "i2cctrldeviceidentificationdata.h"
 #include "i2cctrleeprompermission.h"
 #include "i2cctrlmmode.h"
+#include "i2cctrlpll.h"
 #include "i2cctrlranges.h"
 
 constexpr int defaultDebugLevel = 1;
@@ -78,7 +79,7 @@ I2cCtrlMModePtr FactoryI2cCtrl::getMModeController()
 
 I2cCtrlPllPtr FactoryI2cCtrl::getPllController()
 {
-    return getRelaisController();
+    return std::make_unique<I2cCtrlPll>(m_i2cSettings->getDeviceNode(), m_i2cSettings->getI2CAdress(i2cSettings::relaisCtrlI2cAddress), defaultDebugLevel);
 }
 
 I2cCtrlClampStatusPtr FactoryI2cCtrl::getClampStatusController()
