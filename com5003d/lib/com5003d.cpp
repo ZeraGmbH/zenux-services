@@ -17,7 +17,6 @@
 #include "pcbserver.h"
 #include "systeminfo.h"
 #include "rmconnection.h"
-#include "atmel.h"
 #include "fingroupresourceandinterface.h"
 #include "hkingroupresourceandinterface.h"
 #include "samplinginterface.h"

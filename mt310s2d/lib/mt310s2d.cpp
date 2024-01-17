@@ -1,7 +1,6 @@
 #include "mt310s2d.h"
 #include "mt310s2dglobal.h"
 #include "rmconnection.h"
-#include "atmel.h"
 #include "clampinterface.h"
 #include "fingroupresourceandinterface.h"
 #include "hkingroupresourceandinterface.h"
@@ -127,8 +126,6 @@ QString cMT310S2dServer::getMsgDeviceNode()
 void cMT310S2dServer::setupMicroControllerIo()
 {
     PermissionFunctions::setPermissionCtrlFactory(m_ctrlFactory);
-    cI2CSettings *i2cSettings = m_settings->getI2cSettings();
-    Atmel::setInstanceParams(i2cSettings->getDeviceNode(), i2cSettings->getI2CAdress(i2cSettings::relaisCtrlI2cAddress), m_pDebugSettings->getDebugLevel());
     m_atmelWatcher = m_ctrlFactory->createAtmelWatcher(getCtrlDeviceNode());
 }
 

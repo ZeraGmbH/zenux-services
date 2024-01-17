@@ -2,7 +2,6 @@
 #include "clampfactorytest.h"
 #include "mockfactoryi2cctrl.h"
 #include "proxy.h"
-#include "atmel.h"
 #include "scpisingletransactionblocked.h"
 #include "xmlhelperfortest.h"
 #include <timemachineobject.h>
