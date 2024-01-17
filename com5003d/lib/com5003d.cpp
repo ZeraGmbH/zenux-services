@@ -12,7 +12,7 @@
 #include <fcntl.h>
 #include <syslog.h>
 
-#include "factorycontrolleratmel.h"
+#include "factoryi2cctrl.h"
 #include "com5003dglobal.h"
 #include "com5003d.h"
 #include "pcbserver.h"
@@ -115,7 +115,7 @@ QString cCOM5003dServer::getCtrlDeviceNode()
 
 void cCOM5003dServer::setupMicroControllerIo()
 {
-    m_ctrlFactory = std::make_shared<FactoryControllerAtmel>(m_pI2CSettings);
+    m_ctrlFactory = std::make_shared<FactoryI2cCtrl>(m_pI2CSettings);
     PermissionFunctions::setPermissionCtrlFactory(m_ctrlFactory);
     Atmel::setInstanceParams(m_pI2CSettings->getDeviceNode(), m_pI2CSettings->getI2CAdress(i2cSettings::relaisCtrlI2cAddress), m_pDebugSettings->getDebugLevel());
     m_atmelWatcher = m_ctrlFactory->createAtmelWatcher(getCtrlDeviceNode());

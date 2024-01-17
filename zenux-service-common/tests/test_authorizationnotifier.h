@@ -27,7 +27,7 @@ private slots:
 private:
     QString getAuthoStatus();
     std::unique_ptr<PCBTestServer> m_pcbServerTest;
-    AtmelPermissionTemplatePtrU m_atmelPermissionPtrU;
+    I2cCtrlEepromPermissionPtr m_PermissionCtrl;
     AdjustmentStatusInterface *m_adjustmentStatusNull;
 };
 

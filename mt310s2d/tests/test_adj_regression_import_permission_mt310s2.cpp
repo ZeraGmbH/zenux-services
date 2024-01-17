@@ -1,5 +1,5 @@
 #include "test_adj_regression_import_permission_mt310s2.h"
-#include "factorycontrolleratmel.h"
+#include "factoryi2cctrl.h"
 #include "mockfactoryi2cctrl.h"
 #include "proxy.h"
 #include "scpisingletransactionblocked.h"
@@ -25,7 +25,7 @@ void test_adj_regression_import_permission_mt310s2::scpiImportPermissionQueryFai
 {
     Zera::XMLConfig::cReader dummyReader;
     cI2CSettings i2cSettings(&dummyReader);
-    setupServers(std::make_shared<FactoryControllerAtmel>(&i2cSettings));
+    setupServers(std::make_shared<FactoryI2cCtrl>(&i2cSettings));
 
     QString ret = ScpiSingleTransactionBlocked::cmdXmlParam("SYSTEM:ADJUSTMENT:XML", "foo");
     QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::errexec]);
