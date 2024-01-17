@@ -3,6 +3,7 @@
 #include "i2cctrlbootloader.h"
 #include "i2cctrlclampstatus.h"
 #include "i2cctrlcriticalstatus.h"
+#include "i2cctrldeviceidentificationdata.h"
 
 constexpr int defaultDebugLevel = 1;
 
@@ -54,7 +55,7 @@ I2cCtrlCommonVersionsPtrUnique FactoryI2cCtrl::getCommonVersionController(Contro
 
 I2cCtrlDeviceIdentificationDataPtr FactoryI2cCtrl::getDeviceIdentificationController()
 {
-    return getRelaisController();
+    return std::make_unique<I2cCtrlDeviceIdentificationData>(m_i2cSettings->getDeviceNode(), m_i2cSettings->getI2CAdress(i2cSettings::relaisCtrlI2cAddress), defaultDebugLevel);
 }
 
 I2cCtrlAccumulatorPtr FactoryI2cCtrl::getAccumulatorController()
