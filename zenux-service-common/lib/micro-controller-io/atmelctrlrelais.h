@@ -7,7 +7,6 @@
 
 class AtmelCtrlRelais : public ZeraMControllerIo,
                         public AbstractI2cCtrlCommonVersions,
-                        public AbstractI2cCtrlDeviceIdentificationData,
                         public AbstractI2cCtrlEepromPermission,
                         public AbstractI2cCtrlRanges,
                         public AbstractI2cCtrlMMode,
@@ -15,13 +14,8 @@ class AtmelCtrlRelais : public ZeraMControllerIo,
 {
 public:
     AtmelCtrlRelais(QString devnode, quint8 adr, quint8 debuglevel);
-    atmelRM readSerialNumber(QString& answer) override;
-    atmelRM writeSerialNumber(QString &sNumber) override;
-    atmelRM readDeviceName(QString& answer) override;
     atmelRM readPCBVersion(QString& answer) override;
-    atmelRM writePCBVersion(QString& sVersion) override;
     atmelRM readCTRLVersion(QString& answer) override;
-    atmelRM readLCAVersion(QString& answer) override;
     atmelRM readChannelStatus(quint8 channel, quint8& stat);
 
     atmelRM readRange(quint8 channel, quint8& range) override;
