@@ -2,6 +2,7 @@
 #include "emobctrlfactoryfortest.h"
 #include "atmelctrlemobfortest.h"
 #include "hotpluggablecontrollercontainer.h"
+#include "mockfactoryi2cctrl.h"
 #include <timerfactoryqtfortest.h>
 #include <timemachinefortest.h>
 #include <zeramcontrollerbootloaderstopperfactoryfortest.h>
@@ -14,6 +15,7 @@ test_hotpluggablecontrollercontainer::test_hotpluggablecontrollercontainer() :
     m_i2cSettings(&m_configReader),
     m_senseSettings(&m_configReader, 8 /*mt310s2*/)
 {
+    m_ctrlFactory = std::make_shared<MockFactoryI2cCtrl>(false);
     connect(&m_configReader, &Zera::XMLConfig::cReader::valueChanged,
             &m_i2cSettings, &I2cSettings::configXMLInfo);
     connect(&m_configReader, &Zera::XMLConfig::cReader::valueChanged,
@@ -30,7 +32,7 @@ void test_hotpluggablecontrollercontainer::initTestCase()
 void test_hotpluggablecontrollercontainer::initNoController()
 {
     m_i2cSettings.setI2cAddressesEmob(QString(), 0, 0);
-    HotPluggableControllerContainer container(&m_i2cSettings, 0);
+    HotPluggableControllerContainer container(&m_i2cSettings, m_ctrlFactory, 0);
     QVector<I2cCtrlCommonVersionsPtrShared> controllers = container.getCurrentControllers();
     QCOMPARE(controllers.size(), 0);
 }
@@ -38,7 +40,7 @@ void test_hotpluggablecontrollercontainer::initNoController()
 void test_hotpluggablecontrollercontainer::mt310s2AllVoltageNotPluggable()
 {
     m_i2cSettings.setI2cAddressesEmob(QString(), 0, 0);
-    HotPluggableControllerContainer container(&m_i2cSettings, 0);
+    HotPluggableControllerContainer container(&m_i2cSettings, m_ctrlFactory, 0);
     container.startActualizeEmobControllers((1<<0), &m_senseSettings, 1000);
     container.startActualizeEmobControllers((1<<1), &m_senseSettings, 1000);
     container.startActualizeEmobControllers((1<<2), &m_senseSettings, 1000);
@@ -51,7 +53,7 @@ void test_hotpluggablecontrollercontainer::mt310s2AddI1()
 {
     EmobCtrlFactoryForTest::prepareNextTestControllers(QVector<bool>() << true);
     m_i2cSettings.setI2cAddressesEmob(QString(), 0, 0);
-    HotPluggableControllerContainer container(&m_i2cSettings, 0);
+    HotPluggableControllerContainer container(&m_i2cSettings, m_ctrlFactory, 0);
     container.startActualizeEmobControllers((1<<4), &m_senseSettings, 1000);
     QVector<I2cCtrlCommonVersionsPtrShared> controllers = container.getCurrentControllers();
     QCOMPARE(controllers.size(), 1);
@@ -62,7 +64,7 @@ void test_hotpluggablecontrollercontainer::mt310s2AddI1I2()
 {
     EmobCtrlFactoryForTest::prepareNextTestControllers(QVector<bool>() << true << true);
     m_i2cSettings.setI2cAddressesEmob(QString(), 0, 0);
-    HotPluggableControllerContainer container(&m_i2cSettings, 0);
+    HotPluggableControllerContainer container(&m_i2cSettings, m_ctrlFactory, 0);
     container.startActualizeEmobControllers((1<<4) | (1<<5), &m_senseSettings, 1000);
     QVector<I2cCtrlCommonVersionsPtrShared> controllers = container.getCurrentControllers();
     QCOMPARE(controllers.size(), 2);
@@ -72,7 +74,7 @@ void test_hotpluggablecontrollercontainer::mt310s2AddI1Twice()
 {
     EmobCtrlFactoryForTest::prepareNextTestControllers(QVector<bool>() << true);
     m_i2cSettings.setI2cAddressesEmob(QString(), 0, 0);
-    HotPluggableControllerContainer container(&m_i2cSettings, 0);
+    HotPluggableControllerContainer container(&m_i2cSettings, m_ctrlFactory, 0);
     container.startActualizeEmobControllers((1<<4), &m_senseSettings, 1000);
     container.startActualizeEmobControllers((1<<4), &m_senseSettings, 1000);
     QVector<I2cCtrlCommonVersionsPtrShared> controllers = container.getCurrentControllers();
@@ -84,7 +86,7 @@ void test_hotpluggablecontrollercontainer::mt310s2AddI1I2AddI1()
 {
     EmobCtrlFactoryForTest::prepareNextTestControllers(QVector<bool>() << true);
     m_i2cSettings.setI2cAddressesEmob(QString(), 0, 0);
-    HotPluggableControllerContainer container(&m_i2cSettings, 0);
+    HotPluggableControllerContainer container(&m_i2cSettings, m_ctrlFactory, 0);
     container.startActualizeEmobControllers((1<<4) | (1<<5), &m_senseSettings, 1000);
     container.startActualizeEmobControllers((1<<4), &m_senseSettings, 1000);
     QVector<I2cCtrlCommonVersionsPtrShared> controllers = container.getCurrentControllers();
@@ -96,7 +98,7 @@ void test_hotpluggablecontrollercontainer::mt310s2AddI1CheckI2cSettings()
 {
     EmobCtrlFactoryForTest::prepareNextTestControllers(QVector<bool>() << true);
     m_i2cSettings.setI2cAddressesEmob("foo", 1, 2);
-    HotPluggableControllerContainer container(&m_i2cSettings, 3);
+    HotPluggableControllerContainer container(&m_i2cSettings, m_ctrlFactory, 3);
     container.startActualizeEmobControllers((1<<4), &m_senseSettings, 1000);
     QVector<I2cCtrlCommonVersionsPtrShared> controllers = container.getCurrentControllers();
     QCOMPARE(controllers.size(), 1);
@@ -111,7 +113,7 @@ void test_hotpluggablecontrollercontainer::mt310s2AddI1I2I3IAuxCheckMuxSettings(
 {
     EmobCtrlFactoryForTest::prepareNextTestControllers(QVector<bool>() << true << true << true << true);
     m_i2cSettings.setI2cAddressesEmob("foo", 1, 2);
-    HotPluggableControllerContainer container(&m_i2cSettings, 3);
+    HotPluggableControllerContainer container(&m_i2cSettings, m_ctrlFactory, 3);
     container.startActualizeEmobControllers((1<<4) | (1<<5) | (1<<6) | (1<<7), &m_senseSettings, 1000);
     QVector<I2cCtrlCommonVersionsPtrShared> controllers = container.getCurrentControllers();
     QCOMPARE(controllers.size(), 4);
@@ -131,7 +133,7 @@ void test_hotpluggablecontrollercontainer::mt310s2AddI1CheckSignals()
     ZeraMControllerBootloaderStopperFactoryForTest::setBootoaderAssumeAppStartedImmediates(QVector<bool>() << false);
 
     m_i2cSettings.setI2cAddressesEmob(QString(), 0, 0);
-    HotPluggableControllerContainer container(&m_i2cSettings, 0);
+    HotPluggableControllerContainer container(&m_i2cSettings, m_ctrlFactory, 0);
     QSignalSpy spy(&container, &HotPluggableControllerContainer::sigControllersChanged);
 
     container.startActualizeEmobControllers((1<<4), &m_senseSettings, 1000);
@@ -148,7 +150,7 @@ void test_hotpluggablecontrollercontainer::mt310s2AddI1I2CheckSignalsImmediate()
     ZeraMControllerBootloaderStopperFactoryForTest::setBootoaderAssumeAppStartedImmediates(QVector<bool>() << true << true);
 
     m_i2cSettings.setI2cAddressesEmob(QString(), 0, 0);
-    HotPluggableControllerContainer container(&m_i2cSettings, 0);
+    HotPluggableControllerContainer container(&m_i2cSettings, m_ctrlFactory, 0);
     QSignalSpy spy(&container, &HotPluggableControllerContainer::sigControllersChanged);
 
     container.startActualizeEmobControllers((1<<4) | (1<<5), &m_senseSettings, 1000);
@@ -164,7 +166,7 @@ void test_hotpluggablecontrollercontainer::mt310s2AddI1I2CheckSignalsDelayed()
     ZeraMControllerBootloaderStopperFactoryForTest::setBootoaderAssumeAppStartedImmediates(QVector<bool>() << false << false);
 
     m_i2cSettings.setI2cAddressesEmob(QString(), 0, 0);
-    HotPluggableControllerContainer container(&m_i2cSettings, 0);
+    HotPluggableControllerContainer container(&m_i2cSettings, m_ctrlFactory, 0);
     QSignalSpy spy(&container, &HotPluggableControllerContainer::sigControllersChanged);
 
     container.startActualizeEmobControllers((1<<4) | (1<<5), &m_senseSettings, 1000);
@@ -181,7 +183,7 @@ void test_hotpluggablecontrollercontainer::mt310s2AddI1AndRemoveBeforeFinish()
     ZeraMControllerBootloaderStopperFactoryForTest::setBootoaderAssumeAppStartedImmediates(QVector<bool>() << false);
 
     m_i2cSettings.setI2cAddressesEmob(QString(), 0, 0);
-    HotPluggableControllerContainer container(&m_i2cSettings, 0);
+    HotPluggableControllerContainer container(&m_i2cSettings, m_ctrlFactory, 0);
     QSignalSpy spy(&container, &HotPluggableControllerContainer::sigControllersChanged);
 
     container.startActualizeEmobControllers((1<<4), &m_senseSettings, 1000);
@@ -200,7 +202,7 @@ void test_hotpluggablecontrollercontainer::mt310s2AddI1AndAddI2BeforeFinish()
     ZeraMControllerBootloaderStopperFactoryForTest::setBootoaderAssumeAppStartedImmediates(QVector<bool>() << false << false);
 
     m_i2cSettings.setI2cAddressesEmob(QString(), 0, 0);
-    HotPluggableControllerContainer container(&m_i2cSettings, 0);
+    HotPluggableControllerContainer container(&m_i2cSettings, m_ctrlFactory, 0);
     QSignalSpy spy(&container, &HotPluggableControllerContainer::sigControllersChanged);
 
     container.startActualizeEmobControllers((1<<4), &m_senseSettings, 1000);
@@ -226,7 +228,7 @@ void test_hotpluggablecontrollercontainer::mt310s2AddI1AndAddI2BeforeFinish()
 void test_hotpluggablecontrollercontainer::mt310s2AddClampNoController()
 {
     m_i2cSettings.setI2cAddressesEmob(QString(), 0, 0);
-    HotPluggableControllerContainer container(&m_i2cSettings, 0);
+    HotPluggableControllerContainer container(&m_i2cSettings, m_ctrlFactory, 0);
     QSignalSpy spy(&container, &HotPluggableControllerContainer::sigControllersChanged);
 
     // add clamp only

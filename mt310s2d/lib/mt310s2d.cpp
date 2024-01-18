@@ -217,6 +217,7 @@ void cMT310S2dServer::doSetupServer()
             scpiConnectionList.append(m_pStatusInterface = new cStatusInterface(getSCPIInterface(), m_pSenseInterface, m_ctrlFactory));
             HotPluggableControllerContainerPtr emobControllerContainer =
                     std::make_unique<HotPluggableControllerContainer>(i2cSettings,
+                                                                      m_ctrlFactory,
                                                                       m_pDebugSettings->getDebugLevel());
             scpiConnectionList.append(m_pSystemInterface = new Mt310s2SystemInterface(this,
                                                                                       m_pSystemInfo,
