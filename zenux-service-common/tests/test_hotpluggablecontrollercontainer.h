@@ -3,6 +3,7 @@
 
 #include "i2csettingsfortest.h"
 #include "sensesettings.h"
+#include "abstractfactoryi2cctrl.h"
 
 class test_hotpluggablecontrollercontainer : public QObject
 {
@@ -31,6 +32,7 @@ private:
     Zera::XMLConfig::cReader m_configReader;
     I2cSettingsForTest m_i2cSettings;
     cSenseSettings m_senseSettings;
+    FactoryControllerAbstractPtr m_ctrlFactory;
 };
 
 #endif // TEST_HOTPLUGGABLECONTROLLERCONTAINER_H

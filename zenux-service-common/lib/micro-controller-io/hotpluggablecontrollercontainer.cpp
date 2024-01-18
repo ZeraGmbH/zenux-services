@@ -3,8 +3,9 @@
 #include <zeramcontrollerbootloaderstopperfactory.h>
 #include <i2cmuxerscopedonoff.h>
 
-HotPluggableControllerContainer::HotPluggableControllerContainer(I2cSettings *i2cSettings, quint8 debuglevel) :
+HotPluggableControllerContainer::HotPluggableControllerContainer(I2cSettings *i2cSettings, FactoryControllerAbstractPtr ctrlFactory, quint8 debuglevel) :
     m_i2cSettings(i2cSettings),
+    m_ctrlFactory(ctrlFactory),
     m_debuglevel(debuglevel)
 {
 }
