@@ -63,9 +63,9 @@ bool HotPluggableControllerContainer::isChannelKnown(int ctrlChannel)
             m_ChannelsWithoutController.contains(ctrlChannel);
 }
 
-QVector<I2cCtrlCommonVersionsPtrShared> HotPluggableControllerContainer::getCurrentControllers()
+QVector<I2cCtrlCommonInfoPtrShared> HotPluggableControllerContainer::getCurrentControllers()
 {
-    QVector<I2cCtrlCommonVersionsPtrShared> controllers;
+    QVector<I2cCtrlCommonInfoPtrShared> controllers;
     for(const auto &ctrl : qAsConst(m_Controllers))
         controllers.append(ctrl);
     return controllers;
@@ -75,7 +75,7 @@ void HotPluggableControllerContainer::onBootloaderStopAssumed(int ctrlChannel)
 {
     qInfo("Bootloader stopped or not available. Try controller version read on channel %i...", ctrlChannel);
     if(m_pendingBootloaderStoppers.contains(ctrlChannel)) {
-        I2cCtrlCommonVersionsPtrShared ctrl = m_ctrlFactory->getCommonVersionController(
+        I2cCtrlCommonInfoPtrShared ctrl = m_ctrlFactory->getCommonVersionController(
             AbstractFactoryI2cCtrl::CTRL_TYPE_EMOB,
             m_pendingBootloaderStoppers[ctrlChannel].m_nMuxChannelNo);
         m_pendingBootloaderStoppers.remove(ctrlChannel);

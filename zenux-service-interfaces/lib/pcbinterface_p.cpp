@@ -715,7 +715,7 @@ quint32 cPCBInterfacePrivate::readServerVersion()
 }
 
 
-quint32 cPCBInterfacePrivate::readPCBVersion()
+quint32 cPCBInterfacePrivate::readPCBInfo()
 {
     QString cmd;
     quint32 msgnr;

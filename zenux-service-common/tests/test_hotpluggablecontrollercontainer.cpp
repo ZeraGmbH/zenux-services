@@ -1,5 +1,5 @@
 #include "test_hotpluggablecontrollercontainer.h"
-#include "testhotplugi2cctrlcommonversions.h"
+#include "testhotplugi2cctrlcommoninfo.h"
 #include "testhotplugctrlfactoryi2cctrl.h"
 #include "hotpluggablecontrollercontainer.h"
 #include <timerfactoryqtfortest.h>
@@ -36,7 +36,7 @@ void test_hotpluggablecontrollercontainer::initNoController()
 {
     m_i2cSettings.setI2cAddressesEmob(QString(), 0, 0);
     HotPluggableControllerContainer container(&m_i2cSettings, m_ctrlFactory);
-    QVector<I2cCtrlCommonVersionsPtrShared> controllers = container.getCurrentControllers();
+    QVector<I2cCtrlCommonInfoPtrShared> controllers = container.getCurrentControllers();
     QCOMPARE(controllers.size(), 0);
 }
 
@@ -48,7 +48,7 @@ void test_hotpluggablecontrollercontainer::mt310s2AllVoltageNotPluggable()
     container.startActualizeEmobControllers((1<<1), &m_senseSettings, 1000);
     container.startActualizeEmobControllers((1<<2), &m_senseSettings, 1000);
     container.startActualizeEmobControllers((1<<3), &m_senseSettings, 1000);
-    QVector<I2cCtrlCommonVersionsPtrShared> controllers = container.getCurrentControllers();
+    QVector<I2cCtrlCommonInfoPtrShared> controllers = container.getCurrentControllers();
     QCOMPARE(controllers.size(), 0);
 }
 
@@ -57,7 +57,7 @@ void test_hotpluggablecontrollercontainer::mt310s2AddI1()
     m_i2cSettings.setI2cAddressesEmob(QString(), 0, 0);
     HotPluggableControllerContainer container(&m_i2cSettings, m_ctrlFactory);
     container.startActualizeEmobControllers((1<<4), &m_senseSettings, 1000);
-    QVector<I2cCtrlCommonVersionsPtrShared> controllers = container.getCurrentControllers();
+    QVector<I2cCtrlCommonInfoPtrShared> controllers = container.getCurrentControllers();
     QCOMPARE(controllers.size(), 1);
 
 }
@@ -67,7 +67,7 @@ void test_hotpluggablecontrollercontainer::mt310s2AddI1I2()
     m_i2cSettings.setI2cAddressesEmob(QString(), 0, 0);
     HotPluggableControllerContainer container(&m_i2cSettings, m_ctrlFactory);
     container.startActualizeEmobControllers((1<<4) | (1<<5), &m_senseSettings, 1000);
-    QVector<I2cCtrlCommonVersionsPtrShared> controllers = container.getCurrentControllers();
+    QVector<I2cCtrlCommonInfoPtrShared> controllers = container.getCurrentControllers();
     QCOMPARE(controllers.size(), 2);
 }
 
@@ -77,7 +77,7 @@ void test_hotpluggablecontrollercontainer::mt310s2AddI1Twice()
     HotPluggableControllerContainer container(&m_i2cSettings, m_ctrlFactory);
     container.startActualizeEmobControllers((1<<4), &m_senseSettings, 1000);
     container.startActualizeEmobControllers((1<<4), &m_senseSettings, 1000);
-    QVector<I2cCtrlCommonVersionsPtrShared> controllers = container.getCurrentControllers();
+    QVector<I2cCtrlCommonInfoPtrShared> controllers = container.getCurrentControllers();
     QCOMPARE(controllers.size(), 1);
     TestHotPlugCtrlFactoryI2cCtrl* factory = static_cast<TestHotPlugCtrlFactoryI2cCtrl*>(m_ctrlFactory.get());
     QCOMPARE(factory->getCtrlInstanceCount(), 1);
@@ -89,7 +89,7 @@ void test_hotpluggablecontrollercontainer::mt310s2AddI1I2AddI1()
     HotPluggableControllerContainer container(&m_i2cSettings, m_ctrlFactory);
     container.startActualizeEmobControllers((1<<4) | (1<<5), &m_senseSettings, 1000);
     container.startActualizeEmobControllers((1<<4), &m_senseSettings, 1000);
-    QVector<I2cCtrlCommonVersionsPtrShared> controllers = container.getCurrentControllers();
+    QVector<I2cCtrlCommonInfoPtrShared> controllers = container.getCurrentControllers();
     QCOMPARE(controllers.size(), 1);
     TestHotPlugCtrlFactoryI2cCtrl* factory = static_cast<TestHotPlugCtrlFactoryI2cCtrl*>(m_ctrlFactory.get());
     QCOMPARE(factory->getCtrlInstanceCount(), 1);
@@ -100,9 +100,9 @@ void test_hotpluggablecontrollercontainer::mt310s2AddI1CheckI2cSettings()
     m_i2cSettings.setI2cAddressesEmob("foo", 1, 2);
     HotPluggableControllerContainer container(&m_i2cSettings, m_ctrlFactory);
     container.startActualizeEmobControllers((1<<4), &m_senseSettings, 1000);
-    QVector<I2cCtrlCommonVersionsPtrShared> controllers = container.getCurrentControllers();
+    QVector<I2cCtrlCommonInfoPtrShared> controllers = container.getCurrentControllers();
     QCOMPARE(controllers.size(), 1);
-    TestHotplugI2cCtrlCommonVersions *testController = static_cast<TestHotplugI2cCtrlCommonVersions*>(controllers[0].get());
+    TestHotplugI2cCtrlCommonInfo *testController = static_cast<TestHotplugI2cCtrlCommonInfo*>(controllers[0].get());
     QCOMPARE(testController->getDevnode(), "foo");
     QCOMPARE(testController->getAdrCtrl(), 1);
     QCOMPARE(testController->getAdrMux(), 2);
@@ -113,15 +113,15 @@ void test_hotpluggablecontrollercontainer::mt310s2AddI1I2I3IAuxCheckMuxSettings(
     m_i2cSettings.setI2cAddressesEmob("foo", 1, 2);
     HotPluggableControllerContainer container(&m_i2cSettings, m_ctrlFactory);
     container.startActualizeEmobControllers((1<<4) | (1<<5) | (1<<6) | (1<<7), &m_senseSettings, 1000);
-    QVector<I2cCtrlCommonVersionsPtrShared> controllers = container.getCurrentControllers();
+    QVector<I2cCtrlCommonInfoPtrShared> controllers = container.getCurrentControllers();
     QCOMPARE(controllers.size(), 4);
-    TestHotplugI2cCtrlCommonVersions* ctrlI1 = static_cast<TestHotplugI2cCtrlCommonVersions*>(controllers[0].get());
+    TestHotplugI2cCtrlCommonInfo* ctrlI1 = static_cast<TestHotplugI2cCtrlCommonInfo*>(controllers[0].get());
     QCOMPARE(ctrlI1->getMuxChannel(), 1);
-    TestHotplugI2cCtrlCommonVersions* ctrlI2 = static_cast<TestHotplugI2cCtrlCommonVersions*>(controllers[1].get());
+    TestHotplugI2cCtrlCommonInfo* ctrlI2 = static_cast<TestHotplugI2cCtrlCommonInfo*>(controllers[1].get());
     QCOMPARE(ctrlI2->getMuxChannel(), 2);
-    TestHotplugI2cCtrlCommonVersions* ctrlI3 = static_cast<TestHotplugI2cCtrlCommonVersions*>(controllers[2].get());
+    TestHotplugI2cCtrlCommonInfo* ctrlI3 = static_cast<TestHotplugI2cCtrlCommonInfo*>(controllers[2].get());
     QCOMPARE(ctrlI3->getMuxChannel(), 3);
-    TestHotplugI2cCtrlCommonVersions* ctrlIAux = static_cast<TestHotplugI2cCtrlCommonVersions*>(controllers[3].get());
+    TestHotplugI2cCtrlCommonInfo* ctrlIAux = static_cast<TestHotplugI2cCtrlCommonInfo*>(controllers[3].get());
     QCOMPARE(ctrlIAux->getMuxChannel(), 4);
 }
 

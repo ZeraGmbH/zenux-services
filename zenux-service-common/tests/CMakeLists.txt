@@ -14,6 +14,6 @@ SETUP_TESTS(
 
 target_sources(test_hotpluggablecontrollercontainer
   PRIVATE
-    testhotplugi2cctrlcommonversions.cpp testhotplugi2cctrlcommonversions.h
+  testhotplugi2cctrlcommoninfo.cpp testhotplugi2cctrlcommoninfo.h
     testhotplugctrlfactoryi2cctrl.cpp testhotplugctrlfactoryi2cctrl.h
 )

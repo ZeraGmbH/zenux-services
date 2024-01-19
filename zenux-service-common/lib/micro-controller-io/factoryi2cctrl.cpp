@@ -3,8 +3,8 @@
 #include "i2cctrlaccumulator.h"
 #include "i2cctrlbootloader.h"
 #include "i2cctrlclampstatus.h"
-#include "i2cctrlcommonversions.h"
-#include "i2cctrlcommonversionsemob.h"
+#include "i2cctrlcommoninfo.h"
+#include "i2cctrlcommoninfoemob.h"
 #include "i2cctrlcriticalstatus.h"
 #include "i2cctrldeviceidentificationdata.h"
 #include "i2cctrleeprompermission.h"
@@ -34,23 +34,23 @@ I2cCtrlEepromPermissionPtr FactoryI2cCtrl::getPermissionCheckController()
     return std::make_unique<I2cCtrlEepromPermission>(m_deviceNode, getRelaisCtrlI2cAddress(), m_debugLevel);
 }
 
-I2cCtrlCommonVersionsPtrUnique FactoryI2cCtrl::getCommonVersionController(ControllerTypes ctrlType, quint8 muxChannel)
+I2cCtrlCommonInfoPtrUnique FactoryI2cCtrl::getCommonVersionController(ControllerTypes ctrlType, quint8 muxChannel)
 {
     switch(ctrlType) {
     case CTRL_TYPE_RELAIS:
-        return std::make_unique<I2cCtrlCommonVersions>(m_deviceNode, getRelaisCtrlI2cAddress(), m_debugLevel);
+        return std::make_unique<I2cCtrlCommonInfo>(m_deviceNode, getRelaisCtrlI2cAddress(), m_debugLevel);
 
     case CTRL_TYPE_SYSTEM:
-        return std::make_unique<I2cCtrlCommonVersions>(m_deviceNode, getSystemCtrlI2cAddress(), m_debugLevel);
+        return std::make_unique<I2cCtrlCommonInfo>(m_deviceNode, getSystemCtrlI2cAddress(), m_debugLevel);
         break;
 
     case CTRL_TYPE_EMOB:
-        return std::make_unique<I2cCtrlCommonVersionsEmob>(m_deviceNode, getEmobCtrlI2cAddress(),
+        return std::make_unique<I2cCtrlCommonInfoEmob>(m_deviceNode, getEmobCtrlI2cAddress(),
                                                            getEmobMuxI2cAddress(), muxChannel,
                                                            m_debugLevel);
         break;
     default:
-        qFatal("Controller type %i does not support AbstractI2cCtrlCommonVersions", ctrlType);
+        qFatal("Controller type %i does not support AbstractI2cCtrlCommonInfo", ctrlType);
         return nullptr;
     }
 }

@@ -298,10 +298,10 @@ quint32 cPCBInterface::readServerVersion()
 }
 
 
-quint32 cPCBInterface::readPCBVersion()
+quint32 cPCBInterface::readPCBInfo()
 {
     Q_D(cPCBInterface);
-    return d->readPCBVersion();
+    return d->readPCBInfo();
 }
 
 

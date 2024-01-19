@@ -163,7 +163,7 @@ public:
 
     // all commands to system interface
     quint32 readServerVersion();
-    quint32 readPCBVersion();
+    quint32 readPCBInfo();
     quint32 readFPGAVersion();
     quint32 readCTRLVersion();
     quint32 readSerialNr();
