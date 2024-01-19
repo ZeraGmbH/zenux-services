@@ -10,8 +10,6 @@
 #include <xiqnetserver.h>
 #include <unistd.h>
 #include <fcntl.h>
-#include <syslog.h>
-
 #include "com5003dglobal.h"
 #include "com5003d.h"
 #include "pcbserver.h"
@@ -182,52 +180,52 @@ void cCOM5003dServer::programAtmelFlash()
         m_nerror = atmelProgError; // preset error
 
         devNode = getCtrlDeviceNode();
-        syslog(LOG_INFO,"Starting programming atmel flash\n");
+        qInfo("Starting programming atmel flash");
 
         if ( (fd = open(devNode.toLatin1().data(),O_RDWR)) < 0 ) {
-            syslog(LOG_ERR,"error opening fpga device: %s\n",devNode.toLatin1().data());
+            qCritical("Error opening FPGA device: %s",devNode.toLatin1().data());
             emit abortInit();
         }
         else {
             quint32 pcbTestReg;
             if ( lseek(fd,0xffc,0) < 0 ) {
-                syslog(LOG_ERR,"error positioning fpga device: %s\n", devNode.toLatin1().data());
-                syslog(LOG_ERR,"Programming atmel failed\n");
+                qCritical("Error positioning FPGA device: %s", devNode.toLatin1().data());
+                qCritical("Programming atmel failed");
                 close(fd);
                 emit abortInit();
             }
 
             ssize_t r = read(fd, &pcbTestReg,4);
-            syslog(LOG_INFO,"reading fpga adr 0xFFC = 0x%08X\n", pcbTestReg);
+            qInfo("Reading FPGA adr 0xFFC = 0x%08X", pcbTestReg);
             if (r < 0 )
             {
-                syslog(LOG_ERR,"error reading fpga device: %s\n", devNode.toLatin1().data());
-                syslog(LOG_ERR,"Programming atmel failed\n");
+                qCritical("Error reading FPGA device: %s", devNode.toLatin1().data());
+                qCritical("Programming atmel failed");
                 emit abortInit();
             }
 
             pcbTestReg |= 1 << (atmelResetBit-1); // set bit for atmel reset
-            syslog(LOG_INFO,"writing fpga adr 0xFFC = 0x%08X\n", pcbTestReg);
+            qInfo("Writing FPGA adr 0xFFC = 0x%08X", pcbTestReg);
             r = write(fd, &pcbTestReg,4);
 
             if (r < 0 )
             {
-                syslog(LOG_ERR,"error writing fpga device: %s\n", devNode.toLatin1().data());
-                syslog(LOG_ERR,"Programming atmel failed\n");
+                qCritical("Error writing fpga device: %s", devNode.toLatin1().data());
+                qCritical("Programming atmel failed");
                 emit abortInit();
             }
 
             usleep(100); // give atmel some time for reset
 
             pcbTestReg &= static_cast<quint32>(~(1 << (atmelResetBit-1))); // reset bit for atmel reset
-            syslog(LOG_INFO,"writing fpga adr 0xffc = 0x%08X\n", pcbTestReg);
+            qInfo("Writing FPGA adr 0xffc = 0x%08X", pcbTestReg);
             r = write(fd, &pcbTestReg,4);
             close(fd);
 
             if (r < 0 )
             {
-                syslog(LOG_ERR,"error writing fpga device: %s\n", devNode.toLatin1().data());
-                syslog(LOG_ERR,"Programming atmel failed\n");
+                qCritical("Error writing FPGA device: %s", devNode.toLatin1().data());
+                qCritical("Programming atmel failed");
                 emit abortInit();
             }
 
@@ -238,38 +236,38 @@ void cCOM5003dServer::programAtmelFlash()
             cIntelHexFileIO IntelHexData;
             if (IntelHexData.ReadHexFile(atmelFlashfilePath))
             {
-               syslog(LOG_INFO,"Writing %s to atmel...\n", atmelFlashfilePath);
+               qInfo("Writing %s to atmel...", atmelFlashfilePath);
                 if (m_ctrlFactory->getBootloaderController()->bootloaderLoadFlash(IntelHexData) == ZeraMControllerIo::cmddone)
                {
-                   syslog(LOG_INFO,"Programming atmel passed\n");
+                   qInfo("Programming atmel passed");
 
                    // we must restart atmel now
                    if (m_ctrlFactory->getBootloaderController()->bootloaderStartProgram() == ZeraMControllerIo::cmddone)
                    {
-                       syslog(LOG_INFO,"Restart atmel after programming done\n");
+                       qInfo("Restart atmel after programming done");
                        // once the job is done, we remove the file
                        if(!atmelFile.remove())
-                           syslog(LOG_ERR,"Error deleting %s\n", atmelFlashfilePath);
+                           qCritical("Error deleting %s", atmelFlashfilePath);
 
                        emit atmelProgrammed();
                    }
                    else
                    {
-                       syslog(LOG_ERR,"Restart atmel after programming failed\n");
+                       qCritical("Restart atmel after programming failed");
                        emit abortInit();
                    }
                }
                else
                {
-                   syslog(LOG_ERR,"error writing atmel flash\n");
-                   syslog(LOG_ERR,"Programming atmel failed\n");
+                   qCritical("Error writing atmel flash");
+                   qCritical("Programming atmel failed");
                    emit abortInit();
                }
             }
             else
             {
-                syslog(LOG_ERR,"error reading hex file\n");
-                syslog(LOG_ERR,"Programming atmel failed\n");
+                qCritical("Error reading hex file");
+                qCritical("Programming atmel failed");
                 emit abortInit();
             }
         }
