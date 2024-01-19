@@ -31,7 +31,6 @@
 #include <QFinalState>
 #include <unistd.h>
 #include <fcntl.h>
-#include <syslog.h>
 #include <signal.h>
 
 #ifdef SYSTEMD_NOTIFICATION
