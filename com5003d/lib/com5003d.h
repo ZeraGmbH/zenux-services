@@ -4,7 +4,6 @@
 #include "abstractfactoryi2cctrl.h"
 #include "pcbserver.h"
 #include "rmconnection.h"
-#include "debugsettings.h"
 #include "fpgasettings.h"
 #include "sensesettings.h"
 #include "hkinsettings.h"
@@ -65,7 +64,6 @@ private:
 
     SystemInfo* m_pSystemInfo = nullptr;
 
-    cDebugSettings* m_pDebugSettings = nullptr;
     cSenseSettings* m_pSenseSettings = nullptr;
     cStatusInterface* m_pStatusInterface = nullptr;
     HkInSettings* m_hkInSettings = nullptr;

@@ -6,7 +6,6 @@
 #include "pcbserver.h"
 #include "scpicmds.h"
 #include "rmconnection.h"
-#include "debugsettings.h"
 #include "ethsettings.h"
 #include "dspsettings.h"
 #include <xiqnetserver.h>

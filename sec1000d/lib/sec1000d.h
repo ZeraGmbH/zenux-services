@@ -9,7 +9,6 @@
 class QStateMachine;
 class QState;
 class QSocketNotifier;
-class cDebugSettings;
 class SecCalculatorSettings;
 class SecInputSettings;
 class Sec1000StatusInterface;

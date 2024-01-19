@@ -1,6 +1,5 @@
 #include "secdevicenodesingleton.h"
 #include "sec1000d.h"
-#include "debugsettings.h"
 #include "ethsettings.h"
 #include "fpgasettings.h"
 #include "seccalcsettings.h"
