@@ -12,16 +12,16 @@
 #include "i2cctrlpll.h"
 #include "i2cctrlranges.h"
 
-constexpr int defaultDebugLevel = 1;
-
 FactoryI2cCtrl::FactoryI2cCtrl(I2cSettings *i2cSettings) :
-    m_i2cSettings(i2cSettings)
+    m_i2cSettings(i2cSettings),
+    m_deviceNode(i2cSettings->getDeviceNode()),
+    m_debugLevel(i2cSettings->getDebugLevel())
 {
 }
 
 I2cCtrlCriticalStatusPtr FactoryI2cCtrl::getCriticalStatusController()
 {
-    return std::make_unique<I2cCtrlCriticalStatus>(m_i2cSettings->getDeviceNode(), getRelaisCtrlI2cAddress(), defaultDebugLevel);
+    return std::make_unique<I2cCtrlCriticalStatus>(m_deviceNode, getRelaisCtrlI2cAddress(), m_debugLevel);
 }
 
 AbstractCtrlHeartbeatWaitPtr FactoryI2cCtrl::createCtrlHeartbeatWait(QString devnode)
@@ -31,23 +31,23 @@ AbstractCtrlHeartbeatWaitPtr FactoryI2cCtrl::createCtrlHeartbeatWait(QString dev
 
 I2cCtrlEepromPermissionPtr FactoryI2cCtrl::getPermissionCheckController()
 {
-    return std::make_unique<I2cCtrlEepromPermission>(m_i2cSettings->getDeviceNode(), getRelaisCtrlI2cAddress(), defaultDebugLevel);
+    return std::make_unique<I2cCtrlEepromPermission>(m_deviceNode, getRelaisCtrlI2cAddress(), m_debugLevel);
 }
 
 I2cCtrlCommonVersionsPtrUnique FactoryI2cCtrl::getCommonVersionController(ControllerTypes ctrlType, quint8 muxChannel)
 {
     switch(ctrlType) {
     case CTRL_TYPE_RELAIS:
-        return std::make_unique<I2cCtrlCommonVersions>(m_i2cSettings->getDeviceNode(), getRelaisCtrlI2cAddress(), defaultDebugLevel);
+        return std::make_unique<I2cCtrlCommonVersions>(m_deviceNode, getRelaisCtrlI2cAddress(), m_debugLevel);
 
     case CTRL_TYPE_SYSTEM:
-        return std::make_unique<I2cCtrlCommonVersions>(m_i2cSettings->getDeviceNode(), getSystemCtrlI2cAddress(), defaultDebugLevel);
+        return std::make_unique<I2cCtrlCommonVersions>(m_deviceNode, getSystemCtrlI2cAddress(), m_debugLevel);
         break;
 
     case CTRL_TYPE_EMOB:
-        return std::make_unique<I2cCtrlCommonVersionsEmob>(m_i2cSettings->getDeviceNode(), getEmobCtrlI2cAddress(),
+        return std::make_unique<I2cCtrlCommonVersionsEmob>(m_deviceNode, getEmobCtrlI2cAddress(),
                                                            getEmobMuxI2cAddress(), muxChannel,
-                                                           defaultDebugLevel);
+                                                           m_debugLevel);
         break;
     default:
         qFatal("Controller type %i does not support AbstractI2cCtrlCommonVersions", ctrlType);
@@ -57,37 +57,37 @@ I2cCtrlCommonVersionsPtrUnique FactoryI2cCtrl::getCommonVersionController(Contro
 
 I2cCtrlDeviceIdentificationDataPtr FactoryI2cCtrl::getDeviceIdentificationController()
 {
-    return std::make_unique<I2cCtrlDeviceIdentificationData>(m_i2cSettings->getDeviceNode(), getRelaisCtrlI2cAddress(), defaultDebugLevel);
+    return std::make_unique<I2cCtrlDeviceIdentificationData>(m_deviceNode, getRelaisCtrlI2cAddress(), m_debugLevel);
 }
 
 I2cCtrlAccumulatorPtr FactoryI2cCtrl::getAccumulatorController()
 {
-    return std::make_unique<I2cCtrlAccumulator>(m_i2cSettings->getDeviceNode(), getSystemCtrlI2cAddress(), defaultDebugLevel);
+    return std::make_unique<I2cCtrlAccumulator>(m_deviceNode, getSystemCtrlI2cAddress(), m_debugLevel);
 }
 
 I2cCtrlRangesPtr FactoryI2cCtrl::getRangesController()
 {
-    return std::make_unique<I2cCtrlRanges>(m_i2cSettings->getDeviceNode(), getRelaisCtrlI2cAddress(), defaultDebugLevel);
+    return std::make_unique<I2cCtrlRanges>(m_deviceNode, getRelaisCtrlI2cAddress(), m_debugLevel);
 }
 
 I2cCtrlMModePtr FactoryI2cCtrl::getMModeController()
 {
-    return std::make_unique<I2cCtrlMMode>(m_i2cSettings->getDeviceNode(), getRelaisCtrlI2cAddress(), defaultDebugLevel);
+    return std::make_unique<I2cCtrlMMode>(m_deviceNode, getRelaisCtrlI2cAddress(), m_debugLevel);
 }
 
 I2cCtrlPllPtr FactoryI2cCtrl::getPllController()
 {
-    return std::make_unique<I2cCtrlPll>(m_i2cSettings->getDeviceNode(), getRelaisCtrlI2cAddress(), defaultDebugLevel);
+    return std::make_unique<I2cCtrlPll>(m_deviceNode, getRelaisCtrlI2cAddress(), m_debugLevel);
 }
 
 I2cCtrlClampStatusPtr FactoryI2cCtrl::getClampStatusController()
 {
-    return std::make_unique<I2cCtrlClampStatus>(m_i2cSettings->getDeviceNode(), getRelaisCtrlI2cAddress(), defaultDebugLevel);
+    return std::make_unique<I2cCtrlClampStatus>(m_deviceNode, getRelaisCtrlI2cAddress(), m_debugLevel);
 }
 
 I2cCtrlBootloaderPtr FactoryI2cCtrl::getBootloaderController()
 {
-    return std::make_unique<I2cCtrlBootloader>(m_i2cSettings->getDeviceNode(), getRelaisCtrlI2cAddress(), defaultDebugLevel);
+    return std::make_unique<I2cCtrlBootloader>(m_deviceNode, getRelaisCtrlI2cAddress(), m_debugLevel);
 }
 
 quint8 FactoryI2cCtrl::getRelaisCtrlI2cAddress()

@@ -83,7 +83,6 @@
 
 <xs:complexType name="connectivitytype">
     <xs:sequence>
-        <xs:element name="debuglevel" type="debugtype"/>
         <xs:element name="ethernet">
             <xs:complexType>
                 <xs:sequence>
@@ -111,6 +110,7 @@
         <xs:element name="i2c">
             <xs:complexType>
                 <xs:sequence>
+                    <xs:element name="debuglevel" type="debugtype"/>
                     <xs:element name="device">
                         <xs:complexType>
                             <xs:sequence>

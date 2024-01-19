@@ -18,6 +18,7 @@ enum member
 
 enum configstate
 {
+    SetDebugLevel,
     SetDevNode,
 
     SetAtmelAdr,
@@ -34,11 +35,13 @@ class I2cSettings : public XMLSettings
     Q_OBJECT
 public:
     I2cSettings(Zera::XMLConfig::cReader *xmlread);
+    int getDebugLevel();
     quint8 getI2CAdress(i2cSettings::member member);
     QString& getDeviceNode();
 public slots:
     virtual void configXMLInfo(QString key);
 protected:
+    int m_debugLevel = 1;
     QString m_sDeviceNode;
     quint8 m_nAtmelAdr;
     quint8 m_nAtmelSysAdr;
