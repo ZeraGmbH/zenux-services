@@ -1,4 +1,5 @@
 #include "test_mockservice_com5003d_full.h"
+#include "mockfactoryi2cctrl.h"
 #include "pcbinterface.h"
 #include "proxy.h"
 #include "reply.h"
@@ -18,7 +19,7 @@ void test_mockservice_com5003d_full::initTestCase()
 void test_mockservice_com5003d_full::init()
 {
     m_resman = std::make_unique<ResmanRunFacade>();
-    m_server = std::make_unique<MockCom5003dFull>();
+    m_server = std::make_unique<MockCom5003dFull>(std::make_shared<MockFactoryI2cCtrl>(true));
     TimeMachineObject::feedEventLoop();
 
     m_pcbClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307);

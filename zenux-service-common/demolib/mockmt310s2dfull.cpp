@@ -3,9 +3,8 @@
 #include "mocki2ceepromiofactory.h"
 #include "mockpcbdevicenodectrlsingleton.h"
 #include "mockpcbdevicenodemessagesingleton.h"
-#include "mockfactoryi2cctrl.h"
 
-MockMt310s2dFull::MockMt310s2dFull(QString alternateConfigXml)
+MockMt310s2dFull::MockMt310s2dFull(FactoryControllerAbstractPtr ctrlFactory, QString alternateConfigXml)
 {
     MockI2cEEpromIoFactory::enableMock();
     MockPcbDeviceNodeCtrlSingleton::enableMock();
@@ -15,5 +14,5 @@ MockMt310s2dFull::MockMt310s2dFull(QString alternateConfigXml)
     if(!alternateConfigXml.isEmpty())
         params.xmlFile = alternateConfigXml;
     std::shared_ptr<SettingsForDeviceServer> settings = std::make_shared<SettingsForDeviceServer>(params);
-    m_server = std::make_unique<cMT310S2dServer>(settings, std::make_shared<MockFactoryI2cCtrl>(true));
+    m_server = std::make_unique<cMT310S2dServer>(settings, ctrlFactory);
 }
