@@ -1,7 +1,7 @@
 #include "testfactoryi2cctrl.h"
 #include "mockctrlheartbeatwait.h"
 #include "mocki2cctrlbootloader.h"
-#include "mocki2cctrlcommonversions.h"
+#include "testi2cctrlcommoninfo.h"
 #include "mocki2cctrlcriticalstatus.h"
 #include "mocki2cctrleeprompermission.h"
 #include "mocki2cctrlaccumulator.h"
@@ -35,11 +35,11 @@ I2cCtrlEepromPermissionPtr TestFactoryI2cCtrl::getPermissionCheckController()
     return std::make_unique<MockI2cCtrlEepromPermission>(m_persitentData.m_permission);
 }
 
-I2cCtrlCommonVersionsPtrUnique TestFactoryI2cCtrl::getCommonVersionController(ControllerTypes ctrlType, quint8 muxChannel)
+I2cCtrlCommonInfoPtrUnique TestFactoryI2cCtrl::getCommonVersionController(ControllerTypes ctrlType, quint8 muxChannel)
 {
     Q_UNUSED(ctrlType)
     Q_UNUSED(muxChannel)
-    return std::make_unique<MockI2cCtrlCommonVersions>(); // not prepared for updating pcbVersion write update...
+    return std::make_unique<TestI2cCtrlCommonInfo>(); // not prepared for updating pcbVersion write update...
 }
 
 I2cCtrlDeviceIdentificationDataPtr TestFactoryI2cCtrl::getDeviceIdentificationController()

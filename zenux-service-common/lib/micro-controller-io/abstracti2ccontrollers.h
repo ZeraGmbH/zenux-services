@@ -15,15 +15,15 @@ public:
 };
 typedef std::unique_ptr<AbstractI2cCtrlCriticalStatus> I2cCtrlCriticalStatusPtr;
 
-class AbstractI2cCtrlCommonVersions
+class AbstractI2cCtrlCommonInfo
 {
 public:
-    virtual ~AbstractI2cCtrlCommonVersions() = default;
+    virtual ~AbstractI2cCtrlCommonInfo() = default;
     virtual ZeraMControllerIo::atmelRM readCTRLVersion(QString& answer) = 0;
-    virtual ZeraMControllerIo::atmelRM readPCBVersion(QString& answer) = 0;
+    virtual ZeraMControllerIo::atmelRM readPCBInfo(QString& answer) = 0;
 };
-typedef std::shared_ptr<AbstractI2cCtrlCommonVersions> I2cCtrlCommonVersionsPtrShared;
-typedef std::unique_ptr<AbstractI2cCtrlCommonVersions> I2cCtrlCommonVersionsPtrUnique;
+typedef std::shared_ptr<AbstractI2cCtrlCommonInfo> I2cCtrlCommonInfoPtrShared;
+typedef std::unique_ptr<AbstractI2cCtrlCommonInfo> I2cCtrlCommonInfoPtrUnique;
 
 class AbstractI2cCtrlDeviceIdentificationData
 {

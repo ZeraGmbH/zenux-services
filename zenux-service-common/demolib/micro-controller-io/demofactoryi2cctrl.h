@@ -10,7 +10,7 @@ public:
     AbstractCtrlHeartbeatWaitPtr createCtrlHeartbeatWait(QString devnode) override;
     I2cCtrlCriticalStatusPtr getCriticalStatusController() override;
     I2cCtrlEepromPermissionPtr getPermissionCheckController() override;
-    I2cCtrlCommonVersionsPtrUnique getCommonVersionController(ControllerTypes ctrlType, quint8 muxChannel = -1) override;
+    I2cCtrlCommonInfoPtrUnique getCommonVersionController(ControllerTypes ctrlType, quint8 muxChannel = -1) override;
     I2cCtrlDeviceIdentificationDataPtr getDeviceIdentificationController() override;
     I2cCtrlAccumulatorPtr getAccumulatorController() override;
     I2cCtrlRangesPtr getRangesController() override;
@@ -19,6 +19,7 @@ public:
     I2cCtrlClampStatusPtr getClampStatusController() override;
     I2cCtrlBootloaderPtr getBootloaderController() override;
 private:
+    QString getBaseName(ControllerTypes ctrlType);
     struct TPersitentControllerData
     {
         bool m_permission = false;

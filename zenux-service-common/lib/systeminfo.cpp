@@ -9,11 +9,11 @@ SystemInfo::SystemInfo(FactoryControllerAbstractPtr ctrlFactory) :
 
 void SystemInfo::getSystemInfo()
 {
-    I2cCtrlCommonVersionsPtrUnique controller = m_ctrlFactory->getCommonVersionController(AbstractFactoryI2cCtrl::CTRL_TYPE_RELAIS);
+    I2cCtrlCommonInfoPtrUnique controller = m_ctrlFactory->getCommonVersionController(AbstractFactoryI2cCtrl::CTRL_TYPE_RELAIS);
     I2cCtrlDeviceIdentificationDataPtr idController = m_ctrlFactory->getDeviceIdentificationController();
     int rm = ZeraMControllerIo::cmddone;
     rm |= idController->readDeviceName(m_sDeviceName);
-    rm |= controller->readPCBVersion(m_sPCBVersion);
+    rm |= controller->readPCBInfo(m_sPCBVersion);
     rm |= idController->readLCAVersion(m_sLCAVersion);
     rm |= controller->readCTRLVersion(m_sCTRLVersion);
     rm |= idController->readSerialNumber(m_sSerialNumber);

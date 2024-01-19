@@ -9,7 +9,7 @@ class TestHotPlugCtrlFactoryI2cCtrl : public AbstractFactoryI2cCtrl
 public:
     TestHotPlugCtrlFactoryI2cCtrl(I2cSettings *i2cSettings);
 
-    I2cCtrlCommonVersionsPtrUnique getCommonVersionController(ControllerTypes ctrlType, quint8 muxChannel = -1) override;
+    I2cCtrlCommonInfoPtrUnique getCommonVersionController(ControllerTypes ctrlType, quint8 muxChannel = -1) override;
 
     int getCtrlInstanceCount();
     void prepareNextTestControllers(QVector<bool> respondOnVersionList);
