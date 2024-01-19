@@ -1,5 +1,5 @@
 #include "test_adj_deny_import_mt310s2.h"
-#include "mockfactoryi2cctrl.h"
+#include "testfactoryi2cctrl.h"
 #include "mt310s2systeminfomock.h"
 #include "proxy.h"
 #include "mocki2ceepromiofactory.h"
@@ -70,7 +70,7 @@ void test_adj_deny_import_mt310s2::loadEEpromAndDenyDifferentDeviceName()
 void test_adj_deny_import_mt310s2::setupServers()
 {
     m_resmanServer = std::make_unique<ResmanRunFacade>();
-    m_testServer = std::make_unique<TestServerForSenseInterfaceMt310s2>(std::make_shared<MockFactoryI2cCtrl>(true),
+    m_testServer = std::make_unique<TestServerForSenseInterfaceMt310s2>(std::make_shared<TestFactoryI2cCtrl>(true),
                                                                   true);
     TimeMachineObject::feedEventLoop();
 

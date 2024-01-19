@@ -1,6 +1,6 @@
 #include "test_adj_regression_import_permission_com5003.h"
 #include "factoryi2cctrl.h"
-#include "mockfactoryi2cctrl.h"
+#include "testfactoryi2cctrl.h"
 #include "proxy.h"
 #include "scpisingletransactionblocked.h"
 #include "zscpi_response_definitions.h"
@@ -33,7 +33,7 @@ void test_adj_regression_import_permission_com5003::scpiImportPermissionQueryFai
 
 void test_adj_regression_import_permission_com5003::scpiImportNoPermission()
 {
-    setupServers(std::make_shared<MockFactoryI2cCtrl>(false));
+    setupServers(std::make_shared<TestFactoryI2cCtrl>(false));
 
     QString ret = ScpiSingleTransactionBlocked::cmdXmlParam("SYSTEM:ADJUSTMENT:XML", "foo");
     QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::erraut]);
@@ -41,7 +41,7 @@ void test_adj_regression_import_permission_com5003::scpiImportNoPermission()
 
 void test_adj_regression_import_permission_com5003::scpiImportInvalidXml()
 {
-    setupServers(std::make_shared<MockFactoryI2cCtrl>(true));
+    setupServers(std::make_shared<TestFactoryI2cCtrl>(true));
 
     QString ret = ScpiSingleTransactionBlocked::cmdXmlParam("SYSTEM:ADJUSTMENT:XML", "foo");
     QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::errxml]);
@@ -49,7 +49,7 @@ void test_adj_regression_import_permission_com5003::scpiImportInvalidXml()
 
 void test_adj_regression_import_permission_com5003::scpiImportFailFlashWrite()
 {
-    setupServers(std::make_shared<MockFactoryI2cCtrl>(true));
+    setupServers(std::make_shared<TestFactoryI2cCtrl>(true));
 
     QString xmlFileName = ":/import_minimal_pass.xml";
     QString xml = XmlHelperForTest::loadXml(xmlFileName);
@@ -62,7 +62,7 @@ void test_adj_regression_import_permission_com5003::scpiImportFailFlashWrite()
 void test_adj_regression_import_permission_com5003::scpiImportPassFlashWrite()
 {
     MockI2cEEpromIoFactory::enableMock();
-    setupServers(std::make_shared<MockFactoryI2cCtrl>(true));
+    setupServers(std::make_shared<TestFactoryI2cCtrl>(true));
 
     QString xmlFileName = ":/import_minimal_pass.xml";
     QString xml = XmlHelperForTest::loadXml(xmlFileName);

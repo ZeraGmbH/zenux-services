@@ -1,6 +1,6 @@
 #include "test_adj_regression_import_export_eeprom_mt310s2.h"
 #include "clampfactorytest.h"
-#include "mockfactoryi2cctrl.h"
+#include "testfactoryi2cctrl.h"
 #include "proxy.h"
 #include "mocki2ceepromiofactory.h"
 #include "mockeeprom24lc.h"
@@ -149,7 +149,7 @@ void test_adj_regression_import_export_eeprom_mt310s2::loadRandomToEEpromWriteTo
 void test_adj_regression_import_export_eeprom_mt310s2::setupServers()
 {
     m_resmanServer = std::make_unique<ResmanRunFacade>();
-    m_testServer = std::make_unique<TestServerForSenseInterfaceMt310s2>(std::make_shared<MockFactoryI2cCtrl>(true));
+    m_testServer = std::make_unique<TestServerForSenseInterfaceMt310s2>(std::make_shared<TestFactoryI2cCtrl>(true));
     TimeMachineObject::feedEventLoop();
 
     m_pcbClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307);

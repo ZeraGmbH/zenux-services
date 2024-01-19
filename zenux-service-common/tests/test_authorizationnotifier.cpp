@@ -1,7 +1,7 @@
 #include "test_authorizationnotifier.h"
 #include "testadjustmentstatusinterfacenull.h"
 #include "statusinterface.h"
-#include "mockfactoryi2cctrl.h"
+#include "testfactoryi2cctrl.h"
 #include "mocki2cctrleeprompermission.h"
 #include <scpisingletonfactory.h>
 #include <timerfactoryqtfortest.h>
@@ -26,7 +26,7 @@ void test_authorizationnotifier::init()
 {
     static ServerParams params {"foo", "0", QStringLiteral(CONFIG_SOURCES_MT310S2D) + "/" + "mt310s2d.xsd", QStringLiteral(CONFIG_SOURCES_MT310S2D) + "/" + "mt310s2d.xml"};
     cSCPI *scpiInterface = new cSCPI();
-    FactoryControllerAbstractPtr ctrlFactory = std::make_shared<MockFactoryI2cCtrl>(false);
+    FactoryControllerAbstractPtr ctrlFactory = std::make_shared<TestFactoryI2cCtrl>(false);
 
     m_PermissionCtrl = ctrlFactory->getPermissionCheckController();
     m_pcbServerTest = std::make_unique<TestPcbServerNotifications>(params, scpiInterface, ctrlFactory);
