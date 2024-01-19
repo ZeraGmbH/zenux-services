@@ -3,7 +3,7 @@
 #include "com5003d.h"
 #include "sec1000d.h"
 #include "zdspserver.h"
-#include "mockpcbserver.h"
+#include "serverparamgenerator.h"
 #include "mockfactoryi2cctrl.h"
 #include "mockpcbdevicenodectrlsingleton.h"
 #include "mockpcbdevicenodemessagesingleton.h"
@@ -22,7 +22,7 @@ void test_fpga_settings_regression::com5003d()
 {
     MockPcbDeviceNodeCtrlSingleton::enableMock();
 
-    ServerParams params = MockPcbServer::createParams("com5003d");
+    ServerParams params = ServerParamGenerator::createParams("com5003d");
     std::shared_ptr<SettingsForDeviceServer> settings = std::make_shared<SettingsForDeviceServer>(params);
 
     cCOM5003dServer server(settings, std::make_shared<MockFactoryI2cCtrl>(true));
@@ -36,7 +36,7 @@ void test_fpga_settings_regression::mt310s2d()
     MockPcbDeviceNodeCtrlSingleton::enableMock();
     MockPcbDeviceNodeMessageSingleton::enableMock();
 
-    ServerParams params = MockPcbServer::createParams("mt310s2d");
+    ServerParams params = ServerParamGenerator::createParams("mt310s2d");
     std::shared_ptr<SettingsForDeviceServer> settings = std::make_shared<SettingsForDeviceServer>(params);
 
     cMT310S2dServer server(settings, std::make_shared<MockFactoryI2cCtrl>(true));
@@ -49,7 +49,7 @@ void test_fpga_settings_regression::mt310s2d()
 void test_fpga_settings_regression::sec1000d()
 {
     MockSecDeviceNodeSingleton::enableMock();
-    cSEC1000dServer server(MockPcbServer::createParams("sec1000d"));
+    cSEC1000dServer server(ServerParamGenerator::createParams("sec1000d"));
     TimeMachineObject::feedEventLoop();
 
     QCOMPARE(server.getSecDeviceNode(), "/dev/zFPGA1ec");
@@ -58,7 +58,7 @@ void test_fpga_settings_regression::sec1000d()
 void test_fpga_settings_regression::zdsp1d()
 {
     MockDspDeviceNodeSingleton::enableMock();
-    ZDspServer server(MockPcbServer::createParams("zdsp1d"));
+    ZDspServer server(ServerParamGenerator::createParams("zdsp1d"));
     TimeMachineObject::feedEventLoop();
 
     QCOMPARE(server.getDspDeviceNode(), "/dev/zFPGA1dsp1");

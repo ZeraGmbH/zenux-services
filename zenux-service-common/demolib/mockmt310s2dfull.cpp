@@ -1,5 +1,5 @@
 #include "mockmt310s2dfull.h"
-#include "mockpcbserver.h"
+#include "serverparamgenerator.h"
 #include "mocki2ceepromiofactory.h"
 #include "mockpcbdevicenodectrlsingleton.h"
 #include "mockpcbdevicenodemessagesingleton.h"
@@ -11,7 +11,7 @@ MockMt310s2dFull::MockMt310s2dFull(QString alternateConfigXml)
     MockPcbDeviceNodeCtrlSingleton::enableMock();
     MockPcbDeviceNodeMessageSingleton::enableMock();
 
-    ServerParams params = MockPcbServer::createParams("mt310s2d");
+    ServerParams params = ServerParamGenerator::createParams("mt310s2d");
     if(!alternateConfigXml.isEmpty())
         params.xmlFile = alternateConfigXml;
     std::shared_ptr<SettingsForDeviceServer> settings = std::make_shared<SettingsForDeviceServer>(params);

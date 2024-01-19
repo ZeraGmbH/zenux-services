@@ -14,7 +14,6 @@ class MockPcbServer : public cPCBServer
 {
     Q_OBJECT
 public:
-    static ServerParams createParams(QString serviceName);
     MockPcbServer(QString serviceName);
     ~MockPcbServer();
     Zera::XMLConfig::cReader *getConfigReader();
