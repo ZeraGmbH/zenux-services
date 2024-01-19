@@ -1,7 +1,7 @@
 #ifndef TEST_AUTHORIZATIONNOTIFIER_H
 #define TEST_AUTHORIZATIONNOTIFIER_H
 
-#include "pcbtestserver.h"
+#include "testpcbservernotifications.h"
 #include "adjustmentstatusinterface.h"
 #include <memory.h>
 
@@ -26,7 +26,7 @@ private slots:
     void noNotificationAuthoStatusEnabled();
 private:
     QString getAuthoStatus();
-    std::unique_ptr<PCBTestServer> m_pcbServerTest;
+    std::unique_ptr<TestPcbServerNotifications> m_pcbServerTest;
     I2cCtrlEepromPermissionPtr m_PermissionCtrl;
     AdjustmentStatusInterface *m_adjustmentStatusNull;
 };

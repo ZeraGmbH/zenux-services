@@ -1,12 +1,12 @@
-#ifndef SYSTEMINFOMOCK_H
-#define SYSTEMINFOMOCK_H
+#ifndef TESTSYSTEMINFO_H
+#define TESTSYSTEMINFO_H
 
 #include <systeminfo.h>
 
-class SystemInfoMock : public SystemInfo
+class TestSystemInfo : public SystemInfo
 {
 public:
-    SystemInfoMock(FactoryControllerAbstractPtr ctrlFactory);
+    TestSystemInfo(FactoryControllerAbstractPtr ctrlFactory);
     QString getDeviceName() override;
     QString getPCBVersion() override;
     QString getLCAVersion() override;
@@ -27,4 +27,4 @@ private:
     QString m_serialNumber = "Unknown";
 };
 
-#endif // SYSTEMINFOMOCK_H
+#endif // TESTSYSTEMINFO_H

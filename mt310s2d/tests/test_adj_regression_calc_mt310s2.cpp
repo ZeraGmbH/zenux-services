@@ -21,7 +21,7 @@ void test_adj_regression_calc_mt310s2::initTestCase()
 
     QString filenameShort = ":/import_internal";
     QVERIFY(QFile::exists(filenameShort + ".xml"));
-    QVERIFY(m_mockServer->getSenseInterface()->importAdjXMLFile(filenameShort));
+    QVERIFY(m_testServer->getSenseInterface()->importAdjXMLFile(filenameShort));
 
     m_valueFormatter = AdjustScpiValueFormatterFactory::createMt310s2AdjFormatter();
 }
@@ -29,7 +29,7 @@ void test_adj_regression_calc_mt310s2::initTestCase()
 void test_adj_regression_calc_mt310s2::cleanup()
 {
     MockEEprom24LC::cleanAll();
-    m_mockServer->removeAllClamps();
+    m_testServer->removeAllClamps();
 }
 
 static constexpr double val = 2.0;
@@ -152,7 +152,7 @@ void test_adj_regression_calc_mt310s2::offsetAdjValueTotalClamp()
 void test_adj_regression_calc_mt310s2::setupServers()
 {
     m_resmanServer = std::make_unique<ResmanRunFacade>();
-    m_mockServer = std::make_unique<MockForSenseInterfaceMt310s2>(std::make_shared<MockFactoryI2cCtrl>(true));
+    m_testServer = std::make_unique<TestServerForSenseInterfaceMt310s2>(std::make_shared<MockFactoryI2cCtrl>(true));
     TimeMachineObject::feedEventLoop();
 
     m_pcbClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307);
@@ -164,10 +164,10 @@ void test_adj_regression_calc_mt310s2::setupServers()
 
 void test_adj_regression_calc_mt310s2::addClamp()
 {
-    m_mockServer->addClamp(CL200ADC1000VDC, "IL1");
+    m_testServer->addClamp(CL200ADC1000VDC, "IL1");
     QString xml = readFile(":/import_clamp.xml");
     QVERIFY(!xml.isEmpty());
-    QCOMPARE(m_mockServer->getClampInterface()->importClampXmls(xml, false), ZSCPI::scpiAnswer[ZSCPI::ack]);
+    QCOMPARE(m_testServer->getClampInterface()->importClampXmls(xml, false), ZSCPI::scpiAnswer[ZSCPI::ack]);
 }
 
 QString test_adj_regression_calc_mt310s2::readFile(QString filename)

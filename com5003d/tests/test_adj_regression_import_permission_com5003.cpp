@@ -16,7 +16,7 @@ void test_adj_regression_import_permission_com5003::cleanup()
 {
     m_pcbIFace = nullptr;
     m_pcbClient = nullptr;
-    m_mockServer = nullptr;
+    m_testServer = nullptr;
     m_resmanServer = nullptr;
     TimeMachineObject::feedEventLoop();
 }
@@ -75,7 +75,7 @@ void test_adj_regression_import_permission_com5003::scpiImportPassFlashWrite()
 void test_adj_regression_import_permission_com5003::setupServers(FactoryControllerAbstractPtr ctrlFactory)
 {
     m_resmanServer = std::make_unique<ResmanRunFacade>();
-    m_mockServer = std::make_unique<MockForSenseInterfaceCom5003>(ctrlFactory);
+    m_testServer = std::make_unique<TestServerForSenseInterfaceCom5003>(ctrlFactory);
     TimeMachineObject::feedEventLoop();
 
     m_pcbClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307);

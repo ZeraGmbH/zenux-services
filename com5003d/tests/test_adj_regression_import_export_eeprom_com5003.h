@@ -1,7 +1,7 @@
 #ifndef TEST_REGRESSION_ADJ_IMPORT_EXPORT_EEPROM_COM5003_H
 #define TEST_REGRESSION_ADJ_IMPORT_EXPORT_EEPROM_COM5003_H
 
-#include "mockforsenseinterfacecom5003.h"
+#include "testserverforsenseinterfacecom5003.h"
 #include "pcbinterface.h"
 #include "proxyclient.h"
 #include "resmanrunfacade.h"
@@ -31,7 +31,7 @@ private:
     bool writeFile(QString filename, QByteArray data);
     QByteArray readFile(QString filename);
 
-    std::unique_ptr<MockForSenseInterfaceCom5003> m_mockServer;
+    std::unique_ptr<TestServerForSenseInterfaceCom5003> m_testServer;
     std::unique_ptr<ResmanRunFacade> m_resmanServer;
     Zera::ProxyClientPtr m_pcbClient;
     std::unique_ptr<Zera::cPCBInterface> m_pcbIFace;

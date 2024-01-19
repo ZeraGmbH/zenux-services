@@ -1,14 +1,14 @@
-#ifndef HOTPLUGCTRLTEST_H
-#define HOTPLUGCTRLTEST_H
+#ifndef TESTHOTPLUGI2CCTRLCOMMONVERSIONS_H
+#define TESTHOTPLUGI2CCTRLCOMMONVERSIONS_H
 
 #include "abstracti2ccontrollers.h"
 #include "i2csettings.h"
 
-class HotPlugCtrlTest : public AbstractI2cCtrlCommonVersions
+class TestHotplugI2cCtrlCommonVersions : public AbstractI2cCtrlCommonVersions
 {
 public:
-    HotPlugCtrlTest(I2cSettings *i2cSettings, quint8 muxChannel, bool responding, int &instanceCount);
-    ~HotPlugCtrlTest();
+    TestHotplugI2cCtrlCommonVersions(I2cSettings *i2cSettings, quint8 muxChannel, bool responding, int &instanceCount);
+    ~TestHotplugI2cCtrlCommonVersions();
     ZeraMControllerIo::atmelRM readCTRLVersion(QString&) override;
     virtual ZeraMControllerIo::atmelRM readPCBVersion(QString&) override;
 
@@ -24,4 +24,4 @@ private:
     int &m_instanceCount;
 };
 
-#endif // HOTPLUGCTRLTEST_H
+#endif // TESTHOTPLUGI2CCTRLCOMMONVERSIONS_H

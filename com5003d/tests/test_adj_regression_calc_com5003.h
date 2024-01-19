@@ -1,7 +1,7 @@
 #ifndef TEST_REGRESSION_ADJ_CALC_COM5003_H
 #define TEST_REGRESSION_ADJ_CALC_COM5003_H
 
-#include "mockforsenseinterfacecom5003.h"
+#include "testserverforsenseinterfacecom5003.h"
 #include "pcbinterface.h"
 #include "proxyclient.h"
 #include "resmanrunfacade.h"
@@ -28,7 +28,7 @@ private:
     void setupServers();
     double calcAdjValue(double value, double coeff0, double coeff1, double coeff2);
 
-    std::unique_ptr<MockForSenseInterfaceCom5003> m_mockServer;
+    std::unique_ptr<TestServerForSenseInterfaceCom5003> m_testServer;
     std::unique_ptr<ResmanRunFacade> m_resmanServer;
     Zera::ProxyClientPtr m_pcbClient;
     std::unique_ptr<Zera::cPCBInterface> m_pcbIFace;

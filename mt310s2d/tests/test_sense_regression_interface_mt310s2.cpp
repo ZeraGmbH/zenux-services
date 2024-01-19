@@ -20,7 +20,7 @@ void test_sense_regression_interface_mt310s2::initTestCase()
 {
     ClampFactoryTest::enableTest();
     m_resmanServer = std::make_unique<ResmanRunFacade>();
-    m_mockServer = std::make_unique<MockForSenseInterfaceMt310s2>(std::make_shared<MockFactoryI2cCtrl>(true));
+    m_testServer = std::make_unique<TestServerForSenseInterfaceMt310s2>(std::make_shared<MockFactoryI2cCtrl>(true));
     TimeMachineObject::feedEventLoop();
 
     m_pcbClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307);
@@ -37,7 +37,7 @@ void test_sense_regression_interface_mt310s2::init()
 
 void test_sense_regression_interface_mt310s2::checkVersionsOfSystemInterface()
 {
-    QCOMPARE(m_mockServer->getDeviceVersion(), "DEVICE: Unknown;PCB: Unknown;LCA: Unknown;CTRL: Unknown");
+    QCOMPARE(m_testServer->getDeviceVersion(), "DEVICE: Unknown;PCB: Unknown;LCA: Unknown;CTRL: Unknown");
 }
 
 QStringList test_sense_regression_interface_mt310s2::m_channelsExpectedAllOverThePlace = QStringList()
@@ -58,7 +58,7 @@ QStringList test_sense_regression_interface_mt310s2::m_rangesExpectedU = QString
 
 void test_sense_regression_interface_mt310s2::checkRangesUL1()
 {
-    SenseSystem::cChannelSettings *channelSetting = m_mockServer->getSenseSettings()->findChannelSettingByAlias1("UL1");
+    SenseSystem::cChannelSettings *channelSetting = m_testServer->getSenseSettings()->findChannelSettingByAlias1("UL1");
 
     QSignalSpy responseSpy(m_pcbIFace.get(), &Zera::cPCBInterface::serverAnswer);
     m_pcbIFace->getRangeList(channelSetting->m_nameMx);
@@ -77,7 +77,7 @@ QStringList test_sense_regression_interface_mt310s2::m_rangesExpectedI_Internal 
 
 void test_sense_regression_interface_mt310s2::checkRangesIL1()
 {
-    SenseSystem::cChannelSettings *channelSetting = m_mockServer->getSenseSettings()->findChannelSettingByAlias1("IL1");
+    SenseSystem::cChannelSettings *channelSetting = m_testServer->getSenseSettings()->findChannelSettingByAlias1("IL1");
 
     QSignalSpy responseSpy(m_pcbIFace.get(), &Zera::cPCBInterface::serverAnswer);
     m_pcbIFace->getRangeList(channelSetting->m_nameMx);
@@ -93,10 +93,10 @@ QStringList test_sense_regression_interface_mt310s2::m_rangesExpectedI_CL120A = 
 
 void test_sense_regression_interface_mt310s2::addClampIL1_CL120A()
 {
-    SenseSystem::cChannelSettings *channelSettingI = m_mockServer->getSenseSettings()->findChannelSettingByAlias1("IL1");
-    SenseSystem::cChannelSettings *channelSettingU = m_mockServer->getSenseSettings()->findChannelSettingByAlias1("UL1");
+    SenseSystem::cChannelSettings *channelSettingI = m_testServer->getSenseSettings()->findChannelSettingByAlias1("IL1");
+    SenseSystem::cChannelSettings *channelSettingU = m_testServer->getSenseSettings()->findChannelSettingByAlias1("UL1");
 
-    m_mockServer->addClamp(CL120A, "IL1");
+    m_testServer->addClamp(CL120A, "IL1");
 
     QSignalSpy responseSpyI(m_pcbIFace.get(), &Zera::cPCBInterface::serverAnswer);
     m_pcbIFace->getRangeList(channelSettingI->m_nameMx);
@@ -116,10 +116,10 @@ QStringList test_sense_regression_interface_mt310s2::m_rangesExpectedI_CL800ADC1
 
 void test_sense_regression_interface_mt310s2::addClampIL2_CL800ADC1000VDC()
 {
-    SenseSystem::cChannelSettings *channelSettingI = m_mockServer->getSenseSettings()->findChannelSettingByAlias1("IL2");
-    SenseSystem::cChannelSettings *channelSettingU = m_mockServer->getSenseSettings()->findChannelSettingByAlias1("UL2");
+    SenseSystem::cChannelSettings *channelSettingI = m_testServer->getSenseSettings()->findChannelSettingByAlias1("IL2");
+    SenseSystem::cChannelSettings *channelSettingU = m_testServer->getSenseSettings()->findChannelSettingByAlias1("UL2");
 
-    m_mockServer->addClamp(CL800ADC1000VDC, "IL2");
+    m_testServer->addClamp(CL800ADC1000VDC, "IL2");
 
     QSignalSpy responseSpyI(m_pcbIFace.get(), &Zera::cPCBInterface::serverAnswer);
     m_pcbIFace->getRangeList(channelSettingI->m_nameMx);
@@ -137,10 +137,10 @@ QStringList test_sense_regression_interface_mt310s2::m_rangesExpectedI_DummyAux 
 
 void test_sense_regression_interface_mt310s2::addRemoveClampIAUX_CL800ADC1000VDC()
 {
-    SenseSystem::cChannelSettings *channelSettingI = m_mockServer->getSenseSettings()->findChannelSettingByAlias1("IAUX");
-    SenseSystem::cChannelSettings *channelSettingU = m_mockServer->getSenseSettings()->findChannelSettingByAlias1("UAUX");
+    SenseSystem::cChannelSettings *channelSettingI = m_testServer->getSenseSettings()->findChannelSettingByAlias1("IAUX");
+    SenseSystem::cChannelSettings *channelSettingU = m_testServer->getSenseSettings()->findChannelSettingByAlias1("UAUX");
 
-    m_mockServer->addClamp(CL800ADC1000VDC, "IAUX");
+    m_testServer->addClamp(CL800ADC1000VDC, "IAUX");
 
     QSignalSpy responseSpyIWishClamps(m_pcbIFace.get(), &Zera::cPCBInterface::serverAnswer);
     m_pcbIFace->getRangeList(channelSettingI->m_nameMx);
@@ -152,7 +152,7 @@ void test_sense_regression_interface_mt310s2::addRemoveClampIAUX_CL800ADC1000VDC
     TimeMachineObject::feedEventLoop();
     QCOMPARE(responseSpyU1[0][2].toStringList(), m_rangesExpectedU + m_rangesExpectedU_CL800ADC1000VDC);
 
-    m_mockServer->removeAllClamps();
+    m_testServer->removeAllClamps();
 
     QSignalSpy responseSpyI(m_pcbIFace.get(), &Zera::cPCBInterface::serverAnswer);
     m_pcbIFace->getRangeList(channelSettingI->m_nameMx);
@@ -191,7 +191,7 @@ void test_sense_regression_interface_mt310s2::clampIdsNamesCheck()
 
 void test_sense_regression_interface_mt310s2::constantRangeValuesIL3GenJson()
 {
-    SenseSystem::cChannelSettings *channelSetting = m_mockServer->getSenseSettings()->findChannelSettingByAlias1("IL3");
+    SenseSystem::cChannelSettings *channelSetting = m_testServer->getSenseSettings()->findChannelSettingByAlias1("IL3");
     SenseRegressionHelper::genJsonConstantValuesAllRanges(channelSetting, m_pcbIFace.get());
 }
 
@@ -199,13 +199,13 @@ void test_sense_regression_interface_mt310s2::constantRangeValuesIL3Check()
 {
     QJsonObject json = loadJson(":/all-ranges-il3.json");
     QVERIFY(!json.isEmpty());
-    SenseSystem::cChannelSettings *channelSetting = m_mockServer->getSenseSettings()->findChannelSettingByAlias1("IL3");
+    SenseSystem::cChannelSettings *channelSetting = m_testServer->getSenseSettings()->findChannelSettingByAlias1("IL3");
     QVERIFY(SenseRegressionHelper::checkJsonConstantValuesAllRanges(json, channelSetting, m_pcbIFace.get()));
 }
 
 void test_sense_regression_interface_mt310s2::constantRangeValuesUL3GenJson()
 {
-    SenseSystem::cChannelSettings *channelSetting = m_mockServer->getSenseSettings()->findChannelSettingByAlias1("UL3");
+    SenseSystem::cChannelSettings *channelSetting = m_testServer->getSenseSettings()->findChannelSettingByAlias1("UL3");
     SenseRegressionHelper::genJsonConstantValuesAllRanges(channelSetting, m_pcbIFace.get());
 }
 
@@ -213,13 +213,13 @@ void test_sense_regression_interface_mt310s2::constantRangeValuesUL3Check()
 {
     QJsonObject json = loadJson(":/all-ranges-ul3.json");
     QVERIFY(!json.isEmpty());
-    SenseSystem::cChannelSettings *channelSetting = m_mockServer->getSenseSettings()->findChannelSettingByAlias1("UL3");
+    SenseSystem::cChannelSettings *channelSetting = m_testServer->getSenseSettings()->findChannelSettingByAlias1("UL3");
     QVERIFY(SenseRegressionHelper::checkJsonConstantValuesAllRanges(json, channelSetting, m_pcbIFace.get()));
 }
 
 void test_sense_regression_interface_mt310s2::constantRangeValuesIAUXGenJson()
 {
-    SenseSystem::cChannelSettings *channelSetting = m_mockServer->getSenseSettings()->findChannelSettingByAlias1("IAUX");
+    SenseSystem::cChannelSettings *channelSetting = m_testServer->getSenseSettings()->findChannelSettingByAlias1("IAUX");
     SenseRegressionHelper::genJsonConstantValuesAllRanges(channelSetting, m_pcbIFace.get());
 }
 
@@ -227,13 +227,13 @@ void test_sense_regression_interface_mt310s2::constantRangeValuesIAUXCheck()
 {
     QJsonObject json = loadJson(":/all-ranges-iaux.json");
     QVERIFY(!json.isEmpty());
-    SenseSystem::cChannelSettings *channelSetting = m_mockServer->getSenseSettings()->findChannelSettingByAlias1("IAUX");
+    SenseSystem::cChannelSettings *channelSetting = m_testServer->getSenseSettings()->findChannelSettingByAlias1("IAUX");
     QVERIFY(SenseRegressionHelper::checkJsonConstantValuesAllRanges(json, channelSetting, m_pcbIFace.get()));
 }
 
 void test_sense_regression_interface_mt310s2::constantRangeValuesUAUXGenJson()
 {
-    SenseSystem::cChannelSettings *channelSetting = m_mockServer->getSenseSettings()->findChannelSettingByAlias1("IAUX");
+    SenseSystem::cChannelSettings *channelSetting = m_testServer->getSenseSettings()->findChannelSettingByAlias1("IAUX");
     SenseRegressionHelper::genJsonConstantValuesAllRanges(channelSetting, m_pcbIFace.get());
 }
 
@@ -241,7 +241,7 @@ void test_sense_regression_interface_mt310s2::constantRangeValuesUAUXCheck()
 {
     QJsonObject json = loadJson(":/all-ranges-uaux.json");
     QVERIFY(!json.isEmpty());
-    SenseSystem::cChannelSettings *channelSetting = m_mockServer->getSenseSettings()->findChannelSettingByAlias1("UAUX");
+    SenseSystem::cChannelSettings *channelSetting = m_testServer->getSenseSettings()->findChannelSettingByAlias1("UAUX");
     QVERIFY(SenseRegressionHelper::checkJsonConstantValuesAllRanges(json, channelSetting, m_pcbIFace.get()));
 }
 
@@ -250,7 +250,7 @@ void test_sense_regression_interface_mt310s2::constantRangeValuesIL3ModeAdjGenJs
     QString answer = ScpiSingleTransactionBlocked::cmd("SENS:MMODE", "ADJ");
     QCOMPARE(answer, "ack");
 
-    SenseSystem::cChannelSettings *channelSetting = m_mockServer->getSenseSettings()->findChannelSettingByAlias1("IL3");
+    SenseSystem::cChannelSettings *channelSetting = m_testServer->getSenseSettings()->findChannelSettingByAlias1("IL3");
     SenseRegressionHelper::genJsonConstantValuesAllRanges(channelSetting, m_pcbIFace.get());
 }
 
@@ -261,7 +261,7 @@ void test_sense_regression_interface_mt310s2::constantRangeValuesIL3ModeAdjCheck
 
     QJsonObject json = loadJson(":/all-ranges-il3-adj-mode.json");
     QVERIFY(!json.isEmpty());
-    SenseSystem::cChannelSettings *channelSetting = m_mockServer->getSenseSettings()->findChannelSettingByAlias1("IL3");
+    SenseSystem::cChannelSettings *channelSetting = m_testServer->getSenseSettings()->findChannelSettingByAlias1("IL3");
     QVERIFY(SenseRegressionHelper::checkJsonConstantValuesAllRanges(json, channelSetting, m_pcbIFace.get()));
 }
 
@@ -270,7 +270,7 @@ void test_sense_regression_interface_mt310s2::constantRangeValuesIAUXModeAdjGenJ
     QString answer = ScpiSingleTransactionBlocked::cmd("SENS:MMODE", "ADJ");
     QCOMPARE(answer, "ack");
 
-    SenseSystem::cChannelSettings *channelSetting = m_mockServer->getSenseSettings()->findChannelSettingByAlias1("IAUX");
+    SenseSystem::cChannelSettings *channelSetting = m_testServer->getSenseSettings()->findChannelSettingByAlias1("IAUX");
     SenseRegressionHelper::genJsonConstantValuesAllRanges(channelSetting, m_pcbIFace.get());
 }
 
@@ -281,7 +281,7 @@ void test_sense_regression_interface_mt310s2::constantRangeValuesIAUXModeAdjChec
 
     QJsonObject json = loadJson(":/all-ranges-iaux-adj-mode.json");
     QVERIFY(!json.isEmpty());
-    SenseSystem::cChannelSettings *channelSetting = m_mockServer->getSenseSettings()->findChannelSettingByAlias1("IAUX");
+    SenseSystem::cChannelSettings *channelSetting = m_testServer->getSenseSettings()->findChannelSettingByAlias1("IAUX");
     QVERIFY(SenseRegressionHelper::checkJsonConstantValuesAllRanges(json, channelSetting, m_pcbIFace.get()));
 }
 
@@ -290,7 +290,7 @@ void test_sense_regression_interface_mt310s2::constantRangeValuesIL3ModeHfGenJso
     QString answer = ScpiSingleTransactionBlocked::cmd("SENS:MMODE", "HF");
     QCOMPARE(answer, "ack");
 
-    SenseSystem::cChannelSettings *channelSetting = m_mockServer->getSenseSettings()->findChannelSettingByAlias1("IL3");
+    SenseSystem::cChannelSettings *channelSetting = m_testServer->getSenseSettings()->findChannelSettingByAlias1("IL3");
     SenseRegressionHelper::genJsonConstantValuesAllRanges(channelSetting, m_pcbIFace.get());
 }
 
@@ -301,7 +301,7 @@ void test_sense_regression_interface_mt310s2::constantRangeValuesIL3ModeHfCheck(
 
     QJsonObject json = loadJson(":/all-ranges-il3-hf-mode.json");
     QVERIFY(!json.isEmpty());
-    SenseSystem::cChannelSettings *channelSetting = m_mockServer->getSenseSettings()->findChannelSettingByAlias1("IL3");
+    SenseSystem::cChannelSettings *channelSetting = m_testServer->getSenseSettings()->findChannelSettingByAlias1("IL3");
     QVERIFY(SenseRegressionHelper::checkJsonConstantValuesAllRanges(json, channelSetting, m_pcbIFace.get()));
 }
 
@@ -310,7 +310,7 @@ void test_sense_regression_interface_mt310s2::constantRangeValuesIAUXModeHfGenJs
     QString answer = ScpiSingleTransactionBlocked::cmd("SENS:MMODE", "HF");
     QCOMPARE(answer, "ack");
 
-    SenseSystem::cChannelSettings *channelSetting = m_mockServer->getSenseSettings()->findChannelSettingByAlias1("IAUX");
+    SenseSystem::cChannelSettings *channelSetting = m_testServer->getSenseSettings()->findChannelSettingByAlias1("IAUX");
     SenseRegressionHelper::genJsonConstantValuesAllRanges(channelSetting, m_pcbIFace.get());
 }
 
@@ -321,7 +321,7 @@ void test_sense_regression_interface_mt310s2::constantRangeValuesIAUXModeHfCheck
 
     QJsonObject json = loadJson(":/all-ranges-iaux-hf-mode.json");
     QVERIFY(!json.isEmpty());
-    SenseSystem::cChannelSettings *channelSetting = m_mockServer->getSenseSettings()->findChannelSettingByAlias1("IAUX");
+    SenseSystem::cChannelSettings *channelSetting = m_testServer->getSenseSettings()->findChannelSettingByAlias1("IAUX");
     QVERIFY(SenseRegressionHelper::checkJsonConstantValuesAllRanges(json, channelSetting, m_pcbIFace.get()));
 }
 
@@ -366,10 +366,10 @@ void test_sense_regression_interface_mt310s2::genJsonConstantValuesAllRangesForA
 {
     if(channelNameAdRemoveClamps.isEmpty())
         channelNameAdRemoveClamps = channelName;
-    SenseSystem::cChannelSettings *channelSetting = m_mockServer->getSenseSettings()->findChannelSettingByAlias1(channelName);
+    SenseSystem::cChannelSettings *channelSetting = m_testServer->getSenseSettings()->findChannelSettingByAlias1(channelName);
     QJsonObject jsonAll;
     for(int clampTypeNo=undefined+1; clampTypeNo<anzCL; clampTypeNo++) { // all clamp types
-        m_mockServer->addClamp(clampTypeNo, channelNameAdRemoveClamps);
+        m_testServer->addClamp(clampTypeNo, channelNameAdRemoveClamps);
 
         QSignalSpy responseSpy(m_pcbIFace.get(), &Zera::cPCBInterface::serverAnswer);
         m_pcbIFace->getRangeList(channelSetting->m_nameMx);
@@ -382,7 +382,7 @@ void test_sense_regression_interface_mt310s2::genJsonConstantValuesAllRangesForA
             SenseRegressionHelper::addRangeConstantDataToJson(range, channelSetting, jsonRange);
             jsonRanges.insert(range, jsonRange);
         }
-        m_mockServer->removeAllClamps();
+        m_testServer->removeAllClamps();
 
         jsonAll.insert(cClamp::getClampTypeName(clampTypeNo), jsonRanges);
     }
@@ -396,9 +396,9 @@ bool test_sense_regression_interface_mt310s2::checkJsonConstantValuesAllRangesFo
     if(channelNameAdRemoveClamps.isEmpty())
         channelNameAdRemoveClamps = channelName;
     bool allCheckOk = true;
-    SenseSystem::cChannelSettings *channelSetting = m_mockServer->getSenseSettings()->findChannelSettingByAlias1(channelName);
+    SenseSystem::cChannelSettings *channelSetting = m_testServer->getSenseSettings()->findChannelSettingByAlias1(channelName);
     for(int clampTypeNo=undefined+1; clampTypeNo<anzCL; clampTypeNo++) { // all clamp types
-        m_mockServer->addClamp(clampTypeNo, channelNameAdRemoveClamps);
+        m_testServer->addClamp(clampTypeNo, channelNameAdRemoveClamps);
 
         QSignalSpy responseSpy(m_pcbIFace.get(), &Zera::cPCBInterface::serverAnswer);
         m_pcbIFace->getRangeList(channelSetting->m_nameMx);
@@ -430,7 +430,7 @@ bool test_sense_regression_interface_mt310s2::checkJsonConstantValuesAllRangesFo
             allCheckOk = false;
             qCritical("Clamp \"%s\" not found in reference", qPrintable(clampName));
         }
-        m_mockServer->removeAllClamps();
+        m_testServer->removeAllClamps();
     }
     return allCheckOk;
 }

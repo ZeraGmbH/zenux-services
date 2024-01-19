@@ -1,6 +1,6 @@
 #include "test_adj_deny_import_com5003.h"
 #include "mockfactoryi2cctrl.h"
-#include "systeminfomock.h"
+#include "testsysteminfo.h"
 #include "proxy.h"
 #include "mocki2ceepromiofactory.h"
 #include "mockeeprom24lc.h"
@@ -23,7 +23,7 @@ void test_adj_deny_import_com5003::cleanup()
 {
     m_pcbIFace = nullptr;
     m_pcbClient = nullptr;
-    m_mockServer = nullptr;
+    m_testServer = nullptr;
     m_resmanServer = nullptr;
     TimeMachineObject::feedEventLoop();
 }
@@ -31,7 +31,7 @@ void test_adj_deny_import_com5003::cleanup()
 void test_adj_deny_import_com5003::loadEEpromWithStoredNamesAndVersions()
 {
     // This is mostly to set-up our mock SystemInfo
-    I2cSettings *i2cSettings = m_mockServer->getI2cSettings();
+    I2cSettings *i2cSettings = m_testServer->getI2cSettings();
     MockEEprom24LC eepromMock(i2cSettings->getDeviceNode(), i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress));
     QByteArray eepromContent = readFile(":/export_internal_modified.eeprom");
     QVERIFY(!eepromContent.isEmpty());
@@ -55,9 +55,9 @@ void test_adj_deny_import_com5003::loadEEpromWithStoredNamesAndVersions()
 
 void test_adj_deny_import_com5003::loadEEpromAndDenyDifferentDeviceName()
 {
-    static_cast<SystemInfoMock*>(m_mockServer->getSystemInfo())->setDeviceName("Foo");
+    static_cast<TestSystemInfo*>(m_testServer->getSystemInfo())->setDeviceName("Foo");
 
-    I2cSettings *i2cSettings = m_mockServer->getI2cSettings();
+    I2cSettings *i2cSettings = m_testServer->getI2cSettings();
     MockEEprom24LC eepromMock(i2cSettings->getDeviceNode(), i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress));
     QByteArray eepromContent = readFile(":/export_internal_modified.eeprom");
     QVERIFY(!eepromContent.isEmpty());
@@ -70,7 +70,7 @@ void test_adj_deny_import_com5003::loadEEpromAndDenyDifferentDeviceName()
 void test_adj_deny_import_com5003::setupServers()
 {
     m_resmanServer = std::make_unique<ResmanRunFacade>();
-    m_mockServer = std::make_unique<MockForSenseInterfaceCom5003>(std::make_shared<MockFactoryI2cCtrl>(true),
+    m_testServer = std::make_unique<TestServerForSenseInterfaceCom5003>(std::make_shared<MockFactoryI2cCtrl>(true),
                                                                   true);
     TimeMachineObject::feedEventLoop();
 

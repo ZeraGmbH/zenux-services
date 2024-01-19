@@ -17,7 +17,7 @@ void test_adj_regression_calc_com5003::initTestCase()
 
     QString filenameShort = ":/import_internal";
     QVERIFY(QFile::exists(filenameShort + ".xml"));
-    QVERIFY(m_mockServer->getSenseInterface()->importAdjXMLFile(filenameShort));
+    QVERIFY(m_testServer->getSenseInterface()->importAdjXMLFile(filenameShort));
 
     m_valueFormatter = AdjustScpiValueFormatterFactory::createCom5003AdjFormatter();
 }
@@ -80,7 +80,7 @@ void test_adj_regression_calc_com5003::offsetAdjValueTotal()
 void test_adj_regression_calc_com5003::setupServers()
 {
     m_resmanServer = std::make_unique<ResmanRunFacade>();
-    m_mockServer = std::make_unique<MockForSenseInterfaceCom5003>(std::make_shared<MockFactoryI2cCtrl>(true));
+    m_testServer = std::make_unique<TestServerForSenseInterfaceCom5003>(std::make_shared<MockFactoryI2cCtrl>(true));
     TimeMachineObject::feedEventLoop();
 
     m_pcbClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307);

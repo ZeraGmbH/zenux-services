@@ -1,16 +1,16 @@
-#ifndef MOCKFORSENSEINTERFACEMT310S2_H
-#define MOCKFORSENSEINTERFACEMT310S2_H
+#ifndef TESTSERVERFORSENSEINTERFACEMT310S2_H
+#define TESTSERVERFORSENSEINTERFACEMT310S2_H
 
-#include "mockpcbserver.h"
+#include "testpcbserver.h"
 #include "mt310s2senseinterface.h"
 #include "mt310s2systeminterface.h"
 #include "clampinterface.h"
 #include "abstractfactoryi2cctrl.h"
 
-class MockForSenseInterfaceMt310s2 : public MockPcbServer
+class TestServerForSenseInterfaceMt310s2 : public TestPcbServer
 {
 public:
-    MockForSenseInterfaceMt310s2(FactoryControllerAbstractPtr ctrlFactory, bool systemInfoMock = false);
+    TestServerForSenseInterfaceMt310s2(FactoryControllerAbstractPtr ctrlFactory, bool systemInfoMock = false);
     QString getDeviceVersion() { return m_systemInfo->getDeviceVersion(); }
 
     Mt310s2SenseInterface *getSenseInterface() { return m_senseInterface.get(); }
@@ -34,4 +34,4 @@ private:
     std::unique_ptr<Mt310s2SystemInterface> m_systemInterface;
 };
 
-#endif // MOCKFORSENSEINTERFACEMT310S2_H
+#endif // TESTSERVERFORSENSEINTERFACEMT310S2_H

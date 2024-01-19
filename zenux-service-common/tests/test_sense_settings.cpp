@@ -1,11 +1,11 @@
 #include "test_sense_settings.h"
-#include "mockpcbserver.h"
+#include "testpcbserver.h"
 #include "sensesettings.h"
 #include <QTest>
 
 QTEST_MAIN(test_sense_settings);
 
-class MockForSenseSettings  : public MockPcbServer
+class MockForSenseSettings  : public TestPcbServer
 {
 public:
     MockForSenseSettings(QString deamonName);
@@ -15,7 +15,7 @@ private:
 };
 
 MockForSenseSettings::MockForSenseSettings(QString deamonName) :
-    MockPcbServer(deamonName)
+    TestPcbServer(deamonName)
 {
     m_senseSettings = std::make_unique<cSenseSettings>(getConfigReader(), 8);
     setXmlSettings(XmlSettingsList{m_senseSettings.get()});

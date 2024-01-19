@@ -1,5 +1,5 @@
-#ifndef MOCKPCBSERVER_H
-#define MOCKPCBSERVER_H
+#ifndef TESTPCBSERVER_H
+#define TESTPCBSERVER_H
 
 #include "pcbserver.h"
 #include <xmlsettings.h>
@@ -10,12 +10,12 @@ typedef QList<XMLSettings*> XmlSettingsList;
 typedef QList<cResource*> ResourcesList;
 typedef QList<ScpiConnection*> ScpiConnectionList;
 
-class MockPcbServer : public cPCBServer
+class TestPcbServer : public cPCBServer
 {
     Q_OBJECT
 public:
-    MockPcbServer(QString serviceName);
-    ~MockPcbServer();
+    TestPcbServer(QString serviceName);
+    ~TestPcbServer();
     Zera::XMLConfig::cReader *getConfigReader();
     RMConnection* getRmConnection();
     void setXmlSettings(XmlSettingsList xmlSettings);
@@ -42,4 +42,4 @@ private:
     RMConnection* m_pRMConnection = nullptr;
 };
 
-#endif // MOCKPCBSERVER_H
+#endif // TESTPCBSERVER_H

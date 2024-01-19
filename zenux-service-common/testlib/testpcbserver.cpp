@@ -1,10 +1,10 @@
-#include "mockpcbserver.h"
+#include "testpcbserver.h"
 #include "serverparamgenerator.h"
 #include "scpisingletonfactory.h"
 #include <QFinalState>
 #include <QDir>
 
-MockPcbServer::MockPcbServer(QString serviceName) :
+TestPcbServer::TestPcbServer(QString serviceName) :
     cPCBServer(ServerParamGenerator::createParams(serviceName), ScpiSingletonFactory::getScpiObj())
 {
     m_pInitializationMachine = new QStateMachine(this);
@@ -17,56 +17,56 @@ MockPcbServer::MockPcbServer(QString serviceName) :
     m_stateSendRMIdentAndRegister = new QState(stateCONF); // we send ident. to rm and register our resources
 
     stateCONF->setInitialState(statesetupServer);
-
-    statesetupServer->addTransition(this, &MockPcbServer::sigServerIsSetUp, m_stateconnect2RM);
+    
+    statesetupServer->addTransition(this, &TestPcbServer::sigServerIsSetUp, m_stateconnect2RM);
 
     m_pInitializationMachine->addState(stateCONF);
     m_pInitializationMachine->addState(stateFINISH);
     m_pInitializationMachine->setInitialState(stateCONF);
-
-    QObject::connect(statesetupServer, &QAbstractState::entered, this, &MockPcbServer::doSetupServer);
-    QObject::connect(m_stateconnect2RM, &QAbstractState::entered, this, &MockPcbServer::doConnect2RM);
-    QObject::connect(m_stateSendRMIdentAndRegister, &QAbstractState::entered, this, &MockPcbServer::doIdentAndRegister);
+    
+    QObject::connect(statesetupServer, &QAbstractState::entered, this, &TestPcbServer::doSetupServer);
+    QObject::connect(m_stateconnect2RM, &QAbstractState::entered, this, &TestPcbServer::doConnect2RM);
+    QObject::connect(m_stateSendRMIdentAndRegister, &QAbstractState::entered, this, &TestPcbServer::doIdentAndRegister);
 }
 
-MockPcbServer::~MockPcbServer()
+TestPcbServer::~TestPcbServer()
 {
     if (m_pInitializationMachine) delete m_pInitializationMachine;
     if (m_pRMConnection) delete m_pRMConnection;
 }
 
-void MockPcbServer::setXmlSettings(XmlSettingsList xmlSettings)
+void TestPcbServer::setXmlSettings(XmlSettingsList xmlSettings)
 {
     m_xmlSettings = xmlSettings;
     doConfiguration();
 }
 
-void MockPcbServer::setResources(ResourcesList resources)
+void TestPcbServer::setResources(ResourcesList resources)
 {
     m_resources = resources;
 }
 
-void MockPcbServer::setScpiConnections(ScpiConnectionList scpiConnections)
+void TestPcbServer::setScpiConnections(ScpiConnectionList scpiConnections)
 {
     m_scpiConnecttionsAddedFromExtern = scpiConnections;
 }
 
-Zera::XMLConfig::cReader *MockPcbServer::getConfigReader()
+Zera::XMLConfig::cReader *TestPcbServer::getConfigReader()
 {
     return &m_xmlConfigReader;
 }
 
-RMConnection *MockPcbServer::getRmConnection()
+RMConnection *TestPcbServer::getRmConnection()
 {
     return m_pRMConnection;
 }
 
-void MockPcbServer::start()
+void TestPcbServer::start()
 {
     m_pInitializationMachine->start();
 }
 
-void MockPcbServer::doConfiguration()
+void TestPcbServer::doConfiguration()
 {
     if (m_xmlConfigReader.loadSchema(m_params.xsdFile)) {
         connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged,
@@ -81,7 +81,7 @@ void MockPcbServer::doConfiguration()
         qFatal("Could not load xml schema");
 }
 
-void MockPcbServer::doSetupServer()
+void TestPcbServer::doSetupServer()
 {
     setupServer();
     scpiConnectionList.append(this); // the server itself has some commands
@@ -103,12 +103,12 @@ void MockPcbServer::doSetupServer()
     emit sigServerIsSetUp();
 }
 
-void MockPcbServer::doConnect2RM()
+void TestPcbServer::doConnect2RM()
 {
     m_pRMConnection->connect2RM();
 }
 
-void MockPcbServer::doIdentAndRegister()
+void TestPcbServer::doIdentAndRegister()
 {
     m_pRMConnection->SendIdent(getName());
     for (int i = 0; i < resourceList.count(); i++) {
