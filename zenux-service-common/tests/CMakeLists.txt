@@ -14,3 +14,8 @@ SETUP_TESTS(
     test_fpga_settings_regression
     )
 
+target_sources(test_hotpluggablecontrollercontainer
+  PRIVATE
+    hotplugctrltest.cpp hotplugctrltest.h
+    hotplugctrltestfactory.cpp hotplugctrltestfactory.h
+)
