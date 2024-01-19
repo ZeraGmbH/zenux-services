@@ -12,6 +12,8 @@ public:
     test_hotpluggablecontrollercontainer();
 private slots:
     void initTestCase();
+    void init();
+
     void initNoController();
     void mt310s2AllVoltageNotPluggable();
     void mt310s2AddI1();
