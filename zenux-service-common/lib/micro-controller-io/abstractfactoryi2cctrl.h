@@ -25,6 +25,7 @@ public:
     virtual I2cCtrlMModePtr getMModeController() = 0;
     virtual I2cCtrlPllPtr getPllController() = 0;
     virtual I2cCtrlClampStatusPtr getClampStatusController() = 0;
+    // TODO: Merge zera-microcontroller bootloader here
     virtual I2cCtrlBootloaderPtr getBootloaderController() = 0;
 };
 

@@ -1,12 +1,11 @@
 #include "hotpluggablecontrollercontainer.h"
-#include "factoryemobctrl.h"
 #include <zeramcontrollerbootloaderstopperfactory.h>
+#include "i2cmultiplexerfactory.h"
 #include <i2cmuxerscopedonoff.h>
 
-HotPluggableControllerContainer::HotPluggableControllerContainer(I2cSettings *i2cSettings, FactoryControllerAbstractPtr ctrlFactory, quint8 debuglevel) :
+HotPluggableControllerContainer::HotPluggableControllerContainer(I2cSettings *i2cSettings, FactoryControllerAbstractPtr ctrlFactory) :
     m_i2cSettings(i2cSettings),
-    m_ctrlFactory(ctrlFactory),
-    m_debuglevel(debuglevel)
+    m_ctrlFactory(ctrlFactory)
 {
 }
 
@@ -41,6 +40,9 @@ void HotPluggableControllerContainer::startActualizeEmobControllers(quint16 bitm
     }
 }
 
+// TODO: Move to i2c settings
+constexpr int defaultDebugLevel = 1;
+
 void HotPluggableControllerContainer::startAddingController(int ctrlChannel, SenseSystem::cChannelSettings* channelSettings, int msWaitForApplicationStart)
 {
     I2cMuxerScopedOnOff i2cMuxer(I2cMultiplexerFactory::createPCA9547Muxer(m_i2cSettings->getDeviceNode(),
@@ -48,7 +50,7 @@ void HotPluggableControllerContainer::startAddingController(int ctrlChannel, Sen
                                                                            channelSettings->m_nMuxChannelNo));
     ZeraMcontrollerIoPtr i2cCtrl = std::make_shared<ZeraMControllerIo>(m_i2cSettings->getDeviceNode(),
                                                                        m_i2cSettings->getI2CAdress(i2cSettings::emobCtrlI2cAddress),
-                                                                       m_debuglevel);
+                                                                       defaultDebugLevel);
     ZeraMControllerBootloaderStopperPtr bootStopper = ZeraMControllerBootloaderStopperFactory::createBootloaderStopper(i2cCtrl, ctrlChannel);
     connect(bootStopper.get(), &ZeraMControllerBootloaderStopper::sigAssumeBootloaderStopped,
             this, &HotPluggableControllerContainer::onBootloaderStopAssumed);
@@ -76,12 +78,9 @@ void HotPluggableControllerContainer::onBootloaderStopAssumed(int ctrlChannel)
 {
     qInfo("Bootloader stopped or not available. Try controller version read on channel %i...", ctrlChannel);
     if(m_pendingBootloaderStoppers.contains(ctrlChannel)) {
-        I2cCtrlCommonVersionsPtrShared ctrl = FactoryEmobCtrl::getEmobCtrl(
-            m_i2cSettings->getDeviceNode(),
-            m_i2cSettings->getI2CAdress(i2cSettings::emobCtrlI2cAddress),
-            m_i2cSettings->getI2CAdress(i2cSettings::muxerI2cAddress),
-            m_pendingBootloaderStoppers[ctrlChannel].m_nMuxChannelNo,
-            m_debuglevel);
+        I2cCtrlCommonVersionsPtrShared ctrl = m_ctrlFactory->getCommonVersionController(
+            AbstractFactoryI2cCtrl::CTRL_TYPE_EMOB,
+            m_pendingBootloaderStoppers[ctrlChannel].m_nMuxChannelNo);
         m_pendingBootloaderStoppers.remove(ctrlChannel);
         QString version;
         ZeraMControllerIo::atmelRM result = ctrl->readCTRLVersion(version);

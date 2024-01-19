@@ -1,8 +1,8 @@
 #include "test_hotpluggablecontrollercontainer.h"
 #include "emobctrlfactoryfortest.h"
-#include "atmelctrlemobfortest.h"
+#include "hotplugctrltest.h"
+#include "hotplugctrltestfactory.h"
 #include "hotpluggablecontrollercontainer.h"
-#include "mockfactoryi2cctrl.h"
 #include <timerfactoryqtfortest.h>
 #include <timemachinefortest.h>
 #include <zeramcontrollerbootloaderstopperfactoryfortest.h>
@@ -15,7 +15,6 @@ test_hotpluggablecontrollercontainer::test_hotpluggablecontrollercontainer() :
     m_i2cSettings(&m_configReader),
     m_senseSettings(&m_configReader, 8 /*mt310s2*/)
 {
-    m_ctrlFactory = std::make_shared<MockFactoryI2cCtrl>(false);
     connect(&m_configReader, &Zera::XMLConfig::cReader::valueChanged,
             &m_i2cSettings, &I2cSettings::configXMLInfo);
     connect(&m_configReader, &Zera::XMLConfig::cReader::valueChanged,
@@ -29,10 +28,15 @@ void test_hotpluggablecontrollercontainer::initTestCase()
     TimerFactoryQtForTest::enableTest();
 }
 
+void test_hotpluggablecontrollercontainer::init()
+{
+    m_ctrlFactory = std::make_shared<HotPlugCtrlTestFactory>(&m_i2cSettings);
+}
+
 void test_hotpluggablecontrollercontainer::initNoController()
 {
     m_i2cSettings.setI2cAddressesEmob(QString(), 0, 0);
-    HotPluggableControllerContainer container(&m_i2cSettings, m_ctrlFactory, 0);
+    HotPluggableControllerContainer container(&m_i2cSettings, m_ctrlFactory);
     QVector<I2cCtrlCommonVersionsPtrShared> controllers = container.getCurrentControllers();
     QCOMPARE(controllers.size(), 0);
 }
@@ -40,7 +44,7 @@ void test_hotpluggablecontrollercontainer::initNoController()
 void test_hotpluggablecontrollercontainer::mt310s2AllVoltageNotPluggable()
 {
     m_i2cSettings.setI2cAddressesEmob(QString(), 0, 0);
-    HotPluggableControllerContainer container(&m_i2cSettings, m_ctrlFactory, 0);
+    HotPluggableControllerContainer container(&m_i2cSettings, m_ctrlFactory);
     container.startActualizeEmobControllers((1<<0), &m_senseSettings, 1000);
     container.startActualizeEmobControllers((1<<1), &m_senseSettings, 1000);
     container.startActualizeEmobControllers((1<<2), &m_senseSettings, 1000);
@@ -51,9 +55,8 @@ void test_hotpluggablecontrollercontainer::mt310s2AllVoltageNotPluggable()
 
 void test_hotpluggablecontrollercontainer::mt310s2AddI1()
 {
-    EmobCtrlFactoryForTest::prepareNextTestControllers(QVector<bool>() << true);
     m_i2cSettings.setI2cAddressesEmob(QString(), 0, 0);
-    HotPluggableControllerContainer container(&m_i2cSettings, m_ctrlFactory, 0);
+    HotPluggableControllerContainer container(&m_i2cSettings, m_ctrlFactory);
     container.startActualizeEmobControllers((1<<4), &m_senseSettings, 1000);
     QVector<I2cCtrlCommonVersionsPtrShared> controllers = container.getCurrentControllers();
     QCOMPARE(controllers.size(), 1);
@@ -62,9 +65,8 @@ void test_hotpluggablecontrollercontainer::mt310s2AddI1()
 
 void test_hotpluggablecontrollercontainer::mt310s2AddI1I2()
 {
-    EmobCtrlFactoryForTest::prepareNextTestControllers(QVector<bool>() << true << true);
     m_i2cSettings.setI2cAddressesEmob(QString(), 0, 0);
-    HotPluggableControllerContainer container(&m_i2cSettings, m_ctrlFactory, 0);
+    HotPluggableControllerContainer container(&m_i2cSettings, m_ctrlFactory);
     container.startActualizeEmobControllers((1<<4) | (1<<5), &m_senseSettings, 1000);
     QVector<I2cCtrlCommonVersionsPtrShared> controllers = container.getCurrentControllers();
     QCOMPARE(controllers.size(), 2);
@@ -72,68 +74,64 @@ void test_hotpluggablecontrollercontainer::mt310s2AddI1I2()
 
 void test_hotpluggablecontrollercontainer::mt310s2AddI1Twice()
 {
-    EmobCtrlFactoryForTest::prepareNextTestControllers(QVector<bool>() << true);
     m_i2cSettings.setI2cAddressesEmob(QString(), 0, 0);
-    HotPluggableControllerContainer container(&m_i2cSettings, m_ctrlFactory, 0);
+    HotPluggableControllerContainer container(&m_i2cSettings, m_ctrlFactory);
     container.startActualizeEmobControllers((1<<4), &m_senseSettings, 1000);
     container.startActualizeEmobControllers((1<<4), &m_senseSettings, 1000);
     QVector<I2cCtrlCommonVersionsPtrShared> controllers = container.getCurrentControllers();
     QCOMPARE(controllers.size(), 1);
-    QCOMPARE(AtmelCtrlEmobForTest::getInstanceCount(), 1);
+    HotPlugCtrlTestFactory* factory = static_cast<HotPlugCtrlTestFactory*>(m_ctrlFactory.get());
+    QCOMPARE(factory->getCtrlInstanceCount(), 1);
 }
 
 void test_hotpluggablecontrollercontainer::mt310s2AddI1I2AddI1()
 {
-    EmobCtrlFactoryForTest::prepareNextTestControllers(QVector<bool>() << true);
     m_i2cSettings.setI2cAddressesEmob(QString(), 0, 0);
-    HotPluggableControllerContainer container(&m_i2cSettings, m_ctrlFactory, 0);
+    HotPluggableControllerContainer container(&m_i2cSettings, m_ctrlFactory);
     container.startActualizeEmobControllers((1<<4) | (1<<5), &m_senseSettings, 1000);
     container.startActualizeEmobControllers((1<<4), &m_senseSettings, 1000);
     QVector<I2cCtrlCommonVersionsPtrShared> controllers = container.getCurrentControllers();
     QCOMPARE(controllers.size(), 1);
-    QCOMPARE(AtmelCtrlEmobForTest::getInstanceCount(), 1);
+    HotPlugCtrlTestFactory* factory = static_cast<HotPlugCtrlTestFactory*>(m_ctrlFactory.get());
+    QCOMPARE(factory->getCtrlInstanceCount(), 1);
 }
 
 void test_hotpluggablecontrollercontainer::mt310s2AddI1CheckI2cSettings()
 {
-    EmobCtrlFactoryForTest::prepareNextTestControllers(QVector<bool>() << true);
     m_i2cSettings.setI2cAddressesEmob("foo", 1, 2);
-    HotPluggableControllerContainer container(&m_i2cSettings, m_ctrlFactory, 3);
+    HotPluggableControllerContainer container(&m_i2cSettings, m_ctrlFactory);
     container.startActualizeEmobControllers((1<<4), &m_senseSettings, 1000);
     QVector<I2cCtrlCommonVersionsPtrShared> controllers = container.getCurrentControllers();
     QCOMPARE(controllers.size(), 1);
-    AtmelCtrlEmobForTest* ctrl = static_cast<AtmelCtrlEmobForTest*>(controllers[0].get());
-    QCOMPARE(ctrl->getDevnode(), "foo");
-    QCOMPARE(ctrl->getAdrCtrl(), 1);
-    QCOMPARE(ctrl->getAdrMux(), 2);
-    QCOMPARE(ctrl->getDebuglevel(), 3);
+    HotPlugCtrlTest *testController = static_cast<HotPlugCtrlTest*>(controllers[0].get());
+    QCOMPARE(testController->getDevnode(), "foo");
+    QCOMPARE(testController->getAdrCtrl(), 1);
+    QCOMPARE(testController->getAdrMux(), 2);
 }
 
 void test_hotpluggablecontrollercontainer::mt310s2AddI1I2I3IAuxCheckMuxSettings()
 {
-    EmobCtrlFactoryForTest::prepareNextTestControllers(QVector<bool>() << true << true << true << true);
     m_i2cSettings.setI2cAddressesEmob("foo", 1, 2);
-    HotPluggableControllerContainer container(&m_i2cSettings, m_ctrlFactory, 3);
+    HotPluggableControllerContainer container(&m_i2cSettings, m_ctrlFactory);
     container.startActualizeEmobControllers((1<<4) | (1<<5) | (1<<6) | (1<<7), &m_senseSettings, 1000);
     QVector<I2cCtrlCommonVersionsPtrShared> controllers = container.getCurrentControllers();
     QCOMPARE(controllers.size(), 4);
-    AtmelCtrlEmobForTest* ctrlI1 = static_cast<AtmelCtrlEmobForTest*>(controllers[0].get());
+    HotPlugCtrlTest* ctrlI1 = static_cast<HotPlugCtrlTest*>(controllers[0].get());
     QCOMPARE(ctrlI1->getMuxChannel(), 1);
-    AtmelCtrlEmobForTest* ctrlI2 = static_cast<AtmelCtrlEmobForTest*>(controllers[1].get());
+    HotPlugCtrlTest* ctrlI2 = static_cast<HotPlugCtrlTest*>(controllers[1].get());
     QCOMPARE(ctrlI2->getMuxChannel(), 2);
-    AtmelCtrlEmobForTest* ctrlI3 = static_cast<AtmelCtrlEmobForTest*>(controllers[2].get());
+    HotPlugCtrlTest* ctrlI3 = static_cast<HotPlugCtrlTest*>(controllers[2].get());
     QCOMPARE(ctrlI3->getMuxChannel(), 3);
-    AtmelCtrlEmobForTest* ctrlIAux = static_cast<AtmelCtrlEmobForTest*>(controllers[3].get());
+    HotPlugCtrlTest* ctrlIAux = static_cast<HotPlugCtrlTest*>(controllers[3].get());
     QCOMPARE(ctrlIAux->getMuxChannel(), 4);
 }
 
 void test_hotpluggablecontrollercontainer::mt310s2AddI1CheckSignals()
 {
-    EmobCtrlFactoryForTest::prepareNextTestControllers(QVector<bool>() << true);
     ZeraMControllerBootloaderStopperFactoryForTest::setBootoaderAssumeAppStartedImmediates(QVector<bool>() << false);
 
     m_i2cSettings.setI2cAddressesEmob(QString(), 0, 0);
-    HotPluggableControllerContainer container(&m_i2cSettings, m_ctrlFactory, 0);
+    HotPluggableControllerContainer container(&m_i2cSettings, m_ctrlFactory);
     QSignalSpy spy(&container, &HotPluggableControllerContainer::sigControllersChanged);
 
     container.startActualizeEmobControllers((1<<4), &m_senseSettings, 1000);
@@ -146,33 +144,33 @@ void test_hotpluggablecontrollercontainer::mt310s2AddI1CheckSignals()
 
 void test_hotpluggablecontrollercontainer::mt310s2AddI1I2CheckSignalsImmediate()
 {
-    EmobCtrlFactoryForTest::prepareNextTestControllers(QVector<bool>() << true << true);
     ZeraMControllerBootloaderStopperFactoryForTest::setBootoaderAssumeAppStartedImmediates(QVector<bool>() << true << true);
 
     m_i2cSettings.setI2cAddressesEmob(QString(), 0, 0);
-    HotPluggableControllerContainer container(&m_i2cSettings, m_ctrlFactory, 0);
+    HotPluggableControllerContainer container(&m_i2cSettings, m_ctrlFactory);
     QSignalSpy spy(&container, &HotPluggableControllerContainer::sigControllersChanged);
 
     container.startActualizeEmobControllers((1<<4) | (1<<5), &m_senseSettings, 1000);
     QCOMPARE(spy.count(), 2);
-    QCOMPARE(AtmelCtrlEmobForTest::getInstanceCount(), 2);
+    HotPlugCtrlTestFactory* factory = static_cast<HotPlugCtrlTestFactory*>(m_ctrlFactory.get());
+    QCOMPARE(factory->getCtrlInstanceCount(), 2);
 
     QCOMPARE(ZeraMControllerBootloaderStopperFactoryForTest::checkEmpty(), true);
 }
 
 void test_hotpluggablecontrollercontainer::mt310s2AddI1I2CheckSignalsDelayed()
 {
-    EmobCtrlFactoryForTest::prepareNextTestControllers(QVector<bool>() << true << true);
     ZeraMControllerBootloaderStopperFactoryForTest::setBootoaderAssumeAppStartedImmediates(QVector<bool>() << false << false);
 
     m_i2cSettings.setI2cAddressesEmob(QString(), 0, 0);
-    HotPluggableControllerContainer container(&m_i2cSettings, m_ctrlFactory, 0);
+    HotPluggableControllerContainer container(&m_i2cSettings, m_ctrlFactory);
     QSignalSpy spy(&container, &HotPluggableControllerContainer::sigControllersChanged);
 
     container.startActualizeEmobControllers((1<<4) | (1<<5), &m_senseSettings, 1000);
     QCOMPARE(spy.count(), 0);
     TimeMachineForTest::getInstance()->processTimers(1000);
-    QCOMPARE(AtmelCtrlEmobForTest::getInstanceCount(), 2);
+    HotPlugCtrlTestFactory* factory = static_cast<HotPlugCtrlTestFactory*>(m_ctrlFactory.get());
+    QCOMPARE(factory->getCtrlInstanceCount(), 2);
     QCOMPARE(spy.count(), 2);
 
     QCOMPARE(ZeraMControllerBootloaderStopperFactoryForTest::checkEmpty(), true);
@@ -183,7 +181,7 @@ void test_hotpluggablecontrollercontainer::mt310s2AddI1AndRemoveBeforeFinish()
     ZeraMControllerBootloaderStopperFactoryForTest::setBootoaderAssumeAppStartedImmediates(QVector<bool>() << false);
 
     m_i2cSettings.setI2cAddressesEmob(QString(), 0, 0);
-    HotPluggableControllerContainer container(&m_i2cSettings, m_ctrlFactory, 0);
+    HotPluggableControllerContainer container(&m_i2cSettings, m_ctrlFactory);
     QSignalSpy spy(&container, &HotPluggableControllerContainer::sigControllersChanged);
 
     container.startActualizeEmobControllers((1<<4), &m_senseSettings, 1000);
@@ -192,35 +190,37 @@ void test_hotpluggablecontrollercontainer::mt310s2AddI1AndRemoveBeforeFinish()
     container.startActualizeEmobControllers(0, &m_senseSettings, 1000);
     TimeMachineForTest::getInstance()->processTimers(1000);
     QCOMPARE(spy.count(), 0);
-    QCOMPARE(AtmelCtrlEmobForTest::getInstanceCount(), 0);
+    HotPlugCtrlTestFactory* factory = static_cast<HotPlugCtrlTestFactory*>(m_ctrlFactory.get());
+    QCOMPARE(factory->getCtrlInstanceCount(), 0);
     QCOMPARE(ZeraMControllerBootloaderStopperFactoryForTest::checkEmpty(), true);
 }
 
 void test_hotpluggablecontrollercontainer::mt310s2AddI1AndAddI2BeforeFinish()
 {
-    EmobCtrlFactoryForTest::prepareNextTestControllers(QVector<bool>() << true << true);
     ZeraMControllerBootloaderStopperFactoryForTest::setBootoaderAssumeAppStartedImmediates(QVector<bool>() << false << false);
 
     m_i2cSettings.setI2cAddressesEmob(QString(), 0, 0);
-    HotPluggableControllerContainer container(&m_i2cSettings, m_ctrlFactory, 0);
+    HotPluggableControllerContainer container(&m_i2cSettings, m_ctrlFactory);
     QSignalSpy spy(&container, &HotPluggableControllerContainer::sigControllersChanged);
 
     container.startActualizeEmobControllers((1<<4), &m_senseSettings, 1000);
     QCOMPARE(spy.count(), 0);
-    QCOMPARE(AtmelCtrlEmobForTest::getInstanceCount(), 0);
+
+    HotPlugCtrlTestFactory* factory = static_cast<HotPlugCtrlTestFactory*>(m_ctrlFactory.get());
+    QCOMPARE(factory->getCtrlInstanceCount(), 0);
 
     TimeMachineForTest::getInstance()->processTimers(500); // 500
     container.startActualizeEmobControllers((1<<4) | (1<<5), &m_senseSettings, 1000);
     QCOMPARE(spy.count(), 0);
-    QCOMPARE(AtmelCtrlEmobForTest::getInstanceCount(), 0);
+    QCOMPARE(factory->getCtrlInstanceCount(), 0);
 
     TimeMachineForTest::getInstance()->processTimers(500); // 1000
     QCOMPARE(spy.count(), 1);
-    QCOMPARE(AtmelCtrlEmobForTest::getInstanceCount(), 1);
+    QCOMPARE(factory->getCtrlInstanceCount(), 1);
 
     TimeMachineForTest::getInstance()->processTimers(500); // 1500
     QCOMPARE(spy.count(), 2);
-    QCOMPARE(AtmelCtrlEmobForTest::getInstanceCount(), 2);
+    QCOMPARE(factory->getCtrlInstanceCount(), 2);
 
     QCOMPARE(ZeraMControllerBootloaderStopperFactoryForTest::checkEmpty(), true);
 }
@@ -228,46 +228,48 @@ void test_hotpluggablecontrollercontainer::mt310s2AddI1AndAddI2BeforeFinish()
 void test_hotpluggablecontrollercontainer::mt310s2AddClampNoController()
 {
     m_i2cSettings.setI2cAddressesEmob(QString(), 0, 0);
-    HotPluggableControllerContainer container(&m_i2cSettings, m_ctrlFactory, 0);
+    HotPluggableControllerContainer container(&m_i2cSettings, m_ctrlFactory);
     QSignalSpy spy(&container, &HotPluggableControllerContainer::sigControllersChanged);
 
+    HotPlugCtrlTestFactory* factory = static_cast<HotPlugCtrlTestFactory*>(m_ctrlFactory.get());
+
     // add clamp only
-    EmobCtrlFactoryForTest::prepareNextTestControllers(QVector<bool>() << false);
+    factory->prepareNextTestControllers(QVector<bool>() << false);
     ZeraMControllerBootloaderStopperFactoryForTest::setBootoaderAssumeAppStartedImmediates(QVector<bool>() << true);
     container.startActualizeEmobControllers((1<<4), &m_senseSettings, 1000);
     TimeMachineForTest::getInstance()->processTimers(1000);
     QCOMPARE(spy.count(), 0);
-    QCOMPARE(AtmelCtrlEmobForTest::getInstanceCount(), 0);
+    QCOMPARE(factory->getCtrlInstanceCount(), 0);
 
     // add emob to clamp
-    EmobCtrlFactoryForTest::prepareNextTestControllers(QVector<bool>() << true); // we expect clamp known => no version query
+    factory->prepareNextTestControllers(QVector<bool>() << true); // we expect clamp known => no version query
     ZeraMControllerBootloaderStopperFactoryForTest::setBootoaderAssumeAppStartedImmediates(QVector<bool>() << true); // same
     container.startActualizeEmobControllers((1<<4) | (1<<5), &m_senseSettings, 1000);
     TimeMachineForTest::getInstance()->processTimers(1000);
     QCOMPARE(spy.count(), 1);
     spy.clear();
-    QCOMPARE(AtmelCtrlEmobForTest::getInstanceCount(), 1);
+    QCOMPARE(factory->getCtrlInstanceCount(), 1);
 
     // remove clamp
     container.startActualizeEmobControllers((1<<5), &m_senseSettings, 1000);
     TimeMachineForTest::getInstance()->processTimers(1000);
     QCOMPARE(spy.count(), 0);
-    QCOMPARE(AtmelCtrlEmobForTest::getInstanceCount(), 1);
+    QCOMPARE(factory->getCtrlInstanceCount(), 1);
 
     // remove emob
     container.startActualizeEmobControllers(0, &m_senseSettings, 1000);
     TimeMachineForTest::getInstance()->processTimers(1000);
     QCOMPARE(spy.count(), 1);
     spy.clear();
-    QCOMPARE(AtmelCtrlEmobForTest::getInstanceCount(), 0);
+    QCOMPARE(factory->getCtrlInstanceCount(), 0);
 
     // add clamp & emob only
-    EmobCtrlFactoryForTest::prepareNextTestControllers(QVector<bool>() << false << true);
+    factory->prepareNextTestControllers(QVector<bool>() << false << true);
     ZeraMControllerBootloaderStopperFactoryForTest::setBootoaderAssumeAppStartedImmediates(QVector<bool>() << true << true);
     container.startActualizeEmobControllers((1<<4) | (1<<5), &m_senseSettings, 1000);
     TimeMachineForTest::getInstance()->processTimers(1000);
     QCOMPARE(spy.count(), 1);
-    QCOMPARE(AtmelCtrlEmobForTest::getInstanceCount(), 1);
+    QCOMPARE(factory->getCtrlInstanceCount(), 1);
 
     QCOMPARE(ZeraMControllerBootloaderStopperFactoryForTest::checkEmpty(), true);
 }
