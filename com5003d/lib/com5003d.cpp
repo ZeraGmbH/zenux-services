@@ -25,7 +25,6 @@
 #include "foutgroupresourceandinterface.h"
 #include "statusinterface.h"
 #include "com5003systeminterface.h"
-#include "debugsettings.h"
 #include "ethsettings.h"
 #include "finsettings.h"
 #include "fpgasettings.h"
@@ -88,7 +87,6 @@ cCOM5003dServer::cCOM5003dServer(std::shared_ptr<SettingsForDeviceServer> settin
 
 cCOM5003dServer::~cCOM5003dServer()
 {
-    delete m_pDebugSettings;
     delete m_fpgaSettings;
     delete m_pSenseSettings;
     delete m_foutSettings;
@@ -131,10 +129,8 @@ void cCOM5003dServer::doConfiguration()
         sigStart = 0;
         write(m_nFPGAfd, &sigStart, 4);
 
-        // we want to initialize all settings first
-        m_pDebugSettings = new cDebugSettings(&m_xmlConfigReader);
-        connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_pDebugSettings,&cDebugSettings::configXMLInfo);
         connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, &m_ethSettings, &EthSettings::configXMLInfo);
+
         m_fpgaSettings = new FPGASettings(&m_xmlConfigReader);
         connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_fpgaSettings, &FPGASettings::configXMLInfo);
         m_pSenseSettings = new cSenseSettings(&m_xmlConfigReader, 6);

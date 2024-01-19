@@ -4,7 +4,6 @@
 #include "pcbserver.h"
 #include "rmconnection.h"
 #include "settingsfordeviceserver.h"
-#include "debugsettings.h"
 #include "sensesettings.h"
 #include "hkinsettings.h"
 #include "scinsettings.h"
@@ -70,7 +69,6 @@ private:
 
     Mt310s2SystemInfo* m_pSystemInfo = nullptr;
 
-    cDebugSettings* m_pDebugSettings = nullptr;
     cSenseSettings* m_pSenseSettings = nullptr;
     cStatusInterface* m_pStatusInterface = nullptr;
     HkInSettings* m_hkInSettings = nullptr;

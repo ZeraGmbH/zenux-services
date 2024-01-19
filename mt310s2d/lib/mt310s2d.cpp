@@ -10,7 +10,6 @@
 #include "foutgroupresourceandinterface.h"
 #include "statusinterface.h"
 #include "mt310s2systeminterface.h"
-#include "debugsettings.h"
 #include "ethsettings.h"
 #include "finsettings.h"
 #include "fpgasettings.h"
@@ -94,7 +93,6 @@ cMT310S2dServer::cMT310S2dServer(std::shared_ptr<SettingsForDeviceServer> settin
 
 cMT310S2dServer::~cMT310S2dServer()
 {
-    delete m_pDebugSettings;
     delete m_pSenseSettings;
     delete m_foutSettings;
     delete m_finSettings;
@@ -142,10 +140,8 @@ void cMT310S2dServer::doConfiguration()
         connect(m_pNotifier, &QSocketNotifier::activated, this, &cMT310S2dServer::MTIntHandler);
 
         if (m_xmlConfigReader.loadSchema(m_params.xsdFile)) {
-            // we want to initialize all settings first
-            m_pDebugSettings = new cDebugSettings(&m_xmlConfigReader);
-            connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_pDebugSettings, &cDebugSettings::configXMLInfo);
             connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, &m_ethSettings, &EthSettings::configXMLInfo);
+
             m_pSenseSettings = new cSenseSettings(&m_xmlConfigReader, 8);
             connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_pSenseSettings, &cSenseSettings::configXMLInfo);
             m_foutSettings = new FOutSettings(&m_xmlConfigReader);
