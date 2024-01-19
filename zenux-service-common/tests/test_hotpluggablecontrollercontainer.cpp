@@ -1,5 +1,4 @@
 #include "test_hotpluggablecontrollercontainer.h"
-#include "emobctrlfactoryfortest.h"
 #include "hotplugctrltest.h"
 #include "hotplugctrltestfactory.h"
 #include "hotpluggablecontrollercontainer.h"
