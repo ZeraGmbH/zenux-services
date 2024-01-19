@@ -75,7 +75,7 @@ void HotPluggableControllerContainer::onBootloaderStopAssumed(int ctrlChannel)
 {
     qInfo("Bootloader stopped or not available. Try controller version read on channel %i...", ctrlChannel);
     if(m_pendingBootloaderStoppers.contains(ctrlChannel)) {
-        I2cCtrlCommonInfoPtrShared ctrl = m_ctrlFactory->getCommonVersionController(
+        I2cCtrlCommonInfoPtrShared ctrl = m_ctrlFactory->getCommonInfoController(
             AbstractFactoryI2cCtrl::CTRL_TYPE_EMOB,
             m_pendingBootloaderStoppers[ctrlChannel].m_nMuxChannelNo);
         m_pendingBootloaderStoppers.remove(ctrlChannel);

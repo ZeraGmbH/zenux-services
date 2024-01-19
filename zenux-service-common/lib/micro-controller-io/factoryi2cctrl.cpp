@@ -34,7 +34,7 @@ I2cCtrlEepromPermissionPtr FactoryI2cCtrl::getPermissionCheckController()
     return std::make_unique<I2cCtrlEepromPermission>(m_deviceNode, getRelaisCtrlI2cAddress(), m_debugLevel);
 }
 
-I2cCtrlCommonInfoPtrUnique FactoryI2cCtrl::getCommonVersionController(ControllerTypes ctrlType, quint8 muxChannel)
+I2cCtrlCommonInfoPtrUnique FactoryI2cCtrl::getCommonInfoController(ControllerTypes ctrlType, quint8 muxChannel)
 {
     switch(ctrlType) {
     case CTRL_TYPE_RELAIS:
@@ -55,12 +55,12 @@ I2cCtrlCommonInfoPtrUnique FactoryI2cCtrl::getCommonVersionController(Controller
     }
 }
 
-I2cCtrlDeviceIdentificationDataPtr FactoryI2cCtrl::getDeviceIdentificationController()
+I2cCtrlDeviceIdentPtr FactoryI2cCtrl::getDeviceIdentController()
 {
-    return std::make_unique<I2cCtrlDeviceIdentificationData>(m_deviceNode, getRelaisCtrlI2cAddress(), m_debugLevel);
+    return std::make_unique<I2cCtrlDeviceIdent>(m_deviceNode, getRelaisCtrlI2cAddress(), m_debugLevel);
 }
 
-I2cCtrlAccumulatorPtr FactoryI2cCtrl::getAccumulatorController()
+I2cCtrlAccumulatorPtr FactoryI2cCtrl::getAccuController()
 {
     return std::make_unique<I2cCtrlAccumulator>(m_deviceNode, getSystemCtrlI2cAddress(), m_debugLevel);
 }

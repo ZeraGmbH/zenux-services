@@ -34,7 +34,7 @@ void test_accumulatorinterface_mock::cleanup()
 
 constexpr int ACCU_POLLING_PERIOD_MS = 1000;
 
-void test_accumulatorinterface_mock::readAccumulatorStatusAccuDisabled()
+void test_accumulatorinterface_mock::readAccuStatusAccuDisabled()
 {
     setupServers(":/accu_disabled.xml");
     QSignalSpy responseSpy(m_pcbIFace.get(), &Zera::cPCBInterface::serverAnswer);
@@ -66,7 +66,7 @@ void test_accumulatorinterface_mock::readAccuStateOfChargeAccuDisabled()
     QCOMPARE(responseSpy[0][2], QVariant(0));
 }
 
-void test_accumulatorinterface_mock::readAccumulatorStatusAccuEnabled()
+void test_accumulatorinterface_mock::readAccuStatusAccuEnabled()
 {
     setupServers(":/accu_enabled.xml");
     QSignalSpy responseSpy(m_pcbIFace.get(), &Zera::cPCBInterface::serverAnswer);

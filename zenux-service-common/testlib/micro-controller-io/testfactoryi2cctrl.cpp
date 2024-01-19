@@ -35,22 +35,22 @@ I2cCtrlEepromPermissionPtr TestFactoryI2cCtrl::getPermissionCheckController()
     return std::make_unique<MockI2cCtrlEepromPermission>(m_persitentData.m_permission);
 }
 
-I2cCtrlCommonInfoPtrUnique TestFactoryI2cCtrl::getCommonVersionController(ControllerTypes ctrlType, quint8 muxChannel)
+I2cCtrlCommonInfoPtrUnique TestFactoryI2cCtrl::getCommonInfoController(ControllerTypes ctrlType, quint8 muxChannel)
 {
     Q_UNUSED(ctrlType)
     Q_UNUSED(muxChannel)
     return std::make_unique<TestI2cCtrlCommonInfo>(); // not prepared for updating pcbVersion write update...
 }
 
-I2cCtrlDeviceIdentificationDataPtr TestFactoryI2cCtrl::getDeviceIdentificationController()
+I2cCtrlDeviceIdentPtr TestFactoryI2cCtrl::getDeviceIdentController()
 {
-    return std::make_unique<MockI2cCtrlDeviceIdentificationData>(m_persitentData.m_deviceName,
+    return std::make_unique<MockI2cCtrlDeviceIdent>(m_persitentData.m_deviceName,
                                                                m_persitentData.m_serialNumber,
-                                                               m_persitentData.m_LCAVersion,
+                                                               m_persitentData.m_FPGAVersion,
                                                                m_persitentData.m_writablePcbVersion);
 }
 
-I2cCtrlAccumulatorPtr TestFactoryI2cCtrl::getAccumulatorController()
+I2cCtrlAccumulatorPtr TestFactoryI2cCtrl::getAccuController()
 {
     return std::make_unique<MockI2cCtrlAccumulator>();
 }

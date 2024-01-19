@@ -180,7 +180,7 @@ QString Mt310s2SystemInterface::m_ReadWritePCBVersion(QString &sInput)
         if (cmd.isCommand(1))
         {
             QString Version = cmd.getParam(0);
-            ret = m_ctrlFactory->getDeviceIdentificationController()->writePCBVersion(Version);
+            ret = m_ctrlFactory->getDeviceIdentController()->writePCBVersion(Version);
             m_systemInfo->getSystemInfo(); // read back info
         }
 
@@ -244,7 +244,7 @@ QString Mt310s2SystemInterface::m_ReadWriteSerialNumber(QString &sInput)
         if (cmd.isCommand(1))
         {
             QString Serial = cmd.getParam(0);
-            ret = m_ctrlFactory->getDeviceIdentificationController()->writeSerialNumber(Serial);
+            ret = m_ctrlFactory->getDeviceIdentController()->writeSerialNumber(Serial);
             m_systemInfo->getSystemInfo(); // read back info
         }
 
@@ -408,7 +408,7 @@ QString Mt310s2SystemInterface::testMode(QString &Input)
 {
     cSCPICommand cmd = Input;
     quint32 modeBits = cmd.getParam(0).toUInt();
-    return m_ctrlFactory->getAccumulatorController()->enableTestMode(modeBits)==ZeraMControllerIo::cmddone ? ZSCPI::scpiAnswer[ZSCPI::ack] : ZSCPI::scpiAnswer[ZSCPI::errexec];
+    return m_ctrlFactory->getAccuController()->enableTestMode(modeBits)==ZeraMControllerIo::cmddone ? ZSCPI::scpiAnswer[ZSCPI::ack] : ZSCPI::scpiAnswer[ZSCPI::errexec];
 }
 
 void Mt310s2SystemInterface::updateAllCtrlVersionsJson()

@@ -17,7 +17,7 @@ QString TestSystemInfo::getPCBVersion()
 
 QString TestSystemInfo::getLCAVersion()
 {
-    return m_lcaVersion;
+    return m_FPGAVersion;
 }
 
 QString TestSystemInfo::getCTRLVersion()
@@ -42,7 +42,7 @@ void TestSystemInfo::setPCBVersion(QString version)
 
 void TestSystemInfo::setLCAVersion(QString version)
 {
-    m_lcaVersion = version;
+    m_FPGAVersion = version;
 }
 
 void TestSystemInfo::setCTRLVersion(QString version)

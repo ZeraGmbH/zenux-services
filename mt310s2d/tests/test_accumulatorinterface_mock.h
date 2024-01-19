@@ -14,8 +14,8 @@ private slots:
     void init();
     void cleanup();
 
-    void readAccumulatorStatusAccuDisabled();
-    void readAccumulatorStatusAccuEnabled();
+    void readAccuStatusAccuDisabled();
+    void readAccuStatusAccuEnabled();
 
     void readAccuStateOfChargeAccuDisabled();
     void readAccuStateOfChargeAccuEnabled();

@@ -17,7 +17,7 @@ QString Mt310s2SystemInfoMock::getPCBVersion()
 
 QString Mt310s2SystemInfoMock::getLCAVersion()
 {
-    return m_lcaVersion;
+    return m_FPGAVersion;
 }
 
 QString Mt310s2SystemInfoMock::getCTRLVersion()
@@ -42,7 +42,7 @@ void Mt310s2SystemInfoMock::setPCBVersion(QString version)
 
 void Mt310s2SystemInfoMock::setLCAVersion(QString version)
 {
-    m_lcaVersion = version;
+    m_FPGAVersion = version;
 }
 
 void Mt310s2SystemInfoMock::setCTRLVersion(QString version)

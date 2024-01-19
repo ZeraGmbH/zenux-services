@@ -1,6 +1,6 @@
 #include "i2cctrldeviceidentificationdata.h"
 
-I2cCtrlDeviceIdentificationData::I2cCtrlDeviceIdentificationData(QString deviceNodeName, quint8 i2cAddress, quint8 debugLevel) :
+I2cCtrlDeviceIdent::I2cCtrlDeviceIdent(QString deviceNodeName, quint8 i2cAddress, quint8 debugLevel) :
     m_ctrlIo(deviceNodeName, i2cAddress, debugLevel)
 {
 }
@@ -15,17 +15,17 @@ enum hw_cmdcode
 
 };
 
-ZeraMControllerIoTemplate::atmelRM I2cCtrlDeviceIdentificationData::readDeviceName(QString &answer)
+ZeraMControllerIoTemplate::atmelRM I2cCtrlDeviceIdent::readDeviceName(QString &answer)
 {
     return m_ctrlIo.readVariableLenText(hwGetDevName, answer);
 }
 
-ZeraMControllerIoTemplate::atmelRM I2cCtrlDeviceIdentificationData::readSerialNumber(QString &answer)
+ZeraMControllerIoTemplate::atmelRM I2cCtrlDeviceIdent::readSerialNumber(QString &answer)
 {
     return m_ctrlIo.readVariableLenText(hwGetSerialNr, answer);
 }
 
-ZeraMControllerIoTemplate::atmelRM I2cCtrlDeviceIdentificationData::writeSerialNumber(QString &sNumber)
+ZeraMControllerIoTemplate::atmelRM I2cCtrlDeviceIdent::writeSerialNumber(QString &sNumber)
 {
     ZeraMControllerIo::atmelRM ret;
     quint16 len = static_cast<quint16>(sNumber.length());
@@ -41,12 +41,12 @@ ZeraMControllerIoTemplate::atmelRM I2cCtrlDeviceIdentificationData::writeSerialN
     return ret;
 }
 
-ZeraMControllerIoTemplate::atmelRM I2cCtrlDeviceIdentificationData::readLCAVersion(QString &answer)
+ZeraMControllerIoTemplate::atmelRM I2cCtrlDeviceIdent::readLCAVersion(QString &answer)
 {
     return m_ctrlIo.readVariableLenText(hwGetLCAVersion, answer);
 }
 
-ZeraMControllerIoTemplate::atmelRM I2cCtrlDeviceIdentificationData::writePCBVersion(QString &sVersion)
+ZeraMControllerIoTemplate::atmelRM I2cCtrlDeviceIdent::writePCBVersion(QString &sVersion)
 {
     ZeraMControllerIo::atmelRM ret;
     quint16 len = static_cast<quint16>(sVersion.length());

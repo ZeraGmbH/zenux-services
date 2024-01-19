@@ -6,7 +6,7 @@ TestHotPlugCtrlFactoryI2cCtrl::TestHotPlugCtrlFactoryI2cCtrl(I2cSettings *i2cSet
 {
 }
 
-I2cCtrlCommonInfoPtrUnique TestHotPlugCtrlFactoryI2cCtrl::getCommonVersionController(ControllerTypes ctrlType, quint8 muxChannel)
+I2cCtrlCommonInfoPtrUnique TestHotPlugCtrlFactoryI2cCtrl::getCommonInfoController(ControllerTypes ctrlType, quint8 muxChannel)
 {
     Q_UNUSED(muxChannel)
     Q_ASSERT(ctrlType == AbstractFactoryI2cCtrl::CTRL_TYPE_EMOB);

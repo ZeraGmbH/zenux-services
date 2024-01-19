@@ -158,7 +158,7 @@ QString Com5003SystemInterface::m_ReadWritePCBVersion(QString &sInput)
         if (cmd.isCommand(1))
         {
             QString Version = cmd.getParam(0);
-            ret = m_ctrlFactory->getDeviceIdentificationController()->writePCBVersion(Version);
+            ret = m_ctrlFactory->getDeviceIdentController()->writePCBVersion(Version);
             m_sytemInfo->getSystemInfo(); // read back info
         }
 
@@ -222,7 +222,7 @@ QString Com5003SystemInterface::m_ReadWriteSerialNumber(QString &sInput)
         if (cmd.isCommand(1))
         {
             QString Serial = cmd.getParam(0);
-            ret = m_ctrlFactory->getDeviceIdentificationController()->writeSerialNumber(Serial);
+            ret = m_ctrlFactory->getDeviceIdentController()->writeSerialNumber(Serial);
             m_sytemInfo->getSystemInfo(); // read back info
         }
 

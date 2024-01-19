@@ -12,7 +12,7 @@ enum hw_cmdcode
     hwGetAccuStateOfCharge = 0x0211,
 };
 
-ZeraMControllerIoTemplate::atmelRM I2cCtrlAccumulator::readAccumulatorStatus(quint8 &stat)
+ZeraMControllerIoTemplate::atmelRM I2cCtrlAccumulator::readAccuStatus(quint8 &stat)
 {
     ZeraMControllerIo::atmelRM ret = ZeraMControllerIo::cmdexecfault;
     quint8 answ[2];

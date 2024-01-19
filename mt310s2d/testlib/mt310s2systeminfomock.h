@@ -26,7 +26,7 @@ public:
 private:
     QString m_deviceName = "Unknown";
     QString m_pcpVersion = "Unknown";
-    QString m_lcaVersion = "Unknown";
+    QString m_FPGAVersion = "Unknown";
     QString m_ctrlVersion = "Unknown";
     QString m_serialNumber = "Unknown";
 };

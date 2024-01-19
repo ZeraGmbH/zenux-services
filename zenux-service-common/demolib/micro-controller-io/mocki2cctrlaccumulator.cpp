@@ -3,7 +3,7 @@
 // Currently there is unmocked testmode. Once we ged rid of this, we have to
 // add more in here
 
-ZeraMControllerIoTemplate::atmelRM MockI2cCtrlAccumulator::readAccumulatorStatus(quint8 &stat)
+ZeraMControllerIoTemplate::atmelRM MockI2cCtrlAccumulator::readAccuStatus(quint8 &stat)
 {
     Q_UNUSED(stat)
     return ZeraMControllerIoTemplate::cmddone;
