@@ -2,7 +2,7 @@
 #define TEST_ACCUMULATORINTERFACE_MOCK_H
 
 #include "resmanrunfacade.h"
-#include "mockmt310s2dfull.h"
+#include "mockmt310s2d.h"
 #include "pcbinterface.h"
 #include "proxyclient.h"
 
@@ -23,7 +23,7 @@ private slots:
 private:
     void setupServers(QString configFileXml);
     std::unique_ptr<ResmanRunFacade> m_resman;
-    std::unique_ptr<MockMt310s2dFull> m_mt310s2d;
+    std::unique_ptr<MockMt310s2d> m_mt310s2d;
     Zera::ProxyClientPtr m_pcbClient;
     std::unique_ptr<Zera::cPCBInterface> m_pcbIFace;
 };

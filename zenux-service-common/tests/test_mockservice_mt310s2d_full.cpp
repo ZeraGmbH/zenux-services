@@ -19,7 +19,7 @@ void test_mockservice_mt310s2d_full::initTestCase()
 void test_mockservice_mt310s2d_full::init()
 {
     m_resman = std::make_unique<ResmanRunFacade>();
-    m_mt310s2d = std::make_unique<MockMt310s2dFull>(std::make_shared<MockFactoryI2cCtrl>(true));
+    m_mt310s2d = std::make_unique<MockMt310s2d>(std::make_shared<MockFactoryI2cCtrl>(true));
     TimeMachineObject::feedEventLoop();
 
     m_pcbClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307);

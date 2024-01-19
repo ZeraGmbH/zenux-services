@@ -6,7 +6,7 @@ DemoSystemMt310s2::DemoSystemMt310s2()
 {
     m_resman = new ResmanRunFacade;
     DemoEventLoopFeeder::feedEventLoop();
-    m_mockmt310s2d = new MockMt310s2dFull(std::make_shared<MockFactoryI2cCtrl>(true));
+    m_mockmt310s2d = new MockMt310s2d(std::make_shared<MockFactoryI2cCtrl>(true));
     m_mocksec1000d = new MockSec1000d;
     m_mockzdsp1d = new MockZdsp1d;
     DemoEventLoopFeeder::feedEventLoop();

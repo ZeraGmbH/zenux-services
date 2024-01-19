@@ -101,7 +101,7 @@ void test_accumulatorinterface_mock::readAccuStateOfChargeAccuEnabled()
 void test_accumulatorinterface_mock::setupServers(QString configFileXml)
 {
     m_resman = std::make_unique<ResmanRunFacade>();
-    m_mt310s2d = std::make_unique<MockMt310s2dFull>(std::make_shared<TestFactoryI2cCtrl>(true), configFileXml);
+    m_mt310s2d = std::make_unique<MockMt310s2d>(std::make_shared<TestFactoryI2cCtrl>(true), configFileXml);
     TimeMachineObject::feedEventLoop();
 
     m_pcbClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307);

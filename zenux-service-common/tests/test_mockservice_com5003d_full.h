@@ -2,7 +2,7 @@
 #define TEST_MOCKSERVICE_COM5003D_FULL_H
 
 #include "resmanrunfacade.h"
-#include "mockcom5003dfull.h"
+#include "mockcom5003d.h"
 #include "pcbinterface.h"
 #include "proxyclient.h"
 
@@ -21,7 +21,7 @@ private slots:
     void smokeTestFoutGroupChannelResourceAndInterface();
 private:
     std::unique_ptr<ResmanRunFacade> m_resman;
-    std::unique_ptr<MockCom5003dFull> m_server;
+    std::unique_ptr<MockCom5003d> m_server;
     Zera::ProxyClientPtr m_pcbClient;
     std::unique_ptr<Zera::cPCBInterface> m_pcbIFace;
 };
