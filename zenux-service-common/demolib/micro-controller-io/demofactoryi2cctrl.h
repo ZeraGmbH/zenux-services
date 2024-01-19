@@ -1,12 +1,12 @@
-#ifndef MOCKFACTORYI2CCTRL_H
-#define MOCKFACTORYI2CCTRL_H
+#ifndef DEMOFACTORYI2CCTRL_H
+#define DEMOFACTORYI2CCTRL_H
 
 #include "abstractfactoryi2cctrl.h"
 
-class MockFactoryI2cCtrl : public AbstractFactoryI2cCtrl
+class DemoFactoryI2cCtrl : public AbstractFactoryI2cCtrl
 {
 public:
-    MockFactoryI2cCtrl(bool initialPermission);
+    DemoFactoryI2cCtrl(bool initialPermission);
     AbstractCtrlHeartbeatWaitPtr createCtrlHeartbeatWait(QString devnode) override;
     I2cCtrlCriticalStatusPtr getCriticalStatusController() override;
     I2cCtrlEepromPermissionPtr getPermissionCheckController() override;
@@ -34,4 +34,4 @@ private:
     static TPersitentControllerData m_persitentData;
 };
 
-#endif // MOCKFACTORYI2CCTRL_H
+#endif // DEMOFACTORYI2CCTRL_H
