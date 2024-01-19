@@ -36,21 +36,21 @@ I2cCtrlEepromPermissionPtr DemoFactoryI2cCtrl::getPermissionCheckController()
     return std::make_unique<MockI2cCtrlEepromPermission>(m_persitentData.m_permission);
 }
 
-I2cCtrlCommonInfoPtrUnique DemoFactoryI2cCtrl::getCommonVersionController(ControllerTypes ctrlType, quint8 muxChannel)
+I2cCtrlCommonInfoPtrUnique DemoFactoryI2cCtrl::getCommonInfoController(ControllerTypes ctrlType, quint8 muxChannel)
 {
     Q_UNUSED(muxChannel)
     return std::make_unique<DemoI2cCtrlCommonInfo>(getBaseName(ctrlType));
 }
 
-I2cCtrlDeviceIdentificationDataPtr DemoFactoryI2cCtrl::getDeviceIdentificationController()
+I2cCtrlDeviceIdentPtr DemoFactoryI2cCtrl::getDeviceIdentController()
 {
-    return std::make_unique<MockI2cCtrlDeviceIdentificationData>(m_persitentData.m_deviceName,
+    return std::make_unique<MockI2cCtrlDeviceIdent>(m_persitentData.m_deviceName,
                                                                m_persitentData.m_serialNumber,
-                                                               m_persitentData.m_LCAVersion,
+                                                               m_persitentData.m_FPGAVersion,
                                                                m_persitentData.m_writablePcbVersion);
 }
 
-I2cCtrlAccumulatorPtr DemoFactoryI2cCtrl::getAccumulatorController()
+I2cCtrlAccumulatorPtr DemoFactoryI2cCtrl::getAccuController()
 {
     return std::make_unique<MockI2cCtrlAccumulator>();
 }

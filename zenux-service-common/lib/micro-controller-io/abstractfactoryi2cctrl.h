@@ -18,9 +18,9 @@ public:
 
     virtual I2cCtrlCriticalStatusPtr getCriticalStatusController() = 0;
     virtual I2cCtrlEepromPermissionPtr getPermissionCheckController() = 0;
-    virtual I2cCtrlCommonInfoPtrUnique getCommonVersionController(ControllerTypes ctrlType, quint8 muxChannel = -1) = 0;
-    virtual I2cCtrlDeviceIdentificationDataPtr getDeviceIdentificationController() = 0;
-    virtual I2cCtrlAccumulatorPtr getAccumulatorController() = 0;
+    virtual I2cCtrlCommonInfoPtrUnique getCommonInfoController(ControllerTypes ctrlType, quint8 muxChannel = -1) = 0;
+    virtual I2cCtrlDeviceIdentPtr getDeviceIdentController() = 0;
+    virtual I2cCtrlAccumulatorPtr getAccuController() = 0;
     virtual I2cCtrlRangesPtr getRangesController() = 0;
     virtual I2cCtrlMModePtr getMModeController() = 0;
     virtual I2cCtrlPllPtr getPllController() = 0;

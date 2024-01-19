@@ -25,17 +25,17 @@ public:
 typedef std::shared_ptr<AbstractI2cCtrlCommonInfo> I2cCtrlCommonInfoPtrShared;
 typedef std::unique_ptr<AbstractI2cCtrlCommonInfo> I2cCtrlCommonInfoPtrUnique;
 
-class AbstractI2cCtrlDeviceIdentificationData
+class AbstractI2cCtrlDeviceIdent
 {
 public:
-    virtual ~AbstractI2cCtrlDeviceIdentificationData() = default;
+    virtual ~AbstractI2cCtrlDeviceIdent() = default;
     virtual ZeraMControllerIo::atmelRM readDeviceName(QString& answer) = 0;
     virtual ZeraMControllerIo::atmelRM readSerialNumber(QString& answer) = 0;
     virtual ZeraMControllerIo::atmelRM writeSerialNumber(QString &sNumber) = 0;
     virtual ZeraMControllerIo::atmelRM readLCAVersion(QString& answer) = 0;
     virtual ZeraMControllerIo::atmelRM writePCBVersion(QString& sVersion) = 0; // only relais controller for now
 };
-typedef std::unique_ptr<AbstractI2cCtrlDeviceIdentificationData> I2cCtrlDeviceIdentificationDataPtr;
+typedef std::unique_ptr<AbstractI2cCtrlDeviceIdent> I2cCtrlDeviceIdentPtr;
 
 
 class AbstractI2cCtrlEepromPermission
@@ -80,7 +80,7 @@ class AbstractI2cCtrlAccumulator
 {
 public:
     virtual ~AbstractI2cCtrlAccumulator() = default;
-    virtual ZeraMControllerIo::atmelRM readAccumulatorStatus(quint8& stat) = 0;
+    virtual ZeraMControllerIo::atmelRM readAccuStatus(quint8& stat) = 0;
     virtual ZeraMControllerIo::atmelRM readAccuStateOfCharge(quint8& charge) = 0;
     // This should go soon!!!
     virtual ZeraMControllerIo::atmelRM enableTestMode(qint32 testBits) = 0;

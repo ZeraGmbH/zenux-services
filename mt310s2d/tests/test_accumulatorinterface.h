@@ -12,7 +12,7 @@ private slots:
     void cleanup();
 
     void findObjects();
-    void readAccumulatorStatus();
+    void readAccuStatus();
     void readAccuStateOfCharge();
 
 private:

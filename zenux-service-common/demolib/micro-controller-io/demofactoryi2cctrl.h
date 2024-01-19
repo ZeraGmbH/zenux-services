@@ -10,9 +10,9 @@ public:
     AbstractCtrlHeartbeatWaitPtr createCtrlHeartbeatWait(QString devnode) override;
     I2cCtrlCriticalStatusPtr getCriticalStatusController() override;
     I2cCtrlEepromPermissionPtr getPermissionCheckController() override;
-    I2cCtrlCommonInfoPtrUnique getCommonVersionController(ControllerTypes ctrlType, quint8 muxChannel = -1) override;
-    I2cCtrlDeviceIdentificationDataPtr getDeviceIdentificationController() override;
-    I2cCtrlAccumulatorPtr getAccumulatorController() override;
+    I2cCtrlCommonInfoPtrUnique getCommonInfoController(ControllerTypes ctrlType, quint8 muxChannel = -1) override;
+    I2cCtrlDeviceIdentPtr getDeviceIdentController() override;
+    I2cCtrlAccumulatorPtr getAccuController() override;
     I2cCtrlRangesPtr getRangesController() override;
     I2cCtrlMModePtr getMModeController() override;
     I2cCtrlPllPtr getPllController() override;
@@ -27,7 +27,7 @@ private:
         quint16 m_criticalStatusMask = 0;
         QString m_deviceName = "Device name";
         QString m_serialNumber = "Serial number";
-        QString m_LCAVersion = "FPGA version";
+        QString m_FPGAVersion = "FPGA version";
         QString m_writablePcbVersion = "Unknown";
 
         quint8 m_pllChannel = 0;

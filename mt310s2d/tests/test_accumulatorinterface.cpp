@@ -36,7 +36,7 @@ void test_accumulatorinterface::findObjects()
     QVERIFY(m_scpiInterface->getSCPIObject(systemAccumulatorSoc));
 }
 
-void test_accumulatorinterface::readAccumulatorStatus()
+void test_accumulatorinterface::readAccuStatus()
 {
     TimeMachineForTest::getInstance()->processTimers(1500);
     std::unique_ptr<cProtonetCommand> protoCmd = std::make_unique<cProtonetCommand>(nullptr, false, false, QByteArray(), 0, systemAccumulatorStatus);

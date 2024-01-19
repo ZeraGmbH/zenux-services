@@ -9,7 +9,7 @@ class TestHotPlugCtrlFactoryI2cCtrl : public AbstractFactoryI2cCtrl
 public:
     TestHotPlugCtrlFactoryI2cCtrl(I2cSettings *i2cSettings);
 
-    I2cCtrlCommonInfoPtrUnique getCommonVersionController(ControllerTypes ctrlType, quint8 muxChannel = -1) override;
+    I2cCtrlCommonInfoPtrUnique getCommonInfoController(ControllerTypes ctrlType, quint8 muxChannel = -1) override;
 
     int getCtrlInstanceCount();
     void prepareNextTestControllers(QVector<bool> respondOnVersionList);
@@ -17,8 +17,8 @@ public:
     AbstractCtrlHeartbeatWaitPtr createCtrlHeartbeatWait(QString) override { return nullptr; }
     I2cCtrlCriticalStatusPtr getCriticalStatusController() override { return nullptr; }
     I2cCtrlEepromPermissionPtr getPermissionCheckController() override { return nullptr; }
-    I2cCtrlDeviceIdentificationDataPtr getDeviceIdentificationController() override { return nullptr; }
-    I2cCtrlAccumulatorPtr getAccumulatorController() override { return nullptr; }
+    I2cCtrlDeviceIdentPtr getDeviceIdentController() override { return nullptr; }
+    I2cCtrlAccumulatorPtr getAccuController() override { return nullptr; }
     I2cCtrlRangesPtr getRangesController() override { return nullptr; }
     I2cCtrlMModePtr getMModeController() override { return nullptr; }
     I2cCtrlPllPtr getPllController() override { return nullptr; }

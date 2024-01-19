@@ -3,10 +3,10 @@
 
 #include "abstracti2ccontrollers.h"
 
-class I2cCtrlDeviceIdentificationData : public AbstractI2cCtrlDeviceIdentificationData
+class I2cCtrlDeviceIdent : public AbstractI2cCtrlDeviceIdent
 {
 public:
-    I2cCtrlDeviceIdentificationData(QString deviceNodeName, quint8 i2cAddress, quint8 debugLevel);
+    I2cCtrlDeviceIdent(QString deviceNodeName, quint8 i2cAddress, quint8 debugLevel);
     ZeraMControllerIo::atmelRM readDeviceName(QString& answer) override;
     ZeraMControllerIo::atmelRM readSerialNumber(QString& answer) override;
     ZeraMControllerIo::atmelRM writeSerialNumber(QString &sNumber) override;

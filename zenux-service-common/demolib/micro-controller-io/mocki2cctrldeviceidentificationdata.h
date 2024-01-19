@@ -3,10 +3,10 @@
 
 #include "abstracti2ccontrollers.h"
 
-class MockI2cCtrlDeviceIdentificationData : public AbstractI2cCtrlDeviceIdentificationData
+class MockI2cCtrlDeviceIdent : public AbstractI2cCtrlDeviceIdent
 {
 public:
-    MockI2cCtrlDeviceIdentificationData(QString &deviceName, QString &serialNumber, QString &LCAVersion, QString &writablePcbVersion);
+    MockI2cCtrlDeviceIdent(QString &deviceName, QString &serialNumber, QString &LCAVersion, QString &writablePcbVersion);
     ZeraMControllerIo::atmelRM readDeviceName(QString& answer) override;
     ZeraMControllerIo::atmelRM readSerialNumber(QString& answer) override;
     ZeraMControllerIo::atmelRM writeSerialNumber(QString &sNumber) override;
@@ -15,7 +15,7 @@ public:
 private:
     QString &m_deviceName;
     QString &m_serialNumber;
-    QString &m_LCAVersion;
+    QString &m_FPGAVersion;
     QString &m_writablePcbVersion;
 };
 
