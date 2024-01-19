@@ -1,17 +1,17 @@
-#ifndef MOCKFORSENSEINTERFACECOM5003_H
-#define MOCKFORSENSEINTERFACECOM5003_H
+#ifndef TESTSERVERFORSENSEINTERFACECOM5003_H
+#define TESTSERVERFORSENSEINTERFACECOM5003_H
 
 #include "i2csettings.h"
-#include "mockpcbserver.h"
+#include "testpcbserver.h"
 #include "com5003senseinterface.h"
 #include "com5003systeminterface.h"
 #include "abstractfactoryi2cctrl.h"
 #include <memory>
 
-class MockForSenseInterfaceCom5003  : public MockPcbServer
+class TestServerForSenseInterfaceCom5003  : public TestPcbServer
 {
 public:
-    MockForSenseInterfaceCom5003(FactoryControllerAbstractPtr ctrlFactory, bool systemInfoMock = false);
+    TestServerForSenseInterfaceCom5003(FactoryControllerAbstractPtr ctrlFactory, bool systemInfoMock = false);
     QString getDeviceVersion() { return m_systemInfo->getDeviceVersion(); }
     Com5003SenseInterface *getSenseInterface() { return m_senseInterface.get(); }
     cSenseSettings* getSenseSettings() { return m_senseSettings.get(); }
@@ -28,4 +28,4 @@ private:
     std::unique_ptr<SystemInfo> m_systemInfo;
 };
 
-#endif // MOCKFORSENSEINTERFACECOM5003_H
+#endif // TESTSERVERFORSENSEINTERFACECOM5003_H

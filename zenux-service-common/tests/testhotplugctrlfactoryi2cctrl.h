@@ -1,13 +1,13 @@
-#ifndef HOTPLUGCTRLTESTFACTORY_H
-#define HOTPLUGCTRLTESTFACTORY_H
+#ifndef TESTHOTPLUGCTRLFACTORYI2CCTRL_H
+#define TESTHOTPLUGCTRLFACTORYI2CCTRL_H
 
 #include "abstractfactoryi2cctrl.h"
 #include "i2csettings.h"
 
-class HotPlugCtrlTestFactory : public AbstractFactoryI2cCtrl
+class TestHotPlugCtrlFactoryI2cCtrl : public AbstractFactoryI2cCtrl
 {
 public:
-    HotPlugCtrlTestFactory(I2cSettings *i2cSettings);
+    TestHotPlugCtrlFactoryI2cCtrl(I2cSettings *i2cSettings);
 
     I2cCtrlCommonVersionsPtrUnique getCommonVersionController(ControllerTypes ctrlType, quint8 muxChannel = -1) override;
 
@@ -30,4 +30,4 @@ private:
     QVector<bool> m_respondOnVersionList;
 };
 
-#endif // HOTPLUGCTRLTESTFACTORY_H
+#endif // TESTHOTPLUGCTRLFACTORYI2CCTRL_H

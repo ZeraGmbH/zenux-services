@@ -1,15 +1,15 @@
-#ifndef PCBTESTSERVER_H
-#define PCBTESTSERVER_H
+#ifndef TESTPCBSERVERNOTIFICATIONS_H
+#define TESTPCBSERVERNOTIFICATIONS_H
 
 #include "pcbserver.h"
 #include "abstractfactoryi2cctrl.h"
 
-class PCBTestServer : public cPCBServer
+class TestPcbServerNotifications : public cPCBServer
 {
     Q_OBJECT
 public:
-    PCBTestServer(ServerParams params, cSCPI *scpiInterface, FactoryControllerAbstractPtr ctrlFactory);
-    ~PCBTestServer();
+    TestPcbServerNotifications(ServerParams params, cSCPI *scpiInterface, FactoryControllerAbstractPtr ctrlFactory);
+    ~TestPcbServerNotifications();
     void insertScpiConnection(ScpiConnection *scpiConnection);
     void initTestSCPIConnections();
     void registerNotifier(QString inputCmd, int notifierId);
@@ -21,4 +21,4 @@ private slots:
     void onSendNotification(ScpiNotificationSubscriber subscriber) override;
 };
 
-#endif // PCBTESTSERVER_H
+#endif // TESTPCBSERVERNOTIFICATIONS_H

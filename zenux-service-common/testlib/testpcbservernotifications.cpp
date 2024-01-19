@@ -1,28 +1,28 @@
-#include "pcbtestserver.h"
+#include "testpcbservernotifications.h"
 #include "permissionfunctions.h"
 
-PCBTestServer::PCBTestServer(ServerParams params, cSCPI *scpiInterface, FactoryControllerAbstractPtr ctrlFactory) :
+TestPcbServerNotifications::TestPcbServerNotifications(ServerParams params, cSCPI *scpiInterface, FactoryControllerAbstractPtr ctrlFactory) :
     cPCBServer(params, scpiInterface)
 {
     scpiConnectionList.append(this);
     PermissionFunctions::setPermissionCtrlFactory(ctrlFactory);
 }
 
-PCBTestServer::~PCBTestServer()
+TestPcbServerNotifications::~TestPcbServerNotifications()
 {
 }
 
-void PCBTestServer::insertScpiConnection(ScpiConnection *scpiConnection)
+void TestPcbServerNotifications::insertScpiConnection(ScpiConnection *scpiConnection)
 {
     scpiConnectionList.append(scpiConnection);
 }
 
-void PCBTestServer::initTestSCPIConnections()
+void TestPcbServerNotifications::initTestSCPIConnections()
 {
     initSCPIConnections();
 }
 
-void PCBTestServer::registerNotifier(QString inputCmd, int notifierId)
+void TestPcbServerNotifications::registerNotifier(QString inputCmd, int notifierId)
 {
     QString scpiAuthorizationQuery = QString("%1 %2;%3;").arg("SERVER:REGISTER").arg(inputCmd).arg(notifierId);
     cProtonetCommand* protoCmd = new cProtonetCommand(nullptr, false, false, QByteArray(), 0, scpiAuthorizationQuery);
@@ -30,7 +30,7 @@ void PCBTestServer::registerNotifier(QString inputCmd, int notifierId)
     scpiDelegate->executeSCPI(protoCmd);
 }
 
-void PCBTestServer::unregisterNotifier()
+void TestPcbServerNotifications::unregisterNotifier()
 {
     QString scpiAuthorizationQuery = QString("%1 %2;").arg("SERVER:UNREGISTER").arg("");
     cProtonetCommand* protoCmd = new cProtonetCommand(nullptr, false, false, QByteArray(), 0, scpiAuthorizationQuery);
@@ -39,11 +39,11 @@ void PCBTestServer::unregisterNotifier()
     scpiDelegate->executeSCPI(protoCmd);
 }
 
-void PCBTestServer::doConfiguration()
+void TestPcbServerNotifications::doConfiguration()
 {
 }
 
-void PCBTestServer::onSendNotification(ScpiNotificationSubscriber subscriber)
+void TestPcbServerNotifications::onSendNotification(ScpiNotificationSubscriber subscriber)
 {
     emit notificationSent(subscriber.m_notifierId);
 }

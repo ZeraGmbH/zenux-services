@@ -1,5 +1,5 @@
 #include "test_authorizationnotifier.h"
-#include "adjustmentstatusnull.h"
+#include "testadjustmentstatusinterfacenull.h"
 #include "statusinterface.h"
 #include "mockfactoryi2cctrl.h"
 #include "mocki2cctrleeprompermission.h"
@@ -29,8 +29,8 @@ void test_authorizationnotifier::init()
     FactoryControllerAbstractPtr ctrlFactory = std::make_shared<MockFactoryI2cCtrl>(false);
 
     m_PermissionCtrl = ctrlFactory->getPermissionCheckController();
-    m_pcbServerTest = std::make_unique<PCBTestServer>(params, scpiInterface, ctrlFactory);
-    m_adjustmentStatusNull = new AdjustmentStatusNull();
+    m_pcbServerTest = std::make_unique<TestPcbServerNotifications>(params, scpiInterface, ctrlFactory);
+    m_adjustmentStatusNull = new TestAdjustmentStatusInterfaceNull();
     m_pcbServerTest->insertScpiConnection(new cStatusInterface(m_pcbServerTest->getSCPIInterface(), m_adjustmentStatusNull, ctrlFactory));
     m_pcbServerTest->initTestSCPIConnections();
 }
@@ -76,7 +76,7 @@ void test_authorizationnotifier::getNotiferId()
 
     cSCPIObject* scpiObject = m_pcbServerTest->getSCPIInterface()->getSCPIObject(registerNotifierCommand);
     cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
-    QSignalSpy spy(m_pcbServerTest.get(), &PCBTestServer::notificationSent);
+    QSignalSpy spy(m_pcbServerTest.get(), &TestPcbServerNotifications::notificationSent);
     QVERIFY(scpiDelegate->executeSCPI(protoCmd));
 
     QCOMPARE(spy.count(), 1);
@@ -87,7 +87,7 @@ void test_authorizationnotifier::getNotiferId()
 void test_authorizationnotifier::notifyAuthoStatusEnabled()
 {
     m_pcbServerTest->registerNotifier(statusAuthorizationCommand, NOTIFICATION_ID);
-    QSignalSpy spy(m_pcbServerTest.get(), &PCBTestServer::notificationSent);
+    QSignalSpy spy(m_pcbServerTest.get(), &TestPcbServerNotifications::notificationSent);
     
     static_cast<MockI2cCtrlEepromPermission*>(m_PermissionCtrl.get())->accessEnableAfter(100);
     TimeMachineForTest::getInstance()->processTimers(1500);
@@ -98,7 +98,7 @@ void test_authorizationnotifier::notifyAuthoStatusEnabled()
 void test_authorizationnotifier::notifyAuthoStatusEnabledDisabled()
 {
     m_pcbServerTest->registerNotifier(statusAuthorizationCommand, NOTIFICATION_ID);
-    QSignalSpy spy(m_pcbServerTest.get(), &PCBTestServer::notificationSent);
+    QSignalSpy spy(m_pcbServerTest.get(), &TestPcbServerNotifications::notificationSent);
     
     static_cast<MockI2cCtrlEepromPermission*>(m_PermissionCtrl.get())->accessEnableAfter(100);
     TimeMachineForTest::getInstance()->processTimers(1500);
@@ -114,7 +114,7 @@ void test_authorizationnotifier::unregisteredNotifierAuthoStatusEnabled()
 {
     m_pcbServerTest->registerNotifier(statusAuthorizationCommand, NOTIFICATION_ID);
     m_pcbServerTest->unregisterNotifier();
-    QSignalSpy spy(m_pcbServerTest.get(), &PCBTestServer::notificationSent);
+    QSignalSpy spy(m_pcbServerTest.get(), &TestPcbServerNotifications::notificationSent);
     static_cast<MockI2cCtrlEepromPermission*>(m_PermissionCtrl.get())->accessEnableAfter(10);
     TimeMachineForTest::getInstance()->processTimers(1000);
     QCOMPARE(spy.count(), 0);
@@ -122,7 +122,7 @@ void test_authorizationnotifier::unregisteredNotifierAuthoStatusEnabled()
 
 void test_authorizationnotifier::noNotificationAuthoStatusEnabled()
 {
-    QSignalSpy spy(m_pcbServerTest.get(), &PCBTestServer::notificationSent);
+    QSignalSpy spy(m_pcbServerTest.get(), &TestPcbServerNotifications::notificationSent);
     QCOMPARE(getAuthoStatus(), "0");
     static_cast<MockI2cCtrlEepromPermission*>(m_PermissionCtrl.get())->accessEnableAfter(10);
     TimeMachineForTest::getInstance()->processTimers(1000);

@@ -1,8 +1,8 @@
 #ifndef TEST_SERVERUNREGISTERNOTIFIER_H
 #define TEST_SERVERUNREGISTERNOTIFIER_H
 
-#include "pcbtestserver.h"
-#include "adjustmentstatusnull.h"
+#include "testpcbservernotifications.h"
+#include "testadjustmentstatusinterfacenull.h"
 #include "foutsettings.h"
 #include "accumulatorsettings.h"
 #include <memory>
@@ -23,8 +23,8 @@ private:
     cSCPIDelegate* getDelegate(QString cmd);
 
     cSCPI m_scpiInterface;
-    std::unique_ptr<PCBTestServer> m_pcbServerTest;
-    std::unique_ptr<AdjustmentStatusNull> m_adjustmentStatusNull;
+    std::unique_ptr<TestPcbServerNotifications> m_pcbServerTest;
+    std::unique_ptr<TestAdjustmentStatusInterfaceNull> m_adjustmentStatusNull;
     FactoryControllerAbstractPtr m_ctrlFactory;
 
     std::unique_ptr<Zera::XMLConfig::cReader> m_xmlConfigReader;

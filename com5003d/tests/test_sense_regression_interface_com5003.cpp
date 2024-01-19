@@ -15,7 +15,7 @@ QTEST_MAIN(test_sense_regression_interface_com5003);
 void test_sense_regression_interface_com5003::initTestCase()
 {
     m_resmanServer = std::make_unique<ResmanRunFacade>();
-    m_mockServer = std::make_unique<MockForSenseInterfaceCom5003>(std::make_shared<MockFactoryI2cCtrl>(true));
+    m_testServer = std::make_unique<TestServerForSenseInterfaceCom5003>(std::make_shared<MockFactoryI2cCtrl>(true));
     TimeMachineObject::feedEventLoop();
 
     m_pcbClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307);
@@ -27,7 +27,7 @@ void test_sense_regression_interface_com5003::initTestCase()
 
 void test_sense_regression_interface_com5003::checkVersionsOfSystemInterface()
 {
-    QCOMPARE(m_mockServer->getDeviceVersion(), "DEVICE: Unknown;PCB: Unknown;LCA: Unknown;CTRL: Unknown");
+    QCOMPARE(m_testServer->getDeviceVersion(), "DEVICE: Unknown;PCB: Unknown;LCA: Unknown;CTRL: Unknown");
 }
 
 QStringList test_sense_regression_interface_com5003::m_channelsExpectedAllOverThePlace = QStringList()
@@ -48,7 +48,7 @@ QStringList test_sense_regression_interface_com5003::m_rangesExpectedU = QString
 
 void test_sense_regression_interface_com5003::checkRangesUL1()
 {
-    SenseSystem::cChannelSettings *channelSetting = m_mockServer->getSenseSettings()->findChannelSettingByAlias1("UL1");
+    SenseSystem::cChannelSettings *channelSetting = m_testServer->getSenseSettings()->findChannelSettingByAlias1("UL1");
 
     QSignalSpy responseSpy(m_pcbIFace.get(), &Zera::cPCBInterface::serverAnswer);
     m_pcbIFace->getRangeList(channelSetting->m_nameMx);
@@ -65,7 +65,7 @@ QStringList test_sense_regression_interface_com5003::m_rangesExpectedI = QString
 
 void test_sense_regression_interface_com5003::checkRangesIL1()
 {
-    SenseSystem::cChannelSettings *channelSetting = m_mockServer->getSenseSettings()->findChannelSettingByAlias1("IL1");
+    SenseSystem::cChannelSettings *channelSetting = m_testServer->getSenseSettings()->findChannelSettingByAlias1("IL1");
 
     QSignalSpy responseSpy(m_pcbIFace.get(), &Zera::cPCBInterface::serverAnswer);
     m_pcbIFace->getRangeList(channelSetting->m_nameMx);
@@ -75,7 +75,7 @@ void test_sense_regression_interface_com5003::checkRangesIL1()
 
 void test_sense_regression_interface_com5003::constantRangeValuesIL3GenJson()
 {
-    SenseSystem::cChannelSettings *channelSetting = m_mockServer->getSenseSettings()->findChannelSettingByAlias1("IL3");
+    SenseSystem::cChannelSettings *channelSetting = m_testServer->getSenseSettings()->findChannelSettingByAlias1("IL3");
     SenseRegressionHelper::genJsonConstantValuesAllRanges(channelSetting, m_pcbIFace.get());
 }
 
@@ -83,13 +83,13 @@ void test_sense_regression_interface_com5003::constantRangeValuesIL3Check()
 {
     QJsonObject json = loadJson(":/all-ranges-il3.json");
     QVERIFY(!json.isEmpty());
-    SenseSystem::cChannelSettings *channelSetting = m_mockServer->getSenseSettings()->findChannelSettingByAlias1("IL3");
+    SenseSystem::cChannelSettings *channelSetting = m_testServer->getSenseSettings()->findChannelSettingByAlias1("IL3");
     QVERIFY(SenseRegressionHelper::checkJsonConstantValuesAllRanges(json, channelSetting, m_pcbIFace.get()));
 }
 
 void test_sense_regression_interface_com5003::constantRangeValuesUL3GenJson()
 {
-    SenseSystem::cChannelSettings *channelSetting = m_mockServer->getSenseSettings()->findChannelSettingByAlias1("UL3");
+    SenseSystem::cChannelSettings *channelSetting = m_testServer->getSenseSettings()->findChannelSettingByAlias1("UL3");
     SenseRegressionHelper::genJsonConstantValuesAllRanges(channelSetting, m_pcbIFace.get());
 }
 
@@ -97,7 +97,7 @@ void test_sense_regression_interface_com5003::constantRangeValuesUL3Check()
 {
     QJsonObject json = loadJson(":/all-ranges-ul3.json");
     QVERIFY(!json.isEmpty());
-    SenseSystem::cChannelSettings *channelSetting = m_mockServer->getSenseSettings()->findChannelSettingByAlias1("UL3");
+    SenseSystem::cChannelSettings *channelSetting = m_testServer->getSenseSettings()->findChannelSettingByAlias1("UL3");
     QVERIFY(SenseRegressionHelper::checkJsonConstantValuesAllRanges(json, channelSetting, m_pcbIFace.get()));
 }
 

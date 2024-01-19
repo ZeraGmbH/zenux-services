@@ -1,10 +1,10 @@
-#include "mockforsenseinterfacemt310s2.h"
+#include "testserverforsenseinterfacemt310s2.h"
 #include "clampfactorytest.h"
 #include "mt310s2systeminfomock.h"
 #include <i2cmultiplexerfactory.h>
 
-MockForSenseInterfaceMt310s2::MockForSenseInterfaceMt310s2(FactoryControllerAbstractPtr ctrlFactory, bool systemInfoMock) :
-    MockPcbServer("mt310s2d")
+TestServerForSenseInterfaceMt310s2::TestServerForSenseInterfaceMt310s2(FactoryControllerAbstractPtr ctrlFactory, bool systemInfoMock) :
+    TestPcbServer("mt310s2d")
 {
     m_i2cSettings = std::make_unique<I2cSettings>(getConfigReader());
     m_senseSettings = std::make_unique<cSenseSettings>(getConfigReader(), 8);
@@ -39,14 +39,14 @@ MockForSenseInterfaceMt310s2::MockForSenseInterfaceMt310s2(FactoryControllerAbst
     start();
 }
 
-void MockForSenseInterfaceMt310s2::addClamp(int clampTypeNo, QString channelAlias1)
+void TestServerForSenseInterfaceMt310s2::addClamp(int clampTypeNo, QString channelAlias1)
 {
     ClampFactoryTest::setTestClampType(clampTypeNo);
     SenseSystem::cChannelSettings *channelSettingClamps = getSenseSettings()->findChannelSettingByAlias1(channelAlias1);
     getClampInterface()->addClamp(channelSettingClamps, I2cMultiplexerFactory::createNullMuxer());
 }
 
-void MockForSenseInterfaceMt310s2::removeAllClamps()
+void TestServerForSenseInterfaceMt310s2::removeAllClamps()
 {
     // to execute as much production code as possible we use actualizeClampStatus
     getClampInterface()->actualizeClampStatus(0);

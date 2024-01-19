@@ -19,7 +19,7 @@ void test_adj_regression_scpi_query_format_mt310s2::initTestCase()
 
     QString filenameShort = ":/import_scpi_format";
     QVERIFY(QFile::exists(filenameShort + ".xml"));
-    QVERIFY(m_mockServer->getSenseInterface()->importAdjXMLFile(filenameShort));
+    QVERIFY(m_testServer->getSenseInterface()->importAdjXMLFile(filenameShort));
 }
 
 void test_adj_regression_scpi_query_format_mt310s2::init()
@@ -264,7 +264,7 @@ void test_adj_regression_scpi_query_format_mt310s2::queryOffsetNodes()
 void test_adj_regression_scpi_query_format_mt310s2::setupServers()
 {
     m_resmanServer = std::make_unique<ResmanRunFacade>();
-    m_mockServer = std::make_unique<MockForSenseInterfaceMt310s2>(std::make_shared<MockFactoryI2cCtrl>(true));
+    m_testServer = std::make_unique<TestServerForSenseInterfaceMt310s2>(std::make_shared<MockFactoryI2cCtrl>(true));
     TimeMachineObject::feedEventLoop();
 
     m_pcbClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307);

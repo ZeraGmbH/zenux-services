@@ -1,7 +1,7 @@
 #ifndef TEST_REGRESSION_ADJ_IMPORT_EXPORT_EEPROM_MT310S2_H
 #define TEST_REGRESSION_ADJ_IMPORT_EXPORT_EEPROM_MT310S2_H
 
-#include "mockforsenseinterfacemt310s2.h"
+#include "testserverforsenseinterfacemt310s2.h"
 #include "pcbinterface.h"
 #include "proxyclient.h"
 #include "resmanrunfacade.h"
@@ -30,7 +30,7 @@ private:
     bool writeFile(QString filename, QByteArray data);
     QByteArray readFile(QString filename);
 
-    std::unique_ptr<MockForSenseInterfaceMt310s2> m_mockServer;
+    std::unique_ptr<TestServerForSenseInterfaceMt310s2> m_testServer;
     std::unique_ptr<ResmanRunFacade> m_resmanServer;
     Zera::ProxyClientPtr m_pcbClient;
     std::unique_ptr<Zera::cPCBInterface> m_pcbIFace;

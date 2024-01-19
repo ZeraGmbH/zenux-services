@@ -24,14 +24,14 @@ void test_adj_import_invalid_eeprom_com5003::cleanup()
 {
     m_pcbIFace = nullptr;
     m_pcbClient = nullptr;
-    m_mockServer = nullptr;
+    m_testServer = nullptr;
     m_resmanServer = nullptr;
     TimeMachineObject::feedEventLoop();
 }
 
 void test_adj_import_invalid_eeprom_com5003::importEmptyData()
 {
-    I2cSettings *i2cSettings = m_mockServer->getI2cSettings();
+    I2cSettings *i2cSettings = m_testServer->getI2cSettings();
     MockEEprom24LC eepromMock(i2cSettings->getDeviceNode(), i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress));
 
     QString ret = ScpiSingleTransactionBlocked::cmd("SYSTEM:ADJUSTMENT:FLASH:READ", "");
@@ -40,7 +40,7 @@ void test_adj_import_invalid_eeprom_com5003::importEmptyData()
 
 void test_adj_import_invalid_eeprom_com5003::importIncompleteData()
 {
-    I2cSettings *i2cSettings = m_mockServer->getI2cSettings();
+    I2cSettings *i2cSettings = m_testServer->getI2cSettings();
     MockEEprom24LC eepromMock(i2cSettings->getDeviceNode(), i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress));
     QByteArray eepromContent = readFile(":/export_internal_modified.eeprom");
     QVERIFY(!eepromContent.isEmpty());
@@ -67,7 +67,7 @@ void test_adj_import_invalid_eeprom_com5003::importIncompleteData()
 void test_adj_import_invalid_eeprom_com5003::setupServers()
 {
     m_resmanServer = std::make_unique<ResmanRunFacade>();
-    m_mockServer = std::make_unique<MockForSenseInterfaceCom5003>(std::make_shared<MockFactoryI2cCtrl>(true));
+    m_testServer = std::make_unique<TestServerForSenseInterfaceCom5003>(std::make_shared<MockFactoryI2cCtrl>(true));
     TimeMachineObject::feedEventLoop();
 
     m_pcbClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307);

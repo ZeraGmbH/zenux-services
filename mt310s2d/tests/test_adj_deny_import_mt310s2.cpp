@@ -23,7 +23,7 @@ void test_adj_deny_import_mt310s2::cleanup()
 {
     m_pcbIFace = nullptr;
     m_pcbClient = nullptr;
-    m_mockServer = nullptr;
+    m_testServer = nullptr;
     m_resmanServer = nullptr;
     TimeMachineObject::feedEventLoop();
 }
@@ -31,7 +31,7 @@ void test_adj_deny_import_mt310s2::cleanup()
 void test_adj_deny_import_mt310s2::loadEEpromWithStoredNamesAndVersions()
 {
     // This is mostly to set-up our mock SystemInfo
-    I2cSettings *i2cSettings = m_mockServer->getI2cSettings();
+    I2cSettings *i2cSettings = m_testServer->getI2cSettings();
     MockEEprom24LC eepromMock(i2cSettings->getDeviceNode(), i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress));
     QByteArray eepromContent = readFile(":/export_internal_modified.eeprom");
     QVERIFY(!eepromContent.isEmpty());
@@ -55,9 +55,9 @@ void test_adj_deny_import_mt310s2::loadEEpromWithStoredNamesAndVersions()
 
 void test_adj_deny_import_mt310s2::loadEEpromAndDenyDifferentDeviceName()
 {
-    static_cast<Mt310s2SystemInfoMock*>(m_mockServer->getSystemInfo())->setDeviceName("Foo");
+    static_cast<Mt310s2SystemInfoMock*>(m_testServer->getSystemInfo())->setDeviceName("Foo");
 
-    I2cSettings *i2cSettings = m_mockServer->getI2cSettings();
+    I2cSettings *i2cSettings = m_testServer->getI2cSettings();
     MockEEprom24LC eepromMock(i2cSettings->getDeviceNode(), i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress));
     QByteArray eepromContent = readFile(":/export_internal_modified.eeprom");
     QVERIFY(!eepromContent.isEmpty());
@@ -70,7 +70,7 @@ void test_adj_deny_import_mt310s2::loadEEpromAndDenyDifferentDeviceName()
 void test_adj_deny_import_mt310s2::setupServers()
 {
     m_resmanServer = std::make_unique<ResmanRunFacade>();
-    m_mockServer = std::make_unique<MockForSenseInterfaceMt310s2>(std::make_shared<MockFactoryI2cCtrl>(true),
+    m_testServer = std::make_unique<TestServerForSenseInterfaceMt310s2>(std::make_shared<MockFactoryI2cCtrl>(true),
                                                                   true);
     TimeMachineObject::feedEventLoop();
 
