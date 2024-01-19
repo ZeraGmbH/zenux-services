@@ -39,6 +39,8 @@ target_link_libraries(zenuxservicecommon-demolib
     com5003d-lib
     sec1000d-lib
     zdsp1d-lib
+    Zera::zera-timers-demolib
+    Zera::resman-lib
 )
 
 set_target_properties(zenuxservicecommon-demolib PROPERTIES VERSION ${PROJECT_VERSION})
