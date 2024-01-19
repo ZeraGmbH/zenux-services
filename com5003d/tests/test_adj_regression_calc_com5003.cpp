@@ -1,5 +1,5 @@
 #include "test_adj_regression_calc_com5003.h"
-#include "mockfactoryi2cctrl.h"
+#include "testfactoryi2cctrl.h"
 #include "proxy.h"
 #include "mocki2ceepromiofactory.h"
 #include "mockeeprom24lc.h"
@@ -80,7 +80,7 @@ void test_adj_regression_calc_com5003::offsetAdjValueTotal()
 void test_adj_regression_calc_com5003::setupServers()
 {
     m_resmanServer = std::make_unique<ResmanRunFacade>();
-    m_testServer = std::make_unique<TestServerForSenseInterfaceCom5003>(std::make_shared<MockFactoryI2cCtrl>(true));
+    m_testServer = std::make_unique<TestServerForSenseInterfaceCom5003>(std::make_shared<TestFactoryI2cCtrl>(true));
     TimeMachineObject::feedEventLoop();
 
     m_pcbClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307);

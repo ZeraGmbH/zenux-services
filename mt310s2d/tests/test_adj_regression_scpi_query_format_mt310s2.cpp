@@ -3,7 +3,7 @@
 #include "mocki2ceepromiofactory.h"
 #include "mockeeprom24lc.h"
 #include "scpisingletransactionblocked.h"
-#include "mockfactoryi2cctrl.h"
+#include "testfactoryi2cctrl.h"
 #include <timemachineobject.h>
 #include <QSignalSpy>
 #include <QTest>
@@ -264,7 +264,7 @@ void test_adj_regression_scpi_query_format_mt310s2::queryOffsetNodes()
 void test_adj_regression_scpi_query_format_mt310s2::setupServers()
 {
     m_resmanServer = std::make_unique<ResmanRunFacade>();
-    m_testServer = std::make_unique<TestServerForSenseInterfaceMt310s2>(std::make_shared<MockFactoryI2cCtrl>(true));
+    m_testServer = std::make_unique<TestServerForSenseInterfaceMt310s2>(std::make_shared<TestFactoryI2cCtrl>(true));
     TimeMachineObject::feedEventLoop();
 
     m_pcbClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307);
