@@ -1,4 +1,4 @@
-#include "mockfactoryi2cctrl.h"
+#include "demofactoryi2cctrl.h"
 #include "mockctrlheartbeatwait.h"
 #include "mocki2cctrlbootloader.h"
 #include "mocki2cctrlcommonversions.h"
@@ -11,38 +11,38 @@
 #include "mocki2cctrlpll.h"
 #include "mocki2cctrlclampstatus.h"
 
-MockFactoryI2cCtrl::TPersitentControllerData MockFactoryI2cCtrl::m_persitentData;
+DemoFactoryI2cCtrl::TPersitentControllerData DemoFactoryI2cCtrl::m_persitentData;
 
-MockFactoryI2cCtrl::MockFactoryI2cCtrl(bool initialPermission)
+DemoFactoryI2cCtrl::DemoFactoryI2cCtrl(bool initialPermission)
 {
     m_persitentData.m_permission = initialPermission;
 }
 
-AbstractCtrlHeartbeatWaitPtr MockFactoryI2cCtrl::createCtrlHeartbeatWait(QString devnode)
+AbstractCtrlHeartbeatWaitPtr DemoFactoryI2cCtrl::createCtrlHeartbeatWait(QString devnode)
 {
     Q_UNUSED(devnode)
     return std::make_unique<MockCtrlHeartbeatWait>();
 }
 
-I2cCtrlCriticalStatusPtr MockFactoryI2cCtrl::getCriticalStatusController()
+I2cCtrlCriticalStatusPtr DemoFactoryI2cCtrl::getCriticalStatusController()
 {
     return std::make_unique<MockI2cCtrlCriticalStatus>(m_persitentData.m_criticalStatus,
                                                      m_persitentData.m_criticalStatusMask);
 }
 
-I2cCtrlEepromPermissionPtr MockFactoryI2cCtrl::getPermissionCheckController()
+I2cCtrlEepromPermissionPtr DemoFactoryI2cCtrl::getPermissionCheckController()
 {
     return std::make_unique<MockI2cCtrlEepromPermission>(m_persitentData.m_permission);
 }
 
-I2cCtrlCommonVersionsPtrUnique MockFactoryI2cCtrl::getCommonVersionController(ControllerTypes ctrlType, quint8 muxChannel)
+I2cCtrlCommonVersionsPtrUnique DemoFactoryI2cCtrl::getCommonVersionController(ControllerTypes ctrlType, quint8 muxChannel)
 {
     Q_UNUSED(ctrlType)
     Q_UNUSED(muxChannel)
     return std::make_unique<MockI2cCtrlCommonVersions>(); // not prepared for updating pcbVersion write update...
 }
 
-I2cCtrlDeviceIdentificationDataPtr MockFactoryI2cCtrl::getDeviceIdentificationController()
+I2cCtrlDeviceIdentificationDataPtr DemoFactoryI2cCtrl::getDeviceIdentificationController()
 {
     return std::make_unique<MockI2cCtrlDeviceIdentificationData>(m_persitentData.m_deviceName,
                                                                m_persitentData.m_serialNumber,
@@ -50,32 +50,32 @@ I2cCtrlDeviceIdentificationDataPtr MockFactoryI2cCtrl::getDeviceIdentificationCo
                                                                m_persitentData.m_writablePcbVersion);
 }
 
-I2cCtrlAccumulatorPtr MockFactoryI2cCtrl::getAccumulatorController()
+I2cCtrlAccumulatorPtr DemoFactoryI2cCtrl::getAccumulatorController()
 {
     return std::make_unique<MockI2cCtrlAccumulator>();
 }
 
-I2cCtrlRangesPtr MockFactoryI2cCtrl::getRangesController()
+I2cCtrlRangesPtr DemoFactoryI2cCtrl::getRangesController()
 {
     return std::make_unique<MockI2cCtrlRanges>();
 }
 
-I2cCtrlMModePtr MockFactoryI2cCtrl::getMModeController()
+I2cCtrlMModePtr DemoFactoryI2cCtrl::getMModeController()
 {
     return std::make_unique<MockI2cCtrlMMode>();
 }
 
-I2cCtrlPllPtr MockFactoryI2cCtrl::getPllController()
+I2cCtrlPllPtr DemoFactoryI2cCtrl::getPllController()
 {
     return std::make_unique<MockI2cCtrlPll>(m_persitentData.m_pllChannel);
 }
 
-I2cCtrlClampStatusPtr MockFactoryI2cCtrl::getClampStatusController()
+I2cCtrlClampStatusPtr DemoFactoryI2cCtrl::getClampStatusController()
 {
     return std::make_unique<MockI2cCtrlClampStatus>();
 }
 
-I2cCtrlBootloaderPtr MockFactoryI2cCtrl::getBootloaderController()
+I2cCtrlBootloaderPtr DemoFactoryI2cCtrl::getBootloaderController()
 {
     return std::make_unique<MockI2cCtrlBootloader>();
 }
