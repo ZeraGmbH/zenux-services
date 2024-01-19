@@ -4,7 +4,6 @@
 
 
 <connectivity>
-    <debuglevel>1</debuglevel>
     <ethernet>
         <ipadress>
             <resourcemanager>127.0.0.1</resourcemanager>
@@ -17,6 +16,7 @@
         <scpiactive>1</scpiactive>
     </ethernet>
     <i2c>
+        <debuglevel>1</debuglevel>
         <device>
             <node>/dev/i2c-0</node>
         </device>

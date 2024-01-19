@@ -40,9 +40,6 @@ void HotPluggableControllerContainer::startActualizeEmobControllers(quint16 bitm
     }
 }
 
-// TODO: Move to i2c settings
-constexpr int defaultDebugLevel = 1;
-
 void HotPluggableControllerContainer::startAddingController(int ctrlChannel, SenseSystem::cChannelSettings* channelSettings, int msWaitForApplicationStart)
 {
     I2cMuxerScopedOnOff i2cMuxer(I2cMultiplexerFactory::createPCA9547Muxer(m_i2cSettings->getDeviceNode(),
@@ -50,7 +47,7 @@ void HotPluggableControllerContainer::startAddingController(int ctrlChannel, Sen
                                                                            channelSettings->m_nMuxChannelNo));
     ZeraMcontrollerIoPtr i2cCtrl = std::make_shared<ZeraMControllerIo>(m_i2cSettings->getDeviceNode(),
                                                                        m_i2cSettings->getI2CAdress(i2cSettings::emobCtrlI2cAddress),
-                                                                       defaultDebugLevel);
+                                                                       m_i2cSettings->getDebugLevel());
     ZeraMControllerBootloaderStopperPtr bootStopper = ZeraMControllerBootloaderStopperFactory::createBootloaderStopper(i2cCtrl, ctrlChannel);
     connect(bootStopper.get(), &ZeraMControllerBootloaderStopper::sigAssumeBootloaderStopped,
             this, &HotPluggableControllerContainer::onBootloaderStopAssumed);
