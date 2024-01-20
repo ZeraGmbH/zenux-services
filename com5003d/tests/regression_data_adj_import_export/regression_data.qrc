@@ -9,5 +9,6 @@
         <file>import_missing_serno.xml</file>
         <file>import_missing_type.xml</file>
         <file>import_modified.xml</file>
+        <file>import_unknown_entry.xml</file>
     </qresource>
 </RCC>

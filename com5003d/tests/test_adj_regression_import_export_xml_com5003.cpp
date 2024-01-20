@@ -92,6 +92,13 @@ void test_adj_regression_import_export_xml_com5003::directAcessFileImportMissing
     QVERIFY(!m_testServer->getSenseInterface()->importAdjXMLFile(filenameShort));
 }
 
+void test_adj_regression_import_export_xml_com5003::directAcessUnknownEntry()
+{
+    QString filenameShort = ":/import_unknown_entry";
+    QVERIFY(QFile::exists(filenameShort + ".xml"));
+    QVERIFY(!m_testServer->getSenseInterface()->importAdjXMLFile(filenameShort));
+}
+
 void test_adj_regression_import_export_xml_com5003::scpiExportInitialAdjXml()
 {
     QFile xmlFile(":/export_internal_initial.xml");

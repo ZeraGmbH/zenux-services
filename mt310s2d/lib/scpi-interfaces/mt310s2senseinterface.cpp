@@ -576,7 +576,7 @@ bool Mt310s2SenseInterface::importXMLDocument(QDomDocument* qdomdoc) // n steht 
             }
         }
         else {
-            qCritical("Justdata import: xmlcontains strange data");
+            qCritical("Justdata import: xml contains unknown tag '%s'", qPrintable(tName));
             return false;
         }
     }
