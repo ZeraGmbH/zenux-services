@@ -5,7 +5,7 @@
 #include "mocki2cctrlcriticalstatus.h"
 #include "mocki2cctrleeprompermission.h"
 #include "mocki2cctrlaccumulator.h"
-#include "mocki2cctrldeviceidentificationdata.h"
+#include "mocki2cctrldeviceident.h"
 #include "mocki2cctrlranges.h"
 #include "mocki2cctrlmmode.h"
 #include "mocki2cctrlpll.h"
