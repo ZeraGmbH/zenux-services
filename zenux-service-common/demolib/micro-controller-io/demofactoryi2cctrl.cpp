@@ -1,4 +1,5 @@
 #include "demofactoryi2cctrl.h"
+#include "mockcontrollertypename.h"
 #include "demoi2cctrlcommoninfo.h"
 #include "mockctrlheartbeatwait.h"
 #include "mocki2cctrlbootloader.h"
@@ -39,7 +40,7 @@ I2cCtrlEepromPermissionPtr DemoFactoryI2cCtrl::getPermissionCheckController()
 I2cCtrlCommonInfoPtrUnique DemoFactoryI2cCtrl::getCommonInfoController(ControllerTypes ctrlType, quint8 muxChannel)
 {
     Q_UNUSED(muxChannel)
-    return std::make_unique<DemoI2cCtrlCommonInfo>(getBaseName(ctrlType));
+    return std::make_unique<DemoI2cCtrlCommonInfo>(MockControllerTypeName::getCtrlTypeName(ctrlType));
 }
 
 I2cCtrlDeviceIdentPtr DemoFactoryI2cCtrl::getDeviceIdentController()
@@ -78,16 +79,4 @@ I2cCtrlClampStatusPtr DemoFactoryI2cCtrl::getClampStatusController()
 I2cCtrlBootloaderPtr DemoFactoryI2cCtrl::getBootloaderController()
 {
     return std::make_unique<MockI2cCtrlBootloader>();
-}
-
-QString DemoFactoryI2cCtrl::getBaseName(ControllerTypes ctrlType)
-{
-    switch(ctrlType) {
-    default:
-        return "Relais";
-    case CTRL_TYPE_SYSTEM:
-        return "System";
-    case CTRL_TYPE_EMOB:
-        return "Emob";
-    }
 }
