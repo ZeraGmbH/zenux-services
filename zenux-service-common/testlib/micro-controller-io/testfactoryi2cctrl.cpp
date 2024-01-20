@@ -1,4 +1,5 @@
 #include "testfactoryi2cctrl.h"
+#include "mockcontrollertypename.h"
 #include "mockctrlheartbeatwait.h"
 #include "mocki2cctrlbootloader.h"
 #include "testi2cctrlcommoninfo.h"
@@ -37,9 +38,8 @@ I2cCtrlEepromPermissionPtr TestFactoryI2cCtrl::getPermissionCheckController()
 
 I2cCtrlCommonInfoPtrUnique TestFactoryI2cCtrl::getCommonInfoController(ControllerTypes ctrlType, quint8 muxChannel)
 {
-    Q_UNUSED(ctrlType)
     Q_UNUSED(muxChannel)
-    return std::make_unique<TestI2cCtrlCommonInfo>(); // not prepared for updating pcbVersion write update...
+    return std::make_unique<TestI2cCtrlCommonInfo>(MockControllerTypeName::getCtrlTypeName(ctrlType));
 }
 
 I2cCtrlDeviceIdentPtr TestFactoryI2cCtrl::getDeviceIdentController()

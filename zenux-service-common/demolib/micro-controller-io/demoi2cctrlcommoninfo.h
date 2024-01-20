@@ -6,7 +6,7 @@
 class DemoI2cCtrlCommonInfo : public AbstractI2cCtrlCommonInfo
 {
 public:
-    DemoI2cCtrlCommonInfo(QString prefix);
+    DemoI2cCtrlCommonInfo(QString ctrlTypeName);
     ZeraMControllerIo::atmelRM readCTRLVersion(QString& answer) override;
     ZeraMControllerIo::atmelRM readPCBInfo(QString& answer) override;
 private:
