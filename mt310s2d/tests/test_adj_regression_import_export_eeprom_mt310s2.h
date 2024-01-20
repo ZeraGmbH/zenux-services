@@ -24,6 +24,8 @@ private slots:
     void scpiWriteRandomFileFlashWriteFlashReadExportXmlAndCheck();
     void loadRandomToEEpromWriteToFlashExportXmlAndCheck();
 
+    void directExportFlashArbitraryVersionGen();
+    void loadArbitraryVersionToEEprom();
     // all tests for clamps
 private:
     void setupServers(AbstractFactoryI2cCtrlPtr ctrlFactory);
