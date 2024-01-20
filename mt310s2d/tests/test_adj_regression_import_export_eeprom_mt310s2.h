@@ -26,7 +26,7 @@ private slots:
 
     // all tests for clamps
 private:
-    void setupServers(FactoryControllerAbstractPtr ctrlFactory);
+    void setupServers(AbstractFactoryI2cCtrlPtr ctrlFactory);
     bool writeFile(QString filename, QByteArray data);
     QByteArray readFile(QString filename);
 

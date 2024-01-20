@@ -5,7 +5,7 @@
 #include <scpi.h>
 #include <scpicommand.h>
 
-Mt310s2SenseChannel::Mt310s2SenseChannel(cSCPI* scpiinterface, QString description, QString unit, SenseSystem::cChannelSettings *cSettings, quint8 nr, FactoryControllerAbstractPtr ctrlFactory) :
+Mt310s2SenseChannel::Mt310s2SenseChannel(cSCPI* scpiinterface, QString description, QString unit, SenseSystem::cChannelSettings *cSettings, quint8 nr, AbstractFactoryI2cCtrlPtr ctrlFactory) :
     ScpiConnection(scpiinterface),
     m_ctrlFactory(ctrlFactory),
     m_sDescription(description),

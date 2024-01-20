@@ -4,7 +4,7 @@
 #include "mockpcbdevicenodectrlsingleton.h"
 #include "mockpcbdevicenodemessagesingleton.h"
 
-MockCom5003d::MockCom5003d(FactoryControllerAbstractPtr ctrlFactory, QString alternateConfigXml)
+MockCom5003d::MockCom5003d(AbstractFactoryI2cCtrlPtr ctrlFactory, QString alternateConfigXml)
 {
     MockI2cEEpromIoFactory::enableMock();
     MockPcbDeviceNodeCtrlSingleton::enableMock();

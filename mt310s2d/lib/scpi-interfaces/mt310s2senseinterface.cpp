@@ -25,7 +25,7 @@ Mt310s2SenseInterface::Mt310s2SenseInterface(cSCPI *scpiInterface,
                                              I2cSettings* i2cSettings,
                                              cSenseSettings* senseSettings,
                                              SystemInfo *systemInfo,
-                                             FactoryControllerAbstractPtr ctrlFactory) :
+                                             AbstractFactoryI2cCtrlPtr ctrlFactory) :
     cResource(scpiInterface),
     AdjustmentEeprom(i2cSettings->getDeviceNode(),
               i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress),

@@ -4,7 +4,7 @@
 #include "mockpcbdevicenodectrlsingleton.h"
 #include "mockpcbdevicenodemessagesingleton.h"
 
-MockMt310s2d::MockMt310s2d(FactoryControllerAbstractPtr ctrlFactory, QString alternateConfigXml)
+MockMt310s2d::MockMt310s2d(AbstractFactoryI2cCtrlPtr ctrlFactory, QString alternateConfigXml)
 {
     MockI2cEEpromIoFactory::enableMock();
     MockPcbDeviceNodeCtrlSingleton::enableMock();

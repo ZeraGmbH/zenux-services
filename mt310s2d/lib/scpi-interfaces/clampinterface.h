@@ -29,7 +29,7 @@ public:
                     I2cSettings *i2cSettings,
                     cSenseSettings *senseSettings,
                     Mt310s2SenseInterface *senseInterface,
-                    FactoryControllerAbstractPtr ctrlFactory);
+                    AbstractFactoryI2cCtrlPtr ctrlFactory);
     virtual void initSCPIConnection(QString leadingNodes) override;
     void actualizeClampStatus(quint16 devConnectedMask);
     // lazy: public for test
@@ -52,7 +52,7 @@ private:
     I2cSettings *m_i2cSettings;
     cSenseSettings *m_senseSettings;
     Mt310s2SenseInterface *m_pSenseInterface;
-    FactoryControllerAbstractPtr m_ctrlFactory;
+    AbstractFactoryI2cCtrlPtr m_ctrlFactory;
     NotificationString m_notifierClampChannelList;
     quint16 m_nClampStatus;
     QHash<QString, cClamp*> m_clampHash;

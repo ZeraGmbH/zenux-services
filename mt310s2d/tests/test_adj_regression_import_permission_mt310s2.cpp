@@ -72,7 +72,7 @@ void test_adj_regression_import_permission_mt310s2::scpiImportPassFlashWrite()
     QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::ack]);
 }
 
-void test_adj_regression_import_permission_mt310s2::setupServers(FactoryControllerAbstractPtr ctrlFactory)
+void test_adj_regression_import_permission_mt310s2::setupServers(AbstractFactoryI2cCtrlPtr ctrlFactory)
 {
     m_resmanServer = std::make_unique<ResmanRunFacade>();
     m_testServer = std::make_unique<TestServerForSenseInterfaceMt310s2>(ctrlFactory);

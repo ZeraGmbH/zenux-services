@@ -33,7 +33,7 @@ public:
                         QString unit,
                         SenseSystem::cChannelSettings* cSettings,
                         quint8 nr,
-                        FactoryControllerAbstractPtr ctrlFactory);
+                        AbstractFactoryI2cCtrlPtr ctrlFactory);
     ~Mt310s2SenseChannel();
     virtual void initSCPIConnection(QString leadingNodes) override;
 
@@ -62,7 +62,7 @@ protected:
     void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
 
 private:
-    FactoryControllerAbstractPtr m_ctrlFactory;
+    AbstractFactoryI2cCtrlPtr m_ctrlFactory;
     QString m_sName; // the channels name m0...
     QString m_sAlias; // the channel's alias name for example UL1
     QString m_sDescription; // the channel's brief description

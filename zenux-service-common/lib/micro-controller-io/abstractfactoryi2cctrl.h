@@ -29,6 +29,6 @@ public:
     virtual I2cCtrlBootloaderPtr getBootloaderController() = 0;
 };
 
-typedef std::shared_ptr<AbstractFactoryI2cCtrl> FactoryControllerAbstractPtr;
+typedef std::shared_ptr<AbstractFactoryI2cCtrl> AbstractFactoryI2cCtrlPtr;
 
 #endif // ABSTRACTFACTORYI2CCTRL_H

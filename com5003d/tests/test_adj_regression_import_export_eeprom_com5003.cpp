@@ -171,7 +171,7 @@ void test_adj_regression_import_export_eeprom_com5003::loadValidDateTimeRandomTo
     QCOMPARE(xmlExported, xmlExpected);
 }
 
-void test_adj_regression_import_export_eeprom_com5003::setupServers(FactoryControllerAbstractPtr ctrlFactory)
+void test_adj_regression_import_export_eeprom_com5003::setupServers(AbstractFactoryI2cCtrlPtr ctrlFactory)
 {
     m_resmanServer = std::make_unique<ResmanRunFacade>();
     m_testServer = std::make_unique<TestServerForSenseInterfaceCom5003>(ctrlFactory);

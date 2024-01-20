@@ -6,7 +6,7 @@
 class TestSystemInfo : public SystemInfo
 {
 public:
-    TestSystemInfo(FactoryControllerAbstractPtr ctrlFactory);
+    TestSystemInfo(AbstractFactoryI2cCtrlPtr ctrlFactory);
     QString getDeviceName() override;
     QString getPCBVersion() override;
     QString getLCAVersion() override;

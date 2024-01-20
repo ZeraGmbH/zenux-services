@@ -34,7 +34,7 @@ class cCOM5003dServer: public cPCBServer
 
 public:
     explicit cCOM5003dServer(std::shared_ptr<SettingsForDeviceServer> settings,
-                             FactoryControllerAbstractPtr ctrlFactory);
+                             AbstractFactoryI2cCtrlPtr ctrlFactory);
     ~cCOM5003dServer();
     QString getCtrlDeviceNode();
     static ServerParams defaultParams;
@@ -60,7 +60,7 @@ private:
     void setupMicroControllerIo();
 
     std::shared_ptr<SettingsForDeviceServer> m_settings;
-    FactoryControllerAbstractPtr m_ctrlFactory;
+    AbstractFactoryI2cCtrlPtr m_ctrlFactory;
 
     SystemInfo* m_pSystemInfo = nullptr;
 

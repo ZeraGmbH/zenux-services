@@ -11,7 +11,7 @@ class cStatusInterface: public ScpiConnection
 {
     Q_OBJECT
 public:
-    cStatusInterface(cSCPI *scpiInterface, AdjustmentStatusInterface *adjustmentStatusInterface, FactoryControllerAbstractPtr ctrlFactory);
+    cStatusInterface(cSCPI *scpiInterface, AdjustmentStatusInterface *adjustmentStatusInterface, AbstractFactoryI2cCtrlPtr ctrlFactory);
     virtual void initSCPIConnection(QString leadingNodes) override;
 protected:
     void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
@@ -19,7 +19,7 @@ private:
     QString getControllerAvail();
     QString getAuthorizationStatus();
     AdjustmentStatusInterface *m_adjustmentStatusInterface;
-    FactoryControllerAbstractPtr m_ctrlFactory;
+    AbstractFactoryI2cCtrlPtr m_ctrlFactory;
     NotificationString m_notifierAutorization;
     TimerTemplateQtPtr m_periodicTimer;
 private slots:

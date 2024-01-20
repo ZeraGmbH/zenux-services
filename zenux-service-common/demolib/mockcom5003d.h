@@ -6,7 +6,7 @@
 class MockCom5003d
 {
 public:
-    MockCom5003d(FactoryControllerAbstractPtr ctrlFactory,
+    MockCom5003d(AbstractFactoryI2cCtrlPtr ctrlFactory,
                  QString alternateConfigXml = QString());
 private:
     std::unique_ptr<cCOM5003dServer> m_server;

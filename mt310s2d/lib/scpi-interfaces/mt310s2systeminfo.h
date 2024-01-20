@@ -8,14 +8,14 @@
 class Mt310s2SystemInfo : public SystemInfo
 {
 public:
-    Mt310s2SystemInfo(FactoryControllerAbstractPtr ctrlFactory);
+    Mt310s2SystemInfo(AbstractFactoryI2cCtrlPtr ctrlFactory);
     void getSystemInfo(); // here we fetch all system info
     bool dataRead(); // false if we were not able to read required information
     virtual QString getSysCTRLVersion();
     virtual QString getSysPCBVersion();
 
 private:
-    FactoryControllerAbstractPtr m_ctrlFactory;
+    AbstractFactoryI2cCtrlPtr m_ctrlFactory;
     bool m_bRead; // we keep in mind whether we could read the information
     QString m_sSysCTRLVersion;
     QString m_sSysPCBVersion;

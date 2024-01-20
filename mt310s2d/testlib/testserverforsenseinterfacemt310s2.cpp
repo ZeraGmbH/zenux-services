@@ -3,7 +3,7 @@
 #include "mt310s2systeminfomock.h"
 #include <i2cmultiplexerfactory.h>
 
-TestServerForSenseInterfaceMt310s2::TestServerForSenseInterfaceMt310s2(FactoryControllerAbstractPtr ctrlFactory, bool systemInfoMock) :
+TestServerForSenseInterfaceMt310s2::TestServerForSenseInterfaceMt310s2(AbstractFactoryI2cCtrlPtr ctrlFactory, bool systemInfoMock) :
     TestPcbServer("mt310s2d")
 {
     m_i2cSettings = std::make_unique<I2cSettings>(getConfigReader());
