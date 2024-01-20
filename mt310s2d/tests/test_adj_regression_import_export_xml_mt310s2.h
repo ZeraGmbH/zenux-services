@@ -21,6 +21,7 @@ private slots:
     void directAcessFileImportXmlPseudoRandom();
     void directAcessFileImportMissingType();
     void directAcessFileImportMissingSerNo();
+    void directAcessUnknownEntry();
     // there are no known users for scpi file read write - so for now just test
     // scpi xml transfers
     void scpiExportInitialAdjXml();
