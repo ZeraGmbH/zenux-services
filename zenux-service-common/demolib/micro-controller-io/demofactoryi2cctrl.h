@@ -19,7 +19,6 @@ public:
     I2cCtrlClampStatusPtr getClampStatusController() override;
     I2cCtrlBootloaderPtr getBootloaderController() override;
 private:
-    QString getBaseName(ControllerTypes ctrlType);
     struct TPersitentControllerData
     {
         bool m_permission = false;
