@@ -1,5 +1,6 @@
 #include "test_adj_regression_import_export_eeprom_com5003.h"
 #include "testfactoryi2cctrl.h"
+#include "testfactoryi2cctrlcommoninfofoo.h"
 #include "proxy.h"
 #include "mocki2ceepromiofactory.h"
 #include "mockeeprom24lc.h"
@@ -169,6 +170,30 @@ void test_adj_regression_import_export_eeprom_com5003::loadValidDateTimeRandomTo
     qInfo("Expected XML:");
     qInfo("%s", qPrintable(xmlExpected));
     QCOMPARE(xmlExported, xmlExpected);
+}
+
+void test_adj_regression_import_export_eeprom_com5003::directExportFlashArbitraryVersionGen()
+{
+    setupServers(std::make_shared<TestFactoryI2cCtrlCommonInfoFoo>(true));
+    QVERIFY(m_testServer->getSenseInterface()->exportAdjFlash(refTime));
+    I2cSettings *i2cSettings = m_testServer->getI2cSettings();
+    QByteArray dataWritten = MockEEprom24LC::getData(i2cSettings->getDeviceNode(),
+                                                     i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress));
+    QVERIFY(!dataWritten.isEmpty());
+    QVERIFY(writeFile("/tmp/import_arbitrary_version.eeprom", dataWritten));
+}
+
+void test_adj_regression_import_export_eeprom_com5003::loadArbitraryVersionToEEprom()
+{
+    setupServers(std::make_shared<TestFactoryI2cCtrl>(true));
+    I2cSettings *i2cSettings = m_testServer->getI2cSettings();
+    MockEEprom24LC eepromMock(i2cSettings->getDeviceNode(), i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress));
+    QByteArray eepromContent = readFile(":/import_arbitrary_version.eeprom");
+    QVERIFY(!eepromContent.isEmpty());
+    eepromMock.WriteData(eepromContent.data(), eepromContent.length(), 0);
+
+    QString ret = ScpiSingleTransactionBlocked::cmd("SYSTEM:ADJUSTMENT:FLASH:READ", "");
+    QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::ack]);
 }
 
 void test_adj_regression_import_export_eeprom_com5003::setupServers(AbstractFactoryI2cCtrlPtr ctrlFactory)

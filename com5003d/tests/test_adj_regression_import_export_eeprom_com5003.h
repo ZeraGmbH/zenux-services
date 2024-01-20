@@ -26,6 +26,9 @@ private slots:
     void loadOriginalInvalidDateTimeRandomToEEpromWriteToFlashExportXmlAndCheck();
     void loadValidDateTimeRandomToEEpromWriteToFlashExportXmlAndCheck();
 
+    void directExportFlashArbitraryVersionGen();
+    void loadArbitraryVersionToEEprom();
+
 private:
     void setupServers(AbstractFactoryI2cCtrlPtr ctrlFactory);
     bool writeFile(QString filename, QByteArray data);
