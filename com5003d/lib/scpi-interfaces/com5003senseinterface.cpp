@@ -476,7 +476,6 @@ bool Com5003SenseInterface::importXMLDocument(QDomDocument *qdomdoc)
     QDomElement rootElem = qdomdoc->documentElement();
     QDomNodeList nl = rootElem.childNodes();
     bool TypeOK = false;
-    bool VersionNrOK = false;
     bool SerialNrOK = false;
     bool DateOK = false;
     bool TimeOK = false;
@@ -497,17 +496,14 @@ bool Com5003SenseInterface::importXMLDocument(QDomDocument *qdomdoc)
             }
         }
         else if (tName == "SerialNumber") {
-            if (  !(SerialNrOK = (qdElem.text() == m_systemInfo->getSerialNumber() )) ) {
+            SerialNrOK = qdElem.text() == m_systemInfo->getSerialNumber();
+            if (!SerialNrOK) {
                 qCritical("Justdata import, Wrong serialnumber");
                 return false;
             }
         }
-        else if (tName == "VersionNumber") {
-            if ( ! ( VersionNrOK= (qdElem.text() == m_systemInfo->getDeviceVersion()) ) ) {
-                qCritical("Justdata import: Wrong versionnumber");
-                return false;
-            }
-        }
+        else if (tName == "VersionNumber")
+            continue;
         else if (tName=="Date") {
             QDate d = QDate::fromString(qdElem.text(),Qt::TextDate);
             DateOK = d.isValid();
@@ -517,7 +513,7 @@ bool Com5003SenseInterface::importXMLDocument(QDomDocument *qdomdoc)
             TimeOK = t.isValid();
         }
         else if (tName == "Adjustment") {
-            if ( VersionNrOK && SerialNrOK && DateOK && TimeOK && TypeOK) {
+            if ( SerialNrOK && DateOK && TimeOK && TypeOK) {
                 QDomNodeList adjChildNl = qdElem.childNodes();
                 for (qint32 j = 0; j < adjChildNl.length(); j++) {
                     qdNode = adjChildNl.item(j);

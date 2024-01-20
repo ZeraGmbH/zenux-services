@@ -54,6 +54,13 @@ void test_adj_regression_import_export_xml_mt310s2::directAcessFileImportXmlMini
     QVERIFY(m_testServer->getSenseInterface()->importAdjXMLFile(filenameShort));
 }
 
+void test_adj_regression_import_export_xml_mt310s2::directAcessArbitraryVerion()
+{
+    QString filenameShort = ":/import_abribrary_version";
+    QVERIFY(QFile::exists(filenameShort + ".xml"));
+    QVERIFY(m_testServer->getSenseInterface()->importAdjXMLFile(filenameShort));
+}
+
 void test_adj_regression_import_export_xml_mt310s2::directAcessFileImportXmlPseudoRandom()
 {
     QString xmlExportedInitial = m_testServer->getSenseInterface()->exportXMLString();

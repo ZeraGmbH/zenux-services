@@ -4,6 +4,7 @@
         <file>export_internal_initial.eeprom</file>
         <file>export_internal_initial.xml</file>
         <file>export_internal_modified.eeprom</file>
+        <file>import_abribrary_version.xml</file>
         <file>import_minimal_pass.xml</file>
         <file>import_missing_serno.xml</file>
         <file>import_missing_type.xml</file>
