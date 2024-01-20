@@ -1,4 +1,4 @@
-#include "mocki2cctrldeviceidentificationdata.h"
+#include "mocki2cctrldeviceident.h"
 
 MockI2cCtrlDeviceIdent::MockI2cCtrlDeviceIdent(QString &deviceName,
                                                                      QString &serialNumber,
