@@ -27,7 +27,7 @@ private slots:
     void loadValidDateTimeRandomToEEpromWriteToFlashExportXmlAndCheck();
 
 private:
-    void setupServers();
+    void setupServers(FactoryControllerAbstractPtr ctrlFactory);
     bool writeFile(QString filename, QByteArray data);
     QByteArray readFile(QString filename);
 
