@@ -16,6 +16,7 @@ private slots:
 
     void directAcessExportXml();
     void directAcessFileImportXmlMinimal();
+    void directAcessArbitraryVerion();
     void directAcessFileImportXmlPseudoRandom();
     void directAcessFileImportMissingType();
     void directAcessFileImportMissingSerNo();
