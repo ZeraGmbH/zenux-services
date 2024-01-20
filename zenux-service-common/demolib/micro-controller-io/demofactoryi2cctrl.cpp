@@ -29,7 +29,7 @@ AbstractCtrlHeartbeatWaitPtr DemoFactoryI2cCtrl::createCtrlHeartbeatWait(QString
 I2cCtrlCriticalStatusPtr DemoFactoryI2cCtrl::getCriticalStatusController()
 {
     return std::make_unique<MockI2cCtrlCriticalStatus>(m_persitentData.m_criticalStatus,
-                                                     m_persitentData.m_criticalStatusMask);
+                                                       m_persitentData.m_criticalStatusMask);
 }
 
 I2cCtrlEepromPermissionPtr DemoFactoryI2cCtrl::getPermissionCheckController()
@@ -46,9 +46,9 @@ I2cCtrlCommonInfoPtrUnique DemoFactoryI2cCtrl::getCommonInfoController(Controlle
 I2cCtrlDeviceIdentPtr DemoFactoryI2cCtrl::getDeviceIdentController()
 {
     return std::make_unique<MockI2cCtrlDeviceIdent>(m_persitentData.m_deviceName,
-                                                               m_persitentData.m_serialNumber,
-                                                               m_persitentData.m_FPGAVersion,
-                                                               m_persitentData.m_writablePcbVersion);
+                                                    m_persitentData.m_serialNumber,
+                                                    m_persitentData.m_FPGAVersion,
+                                                    m_persitentData.m_writablePcbVersion);
 }
 
 I2cCtrlAccumulatorPtr DemoFactoryI2cCtrl::getAccuController()

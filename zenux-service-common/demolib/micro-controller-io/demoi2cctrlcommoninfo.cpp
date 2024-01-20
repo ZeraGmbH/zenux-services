@@ -1,7 +1,7 @@
 #include "demoi2cctrlcommoninfo.h"
 
-DemoI2cCtrlCommonInfo::DemoI2cCtrlCommonInfo(QString prefix) :
-    m_prefix(prefix)
+DemoI2cCtrlCommonInfo::DemoI2cCtrlCommonInfo(QString ctrlTypeName) :
+    m_prefix("Demo " + ctrlTypeName)
 {
 }
 
