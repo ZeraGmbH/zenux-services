@@ -4,7 +4,7 @@
 constexpr quint8 ERROR = 0x80;
 constexpr int ACCU_POLLING_PERIOD_MS = 1000;
 
-AccumulatorInterface::AccumulatorInterface(cSCPI *scpiInterface, AccumulatorSettings *settings, FactoryControllerAbstractPtr ctrlFactory) :
+AccumulatorInterface::AccumulatorInterface(cSCPI *scpiInterface, AccumulatorSettings *settings, AbstractFactoryI2cCtrlPtr ctrlFactory) :
     ScpiConnection(scpiInterface),
     m_ctrlFactory(ctrlFactory)
 {

@@ -50,7 +50,7 @@ static struct sigaction sigActionMt310s2;
 
 const ServerParams cMT310S2dServer::defaultParams {ServerName, ServerVersion, "/etc/zera/mt310s2d/mt310s2d.xsd", "/etc/zera/mt310s2d/mt310s2d.xml"};
 
-cMT310S2dServer::cMT310S2dServer(std::shared_ptr<SettingsForDeviceServer> settings, FactoryControllerAbstractPtr ctrlFactory) :
+cMT310S2dServer::cMT310S2dServer(std::shared_ptr<SettingsForDeviceServer> settings, AbstractFactoryI2cCtrlPtr ctrlFactory) :
     cPCBServer(settings->getServerParams(), ScpiSingletonFactory::getScpiObj()),
     m_settings(settings),
     m_ctrlFactory(ctrlFactory)

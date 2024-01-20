@@ -29,7 +29,7 @@ class cSamplingInterface: public cResource
 {
     Q_OBJECT
 public:
-    cSamplingInterface(cSCPI *scpiInterface, SamplingSettings *samplingSettings, FactoryControllerAbstractPtr ctrlFactory);
+    cSamplingInterface(cSCPI *scpiInterface, SamplingSettings *samplingSettings, AbstractFactoryI2cCtrlPtr ctrlFactory);
     virtual void initSCPIConnection(QString leadingNodes) override;
     virtual void registerResource(RMConnection *rmConnection, quint16 port) override;
 protected:
@@ -47,7 +47,7 @@ private:
     QString m_ReadWritePLL(QString& sInput);
     QString m_ReadPLLCatalog(QString& sInput);
 
-    FactoryControllerAbstractPtr m_ctrlFactory;
+    AbstractFactoryI2cCtrlPtr m_ctrlFactory;
     quint16 m_nType;
     QString m_sVersion;
     QString m_sAlias;

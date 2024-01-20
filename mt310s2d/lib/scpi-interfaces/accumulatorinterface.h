@@ -14,7 +14,7 @@ enum accumulatorCommands{
 class AccumulatorInterface : public ScpiConnection
 {
 public:
-    AccumulatorInterface(cSCPI* scpiInterface, AccumulatorSettings* settings, FactoryControllerAbstractPtr ctrlFactory);
+    AccumulatorInterface(cSCPI* scpiInterface, AccumulatorSettings* settings, AbstractFactoryI2cCtrlPtr ctrlFactory);
     void initSCPIConnection(QString leadingNodes) override;
     QString getAccumulatorStatus();
     QString getAccuStateOfCharge();
@@ -23,7 +23,7 @@ protected:
 private:
     NotificationString m_accumulatorStatus;
     NotificationString m_accuStateOfCharge;
-    FactoryControllerAbstractPtr m_ctrlFactory;
+    AbstractFactoryI2cCtrlPtr m_ctrlFactory;
     TimerTemplateQtPtr m_pollingTimer;
 };
 

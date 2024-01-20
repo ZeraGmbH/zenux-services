@@ -13,7 +13,7 @@ Com5003SenseChannel::Com5003SenseChannel(cSCPI *scpiinterface,
                                          QString unit,
                                          SenseSystem::cChannelSettings *cSettings,
                                          quint8 nr,
-                                         FactoryControllerAbstractPtr ctrlFactory) :
+                                         AbstractFactoryI2cCtrlPtr ctrlFactory) :
     ScpiConnection(scpiinterface),
     m_ctrlFactory(ctrlFactory),
     m_sDescription(description),

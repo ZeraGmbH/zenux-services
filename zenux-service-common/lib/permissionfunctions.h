@@ -9,11 +9,11 @@ typedef std::function<bool (bool &)> FuncPermissionCheck;
 class PermissionFunctions
 {
 public:
-    static void setPermissionCtrlFactory(FactoryControllerAbstractPtr ctrlFactory);
+    static void setPermissionCtrlFactory(AbstractFactoryI2cCtrlPtr ctrlFactory);
     const static FuncPermissionCheck checkControllerPin;
     const static FuncPermissionCheck allowAlways;
 private:
-    static FactoryControllerAbstractPtr m_ctrlFactory;
+    static AbstractFactoryI2cCtrlPtr m_ctrlFactory;
 };
 
 struct PermissionStructAdj

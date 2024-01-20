@@ -3,7 +3,7 @@
 #include "i2cmultiplexerfactory.h"
 #include <i2cmuxerscopedonoff.h>
 
-HotPluggableControllerContainer::HotPluggableControllerContainer(I2cSettings *i2cSettings, FactoryControllerAbstractPtr ctrlFactory) :
+HotPluggableControllerContainer::HotPluggableControllerContainer(I2cSettings *i2cSettings, AbstractFactoryI2cCtrlPtr ctrlFactory) :
     m_i2cSettings(i2cSettings),
     m_ctrlFactory(ctrlFactory)
 {

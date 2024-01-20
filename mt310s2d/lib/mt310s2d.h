@@ -34,7 +34,7 @@ class cMT310S2dServer: public cPCBServer
     Q_OBJECT
 public:
     explicit cMT310S2dServer(std::shared_ptr<SettingsForDeviceServer> settings,
-                             FactoryControllerAbstractPtr ctrlFactory);
+                             AbstractFactoryI2cCtrlPtr ctrlFactory);
     ~cMT310S2dServer();
     QString getCtrlDeviceNode();
     QString getMsgDeviceNode();
@@ -65,7 +65,7 @@ private:
     void setupMicroControllerIo();
 
     std::shared_ptr<SettingsForDeviceServer> m_settings;
-    FactoryControllerAbstractPtr m_ctrlFactory;
+    AbstractFactoryI2cCtrlPtr m_ctrlFactory;
 
     Mt310s2SystemInfo* m_pSystemInfo = nullptr;
 

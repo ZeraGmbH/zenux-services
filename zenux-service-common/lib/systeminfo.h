@@ -6,7 +6,7 @@
 class SystemInfo
 {
 public:
-    SystemInfo(FactoryControllerAbstractPtr ctrlFactory);
+    SystemInfo(AbstractFactoryI2cCtrlPtr ctrlFactory);
     virtual ~SystemInfo() = default;
     void getSystemInfo(); // here we fetch all system info
     bool dataRead(); // false if we were not able to read required information
@@ -18,7 +18,7 @@ public:
     virtual QString getSerialNumber();
 
 private:
-    FactoryControllerAbstractPtr m_ctrlFactory;
+    AbstractFactoryI2cCtrlPtr m_ctrlFactory;
     bool m_bRead; // we keep in mind whether we could read the information
     QString m_sDeviceName;
     QString m_sPCBVersion;

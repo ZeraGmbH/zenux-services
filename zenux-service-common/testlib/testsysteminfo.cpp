@@ -1,6 +1,6 @@
 #include "testsysteminfo.h"
 
-TestSystemInfo::TestSystemInfo(FactoryControllerAbstractPtr ctrlFactory) :
+TestSystemInfo::TestSystemInfo(AbstractFactoryI2cCtrlPtr ctrlFactory) :
     SystemInfo(ctrlFactory)
 {
 }

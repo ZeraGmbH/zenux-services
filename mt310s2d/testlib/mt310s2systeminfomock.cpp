@@ -1,6 +1,6 @@
 #include "mt310s2systeminfomock.h"
 
-Mt310s2SystemInfoMock::Mt310s2SystemInfoMock(FactoryControllerAbstractPtr ctrlFactory) :
+Mt310s2SystemInfoMock::Mt310s2SystemInfoMock(AbstractFactoryI2cCtrlPtr ctrlFactory) :
     Mt310s2SystemInfo(ctrlFactory)
 {
 }

@@ -5,7 +5,7 @@
 #include "notzeronumgen.h"
 #include "zscpi_response_definitions.h"
 
-cSamplingInterface::cSamplingInterface(cSCPI *scpiInterface, SamplingSettings* samplingSettings, FactoryControllerAbstractPtr ctrlFactory) :
+cSamplingInterface::cSamplingInterface(cSCPI *scpiInterface, SamplingSettings* samplingSettings, AbstractFactoryI2cCtrlPtr ctrlFactory) :
     cResource(scpiInterface),
     m_ctrlFactory(ctrlFactory)
 {

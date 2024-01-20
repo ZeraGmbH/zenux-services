@@ -6,7 +6,7 @@
 class MockMt310s2d
 {
 public:
-    MockMt310s2d(FactoryControllerAbstractPtr ctrlFactory,
+    MockMt310s2d(AbstractFactoryI2cCtrlPtr ctrlFactory,
                  QString alternateConfigXml = QString());
 private:
     std::unique_ptr<cMT310S2dServer> m_server;

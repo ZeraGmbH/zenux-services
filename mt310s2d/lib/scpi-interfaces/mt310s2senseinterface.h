@@ -72,7 +72,7 @@ public:
                           I2cSettings *i2cSettings,
                           cSenseSettings *senseSettings,
                           SystemInfo *systemInfo,
-                          FactoryControllerAbstractPtr ctrlFactory);
+                          AbstractFactoryI2cCtrlPtr ctrlFactory);
     ~Mt310s2SenseInterface();
     virtual void initSCPIConnection(QString leadingNoMModedes) override;
     Mt310s2SenseChannel* getChannel(QString& name);
@@ -106,7 +106,7 @@ private:
     bool setSenseMode(QString sMode);
 
     SystemInfo* m_pSystemInfo;
-    FactoryControllerAbstractPtr m_ctrlFactory;
+    AbstractFactoryI2cCtrlPtr m_ctrlFactory;
 
     QList<Mt310s2SenseChannel*> m_ChannelList;
     QString m_sVersion;

@@ -19,7 +19,7 @@ private slots:
     void scpiImportFailFlashWrite();
     void scpiImportPassFlashWrite();
 private:
-    void setupServers(FactoryControllerAbstractPtr ctrlFactory);
+    void setupServers(AbstractFactoryI2cCtrlPtr ctrlFactory);
 
     std::unique_ptr<TestServerForSenseInterfaceCom5003> m_testServer;
     std::unique_ptr<ResmanRunFacade> m_resmanServer;

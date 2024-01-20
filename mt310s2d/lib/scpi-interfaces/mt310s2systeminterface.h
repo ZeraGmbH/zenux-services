@@ -41,7 +41,7 @@ public:
                            Mt310s2SystemInfo *systemInfo,
                            cSenseSettings *senseSettings,
                            Mt310s2SenseInterface* senseInterface,
-                           FactoryControllerAbstractPtr ctrlFactory,
+                           AbstractFactoryI2cCtrlPtr ctrlFactory,
                            HotPluggableControllerContainerPtr hotPluggableControllerContainer);
     virtual void initSCPIConnection(QString leadingNodes) override;
     void actualizeContollers(quint16 bitmaskAvailable);
@@ -76,7 +76,7 @@ private:
     Mt310s2SystemInfo *m_systemInfo;
     cSenseSettings *m_senseSettings;
     Mt310s2SenseInterface* m_senseInterface;
-    FactoryControllerAbstractPtr m_ctrlFactory;
+    AbstractFactoryI2cCtrlPtr m_ctrlFactory;
     HotPluggableControllerContainerPtr m_hotPluggableControllerContainer;
 
     NotificationString m_allCtrlVersion;

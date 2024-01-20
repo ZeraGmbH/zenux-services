@@ -34,7 +34,7 @@ private:
     Zera::XMLConfig::cReader m_configReader;
     TestI2cSettings m_i2cSettings;
     cSenseSettings m_senseSettings;
-    FactoryControllerAbstractPtr m_ctrlFactory;
+    AbstractFactoryI2cCtrlPtr m_ctrlFactory;
 };
 
 #endif // TEST_HOTPLUGGABLECONTROLLERCONTAINER_H

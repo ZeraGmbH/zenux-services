@@ -14,7 +14,7 @@ class HotPluggableControllerContainer : public QObject
 {
     Q_OBJECT
 public:
-    HotPluggableControllerContainer(I2cSettings *i2cSettings, FactoryControllerAbstractPtr ctrlFactory);
+    HotPluggableControllerContainer(I2cSettings *i2cSettings, AbstractFactoryI2cCtrlPtr ctrlFactory);
     void startActualizeEmobControllers(quint16 bitmaskAvailable, const cSenseSettings* senseSettings, int msWaitForApplicationStart);
     QVector<I2cCtrlCommonInfoPtrShared> getCurrentControllers();
 signals:
@@ -26,7 +26,7 @@ private:
     bool isChannelKnown(int ctrlChannel);
 
     I2cSettings *m_i2cSettings;
-    FactoryControllerAbstractPtr m_ctrlFactory;
+    AbstractFactoryI2cCtrlPtr m_ctrlFactory;
     QMap<int /* ctrlChannel */, I2cCtrlCommonInfoPtrShared> m_Controllers;
     struct PendingChannelInfo
     {
