@@ -1,8 +1,8 @@
-#include "demosystemcom5003.h"
+#include "demoallservicescom5003.h"
 #include "demofactoryi2cctrl.h"
 #include <demoeventloopfeeder.h>
 
-DemoSystemCom5003::DemoSystemCom5003()
+DemoAllServicesCom5003::DemoAllServicesCom5003()
 {
     m_resman = new ResmanRunFacade;
     DemoEventLoopFeeder::feedEventLoop();
@@ -12,7 +12,7 @@ DemoSystemCom5003::DemoSystemCom5003()
     DemoEventLoopFeeder::feedEventLoop();
 }
 
-DemoSystemCom5003::~DemoSystemCom5003()
+DemoAllServicesCom5003::~DemoAllServicesCom5003()
 {
     delete m_mockzdsp1d;
     delete m_mocksec1000d;
