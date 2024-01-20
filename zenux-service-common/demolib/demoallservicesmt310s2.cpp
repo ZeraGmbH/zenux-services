@@ -1,8 +1,8 @@
-#include "demosystemmt310s2.h"
+#include "demoallservicesmt310s2.h"
 #include <demofactoryi2cctrl.h>
 #include <demoeventloopfeeder.h>
 
-DemoSystemMt310s2::DemoSystemMt310s2()
+DemoAllServicesMt310s2::DemoAllServicesMt310s2()
 {
     m_resman = new ResmanRunFacade;
     DemoEventLoopFeeder::feedEventLoop();
@@ -12,7 +12,7 @@ DemoSystemMt310s2::DemoSystemMt310s2()
     DemoEventLoopFeeder::feedEventLoop();
 }
 
-DemoSystemMt310s2::~DemoSystemMt310s2()
+DemoAllServicesMt310s2::~DemoAllServicesMt310s2()
 {
     delete m_mockzdsp1d;
     delete m_mocksec1000d;
