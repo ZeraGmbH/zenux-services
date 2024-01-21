@@ -24,9 +24,8 @@ private:
         bool m_permission = false;
         quint16 m_criticalStatus = 0;
         quint16 m_criticalStatusMask = 0;
-        QString m_deviceName = "Device name";
-        QString m_serialNumber = "Serial number";
-        QString m_FPGAVersion = "FPGA version";
+        QString m_serialNumber = "Demo Serial number";
+        QString m_FPGAVersion = "Demo FPGA version";
         QString m_writablePcbVersion = "Unknown";
 
         quint8 m_pllChannel = 0;

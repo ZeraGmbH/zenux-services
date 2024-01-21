@@ -1,13 +1,13 @@
 #include "demofactoryi2cctrl.h"
 #include "mockcontrollertypename.h"
-#include "demoi2cctrlcommoninfo.h"
+#include "mocki2cctrlcommoninfo.h"
 #include "mockctrlheartbeatwait.h"
 #include "mocki2cctrlbootloader.h"
-#include "demoi2cctrlcommoninfo.h"
+#include "mocki2cctrlcommoninfo.h"
 #include "mocki2cctrlcriticalstatus.h"
 #include "mocki2cctrleeprompermission.h"
 #include "mocki2cctrlaccumulator.h"
-#include "mocki2cctrldeviceident.h"
+#include "demoi2cctrldeviceident.h"
 #include "mocki2cctrlranges.h"
 #include "mocki2cctrlmmode.h"
 #include "mocki2cctrlpll.h"
@@ -40,13 +40,12 @@ I2cCtrlEepromPermissionPtr DemoFactoryI2cCtrl::getPermissionCheckController()
 I2cCtrlCommonInfoPtrUnique DemoFactoryI2cCtrl::getCommonInfoController(ControllerTypes ctrlType, quint8 muxChannel)
 {
     Q_UNUSED(muxChannel)
-    return std::make_unique<DemoI2cCtrlCommonInfo>(MockControllerTypeName::getCtrlTypeName(ctrlType));
+    return std::make_unique<MockI2cCtrlCommonInfo>(MockControllerTypeName::getCtrlTypeName(ctrlType));
 }
 
 I2cCtrlDeviceIdentPtr DemoFactoryI2cCtrl::getDeviceIdentController()
 {
-    return std::make_unique<MockI2cCtrlDeviceIdent>(m_persitentData.m_deviceName,
-                                                    m_persitentData.m_serialNumber,
+    return std::make_unique<DemoI2cCtrlDeviceIdent>(m_persitentData.m_serialNumber,
                                                     m_persitentData.m_FPGAVersion,
                                                     m_persitentData.m_writablePcbVersion);
 }
