@@ -1,7 +1,7 @@
 #ifndef I2CCTRLCLAMPSTATUS_H
 #define I2CCTRLCLAMPSTATUS_H
 
-#include "abstracti2ccontrollers.h"
+#include "abstractalli2ccontrollers.h"
 
 class I2cCtrlClampStatus : public AbstractI2cCtrlClampStatus
 {

@@ -1,7 +1,7 @@
 #ifndef DEMOI2CCTRLACCU_H
 #define DEMOI2CCTRLACCU_H
 
-#include "abstracti2ccontrollers.h"
+#include "abstractalli2ccontrollers.h"
 
 class DemoI2cCtrlAccu : public AbstractI2cCtrlAccu
 {

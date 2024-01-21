@@ -1,7 +1,7 @@
 #ifndef I2CCTRLMMODE_H
 #define I2CCTRLMMODE_H
 
-#include "abstracti2ccontrollers.h"
+#include "abstractalli2ccontrollers.h"
 
 class I2cCtrlMMode : public AbstractI2cCtrlMMode
 {

@@ -1,7 +1,7 @@
 #ifndef I2CCTRLCRITICALSTATUS_H
 #define I2CCTRLCRITICALSTATUS_H
 
-#include "abstracti2ccontrollers.h"
+#include "abstractalli2ccontrollers.h"
 
 class I2cCtrlCriticalStatus : public AbstractI2cCtrlCriticalStatus
 {

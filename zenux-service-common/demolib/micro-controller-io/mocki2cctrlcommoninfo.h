@@ -1,7 +1,7 @@
 #ifndef MOCKI2CCTRLCOMMONINFO_H
 #define MOCKI2CCTRLCOMMONINFO_H
 
-#include "abstracti2ccontrollers.h"
+#include "abstractalli2ccontrollers.h"
 
 class MockI2cCtrlCommonInfo : public AbstractI2cCtrlCommonInfo
 {

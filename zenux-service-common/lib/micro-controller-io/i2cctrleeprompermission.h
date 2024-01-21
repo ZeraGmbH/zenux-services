@@ -1,7 +1,7 @@
 #ifndef I2CCTRLEEPROMPERMISSION_H
 #define I2CCTRLEEPROMPERMISSION_H
 
-#include "abstracti2ccontrollers.h"
+#include "abstractalli2ccontrollers.h"
 
 class I2cCtrlEepromPermission : public AbstractI2cCtrlEepromPermission
 {

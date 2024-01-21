@@ -1,7 +1,7 @@
 #ifndef I2CCTRLDEVICEIDENTIFICATIONDATA_H
 #define I2CCTRLDEVICEIDENTIFICATIONDATA_H
 
-#include "abstracti2ccontrollers.h"
+#include "abstractalli2ccontrollers.h"
 
 class I2cCtrlDeviceIdent : public AbstractI2cCtrlDeviceIdent
 {

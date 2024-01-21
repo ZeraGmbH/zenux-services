@@ -1,7 +1,7 @@
 #ifndef MOCKI2CCTRLBOOTLOADER_H
 #define MOCKI2CCTRLBOOTLOADER_H
 
-#include <abstracti2ccontrollers.h>
+#include <abstractalli2ccontrollers.h>
 
 class MockI2cCtrlBootloader : public AbstractI2cCtrlBootloader
 {

@@ -1,7 +1,7 @@
 #ifndef MOCKI2CCTRLCRITICALSTATUS_H
 #define MOCKI2CCTRLCRITICALSTATUS_H
 
-#include "abstracti2ccontrollers.h"
+#include "abstractalli2ccontrollers.h"
 
 class MockI2cCtrlCriticalStatus : public AbstractI2cCtrlCriticalStatus
 {

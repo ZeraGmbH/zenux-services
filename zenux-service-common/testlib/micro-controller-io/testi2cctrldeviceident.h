@@ -1,7 +1,7 @@
 #ifndef TESTI2CCTRLDEVICEIDENTIFICATIONDATA_H
 #define TESTI2CCTRLDEVICEIDENTIFICATIONDATA_H
 
-#include "abstracti2ccontrollers.h"
+#include "abstractalli2ccontrollers.h"
 
 class TestI2cCtrlDeviceIdent : public AbstractI2cCtrlDeviceIdent
 {

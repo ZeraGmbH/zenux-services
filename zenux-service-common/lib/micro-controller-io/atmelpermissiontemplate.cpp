@@ -1,4 +1,4 @@
-#include "abstracti2ccontrollers.h"
+#include "abstractalli2ccontrollers.h"
 
 bool AbstractI2cCtrlEepromPermission::hasPermission(bool &allow)
 {

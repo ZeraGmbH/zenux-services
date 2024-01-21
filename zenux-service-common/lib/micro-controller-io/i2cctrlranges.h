@@ -1,7 +1,7 @@
 #ifndef I2CCTRLRANGES_H
 #define I2CCTRLRANGES_H
 
-#include "abstracti2ccontrollers.h"
+#include "abstractalli2ccontrollers.h"
 
 class I2cCtrlRanges : public AbstractI2cCtrlRanges
 {
