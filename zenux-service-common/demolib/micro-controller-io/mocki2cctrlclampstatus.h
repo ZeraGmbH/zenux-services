@@ -1,7 +1,7 @@
 #ifndef MOCKI2CCTRLCLAMPSTATUS_H
 #define MOCKI2CCTRLCLAMPSTATUS_H
 
-#include "abstracti2ccontrollers.h"
+#include "abstractalli2ccontrollers.h"
 
 class MockI2cCtrlClampStatus : public AbstractI2cCtrlClampStatus
 {

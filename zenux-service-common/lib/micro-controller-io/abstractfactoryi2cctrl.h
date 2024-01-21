@@ -1,7 +1,7 @@
 #ifndef ABSTRACTFACTORYI2CCTRL_H
 #define ABSTRACTFACTORYI2CCTRL_H
 
-#include "abstracti2ccontrollers.h"
+#include "abstractalli2ccontrollers.h"
 #include "abstractctrlheartbeatwait.h"
 #include <memory>
 

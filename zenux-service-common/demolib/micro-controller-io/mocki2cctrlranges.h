@@ -1,7 +1,7 @@
 #ifndef MOCKI2CCTRLRANGES_H
 #define MOCKI2CCTRLRANGES_H
 
-#include "abstracti2ccontrollers.h"
+#include "abstractalli2ccontrollers.h"
 
 class MockI2cCtrlRanges : public AbstractI2cCtrlRanges
 {

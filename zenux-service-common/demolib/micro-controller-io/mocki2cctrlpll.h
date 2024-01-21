@@ -1,7 +1,7 @@
 #ifndef MOCKI2CCTRLPLL_H
 #define MOCKI2CCTRLPLL_H
 
-#include "abstracti2ccontrollers.h"
+#include "abstractalli2ccontrollers.h"
 
 class MockI2cCtrlPll : public AbstractI2cCtrlPll
 {

@@ -1,7 +1,7 @@
 #ifndef TESTI2CCTRLACCU_H
 #define TESTI2CCTRLACCU_H
 
-#include "abstracti2ccontrollers.h"
+#include "abstractalli2ccontrollers.h"
 
 class TestI2cCtrlAccu : public AbstractI2cCtrlAccu
 {

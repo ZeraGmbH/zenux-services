@@ -1,7 +1,7 @@
 #ifndef I2CCTRLACCU_H
 #define I2CCTRLACCU_H
 
-#include "abstracti2ccontrollers.h"
+#include "abstractalli2ccontrollers.h"
 
 class I2cCtrlAccu : public AbstractI2cCtrlAccu
 {

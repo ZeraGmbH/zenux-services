@@ -1,7 +1,7 @@
 #ifndef I2CCTRLBOOTLOADER_H
 #define I2CCTRLBOOTLOADER_H
 
-#include "abstracti2ccontrollers.h"
+#include "abstractalli2ccontrollers.h"
 
 class I2cCtrlBootloader : public AbstractI2cCtrlBootloader
 {

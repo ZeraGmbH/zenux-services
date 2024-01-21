@@ -1,7 +1,7 @@
 #ifndef I2CCTRLCOMMONINFO_H
 #define I2CCTRLCOMMONINFO_H
 
-#include "abstracti2ccontrollers.h"
+#include "abstractalli2ccontrollers.h"
 
 class I2cCtrlCommonInfo : public AbstractI2cCtrlCommonInfo
 {

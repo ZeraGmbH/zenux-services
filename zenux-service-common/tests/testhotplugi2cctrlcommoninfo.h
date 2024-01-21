@@ -1,7 +1,7 @@
 #ifndef TESTHOTPLUGI2CCTRLCOMMONINFO_H
 #define TESTHOTPLUGI2CCTRLCOMMONINFO_H
 
-#include "abstracti2ccontrollers.h"
+#include "abstractalli2ccontrollers.h"
 #include "i2csettings.h"
 
 class TestHotplugI2cCtrlCommonInfo : public AbstractI2cCtrlCommonInfo

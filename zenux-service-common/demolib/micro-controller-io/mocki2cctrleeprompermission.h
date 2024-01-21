@@ -1,7 +1,7 @@
 #ifndef MOCKI2CCTRLEEPROMPERMISSION_H
 #define MOCKI2CCTRLEEPROMPERMISSION_H
 
-#include "abstracti2ccontrollers.h"
+#include "abstractalli2ccontrollers.h"
 #include <timertemplateqt.h>
 
 class MockI2cCtrlEepromPermission : public QObject, public AbstractI2cCtrlEepromPermission

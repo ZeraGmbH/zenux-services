@@ -1,7 +1,7 @@
 #ifndef I2CCTRLCOMMONINFOEMOB_H
 #define I2CCTRLCOMMONINFOEMOB_H
 
-#include "abstracti2ccontrollers.h"
+#include "abstractalli2ccontrollers.h"
 #include <i2cmultiplexerfactory.h>
 
 class I2cCtrlCommonInfoEmob : public AbstractI2cCtrlCommonInfo

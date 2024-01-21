@@ -1,7 +1,7 @@
 #ifndef I2CCTRLPLL_H
 #define I2CCTRLPLL_H
 
-#include "abstracti2ccontrollers.h"
+#include "abstractalli2ccontrollers.h"
 
 class I2cCtrlPll : public AbstractI2cCtrlPll
 {
