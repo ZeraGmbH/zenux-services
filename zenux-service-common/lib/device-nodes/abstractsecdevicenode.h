@@ -7,7 +7,7 @@
 class AbstractSecDeviceNode
 {
 public:
-    ~AbstractSecDeviceNode() = default;
+    virtual ~AbstractSecDeviceNode() = default;
     virtual int open(QString devNodeFileName) = 0;
     virtual void close() = 0;
 
