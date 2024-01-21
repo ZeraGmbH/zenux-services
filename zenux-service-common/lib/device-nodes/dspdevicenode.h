@@ -1,9 +1,9 @@
 #ifndef DSPDEVICENODE_H
 #define DSPDEVICENODE_H
 
-#include "dspdevicenodeabstract.h"
+#include "abstractdspdevicenode.h"
 
-class DspDeviceNode : public DspDeviceNodeAbstract
+class DspDeviceNode : public AbstractDspDeviceNode
 {
 public:
     static const int MAGIC_ID21262;

@@ -1,9 +1,9 @@
 #ifndef MOCKPCBDEVICENODECTRL_H
 #define MOCKPCBDEVICENODECTRL_H
 
-#include <pcbdevicenodectrlabstract.h>
+#include <abstractpcbctrldevicenode.h>
 
-class MockPcbDeviceNodeCtrl : public PcbDeviceNodeCtrlAbstract
+class MockPcbDeviceNodeCtrl : public AbstractPcbCtrlDeviceNode
 {
 public:
     int open(QString devNodeFileName) override;
