@@ -105,7 +105,7 @@ private:
     void setNotifierSenseChannelCat();
     bool setSenseMode(QString sMode);
 
-    SystemInfo* m_pSystemInfo;
+    SystemInfo* m_systemInfo;
     AbstractFactoryI2cCtrlPtr m_ctrlFactory;
 
     QList<Mt310s2SenseChannel*> m_ChannelList;

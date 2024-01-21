@@ -30,7 +30,7 @@ Mt310s2SenseInterface::Mt310s2SenseInterface(cSCPI *scpiInterface,
     AdjustmentEeprom(i2cSettings->getDeviceNode(),
               i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress),
               I2cMultiplexerFactory::createNullMuxer()),
-    m_pSystemInfo(systemInfo),
+    m_systemInfo(systemInfo),
     m_ctrlFactory(ctrlFactory)
 {
     // Init with bad defaults so coder's bugs pop up
@@ -271,14 +271,13 @@ bool Mt310s2SenseInterface::importAdjData(QDataStream &stream)
         return false;
     }
 
-    stream >> s;
-    QString SVersion = QString(s);
+    stream >> s; // version: not checked anymore
     stream >> s; // we take the device name
 
-    QString sysDevName = m_pSystemInfo->getDeviceName();
+    QString sysDevName = m_systemInfo->getDeviceName();
     if (QString(s) != sysDevName) {
         qCritical("Flashmemory read: Wrong pcb name: flash %s / µC %s",
-               s, qPrintable(sysDevName));
+                  s, qPrintable(sysDevName));
         return false;
     }
 
@@ -288,10 +287,10 @@ bool Mt310s2SenseInterface::importAdjData(QDataStream &stream)
     m_ctrlFactory->getPermissionCheckController()->hasPermission(enable);
 
     stream >> s; // we take the serial number now
-    QString sysSerNo = m_pSystemInfo->getSerialNumber();
+    QString sysSerNo = m_systemInfo->getSerialNumber();
     if (QString(s) != sysSerNo) {
         qCritical("Flashmemory read, contains wrong serialnumber flash: %s / µC: %s",
-               s, qPrintable(sysSerNo));
+                  s, qPrintable(sysSerNo));
         m_nSerialStatus |= Adjustment::wrongSNR;
         if (!enable) {
             return false; // wrong serial number
@@ -339,9 +338,9 @@ void Mt310s2SenseInterface::exportAdjData(QDataStream &stream, QDateTime dateTim
     // ab version v1.02
     stream << "ServerVersion";
     stream << ServerVersion;
-    stream << m_pSystemInfo->getDeviceName().toStdString().c_str(); // leiterkarten name aus atmel gelesen
-    stream << m_pSystemInfo->getDeviceVersion().toStdString().c_str(); // geräte name versionsnummern ...
-    stream << m_pSystemInfo->getSerialNumber().toStdString().c_str(); // seriennummer
+    stream << m_systemInfo->getDeviceName().toStdString().c_str(); // leiterkarten name aus atmel gelesen
+    stream << m_systemInfo->getDeviceVersion().toStdString().c_str(); // geräte name versionsnummern ...
+    stream << m_systemInfo->getSerialNumber().toStdString().c_str(); // seriennummer
     stream << dateTimeWrite.toString(Qt::TextDate).toStdString().c_str(); // datum,uhrzeit
     for(auto channel : qAsConst(m_ChannelList)) {
         for(auto range : channel->getRangeList()) {
@@ -372,12 +371,12 @@ QString Mt310s2SenseInterface::exportXMLString(int indent)
 
     tag = justqdom.createElement("VersionNumber");
     pcbtag.appendChild( tag );
-    t = justqdom.createTextNode(m_pSystemInfo->getDeviceVersion() );
+    t = justqdom.createTextNode(m_systemInfo->getDeviceVersion() );
     tag.appendChild( t );
 
     tag = justqdom.createElement("SerialNumber");
     pcbtag.appendChild( tag );
-    t = justqdom.createTextNode(m_pSystemInfo->getSerialNumber());
+    t = justqdom.createTextNode(m_systemInfo->getSerialNumber());
     tag.appendChild( t );
 
     tag = justqdom.createElement("Date");
@@ -489,7 +488,7 @@ bool Mt310s2SenseInterface::importXMLDocument(QDomDocument* qdomdoc) // n steht 
             }
         }
         else if (tName == "SerialNumber") {
-            SerialNrOK = qdElem.text() == m_pSystemInfo->getSerialNumber();
+            SerialNrOK = qdElem.text() == m_systemInfo->getSerialNumber();
             if (!SerialNrOK) {
                 qCritical("Justdata import, Wrong serialnumber");
                 return false;
