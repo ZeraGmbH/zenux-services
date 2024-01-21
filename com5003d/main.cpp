@@ -2,12 +2,9 @@
 #include "com5003dglobal.h"
 #include "factoryi2cctrl.h"
 #include <QCoreApplication>
-#include <syslog.h>
 
 int main( int argc, char *argv[] )
 {
-    openlog(ServerName, LOG_PID, LOG_DAEMON); // we are still using it...
-
     QCoreApplication* app = new QCoreApplication (argc, argv);
 
     std::shared_ptr<SettingsForDeviceServer> settings = std::make_shared<SettingsForDeviceServer>(cCOM5003dServer::defaultParams);
@@ -24,6 +21,5 @@ int main( int argc, char *argv[] )
         qCritical("Abort, atmel flash program error") ;
 
     delete com5003d;
-    closelog();
     return (r);
 }
