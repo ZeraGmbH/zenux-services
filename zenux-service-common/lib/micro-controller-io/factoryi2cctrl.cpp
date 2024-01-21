@@ -1,6 +1,6 @@
 #include "factoryi2cctrl.h"
 #include "ctrlheartbeatwait.h"
-#include "i2cctrlaccumulator.h"
+#include "i2cctrlaccu.h"
 #include "i2cctrlbootloader.h"
 #include "i2cctrlclampstatus.h"
 #include "i2cctrlcommoninfo.h"
@@ -62,7 +62,7 @@ I2cCtrlDeviceIdentPtr FactoryI2cCtrl::getDeviceIdentController()
 
 I2cCtrlAccumulatorPtr FactoryI2cCtrl::getAccuController()
 {
-    return std::make_unique<I2cCtrlAccumulator>(m_deviceNode, getSystemCtrlI2cAddress(), m_debugLevel);
+    return std::make_unique<I2cCtrlAccu>(m_deviceNode, getSystemCtrlI2cAddress(), m_debugLevel);
 }
 
 I2cCtrlRangesPtr FactoryI2cCtrl::getRangesController()
