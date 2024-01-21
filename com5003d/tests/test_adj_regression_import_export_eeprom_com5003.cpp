@@ -174,7 +174,7 @@ void test_adj_regression_import_export_eeprom_com5003::loadValidDateTimeRandomTo
 
 void test_adj_regression_import_export_eeprom_com5003::directExportFlashArbitraryVersionGen()
 {
-    setupServers(std::make_shared<TestFactoryI2cCtrlCommonInfoFoo>(true));
+    setupServers(std::make_shared<TestFactoryI2cCtrlCommonInfoFoo>());
     QVERIFY(m_testServer->getSenseInterface()->exportAdjFlash(refTime));
     I2cSettings *i2cSettings = m_testServer->getI2cSettings();
     QByteArray dataWritten = MockEEprom24LC::getData(i2cSettings->getDeviceNode(),

@@ -5,11 +5,11 @@
 #include "mocki2cctrlcriticalstatus.h"
 #include "mocki2cctrleeprompermission.h"
 #include "mocki2cctrlaccumulator.h"
-#include "mocki2cctrldeviceident.h"
 #include "mocki2cctrlranges.h"
 #include "mocki2cctrlmmode.h"
 #include "mocki2cctrlpll.h"
 #include "mocki2cctrlclampstatus.h"
+#include "testi2cctrldeviceident.h"
 
 TestFactoryI2cCtrl::TPersitentControllerData TestFactoryI2cCtrl::m_persitentData;
 
@@ -27,7 +27,7 @@ AbstractCtrlHeartbeatWaitPtr TestFactoryI2cCtrl::createCtrlHeartbeatWait(QString
 I2cCtrlCriticalStatusPtr TestFactoryI2cCtrl::getCriticalStatusController()
 {
     return std::make_unique<MockI2cCtrlCriticalStatus>(m_persitentData.m_criticalStatus,
-                                                     m_persitentData.m_criticalStatusMask);
+                                                       m_persitentData.m_criticalStatusMask);
 }
 
 I2cCtrlEepromPermissionPtr TestFactoryI2cCtrl::getPermissionCheckController()
@@ -44,10 +44,8 @@ I2cCtrlCommonInfoPtrUnique TestFactoryI2cCtrl::getCommonInfoController(Controlle
 
 I2cCtrlDeviceIdentPtr TestFactoryI2cCtrl::getDeviceIdentController()
 {
-    return std::make_unique<MockI2cCtrlDeviceIdent>(m_persitentData.m_deviceName,
-                                                               m_persitentData.m_serialNumber,
-                                                               m_persitentData.m_FPGAVersion,
-                                                               m_persitentData.m_writablePcbVersion);
+    return std::make_unique<TestI2cCtrlDeviceIdent>(m_persitentData.m_serialNumber,
+                                                    m_persitentData.m_writablePcbVersion);
 }
 
 I2cCtrlAccumulatorPtr TestFactoryI2cCtrl::getAccuController()

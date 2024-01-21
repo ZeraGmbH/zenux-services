@@ -1,16 +1,16 @@
-#ifndef DEMOI2CCTRLCOMMONINFO_H
-#define DEMOI2CCTRLCOMMONINFO_H
+#ifndef MOCKI2CCTRLCOMMONINFO_H
+#define MOCKI2CCTRLCOMMONINFO_H
 
 #include "abstracti2ccontrollers.h"
 
-class DemoI2cCtrlCommonInfo : public AbstractI2cCtrlCommonInfo
+class MockI2cCtrlCommonInfo : public AbstractI2cCtrlCommonInfo
 {
 public:
-    DemoI2cCtrlCommonInfo(QString ctrlTypeName);
+    MockI2cCtrlCommonInfo(QString ctrlTypeName);
     ZeraMControllerIo::atmelRM readCTRLVersion(QString& answer) override;
     ZeraMControllerIo::atmelRM readPCBInfo(QString& answer) override;
 private:
     QString m_prefix;
 };
 
-#endif // DEMOI2CCTRLCOMMONINFO_H
+#endif // MOCKI2CCTRLCOMMONINFO_H
