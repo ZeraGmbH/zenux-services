@@ -1,12 +1,12 @@
-#ifndef MOCKCONTROLLERTYPENAME_H
-#define MOCKCONTROLLERTYPENAME_H
+#ifndef CONTROLLERTYPENAME_H
+#define CONTROLLERTYPENAME_H
 
 #include "abstractfactoryi2cctrl.h"
 
-class MockControllerTypeName
+class ControllerTypeName
 {
 public:
     static QString getCtrlTypeName(AbstractFactoryI2cCtrl::ControllerTypes ctrlType);
 };
 
-#endif // MOCKCONTROLLERTYPENAME_H
+#endif // CONTROLLERTYPENAME_H

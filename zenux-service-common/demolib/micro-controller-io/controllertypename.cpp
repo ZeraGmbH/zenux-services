@@ -1,7 +1,7 @@
-#include "mockcontrollertypename.h"
+#include "controllertypename.h"
 
 
-QString MockControllerTypeName::getCtrlTypeName(AbstractFactoryI2cCtrl::ControllerTypes ctrlType)
+QString ControllerTypeName::getCtrlTypeName(AbstractFactoryI2cCtrl::ControllerTypes ctrlType)
 {
     switch(ctrlType) {
     default:
