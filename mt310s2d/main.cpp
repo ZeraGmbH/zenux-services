@@ -2,12 +2,9 @@
 #include "mt310s2dglobal.h"
 #include "factoryi2cctrl.h"
 #include <QCoreApplication>
-#include <syslog.h>
 
 int main( int argc, char *argv[] )
 {
-    openlog(ServerName, LOG_PID, LOG_DAEMON); // we are still using it
-
     QCoreApplication* app = new QCoreApplication (argc, argv);
 
     std::shared_ptr<SettingsForDeviceServer> settings = std::make_shared<SettingsForDeviceServer>(cMT310S2dServer::defaultParams);
@@ -21,8 +18,6 @@ int main( int argc, char *argv[] )
     if (r == rmConnectionError)
         qCritical("Abort, resourcemanager connection error") ;
 
-    syslog(LOG_INFO,"mt310s2d server child process terminated ret = %d\n", r);
     delete mt310s2d;
-    closelog();
     return (r);
 }
