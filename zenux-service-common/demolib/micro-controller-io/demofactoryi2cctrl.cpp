@@ -6,7 +6,7 @@
 #include "mocki2cctrlcommoninfo.h"
 #include "mocki2cctrlcriticalstatus.h"
 #include "mocki2cctrleeprompermission.h"
-#include "mocki2cctrlaccumulator.h"
+#include "demoi2cctrlaccu.h"
 #include "demoi2cctrldeviceident.h"
 #include "mocki2cctrlranges.h"
 #include "mocki2cctrlmmode.h"
@@ -52,7 +52,7 @@ I2cCtrlDeviceIdentPtr DemoFactoryI2cCtrl::getDeviceIdentController()
 
 I2cCtrlAccumulatorPtr DemoFactoryI2cCtrl::getAccuController()
 {
-    return std::make_unique<MockI2cCtrlAccumulator>();
+    return std::make_unique<DemoI2cCtrlAccu>();
 }
 
 I2cCtrlRangesPtr DemoFactoryI2cCtrl::getRangesController()

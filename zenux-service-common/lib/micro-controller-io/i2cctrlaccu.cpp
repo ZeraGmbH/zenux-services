@@ -1,6 +1,6 @@
-#include "i2cctrlaccumulator.h"
+#include "i2cctrlaccu.h"
 
-I2cCtrlAccumulator::I2cCtrlAccumulator(QString deviceNodeName, quint8 i2cAddress, quint8 debugLevel) :
+I2cCtrlAccu::I2cCtrlAccu(QString deviceNodeName, quint8 i2cAddress, quint8 debugLevel) :
     m_ctrlIo(deviceNodeName, i2cAddress, debugLevel)
 {
 }
@@ -12,7 +12,7 @@ enum hw_cmdcode
     hwGetAccuStateOfCharge = 0x0211,
 };
 
-ZeraMControllerIoTemplate::atmelRM I2cCtrlAccumulator::readAccuStatus(quint8 &stat)
+ZeraMControllerIoTemplate::atmelRM I2cCtrlAccu::readAccuStatus(quint8 &stat)
 {
     ZeraMControllerIo::atmelRM ret = ZeraMControllerIo::cmdexecfault;
     quint8 answ[2];
@@ -25,7 +25,7 @@ ZeraMControllerIoTemplate::atmelRM I2cCtrlAccumulator::readAccuStatus(quint8 &st
     return ret;
 }
 
-ZeraMControllerIoTemplate::atmelRM I2cCtrlAccumulator::readAccuStateOfCharge(quint8 &charge)
+ZeraMControllerIoTemplate::atmelRM I2cCtrlAccu::readAccuStateOfCharge(quint8 &charge)
 {
     ZeraMControllerIo::atmelRM ret = ZeraMControllerIo::cmdexecfault;
     quint8 answ[2];
@@ -38,7 +38,7 @@ ZeraMControllerIoTemplate::atmelRM I2cCtrlAccumulator::readAccuStateOfCharge(qui
     return ret;
 }
 
-ZeraMControllerIoTemplate::atmelRM I2cCtrlAccumulator::enableTestMode(qint32 testBits)
+ZeraMControllerIoTemplate::atmelRM I2cCtrlAccu::enableTestMode(qint32 testBits)
 {
     quint8 PAR[4];
     PAR[0] = (testBits >> 24) & 255;

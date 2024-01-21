@@ -1,9 +1,9 @@
-#ifndef MOCKI2CCTRLACCUMULATOR_H
-#define MOCKI2CCTRLACCUMULATOR_H
+#ifndef TESTI2CCTRLACCU_H
+#define TESTI2CCTRLACCU_H
 
 #include "abstracti2ccontrollers.h"
 
-class MockI2cCtrlAccumulator : public AbstractI2cCtrlAccumulator
+class TestI2cCtrlAccu : public AbstractI2cCtrlAccu
 {
 public:
     ZeraMControllerIo::atmelRM readAccuStatus(quint8& stat) override;
@@ -11,4 +11,4 @@ public:
     ZeraMControllerIo::atmelRM enableTestMode(qint32 testBits) override;
 };
 
-#endif // MOCKI2CCTRLACCUMULATOR_H
+#endif // TESTI2CCTRLACCU_H

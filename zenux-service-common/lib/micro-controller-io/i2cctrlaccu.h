@@ -1,12 +1,12 @@
-#ifndef I2CCTRLACCUMULATOR_H
-#define I2CCTRLACCUMULATOR_H
+#ifndef I2CCTRLACCU_H
+#define I2CCTRLACCU_H
 
 #include "abstracti2ccontrollers.h"
 
-class I2cCtrlAccumulator : public AbstractI2cCtrlAccumulator
+class I2cCtrlAccu : public AbstractI2cCtrlAccu
 {
 public:
-    I2cCtrlAccumulator(QString deviceNodeName, quint8 i2cAddress, quint8 debugLevel);
+    I2cCtrlAccu(QString deviceNodeName, quint8 i2cAddress, quint8 debugLevel);
     ZeraMControllerIo::atmelRM readAccuStatus(quint8& stat) override;
     ZeraMControllerIo::atmelRM readAccuStateOfCharge(quint8& charge) override;
     // this one will go soon
@@ -15,4 +15,4 @@ private:
     ZeraMControllerIo m_ctrlIo;
 };
 
-#endif // I2CCTRLACCUMULATOR_H
+#endif // I2CCTRLACCU_H

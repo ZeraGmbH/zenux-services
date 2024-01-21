@@ -1,10 +1,10 @@
 #include "testfactoryi2cctrl.h"
 #include "mockctrlheartbeatwait.h"
 #include "mocki2cctrlbootloader.h"
+#include "testi2cctrlaccu.h"
 #include "testi2cctrlcommoninfo.h"
 #include "mocki2cctrlcriticalstatus.h"
 #include "mocki2cctrleeprompermission.h"
-#include "mocki2cctrlaccumulator.h"
 #include "mocki2cctrlranges.h"
 #include "mocki2cctrlmmode.h"
 #include "mocki2cctrlpll.h"
@@ -50,7 +50,7 @@ I2cCtrlDeviceIdentPtr TestFactoryI2cCtrl::getDeviceIdentController()
 
 I2cCtrlAccumulatorPtr TestFactoryI2cCtrl::getAccuController()
 {
-    return std::make_unique<MockI2cCtrlAccumulator>();
+    return std::make_unique<TestI2cCtrlAccu>();
 }
 
 I2cCtrlRangesPtr TestFactoryI2cCtrl::getRangesController()
