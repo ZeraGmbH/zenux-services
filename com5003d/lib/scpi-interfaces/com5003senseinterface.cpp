@@ -250,15 +250,14 @@ bool Com5003SenseInterface::importAdjData(QDataStream &stream)
         return false;
     }
 
-    stream >> s;
-    QString SVersion = QString(s);
+    stream >> s; // version: not checked anymore
     stream >> s; // we take the device name
 
     QString sysDevName = m_systemInfo->getDeviceName();
     if (QString(s) != sysDevName) {
         qCritical("Flashmemory read: Wrong pcb name: flash %s / µC %s",
                   s, qPrintable(sysDevName));
-        return false; // wrong pcb name
+        return false;
     }
 
     stream >> s; // we take the device version now
@@ -281,7 +280,7 @@ bool Com5003SenseInterface::importAdjData(QDataStream &stream)
     }
 
     stream >> s;
-    QDateTime DateTime = QDateTime::fromString(QString(s),Qt::TextDate); // datum und uhrzeit übernehmen
+    QDateTime DateTime = QDateTime::fromString(QString(s), Qt::TextDate); // datum und uhrzeit übernehmen
     while (!stream.atEnd()) {
         bool done;
         stream >> s;
@@ -466,13 +465,11 @@ void Com5003SenseInterface::computeSenseAdjData()
 
 bool Com5003SenseInterface::importXMLDocument(QDomDocument *qdomdoc)
 {
-    QDateTime DateTime; // useless - TBD
     QDomDocumentType TheDocType = qdomdoc->doctype ();
     if  (TheDocType.name() != QString("%1AdjustmentData").arg(LeiterkartenName)) {
         qCritical("Justdata import, wrong xml documentype");
         return false;
     }
-
     QDomElement rootElem = qdomdoc->documentElement();
     QDomNodeList nl = rootElem.childNodes();
     bool TypeOK = false;
