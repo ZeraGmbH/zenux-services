@@ -1,13 +1,13 @@
-#ifndef SECDEVICENODEABSTRACT_H
-#define SECDEVICENODEABSTRACT_H
+#ifndef ABSTRACTSECDEVICENODE_H
+#define ABSTRACTSECDEVICENODE_H
 
 #include <QString>
 #include <memory>
 
-class SecDeviceNodeAbstract
+class AbstractSecDeviceNode
 {
 public:
-    ~SecDeviceNodeAbstract() = default;
+    ~AbstractSecDeviceNode() = default;
     virtual int open(QString devNodeFileName) = 0;
     virtual void close() = 0;
 
@@ -17,6 +17,6 @@ public:
     virtual void enableFasync() = 0;
 };
 
-typedef std::unique_ptr<SecDeviceNodeAbstract> SecDeviceNodeAbstractPtr;
+typedef std::unique_ptr<AbstractSecDeviceNode> AbstractSecDeviceNodePtr;
 
-#endif // SECDEVICENODEABSTRACT_H
+#endif // ABSTRACTSECDEVICENODE_H

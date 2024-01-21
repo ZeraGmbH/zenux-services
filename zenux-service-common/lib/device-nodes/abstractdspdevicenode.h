@@ -1,13 +1,13 @@
-#ifndef DSPDEVICENODEABSTRACT_H
-#define DSPDEVICENODEABSTRACT_H
+#ifndef ABSTRACTDSPDEVICENODE_H
+#define ABSTRACTDSPDEVICENODE_H
 
 #include <QString>
 #include <memory>
 
-class DspDeviceNodeAbstract
+class AbstractDspDeviceNode
 {
 public:
-    virtual ~DspDeviceNodeAbstract() = default;
+    virtual ~AbstractDspDeviceNode() = default;
     virtual int open(QString devNodeFileName) = 0;
     virtual void close() = 0;
     virtual bool dspReset() = 0;
@@ -23,6 +23,6 @@ public:
     virtual void enableFasync() = 0;
 };
 
-typedef std::unique_ptr<DspDeviceNodeAbstract> DspDeviceNodeAbstractPtr;
+typedef std::unique_ptr<AbstractDspDeviceNode> AbstractDspDeviceNodePtr;
 
-#endif // DSPDEVICENODEABSTRACT_H
+#endif // ABSTRACTDSPDEVICENODE_H

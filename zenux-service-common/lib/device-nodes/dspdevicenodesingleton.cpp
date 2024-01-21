@@ -1,13 +1,13 @@
 #include "dspdevicenodesingleton.h"
 #include "dspdevicenode.h"
 
-DspDeviceNodeAbstractPtr DspDeviceNodeSingleton::m_instance;
+AbstractDspDeviceNodePtr DspDeviceNodeSingleton::m_instance;
 
-std::function<DspDeviceNodeAbstractPtr()> DspDeviceNodeSingleton::m_createFunction = []() {
+std::function<AbstractDspDeviceNodePtr()> DspDeviceNodeSingleton::m_createFunction = []() {
     return std::make_unique<DspDeviceNode>();
 };
 
-DspDeviceNodeAbstract *DspDeviceNodeSingleton::getInstance()
+AbstractDspDeviceNode *DspDeviceNodeSingleton::getInstance()
 {
     if(m_instance == nullptr)
         m_instance = m_createFunction();

@@ -1,17 +1,17 @@
 #ifndef SECDEVICENODESINGLETON_H
 #define SECDEVICENODESINGLETON_H
 
-#include "secdevicenodeabstract.h"
+#include "abstractsecdevicenode.h"
 #include <functional>
 
 class SecDeviceNodeSingleton
 {
 public:
-    static SecDeviceNodeAbstract *getInstance();
+    static AbstractSecDeviceNode *getInstance();
 protected:
-    static std::function<SecDeviceNodeAbstractPtr()> m_createFunction;
+    static std::function<AbstractSecDeviceNodePtr()> m_createFunction;
 private:
-    static SecDeviceNodeAbstractPtr m_instance;
+    static AbstractSecDeviceNodePtr m_instance;
 };
 
 #endif // SECDEVICENODESINGLETON_H

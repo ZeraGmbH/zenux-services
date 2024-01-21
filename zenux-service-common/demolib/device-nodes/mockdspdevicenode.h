@@ -1,9 +1,9 @@
 #ifndef MOCKDSPDEVICENODE_H
 #define MOCKDSPDEVICENODE_H
 
-#include "dspdevicenodeabstract.h"
+#include "abstractdspdevicenode.h"
 
-class MockDspDeviceNode : public DspDeviceNodeAbstract
+class MockDspDeviceNode : public AbstractDspDeviceNode
 {
 public:
     MockDspDeviceNode(int dspMagicId);

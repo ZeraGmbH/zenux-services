@@ -1,13 +1,13 @@
 #include "pcbdevicenodemessagesingleton.h"
 #include "pcbdevicenodemessage.h"
 
-PcbDeviceNodeMessageAbstractPtr PcbDeviceNodeMessageSingleton::m_instance;
+AbstractPcbMsgDeviceNodePtr PcbDeviceNodeMessageSingleton::m_instance;
 
-std::function<PcbDeviceNodeMessageAbstractPtr()> PcbDeviceNodeMessageSingleton::m_createFunction = []() {
+std::function<AbstractPcbMsgDeviceNodePtr()> PcbDeviceNodeMessageSingleton::m_createFunction = []() {
     return std::make_unique<PcbDeviceNodeMessage>();
 };
 
-PcbDeviceNodeMessageAbstract *PcbDeviceNodeMessageSingleton::getInstance()
+AbstractPcbMsgDeviceNode *PcbDeviceNodeMessageSingleton::getInstance()
 {
     if(m_instance == nullptr)
         m_instance = m_createFunction();

@@ -1,9 +1,9 @@
 #ifndef MOCKPCBDEVICENODEMESSAGE_H
 #define MOCKPCBDEVICENODEMESSAGE_H
 
-#include <pcbdevicenodemessageabstract.h>
+#include <abstractpcbmsgdevicenode.h>
 
-class MockPcbDeviceNodeMessage : public PcbDeviceNodeMessageAbstract
+class MockPcbDeviceNodeMessage : public AbstractPcbMsgDeviceNode
 {
 public:
     int open(QString devNodeFileName) override;

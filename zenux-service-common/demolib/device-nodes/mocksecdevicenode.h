@@ -1,9 +1,9 @@
 #ifndef MOCKSECDEVICENODE_H
 #define MOCKSECDEVICENODE_H
 
-#include <secdevicenodeabstract.h>
+#include <abstractsecdevicenode.h>
 
-class MockSecDeviceNode : public SecDeviceNodeAbstract
+class MockSecDeviceNode : public AbstractSecDeviceNode
 {
 public:
     int open(QString devNodeFileName) override;
