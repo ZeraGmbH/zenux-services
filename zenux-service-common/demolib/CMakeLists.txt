@@ -16,10 +16,16 @@ file(GLOB RESOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/../../*/configs/*.qrc
     )
 
+if(GUI_SIMULATION)
+    file(GLOB SOURCES_SIMUL_GUI ${CMAKE_CURRENT_SOURCE_DIR}/simul-gui-lib/*.cpp)
+    file(GLOB HEADER_SIMUL_GUI ${CMAKE_CURRENT_SOURCE_DIR}/simul-gui-lib/*.h)
+    file(GLOB RESOURCES_SIMUL_GUI ${CMAKE_CURRENT_SOURCE_DIR}/simul-gui-lib/*.qrc)
+endif()
+
 add_library(zenuxservicecommon-demolib STATIC
-    ${SOURCES}
-    ${HEADER}
-    ${RESOURCES}
+    ${SOURCES} ${SOURCES_SIMUL_GUI}
+    ${HEADER} ${HEADER_SIMUL_GUI}
+    ${RESOURCES} ${RESOURCES_SIMUL_GUI}
 )
 
 target_include_directories(zenuxservicecommon-demolib
@@ -27,6 +33,7 @@ target_include_directories(zenuxservicecommon-demolib
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/device-nodes>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/eeprom>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/micro-controller-io>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/simul-gui-lib>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
     $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/zenuxservicecommon-demolib>
     )
@@ -42,6 +49,14 @@ target_link_libraries(zenuxservicecommon-demolib
     Zera::zera-timers-demolib
     Zera::resman-lib
 )
+
+if(GUI_SIMULATION)
+    target_link_libraries(zenuxservicecommon-demolib
+        PUBLIC
+        Qt5::Qml
+        Qt5::Quick
+    )
+endif()
 
 set_target_properties(zenuxservicecommon-demolib PROPERTIES VERSION ${PROJECT_VERSION})
 set_target_properties(zenuxservicecommon-demolib PROPERTIES SOVERSION ${PROJECT_VERSION_MAJOR})

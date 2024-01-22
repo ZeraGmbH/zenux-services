@@ -6,6 +6,9 @@
 #include "mockmt310s2d.h"
 #include "mocksec1000d.h"
 #include "mockzdsp1d.h"
+#ifdef GUI_SIMULATION
+#include "simulqmlgui.h"
+#endif
 
 class DemoAllServicesMt310s2 : public AbstractMockAllServices
 {
@@ -17,6 +20,9 @@ private:
     MockMt310s2d *m_mockmt310s2d;
     MockSec1000d *m_mocksec1000d;
     MockZdsp1d *m_mockzdsp1d;
+#ifdef GUI_SIMULATION
+    SimulQmlGui m_gui;
+#endif
 };
 
 #endif // DEMOALLSERVICESMT310S2_H
