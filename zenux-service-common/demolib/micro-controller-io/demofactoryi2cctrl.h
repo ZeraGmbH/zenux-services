@@ -6,7 +6,7 @@
 class DemoFactoryI2cCtrl : public AbstractFactoryI2cCtrl
 {
 public:
-    DemoFactoryI2cCtrl(bool initialPermission);
+    DemoFactoryI2cCtrl();
     AbstractCtrlHeartbeatWaitPtr createCtrlHeartbeatWait(QString devnode) override;
     I2cCtrlCriticalStatusPtr getCriticalStatusController() override;
     I2cCtrlEepromPermissionPtr getPermissionCheckController() override;
@@ -21,7 +21,6 @@ public:
 private:
     struct TPersitentControllerData
     {
-        bool m_permission = false;
         quint16 m_criticalStatus = 0;
         quint16 m_criticalStatusMask = 0;
         QString m_serialNumber = "Demo Serial number";

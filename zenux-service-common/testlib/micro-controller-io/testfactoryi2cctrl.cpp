@@ -4,12 +4,12 @@
 #include "testi2cctrlaccu.h"
 #include "testi2cctrlcommoninfo.h"
 #include "mocki2cctrlcriticalstatus.h"
-#include "mocki2cctrleeprompermission.h"
 #include "mocki2cctrlranges.h"
 #include "mocki2cctrlmmode.h"
 #include "mocki2cctrlpll.h"
 #include "mocki2cctrlclampstatus.h"
 #include "testi2cctrldeviceident.h"
+#include "testi2cctrleeprompermission.h"
 
 TestFactoryI2cCtrl::TPersitentControllerData TestFactoryI2cCtrl::m_persitentData;
 
@@ -32,7 +32,7 @@ I2cCtrlCriticalStatusPtr TestFactoryI2cCtrl::getCriticalStatusController()
 
 I2cCtrlEepromPermissionPtr TestFactoryI2cCtrl::getPermissionCheckController()
 {
-    return std::make_unique<MockI2cCtrlEepromPermission>(m_persitentData.m_permission);
+    return std::make_unique<TestI2cCtrlEepromPermission>(m_persitentData.m_permission);
 }
 
 I2cCtrlCommonInfoPtrUnique TestFactoryI2cCtrl::getCommonInfoController(ControllerTypes ctrlType, quint8 muxChannel)

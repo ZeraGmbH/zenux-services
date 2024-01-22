@@ -5,7 +5,7 @@
 #include "mocki2cctrlbootloader.h"
 #include "mocki2cctrlcommoninfo.h"
 #include "mocki2cctrlcriticalstatus.h"
-#include "mocki2cctrleeprompermission.h"
+#include "demoi2cctrleeprompermission.h"
 #include "demoi2cctrlaccu.h"
 #include "demoi2cctrldeviceident.h"
 #include "mocki2cctrlranges.h"
@@ -15,9 +15,8 @@
 
 DemoFactoryI2cCtrl::TPersitentControllerData DemoFactoryI2cCtrl::m_persitentData;
 
-DemoFactoryI2cCtrl::DemoFactoryI2cCtrl(bool initialPermission)
+DemoFactoryI2cCtrl::DemoFactoryI2cCtrl()
 {
-    m_persitentData.m_permission = initialPermission;
 }
 
 AbstractCtrlHeartbeatWaitPtr DemoFactoryI2cCtrl::createCtrlHeartbeatWait(QString devnode)
@@ -34,7 +33,7 @@ I2cCtrlCriticalStatusPtr DemoFactoryI2cCtrl::getCriticalStatusController()
 
 I2cCtrlEepromPermissionPtr DemoFactoryI2cCtrl::getPermissionCheckController()
 {
-    return std::make_unique<MockI2cCtrlEepromPermission>(m_persitentData.m_permission);
+    return std::make_unique<DemoI2cCtrlEepromPermission>();
 }
 
 I2cCtrlCommonInfoPtrUnique DemoFactoryI2cCtrl::getCommonInfoController(ControllerTypes ctrlType, quint8 muxChannel)
