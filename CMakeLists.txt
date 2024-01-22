@@ -17,6 +17,7 @@ include(CMakePackageConfigHelpers)
 include(FindPkgConfig)
 
 option(useSystemd "Using libsystemd" ON)
+option(GUI_SIMULATION "Build QML gui code for simulation - NOT FOR TARGET" OFF)
 
 find_package(Qt5 COMPONENTS Core Xml Network Test CONFIG REQUIRED)
 find_package(SCPI REQUIRED)
@@ -24,6 +25,14 @@ find_package(ZenuxCore REQUIRED)
 find_package(ZeraMicroController REQUIRED)
 find_package(VeinFramework REQUIRED)
 find_package(ZenuxLegacyComponents REQUIRED)
+
+if(GUI_SIMULATION)
+    message("Building with QML gui code for simulation")
+    find_package(Qt5 COMPONENTS Qml Quick CONFIG REQUIRED)
+    add_definitions(-DGUI_SIMULATION=TRUE)
+else()
+    message("Not building QML gui code for simulation")
+endif()
 
 if(${useSystemd})
     find_package(PkgConfig REQUIRED)

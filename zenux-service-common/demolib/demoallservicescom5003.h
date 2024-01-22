@@ -6,6 +6,9 @@
 #include "mockcom5003d.h"
 #include "mocksec1000d.h"
 #include "mockzdsp1d.h"
+#ifdef GUI_SIMULATION
+#include "simulqmlgui.h"
+#endif
 
 class DemoAllServicesCom5003 : public AbstractMockAllServices
 {
@@ -17,6 +20,9 @@ private:
     MockCom5003d *m_mockcom5003d;
     MockSec1000d *m_mocksec1000d;
     MockZdsp1d *m_mockzdsp1d;
+#ifdef GUI_SIMULATION
+    SimulQmlGui m_gui;
+#endif
 };
 
 #endif // DEMOALLSERVICESCOM5003_H
