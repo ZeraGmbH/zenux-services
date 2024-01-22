@@ -2,15 +2,15 @@
 #include "controllertypename.h"
 #include "mocki2cctrlcommoninfo.h"
 #include "mocki2cctrlranges.h"
-#include "mocki2cctrleeprompermission.h"
-#include "testi2cctrldeviceident.h"
 #include "mocki2cctrlmmode.h"
+#include "testi2cctrleeprompermission.h"
+#include "testi2cctrldeviceident.h"
 
 TestFactoryI2cCtrlCommonInfoFoo::TPersitentControllerData TestFactoryI2cCtrlCommonInfoFoo::m_persitentData;
 
 I2cCtrlEepromPermissionPtr TestFactoryI2cCtrlCommonInfoFoo::getPermissionCheckController()
 {
-    return std::make_unique<MockI2cCtrlEepromPermission>(m_permission);
+    return std::make_unique<TestI2cCtrlEepromPermission>(m_permission);
 }
 
 I2cCtrlCommonInfoPtrUnique TestFactoryI2cCtrlCommonInfoFoo::getCommonInfoController(ControllerTypes ctrlType, quint8 muxChannel)
