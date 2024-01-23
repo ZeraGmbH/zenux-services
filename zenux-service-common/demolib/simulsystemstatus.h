@@ -18,6 +18,8 @@ public:
     bool getSchnubbelPlugged();
     void setSchnubbelPlugged(bool newSchnubbelPlugged);
 
+    bool accuSupported() const;
+
     quint8 getAccuStateOfCharge();
     void setAccuStateOfCharge(quint8 newAccuStateOfCharge);
 
@@ -49,12 +51,20 @@ signals:
     void accuLowShutdownAlertChanged();
     void accuMainSupplyPresentChanged();
 
+    void accuSupportedChanged();
+
 private:
     SimulSystemStatus() = default;
+    void makeAccuSupported();
+
+
     static SimulSystemStatus* m_instance;
 
     Q_PROPERTY(bool schnubbelPlugged READ getSchnubbelPlugged WRITE setSchnubbelPlugged NOTIFY schnubbelPluggedChanged FINAL)
     bool m_schnubbelPlugged = true;
+
+    Q_PROPERTY(bool accuSupported READ accuSupported NOTIFY accuSupportedChanged FINAL)
+    bool m_accuSupported = false;
 
     Q_PROPERTY(bool accuPresent READ accuPresent WRITE setAccuPresent NOTIFY accuPresentChanged FINAL)
     bool m_accuPresent = false;

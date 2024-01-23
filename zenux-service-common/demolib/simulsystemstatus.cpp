@@ -27,6 +27,11 @@ void SimulSystemStatus::setSchnubbelPlugged(bool newSchnubbelPlugged)
 
 quint8 SimulSystemStatus::getAccuStatusFromFlags()
 {
+    // At the time of writing accu support is at multiple places. E.g one is
+    // that com5003d does not contain AccumulatorInterface.
+    // So until the situation is more clear deduce: When C++ polling is not
+    // done, acumulator is not supported.
+    makeAccuSupported();
     quint8 accuFlagMask = 0;
     if(m_accuPresent)
         accuFlagMask |= (1<<bp_Battery_Present);
@@ -39,6 +44,19 @@ quint8 SimulSystemStatus::getAccuStatusFromFlags()
     if(m_accuMainSupplyPresent)
         accuFlagMask |= (1<<bp_Main_Supply_Present);
     return accuFlagMask;
+}
+
+bool SimulSystemStatus::accuSupported() const
+{
+    return m_accuSupported;
+}
+
+void SimulSystemStatus::makeAccuSupported()
+{
+    if (m_accuSupported)
+        return;
+    m_accuSupported = true;
+    emit accuSupportedChanged();
 }
 
 quint8 SimulSystemStatus::getAccuStateOfCharge()

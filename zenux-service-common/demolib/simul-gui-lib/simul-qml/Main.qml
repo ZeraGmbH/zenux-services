@@ -20,6 +20,7 @@ ApplicationWindow {
             onCheckedChanged: Simul.schnubbelPlugged = checked
         }
         RowLayout {
+            enabled: Simul.accuSupported
             Layout.fillWidth: true
             Label { text: "Accu states:" }
             CheckBox {
@@ -49,6 +50,7 @@ ApplicationWindow {
             }
         }
         RowLayout {
+            enabled: Simul.accuSupported
             Layout.fillWidth: true
             Label { text: "Accu state of charge val:" }
             Label { text: stateOfChargeSlider.value }
