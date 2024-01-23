@@ -1,10 +1,7 @@
 #include "com5003sensechannel.h"
-#include "sensesettings.h"
 #include "senserangecommon.h"
 #include "scpiconnection.h"
 #include "zscpi_response_definitions.h"
-#include <QList>
-#include <QString>
 #include <scpi.h>
 #include <scpicommand.h>
 
@@ -122,6 +119,22 @@ SenseRangeCommon *Com5003SenseChannel::getRange(QString &name)
         return 0;
 }
 
+void Com5003SenseChannel::addRangeList(QList<SenseRangeCommon *> &list)
+{
+    for(auto range : list) {
+        m_RangeList.append(range);
+    }
+    setNotifierSenseChannelRangeCat();
+}
+
+void Com5003SenseChannel::removeRangeList(QList<SenseRangeCommon *> &list)
+{
+    for(auto range : list) {
+        m_RangeList.removeOne(range);
+    }
+    setNotifierSenseChannelRangeCat();
+}
+
 
 quint8 Com5003SenseChannel::getAdjustmentStatus80Mask()
 {
@@ -150,6 +163,11 @@ QString &Com5003SenseChannel::getAlias()
 QString &Com5003SenseChannel::getDescription()
 {
     return m_sDescription;
+}
+
+quint8 Com5003SenseChannel::getCtrlChannel()
+{
+    return m_nCtrlChannel;
 }
 
 

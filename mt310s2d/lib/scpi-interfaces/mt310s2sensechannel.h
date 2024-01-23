@@ -39,10 +39,9 @@ public:
 
     void setRangeList(QList<SenseRangeCommon*>& list);
     QList<SenseRangeCommon*>& getRangeList();
+    SenseRangeCommon* getRange(QString& name);
     void addRangeList(QList<SenseRangeCommon*>& list);
     void removeRangeList(QList<SenseRangeCommon *> &list);
-
-    SenseRangeCommon* getRange(QString& name);
 
     quint8 getAdjustmentStatus80Mask();
 

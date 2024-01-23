@@ -45,12 +45,15 @@ public:
     void setRangeList(QList<SenseRangeCommon*>& list);
     QList<SenseRangeCommon*>& getRangeList();
     SenseRangeCommon* getRange(QString& name);
+    void addRangeList(QList<SenseRangeCommon*>& list);
+    void removeRangeList(QList<SenseRangeCommon *> &list);
 
     quint8 getAdjustmentStatus80Mask();
 
     QString& getName();
     QString& getAlias();
     QString& getDescription();
+    quint8 getCtrlChannel();
     void setDescription(const QString& s);
     void setUnit(QString& s);
     void setMMode(int m);
