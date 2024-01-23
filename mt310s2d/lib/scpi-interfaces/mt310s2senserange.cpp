@@ -28,8 +28,3 @@ Mt310s2SenseRange::Mt310s2SenseRange(cSCPI *scpiinterface,
         rejectionScpiQueryDigitsMt310s2)
 {
 }
-
-void Mt310s2SenseRange::setMModeToUpdateAvailability(int mode)
-{
-    m_bAvail = ((getMMask() & mode) > 0);
-}
