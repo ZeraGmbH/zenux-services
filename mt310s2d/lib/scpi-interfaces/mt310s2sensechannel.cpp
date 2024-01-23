@@ -1,11 +1,16 @@
+#include "mt310s2sensechannel.h"
 #include "senserangecommon.h"
 #include "scpiconnection.h"
-#include "mt310s2sensechannel.h"
 #include "zscpi_response_definitions.h"
 #include <scpi.h>
 #include <scpicommand.h>
 
-Mt310s2SenseChannel::Mt310s2SenseChannel(cSCPI* scpiinterface, QString description, QString unit, SenseSystem::cChannelSettings *cSettings, quint8 nr, AbstractFactoryI2cCtrlPtr ctrlFactory) :
+Mt310s2SenseChannel::Mt310s2SenseChannel(cSCPI* scpiinterface,
+                                         QString description,
+                                         QString unit,
+                                         SenseSystem::cChannelSettings *cSettings,
+                                         quint8 nr,
+                                         AbstractFactoryI2cCtrlPtr ctrlFactory) :
     ScpiConnection(scpiinterface),
     m_ctrlFactory(ctrlFactory),
     m_sDescription(description),
