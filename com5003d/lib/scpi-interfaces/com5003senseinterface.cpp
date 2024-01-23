@@ -60,7 +60,7 @@ Com5003SenseInterface::Com5003SenseInterface(cSCPI *scpiInterface,
     pChannel = new Com5003SenseChannel(m_pSCPIInterface, SenseSystem::sCurrentChannelDescription,"A", channelSettings.at(5), 5, m_ctrlFactory);
     m_ChannelList.append(pChannel);
 
-    QList<Com5003SenseRange*> rngList;
+    QList<SenseRangeCommon*> rngList;
 
     int i;
     for (i = 0; i < 3; i++)
@@ -295,7 +295,7 @@ bool Com5003SenseInterface::importAdjData(QDataStream &stream)
             QString s = spec.at(1);
             if ((chn = getChannel(s)) != nullptr) {
                 s = spec.at(2);
-                Com5003SenseRange* rng = chn->getRange(s);
+                SenseRangeCommon* rng = chn->getRange(s);
                 if (rng != nullptr) {
                     rng->getJustData()->Deserialize(stream);
                     done = true;
@@ -525,7 +525,7 @@ bool Com5003SenseInterface::importXMLDocument(QDomDocument *qdomdoc)
                             QDomNode chnNode = channelNl.item(i); // we iterate over all channels from xml file
                             QDomNodeList chnEntryNl = chnNode.childNodes();
                             Com5003SenseChannel* chnPtr = nullptr;
-                            Com5003SenseRange* rngPtr = nullptr;
+                            SenseRangeCommon* rngPtr = nullptr;
                             for (qint32 j = 0; j < chnEntryNl.length(); j++) {
                                 QString Name;
                                 QDomNode ChannelJustNode = chnEntryNl.item(j);
@@ -790,7 +790,7 @@ void Com5003SenseInterface::registerSense()
     // here we do the rest of reconfiguring
     for (qint32 i = 0; i < m_ChannelList.count(); i++) {
         m_ChannelList.at(i)->setMMode(m_nMMode); // this indirectly changes the channnels alias
-        QList<Com5003SenseRange*> list = m_ChannelList.at(i)->getRangeList();
+        QList<SenseRangeCommon*> list = m_ChannelList.at(i)->getRangeList();
         for (int j = 0; j < list.count(); j++ )
             list.at(j)->setAvail( !list.at(j)->getAvail()); // we only toggle the ranges avail
 

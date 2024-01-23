@@ -1,7 +1,7 @@
 #ifndef SENSECHANNEL_H
 #define SENSECHANNEL_H
 
-#include "com5003senserange.h"
+#include "senserangecommon.h"
 #include "notificationstring.h"
 #include "sensesettings.h"
 #include <QList>
@@ -42,9 +42,9 @@ public:
     ~Com5003SenseChannel();
     virtual void initSCPIConnection(QString leadingNodes) override;
 
-    void setRangeList(QList<Com5003SenseRange*>& list);
-    QList<Com5003SenseRange*>& getRangeList();
-    Com5003SenseRange* getRange(QString& name);
+    void setRangeList(QList<SenseRangeCommon*>& list);
+    QList<SenseRangeCommon*>& getRangeList();
+    SenseRangeCommon* getRange(QString& name);
 
     quint8 getAdjustmentStatus80Mask();
 
@@ -72,7 +72,7 @@ private:
     quint8 m_nDspChannel; // where to find the channel's sampled data
     quint8 m_nOverloadBit;
     bool m_bAvail; // is this channel available ?
-    QList<Com5003SenseRange*> m_RangeList;
+    QList<SenseRangeCommon*> m_RangeList;
     quint8 m_nMMode;
 
     QString m_ReadAlias(QString& sInput);

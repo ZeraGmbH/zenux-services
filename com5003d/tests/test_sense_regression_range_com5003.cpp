@@ -1,4 +1,5 @@
 #include "test_sense_regression_range_com5003.h"
+#include "com5003senserange.h"
 #include "zscpi_response_definitions.h"
 #include <QTest>
 
