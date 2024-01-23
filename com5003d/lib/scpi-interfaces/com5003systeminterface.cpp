@@ -7,12 +7,12 @@
 #include <QJsonObject>
 
 Com5003SystemInterface::Com5003SystemInterface(cPCBServer *server,
-                                               SystemInfo *sytemInfo,
+                                               SystemInfo *systemInfo,
                                                Com5003SenseInterface *senseInterface,
                                                AbstractFactoryI2cCtrlPtr ctrlFactory) :
     ScpiConnection(server->getSCPIInterface()),
     m_pMyServer(server),
-    m_sytemInfo(sytemInfo),
+    m_systemInfo(systemInfo),
     m_senseInterface(senseInterface),
     m_ctrlFactory(ctrlFactory)
 {
@@ -111,8 +111,8 @@ QString Com5003SystemInterface::m_ReadDeviceVersion(QString &sInput)
 
     if (cmd.isQuery())
     {
-        if (m_sytemInfo->dataRead())
-            return m_sytemInfo->getDeviceVersion();
+        if (m_systemInfo->dataRead())
+            return m_systemInfo->getDeviceVersion();
         else
             return ZSCPI::scpiAnswer[ZSCPI::errexec];
     }
@@ -128,8 +128,8 @@ QString Com5003SystemInterface::m_ReadDeviceName(QString& sInput)
 
     if (cmd.isQuery())
     {
-        if (m_sytemInfo->dataRead())
-            return m_sytemInfo->getDeviceName();
+        if (m_systemInfo->dataRead())
+            return m_systemInfo->getDeviceName();
         else
             return ZSCPI::scpiAnswer[ZSCPI::errexec];
     }
@@ -143,7 +143,7 @@ QString Com5003SystemInterface::scpiReadPCBVersion(QString &sInput)
     QString s;
     cSCPICommand cmd = sInput;
     if (cmd.isQuery()) {
-        if (m_sytemInfo->dataRead()) {
+        if (m_systemInfo->dataRead()) {
             updateAllPCBsVersion();
             s = m_allPCBVersion.getString();
         }
@@ -160,7 +160,7 @@ QString Com5003SystemInterface::scpiReadAllCTRLVersions(QString &sInput)
 {
     cSCPICommand cmd = sInput;
     if (cmd.isQuery()) {
-        if (m_sytemInfo->dataRead()) {
+        if (m_systemInfo->dataRead()) {
             updateAllCtrlVersionsJson();
             return m_allCtrlVersion.getString();
         }
@@ -178,8 +178,8 @@ QString Com5003SystemInterface::m_ReadFPGAVersion(QString &sInput)
 
     if (cmd.isQuery())
     {
-        if (m_sytemInfo->dataRead())
-            return m_sytemInfo->getLCAVersion();
+        if (m_systemInfo->dataRead())
+            return m_systemInfo->getLCAVersion();
         else
             return ZSCPI::scpiAnswer[ZSCPI::errexec];
     }
@@ -198,8 +198,8 @@ QString Com5003SystemInterface::m_ReadWriteSerialNumber(QString &sInput)
     if (cmd.isQuery())
     {
         {
-            if (m_sytemInfo->dataRead())
-                s = m_sytemInfo->getSerialNumber();
+            if (m_systemInfo->dataRead())
+                s = m_systemInfo->getSerialNumber();
             else
                 s = ZSCPI::scpiAnswer[ZSCPI::errexec];
         }
@@ -210,7 +210,7 @@ QString Com5003SystemInterface::m_ReadWriteSerialNumber(QString &sInput)
         {
             QString Serial = cmd.getParam(0);
             ret = m_ctrlFactory->getDeviceIdentController()->writeSerialNumber(Serial);
-            m_sytemInfo->getSystemInfo(); // read back info
+            m_systemInfo->getSystemInfo(); // read back info
         }
 
         m_genAnswer(ret, s);
@@ -368,7 +368,7 @@ QString Com5003SystemInterface::m_InterfaceRead(QString &sInput)
 void Com5003SystemInterface::updateAllCtrlVersionsJson()
 {
     QJsonObject object;
-    object.insert("Relay controller version", QJsonValue::fromVariant(m_sytemInfo->getCTRLVersion()));
+    object.insert("Relay controller version", QJsonValue::fromVariant(m_systemInfo->getCTRLVersion()));
     QJsonDocument doc(object);
     m_allCtrlVersion = doc.toJson(QJsonDocument::Compact);
 }
@@ -376,7 +376,7 @@ void Com5003SystemInterface::updateAllCtrlVersionsJson()
 void Com5003SystemInterface::updateAllPCBsVersion()
 {
     QJsonObject object;
-    object.insert("Relay PCB version", QJsonValue::fromVariant(m_sytemInfo->getPCBVersion()));
+    object.insert("Relay PCB version", QJsonValue::fromVariant(m_systemInfo->getPCBVersion()));
     QJsonDocument doc(object);
     m_allPCBVersion = doc.toJson(QJsonDocument::Compact);
 }
