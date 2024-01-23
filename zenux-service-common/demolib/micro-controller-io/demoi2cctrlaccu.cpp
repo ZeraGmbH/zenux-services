@@ -3,7 +3,7 @@
 
 ZeraMControllerIoTemplate::atmelRM DemoI2cCtrlAccu::readAccuStatus(quint8 &stat)
 {
-    stat = SimulSystemStatus::getInstance()->getAccuStatus();
+    stat = SimulSystemStatus::getInstance()->getAccuStatusFromFlags();
     return ZeraMControllerIoTemplate::cmddone;
 }
 

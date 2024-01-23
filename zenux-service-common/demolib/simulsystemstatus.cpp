@@ -1,4 +1,5 @@
 #include "simulsystemstatus.h"
+#include "accustatusflags.h"
 
 SimulSystemStatus* SimulSystemStatus::m_instance = nullptr;
 
@@ -24,17 +25,20 @@ void SimulSystemStatus::setSchnubbelPlugged(bool newSchnubbelPlugged)
     emit schnubbelPluggedChanged();
 }
 
-quint8 SimulSystemStatus::getAccuStatus()
+quint8 SimulSystemStatus::getAccuStatusFromFlags()
 {
-    return m_accuStatus;
-}
-
-void SimulSystemStatus::setAccuStatus(quint8 newAccuStatus)
-{
-    if (m_accuStatus == newAccuStatus)
-        return;
-    m_accuStatus = newAccuStatus;
-    emit accuStatusChanged();
+    quint8 accuFlagMask = 0;
+    if(m_accuPresent)
+        accuFlagMask |= (1<<bp_Battery_Present);
+    if(m_accuIsCharging)
+        accuFlagMask |= (1<<bp_Battery_is_Charging);
+    if(m_accuLowWarning)
+        accuFlagMask |= (1<<bp_Battery_Low_SoC_Warning);
+    if(m_accuLowShutdownAlert)
+        accuFlagMask |= (1<<bp_Battery_Low_SoC_Shutdown_Alert);
+    if(m_accuMainSupplyPresent)
+        accuFlagMask |= (1<<bp_Main_Supply_Present);
+    return accuFlagMask;
 }
 
 quint8 SimulSystemStatus::getAccuStateOfCharge()
@@ -48,4 +52,69 @@ void SimulSystemStatus::setAccuStateOfCharge(quint8 newAccuStateOfCharge)
         return;
     m_accuStateOfCharge = newAccuStateOfCharge;
     emit accuStateOfChargeChanged();
+}
+
+bool SimulSystemStatus::accuPresent() const
+{
+    return m_accuPresent;
+}
+
+void SimulSystemStatus::setAccuPresent(bool newAccuPresent)
+{
+    if (m_accuPresent == newAccuPresent)
+        return;
+    m_accuPresent = newAccuPresent;
+    emit accuPresentChanged();
+}
+
+bool SimulSystemStatus::accuIsCharging() const
+{
+    return m_accuIsCharging;
+}
+
+void SimulSystemStatus::setAccuIsCharging(bool newAccuIsCharging)
+{
+    if (m_accuIsCharging == newAccuIsCharging)
+        return;
+    m_accuIsCharging = newAccuIsCharging;
+    emit accuIsChargingChanged();
+}
+
+bool SimulSystemStatus::accuLowWarning() const
+{
+    return m_accuLowWarning;
+}
+
+void SimulSystemStatus::setAccuLowWarning(bool newAccuLowWarning)
+{
+    if (m_accuLowWarning == newAccuLowWarning)
+        return;
+    m_accuLowWarning = newAccuLowWarning;
+    emit accuLowWarningChanged();
+}
+
+bool SimulSystemStatus::accuLowShutdownAlert() const
+{
+    return m_accuLowShutdownAlert;
+}
+
+void SimulSystemStatus::setAccuLowShutdownAlert(bool newAccuLowShutdownAlert)
+{
+    if (m_accuLowShutdownAlert == newAccuLowShutdownAlert)
+        return;
+    m_accuLowShutdownAlert = newAccuLowShutdownAlert;
+    emit accuLowShutdownAlertChanged();
+}
+
+bool SimulSystemStatus::accuMainSupplyPresent() const
+{
+    return m_accuMainSupplyPresent;
+}
+
+void SimulSystemStatus::setAccuMainSupplyPresent(bool newAccuMainSupplyPresent)
+{
+    if (m_accuMainSupplyPresent == newAccuMainSupplyPresent)
+        return;
+    m_accuMainSupplyPresent = newAccuMainSupplyPresent;
+    emit accuMainSupplyPresentChanged();
 }
