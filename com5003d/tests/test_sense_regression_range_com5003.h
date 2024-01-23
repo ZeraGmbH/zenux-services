@@ -1,7 +1,7 @@
 #ifndef TEST_REGRESSION_SENSE_RANGE_COM5003_H
 #define TEST_REGRESSION_SENSE_RANGE_COM5003_H
 
-#include "com5003senserange.h"
+#include "senserangecommon.h"
 #include <QObject>
 
 class test_sense_regression_range_com5003 : public QObject
@@ -22,7 +22,7 @@ private slots:
     void checkTypeOrMask();
 private:
     cSCPI *m_scpi;
-    Com5003SenseRange *m_range;
+    SenseRangeCommon *m_range;
 };
 
 #endif // TEST_REGRESSION_SENSE_RANGE_COM5003_H

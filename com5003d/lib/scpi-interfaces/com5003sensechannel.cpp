@@ -1,12 +1,12 @@
 #include "com5003sensechannel.h"
 #include "sensesettings.h"
+#include "senserangecommon.h"
+#include "scpiconnection.h"
 #include "zscpi_response_definitions.h"
 #include <QList>
 #include <QString>
 #include <scpi.h>
 #include <scpicommand.h>
-#include "com5003senserange.h"
-#include "scpiconnection.h"
 
 Com5003SenseChannel::Com5003SenseChannel(cSCPI *scpiinterface,
                                          QString description,
@@ -95,7 +95,7 @@ void Com5003SenseChannel::executeProtoScpi(int cmdCode, cProtonetCommand *protoC
 }
 
 
-void Com5003SenseChannel::setRangeList(QList<Com5003SenseRange*> &list)
+void Com5003SenseChannel::setRangeList(QList<SenseRangeCommon *> &list)
 {
     m_RangeList = list;
     setNotifierSenseChannelRangeCat();
@@ -103,13 +103,13 @@ void Com5003SenseChannel::setRangeList(QList<Com5003SenseRange*> &list)
 }
 
 
-QList<Com5003SenseRange *> &Com5003SenseChannel::getRangeList()
+QList<SenseRangeCommon *> &Com5003SenseChannel::getRangeList()
 {
     return m_RangeList;
 }
 
 
-Com5003SenseRange *Com5003SenseChannel::getRange(QString &name)
+SenseRangeCommon *Com5003SenseChannel::getRange(QString &name)
 {
     int i;
     for (i = 0; i < m_RangeList.count(); i++)
