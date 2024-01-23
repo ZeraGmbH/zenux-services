@@ -64,10 +64,10 @@ private:
     void addSystAdjInterface();
     void addSystAdjInterfaceChannel(QString channelName);
     void createLEM1000VRanges(const PermissionStructAdj &permissionsOffsetAllowedAlways, quint16 dcCommonMask);
-    Mt310s2SenseRange* getRange(QString name);
+    SenseRangeCommon* getRange(QString name);
     ClampTypes readClampType();
     void removeAllRanges();
-    void exportRangeXml(QDomDocument &justqdom, QDomElement &typeTag, Mt310s2SenseRange *range);
+    void exportRangeXml(QDomDocument &justqdom, QDomElement &typeTag, SenseRangeCommon *range);
     quint8 getAdjStatus();
 
     QString scpiReadWriteSerial(QString &scpi);
@@ -84,9 +84,9 @@ private:
 
     Mt310s2SenseInterface *m_pSenseInterface = nullptr;
 
-    QList<Mt310s2SenseRange*> m_RangeList;
+    QList<SenseRangeCommon*> m_RangeList;
     QString m_sChannelName;
-    QList<Mt310s2SenseRange*> m_RangeListSecondary;
+    QList<SenseRangeCommon*> m_RangeListSecondary;
     QString m_sChannelNameSecondary;
 
     quint8 m_nCtrlChannel;

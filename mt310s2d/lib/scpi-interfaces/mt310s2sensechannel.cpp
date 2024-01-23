@@ -1,4 +1,4 @@
-#include "mt310s2senserange.h"
+#include "senserangecommon.h"
 #include "scpiconnection.h"
 #include "mt310s2sensechannel.h"
 #include "zscpi_response_definitions.h"
@@ -81,19 +81,19 @@ void Mt310s2SenseChannel::executeProtoScpi(int cmdCode, cProtonetCommand *protoC
     }
 }
 
-void Mt310s2SenseChannel::setRangeList(QList<Mt310s2SenseRange*> &list)
+void Mt310s2SenseChannel::setRangeList(QList<SenseRangeCommon *> &list)
 {
     m_RangeList = list;
     setNotifierSenseChannelRangeCat();
     setNotifierSenseChannelRange();
 }
 
-QList<Mt310s2SenseRange *> &Mt310s2SenseChannel::getRangeList()
+QList<SenseRangeCommon *> &Mt310s2SenseChannel::getRangeList()
 {
     return m_RangeList;
 }
 
-void Mt310s2SenseChannel::addRangeList(QList<Mt310s2SenseRange *> &list)
+void Mt310s2SenseChannel::addRangeList(QList<SenseRangeCommon *> &list)
 {
     for(auto range : list) {
         m_RangeList.append(range);
@@ -101,7 +101,7 @@ void Mt310s2SenseChannel::addRangeList(QList<Mt310s2SenseRange *> &list)
     setNotifierSenseChannelRangeCat();
 }
 
-void Mt310s2SenseChannel::removeRangeList(QList<Mt310s2SenseRange *> &list)
+void Mt310s2SenseChannel::removeRangeList(QList<SenseRangeCommon *> &list)
 {
     for(auto range : list) {
         m_RangeList.removeOne(range);
@@ -109,7 +109,7 @@ void Mt310s2SenseChannel::removeRangeList(QList<Mt310s2SenseRange *> &list)
     setNotifierSenseChannelRangeCat();
 }
 
-Mt310s2SenseRange *Mt310s2SenseChannel::getRange(QString &name)
+SenseRangeCommon *Mt310s2SenseChannel::getRange(QString &name)
 {
     for(auto range : qAsConst(m_RangeList)) {
         if(range->getName() == name) {

@@ -64,7 +64,7 @@ Mt310s2SenseInterface::Mt310s2SenseInterface(cSCPI *scpiInterface,
     pChannel = new Mt310s2SenseChannel(m_pSCPIInterface, SenseSystem::sCurrentChannelDescription,"A", channelSettings.at(7), 7, m_ctrlFactory);
     m_ChannelList.append(pChannel);
 
-    QList<Mt310s2SenseRange*> rngList;
+    QList<SenseRangeCommon*> rngList;
 
     int i;
     for (i = 0; i < 4; i++) {
@@ -182,9 +182,9 @@ QString Mt310s2SenseInterface::getChannelSystemName(quint16 ctrlChannel)
     return nameFound;
 }
 
-Mt310s2SenseRange* Mt310s2SenseInterface::getRange(QString channelName, QString rangeName)
+SenseRangeCommon *Mt310s2SenseInterface::getRange(QString channelName, QString rangeName)
 {
-    Mt310s2SenseRange* rangeFound = nullptr;
+    SenseRangeCommon* rangeFound = nullptr;
     Mt310s2SenseChannel *channelFound = getChannel(channelName);
     if(channelFound) {
         rangeFound = channelFound->getRange(rangeName);
@@ -316,7 +316,7 @@ bool Mt310s2SenseInterface::importAdjData(QDataStream &stream)
             QString s = spec.at(1);
             if ((chn = getChannel(s)) != nullptr) {
                 s = spec.at(2);
-                Mt310s2SenseRange* rng = chn->getRange(s);
+                SenseRangeCommon* rng = chn->getRange(s);
                 if (rng != nullptr) {
                     rng->getJustData()->Deserialize(stream);
                     done = true;
@@ -520,7 +520,7 @@ bool Mt310s2SenseInterface::importXMLDocument(QDomDocument* qdomdoc) // n steht 
                             QDomNode chnNode = channelNl.item(i); // we iterate over all channels from xml file
                             QDomNodeList chnEntryNl = chnNode.childNodes();
                             Mt310s2SenseChannel* chnPtr = nullptr;
-                            Mt310s2SenseRange* rngPtr = nullptr;
+                            SenseRangeCommon* rngPtr = nullptr;
                             for (qint32 j = 0; j < chnEntryNl.length(); j++) {
                                 QString Name;
                                 QDomNode ChannelJustNode = chnEntryNl.item(j);

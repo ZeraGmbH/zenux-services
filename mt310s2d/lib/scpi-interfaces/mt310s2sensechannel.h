@@ -1,7 +1,7 @@
 #ifndef SENSECHANNEL_H
 #define SENSECHANNEL_H
 
-#include "mt310s2senserange.h"
+#include "senserangecommon.h"
 #include "notificationstring.h"
 #include "sensesettings.h"
 #include <QList>
@@ -37,12 +37,12 @@ public:
     ~Mt310s2SenseChannel();
     virtual void initSCPIConnection(QString leadingNodes) override;
 
-    void setRangeList(QList<Mt310s2SenseRange*>& list);
-    QList<Mt310s2SenseRange*>& getRangeList();
-    void addRangeList(QList<Mt310s2SenseRange*>& list);
-    void removeRangeList(QList<Mt310s2SenseRange*>& list);
+    void setRangeList(QList<SenseRangeCommon*>& list);
+    QList<SenseRangeCommon*>& getRangeList();
+    void addRangeList(QList<SenseRangeCommon*>& list);
+    void removeRangeList(QList<SenseRangeCommon *> &list);
 
-    Mt310s2SenseRange* getRange(QString& name);
+    SenseRangeCommon* getRange(QString& name);
 
     quint8 getAdjustmentStatus80Mask();
 
@@ -71,7 +71,7 @@ private:
     quint8 m_nDspChannel; // where to find the channel's sampled data
     qint8 m_nOverloadBit;
     bool m_bAvail; // is this channel available ?
-    QList<Mt310s2SenseRange*> m_RangeList;
+    QList<SenseRangeCommon*> m_RangeList;
     quint8 m_nMMode;
 
     QString m_ReadAlias(QString& sInput);

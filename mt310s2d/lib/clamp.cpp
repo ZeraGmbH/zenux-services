@@ -169,7 +169,7 @@ bool cClamp::importAdjData(QDataStream &stream)
     while (!stream.atEnd()) {
         QString rngName;
         stream >> rngName;
-        Mt310s2SenseRange* range = getRange(rngName);
+        SenseRangeCommon* range = getRange(rngName);
         if (range != 0) {
             n++;
             range->getJustData()->Deserialize(stream);
@@ -305,7 +305,7 @@ bool cClamp::importXMLDocument(QDomDocument *qdomdoc, bool ignoreType)
 
                         done = true;
                         QDomNodeList sensNl = qdNode.childNodes(); // we iterate over all ranges
-                        Mt310s2SenseRange* rngPtr = nullptr;
+                        SenseRangeCommon* rngPtr = nullptr;
                         for (qint32 j = 0; j < sensNl.length(); j++) {
                             QString Name;
 
@@ -696,13 +696,13 @@ void cClamp::addSense()
 
 void cClamp::addSenseInterface()
 {
-    for(Mt310s2SenseRange *range : qAsConst(m_RangeList)) {
+    for(SenseRangeCommon *range : qAsConst(m_RangeList)) {
         range->initSCPIConnection(QString("SENSE:%1").arg(m_sChannelName));
-        connect(range, &Mt310s2SenseRange::cmdExecutionDone, this, &cClamp::cmdExecutionDone);
+        connect(range, &SenseRangeCommon::cmdExecutionDone, this, &cClamp::cmdExecutionDone);
     }
-    for(Mt310s2SenseRange *range : qAsConst(m_RangeListSecondary)) {
+    for(SenseRangeCommon *range : qAsConst(m_RangeListSecondary)) {
         range->initSCPIConnection(QString("SENSE:%1").arg(m_sChannelNameSecondary));
-        connect(range, &Mt310s2SenseRange::cmdExecutionDone, this, &cClamp::cmdExecutionDone);
+        connect(range, &SenseRangeCommon::cmdExecutionDone, this, &cClamp::cmdExecutionDone);
     }
 }
 
@@ -737,9 +737,9 @@ void cClamp::addSystAdjInterfaceChannel(QString channelName)
     addDelegate(cmdParent, "ADJUSTMENT", SCPI::isQuery, m_pSCPIInterface, cmdStatAdjustment);
 }
 
-Mt310s2SenseRange* cClamp::getRange(QString name)
+SenseRangeCommon *cClamp::getRange(QString name)
 {
-    Mt310s2SenseRange* rangeFound = nullptr;
+    SenseRangeCommon* rangeFound = nullptr;
     for(auto range : qAsConst(m_RangeList)) {
         if (range->getName() == name) {
             rangeFound = range;
@@ -777,7 +777,7 @@ void cClamp::removeAllRanges()
     m_RangeListSecondary.clear();
 }
 
-void cClamp::exportRangeXml(QDomDocument &justqdom, QDomElement &typeTag, Mt310s2SenseRange *range)
+void cClamp::exportRangeXml(QDomDocument &justqdom, QDomElement &typeTag, SenseRangeCommon *range)
 {
     QDomElement rtag = justqdom.createElement("Range");
     typeTag.appendChild( rtag );
