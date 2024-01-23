@@ -30,9 +30,3 @@ ZeraMControllerIoTemplate::atmelRM TestI2cCtrlDeviceIdent::readLCAVersion(QStrin
     answer = "Unknown";
     return ZeraMControllerIo::cmddone;
 }
-
-ZeraMControllerIoTemplate::atmelRM TestI2cCtrlDeviceIdent::writePCBVersion(QString &sVersion)
-{
-    m_writablePcbVersion = sVersion;
-    return ZeraMControllerIo::cmddone;
-}

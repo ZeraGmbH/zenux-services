@@ -45,19 +45,3 @@ ZeraMControllerIoTemplate::atmelRM I2cCtrlDeviceIdent::readLCAVersion(QString &a
 {
     return m_ctrlIo.readVariableLenText(hwGetLCAVersion, answer);
 }
-
-ZeraMControllerIoTemplate::atmelRM I2cCtrlDeviceIdent::writePCBVersion(QString &sVersion)
-{
-    ZeraMControllerIo::atmelRM ret;
-    quint16 len = static_cast<quint16>(sVersion.length());
-    if (len<1 || len>24) {
-        ret = ZeraMControllerIo::cmdfault;
-    }
-    else {
-        QByteArray ba = sVersion.toLatin1();
-        hw_cmd CMD(hwSetPCBVersion, 0, reinterpret_cast<quint8*>(ba.data()), len);
-        m_ctrlIo.writeCommand(&CMD);
-        ret = m_ctrlIo.getLastErrorMask() == 0 ? ZeraMControllerIo::cmddone : ZeraMControllerIo::cmdexecfault;
-    }
-    return ret;
-}

@@ -35,7 +35,7 @@ private:
     QString scpiReadServerVersion(QString& sInput);
     QString m_ReadDeviceVersion(QString& sInput);
     QString m_ReadDeviceName(QString& sInput);
-    QString m_ReadWritePCBVersion(QString& sInput);
+    QString scpiReadPCBVersion(QString& sInput);
     QString m_ReadFPGAVersion(QString& sInput);
     QString m_ReadWriteSerialNumber(QString& sInput);
     QString m_InterfaceRead(QString& sInput);
