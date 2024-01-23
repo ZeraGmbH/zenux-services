@@ -32,9 +32,3 @@ ZeraMControllerIoTemplate::atmelRM DemoI2cCtrlDeviceIdent::readLCAVersion(QStrin
     answer = m_FPGAVersion;
     return ZeraMControllerIo::cmddone;
 }
-
-ZeraMControllerIoTemplate::atmelRM DemoI2cCtrlDeviceIdent::writePCBVersion(QString &sVersion)
-{
-    m_writablePcbVersion = sVersion;
-    return ZeraMControllerIo::cmddone;
-}

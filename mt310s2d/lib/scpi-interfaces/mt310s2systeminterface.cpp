@@ -28,7 +28,7 @@ void Mt310s2SystemInterface::initSCPIConnection(QString leadingNodes)
     ensureTrailingColonOnNonEmptyParentNodes(leadingNodes);
     addDelegate(QString("%1SYSTEM:VERSION").arg(leadingNodes),"SERVER", SCPI::isQuery, m_pSCPIInterface, SystemSystem::cmdVersionServer);
     addDelegate(QString("%1SYSTEM:VERSION").arg(leadingNodes),"DEVICE", SCPI::isQuery, m_pSCPIInterface, SystemSystem::cmdVersionDevice);
-    addDelegate(QString("%1SYSTEM:VERSION").arg(leadingNodes), "PCB", SCPI::isQuery | SCPI::isCmdwP, m_pSCPIInterface, SystemSystem::cmdVersionPCB, &m_allPCBVersion);
+    addDelegate(QString("%1SYSTEM:VERSION").arg(leadingNodes), "PCB", SCPI::isQuery, m_pSCPIInterface, SystemSystem::cmdVersionPCB, &m_allPCBVersion); // why notification??
     addDelegate(QString("%1SYSTEM:VERSION").arg(leadingNodes), "CTRL", SCPI::isQuery, m_pSCPIInterface, SystemSystem::cmdVersionCTRL, &m_allCtrlVersion);
     addDelegate(QString("%1SYSTEM:VERSION").arg(leadingNodes), "FPGA", SCPI::isQuery, m_pSCPIInterface, SystemSystem::cmdVersionFPGA);
     addDelegate(QString("%1SYSTEM").arg(leadingNodes), "SERIAL", SCPI::isQuery | SCPI::isCmdwP , m_pSCPIInterface, SystemSystem::cmdSerialNumber);
@@ -62,7 +62,7 @@ void Mt310s2SystemInterface::executeProtoScpi(int cmdCode, cProtonetCommand *pro
         protoCmd->m_sOutput = m_ReadDeviceVersion(protoCmd->m_sInput);
         break;
     case SystemSystem::cmdVersionPCB:
-        protoCmd->m_sOutput = m_ReadWritePCBVersion(protoCmd->m_sInput);
+        protoCmd->m_sOutput = scpiReadPCBVersion(protoCmd->m_sInput);
         break;
     case SystemSystem::cmdVersionCTRL:
         protoCmd->m_sOutput = scpiReadAllCTRLVersions(protoCmd->m_sInput);
@@ -156,14 +156,11 @@ QString Mt310s2SystemInterface::m_ReadDeviceName(QString& sInput)
 }
 
 
-QString Mt310s2SystemInterface::m_ReadWritePCBVersion(QString &sInput)
+QString Mt310s2SystemInterface::scpiReadPCBVersion(QString &sInput)
 {
     QString s;
-    int ret = ZeraMControllerIo::cmdfault;
     cSCPICommand cmd = sInput;
-
-    if (cmd.isQuery())
-    {
+    if (cmd.isQuery()) {
         if (m_systemInfo->dataRead()) {
             updateAllPCBsVersion();
             s = m_allPCBVersion.getString();
@@ -172,16 +169,7 @@ QString Mt310s2SystemInterface::m_ReadWritePCBVersion(QString &sInput)
             s = ZSCPI::scpiAnswer[ZSCPI::errexec];
     }
     else
-    {
-        if (cmd.isCommand(1))
-        {
-            QString Version = cmd.getParam(0);
-            ret = m_ctrlFactory->getDeviceIdentController()->writePCBVersion(Version);
-            m_systemInfo->getSystemInfo(); // read back info
-        }
-
-        m_genAnswer(ret, s);
-    }
+        s = ZSCPI::scpiAnswer[ZSCPI::nak];
 
     return s;
 }

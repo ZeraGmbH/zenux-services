@@ -19,7 +19,7 @@ void cSystemInterface::initSCPIConnection(QString leadingNodes)
     ensureTrailingColonOnNonEmptyParentNodes(leadingNodes);
     addDelegate(QString("%1SYSTEM:VERSION").arg(leadingNodes),"SERVER", SCPI::isQuery, m_pSCPIInterface, SystemSystem::cmdVersionServer);
     addDelegate(QString("%1SYSTEM:VERSION").arg(leadingNodes),"DEVICE", SCPI::isQuery, m_pSCPIInterface, SystemSystem::cmdVersionDevice);
-    addDelegate(QString("%1SYSTEM:VERSION").arg(leadingNodes), "PCB", SCPI::isQuery | SCPI::isCmdwP, m_pSCPIInterface, SystemSystem::cmdVersionPCB);
+    addDelegate(QString("%1SYSTEM:VERSION").arg(leadingNodes), "PCB", SCPI::isQuery, m_pSCPIInterface, SystemSystem::cmdVersionPCB);
     addDelegate(QString("%1SYSTEM:VERSION").arg(leadingNodes), "FPGA", SCPI::isQuery, m_pSCPIInterface, SystemSystem::cmdVersionFPGA);
     addDelegate(QString("%1SYSTEM").arg(leadingNodes), "SERIAL", SCPI::isQuery | SCPI::isCmdwP , m_pSCPIInterface, SystemSystem::cmdSerialNumber);
     addDelegate(QString("%1SYSTEM:INTERFACE").arg(leadingNodes), "READ", SCPI::isQuery, m_pSCPIInterface, SystemSystem::cmdInterfaceRead);
@@ -36,7 +36,7 @@ void cSystemInterface::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
         protoCmd->m_sOutput = m_ReadDeviceVersion(protoCmd->m_sInput);
         break;
     case SystemSystem::cmdVersionPCB:
-        protoCmd->m_sOutput = m_ReadWritePCBVersion(protoCmd->m_sInput);
+        protoCmd->m_sOutput = scpiReadPCBVersion(protoCmd->m_sInput);
         break;
     case SystemSystem::cmdVersionFPGA:
         protoCmd->m_sOutput = m_ReadFPGAVersion(protoCmd->m_sInput);
@@ -93,7 +93,7 @@ QString cSystemInterface::m_ReadDeviceName(QString& sInput)
 }
 
 
-QString cSystemInterface::m_ReadWritePCBVersion(QString &sInput)
+QString cSystemInterface::scpiReadPCBVersion(QString &sInput)
 {
     QString s;
     cSCPICommand cmd = sInput;
@@ -103,16 +103,8 @@ QString cSystemInterface::m_ReadWritePCBVersion(QString &sInput)
         else
             s = ZSCPI::scpiAnswer[ZSCPI::errexec];
     }
-    else {
-        if (cmd.isCommand(1)) {
-            //QString Version = cmd.getParam(0);
-            // todo write here the pcb version
-            m_pSystemInfo->getSystemInfo(); // read back info
-            s = ZSCPI::scpiAnswer[ZSCPI::ack];
-        }
-        else
-            s = ZSCPI::scpiAnswer[ZSCPI::nak];
-    }
+    else
+        s = ZSCPI::scpiAnswer[ZSCPI::nak];
     return s;
 }
 

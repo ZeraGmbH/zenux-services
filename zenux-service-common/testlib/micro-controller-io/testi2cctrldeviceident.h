@@ -11,7 +11,6 @@ public:
     ZeraMControllerIo::atmelRM readSerialNumber(QString& answer) override;
     ZeraMControllerIo::atmelRM writeSerialNumber(QString &sNumber) override;
     ZeraMControllerIo::atmelRM readLCAVersion(QString& answer) override;
-    ZeraMControllerIo::atmelRM writePCBVersion(QString& sVersion) override;
 private:
     QString &m_serialNumber;
     QString &m_writablePcbVersion;

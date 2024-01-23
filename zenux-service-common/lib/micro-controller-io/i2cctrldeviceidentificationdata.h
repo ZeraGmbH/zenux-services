@@ -11,7 +11,6 @@ public:
     ZeraMControllerIo::atmelRM readSerialNumber(QString& answer) override;
     ZeraMControllerIo::atmelRM writeSerialNumber(QString &sNumber) override;
     ZeraMControllerIo::atmelRM readLCAVersion(QString& answer) override;
-    ZeraMControllerIo::atmelRM writePCBVersion(QString& sVersion) override; // only relais controller for now
 private:
     ZeraMControllerIo m_ctrlIo;
 };
