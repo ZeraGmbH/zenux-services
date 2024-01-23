@@ -41,7 +41,6 @@ void Mt310s2SystemInterface::initSCPIConnection(QString leadingNodes)
     // End Obsolete???
     addDelegate(QString("%1SYSTEM:ADJUSTMENT:FLASH").arg(leadingNodes), "CHKSUM", SCPI::isQuery, m_pSCPIInterface, SystemSystem::cmdAdjFlashChksum);
     addDelegate(QString("%1SYSTEM:INTERFACE").arg(leadingNodes), "READ", SCPI::isQuery, m_pSCPIInterface, SystemSystem::cmdInterfaceRead);
-    addDelegate(QString("%1SYSTEM").arg(leadingNodes),"TESTMODE",SCPI::isCmdwP, m_pSCPIInterface, SystemSystem::cmdTestMode);
 }
 
 void Mt310s2SystemInterface::actualizeContollers(quint16 bitmaskAvailable)
@@ -94,9 +93,6 @@ void Mt310s2SystemInterface::executeProtoScpi(int cmdCode, cProtonetCommand *pro
         break;
     case SystemSystem::cmdInterfaceRead:
         protoCmd->m_sOutput = m_InterfaceRead(protoCmd->m_sInput);
-        break;
-    case SystemSystem::cmdTestMode:
-        protoCmd->m_sOutput = testMode(protoCmd->m_sInput);
         break;
     }
 
@@ -402,13 +398,6 @@ QString Mt310s2SystemInterface::m_InterfaceRead(QString &sInput)
     }
     else
         return ZSCPI::scpiAnswer[ZSCPI::nak];
-}
-
-QString Mt310s2SystemInterface::testMode(QString &Input)
-{
-    cSCPICommand cmd = Input;
-    quint32 modeBits = cmd.getParam(0).toUInt();
-    return m_ctrlFactory->getAccuController()->enableTestMode(modeBits)==ZeraMControllerIo::cmddone ? ZSCPI::scpiAnswer[ZSCPI::ack] : ZSCPI::scpiAnswer[ZSCPI::errexec];
 }
 
 void Mt310s2SystemInterface::updateAllCtrlVersionsJson()

@@ -82,8 +82,6 @@ public:
     virtual ~AbstractI2cCtrlAccu() = default;
     virtual ZeraMControllerIo::atmelRM readAccuStatus(quint8& stat) = 0;
     virtual ZeraMControllerIo::atmelRM readAccuStateOfCharge(quint8& charge) = 0;
-    // This should go soon!!!
-    virtual ZeraMControllerIo::atmelRM enableTestMode(qint32 testBits) = 0;
 };
 typedef std::unique_ptr<AbstractI2cCtrlAccu> I2cCtrlAccumulatorPtr;
 
