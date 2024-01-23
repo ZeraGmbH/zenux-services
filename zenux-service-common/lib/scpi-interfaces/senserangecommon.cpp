@@ -81,6 +81,11 @@ quint16 SenseRangeCommon::getMMask()
     return m_typeFlags;
 }
 
+void SenseRangeCommon::setMModeToUpdateAvailability(int mode)
+{
+    m_bAvail = ((getMMask() & mode) > 0);
+}
+
 quint8 SenseRangeCommon::getAdjustmentStatus80Mask()
 {
     return m_justdata->getAdjustmentStatus80Mask();
