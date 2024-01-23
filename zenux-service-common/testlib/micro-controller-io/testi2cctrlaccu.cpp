@@ -11,9 +11,3 @@ ZeraMControllerIoTemplate::atmelRM TestI2cCtrlAccu::readAccuStateOfCharge(quint8
     charge = 37;
     return ZeraMControllerIoTemplate::cmddone;
 }
-
-ZeraMControllerIoTemplate::atmelRM TestI2cCtrlAccu::enableTestMode(qint32 testBits)
-{
-    Q_UNUSED(testBits)
-    return ZeraMControllerIoTemplate::cmddone;
-}

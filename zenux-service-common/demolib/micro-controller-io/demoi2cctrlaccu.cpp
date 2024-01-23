@@ -12,11 +12,3 @@ ZeraMControllerIoTemplate::atmelRM DemoI2cCtrlAccu::readAccuStateOfCharge(quint8
     charge = SimulSystemStatus::getInstance()->getAccuStateOfCharge();
     return ZeraMControllerIoTemplate::cmddone;
 }
-
-
-// Make it go!!!
-ZeraMControllerIoTemplate::atmelRM DemoI2cCtrlAccu::enableTestMode(qint32 testBits)
-{
-    Q_UNUSED(testBits)
-    return ZeraMControllerIoTemplate::cmddone;
-}

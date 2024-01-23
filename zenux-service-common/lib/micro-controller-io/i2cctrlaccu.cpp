@@ -37,15 +37,3 @@ ZeraMControllerIoTemplate::atmelRM I2cCtrlAccu::readAccuStateOfCharge(quint8 &ch
     }
     return ret;
 }
-
-ZeraMControllerIoTemplate::atmelRM I2cCtrlAccu::enableTestMode(qint32 testBits)
-{
-    quint8 PAR[4];
-    PAR[0] = (testBits >> 24) & 255;
-    PAR[1] = (testBits >> 16) & 255;
-    PAR[2] = (testBits >> 8) & 255;
-    PAR[3] = testBits & 255;
-    hw_cmd CMD(hwSetTestModes, 0, PAR, 4);
-    m_ctrlIo.writeCommand(&CMD);
-    return m_ctrlIo.getLastErrorMask() == 0 ? ZeraMControllerIo::cmddone : ZeraMControllerIo::cmdexecfault;
-}
