@@ -1,4 +1,5 @@
 #include "test_sense_regression_range_mt310s2.h"
+#include "mt310s2senserange.h"
 #include "mt310s2senseinterface.h"
 #include "zscpi_response_definitions.h"
 #include <QTest>

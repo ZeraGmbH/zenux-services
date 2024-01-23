@@ -32,7 +32,7 @@ namespace SenseSystem
         //
         // * test_sense_regression_interface_mt310s2: all the tests with mode setting
         // * Mt310s2SenseInterface::Mt310s2SenseInterface on setup of m_MModeHash
-        // * Mt310s2SenseRange::setMMode for sense range (de)activation
+        // * SenseRangeCommon::setMMode for sense range (de)activation
         // * Mt310s2SenseInterface::setSenseMode to see some nasty bitmanipulation
         //   before asking atmel to change mode.
         //
@@ -77,7 +77,7 @@ public:
     virtual void initSCPIConnection(QString leadingNoMModedes) override;
     Mt310s2SenseChannel* getChannel(QString& name);
     QString getChannelSystemName(quint16 ctrlChannel);
-    Mt310s2SenseRange* getRange(QString channelName, QString rangeName);
+    SenseRangeCommon* getRange(QString channelName, QString rangeName);
     quint8 getAdjustmentStatus() override;
 
     QString exportXMLString(int indent = 1) override;

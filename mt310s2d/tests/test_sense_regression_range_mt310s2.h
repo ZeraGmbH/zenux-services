@@ -1,7 +1,7 @@
 #ifndef TEST_REGRESSION_SENSE_RANGE_MT310S2_H
 #define TEST_REGRESSION_SENSE_RANGE_MT310S2_H
 
-#include "mt310s2senserange.h"
+#include "senserangecommon.h"
 #include <QObject>
 
 class test_sense_regression_range_mt310s2 : public QObject
@@ -24,7 +24,7 @@ private slots:
 private:
     cSCPI *m_scpi;
     RangeAdjInterface *m_justData;
-    Mt310s2SenseRange *m_range;
+    SenseRangeCommon *m_range;
 };
 
 #endif // TEST_REGRESSION_SENSE_RANGE_MT310S2_H
