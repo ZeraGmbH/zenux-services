@@ -33,7 +33,7 @@ public:
     virtual ZeraMControllerIo::atmelRM readSerialNumber(QString& answer) = 0;
     virtual ZeraMControllerIo::atmelRM writeSerialNumber(QString &sNumber) = 0;
     virtual ZeraMControllerIo::atmelRM readLCAVersion(QString& answer) = 0;
-    virtual ZeraMControllerIo::atmelRM writePCBVersion(QString& sVersion) = 0; // only relais controller for now
+    virtual ZeraMControllerIo::atmelRM writePCBVersion(QString& sVersion) = 0; // not our job -> TODO kick out
 };
 typedef std::unique_ptr<AbstractI2cCtrlDeviceIdent> I2cCtrlDeviceIdentPtr;
 
