@@ -161,7 +161,7 @@ void Mt310s2SenseChannel::setMMode(int m)
 {
     m_nMMode = m;
     for(auto range : qAsConst(m_RangeList)) {
-        range->setMMode(m);
+        range->setMModeToUpdateAvailability(m);
     }
     notifierSenseChannelRangeCat.forceTrigger(); // better we would ask for changed avail ranges and then trigger !!!
     // but we can do this later

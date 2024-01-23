@@ -16,7 +16,7 @@ public:
                       quint8 rselcode,
                       quint16 mmask,
                       RangeAdjInterface* justdata);
-    void setMMode(int mode);
+    void setMModeToUpdateAvailability(int mode);
 };
 
 #endif // SENSERANGE_H
