@@ -1,4 +1,4 @@
-#include "test_adj_regression_import_export_xml_mt310s2.h"
+#include "test_regression_adj_import_export_xml_mt310s2.h"
 #include "clampfactorytest.h"
 #include "testfactoryi2cctrl.h"
 #include "proxy.h"
@@ -8,19 +8,19 @@
 #include <QSignalSpy>
 #include <QTest>
 
-QTEST_MAIN(test_adj_regression_import_export_xml_mt310s2);
+QTEST_MAIN(test_regression_adj_import_export_xml_mt310s2);
 
-void test_adj_regression_import_export_xml_mt310s2::initTestCase()
+void test_regression_adj_import_export_xml_mt310s2::initTestCase()
 {
     ClampFactoryTest::enableTest();
 }
 
-void test_adj_regression_import_export_xml_mt310s2::init()
+void test_regression_adj_import_export_xml_mt310s2::init()
 {
     setupServers();
 }
 
-void test_adj_regression_import_export_xml_mt310s2::cleanup()
+void test_regression_adj_import_export_xml_mt310s2::cleanup()
 {
     m_pcbIFace = nullptr;
     m_pcbClient = nullptr;
@@ -29,7 +29,7 @@ void test_adj_regression_import_export_xml_mt310s2::cleanup()
     TimeMachineObject::feedEventLoop();
 }
 
-void test_adj_regression_import_export_xml_mt310s2::directAcessExportXml()
+void test_regression_adj_import_export_xml_mt310s2::directAcessExportXml()
 {
     QString xmlExported = m_testServer->getSenseInterface()->exportXMLString();
     qInfo("Exported XML (before adjust):");
@@ -47,21 +47,21 @@ void test_adj_regression_import_export_xml_mt310s2::directAcessExportXml()
     QCOMPARE(xmlExported, xmlExpected);
 }
 
-void test_adj_regression_import_export_xml_mt310s2::directAcessFileImportXmlMinimal()
+void test_regression_adj_import_export_xml_mt310s2::directAcessFileImportXmlMinimal()
 {
     QString filenameShort = ":/import_minimal_pass";
     QVERIFY(QFile::exists(filenameShort + ".xml"));
     QVERIFY(m_testServer->getSenseInterface()->importAdjXMLFile(filenameShort));
 }
 
-void test_adj_regression_import_export_xml_mt310s2::directAcessArbitraryVerion()
+void test_regression_adj_import_export_xml_mt310s2::directAcessArbitraryVerion()
 {
     QString filenameShort = ":/import_abribrary_version";
     QVERIFY(QFile::exists(filenameShort + ".xml"));
     QVERIFY(m_testServer->getSenseInterface()->importAdjXMLFile(filenameShort));
 }
 
-void test_adj_regression_import_export_xml_mt310s2::directAcessFileImportXmlPseudoRandom()
+void test_regression_adj_import_export_xml_mt310s2::directAcessFileImportXmlPseudoRandom()
 {
     QString xmlExportedInitial = m_testServer->getSenseInterface()->exportXMLString();
     xmlExportedInitial = XmlHelperForTest::removeTimeDependentEntriesFromXml(xmlExportedInitial);
@@ -84,28 +84,28 @@ void test_adj_regression_import_export_xml_mt310s2::directAcessFileImportXmlPseu
     QCOMPARE(xmlExportedModified, xmlExpected);
 }
 
-void test_adj_regression_import_export_xml_mt310s2::directAcessFileImportMissingType()
+void test_regression_adj_import_export_xml_mt310s2::directAcessFileImportMissingType()
 {
     QString filenameShort = ":/import_missing_type";
     QVERIFY(QFile::exists(filenameShort + ".xml"));
     QVERIFY(!m_testServer->getSenseInterface()->importAdjXMLFile(filenameShort));
 }
 
-void test_adj_regression_import_export_xml_mt310s2::directAcessFileImportMissingSerNo()
+void test_regression_adj_import_export_xml_mt310s2::directAcessFileImportMissingSerNo()
 {
     QString filenameShort = ":/import_missing_serno";
     QVERIFY(QFile::exists(filenameShort + ".xml"));
     QVERIFY(!m_testServer->getSenseInterface()->importAdjXMLFile(filenameShort));
 }
 
-void test_adj_regression_import_export_xml_mt310s2::directAcessUnknownEntry()
+void test_regression_adj_import_export_xml_mt310s2::directAcessUnknownEntry()
 {
     QString filenameShort = ":/import_unknown_entry";
     QVERIFY(QFile::exists(filenameShort + ".xml"));
     QVERIFY(!m_testServer->getSenseInterface()->importAdjXMLFile(filenameShort));
 }
 
-void test_adj_regression_import_export_xml_mt310s2::scpiExportInitialAdjXml()
+void test_regression_adj_import_export_xml_mt310s2::scpiExportInitialAdjXml()
 {
     QFile xmlFile(":/export_internal_initial.xml");
     QVERIFY(xmlFile.open(QFile::ReadOnly));
@@ -125,7 +125,7 @@ void test_adj_regression_import_export_xml_mt310s2::scpiExportInitialAdjXml()
     QCOMPARE(xmlExportedPretty, xmlExpected);
 }
 
-void test_adj_regression_import_export_xml_mt310s2::directAcessExportXmlClamps()
+void test_regression_adj_import_export_xml_mt310s2::directAcessExportXmlClamps()
 {
     m_testServer->addClamp(CL120A, "IL1");
     m_testServer->addClamp(EMOB32, "IL2");
@@ -151,7 +151,7 @@ void test_adj_regression_import_export_xml_mt310s2::directAcessExportXmlClamps()
 }
 
 
-void test_adj_regression_import_export_xml_mt310s2::scpiExportInitialAdjXmlClamps()
+void test_regression_adj_import_export_xml_mt310s2::scpiExportInitialAdjXmlClamps()
 {
     m_testServer->addClamp(CL120A, "IL1");
     m_testServer->addClamp(EMOB32, "IL2");
@@ -176,7 +176,7 @@ void test_adj_regression_import_export_xml_mt310s2::scpiExportInitialAdjXmlClamp
     QCOMPARE(xmlExportedPretty, xmlExpected);
 }
 
-void test_adj_regression_import_export_xml_mt310s2::setupServers()
+void test_regression_adj_import_export_xml_mt310s2::setupServers()
 {
     m_resmanServer = std::make_unique<ResmanRunFacade>();
     m_testServer = std::make_unique<TestServerForSenseInterfaceMt310s2>(std::make_shared<TestFactoryI2cCtrl>(true));

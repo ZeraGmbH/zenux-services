@@ -1,4 +1,4 @@
-#include "test_adj_regression_scpi_query_format_mt310s2.h"
+#include "test_regression_adj_scpi_query_format_mt310s2.h"
 #include "proxy.h"
 #include "mocki2ceepromiofactory.h"
 #include "mockeeprom24lc.h"
@@ -8,11 +8,11 @@
 #include <QSignalSpy>
 #include <QTest>
 
-QTEST_MAIN(test_adj_regression_scpi_query_format_mt310s2);
+QTEST_MAIN(test_regression_adj_scpi_query_format_mt310s2);
 
 static const QDateTime refTime = QDateTime::fromSecsSinceEpoch(0, Qt::UTC);
 
-void test_adj_regression_scpi_query_format_mt310s2::initTestCase()
+void test_regression_adj_scpi_query_format_mt310s2::initTestCase()
 {
     MockI2cEEpromIoFactory::enableMock();
     setupServers();
@@ -22,12 +22,12 @@ void test_adj_regression_scpi_query_format_mt310s2::initTestCase()
     QVERIFY(m_testServer->getSenseInterface()->importAdjXMLFile(filenameShort));
 }
 
-void test_adj_regression_scpi_query_format_mt310s2::init()
+void test_regression_adj_scpi_query_format_mt310s2::init()
 {
     MockEEprom24LC::cleanAll();
 }
 
-void test_adj_regression_scpi_query_format_mt310s2::queryGainCorrectionSingleGen()
+void test_regression_adj_scpi_query_format_mt310s2::queryGainCorrectionSingleGen()
 {
     QString adjustedValue;
     adjustedValue = ScpiSingleTransactionBlocked::cmd("SENS:m0:250V:CORR:ADJGAIN?", "1");
@@ -40,7 +40,7 @@ void test_adj_regression_scpi_query_format_mt310s2::queryGainCorrectionSingleGen
     qInfo("%s", qPrintable(adjustedValue));
 }
 
-void test_adj_regression_scpi_query_format_mt310s2::queryGainCorrectionSingle()
+void test_regression_adj_scpi_query_format_mt310s2::queryGainCorrectionSingle()
 {
     QString adjustedValue;
     adjustedValue = ScpiSingleTransactionBlocked::cmd("SENS:m0:250V:CORR:ADJGAIN?", "1");
@@ -53,7 +53,7 @@ void test_adj_regression_scpi_query_format_mt310s2::queryGainCorrectionSingle()
     QCOMPARE(adjustedValue, "11.1111");
 }
 
-void test_adj_regression_scpi_query_format_mt310s2::queryGainCorrectionTotalGen()
+void test_regression_adj_scpi_query_format_mt310s2::queryGainCorrectionTotalGen()
 {
     QString adjustedValue;
     adjustedValue = ScpiSingleTransactionBlocked::cmd("SENS:m0:250V:CORR:GAIN?", "1");
@@ -66,7 +66,7 @@ void test_adj_regression_scpi_query_format_mt310s2::queryGainCorrectionTotalGen(
     qInfo("%s", qPrintable(adjustedValue));
 }
 
-void test_adj_regression_scpi_query_format_mt310s2::queryGainCorrectionTotal()
+void test_regression_adj_scpi_query_format_mt310s2::queryGainCorrectionTotal()
 {
     QString adjustedValue;
     adjustedValue = ScpiSingleTransactionBlocked::cmd("SENS:m0:250V:CORR:GAIN?", "1");
@@ -79,7 +79,7 @@ void test_adj_regression_scpi_query_format_mt310s2::queryGainCorrectionTotal()
     QCOMPARE(adjustedValue, "11.1111");
 }
 
-void test_adj_regression_scpi_query_format_mt310s2::queryPhaseCorrectionSingleGen()
+void test_regression_adj_scpi_query_format_mt310s2::queryPhaseCorrectionSingleGen()
 {
     QString adjustedValue;
     adjustedValue = ScpiSingleTransactionBlocked::cmd("SENS:m0:250V:CORR:ADJPHASE?", "1");
@@ -92,7 +92,7 @@ void test_adj_regression_scpi_query_format_mt310s2::queryPhaseCorrectionSingleGe
     qInfo("%s", qPrintable(adjustedValue));
 }
 
-void test_adj_regression_scpi_query_format_mt310s2::queryPhaseCorrectionSingle()
+void test_regression_adj_scpi_query_format_mt310s2::queryPhaseCorrectionSingle()
 {
     QString adjustedValue;
     adjustedValue = ScpiSingleTransactionBlocked::cmd("SENS:m0:250V:CORR:ADJPHASE?", "1");
@@ -105,7 +105,7 @@ void test_adj_regression_scpi_query_format_mt310s2::queryPhaseCorrectionSingle()
     QCOMPARE(adjustedValue, "22.2222");
 }
 
-void test_adj_regression_scpi_query_format_mt310s2::queryPhaseCorrectionTotalGen()
+void test_regression_adj_scpi_query_format_mt310s2::queryPhaseCorrectionTotalGen()
 {
     QString adjustedValue;
     adjustedValue = ScpiSingleTransactionBlocked::cmd("SENS:m0:250V:CORR:ADJPHASE?", "1");
@@ -118,7 +118,7 @@ void test_adj_regression_scpi_query_format_mt310s2::queryPhaseCorrectionTotalGen
     qInfo("%s", qPrintable(adjustedValue));
 }
 
-void test_adj_regression_scpi_query_format_mt310s2::queryPhaseCorrectionTotal()
+void test_regression_adj_scpi_query_format_mt310s2::queryPhaseCorrectionTotal()
 {
     QString adjustedValue;
     adjustedValue = ScpiSingleTransactionBlocked::cmd("SENS:m0:250V:CORR:PHASE?", "1");
@@ -131,7 +131,7 @@ void test_adj_regression_scpi_query_format_mt310s2::queryPhaseCorrectionTotal()
     QCOMPARE(adjustedValue, "22.2222");
 }
 
-void test_adj_regression_scpi_query_format_mt310s2::queryOffsetCorrectionSingleGen()
+void test_regression_adj_scpi_query_format_mt310s2::queryOffsetCorrectionSingleGen()
 {
     QString adjustedValue;
     adjustedValue = ScpiSingleTransactionBlocked::cmd("SENS:m0:250V:CORR:ADJOFFSET?", "1");
@@ -144,7 +144,7 @@ void test_adj_regression_scpi_query_format_mt310s2::queryOffsetCorrectionSingleG
     qInfo("%s", qPrintable(adjustedValue));
 }
 
-void test_adj_regression_scpi_query_format_mt310s2::queryOffsetCorrectionSingle()
+void test_regression_adj_scpi_query_format_mt310s2::queryOffsetCorrectionSingle()
 {
     QString adjustedValue;
     adjustedValue = ScpiSingleTransactionBlocked::cmd("SENS:m0:250V:CORR:ADJOFFSET?", "1");
@@ -157,7 +157,7 @@ void test_adj_regression_scpi_query_format_mt310s2::queryOffsetCorrectionSingle(
     QCOMPARE(adjustedValue, "33.3333");
 }
 
-void test_adj_regression_scpi_query_format_mt310s2::queryOffsetCorrectionTotalGen()
+void test_regression_adj_scpi_query_format_mt310s2::queryOffsetCorrectionTotalGen()
 {
     QString adjustedValue;
     adjustedValue = ScpiSingleTransactionBlocked::cmd("SENS:m0:250V:CORR:OFFSET?", "1");
@@ -170,7 +170,7 @@ void test_adj_regression_scpi_query_format_mt310s2::queryOffsetCorrectionTotalGe
     qInfo("%s", qPrintable(adjustedValue));
 }
 
-void test_adj_regression_scpi_query_format_mt310s2::queryOffsetCorrectionTotal()
+void test_regression_adj_scpi_query_format_mt310s2::queryOffsetCorrectionTotal()
 {
     QString adjustedValue;
     adjustedValue = ScpiSingleTransactionBlocked::cmd("SENS:m0:250V:CORR:OFFSET?", "1");
@@ -183,7 +183,7 @@ void test_adj_regression_scpi_query_format_mt310s2::queryOffsetCorrectionTotal()
     QCOMPARE(adjustedValue, "33.3333");
 }
 
-void test_adj_regression_scpi_query_format_mt310s2::queryGainCoefficients()
+void test_regression_adj_scpi_query_format_mt310s2::queryGainCoefficients()
 {
     QString coefficient;
     coefficient = ScpiSingleTransactionBlocked::query("SENS:m0:250V:CORR:GAIN:COEFFICIENT:0?");
@@ -196,7 +196,7 @@ void test_adj_regression_scpi_query_format_mt310s2::queryGainCoefficients()
     QCOMPARE(coefficient, "11.1111");
 }
 
-void test_adj_regression_scpi_query_format_mt310s2::queryGainNodes()
+void test_regression_adj_scpi_query_format_mt310s2::queryGainNodes()
 {
     QString coefficient;
     coefficient = ScpiSingleTransactionBlocked::query("SENS:m0:250V:CORR:GAIN:NODE:0?");
@@ -209,7 +209,7 @@ void test_adj_regression_scpi_query_format_mt310s2::queryGainNodes()
     QCOMPARE(coefficient, "44.444444;55.555556;");
 }
 
-void test_adj_regression_scpi_query_format_mt310s2::queryPhaseCoefficients()
+void test_regression_adj_scpi_query_format_mt310s2::queryPhaseCoefficients()
 {
     QString coefficient;
     coefficient = ScpiSingleTransactionBlocked::query("SENS:m0:250V:CORR:PHASE:COEFFICIENT:0?");
@@ -222,7 +222,7 @@ void test_adj_regression_scpi_query_format_mt310s2::queryPhaseCoefficients()
     QCOMPARE(coefficient, "22.2222");
 }
 
-void test_adj_regression_scpi_query_format_mt310s2::queryPhaseNodes()
+void test_regression_adj_scpi_query_format_mt310s2::queryPhaseNodes()
 {
     QString coefficient;
     coefficient = ScpiSingleTransactionBlocked::query("SENS:m0:250V:CORR:PHASE:NODE:0?");
@@ -235,7 +235,7 @@ void test_adj_regression_scpi_query_format_mt310s2::queryPhaseNodes()
     QCOMPARE(coefficient, "66.666667;77.777778;");
 }
 
-void test_adj_regression_scpi_query_format_mt310s2::queryOffsetCoefficients()
+void test_regression_adj_scpi_query_format_mt310s2::queryOffsetCoefficients()
 {
     QString coefficient;
     coefficient = ScpiSingleTransactionBlocked::query("SENS:m0:250V:CORR:OFFSET:COEFFICIENT:0?");
@@ -248,7 +248,7 @@ void test_adj_regression_scpi_query_format_mt310s2::queryOffsetCoefficients()
     QCOMPARE(coefficient, "33.3333");
 }
 
-void test_adj_regression_scpi_query_format_mt310s2::queryOffsetNodes()
+void test_regression_adj_scpi_query_format_mt310s2::queryOffsetNodes()
 {
     QString coefficient;
     coefficient = ScpiSingleTransactionBlocked::query("SENS:m0:250V:CORR:OFFSET:NODE:0?");
@@ -261,7 +261,7 @@ void test_adj_regression_scpi_query_format_mt310s2::queryOffsetNodes()
     QCOMPARE(coefficient, "88.888889;100.000000;");
 }
 
-void test_adj_regression_scpi_query_format_mt310s2::setupServers()
+void test_regression_adj_scpi_query_format_mt310s2::setupServers()
 {
     m_resmanServer = std::make_unique<ResmanRunFacade>();
     m_testServer = std::make_unique<TestServerForSenseInterfaceMt310s2>(std::make_shared<TestFactoryI2cCtrl>(true));

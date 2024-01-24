@@ -8,7 +8,7 @@
 #include <QStringList>
 #include <QJsonObject>
 
-class test_sense_regression_interface_com5003 : public QObject
+class test_regression_sense_interface_com5003 : public QObject
 {
     Q_OBJECT
 private slots:

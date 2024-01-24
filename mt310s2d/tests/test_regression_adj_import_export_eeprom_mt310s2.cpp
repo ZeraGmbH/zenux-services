@@ -1,4 +1,4 @@
-#include "test_adj_regression_import_export_eeprom_mt310s2.h"
+#include "test_regression_adj_import_export_eeprom_mt310s2.h"
 #include "clampfactorytest.h"
 #include "testfactoryi2cctrl.h"
 #include "testfactoryi2cctrlcommoninfofoo.h"
@@ -12,22 +12,22 @@
 #include <QSignalSpy>
 #include <QTest>
 
-QTEST_MAIN(test_adj_regression_import_export_eeprom_mt310s2);
+QTEST_MAIN(test_regression_adj_import_export_eeprom_mt310s2);
 
 static const QDateTime refTime = QDateTime::fromSecsSinceEpoch(0, Qt::UTC);
 
-void test_adj_regression_import_export_eeprom_mt310s2::initTestCase()
+void test_regression_adj_import_export_eeprom_mt310s2::initTestCase()
 {
     ClampFactoryTest::enableTest();
 }
 
-void test_adj_regression_import_export_eeprom_mt310s2::init()
+void test_regression_adj_import_export_eeprom_mt310s2::init()
 {
     MockEEprom24LC::cleanAll();
     MockI2cEEpromIoFactory::enableMock();
 }
 
-void test_adj_regression_import_export_eeprom_mt310s2::cleanup()
+void test_regression_adj_import_export_eeprom_mt310s2::cleanup()
 {
     m_pcbIFace = nullptr;
     m_pcbClient = nullptr;
@@ -36,14 +36,14 @@ void test_adj_regression_import_export_eeprom_mt310s2::cleanup()
     TimeMachineObject::feedEventLoop();
 }
 
-void test_adj_regression_import_export_eeprom_mt310s2::directExportFlashNoMock()
+void test_regression_adj_import_export_eeprom_mt310s2::directExportFlashNoMock()
 {
     setupServers(std::make_shared<TestFactoryI2cCtrl>(true));
     MockI2cEEpromIoFactory::disableMock();
     QVERIFY(!m_testServer->getSenseInterface()->exportAdjFlash(refTime));
 }
 
-void test_adj_regression_import_export_eeprom_mt310s2::directExportFlashGen()
+void test_regression_adj_import_export_eeprom_mt310s2::directExportFlashGen()
 {
     setupServers(std::make_shared<TestFactoryI2cCtrl>(true));
     QVERIFY(m_testServer->getSenseInterface()->exportAdjFlash(refTime));
@@ -54,7 +54,7 @@ void test_adj_regression_import_export_eeprom_mt310s2::directExportFlashGen()
     QVERIFY(writeFile("/tmp/export_internal_initial.eeprom", dataWritten));
 }
 
-void test_adj_regression_import_export_eeprom_mt310s2::directExportFlashCheckReference()
+void test_regression_adj_import_export_eeprom_mt310s2::directExportFlashCheckReference()
 {
     setupServers(std::make_shared<TestFactoryI2cCtrl>(true));
     QVERIFY(m_testServer->getSenseInterface()->exportAdjFlash(refTime));
@@ -65,7 +65,7 @@ void test_adj_regression_import_export_eeprom_mt310s2::directExportFlashCheckRef
     QCOMPARE(dataWritten, dataReference);
 }
 
-void test_adj_regression_import_export_eeprom_mt310s2::scpiWriteFlashInitial()
+void test_regression_adj_import_export_eeprom_mt310s2::scpiWriteFlashInitial()
 {
     setupServers(std::make_shared<TestFactoryI2cCtrl>(true));
     QString ret = ScpiSingleTransactionBlocked::cmd("SYSTEM:ADJUSTMENT:FLASH:WRITE", "");
@@ -87,7 +87,7 @@ void test_adj_regression_import_export_eeprom_mt310s2::scpiWriteFlashInitial()
     QCOMPARE(dataWritten, dataReference);
 }
 
-void test_adj_regression_import_export_eeprom_mt310s2::scpiWriteRandomFileAndFlashGen()
+void test_regression_adj_import_export_eeprom_mt310s2::scpiWriteRandomFileAndFlashGen()
 {
     setupServers(std::make_shared<TestFactoryI2cCtrl>(true));
     QString filenameShort = ":/import_modified";
@@ -104,7 +104,7 @@ void test_adj_regression_import_export_eeprom_mt310s2::scpiWriteRandomFileAndFla
     QVERIFY(writeFile("/tmp/export_internal_modified.eeprom", dataWritten));
 }
 
-void test_adj_regression_import_export_eeprom_mt310s2::scpiWriteRandomFileFlashWriteFlashReadExportXmlAndCheck()
+void test_regression_adj_import_export_eeprom_mt310s2::scpiWriteRandomFileFlashWriteFlashReadExportXmlAndCheck()
 {
     setupServers(std::make_shared<TestFactoryI2cCtrl>(true));
     QString filenameShort = ":/import_modified";
@@ -128,7 +128,7 @@ void test_adj_regression_import_export_eeprom_mt310s2::scpiWriteRandomFileFlashW
     QCOMPARE(xmlExported, xmlExpected);
 }
 
-void test_adj_regression_import_export_eeprom_mt310s2::loadRandomToEEpromWriteToFlashExportXmlAndCheck()
+void test_regression_adj_import_export_eeprom_mt310s2::loadRandomToEEpromWriteToFlashExportXmlAndCheck()
 {
     setupServers(std::make_shared<TestFactoryI2cCtrl>(true));
     I2cSettings *i2cSettings = m_testServer->getI2cSettings();
@@ -153,7 +153,7 @@ void test_adj_regression_import_export_eeprom_mt310s2::loadRandomToEEpromWriteTo
     QCOMPARE(xmlExported, xmlExpected);
 }
 
-void test_adj_regression_import_export_eeprom_mt310s2::directExportFlashArbitraryVersionGen()
+void test_regression_adj_import_export_eeprom_mt310s2::directExportFlashArbitraryVersionGen()
 {
     setupServers(std::make_shared<TestFactoryI2cCtrlCommonInfoFoo>());
     QVERIFY(m_testServer->getSenseInterface()->exportAdjFlash(refTime));
@@ -164,7 +164,7 @@ void test_adj_regression_import_export_eeprom_mt310s2::directExportFlashArbitrar
     QVERIFY(writeFile("/tmp/import_arbitrary_version.eeprom", dataWritten));
 }
 
-void test_adj_regression_import_export_eeprom_mt310s2::loadArbitraryVersionToEEprom()
+void test_regression_adj_import_export_eeprom_mt310s2::loadArbitraryVersionToEEprom()
 {
     setupServers(std::make_shared<TestFactoryI2cCtrl>(true));
     I2cSettings *i2cSettings = m_testServer->getI2cSettings();
@@ -177,7 +177,7 @@ void test_adj_regression_import_export_eeprom_mt310s2::loadArbitraryVersionToEEp
     QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::ack]);
 }
 
-void test_adj_regression_import_export_eeprom_mt310s2::setupServers(AbstractFactoryI2cCtrlPtr ctrlFactory)
+void test_regression_adj_import_export_eeprom_mt310s2::setupServers(AbstractFactoryI2cCtrlPtr ctrlFactory)
 {
     m_resmanServer = std::make_unique<ResmanRunFacade>();
     m_testServer = std::make_unique<TestServerForSenseInterfaceMt310s2>(ctrlFactory);
@@ -190,7 +190,7 @@ void test_adj_regression_import_export_eeprom_mt310s2::setupServers(AbstractFact
     TimeMachineObject::feedEventLoop();
 }
 
-bool test_adj_regression_import_export_eeprom_mt310s2::writeFile(QString filename, QByteArray data)
+bool test_regression_adj_import_export_eeprom_mt310s2::writeFile(QString filename, QByteArray data)
 {
     QFile file(filename);
     if(file.open(QIODevice::WriteOnly))
@@ -198,7 +198,7 @@ bool test_adj_regression_import_export_eeprom_mt310s2::writeFile(QString filenam
     return false;
 }
 
-QByteArray test_adj_regression_import_export_eeprom_mt310s2::readFile(QString filename)
+QByteArray test_regression_adj_import_export_eeprom_mt310s2::readFile(QString filename)
 {
     QFile file(filename);
     if(file.open(QIODevice::ReadOnly))

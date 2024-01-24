@@ -1,4 +1,4 @@
-#include "test_sense_regression_interface_com5003.h"
+#include "test_regression_sense_interface_com5003.h"
 #include "testfactoryi2cctrl.h"
 #include "senseregressionhelper.h"
 #include "scpisingletransactionblocked.h"
@@ -11,9 +11,9 @@
 #include <QSignalSpy>
 #include <QTest>
 
-QTEST_MAIN(test_sense_regression_interface_com5003);
+QTEST_MAIN(test_regression_sense_interface_com5003);
 
-void test_sense_regression_interface_com5003::init()
+void test_regression_sense_interface_com5003::init()
 {
     m_resmanServer = std::make_unique<ResmanRunFacade>();
     m_testServer = std::make_unique<TestServerForSenseInterfaceCom5003>(std::make_shared<TestFactoryI2cCtrl>(true));
@@ -26,7 +26,7 @@ void test_sense_regression_interface_com5003::init()
     TimeMachineObject::feedEventLoop();
 }
 
-void test_sense_regression_interface_com5003::cleanup()
+void test_regression_sense_interface_com5003::cleanup()
 {
     m_pcbIFace = nullptr;
     m_pcbClient = nullptr;
@@ -35,15 +35,15 @@ void test_sense_regression_interface_com5003::cleanup()
     TimeMachineObject::feedEventLoop();
 }
 
-void test_sense_regression_interface_com5003::checkVersionsOfSystemInterface()
+void test_regression_sense_interface_com5003::checkVersionsOfSystemInterface()
 {
     QCOMPARE(m_testServer->getDeviceVersion(), "DEVICE: Unknown;PCB: Unknown;LCA: Unknown;CTRL: Unknown");
 }
 
-QStringList test_sense_regression_interface_com5003::m_channelsExpectedAllOverThePlace = QStringList()
+QStringList test_regression_sense_interface_com5003::m_channelsExpectedAllOverThePlace = QStringList()
                                                                                          << "m0" << "m1" << "m2" << "m3" << "m4" << "m5";
 
-void test_sense_regression_interface_com5003::checkChannelCatalogAsExpected()
+void test_regression_sense_interface_com5003::checkChannelCatalogAsExpected()
 {
     QSignalSpy responseSpy(m_pcbIFace.get(), &Zera::cPCBInterface::serverAnswer);
     m_pcbIFace->getChannelList();
@@ -52,11 +52,11 @@ void test_sense_regression_interface_com5003::checkChannelCatalogAsExpected()
 }
 
 // Is that a good idea to put it on modules's to hide reference ranges???
-QStringList test_sense_regression_interface_com5003::m_rangesExpectedU = QStringList()
+QStringList test_regression_sense_interface_com5003::m_rangesExpectedU = QStringList()
                                                                          << "480V" << "240V" << "120V" << "60V" << "12V" << "5V"
                                                                          << "R0V" << "R10V";
 
-void test_sense_regression_interface_com5003::checkRangesUL1()
+void test_regression_sense_interface_com5003::checkRangesUL1()
 {
     SenseSystem::cChannelSettings *channelSetting = m_testServer->getSenseSettings()->findChannelSettingByAlias1("UL1");
 
@@ -67,13 +67,13 @@ void test_sense_regression_interface_com5003::checkRangesUL1()
 }
 
 // Is that a good idea to put it on modules's to hide reference ranges???
-QStringList test_sense_regression_interface_com5003::m_rangesExpectedI = QStringList()
+QStringList test_regression_sense_interface_com5003::m_rangesExpectedI = QStringList()
                                                                          << "200A" << "100A" << "50A" << "25A" << "10A"
                                                                          << "5A" << "2.5A" << "1.0A"
                                                                          << "500mA" << "250mA" << "100mA" << "50mA" << "25mA" << "10mA" << "5mA"
                                                                          << "R0V" << "R10V";
 
-void test_sense_regression_interface_com5003::checkRangesIL1()
+void test_regression_sense_interface_com5003::checkRangesIL1()
 {
     SenseSystem::cChannelSettings *channelSetting = m_testServer->getSenseSettings()->findChannelSettingByAlias1("IL1");
 
@@ -83,13 +83,13 @@ void test_sense_regression_interface_com5003::checkRangesIL1()
     QCOMPARE(responseSpy[0][2].toStringList(), m_rangesExpectedI);
 }
 
-void test_sense_regression_interface_com5003::constantRangeValuesIL3GenJson()
+void test_regression_sense_interface_com5003::constantRangeValuesIL3GenJson()
 {
     SenseSystem::cChannelSettings *channelSetting = m_testServer->getSenseSettings()->findChannelSettingByAlias1("IL3");
     SenseRegressionHelper::genJsonConstantValuesAllRanges(channelSetting, m_pcbIFace.get());
 }
 
-void test_sense_regression_interface_com5003::constantRangeValuesIL3Check()
+void test_regression_sense_interface_com5003::constantRangeValuesIL3Check()
 {
     QJsonObject json = loadJson(":/all-ranges-il3.json");
     QVERIFY(!json.isEmpty());
@@ -97,13 +97,13 @@ void test_sense_regression_interface_com5003::constantRangeValuesIL3Check()
     QVERIFY(SenseRegressionHelper::checkJsonConstantValuesAllRanges(json, channelSetting, m_pcbIFace.get()));
 }
 
-void test_sense_regression_interface_com5003::constantRangeValuesUL3GenJson()
+void test_regression_sense_interface_com5003::constantRangeValuesUL3GenJson()
 {
     SenseSystem::cChannelSettings *channelSetting = m_testServer->getSenseSettings()->findChannelSettingByAlias1("UL3");
     SenseRegressionHelper::genJsonConstantValuesAllRanges(channelSetting, m_pcbIFace.get());
 }
 
-void test_sense_regression_interface_com5003::constantRangeValuesUL3Check()
+void test_regression_sense_interface_com5003::constantRangeValuesUL3Check()
 {
     QJsonObject json = loadJson(":/all-ranges-ul3.json");
     QVERIFY(!json.isEmpty());
@@ -111,7 +111,7 @@ void test_sense_regression_interface_com5003::constantRangeValuesUL3Check()
     QVERIFY(SenseRegressionHelper::checkJsonConstantValuesAllRanges(json, channelSetting, m_pcbIFace.get()));
 }
 
-void test_sense_regression_interface_com5003::channelAliasChangeOnREF()
+void test_regression_sense_interface_com5003::channelAliasChangeOnREF()
 {
     QString channelM0AliasBefore = ScpiSingleTransactionBlocked::query("SENSE:m0:ALIAS?");
     QCOMPARE(channelM0AliasBefore, "UL1");
@@ -123,7 +123,7 @@ void test_sense_regression_interface_com5003::channelAliasChangeOnREF()
     QCOMPARE(channelM0AliasAfter, "REF1");
 }
 
-QJsonObject test_sense_regression_interface_com5003::loadJson(QString fileName)
+QJsonObject test_regression_sense_interface_com5003::loadJson(QString fileName)
 {
     QFile referencFile(fileName);
     referencFile.open(QFile::ReadOnly);

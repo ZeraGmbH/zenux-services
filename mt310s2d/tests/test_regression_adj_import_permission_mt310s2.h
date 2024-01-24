@@ -7,7 +7,7 @@
 #include "resmanrunfacade.h"
 #include <QObject>
 
-class test_adj_regression_import_permission_mt310s2 : public QObject
+class test_regression_adj_import_permission_mt310s2 : public QObject
 {
     Q_OBJECT
 private slots:
