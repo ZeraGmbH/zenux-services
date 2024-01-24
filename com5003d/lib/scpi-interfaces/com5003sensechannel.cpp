@@ -11,28 +11,16 @@ Com5003SenseChannel::Com5003SenseChannel(cSCPI *scpiinterface,
                                          SenseSystem::cChannelSettings *cSettings,
                                          quint8 nr,
                                          AbstractFactoryI2cCtrlPtr ctrlFactory) :
-    ScpiConnection(scpiinterface),
-    m_ctrlFactory(ctrlFactory),
-    m_sDescription(description),
-    m_sUnit(unit)
+    SenseChannelCommon(scpiinterface,
+                         description,
+                         unit,
+                         cSettings,
+                         nr,
+                         ctrlFactory
+                         )
 {
-    m_sName = QString("m%1").arg(nr);
-    m_sAlias[0] = cSettings->m_sAlias1;
-    m_sAlias[1] = cSettings->m_sAlias2;
-    m_nCtrlChannel = cSettings->m_nCtrlChannel;
-    m_nDspChannel = cSettings->m_nDspChannel;
-    m_nOverloadBit = cSettings->m_nOverloadBit;
-    m_bAvail = cSettings->avail;
     m_nMMode = SenseChannel::modeAC; // the default
 }
-
-
-Com5003SenseChannel::~Com5003SenseChannel()
-{
-    for (int i = 0; i < m_RangeList.count(); i++)
-        delete m_RangeList.at(i);
-}
-
 
 void Com5003SenseChannel::initSCPIConnection(QString leadingNodes)
 {
@@ -154,9 +142,9 @@ QString &Com5003SenseChannel::getName()
 QString &Com5003SenseChannel::getAlias()
 {
     if (m_nMMode == 0)
-        return m_sAlias[0];
+        return m_sAlias1;
     else
-        return m_sAlias[1];
+        return m_sAlias2;
 }
 
 
@@ -212,14 +200,8 @@ void Com5003SenseChannel::computeJustData()
 QString Com5003SenseChannel::m_ReadAlias(QString &sInput)
 {
     cSCPICommand cmd = sInput;
-
     if (cmd.isQuery())
-    {
-        if (m_nMMode == 0)
-            return m_sAlias[0];
-        else
-            return m_sAlias[1];
-    }
+        return getAlias();
     else
         return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
