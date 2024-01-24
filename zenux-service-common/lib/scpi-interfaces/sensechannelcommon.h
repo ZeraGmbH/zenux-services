@@ -17,6 +17,9 @@ public:
                        AbstractFactoryI2cCtrlPtr ctrlFactory);
     virtual ~SenseChannelCommon();
 protected:
+    virtual void setMMode(int m) = 0;
+    virtual QString getAlias() = 0;
+
     AbstractFactoryI2cCtrlPtr m_ctrlFactory;
     QString m_sName; // the channels name m0...
     QString m_sAlias1; // the channel's alias name for example UL1

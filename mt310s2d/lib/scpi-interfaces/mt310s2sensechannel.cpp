@@ -16,9 +16,23 @@ Mt310s2SenseChannel::Mt310s2SenseChannel(cSCPI* scpiinterface,
                        unit,
                        cSettings,
                        nr,
-                       ctrlFactory
-                       )
+                       ctrlFactory)
 {
+}
+
+void Mt310s2SenseChannel::setMMode(int m)
+{
+    m_nMMode = m;
+    for(auto range : qAsConst(m_RangeList)) {
+        range->setMModeToUpdateAvailability(m);
+    }
+    notifierSenseChannelRangeCat.forceTrigger(); // better we would ask for changed avail ranges and then trigger !!!
+    // but we can do this later
+}
+
+QString Mt310s2SenseChannel::getAlias()
+{
+    return m_sAlias1;
 }
 
 void Mt310s2SenseChannel::initSCPIConnection(QString leadingNodes)
@@ -71,9 +85,8 @@ void Mt310s2SenseChannel::executeProtoScpi(int cmdCode, cProtonetCommand *protoC
         protoCmd->m_sOutput = m_ReadRangeCatalog(protoCmd->m_sInput);
         break;
     }
-    if (protoCmd->m_bwithOutput) {
+    if (protoCmd->m_bwithOutput)
         emit cmdExecutionDone(protoCmd);
-    }
 }
 
 void Mt310s2SenseChannel::setRangeList(QList<SenseRangeCommon *> &list)
@@ -86,6 +99,15 @@ void Mt310s2SenseChannel::setRangeList(QList<SenseRangeCommon *> &list)
 QList<SenseRangeCommon *> &Mt310s2SenseChannel::getRangeList()
 {
     return m_RangeList;
+}
+
+SenseRangeCommon *Mt310s2SenseChannel::getRange(QString &name)
+{
+    for(auto range : qAsConst(m_RangeList)) {
+        if(range->getName() == name)
+            return range;
+    }
+    return nullptr;
 }
 
 void Mt310s2SenseChannel::addRangeList(QList<SenseRangeCommon *> &list)
@@ -104,16 +126,6 @@ void Mt310s2SenseChannel::removeRangeList(QList<SenseRangeCommon *> &list)
     setNotifierSenseChannelRangeCat();
 }
 
-SenseRangeCommon *Mt310s2SenseChannel::getRange(QString &name)
-{
-    for(auto range : qAsConst(m_RangeList)) {
-        if(range->getName() == name) {
-            return range;
-        }
-    }
-    return nullptr;
-}
-
 quint8 Mt310s2SenseChannel::getAdjustmentStatus80Mask()
 {
     quint8 adj = 255;
@@ -122,17 +134,12 @@ quint8 Mt310s2SenseChannel::getAdjustmentStatus80Mask()
     return adj;
 }
 
-QString &Mt310s2SenseChannel::getName()
+QString Mt310s2SenseChannel::getName()
 {
     return m_sName;
 }
 
-QString &Mt310s2SenseChannel::getAlias()
-{
-    return m_sAlias1;
-}
-
-QString &Mt310s2SenseChannel::getDescription()
+QString Mt310s2SenseChannel::getDescription()
 {
     return m_sDescription;
 }
@@ -152,16 +159,6 @@ void Mt310s2SenseChannel::setUnit(QString &s)
     m_sUnit = s;
 }
 
-void Mt310s2SenseChannel::setMMode(int m)
-{
-    m_nMMode = m;
-    for(auto range : qAsConst(m_RangeList)) {
-        range->setMModeToUpdateAvailability(m);
-    }
-    notifierSenseChannelRangeCat.forceTrigger(); // better we would ask for changed avail ranges and then trigger !!!
-    // but we can do this later
-}
-
 bool Mt310s2SenseChannel::isAvail()
 {
     return m_bAvail;
@@ -169,56 +166,47 @@ bool Mt310s2SenseChannel::isAvail()
 
 void Mt310s2SenseChannel::initJustData()
 {
-    for(auto range : qAsConst(m_RangeList)) {
+    for(auto range : qAsConst(m_RangeList))
         range->initJustData();
-    }
 }
 
 void Mt310s2SenseChannel::computeJustData()
 {
-    for(auto range : qAsConst(m_RangeList)) {
+    for(auto range : qAsConst(m_RangeList))
         range->computeJustData();
-    }
 }
 
 QString Mt310s2SenseChannel::m_ReadAlias(QString &sInput)
 {
     cSCPICommand cmd = sInput;
-    if (cmd.isQuery()) {
+    if (cmd.isQuery())
         return getAlias();
-    }
     return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 QString Mt310s2SenseChannel::m_ReadType(QString &sInput)
 {
     cSCPICommand cmd = sInput;
-    if (cmd.isQuery()) {
+    if (cmd.isQuery())
         return QString("0");
-    }
     return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
-
 
 QString Mt310s2SenseChannel::m_ReadUnit(QString &sInput)
 {
     cSCPICommand cmd = sInput;
-    if (cmd.isQuery()) {
+    if (cmd.isQuery())
         return m_sUnit;
-    }
     return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
-
 
 QString Mt310s2SenseChannel::m_ReadDspChannel(QString &sInput)
 {
     cSCPICommand cmd = sInput;
-    if (cmd.isQuery()) {
+    if (cmd.isQuery())
         return QString("%1").arg(m_nDspChannel);
-    }
     return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
-
 
 QString Mt310s2SenseChannel::m_ReadChannelStatus(QString &sInput)
 {
@@ -235,9 +223,8 @@ QString Mt310s2SenseChannel::m_ReadChannelStatus(QString &sInput)
             }
             return QString("%1").arg(r);
         }
-        else {
+        else
             return ZSCPI::scpiAnswer[ZSCPI::errexec];
-        }
     }
     return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
