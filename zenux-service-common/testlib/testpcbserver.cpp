@@ -76,6 +76,7 @@ void TestPcbServer::doConfiguration()
                     setting, &XMLSettings::configXMLInfo);
         if (!m_xmlConfigReader.loadXMLFile(m_params.xmlFile))
             qFatal("Could not load xml config file");
+        m_pRMConnection = new RMConnection(m_ethSettings.getRMIPadr(), m_ethSettings.getPort(EthSettings::resourcemanager));
     }
     else
         qFatal("Could not load xml schema");
@@ -97,7 +98,6 @@ void TestPcbServer::doSetupServer()
     if(m_ethSettings.isSCPIactive())
         m_pSCPIServer->listen(QHostAddress::AnyIPv4, m_ethSettings.getPort(EthSettings::scpiserver));
 
-    m_pRMConnection = new RMConnection(m_ethSettings.getRMIPadr(), m_ethSettings.getPort(EthSettings::resourcemanager));
     m_stateconnect2RM->addTransition(m_pRMConnection, &RMConnection::connected, m_stateSendRMIdentAndRegister);
 
     emit sigServerIsSetUp();
