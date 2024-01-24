@@ -7,7 +7,7 @@
 #include "resmanrunfacade.h"
 #include <QObject>
 
-class test_adj_regression_calc_com5003 : public QObject
+class test_regression_adj_calc_com5003 : public QObject
 {
     Q_OBJECT
 private slots:

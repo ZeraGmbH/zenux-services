@@ -9,7 +9,7 @@
 #include <QStringList>
 #include <QJsonObject>
 
-class test_sense_regression_interface_mt310s2 : public QObject
+class test_regression_sense_interface_mt310s2 : public QObject
 {
     Q_OBJECT
 private slots:

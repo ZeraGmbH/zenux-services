@@ -1,4 +1,4 @@
-#include "test_adj_regression_import_permission_mt310s2.h"
+#include "test_regression_adj_import_permission_mt310s2.h"
 #include "factoryi2cctrl.h"
 #include "testfactoryi2cctrl.h"
 #include "proxy.h"
@@ -10,9 +10,9 @@
 #include <QSignalSpy>
 #include <QTest>
 
-QTEST_MAIN(test_adj_regression_import_permission_mt310s2);
+QTEST_MAIN(test_regression_adj_import_permission_mt310s2);
 
-void test_adj_regression_import_permission_mt310s2::cleanup()
+void test_regression_adj_import_permission_mt310s2::cleanup()
 {
     m_pcbIFace = nullptr;
     m_pcbClient = nullptr;
@@ -21,7 +21,7 @@ void test_adj_regression_import_permission_mt310s2::cleanup()
     TimeMachineObject::feedEventLoop();
 }
 
-void test_adj_regression_import_permission_mt310s2::scpiImportPermissionQueryFail()
+void test_regression_adj_import_permission_mt310s2::scpiImportPermissionQueryFail()
 {
     Zera::XMLConfig::cReader dummyReader;
     I2cSettings i2cSettings(&dummyReader);
@@ -31,7 +31,7 @@ void test_adj_regression_import_permission_mt310s2::scpiImportPermissionQueryFai
     QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::errexec]);
 }
 
-void test_adj_regression_import_permission_mt310s2::scpiImportNoPermission()
+void test_regression_adj_import_permission_mt310s2::scpiImportNoPermission()
 {
     setupServers(std::make_shared<TestFactoryI2cCtrl>(false));
 
@@ -39,7 +39,7 @@ void test_adj_regression_import_permission_mt310s2::scpiImportNoPermission()
     QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::erraut]);
 }
 
-void test_adj_regression_import_permission_mt310s2::scpiImportInvalidXml()
+void test_regression_adj_import_permission_mt310s2::scpiImportInvalidXml()
 {
     setupServers(std::make_shared<TestFactoryI2cCtrl>(true));
 
@@ -47,7 +47,7 @@ void test_adj_regression_import_permission_mt310s2::scpiImportInvalidXml()
     QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::errxml]);
 }
 
-void test_adj_regression_import_permission_mt310s2::scpiImportFailFlashWrite()
+void test_regression_adj_import_permission_mt310s2::scpiImportFailFlashWrite()
 {
     setupServers(std::make_shared<TestFactoryI2cCtrl>(true));
 
@@ -59,7 +59,7 @@ void test_adj_regression_import_permission_mt310s2::scpiImportFailFlashWrite()
     QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::errexec]);
 }
 
-void test_adj_regression_import_permission_mt310s2::scpiImportPassFlashWrite()
+void test_regression_adj_import_permission_mt310s2::scpiImportPassFlashWrite()
 {
     MockI2cEEpromIoFactory::enableMock();
     setupServers(std::make_shared<TestFactoryI2cCtrl>(true));
@@ -72,7 +72,7 @@ void test_adj_regression_import_permission_mt310s2::scpiImportPassFlashWrite()
     QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::ack]);
 }
 
-void test_adj_regression_import_permission_mt310s2::setupServers(AbstractFactoryI2cCtrlPtr ctrlFactory)
+void test_regression_adj_import_permission_mt310s2::setupServers(AbstractFactoryI2cCtrlPtr ctrlFactory)
 {
     m_resmanServer = std::make_unique<ResmanRunFacade>();
     m_testServer = std::make_unique<TestServerForSenseInterfaceMt310s2>(ctrlFactory);

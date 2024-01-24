@@ -1,4 +1,4 @@
-#include "test_adj_regression_import_export_eeprom_com5003.h"
+#include "test_regression_adj_import_export_eeprom_com5003.h"
 #include "testfactoryi2cctrl.h"
 #include "testfactoryi2cctrlcommoninfofoo.h"
 #include "proxy.h"
@@ -11,17 +11,17 @@
 #include <QSignalSpy>
 #include <QTest>
 
-QTEST_MAIN(test_adj_regression_import_export_eeprom_com5003);
+QTEST_MAIN(test_regression_adj_import_export_eeprom_com5003);
 
 static const QDateTime refTime = QDateTime::fromSecsSinceEpoch(0, Qt::UTC);
 
-void test_adj_regression_import_export_eeprom_com5003::init()
+void test_regression_adj_import_export_eeprom_com5003::init()
 {
     MockEEprom24LC::cleanAll();
     MockI2cEEpromIoFactory::enableMock();
 }
 
-void test_adj_regression_import_export_eeprom_com5003::cleanup()
+void test_regression_adj_import_export_eeprom_com5003::cleanup()
 {
     m_pcbIFace = nullptr;
     m_pcbClient = nullptr;
@@ -30,14 +30,14 @@ void test_adj_regression_import_export_eeprom_com5003::cleanup()
     TimeMachineObject::feedEventLoop();
 }
 
-void test_adj_regression_import_export_eeprom_com5003::directExportFlashNoMock()
+void test_regression_adj_import_export_eeprom_com5003::directExportFlashNoMock()
 {
     setupServers(std::make_shared<TestFactoryI2cCtrl>(true));
     MockI2cEEpromIoFactory::disableMock();
     QVERIFY(!m_testServer->getSenseInterface()->exportAdjFlash(refTime));
 }
 
-void test_adj_regression_import_export_eeprom_com5003::directExportFlashGen()
+void test_regression_adj_import_export_eeprom_com5003::directExportFlashGen()
 {
     setupServers(std::make_shared<TestFactoryI2cCtrl>(true));
     QVERIFY(m_testServer->getSenseInterface()->exportAdjFlash(refTime));
@@ -48,7 +48,7 @@ void test_adj_regression_import_export_eeprom_com5003::directExportFlashGen()
     QVERIFY(writeFile("/tmp/export_internal_initial.eeprom", dataWritten));
 }
 
-void test_adj_regression_import_export_eeprom_com5003::directExportFlashCheckReference()
+void test_regression_adj_import_export_eeprom_com5003::directExportFlashCheckReference()
 {
     setupServers(std::make_shared<TestFactoryI2cCtrl>(true));
     QVERIFY(m_testServer->getSenseInterface()->exportAdjFlash(refTime));
@@ -59,7 +59,7 @@ void test_adj_regression_import_export_eeprom_com5003::directExportFlashCheckRef
     QCOMPARE(dataWritten, dataReference);
 }
 
-void test_adj_regression_import_export_eeprom_com5003::scpiWriteFlashInitial()
+void test_regression_adj_import_export_eeprom_com5003::scpiWriteFlashInitial()
 {
     setupServers(std::make_shared<TestFactoryI2cCtrl>(true));
     QString ret = ScpiSingleTransactionBlocked::cmd("SYSTEM:ADJUSTMENT:FLASH:WRITE", "");
@@ -81,7 +81,7 @@ void test_adj_regression_import_export_eeprom_com5003::scpiWriteFlashInitial()
     QCOMPARE(dataWritten, dataReference);
 }
 
-void test_adj_regression_import_export_eeprom_com5003::scpiWriteRandomFileAndFlashGen()
+void test_regression_adj_import_export_eeprom_com5003::scpiWriteRandomFileAndFlashGen()
 {
     setupServers(std::make_shared<TestFactoryI2cCtrl>(true));
     QString filenameShort = ":/import_modified";
@@ -98,7 +98,7 @@ void test_adj_regression_import_export_eeprom_com5003::scpiWriteRandomFileAndFla
     QVERIFY(writeFile("/tmp/export_internal_modified_with_date_time.eeprom", dataWritten));
 }
 
-void test_adj_regression_import_export_eeprom_com5003::scpiWriteRandomFileFlashWriteFlashReadExportXmlAndCheck()
+void test_regression_adj_import_export_eeprom_com5003::scpiWriteRandomFileFlashWriteFlashReadExportXmlAndCheck()
 {
     setupServers(std::make_shared<TestFactoryI2cCtrl>(true));
     QString filenameShort = ":/import_modified";
@@ -122,7 +122,7 @@ void test_adj_regression_import_export_eeprom_com5003::scpiWriteRandomFileFlashW
     QCOMPARE(xmlExported, xmlExpected);
 }
 
-void test_adj_regression_import_export_eeprom_com5003::loadOriginalInvalidDateTimeRandomToEEpromWriteToFlashExportXmlAndCheck()
+void test_regression_adj_import_export_eeprom_com5003::loadOriginalInvalidDateTimeRandomToEEpromWriteToFlashExportXmlAndCheck()
 {
     setupServers(std::make_shared<TestFactoryI2cCtrl>(true));
     I2cSettings *i2cSettings = m_testServer->getI2cSettings();
@@ -147,7 +147,7 @@ void test_adj_regression_import_export_eeprom_com5003::loadOriginalInvalidDateTi
     QCOMPARE(xmlExported, xmlExpected);
 }
 
-void test_adj_regression_import_export_eeprom_com5003::loadValidDateTimeRandomToEEpromWriteToFlashExportXmlAndCheck()
+void test_regression_adj_import_export_eeprom_com5003::loadValidDateTimeRandomToEEpromWriteToFlashExportXmlAndCheck()
 {
     setupServers(std::make_shared<TestFactoryI2cCtrl>(true));
     I2cSettings *i2cSettings = m_testServer->getI2cSettings();
@@ -172,7 +172,7 @@ void test_adj_regression_import_export_eeprom_com5003::loadValidDateTimeRandomTo
     QCOMPARE(xmlExported, xmlExpected);
 }
 
-void test_adj_regression_import_export_eeprom_com5003::directExportFlashArbitraryVersionGen()
+void test_regression_adj_import_export_eeprom_com5003::directExportFlashArbitraryVersionGen()
 {
     setupServers(std::make_shared<TestFactoryI2cCtrlCommonInfoFoo>());
     QVERIFY(m_testServer->getSenseInterface()->exportAdjFlash(refTime));
@@ -183,7 +183,7 @@ void test_adj_regression_import_export_eeprom_com5003::directExportFlashArbitrar
     QVERIFY(writeFile("/tmp/import_arbitrary_version.eeprom", dataWritten));
 }
 
-void test_adj_regression_import_export_eeprom_com5003::loadArbitraryVersionToEEprom()
+void test_regression_adj_import_export_eeprom_com5003::loadArbitraryVersionToEEprom()
 {
     setupServers(std::make_shared<TestFactoryI2cCtrl>(true));
     I2cSettings *i2cSettings = m_testServer->getI2cSettings();
@@ -196,7 +196,7 @@ void test_adj_regression_import_export_eeprom_com5003::loadArbitraryVersionToEEp
     QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::ack]);
 }
 
-void test_adj_regression_import_export_eeprom_com5003::setupServers(AbstractFactoryI2cCtrlPtr ctrlFactory)
+void test_regression_adj_import_export_eeprom_com5003::setupServers(AbstractFactoryI2cCtrlPtr ctrlFactory)
 {
     m_resmanServer = std::make_unique<ResmanRunFacade>();
     m_testServer = std::make_unique<TestServerForSenseInterfaceCom5003>(ctrlFactory);
@@ -209,7 +209,7 @@ void test_adj_regression_import_export_eeprom_com5003::setupServers(AbstractFact
     TimeMachineObject::feedEventLoop();
 }
 
-bool test_adj_regression_import_export_eeprom_com5003::writeFile(QString filename, QByteArray data)
+bool test_regression_adj_import_export_eeprom_com5003::writeFile(QString filename, QByteArray data)
 {
     QFile file(filename);
     if(file.open(QIODevice::WriteOnly))
@@ -217,7 +217,7 @@ bool test_adj_regression_import_export_eeprom_com5003::writeFile(QString filenam
     return false;
 }
 
-QByteArray test_adj_regression_import_export_eeprom_com5003::readFile(QString filename)
+QByteArray test_regression_adj_import_export_eeprom_com5003::readFile(QString filename)
 {
     QFile file(filename);
     if(file.open(QIODevice::ReadOnly))

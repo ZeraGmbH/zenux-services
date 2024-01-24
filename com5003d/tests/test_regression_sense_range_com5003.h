@@ -1,10 +1,10 @@
-#ifndef TEST_REGRESSION_SENSE_RANGE_MT310S2_H
-#define TEST_REGRESSION_SENSE_RANGE_MT310S2_H
+#ifndef TEST_REGRESSION_SENSE_RANGE_COM5003_H
+#define TEST_REGRESSION_SENSE_RANGE_COM5003_H
 
 #include "senserangecommon.h"
 #include <QObject>
 
-class test_sense_regression_range_mt310s2 : public QObject
+class test_regression_sense_range_com5003 : public QObject
 {
     Q_OBJECT
 private slots:
@@ -20,11 +20,9 @@ private slots:
     void checkAdcRejection();
     void checkAtmelSelectionCode();
     void checkTypeOrMask();
-    void checkGetJustData();
 private:
     cSCPI *m_scpi;
-    RangeAdjInterface *m_justData;
     SenseRangeCommon *m_range;
 };
 
-#endif // TEST_REGRESSION_SENSE_RANGE_MT310S2_H
+#endif // TEST_REGRESSION_SENSE_RANGE_COM5003_H
