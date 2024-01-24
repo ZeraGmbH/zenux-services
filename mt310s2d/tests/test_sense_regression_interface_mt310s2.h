@@ -60,6 +60,10 @@ private slots:
     void constantRangeValuesAllClampsIAUXCheck();
     void constantRangeValuesAllClampsUAUXGenJson();
     void constantRangeValuesAllClampsUAUXCheck();
+
+    void channelAliasAcMode();
+    void channelAliasAdjMode();
+    void channelAliasHfMode();
 private:
     void genJsonConstantValuesAllRangesForAllClamps(QString channelName, QString channelNameAdRemoveClamps);
     bool checkJsonConstantValuesAllRangesForAllClamps(QJsonObject jsonReference, QString channelName, QString channelNameAdRemoveClamps);

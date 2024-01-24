@@ -1,9 +1,10 @@
 #include "test_sense_regression_interface_com5003.h"
 #include "testfactoryi2cctrl.h"
+#include "senseregressionhelper.h"
+#include "scpisingletransactionblocked.h"
 #include "proxy.h"
 #include "pcbinterface.h"
 #include <timemachineobject.h>
-#include "senseregressionhelper.h"
 #include <QRegularExpression>
 #include <QJsonValue>
 #include <QJsonDocument>
@@ -12,7 +13,7 @@
 
 QTEST_MAIN(test_sense_regression_interface_com5003);
 
-void test_sense_regression_interface_com5003::initTestCase()
+void test_sense_regression_interface_com5003::init()
 {
     m_resmanServer = std::make_unique<ResmanRunFacade>();
     m_testServer = std::make_unique<TestServerForSenseInterfaceCom5003>(std::make_shared<TestFactoryI2cCtrl>(true));
@@ -22,6 +23,15 @@ void test_sense_regression_interface_com5003::initTestCase()
     m_pcbIFace = std::make_unique<Zera::cPCBInterface>();
     m_pcbIFace->setClientSmart(m_pcbClient);
     Zera::Proxy::getInstance()->startConnectionSmart(m_pcbClient);
+    TimeMachineObject::feedEventLoop();
+}
+
+void test_sense_regression_interface_com5003::cleanup()
+{
+    m_pcbIFace = nullptr;
+    m_pcbClient = nullptr;
+    m_testServer = nullptr;
+    m_resmanServer = nullptr;
     TimeMachineObject::feedEventLoop();
 }
 
@@ -99,6 +109,18 @@ void test_sense_regression_interface_com5003::constantRangeValuesUL3Check()
     QVERIFY(!json.isEmpty());
     SenseSystem::cChannelSettings *channelSetting = m_testServer->getSenseSettings()->findChannelSettingByAlias1("UL3");
     QVERIFY(SenseRegressionHelper::checkJsonConstantValuesAllRanges(json, channelSetting, m_pcbIFace.get()));
+}
+
+void test_sense_regression_interface_com5003::channelAliasChangeOnREF()
+{
+    QString channelM0AliasBefore = ScpiSingleTransactionBlocked::query("SENSE:m0:ALIAS?");
+    QCOMPARE(channelM0AliasBefore, "UL1");
+
+    QString answer = ScpiSingleTransactionBlocked::cmd("SENS:MMODE", "REF");
+    QCOMPARE(answer, "ack");
+
+    QString channelM0AliasAfter = ScpiSingleTransactionBlocked::query("SENSE:m0:ALIAS?");
+    QCOMPARE(channelM0AliasAfter, "REF1");
 }
 
 QJsonObject test_sense_regression_interface_com5003::loadJson(QString fileName)

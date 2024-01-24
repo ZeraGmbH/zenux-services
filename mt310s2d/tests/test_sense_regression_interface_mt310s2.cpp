@@ -361,6 +361,33 @@ void test_sense_regression_interface_mt310s2::constantRangeValuesAllClampsUAUXCh
     QVERIFY(checkJsonConstantValuesAllRangesForAllClamps(json, "UAUX", "IAUX"));
 }
 
+void test_sense_regression_interface_mt310s2::channelAliasAcMode()
+{
+    QString answer = ScpiSingleTransactionBlocked::cmd("SENS:MMODE", "AC");
+    QCOMPARE(answer, "ack");
+
+    QString channelM0AliasAfter = ScpiSingleTransactionBlocked::query("SENSE:m0:ALIAS?");
+    QCOMPARE(channelM0AliasAfter, "UL1");
+}
+
+void test_sense_regression_interface_mt310s2::channelAliasAdjMode()
+{
+    QString answer = ScpiSingleTransactionBlocked::cmd("SENS:MMODE", "ADJ");
+    QCOMPARE(answer, "ack");
+
+    QString channelM0AliasAfter = ScpiSingleTransactionBlocked::query("SENSE:m0:ALIAS?");
+    QCOMPARE(channelM0AliasAfter, "UL1");
+}
+
+void test_sense_regression_interface_mt310s2::channelAliasHfMode()
+{
+    QString answer = ScpiSingleTransactionBlocked::cmd("SENS:MMODE", "HF");
+    QCOMPARE(answer, "ack");
+
+    QString channelM0AliasAfter = ScpiSingleTransactionBlocked::query("SENSE:m0:ALIAS?");
+    QCOMPARE(channelM0AliasAfter, "UL1");
+}
+
 
 void test_sense_regression_interface_mt310s2::genJsonConstantValuesAllRangesForAllClamps(QString channelName, QString channelNameAdRemoveClamps)
 {

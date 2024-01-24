@@ -12,7 +12,8 @@ class test_sense_regression_interface_com5003 : public QObject
 {
     Q_OBJECT
 private slots:
-    void initTestCase();
+    void init();
+    void cleanup();
     void checkVersionsOfSystemInterface();
     void checkChannelCatalogAsExpected();
     void checkRangesUL1();
@@ -26,6 +27,8 @@ private slots:
     void constantRangeValuesIL3Check();
     void constantRangeValuesUL3GenJson();
     void constantRangeValuesUL3Check();
+
+    void channelAliasChangeOnREF();
 private:
     QJsonObject loadJson(QString fileName);
 
