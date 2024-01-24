@@ -40,8 +40,10 @@ public:
                         SenseSystem::cChannelSettings* cSettings,
                         quint8 nr,
                         AbstractFactoryI2cCtrlPtr ctrlFactory);
-    virtual void initSCPIConnection(QString leadingNodes) override;
+    void setMMode(int m) override;
+    QString getAlias() override;
 
+    void initSCPIConnection(QString leadingNodes) override;
     void setRangeList(QList<SenseRangeCommon*>& list);
     QList<SenseRangeCommon*>& getRangeList();
     SenseRangeCommon* getRange(QString& name);
@@ -50,13 +52,11 @@ public:
 
     quint8 getAdjustmentStatus80Mask();
 
-    QString& getName();
-    QString& getAlias();
-    QString& getDescription();
+    QString getName();
+    QString getDescription();
     quint8 getCtrlChannel();
     void setDescription(const QString& s);
     void setUnit(QString& s);
-    void setMMode(int m);
     bool isAvail();
 
     void initJustData();

@@ -12,14 +12,26 @@ Com5003SenseChannel::Com5003SenseChannel(cSCPI *scpiinterface,
                                          quint8 nr,
                                          AbstractFactoryI2cCtrlPtr ctrlFactory) :
     SenseChannelCommon(scpiinterface,
-                         description,
-                         unit,
-                         cSettings,
-                         nr,
-                         ctrlFactory
-                         )
+                       description,
+                       unit,
+                       cSettings,
+                       nr,
+                       ctrlFactory)
 {
     m_nMMode = SenseChannel::modeAC; // the default
+}
+
+void Com5003SenseChannel::setMMode(int m)
+{
+    m_nMMode = m;
+}
+
+QString Com5003SenseChannel::getAlias()
+{
+    if (m_nMMode == 0)
+        return m_sAlias1;
+    else
+        return m_sAlias2;
 }
 
 void Com5003SenseChannel::initSCPIConnection(QString leadingNodes)
@@ -34,12 +46,11 @@ void Com5003SenseChannel::initSCPIConnection(QString leadingNodes)
     addDelegate(QString("%1%2").arg(leadingNodes).arg(m_sName),"RANGE", SCPI::isQuery | SCPI::isCmdwP, m_pSCPIInterface, SenseChannel::cmdRange, &notifierSenseChannelRange);
     addDelegate(QString("%1%2").arg(leadingNodes).arg(m_sName),"URVALUE", SCPI::isQuery, m_pSCPIInterface, SenseChannel::cmdUrvalue);
     addDelegate(QString("%1%2:RANGE").arg(leadingNodes).arg(m_sName),"CATALOG", SCPI::isQuery, m_pSCPIInterface, SenseChannel::cmdRangeCat, &notifierSenseChannelRangeCat);
-    for (int i = 0;i < m_RangeList.count(); i++) {
-        connect(m_RangeList.at(i), &ScpiConnection::cmdExecutionDone, this, &ScpiConnection::cmdExecutionDone);
-        m_RangeList.at(i)->initSCPIConnection(QString("%1%2").arg(leadingNodes).arg(m_sName));
+    for(auto range : qAsConst(m_RangeList)) {
+        connect(range, &ScpiConnection::cmdExecutionDone, this, &ScpiConnection::cmdExecutionDone);
+        range->initSCPIConnection(QString("%1%2").arg(leadingNodes).arg(m_sName));
     }
 }
-
 
 void Com5003SenseChannel::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
 {
@@ -73,12 +84,9 @@ void Com5003SenseChannel::executeProtoScpi(int cmdCode, cProtonetCommand *protoC
         protoCmd->m_sOutput = m_ReadRangeCatalog(protoCmd->m_sInput);
         break;
     }
-
     if (protoCmd->m_bwithOutput)
         emit cmdExecutionDone(protoCmd);
-
 }
-
 
 void Com5003SenseChannel::setRangeList(QList<SenseRangeCommon *> &list)
 {
@@ -87,24 +95,18 @@ void Com5003SenseChannel::setRangeList(QList<SenseRangeCommon *> &list)
     setNotifierSenseChannelRange();
 }
 
-
 QList<SenseRangeCommon *> &Com5003SenseChannel::getRangeList()
 {
     return m_RangeList;
 }
 
-
 SenseRangeCommon *Com5003SenseChannel::getRange(QString &name)
 {
-    int i;
-    for (i = 0; i < m_RangeList.count(); i++)
-        if (m_RangeList.at(i)->getName() == name)
-            break;
-
-    if (i < m_RangeList.count())
-        return m_RangeList.at(i);
-    else
-        return 0;
+    for(auto range : qAsConst(m_RangeList)) {
+        if(range->getName() == name)
+            return range;
+    }
+    return nullptr;
 }
 
 void Com5003SenseChannel::addRangeList(QList<SenseRangeCommon *> &list)
@@ -123,7 +125,6 @@ void Com5003SenseChannel::removeRangeList(QList<SenseRangeCommon *> &list)
     setNotifierSenseChannelRangeCat();
 }
 
-
 quint8 Com5003SenseChannel::getAdjustmentStatus80Mask()
 {
     quint8 adj = 255;
@@ -132,23 +133,12 @@ quint8 Com5003SenseChannel::getAdjustmentStatus80Mask()
     return adj;
 }
 
-
-QString &Com5003SenseChannel::getName()
+QString Com5003SenseChannel::getName()
 {
     return m_sName;
 }
 
-
-QString &Com5003SenseChannel::getAlias()
-{
-    if (m_nMMode == 0)
-        return m_sAlias1;
-    else
-        return m_sAlias2;
-}
-
-
-QString &Com5003SenseChannel::getDescription()
+QString Com5003SenseChannel::getDescription()
 {
     return m_sDescription;
 }
@@ -158,97 +148,71 @@ quint8 Com5003SenseChannel::getCtrlChannel()
     return m_nCtrlChannel;
 }
 
-
 void Com5003SenseChannel::setDescription(const QString &s)
 {
     m_sDescription = s;
 }
-
 
 void Com5003SenseChannel::setUnit(QString &s)
 {
     m_sUnit = s;
 }
 
-
-void Com5003SenseChannel::setMMode(int m)
-{
-    m_nMMode = m;
-}
-
-
 bool Com5003SenseChannel::isAvail()
 {
     return m_bAvail;
 }
 
-
 void Com5003SenseChannel::initJustData()
 {
-    for (int i = 0; i < m_RangeList.count(); i++)
-        m_RangeList.at(i)->initJustData();
+    for(auto range : qAsConst(m_RangeList))
+        range->initJustData();
 }
-
 
 void Com5003SenseChannel::computeJustData()
 {
-    for (int i = 0; i < m_RangeList.count(); i++)
-        m_RangeList.at(i)->computeJustData();
+    for(auto range : qAsConst(m_RangeList))
+        range->computeJustData();
 }
-
 
 QString Com5003SenseChannel::m_ReadAlias(QString &sInput)
 {
     cSCPICommand cmd = sInput;
     if (cmd.isQuery())
         return getAlias();
-    else
-        return ZSCPI::scpiAnswer[ZSCPI::nak];
+    return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
-
 
 QString Com5003SenseChannel::m_ReadType(QString &sInput)
 {
     cSCPICommand cmd = sInput;
-
     if (cmd.isQuery())
         return QString("0");
-    else
-        return ZSCPI::scpiAnswer[ZSCPI::nak];
+    return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
-
 
 QString Com5003SenseChannel::m_ReadUnit(QString &sInput)
 {
     cSCPICommand cmd = sInput;
-
     if (cmd.isQuery())
         return m_sUnit;
-    else
-        return ZSCPI::scpiAnswer[ZSCPI::nak];
+    return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
-
 
 QString Com5003SenseChannel::m_ReadDspChannel(QString &sInput)
 {
     cSCPICommand cmd = sInput;
-
     if (cmd.isQuery())
         return QString("%1").arg(m_nDspChannel);
-    else
-        return ZSCPI::scpiAnswer[ZSCPI::nak];
+    return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
-
 
 QString Com5003SenseChannel::m_ReadChannelStatus(QString &sInput)
 {
-    quint16 status;
     cSCPICommand cmd = sInput;
-
-    if (cmd.isQuery())
-    {
-        if (m_ctrlFactory->getCriticalStatusController()->readCriticalStatus(status) == ZeraMControllerIo::cmddone )
-        {
+    if (cmd.isQuery()) {
+        quint16 status;
+        if (m_ctrlFactory->getCriticalStatusController()->readCriticalStatus(status) == ZeraMControllerIo::cmddone ) {
             quint32 r;
             r = ((m_bAvail) ? 0 : 1 << 31);
             if ( (status & (1 << m_nOverloadBit))  > 0)
