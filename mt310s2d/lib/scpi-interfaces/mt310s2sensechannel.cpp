@@ -11,24 +11,14 @@ Mt310s2SenseChannel::Mt310s2SenseChannel(cSCPI* scpiinterface,
                                          SenseSystem::cChannelSettings *cSettings,
                                          quint8 nr,
                                          AbstractFactoryI2cCtrlPtr ctrlFactory) :
-    ScpiConnection(scpiinterface),
-    m_ctrlFactory(ctrlFactory),
-    m_sDescription(description),
-    m_sUnit(unit)
+    SenseChannelCommon(scpiinterface,
+                       description,
+                       unit,
+                       cSettings,
+                       nr,
+                       ctrlFactory
+                       )
 {
-    m_sName = QString("m%1").arg(nr);
-    m_sAlias = cSettings->m_sAlias1;
-    m_nCtrlChannel = cSettings->m_nCtrlChannel;
-    m_nDspChannel = cSettings->m_nDspChannel;
-    m_nOverloadBit = cSettings->m_nOverloadBit;
-    m_bAvail = cSettings->avail;
-}
-
-Mt310s2SenseChannel::~Mt310s2SenseChannel()
-{
-    for(auto range : qAsConst(m_RangeList)) {
-        delete range;
-    }
 }
 
 void Mt310s2SenseChannel::initSCPIConnection(QString leadingNodes)
@@ -139,7 +129,7 @@ QString &Mt310s2SenseChannel::getName()
 
 QString &Mt310s2SenseChannel::getAlias()
 {
-    return m_sAlias;
+    return m_sAlias1;
 }
 
 QString &Mt310s2SenseChannel::getDescription()

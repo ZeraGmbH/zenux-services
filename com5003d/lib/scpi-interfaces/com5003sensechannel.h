@@ -5,6 +5,7 @@
 #include "notificationstring.h"
 #include "sensesettings.h"
 #include <QList>
+#include <sensechannelcommon.h>
 
 namespace SenseChannel
 {
@@ -28,7 +29,7 @@ enum MMode
 };
 }
 
-class Com5003SenseChannel : public ScpiConnection
+class Com5003SenseChannel : public SenseChannelCommon
 {
     Q_OBJECT
 
@@ -39,7 +40,6 @@ public:
                         SenseSystem::cChannelSettings* cSettings,
                         quint8 nr,
                         AbstractFactoryI2cCtrlPtr ctrlFactory);
-    ~Com5003SenseChannel();
     virtual void initSCPIConnection(QString leadingNodes) override;
 
     void setRangeList(QList<SenseRangeCommon*>& list);
@@ -66,17 +66,6 @@ protected:
     void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
 
 private:
-    AbstractFactoryI2cCtrlPtr m_ctrlFactory;
-    QString m_sName; // the channels name m0...
-    QString m_sAlias[2]; // the channel's alias name for example UL1 alternativ REF1
-    QString m_sDescription; // the channel's brief description
-    QString m_sUnit; // the channel's measured unit
-    quint8 m_nCtrlChannel; // where to control the channel
-    quint8 m_nDspChannel; // where to find the channel's sampled data
-    quint8 m_nOverloadBit;
-    bool m_bAvail; // is this channel available ?
-    QList<SenseRangeCommon*> m_RangeList;
-    quint8 m_nMMode;
 
     QString m_ReadAlias(QString& sInput);
     QString m_ReadType(QString& sInput);
