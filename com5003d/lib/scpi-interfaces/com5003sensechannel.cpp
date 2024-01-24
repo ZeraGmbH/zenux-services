@@ -18,7 +18,6 @@ Com5003SenseChannel::Com5003SenseChannel(cSCPI *scpiinterface,
                        nr,
                        ctrlFactory)
 {
-    m_nMMode = SenseChannel::modeAC; // the default
 }
 
 void Com5003SenseChannel::setMMode(int m)
