@@ -1,12 +1,11 @@
 #include "testallservicescom5003.h"
-#include "testfactoryi2cctrl.h"
 #include <demoeventloopfeeder.h>
 
-TestAllServicesCom5003::TestAllServicesCom5003()
+TestAllServicesCom5003::TestAllServicesCom5003(AbstractFactoryI2cCtrlPtr ctrlFactory)
 {
     m_resman = new ResmanRunFacade;
     DemoEventLoopFeeder::feedEventLoop();
-    m_mockcom5003d = new MockCom5003d(std::make_shared<TestFactoryI2cCtrl>(true));
+    m_mockcom5003d = new MockCom5003d(ctrlFactory);
     m_mocksec1000d = new MockSec1000d;
     m_mockzdsp1d = new MockZdsp1d;
     DemoEventLoopFeeder::feedEventLoop();

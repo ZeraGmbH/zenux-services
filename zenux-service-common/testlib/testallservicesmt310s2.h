@@ -6,11 +6,12 @@
 #include "mockmt310s2d.h"
 #include "mocksec1000d.h"
 #include "mockzdsp1d.h"
+#include "testfactoryi2cctrl.h"
 
 class TestAllServicesMt310s2 : public AbstractMockAllServices
 {
 public:
-    TestAllServicesMt310s2();
+    TestAllServicesMt310s2(AbstractFactoryI2cCtrlPtr ctrlFactory = std::make_shared<TestFactoryI2cCtrl>(true));
     virtual ~TestAllServicesMt310s2();
 private:
     ResmanRunFacade *m_resman;
