@@ -74,7 +74,7 @@ void Com5003SenseChannel::executeProtoScpi(int cmdCode, cProtonetCommand *protoC
         protoCmd->m_sOutput = m_StatusReset(protoCmd->m_sInput);
         break;
     case SenseChannel::cmdRange:
-        protoCmd->m_sOutput = m_ReadWriteRange(protoCmd->m_sInput);
+        protoCmd->m_sOutput = scpiReadWriteRange(protoCmd->m_sInput);
         break;
     case SenseChannel::cmdUrvalue:
         protoCmd->m_sOutput = m_ReadUrvalue(protoCmd->m_sInput);
@@ -212,51 +212,51 @@ QString Com5003SenseChannel::m_ReadChannelStatus(QString &sInput)
     if (cmd.isQuery()) {
         quint16 status;
         if (m_ctrlFactory->getCriticalStatusController()->readCriticalStatus(status) == ZeraMControllerIo::cmddone ) {
-            quint32 r;
-            r = ((m_bAvail) ? 0 : 1 << 31);
-            if ( (status & (1 << m_nOverloadBit))  > 0)
-                r |= 1;
+            quint32 r = ((m_bAvail) ? 0 : 1 << 31);
+            if (m_nOverloadBit >= 0) { // perhaps this channel has no overload bit
+                if ( (status & (1 << m_nOverloadBit))  > 0) {
+                    r |= 1;
+                }
+            }
             return QString("%1").arg(r);
         }
         else
             return ZSCPI::scpiAnswer[ZSCPI::errexec];
     }
-    else
-        return ZSCPI::scpiAnswer[ZSCPI::nak];
+    return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
-
 
 QString Com5003SenseChannel::m_StatusReset(QString &sInput)
 {
     cSCPICommand cmd = sInput;
-
-    if (cmd.isCommand(1) && (cmd.getParam(0) == ""))
-    {
-        if (m_ctrlFactory->getCriticalStatusController()->resetCriticalStatus((quint16)(1 << m_nOverloadBit)) == ZeraMControllerIo::cmddone )
+    if (cmd.isCommand(1) && (cmd.getParam(0) == "")) {
+        if (m_nOverloadBit >= 0)  {
+            if (m_ctrlFactory->getCriticalStatusController()->resetCriticalStatus((quint16)(1 << m_nOverloadBit)) == ZeraMControllerIo::cmddone ) {
+                return ZSCPI::scpiAnswer[ZSCPI::ack];
+            }
+            else {
+                return ZSCPI::scpiAnswer[ZSCPI::errexec];
+            }
+        }
+        else {
             return ZSCPI::scpiAnswer[ZSCPI::ack];
-        else
-            return ZSCPI::scpiAnswer[ZSCPI::errexec];
+        }
     }
-
     return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-
 void Com5003SenseChannel::setNotifierSenseChannelRange()
 {
-    quint8 mode, range;
-
-    if (m_ctrlFactory->getMModeController()->readMeasMode(mode) == ZeraMControllerIo::cmddone )
-    {
-        if (mode == SenseChannel::modeAC) // wir sind im normalberieb
-        {
-            if (m_ctrlFactory->getRangesController()->readRange(m_nCtrlChannel, range) == ZeraMControllerIo::cmddone )
-            {
-                int i;
-                for (i = 0; i < m_RangeList.count(); i++)
-                    if (m_RangeList.at(i)->getSelCode() == range)
+    quint8 mode, rSelCode;
+    if (m_ctrlFactory->getMModeController()->readMeasMode(mode) == ZeraMControllerIo::cmddone ) {
+        if (mode == SenseChannel::modeAC) { // wir sind im normalberieb
+            if (m_ctrlFactory->getRangesController()->readRange(m_nCtrlChannel, rSelCode) == ZeraMControllerIo::cmddone ) {
+                for(auto range : qAsConst(m_RangeList)) {
+                    if ( (range->getSelCode() == rSelCode) && (range->getAvail())) {
+                        notifierSenseChannelRange = range->getName();
                         break;
-                notifierSenseChannelRange = m_RangeList.at(i)->getName();
+                    }
+                }
             }
         }
         else
@@ -272,30 +272,23 @@ void Com5003SenseChannel::setNotifierSenseChannelRange()
 }
 
 
-QString Com5003SenseChannel::m_ReadWriteRange(QString &sInput)
+QString Com5003SenseChannel::scpiReadWriteRange(QString &sInput)
 {
-    int i;
-    quint8 mode;
     cSCPICommand cmd = sInput;
-
-    if (m_ctrlFactory->getMModeController()->readMeasMode(mode) == ZeraMControllerIo::cmddone )
-    {
+    quint8 mode;
+    if (m_ctrlFactory->getMModeController()->readMeasMode(mode) == ZeraMControllerIo::cmddone ) {
         if (cmd.isQuery())
-        {
             return notifierSenseChannelRange.getString();
-        }
-
-        else
-        {
-            if (cmd.isCommand(1))
-            {
+        else {
+            if (cmd.isCommand(1)) {
                 QString rng = cmd.getParam(0);
                 int anz = m_RangeList.count();
-                for  (i = 0; i < anz; i++)
+                int i;
+                for  (i = 0; i < anz; i++) {
                     if (m_RangeList.at(i)->getName() == rng)
                         break;
-                if ( (i < anz) && (m_RangeList.at(i)->getAvail()) )
-                {
+                }
+                if ( (i < anz) && (m_RangeList.at(i)->getAvail()) ) {
                     // we know this range and it's available
                     if (m_nMMode == SenseChannel::modeAC)
                     {
@@ -319,54 +312,36 @@ QString Com5003SenseChannel::m_ReadWriteRange(QString &sInput)
                             notifierSenseChannelRange = "R10V";
                             m_ctrlFactory->getMModeController()->setMeasMode(2);
                         }
-
                         return ZSCPI::scpiAnswer[ZSCPI::ack];
                     }
-
                 }
-
             }
-
             return ZSCPI::scpiAnswer[ZSCPI::nak];
         }
     }
-
-    else
-        return ZSCPI::scpiAnswer[ZSCPI::errexec];
-
+    return ZSCPI::scpiAnswer[ZSCPI::errexec];
 }
-
 
 QString Com5003SenseChannel::m_ReadUrvalue(QString &sInput)
 {
     cSCPICommand cmd = sInput;
-
-    if (cmd.isQuery())
-    {
-        int i;
-        for (i = 0; i < m_RangeList.count(); i++)
-            if (m_RangeList.at(i)->getName() == notifierSenseChannelRange.getString())
-                break;
-        return QString("%1").arg(m_RangeList.at(i)->getUpperRangevalue());
+    if (cmd.isQuery()) {
+        for(auto range : qAsConst(m_RangeList)) {
+            if (range->getName() == notifierSenseChannelRange.getString()) {
+                return QString("%1").arg(range->getUpperRangevalue());
+            }
+        }
     }
-
-    else
-        return ZSCPI::scpiAnswer[ZSCPI::nak];
+    return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
-
 
 QString Com5003SenseChannel::m_ReadRangeCatalog(QString &sInput)
 {
     cSCPICommand cmd = sInput;
-
     if (cmd.isQuery())
-    {
         return notifierSenseChannelRangeCat.getString();
-    }
-    else
-        return ZSCPI::scpiAnswer[ZSCPI::nak];
+    return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
-
 
 void Com5003SenseChannel::setNotifierSenseChannelRangeCat()
 {
@@ -375,6 +350,5 @@ void Com5003SenseChannel::setNotifierSenseChannelRangeCat()
     for (i = 0; i < m_RangeList.count()-1; i++)
         s += (m_RangeList.at(i)->getName() + ";");
     s += m_RangeList.at(i)->getName();
-
-    notifierSenseChannelRangeCat = s; // phs. or virt.
+    notifierSenseChannelRangeCat = s;
 }

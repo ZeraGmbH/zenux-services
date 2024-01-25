@@ -74,7 +74,7 @@ private:
     QString m_ReadChannelStatus(QString& sInput);
     QString m_StatusReset(QString& sInput);
 
-    QString m_ReadWriteRange(QString& sInput);
+    QString scpiReadWriteRange(QString& sInput) override;
     QString m_ReadUrvalue(QString& sInput);
     QString m_ReadRangeCatalog(QString& sInput);
 
@@ -82,7 +82,7 @@ private:
     NotificationString notifierSenseChannelRange;
 
     void setNotifierSenseChannelRangeCat();
-    void setNotifierSenseChannelRange();
+    void setNotifierSenseChannelRange() override;
 };
 
 #endif // SENSECHANNEL_H
