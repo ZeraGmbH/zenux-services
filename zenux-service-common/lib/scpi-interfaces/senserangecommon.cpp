@@ -47,10 +47,10 @@ void SenseRangeCommon::initSCPIConnection(QString leadingNodes)
     addDelegate(QString("%1%2").arg(leadingNodes, m_sName), "TYPE", SCPI::isQuery, m_pSCPIInterface, SenseRange::cmdType);
 
     connect(m_justdata, &ScpiConnection::cmdExecutionDone, this, &ScpiConnection::cmdExecutionDone);
-    m_justdata->initSCPIConnection(QString("%1%2").arg(leadingNodes, getName()));
+    m_justdata->initSCPIConnection(QString("%1%2").arg(leadingNodes, getRangeName()));
 }
 
-QString &SenseRangeCommon::getName()
+QString SenseRangeCommon::getRangeName()
 {
     return m_sName;
 }

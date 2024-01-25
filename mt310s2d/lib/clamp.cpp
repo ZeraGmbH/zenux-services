@@ -141,12 +141,12 @@ void cClamp::exportAdjData(QDataStream &stream, QDateTime dateTimeWrite)
     stream << m_AdjDateTime.toString(Qt::TextDate); // date, time
     QString spec;
     for(auto range : qAsConst(m_RangeList)) {
-        spec = range->getName();
+        spec = range->getRangeName();
         stream << spec;
         range->getJustData()->Serialize(stream);
     }
     for(auto range : qAsConst(m_RangeListSecondary)) {
-        spec = range->getName();
+        spec = range->getRangeName();
         stream << spec;
         range->getJustData()->Serialize(stream);
     }
@@ -741,14 +741,14 @@ SenseRangeCommon *cClamp::getRange(QString name)
 {
     SenseRangeCommon* rangeFound = nullptr;
     for(auto range : qAsConst(m_RangeList)) {
-        if (range->getName() == name) {
+        if (range->getRangeName() == name) {
             rangeFound = range;
             break;
         }
     }
     if(!rangeFound) {
         for(auto range : qAsConst(m_RangeListSecondary)) {
-            if (range->getName() == name) {
+            if (range->getRangeName() == name) {
                 rangeFound = range;
                 break;
             }
@@ -785,7 +785,7 @@ void cClamp::exportRangeXml(QDomDocument &justqdom, QDomElement &typeTag, SenseR
     QDomElement nametag = justqdom.createElement("Name");
     rtag.appendChild(nametag);
 
-    QDomText t = justqdom.createTextNode(range->getName());
+    QDomText t = justqdom.createTextNode(range->getRangeName());
     nametag.appendChild( t );
 
     QDomElement gpotag;

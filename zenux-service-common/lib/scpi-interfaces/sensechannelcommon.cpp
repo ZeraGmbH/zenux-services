@@ -43,7 +43,7 @@ QList<SenseRangeCommon *> &SenseChannelCommon::getRangeList()
 SenseRangeCommon *SenseChannelCommon::getRange(QString &name)
 {
     for(auto range : qAsConst(m_RangeList))
-        if(range->getName() == name)
+        if(range->getRangeName() == name)
             return range;
     return nullptr;
 }
@@ -238,7 +238,7 @@ QString SenseChannelCommon::m_ReadUrvalue(QString &sInput)
     cSCPICommand cmd = sInput;
     if (cmd.isQuery()) {
         for(auto range : qAsConst(m_RangeList))
-            if (range->getName() == notifierSenseChannelRange.getString())
+            if (range->getRangeName() == notifierSenseChannelRange.getString())
                 return QString("%1").arg(range->getUpperRangevalue());
     }
     return ZSCPI::scpiAnswer[ZSCPI::nak];
@@ -257,7 +257,7 @@ void SenseChannelCommon::setNotifierSenseChannelRangeCat()
     int i;
     QString s;
     for (i = 0; i < m_RangeList.count()-1; i++)
-        s += (m_RangeList.at(i)->getName() + ";");
-    s += m_RangeList.at(i)->getName();
+        s += (m_RangeList.at(i)->getRangeName() + ";");
+    s += m_RangeList.at(i)->getRangeName();
     notifierSenseChannelRangeCat = s;
 }

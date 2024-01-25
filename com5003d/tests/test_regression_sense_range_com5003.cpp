@@ -26,7 +26,7 @@ void test_regression_sense_range_com5003::cleanup()
 
 void test_regression_sense_range_com5003::checkName()
 {
-    QCOMPARE(m_range->getName(), "240V");
+    QCOMPARE(m_range->getRangeName(), "240V");
 }
 
 void test_regression_sense_range_com5003::checkAlias()
