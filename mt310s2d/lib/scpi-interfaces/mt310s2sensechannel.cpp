@@ -20,9 +20,8 @@ Mt310s2SenseChannel::Mt310s2SenseChannel(cSCPI* scpiinterface,
 void Mt310s2SenseChannel::setMMode(int m)
 {
     m_nMMode = m;
-    for(auto range : qAsConst(m_RangeList)) {
+    for(auto range : qAsConst(m_RangeList))
         range->setMModeToUpdateAvailability(m);
-    }
     notifierSenseChannelRangeCat.forceTrigger(); // better we would ask for changed avail ranges and then trigger !!!
     // but we can do this later
 }
@@ -52,28 +51,25 @@ QString Mt310s2SenseChannel::scpiReadWriteRange(QString &sInput)
     if (m_ctrlFactory->getMModeController()->readMeasMode(mode) == ZeraMControllerIo::cmddone ) {
         if (cmd.isQuery())
             return notifierSenseChannelRange.getString();
-        else {
-            if (cmd.isCommand(1)) {
-                QString rng = cmd.getParam(0);
-                int anz = m_RangeList.count();
-                int i;
-                for  (i = 0; i < anz; i++) {
-                    if (m_RangeList.at(i)->getName() == rng)
-                        break;
-                }
-                if ( (i < anz) && (m_RangeList.at(i)->getAvail()) ) {
-                    // we know this range and it's available
-                    if (m_ctrlFactory->getRangesController()->setRange(m_nCtrlChannel, m_RangeList.at(i)->getSelCode()) == ZeraMControllerIo::cmddone) {
-                        notifierSenseChannelRange = rng;
-                        return ZSCPI::scpiAnswer[ZSCPI::ack];
-                    }
-                    else {
-                        return ZSCPI::scpiAnswer[ZSCPI::errexec];
-                    }
-                }
+        else  if (cmd.isCommand(1)) {
+            QString rng = cmd.getParam(0);
+            int anz = m_RangeList.count();
+            int i;
+            for  (i = 0; i < anz; i++) {
+                if (m_RangeList.at(i)->getName() == rng)
+                    break;
             }
-            return ZSCPI::scpiAnswer[ZSCPI::nak];
+            if ( (i < anz) && (m_RangeList.at(i)->getAvail()) ) {
+                // we know this range and it's available
+                if (m_ctrlFactory->getRangesController()->setRange(m_nCtrlChannel, m_RangeList.at(i)->getSelCode()) == ZeraMControllerIo::cmddone) {
+                    notifierSenseChannelRange = rng;
+                    return ZSCPI::scpiAnswer[ZSCPI::ack];
+                }
+                else
+                    return ZSCPI::scpiAnswer[ZSCPI::errexec];
+            }
         }
+        return ZSCPI::scpiAnswer[ZSCPI::nak];
     }
     return ZSCPI::scpiAnswer[ZSCPI::errexec];
 }
