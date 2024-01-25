@@ -62,18 +62,7 @@ protected:
 
 private:
 
-    QString m_ReadAlias(QString& sInput);
-    QString m_ReadType(QString& sInput);
-    QString m_ReadUnit(QString& sInput);
-    QString m_ReadDspChannel(QString& sInput);
-    QString m_ReadChannelStatus(QString& sInput);
-    QString m_StatusReset(QString& sInput);
-
     QString scpiReadWriteRange(QString& sInput) override;
-    QString m_ReadUrvalue(QString& sInput);
-    QString m_ReadRangeCatalog(QString& sInput);
-
-    void setNotifierSenseChannelRangeCat();
     void setNotifierSenseChannelRange() override;
 };
 

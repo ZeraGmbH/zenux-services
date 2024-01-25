@@ -22,6 +22,18 @@ protected:
     virtual void setNotifierSenseChannelRange() = 0;
     virtual QString scpiReadWriteRange(QString& sInput) = 0;
 
+    QString m_ReadAlias(QString& sInput);
+    QString m_ReadType(QString& sInput);
+    QString m_ReadUnit(QString& sInput);
+    QString m_ReadDspChannel(QString& sInput);
+    QString m_ReadChannelStatus(QString& sInput);
+    QString m_StatusReset(QString& sInput);
+
+    QString m_ReadUrvalue(QString& sInput);
+    QString m_ReadRangeCatalog(QString& sInput);
+
+    void setNotifierSenseChannelRangeCat();
+
     AbstractFactoryI2cCtrlPtr m_ctrlFactory;
     QString m_sName; // the channels name m0...
     QString m_sAlias1; // the channel's alias name for example UL1

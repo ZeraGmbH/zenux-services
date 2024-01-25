@@ -174,77 +174,6 @@ void Com5003SenseChannel::computeJustData()
         range->computeJustData();
 }
 
-QString Com5003SenseChannel::m_ReadAlias(QString &sInput)
-{
-    cSCPICommand cmd = sInput;
-    if (cmd.isQuery())
-        return getAlias();
-    return ZSCPI::scpiAnswer[ZSCPI::nak];
-}
-
-QString Com5003SenseChannel::m_ReadType(QString &sInput)
-{
-    cSCPICommand cmd = sInput;
-    if (cmd.isQuery())
-        return QString("0");
-    return ZSCPI::scpiAnswer[ZSCPI::nak];
-}
-
-QString Com5003SenseChannel::m_ReadUnit(QString &sInput)
-{
-    cSCPICommand cmd = sInput;
-    if (cmd.isQuery())
-        return m_sUnit;
-    return ZSCPI::scpiAnswer[ZSCPI::nak];
-}
-
-QString Com5003SenseChannel::m_ReadDspChannel(QString &sInput)
-{
-    cSCPICommand cmd = sInput;
-    if (cmd.isQuery())
-        return QString("%1").arg(m_nDspChannel);
-    return ZSCPI::scpiAnswer[ZSCPI::nak];
-}
-
-QString Com5003SenseChannel::m_ReadChannelStatus(QString &sInput)
-{
-    cSCPICommand cmd = sInput;
-    if (cmd.isQuery()) {
-        quint16 status;
-        if (m_ctrlFactory->getCriticalStatusController()->readCriticalStatus(status) == ZeraMControllerIo::cmddone ) {
-            quint32 r = ((m_bAvail) ? 0 : 1 << 31);
-            if (m_nOverloadBit >= 0) { // perhaps this channel has no overload bit
-                if ( (status & (1 << m_nOverloadBit))  > 0) {
-                    r |= 1;
-                }
-            }
-            return QString("%1").arg(r);
-        }
-        else
-            return ZSCPI::scpiAnswer[ZSCPI::errexec];
-    }
-    return ZSCPI::scpiAnswer[ZSCPI::nak];
-}
-
-QString Com5003SenseChannel::m_StatusReset(QString &sInput)
-{
-    cSCPICommand cmd = sInput;
-    if (cmd.isCommand(1) && (cmd.getParam(0) == "")) {
-        if (m_nOverloadBit >= 0)  {
-            if (m_ctrlFactory->getCriticalStatusController()->resetCriticalStatus((quint16)(1 << m_nOverloadBit)) == ZeraMControllerIo::cmddone ) {
-                return ZSCPI::scpiAnswer[ZSCPI::ack];
-            }
-            else {
-                return ZSCPI::scpiAnswer[ZSCPI::errexec];
-            }
-        }
-        else {
-            return ZSCPI::scpiAnswer[ZSCPI::ack];
-        }
-    }
-    return ZSCPI::scpiAnswer[ZSCPI::nak];
-}
-
 void Com5003SenseChannel::setNotifierSenseChannelRange()
 {
     quint8 mode, rSelCode;
@@ -270,7 +199,6 @@ void Com5003SenseChannel::setNotifierSenseChannelRange()
     else
         notifierSenseChannelRange = m_RangeList.at(0)->getName();
 }
-
 
 QString Com5003SenseChannel::scpiReadWriteRange(QString &sInput)
 {
@@ -320,35 +248,4 @@ QString Com5003SenseChannel::scpiReadWriteRange(QString &sInput)
         }
     }
     return ZSCPI::scpiAnswer[ZSCPI::errexec];
-}
-
-QString Com5003SenseChannel::m_ReadUrvalue(QString &sInput)
-{
-    cSCPICommand cmd = sInput;
-    if (cmd.isQuery()) {
-        for(auto range : qAsConst(m_RangeList)) {
-            if (range->getName() == notifierSenseChannelRange.getString()) {
-                return QString("%1").arg(range->getUpperRangevalue());
-            }
-        }
-    }
-    return ZSCPI::scpiAnswer[ZSCPI::nak];
-}
-
-QString Com5003SenseChannel::m_ReadRangeCatalog(QString &sInput)
-{
-    cSCPICommand cmd = sInput;
-    if (cmd.isQuery())
-        return notifierSenseChannelRangeCat.getString();
-    return ZSCPI::scpiAnswer[ZSCPI::nak];
-}
-
-void Com5003SenseChannel::setNotifierSenseChannelRangeCat()
-{
-    int i;
-    QString s;
-    for (i = 0; i < m_RangeList.count()-1; i++)
-        s += (m_RangeList.at(i)->getName() + ";");
-    s += m_RangeList.at(i)->getName();
-    notifierSenseChannelRangeCat = s;
 }
