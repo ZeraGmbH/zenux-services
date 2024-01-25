@@ -73,9 +73,6 @@ private:
     QString m_ReadUrvalue(QString& sInput);
     QString m_ReadRangeCatalog(QString& sInput);
 
-    NotificationString notifierSenseChannelRangeCat;
-    NotificationString notifierSenseChannelRange;
-
     void setNotifierSenseChannelRangeCat();
     void setNotifierSenseChannelRange() override;
 };

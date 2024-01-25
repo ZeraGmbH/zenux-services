@@ -34,6 +34,9 @@ protected:
     bool m_bAvail; // is this channel available ?
     QList<SenseRangeCommon*> m_RangeList;
     quint8 m_nMMode;
+
+    NotificationString notifierSenseChannelRangeCat;
+    NotificationString notifierSenseChannelRange;
 };
 
 #endif // SENSECHANNELCOMMON_H
