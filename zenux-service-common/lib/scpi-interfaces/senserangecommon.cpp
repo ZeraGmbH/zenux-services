@@ -4,7 +4,6 @@
 const char* SenseRangeCommon::rangeNameCurrentNull = "0A";
 const char* SenseRangeCommon::rangeAliasNull = "--";
 
-
 SenseRangeCommon::SenseRangeCommon(cSCPI *scpiInterface,
                                    QString name,
                                    bool avail,
@@ -48,7 +47,7 @@ void SenseRangeCommon::initSCPIConnection(QString leadingNodes)
     addDelegate(QString("%1%2").arg(leadingNodes, m_sName), "TYPE", SCPI::isQuery, m_pSCPIInterface, SenseRange::cmdType);
 
     connect(m_justdata, &ScpiConnection::cmdExecutionDone, this, &ScpiConnection::cmdExecutionDone);
-    m_justdata->initSCPIConnection(QString("%1%2").arg(leadingNodes).arg(getName()));
+    m_justdata->initSCPIConnection(QString("%1%2").arg(leadingNodes, getName()));
 }
 
 QString &SenseRangeCommon::getName()
@@ -141,8 +140,7 @@ QString SenseRangeCommon::scpiRangeAlias(const QString &scpi) const
     cSCPICommand cmd = scpi;
     if (cmd.isQuery())
         return m_sAlias;
-    else
-        return ZSCPI::scpiAnswer[ZSCPI::nak];
+    return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 QString SenseRangeCommon::scpiRangeAvail(const QString &scpi) const
@@ -150,8 +148,7 @@ QString SenseRangeCommon::scpiRangeAvail(const QString &scpi) const
     cSCPICommand cmd = scpi;
     if (cmd.isQuery())
         return m_bAvail ? "1" : "0";
-    else
-        return ZSCPI::scpiAnswer[ZSCPI::nak];
+    return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 QString SenseRangeCommon::scpiRangeUpperRangeValue(const QString &scpi) const
@@ -159,8 +156,7 @@ QString SenseRangeCommon::scpiRangeUpperRangeValue(const QString &scpi) const
     cSCPICommand cmd = scpi;
     if (cmd.isQuery())
         return QString("%1").arg(m_upperRangeValue);
-    else
-        return ZSCPI::scpiAnswer[ZSCPI::nak];
+    return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 QString SenseRangeCommon::scpiRangeRejection(const QString &scpi) const
@@ -168,8 +164,7 @@ QString SenseRangeCommon::scpiRangeRejection(const QString &scpi) const
     cSCPICommand cmd = scpi;
     if (cmd.isQuery())
         return QString("%1").arg(m_fRejection, 0, 'g', m_rejectionScpiQueryDigits);
-    else
-        return ZSCPI::scpiAnswer[ZSCPI::nak];
+    return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 QString SenseRangeCommon::scpiRangeOVRejection(const QString &scpi) const
@@ -177,8 +172,7 @@ QString SenseRangeCommon::scpiRangeOVRejection(const QString &scpi) const
     cSCPICommand cmd = scpi;
     if (cmd.isQuery())
         return QString("%1").arg(m_fOVRejection, 0, 'g', m_rejectionScpiQueryDigits);
-    else
-        return ZSCPI::scpiAnswer[ZSCPI::nak];
+    return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 QString SenseRangeCommon::scpiRangeADCRejection(const QString &scpi) const
@@ -186,8 +180,7 @@ QString SenseRangeCommon::scpiRangeADCRejection(const QString &scpi) const
     cSCPICommand cmd = scpi;
     if (cmd.isQuery())
         return QString("%1").arg(m_fADCRejection, 0, 'g', m_rejectionScpiQueryDigits);
-    else
-        return ZSCPI::scpiAnswer[ZSCPI::nak];
+    return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 QString SenseRangeCommon::scpiRangeTypeFlags(const QString &scpi) const
@@ -195,6 +188,5 @@ QString SenseRangeCommon::scpiRangeTypeFlags(const QString &scpi) const
     cSCPICommand cmd = scpi;
     if (cmd.isQuery())
         return QString("%1").arg(m_typeFlags); // we return mmode mask and sensortype here
-    else
-        return ZSCPI::scpiAnswer[ZSCPI::nak];
+    return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
