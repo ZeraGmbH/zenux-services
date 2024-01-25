@@ -10,6 +10,7 @@ SETUP_TESTS(
     test_mockservice_zdsp1d
     test_sense_settings
     test_fpga_settings_regression
+    test_criticalstatusmock
     )
 
 target_sources(test_hotpluggablecontrollercontainer

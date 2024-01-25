@@ -26,6 +26,7 @@ ZeraMControllerIoTemplate::atmelRM MockI2cCtrlCriticalStatus::readCriticalStatus
 
 ZeraMControllerIoTemplate::atmelRM MockI2cCtrlCriticalStatus::resetCriticalStatus(quint16 stat)
 {
-    m_criticalStatus = 0;
+    quint16 notStat = ~stat;
+    m_criticalStatus &= notStat;
     return ZeraMControllerIo::atmelRM::cmddone;
 }
