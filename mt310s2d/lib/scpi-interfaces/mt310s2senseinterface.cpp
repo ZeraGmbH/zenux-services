@@ -348,7 +348,7 @@ void Mt310s2SenseInterface::exportAdjData(QDataStream &stream, QDateTime dateTim
                 QString spec = QString("%1:%2:%3")
                      .arg("SENSE")
                      .arg(channel->getName())
-                     .arg(range->getName());
+                     .arg(range->getRangeName());
 
                 stream << spec.toLatin1();
                 range->getJustData()->Serialize(stream);
@@ -420,7 +420,7 @@ QString Mt310s2SenseInterface::exportXMLString(int indent)
                 nametag = justqdom.createElement("Name");
                 rtag.appendChild(nametag);
 
-                t = justqdom.createTextNode(range->getName());
+                t = justqdom.createTextNode(range->getRangeName());
                 nametag.appendChild( t );
 
                 QDomElement gpotag;

@@ -30,7 +30,7 @@ void test_regression_sense_range_mt310s2::cleanup()
 
 void test_regression_sense_range_mt310s2::checkName()
 {
-    QCOMPARE(m_range->getName(), "250V");
+    QCOMPARE(m_range->getRangeName(), "250V");
 }
 
 void test_regression_sense_range_mt310s2::checkAlias()

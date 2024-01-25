@@ -38,7 +38,7 @@ public:
                      int rejectionScpiQueryDigits);
     virtual ~SenseRangeCommon();
     void initSCPIConnection(QString leadingNodes) override;
-    QString &getName(); // Ooohh - there are pointer kept
+    QString getRangeName();
     double getUpperRangevalue() const;
     quint8 getSelCode() const;
     bool getAvail() const;

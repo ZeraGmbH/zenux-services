@@ -38,7 +38,7 @@ void Com5003SenseChannel::setNotifierSenseChannelRange()
             if (m_ctrlFactory->getRangesController()->readRange(m_nCtrlChannel, rSelCode) == ZeraMControllerIo::cmddone ) {
                 for(auto range : qAsConst(m_RangeList)) {
                     if ( (range->getSelCode() == rSelCode) && (range->getAvail())) {
-                        notifierSenseChannelRange = range->getName();
+                        notifierSenseChannelRange = range->getRangeName();
                         break;
                     }
                 }
@@ -52,7 +52,7 @@ void Com5003SenseChannel::setNotifierSenseChannelRange()
         }
     }
     else
-        notifierSenseChannelRange = m_RangeList.at(0)->getName();
+        notifierSenseChannelRange = m_RangeList.at(0)->getRangeName();
 }
 
 QString Com5003SenseChannel::scpiReadWriteRange(QString &sInput)
@@ -67,7 +67,7 @@ QString Com5003SenseChannel::scpiReadWriteRange(QString &sInput)
             int anz = m_RangeList.count();
             int i;
             for  (i = 0; i < anz; i++) {
-                if (m_RangeList.at(i)->getName() == rng)
+                if (m_RangeList.at(i)->getRangeName() == rng)
                     break;
             }
             if ( (i < anz) && (m_RangeList.at(i)->getAvail()) ) {
@@ -81,7 +81,7 @@ QString Com5003SenseChannel::scpiReadWriteRange(QString &sInput)
                         return ZSCPI::scpiAnswer[ZSCPI::errexec];
                 }
                 else {
-                    if (m_RangeList.at(i)->getName() == "R0V") {
+                    if (m_RangeList.at(i)->getRangeName() == "R0V") {
                         notifierSenseChannelRange = "R0V";
                         m_ctrlFactory->getMModeController()->setMeasMode(1);
                     }
