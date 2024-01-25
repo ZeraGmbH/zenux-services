@@ -45,7 +45,7 @@ Mt310s2SenseInterface::Mt310s2SenseInterface(cSCPI *scpiInterface,
 
     // for com5003 our sense had 3 voltage and 3 current measuring channels
     // for mt310 we need 4 voltage and 4 current measuring channels
-    Mt310s2SenseChannel* pChannel;
+    SenseChannelCommon* pChannel;
     pChannel = new Mt310s2SenseChannel(m_pSCPIInterface, SenseSystem::sVoltageChannelDescription,"V", channelSettings.at(0), 0, m_ctrlFactory);
     m_ChannelList.append(pChannel);
     pChannel = new Mt310s2SenseChannel(m_pSCPIInterface, SenseSystem::sVoltageChannelDescription,"V", channelSettings.at(1), 1, m_ctrlFactory);
@@ -158,9 +158,9 @@ void Mt310s2SenseInterface::initSCPIConnection(QString leadingNodes)
     addDelegate(cmdParent, "ADJUSTMENT", SCPI::isQuery, m_pSCPIInterface, SenseSystem::cmdStatAdjustment);
 }
 
-Mt310s2SenseChannel *Mt310s2SenseInterface::getChannel(QString &name)
+SenseChannelCommon *Mt310s2SenseInterface::getChannel(QString &name)
 {
-    Mt310s2SenseChannel *channelFound = nullptr;
+    SenseChannelCommon *channelFound = nullptr;
     for(auto channel : qAsConst(m_ChannelList)) {
         if(channel->getName() == name) {
             channelFound = channel;
@@ -185,7 +185,7 @@ QString Mt310s2SenseInterface::getChannelSystemName(quint16 ctrlChannel)
 SenseRangeCommon *Mt310s2SenseInterface::getRange(QString channelName, QString rangeName)
 {
     SenseRangeCommon* rangeFound = nullptr;
-    Mt310s2SenseChannel *channelFound = getChannel(channelName);
+    SenseChannelCommon *channelFound = getChannel(channelName);
     if(channelFound) {
         rangeFound = channelFound->getRange(rangeName);
     }
@@ -312,7 +312,7 @@ bool Mt310s2SenseInterface::importAdjData(QDataStream &stream)
 
         done = false;
         if (spec.at(0) == "SENSE" ) {
-            Mt310s2SenseChannel* chn;
+            SenseChannelCommon* chn;
             QString s = spec.at(1);
             if ((chn = getChannel(s)) != nullptr) {
                 s = spec.at(2);
@@ -519,7 +519,7 @@ bool Mt310s2SenseInterface::importXMLDocument(QDomDocument* qdomdoc) // n steht 
                         for (qint32 i = 0; i < channelNl.length(); i++) {
                             QDomNode chnNode = channelNl.item(i); // we iterate over all channels from xml file
                             QDomNodeList chnEntryNl = chnNode.childNodes();
-                            Mt310s2SenseChannel* chnPtr = nullptr;
+                            SenseChannelCommon* chnPtr = nullptr;
                             SenseRangeCommon* rngPtr = nullptr;
                             for (qint32 j = 0; j < chnEntryNl.length(); j++) {
                                 QString Name;

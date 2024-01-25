@@ -53,9 +53,10 @@ public:
     void computeJustData();
     void initSCPIConnection(QString leadingNodes) override;
 
+    virtual void setMMode(int m) = 0;
+
 protected:
     void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
-    virtual void setMMode(int m) = 0;
     virtual QString getAlias() = 0;
     virtual void setNotifierSenseChannelRange() = 0;
     virtual QString scpiReadWriteRange(QString& sInput) = 0;
