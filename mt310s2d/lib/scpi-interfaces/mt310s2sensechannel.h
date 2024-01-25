@@ -8,7 +8,6 @@
 class Mt310s2SenseChannel : public SenseChannelCommon
 {
     Q_OBJECT
-
 public:
     Mt310s2SenseChannel(cSCPI* scpiinterface,
                         QString description,
@@ -18,10 +17,6 @@ public:
                         AbstractFactoryI2cCtrlPtr ctrlFactory);
     void setMMode(int m) override;
     QString getAlias() override;
-    void initSCPIConnection(QString leadingNodes) override;
-
-protected:
-    void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
 private:
     QString scpiReadWriteRange(QString& sInput) override;
     void setNotifierSenseChannelRange() override;
