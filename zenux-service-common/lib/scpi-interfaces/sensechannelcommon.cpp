@@ -24,9 +24,8 @@ SenseChannelCommon::SenseChannelCommon(cSCPI *scpiinterface,
 
 SenseChannelCommon::~SenseChannelCommon()
 {
-    for(auto range : qAsConst(m_RangeList)) {
+    for(auto range : qAsConst(m_RangeList))
         delete range;
-    }
 }
 
 void SenseChannelCommon::setRangeList(QList<SenseRangeCommon *> &list)
@@ -43,26 +42,23 @@ QList<SenseRangeCommon *> &SenseChannelCommon::getRangeList()
 
 SenseRangeCommon *SenseChannelCommon::getRange(QString &name)
 {
-    for(auto range : qAsConst(m_RangeList)) {
+    for(auto range : qAsConst(m_RangeList))
         if(range->getName() == name)
             return range;
-    }
     return nullptr;
 }
 
 void SenseChannelCommon::addRangeList(QList<SenseRangeCommon *> &list)
 {
-    for(auto range : list) {
+    for(auto range : list)
         m_RangeList.append(range);
-    }
     setNotifierSenseChannelRangeCat();
 }
 
 void SenseChannelCommon::removeRangeList(QList<SenseRangeCommon *> &list)
 {
-    for(auto range : list) {
+    for(auto range : list)
         m_RangeList.removeOne(range);
-    }
     setNotifierSenseChannelRangeCat();
 }
 
@@ -113,18 +109,18 @@ void SenseChannelCommon::initJustData()
 void SenseChannelCommon::initSCPIConnection(QString leadingNodes)
 {
     ensureTrailingColonOnNonEmptyParentNodes(leadingNodes);
-    addDelegate(QString("%1%2").arg(leadingNodes).arg(m_sName),"ALIAS", SCPI::isQuery, m_pSCPIInterface, SenseChannel::cmdAlias);
-    addDelegate(QString("%1%2").arg(leadingNodes).arg(m_sName),"TYPE", SCPI::isQuery, m_pSCPIInterface, SenseChannel::cmdType);
-    addDelegate(QString("%1%2").arg(leadingNodes).arg(m_sName),"UNIT", SCPI::isQuery, m_pSCPIInterface, SenseChannel::cmdUnit);
-    addDelegate(QString("%1%2").arg(leadingNodes).arg(m_sName),"DSPCHANNEL", SCPI::isQuery, m_pSCPIInterface, SenseChannel::cmdDspChannel);
-    addDelegate(QString("%1%2").arg(leadingNodes).arg(m_sName),"STATUS", SCPI::isQuery, m_pSCPIInterface, SenseChannel::cmdStatus);
-    addDelegate(QString("%1%2:STATUS").arg(leadingNodes).arg(m_sName),"RESET", SCPI::isCmd, m_pSCPIInterface, SenseChannel::cmdStatusReset);
-    addDelegate(QString("%1%2").arg(leadingNodes).arg(m_sName),"RANGE", SCPI::isQuery | SCPI::isCmdwP, m_pSCPIInterface, SenseChannel::cmdRange, &notifierSenseChannelRange);
-    addDelegate(QString("%1%2").arg(leadingNodes).arg(m_sName),"URVALUE", SCPI::isQuery, m_pSCPIInterface, SenseChannel::cmdUrvalue);
-    addDelegate(QString("%1%2:RANGE").arg(leadingNodes).arg(m_sName),"CATALOG", SCPI::isQuery, m_pSCPIInterface, SenseChannel::cmdRangeCat, &notifierSenseChannelRangeCat);
+    addDelegate(QString("%1%2").arg(leadingNodes, m_sName),"ALIAS", SCPI::isQuery, m_pSCPIInterface, SenseChannel::cmdAlias);
+    addDelegate(QString("%1%2").arg(leadingNodes, m_sName),"TYPE", SCPI::isQuery, m_pSCPIInterface, SenseChannel::cmdType);
+    addDelegate(QString("%1%2").arg(leadingNodes, m_sName),"UNIT", SCPI::isQuery, m_pSCPIInterface, SenseChannel::cmdUnit);
+    addDelegate(QString("%1%2").arg(leadingNodes, m_sName),"DSPCHANNEL", SCPI::isQuery, m_pSCPIInterface, SenseChannel::cmdDspChannel);
+    addDelegate(QString("%1%2").arg(leadingNodes, m_sName),"STATUS", SCPI::isQuery, m_pSCPIInterface, SenseChannel::cmdStatus);
+    addDelegate(QString("%1%2:STATUS").arg(leadingNodes, m_sName),"RESET", SCPI::isCmd, m_pSCPIInterface, SenseChannel::cmdStatusReset);
+    addDelegate(QString("%1%2").arg(leadingNodes, m_sName),"RANGE", SCPI::isQuery | SCPI::isCmdwP, m_pSCPIInterface, SenseChannel::cmdRange, &notifierSenseChannelRange);
+    addDelegate(QString("%1%2").arg(leadingNodes, m_sName),"URVALUE", SCPI::isQuery, m_pSCPIInterface, SenseChannel::cmdUrvalue);
+    addDelegate(QString("%1%2:RANGE").arg(leadingNodes, m_sName),"CATALOG", SCPI::isQuery, m_pSCPIInterface, SenseChannel::cmdRangeCat, &notifierSenseChannelRangeCat);
     for(auto range : qAsConst(m_RangeList)) {
         connect(range, &ScpiConnection::cmdExecutionDone, this, &ScpiConnection::cmdExecutionDone);
-        range->initSCPIConnection(QString("%1%2").arg(leadingNodes).arg(m_sName));
+        range->initSCPIConnection(QString("%1%2").arg(leadingNodes, m_sName));
     }
 }
 
@@ -210,9 +206,8 @@ QString SenseChannelCommon::m_ReadChannelStatus(QString &sInput)
         if (m_ctrlFactory->getCriticalStatusController()->readCriticalStatus(status) == ZeraMControllerIo::cmddone ) {
             quint32 r = ((m_bAvail) ? 0 : 1 << 31);
             if (m_nOverloadBit >= 0) { // perhaps this channel has no overload bit
-                if ( (status & (1 << m_nOverloadBit))  > 0) {
+                if ( (status & (1 << m_nOverloadBit))  > 0)
                     r |= 1;
-                }
             }
             return QString("%1").arg(r);
         }
@@ -226,17 +221,14 @@ QString SenseChannelCommon::m_StatusReset(QString &sInput)
 {
     cSCPICommand cmd = sInput;
     if (cmd.isCommand(1) && (cmd.getParam(0) == "")) {
-        if (m_nOverloadBit >= 0)  {
-            if (m_ctrlFactory->getCriticalStatusController()->resetCriticalStatus((quint16)(1 << m_nOverloadBit)) == ZeraMControllerIo::cmddone ) {
+        if (m_nOverloadBit >= 0) {
+            if (m_ctrlFactory->getCriticalStatusController()->resetCriticalStatus((quint16)(1 << m_nOverloadBit)) == ZeraMControllerIo::cmddone )
                 return ZSCPI::scpiAnswer[ZSCPI::ack];
-            }
-            else {
+            else
                 return ZSCPI::scpiAnswer[ZSCPI::errexec];
-            }
         }
-        else {
+        else
             return ZSCPI::scpiAnswer[ZSCPI::ack];
-        }
     }
     return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
@@ -245,11 +237,9 @@ QString SenseChannelCommon::m_ReadUrvalue(QString &sInput)
 {
     cSCPICommand cmd = sInput;
     if (cmd.isQuery()) {
-        for(auto range : qAsConst(m_RangeList)) {
-            if (range->getName() == notifierSenseChannelRange.getString()) {
+        for(auto range : qAsConst(m_RangeList))
+            if (range->getName() == notifierSenseChannelRange.getString())
                 return QString("%1").arg(range->getUpperRangevalue());
-            }
-        }
     }
     return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
