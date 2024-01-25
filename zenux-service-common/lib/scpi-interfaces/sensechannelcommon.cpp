@@ -29,6 +29,93 @@ SenseChannelCommon::~SenseChannelCommon()
     }
 }
 
+void SenseChannelCommon::setRangeList(QList<SenseRangeCommon *> &list)
+{
+    m_RangeList = list;
+    setNotifierSenseChannelRangeCat();
+    setNotifierSenseChannelRange();
+}
+
+QList<SenseRangeCommon *> &SenseChannelCommon::getRangeList()
+{
+    return m_RangeList;
+}
+
+SenseRangeCommon *SenseChannelCommon::getRange(QString &name)
+{
+    for(auto range : qAsConst(m_RangeList)) {
+        if(range->getName() == name)
+            return range;
+    }
+    return nullptr;
+}
+
+void SenseChannelCommon::addRangeList(QList<SenseRangeCommon *> &list)
+{
+    for(auto range : list) {
+        m_RangeList.append(range);
+    }
+    setNotifierSenseChannelRangeCat();
+}
+
+void SenseChannelCommon::removeRangeList(QList<SenseRangeCommon *> &list)
+{
+    for(auto range : list) {
+        m_RangeList.removeOne(range);
+    }
+    setNotifierSenseChannelRangeCat();
+}
+
+quint8 SenseChannelCommon::getAdjustmentStatus80Mask()
+{
+    quint8 adj = 255;
+    for(auto range : qAsConst(m_RangeList))
+        adj &= range->getAdjustmentStatus80Mask();
+    return adj;
+}
+
+QString SenseChannelCommon::getName()
+{
+    return m_sName;
+}
+
+QString SenseChannelCommon::getDescription()
+{
+    return m_sDescription;
+}
+
+quint8 SenseChannelCommon::getCtrlChannel()
+{
+    return m_nCtrlChannel;
+}
+
+void SenseChannelCommon::setDescription(const QString &s)
+{
+    m_sDescription = s;
+}
+
+void SenseChannelCommon::setUnit(QString &s)
+{
+    m_sUnit = s;
+}
+
+bool SenseChannelCommon::isAvail()
+{
+    return m_bAvail;
+}
+
+void SenseChannelCommon::initJustData()
+{
+    for(auto range : qAsConst(m_RangeList))
+        range->initJustData();
+}
+
+void SenseChannelCommon::computeJustData()
+{
+    for(auto range : qAsConst(m_RangeList))
+        range->computeJustData();
+}
+
 QString SenseChannelCommon::m_ReadAlias(QString &sInput)
 {
     cSCPICommand cmd = sInput;

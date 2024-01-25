@@ -1,28 +1,9 @@
 #ifndef SENSECHANNEL_H
 #define SENSECHANNEL_H
 
-#include "senserangecommon.h"
-#include "notificationstring.h"
 #include "sensesettings.h"
 #include <QList>
 #include <sensechannelcommon.h>
-
-namespace SenseChannel
-{
-enum Commands
-{
-    cmdAlias,
-    cmdType,
-    cmdUnit,
-    cmdDspChannel,
-    cmdStatus,
-    cmdStatusReset,
-    cmdRange,
-    cmdUrvalue,
-    cmdRangeCat
-};
-
-}
 
 class Mt310s2SenseChannel : public SenseChannelCommon
 {
@@ -39,29 +20,9 @@ public:
     QString getAlias() override;
     void initSCPIConnection(QString leadingNodes) override;
 
-    void setRangeList(QList<SenseRangeCommon*>& list);
-    QList<SenseRangeCommon*>& getRangeList();
-    SenseRangeCommon* getRange(QString& name);
-    void addRangeList(QList<SenseRangeCommon*>& list);
-    void removeRangeList(QList<SenseRangeCommon *> &list);
-
-    quint8 getAdjustmentStatus80Mask();
-
-    QString getName();
-    QString getDescription();
-    quint8 getCtrlChannel();
-    void setDescription(const QString& s);
-    void setUnit(QString& s);
-    bool isAvail();
-
-    void initJustData();
-    void computeJustData();
-
 protected:
     void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
-
 private:
-
     QString scpiReadWriteRange(QString& sInput) override;
     void setNotifierSenseChannelRange() override;
 };

@@ -6,6 +6,23 @@
 #include "sensesettings.h"
 #include <scpiconnection.h>
 
+namespace SenseChannel
+{
+enum Commands
+{
+    cmdAlias,
+    cmdType,
+    cmdUnit,
+    cmdDspChannel,
+    cmdStatus,
+    cmdStatusReset,
+    cmdRange,
+    cmdUrvalue,
+    cmdRangeCat
+};
+
+}
+
 class SenseChannelCommon : public ScpiConnection
 {
 public:
@@ -16,6 +33,24 @@ public:
                        quint8 nr,
                        AbstractFactoryI2cCtrlPtr ctrlFactory);
     virtual ~SenseChannelCommon();
+
+    void setRangeList(QList<SenseRangeCommon*>& list);
+    QList<SenseRangeCommon*>& getRangeList();
+    SenseRangeCommon* getRange(QString& name);
+    void addRangeList(QList<SenseRangeCommon*>& list);
+    void removeRangeList(QList<SenseRangeCommon *> &list);
+
+    quint8 getAdjustmentStatus80Mask();
+
+    QString getName();
+    QString getDescription();
+    quint8 getCtrlChannel();
+    void setDescription(const QString& s);
+    void setUnit(QString& s);
+    bool isAvail();
+
+    void initJustData();
+    void computeJustData();
 protected:
     virtual void setMMode(int m) = 0;
     virtual QString getAlias() = 0;
