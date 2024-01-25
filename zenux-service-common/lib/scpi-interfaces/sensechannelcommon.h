@@ -19,6 +19,8 @@ public:
 protected:
     virtual void setMMode(int m) = 0;
     virtual QString getAlias() = 0;
+    virtual void setNotifierSenseChannelRange() = 0;
+    virtual QString scpiReadWriteRange(QString& sInput) = 0;
 
     AbstractFactoryI2cCtrlPtr m_ctrlFactory;
     QString m_sName; // the channels name m0...

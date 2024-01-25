@@ -76,7 +76,7 @@ void Mt310s2SenseChannel::executeProtoScpi(int cmdCode, cProtonetCommand *protoC
         protoCmd->m_sOutput = m_StatusReset(protoCmd->m_sInput);
         break;
     case SenseChannel::cmdRange:
-        protoCmd->m_sOutput = m_ReadWriteRange(protoCmd->m_sInput);
+        protoCmd->m_sOutput = scpiReadWriteRange(protoCmd->m_sInput);
         break;
     case SenseChannel::cmdUrvalue:
         protoCmd->m_sOutput = m_ReadUrvalue(protoCmd->m_sInput);
@@ -214,8 +214,7 @@ QString Mt310s2SenseChannel::m_ReadChannelStatus(QString &sInput)
     if (cmd.isQuery()) {
         quint16 status;
         if (m_ctrlFactory->getCriticalStatusController()->readCriticalStatus(status) == ZeraMControllerIo::cmddone ) {
-            quint32 r;
-            r = ((m_bAvail) ? 0 : 1 << 31);
+            quint32 r = ((m_bAvail) ? 0 : 1 << 31);
             if (m_nOverloadBit >= 0) { // perhaps this channel has no overload bit
                 if ( (status & (1 << m_nOverloadBit))  > 0) {
                     r |= 1;
@@ -261,23 +260,21 @@ void Mt310s2SenseChannel::setNotifierSenseChannelRange()
     }
 }
 
-QString Mt310s2SenseChannel::m_ReadWriteRange(QString &sInput)
+QString Mt310s2SenseChannel::scpiReadWriteRange(QString &sInput)
 {
     cSCPICommand cmd = sInput;
     quint8 mode;
     if (m_ctrlFactory->getMModeController()->readMeasMode(mode) == ZeraMControllerIo::cmddone ) {
-        if (cmd.isQuery()) {
+        if (cmd.isQuery())
             return notifierSenseChannelRange.getString();
-        }
         else {
             if (cmd.isCommand(1)) {
                 QString rng = cmd.getParam(0);
                 int anz = m_RangeList.count();
                 int i;
                 for  (i = 0; i < anz; i++) {
-                    if (m_RangeList.at(i)->getName() == rng) {
+                    if (m_RangeList.at(i)->getName() == rng)
                         break;
-                    }
                 }
                 if ( (i < anz) && (m_RangeList.at(i)->getAvail()) ) {
                     // we know this range and it's available
@@ -312,9 +309,8 @@ QString Mt310s2SenseChannel::m_ReadUrvalue(QString &sInput)
 QString Mt310s2SenseChannel::m_ReadRangeCatalog(QString &sInput)
 {
     cSCPICommand cmd = sInput;
-    if (cmd.isQuery()) {
+    if (cmd.isQuery())
         return notifierSenseChannelRangeCat.getString();
-    }
     return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
@@ -322,9 +318,8 @@ void Mt310s2SenseChannel::setNotifierSenseChannelRangeCat()
 {
     int i;
     QString s;
-    for (i = 0; i < m_RangeList.count()-1; i++) {
+    for (i = 0; i < m_RangeList.count()-1; i++)
         s += (m_RangeList.at(i)->getName() + ";");
-    }
     s += m_RangeList.at(i)->getName();
     notifierSenseChannelRangeCat = s;
 }
