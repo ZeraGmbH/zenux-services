@@ -46,7 +46,7 @@ Com5003SenseInterface::Com5003SenseInterface(cSCPI *scpiInterface,
     channelSettings = senseSettings->getChannelSettings();
 
     // default our sense has 3 voltage and 3 current measuring channels
-    Com5003SenseChannel* pChannel;
+    SenseChannelCommon* pChannel;
     pChannel = new Com5003SenseChannel(m_pSCPIInterface, SenseSystem::sVoltageChannelDescription,"V", channelSettings.at(0), 0, m_ctrlFactory);
     m_ChannelList.append(pChannel);
     pChannel = new Com5003SenseChannel(m_pSCPIInterface, SenseSystem::sVoltageChannelDescription,"V", channelSettings.at(1), 1, m_ctrlFactory);
@@ -126,11 +126,8 @@ Com5003SenseInterface::Com5003SenseInterface(cSCPI *scpiInterface,
 
 Com5003SenseInterface::~Com5003SenseInterface()
 {
-    int i;
-    Com5003SenseChannel* cptr;
-
-    for (i = 0; i < m_ChannelList.count(); i++)
-    {
+    SenseChannelCommon* cptr;
+    for (int i = 0; i < m_ChannelList.count(); i++){
         cptr = m_ChannelList.at(i);
         delete cptr;
     }
@@ -157,7 +154,7 @@ void Com5003SenseInterface::initSCPIConnection(QString leadingNodes)
 }
 
 
-Com5003SenseChannel *Com5003SenseInterface::getChannel(QString &name)
+SenseChannelCommon *Com5003SenseInterface::getChannel(QString &name)
 {
     int i;
 
@@ -291,7 +288,7 @@ bool Com5003SenseInterface::importAdjData(QDataStream &stream)
 
         done = false;
         if (spec.at(0) == "SENSE" ) {
-            Com5003SenseChannel* chn;
+            SenseChannelCommon* chn;
             QString s = spec.at(1);
             if ((chn = getChannel(s)) != nullptr) {
                 s = spec.at(2);
@@ -438,7 +435,7 @@ void Com5003SenseInterface::exportAdjData(QDataStream &stream, QDateTime dateTim
 
 void Com5003SenseInterface::registerResource(RMConnection *rmConnection, quint16 port)
 {
-    Com5003SenseChannel* pChannel;
+    SenseChannelCommon* pChannel;
     msgNrList.clear();
     for (int i = 0; i < 6; i++)
     {
@@ -524,7 +521,7 @@ bool Com5003SenseInterface::importXMLDocument(QDomDocument *qdomdoc)
                         for (qint32 i = 0; i < channelNl.length(); i++) {
                             QDomNode chnNode = channelNl.item(i); // we iterate over all channels from xml file
                             QDomNodeList chnEntryNl = chnNode.childNodes();
-                            Com5003SenseChannel* chnPtr = nullptr;
+                            SenseChannelCommon* chnPtr = nullptr;
                             SenseRangeCommon* rngPtr = nullptr;
                             for (qint32 j = 0; j < chnEntryNl.length(); j++) {
                                 QString Name;
@@ -749,7 +746,7 @@ void Com5003SenseInterface::setNotifierSenseChannelCat()
 
 void Com5003SenseInterface::unregisterSense()
 {
-    Com5003SenseChannel* pChannel;
+    SenseChannelCommon* pChannel;
     msgNrList.clear();
     for (int i = 0; i < 6; i++) {
         pChannel = m_ChannelList.at(i);

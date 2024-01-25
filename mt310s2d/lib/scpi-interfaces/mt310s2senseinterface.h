@@ -6,7 +6,7 @@
 #include "adjustmentxmlimportexporttemplate.h"
 #include "rangeadjinterface.h"
 #include "resource.h"
-#include "mt310s2sensechannel.h"
+#include "sensechannelcommon.h"
 #include "systeminfo.h"
 #include <QList>
 #include <QHash>
@@ -75,7 +75,7 @@ public:
                           AbstractFactoryI2cCtrlPtr ctrlFactory);
     ~Mt310s2SenseInterface();
     virtual void initSCPIConnection(QString leadingNoMModedes) override;
-    Mt310s2SenseChannel* getChannel(QString& name);
+    SenseChannelCommon *getChannel(QString& name);
     QString getChannelSystemName(quint16 ctrlChannel);
     SenseRangeCommon* getRange(QString channelName, QString rangeName);
     quint8 getAdjustmentStatus() override;
@@ -108,7 +108,7 @@ private:
     SystemInfo* m_systemInfo;
     AbstractFactoryI2cCtrlPtr m_ctrlFactory;
 
-    QList<Mt310s2SenseChannel*> m_ChannelList;
+    QList<SenseChannelCommon*> m_ChannelList;
     QString m_sVersion;
 
     quint8 m_nSerialStatus;

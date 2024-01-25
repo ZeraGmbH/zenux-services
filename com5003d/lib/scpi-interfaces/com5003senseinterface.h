@@ -6,8 +6,7 @@
 #include "i2csettings.h"
 #include "resource.h"
 #include "ethsettings.h"
-#include "com5003sensechannel.h"
-#include "notificationstring.h"
+#include "sensechannelcommon.h"
 #include "systeminfo.h"
 #include <QList>
 #include <QStateMachine>
@@ -58,7 +57,7 @@ public:
                           AbstractFactoryI2cCtrlPtr ctrlFactory);
     ~Com5003SenseInterface();
     virtual void initSCPIConnection(QString leadingNodes) override;
-    Com5003SenseChannel* getChannel(QString& name);
+    SenseChannelCommon* getChannel(QString& name);
     quint8 getAdjustmentStatus() override;
 
     QString exportXMLString(int indent = 1) override;
@@ -92,7 +91,7 @@ private:
     SystemInfo *m_systemInfo;
     AbstractFactoryI2cCtrlPtr m_ctrlFactory;
 
-    QList<Com5003SenseChannel*> m_ChannelList;
+    QList<SenseChannelCommon*> m_ChannelList;
     QString m_sVersion;
     quint8 m_nMMode;
 
