@@ -11,6 +11,7 @@ SETUP_TESTS(
     test_adj_deny_import_mt310s2
     test_accumulatorinterface_mock
     test_regression_critical_status_mt310s2
+    test_regression_adj_status_mt310s2
     )
 
 target_sources(test_regression_adj_import_export_xml_mt310s2
