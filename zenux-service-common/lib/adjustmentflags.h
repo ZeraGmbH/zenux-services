@@ -1,5 +1,5 @@
-#ifndef ADJEEPROMTOOLS_H
-#define ADJEEPROMTOOLS_H
+#ifndef ADJUSTMENTFLAGS_H
+#define ADJUSTMENTFLAGS_H
 
 namespace Adjustment
 {
@@ -12,4 +12,4 @@ namespace Adjustment
     };
 }
 
-#endif // ADJEEPROMTOOLS_H
+#endif // ADJUSTMENTFLAGS_H
