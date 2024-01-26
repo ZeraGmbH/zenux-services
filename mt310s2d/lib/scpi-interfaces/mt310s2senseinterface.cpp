@@ -1,7 +1,7 @@
 #include "mt310s2senseinterface.h"
 #include "mt310s2dglobal.h"
 #include "justdatainterface.h"
-#include "adjeepromtools.h"
+#include "adjustmentflags.h"
 #include "mt310s2sensechannel.h"
 #include "mt310s2senserange.h"
 #include "adjustmenteeprom.h"
