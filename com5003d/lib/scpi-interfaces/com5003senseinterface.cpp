@@ -252,7 +252,7 @@ bool Com5003SenseInterface::importAdjData(QDataStream &stream)
 
     QString sysDevName = m_systemInfo->getDeviceName();
     if (QString(s) != sysDevName) {
-        qCritical("Flashmemory read: Wrong pcb name: flash %s / µC %s",
+        qCritical("Flashmemory read: Wrong device name: flash %s / µC %s",
                   s, qPrintable(sysDevName));
         return false;
     }
