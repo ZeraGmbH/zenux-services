@@ -1,5 +1,4 @@
 #include "test_accumulatorinterface_mock.h"
-#include "pcbinterface.h"
 #include "proxy.h"
 #include "reply.h"
 #include "testfactoryi2cctrl.h"

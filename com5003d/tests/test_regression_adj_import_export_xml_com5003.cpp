@@ -16,7 +16,6 @@ void test_regression_adj_import_export_xml_com5003::init()
 
 void test_regression_adj_import_export_xml_com5003::cleanup()
 {
-    m_pcbIFace = nullptr;
     m_pcbClient = nullptr;
     m_testServer = nullptr;
     m_resmanServer = nullptr;
@@ -126,8 +125,6 @@ void test_regression_adj_import_export_xml_com5003::setupServers()
     TimeMachineObject::feedEventLoop();
 
     m_pcbClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307);
-    m_pcbIFace = std::make_unique<Zera::cPCBInterface>();
-    m_pcbIFace->setClientSmart(m_pcbClient);
     Zera::Proxy::getInstance()->startConnectionSmart(m_pcbClient);
     TimeMachineObject::feedEventLoop();
 }
