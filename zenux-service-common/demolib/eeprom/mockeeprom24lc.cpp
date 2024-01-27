@@ -1,5 +1,4 @@
 #include "mockeeprom24lc.h"
-#include <QFile>
 
 static constexpr int sizeFlash = 32768;
 
@@ -30,7 +29,6 @@ int MockEEprom24LC::WriteData(char *data, ushort count, ushort adr)
     for(int i=0; i<count; i++)
         flashEntry[i] = data[i];
     m_flashDataWriteCounts[m_devNode][m_i2cAddr]++;
-    writeFile("/tmp/last-written.eeprom", flashEntry);
     return count;
 }
 
@@ -89,12 +87,4 @@ int MockEEprom24LC::getWriteCount(QString devNode, short adr)
 void MockEEprom24LC::doReset(int size)
 {
     m_flashData[m_devNode][m_i2cAddr] = QByteArray(size, 0xff);
-}
-
-bool MockEEprom24LC::writeFile(QString filename, QByteArray data)
-{
-    QFile file(filename);
-    if(file.open(QIODevice::WriteOnly))
-        return file.write(data) == data.length();
-    return false;
 }

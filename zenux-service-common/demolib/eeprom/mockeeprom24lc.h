@@ -19,7 +19,6 @@ public:
     static int getWriteCount(QString devNode, short adr);
 private:
     void doReset(int size);
-    bool writeFile(QString filename, QByteArray data);
     QString m_devNode;
     short m_i2cAddr;
     static QHash<QString, QHash<short, QByteArray>> m_flashData;
