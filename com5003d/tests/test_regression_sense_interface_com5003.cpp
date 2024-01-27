@@ -3,7 +3,6 @@
 #include "senseregressionhelper.h"
 #include "scpisingletransactionblocked.h"
 #include "proxy.h"
-#include "pcbinterface.h"
 #include <timemachineobject.h>
 #include <QRegularExpression>
 #include <QJsonValue>

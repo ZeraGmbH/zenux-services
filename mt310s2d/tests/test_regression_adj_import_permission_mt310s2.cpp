@@ -14,7 +14,6 @@ QTEST_MAIN(test_regression_adj_import_permission_mt310s2);
 
 void test_regression_adj_import_permission_mt310s2::cleanup()
 {
-    m_pcbIFace = nullptr;
     m_pcbClient = nullptr;
     m_testServer = nullptr;
     m_resmanServer = nullptr;
@@ -79,8 +78,6 @@ void test_regression_adj_import_permission_mt310s2::setupServers(AbstractFactory
     TimeMachineObject::feedEventLoop();
 
     m_pcbClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307);
-    m_pcbIFace = std::make_unique<Zera::cPCBInterface>();
-    m_pcbIFace->setClientSmart(m_pcbClient);
     Zera::Proxy::getInstance()->startConnectionSmart(m_pcbClient);
     TimeMachineObject::feedEventLoop();
 }

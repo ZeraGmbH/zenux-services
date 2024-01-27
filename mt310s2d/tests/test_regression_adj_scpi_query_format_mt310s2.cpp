@@ -268,8 +268,6 @@ void test_regression_adj_scpi_query_format_mt310s2::setupServers()
     TimeMachineObject::feedEventLoop();
 
     m_pcbClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307);
-    m_pcbIFace = std::make_unique<Zera::cPCBInterface>();
-    m_pcbIFace->setClientSmart(m_pcbClient);
     Zera::Proxy::getInstance()->startConnectionSmart(m_pcbClient);
     TimeMachineObject::feedEventLoop();
 }

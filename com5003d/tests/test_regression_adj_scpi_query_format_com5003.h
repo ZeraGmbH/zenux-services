@@ -2,7 +2,6 @@
 #define TEST_REGRESSION_ADJ_SCPI_QUERY_FORMAT_COM5003_H
 
 #include "testserverforsenseinterfacecom5003.h"
-#include "pcbinterface.h"
 #include "proxyclient.h"
 #include "resmanrunfacade.h"
 #include <QObject>
@@ -41,7 +40,6 @@ private:
     std::unique_ptr<TestServerForSenseInterfaceCom5003> m_testServer;
     std::unique_ptr<ResmanRunFacade> m_resmanServer;
     Zera::ProxyClientPtr m_pcbClient;
-    std::unique_ptr<Zera::cPCBInterface> m_pcbIFace;
 };
 
 #endif // TEST_REGRESSION_ADJ_SCPI_QUERY_FORMAT_COM5003_H

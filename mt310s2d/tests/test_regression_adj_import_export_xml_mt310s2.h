@@ -2,7 +2,6 @@
 #define TEST_REGRESSION_ADJUSTMENT_MT310S2_H
 
 #include "testserverforsenseinterfacemt310s2.h"
-#include "pcbinterface.h"
 #include "proxyclient.h"
 #include "resmanrunfacade.h"
 #include <QObject>
@@ -36,7 +35,6 @@ private:
     std::unique_ptr<TestServerForSenseInterfaceMt310s2> m_testServer;
     std::unique_ptr<ResmanRunFacade> m_resmanServer;
     Zera::ProxyClientPtr m_pcbClient;
-    std::unique_ptr<Zera::cPCBInterface> m_pcbIFace;
     I2cCtrlEepromPermissionPtr m_permissionMock;
 };
 

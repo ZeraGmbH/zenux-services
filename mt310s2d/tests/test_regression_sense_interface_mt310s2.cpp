@@ -3,7 +3,6 @@
 #include "senseregressionhelper.h"
 #include "scpisingletransactionblocked.h"
 #include "proxy.h"
-#include "pcbinterface.h"
 #include "clampfactorytest.h"
 #include <i2cmultiplexerfactory.h>
 #include <timemachineobject.h>
