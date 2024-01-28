@@ -168,7 +168,7 @@ void Mt310s2SenseInterface::executeProtoScpi(int cmdCode, cProtonetCommand *prot
             emit cmdExecutionDone(protoCmd);
         break;
     case SenseSystem::cmdGroupCat:
-        protoCmd->m_sOutput = m_ReadSenseGroupCatalog(protoCmd->m_sInput);
+        protoCmd->m_sOutput = scpiReadSenseGroupCatalog(protoCmd->m_sInput);
         if (protoCmd->m_bwithOutput)
             emit cmdExecutionDone(protoCmd);
         break;
@@ -526,16 +526,12 @@ void Mt310s2SenseInterface::scpiReadWriteMMode(cProtonetCommand *protoCmd)
         emit cmdExecutionDone(protoCmd);
 }
 
-QString Mt310s2SenseInterface::m_ReadSenseGroupCatalog(QString &sInput)
+QString Mt310s2SenseInterface::scpiReadSenseGroupCatalog(QString &scpi)
 {
-    cSCPICommand cmd = sInput;
-    if (cmd.isQuery()) {
-        QString s = ";"; // this server has no grouping constraints
-        return s;
-    }
-    else {
-        return ZSCPI::scpiAnswer[ZSCPI::nak];
-    }
+    cSCPICommand cmd = scpi;
+    if (cmd.isQuery())
+        return ";"; // this server has no grouping constraints
+    return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 QString Mt310s2SenseInterface::m_InitSenseAdjData(QString &sInput)
@@ -543,14 +539,11 @@ QString Mt310s2SenseInterface::m_InitSenseAdjData(QString &sInput)
     cSCPICommand cmd = sInput;
     // cmd.isCommand(0) is not correct but we leave it for compatibility
     if ( cmd.isCommand(0) || (cmd.isCommand(1) && (cmd.getParam(0) == ""))) {
-        for(auto channel : qAsConst(m_channelList)) {
+        for(auto channel : qAsConst(m_channelList))
             channel->initJustData();
-        }
         return ZSCPI::scpiAnswer[ZSCPI::ack];
     }
-    else {
-        return ZSCPI::scpiAnswer[ZSCPI::nak];
-    }
+    return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 QString Mt310s2SenseInterface::m_ComputeSenseAdjData(QString& sInput)
@@ -561,9 +554,7 @@ QString Mt310s2SenseInterface::m_ComputeSenseAdjData(QString& sInput)
         computeSenseAdjData();
         return ZSCPI::scpiAnswer[ZSCPI::ack];
     }
-    else {
-        return ZSCPI::scpiAnswer[ZSCPI::nak];
-    }
+    return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 QString Mt310s2SenseInterface::scpiReadAdjStatus(QString &sInput)
