@@ -170,7 +170,7 @@ void Com5003SenseInterface::executeProtoScpi(int cmdCode, cProtonetCommand *prot
                 emit cmdExecutionDone(protoCmd);
         break;
     case SenseSystem::cmdGroupCat:
-        protoCmd->m_sOutput = m_ReadSenseGroupCatalog(protoCmd->m_sInput);
+        protoCmd->m_sOutput = scpiReadSenseGroupCatalog(protoCmd->m_sInput);
         if (protoCmd->m_bwithOutput)
             emit cmdExecutionDone(protoCmd);
         break;
@@ -554,9 +554,9 @@ void Com5003SenseInterface::scpiReadWriteMMode(cProtonetCommand *protoCmd)
         emit cmdExecutionDone(protoCmd);
 }
 
-QString Com5003SenseInterface::m_ReadSenseGroupCatalog(QString &sInput)
+QString Com5003SenseInterface::scpiReadSenseGroupCatalog(QString &scpi)
 {
-    cSCPICommand cmd = sInput;
+    cSCPICommand cmd = scpi;
     if (cmd.isQuery()) {
         QString s;
         if (m_availSenseModesHash[m_currSenseMode] == SenseSystem::modeAC)
@@ -579,7 +579,6 @@ QString Com5003SenseInterface::m_InitSenseAdjData(QString &sInput)
             if (enable) {
                 for (int i = 0; i < m_channelList.count(); i++)
                     m_channelList.at(i)->initJustData();
-
                 return ZSCPI::scpiAnswer[ZSCPI::ack];
             }
             else

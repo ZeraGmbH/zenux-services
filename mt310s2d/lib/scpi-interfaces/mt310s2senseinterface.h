@@ -69,7 +69,7 @@ protected:
     void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
 
 private:
-    QString m_ReadSenseGroupCatalog(QString& sInput);
+    QString scpiReadSenseGroupCatalog(QString& scpi) override;
     QString m_InitSenseAdjData(QString& sInput);
     QString m_ComputeSenseAdjData(QString& sInput);
     QString scpiReadAdjStatus(QString& sInput);

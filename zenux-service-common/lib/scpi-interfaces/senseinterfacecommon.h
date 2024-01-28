@@ -41,6 +41,7 @@ public:
 protected:
     virtual void scpiReadWriteMMode(cProtonetCommand* protoCmd) = 0;
     virtual RangeAdjInterface* createJustScpiInterfaceWithAtmelPermission() = 0;
+    virtual QString scpiReadSenseGroupCatalog(QString& scpi) = 0;
     QString scpiReadVersion(QString& scpi);
     QString m_ReadMModeCatalog(QString& scpi);
     QString m_ReadSenseChannelCatalog(QString& scpi);
