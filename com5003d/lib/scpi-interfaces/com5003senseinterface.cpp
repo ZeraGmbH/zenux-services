@@ -26,9 +26,10 @@ Com5003SenseInterface::Com5003SenseInterface(cSCPI *scpiInterface,
                                              EthSettings *ethSettings,
                                              cSenseSettings *senseSettings, SystemInfo *systemInfo,
                                              AbstractFactoryI2cCtrlPtr ctrlFactory) :
-    SenseInterfaceCommon(scpiInterface, i2cSettings),
-    m_systemInfo(systemInfo),
-    m_ctrlFactory(ctrlFactory),
+    SenseInterfaceCommon(scpiInterface,
+                           i2cSettings,
+                           systemInfo,
+                           ctrlFactory),
     m_rmConnection(rmConnection),
     m_ethSettings(ethSettings)
 {
@@ -45,17 +46,17 @@ Com5003SenseInterface::Com5003SenseInterface(cSCPI *scpiInterface,
     // default our sense has 3 voltage and 3 current measuring channels
     SenseChannelCommon* pChannel;
     pChannel = new Com5003SenseChannel(m_pSCPIInterface, SenseSystem::sVoltageChannelDescription,"V", channelSettings.at(0), 0, m_ctrlFactory);
-    m_ChannelList.append(pChannel);
+    m_channelList.append(pChannel);
     pChannel = new Com5003SenseChannel(m_pSCPIInterface, SenseSystem::sVoltageChannelDescription,"V", channelSettings.at(1), 1, m_ctrlFactory);
-    m_ChannelList.append(pChannel);
+    m_channelList.append(pChannel);
     pChannel = new Com5003SenseChannel(m_pSCPIInterface, SenseSystem::sVoltageChannelDescription,"V", channelSettings.at(2), 2, m_ctrlFactory);
-    m_ChannelList.append(pChannel);
+    m_channelList.append(pChannel);
     pChannel = new Com5003SenseChannel(m_pSCPIInterface, SenseSystem::sCurrentChannelDescription,"A", channelSettings.at(3), 3, m_ctrlFactory);
-    m_ChannelList.append(pChannel);
+    m_channelList.append(pChannel);
     pChannel = new Com5003SenseChannel(m_pSCPIInterface, SenseSystem::sCurrentChannelDescription,"A", channelSettings.at(4), 4, m_ctrlFactory);
-    m_ChannelList.append(pChannel);
+    m_channelList.append(pChannel);
     pChannel = new Com5003SenseChannel(m_pSCPIInterface, SenseSystem::sCurrentChannelDescription,"A", channelSettings.at(5), 5, m_ctrlFactory);
-    m_ChannelList.append(pChannel);
+    m_channelList.append(pChannel);
 
     QList<SenseRangeCommon*> rngList;
 
@@ -73,7 +74,7 @@ Com5003SenseInterface::Com5003SenseInterface(cSCPI *scpiInterface,
 
         rngList.append(new Com5003SenseRange(m_pSCPIInterface,   "R0V", false,  9.0, 3839668.2, 5332873.0, 14));
         rngList.append(new Com5003SenseRange(m_pSCPIInterface,  "R10V", false, 10.0, 4266298.0, 5332873.0, 15));
-        m_ChannelList.at(i)->setRangeList(rngList);
+        m_channelList.at(i)->setRangeList(rngList);
     }
 
     for (i = 3; i < 6; i++)
@@ -99,11 +100,10 @@ Com5003SenseInterface::Com5003SenseInterface(cSCPI *scpiInterface,
         rngList.append(new Com5003SenseRange(m_pSCPIInterface,   "R0V", false,  9.0, 3839668.2, 5332873.0, 15));
         rngList.append(new Com5003SenseRange(m_pSCPIInterface,  "R10V", false, 10.0, 4266298.0, 5332873.0, 16));
 
-        m_ChannelList.at(i)->setRangeList(rngList);
+        m_channelList.at(i)->setRangeList(rngList);
     }
 
     setNotifierSenseChannelCat(); // only prepared for !!! since we don't have hot plug for measuring channels yet
-    m_sVersion = SenseSystem::Version;
 
     // we set up our statemachine for changing sense mode
     // we must use a statemachine because we have to synchronize sending of notifier
@@ -124,8 +124,8 @@ Com5003SenseInterface::Com5003SenseInterface(cSCPI *scpiInterface,
 Com5003SenseInterface::~Com5003SenseInterface()
 {
     SenseChannelCommon* cptr;
-    for (int i = 0; i < m_ChannelList.count(); i++){
-        cptr = m_ChannelList.at(i);
+    for (int i = 0; i < m_channelList.count(); i++){
+        cptr = m_channelList.at(i);
         delete cptr;
     }
 }
@@ -135,13 +135,13 @@ void Com5003SenseInterface::initSCPIConnection(QString leadingNodes)
 {
     ensureTrailingColonOnNonEmptyParentNodes(leadingNodes);
     addDelegate(QString("%1SENSE").arg(leadingNodes),"VERSION",SCPI::isQuery, m_pSCPIInterface, SenseSystem::cmdVersion);
-    addDelegate(QString("%1SENSE").arg(leadingNodes),"MMODE",SCPI::isQuery | SCPI::isCmdwP , m_pSCPIInterface, SenseSystem::cmdMMode, &notifierSenseMMode);
+    addDelegate(QString("%1SENSE").arg(leadingNodes),"MMODE",SCPI::isQuery | SCPI::isCmdwP , m_pSCPIInterface, SenseSystem::cmdMMode, &m_notifierSenseMMode);
     addDelegate(QString("%1SENSE:MMODE").arg(leadingNodes),"CATALOG",SCPI::isQuery, m_pSCPIInterface, SenseSystem::cmdMModeCat);
-    addDelegate(QString("%1SENSE:CHANNEL").arg(leadingNodes),"CATALOG", SCPI::isQuery, m_pSCPIInterface, SenseSystem::cmdChannelCat, &notifierSenseChannelCat);
+    addDelegate(QString("%1SENSE:CHANNEL").arg(leadingNodes),"CATALOG", SCPI::isQuery, m_pSCPIInterface, SenseSystem::cmdChannelCat, &m_notifierSenseChannelCat);
     addDelegate(QString("%1SENSE:GROUP").arg(leadingNodes),"CATALOG", SCPI::isQuery, m_pSCPIInterface, SenseSystem::cmdGroupCat);
     addDelegate(QString("%1SENSE:CORRECTION").arg(leadingNodes),"INIT", SCPI::isCmd, m_pSCPIInterface, SenseSystem::initAdjData);
     addDelegate(QString("%1SENSE:CORRECTION").arg(leadingNodes),"COMPUTE", SCPI::isCmd, m_pSCPIInterface, SenseSystem::computeAdjData);
-    for(auto channel : qAsConst(m_ChannelList)) {
+    for(auto channel : qAsConst(m_channelList)) {
         // we also must connect the signals for notification and for output
         connect(channel, &ScpiConnection::sendNotification, this, &ScpiConnection::sendNotification);
         connect(channel, &ScpiConnection::cmdExecutionDone, this, &ScpiConnection::cmdExecutionDone);
@@ -155,7 +155,7 @@ void Com5003SenseInterface::initSCPIConnection(QString leadingNodes)
 SenseChannelCommon *Com5003SenseInterface::getChannel(QString &name)
 {
     SenseChannelCommon *channelFound = nullptr;
-    for(auto channel : qAsConst(m_ChannelList)) {
+    for(auto channel : qAsConst(m_channelList)) {
         if(channel->getName() == name) {
             channelFound = channel;
             break;
@@ -168,7 +168,7 @@ quint8 Com5003SenseInterface::getAdjustmentStatus()
 {
     quint8 adjustmentStatusMask = Adjustment::adjusted;
     // Loop adjustment state for all channels
-    for(auto channel : qAsConst(m_ChannelList)) {
+    for(auto channel : qAsConst(m_channelList)) {
         quint8 channelFlags = channel->getAdjustmentStatus80Mask();
         // Currently there is one flag in channel flags only
         if((channelFlags & JustDataInterface::Justified)== 0) {
@@ -354,7 +354,7 @@ QString Com5003SenseInterface::exportXMLString(int indent)
     QDomElement typeTag = justqdom.createElement("Sense");
     adjtag.appendChild(typeTag);
 
-    for(auto channel : qAsConst(m_ChannelList)) {
+    for(auto channel : qAsConst(m_channelList)) {
         QDomText t;
         QDomElement chtag = justqdom.createElement("Channel");
         typeTag.appendChild( chtag );
@@ -414,7 +414,7 @@ void Com5003SenseInterface::exportAdjData(QDataStream &stream, QDateTime dateTim
     stream << m_systemInfo->getDeviceVersion().toStdString().c_str(); // geräte name versionsnummern ...
     stream << m_systemInfo->getSerialNumber().toStdString().c_str(); // seriennummer
     stream << dateTimeWrite.toString(Qt::TextDate).toStdString().c_str(); // datum,uhrzeit
-    for(auto channel : qAsConst(m_ChannelList)) {
+    for(auto channel : qAsConst(m_channelList)) {
         for(auto range : channel->getRangeList()) {
             // This was stolen from MT and that just stores direct ranges (no clamp ranges)
             // Once COM supports clamps, we have to revisit
@@ -438,7 +438,7 @@ void Com5003SenseInterface::registerResource(RMConnection *rmConnection, quint16
     msgNrList.clear();
     for (int i = 0; i < 6; i++)
     {
-        pChannel = m_ChannelList.at(i);
+        pChannel = m_channelList.at(i);
         register1Resource(rmConnection, NotZeroNumGen::getMsgNr(), QString("SENSE;%1;1;%2;%3;")
                          .arg(pChannel->getName())
                          .arg(pChannel->getDescription())
@@ -454,7 +454,7 @@ void Com5003SenseInterface::registerResource(RMConnection *rmConnection, quint16
 
 void Com5003SenseInterface::computeSenseAdjData()
 {
-    for(auto channel : qAsConst(m_ChannelList)) {
+    for(auto channel : qAsConst(m_channelList)) {
         channel->computeJustData();
     }
 }
@@ -587,9 +587,8 @@ QString Com5003SenseInterface::scpiReadVersion(QString &sInput)
 {
     cSCPICommand cmd = sInput;
     if (cmd.isQuery())
-        return m_sVersion;
-    else
-        return ZSCPI::scpiAnswer[ZSCPI::nak];
+        return m_version;
+    return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 
@@ -598,7 +597,7 @@ void Com5003SenseInterface::scpiReadWriteMMode(cProtonetCommand *protoCmd)
     cSCPICommand cmd = protoCmd->m_sInput;
     if (cmd.isQuery()) {
         //return SenseSystem::sMMode[m_nMMode];
-        protoCmd->m_sOutput  = notifierSenseMMode.getString();
+        protoCmd->m_sOutput  = m_notifierSenseMMode.getString();
         if (protoCmd->m_bwithOutput)
             emit cmdExecutionDone(protoCmd);
     }
@@ -659,9 +658,8 @@ QString Com5003SenseInterface::m_ReadSenseChannelCatalog(QString &sInput)
 {
     cSCPICommand cmd = sInput;
     if (cmd.isQuery())
-        return notifierSenseChannelCat.getString();
-    else
-        return ZSCPI::scpiAnswer[ZSCPI::nak];
+        return m_notifierSenseChannelCat.getString();
+    return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 QString Com5003SenseInterface::m_ReadSenseGroupCatalog(QString &sInput)
@@ -687,8 +685,8 @@ QString Com5003SenseInterface::m_InitSenseAdjData(QString &sInput)
         bool enable;
         if (m_ctrlFactory->getPermissionCheckController()->hasPermission(enable)) {
             if (enable) {
-                for (int i = 0; i < m_ChannelList.count(); i++)
-                    m_ChannelList.at(i)->initJustData();
+                for (int i = 0; i < m_channelList.count(); i++)
+                    m_channelList.at(i)->initJustData();
 
                 return ZSCPI::scpiAnswer[ZSCPI::ack];
             }
@@ -709,8 +707,8 @@ QString Com5003SenseInterface::m_ComputeSenseAdjData(QString &sInput)
         bool enable;
         if (m_ctrlFactory->getPermissionCheckController()->hasPermission(enable)) {
             if (enable) {
-                for (int i = 0; i < m_ChannelList.count(); i++)
-                    m_ChannelList.at(i)->computeJustData();
+                for (int i = 0; i < m_channelList.count(); i++)
+                    m_channelList.at(i)->computeJustData();
                 return ZSCPI::scpiAnswer[ZSCPI::ack];
             }
             else
@@ -738,17 +736,17 @@ RangeAdjInterface *Com5003SenseInterface::createJustScpiInterfaceWithAtmelPermis
 
 void Com5003SenseInterface::setNotifierSenseMMode()
 {
-    notifierSenseMMode = SenseSystem::sMMode[m_nMMode];
+    m_notifierSenseMMode = SenseSystem::sMMode[m_nMMode];
 }
 
 void Com5003SenseInterface::setNotifierSenseChannelCat()
 {
     int i;
     QString s;
-    for (i = 0; i < m_ChannelList.count()-1; i++ )
-        s += m_ChannelList.at(i)->getName() + ";";
-    s += m_ChannelList.at(i)->getName();
-    notifierSenseChannelCat = s;
+    for (i = 0; i < m_channelList.count()-1; i++ )
+        s += m_channelList.at(i)->getName() + ";";
+    s += m_channelList.at(i)->getName();
+    m_notifierSenseChannelCat = s;
 }
 
 void Com5003SenseInterface::unregisterSense()
@@ -756,7 +754,7 @@ void Com5003SenseInterface::unregisterSense()
     SenseChannelCommon* pChannel;
     msgNrList.clear();
     for (int i = 0; i < 6; i++) {
-        pChannel = m_ChannelList.at(i);
+        pChannel = m_channelList.at(i);
         unregister1Resource(m_rmConnection, NotZeroNumGen::getMsgNr(), QString("SENSE;%1;")
                                                                          .arg(pChannel->getName()));
     }
@@ -767,34 +765,34 @@ void Com5003SenseInterface::registerSense()
     QString s;
     // first we change the channels units and descriptions
     if (m_nMMode == SenseSystem::modeAC) {
-        m_ChannelList.at(0)->setDescription(SenseSystem::sVoltageChannelDescription);
-        m_ChannelList.at(0)->setUnit(s = "V");
-        m_ChannelList.at(1)->setDescription(SenseSystem::sVoltageChannelDescription);
-        m_ChannelList.at(1)->setUnit(s = "V");
-        m_ChannelList.at(2)->setDescription(SenseSystem::sVoltageChannelDescription);
-        m_ChannelList.at(2)->setUnit(s = "V");
+        m_channelList.at(0)->setDescription(SenseSystem::sVoltageChannelDescription);
+        m_channelList.at(0)->setUnit(s = "V");
+        m_channelList.at(1)->setDescription(SenseSystem::sVoltageChannelDescription);
+        m_channelList.at(1)->setUnit(s = "V");
+        m_channelList.at(2)->setDescription(SenseSystem::sVoltageChannelDescription);
+        m_channelList.at(2)->setUnit(s = "V");
 
-        m_ChannelList.at(3)->setDescription(SenseSystem::sCurrentChannelDescription);
-        m_ChannelList.at(3)->setUnit(s = "A");
-        m_ChannelList.at(4)->setDescription(SenseSystem::sCurrentChannelDescription);
-        m_ChannelList.at(4)->setUnit(s = "A");
-        m_ChannelList.at(5)->setDescription(SenseSystem::sCurrentChannelDescription);
-        m_ChannelList.at(5)->setUnit(s = "A");
+        m_channelList.at(3)->setDescription(SenseSystem::sCurrentChannelDescription);
+        m_channelList.at(3)->setUnit(s = "A");
+        m_channelList.at(4)->setDescription(SenseSystem::sCurrentChannelDescription);
+        m_channelList.at(4)->setUnit(s = "A");
+        m_channelList.at(5)->setDescription(SenseSystem::sCurrentChannelDescription);
+        m_channelList.at(5)->setUnit(s = "A");
     }
     else {
-        for (qint32 i = 0; i < m_ChannelList.count(); i++) // for each channel
+        for (qint32 i = 0; i < m_channelList.count(); i++) // for each channel
         {
-            m_ChannelList.at(i)->setDescription(SenseSystem::sReferenceChannelDescription);
-            m_ChannelList.at(i)->setUnit(s = "V");
+            m_channelList.at(i)->setDescription(SenseSystem::sReferenceChannelDescription);
+            m_channelList.at(i)->setUnit(s = "V");
         }
     }
 
     m_ctrlFactory->getMModeController()->setMeasMode(m_nMMode); // set the atmels mode too
 
     // here we do the rest of reconfiguring
-    for (qint32 i = 0; i < m_ChannelList.count(); i++) {
-        m_ChannelList.at(i)->setMMode(m_nMMode); // this indirectly changes the channnels alias
-        QList<SenseRangeCommon*> list = m_ChannelList.at(i)->getRangeList();
+    for (qint32 i = 0; i < m_channelList.count(); i++) {
+        m_channelList.at(i)->setMMode(m_nMMode); // this indirectly changes the channnels alias
+        QList<SenseRangeCommon*> list = m_channelList.at(i)->getRangeList();
         for (int j = 0; j < list.count(); j++ )
             list.at(j)->setAvail( !list.at(j)->getAvail()); // we only toggle the ranges avail
 
