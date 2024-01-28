@@ -33,12 +33,17 @@ public:
     virtual ~SenseInterfaceCommon();
     quint8 getAdjustmentStatus() override;
     void computeSenseAdjData();
+    void registerResource(RMConnection *rmConnection, quint16 port) override;
 
 protected:
     virtual void scpiReadWriteMMode(cProtonetCommand* protoCmd) = 0;
     virtual RangeAdjInterface* createJustScpiInterfaceWithAtmelPermission() = 0;
+    QString scpiReadVersion(QString& scpi);
+    QString m_ReadMModeCatalog(QString& scpi);
+    QString m_ReadSenseChannelCatalog(QString& scpi);
     void setNotifierSenseMMode();
     void setNotifierSenseChannelCat();
+    QStringList getSenseModesSortedById();
 
     static QString m_version;
     SystemInfo *m_systemInfo;

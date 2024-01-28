@@ -19,7 +19,6 @@ namespace SenseSystem
 
     const QString sVoltageChannelDescription = "Measuring channel 0..480V AC";
     const QString sCurrentChannelDescription = "Measuring channel 0..160A AC";
-    const QString sMeasuringModeDescription = "Measuring mode switch AC,REF";
     const QString sReferenceChannelDescription = "Reference channel 0..10V DC";
 }
 
@@ -39,8 +38,6 @@ public:
 
     QString exportXMLString(int indent = 1) override;
 
-    void registerResource(RMConnection *rmConnection, quint16 port) override;
-
 protected:
     void exportAdjData(QDataStream& stream, QDateTime dateTimeWrite) override;
     bool importAdjData(QDataStream& stream) override;
@@ -53,9 +50,6 @@ private slots:
     void notifySense();
 
 private:
-    QString scpiReadVersion(QString& sInput);
-    QString m_ReadMModeCatalog(QString& scpi);
-    QString m_ReadSenseChannelCatalog(QString& sInput);
     QString m_ReadSenseGroupCatalog(QString& sInput);
     QString m_InitSenseAdjData(QString& sInput);
     QString m_ComputeSenseAdjData(QString& sInput);

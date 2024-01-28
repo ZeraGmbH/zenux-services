@@ -8,11 +8,9 @@
 #include "protonetcommand.h"
 #include "rangeadjinterface.h"
 #include "scpiconnection.h"
-#include "resource.h"
 #include "zscpi_response_definitions.h"
 #include "i2csettings.h"
 #include "sensesettings.h"
-#include "notzeronumgen.h"
 #include <xmlsettings.h>
 #include <QStringList>
 #include <QDomDocument>
@@ -542,30 +540,6 @@ bool Mt310s2SenseInterface::importXMLDocument(QDomDocument* qdomdoc) // n steht 
     return ChksumOK && SenseOK;
 }
 
-void Mt310s2SenseInterface::registerResource(RMConnection *rmConnection, quint16 port)
-{
-    msgNrList.clear();
-    for(auto channel : qAsConst(m_channelList)) {
-        register1Resource(rmConnection, NotZeroNumGen::getMsgNr(), QString("SENSE;%1;1;%2;%3;")
-                         .arg(channel->getName())
-                         .arg(channel->getDescription())
-                         .arg(port));
-    }
-    // additional we register measuring mode switch as resource
-    register1Resource(rmConnection, NotZeroNumGen::getMsgNr(), QString("SENSE;MMODE;1;%1;%2;")
-                      .arg(SenseSystem::sMeasuringModeDescription)
-                      .arg(port));
-
-}
-
-QString Mt310s2SenseInterface::scpiReadVersion(QString &scpi)
-{
-    cSCPICommand cmd = scpi;
-    if (cmd.isQuery())
-        return m_version;
-    return ZSCPI::scpiAnswer[ZSCPI::nak];
-}
-
 void Mt310s2SenseInterface::scpiReadWriteMMode(cProtonetCommand *protoCmd)
 {
     cSCPICommand cmd = protoCmd->m_sInput;
@@ -584,28 +558,6 @@ void Mt310s2SenseInterface::scpiReadWriteMMode(cProtonetCommand *protoCmd)
     }
     if (protoCmd->m_bwithOutput)
         emit cmdExecutionDone(protoCmd);
-}
-
-QString Mt310s2SenseInterface::m_ReadMModeCatalog(QString &scpi)
-{
-    cSCPICommand cmd = scpi;
-    if (cmd.isQuery()) {
-        const QStringList modeNames = m_availSenseModesHash.keys();
-        QMap<int, QString> sortedModes; // original COM implementation was sorted (MT hash random)
-        for(const auto &modeName : modeNames)
-            sortedModes[m_availSenseModesHash[modeName]] = modeName;
-        const QStringList sortedModeName = sortedModes.values();
-        return sortedModeName.join(";");
-    }
-    return ZSCPI::scpiAnswer[ZSCPI::nak];
-}
-
-QString Mt310s2SenseInterface::m_ReadSenseChannelCatalog(QString &sInput)
-{
-    cSCPICommand cmd = sInput;
-    if (cmd.isQuery())
-        return m_notifierSenseChannelCat.getString();
-    return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 QString Mt310s2SenseInterface::m_ReadSenseGroupCatalog(QString &sInput)
