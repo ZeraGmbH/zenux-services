@@ -534,37 +534,6 @@ QString Mt310s2SenseInterface::scpiReadSenseGroupCatalog(QString &scpi)
     return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-QString Mt310s2SenseInterface::m_InitSenseAdjData(QString &sInput)
-{
-    cSCPICommand cmd = sInput;
-    // cmd.isCommand(0) is not correct but we leave it for compatibility
-    if ( cmd.isCommand(0) || (cmd.isCommand(1) && (cmd.getParam(0) == ""))) {
-        for(auto channel : qAsConst(m_channelList))
-            channel->initJustData();
-        return ZSCPI::scpiAnswer[ZSCPI::ack];
-    }
-    return ZSCPI::scpiAnswer[ZSCPI::nak];
-}
-
-QString Mt310s2SenseInterface::m_ComputeSenseAdjData(QString& sInput)
-{
-    cSCPICommand cmd = sInput;
-    // cmd.isCommand(0) is not correct but we leave it for compatibility
-    if ( cmd.isCommand(0) || (cmd.isCommand(1) && (cmd.getParam(0) == ""))) {
-        computeSenseAdjData();
-        return ZSCPI::scpiAnswer[ZSCPI::ack];
-    }
-    return ZSCPI::scpiAnswer[ZSCPI::nak];
-}
-
-QString Mt310s2SenseInterface::scpiReadAdjStatus(QString &sInput)
-{
-    cSCPICommand cmd = sInput;
-    if (cmd.isQuery())
-        return  QString("%1").arg(getAdjustmentStatus());
-    return ZSCPI::scpiAnswer[ZSCPI::nak];
-}
-
 RangeAdjInterface *Mt310s2SenseInterface::createJustScpiInterfaceWithAtmelPermission()
 {
     return new RangeAdjInterface(m_pSCPIInterface, AdjustScpiValueFormatterFactory::createMt310s2AdjFormatter());

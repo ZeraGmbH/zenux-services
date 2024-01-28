@@ -117,6 +117,56 @@ QString SenseInterfaceCommon::m_ReadSenseChannelCatalog(QString &scpi)
     return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
+QString SenseInterfaceCommon::m_InitSenseAdjData(QString &sInput)
+{
+    cSCPICommand cmd = sInput;
+    // cmd.isCommand(0) is not correct but we leave it for compatibility
+    if ( cmd.isCommand(0) || (cmd.isCommand(1) && (cmd.getParam(0) == ""))) {
+        bool enable;
+        if (m_ctrlFactory->getPermissionCheckController()->hasPermission(enable)) {
+            if (enable) {
+                for(auto channel : qAsConst(m_channelList))
+                    channel->initJustData();
+                return ZSCPI::scpiAnswer[ZSCPI::ack];
+            }
+            else
+                return ZSCPI::scpiAnswer[ZSCPI::erraut];
+        }
+        else
+            return ZSCPI::scpiAnswer[ZSCPI::errexec];
+    }
+    else
+        return ZSCPI::scpiAnswer[ZSCPI::nak];
+}
+
+QString SenseInterfaceCommon::m_ComputeSenseAdjData(QString &sInput)
+{
+    cSCPICommand cmd = sInput;
+    if ( cmd.isCommand(1) && (cmd.getParam(0) == "") ) {
+        bool enable;
+        if (m_ctrlFactory->getPermissionCheckController()->hasPermission(enable)) {
+            if (enable) {
+                computeSenseAdjData();
+                return ZSCPI::scpiAnswer[ZSCPI::ack];
+            }
+            else
+                return ZSCPI::scpiAnswer[ZSCPI::erraut];
+        }
+        else
+            return ZSCPI::scpiAnswer[ZSCPI::errexec];
+    }
+    else
+        return ZSCPI::scpiAnswer[ZSCPI::nak];
+}
+
+QString SenseInterfaceCommon::scpiReadAdjStatus(QString &sInput)
+{
+    cSCPICommand cmd = sInput;
+    if (cmd.isQuery())
+        return  QString("%1").arg(getAdjustmentStatus());
+    return ZSCPI::scpiAnswer[ZSCPI::nak];
+}
+
 void SenseInterfaceCommon::setNotifierSenseMMode()
 {
     m_notifierSenseMMode = m_currSenseMode;
