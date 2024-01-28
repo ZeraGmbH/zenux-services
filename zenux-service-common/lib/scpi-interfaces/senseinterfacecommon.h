@@ -33,11 +33,14 @@ public:
     virtual ~SenseInterfaceCommon() = default;
 
 protected:
+    virtual void scpiReadWriteMMode(cProtonetCommand* protoCmd) = 0;
+
     static QString m_version;
     SystemInfo *m_systemInfo;
     AbstractFactoryI2cCtrlPtr m_ctrlFactory;
     QList<SenseChannelCommon*> m_channelList;
-    quint8 m_nMMode;
+    QString m_currSenseMode;
+    QHash<QString, int> m_availSenseModesHash;
     quint8 m_nSerialStatus;
 
     NotificationString m_notifierSenseMMode;

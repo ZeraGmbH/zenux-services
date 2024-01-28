@@ -18,7 +18,7 @@ namespace SenseSystem
         // To shed some light see:
         //
         // * test_regression_sense_interface_mt310s2: all the tests with mode setting
-        // * Mt310s2SenseInterface::Mt310s2SenseInterface on setup of m_MModeHash
+        // * Mt310s2SenseInterface::Mt310s2SenseInterface on setup of m_availSenseModesHash
         // * SenseRangeCommon::setMMode for sense range (de)activation
         // * Mt310s2SenseInterface::setSenseMode to see some nasty bitmanipulation
         //   before asking atmel to change mode.
@@ -80,7 +80,6 @@ protected:
 
 private:
     QString scpiReadVersion(QString& scpi);
-    void scpiReadWriteMMode(cProtonetCommand* protoCmd);
     QString m_ReadMModeCatalog(QString& scpi);
     QString m_ReadSenseChannelCatalog(QString& sInput);
     QString m_ReadSenseGroupCatalog(QString& sInput);
@@ -90,11 +89,10 @@ private:
     RangeAdjInterface* createJustScpiInterfaceWithAtmelPermission();
     void setNotifierSenseMMode();
     void setNotifierSenseChannelCat();
-    bool setSenseMode(QString sMode);
 
     // MT specifics
-    QString m_sMMode;
-    QHash<QString,quint8> m_MModeHash;
+    void scpiReadWriteMMode(cProtonetCommand* protoCmd) override;
+    bool setSenseMode(QString mode);
 };
 
 #endif // SENSEINTERFACE_H
