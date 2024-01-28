@@ -97,7 +97,7 @@ void cClampInterface::actualizeClampStatus(quint16 devConnectedMask)
     for(const auto channelSettings : channelsSettings) {
         int ctrlChannel = channelSettings->m_nCtrlChannel;
 
-        QString channelName = m_pSenseInterface->getChannelSystemName(ctrlChannel); // sense interface can change name (REF)!
+        QString channelName = m_pSenseInterface->getChannelByCtrlChannelNo(ctrlChannel); // sense interface can change name (REF)!
         if(channelName.isEmpty())
             continue;
 
