@@ -360,6 +360,16 @@ void test_regression_sense_interface_mt310s2::constantRangeValuesAllClampsUAUXCh
     QVERIFY(checkJsonConstantValuesAllRangesForAllClamps(json, "UAUX", "IAUX"));
 }
 
+void test_regression_sense_interface_mt310s2::mmodeCat()
+{
+    QString mmodeCat = ScpiSingleTransactionBlocked::query("SENSE:MMODE:CAT?");
+    QStringList mmodes = mmodeCat.split(";");
+    QCOMPARE(mmodes.count(), 3);
+    QVERIFY(mmodes.contains("AC"));
+    QVERIFY(mmodes.contains("ADJ"));
+    QVERIFY(mmodes.contains("HF"));
+}
+
 void test_regression_sense_interface_mt310s2::channelAliasAcMode()
 {
     QString answer = ScpiSingleTransactionBlocked::cmd("SENS:MMODE", "AC");

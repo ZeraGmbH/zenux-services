@@ -29,6 +29,7 @@ private slots:
     void constantRangeValuesUL3Check();
 
     void channelAliasChangeOnREF();
+    void mmodeCat();
 private:
     QJsonObject loadJson(QString fileName);
 
