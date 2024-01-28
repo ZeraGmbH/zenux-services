@@ -15,15 +15,12 @@ namespace SenseSystem
     {
         modeAC,
         modeREF,
-        modeAnz
     };
 
     const QString sVoltageChannelDescription = "Measuring channel 0..480V AC";
     const QString sCurrentChannelDescription = "Measuring channel 0..160A AC";
     const QString sMeasuringModeDescription = "Measuring mode switch AC,REF";
-
     const QString sReferenceChannelDescription = "Reference channel 0..10V DC";
-    const QString sMMode[2] = {"AC", "REF"};
 }
 
 class Com5003SenseInterface : public SenseInterfaceCommon
@@ -60,8 +57,7 @@ private slots:
 
 private:
     QString scpiReadVersion(QString& sInput);
-    void scpiReadWriteMMode(cProtonetCommand* protoCmd);
-    QString m_ReadMModeCatalog(QString& sInput);
+    QString m_ReadMModeCatalog(QString& scpi);
     QString m_ReadSenseChannelCatalog(QString& sInput);
     QString m_ReadSenseGroupCatalog(QString& sInput);
     QString m_InitSenseAdjData(QString& sInput);
@@ -72,6 +68,13 @@ private:
     void setNotifierSenseChannelCat();
 
     // COM specifics
+    void scpiReadWriteMMode(cProtonetCommand* protoCmd) override;
+    enum SetModeModeResult {
+        done,
+        start_statemachine_required,
+        failed
+    };
+    SetModeModeResult setSenseMode(QString mode);
     RMConnection* m_rmConnection;
     EthSettings* m_ethSettings;
 

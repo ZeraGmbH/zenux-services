@@ -33,9 +33,9 @@ Mt310s2SenseInterface::Mt310s2SenseInterface(cSCPI *scpiInterface,
     // Init with bad defaults so coder's bugs pop up
     m_nSerialStatus = Adjustment::wrongSNR;
 
-    m_MModeHash["AC"]   = SenseSystem::modeAC;
-    m_MModeHash["HF"]   = SenseSystem::modeHF;
-    m_MModeHash["ADJ"]   = SenseSystem::modeADJ;
+    m_availSenseModesHash["AC"] = SenseSystem::modeAC;
+    m_availSenseModesHash["HF"] = SenseSystem::modeHF;
+    m_availSenseModesHash["ADJ"] = SenseSystem::modeADJ;
 
     QList<SenseSystem::cChannelSettings*> channelSettings;
     channelSettings = senseSettings->getChannelSettings();
@@ -605,38 +605,35 @@ QString Mt310s2SenseInterface::scpiReadVersion(QString &scpi)
 void Mt310s2SenseInterface::scpiReadWriteMMode(cProtonetCommand *protoCmd)
 {
     cSCPICommand cmd = protoCmd->m_sInput;
-    if (cmd.isQuery()) {
+    if (cmd.isQuery())
         protoCmd->m_sOutput  = m_notifierSenseMMode.getString();
-        if (protoCmd->m_bwithOutput) {
-            emit cmdExecutionDone(protoCmd);
-        }
-    }
     else {
         if (cmd.isCommand(1)) {
             QString mode = cmd.getParam(0);
-            if (setSenseMode(mode)) {
+            if(setSenseMode(mode))
                 protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::ack];
-            }
-            else {
+            else
                 protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::nak];
-            }
         }
-        else {
+        else
             protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::nak];
-        }
-        if (protoCmd->m_bwithOutput) {
-            emit cmdExecutionDone(protoCmd);
-        }
     }
+    if (protoCmd->m_bwithOutput)
+        emit cmdExecutionDone(protoCmd);
 }
 
 QString Mt310s2SenseInterface::m_ReadMModeCatalog(QString &scpi)
 {
     cSCPICommand cmd = scpi;
-    if (cmd.isQuery())
-        return m_MModeHash.keys().join(";");
-    else
-        return ZSCPI::scpiAnswer[ZSCPI::nak];
+    if (cmd.isQuery()) {
+        const QStringList modeNames = m_availSenseModesHash.keys();
+        QMap<int, QString> sortedModes; // original COM implementation was sorted (MT hash random)
+        for(const auto &modeName : modeNames)
+            sortedModes[m_availSenseModesHash[modeName]] = modeName;
+        const QStringList sortedModeName = sortedModes.values();
+        return sortedModeName.join(";");
+    }
+    return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 QString Mt310s2SenseInterface::m_ReadSenseChannelCatalog(QString &sInput)
@@ -702,7 +699,7 @@ RangeAdjInterface *Mt310s2SenseInterface::createJustScpiInterfaceWithAtmelPermis
 
 void Mt310s2SenseInterface::setNotifierSenseMMode()
 {
-    m_notifierSenseMMode = m_sMMode;
+    m_notifierSenseMMode = m_currSenseMode;
 }
 
 void Mt310s2SenseInterface::setNotifierSenseChannelCat()
@@ -719,17 +716,14 @@ void Mt310s2SenseInterface::setNotifierSenseChannelCat()
 
 bool Mt310s2SenseInterface::setSenseMode(QString sMode)
 {
-    bool ret = false;
-    if (m_MModeHash.contains(sMode)) {
-        quint8 mode;
-        mode = m_MModeHash[sMode];
+    if (m_availSenseModesHash.contains(sMode)) {
+        quint8 mode = m_availSenseModesHash[sMode];
         m_ctrlFactory->getMModeController()->setMeasMode((mode >> 1) & 1); // set the atmels mode here...atmel only knows ac and hf
-        for(auto channel : qAsConst(m_channelList)) {
+        for(auto channel : qAsConst(m_channelList))
             channel->setMMode(mode);
-        }
-        m_sMMode = sMode;
+        m_currSenseMode = sMode;
         setNotifierSenseMMode();
-        ret = true;
+        return true;
     }
-    return ret;
+    return false;
 }
