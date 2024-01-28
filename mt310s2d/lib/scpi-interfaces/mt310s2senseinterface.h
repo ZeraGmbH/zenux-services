@@ -60,17 +60,14 @@ public:
                           cSenseSettings *senseSettings,
                           SystemInfo *systemInfo,
                           AbstractFactoryI2cCtrlPtr ctrlFactory);
-    ~Mt310s2SenseInterface();
     virtual void initSCPIConnection(QString leadingNoMModedes) override;
     SenseChannelCommon *getChannel(QString& name);
     QString getChannelSystemName(quint16 ctrlChannel);
     SenseRangeCommon* getRange(QString channelName, QString rangeName);
-    quint8 getAdjustmentStatus() override;
 
     QString exportXMLString(int indent = 1) override;
 
     void registerResource(RMConnection *rmConnection, quint16 port) override;
-    void computeSenseAdjData();
 
 protected:
     void exportAdjData(QDataStream& stream, QDateTime dateTimeWrite) override;

@@ -30,7 +30,9 @@ public:
                          I2cSettings* i2cSettings,
                          SystemInfo *systemInfo,
                          AbstractFactoryI2cCtrlPtr ctrlFactory);
-    virtual ~SenseInterfaceCommon() = default;
+    virtual ~SenseInterfaceCommon();
+    quint8 getAdjustmentStatus() override;
+    void computeSenseAdjData();
 
 protected:
     virtual void scpiReadWriteMMode(cProtonetCommand* protoCmd) = 0;

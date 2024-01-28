@@ -1,4 +1,5 @@
 #include "senseinterfacecommon.h"
+#include "adjustmentflags.h"
 #include <i2cmultiplexerfactory.h>
 
 QString SenseInterfaceCommon::m_version = "V1.00";
@@ -14,6 +15,40 @@ SenseInterfaceCommon::SenseInterfaceCommon(cSCPI *scpiInterface,
     m_systemInfo(systemInfo),
     m_ctrlFactory(ctrlFactory)
 {
+}
+
+SenseInterfaceCommon::~SenseInterfaceCommon()
+{
+    for(auto channel : qAsConst(m_channelList))
+        delete channel;
+    m_channelList.clear();
+}
+
+quint8 SenseInterfaceCommon::getAdjustmentStatus()
+{
+    quint8 adjustmentStatusMask = Adjustment::adjusted;
+    // Loop adjustment state for all channels
+    for(auto channel : qAsConst(m_channelList)) {
+        quint8 channelFlags = channel->getAdjustmentStatus80Mask();
+        // Currently there is one flag in channel flags only
+        if((channelFlags & JustDataInterface::Justified)== 0) {
+            adjustmentStatusMask = Adjustment::notAdjusted;
+            break;
+        }
+    }
+    // if we read wrong serial or version we are not adjusted in any case
+    quint8 sernoVersionStatusMask = m_nSerialStatus;
+    if (sernoVersionStatusMask != 0) {
+        adjustmentStatusMask = Adjustment::notAdjusted;
+        adjustmentStatusMask |= sernoVersionStatusMask;
+    }
+    return adjustmentStatusMask;
+}
+
+void SenseInterfaceCommon::computeSenseAdjData()
+{
+    for(auto channel : qAsConst(m_channelList))
+        channel->computeJustData();
 }
 
 void SenseInterfaceCommon::setNotifierSenseMMode()
