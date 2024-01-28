@@ -4,9 +4,9 @@
 #include "adjustmenteeprom.h"
 #include "adjustmentxmlimportexporttemplate.h"
 #include "i2csettings.h"
-#include "resource.h"
 #include "ethsettings.h"
 #include "sensechannelcommon.h"
+#include "senseinterfacecommon.h"
 #include "systeminfo.h"
 #include <QList>
 #include <QStateMachine>
@@ -15,18 +15,6 @@
 
 namespace SenseSystem
 {
-    const QString Version = "V1.00";
-    enum Commands
-    {
-        cmdVersion,
-        cmdMMode,
-        cmdMModeCat,
-        cmdChannelCat,
-        cmdGroupCat,
-        initAdjData,
-        computeAdjData,
-        cmdStatAdjustment
-    };
     enum MMode
     {
         modeAC,
@@ -42,7 +30,7 @@ namespace SenseSystem
     const QString sMMode[2] = {"AC", "REF"};
 }
 
-class Com5003SenseInterface : public cResource, public AdjustmentEeprom, public AdjustmentXmlImportExportTemplate, public AdjustmentStatusInterface
+class Com5003SenseInterface : public SenseInterfaceCommon
 {
     Q_OBJECT
 public:

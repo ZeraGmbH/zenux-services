@@ -7,6 +7,7 @@
 class AdjustmentXmlImportExportTemplate
 {
 public:
+    virtual ~AdjustmentXmlImportExportTemplate() = default;
     bool exportAdTojXMLFile(QString file);
     bool importAdjXMLFile(QString file);
     bool importAdjXMLString(QString& xml);

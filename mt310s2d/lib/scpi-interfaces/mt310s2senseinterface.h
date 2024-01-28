@@ -3,28 +3,15 @@
 
 #include "i2csettings.h"
 #include "adjustmenteeprom.h"
-#include "adjustmentxmlimportexporttemplate.h"
 #include "rangeadjinterface.h"
-#include "resource.h"
 #include "sensechannelcommon.h"
+#include "senseinterfacecommon.h"
 #include "systeminfo.h"
 #include <QList>
 #include <QHash>
 
 namespace SenseSystem
 {
-    const QString Version = "V1.00";
-    enum Commands
-    {
-        cmdVersion,
-        cmdMMode,
-        cmdMModeCat,
-        cmdChannelCat,
-        cmdGroupCat,
-        initAdjData,
-        computeAdjData,
-        cmdStatAdjustment
-    };
     enum MMode
     {
         // This is protection of intellectual property by obscurity at it's best.
@@ -64,7 +51,7 @@ namespace SenseSystem
     const QString sMeasuringModeDescription = "Measuring mode switch AC,HF,ADJ";
 }
 
-class Mt310s2SenseInterface : public cResource, public AdjustmentEeprom, public AdjustmentXmlImportExportTemplate, public AdjustmentStatusInterface
+class Mt310s2SenseInterface : public SenseInterfaceCommon
 {
     Q_OBJECT
 public:
