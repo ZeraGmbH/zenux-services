@@ -1,5 +1,7 @@
 #include "senseinterfacecommon.h"
 #include "adjustmentflags.h"
+#include "notzeronumgen.h"
+#include "zscpi_response_definitions.h"
 #include <i2cmultiplexerfactory.h>
 
 QString SenseInterfaceCommon::m_version = "V1.00";
@@ -51,6 +53,46 @@ void SenseInterfaceCommon::computeSenseAdjData()
         channel->computeJustData();
 }
 
+void SenseInterfaceCommon::registerResource(RMConnection *rmConnection, quint16 port)
+{
+    msgNrList.clear();
+    for(auto channel : qAsConst(m_channelList)) {
+        register1Resource(rmConnection, NotZeroNumGen::getMsgNr(), QString("SENSE;%1;1;%2;%3;")
+                                                                       .arg(channel->getName())
+                                                                       .arg(channel->getDescription())
+                                                                       .arg(port));
+    }
+    // additional we register measuring mode switch as resource
+    QString measModeDescription = QString("Measuring mode switch %1").arg(getSenseModesSortedById().join(","));
+    register1Resource(rmConnection, NotZeroNumGen::getMsgNr(), QString("SENSE;MMODE;1;%1;%2;")
+                                                                   .arg(measModeDescription)
+                                                                   .arg(port));
+}
+
+QString SenseInterfaceCommon::scpiReadVersion(QString &scpi)
+{
+    cSCPICommand cmd = scpi;
+    if (cmd.isQuery())
+        return m_version;
+    return ZSCPI::scpiAnswer[ZSCPI::nak];
+}
+
+QString SenseInterfaceCommon::m_ReadMModeCatalog(QString &scpi)
+{
+    cSCPICommand cmd = scpi;
+    if (cmd.isQuery())
+        return getSenseModesSortedById().join(";");
+    return ZSCPI::scpiAnswer[ZSCPI::nak];
+}
+
+QString SenseInterfaceCommon::m_ReadSenseChannelCatalog(QString &scpi)
+{
+    cSCPICommand cmd = scpi;
+    if (cmd.isQuery())
+        return m_notifierSenseChannelCat.getString();
+    return ZSCPI::scpiAnswer[ZSCPI::nak];
+}
+
 void SenseInterfaceCommon::setNotifierSenseMMode()
 {
     m_notifierSenseMMode = m_currSenseMode;
@@ -65,4 +107,13 @@ void SenseInterfaceCommon::setNotifierSenseChannelCat()
         s += m_channelList.at(i)->getName() + ";";
     s += m_channelList.at(i)->getName();
     m_notifierSenseChannelCat = s;
+}
+
+QStringList SenseInterfaceCommon::getSenseModesSortedById()
+{
+    const QStringList modeNames = m_availSenseModesHash.keys();
+    QMap<int, QString> sortedModes; // original COM implementation was sorted (MT hash random)
+    for(const auto &modeName : modeNames)
+        sortedModes[m_availSenseModesHash[modeName]] = modeName;
+    return sortedModes.values();
 }

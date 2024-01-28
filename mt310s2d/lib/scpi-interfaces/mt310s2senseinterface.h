@@ -48,7 +48,6 @@ namespace SenseSystem
     };
     const QString sVoltageChannelDescription = "Measuring channel 0..250V 50Hz/150kHz";
     const QString sCurrentChannelDescription = "Measuring channel 0..1000A 50Hz/150kHz";
-    const QString sMeasuringModeDescription = "Measuring mode switch AC,HF,ADJ";
 }
 
 class Mt310s2SenseInterface : public SenseInterfaceCommon
@@ -67,8 +66,6 @@ public:
 
     QString exportXMLString(int indent = 1) override;
 
-    void registerResource(RMConnection *rmConnection, quint16 port) override;
-
 protected:
     void exportAdjData(QDataStream& stream, QDateTime dateTimeWrite) override;
     bool importAdjData(QDataStream& stream) override;
@@ -76,9 +73,6 @@ protected:
     void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
 
 private:
-    QString scpiReadVersion(QString& scpi);
-    QString m_ReadMModeCatalog(QString& scpi);
-    QString m_ReadSenseChannelCatalog(QString& sInput);
     QString m_ReadSenseGroupCatalog(QString& sInput);
     QString m_InitSenseAdjData(QString& sInput);
     QString m_ComputeSenseAdjData(QString& sInput);

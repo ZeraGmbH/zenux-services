@@ -402,27 +402,6 @@ void Com5003SenseInterface::exportAdjData(QDataStream &stream, QDateTime dateTim
     }
 }
 
-
-void Com5003SenseInterface::registerResource(RMConnection *rmConnection, quint16 port)
-{
-    SenseChannelCommon* pChannel;
-    msgNrList.clear();
-    for (int i = 0; i < 6; i++)
-    {
-        pChannel = m_channelList.at(i);
-        register1Resource(rmConnection, NotZeroNumGen::getMsgNr(), QString("SENSE;%1;1;%2;%3;")
-                         .arg(pChannel->getName())
-                         .arg(pChannel->getDescription())
-                         .arg(port));
-    }
-
-    // additional we register measuring mode switch as resource
-    register1Resource(rmConnection, NotZeroNumGen::getMsgNr(), QString("SENSE;MMODE;1;%1;%2;")
-                      .arg(SenseSystem::sMeasuringModeDescription)
-                      .arg(port));
-
-}
-
 bool Com5003SenseInterface::importXMLDocument(QDomDocument *qdomdoc)
 {
     QDomDocumentType TheDocType = qdomdoc->doctype ();
@@ -548,15 +527,6 @@ bool Com5003SenseInterface::importXMLDocument(QDomDocument *qdomdoc)
 }
 
 
-QString Com5003SenseInterface::scpiReadVersion(QString &sInput)
-{
-    cSCPICommand cmd = sInput;
-    if (cmd.isQuery())
-        return m_version;
-    return ZSCPI::scpiAnswer[ZSCPI::nak];
-}
-
-
 Com5003SenseInterface::SetModeModeResult Com5003SenseInterface::setSenseMode(QString mode)
 {
     if(mode == m_currSenseMode)
@@ -594,28 +564,6 @@ void Com5003SenseInterface::scpiReadWriteMMode(cProtonetCommand *protoCmd)
     }
     if (protoCmd->m_bwithOutput)
         emit cmdExecutionDone(protoCmd);
-}
-
-QString Com5003SenseInterface::m_ReadMModeCatalog(QString &scpi)
-{
-    cSCPICommand cmd = scpi;
-    if (cmd.isQuery()) {
-        const QStringList modeNames = m_availSenseModesHash.keys();
-        QMap<int, QString> sortedModes; // original COM implementation was sorted (MT hash random)
-        for(const auto &modeName : modeNames)
-            sortedModes[m_availSenseModesHash[modeName]] = modeName;
-        const QStringList sortedModeName = sortedModes.values();
-        return sortedModeName.join(";");
-    }
-    return ZSCPI::scpiAnswer[ZSCPI::nak];
-}
-
-QString Com5003SenseInterface::m_ReadSenseChannelCatalog(QString &sInput)
-{
-    cSCPICommand cmd = sInput;
-    if (cmd.isQuery())
-        return m_notifierSenseChannelCat.getString();
-    return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 QString Com5003SenseInterface::m_ReadSenseGroupCatalog(QString &sInput)
