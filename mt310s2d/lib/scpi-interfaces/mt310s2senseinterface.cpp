@@ -125,14 +125,6 @@ Mt310s2SenseInterface::Mt310s2SenseInterface(cSCPI *scpiInterface,
     setNotifierSenseChannelCat(); // only prepared for !!! since we don't have hot plug for measuring channels yet
 }
 
-Mt310s2SenseInterface::~Mt310s2SenseInterface()
-{
-    for(auto channel : qAsConst(m_channelList)) {
-        delete channel;
-    }
-    m_channelList.clear();
-}
-
 void Mt310s2SenseInterface::initSCPIConnection(QString leadingNodes)
 {
     ensureTrailingColonOnNonEmptyParentNodes(leadingNodes);
@@ -186,27 +178,6 @@ SenseRangeCommon *Mt310s2SenseInterface::getRange(QString channelName, QString r
         rangeFound = channelFound->getRange(rangeName);
     }
     return rangeFound;
-}
-
-quint8 Mt310s2SenseInterface::getAdjustmentStatus()
-{
-    quint8 adjustmentStatusMask = Adjustment::adjusted;
-    // Loop adjustment state for all channels
-    for(auto channel : qAsConst(m_channelList)) {
-        quint8 channelFlags = channel->getAdjustmentStatus80Mask();
-        // Currently there is one flag in channel flags only
-        if((channelFlags & JustDataInterface::Justified)== 0) {
-            adjustmentStatusMask = Adjustment::notAdjusted;
-            break;
-        }
-    }
-    // if we read wrong serial or version we are not adjusted in any case
-    quint8 sernoVersionStatusMask = m_nSerialStatus;
-    if (sernoVersionStatusMask != 0) {
-        adjustmentStatusMask = Adjustment::notAdjusted;
-        adjustmentStatusMask |= sernoVersionStatusMask;
-    }
-    return adjustmentStatusMask;
 }
 
 void Mt310s2SenseInterface::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
@@ -445,13 +416,6 @@ QString Mt310s2SenseInterface::exportXMLString(int indent)
         }
     }
     return justqdom.toString(indent);
-}
-
-void Mt310s2SenseInterface::computeSenseAdjData()
-{
-    for(auto channel : qAsConst(m_channelList)) {
-        channel->computeJustData();
-    }
 }
 
 bool Mt310s2SenseInterface::importXMLDocument(QDomDocument* qdomdoc) // n steht auf einem element dessen tagname channel ist

@@ -124,17 +124,6 @@ Com5003SenseInterface::Com5003SenseInterface(cSCPI *scpiInterface,
     connect(&m_NotifySenseState, &QAbstractState::entered, this, &Com5003SenseInterface::notifySense);
 }
 
-
-Com5003SenseInterface::~Com5003SenseInterface()
-{
-    SenseChannelCommon* cptr;
-    for (int i = 0; i < m_channelList.count(); i++){
-        cptr = m_channelList.at(i);
-        delete cptr;
-    }
-}
-
-
 void Com5003SenseInterface::initSCPIConnection(QString leadingNodes)
 {
     ensureTrailingColonOnNonEmptyParentNodes(leadingNodes);
@@ -167,28 +156,6 @@ SenseChannelCommon *Com5003SenseInterface::getChannel(QString &name)
     }
     return channelFound;
 }
-
-quint8 Com5003SenseInterface::getAdjustmentStatus()
-{
-    quint8 adjustmentStatusMask = Adjustment::adjusted;
-    // Loop adjustment state for all channels
-    for(auto channel : qAsConst(m_channelList)) {
-        quint8 channelFlags = channel->getAdjustmentStatus80Mask();
-        // Currently there is one flag in channel flags only
-        if((channelFlags & JustDataInterface::Justified)== 0) {
-            adjustmentStatusMask = Adjustment::notAdjusted;
-            break;
-        }
-    }
-    // if we read wrong serial or version we are not adjusted in any case
-    quint8 sernoVersionStatusMask = m_nSerialStatus;
-    if (sernoVersionStatusMask != 0) {
-        adjustmentStatusMask = Adjustment::notAdjusted;
-        adjustmentStatusMask |= sernoVersionStatusMask;
-    }
-    return adjustmentStatusMask;
-}
-
 
 void Com5003SenseInterface::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
 {
@@ -456,13 +423,6 @@ void Com5003SenseInterface::registerResource(RMConnection *rmConnection, quint16
 
 }
 
-void Com5003SenseInterface::computeSenseAdjData()
-{
-    for(auto channel : qAsConst(m_channelList)) {
-        channel->computeJustData();
-    }
-}
-
 bool Com5003SenseInterface::importXMLDocument(QDomDocument *qdomdoc)
 {
     QDomDocumentType TheDocType = qdomdoc->doctype ();
@@ -584,7 +544,8 @@ bool Com5003SenseInterface::importXMLDocument(QDomDocument *qdomdoc)
             return false;
         }
     }
-    return ChksumOK && SenseOK;}
+    return ChksumOK && SenseOK;
+}
 
 
 QString Com5003SenseInterface::scpiReadVersion(QString &sInput)

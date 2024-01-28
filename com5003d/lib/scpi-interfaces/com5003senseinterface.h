@@ -34,15 +34,12 @@ public:
                           cSenseSettings* senseSettings,
                           SystemInfo *systemInfo,
                           AbstractFactoryI2cCtrlPtr ctrlFactory);
-    ~Com5003SenseInterface();
     virtual void initSCPIConnection(QString leadingNodes) override;
     SenseChannelCommon* getChannel(QString& name);
-    quint8 getAdjustmentStatus() override;
 
     QString exportXMLString(int indent = 1) override;
 
     void registerResource(RMConnection *rmConnection, quint16 port) override;
-    void computeSenseAdjData();
 
 protected:
     void exportAdjData(QDataStream& stream, QDateTime dateTimeWrite) override;
