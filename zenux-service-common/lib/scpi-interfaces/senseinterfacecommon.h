@@ -34,6 +34,9 @@ public:
 
 protected:
     virtual void scpiReadWriteMMode(cProtonetCommand* protoCmd) = 0;
+    virtual RangeAdjInterface* createJustScpiInterfaceWithAtmelPermission() = 0;
+    void setNotifierSenseMMode();
+    void setNotifierSenseChannelCat();
 
     static QString m_version;
     SystemInfo *m_systemInfo;
