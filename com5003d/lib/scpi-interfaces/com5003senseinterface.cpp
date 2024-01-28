@@ -151,23 +151,21 @@ void Com5003SenseInterface::initSCPIConnection(QString leadingNodes)
         connect(this, &ScpiConnection::removingSubscribers, channel, &ScpiConnection::onRemoveSubscribers);
         channel->initSCPIConnection(QString("%1SENSE").arg(leadingNodes));
     }
+    QString cmdParent = QString("STATUS:PCB");
+    addDelegate(cmdParent, "ADJUSTMENT", SCPI::isQuery, m_pSCPIInterface, SenseSystem::cmdStatAdjustment);
 }
-
 
 SenseChannelCommon *Com5003SenseInterface::getChannel(QString &name)
 {
-    int i;
-
-    for (i = 0; i < m_ChannelList.count(); i++)
-        if (m_ChannelList.at(i)->getName() == name)
+    SenseChannelCommon *channelFound = nullptr;
+    for(auto channel : qAsConst(m_ChannelList)) {
+        if(channel->getName() == name) {
+            channelFound = channel;
             break;
-
-    if (i < m_ChannelList.count())
-        return m_ChannelList.at(i);
-    else
-        return 0;
+        }
+    }
+    return channelFound;
 }
-
 
 quint8 Com5003SenseInterface::getAdjustmentStatus()
 {
@@ -230,6 +228,10 @@ void Com5003SenseInterface::executeProtoScpi(int cmdCode, cProtonetCommand *prot
         if (protoCmd->m_bwithOutput)
             emit cmdExecutionDone(protoCmd);
         break;
+    case SenseSystem::cmdStatAdjustment:
+        protoCmd->m_sOutput = scpiReadAdjStatus(protoCmd->m_sInput);
+        if (protoCmd->m_bwithOutput)
+            emit cmdExecutionDone(protoCmd);
         break;
     }
 }
@@ -722,6 +724,14 @@ QString Com5003SenseInterface::m_ComputeSenseAdjData(QString &sInput)
     }
     else
         return ZSCPI::scpiAnswer[ZSCPI::nak];
+}
+
+QString Com5003SenseInterface::scpiReadAdjStatus(QString &sInput)
+{
+    cSCPICommand cmd = sInput;
+    if (cmd.isQuery())
+        return  QString("%1").arg(getAdjustmentStatus());
+    return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 RangeAdjInterface *Com5003SenseInterface::createJustScpiInterfaceWithAtmelPermission()

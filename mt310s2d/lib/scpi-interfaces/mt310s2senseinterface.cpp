@@ -698,12 +698,9 @@ QString Mt310s2SenseInterface::m_ComputeSenseAdjData(QString& sInput)
 QString Mt310s2SenseInterface::scpiReadAdjStatus(QString &sInput)
 {
     cSCPICommand cmd = sInput;
-    if (cmd.isQuery()) {
+    if (cmd.isQuery())
         return  QString("%1").arg(getAdjustmentStatus());
-    }
-    else {
-        return ZSCPI::scpiAnswer[ZSCPI::nak];
-    }
+    return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 RangeAdjInterface *Mt310s2SenseInterface::createJustScpiInterfaceWithAtmelPermission()

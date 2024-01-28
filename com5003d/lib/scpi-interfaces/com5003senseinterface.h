@@ -15,33 +15,31 @@
 
 namespace SenseSystem
 {
+    const QString Version = "V1.00";
+    enum Commands
+    {
+        cmdVersion,
+        cmdMMode,
+        cmdMModeCat,
+        cmdChannelCat,
+        cmdGroupCat,
+        initAdjData,
+        computeAdjData,
+        cmdStatAdjustment
+    };
+    enum MMode
+    {
+        modeAC,
+        modeREF,
+        modeAnz
+    };
 
-const QString Version = "V1.00";
+    const QString sVoltageChannelDescription = "Measuring channel 0..480V AC";
+    const QString sCurrentChannelDescription = "Measuring channel 0..160A AC";
+    const QString sMeasuringModeDescription = "Measuring mode switch AC,REF";
 
-enum Commands
-{
-    cmdVersion,
-    cmdMMode,
-    cmdMModeCat,
-    cmdChannelCat,
-    cmdGroupCat,
-    initAdjData,
-    computeAdjData
-};
-
-enum MMode
-{
-    modeAC,
-    modeREF,
-    modeAnz
-};
-
-const QString sVoltageChannelDescription = "Measuring channel 0..480V AC";
-const QString sCurrentChannelDescription = "Measuring channel 0..160A AC";
-const QString sMeasuringModeDescription = "Measuring mode switch AC,REF";
-
-const QString sReferenceChannelDescription = "Reference channel 0..10V DC";
-const QString sMMode[2] = {"AC", "REF"};
+    const QString sReferenceChannelDescription = "Reference channel 0..10V DC";
+    const QString sMMode[2] = {"AC", "REF"};
 }
 
 class Com5003SenseInterface : public cResource, public AdjustmentEeprom, public AdjustmentXmlImportExportTemplate, public AdjustmentStatusInterface
@@ -84,6 +82,7 @@ private:
     QString m_ReadSenseGroupCatalog(QString& sInput);
     QString m_InitSenseAdjData(QString& sInput);
     QString m_ComputeSenseAdjData(QString& sInput);
+    QString scpiReadAdjStatus(QString& sInput);
     RangeAdjInterface* createJustScpiInterfaceWithAtmelPermission();
     void setNotifierSenseMMode();
     void setNotifierSenseChannelCat();
