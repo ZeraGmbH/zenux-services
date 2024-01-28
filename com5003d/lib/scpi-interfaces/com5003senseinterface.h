@@ -34,8 +34,6 @@ public:
                           SystemInfo *systemInfo,
                           AbstractFactoryI2cCtrlPtr ctrlFactory);
     virtual void initSCPIConnection(QString leadingNodes) override;
-    SenseChannelCommon* getChannel(QString& name);
-
     QString exportXMLString(int indent = 1) override;
 
 protected:

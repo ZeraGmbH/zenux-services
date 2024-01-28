@@ -144,40 +144,6 @@ void Mt310s2SenseInterface::initSCPIConnection(QString leadingNodes)
     addDelegate(cmdParent, "ADJUSTMENT", SCPI::isQuery, m_pSCPIInterface, SenseSystem::cmdStatAdjustment);
 }
 
-SenseChannelCommon *Mt310s2SenseInterface::getChannel(QString &name)
-{
-    SenseChannelCommon *channelFound = nullptr;
-    for(auto channel : qAsConst(m_channelList)) {
-        if(channel->getName() == name) {
-            channelFound = channel;
-            break;
-        }
-    }
-    return channelFound;
-}
-
-QString Mt310s2SenseInterface::getChannelSystemName(quint16 ctrlChannel)
-{
-    QString nameFound;
-    for(auto channel : qAsConst(m_channelList)) {
-        if(channel->getCtrlChannel() == ctrlChannel) {
-            nameFound = channel->getName();
-            break;
-        }
-    }
-    return nameFound;
-}
-
-SenseRangeCommon *Mt310s2SenseInterface::getRange(QString channelName, QString rangeName)
-{
-    SenseRangeCommon* rangeFound = nullptr;
-    SenseChannelCommon *channelFound = getChannel(channelName);
-    if(channelFound) {
-        rangeFound = channelFound->getRange(rangeName);
-    }
-    return rangeFound;
-}
-
 void Mt310s2SenseInterface::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
 {
     switch (cmdCode)
