@@ -14,10 +14,13 @@ private slots:
     void cleanup();
 
     void statusDefaultMachine();
+    void statusAllAdjusted();
+
     void statusClampsI1DefaultMachine();
     void statusClampsI1DefaultCL120A();
 private:
     void setupServers(AbstractFactoryI2cCtrlPtr ctrlFactory);
+    bool setAdjStatusAllChannelRanges(bool adjusted);
 
     std::unique_ptr<TestServerForSenseInterfaceMt310s2> m_testServer;
     std::unique_ptr<ResmanRunFacade> m_resmanServer;
