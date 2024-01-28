@@ -61,6 +61,7 @@ private slots:
     void constantRangeValuesAllClampsUAUXGenJson();
     void constantRangeValuesAllClampsUAUXCheck();
 
+    void mmodeCat();
     void channelAliasAcMode();
     void channelAliasAdjMode();
     void channelAliasHfMode();

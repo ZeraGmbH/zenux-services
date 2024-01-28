@@ -122,6 +122,15 @@ void test_regression_sense_interface_com5003::channelAliasChangeOnREF()
     QCOMPARE(channelM0AliasAfter, "REF1");
 }
 
+void test_regression_sense_interface_com5003::mmodeCat()
+{
+    QString mmodeCat = ScpiSingleTransactionBlocked::query("SENSE:MMODE:CAT?");
+    QStringList mmodes = mmodeCat.split(";");
+    QCOMPARE(mmodes.count(), 2);
+    QVERIFY(mmodes.contains("AC"));
+    QVERIFY(mmodes.contains("REF"));
+}
+
 QJsonObject test_regression_sense_interface_com5003::loadJson(QString fileName)
 {
     QFile referencFile(fileName);
