@@ -363,12 +363,28 @@ void test_regression_sense_interface_mt310s2::constantRangeValuesAllClampsUAUXCh
 
 void test_regression_sense_interface_mt310s2::mmodeCat()
 {
+    // original MT implementation was hash random
     QString mmodeCat = ScpiSingleTransactionBlocked::query("SENSE:MMODE:CAT?");
     QStringList mmodes = mmodeCat.split(";");
     QCOMPARE(mmodes.count(), 3);
     QVERIFY(mmodes.contains("AC"));
     QVERIFY(mmodes.contains("ADJ"));
     QVERIFY(mmodes.contains("HF"));
+}
+
+void test_regression_sense_interface_mt310s2::invalidMode()
+{
+    QString answer = ScpiSingleTransactionBlocked::cmd("SENS:MMODE", "foo");
+    QCOMPARE(answer, ZSCPI::scpiAnswer[ZSCPI::nak]);
+}
+
+void test_regression_sense_interface_mt310s2::twiceSameMode()
+{
+    QString answer = ScpiSingleTransactionBlocked::cmd("SENS:MMODE", "AC");
+    QCOMPARE(answer, ZSCPI::scpiAnswer[ZSCPI::ack]);
+
+    answer = ScpiSingleTransactionBlocked::cmd("SENS:MMODE", "AC");
+    QCOMPARE(answer, ZSCPI::scpiAnswer[ZSCPI::ack]);
 }
 
 void test_regression_sense_interface_mt310s2::channelAliasAcMode()

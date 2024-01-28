@@ -62,6 +62,8 @@ private slots:
     void constantRangeValuesAllClampsUAUXCheck();
 
     void mmodeCat();
+    void invalidMode();
+    void twiceSameMode();
     void channelAliasAcMode();
     void channelAliasAdjMode();
     void channelAliasHfMode();

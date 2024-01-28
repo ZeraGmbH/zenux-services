@@ -30,6 +30,8 @@ private slots:
 
     void channelAliasChangeOnREF();
     void mmodeCat();
+    void invalidMode();
+    void twiceSameMode();
 private:
     QJsonObject loadJson(QString fileName);
 
