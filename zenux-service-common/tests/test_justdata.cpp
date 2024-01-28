@@ -1,5 +1,6 @@
 #include "test_justdata.h"
 #include "protonetcommand.h"
+#include "zscpi_response_definitions.h"
 
 QTEST_MAIN(test_justdata);
 
@@ -73,7 +74,7 @@ void test_justdata::nodeSetReject()
     cProtonetCommand* protoCmdWrite = new cProtonetCommand(0, false, true, QByteArray(), 0, scpiStringWrite);
     cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObjectWrite);
     QVERIFY(scpiDelegate->executeSCPI(protoCmdWrite));
-    QCOMPARE((protoCmdWrite->m_sOutput), "erraut");
+    QCOMPARE((protoCmdWrite->m_sOutput), ZSCPI::scpiAnswer[ZSCPI::erraut]);
 }
 
 void test_justdata::coeffSetReject()
@@ -87,7 +88,7 @@ void test_justdata::coeffSetReject()
     cProtonetCommand* protoCmdWrite = new cProtonetCommand(0, false, true, QByteArray(), 0, scpiStringWrite);
     cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObjectWrite);
     QVERIFY(scpiDelegate->executeSCPI(protoCmdWrite));
-    QCOMPARE((protoCmdWrite->m_sOutput), "erraut");
+    QCOMPARE((protoCmdWrite->m_sOutput), ZSCPI::scpiAnswer[ZSCPI::erraut]);
 }
 
 void test_justdata::nodeSetFail()
@@ -101,7 +102,7 @@ void test_justdata::nodeSetFail()
     cProtonetCommand* protoCmdWrite = new cProtonetCommand(0, false, true, QByteArray(), 0, scpiStringWrite);
     cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObjectWrite);
     QVERIFY(scpiDelegate->executeSCPI(protoCmdWrite));
-    QCOMPARE((protoCmdWrite->m_sOutput), "errexec");
+    QCOMPARE((protoCmdWrite->m_sOutput), ZSCPI::scpiAnswer[ZSCPI::errexec]);
 }
 
 void test_justdata::coeffSetFail()
@@ -115,7 +116,7 @@ void test_justdata::coeffSetFail()
     cProtonetCommand* protoCmdWrite = new cProtonetCommand(0, false, true, QByteArray(), 0, scpiStringWrite);
     cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObjectWrite);
     QVERIFY(scpiDelegate->executeSCPI(protoCmdWrite));
-    QCOMPARE((protoCmdWrite->m_sOutput), "errexec");
+    QCOMPARE((protoCmdWrite->m_sOutput), ZSCPI::scpiAnswer[ZSCPI::errexec]);
 }
 
 void test_justdata::nodeSetOneCrap()
@@ -126,7 +127,7 @@ void test_justdata::nodeSetOneCrap()
     cProtonetCommand* protoCmdWrite = new cProtonetCommand(0, false, true, QByteArray(), 0, scpiStringWrite);
     cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObjectWrite);
     QVERIFY(scpiDelegate->executeSCPI(protoCmdWrite));
-    QCOMPARE((protoCmdWrite->m_sOutput), "errval");
+    QCOMPARE((protoCmdWrite->m_sOutput), ZSCPI::scpiAnswer[ZSCPI::errval]);
 }
 
 void test_justdata::nodeSettwoCrap()
@@ -137,7 +138,7 @@ void test_justdata::nodeSettwoCrap()
     cProtonetCommand* protoCmdWrite = new cProtonetCommand(0, false, true, QByteArray(), 0, scpiStringWrite);
     cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObjectWrite);
     QVERIFY(scpiDelegate->executeSCPI(protoCmdWrite));
-    QCOMPARE((protoCmdWrite->m_sOutput), "errval");
+    QCOMPARE((protoCmdWrite->m_sOutput), ZSCPI::scpiAnswer[ZSCPI::errval]);
 }
 
 void test_justdata::coefSetCrap()
@@ -148,5 +149,5 @@ void test_justdata::coefSetCrap()
     cProtonetCommand cmdWrite(0, false, true, QByteArray(), 0, scpiStringWrite);
     cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObjectWrite);
     QVERIFY(scpiDelegate->executeSCPI(&cmdWrite));
-    QCOMPARE(cmdWrite.m_sOutput, "errval");
+    QCOMPARE(cmdWrite.m_sOutput, ZSCPI::scpiAnswer[ZSCPI::errval]);
 }

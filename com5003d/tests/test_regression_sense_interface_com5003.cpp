@@ -3,6 +3,7 @@
 #include "senseregressionhelper.h"
 #include "scpisingletransactionblocked.h"
 #include "proxy.h"
+#include "zscpi_response_definitions.h"
 #include <timemachineobject.h>
 #include <QRegularExpression>
 #include <QJsonValue>
@@ -116,7 +117,7 @@ void test_regression_sense_interface_com5003::channelAliasChangeOnREF()
     QCOMPARE(channelM0AliasBefore, "UL1");
 
     QString answer = ScpiSingleTransactionBlocked::cmd("SENS:MMODE", "REF");
-    QCOMPARE(answer, "ack");
+    QCOMPARE(answer, ZSCPI::scpiAnswer[ZSCPI::ack]);
 
     QString channelM0AliasAfter = ScpiSingleTransactionBlocked::query("SENSE:m0:ALIAS?");
     QCOMPARE(channelM0AliasAfter, "REF1");

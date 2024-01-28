@@ -1,6 +1,7 @@
 #include "test_sec_resource.h"
 #include "mocksecdevicenodesingleton.h"
 #include "scpisingletonfactory.h"
+#include "zscpi_response_definitions.h"
 #include <timemachineobject.h>
 #include <QTest>
 #include <QList>
@@ -63,7 +64,7 @@ void test_sec_resource::setAndFreeSecChannelsForAClient()
 {
     sendScpiCommand(nullptr, QByteArray(), setFourResourcesCommand);
     QString returnString = sendScpiCommand(nullptr, QByteArray(), freeResourcesCommand);
-    QCOMPARE(returnString, "ack");
+    QCOMPARE(returnString, ZSCPI::scpiAnswer[ZSCPI::ack]);
 
     QList<SecChannel*> secChannels = m_secResource->getECalcChannelList();
     for(SecChannel *secCh : secChannels)

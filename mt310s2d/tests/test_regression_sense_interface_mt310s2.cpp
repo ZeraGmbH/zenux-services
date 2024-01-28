@@ -4,6 +4,7 @@
 #include "scpisingletransactionblocked.h"
 #include "proxy.h"
 #include "clampfactorytest.h"
+#include "zscpi_response_definitions.h"
 #include <i2cmultiplexerfactory.h>
 #include <timemachineobject.h>
 #include <QFile>
@@ -247,7 +248,7 @@ void test_regression_sense_interface_mt310s2::constantRangeValuesUAUXCheck()
 void test_regression_sense_interface_mt310s2::constantRangeValuesIL3ModeAdjGenJson()
 {
     QString answer = ScpiSingleTransactionBlocked::cmd("SENS:MMODE", "ADJ");
-    QCOMPARE(answer, "ack");
+    QCOMPARE(answer, ZSCPI::scpiAnswer[ZSCPI::ack]);
 
     SenseSystem::cChannelSettings *channelSetting = m_testServer->getSenseSettings()->findChannelSettingByAlias1("IL3");
     SenseRegressionHelper::genJsonConstantValuesAllRanges(channelSetting, m_pcbIFace.get());
@@ -256,7 +257,7 @@ void test_regression_sense_interface_mt310s2::constantRangeValuesIL3ModeAdjGenJs
 void test_regression_sense_interface_mt310s2::constantRangeValuesIL3ModeAdjCheck()
 {
     QString answer = ScpiSingleTransactionBlocked::cmd("SENS:MMODE", "ADJ");
-    QCOMPARE(answer, "ack");
+    QCOMPARE(answer, ZSCPI::scpiAnswer[ZSCPI::ack]);
 
     QJsonObject json = loadJson(":/all-ranges-il3-adj-mode.json");
     QVERIFY(!json.isEmpty());
@@ -267,7 +268,7 @@ void test_regression_sense_interface_mt310s2::constantRangeValuesIL3ModeAdjCheck
 void test_regression_sense_interface_mt310s2::constantRangeValuesIAUXModeAdjGenJson()
 {
     QString answer = ScpiSingleTransactionBlocked::cmd("SENS:MMODE", "ADJ");
-    QCOMPARE(answer, "ack");
+    QCOMPARE(answer, ZSCPI::scpiAnswer[ZSCPI::ack]);
 
     SenseSystem::cChannelSettings *channelSetting = m_testServer->getSenseSettings()->findChannelSettingByAlias1("IAUX");
     SenseRegressionHelper::genJsonConstantValuesAllRanges(channelSetting, m_pcbIFace.get());
@@ -276,7 +277,7 @@ void test_regression_sense_interface_mt310s2::constantRangeValuesIAUXModeAdjGenJ
 void test_regression_sense_interface_mt310s2::constantRangeValuesIAUXModeAdjCheck()
 {
     QString answer = ScpiSingleTransactionBlocked::cmd("SENS:MMODE", "ADJ");
-    QCOMPARE(answer, "ack");
+    QCOMPARE(answer, ZSCPI::scpiAnswer[ZSCPI::ack]);
 
     QJsonObject json = loadJson(":/all-ranges-iaux-adj-mode.json");
     QVERIFY(!json.isEmpty());
@@ -287,7 +288,7 @@ void test_regression_sense_interface_mt310s2::constantRangeValuesIAUXModeAdjChec
 void test_regression_sense_interface_mt310s2::constantRangeValuesIL3ModeHfGenJson()
 {
     QString answer = ScpiSingleTransactionBlocked::cmd("SENS:MMODE", "HF");
-    QCOMPARE(answer, "ack");
+    QCOMPARE(answer, ZSCPI::scpiAnswer[ZSCPI::ack]);
 
     SenseSystem::cChannelSettings *channelSetting = m_testServer->getSenseSettings()->findChannelSettingByAlias1("IL3");
     SenseRegressionHelper::genJsonConstantValuesAllRanges(channelSetting, m_pcbIFace.get());
@@ -296,7 +297,7 @@ void test_regression_sense_interface_mt310s2::constantRangeValuesIL3ModeHfGenJso
 void test_regression_sense_interface_mt310s2::constantRangeValuesIL3ModeHfCheck()
 {
     QString answer = ScpiSingleTransactionBlocked::cmd("SENS:MMODE", "HF");
-    QCOMPARE(answer, "ack");
+    QCOMPARE(answer, ZSCPI::scpiAnswer[ZSCPI::ack]);
 
     QJsonObject json = loadJson(":/all-ranges-il3-hf-mode.json");
     QVERIFY(!json.isEmpty());
@@ -307,7 +308,7 @@ void test_regression_sense_interface_mt310s2::constantRangeValuesIL3ModeHfCheck(
 void test_regression_sense_interface_mt310s2::constantRangeValuesIAUXModeHfGenJson()
 {
     QString answer = ScpiSingleTransactionBlocked::cmd("SENS:MMODE", "HF");
-    QCOMPARE(answer, "ack");
+    QCOMPARE(answer, ZSCPI::scpiAnswer[ZSCPI::ack]);
 
     SenseSystem::cChannelSettings *channelSetting = m_testServer->getSenseSettings()->findChannelSettingByAlias1("IAUX");
     SenseRegressionHelper::genJsonConstantValuesAllRanges(channelSetting, m_pcbIFace.get());
@@ -316,7 +317,7 @@ void test_regression_sense_interface_mt310s2::constantRangeValuesIAUXModeHfGenJs
 void test_regression_sense_interface_mt310s2::constantRangeValuesIAUXModeHfCheck()
 {
     QString answer = ScpiSingleTransactionBlocked::cmd("SENS:MMODE", "HF");
-    QCOMPARE(answer, "ack");
+    QCOMPARE(answer, ZSCPI::scpiAnswer[ZSCPI::ack]);
 
     QJsonObject json = loadJson(":/all-ranges-iaux-hf-mode.json");
     QVERIFY(!json.isEmpty());
@@ -373,7 +374,7 @@ void test_regression_sense_interface_mt310s2::mmodeCat()
 void test_regression_sense_interface_mt310s2::channelAliasAcMode()
 {
     QString answer = ScpiSingleTransactionBlocked::cmd("SENS:MMODE", "AC");
-    QCOMPARE(answer, "ack");
+    QCOMPARE(answer, ZSCPI::scpiAnswer[ZSCPI::ack]);
 
     QString channelM0AliasAfter = ScpiSingleTransactionBlocked::query("SENSE:m0:ALIAS?");
     QCOMPARE(channelM0AliasAfter, "UL1");
@@ -382,7 +383,7 @@ void test_regression_sense_interface_mt310s2::channelAliasAcMode()
 void test_regression_sense_interface_mt310s2::channelAliasAdjMode()
 {
     QString answer = ScpiSingleTransactionBlocked::cmd("SENS:MMODE", "ADJ");
-    QCOMPARE(answer, "ack");
+    QCOMPARE(answer, ZSCPI::scpiAnswer[ZSCPI::ack]);
 
     QString channelM0AliasAfter = ScpiSingleTransactionBlocked::query("SENSE:m0:ALIAS?");
     QCOMPARE(channelM0AliasAfter, "UL1");
@@ -391,7 +392,7 @@ void test_regression_sense_interface_mt310s2::channelAliasAdjMode()
 void test_regression_sense_interface_mt310s2::channelAliasHfMode()
 {
     QString answer = ScpiSingleTransactionBlocked::cmd("SENS:MMODE", "HF");
-    QCOMPARE(answer, "ack");
+    QCOMPARE(answer, ZSCPI::scpiAnswer[ZSCPI::ack]);
 
     QString channelM0AliasAfter = ScpiSingleTransactionBlocked::query("SENSE:m0:ALIAS?");
     QCOMPARE(channelM0AliasAfter, "UL1");
