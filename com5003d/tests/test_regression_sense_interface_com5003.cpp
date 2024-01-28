@@ -125,11 +125,24 @@ void test_regression_sense_interface_com5003::channelAliasChangeOnREF()
 
 void test_regression_sense_interface_com5003::mmodeCat()
 {
+    // original COM implementation was sorted
     QString mmodeCat = ScpiSingleTransactionBlocked::query("SENSE:MMODE:CAT?");
-    QStringList mmodes = mmodeCat.split(";");
-    QCOMPARE(mmodes.count(), 2);
-    QVERIFY(mmodes.contains("AC"));
-    QVERIFY(mmodes.contains("REF"));
+    QCOMPARE(mmodeCat, "AC;REF");
+}
+
+void test_regression_sense_interface_com5003::invalidMode()
+{
+    QString answer = ScpiSingleTransactionBlocked::cmd("SENS:MMODE", "foo");
+    QCOMPARE(answer, ZSCPI::scpiAnswer[ZSCPI::nak]);
+}
+
+void test_regression_sense_interface_com5003::twiceSameMode()
+{
+    QString answer = ScpiSingleTransactionBlocked::cmd("SENS:MMODE", "AC");
+    QCOMPARE(answer, ZSCPI::scpiAnswer[ZSCPI::ack]);
+
+    answer = ScpiSingleTransactionBlocked::cmd("SENS:MMODE", "AC");
+    QCOMPARE(answer, ZSCPI::scpiAnswer[ZSCPI::ack]);
 }
 
 QJsonObject test_regression_sense_interface_com5003::loadJson(QString fileName)
