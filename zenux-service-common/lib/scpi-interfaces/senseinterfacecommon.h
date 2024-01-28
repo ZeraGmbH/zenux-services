@@ -33,7 +33,7 @@ public:
     virtual ~SenseInterfaceCommon();
     quint8 getAdjustmentStatus() override;
     SenseChannelCommon *getChannel(QString& name);
-    QString getChannelSystemName(quint16 ctrlChannel);
+    QString getChannelByCtrlChannelNo(quint16 ctrlChannel);
     SenseRangeCommon* getRange(QString channelName, QString rangeName);
     void computeSenseAdjData();
     void registerResource(RMConnection *rmConnection, quint16 port) override;

@@ -59,7 +59,7 @@ SenseChannelCommon *SenseInterfaceCommon::getChannel(QString &name)
     return channelFound;
 }
 
-QString SenseInterfaceCommon::getChannelSystemName(quint16 ctrlChannel)
+QString SenseInterfaceCommon::getChannelByCtrlChannelNo(quint16 ctrlChannel)
 {
     QString nameFound;
     for(auto channel : qAsConst(m_channelList)) {

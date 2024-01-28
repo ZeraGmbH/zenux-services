@@ -414,7 +414,7 @@ ClampTypes cClamp::readClampType()
 
 void cClamp::createLEM1000VRanges(const PermissionStructAdj &permissionsOffsetAllowedAlways, quint16 dcCommonMask)
 {
-    m_sChannelNameSecondary = m_pSenseInterface->getChannelSystemName(m_nCtrlChannelSecondary);
+    m_sChannelNameSecondary = m_pSenseInterface->getChannelByCtrlChannelNo(m_nCtrlChannelSecondary);
     RangeAdjClamps* clampJustData = new RangeAdjClamps(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelNameSecondary, QString("8V")), 118.6, permissionsOffsetAllowedAlways);
     m_RangeListSecondary.append(new Mt310s2SenseRange(m_pSCPIInterface, "C1000V", true, 1000.0, 3535110.0, 3535110.0 * 1.25, 0x01 /*8V*/, dcCommonMask | SenseSystem::Clamp, clampJustData));
 }
@@ -519,7 +519,7 @@ void cClamp::initClamp(quint8 type)
         m_RangeList.append(new Mt310s2SenseRange(m_pSCPIInterface,   "C2A", true,   2.0, 2013266.0, 2013266.0 * 1.25, 0x10, dcCommonMask | SenseSystem::Clamp, clampJustData));
 
         // This clamp has a secondary channnel U
-        m_sChannelNameSecondary = m_pSenseInterface->getChannelSystemName(m_nCtrlChannelSecondary);
+        m_sChannelNameSecondary = m_pSenseInterface->getChannelByCtrlChannelNo(m_nCtrlChannelSecondary);
         clampJustData = new RangeAdjClamps(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelNameSecondary, QString("8V")), 121.0);
         m_RangeListSecondary.append(new Mt310s2SenseRange(m_pSCPIInterface, "C1000V", true, 1000.0, 3466367.0, 3466367.0 * 1.25, 1 /*8V*/, dcCommonMask | SenseSystem::Clamp, clampJustData));
         break;
@@ -628,7 +628,7 @@ void cClamp::initClamp(quint8 type)
         m_RangeList.append(new Mt310s2SenseRange(m_pSCPIInterface,   "C5A", true,   5.0, 2516582.0, 2516582.0 * 1.25, 0x10, dcCommonMask | SenseSystem::Clamp, clampJustData));
 
         // This clamp has a secondary channnel U
-        m_sChannelNameSecondary = m_pSenseInterface->getChannelSystemName(m_nCtrlChannelSecondary);
+        m_sChannelNameSecondary = m_pSenseInterface->getChannelByCtrlChannelNo(m_nCtrlChannelSecondary);
         clampJustData = new RangeAdjClamps(m_pSCPIInterface, m_pSenseInterface->getRange(m_sChannelNameSecondary, QString("8V")), 121.0);
         m_RangeListSecondary.append(new Mt310s2SenseRange(m_pSCPIInterface, "C1000V", true, 1000.0, 3466367.0, 3466367.0 * 1.25, 1 /*8V*/, dcCommonMask | SenseSystem::Clamp, clampJustData));
         break;
