@@ -5,10 +5,11 @@
 #include "adjustmenteeprom.h"
 #include "adjustmentxmlimportexporttemplate.h"
 #include "i2csettings.h"
+#include "systeminfo.h"
+#include "sensechannelcommon.h"
 
 namespace SenseSystem
 {
-    const QString Version = "V1.00";
     enum Commands
     {
         cmdVersion,
@@ -25,8 +26,22 @@ namespace SenseSystem
 class SenseInterfaceCommon : public cResource, public AdjustmentEeprom, public AdjustmentXmlImportExportTemplate, public AdjustmentStatusInterface
 {
 public:
-    SenseInterfaceCommon(cSCPI *scpiInterface, I2cSettings* i2cSettings);
+    SenseInterfaceCommon(cSCPI *scpiInterface,
+                         I2cSettings* i2cSettings,
+                         SystemInfo *systemInfo,
+                         AbstractFactoryI2cCtrlPtr ctrlFactory);
     virtual ~SenseInterfaceCommon() = default;
+
+protected:
+    static QString m_version;
+    SystemInfo *m_systemInfo;
+    AbstractFactoryI2cCtrlPtr m_ctrlFactory;
+    QList<SenseChannelCommon*> m_channelList;
+    quint8 m_nMMode;
+    quint8 m_nSerialStatus;
+
+    NotificationString m_notifierSenseMMode;
+    NotificationString m_notifierSenseChannelCat;
 };
 
 #endif // SENSEINTERFACECOMMON_H

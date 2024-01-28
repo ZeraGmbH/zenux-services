@@ -92,17 +92,7 @@ private:
     void setNotifierSenseChannelCat();
     bool setSenseMode(QString sMode);
 
-    SystemInfo* m_systemInfo;
-    AbstractFactoryI2cCtrlPtr m_ctrlFactory;
-
-    QList<SenseChannelCommon*> m_ChannelList;
-    QString m_sVersion;
-
-    quint8 m_nSerialStatus;
-
-    NotificationString notifierSenseMMode;
-    NotificationString notifierSenseChannelCat;
-
+    // MT specifics
     QString m_sMMode;
     QHash<QString,quint8> m_MModeHash;
 };

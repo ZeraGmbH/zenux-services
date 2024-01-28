@@ -2,12 +2,8 @@
 #define SENSEINTERFACE_H
 
 #include "adjustmenteeprom.h"
-#include "adjustmentxmlimportexporttemplate.h"
-#include "i2csettings.h"
 #include "ethsettings.h"
-#include "sensechannelcommon.h"
 #include "senseinterfacecommon.h"
-#include "systeminfo.h"
 #include <QList>
 #include <QStateMachine>
 #include <QState>
@@ -75,23 +71,10 @@ private:
     void setNotifierSenseMMode();
     void setNotifierSenseChannelCat();
 
-    SystemInfo *m_systemInfo;
-    AbstractFactoryI2cCtrlPtr m_ctrlFactory;
-
-    QList<SenseChannelCommon*> m_ChannelList;
-    QString m_sVersion;
-    quint8 m_nMMode;
-
-    quint8 m_nSerialStatus;
-
-    NotificationString notifierSenseMMode;
-    NotificationString notifierSenseChannelCat;
-
     // COM specifics
     RMConnection* m_rmConnection;
     EthSettings* m_ethSettings;
 
-    QHash<QString,quint8> m_MModeHash;
     QStateMachine m_ChangeSenseModeMachine;
     QState m_UnregisterSenseState;
     QState m_RegisterSenseState;

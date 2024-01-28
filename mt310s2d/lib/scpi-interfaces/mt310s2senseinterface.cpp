@@ -25,9 +25,10 @@ Mt310s2SenseInterface::Mt310s2SenseInterface(cSCPI *scpiInterface,
                                              cSenseSettings* senseSettings,
                                              SystemInfo *systemInfo,
                                              AbstractFactoryI2cCtrlPtr ctrlFactory) :
-    SenseInterfaceCommon(scpiInterface, i2cSettings),
-    m_systemInfo(systemInfo),
-    m_ctrlFactory(ctrlFactory)
+    SenseInterfaceCommon(scpiInterface,
+                           i2cSettings,
+                           systemInfo,
+                           ctrlFactory)
 {
     // Init with bad defaults so coder's bugs pop up
     m_nSerialStatus = Adjustment::wrongSNR;
@@ -43,22 +44,22 @@ Mt310s2SenseInterface::Mt310s2SenseInterface(cSCPI *scpiInterface,
     // for mt310 we need 4 voltage and 4 current measuring channels
     SenseChannelCommon* pChannel;
     pChannel = new Mt310s2SenseChannel(m_pSCPIInterface, SenseSystem::sVoltageChannelDescription,"V", channelSettings.at(0), 0, m_ctrlFactory);
-    m_ChannelList.append(pChannel);
+    m_channelList.append(pChannel);
     pChannel = new Mt310s2SenseChannel(m_pSCPIInterface, SenseSystem::sVoltageChannelDescription,"V", channelSettings.at(1), 1, m_ctrlFactory);
-    m_ChannelList.append(pChannel);
+    m_channelList.append(pChannel);
     pChannel = new Mt310s2SenseChannel(m_pSCPIInterface, SenseSystem::sVoltageChannelDescription,"V", channelSettings.at(2), 2, m_ctrlFactory);
-    m_ChannelList.append(pChannel);
+    m_channelList.append(pChannel);
     pChannel = new Mt310s2SenseChannel(m_pSCPIInterface, SenseSystem::sVoltageChannelDescription,"V", channelSettings.at(6), 6, m_ctrlFactory);
-    m_ChannelList.append(pChannel);
+    m_channelList.append(pChannel);
 
     pChannel = new Mt310s2SenseChannel(m_pSCPIInterface, SenseSystem::sCurrentChannelDescription,"A", channelSettings.at(3), 3, m_ctrlFactory);
-    m_ChannelList.append(pChannel);
+    m_channelList.append(pChannel);
     pChannel = new Mt310s2SenseChannel(m_pSCPIInterface, SenseSystem::sCurrentChannelDescription,"A", channelSettings.at(4), 4, m_ctrlFactory);
-    m_ChannelList.append(pChannel);
+    m_channelList.append(pChannel);
     pChannel = new Mt310s2SenseChannel(m_pSCPIInterface, SenseSystem::sCurrentChannelDescription,"A", channelSettings.at(5), 5, m_ctrlFactory);
-    m_ChannelList.append(pChannel);
+    m_channelList.append(pChannel);
     pChannel = new Mt310s2SenseChannel(m_pSCPIInterface, SenseSystem::sCurrentChannelDescription,"A", channelSettings.at(7), 7, m_ctrlFactory);
-    m_ChannelList.append(pChannel);
+    m_channelList.append(pChannel);
 
     QList<SenseRangeCommon*> rngList;
 
@@ -69,7 +70,7 @@ Mt310s2SenseInterface::Mt310s2SenseInterface(cSCPI *scpiInterface,
         rngList.append(new Mt310s2SenseRange(m_pSCPIInterface,    "8V", true,   8.0, 3355443.0, 4194304.0, 1, SenseSystem::modeAC | SenseSystem::modeADJ | SenseSystem::Direct, createJustScpiInterfaceWithAtmelPermission()));
         rngList.append(new Mt310s2SenseRange(m_pSCPIInterface, "100mV", true,   0.1, 4026532.0, 5033165.0, 2, SenseSystem::modeAC | SenseSystem::modeADJ | SenseSystem::Direct, createJustScpiInterfaceWithAtmelPermission()));
 
-        m_ChannelList.at(i)->setRangeList(rngList);
+        m_channelList.at(i)->setRangeList(rngList);
     }
 
     for (i = 4; i < 7; i++) {
@@ -97,7 +98,7 @@ Mt310s2SenseInterface::Mt310s2SenseInterface(cSCPI *scpiInterface,
         rngList.append(new Mt310s2SenseRange(m_pSCPIInterface,   "5mV", false,0.005, 3355443.0, 4194304.0, 19, SenseSystem::modeADJ | SenseSystem::Direct, createJustScpiInterfaceWithAtmelPermission()));
         rngList.append(new Mt310s2SenseRange(m_pSCPIInterface,   "2mV", false,0.002, 2684355.0, 3355444.0, 20, SenseSystem::modeADJ | SenseSystem::Direct, createJustScpiInterfaceWithAtmelPermission()));
 
-        m_ChannelList.at(i)->setRangeList(rngList);
+        m_channelList.at(i)->setRangeList(rngList);
     }
 
     // IAUX
@@ -119,31 +120,30 @@ Mt310s2SenseInterface::Mt310s2SenseInterface(cSCPI *scpiInterface,
     rngList.append(new Mt310s2SenseRange(m_pSCPIInterface,   "5mV", false, 0.005, 3355443.0, 4194304.0, 19, SenseSystem::modeADJ | SenseSystem::Direct, createJustScpiInterfaceWithAtmelPermission()));
     rngList.append(new Mt310s2SenseRange(m_pSCPIInterface,   "2mV", false, 0.002, 2684355.0, 3355444.0, 20, SenseSystem::modeADJ | SenseSystem::Direct, createJustScpiInterfaceWithAtmelPermission()));
 
-    m_ChannelList.at(7)->setRangeList(rngList);
+    m_channelList.at(7)->setRangeList(rngList);
     setSenseMode("AC");
     setNotifierSenseChannelCat(); // only prepared for !!! since we don't have hot plug for measuring channels yet
-    m_sVersion = SenseSystem::Version;
 }
 
 Mt310s2SenseInterface::~Mt310s2SenseInterface()
 {
-    for(auto channel : qAsConst(m_ChannelList)) {
+    for(auto channel : qAsConst(m_channelList)) {
         delete channel;
     }
-    m_ChannelList.clear();
+    m_channelList.clear();
 }
 
 void Mt310s2SenseInterface::initSCPIConnection(QString leadingNodes)
 {
     ensureTrailingColonOnNonEmptyParentNodes(leadingNodes);
     addDelegate(QString("%1SENSE").arg(leadingNodes),"VERSION",SCPI::isQuery, m_pSCPIInterface, SenseSystem::cmdVersion);
-    addDelegate(QString("%1SENSE").arg(leadingNodes),"MMODE",SCPI::isQuery | SCPI::isCmdwP , m_pSCPIInterface, SenseSystem::cmdMMode, &notifierSenseMMode);
+    addDelegate(QString("%1SENSE").arg(leadingNodes),"MMODE",SCPI::isQuery | SCPI::isCmdwP , m_pSCPIInterface, SenseSystem::cmdMMode, &m_notifierSenseMMode);
     addDelegate(QString("%1SENSE:MMODE").arg(leadingNodes),"CATALOG",SCPI::isQuery, m_pSCPIInterface, SenseSystem::cmdMModeCat);
-    addDelegate(QString("%1SENSE:CHANNEL").arg(leadingNodes),"CATALOG", SCPI::isQuery, m_pSCPIInterface, SenseSystem::cmdChannelCat, &notifierSenseChannelCat);
+    addDelegate(QString("%1SENSE:CHANNEL").arg(leadingNodes),"CATALOG", SCPI::isQuery, m_pSCPIInterface, SenseSystem::cmdChannelCat, &m_notifierSenseChannelCat);
     addDelegate(QString("%1SENSE:GROUP").arg(leadingNodes),"CATALOG", SCPI::isQuery, m_pSCPIInterface, SenseSystem::cmdGroupCat);
     addDelegate(QString("%1SENSE:CORRECTION").arg(leadingNodes),"INIT", SCPI::isCmd, m_pSCPIInterface, SenseSystem::initAdjData);
     addDelegate(QString("%1SENSE:CORRECTION").arg(leadingNodes),"COMPUTE", SCPI::isCmd, m_pSCPIInterface, SenseSystem::computeAdjData);
-    for(auto channel : qAsConst(m_ChannelList)) {
+    for(auto channel : qAsConst(m_channelList)) {
         // we also must connect the signals for notification and for output
         connect(channel, &ScpiConnection::sendNotification, this, &ScpiConnection::sendNotification);
         connect(channel, &ScpiConnection::cmdExecutionDone, this, &ScpiConnection::cmdExecutionDone);
@@ -157,7 +157,7 @@ void Mt310s2SenseInterface::initSCPIConnection(QString leadingNodes)
 SenseChannelCommon *Mt310s2SenseInterface::getChannel(QString &name)
 {
     SenseChannelCommon *channelFound = nullptr;
-    for(auto channel : qAsConst(m_ChannelList)) {
+    for(auto channel : qAsConst(m_channelList)) {
         if(channel->getName() == name) {
             channelFound = channel;
             break;
@@ -169,7 +169,7 @@ SenseChannelCommon *Mt310s2SenseInterface::getChannel(QString &name)
 QString Mt310s2SenseInterface::getChannelSystemName(quint16 ctrlChannel)
 {
     QString nameFound;
-    for(auto channel : qAsConst(m_ChannelList)) {
+    for(auto channel : qAsConst(m_channelList)) {
         if(channel->getCtrlChannel() == ctrlChannel) {
             nameFound = channel->getName();
             break;
@@ -192,7 +192,7 @@ quint8 Mt310s2SenseInterface::getAdjustmentStatus()
 {
     quint8 adjustmentStatusMask = Adjustment::adjusted;
     // Loop adjustment state for all channels
-    for(auto channel : qAsConst(m_ChannelList)) {
+    for(auto channel : qAsConst(m_channelList)) {
         quint8 channelFlags = channel->getAdjustmentStatus80Mask();
         // Currently there is one flag in channel flags only
         if((channelFlags & JustDataInterface::Justified)== 0) {
@@ -338,7 +338,7 @@ void Mt310s2SenseInterface::exportAdjData(QDataStream &stream, QDateTime dateTim
     stream << m_systemInfo->getDeviceVersion().toStdString().c_str(); // geräte name versionsnummern ...
     stream << m_systemInfo->getSerialNumber().toStdString().c_str(); // seriennummer
     stream << dateTimeWrite.toString(Qt::TextDate).toStdString().c_str(); // datum,uhrzeit
-    for(auto channel : qAsConst(m_ChannelList)) {
+    for(auto channel : qAsConst(m_channelList)) {
         for(auto range : channel->getRangeList()) {
             if ((range->getMMask() & SenseSystem::Direct)> 0) {
                 QString spec = QString("%1:%2:%3")
@@ -399,7 +399,7 @@ QString Mt310s2SenseInterface::exportXMLString(int indent)
     QDomElement typeTag = justqdom.createElement("Sense");
     adjtag.appendChild(typeTag);
 
-    for(auto channel : qAsConst(m_ChannelList)) {
+    for(auto channel : qAsConst(m_channelList)) {
         QDomText t;
         QDomElement chtag = justqdom.createElement("Channel");
         typeTag.appendChild( chtag );
@@ -449,7 +449,7 @@ QString Mt310s2SenseInterface::exportXMLString(int indent)
 
 void Mt310s2SenseInterface::computeSenseAdjData()
 {
-    for(auto channel : qAsConst(m_ChannelList)) {
+    for(auto channel : qAsConst(m_channelList)) {
         channel->computeJustData();
     }
 }
@@ -581,7 +581,7 @@ bool Mt310s2SenseInterface::importXMLDocument(QDomDocument* qdomdoc) // n steht 
 void Mt310s2SenseInterface::registerResource(RMConnection *rmConnection, quint16 port)
 {
     msgNrList.clear();
-    for(auto channel : qAsConst(m_ChannelList)) {
+    for(auto channel : qAsConst(m_channelList)) {
         register1Resource(rmConnection, NotZeroNumGen::getMsgNr(), QString("SENSE;%1;1;%2;%3;")
                          .arg(channel->getName())
                          .arg(channel->getDescription())
@@ -598,16 +598,15 @@ QString Mt310s2SenseInterface::scpiReadVersion(QString &scpi)
 {
     cSCPICommand cmd = scpi;
     if (cmd.isQuery())
-        return m_sVersion;
-    else
-        return ZSCPI::scpiAnswer[ZSCPI::nak];
+        return m_version;
+    return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 void Mt310s2SenseInterface::scpiReadWriteMMode(cProtonetCommand *protoCmd)
 {
     cSCPICommand cmd = protoCmd->m_sInput;
     if (cmd.isQuery()) {
-        protoCmd->m_sOutput  = notifierSenseMMode.getString();
+        protoCmd->m_sOutput  = m_notifierSenseMMode.getString();
         if (protoCmd->m_bwithOutput) {
             emit cmdExecutionDone(protoCmd);
         }
@@ -643,12 +642,9 @@ QString Mt310s2SenseInterface::m_ReadMModeCatalog(QString &scpi)
 QString Mt310s2SenseInterface::m_ReadSenseChannelCatalog(QString &sInput)
 {
     cSCPICommand cmd = sInput;
-    if (cmd.isQuery()) {
-        return notifierSenseChannelCat.getString();
-    }
-    else {
-        return ZSCPI::scpiAnswer[ZSCPI::nak];
-    }
+    if (cmd.isQuery())
+        return m_notifierSenseChannelCat.getString();
+    return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 QString Mt310s2SenseInterface::m_ReadSenseGroupCatalog(QString &sInput)
@@ -668,7 +664,7 @@ QString Mt310s2SenseInterface::m_InitSenseAdjData(QString &sInput)
     cSCPICommand cmd = sInput;
     // cmd.isCommand(0) is not correct but we leave it for compatibility
     if ( cmd.isCommand(0) || (cmd.isCommand(1) && (cmd.getParam(0) == ""))) {
-        for(auto channel : qAsConst(m_ChannelList)) {
+        for(auto channel : qAsConst(m_channelList)) {
             channel->initJustData();
         }
         return ZSCPI::scpiAnswer[ZSCPI::ack];
@@ -706,7 +702,7 @@ RangeAdjInterface *Mt310s2SenseInterface::createJustScpiInterfaceWithAtmelPermis
 
 void Mt310s2SenseInterface::setNotifierSenseMMode()
 {
-    notifierSenseMMode = m_sMMode;
+    m_notifierSenseMMode = m_sMMode;
 }
 
 void Mt310s2SenseInterface::setNotifierSenseChannelCat()
@@ -714,11 +710,11 @@ void Mt310s2SenseInterface::setNotifierSenseChannelCat()
     // only prepared for !!! since we don't have hot plug for measuring channels yet
     int i;
     QString s;
-    for (i = 0; i < m_ChannelList.count()-1; i++ ) {
-        s += m_ChannelList.at(i)->getName() + ";";
+    for (i = 0; i < m_channelList.count()-1; i++ ) {
+        s += m_channelList.at(i)->getName() + ";";
     }
-    s += m_ChannelList.at(i)->getName();
-    notifierSenseChannelCat = s;
+    s += m_channelList.at(i)->getName();
+    m_notifierSenseChannelCat = s;
 }
 
 bool Mt310s2SenseInterface::setSenseMode(QString sMode)
@@ -728,7 +724,7 @@ bool Mt310s2SenseInterface::setSenseMode(QString sMode)
         quint8 mode;
         mode = m_MModeHash[sMode];
         m_ctrlFactory->getMModeController()->setMeasMode((mode >> 1) & 1); // set the atmels mode here...atmel only knows ac and hf
-        for(auto channel : qAsConst(m_ChannelList)) {
+        for(auto channel : qAsConst(m_channelList)) {
             channel->setMMode(mode);
         }
         m_sMMode = sMode;
