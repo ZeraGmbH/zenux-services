@@ -13,6 +13,7 @@ class AdjustmentEeprom
 public:
     AdjustmentEeprom(){}
     AdjustmentEeprom(QString devnode, quint8 i2cadr, I2cMuxerInterface::Ptr i2cMuxer);
+    virtual ~AdjustmentEeprom() = default;
     bool exportAdjFlash(QDateTime dateTimeWrite);
     bool importAdjFlash();
     bool resetAdjFlash();

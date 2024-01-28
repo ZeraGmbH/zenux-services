@@ -13,7 +13,6 @@
 #include "i2csettings.h"
 #include "sensesettings.h"
 #include "notzeronumgen.h"
-#include <i2cmultiplexerfactory.h>
 #include <xmlsettings.h>
 #include <QStringList>
 #include <QDomDocument>
@@ -26,10 +25,7 @@ Mt310s2SenseInterface::Mt310s2SenseInterface(cSCPI *scpiInterface,
                                              cSenseSettings* senseSettings,
                                              SystemInfo *systemInfo,
                                              AbstractFactoryI2cCtrlPtr ctrlFactory) :
-    cResource(scpiInterface),
-    AdjustmentEeprom(i2cSettings->getDeviceNode(),
-              i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress),
-              I2cMultiplexerFactory::createNullMuxer()),
+    SenseInterfaceCommon(scpiInterface, i2cSettings),
     m_systemInfo(systemInfo),
     m_ctrlFactory(ctrlFactory)
 {
