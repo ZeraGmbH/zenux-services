@@ -48,12 +48,8 @@ private slots:
     void notifySense();
 
 private:
-    QString scpiReadSenseGroupCatalog(QString& scpi) override;
-    QString m_InitSenseAdjData(QString& sInput);
-    QString m_ComputeSenseAdjData(QString& sInput);
-    QString scpiReadAdjStatus(QString& sInput);
-
     // COM specifics
+    QString scpiReadSenseGroupCatalog(QString& scpi) override;
     RangeAdjInterface* createJustScpiInterfaceWithAtmelPermission() override;
     void scpiReadWriteMMode(cProtonetCommand* protoCmd) override;
     enum SetModeModeResult {

@@ -45,6 +45,11 @@ protected:
     QString scpiReadVersion(QString& scpi);
     QString m_ReadMModeCatalog(QString& scpi);
     QString m_ReadSenseChannelCatalog(QString& scpi);
+
+    QString m_InitSenseAdjData(QString& sInput);
+    QString m_ComputeSenseAdjData(QString& sInput);
+    QString scpiReadAdjStatus(QString& sInput);
+
     void setNotifierSenseMMode();
     void setNotifierSenseChannelCat();
     QStringList getSenseModesSortedById();

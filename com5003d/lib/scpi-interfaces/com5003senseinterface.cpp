@@ -569,57 +569,6 @@ QString Com5003SenseInterface::scpiReadSenseGroupCatalog(QString &scpi)
         return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-QString Com5003SenseInterface::m_InitSenseAdjData(QString &sInput)
-{
-    cSCPICommand cmd = sInput;
-    // cmd.isCommand(0) is not correct but we leave it for compatibility
-    if ( cmd.isCommand(0) || (cmd.isCommand(1) && (cmd.getParam(0) == ""))) {
-        bool enable;
-        if (m_ctrlFactory->getPermissionCheckController()->hasPermission(enable)) {
-            if (enable) {
-                for (int i = 0; i < m_channelList.count(); i++)
-                    m_channelList.at(i)->initJustData();
-                return ZSCPI::scpiAnswer[ZSCPI::ack];
-            }
-            else
-                return ZSCPI::scpiAnswer[ZSCPI::erraut];
-        }
-        else
-            return ZSCPI::scpiAnswer[ZSCPI::errexec];
-    }
-    else
-        return ZSCPI::scpiAnswer[ZSCPI::nak];
-}
-
-QString Com5003SenseInterface::m_ComputeSenseAdjData(QString &sInput)
-{
-    cSCPICommand cmd = sInput;
-    if ( cmd.isCommand(1) && (cmd.getParam(0) == "") ) {
-        bool enable;
-        if (m_ctrlFactory->getPermissionCheckController()->hasPermission(enable)) {
-            if (enable) {
-                for (int i = 0; i < m_channelList.count(); i++)
-                    m_channelList.at(i)->computeJustData();
-                return ZSCPI::scpiAnswer[ZSCPI::ack];
-            }
-            else
-               return ZSCPI::scpiAnswer[ZSCPI::erraut];
-        }
-        else
-            return ZSCPI::scpiAnswer[ZSCPI::errexec];
-    }
-    else
-        return ZSCPI::scpiAnswer[ZSCPI::nak];
-}
-
-QString Com5003SenseInterface::scpiReadAdjStatus(QString &sInput)
-{
-    cSCPICommand cmd = sInput;
-    if (cmd.isQuery())
-        return  QString("%1").arg(getAdjustmentStatus());
-    return ZSCPI::scpiAnswer[ZSCPI::nak];
-}
-
 RangeAdjInterface *Com5003SenseInterface::createJustScpiInterfaceWithAtmelPermission()
 {
     return new RangeAdjInterface(m_pSCPIInterface, AdjustScpiValueFormatterFactory::createCom5003AdjFormatter());
