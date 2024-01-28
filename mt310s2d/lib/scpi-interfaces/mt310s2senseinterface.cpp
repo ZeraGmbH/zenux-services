@@ -697,23 +697,6 @@ RangeAdjInterface *Mt310s2SenseInterface::createJustScpiInterfaceWithAtmelPermis
     return new RangeAdjInterface(m_pSCPIInterface, AdjustScpiValueFormatterFactory::createMt310s2AdjFormatter());
 }
 
-void Mt310s2SenseInterface::setNotifierSenseMMode()
-{
-    m_notifierSenseMMode = m_currSenseMode;
-}
-
-void Mt310s2SenseInterface::setNotifierSenseChannelCat()
-{
-    // only prepared for !!! since we don't have hot plug for measuring channels yet
-    int i;
-    QString s;
-    for (i = 0; i < m_channelList.count()-1; i++ ) {
-        s += m_channelList.at(i)->getName() + ";";
-    }
-    s += m_channelList.at(i)->getName();
-    m_notifierSenseChannelCat = s;
-}
-
 bool Mt310s2SenseInterface::setSenseMode(QString sMode)
 {
     if (m_availSenseModesHash.contains(sMode)) {

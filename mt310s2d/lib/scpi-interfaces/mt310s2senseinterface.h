@@ -86,11 +86,9 @@ private:
     QString m_InitSenseAdjData(QString& sInput);
     QString m_ComputeSenseAdjData(QString& sInput);
     QString scpiReadAdjStatus(QString& sInput);
-    RangeAdjInterface* createJustScpiInterfaceWithAtmelPermission();
-    void setNotifierSenseMMode();
-    void setNotifierSenseChannelCat();
 
     // MT specifics
+    RangeAdjInterface* createJustScpiInterfaceWithAtmelPermission() override;
     void scpiReadWriteMMode(cProtonetCommand* protoCmd) override;
     bool setSenseMode(QString mode);
 };

@@ -729,21 +729,6 @@ RangeAdjInterface *Com5003SenseInterface::createJustScpiInterfaceWithAtmelPermis
     return new RangeAdjInterface(m_pSCPIInterface, AdjustScpiValueFormatterFactory::createCom5003AdjFormatter());
 }
 
-void Com5003SenseInterface::setNotifierSenseMMode()
-{
-    m_notifierSenseMMode = m_currSenseMode;
-}
-
-void Com5003SenseInterface::setNotifierSenseChannelCat()
-{
-    int i;
-    QString s;
-    for (i = 0; i < m_channelList.count()-1; i++ )
-        s += m_channelList.at(i)->getName() + ";";
-    s += m_channelList.at(i)->getName();
-    m_notifierSenseChannelCat = s;
-}
-
 void Com5003SenseInterface::unregisterSense()
 {
     SenseChannelCommon* pChannel;

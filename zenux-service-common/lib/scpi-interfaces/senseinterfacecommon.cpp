@@ -15,3 +15,19 @@ SenseInterfaceCommon::SenseInterfaceCommon(cSCPI *scpiInterface,
     m_ctrlFactory(ctrlFactory)
 {
 }
+
+void SenseInterfaceCommon::setNotifierSenseMMode()
+{
+    m_notifierSenseMMode = m_currSenseMode;
+}
+
+void SenseInterfaceCommon::setNotifierSenseChannelCat()
+{
+    // only prepared for !!! since we don't have hot plug for measuring channels yet
+    int i;
+    QString s;
+    for (i = 0; i < m_channelList.count()-1; i++ )
+        s += m_channelList.at(i)->getName() + ";";
+    s += m_channelList.at(i)->getName();
+    m_notifierSenseChannelCat = s;
+}
