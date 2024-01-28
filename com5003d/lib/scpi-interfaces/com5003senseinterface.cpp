@@ -145,18 +145,6 @@ void Com5003SenseInterface::initSCPIConnection(QString leadingNodes)
     addDelegate(cmdParent, "ADJUSTMENT", SCPI::isQuery, m_pSCPIInterface, SenseSystem::cmdStatAdjustment);
 }
 
-SenseChannelCommon *Com5003SenseInterface::getChannel(QString &name)
-{
-    SenseChannelCommon *channelFound = nullptr;
-    for(auto channel : qAsConst(m_channelList)) {
-        if(channel->getName() == name) {
-            channelFound = channel;
-            break;
-        }
-    }
-    return channelFound;
-}
-
 void Com5003SenseInterface::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
 {
     switch (cmdCode)

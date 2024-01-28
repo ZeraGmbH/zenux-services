@@ -47,6 +47,40 @@ quint8 SenseInterfaceCommon::getAdjustmentStatus()
     return adjustmentStatusMask;
 }
 
+SenseChannelCommon *SenseInterfaceCommon::getChannel(QString &name)
+{
+    SenseChannelCommon *channelFound = nullptr;
+    for(auto channel : qAsConst(m_channelList)) {
+        if(channel->getName() == name) {
+            channelFound = channel;
+            break;
+        }
+    }
+    return channelFound;
+}
+
+QString SenseInterfaceCommon::getChannelSystemName(quint16 ctrlChannel)
+{
+    QString nameFound;
+    for(auto channel : qAsConst(m_channelList)) {
+        if(channel->getCtrlChannel() == ctrlChannel) {
+            nameFound = channel->getName();
+            break;
+        }
+    }
+    return nameFound;
+}
+
+SenseRangeCommon *SenseInterfaceCommon::getRange(QString channelName, QString rangeName)
+{
+    SenseRangeCommon* rangeFound = nullptr;
+    SenseChannelCommon *channelFound = getChannel(channelName);
+    if(channelFound) {
+        rangeFound = channelFound->getRange(rangeName);
+    }
+    return rangeFound;
+}
+
 void SenseInterfaceCommon::computeSenseAdjData()
 {
     for(auto channel : qAsConst(m_channelList))

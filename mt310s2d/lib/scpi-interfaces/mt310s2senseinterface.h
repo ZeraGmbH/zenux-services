@@ -60,10 +60,6 @@ public:
                           SystemInfo *systemInfo,
                           AbstractFactoryI2cCtrlPtr ctrlFactory);
     virtual void initSCPIConnection(QString leadingNoMModedes) override;
-    SenseChannelCommon *getChannel(QString& name);
-    QString getChannelSystemName(quint16 ctrlChannel);
-    SenseRangeCommon* getRange(QString channelName, QString rangeName);
-
     QString exportXMLString(int indent = 1) override;
 
 protected:
