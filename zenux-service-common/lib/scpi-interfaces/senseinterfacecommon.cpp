@@ -93,6 +93,72 @@ void SenseInterfaceCommon::registerResource(RMConnection *rmConnection, quint16 
                                                                    .arg(port));
 }
 
+void SenseInterfaceCommon::initSCPIConnection(QString leadingNodes)
+{
+    ensureTrailingColonOnNonEmptyParentNodes(leadingNodes);
+    addDelegate(QString("%1SENSE").arg(leadingNodes),"VERSION",SCPI::isQuery, m_pSCPIInterface, SenseSystem::cmdVersion);
+    addDelegate(QString("%1SENSE").arg(leadingNodes),"MMODE",SCPI::isQuery | SCPI::isCmdwP , m_pSCPIInterface, SenseSystem::cmdMMode, &m_notifierSenseMMode);
+    addDelegate(QString("%1SENSE:MMODE").arg(leadingNodes),"CATALOG",SCPI::isQuery, m_pSCPIInterface, SenseSystem::cmdMModeCat);
+    addDelegate(QString("%1SENSE:CHANNEL").arg(leadingNodes),"CATALOG", SCPI::isQuery, m_pSCPIInterface, SenseSystem::cmdChannelCat, &m_notifierSenseChannelCat);
+    addDelegate(QString("%1SENSE:GROUP").arg(leadingNodes),"CATALOG", SCPI::isQuery, m_pSCPIInterface, SenseSystem::cmdGroupCat);
+    addDelegate(QString("%1SENSE:CORRECTION").arg(leadingNodes),"INIT", SCPI::isCmd, m_pSCPIInterface, SenseSystem::initAdjData);
+    addDelegate(QString("%1SENSE:CORRECTION").arg(leadingNodes),"COMPUTE", SCPI::isCmd, m_pSCPIInterface, SenseSystem::computeAdjData);
+    for(auto channel : qAsConst(m_channelList)) {
+        // we also must connect the signals for notification and for output
+        connect(channel, &ScpiConnection::sendNotification, this, &ScpiConnection::sendNotification);
+        connect(channel, &ScpiConnection::cmdExecutionDone, this, &ScpiConnection::cmdExecutionDone);
+        connect(this, &ScpiConnection::removingSubscribers, channel, &ScpiConnection::onRemoveSubscribers);
+        channel->initSCPIConnection(QString("%1SENSE").arg(leadingNodes));
+    }
+    QString cmdParent = QString("STATUS:PCB");
+    addDelegate(cmdParent, "ADJUSTMENT", SCPI::isQuery, m_pSCPIInterface, SenseSystem::cmdStatAdjustment);
+}
+
+void SenseInterfaceCommon::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
+{
+    switch (cmdCode)
+    {
+    case SenseSystem::cmdVersion:
+        protoCmd->m_sOutput = scpiReadVersion(protoCmd->m_sInput);
+        if (protoCmd->m_bwithOutput)
+            emit cmdExecutionDone(protoCmd);
+        break;
+    case SenseSystem::cmdMMode:
+        scpiReadWriteMMode(protoCmd);
+        break;
+    case SenseSystem::cmdMModeCat:
+        protoCmd->m_sOutput = scpiReadMModeCatalog(protoCmd->m_sInput);
+        if (protoCmd->m_bwithOutput)
+            emit cmdExecutionDone(protoCmd);
+        break;
+    case SenseSystem::cmdChannelCat:
+        protoCmd->m_sOutput = scpiReadSenseChannelCatalog(protoCmd->m_sInput);
+        if (protoCmd->m_bwithOutput)
+            emit cmdExecutionDone(protoCmd);
+        break;
+    case SenseSystem::cmdGroupCat:
+        protoCmd->m_sOutput = scpiReadSenseGroupCatalog(protoCmd->m_sInput);
+        if (protoCmd->m_bwithOutput)
+            emit cmdExecutionDone(protoCmd);
+        break;
+    case SenseSystem::initAdjData:
+        protoCmd->m_sOutput = scpiInitSenseAdjDataAllChannelRanges(protoCmd->m_sInput);
+        if (protoCmd->m_bwithOutput)
+            emit cmdExecutionDone(protoCmd);
+        break;
+    case SenseSystem::computeAdjData:
+        protoCmd->m_sOutput = scpiComputeSenseAdjDataAllChannelRanges(protoCmd->m_sInput);
+        if (protoCmd->m_bwithOutput)
+            emit cmdExecutionDone(protoCmd);
+        break;
+    case SenseSystem::cmdStatAdjustment:
+        protoCmd->m_sOutput = scpiReadAdjStatus(protoCmd->m_sInput);
+        if (protoCmd->m_bwithOutput)
+            emit cmdExecutionDone(protoCmd);
+        break;
+    }
+}
+
 QString SenseInterfaceCommon::scpiReadVersion(QString &scpi)
 {
     cSCPICommand cmd = scpi;
