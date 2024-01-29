@@ -2,7 +2,6 @@
 #define SENSEINTERFACE_H
 
 #include "i2csettings.h"
-#include "adjustmenteeprom.h"
 #include "rangeadjinterface.h"
 #include "senseinterfacecommon.h"
 #include "systeminfo.h"
@@ -18,7 +17,7 @@ public:
                           cSenseSettings *senseSettings,
                           SystemInfo *systemInfo,
                           AbstractFactoryI2cCtrlPtr ctrlFactory);
-    QString exportXMLString(int indent = 1) override;
+// MT specifics only
     int rangeFlagsDevice() override;
     int rangeFlagsIntern() override;
     int rangeFlagsExtern() override;
@@ -28,9 +27,10 @@ protected:
     void exportAdjData(QDataStream& stream, QDateTime dateTimeWrite) override;
 
 private:
-    // MT specifics
+    QString getServerVersion() override;
     QString getPcbName() override;
     QString getXmlType() override;
+    bool isRangePartOfAdjXmlExport(SenseRangeCommon* range) override;
     RangeAdjInterface* createJustScpiInterfaceWithAtmelPermission() override;
     QString scpiReadSenseGroupCatalog(QString& scpi) override;
     void handleScpiReadWriteMMode(cProtonetCommand* protoCmd) override;

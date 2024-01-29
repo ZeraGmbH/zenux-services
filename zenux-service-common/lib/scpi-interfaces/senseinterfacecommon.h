@@ -42,16 +42,20 @@ public:
     virtual int rangeFlagsExtern() = 0;
     virtual int rangeFlagsExternDc() = 0; // maybe this can go - for now just compatibility
     virtual void initSCPIConnection(QString leadingNodes) override;
+    QString exportXMLString(int indent = 1) override;
 
 protected:
+    virtual QString getServerVersion() = 0;
+    virtual QString getPcbName() = 0;
+
     virtual RangeAdjInterface* createJustScpiInterfaceWithAtmelPermission() = 0;
     virtual void handleScpiReadWriteMMode(cProtonetCommand* protoCmd) = 0;
     virtual QString scpiReadSenseGroupCatalog(QString& scpi) = 0;
 
     bool importAdjData(QDataStream& stream) override;
 
-    virtual QString getPcbName() = 0;
     virtual QString getXmlType() = 0;
+    virtual bool isRangePartOfAdjXmlExport(SenseRangeCommon* range) = 0;
     bool importXMLDocument(QDomDocument* qdomdoc) override;
 
     void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;

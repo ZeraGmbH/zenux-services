@@ -135,102 +135,6 @@ Com5003SenseInterface::Com5003SenseInterface(cSCPI *scpiInterface,
     connect(&m_NotifySenseState, &QAbstractState::entered, this, &Com5003SenseInterface::notifySense);
 }
 
-QString Com5003SenseInterface::exportXMLString(int indent)
-{
-    QDomDocument justqdom(QString("%1AdjustmentData").arg(LeiterkartenName));
-
-    QDomElement pcbtag = justqdom.createElement("PCB");
-    justqdom.appendChild( pcbtag );
-
-    QDomElement tag = justqdom.createElement( "Type" );
-    pcbtag.appendChild( tag );
-    QDomText t = justqdom.createTextNode(LeiterkartenName);
-    tag.appendChild( t );
-
-    tag = justqdom.createElement("VersionNumber");
-    pcbtag.appendChild( tag );
-    t = justqdom.createTextNode(m_systemInfo->getDeviceVersion() );
-    tag.appendChild( t );
-
-    tag = justqdom.createElement("SerialNumber");
-    pcbtag.appendChild( tag );
-    t = justqdom.createTextNode(m_systemInfo->getSerialNumber());
-    tag.appendChild( t );
-
-    tag = justqdom.createElement("Date");
-    pcbtag.appendChild( tag );
-    QDateTime currDateTime = QDateTime::currentDateTime();
-    QDate d = currDateTime.date();
-    t = justqdom.createTextNode(d.toString(Qt::TextDate));
-    tag.appendChild( t );
-
-    tag = justqdom.createElement("Time");
-    pcbtag.appendChild( tag );
-    QTime ti = currDateTime.time();
-    t = justqdom.createTextNode(ti.toString(Qt::TextDate));
-    tag.appendChild( t );
-
-    QDomElement adjtag = justqdom.createElement("Adjustment");
-    pcbtag.appendChild( adjtag );
-
-    QDomElement chksumtag = justqdom.createElement("Chksum");
-    adjtag.appendChild(chksumtag);
-    t = justqdom.createTextNode(QString("0x%1").arg(getChecksum(), 0, 16));
-    chksumtag.appendChild(t);
-
-    QDomElement typeTag = justqdom.createElement("Sense");
-    adjtag.appendChild(typeTag);
-
-    for(auto channel : qAsConst(m_channelList)) {
-        QDomText t;
-        QDomElement chtag = justqdom.createElement("Channel");
-        typeTag.appendChild( chtag );
-        QDomElement nametag = justqdom.createElement("Name");
-        chtag.appendChild(nametag);
-        t = justqdom.createTextNode(channel->getName());
-        nametag.appendChild( t );
-
-        for(auto range : qAsConst(channel->getRangeList())) {
-            // This was stolen from MT and that just stores direct ranges (no clamp ranges)
-            // Once COM supports clamps, we have to revisit
-            if (true) {
-                QDomElement rtag = justqdom.createElement("Range");
-                chtag.appendChild( rtag );
-
-                nametag = justqdom.createElement("Name");
-                rtag.appendChild(nametag);
-
-                t = justqdom.createTextNode(range->getRangeName());
-                nametag.appendChild( t );
-
-                QDomElement gpotag;
-                const QStringList listAdjTypes = QStringList() << "Gain" << "Phase" << "Offset";
-                for(const auto &adjType : listAdjTypes) {
-                    gpotag = justqdom.createElement(adjType);
-                    rtag.appendChild(gpotag);
-                    JustDataInterface* adjDataInterface = range->getJustData()->getAdjInterface(adjType);
-                    QDomElement tag = justqdom.createElement("Status");
-                    QString jdata = adjDataInterface->SerializeStatus();
-                    t = justqdom.createTextNode(jdata);
-                    gpotag.appendChild(tag);
-                    tag.appendChild(t);
-                    tag = justqdom.createElement("Coefficients");
-                    gpotag.appendChild(tag);
-                    jdata = adjDataInterface->SerializeCoefficients();
-                    t = justqdom.createTextNode(jdata);
-                    tag.appendChild(t);
-                    tag = justqdom.createElement("Nodes");
-                    gpotag.appendChild(tag);
-                    jdata = adjDataInterface->SerializeNodes();
-                    t = justqdom.createTextNode(jdata);
-                    tag.appendChild(t);
-                }
-            }
-        }
-    }
-    return justqdom.toString(indent);
-}
-
 int Com5003SenseInterface::rangeFlagsDevice()
 {
     // not used yet Com5003SenseChannel ctor adapts
@@ -401,6 +305,11 @@ void Com5003SenseInterface::notifySense()
         emit cmdExecutionDone(protoCmd);
 }
 
+QString Com5003SenseInterface::getServerVersion()
+{
+    return ServerVersion;
+}
+
 QString Com5003SenseInterface::getPcbName()
 {
     return LeiterkartenName;
@@ -409,4 +318,11 @@ QString Com5003SenseInterface::getPcbName()
 QString Com5003SenseInterface::getXmlType()
 {
     return QString("%1AdjustmentData").arg(getPcbName());
+}
+
+bool Com5003SenseInterface::isRangePartOfAdjXmlExport(SenseRangeCommon *range)
+{
+    Q_UNUSED(range)
+    // Once COM supports clamps, we have to revisit
+    return true;
 }
