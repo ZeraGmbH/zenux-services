@@ -6,7 +6,7 @@
 Mt310s2SystemInterface::Mt310s2SystemInterface(cPCBServer *server,
                                                Mt310s2SystemInfo *systemInfo,
                                                cSenseSettings *senseSettings,
-                                               Mt310s2SenseInterface* senseInterface,
+                                               SenseInterfaceCommon* senseInterface,
                                                AbstractFactoryI2cCtrlPtr ctrlFactory,
                                                HotPluggableControllerContainerPtr hotPluggableControllerContainer) :
     ScpiConnection(server->getSCPIInterface()),

@@ -2,7 +2,7 @@
 #define TESTSERVERFORSENSEINTERFACEMT310S2_H
 
 #include "testpcbserver.h"
-#include "mt310s2senseinterface.h"
+#include "senseinterfacecommon.h"
 #include "mt310s2systeminterface.h"
 #include "clampinterface.h"
 #include "abstractfactoryi2cctrl.h"
@@ -13,7 +13,7 @@ public:
     TestServerForSenseInterfaceMt310s2(AbstractFactoryI2cCtrlPtr ctrlFactory, bool systemInfoMock = false);
     QString getDeviceVersion() { return m_systemInfo->getDeviceVersion(); }
 
-    Mt310s2SenseInterface *getSenseInterface() { return m_senseInterface.get(); }
+    SenseInterfaceCommon *getSenseInterface() { return m_senseInterface.get(); }
     cClampInterface *getClampInterface() { return m_clampInterface.get(); }
     cSenseSettings *getSenseSettings() { return m_senseSettings.get(); }
     I2cSettings *getI2cSettings() { return m_i2cSettings.get(); }
@@ -28,7 +28,7 @@ private:
     
     std::unique_ptr<Mt310s2SystemInfo> m_systemInfo;
 
-    std::unique_ptr<Mt310s2SenseInterface> m_senseInterface;
+    std::unique_ptr<SenseInterfaceCommon> m_senseInterface;
     std::unique_ptr<cClampInterface> m_clampInterface;
 
     std::unique_ptr<Mt310s2SystemInterface> m_systemInterface;

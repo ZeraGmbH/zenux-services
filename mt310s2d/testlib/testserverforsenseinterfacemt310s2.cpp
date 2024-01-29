@@ -1,5 +1,6 @@
 #include "testserverforsenseinterfacemt310s2.h"
 #include "clampfactorytest.h"
+#include "mt310s2senseinterface.h"
 #include "mt310s2systeminfomock.h"
 #include <i2cmultiplexerfactory.h>
 
