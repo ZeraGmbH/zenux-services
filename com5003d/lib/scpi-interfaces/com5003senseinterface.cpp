@@ -490,7 +490,7 @@ Com5003SenseInterface::SetModeModeResult Com5003SenseInterface::setSenseMode(QSt
     return start_statemachine_required;
 }
 
-void Com5003SenseInterface::scpiReadWriteMMode(cProtonetCommand *protoCmd)
+void Com5003SenseInterface::handleScpiReadWriteMMode(cProtonetCommand *protoCmd)
 {
     cSCPICommand cmd = protoCmd->m_sInput;
     if (cmd.isQuery())

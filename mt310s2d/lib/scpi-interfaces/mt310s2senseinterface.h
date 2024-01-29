@@ -33,7 +33,7 @@ private:
     // MT specifics
     RangeAdjInterface* createJustScpiInterfaceWithAtmelPermission() override;
     QString scpiReadSenseGroupCatalog(QString& scpi) override;
-    void scpiReadWriteMMode(cProtonetCommand* protoCmd) override;
+    void handleScpiReadWriteMMode(cProtonetCommand* protoCmd) override;
     bool setSenseMode(QString mode);
 };
 

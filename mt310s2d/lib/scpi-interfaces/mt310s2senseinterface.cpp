@@ -497,7 +497,7 @@ bool Mt310s2SenseInterface::importXMLDocument(QDomDocument* qdomdoc) // n steht 
     return ChksumOK && SenseOK;
 }
 
-void Mt310s2SenseInterface::scpiReadWriteMMode(cProtonetCommand *protoCmd)
+void Mt310s2SenseInterface::handleScpiReadWriteMMode(cProtonetCommand *protoCmd)
 {
     cSCPICommand cmd = protoCmd->m_sInput;
     if (cmd.isQuery())
