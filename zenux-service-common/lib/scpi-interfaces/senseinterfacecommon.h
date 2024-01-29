@@ -48,6 +48,12 @@ protected:
     virtual void handleScpiReadWriteMMode(cProtonetCommand* protoCmd) = 0;
     virtual QString scpiReadSenseGroupCatalog(QString& scpi) = 0;
 
+    bool importAdjData(QDataStream& stream) override;
+
+    virtual QString getPcbName() = 0;
+    virtual QString getXmlType() = 0;
+    bool importXMLDocument(QDomDocument* qdomdoc) override;
+
     void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
     QString scpiReadVersion(QString& scpi);
     QString scpiReadMModeCatalog(QString& scpi);

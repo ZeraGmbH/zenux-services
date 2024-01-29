@@ -28,8 +28,6 @@ public:
 
 protected:
     void exportAdjData(QDataStream& stream, QDateTime dateTimeWrite) override;
-    bool importAdjData(QDataStream& stream) override;
-    bool importXMLDocument(QDomDocument* qdomdoc) override;
 
     // COM specifics
 private slots:
@@ -37,6 +35,8 @@ private slots:
     void registerSense();
     void notifySense();
 private:
+    QString getPcbName() override;
+    QString getXmlType() override;
     RangeAdjInterface* createJustScpiInterfaceWithAtmelPermission() override;
     QString scpiReadSenseGroupCatalog(QString& scpi) override;
     void handleScpiReadWriteMMode(cProtonetCommand* protoCmd) override;
