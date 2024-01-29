@@ -20,6 +20,17 @@
 #include <QDomText>
 #include <QDebug>
 
+namespace SenseSystem
+{
+    enum MMode {
+        modeAC,
+        modeREF,
+    };
+    const QString sVoltageChannelDescription = "Measuring channel 0..480V AC";
+    const QString sCurrentChannelDescription = "Measuring channel 0..160A AC";
+    const QString sReferenceChannelDescription = "Reference channel 0..10V DC";
+}
+
 Com5003SenseInterface::Com5003SenseInterface(cSCPI *scpiInterface,
                                              I2cSettings *i2cSettings,
                                              RMConnection* rmConnection,

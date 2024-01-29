@@ -9,19 +9,6 @@
 #include <QState>
 #include <QFinalState>
 
-namespace SenseSystem
-{
-    enum MMode
-    {
-        modeAC,
-        modeREF,
-    };
-
-    const QString sVoltageChannelDescription = "Measuring channel 0..480V AC";
-    const QString sCurrentChannelDescription = "Measuring channel 0..160A AC";
-    const QString sReferenceChannelDescription = "Reference channel 0..10V DC";
-}
-
 class Com5003SenseInterface : public SenseInterfaceCommon
 {
     Q_OBJECT
