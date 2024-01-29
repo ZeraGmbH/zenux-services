@@ -8,7 +8,7 @@
 
 Com5003SystemInterface::Com5003SystemInterface(cPCBServer *server,
                                                SystemInfo *systemInfo,
-                                               Com5003SenseInterface *senseInterface,
+                                               SenseInterfaceCommon *senseInterface,
                                                AbstractFactoryI2cCtrlPtr ctrlFactory) :
     ScpiConnection(server->getSCPIInterface()),
     m_pMyServer(server),

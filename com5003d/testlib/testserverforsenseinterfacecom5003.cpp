@@ -1,4 +1,5 @@
 #include "testserverforsenseinterfacecom5003.h"
+#include "com5003senseinterface.h"
 #include "testsysteminfo.h"
 
 TestServerForSenseInterfaceCom5003::TestServerForSenseInterfaceCom5003(AbstractFactoryI2cCtrlPtr ctrlFactory, bool systemInfoMock) :

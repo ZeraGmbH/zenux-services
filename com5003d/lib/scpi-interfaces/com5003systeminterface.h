@@ -1,7 +1,7 @@
 #ifndef SYSTEMINTERFACE_H
 #define SYSTEMINTERFACE_H
 
-#include "com5003senseinterface.h"
+#include "senseinterfacecommon.h"
 #include "scpiconnection.h"
 #include "pcbserver.h"
 #include <QList>
@@ -34,7 +34,7 @@ class Com5003SystemInterface: public ScpiConnection
 public:
     Com5003SystemInterface(cPCBServer* server,
                            SystemInfo* systemInfo,
-                           Com5003SenseInterface *senseInterface,
+                           SenseInterfaceCommon *senseInterface,
                            AbstractFactoryI2cCtrlPtr ctrlFactory);
     virtual void initSCPIConnection(QString leadingNodes) override;
 
@@ -64,7 +64,7 @@ private:
 
     cPCBServer* m_pMyServer;
     SystemInfo* m_systemInfo;
-    Com5003SenseInterface *m_senseInterface;
+    SenseInterfaceCommon *m_senseInterface;
     AbstractFactoryI2cCtrlPtr m_ctrlFactory;
     NotificationString m_allCtrlVersion;
     NotificationString m_allPCBVersion;

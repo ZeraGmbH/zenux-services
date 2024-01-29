@@ -5,6 +5,7 @@
 #include "pcbserver.h"
 #include "rmconnection.h"
 #include "fpgasettings.h"
+#include "senseinterfacecommon.h"
 #include "sensesettings.h"
 #include "hkinsettings.h"
 #include "scinsettings.h"
@@ -19,7 +20,6 @@ class QStateMachine;
 class QState;
 class cStatusInterface;
 class Com5003SystemInterface;
-class Com5003SenseInterface;
 class cSamplingInterface;
 class FOutGroupResourceAndInterface;
 class FInGroupResourceAndInterface;
@@ -74,7 +74,7 @@ private:
     FPGASettings* m_fpgaSettings = nullptr;
 
     Com5003SystemInterface* m_pSystemInterface = nullptr;
-    Com5003SenseInterface* m_pSenseInterface = nullptr;
+    SenseInterfaceCommon* m_pSenseInterface = nullptr;
     cSamplingInterface* m_pSamplingInterface = nullptr;
     FOutGroupResourceAndInterface* m_foutInterface = nullptr;
     FInGroupResourceAndInterface* m_pFRQInputInterface = nullptr;
