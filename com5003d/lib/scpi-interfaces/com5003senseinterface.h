@@ -20,7 +20,7 @@ public:
                           cSenseSettings* senseSettings,
                           SystemInfo *systemInfo,
                           AbstractFactoryI2cCtrlPtr ctrlFactory);
-    QString exportXMLString(int indent = 1) override;
+// COM specifics only
     int rangeFlagsDevice() override;
     int rangeFlagsIntern() override;
     int rangeFlagsExtern() override;
@@ -29,14 +29,15 @@ public:
 protected:
     void exportAdjData(QDataStream& stream, QDateTime dateTimeWrite) override;
 
-    // COM specifics
 private slots:
     void unregisterSense();
     void registerSense();
     void notifySense();
 private:
+    QString getServerVersion() override;
     QString getPcbName() override;
     QString getXmlType() override;
+    bool isRangePartOfAdjXmlExport(SenseRangeCommon* range) override;
     RangeAdjInterface* createJustScpiInterfaceWithAtmelPermission() override;
     QString scpiReadSenseGroupCatalog(QString& scpi) override;
     void handleScpiReadWriteMMode(cProtonetCommand* protoCmd) override;
