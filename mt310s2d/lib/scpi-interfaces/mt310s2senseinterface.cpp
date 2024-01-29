@@ -1,6 +1,5 @@
 #include "mt310s2senseinterface.h"
 #include "mt310s2dglobal.h"
-#include "justdatainterface.h"
 #include "adjustmentflags.h"
 #include "mt310s2sensechannel.h"
 #include "mt310s2senserange.h"
@@ -161,30 +160,6 @@ Mt310s2SenseInterface::Mt310s2SenseInterface(cSCPI *scpiInterface,
     setNotifierSenseChannelCat(); // only prepared for !!! since we don't have hot plug for measuring channels yet
 }
 
-void Mt310s2SenseInterface::exportAdjData(QDataStream &stream, QDateTime dateTimeWrite)
-{
-    // ab version v1.02
-    stream << "ServerVersion";
-    stream << ServerVersion;
-    stream << m_systemInfo->getDeviceName().toStdString().c_str(); // leiterkarten name aus atmel gelesen
-    stream << m_systemInfo->getDeviceVersion().toStdString().c_str(); // geräte name versionsnummern ...
-    stream << m_systemInfo->getSerialNumber().toStdString().c_str(); // seriennummer
-    stream << dateTimeWrite.toString(Qt::TextDate).toStdString().c_str(); // datum,uhrzeit
-    for(auto channel : qAsConst(m_channelList)) {
-        for(auto range : channel->getRangeList()) {
-            if ((range->getMMask() & Direct)> 0) {
-                QString spec = QString("%1:%2:%3")
-                     .arg("SENSE")
-                     .arg(channel->getName())
-                     .arg(range->getRangeName());
-
-                stream << spec.toLatin1();
-                range->getJustData()->Serialize(stream);
-            }
-        }
-    }
-}
-
 QString Mt310s2SenseInterface::getPcbName()
 {
     return LeiterkartenName;
@@ -220,7 +195,7 @@ int Mt310s2SenseInterface::rangeFlagsExternDc()
     return rangeFlagsExtern() | modeDC;
 }
 
-QString Mt310s2SenseInterface::getServerVersion()
+const char *Mt310s2SenseInterface::getAdjExportedVersion()
 {
     return ServerVersion;
 }

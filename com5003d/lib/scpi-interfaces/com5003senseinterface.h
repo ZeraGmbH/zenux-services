@@ -1,9 +1,8 @@
 #ifndef SENSEINTERFACE_H
 #define SENSEINTERFACE_H
 
-#include "adjustmenteeprom.h"
-#include "ethsettings.h"
 #include "senseinterfacecommon.h"
+#include "ethsettings.h"
 #include <QList>
 #include <QStateMachine>
 #include <QState>
@@ -25,16 +24,12 @@ public:
     int rangeFlagsIntern() override;
     int rangeFlagsExtern() override;
     int rangeFlagsExternDc() override;
-
-protected:
-    void exportAdjData(QDataStream& stream, QDateTime dateTimeWrite) override;
-
 private slots:
     void unregisterSense();
     void registerSense();
     void notifySense();
 private:
-    QString getServerVersion() override;
+    const char* getAdjExportedVersion() override;
     QString getPcbName() override;
     QString getXmlType() override;
     bool isRangePartOfAdjXmlExport(SenseRangeCommon* range) override;

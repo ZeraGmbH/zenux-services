@@ -187,6 +187,29 @@ bool SenseInterfaceCommon::importAdjData(QDataStream &stream)
     return (true);
 }
 
+void SenseInterfaceCommon::exportAdjData(QDataStream &stream, QDateTime dateTimeWrite)
+{
+    stream << "ServerVersion";
+    stream << getAdjExportedVersion();
+    stream << m_systemInfo->getDeviceName().toStdString().c_str(); // leiterkarten name aus atmel gelesen
+    stream << m_systemInfo->getDeviceVersion().toStdString().c_str(); // geräte name versionsnummern ...
+    stream << m_systemInfo->getSerialNumber().toStdString().c_str(); // seriennummer
+    stream << dateTimeWrite.toString(Qt::TextDate).toStdString().c_str(); // datum,uhrzeit
+    for(auto channel : qAsConst(m_channelList)) {
+        for(auto range : channel->getRangeList()) {
+            if (isRangePartOfAdjXmlExport(range)) {
+                QString spec = QString("%1:%2:%3")
+                                   .arg("SENSE")
+                                   .arg(channel->getName())
+                                   .arg(range->getRangeName());
+
+                stream << spec.toLatin1();
+                range->getJustData()->Serialize(stream);
+            }
+        }
+    }
+}
+
 bool SenseInterfaceCommon::importXMLDocument(QDomDocument* qdomdoc)
 {
     QDomDocumentType TheDocType = qdomdoc->doctype ();

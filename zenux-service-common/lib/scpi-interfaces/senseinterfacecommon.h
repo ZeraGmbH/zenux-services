@@ -45,7 +45,7 @@ public:
     QString exportXMLString(int indent = 1) override;
 
 protected:
-    virtual QString getServerVersion() = 0;
+    virtual const char *getAdjExportedVersion() = 0; // stored from #define forces us using const char*
     virtual QString getPcbName() = 0;
 
     virtual RangeAdjInterface* createJustScpiInterfaceWithAtmelPermission() = 0;
@@ -53,6 +53,7 @@ protected:
     virtual QString scpiReadSenseGroupCatalog(QString& scpi) = 0;
 
     bool importAdjData(QDataStream& stream) override;
+    void exportAdjData(QDataStream& stream, QDateTime dateTimeWrite) override;
 
     virtual QString getXmlType() = 0;
     virtual bool isRangePartOfAdjXmlExport(SenseRangeCommon* range) = 0;

@@ -159,32 +159,6 @@ int Com5003SenseInterface::rangeFlagsExternDc()
     return 0;
 }
 
-void Com5003SenseInterface::exportAdjData(QDataStream &stream, QDateTime dateTimeWrite)
-{
-    // ab version v1.02
-    stream << "ServerVersion";
-    stream << ServerVersion;
-    stream << m_systemInfo->getDeviceName().toStdString().c_str(); // leiterkarten name aus atmel gelesen
-    stream << m_systemInfo->getDeviceVersion().toStdString().c_str(); // geräte name versionsnummern ...
-    stream << m_systemInfo->getSerialNumber().toStdString().c_str(); // seriennummer
-    stream << dateTimeWrite.toString(Qt::TextDate).toStdString().c_str(); // datum,uhrzeit
-    for(auto channel : qAsConst(m_channelList)) {
-        for(auto range : channel->getRangeList()) {
-            // This was stolen from MT and that just stores direct ranges (no clamp ranges)
-            // Once COM supports clamps, we have to revisit
-            if (true) {
-                QString spec = QString("%1:%2:%3")
-                                   .arg("SENSE")
-                                   .arg(channel->getName())
-                                   .arg(range->getRangeName());
-
-                stream << spec.toLatin1();
-                range->getJustData()->Serialize(stream);
-            }
-        }
-    }
-}
-
 Com5003SenseInterface::SetModeModeResult Com5003SenseInterface::setSenseMode(QString mode)
 {
     if(mode == m_currSenseMode)
@@ -305,7 +279,7 @@ void Com5003SenseInterface::notifySense()
         emit cmdExecutionDone(protoCmd);
 }
 
-QString Com5003SenseInterface::getServerVersion()
+const char *Com5003SenseInterface::getAdjExportedVersion()
 {
     return ServerVersion;
 }
