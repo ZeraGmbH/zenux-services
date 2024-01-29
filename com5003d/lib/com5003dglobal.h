@@ -1,5 +1,3 @@
-// globale definition
-
 #ifndef COM5003DGLOBAL_H
 #define COM5003DGLOBAL_H
 

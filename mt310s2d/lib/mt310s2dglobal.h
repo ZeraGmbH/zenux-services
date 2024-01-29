@@ -1,5 +1,3 @@
-// globale definition
-
 #ifndef MT310S2DGLOBAL_H
 #define MT310S2DGLOBAL_H
 
@@ -9,7 +7,6 @@
 #define LeiterkartenName "ADW5743"
 #define ServerName "mt310s2d"
 #define ServerVersion "V1.01"
-#define defaultProtoBufServerPort 6307
 
 enum atmelInterrupts
 {
@@ -22,14 +19,6 @@ enum atmelInterrupts
     overloadInterrupt_U3,
     overloadInterrupt_U4,
     clampstatusInterrupt
-};
-
-enum atmelSysCntrlInterrupts
-{
-    logMessageInterrupt,
-    deviceErrorInterrup,
-    extensionPackInterrupt,
-    accumulatorInterrupt
 };
 
 #endif
