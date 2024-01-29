@@ -37,6 +37,10 @@ public:
     SenseRangeCommon* getRange(QString channelName, QString rangeName);
     void computeSenseAdjData();
     void registerResource(RMConnection *rmConnection, quint16 port) override;
+    virtual int rangeFlagsDevice() = 0;
+    virtual int rangeFlagsIntern() = 0;
+    virtual int rangeFlagsExtern() = 0;
+    virtual int rangeFlagsExternDc() = 0; // maybe this can go - for now just compatibility
 
 protected:
     virtual RangeAdjInterface* createJustScpiInterfaceWithAtmelPermission() = 0;
