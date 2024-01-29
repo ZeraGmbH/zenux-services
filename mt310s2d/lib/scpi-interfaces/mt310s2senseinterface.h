@@ -18,7 +18,6 @@ public:
                           cSenseSettings *senseSettings,
                           SystemInfo *systemInfo,
                           AbstractFactoryI2cCtrlPtr ctrlFactory);
-    virtual void initSCPIConnection(QString leadingNoMModedes) override;
     QString exportXMLString(int indent = 1) override;
     int rangeFlagsDevice() override;
     int rangeFlagsIntern() override;
@@ -29,7 +28,6 @@ protected:
     void exportAdjData(QDataStream& stream, QDateTime dateTimeWrite) override;
     bool importAdjData(QDataStream& stream) override;
     bool importXMLDocument(QDomDocument* qdomdoc) override;
-    void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
 
 private:
     // MT specifics

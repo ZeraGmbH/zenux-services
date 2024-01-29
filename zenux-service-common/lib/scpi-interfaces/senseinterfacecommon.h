@@ -41,11 +41,14 @@ public:
     virtual int rangeFlagsIntern() = 0;
     virtual int rangeFlagsExtern() = 0;
     virtual int rangeFlagsExternDc() = 0; // maybe this can go - for now just compatibility
+    virtual void initSCPIConnection(QString leadingNodes) override;
 
 protected:
     virtual RangeAdjInterface* createJustScpiInterfaceWithAtmelPermission() = 0;
     virtual void scpiReadWriteMMode(cProtonetCommand* protoCmd) = 0;
     virtual QString scpiReadSenseGroupCatalog(QString& scpi) = 0;
+
+    void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
     QString scpiReadVersion(QString& scpi);
     QString scpiReadMModeCatalog(QString& scpi);
     QString scpiReadSenseChannelCatalog(QString& scpi);
