@@ -1,12 +1,7 @@
 #ifndef SENSEINTERFACE_H
 #define SENSEINTERFACE_H
 
-#include "i2csettings.h"
-#include "rangeadjinterface.h"
 #include "senseinterfacecommon.h"
-#include "systeminfo.h"
-#include <QList>
-#include <QHash>
 
 class Mt310s2SenseInterface : public SenseInterfaceCommon
 {
@@ -22,12 +17,8 @@ public:
     int rangeFlagsIntern() override;
     int rangeFlagsExtern() override;
     int rangeFlagsExternDc() override;
-
-protected:
-    void exportAdjData(QDataStream& stream, QDateTime dateTimeWrite) override;
-
 private:
-    QString getServerVersion() override;
+    const char* getAdjExportedVersion() override;
     QString getPcbName() override;
     QString getXmlType() override;
     bool isRangePartOfAdjXmlExport(SenseRangeCommon* range) override;
