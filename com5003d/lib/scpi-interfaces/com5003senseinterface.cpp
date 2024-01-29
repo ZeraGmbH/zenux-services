@@ -374,6 +374,29 @@ QString Com5003SenseInterface::exportXMLString(int indent)
     return justqdom.toString(indent);
 }
 
+int Com5003SenseInterface::rangeFlagsDevice()
+{
+    // not used yet Com5003SenseChannel ctor adapts
+    return 0;
+}
+
+int Com5003SenseInterface::rangeFlagsIntern()
+{
+    // not used yet no clamp plugs
+    return 0;
+}
+
+int Com5003SenseInterface::rangeFlagsExtern()
+{
+    // not used yet no clamps supported
+    return 0;
+}
+
+int Com5003SenseInterface::rangeFlagsExternDc()
+{
+    // not used yet no clamps supported
+    return 0;
+}
 
 void Com5003SenseInterface::exportAdjData(QDataStream &stream, QDateTime dateTimeWrite)
 {

@@ -63,7 +63,7 @@ private:
     void addSenseInterface();
     void addSystAdjInterface();
     void addSystAdjInterfaceChannel(QString channelName);
-    void createLEM1000VRanges(const PermissionStructAdj &permissionsOffsetAllowedAlways, quint16 dcCommonMask);
+    void createLEM1000VRanges(const PermissionStructAdj &permissionsOffsetAllowedAlways);
     SenseRangeCommon* getRange(QString name);
     ClampTypes readClampType();
     void removeAllRanges();

@@ -22,6 +22,10 @@ public:
                           AbstractFactoryI2cCtrlPtr ctrlFactory);
     virtual void initSCPIConnection(QString leadingNodes) override;
     QString exportXMLString(int indent = 1) override;
+    int rangeFlagsDevice() override;
+    int rangeFlagsIntern() override;
+    int rangeFlagsExtern() override;
+    int rangeFlagsExternDc() override;
 
 protected:
     void exportAdjData(QDataStream& stream, QDateTime dateTimeWrite) override;

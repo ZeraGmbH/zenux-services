@@ -1,10 +1,24 @@
 #include "test_regression_sense_range_mt310s2.h"
 #include "mt310s2senserange.h"
-#include "mt310s2senseinterface.h"
 #include "zscpi_response_definitions.h"
 #include <QTest>
 
 QTEST_MAIN(test_regression_sense_range_mt310s2);
+
+// These flags are used at the time of writing. No problem if these change at
+// Mt310s2SenseInterface: We are interested to find values injected
+enum SensorType {
+    Direct = 0x100,
+    Clamp = 0x200
+};
+enum MMode
+{
+    modeAC = 1,
+    modeHF = 2,
+    modeDC = 4,
+    modeADJ = 8
+};
+
 
 void test_regression_sense_range_mt310s2::init()
 {
@@ -17,7 +31,7 @@ void test_regression_sense_range_mt310s2::init()
                               22222.22222,
                               33333.33333,
                               5,
-                              SenseSystem::modeAC | SenseSystem::modeADJ | SenseSystem::Direct,
+                              modeAC | modeADJ | Direct,
                               m_justData);
     m_range->initSCPIConnection("SENSE:m0");
 }
@@ -171,7 +185,7 @@ void test_regression_sense_range_mt310s2::checkAtmelSelectionCode()
 
 void test_regression_sense_range_mt310s2::checkTypeOrMask()
 {
-    quint16 expectedMask = SenseSystem::modeAC | SenseSystem::modeADJ | SenseSystem::Direct;
+    quint16 expectedMask = modeAC | modeADJ | Direct;
     QCOMPARE(m_range->getMMask(), expectedMask);
 
     QString scpiRejectionType = "SENSE:m0:250V:TYPE?";
