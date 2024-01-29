@@ -82,8 +82,7 @@ void SenseInterfaceCommon::registerResource(RMConnection *rmConnection, quint16 
     msgNrList.clear();
     for(auto channel : qAsConst(m_channelList)) {
         register1Resource(rmConnection, NotZeroNumGen::getMsgNr(), QString("SENSE;%1;1;%2;%3;")
-                                                                       .arg(channel->getName())
-                                                                       .arg(channel->getDescription())
+                                                                       .arg(channel->getName(), channel->getDescription())
                                                                        .arg(port));
     }
     // additional we register measuring mode switch as resource
@@ -120,43 +119,31 @@ void SenseInterfaceCommon::executeProtoScpi(int cmdCode, cProtonetCommand *proto
     {
     case SenseSystem::cmdVersion:
         protoCmd->m_sOutput = scpiReadVersion(protoCmd->m_sInput);
-        if (protoCmd->m_bwithOutput)
-            emit cmdExecutionDone(protoCmd);
         break;
     case SenseSystem::cmdMMode:
-        scpiReadWriteMMode(protoCmd);
-        break;
+        handleScpiReadWriteMMode(protoCmd);
+        return;
     case SenseSystem::cmdMModeCat:
         protoCmd->m_sOutput = scpiReadMModeCatalog(protoCmd->m_sInput);
-        if (protoCmd->m_bwithOutput)
-            emit cmdExecutionDone(protoCmd);
         break;
     case SenseSystem::cmdChannelCat:
         protoCmd->m_sOutput = scpiReadSenseChannelCatalog(protoCmd->m_sInput);
-        if (protoCmd->m_bwithOutput)
-            emit cmdExecutionDone(protoCmd);
         break;
     case SenseSystem::cmdGroupCat:
         protoCmd->m_sOutput = scpiReadSenseGroupCatalog(protoCmd->m_sInput);
-        if (protoCmd->m_bwithOutput)
-            emit cmdExecutionDone(protoCmd);
         break;
     case SenseSystem::initAdjData:
         protoCmd->m_sOutput = scpiInitSenseAdjDataAllChannelRanges(protoCmd->m_sInput);
-        if (protoCmd->m_bwithOutput)
-            emit cmdExecutionDone(protoCmd);
         break;
     case SenseSystem::computeAdjData:
         protoCmd->m_sOutput = scpiComputeSenseAdjDataAllChannelRanges(protoCmd->m_sInput);
-        if (protoCmd->m_bwithOutput)
-            emit cmdExecutionDone(protoCmd);
         break;
     case SenseSystem::cmdStatAdjustment:
         protoCmd->m_sOutput = scpiReadAdjStatus(protoCmd->m_sInput);
-        if (protoCmd->m_bwithOutput)
-            emit cmdExecutionDone(protoCmd);
         break;
     }
+    if (protoCmd->m_bwithOutput)
+        emit cmdExecutionDone(protoCmd);
 }
 
 QString SenseInterfaceCommon::scpiReadVersion(QString &scpi)
@@ -195,14 +182,11 @@ QString SenseInterfaceCommon::scpiInitSenseAdjDataAllChannelRanges(QString &scpi
                     channel->initJustData();
                 return ZSCPI::scpiAnswer[ZSCPI::ack];
             }
-            else
-                return ZSCPI::scpiAnswer[ZSCPI::erraut];
+            return ZSCPI::scpiAnswer[ZSCPI::erraut];
         }
-        else
-            return ZSCPI::scpiAnswer[ZSCPI::errexec];
+        return ZSCPI::scpiAnswer[ZSCPI::errexec];
     }
-    else
-        return ZSCPI::scpiAnswer[ZSCPI::nak];
+    return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 QString SenseInterfaceCommon::scpiComputeSenseAdjDataAllChannelRanges(QString &scpi)
@@ -215,14 +199,11 @@ QString SenseInterfaceCommon::scpiComputeSenseAdjDataAllChannelRanges(QString &s
                 computeSenseAdjData();
                 return ZSCPI::scpiAnswer[ZSCPI::ack];
             }
-            else
-                return ZSCPI::scpiAnswer[ZSCPI::erraut];
+            return ZSCPI::scpiAnswer[ZSCPI::erraut];
         }
-        else
-            return ZSCPI::scpiAnswer[ZSCPI::errexec];
+        return ZSCPI::scpiAnswer[ZSCPI::errexec];
     }
-    else
-        return ZSCPI::scpiAnswer[ZSCPI::nak];
+    return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 QString SenseInterfaceCommon::scpiReadAdjStatus(QString &scpi)

@@ -39,7 +39,7 @@ private slots:
 private:
     RangeAdjInterface* createJustScpiInterfaceWithAtmelPermission() override;
     QString scpiReadSenseGroupCatalog(QString& scpi) override;
-    void scpiReadWriteMMode(cProtonetCommand* protoCmd) override;
+    void handleScpiReadWriteMMode(cProtonetCommand* protoCmd) override;
     enum SetModeModeResult {
         done,
         start_statemachine_required,
