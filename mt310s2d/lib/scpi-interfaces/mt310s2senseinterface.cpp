@@ -161,80 +161,6 @@ Mt310s2SenseInterface::Mt310s2SenseInterface(cSCPI *scpiInterface,
     setNotifierSenseChannelCat(); // only prepared for !!! since we don't have hot plug for measuring channels yet
 }
 
-bool Mt310s2SenseInterface::importAdjData(QDataStream &stream)
-{
-    char flashdata[200];
-    char* s = flashdata;
-
-    stream.skipRawData(6); // we don't need count and chksum
-    stream >> s;
-    if (QString(s) != "ServerVersion") {
-        qCritical("Flashmemory read: ServerVersion not found");
-        return false;
-    }
-
-    stream >> s; // version: not checked anymore
-    stream >> s; // we take the device name
-
-    QString sysDevName = m_systemInfo->getDeviceName();
-    if (QString(s) != sysDevName) {
-        qCritical("Flashmemory read: Wrong device name: flash %s / µC %s",
-                  s, qPrintable(sysDevName));
-        return false;
-    }
-
-    stream >> s; // we take the device version now
-
-    bool enable = false;
-    m_ctrlFactory->getPermissionCheckController()->hasPermission(enable);
-
-    stream >> s; // we take the serial number now
-    QString sysSerNo = m_systemInfo->getSerialNumber();
-    if (QString(s) != sysSerNo) {
-        qCritical("Flashmemory read, contains wrong serialnumber flash: %s / µC: %s",
-                  s, qPrintable(sysSerNo));
-        m_nSerialStatus |= Adjustment::wrongSNR;
-        if (!enable) {
-            return false; // wrong serial number
-        }
-    }
-    else {
-        m_nSerialStatus = 0; // ok
-    }
-
-    stream >> s;
-    QDateTime DateTime = QDateTime::fromString(QString(s), Qt::TextDate); // datum und uhrzeit übernehmen
-    while (!stream.atEnd()) {
-        bool done;
-        stream >> s;
-        QString  JDataSpecs = s; // Type:Channel:Range
-
-        QStringList spec;
-        spec = JDataSpecs.split(':');
-
-        done = false;
-        if (spec.at(0) == "SENSE" ) {
-            SenseChannelCommon* chn;
-            QString s = spec.at(1);
-            if ((chn = getChannel(s)) != nullptr) {
-                s = spec.at(2);
-                SenseRangeCommon* rng = chn->getRange(s);
-                if (rng != nullptr) {
-                    rng->getJustData()->Deserialize(stream);
-                    done = true;
-                }
-            }
-        }
-        if (!done) {
-            // owner of data read not found: read dummy to keep serialization in sync
-            RangeAdjInterface* dummy = createJustScpiInterfaceWithAtmelPermission();
-            dummy->Deserialize(stream);
-            delete dummy;
-        }
-    }
-    return (true);
-}
-
 void Mt310s2SenseInterface::exportAdjData(QDataStream &stream, QDateTime dateTimeWrite)
 {
     // ab version v1.02
@@ -257,6 +183,16 @@ void Mt310s2SenseInterface::exportAdjData(QDataStream &stream, QDateTime dateTim
             }
         }
     }
+}
+
+QString Mt310s2SenseInterface::getPcbName()
+{
+    return LeiterkartenName;
+}
+
+QString Mt310s2SenseInterface::getXmlType()
+{
+    return "PCBAdjustmentData";
 }
 
 QString Mt310s2SenseInterface::exportXMLString(int indent)
@@ -371,130 +307,6 @@ int Mt310s2SenseInterface::rangeFlagsExtern()
 int Mt310s2SenseInterface::rangeFlagsExternDc()
 {
     return rangeFlagsExtern() | modeDC;
-}
-
-bool Mt310s2SenseInterface::importXMLDocument(QDomDocument* qdomdoc) // n steht auf einem element dessen tagname channel ist
-{
-    QDomDocumentType TheDocType = qdomdoc->doctype ();
-    if  (TheDocType.name() != QString("PCBAdjustmentData")) {
-        qCritical("Justdata import: wrong xml documentype");
-        return false;
-    }
-    QDomElement rootElem = qdomdoc->documentElement();
-    QDomNodeList nl = rootElem.childNodes();
-    bool TypeOK = false;
-    bool SerialNrOK = false;
-    bool DateOK = false;
-    bool TimeOK = false;
-    bool ChksumOK = false;
-    bool SenseOK = false;
-    for (int i = 0; i < nl.length() ; i++) {
-        QDomNode qdNode = nl.item(i);
-        QDomElement qdElem = qdNode.toElement();
-        if ( qdElem.isNull() ) {
-            qCritical("Justdata import: Format error in xml file");
-            return false;
-        }
-        QString tName = qdElem.tagName();
-        if (tName == "Type") {
-            if ( !(TypeOK = (qdElem.text() == QString(LeiterkartenName)))) {
-                qCritical("Justdata import: Wrong type information");
-                return false;
-            }
-        }
-        else if (tName == "SerialNumber") {
-            SerialNrOK = qdElem.text() == m_systemInfo->getSerialNumber();
-            if (!SerialNrOK) {
-                qCritical("Justdata import, Wrong serialnumber");
-                return false;
-            }
-        }
-        else if (tName == "VersionNumber")
-            continue;
-        else if (tName=="Date") {
-            QDate d = QDate::fromString(qdElem.text(),Qt::TextDate);
-            DateOK = d.isValid();
-        }
-        else if (tName=="Time") {
-            QTime t = QTime::fromString(qdElem.text(),Qt::TextDate);
-            TimeOK = t.isValid();
-        }
-        else if (tName == "Adjustment") {
-            if ( SerialNrOK && DateOK && TimeOK && TypeOK) {
-                QDomNodeList adjChildNl = qdElem.childNodes();
-                for (qint32 j = 0; j < adjChildNl.length(); j++) {
-                    qdNode = adjChildNl.item(j);
-                    QString tagName = qdNode.toElement().tagName();
-                    if (tagName == "Chksum") {
-                        ChksumOK = true; // we don't read it actually because if something was changed outside ....
-                    }
-                    else if (qdNode.toElement().tagName() == "Sense") {
-                        SenseOK = true;
-                        QDomNodeList channelNl = qdNode.childNodes(); // we have a list our channels entries now
-                        for (qint32 i = 0; i < channelNl.length(); i++) {
-                            QDomNode chnNode = channelNl.item(i); // we iterate over all channels from xml file
-                            QDomNodeList chnEntryNl = chnNode.childNodes();
-                            SenseChannelCommon* chnPtr = nullptr;
-                            SenseRangeCommon* rngPtr = nullptr;
-                            for (qint32 j = 0; j < chnEntryNl.length(); j++) {
-                                QString Name;
-                                QDomNode ChannelJustNode = chnEntryNl.item(j);
-                                qdElem = ChannelJustNode.toElement();
-                                QString tName = qdElem.tagName();
-                                if (tName == "Name") {
-                                    Name = qdElem.text();
-                                    chnPtr = getChannel(Name);
-                                }
-                                else if (tName == "Range") {
-                                    if (chnPtr) { // if we know this channel
-                                        QDomNodeList chnJustNl = ChannelJustNode.childNodes();
-                                        for (qint32 k = 0; k < chnJustNl.length(); k++) {
-                                            QDomNode RangeJustNode = chnJustNl.item(k);
-                                            qdElem = RangeJustNode.toElement();
-                                            tName = qdElem.tagName();
-                                            if (tName == "Name") {
-                                                Name = qdElem.text();
-                                                rngPtr = chnPtr->getRange(Name);
-                                            }
-                                            JustDataInterface* pJustData = nullptr;
-                                            if (rngPtr != nullptr)
-                                                pJustData = rngPtr->getJustData()->getAdjInterface(tName);
-                                            if (pJustData) {
-                                                QDomNodeList jdataNl = RangeJustNode.childNodes();
-                                                for (qint32 k = 0; k < jdataNl.count(); k++) {
-                                                    QDomNode jTypeNode = jdataNl.item(k);
-                                                    QString jTypeName = jTypeNode.toElement().tagName();
-                                                    QString jdata = jTypeNode.toElement().text();
-                                                    if (jTypeName == "Status") {
-                                                        pJustData->DeserializeStatus(jdata);
-                                                    }
-                                                    if (jTypeName == "Coefficients") {
-                                                        pJustData->DeserializeCoefficients(jdata);
-                                                    }
-                                                    if (jTypeName == "Nodes") {
-                                                        pJustData->DeserializeNodes(jdata);
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            else {
-                qCritical("Justdata import: xml contains strange data");
-                return false;
-            }
-        }
-        else {
-            qCritical("Justdata import: xml contains unknown tag '%s'", qPrintable(tName));
-            return false;
-        }
-    }
-    return ChksumOK && SenseOK;
 }
 
 void Mt310s2SenseInterface::handleScpiReadWriteMMode(cProtonetCommand *protoCmd)

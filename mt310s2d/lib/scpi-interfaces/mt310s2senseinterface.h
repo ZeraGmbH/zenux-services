@@ -26,11 +26,11 @@ public:
 
 protected:
     void exportAdjData(QDataStream& stream, QDateTime dateTimeWrite) override;
-    bool importAdjData(QDataStream& stream) override;
-    bool importXMLDocument(QDomDocument* qdomdoc) override;
 
 private:
     // MT specifics
+    QString getPcbName() override;
+    QString getXmlType() override;
     RangeAdjInterface* createJustScpiInterfaceWithAtmelPermission() override;
     QString scpiReadSenseGroupCatalog(QString& scpi) override;
     void handleScpiReadWriteMMode(cProtonetCommand* protoCmd) override;
