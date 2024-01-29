@@ -4,7 +4,7 @@
 #include "scpiconnection.h"
 #include "hotpluggablecontrollercontainer.h"
 #include "pcbserver.h"
-#include "mt310s2senseinterface.h"
+#include "senseinterfacecommon.h"
 #include "mt310s2systeminfo.h"
 #include <QList>
 #include <QJsonDocument>
@@ -39,7 +39,7 @@ public:
     Mt310s2SystemInterface(cPCBServer* server,
                            Mt310s2SystemInfo *systemInfo,
                            cSenseSettings *senseSettings,
-                           Mt310s2SenseInterface* senseInterface,
+                           SenseInterfaceCommon *senseInterface,
                            AbstractFactoryI2cCtrlPtr ctrlFactory,
                            HotPluggableControllerContainerPtr hotPluggableControllerContainer);
     virtual void initSCPIConnection(QString leadingNodes) override;
@@ -73,7 +73,7 @@ private:
     cPCBServer* m_pMyServer;
     Mt310s2SystemInfo *m_systemInfo;
     cSenseSettings *m_senseSettings;
-    Mt310s2SenseInterface* m_senseInterface;
+    SenseInterfaceCommon* m_senseInterface;
     AbstractFactoryI2cCtrlPtr m_ctrlFactory;
     HotPluggableControllerContainerPtr m_hotPluggableControllerContainer;
 

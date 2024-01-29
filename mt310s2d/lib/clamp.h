@@ -1,10 +1,10 @@
 #ifndef CLAMP_H
 #define CLAMP_H
 
+#include "senseinterfacecommon.h"
 #include "pcbserver.h"
 #include "adjustmenteeprom.h"
 #include "adjustmentxmlimportexporttemplate.h"
-#include "mt310s2senseinterface.h"
 #include <QList>
 #include <QDateTime>
 #include <QDomElement>
@@ -36,7 +36,7 @@ public:
     cClamp();
     cClamp(cPCBServer *server,
            I2cSettings *i2cSettings,
-           Mt310s2SenseInterface *senseInterface,
+           SenseInterfaceCommon *senseInterface,
            QString channelName,
            quint8 ctrlChannel,
            I2cMuxerInterface::Ptr i2cMuxer,
@@ -82,7 +82,7 @@ private:
     QString scpiReadXML(QString &scpi);
     QString scpiReadAdjStatus(QString &scpi);
 
-    Mt310s2SenseInterface *m_pSenseInterface = nullptr;
+    SenseInterfaceCommon *m_pSenseInterface = nullptr;
 
     QList<SenseRangeCommon*> m_RangeList;
     QString m_sChannelName;

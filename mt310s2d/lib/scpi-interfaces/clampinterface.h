@@ -4,7 +4,7 @@
 #include "scpiconnection.h"
 #include "pcbserver.h"
 #include "notificationstring.h"
-#include "mt310s2senseinterface.h"
+#include "senseinterfacecommon.h"
 #include <QHash>
 #include <QSet>
 
@@ -28,7 +28,7 @@ public:
     cClampInterface(cPCBServer *server,
                     I2cSettings *i2cSettings,
                     cSenseSettings *senseSettings,
-                    Mt310s2SenseInterface *senseInterface,
+                    SenseInterfaceCommon *senseInterface,
                     AbstractFactoryI2cCtrlPtr ctrlFactory);
     virtual void initSCPIConnection(QString leadingNodes) override;
     void actualizeClampStatus(quint16 devConnectedMask);
@@ -51,7 +51,7 @@ private:
     cPCBServer *m_pMyServer;
     I2cSettings *m_i2cSettings;
     cSenseSettings *m_senseSettings;
-    Mt310s2SenseInterface *m_pSenseInterface;
+    SenseInterfaceCommon *m_pSenseInterface;
     AbstractFactoryI2cCtrlPtr m_ctrlFactory;
     NotificationString m_notifierClampChannelList;
     quint16 m_nClampStatus;

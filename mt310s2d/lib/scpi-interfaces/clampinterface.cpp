@@ -10,7 +10,7 @@
 cClampInterface::cClampInterface(cPCBServer *server,
                                  I2cSettings *i2cSettings,
                                  cSenseSettings *senseSettings,
-                                 Mt310s2SenseInterface *senseInterface,
+                                 SenseInterfaceCommon *senseInterface,
                                  AbstractFactoryI2cCtrlPtr ctrlFactory) :
     ScpiConnection(server->getSCPIInterface()),
     m_pMyServer(server),

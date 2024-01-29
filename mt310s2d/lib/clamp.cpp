@@ -31,7 +31,7 @@ cClamp::cClamp() :
 
 cClamp::cClamp(cPCBServer *server,
                I2cSettings *i2cSettings,
-               Mt310s2SenseInterface *senseInterface,
+               SenseInterfaceCommon *senseInterface,
                QString channelName,
                quint8 ctrlChannel,
                I2cMuxerInterface::Ptr i2cMuxer,

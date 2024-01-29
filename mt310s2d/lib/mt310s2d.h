@@ -3,6 +3,7 @@
 
 #include "pcbserver.h"
 #include "rmconnection.h"
+#include "senseinterfacecommon.h"
 #include "settingsfordeviceserver.h"
 #include "sensesettings.h"
 #include "hkinsettings.h"
@@ -20,7 +21,6 @@
 
 class cStatusInterface;
 class Mt310s2SystemInterface;
-class Mt310s2SenseInterface;
 class cSamplingInterface;
 class FOutGroupResourceAndInterface;
 class FInGroupResourceAndInterface;
@@ -80,7 +80,7 @@ private:
     AccumulatorSettings* m_accumulatorSettings = nullptr;
 
     Mt310s2SystemInterface* m_pSystemInterface = nullptr;
-    Mt310s2SenseInterface* m_pSenseInterface = nullptr;
+    SenseInterfaceCommon* m_pSenseInterface = nullptr;
     cSamplingInterface* m_pSamplingInterface = nullptr;
     FOutGroupResourceAndInterface* m_foutInterface = nullptr;
     FInGroupResourceAndInterface* m_pFRQInputInterface = nullptr;
