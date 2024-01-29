@@ -198,8 +198,6 @@ bool SenseInterfaceCommon::importXMLDocument(QDomDocument* qdomdoc)
     QDomNodeList nl = rootElem.childNodes();
     bool TypeOK = false;
     bool SerialNrOK = false;
-    bool DateOK = false;
-    bool TimeOK = false;
     bool ChksumOK = false;
     bool SenseOK = false;
     for (int i = 0; i < nl.length() ; i++) {
@@ -226,23 +224,23 @@ bool SenseInterfaceCommon::importXMLDocument(QDomDocument* qdomdoc)
         }
         else if (tName == "VersionNumber")
             continue;
+        // TODO date & time -> EEPROM
         else if (tName=="Date") {
-            QDate d = QDate::fromString(qdElem.text(),Qt::TextDate);
-            DateOK = d.isValid();
+            /*QDate d = QDate::fromString(qdElem.text(),Qt::TextDate);
+            bool DateOK = d.isValid();*/
         }
         else if (tName=="Time") {
-            QTime t = QTime::fromString(qdElem.text(),Qt::TextDate);
-            TimeOK = t.isValid();
+            /*QTime t = QTime::fromString(qdElem.text(),Qt::TextDate);
+            bool TimeOK = TimeOK = t.isValid();*/
         }
         else if (tName == "Adjustment") {
-            if ( SerialNrOK && DateOK && TimeOK && TypeOK) {
+            if (SerialNrOK && TypeOK) {
                 QDomNodeList adjChildNl = qdElem.childNodes();
                 for (qint32 j = 0; j < adjChildNl.length(); j++) {
                     qdNode = adjChildNl.item(j);
                     QString tagName = qdNode.toElement().tagName();
-                    if (tagName == "Chksum") {
+                    if (tagName == "Chksum")
                         ChksumOK = true; // we don't read it actually because if something was changed outside ....
-                    }
                     else if (qdNode.toElement().tagName() == "Sense") {
                         SenseOK = true;
                         QDomNodeList channelNl = qdNode.childNodes(); // we have a list our channels entries now
