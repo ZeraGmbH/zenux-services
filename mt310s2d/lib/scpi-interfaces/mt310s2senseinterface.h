@@ -70,8 +70,8 @@ protected:
 
 private:
     // MT specifics
-    QString scpiReadSenseGroupCatalog(QString& scpi) override;
     RangeAdjInterface* createJustScpiInterfaceWithAtmelPermission() override;
+    QString scpiReadSenseGroupCatalog(QString& scpi) override;
     void scpiReadWriteMMode(cProtonetCommand* protoCmd) override;
     bool setSenseMode(QString mode);
 };
