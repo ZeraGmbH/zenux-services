@@ -42,15 +42,14 @@ protected:
     bool importXMLDocument(QDomDocument* qdomdoc) override;
     void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
 
+    // COM specifics
 private slots:
     void unregisterSense();
     void registerSense();
     void notifySense();
-
 private:
-    // COM specifics
-    QString scpiReadSenseGroupCatalog(QString& scpi) override;
     RangeAdjInterface* createJustScpiInterfaceWithAtmelPermission() override;
+    QString scpiReadSenseGroupCatalog(QString& scpi) override;
     void scpiReadWriteMMode(cProtonetCommand* protoCmd) override;
     enum SetModeModeResult {
         done,

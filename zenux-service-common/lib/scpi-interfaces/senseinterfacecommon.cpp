@@ -101,7 +101,7 @@ QString SenseInterfaceCommon::scpiReadVersion(QString &scpi)
     return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-QString SenseInterfaceCommon::m_ReadMModeCatalog(QString &scpi)
+QString SenseInterfaceCommon::scpiReadMModeCatalog(QString &scpi)
 {
     cSCPICommand cmd = scpi;
     if (cmd.isQuery())
@@ -109,7 +109,7 @@ QString SenseInterfaceCommon::m_ReadMModeCatalog(QString &scpi)
     return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-QString SenseInterfaceCommon::m_ReadSenseChannelCatalog(QString &scpi)
+QString SenseInterfaceCommon::scpiReadSenseChannelCatalog(QString &scpi)
 {
     cSCPICommand cmd = scpi;
     if (cmd.isQuery())
@@ -117,9 +117,9 @@ QString SenseInterfaceCommon::m_ReadSenseChannelCatalog(QString &scpi)
     return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-QString SenseInterfaceCommon::m_InitSenseAdjData(QString &sInput)
+QString SenseInterfaceCommon::scpiInitSenseAdjDataAllChannelRanges(QString &scpi)
 {
-    cSCPICommand cmd = sInput;
+    cSCPICommand cmd = scpi;
     // cmd.isCommand(0) is not correct but we leave it for compatibility
     if ( cmd.isCommand(0) || (cmd.isCommand(1) && (cmd.getParam(0) == ""))) {
         bool enable;
@@ -139,9 +139,9 @@ QString SenseInterfaceCommon::m_InitSenseAdjData(QString &sInput)
         return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-QString SenseInterfaceCommon::m_ComputeSenseAdjData(QString &sInput)
+QString SenseInterfaceCommon::scpiComputeSenseAdjDataAllChannelRanges(QString &scpi)
 {
-    cSCPICommand cmd = sInput;
+    cSCPICommand cmd = scpi;
     if ( cmd.isCommand(1) && (cmd.getParam(0) == "") ) {
         bool enable;
         if (m_ctrlFactory->getPermissionCheckController()->hasPermission(enable)) {
@@ -159,9 +159,9 @@ QString SenseInterfaceCommon::m_ComputeSenseAdjData(QString &sInput)
         return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-QString SenseInterfaceCommon::scpiReadAdjStatus(QString &sInput)
+QString SenseInterfaceCommon::scpiReadAdjStatus(QString &scpi)
 {
-    cSCPICommand cmd = sInput;
+    cSCPICommand cmd = scpi;
     if (cmd.isQuery())
         return  QString("%1").arg(getAdjustmentStatus());
     return ZSCPI::scpiAnswer[ZSCPI::nak];

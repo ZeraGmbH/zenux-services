@@ -39,16 +39,15 @@ public:
     void registerResource(RMConnection *rmConnection, quint16 port) override;
 
 protected:
-    virtual void scpiReadWriteMMode(cProtonetCommand* protoCmd) = 0;
     virtual RangeAdjInterface* createJustScpiInterfaceWithAtmelPermission() = 0;
+    virtual void scpiReadWriteMMode(cProtonetCommand* protoCmd) = 0;
     virtual QString scpiReadSenseGroupCatalog(QString& scpi) = 0;
     QString scpiReadVersion(QString& scpi);
-    QString m_ReadMModeCatalog(QString& scpi);
-    QString m_ReadSenseChannelCatalog(QString& scpi);
-
-    QString m_InitSenseAdjData(QString& sInput);
-    QString m_ComputeSenseAdjData(QString& sInput);
-    QString scpiReadAdjStatus(QString& sInput);
+    QString scpiReadMModeCatalog(QString& scpi);
+    QString scpiReadSenseChannelCatalog(QString& scpi);
+    QString scpiInitSenseAdjDataAllChannelRanges(QString& scpi);
+    QString scpiComputeSenseAdjDataAllChannelRanges(QString& scpi);
+    QString scpiReadAdjStatus(QString& scpi);
 
     void setNotifierSenseMMode();
     void setNotifierSenseChannelCat();

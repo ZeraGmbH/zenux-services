@@ -158,12 +158,12 @@ void Mt310s2SenseInterface::executeProtoScpi(int cmdCode, cProtonetCommand *prot
         // we have to start statemachine when setting
         break;
     case SenseSystem::cmdMModeCat:
-        protoCmd->m_sOutput = m_ReadMModeCatalog(protoCmd->m_sInput);
+        protoCmd->m_sOutput = scpiReadMModeCatalog(protoCmd->m_sInput);
         if (protoCmd->m_bwithOutput)
             emit cmdExecutionDone(protoCmd);
         break;
     case SenseSystem::cmdChannelCat:
-        protoCmd->m_sOutput = m_ReadSenseChannelCatalog(protoCmd->m_sInput);
+        protoCmd->m_sOutput = scpiReadSenseChannelCatalog(protoCmd->m_sInput);
         if (protoCmd->m_bwithOutput)
             emit cmdExecutionDone(protoCmd);
         break;
@@ -173,12 +173,12 @@ void Mt310s2SenseInterface::executeProtoScpi(int cmdCode, cProtonetCommand *prot
             emit cmdExecutionDone(protoCmd);
         break;
     case SenseSystem::initAdjData:
-        protoCmd->m_sOutput = m_InitSenseAdjData(protoCmd->m_sInput);
+        protoCmd->m_sOutput = scpiInitSenseAdjDataAllChannelRanges(protoCmd->m_sInput);
         if (protoCmd->m_bwithOutput)
             emit cmdExecutionDone(protoCmd);
         break;
     case SenseSystem::computeAdjData:
-        protoCmd->m_sOutput = m_ComputeSenseAdjData(protoCmd->m_sInput);
+        protoCmd->m_sOutput = scpiComputeSenseAdjDataAllChannelRanges(protoCmd->m_sInput);
         if (protoCmd->m_bwithOutput)
             emit cmdExecutionDone(protoCmd);
         break;
