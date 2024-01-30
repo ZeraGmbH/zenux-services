@@ -3,7 +3,7 @@
 #include <math.h>
 
 static constexpr int rejectionScpiQueryDigitsMt310s2 = 8;
-static constexpr int adcRejectionCom5003 = (1<<23) -1;
+static constexpr int adcRejectionMt310s2 = (1<<23) -1;
 
 Mt310s2SenseRange::Mt310s2SenseRange(cSCPI *scpiinterface,
                                      QString name,
@@ -21,7 +21,7 @@ Mt310s2SenseRange::Mt310s2SenseRange(cSCPI *scpiinterface,
         rValue,
         rejection,
         ovrejection,
-        adcRejectionCom5003,
+        adcRejectionMt310s2,
         rselcode,
         mmask,
         justdata,
