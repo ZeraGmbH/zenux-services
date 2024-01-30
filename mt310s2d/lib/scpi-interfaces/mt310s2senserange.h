@@ -1,5 +1,5 @@
-#ifndef SENSERANGE_H
-#define SENSERANGE_H
+#ifndef MT310s2SENSERANGE_H
+#define MT310s2SENSERANGE_H
 
 #include "senserangecommon.h"
 
@@ -18,4 +18,4 @@ public:
                       RangeAdjInterface* justdata);
 };
 
-#endif // SENSERANGE_H
+#endif // MT310s2SENSERANGE_H

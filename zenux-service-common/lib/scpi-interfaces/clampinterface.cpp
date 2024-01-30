@@ -1,6 +1,6 @@
 #include "clampinterface.h"
 #include "clampfactory.h"
-#include "mt310s2senseinterface.h"
+#include "senseinterfacecommon.h"
 #include "i2csettings.h"
 #include "zscpi_response_definitions.h"
 #include <i2cmultiplexerfactory.h>
