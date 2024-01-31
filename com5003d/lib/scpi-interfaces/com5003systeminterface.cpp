@@ -1,9 +1,6 @@
 #include "com5003systeminterface.h"
-#include "zscpi_response_definitions.h"
 #include "systeminfo.h"
-#include "protonetcommand.h"
-#include <scpi.h>
-#include <scpicommand.h>
+#include "zscpi_response_definitions.h"
 #include <QJsonObject>
 
 Com5003SystemInterface::Com5003SystemInterface(cPCBServer *server,
