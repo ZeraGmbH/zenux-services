@@ -21,7 +21,7 @@ private:
     MockSec1000d *m_mocksec1000d;
     MockZdsp1d *m_mockzdsp1d;
 #ifdef GUI_SIMULATION
-    SimulQmlGui m_gui;
+    SimulQmlGui *m_gui;
 #endif
 };
 
