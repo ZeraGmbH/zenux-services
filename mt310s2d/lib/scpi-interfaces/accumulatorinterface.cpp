@@ -4,6 +4,11 @@
 constexpr quint8 ERROR = 0x80;
 constexpr int ACCU_POLLING_PERIOD_MS = 1000;
 
+enum accumulatorCommands {
+    cmdStatus,
+    cmdAccuStateOfCharge
+};
+
 AccumulatorInterface::AccumulatorInterface(cSCPI *scpiInterface, AccumulatorSettings *settings, AbstractFactoryI2cCtrlPtr ctrlFactory) :
     ScpiConnection(scpiInterface),
     m_ctrlFactory(ctrlFactory)
@@ -40,23 +45,19 @@ void AccumulatorInterface::executeProtoScpi(int cmdCode, cProtonetCommand *proto
 QString AccumulatorInterface::getAccumulatorStatus()
 {
     quint8 status = 0;
-    if(m_ctrlFactory->getAccuController()->readAccuStatus(status) == ZeraMControllerIo::atmelRM::cmddone){
+    if(m_ctrlFactory->getAccuController()->readAccuStatus(status) == ZeraMControllerIo::atmelRM::cmddone)
         m_accumulatorStatus = QString::number(status);
-    }
-    else{
+    else
         m_accumulatorStatus = QString::number(ERROR);
-    }
     return m_accumulatorStatus.getString();
 }
 
 QString AccumulatorInterface::getAccuStateOfCharge()
 {
     quint8 charge = 0;
-    if(m_ctrlFactory->getAccuController()->readAccuStateOfCharge(charge) == ZeraMControllerIo::atmelRM::cmddone){
+    if(m_ctrlFactory->getAccuController()->readAccuStateOfCharge(charge) == ZeraMControllerIo::atmelRM::cmddone)
         m_accuStateOfCharge = QString::number(charge);
-    }
-    else{
+    else
         m_accuStateOfCharge = QString::number(ERROR);
-    }
     return m_accuStateOfCharge.getString();
 }
