@@ -6,21 +6,16 @@
 #include "accumulatorsettings.h"
 #include <scpiconnection.h>
 
-enum accumulatorCommands{
-    cmdStatus,
-    cmdAccuStateOfCharge
-};
-
 class AccumulatorInterface : public ScpiConnection
 {
 public:
     AccumulatorInterface(cSCPI* scpiInterface, AccumulatorSettings* settings, AbstractFactoryI2cCtrlPtr ctrlFactory);
     void initSCPIConnection(QString leadingNodes) override;
+private:
+    void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
     QString getAccumulatorStatus();
     QString getAccuStateOfCharge();
-protected:
-    void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
-private:
+
     NotificationString m_accumulatorStatus;
     NotificationString m_accuStateOfCharge;
     AbstractFactoryI2cCtrlPtr m_ctrlFactory;
