@@ -40,7 +40,7 @@ private:
 
     std::unique_ptr<TestServerForSenseInterfaceMt310s2> m_testServer;
     std::unique_ptr<ResmanRunFacade> m_resmanServer;
-    Zera::ProxyClientPtr m_pcbClient;
+    Zera::ProxyClientPtr m_proxyClient;
     std::unique_ptr<AdjustScpiValueFormatter> m_valueFormatter;
 };
 

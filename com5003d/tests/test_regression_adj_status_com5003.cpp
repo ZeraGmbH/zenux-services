@@ -18,7 +18,7 @@ void test_regression_adj_status_com5003::initTestCase()
 
 void test_regression_adj_status_com5003::cleanup()
 {
-    m_pcbClient = nullptr;
+    m_proxyClient = nullptr;
     m_testServer = nullptr;
     m_resmanServer = nullptr;
     TimeMachineObject::feedEventLoop();
@@ -49,7 +49,7 @@ void test_regression_adj_status_com5003::setupServers(AbstractFactoryI2cCtrlPtr 
     m_testServer = std::make_unique<TestServerForSenseInterfaceCom5003>(ctrlFactory);
     TimeMachineObject::feedEventLoop();
 
-    m_pcbClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307);
-    Zera::Proxy::getInstance()->startConnectionSmart(m_pcbClient);
+    m_proxyClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307);
+    Zera::Proxy::getInstance()->startConnectionSmart(m_proxyClient);
     TimeMachineObject::feedEventLoop();
 }

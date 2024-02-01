@@ -83,8 +83,8 @@ void test_regression_adj_calc_com5003::setupServers()
     m_testServer = std::make_unique<TestServerForSenseInterfaceCom5003>(std::make_shared<TestFactoryI2cCtrl>(true));
     TimeMachineObject::feedEventLoop();
 
-    m_pcbClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307);
-    Zera::Proxy::getInstance()->startConnectionSmart(m_pcbClient);
+    m_proxyClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307);
+    Zera::Proxy::getInstance()->startConnectionSmart(m_proxyClient);
     TimeMachineObject::feedEventLoop();
 }
 

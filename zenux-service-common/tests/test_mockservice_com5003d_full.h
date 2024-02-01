@@ -22,7 +22,7 @@ private slots:
 private:
     std::unique_ptr<ResmanRunFacade> m_resman;
     std::unique_ptr<MockCom5003d> m_server;
-    Zera::ProxyClientPtr m_pcbClient;
+    Zera::ProxyClientPtr m_proxyClient;
     std::unique_ptr<Zera::cPCBInterface> m_pcbIFace;
 };
 

@@ -22,7 +22,7 @@ void test_adj_import_invalid_eeprom_com5003::init()
 
 void test_adj_import_invalid_eeprom_com5003::cleanup()
 {
-    m_pcbClient = nullptr;
+    m_proxyClient = nullptr;
     m_testServer = nullptr;
     m_resmanServer = nullptr;
     TimeMachineObject::feedEventLoop();
@@ -69,8 +69,8 @@ void test_adj_import_invalid_eeprom_com5003::setupServers()
     m_testServer = std::make_unique<TestServerForSenseInterfaceCom5003>(std::make_shared<TestFactoryI2cCtrl>(true));
     TimeMachineObject::feedEventLoop();
 
-    m_pcbClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307);
-    Zera::Proxy::getInstance()->startConnectionSmart(m_pcbClient);
+    m_proxyClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307);
+    Zera::Proxy::getInstance()->startConnectionSmart(m_proxyClient);
     TimeMachineObject::feedEventLoop();
 }
 

@@ -20,7 +20,7 @@ private:
     void setupServers(quint16 initialCriticalStatus);
     std::unique_ptr<TestServerForSenseInterfaceMt310s2> m_testServer;
     std::unique_ptr<ResmanRunFacade> m_resmanServer;
-    Zera::ProxyClientPtr m_pcbClient;
+    Zera::ProxyClientPtr m_proxyClient;
 };
 
 #endif // TEST_REGRESSION_CRITICAL_STATUS_MT310s2_H
