@@ -193,9 +193,9 @@ void cDSPInterfacePrivate::addIntListItem(QString cmd)
 
 cDspMeasData* cDSPInterfacePrivate::getMemHandle(QString name)
 {
-    cDspMeasData* pdmd = new cDspMeasData(name); // create a new object
-    m_DspMemoryDataList.append(pdmd); // append it to the list
-    return pdmd; // return handle
+    cDspMeasData* pdmd = new cDspMeasData(name);
+    m_DspMemoryDataList.append(pdmd);
+    return pdmd;
 }
 
 
