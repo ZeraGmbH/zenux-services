@@ -21,17 +21,17 @@ void test_mockservice_com5003d_full::init()
     m_server = std::make_unique<MockCom5003d>(std::make_shared<TestFactoryI2cCtrl>(true));
     TimeMachineObject::feedEventLoop();
 
-    m_pcbClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307);
+    m_proxyClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307);
     m_pcbIFace = std::make_unique<Zera::cPCBInterface>();
-    m_pcbIFace->setClientSmart(m_pcbClient);
-    Zera::Proxy::getInstance()->startConnectionSmart(m_pcbClient);
+    m_pcbIFace->setClientSmart(m_proxyClient);
+    Zera::Proxy::getInstance()->startConnectionSmart(m_proxyClient);
     TimeMachineObject::feedEventLoop();
 }
 
 void test_mockservice_com5003d_full::cleanup()
 {
     m_pcbIFace = nullptr;
-    m_pcbClient = nullptr;
+    m_proxyClient = nullptr;
     m_server = nullptr;
     m_resman = nullptr;
     TimeMachineObject::feedEventLoop();
@@ -40,10 +40,10 @@ void test_mockservice_com5003d_full::cleanup()
 void test_mockservice_com5003d_full::connectServer()
 {
     Zera::cPCBInterface pcbIFace;
-    pcbIFace.setClientSmart(m_pcbClient);
+    pcbIFace.setClientSmart(m_proxyClient);
 
-    QSignalSpy connectSpy(m_pcbClient.get(), &Zera::ProxyClient::connected);
-    Zera::Proxy::getInstance()->startConnectionSmart(m_pcbClient);
+    QSignalSpy connectSpy(m_proxyClient.get(), &Zera::ProxyClient::connected);
+    Zera::Proxy::getInstance()->startConnectionSmart(m_proxyClient);
     TimeMachineObject::feedEventLoop();
     QCOMPARE(connectSpy.count(), 1);
 }

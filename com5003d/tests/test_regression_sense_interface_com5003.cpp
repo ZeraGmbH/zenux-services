@@ -19,17 +19,17 @@ void test_regression_sense_interface_com5003::init()
     m_testServer = std::make_unique<TestServerForSenseInterfaceCom5003>(std::make_shared<TestFactoryI2cCtrl>(true));
     TimeMachineObject::feedEventLoop();
 
-    m_pcbClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307);
+    m_proxyClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307);
     m_pcbIFace = std::make_unique<Zera::cPCBInterface>();
-    m_pcbIFace->setClientSmart(m_pcbClient);
-    Zera::Proxy::getInstance()->startConnectionSmart(m_pcbClient);
+    m_pcbIFace->setClientSmart(m_proxyClient);
+    Zera::Proxy::getInstance()->startConnectionSmart(m_proxyClient);
     TimeMachineObject::feedEventLoop();
 }
 
 void test_regression_sense_interface_com5003::cleanup()
 {
     m_pcbIFace = nullptr;
-    m_pcbClient = nullptr;
+    m_proxyClient = nullptr;
     m_testServer = nullptr;
     m_resmanServer = nullptr;
     TimeMachineObject::feedEventLoop();

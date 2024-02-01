@@ -22,7 +22,7 @@ private:
 
     std::unique_ptr<TestServerForSenseInterfaceMt310s2> m_testServer;
     std::unique_ptr<ResmanRunFacade> m_resmanServer;
-    Zera::ProxyClientPtr m_pcbClient;
+    Zera::ProxyClientPtr m_proxyClient;
 };
 
 #endif // TEST_ADJ_DENY_EEPROM_IMPORT_COM5003_H

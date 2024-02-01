@@ -37,7 +37,7 @@ private:
 
     std::unique_ptr<TestServerForSenseInterfaceCom5003> m_testServer;
     std::unique_ptr<ResmanRunFacade> m_resmanServer;
-    Zera::ProxyClientPtr m_pcbClient;
+    Zera::ProxyClientPtr m_proxyClient;
     std::unique_ptr<Zera::cPCBInterface> m_pcbIFace;
     static QStringList m_channelsExpectedAllOverThePlace;
     static QStringList m_rangesExpectedU;

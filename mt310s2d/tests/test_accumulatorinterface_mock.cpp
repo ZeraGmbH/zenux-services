@@ -25,7 +25,7 @@ void test_accumulatorinterface_mock::init()
 void test_accumulatorinterface_mock::cleanup()
 {
     m_pcbIFace = nullptr;
-    m_pcbClient = nullptr;
+    m_proxyClient = nullptr;
     m_mt310s2d = nullptr;
     m_resman = nullptr;
     TimeMachineObject::feedEventLoop();
@@ -103,9 +103,9 @@ void test_accumulatorinterface_mock::setupServers(QString configFileXml)
     m_mt310s2d = std::make_unique<MockMt310s2d>(std::make_shared<TestFactoryI2cCtrl>(true), configFileXml);
     TimeMachineObject::feedEventLoop();
 
-    m_pcbClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307);
+    m_proxyClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307);
     m_pcbIFace = std::make_unique<Zera::cPCBInterface>();
-    m_pcbIFace->setClientSmart(m_pcbClient);
-    Zera::Proxy::getInstance()->startConnectionSmart(m_pcbClient);
+    m_pcbIFace->setClientSmart(m_proxyClient);
+    Zera::Proxy::getInstance()->startConnectionSmart(m_proxyClient);
     TimeMachineObject::feedEventLoop();
 }

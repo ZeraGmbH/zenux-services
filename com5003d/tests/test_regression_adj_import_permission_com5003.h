@@ -22,7 +22,7 @@ private:
 
     std::unique_ptr<TestServerForSenseInterfaceCom5003> m_testServer;
     std::unique_ptr<ResmanRunFacade> m_resmanServer;
-    Zera::ProxyClientPtr m_pcbClient;
+    Zera::ProxyClientPtr m_proxyClient;
 };
 
 #endif // TEST_REGRESSION_ADJ_IMPORT_PERMISSION_COM5003_H

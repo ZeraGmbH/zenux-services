@@ -74,7 +74,7 @@ private:
 
     std::unique_ptr<TestServerForSenseInterfaceMt310s2> m_testServer;
     std::unique_ptr<ResmanRunFacade> m_resmanServer;
-    Zera::ProxyClientPtr m_pcbClient;
+    Zera::ProxyClientPtr m_proxyClient;
     std::unique_ptr<Zera::cPCBInterface> m_pcbIFace;
     static QStringList m_channelsExpectedAllOverThePlace;
     static QStringList m_rangesExpectedU;
