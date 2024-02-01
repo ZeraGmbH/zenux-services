@@ -4,14 +4,12 @@
 #include <QString>
 #include <QList>
 #include <QVector>
-
 #include "dspvar.h"
-
 
 class cDspMeasData
 {
 public:
-    cDspMeasData(QString name); // name des messdaten satzes
+    cDspMeasData(QString name);
     ~cDspMeasData();
     float* data(QString name);
     void addVarItem(cDspVar*);
@@ -21,7 +19,6 @@ public:
     QString& VarList(int section, bool withType = false); // liste mit allen variablen mit längenangaben, optional mit data type
     QString& writeCommand();
     QVector<float>& getData();
-
 
 private:
     QList<cDspVar*> DspVarList;

@@ -46,7 +46,6 @@ class cDSPInterface;
 class cDSPInterfacePrivate: public cInterfacePrivate
 {
     Q_OBJECT
-
 public:
     cDSPInterfacePrivate(cDSPInterface* iface);
     void setClient(Zera::ProxyClient *client);
