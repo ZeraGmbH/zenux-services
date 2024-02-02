@@ -32,14 +32,14 @@ public:
     QString getServerVersion();
     QString getDspDeviceNode();
 
-    virtual cZDSP1Client* AddClient(XiQNetPeer *m_pNetClient); // fügt einen client hinzu
-    virtual void DelClient(XiQNetPeer *netClient); // entfernt einen client
-    virtual void DelClient(QByteArray clientId);
-    virtual cZDSP1Client* AddSCPIClient();
-    virtual void DelSCPIClient();
+    cZDSP1Client* AddClient(XiQNetPeer *m_pNetClient);
+    void DelClients(XiQNetPeer *netClient);
+    void DelClient(QByteArray clientId);
+    cZDSP1Client* AddSCPIClient();
+    void DelSCPIClient();
 
-    virtual QString SCPICmd( SCPICmdType, QChar*);
-    virtual QString SCPIQuery( SCPICmdType);
+    QString SCPICmd( SCPICmdType, QChar*) override;
+    QString SCPIQuery(SCPICmdType cmdEnum) override;
 
 signals:
     void sigServerIsSetUp();
