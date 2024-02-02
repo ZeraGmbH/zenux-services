@@ -1206,7 +1206,7 @@ void ZDspServer::onEstablishNewConnection(XiQNetPeer *newClient)
 void ZDspServer::deleteConnection()
 {
     XiQNetPeer* client = qobject_cast<XiQNetPeer*>(sender());
-    DelClient(client);
+    DelClients(client);
 }
 
 void ZDspServer::onExecuteCommandProto(std::shared_ptr<google::protobuf::Message> cmd)
@@ -1319,7 +1319,7 @@ cZDSP1Client* ZDspServer::AddClient(XiQNetPeer* m_pNetClient)
     return client;
 }
 
-void ZDspServer::DelClient(XiQNetPeer* netClient)
+void ZDspServer::DelClients(XiQNetPeer* netClient)
 { // entfernt alle cZDSP1Clients die an diesem netClient kleben
     QList<cZDSP1Client*> todeleteList;
     for (int i = 0; i < clientlist.count(); i++) {
@@ -1398,9 +1398,9 @@ QString ZDspServer::SCPICmd(SCPICmdType cmd, QChar *s)
     return Answer;
 }
 
-QString ZDspServer::SCPIQuery( SCPICmdType cmd)
+QString ZDspServer::SCPIQuery(SCPICmdType cmdEnum)
 {
-    switch ((int)cmd)
+    switch ((int)cmdEnum)
     {
     case 		GetPCBSerialNumber: 	return mGetPCBSerialNumber();
     case 		GetDeviceVersion:		return getLcaAndDspVersion();
