@@ -98,8 +98,8 @@ ZDspServer::~ZDspServer()
     delete m_pETHSettings;
     delete m_fpgaSettings;
     delete m_pDspSettings;
-    for (int i = 0; i < clientlist.count(); i++)
-        delete clientlist.at(i);
+    for (int i = 0; i < m_clientList.count(); i++)
+        delete m_clientList.at(i);
     delete m_pRMConnection;
     delete m_pSCPIServer;
     resetDsp(); // we reset the dsp when we close the server
@@ -862,8 +862,8 @@ void ZDspServer::DspIntHandler(int)
     char dummy[2];
     read(pipeFileDescriptorZdsp1[0], dummy, 1); // first we read the pipe
 
-    if (!clientlist.isEmpty()) { // wenn vorhanden nutzen wir immer den 1. client zum lesen
-        cZDSP1Client *client = clientlist.first();
+    if (!m_clientList.isEmpty()) { // wenn vorhanden nutzen wir immer den 1. client zum lesen
+        cZDSP1Client *client = m_clientList.first();
         QByteArray ba;
         QString s = "CTRLCMDPAR,20";
         if (client->DspVarRead(s, &ba)) { // 20 worte lesen
@@ -932,13 +932,13 @@ bool ZDspServer::BuildDSProgram(QString &errs)
     cDspCmd cmd;
     QString s;
 
-    if (clientlist.count() > 0) {
-        cZDSP1Client* client = clientlist.at(0);
+    if (m_clientList.count() > 0) {
+        cZDSP1Client* client = m_clientList.at(0);
         s =  QString( "DSPMEMOFFSET(%1)" ).arg(dm32DspWorkspace.StartAdr);
         cmd = client->GenDspCmd(s, &ok, 0, 0);
         mds1 << cmd;
-        for (int i = 0; i < clientlist.count(); i++) {
-            client = clientlist.at(i);
+        for (int i = 0; i < m_clientList.count(); i++) {
+            client = m_clientList.at(i);
             if (client->isActive()) {
                 s =  QString( "USERMEMOFFSET(%1)" ).arg(userMemoryOffset);
                 cmd = client->GenDspCmd(s, &ok, 0, 0);
@@ -957,7 +957,7 @@ bool ZDspServer::BuildDSProgram(QString &errs)
             }
         }
 
-        client = clientlist.at(0);
+        client = m_clientList.at(0);
         s = QString( "DSPINTPOST()"); // wir triggern das senden der serialisierten interrupts
         cmd = client->GenDspCmd(s, &ok, 0, 0);
         mds1 << cmd;
@@ -1174,9 +1174,9 @@ QString ZDspServer::mDspMemoryWrite(QChar* s)
 
 cZDSP1Client* ZDspServer::GetClient(int s)
 {
-    if (clientlist.count() > 0) {
-        for (int i = 0; i < clientlist.count(); i++) {
-            cZDSP1Client* client = clientlist.at(i);
+    if (m_clientList.count() > 0) {
+        for (int i = 0; i < m_clientList.count(); i++) {
+            cZDSP1Client* client = m_clientList.at(i);
             if (client->getSocket() == s)
                 return client;
         }
@@ -1186,9 +1186,9 @@ cZDSP1Client* ZDspServer::GetClient(int s)
 
 cZDSP1Client* ZDspServer::GetClient(XiQNetPeer *peer)
 {
-    if (clientlist.count() > 0) {
-        for (int i = 0; i < clientlist.count(); i++) {
-            cZDSP1Client* client = clientlist.at(i);
+    if (m_clientList.count() > 0) {
+        for (int i = 0; i < m_clientList.count(); i++) {
+            cZDSP1Client* client = m_clientList.at(i);
             if (client->m_pNetClient == peer)
                 return client;
         }
@@ -1315,15 +1315,15 @@ cZDSP1Client* ZDspServer::AddClient(XiQNetPeer* m_pNetClient)
     if (m_nSocketIdentifier == 0)
         m_nSocketIdentifier++;
     cZDSP1Client* client = new cZDSP1Client(m_nSocketIdentifier, m_pNetClient);
-    clientlist.append(client);
+    m_clientList.append(client);
     return client;
 }
 
 void ZDspServer::DelClients(XiQNetPeer* netClient)
 { // entfernt alle cZDSP1Clients die an diesem netClient kleben
     QList<cZDSP1Client*> todeleteList;
-    for (int i = 0; i < clientlist.count(); i++) {
-        cZDSP1Client* zdspclient = clientlist.at(i);
+    for (int i = 0; i < m_clientList.count(); i++) {
+        cZDSP1Client* zdspclient = m_clientList.at(i);
         XiQNetPeer* peer = zdspclient->m_pNetClient;
         if (peer == netClient) {
             todeleteList.append(zdspclient);
@@ -1335,7 +1335,7 @@ void ZDspServer::DelClients(XiQNetPeer* netClient)
     }
     for (int i = 0; i < todeleteList.count(); i++) {
         cZDSP1Client* client = todeleteList.at(i);
-        clientlist.removeOne(client);
+        m_clientList.removeOne(client);
         delete client;
     }
     LoadDSProgram(); // after deleting clients we reload dsp program
@@ -1346,7 +1346,7 @@ void ZDspServer::DelClient(QByteArray clientId)
     if (m_zdspdClientHash.contains(clientId)) {
         cZDSP1Client *client = m_zdspdClientHash.take(clientId);
         m_clientIDHash.remove(client);
-        clientlist.removeOne(client);
+        m_clientList.removeOne(client);
         delete client;
         LoadDSProgram(); // after deleting client we reload dsp program ... means unload dsp for this client
     }
@@ -1359,7 +1359,7 @@ cZDSP1Client *ZDspServer::AddSCPIClient()
 
 void ZDspServer::DelSCPIClient()
 {
-    clientlist.removeAll(m_pSCPIClient);
+    m_clientList.removeAll(m_pSCPIClient);
     LoadDSProgram(); // after deleting client we reload dsp program ... means unload dsp for this client
 }
 

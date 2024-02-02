@@ -70,7 +70,7 @@ private:
     QHash<QByteArray, cZDSP1Client*> m_zdspdClientHash;
     QHash<cZDSP1Client*, QByteArray> m_clientIDHash; // liste der clientID's für die dspclients die über protobuf erzeugt wurden
     cZDSP1Client* m_pSCPIClient;
-    QList<cZDSP1Client*> clientlist; // liste aller clients
+    QList<cZDSP1Client*> m_clientList;
 
     ulong UserWorkSpaceGlobalSegmentAdr;
 
