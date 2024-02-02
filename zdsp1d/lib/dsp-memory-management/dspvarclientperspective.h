@@ -15,6 +15,7 @@ public:
     int segment();
 
 private:
+    QString m_clientHandleName;
     QString m_sName; // eine dsp variable hat einen namen
     int m_nOffsAdr; // hat eine rel. start adresse
     int m_nSize; // und eine anzahl von elementen

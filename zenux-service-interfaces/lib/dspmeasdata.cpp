@@ -3,11 +3,10 @@
 #include "dspmeasdata.h"
 
 
-cDspMeasData::cDspMeasData(QString name)
+cDspMeasData::cDspMeasData(QString name) :
+    m_handleName(name)
 {
-    Q_UNUSED(name)
 }
-
 
 cDspMeasData::~cDspMeasData()
 {
@@ -21,7 +20,6 @@ cDspMeasData::~cDspMeasData()
         }
     }
 }
-
 
 float* cDspMeasData::data(QString name) // gibt einen zeiger zurück auf die var daten
 {
@@ -37,7 +35,6 @@ float* cDspMeasData::data(QString name) // gibt einen zeiger zurück auf die var
     }
     return 0; // caller has to pay attention !!!!!
 }
-
 
 void cDspMeasData::addVarItem(cDspVar* var) // eine neue dsp variable
 {
@@ -60,10 +57,8 @@ quint32 cDspMeasData::getSize()
         for (int i = 0; i < DspVarList.size(); ++i)
             size += DspVarList.at(i)->size();
     }
-
     return size;
 }
-
 
 quint32 cDspMeasData::getSize(QString name)
 {
@@ -98,37 +93,38 @@ quint32 cDspMeasData::getumemSize()
     return size;
 }
 
-
-QString& cDspMeasData::VarList(int section, bool withType)
+QString &cDspMeasData::VarListLong(int section)
 {
-    sReturn="";
-    QTextStream ts( &sReturn, QIODevice::WriteOnly );
+    sReturn = "";
+    QTextStream ts(&sReturn, QIODevice::WriteOnly);
     cDspVar *pDspVar;
-
     for (int i = 0; i < DspVarList.size(); ++i)
     {
         pDspVar = DspVarList.at(i);
-        if ((section & pDspVar->type()) > 0) // do we want this value ?
-        {
-            if (withType)
-            {
-                int seg;
-                if (pDspVar->type() == DSPDATA::vDspTempGlobal)
-                    seg = DSPDATA::globalSegment;
-                else
-                    seg = DSPDATA::localSegment;
-
-                ts << QString("%1,%2,%3,%4;").arg(pDspVar->Name()).arg(pDspVar->size()).arg(pDspVar->datatype()).arg(seg);
-            }
+        if ((section & pDspVar->type()) > 0) {
+            int seg;
+            if (pDspVar->type() == DSPDATA::vDspTempGlobal)
+                seg = DSPDATA::globalSegment;
             else
-                ts << QString("%1,%2;").arg(pDspVar->Name()).arg(pDspVar->size());
+                seg = DSPDATA::localSegment;
+            ts << QString("%1,%2,%3,%4,%5;").arg(m_handleName, pDspVar->Name()).arg(pDspVar->size()).arg(pDspVar->datatype()).arg(seg);
         }
     }
-
-
-    return sReturn; // eine liste aller variablen namen und deren länge
+    return sReturn;
 }
 
+QString &cDspMeasData::VarListShort(int section)
+{
+    sReturn = "";
+    QTextStream ts(&sReturn, QIODevice::WriteOnly);
+    cDspVar *pDspVar;
+    for (int i = 0; i < DspVarList.size(); ++i) {
+        pDspVar = DspVarList.at(i);
+        if ((section & pDspVar->type()) > 0)
+            ts << QString("%1,%2;").arg(pDspVar->Name()).arg(pDspVar->size());
+    }
+    return sReturn;
+}
 
 QString& cDspMeasData::writeCommand()
 {

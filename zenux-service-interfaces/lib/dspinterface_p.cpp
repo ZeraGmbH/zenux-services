@@ -57,7 +57,7 @@ quint32 cDSPInterfacePrivate::varList2Dsp() // the complete list has several par
     cDspMeasData* pDspMeasData;
     for (int i = 0; i < m_DspMemoryDataList.count(); i++) {
         pDspMeasData = m_DspMemoryDataList.at(i);
-        ts << pDspMeasData->VarList(DSPDATA::vDspParam | DSPDATA::vDspTemp | DSPDATA::vDspResult | DSPDATA::vDspTempGlobal, true);
+        ts << pDspMeasData->VarListLong(DSPDATA::vDspParam | DSPDATA::vDspTemp | DSPDATA::vDspResult | DSPDATA::vDspTempGlobal);
     }
     quint32 msgnr = sendCommand(QString("MEAS:LIST:RAVL"), vlist); // long: MEASURE:LIST:RAVLIST
     m_MsgNrCmdList[msgnr] = varlist2dsp;
@@ -234,29 +234,21 @@ quint32 cDSPInterfacePrivate::deactivateInterface()
 
 quint32 cDSPInterfacePrivate::dataAcquisition(cDspMeasData *memgroup)
 {
-    QString cmd, par;
-    quint32 msgnr;
-
-    msgnr = sendCommand(cmd = QString("MEAS"), par = QString("%1").arg(memgroup->VarList(DSPDATA::vDspResult)));
+    quint32 msgnr = sendCommand(QString("MEAS"), QString("%1").arg(memgroup->VarListShort(DSPDATA::vDspResult)));
     m_MsgNrCmdList[msgnr] = dataacquisition;
     m_MsgNrMeasData[msgnr] = memgroup;
     m_MsgNrMemType[msgnr] = DSPDATA::dFloat;
     return msgnr;
 }
 
-
 quint32 cDSPInterfacePrivate::dspMemoryRead(cDspMeasData *memgroup, DSPDATA::dType type)
 {
-    QString cmd, par;
-    quint32 msgnr;
-
-    msgnr = sendCommand(cmd = QString("MEM:READ"), par = QString("%1").arg(memgroup->VarList(DSPDATA::vDspALL)));
+    quint32 msgnr = sendCommand(QString("MEM:READ"), QString("%1").arg(memgroup->VarListShort(DSPDATA::vDspALL)));
     m_MsgNrCmdList[msgnr] = dspmemoryread;
     m_MsgNrMeasData[msgnr] = memgroup;
     m_MsgNrMemType[msgnr] = type;
     return msgnr;
 }
-
 
 void cDSPInterfacePrivate::setVarData(cDspMeasData *memgroup, QString datalist, DSPDATA::dType type)
 {
