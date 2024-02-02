@@ -11,7 +11,7 @@ bool DspVarClientPerspective::Init(const QString& varDefinition)
     bool ret = true;
     int commaCount = varDefinition.count(',');
     if ( commaCount > 0 ) {
-        m_sName = varDefinition.section(',', 0, 0).remove(' ');
+        m_sName = varDefinition.section(',', 0, 0).remove(' ').toUpper();
         bool ok;
         int varSize = varDefinition.section(',',1,1).remove(' ').toInt(&ok); // der erste parameter ist die feldgrösse
         if ((ret = ret && ok))

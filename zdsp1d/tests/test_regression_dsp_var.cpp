@@ -34,43 +34,57 @@ void test_regression_dsp_var::cleanup()
 
 void test_regression_dsp_var::createResultVariables()
 {
-    cDspMeasData* m_pTmpDataDsp = m_dspIFace->getMemHandle("foo");
-    m_pTmpDataDsp->addVarItem(new cDspVar("Result1", 1, DSPDATA::vDspResult));
-    m_pTmpDataDsp->addVarItem(new cDspVar("Result2", 3, DSPDATA::vDspResult));
+    cDspMeasData* dspData = m_dspIFace->getMemHandle("createResultVariables");
+    dspData->addVarItem(new cDspVar("Result1", 1, DSPDATA::vDspResult, DSPDATA::dFloat));
+    dspData->addVarItem(new cDspVar("Result2", 3, DSPDATA::vDspResult, DSPDATA::dInt));
 
-    QSignalSpy spy(m_dspIFace.get(), &Zera::cDSPInterface::serverAnswer);
+    QSignalSpy spyCreate(m_dspIFace.get(), &Zera::cDSPInterface::serverAnswer);
     m_dspIFace->varList2Dsp();
     TimeMachineObject::feedEventLoop();
-
-    QCOMPARE(spy.count(), 1);
-    QCOMPARE(spy[0][2], ZSCPI::scpiAnswer[ZSCPI::ack]);
+    QCOMPARE(spyCreate.count(), 1);
+    QCOMPARE(spyCreate[0][2], ZSCPI::scpiAnswer[ZSCPI::ack]);
 
     QString ret = ScpiSingleTransactionBlocked::query("MEASURE:LIST:RAVLIST?", dspServerPort, m_proxyClient);
-    QCOMPARE(ret, "Result1,1;Result2,3;");
+    QCOMPARE(ret, "RESULT1,1;RESULT2,3;");
+
+    QSignalSpy spyRead(m_dspIFace.get(), &Zera::cDSPInterface::serverAnswer);
+    m_dspIFace->dspMemoryRead(dspData);
+    TimeMachineObject::feedEventLoop();
+    QCOMPARE(spyRead.count(), 1);
+    QCOMPARE(spyRead[0][1], ZSCPI::ack);
+    QVERIFY(spyRead[0][2].toString().contains("RESULT1:"));
+    QVERIFY(spyRead[0][2].toString().contains("RESULT2:"));
 }
 
 void test_regression_dsp_var::createTempVariables()
 {
-    cDspMeasData* m_pTmpDataDsp = m_dspIFace->getMemHandle("foo");
-    m_pTmpDataDsp->addVarItem(new cDspVar("Temp1", 1, DSPDATA::vDspTemp));
-    m_pTmpDataDsp->addVarItem(new cDspVar("Temp2", 3, DSPDATA::vDspTemp));
+    cDspMeasData* dspData = m_dspIFace->getMemHandle("createTempVariables");
+    dspData->addVarItem(new cDspVar("Temp1", 1, DSPDATA::vDspTemp, DSPDATA::dFloat));
+    dspData->addVarItem(new cDspVar("Temp2", 3, DSPDATA::vDspTemp, DSPDATA::dInt));
 
-    QSignalSpy spy(m_dspIFace.get(), &Zera::cDSPInterface::serverAnswer);
+    QSignalSpy spyCreate(m_dspIFace.get(), &Zera::cDSPInterface::serverAnswer);
     m_dspIFace->varList2Dsp();
     TimeMachineObject::feedEventLoop();
-
-    QCOMPARE(spy.count(), 1);
-    QCOMPARE(spy[0][2], ZSCPI::scpiAnswer[ZSCPI::ack]);
+    QCOMPARE(spyCreate.count(), 1);
+    QCOMPARE(spyCreate[0][2], ZSCPI::scpiAnswer[ZSCPI::ack]);
 
     QString ret = ScpiSingleTransactionBlocked::query("MEASURE:LIST:RAVLIST?", dspServerPort, m_proxyClient);
-    QCOMPARE(ret, "Temp1,1;Temp2,3;");
+    QCOMPARE(ret, "TEMP1,1;TEMP2,3;");
+
+    QSignalSpy spyRead(m_dspIFace.get(), &Zera::cDSPInterface::serverAnswer);
+    m_dspIFace->dspMemoryRead(dspData);
+    TimeMachineObject::feedEventLoop();
+    QCOMPARE(spyRead.count(), 1);
+    QCOMPARE(spyRead[0][1], ZSCPI::ack);
+    QVERIFY(spyRead[0][2].toString().contains("TEMP1:"));
+    QVERIFY(spyRead[0][2].toString().contains("TEMP2:"));
 }
 
 void test_regression_dsp_var::createInternalVariables()
 {
-    cDspMeasData* m_pTmpDataDsp = m_dspIFace->getMemHandle("foo");
-    m_pTmpDataDsp->addVarItem(new cDspVar("Internal1", 1, DSPDATA::vDspIntVar));
-    m_pTmpDataDsp->addVarItem(new cDspVar("Internal2", 3, DSPDATA::vDspIntVar));
+    cDspMeasData* dspData = m_dspIFace->getMemHandle("createInternalVariables");
+    dspData->addVarItem(new cDspVar("Internal1", 1, DSPDATA::vDspIntVar, DSPDATA::dFloat));
+    dspData->addVarItem(new cDspVar("Internal2", 3, DSPDATA::vDspIntVar, DSPDATA::dInt));
 
     QSignalSpy spy(m_dspIFace.get(), &Zera::cDSPInterface::serverAnswer);
     m_dspIFace->varList2Dsp();
@@ -79,31 +93,44 @@ void test_regression_dsp_var::createInternalVariables()
     QCOMPARE(spy.count(), 1);
     QCOMPARE(spy[0][2], ZSCPI::scpiAnswer[ZSCPI::ack]);
 
+    // We can neither list nor read but not EMPTY??
     QString ret = ScpiSingleTransactionBlocked::query("MEASURE:LIST:RAVLIST?", dspServerPort, m_proxyClient);
-    QCOMPARE(ret, ",0;"); // Is this a bug???
+    QCOMPARE(ret, ",0;");
+
+    QSignalSpy spyRead(m_dspIFace.get(), &Zera::cDSPInterface::serverAnswer);
+    m_dspIFace->dspMemoryRead(dspData);
+    TimeMachineObject::feedEventLoop();
+    QCOMPARE(spyRead.count(), 1);
+    QCOMPARE(spyRead[0][2], ZSCPI::scpiAnswer[ZSCPI::errexec]);
 }
 
 void test_regression_dsp_var::createTempGlobalVariables()
 {
-    cDspMeasData* m_pTmpDataDsp = m_dspIFace->getMemHandle("foo");
-    m_pTmpDataDsp->addVarItem(new cDspVar("TempGlobal1", 1, DSPDATA::vDspTempGlobal));
-    m_pTmpDataDsp->addVarItem(new cDspVar("TempGlobal2", 2, DSPDATA::vDspTempGlobal));
+    cDspMeasData* dspData = m_dspIFace->getMemHandle("createTempGlobalVariables");
+    dspData->addVarItem(new cDspVar("TempGlobal1", 1, DSPDATA::vDspTempGlobal, DSPDATA::dFloat));
+    dspData->addVarItem(new cDspVar("TempGlobal2", 2, DSPDATA::vDspTempGlobal, DSPDATA::dInt));
 
-    QSignalSpy spy(m_dspIFace.get(), &Zera::cDSPInterface::serverAnswer);
+    QSignalSpy spyCreate(m_dspIFace.get(), &Zera::cDSPInterface::serverAnswer);
     m_dspIFace->varList2Dsp();
     TimeMachineObject::feedEventLoop();
+    QCOMPARE(spyCreate.count(), 1);
+    QCOMPARE(spyCreate[0][2], ZSCPI::scpiAnswer[ZSCPI::ack]);
 
-    QCOMPARE(spy.count(), 1);
-    QCOMPARE(spy[0][2], ZSCPI::scpiAnswer[ZSCPI::ack]);
-
+    // We can list but not read
     QString ret = ScpiSingleTransactionBlocked::query("MEASURE:LIST:RAVLIST?", dspServerPort, m_proxyClient);
-    QCOMPARE(ret, "TempGlobal1,1;TempGlobal2,2;");
+    QCOMPARE(ret, "TEMPGLOBAL1,1;TEMPGLOBAL2,2;");
+
+    QSignalSpy spyRead(m_dspIFace.get(), &Zera::cDSPInterface::serverAnswer);
+    m_dspIFace->dspMemoryRead(dspData);
+    TimeMachineObject::feedEventLoop();
+    QCOMPARE(spyRead.count(), 1);
+    QCOMPARE(spyRead[0][2], ZSCPI::scpiAnswer[ZSCPI::errexec]);
 }
 
 void test_regression_dsp_var::globalVariablesAreNotSharedByDefault()
 {
-    cDspMeasData* m_pTmpDataDsp = m_dspIFace->getMemHandle("foo");
-    m_pTmpDataDsp->addVarItem(new cDspVar("TempGlobal1", 1, DSPDATA::vDspTempGlobal));
+    cDspMeasData* dspData = m_dspIFace->getMemHandle("globalVariablesAreNotSharedByDefault");
+    dspData->addVarItem(new cDspVar("TempGlobal1", 1, DSPDATA::vDspTempGlobal));
 
     QSignalSpy spy(m_dspIFace.get(), &Zera::cDSPInterface::serverAnswer);
     m_dspIFace->varList2Dsp();
