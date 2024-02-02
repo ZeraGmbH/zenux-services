@@ -52,11 +52,8 @@ private:
     XiQNetServer* myProtonetServer; // the real server that does the communication job
     XiQNetWrapper m_ProtobufWrapper;
     quint16 m_nSocketIdentifier = 0; // we will use this instead of real sockets, because protobuf extension clientId
-    QHash<QByteArray, cZDSP1Client*> m_zdspdClientHash;
-    QHash<cZDSP1Client*, QByteArray> m_clientIDHash; // liste der clientID's für die dspclients die über protobuf erzeugt wurden
     QTcpServer* m_pSCPIServer = nullptr;
     QTcpSocket* m_pSCPISocket = nullptr;
-    cZDSP1Client* m_pSCPIClient;
 
     EthSettings* m_pETHSettings = nullptr;
     FPGASettings* m_fpgaSettings = nullptr;
@@ -68,8 +65,12 @@ private:
     uchar ActivatedCmdList;
     QByteArray CmdMem; // unsere dsp programm listen
     QByteArray CmdIntMem;
-    QList<cZDSP1Client*> clientlist; // liste aller clients
     QSocketNotifier* m_pNotifier;
+
+    QHash<QByteArray, cZDSP1Client*> m_zdspdClientHash;
+    QHash<cZDSP1Client*, QByteArray> m_clientIDHash; // liste der clientID's für die dspclients die über protobuf erzeugt wurden
+    cZDSP1Client* m_pSCPIClient;
+    QList<cZDSP1Client*> clientlist; // liste aller clients
 
     ulong UserWorkSpaceGlobalSegmentAdr;
 
