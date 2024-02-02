@@ -18,6 +18,7 @@ private slots:
     void createInternalVariables();
     void createTempGlobalVariables();
     void globalVariablesAreNotSharedByDefault();
+
 private:
     std::unique_ptr<ResmanRunFacade> m_resmanServer;
     std::unique_ptr<MockZdsp1d> m_dspService;
