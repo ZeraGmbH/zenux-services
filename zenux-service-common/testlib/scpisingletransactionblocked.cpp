@@ -2,16 +2,16 @@
 #include "proxy.h"
 #include <timemachineobject.h>
 
-QString ScpiSingleTransactionBlocked::query(QString scpiQuery)
+QString ScpiSingleTransactionBlocked::query(QString scpiQuery, quint16 port, Zera::ProxyClientPtr proxyClient)
 {
     ProtobufMessage::NetMessage envelope;
     ProtobufMessage::NetMessage::ScpiCommand* message = envelope.mutable_scpi();
     message->set_command(scpiQuery.toStdString());
 
-    return sendBlocked(envelope);
+    return sendBlocked(envelope, port, proxyClient);
 }
 
-QString ScpiSingleTransactionBlocked::cmd(QString scpiCmd, QString param)
+QString ScpiSingleTransactionBlocked::cmd(QString scpiCmd, QString param, quint16 port, Zera::ProxyClientPtr proxyClient)
 {
     ProtobufMessage::NetMessage envelope;
     ProtobufMessage::NetMessage::ScpiCommand* message = envelope.mutable_scpi();
@@ -19,27 +19,28 @@ QString ScpiSingleTransactionBlocked::cmd(QString scpiCmd, QString param)
     // Oh no ';' how annoying sometimes needed sometimes not - see cmdXmlParam
     message->set_parameter(param.toStdString() + ";");
 
-    return sendBlocked(envelope);
+    return sendBlocked(envelope, port, proxyClient);
 }
 
-QString ScpiSingleTransactionBlocked::cmdXmlParam(QString scpiCmd, QString param)
+QString ScpiSingleTransactionBlocked::cmdXmlParam(QString scpiCmd, QString param, quint16 port, Zera::ProxyClientPtr proxyClient)
 {
     ProtobufMessage::NetMessage envelope;
     ProtobufMessage::NetMessage::ScpiCommand* message = envelope.mutable_scpi();
     message->set_command(scpiCmd.toStdString());
     message->set_parameter(param.toStdString());
 
-    return sendBlocked(envelope);
+    return sendBlocked(envelope, port, proxyClient);
 }
 
-QString ScpiSingleTransactionBlocked::sendBlocked(ProtobufMessage::NetMessage &envelope)
+QString ScpiSingleTransactionBlocked::sendBlocked(ProtobufMessage::NetMessage &envelope, quint16 port, Zera::ProxyClientPtr proxyClient)
 {
-    Zera::ProxyClientPtr proxylient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307);
+    if(!proxyClient)
+        proxyClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", port);
     QString bareScpiAnswer;
-    QObject::connect(proxylient.get(), &Zera::ProxyClient::answerAvailable, [&](std::shared_ptr<ProtobufMessage::NetMessage> message) {
+    QObject::connect(proxyClient.get(), &Zera::ProxyClient::answerAvailable, [&](std::shared_ptr<ProtobufMessage::NetMessage> message) {
         bareScpiAnswer = QString::fromStdString(message->reply().body());
     });
-    proxylient->transmitCommand(&envelope);
+    proxyClient->transmitCommand(&envelope);
     TimeMachineObject::feedEventLoop();
     return bareScpiAnswer;
 }
