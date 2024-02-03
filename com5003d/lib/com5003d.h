@@ -13,7 +13,7 @@
 #include "foutsettings.h"
 #include "samplingsettings.h"
 #include "abstractctrlheartbeatwait.h"
-#include "settingsfordeviceserver.h"
+#include "settingscontainer.h"
 #include <QTimer>
 
 class QStateMachine;
@@ -33,7 +33,7 @@ class cCOM5003dServer: public cPCBServer
     Q_OBJECT
 
 public:
-    explicit cCOM5003dServer(std::shared_ptr<SettingsForDeviceServer> settings,
+    explicit cCOM5003dServer(std::shared_ptr<SettingsContainer> settings,
                              AbstractFactoryI2cCtrlPtr ctrlFactory);
     ~cCOM5003dServer();
     QString getCtrlDeviceNode();
@@ -59,7 +59,7 @@ private slots:
 private:
     void setupMicroControllerIo();
 
-    std::shared_ptr<SettingsForDeviceServer> m_settings;
+    std::shared_ptr<SettingsContainer> m_settings;
     AbstractFactoryI2cCtrlPtr m_ctrlFactory;
 
     SystemInfo* m_pSystemInfo = nullptr;

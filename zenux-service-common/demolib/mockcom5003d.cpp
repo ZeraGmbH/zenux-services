@@ -13,6 +13,6 @@ MockCom5003d::MockCom5003d(AbstractFactoryI2cCtrlPtr ctrlFactory, QString altern
     ServerParams params = ServerParamGenerator::createParams("com5003d");
     if(!alternateConfigXml.isEmpty())
         params.xmlFile = alternateConfigXml;
-    std::shared_ptr<SettingsForDeviceServer> settings = std::make_shared<SettingsForDeviceServer>(params);
+    std::shared_ptr<SettingsContainer> settings = std::make_shared<SettingsContainer>(params);
     m_server = std::make_unique<cCOM5003dServer>(settings, ctrlFactory);
 }
