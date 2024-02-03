@@ -18,7 +18,7 @@ void test_serverunregisternotifier::init()
     
     m_adjustmentStatusNull = std::make_unique<TestAdjustmentStatusInterfaceNull>();
     m_ctrlFactory = std::make_shared<TestFactoryI2cCtrl>(true);
-    m_pcbServerTest = std::make_unique<TestPcbServerNotifications>(params, &m_scpiInterface, m_ctrlFactory);
+    m_pcbServerTest = std::make_unique<TestPcbServerNotifications>(std::make_unique<SettingsContainer>(params), &m_scpiInterface, m_ctrlFactory);
 
     m_xmlConfigReader = std::make_unique<Zera::XMLConfig::cReader>();
     m_foutSettings = std::make_unique<FOutSettings>(m_xmlConfigReader.get());

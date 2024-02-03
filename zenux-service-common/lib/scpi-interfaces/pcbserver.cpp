@@ -18,10 +18,9 @@ enum commands
     cmdUnregister
 };
 
-cPCBServer::cPCBServer(ServerParams params, cSCPI *scpiInterface) :
+cPCBServer::cPCBServer(std::unique_ptr<SettingsContainer> settings, cSCPI *scpiInterface) :
     ScpiConnection(scpiInterface),
-    m_ethSettings(&m_xmlConfigReader),
-    m_params(params)
+    m_settings(std::move(settings))
 {
 }
 
@@ -37,14 +36,14 @@ cSCPI *cPCBServer::getSCPIInterface()
     return m_pSCPIInterface;
 }
 
-QString &cPCBServer::getName()
+QString cPCBServer::getName()
 {
-    return m_params.name;
+    return m_settings->getServerParams().name;
 }
 
-QString &cPCBServer::getVersion()
+QString cPCBServer::getVersion()
 {
-    return m_params.version;
+    return m_settings->getServerParams().version;
 }
 
 void cPCBServer::setupServer()
@@ -52,7 +51,7 @@ void cPCBServer::setupServer()
     m_myServer = new XiQNetServer(this); // our working (talking) horse
     m_myServer->setDefaultWrapper(&m_ProtobufWrapper);
     connect(m_myServer,&XiQNetServer::sigClientConnected,this,&cPCBServer::onEstablishNewConnection);
-    if(m_ethSettings.isSCPIactive()) {
+    if(m_settings->getEthSettings()->isSCPIactive()) {
         m_pSCPIServer = new QTcpServer();
         m_pSCPIServer->setMaxPendingConnections(1); // we only accept 1 client to connect
         connect(m_pSCPIServer, &QTcpServer::newConnection, this, &cPCBServer::setSCPIConnection);

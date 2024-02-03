@@ -1,11 +1,11 @@
 #include "testpcbserver.h"
-#include "serverparamgenerator.h"
+#include "mockserverparamgenerator.h"
 #include "scpisingletonfactory.h"
 #include <QFinalState>
 #include <QDir>
 
 TestPcbServer::TestPcbServer(QString serviceName) :
-    cPCBServer(ServerParamGenerator::createParams(serviceName), ScpiSingletonFactory::getScpiObj())
+    cPCBServer(std::make_unique<SettingsContainer>(MockServerParamGenerator::createParams(serviceName)), ScpiSingletonFactory::getScpiObj())
 {
     m_pInitializationMachine = new QStateMachine(this);
 
@@ -68,15 +68,17 @@ void TestPcbServer::start()
 
 void TestPcbServer::doConfiguration()
 {
-    if (m_xmlConfigReader.loadSchema(m_params.xsdFile)) {
+    ServerParams params = m_settings->getServerParams();
+    if (m_xmlConfigReader.loadSchema(params.xsdFile)) {
+        EthSettings *ethSettings = m_settings->getEthSettings();
         connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged,
-                &m_ethSettings, &EthSettings::configXMLInfo);
+                ethSettings, &EthSettings::configXMLInfo);
         for (const auto &setting : qAsConst(m_xmlSettings))
             connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged,
                     setting, &XMLSettings::configXMLInfo);
-        if (!m_xmlConfigReader.loadXMLFile(m_params.xmlFile))
+        if (!m_xmlConfigReader.loadXMLFile(params.xmlFile))
             qFatal("Could not load xml config file");
-        m_pRMConnection = new RMConnection(m_ethSettings.getRMIPadr(), m_ethSettings.getPort(EthSettings::resourcemanager));
+        m_pRMConnection = new RMConnection(ethSettings->getRMIPadr(), ethSettings->getPort(EthSettings::resourcemanager));
     }
     else
         qFatal("Could not load xml schema");
@@ -94,9 +96,10 @@ void TestPcbServer::doSetupServer()
         scpiConnectionList.append(scpiConnection);
     initSCPIConnections();
 
-    m_myServer->startServer(m_ethSettings.getPort(EthSettings::protobufserver)); // and can start the server now
-    if(m_ethSettings.isSCPIactive())
-        m_pSCPIServer->listen(QHostAddress::AnyIPv4, m_ethSettings.getPort(EthSettings::scpiserver));
+    EthSettings *ethSettings = m_settings->getEthSettings();
+    m_myServer->startServer(ethSettings->getPort(EthSettings::protobufserver)); // and can start the server now
+    if(ethSettings->isSCPIactive())
+        m_pSCPIServer->listen(QHostAddress::AnyIPv4, ethSettings->getPort(EthSettings::scpiserver));
 
     m_stateconnect2RM->addTransition(m_pRMConnection, &RMConnection::connected, m_stateSendRMIdentAndRegister);
 
@@ -111,9 +114,10 @@ void TestPcbServer::doConnect2RM()
 void TestPcbServer::doIdentAndRegister()
 {
     m_pRMConnection->SendIdent(getName());
+    EthSettings *ethSettings = m_settings->getEthSettings();
     for (int i = 0; i < resourceList.count(); i++) {
         cResource *res = resourceList.at(i);
         connect(m_pRMConnection, &RMConnection::rmAck, res, &cResource::resourceManagerAck);
-        res->registerResource(m_pRMConnection, m_ethSettings.getPort(EthSettings::protobufserver));
+        res->registerResource(m_pRMConnection, ethSettings->getPort(EthSettings::protobufserver));
     }
 }

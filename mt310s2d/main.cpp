@@ -7,7 +7,7 @@ int main( int argc, char *argv[] )
 {
     QCoreApplication* app = new QCoreApplication (argc, argv);
 
-    std::shared_ptr<SettingsContainer> settings = std::make_shared<SettingsContainer>(cMT310S2dServer::defaultParams);
+    std::unique_ptr<SettingsContainer> settings = std::make_unique<SettingsContainer>(cMT310S2dServer::defaultParams);
     std::shared_ptr<FactoryI2cCtrl> ctrlFactory = std::make_shared<FactoryI2cCtrl>(settings->getI2cSettings());
     cMT310S2dServer* mt310s2d = new cMT310S2dServer(std::move(settings), ctrlFactory); // this is our server
     qInfo(ServerName " started");

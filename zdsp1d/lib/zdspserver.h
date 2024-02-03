@@ -1,13 +1,13 @@
 #ifndef ZDSP1D_H
 #define ZDSP1D_H
 
-#include "fpgasettings.h"
 #include "scpicmdinterpreter.h"
 #include "pcbserver.h"
 #include "scpicmds.h"
 #include "rmconnection.h"
 #include "ethsettings.h"
 #include "dspsettings.h"
+#include "settingscontainer.h"
 #include <xiqnetserver.h>
 #include <xiqnetwrapper.h>
 #include <QStringList>
@@ -27,7 +27,7 @@ class ZDspServer: public QObject, public cbIFace
 {
     Q_OBJECT
 public:
-    ZDspServer(ServerParams params = defaultParams);
+    ZDspServer(std::unique_ptr<SettingsContainer> settings);
     virtual ~ZDspServer();
     QString getServerVersion();
     QString getDspDeviceNode();
@@ -41,13 +41,13 @@ public:
     QString SCPICmd( SCPICmdType, QChar*) override;
     QString SCPIQuery(SCPICmdType cmdEnum) override;
 
+    static const ServerParams defaultParams;
 signals:
     void sigServerIsSetUp();
     void abortInit();
 
 private:
-    static ServerParams defaultParams;
-    ServerParams m_params;
+    std::unique_ptr<SettingsContainer> m_settings;
     ScpiCmdInterpreter* m_cmdInterpreter = nullptr;
     XiQNetServer* myProtonetServer; // the real server that does the communication job
     XiQNetWrapper m_ProtobufWrapper;
@@ -55,8 +55,6 @@ private:
     QTcpServer* m_pSCPIServer = nullptr;
     QTcpSocket* m_pSCPISocket = nullptr;
 
-    EthSettings* m_pETHSettings = nullptr;
-    FPGASettings* m_fpgaSettings = nullptr;
     cDSPSettings* m_pDspSettings = nullptr;
 
     int m_actualSocket; // der aktive socket im Execute

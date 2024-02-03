@@ -1,7 +1,6 @@
 #include "secdevicenodesingleton.h"
 #include "sec1000d.h"
 #include "ethsettings.h"
-#include "fpgasettings.h"
 #include "seccalcsettings.h"
 #include "secinputsettings.h"
 #include "sec1000statusinterface.h"
@@ -43,11 +42,10 @@ struct sigaction sigActionSec1000;
 // sigset_t mySigmask, origSigmask;
 
 
-ServerParams cSEC1000dServer::defaultParams{ServerName, ServerVersion, "/etc/zera/sec1000d/sec1000d.xsd", "/etc/zera/sec1000d/sec1000d.xml"};
+const ServerParams cSEC1000dServer::defaultParams{ServerName, ServerVersion, "/etc/zera/sec1000d/sec1000d.xsd", "/etc/zera/sec1000d/sec1000d.xml"};
 
-cSEC1000dServer::cSEC1000dServer(ServerParams params) :
-    cPCBServer(params, ScpiSingletonFactory::getScpiObj()),
-    m_params(params)
+cSEC1000dServer::cSEC1000dServer(std::unique_ptr<SettingsContainer> settings) :
+    cPCBServer(std::move(settings), ScpiSingletonFactory::getScpiObj())
 {
     m_pInitializationMachine = new QStateMachine(this);
 
@@ -82,7 +80,6 @@ cSEC1000dServer::cSEC1000dServer(ServerParams params) :
 
 cSEC1000dServer::~cSEC1000dServer()
 {
-    delete m_pFPGASettings;
     delete m_pECalcSettings;
     delete m_pInputSettings;
     delete m_pStatusInterface;
@@ -103,7 +100,7 @@ QString cSEC1000dServer::getServerVersion()
 
 QString cSEC1000dServer::getSecDeviceNode()
 {
-    return m_pFPGASettings->getSecDeviceNode();
+    return m_settings->getFpgaSettings()->getSecDeviceNode();
 }
 
 void cSEC1000dServer::doConfiguration()
@@ -117,23 +114,21 @@ void cSEC1000dServer::doConfiguration()
         fcntl( pipeFileDescriptorSec1000[0], F_SETFL, O_NONBLOCK);
         m_pNotifier = new QSocketNotifier(pipeFileDescriptorSec1000[0], QSocketNotifier::Read, this);
         connect(m_pNotifier, &QSocketNotifier::activated, this, &cSEC1000dServer::SECIntHandler);
-        if (m_xmlConfigReader.loadSchema(m_params.xsdFile)) {
+        ServerParams params = m_settings->getServerParams();
+        if (m_xmlConfigReader.loadSchema(params.xsdFile)) {
             // we want to initialize all settings first
-            connect(&m_xmlConfigReader,&Zera::XMLConfig::cReader::valueChanged,&m_ethSettings,&EthSettings::configXMLInfo);
-            m_pFPGASettings = new FPGASettings(&m_xmlConfigReader);
-            connect(&m_xmlConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pFPGASettings,&FPGASettings::configXMLInfo);
             m_pECalcSettings = new SecCalculatorSettings(&m_xmlConfigReader);
             connect(&m_xmlConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pECalcSettings,&SecCalculatorSettings::configXMLInfo);
             m_pInputSettings = new SecInputSettings(&m_xmlConfigReader);
             connect(&m_xmlConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pInputSettings,&SecInputSettings::configXMLInfo);
 
-            if(!m_xmlConfigReader.loadXMLFile(m_params.xmlFile)) {
-                qCritical("Abort: Could not open xml file '%s", qPrintable(m_params.xmlFile));
+            if(!m_xmlConfigReader.loadXMLFile(params.xmlFile)) {
+                qCritical("Abort: Could not open xml file '%s", qPrintable(params.xmlFile));
                 emit abortInit();
             }
         }
         else {
-            qCritical("Abort: Could not open xsd file '%s", qPrintable(m_params.xsdFile));
+            qCritical("Abort: Could not open xsd file '%s", qPrintable(params.xsdFile));
             emit abortInit();
         }
     }
@@ -166,7 +161,8 @@ void cSEC1000dServer::doSetupServer()
 
         initSCPIConnections();
 
-        m_myServer->startServer(m_ethSettings.getPort(EthSettings::protobufserver)); // and can start the server now
+        EthSettings *ethSettings = m_settings->getEthSettings();
+        m_myServer->startServer(ethSettings->getPort(EthSettings::protobufserver)); // and can start the server now
 
         sigActionSec1000.sa_handler = &SigHandler; // signal handler einrichten
         sigemptyset(&sigActionSec1000.sa_mask);
@@ -175,7 +171,7 @@ void cSEC1000dServer::doSetupServer()
         sigaction(SIGIO, &sigActionSec1000, NULL); // handler für sigio definieren
         SecDeviceNodeSingleton::getInstance()->enableFasync();
         // our resource mananager connection must be opened after configuration is done
-        m_pRMConnection = new RMConnection(m_ethSettings.getRMIPadr(), m_ethSettings.getPort(EthSettings::resourcemanager));
+        m_pRMConnection = new RMConnection(ethSettings->getRMIPadr(), ethSettings->getPort(EthSettings::resourcemanager));
         //connect(m_pRMConnection, SIGNAL(connectionRMError()), this, SIGNAL(abortInit()));
         // so we must complete our state machine here
         m_retryRMConnect = 100;
@@ -218,7 +214,8 @@ void cSEC1000dServer::doIdentAndRegister()
     {
         cResource *res = resourceList.at(i);
         connect(m_pRMConnection, SIGNAL(rmAck(quint32)), res, SLOT(resourceManagerAck(quint32)) );
-        res->registerResource(m_pRMConnection, m_ethSettings.getPort(EthSettings::protobufserver));
+        EthSettings *ethSettings = m_settings->getEthSettings();
+        res->registerResource(m_pRMConnection, ethSettings->getPort(EthSettings::protobufserver));
     }
 
 #ifdef SYSTEMD_NOTIFICATION

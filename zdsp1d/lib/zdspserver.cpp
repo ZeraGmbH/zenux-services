@@ -55,10 +55,10 @@ struct sigaction sigActionZdsp1;
 // sigset_t mySigmask, origSigmask;
 
 
-ServerParams ZDspServer::defaultParams {ServerName, ServerVersion, "/etc/zera/zdsp1d/zdsp1d.xsd", "/etc/zera/zdsp1d/zdsp1d.xml"};
+const ServerParams ZDspServer::defaultParams {ServerName, ServerVersion, "/etc/zera/zdsp1d/zdsp1d.xsd", "/etc/zera/zdsp1d/zdsp1d.xml"};
 
-ZDspServer::ZDspServer(ServerParams params) :
-    m_params(params)
+ZDspServer::ZDspServer(std::unique_ptr<SettingsContainer> settings) :
+    m_settings(std::move(settings))
 {
     m_pInitializationMachine = new QStateMachine(this);
     myXMLConfigReader = new Zera::XMLConfig::cReader();
@@ -95,8 +95,6 @@ ZDspServer::ZDspServer(ServerParams params) :
 
 ZDspServer::~ZDspServer()
 {
-    delete m_pETHSettings;
-    delete m_fpgaSettings;
     delete m_pDspSettings;
     for (int i = 0; i < m_clientList.count(); i++)
         delete m_clientList.at(i);
@@ -119,22 +117,19 @@ void ZDspServer::doConfiguration()
         fcntl( pipeFileDescriptorZdsp1[0], F_SETFL, O_NONBLOCK);
         m_pNotifier = new QSocketNotifier(pipeFileDescriptorZdsp1[0], QSocketNotifier::Read, this);
         connect(m_pNotifier, &QSocketNotifier::activated, this, &ZDspServer::DspIntHandler);
-        if (myXMLConfigReader->loadSchema(m_params.xsdFile)) {
+        ServerParams params = m_settings->getServerParams();
+        if (myXMLConfigReader->loadSchema(params.xsdFile)) {
             // we want to initialize all settings first
-            m_pETHSettings = new EthSettings(myXMLConfigReader);
-            connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pETHSettings,&EthSettings::configXMLInfo);
-            m_fpgaSettings = new FPGASettings(myXMLConfigReader);
-            connect(myXMLConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_fpgaSettings, &FPGASettings::configXMLInfo);
             m_pDspSettings = new cDSPSettings(myXMLConfigReader);
             connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pDspSettings,&cDSPSettings::configXMLInfo);
 
-            if(!myXMLConfigReader->loadXMLFile(m_params.xmlFile)) {
-                qCritical("Abort: Could not open xml file '%s", qPrintable(m_params.xmlFile));
+            if(!myXMLConfigReader->loadXMLFile(params.xmlFile)) {
+                qCritical("Abort: Could not open xml file '%s", qPrintable(params.xmlFile));
                 emit abortInit();
             }
         }
         else {
-            qCritical("Abort: Could not open xsd file '%s", qPrintable(m_params.xsdFile));
+            qCritical("Abort: Could not open xsd file '%s", qPrintable(params.xsdFile));
             emit abortInit();
         }
     }
@@ -152,13 +147,14 @@ void ZDspServer::doSetupServer()
     myProtonetServer =  new XiQNetServer(this);
     myProtonetServer->setDefaultWrapper(&m_ProtobufWrapper);
     connect(myProtonetServer, &XiQNetServer::sigClientConnected, this, &ZDspServer::onEstablishNewConnection);
-    myProtonetServer->startServer(m_pETHSettings->getPort(EthSettings::protobufserver)); // and can start the server now
+    EthSettings *ethSettings = m_settings->getEthSettings();
+    myProtonetServer->startServer(ethSettings->getPort(EthSettings::protobufserver)); // and can start the server now
 
-    if (m_pETHSettings->isSCPIactive()) {
+    if (ethSettings->isSCPIactive()) {
         m_pSCPIServer = new QTcpServer(this);
         m_pSCPIServer->setMaxPendingConnections(1); // we only accept 1 client to connect
         connect(m_pSCPIServer, &QTcpServer::newConnection, this, &ZDspServer::setSCPIConnection);
-        m_pSCPIServer->listen(QHostAddress::AnyIPv4, m_pETHSettings->getPort(EthSettings::scpiserver));
+        m_pSCPIServer->listen(QHostAddress::AnyIPv4, ethSettings->getPort(EthSettings::scpiserver));
     }
     QString dspDevNodeName = getDspDeviceNode(); // we try to open the dsp device
     if (DspDeviceNodeSingleton::getInstance()->open(dspDevNodeName) < 0) {
@@ -181,7 +177,7 @@ void ZDspServer::doSetupServer()
                 if (resetDsp() && bootDsp()) { // and try to reset and then boot it
                     if (setSamplingSystem()) { // now we try to set the dsp's sampling system
                         // our resource manager connection must be opened after configuration is done
-                        m_pRMConnection = new RMConnection(m_pETHSettings->getRMIPadr(), m_pETHSettings->getPort(EthSettings::resourcemanager));
+                        m_pRMConnection = new RMConnection(ethSettings->getRMIPadr(), ethSettings->getPort(EthSettings::resourcemanager));
                         m_stateconnect2RM->addTransition(m_pRMConnection, SIGNAL(connected()), m_stateSendRMIdentAndRegister);
                         m_stateconnect2RM->addTransition(m_pRMConnection, SIGNAL(connectionRMError()), m_stateconnect2RMError);
                         m_stateconnect2RMError->addTransition(this, SIGNAL(sigServerIsSetUp()), m_stateconnect2RM);
@@ -198,7 +194,7 @@ void ZDspServer::doSetupServer()
                 }
             }
             else { // but for debugging purpose dsp is booted by ice
-                m_pRMConnection = new RMConnection(m_pETHSettings->getRMIPadr(), m_pETHSettings->getPort(EthSettings::resourcemanager));
+                m_pRMConnection = new RMConnection(ethSettings->getRMIPadr(), ethSettings->getPort(EthSettings::resourcemanager));
                 m_stateconnect2RM->addTransition(m_pRMConnection, SIGNAL(connected()), m_stateSendRMIdentAndRegister);
                 m_stateconnect2RM->addTransition(m_pRMConnection, SIGNAL(connectionRMError()), m_stateconnect2RMError);
                 m_stateconnect2RMError->addTransition(this, SIGNAL(sigServerIsSetUp()), m_stateconnect2RM);
@@ -236,7 +232,8 @@ void ZDspServer::doIdentAndRegister()
 {
     m_pRMConnection->SendIdent(ServerName);
 
-    quint32 port = m_pETHSettings->getPort(EthSettings::protobufserver);
+    EthSettings *ethSettings = m_settings->getEthSettings();
+    quint32 port = ethSettings->getPort(EthSettings::protobufserver);
 
     QString cmd, par;
 
@@ -806,7 +803,7 @@ QString ZDspServer::getServerVersion()
 
 QString ZDspServer::getDspDeviceNode()
 {
-    return m_fpgaSettings->getDspDeviceNode();
+    return m_settings->getFpgaSettings()->getDspDeviceNode();
 }
 
 QString ZDspServer::mGetDspStatus()

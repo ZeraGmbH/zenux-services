@@ -3,8 +3,8 @@
 
 #include "scpiconnection.h"
 #include "resource.h"
-#include "ethsettings.h"
 #include "notificationstructwithvalue.h"
+#include "settingscontainer.h"
 #include <scpi.h>
 #include <xiqnetwrapper.h>
 #include <netmessages.pb.h>
@@ -14,14 +14,6 @@
 #include <QTcpServer>
 #include <QTcpSocket>
 #include <QByteArray>
-
-struct ServerParams
-{
-    QString name;
-    QString version;
-    QString xsdFile;
-    QString xmlFile;
-};
 
 enum ServerErrors
 {
@@ -35,13 +27,11 @@ class cPCBServer : public ScpiConnection
 {
     Q_OBJECT
 public:
-    explicit cPCBServer(ServerParams params, cSCPI *scpiInterface);
+    explicit cPCBServer(std::unique_ptr<SettingsContainer> settings, cSCPI *scpiInterface);
     void initSCPIConnection(QString leadingNodes) override;
     cSCPI* getSCPIInterface();
-    QString& getName();
-    QString& getVersion();
-
-    EthSettings m_ethSettings;
+    QString getName();
+    QString getVersion();
 public slots:
     void sendAnswerProto(cProtonetCommand* protoCmd);
 protected slots:
@@ -55,7 +45,8 @@ protected:
     void setupServer();
     void initSCPIConnections();
     void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
-    ServerParams m_params;
+
+    std::unique_ptr<SettingsContainer> m_settings;
     XiQNetServer* m_myServer; // the real server that does the communication job
     XiQNetWrapper m_ProtobufWrapper;
     Zera::XMLConfig::cReader m_xmlConfigReader;
