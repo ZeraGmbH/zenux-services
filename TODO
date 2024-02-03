@@ -1,3 +1,3 @@
-* Fully test XML import export
-* Fully test Flash import export
-* Merge MT implementation -> COM
+* Real Factory for device nodes
+* Split dsp mock -> demo & test -> zdsp
+* (Fully) Abstract operations on dsp device nodes
