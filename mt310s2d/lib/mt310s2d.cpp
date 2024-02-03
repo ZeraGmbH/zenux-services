@@ -12,7 +12,6 @@
 #include "mt310s2systeminterface.h"
 #include "ethsettings.h"
 #include "finsettings.h"
-#include "fpgasettings.h"
 #include "hkinsettings.h"
 #include "i2csettings.h"
 #include "samplingsettings.h"
@@ -50,9 +49,8 @@ static struct sigaction sigActionMt310s2;
 
 const ServerParams cMT310S2dServer::defaultParams {ServerName, ServerVersion, "/etc/zera/mt310s2d/mt310s2d.xsd", "/etc/zera/mt310s2d/mt310s2d.xml"};
 
-cMT310S2dServer::cMT310S2dServer(std::shared_ptr<SettingsContainer> settings, AbstractFactoryI2cCtrlPtr ctrlFactory) :
-    cPCBServer(settings->getServerParams(), ScpiSingletonFactory::getScpiObj()),
-    m_settings(settings),
+cMT310S2dServer::cMT310S2dServer(std::unique_ptr<SettingsContainer> settings, AbstractFactoryI2cCtrlPtr ctrlFactory) :
+    cPCBServer(std::move(settings), ScpiSingletonFactory::getScpiObj()),
     m_ctrlFactory(ctrlFactory)
 {
     m_pInitializationMachine = new QStateMachine(this);
@@ -138,9 +136,8 @@ void cMT310S2dServer::doConfiguration()
         m_pNotifier = new QSocketNotifier(pipeFileDescriptorMt310s2[0], QSocketNotifier::Read, this);
         connect(m_pNotifier, &QSocketNotifier::activated, this, &cMT310S2dServer::MTIntHandler);
 
-        if (m_xmlConfigReader.loadSchema(m_params.xsdFile)) {
-            connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, &m_ethSettings, &EthSettings::configXMLInfo);
-
+        ServerParams params = m_settings->getServerParams();
+        if (m_xmlConfigReader.loadSchema(params.xsdFile)) {
             m_pSenseSettings = new cSenseSettings(&m_xmlConfigReader, 8);
             connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_pSenseSettings, &cSenseSettings::configXMLInfo);
             m_foutSettings = new FOutSettings(&m_xmlConfigReader);
@@ -156,15 +153,15 @@ void cMT310S2dServer::doConfiguration()
             m_accumulatorSettings = new AccumulatorSettings(&m_xmlConfigReader);
             connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_accumulatorSettings, &AccumulatorSettings::configXMLInfo);
 
-            if (m_xmlConfigReader.loadXMLFile(m_params.xmlFile))
+            if (m_xmlConfigReader.loadXMLFile(params.xmlFile))
                 setupMicroControllerIo();
             else {
-                qCritical("Abort: Could not open xml file '%s", qPrintable(m_params.xmlFile));
+                qCritical("Abort: Could not open xml file '%s", qPrintable(params.xmlFile));
                 emit abortInit();
             }
         }
         else {
-            qCritical("Abort: Could not open xsd file '%s", qPrintable(m_params.xsdFile));
+            qCritical("Abort: Could not open xsd file '%s", qPrintable(params.xsdFile));
             emit abortInit();
         }
     }
@@ -246,9 +243,10 @@ void cMT310S2dServer::doSetupServer()
             // after init. we once poll the devices connected at power up
             updateI2cDevicesConnected();
 
-            m_myServer->startServer(m_ethSettings.getPort(EthSettings::protobufserver)); // and can start the server now
-            if(m_ethSettings.isSCPIactive())
-                m_pSCPIServer->listen(QHostAddress::AnyIPv4, m_ethSettings.getPort(EthSettings::scpiserver));
+            EthSettings *ethSettings = m_settings->getEthSettings();
+            m_myServer->startServer(ethSettings->getPort(EthSettings::protobufserver)); // and can start the server now
+            if(ethSettings->isSCPIactive())
+                m_pSCPIServer->listen(QHostAddress::AnyIPv4, ethSettings->getPort(EthSettings::scpiserver));
 
             sigActionMt310s2.sa_handler = &SigHandler; // setup signal handler
             sigemptyset(&sigActionMt310s2.sa_mask);
@@ -260,7 +258,7 @@ void cMT310S2dServer::doSetupServer()
             enableClampInterrupt();
 
             // our resource mananager connection must be opened after configuration is done
-            m_pRMConnection = new RMConnection(m_ethSettings.getRMIPadr(), m_ethSettings.getPort(EthSettings::resourcemanager));
+            m_pRMConnection = new RMConnection(ethSettings->getRMIPadr(), ethSettings->getPort(EthSettings::resourcemanager));
             //connect(m_pRMConnection, SIGNAL(connectionRMError()), this, SIGNAL(abortInit()));
             // so we must complete our state machine here
             m_retryRMConnect = 100;
@@ -308,7 +306,8 @@ void cMT310S2dServer::doIdentAndRegister()
     {
         cResource *res = resourceList.at(i);
         connect(m_pRMConnection, SIGNAL(rmAck(quint32)), res, SLOT(resourceManagerAck(quint32)) );
-        res->registerResource(m_pRMConnection, m_ethSettings.getPort(EthSettings::protobufserver));
+        EthSettings *ethSettings = m_settings->getEthSettings();
+        res->registerResource(m_pRMConnection, ethSettings->getPort(EthSettings::protobufserver));
     }
 #ifdef SYSTEMD_NOTIFICATION
     sd_notify(0, "READY=1");

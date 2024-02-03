@@ -4,7 +4,6 @@
 #include "abstractfactoryi2cctrl.h"
 #include "pcbserver.h"
 #include "rmconnection.h"
-#include "fpgasettings.h"
 #include "senseinterfacecommon.h"
 #include "sensesettings.h"
 #include "hkinsettings.h"
@@ -33,11 +32,11 @@ class cCOM5003dServer: public cPCBServer
     Q_OBJECT
 
 public:
-    explicit cCOM5003dServer(std::shared_ptr<SettingsContainer> settings,
+    explicit cCOM5003dServer(std::unique_ptr<SettingsContainer> settings,
                              AbstractFactoryI2cCtrlPtr ctrlFactory);
     ~cCOM5003dServer();
     QString getCtrlDeviceNode();
-    static ServerParams defaultParams;
+    static const ServerParams defaultParams;
 
 signals:
     void abortInit();
@@ -59,7 +58,6 @@ private slots:
 private:
     void setupMicroControllerIo();
 
-    std::shared_ptr<SettingsContainer> m_settings;
     AbstractFactoryI2cCtrlPtr m_ctrlFactory;
 
     SystemInfo* m_pSystemInfo = nullptr;

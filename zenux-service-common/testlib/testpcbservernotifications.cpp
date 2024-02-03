@@ -1,8 +1,8 @@
 #include "testpcbservernotifications.h"
 #include "permissionfunctions.h"
 
-TestPcbServerNotifications::TestPcbServerNotifications(ServerParams params, cSCPI *scpiInterface, AbstractFactoryI2cCtrlPtr ctrlFactory) :
-    cPCBServer(params, scpiInterface)
+TestPcbServerNotifications::TestPcbServerNotifications(std::unique_ptr<SettingsContainer> settings, cSCPI *scpiInterface, AbstractFactoryI2cCtrlPtr ctrlFactory) :
+    cPCBServer(std::move(settings), scpiInterface)
 {
     scpiConnectionList.append(this);
     PermissionFunctions::setPermissionCtrlFactory(ctrlFactory);

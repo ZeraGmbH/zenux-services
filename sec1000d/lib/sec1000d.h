@@ -3,7 +3,7 @@
 
 #include "pcbserver.h"
 #include "rmconnection.h"
-#include "fpgasettings.h"
+#include "settingscontainer.h"
 #include <QTimer>
 
 class QStateMachine;
@@ -21,12 +21,12 @@ class Sec1000SystemInfo;
 class cSEC1000dServer: public cPCBServer
 {
     Q_OBJECT
-
 public:
-    explicit cSEC1000dServer(ServerParams params = defaultParams);
+    explicit cSEC1000dServer(std::unique_ptr<SettingsContainer> settings);
     ~cSEC1000dServer();
     QString getServerVersion();
     QString getSecDeviceNode();
+    static const ServerParams defaultParams;
 
 signals:
     void abortInit();
@@ -44,10 +44,6 @@ private slots:
     void doIdentAndRegister();
     void onPeerDisconnected();
 private:
-    static ServerParams defaultParams;
-    ServerParams m_params;
-
-    FPGASettings* m_pFPGASettings = nullptr;
     SecCalculatorSettings* m_pECalcSettings = nullptr;
     SecInputSettings* m_pInputSettings = nullptr;
 

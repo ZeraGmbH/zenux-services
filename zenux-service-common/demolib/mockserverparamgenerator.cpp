@@ -1,6 +1,6 @@
-#include "serverparamgenerator.h"
+#include "mockserverparamgenerator.h"
 
-ServerParams ServerParamGenerator::createParams(QString serviceName)
+ServerParams MockServerParamGenerator::createParams(QString serviceName)
 {
     QString xsdName = ":/" + serviceName + ".xsd";
     QString xmlName = ":/" + serviceName + ".xml";

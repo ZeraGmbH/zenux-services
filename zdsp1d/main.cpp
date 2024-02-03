@@ -5,7 +5,9 @@
 int main( int argc, char *argv[] )
 {
     QCoreApplication* app = new QCoreApplication (argc, argv);
-    ZDspServer* zdsp1d = new ZDspServer; // this is our server
+
+    std::unique_ptr<SettingsContainer> settings = std::make_unique<SettingsContainer>(ZDspServer::defaultParams);
+    ZDspServer* zdsp1d = new ZDspServer(std::move(settings)); // this is our server
     qInfo("%s started", qPrintable(zdsp1d->getServerVersion()));
 
     int r =  app->exec();

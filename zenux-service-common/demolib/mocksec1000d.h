@@ -3,10 +3,12 @@
 
 #include "sec1000d.h"
 
-class MockSec1000d : public cSEC1000dServer
+class MockSec1000d
 {
 public:
-    MockSec1000d();
+    MockSec1000d(QString alternateConfigXml = QString());
+private:
+    std::unique_ptr<cSEC1000dServer> m_server;
 };
 
 #endif // MOCKSEC1000D_H

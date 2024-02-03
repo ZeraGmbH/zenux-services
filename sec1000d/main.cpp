@@ -9,7 +9,9 @@
 int main( int argc, char *argv[] )
 {
     QCoreApplication* app = new QCoreApplication (argc, argv);
-    cSEC1000dServer* sec5003d = new cSEC1000dServer(); // this is our server
+
+    std::unique_ptr<SettingsContainer> settings = std::make_unique<SettingsContainer>(cSEC1000dServer::defaultParams);
+    cSEC1000dServer* sec5003d = new cSEC1000dServer(std::move(settings)); // this is our server
     qInfo("%s started", qPrintable(sec5003d->getServerVersion()));
 
     int r = app->exec();

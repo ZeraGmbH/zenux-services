@@ -25,7 +25,6 @@
 #include "com5003systeminterface.h"
 #include "ethsettings.h"
 #include "finsettings.h"
-#include "fpgasettings.h"
 #include "hkinsettings.h"
 #include "sensesettings.h"
 #include "samplingsettings.h"
@@ -37,11 +36,10 @@
 #include <systemd/sd-daemon.h>
 #endif
 
-ServerParams cCOM5003dServer::defaultParams {ServerName, ServerVersion, "/etc/zera/com5003d/com5003d.xsd", "/etc/zera/com5003d/com5003d.xml"};
+const ServerParams cCOM5003dServer::defaultParams {ServerName, ServerVersion, "/etc/zera/com5003d/com5003d.xsd", "/etc/zera/com5003d/com5003d.xml"};
 
-cCOM5003dServer::cCOM5003dServer(std::shared_ptr<SettingsContainer> settings, AbstractFactoryI2cCtrlPtr ctrlFactory) :
-    cPCBServer(settings->getServerParams(), ScpiSingletonFactory::getScpiObj()),
-    m_settings(settings),
+cCOM5003dServer::cCOM5003dServer(std::unique_ptr<SettingsContainer> settings, AbstractFactoryI2cCtrlPtr ctrlFactory) :
+    cPCBServer(std::move(settings), ScpiSingletonFactory::getScpiObj()),
     m_ctrlFactory(ctrlFactory)
 {
     m_pInitializationMachine = new QStateMachine(this);
@@ -122,11 +120,10 @@ void cCOM5003dServer::doConfiguration()
     sigStart = 1;
     write(m_nFPGAfd, &sigStart, 4);
 
-    if (m_xmlConfigReader.loadSchema(m_params.xsdFile)) {
+    ServerParams params = m_settings->getServerParams();
+    if (m_xmlConfigReader.loadSchema(params.xsdFile)) {
         sigStart = 0;
         write(m_nFPGAfd, &sigStart, 4);
-
-        connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, &m_ethSettings, &EthSettings::configXMLInfo);
 
         m_pSenseSettings = new cSenseSettings(&m_xmlConfigReader, 6);
         connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_pSenseSettings, &cSenseSettings::configXMLInfo);
@@ -143,7 +140,7 @@ void cCOM5003dServer::doConfiguration()
 
         sigStart = 1;
         write(m_nFPGAfd, &sigStart, 4);
-        if (m_xmlConfigReader.loadXMLFile(m_params.xmlFile)) {
+        if (m_xmlConfigReader.loadXMLFile(params.xmlFile)) {
             setupMicroControllerIo();
 
             sigStart = 0;
@@ -152,12 +149,12 @@ void cCOM5003dServer::doConfiguration()
             // signals and after this the finishedparsingXML signal
         }
         else {
-            qCritical("Abort: Could not open xml file '%s", qPrintable(m_params.xmlFile));
+            qCritical("Abort: Could not open xml file '%s", qPrintable(params.xmlFile));
             emit abortInit();
         }
     }
     else {
-        qCritical("Abort: Could not open xsd file '%s", qPrintable(m_params.xsdFile));
+        qCritical("Abort: Could not open xsd file '%s", qPrintable(params.xsdFile));
         emit abortInit();
     }
     close(m_nFPGAfd);
@@ -294,13 +291,14 @@ void cCOM5003dServer::doSetupServer()
     setupServer(); // here our scpi interface gets instanciated, we need this for further steps
 
     // our resource mananager connection must be opened after configuration is done
-    m_pRMConnection = new RMConnection(m_ethSettings.getRMIPadr(), m_ethSettings.getPort(EthSettings::resourcemanager));
+    EthSettings *ethSettings = m_settings->getEthSettings();
+    m_pRMConnection = new RMConnection(ethSettings->getRMIPadr(), ethSettings->getPort(EthSettings::resourcemanager));
 
     scpiConnectionList.append(this); // the server itself has some commands
     scpiConnectionList.append(m_pSenseInterface = new Com5003SenseInterface(getSCPIInterface(),
                                                                             m_settings->getI2cSettings(),
                                                                             m_pRMConnection,
-                                                                            &m_ethSettings,
+                                                                            ethSettings,
                                                                             m_pSenseSettings,
                                                                             m_pSystemInfo,
                                                                             m_ctrlFactory));
@@ -323,9 +321,9 @@ void cCOM5003dServer::doSetupServer()
 
     initSCPIConnections();
 
-    m_myServer->startServer(m_ethSettings.getPort(EthSettings::protobufserver)); // and can start the server now
-    if(m_ethSettings.isSCPIactive())
-        m_pSCPIServer->listen(QHostAddress::AnyIPv4, m_ethSettings.getPort(EthSettings::scpiserver));
+    m_myServer->startServer(ethSettings->getPort(EthSettings::protobufserver)); // and can start the server now
+    if(ethSettings->isSCPIactive())
+        m_pSCPIServer->listen(QHostAddress::AnyIPv4, ethSettings->getPort(EthSettings::scpiserver));
 
     //connect(m_pRMConnection, SIGNAL(connectionRMError()), this, SIGNAL(abortInit()));
     // so we must complete our state machine here
@@ -372,7 +370,8 @@ void cCOM5003dServer::doIdentAndRegister()
     {
         cResource *res = resourceList.at(i);
         connect(m_pRMConnection, SIGNAL(rmAck(quint32)), res, SLOT(resourceManagerAck(quint32)) );
-        res->registerResource(m_pRMConnection, m_ethSettings.getPort(EthSettings::protobufserver));
+        EthSettings *ethSettings = m_settings->getEthSettings();
+        res->registerResource(m_pRMConnection, ethSettings->getPort(EthSettings::protobufserver));
     }
 #ifdef SYSTEMD_NOTIFICATION
     sd_notify(0, "READY=1");
