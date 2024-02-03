@@ -85,7 +85,6 @@ cCOM5003dServer::cCOM5003dServer(std::shared_ptr<SettingsContainer> settings, Ab
 
 cCOM5003dServer::~cCOM5003dServer()
 {
-    delete m_fpgaSettings;
     delete m_pSenseSettings;
     delete m_foutSettings;
     delete m_finSettings;
@@ -103,7 +102,7 @@ cCOM5003dServer::~cCOM5003dServer()
 
 QString cCOM5003dServer::getCtrlDeviceNode()
 {
-    return m_fpgaSettings->getCtrlDeviceNode();
+    return m_settings->getFpgaSettings()->getCtrlDeviceNode();
 }
 
 void cCOM5003dServer::setupMicroControllerIo()
@@ -129,8 +128,6 @@ void cCOM5003dServer::doConfiguration()
 
         connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, &m_ethSettings, &EthSettings::configXMLInfo);
 
-        m_fpgaSettings = new FPGASettings(&m_xmlConfigReader);
-        connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_fpgaSettings, &FPGASettings::configXMLInfo);
         m_pSenseSettings = new cSenseSettings(&m_xmlConfigReader, 6);
         connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_pSenseSettings, &cSenseSettings::configXMLInfo);
         m_foutSettings = new FOutSettings(&m_xmlConfigReader);
