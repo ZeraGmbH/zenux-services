@@ -4,7 +4,7 @@
 #include "pcbserver.h"
 #include "rmconnection.h"
 #include "senseinterfacecommon.h"
-#include "settingsfordeviceserver.h"
+#include "settingscontainer.h"
 #include "sensesettings.h"
 #include "hkinsettings.h"
 #include "scinsettings.h"
@@ -33,7 +33,7 @@ class cMT310S2dServer: public cPCBServer
 {
     Q_OBJECT
 public:
-    explicit cMT310S2dServer(std::shared_ptr<SettingsForDeviceServer> settings,
+    explicit cMT310S2dServer(std::shared_ptr<SettingsContainer> settings,
                              AbstractFactoryI2cCtrlPtr ctrlFactory);
     ~cMT310S2dServer();
     QString getCtrlDeviceNode();
@@ -64,7 +64,7 @@ private:
     void updateI2cDevicesConnected();
     void setupMicroControllerIo();
 
-    std::shared_ptr<SettingsForDeviceServer> m_settings;
+    std::shared_ptr<SettingsContainer> m_settings;
     AbstractFactoryI2cCtrlPtr m_ctrlFactory;
 
     Mt310s2SystemInfo* m_pSystemInfo = nullptr;

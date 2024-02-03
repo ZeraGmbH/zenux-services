@@ -39,7 +39,7 @@
 
 ServerParams cCOM5003dServer::defaultParams {ServerName, ServerVersion, "/etc/zera/com5003d/com5003d.xsd", "/etc/zera/com5003d/com5003d.xml"};
 
-cCOM5003dServer::cCOM5003dServer(std::shared_ptr<SettingsForDeviceServer> settings, AbstractFactoryI2cCtrlPtr ctrlFactory) :
+cCOM5003dServer::cCOM5003dServer(std::shared_ptr<SettingsContainer> settings, AbstractFactoryI2cCtrlPtr ctrlFactory) :
     cPCBServer(settings->getServerParams(), ScpiSingletonFactory::getScpiObj()),
     m_settings(settings),
     m_ctrlFactory(ctrlFactory)

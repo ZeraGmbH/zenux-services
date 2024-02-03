@@ -13,6 +13,6 @@ MockMt310s2d::MockMt310s2d(AbstractFactoryI2cCtrlPtr ctrlFactory, QString altern
     ServerParams params = ServerParamGenerator::createParams("mt310s2d");
     if(!alternateConfigXml.isEmpty())
         params.xmlFile = alternateConfigXml;
-    std::shared_ptr<SettingsForDeviceServer> settings = std::make_shared<SettingsForDeviceServer>(params);
+    std::shared_ptr<SettingsContainer> settings = std::make_shared<SettingsContainer>(params);
     m_server = std::make_unique<cMT310S2dServer>(settings, ctrlFactory);
 }

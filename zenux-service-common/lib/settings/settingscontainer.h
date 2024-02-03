@@ -1,16 +1,16 @@
-#ifndef SETTINGSFORDEVICESERVER_H
-#define SETTINGSFORDEVICESERVER_H
+#ifndef SETTINGSCONTAINER_H
+#define SETTINGSCONTAINER_H
 
 #include "pcbserver.h"
 #include "i2csettings.h"
 #include "fpgasettings.h"
 #include <QObject>
 
-class SettingsForDeviceServer : public QObject
+class SettingsContainer : public QObject
 {
     Q_OBJECT
 public:
-    explicit SettingsForDeviceServer(ServerParams params);
+    explicit SettingsContainer(ServerParams params);
     ServerParams getServerParams();
     I2cSettings *getI2cSettings();
     FPGASettings *getFpgaSettings();
@@ -21,4 +21,4 @@ private:
     FPGASettings m_fpgaSettings;
 };
 
-#endif // SETTINGSFORDEVICESERVER_H
+#endif // SETTINGSCONTAINER_H

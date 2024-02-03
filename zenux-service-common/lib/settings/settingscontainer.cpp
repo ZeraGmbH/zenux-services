@@ -1,6 +1,6 @@
-#include "settingsfordeviceserver.h"
+#include "settingscontainer.h"
 
-SettingsForDeviceServer::SettingsForDeviceServer(ServerParams params) :
+SettingsContainer::SettingsContainer(ServerParams params) :
     m_params{params},
     m_i2cSettings(&m_xmlConfigReader),
     m_fpgaSettings(&m_xmlConfigReader)
@@ -18,17 +18,17 @@ SettingsForDeviceServer::SettingsForDeviceServer(ServerParams params) :
         qFatal("Abort: Could not open xml file '%s", qPrintable(m_params.xmlFile));
 }
 
-ServerParams SettingsForDeviceServer::getServerParams()
+ServerParams SettingsContainer::getServerParams()
 {
     return m_params;
 }
 
-I2cSettings *SettingsForDeviceServer::getI2cSettings()
+I2cSettings *SettingsContainer::getI2cSettings()
 {
     return &m_i2cSettings;
 }
 
-FPGASettings *SettingsForDeviceServer::getFpgaSettings()
+FPGASettings *SettingsContainer::getFpgaSettings()
 {
     return &m_fpgaSettings;
 }

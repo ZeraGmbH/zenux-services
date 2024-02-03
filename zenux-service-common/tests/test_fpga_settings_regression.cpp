@@ -23,7 +23,7 @@ void test_fpga_settings_regression::com5003d()
     MockPcbDeviceNodeCtrlSingleton::enableMock();
 
     ServerParams params = ServerParamGenerator::createParams("com5003d");
-    std::shared_ptr<SettingsForDeviceServer> settings = std::make_shared<SettingsForDeviceServer>(params);
+    std::shared_ptr<SettingsContainer> settings = std::make_shared<SettingsContainer>(params);
 
     cCOM5003dServer server(settings, std::make_shared<TestFactoryI2cCtrl>(true));
     TimeMachineObject::feedEventLoop();
@@ -37,7 +37,7 @@ void test_fpga_settings_regression::mt310s2d()
     MockPcbDeviceNodeMessageSingleton::enableMock();
 
     ServerParams params = ServerParamGenerator::createParams("mt310s2d");
-    std::shared_ptr<SettingsForDeviceServer> settings = std::make_shared<SettingsForDeviceServer>(params);
+    std::shared_ptr<SettingsContainer> settings = std::make_shared<SettingsContainer>(params);
 
     cMT310S2dServer server(settings, std::make_shared<TestFactoryI2cCtrl>(true));
     TimeMachineObject::feedEventLoop();
