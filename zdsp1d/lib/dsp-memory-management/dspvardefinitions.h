@@ -8,7 +8,8 @@ enum dType { eInt, eFloat, eUnknown};
 enum sectionType { systemSection, userSection};
 enum segmentType { localSegment, globalSegment};
 
-struct TDspVar { // dient ebenfalls der dekodierung
+struct TDspVar {
+    QString m_clientHandleName;
     QString Name; // name der variablen
     ushort size;  // anzahl worte
     dType type; //
