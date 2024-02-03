@@ -42,6 +42,11 @@ bool DspVarClientPerspective::Init(const QString& varDefinition)
     return ret;
 }
 
+QString DspVarClientPerspective::getClientHandleName()
+{
+    return m_clientHandleName;
+}
+
 QString& DspVarClientPerspective::name()
 {
     return m_sName;

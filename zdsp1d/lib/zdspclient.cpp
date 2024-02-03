@@ -70,6 +70,7 @@ QString& cZDSP1Client::setRawActualValueList(QString& s)
     if (m_memorySection.n > 0) { // wir haben mindestens 1 variable
         m_dspVarArray.resize(m_memorySection.n);
         for (int i = 0;i < m_memorySection.n; i++) { // und machen diese dem resolver zugänglich
+            m_dspVarArray[i].m_clientHandleName = m_dspRawActualValueVarList[i].getClientHandleName();
             m_dspVarArray[i].Name = m_dspRawActualValueVarList[i].name();
             m_dspVarArray[i].size = m_dspRawActualValueVarList[i].size();
             m_dspVarArray[i].offs = m_dspRawActualValueVarList[i].offs();
