@@ -1,12 +1,12 @@
-#ifndef MOCKDEVICENODEDSP_H
-#define MOCKDEVICENODEDSP_H
+#ifndef TESTDEVICENODEDSP_H
+#define TESTDEVICENODEDSP_H
 
 #include "abstractdspdevicenode.h"
 
-class MockDeviceNodeDsp : public AbstractDspDeviceNode
+class TestDeviceNodeDsp : public AbstractDspDeviceNode
 {
 public:
-    MockDeviceNodeDsp(int dspMagicId);
+    TestDeviceNodeDsp(int dspMagicId);
     int open(QString devNodeFileName) override;
     void close() override;
     bool dspReset() override;
@@ -24,4 +24,4 @@ private:
     int m_dspMagicId;
 };
 
-#endif // MOCKDEVICENODEDSP_H
+#endif // TESTDEVICENODEDSP_H

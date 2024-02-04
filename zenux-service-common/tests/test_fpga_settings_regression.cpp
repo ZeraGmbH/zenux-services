@@ -5,8 +5,7 @@
 #include "zdspserver.h"
 #include "mockfactorydevicenodepcb.h"
 #include "mockfactorydevicenodesec.h"
-#include "mockfactorydevicenodedsp.h"
-#include "devicenodedsp.h"
+#include "testfactorydevicenodedsp.h"
 #include "mockserverparamgenerator.h"
 #include "testfactoryi2cctrl.h"
 #include <timemachineobject.h>
@@ -55,7 +54,7 @@ void test_fpga_settings_regression::zdsp1d()
     ServerParams params = MockServerParamGenerator::createParams("zdsp1d");
     ZDspServer server(
         std::make_unique<SettingsContainer>(params),
-        std::make_shared<MockFactoryDeviceNodeDsp>(DeviceNodeDsp::MAGIC_ID21362));
+        std::make_shared<TestFactoryDeviceNodeDsp>());
     TimeMachineObject::feedEventLoop();
 
     QCOMPARE(server.getDspDeviceNode(), "/dev/zFPGA1dsp1");

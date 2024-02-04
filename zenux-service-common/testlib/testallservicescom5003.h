@@ -16,8 +16,8 @@ public:
 private:
     ResmanRunFacade *m_resman;
     MockCom5003d *m_mockcom5003d;
-    MockSec1000d *m_mocksec1000d;
-    MockZdsp1d *m_mockzdsp1d;
+    MockSec1000d *m_sec1000d;
+    MockZdsp1d *m_zdsp1d;
 };
 
 #endif // TESTALLSERVICESCOM5003_H

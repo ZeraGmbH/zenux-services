@@ -2,6 +2,7 @@
 #include "proxy.h"
 #include <zscpi_response_definitions.h>
 #include "scpisingletransactionblocked.h"
+#include "testfactorydevicenodedsp.h"
 #include <timemachineobject.h>
 #include <QSignalSpy>
 #include <QTest>
@@ -13,7 +14,7 @@ static constexpr quint16 dspServerPort = 6310;
 void test_regression_dsp_var::init()
 {
     m_resmanServer = std::make_unique<ResmanRunFacade>();
-    m_dspService = std::make_unique<MockZdsp1d>();
+    m_dspService = std::make_unique<MockZdsp1d>(std::make_shared<TestFactoryDeviceNodeDsp>());
     TimeMachineObject::feedEventLoop();
 
     m_proxyClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", dspServerPort);
