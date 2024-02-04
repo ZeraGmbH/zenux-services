@@ -1,5 +1,4 @@
 #include "zdspclient.h"
-#include "dspdevicenodesingleton.h"
 #include "zscpi_response_definitions.h"
 #include <parse.h>
 #include <QDataStream>
@@ -10,7 +9,13 @@ extern TMemSection dm32UserWorkSpace;
 extern TMemSection dm32CmdList;
 extern TMemSection symbConsts1;
 
-cZDSP1Client::cZDSP1Client(int socket, XiQNetPeer* netclient)
+cZDSP1Client::cZDSP1Client(AbstractFactoryDeviceNodeDspPtr deviceNodeFactory) :
+    m_deviceNodeFactory(deviceNodeFactory)
+{
+}
+
+cZDSP1Client::cZDSP1Client(int socket, XiQNetPeer* netclient, AbstractFactoryDeviceNodeDspPtr deviceNodeFactory) :
+    cZDSP1Client(deviceNodeFactory)
 {
     init(socket, netclient);
 }
@@ -389,7 +394,8 @@ TDspVar* cZDSP1Client::DspVarRead(QString nameLen, QByteArray* varRead)
 
     varRead->resize(4*n);
 
-    if ( (DspDeviceNodeSingleton::getInstance()->lseek(DspVar->adr) >= 0) && (DspDeviceNodeSingleton::getInstance()->read(varRead->data(), n*4 ) >= 0) )
+    AbstractDspDeviceNodePtr deviceNode = m_deviceNodeFactory->getDspDeviceNode();
+    if ( (deviceNode->lseek(DspVar->adr) >= 0) && (deviceNode->read(varRead->data(), n*4 ) >= 0) )
         return DspVar; // dev.  seek und dev. read ok
 
     return 0; // sonst fehler
@@ -555,7 +561,8 @@ bool cZDSP1Client::DspVarWrite(QString s)
         }
         if (!toNumberConvertOk)
             break;
-        if (n > 0 && !DspDeviceNodeSingleton::getInstance()->write(adr, ba.data(), n*4 ))
+        AbstractDspDeviceNodePtr deviceNode = m_deviceNodeFactory->getDspDeviceNode();
+        if (n > 0 && !deviceNode->write(adr, ba.data(), n*4 ))
             break;
     }
     return ok;

@@ -4,14 +4,16 @@
 #include <stdio.h>
 #include <QCoreApplication>
 #include <QTextCodec>
+#include "factorydevicenodesec.h"
 #include "sec1000d.h"
 
 int main( int argc, char *argv[] )
 {
     QCoreApplication* app = new QCoreApplication (argc, argv);
 
-    std::unique_ptr<SettingsContainer> settings = std::make_unique<SettingsContainer>(cSEC1000dServer::defaultParams);
-    cSEC1000dServer* sec5003d = new cSEC1000dServer(std::move(settings)); // this is our server
+    cSEC1000dServer* sec5003d = new cSEC1000dServer(
+        std::make_unique<SettingsContainer>(cSEC1000dServer::defaultParams),
+        std::make_shared<FactoryDeviceNodeSec>());
     qInfo("%s started", qPrintable(sec5003d->getServerVersion()));
 
     int r = app->exec();

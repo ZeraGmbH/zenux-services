@@ -18,8 +18,8 @@
 #include "scinsettings.h"
 #include "sensesettings.h"
 #include "foutsettings.h"
-#include "pcbdevicenodectrlsingleton.h"
-#include "pcbdevicenodemessagesingleton.h"
+#include "singletondevicenodepcbctrl.h"
+#include "singletondevicenodepcbmsg.h"
 #include <scpisingletonfactory.h>
 #include <xmlconfigreader.h>
 #include <xiqnetserver.h>
@@ -49,9 +49,10 @@ static struct sigaction sigActionMt310s2;
 
 const ServerParams cMT310S2dServer::defaultParams {ServerName, ServerVersion, "/etc/zera/mt310s2d/mt310s2d.xsd", "/etc/zera/mt310s2d/mt310s2d.xml"};
 
-cMT310S2dServer::cMT310S2dServer(std::unique_ptr<SettingsContainer> settings, AbstractFactoryI2cCtrlPtr ctrlFactory) :
+cMT310S2dServer::cMT310S2dServer(std::unique_ptr<SettingsContainer> settings, AbstractFactoryI2cCtrlPtr ctrlFactory, AbstractFactoryDeviceNodePcbPtr deviceNodeFactory) :
     cPCBServer(std::move(settings), ScpiSingletonFactory::getScpiObj()),
-    m_ctrlFactory(ctrlFactory)
+    m_ctrlFactory(ctrlFactory),
+    m_deviceNodeFactory(deviceNodeFactory)
 {
     m_pInitializationMachine = new QStateMachine(this);
 
@@ -182,13 +183,15 @@ void cMT310S2dServer::doWait4Atmel()
 void cMT310S2dServer::doSetupServer()
 {
     QString ctrlDeviceNodeName = getCtrlDeviceNode(); // we try to open the ctrl device
-    if (PcbDeviceNodeCtrlSingleton::getInstance()->open(ctrlDeviceNodeName) < 0) {
+    AbstractDeviceNodePcbCtrlPtr ctrlDeviceNode = m_deviceNodeFactory->getPcbCtrlDeviceNode();
+    if (ctrlDeviceNode->open(ctrlDeviceNodeName) < 0) {
         qCritical("Abort: Could not open control device '%s'", qPrintable(ctrlDeviceNodeName));
         emit abortInit();
     }
     else {
         QString messageDeviceNodeName = getMsgDeviceNode();
-        if (PcbDeviceNodeMessageSingleton::getInstance()->open(messageDeviceNodeName) < 0) {
+        AbstractDeviceNodePcbMsgPtr msgDeviceNode = m_deviceNodeFactory->getPcbMsgDeviceNode();
+        if (msgDeviceNode->open(messageDeviceNodeName) < 0) {
             qCritical("Abort: Could not open message device '%s'", qPrintable(messageDeviceNodeName));
             emit abortInit();
         }
@@ -317,8 +320,10 @@ void cMT310S2dServer::doIdentAndRegister()
 
 void cMT310S2dServer::SetFASync()
 {
-    PcbDeviceNodeMessageSingleton::getInstance()->enableFasync();
-    PcbDeviceNodeCtrlSingleton::getInstance()->enableFasync();
+    AbstractDeviceNodePcbMsgPtr msgDeviceNode = m_deviceNodeFactory->getPcbMsgDeviceNode();
+    msgDeviceNode->enableFasync();
+    AbstractDeviceNodePcbCtrlPtr ctrlDeviceNode = m_deviceNodeFactory->getPcbCtrlDeviceNode();
+    ctrlDeviceNode->enableFasync();
 }
 
 

@@ -5,8 +5,7 @@
 #include "dsp.h"
 #include "scpi-zdsp.h"
 #include "pcbserver.h"
-#include "dspdevicenode.h"
-#include "dspdevicenodesingleton.h"
+#include "devicenodedsp.h"
 #include "zscpi_response_definitions.h"
 #include <QDebug>
 #include <QCoreApplication>
@@ -57,7 +56,8 @@ struct sigaction sigActionZdsp1;
 
 const ServerParams ZDspServer::defaultParams {ServerName, ServerVersion, "/etc/zera/zdsp1d/zdsp1d.xsd", "/etc/zera/zdsp1d/zdsp1d.xml"};
 
-ZDspServer::ZDspServer(std::unique_ptr<SettingsContainer> settings) :
+ZDspServer::ZDspServer(std::unique_ptr<SettingsContainer> settings, AbstractFactoryDeviceNodeDspPtr deviceNodeFactory) :
+    m_deviceNodeFactory(deviceNodeFactory),
     m_settings(std::move(settings))
 {
     m_pInitializationMachine = new QStateMachine(this);
@@ -101,7 +101,8 @@ ZDspServer::~ZDspServer()
     delete m_pRMConnection;
     delete m_pSCPIServer;
     resetDsp(); // we reset the dsp when we close the server
-    DspDeviceNodeSingleton::getInstance()->close();
+    AbstractDspDeviceNodePtr deviceNode = m_deviceNodeFactory->getDspDeviceNode();
+    deviceNode->close();
     close(pipeFileDescriptorZdsp1[0]);
     close(pipeFileDescriptorZdsp1[1]);
 }
@@ -157,7 +158,8 @@ void ZDspServer::doSetupServer()
         m_pSCPIServer->listen(QHostAddress::AnyIPv4, ethSettings->getPort(EthSettings::scpiserver));
     }
     QString dspDevNodeName = getDspDeviceNode(); // we try to open the dsp device
-    if (DspDeviceNodeSingleton::getInstance()->open(dspDevNodeName) < 0) {
+    AbstractDspDeviceNodePtr deviceNode = m_deviceNodeFactory->getDspDeviceNode();
+    if (deviceNode->open(dspDevNodeName) < 0) {
         qCritical("Abort: Could not open dsp device node '%s", qPrintable(dspDevNodeName));
         emit abortInit();
     }
@@ -167,7 +169,7 @@ void ZDspServer::doSetupServer()
         sigActionZdsp1. sa_flags = SA_RESTART;
         sigActionZdsp1.sa_restorer = NULL;
         sigaction(SIGIO, &sigActionZdsp1, NULL); // handler für sigio definieren
-        DspDeviceNodeSingleton::getInstance()->enableFasync();
+        deviceNode->enableFasync();
         m_retryRMConnect = 100;
         m_retryTimer.setSingleShot(true);
         connect(&m_retryTimer, &QTimer::timeout, this, &ZDspServer::sigServerIsSetUp);
@@ -314,16 +316,17 @@ QString ZDspServer::mTestDsp(QChar* s)
                 cZDSP1Client* cl = GetClient(m_actualSocket);
                 QString sadr  = "UWSPACE";
                 ulong adr = cl->m_dspVarResolver.adr(sadr) ;
+                AbstractDspDeviceNodePtr deviceNode = m_deviceNodeFactory->getDspDeviceNode();
                 for (i=0; i< nr; i++) {
-                    if(!DspDeviceNodeSingleton::getInstance()->write(adr, ba.data(), n*4 )) {
+                    if(!deviceNode->write(adr, ba.data(), n*4 )) {
                         Answer = QString("Test write/read dsp data, dev write fault");
                         break; // fehler beim schreiben
                     }
-                    if (DspDeviceNodeSingleton::getInstance()->lseek(adr) < 0) {
+                    if (deviceNode->lseek(adr) < 0) {
                         Answer = QString("Test write/read dsp data, dev seek fault");
                         break; // file positionieren
                     }
-                    if (DspDeviceNodeSingleton::getInstance()->read(ba2.data(), n*4) < 0) {
+                    if (deviceNode->read(ba2.data(), n*4) < 0) {
                         Answer = QString("Test write/read dsp data, dev read fault");
                         break; // fehler beim schreiben
                     }
@@ -333,7 +336,7 @@ QString ZDspServer::mTestDsp(QChar* s)
                             bw = ba[j]; // das geschriebene byte
                             br = ba2[j]; // das gelesene byte
                             faultadr = adr + j;
-                            DspDeviceNodeSingleton::getInstance()->read(ba2.data(), n*4);
+                            deviceNode->read(ba2.data(), n*4);
                             br2 = ba2[j];
                             err = true;
                         }
@@ -357,7 +360,8 @@ QString ZDspServer::mTestDsp(QChar* s)
 
 bool ZDspServer::resetDsp()
 {
-    bool ok = DspDeviceNodeSingleton::getInstance()->dspReset();
+    AbstractDspDeviceNodePtr deviceNode = m_deviceNodeFactory->getDspDeviceNode();
+    bool ok = deviceNode->dspReset();
     if(ok)
         Answer = ZSCPI::scpiAnswer[ZSCPI::ack];
     else {
@@ -375,7 +379,8 @@ QString ZDspServer::mResetDsp(QChar*)
 
 bool ZDspServer::bootDsp()
 {
-    bool ok = DspDeviceNodeSingleton::getInstance()->dspBoot(m_sDspBootPath);
+    AbstractDspDeviceNodePtr deviceNode = m_deviceNodeFactory->getDspDeviceNode();
+    bool ok = deviceNode->dspBoot(m_sDspBootPath);
     if(ok)
         Answer = ZSCPI::scpiAnswer[ZSCPI::ack];
     else
@@ -410,7 +415,7 @@ QString ZDspServer::mGetPCBSerialNumber()
 QString ZDspServer::mCommand2Dsp(QString qs)
 {
     // we need a client to do the job
-    cZDSP1Client cl(0, 0);
+    cZDSP1Client cl(0, 0, m_deviceNodeFactory);
     do
     {
         Answer = ZSCPI::scpiAnswer[ZSCPI::errexec];
@@ -428,7 +433,8 @@ QString ZDspServer::mCommand2Dsp(QString qs)
         if (! cl.DspVarWrite(qs))
             break; // kommando und parameter -> dsp
 
-        DspDeviceNodeSingleton::getInstance()->dspRequestInt(); // interrupt beim dsp auslösen
+        AbstractDspDeviceNodePtr deviceNode = m_deviceNodeFactory->getDspDeviceNode();
+        deviceNode->dspRequestInt(); // interrupt beim dsp auslösen
         Answer = ZSCPI::scpiAnswer[ZSCPI::ack]; // sofort fertig melden ....sync. muss die applikation
 
     } while (0);
@@ -782,8 +788,9 @@ QString ZDspServer::mResetMaxima(QChar *)
 
 QString ZDspServer::getLcaAndDspVersion()
 {
+    AbstractDspDeviceNodePtr deviceNode = m_deviceNodeFactory->getDspDeviceNode();
     // LCA
-    int rawLcaVersion = DspDeviceNodeSingleton::getInstance()->lcaRawVersion();
+    int rawLcaVersion = deviceNode->lcaRawVersion();
     if ( rawLcaVersion < 0 )
         return ZSCPI::scpiAnswer[ZSCPI::errexec]; // fehler bei der ausführung
     // DSP
@@ -906,7 +913,7 @@ void ZDspServer::DspIntHandler(int)
         client->DspVarWrite(s = QString("CTRLACK,%1;").arg(CmdDone)); // jetzt in jedem fall acknowledge
     }
     else {
-        cZDSP1Client dummyClient(0, 0); // dummyClient einrichten
+        cZDSP1Client dummyClient(0, 0, m_deviceNodeFactory); // dummyClient einrichten
         QString s = QString("CTRLACK,%1;").arg(CmdDone);
         dummyClient.DspVarWrite(s); // und rücksetzen
     }
@@ -960,7 +967,7 @@ bool ZDspServer::BuildDSProgram(QString &errs)
         mds1 << cmd;
     }
 
-    cZDSP1Client dummyClient(0, 0); // dummyClient einrichten damit was jetzt kommt noch
+    cZDSP1Client dummyClient(0, 0, m_deviceNodeFactory); // dummyClient einrichten damit was jetzt kommt noch
     s =  QString( "INVALID()"); // funktioniert selbst wenn wenn wir keinen mehr haben
     cmd = dummyClient.GenDspCmd(s, &ok, 0, 0);
     mds1 << cmd; // kommando listen ende
@@ -985,14 +992,15 @@ bool ZDspServer::LoadDSProgram()
         s2 = QString("ALTINTCMDLIST");
     };
 
-    cZDSP1Client dummyClient(0, 0); // dummyClient einrichten zum laden der kette
+    cZDSP1Client dummyClient(0, 0, m_deviceNodeFactory); // dummyClient einrichten zum laden der kette
 
+    AbstractDspDeviceNodePtr deviceNode = m_deviceNodeFactory->getDspDeviceNode();
     ulong offset = dummyClient.m_dspVarResolver.adr(s) ;
-    if(!DspDeviceNodeSingleton::getInstance()->write(offset, CmdMem.data(), CmdMem.size()))
+    if(!deviceNode->write(offset, CmdMem.data(), CmdMem.size()))
         return false;
 
     offset = dummyClient.m_dspVarResolver.adr(s2) ;
-    if (!DspDeviceNodeSingleton::getInstance()->write(offset, CmdIntMem.data(), CmdIntMem.size()))
+    if (!deviceNode->write(offset, CmdIntMem.data(), CmdIntMem.size()))
         return false;
 
     // dem dsp die neue liste mitteilen
@@ -1104,12 +1112,12 @@ static constexpr int uwSpaceSize21362 = 32383;
 bool ZDspServer::setDspType()
 {
     int r = readMagicId();
-    if ( r == DspDeviceNode::MAGIC_ID21262 ) {
+    if ( r == DeviceNodeDsp::MAGIC_ID21262 ) {
         UserWorkSpaceGlobalSegmentAdr = dm32UserWorkSpaceGlobal21262;
         return m_sDspBootPath.contains("zdsp21262.ldr");
         // adressen im dsp stehen für adsp21262 default richtig
     }
-    else if ( r == DspDeviceNode::MAGIC_ID21362) {
+    else if ( r == DeviceNodeDsp::MAGIC_ID21362) {
         UserWorkSpaceGlobalSegmentAdr = dm32UserWorkSpaceGlobal21362;
         if (m_sDspBootPath.contains("zdsp21362.ldr")) {
             // für adsp21362 schreiben wir die adressen um
@@ -1139,18 +1147,20 @@ bool ZDspServer::setDspType()
 
 int ZDspServer::readMagicId()
 {
-    return DspDeviceNodeSingleton::getInstance()->dspGetMagicId();
+    AbstractDspDeviceNodePtr deviceNode = m_deviceNodeFactory->getDspDeviceNode();
+    return deviceNode->dspGetMagicId();
 }
 
 bool ZDspServer::Test4HWPresent()
 {
     int r = readMagicId();
-    return ( (r == DspDeviceNode::MAGIC_ID21262) || (r == DspDeviceNode::MAGIC_ID21362));
+    return ( (r == DeviceNodeDsp::MAGIC_ID21262) || (r == DeviceNodeDsp::MAGIC_ID21362));
 }
 
 bool ZDspServer::Test4DspRunning()
 {
-    return DspDeviceNodeSingleton::getInstance()->dspIsRunning();
+    AbstractDspDeviceNodePtr deviceNode = m_deviceNodeFactory->getDspDeviceNode();
+    return deviceNode->dspIsRunning();
 }
 
 QString ZDspServer::mDspMemoryRead(QChar* s)
@@ -1311,7 +1321,7 @@ cZDSP1Client* ZDspServer::AddClient(XiQNetPeer* m_pNetClient)
     m_nSocketIdentifier++;
     if (m_nSocketIdentifier == 0)
         m_nSocketIdentifier++;
-    cZDSP1Client* client = new cZDSP1Client(m_nSocketIdentifier, m_pNetClient);
+    cZDSP1Client* client = new cZDSP1Client(m_nSocketIdentifier, m_pNetClient, m_deviceNodeFactory);
     m_clientList.append(client);
     return client;
 }

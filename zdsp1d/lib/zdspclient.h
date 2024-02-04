@@ -1,6 +1,7 @@
 #ifndef ZDSPCLIENT_H
 #define ZDSPCLIENT_H
 
+#include "abstractfactorydevicenodedsp.h"
 #include "dsp.h"
 #include "dspvarresolver.h"
 #include "dspvarclientperspective.h"
@@ -11,8 +12,8 @@ class ZDspServer;
 class cZDSP1Client
 {
 public:
-    cZDSP1Client(){}
-    cZDSP1Client(int socket, XiQNetPeer *netclient);
+    cZDSP1Client(AbstractFactoryDeviceNodeDspPtr deviceNodeFactory);
+    cZDSP1Client(int socket, XiQNetPeer *netclient, AbstractFactoryDeviceNodeDspPtr deviceNodeFactory);
     ~cZDSP1Client(){} //  allokierten speicher ggf. freigeben
 
     QString& setRawActualValueList(QString&);
@@ -47,6 +48,7 @@ private:
     bool syntaxCheck(QString&);
     char* qSEncryption(char*,int );
 
+    AbstractFactoryDeviceNodeDspPtr m_deviceNodeFactory;
     int m_socket; // socket für den die verbindung besteht
     bool m_bActive;
     int Encryption;

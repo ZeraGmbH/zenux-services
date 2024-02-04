@@ -1,5 +1,6 @@
 file(GLOB SOURCES
     *.cpp
+    device-nodes/*.cpp
     resources/*.cpp
     scpi-interfaces/*.cpp
     settings/*.cpp
@@ -7,6 +8,7 @@ file(GLOB SOURCES
 
 file(GLOB HEADER
     *.h
+    device-nodes/*.h
     resources/*.h
     scpi-interfaces/*.h
     settings/*.h
@@ -15,11 +17,12 @@ file(GLOB HEADER
 add_library(sec1000d-lib STATIC
     ${HEADER}
     ${SOURCES}
-    )
+)
 
 target_include_directories(sec1000d-lib
     PUBLIC
     $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/sec1000d-lib>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/device-nodes>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/resources>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/scpi-interfaces>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/settings>

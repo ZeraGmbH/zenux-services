@@ -1,4 +1,3 @@
-#include "secdevicenodesingleton.h"
 #include "sec1000d.h"
 #include "ethsettings.h"
 #include "seccalcsettings.h"
@@ -44,8 +43,9 @@ struct sigaction sigActionSec1000;
 
 const ServerParams cSEC1000dServer::defaultParams{ServerName, ServerVersion, "/etc/zera/sec1000d/sec1000d.xsd", "/etc/zera/sec1000d/sec1000d.xml"};
 
-cSEC1000dServer::cSEC1000dServer(std::unique_ptr<SettingsContainer> settings) :
-    cPCBServer(std::move(settings), ScpiSingletonFactory::getScpiObj())
+cSEC1000dServer::cSEC1000dServer(std::unique_ptr<SettingsContainer> settings, AbstractFactoryDeviceNodeSecPtr deviceNodeFactory) :
+    cPCBServer(std::move(settings), ScpiSingletonFactory::getScpiObj()),
+    m_deviceNodeFactory(deviceNodeFactory)
 {
     m_pInitializationMachine = new QStateMachine(this);
 
@@ -88,7 +88,8 @@ cSEC1000dServer::~cSEC1000dServer()
     delete m_pSystemInfo;
     delete m_pRMConnection;
 
-    SecDeviceNodeSingleton::getInstance()->close();
+    AbstractDeviceNodeSecPtr deviceNode = m_deviceNodeFactory->getSecDeviceNode();
+    deviceNode->close();
     close(pipeFileDescriptorSec1000[0]);
     close(pipeFileDescriptorSec1000[1]);
 }
@@ -137,7 +138,8 @@ void cSEC1000dServer::doConfiguration()
 void cSEC1000dServer::doSetupServer()
 {
     QString deviceNodeName = getSecDeviceNode(); // we try to open the sec device
-    if (SecDeviceNodeSingleton::getInstance()->open(deviceNodeName) < 0) {
+    AbstractDeviceNodeSecPtr deviceNode = m_deviceNodeFactory->getSecDeviceNode();
+    if (deviceNode->open(deviceNodeName) < 0) {
         qCritical("Abort, could not poen device node %s", qPrintable(deviceNodeName));
         emit abortInit();
     }
@@ -152,7 +154,8 @@ void cSEC1000dServer::doSetupServer()
         scpiConnectionList.append(m_pSystemInterface = new cSystemInterface(this, m_pSystemInfo));
         scpiConnectionList.append(m_pECalculatorInterface = new SecGroupResourceAndInterface(m_pECalcSettings,
                                                                                              m_pInputSettings,
-                                                                                             SigHandler));
+                                                                                             SigHandler,
+                                                                                             m_deviceNodeFactory));
 
         resourceList.append(m_pECalculatorInterface); // all our resources
         m_ECalculatorChannelList = m_pECalculatorInterface->getECalcChannelList(); // we use this list in interrupt service
@@ -169,7 +172,7 @@ void cSEC1000dServer::doSetupServer()
         sigActionSec1000. sa_flags = SA_RESTART;
         sigActionSec1000.sa_restorer = NULL;
         sigaction(SIGIO, &sigActionSec1000, NULL); // handler für sigio definieren
-        SecDeviceNodeSingleton::getInstance()->enableFasync();
+        deviceNode->enableFasync();
         // our resource mananager connection must be opened after configuration is done
         m_pRMConnection = new RMConnection(ethSettings->getRMIPadr(), ethSettings->getPort(EthSettings::resourcemanager));
         //connect(m_pRMConnection, SIGNAL(connectionRMError()), this, SIGNAL(abortInit()));
@@ -242,8 +245,9 @@ void cSEC1000dServer::SECIntHandler(int)
     n /= 2; // so we have to read 4 bytes for 8 entities -> (/ 2)
     QByteArray interruptREGS(n, 0);
     // first word is interrupt collection word
-    SecDeviceNodeSingleton::getInstance()->lseek(m_pECalcSettings->getIrqAdress()+4); // so the dedicated words have +4 offset
-    SecDeviceNodeSingleton::getInstance()->read(interruptREGS.data(), n);
+    AbstractDeviceNodeSecPtr deviceNode = m_deviceNodeFactory->getSecDeviceNode();
+    deviceNode->lseek(m_pECalcSettings->getIrqAdress()+4); // so the dedicated words have +4 offset
+    deviceNode->read(interruptREGS.data(), n);
 
     for (int i = 0; i < n; i++) {
         quint8 irq = interruptREGS[i];

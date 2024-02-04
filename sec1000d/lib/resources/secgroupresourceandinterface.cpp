@@ -7,7 +7,8 @@
 
 SecGroupResourceAndInterface::SecGroupResourceAndInterface(SecCalculatorSettings* ecalcSettings,
                                                            SecInputSettings *inputsettings,
-                                                           std::function<void (int)> funcSigHandler) :
+                                                           std::function<void (int)> funcSigHandler,
+                                                           AbstractFactoryDeviceNodeSecPtr deviceNodeFactory) :
     cResource(ScpiSingletonFactory::getScpiObj()),
     m_pecalcsettings(ecalcSettings),
     m_pInputSettings(inputsettings)
@@ -17,7 +18,7 @@ SecGroupResourceAndInterface::SecGroupResourceAndInterface(SecCalculatorSettings
     // first we create the configured number of error calculators and attach them into a hash table for better access
     int n = m_pecalcsettings->getNumber();
     for (int i = 0; i < n; i++ ) {
-        SecChannel* eChan = new SecChannel(m_pecalcsettings, m_pInputSettings, i, funcSigHandler);
+        SecChannel* eChan = new SecChannel(m_pecalcsettings, m_pInputSettings, i, funcSigHandler, deviceNodeFactory);
         m_ECalculatorChannelList.append(eChan); // we have a list for seq. access
         m_ECalculatorChannelHash[eChan->getName()] = eChan; // and a hash for access by channel name
         m_ECalculatorChannelList.at(i)->m_StopErrorCalculator(); // initially we stop all ec's

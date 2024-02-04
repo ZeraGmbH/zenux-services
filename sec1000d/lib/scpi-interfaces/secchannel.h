@@ -1,6 +1,8 @@
 #ifndef SECCHANNEL_H
 #define SECCHANNEL_H
 
+#include "abstractfactorydevicenodepcb.h"
+#include "abstractfactorydevicenodesec.h"
 #include "scpiconnection.h"
 #include "secinputsettings.h"
 #include "seccalcsettings.h"
@@ -32,7 +34,8 @@ public:
     SecChannel(SecCalculatorSettings* esettings,
                SecInputSettings* inpsettings,
                quint16 nr,
-               std::function<void(int)> funcSigHandler);
+               std::function<void(int)> funcSigHandler,
+               AbstractFactoryDeviceNodeSecPtr deviceNodeFactory);
     ~SecChannel();
     virtual void initSCPIConnection(QString leadingNodes) override;
 
@@ -49,6 +52,7 @@ protected:
     virtual void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
 
 private:
+    AbstractFactoryDeviceNodeSecPtr m_deviceNodeFactory;
     SecCalculatorSettings* m_pecalcsettings;
     SecInputSettings* m_pInputSettings;
     quint16 m_nNr;

@@ -13,6 +13,7 @@ install(TARGETS zdsp1d
     )
 
 add_subdirectory(configs)
+add_subdirectory(demolib)
 add_subdirectory(lib)
 add_subdirectory(systemd)
 add_subdirectory(testlib)

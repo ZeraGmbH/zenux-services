@@ -1,11 +1,10 @@
 #ifndef ZDSP1D_H
 #define ZDSP1D_H
 
+#include "abstractfactorydevicenodedsp.h"
 #include "scpicmdinterpreter.h"
-#include "pcbserver.h"
 #include "scpicmds.h"
 #include "rmconnection.h"
-#include "ethsettings.h"
 #include "dspsettings.h"
 #include "settingscontainer.h"
 #include <xiqnetserver.h>
@@ -27,7 +26,7 @@ class ZDspServer: public QObject, public cbIFace
 {
     Q_OBJECT
 public:
-    ZDspServer(std::unique_ptr<SettingsContainer> settings);
+    ZDspServer(std::unique_ptr<SettingsContainer> settings, AbstractFactoryDeviceNodeDspPtr deviceNodeFactory);
     virtual ~ZDspServer();
     QString getServerVersion();
     QString getDspDeviceNode();
@@ -47,6 +46,7 @@ signals:
     void abortInit();
 
 private:
+    AbstractFactoryDeviceNodeDspPtr m_deviceNodeFactory;
     std::unique_ptr<SettingsContainer> m_settings;
     ScpiCmdInterpreter* m_cmdInterpreter = nullptr;
     XiQNetServer* myProtonetServer; // the real server that does the communication job
