@@ -1,9 +1,9 @@
-#ifndef MOCKSINGLETONDEVICENODEDSP_H
-#define MOCKSINGLETONDEVICENODEDSP_H
+#ifndef DEMOSINGLETONDEVICENODEDSP_H
+#define DEMOSINGLETONDEVICENODEDSP_H
 
 #include <devicenodedsp.h>
 
-class MockSingletonDeviceNodeDsp
+class DemoSingletonDeviceNodeDsp
 {
 public:
     static AbstractDspDeviceNodePtr getInstancePtr(int dspMagicId);
@@ -12,4 +12,4 @@ private:
     static AbstractDspDeviceNodePtr m_instanceMagicId21362;
 };
 
-#endif // MOCKSINGLETONDEVICENODEDSP_H
+#endif // DEMOSINGLETONDEVICENODEDSP_H

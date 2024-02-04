@@ -15,9 +15,9 @@ public:
     virtual ~TestAllServicesMt310s2();
 private:
     ResmanRunFacade *m_resman;
-    MockMt310s2d *m_mockmt310s2d;
-    MockSec1000d *m_mocksec1000d;
-    MockZdsp1d *m_mockzdsp1d;
+    MockMt310s2d *m_mt310s2d;
+    MockSec1000d *m_sec1000d;
+    MockZdsp1d *m_zdsp1d;
 };
 
 #endif // TESTALLSERVICESMT310S2_H

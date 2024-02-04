@@ -29,6 +29,7 @@ target_link_libraries(zenuxservicecommon-testlib
     Qt5::Test
     zenuxservicecommon
     zenuxservicecommon-demolib
+    zdsp1d-testlib
     service-interfaces
     Zera::zera-timers-testlib
 )
