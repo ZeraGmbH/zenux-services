@@ -24,4 +24,6 @@ private:
     int m_dspMagicId;
 };
 
+typedef std::shared_ptr<TestDeviceNodeDsp> TestDeviceNodeDspPtr;
+
 #endif // TESTDEVICENODEDSP_H

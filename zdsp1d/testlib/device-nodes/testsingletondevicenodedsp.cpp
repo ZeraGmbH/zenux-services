@@ -1,10 +1,14 @@
 #include "testsingletondevicenodedsp.h"
-#include "testdevicenodedsp.h"
 
-AbstractDspDeviceNodePtr TestSingletonDeviceNodeDsp::m_instanceMagicId21262;
-AbstractDspDeviceNodePtr TestSingletonDeviceNodeDsp::m_instanceMagicId21362;
+TestDeviceNodeDspPtr TestSingletonDeviceNodeDsp::m_instanceMagicId21262;
+TestDeviceNodeDspPtr TestSingletonDeviceNodeDsp::m_instanceMagicId21362;
 
 AbstractDspDeviceNodePtr TestSingletonDeviceNodeDsp::getInstancePtr(int dspMagicId)
+{
+    return getInstancePtrTest(dspMagicId);
+}
+
+TestDeviceNodeDspPtr TestSingletonDeviceNodeDsp::getInstancePtrTest(int dspMagicId)
 {
     if(dspMagicId == DeviceNodeDsp::MAGIC_ID21262) {
         if(m_instanceMagicId21262 == nullptr)
