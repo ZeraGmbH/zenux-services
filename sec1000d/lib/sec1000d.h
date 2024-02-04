@@ -4,6 +4,7 @@
 #include "pcbserver.h"
 #include "rmconnection.h"
 #include "settingscontainer.h"
+#include "abstractfactorydevicenodesec.h"
 #include <QTimer>
 
 class QStateMachine;
@@ -22,7 +23,7 @@ class cSEC1000dServer: public cPCBServer
 {
     Q_OBJECT
 public:
-    explicit cSEC1000dServer(std::unique_ptr<SettingsContainer> settings);
+    explicit cSEC1000dServer(std::unique_ptr<SettingsContainer> settings, AbstractFactoryDeviceNodeSecPtr deviceNodeFactory);
     ~cSEC1000dServer();
     QString getServerVersion();
     QString getSecDeviceNode();
@@ -44,6 +45,7 @@ private slots:
     void doIdentAndRegister();
     void onPeerDisconnected();
 private:
+    AbstractFactoryDeviceNodeSecPtr m_deviceNodeFactory;
     SecCalculatorSettings* m_pECalcSettings = nullptr;
     SecInputSettings* m_pInputSettings = nullptr;
 

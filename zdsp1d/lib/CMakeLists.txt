@@ -1,32 +1,17 @@
-set(SOURCES
-    dsp-memory-management/dspvarclientperspective.cpp
-    dsp-memory-management/dspvarresolver.cpp
-    dsp.cpp
-    dspsettings.cpp
-    scpicmdinterpreter.cpp
-    scpicmds.cpp
-    scpiparserzdsp1d.cpp
-    scpi-zdsp.cpp
-    zdspserver.cpp
-    zdspclient.cpp
-    )
+file(GLOB HEADERS
+    ${CMAKE_CURRENT_SOURCE_DIR}/*.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/device-nodes/*.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/dsp-memory-management/*.h
+)
 
-set(HEADER
-    dsp-memory-management/dspvarclientperspective.h
-    dsp-memory-management/dspvardefinitions.h
-    dsp-memory-management/dspvarresolver.h
-    dsp.h
-    dspsettings.h
-    scpicmdinterpreter.h
-    scpicmds.h
-    scpiparserzdsp1d.h
-    scpi-zdsp.h
-    zdspserver.h
-    zdspclient.h
-    )
+file(GLOB SOURCES
+    ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/device-nodes/*.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/dsp-memory-management/*.cpp
+)
 
 add_library(zdsp1d-lib STATIC
-    ${HEADER}
+    ${HEADERS}
     ${SOURCES}
     )
 
@@ -34,6 +19,7 @@ target_include_directories(zdsp1d-lib
     PUBLIC
     $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/zdsp1d-lib>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/device-nodes>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/dsp-memory-management>
     )
 
@@ -65,6 +51,6 @@ install(TARGETS zdsp1d-lib
     )
 
 install(
-    FILES ${HEADER}
+    FILES ${HEADERS}
     DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/zdsp1d-lib
     )

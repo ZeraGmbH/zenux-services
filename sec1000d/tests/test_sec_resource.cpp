@@ -1,5 +1,5 @@
 #include "test_sec_resource.h"
-#include "mocksecdevicenodesingleton.h"
+#include "mockfactorydevicenodesec.h"
 #include "scpisingletonfactory.h"
 #include "zscpi_response_definitions.h"
 #include <timemachineobject.h>
@@ -14,7 +14,6 @@ static const char *freeResourcesCommand = "ECALCULATOR:FREE";
 
 void test_sec_resource::init()
 {
-    MockSecDeviceNodeSingleton::enableMock();
     m_xmlConfigReader = std::make_unique<Zera::XMLConfig::cReader>();
     m_xmlConfigReader->loadSchema(QStringLiteral(CONFIG_SOURCES_SEC1000D) + "/" + "sec1000d.xsd");
     m_ecalcSettings = std::make_unique<SecCalculatorSettings>(m_xmlConfigReader.get());
@@ -23,7 +22,11 @@ void test_sec_resource::init()
     connect(m_xmlConfigReader.get(),&Zera::XMLConfig::cReader::valueChanged,m_inputSettings.get(),&SecInputSettings::configXMLInfo);
     m_xmlConfigReader->loadXMLFile(QStringLiteral(CONFIG_SOURCES_SEC1000D) + "/" + "sec1000d.xml");
     TimeMachineObject::feedEventLoop();
-    m_secResource = std::make_unique<SecGroupResourceAndInterface>(m_ecalcSettings.get(), m_inputSettings.get(), nullptr);
+    m_secResource = std::make_unique<SecGroupResourceAndInterface>(
+        m_ecalcSettings.get(),
+        m_inputSettings.get(),
+        nullptr,
+        std::make_shared<MockFactoryDeviceNodeSec>());
     m_secResource->initSCPIConnection("");
 }
 

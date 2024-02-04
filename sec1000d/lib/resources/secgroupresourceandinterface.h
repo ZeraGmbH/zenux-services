@@ -33,7 +33,8 @@ class SecGroupResourceAndInterface : public cResource
 public:
     SecGroupResourceAndInterface(SecCalculatorSettings* ecalcSettings,
                                  SecInputSettings* inputsettings,
-                                 std::function<void(int)> funcSigHandler);
+                                 std::function<void(int)> funcSigHandler,
+                                 AbstractFactoryDeviceNodeSecPtr deviceNodeFactory);
     ~SecGroupResourceAndInterface();
     void initSCPIConnection(QString leadingNodes) override;
     virtual void registerResource(RMConnection *rmConnection, quint16 port) override;

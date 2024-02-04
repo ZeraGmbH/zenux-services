@@ -1,6 +1,7 @@
 #ifndef MT310S2D_H
 #define MT310S2D_H
 
+#include "abstractfactorydevicenodepcb.h"
 #include "pcbserver.h"
 #include "rmconnection.h"
 #include "senseinterfacecommon.h"
@@ -34,7 +35,8 @@ class cMT310S2dServer: public cPCBServer
     Q_OBJECT
 public:
     explicit cMT310S2dServer(std::unique_ptr<SettingsContainer> settings,
-                             AbstractFactoryI2cCtrlPtr ctrlFactory);
+                             AbstractFactoryI2cCtrlPtr ctrlFactory,
+                             AbstractFactoryDeviceNodePcbPtr deviceNodeFactory);
     ~cMT310S2dServer();
     QString getCtrlDeviceNode();
     QString getMsgDeviceNode();
@@ -65,6 +67,7 @@ private:
     void setupMicroControllerIo();
 
     AbstractFactoryI2cCtrlPtr m_ctrlFactory;
+    AbstractFactoryDeviceNodePcbPtr m_deviceNodeFactory;
 
     Mt310s2SystemInfo* m_pSystemInfo = nullptr;
 

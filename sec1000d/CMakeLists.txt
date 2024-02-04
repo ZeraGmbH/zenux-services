@@ -13,6 +13,7 @@ install(TARGETS sec1000d
     )
 
 add_subdirectory(configs)
+add_subdirectory(demolib)
 add_subdirectory(lib)
 add_subdirectory(systemd)
 add_subdirectory(tests)

@@ -1,8 +1,9 @@
 #ifndef COM5003D_H
 #define COM5003D_H
 
-#include "abstractfactoryi2cctrl.h"
 #include "pcbserver.h"
+#include "abstractfactorydevicenodepcb.h"
+#include "abstractfactoryi2cctrl.h"
 #include "rmconnection.h"
 #include "senseinterfacecommon.h"
 #include "sensesettings.h"
@@ -33,7 +34,8 @@ class cCOM5003dServer: public cPCBServer
 
 public:
     explicit cCOM5003dServer(std::unique_ptr<SettingsContainer> settings,
-                             AbstractFactoryI2cCtrlPtr ctrlFactory);
+                             AbstractFactoryI2cCtrlPtr ctrlFactory,
+                             AbstractFactoryDeviceNodePcbPtr deviceNodeFactory);
     ~cCOM5003dServer();
     QString getCtrlDeviceNode();
     static const ServerParams defaultParams;
@@ -59,6 +61,7 @@ private:
     void setupMicroControllerIo();
 
     AbstractFactoryI2cCtrlPtr m_ctrlFactory;
+    AbstractFactoryDeviceNodePcbPtr m_deviceNodeFactory;
 
     SystemInfo* m_pSystemInfo = nullptr;
 
