@@ -2,7 +2,9 @@
 #include "proxy.h"
 #include <zscpi_response_definitions.h>
 #include "scpisingletransactionblocked.h"
+#include "testdevicenodedsp.h"
 #include "testfactorydevicenodedsp.h"
+#include "testsingletondevicenodedsp.h"
 #include <timemachineobject.h>
 #include <QSignalSpy>
 #include <QTest>
@@ -143,4 +145,33 @@ void test_regression_dsp_var::globalVariablesAreNotSharedByDefault()
     // not by dsp interface = different client
     QString ret = ScpiSingleTransactionBlocked::query("MEASURE:LIST:RAVLIST?", dspServerPort);
     QCOMPARE(ret, "Empty");
+}
+
+void test_regression_dsp_var::readVariablesAndListenDeviceNode()
+{
+    cDspMeasData* dspData = m_dspIFace->getMemHandle("readVariablesAndListenDeviceNode");
+    dspData->addVarItem(new cDspVar("Result1", 1, DSPDATA::vDspResult, DSPDATA::dFloat));
+    dspData->addVarItem(new cDspVar("Result2", 3, DSPDATA::vDspResult, DSPDATA::dInt));
+
+    m_dspIFace->varList2Dsp();
+    TimeMachineObject::feedEventLoop();
+
+    TestDeviceNodeDspPtr deviceNode = TestSingletonDeviceNodeDsp::getInstancePtrTest();
+    QSignalSpy spyListen(deviceNode.get(), &TestDeviceNodeDsp::sigIoOperation);
+    m_dspIFace->dspMemoryRead(dspData);
+    TimeMachineObject::feedEventLoop();
+
+    QCOMPARE(spyListen.count(), 4);
+
+    QCOMPARE(spyListen[0][0], "lseek");
+    QCOMPARE(spyListen[0][1], 0);
+    QCOMPARE(spyListen[1][0], "read");
+    QCOMPARE(spyListen[1][1], "buf");
+    QCOMPARE(spyListen[1][2], 4);
+
+    QCOMPARE(spyListen[2][0], "lseek");
+    QCOMPARE(spyListen[2][1], 0);
+    QCOMPARE(spyListen[3][0], "read");
+    QCOMPARE(spyListen[3][1], "buf");
+    QCOMPARE(spyListen[3][2], 12);
 }

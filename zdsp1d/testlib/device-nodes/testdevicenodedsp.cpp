@@ -5,68 +5,74 @@ TestDeviceNodeDsp::TestDeviceNodeDsp(int dspMagicId) :
 {
 }
 
-int TestDeviceNodeDsp::open(QString devNodeFileName)
-{
-    Q_UNUSED(devNodeFileName)
-    return 0;
-}
-
-void TestDeviceNodeDsp::close()
-{
-}
-
 bool TestDeviceNodeDsp::dspReset()
 {
+    emit sigIoOperation("dspReset");
     return true;
 }
 
 bool TestDeviceNodeDsp::dspBoot(QString bootFileName)
 {
-    Q_UNUSED(bootFileName)
+    emit sigIoOperation("dspBoot", bootFileName);
     return true;
+}
+
+void TestDeviceNodeDsp::enableFasync()
+{
+    emit sigIoOperation("enableFasync");
+}
+
+int TestDeviceNodeDsp::dspRequestInt()
+{
+    emit sigIoOperation("dspRequestInt");
+    return 0;
+}
+
+int TestDeviceNodeDsp::dspGetMagicId()
+{
+    emit sigIoOperation("dspGetMagicId");
+    return m_dspMagicId;
+}
+
+bool TestDeviceNodeDsp::dspIsRunning()
+{
+    emit sigIoOperation("dspIsRunning");
+    return true;
+}
+
+int TestDeviceNodeDsp::lcaRawVersion()
+{
+    emit sigIoOperation("lcaRawVersion");
+    return 0;
+}
+
+int TestDeviceNodeDsp::open(QString devNodeFileName)
+{
+    emit sigIoOperation("open", devNodeFileName);
+    return 0;
+}
+
+void TestDeviceNodeDsp::close()
+{
+    emit sigIoOperation("close");
 }
 
 int TestDeviceNodeDsp::lseek(ulong adr)
 {
-    Q_UNUSED(adr)
+    emit sigIoOperation("lseek", int(adr));
     return 0;
 }
 
 bool TestDeviceNodeDsp::write(ulong adr, const char *buf, int len)
 {
-    Q_UNUSED(adr)
-    Q_UNUSED(buf)
-    Q_UNUSED(len)
+    QByteArray bytes(buf, len);
+    emit sigIoOperation("write", int(adr), bytes, len);
     return true;
 }
 
 int TestDeviceNodeDsp::read(char *buf, int len)
 {
     Q_UNUSED(buf)
-    Q_UNUSED(len)
-    return 0;
-}
-
-void TestDeviceNodeDsp::enableFasync()
-{
-}
-
-int TestDeviceNodeDsp::dspRequestInt()
-{
-    return 0;
-}
-
-int TestDeviceNodeDsp::dspGetMagicId()
-{
-    return m_dspMagicId;
-}
-
-bool TestDeviceNodeDsp::dspIsRunning()
-{
-    return true;
-}
-
-int TestDeviceNodeDsp::lcaRawVersion()
-{
+    emit sigIoOperation("read", "buf", len);
     return 0;
 }
