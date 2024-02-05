@@ -32,7 +32,7 @@ public:
     ulong setStartAdr(ulong startAdress, ulong globalMemStart); // zum relokalisieren der userdaten
     QString &DspVarListRead(QString&); // lesen dsp daten ganze Liste
     bool readDspVarInt(QString varName, int& intval); // einen int (32bit) wert lesen
-    TDspVar* DspVarRead(QString nameLen, QByteArray* varRead); // lesen dsp variable;  name , länge stehen im parameter string; werte im anschluss im qbytearray
+    TDspVar *DspVarRead(QString nameLen, QByteArray *varRead); // lesen dsp variable;  name , länge stehen im parameter string; werte im anschluss im qbytearray
     bool DspVarWrite(QString);  // schreiben  true wenn ok
     QString DspVarWriteRM(QString&); // dito schreiben mit rückmeldung
     QList<cDspCmd>& GetDspCmdList(); // damit der server die komplette liste aller clients
@@ -47,6 +47,7 @@ private:
     bool GenCmdList(QString&, QList<cDspCmd>& ,QString&,ulong,ulong);
     bool syntaxCheck(QString&);
     char* qSEncryption(char*,int );
+    TDspVar *readDspVar(TDspVar *&DspVar, int countVars, QByteArray *varRead);
 
     AbstractFactoryDeviceNodeDspPtr m_deviceNodeFactory;
     int m_socket; // socket für den die verbindung besteht

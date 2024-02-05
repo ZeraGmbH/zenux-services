@@ -377,8 +377,18 @@ bool cZDSP1Client::readDspVarInt(QString varName, int& intval)
     return ret;
 }
 
+TDspVar *cZDSP1Client::readDspVar(TDspVar *&DspVar, int countVars, QByteArray *varRead)
+{
+    const int countBytes = countVars * 4;
+    varRead->resize(countBytes);
+    AbstractDspDeviceNodePtr deviceNode = m_deviceNodeFactory->getDspDeviceNode();
+    if ((deviceNode->lseek(DspVar->adr) >= 0) &&
+        (deviceNode->read(varRead->data(), countBytes) >= 0))
+        return DspVar; // dev.  seek und dev. read ok
+    return nullptr; // sonst fehler
+}
 
-TDspVar* cZDSP1Client::DspVarRead(QString nameLen, QByteArray* varRead)
+TDspVar *cZDSP1Client::DspVarRead(QString nameLen, QByteArray *varRead)
 {
     QString name = nameLen.section(",",0,0);
     TDspVar *DspVar = m_dspVarResolver.getDspVar(name);
@@ -391,16 +401,8 @@ TDspVar* cZDSP1Client::DspVarRead(QString nameLen, QByteArray* varRead)
     if (!ok || (countVars<1) )
         return nullptr; // fehler in der anzahl der elemente
 
-    const int countBytes = countVars * 4;
-    varRead->resize(countBytes);
-
-    AbstractDspDeviceNodePtr deviceNode = m_deviceNodeFactory->getDspDeviceNode();
-    if ( (deviceNode->lseek(DspVar->adr) >= 0) && (deviceNode->read(varRead->data(), countBytes ) >= 0) )
-        return DspVar; // dev.  seek und dev. read ok
-
-    return nullptr; // sonst fehler
+    return readDspVar(DspVar, countVars, varRead);
 }
-
 
 char* cZDSP1Client::qSEncryption(char* ch,int n )
 {
