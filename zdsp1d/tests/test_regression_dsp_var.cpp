@@ -29,8 +29,12 @@ void test_regression_dsp_var::init()
 void test_regression_dsp_var::cleanup()
 {
     m_dspIFace = nullptr;
+    TimeMachineObject::feedEventLoop();
     m_proxyClient = nullptr;
+    TimeMachineObject::feedEventLoop();
+
     m_dspService = nullptr;
+    TimeMachineObject::feedEventLoop();
     m_resmanServer = nullptr;
     TimeMachineObject::feedEventLoop();
 }
@@ -150,10 +154,18 @@ void test_regression_dsp_var::globalVariablesAreNotSharedByDefault()
 void test_regression_dsp_var::readVariablesAndListenDeviceNode()
 {
     cDspMeasData* dspData = m_dspIFace->getMemHandle("readVariablesAndListenDeviceNode");
-    dspData->addVarItem(new cDspVar("Result1", 1, DSPDATA::vDspResult, DSPDATA::dFloat));
-    dspData->addVarItem(new cDspVar("Result2", 3, DSPDATA::vDspResult, DSPDATA::dInt));
+    dspData->addVarItem(new cDspVar("ONE_FLOAT", 1, DSPDATA::vDspResult, DSPDATA::dFloat));
+    dspData->addVarItem(new cDspVar("TWO_FLOAT", 2, DSPDATA::vDspResult, DSPDATA::dFloat));
+    dspData->addVarItem(new cDspVar("THREE_INT", 3, DSPDATA::vDspResult, DSPDATA::dInt));
+
+    // In modules we have claimUSERMem() - we had this here during investigation
+    // It is for resman's sake - here is changes nothing
 
     m_dspIFace->varList2Dsp();
+    TimeMachineObject::feedEventLoop();
+    // Calling activateInterface is important - otherwise addresses are not initalized
+    // and all variables start on address 0
+    m_dspIFace->activateInterface();
     TimeMachineObject::feedEventLoop();
 
     TestDeviceNodeDspPtr deviceNode = TestSingletonDeviceNodeDsp::getInstancePtrTest();
@@ -161,17 +173,26 @@ void test_regression_dsp_var::readVariablesAndListenDeviceNode()
     m_dspIFace->dspMemoryRead(dspData);
     TimeMachineObject::feedEventLoop();
 
-    QCOMPARE(spyListen.count(), 4);
+    constexpr int dm32UserWorkSpaceBase21362 = 0x98180; // Stolen from zdspserver.cpp !!!
+    constexpr int startAddress = dm32UserWorkSpaceBase21362;
+    constexpr int varSize = 4;
+    QCOMPARE(spyListen.count(), 3*2);
 
     QCOMPARE(spyListen[0][0], "lseek");
-    QCOMPARE(spyListen[0][1], 0);
+    QCOMPARE(spyListen[0][1].toInt(), startAddress);
     QCOMPARE(spyListen[1][0], "read");
     QCOMPARE(spyListen[1][1], "buf");
-    QCOMPARE(spyListen[1][2], 4);
+    QCOMPARE(spyListen[1][2], 1*varSize);
 
     QCOMPARE(spyListen[2][0], "lseek");
-    QCOMPARE(spyListen[2][1], 0);
+    QCOMPARE(spyListen[2][1], startAddress+1);
     QCOMPARE(spyListen[3][0], "read");
     QCOMPARE(spyListen[3][1], "buf");
-    QCOMPARE(spyListen[3][2], 12);
+    QCOMPARE(spyListen[3][2], 2*varSize);
+
+    QCOMPARE(spyListen[4][0], "lseek");
+    QCOMPARE(spyListen[4][1], startAddress+1+2);
+    QCOMPARE(spyListen[5][0], "read");
+    QCOMPARE(spyListen[5][1], "buf");
+    QCOMPARE(spyListen[5][2], 3*varSize);
 }
