@@ -1,0 +1,11 @@
+Read / write PLL channnel / mode
+SAMP:s0:PLL:CAT?
+SAMP:s0:PLL m0;
+SAMP:s0:PLL fix13;
+SAMP:s0:PLL fix48;
+
+# What is this alias for - it is configured btw
+SAMP:s0:ALIAS?
+
+# Expected 504 samples per period
+SAMP:SRAT?
