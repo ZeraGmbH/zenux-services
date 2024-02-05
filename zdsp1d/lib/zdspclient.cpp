@@ -381,24 +381,24 @@ bool cZDSP1Client::readDspVarInt(QString varName, int& intval)
 TDspVar* cZDSP1Client::DspVarRead(QString nameLen, QByteArray* varRead)
 {
     QString name = nameLen.section(",",0,0);
-    TDspVar *DspVar;
-
-    if ( (DspVar = m_dspVarResolver.getDspVar(name)) == 0)
+    TDspVar *DspVar = m_dspVarResolver.getDspVar(name);
+    if (!DspVar)
         return nullptr; // fehler, den namen gibt es nicht
 
-    QString p = nameLen.section(",",1,1);
+    QString countSection = nameLen.section(",",1,1);
     bool ok;
-    int n = p.toInt(&ok);
-    if (!ok || (n<1) )
+    const int countVars = countSection.toInt(&ok);
+    if (!ok || (countVars<1) )
         return nullptr; // fehler in der anzahl der elemente
 
-    varRead->resize(4*n);
+    const int countBytes = countVars * 4;
+    varRead->resize(countBytes);
 
     AbstractDspDeviceNodePtr deviceNode = m_deviceNodeFactory->getDspDeviceNode();
-    if ( (deviceNode->lseek(DspVar->adr) >= 0) && (deviceNode->read(varRead->data(), n*4 ) >= 0) )
+    if ( (deviceNode->lseek(DspVar->adr) >= 0) && (deviceNode->read(varRead->data(), countBytes ) >= 0) )
         return DspVar; // dev.  seek und dev. read ok
 
-    return 0; // sonst fehler
+    return nullptr; // sonst fehler
 }
 
 
