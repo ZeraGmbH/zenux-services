@@ -96,7 +96,7 @@ void test_regression_sense_interface_mt310s2::addClampIL1_CL120A()
     SenseSystem::cChannelSettings *channelSettingI = m_testServer->getSenseSettings()->findChannelSettingByAlias1("IL1");
     SenseSystem::cChannelSettings *channelSettingU = m_testServer->getSenseSettings()->findChannelSettingByAlias1("UL1");
 
-    m_testServer->addClamp(CL120A, "IL1");
+    m_testServer->addClamp(cClamp::CL120A, "IL1");
 
     QSignalSpy responseSpyI(m_pcbIFace.get(), &Zera::cPCBInterface::serverAnswer);
     m_pcbIFace->getRangeList(channelSettingI->m_nameMx);
@@ -119,7 +119,7 @@ void test_regression_sense_interface_mt310s2::addClampIL2_CL800ADC1000VDC()
     SenseSystem::cChannelSettings *channelSettingI = m_testServer->getSenseSettings()->findChannelSettingByAlias1("IL2");
     SenseSystem::cChannelSettings *channelSettingU = m_testServer->getSenseSettings()->findChannelSettingByAlias1("UL2");
 
-    m_testServer->addClamp(CL800ADC1000VDC, "IL2");
+    m_testServer->addClamp(cClamp::CL800ADC1000VDC, "IL2");
 
     QSignalSpy responseSpyI(m_pcbIFace.get(), &Zera::cPCBInterface::serverAnswer);
     m_pcbIFace->getRangeList(channelSettingI->m_nameMx);
@@ -140,7 +140,7 @@ void test_regression_sense_interface_mt310s2::addRemoveClampIAUX_CL800ADC1000VDC
     SenseSystem::cChannelSettings *channelSettingI = m_testServer->getSenseSettings()->findChannelSettingByAlias1("IAUX");
     SenseSystem::cChannelSettings *channelSettingU = m_testServer->getSenseSettings()->findChannelSettingByAlias1("UAUX");
 
-    m_testServer->addClamp(CL800ADC1000VDC, "IAUX");
+    m_testServer->addClamp(cClamp::CL800ADC1000VDC, "IAUX");
 
     QSignalSpy responseSpyIWishClamps(m_pcbIFace.get(), &Zera::cPCBInterface::serverAnswer);
     m_pcbIFace->getRangeList(channelSettingI->m_nameMx);
@@ -168,7 +168,7 @@ void test_regression_sense_interface_mt310s2::addRemoveClampIAUX_CL800ADC1000VDC
 void test_regression_sense_interface_mt310s2::clampIdsNamesGenJson()
 {
     QJsonObject jsonAll;
-    for(int clampTypeNo=undefined+1; clampTypeNo<anzCL; clampTypeNo++) {
+    for(int clampTypeNo=cClamp::undefined+1; clampTypeNo<cClamp::anzCL; clampTypeNo++) {
         QString clampName = cClamp::getClampTypeName(clampTypeNo);
         jsonAll.insert(SenseRegressionHelper::getJsonNumString(clampTypeNo), clampName);
     }
@@ -181,9 +181,9 @@ void test_regression_sense_interface_mt310s2::clampIdsNamesCheck()
 {
     QJsonObject json = loadJson(":/clamp-id-names.json");
     QVERIFY(!json.isEmpty());
-    int countClamps = anzCL-1; // anzCL lies!!!
+    int countClamps = cClamp::anzCL-1; // anzCL lies!!!
     QCOMPARE(json.count(), countClamps);
-    for(int clampTypeNo=undefined+1; clampTypeNo<anzCL; clampTypeNo++) {
+    for(int clampTypeNo=cClamp::undefined+1; clampTypeNo<cClamp::anzCL; clampTypeNo++) {
         QString jsonKey = SenseRegressionHelper::getJsonNumString(clampTypeNo);
         QCOMPARE(cClamp::getClampTypeName(clampTypeNo), json.value(jsonKey).toString());
     }
@@ -421,7 +421,7 @@ void test_regression_sense_interface_mt310s2::genJsonConstantValuesAllRangesForA
         channelNameAdRemoveClamps = channelName;
     SenseSystem::cChannelSettings *channelSetting = m_testServer->getSenseSettings()->findChannelSettingByAlias1(channelName);
     QJsonObject jsonAll;
-    for(int clampTypeNo=undefined+1; clampTypeNo<anzCL; clampTypeNo++) { // all clamp types
+    for(int clampTypeNo=cClamp::undefined+1; clampTypeNo<cClamp::anzCL; clampTypeNo++) { // all clamp types
         m_testServer->addClamp(clampTypeNo, channelNameAdRemoveClamps);
 
         QSignalSpy responseSpy(m_pcbIFace.get(), &Zera::cPCBInterface::serverAnswer);
@@ -450,7 +450,7 @@ bool test_regression_sense_interface_mt310s2::checkJsonConstantValuesAllRangesFo
         channelNameAdRemoveClamps = channelName;
     bool allCheckOk = true;
     SenseSystem::cChannelSettings *channelSetting = m_testServer->getSenseSettings()->findChannelSettingByAlias1(channelName);
-    for(int clampTypeNo=undefined+1; clampTypeNo<anzCL; clampTypeNo++) { // all clamp types
+    for(int clampTypeNo=cClamp::undefined+1; clampTypeNo<cClamp::anzCL; clampTypeNo++) { // all clamp types
         m_testServer->addClamp(clampTypeNo, channelNameAdRemoveClamps);
 
         QSignalSpy responseSpy(m_pcbIFace.get(), &Zera::cPCBInterface::serverAnswer);

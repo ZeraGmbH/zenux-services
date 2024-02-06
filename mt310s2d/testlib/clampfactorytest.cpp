@@ -1,7 +1,7 @@
 #include "clampfactorytest.h"
 #include "clampfortest.h"
 
-int ClampFactoryTest::m_clampForTestType = CL800ADC1000VDC;
+int ClampFactoryTest::m_clampForTestType = cClamp::CL800ADC1000VDC;
 
 void ClampFactoryTest::enableTest()
 {

@@ -162,7 +162,7 @@ void test_regression_adj_calc_mt310s2::setupServers()
 
 void test_regression_adj_calc_mt310s2::addClamp()
 {
-    m_testServer->addClamp(CL200ADC1000VDC, "IL1");
+    m_testServer->addClamp(cClamp::CL200ADC1000VDC, "IL1");
     QString xml = readFile(":/import_clamp.xml");
     QVERIFY(!xml.isEmpty());
     QCOMPARE(m_testServer->getClampInterface()->importClampXmls(xml, false), ZSCPI::scpiAnswer[ZSCPI::ack]);

@@ -126,10 +126,10 @@ void test_regression_adj_import_export_xml_mt310s2::scpiExportInitialAdjXml()
 
 void test_regression_adj_import_export_xml_mt310s2::directAcessExportXmlClamps()
 {
-    m_testServer->addClamp(CL120A, "IL1");
-    m_testServer->addClamp(EMOB32, "IL2");
-    m_testServer->addClamp(EMOB200DC, "IL3");
-    m_testServer->addClamp(CL200ADC1000VDC, "IAUX");
+    m_testServer->addClamp(cClamp::CL120A, "IL1");
+    m_testServer->addClamp(cClamp::EMOB32, "IL2");
+    m_testServer->addClamp(cClamp::EMOB200DC, "IL3");
+    m_testServer->addClamp(cClamp::CL200ADC1000VDC, "IAUX");
 
     QFile xmlFile(":/export_clamp_initial.xml");
     QVERIFY(xmlFile.open(QFile::ReadOnly));
@@ -152,10 +152,10 @@ void test_regression_adj_import_export_xml_mt310s2::directAcessExportXmlClamps()
 
 void test_regression_adj_import_export_xml_mt310s2::scpiExportInitialAdjXmlClamps()
 {
-    m_testServer->addClamp(CL120A, "IL1");
-    m_testServer->addClamp(EMOB32, "IL2");
-    m_testServer->addClamp(EMOB200DC, "IL3");
-    m_testServer->addClamp(CL200ADC1000VDC, "IAUX");
+    m_testServer->addClamp(cClamp::CL120A, "IL1");
+    m_testServer->addClamp(cClamp::EMOB32, "IL2");
+    m_testServer->addClamp(cClamp::EMOB200DC, "IL3");
+    m_testServer->addClamp(cClamp::CL200ADC1000VDC, "IAUX");
 
     QFile xmlFile(":/export_clamp_initial.xml");
     QVERIFY(xmlFile.open(QFile::ReadOnly));
@@ -177,7 +177,7 @@ void test_regression_adj_import_export_xml_mt310s2::scpiExportInitialAdjXmlClamp
 
 void test_regression_adj_import_export_xml_mt310s2::scpiExportUndefinedClamp()
 {
-    m_testServer->addClamp(undefined, "IL1");
+    m_testServer->addClamp(cClamp::undefined, "IL1");
 
     QString xmlExported = ScpiSingleTransactionBlocked::query("SYSTEM:ADJUSTMENT:CLAMP:XML?");
     QString xmlExportedPretty = XmlHelperForTest::prettify(xmlExported);
