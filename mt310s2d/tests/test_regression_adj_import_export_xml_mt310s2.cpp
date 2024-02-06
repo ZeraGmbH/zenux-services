@@ -175,6 +175,19 @@ void test_regression_adj_import_export_xml_mt310s2::scpiExportInitialAdjXmlClamp
     QCOMPARE(xmlExportedPretty, xmlExpected);
 }
 
+void test_regression_adj_import_export_xml_mt310s2::scpiExportUndefinedClamp()
+{
+    m_testServer->addClamp(undefined, "IL1");
+
+    QString xmlExported = ScpiSingleTransactionBlocked::query("SYSTEM:ADJUSTMENT:CLAMP:XML?");
+    QString xmlExportedPretty = XmlHelperForTest::prettify(xmlExported);
+    qInfo("Exported XML:");
+    qInfo("%s", qPrintable(xmlExportedPretty));
+
+    // if this turns fragile we have to use zera-scpi's xml-compare-testlib
+    QCOMPARE(xmlExported, "");
+}
+
 void test_regression_adj_import_export_xml_mt310s2::setupServers()
 {
     m_resmanServer = std::make_unique<ResmanRunFacade>();

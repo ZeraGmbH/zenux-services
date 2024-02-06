@@ -28,6 +28,7 @@ private slots:
     // clamps
     void directAcessExportXmlClamps();
     void scpiExportInitialAdjXmlClamps();
+    void scpiExportUndefinedClamp();
 
 private:
     void setupServers();
