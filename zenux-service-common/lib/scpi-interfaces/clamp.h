@@ -43,6 +43,7 @@ public:
            quint8 ctrlChannelSecondary,
            quint8 type = undefined);
     virtual ~cClamp();
+    ClampTypes getClampType();
     static QString getClampTypeName(quint8 type);
     virtual void initSCPIConnection(QString) override;
     QString getChannelName();

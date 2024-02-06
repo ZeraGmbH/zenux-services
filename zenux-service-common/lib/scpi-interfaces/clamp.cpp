@@ -69,6 +69,11 @@ cClamp::~cClamp()
     removeAllRanges();
 }
 
+ClampTypes cClamp::getClampType()
+{
+    return ClampTypes(m_nType);
+}
+
 void cClamp::initSCPIConnection(QString)
 {
 }
