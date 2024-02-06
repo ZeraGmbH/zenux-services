@@ -9,30 +9,29 @@
 #include <QDateTime>
 #include <QDomElement>
 
-enum ClampTypes // APPEND NEW TYPES AT BOTTOM
-{
-    undefined,
-    CL120A,
-    CL300A,
-    CL1000A,
-    EMOB32,
-    EMOB200DC,
-    EMOB80,
-    RC3000,
-    CL200ADC1000VDC,
-    CL1000VDC,
-
-    CL8ADC1000VDC,
-    CL800ADC1000VDC,
-
-    EMOB500DC,
-
-    anzCL
-};
-
 class cClamp: public AdjustmentEeprom, public AdjustmentXmlImportExportTemplate, public ScpiConnection
 {
 public:
+    enum ClampTypes // APPEND NEW TYPES AT BOTTOM
+    {
+        undefined,
+        CL120A,
+        CL300A,
+        CL1000A,
+        EMOB32,
+        EMOB200DC,
+        EMOB80,
+        RC3000,
+        CL200ADC1000VDC,
+        CL1000VDC,
+
+        CL8ADC1000VDC,
+        CL800ADC1000VDC,
+
+        EMOB500DC,
+
+        anzCL
+    };
     cClamp();
     cClamp(cPCBServer *server,
            I2cSettings *i2cSettings,

@@ -69,7 +69,7 @@ cClamp::~cClamp()
     removeAllRanges();
 }
 
-ClampTypes cClamp::getClampType()
+cClamp::ClampTypes cClamp::getClampType()
 {
     return ClampTypes(m_nType);
 }
@@ -402,7 +402,7 @@ quint8 cClamp::getAdjStatus()
         return Adjustment::adjusted;
 }
 
-ClampTypes cClamp::readClampType()
+cClamp::ClampTypes cClamp::readClampType()
 {
     I2cMuxerScopedOnOff i2cMuxOnOff(getI2cMuxer());
     QByteArray ba;

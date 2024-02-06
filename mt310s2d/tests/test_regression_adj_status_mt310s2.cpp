@@ -54,7 +54,7 @@ void test_regression_adj_status_mt310s2::statusClampsI1DefaultMachine()
 void test_regression_adj_status_mt310s2::statusClampsI1DefaultCL120A()
 {
     setupServers(std::make_shared<TestFactoryI2cCtrl>(true));
-    m_testServer->addClamp(CL120A, "IL1");
+    m_testServer->addClamp(cClamp::CL120A, "IL1");
 
     QString ret = ScpiSingleTransactionBlocked::query("STATUS:CLAMP:m3:ADJUSTMENT?");
     QCOMPARE(ret, QString::number(Adjustment::notAdjusted));
