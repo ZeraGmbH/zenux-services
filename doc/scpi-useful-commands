@@ -1,4 +1,57 @@
-Read / write PLL channnel / mode
+Port 6308 (mt310s2d/com5003d)
+
+<Channel>
+m0: UL1..
+m3: IL1..
+m6: UAUX
+m7: IAUX
+
+----------------------------------------------------------
+Adjustment internal
+----------------------------------------------------------
+
+Export adjustment data internal
+SYSTEM:ADJUSTMENT:XML?
+
+Read adjustment data from EEPROM:
+SYSTEM:ADJUSTMENT:CLAMP:XML:READ;
+
+----------------------------------------------------------
+Clamps
+----------------------------------------------------------
+
+Export adjustment data all clamps:
+SYSTEM:ADJUSTMENT:CLAMP:XML?
+
+Reset adj-flash:
+SYSTEM:ADJUSTMENT:CLAMP:m7:FLASH:RESET;
+
+Setup Type & serial number:
+SYSTEM:CLAMP:<Channel>:TYPE <type>;
+SYSTEM:CLAMP:<Channel>:SER <Serialnumber>;
+SYST:CLAM:WRITE;
+
+see cClamp e.g.
+SYSTEM:CLAMP:m7:TYPE 5;
+SYSTEM:CLAMP:m7:SER 1234567890;
+
+----------------------------------------------------------
+Sense interface
+----------------------------------------------------------
+
+sens:m0:250V:corr:offset:node:0 0;0;
+sens:m0:250V:corr:offset:node:0 5196;0;
+sens:m0:250V:corr:compute;
+
+SENSE:m0:250V:REJECTION?
+
+sens:m0:250V:corr:offset:node:0 0;0;|*stb?
+
+----------------------------------------------------------
+Sampling interface
+----------------------------------------------------------
+
+Read / write PLL channel / mode
 SAMP:s0:PLL:CAT?
 SAMP:s0:PLL m0;
 SAMP:s0:PLL fix13;
