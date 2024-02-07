@@ -53,10 +53,8 @@ QString cClampInterface::exportXMLString(int indent)
 {
     QString xmlTotal;
     for(auto clamp : qAsConst(m_clampHash)) {
-        if(clamp->getClampType() != cClamp::undefined) {
-            QString xmlClamp = clamp->exportXMLString(indent);
-            xmlTotal.append(xmlClamp);
-        }
+        QString xmlClamp = clamp->exportXMLString(indent);
+        xmlTotal.append(xmlClamp);
     }
     return xmlTotal;
 }

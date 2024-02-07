@@ -184,7 +184,18 @@ void test_regression_adj_import_export_xml_mt310s2::scpiExportUndefinedClamp()
     qInfo("Exported XML:");
     qInfo("%s", qPrintable(xmlExportedPretty));
 
-    // if this turns fragile we have to use zera-scpi's xml-compare-testlib
+    QCOMPARE(xmlExported, "");
+}
+
+void test_regression_adj_import_export_xml_mt310s2::scpiExportInvalidClamp()
+{
+    m_testServer->addClamp(cClamp::ClampTypes(-1), "IL1");
+
+    QString xmlExported = ScpiSingleTransactionBlocked::query("SYSTEM:ADJUSTMENT:CLAMP:XML?");
+    QString xmlExportedPretty = XmlHelperForTest::prettify(xmlExported);
+    qInfo("Exported XML:");
+    qInfo("%s", qPrintable(xmlExportedPretty));
+
     QCOMPARE(xmlExported, "");
 }
 

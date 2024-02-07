@@ -69,11 +69,6 @@ cClamp::~cClamp()
     removeAllRanges();
 }
 
-cClamp::ClampTypes cClamp::getClampType()
-{
-    return ClampTypes(m_nType);
-}
-
 void cClamp::initSCPIConnection(QString)
 {
 }
@@ -191,6 +186,9 @@ bool cClamp::importAdjData(QDataStream &stream)
 
 QString cClamp::exportXMLString(int indent)
 {
+    if(!isValidType())
+        return QString();
+
     QDomDocument justqdom (QString("ClampAdjustmentData"));
 
     QDomElement pcbtag = justqdom.createElement( "CLAMP" );
@@ -379,6 +377,11 @@ bool cClamp::importXMLDocument(QDomDocument *qdomdoc, bool ignoreType)
 bool cClamp::importXMLDocument(QDomDocument *qdomdoc)
 {
     return importXMLDocument(qdomdoc, false);
+}
+
+bool cClamp::isValidType()
+{
+    return getClampTypeName(undefined) != getClampTypeName(m_nType);
 }
 
 quint8 cClamp::getAdjStatus()

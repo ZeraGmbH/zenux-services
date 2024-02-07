@@ -42,7 +42,6 @@ public:
            quint8 ctrlChannelSecondary,
            quint8 type = undefined);
     virtual ~cClamp();
-    ClampTypes getClampType();
     static QString getClampTypeName(quint8 type);
     virtual void initSCPIConnection(QString) override;
     QString getChannelName();
@@ -58,6 +57,7 @@ protected:
     bool importXMLDocument(QDomDocument* qdomdoc) override;
 
 private:
+    bool isValidType();
     void initClamp(quint8 type);
     void addSense();
     void addSenseInterface();
