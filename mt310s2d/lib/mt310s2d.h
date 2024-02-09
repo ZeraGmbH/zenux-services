@@ -77,7 +77,6 @@ private:
     ScInSettings* m_pSCHeadSettings = nullptr;
     FInSettings* m_finSettings = nullptr;
     FOutSettings* m_foutSettings = nullptr;
-    SamplingSettings* m_pSamplingSettings = nullptr;
     // Mt310s2 specifics
     AccumulatorSettings* m_accumulatorSettings = nullptr;
 
