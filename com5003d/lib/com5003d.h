@@ -71,7 +71,6 @@ private:
     ScInSettings* m_pSCHeadSettings = nullptr;
     FInSettings* m_finSettings = nullptr;
     FOutSettings* m_foutSettings = nullptr;
-    SamplingSettings* m_pSamplingSettings = nullptr;
 
     Com5003SystemInterface* m_pSystemInterface = nullptr;
     SenseInterfaceCommon* m_pSenseInterface = nullptr;

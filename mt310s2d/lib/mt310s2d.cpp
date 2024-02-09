@@ -143,8 +143,6 @@ void cMT310S2dServer::doConfiguration()
             connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_pSenseSettings, &cSenseSettings::configXMLInfo);
             m_foutSettings = new FOutSettings(&m_xmlConfigReader);
             connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_foutSettings, &FOutSettings::configXMLInfo);
-            m_pSamplingSettings = new SamplingSettings(&m_xmlConfigReader);
-            connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_pSamplingSettings, &SamplingSettings::configXMLInfo);
             m_finSettings = new FInSettings(&m_xmlConfigReader);
             connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_finSettings, &FInSettings::configXMLInfo);
             m_pSCHeadSettings = new ScInSettings(&m_xmlConfigReader);
@@ -219,7 +217,7 @@ void cMT310S2dServer::doSetupServer()
                                                                                       m_pSenseInterface,
                                                                                       m_ctrlFactory,
                                                                                       std::move(emobControllerContainer)));
-            scpiConnectionList.append(m_pSamplingInterface = new cSamplingInterface(getSCPIInterface(), m_pSamplingSettings, m_ctrlFactory));
+            scpiConnectionList.append(m_pSamplingInterface = new cSamplingInterface(getSCPIInterface(), m_settings->getSamplingSettings(), m_ctrlFactory));
             scpiConnectionList.append(m_foutInterface = new FOutGroupResourceAndInterface(getSCPIInterface(), m_foutSettings));
             scpiConnectionList.append(m_pFRQInputInterface = new FInGroupResourceAndInterface(getSCPIInterface(), m_finSettings));
             scpiConnectionList.append(m_pSCHeadInterface = new ScInGroupResourceAndInterface(getSCPIInterface(), m_pSCHeadSettings));
