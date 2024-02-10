@@ -41,6 +41,9 @@ public:
     // C++ only
     quint8 getAccuStatusFromFlags();
 
+    QString pllMode() const;
+    void setPllMode(const QString &newPllMode);
+
 signals:
     void schnubbelPluggedChanged();
 
@@ -52,6 +55,8 @@ signals:
     void accuMainSupplyPresentChanged();
 
     void accuSupportedChanged();
+
+    void pllModeChanged();
 
 private:
     SimulSystemStatus() = default;
@@ -79,6 +84,9 @@ private:
 
     Q_PROPERTY(quint8 accuStateOfCharge READ getAccuStateOfCharge WRITE setAccuStateOfCharge NOTIFY accuStateOfChargeChanged FINAL)
     quint8 m_accuStateOfCharge = 0;
+
+    Q_PROPERTY(QString pllMode READ pllMode WRITE setPllMode NOTIFY pllModeChanged FINAL)
+    QString m_pllMode = "Undefined";
 };
 
 typedef std::shared_ptr<SimulSystemStatus> SimulSystemStatusPtr;

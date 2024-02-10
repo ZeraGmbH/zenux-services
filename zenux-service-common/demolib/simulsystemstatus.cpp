@@ -59,6 +59,19 @@ void SimulSystemStatus::makeAccuSupported()
     emit accuSupportedChanged();
 }
 
+QString SimulSystemStatus::pllMode() const
+{
+    return m_pllMode;
+}
+
+void SimulSystemStatus::setPllMode(const QString &newPllMode)
+{
+    if (m_pllMode == newPllMode)
+        return;
+    m_pllMode = newPllMode;
+    emit pllModeChanged();
+}
+
 quint8 SimulSystemStatus::getAccuStateOfCharge()
 {
     return m_accuStateOfCharge;
