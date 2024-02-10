@@ -11,6 +11,7 @@ public:
     ZeraMControllerIo::atmelRM setPLLChannel(quint8 chn) override;
     ZeraMControllerIo::atmelRM readPLLChannel(quint8& chn) override;
 private:
+    void setSimulPllDisplay(quint8 chn);
     SamplingSettings* m_samplingSettings;
     quint8& m_pllChannel;
 };
