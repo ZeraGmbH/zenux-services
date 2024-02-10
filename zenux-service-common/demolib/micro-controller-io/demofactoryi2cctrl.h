@@ -2,11 +2,12 @@
 #define DEMOFACTORYI2CCTRL_H
 
 #include "abstractfactoryi2cctrl.h"
+#include "settingscontainer.h"
 
 class DemoFactoryI2cCtrl : public AbstractFactoryI2cCtrl
 {
 public:
-    DemoFactoryI2cCtrl();
+    DemoFactoryI2cCtrl(SettingsContainerPtr settings);
     AbstractCtrlHeartbeatWaitPtr createCtrlHeartbeatWait(QString devnode) override;
     I2cCtrlCriticalStatusPtr getCriticalStatusController() override;
     I2cCtrlEepromPermissionPtr getPermissionCheckController() override;
@@ -19,6 +20,7 @@ public:
     I2cCtrlClampStatusPtr getClampStatusController() override;
     I2cCtrlBootloaderPtr getBootloaderController() override;
 private:
+    SettingsContainerPtr m_settings;
     struct TPersitentControllerData
     {
         quint16 m_criticalStatus = 0;
