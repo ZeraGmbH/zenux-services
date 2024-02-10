@@ -38,7 +38,7 @@
 
 const ServerParams cCOM5003dServer::defaultParams {ServerName, ServerVersion, "/etc/zera/com5003d/com5003d.xsd", "/etc/zera/com5003d/com5003d.xml"};
 
-cCOM5003dServer::cCOM5003dServer(std::unique_ptr<SettingsContainer> settings, AbstractFactoryI2cCtrlPtr ctrlFactory, AbstractFactoryDeviceNodePcbPtr deviceNodeFactory) :
+cCOM5003dServer::cCOM5003dServer(SettingsContainerPtr settings, AbstractFactoryI2cCtrlPtr ctrlFactory, AbstractFactoryDeviceNodePcbPtr deviceNodeFactory) :
     cPCBServer(std::move(settings), ScpiSingletonFactory::getScpiObj()),
     m_ctrlFactory(ctrlFactory),
     m_deviceNodeFactory(deviceNodeFactory)

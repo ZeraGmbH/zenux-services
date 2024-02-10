@@ -18,7 +18,7 @@ enum commands
     cmdUnregister
 };
 
-cPCBServer::cPCBServer(std::unique_ptr<SettingsContainer> settings, cSCPI *scpiInterface) :
+cPCBServer::cPCBServer(SettingsContainerPtr settings, cSCPI *scpiInterface) :
     ScpiConnection(scpiInterface),
     m_settings(std::move(settings))
 {

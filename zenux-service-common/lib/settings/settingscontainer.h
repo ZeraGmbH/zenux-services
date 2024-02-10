@@ -6,6 +6,7 @@
 #include "fpgasettings.h"
 #include "samplingsettings.h"
 #include <QObject>
+#include <memory>
 
 struct ServerParams
 {
@@ -33,5 +34,7 @@ private:
     FPGASettings m_fpgaSettings;
     SamplingSettings m_samplingSettings;
 };
+
+typedef std::unique_ptr<SettingsContainer> SettingsContainerPtr;
 
 #endif // SETTINGSCONTAINER_H

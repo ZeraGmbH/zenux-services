@@ -33,7 +33,7 @@ class cCOM5003dServer: public cPCBServer
     Q_OBJECT
 
 public:
-    explicit cCOM5003dServer(std::unique_ptr<SettingsContainer> settings,
+    explicit cCOM5003dServer(SettingsContainerPtr settings,
                              AbstractFactoryI2cCtrlPtr ctrlFactory,
                              AbstractFactoryDeviceNodePcbPtr deviceNodeFactory);
     ~cCOM5003dServer();

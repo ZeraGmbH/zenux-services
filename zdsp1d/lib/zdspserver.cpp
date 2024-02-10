@@ -56,7 +56,7 @@ struct sigaction sigActionZdsp1;
 
 const ServerParams ZDspServer::defaultParams {ServerName, ServerVersion, "/etc/zera/zdsp1d/zdsp1d.xsd", "/etc/zera/zdsp1d/zdsp1d.xml"};
 
-ZDspServer::ZDspServer(std::unique_ptr<SettingsContainer> settings, AbstractFactoryDeviceNodeDspPtr deviceNodeFactory) :
+ZDspServer::ZDspServer(SettingsContainerPtr settings, AbstractFactoryDeviceNodeDspPtr deviceNodeFactory) :
     m_deviceNodeFactory(deviceNodeFactory),
     m_settings(std::move(settings))
 {

@@ -23,7 +23,7 @@ class cSEC1000dServer: public cPCBServer
 {
     Q_OBJECT
 public:
-    explicit cSEC1000dServer(std::unique_ptr<SettingsContainer> settings, AbstractFactoryDeviceNodeSecPtr deviceNodeFactory);
+    explicit cSEC1000dServer(SettingsContainerPtr settings, AbstractFactoryDeviceNodeSecPtr deviceNodeFactory);
     ~cSEC1000dServer();
     QString getServerVersion();
     QString getSecDeviceNode();
