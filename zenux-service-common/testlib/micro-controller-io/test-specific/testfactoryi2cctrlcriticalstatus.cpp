@@ -10,7 +10,7 @@
 #include "demoi2cctrldeviceident.h"
 #include "mocki2cctrlranges.h"
 #include "mocki2cctrlmmode.h"
-#include "mocki2cctrlpll.h"
+#include "testi2cctrlpll.h"
 #include "mocki2cctrlclampstatus.h"
 
 TestFactoryI2cCtrlCriticalStatus::TPersitentControllerData TestFactoryI2cCtrlCriticalStatus::m_persitentData;
@@ -67,7 +67,7 @@ I2cCtrlMModePtr TestFactoryI2cCtrlCriticalStatus::getMModeController()
 
 I2cCtrlPllPtr TestFactoryI2cCtrlCriticalStatus::getPllController()
 {
-    return std::make_unique<MockI2cCtrlPll>(m_persitentData.m_pllChannel);
+    return std::make_unique<TestI2cCtrlPll>(m_persitentData.m_pllChannel);
 }
 
 I2cCtrlClampStatusPtr TestFactoryI2cCtrlCriticalStatus::getClampStatusController()
