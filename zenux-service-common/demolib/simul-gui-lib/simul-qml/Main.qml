@@ -9,15 +9,21 @@ ApplicationWindow {
     visible: true
     x: 0
     y: 0
-    width: 800
+    width: 700
     height: 200
     Material.accent: "#339966"
 
     ColumnLayout {
+        anchors { fill: parent; margins: 10 }
         CheckBox {
             text: "Schnubbel"
             checked: Simul.schnubbelPlugged
             onCheckedChanged: Simul.schnubbelPlugged = checked
+        }
+        RowLayout {
+            Layout.fillWidth: true
+            Label { text: "PLL channel/mode:" }
+            Label { text: Simul.pllMode }
         }
         RowLayout {
             enabled: Simul.accuSupported
@@ -54,22 +60,15 @@ ApplicationWindow {
             Layout.fillWidth: true
             Label { text: "Accu state of charge val:" }
             Label { text: stateOfChargeSlider.value }
-            Item { Layout.fillWidth: true }
             Slider {
                 id: stateOfChargeSlider
                 from: 0
                 to: 110
                 stepSize: 1
-                Layout.preferredWidth: appWindow * 0.5
+                Layout.fillWidth: true
                 value: Simul.accuStateOfCharge
                 onValueChanged: Simul.accuStateOfCharge = value
             }
-        }
-        RowLayout {
-            Layout.fillWidth: true
-            Label { text: "PLL channel/mode:" }
-            Item { Layout.fillWidth: true }
-            Label { text: Simul.pllMode }
         }
     }
 }
