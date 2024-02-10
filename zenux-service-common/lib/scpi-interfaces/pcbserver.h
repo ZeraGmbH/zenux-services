@@ -27,7 +27,7 @@ class cPCBServer : public ScpiConnection
 {
     Q_OBJECT
 public:
-    explicit cPCBServer(std::unique_ptr<SettingsContainer> settings, cSCPI *scpiInterface);
+    explicit cPCBServer(SettingsContainerPtr settings, cSCPI *scpiInterface);
     void initSCPIConnection(QString leadingNodes) override;
     cSCPI* getSCPIInterface();
     QString getName();
@@ -46,7 +46,7 @@ protected:
     void initSCPIConnections();
     void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
 
-    std::unique_ptr<SettingsContainer> m_settings;
+    SettingsContainerPtr m_settings;
     XiQNetServer* m_myServer; // the real server that does the communication job
     XiQNetWrapper m_ProtobufWrapper;
     Zera::XMLConfig::cReader m_xmlConfigReader;

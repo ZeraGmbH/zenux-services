@@ -8,7 +8,7 @@ int main( int argc, char *argv[] )
 {
     QCoreApplication* app = new QCoreApplication (argc, argv);
 
-    std::unique_ptr<SettingsContainer> settings = std::make_unique<SettingsContainer>(cCOM5003dServer::defaultParams);
+    SettingsContainerPtr settings = std::make_unique<SettingsContainer>(cCOM5003dServer::defaultParams);
     std::shared_ptr<FactoryI2cCtrl> ctrlFactory = std::make_shared<FactoryI2cCtrl>(settings->getI2cSettings());
     cCOM5003dServer* com5003d = new cCOM5003dServer(
         std::move(settings),

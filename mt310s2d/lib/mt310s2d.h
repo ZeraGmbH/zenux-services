@@ -34,7 +34,7 @@ class cMT310S2dServer: public cPCBServer
 {
     Q_OBJECT
 public:
-    explicit cMT310S2dServer(std::unique_ptr<SettingsContainer> settings,
+    explicit cMT310S2dServer(SettingsContainerPtr settings,
                              AbstractFactoryI2cCtrlPtr ctrlFactory,
                              AbstractFactoryDeviceNodePcbPtr deviceNodeFactory);
     ~cMT310S2dServer();

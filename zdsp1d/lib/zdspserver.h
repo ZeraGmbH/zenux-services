@@ -26,7 +26,7 @@ class ZDspServer: public QObject, public cbIFace
 {
     Q_OBJECT
 public:
-    ZDspServer(std::unique_ptr<SettingsContainer> settings, AbstractFactoryDeviceNodeDspPtr deviceNodeFactory);
+    ZDspServer(SettingsContainerPtr settings, AbstractFactoryDeviceNodeDspPtr deviceNodeFactory);
     virtual ~ZDspServer();
     QString getServerVersion();
     QString getDspDeviceNode();
@@ -47,7 +47,7 @@ signals:
 
 private:
     AbstractFactoryDeviceNodeDspPtr m_deviceNodeFactory;
-    std::unique_ptr<SettingsContainer> m_settings;
+    SettingsContainerPtr m_settings;
     ScpiCmdInterpreter* m_cmdInterpreter = nullptr;
     XiQNetServer* myProtonetServer; // the real server that does the communication job
     XiQNetWrapper m_ProtobufWrapper;
