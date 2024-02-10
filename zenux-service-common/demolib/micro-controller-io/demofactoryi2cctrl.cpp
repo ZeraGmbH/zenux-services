@@ -15,7 +15,8 @@
 
 DemoFactoryI2cCtrl::TPersitentControllerData DemoFactoryI2cCtrl::m_persitentData;
 
-DemoFactoryI2cCtrl::DemoFactoryI2cCtrl()
+DemoFactoryI2cCtrl::DemoFactoryI2cCtrl(SettingsContainerPtr settings) :
+    m_settings(std::move(settings))
 {
 }
 

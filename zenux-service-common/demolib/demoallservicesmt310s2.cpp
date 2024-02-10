@@ -2,11 +2,13 @@
 #include "demofactoryi2cctrl.h"
 #include "demoeventloopfeeder.h"
 #include "demofactorydevicenodedsp.h"
+#include "mockserverparamgenerator.h"
 
 DemoAllServicesMt310s2::DemoAllServicesMt310s2()
 {
     m_resman = new ResmanRunFacade;
-    m_mt310s2d = new MockMt310s2d(std::make_shared<DemoFactoryI2cCtrl>());
+    ServerParams params = MockServerParamGenerator::createParams("mt310s2d");
+    m_mt310s2d = new MockMt310s2d(std::make_shared<DemoFactoryI2cCtrl>(std::make_unique<SettingsContainer>(params)));
     m_sec1000d = new MockSec1000d;
     m_zdsp1d = new MockZdsp1d(std::make_shared<DemoFactoryDeviceNodeDsp>());
     DemoEventLoopFeeder::feedEventLoop();
