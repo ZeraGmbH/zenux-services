@@ -65,5 +65,11 @@ ApplicationWindow {
                 onValueChanged: Simul.accuStateOfCharge = value
             }
         }
+        RowLayout {
+            Layout.fillWidth: true
+            Label { text: "PLL channel/mode:" }
+            Item { Layout.fillWidth: true }
+            Label { text: Simul.pllMode }
+        }
     }
 }
