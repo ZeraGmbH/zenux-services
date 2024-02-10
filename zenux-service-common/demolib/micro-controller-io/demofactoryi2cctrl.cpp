@@ -67,7 +67,7 @@ I2cCtrlMModePtr DemoFactoryI2cCtrl::getMModeController()
 
 I2cCtrlPllPtr DemoFactoryI2cCtrl::getPllController()
 {
-    return std::make_unique<DemoI2cCtrlPll>(m_persitentData.m_pllChannel);
+    return std::make_unique<DemoI2cCtrlPll>(m_settings->getSamplingSettings(), m_persitentData.m_pllChannel);
 }
 
 I2cCtrlClampStatusPtr DemoFactoryI2cCtrl::getClampStatusController()
