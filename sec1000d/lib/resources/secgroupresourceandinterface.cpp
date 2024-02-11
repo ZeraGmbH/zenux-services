@@ -104,7 +104,7 @@ QList<SecChannel *> SecGroupResourceAndInterface::getECalcChannelList()
 bool SecGroupResourceAndInterface::freeChannelsForThisPeer(XiQNetPeer *peer)
 {
     bool result = true;
-    for(const QByteArray &client: m_peerClientsHash[peer])
+    for(const QByteArray &client : m_peerClientsHash[peer])
         if(!freeChannelsFromAClient(client))
             result = false;
     return result;
