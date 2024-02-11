@@ -60,7 +60,7 @@ bool ProxyPrivate::releaseConnection(ProxyClientPrivate *client)
         ProtobufMessage::NetMessage::NetCmd *Command = netCommand.mutable_netcommand();
         Command->set_cmd(ProtobufMessage::NetMessage_NetCmd_CmdType_RELEASE);
         netCommand.set_clientid(binUUid.data(), binUUid.size());
-        connection->m_pNetClient->sendMessage(netCommand);
+        connection->m_pNetClient->sendMessage(m_protobufWrapper.protobufToByteArray(netCommand));
         delete connection;
         return true;
     }
@@ -77,12 +77,11 @@ quint32 ProxyPrivate::transmitCommand(ProxyClientPrivate* client, ProtobufMessag
     quint32 nr = m_nMessageNumber;
     message->set_messagenr(nr);
     m_nMessageNumber++; // increment message number
-
-    m_ConnectionHash[client]->m_pNetClient->sendMessage(*message);
+    m_ConnectionHash[client]->m_pNetClient->sendMessage(m_protobufWrapper.protobufToByteArray(*message));
     return nr;
 }
 
-void ProxyPrivate::receiveMessage(std::shared_ptr<google::protobuf::Message> message)
+void ProxyPrivate::handleReceiveMessage(std::shared_ptr<google::protobuf::Message> message)
 {
     std::shared_ptr<ProtobufMessage::NetMessage> netMessage = std::static_pointer_cast<ProtobufMessage::NetMessage>(message);
     if(netMessage->has_clientid()) {
@@ -97,46 +96,49 @@ void ProxyPrivate::receiveMessage(std::shared_ptr<google::protobuf::Message> mes
         qWarning() << "No ClientID";
 }
 
-void ProxyPrivate::receiveTcpError(QAbstractSocket::SocketError errorCode)
+void ProxyPrivate::receiveTcpError(XiQNetPeer *peer, QAbstractSocket::SocketError errorCode)
 {
-    ProxyNetPeer* netClient = qobject_cast<ProxyNetPeer*>(QObject::sender());
     QHashIterator<ProxyClientPrivate*, ProxyConnection*> it(m_ConnectionHash);
     while(it.hasNext()) {
         it.next();
         ProxyConnection *pC = it.value();
-        if(pC->m_pNetClient == netClient) { // we found a client that was connected to netclient
+        if(pC->m_pNetClient == peer) { // we found a client that was connected to netclient
             ProxyClientPrivate* client = it.key();
             client->transmitError(errorCode); // so this client will forward error
         }
     }
 }
 
-void ProxyPrivate::registerConnection()
+void ProxyPrivate::registerConnection(XiQNetPeer *peer)
 {
-    ProxyNetPeer* netClient = qobject_cast<ProxyNetPeer*>(QObject::sender());
     QHashIterator<ProxyClientPrivate*, ProxyConnection*> it(m_ConnectionHash);
     while(it.hasNext()) {
         it.next();
         ProxyConnection *pC = it.value();
-        if(pC->m_pNetClient == netClient) { // we found a client that tried to connected to netclient
+        if(pC->m_pNetClient == peer) { // we found a client that tried to connected to netclient
             ProxyClientPrivate* client = it.key();
             client->transmitConnection();
         }
     }
 }
 
-void ProxyPrivate::registerDisConnection()
+void ProxyPrivate::registerDisConnection(XiQNetPeer *peer)
 {
-    ProxyNetPeer* netClient = qobject_cast<ProxyNetPeer*>(QObject::sender());
     QHashIterator<ProxyClientPrivate*, ProxyConnection*> it(m_ConnectionHash);
     while(it.hasNext()) {
         it.next();
         ProxyConnection *pC = it.value();
-        if(pC->m_pNetClient == netClient) { // we found a client that tried to connected to netclient
+        if(pC->m_pNetClient == peer) { // we found a client that tried to connected to netclient
             ProxyClientPrivate* client = it.key();
             client->transmitDisConnection(); // so this client will be forwarded connection
         }
     }
+}
+
+void ProxyPrivate::onMessageReceived(XiQNetPeer *peer, QByteArray message)
+{
+    Q_UNUSED(peer)
+    handleReceiveMessage(m_protobufWrapper.byteArrayToProtobuf(message));
 }
 
 ProxyNetPeer *ProxyPrivate::getProxyNetPeer(QString ipadress, quint16 port)
@@ -144,8 +146,7 @@ ProxyNetPeer *ProxyPrivate::getProxyNetPeer(QString ipadress, quint16 port)
     ProxyNetPeer* netClient = searchConnection(ipadress, port);
     if(!netClient)  {// look for existing connection
         netClient = new ProxyNetPeer(this);
-        netClient->setWrapper(&protobufWrapper);
-        connect(netClient, &ProxyNetPeer::sigMessageReceived, this, &ProxyPrivate::receiveMessage);
+        connect(netClient, &ProxyNetPeer::sigMessageReceived, this, &ProxyPrivate::onMessageReceived);
         connect(netClient, &ProxyNetPeer::sigSocketError, this, &ProxyPrivate::receiveTcpError);
         connect(netClient, &ProxyNetPeer::sigConnectionEstablished, this, &ProxyPrivate::registerConnection);
         connect(netClient, &ProxyNetPeer::sigConnectionClosed, this, &ProxyPrivate::registerDisConnection);

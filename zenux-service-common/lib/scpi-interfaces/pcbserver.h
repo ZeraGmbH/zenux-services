@@ -32,6 +32,9 @@ public:
     cSCPI* getSCPIInterface();
     QString getName();
     QString getVersion();
+signals:
+    void notifierRegistred(NotificationString* notifier);
+    void removeSubscribers(XiQNetPeer* peer, const QByteArray &clientID);
 public slots:
     void sendAnswerProto(cProtonetCommand* protoCmd);
 protected slots:
@@ -40,7 +43,7 @@ protected slots:
     virtual void SCPIInput();
     virtual void SCPIdisconnect();
     virtual void onSendNotification(ScpiNotificationSubscriber subscriber);
-    virtual void onPeerDisconnected();
+    virtual void onPeerDisconnected(XiQNetPeer *peer);
 protected:
     void setupServer();
     void initSCPIConnections();
@@ -48,32 +51,30 @@ protected:
 
     SettingsContainerPtr m_settings;
     XiQNetServer* m_myServer; // the real server that does the communication job
-    XiQNetWrapper m_ProtobufWrapper;
     Zera::XMLConfig::cReader m_xmlConfigReader;
     QString m_sConfigurationPath;
     QList<ScpiConnection*> scpiConnectionList; // a list of all scpi connections
     QList<cResource*> resourceList;
     QTcpServer* m_pSCPIServer;
     QTcpSocket* m_pSCPISocket;
+private slots:
+    void onEstablishNewConnection(XiQNetPeer *newClient);
+    void onMessageReceived(XiQNetPeer *peer, QByteArray message);
+    void onNotifyPeerConnectionClosed(XiQNetPeer *peer);
+    void onEstablishNewNotifier(NotificationValue *notifier);
+    void onNotifierChanged(quint32 irqreg);
 private:
-    QString m_sInput, m_sOutput;
-    QTcpSocket* resourceManagerSocket;
-    QList<NotificationStructWithValue> m_notifierRegisterNext;
-    QList<NotificationStructWithValue> m_notifierRegisterList;
-
     void registerNotifier(cProtonetCommand* protoCmd); // registeres 1 notifier per command
     void unregisterNotifier(cProtonetCommand *protoCmd); // unregisters all notifiers
     void doUnregisterNotifier(XiQNetPeer *peer, const QByteArray &clientID = QByteArray());
     void sendNotificationToClient(QString message, QByteArray clientID, XiQNetPeer *netPeer);
-private slots:
-    void onEstablishNewConnection(XiQNetPeer* newClient);
-    void onExecuteCommandProto(std::shared_ptr<google::protobuf::Message> cmd);
-    void onNotifyPeerConnectionClosed();
-    void onEstablishNewNotifier(NotificationValue *notifier);
-    void onNotifierChanged(quint32 irqreg);
-signals:
-    void notifierRegistred(NotificationString* notifier);
-    void removeSubscribers(XiQNetPeer* peer, const QByteArray &clientID);
+    void executeCommandProto(XiQNetPeer* peer, std::shared_ptr<google::protobuf::Message> cmd);
+
+    QString m_sInput, m_sOutput;
+    QTcpSocket* resourceManagerSocket;
+    QList<NotificationStructWithValue> m_notifierRegisterNext;
+    QList<NotificationStructWithValue> m_notifierRegisterList;
+    XiQNetWrapper m_protobufWrapper;
 };
 
 #endif // PCBSERVER_H

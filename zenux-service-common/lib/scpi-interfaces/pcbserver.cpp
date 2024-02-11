@@ -49,7 +49,6 @@ QString cPCBServer::getVersion()
 void cPCBServer::setupServer()
 {
     m_myServer = new XiQNetServer(this); // our working (talking) horse
-    m_myServer->setDefaultWrapper(&m_ProtobufWrapper);
     connect(m_myServer,&XiQNetServer::sigClientConnected,this,&cPCBServer::onEstablishNewConnection);
     if(m_settings->getEthSettings()->isSCPIactive()) {
         m_pSCPIServer = new QTcpServer();
@@ -110,7 +109,7 @@ void cPCBServer::sendAnswerProto(cProtonetCommand *protoCmd)
             Answer->set_body(output.toStdString()); // in any case we set the body
             protobufAnswer.set_clientid(protoCmd->m_clientId, protoCmd->m_clientId.count());
             protobufAnswer.set_messagenr(protoCmd->m_nmessageNr);
-            protoCmd->m_pPeer->sendMessage(protobufAnswer);
+            protoCmd->m_pPeer->sendMessage(m_protobufWrapper.protobufToByteArray(protobufAnswer));
         }
         else {
             QByteArray block;
@@ -122,7 +121,7 @@ void cPCBServer::sendAnswerProto(cProtonetCommand *protoCmd)
             out.device()->seek(0);
             out << (qint32)(block.size() - sizeof(qint32));
 
-            protoCmd->m_pPeer->getTcpSocket()->write(block);
+            protoCmd->m_pPeer->writeRaw(block);
         }
     }
     delete protoCmd;
@@ -171,8 +170,9 @@ void cPCBServer::onSendNotification(ScpiNotificationSubscriber subscriber)
     sendNotificationToClient(notificationMsg, subscriber.m_clientId, subscriber.m_netPeer);
 }
 
-void cPCBServer::onPeerDisconnected()
+void cPCBServer::onPeerDisconnected(XiQNetPeer *peer)
 {
+    Q_UNUSED(peer)
 }
 
 void cPCBServer::registerNotifier(cProtonetCommand *protoCmd)
@@ -254,14 +254,18 @@ void cPCBServer::doUnregisterNotifier(XiQNetPeer* peer, const QByteArray &client
 
 void cPCBServer::onEstablishNewConnection(XiQNetPeer *newClient)
 {
-    connect(newClient, &XiQNetPeer::sigMessageReceived, this, &cPCBServer::onExecuteCommandProto);
+    connect(newClient, &XiQNetPeer::sigMessageReceived, this, &cPCBServer::onMessageReceived);
     connect(newClient, &XiQNetPeer::sigConnectionClosed, this, &cPCBServer::onPeerDisconnected);
 }
 
-void cPCBServer::onExecuteCommandProto(std::shared_ptr<google::protobuf::Message> cmd)
+void cPCBServer::onMessageReceived(XiQNetPeer *peer, QByteArray message)
+{
+    executeCommandProto(peer, m_protobufWrapper.byteArrayToProtobuf(message));
+}
+
+void cPCBServer::executeCommandProto(XiQNetPeer* peer, std::shared_ptr<google::protobuf::Message> cmd)
 {
     cSCPIObject* scpiObject;
-    XiQNetPeer* peer = qobject_cast<XiQNetPeer*>(sender());
     std::shared_ptr<ProtobufMessage::NetMessage> protobufCommand = std::static_pointer_cast<ProtobufMessage::NetMessage>(cmd);
     if ( (protobufCommand != nullptr) && (peer != nullptr)) {
         if (protobufCommand->has_clientid()) {
@@ -336,7 +340,7 @@ void cPCBServer::sendNotificationToClient(QString message, QByteArray clientID, 
         out << message.toUtf8();
         out.device()->seek(0);
         out << (qint32)(block.size() - sizeof(qint32));
-        netPeer->getTcpSocket()->write(block);
+        netPeer->writeRaw(block);
     }
     else {
         ProtobufMessage::NetMessage protobufIntMessage;
@@ -345,9 +349,10 @@ void cPCBServer::sendNotificationToClient(QString message, QByteArray clientID, 
         intMessage->set_rtype(ProtobufMessage::NetMessage_NetReply_ReplyType_ACK);
         protobufIntMessage.set_clientid(clientID, clientID.count());
         protobufIntMessage.set_messagenr(0); // interrupt
-        netPeer->sendMessage(protobufIntMessage);
+        netPeer->sendMessage(m_protobufWrapper.protobufToByteArray(protobufIntMessage));
     }
 }
+
 
 void cPCBServer::onNotifierChanged(quint32 irqreg)
 {
@@ -364,9 +369,8 @@ void cPCBServer::onNotifierChanged(quint32 irqreg)
     }
 }
 
-void cPCBServer::onNotifyPeerConnectionClosed()
+void cPCBServer::onNotifyPeerConnectionClosed(XiQNetPeer *peer)
 {
-    XiQNetPeer *peer = qobject_cast<XiQNetPeer*>(QObject::sender());
     doUnregisterNotifier(peer);
 }
 

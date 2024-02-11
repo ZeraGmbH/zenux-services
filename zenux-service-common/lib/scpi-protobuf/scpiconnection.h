@@ -21,7 +21,7 @@ signals:
     void removingSubscribers(XiQNetPeer* peer, const QByteArray &clientID);
 public slots:
     virtual void onNotifierRegistered(NotificationString* notifier);
-    void onRemoveSubscribers(XiQNetPeer* peer, const QByteArray &clientID);
+    void onRemoveSubscribers(XiQNetPeer *peer, const QByteArray &clientID);
 protected:
     virtual void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) = 0;
     void removeSCPIConnections();

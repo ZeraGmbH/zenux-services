@@ -45,12 +45,28 @@ signals:
     void sigServerIsSetUp();
     void abortInit();
 
+private slots:
+    virtual void onEstablishNewConnection(XiQNetPeer* newClient);
+    virtual void deleteConnection(XiQNetPeer *peer);
+    void onMessageReceived(XiQNetPeer *peer, QByteArray message);
+
+    void setSCPIConnection();
+    virtual void SCPIInput();
+    virtual void SCPIdisconnect();
+
+    void DspIntHandler(int);
+    void doConfiguration();
+    void doSetupServer();
+    void doCloseServer();
+    void doConnect2RM();
+    void connect2RMError();
+    void doIdentAndRegister();
 private:
     AbstractFactoryDeviceNodeDspPtr m_deviceNodeFactory;
     SettingsContainerPtr m_settings;
     ScpiCmdInterpreter* m_cmdInterpreter = nullptr;
     XiQNetServer* myProtonetServer; // the real server that does the communication job
-    XiQNetWrapper m_ProtobufWrapper;
+    XiQNetWrapper m_protobufWrapper;
     quint16 m_nSocketIdentifier = 0; // we will use this instead of real sockets, because protobuf extension clientId
     QTcpServer* m_pSCPIServer = nullptr;
     QTcpSocket* m_pSCPISocket = nullptr;
@@ -141,6 +157,7 @@ private:
     bool Test4DspRunning();
     cZDSP1Client* GetClient(int s);
     cZDSP1Client* GetClient(XiQNetPeer* peer);
+    void executeCommandProto(XiQNetPeer* peer, std::shared_ptr<google::protobuf::Message> cmd);
     QString m_sDspSerialNumber; // seriennummer der hardware
     QString m_sDspBootPath;
     Zera::XMLConfig::cReader* myXMLConfigReader;
@@ -156,22 +173,6 @@ private:
     int m_retryRMConnect;
     QTimer m_retryTimer;
 
-private slots:
-    virtual void onEstablishNewConnection(XiQNetPeer* newClient);
-    virtual void deleteConnection();
-    void onExecuteCommandProto(std::shared_ptr<google::protobuf::Message> cmd);
-
-    void setSCPIConnection();
-    virtual void SCPIInput();
-    virtual void SCPIdisconnect();
-
-    void DspIntHandler(int);
-    void doConfiguration();
-    void doSetupServer();
-    void doCloseServer();
-    void doConnect2RM();
-    void connect2RMError();
-    void doIdentAndRegister();
 };
 
 #endif

@@ -146,7 +146,6 @@ void ZDspServer::doSetupServer()
     ActivatedCmdList = 0; // der derzeit aktuelle kommando listen satz (0,1)
 
     myProtonetServer =  new XiQNetServer(this);
-    myProtonetServer->setDefaultWrapper(&m_ProtobufWrapper);
     connect(myProtonetServer, &XiQNetServer::sigClientConnected, this, &ZDspServer::onEstablishNewConnection);
     EthSettings *ethSettings = m_settings->getEthSettings();
     myProtonetServer->startServer(ethSettings->getPort(EthSettings::protobufserver)); // and can start the server now
@@ -889,7 +888,7 @@ void ZDspServer::DspIntHandler(int)
                         protobufIntMessage.set_clientid(idba.data(), idba.size() );
                         protobufIntMessage.set_messagenr(0); // interrupt
 
-                        client2->m_pNetClient->sendMessage(protobufIntMessage);
+                        client2->m_pNetClient->sendMessage(m_protobufWrapper.protobufToByteArray(protobufIntMessage));
                     }
                     else {
                         QByteArray block;
@@ -905,7 +904,7 @@ void ZDspServer::DspIntHandler(int)
                         if (pNetclient == nullptr)
                             m_pSCPISocket->write(block);
                         else
-                            pNetclient->getTcpSocket()->write(block);
+                            pNetclient->writeRaw(block);
                     }
                 }
             }
@@ -1205,22 +1204,25 @@ cZDSP1Client* ZDspServer::GetClient(XiQNetPeer *peer)
 
 void ZDspServer::onEstablishNewConnection(XiQNetPeer *newClient)
 {
-    connect(newClient, &XiQNetPeer::sigMessageReceived, this, &ZDspServer::onExecuteCommandProto);
+    connect(newClient, &XiQNetPeer::sigMessageReceived, this, &ZDspServer::onMessageReceived);
     connect(newClient, &XiQNetPeer::sigConnectionClosed, this, &ZDspServer::deleteConnection);
     AddClient(newClient); // we additionally add the client to our list
 }
 
-void ZDspServer::deleteConnection()
+void ZDspServer::deleteConnection(XiQNetPeer *peer)
 {
-    XiQNetPeer* client = qobject_cast<XiQNetPeer*>(sender());
-    DelClients(client);
+    DelClients(peer);
 }
 
-void ZDspServer::onExecuteCommandProto(std::shared_ptr<google::protobuf::Message> cmd)
+void ZDspServer::onMessageReceived(XiQNetPeer *peer, QByteArray message)
 {
-    XiQNetPeer* client = qobject_cast<XiQNetPeer*>(sender());
+    executeCommandProto(peer, m_protobufWrapper.byteArrayToProtobuf(message));
+}
+
+void ZDspServer::executeCommandProto(XiQNetPeer *peer, std::shared_ptr<google::protobuf::Message> cmd)
+{
     std::shared_ptr<ProtobufMessage::NetMessage> protobufCommand = std::static_pointer_cast<ProtobufMessage::NetMessage>(cmd);
-    if ( (protobufCommand != 0) && (client != 0)) {
+    if ( (protobufCommand != 0) && (peer != 0)) {
         if (protobufCommand->has_netcommand() && protobufCommand->has_clientid()) {
             // in case of "lost" clients we delete the clients and its data
             QByteArray clientId = QByteArray(protobufCommand->clientid().data(), protobufCommand->clientid().size());
@@ -1232,7 +1234,7 @@ void ZDspServer::onExecuteCommandProto(std::shared_ptr<google::protobuf::Message
             ProtobufMessage::NetMessage::ScpiCommand scpiCmd = protobufCommand->scpi();
 
             if (!m_zdspdClientHash.contains(clientId)) { // we didn't get any command from here yet
-                cZDSP1Client *zdspclient = AddClient(client); // we add a new client with the same socket but different identifier
+                cZDSP1Client *zdspclient = AddClient(peer); // we add a new client with the same socket but different identifier
                 m_zdspdClientHash[clientId] = zdspclient;
                 m_clientIDHash[zdspclient] = clientId; // we need this list in case of interrupts
             }
@@ -1267,10 +1269,10 @@ void ZDspServer::onExecuteCommandProto(std::shared_ptr<google::protobuf::Message
             Answer->set_body(ba.data()); // in any case we set the body
             protobufAnswer.set_clientid(clientId, clientId.count());
             protobufAnswer.set_messagenr(messageNr);
-            client->sendMessage(protobufAnswer);
+            peer->sendMessage(m_protobufWrapper.protobufToByteArray(protobufAnswer));
         }
         else {
-            m_actualSocket = GetClient(client)->getSocket();
+            m_actualSocket = GetClient(peer)->getSocket();
 
             QString input =  QString::fromStdString(protobufCommand->scpi().command());
             QString output = m_cmdInterpreter->CmdExecute(input);
@@ -1284,7 +1286,7 @@ void ZDspServer::onExecuteCommandProto(std::shared_ptr<google::protobuf::Message
             out.device()->seek(0);
             out << (qint32)(block.size() - sizeof(qint32));
 
-            client->getTcpSocket()->write(block);
+            peer->writeRaw(block);
         }
     }
 }
