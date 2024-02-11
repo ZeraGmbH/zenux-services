@@ -30,14 +30,15 @@ protected:
     static Proxy* singletonInstance;
     Proxy *q_ptr;
 protected slots:
-    void receiveMessage(std::shared_ptr<google::protobuf::Message> message);
-    void receiveTcpError(QAbstractSocket::SocketError errorCode);
-    void registerConnection();
-    void registerDisConnection();
+    void receiveTcpError(XiQNetPeer *peer, QAbstractSocket::SocketError errorCode);
+    void registerConnection(XiQNetPeer *peer);
+    void registerDisConnection(XiQNetPeer *peer);
+    void onMessageReceived(XiQNetPeer *peer, QByteArray message);
 private:
+    void handleReceiveMessage(std::shared_ptr<google::protobuf::Message> message);
     ProxyNetPeer *getProxyNetPeer(QString ipadress, quint16 port);
     ProxyNetPeer *searchConnection(QString ip, quint16 port); // we search for a netclient that matches ip, port
-    XiQNetWrapper protobufWrapper;
+    XiQNetWrapper m_protobufWrapper;
     QHash<ProxyClientPrivate*, ProxyConnection*> m_ConnectionHash; // holds network connection for each client
     QHash<QByteArray, ProxyClientPrivate*> m_ClientHash; // information for faster redirecting
     quint32 m_nMessageNumber; // message number, .. we never use 0

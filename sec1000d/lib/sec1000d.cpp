@@ -226,9 +226,8 @@ void cSEC1000dServer::doIdentAndRegister()
 #endif
 }
 
-void cSEC1000dServer::onPeerDisconnected()
+void cSEC1000dServer::onPeerDisconnected(XiQNetPeer* peer)
 {
-    XiQNetPeer* peer = qobject_cast<XiQNetPeer*>(sender());
     if(!m_pECalculatorInterface->freeChannelsForThisPeer(peer))
         qWarning("Client disconnected. But SEC resources could not be freed!");
 }

@@ -18,11 +18,10 @@ void RMConnection::connect2RM()
         qCritical("RMConnection::connect2RM called with connection open!");
     }
     m_pResourceManagerClient = new XiQNetPeer(this);
-    m_pResourceManagerClient->setWrapper(&m_ProtobufWrapper);
     connect(m_pResourceManagerClient, &XiQNetPeer::sigSocketError, this, &RMConnection::tcpErrorHandler);
     connect(m_pResourceManagerClient, &XiQNetPeer::sigConnectionEstablished, this, &RMConnection::connected);
     connect(m_pResourceManagerClient, &XiQNetPeer::sigConnectionClosed, this, &RMConnection::connectionRMError);
-    connect(m_pResourceManagerClient, &XiQNetPeer::sigMessageReceived, this, &RMConnection::responseHandler);
+    connect(m_pResourceManagerClient, &XiQNetPeer::sigMessageReceived, this, &RMConnection::onMessageReceived);
     m_pResourceManagerClient->startConnection(m_sIPAdr, m_nPort);
 }
 
@@ -34,7 +33,7 @@ void RMConnection::SendCommand(QString &cmd, QString &par, quint32 msgnr)
     scpiCmd->set_command(cmd.toStdString());
     scpiCmd->set_parameter(par.toStdString());
     message.set_messagenr(msgnr);
-    m_pResourceManagerClient->sendMessage(message);
+    m_pResourceManagerClient->sendMessage(m_protobufWrapper.protobufToByteArray(message));
 }
 
 void RMConnection::SendCommand(QString &cmd, QString &par)
@@ -44,13 +43,20 @@ void RMConnection::SendCommand(QString &cmd, QString &par)
     ProtobufMessage::NetMessage::ScpiCommand* message = envelope.mutable_scpi();
     message->set_command(cmd.toStdString());
     message->set_parameter(par.toStdString());
-    m_pResourceManagerClient->sendMessage(envelope);
+    m_pResourceManagerClient->sendMessage(m_protobufWrapper.protobufToByteArray(envelope));
 }
 
-void RMConnection::tcpErrorHandler(QAbstractSocket::SocketError errorCode)
+void RMConnection::tcpErrorHandler(XiQNetPeer *peer, QAbstractSocket::SocketError errorCode)
 {
-    qCritical("tcp socket error resource manager port: %d",errorCode);
+    Q_UNUSED(peer)
+    qCritical("tcp socket error resource manager port: %d", errorCode);
     emit connectionRMError();
+}
+
+void RMConnection::onMessageReceived(XiQNetPeer *peer, QByteArray message)
+{
+    Q_UNUSED(peer)
+    responseHandler(m_protobufWrapper.byteArrayToProtobuf(message));
 }
 
 void RMConnection::responseHandler(std::shared_ptr<google::protobuf::Message> response)
@@ -78,5 +84,5 @@ void RMConnection::SendIdent(QString ident)
     ProtobufMessage::NetMessage::NetReply* message = envelope.mutable_reply();
     message->set_rtype(ProtobufMessage::NetMessage::NetReply::IDENT);
     message->set_body(ident.toStdString());
-    m_pResourceManagerClient->sendMessage(envelope);
+    m_pResourceManagerClient->sendMessage(m_protobufWrapper.protobufToByteArray(envelope));
 }

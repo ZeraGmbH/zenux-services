@@ -37,13 +37,13 @@ signals:
 
 private slots:
     void SECIntHandler(int);
-    void doConfiguration();
+    void doConfiguration() override;
     void doSetupServer();
     void doCloseServer();
     void doConnect2RM();
     void connect2RMError();
     void doIdentAndRegister();
-    void onPeerDisconnected();
+    void onPeerDisconnected(XiQNetPeer *peer) override;
 private:
     AbstractFactoryDeviceNodeSecPtr m_deviceNodeFactory;
     SecCalculatorSettings* m_pECalcSettings = nullptr;
