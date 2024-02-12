@@ -7,7 +7,7 @@
 #include <QHostAddress>
 #include <xmlconfigreader.h>
 #include <QCoreApplication>
-#include <xiqnetserver.h>
+#include <vtcp_server.h>
 #include <unistd.h>
 #include <fcntl.h>
 #include "com5003dglobal.h"

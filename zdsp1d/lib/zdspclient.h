@@ -5,7 +5,7 @@
 #include "dsp.h"
 #include "dspvarresolver.h"
 #include "dspvarclientperspective.h"
-#include <xiqnetpeer.h>
+#include <vtcp_peer.h>
 
 class ZDspServer;
 
@@ -13,7 +13,7 @@ class cZDSP1Client
 {
 public:
     cZDSP1Client(AbstractFactoryDeviceNodeDspPtr deviceNodeFactory);
-    cZDSP1Client(int socket, XiQNetPeer *netclient, AbstractFactoryDeviceNodeDspPtr deviceNodeFactory);
+    cZDSP1Client(int socket, VeinTcp::TcpPeer *netclient, AbstractFactoryDeviceNodeDspPtr deviceNodeFactory);
     ~cZDSP1Client(){} //  allokierten speicher ggf. freigeben
 
     QString& setRawActualValueList(QString&);
@@ -40,10 +40,10 @@ public:
     int getSocket();
 
     DspVarResolver m_dspVarResolver; // zum auflösen der variablen aus kommandos
-    XiQNetPeer* m_pNetClient; // our network client
+    VeinTcp::TcpPeer* m_pNetClient; // our network client
 
 private:
-    void init(int socket, XiQNetPeer *netclient);
+    void init(int socket, VeinTcp::TcpPeer *netclient);
     bool GenCmdList(QString&, QList<cDspCmd>& ,QString&,ulong,ulong);
     bool syntaxCheck(QString&);
     char* qSEncryption(char*,int );

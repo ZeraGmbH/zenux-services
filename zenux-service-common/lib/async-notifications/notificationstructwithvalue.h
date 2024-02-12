@@ -2,12 +2,12 @@
 #define NOTIFICATIONSTRUCTWITHVALUE_H
 
 #include "notificationvalue.h"
-#include <xiqnetpeer.h>
+#include <vtcp_peer.h>
 #include <QByteArray>
 
 struct NotificationStructWithValue
 {
-    XiQNetPeer *netPeer;
+    VeinTcp::TcpPeer *netPeer;
     QByteArray clientID;
     NotificationValue *notValue;
 };

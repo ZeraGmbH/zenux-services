@@ -4,7 +4,7 @@
 #include "proxyconnection.h"
 #include <QUuid>
 #include <QTimer>
-#include <xiqnetpeer.h>
+#include <vtcp_peer.h>
 #include <netmessages.pb.h>
 
 namespace Zera {
@@ -96,7 +96,7 @@ void ProxyPrivate::handleReceiveMessage(std::shared_ptr<google::protobuf::Messag
         qWarning() << "No ClientID";
 }
 
-void ProxyPrivate::receiveTcpError(XiQNetPeer *peer, QAbstractSocket::SocketError errorCode)
+void ProxyPrivate::receiveTcpError(VeinTcp::TcpPeer *peer, QAbstractSocket::SocketError errorCode)
 {
     QHashIterator<ProxyClientPrivate*, ProxyConnection*> it(m_ConnectionHash);
     while(it.hasNext()) {
@@ -109,7 +109,7 @@ void ProxyPrivate::receiveTcpError(XiQNetPeer *peer, QAbstractSocket::SocketErro
     }
 }
 
-void ProxyPrivate::registerConnection(XiQNetPeer *peer)
+void ProxyPrivate::registerConnection(VeinTcp::TcpPeer *peer)
 {
     QHashIterator<ProxyClientPrivate*, ProxyConnection*> it(m_ConnectionHash);
     while(it.hasNext()) {
@@ -122,7 +122,7 @@ void ProxyPrivate::registerConnection(XiQNetPeer *peer)
     }
 }
 
-void ProxyPrivate::registerDisConnection(XiQNetPeer *peer)
+void ProxyPrivate::registerDisConnection(VeinTcp::TcpPeer *peer)
 {
     QHashIterator<ProxyClientPrivate*, ProxyConnection*> it(m_ConnectionHash);
     while(it.hasNext()) {
@@ -135,7 +135,7 @@ void ProxyPrivate::registerDisConnection(XiQNetPeer *peer)
     }
 }
 
-void ProxyPrivate::onMessageReceived(XiQNetPeer *peer, QByteArray message)
+void ProxyPrivate::onMessageReceived(VeinTcp::TcpPeer *peer, QByteArray message)
 {
     Q_UNUSED(peer)
     handleReceiveMessage(m_protobufWrapper.byteArrayToProtobuf(message));

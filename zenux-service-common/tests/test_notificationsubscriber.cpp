@@ -6,7 +6,7 @@ QTEST_MAIN(test_notificationsubscriber);
 
 void test_notificationsubscriber::init()
 {
-    m_netPeer = new XiQNetPeer();
+    m_netPeer = new VeinTcp::TcpPeer();
     m_notificationHandler = new ScpiNotificationSubscriberHandler();
 }
 

@@ -24,7 +24,7 @@ private slots:
 
 private:
     ScpiNotificationSubscriberHandler *m_notificationHandler;
-    XiQNetPeer* m_netPeer;
+    VeinTcp::TcpPeer* m_netPeer;
 };
 
 #endif // TEST_NOTIFICATIONSUBSCRIBER_H

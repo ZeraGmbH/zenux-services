@@ -7,7 +7,7 @@
 #include "rmconnection.h"
 #include "dspsettings.h"
 #include "settingscontainer.h"
-#include <xiqnetserver.h>
+#include <vtcp_server.h>
 #include <xiqnetwrapper.h>
 #include <QStringList>
 #include <QSocketNotifier>
@@ -16,6 +16,8 @@
 #include <QHash>
 #include <QVector>
 #include <QStateMachine>
+#include <QTcpServer>
+
 
 class cZDSP1Client;
 
@@ -31,8 +33,8 @@ public:
     QString getServerVersion();
     QString getDspDeviceNode();
 
-    cZDSP1Client* AddClient(XiQNetPeer *m_pNetClient);
-    void DelClients(XiQNetPeer *netClient);
+    cZDSP1Client* AddClient(VeinTcp::TcpPeer *m_pNetClient);
+    void DelClients(VeinTcp::TcpPeer *netClient);
     void DelClient(QByteArray clientId);
     cZDSP1Client* AddSCPIClient();
     void DelSCPIClient();
@@ -46,9 +48,9 @@ signals:
     void abortInit();
 
 private slots:
-    virtual void onEstablishNewConnection(XiQNetPeer* newClient);
-    virtual void deleteConnection(XiQNetPeer *peer);
-    void onMessageReceived(XiQNetPeer *peer, QByteArray message);
+    virtual void onEstablishNewConnection(VeinTcp::TcpPeer* newClient);
+    virtual void deleteConnection(VeinTcp::TcpPeer *peer);
+    void onMessageReceived(VeinTcp::TcpPeer *peer, QByteArray message);
 
     void setSCPIConnection();
     virtual void SCPIInput();
@@ -65,7 +67,7 @@ private:
     AbstractFactoryDeviceNodeDspPtr m_deviceNodeFactory;
     SettingsContainerPtr m_settings;
     ScpiCmdInterpreter* m_cmdInterpreter = nullptr;
-    XiQNetServer* myProtonetServer; // the real server that does the communication job
+    VeinTcp::TcpServer* myProtonetServer; // the real server that does the communication job
     XiQNetWrapper m_protobufWrapper;
     quint16 m_nSocketIdentifier = 0; // we will use this instead of real sockets, because protobuf extension clientId
     QTcpServer* m_pSCPIServer = nullptr;
@@ -156,8 +158,8 @@ private:
     bool Test4HWPresent();
     bool Test4DspRunning();
     cZDSP1Client* GetClient(int s);
-    cZDSP1Client* GetClient(XiQNetPeer* peer);
-    void executeCommandProto(XiQNetPeer* peer, std::shared_ptr<google::protobuf::Message> cmd);
+    cZDSP1Client* GetClient(VeinTcp::TcpPeer* peer);
+    void executeCommandProto(VeinTcp::TcpPeer* peer, std::shared_ptr<google::protobuf::Message> cmd);
     QString m_sDspSerialNumber; // seriennummer der hardware
     QString m_sDspBootPath;
     Zera::XMLConfig::cReader* myXMLConfigReader;

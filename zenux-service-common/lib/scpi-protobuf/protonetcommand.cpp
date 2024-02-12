@@ -1,6 +1,6 @@
 #include "protonetcommand.h"
 
-cProtonetCommand::cProtonetCommand(XiQNetPeer *peer, bool hasClientId, bool withOutput, QByteArray clientid, quint32 messagenr, QString input, quint8 scpiType) :
+cProtonetCommand::cProtonetCommand(VeinTcp::TcpPeer *peer, bool hasClientId, bool withOutput, QByteArray clientid, quint32 messagenr, QString input, quint8 scpiType) :
     m_pPeer(peer),
     m_bhasClientId(hasClientId),
     m_bwithOutput(withOutput),
