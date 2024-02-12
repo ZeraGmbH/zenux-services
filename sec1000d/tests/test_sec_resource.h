@@ -19,7 +19,7 @@ private slots:
     void setSecChannelsForMultipleClientsMultiplePeersFreeOnePeer();
     void freeChannelsFromInvalidPeer();
 private:
-    QString sendScpiCommand(XiQNetPeer *peer, QByteArray clientID, QString cmd);
+    QString sendScpiCommand(VeinTcp::TcpPeer *peer, QByteArray clientID, QString cmd);
     std::unique_ptr<Zera::XMLConfig::cReader> m_xmlConfigReader;
     std::unique_ptr<SecCalculatorSettings> m_ecalcSettings;
     std::unique_ptr<SecInputSettings> m_inputSettings;

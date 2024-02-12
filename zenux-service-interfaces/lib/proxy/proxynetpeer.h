@@ -1,11 +1,11 @@
 #ifndef PROXYNETPEER_H
 #define PROXYNETPEER_H
 
-#include <xiqnetpeer.h>
+#include <vtcp_peer.h>
 
 namespace Zera {
 
-class ProxyNetPeer: public XiQNetPeer
+class ProxyNetPeer: public VeinTcp::TcpPeer
 {
     Q_OBJECT
 public:

@@ -8,7 +8,7 @@
 #include "secgroupresourceandinterface.h"
 #include "rmconnection.h"
 #include <scpisingletonfactory.h>
-#include <xiqnetserver.h>
+#include <vtcp_server.h>
 #include <xmlconfigreader.h>
 #include <QStateMachine>
 #include <QState>
@@ -225,7 +225,7 @@ void cSEC1000dServer::doIdentAndRegister()
 #endif
 }
 
-void cSEC1000dServer::onPeerDisconnected(XiQNetPeer* peer)
+void cSEC1000dServer::onPeerDisconnected(VeinTcp::TcpPeer* peer)
 {
     if(!m_pECalculatorInterface->freeChannelsForThisPeer(peer))
         qWarning("Client disconnected. But SEC resources could not be freed!");

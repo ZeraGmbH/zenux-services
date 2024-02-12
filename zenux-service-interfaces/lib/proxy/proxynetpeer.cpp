@@ -3,7 +3,7 @@
 namespace Zera {
 
 ProxyNetPeer::ProxyNetPeer(QObject *qObjParent)
-    :XiQNetPeer(qObjParent)
+    :VeinTcp::TcpPeer(qObjParent)
 {
     m_bStarted = false;
 }

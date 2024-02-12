@@ -18,10 +18,10 @@ signals:
     void valNotifier(NotificationValue* notifier);
     void cmdExecutionDone(cProtonetCommand* protoCmd);
     void sendNotification(ScpiNotificationSubscriber subscriber);
-    void removingSubscribers(XiQNetPeer* peer, const QByteArray &clientID);
+    void removingSubscribers(VeinTcp::TcpPeer* peer, const QByteArray &clientID);
 public slots:
     virtual void onNotifierRegistered(NotificationString* notifier);
-    void onRemoveSubscribers(XiQNetPeer *peer, const QByteArray &clientID);
+    void onRemoveSubscribers(VeinTcp::TcpPeer *peer, const QByteArray &clientID);
 protected:
     virtual void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) = 0;
     void removeSCPIConnections();

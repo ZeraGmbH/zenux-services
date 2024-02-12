@@ -9,7 +9,7 @@
 #include <xiqnetwrapper.h>
 #include <netmessages.pb.h>
 #include <xmlconfigreader.h>
-#include <xiqnetserver.h>
+#include <vtcp_server.h>
 #include <QList>
 #include <QTcpServer>
 #include <QTcpSocket>
@@ -34,7 +34,7 @@ public:
     QString getVersion();
 signals:
     void notifierRegistred(NotificationString* notifier);
-    void removeSubscribers(XiQNetPeer* peer, const QByteArray &clientID);
+    void removeSubscribers(VeinTcp::TcpPeer* peer, const QByteArray &clientID);
 public slots:
     void sendAnswerProto(cProtonetCommand* protoCmd);
 protected slots:
@@ -43,14 +43,14 @@ protected slots:
     virtual void SCPIInput();
     virtual void SCPIdisconnect();
     virtual void onSendNotification(ScpiNotificationSubscriber subscriber);
-    virtual void onPeerDisconnected(XiQNetPeer *peer);
+    virtual void onPeerDisconnected(VeinTcp::TcpPeer *peer);
 protected:
     void setupServer();
     void initSCPIConnections();
     void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
 
     SettingsContainerPtr m_settings;
-    XiQNetServer* m_myServer; // the real server that does the communication job
+    VeinTcp::TcpServer* m_myServer; // the real server that does the communication job
     Zera::XMLConfig::cReader m_xmlConfigReader;
     QString m_sConfigurationPath;
     QList<ScpiConnection*> scpiConnectionList; // a list of all scpi connections
@@ -58,17 +58,17 @@ protected:
     QTcpServer* m_pSCPIServer;
     QTcpSocket* m_pSCPISocket;
 private slots:
-    void onEstablishNewConnection(XiQNetPeer *newClient);
-    void onMessageReceived(XiQNetPeer *peer, QByteArray message);
-    void onNotifyPeerConnectionClosed(XiQNetPeer *peer);
+    void onEstablishNewConnection(VeinTcp::TcpPeer *newClient);
+    void onMessageReceived(VeinTcp::TcpPeer *peer, QByteArray message);
+    void onNotifyPeerConnectionClosed(VeinTcp::TcpPeer *peer);
     void onEstablishNewNotifier(NotificationValue *notifier);
     void onNotifierChanged(quint32 irqreg);
 private:
     void registerNotifier(cProtonetCommand* protoCmd); // registeres 1 notifier per command
     void unregisterNotifier(cProtonetCommand *protoCmd); // unregisters all notifiers
-    void doUnregisterNotifier(XiQNetPeer *peer, const QByteArray &clientID = QByteArray());
-    void sendNotificationToClient(QString message, QByteArray clientID, XiQNetPeer *netPeer);
-    void executeCommandProto(XiQNetPeer* peer, std::shared_ptr<google::protobuf::Message> cmd);
+    void doUnregisterNotifier(VeinTcp::TcpPeer *peer, const QByteArray &clientID = QByteArray());
+    void sendNotificationToClient(QString message, QByteArray clientID, VeinTcp::TcpPeer *netPeer);
+    void executeCommandProto(VeinTcp::TcpPeer* peer, std::shared_ptr<google::protobuf::Message> cmd);
 
     QString m_sInput, m_sOutput;
     QTcpSocket* resourceManagerSocket;

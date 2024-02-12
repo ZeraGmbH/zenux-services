@@ -39,7 +39,7 @@ public:
     void initSCPIConnection(QString leadingNodes) override;
     virtual void registerResource(RMConnection *rmConnection, quint16 port) override;
     QList<SecChannel*> getECalcChannelList();
-    bool freeChannelsForThisPeer(XiQNetPeer *peer);
+    bool freeChannelsForThisPeer(VeinTcp::TcpPeer *peer);
 protected:
     void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
 
@@ -52,7 +52,7 @@ private:
     QList<SecChannel*> m_ECalculatorChannelList;
     QHash<QString,SecChannel*> m_ECalculatorChannelHash;
     QHash<QByteArray, QString> m_ClientECalcHash; // we hold the set ecalculators by clientid
-    QHash<XiQNetPeer*, QList<QByteArray>> m_peerClientsHash;
+    QHash<VeinTcp::TcpPeer*, QList<QByteArray>> m_peerClientsHash;
 
     QString m_ReadVersion(QString& sInput);
     QString m_ReadECalculatorChannelCatalog(QString& sInput);

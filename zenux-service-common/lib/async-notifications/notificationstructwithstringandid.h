@@ -2,12 +2,12 @@
 #define NOTIFICATIONSTRUCTWITHSTRINGANDID_H
 
 #include "notificationstring.h"
-#include <xiqnetpeer.h>
+#include <vtcp_peer.h>
 #include <QByteArray>
 
 struct NotificationStructWithStringAndId
 {
-    XiQNetPeer *netPeer;
+    VeinTcp::TcpPeer *netPeer;
     QByteArray clientId;
     quint16 notifierId;
     NotificationString *notString;

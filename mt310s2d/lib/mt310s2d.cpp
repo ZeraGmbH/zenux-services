@@ -22,7 +22,7 @@
 #include "singletondevicenodepcbmsg.h"
 #include <scpisingletonfactory.h>
 #include <xmlconfigreader.h>
-#include <xiqnetserver.h>
+#include <vtcp_server.h>
 #include <QSocketNotifier>
 #include <QCoreApplication>
 #include <QStateMachine>

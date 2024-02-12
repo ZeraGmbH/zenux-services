@@ -101,7 +101,7 @@ QList<SecChannel *> SecGroupResourceAndInterface::getECalcChannelList()
     return m_ECalculatorChannelList;
 }
 
-bool SecGroupResourceAndInterface::freeChannelsForThisPeer(XiQNetPeer *peer)
+bool SecGroupResourceAndInterface::freeChannelsForThisPeer(VeinTcp::TcpPeer *peer)
 {
     bool result = true;
     for(const QByteArray &client : m_peerClientsHash[peer])

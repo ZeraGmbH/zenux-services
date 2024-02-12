@@ -48,8 +48,8 @@ QString cPCBServer::getVersion()
 
 void cPCBServer::setupServer()
 {
-    m_myServer = new XiQNetServer(this); // our working (talking) horse
-    connect(m_myServer,&XiQNetServer::sigClientConnected,this,&cPCBServer::onEstablishNewConnection);
+    m_myServer = new VeinTcp::TcpServer(this); // our working (talking) horse
+    connect(m_myServer,&VeinTcp::TcpServer::sigClientConnected,this,&cPCBServer::onEstablishNewConnection);
     if(m_settings->getEthSettings()->isSCPIactive()) {
         m_pSCPIServer = new QTcpServer();
         m_pSCPIServer->setMaxPendingConnections(1); // we only accept 1 client to connect
@@ -170,7 +170,7 @@ void cPCBServer::onSendNotification(ScpiNotificationSubscriber subscriber)
     sendNotificationToClient(notificationMsg, subscriber.m_clientId, subscriber.m_netPeer);
 }
 
-void cPCBServer::onPeerDisconnected(XiQNetPeer *peer)
+void cPCBServer::onPeerDisconnected(VeinTcp::TcpPeer *peer)
 {
     Q_UNUSED(peer)
 }
@@ -185,7 +185,7 @@ void cPCBServer::registerNotifier(cProtonetCommand *protoCmd)
             NotificationStructWithValue notData;
             notData.netPeer = protoCmd->m_pPeer;
             notData.clientID = protoCmd->m_clientId;
-            connect(notData.netPeer, &XiQNetPeer::sigConnectionClosed, this, &cPCBServer::onNotifyPeerConnectionClosed);
+            connect(notData.netPeer, &VeinTcp::TcpPeer::sigConnectionClosed, this, &cPCBServer::onNotifyPeerConnectionClosed);
             m_notifierRegisterNext.append(notData); // we wait for a notifier signal
 
             cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
@@ -207,7 +207,7 @@ void cPCBServer::registerNotifier(cProtonetCommand *protoCmd)
         QString query = cmd.getParam(0);
         cSCPIObject* scpiObject = m_pSCPIInterface->getSCPIObject(query);
         if(scpiObject) {
-            connect( protoCmd->m_pPeer, &XiQNetPeer::sigConnectionClosed, this, &cPCBServer::onNotifyPeerConnectionClosed);
+            connect( protoCmd->m_pPeer, &VeinTcp::TcpPeer::sigConnectionClosed, this, &cPCBServer::onNotifyPeerConnectionClosed);
             cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
             cProtonetCommand* procmd = new cProtonetCommand(protoCmd);
             procmd->m_bwithOutput = false;
@@ -234,7 +234,7 @@ void cPCBServer::unregisterNotifier(cProtonetCommand *protoCmd)
         protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-void cPCBServer::doUnregisterNotifier(XiQNetPeer* peer, const QByteArray &clientID)
+void cPCBServer::doUnregisterNotifier(VeinTcp::TcpPeer* peer, const QByteArray &clientID)
 {
     emit removeSubscribers(peer, clientID);
     if(m_notifierRegisterList.count() > 0) {
@@ -252,18 +252,18 @@ void cPCBServer::doUnregisterNotifier(XiQNetPeer* peer, const QByteArray &client
     }
 }
 
-void cPCBServer::onEstablishNewConnection(XiQNetPeer *newClient)
+void cPCBServer::onEstablishNewConnection(VeinTcp::TcpPeer *newClient)
 {
-    connect(newClient, &XiQNetPeer::sigMessageReceived, this, &cPCBServer::onMessageReceived);
-    connect(newClient, &XiQNetPeer::sigConnectionClosed, this, &cPCBServer::onPeerDisconnected);
+    connect(newClient, &VeinTcp::TcpPeer::sigMessageReceived, this, &cPCBServer::onMessageReceived);
+    connect(newClient, &VeinTcp::TcpPeer::sigConnectionClosed, this, &cPCBServer::onPeerDisconnected);
 }
 
-void cPCBServer::onMessageReceived(XiQNetPeer *peer, QByteArray message)
+void cPCBServer::onMessageReceived(VeinTcp::TcpPeer *peer, QByteArray message)
 {
     executeCommandProto(peer, m_protobufWrapper.byteArrayToProtobuf(message));
 }
 
-void cPCBServer::executeCommandProto(XiQNetPeer* peer, std::shared_ptr<google::protobuf::Message> cmd)
+void cPCBServer::executeCommandProto(VeinTcp::TcpPeer* peer, std::shared_ptr<google::protobuf::Message> cmd)
 {
     cSCPIObject* scpiObject;
     std::shared_ptr<ProtobufMessage::NetMessage> protobufCommand = std::static_pointer_cast<ProtobufMessage::NetMessage>(cmd);
@@ -330,7 +330,7 @@ void cPCBServer::onEstablishNewNotifier(NotificationValue *notifier)
     }
 }
 
-void cPCBServer::sendNotificationToClient(QString message, QByteArray clientID, XiQNetPeer *netPeer)
+void cPCBServer::sendNotificationToClient(QString message, QByteArray clientID, VeinTcp::TcpPeer *netPeer)
 {
     if (clientID.isEmpty()) { // old style communication
         QByteArray block;
@@ -369,7 +369,7 @@ void cPCBServer::onNotifierChanged(quint32 irqreg)
     }
 }
 
-void cPCBServer::onNotifyPeerConnectionClosed(XiQNetPeer *peer)
+void cPCBServer::onNotifyPeerConnectionClosed(VeinTcp::TcpPeer *peer)
 {
     doUnregisterNotifier(peer);
 }

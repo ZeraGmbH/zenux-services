@@ -43,7 +43,7 @@ private slots:
     void doConnect2RM();
     void connect2RMError();
     void doIdentAndRegister();
-    void onPeerDisconnected(XiQNetPeer *peer) override;
+    void onPeerDisconnected(VeinTcp::TcpPeer *peer) override;
 private:
     AbstractFactoryDeviceNodeSecPtr m_deviceNodeFactory;
     SecCalculatorSettings* m_pECalcSettings = nullptr;

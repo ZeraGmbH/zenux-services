@@ -14,13 +14,13 @@ cZDSP1Client::cZDSP1Client(AbstractFactoryDeviceNodeDspPtr deviceNodeFactory) :
 {
 }
 
-cZDSP1Client::cZDSP1Client(int socket, XiQNetPeer* netclient, AbstractFactoryDeviceNodeDspPtr deviceNodeFactory) :
+cZDSP1Client::cZDSP1Client(int socket, VeinTcp::TcpPeer* netclient, AbstractFactoryDeviceNodeDspPtr deviceNodeFactory) :
     cZDSP1Client(deviceNodeFactory)
 {
     init(socket, netclient);
 }
 
-void cZDSP1Client::init(int socket, XiQNetPeer *netclient)
+void cZDSP1Client::init(int socket, VeinTcp::TcpPeer *netclient)
 {
     m_socket = socket;
     m_pNetClient = netclient;

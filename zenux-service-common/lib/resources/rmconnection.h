@@ -2,7 +2,7 @@
 #define RMCONNECTION_H
 
 #include <xiqnetwrapper.h>
-#include <xiqnetpeer.h>
+#include <vtcp_peer.h>
 #include <netmessages.pb.h>
 #include <QString>
 #include <QAbstractSocket>
@@ -18,14 +18,14 @@ public:
     void SendCommand(QString& cmd, QString &par, quint32 msgnr);
     void SendCommand(QString &cmd, QString &par);
 private slots:
-    void tcpErrorHandler(XiQNetPeer *peer, QAbstractSocket::SocketError errorCode);
-    void onMessageReceived(XiQNetPeer *peer, QByteArray message);
+    void tcpErrorHandler(VeinTcp::TcpPeer *peer, QAbstractSocket::SocketError errorCode);
+    void onMessageReceived(VeinTcp::TcpPeer *peer, QByteArray message);
 private:
-    void responseHandler(XiQNetPeer *peer, std::shared_ptr<google::protobuf::Message> response);
+    void responseHandler(VeinTcp::TcpPeer *peer, std::shared_ptr<google::protobuf::Message> response);
     QString m_sIPAdr;
     quint16 m_nPort;
     QString m_sCommand;
-    XiQNetPeer* m_pResourceManagerClient = nullptr;
+    VeinTcp::TcpPeer* m_pResourceManagerClient = nullptr;
     XiQNetWrapper m_protobufWrapper;
 signals:
     void connectionRMError();

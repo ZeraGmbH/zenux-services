@@ -39,7 +39,7 @@ void test_sec_resource::cleanup()
     TimeMachineObject::feedEventLoop();
 }
 
-QString test_sec_resource::sendScpiCommand(XiQNetPeer *peer, QByteArray clientID, QString cmd)
+QString test_sec_resource::sendScpiCommand(VeinTcp::TcpPeer *peer, QByteArray clientID, QString cmd)
 {
     cProtonetCommand protoCmd(peer, false, false, clientID, 0, cmd);
     cSCPIObject* scpiObject = ScpiSingletonFactory::getScpiObj()->getSCPIObject(cmd);
@@ -99,7 +99,7 @@ void test_sec_resource::setSecChannelsForMultipleClientsFreeOneClient()
 
 void test_sec_resource::setSecChannelsForMultipleClientsOnePeerFreePeer()
 {
-    XiQNetPeer peer;
+    VeinTcp::TcpPeer peer;
     sendScpiCommand(&peer, QByteArray(1, '1'), setFourResourcesCommand);
     sendScpiCommand(&peer, QByteArray(1, '2'), setFourResourcesCommand);
     QVERIFY(m_secResource->freeChannelsForThisPeer(&peer));
@@ -110,11 +110,11 @@ void test_sec_resource::setSecChannelsForMultipleClientsOnePeerFreePeer()
 
 void test_sec_resource::setSecChannelsForMultipleClientsMultiplePeersFreeOnePeer()
 {
-    XiQNetPeer peer;
+    VeinTcp::TcpPeer peer;
     sendScpiCommand(&peer, QByteArray(1, '1'), setTwoResourcesCommand);
     sendScpiCommand(&peer, QByteArray(1, '2'), setTwoResourcesCommand);
 
-    XiQNetPeer peer1;
+    VeinTcp::TcpPeer peer1;
     QString channelsSet = sendScpiCommand(&peer1, QByteArray(1, '3'), setTwoResourcesCommand);
     channelsSet.append(sendScpiCommand(&peer1, QByteArray(1, '4'), setTwoResourcesCommand));
 
@@ -132,10 +132,10 @@ void test_sec_resource::setSecChannelsForMultipleClientsMultiplePeersFreeOnePeer
 
 void test_sec_resource::freeChannelsFromInvalidPeer()
 {
-    XiQNetPeer peer;
+    VeinTcp::TcpPeer peer;
     sendScpiCommand(&peer, QByteArray(1, '1'), setTwoResourcesCommand);
     sendScpiCommand(&peer, QByteArray(1, '2'), setTwoResourcesCommand);
 
-    XiQNetPeer peer1;
+    VeinTcp::TcpPeer peer1;
     QVERIFY(m_secResource->freeChannelsForThisPeer(&peer1)); //because no channels were set
 }

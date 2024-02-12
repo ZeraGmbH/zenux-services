@@ -145,8 +145,8 @@ void ZDspServer::doSetupServer()
     m_sDspBootPath = m_pDspSettings->getBootFile();
     ActivatedCmdList = 0; // der derzeit aktuelle kommando listen satz (0,1)
 
-    myProtonetServer =  new XiQNetServer(this);
-    connect(myProtonetServer, &XiQNetServer::sigClientConnected, this, &ZDspServer::onEstablishNewConnection);
+    myProtonetServer =  new VeinTcp::TcpServer(this);
+    connect(myProtonetServer, &VeinTcp::TcpServer::sigClientConnected, this, &ZDspServer::onEstablishNewConnection);
     EthSettings *ethSettings = m_settings->getEthSettings();
     myProtonetServer->startServer(ethSettings->getPort(EthSettings::protobufserver)); // and can start the server now
 
@@ -900,7 +900,7 @@ void ZDspServer::DspIntHandler(int)
                         out.device()->seek(0);
                         out << (qint32)(block.size() - sizeof(qint32));
 
-                        XiQNetPeer* pNetclient = client2->m_pNetClient;
+                        VeinTcp::TcpPeer* pNetclient = client2->m_pNetClient;
                         if (pNetclient == nullptr)
                             m_pSCPISocket->write(block);
                         else
@@ -1190,7 +1190,7 @@ cZDSP1Client* ZDspServer::GetClient(int s)
     return nullptr;
 }
 
-cZDSP1Client* ZDspServer::GetClient(XiQNetPeer *peer)
+cZDSP1Client* ZDspServer::GetClient(VeinTcp::TcpPeer *peer)
 {
     if (m_clientList.count() > 0) {
         for (int i = 0; i < m_clientList.count(); i++) {
@@ -1202,24 +1202,24 @@ cZDSP1Client* ZDspServer::GetClient(XiQNetPeer *peer)
     return nullptr;
 }
 
-void ZDspServer::onEstablishNewConnection(XiQNetPeer *newClient)
+void ZDspServer::onEstablishNewConnection(VeinTcp::TcpPeer *newClient)
 {
-    connect(newClient, &XiQNetPeer::sigMessageReceived, this, &ZDspServer::onMessageReceived);
-    connect(newClient, &XiQNetPeer::sigConnectionClosed, this, &ZDspServer::deleteConnection);
+    connect(newClient, &VeinTcp::TcpPeer::sigMessageReceived, this, &ZDspServer::onMessageReceived);
+    connect(newClient, &VeinTcp::TcpPeer::sigConnectionClosed, this, &ZDspServer::deleteConnection);
     AddClient(newClient); // we additionally add the client to our list
 }
 
-void ZDspServer::deleteConnection(XiQNetPeer *peer)
+void ZDspServer::deleteConnection(VeinTcp::TcpPeer *peer)
 {
     DelClients(peer);
 }
 
-void ZDspServer::onMessageReceived(XiQNetPeer *peer, QByteArray message)
+void ZDspServer::onMessageReceived(VeinTcp::TcpPeer *peer, QByteArray message)
 {
     executeCommandProto(peer, m_protobufWrapper.byteArrayToProtobuf(message));
 }
 
-void ZDspServer::executeCommandProto(XiQNetPeer *peer, std::shared_ptr<google::protobuf::Message> cmd)
+void ZDspServer::executeCommandProto(VeinTcp::TcpPeer *peer, std::shared_ptr<google::protobuf::Message> cmd)
 {
     std::shared_ptr<ProtobufMessage::NetMessage> protobufCommand = std::static_pointer_cast<ProtobufMessage::NetMessage>(cmd);
     if ( (protobufCommand != 0) && (peer != 0)) {
@@ -1317,7 +1317,7 @@ void ZDspServer::SCPIdisconnect()
     DelSCPIClient();
 }
 
-cZDSP1Client* ZDspServer::AddClient(XiQNetPeer* m_pNetClient)
+cZDSP1Client* ZDspServer::AddClient(VeinTcp::TcpPeer* m_pNetClient)
 {
     // fügt einen client hinzu
     m_nSocketIdentifier++;
@@ -1328,12 +1328,12 @@ cZDSP1Client* ZDspServer::AddClient(XiQNetPeer* m_pNetClient)
     return client;
 }
 
-void ZDspServer::DelClients(XiQNetPeer* netClient)
+void ZDspServer::DelClients(VeinTcp::TcpPeer* netClient)
 { // entfernt alle cZDSP1Clients die an diesem netClient kleben
     QList<cZDSP1Client*> todeleteList;
     for (int i = 0; i < m_clientList.count(); i++) {
         cZDSP1Client* zdspclient = m_clientList.at(i);
-        XiQNetPeer* peer = zdspclient->m_pNetClient;
+        VeinTcp::TcpPeer* peer = zdspclient->m_pNetClient;
         if (peer == netClient) {
             todeleteList.append(zdspclient);
             if (m_clientIDHash.contains(zdspclient)) {
@@ -1363,7 +1363,7 @@ void ZDspServer::DelClient(QByteArray clientId)
 
 cZDSP1Client *ZDspServer::AddSCPIClient()
 {
-    return AddClient(0); // we add this client with netclient (XiQNetPeer) = 0 because it is no XiQNetPeer but
+    return AddClient(0); // we add this client with netclient (VeinTcp::TcpPeer) = 0 because it is no VeinTcp::TcpPeer but
 }
 
 void ZDspServer::DelSCPIClient()

@@ -17,11 +17,11 @@ void RMConnection::connect2RM()
         delete m_pResourceManagerClient;
         qCritical("RMConnection::connect2RM called with connection open!");
     }
-    m_pResourceManagerClient = new XiQNetPeer(this);
-    connect(m_pResourceManagerClient, &XiQNetPeer::sigSocketError, this, &RMConnection::tcpErrorHandler);
-    connect(m_pResourceManagerClient, &XiQNetPeer::sigConnectionEstablished, this, &RMConnection::connected);
-    connect(m_pResourceManagerClient, &XiQNetPeer::sigConnectionClosed, this, &RMConnection::connectionRMError);
-    connect(m_pResourceManagerClient, &XiQNetPeer::sigMessageReceived, this, &RMConnection::onMessageReceived);
+    m_pResourceManagerClient = new VeinTcp::TcpPeer(this);
+    connect(m_pResourceManagerClient, &VeinTcp::TcpPeer::sigSocketError, this, &RMConnection::tcpErrorHandler);
+    connect(m_pResourceManagerClient, &VeinTcp::TcpPeer::sigConnectionEstablished, this, &RMConnection::connected);
+    connect(m_pResourceManagerClient, &VeinTcp::TcpPeer::sigConnectionClosed, this, &RMConnection::connectionRMError);
+    connect(m_pResourceManagerClient, &VeinTcp::TcpPeer::sigMessageReceived, this, &RMConnection::onMessageReceived);
     m_pResourceManagerClient->startConnection(m_sIPAdr, m_nPort);
 }
 
@@ -46,19 +46,19 @@ void RMConnection::SendCommand(QString &cmd, QString &par)
     m_pResourceManagerClient->sendMessage(m_protobufWrapper.protobufToByteArray(envelope));
 }
 
-void RMConnection::tcpErrorHandler(XiQNetPeer *peer, QAbstractSocket::SocketError errorCode)
+void RMConnection::tcpErrorHandler(VeinTcp::TcpPeer *peer, QAbstractSocket::SocketError errorCode)
 {
     Q_UNUSED(peer)
     qCritical("tcp socket error resource manager port: %d", errorCode);
     emit connectionRMError();
 }
 
-void RMConnection::onMessageReceived(XiQNetPeer *peer, QByteArray message)
+void RMConnection::onMessageReceived(VeinTcp::TcpPeer *peer, QByteArray message)
 {
     responseHandler(peer, m_protobufWrapper.byteArrayToProtobuf(message));
 }
 
-void RMConnection::responseHandler(XiQNetPeer *peer, std::shared_ptr<google::protobuf::Message> response)
+void RMConnection::responseHandler(VeinTcp::TcpPeer *peer, std::shared_ptr<google::protobuf::Message> response)
 {
     Q_UNUSED(peer)
     std::shared_ptr<ProtobufMessage::NetMessage> answer = nullptr;

@@ -2,7 +2,7 @@
 #define PROXY_P_H
 
 #include "proxy.h"
-#include <xiqnetpeer.h>
+#include <vtcp_peer.h>
 #include <xiqnetwrapper.h>
 #include <QHash>
 #include <QString>
@@ -30,10 +30,10 @@ protected:
     static Proxy* singletonInstance;
     Proxy *q_ptr;
 protected slots:
-    void receiveTcpError(XiQNetPeer *peer, QAbstractSocket::SocketError errorCode);
-    void registerConnection(XiQNetPeer *peer);
-    void registerDisConnection(XiQNetPeer *peer);
-    void onMessageReceived(XiQNetPeer *peer, QByteArray message);
+    void receiveTcpError(VeinTcp::TcpPeer *peer, QAbstractSocket::SocketError errorCode);
+    void registerConnection(VeinTcp::TcpPeer *peer);
+    void registerDisConnection(VeinTcp::TcpPeer *peer);
+    void onMessageReceived(VeinTcp::TcpPeer *peer, QByteArray message);
 private:
     void handleReceiveMessage(std::shared_ptr<google::protobuf::Message> message);
     ProxyNetPeer *getProxyNetPeer(QString ipadress, quint16 port);
