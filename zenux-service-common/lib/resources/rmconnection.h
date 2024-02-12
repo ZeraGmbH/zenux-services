@@ -21,7 +21,7 @@ private slots:
     void tcpErrorHandler(XiQNetPeer *peer, QAbstractSocket::SocketError errorCode);
     void onMessageReceived(XiQNetPeer *peer, QByteArray message);
 private:
-    void responseHandler(std::shared_ptr<google::protobuf::Message> response);
+    void responseHandler(XiQNetPeer *peer, std::shared_ptr<google::protobuf::Message> response);
     QString m_sIPAdr;
     quint16 m_nPort;
     QString m_sCommand;

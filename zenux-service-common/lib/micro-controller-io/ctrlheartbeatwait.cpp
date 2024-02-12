@@ -45,8 +45,8 @@ void CtrlHeartbeatWait::doAtmelTest()
             {
                 if ((pcbTestReg & 1) > 0) {
                     qInfo("Atmel running");
-                    m_TimerTO.disconnect(SIGNAL(timeout()));
-                    m_TimerPeriod.disconnect(SIGNAL(timeout()));
+                    disconnect(&m_TimerTO, 0, this, 0);
+                    disconnect(&m_TimerPeriod, 0, this, 0);
                     m_TimerTO.stop();
                     m_TimerPeriod.stop();
                     emit sigRunning();
@@ -59,7 +59,7 @@ void CtrlHeartbeatWait::doAtmelTest()
 void CtrlHeartbeatWait::doTimeout()
 {
     qCritical("Atmel did not start within timeout");
-    m_TimerPeriod.disconnect(SIGNAL(timeout()));
+    disconnect(&m_TimerPeriod, 0, this, 0);
     m_TimerPeriod.stop();
     emit sigTimeout();
 }

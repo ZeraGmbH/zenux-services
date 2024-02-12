@@ -55,12 +55,12 @@ void RMConnection::tcpErrorHandler(XiQNetPeer *peer, QAbstractSocket::SocketErro
 
 void RMConnection::onMessageReceived(XiQNetPeer *peer, QByteArray message)
 {
-    Q_UNUSED(peer)
-    responseHandler(m_protobufWrapper.byteArrayToProtobuf(message));
+    responseHandler(peer, m_protobufWrapper.byteArrayToProtobuf(message));
 }
 
-void RMConnection::responseHandler(std::shared_ptr<google::protobuf::Message> response)
+void RMConnection::responseHandler(XiQNetPeer *peer, std::shared_ptr<google::protobuf::Message> response)
 {
+    Q_UNUSED(peer)
     std::shared_ptr<ProtobufMessage::NetMessage> answer = nullptr;
     answer = std::static_pointer_cast<ProtobufMessage::NetMessage>(response);
     if (answer != nullptr) {

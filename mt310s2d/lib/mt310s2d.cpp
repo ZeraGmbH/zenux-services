@@ -59,7 +59,7 @@ cMT310S2dServer::cMT310S2dServer(SettingsContainerPtr settings, AbstractFactoryI
     QState* stateCONF = new QState(); // we start from here
     QFinalState* stateFINISH = new QFinalState(); // and here we finish
 
-    stateCONF->addTransition(this, SIGNAL(abortInit()),stateFINISH); // from anywhere we arrive here if some error
+    stateCONF->addTransition(this, &cMT310S2dServer::abortInit, stateFINISH); // from anywhere we arrive here if some error
 
     QState* statexmlConfiguration = new QState(stateCONF); // we configure our server with xml file
     QState* statewait4Atmel = new QState(stateCONF); // we synchronize on atmel running
@@ -70,9 +70,9 @@ cMT310S2dServer::cMT310S2dServer(SettingsContainerPtr settings, AbstractFactoryI
 
     stateCONF->setInitialState(statexmlConfiguration);
 
-    statexmlConfiguration->addTransition(&m_xmlConfigReader, SIGNAL(finishedParsingXML(bool)), statewait4Atmel);
-    statewait4Atmel->addTransition(this, SIGNAL(atmelRunning()), statesetupServer);
-    statesetupServer->addTransition(this, SIGNAL(sigServerIsSetUp()), m_stateconnect2RM);
+    statexmlConfiguration->addTransition(&m_xmlConfigReader, &Zera::XMLConfig::cReader::finishedParsingXML, statewait4Atmel);
+    statewait4Atmel->addTransition(this, &cMT310S2dServer::atmelRunning, statesetupServer);
+    statesetupServer->addTransition(this, &cMT310S2dServer::sigServerIsSetUp, m_stateconnect2RM);
 
     m_pInitializationMachine->addState(stateCONF);
     m_pInitializationMachine->addState(stateFINISH);
@@ -260,15 +260,14 @@ void cMT310S2dServer::doSetupServer()
 
             // our resource mananager connection must be opened after configuration is done
             m_pRMConnection = new RMConnection(ethSettings->getRMIPadr(), ethSettings->getPort(EthSettings::resourcemanager));
-            //connect(m_pRMConnection, SIGNAL(connectionRMError()), this, SIGNAL(abortInit()));
             // so we must complete our state machine here
             m_retryRMConnect = 100;
             m_retryTimer.setSingleShot(true);
             connect(&m_retryTimer, &QTimer::timeout, this, &cMT310S2dServer::sigServerIsSetUp);
 
-            m_stateconnect2RM->addTransition(m_pRMConnection, SIGNAL(connected()), m_stateSendRMIdentAndRegister);
-            m_stateconnect2RM->addTransition(m_pRMConnection, SIGNAL(connectionRMError()), m_stateconnect2RMError);
-            m_stateconnect2RMError->addTransition(this, SIGNAL(sigServerIsSetUp()), m_stateconnect2RM);
+            m_stateconnect2RM->addTransition(m_pRMConnection, &RMConnection::connected, m_stateSendRMIdentAndRegister);
+            m_stateconnect2RM->addTransition(m_pRMConnection, &RMConnection::connectionRMError, m_stateconnect2RMError);
+            m_stateconnect2RMError->addTransition(this, &cMT310S2dServer::sigServerIsSetUp, m_stateconnect2RM);
 
             emit sigServerIsSetUp(); // so we enter state machine's next state
         }
@@ -306,7 +305,7 @@ void cMT310S2dServer::doIdentAndRegister()
     for (int i = 0; i < resourceList.count(); i++)
     {
         cResource *res = resourceList.at(i);
-        connect(m_pRMConnection, SIGNAL(rmAck(quint32)), res, SLOT(resourceManagerAck(quint32)) );
+        connect(m_pRMConnection, &RMConnection::rmAck, res, &cResource::resourceManagerAck );
         EthSettings *ethSettings = m_settings->getEthSettings();
         res->registerResource(m_pRMConnection, ethSettings->getPort(EthSettings::protobufserver));
     }

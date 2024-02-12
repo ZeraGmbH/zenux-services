@@ -124,8 +124,8 @@ Com5003SenseInterface::Com5003SenseInterface(cSCPI *scpiInterface,
     // we must use a statemachine because we have to synchronize sending of notifier
     // otherwise moduls using this notifier will crash because resources are not registered properly
 
-    m_UnregisterSenseState.addTransition(this, SIGNAL(registerRdy()), &m_RegisterSenseState);
-    m_RegisterSenseState.addTransition(this, SIGNAL(registerRdy()), &m_NotifySenseState);
+    m_UnregisterSenseState.addTransition(this, &Com5003SenseInterface::registerRdy, &m_RegisterSenseState);
+    m_RegisterSenseState.addTransition(this, &Com5003SenseInterface::registerRdy, &m_NotifySenseState);
     m_ChangeSenseModeMachine.addState(&m_UnregisterSenseState);
     m_ChangeSenseModeMachine.addState(&m_RegisterSenseState);
     m_ChangeSenseModeMachine.addState(&m_NotifySenseState);
