@@ -115,7 +115,7 @@
         <s0>
             <alias>S1</alias>
             <avail>true</avail>
-            <pllchannels>m0,m1,m2,m6,m3,m4,m5,m7,fix13,fix48,fix77</pllchannels>
+            <pllchannels>m0,m1,m2,m6,m3,m4,m5,m7,13Hz_DPLL,50Hz_DPLL,13Hz363_Fix,48Hz441_Fix,77Hz505_Fix,External_Source</pllchannels>
         </s0>
     </sample>
 
