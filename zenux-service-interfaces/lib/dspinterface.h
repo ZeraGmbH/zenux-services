@@ -1,6 +1,7 @@
 #ifndef DSPINTERFACE_H
 #define DSPINTERFACE_H
 
+#include "abstractserverInterface.h"
 #include "service-interfaces_export.h"
 #include "dspmeasdata.h"
 #include <proxyclient.h>
@@ -13,7 +14,7 @@ namespace Zera {
 typedef quint32 tRouting[16];
 class cDSPInterfacePrivate;
 
-class SERVICE_INTERFACES_EXPORT cDSPInterface: public QObject
+class SERVICE_INTERFACES_EXPORT cDSPInterface: public AbstractServerInterface
 {
     Q_OBJECT
 public:
@@ -57,10 +58,6 @@ public:
     quint32 setGainCorrection(int chn, float val); // sets gaincorrection for 1 channel
     quint32 setPhaseCorrection(int chn, float val); // sets phase correction for 1 channel
     quint32 setOffsetCorrection(int chn, float val); // sets offset correction for 1 channel
-
-signals:
-    void tcpError(QAbstractSocket::SocketError errorCode);
-    void serverAnswer(quint32 msgnr, quint8 reply, QVariant answer);
 
 private:
     Q_DECLARE_PRIVATE(cDSPInterface)
