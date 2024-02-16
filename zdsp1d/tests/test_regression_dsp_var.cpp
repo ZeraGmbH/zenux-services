@@ -5,6 +5,7 @@
 #include "testdevicenodedsp.h"
 #include "testfactorydevicenodedsp.h"
 #include "testsingletondevicenodedsp.h"
+#include "dspinterfacecmddecoder.h"
 #include <timemachineobject.h>
 #include <QSignalSpy>
 #include <QTest>
@@ -151,6 +152,10 @@ void test_regression_dsp_var::globalVariablesAreNotSharedByDefault()
     QCOMPARE(ret, "Empty");
 }
 
+static constexpr int dm32UserWorkSpaceBase21362 = 0x98180; // Stolen from zdspserver.cpp !!!
+static constexpr int startAddress = dm32UserWorkSpaceBase21362;
+static constexpr int varSize = 4;
+
 void test_regression_dsp_var::readVariablesAndListenDeviceNode()
 {
     cDspMeasData* dspData = m_dspIFace->getMemHandle("readVariablesAndListenDeviceNode");
@@ -169,30 +174,75 @@ void test_regression_dsp_var::readVariablesAndListenDeviceNode()
     TimeMachineObject::feedEventLoop();
 
     TestDeviceNodeDspPtr deviceNode = TestSingletonDeviceNodeDsp::getInstancePtrTest();
-    QSignalSpy spyListen(deviceNode.get(), &TestDeviceNodeDsp::sigIoOperation);
+    QSignalSpy spyRead(deviceNode.get(), &TestDeviceNodeDsp::sigIoOperation);
     m_dspIFace->dspMemoryRead(dspData);
     TimeMachineObject::feedEventLoop();
 
-    constexpr int dm32UserWorkSpaceBase21362 = 0x98180; // Stolen from zdspserver.cpp !!!
-    constexpr int startAddress = dm32UserWorkSpaceBase21362;
-    constexpr int varSize = 4;
-    QCOMPARE(spyListen.count(), 3*2);
+    QCOMPARE(spyRead.count(), 3*2);
 
-    QCOMPARE(spyListen[0][0], "lseek");
-    QCOMPARE(spyListen[0][1].toInt(), startAddress);
-    QCOMPARE(spyListen[1][0], "read");
-    QCOMPARE(spyListen[1][1], "buf");
-    QCOMPARE(spyListen[1][2], 1*varSize);
+    QCOMPARE(spyRead[0][0], "lseek");
+    QCOMPARE(spyRead[0][1].toInt(), startAddress);
+    QCOMPARE(spyRead[1][0], "read");
+    QCOMPARE(spyRead[1][1], "buf");
+    QCOMPARE(spyRead[1][2], 1*varSize);
 
-    QCOMPARE(spyListen[2][0], "lseek");
-    QCOMPARE(spyListen[2][1], startAddress+1);
-    QCOMPARE(spyListen[3][0], "read");
-    QCOMPARE(spyListen[3][1], "buf");
-    QCOMPARE(spyListen[3][2], 2*varSize);
+    QCOMPARE(spyRead[2][0], "lseek");
+    QCOMPARE(spyRead[2][1], startAddress+1);
+    QCOMPARE(spyRead[3][0], "read");
+    QCOMPARE(spyRead[3][1], "buf");
+    QCOMPARE(spyRead[3][2], 2*varSize);
 
-    QCOMPARE(spyListen[4][0], "lseek");
-    QCOMPARE(spyListen[4][1], startAddress+1+2);
-    QCOMPARE(spyListen[5][0], "read");
-    QCOMPARE(spyListen[5][1], "buf");
-    QCOMPARE(spyListen[5][2], 3*varSize);
+    QCOMPARE(spyRead[4][0], "lseek");
+    QCOMPARE(spyRead[4][1], startAddress+1+2);
+    QCOMPARE(spyRead[5][0], "read");
+    QCOMPARE(spyRead[5][1], "buf");
+    QCOMPARE(spyRead[5][2], 3*varSize);
+}
+
+void test_regression_dsp_var::writeVariablesAndListenDeviceNode()
+{
+    // Important note: With code at the time of wtiting sending multiple integers
+    // fails
+    cDspMeasData* dspData = m_dspIFace->getMemHandle("readVariablesAndListenDeviceNode");
+    dspData->addVarItem(new cDspVar("ONE_FLOAT", 1, DSPDATA::vDspResult, DSPDATA::dFloat));
+    dspData->addVarItem(new cDspVar("TWO_FLOAT", 2, DSPDATA::vDspResult, DSPDATA::dFloat));
+    dspData->addVarItem(new cDspVar("ONE_INT", 1, DSPDATA::vDspResult, DSPDATA::dInt));
+
+    m_dspIFace->varList2Dsp();
+    TimeMachineObject::feedEventLoop();
+    // Calling activateInterface is important - otherwise addresses are not initalized
+    // and all variables start on address 0
+    m_dspIFace->activateInterface();
+    TimeMachineObject::feedEventLoop();
+
+    DspInterfaceCmdDecoder::setVarData(dspData, QString("ONE_FLOAT:42;"), DSPDATA::dInt);
+    DspInterfaceCmdDecoder::setVarData(dspData, QString("TWO_FLOAT:37,38;"), DSPDATA::dInt);
+    DspInterfaceCmdDecoder::setVarData(dspData, QString("ONE_INT:666;"), DSPDATA::dInt);
+
+    TestDeviceNodeDspPtr deviceNode = TestSingletonDeviceNodeDsp::getInstancePtrTest();
+    QSignalSpy spyWrite(deviceNode.get(), &TestDeviceNodeDsp::sigIoOperation);
+    m_dspIFace->dspMemoryWrite(dspData);
+    TimeMachineObject::feedEventLoop();
+
+    QCOMPARE(spyWrite.count(), 3);
+
+    QCOMPARE(spyWrite[0][0], "write");
+    QCOMPARE(spyWrite[0][1].toInt(), startAddress);
+    QByteArray data1 = spyWrite[0][2].toByteArray();
+    QCOMPARE(data1[0], 42);
+    QCOMPARE(spyWrite[0][3], 1*varSize);
+
+    QCOMPARE(spyWrite[1][0], "write");
+    QCOMPARE(spyWrite[1][1], startAddress+1);
+    QByteArray data2 = spyWrite[1][2].toByteArray();
+    QCOMPARE(data2[varSize*0], 37);
+    QCOMPARE(data2[varSize*1], 38);
+    QCOMPARE(spyWrite[1][3], 2*varSize);
+
+    // TODO: What exactly are the contents we see here?
+    QCOMPARE(spyWrite[2][0], "write");
+    QCOMPARE(spyWrite[2][1], startAddress+1+2);
+    QByteArray data3 = spyWrite[2][2].toByteArray();
+    QCOMPARE(data3[varSize*0], 666);
+    QCOMPARE(spyWrite[2][3], varSize);
 }
