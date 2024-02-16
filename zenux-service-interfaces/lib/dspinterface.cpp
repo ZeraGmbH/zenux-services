@@ -115,13 +115,6 @@ quint32 cDSPInterface::dspMemoryRead(cDspMeasData *memgroup, DSPDATA::dType type
 }
 
 
-void cDSPInterface::setVarData(cDspMeasData *memgroup, QString datalist, DSPDATA::dType type)
-{
-    Q_D(cDSPInterface);
-    d->setVarData(memgroup, datalist, type);
-}
-
-
 quint32 cDSPInterface::dspMemoryWrite(cDspMeasData *memgroup)
 {
     Q_D(cDSPInterface);
