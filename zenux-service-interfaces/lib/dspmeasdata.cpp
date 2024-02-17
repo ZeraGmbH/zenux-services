@@ -36,16 +36,9 @@ float* cDspMeasData::data(QString name) // gibt einen zeiger zurück auf die var
     return 0; // caller has to pay attention !!!!!
 }
 
-void cDspMeasData::addVarItem(cDspVar* var) // eine neue dsp variable
+void cDspMeasData::addVarItem(cDspVar* varItem)
 {
-    DspVarList.append(var);
-    // wir brauchen speicher für daten, die wir lesen und/oder schreiben wollen
-    // dies ist der fall für ergebnisse , dsp konstanten und parameter
-    //
-    /*
-    if ( (var->type() & (DSPDATA::vDspResult | DSPDATA::vDspIntVar | DSPDATA::vDspParam)) > 0)
-        DspVarData.resize ( DspVarData.size() + var->size());
-    */
+    DspVarList.append(varItem);
 }
 
 quint32 cDspMeasData::getSize()
