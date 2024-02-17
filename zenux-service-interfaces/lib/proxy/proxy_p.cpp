@@ -2,6 +2,7 @@
 #include "proxyclient_p.h"
 #include "proxynetpeer.h"
 #include "proxyconnection.h"
+#include "notzeronumgen.h"
 #include <QUuid>
 #include <QTimer>
 #include <vtcp_peer.h>
@@ -14,7 +15,6 @@ Proxy* ProxyPrivate::singletonInstance=0;
 ProxyPrivate::ProxyPrivate(Proxy *parent):
     q_ptr(parent)
 {
-    m_nMessageNumber = 0;
 }
 
 ProxyClient* ProxyPrivate::getConnection(QString ipadress, quint16 port)
@@ -72,11 +72,8 @@ quint32 ProxyPrivate::transmitCommand(ProxyClientPrivate* client, ProtobufMessag
     QByteArray ba = m_ConnectionHash[client]->m_binUUID;
     message->set_clientid(ba.data(), ba.size()); // we put the client's id into message
 
-    if(m_nMessageNumber == 0)
-        m_nMessageNumber++; // we never use 0 as message number (reserved)
-    quint32 nr = m_nMessageNumber;
+    quint32 nr = NotZeroNumGen::getMsgNr();
     message->set_messagenr(nr);
-    m_nMessageNumber++; // increment message number
     m_ConnectionHash[client]->m_pNetClient->sendMessage(m_protobufWrapper.protobufToByteArray(*message));
     return nr;
 }
