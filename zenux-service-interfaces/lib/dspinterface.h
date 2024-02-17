@@ -2,7 +2,6 @@
 #define DSPINTERFACE_H
 
 #include "abstractserverInterface.h"
-#include "service-interfaces_export.h"
 #include "dspmeasdata.h"
 #include <proxyclient.h>
 #include <QObject>
@@ -14,7 +13,7 @@ namespace Zera {
 typedef quint32 tRouting[16];
 class cDSPInterfacePrivate;
 
-class SERVICE_INTERFACES_EXPORT cDSPInterface: public AbstractServerInterface
+class cDSPInterface: public AbstractServerInterface
 {
     Q_OBJECT
 public:
