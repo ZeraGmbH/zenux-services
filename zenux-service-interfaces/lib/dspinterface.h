@@ -37,10 +37,12 @@ public:
     quint32 dspMemoryRead(cDspMeasData* memgroup, DSPDATA::dType type = DSPDATA::dFloat); // reads all vars of this memorygroup
     void setVarData(cDspMeasData* memgroup, QString datalist, DSPDATA::dType type = DSPDATA::dFloat); //set the values of memgroup from qstring
     quint32 dspMemoryWrite(cDspMeasData* memgroup); // writes all vars of this memorygroup with type
-    float* data(cDspMeasData* memgroup, QString name); // returns a pointer to the vars read from dsp
     void getData(cDspMeasData* memgroup, QVector<float>& vector); // copy the memgroups data into qvector
     quint32 readDeviceVersion(); // reads the dsp devices version
     quint32 readServerVersion();
+
+    // Nightmare candidates
+    float* data(cDspMeasData* memgroup, QString name); // returns a pointer to the vars read from dsp
 
     // unused in ZENUX - kept for sake of future WM???
     quint32 intList2Dsp(); // send interrupt command list to the dsp server
