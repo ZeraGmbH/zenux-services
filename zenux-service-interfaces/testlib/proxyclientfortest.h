@@ -16,6 +16,7 @@ public:
     ProxyClientForTest();
     void setAnswers(ServerTestAnswers answers);
     quint32 transmitCommand(ProtobufMessage::NetMessage *message) override;
+
     QStringList getReceivedIdents() const;
     QStringList getReceivedCommands() const;
 signals:

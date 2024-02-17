@@ -19,7 +19,7 @@ public:
 public slots:
     void transmitConnection();
 protected:
-    virtual quint32 transmitCommand(ProtobufMessage::NetMessage *message);
+    virtual quint32 transmitCommand(ProtobufMessage::NetMessage *message) override;
     ProxyPrivate *m_pProxy;
 };
 
