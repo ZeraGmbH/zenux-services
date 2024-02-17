@@ -41,7 +41,6 @@ private:
     XiQNetWrapper m_protobufWrapper;
     QHash<ProxyClientPrivate*, ProxyConnection*> m_ConnectionHash; // holds network connection for each client
     QHash<QByteArray, ProxyClientPrivate*> m_ClientHash; // information for faster redirecting
-    quint32 m_nMessageNumber; // message number, .. we never use 0
 
     Q_DISABLE_COPY(ProxyPrivate)
     Q_DECLARE_PUBLIC(Proxy)

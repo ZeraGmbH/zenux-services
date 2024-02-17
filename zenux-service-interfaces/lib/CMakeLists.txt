@@ -17,6 +17,7 @@ target_link_libraries(service-interfaces
     PUBLIC
     Qt5::Network
     Zera::xiqnet
+    zenuxservicecommon
     # ask linker to help us finding unresolved symbols
     "-Wl,--no-undefined"
     )
