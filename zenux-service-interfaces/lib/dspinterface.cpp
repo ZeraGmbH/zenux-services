@@ -121,21 +121,6 @@ quint32 cDSPInterface::dspMemoryWrite(cDspMeasData *memgroup)
     return d->dspMemoryWrite(memgroup);
 }
 
-
-float* cDSPInterface::data(cDspMeasData *memgroup, QString name)
-{
-    Q_D(cDSPInterface);
-    return d->data(memgroup, name);
-}
-
-
-void cDSPInterface::getData(cDspMeasData *memgroup, QVector<float> &vector)
-{
-    Q_D(cDSPInterface);
-    d->getData(memgroup, vector);
-}
-
-
 quint32 cDSPInterface::readDeviceVersion()
 {
     Q_D(cDSPInterface);

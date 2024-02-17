@@ -35,12 +35,8 @@ public:
     quint32 dataAcquisition(cDspMeasData* memgroup); // reads all vars of this memorygroup that are of type vapplication
     quint32 dspMemoryRead(cDspMeasData* memgroup, DSPDATA::dType type = DSPDATA::dFloat); // reads all vars of this memorygroup
     quint32 dspMemoryWrite(cDspMeasData* memgroup); // writes all vars of this memorygroup with type
-    void getData(cDspMeasData* memgroup, QVector<float>& vector); // copy the memgroups data into qvector
     quint32 readDeviceVersion(); // reads the dsp devices version
     quint32 readServerVersion();
-
-    // Nightmare candidates: Make them go!!!
-    float* data(cDspMeasData* memgroup, QString name); // returns a pointer to the vars read from dsp
 
 private:
     Q_DECLARE_PRIVATE(cDSPInterface)

@@ -260,19 +260,6 @@ quint32 cDSPInterfacePrivate::dspMemoryWrite(cDspMeasData *memgroup)
     return msgnr;
 }
 
-
-float* cDSPInterfacePrivate::data(cDspMeasData *memgroup, QString name)
-{
-    return memgroup->data(name);
-}
-
-
-void cDSPInterfacePrivate::getData(cDspMeasData *memgroup, QVector<float> &vector)
-{
-    vector = memgroup->getData();
-}
-
-
 quint32 cDSPInterfacePrivate::setGainCorrection(int chn, float val)
 {
     QString cmd, par;
@@ -282,7 +269,6 @@ quint32 cDSPInterfacePrivate::setGainCorrection(int chn, float val)
     m_MsgNrCmdList[msgnr] = setgaincorrection;
     return msgnr;
 }
-
 
 quint32 cDSPInterfacePrivate::setPhaseCorrection(int chn, float val)
 {
