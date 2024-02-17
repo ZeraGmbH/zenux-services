@@ -41,25 +41,8 @@ public:
     quint32 readDeviceVersion(); // reads the dsp devices version
     quint32 readServerVersion();
 
-    // Nightmare candidates
+    // Nightmare candidates: Make them go!!!
     float* data(cDspMeasData* memgroup, QString name); // returns a pointer to the vars read from dsp
-
-    // unused in ZENUX - kept for sake of future WM???
-    quint32 intList2Dsp(); // send interrupt command list to the dsp server
-    quint32 bootDsp();
-    quint32 resetDsp();
-    int intListCount(); // returns the number of command in intlist program list
-    void clearMemLists(); // clears all memory lists (memhandles)
-    quint32 setSignalRouting(tRouting* routingtab); // set signal routing
-    quint32 setDsp61850PriorityTagged(quint32 priotag); // set entries for eth frame decoder
-    quint32 setDsp61850EthTypeAppId(quint32 typAppid); // same
-    quint32 setDsp61850EthSynchronisation(quint32 syncdata); // setting strong sync. and dataset
-    quint32 resetMaximum(); // clear maximum memory
-    quint32 triggerIntHKSK(quint32 hksk); // trigger start hksk in intlist
-    void addIntListItem(QString cmd); // same for interrupt list
-    quint32 setGainCorrection(int chn, float val); // sets gaincorrection for 1 channel
-    quint32 setPhaseCorrection(int chn, float val); // sets phase correction for 1 channel
-    quint32 setOffsetCorrection(int chn, float val); // sets offset correction for 1 channel
 
 private:
     Q_DECLARE_PRIVATE(cDSPInterface)
