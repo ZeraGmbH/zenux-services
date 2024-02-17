@@ -165,6 +165,15 @@ QVector<float>& cDspMeasData::getData()
     return vector;
 }
 
-
-
-
+void cDspMeasData::setData(QVector<float> data)
+{
+    int valueCount = 0;
+    for(cDspVar* dspVar : qAsConst(DspVarList)) {
+        QVector<float> varData;
+        for(int singleVal = 0; singleVal<dspVar->size(); singleVal++) {
+            varData.append(data[valueCount]);
+            valueCount++;
+        }
+        dspVar->setData(varData);
+    }
+}
