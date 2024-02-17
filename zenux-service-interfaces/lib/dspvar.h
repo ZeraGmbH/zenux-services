@@ -36,6 +36,12 @@ public:
     float* data() {return DspVarData.data();}
 
 private:
+    friend class cDspMeasData;
+    void setData(QVector<float> data) {
+        Q_ASSERT(DspVarData.size() == data.size());
+        DspVarData = data;
+    }
+
     QString m_sName; // a var. has its name
     int m_nsize; // it has a number of elements
     int m_nType; // an it can be of different type : vDspResult, vDspTemp , vDspIntVar , vDspParam

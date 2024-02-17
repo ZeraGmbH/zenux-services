@@ -313,7 +313,6 @@ quint32 cDSPInterfacePrivate::readServerVersion()
     return msgnr;
 }
 
-
 void cDSPInterfacePrivate::receiveAnswer(std::shared_ptr<ProtobufMessage::NetMessage> message)
 {
     if (message->has_reply())
