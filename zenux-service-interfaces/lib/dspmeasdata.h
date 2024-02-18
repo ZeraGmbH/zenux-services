@@ -25,7 +25,7 @@ public:
     QVector<float>& getData();
 
 private:
-    friend class TestDspInterface;
+    friend class MockDspInterface;
     void setData(QVector<float> data);
 
     QString m_handleName;

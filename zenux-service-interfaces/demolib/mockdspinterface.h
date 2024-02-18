@@ -1,9 +1,9 @@
-#ifndef TESTDSPINTERFACE_H
-#define TESTDSPINTERFACE_H
+#ifndef MOCKDSPINTERFACE_H
+#define MOCKDSPINTERFACE_H
 
 #include "dspinterface.h"
 
-class TestDspInterface : public Zera::cDSPInterface
+class MockDspInterface : public Zera::cDSPInterface
 {
     Q_OBJECT
 public:
@@ -13,4 +13,4 @@ private:
     QVector<float> m_actualValues;
 };
 
-#endif // TESTDSPINTERFACE_H
+#endif // MOCKDSPINTERFACE_H
