@@ -14,5 +14,15 @@ void MockDspInterface::fireActValInterrupt(QVector<float> actualValues, int irqN
 quint32 MockDspInterface::dataAcquisition(cDspMeasData *memgroup)
 {
     memgroup->setData(m_actualValues);
-    return NotZeroNumGen::getMsgNr();
+    quint32 messageNum = NotZeroNumGen::getMsgNr();
+    quint8 reply = 0;
+    QVariant answer = QString();
+    QMetaObject::invokeMethod(this,
+                              "serverAnswer",
+                              Qt::QueuedConnection,
+                              Q_ARG(quint32, messageNum),
+                              Q_ARG(quint8, reply),
+                              Q_ARG(QVariant, answer)
+                              );
+    return messageNum;
 }
