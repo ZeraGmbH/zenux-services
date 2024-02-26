@@ -21,6 +21,10 @@ public:
     virtual ~cDSPInterface();
     void setClient(Zera::ProxyClient *client);
     void setClientSmart(Zera::ProxyClientPtr client);
+
+    virtual quint32 dataAcquisition(cDspMeasData* memgroup); // reads all vars of this memorygroup that are of type vapplication
+    virtual quint32 dspMemoryWrite(cDspMeasData* memgroup); // writes all vars of this memorygroup with type
+
     quint32 setSamplingSystem(int chncount, int samp_per, int samp_mper); // nmuber of channels, samples/signalperiod, samples/measperiod
     quint32 varList2Dsp(); // send the var-list to dsp server
     quint32 cmdList2Dsp(); // send cyclic command list to the dsp server
@@ -32,9 +36,7 @@ public:
     void deleteMemHandle(cDspMeasData* memhandle);
     quint32 activateInterface(); // load var- and cmdlists to dsp (starts theprogram on dsp)
     quint32 deactivateInterface(); // unload ...
-    virtual quint32 dataAcquisition(cDspMeasData* memgroup); // reads all vars of this memorygroup that are of type vapplication
     quint32 dspMemoryRead(cDspMeasData* memgroup, DSPDATA::dType type = DSPDATA::dFloat); // reads all vars of this memorygroup
-    quint32 dspMemoryWrite(cDspMeasData* memgroup); // writes all vars of this memorygroup with type
     quint32 readDeviceVersion(); // reads the dsp devices version
     quint32 readServerVersion();
 

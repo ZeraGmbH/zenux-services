@@ -16,6 +16,7 @@ public:
     float* data(QString name);
 
     void addVarItem(cDspVar*);
+    QString getName();
     quint32 getSize(); // number of all element in this container
     quint32 getSize(QString name); // number of elements of var name in this container
     quint32 getumemSize();

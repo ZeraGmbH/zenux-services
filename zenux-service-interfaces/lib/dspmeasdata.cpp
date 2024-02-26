@@ -41,6 +41,11 @@ void cDspMeasData::addVarItem(cDspVar* varItem)
     DspVarList.append(varItem);
 }
 
+QString cDspMeasData::getName()
+{
+    return m_handleName;
+}
+
 quint32 cDspMeasData::getSize()
 {
     quint32 size = 0;

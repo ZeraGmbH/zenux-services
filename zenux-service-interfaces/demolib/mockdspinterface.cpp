@@ -16,6 +16,17 @@ void MockDspInterface::fireActValInterrupt(QVector<float> actualValues, int irqN
 quint32 MockDspInterface::dataAcquisition(cDspMeasData *memgroup)
 {
     memgroup->setData(m_actualValues);
+    return sendCmdResponse();
+}
+
+quint32 MockDspInterface::dspMemoryWrite(cDspMeasData *memgroup)
+{
+    emit sigDspMemoryWrite(memgroup->getName(), memgroup->getData());
+    return sendCmdResponse();
+}
+
+quint32 MockDspInterface::sendCmdResponse()
+{
     quint32 messageNum = NotZeroNumGen::getMsgNr();
     QVariant answer = QString();
     QMetaObject::invokeMethod(this,
