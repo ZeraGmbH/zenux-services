@@ -24,6 +24,7 @@ public:
 
     virtual quint32 dataAcquisition(cDspMeasData* memgroup); // reads all vars of this memorygroup that are of type vapplication
     virtual quint32 dspMemoryWrite(cDspMeasData* memgroup); // writes all vars of this memorygroup with type
+    virtual quint32 activateInterface(); // load var- and cmdlists to dsp (starts theprogram on dsp)
 
     quint32 setSamplingSystem(int chncount, int samp_per, int samp_mper); // nmuber of channels, samples/signalperiod, samples/measperiod
     quint32 varList2Dsp(); // send the var-list to dsp server
@@ -34,7 +35,6 @@ public:
     void addCycListItems(const QStringList &cmds); // appends new commands to cyclic list
     cDspMeasData* getMemHandle(QString name); // init a new memory group and return handle
     void deleteMemHandle(cDspMeasData* memhandle);
-    quint32 activateInterface(); // load var- and cmdlists to dsp (starts theprogram on dsp)
     quint32 deactivateInterface(); // unload ...
     quint32 dspMemoryRead(cDspMeasData* memgroup, DSPDATA::dType type = DSPDATA::dFloat); // reads all vars of this memorygroup
     quint32 readDeviceVersion(); // reads the dsp devices version
