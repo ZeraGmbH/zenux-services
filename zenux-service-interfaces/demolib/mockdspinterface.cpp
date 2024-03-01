@@ -25,6 +25,12 @@ quint32 MockDspInterface::dspMemoryWrite(cDspMeasData *memgroup)
     return sendCmdResponse();
 }
 
+quint32 MockDspInterface::activateInterface()
+{
+    emit sigDspStarted();
+    return sendCmdResponse();
+}
+
 quint32 MockDspInterface::sendCmdResponse()
 {
     quint32 messageNum = NotZeroNumGen::getMsgNr();
