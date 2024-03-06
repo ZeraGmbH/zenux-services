@@ -5,8 +5,8 @@ import QtQuick.Layouts 1.14
 import SimulSystemStatus 1.0
 
 ApplicationWindow {
-    id: appWindow
     visible: true
+    title: "PCB service simulation"
     x: 0
     y: 0
     width: 700
