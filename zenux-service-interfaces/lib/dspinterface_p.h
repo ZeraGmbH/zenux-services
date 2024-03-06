@@ -48,6 +48,7 @@ class cDSPInterfacePrivate: public cInterfacePrivate
     Q_OBJECT
 public:
     cDSPInterfacePrivate(cDSPInterface* iface);
+    virtual ~cDSPInterfacePrivate();
     void setClient(Zera::ProxyClient *client);
     void setClientSmart(Zera::ProxyClientPtr client);
     quint32 setSamplingSystem(int chncount, int samp_per, int samp_mper); // nmuber of channels, samples/signalperiod, samples/measperiod
