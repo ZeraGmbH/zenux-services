@@ -11,6 +11,12 @@ cDSPInterfacePrivate::cDSPInterfacePrivate(cDSPInterface *iface) :
 {
 }
 
+cDSPInterfacePrivate::~cDSPInterfacePrivate()
+{
+    for(const auto dspMem : qAsConst(m_DspMemoryDataList))
+        delete dspMem;
+}
+
 void cDSPInterfacePrivate::setClient(Zera::ProxyClient *client)
 {
     if (m_pClient) // we avoid multiple connections
