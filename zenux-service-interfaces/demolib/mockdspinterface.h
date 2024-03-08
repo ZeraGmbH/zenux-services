@@ -19,4 +19,6 @@ private:
     QVector<float> m_actualValues;
 };
 
+typedef std::shared_ptr<MockDspInterface> MockDspInterfacePtr;
+
 #endif // MOCKDSPINTERFACE_H
