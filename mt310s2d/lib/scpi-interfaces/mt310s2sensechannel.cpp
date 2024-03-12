@@ -33,7 +33,7 @@ QString Mt310s2SenseChannel::getAlias()
 
 void Mt310s2SenseChannel::setNotifierSenseChannelRange()
 {
-    quint8 rSelCode = 0;
+    quint8 rSelCode;
     if (m_ctrlFactory->getRangesController()->readRange(m_nCtrlChannel, rSelCode) == ZeraMControllerIo::cmddone ) {
         for(auto range : qAsConst(m_RangeList)) {
             if ( (range->getSelCode() == rSelCode) && (range->getAvail())) {
