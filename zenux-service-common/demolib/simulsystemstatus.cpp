@@ -46,6 +46,23 @@ quint8 SimulSystemStatus::getAccuStatusFromFlags()
     return accuFlagMask;
 }
 
+quint8 SimulSystemStatus::getRange(quint8 channel)
+{
+    quint8 idx = channel-1;
+    if(resizeChannelRanges(idx))
+        emit channelRangesChanged();
+    return m_channelRanges[idx];
+}
+
+void SimulSystemStatus::setRange(quint8 channel, quint8 range)
+{
+    quint8 idx = channel-1;
+    if(resizeChannelRanges(idx) || m_channelRanges[idx] != range) {
+        m_channelRanges[idx] = range;
+        emit channelRangesChanged();
+    }
+}
+
 bool SimulSystemStatus::accuSupported() const
 {
     return m_accuSupported;
@@ -57,6 +74,21 @@ void SimulSystemStatus::makeAccuSupported()
         return;
     m_accuSupported = true;
     emit accuSupportedChanged();
+}
+
+bool SimulSystemStatus::resizeChannelRanges(quint8 idx)
+{
+    bool resized = false;
+    while(m_channelRanges.count() <= idx) {
+        resized = true;
+        m_channelRanges.append(0);
+    }
+    return resized;
+}
+
+QList<int> SimulSystemStatus::channelRanges() const
+{
+    return m_channelRanges;
 }
 
 QString SimulSystemStatus::pllMode() const

@@ -38,11 +38,15 @@ public:
     bool accuMainSupplyPresent() const;
     void setAccuMainSupplyPresent(bool newAccuMainSupplyPresent);
 
-    // C++ only
-    quint8 getAccuStatusFromFlags();
-
     QString pllMode() const;
     void setPllMode(const QString &newPllMode);
+
+    QList<int> channelRanges() const;
+
+    // C++ only
+    quint8 getAccuStatusFromFlags();
+    quint8 getRange(quint8 channel);
+    void setRange(quint8 channel, quint8 range);
 
 signals:
     void schnubbelPluggedChanged();
@@ -58,10 +62,12 @@ signals:
 
     void pllModeChanged();
 
+    void channelRangesChanged();
+
 private:
     SimulSystemStatus() = default;
     void makeAccuSupported();
-
+    bool resizeChannelRanges(quint8 idx);
 
     static SimulSystemStatus* m_instance;
 
@@ -87,6 +93,9 @@ private:
 
     Q_PROPERTY(QString pllMode READ pllMode WRITE setPllMode NOTIFY pllModeChanged FINAL)
     QString m_pllMode = "Undefined";
+
+    Q_PROPERTY(QList<int> channelRanges READ channelRanges NOTIFY channelRangesChanged FINAL)
+    QList<int> m_channelRanges;
 };
 
 typedef std::shared_ptr<SimulSystemStatus> SimulSystemStatusPtr;
