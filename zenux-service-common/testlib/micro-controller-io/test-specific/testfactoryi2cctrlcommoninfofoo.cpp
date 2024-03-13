@@ -1,7 +1,7 @@
 #include "testfactoryi2cctrlcommoninfofoo.h"
 #include "controllertypename.h"
 #include "mocki2cctrlcommoninfo.h"
-#include "mocki2cctrlranges.h"
+#include "demoi2cctrlranges.h"
 #include "mocki2cctrlmmode.h"
 #include "testi2cctrleeprompermission.h"
 #include "testi2cctrldeviceident.h"
@@ -27,7 +27,7 @@ I2cCtrlDeviceIdentPtr TestFactoryI2cCtrlCommonInfoFoo::getDeviceIdentController(
 
 I2cCtrlRangesPtr TestFactoryI2cCtrlCommonInfoFoo::getRangesController()
 {
-    return std::make_unique<MockI2cCtrlRanges>();
+    return std::make_unique<DemoI2cCtrlRanges>();
 }
 
 I2cCtrlMModePtr TestFactoryI2cCtrlCommonInfoFoo::getMModeController()

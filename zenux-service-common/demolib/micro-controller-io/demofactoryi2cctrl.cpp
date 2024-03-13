@@ -8,7 +8,7 @@
 #include "demoi2cctrleeprompermission.h"
 #include "demoi2cctrlaccu.h"
 #include "demoi2cctrldeviceident.h"
-#include "mocki2cctrlranges.h"
+#include "demoi2cctrlranges.h"
 #include "mocki2cctrlmmode.h"
 #include "demoi2cctrlpll.h"
 #include "mocki2cctrlclampstatus.h"
@@ -57,7 +57,7 @@ I2cCtrlAccumulatorPtr DemoFactoryI2cCtrl::getAccuController()
 
 I2cCtrlRangesPtr DemoFactoryI2cCtrl::getRangesController()
 {
-    return std::make_unique<MockI2cCtrlRanges>();
+    return std::make_unique<DemoI2cCtrlRanges>();
 }
 
 I2cCtrlMModePtr DemoFactoryI2cCtrl::getMModeController()
