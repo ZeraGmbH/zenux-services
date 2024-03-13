@@ -10,7 +10,7 @@ ApplicationWindow {
     x: 0
     y: 0
     width: 700
-    height: 200
+    height: 250
     Material.accent: "#339966"
 
     ColumnLayout {
@@ -69,6 +69,10 @@ ApplicationWindow {
                 value: Simul.accuStateOfCharge
                 onValueChanged: Simul.accuStateOfCharge = value
             }
+        }
+        RowLayout {
+            Layout.fillWidth: true
+            Label { text: "Range channels: " + Simul.channelRanges.length }
         }
     }
 }
