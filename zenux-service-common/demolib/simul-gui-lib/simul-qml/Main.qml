@@ -9,9 +9,10 @@ ApplicationWindow {
     title: "PCB service simulation"
     x: 0
     y: 0
-    width: 700
+    width: 800
     height: 250
     Material.accent: "#339966"
+    property real labelWidth: width * 0.25
 
     ColumnLayout {
         anchors { fill: parent; margins: 10 }
@@ -22,13 +23,13 @@ ApplicationWindow {
         }
         RowLayout {
             Layout.fillWidth: true
-            Label { text: "PLL channel/mode:" }
+            Label { text: "PLL channel/mode:"; Layout.preferredWidth: labelWidth }
             Label { text: Simul.pllMode }
         }
         RowLayout {
             enabled: Simul.accuSupported
             Layout.fillWidth: true
-            Label { text: "Accu states:" }
+            Label { text: "Accu states:"; Layout.preferredWidth: labelWidth }
             CheckBox {
                 text: "present"
                 checked: Simul.accuPresent
@@ -58,7 +59,7 @@ ApplicationWindow {
         RowLayout {
             enabled: Simul.accuSupported
             Layout.fillWidth: true
-            Label { text: "Accu state of charge val:" }
+            Label { text: "Accu state of charge val:"; Layout.preferredWidth: labelWidth }
             Label { text: stateOfChargeSlider.value }
             Slider {
                 id: stateOfChargeSlider
@@ -72,7 +73,11 @@ ApplicationWindow {
         }
         RowLayout {
             Layout.fillWidth: true
-            Label { text: "Range channels: " + Simul.channelRanges.length }
+            Label { text: "Ranges:"; Layout.preferredWidth: labelWidth }
+            Repeater {
+                model: Simul.channelRanges.length
+                Label { text: Simul.channelRanges[index]; Layout.fillWidth: true }
+            }
         }
     }
 }
