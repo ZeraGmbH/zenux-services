@@ -18,8 +18,6 @@
 #include "scinsettings.h"
 #include "sensesettings.h"
 #include "foutsettings.h"
-#include "singletondevicenodepcbctrl.h"
-#include "singletondevicenodepcbmsg.h"
 #include <scpisingletonfactory.h>
 #include <xmlconfigreader.h>
 #include <vtcp_server.h>
