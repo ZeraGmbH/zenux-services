@@ -11,7 +11,6 @@
 #include "scinsettings.h"
 #include "finsettings.h"
 #include "foutsettings.h"
-#include "samplingsettings.h"
 #include "accumulatorsettings.h"
 #include "accumulatorinterface.h"
 #include "mt310s2systeminfo.h"
