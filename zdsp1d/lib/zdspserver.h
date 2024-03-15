@@ -6,7 +6,9 @@
 #include "scpicmds.h"
 #include "rmconnection.h"
 #include "dspsettings.h"
+#include "scpiconnection.h"
 #include "settingscontainer.h"
+#include <scpi.h>
 #include <vtcp_server.h>
 #include <xiqnetwrapper.h>
 #include <QStringList>
@@ -24,12 +26,13 @@ class cZDSP1Client;
 typedef QVector<float> tDspMemArray;
 
 
-class ZDspServer: public QObject, public cbIFace
+class ZDspServer: public ScpiConnection, public cbIFace
 {
     Q_OBJECT
 public:
     ZDspServer(SettingsContainerPtr settings, AbstractFactoryDeviceNodeDspPtr deviceNodeFactory);
     virtual ~ZDspServer();
+    void initSCPIConnection(QString leadingNodes) override;
     QString getServerVersion();
     QString getDspDeviceNode();
 
@@ -64,6 +67,8 @@ private slots:
     void connect2RMError();
     void doIdentAndRegister();
 private:
+    void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
+
     AbstractFactoryDeviceNodeDspPtr m_deviceNodeFactory;
     SettingsContainerPtr m_settings;
     ScpiCmdInterpreter* m_cmdInterpreter = nullptr;
