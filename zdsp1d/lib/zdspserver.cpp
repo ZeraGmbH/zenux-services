@@ -3,6 +3,7 @@
 #include "zdspserver.h"
 #include "zdspclient.h"
 #include "dsp.h"
+#include <scpisingletonfactory.h>
 #include "scpi-zdsp.h"
 #include "pcbserver.h"
 #include "devicenodedsp.h"
@@ -57,6 +58,7 @@ struct sigaction sigActionZdsp1;
 const ServerParams ZDspServer::defaultParams {ServerName, ServerVersion, "/etc/zera/zdsp1d/zdsp1d.xsd", "/etc/zera/zdsp1d/zdsp1d.xml"};
 
 ZDspServer::ZDspServer(SettingsContainerPtr settings, AbstractFactoryDeviceNodeDspPtr deviceNodeFactory) :
+    ScpiConnection(ScpiSingletonFactory::getScpiObj()),
     m_deviceNodeFactory(deviceNodeFactory),
     m_settings(std::move(settings))
 {
@@ -105,6 +107,11 @@ ZDspServer::~ZDspServer()
     deviceNode->close();
     close(pipeFileDescriptorZdsp1[0]);
     close(pipeFileDescriptorZdsp1[1]);
+}
+
+void ZDspServer::initSCPIConnection(QString leadingNodes)
+{
+
 }
 
 void ZDspServer::doConfiguration()
@@ -258,6 +265,13 @@ void ZDspServer::doIdentAndRegister()
 #ifdef SYSTEMD_NOTIFICATION
     sd_notify(0, "READY=1");
 #endif
+}
+
+void ZDspServer::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
+{
+    // Currently just for the sake of ScpiConnection
+    Q_UNUSED(cmdCode)
+    Q_UNUSED(protoCmd)
 }
 
 QString ZDspServer::mTestDsp(QChar* s)
@@ -1232,6 +1246,26 @@ void ZDspServer::executeCommandProto(VeinTcp::TcpPeer *peer, std::shared_ptr<goo
             QByteArray clientId = QByteArray(protobufCommand->clientid().data(), protobufCommand->clientid().size());
             quint32 messageNr = protobufCommand->messagenr();
             ProtobufMessage::NetMessage::ScpiCommand scpiCmd = protobufCommand->scpi();
+
+            // --- new scpi stolen from cPCBServer::executeCommandProto ---
+            cProtonetCommand* protoCmd;
+            QString scpiInput = QString::fromStdString(scpiCmd.command()) +  " " + QString::fromStdString(scpiCmd.parameter());
+            cSCPIObject* scpiObject =  m_pSCPIInterface->getSCPIObject(scpiInput);
+            if (scpiObject) {
+                protoCmd = new cProtonetCommand(peer, true, true, clientId, messageNr, scpiInput, scpiObject->getType());
+                cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
+                if (!scpiDelegate->executeSCPI(protoCmd)) {
+                    protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::nak];
+                    emit cmdExecutionDone(protoCmd);
+                }
+            }
+            // As long as old scpi is around nak is not a good idea
+            /*else {
+                protoCmd = new cProtonetCommand(peer, true, true, clientId, messageNr, scpiInput);
+                protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::nak];
+                emit cmdExecutionDone(protoCmd);
+            }*/
+
 
             if (!m_zdspdClientHash.contains(clientId)) { // we didn't get any command from here yet
                 cZDSP1Client *zdspclient = AddClient(peer); // we add a new client with the same socket but different identifier
