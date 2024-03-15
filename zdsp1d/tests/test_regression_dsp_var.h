@@ -21,6 +21,8 @@ private slots:
 
     void readVariablesAndListenDeviceNode(); // we learned dspMemoryRead details by this
     void writeVariablesAndListenDeviceNode();
+
+    void multipleClientsCreateResultVars();
 private:
     std::unique_ptr<ResmanRunFacade> m_resmanServer;
     std::unique_ptr<MockZdsp1d> m_dspService;
