@@ -246,3 +246,59 @@ void test_regression_dsp_var::writeVariablesAndListenDeviceNode()
     QCOMPARE(data3[varSize*0], 666);
     QCOMPARE(spyWrite[2][3], varSize);
 }
+
+void test_regression_dsp_var::multipleClientsCreateResultVars()
+{
+    // create vars client1
+    cDspMeasData* dspData1 = m_dspIFace->getMemHandle("createResultVariables");
+    dspData1->addVarItem(new cDspVar("CLIENT1_VAR1", 1, DSPDATA::vDspResult, DSPDATA::dFloat));
+    dspData1->addVarItem(new cDspVar("CLIENT1_VAR2", 2, DSPDATA::vDspResult, DSPDATA::dFloat));
+    m_dspIFace->varList2Dsp();
+    TimeMachineObject::feedEventLoop();
+
+    // connect client2
+    Zera::ProxyClientPtr proxyClient2 = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", dspServerPort);
+    std::unique_ptr<Zera::cDSPInterface> dspIFace2 = std::make_unique<Zera::cDSPInterface>();
+    dspIFace2->setClientSmart(proxyClient2);
+    Zera::Proxy::getInstance()->startConnectionSmart(proxyClient2);
+    TimeMachineObject::feedEventLoop();
+
+    // create vars client2
+    cDspMeasData* dspData2 = dspIFace2->getMemHandle("createResultVariables");
+    dspData2->addVarItem(new cDspVar("CLIENT2_VAR1", 3, DSPDATA::vDspResult, DSPDATA::dFloat));
+    dspData2->addVarItem(new cDspVar("CLIENT2_VAR2", 4, DSPDATA::vDspResult, DSPDATA::dFloat));
+    dspIFace2->varList2Dsp();
+    TimeMachineObject::feedEventLoop();
+
+    // client1 query vars
+    QString ret1 = ScpiSingleTransactionBlocked::query("MEASURE:LIST:RAVLIST?", dspServerPort, m_proxyClient);
+    QCOMPARE(ret1, "CLIENT1_VAR1,1;CLIENT1_VAR2,2;");
+    // client1 read client1 vars
+    QSignalSpy spyRead1(m_dspIFace.get(), &Zera::cDSPInterface::serverAnswer);
+    m_dspIFace->dspMemoryRead(dspData1);
+    TimeMachineObject::feedEventLoop();
+    QCOMPARE(spyRead1[0][1], ZSCPI::ack);
+    QVERIFY(spyRead1[0][2].toString().contains("CLIENT1_VAR1:"));
+    QVERIFY(spyRead1[0][2].toString().contains("CLIENT1_VAR2:"));
+    spyRead1.clear();
+    // client1 read client2 vars
+    m_dspIFace->dspMemoryRead(dspData2);
+    TimeMachineObject::feedEventLoop();
+    QCOMPARE(spyRead1[0][2].toString(), "errexec");
+
+    // client2 query vars
+    QString ret2 = ScpiSingleTransactionBlocked::query("MEASURE:LIST:RAVLIST?", dspServerPort, proxyClient2);
+    QCOMPARE(ret2, "CLIENT2_VAR1,3;CLIENT2_VAR2,4;");
+    // client2 read client2 vars
+    QSignalSpy spyRead2(dspIFace2.get(), &Zera::cDSPInterface::serverAnswer);
+    dspIFace2->dspMemoryRead(dspData2);
+    TimeMachineObject::feedEventLoop();
+    QCOMPARE(spyRead2[0][1], ZSCPI::ack);
+    QVERIFY(spyRead2[0][2].toString().contains("CLIENT2_VAR1:"));
+    QVERIFY(spyRead2[0][2].toString().contains("CLIENT2_VAR2:"));
+    spyRead2.clear();
+    // client2 read client1 vars
+    dspIFace2->dspMemoryRead(dspData1);
+    TimeMachineObject::feedEventLoop();
+    QCOMPARE(spyRead2[0][2].toString(), "errexec");
+}
