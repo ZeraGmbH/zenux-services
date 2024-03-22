@@ -137,6 +137,7 @@ void cSEC1000dServer::doConfiguration()
 
 void cSEC1000dServer::doSetupServer()
 {
+    qInfo("Starting doSetupServer");
     QString deviceNodeName = getSecDeviceNode(); // we try to open the sec device
     AbstractDeviceNodeSecPtr deviceNode = m_deviceNodeFactory->getSecDeviceNode();
     if (deviceNode->open(deviceNodeName) < 0) {
@@ -195,6 +196,7 @@ void cSEC1000dServer::doCloseServer()
 
 void cSEC1000dServer::doConnect2RM()
 {
+    qInfo("Starting doConnect2RM");
     m_nerror = rmConnectionError; // preset error condition
     m_pRMConnection->connect2RM();
 }
@@ -202,14 +204,19 @@ void cSEC1000dServer::doConnect2RM()
 void cSEC1000dServer::connect2RMError()
 {
     m_retryRMConnect--;
-    if (m_retryRMConnect == 0)
+    if (m_retryRMConnect == 0) {
+        qCritical("Connect to resourcemanager failed: Abort");
         emit abortInit();
-    else
+    }
+    else {
+        qWarning("Connect to resourcemanager failed: Retry");
         m_retryTimer.start(200);
+    }
 }
 
 void cSEC1000dServer::doIdentAndRegister()
 {
+    qInfo("Starting doIdentAndRegister");
     m_pRMConnection->SendIdent(getName());
 
     for (int i = 0; i < resourceList.count(); i++)

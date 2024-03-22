@@ -146,6 +146,7 @@ void ZDspServer::doConfiguration()
 
 void ZDspServer::doSetupServer()
 {
+    qInfo("Starting doSetupServer");
     ScpiParserZdsp1d* parser = new(ScpiParserZdsp1d); // das ist der parser
     m_cmdInterpreter = new ScpiCmdInterpreter(this, InitCmdTree(), parser); // das ist der kommando interpreter
     m_sDspSerialNumber = "Unknown"; // kennen wir erst mal nicht
@@ -223,6 +224,7 @@ void ZDspServer::doCloseServer()
 
 void ZDspServer::doConnect2RM()
 {
+    qInfo("Starting doConnect2RM");
     m_nerror = rmConnectionError; // preset error condition
     m_pRMConnection->connect2RM();
 }
@@ -230,14 +232,19 @@ void ZDspServer::doConnect2RM()
 void ZDspServer::connect2RMError()
 {
     m_retryRMConnect--;
-    if (m_retryRMConnect == 0)
+    if (m_retryRMConnect == 0) {
+        qCritical("Connect to resourcemanager failed: Abort");
         emit abortInit();
-    else
+    }
+    else {
+        qWarning("Connect to resourcemanager failed: Retry");
         m_retryTimer.start(200);
+    }
 }
 
 void ZDspServer::doIdentAndRegister()
 {
+    qInfo("Starting doIdentAndRegister");
     m_pRMConnection->SendIdent(ServerName);
 
     EthSettings *ethSettings = m_settings->getEthSettings();
