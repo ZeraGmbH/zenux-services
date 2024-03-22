@@ -194,7 +194,9 @@ void cMT310S2dServer::doSetupServer()
         }
         else
         {
+            qInfo("Set initial PLL channel...");
             m_ctrlFactory->getPllController()->setPLLChannel(1); // default channel m0 for pll control
+            qInfo("Initial PLL channel set");
             m_pSystemInfo = new Mt310s2SystemInfo(m_ctrlFactory);
 
             setupServer(); // here our scpi interface gets instanciated, we need this for further steps
@@ -234,7 +236,7 @@ void cMT310S2dServer::doSetupServer()
             resourceList.append(m_pFRQInputInterface);
             resourceList.append(m_pSCHeadInterface);
             resourceList.append(m_hkInInterface);
-
+            qInfo("SCPI interfaces set.");
 
             m_pSenseInterface->importAdjFlash(); // we read adjustmentdata at least once
 
@@ -343,14 +345,14 @@ void cMT310S2dServer::enableClampInterrupt()
 void cMT310S2dServer::updateI2cDevicesConnected()
 {
     quint16 clStat;
+    qInfo("Read device connect mask...");
     if (m_ctrlFactory->getClampStatusController()->readClampStatus(clStat) == ZeraMControllerIo::cmddone) {
         qInfo("Devices connected mask read: 0x%02X", clStat);
         m_pClampInterface->actualizeClampStatus(clStat);
         m_pSystemInterface->actualizeContollers(clStat);
     }
-    else {
+    else
         qWarning("Devices connected mask read failed");
-    }
 }
 
 

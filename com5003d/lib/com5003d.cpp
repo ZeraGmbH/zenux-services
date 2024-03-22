@@ -285,7 +285,9 @@ void cCOM5003dServer::doWait4Atmel()
 void cCOM5003dServer::doSetupServer()
 {
     qInfo("Starting doSetupServer");
+    qInfo("Set initial PLL channel...");
     m_ctrlFactory->getPllController()->setPLLChannel(1); // default channel m0 for pll control
+    qInfo("Initial PLL channel set");
     m_pSystemInfo = new SystemInfo(m_ctrlFactory);
 
     setupServer(); // here our scpi interface gets instanciated, we need this for further steps
@@ -316,6 +318,7 @@ void cCOM5003dServer::doSetupServer()
     resourceList.append(m_pFRQInputInterface);
     resourceList.append(m_pSCHeadInterface);
     resourceList.append(m_hkInInterface);
+    qInfo("SCPI interfaces set.");
 
     m_pSenseInterface->importAdjFlash(); // we read adjustmentdata at least once
 
