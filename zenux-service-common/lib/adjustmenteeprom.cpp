@@ -34,13 +34,20 @@ bool AdjustmentEeprom::exportAdjFlash(QDateTime dateTimeWrite)
 
 bool AdjustmentEeprom::importAdjFlash()
 {
+    qInfo("Import AdjFlash...");
     I2cMuxerScopedOnOff i2cMuxOnOff(m_i2cMuxer);
     QByteArray ba;
     if (readEepromChecksumValidated(ba)) {
         QDataStream stream(&ba, QIODevice::ReadOnly);
         stream.setVersion(QDataStream::Qt_5_4);
-        return importAdjData(stream);
+        bool ok = importAdjData(stream);
+        if(ok)
+            qInfo("Import AdjFlash passed.");
+        else
+            qWarning("Import AdjFlash failed.");
+        return ok;
     }
+    qWarning("readEepromChecksumValidated failed");
     return false;
 }
 
