@@ -18,10 +18,8 @@ void ScpiConnection::removeSCPIConnections()
             m_pSCPIInterface->delSCPICmds(ptr->getCommand());
         }
     }
-    for (int i = 0; i < m_DelegateList.count(); i++) {
-        cSCPIDelegate* ptr = m_DelegateList.at(i);
-        delete ptr;
-    }
+    for (int i = 0; i < m_DelegateList.count(); i++)
+        delete m_DelegateList.at(i);
     m_DelegateList.clear();
 }
 
