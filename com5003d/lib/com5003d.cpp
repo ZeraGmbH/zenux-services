@@ -284,6 +284,7 @@ void cCOM5003dServer::doWait4Atmel()
 
 void cCOM5003dServer::doSetupServer()
 {
+    qInfo("Starting doSetupServer");
     m_ctrlFactory->getPllController()->setPLLChannel(1); // default channel m0 for pll control
     m_pSystemInfo = new SystemInfo(m_ctrlFactory);
 
@@ -345,6 +346,7 @@ void cCOM5003dServer::doCloseServer()
 
 void cCOM5003dServer::doConnect2RM()
 {
+    qInfo("Starting doConnect2RM");
     m_nerror = rmConnectionError; // preset error condition
     m_pRMConnection->connect2RM();
 }
@@ -353,15 +355,20 @@ void cCOM5003dServer::doConnect2RM()
 void cCOM5003dServer::connect2RMError()
 {
     m_retryRMConnect--;
-    if (m_retryRMConnect == 0)
+    if (m_retryRMConnect == 0) {
+        qCritical("Connect to resourcemanager failed: Abort");
         emit abortInit();
-    else
+    }
+    else {
+        qWarning("Connect to resourcemanager failed: Retry");
         m_retryTimer.start(200);
+    }
 }
 
 
 void cCOM5003dServer::doIdentAndRegister()
 {
+    qInfo("Starting doIdentAndRegister");
     m_pRMConnection->SendIdent(getName());
 
     for (int i = 0; i < resourceList.count(); i++)

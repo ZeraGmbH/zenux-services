@@ -178,6 +178,7 @@ void cMT310S2dServer::doWait4Atmel()
 
 void cMT310S2dServer::doSetupServer()
 {
+    qInfo("Starting doSetupServer");
     QString ctrlDeviceNodeName = getCtrlDeviceNode(); // we try to open the ctrl device
     AbstractDeviceNodePcbCtrlPtr ctrlDeviceNode = m_deviceNodeFactory->getPcbCtrlDeviceNode();
     if (ctrlDeviceNode->open(ctrlDeviceNodeName) < 0) {
@@ -281,6 +282,7 @@ void cMT310S2dServer::doCloseServer()
 
 void cMT310S2dServer::doConnect2RM()
 {
+    qInfo("Starting doConnect2RM");
     m_nerror = rmConnectionError; // preset error condition
     m_pRMConnection->connect2RM();
 }
@@ -289,15 +291,20 @@ void cMT310S2dServer::doConnect2RM()
 void cMT310S2dServer::connect2RMError()
 {
     m_retryRMConnect--;
-    if (m_retryRMConnect == 0)
+    if (m_retryRMConnect == 0) {
+        qCritical("Connect to resourcemanager failed: Abort");
         emit abortInit();
-    else
+    }
+    else {
+        qWarning("Connect to resourcemanager failed: Retry");
         m_retryTimer.start(200);
+    }
 }
 
 
 void cMT310S2dServer::doIdentAndRegister()
 {
+    qInfo("Starting doIdentAndRegister");
     m_pRMConnection->SendIdent(getName());
 
     for (int i = 0; i < resourceList.count(); i++)
