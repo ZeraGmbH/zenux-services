@@ -11,10 +11,16 @@ SETUP_TESTS(
     test_sense_settings
     test_fpga_settings_regression
     test_criticalstatusmock
+    test_readadjustmentdata
     )
 
 target_sources(test_hotpluggablecontrollercontainer
   PRIVATE
   testhotplugi2cctrlcommoninfo.cpp testhotplugi2cctrlcommoninfo.h
     testhotplugctrlfactoryi2cctrl.cpp testhotplugctrlfactoryi2cctrl.h
+)
+
+target_sources(test_readadjustmentdata
+  PRIVATE
+  AdjustedData/regression_data.qrc
 )
