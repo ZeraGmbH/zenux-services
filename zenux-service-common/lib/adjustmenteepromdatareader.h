@@ -2,6 +2,7 @@
 #define ADJUSTMENTEEPROMDATAREADER_H
 
 #include <QObject>
+#include <QMap>
 
 class AdjustmentEepromDataReader
 {
@@ -13,7 +14,7 @@ public:
 
     QString getDeviceName();
     QString getServerVersion();
-    QStringList getRangesList();
+    QList<QMap<QString, QString>> getRangeInfos();
 
 private:
     bool extractServerVersion(QDataStream &stream, char* s);
@@ -23,7 +24,7 @@ private:
 
     QString m_deviceName;
     QString m_serverVersion;
-    QStringList m_rangesList;
+    QList<QMap<QString, QString>> m_rangeInfosMap;
 };
 
 #endif // ADJUSTMENTEEPROMDATAREADER_H
