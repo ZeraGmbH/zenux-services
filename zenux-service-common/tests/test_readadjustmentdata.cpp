@@ -33,11 +33,16 @@ void test_readadjustmentdata::readMT310s2Ranges()
     QDataStream stream(&file);
     AdjustmentEepromDataReader reader(stream);
 
-    QStringList rangesList = reader.getRangesList();
-    QCOMPARE(rangesList.size(), 88);
-    QVERIFY(rangesList.contains("250V"));
-    QVERIFY(rangesList.contains("10A"));
-    QVERIFY(!rangesList.contains("480V"));
+    QList<QMap<QString, QString>> ranges = reader.getRangeInfos();
+    QCOMPARE(ranges.size(), 88);
+
+    QMap<QString, QString> expectedRange;
+    expectedRange["m0"] = "250V";
+    QVERIFY(ranges.contains(expectedRange));
+
+    expectedRange.clear();
+    expectedRange["m3"] = "10A";
+    QVERIFY(ranges.contains(expectedRange));
 }
 
 void test_readadjustmentdata::readServerVersionAndDeviceNameForCOM()
@@ -58,11 +63,11 @@ void test_readadjustmentdata::readCOM5003Ranges()
     QDataStream stream(&file);
     AdjustmentEepromDataReader reader(stream);
 
-    QStringList rangesList = reader.getRangesList();
-    QCOMPARE(rangesList.size(), 75);
-    QVERIFY(rangesList.contains("480V"));
-    QVERIFY(rangesList.contains("10A"));
-    QVERIFY(!rangesList.contains("250V"));
+    QList<QMap<QString, QString>> ranges = reader.getRangeInfos();
+    QMap<QString, QString> expectedRange;
+    expectedRange["m0"] = "480V";
+    QCOMPARE(ranges.size(), 75);
+    QVERIFY(ranges.contains(expectedRange));
 }
 
 

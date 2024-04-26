@@ -20,9 +20,9 @@ QString AdjustmentEepromDataReader::getServerVersion()
     return m_serverVersion;
 }
 
-QStringList AdjustmentEepromDataReader::getRangesList()
+QList<QMap<QString, QString> > AdjustmentEepromDataReader::getRangeInfos()
 {
-    return m_rangesList;
+    return m_rangeInfosMap;
 }
 
 bool AdjustmentEepromDataReader::ignoreCountAndCheckSum(QDataStream &stream)
@@ -72,7 +72,9 @@ void AdjustmentEepromDataReader::extractRanges(QDataStream &stream)
         QString data = QString(it);
         if(data.startsWith("SENSE")) {
             QStringList rangeCmdList = data.split(':');
-            m_rangesList.append(rangeCmdList[2]);
+            QMap<QString, QString> rangesMap;
+            rangesMap.insert(rangeCmdList[1], rangeCmdList[2]);
+            m_rangeInfosMap.append(rangesMap);
         }
     }
 }
