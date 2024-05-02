@@ -14,7 +14,7 @@ public:
 
     QString getDeviceName();
     QString getServerVersion();
-    QList<QMap<QString, QString>> getRangeInfos();
+    QMap<QString, QStringList> getRangeInfos();
 
 private:
     bool extractServerVersion(QDataStream &stream, char* s);
@@ -24,7 +24,7 @@ private:
 
     QString m_deviceName;
     QString m_serverVersion;
-    QList<QMap<QString, QString>> m_rangeInfosMap;
+    QMap<QString, QStringList> m_rangeInfosMap;
 };
 
 #endif // ADJUSTMENTEEPROMDATAREADER_H
