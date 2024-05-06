@@ -53,7 +53,7 @@ public:
 protected:
     void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
     void exportAdjData(QDataStream& stream, QDateTime dateTimeWrite) override;
-    bool importAdjData(QDataStream& stream) override;
+    bool importAdjData(QByteArray& ba) override;
     bool importXMLDocument(QDomDocument* qdomdoc) override;
 
 private:

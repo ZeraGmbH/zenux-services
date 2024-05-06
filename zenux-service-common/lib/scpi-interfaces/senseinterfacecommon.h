@@ -52,7 +52,7 @@ protected:
     virtual void handleScpiReadWriteMMode(cProtonetCommand* protoCmd) = 0;
     virtual QString scpiReadSenseGroupCatalog(QString& scpi) = 0;
 
-    bool importAdjData(QDataStream& stream) override;
+    bool importAdjData(QByteArray& ba) override;
     void exportAdjData(QDataStream& stream, QDateTime dateTimeWrite) override;
 
     virtual QString getXmlType() = 0;

@@ -152,8 +152,11 @@ void cClamp::exportAdjData(QDataStream &stream, QDateTime dateTimeWrite)
     }
 }
 
-bool cClamp::importAdjData(QDataStream &stream)
+bool cClamp::importAdjData(QByteArray& ba)
 {
+    QDataStream stream(&ba, QIODevice::ReadOnly);
+    stream.setVersion(QDataStream::Qt_5_4);
+
     stream.skipRawData(6);
     stream >> m_nType;
     stream >> m_nFlags;
