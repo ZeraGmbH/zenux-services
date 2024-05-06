@@ -31,7 +31,8 @@ void test_readadjustmentdata::readMT310s2Ranges()
     QFile file(":/export_internal_initial_mt310s2.eeprom");
     file.open(QIODevice::ReadOnly);
     QDataStream stream(&file);
-    AdjustmentEepromDataReader reader(stream);
+    AdjustmentEepromDataReader reader;
+    reader.extractDeviceInfos(stream);
 
     QMap<QString, QStringList> rangesInfos = reader.getRangeInfos();
     QCOMPARE(rangesInfos.size(), 8);
@@ -70,7 +71,8 @@ void test_readadjustmentdata::readCOM5003Ranges()
     QFile file(":/export_internal_initial_com5003.eeprom");
     file.open(QIODevice::ReadOnly);
     QDataStream stream(&file);
-    AdjustmentEepromDataReader reader(stream);
+    AdjustmentEepromDataReader reader;
+    reader.extractDeviceInfos(stream);
 
     QMap<QString, QStringList> rangesInfos = reader.getRangeInfos();
     QCOMPARE(rangesInfos.size(), 6);
@@ -95,7 +97,8 @@ void test_readadjustmentdata::checkChannelRangeAvailability()
     QFile file(":/export_internal_initial_com5003.eeprom");
     file.open(QIODevice::ReadOnly);
     QDataStream stream(&file);
-    AdjustmentEepromDataReader reader(stream);
+    AdjustmentEepromDataReader reader;
+    reader.extractDeviceInfos(stream);
 
     QVERIFY(reader.isChannelRangeAvailable("m0", "480V"));
     QVERIFY(!reader.isChannelRangeAvailable("m0", "48V"));

@@ -1,15 +1,6 @@
 #include "adjustmenteepromdatareader.h"
 #include <QDataStream>
 
-AdjustmentEepromDataReader::AdjustmentEepromDataReader(QDataStream &stream)
-{
-    extractDeviceInfos(stream);
-}
-
-AdjustmentEepromDataReader::AdjustmentEepromDataReader()
-{
-}
-
 QString AdjustmentEepromDataReader::getDeviceName()
 {
     return m_deviceName;
