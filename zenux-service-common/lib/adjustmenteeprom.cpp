@@ -38,9 +38,7 @@ bool AdjustmentEeprom::importAdjFlash()
     I2cMuxerScopedOnOff i2cMuxOnOff(m_i2cMuxer);
     QByteArray ba;
     if (readEepromChecksumValidated(ba)) {
-        QDataStream stream(&ba, QIODevice::ReadOnly);
-        stream.setVersion(QDataStream::Qt_5_4);
-        bool ok = importAdjData(stream);
+        bool ok = importAdjData(ba);
         if(ok)
             qInfo("Import AdjFlash passed.");
         else

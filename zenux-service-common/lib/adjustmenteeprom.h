@@ -22,7 +22,7 @@ public:
     I2cMuxerInterface::Ptr getI2cMuxer();
 protected:
     virtual void exportAdjData(QDataStream& stream, QDateTime dateTimeWrite) = 0; // the derived class exports adjdata to qdatastream
-    virtual bool importAdjData(QDataStream& stream) = 0; // same for import
+    virtual bool importAdjData(QByteArray& ba) = 0; // same for import
     bool readEepromChecksumValidated(QByteArray& ba);
 
 private:

@@ -113,8 +113,11 @@ void SenseInterfaceCommon::initSCPIConnection(QString leadingNodes)
     addDelegate(cmdParent, "ADJUSTMENT", SCPI::isQuery, m_pSCPIInterface, SenseSystem::cmdStatAdjustment);
 }
 
-bool SenseInterfaceCommon::importAdjData(QDataStream &stream)
+bool SenseInterfaceCommon::importAdjData(QByteArray &ba)
 {
+    QDataStream stream(&ba, QIODevice::ReadOnly);
+    stream.setVersion(QDataStream::Qt_5_4);
+
     char flashdata[200];
     char* s = flashdata;
 
