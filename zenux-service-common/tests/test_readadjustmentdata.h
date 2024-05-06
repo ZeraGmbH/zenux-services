@@ -7,6 +7,7 @@ class test_readadjustmentdata : public QObject
 {
     Q_OBJECT
 private slots:
+    void initTestCase();
     void checkFileNotEmpty();
     void readServerVersionAndDeviceNameForMT();
     void readMT310s2Ranges();
@@ -14,6 +15,8 @@ private slots:
     void readServerVersionAndDeviceNameForCOM();
     void readCOM5003Ranges();
     void checkChannelRangeAvailability();
+private:
+    quint32 m_flashSizeAllDevicesAtTheTimeOfWriting;
 };
 
 #endif // TEST_READADJUSTEDDATA_H

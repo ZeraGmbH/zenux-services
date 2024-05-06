@@ -84,8 +84,8 @@ protected:
     NotificationString m_notifierSenseMMode;
     NotificationString m_notifierSenseChannelCat;
 
-    AdjustmentEepromDataReader m_adjustmentReader;
     AdjustmentEepromReadWrite m_adjReadWrite;
+    AdjustmentEepromDataReader m_adjustmentReader;
 };
 
 #endif // SENSEINTERFACECOMMON_H

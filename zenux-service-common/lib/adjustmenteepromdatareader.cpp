@@ -1,6 +1,11 @@
 #include "adjustmenteepromdatareader.h"
 #include <QDataStream>
 
+AdjustmentEepromDataReader::AdjustmentEepromDataReader(quint32 maxSize) :
+    m_maxSize(maxSize)
+{
+}
+
 QString AdjustmentEepromDataReader::getDeviceName()
 {
     return m_deviceName;

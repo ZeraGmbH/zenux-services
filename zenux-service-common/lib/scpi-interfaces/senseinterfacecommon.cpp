@@ -16,7 +16,8 @@ SenseInterfaceCommon::SenseInterfaceCommon(cSCPI *scpiInterface,
     m_ctrlFactory(ctrlFactory),
     m_adjReadWrite(i2cSettings->getDeviceNode(),
                    i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress),
-                   I2cMultiplexerFactory::createNullMuxer())
+                   I2cMultiplexerFactory::createNullMuxer()),
+    m_adjustmentReader(m_adjReadWrite.getMaxSize())
 {
 }
 
