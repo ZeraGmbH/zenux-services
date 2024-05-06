@@ -3,7 +3,6 @@
 #include "adjustmentflags.h"
 #include "mt310s2sensechannel.h"
 #include "mt310s2senserange.h"
-#include "adjustmenteeprom.h"
 #include "protonetcommand.h"
 #include "rangeadjinterface.h"
 #include "scpiconnection.h"

@@ -3,6 +3,7 @@
 #include "notzeronumgen.h"
 #include "zscpi_response_definitions.h"
 #include <i2cmultiplexerfactory.h>
+#include <QDateTime>
 
 QString SenseInterfaceCommon::m_version = "V1.00";
 

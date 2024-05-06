@@ -2,7 +2,6 @@
 #define SENSEINTERFACECOMMON_H
 
 #include "resource.h"
-#include "adjustmenteeprom.h"
 #include "adjustmentxmlimportexporttemplate.h"
 #include "i2csettings.h"
 #include "systeminfo.h"

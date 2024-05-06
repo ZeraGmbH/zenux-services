@@ -3,7 +3,6 @@
 
 #include "senseinterfacecommon.h"
 #include "pcbserver.h"
-#include "adjustmenteeprom.h"
 #include "adjustmentxmlimportexporttemplate.h"
 #include "adjustmenteepromreadwrite.h"
 #include <QList>
