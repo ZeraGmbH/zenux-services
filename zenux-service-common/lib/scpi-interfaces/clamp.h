@@ -5,11 +5,12 @@
 #include "pcbserver.h"
 #include "adjustmenteeprom.h"
 #include "adjustmentxmlimportexporttemplate.h"
+#include "adjustmenteepromreadwrite.h"
 #include <QList>
 #include <QDateTime>
 #include <QDomElement>
 
-class cClamp: public AdjustmentEeprom, public AdjustmentXmlImportExportTemplate, public ScpiConnection
+class cClamp: public AdjustmentXmlImportExportTemplate, public ScpiConnection
 {
 public:
     enum ClampTypes // APPEND NEW TYPES AT BOTTOM
@@ -49,11 +50,11 @@ public:
     QString getSerial();
     virtual QString exportXMLString(int indent = 1) override;
     bool importXMLDocument(QDomDocument *qdomdoc, bool ignoreType);
+    bool exportAdjData(QDateTime dateTimeWrite);
+    bool importAdjData();
 
 protected:
     void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
-    void exportAdjData(QDataStream& stream, QDateTime dateTimeWrite) override;
-    bool importAdjData(QByteArray& ba) override;
     bool importXMLDocument(QDomDocument* qdomdoc) override;
 
 private:
@@ -96,6 +97,7 @@ private:
     quint8 m_nType = undefined;
     quint32 m_nFlags = 0; // for future purpose
     QDateTime m_AdjDateTime;
+    AdjustmentEepromReadWrite m_adjReadWrite;
 };
 
 #endif // CLAMP_H

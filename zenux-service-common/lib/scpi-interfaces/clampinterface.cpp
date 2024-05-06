@@ -162,7 +162,7 @@ QString cClampInterface::writeAllClamps(QString &sInput)
                     bool done = true;
                     QDateTime now = QDateTime::currentDateTime();
                     for(auto clamp : qAsConst(m_clampHash))
-                        done = done && clamp->exportAdjFlash(now);
+                        done = done && clamp->exportAdjData(now);
                     if (!done)
                         return ZSCPI::scpiAnswer[ZSCPI::errexec];
                 }
@@ -227,7 +227,7 @@ QString cClampInterface::importClampXmls(QString allXML, bool computeAndExport)
                     m_pSenseInterface->computeSenseAdjData();
                     // then we let it compute its new adjustment coefficients... we simply call senseinterface's compute
                     // command. we compute a little bit to much but this doesn't matter at all
-                    if (!pClamp4Use->exportAdjFlash(QDateTime::currentDateTime())) // and then we program the clamp
+                    if (!pClamp4Use->exportAdjData(QDateTime::currentDateTime())) // and then we program the clamp
                         return ZSCPI::scpiAnswer[ZSCPI::errexec];
                 }
             }

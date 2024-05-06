@@ -11,11 +11,11 @@ SenseInterfaceCommon::SenseInterfaceCommon(cSCPI *scpiInterface,
                                            SystemInfo *systemInfo,
                                            AbstractFactoryI2cCtrlPtr ctrlFactory) :
     cResource(scpiInterface),
-    m_adjReadWrite(i2cSettings->getDeviceNode(),
-                     i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress),
-                     I2cMultiplexerFactory::createNullMuxer()),
     m_systemInfo(systemInfo),
-    m_ctrlFactory(ctrlFactory)
+    m_ctrlFactory(ctrlFactory),
+    m_adjReadWrite(i2cSettings->getDeviceNode(),
+                   i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress),
+                   I2cMultiplexerFactory::createNullMuxer())
 {
 }
 

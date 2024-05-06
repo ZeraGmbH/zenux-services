@@ -25,7 +25,8 @@ enum Commands
 };
 
 cClamp::cClamp() :
-    ScpiConnection(nullptr) // TODO get rid of dummy clamp
+    ScpiConnection(nullptr), // TODO get rid of dummy clamp
+    m_adjReadWrite("", 0, nullptr)
 {
 }
 
@@ -37,14 +38,14 @@ cClamp::cClamp(cPCBServer *server,
                I2cMuxerInterface::Ptr i2cMuxer,
                quint8 ctrlChannelSecondary,
                quint8 type) :
-    AdjustmentEeprom(i2cSettings->getDeviceNode(),
-                    i2cSettings->getI2CAdress(i2cSettings::clampFlashI2cAddress),
-                    i2cMuxer),
     ScpiConnection(server->getSCPIInterface()),
     m_pSenseInterface(senseInterface),
     m_sChannelName(channelName),
     m_nCtrlChannel(ctrlChannel),
-    m_nCtrlChannelSecondary(ctrlChannelSecondary)
+    m_nCtrlChannelSecondary(ctrlChannelSecondary),
+    m_adjReadWrite(i2cSettings->getDeviceNode(),
+                   i2cSettings->getI2CAdress(i2cSettings::clampFlashI2cAddress),
+                   i2cMuxer)
 {
     if(type == undefined)
         type = readClampType();
@@ -58,7 +59,7 @@ cClamp::cClamp(cPCBServer *server,
     connect(server, &cPCBServer::removeSubscribers, this, &ScpiConnection::onRemoveSubscribers);
 
     if (type != undefined) {
-        importAdjFlash();
+        importAdjData();
         addSense();
         addSenseInterface();
     }
@@ -130,8 +131,11 @@ void cClamp::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
     }
 }
 
-void cClamp::exportAdjData(QDataStream &stream, QDateTime dateTimeWrite)
+bool cClamp::exportAdjData(QDateTime dateTimeWrite)
 {
+    QByteArray ba;
+    QDataStream stream(&ba,QIODevice::ReadWrite);
+    stream.setVersion(QDataStream::Qt_5_4);
     m_AdjDateTime = dateTimeWrite;
     stream << m_nType;
     stream << m_nFlags;
@@ -150,41 +154,47 @@ void cClamp::exportAdjData(QDataStream &stream, QDateTime dateTimeWrite)
         stream << spec;
         range->getJustData()->Serialize(stream);
     }
+    m_adjReadWrite.setAdjData(ba);
+    return m_adjReadWrite.exportAdjFlash();
 }
 
-bool cClamp::importAdjData(QByteArray& ba)
+bool cClamp::importAdjData()
 {
-    QDataStream stream(&ba, QIODevice::ReadOnly);
-    stream.setVersion(QDataStream::Qt_5_4);
+    if(m_adjReadWrite.importAdjFlash()) {
+        QByteArray ba = m_adjReadWrite.getAdjData();
+        QDataStream stream(&ba, QIODevice::ReadOnly);
+        stream.setVersion(QDataStream::Qt_5_4);
 
-    stream.skipRawData(6);
-    stream >> m_nType;
-    stream >> m_nFlags;
-    QString clampTypeNameDummy;
-    stream >> clampTypeNameDummy; // for sake of compatibility
-    stream >> m_sVersion;
-    stream >> m_sSerial;
-    QString dts;
-    stream >> dts;
+        stream.skipRawData(6);
+        stream >> m_nType;
+        stream >> m_nFlags;
+        QString clampTypeNameDummy;
+        stream >> clampTypeNameDummy; // for sake of compatibility
+        stream >> m_sVersion;
+        stream >> m_sSerial;
+        QString dts;
+        stream >> dts;
 
-    int n = 0;
-    m_AdjDateTime = QDateTime::fromString(dts);
-    while (!stream.atEnd()) {
-        QString rngName;
-        stream >> rngName;
-        SenseRangeCommon* range = getRange(rngName);
-        if (range != 0) {
-            n++;
-            range->getJustData()->Deserialize(stream);
+        int n = 0;
+        m_AdjDateTime = QDateTime::fromString(dts);
+        while (!stream.atEnd()) {
+            QString rngName;
+            stream >> rngName;
+            SenseRangeCommon* range = getRange(rngName);
+            if (range != 0) {
+                n++;
+                range->getJustData()->Deserialize(stream);
+            }
+            else {
+                // range not found: read dummy to keep serialization in sync
+                RangeAdjInterface *dummy = new RangeAdjInterface(m_pSCPIInterface, AdjustScpiValueFormatterFactory::createMt310s2AdjFormatter());
+                dummy->Deserialize(stream); // we read the data from stream to keep it in flow
+                delete dummy;
+            }
         }
-        else {
-            // range not found: read dummy to keep serialization in sync
-            RangeAdjInterface *dummy = new RangeAdjInterface(m_pSCPIInterface, AdjustScpiValueFormatterFactory::createMt310s2AdjFormatter());
-            dummy->Deserialize(stream); // we read the data from stream to keep it in flow
-            delete dummy;
-        }
+        return (n == m_RangeList.count() + m_RangeListSecondary.count()); // it's ok if we found data for all ranges in our list
     }
-    return (n == m_RangeList.count() + m_RangeListSecondary.count()); // it's ok if we found data for all ranges in our list
+    return false;
 }
 
 QString cClamp::exportXMLString(int indent)
@@ -230,7 +240,7 @@ QString cClamp::exportXMLString(int indent)
 
     QDomElement chksumtag = justqdom.createElement("Chksum");
     adjtag.appendChild(chksumtag);
-    t = justqdom.createTextNode(QString("0x%1").arg(getChecksum(), 0, 16));
+    t = justqdom.createTextNode(QString("0x%1").arg(m_adjReadWrite.getChecksum(), 0, 16));
     chksumtag.appendChild(t);
 
     QDomElement typeTag = justqdom.createElement( "Sense");
@@ -410,9 +420,8 @@ quint8 cClamp::getAdjStatus()
 
 cClamp::ClampTypes cClamp::readClampType()
 {
-    I2cMuxerScopedOnOff i2cMuxOnOff(getI2cMuxer());
-    QByteArray ba;
-    if (readEepromChecksumValidated(ba)) {
+    if(m_adjReadWrite.importAdjFlash()) {
+        QByteArray ba = m_adjReadWrite.getAdjData();
         quint8 type;
         QDataStream stream(&ba, QIODevice::ReadWrite);
         stream.setVersion(QDataStream::Qt_5_4);
@@ -888,7 +897,7 @@ QString cClamp::scpiReadWriteType(QString& scpi)
             if ( (type > undefined) && (type < anzCL)) {
                 removeAllRanges();
                 initClamp(type);
-                if (exportAdjFlash(QDateTime::currentDateTime())) {
+                if (exportAdjData(QDateTime::currentDateTime())) {
                     addSense();
                     addSenseInterface();
                     answer = ZSCPI::scpiAnswer[ZSCPI::ack];
@@ -926,7 +935,7 @@ QString cClamp::scpiWriteFlash(QString& scpi)
     QString answer;
     cSCPICommand cmd = scpi;
     if (cmd.isCommand(1) && (cmd.getParam(0) == "")) {
-        if (exportAdjFlash(QDateTime::currentDateTime())) {
+        if (exportAdjData(QDateTime::currentDateTime())) {
             answer = ZSCPI::scpiAnswer[ZSCPI::ack];
         }
         else {
@@ -945,7 +954,7 @@ QString cClamp::scpiReadFlash(QString& scpi)
     cSCPICommand cmd = scpi;
     if (cmd.isCommand(1) && (cmd.getParam(0) == "")) {
         if (readClampType() == m_nType) { // we first look whether the type matches
-            importAdjFlash();
+            importAdjData();
             answer = ZSCPI::scpiAnswer[ZSCPI::ack];
         }
         else {
@@ -963,7 +972,7 @@ QString cClamp::scpiResetFlash(QString &scpi)
     QString answer;
     cSCPICommand cmd = scpi;
     if (cmd.isCommand(1) && (cmd.getParam(0) == "")) {
-        if (resetAdjFlash()) {
+        if (m_adjReadWrite.resetAdjFlash()) {
             answer = ZSCPI::scpiAnswer[ZSCPI::ack];
         }
         else {
@@ -981,7 +990,7 @@ QString cClamp::scpiReadChksum(QString& scpi)
     QString answer;
     cSCPICommand cmd = scpi;
     if (cmd.isQuery()) {
-        answer = QString("0x%1").arg(getChecksum(),0,16); // hex output
+        answer = QString("0x%1").arg(m_adjReadWrite.getChecksum(),0,16); // hex output
     }
     else {
         answer = ZSCPI::scpiAnswer[ZSCPI::nak];
