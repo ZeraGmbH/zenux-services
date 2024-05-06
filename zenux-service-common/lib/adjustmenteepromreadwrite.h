@@ -11,6 +11,7 @@ public:
     bool importAdjFlash();
     bool exportAdjFlash();
     bool resetAdjFlash();
+    quint32 getMaxSize();
 
     QByteArray getAdjData();
     void setAdjData(const QByteArray& ba);

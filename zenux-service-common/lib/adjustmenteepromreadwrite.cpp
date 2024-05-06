@@ -39,6 +39,13 @@ bool AdjustmentEepromReadWrite::resetAdjFlash()
     return flashIo->Reset() == flashIo->size();
 }
 
+// Current (valid) assumption: All devices have 24LC256 with 32kBytes
+quint32 AdjustmentEepromReadWrite::getMaxSize()
+{
+    I2cFlashInterfacePtrU flashIo = I2cEEpromIoFactory::create24LC256(m_sDeviceNode, m_nI2CAdr);
+    return flashIo->size();
+}
+
 QByteArray AdjustmentEepromReadWrite::getAdjData()
 {
     return m_adjData;

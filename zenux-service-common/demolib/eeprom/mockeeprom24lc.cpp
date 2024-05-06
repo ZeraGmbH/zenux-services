@@ -55,6 +55,7 @@ int MockEEprom24LC::Reset()
 
 int MockEEprom24LC::size()
 {
+    // Current (valid) assumption: All devices have 24LC256 with 32kBytes
     return sizeFlash;
 }
 
