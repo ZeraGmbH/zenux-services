@@ -115,6 +115,10 @@ void SenseInterfaceCommon::initSCPIConnection(QString leadingNodes)
 
 bool SenseInterfaceCommon::importAdjData(QByteArray &ba)
 {
+    QDataStream streamForAdjReader(&ba, QIODevice::ReadOnly);
+    streamForAdjReader.setVersion(QDataStream::Qt_5_4);
+    m_adjustmentReader.extractDeviceInfos(streamForAdjReader);
+
     QDataStream stream(&ba, QIODevice::ReadOnly);
     stream.setVersion(QDataStream::Qt_5_4);
 
