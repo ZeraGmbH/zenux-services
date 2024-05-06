@@ -13,6 +13,7 @@ private slots:
 
     void readServerVersionAndDeviceNameForCOM();
     void readCOM5003Ranges();
+    void checkChannelRangeAvailability();
 };
 
 #endif // TEST_READADJUSTEDDATA_H

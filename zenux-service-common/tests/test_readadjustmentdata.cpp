@@ -90,4 +90,16 @@ void test_readadjustmentdata::readCOM5003Ranges()
     QCOMPARE(rangesInfos.value("m5"), expectedRangesI + expectedInternalRanges);
 }
 
+void test_readadjustmentdata::checkChannelRangeAvailability()
+{
+    QFile file(":/export_internal_initial_com5003.eeprom");
+    file.open(QIODevice::ReadOnly);
+    QDataStream stream(&file);
+    AdjustmentEepromDataReader reader(stream);
+
+    QVERIFY(reader.isChannelRangeAvailable("m0", "480V"));
+    QVERIFY(!reader.isChannelRangeAvailable("m0", "48V"));
+    QVERIFY(!reader.isChannelRangeAvailable("m10", "480V"));
+}
+
 

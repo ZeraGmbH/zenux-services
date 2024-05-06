@@ -15,6 +15,7 @@ public:
     QString getDeviceName();
     QString getServerVersion();
     QMap<QString, QStringList> getRangeInfos();
+    bool isChannelRangeAvailable(QString channelName, QString rangeName);
 
 private:
     bool extractServerVersion(QDataStream &stream, char* s);

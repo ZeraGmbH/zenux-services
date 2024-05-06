@@ -25,6 +25,11 @@ QMap<QString, QStringList> AdjustmentEepromDataReader::getRangeInfos()
     return m_rangeInfosMap;
 }
 
+bool AdjustmentEepromDataReader::isChannelRangeAvailable(QString channelName, QString rangeName)
+{
+    return m_rangeInfosMap.contains(channelName) && m_rangeInfosMap[channelName].contains(rangeName);
+}
+
 bool AdjustmentEepromDataReader::ignoreCountAndCheckSum(QDataStream &stream)
 {
     // we need count and chksum only to check if file is not empty
