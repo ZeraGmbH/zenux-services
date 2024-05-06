@@ -238,7 +238,7 @@ void cMT310S2dServer::doSetupServer()
             resourceList.append(m_hkInInterface);
             qInfo("SCPI interfaces set.");
 
-            m_pSenseInterface->importAdjFlash(); // we read adjustmentdata at least once
+            m_pSenseInterface->importAdjData(); // we read adjustmentdata at least once
 
             initSCPIConnections();
 
