@@ -2,6 +2,7 @@
 #include "systeminfo.h"
 #include "zscpi_response_definitions.h"
 #include <QJsonObject>
+#include <QDateTime>
 
 Mt310s2SystemInterface::Mt310s2SystemInterface(cPCBServer *server,
                                                Mt310s2SystemInfo *systemInfo,

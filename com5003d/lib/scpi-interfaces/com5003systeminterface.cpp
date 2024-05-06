@@ -1,6 +1,7 @@
 #include "com5003systeminterface.h"
 #include "systeminfo.h"
 #include "zscpi_response_definitions.h"
+#include <QDateTime>
 #include <QJsonObject>
 
 Com5003SystemInterface::Com5003SystemInterface(cPCBServer *server,
