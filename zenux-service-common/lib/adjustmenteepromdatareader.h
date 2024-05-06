@@ -7,8 +7,6 @@
 class AdjustmentEepromDataReader
 {
 public:
-    AdjustmentEepromDataReader(QDataStream &stream);
-    AdjustmentEepromDataReader();
     bool extractDeviceInfos(QDataStream &stream);
     bool ignoreCountAndCheckSum(QDataStream &stream);
 
