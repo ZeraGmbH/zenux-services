@@ -33,13 +33,13 @@ void test_regression_adj_import_export_eeprom_com5003::directExportFlashNoMock()
 {
     setupServers(std::make_shared<TestFactoryI2cCtrl>(true));
     MockI2cEEpromIoFactory::disableMock();
-    QVERIFY(!m_testServer->getSenseInterface()->exportAdjFlash(refTime));
+    QVERIFY(!m_testServer->getSenseInterface()->exportAdjData(refTime));
 }
 
 void test_regression_adj_import_export_eeprom_com5003::directExportFlashGen()
 {
     setupServers(std::make_shared<TestFactoryI2cCtrl>(true));
-    QVERIFY(m_testServer->getSenseInterface()->exportAdjFlash(refTime));
+    QVERIFY(m_testServer->getSenseInterface()->exportAdjData(refTime));
     I2cSettings *i2cSettings = m_testServer->getI2cSettings();
     QByteArray dataWritten = MockEEprom24LC::getData(i2cSettings->getDeviceNode(),
                                                        i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress));
@@ -50,7 +50,7 @@ void test_regression_adj_import_export_eeprom_com5003::directExportFlashGen()
 void test_regression_adj_import_export_eeprom_com5003::directExportFlashCheckReference()
 {
     setupServers(std::make_shared<TestFactoryI2cCtrl>(true));
-    QVERIFY(m_testServer->getSenseInterface()->exportAdjFlash(refTime));
+    QVERIFY(m_testServer->getSenseInterface()->exportAdjData(refTime));
     I2cSettings *i2cSettings = m_testServer->getI2cSettings();
     QByteArray dataWritten = MockEEprom24LC::getData(i2cSettings->getDeviceNode(),
                                                        i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress));
@@ -73,7 +73,7 @@ void test_regression_adj_import_export_eeprom_com5003::scpiWriteFlashInitial()
     QCOMPARE(MockEEprom24LC::getWriteCount(devNode, i2cAddress), 1);
 
     // and do a second write with known time
-    QVERIFY(m_testServer->getSenseInterface()->exportAdjFlash(refTime));
+    QVERIFY(m_testServer->getSenseInterface()->exportAdjData(refTime));
     QCOMPARE(MockEEprom24LC::getWriteCount(devNode, i2cAddress), 2);
     QByteArray dataWritten = MockEEprom24LC::getData(devNode, i2cAddress);
     QByteArray dataReference = readFile(":/export_internal_initial.eeprom");
@@ -174,7 +174,7 @@ void test_regression_adj_import_export_eeprom_com5003::loadValidDateTimeRandomTo
 void test_regression_adj_import_export_eeprom_com5003::directExportFlashArbitraryVersionGen()
 {
     setupServers(std::make_shared<TestFactoryI2cCtrlCommonInfoFoo>());
-    QVERIFY(m_testServer->getSenseInterface()->exportAdjFlash(refTime));
+    QVERIFY(m_testServer->getSenseInterface()->exportAdjData(refTime));
     I2cSettings *i2cSettings = m_testServer->getI2cSettings();
     QByteArray dataWritten = MockEEprom24LC::getData(i2cSettings->getDeviceNode(),
                                                      i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress));

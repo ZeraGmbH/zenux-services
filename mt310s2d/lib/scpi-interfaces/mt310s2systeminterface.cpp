@@ -249,7 +249,7 @@ QString Mt310s2SystemInterface::m_AdjFlashWrite(QString &sInput)
         {
             if (enable)
             {
-                if (m_senseInterface->exportAdjFlash(QDateTime::currentDateTime()))
+                if (m_senseInterface->exportAdjData(QDateTime::currentDateTime()))
                     return ZSCPI::scpiAnswer[ZSCPI::ack];
                 else
                     return ZSCPI::scpiAnswer[ZSCPI::errexec];
@@ -271,7 +271,7 @@ QString Mt310s2SystemInterface::m_AdjFlashRead(QString &sInput)
 
     if (cmd.isCommand(1) && (cmd.getParam(0) == ""))
     {
-        if (m_senseInterface->importAdjFlash())
+        if (m_senseInterface->importAdjData())
             return ZSCPI::scpiAnswer[ZSCPI::ack];
         else
             return ZSCPI::scpiAnswer[ZSCPI::errexec];
@@ -299,7 +299,7 @@ QString Mt310s2SystemInterface::m_AdjXmlImportExport(QString &sInput)
                 else
                 {
                     m_senseInterface->computeSenseAdjData();
-                    if (!m_senseInterface->exportAdjFlash(QDateTime::currentDateTime()))
+                    if (!m_senseInterface->exportAdjData(QDateTime::currentDateTime()))
                         s = ZSCPI::scpiAnswer[ZSCPI::errexec];
                     else
                         s = ZSCPI::scpiAnswer[ZSCPI::ack];
@@ -366,7 +366,7 @@ QString Mt310s2SystemInterface::m_AdjFlashChksum(QString &sInput)
 
     if (cmd.isQuery())
     {
-        QString s = QString("0x%1").arg(m_senseInterface->getChecksum()); // hex output
+        QString s = QString("0x%1").arg(m_senseInterface->getAdjChecksum()); // hex output
         return s;
     }
     else

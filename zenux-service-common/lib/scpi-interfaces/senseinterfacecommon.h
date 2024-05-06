@@ -8,6 +8,7 @@
 #include "systeminfo.h"
 #include "sensechannelcommon.h"
 #include "adjustmenteepromdatareader.h"
+#include "adjustmenteepromreadwrite.h"
 
 namespace SenseSystem
 {
@@ -24,7 +25,7 @@ namespace SenseSystem
     };
 }
 
-class SenseInterfaceCommon : public cResource, public AdjustmentEeprom, public AdjustmentXmlImportExportTemplate, public AdjustmentStatusInterface
+class SenseInterfaceCommon : public cResource, public AdjustmentXmlImportExportTemplate, public AdjustmentStatusInterface
 {
 public:
     SenseInterfaceCommon(cSCPI *scpiInterface,
@@ -38,6 +39,10 @@ public:
     SenseRangeCommon* getRange(QString channelName, QString rangeName);
     void computeSenseAdjData();
     void registerResource(RMConnection *rmConnection, quint16 port) override;
+    bool exportAdjData(QDateTime dateTimeWrite);
+    bool importAdjData();
+    quint16 getAdjChecksum();
+
     virtual int rangeFlagsDevice() = 0;
     virtual int rangeFlagsIntern() = 0;
     virtual int rangeFlagsExtern() = 0;
@@ -52,9 +57,6 @@ protected:
     virtual RangeAdjInterface* createJustScpiInterfaceWithAtmelPermission() = 0;
     virtual void handleScpiReadWriteMMode(cProtonetCommand* protoCmd) = 0;
     virtual QString scpiReadSenseGroupCatalog(QString& scpi) = 0;
-
-    bool importAdjData(QByteArray& ba) override;
-    void exportAdjData(QDataStream& stream, QDateTime dateTimeWrite) override;
 
     virtual QString getXmlType() = 0;
     virtual bool isRangePartOfAdjXmlExport(SenseRangeCommon* range) = 0;
@@ -82,7 +84,9 @@ protected:
 
     NotificationString m_notifierSenseMMode;
     NotificationString m_notifierSenseChannelCat;
+
     AdjustmentEepromDataReader m_adjustmentReader;
+    AdjustmentEepromReadWrite m_adjReadWrite;
 };
 
 #endif // SENSEINTERFACECOMMON_H

@@ -11,7 +11,7 @@ SenseInterfaceCommon::SenseInterfaceCommon(cSCPI *scpiInterface,
                                            SystemInfo *systemInfo,
                                            AbstractFactoryI2cCtrlPtr ctrlFactory) :
     cResource(scpiInterface),
-    AdjustmentEeprom(i2cSettings->getDeviceNode(),
+    m_adjReadWrite(i2cSettings->getDeviceNode(),
                      i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress),
                      I2cMultiplexerFactory::createNullMuxer()),
     m_systemInfo(systemInfo),
@@ -113,89 +113,108 @@ void SenseInterfaceCommon::initSCPIConnection(QString leadingNodes)
     addDelegate(cmdParent, "ADJUSTMENT", SCPI::isQuery, m_pSCPIInterface, SenseSystem::cmdStatAdjustment);
 }
 
-bool SenseInterfaceCommon::importAdjData(QByteArray &ba)
+bool SenseInterfaceCommon::importAdjData()
 {
-    QDataStream streamForAdjReader(&ba, QIODevice::ReadOnly);
-    streamForAdjReader.setVersion(QDataStream::Qt_5_4);
-    m_adjustmentReader.extractDeviceInfos(streamForAdjReader);
+    if(m_adjReadWrite.importAdjFlash()) {
+        QByteArray ba = m_adjReadWrite.getAdjData();
+        QDataStream streamForAdjReader(&ba, QIODevice::ReadOnly);
+        streamForAdjReader.setVersion(QDataStream::Qt_5_4);
+        m_adjustmentReader.extractDeviceInfos(streamForAdjReader);
 
-    QDataStream stream(&ba, QIODevice::ReadOnly);
-    stream.setVersion(QDataStream::Qt_5_4);
+        QDataStream stream(&ba, QIODevice::ReadOnly);
+        stream.setVersion(QDataStream::Qt_5_4);
 
-    char flashdata[200];
-    char* s = flashdata;
+        char flashdata[200];
+        char* s = flashdata;
 
-    stream.skipRawData(6); // we don't need count and chksum
-    stream >> s;
-    if (QString(s) != "ServerVersion") {
-        qCritical("Flashmemory read: ServerVersion not found");
-        return false;
-    }
-
-    stream >> s; // version: not checked anymore
-    stream >> s; // we take the device name
-
-    QString sysDevName = m_systemInfo->getDeviceName();
-    if (QString(s) != sysDevName) {
-        qCritical("Flashmemory read: Wrong device name: flash %s / µC %s",
-                  s, qPrintable(sysDevName));
-        return false;
-    }
-
-    stream >> s; // we take the device version now
-
-    bool enable = false;
-    m_ctrlFactory->getPermissionCheckController()->hasPermission(enable);
-
-    stream >> s; // we take the serial number now
-    QString sysSerNo = m_systemInfo->getSerialNumber();
-    if (QString(s) != sysSerNo) {
-        qCritical("Flashmemory read, contains wrong serialnumber: flash %s / µC: %s",
-                  s, qPrintable(sysSerNo));
-        m_nSerialStatus |= Adjustment::wrongSNR;
-        if (!enable) {
-            return false; // wrong serial number
-        }
-    }
-    else {
-        m_nSerialStatus = 0; // ok
-    }
-
-    stream >> s;
-    QDateTime DateTime = QDateTime::fromString(QString(s), Qt::TextDate); // datum und uhrzeit übernehmen
-    while (!stream.atEnd()) {
-        bool done;
+        stream.skipRawData(6); // we don't need count and chksum
         stream >> s;
-        QString  JDataSpecs = s; // Type:Channel:Range
+        if (QString(s) != "ServerVersion") {
+            qCritical("Flashmemory read: ServerVersion not found");
+            return false;
+        }
 
-        QStringList spec;
-        spec = JDataSpecs.split(':');
+        stream >> s; // version: not checked anymore
+        stream >> s; // we take the device name
 
-        done = false;
-        if (spec.at(0) == "SENSE" ) {
-            SenseChannelCommon* chn;
-            QString s = spec.at(1);
-            if ((chn = getChannel(s)) != nullptr) {
-                s = spec.at(2);
-                SenseRangeCommon* rng = chn->getRange(s);
-                if (rng != nullptr) {
-                    rng->getJustData()->Deserialize(stream);
-                    done = true;
-                }
+        QString sysDevName = m_systemInfo->getDeviceName();
+        if (QString(s) != sysDevName) {
+            qCritical("Flashmemory read: Wrong device name: flash %s / µC %s",
+                      s, qPrintable(sysDevName));
+            return false;
+        }
+
+        stream >> s; // we take the device version now
+
+        bool enable = false;
+        m_ctrlFactory->getPermissionCheckController()->hasPermission(enable);
+
+        stream >> s; // we take the serial number now
+        QString sysSerNo = m_systemInfo->getSerialNumber();
+        if (QString(s) != sysSerNo) {
+            qCritical("Flashmemory read, contains wrong serialnumber: flash %s / µC: %s",
+                      s, qPrintable(sysSerNo));
+            m_nSerialStatus |= Adjustment::wrongSNR;
+            if (!enable) {
+                return false; // wrong serial number
             }
         }
-        if (!done) {
-            // owner of data read not found: read dummy to keep serialization in sync
-            RangeAdjInterface* dummy = createJustScpiInterfaceWithAtmelPermission();
-            dummy->Deserialize(stream);
-            delete dummy;
+        else {
+            m_nSerialStatus = 0; // ok
         }
+
+        stream >> s;
+        QDateTime DateTime = QDateTime::fromString(QString(s), Qt::TextDate); // datum und uhrzeit übernehmen
+        while (!stream.atEnd()) {
+            bool done;
+            stream >> s;
+            QString  JDataSpecs = s; // Type:Channel:Range
+
+            QStringList spec;
+            spec = JDataSpecs.split(':');
+
+            done = false;
+            if (spec.at(0) == "SENSE" ) {
+                SenseChannelCommon* chn;
+                QString s = spec.at(1);
+                if ((chn = getChannel(s)) != nullptr) {
+                    s = spec.at(2);
+                    SenseRangeCommon* rng = chn->getRange(s);
+                    if (rng != nullptr) {
+                        rng->getJustData()->Deserialize(stream);
+                        done = true;
+                    }
+                }
+            }
+            if (!done) {
+                // owner of data read not found: read dummy to keep serialization in sync
+                RangeAdjInterface* dummy = createJustScpiInterfaceWithAtmelPermission();
+                dummy->Deserialize(stream);
+                delete dummy;
+            }
+        }
+        return (true);
     }
-    return (true);
+    return false;
 }
 
-void SenseInterfaceCommon::exportAdjData(QDataStream &stream, QDateTime dateTimeWrite)
+quint16 SenseInterfaceCommon::getAdjChecksum()
 {
+    return m_adjReadWrite.getChecksum();
+}
+
+bool SenseInterfaceCommon::exportAdjData(QDateTime dateTimeWrite)
+{
+    QByteArray ba;
+    QDataStream stream(&ba,QIODevice::ReadWrite);
+    stream.setVersion(QDataStream::Qt_5_4);
+
+    quint32 count = 0;
+    quint16 chksum = 0;
+
+    stream << count; // first we write place holders for count and chksum this is the same for each adjflash object
+    stream << chksum;
+
     stream << "ServerVersion";
     stream << getAdjExportedVersion();
     stream << m_systemInfo->getDeviceName().toStdString().c_str(); // leiterkarten name aus atmel gelesen
@@ -215,6 +234,8 @@ void SenseInterfaceCommon::exportAdjData(QDataStream &stream, QDateTime dateTime
             }
         }
     }
+    m_adjReadWrite.setAdjData(ba);
+    return m_adjReadWrite.exportAdjFlash();
 }
 
 bool SenseInterfaceCommon::importXMLDocument(QDomDocument* qdomdoc)
@@ -380,7 +401,7 @@ QString SenseInterfaceCommon::exportXMLString(int indent)
 
     QDomElement chksumtag = justqdom.createElement("Chksum");
     adjtag.appendChild(chksumtag);
-    t = justqdom.createTextNode(QString("0x%1").arg(getChecksum(), 0, 16));
+    t = justqdom.createTextNode(QString("0x%1").arg(m_adjReadWrite.getChecksum(), 0, 16));
     chksumtag.appendChild(t);
 
     QDomElement typeTag = justqdom.createElement("Sense");
