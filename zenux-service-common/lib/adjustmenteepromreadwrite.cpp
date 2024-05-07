@@ -21,7 +21,7 @@ bool AdjustmentEepromReadWrite::importAdjFlash()
         qInfo("Import AdjFlash passed.");
         return true;
     }
-    qWarning("readEepromChecksumValidated failed");
+    qWarning("Import AdjFlash failed");
     return false;
 }
 
