@@ -71,6 +71,13 @@ Mt310s2SenseInterface::Mt310s2SenseInterface(cSCPI *scpiInterface,
     m_availSenseModesHash["HF"] = modeHF;
     m_availSenseModesHash["ADJ"] = modeADJ;
 
+    setChannelAndRanges(senseSettings);
+    setSenseMode("AC");
+    setNotifierSenseChannelCat(); // only prepared for !!! since we don't have hot plug for measuring channels yet
+}
+
+void Mt310s2SenseInterface::setChannelAndRanges(cSenseSettings* senseSettings)
+{
     QList<SenseSystem::cChannelSettings*> channelSettings;
     channelSettings = senseSettings->getChannelSettings();
 
@@ -155,9 +162,8 @@ Mt310s2SenseInterface::Mt310s2SenseInterface(cSCPI *scpiInterface,
     rngList.append(new Mt310s2SenseRange(m_pSCPIInterface,   "2mV", false, 0.002, 2684355.0, 3355444.0, 20, rangeFlagsIntern(), createJustScpiInterfaceWithAtmelPermission()));
 
     m_channelList.at(7)->setRangeList(rngList);
-    setSenseMode("AC");
-    setNotifierSenseChannelCat(); // only prepared for !!! since we don't have hot plug for measuring channels yet
 }
+
 
 QString Mt310s2SenseInterface::getPcbName()
 {
