@@ -13,10 +13,12 @@ public:
                           SystemInfo *systemInfo,
                           AbstractFactoryI2cCtrlPtr ctrlFactory);
 // MT specifics only
+    void setChannelAndRanges(cSenseSettings* senseSettings);
     int rangeFlagsDevice() override;
     int rangeFlagsIntern() override;
     int rangeFlagsExtern() override;
     int rangeFlagsExternDc() override;
+
 private:
     const char* getAdjExportedVersion() override;
     QString getPcbName() override;
