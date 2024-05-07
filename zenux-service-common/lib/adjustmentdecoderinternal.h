@@ -11,18 +11,19 @@ public:
     AdjustmentDecoderInternal(quint32 maxSize);
     ~AdjustmentDecoderInternal();
 
-    bool extractDeviceInfos(QByteArray ba);
+    bool decodeAdjBytes(QByteArray ba);
+    const AdjustmentDataHeader& getAdjHeader();
 
-    QString getDeviceName();
-    QString getServerVersion();
     QMap<QString, QStringList> getRangeInfos();
     bool isChannelRangeAvailable(QString channelName, QString rangeName);
 
 private:
-    bool ignoreCountAndCheckSum(QDataStream &stream);
-    bool extractServerVersion(QDataStream &stream);
-    void extractDeviceName(QDataStream &stream);
-    void IgnoreUselessInfos(QDataStream &stream);
+    bool decodeHeader(QDataStream &stream);
+    bool decodeServerVersion(QDataStream &stream);
+    bool decodeDeviceName(QDataStream &stream);
+    bool decodeDeviceVersion(QDataStream &stream);
+    bool decodeSerialNumber(QDataStream &stream);
+    bool decodeAdjTimeStamp(QDataStream &stream);
     void extractRanges(QDataStream &stream);
 
     quint32 m_maxSize;

@@ -12,16 +12,6 @@ AdjustmentDecoderInternal::~AdjustmentDecoderInternal()
     delete[] m_tmpWorkBuffer;
 }
 
-QString AdjustmentDecoderInternal::getDeviceName()
-{
-    return m_adjHeader.m_deviceName;
-}
-
-QString AdjustmentDecoderInternal::getServerVersion()
-{
-    return m_adjHeader.m_serverVersion;
-}
-
 QMap<QString, QStringList> AdjustmentDecoderInternal::getRangeInfos()
 {
     return m_rangeInfosMap;
@@ -32,7 +22,7 @@ bool AdjustmentDecoderInternal::isChannelRangeAvailable(QString channelName, QSt
     return m_rangeInfosMap.contains(channelName) && m_rangeInfosMap[channelName].contains(rangeName);
 }
 
-bool AdjustmentDecoderInternal::extractDeviceInfos(QByteArray ba)
+bool AdjustmentDecoderInternal::decodeAdjBytes(QByteArray ba)
 {
     if(ba.size() > m_maxSize) {
         qWarning("Adjustment data size exceeds max size: %i (max: %i)", ba.size(), m_maxSize);
@@ -42,53 +32,109 @@ bool AdjustmentDecoderInternal::extractDeviceInfos(QByteArray ba)
     QDataStream stream(&ba, QIODevice::ReadOnly);
     stream.setVersion(QDataStream::Qt_5_4);
 
-    if(!ignoreCountAndCheckSum(stream))
+    quint32 sizeStored;
+    stream >> sizeStored;
+    if(sizeStored != ba.size()) {
+        qWarning("Adjustment data size %i does not match size stored %i!", ba.size(), sizeStored);
         return false;
+    }
+    quint16 checkSum;
+    stream >> checkSum; // ignore - checked in AdjustmentEepromReadWrite
 
-    if(!extractServerVersion(stream))
+    if(!decodeHeader(stream)) {
+        qWarning("Adjustment data contains invalid header!");
         return false;
-    extractDeviceName(stream);
-    IgnoreUselessInfos(stream);
+    }
+
     extractRanges(stream);
 
     return true;
 }
 
-bool AdjustmentDecoderInternal::ignoreCountAndCheckSum(QDataStream &stream)
+const AdjustmentDataHeader &AdjustmentDecoderInternal::getAdjHeader()
 {
-    // we need count and chksum only to check if file is not empty
-    if(stream.skipRawData(6) == -1) {
-        qCritical("Empty file ?");
+    return m_adjHeader;
+}
+
+bool AdjustmentDecoderInternal::decodeHeader(QDataStream &stream)
+{
+    if(!decodeServerVersion(stream))
+        return false;
+    if(!decodeDeviceName(stream))
+        return false;
+    if(!decodeDeviceVersion(stream))
+        return false;
+    if(!decodeSerialNumber(stream))
+        return false;
+    // before 4.4.3 COM5003 did not store valid timestamps
+    // see test_regression_adj_import_export_eeprom_com5003
+    // * loadOriginalInvalidDateTimeRandomToEEpromWriteToFlashExportXmlAndCheck
+    // * loadValidDateTimeRandomToEEpromWriteToFlashExportXmlAndCheck
+    decodeAdjTimeStamp(stream);
+    return true;
+}
+
+bool AdjustmentDecoderInternal::decodeServerVersion(QDataStream &stream)
+{
+    stream >> m_tmpWorkBuffer;
+    if (QString(m_tmpWorkBuffer) != "ServerVersion") {
+        qWarning("Adjustment data is missing ServerVersion tag!");
+        return false;
+    }
+    stream >> m_tmpWorkBuffer;
+    m_adjHeader.m_serverVersion = m_tmpWorkBuffer;
+    if(m_adjHeader.m_serverVersion.isEmpty()) {
+        qWarning("Adjustment data is missing server version!");
         return false;
     }
     return true;
 }
 
-bool AdjustmentDecoderInternal::extractServerVersion(QDataStream &stream)
+bool AdjustmentDecoderInternal::decodeDeviceName(QDataStream &stream)
 {
     stream >> m_tmpWorkBuffer;
-    if (QString(m_tmpWorkBuffer) != "ServerVersion") {
-        qCritical("Flashmemory read: ServerVersion not found");
+    m_adjHeader.m_deviceName = m_tmpWorkBuffer;
+    if(m_adjHeader.m_deviceName.isEmpty()) {
+        qWarning("Adjustment data is missing device name!");
         return false;
     }
-    else {
-        stream >> m_tmpWorkBuffer;
-        m_adjHeader.m_serverVersion = QString(m_tmpWorkBuffer);
-        return true;
+    return true;
+}
+
+bool AdjustmentDecoderInternal::decodeDeviceVersion(QDataStream &stream)
+{
+    stream >> m_tmpWorkBuffer;
+    m_adjHeader.m_deviceVersion = m_tmpWorkBuffer;
+    if(m_adjHeader.m_deviceVersion.isEmpty()) {
+        qWarning("Adjustment data is missing device version!");
+        return false;
     }
+    return true;
 }
 
-void AdjustmentDecoderInternal::extractDeviceName(QDataStream &stream)
+bool AdjustmentDecoderInternal::decodeSerialNumber(QDataStream &stream)
 {
-    stream >> m_tmpWorkBuffer; // device name
-    m_adjHeader.m_deviceName = QString(m_tmpWorkBuffer);
+    stream >> m_tmpWorkBuffer;
+    m_adjHeader.m_serialNumber = m_tmpWorkBuffer;
+    if(m_adjHeader.m_serialNumber.isEmpty()) {
+        qWarning("Adjustment data is missing device serial number!");
+        return false;
+    }
+    return true;
 }
 
-void AdjustmentDecoderInternal::IgnoreUselessInfos(QDataStream &stream)
+bool AdjustmentDecoderInternal::decodeAdjTimeStamp(QDataStream &stream)
 {
-    stream >> m_tmpWorkBuffer; // device version
-    stream >> m_tmpWorkBuffer; // serial number
-    stream >> m_tmpWorkBuffer; // date & time
+    stream >> m_tmpWorkBuffer;
+    QString adjTimeStamp = m_tmpWorkBuffer;
+    if(adjTimeStamp.isEmpty())
+        qWarning("Adjustment data is missing device adjustment timestamp!");
+    m_adjHeader.m_adjustmentDate = QDateTime::fromString(adjTimeStamp, Qt::TextDate);
+    if(!m_adjHeader.m_adjustmentDate.isValid()) {
+        qWarning("Adjustment data'a adjustment timestamp is invalid!");
+        return false;
+    }
+    return true;
 }
 
 void AdjustmentDecoderInternal::extractRanges(QDataStream &stream)

@@ -115,15 +115,15 @@ void SenseInterfaceCommon::initSCPIConnection(QString leadingNodes)
     addDelegate(cmdParent, "ADJUSTMENT", SCPI::isQuery, m_pSCPIInterface, SenseSystem::cmdStatAdjustment);
 }
 
-void SenseInterfaceCommon::decodeAdjustmentData()
+void SenseInterfaceCommon::decodeAdjustmentDataNextGen()
 {
-    m_adjustmentDecoder.extractDeviceInfos(m_adjReadWrite.getAdjData());
+    m_adjustmentDecoder.decodeAdjBytes(m_adjReadWrite.getAdjData());
 }
 
 bool SenseInterfaceCommon::importAdjData()
 {
     if(m_adjReadWrite.importAdjFlash()) {
-        decodeAdjustmentData();
+        decodeAdjustmentDataNextGen();
         QByteArray ba = m_adjReadWrite.getAdjData();
         QDataStream stream(&ba, QIODevice::ReadOnly);
         stream.setVersion(QDataStream::Qt_5_4);
