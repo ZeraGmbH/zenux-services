@@ -19,10 +19,10 @@ void test_readadjustmentdata::denyMaxSizeExceed()
     QByteArray ba = file.readAll();
 
     AdjustmentDecoderInternal reader1(ba.size());
-    QVERIFY(reader1.extractDeviceInfos(ba));
+    QVERIFY(reader1.decodeAdjBytes(ba));
 
     AdjustmentDecoderInternal reader2(ba.size()-1);
-    QVERIFY(!reader2.extractDeviceInfos(ba));
+    QVERIFY(!reader2.decodeAdjBytes(ba));
 }
 
 void test_readadjustmentdata::readServerVersionAndDeviceNameForMT()
@@ -32,9 +32,12 @@ void test_readadjustmentdata::readServerVersionAndDeviceNameForMT()
     QByteArray ba = file.readAll();
 
     AdjustmentDecoderInternal reader(m_flashSizeAllDevicesAtTheTimeOfWriting);
-    QVERIFY(reader.extractDeviceInfos(ba));
-    QCOMPARE(reader.getServerVersion(), "V1.01");
-    QCOMPARE(reader.getDeviceName(), "Unknown");
+    QVERIFY(reader.decodeAdjBytes(ba));
+    QCOMPARE(reader.getAdjHeader().m_deviceName, "Unknown");
+    QCOMPARE(reader.getAdjHeader().m_serverVersion, "V1.01");
+    QCOMPARE(reader.getAdjHeader().m_serialNumber, "Unknown");
+    QCOMPARE(reader.getAdjHeader().m_deviceVersion, "DEVICE: Unknown;PCB: Unknown;LCA: Unknown;CTRL: Unknown");
+    QCOMPARE(reader.getAdjHeader().m_adjustmentDate, QDateTime::fromSecsSinceEpoch(0, Qt::UTC));
 }
 
 void test_readadjustmentdata::readMT310s2Ranges()
@@ -44,7 +47,7 @@ void test_readadjustmentdata::readMT310s2Ranges()
     QByteArray ba = file.readAll();
 
     AdjustmentDecoderInternal reader(m_flashSizeAllDevicesAtTheTimeOfWriting);
-    reader.extractDeviceInfos(ba);
+    reader.decodeAdjBytes(ba);
 
     QMap<QString, QStringList> rangesInfos = reader.getRangeInfos();
     QCOMPARE(rangesInfos.size(), 8);
@@ -74,9 +77,12 @@ void test_readadjustmentdata::readServerVersionAndDeviceNameForCOM()
     QByteArray ba = file.readAll();
 
     AdjustmentDecoderInternal reader(m_flashSizeAllDevicesAtTheTimeOfWriting);
-    QVERIFY(reader.extractDeviceInfos(ba));
-    QCOMPARE(reader.getServerVersion(), "V1.00");
-    QCOMPARE(reader.getDeviceName(), "Unknown");
+    QVERIFY(reader.decodeAdjBytes(ba));
+    QCOMPARE(reader.getAdjHeader().m_deviceName, "Unknown");
+    QCOMPARE(reader.getAdjHeader().m_serverVersion, "V1.00");
+    QCOMPARE(reader.getAdjHeader().m_serialNumber, "Unknown");
+    QCOMPARE(reader.getAdjHeader().m_deviceVersion, "DEVICE: Unknown;PCB: Unknown;LCA: Unknown;CTRL: Unknown");
+    QCOMPARE(reader.getAdjHeader().m_adjustmentDate, QDateTime::fromSecsSinceEpoch(0, Qt::UTC));
 }
 
 void test_readadjustmentdata::readCOM5003Ranges()
@@ -86,7 +92,7 @@ void test_readadjustmentdata::readCOM5003Ranges()
     QByteArray ba = file.readAll();
 
     AdjustmentDecoderInternal reader(m_flashSizeAllDevicesAtTheTimeOfWriting);
-    reader.extractDeviceInfos(ba);
+    reader.decodeAdjBytes(ba);
 
     QMap<QString, QStringList> rangesInfos = reader.getRangeInfos();
     QCOMPARE(rangesInfos.size(), 6);
@@ -113,7 +119,7 @@ void test_readadjustmentdata::checkChannelRangeAvailability()
     QByteArray ba = file.readAll();
 
     AdjustmentDecoderInternal reader(m_flashSizeAllDevicesAtTheTimeOfWriting);
-    reader.extractDeviceInfos(ba);
+    reader.decodeAdjBytes(ba);
 
     QVERIFY(reader.isChannelRangeAvailable("m0", "480V"));
     QVERIFY(!reader.isChannelRangeAvailable("m0", "48V"));

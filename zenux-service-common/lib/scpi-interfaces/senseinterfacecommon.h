@@ -72,7 +72,7 @@ protected:
     void setNotifierSenseMMode();
     void setNotifierSenseChannelCat();
     QStringList getSenseModesSortedById();
-    void decodeAdjustmentData();
+    void decodeAdjustmentDataNextGen(); // WIP
 
     static QString m_version;
     SystemInfo *m_systemInfo;
