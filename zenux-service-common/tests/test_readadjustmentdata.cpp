@@ -1,12 +1,10 @@
 #include "test_readadjustmentdata.h"
 #include "adjustmentdecoderinternal.h"
 #include "adjustmenteepromreadwrite.h"
-#include <QDataStream>
 #include <QFile>
 #include <QTest>
 
 QTEST_MAIN(test_readadjustmentdata)
-
 
 void test_readadjustmentdata::initTestCase()
 {
@@ -14,22 +12,14 @@ void test_readadjustmentdata::initTestCase()
     m_flashSizeAllDevicesAtTheTimeOfWriting = eepromRw.getMaxSize();
 }
 
-void test_readadjustmentdata::checkFileNotEmpty()
-{
-    AdjustmentDecoderInternal reader(m_flashSizeAllDevicesAtTheTimeOfWriting);
-    QFile file(":/export_internal_initial_mt310s2.eeprom");
-    QVERIFY(file.open(QIODevice::ReadOnly));
-    QDataStream stream(&file);
-    QVERIFY(reader.ignoreCountAndCheckSum(stream));
-}
-
 void test_readadjustmentdata::readServerVersionAndDeviceNameForMT()
 {
-    AdjustmentDecoderInternal reader(m_flashSizeAllDevicesAtTheTimeOfWriting);
     QFile file(":/export_internal_initial_mt310s2.eeprom");
     file.open(QIODevice::ReadOnly);
-    QDataStream stream(&file);
-    QVERIFY(reader.extractDeviceInfos(stream));
+    QByteArray ba = file.readAll();
+
+    AdjustmentDecoderInternal reader(m_flashSizeAllDevicesAtTheTimeOfWriting);
+    QVERIFY(reader.extractDeviceInfos(ba));
     QCOMPARE(reader.getServerVersion(), "V1.01");
     QCOMPARE(reader.getDeviceName(), "Unknown");
 }
@@ -38,9 +28,10 @@ void test_readadjustmentdata::readMT310s2Ranges()
 {
     QFile file(":/export_internal_initial_mt310s2.eeprom");
     file.open(QIODevice::ReadOnly);
-    QDataStream stream(&file);
+    QByteArray ba = file.readAll();
+
     AdjustmentDecoderInternal reader(m_flashSizeAllDevicesAtTheTimeOfWriting);
-    reader.extractDeviceInfos(stream);
+    reader.extractDeviceInfos(ba);
 
     QMap<QString, QStringList> rangesInfos = reader.getRangeInfos();
     QCOMPARE(rangesInfos.size(), 8);
@@ -65,11 +56,12 @@ void test_readadjustmentdata::readMT310s2Ranges()
 
 void test_readadjustmentdata::readServerVersionAndDeviceNameForCOM()
 {
-    AdjustmentDecoderInternal reader(m_flashSizeAllDevicesAtTheTimeOfWriting);
     QFile file(":/export_internal_initial_com5003.eeprom");
     file.open(QIODevice::ReadOnly);
-    QDataStream stream(&file);
-    QVERIFY(reader.extractDeviceInfos(stream));
+    QByteArray ba = file.readAll();
+
+    AdjustmentDecoderInternal reader(m_flashSizeAllDevicesAtTheTimeOfWriting);
+    QVERIFY(reader.extractDeviceInfos(ba));
     QCOMPARE(reader.getServerVersion(), "V1.00");
     QCOMPARE(reader.getDeviceName(), "Unknown");
 }
@@ -78,9 +70,10 @@ void test_readadjustmentdata::readCOM5003Ranges()
 {
     QFile file(":/export_internal_initial_com5003.eeprom");
     file.open(QIODevice::ReadOnly);
-    QDataStream stream(&file);
+    QByteArray ba = file.readAll();
+
     AdjustmentDecoderInternal reader(m_flashSizeAllDevicesAtTheTimeOfWriting);
-    reader.extractDeviceInfos(stream);
+    reader.extractDeviceInfos(ba);
 
     QMap<QString, QStringList> rangesInfos = reader.getRangeInfos();
     QCOMPARE(rangesInfos.size(), 6);
@@ -104,13 +97,13 @@ void test_readadjustmentdata::checkChannelRangeAvailability()
 {
     QFile file(":/export_internal_initial_com5003.eeprom");
     file.open(QIODevice::ReadOnly);
-    QDataStream stream(&file);
+    QByteArray ba = file.readAll();
+
     AdjustmentDecoderInternal reader(m_flashSizeAllDevicesAtTheTimeOfWriting);
-    reader.extractDeviceInfos(stream);
+    reader.extractDeviceInfos(ba);
 
     QVERIFY(reader.isChannelRangeAvailable("m0", "480V"));
     QVERIFY(!reader.isChannelRangeAvailable("m0", "48V"));
     QVERIFY(!reader.isChannelRangeAvailable("m10", "480V"));
 }
-
 

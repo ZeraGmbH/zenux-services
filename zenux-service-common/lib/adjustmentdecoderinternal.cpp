@@ -87,8 +87,11 @@ void AdjustmentDecoderInternal::extractRanges(QDataStream &stream)
     }
 }
 
-bool AdjustmentDecoderInternal::extractDeviceInfos(QDataStream &stream)
+bool AdjustmentDecoderInternal::extractDeviceInfos(QByteArray ba)
 {
+    QDataStream stream(&ba, QIODevice::ReadOnly);
+    stream.setVersion(QDataStream::Qt_5_4);
+
     char flashdata[200];
     char* s = flashdata;
 

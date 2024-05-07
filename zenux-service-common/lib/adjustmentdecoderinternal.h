@@ -8,8 +8,8 @@ class AdjustmentDecoderInternal
 {
 public:
     AdjustmentDecoderInternal(quint32 maxSize);
-    bool extractDeviceInfos(QDataStream &stream);
-    bool ignoreCountAndCheckSum(QDataStream &stream);
+
+    bool extractDeviceInfos(QByteArray ba);
 
     QString getDeviceName();
     QString getServerVersion();
@@ -17,6 +17,7 @@ public:
     bool isChannelRangeAvailable(QString channelName, QString rangeName);
 
 private:
+    bool ignoreCountAndCheckSum(QDataStream &stream);
     bool extractServerVersion(QDataStream &stream, char* s);
     void extractDeviceName(QDataStream &stream, char* s);
     void IgnoreUselessInfos(QDataStream &stream, char* s);
