@@ -20,10 +20,12 @@ public:
                           SystemInfo *systemInfo,
                           AbstractFactoryI2cCtrlPtr ctrlFactory);
 // COM specifics only
+    void setChannelAndRanges(cSenseSettings *senseSettings);
     int rangeFlagsDevice() override;
     int rangeFlagsIntern() override;
     int rangeFlagsExtern() override;
     int rangeFlagsExternDc() override;
+
 private slots:
     void unregisterSense();
     void registerSense();
