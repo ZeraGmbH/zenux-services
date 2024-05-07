@@ -19,8 +19,6 @@ SenseInterfaceCommon::SenseInterfaceCommon(cSCPI *scpiInterface,
                    I2cMultiplexerFactory::createNullMuxer()),
     m_adjustmentDecoder(m_adjReadWrite.getMaxSize())
 {
-    m_adjReadWrite.importAdjFlash();
-    decodeAdjustmentData();
 }
 
 SenseInterfaceCommon::~SenseInterfaceCommon()
@@ -128,6 +126,7 @@ void SenseInterfaceCommon::decodeAdjustmentData()
 bool SenseInterfaceCommon::importAdjData()
 {
     if(m_adjReadWrite.importAdjFlash()) {
+        decodeAdjustmentData();
         QByteArray ba = m_adjReadWrite.getAdjData();
         QDataStream stream(&ba, QIODevice::ReadOnly);
         stream.setVersion(QDataStream::Qt_5_4);
