@@ -5,6 +5,7 @@
 #include <timemachineobject.h>
 #include "scpisingletransactionblocked.h"
 #include "zscpi_response_definitions.h"
+#include <mockeeprom24lc.h>
 #include <QSignalSpy>
 #include <QTest>
 
@@ -30,6 +31,7 @@ void test_mockservice_mt310s2d_full::init()
 
 void test_mockservice_mt310s2d_full::cleanup()
 {
+    MockEEprom24LC::cleanAll();
     m_pcbIFace = nullptr;
     m_proxyClient = nullptr;
     m_mt310s2d = nullptr;

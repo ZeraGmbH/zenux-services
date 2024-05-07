@@ -8,6 +8,7 @@
 #include "testfactoryi2cctrl.h"
 #include "zscpi_response_definitions.h"
 #include <timemachineobject.h>
+#include <mockeeprom24lc.h>
 #include <QTest>
 
 QTEST_MAIN(test_regression_adj_status_mt310s2);
@@ -20,6 +21,7 @@ void test_regression_adj_status_mt310s2::initTestCase()
 
 void test_regression_adj_status_mt310s2::cleanup()
 {
+    MockEEprom24LC::cleanAll();
     m_proxyClient = nullptr;
     m_testServer = nullptr;
     m_resmanServer = nullptr;
