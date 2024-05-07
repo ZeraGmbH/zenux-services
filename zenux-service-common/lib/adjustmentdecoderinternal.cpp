@@ -2,8 +2,14 @@
 #include <QDataStream>
 
 AdjustmentDecoderInternal::AdjustmentDecoderInternal(quint32 maxSize) :
-    m_maxSize(maxSize)
+    m_maxSize(maxSize),
+    m_tmpWorkBuffer(new char[maxSize])
 {
+}
+
+AdjustmentDecoderInternal::~AdjustmentDecoderInternal()
+{
+    delete[] m_tmpWorkBuffer;
 }
 
 QString AdjustmentDecoderInternal::getDeviceName()
@@ -36,16 +42,13 @@ bool AdjustmentDecoderInternal::extractDeviceInfos(QByteArray ba)
     QDataStream stream(&ba, QIODevice::ReadOnly);
     stream.setVersion(QDataStream::Qt_5_4);
 
-    char flashdata[200];
-    char* s = flashdata;
-
     if(!ignoreCountAndCheckSum(stream))
         return false;
 
-    if(!extractServerVersion(stream, s))
+    if(!extractServerVersion(stream))
         return false;
-    extractDeviceName(stream, s);
-    IgnoreUselessInfos(stream, s);
+    extractDeviceName(stream);
+    IgnoreUselessInfos(stream);
     extractRanges(stream);
 
     return true;
@@ -61,31 +64,31 @@ bool AdjustmentDecoderInternal::ignoreCountAndCheckSum(QDataStream &stream)
     return true;
 }
 
-bool AdjustmentDecoderInternal::extractServerVersion(QDataStream &stream, char *s)
+bool AdjustmentDecoderInternal::extractServerVersion(QDataStream &stream)
 {
-    stream >> s;
-    if (QString(s) != "ServerVersion") {
+    stream >> m_tmpWorkBuffer;
+    if (QString(m_tmpWorkBuffer) != "ServerVersion") {
         qCritical("Flashmemory read: ServerVersion not found");
         return false;
     }
     else {
-        stream >> s;
-        m_adjHeader.m_serverVersion = QString(s);
+        stream >> m_tmpWorkBuffer;
+        m_adjHeader.m_serverVersion = QString(m_tmpWorkBuffer);
         return true;
     }
 }
 
-void AdjustmentDecoderInternal::extractDeviceName(QDataStream &stream, char *s)
+void AdjustmentDecoderInternal::extractDeviceName(QDataStream &stream)
 {
-    stream >> s; // device name
-    m_adjHeader.m_deviceName = QString(s);
+    stream >> m_tmpWorkBuffer; // device name
+    m_adjHeader.m_deviceName = QString(m_tmpWorkBuffer);
 }
 
-void AdjustmentDecoderInternal::IgnoreUselessInfos(QDataStream &stream, char *s)
+void AdjustmentDecoderInternal::IgnoreUselessInfos(QDataStream &stream)
 {
-    stream >> s; // device version
-    stream >> s; // serial number
-    stream >> s; // date & time
+    stream >> m_tmpWorkBuffer; // device version
+    stream >> m_tmpWorkBuffer; // serial number
+    stream >> m_tmpWorkBuffer; // date & time
 }
 
 void AdjustmentDecoderInternal::extractRanges(QDataStream &stream)
