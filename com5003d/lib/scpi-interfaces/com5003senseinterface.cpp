@@ -55,6 +55,27 @@ Com5003SenseInterface::Com5003SenseInterface(cSCPI *scpiInterface,
     m_ctrlFactory->getMModeController()->setMeasMode(SenseSystem::modeAC); // set the atmels mode too
     setNotifierSenseMMode();
 
+    setChannelAndRanges(senseSettings);
+
+    setNotifierSenseChannelCat(); // only prepared for !!! since we don't have hot plug for measuring channels yet
+
+    // we set up our statemachine for changing sense mode
+    // we must use a statemachine because we have to synchronize sending of notifier
+    // otherwise moduls using this notifier will crash because resources are not registered properly
+
+    m_UnregisterSenseState.addTransition(this, &Com5003SenseInterface::registerRdy, &m_RegisterSenseState);
+    m_RegisterSenseState.addTransition(this, &Com5003SenseInterface::registerRdy, &m_NotifySenseState);
+    m_ChangeSenseModeMachine.addState(&m_UnregisterSenseState);
+    m_ChangeSenseModeMachine.addState(&m_RegisterSenseState);
+    m_ChangeSenseModeMachine.addState(&m_NotifySenseState);
+    m_ChangeSenseModeMachine.setInitialState(&m_UnregisterSenseState);
+    connect(&m_UnregisterSenseState, &QAbstractState::entered, this, &Com5003SenseInterface::unregisterSense);
+    connect(&m_RegisterSenseState, &QAbstractState::entered, this, &Com5003SenseInterface::registerSense);
+    connect(&m_NotifySenseState, &QAbstractState::entered, this, &Com5003SenseInterface::notifySense);
+}
+
+void Com5003SenseInterface::setChannelAndRanges(cSenseSettings *senseSettings)
+{
     QList<SenseSystem::cChannelSettings*> channelSettings;
     channelSettings = senseSettings->getChannelSettings();
 
@@ -117,22 +138,6 @@ Com5003SenseInterface::Com5003SenseInterface(cSCPI *scpiInterface,
 
         m_channelList.at(i)->setRangeList(rngList);
     }
-
-    setNotifierSenseChannelCat(); // only prepared for !!! since we don't have hot plug for measuring channels yet
-
-    // we set up our statemachine for changing sense mode
-    // we must use a statemachine because we have to synchronize sending of notifier
-    // otherwise moduls using this notifier will crash because resources are not registered properly
-
-    m_UnregisterSenseState.addTransition(this, &Com5003SenseInterface::registerRdy, &m_RegisterSenseState);
-    m_RegisterSenseState.addTransition(this, &Com5003SenseInterface::registerRdy, &m_NotifySenseState);
-    m_ChangeSenseModeMachine.addState(&m_UnregisterSenseState);
-    m_ChangeSenseModeMachine.addState(&m_RegisterSenseState);
-    m_ChangeSenseModeMachine.addState(&m_NotifySenseState);
-    m_ChangeSenseModeMachine.setInitialState(&m_UnregisterSenseState);
-    connect(&m_UnregisterSenseState, &QAbstractState::entered, this, &Com5003SenseInterface::unregisterSense);
-    connect(&m_RegisterSenseState, &QAbstractState::entered, this, &Com5003SenseInterface::registerSense);
-    connect(&m_NotifySenseState, &QAbstractState::entered, this, &Com5003SenseInterface::notifySense);
 }
 
 int Com5003SenseInterface::rangeFlagsDevice()
