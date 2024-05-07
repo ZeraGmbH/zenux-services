@@ -17,8 +17,10 @@ SenseInterfaceCommon::SenseInterfaceCommon(cSCPI *scpiInterface,
     m_adjReadWrite(i2cSettings->getDeviceNode(),
                    i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress),
                    I2cMultiplexerFactory::createNullMuxer()),
-    m_adjustmentReader(m_adjReadWrite.getMaxSize())
+    m_adjustmentDecoder(m_adjReadWrite.getMaxSize())
 {
+    m_adjReadWrite.importAdjFlash();
+    decodeAdjustmentData();
 }
 
 SenseInterfaceCommon::~SenseInterfaceCommon()
@@ -115,14 +117,18 @@ void SenseInterfaceCommon::initSCPIConnection(QString leadingNodes)
     addDelegate(cmdParent, "ADJUSTMENT", SCPI::isQuery, m_pSCPIInterface, SenseSystem::cmdStatAdjustment);
 }
 
+void SenseInterfaceCommon::decodeAdjustmentData()
+{
+    QByteArray ba = m_adjReadWrite.getAdjData();
+    QDataStream streamForAdjReader(&ba, QIODevice::ReadOnly);
+    streamForAdjReader.setVersion(QDataStream::Qt_5_4);
+    m_adjustmentDecoder.extractDeviceInfos(streamForAdjReader);
+}
+
 bool SenseInterfaceCommon::importAdjData()
 {
     if(m_adjReadWrite.importAdjFlash()) {
         QByteArray ba = m_adjReadWrite.getAdjData();
-        QDataStream streamForAdjReader(&ba, QIODevice::ReadOnly);
-        streamForAdjReader.setVersion(QDataStream::Qt_5_4);
-        m_adjustmentReader.extractDeviceInfos(streamForAdjReader);
-
         QDataStream stream(&ba, QIODevice::ReadOnly);
         stream.setVersion(QDataStream::Qt_5_4);
 
