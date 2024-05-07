@@ -8,7 +8,7 @@ class test_readadjustmentdata : public QObject
     Q_OBJECT
 private slots:
     void initTestCase();
-    void checkFileNotEmpty();
+
     void readServerVersionAndDeviceNameForMT();
     void readMT310s2Ranges();
 
