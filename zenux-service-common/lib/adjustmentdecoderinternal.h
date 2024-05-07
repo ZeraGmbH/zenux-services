@@ -1,7 +1,8 @@
 #ifndef ADJUSTMENTDECODERINTERNAL_H
 #define ADJUSTMENTDECODERINTERNAL_H
 
-#include <QObject>
+#include "adjustmendataheader.h"
+#include <QByteArray>
 #include <QMap>
 
 class AdjustmentDecoderInternal
@@ -24,8 +25,7 @@ private:
     void extractRanges(QDataStream &stream);
 
     quint32 m_maxSize;
-    QString m_deviceName;
-    QString m_serverVersion;
+    AdjustmentDataHeader m_adjHeader;
 
     QMap<QString, QStringList> m_rangeInfosMap;
 };

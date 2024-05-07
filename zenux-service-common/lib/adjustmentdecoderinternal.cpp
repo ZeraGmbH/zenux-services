@@ -8,12 +8,12 @@ AdjustmentDecoderInternal::AdjustmentDecoderInternal(quint32 maxSize) :
 
 QString AdjustmentDecoderInternal::getDeviceName()
 {
-    return m_deviceName;
+    return m_adjHeader.m_deviceName;
 }
 
 QString AdjustmentDecoderInternal::getServerVersion()
 {
-    return m_serverVersion;
+    return m_adjHeader.m_serverVersion;
 }
 
 QMap<QString, QStringList> AdjustmentDecoderInternal::getRangeInfos()
@@ -45,7 +45,7 @@ bool AdjustmentDecoderInternal::extractServerVersion(QDataStream &stream, char *
     }
     else {
         stream >> s;
-        m_serverVersion = QString(s);
+        m_adjHeader.m_serverVersion = QString(s);
         return true;
     }
 }
@@ -53,7 +53,7 @@ bool AdjustmentDecoderInternal::extractServerVersion(QDataStream &stream, char *
 void AdjustmentDecoderInternal::extractDeviceName(QDataStream &stream, char *s)
 {
     stream >> s; // device name
-    m_deviceName = QString(s);
+    m_adjHeader.m_deviceName = QString(s);
 }
 
 void AdjustmentDecoderInternal::IgnoreUselessInfos(QDataStream &stream, char *s)
