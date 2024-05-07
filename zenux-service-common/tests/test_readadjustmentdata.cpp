@@ -12,6 +12,19 @@ void test_readadjustmentdata::initTestCase()
     m_flashSizeAllDevicesAtTheTimeOfWriting = eepromRw.getMaxSize();
 }
 
+void test_readadjustmentdata::denyMaxSizeExceed()
+{
+    QFile file(":/export_internal_initial_mt310s2.eeprom");
+    file.open(QIODevice::ReadOnly);
+    QByteArray ba = file.readAll();
+
+    AdjustmentDecoderInternal reader1(ba.size());
+    QVERIFY(reader1.extractDeviceInfos(ba));
+
+    AdjustmentDecoderInternal reader2(ba.size()-1);
+    QVERIFY(!reader2.extractDeviceInfos(ba));
+}
+
 void test_readadjustmentdata::readServerVersionAndDeviceNameForMT()
 {
     QFile file(":/export_internal_initial_mt310s2.eeprom");
