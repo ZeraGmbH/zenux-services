@@ -26,6 +26,31 @@ bool AdjustmentDecoderInternal::isChannelRangeAvailable(QString channelName, QSt
     return m_rangeInfosMap.contains(channelName) && m_rangeInfosMap[channelName].contains(rangeName);
 }
 
+bool AdjustmentDecoderInternal::extractDeviceInfos(QByteArray ba)
+{
+    if(ba.size() > m_maxSize) {
+        qWarning("Adjustment data size exceeds max size: %i (max: %i)", ba.size(), m_maxSize);
+        return false;
+    }
+
+    QDataStream stream(&ba, QIODevice::ReadOnly);
+    stream.setVersion(QDataStream::Qt_5_4);
+
+    char flashdata[200];
+    char* s = flashdata;
+
+    if(!ignoreCountAndCheckSum(stream))
+        return false;
+
+    if(!extractServerVersion(stream, s))
+        return false;
+    extractDeviceName(stream, s);
+    IgnoreUselessInfos(stream, s);
+    extractRanges(stream);
+
+    return true;
+}
+
 bool AdjustmentDecoderInternal::ignoreCountAndCheckSum(QDataStream &stream)
 {
     // we need count and chksum only to check if file is not empty
@@ -87,22 +112,3 @@ void AdjustmentDecoderInternal::extractRanges(QDataStream &stream)
     }
 }
 
-bool AdjustmentDecoderInternal::extractDeviceInfos(QByteArray ba)
-{
-    QDataStream stream(&ba, QIODevice::ReadOnly);
-    stream.setVersion(QDataStream::Qt_5_4);
-
-    char flashdata[200];
-    char* s = flashdata;
-
-    if(!ignoreCountAndCheckSum(stream))
-        return false;
-
-    if(!extractServerVersion(stream, s))
-        return false;
-    extractDeviceName(stream, s);
-    IgnoreUselessInfos(stream, s);
-    extractRanges(stream);
-
-    return true;
-}

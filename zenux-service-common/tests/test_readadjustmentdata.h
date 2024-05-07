@@ -9,6 +9,8 @@ class test_readadjustmentdata : public QObject
 private slots:
     void initTestCase();
 
+    void denyMaxSizeExceed();
+
     void readServerVersionAndDeviceNameForMT();
     void readMT310s2Ranges();
 
