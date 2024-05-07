@@ -1,32 +1,32 @@
-#include "adjustmenteepromdatareader.h"
+#include "adjustmentdecoderinternal.h"
 #include <QDataStream>
 
-AdjustmentEepromDataReader::AdjustmentEepromDataReader(quint32 maxSize) :
+AdjustmentDecoderInternal::AdjustmentDecoderInternal(quint32 maxSize) :
     m_maxSize(maxSize)
 {
 }
 
-QString AdjustmentEepromDataReader::getDeviceName()
+QString AdjustmentDecoderInternal::getDeviceName()
 {
     return m_deviceName;
 }
 
-QString AdjustmentEepromDataReader::getServerVersion()
+QString AdjustmentDecoderInternal::getServerVersion()
 {
     return m_serverVersion;
 }
 
-QMap<QString, QStringList> AdjustmentEepromDataReader::getRangeInfos()
+QMap<QString, QStringList> AdjustmentDecoderInternal::getRangeInfos()
 {
     return m_rangeInfosMap;
 }
 
-bool AdjustmentEepromDataReader::isChannelRangeAvailable(QString channelName, QString rangeName)
+bool AdjustmentDecoderInternal::isChannelRangeAvailable(QString channelName, QString rangeName)
 {
     return m_rangeInfosMap.contains(channelName) && m_rangeInfosMap[channelName].contains(rangeName);
 }
 
-bool AdjustmentEepromDataReader::ignoreCountAndCheckSum(QDataStream &stream)
+bool AdjustmentDecoderInternal::ignoreCountAndCheckSum(QDataStream &stream)
 {
     // we need count and chksum only to check if file is not empty
     if(stream.skipRawData(6) == -1) {
@@ -36,7 +36,7 @@ bool AdjustmentEepromDataReader::ignoreCountAndCheckSum(QDataStream &stream)
     return true;
 }
 
-bool AdjustmentEepromDataReader::extractServerVersion(QDataStream &stream, char *s)
+bool AdjustmentDecoderInternal::extractServerVersion(QDataStream &stream, char *s)
 {
     stream >> s;
     if (QString(s) != "ServerVersion") {
@@ -50,20 +50,20 @@ bool AdjustmentEepromDataReader::extractServerVersion(QDataStream &stream, char 
     }
 }
 
-void AdjustmentEepromDataReader::extractDeviceName(QDataStream &stream, char *s)
+void AdjustmentDecoderInternal::extractDeviceName(QDataStream &stream, char *s)
 {
     stream >> s; // device name
     m_deviceName = QString(s);
 }
 
-void AdjustmentEepromDataReader::IgnoreUselessInfos(QDataStream &stream, char *s)
+void AdjustmentDecoderInternal::IgnoreUselessInfos(QDataStream &stream, char *s)
 {
     stream >> s; // device version
     stream >> s; // serial number
     stream >> s; // date & time
 }
 
-void AdjustmentEepromDataReader::extractRanges(QDataStream &stream)
+void AdjustmentDecoderInternal::extractRanges(QDataStream &stream)
 {
     QByteArray ba(100000, 0);
     stream.readRawData(ba.data(), ba.size());
@@ -87,7 +87,7 @@ void AdjustmentEepromDataReader::extractRanges(QDataStream &stream)
     }
 }
 
-bool AdjustmentEepromDataReader::extractDeviceInfos(QDataStream &stream)
+bool AdjustmentDecoderInternal::extractDeviceInfos(QDataStream &stream)
 {
     char flashdata[200];
     char* s = flashdata;

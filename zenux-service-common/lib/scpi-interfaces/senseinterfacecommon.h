@@ -6,7 +6,7 @@
 #include "i2csettings.h"
 #include "systeminfo.h"
 #include "sensechannelcommon.h"
-#include "adjustmenteepromdatareader.h"
+#include "adjustmentdecoderinternal.h"
 #include "adjustmenteepromreadwrite.h"
 
 namespace SenseSystem
@@ -85,7 +85,7 @@ protected:
     NotificationString m_notifierSenseChannelCat;
 
     AdjustmentEepromReadWrite m_adjReadWrite;
-    AdjustmentEepromDataReader m_adjustmentReader;
+    AdjustmentDecoderInternal m_adjustmentReader;
 };
 
 #endif // SENSEINTERFACECOMMON_H
