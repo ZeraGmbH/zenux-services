@@ -72,6 +72,7 @@ protected:
     void setNotifierSenseMMode();
     void setNotifierSenseChannelCat();
     QStringList getSenseModesSortedById();
+    void decodeAdjustmentData();
 
     static QString m_version;
     SystemInfo *m_systemInfo;
@@ -85,7 +86,7 @@ protected:
     NotificationString m_notifierSenseChannelCat;
 
     AdjustmentEepromReadWrite m_adjReadWrite;
-    AdjustmentDecoderInternal m_adjustmentReader;
+    AdjustmentDecoderInternal m_adjustmentDecoder;
 };
 
 #endif // SENSEINTERFACECOMMON_H
