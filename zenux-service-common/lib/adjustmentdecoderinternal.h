@@ -9,6 +9,7 @@ class AdjustmentDecoderInternal
 {
 public:
     AdjustmentDecoderInternal(quint32 maxSize);
+    ~AdjustmentDecoderInternal();
 
     bool extractDeviceInfos(QByteArray ba);
 
@@ -19,12 +20,13 @@ public:
 
 private:
     bool ignoreCountAndCheckSum(QDataStream &stream);
-    bool extractServerVersion(QDataStream &stream, char* s);
-    void extractDeviceName(QDataStream &stream, char* s);
-    void IgnoreUselessInfos(QDataStream &stream, char* s);
+    bool extractServerVersion(QDataStream &stream);
+    void extractDeviceName(QDataStream &stream);
+    void IgnoreUselessInfos(QDataStream &stream);
     void extractRanges(QDataStream &stream);
 
     quint32 m_maxSize;
+    char* m_tmpWorkBuffer = nullptr;
     AdjustmentDataHeader m_adjHeader;
 
     QMap<QString, QStringList> m_rangeInfosMap;
