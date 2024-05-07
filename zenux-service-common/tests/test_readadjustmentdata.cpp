@@ -1,5 +1,5 @@
 #include "test_readadjustmentdata.h"
-#include "adjustmenteepromdatareader.h"
+#include "adjustmentdecoderinternal.h"
 #include "adjustmenteepromreadwrite.h"
 #include <QDataStream>
 #include <QFile>
@@ -16,7 +16,7 @@ void test_readadjustmentdata::initTestCase()
 
 void test_readadjustmentdata::checkFileNotEmpty()
 {
-    AdjustmentEepromDataReader reader(m_flashSizeAllDevicesAtTheTimeOfWriting);
+    AdjustmentDecoderInternal reader(m_flashSizeAllDevicesAtTheTimeOfWriting);
     QFile file(":/export_internal_initial_mt310s2.eeprom");
     QVERIFY(file.open(QIODevice::ReadOnly));
     QDataStream stream(&file);
@@ -25,7 +25,7 @@ void test_readadjustmentdata::checkFileNotEmpty()
 
 void test_readadjustmentdata::readServerVersionAndDeviceNameForMT()
 {
-    AdjustmentEepromDataReader reader(m_flashSizeAllDevicesAtTheTimeOfWriting);
+    AdjustmentDecoderInternal reader(m_flashSizeAllDevicesAtTheTimeOfWriting);
     QFile file(":/export_internal_initial_mt310s2.eeprom");
     file.open(QIODevice::ReadOnly);
     QDataStream stream(&file);
@@ -39,7 +39,7 @@ void test_readadjustmentdata::readMT310s2Ranges()
     QFile file(":/export_internal_initial_mt310s2.eeprom");
     file.open(QIODevice::ReadOnly);
     QDataStream stream(&file);
-    AdjustmentEepromDataReader reader(m_flashSizeAllDevicesAtTheTimeOfWriting);
+    AdjustmentDecoderInternal reader(m_flashSizeAllDevicesAtTheTimeOfWriting);
     reader.extractDeviceInfos(stream);
 
     QMap<QString, QStringList> rangesInfos = reader.getRangeInfos();
@@ -65,7 +65,7 @@ void test_readadjustmentdata::readMT310s2Ranges()
 
 void test_readadjustmentdata::readServerVersionAndDeviceNameForCOM()
 {
-    AdjustmentEepromDataReader reader(m_flashSizeAllDevicesAtTheTimeOfWriting);
+    AdjustmentDecoderInternal reader(m_flashSizeAllDevicesAtTheTimeOfWriting);
     QFile file(":/export_internal_initial_com5003.eeprom");
     file.open(QIODevice::ReadOnly);
     QDataStream stream(&file);
@@ -79,7 +79,7 @@ void test_readadjustmentdata::readCOM5003Ranges()
     QFile file(":/export_internal_initial_com5003.eeprom");
     file.open(QIODevice::ReadOnly);
     QDataStream stream(&file);
-    AdjustmentEepromDataReader reader(m_flashSizeAllDevicesAtTheTimeOfWriting);
+    AdjustmentDecoderInternal reader(m_flashSizeAllDevicesAtTheTimeOfWriting);
     reader.extractDeviceInfos(stream);
 
     QMap<QString, QStringList> rangesInfos = reader.getRangeInfos();
@@ -105,7 +105,7 @@ void test_readadjustmentdata::checkChannelRangeAvailability()
     QFile file(":/export_internal_initial_com5003.eeprom");
     file.open(QIODevice::ReadOnly);
     QDataStream stream(&file);
-    AdjustmentEepromDataReader reader(m_flashSizeAllDevicesAtTheTimeOfWriting);
+    AdjustmentDecoderInternal reader(m_flashSizeAllDevicesAtTheTimeOfWriting);
     reader.extractDeviceInfos(stream);
 
     QVERIFY(reader.isChannelRangeAvailable("m0", "480V"));

@@ -1,13 +1,13 @@
-#ifndef ADJUSTMENTEEPROMDATAREADER_H
-#define ADJUSTMENTEEPROMDATAREADER_H
+#ifndef ADJUSTMENTDECODERINTERNAL_H
+#define ADJUSTMENTDECODERINTERNAL_H
 
 #include <QObject>
 #include <QMap>
 
-class AdjustmentEepromDataReader
+class AdjustmentDecoderInternal
 {
 public:
-    AdjustmentEepromDataReader(quint32 maxSize);
+    AdjustmentDecoderInternal(quint32 maxSize);
     bool extractDeviceInfos(QDataStream &stream);
     bool ignoreCountAndCheckSum(QDataStream &stream);
 
@@ -29,4 +29,4 @@ private:
     QMap<QString, QStringList> m_rangeInfosMap;
 };
 
-#endif // ADJUSTMENTEEPROMDATAREADER_H
+#endif // ADJUSTMENTDECODERINTERNAL_H
