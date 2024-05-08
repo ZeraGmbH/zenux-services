@@ -127,8 +127,10 @@ bool AdjustmentDecoderInternal::decodeAdjTimeStamp(QDataStream &stream)
 {
     stream >> m_tmpWorkBuffer;
     QString adjTimeStamp = m_tmpWorkBuffer;
-    if(adjTimeStamp.isEmpty())
+    if(adjTimeStamp.isEmpty()) {
         qWarning("Adjustment data is missing device adjustment timestamp!");
+        return false;
+    }
     m_adjHeader.m_adjustmentDate = QDateTime::fromString(adjTimeStamp, Qt::TextDate);
     if(!m_adjHeader.m_adjustmentDate.isValid()) {
         qWarning("Adjustment data'a adjustment timestamp is invalid!");
