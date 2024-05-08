@@ -13,20 +13,29 @@ AdjustmentEepromReadWrite::AdjustmentEepromReadWrite(QString devnode, quint8 i2c
 
 bool AdjustmentEepromReadWrite::importAdjFlash()
 {
+    if(m_adjDataReadIsValid) {
+        qInfo("Adjustment data was not changed since last valid read. Do consider still valid,");
+        return true;
+    }
     qInfo("Import AdjFlash...");
+    m_adjDataReadIsValid = false;
     I2cMuxerScopedOnOff i2cMuxOnOff(m_i2cMuxer);
     QByteArray ba;
     if (readEepromChecksumValidated(ba)) {
         m_adjData = ba;
         qInfo("Import AdjFlash passed.");
-        return true;
+        m_adjDataReadIsValid = true;
     }
     qWarning("Import AdjFlash failed");
-    return false;
+    return m_adjDataReadIsValid;
 }
 
 bool AdjustmentEepromReadWrite::exportAdjFlash()
 {
+    // There are different places not properly designed
+    // importAdjFlash is bound to decode so to make writes take effect
+    // reading is mandatory. So force a read
+    m_adjDataReadIsValid = false;
     setAdjCountChecksum(m_adjData);
     I2cMuxerScopedOnOff i2cMuxOnOff(m_i2cMuxer);
     return writeFlash(m_adjData);
@@ -34,6 +43,7 @@ bool AdjustmentEepromReadWrite::exportAdjFlash()
 
 bool AdjustmentEepromReadWrite::resetAdjFlash()
 {
+    m_adjDataReadIsValid = false;
     I2cMuxerScopedOnOff i2cMuxOnOff(m_i2cMuxer);
     I2cFlashInterfacePtrU flashIo = I2cEEpromIoFactory::create24LC256(m_sDeviceNode, m_nI2CAdr);
     return flashIo->Reset() == flashIo->size();
