@@ -146,21 +146,16 @@ void AdjustmentDecoderInternal::extractRanges(QDataStream &stream)
     QByteArray ba(m_maxSize, 0);
     stream.readRawData(ba.data(), ba.size());
 
-    QByteArray::iterator it;
-    for(it = ba.begin(); it != ba.end(); it++) {
-        QString data = QString(it);
-        if(data.startsWith("SENSE")) {
-            QStringList rangeCmdList = data.split(':'); //[0]:SENSE  [1]:m0  [2]:250V
-            if(m_rangeInfosMap.contains(rangeCmdList[1])) {
-                QStringList values = m_rangeInfosMap.value(rangeCmdList[1]);
-                values.append(rangeCmdList[2]);
-                m_rangeInfosMap.insert(rangeCmdList[1], values);
-            }
-            else {
-                QStringList values;
-                values.append(rangeCmdList[2]);
-                m_rangeInfosMap.insert(rangeCmdList[1], values);
-            }
+    for(auto it = ba.cbegin(); it != ba.cend(); it++) {
+        const QByteArray &data = it;
+        if(data.startsWith("SENSE:")) {
+            QList<QByteArray> rangeCmdList = data.split(':'); //[0]:SENSE  [1]:m0  [2]:250V
+            QByteArray channelName = rangeCmdList[1];
+            QByteArray rangeName = rangeCmdList[2];
+            if(!m_rangeInfosMap[channelName].contains(rangeName))
+                m_rangeInfosMap[rangeCmdList[1]].append(rangeCmdList[2]);
+            else
+                qFatal("Channel %s / range %s was already added!", qPrintable(channelName), qPrintable(rangeName));
         }
     }
 }
