@@ -13,20 +13,21 @@ AdjustmentEepromReadWrite::AdjustmentEepromReadWrite(QString devnode, quint8 i2c
 
 bool AdjustmentEepromReadWrite::importAdjFlash()
 {
+    qInfo("Read adjustment data...");
     if(m_adjDataReadIsValid) {
-        qInfo("Adjustment data was not changed since last valid read. Do consider still valid,");
+        qInfo("Adjustment data was not changed since last valid read. No read necessary.");
         return true;
     }
-    qInfo("Import AdjFlash...");
     m_adjDataReadIsValid = false;
     I2cMuxerScopedOnOff i2cMuxOnOff(m_i2cMuxer);
     QByteArray ba;
-    if (readEepromChecksumValidated(ba)) {
+    if(readEepromChecksumValidated(ba)) {
+        qInfo("Read adjustment data passed.");
         m_adjData = ba;
-        qInfo("Import AdjFlash passed.");
         m_adjDataReadIsValid = true;
     }
-    qWarning("Import AdjFlash failed");
+    else
+        qWarning("Read adjustment data failed!");
     return m_adjDataReadIsValid;
 }
 
