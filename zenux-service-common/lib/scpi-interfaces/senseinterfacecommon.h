@@ -73,6 +73,7 @@ protected:
     void setNotifierSenseChannelCat();
     QStringList getSenseModesSortedById();
     void decodeAdjustmentDataNextGen(); // WIP
+    bool isInvalidAdjDataOrChannelRangeAvail(QString channelName, QString rangeName);
 
     static QString m_version;
     SystemInfo *m_systemInfo;

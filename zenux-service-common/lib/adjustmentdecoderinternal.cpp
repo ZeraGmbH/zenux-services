@@ -50,7 +50,13 @@ bool AdjustmentDecoderInternal::decodeAdjBytes(QByteArray ba)
     extractRanges(stream);
 
     qInfo("Decode succeeded.");
+    m_isValid = true;
     return true;
+}
+
+bool AdjustmentDecoderInternal::isValid()
+{
+    return m_isValid;
 }
 
 const AdjustmentDataHeader &AdjustmentDecoderInternal::getAdjHeader()

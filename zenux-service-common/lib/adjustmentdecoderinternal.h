@@ -12,6 +12,7 @@ public:
     ~AdjustmentDecoderInternal();
 
     bool decodeAdjBytes(QByteArray ba);
+    bool isValid();
     const AdjustmentDataHeader& getAdjHeader();
 
     QMap<QString, QStringList> getRangeInfos();
@@ -28,6 +29,7 @@ private:
 
     int m_maxSize;
     char* m_tmpWorkBuffer = nullptr;
+    bool m_isValid = false;
     AdjustmentDataHeader m_adjHeader;
 
     QMap<QString, QStringList> m_rangeInfosMap;

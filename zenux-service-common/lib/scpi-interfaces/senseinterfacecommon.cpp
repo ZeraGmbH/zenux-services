@@ -122,6 +122,13 @@ void SenseInterfaceCommon::decodeAdjustmentDataNextGen()
     m_adjustmentDecoder.decodeAdjBytes(m_adjReadWrite.getData());
 }
 
+bool SenseInterfaceCommon::isInvalidAdjDataOrChannelRangeAvail(QString channelName, QString rangeName)
+{
+    if(!m_adjustmentDecoder.isValid())
+        return true;
+    return m_adjustmentDecoder.isChannelRangeAvailable(channelName, rangeName);
+}
+
 bool SenseInterfaceCommon::importAdjData()
 {
     if(m_adjReadWrite.readData()) {
