@@ -8,7 +8,7 @@
 class AdjustmentDecoderInternal
 {
 public:
-    AdjustmentDecoderInternal(quint32 maxSize);
+    AdjustmentDecoderInternal(int maxSize);
     ~AdjustmentDecoderInternal();
 
     bool decodeAdjBytes(QByteArray ba);
@@ -26,7 +26,7 @@ private:
     bool decodeAdjTimeStamp(QDataStream &stream);
     void extractRanges(QDataStream &stream);
 
-    quint32 m_maxSize;
+    int m_maxSize;
     char* m_tmpWorkBuffer = nullptr;
     AdjustmentDataHeader m_adjHeader;
 
