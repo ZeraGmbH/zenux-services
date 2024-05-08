@@ -29,6 +29,7 @@ private:
     quint8 m_nI2CAdr;
     I2cMuxerInterface::Ptr m_i2cMuxer;
     QByteArray m_adjData;
+    bool m_adjDataReadIsValid = false;
 };
 
 #endif // ADJUSTMENTEEPROMREADWRITE_H
