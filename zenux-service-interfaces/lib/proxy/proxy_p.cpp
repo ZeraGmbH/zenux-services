@@ -4,7 +4,6 @@
 #include "proxyconnection.h"
 #include "notzeronumgen.h"
 #include <QUuid>
-#include <QTimer>
 #include <vtcp_peer.h>
 #include <netmessages.pb.h>
 
