@@ -141,7 +141,7 @@ bool AdjustmentDecoderInternal::decodeAdjTimeStamp(QDataStream &stream)
 
 void AdjustmentDecoderInternal::extractRanges(QDataStream &stream)
 {
-    QByteArray ba(100000, 0);
+    QByteArray ba(m_maxSize, 0);
     stream.readRawData(ba.data(), ba.size());
 
     QByteArray::iterator it;
