@@ -107,7 +107,9 @@ void Mt310s2SenseInterface::setChannelAndRanges(cSenseSettings* senseSettings)
     int i;
     for (i = 0; i < 4; i++) {
         rngList.clear();
-        rngList.append(new Mt310s2SenseRange(m_pSCPIInterface,  "250V", true, 250.0, 4415057.0, 5518821.0, 0, rangeFlagsDevice(), createJustScpiInterfaceWithAtmelPermission()));
+        QString rangeName = "250V";
+        if(isInvalidAdjDataOrChannelRangeAvail(m_channelList.at(i)->getName(), rangeName))
+            rngList.append(new Mt310s2SenseRange(m_pSCPIInterface, rangeName, true, 250.0, 4415057.0, 5518821.0, 0, rangeFlagsDevice(), createJustScpiInterfaceWithAtmelPermission()));
         rngList.append(new Mt310s2SenseRange(m_pSCPIInterface,    "8V", true,   8.0, 3355443.0, 4194304.0, 1, rangeFlagsDevice(), createJustScpiInterfaceWithAtmelPermission()));
         rngList.append(new Mt310s2SenseRange(m_pSCPIInterface, "100mV", true,   0.1, 4026532.0, 5033165.0, 2, rangeFlagsDevice(), createJustScpiInterfaceWithAtmelPermission()));
 
