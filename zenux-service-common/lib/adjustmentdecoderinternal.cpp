@@ -24,6 +24,7 @@ bool AdjustmentDecoderInternal::isChannelRangeAvailable(QString channelName, QSt
 
 bool AdjustmentDecoderInternal::decodeAdjBytes(QByteArray ba)
 {
+    qInfo("Decode adjustment data...");
     if(ba.size() > m_maxSize) {
         qWarning("Adjustment data size exceeds max size: %i (max: %i)", ba.size(), m_maxSize);
         return false;
@@ -48,6 +49,7 @@ bool AdjustmentDecoderInternal::decodeAdjBytes(QByteArray ba)
 
     extractRanges(stream);
 
+    qInfo("Decode succeeded.");
     return true;
 }
 
