@@ -1,7 +1,7 @@
 #include "adjustmentdecoderinternal.h"
 #include <QDataStream>
 
-AdjustmentDecoderInternal::AdjustmentDecoderInternal(quint32 maxSize) :
+AdjustmentDecoderInternal::AdjustmentDecoderInternal(int maxSize) :
     m_maxSize(maxSize),
     m_tmpWorkBuffer(new char[maxSize])
 {
