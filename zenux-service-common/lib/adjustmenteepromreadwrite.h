@@ -25,6 +25,7 @@ private:
     bool readEepromChecksumValidated(I2cFlashInterface* memInterface, QByteArray& ba);
     bool writeFlash(QByteArray& ba);
     void setAdjCountChecksum(QByteArray& ba);
+    void setChecksumInBuffer(QByteArray& ba, quint16 checksum);
 
     quint16 m_nChecksum = 0;
     quint32 m_adjSize = 0;
