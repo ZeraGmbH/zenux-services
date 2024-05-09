@@ -19,7 +19,7 @@ SenseInterfaceCommon::SenseInterfaceCommon(cSCPI *scpiInterface,
                    I2cMultiplexerFactory::createNullMuxer()),
     m_adjustmentDecoder(m_adjReadWrite.getMaxSize())
 {
-    if(m_adjReadWrite.importAdjFlash())
+    if(m_adjReadWrite.readData())
         decodeAdjustmentDataNextGen();
 }
 
@@ -119,13 +119,13 @@ void SenseInterfaceCommon::initSCPIConnection(QString leadingNodes)
 
 void SenseInterfaceCommon::decodeAdjustmentDataNextGen()
 {
-    m_adjustmentDecoder.decodeAdjBytes(m_adjReadWrite.getAdjData());
+    m_adjustmentDecoder.decodeAdjBytes(m_adjReadWrite.getData());
 }
 
 bool SenseInterfaceCommon::importAdjData()
 {
-    if(m_adjReadWrite.importAdjFlash()) {
-        QByteArray ba = m_adjReadWrite.getAdjData();
+    if(m_adjReadWrite.readData()) {
+        QByteArray ba = m_adjReadWrite.getData();
         QDataStream stream(&ba, QIODevice::ReadOnly);
         stream.setVersion(QDataStream::Qt_5_4);
 
@@ -239,8 +239,8 @@ bool SenseInterfaceCommon::exportAdjData(QDateTime dateTimeWrite)
             }
         }
     }
-    m_adjReadWrite.setAdjData(ba);
-    return m_adjReadWrite.exportAdjFlash();
+    m_adjReadWrite.setData(ba);
+    return m_adjReadWrite.writeData();
 }
 
 bool SenseInterfaceCommon::importXMLDocument(QDomDocument* qdomdoc)

@@ -154,14 +154,14 @@ bool cClamp::exportAdjData(QDateTime dateTimeWrite)
         stream << spec;
         range->getJustData()->Serialize(stream);
     }
-    m_adjReadWrite.setAdjData(ba);
-    return m_adjReadWrite.exportAdjFlash();
+    m_adjReadWrite.setData(ba);
+    return m_adjReadWrite.writeData();
 }
 
 bool cClamp::importAdjData()
 {
-    if(m_adjReadWrite.importAdjFlash()) {
-        QByteArray ba = m_adjReadWrite.getAdjData();
+    if(m_adjReadWrite.readData()) {
+        QByteArray ba = m_adjReadWrite.getData();
         QDataStream stream(&ba, QIODevice::ReadOnly);
         stream.setVersion(QDataStream::Qt_5_4);
 
@@ -420,8 +420,8 @@ quint8 cClamp::getAdjStatus()
 
 cClamp::ClampTypes cClamp::readClampType()
 {
-    if(m_adjReadWrite.importAdjFlash()) {
-        QByteArray ba = m_adjReadWrite.getAdjData();
+    if(m_adjReadWrite.readData()) {
+        QByteArray ba = m_adjReadWrite.getData();
         quint8 type;
         QDataStream stream(&ba, QIODevice::ReadWrite);
         stream.setVersion(QDataStream::Qt_5_4);
@@ -972,7 +972,7 @@ QString cClamp::scpiResetFlash(QString &scpi)
     QString answer;
     cSCPICommand cmd = scpi;
     if (cmd.isCommand(1) && (cmd.getParam(0) == "")) {
-        if (m_adjReadWrite.resetAdjFlash()) {
+        if (m_adjReadWrite.resetData()) {
             answer = ZSCPI::scpiAnswer[ZSCPI::ack];
         }
         else {
