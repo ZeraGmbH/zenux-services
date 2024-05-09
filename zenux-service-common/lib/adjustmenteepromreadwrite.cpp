@@ -3,12 +3,23 @@
 #include <i2cmuxerscopedonoff.h>
 #include <QDataStream>
 #include <QBuffer>
+#include <QDir>
+
+QString AdjustmentEepromReadWrite::m_cachePath = "/var/zera/zenux-services";
 
 AdjustmentEepromReadWrite::AdjustmentEepromReadWrite(QString devnode, quint8 i2cadr, I2cMuxerInterface::Ptr i2cMuxer) :
     m_sDeviceNode(devnode),
     m_i2cAdr(i2cadr),
     m_i2cMuxer(i2cMuxer)
 {
+    QDir dir;
+    if(!dir.mkpath(m_cachePath))
+        qWarning("Could not create cache path %s!", qPrintable(m_cachePath));
+}
+
+void AdjustmentEepromReadWrite::setCachePath(QString path)
+{
+    m_cachePath = path;
 }
 
 bool AdjustmentEepromReadWrite::readData()
