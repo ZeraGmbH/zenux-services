@@ -20,8 +20,9 @@ bool AdjustmentEepromReadWrite::importAdjFlash()
     }
     m_adjDataReadIsValid = false;
     I2cMuxerScopedOnOff i2cMuxOnOff(m_i2cMuxer);
+    I2cFlashInterfacePtrU memIo = I2cEEpromIoFactory::create24LC256(m_sDeviceNode, m_nI2CAdr);
     QByteArray ba;
-    if(readEepromChecksumValidated(ba)) {
+    if(readSizeAndChecksum(memIo.get()) && readEepromChecksumValidated(memIo.get(), ba)) {
         qInfo("Read adjustment data passed.");
         m_adjData = ba;
         m_adjDataReadIsValid = true;
@@ -77,51 +78,47 @@ quint16 AdjustmentEepromReadWrite::getChecksum()
     return m_nChecksum;
 }
 
-bool AdjustmentEepromReadWrite::readEepromChecksumValidated(QByteArray &ba)
+bool AdjustmentEepromReadWrite::readSizeAndChecksum(I2cFlashInterface *memInterface)
 {
-    // first we try to read 6 bytes hold length (quint32) and checksum (quint16)
-    const int headerLen = 6;
+    const int headerLen = sizeof(m_adjSize) + sizeof(m_nChecksum);
+    QByteArray ba;
     ba.resize(headerLen);
-    I2cFlashInterfacePtrU flashIo = I2cEEpromIoFactory::create24LC256(m_sDeviceNode, m_nI2CAdr);
-    int bytesRead = flashIo->ReadData(ba.data(), headerLen, 0);
-    if ( bytesRead != headerLen ) {
+    int bytesRead = memInterface->ReadData(ba.data(), headerLen, 0);
+    if(bytesRead != headerLen) {
         qCritical("Error on flash read: expected: %i / read %i", headerLen, bytesRead);
-        return(false); // read error
+        return false;
     }
-
-    QDataStream bastream(&ba, QIODevice::ReadOnly );
+    QDataStream bastream(&ba, QIODevice::ReadOnly);
     bastream.setVersion(QDataStream::Qt_5_4);
-
-    quint32 count;
-    bastream >> count >> m_nChecksum;
-    if ( count > (quint32)flashIo->size() ) {
-        qWarning("EEPROM size wanted: %u is larger than available %i - fresh EEPROM?", count, flashIo->size());
-        return(false); // read error
+    bastream >> m_adjSize >> m_nChecksum;
+    quint32 memSize = memInterface->size();
+    if(m_adjSize > memSize) {
+        qWarning("EEPROM size wanted: %u is larger than available %u - fresh EEPROM?", m_adjSize, memSize);
+        return false;
     }
+    return true;
+}
 
-    ba.resize(count);
-    quint32 sizeRead = flashIo->ReadData(ba.data(), count, 0);
-    if (sizeRead < count) {
+bool AdjustmentEepromReadWrite::readEepromChecksumValidated(I2cFlashInterface *memInterface, QByteArray &ba)
+{
+    ba.resize(m_adjSize);
+    quint32 sizeRead = memInterface->ReadData(ba.data(), m_adjSize, 0);
+    if (sizeRead < m_adjSize) {
         qCritical("Error on flash read: wanted: %i / available %i / got %i",
-                  count, flashIo->size(), sizeRead);
-        return(false); // read error
+                  m_adjSize, memInterface->size(), sizeRead);
+        return false;
     }
-
     QBuffer mem;
     mem.setBuffer(&ba);
     mem.open(QIODevice::ReadWrite);
+    mem.seek(sizeof(m_adjSize));
 
-    mem.seek(4);
-
-    QByteArray ca(2, 0); // qbyte array mit 6 bytes
-    mem.write(ca); // 0 setzen der checksumme
+    QByteArray ca(sizeof(m_nChecksum), 0);
+    mem.write(ca); // for checksum calculation checksum in buffer is set 0
     mem.close();
 
-    quint16 chksum;
-    chksum = qChecksum(ba.data(),ba.size()); // +crc-16
-
-    return (chksum == m_nChecksum); // we could read count bytes and the chksum is ok.
-
+    quint16 chksum = qChecksum(ba.data(), ba.size()); // +crc-16
+    return (chksum == m_nChecksum);
 }
 
 bool AdjustmentEepromReadWrite::writeFlash(QByteArray &ba)
