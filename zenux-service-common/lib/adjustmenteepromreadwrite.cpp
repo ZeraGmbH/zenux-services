@@ -108,15 +108,11 @@ bool AdjustmentEepromReadWrite::readEepromChecksumValidated(I2cFlashInterface *m
                   m_adjSize, memInterface->size(), sizeRead);
         return false;
     }
-    QBuffer mem;
-    mem.setBuffer(&ba);
-    mem.open(QIODevice::ReadWrite);
-    mem.seek(sizeof(m_adjSize));
-
-    QByteArray ca(sizeof(m_nChecksum), 0);
-    mem.write(ca); // for checksum calculation checksum in buffer is set 0
-    mem.close();
-
+    // for checksum calculation checksum in buffer is set 0
+    // TODO?: solve different states
+    // * after read: checksum = 0
+    // * after write: checksum as calculated...
+    setChecksumInBuffer(ba, 0);
     quint16 chksum = qChecksum(ba.data(), ba.size()); // +crc-16
     return (chksum == m_nChecksum);
 }
@@ -128,18 +124,15 @@ bool AdjustmentEepromReadWrite::writeFlash(QByteArray &ba)
     int written = flashIo->WriteData(ba.data(), count, 0);
     if ( (count - written) > 0) {
         qCritical("Error on flash memory write: wanted: %i / written: %i", count, written);
-        return false; // fehler beim flash schreiben
+        return false;
     }
     return true;
-
 }
 
 void AdjustmentEepromReadWrite::setAdjCountChecksum(QByteArray &ba)
 {
-    quint32 count;
-
     m_nChecksum = 0;
-    count = ba.size();
+    quint32 count = ba.size();
 
     QByteArray ca(6, 0); // qbyte array mit 6 bytes
     QDataStream castream( &ca, QIODevice::WriteOnly );
@@ -162,4 +155,12 @@ void AdjustmentEepromReadWrite::setAdjCountChecksum(QByteArray &ba)
     mem.seek(0); // positioning qbuffer to chksum
     mem.write(ca); // setting correct chksum now
     mem.close(); // wird nicht mehr benötigt
+}
+
+void AdjustmentEepromReadWrite::setChecksumInBuffer(QByteArray &ba, quint16 checksum)
+{
+    QDataStream stream(&ba, QIODevice::ReadWrite);
+    stream.setVersion(QDataStream::Qt_5_4);
+    stream.skipRawData(sizeof(m_adjSize));
+    stream << checksum;
 }
