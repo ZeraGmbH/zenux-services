@@ -1,4 +1,6 @@
 SETUP_TESTS(
+    test_adj_data_cache
+    test_adj_data_decoder
     test_justdata
     test_authorizationnotifier
     test_notificationsubscriber
@@ -11,7 +13,6 @@ SETUP_TESTS(
     test_sense_settings
     test_fpga_settings_regression
     test_criticalstatusmock
-    test_adj_data_decoder
     )
 
 target_sources(test_hotpluggablecontrollercontainer

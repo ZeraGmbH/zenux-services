@@ -9,6 +9,7 @@ class AdjustmentEepromReadWrite
 {
 public:
     AdjustmentEepromReadWrite(QString devnode, quint8 i2cadr, I2cMuxerInterface::Ptr i2cMuxer);
+    static void setCachePath(QString path);
     bool readData();
     bool writeData();
     bool resetData();
@@ -34,6 +35,7 @@ private:
     I2cMuxerInterface::Ptr m_i2cMuxer;
     QByteArray m_adjData;
     bool m_adjDataReadIsValid = false;
+    static QString m_cachePath;
 };
 
 #endif // ADJUSTMENTEEPROMREADWRITE_H
