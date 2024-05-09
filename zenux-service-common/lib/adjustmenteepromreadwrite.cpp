@@ -23,8 +23,18 @@ bool AdjustmentEepromReadWrite::readData()
     I2cFlashInterfacePtrU memIo = I2cEEpromIoFactory::create24LC256(m_sDeviceNode, m_i2cAdr);
     QByteArray ba;
     quint32 sizeRead;
-    if(readSizeAndChecksum(memIo.get(), sizeRead) && readAllAndValidate(memIo.get(), ba, sizeRead)) {
-        qInfo("Read adjustment data passed.");
+    bool readOk = false;
+    if(readSizeAndChecksum(memIo.get(), sizeRead)) {
+        if(readAllAndValidateFromCache(ba, sizeRead)) {
+            qInfo("Read adjustment data from cache passed.");
+            readOk = true;
+        }
+        else if(readAllAndValidateFromChip(memIo.get(), ba, sizeRead)) {
+            qInfo("Read adjustment data from chip passed.");
+            readOk = true;
+        }
+    }
+    if(readOk) {
         m_adjData = ba;
         m_adjDataReadIsValid = true;
     }
@@ -96,7 +106,7 @@ bool AdjustmentEepromReadWrite::readSizeAndChecksum(I2cFlashInterface *memInterf
     return true;
 }
 
-bool AdjustmentEepromReadWrite::readAllAndValidate(I2cFlashInterface *memInterface, QByteArray &ba, quint32 size)
+bool AdjustmentEepromReadWrite::readAllAndValidateFromChip(I2cFlashInterface *memInterface, QByteArray &ba, quint32 size)
 {
     ba.resize(size);
     quint32 sizeRead = memInterface->ReadData(ba.data(), size, 0);
@@ -112,6 +122,11 @@ bool AdjustmentEepromReadWrite::readAllAndValidate(I2cFlashInterface *memInterfa
     setChecksumInBuffer(ba, 0);
     quint16 chksum = qChecksum(ba.data(), ba.size());
     return (chksum == m_checksum);
+}
+
+bool AdjustmentEepromReadWrite::readAllAndValidateFromCache(QByteArray &ba, quint32 size)
+{
+    return false;
 }
 
 bool AdjustmentEepromReadWrite::writeRawDataToChip(QByteArray &ba)
