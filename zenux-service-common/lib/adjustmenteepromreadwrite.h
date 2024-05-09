@@ -9,28 +9,26 @@ class AdjustmentEepromReadWrite
 {
 public:
     AdjustmentEepromReadWrite(QString devnode, quint8 i2cadr, I2cMuxerInterface::Ptr i2cMuxer);
-    bool importAdjFlash();
-    bool exportAdjFlash();
-    bool resetAdjFlash();
+    bool readData();
+    bool writeData();
+    bool resetData();
+
     quint32 getMaxSize();
-
-    QByteArray getAdjData();
-    void setAdjData(const QByteArray& ba);
-
-    I2cMuxerInterface::Ptr getI2cMuxer();
     quint16 getChecksum();
+    QByteArray getData();
+    void setData(const QByteArray& ba);
 
 private:
-    bool readSizeAndChecksum(I2cFlashInterface* memInterface);
-    bool readEepromChecksumValidated(I2cFlashInterface* memInterface, QByteArray& ba);
-    bool writeFlash(QByteArray& ba);
-    void setAdjCountChecksum(QByteArray& ba);
+    bool readSizeAndChecksum(I2cFlashInterface *memInterface, quint32 &sizeRead);
+    bool readAllAndValidate(I2cFlashInterface *memInterface, QByteArray& ba, quint32 size);
+    bool writeRawData(QByteArray& ba);
+    void setCountAndChecksum(QByteArray& ba);
     void setChecksumInBuffer(QByteArray& ba, quint16 checksum);
+    void setCountInBuffer(QByteArray& ba);
 
-    quint16 m_nChecksum = 0;
-    quint32 m_adjSize = 0;
+    quint16 m_checksum = 0;
     QString m_sDeviceNode;
-    quint8 m_nI2CAdr;
+    quint8 m_i2cAdr;
     I2cMuxerInterface::Ptr m_i2cMuxer;
     QByteArray m_adjData;
     bool m_adjDataReadIsValid = false;

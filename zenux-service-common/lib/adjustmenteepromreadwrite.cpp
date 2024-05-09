@@ -6,12 +6,12 @@
 
 AdjustmentEepromReadWrite::AdjustmentEepromReadWrite(QString devnode, quint8 i2cadr, I2cMuxerInterface::Ptr i2cMuxer) :
     m_sDeviceNode(devnode),
-    m_nI2CAdr(i2cadr),
+    m_i2cAdr(i2cadr),
     m_i2cMuxer(i2cMuxer)
 {
 }
 
-bool AdjustmentEepromReadWrite::importAdjFlash()
+bool AdjustmentEepromReadWrite::readData()
 {
     qInfo("Read adjustment data...");
     if(m_adjDataReadIsValid) {
@@ -20,9 +20,10 @@ bool AdjustmentEepromReadWrite::importAdjFlash()
     }
     m_adjDataReadIsValid = false;
     I2cMuxerScopedOnOff i2cMuxOnOff(m_i2cMuxer);
-    I2cFlashInterfacePtrU memIo = I2cEEpromIoFactory::create24LC256(m_sDeviceNode, m_nI2CAdr);
+    I2cFlashInterfacePtrU memIo = I2cEEpromIoFactory::create24LC256(m_sDeviceNode, m_i2cAdr);
     QByteArray ba;
-    if(readSizeAndChecksum(memIo.get()) && readEepromChecksumValidated(memIo.get(), ba)) {
+    quint32 sizeRead;
+    if(readSizeAndChecksum(memIo.get(), sizeRead) && readAllAndValidate(memIo.get(), ba, sizeRead)) {
         qInfo("Read adjustment data passed.");
         m_adjData = ba;
         m_adjDataReadIsValid = true;
@@ -32,55 +33,50 @@ bool AdjustmentEepromReadWrite::importAdjFlash()
     return m_adjDataReadIsValid;
 }
 
-bool AdjustmentEepromReadWrite::exportAdjFlash()
+bool AdjustmentEepromReadWrite::writeData()
 {
     // There are different places not properly designed
-    // importAdjFlash is bound to decode so to make writes take effect
+    // readData is bound to decode so to make writes take effect
     // reading is mandatory. So force a read
     m_adjDataReadIsValid = false;
-    setAdjCountChecksum(m_adjData);
+    setCountAndChecksum(m_adjData);
     I2cMuxerScopedOnOff i2cMuxOnOff(m_i2cMuxer);
-    return writeFlash(m_adjData);
+    return writeRawData(m_adjData);
 }
 
-bool AdjustmentEepromReadWrite::resetAdjFlash()
+bool AdjustmentEepromReadWrite::resetData()
 {
     m_adjDataReadIsValid = false;
     I2cMuxerScopedOnOff i2cMuxOnOff(m_i2cMuxer);
-    I2cFlashInterfacePtrU flashIo = I2cEEpromIoFactory::create24LC256(m_sDeviceNode, m_nI2CAdr);
+    I2cFlashInterfacePtrU flashIo = I2cEEpromIoFactory::create24LC256(m_sDeviceNode, m_i2cAdr);
     return flashIo->Reset() == flashIo->size();
 }
 
 // Current (valid) assumption: All devices have 24LC256 with 32kBytes
 quint32 AdjustmentEepromReadWrite::getMaxSize()
 {
-    I2cFlashInterfacePtrU flashIo = I2cEEpromIoFactory::create24LC256(m_sDeviceNode, m_nI2CAdr);
+    I2cFlashInterfacePtrU flashIo = I2cEEpromIoFactory::create24LC256(m_sDeviceNode, m_i2cAdr);
     return flashIo->size();
 }
 
-QByteArray AdjustmentEepromReadWrite::getAdjData()
+QByteArray AdjustmentEepromReadWrite::getData()
 {
     return m_adjData;
 }
 
-void AdjustmentEepromReadWrite::setAdjData(const QByteArray &ba)
+void AdjustmentEepromReadWrite::setData(const QByteArray &ba)
 {
     m_adjData = ba;
 }
 
-I2cMuxerInterface::Ptr AdjustmentEepromReadWrite::getI2cMuxer()
-{
-    return m_i2cMuxer;
-}
-
 quint16 AdjustmentEepromReadWrite::getChecksum()
 {
-    return m_nChecksum;
+    return m_checksum;
 }
 
-bool AdjustmentEepromReadWrite::readSizeAndChecksum(I2cFlashInterface *memInterface)
+bool AdjustmentEepromReadWrite::readSizeAndChecksum(I2cFlashInterface *memInterface, quint32 &sizeRead)
 {
-    const int headerLen = sizeof(m_adjSize) + sizeof(m_nChecksum);
+    const int headerLen = sizeof(sizeRead) + sizeof(m_checksum);
     QByteArray ba;
     ba.resize(headerLen);
     int bytesRead = memInterface->ReadData(ba.data(), headerLen, 0);
@@ -90,22 +86,22 @@ bool AdjustmentEepromReadWrite::readSizeAndChecksum(I2cFlashInterface *memInterf
     }
     QDataStream bastream(&ba, QIODevice::ReadOnly);
     bastream.setVersion(QDataStream::Qt_5_4);
-    bastream >> m_adjSize >> m_nChecksum;
+    bastream >> sizeRead >> m_checksum;
     quint32 memSize = memInterface->size();
-    if(m_adjSize > memSize) {
-        qWarning("EEPROM size wanted: %u is larger than available %u - fresh EEPROM?", m_adjSize, memSize);
+    if(sizeRead > memSize) {
+        qWarning("EEPROM size wanted: %u is larger than available %u - fresh EEPROM?", sizeRead, memSize);
         return false;
     }
     return true;
 }
 
-bool AdjustmentEepromReadWrite::readEepromChecksumValidated(I2cFlashInterface *memInterface, QByteArray &ba)
+bool AdjustmentEepromReadWrite::readAllAndValidate(I2cFlashInterface *memInterface, QByteArray &ba, quint32 size)
 {
-    ba.resize(m_adjSize);
-    quint32 sizeRead = memInterface->ReadData(ba.data(), m_adjSize, 0);
-    if (sizeRead < m_adjSize) {
-        qCritical("Error on flash read: wanted: %i / available %i / got %i",
-                  m_adjSize, memInterface->size(), sizeRead);
+    ba.resize(size);
+    quint32 sizeRead = memInterface->ReadData(ba.data(), size, 0);
+    if (sizeRead < size) {
+        qCritical("Error on adjustment raw data read: wanted: %i / available %i / got %i",
+                  size, memInterface->size(), sizeRead);
         return false;
     }
     // for checksum calculation checksum in buffer is set 0
@@ -113,14 +109,14 @@ bool AdjustmentEepromReadWrite::readEepromChecksumValidated(I2cFlashInterface *m
     // * after read: checksum = 0
     // * after write: checksum as calculated...
     setChecksumInBuffer(ba, 0);
-    quint16 chksum = qChecksum(ba.data(), ba.size()); // +crc-16
-    return (chksum == m_nChecksum);
+    quint16 chksum = qChecksum(ba.data(), ba.size());
+    return (chksum == m_checksum);
 }
 
-bool AdjustmentEepromReadWrite::writeFlash(QByteArray &ba)
+bool AdjustmentEepromReadWrite::writeRawData(QByteArray &ba)
 {
     int count = ba.size();
-    I2cFlashInterfacePtrU flashIo = I2cEEpromIoFactory::create24LC256(m_sDeviceNode, m_nI2CAdr);
+    I2cFlashInterfacePtrU flashIo = I2cEEpromIoFactory::create24LC256(m_sDeviceNode, m_i2cAdr);
     int written = flashIo->WriteData(ba.data(), count, 0);
     if ( (count - written) > 0) {
         qCritical("Error on flash memory write: wanted: %i / written: %i", count, written);
@@ -129,38 +125,26 @@ bool AdjustmentEepromReadWrite::writeFlash(QByteArray &ba)
     return true;
 }
 
-void AdjustmentEepromReadWrite::setAdjCountChecksum(QByteArray &ba)
+void AdjustmentEepromReadWrite::setCountAndChecksum(QByteArray &ba)
 {
-    m_nChecksum = 0;
-    quint32 count = ba.size();
-
-    QByteArray ca(6, 0); // qbyte array mit 6 bytes
-    QDataStream castream( &ca, QIODevice::WriteOnly );
-    castream.setVersion(QDataStream::Qt_5_4);
-
-    castream << count << m_nChecksum;
-
-    QBuffer mem(&ba);
-    mem.open(QIODevice::ReadWrite);
-    mem.seek(0); // positioning qbuffer to chksum
-    mem.write(ca); // we set count here  and chksum to 0
-
-    m_nChecksum = qChecksum(ba.data(),ba.size()); // +crc-16
-
-    QDataStream ca2stream( &ca, QIODevice::WriteOnly );
-    ca2stream.setVersion(QDataStream::Qt_5_4);
-
-    ca2stream << count << m_nChecksum;
-
-    mem.seek(0); // positioning qbuffer to chksum
-    mem.write(ca); // setting correct chksum now
-    mem.close(); // wird nicht mehr benötigt
+    setCountInBuffer(ba);
+    setChecksumInBuffer(ba, 0);
+    m_checksum = qChecksum(ba.data(), ba.size());
+    setChecksumInBuffer(ba, m_checksum);
 }
 
 void AdjustmentEepromReadWrite::setChecksumInBuffer(QByteArray &ba, quint16 checksum)
 {
     QDataStream stream(&ba, QIODevice::ReadWrite);
     stream.setVersion(QDataStream::Qt_5_4);
-    stream.skipRawData(sizeof(m_adjSize));
+    stream.skipRawData(sizeof(quint32 /* size field */));
     stream << checksum;
+}
+
+void AdjustmentEepromReadWrite::setCountInBuffer(QByteArray &ba)
+{
+    quint32 count = ba.size();
+    QDataStream stream(&ba, QIODevice::ReadWrite);
+    stream.setVersion(QDataStream::Qt_5_4);
+    stream << count;
 }
