@@ -20,7 +20,8 @@ public:
 
 private:
     bool readSizeAndChecksum(I2cFlashInterface *memInterface, quint32 &sizeRead);
-    bool readAllAndValidate(I2cFlashInterface *memInterface, QByteArray& ba, quint32 size);
+    bool readAllAndValidateFromChip(I2cFlashInterface *memInterface, QByteArray& ba, quint32 size);
+    bool readAllAndValidateFromCache(QByteArray& ba, quint32 size);
     bool writeRawDataToChip(QByteArray& ba);
     void writeRawDataToCache(QByteArray& ba);
     void setCountAndChecksum(QByteArray& ba);
