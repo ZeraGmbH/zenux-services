@@ -1,18 +1,18 @@
-#include "test_readadjustmentdata.h"
+#include "test_adj_data_decoder.h"
 #include "adjustmentdecoderinternal.h"
 #include "adjustmenteepromreadwrite.h"
 #include <QFile>
 #include <QTest>
 
-QTEST_MAIN(test_readadjustmentdata)
+QTEST_MAIN(test_adj_data_decoder)
 
-void test_readadjustmentdata::initTestCase()
+void test_adj_data_decoder::initTestCase()
 {
     AdjustmentEepromReadWrite eepromRw("", 0, nullptr);
     m_flashSizeAllDevicesAtTheTimeOfWriting = eepromRw.getMaxSize();
 }
 
-void test_readadjustmentdata::denyMaxSizeExceed()
+void test_adj_data_decoder::denyMaxSizeExceed()
 {
     QFile file(":/export_internal_initial_mt310s2.eeprom");
     file.open(QIODevice::ReadOnly);
@@ -25,7 +25,7 @@ void test_readadjustmentdata::denyMaxSizeExceed()
     QVERIFY(!reader2.decodeAdjBytes(ba));
 }
 
-void test_readadjustmentdata::readServerVersionAndDeviceNameForMT()
+void test_adj_data_decoder::readServerVersionAndDeviceNameForMT()
 {
     QFile file(":/export_internal_initial_mt310s2.eeprom");
     file.open(QIODevice::ReadOnly);
@@ -40,7 +40,7 @@ void test_readadjustmentdata::readServerVersionAndDeviceNameForMT()
     QCOMPARE(reader.getAdjHeader().m_adjustmentDate, QDateTime::fromSecsSinceEpoch(0, Qt::UTC));
 }
 
-void test_readadjustmentdata::readMT310s2Ranges()
+void test_adj_data_decoder::readMT310s2Ranges()
 {
     QFile file(":/export_internal_initial_mt310s2.eeprom");
     file.open(QIODevice::ReadOnly);
@@ -70,7 +70,7 @@ void test_readadjustmentdata::readMT310s2Ranges()
     QCOMPARE(rangesInfos.value("m7"), expectedRangesIAUX);
 }
 
-void test_readadjustmentdata::readServerVersionAndDeviceNameForCOM()
+void test_adj_data_decoder::readServerVersionAndDeviceNameForCOM()
 {
     QFile file(":/export_internal_initial_com5003.eeprom");
     file.open(QIODevice::ReadOnly);
@@ -85,7 +85,7 @@ void test_readadjustmentdata::readServerVersionAndDeviceNameForCOM()
     QCOMPARE(reader.getAdjHeader().m_adjustmentDate, QDateTime::fromSecsSinceEpoch(0, Qt::UTC));
 }
 
-void test_readadjustmentdata::readCOM5003Ranges()
+void test_adj_data_decoder::readCOM5003Ranges()
 {
     QFile file(":/export_internal_initial_com5003.eeprom");
     file.open(QIODevice::ReadOnly);
@@ -112,7 +112,7 @@ void test_readadjustmentdata::readCOM5003Ranges()
     QCOMPARE(rangesInfos.value("m5"), expectedRangesI + expectedInternalRanges);
 }
 
-void test_readadjustmentdata::checkChannelRangeAvailability()
+void test_adj_data_decoder::checkChannelRangeAvailability()
 {
     QFile file(":/export_internal_initial_com5003.eeprom");
     file.open(QIODevice::ReadOnly);

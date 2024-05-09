@@ -1,9 +1,9 @@
-#ifndef TEST_READADJUSTEDDATA_H
-#define TEST_READADJUSTEDDATA_H
+#ifndef TEST_ADJDATADECODER_H
+#define TEST_ADJDATADECODER_H
 
 #include <QObject>
 
-class test_readadjustmentdata : public QObject
+class test_adj_data_decoder : public QObject
 {
     Q_OBJECT
 private slots:
@@ -21,4 +21,4 @@ private:
     quint32 m_flashSizeAllDevicesAtTheTimeOfWriting;
 };
 
-#endif // TEST_READADJUSTEDDATA_H
+#endif // TEST_ADJDATADECODER_H

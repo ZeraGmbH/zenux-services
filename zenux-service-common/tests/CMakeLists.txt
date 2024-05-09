@@ -11,7 +11,7 @@ SETUP_TESTS(
     test_sense_settings
     test_fpga_settings_regression
     test_criticalstatusmock
-    test_readadjustmentdata
+    test_adj_data_decoder
     )
 
 target_sources(test_hotpluggablecontrollercontainer
@@ -20,7 +20,7 @@ target_sources(test_hotpluggablecontrollercontainer
     testhotplugctrlfactoryi2cctrl.cpp testhotplugctrlfactoryi2cctrl.h
 )
 
-target_sources(test_readadjustmentdata
+target_sources(test_adj_data_decoder
   PRIVATE
   AdjustedData/regression_data.qrc
 )
