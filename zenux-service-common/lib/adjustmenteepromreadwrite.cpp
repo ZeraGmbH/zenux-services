@@ -37,12 +37,13 @@ bool AdjustmentEepromReadWrite::readData()
     bool readOk = false;
     if(readSizeAndChecksum(memIo.get(), sizeRead)) {
         if(readAllAndValidateFromCache(ba, sizeRead)) {
-            qInfo("Read adjustment data from cache passed.");
             readOk = true;
+            qInfo("Read adjustment data from cache passed.");
         }
         else if(readAllAndValidateFromChip(memIo.get(), ba, sizeRead)) {
-            qInfo("Read adjustment data from chip passed.");
             readOk = true;
+            qInfo("Read adjustment data from chip passed.");
+            writeRawDataToCache(m_adjData);
         }
     }
     if(readOk) {
@@ -62,7 +63,6 @@ bool AdjustmentEepromReadWrite::writeData()
     m_adjDataReadIsValid = false;
     setCountAndChecksum(m_adjData);
     I2cMuxerScopedOnOff i2cMuxOnOff(m_i2cMuxer);
-    writeRawDataToCache(m_adjData);
     return writeRawDataToChip(m_adjData);
 }
 
@@ -132,7 +132,7 @@ bool AdjustmentEepromReadWrite::readAllAndValidateFromChip(I2cFlashInterface *me
     // * after write: checksum as calculated...
     setChecksumInBuffer(ba, 0);
     quint16 chksum = qChecksum(ba.data(), ba.size());
-    return (chksum == m_checksum);
+    return chksum == m_checksum;
 }
 
 bool AdjustmentEepromReadWrite::readAllAndValidateFromCache(QByteArray &ba, quint32 size)
