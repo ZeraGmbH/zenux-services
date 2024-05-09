@@ -41,7 +41,8 @@ bool AdjustmentEepromReadWrite::writeData()
     m_adjDataReadIsValid = false;
     setCountAndChecksum(m_adjData);
     I2cMuxerScopedOnOff i2cMuxOnOff(m_i2cMuxer);
-    return writeRawData(m_adjData);
+    writeRawDataToCache(m_adjData);
+    return writeRawDataToChip(m_adjData);
 }
 
 bool AdjustmentEepromReadWrite::resetData()
@@ -113,7 +114,7 @@ bool AdjustmentEepromReadWrite::readAllAndValidate(I2cFlashInterface *memInterfa
     return (chksum == m_checksum);
 }
 
-bool AdjustmentEepromReadWrite::writeRawData(QByteArray &ba)
+bool AdjustmentEepromReadWrite::writeRawDataToChip(QByteArray &ba)
 {
     int count = ba.size();
     I2cFlashInterfacePtrU flashIo = I2cEEpromIoFactory::create24LC256(m_sDeviceNode, m_i2cAdr);
@@ -123,6 +124,11 @@ bool AdjustmentEepromReadWrite::writeRawData(QByteArray &ba)
         return false;
     }
     return true;
+}
+
+void AdjustmentEepromReadWrite::writeRawDataToCache(QByteArray &ba)
+{
+
 }
 
 void AdjustmentEepromReadWrite::setCountAndChecksum(QByteArray &ba)
