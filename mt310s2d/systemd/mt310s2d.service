@@ -1,9 +1,6 @@
 [Unit]
 Description=MT310S2 daemon
 
-# We cannot let modulemanager start after us - we are running on particular
-# ZERA device only
-Before=modulemanager.service
 ConditionKernelCommandLine=zera_device=mt310s2
 
 # Mandatory devices (see systemd.device / 'escaping' /
