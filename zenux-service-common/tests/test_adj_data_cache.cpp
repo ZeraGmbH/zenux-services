@@ -60,7 +60,7 @@ void test_adj_data_cache::cacheFileNotCreatedOnReadInvalidAdj()
     QVERIFY(!QFile(adjRW.getCacheFileName()).exists());
 }
 
-void test_adj_data_cache::cacheFileCreatedSameContentAsEEprom()
+void test_adj_data_cache::cacheFileCreatedSameContentAsEeprom()
 {
     QVERIFY(MockEEprom24LC::mockReadFromFile(testI2cDevNode, testI2cAddr, ":/export_internal_initial_mt310s2.eeprom"));
     AdjustmentEepromReadWrite adjRW(testI2cDevNode, testI2cAddr, I2cMultiplexerFactory::createNullMuxer());
@@ -73,4 +73,93 @@ void test_adj_data_cache::cacheFileCreatedSameContentAsEEprom()
     QByteArray written = file.readAll();
 
     QCOMPARE(expected, written);
+}
+
+void test_adj_data_cache::cacheFileCreatedSameContentAsEepromOnOverwrite()
+{
+    QDir dir;
+    QVERIFY(dir.mkpath(testPath));
+    QFile::copy(":/export_mt310s2_short.eeprom", AdjustmentEepromReadWrite::getCacheFileName());
+
+    QVERIFY(MockEEprom24LC::mockReadFromFile(testI2cDevNode, testI2cAddr, ":/export_internal_initial_mt310s2.eeprom"));
+    AdjustmentEepromReadWrite adjRW(testI2cDevNode, testI2cAddr, I2cMultiplexerFactory::createNullMuxer());
+    QVERIFY(adjRW.readData());
+
+    QByteArray expected = MockEEprom24LC::mockGetData(testI2cDevNode, testI2cAddr);
+
+    QFile file(adjRW.getCacheFileName());
+    QVERIFY(file.open(QIODevice::ReadOnly));
+    QByteArray written = file.readAll();
+
+    QCOMPARE(expected, written);
+}
+
+void test_adj_data_cache::cacheFileNotReadOnInvalidEeprom()
+{
+    AdjustmentEepromReadWrite adjRW(testI2cDevNode, testI2cAddr, I2cMultiplexerFactory::createNullMuxer());
+    QVERIFY(!adjRW.readData());
+
+    QCOMPARE(MockEEprom24LC::mockGetReadCount(testI2cDevNode, testI2cAddr), 1);
+}
+
+void test_adj_data_cache::cacheFileIsEmpty()
+{
+    QDir dir;
+    QVERIFY(dir.mkpath(testPath));
+    QFile file(AdjustmentEepromReadWrite::getCacheFileName());
+    QVERIFY(file.open(QIODevice::WriteOnly));
+    file.close();
+
+    QVERIFY(MockEEprom24LC::mockReadFromFile(testI2cDevNode, testI2cAddr, ":/export_internal_initial_mt310s2.eeprom"));
+    AdjustmentEepromReadWrite adjRW(testI2cDevNode, testI2cAddr, I2cMultiplexerFactory::createNullMuxer());
+    QVERIFY(adjRW.readData());
+
+    QCOMPARE(MockEEprom24LC::mockGetReadCount(testI2cDevNode, testI2cAddr), 2);
+}
+
+void test_adj_data_cache::cacheFileIsTooShort()
+{
+    QDir dir;
+    QVERIFY(dir.mkpath(testPath));
+    QFile::copy(":/export_mt310s2_short.eeprom", AdjustmentEepromReadWrite::getCacheFileName());
+
+    QVERIFY(MockEEprom24LC::mockReadFromFile(testI2cDevNode, testI2cAddr, ":/export_internal_initial_mt310s2.eeprom"));
+    AdjustmentEepromReadWrite adjRW(testI2cDevNode, testI2cAddr, I2cMultiplexerFactory::createNullMuxer());
+    QVERIFY(adjRW.readData());
+
+    QCOMPARE(MockEEprom24LC::mockGetReadCount(testI2cDevNode, testI2cAddr), 2);
+}
+
+void test_adj_data_cache::cacheFileBitFlipped()
+{
+    QDir dir;
+    QVERIFY(dir.mkpath(testPath));
+    QFile::copy(":/export_mt310s2_bit_flipped.eeprom", AdjustmentEepromReadWrite::getCacheFileName());
+
+    QVERIFY(MockEEprom24LC::mockReadFromFile(testI2cDevNode, testI2cAddr, ":/export_internal_initial_mt310s2.eeprom"));
+    AdjustmentEepromReadWrite adjRW(testI2cDevNode, testI2cAddr, I2cMultiplexerFactory::createNullMuxer());
+    QVERIFY(adjRW.readData());
+
+    QCOMPARE(MockEEprom24LC::mockGetReadCount(testI2cDevNode, testI2cAddr), 2);
+}
+
+void test_adj_data_cache::cacheFileReadSuccessfully()
+{
+    QDir dir;
+    QVERIFY(dir.mkpath(testPath));
+    QFile::copy(":/export_internal_initial_mt310s2.eeprom", AdjustmentEepromReadWrite::getCacheFileName());
+
+    QVERIFY(MockEEprom24LC::mockReadFromFile(testI2cDevNode, testI2cAddr, ":/export_internal_initial_mt310s2.eeprom"));
+    AdjustmentEepromReadWrite adjRW(testI2cDevNode, testI2cAddr, I2cMultiplexerFactory::createNullMuxer());
+    QVERIFY(adjRW.readData());
+
+    QCOMPARE(MockEEprom24LC::mockGetReadCount(testI2cDevNode, testI2cAddr), 1);
+
+    QByteArray written = adjRW.getData();
+    QFile file(":/export_internal_initial_mt310s2.eeprom");
+    QVERIFY(file.open(QIODevice::ReadOnly));
+    QByteArray expected = file.readAll();
+
+    QCOMPARE(expected, written);
+
 }

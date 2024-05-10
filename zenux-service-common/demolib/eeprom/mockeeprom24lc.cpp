@@ -4,6 +4,7 @@
 static constexpr int sizeFlash = 32768;
 
 QHash<QString, QHash<short, QByteArray>> MockEEprom24LC::m_flashData;
+QHash<QString, QHash<short, int>>        MockEEprom24LC::m_flashDataReadCounts;
 QHash<QString, QHash<short, int>>        MockEEprom24LC::m_flashDataWriteCounts;
 QHash<QString, QHash<short, bool>>       MockEEprom24LC::m_returnReducedDataSizeOnRead;
 
@@ -44,6 +45,7 @@ int MockEEprom24LC::ReadData(char *data, ushort count, ushort adr)
     ushort reducedCount = std::min(count, ushort(flashEntry.size()));
     for(int i=0; i<reducedCount; i++)
         data[i] = flashEntry[i];
+    m_flashDataReadCounts[m_devNode][m_i2cAddr]++;
     bool reduceCount = m_returnReducedDataSizeOnRead[m_devNode][m_i2cAddr];
     return reduceCount ? reducedCount: count;
 }
@@ -68,6 +70,7 @@ void MockEEprom24LC::returnReduceCountOnErrorRead()
 void MockEEprom24LC::mockCleanAll()
 {
     m_flashData.clear();
+    m_flashDataReadCounts.clear();
     m_flashDataWriteCounts.clear();
     m_returnReducedDataSizeOnRead.clear();
 }
@@ -84,6 +87,11 @@ QByteArray MockEEprom24LC::mockGetData(QString devNode, short adr)
 void MockEEprom24LC::mockSetData(QString devNode, short adr, QByteArray data)
 {
     m_flashData[devNode][adr] = data;
+}
+
+int MockEEprom24LC::mockGetReadCount(QString devNode, short adr)
+{
+    return m_flashDataReadCounts[devNode][adr];
 }
 
 int MockEEprom24LC::mockGetWriteCount(QString devNode, short adr)

@@ -17,6 +17,7 @@ public:
     static void mockCleanAll();
     static QByteArray mockGetData(QString devNode, short adr);
     static void mockSetData(QString devNode, short adr, QByteArray data);
+    static int mockGetReadCount(QString devNode, short adr);
     static int mockGetWriteCount(QString devNode, short adr);
     static bool mockWriteToFile(QString devNode, short adr, QString fileName);
     static bool mockReadFromFile(QString devNode, short adr, QString fileName);
@@ -26,6 +27,7 @@ private:
     QString m_devNode;
     short m_i2cAddr;
     static QHash<QString, QHash<short, QByteArray>> m_flashData;
+    static QHash<QString, QHash<short, int>> m_flashDataReadCounts;
     static QHash<QString, QHash<short, int>> m_flashDataWriteCounts;
     static QHash<QString, QHash<short, bool>> m_returnReducedDataSizeOnRead;
 };
