@@ -21,7 +21,6 @@ private slots:
 
 private:
     void setupServers();
-    bool writeFile(QString filename, QByteArray data);
     QByteArray readFile(QString filename);
 
     std::unique_ptr<TestServerForSenseInterfaceCom5003> m_testServer;

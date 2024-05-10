@@ -30,7 +30,6 @@ private slots:
 
 private:
     void setupServers(AbstractFactoryI2cCtrlPtr ctrlFactory);
-    bool writeFile(QString filename, QByteArray data);
     QByteArray readFile(QString filename);
 
     std::unique_ptr<TestServerForSenseInterfaceCom5003> m_testServer;
