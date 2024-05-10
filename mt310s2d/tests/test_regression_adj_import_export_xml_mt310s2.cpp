@@ -5,6 +5,7 @@
 #include "scpisingletransactionblocked.h"
 #include "xmlhelperfortest.h"
 #include <timemachineobject.h>
+#include <testloghelpers.h>
 #include <QSignalSpy>
 #include <QTest>
 
@@ -31,19 +32,14 @@ void test_regression_adj_import_export_xml_mt310s2::cleanup()
 void test_regression_adj_import_export_xml_mt310s2::directAcessExportXml()
 {
     QString xmlExported = m_testServer->getSenseInterface()->exportXMLString();
-    qInfo("Exported XML (before adjust):");
-    qInfo("%s", qPrintable(xmlExported));
     xmlExported = XmlHelperForTest::removeTimeDependentEntriesFromXml(xmlExported);
 
     QFile xmlFile(":/export_internal_initial.xml");
     QVERIFY(xmlFile.open(QFile::ReadOnly));
     QString xmlExpected = xmlFile.readAll();
-    qInfo("Expected XML (before adjust):");
-    qInfo("%s", qPrintable(xmlExpected));
     xmlExpected = XmlHelperForTest::removeTimeDependentEntriesFromXml(xmlExpected);
 
-    // if this turns fragile we have to use zera-scpi's xml-compare-testlib
-    QCOMPARE(xmlExported, xmlExpected);
+    QVERIFY(TestLogHelpers::compareAndLogOnDiff(xmlExpected, xmlExported));
 }
 
 void test_regression_adj_import_export_xml_mt310s2::directAcessFileImportXmlMinimal()
@@ -109,19 +105,14 @@ void test_regression_adj_import_export_xml_mt310s2::scpiExportInitialAdjXml()
     QFile xmlFile(":/export_internal_initial.xml");
     QVERIFY(xmlFile.open(QFile::ReadOnly));
     QString xmlExpected = xmlFile.readAll();
-    qInfo("Expected XML:");
-    qInfo("%s", qPrintable(xmlExpected));
     xmlExpected = XmlHelperForTest::prettify(xmlExpected);
     xmlExpected = XmlHelperForTest::removeTimeDependentEntriesFromXml(xmlExpected);
 
     QString xmlExported = ScpiSingleTransactionBlocked::query("SYSTEM:ADJUSTMENT:XML?");
-    QString xmlExportedPretty = XmlHelperForTest::prettify(xmlExported);
-    qInfo("Exported XML:");
-    qInfo("%s", qPrintable(xmlExportedPretty));
-    xmlExportedPretty = XmlHelperForTest::removeTimeDependentEntriesFromXml(xmlExportedPretty);
+    xmlExported = XmlHelperForTest::prettify(xmlExported);
+    xmlExported = XmlHelperForTest::removeTimeDependentEntriesFromXml(xmlExported);
 
-    // if this turns fragile we have to use zera-scpi's xml-compare-testlib
-    QCOMPARE(xmlExportedPretty, xmlExpected);
+    QVERIFY(TestLogHelpers::compareAndLogOnDiff(xmlExpected, xmlExported));
 }
 
 void test_regression_adj_import_export_xml_mt310s2::directAcessExportXmlClamps()
@@ -134,19 +125,14 @@ void test_regression_adj_import_export_xml_mt310s2::directAcessExportXmlClamps()
     QFile xmlFile(":/export_clamp_initial.xml");
     QVERIFY(xmlFile.open(QFile::ReadOnly));
     QString xmlExpected = xmlFile.readAll();
-    qInfo("Expected XML:");
-    qInfo("%s", qPrintable(xmlExpected));
     xmlExpected = XmlHelperForTest::prettify(xmlExpected);
     xmlExpected = XmlHelperForTest::removeTimeDependentEntriesFromXml(xmlExpected);
 
     QString xmlExported = m_testServer->getClampInterface()->exportXMLString(4);
-    QString xmlExportedPretty = XmlHelperForTest::prettify(xmlExported);
-    qInfo("Exported XML:");
-    qInfo("%s", qPrintable(xmlExportedPretty));
-    xmlExportedPretty = XmlHelperForTest::removeTimeDependentEntriesFromXml(xmlExportedPretty);
+    xmlExported = XmlHelperForTest::prettify(xmlExported);
+    xmlExported = XmlHelperForTest::removeTimeDependentEntriesFromXml(xmlExported);
 
-    // if this turns fragile we have to use zera-scpi's xml-compare-testlib
-    QCOMPARE(xmlExportedPretty, xmlExpected);
+    QVERIFY(TestLogHelpers::compareAndLogOnDiff(xmlExpected, xmlExported));
 }
 
 
@@ -160,19 +146,14 @@ void test_regression_adj_import_export_xml_mt310s2::scpiExportInitialAdjXmlClamp
     QFile xmlFile(":/export_clamp_initial.xml");
     QVERIFY(xmlFile.open(QFile::ReadOnly));
     QString xmlExpected = xmlFile.readAll();
-    qInfo("Expected XML:");
-    qInfo("%s", qPrintable(xmlExpected));
     xmlExpected = XmlHelperForTest::prettify(xmlExpected);
     xmlExpected = XmlHelperForTest::removeTimeDependentEntriesFromXml(xmlExpected);
 
     QString xmlExported = ScpiSingleTransactionBlocked::query("SYSTEM:ADJUSTMENT:CLAMP:XML?");
-    QString xmlExportedPretty = XmlHelperForTest::prettify(xmlExported);
-    qInfo("Exported XML:");
-    qInfo("%s", qPrintable(xmlExportedPretty));
-    xmlExportedPretty = XmlHelperForTest::removeTimeDependentEntriesFromXml(xmlExportedPretty);
+    xmlExported = XmlHelperForTest::prettify(xmlExported);
+    xmlExported = XmlHelperForTest::removeTimeDependentEntriesFromXml(xmlExported);
 
-    // if this turns fragile we have to use zera-scpi's xml-compare-testlib
-    QCOMPARE(xmlExportedPretty, xmlExpected);
+    QVERIFY(TestLogHelpers::compareAndLogOnDiff(xmlExpected, xmlExported));
 }
 
 void test_regression_adj_import_export_xml_mt310s2::scpiExportUndefinedClamp()
@@ -180,11 +161,9 @@ void test_regression_adj_import_export_xml_mt310s2::scpiExportUndefinedClamp()
     m_testServer->addClamp(cClamp::undefined, "IL1");
 
     QString xmlExported = ScpiSingleTransactionBlocked::query("SYSTEM:ADJUSTMENT:CLAMP:XML?");
-    QString xmlExportedPretty = XmlHelperForTest::prettify(xmlExported);
-    qInfo("Exported XML:");
-    qInfo("%s", qPrintable(xmlExportedPretty));
+    xmlExported = XmlHelperForTest::prettify(xmlExported);
 
-    QCOMPARE(xmlExported, "");
+    QVERIFY(TestLogHelpers::compareAndLogOnDiff("", xmlExported));
 }
 
 void test_regression_adj_import_export_xml_mt310s2::scpiExportInvalidClamp()
@@ -192,11 +171,9 @@ void test_regression_adj_import_export_xml_mt310s2::scpiExportInvalidClamp()
     m_testServer->addClamp(cClamp::ClampTypes(-1), "IL1");
 
     QString xmlExported = ScpiSingleTransactionBlocked::query("SYSTEM:ADJUSTMENT:CLAMP:XML?");
-    QString xmlExportedPretty = XmlHelperForTest::prettify(xmlExported);
-    qInfo("Exported XML:");
-    qInfo("%s", qPrintable(xmlExportedPretty));
+    xmlExported = XmlHelperForTest::prettify(xmlExported);
 
-    QCOMPARE(xmlExported, "");
+    QVERIFY(TestLogHelpers::compareAndLogOnDiff("", xmlExported));
 }
 
 void test_regression_adj_import_export_xml_mt310s2::setupServers()

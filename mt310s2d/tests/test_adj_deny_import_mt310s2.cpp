@@ -8,6 +8,7 @@
 #include "zscpi_response_definitions.h"
 #include "xmlhelperfortest.h"
 #include <timemachineobject.h>
+#include <testloghelpers.h>
 #include <QTest>
 
 QTEST_MAIN(test_adj_deny_import_mt310s2);
@@ -31,10 +32,9 @@ void test_adj_deny_import_mt310s2::loadEEpromWithStoredNamesAndVersions()
 {
     // This is mostly to set-up our mock SystemInfo
     I2cSettings *i2cSettings = m_testServer->getI2cSettings();
-    MockEEprom24LC eepromMock(i2cSettings->getDeviceNode(), i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress));
-    QByteArray eepromContent = readFile(":/export_internal_modified.eeprom");
-    QVERIFY(!eepromContent.isEmpty());
-    eepromMock.WriteData(eepromContent.data(), eepromContent.length(), 0);
+    QVERIFY(MockEEprom24LC::mockReadFromFile(i2cSettings->getDeviceNode(),
+                                             i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress),
+                                             ":/export_internal_modified.eeprom"));
 
     QString ret = ScpiSingleTransactionBlocked::cmd("SYSTEM:ADJUSTMENT:FLASH:READ", "");
     QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::ack]);
@@ -45,11 +45,7 @@ void test_adj_deny_import_mt310s2::loadEEpromWithStoredNamesAndVersions()
     QVERIFY(xmlFile.open(QFile::ReadOnly));
     QString xmlExpected = XmlHelperForTest::prepareForCompare(xmlFile.readAll());
 
-    qInfo("Exported XML:");
-    qInfo("%s", qPrintable(xmlExported));
-    qInfo("Expected XML:");
-    qInfo("%s", qPrintable(xmlExpected));
-    QCOMPARE(xmlExported, xmlExpected);
+    QVERIFY(TestLogHelpers::compareAndLogOnDiff(xmlExpected, xmlExported));
 }
 
 void test_adj_deny_import_mt310s2::loadEEpromAndDenyDifferentDeviceName()
@@ -57,10 +53,9 @@ void test_adj_deny_import_mt310s2::loadEEpromAndDenyDifferentDeviceName()
     static_cast<Mt310s2SystemInfoMock*>(m_testServer->getSystemInfo())->setDeviceName("Foo");
 
     I2cSettings *i2cSettings = m_testServer->getI2cSettings();
-    MockEEprom24LC eepromMock(i2cSettings->getDeviceNode(), i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress));
-    QByteArray eepromContent = readFile(":/export_internal_modified.eeprom");
-    QVERIFY(!eepromContent.isEmpty());
-    eepromMock.WriteData(eepromContent.data(), eepromContent.length(), 0);
+    QVERIFY(MockEEprom24LC::mockReadFromFile(i2cSettings->getDeviceNode(),
+                                             i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress),
+                                             ":/export_internal_modified.eeprom"));
 
     QString ret = ScpiSingleTransactionBlocked::cmd("SYSTEM:ADJUSTMENT:FLASH:READ", "");
     QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::errexec]);
@@ -76,12 +71,4 @@ void test_adj_deny_import_mt310s2::setupServers()
     m_proxyClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307);
     Zera::Proxy::getInstance()->startConnectionSmart(m_proxyClient);
     TimeMachineObject::feedEventLoop();
-}
-
-QByteArray test_adj_deny_import_mt310s2::readFile(QString filename)
-{
-    QFile file(filename);
-    if(file.open(QIODevice::ReadOnly))
-        return file.readAll();
-    return QByteArray();
 }

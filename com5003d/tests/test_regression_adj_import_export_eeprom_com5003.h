@@ -30,7 +30,6 @@ private slots:
 
 private:
     void setupServers(AbstractFactoryI2cCtrlPtr ctrlFactory);
-    QByteArray readFile(QString filename);
 
     std::unique_ptr<TestServerForSenseInterfaceCom5003> m_testServer;
     std::unique_ptr<ResmanRunFacade> m_resmanServer;

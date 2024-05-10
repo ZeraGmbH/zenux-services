@@ -85,6 +85,7 @@ function(SETUP_TESTS)
             service-interfaces
             service-interfaces-testlib
             zdsp1d-testlib
+            Zera::testlib-common
             Zera::zera-timers-testlib
             Zera::zera-i2c-devices-testlib
             Zera::resman-lib
