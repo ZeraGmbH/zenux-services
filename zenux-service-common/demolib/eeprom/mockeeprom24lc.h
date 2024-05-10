@@ -14,9 +14,10 @@ public:
     virtual int size() override;
 
     void returnReduceCountOnErrorRead();
-    static void cleanAll();
-    static QByteArray getData(QString devNode, short adr);
-    static int getWriteCount(QString devNode, short adr);
+    static void mockCleanAll();
+    static QByteArray mockGetData(QString devNode, short adr);
+    static void mockSetData(QString devNode, short adr, QByteArray data);
+    static int mockGetWriteCount(QString devNode, short adr);
 private:
     void doReset(int size);
     QString m_devNode;

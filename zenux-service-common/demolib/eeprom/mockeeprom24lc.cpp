@@ -64,14 +64,14 @@ void MockEEprom24LC::returnReduceCountOnErrorRead()
     m_returnReducedDataSizeOnRead[m_devNode][m_i2cAddr] = true;
 }
 
-void MockEEprom24LC::cleanAll()
+void MockEEprom24LC::mockCleanAll()
 {
     m_flashData.clear();
     m_flashDataWriteCounts.clear();
     m_returnReducedDataSizeOnRead.clear();
 }
 
-QByteArray MockEEprom24LC::getData(QString devNode, short adr)
+QByteArray MockEEprom24LC::mockGetData(QString devNode, short adr)
 {
     QByteArray ret;
     if(m_flashData.contains(devNode))
@@ -80,7 +80,12 @@ QByteArray MockEEprom24LC::getData(QString devNode, short adr)
     return ret;
 }
 
-int MockEEprom24LC::getWriteCount(QString devNode, short adr)
+void MockEEprom24LC::mockSetData(QString devNode, short adr, QByteArray data)
+{
+    m_flashData[devNode][adr] = data;
+}
+
+int MockEEprom24LC::mockGetWriteCount(QString devNode, short adr)
 {
     return m_flashDataWriteCounts[devNode][adr];
 }

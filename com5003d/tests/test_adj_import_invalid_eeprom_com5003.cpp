@@ -15,7 +15,7 @@ static const QDateTime refTime = QDateTime::fromSecsSinceEpoch(0, Qt::UTC);
 
 void test_adj_import_invalid_eeprom_com5003::init()
 {
-    MockEEprom24LC::cleanAll();
+    MockEEprom24LC::mockCleanAll();
     MockI2cEEpromIoFactory::enableMock();
     setupServers();
 }
@@ -46,14 +46,14 @@ void test_adj_import_invalid_eeprom_com5003::importIncompleteData()
 
     QList<int> notErrExec;
     for(int i=10; i<eepromContent.length(); i+=1000) {
-        MockEEprom24LC::cleanAll();
+        MockEEprom24LC::mockCleanAll();
         eepromMock.WriteData(eepromContent.left(i).data(), i, 0);
         QString ret = ScpiSingleTransactionBlocked::cmd("SYSTEM:ADJUSTMENT:FLASH:READ", "");
         if(ret != ZSCPI::scpiAnswer[ZSCPI::errexec])
             notErrExec.append(i);
     }
     for(int i=10; i<eepromContent.length(); i+=1000) {
-        MockEEprom24LC::cleanAll();
+        MockEEprom24LC::mockCleanAll();
         eepromMock.WriteData(eepromContent.left(i).data(), i, 0);
         eepromMock.returnReduceCountOnErrorRead();
         QString ret = ScpiSingleTransactionBlocked::cmd("SYSTEM:ADJUSTMENT:FLASH:READ", "");

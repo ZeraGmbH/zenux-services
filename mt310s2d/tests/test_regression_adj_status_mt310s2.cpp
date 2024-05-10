@@ -21,7 +21,7 @@ void test_regression_adj_status_mt310s2::initTestCase()
 
 void test_regression_adj_status_mt310s2::cleanup()
 {
-    MockEEprom24LC::cleanAll();
+    MockEEprom24LC::mockCleanAll();
     m_proxyClient = nullptr;
     m_testServer = nullptr;
     m_resmanServer = nullptr;

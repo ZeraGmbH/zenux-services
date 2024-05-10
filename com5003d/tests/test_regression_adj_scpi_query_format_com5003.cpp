@@ -24,7 +24,7 @@ void test_regression_adj_scpi_query_format_com5003::initTestCase()
 
 void test_regression_adj_scpi_query_format_com5003::init()
 {
-    MockEEprom24LC::cleanAll();
+    MockEEprom24LC::mockCleanAll();
 }
 
 void test_regression_adj_scpi_query_format_com5003::queryGainCorrectionSingleGen()

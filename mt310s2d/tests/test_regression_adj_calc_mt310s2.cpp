@@ -28,7 +28,7 @@ void test_regression_adj_calc_mt310s2::initTestCase()
 
 void test_regression_adj_calc_mt310s2::cleanup()
 {
-    MockEEprom24LC::cleanAll();
+    MockEEprom24LC::mockCleanAll();
     m_testServer->removeAllClamps();
 }
 
