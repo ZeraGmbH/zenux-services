@@ -38,13 +38,10 @@ bool AdjustmentEepromReadWrite::readData()
     quint32 sizeRead;
     bool readOk = false;
     if(readSizeAndChecksum(memIo.get(), sizeRead)) {
-        if(readAllAndValidateFromCache(ba, sizeRead)) {
+        if(readAllAndValidateFromCache(ba, sizeRead))
             readOk = true;
-            qInfo("Read adjustment data from cache passed.");
-        }
         else if(readAllAndValidateFromChip(memIo.get(), ba, sizeRead)) {
             readOk = true;
-            qInfo("Read adjustment data from chip passed.");
             writeRawDataToCache(ba);
         }
     }
@@ -121,6 +118,7 @@ bool AdjustmentEepromReadWrite::readSizeAndChecksum(I2cFlashInterface *memInterf
 
 bool AdjustmentEepromReadWrite::readAllAndValidateFromChip(I2cFlashInterface *memInterface, QByteArray &ba, quint32 size)
 {
+    qInfo("Read adjustment data from chip...");
     ba.resize(size);
     quint32 sizeRead = memInterface->ReadData(ba.data(), size, 0);
     if (sizeRead < size) {
@@ -133,12 +131,38 @@ bool AdjustmentEepromReadWrite::readAllAndValidateFromChip(I2cFlashInterface *me
     // * after read: checksum = 0
     // * after write: checksum as calculated...
     setChecksumInBuffer(ba, 0);
-    quint16 chksum = qChecksum(ba.data(), ba.size());
-    return chksum == m_checksum;
+    quint16 checksum = qChecksum(ba.data(), ba.size());
+    if(checksum != m_checksum) {
+        qWarning("Chip content has incorrect checksum: expected 0x%04X / found 0x%04X", m_checksum, checksum);
+        return false;
+    }
+    qInfo("Adjustment data from is valid and was read.");
+    return true;
 }
 
 bool AdjustmentEepromReadWrite::readAllAndValidateFromCache(QByteArray &ba, quint32 size)
 {
+    qInfo("Try read adjustment data from cache...");
+    QFile cacheFile(getCacheFileName());
+    if(cacheFile.open(QIODevice::ReadOnly)) {
+        QByteArray cacheData = cacheFile.readAll();
+        if(size == (quint32)cacheData.size()) {
+            setChecksumInBuffer(cacheData, 0);
+            quint16 checksum = qChecksum(cacheData.data(), cacheData.size());
+            if(checksum == m_checksum) {
+                qInfo("Read adjustment data from cache passed.");
+                setChecksumInBuffer(cacheData, checksum);
+                ba = cacheData;
+                return true;
+            }
+            else
+                qWarning("Cache file has incorrect checksum: expected 0x%04X / found 0x%04X", m_checksum, checksum);
+        }
+        else
+            qWarning("Cache file has incorrect size: expected %u / found %u", size, cacheData.size());
+    }
+    else
+        qWarning("Cannot open cache file %s!", qPrintable(getCacheFileName()));
     return false;
 }
 
@@ -162,11 +186,12 @@ void AdjustmentEepromReadWrite::writeRawDataToCache(QByteArray ba)
         qWarning("Could not create cache path %s!", qPrintable(m_cachePath));
         return;
     }
+    QFile::remove(getCacheFileName()); // cache files are read-only
     QFile file(getCacheFileName());
     if(file.open(QIODevice::WriteOnly)) {
         setCountAndChecksum(ba);
         if(file.write(ba) == ba.size())
-            qInfo("Adjustment cache file written sucessfully");
+            qInfo("Adjustment cache file written sucessfully.");
         else
             qWarning("Adjustment cache was not written completely!");
     }

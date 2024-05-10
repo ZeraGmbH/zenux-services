@@ -15,7 +15,15 @@ private slots:
     void cachePathNotCreatedOnReadinvalidAdj();
     void cacheFileCreatedOnReadValidAdj();
     void cacheFileNotCreatedOnReadInvalidAdj();
-    void cacheFileCreatedSameContentAsEEprom();
+    void cacheFileCreatedSameContentAsEeprom();
+    void cacheFileCreatedSameContentAsEepromOnOverwrite();
+
+    // read cache
+    void cacheFileNotReadOnInvalidEeprom();
+    void cacheFileIsEmpty();
+    void cacheFileIsTooShort();
+    void cacheFileBitFlipped();
+    void cacheFileReadSuccessfully();
 };
 
 #endif // TEST_ADJ_DATA_CACHE_H

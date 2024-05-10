@@ -1,6 +1,8 @@
 <RCC>
     <qresource prefix="/">
-        <file>export_internal_initial_mt310s2.eeprom</file>
         <file>export_internal_initial_com5003.eeprom</file>
+        <file>export_internal_initial_mt310s2.eeprom</file>
+        <file>export_mt310s2_short.eeprom</file>
+        <file>export_mt310s2_bit_flipped.eeprom</file>
     </qresource>
 </RCC>
