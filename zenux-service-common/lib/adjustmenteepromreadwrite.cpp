@@ -12,14 +12,16 @@ AdjustmentEepromReadWrite::AdjustmentEepromReadWrite(QString devnode, quint8 i2c
     m_i2cAdr(i2cadr),
     m_i2cMuxer(i2cMuxer)
 {
-    QDir dir;
-    if(!dir.mkpath(m_cachePath))
-        qWarning("Could not create cache path %s!", qPrintable(m_cachePath));
 }
 
 void AdjustmentEepromReadWrite::setCachePath(QString path)
 {
     m_cachePath = path;
+}
+
+QString AdjustmentEepromReadWrite::getCacheFileName()
+{
+    return m_cachePath + "/" + "adj-cache";
 }
 
 bool AdjustmentEepromReadWrite::readData()
@@ -43,7 +45,7 @@ bool AdjustmentEepromReadWrite::readData()
         else if(readAllAndValidateFromChip(memIo.get(), ba, sizeRead)) {
             readOk = true;
             qInfo("Read adjustment data from chip passed.");
-            writeRawDataToCache(m_adjData);
+            writeRawDataToCache(ba);
         }
     }
     if(readOk) {
@@ -152,9 +154,24 @@ bool AdjustmentEepromReadWrite::writeRawDataToChip(QByteArray &ba)
     return true;
 }
 
-void AdjustmentEepromReadWrite::writeRawDataToCache(QByteArray &ba)
+void AdjustmentEepromReadWrite::writeRawDataToCache(QByteArray ba)
 {
-
+    qInfo("Write adjustment cache file...");
+    QDir dir;
+    if(!dir.mkpath(m_cachePath)) {
+        qWarning("Could not create cache path %s!", qPrintable(m_cachePath));
+        return;
+    }
+    QFile file(getCacheFileName());
+    if(file.open(QIODevice::WriteOnly)) {
+        setCountAndChecksum(ba);
+        if(file.write(ba) == ba.size())
+            qInfo("Adjustment cache file written sucessfully");
+        else
+            qWarning("Adjustment cache was not written completely!");
+    }
+    else
+        qWarning("Could not create cache file %s!", qPrintable(getCacheFileName()));
 }
 
 void AdjustmentEepromReadWrite::setCountAndChecksum(QByteArray &ba)

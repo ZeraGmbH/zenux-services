@@ -21,6 +21,11 @@ target_sources(test_hotpluggablecontrollercontainer
     testhotplugctrlfactoryi2cctrl.cpp testhotplugctrlfactoryi2cctrl.h
 )
 
+target_sources(test_adj_data_cache
+  PRIVATE
+  AdjustedData/regression_data.qrc
+)
+
 target_sources(test_adj_data_decoder
   PRIVATE
   AdjustedData/regression_data.qrc
