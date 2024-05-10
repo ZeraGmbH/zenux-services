@@ -24,7 +24,7 @@ void test_regression_adj_calc_com5003::initTestCase()
 
 void test_regression_adj_calc_com5003::cleanup()
 {
-    MockEEprom24LC::cleanAll();
+    MockEEprom24LC::mockCleanAll();
 }
 
 static constexpr double val = 2.0;

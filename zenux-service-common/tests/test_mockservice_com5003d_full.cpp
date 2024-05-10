@@ -31,7 +31,7 @@ void test_mockservice_com5003d_full::init()
 
 void test_mockservice_com5003d_full::cleanup()
 {
-    MockEEprom24LC::cleanAll();
+    MockEEprom24LC::mockCleanAll();
     m_pcbIFace = nullptr;
     m_proxyClient = nullptr;
     m_server = nullptr;

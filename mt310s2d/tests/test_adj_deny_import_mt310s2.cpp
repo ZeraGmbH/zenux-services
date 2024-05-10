@@ -14,7 +14,7 @@ QTEST_MAIN(test_adj_deny_import_mt310s2);
 
 void test_adj_deny_import_mt310s2::init()
 {
-    MockEEprom24LC::cleanAll();
+    MockEEprom24LC::mockCleanAll();
     MockI2cEEpromIoFactory::enableMock();
     setupServers();
 }

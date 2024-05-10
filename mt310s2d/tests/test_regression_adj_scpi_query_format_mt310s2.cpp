@@ -24,7 +24,7 @@ void test_regression_adj_scpi_query_format_mt310s2::initTestCase()
 
 void test_regression_adj_scpi_query_format_mt310s2::init()
 {
-    MockEEprom24LC::cleanAll();
+    MockEEprom24LC::mockCleanAll();
 }
 
 void test_regression_adj_scpi_query_format_mt310s2::queryGainCorrectionSingleGen()

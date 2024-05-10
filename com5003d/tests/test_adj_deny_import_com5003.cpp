@@ -14,7 +14,7 @@ QTEST_MAIN(test_adj_deny_import_com5003);
 
 void test_adj_deny_import_com5003::init()
 {
-    MockEEprom24LC::cleanAll();
+    MockEEprom24LC::mockCleanAll();
     MockI2cEEpromIoFactory::enableMock();
     setupServers();
 }
