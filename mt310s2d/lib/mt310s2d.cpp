@@ -30,10 +30,6 @@
 #include <fcntl.h>
 #include <signal.h>
 
-#ifdef SYSTEMD_NOTIFICATION
-#include <systemd/sd-daemon.h>
-#endif
-
 static int pipeFileDescriptorMt310s2[2];
 static void SigHandler(int)
 {
@@ -324,9 +320,6 @@ void cMT310S2dServer::onResourceReady()
         m_myServer->startServer(ethSettings->getPort(EthSettings::protobufserver));
         if(ethSettings->isSCPIactive())
             m_pSCPIServer->listen(QHostAddress::AnyIPv4, ethSettings->getPort(EthSettings::scpiserver));
-#ifdef SYSTEMD_NOTIFICATION
-        sd_notify(0, "READY=1");
-#endif
     }
 }
 

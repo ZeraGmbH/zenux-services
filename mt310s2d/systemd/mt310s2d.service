@@ -12,7 +12,7 @@ After=dev-i2c\x2d0.device
 
 [Service]
 ExecStart=/usr/bin/mt310s2d
-Type=notify
+Type=simple
 User=zera-services
 NoNewPrivileges=true
 ProtectHome=true
