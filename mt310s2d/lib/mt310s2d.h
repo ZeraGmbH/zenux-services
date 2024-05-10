@@ -58,6 +58,7 @@ private slots:
     void doConnect2RM();
     void connect2RMError();
     void doIdentAndRegister();
+    void onResourceReady();
 
 private:
     void SetFASync();
@@ -89,6 +90,7 @@ private:
     RMConnection* m_pRMConnection = nullptr;
     cClampInterface* m_pClampInterface = nullptr;
     AccumulatorInterface* m_accumulatorInterface = nullptr;
+    int m_pendingResources = 0;
 
     quint16 m_atmelInterruptMask = 0;
     quint16 m_atmelSysCntrlInterruptMask = 0;
