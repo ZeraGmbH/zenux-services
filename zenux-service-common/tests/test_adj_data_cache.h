@@ -8,8 +8,14 @@ class test_adj_data_cache : public QObject
     Q_OBJECT
 private slots:
     void initTestCase();
-    void cleanup();
-    void pathCreatedOnFirstUse();
+    void init();
+
+    // create cache
+    void cachePathCreatedOnReadValidAdj();
+    void cachePathNotCreatedOnReadinvalidAdj();
+    void cacheFileCreatedOnReadValidAdj();
+    void cacheFileNotCreatedOnReadInvalidAdj();
+    void cacheFileCreatedSameContentAsEEprom();
 };
 
 #endif // TEST_ADJ_DATA_CACHE_H
