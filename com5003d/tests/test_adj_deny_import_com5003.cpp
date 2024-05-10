@@ -8,6 +8,7 @@
 #include "zscpi_response_definitions.h"
 #include "xmlhelperfortest.h"
 #include <timemachineobject.h>
+#include <testloghelpers.h>
 #include <QTest>
 
 QTEST_MAIN(test_adj_deny_import_com5003);
@@ -39,16 +40,11 @@ void test_adj_deny_import_com5003::loadEEpromWithStoredNamesAndVersions()
     QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::ack]);
 
     QString xmlExported = XmlHelperForTest::prepareForCompare(ScpiSingleTransactionBlocked::query("SYSTEM:ADJUSTMENT:XML?"));
-
     QFile xmlFile(":/import_modified.xml");
     QVERIFY(xmlFile.open(QFile::ReadOnly));
     QString xmlExpected = XmlHelperForTest::prepareForCompare(xmlFile.readAll());
 
-    qInfo("Exported XML:");
-    qInfo("%s", qPrintable(xmlExported));
-    qInfo("Expected XML:");
-    qInfo("%s", qPrintable(xmlExpected));
-    QCOMPARE(xmlExported, xmlExpected);
+    QVERIFY(TestLogHelpers::compareAndLogOnDiff(xmlExpected, xmlExported));
 }
 
 void test_adj_deny_import_com5003::loadEEpromAndDenyDifferentDeviceName()

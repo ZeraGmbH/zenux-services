@@ -9,6 +9,7 @@
 #include "zscpi_response_definitions.h"
 #include "xmlhelperfortest.h"
 #include <timemachineobject.h>
+#include <testloghelpers.h>
 #include <QSignalSpy>
 #include <QTest>
 
@@ -115,11 +116,7 @@ void test_regression_adj_import_export_eeprom_mt310s2::scpiWriteRandomFileFlashW
     QVERIFY(xmlFile.open(QFile::ReadOnly));
     QString xmlExpected = XmlHelperForTest::prepareForCompare(xmlFile.readAll());
 
-    qInfo("Exported XML:");
-    qInfo("%s", qPrintable(xmlExported));
-    qInfo("Expected XML:");
-    qInfo("%s", qPrintable(xmlExpected));
-    QCOMPARE(xmlExported, xmlExpected);
+    QVERIFY(TestLogHelpers::compareAndLogOnDiff(xmlExpected, xmlExported));
 }
 
 void test_regression_adj_import_export_eeprom_mt310s2::loadRandomToEEpromWriteToFlashExportXmlAndCheck()
@@ -139,11 +136,7 @@ void test_regression_adj_import_export_eeprom_mt310s2::loadRandomToEEpromWriteTo
     QVERIFY(xmlFile.open(QFile::ReadOnly));
     QString xmlExpected = XmlHelperForTest::prepareForCompare(xmlFile.readAll());
 
-    qInfo("Exported XML:");
-    qInfo("%s", qPrintable(xmlExported));
-    qInfo("Expected XML:");
-    qInfo("%s", qPrintable(xmlExpected));
-    QCOMPARE(xmlExported, xmlExpected);
+    QVERIFY(TestLogHelpers::compareAndLogOnDiff(xmlExpected, xmlExported));
 }
 
 void test_regression_adj_import_export_eeprom_mt310s2::directExportFlashArbitraryVersionGen()
