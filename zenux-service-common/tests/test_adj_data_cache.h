@@ -7,6 +7,7 @@ class test_adj_data_cache : public QObject
 {
     Q_OBJECT
 private slots:
+    void initTestCase();
     void cleanup();
     void pathCreatedOnFirstUse();
 };

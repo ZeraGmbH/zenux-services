@@ -28,7 +28,6 @@ private slots:
     // all tests for clamps
 private:
     void setupServers(AbstractFactoryI2cCtrlPtr ctrlFactory);
-    bool writeFile(QString filename, QByteArray data);
     QByteArray readFile(QString filename);
 
     std::unique_ptr<TestServerForSenseInterfaceMt310s2> m_testServer;

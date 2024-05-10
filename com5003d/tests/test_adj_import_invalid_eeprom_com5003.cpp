@@ -74,14 +74,6 @@ void test_adj_import_invalid_eeprom_com5003::setupServers()
     TimeMachineObject::feedEventLoop();
 }
 
-bool test_adj_import_invalid_eeprom_com5003::writeFile(QString filename, QByteArray data)
-{
-    QFile file(filename);
-    if(file.open(QIODevice::WriteOnly))
-        return file.write(data) == data.length();
-    return false;
-}
-
 QByteArray test_adj_import_invalid_eeprom_com5003::readFile(QString filename)
 {
     QFile file(filename);

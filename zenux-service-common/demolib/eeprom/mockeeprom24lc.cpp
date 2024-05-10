@@ -1,4 +1,5 @@
 #include "mockeeprom24lc.h"
+#include <QFile>
 
 static constexpr int sizeFlash = 32768;
 
@@ -88,6 +89,17 @@ void MockEEprom24LC::mockSetData(QString devNode, short adr, QByteArray data)
 int MockEEprom24LC::mockGetWriteCount(QString devNode, short adr)
 {
     return m_flashDataWriteCounts[devNode][adr];
+}
+
+bool MockEEprom24LC::mockWriteToFile(QString devNode, short adr, QString fileName)
+{
+    QByteArray data = mockGetData(devNode, adr);
+    if(data.isEmpty())
+        return false;
+    QFile file(fileName);
+    if(file.open(QIODevice::WriteOnly))
+        return file.write(data) == data.length();
+    return false;
 }
 
 void MockEEprom24LC::doReset(int size)
