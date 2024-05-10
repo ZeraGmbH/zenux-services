@@ -245,11 +245,6 @@ void cMT310S2dServer::doSetupServer()
             // after init. we once poll the devices connected at power up
             updateI2cDevicesConnected();
 
-            EthSettings *ethSettings = m_settings->getEthSettings();
-            m_myServer->startServer(ethSettings->getPort(EthSettings::protobufserver)); // and can start the server now
-            if(ethSettings->isSCPIactive())
-                m_pSCPIServer->listen(QHostAddress::AnyIPv4, ethSettings->getPort(EthSettings::scpiserver));
-
             sigActionMt310s2.sa_handler = &SigHandler; // setup signal handler
             sigemptyset(&sigActionMt310s2.sa_mask);
             sigActionMt310s2. sa_flags = SA_RESTART;
@@ -260,6 +255,7 @@ void cMT310S2dServer::doSetupServer()
             enableClampInterrupt();
 
             // our resource mananager connection must be opened after configuration is done
+            EthSettings *ethSettings = m_settings->getEthSettings();
             m_pRMConnection = new RMConnection(ethSettings->getRMIPadr(), ethSettings->getPort(EthSettings::resourcemanager));
             // so we must complete our state machine here
             m_retryRMConnect = 100;
@@ -308,17 +304,30 @@ void cMT310S2dServer::doIdentAndRegister()
 {
     qInfo("Starting doIdentAndRegister");
     m_pRMConnection->SendIdent(getName());
-
-    for (int i = 0; i < resourceList.count(); i++)
-    {
+    for (int i = 0; i < resourceList.count(); i++) {
         cResource *res = resourceList.at(i);
         connect(m_pRMConnection, &RMConnection::rmAck, res, &cResource::resourceManagerAck );
         EthSettings *ethSettings = m_settings->getEthSettings();
         res->registerResource(m_pRMConnection, ethSettings->getPort(EthSettings::protobufserver));
+        connect(res, &cResource::registerRdy, this, &cMT310S2dServer::onResourceReady);
     }
+    m_pendingResources = resourceList.count();
+}
+
+void cMT310S2dServer::onResourceReady()
+{
+    Q_ASSERT(m_pendingResources > 0);
+    m_pendingResources--;
+    if(m_pendingResources == 0) {
+        qInfo("Server is up and port(s) are open");
+        EthSettings *ethSettings = m_settings->getEthSettings();
+        m_myServer->startServer(ethSettings->getPort(EthSettings::protobufserver));
+        if(ethSettings->isSCPIactive())
+            m_pSCPIServer->listen(QHostAddress::AnyIPv4, ethSettings->getPort(EthSettings::scpiserver));
 #ifdef SYSTEMD_NOTIFICATION
-    sd_notify(0, "READY=1");
+        sd_notify(0, "READY=1");
 #endif
+    }
 }
 
 
