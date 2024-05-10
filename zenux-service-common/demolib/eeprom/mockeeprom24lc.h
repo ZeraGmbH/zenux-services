@@ -19,6 +19,8 @@ public:
     static void mockSetData(QString devNode, short adr, QByteArray data);
     static int mockGetWriteCount(QString devNode, short adr);
     static bool mockWriteToFile(QString devNode, short adr, QString fileName);
+    static bool mockReadFromFile(QString devNode, short adr, QString fileName);
+    static bool mockCompareWithFile(QString devNode, short adr, QString fileName);
 private:
     void doReset(int size);
     QString m_devNode;

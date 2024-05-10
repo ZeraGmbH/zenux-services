@@ -18,7 +18,6 @@ private slots:
 
 private:
     void setupServers();
-    QByteArray readFile(QString filename);
 
     std::unique_ptr<TestServerForSenseInterfaceCom5003> m_testServer;
     std::unique_ptr<ResmanRunFacade> m_resmanServer;

@@ -57,10 +57,9 @@ void test_regression_adj_import_export_eeprom_mt310s2::directExportFlashCheckRef
     setupServers(std::make_shared<TestFactoryI2cCtrl>(true));
     QVERIFY(m_testServer->getSenseInterface()->exportAdjData(refTime));
     I2cSettings *i2cSettings = m_testServer->getI2cSettings();
-    QByteArray dataWritten = MockEEprom24LC::mockGetData(i2cSettings->getDeviceNode(),
-                                                       i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress));
-    QByteArray dataReference = readFile(":/export_internal_initial.eeprom");
-    QCOMPARE(dataWritten, dataReference);
+    QVERIFY(MockEEprom24LC::mockCompareWithFile(i2cSettings->getDeviceNode(),
+                                                i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress),
+                                                ":/export_internal_initial.eeprom"));
 }
 
 void test_regression_adj_import_export_eeprom_mt310s2::scpiWriteFlashInitial()
@@ -80,9 +79,7 @@ void test_regression_adj_import_export_eeprom_mt310s2::scpiWriteFlashInitial()
     // and do a second write with known time
     QVERIFY(m_testServer->getSenseInterface()->exportAdjData(refTime));
     QCOMPARE(MockEEprom24LC::mockGetWriteCount(devNode, i2cAddress), 2);
-    QByteArray dataWritten = MockEEprom24LC::mockGetData(devNode, i2cAddress);
-    QByteArray dataReference = readFile(":/export_internal_initial.eeprom");
-    QCOMPARE(dataWritten, dataReference);
+    QVERIFY(MockEEprom24LC::mockCompareWithFile(devNode, i2cAddress, ":/export_internal_initial.eeprom"));
 }
 
 void test_regression_adj_import_export_eeprom_mt310s2::scpiWriteRandomFileAndFlashGen()
@@ -129,10 +126,9 @@ void test_regression_adj_import_export_eeprom_mt310s2::loadRandomToEEpromWriteTo
 {
     setupServers(std::make_shared<TestFactoryI2cCtrl>(true));
     I2cSettings *i2cSettings = m_testServer->getI2cSettings();
-    MockEEprom24LC eepromMock(i2cSettings->getDeviceNode(), i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress));
-    QByteArray eepromContent = readFile(":/export_internal_modified.eeprom");
-    QVERIFY(!eepromContent.isEmpty());
-    eepromMock.WriteData(eepromContent.data(), eepromContent.length(), 0);
+    QVERIFY(MockEEprom24LC::mockReadFromFile(i2cSettings->getDeviceNode(),
+                                             i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress),
+                                             ":/export_internal_modified.eeprom"));
 
     QString ret = ScpiSingleTransactionBlocked::cmd("SYSTEM:ADJUSTMENT:FLASH:READ", "");
     QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::ack]);
@@ -164,10 +160,9 @@ void test_regression_adj_import_export_eeprom_mt310s2::loadArbitraryVersionToEEp
 {
     setupServers(std::make_shared<TestFactoryI2cCtrl>(true));
     I2cSettings *i2cSettings = m_testServer->getI2cSettings();
-    MockEEprom24LC eepromMock(i2cSettings->getDeviceNode(), i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress));
-    QByteArray eepromContent = readFile(":/import_arbitrary_version.eeprom");
-    QVERIFY(!eepromContent.isEmpty());
-    eepromMock.WriteData(eepromContent.data(), eepromContent.length(), 0);
+    QVERIFY(MockEEprom24LC::mockReadFromFile(i2cSettings->getDeviceNode(),
+                                             i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress),
+                                             ":/import_arbitrary_version.eeprom"));
 
     QString ret = ScpiSingleTransactionBlocked::cmd("SYSTEM:ADJUSTMENT:FLASH:READ", "");
     QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::ack]);
@@ -182,12 +177,4 @@ void test_regression_adj_import_export_eeprom_mt310s2::setupServers(AbstractFact
     m_proxyClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307);
     Zera::Proxy::getInstance()->startConnectionSmart(m_proxyClient);
     TimeMachineObject::feedEventLoop();
-}
-
-QByteArray test_regression_adj_import_export_eeprom_mt310s2::readFile(QString filename)
-{
-    QFile file(filename);
-    if(file.open(QIODevice::ReadOnly))
-        return file.readAll();
-    return QByteArray();
 }

@@ -102,6 +102,31 @@ bool MockEEprom24LC::mockWriteToFile(QString devNode, short adr, QString fileNam
     return false;
 }
 
+bool MockEEprom24LC::mockReadFromFile(QString devNode, short adr, QString fileName)
+{
+    QFile file(fileName);
+    if(file.open(QIODevice::ReadOnly)) {
+        QByteArray data = file.readAll();
+        if(data.isEmpty())
+            return false;
+        mockSetData(devNode, adr, data);
+        return true;
+    }
+    return false;
+}
+
+bool MockEEprom24LC::mockCompareWithFile(QString devNode, short adr, QString fileName)
+{
+    QFile file(fileName);
+    if(file.open(QIODevice::ReadOnly)) {
+        QByteArray data = file.readAll();
+        if(data.isEmpty()) // for now...
+            return false;
+        return data == mockGetData(devNode, adr);
+    }
+    return false;
+}
+
 void MockEEprom24LC::doReset(int size)
 {
     m_flashData[m_devNode][m_i2cAddr] = QByteArray(size, 0xff);
