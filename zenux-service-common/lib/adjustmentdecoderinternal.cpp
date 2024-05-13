@@ -170,10 +170,5 @@ void AdjustmentDecoderInternal::extractRanges(QDataStream &stream)
             }
         }
     }
-    for(auto it = m_rangeInfosMap.begin(); it != m_rangeInfosMap.end(); it++) {
-        QStringList ranges = it.value();
-        for(int i = 0; i < ranges.size(); i++)
-            qInfo("Channel %s / Range %s", qPrintable(it.key()), qPrintable(ranges.at(i)));
-    }
 }
 
