@@ -17,7 +17,7 @@ void AdjustmentNode::Deserialize(QDataStream& qds)
     qds >> m_fCorrection >> m_fArgument;
 }
 
-QString AdjustmentNode::Serialize(int digits)
+QString AdjustmentNode::toString(int digits)
 {
     QString s;
     s = QString("%1;%2;").arg(m_fCorrection,0,'f',digits)
@@ -25,7 +25,7 @@ QString AdjustmentNode::Serialize(int digits)
     return s;
 }
 
-void AdjustmentNode::Deserialize(const QString& s)
+void AdjustmentNode::fromString(const QString& s)
 {
     m_fCorrection = s.section( ';',0,0).toDouble();
     m_fArgument = s.section( ';',1,1).toDouble();

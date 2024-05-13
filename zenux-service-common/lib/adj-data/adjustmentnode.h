@@ -14,8 +14,8 @@ public:
     ~AdjustmentNode(){};
     void Serialize(QDataStream&);
     void Deserialize(QDataStream&);
-    QString Serialize(int digits);
-    void Deserialize(const QString&);
+    QString toString(int digits);
+    void fromString(const QString&);
     AdjustmentNode& operator = (const AdjustmentNode&);
     void setCorrection(double value);
     double getCorrection();

@@ -146,7 +146,7 @@ QString JustDataInterface::m_ReadWriteJustNode(QString &sInput, quint8 index)
 {
     cSCPICommand cmd = sInput;
     if (cmd.isQuery())
-        return QString("%1").arg(getNode(index)->Serialize(m_digits));
+        return QString("%1").arg(getNode(index)->toString(m_digits));
     else if (cmd.isCommand(2))
     {
         bool enable;
@@ -214,7 +214,7 @@ QString JustDataInterface::SerializeNodes()
 {
     QString s;
     for (int i = 0; i < m_nOrder+1; i++)
-        s += m_pJustNode[i].Serialize(m_digits);
+        s += m_pJustNode[i].toString(m_digits);
     return s;
 }
 
@@ -234,7 +234,7 @@ void JustDataInterface::DeserializeCoefficients(const QString& s)
 void JustDataInterface::DeserializeNodes(const QString& s)
 {
     for (int i = 0; i < m_nOrder+1; i++)
-        m_pJustNode[i].Deserialize(s.section(';',i << 1,(i << 1) + 1));
+        m_pJustNode[i].fromString(s.section(';',i << 1,(i << 1) + 1));
 }
 
 
