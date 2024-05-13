@@ -50,10 +50,6 @@ enum ScpiCommands
     DirectJustInit
 };
 
-static constexpr int GainCorrOrder = 3; // ax^3 + bx^2 + cx + d
-static constexpr int PhaseCorrOrder  = 3;
-static constexpr int OffsetCorrOrder = 3;
-
 RangeAdjInterface::RangeAdjInterface(cSCPI *scpiinterface,
                                                    std::unique_ptr<AdjustScpiValueFormatter> adjustmentFormatter,
                                                    PermissionStructAdj permissions) :

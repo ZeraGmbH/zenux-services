@@ -42,7 +42,7 @@ void test_adj_data_decoder::readServerVersionAndDeviceNameForMT()
 
 void test_adj_data_decoder::readMT310s2Ranges()
 {
-    QFile file(":/export_internal_initial_mt310s2.eeprom");
+    QFile file(":/mt310s2-050059467.eeprom");
     file.open(QIODevice::ReadOnly);
     QByteArray ba = file.readAll();
 

@@ -1,4 +1,5 @@
 #include "adjustmentdecoderinternal.h"
+#include "adjustmentrangeserializer.h"
 #include <QDataStream>
 
 AdjustmentDecoderInternal::AdjustmentDecoderInternal(int maxSize) :
@@ -149,19 +150,24 @@ bool AdjustmentDecoderInternal::decodeAdjTimeStamp(QDataStream &stream)
 
 void AdjustmentDecoderInternal::extractRanges(QDataStream &stream)
 {
-    QByteArray ba(m_maxSize, 0);
-    stream.readRawData(ba.data(), ba.size());
-
-    for(auto it = ba.cbegin(); it != ba.cend(); it++) {
-        const QByteArray &data = it;
-        if(data.startsWith("SENSE:")) {
-            QList<QByteArray> rangeCmdList = data.split(':'); //[0]:SENSE  [1]:m0  [2]:250V
-            QByteArray channelName = rangeCmdList[1];
-            QByteArray rangeName = rangeCmdList[2];
-            if(!m_rangeInfosMap[channelName].contains(rangeName))
-                m_rangeInfosMap[rangeCmdList[1]].append(rangeCmdList[2]);
-            else
-                qFatal("Channel %s / range %s was already added!", qPrintable(channelName), qPrintable(rangeName));
+    while (!stream.atEnd()) {
+        QString channelRangeInfo;
+        stream >> m_tmpWorkBuffer;
+        channelRangeInfo = m_tmpWorkBuffer;
+        if(!channelRangeInfo.isEmpty()) {
+            QStringList rangeCmdList = channelRangeInfo.split(':'); //[0]:SENSE  [1]:m0  [2]:250V
+            QString senseId = rangeCmdList[0];
+            if(senseId == "SENSE") {
+                QString channelName = rangeCmdList[1];
+                QString rangeName = rangeCmdList[2];
+                if(!m_rangeInfosMap[channelName].contains(rangeName)) {
+                    m_rangeInfosMap[rangeCmdList[1]].append(rangeCmdList[2]);
+                    AdjustmentRangeSerializer adjRangeDecoder;
+                    adjRangeDecoder.Deserialize(stream);
+                }
+                else
+                    qFatal("Channel %s / range %s was already added!", qPrintable(channelName), qPrintable(rangeName));
+            }
         }
     }
     for(auto it = m_rangeInfosMap.begin(); it != m_rangeInfosMap.end(); it++) {
