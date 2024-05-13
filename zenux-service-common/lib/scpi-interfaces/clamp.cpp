@@ -695,11 +695,11 @@ void cClamp::initClamp(quint8 type)
         // U
         createVDE1400VRanges();
         break;
+
+    case CL1400VDC:
+        createVDE1400VRanges();
+        break;
     }
-
-
-
-
 
     if(!m_RangeList.isEmpty() || !m_RangeListSecondary.isEmpty())
         qInfo("Clamp type: %s", qPrintable(getClampTypeName(type)));
@@ -753,6 +753,9 @@ QString cClamp::getClampTypeName(quint8 type)
         break;
     case CL800ADC1400VDC:
         CLName = QString("CL800ADC1400VDC");
+        break;
+    case CL1400VDC:
+        CLName = QString("CL1400VDC");
         break;
     default:
         CLName = QString("Undefined");

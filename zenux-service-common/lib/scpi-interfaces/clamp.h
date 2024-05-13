@@ -32,6 +32,7 @@ public:
 
         CL8ADC1400VDC,  // VDE
         CL800ADC1400VDC,
+        CL1400VDC,
 
         anzCL
     };
