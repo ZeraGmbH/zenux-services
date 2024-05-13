@@ -1,5 +1,6 @@
 file(GLOB HEADERS
     ${CMAKE_CURRENT_SOURCE_DIR}/*.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/adj-data/*.h
     ${CMAKE_CURRENT_SOURCE_DIR}/async-notifications/*.h
     ${CMAKE_CURRENT_SOURCE_DIR}/device-nodes/*.h
     ${CMAKE_CURRENT_SOURCE_DIR}/meas-channels/*.h
@@ -12,6 +13,7 @@ file(GLOB HEADERS
 
 file(GLOB SOURCES 
     ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/adj-data/*.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/async-notifications/*.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/device-nodes/*.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/meas-channels/*.cpp
@@ -46,6 +48,7 @@ target_include_directories(zenuxservicecommon
     $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/zenuxservicecommon>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/adj-data>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/async-notifications>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/device-nodes>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/meas-channels>
