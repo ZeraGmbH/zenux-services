@@ -355,13 +355,13 @@ bool cClamp::importXMLDocument(QDomDocument *qdomdoc, bool ignoreType)
                                             QString jTypeName = jTypeNode.toElement().tagName();
                                             QString jdata = jTypeNode.toElement().text();
                                             if (jTypeName == "Status") {
-                                                pJustData->DeserializeStatus(jdata);
+                                                pJustData->statusFromString(jdata);
                                             }
                                             else if (jTypeName == "Coefficients") {
-                                                pJustData->DeserializeCoefficients(jdata);
+                                                pJustData->coefficientsFromString(jdata);
                                             }
                                             if (jTypeName == "Nodes") {
-                                                pJustData->DeserializeNodes(jdata);
+                                                pJustData->nodesFromString(jdata);
                                             }
                                         }
                                     }
@@ -872,18 +872,18 @@ void cClamp::exportRangeXml(QDomDocument &justqdom, QDomElement &typeTag, SenseR
         rtag.appendChild(gpotag);
         JustDataInterface* adjDataInterface = range->getJustData()->getAdjInterface(adjType);
         QDomElement tag = justqdom.createElement("Status");
-        QString jdata = adjDataInterface->SerializeStatus();
+        QString jdata = adjDataInterface->statusToString();
         t = justqdom.createTextNode(jdata);
         gpotag.appendChild(tag);
         tag.appendChild(t);
         tag = justqdom.createElement("Coefficients");
         gpotag.appendChild(tag);
-        jdata = adjDataInterface->SerializeCoefficients();
+        jdata = adjDataInterface->coefficientsToString();
         t = justqdom.createTextNode(jdata);
         tag.appendChild(t);
         tag = justqdom.createElement("Nodes");
         gpotag.appendChild(tag);
-        jdata = adjDataInterface->SerializeNodes();
+        jdata = adjDataInterface->nodesToString();
         t = justqdom.createTextNode(jdata);
         tag.appendChild(t);
     }

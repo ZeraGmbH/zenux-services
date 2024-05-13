@@ -243,9 +243,9 @@ QString RangeAdjInterface::scpiCmdComputeJustData(QString& scpiInput)
         bool enable;
         if(m_permissions.funcAllowAdjCompute(enable)) {
             if (enable) {
-                m_gainCorrection.cmpCoefficients();
-                m_phaseCorrection.cmpCoefficients();
-                m_offsetCorrection.cmpCoefficients();
+                m_gainCorrection.calcCoefficientsFromNodes();
+                m_phaseCorrection.calcCoefficientsFromNodes();
+                m_offsetCorrection.calcCoefficientsFromNodes();
                 return ZSCPI::scpiAnswer[ZSCPI::ack];
             }
             else
@@ -309,9 +309,9 @@ void RangeAdjInterface::initJustData()
 
 void RangeAdjInterface::computeJustData()
 {
-    m_gainCorrection.cmpCoefficients();
-    m_phaseCorrection.cmpCoefficients();
-    m_offsetCorrection.cmpCoefficients();
+    m_gainCorrection.calcCoefficientsFromNodes();
+    m_phaseCorrection.calcCoefficientsFromNodes();
+    m_offsetCorrection.calcCoefficientsFromNodes();
 }
 
 double RangeAdjInterface::getGainCorrectionTotal(double par)

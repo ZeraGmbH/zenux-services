@@ -54,38 +54,38 @@ void JustDataInterface::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd
     switch (cmdCode)
     {
     case JustStatus:
-        protoCmd->m_sOutput = m_ReadWriteStatus(protoCmd->m_sInput);
+        protoCmd->m_sOutput = scpiReadWriteStatus(protoCmd->m_sInput);
         break;
     case JustCoefficient0:
-        protoCmd->m_sOutput = m_ReadWriteJustCoeeficient(protoCmd->m_sInput, 0);
+        protoCmd->m_sOutput = scpiReadWriteJustCoeeficient(protoCmd->m_sInput, 0);
         break;
     case JustCoefficient1:
-        protoCmd->m_sOutput = m_ReadWriteJustCoeeficient(protoCmd->m_sInput, 1);
+        protoCmd->m_sOutput = scpiReadWriteJustCoeeficient(protoCmd->m_sInput, 1);
         break;
     case JustCoefficient2:
-        protoCmd->m_sOutput = m_ReadWriteJustCoeeficient(protoCmd->m_sInput, 2);
+        protoCmd->m_sOutput = scpiReadWriteJustCoeeficient(protoCmd->m_sInput, 2);
         break;
     case JustCoefficient3:
-        protoCmd->m_sOutput = m_ReadWriteJustCoeeficient(protoCmd->m_sInput, 3);
+        protoCmd->m_sOutput = scpiReadWriteJustCoeeficient(protoCmd->m_sInput, 3);
         break;
     case JustNode0:
-        protoCmd->m_sOutput = m_ReadWriteJustNode(protoCmd->m_sInput, 0);
+        protoCmd->m_sOutput = scpiReadWriteJustNode(protoCmd->m_sInput, 0);
         break;
     case JustNode1:
-        protoCmd->m_sOutput = m_ReadWriteJustNode(protoCmd->m_sInput, 1);
+        protoCmd->m_sOutput = scpiReadWriteJustNode(protoCmd->m_sInput, 1);
         break;
     case JustNode2:
-        protoCmd->m_sOutput = m_ReadWriteJustNode(protoCmd->m_sInput, 2);
+        protoCmd->m_sOutput = scpiReadWriteJustNode(protoCmd->m_sInput, 2);
         break;
     case JustNode3:
-        protoCmd->m_sOutput = m_ReadWriteJustNode(protoCmd->m_sInput, 3);
+        protoCmd->m_sOutput = scpiReadWriteJustNode(protoCmd->m_sInput, 3);
         break;
     }
     if (protoCmd->m_bwithOutput)
         emit cmdExecutionDone(protoCmd);
 }
 
-QString JustDataInterface::m_ReadWriteStatus(QString &sInput)
+QString JustDataInterface::scpiReadWriteStatus(QString &sInput)
 {
     cSCPICommand cmd = sInput;
     if (cmd.isQuery())
@@ -113,7 +113,7 @@ QString JustDataInterface::m_ReadWriteStatus(QString &sInput)
     return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-QString JustDataInterface::m_ReadWriteJustCoeeficient(QString &sInput, quint8 index)
+QString JustDataInterface::scpiReadWriteJustCoeeficient(QString &sInput, quint8 index)
 {
     cSCPICommand cmd = sInput;
     if (cmd.isQuery())
@@ -142,7 +142,7 @@ QString JustDataInterface::m_ReadWriteJustCoeeficient(QString &sInput, quint8 in
 }
 
 
-QString JustDataInterface::m_ReadWriteJustNode(QString &sInput, quint8 index)
+QString JustDataInterface::scpiReadWriteJustNode(QString &sInput, quint8 index)
 {
     cSCPICommand cmd = sInput;
     if (cmd.isQuery())
@@ -197,12 +197,12 @@ void JustDataInterface::Deserialize(QDataStream& qds) // reads adjustment data f
         m_pJustNode[i].Deserialize(qds);
 }
 
-QString JustDataInterface::SerializeStatus()
+QString JustDataInterface::statusToString()
 {
     return QString("%1").arg(m_nStatus);
 }
 
-QString JustDataInterface::SerializeCoefficients() // writes adjustment data to qstring
+QString JustDataInterface::coefficientsToString() // writes adjustment data to qstring
 {
     QString s;
     for (int i = 0; i < m_nOrder+1; i++)
@@ -210,7 +210,7 @@ QString JustDataInterface::SerializeCoefficients() // writes adjustment data to 
     return s;
 }
 
-QString JustDataInterface::SerializeNodes()
+QString JustDataInterface::nodesToString()
 {
     QString s;
     for (int i = 0; i < m_nOrder+1; i++)
@@ -218,20 +218,20 @@ QString JustDataInterface::SerializeNodes()
     return s;
 }
 
-void JustDataInterface::DeserializeStatus(const QString &s)
+void JustDataInterface::statusFromString(const QString &s)
 {
     m_nStatus = s.toInt();
 }
 
 
-void JustDataInterface::DeserializeCoefficients(const QString& s) 
+void JustDataInterface::coefficientsFromString(const QString& s)
 {
     for (int i = 0; i < m_nOrder+1; i++)
         m_pCoefficient[i] = s.section(';',i,i).toDouble();
 }
 
 
-void JustDataInterface::DeserializeNodes(const QString& s)
+void JustDataInterface::nodesFromString(const QString& s)
 {
     for (int i = 0; i < m_nOrder+1; i++)
         m_pJustNode[i].fromString(s.section(';',i << 1,(i << 1) + 1));
@@ -270,7 +270,7 @@ double JustDataInterface::getCoefficient(int index)
     return m_pCoefficient[index];
 }
 
-bool JustDataInterface::cmpCoefficients() // calculates coefficients from nodes
+bool JustDataInterface::calcCoefficientsFromNodes()
 {
     const double epsilon = 1e-7;
     int i;
@@ -311,7 +311,7 @@ quint8 JustDataInterface::getStatus()
 void JustDataInterface::initJustData(double init)
 {
     setNode(0 , AdjustmentNode(init,0.0)); // setting the 1st node and all following
-    cmpCoefficients();
+    calcCoefficientsFromNodes();
     m_nStatus = 0;
 }
 
