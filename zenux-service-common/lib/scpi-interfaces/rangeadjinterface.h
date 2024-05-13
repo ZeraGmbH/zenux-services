@@ -26,6 +26,10 @@ public:
     static std::unique_ptr<AdjustScpiValueFormatter> createCom5003AdjFormatter();
 };
 
+static constexpr int GainCorrOrder = 3; // ax^3 + bx^2 + cx + d
+static constexpr int PhaseCorrOrder  = 3;
+static constexpr int OffsetCorrOrder = 3;
+
 class RangeAdjInterface : public ScpiConnection
 {
     Q_OBJECT
