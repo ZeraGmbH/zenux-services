@@ -77,14 +77,6 @@ function(SETUP_TESTS)
         target_link_libraries(${_testname}
             PUBLIC
             Qt5::Test
-            mt310s2d-lib-testlib
-            com5003d-lib
-            com5003-testlib
-            zenuxservicecommon-testlib
-            zenuxservicecommon-demolib
-            service-interfaces
-            service-interfaces-testlib
-            zdsp1d-testlib
             Zera::testlib-common
             Zera::zera-timers-testlib
             Zera::zera-i2c-devices-testlib

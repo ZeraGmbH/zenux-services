@@ -1,4 +1,15 @@
-SETUP_TESTS(
+function(SETUP_COM5003_TESTS)
+    foreach(_testname ${ARGN})
+        SETUP_TESTS(${_testname})
+        target_link_libraries(${_testname}
+            PUBLIC
+            com5003d-lib
+            com5003-testlib
+        )
+    endforeach()
+endfunction()
+
+SETUP_COM5003_TESTS(
     test_config_load_com5003
     test_regression_sense_range_com5003
     test_regression_sense_interface_com5003

@@ -1,4 +1,14 @@
-SETUP_TESTS(
+function(SETUP_MT310S2_TESTS)
+    foreach(_testname ${ARGN})
+        SETUP_TESTS(${_testname})
+        target_link_libraries(${_testname}
+            PUBLIC
+            mt310s2d-lib-testlib
+        )
+    endforeach()
+endfunction()
+
+SETUP_MT310S2_TESTS(
     test_accumulatorinterface
     test_config_load_mt310s2
     test_regression_sense_range_mt310s2
