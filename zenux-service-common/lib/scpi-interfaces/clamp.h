@@ -22,13 +22,16 @@ public:
         EMOB200DC,
         EMOB80,
         RC3000,
-        CL200ADC1000VDC,
+        CL200ADC1000VDC, // LEM
         CL1000VDC,
 
-        CL8ADC1000VDC,
+        CL8ADC1000VDC,  // TESLA
         CL800ADC1000VDC,
 
         EMOB500DC,
+
+        CL8ADC1400VDC,  // VDE
+        CL800ADC1400VDC,
 
         anzCL
     };
@@ -64,6 +67,7 @@ private:
     void addSystAdjInterface();
     void addSystAdjInterfaceChannel(QString channelName);
     void createLEM1000VRanges(const PermissionStructAdj &permissionsOffsetAllowedAlways);
+    void createVDE1400VRanges();
     SenseRangeCommon* getRange(QString name);
     ClampTypes readClampType();
     void removeAllRanges();
