@@ -1,6 +1,6 @@
 #!/bin/sh
 
-journalctl $@ -b -o short-precise \
+journalctl $@ -b -o short-monotonic \
     -u com5003d.service \
     -u com5003-fpga1file.service \
     -u mt310s2d.service \
