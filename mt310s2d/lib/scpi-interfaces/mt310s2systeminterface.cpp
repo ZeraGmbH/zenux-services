@@ -323,7 +323,7 @@ QString Mt310s2SystemInterface::m_AdjXMLWrite(QString &sInput)
     if (cmd.isCommand(1))
     {
         QString filename = cmd.getParam(0);
-        if (m_senseInterface->exportAdTojXMLFile(filename))
+        if (m_senseInterface->exportAdjToXMLFile(filename))
             return ZSCPI::scpiAnswer[ZSCPI::ack];
         else
             return ZSCPI::scpiAnswer[ZSCPI::errexec];

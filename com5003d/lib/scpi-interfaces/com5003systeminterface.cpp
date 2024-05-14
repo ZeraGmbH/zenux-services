@@ -305,7 +305,7 @@ QString Com5003SystemInterface::m_AdjXMLWrite(QString &sInput)
     if (cmd.isCommand(1))
     {
         QString filename = cmd.getParam(0);
-        if (m_senseInterface->exportAdTojXMLFile(filename))
+        if (m_senseInterface->exportAdjToXMLFile(filename))
             ret = ZeraMControllerIo::cmddone;
         else
             ret = ZeraMControllerIo::cmdexecfault;
