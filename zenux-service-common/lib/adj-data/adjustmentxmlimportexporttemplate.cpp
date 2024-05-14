@@ -2,12 +2,12 @@
 #include <QFile>
 #include <QTextStream>
 
-bool AdjustmentXmlImportExportTemplate::exportAdTojXMLFile(QString file)
+bool AdjustmentXmlImportExportTemplate::exportAdjToXMLFile(QString file)
 {
     QString filename = file + ".xml";
     QFile adjfile(filename);
     if (!adjfile.open(QIODevice::WriteOnly )) {
-        qCritical("exportAdTojXMLFile: could not open xml file: %s", qPrintable(filename));
+        qCritical("exportAdjToXMLFile: could not open xml file: %s", qPrintable(filename));
         return false;
     }
     QString sXML = exportXMLString();

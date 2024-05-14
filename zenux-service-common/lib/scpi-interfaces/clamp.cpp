@@ -1061,7 +1061,7 @@ QString cClamp::scpiWriteXML(QString &scpi)
     cSCPICommand cmd = scpi;
     if (cmd.isCommand(1)) {
         QString filename = cmd.getParam(0);
-        if (exportAdTojXMLFile(filename)) {
+        if (exportAdjToXMLFile(filename)) {
             answer = ZSCPI::scpiAnswer[ZSCPI::ack];
         }
         else {
