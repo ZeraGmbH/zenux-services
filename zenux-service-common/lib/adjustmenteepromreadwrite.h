@@ -10,8 +10,9 @@ class AdjustmentEepromReadWrite
 public:
     AdjustmentEepromReadWrite(QString devnode, quint8 i2cadr, I2cMuxerInterface::Ptr i2cMuxer);
     static void setCachePath(QString path);
-    static QString getCacheFileName();
+    static QString getCacheFullFileName(QString cacheFileName);
     bool readData();
+    bool readDataCached(QString cacheFileName);
     bool writeData();
     bool resetData();
 
@@ -23,9 +24,9 @@ public:
 private:
     bool readSizeAndChecksum(I2cFlashInterface *memInterface, quint32 &sizeRead);
     bool readAllAndValidateFromChip(I2cFlashInterface *memInterface, QByteArray& ba, quint32 size);
-    bool readAllAndValidateFromCache(QByteArray& ba, quint32 size);
+    bool readAllAndValidateFromCache(QByteArray& ba, quint32 size, QString cacheFileName);
     bool writeRawDataToChip(QByteArray& ba);
-    void writeRawDataToCache(QByteArray ba);
+    void writeRawDataToCache(QByteArray ba, QString cacheFileName);
     void setCountAndChecksum(QByteArray& ba);
     void setChecksumInBuffer(QByteArray& ba, quint16 checksum);
     void setCountInBuffer(QByteArray& ba);

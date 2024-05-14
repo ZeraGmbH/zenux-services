@@ -6,6 +6,7 @@
 #include <QDateTime>
 
 QString SenseInterfaceCommon::m_version = "V1.00";
+static const char* cacheFileName = "adj-intern-cache";
 
 SenseInterfaceCommon::SenseInterfaceCommon(cSCPI *scpiInterface,
                                            I2cSettings *i2cSettings,
@@ -19,7 +20,7 @@ SenseInterfaceCommon::SenseInterfaceCommon(cSCPI *scpiInterface,
                    I2cMultiplexerFactory::createNullMuxer()),
     m_adjustmentDecoder(m_adjReadWrite.getMaxSize())
 {
-    if(m_adjReadWrite.readData())
+    if(m_adjReadWrite.readDataCached(cacheFileName))
         decodeAdjustmentDataNextGen();
 }
 
@@ -131,7 +132,7 @@ bool SenseInterfaceCommon::isInvalidAdjDataOrChannelRangeAvail(QString channelNa
 
 bool SenseInterfaceCommon::importAdjData()
 {
-    if(m_adjReadWrite.readData()) {
+    if(m_adjReadWrite.readDataCached(cacheFileName)) {
         QByteArray ba = m_adjReadWrite.getData();
         QDataStream stream(&ba, QIODevice::ReadOnly);
         stream.setVersion(QDataStream::Qt_5_4);

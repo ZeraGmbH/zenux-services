@@ -19,12 +19,19 @@ void AdjustmentEepromReadWrite::setCachePath(QString path)
     m_cachePath = path;
 }
 
-QString AdjustmentEepromReadWrite::getCacheFileName()
+QString AdjustmentEepromReadWrite::getCacheFullFileName(QString cacheFileName)
 {
-    return m_cachePath + "/" + "adj-cache";
+    QFileInfo fi(m_cachePath + "/" + cacheFileName);
+    QString fullPath = fi.absoluteFilePath();
+    return fullPath;
 }
 
 bool AdjustmentEepromReadWrite::readData()
+{
+    return readDataCached("");
+}
+
+bool AdjustmentEepromReadWrite::readDataCached(QString cacheFileName)
 {
     qInfo("Read adjustment data...");
     if(m_adjDataReadIsValid) {
@@ -38,11 +45,11 @@ bool AdjustmentEepromReadWrite::readData()
     quint32 sizeRead;
     bool readOk = false;
     if(readSizeAndChecksum(memIo.get(), sizeRead)) {
-        if(readAllAndValidateFromCache(ba, sizeRead))
+        if(readAllAndValidateFromCache(ba, sizeRead, cacheFileName))
             readOk = true;
         else if(readAllAndValidateFromChip(memIo.get(), ba, sizeRead)) {
             readOk = true;
-            writeRawDataToCache(ba);
+            writeRawDataToCache(ba, cacheFileName);
         }
     }
     if(readOk) {
@@ -140,10 +147,12 @@ bool AdjustmentEepromReadWrite::readAllAndValidateFromChip(I2cFlashInterface *me
     return true;
 }
 
-bool AdjustmentEepromReadWrite::readAllAndValidateFromCache(QByteArray &ba, quint32 size)
+bool AdjustmentEepromReadWrite::readAllAndValidateFromCache(QByteArray &ba, quint32 size, QString cacheFileName)
 {
+    if(cacheFileName.isEmpty())
+        return false;
     qInfo("Try read adjustment data from cache...");
-    QFile cacheFile(getCacheFileName());
+    QFile cacheFile(getCacheFullFileName(cacheFileName));
     if(cacheFile.open(QIODevice::ReadOnly)) {
         QByteArray cacheData = cacheFile.readAll();
         if(size == (quint32)cacheData.size()) {
@@ -162,7 +171,7 @@ bool AdjustmentEepromReadWrite::readAllAndValidateFromCache(QByteArray &ba, quin
             qWarning("Cache file has incorrect size: expected %u / found %u", size, cacheData.size());
     }
     else
-        qWarning("Cannot open cache file %s!", qPrintable(getCacheFileName()));
+        qWarning("Cannot open cache file %s!", qPrintable(cacheFile.fileName()));
     return false;
 }
 
@@ -178,16 +187,19 @@ bool AdjustmentEepromReadWrite::writeRawDataToChip(QByteArray &ba)
     return true;
 }
 
-void AdjustmentEepromReadWrite::writeRawDataToCache(QByteArray ba)
+void AdjustmentEepromReadWrite::writeRawDataToCache(QByteArray ba, QString cacheFileName)
 {
+    if(cacheFileName.isEmpty())
+        return;
     qInfo("Write adjustment cache file...");
     QDir dir;
     if(!dir.mkpath(m_cachePath)) {
         qWarning("Could not create cache path %s!", qPrintable(m_cachePath));
         return;
     }
-    QFile::remove(getCacheFileName()); // cache files are read-only
-    QFile file(getCacheFileName());
+    QString fullFileName = getCacheFullFileName(cacheFileName);
+    QFile::remove(fullFileName); // cache files are read-only
+    QFile file(fullFileName);
     if(file.open(QIODevice::WriteOnly)) {
         setCountAndChecksum(ba);
         if(file.write(ba) == ba.size())
@@ -196,7 +208,7 @@ void AdjustmentEepromReadWrite::writeRawDataToCache(QByteArray ba)
             qWarning("Adjustment cache was not written completely!");
     }
     else
-        qWarning("Could not create cache file %s!", qPrintable(getCacheFileName()));
+        qWarning("Could not create cache file %s!", qPrintable(fullFileName));
 }
 
 void AdjustmentEepromReadWrite::setCountAndChecksum(QByteArray &ba)

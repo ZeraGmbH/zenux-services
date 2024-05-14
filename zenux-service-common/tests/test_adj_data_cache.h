@@ -24,6 +24,10 @@ private slots:
     void cacheFileIsTooShort();
     void cacheFileBitFlipped();
     void cacheFileReadSuccessfully();
+
+    // no cache requested
+    void nocachePathCreatedOnReadValidAdj();
+    void nocacheFileCreatedOnReadValidAdj();
 };
 
 #endif // TEST_ADJ_DATA_CACHE_H
