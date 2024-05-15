@@ -5,6 +5,5 @@
         <file>export_mt310s2_short.eeprom</file>
         <file>export_mt310s2_bit_flipped.eeprom</file>
         <file>mt310s2-050059467.eeprom</file>
-        <file>mt310s2-050059467.xml</file>
     </qresource>
 </RCC>
