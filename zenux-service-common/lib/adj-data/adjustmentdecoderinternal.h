@@ -11,6 +11,9 @@ public:
     AdjustmentDecoderInternal(int maxSize);
     ~AdjustmentDecoderInternal();
 
+    void setDeviceName(QString deviceName);
+    void setSerialNumber(QString serialNumber);
+
     bool decodeAdjBytes(QByteArray ba);
     bool isValid();
     const AdjustmentDataHeader& getAdjHeader();
@@ -33,6 +36,8 @@ private:
     AdjustmentDataHeader m_adjHeader;
 
     QMap<QString, QStringList> m_rangeInfosMap;
+    QString m_deviceName = "Unknown";
+    QString m_serialNumber = "Unknown";
 };
 
 #endif // ADJUSTMENTDECODERINTERNAL_H
