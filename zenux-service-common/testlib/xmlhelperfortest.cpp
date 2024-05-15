@@ -56,6 +56,17 @@ QString XmlHelperForTest::removeTimeDependentEntriesFromXml(QString xml)
 QString XmlHelperForTest::removeChecksumDependentEntriesFromXml(QString xml)
 {
     static QRegularExpression regexDate("<Chksum>.*<\\/Chksum>");
-    xml = xml.replace(regexDate, "<Chksum>nochksum</Chksum>");
+    QString emptyChksum = "<Chksum/>";
+    if(xml.contains(regexDate))
+        xml = xml.replace(regexDate, "<Chksum>nochksum</Chksum>");
+    else if(xml.contains(emptyChksum))
+        xml = xml.replace(emptyChksum, "<Chksum>nochksum</Chksum>");
+    return xml;
+}
+
+QString XmlHelperForTest::removeDeviceSpecificEntriesFromXml(QString xml)
+{
+    static QRegularExpression regexVersionNumber("<VersionNumber>.*<\\/VersionNumber>");
+    xml = xml.replace(regexVersionNumber, "<VersionNumber>DEVICE: Unkown;PCB: Unknown;LCA: Unknown;CTRL: Unknown</VersionNumber>");
     return xml;
 }
