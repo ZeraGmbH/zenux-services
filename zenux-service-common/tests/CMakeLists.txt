@@ -5,6 +5,7 @@ function(SETUP_SERVICE_COMMON_TESTS)
             PUBLIC
             zenuxservicecommon-testlib
             service-interfaces-testlib
+            mt310s2d-lib-testlib
         )
     endforeach()
 endfunction()
@@ -24,6 +25,7 @@ SETUP_SERVICE_COMMON_TESTS(
     test_sense_settings
     test_fpga_settings_regression
     test_criticalstatusmock
+    test_adj_data_serialization
     )
 
 target_sources(test_hotpluggablecontrollercontainer
@@ -40,4 +42,9 @@ target_sources(test_adj_data_cache
 target_sources(test_adj_data_decoder
   PRIVATE
   AdjustedData/regression_data.qrc
+)
+
+target_sources(test_adj_data_serialization
+  PRIVATE
+  SerializationData/regression_data.qrc
 )
