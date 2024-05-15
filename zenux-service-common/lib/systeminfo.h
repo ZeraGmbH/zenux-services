@@ -17,13 +17,15 @@ public:
     virtual QString getCTRLVersion();
     virtual QString getSerialNumber();
 
+protected:
+    QString m_sDeviceName;
+    QString m_sSerialNumber;
+
 private:
     AbstractFactoryI2cCtrlPtr m_ctrlFactory;
     bool m_bRead; // we keep in mind whether we could read the information
-    QString m_sDeviceName;
     QString m_sPCBVersion;
     QString m_sLCAVersion;
     QString m_sCTRLVersion;
-    QString m_sSerialNumber;
 };
 #endif // SYSTEMINFO_H
