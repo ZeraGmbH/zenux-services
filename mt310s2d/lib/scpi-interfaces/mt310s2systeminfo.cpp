@@ -30,3 +30,13 @@ QString Mt310s2SystemInfo::getSysPCBVersion()
 {
     return m_sSysPCBVersion;
 }
+
+void Mt310s2SystemInfo::setDeviceName(QString devName)
+{
+    m_sDeviceName = devName;
+}
+
+void Mt310s2SystemInfo::setSerialNum(QString serialNum)
+{
+    m_sSerialNumber = serialNum;
+}
