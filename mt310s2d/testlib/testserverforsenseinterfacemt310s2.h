@@ -21,6 +21,8 @@ public:
 
     cClamp *addClamp(int clampTypeNo, QString channelAlias1);
     void removeAllClamps();
+    void setDeviceName(QString devName);
+    void setSerialNum(QString serialNum);
 
 private:
     std::unique_ptr<cSenseSettings> m_senseSettings;

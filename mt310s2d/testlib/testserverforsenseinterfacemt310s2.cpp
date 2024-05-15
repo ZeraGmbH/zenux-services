@@ -51,3 +51,13 @@ void TestServerForSenseInterfaceMt310s2::removeAllClamps()
     // to execute as much production code as possible we use actualizeClampStatus
     getClampInterface()->actualizeClampStatus(0);
 }
+
+void TestServerForSenseInterfaceMt310s2::setDeviceName(QString devName)
+{
+    m_systemInfo->setDeviceName(devName);
+}
+
+void TestServerForSenseInterfaceMt310s2::setSerialNum(QString serialNum)
+{
+    m_systemInfo->setSerialNum(serialNum);
+}
