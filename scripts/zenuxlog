@@ -1,13 +1,13 @@
 #!/bin/sh
 
 journalctl $@ -b -o short-monotonic \
-    -u com5003d.service \
-    -u com5003-fpga1file.service \
-    -u mt310s2d.service \
-    -u mt310s2-fpga1file.service \
-    -u mt310s2-mcontroller-startup.service \
-    -u modulemanager.service \
-    -u sec1000d.service \
-    -u zdsp1d.service \
-    -u resourcemanager.service
-
+    _SYSTEMD_UNIT=com5003d.service + \
+    _SYSTEMD_UNIT=com5003-fpga1file.service + \
+    _SYSTEMD_UNIT=mt310s2d.service + \
+    _SYSTEMD_UNIT=mt310s2-fpga1file.service + \
+    _SYSTEMD_UNIT=mt310s2-mcontroller-startup.service + \
+    _SYSTEMD_UNIT=modulemanager.service + \
+    _SYSTEMD_UNIT=sec1000d.service + \
+    _SYSTEMD_UNIT=zdsp1d.service + \
+    _SYSTEMD_UNIT=resourcemanager.service + \
+    SYSLOG_IDENTIFIER=vf-declarative-gui
