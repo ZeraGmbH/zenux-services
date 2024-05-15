@@ -11,6 +11,7 @@ public:
     static QString prepareForCompare(QString xml);
     static QString removeTimeDependentEntriesFromXml(QString xml);
     static QString removeChecksumDependentEntriesFromXml(QString xml);
+    static QString removeDeviceSpecificEntriesFromXml(QString xml);
 };
 
 #endif // XMLHELPERFORTEST_H
