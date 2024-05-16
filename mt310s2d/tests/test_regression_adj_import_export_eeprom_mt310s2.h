@@ -25,7 +25,13 @@ private slots:
 
     void directExportFlashArbitraryVersionGen();
     void loadArbitraryVersionToEEprom();
-    // all tests for clamps
+
+    void freshClampSetTypeIOnlyEepromGen();
+    void freshClampSetTypeIOnlyEepromCheck();
+    void freshClampSetTypeUOnlyEepromGen();
+    void freshClampSetTypeUOnlyEepromCheck();
+    void freshClampSetTypeUIEepromGen();
+    void freshClampSetTypeUIEepromCheck();
 private:
     void setupServers(AbstractFactoryI2cCtrlPtr ctrlFactory);
 

@@ -161,6 +161,96 @@ void test_regression_adj_import_export_eeprom_mt310s2::loadArbitraryVersionToEEp
     QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::ack]);
 }
 
+void test_regression_adj_import_export_eeprom_mt310s2::freshClampSetTypeIOnlyEepromGen()
+{
+    setupServers(std::make_shared<TestFactoryI2cCtrl>(true));
+    cClamp *clamp = m_testServer->addClamp(0, "IAUX");
+
+    QString ret = ScpiSingleTransactionBlocked::cmd("SYSTEM:CLAMP:m7:TYPE", QString::number(cClamp::CL120A));
+    QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::ack]);
+    QVERIFY(clamp->exportAdjData(refTime));
+
+    I2cSettings *i2cSettings = m_testServer->getI2cSettings();
+    QVERIFY(MockEEprom24LC::mockWriteToFile(i2cSettings->getDeviceNode(),
+                                            i2cSettings->getI2CAdress(i2cSettings::clampFlashI2cAddress),
+                                            "/tmp/initial_clamp_type_i.eeprom"));
+}
+
+void test_regression_adj_import_export_eeprom_mt310s2::freshClampSetTypeIOnlyEepromCheck()
+{
+    setupServers(std::make_shared<TestFactoryI2cCtrl>(true));
+    cClamp *clamp = m_testServer->addClamp(0, "IAUX");
+
+    QString ret = ScpiSingleTransactionBlocked::cmd("SYSTEM:CLAMP:m7:TYPE", QString::number(cClamp::CL120A));
+    QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::ack]);
+    QVERIFY(clamp->exportAdjData(refTime));
+
+    I2cSettings *i2cSettings = m_testServer->getI2cSettings();
+    QVERIFY(MockEEprom24LC::mockCompareWithFile(i2cSettings->getDeviceNode(),
+                                                i2cSettings->getI2CAdress(i2cSettings::clampFlashI2cAddress),
+                                                ":/initial_clamp_type_i.eeprom"));
+}
+
+void test_regression_adj_import_export_eeprom_mt310s2::freshClampSetTypeUOnlyEepromGen()
+{
+    setupServers(std::make_shared<TestFactoryI2cCtrl>(true));
+    cClamp *clamp = m_testServer->addClamp(0, "IAUX");
+
+    QString ret = ScpiSingleTransactionBlocked::cmd("SYSTEM:CLAMP:m7:TYPE", QString::number(cClamp::CL1000VDC));
+    QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::ack]);
+    QVERIFY(clamp->exportAdjData(refTime));
+
+    I2cSettings *i2cSettings = m_testServer->getI2cSettings();
+    QVERIFY(MockEEprom24LC::mockWriteToFile(i2cSettings->getDeviceNode(),
+                                            i2cSettings->getI2CAdress(i2cSettings::clampFlashI2cAddress),
+                                            "/tmp/initial_clamp_type_u.eeprom"));
+}
+
+void test_regression_adj_import_export_eeprom_mt310s2::freshClampSetTypeUOnlyEepromCheck()
+{
+    setupServers(std::make_shared<TestFactoryI2cCtrl>(true));
+    cClamp *clamp = m_testServer->addClamp(0, "IAUX");
+
+    QString ret = ScpiSingleTransactionBlocked::cmd("SYSTEM:CLAMP:m7:TYPE", QString::number(cClamp::CL1000VDC));
+    QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::ack]);
+    QVERIFY(clamp->exportAdjData(refTime));
+
+    I2cSettings *i2cSettings = m_testServer->getI2cSettings();
+    QVERIFY(MockEEprom24LC::mockCompareWithFile(i2cSettings->getDeviceNode(),
+                                                i2cSettings->getI2CAdress(i2cSettings::clampFlashI2cAddress),
+                                                ":/initial_clamp_type_u.eeprom"));
+}
+
+void test_regression_adj_import_export_eeprom_mt310s2::freshClampSetTypeUIEepromGen()
+{
+    setupServers(std::make_shared<TestFactoryI2cCtrl>(true));
+    cClamp *clamp = m_testServer->addClamp(0, "IAUX");
+
+    QString ret = ScpiSingleTransactionBlocked::cmd("SYSTEM:CLAMP:m7:TYPE", QString::number(cClamp::CL200ADC1000VDC));
+    QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::ack]);
+    QVERIFY(clamp->exportAdjData(refTime));
+
+    I2cSettings *i2cSettings = m_testServer->getI2cSettings();
+    QVERIFY(MockEEprom24LC::mockWriteToFile(i2cSettings->getDeviceNode(),
+                                            i2cSettings->getI2CAdress(i2cSettings::clampFlashI2cAddress),
+                                            "/tmp/initial_clamp_type_ui.eeprom"));
+}
+
+void test_regression_adj_import_export_eeprom_mt310s2::freshClampSetTypeUIEepromCheck()
+{
+    setupServers(std::make_shared<TestFactoryI2cCtrl>(true));
+    cClamp *clamp = m_testServer->addClamp(0, "IAUX");
+
+    QString ret = ScpiSingleTransactionBlocked::cmd("SYSTEM:CLAMP:m7:TYPE", QString::number(cClamp::CL200ADC1000VDC));
+    QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::ack]);
+    QVERIFY(clamp->exportAdjData(refTime));
+
+    I2cSettings *i2cSettings = m_testServer->getI2cSettings();
+    QVERIFY(MockEEprom24LC::mockCompareWithFile(i2cSettings->getDeviceNode(),
+                                                i2cSettings->getI2CAdress(i2cSettings::clampFlashI2cAddress),
+                                                ":/initial_clamp_type_ui.eeprom"));
+}
+
 void test_regression_adj_import_export_eeprom_mt310s2::setupServers(AbstractFactoryI2cCtrlPtr ctrlFactory)
 {
     m_resmanServer = std::make_unique<ResmanRunFacade>();
