@@ -321,7 +321,6 @@ bool cClamp::importXMLDocument(QDomDocument *qdomdoc, bool ignoreType)
                 QDomNodeList adjChildNl = qdElem.childNodes();
                 for (qint32 j = 0; j < adjChildNl.length(); j++) {
                     qdNode = adjChildNl.item(j);
-                    qDebug() << qdNode.toElement().tagName();
                     if (qdNode.toElement().tagName() == "Sense") {// we look for the sense entry
 
                         done = true;
@@ -333,8 +332,6 @@ bool cClamp::importXMLDocument(QDomDocument *qdomdoc, bool ignoreType)
                             QDomNode RangeJustNode = sensNl.item(j);
                             qdElem = RangeJustNode.toElement();
                             QString tName = qdElem.tagName();
-                            qDebug() << tName;
-
                             if (tName == "Range") {
                                 QDomNodeList rngJustNl = RangeJustNode.childNodes();
                                 for (qint32 k = 0; k < rngJustNl.length(); k++) {
@@ -342,11 +339,8 @@ bool cClamp::importXMLDocument(QDomDocument *qdomdoc, bool ignoreType)
 
                                     qdElem = RangeJustNode.toElement();
                                     tName = qdElem.tagName();
-                                    qDebug() << tName;
-
                                     if (tName == "Name") {
                                         Name = qdElem.text();
-                                        qDebug() << Name;
                                         rngPtr = getRange(Name);
                                     }
 
