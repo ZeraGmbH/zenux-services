@@ -1,6 +1,10 @@
 #include "adjustmentrangeserializer.h"
 #include "rangeadjinterface.h"
 
+AdjustmentDataSerializer::AdjustmentDataSerializer()
+{
+}
+
 AdjustmentDataSerializer::AdjustmentDataSerializer(int order) :
     m_order(order)
 {
@@ -35,5 +39,20 @@ void AdjustmentRangeSerializer::Deserialize(QDataStream &qds)
     m_gainSerializer.Deserialize(qds);
     m_phaseSerializer.Deserialize(qds);
     m_offsetSerializer.Deserialize(qds);
+}
+
+AdjustmentDataSerializer AdjustmentRangeSerializer::getGainSerializer()
+{
+    return m_gainSerializer;
+}
+
+AdjustmentDataSerializer AdjustmentRangeSerializer::getPhaseSerializer()
+{
+    return m_phaseSerializer;
+}
+
+AdjustmentDataSerializer AdjustmentRangeSerializer::getOffsetSerializer()
+{
+    return m_offsetSerializer;
 }
 

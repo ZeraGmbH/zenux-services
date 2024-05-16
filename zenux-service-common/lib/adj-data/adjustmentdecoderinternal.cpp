@@ -1,5 +1,4 @@
 #include "adjustmentdecoderinternal.h"
-#include "adjustmentrangeserializer.h"
 #include <QDataStream>
 
 AdjustmentDecoderInternal::AdjustmentDecoderInternal(int maxSize) :
@@ -26,6 +25,11 @@ void AdjustmentDecoderInternal::setSerialNumber(QString serialNumber)
 QMap<QString, QStringList> AdjustmentDecoderInternal::getRangeInfos()
 {
     return m_rangeInfosMap;
+}
+
+AdjustmentDecoderInternal::rangeAdjStruct AdjustmentDecoderInternal::getRangeAdjStruct(QString channelName, QString rangeName)
+{
+    return m_rangeAdjMap[channelName][rangeName];
 }
 
 bool AdjustmentDecoderInternal::isChannelRangeAvailable(QString channelName, QString rangeName)
@@ -182,13 +186,26 @@ void AdjustmentDecoderInternal::extractRanges(QDataStream &stream)
                 QString rangeName = rangeCmdList[2];
                 if(!m_rangeInfosMap[channelName].contains(rangeName)) {
                     m_rangeInfosMap[rangeCmdList[1]].append(rangeCmdList[2]);
+
                     AdjustmentRangeSerializer adjRangeDecoder;
                     adjRangeDecoder.Deserialize(stream);
+                    setRangeAdjStruct(channelName, rangeName, adjRangeDecoder);
                 }
                 else
                     qFatal("Channel %s / range %s was already added!", qPrintable(channelName), qPrintable(rangeName));
             }
         }
     }
+}
+
+void AdjustmentDecoderInternal::setRangeAdjStruct(QString channelName, QString rangeName, AdjustmentRangeSerializer adjRangeDecoder)
+{
+    rangeAdjStruct rangeAdjInterface;
+    rangeAdjInterface.gainSerializer = adjRangeDecoder.getGainSerializer();
+    rangeAdjInterface.offsetSerializer = adjRangeDecoder.getOffsetSerializer();
+    rangeAdjInterface.phaseSerializer = adjRangeDecoder.getPhaseSerializer();
+    QMap<QString, rangeAdjStruct> adjInterface;
+    adjInterface[rangeName] = rangeAdjInterface;
+    m_rangeAdjMap[channelName] = adjInterface;
 }
 

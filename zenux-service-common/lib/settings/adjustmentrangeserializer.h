@@ -7,6 +7,7 @@
 class AdjustmentDataSerializer
 {
 public:
+    AdjustmentDataSerializer();
     AdjustmentDataSerializer(int order);
     void Deserialize(QDataStream& qds);
 private:
@@ -22,6 +23,10 @@ class AdjustmentRangeSerializer
 public:
     AdjustmentRangeSerializer();
     void Deserialize(QDataStream& qds);
+    AdjustmentDataSerializer getGainSerializer();
+    AdjustmentDataSerializer getPhaseSerializer();
+    AdjustmentDataSerializer getOffsetSerializer();
+
 private:
     AdjustmentDataSerializer m_gainSerializer;
     AdjustmentDataSerializer m_phaseSerializer;

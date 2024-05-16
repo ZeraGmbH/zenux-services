@@ -2,12 +2,21 @@
 #define ADJUSTMENTDECODERINTERNAL_H
 
 #include "adjustmendataheader.h"
+#include "adjustmentrangeserializer.h"
 #include <QByteArray>
 #include <QMap>
+
 
 class AdjustmentDecoderInternal
 {
 public:
+    struct rangeAdjStruct
+    {
+        AdjustmentDataSerializer gainSerializer;
+        AdjustmentDataSerializer phaseSerializer;
+        AdjustmentDataSerializer offsetSerializer;
+    };
+
     AdjustmentDecoderInternal(int maxSize);
     ~AdjustmentDecoderInternal();
 
@@ -19,6 +28,7 @@ public:
     const AdjustmentDataHeader& getAdjHeader();
 
     QMap<QString, QStringList> getRangeInfos();
+    rangeAdjStruct getRangeAdjStruct(QString channelName, QString rangeName);
     bool isChannelRangeAvailable(QString channelName, QString rangeName);
 
 private:
@@ -29,6 +39,7 @@ private:
     bool decodeSerialNumber(QDataStream &stream);
     bool decodeAdjTimeStamp(QDataStream &stream);
     void extractRanges(QDataStream &stream);
+    void setRangeAdjStruct(QString channelName, QString rangeName, AdjustmentRangeSerializer adjRangeDecoder);
 
     int m_maxSize;
     char* m_tmpWorkBuffer = nullptr;
@@ -36,6 +47,7 @@ private:
     AdjustmentDataHeader m_adjHeader;
 
     QMap<QString, QStringList> m_rangeInfosMap;
+    QMap<QString, QMap<QString, rangeAdjStruct>> m_rangeAdjMap;
     QString m_deviceName = "Unknown";
     QString m_serialNumber = "Unknown";
 };
