@@ -127,7 +127,7 @@ bool AdjustmentEepromReadWrite::readAllAndValidateFromChip(I2cFlashInterface *me
     ba.resize(size);
     quint32 sizeRead = memInterface->ReadData(ba.data(), size, 0);
     if (sizeRead < size) {
-        qCritical("Error on adjustment raw data read: wanted: %i / available %i / got %i",
+        qCritical("Error on chip adjustment data read: wanted: %i / available %i / read %i",
                   size, memInterface->size(), sizeRead);
         return false;
     }
@@ -139,10 +139,10 @@ bool AdjustmentEepromReadWrite::readAllAndValidateFromChip(I2cFlashInterface *me
     setChecksumInBuffer(ba, 0);
     quint16 checksum = qChecksum(ba.data(), ba.size());
     if(checksum != m_checksum) {
-        qWarning("Chip content has incorrect checksum: expected 0x%04X / found 0x%04X", m_checksum, checksum);
+        qWarning("Chip adjustment data has incorrect checksum: expected 0x%04X / found 0x%04X", m_checksum, checksum);
         return false;
     }
-    qInfo("Adjustment data from is valid and was read.");
+    qInfo("Chip adjustment data read is valid.");
     return true;
 }
 
