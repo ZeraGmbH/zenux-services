@@ -129,6 +129,7 @@ void cPCBServer::sendAnswerProto(cProtonetCommand *protoCmd)
 
 void cPCBServer::setSCPIConnection()
 {
+    qInfo("Ethernet SCPI Client connected");
     m_pSCPISocket = m_pSCPIServer->nextPendingConnection();
     connect(m_pSCPISocket, &QIODevice::readyRead, this, &cPCBServer::SCPIInput);
     connect(m_pSCPISocket, &QAbstractSocket::disconnected, this, &cPCBServer::SCPIdisconnect);
@@ -161,6 +162,7 @@ void cPCBServer::SCPIInput()
 
 void cPCBServer::SCPIdisconnect()
 {
+    qInfo("Ethernet SCPI Client disconnected");
     disconnect(m_pSCPISocket, 0, 0, 0); // we disconnect everything
 }
 

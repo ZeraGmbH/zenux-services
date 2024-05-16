@@ -1334,6 +1334,7 @@ void ZDspServer::executeCommandProto(VeinTcp::TcpPeer *peer, std::shared_ptr<goo
 
 void ZDspServer::setSCPIConnection()
 {
+    qInfo("Ethernet SCPI Client connected");
     m_pSCPISocket = m_pSCPIServer->nextPendingConnection();
     m_pSCPIClient = AddSCPIClient();
     connect(m_pSCPISocket, &QIODevice::readyRead, this, &ZDspServer::SCPIInput);
@@ -1354,6 +1355,7 @@ void ZDspServer::SCPIInput()
 
 void ZDspServer::SCPIdisconnect()
 {
+    qInfo("Ethernet SCPI Client disconnected");
     disconnect(m_pSCPISocket, 0, 0, 0); // we disconnect everything
     DelSCPIClient();
 }
