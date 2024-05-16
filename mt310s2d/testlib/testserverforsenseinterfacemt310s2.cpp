@@ -39,11 +39,11 @@ TestServerForSenseInterfaceMt310s2::TestServerForSenseInterfaceMt310s2(AbstractF
     start();
 }
 
-void TestServerForSenseInterfaceMt310s2::addClamp(int clampTypeNo, QString channelAlias1)
+cClamp * TestServerForSenseInterfaceMt310s2::addClamp(int clampTypeNo, QString channelAlias1)
 {
     ClampFactoryTest::setTestClampType(clampTypeNo);
     SenseSystem::cChannelSettings *channelSettingClamps = getSenseSettings()->findChannelSettingByAlias1(channelAlias1);
-    getClampInterface()->addClamp(channelSettingClamps, I2cMultiplexerFactory::createNullMuxer());
+    return getClampInterface()->addClamp(channelSettingClamps, I2cMultiplexerFactory::createNullMuxer());
 }
 
 void TestServerForSenseInterfaceMt310s2::removeAllClamps()

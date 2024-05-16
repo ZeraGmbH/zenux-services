@@ -30,7 +30,7 @@ void cClampInterface::initSCPIConnection(QString leadingNodes)
     addDelegate(QString("%1SYSTEM:ADJUSTMENT:CLAMP").arg(leadingNodes),"XML",SCPI::isQuery | SCPI::isCmdwP, m_pSCPIInterface, ClampSystem::cmdClampImportExport);
 }
 
-void cClampInterface::addClamp(const SenseSystem::cChannelSettings *chSettings, I2cMuxerInterface::Ptr i2cMuxer)
+cClamp *cClampInterface::addClamp(const SenseSystem::cChannelSettings *chSettings, I2cMuxerInterface::Ptr i2cMuxer)
 {
     m_nClampStatus |= (1<<chSettings->m_nPluggedBit);
 
@@ -47,6 +47,7 @@ void cClampInterface::addClamp(const SenseSystem::cChannelSettings *chSettings, 
         qInfo("Add secondary clamp ranges for \"%s\"", qPrintable(m_senseSettings->findChannelSettingByMxName(channelNameSecondary)->m_sAlias1));
     }
     generateAndNotifyClampChannelList();
+    return clamp;
 }
 
 QString cClampInterface::exportXMLString(int indent)

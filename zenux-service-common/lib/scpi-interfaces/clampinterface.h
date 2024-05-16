@@ -33,7 +33,7 @@ public:
     virtual void initSCPIConnection(QString leadingNodes) override;
     void actualizeClampStatus(quint16 devConnectedMask);
     // lazy: public for test
-    void addClamp(const SenseSystem::cChannelSettings *chSettings, I2cMuxerInterface::Ptr i2cMuxer);
+    cClamp* addClamp(const SenseSystem::cChannelSettings *chSettings, I2cMuxerInterface::Ptr i2cMuxer);
     QString exportXMLString(int indent = 1);
     QString importClampXmls(QString allXML, bool computeAndExport);
 

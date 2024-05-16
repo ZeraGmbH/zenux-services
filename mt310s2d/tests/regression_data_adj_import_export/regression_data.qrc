@@ -11,5 +11,8 @@
         <file>import_missing_type.xml</file>
         <file>import_modified.xml</file>
         <file>import_unknown_entry.xml</file>
+        <file>initial_clamp_type_i.eeprom</file>
+        <file>initial_clamp_type_u.eeprom</file>
+        <file>initial_clamp_type_ui.eeprom</file>
     </qresource>
 </RCC>
