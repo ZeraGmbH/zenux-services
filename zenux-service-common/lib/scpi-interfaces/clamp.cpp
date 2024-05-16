@@ -137,6 +137,11 @@ bool cClamp::exportAdjData(QDateTime dateTimeWrite)
     QDataStream stream(&ba,QIODevice::ReadWrite);
     stream.setVersion(QDataStream::Qt_5_4);
     m_AdjDateTime = dateTimeWrite;
+    quint32 count = 0;
+    quint16 chksum = 0;
+
+    stream << count; // first we write place holders for count and chksum this is the same for each adjflash object
+    stream << chksum;
     stream << m_nType;
     stream << m_nFlags;
     stream << getClampTypeName(m_nType); // for sake of compatibilty
