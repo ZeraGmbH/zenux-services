@@ -79,7 +79,7 @@ void cPCBServer::sendAnswerProto(cProtonetCommand *protoCmd)
         QString answer = protoCmd->m_sOutput+"\n";
         QByteArray ba = answer.toLatin1();
         m_pSCPISocket->write(ba);
-        qInfo("Telnet SCPI response: %s", qPrintable(answer));
+        qInfo("External SCPI response: %s", qPrintable(answer));
     }
     else {
         if(protoCmd->m_bhasClientId) {
@@ -130,7 +130,7 @@ void cPCBServer::sendAnswerProto(cProtonetCommand *protoCmd)
 
 void cPCBServer::setSCPIConnection()
 {
-    qInfo("Telnet SCPI Client connected");
+    qInfo("External SCPI Client connected");
     m_pSCPISocket = m_pSCPIServer->nextPendingConnection();
     connect(m_pSCPISocket, &QIODevice::readyRead, this, &cPCBServer::SCPIInput);
     connect(m_pSCPISocket, &QAbstractSocket::disconnected, this, &cPCBServer::SCPIdisconnect);
@@ -143,7 +143,7 @@ void cPCBServer::SCPIInput()
         m_sInput += m_pSCPISocket->readLine();
     m_sInput.remove('\r'); // we remove cr lf
     m_sInput.remove('\n');
-    qInfo("Telnet SCPI command: %s", qPrintable(m_sInput));
+    qInfo("External SCPI command: %s", qPrintable(m_sInput));
 
     QByteArray clientId = QByteArray(); // we set an empty byte array
     cProtonetCommand* protoCmd = new cProtonetCommand(0, false, true, clientId, 0, m_sInput);
@@ -164,7 +164,7 @@ void cPCBServer::SCPIInput()
 
 void cPCBServer::SCPIdisconnect()
 {
-    qInfo("Telnet SCPI Client disconnected");
+    qInfo("External SCPI Client disconnected");
     disconnect(m_pSCPISocket, 0, 0, 0); // we disconnect everything
 }
 
