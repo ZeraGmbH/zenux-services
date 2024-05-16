@@ -39,7 +39,6 @@ bool AdjustmentEepromReadWrite::readDataCached(QString cacheFileName)
         return true;
     }
     m_adjDataReadIsValid = false;
-    I2cMuxerScopedOnOff i2cMuxOnOff(m_i2cMuxer);
     I2cFlashInterfacePtrU memIo = I2cEEpromIoFactory::create24LC256(m_sDeviceNode, m_i2cAdr);
     QByteArray ba;
     quint32 sizeRead;
@@ -68,7 +67,6 @@ bool AdjustmentEepromReadWrite::writeData()
     // reading is mandatory. So force a read
     m_adjDataReadIsValid = false;
     setCountAndChecksum(m_adjData);
-    I2cMuxerScopedOnOff i2cMuxOnOff(m_i2cMuxer);
     return writeRawDataToChip(m_adjData);
 }
 
@@ -133,6 +131,7 @@ bool AdjustmentEepromReadWrite::readAllAndValidateFromChip(I2cFlashInterface *me
                   size, memInterface->size(), sizeRead);
         return false;
     }
+    I2cMuxerScopedOnOff i2cMuxOnOff(m_i2cMuxer);
     // for checksum calculation checksum in buffer is set 0
     // TODO?: solve different states
     // * after read: checksum = 0
@@ -178,6 +177,7 @@ bool AdjustmentEepromReadWrite::readAllAndValidateFromCache(QByteArray &ba, quin
 bool AdjustmentEepromReadWrite::writeRawDataToChip(QByteArray &ba)
 {
     int count = ba.size();
+    I2cMuxerScopedOnOff i2cMuxOnOff(m_i2cMuxer);
     I2cFlashInterfacePtrU flashIo = I2cEEpromIoFactory::create24LC256(m_sDeviceNode, m_i2cAdr);
     int written = flashIo->WriteData(ba.data(), count, 0);
     if ( (count - written) > 0) {
