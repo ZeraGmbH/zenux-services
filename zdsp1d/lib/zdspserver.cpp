@@ -1334,7 +1334,7 @@ void ZDspServer::executeCommandProto(VeinTcp::TcpPeer *peer, std::shared_ptr<goo
 
 void ZDspServer::setSCPIConnection()
 {
-    qInfo("Ethernet SCPI Client connected");
+    qInfo("Telnet SCPI Client connected");
     m_pSCPISocket = m_pSCPIServer->nextPendingConnection();
     m_pSCPIClient = AddSCPIClient();
     connect(m_pSCPISocket, &QIODevice::readyRead, this, &ZDspServer::SCPIInput);
@@ -1348,14 +1348,16 @@ void ZDspServer::SCPIInput()
         m_sInput += m_pSCPISocket->readLine();
     m_sInput.remove('\r'); // we remove cr lf
     m_sInput.remove('\n');
+    qInfo("Telnet SCPI command: %s", qPrintable(m_sInput));
     QString m_sOutput = m_cmdInterpreter->CmdExecute(m_sInput) + "\n";
     QByteArray ba = m_sOutput.toLatin1();
     m_pSCPISocket->write(ba);
+    qInfo("Telnet SCPI response: %s", qPrintable(m_sOutput));
 }
 
 void ZDspServer::SCPIdisconnect()
 {
-    qInfo("Ethernet SCPI Client disconnected");
+    qInfo("Telnet SCPI Client disconnected");
     disconnect(m_pSCPISocket, 0, 0, 0); // we disconnect everything
     DelSCPIClient();
 }
