@@ -704,7 +704,7 @@ void cClamp::initClamp(quint8 type)
     if(!m_RangeList.isEmpty() || !m_RangeListSecondary.isEmpty())
         qInfo("Clamp type: %s", qPrintable(getClampTypeName(type)));
     else
-        qCritical("Unkown clamp type - no ranges set!");
+        qCritical("Unkown clamp type %u - no ranges set!", type);
 }
 
 QString cClamp::getClampTypeName(quint8 type)
