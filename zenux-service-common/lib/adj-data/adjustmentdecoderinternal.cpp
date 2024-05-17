@@ -12,16 +12,6 @@ AdjustmentDecoderInternal::~AdjustmentDecoderInternal()
     delete[] m_tmpWorkBuffer;
 }
 
-void AdjustmentDecoderInternal::setDeviceName(QString deviceName)
-{
-    m_deviceName = deviceName;
-}
-
-void AdjustmentDecoderInternal::setSerialNumber(QString serialNumber)
-{
-    m_serialNumber = serialNumber;
-}
-
 QMap<QString, QStringList> AdjustmentDecoderInternal::getRangeInfos()
 {
     return m_rangeInfosMap;
@@ -121,11 +111,6 @@ bool AdjustmentDecoderInternal::decodeDeviceName(QDataStream &stream)
         qWarning("Adjustment data is missing device name!");
         return false;
     }
-    else if (m_deviceName != m_adjHeader.m_deviceName) {
-        qWarning("Flashmemory read: Wrong device name: flash %s / µC %s",
-                  m_adjHeader.m_deviceName, qPrintable(m_deviceName));
-        return false;
-    }
     return true;
 }
 
@@ -146,11 +131,6 @@ bool AdjustmentDecoderInternal::decodeSerialNumber(QDataStream &stream)
     m_adjHeader.m_serialNumber = m_tmpWorkBuffer;
     if(m_adjHeader.m_serialNumber.isEmpty()) {
         qWarning("Adjustment data is missing device serial number!");
-        return false;
-    }
-    else if (m_serialNumber != m_adjHeader.m_serialNumber) {
-        qWarning("Flashmemory read, contains wrong serialnumber: flash %s / µC %s",
-                  m_adjHeader.m_serialNumber, qPrintable(m_serialNumber));
         return false;
     }
     return true;

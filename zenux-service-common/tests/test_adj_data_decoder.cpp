@@ -47,8 +47,6 @@ void test_adj_data_decoder::readMT310s2Ranges()
     QByteArray ba = file.readAll();
 
     AdjustmentDecoderInternal reader(m_flashSizeAllDevicesAtTheTimeOfWriting);
-    reader.setDeviceName("MT310s2 ADW5859");
-    reader.setSerialNumber("050059467");
     reader.decodeAdjBytes(ba);
 
     QMap<QString, QStringList> rangesInfos = reader.getRangeInfos();
