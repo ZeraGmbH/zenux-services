@@ -1,13 +1,19 @@
 #!/bin/sh
 
 journalctl $@ -b -o short-monotonic \
-    _SYSTEMD_UNIT=com5003d.service + \
-    _SYSTEMD_UNIT=com5003-fpga1file.service + \
-    _SYSTEMD_UNIT=mt310s2d.service + \
-    _SYSTEMD_UNIT=mt310s2-fpga1file.service + \
-    _SYSTEMD_UNIT=mt310s2-mcontroller-startup.service + \
-    _SYSTEMD_UNIT=modulemanager.service + \
-    _SYSTEMD_UNIT=sec1000d.service + \
-    _SYSTEMD_UNIT=zdsp1d.service + \
-    _SYSTEMD_UNIT=resourcemanager.service + \
-    SYSLOG_IDENTIFIER=vf-declarative-gui
+    UNIT=com5003d.service + _SYSTEMD_UNIT=com5003d.service + \
+    UNIT=com5003-fpga1file.service + _SYSTEMD_UNIT=com5003-fpga1file.service + \
+    UNIT=mt310s2d.service + _SYSTEMD_UNIT=mt310s2d.service + \
+    UNIT=mt310s2-fpga1file.service + _SYSTEMD_UNIT=mt310s2-fpga1file.service + \
+    UNIT=mt310s2-mcontroller-startup.service + _SYSTEMD_UNIT=mt310s2-mcontroller-startup.service + \
+    UNIT=modulemanager.service + _SYSTEMD_UNIT=modulemanager.service + \
+    UNIT=sec1000d.service + _SYSTEMD_UNIT=sec1000d.service + \
+    UNIT=zdsp1d.service + _SYSTEMD_UNIT=zdsp1d.service + \
+    UNIT=resourcemanager.service + _SYSTEMD_UNIT=resourcemanager.service + \
+    UNIT=varsom-eeprom-dump.service + _SYSTEMD_UNIT=varsom-eeprom-dump.service + \
+    UNIT=zera-auto-hostname.service + _SYSTEMD_UNIT=zera-auto-hostname.service + \
+    UNIT=zera-update-service.service + _SYSTEMD_UNIT=zera-update-service.service + \
+    UNIT=zera-update-update-service.service + _SYSTEMD_UNIT=zera-update-update-service.service + \
+    UNIT=vein-avahi.service + _SYSTEMD_UNIT=vein-avahi.service + \
+    SYSLOG_IDENTIFIER=vf-declarative-gui + \
+    SYSLOG_IDENTIFIER=zera-usb-automount.sh
