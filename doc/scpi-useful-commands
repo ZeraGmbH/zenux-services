@@ -33,7 +33,7 @@ SYST:CLAM:WRITE;
 
 see cClamp e.g.
 SYSTEM:CLAMP:m7:TYPE 5;
-SYSTEM:CLAMP:m7:SER 1234567890;
+SYSTEM:CLAMP:m7:SER 987654321;
 
 ----------------------------------------------------------
 Sense interface
