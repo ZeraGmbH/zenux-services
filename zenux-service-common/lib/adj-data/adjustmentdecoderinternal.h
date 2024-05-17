@@ -45,6 +45,7 @@ private:
 
     QMap<QString, QStringList> m_rangeInfosMap;
     QMap<QString, QMap<QString, rangeAdjStruct>> m_rangeAdjMap;
+    QMap<QString, rangeAdjStruct> m_adjInterface;
 };
 
 #endif // ADJUSTMENTDECODERINTERNAL_H

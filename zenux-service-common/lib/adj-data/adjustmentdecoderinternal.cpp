@@ -184,8 +184,7 @@ void AdjustmentDecoderInternal::setRangeAdjStruct(QString channelName, QString r
     rangeAdjInterface.gainSerializer = adjRangeDecoder.getGainSerializer();
     rangeAdjInterface.offsetSerializer = adjRangeDecoder.getOffsetSerializer();
     rangeAdjInterface.phaseSerializer = adjRangeDecoder.getPhaseSerializer();
-    QMap<QString, rangeAdjStruct> adjInterface;
-    adjInterface[rangeName] = rangeAdjInterface;
-    m_rangeAdjMap[channelName] = adjInterface;
+    m_adjInterface[rangeName] = rangeAdjInterface;
+    m_rangeAdjMap[channelName] = m_adjInterface;
 }
 
