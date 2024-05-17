@@ -105,6 +105,21 @@ void SenseRangeCommon::computeJustData()
     m_justdata->computeJustData();
 }
 
+void SenseRangeCommon::setGainCorrection(AdjustmentDataSerializer gain)
+{
+    m_justdata->setGainCorrection(gain);
+}
+
+void SenseRangeCommon::setPhaseCorrection(AdjustmentDataSerializer phase)
+{
+    m_justdata->setPhaseCorrection(phase);
+}
+
+void SenseRangeCommon::setOffsetCorrection(AdjustmentDataSerializer offset)
+{
+    m_justdata->setOffsetCorrection(offset);
+}
+
 void SenseRangeCommon::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
 {
     switch (cmdCode)

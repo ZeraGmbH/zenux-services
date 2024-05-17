@@ -3,6 +3,7 @@
 
 #include "scpiconnection.h"
 #include "rangeadjinterface.h"
+#include "adjustmentdecoderinternal.h"
 
 namespace SenseRange
 {
@@ -52,6 +53,9 @@ public:
     void computeJustData();
 
 protected:
+    void setGainCorrection(AdjustmentDataSerializer gain);
+    void setPhaseCorrection(AdjustmentDataSerializer phase);
+    void setOffsetCorrection(AdjustmentDataSerializer offset);
     bool m_bAvail; // range io avail or not
 private:
     void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;

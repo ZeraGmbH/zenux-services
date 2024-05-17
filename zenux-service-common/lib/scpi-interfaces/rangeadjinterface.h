@@ -5,6 +5,7 @@
 #include "permissionfunctions.h"
 #include "adjustmentstatusinterface.h"
 #include "justdatainterface.h"
+#include "adjustmentrangeserializer.h"
 #include <QDataStream>
 #include <functional>
 #include <memory>
@@ -35,8 +36,8 @@ class RangeAdjInterface : public ScpiConnection
     Q_OBJECT
 public:
     RangeAdjInterface(cSCPI* scpiinterface,
-                             std::unique_ptr<AdjustScpiValueFormatter> adjustmentFormatter,
-                             PermissionStructAdj permissions = PermissionStructAdj());
+                      std::unique_ptr<AdjustScpiValueFormatter> adjustmentFormatter,
+                      PermissionStructAdj permissions = PermissionStructAdj());
     virtual void initSCPIConnection(QString leadingNodes) override;
     JustDataInterface* getAdjInterface(QString name);
 
@@ -61,6 +62,9 @@ public:
     // * finally make adjustment module handle errors so the caller gets aware...
     void initJustData();
     void computeJustData();
+    void setGainCorrection(AdjustmentDataSerializer gain);
+    void setPhaseCorrection(AdjustmentDataSerializer phase);
+    void setOffsetCorrection(AdjustmentDataSerializer offset);
 
 protected:
     void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;

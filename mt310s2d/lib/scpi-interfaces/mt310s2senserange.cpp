@@ -13,7 +13,8 @@ Mt310s2SenseRange::Mt310s2SenseRange(cSCPI *scpiinterface,
                                      double ovrejection,
                                      quint8 rselcode,
                                      quint16 mmask,
-                                     RangeAdjInterface* justdata) :
+                                     RangeAdjInterface* justdata,
+                                     AdjustmentDecoderInternal::rangeAdjStruct rangeAdjStruct) :
     SenseRangeCommon(
         scpiinterface,
         name,
@@ -27,4 +28,7 @@ Mt310s2SenseRange::Mt310s2SenseRange(cSCPI *scpiinterface,
         justdata,
         rejectionScpiQueryDigitsMt310s2)
 {
+    setGainCorrection(rangeAdjStruct.gainSerializer);
+    setPhaseCorrection(rangeAdjStruct.phaseSerializer);
+    setOffsetCorrection(rangeAdjStruct.offsetSerializer);
 }

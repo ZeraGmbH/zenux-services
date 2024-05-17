@@ -314,6 +314,21 @@ void RangeAdjInterface::computeJustData()
     m_offsetCorrection.calcCoefficientsFromNodes();
 }
 
+void RangeAdjInterface::setGainCorrection(AdjustmentDataSerializer gain)
+{
+
+}
+
+void RangeAdjInterface::setPhaseCorrection(AdjustmentDataSerializer phase)
+{
+
+}
+
+void RangeAdjInterface::setOffsetCorrection(AdjustmentDataSerializer offset)
+{
+
+}
+
 double RangeAdjInterface::getGainCorrectionTotal(double par)
 {
     return m_gainCorrection.getCorrection(par);

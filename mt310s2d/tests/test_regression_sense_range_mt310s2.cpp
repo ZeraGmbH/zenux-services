@@ -24,6 +24,7 @@ void test_regression_sense_range_mt310s2::init()
 {
     m_scpi = new cSCPI;
     m_justData = new RangeAdjInterface(m_scpi, AdjustScpiValueFormatterFactory::createMt310s2AdjFormatter()); // range deletes
+    AdjustmentDecoderInternal::rangeAdjStruct rangeAdjStruct;
     m_range = new Mt310s2SenseRange(m_scpi,
                               "250V",
                               true,
@@ -32,7 +33,8 @@ void test_regression_sense_range_mt310s2::init()
                               33333.33333,
                               5,
                               modeAC | modeADJ | Direct,
-                              m_justData);
+                              m_justData,
+                              rangeAdjStruct);
     m_range->initSCPIConnection("SENSE:m0");
 }
 
