@@ -30,6 +30,7 @@ public:
     QMap<QString, QStringList> getRangeInfos();
     rangeAdjStruct getRangeAdjStruct(QString channelName, QString rangeName);
     bool isChannelRangeAvailable(QString channelName, QString rangeName);
+    void setRangeAdjStruct(QString channelName, QString rangeName, AdjustmentRangeSerializer adjRangeDecoder);
 
 private:
     bool decodeHeader(QDataStream &stream);
@@ -39,7 +40,6 @@ private:
     bool decodeSerialNumber(QDataStream &stream);
     bool decodeAdjTimeStamp(QDataStream &stream);
     void extractRanges(QDataStream &stream);
-    void setRangeAdjStruct(QString channelName, QString rangeName, AdjustmentRangeSerializer adjRangeDecoder);
 
     int m_maxSize;
     char* m_tmpWorkBuffer = nullptr;

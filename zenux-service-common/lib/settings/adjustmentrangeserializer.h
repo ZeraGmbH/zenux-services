@@ -10,6 +10,11 @@ public:
     AdjustmentDataSerializer();
     AdjustmentDataSerializer(int order);
     void Deserialize(QDataStream& qds);
+
+    void setStatus(quint8 status);
+    void setAdjNodes(QList<AdjustmentNode> adjNodes);
+    void setAdjCoeff(QList<double> adjCoefficients);
+
 private:
     int m_order;
     quint8 m_adjStatus;
@@ -23,6 +28,7 @@ class AdjustmentRangeSerializer
 public:
     AdjustmentRangeSerializer();
     void Deserialize(QDataStream& qds);
+    void setInitialDataSerializer();
     AdjustmentDataSerializer getGainSerializer();
     AdjustmentDataSerializer getPhaseSerializer();
     AdjustmentDataSerializer getOffsetSerializer();

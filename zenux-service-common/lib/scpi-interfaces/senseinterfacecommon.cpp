@@ -125,8 +125,12 @@ void SenseInterfaceCommon::decodeAdjustmentDataNextGen()
 
 bool SenseInterfaceCommon::isInvalidAdjDataOrChannelRangeAvail(QString channelName, QString rangeName)
 {
-    if(!m_adjustmentDecoder.isValid())
+    if(!m_adjustmentDecoder.isValid()) {
+        AdjustmentRangeSerializer adjRangeSerializer;
+        adjRangeSerializer.setInitialDataSerializer();
+        m_adjustmentDecoder.setRangeAdjStruct(channelName, rangeName, adjRangeSerializer);
         return true;
+    }
     return m_adjustmentDecoder.isChannelRangeAvailable(channelName, rangeName);
 }
 
