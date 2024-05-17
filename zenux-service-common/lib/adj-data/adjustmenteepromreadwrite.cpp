@@ -5,7 +5,7 @@
 #include <QBuffer>
 #include <QDir>
 
-QString AdjustmentEepromReadWrite::m_cachePath = "/var/zera/zenux-services";
+QString AdjustmentEepromReadWrite::m_cachePath = "/var/cache/zenux-services";
 
 AdjustmentEepromReadWrite::AdjustmentEepromReadWrite(QString devnode, quint8 i2cadr, I2cMuxerInterface::Ptr i2cMuxer) :
     m_sDeviceNode(devnode),
