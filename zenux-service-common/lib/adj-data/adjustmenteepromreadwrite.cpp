@@ -180,11 +180,7 @@ bool AdjustmentEepromReadWrite::writeRawDataToChip(QByteArray &ba)
     I2cMuxerScopedOnOff i2cMuxOnOff(m_i2cMuxer);
     I2cFlashInterfacePtrU flashIo = I2cEEpromIoFactory::create24LC256(m_sDeviceNode, m_i2cAdr);
     int written = flashIo->WriteData(ba.data(), count, 0);
-    if ( (count - written) > 0) {
-        qCritical("Error on flash memory write: wanted: %i / written: %i", count, written);
-        return false;
-    }
-    return true;
+    return count == written;
 }
 
 void AdjustmentEepromReadWrite::writeRawDataToCache(QByteArray ba, QString cacheFileName)
