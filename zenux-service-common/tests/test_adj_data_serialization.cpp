@@ -6,6 +6,7 @@
 #include "scpisingletransactionblocked.h"
 #include "zscpi_response_definitions.h"
 #include "xmlhelperfortest.h"
+#include "mockserverparamgenerator.h"
 #include <timemachineobject.h>
 #include <testloghelpers.h>
 #include <QFile>
@@ -13,16 +14,25 @@
 
 QTEST_MAIN(test_adj_data_serialization)
 
-void test_adj_data_serialization::FromAdjToXMLFileForMt310s2()
+void test_adj_data_serialization::initTestCase()
+{
+    MockI2cEEpromIoFactory::enableMock();
+}
+
+void test_adj_data_serialization::init()
 {
     MockEEprom24LC::mockCleanAll();
-    MockI2cEEpromIoFactory::enableMock();
-    setupServers("MT310s2 ADW5859", "050059467");
+}
 
-    I2cSettings *i2cSettings = m_testServer->getI2cSettings();
+void test_adj_data_serialization::FromAdjToXMLFileForMt310s2()
+{
+    std::unique_ptr<SettingsContainer> settings =  std::make_unique<SettingsContainer>(MockServerParamGenerator::createParams("mt310s2d"));
+    I2cSettings *i2cSettings = settings->getI2cSettings();
     QVERIFY(MockEEprom24LC::mockReadFromFile(i2cSettings->getDeviceNode(),
                                              i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress),
                                              ":/mt310s2-050059467.eeprom"));
+
+    setupServers("MT310s2 ADW5859", "050059467");
 
     QString ret = ScpiSingleTransactionBlocked::cmd("SYSTEM:ADJUSTMENT:FLASH:READ", "");
     QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::ack]);
@@ -36,8 +46,6 @@ void test_adj_data_serialization::FromAdjToXMLFileForMt310s2()
     QString xmlExpected = xmlFile.readAll();
     xmlExpected = XmlHelperForTest::prepareForCompare(xmlExpected);
     xmlExpected = XmlHelperForTest::removeDeviceSpecificEntriesFromXml(xmlExpected);
-
-
     QVERIFY(TestLogHelpers::compareAndLogOnDiff(xmlExpected, xmlExported));
 }
 

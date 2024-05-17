@@ -10,6 +10,8 @@ class test_adj_data_serialization : public QObject
 {
     Q_OBJECT
 private slots:
+    void initTestCase();
+    void init();
     void FromAdjToXMLFileForMt310s2();
 
 private:
