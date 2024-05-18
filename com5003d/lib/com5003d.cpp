@@ -27,14 +27,9 @@
 #include "finsettings.h"
 #include "hkinsettings.h"
 #include "sensesettings.h"
-#include "samplingsettings.h"
 #include "foutsettings.h"
 #include "scinsettings.h"
 #include <scpisingletonfactory.h>
-
-#ifdef SYSTEMD_NOTIFICATION
-#include <systemd/sd-daemon.h>
-#endif
 
 const ServerParams cCOM5003dServer::defaultParams {ServerName, ServerVersion, "/etc/zera/com5003d/com5003d.xsd", "/etc/zera/com5003d/com5003d.xml"};
 
@@ -324,10 +319,6 @@ void cCOM5003dServer::doSetupServer()
 
     initSCPIConnections();
 
-    m_myServer->startServer(ethSettings->getPort(EthSettings::protobufserver)); // and can start the server now
-    if(ethSettings->isSCPIactive())
-        m_pSCPIServer->listen(QHostAddress::AnyIPv4, ethSettings->getPort(EthSettings::scpiserver));
-
     // so we must complete our state machine here
     m_retryRMConnect = 100;
     m_retryTimer.setSingleShot(true);
@@ -373,15 +364,24 @@ void cCOM5003dServer::doIdentAndRegister()
 {
     qInfo("Starting doIdentAndRegister");
     m_pRMConnection->SendIdent(getName());
-
-    for (int i = 0; i < resourceList.count(); i++)
-    {
+    for (int i = 0; i < resourceList.count(); i++) {
         cResource *res = resourceList.at(i);
         connect(m_pRMConnection, &RMConnection::rmAck, res, &cResource::resourceManagerAck );
         EthSettings *ethSettings = m_settings->getEthSettings();
         res->registerResource(m_pRMConnection, ethSettings->getPort(EthSettings::protobufserver));
+        connect(res, &cResource::registerRdy, this, &cCOM5003dServer::onResourceReady);
     }
-#ifdef SYSTEMD_NOTIFICATION
-    sd_notify(0, "READY=1");
-#endif
+    m_pendingResources = resourceList.count();
+}
+
+void cCOM5003dServer::onResourceReady()
+{
+    Q_ASSERT(m_pendingResources > 0);
+    m_pendingResources--;
+    if(m_pendingResources == 0) {
+        EthSettings *ethSettings = m_settings->getEthSettings();
+        m_myServer->startServer(ethSettings->getPort(EthSettings::protobufserver));
+        if(ethSettings->isSCPIactive())
+            m_pSCPIServer->listen(QHostAddress::AnyIPv4, ethSettings->getPort(EthSettings::scpiserver));
+    }
 }

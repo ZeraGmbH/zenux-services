@@ -57,6 +57,7 @@ private slots:
     void doConnect2RM();
     void connect2RMError();
     void doIdentAndRegister();
+    void onResourceReady();
 private:
     void setupMicroControllerIo();
 
@@ -80,6 +81,7 @@ private:
     ScInGroupResourceAndInterface* m_pSCHeadInterface = nullptr;
     HkInGroupResourceAndInterface* m_hkInInterface = nullptr;
     RMConnection* m_pRMConnection = nullptr;
+    int m_pendingResources = 0;
 
     QStateMachine* m_pInitializationMachine = nullptr;
     QState* m_stateconnect2RM = nullptr;

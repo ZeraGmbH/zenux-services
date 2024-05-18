@@ -315,7 +315,6 @@ void cMT310S2dServer::onResourceReady()
     Q_ASSERT(m_pendingResources > 0);
     m_pendingResources--;
     if(m_pendingResources == 0) {
-        qInfo("Server is up and port(s) are open");
         EthSettings *ethSettings = m_settings->getEthSettings();
         m_myServer->startServer(ethSettings->getPort(EthSettings::protobufserver));
         if(ethSettings->isSCPIactive())

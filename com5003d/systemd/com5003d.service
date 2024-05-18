@@ -1,9 +1,6 @@
 [Unit]
 Description=COM5003 daemon
 
-# We cannot let modulemanager start after us - we are running on particular
-# ZERA device only
-Before=modulemanager.service
 ConditionKernelCommandLine=zera_device=com5003
 
 # Mandatory devices (see systemd.device / 'escaping' /
@@ -15,7 +12,7 @@ After=dev-i2c\x2d0.device
 
 [Service]
 ExecStart=/usr/bin/com5003d
-Type=notify
+Type=simple
 User=zera-services
 NoNewPrivileges=true
 ProtectHome=true
