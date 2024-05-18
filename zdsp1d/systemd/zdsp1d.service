@@ -6,7 +6,7 @@ After=dev-zFPGA1dsp1.device
 
 [Service]
 ExecStart=/usr/bin/zdsp1d
-Type=notify
+Type=simple
 User=zera-services
 NoNewPrivileges=true
 ProtectHome=true

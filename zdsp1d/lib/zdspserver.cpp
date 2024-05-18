@@ -17,9 +17,6 @@
 #include <fcntl.h>
 #include <signal.h>
 #include <unistd.h>
-#ifdef SYSTEMD_NOTIFICATION
-#include <systemd/sd-daemon.h>
-#endif
 
 #define ServerName "zdsp1d"
 #define ServerVersion "V1.11"
@@ -60,7 +57,9 @@ const ServerParams ZDspServer::defaultParams {ServerName, ServerVersion, "/etc/z
 ZDspServer::ZDspServer(SettingsContainerPtr settings, AbstractFactoryDeviceNodeDspPtr deviceNodeFactory) :
     ScpiConnection(ScpiSingletonFactory::getScpiObj()),
     m_deviceNodeFactory(deviceNodeFactory),
-    m_settings(std::move(settings))
+    m_settings(std::move(settings)),
+    m_pRMConnection(new RMConnection(m_settings->getEthSettings()->getRMIPadr(), m_settings->getEthSettings()->getPort(EthSettings::resourcemanager))),
+    m_resourceRegister(m_pRMConnection)
 {
     m_pInitializationMachine = new QStateMachine(this);
     myXMLConfigReader = new Zera::XMLConfig::cReader();
@@ -155,15 +154,7 @@ void ZDspServer::doSetupServer()
 
     myProtonetServer =  new VeinTcp::TcpServer(this);
     connect(myProtonetServer, &VeinTcp::TcpServer::sigClientConnected, this, &ZDspServer::onEstablishNewConnection);
-    EthSettings *ethSettings = m_settings->getEthSettings();
-    myProtonetServer->startServer(ethSettings->getPort(EthSettings::protobufserver)); // and can start the server now
 
-    if (ethSettings->isSCPIactive()) {
-        m_pSCPIServer = new QTcpServer(this);
-        m_pSCPIServer->setMaxPendingConnections(1); // we only accept 1 client to connect
-        connect(m_pSCPIServer, &QTcpServer::newConnection, this, &ZDspServer::setSCPIConnection);
-        m_pSCPIServer->listen(QHostAddress::AnyIPv4, ethSettings->getPort(EthSettings::scpiserver));
-    }
     QString dspDevNodeName = getDspDeviceNode(); // we try to open the dsp device
     AbstractDspDeviceNodePtr deviceNode = m_deviceNodeFactory->getDspDeviceNode();
     if (deviceNode->open(dspDevNodeName) < 0) {
@@ -186,7 +177,6 @@ void ZDspServer::doSetupServer()
                 if (resetDsp() && bootDsp()) { // and try to reset and then boot it
                     if (setSamplingSystem()) { // now we try to set the dsp's sampling system
                         // our resource manager connection must be opened after configuration is done
-                        m_pRMConnection = new RMConnection(ethSettings->getRMIPadr(), ethSettings->getPort(EthSettings::resourcemanager));
                         m_stateconnect2RM->addTransition(m_pRMConnection, &RMConnection::connected, m_stateSendRMIdentAndRegister);
                         m_stateconnect2RM->addTransition(m_pRMConnection, &RMConnection::connectionRMError, m_stateconnect2RMError);
                         m_stateconnect2RMError->addTransition(this, &ZDspServer::sigServerIsSetUp, m_stateconnect2RM);
@@ -203,7 +193,6 @@ void ZDspServer::doSetupServer()
                 }
             }
             else { // but for debugging purpose dsp is booted by ice
-                m_pRMConnection = new RMConnection(ethSettings->getRMIPadr(), ethSettings->getPort(EthSettings::resourcemanager));
                 m_stateconnect2RM->addTransition(m_pRMConnection, &RMConnection::connected, m_stateSendRMIdentAndRegister);
                 m_stateconnect2RM->addTransition(m_pRMConnection, &RMConnection::connectionRMError, m_stateconnect2RMError);
                 m_stateconnect2RMError->addTransition(this, &ZDspServer::sigServerIsSetUp, m_stateconnect2RM);
@@ -250,28 +239,26 @@ void ZDspServer::doIdentAndRegister()
     EthSettings *ethSettings = m_settings->getEthSettings();
     quint32 port = ethSettings->getPort(EthSettings::protobufserver);
 
-    QString cmd, par;
-
-    m_pRMConnection->SendCommand(cmd = QString("RESOURCE:ADD"), par = QString("DSP;DSP1;;ADSP Signal Processor;%1;")
-                                 .arg(port));
-
+    connect(&m_resourceRegister, &ResourceRegisterTransaction::registerDone, this, &ZDspServer::onResourceReady);
+    m_resourceRegister.register1Resource(QString("DSP;DSP1;;ADSP Signal Processor;%1;").arg(port));
     TDspVar* pDspVar = &CmdListVar;
-    m_pRMConnection->SendCommand(cmd = QString("RESOURCE:ADD"), par = QString("DSP1;PGRMEMI;%1;DSP ProgramMemory(Interrupt);%2;")
-                                 .arg(pDspVar->size)
-                                 .arg(port));
+    m_resourceRegister.register1Resource(QString("DSP1;PGRMEMI;%1;DSP ProgramMemory(Interrupt);%2;").arg(pDspVar->size).arg(port));
     pDspVar++;
-
-    m_pRMConnection->SendCommand(cmd = QString("RESOURCE:ADD"), par = QString("DSP1;PGRMEMC;%1;DSP ProgramMemory(Cyclic);%2;")
-                                 .arg(pDspVar->size)
-                                 .arg(port));
-
+    m_resourceRegister.register1Resource(QString("DSP1;PGRMEMC;%1;DSP ProgramMemory(Cyclic);%2;").arg(pDspVar->size).arg(port));
     pDspVar = &UserWorkSpaceVar;
-    m_pRMConnection->SendCommand(cmd = QString("RESOURCE:ADD"), par = QString("DSP1;USERMEM;%1;DSP UserMemory;%2;")
-                                 .arg(pDspVar->size)
-                                 .arg(port));
-#ifdef SYSTEMD_NOTIFICATION
-    sd_notify(0, "READY=1");
-#endif
+    m_resourceRegister.register1Resource(QString("DSP1;USERMEM;%1;DSP UserMemory;%2;").arg(pDspVar->size).arg(port));
+}
+
+void ZDspServer::onResourceReady()
+{
+    EthSettings *ethSettings = m_settings->getEthSettings();
+    myProtonetServer->startServer(ethSettings->getPort(EthSettings::protobufserver)); // and can start the server now
+    if (ethSettings->isSCPIactive()) {
+        m_pSCPIServer = new QTcpServer(this);
+        m_pSCPIServer->setMaxPendingConnections(1); // we only accept 1 client to connect
+        connect(m_pSCPIServer, &QTcpServer::newConnection, this, &ZDspServer::setSCPIConnection);
+        m_pSCPIServer->listen(QHostAddress::AnyIPv4, ethSettings->getPort(EthSettings::scpiserver));
+    }
 }
 
 void ZDspServer::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
