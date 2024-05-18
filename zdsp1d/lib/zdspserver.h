@@ -2,6 +2,7 @@
 #define ZDSP1D_H
 
 #include "abstractfactorydevicenodedsp.h"
+#include "resourceregistertransaction.h"
 #include "scpicmdinterpreter.h"
 #include "scpicmds.h"
 #include "rmconnection.h"
@@ -66,6 +67,7 @@ private slots:
     void doConnect2RM();
     void connect2RMError();
     void doIdentAndRegister();
+    void onResourceReady();
 private:
     void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
 
@@ -176,6 +178,7 @@ private:
     QState* m_stateconnect2RMError;
     QState* m_stateSendRMIdentAndRegister;
     RMConnection* m_pRMConnection = nullptr;
+    ResourceRegisterTransaction m_resourceRegister;
 
     int m_retryRMConnect;
     QTimer m_retryTimer;
