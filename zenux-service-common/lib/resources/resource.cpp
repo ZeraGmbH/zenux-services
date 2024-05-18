@@ -10,22 +10,19 @@ cResource::cResource(cSCPI *scpiInterface) :
 void cResource::register1Resource(RMConnection *rmConnection, quint32 msgnr, QString registerParameter)
 {
     QString cmd = QString("RESOURCE:ADD");
-    msgNrList.append(msgnr);
+    m_msgNrList.append(msgnr);
     rmConnection->SendCommand(cmd, registerParameter, msgnr);
 }
 
 void cResource::unregister1Resource(RMConnection *rmConnection, quint32 msgnr, QString unregisterParameter)
 {
     QString cmd = QString("RESOURCE:REMOVE");
-    msgNrList.append(msgnr);
+    m_msgNrList.append(msgnr);
     rmConnection->SendCommand(cmd, unregisterParameter, msgnr);
 }
 
 void cResource::resourceManagerAck(quint32 msgnr)
 {
-    if (msgNrList.contains(msgnr)) {
-        msgNrList.removeOne(msgnr);
-        if (msgNrList.isEmpty())
-            emit registerRdy();
-    }
+    if (m_msgNrList.removeOne(msgnr) && m_msgNrList.isEmpty())
+        emit registerRdy();
 }

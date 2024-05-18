@@ -226,7 +226,7 @@ RangeAdjInterface *Com5003SenseInterface::createJustScpiInterfaceWithAtmelPermis
 void Com5003SenseInterface::unregisterSense()
 {
     SenseChannelCommon* pChannel;
-    msgNrList.clear();
+    m_msgNrList.clear();
     for (int i = 0; i < 6; i++) {
         pChannel = m_channelList.at(i);
         unregister1Resource(m_rmConnection, NotZeroNumGen::getMsgNr(), QString("SENSE;%1;")
