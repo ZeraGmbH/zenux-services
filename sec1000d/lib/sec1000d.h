@@ -43,6 +43,7 @@ private slots:
     void doConnect2RM();
     void connect2RMError();
     void doIdentAndRegister();
+    void onResourceReady();
     void onPeerDisconnected(VeinTcp::TcpPeer *peer) override;
 private:
     AbstractFactoryDeviceNodeSecPtr m_deviceNodeFactory;
@@ -54,6 +55,7 @@ private:
     SecGroupResourceAndInterface* m_pECalculatorInterface = nullptr;
     Sec1000SystemInfo* m_pSystemInfo = nullptr;
     RMConnection* m_pRMConnection = nullptr;
+    int m_pendingResources = 0;
 
     QStateMachine* m_pInitializationMachine = nullptr;
     QState* m_stateconnect2RM = nullptr;
