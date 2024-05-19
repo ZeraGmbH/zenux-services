@@ -21,9 +21,6 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <signal.h>
-#ifdef SYSTEMD_NOTIFICATION
-#include <systemd/sd-daemon.h>
-#endif
 
 #define ServerName "sec1000d"
 #define ServerVersion "V1.00"
@@ -166,7 +163,6 @@ void cSEC1000dServer::doSetupServer()
         initSCPIConnections();
 
         EthSettings *ethSettings = m_settings->getEthSettings();
-        m_myServer->startServer(ethSettings->getPort(EthSettings::protobufserver)); // and can start the server now
 
         sigActionSec1000.sa_handler = &SigHandler; // signal handler einrichten
         sigemptyset(&sigActionSec1000.sa_mask);
@@ -218,18 +214,24 @@ void cSEC1000dServer::doIdentAndRegister()
 {
     qInfo("Starting doIdentAndRegister");
     m_pRMConnection->SendIdent(getName());
-
-    for (int i = 0; i < resourceList.count(); i++)
-    {
+    for (int i = 0; i < resourceList.count(); i++) {
         cResource *res = resourceList.at(i);
         connect(m_pRMConnection, &RMConnection::rmAck, res, &cResource::resourceManagerAck);
         EthSettings *ethSettings = m_settings->getEthSettings();
         res->registerResource(m_pRMConnection, ethSettings->getPort(EthSettings::protobufserver));
+        connect(res, &cResource::registerRdy, this, &cSEC1000dServer::onResourceReady);
     }
+    m_pendingResources = resourceList.count();
+}
 
-#ifdef SYSTEMD_NOTIFICATION
-    sd_notify(0, "READY=1");
-#endif
+void cSEC1000dServer::onResourceReady()
+{
+    Q_ASSERT(m_pendingResources > 0);
+    m_pendingResources--;
+    if(m_pendingResources == 0) {
+        EthSettings *ethSettings = m_settings->getEthSettings();
+        m_myServer->startServer(ethSettings->getPort(EthSettings::protobufserver));
+    }
 }
 
 void cSEC1000dServer::onPeerDisconnected(VeinTcp::TcpPeer* peer)
