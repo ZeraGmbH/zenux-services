@@ -26,6 +26,7 @@ bool AdjustmentDecoderInternal::isChannelRangeAvailable(QString channelName, QSt
 bool AdjustmentDecoderInternal::decodeAdjBytes(QByteArray ba)
 {
     qInfo("Decode adjustment data...");
+    m_adjData = std::make_shared<AdjustmentData>();
     if(ba.size() > m_maxSize) {
         qWarning("Adjustment data size exceeds max size: %i (max: %i)", ba.size(), m_maxSize);
         return false;
@@ -60,9 +61,9 @@ bool AdjustmentDecoderInternal::isValid()
     return m_isValid;
 }
 
-const AdjustmentDataHeader &AdjustmentDecoderInternal::getAdjHeader()
+std::shared_ptr<AdjustmentData> AdjustmentDecoderInternal::getAdjData()
 {
-    return m_adjHeader;
+    return m_adjData;
 }
 
 bool AdjustmentDecoderInternal::decodeHeader(QDataStream &stream)
@@ -91,8 +92,8 @@ bool AdjustmentDecoderInternal::decodeServerVersion(QDataStream &stream)
         return false;
     }
     stream >> m_tmpWorkBuffer;
-    m_adjHeader.m_serverVersion = m_tmpWorkBuffer;
-    if(m_adjHeader.m_serverVersion.isEmpty()) {
+    getAdjData()->getAdjHeader().m_serverVersion = m_tmpWorkBuffer;
+    if(getAdjData()->getAdjHeader().m_serverVersion.isEmpty()) {
         qWarning("Adjustment data is missing server version!");
         return false;
     }
@@ -102,8 +103,8 @@ bool AdjustmentDecoderInternal::decodeServerVersion(QDataStream &stream)
 bool AdjustmentDecoderInternal::decodeDeviceName(QDataStream &stream)
 {
     stream >> m_tmpWorkBuffer;
-    m_adjHeader.m_deviceName = m_tmpWorkBuffer;
-    if(m_adjHeader.m_deviceName.isEmpty()) {
+    getAdjData()->getAdjHeader().m_deviceName = m_tmpWorkBuffer;
+    if(getAdjData()->getAdjHeader().m_deviceName.isEmpty()) {
         qWarning("Adjustment data is missing device name!");
         return false;
     }
@@ -113,8 +114,8 @@ bool AdjustmentDecoderInternal::decodeDeviceName(QDataStream &stream)
 bool AdjustmentDecoderInternal::decodeDeviceVersion(QDataStream &stream)
 {
     stream >> m_tmpWorkBuffer;
-    m_adjHeader.m_deviceVersion = m_tmpWorkBuffer;
-    if(m_adjHeader.m_deviceVersion.isEmpty()) {
+    getAdjData()->getAdjHeader().m_deviceVersion = m_tmpWorkBuffer;
+    if(getAdjData()->getAdjHeader().m_deviceVersion.isEmpty()) {
         qWarning("Adjustment data is missing device version!");
         return false;
     }
@@ -124,8 +125,8 @@ bool AdjustmentDecoderInternal::decodeDeviceVersion(QDataStream &stream)
 bool AdjustmentDecoderInternal::decodeSerialNumber(QDataStream &stream)
 {
     stream >> m_tmpWorkBuffer;
-    m_adjHeader.m_serialNumber = m_tmpWorkBuffer;
-    if(m_adjHeader.m_serialNumber.isEmpty()) {
+    getAdjData()->getAdjHeader().m_serialNumber = m_tmpWorkBuffer;
+    if(getAdjData()->getAdjHeader().m_serialNumber.isEmpty()) {
         qWarning("Adjustment data is missing device serial number!");
         return false;
     }
@@ -140,8 +141,8 @@ bool AdjustmentDecoderInternal::decodeAdjTimeStamp(QDataStream &stream)
         qWarning("Adjustment data is missing device adjustment timestamp!");
         return false;
     }
-    m_adjHeader.m_adjustmentDate = QDateTime::fromString(adjTimeStamp, Qt::TextDate);
-    if(!m_adjHeader.m_adjustmentDate.isValid()) {
+    getAdjData()->getAdjHeader().m_adjustmentDate = QDateTime::fromString(adjTimeStamp, Qt::TextDate);
+    if(!getAdjData()->getAdjHeader().m_adjustmentDate.isValid()) {
         qWarning("Adjustment data'a adjustment timestamp is invalid!");
         return false;
     }
