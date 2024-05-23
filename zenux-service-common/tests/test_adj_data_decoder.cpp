@@ -33,11 +33,11 @@ void test_adj_data_decoder::readServerVersionAndDeviceNameForMT()
 
     AdjustmentDecoderInternal reader(m_flashSizeAllDevicesAtTheTimeOfWriting);
     QVERIFY(reader.decodeAdjBytes(ba));
-    QCOMPARE(reader.getAdjHeader().m_deviceName, "Unknown");
-    QCOMPARE(reader.getAdjHeader().m_serverVersion, "V1.01");
-    QCOMPARE(reader.getAdjHeader().m_serialNumber, "Unknown");
-    QCOMPARE(reader.getAdjHeader().m_deviceVersion, "DEVICE: Unknown;PCB: Unknown;LCA: Unknown;CTRL: Unknown");
-    QCOMPARE(reader.getAdjHeader().m_adjustmentDate, QDateTime::fromSecsSinceEpoch(0, Qt::UTC));
+    QCOMPARE(reader.getAdjData()->getAdjHeader().m_deviceName, "Unknown");
+    QCOMPARE(reader.getAdjData()->getAdjHeader().m_serverVersion, "V1.01");
+    QCOMPARE(reader.getAdjData()->getAdjHeader().m_serialNumber, "Unknown");
+    QCOMPARE(reader.getAdjData()->getAdjHeader().m_deviceVersion, "DEVICE: Unknown;PCB: Unknown;LCA: Unknown;CTRL: Unknown");
+    QCOMPARE(reader.getAdjData()->getAdjHeader().m_adjustmentDate, QDateTime::fromSecsSinceEpoch(0, Qt::UTC));
 }
 
 void test_adj_data_decoder::readMT310s2Ranges()
@@ -78,11 +78,11 @@ void test_adj_data_decoder::readServerVersionAndDeviceNameForCOM()
 
     AdjustmentDecoderInternal reader(m_flashSizeAllDevicesAtTheTimeOfWriting);
     QVERIFY(reader.decodeAdjBytes(ba));
-    QCOMPARE(reader.getAdjHeader().m_deviceName, "Unknown");
-    QCOMPARE(reader.getAdjHeader().m_serverVersion, "V1.00");
-    QCOMPARE(reader.getAdjHeader().m_serialNumber, "Unknown");
-    QCOMPARE(reader.getAdjHeader().m_deviceVersion, "DEVICE: Unknown;PCB: Unknown;LCA: Unknown;CTRL: Unknown");
-    QCOMPARE(reader.getAdjHeader().m_adjustmentDate, QDateTime::fromSecsSinceEpoch(0, Qt::UTC));
+    QCOMPARE(reader.getAdjData()->getAdjHeader().m_deviceName, "Unknown");
+    QCOMPARE(reader.getAdjData()->getAdjHeader().m_serverVersion, "V1.00");
+    QCOMPARE(reader.getAdjData()->getAdjHeader().m_serialNumber, "Unknown");
+    QCOMPARE(reader.getAdjData()->getAdjHeader().m_deviceVersion, "DEVICE: Unknown;PCB: Unknown;LCA: Unknown;CTRL: Unknown");
+    QCOMPARE(reader.getAdjData()->getAdjHeader().m_adjustmentDate, QDateTime::fromSecsSinceEpoch(0, Qt::UTC));
 }
 
 void test_adj_data_decoder::readCOM5003Ranges()

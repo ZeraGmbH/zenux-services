@@ -2,8 +2,11 @@
 #define ADJUSTMENTDECODERINTERNAL_H
 
 #include "adjustmendataheader.h"
+#include "adjustmentdata.h"
+#include "adjustmentdata.h"
 #include <QByteArray>
 #include <QMap>
+#include <memory>
 
 class AdjustmentDecoderInternal
 {
@@ -12,8 +15,20 @@ public:
     ~AdjustmentDecoderInternal();
 
     bool decodeAdjBytes(QByteArray ba);
+    //QByteArray encodeAdjData(std::shared_ptr<AdjustmentRangeData> adjData);
     bool isValid();
-    const AdjustmentDataHeader& getAdjHeader();
+
+    std::shared_ptr<AdjustmentData> getAdjData();
+
+
+
+
+
+
+
+
+
+
 
     QMap<QString, QStringList> getRangeInfos();
     bool isChannelRangeAvailable(QString channelName, QString rangeName);
@@ -27,10 +42,10 @@ private:
     bool decodeAdjTimeStamp(QDataStream &stream);
     void extractRanges(QDataStream &stream);
 
+    std::shared_ptr<AdjustmentData> m_adjData;
     int m_maxSize;
     char* m_tmpWorkBuffer = nullptr;
     bool m_isValid = false;
-    AdjustmentDataHeader m_adjHeader;
 
     QMap<QString, QStringList> m_rangeInfosMap;
 };
