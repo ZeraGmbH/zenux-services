@@ -13,16 +13,6 @@ AdjustmentDecoderInternal::~AdjustmentDecoderInternal()
     delete[] m_tmpWorkBuffer;
 }
 
-QMap<QString, QStringList> AdjustmentDecoderInternal::getRangeInfos()
-{
-    return m_rangeInfosMap;
-}
-
-bool AdjustmentDecoderInternal::isChannelRangeAvailable(QString channelName, QString rangeName)
-{
-    return m_rangeInfosMap.contains(channelName) && m_rangeInfosMap[channelName].contains(rangeName);
-}
-
 bool AdjustmentDecoderInternal::decodeAdjBytes(QByteArray ba)
 {
     qInfo("Decode adjustment data...");
@@ -161,10 +151,11 @@ void AdjustmentDecoderInternal::extractRanges(QDataStream &stream)
             if(senseId == "SENSE") {
                 QString channelName = rangeCmdList[1];
                 QString rangeName = rangeCmdList[2];
-                if(!m_rangeInfosMap[channelName].contains(rangeName)) {
-                    m_rangeInfosMap[rangeCmdList[1]].append(rangeCmdList[2]);
+                if(!m_adjData->isChannelRangeAvailable(channelName, rangeName)) {
                     AdjustmentRangeSerializer adjRangeDecoder;
-                    adjRangeDecoder.Deserialize(stream);
+                    std::shared_ptr<AdjustmentRangeData> rangeAdjData = adjRangeDecoder.Deserialize(stream);
+                    m_adjData->setChannelRange(channelName, rangeName, rangeAdjData);
+
                 }
                 else
                     qFatal("Channel %s / range %s was already added!", qPrintable(channelName), qPrintable(rangeName));

@@ -127,7 +127,7 @@ bool SenseInterfaceCommon::isInvalidAdjDataOrChannelRangeAvail(QString channelNa
 {
     if(!m_adjustmentDecoder.isValid())
         return true;
-    return m_adjustmentDecoder.isChannelRangeAvailable(channelName, rangeName);
+    return m_adjustmentDecoder.getAdjData()->isChannelRangeAvailable(channelName, rangeName);
 }
 
 bool SenseInterfaceCommon::importAdjData()

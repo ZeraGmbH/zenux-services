@@ -30,8 +30,6 @@ public:
 
 
 
-    QMap<QString, QStringList> getRangeInfos();
-    bool isChannelRangeAvailable(QString channelName, QString rangeName);
 
 private:
     bool decodeHeader(QDataStream &stream);
@@ -46,8 +44,6 @@ private:
     int m_maxSize;
     char* m_tmpWorkBuffer = nullptr;
     bool m_isValid = false;
-
-    QMap<QString, QStringList> m_rangeInfosMap;
 };
 
 #endif // ADJUSTMENTDECODERINTERNAL_H
