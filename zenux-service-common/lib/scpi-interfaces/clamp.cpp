@@ -344,7 +344,7 @@ bool cClamp::importXMLDocument(QDomDocument *qdomdoc, bool ignoreType)
                                         rngPtr = getRange(Name);
                                     }
 
-                                    JustDataInterface* pJustData = nullptr;
+                                    AdjustmentDataSerializer* pJustData = nullptr;
                                     if (rngPtr != 0)
                                         pJustData = rngPtr->getJustData()->getAdjInterface(tName);
                                     if (pJustData) {
@@ -354,13 +354,13 @@ bool cClamp::importXMLDocument(QDomDocument *qdomdoc, bool ignoreType)
                                             QString jTypeName = jTypeNode.toElement().tagName();
                                             QString jdata = jTypeNode.toElement().text();
                                             if (jTypeName == "Status") {
-                                                pJustData->statusFromString(jdata);
+                                                pJustData->getAdjRangeForXML().statusFromString(jdata);
                                             }
                                             else if (jTypeName == "Coefficients") {
-                                                pJustData->coefficientsFromString(jdata);
+                                                pJustData->getAdjRangeForXML().coefficientsFromString(jdata);
                                             }
                                             if (jTypeName == "Nodes") {
-                                                pJustData->nodesFromString(jdata);
+                                                pJustData->getAdjRangeForXML().nodesFromString(jdata);
                                             }
                                         }
                                     }
@@ -869,20 +869,20 @@ void cClamp::exportRangeXml(QDomDocument &justqdom, QDomElement &typeTag, SenseR
     for(const auto &adjType : listAdjTypes) {
         gpotag = justqdom.createElement(adjType);
         rtag.appendChild(gpotag);
-        JustDataInterface* adjDataInterface = range->getJustData()->getAdjInterface(adjType);
+        AdjustmentDataSerializer* adjDataInterface = range->getJustData()->getAdjInterface(adjType);
         QDomElement tag = justqdom.createElement("Status");
-        QString jdata = adjDataInterface->statusToString();
+        QString jdata = adjDataInterface->getAdjRangeForXML().statusToString();
         t = justqdom.createTextNode(jdata);
         gpotag.appendChild(tag);
         tag.appendChild(t);
         tag = justqdom.createElement("Coefficients");
         gpotag.appendChild(tag);
-        jdata = adjDataInterface->coefficientsToString();
+        jdata = adjDataInterface->getAdjRangeForXML().coefficientsToString();
         t = justqdom.createTextNode(jdata);
         tag.appendChild(t);
         tag = justqdom.createElement("Nodes");
         gpotag.appendChild(tag);
-        jdata = adjDataInterface->nodesToString();
+        jdata = adjDataInterface->getAdjRangeForXML().nodesToString();
         t = justqdom.createTextNode(jdata);
         tag.appendChild(t);
     }

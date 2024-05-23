@@ -39,7 +39,7 @@ public:
                       std::unique_ptr<AdjustScpiValueFormatter> adjustmentFormatter,
                       PermissionStructAdj permissions = PermissionStructAdj());
     virtual void initSCPIConnection(QString leadingNodes) override;
-    JustDataInterface* getAdjInterface(QString name);
+    AdjustmentDataSerializer *getAdjInterface(QString name);
 
     double getGainCorrectionSingle(double par);
     double getPhaseCorrectionSingle(double par);
@@ -83,9 +83,9 @@ private:
     QString scpiCmdComputeJustData(QString &scpiInput);
     QString scpiCmdInitJustData(QString &scpiInput); // done in Adjustmentmodule - left for compatibility
 
-    JustDataInterface m_gainCorrection;
-    JustDataInterface m_phaseCorrection;
-    JustDataInterface m_offsetCorrection;
+    AdjustmentDataSerializer m_gainCorrection;
+    AdjustmentDataSerializer m_phaseCorrection;
+    AdjustmentDataSerializer m_offsetCorrection;
     std::unique_ptr<AdjustScpiValueFormatter> m_scpiQueryFormatter;
     PermissionStructAdj m_permissions;
 };

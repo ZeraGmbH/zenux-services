@@ -22,6 +22,16 @@ AdjustmentDecoderInternal::rangeAdjStruct AdjustmentDecoderInternal::getRangeAdj
     return m_rangeAdjMap[channelName][rangeName];
 }
 
+QString AdjustmentDecoderInternal::getDeviceName()
+{
+    return m_adjHeader.m_deviceName;
+}
+
+QString AdjustmentDecoderInternal::getSerialNumber()
+{
+    return m_adjHeader.m_serialNumber;
+}
+
 bool AdjustmentDecoderInternal::isChannelRangeAvailable(QString channelName, QString rangeName)
 {
     return m_rangeInfosMap.contains(channelName) && m_rangeInfosMap[channelName].contains(rangeName);
@@ -172,7 +182,7 @@ void AdjustmentDecoderInternal::extractRanges(QDataStream &stream)
                     setRangeAdjStruct(channelName, rangeName, adjRangeDecoder);
                 }
                 else
-                    qFatal("Channel %s / range %s was already added!", qPrintable(channelName), qPrintable(rangeName));
+                    qWarning("Channel %s / range %s was already added!", qPrintable(channelName), qPrintable(rangeName));
             }
         }
     }

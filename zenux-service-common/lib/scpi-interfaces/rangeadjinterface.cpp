@@ -54,12 +54,15 @@ RangeAdjInterface::RangeAdjInterface(cSCPI *scpiinterface,
                                                    std::unique_ptr<AdjustScpiValueFormatter> adjustmentFormatter,
                                                    PermissionStructAdj permissions) :
     ScpiConnection(scpiinterface),
-    m_gainCorrection({m_pSCPIInterface, GainCorrOrder, 1.0, permissions.funcAllowAdjGain, adjustmentFormatter->m_correctionExportDigits}),
-    m_phaseCorrection({m_pSCPIInterface, PhaseCorrOrder, 0.0, permissions.funcAllowAdjPhase, adjustmentFormatter->m_correctionExportDigits}),
-    m_offsetCorrection({m_pSCPIInterface, OffsetCorrOrder, 0.0, permissions.funcAllowAdjOffset, adjustmentFormatter->m_correctionExportDigits}),
+    m_gainCorrection(GainCorrOrder),
+    m_phaseCorrection(PhaseCorrOrder),
+    m_offsetCorrection(OffsetCorrOrder),
     m_scpiQueryFormatter(std::move(adjustmentFormatter)),
     m_permissions(permissions)
 {
+    m_gainCorrection.setDigits(m_scpiQueryFormatter->m_correctionExportDigits);
+    m_phaseCorrection.setDigits(m_scpiQueryFormatter->m_correctionExportDigits);
+    m_offsetCorrection.setDigits(m_scpiQueryFormatter->m_correctionExportDigits);
 }
 
 void RangeAdjInterface::initSCPIConnection(QString leadingNodes)
@@ -75,15 +78,15 @@ void RangeAdjInterface::initSCPIConnection(QString leadingNodes)
     addDelegate(QString("%1CORRECTION").arg(leadingNodes), "COMPUTE", SCPI::isCmdwP, m_pSCPIInterface, DirectJustCompute);
     addDelegate(QString("%1CORRECTION").arg(leadingNodes), "INIT", SCPI::isCmdwP, m_pSCPIInterface, DirectJustInit);
 
-    connect(&m_gainCorrection, &ScpiConnection::cmdExecutionDone, this, &ScpiConnection::cmdExecutionDone);
-    m_gainCorrection.initSCPIConnection(QString("%1CORRECTION:GAIN").arg(leadingNodes));
-    connect(&m_phaseCorrection, &ScpiConnection::cmdExecutionDone, this, &ScpiConnection::cmdExecutionDone);
-    m_phaseCorrection.initSCPIConnection(QString("%1CORRECTION:PHASE").arg(leadingNodes));
-    connect(&m_offsetCorrection, &ScpiConnection::cmdExecutionDone, this, &ScpiConnection::cmdExecutionDone);
-    m_offsetCorrection.initSCPIConnection(QString("%1CORRECTION:OFFSET").arg(leadingNodes));
+//    connect(&m_gainCorrection, &ScpiConnection::cmdExecutionDone, this, &ScpiConnection::cmdExecutionDone);
+//    m_gainCorrection.initSCPIConnection(QString("%1CORRECTION:GAIN").arg(leadingNodes)); //m_gain.getScpiReader.initSCPIConnection
+//    connect(&m_phaseCorrection, &ScpiConnection::cmdExecutionDone, this, &ScpiConnection::cmdExecutionDone);
+//    m_phaseCorrection.initSCPIConnection(QString("%1CORRECTION:PHASE").arg(leadingNodes));
+//    connect(&m_offsetCorrection, &ScpiConnection::cmdExecutionDone, this, &ScpiConnection::cmdExecutionDone);
+//    m_offsetCorrection.initSCPIConnection(QString("%1CORRECTION:OFFSET").arg(leadingNodes));
 }
 
-JustDataInterface *RangeAdjInterface::getAdjInterface(QString name)
+AdjustmentDataSerializer *RangeAdjInterface::getAdjInterface(QString name)
 {
     if(name == "Gain")
         return &m_gainCorrection;
@@ -316,17 +319,17 @@ void RangeAdjInterface::computeJustData()
 
 void RangeAdjInterface::setGainCorrection(AdjustmentDataSerializer gain)
 {
-
+    m_gainCorrection = gain;
 }
 
 void RangeAdjInterface::setPhaseCorrection(AdjustmentDataSerializer phase)
 {
-
+    m_phaseCorrection = phase;
 }
 
 void RangeAdjInterface::setOffsetCorrection(AdjustmentDataSerializer offset)
 {
-
+    m_offsetCorrection = offset;
 }
 
 double RangeAdjInterface::getGainCorrectionTotal(double par)

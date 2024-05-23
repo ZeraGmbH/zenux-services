@@ -138,39 +138,23 @@ bool SenseInterfaceCommon::importAdjData()
 {
     if(m_adjReadWrite.readDataCached(cacheFileName)) {
         QByteArray ba = m_adjReadWrite.getData();
-        QDataStream stream(&ba, QIODevice::ReadOnly);
-        stream.setVersion(QDataStream::Qt_5_4);
-
-        char flashdata[200];
-        char* s = flashdata;
-
-        stream.skipRawData(6); // we don't need count and chksum
-        stream >> s;
-        if (QString(s) != "ServerVersion") {
-            qCritical("Flashmemory read: ServerVersion not found");
-            return false;
-        }
-
-        stream >> s; // version: not checked anymore
-        stream >> s; // we take the device name
+        m_adjustmentDecoder.decodeAdjBytes(ba);
 
         QString sysDevName = m_systemInfo->getDeviceName();
-        if (QString(s) != sysDevName) {
+        QString devNameRead = m_adjustmentDecoder.getDeviceName();
+        if( devNameRead!= sysDevName) {
             qCritical("Flashmemory read: Wrong device name: flash %s / µC %s",
-                      s, qPrintable(sysDevName));
+                      devNameRead, qPrintable(sysDevName));
             return false;
         }
-
-        stream >> s; // we take the device version now
 
         bool enable = false;
         m_ctrlFactory->getPermissionCheckController()->hasPermission(enable);
-
-        stream >> s; // we take the serial number now
         QString sysSerNo = m_systemInfo->getSerialNumber();
-        if (QString(s) != sysSerNo) {
+        QString serialNumRead = m_adjustmentDecoder.getSerialNumber();
+        if(m_adjustmentDecoder.getSerialNumber() != sysSerNo) {
             qCritical("Flashmemory read, contains wrong serialnumber: flash %s / µC: %s",
-                      s, qPrintable(sysSerNo));
+                      serialNumRead, qPrintable(sysSerNo));
             m_nSerialStatus |= Adjustment::wrongSNR;
             if (!enable) {
                 return false; // wrong serial number
@@ -178,37 +162,6 @@ bool SenseInterfaceCommon::importAdjData()
         }
         else {
             m_nSerialStatus = 0; // ok
-        }
-
-        stream >> s;
-        QDateTime DateTime = QDateTime::fromString(QString(s), Qt::TextDate); // datum und uhrzeit übernehmen
-        while (!stream.atEnd()) {
-            bool done;
-            stream >> s;
-            QString  JDataSpecs = s; // Type:Channel:Range
-
-            QStringList spec;
-            spec = JDataSpecs.split(':');
-
-            done = false;
-            if (spec.at(0) == "SENSE" ) {
-                SenseChannelCommon* chn;
-                QString s = spec.at(1);
-                if ((chn = getChannel(s)) != nullptr) {
-                    s = spec.at(2);
-                    SenseRangeCommon* rng = chn->getRange(s);
-                    if (rng != nullptr) {
-                        rng->getJustData()->Deserialize(stream);
-                        done = true;
-                    }
-                }
-            }
-            if (!done) {
-                // owner of data read not found: read dummy to keep serialization in sync
-                RangeAdjInterface* dummy = createJustScpiInterfaceWithAtmelPermission();
-                dummy->Deserialize(stream);
-                delete dummy;
-            }
         }
         return (true);
     }
@@ -337,7 +290,7 @@ bool SenseInterfaceCommon::importXMLDocument(QDomDocument* qdomdoc)
                                                 Name = qdElem.text();
                                                 rngPtr = chnPtr->getRange(Name);
                                             }
-                                            JustDataInterface* pJustData = nullptr;
+                                            AdjustmentDataSerializer* pJustData = nullptr;
                                             if (rngPtr != nullptr)
                                                 pJustData = rngPtr->getJustData()->getAdjInterface(tName);
                                             if (pJustData) {
@@ -347,13 +300,13 @@ bool SenseInterfaceCommon::importXMLDocument(QDomDocument* qdomdoc)
                                                     QString jTypeName = jTypeNode.toElement().tagName();
                                                     QString jdata = jTypeNode.toElement().text();
                                                     if (jTypeName == "Status") {
-                                                        pJustData->statusFromString(jdata);
+                                                        pJustData->getAdjRangeForXML().statusFromString(jdata);
                                                     }
                                                     if (jTypeName == "Coefficients") {
-                                                        pJustData->coefficientsFromString(jdata);
+                                                        pJustData->getAdjRangeForXML().coefficientsFromString(jdata);
                                                     }
                                                     if (jTypeName == "Nodes") {
-                                                        pJustData->nodesFromString(jdata);
+                                                        pJustData->getAdjRangeForXML().nodesFromString(jdata);
                                                     }
                                                 }
                                             }
@@ -449,20 +402,20 @@ QString SenseInterfaceCommon::exportXMLString(int indent)
                 for(const auto &adjType : listAdjTypes) {
                     gpotag = justqdom.createElement(adjType);
                     rtag.appendChild(gpotag);
-                    JustDataInterface* adjDataInterface = range->getJustData()->getAdjInterface(adjType);
+                    AdjustmentDataSerializer* adjDataInterface = range->getJustData()->getAdjInterface(adjType);
                     QDomElement tag = justqdom.createElement("Status");
-                    QString jdata = adjDataInterface->statusToString();
+                    QString jdata = adjDataInterface->getAdjRangeForXML().statusToString();
                     t = justqdom.createTextNode(jdata);
                     gpotag.appendChild(tag);
                     tag.appendChild(t);
                     tag = justqdom.createElement("Coefficients");
                     gpotag.appendChild(tag);
-                    jdata = adjDataInterface->coefficientsToString();
+                    jdata = adjDataInterface->getAdjRangeForXML().coefficientsToString();
                     t = justqdom.createTextNode(jdata);
                     tag.appendChild(t);
                     tag = justqdom.createElement("Nodes");
                     gpotag.appendChild(tag);
-                    jdata = adjDataInterface->nodesToString();
+                    jdata = adjDataInterface->getAdjRangeForXML().nodesToString();
                     t = justqdom.createTextNode(jdata);
                     tag.appendChild(t);
                 }
