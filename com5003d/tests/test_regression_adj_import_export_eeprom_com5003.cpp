@@ -2,6 +2,7 @@
 #include "testfactoryi2cctrl.h"
 #include "testfactoryi2cctrlcommoninfofoo.h"
 #include "proxy.h"
+#include "mockserverparamgenerator.h"
 #include "mocki2ceepromiofactory.h"
 #include "mockeeprom24lc.h"
 #include "scpisingletransactionblocked.h"
@@ -115,11 +116,12 @@ void test_regression_adj_import_export_eeprom_com5003::scpiWriteRandomFileFlashW
 
 void test_regression_adj_import_export_eeprom_com5003::loadOriginalInvalidDateTimeRandomToEEpromWriteToFlashExportXmlAndCheck()
 {
-    setupServers(std::make_shared<TestFactoryI2cCtrl>(true));
-    I2cSettings *i2cSettings = m_testServer->getI2cSettings();
+    std::unique_ptr<SettingsContainer> settings =  std::make_unique<SettingsContainer>(MockServerParamGenerator::createParams("com5003d"));
+    I2cSettings *i2cSettings = settings->getI2cSettings();
     QVERIFY(MockEEprom24LC::mockReadFromFile(i2cSettings->getDeviceNode(),
                                              i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress),
                                              ":/export_internal_modified.eeprom"));
+    setupServers(std::make_shared<TestFactoryI2cCtrl>(true));
 
     QString ret = ScpiSingleTransactionBlocked::cmd("SYSTEM:ADJUSTMENT:FLASH:READ", "");
     QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::ack]);
@@ -135,11 +137,12 @@ void test_regression_adj_import_export_eeprom_com5003::loadOriginalInvalidDateTi
 
 void test_regression_adj_import_export_eeprom_com5003::loadValidDateTimeRandomToEEpromWriteToFlashExportXmlAndCheck()
 {
+    std::unique_ptr<SettingsContainer> settings =  std::make_unique<SettingsContainer>(MockServerParamGenerator::createParams("com5003d"));
+    I2cSettings *i2cSettings = settings->getI2cSettings();
+    QVERIFY(MockEEprom24LC::mockReadFromFile(i2cSettings->getDeviceNode(),
+                                             i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress),
+                                             ":/export_internal_modified_with_date_time.eeprom"));
     setupServers(std::make_shared<TestFactoryI2cCtrl>(true));
-    I2cSettings *i2cSettings = m_testServer->getI2cSettings();
-    MockEEprom24LC::mockReadFromFile(i2cSettings->getDeviceNode(),
-                                     i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress),
-                                     ":/export_internal_modified_with_date_time.eeprom");
 
     QString ret = ScpiSingleTransactionBlocked::cmd("SYSTEM:ADJUSTMENT:FLASH:READ", "");
     QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::ack]);
@@ -155,21 +158,25 @@ void test_regression_adj_import_export_eeprom_com5003::loadValidDateTimeRandomTo
 
 void test_regression_adj_import_export_eeprom_com5003::directExportFlashArbitraryVersionGen()
 {
+    std::unique_ptr<SettingsContainer> settings =  std::make_unique<SettingsContainer>(MockServerParamGenerator::createParams("com5003d"));
+    I2cSettings *i2cSettings = settings->getI2cSettings();
     setupServers(std::make_shared<TestFactoryI2cCtrlCommonInfoFoo>());
+
     QVERIFY(m_testServer->getSenseInterface()->exportAdjData(refTime));
-    I2cSettings *i2cSettings = m_testServer->getI2cSettings();
     QVERIFY(MockEEprom24LC::mockWriteToFile(i2cSettings->getDeviceNode(),
                                             i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress),
                                             "/tmp/import_arbitrary_version.eeprom"));
+    QVERIFY(m_testServer->getSenseInterface()->exportAdjData(refTime));
 }
 
 void test_regression_adj_import_export_eeprom_com5003::loadArbitraryVersionToEEprom()
 {
-    setupServers(std::make_shared<TestFactoryI2cCtrl>(true));
-    I2cSettings *i2cSettings = m_testServer->getI2cSettings();
+    std::unique_ptr<SettingsContainer> settings =  std::make_unique<SettingsContainer>(MockServerParamGenerator::createParams("com5003d"));
+    I2cSettings *i2cSettings = settings->getI2cSettings();
     QVERIFY(MockEEprom24LC::mockReadFromFile(i2cSettings->getDeviceNode(),
                                              i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress),
                                              ":/import_arbitrary_version.eeprom"));
+    setupServers(std::make_shared<TestFactoryI2cCtrl>(true));
 
     QString ret = ScpiSingleTransactionBlocked::cmd("SYSTEM:ADJUSTMENT:FLASH:READ", "");
     QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::ack]);
