@@ -2,6 +2,7 @@
 #include "testfactoryi2cctrl.h"
 #include "testsysteminfo.h"
 #include "proxy.h"
+#include "mockserverparamgenerator.h"
 #include "mocki2ceepromiofactory.h"
 #include "mockeeprom24lc.h"
 #include "scpisingletransactionblocked.h"
@@ -17,7 +18,6 @@ void test_adj_deny_import_com5003::init()
 {
     MockEEprom24LC::mockCleanAll();
     MockI2cEEpromIoFactory::enableMock();
-    setupServers();
 }
 
 void test_adj_deny_import_com5003::cleanup()
@@ -30,11 +30,12 @@ void test_adj_deny_import_com5003::cleanup()
 
 void test_adj_deny_import_com5003::loadEEpromWithStoredNamesAndVersions()
 {
-    // This is mostly to set-up our mock SystemInfo
-    I2cSettings *i2cSettings = m_testServer->getI2cSettings();
+    std::unique_ptr<SettingsContainer> settings =  std::make_unique<SettingsContainer>(MockServerParamGenerator::createParams("com5003d"));
+    I2cSettings *i2cSettings = settings->getI2cSettings();
     QVERIFY(MockEEprom24LC::mockReadFromFile(i2cSettings->getDeviceNode(),
                                              i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress),
                                              ":/export_internal_modified.eeprom"));
+    setupServers();
 
     QString ret = ScpiSingleTransactionBlocked::cmd("SYSTEM:ADJUSTMENT:FLASH:READ", "");
     QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::ack]);
@@ -49,11 +50,14 @@ void test_adj_deny_import_com5003::loadEEpromWithStoredNamesAndVersions()
 
 void test_adj_deny_import_com5003::loadEEpromAndDenyDifferentDeviceName()
 {
+    std::unique_ptr<SettingsContainer> settings =  std::make_unique<SettingsContainer>(MockServerParamGenerator::createParams("com5003d"));
+    I2cSettings *i2cSettings = settings->getI2cSettings();
+    QVERIFY(MockEEprom24LC::mockReadFromFile(i2cSettings->getDeviceNode(),
+                                             i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress),
+                                             ":/export_internal_modified.eeprom"));
+    setupServers();
+
     static_cast<TestSystemInfo*>(m_testServer->getSystemInfo())->setDeviceName("Foo");
-    I2cSettings *i2cSettings = m_testServer->getI2cSettings();
-    MockEEprom24LC::mockReadFromFile(i2cSettings->getDeviceNode(),
-                                     i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress),
-                                     ":/export_internal_modified.eeprom");
 
     QString ret = ScpiSingleTransactionBlocked::cmd("SYSTEM:ADJUSTMENT:FLASH:READ", "");
     QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::errexec]);
