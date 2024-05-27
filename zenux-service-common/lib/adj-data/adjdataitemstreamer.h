@@ -8,10 +8,8 @@
 class AdjDataItemStreamer
 {
 public:
-    AdjDataItemStreamer(int order);
-    AdjDataItem Deserialize(QDataStream& qds);
-private:
-    int m_order;
+    static void Deserialize(AdjDataItem &item, QDataStream& qds);
+    static void Serialize(AdjDataItem item, QDataStream& qds);
 };
 
 #endif // ADJDATAITEMSTREAMER_H

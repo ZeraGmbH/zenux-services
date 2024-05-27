@@ -2,6 +2,7 @@
 #include "protonetcommand.h"
 #include "justdatainterface.h"
 #include "zscpi_response_definitions.h"
+#include "adjdataitemstreamer.h"
 #include <scpi.h>
 
 std::unique_ptr<AdjustScpiValueFormatter> AdjustScpiValueFormatterFactory::createMt310s2AdjFormatter()
@@ -282,22 +283,21 @@ QString RangeAdjInterface::scpiCmdInitJustData(QString &scpiInput)
 
 void RangeAdjInterface::Serialize(QDataStream& qds)  // zum schreiben aller justagedaten in flashspeicher
 {
-    m_gainCorrection.Serialize(qds);
-    m_phaseCorrection.Serialize(qds);
-    m_offsetCorrection.Serialize(qds);
+    AdjDataItemStreamer::Serialize(m_gainCorrection.getAdjItem(), qds);
+    AdjDataItemStreamer::Serialize(m_phaseCorrection.getAdjItem(), qds);
+    AdjDataItemStreamer::Serialize(m_offsetCorrection.getAdjItem(), qds);
 }
 
 void RangeAdjInterface::Deserialize(QDataStream& qds) // zum lesen aller justagedaten aus flashspeicher
 {
-    m_gainCorrection.Deserialize(qds);
-    m_phaseCorrection.Deserialize(qds);
-    m_offsetCorrection.Deserialize(qds);
+    AdjDataItemStreamer::Deserialize(m_gainCorrection.getAdjItem(), qds);
+    AdjDataItemStreamer::Deserialize(m_phaseCorrection.getAdjItem(), qds);
+    AdjDataItemStreamer::Deserialize(m_offsetCorrection.getAdjItem(), qds);
 }
 
 quint8 RangeAdjInterface::getAdjustmentStatus80Mask()
 {
     return m_gainCorrection.getStatus() & m_phaseCorrection.getStatus() & m_offsetCorrection.getStatus();
-
 }
 
 void RangeAdjInterface::initJustData()

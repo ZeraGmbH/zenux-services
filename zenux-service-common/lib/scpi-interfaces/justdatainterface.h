@@ -1,6 +1,7 @@
 #ifndef JUSTDATAINTERFACE_H
 #define JUSTDATAINTERFACE_H
 
+#include "adjdataitem.h"
 #include "scpiconnection.h"
 #include "adjustmentnode.h"
 #include <QDataStream>
@@ -29,9 +30,7 @@ public:
     ~JustDataInterface();
     virtual void initSCPIConnection(QString leadingNodes) override;
 
-    // stream
-    void Serialize(QDataStream& qds);
-    void Deserialize(QDataStream& qds);
+    AdjDataItem &getAdjItem();
 
     // xml
     quint8 getStatus();
@@ -59,10 +58,7 @@ private:
     bool setCoefficient(int index, double); // !!! setting coefficient also is sequence relevant !!!
     double getCoefficient(int index);
 
-    quint8 m_nStatus;
-    double* m_pCoefficient; // size of data depends on order
-    AdjustmentNode* m_pJustNode; // same
-    int m_nOrder; // we notice order
+    AdjDataItem m_adjItem;
     int m_digits;
 };
 

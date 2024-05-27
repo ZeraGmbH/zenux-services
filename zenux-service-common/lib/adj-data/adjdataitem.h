@@ -2,15 +2,19 @@
 #define ADJDATAITEM_H
 
 #include "adjustmentnode.h"
-#include <QList>
+#include <QVector>
 
 class AdjDataItem
 {
 public:
-    int m_order;
+    AdjDataItem(int order);
+    int getOrder();
     quint8 m_adjStatus;
-    QList<AdjustmentNode> m_adjNodes;
-    QList<double> m_adjCoefficients;
+    QVector<AdjustmentNode> m_adjNodes;
+    QVector<double> m_adjCoefficients;
+private:
+    int m_order;
 };
+
 
 #endif // ADJDATAITEM_H
