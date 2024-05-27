@@ -10,7 +10,7 @@ static constexpr int digits = 4;
 void test_justdata::init()
 {
     scpi = new cSCPI();
-    justData = new JustDataInterface({scpi, 5, 0.1, [] (bool &enable) { enable =true; return true;}, digits});
+    justData = new AdjDataItemInterface({scpi, 5, 0.1, [] (bool &enable) { enable =true; return true;}, digits});
     justData->initSCPIConnection("sens:m0:8V:corr:offset");
 }
 
@@ -65,7 +65,7 @@ void test_justdata::coeffSetAndRead()
 
 void test_justdata::nodeSetReject()
 {
-    JustDataInterface *justDataReject = new JustDataInterface({scpi, 5, 0.1, [] (bool &enable) { enable=false; return true;}, digits});
+    AdjDataItemInterface *justDataReject = new AdjDataItemInterface({scpi, 5, 0.1, [] (bool &enable) { enable=false; return true;}, digits});
     justDataReject->initSCPIConnection("sens:m1:8V:corr:offset");
 
     QString scpiStringWrite = "sens:m1:8V:corr:offset:node:0 0.1;0.02;";
@@ -79,7 +79,7 @@ void test_justdata::nodeSetReject()
 
 void test_justdata::coeffSetReject()
 {
-    JustDataInterface *justDataReject = new JustDataInterface({scpi, 5, 0.1, [] (bool &enable) { enable=false; return true;}, digits});
+    AdjDataItemInterface *justDataReject = new AdjDataItemInterface({scpi, 5, 0.1, [] (bool &enable) { enable=false; return true;}, digits});
     justDataReject->initSCPIConnection("sens:m1:8V:corr:offset");
 
     QString scpiStringWrite = "sens:m1:8V:corr:offset:coef:0 0.1;";
@@ -93,7 +93,7 @@ void test_justdata::coeffSetReject()
 
 void test_justdata::nodeSetFail()
 {
-    JustDataInterface *justDataReject = new JustDataInterface({scpi, 5, 0.1, [] (bool &enable) { enable=true; return false;}, digits});
+    AdjDataItemInterface *justDataReject = new AdjDataItemInterface({scpi, 5, 0.1, [] (bool &enable) { enable=true; return false;}, digits});
     justDataReject->initSCPIConnection("sens:m1:8V:corr:offset");
 
     QString scpiStringWrite = "sens:m1:8V:corr:offset:node:0 0.1;0.02;";
@@ -107,7 +107,7 @@ void test_justdata::nodeSetFail()
 
 void test_justdata::coeffSetFail()
 {
-    JustDataInterface *justDataReject = new JustDataInterface({scpi, 5, 0.1, [] (bool &enable) { enable=true; return false;}, digits});
+    AdjDataItemInterface *justDataReject = new AdjDataItemInterface({scpi, 5, 0.1, [] (bool &enable) { enable=true; return false;}, digits});
     justDataReject->initSCPIConnection("sens:m1:8V:corr:offset");
 
     QString scpiStringWrite = "sens:m1:8V:corr:offset:coef:0 0.1;";

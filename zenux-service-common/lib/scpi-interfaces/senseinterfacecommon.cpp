@@ -38,7 +38,7 @@ quint8 SenseInterfaceCommon::getAdjustmentStatus()
     for(auto channel : qAsConst(m_channelList)) {
         quint8 channelFlags = channel->getAdjustmentStatus80Mask();
         // Currently there is one flag in channel flags only
-        if((channelFlags & JustDataInterface::Justified)== 0) {
+        if((channelFlags & AdjDataItemInterface::Justified)== 0) {
             adjustmentStatusMask = Adjustment::notAdjusted;
             break;
         }
@@ -333,7 +333,7 @@ bool SenseInterfaceCommon::importXMLDocument(QDomDocument* qdomdoc)
                                                 Name = qdElem.text();
                                                 rngPtr = chnPtr->getRange(Name);
                                             }
-                                            JustDataInterface* pJustData = nullptr;
+                                            AdjDataItemInterface* pJustData = nullptr;
                                             if (rngPtr != nullptr)
                                                 pJustData = rngPtr->getJustData()->getAdjInterface(tName);
                                             if (pJustData) {
@@ -445,7 +445,7 @@ QString SenseInterfaceCommon::exportXMLString(int indent)
                 for(const auto &adjType : listAdjTypes) {
                     gpotag = justqdom.createElement(adjType);
                     rtag.appendChild(gpotag);
-                    JustDataInterface* adjDataInterface = range->getJustData()->getAdjInterface(adjType);
+                    AdjDataItemInterface* adjDataInterface = range->getJustData()->getAdjInterface(adjType);
                     QDomElement tag = justqdom.createElement("Status");
                     QString jdata = adjDataInterface->statusToString();
                     t = justqdom.createTextNode(jdata);

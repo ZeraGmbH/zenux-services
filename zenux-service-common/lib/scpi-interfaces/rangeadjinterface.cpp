@@ -1,6 +1,6 @@
 #include "rangeadjinterface.h"
 #include "protonetcommand.h"
-#include "justdatainterface.h"
+#include "adjdataiteminterface.h"
 #include "zscpi_response_definitions.h"
 #include "adjdataitemstreamer.h"
 #include <scpi.h>
@@ -84,7 +84,7 @@ void RangeAdjInterface::initSCPIConnection(QString leadingNodes)
     m_offsetCorrection.initSCPIConnection(QString("%1CORRECTION:OFFSET").arg(leadingNodes));
 }
 
-JustDataInterface *RangeAdjInterface::getAdjInterface(QString name)
+AdjDataItemInterface *RangeAdjInterface::getAdjInterface(QString name)
 {
     if(name == "Gain")
         return &m_gainCorrection;
