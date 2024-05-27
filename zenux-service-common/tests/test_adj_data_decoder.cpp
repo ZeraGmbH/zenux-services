@@ -1,5 +1,5 @@
 #include "test_adj_data_decoder.h"
-#include "adjustmentdecoderinternal.h"
+#include "adjdatacompleteinternstreamer.h"
 #include "adjustmenteepromreadwrite.h"
 #include <QFile>
 #include <QTest>
@@ -17,11 +17,11 @@ void test_adj_data_decoder::denyMaxSizeExceed()
     QFile file(":/export_internal_initial_mt310s2.eeprom");
     file.open(QIODevice::ReadOnly);
     QByteArray ba = file.readAll();
-
-    AdjustmentDecoderInternal reader1(ba.size());
+    
+    AdjDataCompleteInternStreamer reader1(ba.size());
     QVERIFY(reader1.decodeAdjBytes(ba));
-
-    AdjustmentDecoderInternal reader2(ba.size()-1);
+    
+    AdjDataCompleteInternStreamer reader2(ba.size()-1);
     QVERIFY(!reader2.decodeAdjBytes(ba));
 }
 
@@ -30,10 +30,10 @@ void test_adj_data_decoder::readServerVersionAndDeviceNameForMT()
     QFile file(":/export_internal_initial_mt310s2.eeprom");
     file.open(QIODevice::ReadOnly);
     QByteArray ba = file.readAll();
-
-    AdjustmentDecoderInternal reader(m_flashSizeAllDevicesAtTheTimeOfWriting);
+    
+    AdjDataCompleteInternStreamer reader(m_flashSizeAllDevicesAtTheTimeOfWriting);
     QVERIFY(reader.decodeAdjBytes(ba));
-    std::shared_ptr<AdjustmentDataSet> adjData = reader.getAdjData();
+    std::shared_ptr<AdjDataCompleteIntern> adjData = reader.getAdjData();
 
     QCOMPARE(adjData->getAdjHeader().m_deviceName, "Unknown");
     QCOMPARE(adjData->getAdjHeader().m_serverVersion, "V1.01");
@@ -47,10 +47,10 @@ void test_adj_data_decoder::readMT310s2Ranges()
     QFile file(":/mt310s2-050059467.eeprom");
     file.open(QIODevice::ReadOnly);
     QByteArray ba = file.readAll();
-
-    AdjustmentDecoderInternal reader(m_flashSizeAllDevicesAtTheTimeOfWriting);
+    
+    AdjDataCompleteInternStreamer reader(m_flashSizeAllDevicesAtTheTimeOfWriting);
     reader.decodeAdjBytes(ba);
-    std::shared_ptr<AdjustmentDataSet> adjData = reader.getAdjData();
+    std::shared_ptr<AdjDataCompleteIntern> adjData = reader.getAdjData();
 
     QMap<QString, QStringList> rangesInfos = adjData->getRangeInfos();
     QCOMPARE(rangesInfos.size(), 8);
@@ -82,10 +82,10 @@ void test_adj_data_decoder::readServerVersionAndDeviceNameForCOM()
     QFile file(":/export_internal_initial_com5003.eeprom");
     file.open(QIODevice::ReadOnly);
     QByteArray ba = file.readAll();
-
-    AdjustmentDecoderInternal reader(m_flashSizeAllDevicesAtTheTimeOfWriting);
+    
+    AdjDataCompleteInternStreamer reader(m_flashSizeAllDevicesAtTheTimeOfWriting);
     QVERIFY(reader.decodeAdjBytes(ba));
-    std::shared_ptr<AdjustmentDataSet> adjData = reader.getAdjData();
+    std::shared_ptr<AdjDataCompleteIntern> adjData = reader.getAdjData();
 
     QCOMPARE(adjData->getAdjHeader().m_deviceName, "Unknown");
     QCOMPARE(adjData->getAdjHeader().m_serverVersion, "V1.00");
@@ -99,10 +99,10 @@ void test_adj_data_decoder::readCOM5003Ranges()
     QFile file(":/export_internal_initial_com5003.eeprom");
     file.open(QIODevice::ReadOnly);
     QByteArray ba = file.readAll();
-
-    AdjustmentDecoderInternal reader(m_flashSizeAllDevicesAtTheTimeOfWriting);
+    
+    AdjDataCompleteInternStreamer reader(m_flashSizeAllDevicesAtTheTimeOfWriting);
     reader.decodeAdjBytes(ba);
-    std::shared_ptr<AdjustmentDataSet> adjData = reader.getAdjData();
+    std::shared_ptr<AdjDataCompleteIntern> adjData = reader.getAdjData();
 
     QMap<QString, QStringList> rangesInfos = adjData->getRangeInfos();
     QCOMPARE(rangesInfos.size(), 6);
@@ -132,10 +132,10 @@ void test_adj_data_decoder::checkChannelRangeAvailability()
     QFile file(":/export_internal_initial_com5003.eeprom");
     file.open(QIODevice::ReadOnly);
     QByteArray ba = file.readAll();
-
-    AdjustmentDecoderInternal reader(m_flashSizeAllDevicesAtTheTimeOfWriting);
+    
+    AdjDataCompleteInternStreamer reader(m_flashSizeAllDevicesAtTheTimeOfWriting);
     reader.decodeAdjBytes(ba);
-    std::shared_ptr<AdjustmentDataSet> adjData = reader.getAdjData();
+    std::shared_ptr<AdjDataCompleteIntern> adjData = reader.getAdjData();
 
     QVERIFY(adjData->isChannelRangeAvailable("m0", "480V"));
     QVERIFY(!adjData->isChannelRangeAvailable("m0", "48V"));

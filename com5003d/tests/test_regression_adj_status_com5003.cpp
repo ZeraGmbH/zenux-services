@@ -1,5 +1,5 @@
 #include "test_regression_adj_status_com5003.h"
-#include "adjustmentflags.h"
+#include "adjflags.h"
 #include "testadjstatussetter.h"
 #include "proxy.h"
 #include "scpisingletransactionblocked.h"

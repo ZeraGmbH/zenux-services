@@ -1,5 +1,5 @@
 #include "senseinterfacecommon.h"
-#include "adjustmentflags.h"
+#include "adjflags.h"
 #include "notzeronumgen.h"
 #include "zscpi_response_definitions.h"
 #include <i2cmultiplexerfactory.h>

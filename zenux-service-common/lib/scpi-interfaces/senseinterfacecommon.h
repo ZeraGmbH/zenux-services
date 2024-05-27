@@ -6,7 +6,7 @@
 #include "i2csettings.h"
 #include "systeminfo.h"
 #include "sensechannelcommon.h"
-#include "adjustmentdecoderinternal.h"
+#include "adjdatacompleteinternstreamer.h"
 #include "adjustmenteepromreadwrite.h"
 
 namespace SenseSystem
@@ -23,8 +23,8 @@ namespace SenseSystem
         cmdStatAdjustment
     };
 }
-
-class SenseInterfaceCommon : public cResource, public AdjustmentXmlImportExportTemplate, public AdjustmentStatusInterface
+    
+    class SenseInterfaceCommon : public cResource, public AdjustmentXmlImportExportTemplate, public AbstractAdjStatus
 {
 public:
     SenseInterfaceCommon(cSCPI *scpiInterface,
@@ -87,7 +87,7 @@ protected:
     NotificationString m_notifierSenseChannelCat;
 
     AdjustmentEepromReadWrite m_adjReadWrite;
-    AdjustmentDecoderInternal m_adjustmentDecoder;
+    AdjDataCompleteInternStreamer m_adjustmentDecoder;
 };
 
 #endif // SENSEINTERFACECOMMON_H

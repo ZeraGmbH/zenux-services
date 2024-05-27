@@ -1,10 +1,10 @@
-#ifndef ADJUSTMENDATAHEADER_H
-#define ADJUSTMENDATAHEADER_H
+#ifndef ADJDATAHEADERINTERN_H
+#define ADJDATAHEADERINTERN_H
 
 #include <QString>
 #include <QDateTime>
 
-struct AdjustmentDataHeader
+struct AdjDataHeaderIntern
 {
     QString m_deviceName;
     QString m_serverVersion;
@@ -13,4 +13,4 @@ struct AdjustmentDataHeader
     QDateTime m_adjustmentDate;
 };
 
-#endif // ADJUSTMENDATAHEADER_H
+#endif // ADJDATAHEADERINTERN_H

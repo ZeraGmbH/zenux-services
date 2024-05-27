@@ -1,22 +1,22 @@
-#include "adjustmentdecoderinternal.h"
-#include "adjustmentrangeserializer.h"
+#include "adjdatacompleteinternstreamer.h"
+#include "adjdatarangegroupstreamer.h"
 #include <QDataStream>
 
-AdjustmentDecoderInternal::AdjustmentDecoderInternal(int maxSize) :
+AdjDataCompleteInternStreamer::AdjDataCompleteInternStreamer(int maxSize) :
     m_maxSize(maxSize),
     m_tmpWorkBuffer(new char[maxSize])
 {
 }
 
-AdjustmentDecoderInternal::~AdjustmentDecoderInternal()
+AdjDataCompleteInternStreamer::~AdjDataCompleteInternStreamer()
 {
     delete[] m_tmpWorkBuffer;
 }
 
-bool AdjustmentDecoderInternal::decodeAdjBytes(QByteArray ba)
+bool AdjDataCompleteInternStreamer::decodeAdjBytes(QByteArray ba)
 {
     qInfo("Decode adjustment data...");
-    m_adjData = std::make_shared<AdjustmentDataSet>();
+    m_adjData = std::make_shared<AdjDataCompleteIntern>();
     if(ba.size() > m_maxSize) {
         qWarning("Adjustment data size exceeds max size: %i (max: %i)", ba.size(), m_maxSize);
         return false;
@@ -46,17 +46,17 @@ bool AdjustmentDecoderInternal::decodeAdjBytes(QByteArray ba)
     return true;
 }
 
-bool AdjustmentDecoderInternal::isValid()
+bool AdjDataCompleteInternStreamer::isValid()
 {
     return m_isValid;
 }
 
-std::shared_ptr<AdjustmentDataSet> AdjustmentDecoderInternal::getAdjData()
+std::shared_ptr<AdjDataCompleteIntern> AdjDataCompleteInternStreamer::getAdjData()
 {
     return m_adjData;
 }
 
-bool AdjustmentDecoderInternal::decodeHeader(QDataStream &stream)
+bool AdjDataCompleteInternStreamer::decodeHeader(QDataStream &stream)
 {
     if(!decodeServerVersion(stream))
         return false;
@@ -74,7 +74,7 @@ bool AdjustmentDecoderInternal::decodeHeader(QDataStream &stream)
     return true;
 }
 
-bool AdjustmentDecoderInternal::decodeServerVersion(QDataStream &stream)
+bool AdjDataCompleteInternStreamer::decodeServerVersion(QDataStream &stream)
 {
     stream >> m_tmpWorkBuffer;
     if (QString(m_tmpWorkBuffer) != "ServerVersion") {
@@ -90,7 +90,7 @@ bool AdjustmentDecoderInternal::decodeServerVersion(QDataStream &stream)
     return true;
 }
 
-bool AdjustmentDecoderInternal::decodeDeviceName(QDataStream &stream)
+bool AdjDataCompleteInternStreamer::decodeDeviceName(QDataStream &stream)
 {
     stream >> m_tmpWorkBuffer;
     getAdjData()->getAdjHeader().m_deviceName = m_tmpWorkBuffer;
@@ -101,7 +101,7 @@ bool AdjustmentDecoderInternal::decodeDeviceName(QDataStream &stream)
     return true;
 }
 
-bool AdjustmentDecoderInternal::decodeDeviceVersion(QDataStream &stream)
+bool AdjDataCompleteInternStreamer::decodeDeviceVersion(QDataStream &stream)
 {
     stream >> m_tmpWorkBuffer;
     getAdjData()->getAdjHeader().m_deviceVersion = m_tmpWorkBuffer;
@@ -112,7 +112,7 @@ bool AdjustmentDecoderInternal::decodeDeviceVersion(QDataStream &stream)
     return true;
 }
 
-bool AdjustmentDecoderInternal::decodeSerialNumber(QDataStream &stream)
+bool AdjDataCompleteInternStreamer::decodeSerialNumber(QDataStream &stream)
 {
     stream >> m_tmpWorkBuffer;
     getAdjData()->getAdjHeader().m_serialNumber = m_tmpWorkBuffer;
@@ -123,7 +123,7 @@ bool AdjustmentDecoderInternal::decodeSerialNumber(QDataStream &stream)
     return true;
 }
 
-bool AdjustmentDecoderInternal::decodeAdjTimeStamp(QDataStream &stream)
+bool AdjDataCompleteInternStreamer::decodeAdjTimeStamp(QDataStream &stream)
 {
     stream >> m_tmpWorkBuffer;
     QString adjTimeStamp = m_tmpWorkBuffer;
@@ -139,7 +139,7 @@ bool AdjustmentDecoderInternal::decodeAdjTimeStamp(QDataStream &stream)
     return true;
 }
 
-void AdjustmentDecoderInternal::decodeRanges(QDataStream &stream)
+void AdjDataCompleteInternStreamer::decodeRanges(QDataStream &stream)
 {
     while (!stream.atEnd()) {
         QString channelRangeInfo;
@@ -152,8 +152,7 @@ void AdjustmentDecoderInternal::decodeRanges(QDataStream &stream)
                 QString channelName = rangeCmdList[1];
                 QString rangeName = rangeCmdList[2];
                 if(!m_adjData->isChannelRangeAvailable(channelName, rangeName)) {
-                    AdjustmentRangeSerializer adjRangeDecoder;
-                    std::shared_ptr<AdjustmentDataRangeGroup> rangeAdjData = adjRangeDecoder.Deserialize(stream);
+                    std::shared_ptr<AdjDataRangeGroup> rangeAdjData = AdjDataRangeGroupStreamer::Deserialize(stream);
                     m_adjData->setChannelRange(channelName, rangeName, rangeAdjData);
 
                 }

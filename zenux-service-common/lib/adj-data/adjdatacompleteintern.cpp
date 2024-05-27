@@ -1,21 +1,21 @@
-#include "adjustmentdataset.h"
+#include "adjdatacompleteintern.h"
 
-AdjustmentDataHeader &AdjustmentDataSet::getAdjHeader()
+AdjDataHeaderIntern &AdjDataCompleteIntern::getAdjHeader()
 {
     return m_adjHeader;
 }
 
-bool AdjustmentDataSet::isChannelRangeAvailable(QString channelName, QString rangeName)
+bool AdjDataCompleteIntern::isChannelRangeAvailable(QString channelName, QString rangeName)
 {
     return m_rangeInfosMap.contains(channelName) && m_rangeInfosMap[channelName].contains(rangeName);
 }
 
-void AdjustmentDataSet::setChannelRange(QString channelName, QString rangeName, std::shared_ptr<AdjustmentDataRangeGroup> adjData)
+void AdjDataCompleteIntern::setChannelRange(QString channelName, QString rangeName, std::shared_ptr<AdjDataRangeGroup> adjData)
 {
     m_rangeInfosMap[channelName][rangeName] = adjData;
 }
 
-QMap<QString, QStringList> AdjustmentDataSet::getRangeInfos()
+QMap<QString, QStringList> AdjDataCompleteIntern::getRangeInfos()
 {
     QMap<QString, QStringList> info;
     for(auto channelIter = m_rangeInfosMap.cbegin(); channelIter!=m_rangeInfosMap.cend(); ++channelIter) {

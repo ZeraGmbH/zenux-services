@@ -1,10 +1,10 @@
-#ifndef ADJUSTMENTDATAITEM_H
-#define ADJUSTMENTDATAITEM_H
+#ifndef ADJDATAITEM_H
+#define ADJDATAITEM_H
 
 #include "adjustmentnode.h"
 #include <QList>
 
-class AdjustmentDataItem
+class AdjDataItem
 {
 public:
     int m_order;
@@ -13,4 +13,4 @@ public:
     QList<double> m_adjCoefficients;
 };
 
-#endif // ADJUSTMENTDATAITEM_H
+#endif // ADJDATAITEM_H

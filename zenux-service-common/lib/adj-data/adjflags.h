@@ -1,5 +1,5 @@
-#ifndef ADJUSTMENTFLAGS_H
-#define ADJUSTMENTFLAGS_H
+#ifndef ADJFLAGS_H
+#define ADJFLAGS_H
 
 namespace Adjustment
 {
@@ -12,4 +12,4 @@ namespace Adjustment
     };
 }
 
-#endif // ADJUSTMENTFLAGS_H
+#endif // ADJFLAGS_H

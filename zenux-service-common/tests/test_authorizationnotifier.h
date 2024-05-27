@@ -2,7 +2,7 @@
 #define TEST_AUTHORIZATIONNOTIFIER_H
 
 #include "testpcbservernotifications.h"
-#include "adjustmentstatusinterface.h"
+#include "abstractadjstatus.h"
 #include <memory.h>
 
 class test_authorizationnotifier : public QObject
@@ -28,7 +28,7 @@ private:
     QString getAuthoStatus();
     std::unique_ptr<TestPcbServerNotifications> m_pcbServerTest;
     I2cCtrlEepromPermissionPtr m_PermissionCtrl;
-    AdjustmentStatusInterface *m_adjustmentStatusNull;
+    AbstractAdjStatus *m_adjustmentStatusNull;
 };
 
 #endif // TEST_AUTHORIZATIONNOTIFIER_H
