@@ -3,6 +3,7 @@
 #include "testfactoryi2cctrl.h"
 #include "testfactoryi2cctrlcommoninfofoo.h"
 #include "proxy.h"
+#include "mockserverparamgenerator.h"
 #include "mocki2ceepromiofactory.h"
 #include "mockeeprom24lc.h"
 #include "scpisingletransactionblocked.h"
@@ -121,11 +122,12 @@ void test_regression_adj_import_export_eeprom_mt310s2::scpiWriteRandomFileFlashW
 
 void test_regression_adj_import_export_eeprom_mt310s2::loadRandomToEEpromWriteToFlashExportXmlAndCheck()
 {
-    setupServers(std::make_shared<TestFactoryI2cCtrl>(true));
-    I2cSettings *i2cSettings = m_testServer->getI2cSettings();
+    std::unique_ptr<SettingsContainer> settings =  std::make_unique<SettingsContainer>(MockServerParamGenerator::createParams("mt310s2d"));
+    I2cSettings *i2cSettings = settings->getI2cSettings();
     QVERIFY(MockEEprom24LC::mockReadFromFile(i2cSettings->getDeviceNode(),
                                              i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress),
                                              ":/export_internal_modified.eeprom"));
+    setupServers(std::make_shared<TestFactoryI2cCtrl>(true));
 
     QString ret = ScpiSingleTransactionBlocked::cmd("SYSTEM:ADJUSTMENT:FLASH:READ", "");
     QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::ack]);
@@ -151,11 +153,12 @@ void test_regression_adj_import_export_eeprom_mt310s2::directExportFlashArbitrar
 
 void test_regression_adj_import_export_eeprom_mt310s2::loadArbitraryVersionToEEprom()
 {
-    setupServers(std::make_shared<TestFactoryI2cCtrl>(true));
-    I2cSettings *i2cSettings = m_testServer->getI2cSettings();
+    std::unique_ptr<SettingsContainer> settings =  std::make_unique<SettingsContainer>(MockServerParamGenerator::createParams("mt310s2d"));
+    I2cSettings *i2cSettings = settings->getI2cSettings();
     QVERIFY(MockEEprom24LC::mockReadFromFile(i2cSettings->getDeviceNode(),
                                              i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress),
                                              ":/import_arbitrary_version.eeprom"));
+    setupServers(std::make_shared<TestFactoryI2cCtrl>(true));
 
     QString ret = ScpiSingleTransactionBlocked::cmd("SYSTEM:ADJUSTMENT:FLASH:READ", "");
     QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::ack]);
