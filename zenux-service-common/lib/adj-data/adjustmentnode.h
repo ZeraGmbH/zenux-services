@@ -7,7 +7,8 @@
 // an adjustmentnode (datapoint) consists of the data point's value and the data point's argument
 // it can serialize and deserialize itself to a qdatastream
 
-class AdjustmentNode { // stützspunkt kann sich serialisieren und besteht aus stützwert (correction) und argument
+class AdjustmentNode
+{
 public:
     AdjustmentNode(double corr, double arg);
     AdjustmentNode(){};
