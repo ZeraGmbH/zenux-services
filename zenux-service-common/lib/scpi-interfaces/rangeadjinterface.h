@@ -3,7 +3,7 @@
 
 #include "scpiconnection.h"
 #include "permissionfunctions.h"
-#include "adjustmentstatusinterface.h"
+#include "abstractadjstatus.h"
 #include "justdatainterface.h"
 #include <QDataStream>
 #include <functional>

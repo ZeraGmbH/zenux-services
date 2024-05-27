@@ -1,22 +1,22 @@
-#ifndef ADJUSTMENTDECODERINTERNAL_H
-#define ADJUSTMENTDECODERINTERNAL_H
+#ifndef ADJDATACOMPLETEINTERNSTREAMER_H
+#define ADJDATACOMPLETEINTERNSTREAMER_H
 
-#include "adjustmendataheader.h"
-#include "adjustmentdataset.h"
+#include "adjdataheaderintern.h"
+#include "adjdatacompleteintern.h"
 #include <QByteArray>
 #include <QMap>
 #include <memory>
 
-class AdjustmentDecoderInternal
+class AdjDataCompleteInternStreamer
 {
 public:
-    AdjustmentDecoderInternal(int maxSize);
-    ~AdjustmentDecoderInternal();
+    AdjDataCompleteInternStreamer(int maxSize);
+    ~AdjDataCompleteInternStreamer();
 
     bool decodeAdjBytes(QByteArray ba);
     bool isValid();
-
-    std::shared_ptr<AdjustmentDataSet> getAdjData();
+    
+    std::shared_ptr<AdjDataCompleteIntern> getAdjData();
 
 private:
     bool decodeHeader(QDataStream &stream);
@@ -26,11 +26,11 @@ private:
     bool decodeSerialNumber(QDataStream &stream);
     bool decodeAdjTimeStamp(QDataStream &stream);
     void decodeRanges(QDataStream &stream);
-
-    std::shared_ptr<AdjustmentDataSet> m_adjData;
+    
+    std::shared_ptr<AdjDataCompleteIntern> m_adjData;
     int m_maxSize;
     char* m_tmpWorkBuffer = nullptr;
     bool m_isValid = false;
 };
 
-#endif // ADJUSTMENTDECODERINTERNAL_H
+#endif // ADJDATACOMPLETEINTERNSTREAMER_H

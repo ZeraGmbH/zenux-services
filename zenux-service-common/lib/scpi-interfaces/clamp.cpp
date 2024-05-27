@@ -1,5 +1,5 @@
 #include "clamp.h"
-#include "adjustmentflags.h"
+#include "adjflags.h"
 #include "clampsenserange.h"
 #include "justdatainterface.h"
 #include "rangeadjclamps.h"

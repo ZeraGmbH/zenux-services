@@ -1,6 +1,6 @@
 #include "mt310s2senseinterface.h"
 #include "mt310s2dglobal.h"
-#include "adjustmentflags.h"
+#include "adjflags.h"
 #include "mt310s2sensechannel.h"
 #include "mt310s2senserange.h"
 #include "protonetcommand.h"

@@ -1,9 +1,9 @@
 #ifndef TESTADJUSTMENTSTATUSINTERFACENULL_H
 #define TESTADJUSTMENTSTATUSINTERFACENULL_H
 
-#include <adjustmentstatusinterface.h>
+#include <abstractadjstatus.h>
 
-class TestAdjustmentStatusInterfaceNull : public AdjustmentStatusInterface
+class TestAdjustmentStatusInterfaceNull : public AbstractAdjStatus
 {
 public:
     quint8 getAdjustmentStatus() override;

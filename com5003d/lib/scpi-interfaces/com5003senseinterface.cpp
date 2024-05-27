@@ -1,5 +1,5 @@
 #include "com5003senseinterface.h"
-#include "adjustmentflags.h"
+#include "adjflags.h"
 #include "com5003dglobal.h"
 #include "rangeadjinterface.h"
 #include "scpiconnection.h"
