@@ -17,9 +17,6 @@ public:
 
 private:
     AdjustmentDataHeader m_adjHeader;
-
-
-
     QMap<QString, QMap<QString, std::shared_ptr<AdjustmentRangeData>>> m_rangeInfosMap;
 };
 

@@ -15,21 +15,9 @@ public:
     ~AdjustmentDecoderInternal();
 
     bool decodeAdjBytes(QByteArray ba);
-    //QByteArray encodeAdjData(std::shared_ptr<AdjustmentRangeData> adjData);
     bool isValid();
 
     std::shared_ptr<AdjustmentData> getAdjData();
-
-
-
-
-
-
-
-
-
-
-
 
 private:
     bool decodeHeader(QDataStream &stream);
@@ -38,7 +26,7 @@ private:
     bool decodeDeviceVersion(QDataStream &stream);
     bool decodeSerialNumber(QDataStream &stream);
     bool decodeAdjTimeStamp(QDataStream &stream);
-    void extractRanges(QDataStream &stream);
+    void decodeRanges(QDataStream &stream);
 
     std::shared_ptr<AdjustmentData> m_adjData;
     int m_maxSize;

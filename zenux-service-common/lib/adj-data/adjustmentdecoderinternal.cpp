@@ -39,7 +39,7 @@ bool AdjustmentDecoderInternal::decodeAdjBytes(QByteArray ba)
         return false;
     }
 
-    extractRanges(stream);
+    decodeRanges(stream);
 
     qInfo("Decode succeeded.");
     m_isValid = true;
@@ -139,7 +139,7 @@ bool AdjustmentDecoderInternal::decodeAdjTimeStamp(QDataStream &stream)
     return true;
 }
 
-void AdjustmentDecoderInternal::extractRanges(QDataStream &stream)
+void AdjustmentDecoderInternal::decodeRanges(QDataStream &stream)
 {
     while (!stream.atEnd()) {
         QString channelRangeInfo;
