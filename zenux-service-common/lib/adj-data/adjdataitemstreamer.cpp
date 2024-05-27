@@ -1,25 +1,26 @@
 #include "adjdataitemstreamer.h"
 
-AdjDataItemStreamer::AdjDataItemStreamer(int order) :
-    m_order(order)
+void AdjDataItemStreamer::Deserialize(AdjDataItem &item, QDataStream &qds)
 {
-}
-
-AdjDataItem AdjDataItemStreamer::Deserialize(QDataStream &qds)
-{
-    AdjDataItem adjData;
-    adjData.m_order = m_order;
-    qds >> adjData.m_adjStatus;
-    for (int i = 0; i < m_order+1; i++) {
+    qds >> item.m_adjStatus;
+    for (int i = 0; i < item.getOrder()+1; i++) {
         double coeff;
         qds >> coeff;
-        adjData.m_adjCoefficients.append(coeff);
+        item.m_adjCoefficients[i] = coeff;
     }
-    for (int i = 0; i < m_order+1; i++) {
+    for (int i = 0; i < item.getOrder()+1; i++) {
         double correction, argument;
         qds >> correction >> argument;
         AdjustmentNode node(correction, argument);
-        adjData.m_adjNodes.append(node);
+        item.m_adjNodes[i] = node;
     }
-    return adjData;
+}
+
+void AdjDataItemStreamer::Serialize(AdjDataItem item, QDataStream &qds)
+{
+    qds << item.m_adjStatus;
+    for (int i = 0; i < item.m_adjCoefficients.size(); i++)
+        qds << item.m_adjCoefficients[i];
+    for (int i = 0; i < item.m_adjNodes.size(); i++)
+        qds << item.m_adjNodes[i].getCorrection() << item.m_adjNodes[i].getArgument();
 }
