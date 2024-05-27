@@ -12,15 +12,13 @@ class AdjustmentNode
 public:
     AdjustmentNode(double corr, double arg);
     AdjustmentNode(){};
-    ~AdjustmentNode(){};
     void Serialize(QDataStream&);
     void Deserialize(QDataStream&);
+
     QString toString(int digits);
     void fromString(const QString&);
-    AdjustmentNode& operator = (const AdjustmentNode&);
-    void setCorrection(double value);
+
     double getCorrection();
-    void setArgument(double value);
     double getArgument();
 
 private:

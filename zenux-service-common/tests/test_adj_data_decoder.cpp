@@ -33,7 +33,7 @@ void test_adj_data_decoder::readServerVersionAndDeviceNameForMT()
 
     AdjustmentDecoderInternal reader(m_flashSizeAllDevicesAtTheTimeOfWriting);
     QVERIFY(reader.decodeAdjBytes(ba));
-    std::shared_ptr<AdjustmentData> adjData = reader.getAdjData();
+    std::shared_ptr<AdjustmentDataSet> adjData = reader.getAdjData();
 
     QCOMPARE(adjData->getAdjHeader().m_deviceName, "Unknown");
     QCOMPARE(adjData->getAdjHeader().m_serverVersion, "V1.01");
@@ -50,7 +50,7 @@ void test_adj_data_decoder::readMT310s2Ranges()
 
     AdjustmentDecoderInternal reader(m_flashSizeAllDevicesAtTheTimeOfWriting);
     reader.decodeAdjBytes(ba);
-    std::shared_ptr<AdjustmentData> adjData = reader.getAdjData();
+    std::shared_ptr<AdjustmentDataSet> adjData = reader.getAdjData();
 
     QMap<QString, QStringList> rangesInfos = adjData->getRangeInfos();
     QCOMPARE(rangesInfos.size(), 8);
@@ -85,7 +85,7 @@ void test_adj_data_decoder::readServerVersionAndDeviceNameForCOM()
 
     AdjustmentDecoderInternal reader(m_flashSizeAllDevicesAtTheTimeOfWriting);
     QVERIFY(reader.decodeAdjBytes(ba));
-    std::shared_ptr<AdjustmentData> adjData = reader.getAdjData();
+    std::shared_ptr<AdjustmentDataSet> adjData = reader.getAdjData();
 
     QCOMPARE(adjData->getAdjHeader().m_deviceName, "Unknown");
     QCOMPARE(adjData->getAdjHeader().m_serverVersion, "V1.00");
@@ -102,7 +102,7 @@ void test_adj_data_decoder::readCOM5003Ranges()
 
     AdjustmentDecoderInternal reader(m_flashSizeAllDevicesAtTheTimeOfWriting);
     reader.decodeAdjBytes(ba);
-    std::shared_ptr<AdjustmentData> adjData = reader.getAdjData();
+    std::shared_ptr<AdjustmentDataSet> adjData = reader.getAdjData();
 
     QMap<QString, QStringList> rangesInfos = adjData->getRangeInfos();
     QCOMPARE(rangesInfos.size(), 6);
@@ -135,7 +135,7 @@ void test_adj_data_decoder::checkChannelRangeAvailability()
 
     AdjustmentDecoderInternal reader(m_flashSizeAllDevicesAtTheTimeOfWriting);
     reader.decodeAdjBytes(ba);
-    std::shared_ptr<AdjustmentData> adjData = reader.getAdjData();
+    std::shared_ptr<AdjustmentDataSet> adjData = reader.getAdjData();
 
     QVERIFY(adjData->isChannelRangeAvailable("m0", "480V"));
     QVERIFY(!adjData->isChannelRangeAvailable("m0", "48V"));

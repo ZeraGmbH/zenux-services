@@ -19,38 +19,20 @@ void AdjustmentNode::Deserialize(QDataStream& qds)
 
 QString AdjustmentNode::toString(int digits)
 {
-    QString s;
-    s = QString("%1;%2;").arg(m_fCorrection,0,'f',digits)
+    QString s = QString("%1;%2;").arg(m_fCorrection,0,'f',digits)
                            .arg(m_fArgument,0,'f',digits);
     return s;
 }
 
 void AdjustmentNode::fromString(const QString& s)
 {
-    m_fCorrection = s.section( ';',0,0).toDouble();
-    m_fArgument = s.section( ';',1,1).toDouble();
-}
-
-AdjustmentNode& AdjustmentNode::operator = (const AdjustmentNode& jn)
-{
-    m_fCorrection = jn.m_fCorrection;
-    m_fArgument = jn.m_fArgument;
-    return (*this);
-}
-
-void AdjustmentNode::setCorrection(double value)
-{
-    m_fCorrection = value;
+    m_fCorrection = s.section(';', 0, 0).toDouble();
+    m_fArgument = s.section(';', 1, 1).toDouble();
 }
 
 double AdjustmentNode::getCorrection()
 {
     return m_fCorrection;
-}
-
-void AdjustmentNode::setArgument(double value)
-{
-   m_fArgument = value;
 }
 
 double AdjustmentNode::getArgument()
