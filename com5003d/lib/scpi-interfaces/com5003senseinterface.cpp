@@ -5,7 +5,7 @@
 #include "scpiconnection.h"
 #include "resource.h"
 #include "notzeronumgen.h"
-#include "justdatainterface.h"
+#include "adjdataiteminterface.h"
 #include "com5003sensechannel.h"
 #include "com5003senserange.h"
 #include "protonetcommand.h"

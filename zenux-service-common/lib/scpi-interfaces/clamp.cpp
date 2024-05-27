@@ -1,7 +1,7 @@
 #include "clamp.h"
 #include "adjflags.h"
 #include "clampsenserange.h"
-#include "justdatainterface.h"
+#include "adjdataiteminterface.h"
 #include "rangeadjclamps.h"
 #include "i2csettings.h"
 #include "rangeadjinterface.h"
@@ -343,8 +343,8 @@ bool cClamp::importXMLDocument(QDomDocument *qdomdoc, bool ignoreType)
                                         Name = qdElem.text();
                                         rngPtr = getRange(Name);
                                     }
-
-                                    JustDataInterface* pJustData = nullptr;
+                                    
+                                    AdjDataItemInterface* pJustData = nullptr;
                                     if (rngPtr != 0)
                                         pJustData = rngPtr->getJustData()->getAdjInterface(tName);
                                     if (pJustData) {
@@ -411,7 +411,7 @@ quint8 cClamp::getAdjStatus()
         stat &= range->getAdjustmentStatus80Mask();
     for(auto range : qAsConst(m_RangeListSecondary))
         stat &= range->getAdjustmentStatus80Mask();
-    if ((stat & JustDataInterface::Justified)== 0)
+    if ((stat & AdjDataItemInterface::Justified)== 0)
         return Adjustment::notAdjusted;
     else
         return Adjustment::adjusted;
@@ -869,7 +869,7 @@ void cClamp::exportRangeXml(QDomDocument &justqdom, QDomElement &typeTag, SenseR
     for(const auto &adjType : listAdjTypes) {
         gpotag = justqdom.createElement(adjType);
         rtag.appendChild(gpotag);
-        JustDataInterface* adjDataInterface = range->getJustData()->getAdjInterface(adjType);
+        AdjDataItemInterface* adjDataInterface = range->getJustData()->getAdjInterface(adjType);
         QDomElement tag = justqdom.createElement("Status");
         QString jdata = adjDataInterface->statusToString();
         t = justqdom.createTextNode(jdata);

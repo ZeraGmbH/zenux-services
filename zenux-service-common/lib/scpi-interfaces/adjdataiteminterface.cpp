@@ -1,4 +1,4 @@
-#include "justdatainterface.h"
+#include "adjdataiteminterface.h"
 #include "zscpi_response_definitions.h"
 #include <gaussmatrix.h>
 #include <gaussnode.h>
@@ -17,7 +17,7 @@ enum JustCommands
     JustNode3
 };
 
-JustDataInterface::JustDataInterface(TJustDataParam param) :
+AdjDataItemInterface::AdjDataItemInterface(TJustDataParam param) :
     ScpiConnection(param.scpiinterface),
     m_checkPermission(param.checkPermission),
     m_adjItem(param.order),
@@ -26,11 +26,11 @@ JustDataInterface::JustDataInterface(TJustDataParam param) :
     initJustData(param.init);
 }
 
-JustDataInterface::~JustDataInterface()
+AdjDataItemInterface::~AdjDataItemInterface()
 {
 }
 
-void JustDataInterface::initSCPIConnection(QString leadingNodes)
+void AdjDataItemInterface::initSCPIConnection(QString leadingNodes)
 {
     addDelegate(QString("%1").arg(leadingNodes), "STATUS", SCPI::isCmdwP | SCPI::isQuery, m_pSCPIInterface, JustStatus);
 
@@ -45,12 +45,12 @@ void JustDataInterface::initSCPIConnection(QString leadingNodes)
     addDelegate(QString("%1NODE").arg(leadingNodes), "3", SCPI::isCmdwP | SCPI::isQuery, m_pSCPIInterface, JustNode3);
 }
 
-AdjDataItem &JustDataInterface::getAdjItem()
+AdjDataItem &AdjDataItemInterface::getAdjItem()
 {
     return m_adjItem;
 }
 
-void JustDataInterface::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
+void AdjDataItemInterface::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
 {
     switch (cmdCode)
     {
@@ -86,7 +86,7 @@ void JustDataInterface::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd
         emit cmdExecutionDone(protoCmd);
 }
 
-QString JustDataInterface::scpiReadWriteStatus(QString &sInput)
+QString AdjDataItemInterface::scpiReadWriteStatus(QString &sInput)
 {
     cSCPICommand cmd = sInput;
     if (cmd.isQuery())
@@ -114,7 +114,7 @@ QString JustDataInterface::scpiReadWriteStatus(QString &sInput)
     return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-QString JustDataInterface::scpiReadWriteJustCoeeficient(QString &sInput, quint8 index)
+QString AdjDataItemInterface::scpiReadWriteJustCoeeficient(QString &sInput, quint8 index)
 {
     cSCPICommand cmd = sInput;
     if (cmd.isQuery())
@@ -143,7 +143,7 @@ QString JustDataInterface::scpiReadWriteJustCoeeficient(QString &sInput, quint8 
 }
 
 
-QString JustDataInterface::scpiReadWriteJustNode(QString &sInput, quint8 index)
+QString AdjDataItemInterface::scpiReadWriteJustNode(QString &sInput, quint8 index)
 {
     cSCPICommand cmd = sInput;
     if (cmd.isQuery())
@@ -178,12 +178,12 @@ QString JustDataInterface::scpiReadWriteJustNode(QString &sInput, quint8 index)
 }
 
 
-QString JustDataInterface::statusToString()
+QString AdjDataItemInterface::statusToString()
 {
     return QString("%1").arg(m_adjItem.m_adjStatus);
 }
 
-QString JustDataInterface::coefficientsToString() // writes adjustment data to qstring
+QString AdjDataItemInterface::coefficientsToString() // writes adjustment data to qstring
 {
     QString s;
     for (int i = 0; i < m_adjItem.getOrder()+1; i++)
@@ -191,7 +191,7 @@ QString JustDataInterface::coefficientsToString() // writes adjustment data to q
     return s;
 }
 
-QString JustDataInterface::nodesToString()
+QString AdjDataItemInterface::nodesToString()
 {
     QString s;
     for (int i = 0; i < m_adjItem.getOrder()+1; i++)
@@ -199,27 +199,27 @@ QString JustDataInterface::nodesToString()
     return s;
 }
 
-void JustDataInterface::statusFromString(const QString &s)
+void AdjDataItemInterface::statusFromString(const QString &s)
 {
     m_adjItem.m_adjStatus = s.toInt();
 }
 
 
-void JustDataInterface::coefficientsFromString(const QString& s)
+void AdjDataItemInterface::coefficientsFromString(const QString& s)
 {
     for (int i = 0; i < m_adjItem.getOrder()+1; i++)
         m_adjItem.m_adjCoefficients[i] = s.section(';',i,i).toDouble();
 }
 
 
-void JustDataInterface::nodesFromString(const QString& s)
+void AdjDataItemInterface::nodesFromString(const QString& s)
 {
     for (int i = 0; i < m_adjItem.getOrder()+1; i++)
         m_adjItem.m_adjNodes[i].fromString(s.section(';',i << 1,(i << 1) + 1));
 }
 
 
-bool JustDataInterface::setNode(int index, AdjustmentNode jn) // // !!! setting node sequence is relevant !!!
+bool AdjDataItemInterface::setNode(int index, AdjustmentNode jn) // // !!! setting node sequence is relevant !!!
 {
     if (index < m_adjItem.getOrder()+1) {
         for (int i = index; i < m_adjItem.getOrder()+1; i++)
@@ -229,12 +229,12 @@ bool JustDataInterface::setNode(int index, AdjustmentNode jn) // // !!! setting 
     return false;
 }
 
-AdjustmentNode* JustDataInterface::getNode(int index) // can be read back
+AdjustmentNode* AdjDataItemInterface::getNode(int index) // can be read back
 {
     return &m_adjItem.m_adjNodes[index];
 }
- 
-bool JustDataInterface::setCoefficient(int index, double value)
+
+bool AdjDataItemInterface::setCoefficient(int index, double value)
 {
     if (index < m_adjItem.getOrder()+1) {
         m_adjItem.m_adjCoefficients[index] = value;
@@ -246,12 +246,12 @@ bool JustDataInterface::setCoefficient(int index, double value)
     return false;
 }
 
-double JustDataInterface::getCoefficient(int index)
+double AdjDataItemInterface::getCoefficient(int index)
 {
     return m_adjItem.m_adjCoefficients[index];
 }
 
-bool JustDataInterface::calcCoefficientsFromNodes()
+bool AdjDataItemInterface::calcCoefficientsFromNodes()
 {
     const double epsilon = 1e-7;
     int i;
@@ -284,19 +284,19 @@ bool JustDataInterface::calcCoefficientsFromNodes()
     return true;
 }
 
-quint8 JustDataInterface::getStatus()
+quint8 AdjDataItemInterface::getStatus()
 {
     return m_adjItem.m_adjStatus;
 }
 
-void JustDataInterface::initJustData(double init)
+void AdjDataItemInterface::initJustData(double init)
 {
     setNode(0, AdjustmentNode(init, 0.0)); // setting the 1st node and all following
     calcCoefficientsFromNodes();
     m_adjItem.m_adjStatus = 0;
 }
 
-double JustDataInterface::getCorrection(double arg) // calculates correction value
+double AdjDataItemInterface::getCorrection(double arg) // calculates correction value
 {
     double Arg = 1.0;
     double Corr = 0.0;

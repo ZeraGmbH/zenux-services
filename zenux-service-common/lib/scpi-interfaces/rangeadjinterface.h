@@ -4,7 +4,7 @@
 #include "scpiconnection.h"
 #include "permissionfunctions.h"
 #include "abstractadjstatus.h"
-#include "justdatainterface.h"
+#include "adjdataiteminterface.h"
 #include <QDataStream>
 #include <functional>
 #include <memory>
@@ -38,7 +38,7 @@ public:
                              std::unique_ptr<AdjustScpiValueFormatter> adjustmentFormatter,
                              PermissionStructAdj permissions = PermissionStructAdj());
     virtual void initSCPIConnection(QString leadingNodes) override;
-    JustDataInterface* getAdjInterface(QString name);
+    AdjDataItemInterface* getAdjInterface(QString name);
 
     double getGainCorrectionSingle(double par);
     double getPhaseCorrectionSingle(double par);
@@ -79,9 +79,9 @@ private:
     QString scpiCmdComputeJustData(QString &scpiInput);
     QString scpiCmdInitJustData(QString &scpiInput); // done in Adjustmentmodule - left for compatibility
 
-    JustDataInterface m_gainCorrection;
-    JustDataInterface m_phaseCorrection;
-    JustDataInterface m_offsetCorrection;
+    AdjDataItemInterface m_gainCorrection;
+    AdjDataItemInterface m_phaseCorrection;
+    AdjDataItemInterface m_offsetCorrection;
     std::unique_ptr<AdjustScpiValueFormatter> m_scpiQueryFormatter;
     PermissionStructAdj m_permissions;
 };

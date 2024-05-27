@@ -1,5 +1,5 @@
-#ifndef JUSTDATAINTERFACE_H
-#define JUSTDATAINTERFACE_H
+#ifndef ADJDATAITEMINTERFACE_H
+#define ADJDATAITEMINTERFACE_H
 
 #include "adjdataitem.h"
 #include "scpiconnection.h"
@@ -7,11 +7,11 @@
 #include <QDataStream>
 #include <QString>
 
-// a JustDataInterface object has a max. possible order
+// a AdjDataItemInterface object has a max. possible order
 // the order must not necessarily be used
 // setting only the first node results in a effectively 0 order
 // a new generated object is also initialized like that
-class JustDataInterface: public ScpiConnection // base class for adjustment coefficients and nodes
+class AdjDataItemInterface: public ScpiConnection // base class for adjustment coefficients and nodes
 {
 public:
     enum StatusMasks
@@ -26,8 +26,8 @@ public:
         std::function<bool(bool &)> checkPermission;
         int digits;
     };
-    JustDataInterface(TJustDataParam param);
-    ~JustDataInterface();
+    AdjDataItemInterface(TJustDataParam param);
+    ~AdjDataItemInterface();
     virtual void initSCPIConnection(QString leadingNodes) override;
 
     AdjDataItem &getAdjItem();
