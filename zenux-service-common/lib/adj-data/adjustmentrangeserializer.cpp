@@ -6,9 +6,9 @@ AdjustmentDataSerializer::AdjustmentDataSerializer(int order) :
 {
 }
 
-AdjustmentTypeData AdjustmentDataSerializer::Deserialize(QDataStream &qds)
+AdjustmentDataItem AdjustmentDataSerializer::Deserialize(QDataStream &qds)
 {
-    AdjustmentTypeData adjData;
+    AdjustmentDataItem adjData;
     adjData.m_order = m_order;
     qds >> adjData.m_adjStatus;
     for (int i = 0; i < m_order+1; i++) {
@@ -17,20 +17,21 @@ AdjustmentTypeData AdjustmentDataSerializer::Deserialize(QDataStream &qds)
         adjData.m_adjCoefficients.append(coeff);
     }
     for (int i = 0; i < m_order+1; i++) {
-        AdjustmentNode node;
-        node.Deserialize(qds);
+        double correction, argument;
+        qds >> correction >> argument;
+        AdjustmentNode node(correction, argument);
         adjData.m_adjNodes.append(node);
     }
     return adjData;
 }
 
-std::shared_ptr<AdjustmentRangeData> AdjustmentRangeSerializer::Deserialize(QDataStream &qds)
+std::shared_ptr<AdjustmentDataRangeGroup> AdjustmentRangeSerializer::Deserialize(QDataStream &qds)
 {
     AdjustmentDataSerializer gainSerializer(GainCorrOrder);
     AdjustmentDataSerializer phaseSerializer(PhaseCorrOrder);
     AdjustmentDataSerializer offsetSerializer(OffsetCorrOrder);
 
-    std::shared_ptr<AdjustmentRangeData> rangeAdjData = std::make_shared<AdjustmentRangeData>();
+    std::shared_ptr<AdjustmentDataRangeGroup> rangeAdjData = std::make_shared<AdjustmentDataRangeGroup>();
     rangeAdjData->m_gainAdjData = gainSerializer.Deserialize(qds);
     rangeAdjData->m_phasAdjData = phaseSerializer.Deserialize(qds);
     rangeAdjData->m_offsAdjData = offsetSerializer.Deserialize(qds);

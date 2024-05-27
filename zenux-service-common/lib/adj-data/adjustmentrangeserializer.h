@@ -2,7 +2,7 @@
 #define ADJUSTMENTRANGESERIALIZER_H
 
 #include "adjustmentnode.h"
-#include "adjustmentrangedata.h"
+#include "adjustmentdatarangegroup.h"
 #include <QDataStream>
 #include <memory>
 
@@ -10,7 +10,7 @@ class AdjustmentDataSerializer
 {
 public:
     AdjustmentDataSerializer(int order);
-    AdjustmentTypeData Deserialize(QDataStream& qds);
+    AdjustmentDataItem Deserialize(QDataStream& qds);
 private:
     int m_order;
 };
@@ -18,7 +18,7 @@ private:
 class AdjustmentRangeSerializer
 {
 public:
-    static std::shared_ptr<AdjustmentRangeData> Deserialize(QDataStream& qds);
+    static std::shared_ptr<AdjustmentDataRangeGroup> Deserialize(QDataStream& qds);
 };
 
 #endif // ADJUSTMENTRANGESERIALIZER_H

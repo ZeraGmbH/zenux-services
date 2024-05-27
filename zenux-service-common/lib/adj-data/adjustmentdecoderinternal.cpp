@@ -16,7 +16,7 @@ AdjustmentDecoderInternal::~AdjustmentDecoderInternal()
 bool AdjustmentDecoderInternal::decodeAdjBytes(QByteArray ba)
 {
     qInfo("Decode adjustment data...");
-    m_adjData = std::make_shared<AdjustmentData>();
+    m_adjData = std::make_shared<AdjustmentDataSet>();
     if(ba.size() > m_maxSize) {
         qWarning("Adjustment data size exceeds max size: %i (max: %i)", ba.size(), m_maxSize);
         return false;
@@ -51,7 +51,7 @@ bool AdjustmentDecoderInternal::isValid()
     return m_isValid;
 }
 
-std::shared_ptr<AdjustmentData> AdjustmentDecoderInternal::getAdjData()
+std::shared_ptr<AdjustmentDataSet> AdjustmentDecoderInternal::getAdjData()
 {
     return m_adjData;
 }
@@ -153,7 +153,7 @@ void AdjustmentDecoderInternal::decodeRanges(QDataStream &stream)
                 QString rangeName = rangeCmdList[2];
                 if(!m_adjData->isChannelRangeAvailable(channelName, rangeName)) {
                     AdjustmentRangeSerializer adjRangeDecoder;
-                    std::shared_ptr<AdjustmentRangeData> rangeAdjData = adjRangeDecoder.Deserialize(stream);
+                    std::shared_ptr<AdjustmentDataRangeGroup> rangeAdjData = adjRangeDecoder.Deserialize(stream);
                     m_adjData->setChannelRange(channelName, rangeName, rangeAdjData);
 
                 }
