@@ -38,7 +38,7 @@ quint8 SenseInterfaceCommon::getAdjustmentStatus()
     for(auto channel : qAsConst(m_channelList)) {
         quint8 channelFlags = channel->getAdjustmentStatus80Mask();
         // Currently there is one flag in channel flags only
-        if((channelFlags & AdjDataItemInterface::Justified)== 0) {
+        if((channelFlags & Adjustment::Justified)== 0) {
             adjustmentStatusMask = Adjustment::notAdjusted;
             break;
         }
