@@ -134,6 +134,7 @@ bool SenseInterfaceCommon::isInvalidAdjDataOrChannelRangeAvail(QString channelNa
 bool SenseInterfaceCommon::importAdjData()
 {
     if(m_adjReadWrite.readDataCached(cacheFileName)) {
+
         QByteArray ba = m_adjReadWrite.getData();
         QDataStream stream(&ba, QIODevice::ReadOnly);
         stream.setVersion(QDataStream::Qt_5_4);
@@ -179,30 +180,20 @@ bool SenseInterfaceCommon::importAdjData()
 
         stream >> s;
         QDateTime DateTime = QDateTime::fromString(QString(s), Qt::TextDate); // datum und uhrzeit übernehmen
-        while (!stream.atEnd()) {
-            bool done;
-            stream >> s;
-            QString  JDataSpecs = s; // Type:Channel:Range
 
-            QStringList spec;
-            spec = JDataSpecs.split(':');
-
-            done = false;
-            if (spec.at(0) == "SENSE" ) {
-                SenseChannelCommon* chn;
-                QString s = spec.at(1);
-                if ((chn = getChannel(s)) != nullptr) {
-                    s = spec.at(2);
-                    SenseRangeCommon* rng = chn->getRange(s);
-                    if (rng != nullptr) {
-                        rng->getJustData()->setAdjGroupData(AdjDataRangeGroupStreamer::Deserialize(stream));
-                        done = true;
+        if(m_adjustmentDecoder.isValid()) {
+            std::shared_ptr<AdjDataCompleteIntern> adjDataComplete = m_adjustmentDecoder.getAdjData();
+            for(auto &channel : m_channelList) {
+                QString channelName = channel->getName();
+                QList<SenseRangeCommon*>& rangeList = channel->getRangeList();
+                for(auto &range : rangeList) {
+                    QString rangeName = range->getRangeName();
+                    if(adjDataComplete->isChannelRangeAvailable(channelName, rangeName)) {
+                        AdjDataRangeGroup rangeAdjData = adjDataComplete->getRangeAdjData(channelName, rangeName);
+                        AdjRangeInterface *adjInterface = range->getJustData();
+                        adjInterface->setAdjGroupData(rangeAdjData);
                     }
                 }
-            }
-            if (!done) {
-                // range not found: read dummy to keep serialization in sync
-                AdjDataRangeGroupStreamer::Deserialize(stream);
             }
         }
         return (true);
