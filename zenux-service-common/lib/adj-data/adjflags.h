@@ -10,6 +10,10 @@ namespace Adjustment
         wrongVERS = 2,
         wrongSNR = 4
     };
+    enum StatusMasks
+    {
+        Justified = 128
+    };
 }
 
 #endif // ADJFLAGS_H

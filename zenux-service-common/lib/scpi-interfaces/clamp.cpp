@@ -411,7 +411,7 @@ quint8 cClamp::getAdjStatus()
         stat &= range->getAdjustmentStatus80Mask();
     for(auto range : qAsConst(m_RangeListSecondary))
         stat &= range->getAdjustmentStatus80Mask();
-    if ((stat & AdjDataItemInterface::Justified)== 0)
+    if ((stat & Adjustment::Justified)== 0)
         return Adjustment::notAdjusted;
     else
         return Adjustment::adjusted;

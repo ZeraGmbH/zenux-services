@@ -14,10 +14,6 @@
 class AdjDataItemInterface: public ScpiConnection // base class for adjustment coefficients and nodes
 {
 public:
-    enum StatusMasks
-    {
-        Justified = 128
-    };
     struct TJustDataParam
     {
         cSCPI *scpiinterface;
