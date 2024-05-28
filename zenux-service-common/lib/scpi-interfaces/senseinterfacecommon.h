@@ -1,6 +1,7 @@
 #ifndef SENSEINTERFACECOMMON_H
 #define SENSEINTERFACECOMMON_H
 
+#include "abstractadjstatus.h"
 #include "resource.h"
 #include "adjustmentxmlimportexporttemplate.h"
 #include "i2csettings.h"
@@ -23,8 +24,8 @@ namespace SenseSystem
         cmdStatAdjustment
     };
 }
-    
-    class SenseInterfaceCommon : public cResource, public AdjustmentXmlImportExportTemplate, public AbstractAdjStatus
+
+class SenseInterfaceCommon : public cResource, public AdjustmentXmlImportExportTemplate, public AbstractAdjStatus
 {
 public:
     SenseInterfaceCommon(cSCPI *scpiInterface,

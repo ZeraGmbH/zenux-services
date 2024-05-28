@@ -1,9 +1,9 @@
 #ifndef ADJRANGEINTERFACE_H
 #define ADJRANGEINTERFACE_H
 
+#include "adjdatarangegroup.h"
 #include "scpiconnection.h"
 #include "permissionfunctions.h"
-#include "abstractadjstatus.h"
 #include "adjdataiteminterface.h"
 #include <QDataStream>
 #include <functional>
@@ -25,10 +25,6 @@ public:
     static std::unique_ptr<AdjustScpiValueFormatter> createMt310s2AdjFormatter();
     static std::unique_ptr<AdjustScpiValueFormatter> createCom5003AdjFormatter();
 };
-
-static constexpr int GainCorrOrder = 3; // ax^3 + bx^2 + cx + d
-static constexpr int PhaseCorrOrder  = 3;
-static constexpr int OffsetCorrOrder = 3;
 
 class AdjRangeInterface : public ScpiConnection
 {
@@ -79,6 +75,7 @@ private:
     QString scpiCmdComputeJustData(QString &scpiInput);
     QString scpiCmdInitJustData(QString &scpiInput); // done in Adjustmentmodule - left for compatibility
 
+    AdjDataRangeGroup m_adjGroupData;
     AdjDataItemInterface m_gainCorrection;
     AdjDataItemInterface m_phaseCorrection;
     AdjDataItemInterface m_offsetCorrection;

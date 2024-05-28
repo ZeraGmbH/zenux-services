@@ -55,9 +55,12 @@ AdjRangeInterface::AdjRangeInterface(cSCPI *scpiinterface,
                                                    std::unique_ptr<AdjustScpiValueFormatter> adjustmentFormatter,
                                                    PermissionStructAdj permissions) :
     ScpiConnection(scpiinterface),
-    m_gainCorrection({m_pSCPIInterface, GainCorrOrder, 1.0, permissions.funcAllowAdjGain, adjustmentFormatter->m_correctionExportDigits}),
-    m_phaseCorrection({m_pSCPIInterface, PhaseCorrOrder, 0.0, permissions.funcAllowAdjPhase, adjustmentFormatter->m_correctionExportDigits}),
-    m_offsetCorrection({m_pSCPIInterface, OffsetCorrOrder, 0.0, permissions.funcAllowAdjOffset, adjustmentFormatter->m_correctionExportDigits}),
+    m_gainCorrection({m_pSCPIInterface, GainCorrOrder, 1.0, permissions.funcAllowAdjGain, adjustmentFormatter->m_correctionExportDigits},
+                       &m_adjGroupData.m_gainAdjData),
+    m_phaseCorrection({m_pSCPIInterface, PhaseCorrOrder, 0.0, permissions.funcAllowAdjPhase, adjustmentFormatter->m_correctionExportDigits},
+                        &m_adjGroupData.m_phasAdjData),
+    m_offsetCorrection({m_pSCPIInterface, OffsetCorrOrder, 0.0, permissions.funcAllowAdjOffset, adjustmentFormatter->m_correctionExportDigits},
+                         &m_adjGroupData.m_offsAdjData),
     m_scpiQueryFormatter(std::move(adjustmentFormatter)),
     m_permissions(permissions)
 {
@@ -283,16 +286,16 @@ QString AdjRangeInterface::scpiCmdInitJustData(QString &scpiInput)
 
 void AdjRangeInterface::Serialize(QDataStream& qds)  // zum schreiben aller justagedaten in flashspeicher
 {
-    AdjDataItemStreamer::Serialize(m_gainCorrection.getAdjItem(), qds);
-    AdjDataItemStreamer::Serialize(m_phaseCorrection.getAdjItem(), qds);
-    AdjDataItemStreamer::Serialize(m_offsetCorrection.getAdjItem(), qds);
+    AdjDataItemStreamer::Serialize(*m_gainCorrection.getAdjItem(), qds);
+    AdjDataItemStreamer::Serialize(*m_phaseCorrection.getAdjItem(), qds);
+    AdjDataItemStreamer::Serialize(*m_offsetCorrection.getAdjItem(), qds);
 }
 
 void AdjRangeInterface::Deserialize(QDataStream& qds) // zum lesen aller justagedaten aus flashspeicher
 {
-    AdjDataItemStreamer::Deserialize(m_gainCorrection.getAdjItem(), qds);
-    AdjDataItemStreamer::Deserialize(m_phaseCorrection.getAdjItem(), qds);
-    AdjDataItemStreamer::Deserialize(m_offsetCorrection.getAdjItem(), qds);
+    AdjDataItemStreamer::Deserialize(*m_gainCorrection.getAdjItem(), qds);
+    AdjDataItemStreamer::Deserialize(*m_phaseCorrection.getAdjItem(), qds);
+    AdjDataItemStreamer::Deserialize(*m_offsetCorrection.getAdjItem(), qds);
 }
 
 quint8 AdjRangeInterface::getAdjustmentStatus80Mask()

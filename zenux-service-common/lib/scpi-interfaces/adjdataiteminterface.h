@@ -22,11 +22,11 @@ public:
         std::function<bool(bool &)> checkPermission;
         int digits;
     };
-    AdjDataItemInterface(TJustDataParam param);
+    AdjDataItemInterface(TJustDataParam param, AdjDataItem* adjItem);
     ~AdjDataItemInterface();
     virtual void initSCPIConnection(QString leadingNodes) override;
 
-    AdjDataItem &getAdjItem();
+    AdjDataItem *getAdjItem();
 
     // xml
     quint8 getStatus();
@@ -54,7 +54,7 @@ private:
     bool setCoefficient(int index, double); // !!! setting coefficient also is sequence relevant !!!
     double getCoefficient(int index);
 
-    AdjDataItem m_adjItem;
+    AdjDataItem* m_adjItem;
     int m_digits;
 };
 

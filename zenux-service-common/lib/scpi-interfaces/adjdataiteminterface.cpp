@@ -17,10 +17,10 @@ enum JustCommands
     JustNode3
 };
 
-AdjDataItemInterface::AdjDataItemInterface(TJustDataParam param) :
+AdjDataItemInterface::AdjDataItemInterface(TJustDataParam param, AdjDataItem *adjItem) :
     ScpiConnection(param.scpiinterface),
     m_checkPermission(param.checkPermission),
-    m_adjItem(param.order),
+    m_adjItem(adjItem),
     m_digits(param.digits)
 {
     initJustData(param.init);
@@ -45,7 +45,7 @@ void AdjDataItemInterface::initSCPIConnection(QString leadingNodes)
     addDelegate(QString("%1NODE").arg(leadingNodes), "3", SCPI::isCmdwP | SCPI::isQuery, m_pSCPIInterface, JustNode3);
 }
 
-AdjDataItem &AdjDataItemInterface::getAdjItem()
+AdjDataItem *AdjDataItemInterface::getAdjItem()
 {
     return m_adjItem;
 }
@@ -90,7 +90,7 @@ QString AdjDataItemInterface::scpiReadWriteStatus(QString &sInput)
 {
     cSCPICommand cmd = sInput;
     if (cmd.isQuery())
-        return QString("%1").arg(m_adjItem.m_adjStatus);
+        return QString("%1").arg(m_adjItem->m_adjStatus);
     else if (cmd.isCommand(1)) {
         bool enable;
         if (m_checkPermission(enable)) {
@@ -99,7 +99,7 @@ QString AdjDataItemInterface::scpiReadWriteStatus(QString &sInput)
                 bool ok;
                 quint8 par = spar.toInt(&ok);
                 if (ok) {
-                    m_adjItem.m_adjStatus = par;
+                    m_adjItem->m_adjStatus = par;
                     return ZSCPI::scpiAnswer[ZSCPI::ack];
                 }
                 else
@@ -180,50 +180,50 @@ QString AdjDataItemInterface::scpiReadWriteJustNode(QString &sInput, quint8 inde
 
 QString AdjDataItemInterface::statusToString()
 {
-    return QString("%1").arg(m_adjItem.m_adjStatus);
+    return QString("%1").arg(m_adjItem->m_adjStatus);
 }
 
 QString AdjDataItemInterface::coefficientsToString() // writes adjustment data to qstring
 {
     QString s;
-    for (int i = 0; i < m_adjItem.getOrder()+1; i++)
-        s += QString("%1;").arg(m_adjItem.m_adjCoefficients[i],0,'f',12);
+    for (int i = 0; i < m_adjItem->getOrder()+1; i++)
+        s += QString("%1;").arg(m_adjItem->m_adjCoefficients[i],0,'f',12);
     return s;
 }
 
 QString AdjDataItemInterface::nodesToString()
 {
     QString s;
-    for (int i = 0; i < m_adjItem.getOrder()+1; i++)
-        s += m_adjItem.m_adjNodes[i].toString(m_digits);
+    for (int i = 0; i < m_adjItem->getOrder()+1; i++)
+        s += m_adjItem->m_adjNodes[i].toString(m_digits);
     return s;
 }
 
 void AdjDataItemInterface::statusFromString(const QString &s)
 {
-    m_adjItem.m_adjStatus = s.toInt();
+    m_adjItem->m_adjStatus = s.toInt();
 }
 
 
 void AdjDataItemInterface::coefficientsFromString(const QString& s)
 {
-    for (int i = 0; i < m_adjItem.getOrder()+1; i++)
-        m_adjItem.m_adjCoefficients[i] = s.section(';',i,i).toDouble();
+    for (int i = 0; i < m_adjItem->getOrder()+1; i++)
+        m_adjItem->m_adjCoefficients[i] = s.section(';',i,i).toDouble();
 }
 
 
 void AdjDataItemInterface::nodesFromString(const QString& s)
 {
-    for (int i = 0; i < m_adjItem.getOrder()+1; i++)
-        m_adjItem.m_adjNodes[i].fromString(s.section(';',i << 1,(i << 1) + 1));
+    for (int i = 0; i < m_adjItem->getOrder()+1; i++)
+        m_adjItem->m_adjNodes[i].fromString(s.section(';',i << 1,(i << 1) + 1));
 }
 
 
 bool AdjDataItemInterface::setNode(int index, AdjustmentNode jn) // // !!! setting node sequence is relevant !!!
 {
-    if (index < m_adjItem.getOrder()+1) {
-        for (int i = index; i < m_adjItem.getOrder()+1; i++)
-            m_adjItem.m_adjNodes[i] = jn;
+    if (index < m_adjItem->getOrder()+1) {
+        for (int i = index; i < m_adjItem->getOrder()+1; i++)
+            m_adjItem->m_adjNodes[i] = jn;
         return true;
     }
     return false;
@@ -231,16 +231,16 @@ bool AdjDataItemInterface::setNode(int index, AdjustmentNode jn) // // !!! setti
 
 AdjustmentNode* AdjDataItemInterface::getNode(int index) // can be read back
 {
-    return &m_adjItem.m_adjNodes[index];
+    return &m_adjItem->m_adjNodes[index];
 }
 
 bool AdjDataItemInterface::setCoefficient(int index, double value)
 {
-    if (index < m_adjItem.getOrder()+1) {
-        m_adjItem.m_adjCoefficients[index] = value;
-        if (index < m_adjItem.getOrder())
-            for (int i = index+1; i < m_adjItem.getOrder()+1; i++)
-                m_adjItem.m_adjCoefficients[i] = 0.0;
+    if (index < m_adjItem->getOrder()+1) {
+        m_adjItem->m_adjCoefficients[index] = value;
+        if (index < m_adjItem->getOrder())
+            for (int i = index+1; i < m_adjItem->getOrder()+1; i++)
+                m_adjItem->m_adjCoefficients[i] = 0.0;
         return true;
     }
     return false;
@@ -248,7 +248,7 @@ bool AdjDataItemInterface::setCoefficient(int index, double value)
 
 double AdjDataItemInterface::getCoefficient(int index)
 {
-    return m_adjItem.m_adjCoefficients[index];
+    return m_adjItem->m_adjCoefficients[index];
 }
 
 bool AdjDataItemInterface::calcCoefficientsFromNodes()
@@ -256,9 +256,9 @@ bool AdjDataItemInterface::calcCoefficientsFromNodes()
     const double epsilon = 1e-7;
     int i;
     int realOrd = 0;
-    if (m_adjItem.getOrder() > 0) { // only done if noticed order > 0
-        for (i = 0;i < m_adjItem.getOrder(); i++) {
-            if (fabs(m_adjItem.m_adjNodes[i].getArgument() - m_adjItem.m_adjNodes[i+1].getArgument()) < epsilon)
+    if (m_adjItem->getOrder() > 0) { // only done if noticed order > 0
+        for (i = 0;i < m_adjItem->getOrder(); i++) {
+            if (fabs(m_adjItem->m_adjNodes[i].getArgument() - m_adjItem->m_adjNodes[i+1].getArgument()) < epsilon)
                 break;
             realOrd++;
         }
@@ -268,8 +268,8 @@ bool AdjDataItemInterface::calcCoefficientsFromNodes()
     Matrix = new cGaussMatrix(realOrd+1);
     cGaussNode gn;
     for (i = 0; i < realOrd+1; i++) {
-        gn.m_fNode = m_adjItem.m_adjNodes[i].getCorrection();
-        gn.m_fArg = m_adjItem.m_adjNodes[i].getArgument();
+        gn.m_fNode = m_adjItem->m_adjNodes[i].getCorrection();
+        gn.m_fArg = m_adjItem->m_adjNodes[i].getArgument();
         Matrix->setMatrix(i, gn);
     }
     // matrix computation
@@ -278,7 +278,7 @@ bool AdjDataItemInterface::calcCoefficientsFromNodes()
     for (i = 0; i < realOrd+1; i++)
         setCoefficient(i, Matrix->getKoeff(realOrd-i));
     // not calculated coefficient are set to 0
-    for (i = i; i < m_adjItem.getOrder()+1; i++)
+    for (i = i; i < m_adjItem->getOrder()+1; i++)
     setCoefficient(i, 0.0);
     delete Matrix;
     return true;
@@ -286,22 +286,22 @@ bool AdjDataItemInterface::calcCoefficientsFromNodes()
 
 quint8 AdjDataItemInterface::getStatus()
 {
-    return m_adjItem.m_adjStatus;
+    return m_adjItem->m_adjStatus;
 }
 
 void AdjDataItemInterface::initJustData(double init)
 {
     setNode(0, AdjustmentNode(init, 0.0)); // setting the 1st node and all following
     calcCoefficientsFromNodes();
-    m_adjItem.m_adjStatus = 0;
+    m_adjItem->m_adjStatus = 0;
 }
 
 double AdjDataItemInterface::getCorrection(double arg) // calculates correction value
 {
     double Arg = 1.0;
     double Corr = 0.0;
-    for (int i = 0; i < m_adjItem.getOrder()+1; i++) { // correction function has nth order
-        Corr += m_adjItem.m_adjCoefficients[i] * Arg;
+    for (int i = 0; i < m_adjItem->getOrder()+1; i++) { // correction function has nth order
+        Corr += m_adjItem->m_adjCoefficients[i] * Arg;
         Arg *= arg;
     }
     return Corr;
