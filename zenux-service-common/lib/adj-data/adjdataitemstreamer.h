@@ -3,7 +3,6 @@
 
 #include "adjdataitem.h"
 #include <QDataStream>
-#include <memory>
 
 class AdjDataItemStreamer
 {

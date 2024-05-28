@@ -152,9 +152,8 @@ void AdjDataCompleteInternStreamer::decodeRanges(QDataStream &stream)
                 QString channelName = rangeCmdList[1];
                 QString rangeName = rangeCmdList[2];
                 if(!m_adjData->isChannelRangeAvailable(channelName, rangeName)) {
-                    std::shared_ptr<AdjDataRangeGroup> rangeAdjData = AdjDataRangeGroupStreamer::Deserialize(stream);
+                    AdjDataRangeGroup rangeAdjData = AdjDataRangeGroupStreamer::Deserialize(stream);
                     m_adjData->setChannelRange(channelName, rangeName, rangeAdjData);
-
                 }
                 else
                     qFatal("Channel %s / range %s was already added!", qPrintable(channelName), qPrintable(rangeName));

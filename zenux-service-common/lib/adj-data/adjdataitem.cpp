@@ -5,6 +5,7 @@ AdjDataItem::AdjDataItem(int order) :
     m_adjCoefficients(order+1),
     m_order(order)
 {
+    Q_ASSERT(order+1 > 0);
 }
 
 int AdjDataItem::getOrder()

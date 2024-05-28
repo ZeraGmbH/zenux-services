@@ -3,12 +3,12 @@
 
 #include "adjdatarangegroup.h"
 #include <QDataStream>
-#include <memory>
 
 class AdjDataRangeGroupStreamer
 {
 public:
-    static std::shared_ptr<AdjDataRangeGroup> Deserialize(QDataStream& qds);
+    static AdjDataRangeGroup Deserialize(QDataStream& qds);
+    static void Serialize(AdjDataRangeGroup adjGroup, QDataStream& qds);
 };
 
 #endif // ADJDATARANGEGROUPSTREAMER_H

@@ -34,14 +34,16 @@ public:
                              std::unique_ptr<AdjustScpiValueFormatter> adjustmentFormatter,
                              PermissionStructAdj permissions = PermissionStructAdj());
     virtual void initSCPIConnection(QString leadingNodes) override;
+
+    void setAdjGroupData(AdjDataRangeGroup groupData);
+    AdjDataRangeGroup getAdjGroupData();
+
     AdjDataItemInterface* getAdjInterface(QString name);
 
     double getGainCorrectionSingle(double par);
     double getPhaseCorrectionSingle(double par);
     double getOffsetCorrectionSingle(double par);
 
-    void Serialize(QDataStream&); // zum schreiben aller justagedaten in flashspeicher
-    void Deserialize(QDataStream&); // zum lesen aller justagedaten aus flashspeicher
     quint8 getAdjustmentStatus80Mask();
     // We ruined dc clamp 'on-the-fly DC offset adjustment' by da7ab853c5f1b70d888a5974e30fe63d923e90be
     // Not only that that 'on-the-fly DC offset adjustment' was sold to us as MANDATORY (but WinSAM

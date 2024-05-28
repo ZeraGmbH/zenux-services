@@ -1,5 +1,6 @@
 #include "senseinterfacecommon.h"
 #include "adjflags.h"
+#include "adjdatarangegroupstreamer.h"
 #include "notzeronumgen.h"
 #include "zscpi_response_definitions.h"
 #include <i2cmultiplexerfactory.h>
@@ -194,16 +195,14 @@ bool SenseInterfaceCommon::importAdjData()
                     s = spec.at(2);
                     SenseRangeCommon* rng = chn->getRange(s);
                     if (rng != nullptr) {
-                        rng->getJustData()->Deserialize(stream);
+                        rng->getJustData()->setAdjGroupData(AdjDataRangeGroupStreamer::Deserialize(stream));
                         done = true;
                     }
                 }
             }
             if (!done) {
-                // owner of data read not found: read dummy to keep serialization in sync
-                AdjRangeInterface* dummy = createJustScpiInterfaceWithAtmelPermission();
-                dummy->Deserialize(stream);
-                delete dummy;
+                // range not found: read dummy to keep serialization in sync
+                AdjDataRangeGroupStreamer::Deserialize(stream);
             }
         }
         return (true);
@@ -243,7 +242,7 @@ bool SenseInterfaceCommon::exportAdjData(QDateTime dateTimeWrite)
                                    .arg(range->getRangeName());
 
                 stream << spec.toLatin1();
-                range->getJustData()->Serialize(stream);
+                AdjDataRangeGroupStreamer::Serialize(range->getJustData()->getAdjGroupData(), stream);
             }
         }
     }
