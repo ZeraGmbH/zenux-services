@@ -12,7 +12,7 @@ namespace Adjustment
     };
     enum StatusMasks
     {
-        Justified = 128
+        AdjustedMask = 128
     };
 }
 
