@@ -2,7 +2,6 @@
 #include "protonetcommand.h"
 #include "adjdataiteminterface.h"
 #include "zscpi_response_definitions.h"
-#include "adjdataitemstreamer.h"
 #include <scpi.h>
 
 std::unique_ptr<AdjustScpiValueFormatter> AdjustScpiValueFormatterFactory::createMt310s2AdjFormatter()
@@ -85,6 +84,16 @@ void AdjRangeInterface::initSCPIConnection(QString leadingNodes)
     m_phaseCorrection.initSCPIConnection(QString("%1CORRECTION:PHASE").arg(leadingNodes));
     connect(&m_offsetCorrection, &ScpiConnection::cmdExecutionDone, this, &ScpiConnection::cmdExecutionDone);
     m_offsetCorrection.initSCPIConnection(QString("%1CORRECTION:OFFSET").arg(leadingNodes));
+}
+
+void AdjRangeInterface::setAdjGroupData(AdjDataRangeGroup groupData)
+{
+    m_adjGroupData = groupData;
+}
+
+AdjDataRangeGroup AdjRangeInterface::getAdjGroupData()
+{
+    return m_adjGroupData;
 }
 
 AdjDataItemInterface *AdjRangeInterface::getAdjInterface(QString name)
@@ -282,20 +291,6 @@ QString AdjRangeInterface::scpiCmdInitJustData(QString &scpiInput)
     }
     else
         return ZSCPI::scpiAnswer[ZSCPI::nak];
-}
-
-void AdjRangeInterface::Serialize(QDataStream& qds)  // zum schreiben aller justagedaten in flashspeicher
-{
-    AdjDataItemStreamer::Serialize(*m_gainCorrection.getAdjItem(), qds);
-    AdjDataItemStreamer::Serialize(*m_phaseCorrection.getAdjItem(), qds);
-    AdjDataItemStreamer::Serialize(*m_offsetCorrection.getAdjItem(), qds);
-}
-
-void AdjRangeInterface::Deserialize(QDataStream& qds) // zum lesen aller justagedaten aus flashspeicher
-{
-    AdjDataItemStreamer::Deserialize(*m_gainCorrection.getAdjItem(), qds);
-    AdjDataItemStreamer::Deserialize(*m_phaseCorrection.getAdjItem(), qds);
-    AdjDataItemStreamer::Deserialize(*m_offsetCorrection.getAdjItem(), qds);
 }
 
 quint8 AdjRangeInterface::getAdjustmentStatus80Mask()

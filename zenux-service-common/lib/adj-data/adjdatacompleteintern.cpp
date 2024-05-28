@@ -10,7 +10,7 @@ bool AdjDataCompleteIntern::isChannelRangeAvailable(QString channelName, QString
     return m_rangeInfosMap.contains(channelName) && m_rangeInfosMap[channelName].contains(rangeName);
 }
 
-void AdjDataCompleteIntern::setChannelRange(QString channelName, QString rangeName, std::shared_ptr<AdjDataRangeGroup> adjData)
+void AdjDataCompleteIntern::setChannelRange(QString channelName, QString rangeName, AdjDataRangeGroup adjData)
 {
     m_rangeInfosMap[channelName][rangeName] = adjData;
 }

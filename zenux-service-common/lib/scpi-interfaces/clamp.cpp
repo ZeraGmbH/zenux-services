@@ -1,5 +1,6 @@
 #include "clamp.h"
 #include "adjflags.h"
+#include "adjdatarangegroupstreamer.h"
 #include "clampsenserange.h"
 #include "adjdataiteminterface.h"
 #include "rangeadjclamps.h"
@@ -152,12 +153,12 @@ bool cClamp::exportAdjData(QDateTime dateTimeWrite)
     for(auto range : qAsConst(m_RangeList)) {
         spec = range->getRangeName();
         stream << spec;
-        range->getJustData()->Serialize(stream);
+        AdjDataRangeGroupStreamer::Serialize(range->getJustData()->getAdjGroupData(), stream);
     }
     for(auto range : qAsConst(m_RangeListSecondary)) {
         spec = range->getRangeName();
         stream << spec;
-        range->getJustData()->Serialize(stream);
+        AdjDataRangeGroupStreamer::Serialize(range->getJustData()->getAdjGroupData(), stream);
     }
     m_adjReadWrite.setData(ba);
     return m_adjReadWrite.writeData();
@@ -188,13 +189,11 @@ bool cClamp::importAdjData()
             SenseRangeCommon* range = getRange(rngName);
             if (range != 0) {
                 n++;
-                range->getJustData()->Deserialize(stream);
+                range->getJustData()->setAdjGroupData(AdjDataRangeGroupStreamer::Deserialize(stream));
             }
             else {
                 // range not found: read dummy to keep serialization in sync
-                AdjRangeInterface *dummy = new AdjRangeInterface(m_pSCPIInterface, AdjustScpiValueFormatterFactory::createMt310s2AdjFormatter());
-                dummy->Deserialize(stream); // we read the data from stream to keep it in flow
-                delete dummy;
+                AdjDataRangeGroupStreamer::Deserialize(stream);
             }
         }
         return (n == m_RangeList.count() + m_RangeListSecondary.count()); // it's ok if we found data for all ranges in our list
