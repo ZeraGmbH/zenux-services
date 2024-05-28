@@ -10,13 +10,15 @@ static constexpr int digits = 4;
 void test_justdata::init()
 {
     scpi = new cSCPI();
-    justData = new AdjDataItemInterface({scpi, 5, 0.1, [] (bool &enable) { enable =true; return true;}, digits});
+    m_adjDataGroup = new AdjDataRangeGroup;
+    justData = new AdjDataItemInterface({scpi, 5, 0.1, [] (bool &enable) { enable =true; return true;}, digits}, &m_adjDataGroup->m_gainAdjData);
     justData->initSCPIConnection("sens:m0:8V:corr:offset");
 }
 
 void test_justdata::cleanup()
 {
     delete justData;
+    delete m_adjDataGroup;
     delete scpi;
 }
 
@@ -65,7 +67,7 @@ void test_justdata::coeffSetAndRead()
 
 void test_justdata::nodeSetReject()
 {
-    AdjDataItemInterface *justDataReject = new AdjDataItemInterface({scpi, 5, 0.1, [] (bool &enable) { enable=false; return true;}, digits});
+    AdjDataItemInterface *justDataReject = new AdjDataItemInterface({scpi, 5, 0.1, [] (bool &enable) { enable=false; return true;}, digits}, &m_adjDataGroup->m_gainAdjData);
     justDataReject->initSCPIConnection("sens:m1:8V:corr:offset");
 
     QString scpiStringWrite = "sens:m1:8V:corr:offset:node:0 0.1;0.02;";
@@ -79,7 +81,7 @@ void test_justdata::nodeSetReject()
 
 void test_justdata::coeffSetReject()
 {
-    AdjDataItemInterface *justDataReject = new AdjDataItemInterface({scpi, 5, 0.1, [] (bool &enable) { enable=false; return true;}, digits});
+    AdjDataItemInterface *justDataReject = new AdjDataItemInterface({scpi, 5, 0.1, [] (bool &enable) { enable=false; return true;}, digits}, &m_adjDataGroup->m_gainAdjData);
     justDataReject->initSCPIConnection("sens:m1:8V:corr:offset");
 
     QString scpiStringWrite = "sens:m1:8V:corr:offset:coef:0 0.1;";
@@ -93,7 +95,7 @@ void test_justdata::coeffSetReject()
 
 void test_justdata::nodeSetFail()
 {
-    AdjDataItemInterface *justDataReject = new AdjDataItemInterface({scpi, 5, 0.1, [] (bool &enable) { enable=true; return false;}, digits});
+    AdjDataItemInterface *justDataReject = new AdjDataItemInterface({scpi, 5, 0.1, [] (bool &enable) { enable=true; return false;}, digits}, &m_adjDataGroup->m_gainAdjData);
     justDataReject->initSCPIConnection("sens:m1:8V:corr:offset");
 
     QString scpiStringWrite = "sens:m1:8V:corr:offset:node:0 0.1;0.02;";
@@ -107,7 +109,7 @@ void test_justdata::nodeSetFail()
 
 void test_justdata::coeffSetFail()
 {
-    AdjDataItemInterface *justDataReject = new AdjDataItemInterface({scpi, 5, 0.1, [] (bool &enable) { enable=true; return false;}, digits});
+    AdjDataItemInterface *justDataReject = new AdjDataItemInterface({scpi, 5, 0.1, [] (bool &enable) { enable=true; return false;}, digits}, &m_adjDataGroup->m_gainAdjData);
     justDataReject->initSCPIConnection("sens:m1:8V:corr:offset");
 
     QString scpiStringWrite = "sens:m1:8V:corr:offset:coef:0 0.1;";
