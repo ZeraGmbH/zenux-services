@@ -1,5 +1,5 @@
-#ifndef RANGEADJINTERFACE_H
-#define RANGEADJINTERFACE_H
+#ifndef ADJRANGEINTERFACE_H
+#define ADJRANGEINTERFACE_H
 
 #include "scpiconnection.h"
 #include "permissionfunctions.h"
@@ -30,11 +30,11 @@ static constexpr int GainCorrOrder = 3; // ax^3 + bx^2 + cx + d
 static constexpr int PhaseCorrOrder  = 3;
 static constexpr int OffsetCorrOrder = 3;
 
-class RangeAdjInterface : public ScpiConnection
+class AdjRangeInterface : public ScpiConnection
 {
     Q_OBJECT
 public:
-    RangeAdjInterface(cSCPI* scpiinterface,
+    AdjRangeInterface(cSCPI* scpiinterface,
                              std::unique_ptr<AdjustScpiValueFormatter> adjustmentFormatter,
                              PermissionStructAdj permissions = PermissionStructAdj());
     virtual void initSCPIConnection(QString leadingNodes) override;

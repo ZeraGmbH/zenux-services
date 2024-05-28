@@ -4,7 +4,7 @@
 #include "mt310s2sensechannel.h"
 #include "mt310s2senserange.h"
 #include "protonetcommand.h"
-#include "rangeadjinterface.h"
+#include "adjrangeinterface.h"
 #include "scpiconnection.h"
 #include "zscpi_response_definitions.h"
 #include "i2csettings.h"
@@ -307,9 +307,9 @@ QString Mt310s2SenseInterface::scpiReadSenseGroupCatalog(QString &scpi)
     return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-RangeAdjInterface *Mt310s2SenseInterface::createJustScpiInterfaceWithAtmelPermission()
+AdjRangeInterface *Mt310s2SenseInterface::createJustScpiInterfaceWithAtmelPermission()
 {
-    return new RangeAdjInterface(m_pSCPIInterface, AdjustScpiValueFormatterFactory::createMt310s2AdjFormatter());
+    return new AdjRangeInterface(m_pSCPIInterface, AdjustScpiValueFormatterFactory::createMt310s2AdjFormatter());
 }
 
 bool Mt310s2SenseInterface::setSenseMode(QString sMode)

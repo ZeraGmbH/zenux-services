@@ -23,7 +23,7 @@ private slots:
     void checkGetJustData();
 private:
     cSCPI *m_scpi;
-    RangeAdjInterface *m_justData;
+    AdjRangeInterface *m_justData;
     SenseRangeCommon *m_range;
 };
 

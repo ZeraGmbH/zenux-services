@@ -2,7 +2,7 @@
 #define ADJDATARANGEGROUP_H
 
 #include "adjdataitem.h"
-#include "rangeadjinterface.h"
+#include "adjrangeinterface.h"
 
 class AdjDataRangeGroup
 {

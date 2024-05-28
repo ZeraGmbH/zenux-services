@@ -1,5 +1,5 @@
 #include "clampsenserange.h"
-#include "rangeadjinterface.h"
+#include "adjrangeinterface.h"
 
 static constexpr int rejectionScpiQueryDigitsClamp = 8;
 static constexpr int adcRejectionClamp = (1<<23) -1;
@@ -12,7 +12,7 @@ ClampSenseRange::ClampSenseRange(cSCPI *scpiinterface,
                                  double ovrejection,
                                  quint8 rselcode,
                                  quint16 mmask,
-                                 RangeAdjInterface* justdata) :
+                                 AdjRangeInterface* justdata) :
     SenseRangeCommon(
         scpiinterface,
         name,
