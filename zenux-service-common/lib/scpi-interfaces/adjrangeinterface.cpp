@@ -256,9 +256,9 @@ QString AdjRangeInterface::scpiCmdComputeJustData(QString& scpiInput)
         bool enable;
         if(m_permissions.funcAllowAdjCompute(enable)) {
             if (enable) {
-                m_gainCorrection.calcCoefficientsFromNodes();
-                m_phaseCorrection.calcCoefficientsFromNodes();
-                m_offsetCorrection.calcCoefficientsFromNodes();
+                m_gainCorrection.getAdjItem()->calcCoefficientsFromNodes();
+                m_phaseCorrection.getAdjItem()->calcCoefficientsFromNodes();
+                m_offsetCorrection.getAdjItem()->calcCoefficientsFromNodes();
                 return ZSCPI::scpiAnswer[ZSCPI::ack];
             }
             else
@@ -278,9 +278,9 @@ QString AdjRangeInterface::scpiCmdInitJustData(QString &scpiInput)
         bool enable;
         if(m_permissions.funcAllowAdjInit(enable)) {
             if (enable) {
-                m_gainCorrection.initJustData(1.0);
-                m_phaseCorrection.initJustData(0.0);
-                m_offsetCorrection.initJustData(0.0);
+                m_gainCorrection.getAdjItem()->initJustData(1.0);
+                m_phaseCorrection.getAdjItem()->initJustData(0.0);
+                m_offsetCorrection.getAdjItem()->initJustData(0.0);
                 return ZSCPI::scpiAnswer[ZSCPI::ack];
             }
             else
@@ -300,44 +300,44 @@ quint8 AdjRangeInterface::getAdjustmentStatus80Mask()
 
 void AdjRangeInterface::initJustData()
 {
-    m_gainCorrection.initJustData(1.0);
-    m_phaseCorrection.initJustData(0.0);
-    m_offsetCorrection.initJustData(0.0);
+    m_gainCorrection.getAdjItem()->initJustData(1.0);
+    m_phaseCorrection.getAdjItem()->initJustData(0.0);
+    m_offsetCorrection.getAdjItem()->initJustData(0.0);
 }
 
 void AdjRangeInterface::computeJustData()
 {
-    m_gainCorrection.calcCoefficientsFromNodes();
-    m_phaseCorrection.calcCoefficientsFromNodes();
-    m_offsetCorrection.calcCoefficientsFromNodes();
+    m_gainCorrection.getAdjItem()->calcCoefficientsFromNodes();
+    m_phaseCorrection.getAdjItem()->calcCoefficientsFromNodes();
+    m_offsetCorrection.getAdjItem()->calcCoefficientsFromNodes();
 }
 
 double AdjRangeInterface::getGainCorrectionTotal(double par)
 {
-    return m_gainCorrection.getCorrection(par);
+    return m_gainCorrection.getAdjItem()->getCorrection(par);
 }
 
 double AdjRangeInterface::getGainCorrectionSingle(double par)
 {
-    return m_gainCorrection.getCorrection(par);
+    return m_gainCorrection.getAdjItem()->getCorrection(par);
 }
 
 double AdjRangeInterface::getPhaseCorrectionTotal(double par)
 {
-    return m_phaseCorrection.getCorrection(par);
+    return m_phaseCorrection.getAdjItem()->getCorrection(par);
 }
 
 double AdjRangeInterface::getPhaseCorrectionSingle(double par)
 {
-    return m_phaseCorrection.getCorrection(par);
+    return m_phaseCorrection.getAdjItem()->getCorrection(par);
 }
 
 double AdjRangeInterface::getOffsetCorrectionTotal(double par)
 {
-    return m_offsetCorrection.getCorrection(par);
+    return m_offsetCorrection.getAdjItem()->getCorrection(par);
 }
 
 double AdjRangeInterface::getOffsetCorrectionSingle(double par)
 {
-    return m_offsetCorrection.getCorrection(par);
+    return m_offsetCorrection.getAdjItem()->getCorrection(par);
 }
