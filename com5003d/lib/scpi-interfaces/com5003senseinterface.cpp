@@ -1,7 +1,7 @@
 #include "com5003senseinterface.h"
 #include "adjflags.h"
 #include "com5003dglobal.h"
-#include "rangeadjinterface.h"
+#include "adjrangeinterface.h"
 #include "scpiconnection.h"
 #include "resource.h"
 #include "notzeronumgen.h"
@@ -218,9 +218,9 @@ QString Com5003SenseInterface::scpiReadSenseGroupCatalog(QString &scpi)
         return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-RangeAdjInterface *Com5003SenseInterface::createJustScpiInterfaceWithAtmelPermission()
+AdjRangeInterface *Com5003SenseInterface::createJustScpiInterfaceWithAtmelPermission()
 {
-    return new RangeAdjInterface(m_pSCPIInterface, AdjustScpiValueFormatterFactory::createCom5003AdjFormatter());
+    return new AdjRangeInterface(m_pSCPIInterface, AdjustScpiValueFormatterFactory::createCom5003AdjFormatter());
 }
 
 void Com5003SenseInterface::unregisterSense()

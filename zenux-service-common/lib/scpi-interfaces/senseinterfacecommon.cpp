@@ -201,7 +201,7 @@ bool SenseInterfaceCommon::importAdjData()
             }
             if (!done) {
                 // owner of data read not found: read dummy to keep serialization in sync
-                RangeAdjInterface* dummy = createJustScpiInterfaceWithAtmelPermission();
+                AdjRangeInterface* dummy = createJustScpiInterfaceWithAtmelPermission();
                 dummy->Deserialize(stream);
                 delete dummy;
             }

@@ -23,7 +23,7 @@ enum MMode
 void test_regression_sense_range_mt310s2::init()
 {
     m_scpi = new cSCPI;
-    m_justData = new RangeAdjInterface(m_scpi, AdjustScpiValueFormatterFactory::createMt310s2AdjFormatter()); // range deletes
+    m_justData = new AdjRangeInterface(m_scpi, AdjustScpiValueFormatterFactory::createMt310s2AdjFormatter()); // range deletes
     m_range = new Mt310s2SenseRange(m_scpi,
                               "250V",
                               true,

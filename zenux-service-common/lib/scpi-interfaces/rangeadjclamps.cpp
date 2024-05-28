@@ -4,7 +4,7 @@ RangeAdjClamps::RangeAdjClamps(cSCPI *scpiinterface,
                                SenseRangeCommon *cascadedRange,
                                double cvRatio,
                                PermissionStructAdj permission)  :
-    RangeAdjInterface(scpiinterface, AdjustScpiValueFormatterFactory::createMt310s2AdjFormatter(), permission),
+    AdjRangeInterface(scpiinterface, AdjustScpiValueFormatterFactory::createMt310s2AdjFormatter(), permission),
     m_pFirstStageRange(cascadedRange),
     m_cvRatio(cvRatio)
 {

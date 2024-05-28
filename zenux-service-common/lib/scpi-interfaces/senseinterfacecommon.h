@@ -52,8 +52,8 @@ public:
 protected:
     virtual const char *getAdjExportedVersion() = 0; // stored from #define forces us using const char*
     virtual QString getPcbName() = 0;
-
-    virtual RangeAdjInterface* createJustScpiInterfaceWithAtmelPermission() = 0;
+    
+    virtual AdjRangeInterface* createJustScpiInterfaceWithAtmelPermission() = 0;
     virtual void handleScpiReadWriteMMode(cProtonetCommand* protoCmd) = 0;
     virtual QString scpiReadSenseGroupCatalog(QString& scpi) = 0;
 

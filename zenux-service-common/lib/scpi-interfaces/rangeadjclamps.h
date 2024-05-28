@@ -1,7 +1,7 @@
 #ifndef RANGEADJCLAMPS_H
 #define RANGEADJCLAMPS_H
 
-#include "rangeadjinterface.h"
+#include "adjrangeinterface.h"
 #include "senserangecommon.h"
 #include "permissionfunctions.h"
 
@@ -10,7 +10,7 @@
 // a normal senserange) but the adjustment data is the combination of the clamp's and the
 // the voltage input range's adjustment data
 
-class RangeAdjClamps: public RangeAdjInterface
+class RangeAdjClamps: public AdjRangeInterface
 {
     Q_OBJECT
 public:

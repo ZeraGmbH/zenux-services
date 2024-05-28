@@ -4,7 +4,7 @@
 #include "adjdataiteminterface.h"
 #include "rangeadjclamps.h"
 #include "i2csettings.h"
-#include "rangeadjinterface.h"
+#include "adjrangeinterface.h"
 #include "zscpi_response_definitions.h"
 #include <i2cutils.h>
 #include <i2cmuxerscopedonoff.h>
@@ -192,7 +192,7 @@ bool cClamp::importAdjData()
             }
             else {
                 // range not found: read dummy to keep serialization in sync
-                RangeAdjInterface *dummy = new RangeAdjInterface(m_pSCPIInterface, AdjustScpiValueFormatterFactory::createMt310s2AdjFormatter());
+                AdjRangeInterface *dummy = new AdjRangeInterface(m_pSCPIInterface, AdjustScpiValueFormatterFactory::createMt310s2AdjFormatter());
                 dummy->Deserialize(stream); // we read the data from stream to keep it in flow
                 delete dummy;
             }

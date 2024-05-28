@@ -2,7 +2,7 @@
 #define SENSERANGECOMMON_H
 
 #include "scpiconnection.h"
-#include "rangeadjinterface.h"
+#include "adjrangeinterface.h"
 
 namespace SenseRange
 {
@@ -34,7 +34,7 @@ public:
                      double adcrejection,
                      quint8 rselcode,
                      quint32 typeFlags,
-                     RangeAdjInterface* justdata,
+                     AdjRangeInterface* justdata,
                      int rejectionScpiQueryDigits);
     virtual ~SenseRangeCommon();
     void initSCPIConnection(QString leadingNodes) override;
@@ -47,7 +47,7 @@ public:
     void setMModeToUpdateAvailability(int mode);
 
     quint8 getAdjustmentStatus80Mask();
-    RangeAdjInterface *getJustData();
+    AdjRangeInterface *getJustData();
     void initJustData();
     void computeJustData();
 
@@ -72,7 +72,7 @@ private:
     const quint8 m_nSelCode; // selection code
     const quint32 m_typeFlags;
     const int m_rejectionScpiQueryDigits;
-    RangeAdjInterface* m_justdata;
+    AdjRangeInterface* m_justdata;
 };
 
 #endif // SENSERANGECOMMON_H
