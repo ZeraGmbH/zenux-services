@@ -12,7 +12,6 @@ public:
     struct TJustDataParam
     {
         cSCPI *scpiinterface;
-        int order;
         double init;
         std::function<bool(bool &)> checkPermission;
         int digits;
