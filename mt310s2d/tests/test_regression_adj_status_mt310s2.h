@@ -11,6 +11,7 @@ class test_regression_adj_status_mt310s2 : public QObject
     Q_OBJECT
 private slots:
     void initTestCase();
+    void init();
     void cleanup();
 
     void statusDefaultMachine();

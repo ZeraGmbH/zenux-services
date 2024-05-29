@@ -7,6 +7,7 @@
 #include "testfactoryi2cctrl.h"
 #include "zscpi_response_definitions.h"
 #include <timemachineobject.h>
+#include <mockeeprom24lc.h>
 #include <QTest>
 
 QTEST_MAIN(test_regression_adj_status_com5003);
@@ -14,6 +15,11 @@ QTEST_MAIN(test_regression_adj_status_com5003);
 void test_regression_adj_status_com5003::initTestCase()
 {
     MockI2cEEpromIoFactory::enableMock();
+}
+
+void test_regression_adj_status_com5003::init()
+{
+    MockEEprom24LC::mockCleanAll();
 }
 
 void test_regression_adj_status_com5003::cleanup()
@@ -38,6 +44,14 @@ void test_regression_adj_status_com5003::statusAllAdjusted()
     QVERIFY(TestAdjStatusSetter::setAdjStatusAllChannelRanges(true));
 
     QString ret = ScpiSingleTransactionBlocked::query("STATUS:PCB:ADJUSTMENT?");
+    QCOMPARE(ret, QString::number(Adjustment::adjusted));
+
+    qInfo("Cleanup and read adjusted state...");
+    cleanup();
+    setupServers(std::make_shared<TestFactoryI2cCtrl>(true));
+    // TEMP: THIS and all the others of this kind MUST GO!!!
+    QCOMPARE(ScpiSingleTransactionBlocked::cmd("SYSTEM:ADJUSTMENT:FLASH:READ", ""), ZSCPI::scpiAnswer[ZSCPI::ack]);
+    ret = ScpiSingleTransactionBlocked::query("STATUS:PCB:ADJUSTMENT?");
     QCOMPARE(ret, QString::number(Adjustment::adjusted));
 }
 

@@ -19,9 +19,13 @@ void test_regression_adj_status_mt310s2::initTestCase()
     MockI2cEEpromIoFactory::enableMock();
 }
 
-void test_regression_adj_status_mt310s2::cleanup()
+void test_regression_adj_status_mt310s2::init()
 {
     MockEEprom24LC::mockCleanAll();
+}
+
+void test_regression_adj_status_mt310s2::cleanup()
+{
     m_proxyClient = nullptr;
     m_testServer = nullptr;
     m_resmanServer = nullptr;
@@ -42,6 +46,14 @@ void test_regression_adj_status_mt310s2::statusAllAdjusted()
     QVERIFY(TestAdjStatusSetter::setAdjStatusAllChannelRanges(true));
 
     QString ret = ScpiSingleTransactionBlocked::query("STATUS:PCB:ADJUSTMENT?");
+    QCOMPARE(ret, QString::number(Adjustment::adjusted));
+
+    qInfo("Cleanup and read adjusted state...");
+    cleanup();
+    setupServers(std::make_shared<TestFactoryI2cCtrl>(true));
+    // TEMP: THIS and all the others of this kind MUST GO!!!
+    QCOMPARE(ScpiSingleTransactionBlocked::cmd("SYSTEM:ADJUSTMENT:FLASH:READ", ""), ZSCPI::scpiAnswer[ZSCPI::ack]);
+    ret = ScpiSingleTransactionBlocked::query("STATUS:PCB:ADJUSTMENT?");
     QCOMPARE(ret, QString::number(Adjustment::adjusted));
 }
 
