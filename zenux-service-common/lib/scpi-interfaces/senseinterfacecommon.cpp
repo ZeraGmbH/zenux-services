@@ -208,7 +208,7 @@ bool SenseInterfaceCommon::exportAdjData(QDateTime dateTimeWrite)
                                    .arg(range->getRangeName());
 
                 stream << spec.toLatin1();
-                AdjDataRangeGroupStreamer::Serialize(range->getJustData()->getAdjGroupData(), stream);
+                AdjDataRangeGroupStreamer::toStream(range->getJustData()->getAdjGroupData(), stream);
             }
         }
     }

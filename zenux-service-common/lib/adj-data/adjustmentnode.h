@@ -12,8 +12,8 @@ class AdjustmentNode
 public:
     AdjustmentNode(double corr, double arg);
     AdjustmentNode(){};
-    void Serialize(QDataStream&);
-    void Deserialize(QDataStream&);
+    void toStream(QDataStream&);
+    void fromStream(QDataStream&);
 
     QString toString(int digits);
     void fromString(const QString&);
