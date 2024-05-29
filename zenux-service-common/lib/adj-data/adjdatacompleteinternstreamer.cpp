@@ -13,13 +13,13 @@ AdjDataCompleteInternStreamer::~AdjDataCompleteInternStreamer()
     delete[] m_tmpWorkBuffer;
 }
 
-bool AdjDataCompleteInternStreamer::decodeAdjBytes(QByteArray ba)
+AdjDataPtr AdjDataCompleteInternStreamer::decodeAdjBytes(QByteArray ba)
 {
     qInfo("Decode adjustment data...");
-    m_adjData = std::make_shared<AdjDataCompleteIntern>();
+    std::shared_ptr<AdjDataCompleteIntern> adjData = std::make_shared<AdjDataCompleteIntern>();
     if(ba.size() > m_maxSize) {
         qWarning("Adjustment data size exceeds max size: %i (max: %i)", ba.size(), m_maxSize);
-        return false;
+        return adjData;
     }
 
     QDataStream stream(&ba, QIODevice::ReadOnly);
@@ -29,52 +29,42 @@ bool AdjDataCompleteInternStreamer::decodeAdjBytes(QByteArray ba)
     stream >> sizeStored;
     if(sizeStored != ba.size()) {
         qWarning("Adjustment data size %i does not match size stored %i!", ba.size(), sizeStored);
-        return false;
+        return adjData;
     }
     quint16 checkSum;
     stream >> checkSum; // ignore - checked in AdjustmentEepromReadWrite
 
-    if(!decodeHeader(stream)) {
+    if(!decodeHeader(stream, adjData)) {
         qWarning("Adjustment data contains invalid header!");
-        return false;
+        return adjData;
     }
 
-    decodeRanges(stream);
+    decodeRanges(stream, adjData);
 
     qInfo("Decode succeeded.");
     m_isValid = true;
-    return true;
+    return adjData;
 }
 
-bool AdjDataCompleteInternStreamer::isValid()
+bool AdjDataCompleteInternStreamer::decodeHeader(QDataStream &stream, AdjDataPtr adjData)
 {
-    return m_isValid;
-}
-
-std::shared_ptr<AdjDataCompleteIntern> AdjDataCompleteInternStreamer::getAdjData()
-{
-    return m_adjData;
-}
-
-bool AdjDataCompleteInternStreamer::decodeHeader(QDataStream &stream)
-{
-    if(!decodeServerVersion(stream))
+    if(!decodeServerVersion(stream, adjData))
         return false;
-    if(!decodeDeviceName(stream))
+    if(!decodeDeviceName(stream, adjData))
         return false;
-    if(!decodeDeviceVersion(stream))
+    if(!decodeDeviceVersion(stream, adjData))
         return false;
-    if(!decodeSerialNumber(stream))
+    if(!decodeSerialNumber(stream, adjData))
         return false;
     // before 4.4.3 COM5003 did not store valid timestamps
     // see test_regression_adj_import_export_eeprom_com5003
     // * loadOriginalInvalidDateTimeRandomToEEpromWriteToFlashExportXmlAndCheck
     // * loadValidDateTimeRandomToEEpromWriteToFlashExportXmlAndCheck
-    decodeAdjTimeStamp(stream);
+    decodeAdjTimeStamp(stream, adjData);
     return true;
 }
 
-bool AdjDataCompleteInternStreamer::decodeServerVersion(QDataStream &stream)
+bool AdjDataCompleteInternStreamer::decodeServerVersion(QDataStream &stream, AdjDataPtr adjData)
 {
     stream >> m_tmpWorkBuffer;
     if (QString(m_tmpWorkBuffer) != "ServerVersion") {
@@ -82,48 +72,48 @@ bool AdjDataCompleteInternStreamer::decodeServerVersion(QDataStream &stream)
         return false;
     }
     stream >> m_tmpWorkBuffer;
-    getAdjData()->getAdjHeader().m_serverVersion = m_tmpWorkBuffer;
-    if(getAdjData()->getAdjHeader().m_serverVersion.isEmpty()) {
+    adjData->getAdjHeader().m_serverVersion = m_tmpWorkBuffer;
+    if(adjData->getAdjHeader().m_serverVersion.isEmpty()) {
         qWarning("Adjustment data is missing server version!");
         return false;
     }
     return true;
 }
 
-bool AdjDataCompleteInternStreamer::decodeDeviceName(QDataStream &stream)
+bool AdjDataCompleteInternStreamer::decodeDeviceName(QDataStream &stream, AdjDataPtr adjData)
 {
     stream >> m_tmpWorkBuffer;
-    getAdjData()->getAdjHeader().m_deviceName = m_tmpWorkBuffer;
-    if(getAdjData()->getAdjHeader().m_deviceName.isEmpty()) {
+    adjData->getAdjHeader().m_deviceName = m_tmpWorkBuffer;
+    if(adjData->getAdjHeader().m_deviceName.isEmpty()) {
         qWarning("Adjustment data is missing device name!");
         return false;
     }
     return true;
 }
 
-bool AdjDataCompleteInternStreamer::decodeDeviceVersion(QDataStream &stream)
+bool AdjDataCompleteInternStreamer::decodeDeviceVersion(QDataStream &stream, AdjDataPtr adjData)
 {
     stream >> m_tmpWorkBuffer;
-    getAdjData()->getAdjHeader().m_deviceVersion = m_tmpWorkBuffer;
-    if(getAdjData()->getAdjHeader().m_deviceVersion.isEmpty()) {
+    adjData->getAdjHeader().m_deviceVersion = m_tmpWorkBuffer;
+    if(adjData->getAdjHeader().m_deviceVersion.isEmpty()) {
         qWarning("Adjustment data is missing device version!");
         return false;
     }
     return true;
 }
 
-bool AdjDataCompleteInternStreamer::decodeSerialNumber(QDataStream &stream)
+bool AdjDataCompleteInternStreamer::decodeSerialNumber(QDataStream &stream, AdjDataPtr adjData)
 {
     stream >> m_tmpWorkBuffer;
-    getAdjData()->getAdjHeader().m_serialNumber = m_tmpWorkBuffer;
-    if(getAdjData()->getAdjHeader().m_serialNumber.isEmpty()) {
+    adjData->getAdjHeader().m_serialNumber = m_tmpWorkBuffer;
+    if(adjData->getAdjHeader().m_serialNumber.isEmpty()) {
         qWarning("Adjustment data is missing device serial number!");
         return false;
     }
     return true;
 }
 
-bool AdjDataCompleteInternStreamer::decodeAdjTimeStamp(QDataStream &stream)
+bool AdjDataCompleteInternStreamer::decodeAdjTimeStamp(QDataStream &stream, AdjDataPtr adjData)
 {
     stream >> m_tmpWorkBuffer;
     QString adjTimeStamp = m_tmpWorkBuffer;
@@ -131,15 +121,15 @@ bool AdjDataCompleteInternStreamer::decodeAdjTimeStamp(QDataStream &stream)
         qWarning("Adjustment data is missing device adjustment timestamp!");
         return false;
     }
-    getAdjData()->getAdjHeader().m_adjustmentDate = QDateTime::fromString(adjTimeStamp, Qt::TextDate);
-    if(!getAdjData()->getAdjHeader().m_adjustmentDate.isValid()) {
+    adjData->getAdjHeader().m_adjustmentDate = QDateTime::fromString(adjTimeStamp, Qt::TextDate);
+    if(!adjData->getAdjHeader().m_adjustmentDate.isValid()) {
         qWarning("Adjustment data'a adjustment timestamp is invalid!");
         return false;
     }
     return true;
 }
 
-void AdjDataCompleteInternStreamer::decodeRanges(QDataStream &stream)
+void AdjDataCompleteInternStreamer::decodeRanges(QDataStream &stream, AdjDataPtr adjData)
 {
     while (!stream.atEnd()) {
         QString channelRangeInfo;
@@ -151,9 +141,9 @@ void AdjDataCompleteInternStreamer::decodeRanges(QDataStream &stream)
             if(senseId == "SENSE") {
                 QString channelName = rangeCmdList[1];
                 QString rangeName = rangeCmdList[2];
-                if(!m_adjData->isChannelRangeAvailable(channelName, rangeName)) {
+                if(!adjData->isChannelRangeAvailable(channelName, rangeName)) {
                     AdjDataRangeGroup rangeAdjData = AdjDataRangeGroupStreamer::Deserialize(stream);
-                    m_adjData->setChannelRange(channelName, rangeName, rangeAdjData);
+                    adjData->setChannelRange(channelName, rangeName, rangeAdjData);
                 }
                 else
                     qFatal("Channel %s / range %s was already added!", qPrintable(channelName), qPrintable(rangeName));
