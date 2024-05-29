@@ -7,8 +7,8 @@
 class AdjDataRangeGroupStreamer
 {
 public:
-    static AdjDataRangeGroup Deserialize(QDataStream& qds);
-    static void Serialize(AdjDataRangeGroup adjGroup, QDataStream& qds);
+    static AdjDataRangeGroup fromStream(QDataStream& qds);
+    static void toStream(AdjDataRangeGroup adjGroup, QDataStream& qds);
 };
 
 #endif // ADJDATARANGEGROUPSTREAMER_H

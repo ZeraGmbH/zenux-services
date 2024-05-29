@@ -7,12 +7,12 @@ AdjustmentNode::AdjustmentNode(double corr, double arg)
 {
 }
 
-void AdjustmentNode::Serialize(QDataStream& qds)
+void AdjustmentNode::toStream(QDataStream& qds)
 {
     qds << m_fCorrection << m_fArgument;
 }
 
-void AdjustmentNode::Deserialize(QDataStream& qds)
+void AdjustmentNode::fromStream(QDataStream& qds)
 {
     qds >> m_fCorrection >> m_fArgument;
 }

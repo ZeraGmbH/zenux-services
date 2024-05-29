@@ -1,18 +1,18 @@
 #include "adjdatarangegroupstreamer.h"
 #include "adjdataitemstreamer.h"
 
-AdjDataRangeGroup AdjDataRangeGroupStreamer::Deserialize(QDataStream &qds)
+AdjDataRangeGroup AdjDataRangeGroupStreamer::fromStream(QDataStream &qds)
 {
     AdjDataRangeGroup rangeAdjData;
-    AdjDataItemStreamer::Deserialize(rangeAdjData.m_gainAdjData, qds);
-    AdjDataItemStreamer::Deserialize(rangeAdjData.m_phasAdjData, qds);
-    AdjDataItemStreamer::Deserialize(rangeAdjData.m_offsAdjData, qds);
+    AdjDataItemStreamer::fromStream(rangeAdjData.m_gainAdjData, qds);
+    AdjDataItemStreamer::fromStream(rangeAdjData.m_phasAdjData, qds);
+    AdjDataItemStreamer::fromStream(rangeAdjData.m_offsAdjData, qds);
     return rangeAdjData;
 }
 
-void AdjDataRangeGroupStreamer::Serialize(AdjDataRangeGroup adjGroup, QDataStream &qds)
+void AdjDataRangeGroupStreamer::toStream(AdjDataRangeGroup adjGroup, QDataStream &qds)
 {
-    AdjDataItemStreamer::Serialize(adjGroup.m_gainAdjData, qds);
-    AdjDataItemStreamer::Serialize(adjGroup.m_phasAdjData, qds);
-    AdjDataItemStreamer::Serialize(adjGroup.m_offsAdjData, qds);
+    AdjDataItemStreamer::toStream(adjGroup.m_gainAdjData, qds);
+    AdjDataItemStreamer::toStream(adjGroup.m_phasAdjData, qds);
+    AdjDataItemStreamer::toStream(adjGroup.m_offsAdjData, qds);
 }

@@ -1,6 +1,6 @@
 #include "adjdataitemstreamer.h"
 
-void AdjDataItemStreamer::Deserialize(AdjDataItem &item, QDataStream &qds)
+void AdjDataItemStreamer::fromStream(AdjDataItem &item, QDataStream &qds)
 {
     qds >> item.m_adjStatus;
     for (int i = 0; i < item.getOrder()+1; i++) {
@@ -16,7 +16,7 @@ void AdjDataItemStreamer::Deserialize(AdjDataItem &item, QDataStream &qds)
     }
 }
 
-void AdjDataItemStreamer::Serialize(AdjDataItem item, QDataStream &qds)
+void AdjDataItemStreamer::toStream(AdjDataItem item, QDataStream &qds)
 {
     qds << item.m_adjStatus;
     for (int i = 0; i < item.m_adjCoefficients.size(); i++)

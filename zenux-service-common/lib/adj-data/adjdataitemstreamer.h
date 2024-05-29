@@ -7,8 +7,8 @@
 class AdjDataItemStreamer
 {
 public:
-    static void Deserialize(AdjDataItem &item, QDataStream& qds);
-    static void Serialize(AdjDataItem item, QDataStream& qds);
+    static void fromStream(AdjDataItem &item, QDataStream& qds);
+    static void toStream(AdjDataItem item, QDataStream& qds);
 };
 
 #endif // ADJDATAITEMSTREAMER_H

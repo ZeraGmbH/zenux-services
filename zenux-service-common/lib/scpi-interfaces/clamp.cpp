@@ -153,12 +153,12 @@ bool cClamp::exportClampAdjData(QDateTime dateTimeWrite)
     for(auto range : qAsConst(m_RangeList)) {
         spec = range->getRangeName();
         stream << spec;
-        AdjDataRangeGroupStreamer::Serialize(range->getJustData()->getAdjGroupData(), stream);
+        AdjDataRangeGroupStreamer::toStream(range->getJustData()->getAdjGroupData(), stream);
     }
     for(auto range : qAsConst(m_RangeListSecondary)) {
         spec = range->getRangeName();
         stream << spec;
-        AdjDataRangeGroupStreamer::Serialize(range->getJustData()->getAdjGroupData(), stream);
+        AdjDataRangeGroupStreamer::toStream(range->getJustData()->getAdjGroupData(), stream);
     }
     m_adjReadWrite.setData(ba);
     return m_adjReadWrite.writeData();
@@ -189,11 +189,11 @@ bool cClamp::importClampAdjData()
             SenseRangeCommon* range = getRange(rngName);
             if (range != 0) {
                 n++;
-                range->getJustData()->setAdjGroupData(AdjDataRangeGroupStreamer::Deserialize(stream));
+                range->getJustData()->setAdjGroupData(AdjDataRangeGroupStreamer::fromStream(stream));
             }
             else {
                 // range not found: read dummy to keep serialization in sync
-                AdjDataRangeGroupStreamer::Deserialize(stream);
+                AdjDataRangeGroupStreamer::fromStream(stream);
             }
         }
         return (n == m_RangeList.count() + m_RangeListSecondary.count()); // it's ok if we found data for all ranges in our list
