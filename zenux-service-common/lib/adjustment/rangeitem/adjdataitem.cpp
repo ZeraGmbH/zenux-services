@@ -18,12 +18,12 @@ int AdjDataItem::getOrder()
 
 void AdjDataItem::initData(double init)
 {
-    setNode(0, AdjustmentNode(init, 0.0)); // setting the 1st node and all following
+    setNode(0, AdjDataNode(init, 0.0)); // setting the 1st node and all following
     calcCoefficientsFromNodes();
     m_adjStatus = 0;
 }
 
-bool AdjDataItem::setNode(int index, AdjustmentNode jn)
+bool AdjDataItem::setNode(int index, AdjDataNode jn)
 {
     if (index < getOrder()+1) {
         for (int i = index; i < getOrder()+1; i++)
@@ -33,7 +33,7 @@ bool AdjDataItem::setNode(int index, AdjustmentNode jn)
     return false;
 }
 
-AdjustmentNode *AdjDataItem::getNode(int index)
+AdjDataNode *AdjDataItem::getNode(int index)
 {
     return &m_adjNodes[index];
 }

@@ -1,41 +1,41 @@
-#include "adjustmentnode.h"
+#include "adjdatanode.h"
 #include <QDataStream>
 #include <QString>
 
-AdjustmentNode::AdjustmentNode(double corr, double arg)
-    :m_fCorrection(corr),m_fArgument(arg)
+AdjDataNode::AdjDataNode(double corr, double arg) :
+    m_fCorrection(corr),m_fArgument(arg)
 {
 }
 
-void AdjustmentNode::toStream(QDataStream& qds)
+void AdjDataNode::toStream(QDataStream& qds)
 {
     qds << m_fCorrection << m_fArgument;
 }
 
-void AdjustmentNode::fromStream(QDataStream& qds)
+void AdjDataNode::fromStream(QDataStream& qds)
 {
     qds >> m_fCorrection >> m_fArgument;
 }
 
-QString AdjustmentNode::toString(int digits)
+QString AdjDataNode::toString(int digits)
 {
     QString s = QString("%1;%2;").arg(m_fCorrection,0,'f',digits)
                            .arg(m_fArgument,0,'f',digits);
     return s;
 }
 
-void AdjustmentNode::fromString(const QString& s)
+void AdjDataNode::fromString(const QString& s)
 {
     m_fCorrection = s.section(';', 0, 0).toDouble();
     m_fArgument = s.section(';', 1, 1).toDouble();
 }
 
-double AdjustmentNode::getCorrection()
+double AdjDataNode::getCorrection()
 {
     return m_fCorrection;
 }
 
-double AdjustmentNode::getArgument()
+double AdjDataNode::getArgument()
 {
     return m_fArgument;
 }

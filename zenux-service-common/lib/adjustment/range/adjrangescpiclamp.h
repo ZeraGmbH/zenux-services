@@ -1,7 +1,7 @@
-#ifndef RANGEADJCLAMPS_H
-#define RANGEADJCLAMPS_H
+#ifndef ADJRANGESCPICLAMP_H
+#define ADJRANGESCPICLAMP_H
 
-#include "adjrangeinterface.h"
+#include "adjrangescpi.h"
 #include "senserangecommon.h"
 #include "permissionfunctions.h"
 
@@ -10,11 +10,11 @@
 // a normal senserange) but the adjustment data is the combination of the clamp's and the
 // the voltage input range's adjustment data
 
-class RangeAdjClamps: public AdjRangeInterface
+class AdjRangeScpiClamp: public AdjRangeScpi
 {
     Q_OBJECT
 public:
-    RangeAdjClamps(cSCPI* scpiinterface,
+    AdjRangeScpiClamp(cSCPI* scpiinterface,
                    SenseRangeCommon* cascadedRange,
                    double cvRatio,
                    PermissionStructAdj permission = PermissionStructAdj());
@@ -29,5 +29,5 @@ private:
     double m_cvRatio;
 };
 
-#endif // RANGEADJCLAMPS_H
+#endif // ADJRANGESCPICLAMP_H
 

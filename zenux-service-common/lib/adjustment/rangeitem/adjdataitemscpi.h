@@ -1,12 +1,12 @@
-#ifndef ADJDATAITEMINTERFACE_H
-#define ADJDATAITEMINTERFACE_H
+#ifndef ADJDATAITEMSCPI_H
+#define ADJDATAITEMSCPI_H
 
 #include "adjdataitem.h"
 #include "scpiconnection.h"
 #include <QDataStream>
 #include <QString>
 
-class AdjDataItemInterface: public ScpiConnection // base class for adjustment coefficients and nodes
+class AdjDataItemScpi: public ScpiConnection // base class for adjustment coefficients and nodes
 {
 public:
     struct TJustDataParam
@@ -15,8 +15,8 @@ public:
         std::function<bool(bool &)> checkPermission;
         int digits;
     };
-    AdjDataItemInterface(TJustDataParam param, AdjDataItem* adjItem);
-    ~AdjDataItemInterface();
+    AdjDataItemScpi(TJustDataParam param, AdjDataItem* adjItem);
+    ~AdjDataItemScpi();
     virtual void initSCPIConnection(QString leadingNodes) override;
 
     AdjDataItem *getAdjItem();

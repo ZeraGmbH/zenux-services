@@ -1,6 +1,6 @@
-#include "adjrangeinterface.h"
+#include "adjrangescpi.h"
 #include "protonetcommand.h"
-#include "adjdataiteminterface.h"
+#include "adjdataitemscpi.h"
 #include "zscpi_response_definitions.h"
 #include <scpi.h>
 
@@ -50,7 +50,7 @@ enum ScpiCommands
     DirectJustInit
 };
 
-AdjRangeInterface::AdjRangeInterface(cSCPI *scpiinterface,
+AdjRangeScpi::AdjRangeScpi(cSCPI *scpiinterface,
                                                    std::unique_ptr<AdjustScpiValueFormatter> adjustmentFormatter,
                                                    PermissionStructAdj permissions) :
     ScpiConnection(scpiinterface),
@@ -65,7 +65,7 @@ AdjRangeInterface::AdjRangeInterface(cSCPI *scpiinterface,
 {
 }
 
-void AdjRangeInterface::initSCPIConnection(QString leadingNodes)
+void AdjRangeScpi::initSCPIConnection(QString leadingNodes)
 {
     ensureTrailingColonOnNonEmptyParentNodes(leadingNodes);
     addDelegate(QString("%1CORRECTION").arg(leadingNodes), "GAIN", SCPI::CmdwP , m_pSCPIInterface, GainTotal);
@@ -86,17 +86,17 @@ void AdjRangeInterface::initSCPIConnection(QString leadingNodes)
     m_offsetCorrection.initSCPIConnection(QString("%1CORRECTION:OFFSET").arg(leadingNodes));
 }
 
-void AdjRangeInterface::setAdjGroupData(AdjDataRangeGroup groupData)
+void AdjRangeScpi::setAdjGroupData(AdjDataRangeGroup groupData)
 {
     m_adjGroupData = groupData;
 }
 
-AdjDataRangeGroup AdjRangeInterface::getAdjGroupData()
+AdjDataRangeGroup AdjRangeScpi::getAdjGroupData()
 {
     return m_adjGroupData;
 }
 
-AdjDataItemInterface *AdjRangeInterface::getAdjInterface(QString name)
+AdjDataItemScpi *AdjRangeScpi::getAdjInterface(QString name)
 {
     if(name == "Gain")
         return &m_gainCorrection;
@@ -107,7 +107,7 @@ AdjDataItemInterface *AdjRangeInterface::getAdjInterface(QString name)
     return nullptr;
 }
 
-void AdjRangeInterface::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
+void AdjRangeScpi::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
 {
     switch (cmdCode)
     {
@@ -143,7 +143,7 @@ void AdjRangeInterface::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd
         emit cmdExecutionDone(protoCmd);
 }
 
-QString AdjRangeInterface::scpiQueryGainCorrectionTotal(const QString &scpiInput)
+QString AdjRangeScpi::scpiQueryGainCorrectionTotal(const QString &scpiInput)
 {
     cSCPICommand cmd = scpiInput;
     if (cmd.isQuery(1)) {
@@ -159,7 +159,7 @@ QString AdjRangeInterface::scpiQueryGainCorrectionTotal(const QString &scpiInput
         return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-QString AdjRangeInterface::scpiQueryGainCorrectionSingle(QString &scpiInput)
+QString AdjRangeScpi::scpiQueryGainCorrectionSingle(QString &scpiInput)
 {
     cSCPICommand cmd = scpiInput;
     if (cmd.isQuery(1)) {
@@ -175,7 +175,7 @@ QString AdjRangeInterface::scpiQueryGainCorrectionSingle(QString &scpiInput)
         return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-QString AdjRangeInterface::scpiQueryPhaseCorrectionTotal(QString& scpiInput)
+QString AdjRangeScpi::scpiQueryPhaseCorrectionTotal(QString& scpiInput)
 {
     cSCPICommand cmd = scpiInput;
     if (cmd.isQuery(1)) {
@@ -191,7 +191,7 @@ QString AdjRangeInterface::scpiQueryPhaseCorrectionTotal(QString& scpiInput)
         return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-QString AdjRangeInterface::scpiQueryPhaseCorrectionSingle(QString &scpiInput)
+QString AdjRangeScpi::scpiQueryPhaseCorrectionSingle(QString &scpiInput)
 {
     cSCPICommand cmd = scpiInput;
     if (cmd.isQuery(1)) {
@@ -207,7 +207,7 @@ QString AdjRangeInterface::scpiQueryPhaseCorrectionSingle(QString &scpiInput)
         return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-QString AdjRangeInterface::scpiQueryOffsetCorrectionTotal(QString& scpiInput)
+QString AdjRangeScpi::scpiQueryOffsetCorrectionTotal(QString& scpiInput)
 {
     cSCPICommand cmd = scpiInput;
     if (cmd.isQuery(1)) {
@@ -223,7 +223,7 @@ QString AdjRangeInterface::scpiQueryOffsetCorrectionTotal(QString& scpiInput)
         return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-QString AdjRangeInterface::scpiQueryOffsetCorrectionSingle(QString &scpiInput)
+QString AdjRangeScpi::scpiQueryOffsetCorrectionSingle(QString &scpiInput)
 {
     cSCPICommand cmd = scpiInput;
     if (cmd.isQuery(1)) {
@@ -239,7 +239,7 @@ QString AdjRangeInterface::scpiQueryOffsetCorrectionSingle(QString &scpiInput)
         return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-QString AdjRangeInterface::scpiQueryStatus(QString& scpiInput)
+QString AdjRangeScpi::scpiQueryStatus(QString& scpiInput)
 {
     cSCPICommand cmd = scpiInput;
     if (cmd.isQuery()) {
@@ -249,7 +249,7 @@ QString AdjRangeInterface::scpiQueryStatus(QString& scpiInput)
         return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-QString AdjRangeInterface::scpiCmdComputeJustData(QString& scpiInput)
+QString AdjRangeScpi::scpiCmdComputeJustData(QString& scpiInput)
 {
     cSCPICommand cmd = scpiInput;
     if(cmd.isCommand(1) && (cmd.getParam(0) == "")) {
@@ -271,7 +271,7 @@ QString AdjRangeInterface::scpiCmdComputeJustData(QString& scpiInput)
         return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-QString AdjRangeInterface::scpiCmdInitJustData(QString &scpiInput)
+QString AdjRangeScpi::scpiCmdInitJustData(QString &scpiInput)
 {
     cSCPICommand cmd = scpiInput;
     if (cmd.isCommand(1) && (cmd.getParam(0) == "")) {
@@ -291,49 +291,49 @@ QString AdjRangeInterface::scpiCmdInitJustData(QString &scpiInput)
         return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-quint8 AdjRangeInterface::getAdjustmentStatus80Mask()
+quint8 AdjRangeScpi::getAdjustmentStatus80Mask()
 {
     return m_gainCorrection.getStatus() & m_phaseCorrection.getStatus() & m_offsetCorrection.getStatus();
 }
 
-void AdjRangeInterface::initJustData()
+void AdjRangeScpi::initJustData()
 {
     m_adjGroupData.initGroup();
 }
 
-void AdjRangeInterface::computeJustData()
+void AdjRangeScpi::computeJustData()
 {
     m_gainCorrection.getAdjItem()->calcCoefficientsFromNodes();
     m_phaseCorrection.getAdjItem()->calcCoefficientsFromNodes();
     m_offsetCorrection.getAdjItem()->calcCoefficientsFromNodes();
 }
 
-double AdjRangeInterface::getGainCorrectionTotal(double par)
+double AdjRangeScpi::getGainCorrectionTotal(double par)
 {
     return m_gainCorrection.getAdjItem()->getCorrection(par);
 }
 
-double AdjRangeInterface::getGainCorrectionSingle(double par)
+double AdjRangeScpi::getGainCorrectionSingle(double par)
 {
     return m_gainCorrection.getAdjItem()->getCorrection(par);
 }
 
-double AdjRangeInterface::getPhaseCorrectionTotal(double par)
+double AdjRangeScpi::getPhaseCorrectionTotal(double par)
 {
     return m_phaseCorrection.getAdjItem()->getCorrection(par);
 }
 
-double AdjRangeInterface::getPhaseCorrectionSingle(double par)
+double AdjRangeScpi::getPhaseCorrectionSingle(double par)
 {
     return m_phaseCorrection.getAdjItem()->getCorrection(par);
 }
 
-double AdjRangeInterface::getOffsetCorrectionTotal(double par)
+double AdjRangeScpi::getOffsetCorrectionTotal(double par)
 {
     return m_offsetCorrection.getAdjItem()->getCorrection(par);
 }
 
-double AdjRangeInterface::getOffsetCorrectionSingle(double par)
+double AdjRangeScpi::getOffsetCorrectionSingle(double par)
 {
     return m_offsetCorrection.getAdjItem()->getCorrection(par);
 }

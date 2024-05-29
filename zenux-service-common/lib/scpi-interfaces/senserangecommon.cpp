@@ -13,7 +13,7 @@ SenseRangeCommon::SenseRangeCommon(cSCPI *scpiInterface,
                                    double adcrejection,
                                    quint8 rselcode,
                                    quint32 typeFlags,
-                                   AdjRangeInterface *justdata,
+                                   AdjRangeScpi *justdata,
                                    int rejectionScpiQueryDigits) :
     ScpiConnection(scpiInterface),
     m_bAvail(avail),
@@ -90,7 +90,7 @@ quint8 SenseRangeCommon::getAdjustmentStatus80Mask()
     return m_justdata->getAdjustmentStatus80Mask();
 }
 
-AdjRangeInterface *SenseRangeCommon::getJustData()
+AdjRangeScpi *SenseRangeCommon::getJustData()
 {
     return m_justdata;
 }

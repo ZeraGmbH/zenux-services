@@ -1,6 +1,6 @@
-#include "adjdataitemstreamer.h"
+#include "adjdataitemstream.h"
 
-void AdjDataItemStreamer::fromStream(AdjDataItem &item, QDataStream &qds)
+void AdjDataItemStream::fromStream(AdjDataItem &item, QDataStream &qds)
 {
     qds >> item.m_adjStatus;
     for (int i = 0; i < item.getOrder()+1; i++) {
@@ -11,12 +11,12 @@ void AdjDataItemStreamer::fromStream(AdjDataItem &item, QDataStream &qds)
     for (int i = 0; i < item.getOrder()+1; i++) {
         double correction, argument;
         qds >> correction >> argument;
-        AdjustmentNode node(correction, argument);
+        AdjDataNode node(correction, argument);
         item.m_adjNodes[i] = node;
     }
 }
 
-void AdjDataItemStreamer::toStream(AdjDataItem item, QDataStream &qds)
+void AdjDataItemStream::toStream(AdjDataItem item, QDataStream &qds)
 {
     qds << item.m_adjStatus;
     for (int i = 0; i < item.m_adjCoefficients.size(); i++)

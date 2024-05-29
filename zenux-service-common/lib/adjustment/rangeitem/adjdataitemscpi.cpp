@@ -1,4 +1,4 @@
-#include "adjdataiteminterface.h"
+#include "adjdataitemscpi.h"
 #include "zscpi_response_definitions.h"
 
 enum JustCommands
@@ -14,7 +14,7 @@ enum JustCommands
     JustNode3
 };
 
-AdjDataItemInterface::AdjDataItemInterface(TJustDataParam param, AdjDataItem *adjItem) :
+AdjDataItemScpi::AdjDataItemScpi(TJustDataParam param, AdjDataItem *adjItem) :
     ScpiConnection(param.scpiinterface),
     m_checkPermission(param.checkPermission),
     m_adjItem(adjItem),
@@ -22,11 +22,11 @@ AdjDataItemInterface::AdjDataItemInterface(TJustDataParam param, AdjDataItem *ad
 {
 }
 
-AdjDataItemInterface::~AdjDataItemInterface()
+AdjDataItemScpi::~AdjDataItemScpi()
 {
 }
 
-void AdjDataItemInterface::initSCPIConnection(QString leadingNodes)
+void AdjDataItemScpi::initSCPIConnection(QString leadingNodes)
 {
     addDelegate(QString("%1").arg(leadingNodes), "STATUS", SCPI::isCmdwP | SCPI::isQuery, m_pSCPIInterface, JustStatus);
 
@@ -41,12 +41,12 @@ void AdjDataItemInterface::initSCPIConnection(QString leadingNodes)
     addDelegate(QString("%1NODE").arg(leadingNodes), "3", SCPI::isCmdwP | SCPI::isQuery, m_pSCPIInterface, JustNode3);
 }
 
-AdjDataItem *AdjDataItemInterface::getAdjItem()
+AdjDataItem *AdjDataItemScpi::getAdjItem()
 {
     return m_adjItem;
 }
 
-void AdjDataItemInterface::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
+void AdjDataItemScpi::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
 {
     switch (cmdCode)
     {
@@ -82,7 +82,7 @@ void AdjDataItemInterface::executeProtoScpi(int cmdCode, cProtonetCommand *proto
         emit cmdExecutionDone(protoCmd);
 }
 
-QString AdjDataItemInterface::scpiReadWriteStatus(QString &sInput)
+QString AdjDataItemScpi::scpiReadWriteStatus(QString &sInput)
 {
     cSCPICommand cmd = sInput;
     if (cmd.isQuery())
@@ -110,7 +110,7 @@ QString AdjDataItemInterface::scpiReadWriteStatus(QString &sInput)
     return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-QString AdjDataItemInterface::scpiReadWriteJustCoeeficient(QString &sInput, quint8 index)
+QString AdjDataItemScpi::scpiReadWriteJustCoeeficient(QString &sInput, quint8 index)
 {
     cSCPICommand cmd = sInput;
     if (cmd.isQuery())
@@ -139,7 +139,7 @@ QString AdjDataItemInterface::scpiReadWriteJustCoeeficient(QString &sInput, quin
 }
 
 
-QString AdjDataItemInterface::scpiReadWriteJustNode(QString &sInput, quint8 index)
+QString AdjDataItemScpi::scpiReadWriteJustNode(QString &sInput, quint8 index)
 {
     cSCPICommand cmd = sInput;
     if (cmd.isQuery())
@@ -157,8 +157,8 @@ QString AdjDataItemInterface::scpiReadWriteJustNode(QString &sInput, quint8 inde
                 double par1 = spar.toDouble(&ok1);
                 if (ok0 && ok1)
                 {
-                    AdjustmentNode jn = AdjustmentNode(par0,par1);
-                    getAdjItem()->setNode(index, jn);
+                    AdjDataNode node = AdjDataNode(par0,par1);
+                    getAdjItem()->setNode(index, node);
                     return ZSCPI::scpiAnswer[ZSCPI::ack];
                 }
                 else
@@ -174,12 +174,12 @@ QString AdjDataItemInterface::scpiReadWriteJustNode(QString &sInput, quint8 inde
 }
 
 
-QString AdjDataItemInterface::statusToString()
+QString AdjDataItemScpi::statusToString()
 {
     return QString("%1").arg(m_adjItem->m_adjStatus);
 }
 
-QString AdjDataItemInterface::coefficientsToString() // writes adjustment data to qstring
+QString AdjDataItemScpi::coefficientsToString() // writes adjustment data to qstring
 {
     QString s;
     for (int i = 0; i < m_adjItem->getOrder()+1; i++)
@@ -187,7 +187,7 @@ QString AdjDataItemInterface::coefficientsToString() // writes adjustment data t
     return s;
 }
 
-QString AdjDataItemInterface::nodesToString()
+QString AdjDataItemScpi::nodesToString()
 {
     QString s;
     for (int i = 0; i < m_adjItem->getOrder()+1; i++)
@@ -195,27 +195,27 @@ QString AdjDataItemInterface::nodesToString()
     return s;
 }
 
-void AdjDataItemInterface::statusFromString(const QString &s)
+void AdjDataItemScpi::statusFromString(const QString &s)
 {
     m_adjItem->m_adjStatus = s.toInt();
 }
 
 
-void AdjDataItemInterface::coefficientsFromString(const QString& s)
+void AdjDataItemScpi::coefficientsFromString(const QString& s)
 {
     for (int i = 0; i < m_adjItem->getOrder()+1; i++)
         m_adjItem->m_adjCoefficients[i] = s.section(';',i,i).toDouble();
 }
 
 
-void AdjDataItemInterface::nodesFromString(const QString& s)
+void AdjDataItemScpi::nodesFromString(const QString& s)
 {
     for (int i = 0; i < m_adjItem->getOrder()+1; i++)
         m_adjItem->m_adjNodes[i].fromString(s.section(';',i << 1,(i << 1) + 1));
 }
 
 
-quint8 AdjDataItemInterface::getStatus()
+quint8 AdjDataItemScpi::getStatus()
 {
     return m_adjItem->m_adjStatus;
 }
