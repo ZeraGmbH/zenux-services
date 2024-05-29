@@ -15,7 +15,6 @@ public:
     bool isChannelRangeAvailable(QString channelName, QString rangeName);
     AdjDataRangeGroup getRangeAdjData(QString channelName, QString rangeName);
     void setChannelRange(QString channelName, QString rangeName, AdjDataRangeGroup adjData);
-    QMap<QString, QStringList> getRangeInfos();
 
 private:
     AdjDataHeaderIntern m_adjHeader;
