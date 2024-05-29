@@ -20,10 +20,7 @@ SenseInterfaceCommon::SenseInterfaceCommon(cSCPI *scpiInterface,
                    i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress),
                    I2cMultiplexerFactory::createNullMuxer())
 {
-    AdjDataCompleteInternStreamer adjustmentDecoder(m_adjReadWrite.getMaxSize());
-    m_adjData = std::make_shared<AdjDataCompleteIntern>();
-    if(m_adjReadWrite.readDataCached(cacheFileName))
-        m_adjData = adjustmentDecoder.decodeAdjBytes(m_adjReadWrite.getData());
+    importAdjData();
 }
 
 SenseInterfaceCommon::~SenseInterfaceCommon()
@@ -127,73 +124,56 @@ bool SenseInterfaceCommon::isInvalidAdjDataOrChannelRangeAvail(QString channelNa
     return m_adjData->isChannelRangeAvailable(channelName, rangeName);
 }
 
+void SenseInterfaceCommon::injectAdjToChannelRanges()
+{
+    for(auto &channel : m_channelList) {
+        QString channelName = channel->getName();
+        QList<SenseRangeCommon*>& rangeList = channel->getRangeList();
+        for(auto &range : rangeList) {
+            QString rangeName = range->getRangeName();
+            if(m_adjData->isChannelRangeAvailable(channelName, rangeName)) {
+                AdjDataRangeGroup rangeAdjData = m_adjData->getRangeAdjData(channelName, rangeName);
+                AdjRangeInterface *adjInterface = range->getJustData();
+                adjInterface->setAdjGroupData(rangeAdjData);
+            }
+        }
+    }
+}
+
 bool SenseInterfaceCommon::importAdjData()
 {
+    // Init with bad defaults (bad value was decided decades ago)
+    m_nSerialStatus = Adjustment::wrongSNR;
+    m_adjData = std::make_shared<AdjDataCompleteIntern>(); // default object
     if(m_adjReadWrite.readDataCached(cacheFileName)) {
-
-        QByteArray ba = m_adjReadWrite.getData();
-        QDataStream stream(&ba, QIODevice::ReadOnly);
-        stream.setVersion(QDataStream::Qt_5_4);
-
-        char flashdata[200];
-        char* s = flashdata;
-
-        stream.skipRawData(6); // we don't need count and chksum
-        stream >> s;
-        if (QString(s) != "ServerVersion") {
-            qCritical("Flashmemory read: ServerVersion not found");
+        AdjDataCompleteInternStreamer adjustmentDecoder(m_adjReadWrite.getMaxSize());
+        m_adjData = adjustmentDecoder.decodeAdjBytes(m_adjReadWrite.getData());
+        if(m_adjData->isEmpty()) {
+            qWarning("No range information in adjustment data!");
             return false;
         }
-
-        stream >> s; // version: not checked anymore
-        stream >> s; // we take the device name
-
+        AdjDataHeaderIntern adjHeader = m_adjData->getAdjHeader();
         QString sysDevName = m_systemInfo->getDeviceName();
-        if (QString(s) != sysDevName) {
+        if (adjHeader.m_deviceName != sysDevName) {
             qCritical("Flashmemory read: Wrong device name: flash %s / µC %s",
-                      s, qPrintable(sysDevName));
+                      qPrintable(adjHeader.m_deviceName), qPrintable(sysDevName));
             return false;
         }
-
-        stream >> s; // we take the device version now
-
-        bool enable = false;
-        m_ctrlFactory->getPermissionCheckController()->hasPermission(enable);
-
-        stream >> s; // we take the serial number now
         QString sysSerNo = m_systemInfo->getSerialNumber();
-        if (QString(s) != sysSerNo) {
+        if (adjHeader.m_serialNumber != sysSerNo) {
             qCritical("Flashmemory read, contains wrong serialnumber: flash %s / µC: %s",
-                      s, qPrintable(sysSerNo));
+                      qPrintable(adjHeader.m_serialNumber), qPrintable(sysSerNo));
             m_nSerialStatus |= Adjustment::wrongSNR;
-            if (!enable) {
+            // accept wrong serial number with schnubbel
+            bool enable = false;
+            m_ctrlFactory->getPermissionCheckController()->hasPermission(enable);
+            if (!enable)
                 return false; // wrong serial number
-            }
         }
-        else {
+        else
             m_nSerialStatus = 0; // ok
-        }
-
-        stream >> s;
-        QDateTime DateTime = QDateTime::fromString(QString(s), Qt::TextDate); // datum und uhrzeit übernehmen
-
-        if(!m_adjData->isEmpty()) {
-            for(auto &channel : m_channelList) {
-                QString channelName = channel->getName();
-                QList<SenseRangeCommon*>& rangeList = channel->getRangeList();
-                for(auto &range : rangeList) {
-                    QString rangeName = range->getRangeName();
-                    if(m_adjData->isChannelRangeAvailable(channelName, rangeName)) {
-                        AdjDataRangeGroup rangeAdjData = m_adjData->getRangeAdjData(channelName, rangeName);
-                        AdjRangeInterface *adjInterface = range->getJustData();
-                        adjInterface->setAdjGroupData(rangeAdjData);
-                    }
-                }
-            }
-        }
-        return (true);
     }
-    return false;
+    return true;
 }
 
 quint16 SenseInterfaceCommon::getAdjChecksum()

@@ -49,8 +49,6 @@ void test_regression_adj_status_com5003::statusAllAdjusted()
     qInfo("Cleanup and read adjusted state...");
     cleanup();
     setupServers(std::make_shared<TestFactoryI2cCtrl>(true));
-    // TEMP: THIS and all the others of this kind MUST GO!!!
-    QCOMPARE(ScpiSingleTransactionBlocked::cmd("SYSTEM:ADJUSTMENT:FLASH:READ", ""), ZSCPI::scpiAnswer[ZSCPI::ack]);
     ret = ScpiSingleTransactionBlocked::query("STATUS:PCB:ADJUSTMENT?");
     QCOMPARE(ret, QString::number(Adjustment::adjusted));
 }

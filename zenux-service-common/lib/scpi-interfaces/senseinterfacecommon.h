@@ -43,8 +43,6 @@ public:
     bool importAdjData();
     quint16 getAdjChecksum();
 
-    virtual int rangeFlagsDevice() = 0;
-    virtual int rangeFlagsIntern() = 0;
     virtual int rangeFlagsExtern() = 0;
     virtual int rangeFlagsExternDc() = 0; // maybe this can go - for now just compatibility
     virtual void initSCPIConnection(QString leadingNodes) override;
@@ -53,8 +51,7 @@ public:
 protected:
     virtual const char *getAdjExportedVersion() = 0; // stored from #define forces us using const char*
     virtual QString getPcbName() = 0;
-    
-    virtual AdjRangeInterface* createJustScpiInterfaceWithAtmelPermission() = 0;
+
     virtual void handleScpiReadWriteMMode(cProtonetCommand* protoCmd) = 0;
     virtual QString scpiReadSenseGroupCatalog(QString& scpi) = 0;
 
@@ -88,6 +85,7 @@ protected:
 
     AdjustmentEepromReadWrite m_adjReadWrite; // go??
     AdjDataPtr m_adjData;
+    void injectAdjToChannelRanges();
 };
 
 #endif // SENSEINTERFACECOMMON_H

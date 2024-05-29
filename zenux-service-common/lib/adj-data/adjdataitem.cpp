@@ -16,7 +16,7 @@ int AdjDataItem::getOrder()
     return m_order;
 }
 
-void AdjDataItem::initJustData(double init)
+void AdjDataItem::initData(double init)
 {
     setNode(0, AdjustmentNode(init, 0.0)); // setting the 1st node and all following
     calcCoefficientsFromNodes();
