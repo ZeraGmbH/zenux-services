@@ -2,7 +2,7 @@
 #define ADJDATACOMPLETEINTERN_H
 
 #include "adjdataheaderintern.h"
-#include "adjdatarangegroup.h"
+#include "adjdatarange.h"
 #include <QMap>
 
 class AdjDataCompleteIntern
@@ -13,12 +13,12 @@ public:
     AdjDataHeaderIntern& getAdjHeader();
 
     bool isChannelRangeAvailable(QString channelName, QString rangeName);
-    AdjDataRangeGroup getRangeAdjData(QString channelName, QString rangeName);
-    void setChannelRange(QString channelName, QString rangeName, AdjDataRangeGroup adjData);
+    AdjDataRange getRangeAdjData(QString channelName, QString rangeName);
+    void setChannelRange(QString channelName, QString rangeName, AdjDataRange adjData);
 
 private:
     AdjDataHeaderIntern m_adjHeader;
-    QMap<QString, QMap<QString, AdjDataRangeGroup>> m_rangeInfosMap;
+    QMap<QString, QMap<QString, AdjDataRange>> m_rangeInfosMap;
 };
 
 #endif // ADJDATACOMPLETEINTERN_H

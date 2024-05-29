@@ -1,16 +1,16 @@
-#include "adjdatarangegroupstream.h"
+#include "adjdatarangestream.h"
 #include "adjdataitemstream.h"
 
-AdjDataRangeGroup AdjDataRangeGroupStream::fromStream(QDataStream &qds)
+AdjDataRange AdjDataRangeStream::fromStream(QDataStream &qds)
 {
-    AdjDataRangeGroup rangeAdjData;
+    AdjDataRange rangeAdjData;
     AdjDataItemStream::fromStream(rangeAdjData.m_gainAdjData, qds);
     AdjDataItemStream::fromStream(rangeAdjData.m_phasAdjData, qds);
     AdjDataItemStream::fromStream(rangeAdjData.m_offsAdjData, qds);
     return rangeAdjData;
 }
 
-void AdjDataRangeGroupStream::toStream(AdjDataRangeGroup adjGroup, QDataStream &qds)
+void AdjDataRangeStream::toStream(AdjDataRange adjGroup, QDataStream &qds)
 {
     AdjDataItemStream::toStream(adjGroup.m_gainAdjData, qds);
     AdjDataItemStream::toStream(adjGroup.m_phasAdjData, qds);

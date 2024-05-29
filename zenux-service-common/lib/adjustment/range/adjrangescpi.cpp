@@ -86,12 +86,12 @@ void AdjRangeScpi::initSCPIConnection(QString leadingNodes)
     m_offsetCorrection.initSCPIConnection(QString("%1CORRECTION:OFFSET").arg(leadingNodes));
 }
 
-void AdjRangeScpi::setAdjGroupData(AdjDataRangeGroup groupData)
+void AdjRangeScpi::setAdjGroupData(AdjDataRange groupData)
 {
     m_adjGroupData = groupData;
 }
 
-AdjDataRangeGroup AdjRangeScpi::getAdjGroupData()
+AdjDataRange AdjRangeScpi::getAdjGroupData()
 {
     return m_adjGroupData;
 }

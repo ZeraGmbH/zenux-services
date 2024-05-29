@@ -2,7 +2,7 @@
 #define TEST_JUSTDATA_H
 
 #include "adjdataitemscpi.h"
-#include "adjdatarangegroup.h"
+#include "adjdatarange.h"
 #include <scpi.h>
 #include <QTest>
 
@@ -25,7 +25,7 @@ private slots:
 private:
     cSCPI *scpi;
     AdjDataItemScpi *justData;
-    AdjDataRangeGroup *m_adjDataGroup;
+    AdjDataRange *m_adjDataGroup;
 };
 
 #endif // TEST_JUSTDATA_H

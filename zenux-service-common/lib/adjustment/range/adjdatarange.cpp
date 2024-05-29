@@ -1,7 +1,7 @@
-#include "adjdatarangegroup.h"
+#include "adjdatarange.h"
 #include "adjflags.h"
 
-AdjDataRangeGroup::AdjDataRangeGroup() :
+AdjDataRange::AdjDataRange() :
     m_gainAdjData(GainCorrOrder),
     m_phasAdjData(PhaseCorrOrder),
     m_offsAdjData(OffsetCorrOrder)
@@ -9,7 +9,7 @@ AdjDataRangeGroup::AdjDataRangeGroup() :
     initGroup();
 }
 
-void AdjDataRangeGroup::initGroup()
+void AdjDataRange::initGroup()
 {
     m_gainAdjData.initData(1.0);
     m_phasAdjData.initData(0.0);

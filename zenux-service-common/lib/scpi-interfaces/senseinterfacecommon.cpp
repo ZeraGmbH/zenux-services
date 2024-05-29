@@ -1,6 +1,6 @@
 #include "senseinterfacecommon.h"
 #include "adjflags.h"
-#include "adjdatarangegroupstream.h"
+#include "adjdatarangestream.h"
 #include "notzeronumgen.h"
 #include "zscpi_response_definitions.h"
 #include <i2cmultiplexerfactory.h>
@@ -132,7 +132,7 @@ void SenseInterfaceCommon::injectAdjToChannelRanges()
         for(auto &range : rangeList) {
             QString rangeName = range->getRangeName();
             if(m_adjData->isChannelRangeAvailable(channelName, rangeName)) {
-                AdjDataRangeGroup rangeAdjData = m_adjData->getRangeAdjData(channelName, rangeName);
+                AdjDataRange rangeAdjData = m_adjData->getRangeAdjData(channelName, rangeName);
                 AdjRangeScpi *adjInterface = range->getJustData();
                 adjInterface->setAdjGroupData(rangeAdjData);
             }
@@ -208,7 +208,7 @@ bool SenseInterfaceCommon::exportAdjData(QDateTime dateTimeWrite)
                                    .arg(range->getRangeName());
 
                 stream << spec.toLatin1();
-                AdjDataRangeGroupStream::toStream(range->getJustData()->getAdjGroupData(), stream);
+                AdjDataRangeStream::toStream(range->getJustData()->getAdjGroupData(), stream);
             }
         }
     }
