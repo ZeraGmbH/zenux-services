@@ -60,7 +60,7 @@ cClamp::cClamp(cPCBServer *server,
     connect(server, &cPCBServer::removeSubscribers, this, &ScpiConnection::onRemoveSubscribers);
 
     if (type != undefined) {
-        importAdjData();
+        importClampAdjData();
         addSense();
         addSenseInterface();
     }
@@ -132,7 +132,7 @@ void cClamp::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
     }
 }
 
-bool cClamp::exportAdjData(QDateTime dateTimeWrite)
+bool cClamp::exportClampAdjData(QDateTime dateTimeWrite)
 {
     QByteArray ba;
     QDataStream stream(&ba,QIODevice::ReadWrite);
@@ -164,7 +164,7 @@ bool cClamp::exportAdjData(QDateTime dateTimeWrite)
     return m_adjReadWrite.writeData();
 }
 
-bool cClamp::importAdjData()
+bool cClamp::importClampAdjData()
 {
     if(m_adjReadWrite.readData()) {
         QByteArray ba = m_adjReadWrite.getData();
@@ -953,7 +953,7 @@ QString cClamp::scpiReadWriteType(QString& scpi)
             if ( (type > undefined) && (type < anzCL)) {
                 removeAllRanges();
                 initClamp(type);
-                if (exportAdjData(QDateTime::currentDateTime())) {
+                if (exportClampAdjData(QDateTime::currentDateTime())) {
                     addSense();
                     addSenseInterface();
                     answer = ZSCPI::scpiAnswer[ZSCPI::ack];
@@ -991,7 +991,7 @@ QString cClamp::scpiWriteFlash(QString& scpi)
     QString answer;
     cSCPICommand cmd = scpi;
     if (cmd.isCommand(1) && (cmd.getParam(0) == "")) {
-        if (exportAdjData(QDateTime::currentDateTime())) {
+        if (exportClampAdjData(QDateTime::currentDateTime())) {
             answer = ZSCPI::scpiAnswer[ZSCPI::ack];
         }
         else {
@@ -1010,7 +1010,7 @@ QString cClamp::scpiReadFlash(QString& scpi)
     cSCPICommand cmd = scpi;
     if (cmd.isCommand(1) && (cmd.getParam(0) == "")) {
         if (readClampType() == m_nType) { // we first look whether the type matches
-            importAdjData();
+            importClampAdjData();
             answer = ZSCPI::scpiAnswer[ZSCPI::ack];
         }
         else {
