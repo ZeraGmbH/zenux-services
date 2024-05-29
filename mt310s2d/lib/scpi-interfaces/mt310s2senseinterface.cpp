@@ -1,6 +1,5 @@
 #include "mt310s2senseinterface.h"
 #include "mt310s2dglobal.h"
-#include "adjflags.h"
 #include "mt310s2sensechannel.h"
 #include "mt310s2senserange.h"
 #include "protonetcommand.h"
@@ -64,9 +63,6 @@ Mt310s2SenseInterface::Mt310s2SenseInterface(cSCPI *scpiInterface,
                            systemInfo,
                            ctrlFactory)
 {
-    // Init with bad defaults so coder's bugs pop up
-    m_nSerialStatus = Adjustment::wrongSNR;
-
     m_availSenseModesHash["AC"] = modeAC;
     m_availSenseModesHash["HF"] = modeHF;
     m_availSenseModesHash["ADJ"] = modeADJ;
@@ -107,6 +103,10 @@ void Mt310s2SenseInterface::setChannelAndRanges(cSenseSettings* senseSettings)
     int i;
     for (i = 0; i < 4; i++) {
         rngList.clear();
+
+        // TODO:
+        // * move channel/range generation to a common place
+        // * Do checks isInvalidAdjDataOrChannelRangeAvail only on ranges introduced later
 
         QString rangeName = "250V";
         if(isInvalidAdjDataOrChannelRangeAvail(m_channelList.at(i)->getName(), rangeName))
@@ -236,6 +236,7 @@ void Mt310s2SenseInterface::setChannelAndRanges(cSenseSettings* senseSettings)
         rngList.append(new Mt310s2SenseRange(m_pSCPIInterface, rangeName, false, 0.002, 2684355.0, 3355444.0, 20, rangeFlagsIntern(), createJustScpiInterfaceWithAtmelPermission()));
 
     m_channelList.at(7)->setRangeList(rngList);
+    injectAdjToChannelRanges();
 }
 
 

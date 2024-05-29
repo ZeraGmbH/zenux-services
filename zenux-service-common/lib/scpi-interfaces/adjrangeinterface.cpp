@@ -54,11 +54,11 @@ AdjRangeInterface::AdjRangeInterface(cSCPI *scpiinterface,
                                                    std::unique_ptr<AdjustScpiValueFormatter> adjustmentFormatter,
                                                    PermissionStructAdj permissions) :
     ScpiConnection(scpiinterface),
-    m_gainCorrection({m_pSCPIInterface, 1.0, permissions.funcAllowAdjGain, adjustmentFormatter->m_correctionExportDigits},
+    m_gainCorrection({m_pSCPIInterface, permissions.funcAllowAdjGain, adjustmentFormatter->m_correctionExportDigits},
                        &m_adjGroupData.m_gainAdjData),
-    m_phaseCorrection({m_pSCPIInterface, 0.0, permissions.funcAllowAdjPhase, adjustmentFormatter->m_correctionExportDigits},
+    m_phaseCorrection({m_pSCPIInterface, permissions.funcAllowAdjPhase, adjustmentFormatter->m_correctionExportDigits},
                         &m_adjGroupData.m_phasAdjData),
-    m_offsetCorrection({m_pSCPIInterface, 0.0, permissions.funcAllowAdjOffset, adjustmentFormatter->m_correctionExportDigits},
+    m_offsetCorrection({m_pSCPIInterface, permissions.funcAllowAdjOffset, adjustmentFormatter->m_correctionExportDigits},
                          &m_adjGroupData.m_offsAdjData),
     m_scpiQueryFormatter(std::move(adjustmentFormatter)),
     m_permissions(permissions)
@@ -278,9 +278,7 @@ QString AdjRangeInterface::scpiCmdInitJustData(QString &scpiInput)
         bool enable;
         if(m_permissions.funcAllowAdjInit(enable)) {
             if (enable) {
-                m_gainCorrection.getAdjItem()->initJustData(1.0);
-                m_phaseCorrection.getAdjItem()->initJustData(0.0);
-                m_offsetCorrection.getAdjItem()->initJustData(0.0);
+                m_adjGroupData.initGroup();
                 return ZSCPI::scpiAnswer[ZSCPI::ack];
             }
             else
@@ -300,9 +298,7 @@ quint8 AdjRangeInterface::getAdjustmentStatus80Mask()
 
 void AdjRangeInterface::initJustData()
 {
-    m_gainCorrection.getAdjItem()->initJustData(1.0);
-    m_phaseCorrection.getAdjItem()->initJustData(0.0);
-    m_offsetCorrection.getAdjItem()->initJustData(0.0);
+    m_adjGroupData.initGroup();
 }
 
 void AdjRangeInterface::computeJustData()

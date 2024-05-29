@@ -20,7 +20,6 @@ AdjDataItemInterface::AdjDataItemInterface(TJustDataParam param, AdjDataItem *ad
     m_adjItem(adjItem),
     m_digits(param.digits)
 {
-    getAdjItem()->initJustData(param.init);
 }
 
 AdjDataItemInterface::~AdjDataItemInterface()

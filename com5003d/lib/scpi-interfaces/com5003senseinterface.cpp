@@ -44,10 +44,6 @@ Com5003SenseInterface::Com5003SenseInterface(cSCPI *scpiInterface,
     m_rmConnection(rmConnection),
     m_ethSettings(ethSettings)
 {
-
-    // Init with bad defaults so coder's bugs pop up
-    m_nSerialStatus = Adjustment::wrongSNR;
-
     m_currSenseMode = "AC";
     m_availSenseModesHash["AC"] = SenseSystem::modeAC;
     m_availSenseModesHash["REF"] = SenseSystem::modeREF;
@@ -138,6 +134,7 @@ void Com5003SenseInterface::setChannelAndRanges(cSenseSettings *senseSettings)
 
         m_channelList.at(i)->setRangeList(rngList);
     }
+    injectAdjToChannelRanges();
 }
 
 int Com5003SenseInterface::rangeFlagsDevice()

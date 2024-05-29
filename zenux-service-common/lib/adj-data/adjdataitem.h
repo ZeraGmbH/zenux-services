@@ -15,7 +15,7 @@ public:
     AdjDataItem(int order);
     int getOrder();
 
-    void initJustData(double init);
+    void initData(double init);
 
     bool setNode(int index, AdjustmentNode jn); // !!! setting node sequence is relevant !!!
     AdjustmentNode* getNode(int index);
@@ -26,7 +26,7 @@ public:
     bool calcCoefficientsFromNodes();
     double getCorrection(double arg); // calculates correction value c= ax^order +bx^order-1 ...
 
-    quint8 m_adjStatus;
+    quint8 m_adjStatus = 0;
     QVector<AdjustmentNode> m_adjNodes;
     QVector<double> m_adjCoefficients;
 private:

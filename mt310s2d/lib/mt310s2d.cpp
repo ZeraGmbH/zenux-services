@@ -234,8 +234,6 @@ void cMT310S2dServer::doSetupServer()
             resourceList.append(m_hkInInterface);
             qInfo("SCPI interfaces set.");
 
-            m_pSenseInterface->importAdjData(); // we read adjustmentdata at least once
-
             initSCPIConnections();
 
             // after init. we once poll the devices connected at power up

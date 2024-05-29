@@ -21,8 +21,6 @@ public:
                           AbstractFactoryI2cCtrlPtr ctrlFactory);
 // COM specifics only
     void setChannelAndRanges(cSenseSettings *senseSettings);
-    int rangeFlagsDevice() override;
-    int rangeFlagsIntern() override;
     int rangeFlagsExtern() override;
     int rangeFlagsExternDc() override;
 
@@ -31,11 +29,13 @@ private slots:
     void registerSense();
     void notifySense();
 private:
+    int rangeFlagsDevice();
+    int rangeFlagsIntern();
     const char* getAdjExportedVersion() override;
     QString getPcbName() override;
     QString getXmlType() override;
     bool isRangePartOfAdjXmlExport(SenseRangeCommon* range) override;
-    AdjRangeInterface* createJustScpiInterfaceWithAtmelPermission() override;
+    AdjRangeInterface* createJustScpiInterfaceWithAtmelPermission();
     QString scpiReadSenseGroupCatalog(QString& scpi) override;
     void handleScpiReadWriteMMode(cProtonetCommand* protoCmd) override;
     enum SetModeModeResult {
