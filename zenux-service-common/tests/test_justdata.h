@@ -1,7 +1,7 @@
 #ifndef TEST_JUSTDATA_H
 #define TEST_JUSTDATA_H
 
-#include "adjdataiteminterface.h"
+#include "adjdataitemscpi.h"
 #include "adjdatarangegroup.h"
 #include <scpi.h>
 #include <QTest>
@@ -24,7 +24,7 @@ private slots:
     void coefSetCrap();
 private:
     cSCPI *scpi;
-    AdjDataItemInterface *justData;
+    AdjDataItemScpi *justData;
     AdjDataRangeGroup *m_adjDataGroup;
 };
 

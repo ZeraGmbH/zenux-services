@@ -1,6 +1,6 @@
 #include "senseinterfacecommon.h"
 #include "adjflags.h"
-#include "adjdatarangegroupstreamer.h"
+#include "adjdatarangegroupstream.h"
 #include "notzeronumgen.h"
 #include "zscpi_response_definitions.h"
 #include <i2cmultiplexerfactory.h>
@@ -133,7 +133,7 @@ void SenseInterfaceCommon::injectAdjToChannelRanges()
             QString rangeName = range->getRangeName();
             if(m_adjData->isChannelRangeAvailable(channelName, rangeName)) {
                 AdjDataRangeGroup rangeAdjData = m_adjData->getRangeAdjData(channelName, rangeName);
-                AdjRangeInterface *adjInterface = range->getJustData();
+                AdjRangeScpi *adjInterface = range->getJustData();
                 adjInterface->setAdjGroupData(rangeAdjData);
             }
         }
@@ -146,7 +146,7 @@ bool SenseInterfaceCommon::importAdjData()
     m_nSerialStatus = Adjustment::wrongSNR;
     m_adjData = std::make_shared<AdjDataCompleteIntern>(); // default object
     if(m_adjReadWrite.readDataCached(cacheFileName)) {
-        AdjDataCompleteInternStreamer adjustmentDecoder(m_adjReadWrite.getMaxSize());
+        AdjDataCompleteInternStream adjustmentDecoder(m_adjReadWrite.getMaxSize());
         m_adjData = adjustmentDecoder.decodeAdjBytes(m_adjReadWrite.getData());
         if(m_adjData->isEmpty()) {
             qWarning("No range information in adjustment data!");
@@ -208,7 +208,7 @@ bool SenseInterfaceCommon::exportAdjData(QDateTime dateTimeWrite)
                                    .arg(range->getRangeName());
 
                 stream << spec.toLatin1();
-                AdjDataRangeGroupStreamer::toStream(range->getJustData()->getAdjGroupData(), stream);
+                AdjDataRangeGroupStream::toStream(range->getJustData()->getAdjGroupData(), stream);
             }
         }
     }
@@ -298,7 +298,7 @@ bool SenseInterfaceCommon::importXMLDocument(QDomDocument* qdomdoc)
                                                 Name = qdElem.text();
                                                 rngPtr = chnPtr->getRange(Name);
                                             }
-                                            AdjDataItemInterface* pJustData = nullptr;
+                                            AdjDataItemScpi* pJustData = nullptr;
                                             if (rngPtr != nullptr)
                                                 pJustData = rngPtr->getJustData()->getAdjInterface(tName);
                                             if (pJustData) {
@@ -410,7 +410,7 @@ QString SenseInterfaceCommon::exportXMLString(int indent)
                 for(const auto &adjType : listAdjTypes) {
                     gpotag = justqdom.createElement(adjType);
                     rtag.appendChild(gpotag);
-                    AdjDataItemInterface* adjDataInterface = range->getJustData()->getAdjInterface(adjType);
+                    AdjDataItemScpi* adjDataInterface = range->getJustData()->getAdjInterface(adjType);
                     QDomElement tag = justqdom.createElement("Status");
                     QString jdata = adjDataInterface->statusToString();
                     t = justqdom.createTextNode(jdata);

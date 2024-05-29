@@ -1,14 +1,14 @@
-#ifndef ADJDATARANGEGROUPSTREAMER_H
-#define ADJDATARANGEGROUPSTREAMER_H
+#ifndef ADJDATARANGEGROUPSTREAM_H
+#define ADJDATARANGEGROUPSTREAM_H
 
 #include "adjdatarangegroup.h"
 #include <QDataStream>
 
-class AdjDataRangeGroupStreamer
+class AdjDataRangeGroupStream
 {
 public:
     static AdjDataRangeGroup fromStream(QDataStream& qds);
     static void toStream(AdjDataRangeGroup adjGroup, QDataStream& qds);
 };
 
-#endif // ADJDATARANGEGROUPSTREAMER_H
+#endif // ADJDATARANGEGROUPSTREAM_H

@@ -1,19 +1,19 @@
-#include "adjdatacompleteinternstreamer.h"
-#include "adjdatarangegroupstreamer.h"
+#include "adjdatacompleteinternstream.h"
+#include "adjdatarangegroupstream.h"
 #include <QDataStream>
 
-AdjDataCompleteInternStreamer::AdjDataCompleteInternStreamer(int maxSize) :
+AdjDataCompleteInternStream::AdjDataCompleteInternStream(int maxSize) :
     m_maxSize(maxSize),
     m_tmpWorkBuffer(new char[maxSize])
 {
 }
 
-AdjDataCompleteInternStreamer::~AdjDataCompleteInternStreamer()
+AdjDataCompleteInternStream::~AdjDataCompleteInternStream()
 {
     delete[] m_tmpWorkBuffer;
 }
 
-AdjDataPtr AdjDataCompleteInternStreamer::decodeAdjBytes(QByteArray ba)
+AdjDataPtr AdjDataCompleteInternStream::decodeAdjBytes(QByteArray ba)
 {
     qInfo("Decode adjustment data...");
     std::shared_ptr<AdjDataCompleteIntern> adjData = std::make_shared<AdjDataCompleteIntern>();
@@ -46,7 +46,7 @@ AdjDataPtr AdjDataCompleteInternStreamer::decodeAdjBytes(QByteArray ba)
     return adjData;
 }
 
-bool AdjDataCompleteInternStreamer::decodeHeader(QDataStream &stream, AdjDataPtr adjData)
+bool AdjDataCompleteInternStream::decodeHeader(QDataStream &stream, AdjDataPtr adjData)
 {
     if(!decodeServerVersion(stream, adjData))
         return false;
@@ -64,7 +64,7 @@ bool AdjDataCompleteInternStreamer::decodeHeader(QDataStream &stream, AdjDataPtr
     return true;
 }
 
-bool AdjDataCompleteInternStreamer::decodeServerVersion(QDataStream &stream, AdjDataPtr adjData)
+bool AdjDataCompleteInternStream::decodeServerVersion(QDataStream &stream, AdjDataPtr adjData)
 {
     stream >> m_tmpWorkBuffer;
     if (QString(m_tmpWorkBuffer) != "ServerVersion") {
@@ -80,7 +80,7 @@ bool AdjDataCompleteInternStreamer::decodeServerVersion(QDataStream &stream, Adj
     return true;
 }
 
-bool AdjDataCompleteInternStreamer::decodeDeviceName(QDataStream &stream, AdjDataPtr adjData)
+bool AdjDataCompleteInternStream::decodeDeviceName(QDataStream &stream, AdjDataPtr adjData)
 {
     stream >> m_tmpWorkBuffer;
     adjData->getAdjHeader().m_deviceName = m_tmpWorkBuffer;
@@ -91,7 +91,7 @@ bool AdjDataCompleteInternStreamer::decodeDeviceName(QDataStream &stream, AdjDat
     return true;
 }
 
-bool AdjDataCompleteInternStreamer::decodeDeviceVersion(QDataStream &stream, AdjDataPtr adjData)
+bool AdjDataCompleteInternStream::decodeDeviceVersion(QDataStream &stream, AdjDataPtr adjData)
 {
     stream >> m_tmpWorkBuffer;
     adjData->getAdjHeader().m_deviceVersion = m_tmpWorkBuffer;
@@ -102,7 +102,7 @@ bool AdjDataCompleteInternStreamer::decodeDeviceVersion(QDataStream &stream, Adj
     return true;
 }
 
-bool AdjDataCompleteInternStreamer::decodeSerialNumber(QDataStream &stream, AdjDataPtr adjData)
+bool AdjDataCompleteInternStream::decodeSerialNumber(QDataStream &stream, AdjDataPtr adjData)
 {
     stream >> m_tmpWorkBuffer;
     adjData->getAdjHeader().m_serialNumber = m_tmpWorkBuffer;
@@ -113,7 +113,7 @@ bool AdjDataCompleteInternStreamer::decodeSerialNumber(QDataStream &stream, AdjD
     return true;
 }
 
-bool AdjDataCompleteInternStreamer::decodeAdjTimeStamp(QDataStream &stream, AdjDataPtr adjData)
+bool AdjDataCompleteInternStream::decodeAdjTimeStamp(QDataStream &stream, AdjDataPtr adjData)
 {
     stream >> m_tmpWorkBuffer;
     QString adjTimeStamp = m_tmpWorkBuffer;
@@ -129,7 +129,7 @@ bool AdjDataCompleteInternStreamer::decodeAdjTimeStamp(QDataStream &stream, AdjD
     return true;
 }
 
-void AdjDataCompleteInternStreamer::decodeRanges(QDataStream &stream, AdjDataPtr adjData)
+void AdjDataCompleteInternStream::decodeRanges(QDataStream &stream, AdjDataPtr adjData)
 {
     while (!stream.atEnd()) {
         QString channelRangeInfo;
@@ -142,7 +142,7 @@ void AdjDataCompleteInternStreamer::decodeRanges(QDataStream &stream, AdjDataPtr
                 QString channelName = rangeCmdList[1];
                 QString rangeName = rangeCmdList[2];
                 if(!adjData->isChannelRangeAvailable(channelName, rangeName)) {
-                    AdjDataRangeGroup rangeAdjData = AdjDataRangeGroupStreamer::fromStream(stream);
+                    AdjDataRangeGroup rangeAdjData = AdjDataRangeGroupStream::fromStream(stream);
                     adjData->setChannelRange(channelName, rangeName, rangeAdjData);
                 }
                 else

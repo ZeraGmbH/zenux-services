@@ -1,10 +1,10 @@
-#ifndef ADJRANGEINTERFACE_H
-#define ADJRANGEINTERFACE_H
+#ifndef ADJRANGESCPI_H
+#define ADJRANGESCPI_H
 
 #include "adjdatarangegroup.h"
 #include "scpiconnection.h"
 #include "permissionfunctions.h"
-#include "adjdataiteminterface.h"
+#include "adjdataitemscpi.h"
 #include <QDataStream>
 #include <functional>
 #include <memory>
@@ -26,11 +26,11 @@ public:
     static std::unique_ptr<AdjustScpiValueFormatter> createCom5003AdjFormatter();
 };
 
-class AdjRangeInterface : public ScpiConnection
+class AdjRangeScpi : public ScpiConnection
 {
     Q_OBJECT
 public:
-    AdjRangeInterface(cSCPI* scpiinterface,
+    AdjRangeScpi(cSCPI* scpiinterface,
                              std::unique_ptr<AdjustScpiValueFormatter> adjustmentFormatter,
                              PermissionStructAdj permissions = PermissionStructAdj());
     virtual void initSCPIConnection(QString leadingNodes) override;
@@ -38,7 +38,7 @@ public:
     void setAdjGroupData(AdjDataRangeGroup groupData);
     AdjDataRangeGroup getAdjGroupData();
 
-    AdjDataItemInterface* getAdjInterface(QString name);
+    AdjDataItemScpi* getAdjInterface(QString name);
 
     double getGainCorrectionSingle(double par);
     double getPhaseCorrectionSingle(double par);
@@ -78,9 +78,9 @@ private:
     QString scpiCmdInitJustData(QString &scpiInput); // done in Adjustmentmodule - left for compatibility
 
     AdjDataRangeGroup m_adjGroupData;
-    AdjDataItemInterface m_gainCorrection;
-    AdjDataItemInterface m_phaseCorrection;
-    AdjDataItemInterface m_offsetCorrection;
+    AdjDataItemScpi m_gainCorrection;
+    AdjDataItemScpi m_phaseCorrection;
+    AdjDataItemScpi m_offsetCorrection;
     std::unique_ptr<AdjustScpiValueFormatter> m_scpiQueryFormatter;
     PermissionStructAdj m_permissions;
 };

@@ -1,7 +1,7 @@
 #ifndef ADJDATAITEM_H
 #define ADJDATAITEM_H
 
-#include "adjustmentnode.h"
+#include "adjdatanode.h"
 #include <QVector>
 
 // An AdjDataItem object has a max. possible order
@@ -16,9 +16,9 @@ public:
     int getOrder();
 
     void initData(double init);
-
-    bool setNode(int index, AdjustmentNode jn); // !!! setting node sequence is relevant !!!
-    AdjustmentNode* getNode(int index);
+    
+    bool setNode(int index, AdjDataNode jn); // !!! setting node sequence is relevant !!!
+    AdjDataNode* getNode(int index);
 
     bool setCoefficient(int index, double value); // !!! setting coefficient also is sequence relevant !!!
     double getCoefficient(int index);
@@ -27,7 +27,7 @@ public:
     double getCorrection(double arg); // calculates correction value c= ax^order +bx^order-1 ...
 
     quint8 m_adjStatus = 0;
-    QVector<AdjustmentNode> m_adjNodes;
+    QVector<AdjDataNode> m_adjNodes;
     QVector<double> m_adjCoefficients;
 private:
     int m_order;

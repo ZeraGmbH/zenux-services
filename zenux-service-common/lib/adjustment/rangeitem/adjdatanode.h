@@ -7,11 +7,11 @@
 // an adjustmentnode (datapoint) consists of the data point's value and the data point's argument
 // it can serialize and deserialize itself to a qdatastream
 
-class AdjustmentNode
+class AdjDataNode
 {
 public:
-    AdjustmentNode(double corr, double arg);
-    AdjustmentNode(){};
+    AdjDataNode(double corr, double arg);
+    AdjDataNode(){};
     void toStream(QDataStream&);
     void fromStream(QDataStream&);
 

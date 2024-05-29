@@ -1,5 +1,5 @@
 #include "mt310s2senserange.h"
-#include "adjrangeinterface.h"
+#include "adjrangescpi.h"
 #include <math.h>
 
 static constexpr int rejectionScpiQueryDigitsMt310s2 = 8;
@@ -13,7 +13,7 @@ Mt310s2SenseRange::Mt310s2SenseRange(cSCPI *scpiinterface,
                                      double ovrejection,
                                      quint8 rselcode,
                                      quint16 mmask,
-                                     AdjRangeInterface* justdata) :
+                                     AdjRangeScpi* justdata) :
     SenseRangeCommon(
         scpiinterface,
         name,

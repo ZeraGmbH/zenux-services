@@ -1,5 +1,5 @@
 #include "test_adj_data_decoder.h"
-#include "adjdatacompleteinternstreamer.h"
+#include "adjdatacompleteinternstream.h"
 #include "adjustmenteepromreadwrite.h"
 #include <QFile>
 #include <QTest>
@@ -18,11 +18,11 @@ void test_adj_data_decoder::denyMaxSizeExceed()
     file.open(QIODevice::ReadOnly);
     QByteArray ba = file.readAll();
     
-    AdjDataCompleteInternStreamer reader1(ba.size());
+    AdjDataCompleteInternStream reader1(ba.size());
     AdjDataPtr data1 = reader1.decodeAdjBytes(ba);
     QVERIFY(!data1->isEmpty());
     
-    AdjDataCompleteInternStreamer reader2(ba.size()-1);
+    AdjDataCompleteInternStream reader2(ba.size()-1);
     AdjDataPtr data2 = reader2.decodeAdjBytes(ba);
     QVERIFY(data2->isEmpty());
 }
@@ -33,7 +33,7 @@ void test_adj_data_decoder::readServerVersionAndDeviceNameForMT()
     file.open(QIODevice::ReadOnly);
     QByteArray ba = file.readAll();
     
-    AdjDataCompleteInternStreamer reader(m_flashSizeAllDevicesAtTheTimeOfWriting);
+    AdjDataCompleteInternStream reader(m_flashSizeAllDevicesAtTheTimeOfWriting);
     std::shared_ptr<AdjDataCompleteIntern> adjData = reader.decodeAdjBytes(ba);
 
     QCOMPARE(adjData->getAdjHeader().m_deviceName, "Unknown");
@@ -49,7 +49,7 @@ void test_adj_data_decoder::readServerVersionAndDeviceNameForCOM()
     file.open(QIODevice::ReadOnly);
     QByteArray ba = file.readAll();
     
-    AdjDataCompleteInternStreamer reader(m_flashSizeAllDevicesAtTheTimeOfWriting);
+    AdjDataCompleteInternStream reader(m_flashSizeAllDevicesAtTheTimeOfWriting);
     std::shared_ptr<AdjDataCompleteIntern> adjData = reader.decodeAdjBytes(ba);
 
     QCOMPARE(adjData->getAdjHeader().m_deviceName, "Unknown");
@@ -65,7 +65,7 @@ void test_adj_data_decoder::checkChannelRangeAvailability()
     file.open(QIODevice::ReadOnly);
     QByteArray ba = file.readAll();
     
-    AdjDataCompleteInternStreamer reader(m_flashSizeAllDevicesAtTheTimeOfWriting);
+    AdjDataCompleteInternStream reader(m_flashSizeAllDevicesAtTheTimeOfWriting);
     std::shared_ptr<AdjDataCompleteIntern> adjData = reader.decodeAdjBytes(ba);
 
     QVERIFY(adjData->isChannelRangeAvailable("m0", "480V"));

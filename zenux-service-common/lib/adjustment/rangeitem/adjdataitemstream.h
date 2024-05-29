@@ -1,14 +1,14 @@
-#ifndef ADJDATAITEMSTREAMER_H
-#define ADJDATAITEMSTREAMER_H
+#ifndef ADJDATAITEMSTREAM_H
+#define ADJDATAITEMSTREAM_H
 
 #include "adjdataitem.h"
 #include <QDataStream>
 
-class AdjDataItemStreamer
+class AdjDataItemStream
 {
 public:
     static void fromStream(AdjDataItem &item, QDataStream& qds);
     static void toStream(AdjDataItem item, QDataStream& qds);
 };
 
-#endif // ADJDATAITEMSTREAMER_H
+#endif // ADJDATAITEMSTREAM_H

@@ -1,5 +1,5 @@
-#ifndef ADJDATACOMPLETEINTERNSTREAMER_H
-#define ADJDATACOMPLETEINTERNSTREAMER_H
+#ifndef ADJDATACOMPLETEINTERNSTREAM_H
+#define ADJDATACOMPLETEINTERNSTREAM_H
 
 #include "adjdataheaderintern.h"
 #include "adjdatacompleteintern.h"
@@ -9,11 +9,11 @@
 
 typedef std::shared_ptr<AdjDataCompleteIntern> AdjDataPtr;
 
-class AdjDataCompleteInternStreamer
+class AdjDataCompleteInternStream
 {
 public:
-    AdjDataCompleteInternStreamer(int maxSize);
-    ~AdjDataCompleteInternStreamer();
+    AdjDataCompleteInternStream(int maxSize);
+    ~AdjDataCompleteInternStream();
 
     AdjDataPtr decodeAdjBytes(QByteArray ba);
 private:
@@ -30,4 +30,4 @@ private:
     bool m_isValid = false;
 };
 
-#endif // ADJDATACOMPLETEINTERNSTREAMER_H
+#endif // ADJDATACOMPLETEINTERNSTREAM_H

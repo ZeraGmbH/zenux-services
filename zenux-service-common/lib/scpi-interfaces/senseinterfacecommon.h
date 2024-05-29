@@ -7,7 +7,7 @@
 #include "i2csettings.h"
 #include "systeminfo.h"
 #include "sensechannelcommon.h"
-#include "adjdatacompleteinternstreamer.h"
+#include "adjdatacompleteinternstream.h"
 #include "adjustmenteepromreadwrite.h"
 
 namespace SenseSystem
