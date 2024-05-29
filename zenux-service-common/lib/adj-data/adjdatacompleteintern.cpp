@@ -27,15 +27,3 @@ void AdjDataCompleteIntern::setChannelRange(QString channelName, QString rangeNa
 {
     m_rangeInfosMap[channelName][rangeName] = adjData;
 }
-
-QMap<QString, QStringList> AdjDataCompleteIntern::getRangeInfos()
-{
-    QMap<QString, QStringList> info;
-    for(auto channelIter = m_rangeInfosMap.cbegin(); channelIter!=m_rangeInfosMap.cend(); ++channelIter) {
-        QString channelName = channelIter.key();
-        const auto& rangeData = channelIter.value();
-        for(auto rangeIter=rangeData.cbegin(); rangeIter!=rangeData.constEnd(); ++rangeIter)
-            info[channelName].append(rangeIter.key());
-    }
-    return info;
-}

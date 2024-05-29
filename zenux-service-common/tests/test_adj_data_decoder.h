@@ -12,10 +12,8 @@ private slots:
     void denyMaxSizeExceed();
 
     void readServerVersionAndDeviceNameForMT();
-    void readMT310s2Ranges();
 
     void readServerVersionAndDeviceNameForCOM();
-    void readCOM5003Ranges();
     void checkChannelRangeAvailability();
 private:
     quint32 m_flashSizeAllDevicesAtTheTimeOfWriting;
