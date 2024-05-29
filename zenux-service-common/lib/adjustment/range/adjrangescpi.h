@@ -1,7 +1,7 @@
 #ifndef ADJRANGESCPI_H
 #define ADJRANGESCPI_H
 
-#include "adjdatarangegroup.h"
+#include "adjdatarange.h"
 #include "scpiconnection.h"
 #include "permissionfunctions.h"
 #include "adjdataitemscpi.h"
@@ -35,8 +35,8 @@ public:
                              PermissionStructAdj permissions = PermissionStructAdj());
     virtual void initSCPIConnection(QString leadingNodes) override;
 
-    void setAdjGroupData(AdjDataRangeGroup groupData);
-    AdjDataRangeGroup getAdjGroupData();
+    void setAdjGroupData(AdjDataRange groupData);
+    AdjDataRange getAdjGroupData();
 
     AdjDataItemScpi* getAdjInterface(QString name);
 
@@ -77,7 +77,7 @@ private:
     QString scpiCmdComputeJustData(QString &scpiInput);
     QString scpiCmdInitJustData(QString &scpiInput); // done in Adjustmentmodule - left for compatibility
 
-    AdjDataRangeGroup m_adjGroupData;
+    AdjDataRange m_adjGroupData;
     AdjDataItemScpi m_gainCorrection;
     AdjDataItemScpi m_phaseCorrection;
     AdjDataItemScpi m_offsetCorrection;

@@ -10,7 +10,7 @@ static constexpr int digits = 4;
 void test_justdata::init()
 {
     scpi = new cSCPI();
-    m_adjDataGroup = new AdjDataRangeGroup;
+    m_adjDataGroup = new AdjDataRange;
     justData = new AdjDataItemScpi({scpi, [] (bool &enable) { enable =true; return true;}, digits}, &m_adjDataGroup->m_gainAdjData);
     justData->initSCPIConnection("sens:m0:8V:corr:offset");
 }
