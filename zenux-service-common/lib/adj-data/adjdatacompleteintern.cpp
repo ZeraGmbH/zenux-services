@@ -1,5 +1,10 @@
 #include "adjdatacompleteintern.h"
 
+bool AdjDataCompleteIntern::isEmpty()
+{
+    return m_rangeInfosMap.isEmpty();
+}
+
 AdjDataHeaderIntern &AdjDataCompleteIntern::getAdjHeader()
 {
     return m_adjHeader;

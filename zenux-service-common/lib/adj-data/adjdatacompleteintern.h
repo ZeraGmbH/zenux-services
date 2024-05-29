@@ -8,7 +8,10 @@
 class AdjDataCompleteIntern
 {
 public:
+    bool isEmpty();
+
     AdjDataHeaderIntern& getAdjHeader();
+
     bool isChannelRangeAvailable(QString channelName, QString rangeName);
     AdjDataRangeGroup getRangeAdjData(QString channelName, QString rangeName);
     void setChannelRange(QString channelName, QString rangeName, AdjDataRangeGroup adjData);

@@ -7,27 +7,24 @@
 #include <QMap>
 #include <memory>
 
+typedef std::shared_ptr<AdjDataCompleteIntern> AdjDataPtr;
+
 class AdjDataCompleteInternStreamer
 {
 public:
     AdjDataCompleteInternStreamer(int maxSize);
     ~AdjDataCompleteInternStreamer();
 
-    bool decodeAdjBytes(QByteArray ba);
-    bool isValid();
-    
-    std::shared_ptr<AdjDataCompleteIntern> getAdjData();
-
+    AdjDataPtr decodeAdjBytes(QByteArray ba);
 private:
-    bool decodeHeader(QDataStream &stream);
-    bool decodeServerVersion(QDataStream &stream);
-    bool decodeDeviceName(QDataStream &stream);
-    bool decodeDeviceVersion(QDataStream &stream);
-    bool decodeSerialNumber(QDataStream &stream);
-    bool decodeAdjTimeStamp(QDataStream &stream);
-    void decodeRanges(QDataStream &stream);
+    bool decodeHeader(QDataStream &stream, AdjDataPtr adjData);
+    bool decodeServerVersion(QDataStream &stream, AdjDataPtr adjData);
+    bool decodeDeviceName(QDataStream &stream, AdjDataPtr adjData);
+    bool decodeDeviceVersion(QDataStream &stream, AdjDataPtr adjData);
+    bool decodeSerialNumber(QDataStream &stream, AdjDataPtr adjData);
+    bool decodeAdjTimeStamp(QDataStream &stream, AdjDataPtr adjData);
+    void decodeRanges(QDataStream &stream, AdjDataPtr adjData);
     
-    std::shared_ptr<AdjDataCompleteIntern> m_adjData;
     int m_maxSize;
     char* m_tmpWorkBuffer = nullptr;
     bool m_isValid = false;

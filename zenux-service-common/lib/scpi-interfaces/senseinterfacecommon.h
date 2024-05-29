@@ -73,7 +73,6 @@ protected:
     void setNotifierSenseMMode();
     void setNotifierSenseChannelCat();
     QStringList getSenseModesSortedById();
-    void decodeAdjustmentDataNextGen(); // WIP
     bool isInvalidAdjDataOrChannelRangeAvail(QString channelName, QString rangeName);
 
     static QString m_version;
@@ -87,8 +86,8 @@ protected:
     NotificationString m_notifierSenseMMode;
     NotificationString m_notifierSenseChannelCat;
 
-    AdjustmentEepromReadWrite m_adjReadWrite;
-    AdjDataCompleteInternStreamer m_adjustmentDecoder;
+    AdjustmentEepromReadWrite m_adjReadWrite; // go??
+    AdjDataPtr m_adjData;
 };
 
 #endif // SENSEINTERFACECOMMON_H

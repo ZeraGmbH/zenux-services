@@ -19,10 +19,12 @@ void test_adj_data_decoder::denyMaxSizeExceed()
     QByteArray ba = file.readAll();
     
     AdjDataCompleteInternStreamer reader1(ba.size());
-    QVERIFY(reader1.decodeAdjBytes(ba));
+    AdjDataPtr data1 = reader1.decodeAdjBytes(ba);
+    QVERIFY(!data1->isEmpty());
     
     AdjDataCompleteInternStreamer reader2(ba.size()-1);
-    QVERIFY(!reader2.decodeAdjBytes(ba));
+    AdjDataPtr data2 = reader2.decodeAdjBytes(ba);
+    QVERIFY(data2->isEmpty());
 }
 
 void test_adj_data_decoder::readServerVersionAndDeviceNameForMT()
@@ -32,8 +34,7 @@ void test_adj_data_decoder::readServerVersionAndDeviceNameForMT()
     QByteArray ba = file.readAll();
     
     AdjDataCompleteInternStreamer reader(m_flashSizeAllDevicesAtTheTimeOfWriting);
-    QVERIFY(reader.decodeAdjBytes(ba));
-    std::shared_ptr<AdjDataCompleteIntern> adjData = reader.getAdjData();
+    std::shared_ptr<AdjDataCompleteIntern> adjData = reader.decodeAdjBytes(ba);
 
     QCOMPARE(adjData->getAdjHeader().m_deviceName, "Unknown");
     QCOMPARE(adjData->getAdjHeader().m_serverVersion, "V1.01");
@@ -49,8 +50,7 @@ void test_adj_data_decoder::readMT310s2Ranges()
     QByteArray ba = file.readAll();
     
     AdjDataCompleteInternStreamer reader(m_flashSizeAllDevicesAtTheTimeOfWriting);
-    reader.decodeAdjBytes(ba);
-    std::shared_ptr<AdjDataCompleteIntern> adjData = reader.getAdjData();
+    std::shared_ptr<AdjDataCompleteIntern> adjData = reader.decodeAdjBytes(ba);
 
     QMap<QString, QStringList> rangesInfos = adjData->getRangeInfos();
     QCOMPARE(rangesInfos.size(), 8);
@@ -84,8 +84,7 @@ void test_adj_data_decoder::readServerVersionAndDeviceNameForCOM()
     QByteArray ba = file.readAll();
     
     AdjDataCompleteInternStreamer reader(m_flashSizeAllDevicesAtTheTimeOfWriting);
-    QVERIFY(reader.decodeAdjBytes(ba));
-    std::shared_ptr<AdjDataCompleteIntern> adjData = reader.getAdjData();
+    std::shared_ptr<AdjDataCompleteIntern> adjData = reader.decodeAdjBytes(ba);
 
     QCOMPARE(adjData->getAdjHeader().m_deviceName, "Unknown");
     QCOMPARE(adjData->getAdjHeader().m_serverVersion, "V1.00");
@@ -101,8 +100,7 @@ void test_adj_data_decoder::readCOM5003Ranges()
     QByteArray ba = file.readAll();
     
     AdjDataCompleteInternStreamer reader(m_flashSizeAllDevicesAtTheTimeOfWriting);
-    reader.decodeAdjBytes(ba);
-    std::shared_ptr<AdjDataCompleteIntern> adjData = reader.getAdjData();
+    std::shared_ptr<AdjDataCompleteIntern> adjData = reader.decodeAdjBytes(ba);
 
     QMap<QString, QStringList> rangesInfos = adjData->getRangeInfos();
     QCOMPARE(rangesInfos.size(), 6);
@@ -134,8 +132,7 @@ void test_adj_data_decoder::checkChannelRangeAvailability()
     QByteArray ba = file.readAll();
     
     AdjDataCompleteInternStreamer reader(m_flashSizeAllDevicesAtTheTimeOfWriting);
-    reader.decodeAdjBytes(ba);
-    std::shared_ptr<AdjDataCompleteIntern> adjData = reader.getAdjData();
+    std::shared_ptr<AdjDataCompleteIntern> adjData = reader.decodeAdjBytes(ba);
 
     QVERIFY(adjData->isChannelRangeAvailable("m0", "480V"));
     QVERIFY(!adjData->isChannelRangeAvailable("m0", "48V"));

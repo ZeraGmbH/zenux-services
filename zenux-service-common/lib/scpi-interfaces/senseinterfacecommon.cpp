@@ -18,11 +18,12 @@ SenseInterfaceCommon::SenseInterfaceCommon(cSCPI *scpiInterface,
     m_ctrlFactory(ctrlFactory),
     m_adjReadWrite(i2cSettings->getDeviceNode(),
                    i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress),
-                   I2cMultiplexerFactory::createNullMuxer()),
-    m_adjustmentDecoder(m_adjReadWrite.getMaxSize())
+                   I2cMultiplexerFactory::createNullMuxer())
 {
+    AdjDataCompleteInternStreamer adjustmentDecoder(m_adjReadWrite.getMaxSize());
+    m_adjData = std::make_shared<AdjDataCompleteIntern>();
     if(m_adjReadWrite.readDataCached(cacheFileName))
-        decodeAdjustmentDataNextGen();
+        m_adjData = adjustmentDecoder.decodeAdjBytes(m_adjReadWrite.getData());
 }
 
 SenseInterfaceCommon::~SenseInterfaceCommon()
@@ -119,16 +120,11 @@ void SenseInterfaceCommon::initSCPIConnection(QString leadingNodes)
     addDelegate(cmdParent, "ADJUSTMENT", SCPI::isQuery, m_pSCPIInterface, SenseSystem::cmdStatAdjustment);
 }
 
-void SenseInterfaceCommon::decodeAdjustmentDataNextGen()
-{
-    m_adjustmentDecoder.decodeAdjBytes(m_adjReadWrite.getData());
-}
-
 bool SenseInterfaceCommon::isInvalidAdjDataOrChannelRangeAvail(QString channelName, QString rangeName)
 {
-    if(!m_adjustmentDecoder.isValid())
+    if(m_adjData->isEmpty())
         return true;
-    return m_adjustmentDecoder.getAdjData()->isChannelRangeAvailable(channelName, rangeName);
+    return m_adjData->isChannelRangeAvailable(channelName, rangeName);
 }
 
 bool SenseInterfaceCommon::importAdjData()
@@ -181,15 +177,14 @@ bool SenseInterfaceCommon::importAdjData()
         stream >> s;
         QDateTime DateTime = QDateTime::fromString(QString(s), Qt::TextDate); // datum und uhrzeit übernehmen
 
-        if(m_adjustmentDecoder.isValid()) {
-            std::shared_ptr<AdjDataCompleteIntern> adjDataComplete = m_adjustmentDecoder.getAdjData();
+        if(!m_adjData->isEmpty()) {
             for(auto &channel : m_channelList) {
                 QString channelName = channel->getName();
                 QList<SenseRangeCommon*>& rangeList = channel->getRangeList();
                 for(auto &range : rangeList) {
                     QString rangeName = range->getRangeName();
-                    if(adjDataComplete->isChannelRangeAvailable(channelName, rangeName)) {
-                        AdjDataRangeGroup rangeAdjData = adjDataComplete->getRangeAdjData(channelName, rangeName);
+                    if(m_adjData->isChannelRangeAvailable(channelName, rangeName)) {
+                        AdjDataRangeGroup rangeAdjData = m_adjData->getRangeAdjData(channelName, rangeName);
                         AdjRangeInterface *adjInterface = range->getJustData();
                         adjInterface->setAdjGroupData(rangeAdjData);
                     }
