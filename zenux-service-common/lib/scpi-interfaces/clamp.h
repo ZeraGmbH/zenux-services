@@ -53,8 +53,8 @@ public:
     QString getSerial();
     virtual QString exportXMLString(int indent = 1) override;
     bool importXMLDocument(QDomDocument *qdomdoc, bool ignoreType);
-    bool exportAdjData(QDateTime dateTimeWrite);
-    bool importAdjData();
+    bool exportClampAdjData(QDateTime dateTimeWrite);
+    bool importClampAdjData();
 
 protected:
     void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
