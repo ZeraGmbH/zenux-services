@@ -14,21 +14,21 @@ public:
     QString getCTRLVersion() override;
     QString getSerialNumber() override;
 
-    void setDeviceName(QString name);
-    void setPCBVersion(QString version);
-    void setLCAVersion(QString version);
-    void setCTRLVersion(QString version);
-    void setSerialNumber(QString serno);
+    static void setDeviceName(QString name);
+    static void setPCBVersion(QString version);
+    static void setLCAVersion(QString version);
+    static void setCTRLVersion(QString version);
+    static void setSerialNumber(QString serno);
 
     QString getSysCTRLVersion() override;
     QString getSysPCBVersion() override;
 
 private:
-    QString m_deviceName = "Unknown";
-    QString m_pcpVersion = "Unknown";
-    QString m_FPGAVersion = "Unknown";
-    QString m_ctrlVersion = "Unknown";
-    QString m_serialNumber = "Unknown";
+    static QString m_deviceName;
+    static QString m_pcpVersion;
+    static QString m_FPGAVersion;
+    static QString m_ctrlVersion;
+    static QString m_serialNumber;
 };
 
 #endif // MT310S2SYSTEMINFOMOCK_H

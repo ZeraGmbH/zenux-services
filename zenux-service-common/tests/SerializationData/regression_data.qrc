@@ -1,6 +1,0 @@
-<RCC>
-    <qresource prefix="/">
-        <file>mt310s2-050059467.eeprom</file>
-        <file>mt310s2-050059467.xml</file>
-    </qresource>
-</RCC>

@@ -1,5 +1,11 @@
 #include "mt310s2systeminfomock.h"
 
+QString Mt310s2SystemInfoMock::m_deviceName = "Unknown";
+QString Mt310s2SystemInfoMock::m_pcpVersion = "Unknown";
+QString Mt310s2SystemInfoMock::m_FPGAVersion = "Unknown";
+QString Mt310s2SystemInfoMock::m_ctrlVersion = "Unknown";
+QString Mt310s2SystemInfoMock::m_serialNumber = "Unknown";
+
 Mt310s2SystemInfoMock::Mt310s2SystemInfoMock(AbstractFactoryI2cCtrlPtr ctrlFactory) :
     Mt310s2SystemInfo(ctrlFactory)
 {

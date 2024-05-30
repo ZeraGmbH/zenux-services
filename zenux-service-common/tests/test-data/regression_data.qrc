@@ -4,7 +4,11 @@
         <file>export_internal_initial_mt310s2.eeprom</file>
         <file>export_mt310s2_short.eeprom</file>
         <file>export_mt310s2_bit_flipped.eeprom</file>
+        <file>gain_compute.xml</file>
+        <file>gain_nodes_write.xml</file>
         <file>mt310s2-050059467.eeprom</file>
         <file>mt310s2-050059467.xml</file>
+        <file>phase_compute.xml</file>
+        <file>phase_nodes_write.xml</file>
     </qresource>
 </RCC>
