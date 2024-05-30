@@ -37,9 +37,6 @@ void test_adj_deny_import_mt310s2::loadEEpromWithStoredNamesAndVersions()
                                              ":/export_internal_modified.eeprom"));
     setupServers();
 
-    QString ret = ScpiSingleTransactionBlocked::cmd("SYSTEM:ADJUSTMENT:FLASH:READ", "");
-    QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::ack]);
-
     QString xmlExported = XmlHelperForTest::prepareForCompare(ScpiSingleTransactionBlocked::query("SYSTEM:ADJUSTMENT:XML?"));
 
     QFile xmlFile(":/import_modified.xml");

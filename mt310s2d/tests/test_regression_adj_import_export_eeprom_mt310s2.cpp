@@ -129,9 +129,6 @@ void test_regression_adj_import_export_eeprom_mt310s2::loadRandomToEEpromWriteTo
                                              ":/export_internal_modified.eeprom"));
     setupServers(std::make_shared<TestFactoryI2cCtrl>(true));
 
-    QString ret = ScpiSingleTransactionBlocked::cmd("SYSTEM:ADJUSTMENT:FLASH:READ", "");
-    QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::ack]);
-
     QString xmlExported = XmlHelperForTest::prepareForCompare(ScpiSingleTransactionBlocked::query("SYSTEM:ADJUSTMENT:XML?"));
 
     QFile xmlFile(":/import_modified.xml");

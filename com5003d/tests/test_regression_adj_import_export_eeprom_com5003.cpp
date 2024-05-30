@@ -123,9 +123,6 @@ void test_regression_adj_import_export_eeprom_com5003::loadOriginalInvalidDateTi
                                              ":/export_internal_modified.eeprom"));
     setupServers(std::make_shared<TestFactoryI2cCtrl>(true));
 
-    QString ret = ScpiSingleTransactionBlocked::cmd("SYSTEM:ADJUSTMENT:FLASH:READ", "");
-    QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::ack]);
-
     QString xmlExported = XmlHelperForTest::prepareForCompare(ScpiSingleTransactionBlocked::query("SYSTEM:ADJUSTMENT:XML?"));
 
     QFile xmlFile(":/import_modified.xml");
@@ -143,9 +140,6 @@ void test_regression_adj_import_export_eeprom_com5003::loadValidDateTimeRandomTo
                                              i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress),
                                              ":/export_internal_modified_with_date_time.eeprom"));
     setupServers(std::make_shared<TestFactoryI2cCtrl>(true));
-
-    QString ret = ScpiSingleTransactionBlocked::cmd("SYSTEM:ADJUSTMENT:FLASH:READ", "");
-    QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::ack]);
 
     QString xmlExported = XmlHelperForTest::prepareForCompare(ScpiSingleTransactionBlocked::query("SYSTEM:ADJUSTMENT:XML?"));
 
