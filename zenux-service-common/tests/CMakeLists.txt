@@ -25,7 +25,7 @@ SETUP_SERVICE_COMMON_TESTS(
     test_sense_settings
     test_fpga_settings_regression
     test_criticalstatusmock
-    test_adj_data_serialization
+    test_adj_procedure
     )
 
 target_sources(test_hotpluggablecontrollercontainer
@@ -36,15 +36,15 @@ target_sources(test_hotpluggablecontrollercontainer
 
 target_sources(test_adj_data_cache
   PRIVATE
-  AdjustedData/regression_data.qrc
+  test-data/regression_data.qrc
 )
 
 target_sources(test_adj_data_decoder
   PRIVATE
-  AdjustedData/regression_data.qrc
+  test-data/regression_data.qrc
 )
 
-target_sources(test_adj_data_serialization
+target_sources(test_adj_procedure
   PRIVATE
-  SerializationData/regression_data.qrc
+  test-data/regression_data.qrc
 )

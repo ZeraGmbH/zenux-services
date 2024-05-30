@@ -13,8 +13,6 @@ public:
     bool dataRead(); // false if we were not able to read required information
     virtual QString getSysCTRLVersion();
     virtual QString getSysPCBVersion();
-    void setDeviceName(QString devName);
-    void setSerialNum(QString serialNum);
 
 private:
     AbstractFactoryI2cCtrlPtr m_ctrlFactory;
