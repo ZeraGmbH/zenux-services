@@ -83,7 +83,6 @@ void SenseInterfaceCommon::computeSenseAdjData()
 
 void SenseInterfaceCommon::registerResource(RMConnection *rmConnection, quint16 port)
 {
-    m_msgNrList.clear();
     for(auto channel : qAsConst(m_channelList)) {
         register1Resource(rmConnection, NotZeroNumGen::getMsgNr(), QString("SENSE;%1;1;%2;%3;")
                                                                        .arg(channel->getName(), channel->getDescription())

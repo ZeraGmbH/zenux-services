@@ -12,12 +12,12 @@ void ResourceRegisterTransaction::register1Resource(QString registerParameter)
 {
     QString cmd = QString("RESOURCE:ADD");
     quint32 msgnr = NotZeroNumGen::getMsgNr();
-    m_msgNrList.append(msgnr);
+    m_msgNrListRegister.append(msgnr);
     m_rmConnection->SendCommand(cmd, registerParameter, msgnr);
 }
 
 void ResourceRegisterTransaction::resourceManagerAck(quint32 msgnr)
 {
-    if (m_msgNrList.removeOne(msgnr) && m_msgNrList.isEmpty())
-        emit registerDone();
+    if (m_msgNrListRegister.removeOne(msgnr) && m_msgNrListRegister.isEmpty())
+        emit registerRdy();
 }

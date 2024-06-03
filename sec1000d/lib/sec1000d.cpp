@@ -228,6 +228,7 @@ void cSEC1000dServer::onResourceReady()
 {
     Q_ASSERT(m_pendingResources > 0);
     m_pendingResources--;
+    disconnect(static_cast<cResource*>(sender()), &cResource::registerRdy, this, &cSEC1000dServer::onResourceReady);
     if(m_pendingResources == 0) {
         EthSettings *ethSettings = m_settings->getEthSettings();
         m_myServer->startServer(ethSettings->getPort(EthSettings::protobufserver));
