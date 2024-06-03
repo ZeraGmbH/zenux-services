@@ -376,6 +376,7 @@ void cCOM5003dServer::onResourceReady()
 {
     Q_ASSERT(m_pendingResources > 0);
     m_pendingResources--;
+    disconnect(static_cast<cResource*>(sender()), &cResource::registerRdy, this, &cCOM5003dServer::onResourceReady);
     if(m_pendingResources == 0) {
         EthSettings *ethSettings = m_settings->getEthSettings();
         m_myServer->startServer(ethSettings->getPort(EthSettings::protobufserver));

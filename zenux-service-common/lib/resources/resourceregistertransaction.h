@@ -11,12 +11,12 @@ public:
     ResourceRegisterTransaction(RMConnection *rmConnection);
     void register1Resource(QString registerParameter);
 signals:
-    void registerDone();
+    void registerRdy();
 private slots:
     void resourceManagerAck(quint32 msgnr);
 private:
     RMConnection *m_rmConnection;
-    QList<quint32> m_msgNrList;
+    QList<quint32> m_msgNrListRegister;
 };
 
 #endif // RESOURCEREGISTERTRANSACTION_H

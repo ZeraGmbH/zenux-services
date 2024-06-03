@@ -59,7 +59,7 @@ Com5003SenseInterface::Com5003SenseInterface(cSCPI *scpiInterface,
     // we must use a statemachine because we have to synchronize sending of notifier
     // otherwise moduls using this notifier will crash because resources are not registered properly
 
-    m_UnregisterSenseState.addTransition(this, &Com5003SenseInterface::registerRdy, &m_RegisterSenseState);
+    m_UnregisterSenseState.addTransition(this, &Com5003SenseInterface::unregisterRdy, &m_RegisterSenseState);
     m_RegisterSenseState.addTransition(this, &Com5003SenseInterface::registerRdy, &m_NotifySenseState);
     m_ChangeSenseModeMachine.addState(&m_UnregisterSenseState);
     m_ChangeSenseModeMachine.addState(&m_RegisterSenseState);
@@ -223,7 +223,6 @@ AdjRangeScpi *Com5003SenseInterface::createJustScpiInterfaceWithAtmelPermission(
 void Com5003SenseInterface::unregisterSense()
 {
     SenseChannelCommon* pChannel;
-    m_msgNrList.clear();
     for (int i = 0; i < 6; i++) {
         pChannel = m_channelList.at(i);
         unregister1Resource(m_rmConnection, NotZeroNumGen::getMsgNr(), QString("SENSE;%1;")

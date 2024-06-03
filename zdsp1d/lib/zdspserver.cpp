@@ -239,7 +239,7 @@ void ZDspServer::doIdentAndRegister()
     EthSettings *ethSettings = m_settings->getEthSettings();
     quint32 port = ethSettings->getPort(EthSettings::protobufserver);
 
-    connect(&m_resourceRegister, &ResourceRegisterTransaction::registerDone, this, &ZDspServer::onResourceReady);
+    connect(&m_resourceRegister, &ResourceRegisterTransaction::registerRdy, this, &ZDspServer::onResourceReady);
     m_resourceRegister.register1Resource(QString("DSP;DSP1;;ADSP Signal Processor;%1;").arg(port));
     TDspVar* pDspVar = &CmdListVar;
     m_resourceRegister.register1Resource(QString("DSP1;PGRMEMI;%1;DSP ProgramMemory(Interrupt);%2;").arg(pDspVar->size).arg(port));
@@ -251,6 +251,7 @@ void ZDspServer::doIdentAndRegister()
 
 void ZDspServer::onResourceReady()
 {
+    disconnect(&m_resourceRegister, &ResourceRegisterTransaction::registerRdy, this, &ZDspServer::onResourceReady);
     EthSettings *ethSettings = m_settings->getEthSettings();
     myProtonetServer->startServer(ethSettings->getPort(EthSettings::protobufserver)); // and can start the server now
     if (ethSettings->isSCPIactive()) {
