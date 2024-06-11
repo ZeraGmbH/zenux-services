@@ -1,43 +1,43 @@
-#include "test_auto_journal_logger.h"
-#include "autojournallogger.h"
-#include "journallogcreator.h"
+#include "test_periodic_log_generator.h"
+#include "periodicloggenerator.h"
+#include "logcreatorjournalsimple.h"
 #include "testonofffilegenerator.h"
 #include "timerfactoryqtfortest.h"
 #include "timemachinefortest.h"
 #include <QFile>
 #include <QTest>
 
-QTEST_MAIN(test_auto_journal_logger)
+QTEST_MAIN(test_periodic_log_generator)
 
 constexpr int loggerPerioudMs = 100;
 static const char* fullLogFileName = "/tmp/test-zenux-log";
 
 static AbstractLogCreatorPtr createLogCreator()
 {
-    return std::make_unique<JournalLogCreator>(fullLogFileName);
+    return std::make_unique<LogCreatorJournalSimple>(fullLogFileName);
 }
 
-void test_auto_journal_logger::init()
+void test_periodic_log_generator::init()
 {
     TimerFactoryQtForTest::enableTest();
     TimeMachineForTest::reset();
     TestOnOffFileGenerator::deleteOnFile();
     deleteLogFile();
 
-    AutoJournalLogger logger(createLogCreator());
+    PeriodicLogGenerator logger(createLogCreator());
     QVERIFY(!QFile::exists(fullLogFileName));
 }
 
-void test_auto_journal_logger::manualLog()
+void test_periodic_log_generator::manualLog()
 {
-    AutoJournalLogger logger(createLogCreator());
+    PeriodicLogGenerator logger(createLogCreator());
     QVERIFY(logger.saveLogFileNow());
     QVERIFY(QFile::exists(fullLogFileName));
 }
 
-void test_auto_journal_logger::periodicLog()
+void test_periodic_log_generator::periodicLog()
 {
-    AutoJournalLogger logger(createLogCreator());
+    PeriodicLogGenerator logger(createLogCreator());
     logger.startPeriodicLog(loggerPerioudMs);
     QVERIFY(QFile::exists(fullLogFileName)); // first log on start
 
@@ -50,9 +50,9 @@ void test_auto_journal_logger::periodicLog()
     QVERIFY(QFile::exists(fullLogFileName));
 }
 
-void test_auto_journal_logger::periodicLogAndStop()
+void test_periodic_log_generator::periodicLogAndStop()
 {
-    AutoJournalLogger logger(createLogCreator());
+    PeriodicLogGenerator logger(createLogCreator());
     logger.startPeriodicLog(loggerPerioudMs);
 
     TimeMachineForTest::getInstance()->processTimers(loggerPerioudMs);
@@ -65,7 +65,7 @@ void test_auto_journal_logger::periodicLogAndStop()
     QVERIFY(!QFile::exists(fullLogFileName));
 }
 
-void test_auto_journal_logger::deleteLogFile()
+void test_periodic_log_generator::deleteLogFile()
 {
     QFile::remove(fullLogFileName);
 }
