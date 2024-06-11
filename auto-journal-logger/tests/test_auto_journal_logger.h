@@ -11,6 +11,8 @@ private slots:
     void manualLog();
     void periodicLog();
     void periodicLogAndStop();
+private:
+    void deleteLogFile();
 };
 
 #endif // TEST_AUTO_JOURNAL_LOGGER_H

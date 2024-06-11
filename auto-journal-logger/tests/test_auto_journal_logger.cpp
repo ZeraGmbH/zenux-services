@@ -3,57 +3,64 @@
 #include "testonofffilegenerator.h"
 #include "timerfactoryqtfortest.h"
 #include "timemachinefortest.h"
+#include <QFile>
 #include <QTest>
 
 QTEST_MAIN(test_auto_journal_logger)
 
 constexpr int loggerPerioudMs = 100;
+static const char* fullLogFileName = "/tmp/test-zenux-log";
 
 void test_auto_journal_logger::init()
 {
     TimerFactoryQtForTest::enableTest();
     TimeMachineForTest::reset();
     TestOnOffFileGenerator::deleteOnFile();
-    TestOnOffFileGenerator::deleteLogFile();
+    deleteLogFile();
 
-    AutoJournalLogger logger(TestOnOffFileGenerator::getTestLogPath());
-    QVERIFY(!QFile::exists(logger.getLogFilePath()));
+    AutoJournalLogger logger(fullLogFileName);
+    QVERIFY(!QFile::exists(fullLogFileName));
 }
 
 void test_auto_journal_logger::manualLog()
 {
-    AutoJournalLogger logger(TestOnOffFileGenerator::getTestLogPath());
+    AutoJournalLogger logger(fullLogFileName);
     QVERIFY(logger.saveLogFileNow());
-    QVERIFY(QFile::exists(logger.getLogFilePath()));
+    QVERIFY(QFile::exists(fullLogFileName));
 }
 
 void test_auto_journal_logger::periodicLog()
 {
-    AutoJournalLogger logger(TestOnOffFileGenerator::getTestLogPath());
+    AutoJournalLogger logger(fullLogFileName);
     logger.startPeriodicLog(loggerPerioudMs);
-    QVERIFY(QFile::exists(logger.getLogFilePath())); // first log on start
+    QVERIFY(QFile::exists(fullLogFileName)); // first log on start
 
-    TestOnOffFileGenerator::deleteLogFile();
+    deleteLogFile();
     TimeMachineForTest::getInstance()->processTimers(loggerPerioudMs);
-    QVERIFY(QFile::exists(logger.getLogFilePath()));
+    QVERIFY(QFile::exists(fullLogFileName));
 
-    TestOnOffFileGenerator::deleteLogFile();
+    deleteLogFile();
     TimeMachineForTest::getInstance()->processTimers(loggerPerioudMs);
-    QVERIFY(QFile::exists(logger.getLogFilePath()));
+    QVERIFY(QFile::exists(fullLogFileName));
 }
 
 void test_auto_journal_logger::periodicLogAndStop()
 {
-    AutoJournalLogger logger(TestOnOffFileGenerator::getTestLogPath());
+    AutoJournalLogger logger(fullLogFileName);
     logger.startPeriodicLog(loggerPerioudMs);
 
     TimeMachineForTest::getInstance()->processTimers(loggerPerioudMs);
-    QVERIFY(QFile::exists(logger.getLogFilePath()));
+    QVERIFY(QFile::exists(fullLogFileName));
 
-    TestOnOffFileGenerator::deleteLogFile();
+    deleteLogFile();
     logger.stopPeriodicLog();
 
     TimeMachineForTest::getInstance()->processTimers(loggerPerioudMs);
-    QVERIFY(!QFile::exists(logger.getLogFilePath()));
+    QVERIFY(!QFile::exists(fullLogFileName));
+}
+
+void test_auto_journal_logger::deleteLogFile()
+{
+    QFile::remove(fullLogFileName);
 }
 
