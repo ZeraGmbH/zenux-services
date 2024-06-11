@@ -9,7 +9,7 @@ file(GLOB HEADER
 add_library(auto-journal-logger-lib STATIC
     ${HEADER}
     ${SOURCES}
-    )
+)
 
 target_include_directories(auto-journal-logger-lib
     PUBLIC

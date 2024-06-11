@@ -1,9 +1,9 @@
-#ifndef TEST_AUTO_JOURNAL_LOGGER_H
-#define TEST_AUTO_JOURNAL_LOGGER_H
+#ifndef TEST_PERIODIC_LOG_GENERATOR_H
+#define TEST_PERIODIC_LOG_GENERATOR_H
 
 #include <QObject>
 
-class test_auto_journal_logger : public QObject
+class test_periodic_log_generator : public QObject
 {
     Q_OBJECT
 private slots:
@@ -16,4 +16,4 @@ private:
 
 };
 
-#endif // TEST_AUTO_JOURNAL_LOGGER_H
+#endif // TEST_PERIODIC_LOG_GENERATOR_H

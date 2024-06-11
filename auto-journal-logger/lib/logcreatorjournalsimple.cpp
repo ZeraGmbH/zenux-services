@@ -1,11 +1,11 @@
-#include "journallogcreator.h"
+#include "logcreatorjournalsimple.h"
 
-JournalLogCreator::JournalLogCreator(QString logFileFullName) :
+LogCreatorJournalSimple::LogCreatorJournalSimple(QString logFileFullName) :
     m_logFileFullName(logFileFullName)
 {
 }
 
-bool JournalLogCreator::storeLogs()
+bool LogCreatorJournalSimple::storeLogs()
 {
     QString command = "journalctl -o short-precise --boot >> " + m_logFileFullName;
     if(system(qPrintable(command)) == 0)
