@@ -1,8 +1,8 @@
 #include "autojournallogger.h"
 #include <timerfactoryqt.h>
 
-AutoJournalLogger::AutoJournalLogger(QString logFileDir) :
-    m_logFileDir(logFileDir)
+AutoJournalLogger::AutoJournalLogger(QString logFileFullName) :
+    m_logFileFullName(logFileFullName)
 {
 }
 
@@ -20,9 +20,9 @@ void AutoJournalLogger::stopPeriodicLog()
     m_timer->stop();
 }
 
-QString AutoJournalLogger::getLogFilePath()
+QString AutoJournalLogger::getLogFileFullName()
 {
-    return m_logFileDir + "/zenux-logfile";
+    return m_logFileFullName;
 }
 
 void AutoJournalLogger::onSaveTimer()
@@ -32,7 +32,7 @@ void AutoJournalLogger::onSaveTimer()
 
 bool AutoJournalLogger::saveLogFileNow()
 {
-    QString command = "journalctl -o short-precise --boot >> " + getLogFilePath();
+    QString command = "journalctl -o short-precise --boot >> " + getLogFileFullName();
     if(system(qPrintable(command)) == 0)
         return true;
     qWarning("AutoJournalLogger: System command 'journalctl' error");

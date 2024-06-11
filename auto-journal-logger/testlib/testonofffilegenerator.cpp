@@ -1,5 +1,4 @@
 #include "testonofffilegenerator.h"
-#include "autojournallogger.h"
 #include "onofffilewatcher.h"
 #include <QDir>
 #include <QFile>
@@ -17,15 +16,3 @@ void TestOnOffFileGenerator::deleteOnFile()
 {
     QFile::remove(OnOffFileWatcher::getOnOffFullPath());
 }
-
-QString TestOnOffFileGenerator::getTestLogPath()
-{
-    return "/tmp/";
-}
-
-void TestOnOffFileGenerator::deleteLogFile()
-{
-    AutoJournalLogger logger(getTestLogPath());
-    QFile::remove(logger.getLogFilePath());
-}
-
