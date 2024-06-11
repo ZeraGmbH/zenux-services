@@ -85,6 +85,7 @@ function(SETUP_TESTS)
     endforeach()
 endfunction()
 
+add_subdirectory(auto-journal-logger)
 add_subdirectory(com5003d)
 add_subdirectory(mt310s2d)
 add_subdirectory(scripts)
