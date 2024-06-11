@@ -1,6 +1,7 @@
 #ifndef AUTOJOURNALLOGGER_H
 #define AUTOJOURNALLOGGER_H
 
+#include "abstractlogcreator.h"
 #include <timertemplateqt.h>
 #include <QObject>
 
@@ -8,9 +9,7 @@ class AutoJournalLogger : public QObject
 {
     Q_OBJECT
 public:
-    AutoJournalLogger(QString logFileFullName);
-    QString getLogFileFullName();
-
+    AutoJournalLogger(AbstractLogCreatorPtr logCreator);
     bool saveLogFileNow();
     void startPeriodicLog(int storeFreqMs);
     void stopPeriodicLog();
@@ -18,7 +17,7 @@ public:
 private slots:
     void onSaveTimer();
 private:
-    QString m_logFileFullName;
+    AbstractLogCreatorPtr m_logCreator;
     TimerTemplateQtPtr m_timer;
 };
 
