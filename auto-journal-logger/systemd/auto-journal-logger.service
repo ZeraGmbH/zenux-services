@@ -5,6 +5,7 @@ Description=Auto Store Journal and dumps
 ExecStart=/usr/bin/auto-journal-logger
 Type=simple
 StandardOutput=journal
+Requires=auto-journal-logger.socket
 
 [Install]
 WantedBy=multi-user.target
