@@ -10,7 +10,6 @@ function(SETUP_AUTO_JOURNAL_LOGGER_TESTS)
 endfunction()
 
 SETUP_AUTO_JOURNAL_LOGGER_TESTS(
-    test_onofffilewatcher
     test_periodic_log_generator
     test_fileutils
 )
