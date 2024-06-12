@@ -1,15 +1,15 @@
-#ifndef PERIODICLOGGENERATOR_H
-#define PERIODICLOGGENERATOR_H
+#ifndef PERIODICLOGGER_H
+#define PERIODICLOGGER_H
 
 #include "abstractlogcreator.h"
 #include <timertemplateqt.h>
 #include <QObject>
 
-class PeriodicLogGenerator : public QObject
+class PeriodicLogger : public QObject
 {
     Q_OBJECT
 public:
-    PeriodicLogGenerator(AbstractLogCreatorPtr logCreator);
+    PeriodicLogger(AbstractLogCreatorPtr logCreator);
     bool saveLogFileNow();
     void startPeriodicLog(int storeFreqMs);
     void stopPeriodicLog();
@@ -21,4 +21,4 @@ private:
     TimerTemplateQtPtr m_timer;
 };
 
-#endif // PERIODICLOGGENERATOR_H
+#endif // PERIODICLOGGER_H

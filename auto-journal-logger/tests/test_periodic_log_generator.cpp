@@ -1,5 +1,5 @@
 #include "test_periodic_log_generator.h"
-#include "periodicloggenerator.h"
+#include "periodiclogger.h"
 #include "logcreatorjournalsimple.h"
 #include "testonofffilegenerator.h"
 #include "timerfactoryqtfortest.h"
@@ -24,20 +24,20 @@ void test_periodic_log_generator::init()
     TestOnOffFileGenerator::deleteOnFile();
     deleteLogFile();
 
-    PeriodicLogGenerator logger(createLogCreator());
+    PeriodicLogger logger(createLogCreator());
     QVERIFY(!QFile::exists(fullLogFileName));
 }
 
 void test_periodic_log_generator::manualLog()
 {
-    PeriodicLogGenerator logger(createLogCreator());
+    PeriodicLogger logger(createLogCreator());
     QVERIFY(logger.saveLogFileNow());
     QVERIFY(QFile::exists(fullLogFileName));
 }
 
 void test_periodic_log_generator::periodicLog()
 {
-    PeriodicLogGenerator logger(createLogCreator());
+    PeriodicLogger logger(createLogCreator());
     logger.startPeriodicLog(loggerPerioudMs);
     QVERIFY(QFile::exists(fullLogFileName)); // first log on start
 
@@ -52,7 +52,7 @@ void test_periodic_log_generator::periodicLog()
 
 void test_periodic_log_generator::periodicLogAndStop()
 {
-    PeriodicLogGenerator logger(createLogCreator());
+    PeriodicLogger logger(createLogCreator());
     logger.startPeriodicLog(loggerPerioudMs);
 
     TimeMachineForTest::getInstance()->processTimers(loggerPerioudMs);
