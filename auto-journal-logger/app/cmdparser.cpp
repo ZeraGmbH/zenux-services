@@ -31,7 +31,7 @@ const QString CmdParser::PlausiCheck(SimpleCmdData *pCmd, const QVariantList &pa
         if(m_logger->isLogActive())
             errInfo.append(QStringLiteral("Logger is already running"));
         if(!FileUtils::dirExists(params[0].toString()))
-            errInfo.append(QStringLiteral("Parameter LogFileNameFull %1 is invalid").arg(params[1].toString()));
+            errInfo.append(QStringLiteral("Parameter LogFileNameFull %1 is invalid - dir exists???").arg(params[1].toString()));
         if(params[1].toInt() < 10 || params[1].toInt() > 1000)
             errInfo.append(QStringLiteral("Parameter LogFrequency out of limits: %1 allowed [10;1000]").arg(params[1].toInt()));
         break;
