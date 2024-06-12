@@ -1,7 +1,5 @@
 #include "test_periodic_log_generator.h"
 #include "periodiclogger.h"
-#include "logcreatorjournalsimple.h"
-#include "testonofffilegenerator.h"
 #include "timerfactoryqtfortest.h"
 #include "timemachinefortest.h"
 #include "testlogcreator.h"
@@ -22,7 +20,6 @@ void test_periodic_log_generator::init()
 {
     TimerFactoryQtForTest::enableTest();
     TimeMachineForTest::reset();
-    TestOnOffFileGenerator::deleteOnFile();
     deleteLogFile();
 
     PeriodicLogger logger(createLogCreator());
