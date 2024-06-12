@@ -1,5 +1,14 @@
+file(GLOB SOURCES
+    *.cpp
+    )
+
+file(GLOB HEADER
+    *.h
+    )
+
 add_executable(auto-journal-logger
-    main.cpp
+    ${HEADER}
+    ${SOURCES}
     )
 
 target_link_libraries(auto-journal-logger

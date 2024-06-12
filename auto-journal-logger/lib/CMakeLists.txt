@@ -20,6 +20,7 @@ target_link_libraries(auto-journal-logger-lib
     PUBLIC
     Qt5::Core
     Zera::zera-timers
+    simplecmdiobase
     )
 
 set_target_properties(auto-journal-logger-lib PROPERTIES VERSION ${PROJECT_VERSION})
