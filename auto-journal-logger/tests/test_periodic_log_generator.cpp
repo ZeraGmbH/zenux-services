@@ -4,6 +4,7 @@
 #include "testonofffilegenerator.h"
 #include "timerfactoryqtfortest.h"
 #include "timemachinefortest.h"
+#include "testlogcreator.h"
 #include <QFile>
 #include <QTest>
 
@@ -14,7 +15,7 @@ static const char* fullLogFileName = "/tmp/test-zenux-log";
 
 static AbstractLogCreatorPtr createLogCreator()
 {
-    return std::make_unique<LogCreatorJournalSimple>(fullLogFileName);
+    return std::make_unique<TestLogCreator>(fullLogFileName);
 }
 
 void test_periodic_log_generator::init()
