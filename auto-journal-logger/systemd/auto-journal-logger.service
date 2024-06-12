@@ -1,0 +1,10 @@
+[Unit]
+Description=Auto Store Journal and dumps
+
+[Service]
+ExecStart=/usr/bin/auto-journal-logger
+Type=simple
+StandardOutput=journal
+
+[Install]
+WantedBy=multi-user.target
