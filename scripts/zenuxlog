@@ -1,6 +1,7 @@
 #!/bin/sh
 
 journalctl $@ -b -o short-monotonic \
+    UNIT=auto-journal-logger.service + _SYSTEMD_UNIT=auto-journal-logger.service + \
     UNIT=com5003d.service + _SYSTEMD_UNIT=com5003d.service + \
     UNIT=com5003-fpga1file.service + _SYSTEMD_UNIT=com5003-fpga1file.service + \
     UNIT=mt310s2d.service + _SYSTEMD_UNIT=mt310s2d.service + \
