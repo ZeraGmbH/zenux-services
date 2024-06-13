@@ -4,6 +4,7 @@ Description=Auto Store Journal and dumps
 [Service]
 ExecStart=/usr/bin/auto-journal-logger
 Type=simple
+User=operator
 StandardOutput=journal
 Requires=auto-journal-logger.socket
 
