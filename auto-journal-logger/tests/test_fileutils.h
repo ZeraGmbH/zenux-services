@@ -8,7 +8,10 @@ class test_fileutils : public QObject
     Q_OBJECT
 private slots:
     void dirNotExist();
-    void dirExists();
+    void dirExistsForFileName();
+
+    void dirFindExistingParent();
+    void dirFindExistingParentOfFile();
 };
 
 #endif // TEST_FILEUTILS_H

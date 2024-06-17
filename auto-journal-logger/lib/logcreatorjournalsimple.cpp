@@ -1,18 +1,12 @@
 #include "logcreatorjournalsimple.h"
+#include <QDateTime>
 
-LogCreatorJournalSimple::LogCreatorJournalSimple(QString logFileFullName) :
-    m_logFileFullName(logFileFullName)
+bool LogCreatorJournalSimple::storeLogs(QString dir)
 {
-}
-
-bool LogCreatorJournalSimple::storeLogs()
-{
-    qInfo("Writing journal to %s...", qPrintable(m_logFileFullName));
-    QString command = "journalctl -o short-precise --boot >> " + m_logFileFullName;
-    if(system(qPrintable(command)) == 0) {
-        qInfo("Journal written.");
+    QDateTime now = QDateTime::currentDateTime();
+    QString fileName = dir + "/zenux-" + now.toString("yyyy_MM_dd-HH_mm_ss") + ".log";
+    QString command = "journalctl -o short-precise --boot >> " + fileName;
+    if(system(qPrintable(command)) == 0)
         return true;
-    }
-    qWarning("AutoJournalLogger: System command 'journalctl' error");
     return false;
 }

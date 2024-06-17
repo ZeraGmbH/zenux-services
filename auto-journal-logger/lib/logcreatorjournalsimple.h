@@ -7,10 +7,8 @@
 class LogCreatorJournalSimple : public AbstractLogCreator
 {
 public:
-    LogCreatorJournalSimple(QString logFileFullName);
-    bool storeLogs() override;
-private:
-    QString m_logFileFullName;
+    virtual ~LogCreatorJournalSimple() = default;
+    bool storeLogs(QString dir) override;
 };
 
 #endif // LOGCREATORJOURNALSIMPLE_H
