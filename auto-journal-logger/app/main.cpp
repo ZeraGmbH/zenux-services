@@ -1,7 +1,7 @@
 #include "logcreatorjournalsimple.h"
 #include "cmdparser.h"
 #include "cmdhandler.h"
-#include "cmdserver.h"
+#include <cmdserver.h>
 #include <QCoreApplication>
 
 int main( int argc, char *argv[] )
@@ -15,7 +15,7 @@ int main( int argc, char *argv[] )
     QSimpleCmdParserSocketBase::SetCmdLogGlobal(true); // ??
 
     const int portNo = 5000;
-    CmdServer server;
+    QSimpleCmdServer server;
     if(server.Setup(portNo, parser))
         qInfo("Opened logger server on port %u", portNo);
     else
