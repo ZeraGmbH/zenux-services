@@ -8,6 +8,7 @@
 #include "pcbserver.h"
 #include "devicenodedsp.h"
 #include "zscpi_response_definitions.h"
+#include <timerfactoryqt.h>
 #include <QDebug>
 #include <QCoreApplication>
 #include <QFinalState>
@@ -32,6 +33,7 @@ extern TDspVar UserWorkSpaceVar;
 
 extern cNode* InitCmdTree();
 
+constexpr int loggingIntervalMs = 10000;
 
 static char devavail[6] = "avail";
 static char devnavail[10]= "not avail";
@@ -260,6 +262,29 @@ void ZDspServer::onResourceReady()
         connect(m_pSCPIServer, &QTcpServer::newConnection, this, &ZDspServer::setSCPIConnection);
         m_pSCPIServer->listen(QHostAddress::AnyIPv4, ethSettings->getPort(EthSettings::scpiserver));
     }
+    m_periodLogTimer = TimerFactoryQt::createPeriodic(loggingIntervalMs);
+    connect(m_periodLogTimer.get(), &TimerTemplateQt::sigExpired,
+            this, &ZDspServer::logAndResetMaxLoad);
+    m_periodLogTimer->start();
+}
+
+void ZDspServer::logAndResetMaxLoad()
+{
+    // we need a client to do the job
+    cZDSP1Client dummyClient(0, 0, m_deviceNodeFactory);
+
+    QString queryMaxLoad = "BUSYMAX,1;";
+    QStringList responseSplit = dummyClient.DspVarListRead(queryMaxLoad).split(":"); //example response BUSYMAX:5.7539682;
+    QString loadStr;
+    if (responseSplit.length() > 0)
+        loadStr = responseSplit[1];
+    loadStr.chop(1); //remove last char ';'
+
+    QString commandResetMaxLoad = "BUSYMAX,0.0";
+    if(dummyClient.DspVarWriteRM(commandResetMaxLoad) == ZSCPI::scpiAnswer[ZSCPI::ack])
+        qInfo("Max load: %.1f%%, reset successful !", loadStr.toFloat());
+    else
+        qInfo("Max load: %.1f%%, reset failed !", loadStr.toFloat());
 }
 
 void ZDspServer::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
