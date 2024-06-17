@@ -9,6 +9,7 @@
 #include "dspsettings.h"
 #include "scpiconnection.h"
 #include "settingscontainer.h"
+#include <timertemplateqt.h>
 #include <scpi.h>
 #include <vtcp_server.h>
 #include <xiqnetwrapper.h>
@@ -68,6 +69,8 @@ private slots:
     void connect2RMError();
     void doIdentAndRegister();
     void onResourceReady();
+
+    void logAndResetMaxLoad();
 private:
     void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
 
@@ -182,7 +185,7 @@ private:
 
     int m_retryRMConnect;
     QTimer m_retryTimer;
-
+    TimerTemplateQtPtr m_periodLogTimer;
 };
 
 #endif
