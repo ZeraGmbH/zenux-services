@@ -4,12 +4,10 @@ function(SETUP_AUTO_JOURNAL_LOGGER_TESTS)
         target_link_libraries(${_testname}
             PUBLIC
             auto-journal-logger-lib
-            auto-journal-logger-testlib
         )
     endforeach()
 endfunction()
 
 SETUP_AUTO_JOURNAL_LOGGER_TESTS(
-    test_periodic_log_generator
     test_fileutils
 )

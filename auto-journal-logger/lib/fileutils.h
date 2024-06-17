@@ -6,7 +6,9 @@
 class FileUtils
 {
 public:
-    static bool dirExists(QString fullFileName);
+    static bool dirExistsForFileName(QString fullFileName);
+    static QString getExistingParentNonRootPath(const QString &path);
+    static QString getLocalHostname();
 };
 
 #endif // FILEUTILS_H

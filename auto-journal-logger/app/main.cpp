@@ -1,16 +1,15 @@
+#include "logcreatorjournalsimple.h"
 #include "cmdparser.h"
 #include "cmdhandler.h"
 #include "cmdserver.h"
-#include "periodicloggerwrapper.h"
 #include <QCoreApplication>
 
 int main( int argc, char *argv[] )
 {
     QCoreApplication* app = new QCoreApplication(argc, argv);
 
-    PeriodicLoggerWrapper *logger = new PeriodicLoggerWrapper(app);
-    CmdHandler *handler = new CmdHandler(logger, app);
-    CmdParser *parser = new CmdParser(logger, app);
+    CmdHandler *handler = new CmdHandler(std::make_unique<LogCreatorJournalSimple>(), app);
+    CmdParser *parser = new CmdParser(app);
     parser->SetCmdHandler(handler);
 
     QSimpleCmdParserSocketBase::SetCmdLogGlobal(true); // ??
