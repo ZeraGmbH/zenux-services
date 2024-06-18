@@ -185,7 +185,7 @@ private:
 
     int m_retryRMConnect;
     QTimer m_retryTimer;
-    TimerTemplateQtPtr m_periodLogTimer;
+    TimerTemplateQtPtr m_periodicLogTimer;
 };
 
 #endif
