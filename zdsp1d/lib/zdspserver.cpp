@@ -262,10 +262,10 @@ void ZDspServer::onResourceReady()
         connect(m_pSCPIServer, &QTcpServer::newConnection, this, &ZDspServer::setSCPIConnection);
         m_pSCPIServer->listen(QHostAddress::AnyIPv4, ethSettings->getPort(EthSettings::scpiserver));
     }
-    m_periodLogTimer = TimerFactoryQt::createPeriodic(loggingIntervalMs);
-    connect(m_periodLogTimer.get(), &TimerTemplateQt::sigExpired,
+    m_periodicLogTimer = TimerFactoryQt::createPeriodic(loggingIntervalMs);
+    connect(m_periodicLogTimer.get(), &TimerTemplateQt::sigExpired,
             this, &ZDspServer::logAndResetMaxLoad);
-    m_periodLogTimer->start();
+    m_periodicLogTimer->start();
 }
 
 void ZDspServer::logAndResetMaxLoad()
