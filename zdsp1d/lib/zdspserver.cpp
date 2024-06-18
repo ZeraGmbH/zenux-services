@@ -264,27 +264,28 @@ void ZDspServer::onResourceReady()
     }
     m_periodicLogTimer = TimerFactoryQt::createPeriodic(loggingIntervalMs);
     connect(m_periodicLogTimer.get(), &TimerTemplateQt::sigExpired,
-            this, &ZDspServer::logAndResetMaxLoad);
+            this, &ZDspServer::periodicLogs);
     m_periodicLogTimer->start();
 }
 
-void ZDspServer::logAndResetMaxLoad()
+void ZDspServer::periodicLogs()
 {
     // we need a client to do the job
     cZDSP1Client dummyClient(0, 0, m_deviceNodeFactory);
 
     QString queryMaxLoad = "BUSYMAX,1;";
     QStringList responseSplit = dummyClient.DspVarListRead(queryMaxLoad).split(":"); //example response BUSYMAX:5.7539682;
-    QString loadStr;
+    QString maxLoadStr;
     if (responseSplit.length() > 0)
-        loadStr = responseSplit[1];
-    loadStr.chop(1); //remove last char ';'
+        maxLoadStr = responseSplit[1];
+    maxLoadStr.chop(1); //remove last char ';'
 
     QString commandResetMaxLoad = "BUSYMAX,0.0";
-    if(dummyClient.DspVarWriteRM(commandResetMaxLoad) == ZSCPI::scpiAnswer[ZSCPI::ack])
-        qInfo("Max load: %.1f%%, reset successful !", loadStr.toFloat());
-    else
-        qInfo("Max load: %.1f%%, reset failed !", loadStr.toFloat());
+    QString maxLoadReset = (dummyClient.DspVarWriteRM(commandResetMaxLoad) == ZSCPI::scpiAnswer[ZSCPI::ack]) ?
+                               "Reset successful !" :
+                               "Reset failed !";
+
+    qInfo("Max load: %.1f%%, %s", maxLoadStr.toFloat(), qPrintable(maxLoadReset));
 }
 
 void ZDspServer::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
