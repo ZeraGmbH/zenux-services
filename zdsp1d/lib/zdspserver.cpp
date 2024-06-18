@@ -285,7 +285,7 @@ void ZDspServer::periodicLogs()
                                "Reset successful !" :
                                "Reset failed !";
 
-    qInfo("Max load: %.1f%%, %s", maxLoadStr.toFloat(), qPrintable(maxLoadReset));
+    qInfo("DSP is %s, Max load: %.1f%%, %s", qPrintable(mGetDspStatus()), maxLoadStr.toFloat(), qPrintable(maxLoadReset));
 }
 
 void ZDspServer::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
