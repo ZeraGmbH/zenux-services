@@ -99,6 +99,7 @@ private:
     QList<cZDSP1Client*> m_clientList;
 
     ulong UserWorkSpaceGlobalSegmentAdr;
+    QString m_lastLoadLog;
 
     bool resetDsp();
     bool bootDsp();
