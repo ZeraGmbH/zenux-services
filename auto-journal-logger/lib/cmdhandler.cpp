@@ -36,7 +36,7 @@ void CmdHandler::StartCmd(SimpleCmdData *pCmd, QVariantList params)
                 return;
             }
             QString fileName = path + "/zenux-version.json";
-            versionFile.copy(fileName);
+            versionFile.rename(fileName);
         }
         emit OperationFinish(false, "");
         break;
