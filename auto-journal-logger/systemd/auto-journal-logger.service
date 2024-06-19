@@ -1,12 +1,12 @@
 [Unit]
 Description=Auto Store Journal and dumps
+Requires=auto-journal-logger.socket
 
 [Service]
 ExecStart=/usr/bin/auto-journal-logger
 Type=simple
 User=operator
 StandardOutput=journal
-Requires=auto-journal-logger.socket
 
 [Install]
 WantedBy=multi-user.target
