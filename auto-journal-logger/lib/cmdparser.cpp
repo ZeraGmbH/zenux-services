@@ -6,10 +6,10 @@ CmdParser::CmdParser(QObject *parent) :
     QSimpleCmdParserSocketBase(parent)
 {
     AddCmdInfo("SaveLogAndDumps",
-               CmdParamTypeIdList() << PARAM_TYPE_STRING,
+               CmdParamTypeIdList() << PARAM_TYPE_STRING << PARAM_TYPE_STRING,
                CMD_SAVE_LOG_AND_DUMPS,
                true,
-               QStringLiteral("Parameter: DestDir\nReturn: Log status info"));
+               QStringLiteral("Parameter: DestDir,VersionInfoFilePath(empty allowed)\nReturn: Log status info"));
 }
 
 QString CmdParser::GetParserName()
@@ -34,6 +34,9 @@ const QString CmdParser::PlausiCheck(SimpleCmdData *pCmd, const QVariantList &pa
             if(path != parentPath)
                 errInfo.append(QStringLiteral("Parameter DestDir '%1' invalid!").arg(params[0].toString()));
         }
+        QString versionFilePath = params[1].toString();
+        if(!versionFilePath.isEmpty() && !FileUtils::dirExistsForFileName(versionFilePath))
+            errInfo.append(QStringLiteral("Parameter VersionInfoFilePath '%1' points to non existing dir!").arg(params[1].toString()));
         break;
     }
     QString strRet;
