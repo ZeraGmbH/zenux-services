@@ -289,10 +289,14 @@ void ZDspServer::periodicLogs()
                       arg(mGetDspStatus()).
                       arg(maxLoad).
                       arg(maxLoadReset);
-    if(resetOk)
-        qInfo("%s", qPrintable(message));
-    else
-        qWarning("%s", qPrintable(message));
+
+    if(m_lastLoadLog != message) {
+        m_lastLoadLog = message;
+        if(resetOk)
+            qInfo("%s", qPrintable(message));
+        else
+            qWarning("%s", qPrintable(message));
+    }
 }
 
 void ZDspServer::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
