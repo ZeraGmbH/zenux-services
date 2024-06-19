@@ -285,14 +285,17 @@ void ZDspServer::periodicLogs()
     QString commandResetMaxLoad = "BUSYMAX,0.0";
     bool resetOk = dummyClient.DspVarWriteRM(commandResetMaxLoad) == ZSCPI::scpiAnswer[ZSCPI::ack];
     QString maxLoadReset = resetOk ? "Reset successful" : "Reset failed !";
+
+    QString dspStatus = mGetDspStatus();
+
     QString message = QString("DSP is %1, Max load: %2%, %3").
-                      arg(mGetDspStatus()).
+                      arg(dspStatus).
                       arg(maxLoad).
                       arg(maxLoadReset);
 
     if(m_lastLoadLog != message) {
         m_lastLoadLog = message;
-        if(resetOk)
+        if(resetOk && (dspStatus == dsprunning))
             qInfo("%s", qPrintable(message));
         else
             qWarning("%s", qPrintable(message));
