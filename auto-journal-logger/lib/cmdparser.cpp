@@ -35,8 +35,11 @@ const QString CmdParser::PlausiCheck(SimpleCmdData *pCmd, const QVariantList &pa
                 errInfo.append(QStringLiteral("Parameter DestDir '%1' invalid!").arg(params[0].toString()));
         }
         QString versionFilePath = params[1].toString();
-        if(!versionFilePath.isEmpty() && !FileUtils::dirExistsForFileName(versionFilePath))
-            errInfo.append(QStringLiteral("Parameter VersionInfoFilePath '%1' points to non existing dir!").arg(params[1].toString()));
+        if(!versionFilePath.isEmpty()) {
+            QFile versionFile(versionFilePath);
+            if(!versionFile.exists())
+                errInfo.append(QStringLiteral("VersionInfoFilePath: File '%1' does not exist!").arg(versionFilePath));
+        }
         break;
     }
     QString strRet;

@@ -31,12 +31,11 @@ void CmdHandler::StartCmd(SimpleCmdData *pCmd, QVariantList params)
         QString versionFilePath = params[1].toString();
         if(!versionFilePath.isEmpty()) {
             QFile versionFile(versionFilePath);
-            if(!versionFile.exists()) {
-                emit OperationFinish(true, QStringLiteral("Version file %1 does not exist").arg(versionFilePath));
+            QString fileName = path + "/zenux-version.json";
+            if(!versionFile.rename(fileName)) {
+                emit OperationFinish(true, QStringLiteral("Could not move version file to %1").arg(fileName));
                 return;
             }
-            QString fileName = path + "/zenux-version.json";
-            versionFile.rename(fileName);
         }
         emit OperationFinish(false, "");
         break;
