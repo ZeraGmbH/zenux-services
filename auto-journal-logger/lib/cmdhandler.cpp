@@ -26,10 +26,12 @@ void CmdHandler::StartCmd(SimpleCmdData *pCmd, QVariantList params)
             emit OperationFinish(true, QStringLiteral("Could not create dir '%1'").arg(path));
             return;
         }
+
         if(!m_logGenerator->storeLogs(path)) {
             emit OperationFinish(true, QStringLiteral("Could not write journal").arg(path));
             return;
         }
+
         QString coreFilePath = "/var/lib/systemd/coredump/";
         QDir coreDir(coreFilePath);
         QFileInfoList fileList = coreDir.entryInfoList(QDir::NoDotAndDotDot | QDir::Files);
@@ -42,11 +44,12 @@ void CmdHandler::StartCmd(SimpleCmdData *pCmd, QVariantList params)
                 return;
             }
         }
+
         QString versionFilePath = params[1].toString();
         if(!versionFilePath.isEmpty()) {
-            QFile versionFile(versionFilePath);
             QString fileName = path + "/zenux-version.json";
-            if(!versionFile.copy(fileName)) {
+            QString cmd = QString("mv %1 %2").arg(versionFilePath, fileName);
+            if(system(qPrintable(cmd)) != 0) {
                 emit OperationFinish(true, QStringLiteral("Could not move version file from %1 to %2").arg(versionFilePath, fileName));
                 return;
             }
