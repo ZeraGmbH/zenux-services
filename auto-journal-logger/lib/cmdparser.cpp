@@ -24,9 +24,6 @@ const QString CmdParser::PlausiCheck(SimpleCmdData *pCmd, const QVariantList &pa
     {
     case CMD_SAVE_LOG_AND_DUMPS:
         QString path = params[0].toString();
-        QString hostName = FileUtils::getLocalHostname();
-        if(hostName.isEmpty())
-            errInfo.append(QStringLiteral("Cannot read local hostname!"));
         if(path.isEmpty())
             errInfo.append(QStringLiteral("Parameter DestDir cannot be empty!").arg(params[0].toString()));
         else {

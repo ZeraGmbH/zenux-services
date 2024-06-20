@@ -16,6 +16,8 @@ void CmdHandler::StartCmd(SimpleCmdData *pCmd, QVariantList params)
     switch(static_cast<enum ControlCmdIds>(pCmd->GetCmdID())) {
     case CMD_SAVE_LOG_AND_DUMPS:
         QString hostName = FileUtils::getLocalHostname();
+        if (hostName.isEmpty())
+            hostName = "unknown-host";
         QDateTime now = QDateTime::currentDateTime();
         QString dateTime = now.toString("yyyy_MM_dd-HH_mm_ss");
         QString path = params[0].toString() + "/" + hostName + "/logs-and-dumps/" + dateTime;
@@ -37,6 +39,20 @@ void CmdHandler::StartCmd(SimpleCmdData *pCmd, QVariantList params)
                 return;
             }
         }
+        QString coreFilePath = "/var/lib/systemd/coredump/";
+        QDir coreDir(coreFilePath);
+        QFileInfoList fileList = coreDir.entryInfoList(QDir::NoDotAndDotDot | QDir::Files);
+        for(auto &entry: fileList) {
+            QDir copyDir;
+            QString outputPath = path + "/" + entry.fileName();
+            QString sourcePath = entry.absoluteFilePath();
+            if (!copyDir.rename(sourcePath, outputPath)) {
+                emit OperationFinish(true, QStringLiteral("Could not move core file %1 to %2").arg(sourcePath, outputPath));
+                return;
+            }
+
+        }
+
         emit OperationFinish(false, "");
         break;
     }
