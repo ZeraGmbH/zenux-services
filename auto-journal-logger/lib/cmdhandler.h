@@ -8,7 +8,7 @@ class CmdHandler : public QSimpleCmdHandlerBase
 {
     Q_OBJECT
 public:
-    explicit CmdHandler(AbstractLogCreatorPtr logGenerator, QObject *parent = nullptr);
+    explicit CmdHandler(AbstractLogCreatorPtr logGenerator, QString coreFilePath, QObject *parent = nullptr);
     void StartCmd(SimpleCmdData *pCmd, QVariantList params) override;
 private:
     bool makeDirWithParents(QString path);
@@ -16,6 +16,7 @@ private:
     bool storeCoreDumps(QString path);
     bool storeVersionFile(QString path, QString versionFilePath);
     AbstractLogCreatorPtr m_logGenerator;
+    QString m_coreFilePath;
 };
 
 #endif // CMDHANDLER_H
