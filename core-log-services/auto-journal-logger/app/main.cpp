@@ -8,11 +8,10 @@ int main( int argc, char *argv[] )
 {
     QCoreApplication* app = new QCoreApplication(argc, argv);
 
+    QSimpleCmdParserSocketBase::SetCmdLogGlobal(true);
     CmdHandler *handler = new CmdHandler(std::make_unique<LogCreatorJournalSimple>(), "/var/lib/systemd/coredump/", app);
     CmdParser *parser = new CmdParser(app);
     parser->SetCmdHandler(handler);
-
-    QSimpleCmdParserSocketBase::SetCmdLogGlobal(true); // ??
 
     const int portNo = 5000;
     QSimpleCmdServer server;
