@@ -46,7 +46,7 @@ void CmdHandler::StartCmd(SimpleCmdData *pCmd, QVariantList params)
         if(!versionFilePath.isEmpty()) {
             QFile versionFile(versionFilePath);
             QString fileName = path + "/zenux-version.json";
-            if(!versionFile.rename(fileName)) {
+            if(!versionFile.copy(fileName)) {
                 emit OperationFinish(true, QStringLiteral("Could not move version file from %1 to %2").arg(versionFilePath, fileName));
                 return;
             }
