@@ -1,0 +1,11 @@
+[Unit]
+Description=Coredum collector
+Requires=coredump-collector.socket
+
+[Service]
+ExecStart=/usr/bin/coredump-collector
+Type=simple
+StandardOutput=journal
+
+[Install]
+WantedBy=multi-user.target
