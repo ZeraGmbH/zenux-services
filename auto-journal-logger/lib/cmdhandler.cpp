@@ -4,9 +4,10 @@
 #include <QDir>
 #include <QDateTime>
 
-CmdHandler::CmdHandler(AbstractLogCreatorPtr logGenerator, QObject *parent) :
+CmdHandler::CmdHandler(AbstractLogCreatorPtr logGenerator, QString coreFilePath, QObject *parent) :
     QSimpleCmdHandlerBase(parent),
-    m_logGenerator(std::move(logGenerator))
+    m_logGenerator(std::move(logGenerator)),
+    m_coreFilePath(coreFilePath.endsWith("/") ? coreFilePath : coreFilePath + "/")
 {
 }
 
@@ -58,8 +59,7 @@ bool CmdHandler::storeLogs(QString path)
 
 bool CmdHandler::storeCoreDumps(QString path)
 {
-    QString coreFilePath = "/var/lib/systemd/coredump/";
-    QDir coreDir(coreFilePath);
+    QDir coreDir(m_coreFilePath);
     QFileInfoList fileList = coreDir.entryInfoList(QDir::NoDotAndDotDot | QDir::Files);
     for(auto &entry : fileList) {
         QString outputPath = path + "/" + entry.fileName();

@@ -8,7 +8,7 @@ int main( int argc, char *argv[] )
 {
     QCoreApplication* app = new QCoreApplication(argc, argv);
 
-    CmdHandler *handler = new CmdHandler(std::make_unique<LogCreatorJournalSimple>(), app);
+    CmdHandler *handler = new CmdHandler(std::make_unique<LogCreatorJournalSimple>(), "/var/lib/systemd/coredump/", app);
     CmdParser *parser = new CmdParser(app);
     parser->SetCmdHandler(handler);
 
