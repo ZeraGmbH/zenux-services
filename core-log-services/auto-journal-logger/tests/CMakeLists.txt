@@ -10,4 +10,5 @@ endfunction()
 
 SETUP_AUTO_JOURNAL_LOGGER_TESTS(
     test_fileutils
+    test_cmd_handler
 )
