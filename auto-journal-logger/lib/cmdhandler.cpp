@@ -34,10 +34,10 @@ void CmdHandler::StartCmd(SimpleCmdData *pCmd, QVariantList params)
         QDir coreDir(coreFilePath);
         QFileInfoList fileList = coreDir.entryInfoList(QDir::NoDotAndDotDot | QDir::Files);
         for(auto &entry: fileList) {
-            QDir copyDir;
             QString outputPath = path + "/" + entry.fileName();
             QString sourcePath = entry.absoluteFilePath();
-            if (!copyDir.rename(sourcePath, outputPath)) {
+            QString cmd = QString("mv %1 %2").arg(sourcePath, outputPath);
+            if(system(qPrintable(cmd)) != 0) {
                 emit OperationFinish(true, QStringLiteral("Could not move core file %1 to %2").arg(sourcePath, outputPath));
                 return;
             }
