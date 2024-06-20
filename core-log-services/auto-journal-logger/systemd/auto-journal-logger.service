@@ -5,7 +5,7 @@ Requires=auto-journal-logger.socket
 [Service]
 ExecStart=/usr/bin/auto-journal-logger
 Type=simple
-User=zenux-loggers
+User=operator
 StandardOutput=journal
 
 [Install]
