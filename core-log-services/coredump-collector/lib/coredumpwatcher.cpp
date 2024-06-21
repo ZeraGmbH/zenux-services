@@ -19,24 +19,37 @@ void CoreDumpWatcher::startWatching()
                         QFileDevice::ReadOther | QFileDevice::WriteOther | QFileDevice::ExeOther |
                         QFileDevice::ReadGroup | QFileDevice::ExeGroup);
     file.close();
-    if(m_watcher.addPath(m_coreDumpDir))
+    QDir coreDumpDir(m_coreDumpDir);
+    if(!coreDumpDir.exists())
+        qWarning("Input coredump dir %s, does not exist!", qPrintable(m_coreDumpDir));
+    if(m_watcher.addPath(m_coreDumpDir)) {
         connect(&m_watcher, &QFileSystemWatcher::directoryChanged, this, &CoreDumpWatcher::newCoreDumpFound);
+        qInfo("Watching dir %s", qPrintable(m_coreDumpDir));
+        newCoreDumpFound(m_coreDumpDir);
+    }
+    else
+        qWarning("Cannot watch directory %s!", qPrintable(m_coreDumpDir));
 }
 
 void CoreDumpWatcher::newCoreDumpFound(QString path)
 {
     QDir coreDumpDir(path);
     QFileInfoList filesInDir(coreDumpDir.entryInfoList(QDir::NoDotAndDotDot | QDir::Files));
-    if(!filesInDir.isEmpty())
-        for(auto &entry:filesInDir){
-            int userId = extractUserId(entry.fileName());
-            if(m_userIdsToWatch.contains(userId))
-                if(fixPermissions(entry.absoluteFilePath())){
-                    QString cmd = QString("mv %1 %2").arg(entry.absoluteFilePath(), m_outputDir + "/");
-                    if(system(qPrintable(cmd)) == 0)
-                        emit sigCoredumpMoved();
+    for(auto &entry:filesInDir){
+        int userId = extractUserId(entry.fileName());
+        if(m_userIdsToWatch.contains(userId)){
+            QString cmd = QString("mv %1 %2").arg(entry.absoluteFilePath(), m_outputDir + "/");
+            if(system(qPrintable(cmd)) == 0){
+                if(fixPermissions(m_outputDir + "/" + entry.fileName()))
+                    QMetaObject::invokeMethod(this,
+                                              "sigCoredumpMoved",
+                                              Qt::QueuedConnection);
             }
+            else
+                qWarning("Move from %s to %s failed", qPrintable(entry.absolutePath()), qPrintable(m_outputDir));
         }
+    }
+
 }
 
 bool CoreDumpWatcher::fixPermissions(QString filePath)
@@ -46,15 +59,15 @@ bool CoreDumpWatcher::fixPermissions(QString filePath)
                             QFileDevice::ReadOther | QFileDevice::WriteOther |
                             QFileDevice::ReadGroup))
         return true;
+    qWarning("Cannot fix permissions of file %s!", qPrintable(filePath));
     return false;
 }
 
 int CoreDumpWatcher::extractUserId(QString fileName)
 {
-    int fileUserId = -1;
     QStringList splitString = fileName.split(".");
     if(splitString.count() > 3)
-        fileUserId = splitString[2].toInt();
-
-    return fileUserId;
+        return splitString[2].toInt();
+    qWarning("Cannot extractUserId from %s", qPrintable(fileName));
+    return -1;
 }
