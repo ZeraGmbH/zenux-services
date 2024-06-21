@@ -35,18 +35,22 @@ void CoreDumpWatcher::newCoreDumpFound(QString path)
 {
     QDir coreDumpDir(path);
     QFileInfoList filesInDir(coreDumpDir.entryInfoList(QDir::NoDotAndDotDot | QDir::Files));
-    for(auto &entry:filesInDir){
+    for(auto &entry:filesInDir) {
         int userId = extractUserId(entry.fileName());
-        if(m_userIdsToWatch.contains(userId)){
-            QString cmd = QString("mv %1 %2").arg(entry.absoluteFilePath(), m_outputDir + "/");
-            if(system(qPrintable(cmd)) == 0){
-                if(fixPermissions(m_outputDir + "/" + entry.fileName()))
+        if(m_userIdsToWatch.contains(userId)) {
+            QString absoluteFilePath = entry.absoluteFilePath();
+            QString cmd = QString("mv %1 %2").arg(absoluteFilePath, m_outputDir + "/");
+            if(system(qPrintable(cmd)) == 0) {
+                if(fixPermissions(m_outputDir + "/" + entry.fileName())) {
+                    qInfo("Successfully moved core file from %s to %s",
+                          qPrintable(absoluteFilePath),qPrintable(m_outputDir));
                     QMetaObject::invokeMethod(this,
                                               "sigCoredumpMoved",
                                               Qt::QueuedConnection);
+                }
             }
             else
-                qWarning("Move from %s to %s failed", qPrintable(entry.absolutePath()), qPrintable(m_outputDir));
+                qWarning("Move from %s to %s failed", qPrintable(absoluteFilePath), qPrintable(m_outputDir));
         }
     }
 
