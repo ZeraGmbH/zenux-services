@@ -25,11 +25,13 @@ void test_coredump_watcher::cleanup()
     destDir.removeRecursively();
 }
 
+
+
 void test_coredump_watcher::test_single_core_file_ok()
 {
     CoreDumpWatcher watcher(testCoreDumpSourceDir, testCoreDumpDestDir, QList<int>() << 10000 << 15000);
     watcher.startWatching();
-    QSignalSpy spy(&watcher, &CoreDumpWatcher::sigCoredumpCreated);
+    QSignalSpy spy(&watcher, &CoreDumpWatcher::sigCoredumpMoved);
 
     writeTestCoreDump(10000, "vf-declarative-");
 
@@ -49,7 +51,7 @@ void test_coredump_watcher::test_multiple_core_file_ok()
 {
     CoreDumpWatcher watcher(testCoreDumpSourceDir, testCoreDumpDestDir, QList<int>() << 10000 << 15000);
     watcher.startWatching();
-    QSignalSpy spy(&watcher, &CoreDumpWatcher::sigCoredumpCreated);
+    QSignalSpy spy(&watcher, &CoreDumpWatcher::sigCoredumpMoved);
 
     writeTestCoreDump(10000, "vf-declarative-");
     writeTestCoreDump(10000, "vf-declarative2-");
@@ -66,7 +68,7 @@ void test_coredump_watcher::test_dir_instead_of_dump_file()
 {
     CoreDumpWatcher watcher(testCoreDumpSourceDir, testCoreDumpDestDir, QList<int>() << 10000 << 15000);
     watcher.startWatching();
-    QSignalSpy spy(&watcher, &CoreDumpWatcher::sigCoredumpCreated);
+    QSignalSpy spy(&watcher, &CoreDumpWatcher::sigCoredumpMoved);
 
     QDir testDir;
     testDir.mkpath(QString(testCoreDumpSourceDir) + "/testDir/");
@@ -79,7 +81,7 @@ void test_coredump_watcher::test_only_filtered_uid_copy()
 {
     CoreDumpWatcher watcher(testCoreDumpSourceDir, testCoreDumpDestDir, QList<int>() << 10000 << 15000);
     watcher.startWatching();
-    QSignalSpy spy(&watcher, &CoreDumpWatcher::sigCoredumpCreated);
+    QSignalSpy spy(&watcher, &CoreDumpWatcher::sigCoredumpMoved);
 
     writeTestCoreDump(10000, "vf-declarative-");
     writeTestCoreDump(10001, "vf-declarative2-");
@@ -94,7 +96,7 @@ void test_coredump_watcher::test_misnamed_core_file()
 {
     CoreDumpWatcher watcher(testCoreDumpSourceDir, testCoreDumpDestDir, QList<int>() << 10000 << 15000);
     watcher.startWatching();
-    QSignalSpy spy(&watcher, &CoreDumpWatcher::sigCoredumpCreated);
+    QSignalSpy spy(&watcher, &CoreDumpWatcher::sigCoredumpMoved);
 
     // introduce "." randomly into name
     writeTestCoreDump(10000, "vf-declar.ative-");

@@ -19,9 +19,8 @@ void CoreDumpWatcher::startWatching()
                         QFileDevice::ReadOther | QFileDevice::WriteOther | QFileDevice::ExeOther |
                         QFileDevice::ReadGroup | QFileDevice::ExeGroup);
     file.close();
-    if(m_watcher.addPath(m_coreDumpDir)) {
+    if(m_watcher.addPath(m_coreDumpDir))
         connect(&m_watcher, &QFileSystemWatcher::directoryChanged, this, &CoreDumpWatcher::newCoreDumpFound);
-    }
 }
 
 void CoreDumpWatcher::newCoreDumpFound(QString path)
@@ -35,7 +34,7 @@ void CoreDumpWatcher::newCoreDumpFound(QString path)
                 if(fixPermissions(entry.absoluteFilePath())){
                     QString cmd = QString("mv %1 %2").arg(entry.absoluteFilePath(), m_outputDir + "/");
                     if(system(qPrintable(cmd)) == 0)
-                        emit sigCoredumpCreated();
+                        emit sigCoredumpMoved();
             }
         }
 }
