@@ -12,6 +12,13 @@ CoreDumpWatcher::CoreDumpWatcher(QString coreDumpDir, QString outputDir, QList<i
 
 void CoreDumpWatcher::startWatching()
 {
+    QDir dir;
+    dir.mkpath(m_outputDir);
+    QFile file(m_outputDir);
+    file.setPermissions(QFileDevice::ReadOwner | QFileDevice::WriteOwner | QFileDevice::ExeOwner |
+                        QFileDevice::ReadOther | QFileDevice::WriteOther | QFileDevice::ExeOther |
+                        QFileDevice::ReadGroup | QFileDevice::ExeGroup);
+    file.close();
     if(m_watcher.addPath(m_coreDumpDir)) {
         connect(&m_watcher, &QFileSystemWatcher::directoryChanged, this, &CoreDumpWatcher::newCoreDumpFound);
     }
