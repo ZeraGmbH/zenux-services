@@ -27,8 +27,8 @@ void CmdHandler::StartCmd(SimpleCmdData *pCmd, QVariantList params)
             return;
         if(!storeLogs(path))
             return;
-        /*if(!storeCoreDumps(path))
-            return;*/
+        if(!storeCoreDumps(path))
+            return;
         QString versionFilePath = params[1].toString();
         if(!storeVersionFile(path, versionFilePath))
             return;
