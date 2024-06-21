@@ -9,7 +9,7 @@ int main( int argc, char *argv[] )
     QCoreApplication* app = new QCoreApplication(argc, argv);
 
     QSimpleCmdParserSocketBase::SetCmdLogGlobal(true);
-    CmdHandler *handler = new CmdHandler(std::make_unique<LogCreatorJournalSimple>(), "/var/lib/systemd/coredump/", app);
+    CmdHandler *handler = new CmdHandler(std::make_unique<LogCreatorJournalSimple>(), "/var/lib/zenux-coredumps/", app);
     CmdParser *parser = new CmdParser(app);
     parser->SetCmdHandler(handler);
 

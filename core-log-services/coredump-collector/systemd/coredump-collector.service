@@ -1,6 +1,5 @@
 [Unit]
-Description=Coredum collector
-Requires=coredump-collector.socket
+Description=Coredump collector
 
 [Service]
 ExecStart=/usr/bin/coredump-collector
