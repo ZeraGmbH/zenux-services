@@ -13,7 +13,7 @@ public:
     void startWatching();
 
 signals:
-    void sigCoredumpCreated();
+    void sigCoredumpMoved();
 
 private slots:
     void newCoreDumpFound(QString path);
