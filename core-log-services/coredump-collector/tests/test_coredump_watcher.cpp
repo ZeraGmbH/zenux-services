@@ -110,6 +110,18 @@ void test_coredump_watcher::test_misnamed_core_file()
     QCOMPARE(spy.count(), 0);
 }
 
+void test_coredump_watcher::test_coredump_before_watcher_active()
+{
+    writeTestCoreDump(10000, "foo");
+
+    CoreDumpWatcher watcher(testCoreDumpSourceDir, testCoreDumpDestDir, QList<int>() << 10000 << 15000);
+    watcher.startWatching();
+    QSignalSpy spy(&watcher, &CoreDumpWatcher::sigCoredumpMoved);
+
+    TimeMachineObject::feedEventLoop();
+    QCOMPARE(spy.count(), 1);
+}
+
 bool test_coredump_watcher::writeTestCoreDump(int userId, QString programName)
 {
     QFile file(QString(testCoreDumpSourceDir) + "/core." + programName + "." + QString::number(userId) + ".ignore.ignore.ignore.xz");

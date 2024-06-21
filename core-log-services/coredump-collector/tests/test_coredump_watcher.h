@@ -14,6 +14,7 @@ private slots:
     void test_dir_instead_of_dump_file();
     void test_only_filtered_uid_copy();
     void test_misnamed_core_file();
+    void test_coredump_before_watcher_active();
 private:
     bool writeTestCoreDump(int userId, QString programName);
 };
