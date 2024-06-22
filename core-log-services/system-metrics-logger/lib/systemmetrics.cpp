@@ -1,12 +1,6 @@
 #include "systemmetrics.h"
 #include <timerfactoryqt.h>
 
-SystemMetrics::SystemMetrics()
-{
-    m_cpuLoad.calcNextValues();
-    m_totalMemoryTracker.calculateMemoryUsedPercent();
-}
-
 CpuLoad *SystemMetrics::getCpuLoad()
 {
     return &m_cpuLoad;
@@ -36,6 +30,7 @@ void SystemMetrics::startCpuLoadPollTimer(int pollMs)
     connect(m_cpuLoadPollTimer.get(), &TimerTemplateQt::sigExpired,
             this, &SystemMetrics::onCpuLoadTimer);
     m_cpuLoadPollTimer->start();
+    onCpuLoadTimer();
 }
 
 void SystemMetrics::startMemoryPollTimer(int logIntervalMs)
@@ -44,4 +39,5 @@ void SystemMetrics::startMemoryPollTimer(int logIntervalMs)
     connect(m_memoryPollTimer.get(), &TimerTemplateQt::sigExpired,
             this, &SystemMetrics::onMemoryTimer);
     m_memoryPollTimer->start();
+    onMemoryTimer();
 }

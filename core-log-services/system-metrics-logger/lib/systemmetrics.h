@@ -10,7 +10,6 @@ class SystemMetrics : public QObject
 {
     Q_OBJECT
 public:
-    SystemMetrics();
     CpuLoad *getCpuLoad();
     TotalMemoryTracker *getTotalMemoryTracker();
     void startCpuLoadPollTimer(int pollMs);
