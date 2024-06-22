@@ -264,11 +264,11 @@ void ZDspServer::onResourceReady()
     }
     m_periodicLogTimer = TimerFactoryQt::createPeriodic(loggingIntervalMs);
     connect(m_periodicLogTimer.get(), &TimerTemplateQt::sigExpired,
-            this, &ZDspServer::periodicLogs);
+            this, &ZDspServer::outputLogs);
     m_periodicLogTimer->start();
 }
 
-void ZDspServer::periodicLogs()
+void ZDspServer::outputLogs()
 {
     // we need a client to do the job
     cZDSP1Client dummyClient(0, 0, m_deviceNodeFactory);

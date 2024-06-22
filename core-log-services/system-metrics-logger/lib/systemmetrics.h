@@ -16,7 +16,8 @@ public:
     void startCpuLoadPollTimer(int pollMs);
     void startMemoryPollTimer(int logIntervalMs);
 signals:
-    void sigNewValues();
+    void sigNewCpuValues();
+    void sigNewMemValues();
 
 private slots:
     void onCpuLoadTimer();
