@@ -20,13 +20,14 @@ TotalMemoryTracker *SystemMetrics::getTotalMemoryTracker()
 void SystemMetrics::onCpuLoadTimer()
 {
     m_cpuLoad.calcNextValues();
-    m_totalMemoryTracker.calculateMemoryUsedPercent();
-    emit sigNewValues();
+    emit sigNewCpuValues();
 }
 
 void SystemMetrics::onMemoryTimer()
 {
-    m_totalMemoryTracker.periodicLogs();
+    m_totalMemoryTracker.calculateMemoryUsedPercent();
+    m_totalMemoryTracker.outputLogs();
+    emit sigNewMemValues();
 }
 
 void SystemMetrics::startCpuLoadPollTimer(int pollMs)

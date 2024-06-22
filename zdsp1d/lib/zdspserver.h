@@ -70,7 +70,7 @@ private slots:
     void doIdentAndRegister();
     void onResourceReady();
 
-    void periodicLogs();
+    void outputLogs();
 private:
     void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
 
