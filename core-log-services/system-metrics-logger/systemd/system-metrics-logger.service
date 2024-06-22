@@ -1,0 +1,10 @@
+[Unit]
+Description=System metrics logger
+
+[Service]
+ExecStart=/usr/bin/system-metrics-logger
+Type=simple
+StandardOutput=journal
+
+[Install]
+WantedBy=multi-user.target
