@@ -5,6 +5,7 @@
 #include "proxy.h"
 #include "zscpi_response_definitions.h"
 #include <timemachineobject.h>
+#include "mocki2ceepromiofactory.h"
 #include <QRegularExpression>
 #include <QJsonValue>
 #include <QJsonDocument>
@@ -15,6 +16,7 @@ QTEST_MAIN(test_regression_sense_interface_com5003);
 
 void test_regression_sense_interface_com5003::init()
 {
+    MockI2cEEpromIoFactory::enableMock();
     m_resmanServer = std::make_unique<ResmanRunFacade>();
     m_testServer = std::make_unique<TestServerForSenseInterfaceCom5003>(std::make_shared<TestFactoryI2cCtrl>(true));
     TimeMachineObject::feedEventLoop();

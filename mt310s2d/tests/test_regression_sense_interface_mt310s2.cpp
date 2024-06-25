@@ -7,6 +7,7 @@
 #include "zscpi_response_definitions.h"
 #include <i2cmultiplexerfactory.h>
 #include <timemachineobject.h>
+#include "mocki2ceepromiofactory.h"
 #include <QFile>
 #include <QRegularExpression>
 #include <QJsonValue>
@@ -18,6 +19,7 @@ QTEST_MAIN(test_regression_sense_interface_mt310s2);
 
 void test_regression_sense_interface_mt310s2::initTestCase()
 {
+    MockI2cEEpromIoFactory::enableMock();
     ClampFactoryTest::enableTest();
     m_resmanServer = std::make_unique<ResmanRunFacade>();
     m_testServer = std::make_unique<TestServerForSenseInterfaceMt310s2>(std::make_shared<TestFactoryI2cCtrl>(true));
