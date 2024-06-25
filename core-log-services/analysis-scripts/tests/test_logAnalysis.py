@@ -3,6 +3,15 @@ import sys
 sys.path.insert(0, '.')
 from log_analysis import process_key_strings, process_limit_strings, check_strings
 
+#####################################################################
+#                                                                   #
+#   IMPORTANT NOTE                                                  #
+# By Default these tests will not show up in Qt Creator             #
+# Either enable them in project -> testing -> check CTest checkbox  #
+# or run them locally by "python3 tests/test_logAnalysis.py"        #
+#                                                                   #
+#####################################################################
+
 def get_testFile():
         return "tests/data/example-journal.log-0"
 
