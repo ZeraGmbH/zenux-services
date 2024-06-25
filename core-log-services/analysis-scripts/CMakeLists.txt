@@ -17,7 +17,7 @@ add_custom_target(
 #####################################################################
 
 add_test (NAME analysis-script-tests
-  COMMAND ${Python_EXECUTABLE} tests/test_logAnalysis.py
+  COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/tests/test_logAnalysis.py
   WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
