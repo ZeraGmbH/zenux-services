@@ -17,69 +17,79 @@ class bcolors:
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
 
-
-def process_key_strings(filename, key_strings=key_strings_default):
+def check_file_exists(filename):
     if not os.path.isfile(filename):
         print("Provided file ", filename, " can not be accessed")
+        return False
+    return True
+
+def print_lines_before_matching_line(line_number, content):
+    ret = []
+    if line_number > 5:
+            before_block = content[line_number-4:line_number-1]
+            for b_num, b_line in enumerate(before_block, 1):
+                print((line_number - 3) + b_num, b_line.strip())
+                ret.append(str((line_number - 3) + b_num) + " " + b_line.strip())
+    return ret
+
+def print_lines_after_matching_line(line_number, content):
+    ret = []
+    if (line_number + 5) < len(content):
+            after_block = content[line_number+1:line_number+4]
+            for b_num, b_line in enumerate(after_block, 1):
+                print((line_number+1) + b_num, b_line.strip())
+                ret.append(str((line_number+1) + b_num) + " " + b_line.strip())
+    return ret
+
+
+def process_key_strings(filename, key_strings=key_strings_default):
+    if not check_file_exists(filename):
         return []
+    
     offending_lines = check_strings(filename, key_strings)
     file = open(filename)
     content = file.readlines()
-    ret = []
+    output = []
     print("======================================KEY_STRINGS======================================")
+    # num just counter for number of block in output
     for num, line in enumerate(offending_lines,1):
         print("offending key string " + str(num) + ":")
-        if line > 5:
-            before_block = content[line-4:line-1]
-            for b_num, b_line in enumerate(before_block, 1):
-                print((line - 3) + b_num, b_line.strip())
-                ret.append(str((line - 3) + b_num) + " " + b_line.strip())
-            
+        output.extend(print_lines_before_matching_line(line, content))
+
         print(bcolors.WARNING + str(line+1) + " " +  str(content[line].strip()) + bcolors.ENDC)
-        ret.append(content[line].strip())
-        if (line + 5) < len(content):
-            after_block = content[line+1:line+4]
-            for b_num, b_line in enumerate(after_block, 1):
-                print((line+1) + b_num, b_line.strip())
-                ret.append(str((line+1) + b_num) + " " + b_line.strip())
+
+        output.append(content[line].strip())
+        output.extend(print_lines_after_matching_line(line, content))
         print("\n")
-        ret.append("\n")
-    return ret
+        output.append("\n")
+    return output
 
 def process_limit_strings(filename, limit_strings=limit_strings_default):
-    if not os.path.isfile(filename):
-        print("Provided file ", filename, " can not be accessed")
+    if not check_file_exists(filename):
         return []
+    
     offending_lines = check_strings(filename, limit_strings)
     file = open(filename)
     content = file.readlines()
     blocks = 1
-    ret = []
+    output = []
     print("======================================LIMITS======================================")
     for line in offending_lines:
         for limit_string in limit_strings:
-            temp_index = content[line].find(limit_string[0])
-            temp_string = content[line][temp_index + len(limit_string[0]):]
-            percent = int(float(temp_string.split("%")[0]))
+            index_of_search_string = content[line].find(limit_string[0])
+            cutoff_before_search_string = content[line][index_of_search_string + len(limit_string[0]):]
+            percent = int(float(cutoff_before_search_string.split("%")[0]))
             if percent >= limit_string[1]:
                 print("offending limit string " + str(blocks) + ":")
                 blocks += 1
-                if line > 5:
-                    before_block = content[line-4:line-1]
-                    for b_num, b_line in enumerate(before_block, 1):
-                        print((line - 3) + b_num, b_line.strip())
-                        ret.append(str((line - 3) + b_num) + " " + b_line.strip())
+                output.extend(print_lines_before_matching_line(line, content))
                     
                 print(bcolors.WARNING + str(line+1) + " " +  str(content[line].strip()) + bcolors.ENDC)
-                ret.append(content[line].strip())
-                if (line + 5) < len(content):
-                    after_block = content[line+1:line+4]
-                    for b_num, b_line in enumerate(after_block, 1):
-                        print((line+1) + b_num, b_line.strip())
-                        ret.append(str((line+1) + b_num) + " " + b_line.strip())
+                output.append(content[line].strip())
+                output.extend(print_lines_after_matching_line(line, content))
                 print("\n")
-                ret.append("\n")
-    return ret
+                output.append("\n")
+    return output
 
 def check_strings(input_file, strings):
     matches = []
