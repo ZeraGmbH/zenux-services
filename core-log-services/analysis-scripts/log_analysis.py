@@ -19,6 +19,9 @@ class bcolors:
 
 
 def process_key_strings(filename, key_strings=key_strings_default):
+    if not os.path.isfile(filename):
+        print("Provided file ", filename, " can not be accessed")
+        return []
     offending_lines = check_strings(filename, key_strings)
     file = open(filename)
     content = file.readlines()
@@ -44,6 +47,9 @@ def process_key_strings(filename, key_strings=key_strings_default):
     return ret
 
 def process_limit_strings(filename, limit_strings=limit_strings_default):
+    if not os.path.isfile(filename):
+        print("Provided file ", filename, " can not be accessed")
+        return []
     offending_lines = check_strings(filename, limit_strings)
     file = open(filename)
     content = file.readlines()
@@ -77,6 +83,10 @@ def process_limit_strings(filename, limit_strings=limit_strings_default):
 
 def check_strings(input_file, strings):
     matches = []
+    if not os.path.isfile(input_file):
+        print("Provided file ", input_file, " can not be accessed")
+        return []
+    
     with open(input_file) as myFile:
         for num, line in enumerate(myFile,0):
             for string in strings:
