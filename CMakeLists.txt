@@ -26,6 +26,7 @@ find_package(ZeraMicroController REQUIRED)
 find_package(VeinFramework REQUIRED)
 find_package(ZenuxLegacyComponents REQUIRED)
 find_package(simplecmdiobase REQUIRED)
+find_package(Python REQUIRED)
 
 if(GUI_SIMULATION)
     message("Building with QML gui code for simulation")
