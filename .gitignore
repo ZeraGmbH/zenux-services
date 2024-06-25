@@ -32,3 +32,8 @@ Thumbs.db
 *.qmlproject.user*
 *.pluginspec
 
+# vscode generated files
+.vscode/
+__pycache__/
+.pytest_cache/
+

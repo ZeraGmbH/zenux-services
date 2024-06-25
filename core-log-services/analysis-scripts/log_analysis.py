@@ -3,8 +3,8 @@
 from optparse import OptionParser
 import glob, os
 
-key_strings = ["Failed with result 'core-dump'", "DSP stuck"]
-limit_strings = [(" Memory used: ", 80)]
+key_strings_default = ["Failed with result 'core-dump'", "DSP stuck"]
+limit_strings_default = [(" Memory used: ", 80)]
 
 class bcolors:
     HEADER = '\033[95m'
@@ -18,10 +18,11 @@ class bcolors:
     UNDERLINE = '\033[4m'
 
 
-def process_key_strings(filename):
+def process_key_strings(filename, key_strings=key_strings_default):
     offending_lines = check_strings(filename, key_strings)
     file = open(filename)
     content = file.readlines()
+    ret = []
     print("======================================KEY_STRINGS======================================")
     for num, line in enumerate(offending_lines,1):
         print("offending key string " + str(num) + ":")
@@ -29,19 +30,25 @@ def process_key_strings(filename):
             before_block = content[line-4:line-1]
             for b_num, b_line in enumerate(before_block, 1):
                 print((line - 3) + b_num, b_line.strip())
+                ret.append(str((line - 3) + b_num) + " " + b_line.strip())
             
         print(bcolors.WARNING + str(line+1) + " " +  str(content[line].strip()) + bcolors.ENDC)
+        ret.append(content[line].strip())
         if (line + 5) < len(content):
             after_block = content[line+1:line+4]
             for b_num, b_line in enumerate(after_block, 1):
                 print((line+1) + b_num, b_line.strip())
+                ret.append(str((line+1) + b_num) + " " + b_line.strip())
         print("\n")
+        ret.append("\n")
+    return ret
 
-def process_limit_strings(filename):
+def process_limit_strings(filename, limit_strings=limit_strings_default):
     offending_lines = check_strings(filename, limit_strings)
     file = open(filename)
     content = file.readlines()
     blocks = 1
+    ret = []
     print("======================================LIMITS======================================")
     for line in offending_lines:
         for limit_string in limit_strings:
@@ -55,14 +62,18 @@ def process_limit_strings(filename):
                     before_block = content[line-4:line-1]
                     for b_num, b_line in enumerate(before_block, 1):
                         print((line - 3) + b_num, b_line.strip())
+                        ret.append(str((line - 3) + b_num) + " " + b_line.strip())
                     
                 print(bcolors.WARNING + str(line+1) + " " +  str(content[line].strip()) + bcolors.ENDC)
+                ret.append(content[line].strip())
                 if (line + 5) < len(content):
                     after_block = content[line+1:line+4]
                     for b_num, b_line in enumerate(after_block, 1):
                         print((line+1) + b_num, b_line.strip())
+                        ret.append(str((line+1) + b_num) + " " + b_line.strip())
                 print("\n")
-        
+                ret.append("\n")
+    return ret
 
 def check_strings(input_file, strings):
     matches = []

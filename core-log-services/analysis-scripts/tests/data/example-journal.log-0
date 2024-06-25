@@ -1,0 +1,1335 @@
+-- Logs begin at Mon 2024-06-24 13:15:05 UTC, end at Mon 2024-06-24 13:26:22 UTC. --
+Jun 24 13:15:05.711844 imx6qdl-variscite-som kernel: Booting Linux on physical CPU 0x0
+Jun 24 13:15:05.712150 imx6qdl-variscite-som kernel: Linux version 5.4.224-fslc+g0a328f252596 (oe-user@oe-host) (gcc version 9.3.0 (GCC)) #1 SMP Mon May 27 09:45:15 UTC 2024
+Jun 24 13:15:05.712333 imx6qdl-variscite-som kernel: CPU: ARMv7 Processor [412fc09a] revision 10 (ARMv7), cr=10c5387d
+Jun 24 13:15:05.712478 imx6qdl-variscite-som kernel: CPU: PIPT / VIPT nonaliasing data cache, VIPT aliasing instruction cache
+Jun 24 13:15:05.712649 imx6qdl-variscite-som kernel: OF: fdt: Machine model: ZERA i.MX6 VAR-SOM-MX6
+Jun 24 13:15:05.712792 imx6qdl-variscite-som kernel: Memory policy: Data cache writealloc
+Jun 24 13:15:05.712974 imx6qdl-variscite-som kernel: cma: Reserved 64 MiB at 0x4c000000
+Jun 24 13:15:05.713127 imx6qdl-variscite-som kernel: On node 0 totalpages: 262144
+Jun 24 13:15:05.713293 imx6qdl-variscite-som kernel:   Normal zone: 1536 pages used for memmap
+Jun 24 13:15:05.713478 imx6qdl-variscite-som kernel:   Normal zone: 0 pages reserved
+Jun 24 13:15:05.713633 imx6qdl-variscite-som kernel:   Normal zone: 196608 pages, LIFO batch:63
+Jun 24 13:15:05.713778 imx6qdl-variscite-som kernel:   HighMem zone: 65536 pages, LIFO batch:15
+Jun 24 13:15:05.713913 imx6qdl-variscite-som kernel: percpu: Embedded 20 pages/cpu s50664 r8192 d23064 u81920
+Jun 24 13:15:05.714056 imx6qdl-variscite-som kernel: pcpu-alloc: s50664 r8192 d23064 u81920 alloc=20*4096
+Jun 24 13:15:05.714262 imx6qdl-variscite-som kernel: pcpu-alloc: [0] 0 [0] 1 [0] 2 [0] 3 
+Jun 24 13:15:05.714405 imx6qdl-variscite-som kernel: Built 1 zonelists, mobility grouping on.  Total pages: 260608
+Jun 24 13:15:05.714566 imx6qdl-variscite-som kernel: Kernel command line: console=ttymxc0,115200 root=/dev/mmcblk1p2 rootwait rw video=mxcfb0:dev=ldb video=mxcfb1:off video=mxcfb2:off video=mxcfb3:off consoleblank=0 fbcon=logo-pos:center vt.global_cursor_default=0 zera_device=mt310s2
+Jun 24 13:15:05.714761 imx6qdl-variscite-som kernel: Dentry cache hash table entries: 131072 (order: 7, 524288 bytes, linear)
+Jun 24 13:15:05.714940 imx6qdl-variscite-som kernel: Inode-cache hash table entries: 65536 (order: 6, 262144 bytes, linear)
+Jun 24 13:15:05.715114 imx6qdl-variscite-som kernel: mem auto-init: stack:off, heap alloc:off, heap free:off
+Jun 24 13:15:05.715259 imx6qdl-variscite-som kernel: Memory: 949812K/1048576K available (11264K kernel code, 782K rwdata, 3488K rodata, 1024K init, 6563K bss, 33228K reserved, 65536K cma-reserved, 196608K highmem)
+Jun 24 13:15:05.715397 imx6qdl-variscite-som kernel: SLUB: HWalign=64, Order=0-3, MinObjects=0, CPUs=4, Nodes=1
+Jun 24 13:15:05.715534 imx6qdl-variscite-som kernel: ftrace: allocating 33009 entries in 97 pages
+Jun 24 13:15:05.715683 imx6qdl-variscite-som kernel: Running RCU self tests
+Jun 24 13:15:05.715838 imx6qdl-variscite-som kernel: rcu: Hierarchical RCU implementation.
+Jun 24 13:15:05.716031 imx6qdl-variscite-som kernel: rcu:         RCU event tracing is enabled.
+Jun 24 13:15:05.716178 imx6qdl-variscite-som kernel: rcu:         RCU lockdep checking is enabled.
+Jun 24 13:15:05.716332 imx6qdl-variscite-som kernel: rcu: RCU calculated value of scheduler-enlistment delay is 10 jiffies.
+Jun 24 13:15:05.716512 imx6qdl-variscite-som kernel: NR_IRQS: 16, nr_irqs: 16, preallocated irqs: 16
+Jun 24 13:15:05.716662 imx6qdl-variscite-som kernel: L2C-310 errata 752271 769419 enabled
+Jun 24 13:15:05.716819 imx6qdl-variscite-som kernel: L2C-310 enabling early BRESP for Cortex-A9
+Jun 24 13:15:05.717004 imx6qdl-variscite-som kernel: L2C-310 full line of zeros enabled for Cortex-A9
+Jun 24 13:15:05.717187 imx6qdl-variscite-som kernel: L2C-310 ID prefetch enabled, offset 16 lines
+Jun 24 13:15:05.717333 imx6qdl-variscite-som kernel: L2C-310 dynamic clock gating enabled, standby mode enabled
+Jun 24 13:15:05.717489 imx6qdl-variscite-som kernel: L2C-310 cache controller enabled, 16 ways, 1024 kB
+Jun 24 13:15:05.717666 imx6qdl-variscite-som kernel: L2C-310: CACHE_ID 0x410000c7, AUX_CTRL 0x76470001
+Jun 24 13:15:05.717815 imx6qdl-variscite-som kernel: Switching to timer-based delay loop, resolution 333ns
+Jun 24 13:15:05.717974 imx6qdl-variscite-som kernel: sched_clock: 32 bits at 3000kHz, resolution 333ns, wraps every 715827882841ns
+Jun 24 13:15:05.718134 imx6qdl-variscite-som kernel: clocksource: mxc_timer1: mask: 0xffffffff max_cycles: 0xffffffff, max_idle_ns: 637086815595 ns
+Jun 24 13:15:05.718348 imx6qdl-variscite-som kernel: Console: colour dummy device 80x30
+Jun 24 13:15:05.718570 imx6qdl-variscite-som kernel: Lock dependency validator: Copyright (c) 2006 Red Hat, Inc., Ingo Molnar
+Jun 24 13:15:05.718811 imx6qdl-variscite-som kernel: ... MAX_LOCKDEP_SUBCLASSES:  8
+Jun 24 13:15:05.718980 imx6qdl-variscite-som kernel: ... MAX_LOCK_DEPTH:          48
+Jun 24 13:15:05.719172 imx6qdl-variscite-som kernel: ... MAX_LOCKDEP_KEYS:        8192
+Jun 24 13:15:05.719327 imx6qdl-variscite-som kernel: ... CLASSHASH_SIZE:          4096
+Jun 24 13:15:05.719486 imx6qdl-variscite-som kernel: ... MAX_LOCKDEP_ENTRIES:     32768
+Jun 24 13:15:05.719676 imx6qdl-variscite-som kernel: ... MAX_LOCKDEP_CHAINS:      65536
+Jun 24 13:15:05.719841 imx6qdl-variscite-som kernel: ... CHAINHASH_SIZE:          32768
+Jun 24 13:15:05.720026 imx6qdl-variscite-som kernel:  memory used by lock dependency info: 3997 kB
+Jun 24 13:15:05.720177 imx6qdl-variscite-som kernel:  memory used for stack traces: 2112 kB
+Jun 24 13:15:05.730466 imx6qdl-variscite-som kernel:  per task-struct memory footprint: 1536 bytes
+Jun 24 13:15:05.730669 imx6qdl-variscite-som kernel: Calibrating delay loop (skipped), value calculated using timer frequency.. 6.00 BogoMIPS (lpj=30000)
+Jun 24 13:15:05.730844 imx6qdl-variscite-som kernel: pid_max: default: 32768 minimum: 301
+Jun 24 13:15:05.731012 imx6qdl-variscite-som kernel: Mount-cache hash table entries: 2048 (order: 1, 8192 bytes, linear)
+Jun 24 13:15:05.731184 imx6qdl-variscite-som kernel: Mountpoint-cache hash table entries: 2048 (order: 1, 8192 bytes, linear)
+Jun 24 13:15:05.731345 imx6qdl-variscite-som kernel: CPU: Testing write buffer coherency: ok
+Jun 24 13:15:05.731501 imx6qdl-variscite-som kernel: CPU0: Spectre v2: using BPIALL workaround
+Jun 24 13:15:05.731664 imx6qdl-variscite-som kernel: CPU0: thread -1, cpu 0, socket 0, mpidr 80000000
+Jun 24 13:15:05.731822 imx6qdl-variscite-som kernel: Setting up static identity map for 0x10100000 - 0x10100078
+Jun 24 13:15:05.732036 imx6qdl-variscite-som kernel: rcu: Hierarchical SRCU implementation.
+Jun 24 13:15:05.732208 imx6qdl-variscite-som kernel: smp: Bringing up secondary CPUs ...
+Jun 24 13:15:05.732375 imx6qdl-variscite-som kernel: CPU1: thread -1, cpu 1, socket 0, mpidr 80000001
+Jun 24 13:15:05.732530 imx6qdl-variscite-som kernel: CPU1: Spectre v2: using BPIALL workaround
+Jun 24 13:15:05.732681 imx6qdl-variscite-som kernel: CPU2: thread -1, cpu 2, socket 0, mpidr 80000002
+Jun 24 13:15:05.732836 imx6qdl-variscite-som kernel: CPU2: Spectre v2: using BPIALL workaround
+Jun 24 13:15:05.732989 imx6qdl-variscite-som kernel: CPU3: thread -1, cpu 3, socket 0, mpidr 80000003
+Jun 24 13:15:05.733191 imx6qdl-variscite-som kernel: CPU3: Spectre v2: using BPIALL workaround
+Jun 24 13:15:05.733408 imx6qdl-variscite-som kernel: smp: Brought up 1 node, 4 CPUs
+Jun 24 13:15:05.733610 imx6qdl-variscite-som kernel: SMP: Total of 4 processors activated (24.00 BogoMIPS).
+Jun 24 13:15:05.733770 imx6qdl-variscite-som kernel: CPU: All CPU(s) started in SVC mode.
+Jun 24 13:15:05.733928 imx6qdl-variscite-som kernel: devtmpfs: initialized
+Jun 24 13:15:05.734082 imx6qdl-variscite-som kernel: VFP support v0.3: implementor 41 architecture 3 part 30 variant 9 rev 4
+Jun 24 13:15:05.734240 imx6qdl-variscite-som kernel: clocksource: jiffies: mask: 0xffffffff max_cycles: 0xffffffff, max_idle_ns: 19112604462750000 ns
+Jun 24 13:15:05.734396 imx6qdl-variscite-som kernel: futex hash table entries: 1024 (order: 4, 65536 bytes, linear)
+Jun 24 13:15:05.734561 imx6qdl-variscite-som kernel: pinctrl core: initialized pinctrl subsystem
+Jun 24 13:15:05.734715 imx6qdl-variscite-som kernel: NET: Registered protocol family 16
+Jun 24 13:15:05.734873 imx6qdl-variscite-som kernel: DMA: preallocated 256 KiB pool for atomic coherent allocations
+Jun 24 13:15:05.735083 imx6qdl-variscite-som kernel: cpuidle: using governor menu
+Jun 24 13:15:05.735249 imx6qdl-variscite-som kernel: CPU identified as i.MX6Q, silicon rev 1.5
+Jun 24 13:15:05.735407 imx6qdl-variscite-som kernel: vdd1p1: supplied by regulator-dummy
+Jun 24 13:15:05.735564 imx6qdl-variscite-som kernel: vdd3p0: supplied by regulator-dummy
+Jun 24 13:15:05.735721 imx6qdl-variscite-som kernel: vdd2p5: supplied by regulator-dummy
+Jun 24 13:15:05.735884 imx6qdl-variscite-som kernel: vddarm: bypassed regulator has no supply!
+Jun 24 13:15:05.736076 imx6qdl-variscite-som kernel: vddarm: failed to get the current voltage(-517)
+Jun 24 13:15:05.739412 imx6qdl-variscite-som kernel: anatop_regulator 20c8000.anatop:regulator-vddcore: failed to register vddarm
+Jun 24 13:15:05.739721 imx6qdl-variscite-som kernel: vddsoc: bypassed regulator has no supply!
+Jun 24 13:15:05.739882 imx6qdl-variscite-som kernel: vddsoc: failed to get the current voltage(-517)
+Jun 24 13:15:05.752372 imx6qdl-variscite-som kernel: anatop_regulator 20c8000.anatop:regulator-vddsoc: failed to register vddsoc
+Jun 24 13:15:05.752628 imx6qdl-variscite-som kernel: No ATAGs?
+Jun 24 13:15:05.752792 imx6qdl-variscite-som kernel: hw-breakpoint: found 5 (+1 reserved) breakpoint and 1 watchpoint registers.
+Jun 24 13:15:05.752943 imx6qdl-variscite-som kernel: hw-breakpoint: maximum watchpoint size is 4 bytes.
+Jun 24 13:15:05.753106 imx6qdl-variscite-som kernel: debugfs: Directory 'dummy-iomuxc-gpr@20e0000' with parent 'regmap' already present!
+Jun 24 13:15:05.755101 imx6qdl-variscite-som kernel: imx6q-pinctrl 20e0000.iomuxc: initialized IMX pinctrl driver
+Jun 24 13:15:05.757691 imx6qdl-variscite-som kernel: mxs-dma 110000.dma-apbh: initialized
+Jun 24 13:15:05.757944 imx6qdl-variscite-som kernel: SCSI subsystem initialized
+Jun 24 13:15:05.758103 imx6qdl-variscite-som kernel: usbcore: registered new interface driver usbfs
+Jun 24 13:15:05.758263 imx6qdl-variscite-som kernel: usbcore: registered new interface driver hub
+Jun 24 13:15:05.758411 imx6qdl-variscite-som kernel: usbcore: registered new device driver usb
+Jun 24 13:15:05.760108 imx6qdl-variscite-som kernel: usb_phy_generic usbphynop1: usbphynop1 supply vcc not found, using dummy regulator
+Jun 24 13:15:05.775678 imx6qdl-variscite-som kernel: usb_phy_generic usbphynop2: usbphynop2 supply vcc not found, using dummy regulator
+Jun 24 13:15:05.778532 imx6qdl-variscite-som kernel: i2c i2c-0: IMX I2C adapter registered
+Jun 24 13:15:05.782114 imx6qdl-variscite-som kernel: i2c i2c-1: IMX I2C adapter registered
+Jun 24 13:15:05.784553 imx6qdl-variscite-som kernel: i2c i2c-2: IMX I2C adapter registered
+Jun 24 13:15:05.784772 imx6qdl-variscite-som kernel: pps_core: LinuxPPS API ver. 1 registered
+Jun 24 13:15:05.784934 imx6qdl-variscite-som kernel: pps_core: Software ver. 5.3.6 - Copyright 2005-2007 Rodolfo Giometti <giometti@linux.it>
+Jun 24 13:15:05.785087 imx6qdl-variscite-som kernel: PTP clock support registered
+Jun 24 13:15:05.785248 imx6qdl-variscite-som kernel: Advanced Linux Sound Architecture Driver Initialized.
+Jun 24 13:15:05.785467 imx6qdl-variscite-som kernel: Bluetooth: Core ver 2.22
+Jun 24 13:15:05.785628 imx6qdl-variscite-som kernel: NET: Registered protocol family 31
+Jun 24 13:15:05.785792 imx6qdl-variscite-som kernel: Bluetooth: HCI device and connection manager initialized
+Jun 24 13:15:05.785960 imx6qdl-variscite-som kernel: Bluetooth: HCI socket layer initialized
+Jun 24 13:15:05.786119 imx6qdl-variscite-som kernel: Bluetooth: L2CAP socket layer initialized
+Jun 24 13:15:05.786271 imx6qdl-variscite-som kernel: Bluetooth: SCO socket layer initialized
+Jun 24 13:15:05.786423 imx6qdl-variscite-som kernel: clocksource: Switched to clocksource mxc_timer1
+Jun 24 13:15:05.786580 imx6qdl-variscite-som kernel: VFS: Disk quotas dquot_6.6.0
+Jun 24 13:15:05.786751 imx6qdl-variscite-som kernel: VFS: Dquot-cache hash table entries: 1024 (order 0, 4096 bytes)
+Jun 24 13:15:05.786919 imx6qdl-variscite-som kernel: thermal_sys: Registered thermal governor 'step_wise'
+Jun 24 13:15:05.787131 imx6qdl-variscite-som kernel: NET: Registered protocol family 2
+Jun 24 13:15:05.787406 imx6qdl-variscite-som kernel: IP idents hash table entries: 16384 (order: 5, 131072 bytes, linear)
+Jun 24 13:15:05.787629 imx6qdl-variscite-som kernel: tcp_listen_portaddr_hash hash table entries: 512 (order: 2, 20480 bytes, linear)
+Jun 24 13:15:05.787791 imx6qdl-variscite-som kernel: TCP established hash table entries: 8192 (order: 3, 32768 bytes, linear)
+Jun 24 13:15:05.787945 imx6qdl-variscite-som kernel: TCP bind hash table entries: 8192 (order: 6, 294912 bytes, linear)
+Jun 24 13:15:05.788098 imx6qdl-variscite-som kernel: TCP: Hash tables configured (established 8192 bind 8192)
+Jun 24 13:15:05.788246 imx6qdl-variscite-som kernel: UDP hash table entries: 512 (order: 3, 40960 bytes, linear)
+Jun 24 13:15:05.788434 imx6qdl-variscite-som kernel: UDP-Lite hash table entries: 512 (order: 3, 40960 bytes, linear)
+Jun 24 13:15:05.788593 imx6qdl-variscite-som kernel: NET: Registered protocol family 1
+Jun 24 13:15:05.788740 imx6qdl-variscite-som kernel: RPC: Registered named UNIX socket transport module.
+Jun 24 13:15:05.788894 imx6qdl-variscite-som kernel: RPC: Registered udp transport module.
+Jun 24 13:15:05.789050 imx6qdl-variscite-som kernel: RPC: Registered tcp transport module.
+Jun 24 13:15:05.789202 imx6qdl-variscite-som kernel: RPC: Registered tcp NFSv4.1 backchannel transport module.
+Jun 24 13:15:05.789351 imx6qdl-variscite-som kernel: hw perfevents: no interrupt-affinity property for /pmu, guessing.
+Jun 24 13:15:05.789507 imx6qdl-variscite-som kernel: hw perfevents: enabled with armv7_cortex_a9 PMU driver, 7 counters available
+Jun 24 13:15:05.789656 imx6qdl-variscite-som kernel: Initialise system trusted keyrings
+Jun 24 13:15:05.789837 imx6qdl-variscite-som kernel: workingset: timestamp_bits=30 max_order=18 bucket_order=0
+Jun 24 13:15:05.789993 imx6qdl-variscite-som kernel: NFS: Registering the id_resolver key type
+Jun 24 13:15:05.790144 imx6qdl-variscite-som kernel: Key type id_resolver registered
+Jun 24 13:15:05.790291 imx6qdl-variscite-som kernel: Key type id_legacy registered
+Jun 24 13:15:05.810125 imx6qdl-variscite-som kernel: jffs2: version 2.2. (NAND) © 2001-2006 Red Hat, Inc.
+Jun 24 13:15:05.810308 imx6qdl-variscite-som kernel: fuse: init (API version 7.31)
+Jun 24 13:15:05.810900 imx6qdl-variscite-som kernel: Key type asymmetric registered
+Jun 24 13:15:05.811060 imx6qdl-variscite-som kernel: Asymmetric key parser 'x509' registered
+Jun 24 13:15:05.811297 imx6qdl-variscite-som kernel: bounce: pool size: 64 pages
+Jun 24 13:15:05.811520 imx6qdl-variscite-som kernel: io scheduler mq-deadline registered
+Jun 24 13:15:05.811691 imx6qdl-variscite-som kernel: io scheduler kyber registered
+Jun 24 13:15:05.813956 imx6qdl-variscite-som kernel: imx-weim 21b8000.weim: Driver registered.
+Jun 24 13:15:05.816299 imx6qdl-variscite-som kernel: pfuze100-regulator 1-0008: Full layer: 2, Metal layer: 1
+Jun 24 13:15:05.818677 imx6qdl-variscite-som kernel: pfuze100-regulator 1-0008: FAB: 0, FIN: 0
+Jun 24 13:15:05.834395 imx6qdl-variscite-som kernel: pfuze100-regulator 1-0008: pfuze100 found.
+Jun 24 13:15:05.834623 imx6qdl-variscite-som kernel: 2020000.serial: ttymxc0 at MMIO 0x2020000 (irq = 26, base_baud = 5000000) is a IMX
+Jun 24 13:15:05.834780 imx6qdl-variscite-som kernel: printk: console [ttymxc0] enabled
+Jun 24 13:15:05.834981 imx6qdl-variscite-som kernel: 21e8000.serial: ttymxc1 at MMIO 0x21e8000 (irq = 68, base_baud = 5000000) is a IMX
+Jun 24 13:15:05.837063 imx6qdl-variscite-som kernel: serial serial0: tty port ttymxc1 registered
+Jun 24 13:15:05.862252 imx6qdl-variscite-som kernel: imx-ipuv3 2400000.ipu: IPUv3H probed
+Jun 24 13:15:05.862475 imx6qdl-variscite-som kernel: [drm] Supports vblank timestamp caching Rev 2 (21.10.2013).
+Jun 24 13:15:05.862632 imx6qdl-variscite-som kernel: [drm] No driver support for vblank timestamp query.
+Jun 24 13:15:05.864374 imx6qdl-variscite-som kernel: imx-drm display-subsystem: bound imx-ipuv3-crtc.2 (ops ipu_crtc_ops)
+Jun 24 13:15:05.865968 imx6qdl-variscite-som kernel: imx-drm display-subsystem: bound imx-ipuv3-crtc.3 (ops ipu_crtc_ops)
+Jun 24 13:15:05.867592 imx6qdl-variscite-som kernel: imx-drm display-subsystem: bound imx-ipuv3-crtc.6 (ops ipu_crtc_ops)
+Jun 24 13:15:05.869099 imx6qdl-variscite-som kernel: imx-drm display-subsystem: bound imx-ipuv3-crtc.7 (ops ipu_crtc_ops)
+Jun 24 13:15:05.881057 imx6qdl-variscite-som kernel: imx-drm display-subsystem: bound ldb (ops imx_ldb_ops)
+Jun 24 13:15:05.881275 imx6qdl-variscite-som kernel: [drm] Initialized imx-drm 1.0.0 20120507 for display-subsystem on minor 0
+Jun 24 13:15:05.881482 imx6qdl-variscite-som kernel: Console: switching to colour frame buffer device 100x30
+Jun 24 13:15:05.883086 imx6qdl-variscite-som kernel: imx-drm display-subsystem: fb0: imx-drmdrmfb frame buffer device
+Jun 24 13:15:05.884962 imx6qdl-variscite-som kernel: imx-ipuv3 2800000.ipu: IPUv3H probed
+Jun 24 13:15:05.892264 imx6qdl-variscite-som kernel: brd: module loaded
+Jun 24 13:15:05.892454 imx6qdl-variscite-som kernel: loop: module loaded
+Jun 24 13:15:05.902239 imx6qdl-variscite-som kernel: pps pps0: new PPS source ptp0
+Jun 24 13:15:05.904280 imx6qdl-variscite-som kernel: fec 2188000.ethernet eth0: registered PHC device 0
+Jun 24 13:15:05.904522 imx6qdl-variscite-som kernel: ehci_hcd: USB 2.0 'Enhanced' Host Controller (EHCI) Driver
+Jun 24 13:15:05.904680 imx6qdl-variscite-som kernel: ehci-mxc: Freescale On-Chip EHCI Host driver
+Jun 24 13:15:05.904830 imx6qdl-variscite-som kernel: usbcore: registered new interface driver usb-storage
+Jun 24 13:15:05.906751 imx6qdl-variscite-som kernel: ci_hdrc ci_hdrc.0: EHCI Host Controller
+Jun 24 13:15:05.908462 imx6qdl-variscite-som kernel: ci_hdrc ci_hdrc.0: new USB bus registered, assigned bus number 1
+Jun 24 13:15:05.910148 imx6qdl-variscite-som kernel: ci_hdrc ci_hdrc.0: USB 2.0 started, EHCI 1.00
+Jun 24 13:15:05.932177 imx6qdl-variscite-som kernel: usb usb1: New USB device found, idVendor=1d6b, idProduct=0002, bcdDevice= 5.04
+Jun 24 13:15:05.933985 imx6qdl-variscite-som kernel: usb usb1: New USB device strings: Mfr=3, Product=2, SerialNumber=1
+Jun 24 13:15:05.935686 imx6qdl-variscite-som kernel: usb usb1: Product: EHCI Host Controller
+Jun 24 13:15:05.937354 imx6qdl-variscite-som kernel: usb usb1: Manufacturer: Linux 5.4.224-fslc+g0a328f252596 ehci_hcd
+Jun 24 13:15:05.939004 imx6qdl-variscite-som kernel: usb usb1: SerialNumber: ci_hdrc.0
+Jun 24 13:15:05.962091 imx6qdl-variscite-som kernel: hub 1-0:1.0: USB hub found
+Jun 24 13:15:05.964189 imx6qdl-variscite-som kernel: hub 1-0:1.0: 1 port detected
+Jun 24 13:15:05.966099 imx6qdl-variscite-som kernel: imx_usb 2184200.usb: No over current polarity defined
+Jun 24 13:15:05.968022 imx6qdl-variscite-som kernel: ci_hdrc ci_hdrc.1: EHCI Host Controller
+Jun 24 13:15:05.969677 imx6qdl-variscite-som kernel: ci_hdrc ci_hdrc.1: new USB bus registered, assigned bus number 2
+Jun 24 13:15:05.991581 imx6qdl-variscite-som kernel: ci_hdrc ci_hdrc.1: USB 2.0 started, EHCI 1.00
+Jun 24 13:15:05.993488 imx6qdl-variscite-som kernel: usb usb2: New USB device found, idVendor=1d6b, idProduct=0002, bcdDevice= 5.04
+Jun 24 13:15:05.995187 imx6qdl-variscite-som kernel: usb usb2: New USB device strings: Mfr=3, Product=2, SerialNumber=1
+Jun 24 13:15:05.996861 imx6qdl-variscite-som kernel: usb usb2: Product: EHCI Host Controller
+Jun 24 13:15:05.998571 imx6qdl-variscite-som kernel: usb usb2: Manufacturer: Linux 5.4.224-fslc+g0a328f252596 ehci_hcd
+Jun 24 13:15:06.000279 imx6qdl-variscite-som kernel: usb usb2: SerialNumber: ci_hdrc.1
+Jun 24 13:15:06.022725 imx6qdl-variscite-som kernel: hub 2-0:1.0: USB hub found
+Jun 24 13:15:06.024766 imx6qdl-variscite-som kernel: hub 2-0:1.0: 1 port detected
+Jun 24 13:15:06.026927 imx6qdl-variscite-som kernel: rtc-ds1307 2-0068: registered as rtc0
+Jun 24 13:15:06.027225 imx6qdl-variscite-som kernel: i2c /dev entries driver
+Jun 24 13:15:06.029319 imx6qdl-variscite-som kernel: imx2-wdt 20bc000.wdog: timeout 60 sec (nowayout=0)
+Jun 24 13:15:06.029558 imx6qdl-variscite-som kernel: sdhci: Secure Digital Host Controller Interface driver
+Jun 24 13:15:06.029719 imx6qdl-variscite-som kernel: sdhci: Copyright(c) Pierre Ossman
+Jun 24 13:15:06.029869 imx6qdl-variscite-som kernel: sdhci-pltfm: SDHCI platform and OF driver helper
+Jun 24 13:15:06.030023 imx6qdl-variscite-som kernel: mmc0: SDHCI controller on 2190000.usdhc [2190000.usdhc] using ADMA
+Jun 24 13:15:06.042090 imx6qdl-variscite-som kernel: sdhci-esdhc-imx 2194000.usdhc: Got CD GPIO
+Jun 24 13:15:06.042302 imx6qdl-variscite-som kernel: mmc1: SDHCI controller on 2194000.usdhc [2194000.usdhc] using ADMA
+Jun 24 13:15:06.042469 imx6qdl-variscite-som kernel: mmc0: new DDR MMC card at address 0001
+Jun 24 13:15:06.044730 imx6qdl-variscite-som kernel: usb 1-1: new full-speed USB device number 2 using ci_hdrc
+Jun 24 13:15:06.044986 imx6qdl-variscite-som kernel: mmcblk0: mmc0:0001 M32508 7.13 GiB 
+Jun 24 13:15:06.045152 imx6qdl-variscite-som kernel: mmcblk0boot0: mmc0:0001 M32508 partition 1 4.00 MiB
+Jun 24 13:15:06.045305 imx6qdl-variscite-som kernel: mmcblk0boot1: mmc0:0001 M32508 partition 2 4.00 MiB
+Jun 24 13:15:06.045458 imx6qdl-variscite-som kernel: mmcblk0rpmb: mmc0:0001 M32508 partition 3 4.00 MiB, chardev (246:0)
+Jun 24 13:15:06.047644 imx6qdl-variscite-som kernel: usb 2-1: new high-speed USB device number 2 using ci_hdrc
+Jun 24 13:15:06.047851 imx6qdl-variscite-som kernel: mmc2: SDHCI controller on 2198000.usdhc [2198000.usdhc] using ADMA
+Jun 24 13:15:06.050004 imx6qdl-variscite-som kernel: caam 2100000.caam: Entropy delay = 3200
+Jun 24 13:15:06.063541 imx6qdl-variscite-som kernel: sdhci-esdhc-imx 2198000.usdhc: card claims to support voltages below defined range
+Jun 24 13:15:06.063792 imx6qdl-variscite-som kernel: mmc2: new high speed SDIO card at address 0001
+Jun 24 13:15:06.065659 imx6qdl-variscite-som kernel: caam 2100000.caam: Instantiated RNG4 SH0
+Jun 24 13:15:06.067439 imx6qdl-variscite-som kernel: caam 2100000.caam: Instantiated RNG4 SH1
+Jun 24 13:15:06.069164 imx6qdl-variscite-som kernel: caam 2100000.caam: device ID = 0x0a16010000000000 (Era 4)
+Jun 24 13:15:06.071023 imx6qdl-variscite-som kernel: caam 2100000.caam: job rings = 2, qi = 0
+Jun 24 13:15:06.071226 imx6qdl-variscite-som kernel: mmc1: host does not support reading read-only switch, assuming write-enable
+Jun 24 13:15:06.071398 imx6qdl-variscite-som kernel: mmc1: new high speed SDHC card at address 0001
+Jun 24 13:15:06.071565 imx6qdl-variscite-som kernel: mmcblk1: mmc1:0001 0004G 3.71 GiB 
+Jun 24 13:15:06.071870 imx6qdl-variscite-som kernel:  mmcblk1: p1 p2
+Jun 24 13:15:06.072118 imx6qdl-variscite-som kernel: caam algorithms registered in /proc/crypto
+Jun 24 13:15:06.075013 imx6qdl-variscite-som kernel: caam_jr 2101000.jr0: registering rng-caam
+Jun 24 13:15:06.075206 imx6qdl-variscite-som kernel: usbcore: registered new interface driver usbhid
+Jun 24 13:15:06.076932 imx6qdl-variscite-som kernel: usb 1-1: New USB device found, idVendor=0eef, idProduct=c000, bcdDevice=62.01
+Jun 24 13:15:06.077124 imx6qdl-variscite-som kernel: usbhid: USB HID core driver
+Jun 24 13:15:06.078800 imx6qdl-variscite-som kernel: usb 1-1: New USB device strings: Mfr=1, Product=2, SerialNumber=0
+Jun 24 13:15:06.090995 imx6qdl-variscite-som kernel: fsl-ssi-dai 202c000.ssi: No cache defaults, reading back from HW
+Jun 24 13:15:06.092886 imx6qdl-variscite-som kernel: usb 1-1: Product: eGalaxTouch EXC3132-2162-05.00.00
+Jun 24 13:15:06.094757 imx6qdl-variscite-som kernel: usb 1-1: Manufacturer: eGalax Inc.
+Jun 24 13:15:06.094942 imx6qdl-variscite-som kernel: NET: Registered protocol family 10
+Jun 24 13:15:06.095103 imx6qdl-variscite-som kernel: input: eGalax Inc. eGalaxTouch EXC3132-2162-05.00.00 as /devices/soc0/soc/2100000.aips-bus/2184000.usb/ci_hdrc.0/usb1/1-1/1-1:1.0/0003:0EEF:C000.0001/input/input0
+Jun 24 13:15:06.095259 imx6qdl-variscite-som kernel: Segment Routing with IPv6
+Jun 24 13:15:06.095417 imx6qdl-variscite-som kernel: input: eGalax Inc. eGalaxTouch EXC3132-2162-05.00.00 UNKNOWN as /devices/soc0/soc/2100000.aips-bus/2184000.usb/ci_hdrc.0/usb1/1-1/1-1:1.0/0003:0EEF:C000.0001/input/input2
+Jun 24 13:15:06.095570 imx6qdl-variscite-som kernel: sit: IPv6, IPv4 and MPLS over IPv4 tunneling driver
+Jun 24 13:15:06.097404 imx6qdl-variscite-som kernel: usb 2-1: New USB device found, idVendor=0424, idProduct=2514, bcdDevice= b.b3
+Jun 24 13:15:06.097643 imx6qdl-variscite-som kernel: NET: Registered protocol family 17
+Jun 24 13:15:06.099342 imx6qdl-variscite-som kernel: usb 2-1: New USB device strings: Mfr=0, Product=0, SerialNumber=0
+Jun 24 13:15:06.099527 imx6qdl-variscite-som kernel: Key type dns_resolver registered
+Jun 24 13:15:06.112160 imx6qdl-variscite-som kernel: hid-multitouch 0003:0EEF:C000.0001: input: USB HID v2.10 Pointer [eGalax Inc. eGalaxTouch EXC3132-2162-05.00.00] on usb-ci_hdrc.0-1/input0
+Jun 24 13:15:06.112384 imx6qdl-variscite-som kernel: vddpu: supplied by SW1C
+Jun 24 13:15:06.114731 imx6qdl-variscite-som kernel: hub 2-1:1.0: USB hub found
+Jun 24 13:15:06.114933 imx6qdl-variscite-som kernel: Registering SWP/SWPB emulation handler
+Jun 24 13:15:06.116977 imx6qdl-variscite-som kernel: hub 2-1:1.0: 2 ports detected
+Jun 24 13:15:06.117161 imx6qdl-variscite-som kernel: Loading compiled-in X.509 certificates
+Jun 24 13:15:06.117317 imx6qdl-variscite-som kernel: vddarm: bypassed regulator has no supply!
+Jun 24 13:15:06.117465 imx6qdl-variscite-som kernel: vddarm: failed to get the current voltage(-517)
+Jun 24 13:15:06.117611 imx6qdl-variscite-som kernel: vddarm: supplied by SW1AB
+Jun 24 13:15:06.117759 imx6qdl-variscite-som kernel: vddsoc: bypassed regulator has no supply!
+Jun 24 13:15:06.117905 imx6qdl-variscite-som kernel: vddsoc: failed to get the current voltage(-517)
+Jun 24 13:15:06.118052 imx6qdl-variscite-som kernel: vddsoc: supplied by SW1C
+Jun 24 13:15:06.119649 imx6qdl-variscite-som kernel: etnaviv etnaviv: bound 130000.gpu (ops gpu_ops)
+Jun 24 13:15:06.131422 imx6qdl-variscite-som kernel: etnaviv etnaviv: bound 134000.gpu (ops gpu_ops)
+Jun 24 13:15:06.132951 imx6qdl-variscite-som kernel: etnaviv etnaviv: bound 2204000.gpu (ops gpu_ops)
+Jun 24 13:15:06.134738 imx6qdl-variscite-som kernel: etnaviv-gpu 130000.gpu: model: GC2000, revision: 5108
+Jun 24 13:15:06.136509 imx6qdl-variscite-som kernel: etnaviv-gpu 134000.gpu: model: GC320, revision: 5007
+Jun 24 13:15:06.138251 imx6qdl-variscite-som kernel: etnaviv-gpu 2204000.gpu: model: GC355, revision: 1215
+Jun 24 13:15:06.139860 imx6qdl-variscite-som kernel: etnaviv-gpu 2204000.gpu: Ignoring GPU with VG and FE2.0
+Jun 24 13:15:06.140093 imx6qdl-variscite-som kernel: [drm] Initialized etnaviv 1.3.0 20151214 for etnaviv on minor 1
+Jun 24 13:15:06.162093 imx6qdl-variscite-som kernel: fsl-ssi-dai 202c000.ssi: No cache defaults, reading back from HW
+Jun 24 13:15:06.164045 imx6qdl-variscite-som kernel: imx_thermal tempmon: Extended Commercial CPU temperature grade - max:105C critical:100C passive:95C
+Jun 24 13:15:06.165898 imx6qdl-variscite-som kernel: fsl-ssi-dai 202c000.ssi: No cache defaults, reading back from HW
+Jun 24 13:15:06.167687 imx6qdl-variscite-som kernel: fsl-ssi-dai 202c000.ssi: No cache defaults, reading back from HW
+Jun 24 13:15:06.167852 imx6qdl-variscite-som kernel: input: gpio-keys as /devices/soc0/gpio-keys/input/input3
+Jun 24 13:15:06.169633 imx6qdl-variscite-som kernel: fsl-ssi-dai 202c000.ssi: No cache defaults, reading back from HW
+Jun 24 13:15:06.182754 imx6qdl-variscite-som kernel: rtc-ds1307 2-0068: setting system clock to 2024-06-24T13:15:02 UTC (1719234902)
+Jun 24 13:15:06.185303 imx6qdl-variscite-som kernel: usb 2-1.1: new high-speed USB device number 3 using ci_hdrc
+Jun 24 13:15:06.185524 imx6qdl-variscite-som kernel: ALSA device list:
+Jun 24 13:15:06.185686 imx6qdl-variscite-som kernel:   No soundcards found.
+Jun 24 13:15:06.185839 imx6qdl-variscite-som kernel: EXT4-fs (mmcblk1p2): mounted filesystem with ordered data mode. Opts: (null)
+Jun 24 13:15:06.185994 imx6qdl-variscite-som kernel: VFS: Mounted root (ext4 filesystem) on device 179:26.
+Jun 24 13:15:06.186150 imx6qdl-variscite-som kernel: devtmpfs: mounted
+Jun 24 13:15:06.186304 imx6qdl-variscite-som kernel: Freeing unused kernel memory: 1024K
+Jun 24 13:15:06.186455 imx6qdl-variscite-som kernel: Run /sbin/init as init process
+Jun 24 13:15:06.188364 imx6qdl-variscite-som kernel: usb 2-1.1: New USB device found, idVendor=0409, idProduct=005a, bcdDevice= 1.00
+Jun 24 13:15:06.190300 imx6qdl-variscite-som kernel: usb 2-1.1: New USB device strings: Mfr=0, Product=0, SerialNumber=0
+Jun 24 13:15:06.192713 imx6qdl-variscite-som kernel: hub 2-1.1:1.0: USB hub found
+Jun 24 13:15:06.194954 imx6qdl-variscite-som kernel: hub 2-1.1:1.0: 4 ports detected
+Jun 24 13:15:06.196876 imx6qdl-variscite-som kernel: fsl-ssi-dai 202c000.ssi: No cache defaults, reading back from HW
+Jun 24 13:15:06.199276 imx6qdl-variscite-som kernel: usb 2-1.1.1: new low-speed USB device number 4 using ci_hdrc
+Jun 24 13:15:06.199488 imx6qdl-variscite-som systemd[1]: Configuration file /etc/systemd/system.conf.d/mesa-etnaviv.conf is marked executable. Please remove executable permission bits. Proceeding anyway.
+Jun 24 13:15:06.199727 imx6qdl-variscite-som systemd[1]: systemd 244.5+ running in system mode. (+PAM -AUDIT -SELINUX +IMA -APPARMOR -SMACK +SYSVINIT +UTMP -LIBCRYPTSETUP -GCRYPT -GNUTLS -ACL +XZ -LZ4 -SECCOMP +BLKID -ELFUTILS +KMOD -IDN2 -IDN -PCRE2 default-hierarchy=hybrid)
+Jun 24 13:15:06.199907 imx6qdl-variscite-som systemd[1]: Detected architecture arm.
+Jun 24 13:15:06.200070 imx6qdl-variscite-som systemd[1]: Set hostname to <imx6qdl-variscite-som>.
+Jun 24 13:15:06.213248 imx6qdl-variscite-som kernel: usb 2-1.1.1: New USB device found, idVendor=046a, idProduct=0021, bcdDevice= 0.20
+Jun 24 13:15:06.215394 imx6qdl-variscite-som kernel: usb 2-1.1.1: New USB device strings: Mfr=0, Product=0, SerialNumber=0
+Jun 24 13:15:06.217923 imx6qdl-variscite-som kernel: fsl-ssi-dai 202c000.ssi: No cache defaults, reading back from HW
+Jun 24 13:15:06.218119 imx6qdl-variscite-som kernel: random: systemd: uninitialized urandom read (16 bytes read)
+Jun 24 13:15:06.231008 imx6qdl-variscite-som kernel: fsl-ssi-dai 202c000.ssi: No cache defaults, reading back from HW
+Jun 24 13:15:06.231266 imx6qdl-variscite-som systemd[1]: Initializing machine ID from random generator.
+Jun 24 13:15:06.233840 imx6qdl-variscite-som kernel: usb 2-1.1.2: new low-speed USB device number 5 using ci_hdrc
+Jun 24 13:15:06.235880 imx6qdl-variscite-som kernel: usb 2-1.1.2: New USB device found, idVendor=413c, idProduct=301a, bcdDevice= 1.00
+Jun 24 13:15:06.237847 imx6qdl-variscite-som kernel: usb 2-1.1.2: New USB device strings: Mfr=1, Product=2, SerialNumber=0
+Jun 24 13:15:06.239736 imx6qdl-variscite-som kernel: usb 2-1.1.2: Product: Dell MS116 USB Optical Mouse
+Jun 24 13:15:06.251907 imx6qdl-variscite-som kernel: usb 2-1.1.2: Manufacturer: PixArt
+Jun 24 13:15:06.253920 imx6qdl-variscite-som kernel: fsl-ssi-dai 202c000.ssi: No cache defaults, reading back from HW
+Jun 24 13:15:06.254100 imx6qdl-variscite-som kernel: random: systemd: uninitialized urandom read (16 bytes read)
+Jun 24 13:15:06.254268 imx6qdl-variscite-som systemd[1]: system-getty.slice: unit configures an IP firewall, but the local system does not support BPF/cgroup firewalling.
+Jun 24 13:15:06.254446 imx6qdl-variscite-som systemd[1]: (This warning is only shown for the first unit using IP firewalling.)
+Jun 24 13:15:06.254608 imx6qdl-variscite-som systemd[1]: Created slice system-getty.slice.
+Jun 24 13:15:06.254763 imx6qdl-variscite-som kernel: random: systemd: uninitialized urandom read (16 bytes read)
+Jun 24 13:15:06.254917 imx6qdl-variscite-som systemd[1]: Created slice system-serial\x2dgetty.slice.
+Jun 24 13:15:06.255071 imx6qdl-variscite-som kernel: random: systemd: uninitialized urandom read (16 bytes read)
+Jun 24 13:15:06.255223 imx6qdl-variscite-som systemd[1]: Created slice system-systemd\x2dfsck.slice.
+Jun 24 13:15:06.255415 imx6qdl-variscite-som systemd[1]: Created slice User and Session Slice.
+Jun 24 13:15:06.255580 imx6qdl-variscite-som systemd[1]: Started Dispatch Password Requests to Console Directory Watch.
+Jun 24 13:15:06.255739 imx6qdl-variscite-som systemd[1]: Started Forward Password Requests to Wall Directory Watch.
+Jun 24 13:15:06.255898 imx6qdl-variscite-som systemd[1]: Reached target Paths.
+Jun 24 13:15:06.256073 imx6qdl-variscite-som systemd[1]: Reached target Remote File Systems.
+Jun 24 13:15:06.256231 imx6qdl-variscite-som systemd[1]: Reached target Slices.
+Jun 24 13:15:06.256391 imx6qdl-variscite-som systemd[1]: Reached target Swap.
+Jun 24 13:15:06.256553 imx6qdl-variscite-som systemd[1]: Listening on RPCbind Server Activation Socket.
+Jun 24 13:15:06.256744 imx6qdl-variscite-som systemd[1]: Reached target RPC Port Mapper.
+Jun 24 13:15:06.256906 imx6qdl-variscite-som systemd[1]: Listening on Process Core Dump Socket.
+Jun 24 13:15:06.257065 imx6qdl-variscite-som systemd[1]: Listening on initctl Compatibility Named Pipe.
+Jun 24 13:15:06.257225 imx6qdl-variscite-som systemd[1]: Condition check resulted in Journal Audit Socket being skipped.
+Jun 24 13:15:06.257386 imx6qdl-variscite-som systemd[1]: Listening on Journal Socket (/dev/log).
+Jun 24 13:15:06.257545 imx6qdl-variscite-som systemd[1]: Listening on Journal Socket.
+Jun 24 13:15:06.257704 imx6qdl-variscite-som systemd[1]: Listening on Network Service Netlink Socket.
+Jun 24 13:15:06.257863 imx6qdl-variscite-som systemd[1]: Listening on udev Control Socket.
+Jun 24 13:15:06.258020 imx6qdl-variscite-som systemd[1]: Listening on udev Kernel Socket.
+Jun 24 13:15:06.258212 imx6qdl-variscite-som systemd[1]: Condition check resulted in Huge Pages File System being skipped.
+Jun 24 13:15:06.258373 imx6qdl-variscite-som systemd[1]: Condition check resulted in POSIX Message Queue File System being skipped.
+Jun 24 13:15:06.258538 imx6qdl-variscite-som systemd[1]: Mounting Kernel Debug File System...
+Jun 24 13:15:06.258695 imx6qdl-variscite-som kernel: random: systemd: uninitialized urandom read (16 bytes read)
+Jun 24 13:15:06.258860 imx6qdl-variscite-som systemd[1]: Mounting Temporary Directory (/tmp)...
+Jun 24 13:15:06.259016 imx6qdl-variscite-som kernel: random: systemd: uninitialized urandom read (16 bytes read)
+Jun 24 13:15:06.259173 imx6qdl-variscite-som systemd[1]: Starting Create list of static device nodes for the current kernel...
+Jun 24 13:15:06.259328 imx6qdl-variscite-som kernel: random: systemd: uninitialized urandom read (16 bytes read)
+Jun 24 13:15:06.259480 imx6qdl-variscite-som systemd[1]: Started Hardware RNG Entropy Gatherer Daemon.
+Jun 24 13:15:06.259638 imx6qdl-variscite-som systemd[1]: Starting RPC Bind...
+Jun 24 13:15:06.259831 imx6qdl-variscite-som systemd[1]: Condition check resulted in File System Check on Root Device being skipped.
+Jun 24 13:15:06.259995 imx6qdl-variscite-som systemd[1]: Starting Journal Service...
+Jun 24 13:15:06.260155 imx6qdl-variscite-som systemd[1]: Condition check resulted in Load Kernel Modules being skipped.
+Jun 24 13:15:06.260336 imx6qdl-variscite-som systemd[1]: Mounting FUSE Control File System...
+Jun 24 13:15:06.270662 imx6qdl-variscite-som systemd[1]: Condition check resulted in Kernel Configuration File System being skipped.
+Jun 24 13:15:06.270839 imx6qdl-variscite-som systemd[1]: Starting Remount Root and Kernel File Systems...
+Jun 24 13:15:06.271066 imx6qdl-variscite-som systemd[1]: Starting Apply Kernel Variables...
+Jun 24 13:15:06.271239 imx6qdl-variscite-som systemd[1]: Starting udev Coldplug all Devices...
+Jun 24 13:15:06.271403 imx6qdl-variscite-som kernel: EXT4-fs (mmcblk1p2): re-mounted. Opts: (null)
+Jun 24 13:15:06.271564 imx6qdl-variscite-som systemd[1]: Started RPC Bind.
+Jun 24 13:15:06.271727 imx6qdl-variscite-som systemd[1]: Mounted Kernel Debug File System.
+Jun 24 13:15:06.271886 imx6qdl-variscite-som systemd[1]: Mounted Temporary Directory (/tmp).
+Jun 24 13:15:06.272048 imx6qdl-variscite-som systemd[1]: Started Create list of static device nodes for the current kernel.
+Jun 24 13:15:06.272207 imx6qdl-variscite-som systemd[1]: Mounted FUSE Control File System.
+Jun 24 13:15:06.272403 imx6qdl-variscite-som systemd[1]: Started Remount Root and Kernel File Systems.
+Jun 24 13:15:06.272567 imx6qdl-variscite-som systemd[1]: Started Apply Kernel Variables.
+Jun 24 13:15:06.272747 imx6qdl-variscite-som systemd[1]: Condition check resulted in Rebuild Hardware Database being skipped.
+Jun 24 13:15:06.272907 imx6qdl-variscite-som systemd[1]: Starting Create System Users...
+Jun 24 13:15:06.273066 imx6qdl-variscite-som systemd-journald[182]: Journal started
+Jun 24 13:15:06.273651 imx6qdl-variscite-som systemd-journald[182]: Runtime Journal (/run/log/journal/aa9c08e289964cdfbe083816c47981ae) is 8.0M, max 64.0M, 56.0M free.
+Jun 24 13:15:05.829736 imx6qdl-variscite-som systemd-sysctl[189]: Couldn't write 'fq_codel' to 'net/core/default_qdisc', ignoring: No such file or directory
+Jun 24 13:15:06.313862 imx6qdl-variscite-som systemd[1]: Started Journal Service.
+Jun 24 13:15:05.830822 imx6qdl-variscite-som systemd-sysctl[189]: Couldn't write '1' to 'net/ipv4/tcp_syncookies', ignoring: No such file or directory
+Jun 24 13:15:06.298185 imx6qdl-variscite-som systemd-sysusers[195]: Creating group wheel with gid 984.
+Jun 24 13:15:06.298780 imx6qdl-variscite-som systemd-sysusers[195]: Creating group render with gid 983.
+Jun 24 13:15:06.299363 imx6qdl-variscite-som systemd-sysusers[195]: Creating group nobody with gid 982.
+Jun 24 13:15:06.322568 imx6qdl-variscite-som rngd[180]: Initializing available sources
+Jun 24 13:15:06.322568 imx6qdl-variscite-som rngd[180]: [hwrng ]: Initialized
+Jun 24 13:15:06.322568 imx6qdl-variscite-som rngd[180]: [jitter]: Initializing AES buffer
+Jun 24 13:15:06.318038 imx6qdl-variscite-som systemd[1]: Starting Flush Journal to Persistent Storage...
+Jun 24 13:15:06.381233 imx6qdl-variscite-som kernel: random: systemd-journal: uninitialized urandom read (16 bytes read)
+Jun 24 13:15:06.381595 imx6qdl-variscite-som kernel: random: systemd-journal: uninitialized urandom read (16 bytes read)
+Jun 24 13:15:06.400589 imx6qdl-variscite-som kernel: random: systemd-journal: uninitialized urandom read (16 bytes read)
+Jun 24 13:15:06.402235 imx6qdl-variscite-som systemd-journald[182]: Time spent on flushing to /var is 100.045ms for 363 entries.
+Jun 24 13:15:06.402235 imx6qdl-variscite-som systemd-journald[182]: System Journal (/var/log/journal/aa9c08e289964cdfbe083816c47981ae) is 8.0M, max 361.9M, 353.9M free.
+Jun 24 13:15:06.387703 imx6qdl-variscite-som systemd[1]: Started Create System Users.
+Jun 24 13:15:06.429946 imx6qdl-variscite-som systemd[1]: Starting Create Static Device Nodes in /dev...
+Jun 24 13:15:06.539663 imx6qdl-variscite-som systemd-tmpfiles[197]: /etc/tmpfiles.d/openvpn.conf:1: Line references path below legacy directory /var/run/, updating /var/run/openvpn → /run/openvpn; please update the tmpfiles.d/ drop-in file accordingly.
+Jun 24 13:15:06.541502 imx6qdl-variscite-som systemd-tmpfiles[197]: /etc/tmpfiles.d/samba.conf:1: Line references path below legacy directory /var/run/, updating /var/run/samba → /run/samba; please update the tmpfiles.d/ drop-in file accordingly.
+Jun 24 13:15:06.575388 imx6qdl-variscite-som systemd[1]: Started Create Static Device Nodes in /dev.
+Jun 24 13:15:06.602787 imx6qdl-variscite-som systemd[1]: Reached target Local File Systems (Pre).
+Jun 24 13:15:06.646126 imx6qdl-variscite-som systemd[1]: Mounting /var/volatile...
+Jun 24 13:15:06.677283 imx6qdl-variscite-som systemd[1]: Starting udev Kernel Device Manager...
+Jun 24 13:15:06.716695 imx6qdl-variscite-som systemd[1]: Started Flush Journal to Persistent Storage.
+Jun 24 13:15:06.757801 imx6qdl-variscite-som systemd[1]: Mounted /var/volatile.
+Jun 24 13:15:06.794541 imx6qdl-variscite-som systemd[1]: Condition check resulted in Bind mount volatile /var/cache being skipped.
+Jun 24 13:15:06.794882 imx6qdl-variscite-som systemd[1]: Condition check resulted in Bind mount volatile /var/lib being skipped.
+Jun 24 13:15:06.801093 imx6qdl-variscite-som systemd[1]: Starting Load/Save Random Seed...
+Jun 24 13:15:06.808430 imx6qdl-variscite-som systemd[1]: Condition check resulted in Bind mount volatile /var/spool being skipped.
+Jun 24 13:15:06.808744 imx6qdl-variscite-som systemd[1]: Condition check resulted in Bind mount volatile /srv being skipped.
+Jun 24 13:15:06.891366 imx6qdl-variscite-som systemd-random-seed[202]: Kernel entropy pool is not initialized yet, waiting until it is.
+Jun 24 13:15:07.055749 imx6qdl-variscite-som systemd[1]: Started udev Kernel Device Manager.
+Jun 24 13:15:08.370684 imx6qdl-variscite-som kernel: mc: Linux media interface: v0.10
+Jun 24 13:15:08.470582 imx6qdl-variscite-som kernel: videodev: Linux video capture interface: v2.00
+Jun 24 13:15:08.482089 imx6qdl-variscite-som systemd[1]: Started udev Coldplug all Devices.
+Jun 24 13:15:08.556530 imx6qdl-variscite-som systemd-udevd[209]: Using default interface naming scheme 'v243'.
+Jun 24 13:15:08.582951 imx6qdl-variscite-som systemd-udevd[209]: ethtool: autonegotiation is unset or enabled, the speed and duplex are not writable.
+Jun 24 13:15:08.630567 imx6qdl-variscite-som kernel: fsl-ssi-dai 202c000.ssi: No cache defaults, reading back from HW
+Jun 24 13:15:08.633434 imx6qdl-variscite-som kernel: imx-sdma 20ec000.sdma: loaded firmware 3.5
+Jun 24 13:15:08.670541 imx6qdl-variscite-som kernel: spi_imx 2008000.spi: probed
+Jun 24 13:15:08.790672 imx6qdl-variscite-som kernel: coda 2040000.vpu: Firmware code revision: 46076
+Jun 24 13:15:08.791240 imx6qdl-variscite-som kernel: coda 2040000.vpu: Initialized CODA960.
+Jun 24 13:15:08.791665 imx6qdl-variscite-som kernel: coda 2040000.vpu: Firmware version: 3.1.1
+Jun 24 13:15:08.824608 imx6qdl-variscite-som mtp-probe[221]: checking bus 1, device 2: "/sys/devices/soc0/soc/2100000.aips-bus/2184000.usb/ci_hdrc.0/usb1/1-1"
+Jun 24 13:15:08.830591 imx6qdl-variscite-som systemd[1]: Found device /dev/i2c-1.
+Jun 24 13:15:08.844910 imx6qdl-variscite-som mtp-probe[221]: bus: 1, device: 2 was not an MTP device
+Jun 24 13:15:08.870488 imx6qdl-variscite-som kernel: asoc-simple-card sound: tlv320aic3x-hifi <-> 202c000.ssi mapping ok
+Jun 24 13:15:08.872534 imx6qdl-variscite-som kernel: coda 2040000.vpu: encoder registered as video0
+Jun 24 13:15:08.913570 imx6qdl-variscite-som kernel: coda 2040000.vpu: decoder registered as video1
+Jun 24 13:15:09.000510 imx6qdl-variscite-som kernel: input: HID 046a:0021 as /devices/soc0/soc/2100000.aips-bus/2184200.usb/ci_hdrc.1/usb2/2-1/2-1.1/2-1.1.1/2-1.1.1:1.0/0003:046A:0021.0002/input/input4
+Jun 24 13:15:09.076907 imx6qdl-variscite-som mtp-probe[223]: checking bus 2, device 4: "/sys/devices/soc0/soc/2100000.aips-bus/2184200.usb/ci_hdrc.1/usb2/2-1/2-1.1/2-1.1.1"
+Jun 24 13:15:09.084345 imx6qdl-variscite-som mtp-probe[224]: checking bus 2, device 5: "/sys/devices/soc0/soc/2100000.aips-bus/2184200.usb/ci_hdrc.1/usb2/2-1/2-1.1/2-1.1.2"
+Jun 24 13:15:09.088834 imx6qdl-variscite-som systemd[1]: Found device /dev/i2c-0.
+Jun 24 13:15:09.111513 imx6qdl-variscite-som mtp-probe[223]: bus: 2, device: 4 was not an MTP device
+Jun 24 13:15:09.124872 imx6qdl-variscite-som kernel: hid-generic 0003:046A:0021.0002: input: USB HID v1.11 Keyboard [HID 046a:0021] on usb-ci_hdrc.1-1.1.1/input0
+Jun 24 13:15:09.113442 imx6qdl-variscite-som mtp-probe[224]: bus: 2, device: 5 was not an MTP device
+Jun 24 13:15:09.160480 imx6qdl-variscite-som kernel: input: HID 046a:0021 Consumer Control as /devices/soc0/soc/2100000.aips-bus/2184200.usb/ci_hdrc.1/usb2/2-1/2-1.1/2-1.1.1/2-1.1.1:1.1/0003:046A:0021.0003/input/input5
+Jun 24 13:15:09.260513 imx6qdl-variscite-som kernel: zfpga1: loading out-of-tree module taints kernel.
+Jun 24 13:15:09.290527 imx6qdl-variscite-som kernel: input: HID 046a:0021 System Control as /devices/soc0/soc/2100000.aips-bus/2184200.usb/ci_hdrc.1/usb2/2-1/2-1.1/2-1.1.1/2-1.1.1:1.1/0003:046A:0021.0003/input/input6
+Jun 24 13:15:09.290980 imx6qdl-variscite-som kernel: zFPGA1 8000000.zfpga: zfpga initialized
+Jun 24 13:15:09.325499 imx6qdl-variscite-som kernel: Bluetooth: HCI UART driver ver 2.3
+Jun 24 13:15:09.325985 imx6qdl-variscite-som kernel: Bluetooth: HCI UART protocol H4 registered
+Jun 24 13:15:09.326256 imx6qdl-variscite-som kernel: hid-generic 0003:046A:0021.0003: input: USB HID v1.11 Device [HID 046a:0021] on usb-ci_hdrc.1-1.1.1/input1
+Jun 24 13:15:09.328891 imx6qdl-variscite-som kernel: zFPGA1 c000000.zfpga: zfpga initialized
+Jun 24 13:15:09.350519 imx6qdl-variscite-som kernel: Bluetooth: HCI UART protocol LL registered
+Jun 24 13:15:09.370495 imx6qdl-variscite-som kernel: input: PixArt Dell MS116 USB Optical Mouse as /devices/soc0/soc/2100000.aips-bus/2184200.usb/ci_hdrc.1/usb2/2-1/2-1.1/2-1.1.2/2-1.1.2:1.0/0003:413C:301A.0004/input/input7
+Jun 24 13:15:09.410820 imx6qdl-variscite-som systemd[1]: Found device /dev/mmcblk1p1.
+Jun 24 13:15:09.430492 imx6qdl-variscite-som kernel: hid-generic 0003:413C:301A.0004: input: USB HID v1.11 Mouse [PixArt Dell MS116 USB Optical Mouse] on usb-ci_hdrc.1-1.1.2/input0
+Jun 24 13:15:09.520507 imx6qdl-variscite-som kernel: Bluetooth: hci0: change remote baud rate command in firmware
+Jun 24 13:15:09.572348 imx6qdl-variscite-som systemd-udevd[203]: ethtool: autonegotiation is unset or enabled, the speed and duplex are not writable.
+Jun 24 13:15:09.588664 imx6qdl-variscite-som systemd-udevd[204]: ethtool: autonegotiation is unset or enabled, the speed and duplex are not writable.
+Jun 24 13:15:10.320094 imx6qdl-variscite-som systemd[1]: Found device /dev/zFPGA1reg.
+Jun 24 13:15:10.357526 imx6qdl-variscite-som systemd[1]: Found device /dev/zFPGA1dsp1.
+Jun 24 13:15:10.410590 imx6qdl-variscite-som kernel: cfg80211: Loading compiled-in X.509 certificates for regulatory database
+Jun 24 13:15:10.423775 imx6qdl-variscite-som systemd[1]: Found device /dev/zFPGA1boot.
+Jun 24 13:15:10.444113 imx6qdl-variscite-som systemd-udevd[204]: controlC0: Process '/usr/sbin/alsactl restore 0' failed with exit code 99.
+Jun 24 13:15:10.570595 imx6qdl-variscite-som kernel: cfg80211: Loaded X.509 cert 'sforshee: 00b28ddf47aef9cea7'
+Jun 24 13:15:10.629853 imx6qdl-variscite-som systemd[1]: Listening on Load/Save RF Kill Switch Status /dev/rfkill Watch.
+Jun 24 13:15:10.672825 imx6qdl-variscite-som systemd[1]: Condition check resulted in Huge Pages File System being skipped.
+Jun 24 13:15:10.674227 imx6qdl-variscite-som systemd[1]: Condition check resulted in POSIX Message Queue File System being skipped.
+Jun 24 13:15:10.675418 imx6qdl-variscite-som systemd[1]: Condition check resulted in File System Check on Root Device being skipped.
+Jun 24 13:15:10.686792 imx6qdl-variscite-som systemd[1]: Starting File System Check on /dev/mmcblk1p1...
+Jun 24 13:15:10.701443 imx6qdl-variscite-som systemd[1]: Condition check resulted in Rebuild Hardware Database being skipped.
+Jun 24 13:15:10.703346 imx6qdl-variscite-som systemd[1]: Condition check resulted in Load Kernel Modules being skipped.
+Jun 24 13:15:10.704139 imx6qdl-variscite-som systemd[1]: Condition check resulted in Kernel Configuration File System being skipped.
+Jun 24 13:15:10.704566 imx6qdl-variscite-som systemd[1]: Condition check resulted in Bind mount volatile /var/cache being skipped.
+Jun 24 13:15:10.704849 imx6qdl-variscite-som systemd[1]: Condition check resulted in Bind mount volatile /var/lib being skipped.
+Jun 24 13:15:10.705119 imx6qdl-variscite-som systemd[1]: Condition check resulted in Bind mount volatile /var/spool being skipped.
+Jun 24 13:15:10.705318 imx6qdl-variscite-som systemd[1]: Condition check resulted in Bind mount volatile /srv being skipped.
+Jun 24 13:15:10.729237 imx6qdl-variscite-som systemd[1]: Starting Load/Save RF Kill Switch Status...
+Jun 24 13:15:10.809824 imx6qdl-variscite-som systemd[1]: Started Load/Save RF Kill Switch Status.
+Jun 24 13:15:10.929490 imx6qdl-variscite-som systemd-fsck[250]: fsck.fat 4.1 (2017-01-24)
+Jun 24 13:15:10.929490 imx6qdl-variscite-som systemd-fsck[250]: /dev/mmcblk1p1: 6 files, 3982/11798 clusters
+Jun 24 13:15:10.940901 imx6qdl-variscite-som systemd[1]: Started File System Check on /dev/mmcblk1p1.
+Jun 24 13:15:10.974064 imx6qdl-variscite-som systemd[1]: boot.mount: Directory /boot to mount over is not empty, mounting anyway.
+Jun 24 13:15:10.979309 imx6qdl-variscite-som systemd[1]: Mounting /boot...
+Jun 24 13:15:11.126478 imx6qdl-variscite-som systemd[1]: Mounted /boot.
+Jun 24 13:15:11.162554 imx6qdl-variscite-som systemd[1]: Reached target Local File Systems.
+Jun 24 13:15:11.197098 imx6qdl-variscite-som systemd[1]: Starting Rebuild Dynamic Linker Cache...
+Jun 24 13:15:11.231310 imx6qdl-variscite-som systemd[1]: Condition check resulted in Commit a transient machine-id on disk being skipped.
+Jun 24 13:15:11.237190 imx6qdl-variscite-som systemd[1]: Starting Create Volatile Files and Directories...
+Jun 24 13:15:11.315018 imx6qdl-variscite-som systemd-tmpfiles[256]: /etc/tmpfiles.d/openvpn.conf:1: Line references path below legacy directory /var/run/, updating /var/run/openvpn → /run/openvpn; please update the tmpfiles.d/ drop-in file accordingly.
+Jun 24 13:15:11.318062 imx6qdl-variscite-som systemd-tmpfiles[256]: /etc/tmpfiles.d/samba.conf:1: Line references path below legacy directory /var/run/, updating /var/run/samba → /run/samba; please update the tmpfiles.d/ drop-in file accordingly.
+Jun 24 13:15:11.361346 imx6qdl-variscite-som kernel: random: crng init done
+Jun 24 13:15:11.361678 imx6qdl-variscite-som kernel: random: 154 urandom warning(s) missed due to ratelimiting
+Jun 24 13:15:11.409734 imx6qdl-variscite-som systemd[1]: Started Load/Save Random Seed.
+Jun 24 13:15:11.462452 imx6qdl-variscite-som systemd[1]: Started Create Volatile Files and Directories.
+Jun 24 13:15:11.498685 imx6qdl-variscite-som systemd[1]: Starting Run pending postinsts...
+Jun 24 13:15:11.538873 imx6qdl-variscite-som systemd[1]: Starting Rebuild Journal Catalog...
+Jun 24 13:15:11.562001 imx6qdl-variscite-som systemd[1]: Starting Network Time Synchronization...
+Jun 24 13:15:11.579695 imx6qdl-variscite-som systemd[1]: Starting Update UTMP about System Boot/Shutdown...
+Jun 24 13:15:11.582145 imx6qdl-variscite-som kernel: wlcore: wl18xx HW: 183x or 180x, PG 2.2 (ROM 0x11)
+Jun 24 13:15:11.647951 imx6qdl-variscite-som kernel: wlcore: WARNING Detected unconfigured mac address in nvs, derive from fuse instead.
+Jun 24 13:15:11.648508 imx6qdl-variscite-som kernel: wlcore: WARNING This default nvs file can be removed from the file system
+Jun 24 13:15:11.662496 imx6qdl-variscite-som run-postinsts[257]: Configuring packages on first boot....
+Jun 24 13:15:11.666041 imx6qdl-variscite-som run-postinsts[257]:  (This may take several minutes. Please do not power off the machine.)
+Jun 24 13:15:11.702666 imx6qdl-variscite-som systemd-udevd[209]: ethtool: autonegotiation is unset or enabled, the speed and duplex are not writable.
+Jun 24 13:15:11.733419 imx6qdl-variscite-som systemd[1]: Started Update UTMP about System Boot/Shutdown.
+Jun 24 13:15:11.748157 imx6qdl-variscite-som kernel: wlcore: loaded
+Jun 24 13:15:11.758804 imx6qdl-variscite-som systemd[1]: Started Rebuild Journal Catalog.
+Jun 24 13:15:12.311918 imx6qdl-variscite-som systemd[1]: Started Network Time Synchronization.
+Jun 24 13:15:12.344651 imx6qdl-variscite-som systemd[1]: Reached target System Time Set.
+Jun 24 13:15:12.370862 imx6qdl-variscite-som systemd[1]: Reached target System Time Synchronized.
+Jun 24 13:15:14.323071 imx6qdl-variscite-som passwd[269]: password for 'operator' changed by 'root'
+Jun 24 13:15:14.753215 imx6qdl-variscite-som passwd[275]: password for 'zera-services' changed by 'root'
+Jun 24 13:15:15.199794 imx6qdl-variscite-som systemd[1]: Started Rebuild Dynamic Linker Cache.
+Jun 24 13:15:15.238223 imx6qdl-variscite-som systemd[1]: Starting Update is Completed...
+Jun 24 13:15:15.316826 imx6qdl-variscite-som systemd[1]: Started Update is Completed.
+Jun 24 13:15:16.764677 imx6qdl-variscite-som systemd[1]: systemd-rfkill.service: Succeeded.
+Jun 24 13:15:17.037294 imx6qdl-variscite-som systemd-udevd[283]: Using default interface naming scheme 'v243'.
+Jun 24 13:15:17.319547 imx6qdl-variscite-som systemd-udevd[286]: Using default interface naming scheme 'v243'.
+Jun 24 13:15:21.256927 imx6qdl-variscite-som rngd[180]: [jitter]: Enabling JITTER rng support
+Jun 24 13:15:21.259357 imx6qdl-variscite-som rngd[180]: [jitter]: Initialized
+Jun 24 13:15:23.939629 imx6qdl-variscite-som run-postinsts[350]:  Removing any system startup links for run-postinsts ...
+Jun 24 13:15:24.118331 imx6qdl-variscite-som systemctl[351]: Removed /etc/systemd/system/sysinit.target.wants/run-postinsts.service.
+Jun 24 13:15:24.124672 imx6qdl-variscite-som systemd[1]: Started Run pending postinsts.
+Jun 24 13:15:24.169201 imx6qdl-variscite-som systemd[1]: Reached target System Initialization.
+Jun 24 13:15:24.181068 imx6qdl-variscite-som systemd[1]: Started Daily Cleanup of Temporary Directories.
+Jun 24 13:15:24.210786 imx6qdl-variscite-som systemd[1]: Reached target Timers.
+Jun 24 13:15:24.241602 imx6qdl-variscite-som systemd[1]: Listening on auto-journal-logger.socket.
+Jun 24 13:15:24.272300 imx6qdl-variscite-som systemd[1]: Listening on Avahi mDNS/DNS-SD Stack Activation Socket.
+Jun 24 13:15:24.301278 imx6qdl-variscite-som systemd[1]: Condition check resulted in com5003d.socket being skipped.
+Jun 24 13:15:24.302783 imx6qdl-variscite-som systemd[1]: Listening on D-Bus System Message Bus Socket.
+Jun 24 13:15:24.331836 imx6qdl-variscite-som systemd[1]: Listening on modulemanager.socket.
+Jun 24 13:15:24.362065 imx6qdl-variscite-som systemd[1]: Listening on mt310s2d.socket.
+Jun 24 13:15:24.391743 imx6qdl-variscite-som systemd[1]: Listening on resourcemanager.socket.
+Jun 24 13:15:24.421731 imx6qdl-variscite-som systemd[1]: Listening on sec1000d.socket.
+Jun 24 13:15:24.455316 imx6qdl-variscite-som systemd[1]: Starting sshd.socket.
+Jun 24 13:15:24.482276 imx6qdl-variscite-som systemd[1]: Listening on zdsp1d.socket.
+Jun 24 13:15:24.530271 imx6qdl-variscite-som systemd[1]: Listening on sshd.socket.
+Jun 24 13:15:24.562605 imx6qdl-variscite-som systemd[1]: Reached target Sockets.
+Jun 24 13:15:24.590812 imx6qdl-variscite-som systemd[1]: Reached target Basic System.
+Jun 24 13:15:24.637459 imx6qdl-variscite-som systemd[1]: Starting Save/Restore Sound Card State...
+Jun 24 13:15:24.651126 imx6qdl-variscite-som systemd[1]: Condition check resulted in Manage Sound Card State (restore and store) being skipped.
+Jun 24 13:15:24.658326 imx6qdl-variscite-som systemd[1]: Starting Bluetooth service...
+Jun 24 13:15:24.691248 imx6qdl-variscite-som systemd[1]: Condition check resulted in COM FPGA bootfile loader being skipped.
+Jun 24 13:15:24.691804 imx6qdl-variscite-som systemd[1]: Condition check resulted in COM5003 daemon being skipped.
+Jun 24 13:15:24.698165 imx6qdl-variscite-som systemd[1]: Started Coredump collector.
+Jun 24 13:15:24.717660 imx6qdl-variscite-som systemd[1]: Started D-Bus System Message Bus.
+Jun 24 13:15:24.792070 imx6qdl-variscite-som systemd[1]: Starting IPv6 Packet Filtering Framework...
+Jun 24 13:15:24.810958 imx6qdl-variscite-som systemd[1]: Starting IPv4 Packet Filtering Framework...
+Jun 24 13:15:24.834307 imx6qdl-variscite-som alsactl[353]: No state is present for card tlv320aic3106au
+Jun 24 13:15:24.846452 imx6qdl-variscite-som systemd[1]: Starting MT310s2 FPGA bootfile loader...
+Jun 24 13:15:24.856115 imx6qdl-variscite-som alsactl[353]: Found hardware: "tlv320aic3106-a" "" "" "" ""
+Jun 24 13:15:24.859085 imx6qdl-variscite-som alsactl[353]: Hardware is initialized using a generic method
+Jun 24 13:15:24.869120 imx6qdl-variscite-som alsactl[353]: No state is present for card tlv320aic3106au
+Jun 24 13:15:24.888108 imx6qdl-variscite-som systemd[1]: Starting Zera MT310s2 µController upgrade and startup...
+Jun 24 13:15:24.909615 imx6qdl-variscite-som systemd[1]: Started Zera Resource Manager.
+Jun 24 13:15:24.948862 imx6qdl-variscite-som systemd[1]: Started SEC1000 daemon.
+Jun 24 13:15:25.000536 imx6qdl-variscite-som systemd[1]: Started System metrics logger.
+Jun 24 13:15:25.034772 imx6qdl-variscite-som systemd[1]: Starting Hostname Service...
+Jun 24 13:15:25.075435 imx6qdl-variscite-som systemd[1]: Starting Login Service...
+Jun 24 13:15:25.090696 imx6qdl-variscite-som bluetoothd[354]: Bluetooth daemon 5.55
+Jun 24 13:15:25.123550 imx6qdl-variscite-som systemd[1]: Starting Dump VARSOM EEPROM...
+Jun 24 13:15:25.179344 imx6qdl-variscite-som systemd[1]: Started Zera DSP daemon.
+Jun 24 13:15:25.237304 imx6qdl-variscite-som systemd[1]: Started Save/Restore Sound Card State.
+Jun 24 13:15:25.255784 imx6qdl-variscite-som systemd[1]: Started IPv6 Packet Filtering Framework.
+Jun 24 13:15:25.295823 imx6qdl-variscite-som systemd[1]: Started IPv4 Packet Filtering Framework.
+Jun 24 13:15:25.334147 imx6qdl-variscite-som systemd[1]: Reached target Network (Pre).
+Jun 24 13:15:25.360935 imx6qdl-variscite-som systemd[1]: Reached target Sound Card.
+Jun 24 13:15:25.396560 imx6qdl-variscite-som systemd[1]: Starting Network Manager...
+Jun 24 13:15:25.430253 imx6qdl-variscite-som bluetoothd[354]: Starting SDP server
+Jun 24 13:15:25.465332 imx6qdl-variscite-som varsom-eeprom-dump.sh[372]: eeprog 0.7.5, a 24Cxx EEPROM reader/writer
+Jun 24 13:15:25.465332 imx6qdl-variscite-som varsom-eeprom-dump.sh[372]: Copyright (c) 2003 by Stefano Barbato - All rights reserved.
+Jun 24 13:15:25.465332 imx6qdl-variscite-som varsom-eeprom-dump.sh[372]:   Bus: /dev/i2c-1, Address: 0x56, Mode: 8bit
+Jun 24 13:15:25.465332 imx6qdl-variscite-som varsom-eeprom-dump.sh[372]:   Reading 64 bytes from 0x0
+Jun 24 13:15:25.496814 imx6qdl-variscite-som system-metrics-logger[365]: Memory used: 6.3%, Buffers: 1.0% Cache: 8.1%
+Jun 24 13:15:25.498850 imx6qdl-variscite-som coredump-collector[355]: Watching dir /var/lib/systemd/coredump/
+Jun 24 13:15:25.504842 imx6qdl-variscite-som systemd[1]: Starting Network Service...
+Jun 24 13:15:25.515542 imx6qdl-variscite-som systemd[1]: Started Bluetooth service.
+Jun 24 13:15:25.535446 imx6qdl-variscite-som systemd[1]: Reached target Bluetooth.
+Jun 24 13:15:25.592773 imx6qdl-variscite-som kernel: Bluetooth: BNEP (Ethernet Emulation) ver 1.3
+Jun 24 13:15:25.593381 imx6qdl-variscite-som kernel: Bluetooth: BNEP socket layer initialized
+Jun 24 13:15:25.603037 imx6qdl-variscite-som mt310s2-fpga-boot.sh[359]: Bootfile inserted successfully
+Jun 24 13:15:25.604525 imx6qdl-variscite-som systemd[1]: varsom-eeprom-dump.service: Succeeded.
+Jun 24 13:15:25.616977 imx6qdl-variscite-som systemd[1]: Started Dump VARSOM EEPROM.
+Jun 24 13:15:25.656103 imx6qdl-variscite-som systemd[1]: mt310s2-fpga1file.service: Succeeded.
+Jun 24 13:15:25.659030 imx6qdl-variscite-som systemd[1]: Started MT310s2 FPGA bootfile loader.
+Jun 24 13:15:25.663346 imx6qdl-variscite-som dbus-daemon[356]: [system] Activating via systemd: service name='org.freedesktop.hostname1' unit='dbus-org.freedesktop.hostname1.service' requested by ':1.2' (uid=0 pid=354 comm="/usr/libexec/bluetooth/bluetoothd ")
+Jun 24 13:15:25.667287 imx6qdl-variscite-som bluetoothd[354]: Bluetooth management interface 1.14 initialized
+Jun 24 13:15:25.724611 imx6qdl-variscite-som systemd[1]: Started Zera Module Manager.
+Jun 24 13:15:26.047115 imx6qdl-variscite-som dbus-daemon[356]: [system] Successfully activated service 'org.freedesktop.hostname1'
+Jun 24 13:15:26.048212 imx6qdl-variscite-som systemd[1]: Started Hostname Service.
+Jun 24 13:15:26.087781 imx6qdl-variscite-som systemd[1]: Starting ZERA auto hostname service...
+Jun 24 13:15:26.104541 imx6qdl-variscite-som systemd-networkd[373]: Enumeration completed
+Jun 24 13:15:26.122050 imx6qdl-variscite-som systemd[1]: Started Network Service.
+Jun 24 13:15:26.134955 imx6qdl-variscite-som systemd-networkd[373]: eth0: IPv6 successfully enabled
+Jun 24 13:15:26.159574 imx6qdl-variscite-som systemd[1]: Starting Network Name Resolution...
+Jun 24 13:15:26.280197 imx6qdl-variscite-som system-metrics-logger[365]: CPU load 100.0% exceeds limit 20.0%
+Jun 24 13:15:26.317124 imx6qdl-variscite-som kernel: Micrel KSZ9031 Gigabit PHY 2188000.ethernet-1:07: attached PHY driver [Micrel KSZ9031 Gigabit PHY] (mii_bus:phy_addr=2188000.ethernet-1:07, irq=POLL)
+Jun 24 13:15:26.360708 imx6qdl-variscite-som systemd-networkd[373]: eth0: Link UP
+Jun 24 13:15:26.364276 imx6qdl-variscite-som mt310s2-controller-full-update.sh[364]: System-controller: check if bootloader is running... application is running
+Jun 24 13:15:26.435826 imx6qdl-variscite-som systemd-logind[382]: New seat seat0.
+Jun 24 13:15:26.458115 imx6qdl-variscite-som NetworkManager[371]: <info>  [1719234926.4574] NetworkManager (version 1.22.10) is starting... (for the first time)
+Jun 24 13:15:26.458425 imx6qdl-variscite-som NetworkManager[371]: <info>  [1719234926.4583] Read config: /etc/NetworkManager/NetworkManager.conf
+Jun 24 13:15:26.502829 imx6qdl-variscite-som zdsp1d[369]: zdsp1d V1.11 started
+Jun 24 13:15:26.521865 imx6qdl-variscite-som systemd[1]: Started Network Manager.
+Jun 24 13:15:26.656829 imx6qdl-variscite-som zera-auto-hostname[412]: cat: /opt/zera/conf/serialnumber: No such file or directory
+Jun 24 13:15:26.521999 imx6qdl-variscite-som NetworkManager[371]: <info>  [1719234926.5218] bus-manager: acquired D-Bus service "org.freedesktop.NetworkManager"
+Jun 24 13:15:26.535426 imx6qdl-variscite-som zdsp1d[369]: propsReply "No such interface “org.freedesktop.DBus.Properties” on object at path /org/freedesktop/NetworkManager"
+Jun 24 13:15:26.541968 imx6qdl-variscite-som zdsp1d[369]: nmReply "No such interface “org.freedesktop.NetworkManager” on object at path /org/freedesktop/NetworkManager"
+Jun 24 13:15:26.605783 imx6qdl-variscite-som zdsp1d[369]: "Object path cannot be empty"
+Jun 24 13:15:26.622773 imx6qdl-variscite-som systemd-logind[382]: Watching system buttons on /dev/input/event2 (gpio-keys)
+Jun 24 13:15:26.623912 imx6qdl-variscite-som systemd-logind[382]: Watching system buttons on /dev/input/event3 (HID 046a:0021)
+Jun 24 13:15:26.624971 imx6qdl-variscite-som systemd-logind[382]: Watching system buttons on /dev/input/event4 (HID 046a:0021 Consumer Control)
+Jun 24 13:15:26.626026 imx6qdl-variscite-som systemd-logind[382]: Watching system buttons on /dev/input/event5 (HID 046a:0021 System Control)
+Jun 24 13:15:26.642902 imx6qdl-variscite-som systemd[1]: Started Login Service.
+Jun 24 13:15:26.661009 imx6qdl-variscite-som zdsp1d[369]: Starting doSetupServer
+Jun 24 13:15:26.699693 imx6qdl-variscite-som NetworkManager[371]: <info>  [1719234926.6995] manager[0x758038]: monitoring kernel firmware directory '/lib/firmware'.
+Jun 24 13:15:26.736316 imx6qdl-variscite-som NetworkManager[371]: <info>  [1719234926.7361] hostname: hostname: using hostnamed
+Jun 24 13:15:26.736494 imx6qdl-variscite-som NetworkManager[371]: <info>  [1719234926.7363] hostname: hostname changed from (none) to "imx6qdl-variscite-som"
+Jun 24 13:15:26.741348 imx6qdl-variscite-som NetworkManager[371]: <info>  [1719234926.7411] dns-mgr[0x75a0a8]: init: dns=default,systemd-resolved rc-manager=symlink
+Jun 24 13:15:26.774298 imx6qdl-variscite-som NetworkManager[371]: <info>  [1719234926.7724] rfkill1: found Wi-Fi radio killswitch (at /sys/devices/soc0/soc/2100000.aips-bus/2198000.usdhc/mmc_host/mmc2/mmc2:0001/mmc2:0001:2/wl18xx.0.auto/ieee80211/phy0/rfkill1) (driver wl18xx_driver)
+Jun 24 13:15:26.785282 imx6qdl-variscite-som zera-auto-hostname[388]: Changing hostname from imx6qdl-variscite-som to zera-mt310s2-unknown.
+Jun 24 13:15:26.795109 imx6qdl-variscite-som NetworkManager[371]: <info>  [1719234926.7949] manager[0x758038]: rfkill: Wi-Fi hardware radio set enabled
+Jun 24 13:15:26.795396 imx6qdl-variscite-som NetworkManager[371]: <info>  [1719234926.7952] manager[0x758038]: rfkill: WWAN hardware radio set enabled
+Jun 24 13:15:26.857387 imx6qdl-variscite-som NetworkManager[371]: <info>  [1719234926.8565] Loaded device plugin: NMOvsFactory (/usr/lib/NetworkManager/1.22.10/libnm-device-plugin-ovs.so)
+Jun 24 13:15:26.865043 imx6qdl-variscite-som sec1000d[362]: sec1000d V1.00 started
+Jun 24 13:15:26.877254 imx6qdl-variscite-som NetworkManager[371]: <info>  [1719234926.8771] Loaded device plugin: NMWifiFactory (/usr/lib/NetworkManager/1.22.10/libnm-device-plugin-wifi.so)
+Jun 24 13:15:26.877905 imx6qdl-variscite-som NetworkManager[371]: <info>  [1719234926.8777] manager: rfkill: Wi-Fi enabled by radio killswitch; enabled by state file
+Jun 24 13:15:26.878790 imx6qdl-variscite-som NetworkManager[371]: <info>  [1719234926.8786] manager: rfkill: WWAN enabled by radio killswitch; enabled by state file
+Jun 24 13:15:26.879686 imx6qdl-variscite-som NetworkManager[371]: <info>  [1719234926.8795] manager: Networking is enabled by state file
+Jun 24 13:15:26.884826 imx6qdl-variscite-som dbus-daemon[356]: [system] Activating via systemd: service name='org.freedesktop.nm_dispatcher' unit='dbus-org.freedesktop.nm-dispatcher.service' requested by ':1.7' (uid=0 pid=371 comm="/usr/sbin/NetworkManager --no-daemon ")
+Jun 24 13:15:26.889512 zera-mt310s2-unknown systemd-hostnamed[366]: Changed static host name to 'zera-mt310s2-unknown'
+Jun 24 13:15:26.890165 zera-mt310s2-unknown NetworkManager[371]: <info>  [1719234926.8900] dhcp-init: Using DHCP client 'internal'
+Jun 24 13:15:26.901548 zera-mt310s2-unknown systemd-hostnamed[366]: Changed host name to 'zera-mt310s2-unknown'
+Jun 24 13:15:26.905345 zera-mt310s2-unknown NetworkManager[371]: <info>  [1719234926.9051] settings: Loaded settings plugin: ifupdown ("/usr/lib/NetworkManager/1.22.10/libnm-settings-plugin-ifupdown.so")
+Jun 24 13:15:26.905771 zera-mt310s2-unknown NetworkManager[371]: <info>  [1719234926.9056] settings: Loaded settings plugin: keyfile (internal)
+Jun 24 13:15:26.905967 zera-mt310s2-unknown NetworkManager[371]: <info>  [1719234926.9058] ifupdown: management mode: unmanaged
+Jun 24 13:15:26.917650 zera-mt310s2-unknown mt310s2-controller-full-update.sh[364]: System-controller: Get firmware checksum... 0A20E9549A8F1E611A4E33576B1252338A5D
+Jun 24 13:15:26.917650 zera-mt310s2-unknown mt310s2-controller-full-update.sh[364]: System-controller: Expected checksum matches: read 0A20E9549A8F1E611A4E33576B1252338A5D / expected 0A20E9549A8F1E611A4E33576B1252338A5D
+Jun 24 13:15:26.917650 zera-mt310s2-unknown mt310s2-controller-full-update.sh[364]: System-controller: Checksum matches / no upgrade required
+Jun 24 13:15:26.917650 zera-mt310s2-unknown mt310s2-controller-full-update.sh[364]: System-controller: write /opt/zera/conf/last-checked-atmel-mt310s2-system.txt
+Jun 24 13:15:26.908027 zera-mt310s2-unknown zera-modulemanager[381]: ZERA Device from kernel cmdline:  "mt310s2"
+Jun 24 13:15:26.910467 zera-mt310s2-unknown NetworkManager[371]: <warn>  [1719234926.9102] ifupdown: interfaces file /etc/network/interfaces doesn't exist
+Jun 24 13:15:26.911138 zera-mt310s2-unknown zera-modulemanager[381]: Moduleamanger configuration file: "/etc/zera/modules/modulemanager_config.json"
+Jun 24 13:15:26.911335 zera-mt310s2-unknown zera-modulemanager[381]: Loading session data for "mt310s2"
+Jun 24 13:15:26.942017 zera-mt310s2-unknown NetworkManager[371]: <info>  [1719234926.9416] device (lo): carrier: link connected
+Jun 24 13:15:26.945108 zera-mt310s2-unknown NetworkManager[371]: <info>  [1719234926.9448] manager: (lo): new Generic device (/org/freedesktop/NetworkManager/Devices/1)
+Jun 24 13:15:26.947801 zera-mt310s2-unknown systemd[1]: Starting Network Manager Script Dispatcher Service...
+Jun 24 13:15:26.987143 zera-mt310s2-unknown NetworkManager[371]: <info>  [1719234926.9869] manager: (eth0): new Ethernet device (/org/freedesktop/NetworkManager/Devices/2)
+Jun 24 13:15:27.062011 zera-mt310s2-unknown NetworkManager[371]: <info>  [1719234927.0613] settings: (eth0): created default wired connection 'Wired connection 1'
+Jun 24 13:15:27.081662 zera-mt310s2-unknown NetworkManager[371]: <info>  [1719234927.0699] device (eth0): state change: unmanaged -> unavailable (reason 'managed', sys-iface-state: 'external')
+Jun 24 13:15:27.085141 zera-mt310s2-unknown systemd-resolved[390]: Positive Trust Anchors:
+Jun 24 13:15:27.085240 zera-mt310s2-unknown systemd-resolved[390]: . IN DS 20326 8 2 e06d44b80b8f1d39a95c0b0d7c65d08458e880409bbc683457104237c7f8ec8d
+Jun 24 13:15:27.085470 zera-mt310s2-unknown systemd-resolved[390]: Negative trust anchors: 10.in-addr.arpa 16.172.in-addr.arpa 17.172.in-addr.arpa 18.172.in-addr.arpa 19.172.in-addr.arpa 20.172.in-addr.arpa 21.172.in-addr.arpa 22.172.in-addr.arpa 23.172.in-addr.arpa 24.172.in-addr.arpa 25.172.in-addr.arpa 26.172.in-addr.arpa 27.172.in-addr.arpa 28.172.in-addr.arpa 29.172.in-addr.arpa 30.172.in-addr.arpa 31.172.in-addr.arpa 168.192.in-addr.arpa d.f.ip6.arpa corp home internal intranet lan local private test
+Jun 24 13:15:27.092415 zera-mt310s2-unknown zera-modulemanager[381]: Created plaintext logger: "_LoggingSystem" with id: 2
+Jun 24 13:15:27.092829 zera-mt310s2-unknown zera-modulemanager[381]: Starting vf-files...
+Jun 24 13:15:27.095928 zera-mt310s2-unknown systemd-resolved[390]: Using system hostname 'zera-mt310s2-unknown'.
+Jun 24 13:15:27.111456 zera-mt310s2-unknown zdsp1d[369]: Starting doConnect2RM
+Jun 24 13:15:27.121744 zera-mt310s2-unknown zera-modulemanager[381]: Start mount poll thread.
+Jun 24 13:15:27.141376 zera-mt310s2-unknown zdsp1d[369]: Starting doIdentAndRegister
+Jun 24 13:15:27.151392 zera-mt310s2-unknown zdsp1d[369]: [vein-tcp] Inherited socket descriptor from systemd, listening on port: 6310
+Jun 24 13:15:27.152638 zera-mt310s2-unknown systemd[1]: Started Network Name Resolution.
+Jun 24 13:15:27.153689 zera-mt310s2-unknown NetworkManager[371]: <info>  [1719234927.1535] manager: (sit0): new IPTunnel device (/org/freedesktop/NetworkManager/Devices/3)
+Jun 24 13:15:27.174341 zera-mt310s2-unknown systemd[1]: Reached target Network.
+Jun 24 13:15:27.193561 zera-mt310s2-unknown NetworkManager[371]: <info>  [1719234927.1934] device (wlan0): driver supports Access Point (AP) mode
+Jun 24 13:15:27.198182 zera-mt310s2-unknown NetworkManager[371]: <info>  [1719234927.1980] manager: (wlan0): new 802.11 Wi-Fi device (/org/freedesktop/NetworkManager/Devices/4)
+Jun 24 13:15:27.211863 zera-mt310s2-unknown systemd[1]: Reached target Host and Network Name Lookups.
+Jun 24 13:15:27.225254 zera-mt310s2-unknown NetworkManager[371]: <info>  [1719234927.2248] device (wlan0): state change: unmanaged -> unavailable (reason 'managed', sys-iface-state: 'external')
+Jun 24 13:15:27.241442 zera-mt310s2-unknown dbus-daemon[356]: [system] Successfully activated service 'org.freedesktop.nm_dispatcher'
+Jun 24 13:15:27.248012 zera-mt310s2-unknown systemd[1]: Starting Avahi mDNS/DNS-SD Stack...
+Jun 24 13:15:27.288896 zera-mt310s2-unknown systemd[1]: Started Respond to IPv6 Node Information Queries.
+Jun 24 13:15:27.303910 zera-mt310s2-unknown sec1000d[362]: Starting doSetupServer
+Jun 24 13:15:27.311648 zera-mt310s2-unknown sec1000d[362]: Starting doConnect2RM
+Jun 24 13:15:27.322900 zera-mt310s2-unknown sec1000d[362]: Starting doIdentAndRegister
+Jun 24 13:15:27.326445 zera-mt310s2-unknown sec1000d[362]: [vein-tcp] Inherited socket descriptor from systemd, listening on port: 6305
+Jun 24 13:15:27.339414 zera-mt310s2-unknown systemd[1]: Started Network Router Discovery Daemon.
+Jun 24 13:15:27.359566 zera-mt310s2-unknown systemd[1]: Starting Permit User Sessions...
+Jun 24 13:15:27.407152 zera-mt310s2-unknown systemd[1]: Started Xinetd A Powerful Replacement For Inetd.
+Jun 24 13:15:27.470773 zera-mt310s2-unknown systemd[1]: Started Network Manager Script Dispatcher Service.
+Jun 24 13:15:27.498398 zera-mt310s2-unknown avahi-daemon[429]: Found user 'avahi' (UID 993) and group 'avahi' (GID 992).
+Jun 24 13:15:27.498969 zera-mt310s2-unknown avahi-daemon[429]: Successfully dropped root privileges.
+Jun 24 13:15:27.501927 zera-mt310s2-unknown avahi-daemon[429]: avahi-daemon 0.7 starting up.
+Jun 24 13:15:27.513459 zera-mt310s2-unknown xinetd[433]: Reading included configuration file: /etc/xinetd.d/chargen-dgram [file=/etc/xinetd.conf] [line=11]
+Jun 24 13:15:27.520018 zera-mt310s2-unknown xinetd[433]: Reading included configuration file: /etc/xinetd.d/chargen-stream [file=/etc/xinetd.d/chargen-stream] [line=67]
+Jun 24 13:15:27.521773 zera-mt310s2-unknown xinetd[433]: Reading included configuration file: /etc/xinetd.d/daytime-dgram [file=/etc/xinetd.d/daytime-dgram] [line=67]
+Jun 24 13:15:27.523032 zera-mt310s2-unknown xinetd[433]: Reading included configuration file: /etc/xinetd.d/daytime-stream [file=/etc/xinetd.d/daytime-stream] [line=67]
+Jun 24 13:15:27.524098 zera-mt310s2-unknown xinetd[433]: Reading included configuration file: /etc/xinetd.d/discard-dgram [file=/etc/xinetd.d/discard-dgram] [line=67]
+Jun 24 13:15:27.525238 zera-mt310s2-unknown xinetd[433]: Reading included configuration file: /etc/xinetd.d/discard-stream [file=/etc/xinetd.d/discard-stream] [line=67]
+Jun 24 13:15:27.526340 zera-mt310s2-unknown xinetd[433]: Reading included configuration file: /etc/xinetd.d/echo-dgram [file=/etc/xinetd.d/echo-dgram] [line=67]
+Jun 24 13:15:27.527527 zera-mt310s2-unknown xinetd[433]: Reading included configuration file: /etc/xinetd.d/echo-stream [file=/etc/xinetd.d/echo-stream] [line=67]
+Jun 24 13:15:27.528672 zera-mt310s2-unknown xinetd[433]: Reading included configuration file: /etc/xinetd.d/ftp-sensor [file=/etc/xinetd.d/ftp-sensor] [line=67]
+Jun 24 13:15:27.530066 zera-mt310s2-unknown xinetd[433]: Reading included configuration file: /etc/xinetd.d/tcpmux-server [file=/etc/xinetd.d/tcpmux-server] [line=70]
+Jun 24 13:15:27.531564 zera-mt310s2-unknown xinetd[433]: Reading included configuration file: /etc/xinetd.d/time-dgram [file=/etc/xinetd.d/time-dgram] [line=68]
+Jun 24 13:15:27.533052 zera-mt310s2-unknown xinetd[433]: Reading included configuration file: /etc/xinetd.d/time-stream [file=/etc/xinetd.d/time-stream] [line=67]
+Jun 24 13:15:27.534305 zera-mt310s2-unknown xinetd[433]: removing chargen
+Jun 24 13:15:27.534364 zera-mt310s2-unknown xinetd[433]: removing chargen
+Jun 24 13:15:27.534416 zera-mt310s2-unknown xinetd[433]: removing daytime
+Jun 24 13:15:27.534472 zera-mt310s2-unknown xinetd[433]: removing daytime
+Jun 24 13:15:27.534524 zera-mt310s2-unknown xinetd[433]: removing discard
+Jun 24 13:15:27.534578 zera-mt310s2-unknown xinetd[433]: removing discard
+Jun 24 13:15:27.534633 zera-mt310s2-unknown xinetd[433]: removing echo
+Jun 24 13:15:27.534685 zera-mt310s2-unknown xinetd[433]: removing echo
+Jun 24 13:15:27.534737 zera-mt310s2-unknown xinetd[433]: removing ftp
+Jun 24 13:15:27.534795 zera-mt310s2-unknown xinetd[433]: removing tcpmux
+Jun 24 13:15:27.534850 zera-mt310s2-unknown xinetd[433]: removing time
+Jun 24 13:15:27.534900 zera-mt310s2-unknown xinetd[433]: removing time
+Jun 24 13:15:27.535302 zera-mt310s2-unknown xinetd[433]: xinetd Version 2.3.15 started with libwrap options compiled in.
+Jun 24 13:15:27.535353 zera-mt310s2-unknown xinetd[433]: Started working: 0 available services
+Jun 24 13:15:27.539724 zera-mt310s2-unknown avahi-daemon[429]: Successfully called chroot().
+Jun 24 13:15:27.539828 zera-mt310s2-unknown avahi-daemon[429]: Successfully dropped remaining capabilities.
+Jun 24 13:15:27.544623 zera-mt310s2-unknown avahi-daemon[429]: write() failed: Broken pipe
+Jun 24 13:15:27.544682 zera-mt310s2-unknown avahi-daemon[429]: Failed to open /etc/resolv.conf: Broken pipe
+Jun 24 13:15:27.569613 zera-mt310s2-unknown systemd[1]: Started Permit User Sessions.
+Jun 24 13:15:27.546840 zera-mt310s2-unknown avahi-daemon[429]: Loading service file /services/vein-avahi.service.
+Jun 24 13:15:27.633577 zera-mt310s2-unknown systemd[1]: Started LXDE Display Manager.
+Jun 24 13:15:27.692692 zera-mt310s2-unknown systemd[1]: Started Serial Getty on ttymxc0.
+Jun 24 13:15:27.724834 zera-mt310s2-unknown systemd[1]: Reached target Login Prompts.
+Jun 24 13:15:27.757553 zera-mt310s2-unknown mt310s2-controller-full-update.sh[364]: Relay-controller: check if bootloader is running... application is running
+Jun 24 13:15:27.970496 zera-mt310s2-unknown kernel: wlcore: PHY firmware version: Rev 8.2.0.0.243
+Jun 24 13:15:28.042528 zera-mt310s2-unknown zera-modulemanager[381]: Modules analyse took 956ms
+Jun 24 13:15:28.044259 zera-mt310s2-unknown zera-modulemanager[381]: Loading session: "/etc/zera/modules/sessions/mt310s2-meas-session.json"
+Jun 24 13:15:28.061151 zera-mt310s2-unknown zera-modulemanager[381]: Session contains 28 modules
+Jun 24 13:15:28.071211 zera-mt310s2-unknown zera-modulemanager[381]: Creating module: statusmodule / EntityId: 1150 / Config: mt310s2-statusmodule.xml
+Jun 24 13:15:28.110518 zera-mt310s2-unknown kernel: wlcore: firmware booted (Rev 8.9.0.0.83)
+Jun 24 13:15:28.159430 zera-mt310s2-unknown mt310s2-controller-full-update.sh[364]: Relay-controller: Get firmware checksum... 272E1D83EE9B35994643DC7F6F7543181266
+Jun 24 13:15:28.191264 zera-mt310s2-unknown mt310s2-controller-full-update.sh[364]: Relay-controller: Expected checksum matches: read 272E1D83EE9B35994643DC7F6F7543181266 / expected 272E1D83EE9B35994643DC7F6F7543181266
+Jun 24 13:15:28.191264 zera-mt310s2-unknown mt310s2-controller-full-update.sh[364]: Relay-controller: Checksum matches / no upgrade required
+Jun 24 13:15:28.191264 zera-mt310s2-unknown mt310s2-controller-full-update.sh[364]: Relay-controller: write /opt/zera/conf/last-checked-atmel-mt310s2-relays.txt
+Jun 24 13:15:28.286725 zera-mt310s2-unknown kernel: wlcore: down
+Jun 24 13:15:28.287297 zera-mt310s2-unknown ninfod[430]: [WARNING] init_nodeinfo_nodename(): failed to join group ff02::2:1cca:3c68.
+Jun 24 13:15:28.238442 zera-mt310s2-unknown avahi-daemon[429]: Network interface enumeration completed.
+Jun 24 13:15:28.194791 zera-mt310s2-unknown systemd-networkd[373]: wlan0: Link UP
+Jun 24 13:15:28.239101 zera-mt310s2-unknown avahi-daemon[429]: Server startup complete. Host name is zera-mt310s2-unknown.local. Local service cookie is 645930121.
+Jun 24 13:15:28.235561 zera-mt310s2-unknown systemd-networkd[373]: wlan0: Link DOWN
+Jun 24 13:15:28.239517 zera-mt310s2-unknown avahi-daemon[429]: Service "zera-mt310s2-unknown" (/services/vein-avahi.service) successfully established.
+Jun 24 13:15:28.253296 zera-mt310s2-unknown NetworkManager[371]: <info>  [1719234928.2531] device (wlan0): set-hw-addr: set MAC address to B2:71:00:B3:94:73 (scanning)
+Jun 24 13:15:28.240195 zera-mt310s2-unknown avahi-daemon[429]: Got SIGTERM, quitting.
+Jun 24 13:15:28.260274 zera-mt310s2-unknown systemd[1]: avahi-daemon.service: Succeeded.
+Jun 24 13:15:28.253807 zera-mt310s2-unknown avahi-daemon[429]: avahi-daemon 0.7 exiting.
+Jun 24 13:15:28.265736 zera-mt310s2-unknown systemd[1]: Stopped Avahi mDNS/DNS-SD Stack.
+Jun 24 13:15:28.348749 zera-mt310s2-unknown systemd[1]: Starting Avahi mDNS/DNS-SD Stack...
+Jun 24 13:15:28.416392 zera-mt310s2-unknown mt310s2-controller-full-update.sh[456]: EMOB-controller: No device connected - done
+Jun 24 13:15:28.451473 zera-mt310s2-unknown avahi-daemon[459]: Process 429 died: No such process; trying to remove PID file. (/run/avahi-daemon//pid)
+Jun 24 13:15:28.422604 zera-mt310s2-unknown systemd[1]: mt310s2-mcontroller-startup.service: Succeeded.
+Jun 24 13:15:28.453053 zera-mt310s2-unknown avahi-daemon[459]: Found user 'avahi' (UID 993) and group 'avahi' (GID 992).
+Jun 24 13:15:28.425360 zera-mt310s2-unknown systemd[1]: Started Zera MT310s2 µController upgrade and startup.
+Jun 24 13:15:28.453502 zera-mt310s2-unknown avahi-daemon[459]: Successfully dropped root privileges.
+Jun 24 13:15:28.455293 zera-mt310s2-unknown avahi-daemon[459]: avahi-daemon 0.7 starting up.
+Jun 24 13:15:28.485630 zera-mt310s2-unknown avahi-daemon[459]: Successfully called chroot().
+Jun 24 13:15:28.485739 zera-mt310s2-unknown avahi-daemon[459]: Successfully dropped remaining capabilities.
+Jun 24 13:15:28.486868 zera-mt310s2-unknown avahi-daemon[463]: ../../avahi-0.7/avahi-daemon/chroot.c: open() failed: No such file or directory
+Jun 24 13:15:28.487055 zera-mt310s2-unknown avahi-daemon[459]: Failed to open /etc/resolv.conf: Invalid argument
+Jun 24 13:15:28.487319 zera-mt310s2-unknown avahi-daemon[459]: Loading service file /services/vein-avahi.service.
+Jun 24 13:15:28.497582 zera-mt310s2-unknown systemd[1]: Started Avahi mDNS/DNS-SD Stack.
+Jun 24 13:15:28.521473 zera-mt310s2-unknown systemd[1]: zera-auto-hostname.service: Succeeded.
+Jun 24 13:15:28.524949 zera-mt310s2-unknown systemd[1]: Started ZERA auto hostname service.
+Jun 24 13:15:28.599952 zera-mt310s2-unknown systemd[1]: Started MT310S2 daemon.
+Jun 24 13:15:28.642604 zera-mt310s2-unknown systemd[1]: Reached target Multi-User System.
+Jun 24 13:15:28.671678 zera-mt310s2-unknown systemd[1]: Reached target Graphical Interface.
+Jun 24 13:15:28.708379 zera-mt310s2-unknown systemd[1]: Starting Update UTMP about System Runlevel Changes...
+Jun 24 13:15:28.843979 zera-mt310s2-unknown systemd[1]: systemd-update-utmp-runlevel.service: Succeeded.
+Jun 24 13:15:28.848274 zera-mt310s2-unknown systemd[1]: Started Update UTMP about System Runlevel Changes.
+Jun 24 13:15:28.891764 zera-mt310s2-unknown systemd[1]: Startup finished in 4.054s (kernel) + 25.937s (userspace) = 29.991s.
+Jun 24 13:15:28.950505 zera-mt310s2-unknown kernel: wlcore: PHY firmware version: Rev 8.2.0.0.243
+Jun 24 13:15:29.086819 zera-mt310s2-unknown kernel: wlcore: firmware booted (Rev 8.9.0.0.83)
+Jun 24 13:15:29.132330 zera-mt310s2-unknown systemd-networkd[373]: wlan0: Link UP
+Jun 24 13:15:29.134433 zera-mt310s2-unknown avahi-daemon[459]: Network interface enumeration completed.
+Jun 24 13:15:29.135172 zera-mt310s2-unknown avahi-daemon[459]: Server startup complete. Host name is zera-mt310s2-unknown.local. Local service cookie is 1381045272.
+Jun 24 13:15:29.135668 zera-mt310s2-unknown avahi-daemon[459]: Service "zera-mt310s2-unknown" (/services/vein-avahi.service) successfully established.
+Jun 24 13:15:29.191247 zera-mt310s2-unknown NetworkManager[371]: <info>  [1719234929.1911] hostname: hostname changed from "imx6qdl-variscite-som" to "zera-mt310s2-unknown"
+Jun 24 13:15:29.200951 zera-mt310s2-unknown NetworkManager[371]: <info>  [1719234929.2008] policy: set-hostname: set hostname to 'zera-mt310s2-unknown' (from system configuration)
+Jun 24 13:15:29.220182 zera-mt310s2-unknown dbus-daemon[356]: [system] Activating via systemd: service name='fi.w1.wpa_supplicant1' unit='wpa_supplicant.service' requested by ':1.7' (uid=0 pid=371 comm="/usr/sbin/NetworkManager --no-daemon ")
+Jun 24 13:15:29.225251 zera-mt310s2-unknown NetworkManager[371]: <info>  [1719234929.2250] ovsdb: Could not connect: No such file or directory
+Jun 24 13:15:29.250605 zera-mt310s2-unknown systemd[1]: Starting WPA supplicant...
+Jun 24 13:15:29.466235 zera-mt310s2-unknown kernel: fec 2188000.ethernet eth0: Link is Up - 100Mbps/Full - flow control rx/tx
+Jun 24 13:15:29.468616 zera-mt310s2-unknown kernel: IPv6: ADDRCONF(NETDEV_CHANGE): eth0: link becomes ready
+Jun 24 13:15:29.485275 zera-mt310s2-unknown NetworkManager[371]: <info>  [1719234929.4851] device (eth0): carrier: link connected
+Jun 24 13:15:29.488494 zera-mt310s2-unknown systemd-networkd[373]: eth0: Gained carrier
+Jun 24 13:15:29.490640 zera-mt310s2-unknown NetworkManager[371]: <info>  [1719234929.4905] device (eth0): state change: unavailable -> disconnected (reason 'carrier-changed', sys-iface-state: 'managed')
+Jun 24 13:15:29.498760 zera-mt310s2-unknown NetworkManager[371]: <info>  [1719234929.4986] policy: auto-activating connection 'Wired connection 1' (b28d8e59-2d42-3781-baa5-0653672fb9ec)
+Jun 24 13:15:29.525098 zera-mt310s2-unknown NetworkManager[371]: <info>  [1719234929.5233] device (eth0): Activation: starting connection 'Wired connection 1' (b28d8e59-2d42-3781-baa5-0653672fb9ec)
+Jun 24 13:15:29.528469 zera-mt310s2-unknown NetworkManager[371]: <info>  [1719234929.5269] device (eth0): state change: disconnected -> prepare (reason 'none', sys-iface-state: 'managed')
+Jun 24 13:15:29.531609 zera-mt310s2-unknown NetworkManager[371]: <info>  [1719234929.5314] manager: NetworkManager state is now CONNECTING
+Jun 24 13:15:29.533601 zera-mt310s2-unknown NetworkManager[371]: <info>  [1719234929.5334] device (eth0): state change: prepare -> config (reason 'none', sys-iface-state: 'managed')
+Jun 24 13:15:29.539506 zera-mt310s2-unknown NetworkManager[371]: <info>  [1719234929.5393] device (eth0): state change: config -> ip-config (reason 'none', sys-iface-state: 'managed')
+Jun 24 13:15:29.575313 zera-mt310s2-unknown NetworkManager[371]: <info>  [1719234929.5751] dhcp4 (eth0): activation: beginning transaction (timeout in 45 seconds)
+Jun 24 13:15:29.588874 zera-mt310s2-unknown dbus-daemon[356]: [system] Successfully activated service 'fi.w1.wpa_supplicant1'
+Jun 24 13:15:29.593842 zera-mt310s2-unknown wpa_supplicant[472]: Successfully initialized wpa_supplicant
+Jun 24 13:15:29.590275 zera-mt310s2-unknown systemd[1]: Started WPA supplicant.
+Jun 24 13:15:29.603032 zera-mt310s2-unknown avahi-daemon[459]: Joining mDNS multicast group on interface eth0.IPv6 with address fe80::bae0:afb6:3017:5949.
+Jun 24 13:15:29.603543 zera-mt310s2-unknown avahi-daemon[459]: New relevant interface eth0.IPv6 for mDNS.
+Jun 24 13:15:29.603624 zera-mt310s2-unknown avahi-daemon[459]: Registering new address record for fe80::bae0:afb6:3017:5949 on eth0.*.
+Jun 24 13:15:29.647394 zera-mt310s2-unknown NetworkManager[371]: <info>  [1719234929.6472] dhcp4 (eth0): option dhcp_lease_time      => '3600'
+Jun 24 13:15:29.647546 zera-mt310s2-unknown NetworkManager[371]: <info>  [1719234929.6474] dhcp4 (eth0): option domain_name          => 'zera.local'
+Jun 24 13:15:29.647672 zera-mt310s2-unknown NetworkManager[371]: <info>  [1719234929.6475] dhcp4 (eth0): option domain_name_servers  => '192.168.7.62 192.168.7.63'
+Jun 24 13:15:29.647789 zera-mt310s2-unknown NetworkManager[371]: <info>  [1719234929.6477] dhcp4 (eth0): option expiry               => '1719238529'
+Jun 24 13:15:29.647902 zera-mt310s2-unknown NetworkManager[371]: <info>  [1719234929.6478] dhcp4 (eth0): option ip_address           => '192.168.6.7'
+Jun 24 13:15:29.648011 zera-mt310s2-unknown NetworkManager[371]: <info>  [1719234929.6479] dhcp4 (eth0): option requested_broadcast_address => '1'
+Jun 24 13:15:29.648121 zera-mt310s2-unknown NetworkManager[371]: <info>  [1719234929.6480] dhcp4 (eth0): option requested_domain_name => '1'
+Jun 24 13:15:29.648241 zera-mt310s2-unknown NetworkManager[371]: <info>  [1719234929.6481] dhcp4 (eth0): option requested_domain_name_servers => '1'
+Jun 24 13:15:29.648416 zera-mt310s2-unknown NetworkManager[371]: <info>  [1719234929.6482] dhcp4 (eth0): option requested_domain_search => '1'
+Jun 24 13:15:29.648541 zera-mt310s2-unknown NetworkManager[371]: <info>  [1719234929.6484] dhcp4 (eth0): option requested_host_name  => '1'
+Jun 24 13:15:29.648655 zera-mt310s2-unknown NetworkManager[371]: <info>  [1719234929.6485] dhcp4 (eth0): option requested_interface_mtu => '1'
+Jun 24 13:15:29.648772 zera-mt310s2-unknown NetworkManager[371]: <info>  [1719234929.6486] dhcp4 (eth0): option requested_ms_classless_static_routes => '1'
+Jun 24 13:15:29.648891 zera-mt310s2-unknown NetworkManager[371]: <info>  [1719234929.6488] dhcp4 (eth0): option requested_nis_domain => '1'
+Jun 24 13:15:29.649005 zera-mt310s2-unknown NetworkManager[371]: <info>  [1719234929.6489] dhcp4 (eth0): option requested_nis_servers => '1'
+Jun 24 13:15:29.649118 zera-mt310s2-unknown NetworkManager[371]: <info>  [1719234929.6490] dhcp4 (eth0): option requested_ntp_servers => '1'
+Jun 24 13:15:29.649231 zera-mt310s2-unknown NetworkManager[371]: <info>  [1719234929.6491] dhcp4 (eth0): option requested_rfc3442_classless_static_routes => '1'
+Jun 24 13:15:29.649346 zera-mt310s2-unknown NetworkManager[371]: <info>  [1719234929.6492] dhcp4 (eth0): option requested_root_path  => '1'
+Jun 24 13:15:29.649456 zera-mt310s2-unknown NetworkManager[371]: <info>  [1719234929.6493] dhcp4 (eth0): option requested_routers    => '1'
+Jun 24 13:15:29.649565 zera-mt310s2-unknown NetworkManager[371]: <info>  [1719234929.6494] dhcp4 (eth0): option requested_static_routes => '1'
+Jun 24 13:15:29.649676 zera-mt310s2-unknown NetworkManager[371]: <info>  [1719234929.6495] dhcp4 (eth0): option requested_subnet_mask => '1'
+Jun 24 13:15:29.649786 zera-mt310s2-unknown NetworkManager[371]: <info>  [1719234929.6497] dhcp4 (eth0): option requested_time_offset => '1'
+Jun 24 13:15:29.649897 zera-mt310s2-unknown NetworkManager[371]: <info>  [1719234929.6498] dhcp4 (eth0): option requested_wpad       => '1'
+Jun 24 13:15:29.650009 zera-mt310s2-unknown NetworkManager[371]: <info>  [1719234929.6499] dhcp4 (eth0): option routers              => '192.168.7.66'
+Jun 24 13:15:29.650120 zera-mt310s2-unknown NetworkManager[371]: <info>  [1719234929.6500] dhcp4 (eth0): option subnet_mask          => '255.255.254.0'
+Jun 24 13:15:29.650226 zera-mt310s2-unknown NetworkManager[371]: <info>  [1719234929.6501] dhcp4 (eth0): state changed unknown -> bound
+Jun 24 13:15:29.674815 zera-mt310s2-unknown NetworkManager[371]: <info>  [1719234929.6746] supplicant: wpa_supplicant running
+Jun 24 13:15:29.675103 zera-mt310s2-unknown NetworkManager[371]: <info>  [1719234929.6749] device (wlan0): supplicant interface state: init -> starting
+Jun 24 13:15:29.677118 zera-mt310s2-unknown avahi-daemon[459]: Joining mDNS multicast group on interface eth0.IPv4 with address 192.168.6.7.
+Jun 24 13:15:29.677733 zera-mt310s2-unknown avahi-daemon[459]: New relevant interface eth0.IPv4 for mDNS.
+Jun 24 13:15:29.677974 zera-mt310s2-unknown avahi-daemon[459]: Registering new address record for 192.168.6.7 on eth0.IPv4.
+Jun 24 13:15:29.680683 zera-mt310s2-unknown systemd-timesyncd[259]: Network configuration changed, trying to establish connection.
+Jun 24 13:15:29.685136 zera-mt310s2-unknown NetworkManager[371]: <info>  [1719234929.6849] device (eth0): state change: ip-config -> ip-check (reason 'none', sys-iface-state: 'managed')
+Jun 24 13:15:29.722761 zera-mt310s2-unknown mt310s2d[464]: mt310s2d started
+Jun 24 13:15:29.723521 zera-mt310s2-unknown NetworkManager[371]: <info>  [1719234929.7233] device (eth0): state change: ip-check -> secondaries (reason 'none', sys-iface-state: 'managed')
+Jun 24 13:15:29.728275 zera-mt310s2-unknown NetworkManager[371]: <info>  [1719234929.7279] device (eth0): state change: secondaries -> activated (reason 'none', sys-iface-state: 'managed')
+Jun 24 13:15:29.747683 zera-mt310s2-unknown NetworkManager[371]: <info>  [1719234929.7456] manager: NetworkManager state is now CONNECTED_LOCAL
+Jun 24 13:15:29.786934 zera-mt310s2-unknown NetworkManager[371]: <info>  [1719234929.7853] manager: NetworkManager state is now CONNECTED_SITE
+Jun 24 13:15:29.790098 zera-mt310s2-unknown NetworkManager[371]: <info>  [1719234929.7897] policy: set 'Wired connection 1' (eth0) as default for IPv4 routing and DNS
+Jun 24 13:15:29.802371 zera-mt310s2-unknown NetworkManager[371]: <info>  [1719234929.8019] device (eth0): Activation: successful, device activated.
+Jun 24 13:15:29.818691 zera-mt310s2-unknown NetworkManager[371]: <info>  [1719234929.8185] manager: NetworkManager state is now CONNECTED_GLOBAL
+Jun 24 13:15:29.842730 zera-mt310s2-unknown wpa_supplicant[472]: Libgcrypt warning: missing initialization - please fix the application
+Jun 24 13:15:29.875092 zera-mt310s2-unknown NetworkManager[371]: <warn>  [1719234929.8749] dns-sd-resolved[2460f2cdcc0f96c5]: send-updates failed to update systemd-resolved: GDBus.Error:org.freedesktop.resolve1.LinkBusy: Link eth0 is managed.
+Jun 24 13:15:29.960467 zera-mt310s2-unknown NetworkManager[371]: <info>  [1719234929.9602] sup-iface[0x752ba8,wlan0]: supports 1 scan SSIDs
+Jun 24 13:15:29.990029 zera-mt310s2-unknown NetworkManager[371]: <info>  [1719234929.9898] device (wlan0): supplicant interface state: starting -> ready
+Jun 24 13:15:30.015359 zera-mt310s2-unknown NetworkManager[371]: <info>  [1719234930.0152] device (wlan0): state change: unavailable -> disconnected (reason 'supplicant-available', sys-iface-state: 'managed')
+Jun 24 13:15:30.056530 zera-mt310s2-unknown mt310s2d[464]: Atmel run-detection started
+Jun 24 13:15:30.162310 zera-mt310s2-unknown mt310s2d[464]: Atmel running
+Jun 24 13:15:30.162632 zera-mt310s2-unknown mt310s2d[464]: Starting doSetupServer
+Jun 24 13:15:30.162888 zera-mt310s2-unknown mt310s2d[464]: Set initial PLL channel...
+Jun 24 13:15:30.185868 zera-mt310s2-unknown mt310s2d[464]: Initial PLL channel set
+Jun 24 13:15:30.221971 zera-mt310s2-unknown mt310s2d[464]: Read adjustment data...
+Jun 24 13:15:30.222146 zera-mt310s2-unknown mt310s2d[464]: Start EEPROM read on i2c /dev/i2c-0 / 0x50 / mem address: 0x0000 / size 6...
+Jun 24 13:15:30.224190 zera-mt310s2-unknown mt310s2d[464]: EEPROM read complete.
+Jun 24 13:15:30.224342 zera-mt310s2-unknown mt310s2d[464]: Try read adjustment data from cache...
+Jun 24 13:15:30.225729 zera-mt310s2-unknown mt310s2d[464]: Cannot open cache file /var/cache/zenux-services/adj-intern-cache!
+Jun 24 13:15:30.225873 zera-mt310s2-unknown mt310s2d[464]: Read adjustment data from chip...
+Jun 24 13:15:30.226541 zera-mt310s2-unknown mt310s2d[464]: Start EEPROM read on i2c /dev/i2c-0 / 0x50 / mem address: 0x0000 / size 27230...
+Jun 24 13:15:30.570705 zera-mt310s2-unknown zera-modulemanager[381]: Core event systems: 5
+Jun 24 13:15:30.570851 zera-mt310s2-unknown zera-modulemanager[381]: Module event systems: 1
+Jun 24 13:15:31.133513 zera-mt310s2-unknown systemd-networkd[373]: eth0: Gained IPv6LL
+Jun 24 13:15:31.768902 zera-mt310s2-unknown systemd-networkd[373]: eth0: DHCPv4 address 192.168.6.7/23 via 192.168.7.66
+Jun 24 13:15:31.772369 zera-mt310s2-unknown systemd-timesyncd[259]: Network configuration changed, trying to establish connection.
+Jun 24 13:15:32.660469 zera-mt310s2-unknown kernel: SW4: disabling
+Jun 24 13:15:32.660844 zera-mt310s2-unknown kernel: VGEN2: disabling
+Jun 24 13:15:33.129057 zera-mt310s2-unknown lxdm-session[476]: pam_unix(lxdm:session): session opened for user operator by (uid=0)
+Jun 24 13:15:33.175000 zera-mt310s2-unknown systemd[1]: Created slice User Slice of UID 10000.
+Jun 24 13:15:33.194268 zera-mt310s2-unknown systemd[1]: Starting User Runtime Directory /run/user/10000...
+Jun 24 13:15:33.231135 zera-mt310s2-unknown systemd-logind[382]: New session c1 of user operator.
+Jun 24 13:15:33.271033 zera-mt310s2-unknown zera-modulemanager[381]: Mounts changed: Read /etc/mtab...
+Jun 24 13:15:33.306835 zera-mt310s2-unknown systemd[1]: Started User Runtime Directory /run/user/10000.
+Jun 24 13:15:33.327925 zera-mt310s2-unknown systemd[1]: Starting User Manager for UID 10000...
+Jun 24 13:15:34.239100 zera-mt310s2-unknown NetworkManager[371]: <info>  [1719234934.2389] manager: startup complete
+Jun 24 13:15:34.571597 zera-mt310s2-unknown mt310s2d[464]: EEPROM read complete.
+Jun 24 13:15:34.572278 zera-mt310s2-unknown mt310s2d[464]: Chip adjustment data read is valid.
+Jun 24 13:15:34.572388 zera-mt310s2-unknown mt310s2d[464]: Write adjustment cache file...
+Jun 24 13:15:34.574539 zera-mt310s2-unknown mt310s2d[464]: Adjustment cache file written sucessfully.
+Jun 24 13:15:34.574819 zera-mt310s2-unknown mt310s2d[464]: Decode adjustment data...
+Jun 24 13:15:34.579796 zera-mt310s2-unknown mt310s2d[464]: Decode succeeded.
+Jun 24 13:15:34.635534 zera-mt310s2-unknown mt310s2d[464]: SCPI interfaces set.
+Jun 24 13:15:34.902207 zera-mt310s2-unknown system-metrics-logger[365]: Memory used: 9.6%, Buffers: 1.0% Cache: 11.8%
+Jun 24 13:15:34.947307 zera-mt310s2-unknown mt310s2d[464]: Read device connect mask...
+Jun 24 13:15:34.963794 zera-mt310s2-unknown mt310s2d[464]: Devices connected mask read: 0x00
+Jun 24 13:15:34.967284 zera-mt310s2-unknown mt310s2d[464]: Starting doConnect2RM
+Jun 24 13:15:34.969712 zera-mt310s2-unknown mt310s2d[464]: Starting doIdentAndRegister
+Jun 24 13:15:34.983780 zera-mt310s2-unknown mt310s2d[464]: [vein-tcp] Inherited socket descriptor from systemd, listening on port: 6307
+Jun 24 13:15:34.984398 zera-mt310s2-unknown mt310s2d[464]: [vein-tcp] Client connected
+Jun 24 13:15:35.011578 zera-mt310s2-unknown zdsp1d[369]: [vein-tcp] Client connected
+Jun 24 13:15:35.048085 zera-mt310s2-unknown zera-modulemanager[381]: Changed device serial from: "SERIAL NUMBER NOT FOUND!" to: QVariant(QString, "050059467") QVariant(Invalid)
+Jun 24 13:15:35.050693 zera-mt310s2-unknown zera-modulemanager[381]: Starting CustomerDataSystem
+Jun 24 13:15:35.052075 zera-mt310s2-unknown zera-modulemanager[381]: Starting DataLoggerSystem...
+Jun 24 13:15:35.052477 zera-mt310s2-unknown zera-modulemanager[381]: Starting vf-export...
+Jun 24 13:15:35.238485 zera-mt310s2-unknown systemd[478]: Reached target Paths.
+Jun 24 13:15:35.238693 zera-mt310s2-unknown systemd[478]: Reached target Timers.
+Jun 24 13:15:35.261799 zera-mt310s2-unknown systemd[478]: Starting D-Bus User Message Bus Socket.
+Jun 24 13:15:35.352204 zera-mt310s2-unknown systemd[478]: Listening on D-Bus User Message Bus Socket.
+Jun 24 13:15:35.353364 zera-mt310s2-unknown systemd[478]: Reached target Sockets.
+Jun 24 13:15:35.353530 zera-mt310s2-unknown systemd[478]: Reached target Basic System.
+Jun 24 13:15:35.354288 zera-mt310s2-unknown systemd[1]: Started User Manager for UID 10000.
+Jun 24 13:15:35.359965 zera-mt310s2-unknown systemd[1]: Started Session c1 of user operator.
+Jun 24 13:15:35.371248 zera-mt310s2-unknown systemd[478]: Reached target Main User Target.
+Jun 24 13:15:35.371534 zera-mt310s2-unknown systemd[478]: Startup finished in 1.915s.
+Jun 24 13:15:35.692313 zera-mt310s2-unknown systemd[478]: Started D-Bus User Message Bus.
+Jun 24 13:15:36.482241 zera-mt310s2-unknown zera-modulemanager[381]: Creating module: modemodule / EntityId: 1000 / Config: mt310s2-modemoduleAC.xml
+Jun 24 13:15:36.613011 zera-mt310s2-unknown zera-modulemanager[381]: Creating module: rangemodule / EntityId: 1020 / Config: mt310s2-rangemodule.xml
+Jun 24 13:15:36.901978 zera-mt310s2-unknown zdsp1d[369]: DSP is running, Max load: 0%, Reset successful
+Jun 24 13:15:37.696178 zera-mt310s2-unknown dbus-daemon[490]: [session uid=10000 pid=490] Activating via systemd: service name='org.a11y.Bus' unit='at-spi-dbus-bus.service' requested by ':1.3' (uid=10000 pid=484 comm="xfce4-session ")
+Jun 24 13:15:37.713656 zera-mt310s2-unknown systemd[478]: Starting Accessibility services bus...
+Jun 24 13:15:37.794859 zera-mt310s2-unknown zera-modulemanager[381]: Core event systems: 8
+Jun 24 13:15:37.795000 zera-mt310s2-unknown zera-modulemanager[381]: Module event systems: 3
+Jun 24 13:15:37.910585 zera-mt310s2-unknown dbus-daemon[490]: [session uid=10000 pid=490] Activating via systemd: service name='org.gtk.vfs.Daemon' unit='gvfs-daemon.service' requested by ':1.4' (uid=10000 pid=507 comm="/usr/libexec/at-spi-bus-launcher ")
+Jun 24 13:15:37.971009 zera-mt310s2-unknown zera-modulemanager[381]: Reset overload channel 0
+Jun 24 13:15:37.971370 zera-mt310s2-unknown zera-modulemanager[381]: Reset overload channel 1
+Jun 24 13:15:37.971631 zera-mt310s2-unknown zera-modulemanager[381]: Reset overload channel 2
+Jun 24 13:15:37.971885 zera-mt310s2-unknown zera-modulemanager[381]: Reset overload channel 3
+Jun 24 13:15:37.972132 zera-mt310s2-unknown zera-modulemanager[381]: Reset overload channel 4
+Jun 24 13:15:37.972372 zera-mt310s2-unknown zera-modulemanager[381]: Reset overload channel 5
+Jun 24 13:15:37.972637 zera-mt310s2-unknown zera-modulemanager[381]: Reset overload channel 6
+Jun 24 13:15:37.972955 zera-mt310s2-unknown zera-modulemanager[381]: Reset overload channel 7
+Jun 24 13:15:38.011279 zera-mt310s2-unknown zdsp1d[369]: "LoadCmdList(1)"
+Jun 24 13:15:38.018812 zera-mt310s2-unknown zera-modulemanager[381]: Creating module: samplemodule / EntityId: 1030 / Config: mt310s2-samplemodule.xml
+Jun 24 13:15:38.045005 zera-mt310s2-unknown systemd[1]: NetworkManager-dispatcher.service: Succeeded.
+Jun 24 13:15:38.055280 zera-mt310s2-unknown systemd[478]: Starting Virtual filesystem service...
+Jun 24 13:15:38.270282 zera-mt310s2-unknown dbus-daemon[490]: [session uid=10000 pid=490] Successfully activated service 'org.gtk.vfs.Daemon'
+Jun 24 13:15:38.271411 zera-mt310s2-unknown systemd[478]: Started Virtual filesystem service.
+Jun 24 13:15:38.313136 zera-mt310s2-unknown dbus-daemon[490]: [session uid=10000 pid=490] Successfully activated service 'org.a11y.Bus'
+Jun 24 13:15:38.314043 zera-mt310s2-unknown systemd[478]: Started Accessibility services bus.
+Jun 24 13:15:38.421478 zera-mt310s2-unknown dbus-daemon[490]: [session uid=10000 pid=490] Activating service name='org.xfce.Xfconf' requested by ':1.6' (uid=10000 pid=484 comm="xfce4-session ")
+Jun 24 13:15:38.632220 zera-mt310s2-unknown dbus-daemon[490]: [session uid=10000 pid=490] Successfully activated service 'org.xfce.Xfconf'
+Jun 24 13:15:38.641927 zera-mt310s2-unknown at-spi-bus-launcher[515]: dbus-daemon[515]: Activating service name='org.a11y.atspi.Registry' requested by ':1.0' (uid=10000 pid=484 comm="xfce4-session ")
+Jun 24 13:15:38.673396 zera-mt310s2-unknown dbus-daemon[356]: [system] Activating via systemd: service name='org.freedesktop.PolicyKit1' unit='polkit.service' requested by ':1.22' (uid=10000 pid=484 comm="xfce4-session ")
+Jun 24 13:15:38.698635 zera-mt310s2-unknown systemd[1]: Starting Authorization Manager...
+Jun 24 13:15:38.818244 zera-mt310s2-unknown at-spi-bus-launcher[515]: dbus-daemon[515]: Successfully activated service 'org.a11y.atspi.Registry'
+Jun 24 13:15:38.828820 zera-mt310s2-unknown at-spi-bus-launcher[525]: SpiRegistry daemon is running with well-known name - org.a11y.atspi.Registry
+Jun 24 13:15:38.990765 zera-mt310s2-unknown polkitd[526]: Started polkitd version 0.116
+Jun 24 13:15:39.042780 zera-mt310s2-unknown zera-modulemanager[381]: Core event systems: 8
+Jun 24 13:15:39.042918 zera-mt310s2-unknown zera-modulemanager[381]: Module event systems: 4
+Jun 24 13:15:39.643619 zera-mt310s2-unknown polkitd[526]: Loading rules from directory /etc/polkit-1/rules.d
+Jun 24 13:15:39.660772 zera-mt310s2-unknown polkitd[526]: Loading rules from directory /usr/share/polkit-1/rules.d
+Jun 24 13:15:39.671558 zera-mt310s2-unknown polkitd[526]: Finished loading, compiling and executing 5 rules
+Jun 24 13:15:39.692977 zera-mt310s2-unknown dbus-daemon[356]: [system] Successfully activated service 'org.freedesktop.PolicyKit1'
+Jun 24 13:15:39.694146 zera-mt310s2-unknown systemd[1]: Started Authorization Manager.
+Jun 24 13:15:39.700728 zera-mt310s2-unknown polkitd[526]: Acquired the name org.freedesktop.PolicyKit1 on the system bus
+Jun 24 13:15:39.717660 zera-mt310s2-unknown zdsp1d[369]: "LoadCmdList(2)"
+Jun 24 13:15:39.723538 zera-mt310s2-unknown zera-modulemanager[381]: Creating module: rmsmodule / EntityId: 1040 / Config: mt310s2-rmsmodule.xml
+Jun 24 13:15:40.054879 zera-mt310s2-unknown zdsp1d[369]: "LoadCmdList(3)"
+Jun 24 13:15:40.058537 zera-mt310s2-unknown zera-modulemanager[381]: Creating module: dftmodule / EntityId: 1050 / Config: mt310s2-dftmodule.xml
+Jun 24 13:15:40.250973 zera-mt310s2-unknown zdsp1d[369]: "LoadCmdList(4)"
+Jun 24 13:15:40.264020 zera-mt310s2-unknown zera-modulemanager[381]: Creating module: fftmodule / EntityId: 1060 / Config: mt310s2-fftmodule.xml
+Jun 24 13:15:40.448531 zera-mt310s2-unknown zdsp1d[369]: "LoadCmdList(5)"
+Jun 24 13:15:40.464311 zera-mt310s2-unknown zera-modulemanager[381]: Creating module: power1module / EntityId: 1070 / Config: mt310s2-power1module.xml
+Jun 24 13:15:40.867634 zera-mt310s2-unknown zdsp1d[369]: "LoadCmdList(6)"
+Jun 24 13:15:40.876416 zera-mt310s2-unknown zera-modulemanager[381]: Creating module: power1module / EntityId: 1071 / Config: mt310s2-power1module2.xml
+Jun 24 13:15:41.268236 zera-mt310s2-unknown zdsp1d[369]: "LoadCmdList(7)"
+Jun 24 13:15:41.285756 zera-mt310s2-unknown zera-modulemanager[381]: Creating module: power1module / EntityId: 1072 / Config: mt310s2-power1module3.xml
+Jun 24 13:15:41.645397 zera-mt310s2-unknown zdsp1d[369]: "LoadCmdList(8)"
+Jun 24 13:15:41.650672 zera-mt310s2-unknown zera-modulemanager[381]: Creating module: power1module / EntityId: 1073 / Config: mt310s2-power1module4.xml
+Jun 24 13:15:42.094951 zera-mt310s2-unknown zdsp1d[369]: "LoadCmdList(9)"
+Jun 24 13:15:42.101418 zera-mt310s2-unknown zera-modulemanager[381]: Creating module: power1module / EntityId: 1074 / Config: power1moduleAllPhaseLambdaApparent.xml
+Jun 24 13:15:42.473928 zera-mt310s2-unknown zdsp1d[369]: "LoadCmdList(10)"
+Jun 24 13:15:42.481777 zera-mt310s2-unknown zera-modulemanager[381]: Creating module: power1module / EntityId: 1076 / Config: power1moduleAllPhaseLambdaReactive.xml
+Jun 24 13:15:42.939877 zera-mt310s2-unknown zdsp1d[369]: "LoadCmdList(11)"
+Jun 24 13:15:42.943847 zera-mt310s2-unknown zera-modulemanager[381]: Creating module: power3module / EntityId: 1100 / Config: mt310s2-power3module.xml
+Jun 24 13:15:42.999648 zera-mt310s2-unknown zera-modulemanager[381]: Creating module: thdnmodule / EntityId: 1110 / Config: mt310s2-thdnmodule.xml
+Jun 24 13:15:43.146370 zera-mt310s2-unknown systemd-timesyncd[259]: Network configuration changed, trying to establish connection.
+Jun 24 13:15:43.190586 zera-mt310s2-unknown systemd-timesyncd[259]: Initial synchronization to time server 216.239.35.0:123 (time1.google.com).
+Jun 24 13:15:43.328062 zera-mt310s2-unknown zdsp1d[369]: "LoadCmdList(12)"
+Jun 24 13:15:43.331719 zera-mt310s2-unknown zera-modulemanager[381]: Creating module: thdnmodule / EntityId: 1111 / Config: mt310s2-thdnmodule2.xml
+Jun 24 13:15:43.667972 zera-mt310s2-unknown zdsp1d[369]: "LoadCmdList(13)"
+Jun 24 13:15:43.671368 zera-mt310s2-unknown zera-modulemanager[381]: Creating module: oscimodule / EntityId: 1120 / Config: mt310s2-oscimodule.xml
+Jun 24 13:15:44.051222 zera-mt310s2-unknown zdsp1d[369]: "LoadCmdList(14)"
+Jun 24 13:15:44.055865 zera-mt310s2-unknown zera-modulemanager[381]: Creating module: sec1module / EntityId: 1130 / Config: mt310s2-sec1module.xml
+Jun 24 13:15:44.506036 zera-mt310s2-unknown sec1000d[362]: [vein-tcp] Client connected
+Jun 24 13:15:44.641104 zera-mt310s2-unknown zera-modulemanager[381]: Creating module: lambdamodule / EntityId: 1140 / Config: lambdamodule-with-own-apparentpowermodule.xml
+Jun 24 13:15:44.721516 zera-mt310s2-unknown zera-modulemanager[381]: Creating module: burden1module / EntityId: 1160 / Config: mt310s2-burden1module.xml
+Jun 24 13:15:44.778645 zera-mt310s2-unknown zera-modulemanager[381]: Creating module: burden1module / EntityId: 1161 / Config: mt310s2-burden1module2.xml
+Jun 24 13:15:44.863501 zera-mt310s2-unknown zera-modulemanager[381]: Creating module: transformer1module / EntityId: 1170 / Config: mt310s2-transformer1module.xml
+Jun 24 13:15:44.902592 zera-mt310s2-unknown system-metrics-logger[365]: Memory used: 12.2%, Buffers: 1.2% Cache: 14.7%
+Jun 24 13:15:44.935075 zera-mt310s2-unknown zera-modulemanager[381]: Creating module: adjustmentmodule / EntityId: 1190 / Config: mt310s2-adjustmentmodule.xml
+Jun 24 13:15:45.039381 zera-mt310s2-unknown dbus-daemon[356]: [system] Activating via systemd: service name='org.freedesktop.UPower' unit='upower.service' requested by ':1.24' (uid=10000 pid=543 comm="xfsettingsd ")
+Jun 24 13:15:45.084018 zera-mt310s2-unknown systemd[1]: Starting Daemon for power management...
+Jun 24 13:15:45.163391 zera-mt310s2-unknown zera-modulemanager[381]: Creating module: sem1module / EntityId: 1200 / Config: mt310s2-sem1module.xml
+Jun 24 13:15:45.382413 zera-mt310s2-unknown systemd-logind[382]: Failed to read LoaderConfigTimeoutOneShot variable: Operation not supported
+Jun 24 13:15:45.382494 zera-mt310s2-unknown systemd-logind[382]: Failed to read LoaderEntryOneShot variable: Operation not supported
+Jun 24 13:15:45.632870 zera-mt310s2-unknown zera-modulemanager[381]: Creating module: spm1module / EntityId: 1210 / Config: mt310s2-spm1module.xml
+Jun 24 13:15:46.080614 zera-mt310s2-unknown zera-modulemanager[381]: Creating module: sourcemodule / EntityId: 1300 / Config: modules
+Jun 24 13:15:46.101978 zera-mt310s2-unknown zera-modulemanager[381]: Creating module: blemodule / EntityId: 1400 / Config: blemodule.xml
+Jun 24 13:15:46.208868 zera-mt310s2-unknown zera-modulemanager[381]: qt.bluetooth.bluez: Missing CAP_NET_ADMIN permission. Cannot determine whether a found address is of random or public type.
+Jun 24 13:15:46.246323 zera-mt310s2-unknown zera-modulemanager[381]: Creating module: scpimodule / EntityId: 9999 / Config: mt310s2-scpimodule.xml
+Jun 24 13:15:46.901298 zera-mt310s2-unknown zdsp1d[369]: DSP is running, Max load: 5.5%, Reset successful
+Jun 24 13:15:47.021208 zera-mt310s2-unknown zera-modulemanager[381]: All modules started within 19935ms
+Jun 24 13:15:47.021583 zera-mt310s2-unknown zera-modulemanager[381]: ENTITIES (1071, 1030, 1140, 1020, 1100, 1210, 1060, 1170, 1130, 9999, 1200, 200, 1050, 1160, 1161, 1300, 1120, 1000, 1190, 4, 1040, 1150, 1076, 2, 1074, 3, 0, 1110, 1400, 1072, 1111, 1073, 1070) (1071, 1030, 1140, 1020, 1100, 1210, 1060, 1170, 1130, 9999, 1200, 200, 1050, 1160, 1161, 1300, 1120, 1000, 1190, 4, 1040, 1150, 1076, 2, 1074, 3, 0, 1110, 1400, 1072, 1111, 1073, 1070)
+Jun 24 13:15:47.028222 zera-mt310s2-unknown zera-modulemanager[381]: [vein-tcp] Inherited socket descriptor from systemd, listening on port: 12000
+Jun 24 13:15:47.391298 zera-mt310s2-unknown dbus-daemon[356]: [system] Successfully activated service 'org.freedesktop.UPower'
+Jun 24 13:15:47.393709 zera-mt310s2-unknown systemd[1]: Started Daemon for power management.
+Jun 24 13:15:47.978356 zera-mt310s2-unknown zera-modulemanager[381]: Core event systems: 10
+Jun 24 13:15:47.978510 zera-mt310s2-unknown zera-modulemanager[381]: Module event systems: 30
+Jun 24 13:15:54.902142 zera-mt310s2-unknown system-metrics-logger[365]: Memory used: 16.4%, Buffers: 1.2% Cache: 15.2%
+Jun 24 13:15:55.156879 zera-mt310s2-unknown dbus-daemon[490]: [session uid=10000 pid=490] Activating service name='org.freedesktop.thumbnails.Thumbnailer1' requested by ':1.19' (uid=10000 pid=596 comm="xfdesktop ")
+Jun 24 13:15:55.168011 zera-mt310s2-unknown cat[603]: StartZeraGUI started
+Jun 24 13:15:55.955936 zera-mt310s2-unknown org.freedesktop.thumbnails.Thumbnailer1[607]: Registered thumbnailer /usr/bin/gdk-pixbuf-thumbnailer -s %s %u %o
+Jun 24 13:15:55.959050 zera-mt310s2-unknown org.freedesktop.thumbnails.Thumbnailer1[607]: Registered thumbnailer gsf-office-thumbnailer -i %i -o %o -s %s
+Jun 24 13:15:55.964418 zera-mt310s2-unknown org.freedesktop.thumbnails.Thumbnailer1[607]: Registered thumbnailer /usr/bin/gdk-pixbuf-thumbnailer -s %s %u %o
+Jun 24 13:15:56.101164 zera-mt310s2-unknown dbus-daemon[490]: [session uid=10000 pid=490] Activating via systemd: service name='org.gtk.vfs.UDisks2VolumeMonitor' unit='gvfs-udisks2-volume-monitor.service' requested by ':1.20' (uid=10000 pid=607 comm="/usr/lib/tumbler-1/tumblerd ")
+Jun 24 13:15:56.141285 zera-mt310s2-unknown systemd[478]: Starting Virtual filesystem service - disk device monitor...
+Jun 24 13:15:56.208619 zera-mt310s2-unknown cat[630]: StartZeraGUI: start vf-declarative-gui
+Jun 24 13:15:56.267516 zera-mt310s2-unknown dbus-daemon[356]: [system] Activating via systemd: service name='org.freedesktop.UDisks2' unit='udisks2.service' requested by ':1.26' (uid=10000 pid=628 comm="/usr/libexec/gvfs-udisks2-volume-monitor ")
+Jun 24 13:15:56.306997 zera-mt310s2-unknown systemd[1]: Starting Disk Manager...
+Jun 24 13:15:56.427253 zera-mt310s2-unknown polkitd[526]: Registered Authentication Agent for unix-session:c1 (system bus name :1.27 [/usr/libexec/xfce-polkit], object path /org/freedesktop/PolicyKit1/AuthenticationAgent, locale en_US.UTF-8)
+Jun 24 13:15:56.449466 zera-mt310s2-unknown udisksd[637]: udisks daemon version 2.9.0 starting
+Jun 24 13:15:56.904589 zera-mt310s2-unknown zdsp1d[369]: DSP is running, Max load: 5.7%, Reset successful
+Jun 24 13:15:57.269345 zera-mt310s2-unknown vf-declarative-gui[633]: Application starts...
+Jun 24 13:15:57.284148 zera-mt310s2-unknown NetworkManager[371]: <info>  [1719234957.2839] agent-manager: agent[ec8f6c05693e08fd,:1.30/org.freedesktop.nm-applet/10000]: agent registered
+Jun 24 13:15:57.814829 zera-mt310s2-unknown dbus-daemon[356]: [system] Successfully activated service 'org.freedesktop.UDisks2'
+Jun 24 13:15:57.817585 zera-mt310s2-unknown systemd[1]: Started Disk Manager.
+Jun 24 13:15:57.839280 zera-mt310s2-unknown udisksd[637]: Acquired the name org.freedesktop.UDisks2 on the system message bus
+Jun 24 13:15:58.090227 zera-mt310s2-unknown dbus-daemon[490]: [session uid=10000 pid=490] Successfully activated service 'org.gtk.vfs.UDisks2VolumeMonitor'
+Jun 24 13:15:58.091406 zera-mt310s2-unknown systemd[478]: Started Virtual filesystem service - disk device monitor.
+Jun 24 13:15:58.198481 zera-mt310s2-unknown dbus-daemon[490]: [session uid=10000 pid=490] Activating via systemd: service name='org.gtk.vfs.MTPVolumeMonitor' unit='gvfs-mtp-volume-monitor.service' requested by ':1.20' (uid=10000 pid=607 comm="/usr/lib/tumbler-1/tumblerd ")
+Jun 24 13:15:58.216981 zera-mt310s2-unknown systemd[478]: Starting Virtual filesystem service - Media Transfer Protocol monitor...
+Jun 24 13:15:58.423773 zera-mt310s2-unknown dbus-daemon[490]: [session uid=10000 pid=490] Successfully activated service 'org.gtk.vfs.MTPVolumeMonitor'
+Jun 24 13:15:58.424792 zera-mt310s2-unknown systemd[478]: Started Virtual filesystem service - Media Transfer Protocol monitor.
+Jun 24 13:15:58.465397 zera-mt310s2-unknown dbus-daemon[490]: [session uid=10000 pid=490] Successfully activated service 'org.freedesktop.thumbnails.Thumbnailer1'
+Jun 24 13:15:58.491066 zera-mt310s2-unknown zera-update-client[599]: zera-update-client: No unfinished updates found
+Jun 24 13:15:59.247255 zera-mt310s2-unknown systemd[1]: systemd-hostnamed.service: Succeeded.
+Jun 24 13:15:59.374107 zera-mt310s2-unknown vf-declarative-gui[633]: Load settings..
+Jun 24 13:15:59.374728 zera-mt310s2-unknown vf-declarative-gui[633]: Settings loaded.
+Jun 24 13:15:59.484407 zera-mt310s2-unknown vf-declarative-gui[633]: Start mount poll thread.
+Jun 24 13:15:59.576876 zera-mt310s2-unknown vf-declarative-gui[633]: Register QML external dependencies...
+Jun 24 13:15:59.652256 zera-mt310s2-unknown vf-declarative-gui[633]: External QML external dependencies registered.
+Jun 24 13:15:59.655403 zera-mt310s2-unknown vf-declarative-gui[633]: Register QML internal dependencies...
+Jun 24 13:15:59.656605 zera-mt310s2-unknown vf-declarative-gui[633]: External QML internal dependencies registered.
+Jun 24 13:15:59.667824 zera-mt310s2-unknown vf-declarative-gui[633]: Load translation file /usr/share/zera/translations/zera-gui_en_GB.qm...
+Jun 24 13:15:59.673483 zera-mt310s2-unknown vf-declarative-gui[633]: Install translator...
+Jun 24 13:15:59.674136 zera-mt310s2-unknown vf-declarative-gui[633]: Current Language changed to "English" QLocale(English, Latin, United Kingdom) "en_GB"
+Jun 24 13:15:59.674268 zera-mt310s2-unknown vf-declarative-gui[633]: Reload translation string table...
+Jun 24 13:15:59.676908 zera-mt310s2-unknown vf-declarative-gui[633]: Translation string table with 407 entries reloaded within 2ms.
+Jun 24 13:16:00.961813 zera-mt310s2-unknown vf-declarative-gui[633]: Translation strings added to property map within 1287ms.
+Jun 24 13:16:00.961955 zera-mt310s2-unknown vf-declarative-gui[633]: Language change notification within 1287ms.
+Jun 24 13:16:00.966113 zera-mt310s2-unknown vf-declarative-gui[633]: Loading QML engine...
+Jun 24 13:16:03.785993 zera-mt310s2-unknown vf-declarative-gui[633]: QFont::setPointSizeF: Point size <= 0 (0.000000), must be greater than 0
+Jun 24 13:16:04.081661 zera-mt310s2-unknown vf-declarative-gui[633]: qml: Desktop Session: Xfce Session
+Jun 24 13:16:04.484966 zera-mt310s2-unknown vf-declarative-gui[633]: QML engine loaded.
+Jun 24 13:16:04.485264 zera-mt310s2-unknown vf-declarative-gui[633]: Connecting to modman...
+Jun 24 13:16:04.487289 zera-mt310s2-unknown zera-modulemanager[381]: [vein-tcp] Client connected
+Jun 24 13:16:04.901565 zera-mt310s2-unknown system-metrics-logger[365]: Memory used: 21.2%, Buffers: 1.2% Cache: 18.4%
+Jun 24 13:16:05.449917 zera-mt310s2-unknown vf-declarative-gui[633]: Core event systems: 4
+Jun 24 13:16:05.452445 zera-mt310s2-unknown vf-declarative-gui[633]: Subscribe system entity...
+Jun 24 13:16:05.487929 zera-mt310s2-unknown vf-declarative-gui[633]: Translation not found for ''
+Jun 24 13:16:05.963316 zera-mt310s2-unknown vf-declarative-gui[633]: qml: Loaded session:  mt310s2-meas-session.json
+Jun 24 13:16:06.211933 zera-mt310s2-unknown vf-declarative-gui[633]: qml: Z.tr / Translation not found: Menu0
+Jun 24 13:16:07.361850 zera-mt310s2-unknown vf-declarative-gui[633]: qml: Z.tr / Translation not found: NF:
+Jun 24 13:16:11.404517 zera-mt310s2-unknown system-metrics-logger[365]: CPU load 18.7% is within 20.0% limit again - max was 100.0%
+Jun 24 13:16:14.902400 zera-mt310s2-unknown system-metrics-logger[365]: Memory used: 22.7%, Buffers: 1.2% Cache: 19.5%
+Jun 24 13:16:14.902865 zera-mt310s2-unknown vf-declarative-gui[633]: Application ping
+Jun 24 13:16:15.403575 zera-mt310s2-unknown system-metrics-logger[365]: CPU load 20.3% exceeds limit 20.0%
+Jun 24 13:16:16.404293 zera-mt310s2-unknown system-metrics-logger[365]: CPU load 18.2% is within 20.0% limit again - max was 20.3%
+Jun 24 13:16:17.404062 zera-mt310s2-unknown system-metrics-logger[365]: CPU load 21.0% exceeds limit 20.0%
+Jun 24 13:16:18.403588 zera-mt310s2-unknown system-metrics-logger[365]: CPU load 18.0% is within 20.0% limit again - max was 21.0%
+Jun 24 13:16:24.901103 zera-mt310s2-unknown vf-declarative-gui[633]: Application ping
+Jun 24 13:16:24.903221 zera-mt310s2-unknown system-metrics-logger[365]: Memory used: 22.9%, Buffers: 1.2% Cache: 19.5%
+Jun 24 13:16:34.901551 zera-mt310s2-unknown vf-declarative-gui[633]: Application ping
+Jun 24 13:16:34.901967 zera-mt310s2-unknown system-metrics-logger[365]: Memory used: 23.0%, Buffers: 1.3% Cache: 19.5%
+Jun 24 13:16:37.402823 zera-mt310s2-unknown system-metrics-logger[365]: CPU load 20.5% exceeds limit 20.0%
+Jun 24 13:16:38.404466 zera-mt310s2-unknown system-metrics-logger[365]: CPU load 18.3% is within 20.0% limit again - max was 20.5%
+Jun 24 13:16:44.901510 zera-mt310s2-unknown vf-declarative-gui[633]: Application ping
+Jun 24 13:16:44.902718 zera-mt310s2-unknown system-metrics-logger[365]: Memory used: 22.7%, Buffers: 1.3% Cache: 19.3%
+Jun 24 13:16:46.903633 zera-mt310s2-unknown zdsp1d[369]: DSP is running, Max load: 7.5%, Reset successful
+Jun 24 13:16:51.404746 zera-mt310s2-unknown system-metrics-logger[365]: CPU load 20.3% exceeds limit 20.0%
+Jun 24 13:16:52.404364 zera-mt310s2-unknown system-metrics-logger[365]: CPU load 17.7% is within 20.0% limit again - max was 20.3%
+Jun 24 13:16:54.901130 zera-mt310s2-unknown vf-declarative-gui[633]: Application ping
+Jun 24 13:16:56.901622 zera-mt310s2-unknown zdsp1d[369]: DSP is running, Max load: 5.7%, Reset successful
+Jun 24 13:17:04.404145 zera-mt310s2-unknown system-metrics-logger[365]: CPU load 20.5% exceeds limit 20.0%
+Jun 24 13:17:04.902678 zera-mt310s2-unknown vf-declarative-gui[633]: Application ping
+Jun 24 13:17:05.404171 zera-mt310s2-unknown system-metrics-logger[365]: CPU load 16.7% is within 20.0% limit again - max was 20.5%
+Jun 24 13:17:06.902223 zera-mt310s2-unknown zdsp1d[369]: DSP is running, Max load: 5.5%, Reset successful
+Jun 24 13:17:14.901869 zera-mt310s2-unknown vf-declarative-gui[633]: Application ping
+Jun 24 13:17:14.901958 zera-mt310s2-unknown system-metrics-logger[365]: Memory used: 22.8%, Buffers: 1.3% Cache: 19.3%
+Jun 24 13:17:16.901665 zera-mt310s2-unknown zdsp1d[369]: DSP is running, Max load: 5.7%, Reset successful
+Jun 24 13:17:24.901645 zera-mt310s2-unknown vf-declarative-gui[633]: Application ping
+Jun 24 13:17:24.903763 zera-mt310s2-unknown system-metrics-logger[365]: Memory used: 22.9%, Buffers: 1.3% Cache: 19.3%
+Jun 24 13:17:34.901387 zera-mt310s2-unknown vf-declarative-gui[633]: Application ping
+Jun 24 13:17:34.903178 zera-mt310s2-unknown system-metrics-logger[365]: Memory used: 22.7%, Buffers: 1.3% Cache: 19.3%
+Jun 24 13:17:44.901956 zera-mt310s2-unknown vf-declarative-gui[633]: Application ping
+Jun 24 13:17:44.903256 zera-mt310s2-unknown system-metrics-logger[365]: Memory used: 22.8%, Buffers: 1.3% Cache: 19.3%
+Jun 24 13:17:54.901801 zera-mt310s2-unknown vf-declarative-gui[633]: Application ping
+Jun 24 13:17:54.903675 zera-mt310s2-unknown system-metrics-logger[365]: Memory used: 22.7%, Buffers: 1.3% Cache: 19.3%
+Jun 24 13:18:04.902649 zera-mt310s2-unknown system-metrics-logger[365]: Memory used: 22.9%, Buffers: 1.3% Cache: 19.3%
+Jun 24 13:18:04.912491 zera-mt310s2-unknown vf-declarative-gui[633]: Application ping
+Jun 24 13:18:14.402952 zera-mt310s2-unknown system-metrics-logger[365]: CPU load 20.5% exceeds limit 20.0%
+Jun 24 13:18:14.901208 zera-mt310s2-unknown vf-declarative-gui[633]: Application ping
+Jun 24 13:18:14.902396 zera-mt310s2-unknown system-metrics-logger[365]: Memory used: 22.8%, Buffers: 1.3% Cache: 19.3%
+Jun 24 13:18:15.403404 zera-mt310s2-unknown system-metrics-logger[365]: CPU load 18.1% is within 20.0% limit again - max was 20.5%
+Jun 24 13:18:24.901561 zera-mt310s2-unknown vf-declarative-gui[633]: Application ping
+Jun 24 13:18:34.901456 zera-mt310s2-unknown vf-declarative-gui[633]: Application ping
+Jun 24 13:18:44.902728 zera-mt310s2-unknown vf-declarative-gui[633]: Application ping
+Jun 24 13:18:44.902978 zera-mt310s2-unknown system-metrics-logger[365]: Memory used: 22.7%, Buffers: 1.3% Cache: 19.4%
+Jun 24 13:18:54.901672 zera-mt310s2-unknown vf-declarative-gui[633]: Application ping
+Jun 24 13:18:54.910653 zera-mt310s2-unknown system-metrics-logger[365]: Memory used: 22.7%, Buffers: 1.3% Cache: 19.3%
+Jun 24 13:19:00.402954 zera-mt310s2-unknown system-metrics-logger[365]: CPU load 20.5% exceeds limit 20.0%
+Jun 24 13:19:01.402805 zera-mt310s2-unknown system-metrics-logger[365]: CPU load 14.9% is within 20.0% limit again - max was 20.5%
+Jun 24 13:19:04.901620 zera-mt310s2-unknown vf-declarative-gui[633]: Application ping
+Jun 24 13:19:12.402631 zera-mt310s2-unknown system-metrics-logger[365]: CPU load 20.8% exceeds limit 20.0%
+Jun 24 13:19:13.403873 zera-mt310s2-unknown system-metrics-logger[365]: CPU load 15.4% is within 20.0% limit again - max was 20.8%
+Jun 24 13:19:14.903296 zera-mt310s2-unknown system-metrics-logger[365]: Memory used: 22.9%, Buffers: 1.3% Cache: 19.4%
+Jun 24 13:19:14.918669 zera-mt310s2-unknown vf-declarative-gui[633]: Application ping
+Jun 24 13:19:18.402992 zera-mt310s2-unknown system-metrics-logger[365]: CPU load 20.8% exceeds limit 20.0%
+Jun 24 13:19:19.403852 zera-mt310s2-unknown system-metrics-logger[365]: CPU load 15.7% is within 20.0% limit again - max was 20.8%
+Jun 24 13:19:24.901098 zera-mt310s2-unknown vf-declarative-gui[633]: Application ping
+Jun 24 13:19:33.402718 zera-mt310s2-unknown system-metrics-logger[365]: CPU load 21.3% exceeds limit 20.0%
+Jun 24 13:19:34.404098 zera-mt310s2-unknown system-metrics-logger[365]: CPU load 16.8% is within 20.0% limit again - max was 21.3%
+Jun 24 13:19:34.900954 zera-mt310s2-unknown vf-declarative-gui[633]: Application ping
+Jun 24 13:19:44.901694 zera-mt310s2-unknown vf-declarative-gui[633]: Application ping
+Jun 24 13:19:44.903046 zera-mt310s2-unknown system-metrics-logger[365]: Memory used: 23.0%, Buffers: 1.3% Cache: 19.4%
+Jun 24 13:19:45.402569 zera-mt310s2-unknown system-metrics-logger[365]: CPU load 20.3% exceeds limit 20.0%
+Jun 24 13:19:46.404731 zera-mt310s2-unknown system-metrics-logger[365]: CPU load 18.1% is within 20.0% limit again - max was 20.3%
+Jun 24 13:19:47.404850 zera-mt310s2-unknown system-metrics-logger[365]: CPU load 20.2% exceeds limit 20.0%
+Jun 24 13:19:48.403531 zera-mt310s2-unknown system-metrics-logger[365]: CPU load 16.9% is within 20.0% limit again - max was 20.2%
+Jun 24 13:19:54.402459 zera-mt310s2-unknown system-metrics-logger[365]: CPU load 21.5% exceeds limit 20.0%
+Jun 24 13:19:54.901747 zera-mt310s2-unknown vf-declarative-gui[633]: Application ping
+Jun 24 13:19:54.902928 zera-mt310s2-unknown system-metrics-logger[365]: Memory used: 22.9%, Buffers: 1.3% Cache: 19.4%
+Jun 24 13:19:55.404545 zera-mt310s2-unknown system-metrics-logger[365]: CPU load 15.7% is within 20.0% limit again - max was 21.5%
+Jun 24 13:20:02.404139 zera-mt310s2-unknown system-metrics-logger[365]: CPU load 20.1% exceeds limit 20.0%
+Jun 24 13:20:03.403178 zera-mt310s2-unknown system-metrics-logger[365]: CPU load 16.4% is within 20.0% limit again - max was 20.1%
+Jun 24 13:20:04.901710 zera-mt310s2-unknown vf-declarative-gui[633]: Application ping
+Jun 24 13:20:04.902451 zera-mt310s2-unknown system-metrics-logger[365]: Memory used: 22.8%, Buffers: 1.3% Cache: 19.5%
+Jun 24 13:20:14.902601 zera-mt310s2-unknown vf-declarative-gui[633]: Application ping
+Jun 24 13:20:14.903530 zera-mt310s2-unknown system-metrics-logger[365]: Memory used: 22.8%, Buffers: 1.3% Cache: 19.4%
+Jun 24 13:20:22.403628 zera-mt310s2-unknown system-metrics-logger[365]: CPU load 20.1% exceeds limit 20.0%
+Jun 24 13:20:23.404609 zera-mt310s2-unknown system-metrics-logger[365]: CPU load 16.6% is within 20.0% limit again - max was 20.1%
+Jun 24 13:20:24.901867 zera-mt310s2-unknown system-metrics-logger[365]: Memory used: 23.0%, Buffers: 1.3% Cache: 19.4%
+Jun 24 13:20:24.942425 zera-mt310s2-unknown vf-declarative-gui[633]: Application ping
+Jun 24 13:20:34.902306 zera-mt310s2-unknown vf-declarative-gui[633]: Application ping
+Jun 24 13:20:44.903397 zera-mt310s2-unknown system-metrics-logger[365]: Memory used: 22.9%, Buffers: 1.3% Cache: 19.4%
+Jun 24 13:20:44.903865 zera-mt310s2-unknown vf-declarative-gui[633]: Application ping
+Jun 24 13:20:54.901658 zera-mt310s2-unknown vf-declarative-gui[633]: Application ping
+Jun 24 13:21:04.902348 zera-mt310s2-unknown vf-declarative-gui[633]: Application ping
+Jun 24 13:21:04.902998 zera-mt310s2-unknown system-metrics-logger[365]: Memory used: 22.7%, Buffers: 1.3% Cache: 19.4%
+Jun 24 13:21:06.403573 zera-mt310s2-unknown system-metrics-logger[365]: CPU load 20.5% exceeds limit 20.0%
+Jun 24 13:21:06.901637 zera-mt310s2-unknown zdsp1d[369]: DSP is running, Max load: 5.9%, Reset successful
+Jun 24 13:21:07.402882 zera-mt310s2-unknown system-metrics-logger[365]: CPU load 14.2% is within 20.0% limit again - max was 20.5%
+Jun 24 13:21:14.901951 zera-mt310s2-unknown vf-declarative-gui[633]: Application ping
+Jun 24 13:21:15.967275 zera-mt310s2-unknown systemd-networkd[373]: wlan0: Link DOWN
+Jun 24 13:21:15.972296 zera-mt310s2-unknown kernel: wlcore: down
+Jun 24 13:21:15.976305 zera-mt310s2-unknown NetworkManager[371]: <info>  [1719235275.9759] device (wlan0): set-hw-addr: set MAC address to CA:75:D2:02:21:E5 (scanning)
+Jun 24 13:21:16.500518 zera-mt310s2-unknown kernel: wlcore: PHY firmware version: Rev 8.2.0.0.243
+Jun 24 13:21:16.608507 zera-mt310s2-unknown kernel: wlcore: firmware booted (Rev 8.9.0.0.83)
+Jun 24 13:21:16.632950 zera-mt310s2-unknown systemd-networkd[373]: wlan0: Link UP
+Jun 24 13:21:16.662595 zera-mt310s2-unknown NetworkManager[371]: <info>  [1719235276.6624] device (wlan0): supplicant interface state: ready -> disabled
+Jun 24 13:21:16.663525 zera-mt310s2-unknown NetworkManager[371]: <info>  [1719235276.6633] device (wlan0): supplicant interface state: disabled -> inactive
+Jun 24 13:21:16.678843 zera-mt310s2-unknown wpa_supplicant[472]: wlan0: Reject scan trigger since one is already pending
+Jun 24 13:21:16.902313 zera-mt310s2-unknown zdsp1d[369]: DSP is running, Max load: 5.5%, Reset successful
+Jun 24 13:21:17.403959 zera-mt310s2-unknown system-metrics-logger[365]: CPU load 24.1% exceeds limit 20.0%
+Jun 24 13:21:18.403444 zera-mt310s2-unknown system-metrics-logger[365]: CPU load 19.0% is within 20.0% limit again - max was 24.1%
+Jun 24 13:21:24.901194 zera-mt310s2-unknown vf-declarative-gui[633]: Application ping
+Jun 24 13:21:24.902335 zera-mt310s2-unknown system-metrics-logger[365]: Memory used: 22.7%, Buffers: 1.3% Cache: 19.5%
+Jun 24 13:21:26.902571 zera-mt310s2-unknown zdsp1d[369]: DSP is running, Max load: 5.7%, Reset successful
+Jun 24 13:21:34.902230 zera-mt310s2-unknown system-metrics-logger[365]: Memory used: 22.7%, Buffers: 1.3% Cache: 19.4%
+Jun 24 13:21:34.933275 zera-mt310s2-unknown vf-declarative-gui[633]: Application ping
+Jun 24 13:21:44.901823 zera-mt310s2-unknown vf-declarative-gui[633]: Application ping
+Jun 24 13:21:44.903486 zera-mt310s2-unknown system-metrics-logger[365]: Memory used: 22.6%, Buffers: 1.3% Cache: 19.4%
+Jun 24 13:21:54.901181 zera-mt310s2-unknown vf-declarative-gui[633]: Application ping
+Jun 24 13:21:54.903906 zera-mt310s2-unknown system-metrics-logger[365]: Memory used: 22.7%, Buffers: 1.3% Cache: 19.4%
+Jun 24 13:22:04.901579 zera-mt310s2-unknown vf-declarative-gui[633]: Application ping
+Jun 24 13:22:04.903765 zera-mt310s2-unknown system-metrics-logger[365]: Memory used: 22.8%, Buffers: 1.3% Cache: 19.4%
+Jun 24 13:22:06.402521 zera-mt310s2-unknown system-metrics-logger[365]: CPU load 20.1% exceeds limit 20.0%
+Jun 24 13:22:07.403815 zera-mt310s2-unknown system-metrics-logger[365]: CPU load 15.8% is within 20.0% limit again - max was 20.1%
+Jun 24 13:22:14.902255 zera-mt310s2-unknown vf-declarative-gui[633]: Application ping
+Jun 24 13:22:14.903326 zera-mt310s2-unknown system-metrics-logger[365]: Memory used: 22.7%, Buffers: 1.3% Cache: 19.4%
+Jun 24 13:22:21.157941 zera-mt310s2-unknown vf-declarative-gui[633]: QDBusAbstractInterface: type IpV6DBusNameservers must be registered with Qt D-Bus before it can be used to read property org.freedesktop.NetworkManager.IP6Config.Nameservers
+Jun 24 13:22:21.248364 zera-mt310s2-unknown vf-declarative-gui[633]: QFont::setPointSizeF: Point size <= 0 (0.000000), must be greater than 0
+Jun 24 13:22:21.249977 zera-mt310s2-unknown vf-declarative-gui[633]: QFont::setPointSizeF: Point size <= 0 (0.000000), must be greater than 0
+Jun 24 13:22:21.251717 zera-mt310s2-unknown vf-declarative-gui[633]: QFont::setPointSizeF: Point size <= 0 (0.000000), must be greater than 0
+Jun 24 13:22:21.403740 zera-mt310s2-unknown system-metrics-logger[365]: CPU load 35.0% exceeds limit 20.0%
+Jun 24 13:22:24.901339 zera-mt310s2-unknown vf-declarative-gui[633]: Application ping
+Jun 24 13:22:24.903324 zera-mt310s2-unknown system-metrics-logger[365]: Memory used: 23.8%, Buffers: 1.3% Cache: 21.5%
+Jun 24 13:22:25.403558 zera-mt310s2-unknown system-metrics-logger[365]: CPU load 16.5% is within 20.0% limit again - max was 38.4%
+Jun 24 13:22:26.404200 zera-mt310s2-unknown system-metrics-logger[365]: CPU load 20.8% exceeds limit 20.0%
+Jun 24 13:22:27.402813 zera-mt310s2-unknown system-metrics-logger[365]: CPU load 19.1% is within 20.0% limit again - max was 20.8%
+Jun 24 13:22:34.901221 zera-mt310s2-unknown vf-declarative-gui[633]: Application ping
+Jun 24 13:22:34.903004 zera-mt310s2-unknown system-metrics-logger[365]: Memory used: 23.8%, Buffers: 1.3% Cache: 21.1%
+Jun 24 13:22:44.900900 zera-mt310s2-unknown vf-declarative-gui[633]: Application ping
+Jun 24 13:22:54.901067 zera-mt310s2-unknown vf-declarative-gui[633]: Application ping
+Jun 24 13:22:54.903297 zera-mt310s2-unknown system-metrics-logger[365]: Memory used: 23.9%, Buffers: 1.3% Cache: 21.1%
+Jun 24 13:22:56.902867 zera-mt310s2-unknown zdsp1d[369]: DSP is running, Max load: 5.5%, Reset successful
+Jun 24 13:23:04.901114 zera-mt310s2-unknown vf-declarative-gui[633]: Application ping
+Jun 24 13:23:04.902175 zera-mt310s2-unknown system-metrics-logger[365]: Memory used: 23.9%, Buffers: 1.3% Cache: 21.2%
+Jun 24 13:23:06.902466 zera-mt310s2-unknown zdsp1d[369]: DSP is running, Max load: 6.3%, Reset successful
+Jun 24 13:23:14.901289 zera-mt310s2-unknown vf-declarative-gui[633]: Application ping
+Jun 24 13:23:14.903164 zera-mt310s2-unknown system-metrics-logger[365]: Memory used: 24.0%, Buffers: 1.3% Cache: 21.2%
+Jun 24 13:23:16.902842 zera-mt310s2-unknown zdsp1d[369]: DSP is running, Max load: 5.5%, Reset successful
+Jun 24 13:23:24.401945 zera-mt310s2-unknown system-metrics-logger[365]: CPU load 20.9% exceeds limit 20.0%
+Jun 24 13:23:24.902102 zera-mt310s2-unknown vf-declarative-gui[633]: Application ping
+Jun 24 13:23:24.903262 zera-mt310s2-unknown system-metrics-logger[365]: Memory used: 23.9%, Buffers: 1.3% Cache: 21.2%
+Jun 24 13:23:25.404012 zera-mt310s2-unknown system-metrics-logger[365]: CPU load 17.4% is within 20.0% limit again - max was 20.9%
+Jun 24 13:23:26.901411 zera-mt310s2-unknown zdsp1d[369]: DSP is running, Max load: 5.7%, Reset successful
+Jun 24 13:23:27.403853 zera-mt310s2-unknown system-metrics-logger[365]: CPU load 21.0% exceeds limit 20.0%
+Jun 24 13:23:28.405033 zera-mt310s2-unknown system-metrics-logger[365]: CPU load 18.7% is within 20.0% limit again - max was 21.0%
+Jun 24 13:23:30.403259 zera-mt310s2-unknown system-metrics-logger[365]: CPU load 20.5% exceeds limit 20.0%
+Jun 24 13:23:31.405057 zera-mt310s2-unknown system-metrics-logger[365]: CPU load 16.0% is within 20.0% limit again - max was 20.5%
+Jun 24 13:23:34.902649 zera-mt310s2-unknown vf-declarative-gui[633]: Application ping
+Jun 24 13:23:43.404726 zera-mt310s2-unknown system-metrics-logger[365]: CPU load 31.7% exceeds limit 20.0%
+Jun 24 13:23:44.404375 zera-mt310s2-unknown system-metrics-logger[365]: CPU load 18.0% is within 20.0% limit again - max was 31.7%
+Jun 24 13:23:44.903429 zera-mt310s2-unknown system-metrics-logger[365]: Memory used: 23.9%, Buffers: 1.3% Cache: 21.6%
+Jun 24 13:23:44.905299 zera-mt310s2-unknown vf-declarative-gui[633]: Application ping
+Jun 24 13:23:54.901946 zera-mt310s2-unknown system-metrics-logger[365]: Memory used: 24.0%, Buffers: 1.3% Cache: 21.6%
+Jun 24 13:23:54.948194 zera-mt310s2-unknown vf-declarative-gui[633]: Application ping
+Jun 24 13:24:04.901886 zera-mt310s2-unknown vf-declarative-gui[633]: Application ping
+Jun 24 13:24:14.910936 zera-mt310s2-unknown vf-declarative-gui[633]: Application ping
+Jun 24 13:24:23.569434 zera-mt310s2-unknown systemd[1]: Created slice system-sshd.slice.
+Jun 24 13:24:23.579661 zera-mt310s2-unknown systemd[1]: Starting OpenSSH Key Generation...
+Jun 24 13:24:23.673850 zera-mt310s2-unknown sshd_check_keys[691]:   generating ssh RSA host key...
+Jun 24 13:24:24.402499 zera-mt310s2-unknown system-metrics-logger[365]: CPU load 37.9% exceeds limit 20.0%
+Jun 24 13:24:24.901678 zera-mt310s2-unknown vf-declarative-gui[633]: Application ping
+Jun 24 13:24:24.901685 zera-mt310s2-unknown system-metrics-logger[365]: Memory used: 24.0%, Buffers: 1.3% Cache: 21.7%
+Jun 24 13:24:32.653209 zera-mt310s2-unknown sshd_check_keys[691]:   generating ssh ECDSA host key...
+Jun 24 13:24:32.790907 zera-mt310s2-unknown sshd_check_keys[691]:   generating ssh ED25519 host key...
+Jun 24 13:24:32.921777 zera-mt310s2-unknown systemd[1]: Started OpenSSH Key Generation.
+Jun 24 13:24:32.943222 zera-mt310s2-unknown systemd[1]: Started OpenSSH Per-Connection Daemon (192.168.6.78:57716).
+Jun 24 13:24:34.404054 zera-mt310s2-unknown system-metrics-logger[365]: CPU load 17.1% is within 20.0% limit again - max was 39.5%
+Jun 24 13:24:34.903407 zera-mt310s2-unknown vf-declarative-gui[633]: Application ping
+Jun 24 13:24:34.903635 zera-mt310s2-unknown system-metrics-logger[365]: Memory used: 24.0%, Buffers: 1.3% Cache: 21.8%
+Jun 24 13:24:35.518606 zera-mt310s2-unknown sshd[715]: Accepted none for operator from 192.168.6.78 port 57716 ssh2
+Jun 24 13:24:35.526948 zera-mt310s2-unknown sshd[715]: pam_unix(sshd:session): session opened for user operator by (uid=0)
+Jun 24 13:24:35.551318 zera-mt310s2-unknown systemd-logind[382]: New session c2 of user operator.
+Jun 24 13:24:35.559782 zera-mt310s2-unknown systemd[1]: Started Session c2 of user operator.
+Jun 24 13:24:36.402766 zera-mt310s2-unknown system-metrics-logger[365]: CPU load 30.6% exceeds limit 20.0%
+Jun 24 13:24:37.404566 zera-mt310s2-unknown system-metrics-logger[365]: CPU load 14.6% is within 20.0% limit again - max was 30.6%
+Jun 24 13:24:38.546948 zera-mt310s2-unknown su[725]: Successful su for root by operator
+Jun 24 13:24:38.547742 zera-mt310s2-unknown su[725]: + /dev/pts/0 operator:root
+Jun 24 13:24:38.551944 zera-mt310s2-unknown su[725]: pam_unix(su:session): session opened for user root by operator(uid=10000)
+Jun 24 13:24:39.404042 zera-mt310s2-unknown system-metrics-logger[365]: CPU load 24.3% exceeds limit 20.0%
+Jun 24 13:24:40.404913 zera-mt310s2-unknown system-metrics-logger[365]: CPU load 17.8% is within 20.0% limit again - max was 24.3%
+Jun 24 13:24:44.901918 zera-mt310s2-unknown vf-declarative-gui[633]: Application ping
+Jun 24 13:24:44.903105 zera-mt310s2-unknown system-metrics-logger[365]: Memory used: 24.3%, Buffers: 1.3% Cache: 21.8%
+Jun 24 13:24:50.402949 zera-mt310s2-unknown system-metrics-logger[365]: CPU load 22.3% exceeds limit 20.0%
+Jun 24 13:24:51.403590 zera-mt310s2-unknown system-metrics-logger[365]: CPU load 18.1% is within 20.0% limit again - max was 22.3%
+Jun 24 13:24:54.901387 zera-mt310s2-unknown vf-declarative-gui[633]: Application ping
+Jun 24 13:24:54.902452 zera-mt310s2-unknown system-metrics-logger[365]: Memory used: 24.5%, Buffers: 1.3% Cache: 21.8%
+Jun 24 13:24:55.403573 zera-mt310s2-unknown system-metrics-logger[365]: CPU load 20.3% exceeds limit 20.0%
+Jun 24 13:24:56.403695 zera-mt310s2-unknown system-metrics-logger[365]: CPU load 17.5% is within 20.0% limit again - max was 20.3%
+Jun 24 13:24:57.403041 zera-mt310s2-unknown system-metrics-logger[365]: CPU load 20.8% exceeds limit 20.0%
+Jun 24 13:24:58.404790 zera-mt310s2-unknown system-metrics-logger[365]: CPU load 15.8% is within 20.0% limit again - max was 20.8%
+Jun 24 13:25:04.902628 zera-mt310s2-unknown system-metrics-logger[365]: Memory used: 24.4%, Buffers: 1.3% Cache: 21.8%
+Jun 24 13:25:04.913009 zera-mt310s2-unknown vf-declarative-gui[633]: Application ping
+Jun 24 13:25:05.961387 zera-mt310s2-unknown systemd[1]: Created slice system-systemd\x2dcoredump.slice.
+Jun 24 13:25:05.975559 zera-mt310s2-unknown systemd[1]: Started Process Core Dump (PID 732/UID 0).
+Jun 24 13:25:06.403728 zera-mt310s2-unknown system-metrics-logger[365]: CPU load 28.3% exceeds limit 20.0%
+Jun 24 13:25:07.356923 zera-mt310s2-unknown vf-declarative-gui[633]: <Vein.Network.Tcp>: Connection error on network with id: QUuid("{0019aca2-a161-4c3e-904d-ca86aa2a6fa8}") error: QAbstractSocket::RemoteHostClosedError sent NetworkStatusEvent: 0x21e0590
+Jun 24 13:25:07.357149 zera-mt310s2-unknown vf-declarative-gui[633]: Network failed retrying network connection ...
+Jun 24 13:25:07.407689 zera-mt310s2-unknown systemd[1]: modulemanager.service: Main process exited, code=dumped, status=11/SEGV
+Jun 24 13:25:07.409967 zera-mt310s2-unknown systemd[1]: modulemanager.service: Failed with result 'core-dump'.
+Jun 24 13:25:10.402336 zera-mt310s2-unknown vf-declarative-gui[633]: Repeat connecting to modman...
+Jun 24 13:25:10.419184 zera-mt310s2-unknown systemd[1]: Started Zera Module Manager.
+Jun 24 13:25:10.713515 zera-mt310s2-unknown zera-modulemanager[738]: ZERA Device from kernel cmdline:  "mt310s2"
+Jun 24 13:25:10.718469 zera-mt310s2-unknown zera-modulemanager[738]: Moduleamanger configuration file: "/etc/zera/modules/modulemanager_config.json"
+Jun 24 13:25:10.718618 zera-mt310s2-unknown zera-modulemanager[738]: Loading session data for "mt310s2"
+Jun 24 13:25:10.781741 zera-mt310s2-unknown zera-modulemanager[738]: Created plaintext logger: "_LoggingSystem" with id: 2
+Jun 24 13:25:10.782957 zera-mt310s2-unknown zera-modulemanager[738]: Starting vf-files...
+Jun 24 13:25:10.791028 zera-mt310s2-unknown zera-modulemanager[738]: Start mount poll thread.
+Jun 24 13:25:10.980560 zera-mt310s2-unknown zera-modulemanager[738]: Modules analyse took 200ms
+Jun 24 13:25:10.982103 zera-mt310s2-unknown zera-modulemanager[738]: Loading session: "/etc/zera/modules/sessions/mt310s2-meas-session.json"
+Jun 24 13:25:10.983430 zera-mt310s2-unknown zera-modulemanager[738]: Session contains 28 modules
+Jun 24 13:25:10.984548 zera-mt310s2-unknown zera-modulemanager[738]: Creating module: statusmodule / EntityId: 1150 / Config: mt310s2-statusmodule.xml
+Jun 24 13:25:11.156903 zera-mt310s2-unknown mt310s2d[464]: [vein-tcp] Client connected
+Jun 24 13:25:11.176936 zera-mt310s2-unknown zdsp1d[369]: [vein-tcp] Client connected
+Jun 24 13:25:11.210035 zera-mt310s2-unknown zera-modulemanager[738]: Changed device serial from: "SERIAL NUMBER NOT FOUND!" to: QVariant(QString, "050059467") QVariant(Invalid)
+Jun 24 13:25:11.210571 zera-mt310s2-unknown zera-modulemanager[738]: Starting CustomerDataSystem
+Jun 24 13:25:11.213308 zera-mt310s2-unknown zera-modulemanager[738]: Starting DataLoggerSystem...
+Jun 24 13:25:11.214165 zera-mt310s2-unknown zera-modulemanager[738]: Starting vf-export...
+Jun 24 13:25:11.671032 zera-mt310s2-unknown zera-modulemanager[738]: Creating module: modemodule / EntityId: 1000 / Config: mt310s2-modemoduleAC.xml
+Jun 24 13:25:11.739650 zera-mt310s2-unknown zera-modulemanager[738]: Creating module: rangemodule / EntityId: 1020 / Config: mt310s2-rangemodule.xml
+Jun 24 13:25:12.713750 zera-mt310s2-unknown zera-modulemanager[738]: Reset overload channel 0
+Jun 24 13:25:12.714127 zera-mt310s2-unknown zera-modulemanager[738]: Reset overload channel 1
+Jun 24 13:25:12.714398 zera-mt310s2-unknown zera-modulemanager[738]: Reset overload channel 2
+Jun 24 13:25:12.714716 zera-mt310s2-unknown zera-modulemanager[738]: Reset overload channel 3
+Jun 24 13:25:12.714979 zera-mt310s2-unknown zera-modulemanager[738]: Reset overload channel 4
+Jun 24 13:25:12.715232 zera-mt310s2-unknown zera-modulemanager[738]: Reset overload channel 5
+Jun 24 13:25:12.715476 zera-mt310s2-unknown zera-modulemanager[738]: Reset overload channel 6
+Jun 24 13:25:12.715816 zera-mt310s2-unknown zera-modulemanager[738]: Reset overload channel 7
+Jun 24 13:25:12.745256 zera-mt310s2-unknown zdsp1d[369]: "LoadCmdList(15)"
+Jun 24 13:25:12.754296 zera-mt310s2-unknown zera-modulemanager[738]: Creating module: samplemodule / EntityId: 1030 / Config: mt310s2-samplemodule.xml
+Jun 24 13:25:13.761452 zera-mt310s2-unknown zdsp1d[369]: "LoadCmdList(16)"
+Jun 24 13:25:13.763663 zera-mt310s2-unknown zera-modulemanager[738]: Creating module: rmsmodule / EntityId: 1040 / Config: mt310s2-rmsmodule.xml
+Jun 24 13:25:13.873502 zera-mt310s2-unknown zdsp1d[369]: "LoadCmdList(17)"
+Jun 24 13:25:13.877952 zera-mt310s2-unknown zera-modulemanager[738]: Creating module: dftmodule / EntityId: 1050 / Config: mt310s2-dftmodule.xml
+Jun 24 13:25:13.987894 zera-mt310s2-unknown zdsp1d[369]: "LoadCmdList(18)"
+Jun 24 13:25:13.991701 zera-mt310s2-unknown zera-modulemanager[738]: Creating module: fftmodule / EntityId: 1060 / Config: mt310s2-fftmodule.xml
+Jun 24 13:25:14.101927 zera-mt310s2-unknown zdsp1d[369]: "LoadCmdList(19)"
+Jun 24 13:25:14.106014 zera-mt310s2-unknown zera-modulemanager[738]: Creating module: power1module / EntityId: 1070 / Config: mt310s2-power1module.xml
+Jun 24 13:25:14.294806 zera-mt310s2-unknown zdsp1d[369]: "LoadCmdList(20)"
+Jun 24 13:25:14.301022 zera-mt310s2-unknown zera-modulemanager[738]: Creating module: power1module / EntityId: 1071 / Config: mt310s2-power1module2.xml
+Jun 24 13:25:14.516348 zera-mt310s2-unknown zdsp1d[369]: "LoadCmdList(21)"
+Jun 24 13:25:14.521885 zera-mt310s2-unknown zera-modulemanager[738]: Creating module: power1module / EntityId: 1072 / Config: mt310s2-power1module3.xml
+Jun 24 13:25:14.731177 zera-mt310s2-unknown zdsp1d[369]: "LoadCmdList(22)"
+Jun 24 13:25:14.735825 zera-mt310s2-unknown zera-modulemanager[738]: Creating module: power1module / EntityId: 1073 / Config: mt310s2-power1module4.xml
+Jun 24 13:25:14.900913 zera-mt310s2-unknown vf-declarative-gui[633]: Application ping
+Jun 24 13:25:14.901283 zera-mt310s2-unknown system-metrics-logger[365]: Memory used: 27.7%, Buffers: 1.3% Cache: 24.3%
+Jun 24 13:25:14.977811 zera-mt310s2-unknown zdsp1d[369]: "LoadCmdList(23)"
+Jun 24 13:25:14.983149 zera-mt310s2-unknown zera-modulemanager[738]: Creating module: power1module / EntityId: 1074 / Config: power1moduleAllPhaseLambdaApparent.xml
+Jun 24 13:25:15.230593 zera-mt310s2-unknown zdsp1d[369]: "LoadCmdList(24)"
+Jun 24 13:25:15.235733 zera-mt310s2-unknown zera-modulemanager[738]: Creating module: power1module / EntityId: 1076 / Config: power1moduleAllPhaseLambdaReactive.xml
+Jun 24 13:25:15.455461 zera-mt310s2-unknown zdsp1d[369]: "LoadCmdList(25)"
+Jun 24 13:25:15.459951 zera-mt310s2-unknown zera-modulemanager[738]: Creating module: power3module / EntityId: 1100 / Config: mt310s2-power3module.xml
+Jun 24 13:25:15.485104 zera-mt310s2-unknown zera-modulemanager[738]: Creating module: thdnmodule / EntityId: 1110 / Config: mt310s2-thdnmodule.xml
+Jun 24 13:25:15.661414 zera-mt310s2-unknown zdsp1d[369]: "LoadCmdList(26)"
+Jun 24 13:25:15.664632 zera-mt310s2-unknown zera-modulemanager[738]: Creating module: thdnmodule / EntityId: 1111 / Config: mt310s2-thdnmodule2.xml
+Jun 24 13:25:15.842956 zera-mt310s2-unknown zdsp1d[369]: "LoadCmdList(27)"
+Jun 24 13:25:15.845736 zera-mt310s2-unknown zera-modulemanager[738]: Creating module: oscimodule / EntityId: 1120 / Config: mt310s2-oscimodule.xml
+Jun 24 13:25:16.026558 zera-mt310s2-unknown zdsp1d[369]: "LoadCmdList(28)"
+Jun 24 13:25:16.029716 zera-mt310s2-unknown zera-modulemanager[738]: Creating module: sec1module / EntityId: 1130 / Config: mt310s2-sec1module.xml
+Jun 24 13:25:16.235961 zera-mt310s2-unknown sec1000d[362]: [vein-tcp] Client connected
+Jun 24 13:25:16.279185 zera-mt310s2-unknown zera-modulemanager[738]: Creating module: lambdamodule / EntityId: 1140 / Config: lambdamodule-with-own-apparentpowermodule.xml
+Jun 24 13:25:16.318864 zera-mt310s2-unknown zera-modulemanager[738]: Creating module: burden1module / EntityId: 1160 / Config: mt310s2-burden1module.xml
+Jun 24 13:25:16.353017 zera-mt310s2-unknown zera-modulemanager[738]: Creating module: burden1module / EntityId: 1161 / Config: mt310s2-burden1module2.xml
+Jun 24 13:25:16.385229 zera-mt310s2-unknown zera-modulemanager[738]: Creating module: transformer1module / EntityId: 1170 / Config: mt310s2-transformer1module.xml
+Jun 24 13:25:16.420597 zera-mt310s2-unknown zera-modulemanager[738]: Creating module: adjustmentmodule / EntityId: 1190 / Config: mt310s2-adjustmentmodule.xml
+Jun 24 13:25:16.504617 zera-mt310s2-unknown zera-modulemanager[738]: Creating module: sem1module / EntityId: 1200 / Config: mt310s2-sem1module.xml
+Jun 24 13:25:16.723135 zera-mt310s2-unknown zera-modulemanager[738]: Creating module: spm1module / EntityId: 1210 / Config: mt310s2-spm1module.xml
+Jun 24 13:25:16.901603 zera-mt310s2-unknown zdsp1d[369]: DSP is running, Max load: 5.5%, Reset successful
+Jun 24 13:25:16.932205 zera-mt310s2-unknown zera-modulemanager[738]: Creating module: sourcemodule / EntityId: 1300 / Config: modules
+Jun 24 13:25:16.938429 zera-mt310s2-unknown zera-modulemanager[738]: Creating module: blemodule / EntityId: 1400 / Config: blemodule.xml
+Jun 24 13:25:16.972070 zera-mt310s2-unknown zera-modulemanager[738]: qt.bluetooth.bluez: Missing CAP_NET_ADMIN permission. Cannot determine whether a found address is of random or public type.
+Jun 24 13:25:16.996798 zera-mt310s2-unknown zera-modulemanager[738]: Creating module: scpimodule / EntityId: 9999 / Config: mt310s2-scpimodule.xml
+Jun 24 13:25:17.331480 zera-mt310s2-unknown zera-modulemanager[738]: All modules started within 6551ms
+Jun 24 13:25:17.334603 zera-mt310s2-unknown zera-modulemanager[738]: ENTITIES (1060, 1020, 1130, 1200, 200, 1161, 1160, 9999, 1050, 1120, 1190, 1300, 4, 1040, 1000, 3, 1150, 1076, 2, 1074, 1111, 1073, 0, 1110, 1072, 1071, 1070, 1030, 1400, 1140, 1210, 1100, 1170) (1060, 1020, 1130, 1200, 200, 1161, 1160, 9999, 1050, 1120, 1190, 1300, 4, 1040, 1000, 3, 1150, 1076, 2, 1074, 1111, 1073, 0, 1110, 1072, 1071, 1070, 1030, 1400, 1140, 1210, 1100, 1170)
+Jun 24 13:25:17.337064 zera-mt310s2-unknown zera-modulemanager[738]: [vein-tcp] Inherited socket descriptor from systemd, listening on port: 12000
+Jun 24 13:25:17.344326 zera-mt310s2-unknown zera-modulemanager[738]: [vein-tcp] Client connected
+Jun 24 13:25:17.351673 zera-mt310s2-unknown vf-declarative-gui[633]: Subscribe system entity...
+Jun 24 13:25:18.387681 zera-mt310s2-unknown zera-modulemanager[738]: Core event systems: 10
+Jun 24 13:25:18.387830 zera-mt310s2-unknown zera-modulemanager[738]: Module event systems: 30
+Jun 24 13:25:24.901590 zera-mt310s2-unknown vf-declarative-gui[633]: Application ping
+Jun 24 13:25:24.905289 zera-mt310s2-unknown system-metrics-logger[365]: Memory used: 30.6%, Buffers: 1.3% Cache: 24.4%
+Jun 24 13:25:34.901575 zera-mt310s2-unknown vf-declarative-gui[633]: Application ping
+Jun 24 13:25:34.902003 zera-mt310s2-unknown system-metrics-logger[365]: Memory used: 33.3%, Buffers: 1.3% Cache: 24.4%
+Jun 24 13:25:36.901308 zera-mt310s2-unknown zdsp1d[369]: DSP is running, Max load: 5.7%, Reset successful
+Jun 24 13:25:44.900997 zera-mt310s2-unknown vf-declarative-gui[633]: Application ping
+Jun 24 13:25:44.904812 zera-mt310s2-unknown system-metrics-logger[365]: Memory used: 33.7%, Buffers: 1.3% Cache: 24.4%
+Jun 24 13:25:54.901860 zera-mt310s2-unknown vf-declarative-gui[633]: Application ping
+Jun 24 13:25:54.902761 zera-mt310s2-unknown system-metrics-logger[365]: Memory used: 33.7%, Buffers: 1.3% Cache: 24.5%
+Jun 24 13:25:57.065506 zera-mt310s2-unknown systemd-coredump[733]: Process 381 (zera-modulemana) of user 15000 dumped core.
+Jun 24 13:25:57.115060 zera-mt310s2-unknown coredump-collector[355]: Successfully moved core file from /var/lib/systemd/coredump/core.zera-modulemana.15000.c640c8c179a54f2d9c81034bb7138a97.381.1719235505000000.xz to /var/lib/zenux-coredumps
+Jun 24 13:25:57.205116 zera-mt310s2-unknown systemd[1]: systemd-coredump@0-732-0.service: Succeeded.
+Jun 24 13:25:58.403244 zera-mt310s2-unknown system-metrics-logger[365]: CPU load 13.0% is within 20.0% limit again - max was 58.3%
+Jun 24 13:26:04.901586 zera-mt310s2-unknown vf-declarative-gui[633]: Application ping
+Jun 24 13:26:04.901903 zera-mt310s2-unknown system-metrics-logger[365]: Memory used: 24.3%, Buffers: 1.3% Cache: 20.7%
+Jun 24 13:26:14.901624 zera-mt310s2-unknown vf-declarative-gui[633]: Application ping
+Jun 24 13:26:14.903312 zera-mt310s2-unknown system-metrics-logger[365]: Memory used: 24.2%, Buffers: 1.3% Cache: 20.6%
+Jun 24 13:26:18.730498 zera-mt310s2-unknown kernel: usb 2-1.2: new high-speed USB device number 6 using ci_hdrc
+Jun 24 13:26:18.895050 zera-mt310s2-unknown kernel: usb 2-1.2: New USB device found, idVendor=058f, idProduct=6387, bcdDevice= 1.12
+Jun 24 13:26:18.896626 zera-mt310s2-unknown kernel: usb 2-1.2: New USB device strings: Mfr=1, Product=2, SerialNumber=3
+Jun 24 13:26:18.897483 zera-mt310s2-unknown kernel: usb 2-1.2: Product: Mass Storage
+Jun 24 13:26:18.903893 zera-mt310s2-unknown kernel: usb 2-1.2: Manufacturer: Generic
+Jun 24 13:26:18.904858 zera-mt310s2-unknown kernel: usb 2-1.2: SerialNumber: 64603454
+Jun 24 13:26:18.932166 zera-mt310s2-unknown kernel: usb-storage 2-1.2:1.0: USB Mass Storage device detected
+Jun 24 13:26:18.935390 zera-mt310s2-unknown kernel: scsi host0: usb-storage 2-1.2:1.0
+Jun 24 13:26:19.004050 zera-mt310s2-unknown mtp-probe[767]: checking bus 2, device 6: "/sys/devices/soc0/soc/2100000.aips-bus/2184200.usb/ci_hdrc.1/usb2/2-1/2-1.2"
+Jun 24 13:26:19.011751 zera-mt310s2-unknown mtp-probe[767]: bus: 2, device: 6 was not an MTP device
+Jun 24 13:26:19.139261 zera-mt310s2-unknown mtp-probe[770]: checking bus 2, device 6: "/sys/devices/soc0/soc/2100000.aips-bus/2184200.usb/ci_hdrc.1/usb2/2-1/2-1.2"
+Jun 24 13:26:19.146909 zera-mt310s2-unknown mtp-probe[770]: bus: 2, device: 6 was not an MTP device
+Jun 24 13:26:19.404245 zera-mt310s2-unknown system-metrics-logger[365]: CPU load 21.3% exceeds limit 20.0%
+Jun 24 13:26:20.036944 zera-mt310s2-unknown kernel: scsi 0:0:0:0: Direct-Access     Generic  Flash Disk       8.07 PQ: 0 ANSI: 4
+Jun 24 13:26:20.070686 zera-mt310s2-unknown kernel: sd 0:0:0:0: [sda] 7987200 512-byte logical blocks: (4.09 GB/3.81 GiB)
+Jun 24 13:26:20.100504 zera-mt310s2-unknown kernel: sd 0:0:0:0: [sda] Write Protect is off
+Jun 24 13:26:20.105318 zera-mt310s2-unknown kernel: sd 0:0:0:0: [sda] Mode Sense: 23 00 00 00
+Jun 24 13:26:20.109157 zera-mt310s2-unknown kernel: sd 0:0:0:0: [sda] Write cache: disabled, read cache: enabled, doesn't support DPO or FUA
+Jun 24 13:26:20.220696 zera-mt310s2-unknown kernel:  sda: sda1
+Jun 24 13:26:20.250515 zera-mt310s2-unknown kernel: sd 0:0:0:0: [sda] Attached SCSI removable disk
+Jun 24 13:26:20.573856 zera-mt310s2-unknown systemd[1]: /lib/systemd/system/zera-usb-automount@.service:3: Failed to add dependency on multi-user-target, ignoring: Invalid argument
+Jun 24 13:26:20.660180 zera-mt310s2-unknown systemd[1]: Created slice system-zera\x2dusb\x2dautomount.slice.
+Jun 24 13:26:20.673433 zera-mt310s2-unknown systemd[1]: Starting Mount USB Drive on sda1...
+Jun 24 13:26:20.980569 zera-mt310s2-unknown kernel: FAT-fs (sda1): Volume was not properly unmounted. Some data may be corrupt. Please run fsck.
+Jun 24 13:26:20.991613 zera-mt310s2-unknown zera-modulemanager[738]: Mounts changed: Read /etc/mtab...
+Jun 24 13:26:21.000814 zera-mt310s2-unknown vf-declarative-gui[633]: Mounts changed: Read /etc/mtab...
+Jun 24 13:26:21.038977 zera-mt310s2-unknown zera-usb-automount.sh[772]: Mounted /dev/sda1 at /media/sda1
+Jun 24 13:26:21.029076 zera-mt310s2-unknown systemd[1]: Started Mount USB Drive on sda1.
+Jun 24 13:26:22.221917 zera-mt310s2-unknown systemd[1]: Started Auto Store Journal and dumps.
+Jun 24 13:26:22.333391 zera-mt310s2-unknown auto-journal-logger[781]: Inherited socket descriptor from systemd, listening on port: 5000
+Jun 24 13:26:22.333572 zera-mt310s2-unknown auto-journal-logger[781]: Opened logger server on port 5000
+Jun 24 13:26:22.334146 zera-mt310s2-unknown auto-journal-logger[781]: Client connected to PeriodicLogControl parser
+Jun 24 13:26:22.334687 zera-mt310s2-unknown auto-journal-logger[781]: PeriodicLogControl/5000: SaveLogAndDumps,/media/sda1,/tmp/zenux-version.json
