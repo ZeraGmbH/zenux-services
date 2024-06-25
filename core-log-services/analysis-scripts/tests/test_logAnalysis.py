@@ -21,3 +21,6 @@ class Test_logAnalysis(unittest.TestCase):
         capturedOutput = process_limit_strings(get_testFile(), [(" Memory used: ", 30)])
         expected_result = "Jun 24 13:25:24.905289 zera-mt310s2-unknown system-metrics-logger[365]: Memory used: 30.6%, Buffers: 1.3% Cache: 24.4%"
         self.assertEqual(capturedOutput[3], expected_result)
+
+if __name__ == "__main__":
+    unittest.main()
