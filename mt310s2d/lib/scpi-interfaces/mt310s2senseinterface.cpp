@@ -74,6 +74,8 @@ Mt310s2SenseInterface::Mt310s2SenseInterface(cSCPI *scpiInterface,
 
 void Mt310s2SenseInterface::setChannelAndRanges(cSenseSettings* senseSettings)
 {
+    // TODO:
+    // * move channel/range generation to a common place
     QList<SenseSystem::cChannelSettings*> channelSettings;
     channelSettings = senseSettings->getChannelSettings();
 
@@ -104,10 +106,6 @@ void Mt310s2SenseInterface::setChannelAndRanges(cSenseSettings* senseSettings)
     for (i = 0; i < 4; i++) {
         rngList.clear();
 
-        // TODO:
-        // * move channel/range generation to a common place
-        // * Do checks isInvalidAdjDataOrChannelRangeAvail only on ranges introduced later
-
         rngList.append(new Mt310s2SenseRange(m_pSCPIInterface, "250V",  true, 250.0, 4415057.0, 5518821.0, 0, rangeFlagsDevice(), createJustScpiInterfaceWithAtmelPermission()));
         rngList.append(new Mt310s2SenseRange(m_pSCPIInterface, "8V",    true,   8.0, 3355443.0, 4194304.0, 1, rangeFlagsDevice(), createJustScpiInterfaceWithAtmelPermission()));
         rngList.append(new Mt310s2SenseRange(m_pSCPIInterface, "100mV", true,   0.1, 4026532.0, 5033165.0, 2, rangeFlagsDevice(), createJustScpiInterfaceWithAtmelPermission()));
@@ -117,6 +115,13 @@ void Mt310s2SenseInterface::setChannelAndRanges(cSenseSettings* senseSettings)
 
     for (i = 4; i < 7; i++) {
         rngList.clear();
+
+        // 16A - new since Vx.xx
+        // This blocks for:
+        // * New Atmel Relais-Controller (accelerate fans in 16A)
+        // * Adjustment sequence needs to adjust new range
+        if(isInvalidAdjDataOrChannelRangeAvail(m_channelList.at(i)->getName(), "16A"))
+            rngList.append(new Mt310s2SenseRange(m_pSCPIInterface, "16A",   true,  16.0, 3197613.0, 3997016.0,  0, rangeFlagsDevice(), createJustScpiInterfaceWithAtmelPermission()));
 
         rngList.append(new Mt310s2SenseRange(m_pSCPIInterface, "10A",   true,  10.0, 3197613.0, 3997016.0,  0, rangeFlagsDevice(), createJustScpiInterfaceWithAtmelPermission()));
         rngList.append(new Mt310s2SenseRange(m_pSCPIInterface, "5A",    true,   5.0, 3197613.0, 3997016.0,  1, rangeFlagsDevice(), createJustScpiInterfaceWithAtmelPermission()));
