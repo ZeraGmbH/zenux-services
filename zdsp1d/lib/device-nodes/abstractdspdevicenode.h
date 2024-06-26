@@ -21,6 +21,16 @@ public:
     virtual bool write(ulong adr, const char* buf, int len) = 0;
     virtual int read(char* buf, int len) = 0;
     virtual void enableFasync() = 0;
+
+    static int getReadTransactions();
+    static int getWriteTransactions();
+    static void resetAllTransactions();
+protected:
+    void incReadTransactionCount();
+    void incWriteTransactionCount();
+private:
+    static int m_readTransactions;
+    static int m_writeTransactions;
 };
 
 typedef std::shared_ptr<AbstractDspDeviceNode> AbstractDspDeviceNodePtr;

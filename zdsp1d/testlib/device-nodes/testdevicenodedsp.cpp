@@ -65,6 +65,7 @@ int TestDeviceNodeDsp::lseek(ulong adr)
 
 bool TestDeviceNodeDsp::write(ulong adr, const char *buf, int len)
 {
+    incWriteTransactionCount();
     QByteArray bytes(buf, len);
     emit sigIoOperation("write", int(adr), bytes, len);
     return true;
@@ -73,6 +74,7 @@ bool TestDeviceNodeDsp::write(ulong adr, const char *buf, int len)
 int TestDeviceNodeDsp::read(char *buf, int len)
 {
     Q_UNUSED(buf)
+    incReadTransactionCount();
     emit sigIoOperation("read", "buf", len);
     return 0;
 }
