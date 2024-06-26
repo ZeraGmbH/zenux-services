@@ -73,6 +73,8 @@ private slots:
     void outputLogs();
 private:
     void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
+    void outputAndResetLoadLogs();
+    void outputAndResetTransactionsLogs();
 
     AbstractFactoryDeviceNodeDspPtr m_deviceNodeFactory;
     SettingsContainerPtr m_settings;
@@ -100,6 +102,7 @@ private:
 
     ulong UserWorkSpaceGlobalSegmentAdr;
     QString m_lastLoadLog;
+    QString m_lastTransactionLog;
 
     bool resetDsp();
     bool bootDsp();

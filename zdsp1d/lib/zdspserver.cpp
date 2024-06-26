@@ -268,7 +268,7 @@ void ZDspServer::onResourceReady()
     m_periodicLogTimer->start();
 }
 
-void ZDspServer::outputLogs()
+void ZDspServer::outputAndResetLoadLogs()
 {
     // we need a client to do the job
     cZDSP1Client dummyClient(0, 0, m_deviceNodeFactory);
@@ -300,6 +300,24 @@ void ZDspServer::outputLogs()
         else
             qWarning("%s", qPrintable(message));
     }
+}
+
+void ZDspServer::outputAndResetTransactionsLogs()
+{
+    int readTransactions = AbstractDspDeviceNode::getReadTransactions();
+    int writeTransactions = AbstractDspDeviceNode::getWriteTransactions();
+    AbstractDspDeviceNode::resetAllTransactions();
+    QString message = QString("DSP transactions: Read: %1 / Write %2").arg(readTransactions).arg(writeTransactions);
+    if(m_lastTransactionLog != message) {
+        m_lastTransactionLog = message;
+        qInfo("%s", qPrintable(message));
+    }
+}
+
+void ZDspServer::outputLogs()
+{
+    outputAndResetLoadLogs();
+    outputAndResetTransactionsLogs();
 }
 
 void ZDspServer::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
