@@ -53,6 +53,7 @@ int DeviceNodeDsp::lseek(ulong adr)
 
 bool DeviceNodeDsp::write(ulong adr, const char *buf, int len)
 {
+    incWriteTransactionCount();
     if(lseek(adr) >= 0 && _write(buf, len) >= 0)
         return true;
     return false;
@@ -68,6 +69,7 @@ int DeviceNodeDsp::_write(const char *buf, int len)
 
 int DeviceNodeDsp::read(char *buf, int len)
 {
+    incReadTransactionCount();
     int r = ::read(m_devFileDescriptor, buf, len);
     if (r < 0)
         qCritical("Error reading dsp device: %s", qPrintable(m_devNodeFileName));

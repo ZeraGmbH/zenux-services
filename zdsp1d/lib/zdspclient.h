@@ -62,5 +62,8 @@ private:
     QList<cDspCmd>  m_DspIntCmdList; // liste mit dsp kommandos (interrupt)
     QVector<TDspVar> m_dspVarArray; // array von TDspVar
     TMemSection m_memorySection; // eine memory section für den DspVarResolver für die variablen des clients
+
+    static int m_readTransactionsAllClients;
+    static int m_writeTransactionsAllClients;
 };
 #endif // ZDSPCLIENT_H

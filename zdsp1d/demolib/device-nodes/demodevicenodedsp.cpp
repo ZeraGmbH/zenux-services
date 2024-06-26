@@ -37,6 +37,7 @@ bool DemoDeviceNodeDsp::write(ulong adr, const char *buf, int len)
     Q_UNUSED(adr)
     Q_UNUSED(buf)
     Q_UNUSED(len)
+    incWriteTransactionCount();
     return true;
 }
 
@@ -44,6 +45,7 @@ int DemoDeviceNodeDsp::read(char *buf, int len)
 {
     Q_UNUSED(buf)
     Q_UNUSED(len)
+    incReadTransactionCount();
     return 0;
 }
 
