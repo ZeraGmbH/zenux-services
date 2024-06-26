@@ -274,7 +274,7 @@ void ZDspServer::outputAndResetLoadLogs()
     cZDSP1Client dummyClient(0, 0, m_deviceNodeFactory);
 
     QString queryMaxLoad = "BUSYMAX,1;";
-    //example response BUSYMAX:5.7539682;
+    // example response BUSYMAX:5.7539682;
     QStringList responseSplit = dummyClient.DspVarListRead(queryMaxLoad).split(":");
     QString maxLoad = responseSplit[1];
     maxLoad.chop(1); //remove last char ';'
@@ -287,11 +287,8 @@ void ZDspServer::outputAndResetLoadLogs()
     QString maxLoadReset = resetOk ? "Reset successful" : "Reset failed !";
 
     QString dspStatus = mGetDspStatus();
-
     QString message = QString("DSP is %1, Max load: %2%, %3").
-                      arg(dspStatus).
-                      arg(maxLoad).
-                      arg(maxLoadReset);
+                      arg(dspStatus, maxLoad, maxLoadReset);
 
     if(m_lastLoadLog != message) {
         m_lastLoadLog = message;
