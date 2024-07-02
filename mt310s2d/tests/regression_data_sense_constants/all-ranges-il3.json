@@ -45,6 +45,15 @@
             "rejection": "3355443",
             "urval": "0.01"
         },
+        "16A": {
+            "adcrejection": "8388607",
+            "adjuststatusflags": "265",
+            "alias": "16A",
+            "avail": "1",
+            "ovrejection": "3997016",
+            "rejection": "3197613",
+            "urval": "16"
+        },
         "1V": {
             "adcrejection": "8388607",
             "adjuststatusflags": "264",

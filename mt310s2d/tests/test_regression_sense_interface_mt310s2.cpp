@@ -71,7 +71,7 @@ void test_regression_sense_interface_mt310s2::checkRangesUL1()
 
 // Is that a good idea to put it on modules's to hide internal current (voltage) ranges???
 QStringList test_regression_sense_interface_mt310s2::m_rangesExpectedI = QStringList()
-                                                                         << "10A" << "5A" << "2.5A" << "1.0A"
+                                                                         << "16A" << "10A" << "5A" << "2.5A" << "1.0A"
                                                                          << "500mA" << "250mA" << "100mA" << "50mA" << "25mA";
 QStringList test_regression_sense_interface_mt310s2::m_rangesExpectedI_Internal = QStringList()
                                                                          << "8V" << "5V" << "2V" << "1V"
