@@ -24,7 +24,7 @@ class Test_logAnalysis(unittest.TestCase):
         self.assertEqual(check_strings(get_testFile(),["Failed with result 'core-dump'"])[0], 1205)
 
     def test_process_key_strings(self):
-        capturedOutput = process_key_strings(get_testFile())                                   
+        capturedOutput = process_key_strings(get_testFile(), ["Failed with result 'core-dump'", "DSP stuck"])
         expected_result = "Jun 24 13:25:07.409967 zera-mt310s2-unknown systemd[1]: modulemanager.service: Failed with result 'core-dump'."
         self.assertEqual(capturedOutput[3], expected_result)
          
