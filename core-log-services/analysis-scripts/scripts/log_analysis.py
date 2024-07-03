@@ -3,7 +3,7 @@
 from optparse import OptionParser
 import glob, os
 
-key_strings_default = ["Failed with result 'core-dump'", "DSP stuck"]
+key_strings_default = ["Failed with result 'core-dump'", "DSP stuck", "SEGV"]
 limit_strings_default = [(" Memory used: ", 80)]
 
 class bcolors:
