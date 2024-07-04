@@ -11,15 +11,11 @@ public:
     quint32 dataAcquisition(cDspMeasData* memgroup) override;
     quint32 dspMemoryWrite(cDspMeasData* memgroup) override;
     quint32 activateInterface() override;
-
-    quint32 readMaximumLoad() override;
-    quint32 resetMaximumLoad() override;
-
 signals:
     void sigDspMemoryWrite(QString name, QVector<float> values);
     void sigDspStarted();
 private:
-    quint32 sendCmdResponse(QString answer);
+    quint32 sendCmdResponse();
     QVector<float> m_actualValues;
 };
 

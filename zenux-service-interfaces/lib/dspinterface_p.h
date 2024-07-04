@@ -37,10 +37,7 @@ enum dspcommands
     setoffsetcorrection,
     readdeviceversion,
     readserverversion,
-    dspinterrupt,
-    readactualload,
-    readmaxload,
-    resetmaxload
+    dspinterrupt
 };
 
 
@@ -70,8 +67,6 @@ public:
     quint32 dspMemoryWrite(cDspMeasData* memgroup); // writes all vars of this memorygroup with type
     quint32 readDeviceVersion(); // reads the dsp devices version
     quint32 readServerVersion();
-    quint32 readMaximumLoad();
-    quint32 resetMaximumLoad();
 
     // unused in ZENUX - kept for sake of future WM???
     quint32 intList2Dsp(); // send interrupt command list to the dsp server

@@ -40,9 +40,6 @@ public:
     quint32 readDeviceVersion(); // reads the dsp devices version
     quint32 readServerVersion();
 
-    virtual quint32 readMaximumLoad();
-    virtual quint32 resetMaximumLoad();
-
 private:
     Q_DECLARE_PRIVATE(cDSPInterface)
     cDSPInterfacePrivate *d_ptr;
