@@ -134,4 +134,16 @@ quint32 cDSPInterface::readServerVersion()
     return d->readServerVersion();
 }
 
+quint32 cDSPInterface::readMaximumLoad()
+{
+    Q_D(cDSPInterface);
+    return d->readMaximumLoad();
+}
+
+quint32 cDSPInterface::resetMaximumLoad()
+{
+    Q_D(cDSPInterface);
+    return d->resetMaximumLoad();
+}
+
 }

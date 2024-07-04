@@ -16,31 +16,40 @@ void MockDspInterface::fireActValInterrupt(QVector<float> actualValues, int irqN
 quint32 MockDspInterface::dataAcquisition(cDspMeasData *memgroup)
 {
     memgroup->setData(m_actualValues);
-    return sendCmdResponse();
+    return sendCmdResponse("");
 }
 
 quint32 MockDspInterface::dspMemoryWrite(cDspMeasData *memgroup)
 {
     emit sigDspMemoryWrite(memgroup->getName(), memgroup->getData());
-    return sendCmdResponse();
+    return sendCmdResponse("");
 }
 
 quint32 MockDspInterface::activateInterface()
 {
     emit sigDspStarted();
-    return sendCmdResponse();
+    return sendCmdResponse("");
 }
 
-quint32 MockDspInterface::sendCmdResponse()
+quint32 MockDspInterface::readMaximumLoad()
+{
+    return sendCmdResponse("BUSYMAX:42.0");
+}
+
+quint32 MockDspInterface::resetMaximumLoad()
+{
+    return sendCmdResponse("");
+}
+
+quint32 MockDspInterface::sendCmdResponse(QString answer)
 {
     quint32 messageNum = NotZeroNumGen::getMsgNr();
-    QVariant answer = QString();
     QMetaObject::invokeMethod(this,
                               "serverAnswer",
                               Qt::QueuedConnection,
                               Q_ARG(quint32, messageNum),
                               Q_ARG(quint8, ack),
-                              Q_ARG(QVariant, answer)
+                              Q_ARG(QVariant, QVariant(answer))
                               );
     return messageNum;
 }
