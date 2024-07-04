@@ -313,7 +313,7 @@ void ZDspServer::outputAndResetTransactionsLogs()
 
 void ZDspServer::outputLogs()
 {
-    //outputAndResetLoadLogs();
+    outputAndResetLoadLogs();
     outputAndResetTransactionsLogs();
 }
 
