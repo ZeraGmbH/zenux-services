@@ -1,5 +1,7 @@
 <RCC>
     <qresource prefix="/">
+		<file>thermal_zone0/temp</file>
+		<file>thermal_zone0/type</file>
         <file>procStat</file>
         <file>procStatOneCpuAllZero</file>
         <file>procStatOneCpuNiceLoad</file>

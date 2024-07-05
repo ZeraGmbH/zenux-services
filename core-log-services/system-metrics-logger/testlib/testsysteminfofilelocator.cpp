@@ -9,3 +9,8 @@ void TestSystemInfoFileLocator::setProcMeminfoFileName(QString procMeminfoFileNa
 {
     m_procMeminfoFileName = procMeminfoFileName;
 }
+
+void TestSystemInfoFileLocator::setSysTempRootPath(QString sysTempRootPath)
+{
+    m_sysTempRootPath = sysTempRootPath;
+}
