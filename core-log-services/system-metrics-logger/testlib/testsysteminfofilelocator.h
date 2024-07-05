@@ -8,6 +8,7 @@ class TestSystemInfoFileLocator : public SystemInfoFileLocator
 public:
     static void setProcStatusFileName(QString procStatusFileName);
     static void setProcMeminfoFileName(QString procMeminfoFileName);
+    static void setSysTempRootPath(QString sysTempRootPath);
 };
 
 #endif // TESTSYSTEMINFOFILELOCATOR_H
