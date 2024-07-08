@@ -1,6 +1,6 @@
 #include "logcomponent.h"
 
-LogComponent::LogComponent(std::unique_ptr<LogValueGetter> logValueGetter, std::unique_ptr<LogStrategy> logStrategy) :
+LogComponent::LogComponent(std::unique_ptr<LogValueGetter> logValueGetter, std::unique_ptr<LogStrategyMinMaxMean> logStrategy) :
     m_logValueGetter(std::move(logValueGetter)),
     m_strategy(std::move(logStrategy))
 {}
