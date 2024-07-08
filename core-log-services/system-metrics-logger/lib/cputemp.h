@@ -1,10 +1,10 @@
 #ifndef CPUTEMP_H
 #define CPUTEMP_H
 
-#include "logvaluegetter.h"
+#include "abstractlogvaluegetter.h"
 #include <QString>
 
-class CpuTemp : public LogValueGetter
+class CpuTemp : public AbstractLogValueGetter
 {
 public:
     int getTemperature();

@@ -4,7 +4,7 @@
 
 #include "logcomponent.h"
 #include "logstrategyminmaxmean.h"
-#include "logvaluegetter.h"
+#include "abstractlogvaluegetter.h"
 
 #include <QTest>
 
