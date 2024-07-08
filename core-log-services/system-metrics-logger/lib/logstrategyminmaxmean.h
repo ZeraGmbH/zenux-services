@@ -6,7 +6,6 @@
 class LogStrategyMinMaxMean
 {
 public:
-    LogStrategyMinMaxMean();
     void addValue(QList<float> &values, float newValue);
 };
 
