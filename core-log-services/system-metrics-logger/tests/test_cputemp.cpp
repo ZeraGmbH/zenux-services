@@ -1,11 +1,8 @@
 #include "test_cputemp.h"
 #include "cputemp.h"
 #include "testsysteminfofilelocator.h"
-
 #include "logcomponent.h"
 #include "logstrategyminmaxmean.h"
-#include "abstractlogvaluegetter.h"
-
 #include <QTest>
 
 QTEST_MAIN(test_cputemp)
