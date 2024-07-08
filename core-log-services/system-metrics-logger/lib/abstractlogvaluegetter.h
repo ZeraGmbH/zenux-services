@@ -4,6 +4,7 @@
 class AbstractLogValueGetter
 {
 public:
+    virtual bool canGetValue() = 0;
     virtual float getValue() = 0;
 };
 
