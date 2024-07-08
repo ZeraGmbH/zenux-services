@@ -3,21 +3,15 @@
 
 #include <QDir>
 
-CpuTemp::CpuTemp()
-{
-}
-
 int CpuTemp::getTemperature()
 {
-    int ret = -1;
-
     QFile temperatureFile(findTempFileLocation());
     if (temperatureFile.open(QIODevice::ReadOnly)) {
         int temperature = temperatureFile.readAll().trimmed().toInt();
         temperature = temperature / 1000;
         return temperature;
     }
-    return ret;
+    return -273;
 }
 
 float CpuTemp::getValue()
@@ -27,8 +21,6 @@ float CpuTemp::getValue()
 
 QString CpuTemp::findTempFileLocation()
 {
-    QString ret = "";
-
     QDir thermalDir(SystemInfoFileLocator::getSysTempRootPath());
     thermalDir.setNameFilters(QStringList("thermal_zone*"));
     QFileInfoList infoList = thermalDir.entryInfoList(QDir::Dirs | QDir::NoDotAndDotDot);
@@ -41,6 +33,5 @@ QString CpuTemp::findTempFileLocation()
                 return entry.absoluteFilePath() + "/temp";
         }
     }
-
-    return ret;
+    return "";
 }

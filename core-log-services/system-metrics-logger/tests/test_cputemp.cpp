@@ -24,7 +24,7 @@ void test_cputemp::test_invalidDirectory()
     TestSystemInfoFileLocator::setSysTempRootPath(":/foo");
     temp.getTemperature();
 
-    QCOMPARE(-1, temp.getTemperature());
+    QCOMPARE(-273, temp.getTemperature());
 }
 
 void test_cputemp::test_logComponent()
