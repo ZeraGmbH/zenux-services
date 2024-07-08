@@ -8,11 +8,12 @@
 #include <QList>
 #include <memory>
 
-class LogComponent : public QObject
+class LogComponent
 {
-    Q_OBJECT
+
 public:
     LogComponent(std::unique_ptr<LogValueGetter> logValueGetter, std::unique_ptr<LogStrategy> logStrategy);
+
     QList<float> getBuffer();
 public slots:
     void tryLogOne();
