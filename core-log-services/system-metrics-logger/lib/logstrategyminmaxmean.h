@@ -1,12 +1,12 @@
 #ifndef LOGSTRATEGYMINMAXMEAN_H
 #define LOGSTRATEGYMINMAXMEAN_H
 
-#include <QList>
+#include "abstractlogstrategy.h"
 
-class LogStrategyMinMaxMean
+class LogStrategyMinMaxMean : public AbstractLogStrategy
 {
 public:
-    void addValue(QList<float> &values, float newValue);
+    void addValue(QList<float> &values, float newValue) override;
 };
 
 #endif // LOGSTRATEGYMINMAXMEAN_H
