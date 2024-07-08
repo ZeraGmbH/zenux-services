@@ -60,5 +60,5 @@ void SystemMetrics::startLogComponentsTimer(int pollMs)
 
 void SystemMetrics::initLogComponents()
 {
-    m_cpuTempComponent = std::make_unique<LogComponent>(std::make_unique<CpuTemp>(), std::make_unique<LogStrategy>());
+    m_cpuTempComponent = std::make_unique<LogComponent>(std::make_unique<CpuTemp>(), std::make_unique<LogStrategyMinMaxMean>());
 }

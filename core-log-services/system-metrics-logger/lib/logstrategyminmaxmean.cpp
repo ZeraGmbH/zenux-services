@@ -1,8 +1,8 @@
-#include "logstrategy.h"
+#include "logstrategyminmaxmean.h"
 
-LogStrategy::LogStrategy() {}
+LogStrategyMinMaxMean::LogStrategyMinMaxMean() {}
 
-void LogStrategy::addValue(QList<float> &values, float newValue)
+void LogStrategyMinMaxMean::addValue(QList<float> &values, float newValue)
 {
     values.append(newValue);
     if (values.size() >= 10) {
