@@ -7,7 +7,6 @@
 class CpuTemp : public AbstractLogValueGetter
 {
 public:
-    int getTemperature();
     float getValue() override;
 
 private:

@@ -1,25 +1,19 @@
 #include "cputemp.h"
 #include "systeminfofilelocator.h"
-
 #include <QDir>
 
-int CpuTemp::getTemperature()
+float CpuTemp::getValue()
 {
     QString tempFileLocation = findTempFileLocation();
     if(!tempFileLocation.isEmpty()) {
         QFile temperatureFile(tempFileLocation);
         if (temperatureFile.open(QIODevice::ReadOnly)) {
-            int temperature = temperatureFile.readAll().trimmed().toInt();
+            float temperature = temperatureFile.readAll().trimmed().toInt();
             temperature = temperature / 1000;
             return temperature;
         }
     }
-    return -273;
-}
-
-float CpuTemp::getValue()
-{
-    return getTemperature();
+    return -273.0;
 }
 
 QString CpuTemp::findTempFileLocation()

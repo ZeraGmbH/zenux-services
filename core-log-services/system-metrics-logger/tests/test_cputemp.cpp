@@ -15,16 +15,15 @@ void test_cputemp::test_temp()
     CpuTemp temp;
     TestSystemInfoFileLocator::setSysTempRootPath(":/");
 
-    QCOMPARE(50, temp.getTemperature());
+    QCOMPARE(50, temp.getValue());
 }
 
 void test_cputemp::test_invalidDirectory()
 {
     CpuTemp temp;
     TestSystemInfoFileLocator::setSysTempRootPath(":/foo");
-    temp.getTemperature();
 
-    QCOMPARE(-273, temp.getTemperature());
+    QCOMPARE(-273, temp.getValue());
 }
 
 void test_cputemp::test_logComponent()
