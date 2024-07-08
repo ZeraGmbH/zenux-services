@@ -7,6 +7,7 @@
 class CpuTemp : public AbstractLogValueGetter
 {
 public:
+    bool canGetValue() override;
     float getValue() override;
 
 private:

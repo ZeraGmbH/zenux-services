@@ -16,6 +16,11 @@ float CpuTemp::getValue()
     return -273.0;
 }
 
+bool CpuTemp::canGetValue()
+{
+    return !findTempFileLocation().isEmpty();
+}
+
 QString CpuTemp::findTempFileLocation()
 {
     QDir thermalDir(SystemInfoFileLocator::getSysTempRootPath());
