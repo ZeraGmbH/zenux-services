@@ -1,9 +1,10 @@
 #include "logcomponent.h"
 
-LogComponent::LogComponent(std::unique_ptr<AbstractLogValueGetter> logValueGetter, std::unique_ptr<LogStrategyMinMaxMean> logStrategy) :
+LogComponent::LogComponent(std::unique_ptr<AbstractLogValueGetter> logValueGetter, std::unique_ptr<AbstractLogStrategy> logStrategy) :
     m_logValueGetter(std::move(logValueGetter)),
     m_strategy(std::move(logStrategy))
-{}
+{
+}
 
 QList<float> LogComponent::getBuffer()
 {

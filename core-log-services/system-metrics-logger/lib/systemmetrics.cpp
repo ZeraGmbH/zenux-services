@@ -1,6 +1,6 @@
 #include "systemmetrics.h"
 #include "cputemp.h"
-
+#include "logstrategyminmaxmean.h"
 #include <timerfactoryqt.h>
 
 CpuLoad *SystemMetrics::getCpuLoad()
