@@ -1,7 +1,5 @@
 #include "logstrategyminmaxmean.h"
 
-LogStrategyMinMaxMean::LogStrategyMinMaxMean() {}
-
 void LogStrategyMinMaxMean::addValue(QList<float> &values, float newValue)
 {
     values.append(newValue);
