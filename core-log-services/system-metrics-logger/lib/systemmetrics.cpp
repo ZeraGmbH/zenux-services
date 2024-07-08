@@ -66,7 +66,7 @@ void SystemMetrics::initLogComponents()
 
     currValueGetter = std::make_unique<CpuTemp>();
     if(currValueGetter->canGetValue())
-        m_logComponents.push_back(std::make_unique<LogComponent>(std::make_unique<CpuTemp>(), std::make_unique<LogStrategyMinMaxMean>()));
+        m_logComponents.push_back(std::make_unique<LogComponent>(std::make_unique<CpuTemp>(), std::make_unique<LogStrategyMinMaxMean>("CPU Temperature")));
     else
         qWarning("CpuTemp does not work in this environment - ignore!");
 
