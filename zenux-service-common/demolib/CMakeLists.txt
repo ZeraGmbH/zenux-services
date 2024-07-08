@@ -45,6 +45,7 @@ target_link_libraries(zenuxservicecommon-demolib
     mt310s2d-lib
     com5003d-lib
     sec1000d-lib
+    auto-journal-logger-lib
     sec1000d-demolib
     zdsp1d-lib
     zdsp1d-demolib
