@@ -1,6 +1,7 @@
 #include "systemmetrics.h"
 #include "cputemp.h"
 #include "logstrategyminmaxmean.h"
+
 #include <timerfactoryqt.h>
 
 CpuLoad *SystemMetrics::getCpuLoad()
@@ -28,7 +29,8 @@ void SystemMetrics::onMemoryTimer()
 
 void SystemMetrics::onLogComponentsTimer()
 {
-    m_cpuTempComponent->tryLogOne();
+    for(auto &entry : m_logComponents)
+        entry->tryLogOne();
 }
 
 void SystemMetrics::startCpuLoadPollTimer(int pollMs)
@@ -60,5 +62,13 @@ void SystemMetrics::startLogComponentsTimer(int pollMs)
 
 void SystemMetrics::initLogComponents()
 {
-    m_cpuTempComponent = std::make_unique<LogComponent>(std::make_unique<CpuTemp>(), std::make_unique<LogStrategyMinMaxMean>());
+    std::unique_ptr<AbstractLogValueGetter> currValueGetter;
+
+    currValueGetter = std::make_unique<CpuTemp>();
+    if(currValueGetter->canGetValue())
+        m_logComponents.push_back(std::make_unique<LogComponent>(std::make_unique<CpuTemp>(), std::make_unique<LogStrategyMinMaxMean>()));
+    else
+        qWarning("CpuTemp does not work in this environment - ignore!");
+
+    // more to come...
 }
