@@ -50,9 +50,13 @@ target_link_libraries(zenuxservicecommon-demolib
     zdsp1d-demolib
     Zera::zera-timers-demolib
     Zera::resman-lib
+    # ask linker to help us finding unresolved symbols
+    "-Wl,--no-undefined"
 )
 
 if(GUI_SIMULATION)
+    target_compile_definitions(zenuxservicecommon-demolib PUBLIC $<$<CONFIG:Debug>:QT_QML_DEBUG>)
+    target_compile_definitions(zenuxservicecommon-demolib PUBLIC $<$<CONFIG:Debug>:QT_DECLARATIVE_DEBUG>)
     target_link_libraries(zenuxservicecommon-demolib
         PUBLIC
         Qt5::Qml
