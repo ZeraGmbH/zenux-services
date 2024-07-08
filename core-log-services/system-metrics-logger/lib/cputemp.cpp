@@ -5,11 +5,14 @@
 
 int CpuTemp::getTemperature()
 {
-    QFile temperatureFile(findTempFileLocation());
-    if (temperatureFile.open(QIODevice::ReadOnly)) {
-        int temperature = temperatureFile.readAll().trimmed().toInt();
-        temperature = temperature / 1000;
-        return temperature;
+    QString tempFileLocation = findTempFileLocation();
+    if(!tempFileLocation.isEmpty()) {
+        QFile temperatureFile(tempFileLocation);
+        if (temperatureFile.open(QIODevice::ReadOnly)) {
+            int temperature = temperatureFile.readAll().trimmed().toInt();
+            temperature = temperature / 1000;
+            return temperature;
+        }
     }
     return -273;
 }
@@ -33,5 +36,6 @@ QString CpuTemp::findTempFileLocation()
                 return entry.absoluteFilePath() + "/temp";
         }
     }
+    qWarning("Could not find matching thermal-zone!");
     return "";
 }
