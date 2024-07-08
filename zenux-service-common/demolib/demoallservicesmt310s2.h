@@ -6,6 +6,7 @@
 #include "mockmt310s2d.h"
 #include "mocksec1000d.h"
 #include "mockzdsp1d.h"
+#include "autojournalloggerfacade.h"
 #ifdef GUI_SIMULATION
 #include "simulqmlgui.h"
 #endif
@@ -16,6 +17,7 @@ public:
     DemoAllServicesMt310s2();
     virtual ~DemoAllServicesMt310s2();
 private:
+    AutoJournalLoggerFacade *m_autoLogger;
     ResmanRunFacade *m_resman;
     MockMt310s2d *m_mt310s2d;
     MockSec1000d *m_sec1000d;
