@@ -51,7 +51,7 @@ bool CmdHandler::makeDirWithParents(QString path)
 bool CmdHandler::storeLogs(QString path)
 {
     if(!m_logGenerator->storeLogs(path)) {
-        emit OperationFinish(true, QStringLiteral("Could not write journal").arg(path));
+        emit OperationFinish(true, QStringLiteral("Could not write journal to dir %1").arg(path));
         return false;
     }
     return true;
