@@ -6,6 +6,7 @@
 #include "logcomponent.h"
 #include <timertemplateqt.h>
 #include <QObject>
+#include <vector>
 
 class SystemMetrics : public QObject
 {
@@ -30,7 +31,9 @@ private:
     TimerTemplateQtPtr m_memoryPollTimer;
     CpuLoad m_cpuLoad;
     TotalMemoryTracker m_totalMemoryTracker;
-    std::unique_ptr<LogComponent> m_cpuTempComponent;
+
+    // new style??
+    std::vector<std::unique_ptr<LogComponent>> m_logComponents;
     TimerTemplateQtPtr m_logComponentsTimer;
 };
 
