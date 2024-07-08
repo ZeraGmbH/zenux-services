@@ -10,7 +10,7 @@ public:
     float getValue() override;
 
 private:
-    QString findTempFileLocation();
+    static QString findTempFileLocation();
 };
 
 #endif // CPUTEMP_H
