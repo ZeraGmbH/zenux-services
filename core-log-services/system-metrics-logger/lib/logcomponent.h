@@ -1,7 +1,7 @@
 #ifndef LOGCOMPONENT_H
 #define LOGCOMPONENT_H
 
-#include "logvaluegetter.h"
+#include "abstractlogvaluegetter.h"
 #include "logstrategyminmaxmean.h"
 
 #include <QObject>
@@ -12,14 +12,14 @@ class LogComponent
 {
 
 public:
-    LogComponent(std::unique_ptr<LogValueGetter> logValueGetter, std::unique_ptr<LogStrategyMinMaxMean> logStrategy);
+    LogComponent(std::unique_ptr<AbstractLogValueGetter> logValueGetter, std::unique_ptr<LogStrategyMinMaxMean> logStrategy);
 
     QList<float> getBuffer();
 public slots:
     void tryLogOne();
 
 private:
-    std::unique_ptr<LogValueGetter> m_logValueGetter;
+    std::unique_ptr<AbstractLogValueGetter> m_logValueGetter;
     std::unique_ptr<LogStrategyMinMaxMean> m_strategy;
     QList<float> m_buffer;
 };
