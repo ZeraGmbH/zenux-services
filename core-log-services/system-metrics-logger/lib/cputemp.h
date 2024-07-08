@@ -8,7 +8,7 @@ class CpuTemp : public AbstractLogValueGetter
 {
 public:
     int getTemperature();
-    float getValue();
+    float getValue() override;
 
 private:
     QString findTempFileLocation();
