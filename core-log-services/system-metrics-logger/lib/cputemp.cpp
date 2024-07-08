@@ -20,6 +20,11 @@ int CpuTemp::getTemperature()
     return ret;
 }
 
+float CpuTemp::getValue()
+{
+    return getTemperature();
+}
+
 QString CpuTemp::findTempFileLocation()
 {
     QString ret = "";
