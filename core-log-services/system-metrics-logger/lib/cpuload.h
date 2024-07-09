@@ -8,7 +8,6 @@ class CpuLoad : public AbstractLogValueGetter
 {
 public:
     CpuLoad(int coreIdx);
-    void calcNextValues();
     float getValue();
     bool canGetValue();
 
@@ -18,8 +17,8 @@ private:
         quint64 m_totalTime = 0;
         quint64 m_loadRelevantTime = 0;
     };
-    QMap<int, float> m_loadMap;
-    QMap<int, LoadRelevantData> m_prevLoadRelData;
+
+    LoadRelevantData m_prevLoadRelData;
 
     int m_coreIdx = 0;
 };
