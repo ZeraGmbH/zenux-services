@@ -30,6 +30,26 @@ QMap<int, CpuTimingValues> ProcStatDecoder::getCpuTimings()
     return allTimings;
 }
 
+CpuTimingValues ProcStatDecoder::getCpuTimingsSingle(int cpuIdx)
+{
+    const QStringList &procCpuLines = getCpuLines();
+    for(const QString &line : procCpuLines) {
+        CpuTimingValues cpuTimings;
+        int cpuNum = decodeCpuProcLine(line, cpuTimings);
+        if (cpuIdx == cpuNum)
+            return cpuTimings;
+    }
+    return CpuTimingValues();
+}
+
+bool ProcStatDecoder::procStatOk()
+{
+    if(QFile::exists(SystemInfoFileLocator::getProcStatusFileName()) && !getProcStat().isEmpty())
+        return true;
+    else
+        return false;
+}
+
 QStringList ProcStatDecoder::getCpuLines()
 {
     const QStringList procLines = getProcStat().split("\n", Qt::SkipEmptyParts);
