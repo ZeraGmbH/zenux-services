@@ -12,7 +12,7 @@ public:
     static /* cpu idx */ int decodeCpuProcLine(const QString &procCpuLineIn, CpuTimingValues &cpuTimingsOut);
     static QMap<int, CpuTimingValues> getCpuTimings();
     static CpuTimingValues getCpuTimingsSingle(int cpuIdx);
-    static bool procStatOk();
+    static bool procStatOk(int cpuIdx);
 private:
     static QStringList getCpuLines();
     static QString getProcStat();

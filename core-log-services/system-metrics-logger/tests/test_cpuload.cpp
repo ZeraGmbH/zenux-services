@@ -42,3 +42,11 @@ void test_cpuload::test_user_load_multiple()
     QCOMPARE(cpuLoadAllCores.getValue(), 25.0);
     QCOMPARE(cpuLoadCoreOne.getValue(), 100.0);
 }
+
+void test_cpuload::test_coreIdx_out_of_range()
+{
+    CpuLoad cpuLoadCoreOutOfRange(99);
+    TestSystemInfoFileLocator::setProcStatusFileName(":/procStatOneCpuAllZero");
+
+    QCOMPARE(cpuLoadCoreOutOfRange.canGetValue(), false);
+}

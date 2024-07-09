@@ -30,5 +30,5 @@ float CpuLoad::getValue()
 
 bool CpuLoad::canGetValue()
 {
-    return ProcStatDecoder::procStatOk();
+    return ProcStatDecoder::procStatOk(m_coreIdx);
 }
