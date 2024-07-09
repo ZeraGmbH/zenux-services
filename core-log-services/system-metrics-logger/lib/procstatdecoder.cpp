@@ -15,6 +15,7 @@ int ProcStatDecoder::decodeCpuProcLine(const QString &procCpuLineIn, CpuTimingVa
     cpuTimingsOut.m_iowaitTime = entries[5].toULongLong();
     cpuTimingsOut.m_irqTime = entries[6].toULongLong();
     cpuTimingsOut.m_softIrqTime = entries[7].toULongLong();
+    cpuTimingsOut.isEmpty = false;
     return cpuNum;
 }
 
@@ -42,11 +43,17 @@ CpuTimingValues ProcStatDecoder::getCpuTimingsSingle(int cpuIdx)
     return CpuTimingValues();
 }
 
-bool ProcStatDecoder::procStatOk()
+bool ProcStatDecoder::procStatOk(int cpuIdx)
 {
-    if(QFile::exists(SystemInfoFileLocator::getProcStatusFileName()) && !getProcStat().isEmpty())
+    if(QFile::exists(SystemInfoFileLocator::getProcStatusFileName()) && !getProcStat().isEmpty()) {
+        if(getCpuTimingsSingle(cpuIdx).isEmpty) {
+            qWarning("ProcStatDecoder: Request non existant cpu core with Index %i", cpuIdx);
+            return false;
+        }
         return true;
+    }
     else
+        qWarning("ProcStatDecoder: ProcStatus file does not exist!");
         return false;
 }
 

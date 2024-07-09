@@ -9,8 +9,8 @@ class test_cpuload : public QObject
 private slots:
     void test_initial_zero(); // academic?
     void test_nice_load();
-
     void test_user_load_multiple();
+    void test_coreIdx_out_of_range();
 };
 
 #endif // TEST_CPULOAD_H

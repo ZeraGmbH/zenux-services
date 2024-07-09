@@ -12,6 +12,7 @@ struct CpuTimingValues
     quint64 m_iowaitTime = 0;
     quint64 m_irqTime = 0;
     quint64 m_softIrqTime = 0;
+    bool isEmpty = true;
 };
 
 #endif // CPUTIMINGVALUES_H
