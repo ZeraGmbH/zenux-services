@@ -1,18 +1,18 @@
 #ifndef CPULOAD_H
 #define CPULOAD_H
 
+#include "abstractlogvaluegetter.h"
 #include <QMap>
 
-class CpuLoad
+class CpuLoad : public AbstractLogValueGetter
 {
 public:
+    CpuLoad(int coreIdx);
     void calcNextValues();
-    bool setWarningLimit(float limit);
-    QMap<QString, float> getLoadMapForDisplay() const;
+    float getValue();
+    bool canGetValue();
 
 private:
-    static QString getCpuDisplayName(int cpuIdx);
-    void checkLimitAndSpawnWarning(float allCpuLoad);
     struct LoadRelevantData
     {
         quint64 m_totalTime = 0;
@@ -21,9 +21,7 @@ private:
     QMap<int, float> m_loadMap;
     QMap<int, LoadRelevantData> m_prevLoadRelData;
 
-    float m_allCpuLoadWarnLimit = 0.0;
-    float m_allCpuLoadMax = 0.0;
-    bool m_allCpuloadAboveWarnLimit = false;
+    int m_coreIdx = 0;
 };
 
 #endif // CPULOAD_H
