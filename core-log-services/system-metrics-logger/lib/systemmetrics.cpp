@@ -1,23 +1,13 @@
 #include "systemmetrics.h"
 #include "cputemp.h"
+#include "cpuload.h"
 #include "logstrategyminmaxmean.h"
 
 #include <timerfactoryqt.h>
 
-CpuLoad *SystemMetrics::getCpuLoad()
-{
-    return &m_cpuLoad;
-}
-
 TotalMemoryTracker *SystemMetrics::getTotalMemoryTracker()
 {
     return &m_totalMemoryTracker;
-}
-
-void SystemMetrics::onCpuLoadTimer()
-{
-    m_cpuLoad.calcNextValues();
-    emit sigNewCpuValues();
 }
 
 void SystemMetrics::onMemoryTimer()
@@ -31,15 +21,6 @@ void SystemMetrics::onLogComponentsTimer()
 {
     for(auto &entry : m_logComponents)
         entry->tryLogOne();
-}
-
-void SystemMetrics::startCpuLoadPollTimer(int pollMs)
-{
-    m_cpuLoadPollTimer = TimerFactoryQt::createPeriodic(pollMs);
-    connect(m_cpuLoadPollTimer.get(), &TimerTemplateQt::sigExpired,
-            this, &SystemMetrics::onCpuLoadTimer);
-    m_cpuLoadPollTimer->start();
-    onCpuLoadTimer();
 }
 
 void SystemMetrics::startMemoryPollTimer(int logIntervalMs)
@@ -70,5 +51,9 @@ void SystemMetrics::initLogComponents()
     else
         qWarning("CpuTemp does not work in this environment - ignore!");
 
-    // more to come...
+    currValueGetter = std::make_unique<CpuLoad>(0);
+    if(currValueGetter->canGetValue())
+        m_logComponents.push_back(std::make_unique<LogComponent>(std::make_unique<CpuLoad>(0), std::make_unique<LogStrategyMinMaxMean>("CPU Load")));
+    else
+        qWarning("CpuLoad does not work in this environment - ignore");
 }
