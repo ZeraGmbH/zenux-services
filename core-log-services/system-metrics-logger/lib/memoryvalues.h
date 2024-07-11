@@ -8,6 +8,8 @@ struct MemoryValues {
     quint32 freeMemory = 0;
     quint32 buffers = 0;
     quint32 cached = 0;
+    quint32 sReclaimable = 0;
+    quint32 shmem = 0;
 };
 
 #endif // MEMORYVALUES_H

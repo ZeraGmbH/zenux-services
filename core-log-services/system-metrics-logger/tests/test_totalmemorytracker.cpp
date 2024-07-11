@@ -5,22 +5,17 @@
 
 QTEST_MAIN(test_totalmemorytracker)
 
-void test_totalmemorytracker::test_initial_zero()
+void test_totalmemorytracker::test_invalid_values()
 {
-    TotalMemoryTracker memorytracker;
-    TestSystemInfoFileLocator::setProcMeminfoFileName(":/procMeminfoAllZero");
-    memorytracker.calculateMemoryUsedPercent();
-    QCOMPARE(memorytracker.getMemoryUsageParams().m_RAMUsedPercent, 0.0);
-    QCOMPARE(memorytracker.getMemoryUsageParams().m_buffersUsedPercent, 0.0);
-    QCOMPARE(memorytracker.getMemoryUsageParams().m_cachesUsedPercent, 0.0);
+    TotalMemoryTracker memoryTracker;
+    TestSystemInfoFileLocator::setProcMeminfoFileName(":/procMeminfAllZero");
+    QCOMPARE(memoryTracker.canGetValue(), false);
 }
 
-void test_totalmemorytracker::testMemoryUsed()
+void test_totalmemorytracker::test_memory_used()
 {
-    TotalMemoryTracker memorytracker;
+    TotalMemoryTracker memoryTracker;
     TestSystemInfoFileLocator::setProcMeminfoFileName(":/procMeminfo");
-    memorytracker.calculateMemoryUsedPercent();
-    QCOMPARE(memorytracker.getMemoryUsageParams().m_RAMUsedPercent, 25.0);
-    QCOMPARE(memorytracker.getMemoryUsageParams().m_buffersUsedPercent, 15.0);
-    QCOMPARE(memorytracker.getMemoryUsageParams().m_cachesUsedPercent, 20.0);
+    QCOMPARE(memoryTracker.canGetValue(), true);
+    QCOMPARE((int)memoryTracker.getValue(), 27);
 }

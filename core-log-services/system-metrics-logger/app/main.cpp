@@ -9,7 +9,6 @@ int main( int argc, char *argv[] )
     std::unique_ptr<SystemMetrics> systemMetrics = std::make_unique<SystemMetrics>();
     systemMetrics->initLogComponents();
     systemMetrics->startLogComponentsTimer(1000);
-    systemMetrics->startMemoryPollTimer(10000);
 
     return app->exec();
 }

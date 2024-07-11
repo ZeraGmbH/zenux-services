@@ -15,6 +15,10 @@ MemoryValues ProcMeminfoDecoder::getCurrentMemoryValues()
             currentMemoryValues.buffers = decodeSingleMemoryValue(line);
         if(line.startsWith("Cached"))
             currentMemoryValues.cached = decodeSingleMemoryValue(line);
+        if(line.startsWith("SReclaimable"))
+            currentMemoryValues.sReclaimable = decodeSingleMemoryValue(line);
+        if(line.startsWith("Shmem"))
+            currentMemoryValues.shmem = decodeSingleMemoryValue(line);
     }
     return currentMemoryValues;
 }
@@ -25,6 +29,8 @@ QString ProcMeminfoDecoder::getProcMeminfo()
     QString procMeminfo;
     if(file.open(QFile::ReadOnly))
         procMeminfo = file.readAll();
+    else
+        qWarning("Cannot read meminfo file");
     return procMeminfo;
 }
 
