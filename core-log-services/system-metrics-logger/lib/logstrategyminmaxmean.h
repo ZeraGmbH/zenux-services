@@ -6,10 +6,11 @@
 class LogStrategyMinMaxMean : public AbstractLogStrategy
 {
 public:
-    LogStrategyMinMaxMean(QString valueLabel);
+    LogStrategyMinMaxMean(QString valueLabel, QString unitLabel);
     void addValue(QList<float> &values, float newValue) override;
 private:
     QString m_valueLabel;
+    QString m_unitLabel;
 };
 
 #endif // LOGSTRATEGYMINMAXMEAN_H

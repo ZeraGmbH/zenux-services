@@ -2,44 +2,21 @@
 #include "procmeminfodecoder.h"
 #include <math.h>
 
-void MemoryUsageParams::setZeros()
-{
-    m_RAMUsedPercent = 0.0;
-    m_cachesUsedPercent = 0.0;
-    m_buffersUsedPercent = 0.0;
-}
-
-void TotalMemoryTracker::calculateMemoryUsedPercent()
+bool TotalMemoryTracker::canGetValue()
 {
     MemoryValues memoryValues = ProcMeminfoDecoder::getCurrentMemoryValues();
-    quint32 usedMemory = memoryValues.totalMemory - memoryValues.freeMemory;
-    quint32 buffersAndCachedMemory = memoryValues.buffers + memoryValues.cached;
-    quint32 usedRAM = usedMemory - buffersAndCachedMemory;
-    if(memoryValues.totalMemory != 0.0) {
-        m_memoryUsageParams.m_RAMUsedPercent = calcPercentageOneDecimal(float(usedRAM) / float(memoryValues.totalMemory));
-        m_memoryUsageParams.m_buffersUsedPercent = calcPercentageOneDecimal(float(memoryValues.buffers) / float(memoryValues.totalMemory));
-        m_memoryUsageParams.m_cachesUsedPercent = calcPercentageOneDecimal(float(memoryValues.cached) / float(memoryValues.totalMemory));
-    }
-    else
-        m_memoryUsageParams.setZeros();
-
+    if(memoryValues.freeMemory != 0)
+        return true;
+    return false;
 }
 
-MemoryUsageParams TotalMemoryTracker::getMemoryUsageParams() const
+float TotalMemoryTracker::getValue()
 {
-    return m_memoryUsageParams;
-}
-
-void TotalMemoryTracker::outputLogs()
-{
-    QString logString = QString("Memory used: %1%, Buffers: %2% Cache: %3%")
-                            .arg(m_memoryUsageParams.m_RAMUsedPercent, 0, 'f', 1)
-                            .arg(m_memoryUsageParams.m_buffersUsedPercent, 0, 'f', 1)
-                            .arg(m_memoryUsageParams.m_cachesUsedPercent, 0, 'f', 1);
-    if(logString != m_lastLogString) {
-        m_lastLogString = logString;
-        qInfo("%s", qPrintable(logString));
-    }
+    // calculation taken from https://stackoverflow.com/questions/41224738/how-to-calculate-system-memory-usage-from-proc-meminfo-like-htop
+    MemoryValues memoryValues = ProcMeminfoDecoder::getCurrentMemoryValues();
+    quint32 usedMemory = memoryValues.totalMemory - (memoryValues.freeMemory + memoryValues.buffers + (memoryValues.cached + memoryValues.sReclaimable - memoryValues.shmem));
+    float usedMemoryPercent = calcPercentageOneDecimal(float(usedMemory) / float(memoryValues.totalMemory));
+    return usedMemoryPercent;
 }
 
 float TotalMemoryTracker::calcPercentageOneDecimal(float value)
