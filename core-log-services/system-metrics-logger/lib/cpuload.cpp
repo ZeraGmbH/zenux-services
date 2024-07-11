@@ -8,6 +8,8 @@ CpuLoad::CpuLoad(int coreIdx) : m_coreIdx(coreIdx)
 
 float CpuLoad::getValue()
 {
+    // inspired by https://gitlab.xfce.org/panel-plugins/xfce4-cpugraph-plugin/-/blob/master/panel-plugin/os.cc
+    // Simplified: just Linux & no CPU hotplug
     const CpuTimingValues singleTiming = ProcStatDecoder::getCpuTimingsSingle(m_coreIdx);
     LoadRelevantData currLoadRelData;
     currLoadRelData.m_loadRelevantTime =

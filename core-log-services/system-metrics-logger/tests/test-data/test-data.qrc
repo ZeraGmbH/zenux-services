@@ -1,7 +1,10 @@
 <RCC>
     <qresource prefix="/">
-		<file>thermal_zone0/temp</file>
-		<file>thermal_zone0/type</file>
+        <file>cpufreq/policy0/scaling_cur_freq</file>
+        <file>cpufreq/policy1/scaling_cur_freq</file>
+        <file>cpufreq/foo/foo</file>
+	<file>thermal_zone0/temp</file>
+	<file>thermal_zone0/type</file>
         <file>procStat</file>
         <file>procStatOneCpuAllZero</file>
         <file>procStatOneCpuNiceLoad</file>
