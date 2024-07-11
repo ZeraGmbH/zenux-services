@@ -1,6 +1,7 @@
 #include "systemmetrics.h"
 #include "cputemp.h"
 #include "cpuload.h"
+#include "cpufreq.h"
 #include "logstrategyminmaxmean.h"
 
 #include <timerfactoryqt.h>
@@ -56,4 +57,10 @@ void SystemMetrics::initLogComponents()
         m_logComponents.push_back(std::make_unique<LogComponent>(std::make_unique<CpuLoad>(0), std::make_unique<LogStrategyMinMaxMean>("CPU Load")));
     else
         qWarning("CpuLoad does not work in this environment - ignore");
+
+    currValueGetter = std::make_unique<CpuFreq>();
+    if(currValueGetter->canGetValue())
+        m_logComponents.push_back(std::make_unique<LogComponent>(std::make_unique<CpuFreq>(), std::make_unique<LogStrategyMinMaxMean>("CPU Frequency")));
+    else
+        qWarning("CpuFrequency does not work in this environment - ignore");
 }
