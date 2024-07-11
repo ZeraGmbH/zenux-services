@@ -3,6 +3,7 @@
 #include "cpuload.h"
 #include "cpufreq.h"
 #include "logstrategyminmaxmean.h"
+#include "totalmemorytracker.h"
 
 #include <timerfactoryqt.h>
 
@@ -42,4 +43,10 @@ void SystemMetrics::initLogComponents()
         m_logComponents.push_back(std::make_unique<LogComponent>(std::make_unique<CpuFreq>(), std::make_unique<LogStrategyMinMaxMean>("CPU Frequency", "MHz")));
     else
         qWarning("CpuFrequency does not work in this environment - ignore");
+
+    currValueGetter = std::make_unique<TotalMemoryTracker>();
+    if(currValueGetter->canGetValue())
+        m_logComponents.push_back(std::make_unique<LogComponent>(std::make_unique<TotalMemoryTracker>(), std::make_unique<LogStrategyMinMaxMean>("RAM usage", "%")));
+    else
+        qWarning("RAM usage does not work in this environment - ignore");
 }
