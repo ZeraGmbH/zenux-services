@@ -1,0 +1,48 @@
+           CPU0       CPU1       CPU2       CPU3       
+ 16:     690262     669261     517642     517425     GIC-0  29 Edge      twd
+ 17:        182        138         59         38       GPC  55 Level     i.MX Timer Tick
+ 18:          0          0          0          0       GPC  49 Level     imx_thermal
+ 19:          0          0          0          0       GPC  94 Level     arm-pmu
+ 22:     120975          0          0          0       GPC   9 Level     130000.gpu
+ 23:          0          0          0          0       GPC  10 Level     134000.gpu
+ 25:          0          0          0          0       GPC  31 Level     2008000.spi
+ 26:        676          0          0          0       GPC  26 Level     2020000.serial
+ 27:          0          0          0          0       GPC  47 Level     202c000.ssi
+ 28:          0          0          0          0       GPC  50 Level     2034000.asrc
+ 29:          0          0          0          0       GPC  12 Level     2040000.vpu
+ 46:          0          0          0          0       GPC  80 Level     20bc000.wdog
+ 55:        670          0          0          0       GPC   2 Level     sdma
+ 56:        122          0          0          0       GPC  43 Level     2184000.usb
+ 57:        153          0          0          0       GPC  40 Level     2184200.usb
+ 58:     103252          0          0          0       GPC 118 Level     2188000.ethernet
+ 59:          0          0          0          0       GPC 119 Level     2188000.ethernet
+ 60:        747          0          0          0       GPC  22 Level     mmc0
+ 61:      61360          0          0          0       GPC  23 Level     mmc1
+ 62:      27480          0          0          0       GPC  24 Level     mmc2
+ 63:    3134148          0          0          0       GPC  36 Level     21a0000.i2c
+ 64:     556729          0          0          0       GPC  37 Level     21a4000.i2c
+ 65:        172          0          0          0       GPC  38 Level     21a8000.i2c
+ 67:          0          0          0          0       GPC  18 Level     vdoa
+ 68:          5          0          0          0       GPC  27 Level     21e8000.serial
+ 71:          0          0          0          0       GPC  11 Level     2204000.gpu
+117:          1          0          0          0  gpio-mxc  11 Edge      zFPGA1boot
+120:      91988          0          0          0  gpio-mxc  14 Level     zFPGA1dsp1, zFPGA1ec, zFPGA1reg, zFPGA1msg
+184:          0          0          0          0  gpio-mxc  14 Edge      2194000.usdhc cd
+222:          0          0          0          0  gpio-mxc  20 Edge      Power Button
+223:          0          0          0          0  gpio-mxc  21 Edge      Power Down
+251:        435          0          0          0  gpio-mxc  17 Level     wl18xx
+298:     229484          1          0          0       IPU  23 Edge      imx_drm
+299:          0          0          0          0       IPU  28 Edge      imx_drm
+300:          0          0          0          0       IPU  23 Edge      imx_drm
+301:          0          0          0          0       IPU  28 Edge      imx_drm
+302:          2          0          0          0       GPC 105 Level     2101000.jr0
+303:          0          0          0          0       GPC 106 Level     2102000.jr1
+IPI0:          0          0          0          0  CPU wakeup interrupts
+IPI1:         50         57         46         18  Timer broadcast interrupts
+IPI2:     251137    1456864    1115351    1068420  Rescheduling interrupts
+IPI3:     123859     121151     134431     135113  Function call interrupts
+IPI4:          0          0          0          0  CPU stop interrupts
+IPI5:      60568      63896      47055      45871  IRQ work interrupts
+IPI6:          0          0          0          0  completion interrupts
+Err:          0
+
