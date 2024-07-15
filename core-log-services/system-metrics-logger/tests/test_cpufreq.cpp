@@ -1,5 +1,5 @@
 #include "test_cpufreq.h"
-#include "cpufreq.h"
+#include "log-components/cpufreq.h"
 #include "testsysteminfofilelocator.h"
 #include <QTest>
 

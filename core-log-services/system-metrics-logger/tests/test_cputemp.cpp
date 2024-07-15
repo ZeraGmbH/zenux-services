@@ -1,5 +1,5 @@
 #include "test_cputemp.h"
-#include "cputemp.h"
+#include "log-components/cputemp.h"
 #include "testsysteminfofilelocator.h"
 #include "logcomponent.h"
 #include "logstrategyminmaxmean.h"

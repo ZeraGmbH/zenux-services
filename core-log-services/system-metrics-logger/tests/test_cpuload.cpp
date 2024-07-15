@@ -1,5 +1,5 @@
 #include "test_cpuload.h"
-#include "cpuload.h"
+#include "log-components/cpuload.h"
 #include "testsysteminfofilelocator.h"
 #include <QTest>
 
