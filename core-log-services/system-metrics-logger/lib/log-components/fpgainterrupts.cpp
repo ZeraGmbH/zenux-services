@@ -3,17 +3,18 @@
 
 bool FpgaInterrupts::canGetValue()
 {
-    InterruptValues interruptValues = ProcInterruptDecoder::getCurrentInterrupts();
-    if(!interruptValues.isEmpty)
-        return true;
-    return false;
+    // on device these will turn up eventually
+    return true;
 }
 
 float FpgaInterrupts::getValue()
 {
     InterruptValues interruptValues = ProcInterruptDecoder::getCurrentInterrupts();
-    quint32 interruptsSinceLast = interruptValues.fpgaInterrupts - m_previousInterrupts.fpgaInterrupts;
-    m_previousInterrupts.fpgaInterrupts = interruptValues.fpgaInterrupts;
-    return interruptsSinceLast;
+    if(!interruptValues.isEmpty) {
+        quint32 interruptsSinceLast = interruptValues.fpgaInterrupts - m_previousInterrupts.fpgaInterrupts;
+        m_previousInterrupts.fpgaInterrupts = interruptValues.fpgaInterrupts;
+        return interruptsSinceLast;
+    }
+    return qQNaN();
 }
 

@@ -31,7 +31,8 @@ void test_fpgainterrupts::test_invalidFile()
     FpgaInterrupts interrupts;
     TestSystemInfoFileLocator::setProcInterruptFile(":/foo");
 
-    QVERIFY(!interrupts.canGetValue());
+    QVERIFY(interrupts.canGetValue());
+    QCOMPARE(interrupts.getValue(), qQNaN());
 }
 
 void test_fpgainterrupts::test_noFpgaInInterrupts()
@@ -39,5 +40,6 @@ void test_fpgainterrupts::test_noFpgaInInterrupts()
     FpgaInterrupts interrupts;
     TestSystemInfoFileLocator::setProcInterruptFile(":/procInterruptsDevMachine");
 
-    QVERIFY(!interrupts.canGetValue());
+    QVERIFY(interrupts.canGetValue());
+    QCOMPARE(interrupts.getValue(), qQNaN());
 }
