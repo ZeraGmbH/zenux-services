@@ -25,6 +25,7 @@ target_include_directories(system-metrics
     PUBLIC
     $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/zera-classes/dsp-helper>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/log-components>
     )
 
 set_target_properties(system-metrics PROPERTIES VERSION ${PROJECT_VERSION})
