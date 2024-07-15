@@ -4,7 +4,7 @@
 bool FpgaInterrupts::canGetValue()
 {
     InterruptValues interruptValues = ProcInterruptDecoder::getCurrentInterrupts();
-    if(interruptValues.fpgaInterrupts != 0)
+    if(!interruptValues.isEmpty)
         return true;
     return false;
 }
