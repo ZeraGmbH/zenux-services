@@ -1,9 +1,9 @@
 #include "systemmetrics.h"
-#include "log-components/cputemp.h"
-#include "log-components/cpuload.h"
-#include "log-components/cpufreq.h"
+#include "cputemp.h"
+#include "cpuload.h"
+#include "cpufreq.h"
 #include "logstrategyminmaxmean.h"
-#include "log-components/totalmemorytracker.h"
+#include "totalmemorytracker.h"
 
 #include <timerfactoryqt.h>
 

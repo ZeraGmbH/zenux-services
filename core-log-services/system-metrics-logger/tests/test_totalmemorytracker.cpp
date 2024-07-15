@@ -1,5 +1,5 @@
 #include "test_totalmemorytracker.h"
-#include "log-components/totalmemorytracker.h"
+#include "totalmemorytracker.h"
 #include "testsysteminfofilelocator.h"
 #include <QTest>
 
