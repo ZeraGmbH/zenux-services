@@ -19,4 +19,10 @@ void LogStrategyFutureMinMaxMean::addValue(QList<float> &values, float newValue)
             values.clear();
         }
     }
+    else {
+        // keep the log rhythm... to be made beautiful
+        values.append(0.0);
+        if (values.size() >= 10)
+            values.clear();
+    }
 }
