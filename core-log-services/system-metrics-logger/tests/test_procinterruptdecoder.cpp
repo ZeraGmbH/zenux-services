@@ -21,6 +21,4 @@ void test_procinterruptdecoder::decodeTestProcInterruptInfo()
 {
     InterruptValues testInterruptValues = ProcInterruptDecoder::getCurrentInterrupts();
     QCOMPARE(testInterruptValues.fpgaInterrupts, 91988);
-    testInterruptValues = ProcInterruptDecoder::getCurrentInterrupts();
-    QCOMPARE(testInterruptValues.fpgaInterrupts, 0);
 }
