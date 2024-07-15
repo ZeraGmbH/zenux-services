@@ -4,6 +4,7 @@
 #include "cpufreq.h"
 #include "logstrategyminmaxmean.h"
 #include "totalmemorytracker.h"
+#include "fpgainterrupts.h"
 
 #include <timerfactoryqt.h>
 
@@ -49,4 +50,10 @@ void SystemMetrics::initLogComponents()
         m_logComponents.push_back(std::make_unique<LogComponent>(std::make_unique<TotalMemoryTracker>(), std::make_unique<LogStrategyMinMaxMean>("RAM usage", "%")));
     else
         qWarning("RAM usage does not work in this environment - ignore");
+
+    currValueGetter = std::make_unique<FpgaInterrupts>();
+    if(currValueGetter->canGetValue())
+        m_logComponents.push_back(std::make_unique<LogComponent>(std::make_unique<FpgaInterrupts>(), std::make_unique<LogStrategyMinMaxMean>("Fpga Interrupts", "interrupt/s")));
+    else
+        qWarning("FPGA interrupts do not work in this environment - ignore");
 }

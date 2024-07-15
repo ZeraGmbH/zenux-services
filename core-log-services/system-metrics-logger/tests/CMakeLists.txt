@@ -20,4 +20,6 @@ SETUP_SYSTEM_METRICE_TESTS(
     test_totalmemorytracker
     test_cputemp
     test_cpufreq
+    test_fpgainterrupts
+    test_procinterruptdecoder
 )
