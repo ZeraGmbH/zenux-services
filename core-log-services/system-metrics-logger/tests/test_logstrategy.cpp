@@ -1,13 +1,13 @@
-#include "test_logstrategyfuture.h"
-#include "logstrategyfutureminmaxmean.h"
+#include "test_logstrategy.h"
+#include "logstrategyminmaxmean.h"
 #include <QTest>
 
-QTEST_MAIN(test_logstrategyfuture)
+QTEST_MAIN(test_logstrategy)
 
-void test_logstrategyfuture::test_someNaNInput()
+void test_logstrategy::test_someNaNInput()
 {
     QString logOutput;
-    LogStrategyFutureMinMaxMean strat("foo", "bar", [&](QString log){
+    LogStrategyMinMaxMean strat("foo", "bar", [&](QString log){
         logOutput = log;
     });
     QList<float> values;
@@ -26,10 +26,10 @@ void test_logstrategyfuture::test_someNaNInput()
     QVERIFY(values.isEmpty());
 }
 
-void test_logstrategyfuture::test_allNaNInput()
+void test_logstrategy::test_allNaNInput()
 {
     QString logOutput = "foo";
-    LogStrategyFutureMinMaxMean strat("foo", "bar", [&](QString log){
+    LogStrategyMinMaxMean strat("foo", "bar", [&](QString log){
         logOutput = log;
     });
     QList<float> values;
@@ -40,10 +40,10 @@ void test_logstrategyfuture::test_allNaNInput()
     QVERIFY(values.isEmpty());
 }
 
-void test_logstrategyfuture::test_allZeroInput()
+void test_logstrategy::test_allZeroInput()
 {
     QString logOutput = "foo";
-    LogStrategyFutureMinMaxMean strat("foo", "bar", [&](QString log){
+    LogStrategyMinMaxMean strat("foo", "bar", [&](QString log){
         logOutput = log;
     });
     QList<float> values;
