@@ -6,10 +6,11 @@
 #include "mockmt310s2d.h"
 #include "mocksec1000d.h"
 #include "mockzdsp1d.h"
-#include "autojournalloggerfacade.h"
 #ifdef GUI_SIMULATION
 #include "simulqmlgui.h"
 #endif
+
+class AutoJournalLoggerFacade;
 
 class DemoAllServicesMt310s2 : public AbstractMockAllServices
 {
