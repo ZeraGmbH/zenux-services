@@ -101,7 +101,6 @@ private:
     QList<cZDSP1Client*> m_clientList;
 
     ulong UserWorkSpaceGlobalSegmentAdr;
-    QString m_lastLoadLog;
     QString m_lastTransactionLog;
 
     bool resetDsp();
