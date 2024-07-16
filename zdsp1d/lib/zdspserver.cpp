@@ -290,13 +290,10 @@ void ZDspServer::outputAndResetLoadLogs()
     QString message = QString("DSP is %1, Max load: %2%, %3").
                       arg(dspStatus, maxLoad, maxLoadReset);
 
-    if(m_lastLoadLog != message) {
-        m_lastLoadLog = message;
-        if(resetOk && (dspStatus == dsprunning))
-            qInfo("%s", qPrintable(message));
-        else
-            qWarning("%s", qPrintable(message));
-    }
+    if(resetOk && (dspStatus == dsprunning))
+        qInfo("%s", qPrintable(message));
+    else
+        qWarning("%s", qPrintable(message));
 }
 
 void ZDspServer::outputAndResetTransactionsLogs()
