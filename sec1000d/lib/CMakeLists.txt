@@ -40,7 +40,6 @@ target_link_libraries(sec1000d-lib
     PUBLIC
     Qt5::Xml
     Qt5::Network
-    Zera::zera-xmlconfig
     Zera::zeraprotobuf
     zenuxservicecommon
     )
