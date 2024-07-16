@@ -22,5 +22,5 @@ SETUP_SYSTEM_METRICE_TESTS(
     test_cpufreq
     test_fpgainterrupts
     test_procinterruptdecoder
-    test_logstrategyfuture
+    test_logstrategy
 )
