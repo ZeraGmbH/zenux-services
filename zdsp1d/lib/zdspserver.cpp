@@ -302,10 +302,7 @@ void ZDspServer::outputAndResetTransactionsLogs()
     int writeTransactions = AbstractDspDeviceNode::getWriteTransactions();
     AbstractDspDeviceNode::resetAllTransactions();
     QString message = QString("DSP transactions: Read: %1 / Write %2").arg(readTransactions).arg(writeTransactions);
-    if(m_lastTransactionLog != message) {
-        m_lastTransactionLog = message;
-        qInfo("%s", qPrintable(message));
-    }
+    qInfo("%s", qPrintable(message));
 }
 
 void ZDspServer::outputLogs()
