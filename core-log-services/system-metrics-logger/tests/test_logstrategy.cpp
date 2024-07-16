@@ -1,10 +1,10 @@
-#include "test_logstrategyfuture.h"
+#include "test_logstrategy.h"
 #include "logstrategyminmaxmean.h"
 #include <QTest>
 
-QTEST_MAIN(test_logstrategyfuture)
+QTEST_MAIN(test_logstrategy)
 
-void test_logstrategyfuture::test_someNaNInput()
+void test_logstrategy::test_someNaNInput()
 {
     QString logOutput;
     LogStrategyMinMaxMean strat("foo", "bar", [&](QString log){
@@ -26,7 +26,7 @@ void test_logstrategyfuture::test_someNaNInput()
     QVERIFY(values.isEmpty());
 }
 
-void test_logstrategyfuture::test_allNaNInput()
+void test_logstrategy::test_allNaNInput()
 {
     QString logOutput = "foo";
     LogStrategyMinMaxMean strat("foo", "bar", [&](QString log){
@@ -40,7 +40,7 @@ void test_logstrategyfuture::test_allNaNInput()
     QVERIFY(values.isEmpty());
 }
 
-void test_logstrategyfuture::test_allZeroInput()
+void test_logstrategy::test_allZeroInput()
 {
     QString logOutput = "foo";
     LogStrategyMinMaxMean strat("foo", "bar", [&](QString log){
