@@ -3,7 +3,6 @@
 #include "cpuload.h"
 #include "cpufreq.h"
 #include "logstrategyminmaxmean.h"
-#include "logstrategyfutureminmaxmean.h"
 #include "totalmemorytracker.h"
 #include "fpgainterrupts.h"
 
@@ -54,7 +53,7 @@ void SystemMetrics::initLogComponents()
 
     currValueGetter = std::make_unique<FpgaInterrupts>();
     if(currValueGetter->canGetValue())
-        m_logComponents.push_back(std::make_unique<LogComponent>(std::make_unique<FpgaInterrupts>(), std::make_unique<LogStrategyFutureMinMaxMean>("Fpga Interrupts", "interrupt/s")));
+        m_logComponents.push_back(std::make_unique<LogComponent>(std::make_unique<FpgaInterrupts>(), std::make_unique<LogStrategyMinMaxMean>("Fpga Interrupts", "interrupt/s")));
     else
         qWarning("FPGA interrupts do not work in this environment - ignore");
 }
