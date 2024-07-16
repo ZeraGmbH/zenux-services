@@ -3,6 +3,7 @@
 #include "demoeventloopfeeder.h"
 #include "demofactorydevicenodedsp.h"
 #include "mockserverparamgenerator.h"
+#include "autojournalloggerfacade.h"
 
 DemoAllServicesMt310s2::DemoAllServicesMt310s2()
 {
