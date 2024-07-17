@@ -20,7 +20,9 @@ selected_log_types = []
 def parse_log_output(log_input, log_type):
     outputStr = []
     if not Path(log_input).is_file():
-        print("Invalid log file", log_input)
+        print("Invalid log file - File does not exist. Exiting...", log_input)
+        return outputStr
+        exit(1)
     else:    
         with open(log_input, 'r') as file:
             for line in file:
@@ -61,8 +63,12 @@ def main():
     print("selected log types:", selected_log_types)
     for log_type in selected_log_types:
         parsedStringList = parse_log_output(options.log_path, log_type)
-        if parsedStringList and saveAsCSV(parsedStringList, log_type):
-            subprocess.run(["gnuplot", "-e", "filename='/tmp/plotter_out/" + log_type + ".csv'", "-p", "plot.gnuplot"])
+        if not parsedStringList:
+            print("No log output found. Old style log format? Exiting...")
+            exit(0)
+        if saveAsCSV(parsedStringList, log_type):
+            gnuplotPath = str(Path(__file__).parent.resolve()) + "/plot.gnuplot"
+            subprocess.run(["gnuplot", "-e", "filename='/tmp/plotter_out/" + log_type + ".csv'", "-p", gnuplotPath])
     
 
 if __name__ == "__main__":
