@@ -6,13 +6,15 @@ import shutil
 import subprocess
 from optparse import OptionParser
 
-available_log_outputs = ["cpu_temp","cpu_load","cpu_freq","fpga_interrupts","ram_usage"]
+available_log_outputs = ["cpu_temp","cpu_load","cpu_freq","fpga_interrupts","ram_usage","dsp_load","dsp_read_write"]
 search_string_lookup = {
     "cpu_temp": searchLookUp("cpu_temp","CPU Temperature (°C)"),
     "cpu_load": searchLookUp("cpu_load","CPU Load (%)"),
     "cpu_freq": searchLookUp("cpu_freq","CPU Frequency (MHz)"),
     "ram_usage": searchLookUp("ram_usage","RAM usage (%)"),
-    "fpga_interrupts": searchLookUp("fpga_interrupts","Fpga Interrupts (interrupt/s)")
+    "fpga_interrupts": searchLookUp("fpga_interrupts","Fpga Interrupts (interrupt/s)"),
+    "dsp_load": searchLookUp("dsp_load", "DSP is running, Max load:",extract_dsp),
+    "dsp_read_write": searchLookUp("dsp_read","DSP transactions: Read:", extract_dsp_read)
 }
 
 selected_log_types = []
@@ -68,7 +70,10 @@ def main():
             exit(0)
         if saveAsCSV(parsedStringList, log_type):
             gnuplotPath = str(Path(__file__).parent.resolve()) + "/plot.gnuplot"
-            subprocess.run(["gnuplot", "-e", "filename='/tmp/plotter_out/" + log_type + ".csv'", "-p", gnuplotPath])
+            if log_type == "dsp_read_write":
+                subprocess.run(["gnuplot", "-e", "filename='/tmp/plotter_out/" + log_type + ".csv'", "-e", "multi='1'", "-p", gnuplotPath])
+            else:
+                subprocess.run(["gnuplot", "-e", "filename='/tmp/plotter_out/" + log_type + ".csv'", "-e", "multi='0'", "-p", gnuplotPath])
     
 
 if __name__ == "__main__":
