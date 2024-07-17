@@ -2,7 +2,7 @@
 from structs import *
 from csvHandler import saveAsCSV
 from pathlib import Path
-import csv
+import shutil
 import subprocess
 from optparse import OptionParser
 
@@ -39,6 +39,10 @@ def main():
     (options, args) = parser.parse_args()
 
     print("chosen log file:", options.log_path)
+
+    if not shutil.which("gnuplot"):
+        print("gnuplot could not be found. Please install. Exiting...")
+        exit(0)
 
     log_type_string = options.log_type.split(',')
 
