@@ -73,7 +73,7 @@ private slots:
     void outputLogs();
 private:
     void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
-    void outputAndResetLoadLogs();
+    void outputDspRunState();
     void outputAndResetTransactionsLogs();
 
     AbstractFactoryDeviceNodeDspPtr m_deviceNodeFactory;
