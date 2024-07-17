@@ -268,29 +268,11 @@ void ZDspServer::onResourceReady()
     m_periodicLogTimer->start();
 }
 
-void ZDspServer::outputAndResetLoadLogs()
+void ZDspServer::outputDspRunState()
 {
-    // we need a client to do the job
-    cZDSP1Client dummyClient(0, 0, m_deviceNodeFactory);
-
-    QString queryMaxLoad = "BUSYMAX,1;";
-    // example response BUSYMAX:5.7539682;
-    QStringList responseSplit = dummyClient.DspVarListRead(queryMaxLoad).split(":");
-    QString maxLoad = responseSplit[1];
-    maxLoad.chop(1); //remove last char ';'
-    int decimalPointIndex = maxLoad.indexOf(".");
-    if (decimalPointIndex > 0)
-        maxLoad = maxLoad.left(decimalPointIndex + 2); //take one digit after decimal point
-
-    QString commandResetMaxLoad = "BUSYMAX,0.0";
-    bool resetOk = dummyClient.DspVarWriteRM(commandResetMaxLoad) == ZSCPI::scpiAnswer[ZSCPI::ack];
-    QString maxLoadReset = resetOk ? "Reset successful" : "Reset failed !";
-
     QString dspStatus = mGetDspStatus();
-    QString message = QString("DSP is %1, Max load: %2%, %3").
-                      arg(dspStatus, maxLoad, maxLoadReset);
-
-    if(resetOk && (dspStatus == dsprunning))
+    QString message = QString("DSP is %1").arg(dspStatus);
+    if(dspStatus == dsprunning)
         qInfo("%s", qPrintable(message));
     else
         qWarning("%s", qPrintable(message));
@@ -307,7 +289,7 @@ void ZDspServer::outputAndResetTransactionsLogs()
 
 void ZDspServer::outputLogs()
 {
-    outputAndResetLoadLogs();
+    outputDspRunState();
     outputAndResetTransactionsLogs();
 }
 
