@@ -8,13 +8,13 @@ from optparse import OptionParser
 
 available_log_outputs = ["cpu_temp","cpu_load","cpu_freq","fpga_interrupts","ram_usage","dsp_load","dsp_read_write"]
 search_string_lookup = {
-    "cpu_temp": searchLookUp("cpu_temp","CPU Temperature (°C)"),
-    "cpu_load": searchLookUp("cpu_load","CPU Load (%)"),
-    "cpu_freq": searchLookUp("cpu_freq","CPU Frequency (MHz)"),
-    "ram_usage": searchLookUp("ram_usage","RAM usage (%)"),
-    "fpga_interrupts": searchLookUp("fpga_interrupts","Fpga Interrupts (interrupt/s)"),
-    "dsp_load": searchLookUp("dsp_load", "DSP is running, Max load:",extract_dsp),
-    "dsp_read_write": searchLookUp("dsp_read","DSP transactions: Read:", extract_dsp_read)
+    "cpu_temp": searchLookUp("cpu_temp","CPU Temperature (°C)", label="CPU temp"),
+    "cpu_load": searchLookUp("cpu_load","CPU Load (%)", label="CPU load"),
+    "cpu_freq": searchLookUp("cpu_freq","CPU Frequency (MHz)", label="CPU freq"),
+    "ram_usage": searchLookUp("ram_usage","RAM usage (%)", label="RAM usage"),
+    "fpga_interrupts": searchLookUp("fpga_interrupts","Fpga Interrupts (interrupt/s)", label="FPGA interrupts"),
+    "dsp_load": searchLookUp("dsp_load", "DSP max load:",extract_dsp, label="DSP load"),
+    "dsp_read_write": searchLookUp("dsp_read","DSP transactions: Read:", extract_dsp_read_write, label="DSP read", label2="DSP write")
 }
 
 selected_log_types = []
@@ -38,7 +38,7 @@ def main():
     parser.add_option("-i", "--input-log", dest="log_path",
                     help="path to log file", metavar="<path_to_log>", default="./journal.log-0")
     parser.add_option("-t", "--type-of-log", dest="log_type",
-                    help="types of logs comma separated. Available log types: all,cpu_temp,cpu_load,cpu_freq,fpga_interrupts,ram_usage", metavar="<log_type>", default="all")
+                    help="types of logs comma separated. Available log types: all,cpu_temp,cpu_load,cpu_freq,fpga_interrupts,ram_usage,dsp_load,dsp_read_write", metavar="<log_type>", default="all")
 
     (options, args) = parser.parse_args()
 
@@ -68,9 +68,9 @@ def main():
         if not parsedStringList:
             print("No log output found. Old style log format? Exiting...")
             exit(0)
-        if saveAsCSV(parsedStringList, log_type):
+        if saveAsCSV(parsedStringList, log_type, search_string_lookup):
             gnuplotPath = str(Path(__file__).parent.resolve()) + "/plot.gnuplot"
-            if log_type == "dsp_read_write":
+            if search_string_lookup[log_type].label2:
                 subprocess.run(["gnuplot", "-e", "filename='/tmp/plotter_out/" + log_type + ".csv'", "-e", "multi='1'", "-p", gnuplotPath])
             else:
                 subprocess.run(["gnuplot", "-e", "filename='/tmp/plotter_out/" + log_type + ".csv'", "-e", "multi='0'", "-p", gnuplotPath])

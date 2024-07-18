@@ -22,18 +22,17 @@ def extract_dsp(input_line):
     returnOutput = structs.measValue()
 
     for parts in splitString:
-        if "Max load:" in parts:
-            resetCutOff = parts.rsplit(",",1)[0]
-            value = resetCutOff.rsplit(" ", 1)
-            returnOutput.value = value[1].replace("%","").strip()
-        if "zdsp1d" in parts:
-            partsSplit = parts.split("zdsp1d")
+        if "max load:" in parts:
+            value = parts.rsplit(" ", 1)
+            returnOutput.value = value[1].strip()
+        if "zera-modulemanager" in parts:
+            partsSplit = parts.split("zera-modulemanager")
             partsSplit = partsSplit[0].rstrip().rsplit(" ", 1)
             timeStamp = partsSplit[0].strip().split('.')[0]
             returnOutput.time = timeStamp
     return returnOutput
 
-def extract_dsp_read(input_line):
+def extract_dsp_read_write(input_line):
     input_line = input_line.rstrip()
     splitString = input_line.rsplit('/',1)
     returnOutput = structs.measValue()
@@ -51,6 +50,3 @@ def extract_dsp_read(input_line):
             timeStamp = partsSplit[0].strip().split('.')[0]
             returnOutput.time = timeStamp
     return returnOutput
-
-def extract_dsp_write(input_line):
-    return structs.measValue()
