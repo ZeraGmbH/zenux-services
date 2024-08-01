@@ -47,3 +47,14 @@ def extract_dsp_read_write(input_line):
         if "zdsp1d" in parts:
             returnOutput.time = get_timestamp(parts, "zdsp1d")
     return returnOutput
+
+def extract_meas_freq(input_line):
+    input_line = input_line.rstrip()
+    splitString = input_line.rsplit('~',1)
+    returnOutput = structs.measValue()
+    for parts in splitString:
+        if "Hz" in parts:
+            returnOutput.value = parts.replace("Hz", "")
+        if "zera-modulemanager" in parts:
+            returnOutput.time = get_timestamp(parts, "zera-modulemanager")
+    return returnOutput
