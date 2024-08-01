@@ -7,7 +7,6 @@ set format x "%H:%M"
 set key autotitle columnhead # use the first line as title
 set xlabel 'Time' # label for the X axis
 set ylabel "Measurement" # label for the Y axis
-plot filename using 1:2  smooth acsplines lt rgb "#00725c" lw 2
 
 set style line 1 \
     linecolor rgb '#00725c' \
