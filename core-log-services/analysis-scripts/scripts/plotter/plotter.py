@@ -67,8 +67,8 @@ def main():
     for log_type in selected_log_types:
         parsedStringList = parse_log_output(options.log_path, log_type)
         if not parsedStringList:
-            print("No log output found. Old style log format? Exiting...")
-            exit(0)
+            print("No log output found. Old style log format? Skipping...")
+            continue
         if saveAsCSV(parsedStringList, log_type, search_string_lookup):
             gnuplotPath = str(Path(__file__).parent.resolve()) + "/plot.gnuplot"
             if search_string_lookup[log_type].label2:
