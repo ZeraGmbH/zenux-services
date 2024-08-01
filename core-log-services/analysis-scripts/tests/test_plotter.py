@@ -4,7 +4,7 @@ import unittest
 import sys
 sys.path.insert(0, '../scripts/plotter/')
 from plotter import parse_log_output, main
-from extractStrategies import extract_min_max_mean
+from extractStrategies import extract_min_max_mean, extract_meas_freq
 
 #####################################################################
 #                                                                   #
@@ -33,6 +33,12 @@ class Test_plotter(unittest.TestCase):
         returnValue = extract_min_max_mean(testLine)
         self.assertEqual(returnValue.time, "")
         self.assertEqual(returnValue.value, "")
+
+    def test_validMeasFreqStrategy(self):
+        testLine = "Jul 30 14:36:02.297406 zera-mt310s2-050082224 zera-modulemanager[279]: Measured frequency: ~13Hz"
+        returnValue = extract_meas_freq(testLine)
+        self.assertEqual(returnValue.time, "Jul 30 14:36:02")
+        self.assertEqual(returnValue.value, "13")
 
 if __name__ == "__main__":
     unittest.main()

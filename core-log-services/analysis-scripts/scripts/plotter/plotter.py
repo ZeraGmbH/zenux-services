@@ -6,7 +6,7 @@ import shutil
 import subprocess
 from optparse import OptionParser
 
-available_log_outputs = ["cpu_temp","cpu_load","cpu_freq","fpga_interrupts","ram_usage","dsp_load","dsp_read_write"]
+available_log_outputs = ["cpu_temp","cpu_load","cpu_freq","fpga_interrupts","ram_usage","dsp_load","dsp_read_write","meas_freq"]
 search_string_lookup = {
     "cpu_temp": searchLookUp("cpu_temp","CPU Temperature (°C)", label="CPU temp"),
     "cpu_load": searchLookUp("cpu_load","CPU Load (%)", label="CPU load"),
@@ -14,7 +14,8 @@ search_string_lookup = {
     "ram_usage": searchLookUp("ram_usage","RAM usage (%)", label="RAM usage"),
     "fpga_interrupts": searchLookUp("fpga_interrupts","Fpga Interrupts (interrupt/s)", label="FPGA interrupts"),
     "dsp_load": searchLookUp("dsp_load", "DSP max load:",extract_dsp, label="DSP load"),
-    "dsp_read_write": searchLookUp("dsp_read","DSP transactions: Read:", extract_dsp_read_write, label="DSP read", label2="DSP write")
+    "dsp_read_write": searchLookUp("dsp_read","DSP transactions: Read:", extract_dsp_read_write, label="DSP read", label2="DSP write"),
+    "meas_freq": searchLookUp("meas_freq","Measured frequency:", extract_meas_freq, label="Measured frequency")
 }
 
 selected_log_types = []
