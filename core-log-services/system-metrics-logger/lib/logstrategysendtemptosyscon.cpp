@@ -3,7 +3,7 @@
 LogStrategySendTempToSysCon::LogStrategySendTempToSysCon(QString valueLabel, QString unitLabel) :
     m_valueLabel(valueLabel),
     m_unitLabel(unitLabel),
-    m_sendTemp(I2cSendTemp("test", 0x22, 0))
+    m_sendTemp(I2cSendTemp("/dev/i2c-0", 0x22, 0))  // todo no magic string!!!
 {
 }
 
