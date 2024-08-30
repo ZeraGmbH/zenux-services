@@ -17,6 +17,8 @@ target_link_libraries(system-metrics
     PUBLIC
     Qt5::Core
     Zera::zera-timers
+    Zera::zera-i2c-devices
+    zenuxservicecommon
     # ask linker to help us finding unresolved symbols
     "-Wl,--no-undefined"
     )

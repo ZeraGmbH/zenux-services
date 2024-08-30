@@ -4,6 +4,7 @@
 #include "cpufreq.h"
 #include "logstrategyminmaxmean.h"
 #include "logstrategyfutureminmaxmean.h"
+#include "logstrategysendtemptosyscon.h"
 #include "totalmemorytracker.h"
 #include "fpgainterrupts.h"
 
@@ -30,7 +31,10 @@ void SystemMetrics::initLogComponents()
 
     currValueGetter = std::make_unique<CpuTemp>();
     if(currValueGetter->canGetValue())
+    {
         m_logComponents.push_back(std::make_unique<LogComponent>(std::make_unique<CpuTemp>(), std::make_unique<LogStrategyMinMaxMean>("CPU Temperature", "°C")));
+        m_logComponents.push_back(std::make_unique<LogComponent>(std::make_unique<CpuTemp>(), std::make_unique<LogStrategySendTempToSysCon>("CPU Temperature", "°C")));
+    }
     else
         qWarning("CpuTemp does not work in this environment - ignore!");
 
