@@ -11,7 +11,7 @@ public:
     DspInterruptLogger(int periodMs);
     void addInterruptCount(int perIntInterruptCount);
 signals:
-    void sigLogNewData(int minInts, int maxInts, int avgInts);
+    void sigLogNewData(int minInts, int maxInts, float avgInts);
 private slots:
     void onTimer();
 private:
