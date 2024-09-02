@@ -16,7 +16,7 @@ search_string_lookup = {
     "dsp_load": searchLookUp("dsp_load", "DSP max load:",extract_dsp, label="DSP load"),
     "dsp_read_write": searchLookUp("dsp_read","DSP transactions: Read:", extract_dsp_read_write, label="DSP read", label2="DSP write"),
     "meas_freq": searchLookUp("meas_freq","Measured frequency:", extract_meas_freq, label="Measured frequency"),
-    "dsp_int_cnt": searchLookUp("dsp_int_cnt","DSP Interrupts per Linux interrupt", extract_min_max_mean_dsp, label="DSP Interrupts per Linux interrupt"),
+    "dsp_int_cnt": searchLookUp("dsp_int_cnt","DSP Interrupts per Linux interrupt", extract_min_max_mean_dsp, label="DSP Interrupts per Linux interrupt - mean", label2="DSP Interrupts per Linux interrupt - max"),
     "linux_dsp_int": searchLookUp("linux_dsp_int","DSP Interrupts per Linux interrupt", extract_min_max_mean_total_int, label="Total Linux interrupts by DSP")
 }
 

@@ -28,6 +28,10 @@ def extract_min_max_mean_dsp(input_line):
             parts = parts.lstrip()
             partsSplit = parts.split(' ')
             returnOutput.value = partsSplit[1]
+        if "max" in parts:
+            parts = parts.lstrip()
+            partsSplit = parts.rsplit(' ',1)
+            returnOutput.value2 = partsSplit[1]
         if "zdsp1d" in parts:
             returnOutput.time = get_timestamp(parts, "zdsp1d")
     return returnOutput
