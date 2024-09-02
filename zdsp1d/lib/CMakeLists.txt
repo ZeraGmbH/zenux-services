@@ -37,6 +37,7 @@ target_link_libraries(zdsp1d-lib
     Qt5::Core
     Zera::xiqnet
     Zera::zeraprotobuf
+    Zera::zera-log-statistics
     zenuxservicecommon
     )
 

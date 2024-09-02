@@ -2,7 +2,6 @@
 #define ZDSP1D_H
 
 #include "abstractfactorydevicenodedsp.h"
-#include "dspinterruptlogger.h"
 #include "resourceregistertransaction.h"
 #include "scpicmdinterpreter.h"
 #include "scpicmds.h"
@@ -11,6 +10,7 @@
 #include "scpiconnection.h"
 #include "settingscontainer.h"
 #include <timertemplateqt.h>
+#include <logstatisticsasyncint.h>
 #include <scpi.h>
 #include <vtcp_server.h>
 #include <xiqnetwrapper.h>
@@ -102,7 +102,7 @@ private:
     QList<cZDSP1Client*> m_clientList;
 
     ulong UserWorkSpaceGlobalSegmentAdr;
-    DspInterruptLogger m_dspInterruptLogger;
+    LogStatisticsAsyncInt m_dspInterruptLogStatistics;
 
     bool resetDsp();
     bool bootDsp();
