@@ -17,10 +17,11 @@ void DspInterruptLogger::addInterruptCount(int perIntInterruptCount)
 void DspInterruptLogger::onTimer()
 {
     if(!m_interruptCounts.isEmpty()) {
+        int linuxInterruptCnt = m_interruptCounts.size();
         int min = *std::min_element(m_interruptCounts.begin(), m_interruptCounts.end());
         int max = *std::max_element(m_interruptCounts.begin(), m_interruptCounts.end());
-        float mean = std::accumulate(m_interruptCounts.begin(), m_interruptCounts.end(), 0.0)/m_interruptCounts.size();
+        float mean = std::accumulate(m_interruptCounts.begin(), m_interruptCounts.end(), 0.0) / linuxInterruptCnt;
         m_interruptCounts.clear();
-        emit sigLogNewData(min, max, mean);
+        emit sigLogNewData(min, max, mean, linuxInterruptCnt);
     }
 }
