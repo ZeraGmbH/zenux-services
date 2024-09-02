@@ -16,5 +16,6 @@ SETUP_SERVICE_ZDSP1D_TESTS(
     test_config_load_zdsp1
     test_old_scpi_implementation
     test_regression_dsp_var
+    test_dsp_interrupt_logger
     )
 
