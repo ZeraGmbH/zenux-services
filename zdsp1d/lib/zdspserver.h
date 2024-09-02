@@ -2,6 +2,7 @@
 #define ZDSP1D_H
 
 #include "abstractfactorydevicenodedsp.h"
+#include "dspinterruptlogger.h"
 #include "resourceregistertransaction.h"
 #include "scpicmdinterpreter.h"
 #include "scpicmds.h"
@@ -101,6 +102,7 @@ private:
     QList<cZDSP1Client*> m_clientList;
 
     ulong UserWorkSpaceGlobalSegmentAdr;
+    DspInterruptLogger m_dspInterruptLogger;
 
     bool resetDsp();
     bool bootDsp();
