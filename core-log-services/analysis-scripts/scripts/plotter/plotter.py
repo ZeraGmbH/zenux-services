@@ -6,7 +6,7 @@ import shutil
 import subprocess
 from optparse import OptionParser
 
-available_log_outputs = ["cpu_temp","cpu_load","cpu_freq","fpga_interrupts","ram_usage","dsp_load","dsp_read_write","meas_freq","dsp_int_cnt"]
+available_log_outputs = ["cpu_temp","cpu_load","cpu_freq","fpga_interrupts","ram_usage","dsp_load","dsp_read_write","meas_freq","dsp_int_cnt", "linux_dsp_int"]
 search_string_lookup = {
     "cpu_temp": searchLookUp("cpu_temp","CPU Temperature (°C)", label="CPU temp"),
     "cpu_load": searchLookUp("cpu_load","CPU Load (%)", label="CPU load"),
@@ -16,7 +16,8 @@ search_string_lookup = {
     "dsp_load": searchLookUp("dsp_load", "DSP max load:",extract_dsp, label="DSP load"),
     "dsp_read_write": searchLookUp("dsp_read","DSP transactions: Read:", extract_dsp_read_write, label="DSP read", label2="DSP write"),
     "meas_freq": searchLookUp("meas_freq","Measured frequency:", extract_meas_freq, label="Measured frequency"),
-    "dsp_int_cnt": searchLookUp("dsp_int_cnt","DSP Interrupts per Linux interrupt", extract_min_max_mean_dsp, label="DSP Interrupts per Linux interrupt")
+    "dsp_int_cnt": searchLookUp("dsp_int_cnt","DSP Interrupts per Linux interrupt", extract_min_max_mean_dsp, label="DSP Interrupts per Linux interrupt"),
+    "linux_dsp_int": searchLookUp("linux_dsp_int","DSP Interrupts per Linux interrupt", extract_min_max_mean_total_int, label="Total Linux interrupts by DSP")
 }
 
 selected_log_types = []
@@ -40,7 +41,7 @@ def main():
     parser.add_option("-i", "--input-log", dest="log_path",
                     help="path to log file", metavar="<path_to_log>", default="./journal.log-0")
     parser.add_option("-t", "--type-of-log", dest="log_type",
-                    help="types of logs comma separated. Available log types: all,cpu_temp,cpu_load,cpu_freq,fpga_interrupts,ram_usage,dsp_load,dsp_read_write,dsp_int_cnt", metavar="<log_type>", default="all")
+                    help="types of logs comma separated. Available log types: all,cpu_temp,cpu_load,cpu_freq,fpga_interrupts,ram_usage,dsp_load,dsp_read_write,dsp_int_cnt,linux_dsp_int", metavar="<log_type>", default="all")
 
     (options, args) = parser.parse_args()
 
