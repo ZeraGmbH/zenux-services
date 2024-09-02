@@ -96,9 +96,9 @@ ZDspServer::ZDspServer(SettingsContainerPtr settings, AbstractFactoryDeviceNodeD
 
     m_pInitializationMachine->start();
 
-    connect(&m_dspInterruptLogger, &DspInterruptLogger::sigLogNewData, [](int min, int max, float avg) {
-        qInfo("DSP Interrupts per Linux interrupt min: %i, max: %i, mean: %.1f",
-              min, max, avg);
+    connect(&m_dspInterruptLogger, &DspInterruptLogger::sigLogNewData, [](int min, int max, float avg, int interruptCnt) {
+        qInfo("DSP Interrupts per Linux interrupt min: %i, max: %i, mean: %.1f; Total Linux Interrupts: %i",
+              min, max, avg, interruptCnt);
     });
 }
 
