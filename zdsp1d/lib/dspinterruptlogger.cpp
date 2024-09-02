@@ -19,7 +19,7 @@ void DspInterruptLogger::onTimer()
     if(!m_interruptCounts.isEmpty()) {
         int min = *std::min_element(m_interruptCounts.begin(), m_interruptCounts.end());
         int max = *std::max_element(m_interruptCounts.begin(), m_interruptCounts.end());
-        int mean = std::accumulate(m_interruptCounts.begin(), m_interruptCounts.end(), 0)/m_interruptCounts.size();
+        float mean = std::accumulate(m_interruptCounts.begin(), m_interruptCounts.end(), 0.0)/m_interruptCounts.size();
         m_interruptCounts.clear();
         emit sigLogNewData(min, max, mean);
     }
