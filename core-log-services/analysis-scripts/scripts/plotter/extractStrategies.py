@@ -19,6 +19,19 @@ def extract_min_max_mean(input_line):
             returnOutput.time = get_timestamp(parts, "system-metrics-logger")
     return returnOutput
 
+def extract_min_max_mean_dsp(input_line):
+    input_line = input_line.rstrip()
+    splitString = input_line.rsplit(',',1)
+    returnOutput = structs.measValue()
+    for parts in splitString:
+        if "mean" in parts:
+            parts = parts.lstrip()
+            partsSplit = parts.split(' ')
+            returnOutput.value = partsSplit[1]
+        if "zdsp1d" in parts:
+            returnOutput.time = get_timestamp(parts, "zdsp1d")
+    return returnOutput
+
 def extract_dsp(input_line):
     input_line = input_line.rstrip()
     splitString = input_line.rsplit('/',1)
