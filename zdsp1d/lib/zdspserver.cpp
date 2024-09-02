@@ -60,6 +60,7 @@ ZDspServer::ZDspServer(SettingsContainerPtr settings, AbstractFactoryDeviceNodeD
     ScpiConnection(ScpiSingletonFactory::getScpiObj()),
     m_deviceNodeFactory(deviceNodeFactory),
     m_settings(std::move(settings)),
+    m_dspInterruptLogger(10000),
     m_pRMConnection(new RMConnection(m_settings->getEthSettings()->getRMIPadr(), m_settings->getEthSettings()->getPort(EthSettings::resourcemanager))),
     m_resourceRegister(m_pRMConnection)
 {
@@ -94,6 +95,11 @@ ZDspServer::ZDspServer(SettingsContainerPtr settings, AbstractFactoryDeviceNodeD
     QObject::connect(stateFINISH, &QAbstractState::entered, this, &ZDspServer::doCloseServer);
 
     m_pInitializationMachine->start();
+
+    connect(&m_dspInterruptLogger, &DspInterruptLogger::sigLogNewData, [](int min, int max, int avg) {
+        qInfo("DSP Interrupts per Linux interrupt min: %i, max: %i, mean: %i",
+              min, max, avg);
+    });
 }
 
 ZDspServer::~ZDspServer()
@@ -912,6 +918,7 @@ void ZDspServer::DspIntHandler(int)
         if (client->DspVarRead(s, &ba)) { // 20 worte lesen
             ulong* pardsp = (ulong*) ba.data();
             int n = pardsp[0]; // anzahl der interrupts
+            m_dspInterruptLogger.addInterruptCount(n);
             for (int i = 1; i < (n+1); i++) {
                 int process = pardsp[i] >> 16;
                 cZDSP1Client *client2 = GetClient(process);
