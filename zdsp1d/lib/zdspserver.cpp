@@ -919,39 +919,43 @@ void ZDspServer::DspIntHandler(int)
             ulong* pardsp = (ulong*) ba.data();
             int n = pardsp[0]; // anzahl der interrupts
             m_dspInterruptLogStatistics.addValue(n);
-            for (int i = 1; i < (n+1); i++) {
-                int process = pardsp[i] >> 16;
-                cZDSP1Client *client2 = GetClient(process);
-                if (client2) { // gibts den client noch, der den interrupt haben wollte
-                    s = QString("DSPINT:%1").arg(pardsp[i] & 0xFFFF);
-                    if (m_clientIDHash.contains(client2)) { // es war ein client der über protobuf (clientid) angelegt wurde
-                        ProtobufMessage::NetMessage protobufIntMessage;
-                        ProtobufMessage::NetMessage::NetReply *intMessage = protobufIntMessage.mutable_reply();
+            if (n > 250)   // in the moment magic nr
+                qInfo ("Number of interrupts in a package: %i exceeds upper limit!", n);
+            else {
+                for (int i = 1; i < (n+1); i++) {
+                    int process = pardsp[i] >> 16;
+                    cZDSP1Client *client2 = GetClient(process);
+                    if (client2) { // gibts den client noch, der den interrupt haben wollte
+                        s = QString("DSPINT:%1").arg(pardsp[i] & 0xFFFF);
+                        if (m_clientIDHash.contains(client2)) { // es war ein client der über protobuf (clientid) angelegt wurde
+                            ProtobufMessage::NetMessage protobufIntMessage;
+                            ProtobufMessage::NetMessage::NetReply *intMessage = protobufIntMessage.mutable_reply();
 
-                        intMessage->set_body(s.toStdString());
-                        intMessage->set_rtype(ProtobufMessage::NetMessage_NetReply_ReplyType_ACK);
+                            intMessage->set_body(s.toStdString());
+                            intMessage->set_rtype(ProtobufMessage::NetMessage_NetReply_ReplyType_ACK);
 
-                        QByteArray idba = m_clientIDHash[client2];
-                        protobufIntMessage.set_clientid(idba.data(), idba.size() );
-                        protobufIntMessage.set_messagenr(0); // interrupt
+                            QByteArray idba = m_clientIDHash[client2];
+                            protobufIntMessage.set_clientid(idba.data(), idba.size() );
+                            protobufIntMessage.set_messagenr(0); // interrupt
 
-                        client2->m_pNetClient->sendMessage(m_protobufWrapper.protobufToByteArray(protobufIntMessage));
-                    }
-                    else {
-                        QByteArray block;
-                        QDataStream out(&block, QIODevice::WriteOnly);
-                        out.setVersion(QDataStream::Qt_4_0);
-                        out << (qint32)0;
+                            client2->m_pNetClient->sendMessage(m_protobufWrapper.protobufToByteArray(protobufIntMessage));
+                        }
+                        else {
+                            QByteArray block;
+                            QDataStream out(&block, QIODevice::WriteOnly);
+                            out.setVersion(QDataStream::Qt_4_0);
+                            out << (qint32)0;
 
-                        out << s.toUtf8();
-                        out.device()->seek(0);
-                        out << (qint32)(block.size() - sizeof(qint32));
+                            out << s.toUtf8();
+                            out.device()->seek(0);
+                            out << (qint32)(block.size() - sizeof(qint32));
 
-                        VeinTcp::TcpPeer* pNetclient = client2->m_pNetClient;
-                        if (pNetclient == nullptr)
-                            m_pSCPISocket->write(block);
-                        else
-                            pNetclient->writeRaw(block);
+                            VeinTcp::TcpPeer* pNetclient = client2->m_pNetClient;
+                            if (pNetclient == nullptr)
+                                m_pSCPISocket->write(block);
+                            else
+                                pNetclient->writeRaw(block);
+                        }
                     }
                 }
             }
