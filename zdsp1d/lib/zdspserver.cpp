@@ -62,7 +62,8 @@ ZDspServer::ZDspServer(SettingsContainerPtr settings, AbstractFactoryDeviceNodeD
     m_settings(std::move(settings)),
     m_dspInterruptLogStatistics(10000),
     m_pRMConnection(new RMConnection(m_settings->getEthSettings()->getRMIPadr(), m_settings->getEthSettings()->getPort(EthSettings::resourcemanager))),
-    m_resourceRegister(m_pRMConnection)
+    m_resourceRegister(m_pRMConnection),
+    m_mayhemBaby(false)
 {
     m_pInitializationMachine = new QStateMachine(this);
     myXMLConfigReader = new Zera::XMLConfig::cReader();
@@ -880,6 +881,7 @@ QString ZDspServer::mGetDeviceLoadAct()
 {
     cZDSP1Client* cl = GetClient(m_actualSocket);
     QString p = "BUSY,1;";
+    m_mayhemBaby = true;
     Answer = cl->DspVarListRead(p);  // ab "BUSY"  1 wort lesen
     return Answer;
 }
@@ -922,6 +924,12 @@ void ZDspServer::DspIntHandler(int)
             if (n > 20)   // in the moment magic nr
                 qInfo ("Number of interrupts in a package: %i exceeds upper limit!", n);
             else {
+                if (m_mayhemBaby) {
+                    m_mayhemBaby = false;
+                    qInfo ("We were here breaking ankles");
+                    n = n + 1000;
+                }
+
                 for (int i = 1; i < (n+1); i++) {
                     int process = pardsp[i] >> 16;
                     cZDSP1Client *client2 = GetClient(process);

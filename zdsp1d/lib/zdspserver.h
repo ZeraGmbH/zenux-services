@@ -190,6 +190,7 @@ private:
     int m_retryRMConnect;
     QTimer m_retryTimer;
     TimerTemplateQtPtr m_periodicLogTimer;
+    bool m_mayhemBaby;
 };
 
 #endif
