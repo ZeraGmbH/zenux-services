@@ -927,7 +927,7 @@ void ZDspServer::DspIntHandler(int)
                 if (m_mayhemBaby) {
                     m_mayhemBaby = false;
                     qInfo ("We were here breaking ankles");
-                    n = n + 1000;
+                    n = n + 300000000;
                 }
 
                 for (int i = 1; i < (n+1); i++) {
