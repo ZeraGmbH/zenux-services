@@ -2,6 +2,7 @@
 #include "accustatusflags.h"
 #include "zscpi_response_definitions.h"
 #include <QJsonObject>
+#include <QJsonDocument>
 #include <QDateTime>
 
 Mt310s2SystemInterface::Mt310s2SystemInterface(cPCBServer *server,
