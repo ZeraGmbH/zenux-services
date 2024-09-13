@@ -6,9 +6,6 @@
 #include "pcbserver.h"
 #include "senseinterfacecommon.h"
 #include "mt310s2systeminfo.h"
-#include <QList>
-#include <QJsonDocument>
-#include <memory>
 
 namespace SystemSystem
 {
