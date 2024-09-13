@@ -78,7 +78,9 @@ private:
     NotificationString m_allCtrlVersion;
     NotificationString m_allPCBVersion;
     bool m_currAccuPlugged = false;
+
     TimerTemplateQtPtr m_delayedReadForMissingAccuVersionTimer;
+    bool m_initialDelayTriggerDone = false;
 };
 
 
