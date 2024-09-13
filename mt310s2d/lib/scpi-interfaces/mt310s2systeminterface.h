@@ -44,11 +44,12 @@ public:
                            HotPluggableControllerContainerPtr hotPluggableControllerContainer);
     virtual void initSCPIConnection(QString leadingNodes) override;
     void actualizeContollers(quint16 bitmaskAvailable);
-
+public slots:
+    void onAccuStatusChanged(uint8_t status);
 protected:
     void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
 private slots:
-    void onHotPluggableContainersChanged();
+    void onHotPluggablesChanged();
 private:
     QString scpiReadServerVersion(QString& sInput);
     QString scpiReadAllCTRLVersions(QString& sInput);
@@ -79,6 +80,7 @@ private:
 
     NotificationString m_allCtrlVersion;
     NotificationString m_allPCBVersion;
+    bool m_currAccuPluggedState = false;
 };
 
 

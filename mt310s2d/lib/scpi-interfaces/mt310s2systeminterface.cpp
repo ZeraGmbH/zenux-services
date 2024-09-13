@@ -20,7 +20,7 @@ Mt310s2SystemInterface::Mt310s2SystemInterface(cPCBServer *server,
 {
     if(m_hotPluggableControllerContainer)
         connect(m_hotPluggableControllerContainer.get(), &HotPluggableControllerContainer::sigControllersChanged,
-                this, &Mt310s2SystemInterface::onHotPluggableContainersChanged);
+                this, &Mt310s2SystemInterface::onHotPluggablesChanged);
 }
 
 
@@ -51,6 +51,14 @@ void Mt310s2SystemInterface::actualizeContollers(quint16 bitmaskAvailable)
                                                                      10000);
 }
 
+void Mt310s2SystemInterface::onAccuStatusChanged(uint8_t status)
+{
+    bool accuPlugged = status & (1<<0);
+    if(m_currAccuPluggedState != accuPlugged) {
+        m_currAccuPluggedState = accuPlugged;
+        onHotPluggablesChanged();
+    }
+}
 
 void Mt310s2SystemInterface::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
 {
@@ -101,12 +109,11 @@ void Mt310s2SystemInterface::executeProtoScpi(int cmdCode, cProtonetCommand *pro
         emit cmdExecutionDone(protoCmd);
 }
 
-void Mt310s2SystemInterface::onHotPluggableContainersChanged()
+void Mt310s2SystemInterface::onHotPluggablesChanged()
 {
     updateAllCtrlVersionsJson();
     updateAllPCBsVersion();
 }
-
 
 QString Mt310s2SystemInterface::scpiReadServerVersion(QString &sInput)
 {
@@ -400,6 +407,12 @@ void Mt310s2SystemInterface::updateAllCtrlVersionsJson()
         controller->readCTRLVersion(version);
         object.insert("Emob controller version", QJsonValue::fromVariant(version));
     }
+    if(m_currAccuPluggedState) {
+        I2cCtrlCommonInfoPtrUnique controller = m_ctrlFactory->getCommonInfoController(AbstractFactoryI2cCtrl::CTRL_TYPE_ACCU);
+        QString version;
+        controller->readCTRLVersion(version);
+        object.insert("Accu controller version", version);
+    }
     QJsonDocument doc(object);
     m_allCtrlVersion = doc.toJson(QJsonDocument::Compact);
 }
@@ -414,6 +427,12 @@ void Mt310s2SystemInterface::updateAllPCBsVersion()
         QString version;
         controller->readPCBInfo(version);
         object.insert("Emob PCB version", QJsonValue::fromVariant(version));
+    }
+    if(m_currAccuPluggedState) {
+        I2cCtrlCommonInfoPtrUnique controller = m_ctrlFactory->getCommonInfoController(AbstractFactoryI2cCtrl::CTRL_TYPE_ACCU);
+        QString version;
+        controller->readPCBInfo(version);
+        object.insert("Accu PCB version", version);
     }
     QJsonDocument doc(object);
     m_allPCBVersion = doc.toJson(QJsonDocument::Compact);

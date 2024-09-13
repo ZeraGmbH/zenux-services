@@ -225,6 +225,8 @@ void cMT310S2dServer::doSetupServer()
                                                                               m_pSenseInterface,
                                                                               m_ctrlFactory));
             scpiConnectionList.append(m_accumulatorInterface = new AccumulatorInterface(getSCPIInterface(), m_accumulatorSettings, m_ctrlFactory));
+            connect(m_accumulatorInterface, &AccumulatorInterface::sigAccumulatorStatusChange,
+                    m_pSystemInterface, &Mt310s2SystemInterface::onAccuStatusChanged);
 
             resourceList.append(m_pSenseInterface); // all our resources
             resourceList.append(m_pSamplingInterface);
