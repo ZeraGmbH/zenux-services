@@ -50,6 +50,7 @@ private slots:
 private:
     QString scpiReadServerVersion(QString& sInput);
     QString scpiReadAllCTRLVersions(QString& sInput);
+    void triggerVersionInfoChanges();
     void updateAllCtrlVersionsJson();
     void updateAllPCBsVersion();
 
