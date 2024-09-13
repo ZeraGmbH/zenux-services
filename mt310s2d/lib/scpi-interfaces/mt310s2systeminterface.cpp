@@ -1,5 +1,5 @@
 #include "mt310s2systeminterface.h"
-#include "systeminfo.h"
+#include "accustatusflags.h"
 #include "zscpi_response_definitions.h"
 #include <QJsonObject>
 #include <QDateTime>
@@ -53,7 +53,7 @@ void Mt310s2SystemInterface::actualizeContollers(quint16 bitmaskAvailable)
 
 void Mt310s2SystemInterface::onAccuStatusChanged(uint8_t status)
 {
-    bool accuPlugged = status & (1<<0);
+    bool accuPlugged = status & (1<<bp_Battery_Present);
     if(m_currAccuPluggedState != accuPlugged) {
         m_currAccuPluggedState = accuPlugged;
         onHotPluggablesChanged();
