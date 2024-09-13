@@ -13,8 +13,8 @@ public:
     void initSCPIConnection(QString leadingNodes) override;
 private:
     void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
-    QString getAccumulatorStatus();
-    QString getAccuStateOfCharge();
+    void getAccumulatorStatus();
+    void getAccuStateOfCharge();
 
     NotificationString m_accumulatorStatus;
     NotificationString m_accuStateOfCharge;
