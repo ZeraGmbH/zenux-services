@@ -17,13 +17,21 @@ Mt310s2SystemInterface::Mt310s2SystemInterface(cPCBServer *server,
     m_senseSettings(senseSettings),
     m_senseInterface(senseInterface),
     m_ctrlFactory(ctrlFactory),
-    m_hotPluggableControllerContainer(std::move(hotPluggableControllerContainer))
+    m_hotPluggableControllerContainer(std::move(hotPluggableControllerContainer)),
+    m_delayedReadForMissingAccuVersionTimer(TimerFactoryQt::createSingleShot(10000))
 {
     if(m_hotPluggableControllerContainer)
         connect(m_hotPluggableControllerContainer.get(), &HotPluggableControllerContainer::sigControllersChanged, this, [=]() {
             qInfo("Hot plug controllers changed.");
             onHotPluggablesChanged();
         });
+
+    // Hack: On startup we miss Accu controller version - try again delayed
+    connect(m_delayedReadForMissingAccuVersionTimer.get(), &TimerTemplateQt::sigExpired, this, [&]() {
+        qInfo("Retrigger version info changes");
+        m_allCtrlVersion.forceTrigger();
+        m_allPCBVersion.forceTrigger();
+    });
 }
 
 
@@ -62,6 +70,7 @@ void Mt310s2SystemInterface::onAccuStatusChanged(uint8_t status)
         QString pluggedString = m_currAccuPlugged ? "plugged" : "unplugged";
         qInfo("Accu was detected as %s.", qPrintable(pluggedString));
         onHotPluggablesChanged();
+        m_delayedReadForMissingAccuVersionTimer->start();
     }
 }
 
