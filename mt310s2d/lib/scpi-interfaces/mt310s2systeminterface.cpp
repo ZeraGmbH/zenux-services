@@ -26,11 +26,9 @@ Mt310s2SystemInterface::Mt310s2SystemInterface(cPCBServer *server,
             onHotPluggablesChanged();
         });
 
-    // Hack: On startup we miss Accu controller version - try again delayed
+    // Hack: On startup we miss Accu controller version - force client to read again
     connect(m_delayedChangeTriggerForMissingAccuVersionTimer.get(), &TimerTemplateQt::sigExpired, this, [&]() {
-        qInfo("Retrigger version info changes");
-        m_allCtrlVersion.forceTrigger();
-        m_allPCBVersion.forceTrigger();
+        triggerVersionInfoChanges();
     });
 }
 
@@ -128,10 +126,7 @@ void Mt310s2SystemInterface::executeProtoScpi(int cmdCode, cProtonetCommand *pro
 
 void Mt310s2SystemInterface::onHotPluggablesChanged()
 {
-    qInfo("Read versions of all hotpluggables...");
-    updateAllCtrlVersionsJson();
-    updateAllPCBsVersion();
-    qInfo("Hotpluggables' versions were read.");
+    triggerVersionInfoChanges();
 }
 
 QString Mt310s2SystemInterface::scpiReadServerVersion(QString &sInput)
@@ -217,6 +212,12 @@ QString Mt310s2SystemInterface::scpiReadAllCTRLVersions(QString &sInput)
         return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
+void Mt310s2SystemInterface::triggerVersionInfoChanges()
+{
+    qInfo("Retrigger version info changes");
+    m_allCtrlVersion.forceTrigger();
+    m_allPCBVersion.forceTrigger();
+}
 
 QString Mt310s2SystemInterface::m_ReadFPGAVersion(QString &sInput)
 {
