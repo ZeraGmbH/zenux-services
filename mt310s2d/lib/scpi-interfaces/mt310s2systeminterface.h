@@ -80,7 +80,7 @@ private:
 
     NotificationString m_allCtrlVersion;
     NotificationString m_allPCBVersion;
-    bool m_currAccuPluggedState = false;
+    bool m_currAccuPlugged = false;
 };
 
 
