@@ -79,7 +79,7 @@ private:
     NotificationString m_allPCBVersion;
     bool m_currAccuPlugged = false;
 
-    TimerTemplateQtPtr m_delayedReadForMissingAccuVersionTimer;
+    TimerTemplateQtPtr m_delayedChangeTriggerForMissingAccuVersionTimer;
     bool m_initialDelayTriggerDone = false;
 };
 
