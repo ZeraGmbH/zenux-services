@@ -436,6 +436,7 @@ void Mt310s2SystemInterface::updateAllCtrlVersionsJson()
     }
     QJsonDocument doc(object);
     m_allCtrlVersion = doc.toJson(QJsonDocument::Compact);
+    qInfo("Controller versions were updated.");
 }
 
 void Mt310s2SystemInterface::updateAllPCBsVersion()
@@ -458,6 +459,7 @@ void Mt310s2SystemInterface::updateAllPCBsVersion()
     }
     QJsonDocument doc(object);
     m_allPCBVersion = doc.toJson(QJsonDocument::Compact);
+    qInfo("Pcb info were updated.");
 }
 
 void Mt310s2SystemInterface::m_genAnswer(int select, QString &answer)
