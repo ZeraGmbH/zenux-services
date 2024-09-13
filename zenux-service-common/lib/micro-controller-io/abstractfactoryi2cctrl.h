@@ -12,7 +12,8 @@ public:
     {
         CTRL_TYPE_RELAIS,
         CTRL_TYPE_SYSTEM,
-        CTRL_TYPE_EMOB
+        CTRL_TYPE_EMOB,
+        CTRL_TYPE_ACCU
     };
     virtual AbstractCtrlHeartbeatWaitPtr createCtrlHeartbeatWait(QString devnode) = 0; // this is more a device-node thingy...
 

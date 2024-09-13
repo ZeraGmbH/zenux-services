@@ -10,5 +10,7 @@ QString ControllerTypeName::getCtrlTypeName(AbstractFactoryI2cCtrl::ControllerTy
         return "System";
     case AbstractFactoryI2cCtrl::CTRL_TYPE_EMOB:
         return "Emob";
+    case AbstractFactoryI2cCtrl::CTRL_TYPE_ACCU:
+        return "Accu";
     }
 }

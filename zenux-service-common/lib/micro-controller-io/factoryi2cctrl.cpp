@@ -4,6 +4,7 @@
 #include "i2cctrlbootloader.h"
 #include "i2cctrlclampstatus.h"
 #include "i2cctrlcommoninfo.h"
+#include "i2cctrlcommoninfoaccu.h"
 #include "i2cctrlcommoninfoemob.h"
 #include "i2cctrlcriticalstatus.h"
 #include "i2cctrldeviceidentificationdata.h"
@@ -49,6 +50,11 @@ I2cCtrlCommonInfoPtrUnique FactoryI2cCtrl::getCommonInfoController(ControllerTyp
                                                            getEmobMuxI2cAddress(), muxChannel,
                                                            m_debugLevel);
         break;
+
+    case CTRL_TYPE_ACCU:
+        return std::make_unique<I2cCtrlCommonInfoAccu>(m_deviceNode, getSystemCtrlI2cAddress(), m_debugLevel);
+        break;
+
     default:
         qFatal("Controller type %i does not support AbstractI2cCtrlCommonInfo", ctrlType);
         return nullptr;
