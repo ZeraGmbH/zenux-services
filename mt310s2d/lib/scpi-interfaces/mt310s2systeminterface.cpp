@@ -404,6 +404,7 @@ QString Mt310s2SystemInterface::m_InterfaceRead(QString &sInput)
 
 void Mt310s2SystemInterface::updateAllCtrlVersionsJson()
 {
+    qInfo("Update all controller versions...");
     QJsonObject object;
     object.insert("Relay controller version", QJsonValue::fromVariant(m_systemInfo->getCTRLVersion()));
     object.insert("System controller version", QJsonValue::fromVariant(m_systemInfo->getSysCTRLVersion()));
@@ -425,6 +426,7 @@ void Mt310s2SystemInterface::updateAllCtrlVersionsJson()
 
 void Mt310s2SystemInterface::updateAllPCBsVersion()
 {
+    qInfo("Update all pcb info...");
     QJsonObject object;
     object.insert("Relay PCB version", QJsonValue::fromVariant(m_systemInfo->getPCBVersion()));
     object.insert("System PCB version", QJsonValue::fromVariant(m_systemInfo->getSysPCBVersion()));
