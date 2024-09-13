@@ -19,8 +19,10 @@ Mt310s2SystemInterface::Mt310s2SystemInterface(cPCBServer *server,
     m_hotPluggableControllerContainer(std::move(hotPluggableControllerContainer))
 {
     if(m_hotPluggableControllerContainer)
-        connect(m_hotPluggableControllerContainer.get(), &HotPluggableControllerContainer::sigControllersChanged,
-                this, &Mt310s2SystemInterface::onHotPluggablesChanged);
+        connect(m_hotPluggableControllerContainer.get(), &HotPluggableControllerContainer::sigControllersChanged, this, [=]() {
+            qInfo("Hot plug controllers changed.");
+            onHotPluggablesChanged();
+        });
 }
 
 
@@ -54,8 +56,10 @@ void Mt310s2SystemInterface::actualizeContollers(quint16 bitmaskAvailable)
 void Mt310s2SystemInterface::onAccuStatusChanged(uint8_t status)
 {
     bool accuPlugged = status & (1<<bp_Battery_Present);
-    if(m_currAccuPluggedState != accuPlugged) {
-        m_currAccuPluggedState = accuPlugged;
+    if(m_currAccuPlugged != accuPlugged) {
+        m_currAccuPlugged = accuPlugged;
+        QString pluggedString = m_currAccuPlugged ? "plugged" : "unplugged";
+        qInfo("Accu was detected as %s.", qPrintable(pluggedString));
         onHotPluggablesChanged();
     }
 }
@@ -111,8 +115,10 @@ void Mt310s2SystemInterface::executeProtoScpi(int cmdCode, cProtonetCommand *pro
 
 void Mt310s2SystemInterface::onHotPluggablesChanged()
 {
+    qInfo("Read versions of all hotpluggables...");
     updateAllCtrlVersionsJson();
     updateAllPCBsVersion();
+    qInfo("Hotpluggables' versions were read.");
 }
 
 QString Mt310s2SystemInterface::scpiReadServerVersion(QString &sInput)
@@ -407,7 +413,7 @@ void Mt310s2SystemInterface::updateAllCtrlVersionsJson()
         controller->readCTRLVersion(version);
         object.insert("Emob controller version", QJsonValue::fromVariant(version));
     }
-    if(m_currAccuPluggedState) {
+    if(m_currAccuPlugged) {
         I2cCtrlCommonInfoPtrUnique controller = m_ctrlFactory->getCommonInfoController(AbstractFactoryI2cCtrl::CTRL_TYPE_ACCU);
         QString version;
         controller->readCTRLVersion(version);
@@ -428,7 +434,7 @@ void Mt310s2SystemInterface::updateAllPCBsVersion()
         controller->readPCBInfo(version);
         object.insert("Emob PCB version", QJsonValue::fromVariant(version));
     }
-    if(m_currAccuPluggedState) {
+    if(m_currAccuPlugged) {
         I2cCtrlCommonInfoPtrUnique controller = m_ctrlFactory->getCommonInfoController(AbstractFactoryI2cCtrl::CTRL_TYPE_ACCU);
         QString version;
         controller->readPCBInfo(version);
