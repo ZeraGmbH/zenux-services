@@ -23,7 +23,7 @@ Mt310s2SystemInterface::Mt310s2SystemInterface(cPCBServer *server,
     if(m_hotPluggableControllerContainer)
         connect(m_hotPluggableControllerContainer.get(), &HotPluggableControllerContainer::sigControllersChanged, this, [=]() {
             qInfo("Hot plug controllers changed.");
-            onHotPluggablesChanged();
+            triggerVersionInfoChanges();
         });
 
     // Hack: On startup we miss Accu controller version - force client to read again
@@ -67,7 +67,7 @@ void Mt310s2SystemInterface::onAccuStatusChanged(uint8_t status)
         m_currAccuPlugged = accuPlugged;
         QString pluggedString = m_currAccuPlugged ? "plugged" : "unplugged";
         qInfo("Accu was detected as %s.", qPrintable(pluggedString));
-        onHotPluggablesChanged();
+        triggerVersionInfoChanges();
         if(!m_initialDelayTriggerDone) {
             m_initialDelayTriggerDone = true;
             m_delayedChangeTriggerForMissingAccuVersionTimer->start();
@@ -122,11 +122,6 @@ void Mt310s2SystemInterface::executeProtoScpi(int cmdCode, cProtonetCommand *pro
 
     if (protoCmd->m_bwithOutput)
         emit cmdExecutionDone(protoCmd);
-}
-
-void Mt310s2SystemInterface::onHotPluggablesChanged()
-{
-    triggerVersionInfoChanges();
 }
 
 QString Mt310s2SystemInterface::scpiReadServerVersion(QString &sInput)
