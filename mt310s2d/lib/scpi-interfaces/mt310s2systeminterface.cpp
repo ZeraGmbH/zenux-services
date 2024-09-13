@@ -70,7 +70,10 @@ void Mt310s2SystemInterface::onAccuStatusChanged(uint8_t status)
         QString pluggedString = m_currAccuPlugged ? "plugged" : "unplugged";
         qInfo("Accu was detected as %s.", qPrintable(pluggedString));
         onHotPluggablesChanged();
-        m_delayedReadForMissingAccuVersionTimer->start();
+        if(!m_initialDelayTriggerDone) {
+            m_initialDelayTriggerDone = true;
+            m_delayedReadForMissingAccuVersionTimer->start();
+        }
     }
 }
 
