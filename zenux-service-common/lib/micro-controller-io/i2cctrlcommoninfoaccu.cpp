@@ -11,7 +11,7 @@ constexpr quint8 accuCmdIdLogicalDeviceNo = 0x00;
 
 constexpr quint8 cmdIdTunnelI2c = 0x0054;
 constexpr quint8 cmdAccuGetCtrlVersion = 0x0003;
-constexpr quint8 cmdAccuGetPCBVersion = 0x0002;
+constexpr quint8 cmdAccuGetPCBVersion = 0x0005;
 
 ZeraMControllerIoTemplate::atmelRM I2cCtrlCommonInfoAccu::readPCBInfo(QString &answer)
 {
