@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-from structs import *
+from structs import searchLookUp
+from extractStrategies import extract_dsp, extract_dsp_read_write, extract_meas_freq, extract_min_max_mean_dsp, extract_min_max_mean_total_int
 from csvHandler import saveAsCSV
 from pathlib import Path
 import shutil

@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from typing import Callable
-from extractStrategies import extract_min_max_mean, extract_dsp, extract_dsp_read_write, extract_meas_freq, extract_min_max_mean_dsp, extract_min_max_mean_total_int
+from extractStrategies import extract_min_max_mean
 
 @dataclass
 class searchLookUp:
