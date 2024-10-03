@@ -35,7 +35,7 @@ class Test_plotter(unittest.TestCase):
         self.assertEqual(returnValue.value, "")
 
     def test_validMeasFreqStrategy(self):
-        testLine = "Jul 30 14:36:02.297406 zera-mt310s2-050082224 zera-modulemanager[279]:  Measured frequency intervall (Hz) min: 55.0, max: 55.0, mean: 55.0; Total message count: 46"
+        testLine = "Jul 30 14:36:02.297406 zera-mt310s2-050082224 zera-modulemanager[279]:  Measured frequency intervall (Hz) min: 56.0, max: 54.0, mean: 55.0; Total message count: 46"
         returnValue = extract_meas_freq(testLine)
         self.assertEqual(returnValue.time, "Jul 30 14:36:02")
         self.assertEqual(returnValue.value, "55.0")
