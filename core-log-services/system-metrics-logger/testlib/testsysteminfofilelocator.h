@@ -11,6 +11,7 @@ public:
     static void setProcInterruptFile(QString procInterruptFileName);
     static void setSysTempRootPath(QString sysTempRootPath);
     static void setSysCpuPath(QString sysCpuPath);
+    static void setProcDiskStatsName(QString procDiskStatsName);
     static void resetSysFreqPaths();
 };
 

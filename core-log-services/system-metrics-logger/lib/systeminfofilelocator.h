@@ -12,6 +12,7 @@ public:
     static QString getSysTempRootPath();
     static QList<QString> getSysFreqPaths();
     static QString getProcInterruptFileName();
+    static QString getProcDiskStatsName();
 protected:
     static QString m_procStatusFileName;
     static QString m_procMeminfoFileName;
@@ -19,6 +20,7 @@ protected:
     static QList<QString> m_sysFreqPaths;
     static QString m_sysCpuPath;
     static QString m_procInterruptFileName;
+    static QString m_procDiskStatsName;
 };
 
 #endif // SYSTEMINFOFILELOCATOR_H

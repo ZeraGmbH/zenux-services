@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/">
+        <file>procDisksBlockDevices</file>
         <file>procInterruptsDevMachine</file>
         <file>procInterruptsMT310s2</file>
         <file>procInterruptsMT310s2-next</file>     

@@ -25,6 +25,11 @@ void TestSystemInfoFileLocator::setSysCpuPath(QString sysCpuPath)
     m_sysCpuPath = sysCpuPath;
 }
 
+void TestSystemInfoFileLocator::setProcDiskStatsName(QString procDiskStatsName)
+{
+    m_procDiskStatsName = procDiskStatsName;
+}
+
 void TestSystemInfoFileLocator::resetSysFreqPaths()
 {
     m_sysFreqPaths.clear();
