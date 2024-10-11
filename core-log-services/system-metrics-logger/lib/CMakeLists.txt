@@ -1,11 +1,14 @@
 file(GLOB SOURCES
-    ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/log-components/*.cpp
+    *.cpp
+    log-components/*.cpp
+    decoder/*.cpp
     )
 
 file(GLOB HEADER
-    ${CMAKE_CURRENT_SOURCE_DIR}/*.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/log-components/*.h
+    *.h
+    datatypes/*.h
+    decoder/*.h
+    log-components/*.h
     )
 
 add_library(system-metrics STATIC
@@ -23,8 +26,9 @@ target_link_libraries(system-metrics
 
 target_include_directories(system-metrics
     PUBLIC
-    $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/zera-classes/dsp-helper>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/datatypes>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/decoder>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/log-components>
     )
 
