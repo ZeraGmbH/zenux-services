@@ -4,7 +4,7 @@
 
 MemoryValues ProcMeminfoDecoder::getCurrentMemoryValues()
 {
-    QStringList procMeminfoLines = getProcMeminfo().split("\n");
+    const QStringList procMeminfoLines = getProcMeminfo().split("\n");
     MemoryValues currentMemoryValues;
     for(const QString &line : procMeminfoLines) {
         if(line.startsWith("MemTotal"))

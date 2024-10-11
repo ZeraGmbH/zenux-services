@@ -4,7 +4,7 @@
 
 InterruptValues ProcInterruptDecoder::getCurrentInterrupts()
 {
-    QStringList procInterruptInfoLines = getInterruptInfo().split("\n");
+    const QStringList procInterruptInfoLines = getInterruptInfo().split("\n");
     InterruptValues currentInterrupts;
     for(const QString &line : procInterruptInfoLines) {
         if(line.contains("zFPGA1dsp1")) {
