@@ -10,8 +10,8 @@ DiskValues DiskIoCalculator::getReadWriteSinceLast()
 {
     DiskValues nextValues = ProcDiskStatDecoder::getReadWriteBytes(m_diskBlockDevName);
     DiskValues valueSince;
-    valueSince.totalReadBytes = nextValues.totalReadBytes - m_currentValues.totalReadBytes;
-    valueSince.totalWriteBytes = nextValues.totalWriteBytes - m_currentValues.totalWriteBytes;
+    valueSince.bytesRead = nextValues.bytesRead - m_currentValues.bytesRead;
+    valueSince.bytesWritten = nextValues.bytesWritten - m_currentValues.bytesWritten;
     m_currentValues = nextValues;
     return valueSince;
 }

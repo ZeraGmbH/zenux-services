@@ -9,8 +9,8 @@ void test_disk_io_total_calculator::zeroValuesOnNoDevices()
 {
     DiskIoTotalCalculator ioCalc((QStringList()));
     DiskValues values = ioCalc.getReadWriteSinceLast();
-    QCOMPARE(values.totalReadBytes, 0);
-    QCOMPARE(values.totalWriteBytes, 0);
+    QCOMPARE(values.bytesRead, 0);
+    QCOMPARE(values.bytesWritten, 0);
 }
 
 void test_disk_io_total_calculator::sequenceDisk1Disk2()
@@ -20,16 +20,16 @@ void test_disk_io_total_calculator::sequenceDisk1Disk2()
 
     TestSystemInfoFileLocator::setProcDiskStatsName(":/procDisksTest1");
     values = ioCalc.getReadWriteSinceLast();
-    QCOMPARE(values.totalReadBytes, 3*sectorSizeAllDevices);
-    QCOMPARE(values.totalWriteBytes, 6*sectorSizeAllDevices);
+    QCOMPARE(values.bytesRead, 3*sectorSizeAllDevices);
+    QCOMPARE(values.bytesWritten, 6*sectorSizeAllDevices);
 
     TestSystemInfoFileLocator::setProcDiskStatsName(":/procDisksTest2");
     values = ioCalc.getReadWriteSinceLast();
-    QCOMPARE(values.totalReadBytes, 3*sectorSizeAllDevices);
-    QCOMPARE(values.totalWriteBytes, 5*sectorSizeAllDevices);
+    QCOMPARE(values.bytesRead, 3*sectorSizeAllDevices);
+    QCOMPARE(values.bytesWritten, 5*sectorSizeAllDevices);
 
     TestSystemInfoFileLocator::setProcDiskStatsName(":/procDisksTest3");
     values = ioCalc.getReadWriteSinceLast();
-    QCOMPARE(values.totalReadBytes, 2*sectorSizeAllDevices);
-    QCOMPARE(values.totalWriteBytes, 2*sectorSizeAllDevices);
+    QCOMPARE(values.bytesRead, 2*sectorSizeAllDevices);
+    QCOMPARE(values.bytesWritten, 2*sectorSizeAllDevices);
 }

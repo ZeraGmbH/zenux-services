@@ -35,22 +35,22 @@ void test_disk_read_write::decodeLine()
 {
     DiskValues values;
     values = ProcDiskStatDecoder::decodeSingleDiskStatLine("0      0 mmcblk1 0 0 1 0 0 0 2 0 0 0 0 0 0 0 0");
-    QCOMPARE(values.totalReadBytes, 1*sectorSizeAllDevices);
-    QCOMPARE(values.totalWriteBytes, 2*sectorSizeAllDevices);
+    QCOMPARE(values.bytesRead, 1*sectorSizeAllDevices);
+    QCOMPARE(values.bytesWritten, 2*sectorSizeAllDevices);
     values = ProcDiskStatDecoder::decodeSingleDiskStatLine("0      0 mmcblk1 0 0 3 0 0 0 4 0 0 0 0 0 0 0 0");
-    QCOMPARE(values.totalReadBytes, 3*sectorSizeAllDevices);
-    QCOMPARE(values.totalWriteBytes, 4*sectorSizeAllDevices);
+    QCOMPARE(values.bytesRead, 3*sectorSizeAllDevices);
+    QCOMPARE(values.bytesWritten, 4*sectorSizeAllDevices);
 }
 
 void test_disk_read_write::decodeInvalidLines()
 {
     DiskValues values;
     values = ProcDiskStatDecoder::decodeSingleDiskStatLine("0      0 mmcblk1 0 0 a 0 0 0 b 0 0 0 0 0 0 0 0");
-    QCOMPARE(values.totalReadBytes, 0);
-    QCOMPARE(values.totalWriteBytes, 0);
+    QCOMPARE(values.bytesRead, 0);
+    QCOMPARE(values.bytesWritten, 0);
     values = ProcDiskStatDecoder::decodeSingleDiskStatLine("");
-    QCOMPARE(values.totalReadBytes, 0);
-    QCOMPARE(values.totalWriteBytes, 0);
+    QCOMPARE(values.bytesRead, 0);
+    QCOMPARE(values.bytesWritten, 0);
 }
 
 void test_disk_read_write::decodeInvalidProcFile()
@@ -59,8 +59,8 @@ void test_disk_read_write::decodeInvalidProcFile()
     DiskValues values;
 
     values = ProcDiskStatDecoder::getReadWriteBytes("sda");
-    QCOMPARE(values.totalReadBytes, 0);
-    QCOMPARE(values.totalWriteBytes, 0);
+    QCOMPARE(values.bytesRead, 0);
+    QCOMPARE(values.bytesWritten, 0);
 }
 
 void test_disk_read_write::decodeDevices()
@@ -69,18 +69,18 @@ void test_disk_read_write::decodeDevices()
     DiskValues values;
 
     values = ProcDiskStatDecoder::getReadWriteBytes("sda");
-    QCOMPARE(values.totalReadBytes, 1*sectorSizeAllDevices);
-    QCOMPARE(values.totalWriteBytes, 2*sectorSizeAllDevices);
+    QCOMPARE(values.bytesRead, 1*sectorSizeAllDevices);
+    QCOMPARE(values.bytesWritten, 2*sectorSizeAllDevices);
 
     values = ProcDiskStatDecoder::getReadWriteBytes("sdb");
-    QCOMPARE(values.totalReadBytes, 3*sectorSizeAllDevices);
-    QCOMPARE(values.totalWriteBytes, 4*sectorSizeAllDevices);
+    QCOMPARE(values.bytesRead, 3*sectorSizeAllDevices);
+    QCOMPARE(values.bytesWritten, 4*sectorSizeAllDevices);
 
     values = ProcDiskStatDecoder::getReadWriteBytes("mmcblk0");
-    QCOMPARE(values.totalReadBytes, 5*sectorSizeAllDevices);
-    QCOMPARE(values.totalWriteBytes, 6*sectorSizeAllDevices);
+    QCOMPARE(values.bytesRead, 5*sectorSizeAllDevices);
+    QCOMPARE(values.bytesWritten, 6*sectorSizeAllDevices);
 
     values = ProcDiskStatDecoder::getReadWriteBytes("foo");
-    QCOMPARE(values.totalReadBytes, 0);
-    QCOMPARE(values.totalWriteBytes, 0);
+    QCOMPARE(values.bytesRead, 0);
+    QCOMPARE(values.bytesWritten, 0);
 }

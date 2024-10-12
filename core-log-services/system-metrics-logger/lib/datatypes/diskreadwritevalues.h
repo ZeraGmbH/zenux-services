@@ -9,8 +9,8 @@
 constexpr quint64 sectorSizeAllDevices = 512;
 
 struct DiskValues {
-    quint64 totalReadBytes = 0;
-    quint64 totalWriteBytes = 0;
+    quint64 bytesRead = 0;
+    quint64 bytesWritten = 0;
 };
 
 #endif // DISKREADWRITEVALUES_H

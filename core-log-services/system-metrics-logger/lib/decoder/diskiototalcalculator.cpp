@@ -11,8 +11,8 @@ DiskValues DiskIoTotalCalculator::getReadWriteSinceLast()
     DiskValues totalValuesSince;
     for(DiskIoCalculator &calc : m_diskCalculators) {
         DiskValues valuesSince = calc.getReadWriteSinceLast();
-        totalValuesSince.totalReadBytes += valuesSince.totalReadBytes;
-        totalValuesSince.totalWriteBytes += valuesSince.totalWriteBytes;
+        totalValuesSince.bytesRead += valuesSince.bytesRead;
+        totalValuesSince.bytesWritten += valuesSince.bytesWritten;
     }
     return totalValuesSince;
 }
