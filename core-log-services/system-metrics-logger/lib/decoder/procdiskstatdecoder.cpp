@@ -48,20 +48,16 @@ DiskValues ProcDiskStatDecoder::decodeSingleDiskStatLine(QString line)
 {
     QStringList entries = line.split(" ", Qt::SkipEmptyParts);
     DiskValues values;
-    // hard coded for now
-    // * all /sys/block/<devicename>/queue/hw_sector_size reported 512
-    // * /sys/block/<devicename>/queue/hw_sector_size reported requires root
-    constexpr quint64 sectorSize = 512;
     bool ok = false;
     if(entries.size() >= 6) {
         quint64 val = entries[5].toULongLong(&ok);
         if(ok)
-            values.totalReadBytes = val*sectorSize;
+            values.totalReadBytes = val*sectorSizeAllDevices;
     }
     if(entries.size() >= 10) {
         quint64 val = entries[9].toULongLong(&ok);
         if(ok)
-            values.totalWriteBytes = val*sectorSize;
+            values.totalWriteBytes = val*sectorSizeAllDevices;
     }
     return values;
 }
