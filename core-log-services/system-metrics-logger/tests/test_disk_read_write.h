@@ -8,9 +8,11 @@ class test_disk_read_write : public QObject
     Q_OBJECT
 private slots:
     void allDiskBlockDevices();
+    void allDiskBlockDevicesInvalidProcFile();
     void diskBlockDevicesOfInterest();
     void decodeLine();
     void decodeInvalidLines();
+    void decodeInvalidProcFile();
     void decodeDevices();
 };
 
