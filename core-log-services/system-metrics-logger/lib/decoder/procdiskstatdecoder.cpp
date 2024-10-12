@@ -52,12 +52,12 @@ DiskValues ProcDiskStatDecoder::decodeSingleDiskStatLine(QString line)
     if(entries.size() >= 6) {
         quint64 val = entries[5].toULongLong(&ok);
         if(ok)
-            values.totalReadBytes = val*sectorSizeAllDevices;
+            values.bytesRead = val*sectorSizeAllDevices;
     }
     if(entries.size() >= 10) {
         quint64 val = entries[9].toULongLong(&ok);
         if(ok)
-            values.totalWriteBytes = val*sectorSizeAllDevices;
+            values.bytesWritten = val*sectorSizeAllDevices;
     }
     return values;
 }
