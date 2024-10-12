@@ -2,11 +2,14 @@
 #include "cputemp.h"
 #include "cpuload.h"
 #include "cpufreq.h"
+#include "diskreadtotal.h"
+#include "diskwritetotal.h"
 #include "logstrategyminmaxmean.h"
 #include "totalmemorytracker.h"
 #include "fpgainterrupts.h"
-
+#include "procdiskstatdecoder.h"
 #include <timerfactoryqt.h>
+#include <QDebug>
 
 void SystemMetrics::onLogComponentsTimer()
 {
@@ -56,4 +59,17 @@ void SystemMetrics::initLogComponents()
         m_logComponents.push_back(std::make_unique<LogComponent>(std::make_unique<FpgaInterrupts>(), std::make_unique<LogStrategyMinMaxMean>("Fpga Interrupts", "interrupt/s")));
     else
         qWarning("FPGA interrupts do not work in this environment - ignore");
+
+    QStringList diskDevices = ProcDiskStatDecoder::getDiskBlockDevicesOfInterest();
+    qInfo() << "Drives to monitor:" << diskDevices;
+    currValueGetter = std::make_unique<DiskReadTotal>(std::make_unique<DiskIoTotalCalculator>(diskDevices));
+    if(currValueGetter->canGetValue())
+        m_logComponents.push_back(std::make_unique<LogComponent>(std::move(currValueGetter), std::make_unique<LogStrategyMinMaxMean>("Drive reads", "KiB/s")));
+    else
+        qWarning("Drive read monitoring does work in this environment - ignore");
+    currValueGetter = std::make_unique<DiskWriteTotal>(std::make_unique<DiskIoTotalCalculator>(diskDevices));
+    if(currValueGetter->canGetValue())
+        m_logComponents.push_back(std::make_unique<LogComponent>(std::move(currValueGetter), std::make_unique<LogStrategyMinMaxMean>("Drive writes", "KiB/s")));
+    else
+        qWarning("Drive write monitoring does work in this environment - ignore");
 }
