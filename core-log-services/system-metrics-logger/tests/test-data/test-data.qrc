@@ -1,21 +1,25 @@
 <RCC>
     <qresource prefix="/">
+        <file>cpufreq/foo/foo</file>
+        <file>cpufreq/policy0/scaling_cur_freq</file>
+        <file>cpufreq/policy1/scaling_cur_freq</file>
+        <file>thermal_zone0/temp</file>
+        <file>thermal_zone0/type</file>
+        <file>procDisksBlockDevices</file>
+        <file>procDisksTest1</file>
+        <file>procDisksTest2</file>
+        <file>procDisksTest3</file>
         <file>procDisksBlockDevices</file>
         <file>procInterruptsDevMachine</file>
         <file>procInterruptsMT310s2</file>
-        <file>procInterruptsMT310s2-next</file>     
-        <file>cpufreq/policy0/scaling_cur_freq</file>
-        <file>cpufreq/policy1/scaling_cur_freq</file>
-        <file>cpufreq/foo/foo</file>
-	<file>thermal_zone0/temp</file>
-	<file>thermal_zone0/type</file>
+        <file>procInterruptsMT310s2-next</file>
+        <file>procMeminfo</file>
+        <file>procMeminfoAllZero</file>
         <file>procStat</file>
         <file>procStatOneCpuAllZero</file>
         <file>procStatOneCpuNiceLoad</file>
         <file>procStatOneCpuUserLoad</file>
         <file>procStatOneCpuUserLoad1</file>
         <file>procStatOneCpuUserLoad2</file>
-        <file>procMeminfo</file>
-        <file>procMeminfoAllZero</file>
     </qresource>
 </RCC>

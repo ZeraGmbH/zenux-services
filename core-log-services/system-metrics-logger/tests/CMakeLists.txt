@@ -24,4 +24,5 @@ SETUP_SYSTEM_METRICE_TESTS(
     test_procinterruptdecoder
     test_logstrategy
     test_disk_read_write
+    test_disk_io_calculator
 )
