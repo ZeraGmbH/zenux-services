@@ -4,6 +4,9 @@ LogComponent::LogComponent(std::unique_ptr<AbstractLogValueGetter> logValueGette
     m_logValueGetter(std::move(logValueGetter)),
     m_strategy(std::move(logStrategy))
 {
+    // Most getters calculate diffs from last read. For them to have a proper
+    // last value read once and ignore
+    m_logValueGetter->getValue();
 }
 
 QList<float> LogComponent::getBuffer()
