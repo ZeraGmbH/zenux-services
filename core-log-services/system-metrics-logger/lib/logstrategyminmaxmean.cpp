@@ -1,6 +1,7 @@
 #include "logstrategyminmaxmean.h"
 
-LogStrategyMinMaxMean::LogStrategyMinMaxMean(QString valueLabel, QString unitLabel, std::function<void (QString)> loggingFunction) :
+LogStrategyMinMaxMean::LogStrategyMinMaxMean(int valuesTillLog, QString valueLabel, QString unitLabel, std::function<void (QString)> loggingFunction) :
+    m_valuesTillLog(valuesTillLog),
     m_valueLabel(valueLabel),
     m_unitLabel(unitLabel),
     m_loggingFunction(loggingFunction)
@@ -10,7 +11,7 @@ LogStrategyMinMaxMean::LogStrategyMinMaxMean(QString valueLabel, QString unitLab
 void LogStrategyMinMaxMean::addValue(QList<float> &values, float newValue)
 {
     values.append(newValue);
-    if (values.size() >= 10) {
+    if (values.size() >= m_valuesTillLog) {
         QList<float> noNaNValues;
         for(auto value : values) {
             if(!qIsNaN(value))

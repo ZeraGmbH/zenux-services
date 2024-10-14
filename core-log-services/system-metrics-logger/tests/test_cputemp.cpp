@@ -28,7 +28,7 @@ void test_cputemp::test_invalidDirectory()
 void test_cputemp::test_logComponent()
 {
     TestSystemInfoFileLocator::setSysTempRootPath(":/");
-    LogComponent temperatureComponent(std::make_unique<CpuTemp>(), std::make_unique<LogStrategyMinMaxMean>("foo", "°C"));
+    LogComponent temperatureComponent(std::make_unique<CpuTemp>(), std::make_unique<LogStrategyMinMaxMean>(10, "foo", "°C"));
     temperatureComponent.tryLogOne();
     QList<float> test(temperatureComponent.getBuffer());
 
@@ -38,7 +38,7 @@ void test_cputemp::test_logComponent()
 void test_cputemp::test_logComponentEmptyAfterTen()
 {
     TestSystemInfoFileLocator::setSysTempRootPath(":/");
-    LogComponent temperatureComponent(std::make_unique<CpuTemp>(), std::make_unique<LogStrategyMinMaxMean>("foo", "°C"));
+    LogComponent temperatureComponent(std::make_unique<CpuTemp>(), std::make_unique<LogStrategyMinMaxMean>(10, "foo", "°C"));
     for(int i = 0; i < 10; i++)
         temperatureComponent.tryLogOne();
     QList<float> test(temperatureComponent.getBuffer());

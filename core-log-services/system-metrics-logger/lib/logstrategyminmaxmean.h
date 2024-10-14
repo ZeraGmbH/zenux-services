@@ -7,11 +7,12 @@
 class LogStrategyMinMaxMean : public AbstractLogStrategy
 {
 public:
-    LogStrategyMinMaxMean(QString valueLabel, QString unitLabel, std::function<void(QString)> loggingFunction = [](QString logString){
+    LogStrategyMinMaxMean(int valuesTillLog, QString valueLabel, QString unitLabel, std::function<void(QString)> loggingFunction = [](QString logString){
             qInfo("%s",qPrintable(logString));
         });
     void addValue(QList<float> &values, float newValue) override;
 private:
+    int m_valuesTillLog;
     QString m_valueLabel;
     QString m_unitLabel;
     std::function<void(QString)> m_loggingFunction;
