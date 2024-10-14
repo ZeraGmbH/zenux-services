@@ -54,3 +54,22 @@ void test_logstrategy::test_allZeroInput()
     QVERIFY(values.isEmpty());
 
 }
+
+void test_logstrategy::test_6Values()
+{
+    QString logOutput;
+    LogStrategyMinMaxMean strat(6, "foo", "bar", [&](QString log){
+        logOutput = log;
+    });
+    QList<float> values;
+    strat.addValue(values, 0);
+    strat.addValue(values, 4);
+    strat.addValue(values, 1);
+    strat.addValue(values, 3);
+    strat.addValue(values, 1);
+    strat.addValue(values, 3);
+
+    QCOMPARE(logOutput, "foo (bar) min: 0.0, max: 4.0, mean: 2.0");
+    QVERIFY(values.isEmpty());
+
+}

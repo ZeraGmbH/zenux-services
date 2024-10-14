@@ -10,6 +10,7 @@ private slots:
     void test_someNaNInput();
     void test_allNaNInput();
     void test_allZeroInput();
+    void test_6Values();
 };
 
 #endif // TEST_LOGSTRATEGY_H
