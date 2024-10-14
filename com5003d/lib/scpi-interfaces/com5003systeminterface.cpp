@@ -121,7 +121,6 @@ QString Com5003SystemInterface::m_ReadDeviceVersion(QString &sInput)
 
 QString Com5003SystemInterface::m_ReadDeviceName(QString& sInput)
 {
-    QString s;
     cSCPICommand cmd = sInput;
 
     if (cmd.isQuery())
