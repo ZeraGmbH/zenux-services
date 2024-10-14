@@ -10,8 +10,8 @@ class SystemMetrics : public QObject
 {
     Q_OBJECT
 public:
+    void initLogComponents(std::vector<std::unique_ptr<LogComponent> > &logComponents);
     void startLogComponentsTimer(int pollMs);
-    void initLogComponents();
 
 private slots:
     void onLogComponentsTimer();
