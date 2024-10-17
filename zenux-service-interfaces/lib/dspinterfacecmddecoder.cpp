@@ -3,7 +3,7 @@
 void DspInterfaceCmdDecoder::setVarData(cDspMeasData *memgroup, QString datalist, DSPDATA::dType type)
 {
     // we expect something like Name1:0.2,0.4,0,3;Name2:1,2,3; ......
-    QStringList dataEntryList = datalist.split(";", Qt::SkipEmptyParts);
+    const QStringList dataEntryList = datalist.split(";", Qt::SkipEmptyParts);
     for (const QString &dspVarEntry : dataEntryList) {
         QString varName = dspVarEntry.section(":",0,0);
         QString varValues = dspVarEntry.section(":",1,1);
