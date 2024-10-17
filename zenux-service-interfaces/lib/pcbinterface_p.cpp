@@ -676,7 +676,7 @@ quint32 cPCBInterfacePrivate::resourceAliasQuery(QString resourceType, QString r
     QString cmd;
     quint32 msgnr;
 
-    msgnr = sendCommand(cmd = QString("%1:%2:ALI?").arg(resourceType).arg(resourceName));
+    msgnr = sendCommand(cmd = QString("%1:%2:ALI?").arg(resourceType, resourceName));
     m_MsgNrCmdList[msgnr] = PCB::resourcealiasquery;
     return msgnr;
 }
