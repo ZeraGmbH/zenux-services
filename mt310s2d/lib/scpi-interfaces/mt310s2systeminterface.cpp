@@ -158,7 +158,6 @@ QString Mt310s2SystemInterface::m_ReadDeviceVersion(QString &sInput)
 
 QString Mt310s2SystemInterface::m_ReadDeviceName(QString& sInput)
 {
-    QString s;
     cSCPICommand cmd = sInput;
 
     if (cmd.isQuery())
