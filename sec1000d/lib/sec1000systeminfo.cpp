@@ -21,11 +21,7 @@ bool Sec1000SystemInfo::dataRead()
 
 QString Sec1000SystemInfo::getDeviceVersion()
 {
-    QString s = QString ("DEVICE: %1;PCB: %2;LCA: %3")
-            .arg(m_sDeviceName)
-            .arg(m_sPCBVersion)
-            .arg(m_sLCAVersion);
-    return s;
+    return QString ("DEVICE: %1;PCB: %2;LCA: %3").arg(m_sDeviceName, m_sPCBVersion, m_sLCAVersion);
 }
 
 
