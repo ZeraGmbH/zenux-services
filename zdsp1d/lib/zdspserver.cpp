@@ -1087,7 +1087,7 @@ QString ZDspServer::mLoadCmdList(QChar *)
     }
     else {
         cl->SetActive(false);
-        Answer = QString("%1 %2").arg(ZSCPI::scpiAnswer[ZSCPI::errval]).arg(errs); // das "fehlerhafte" kommando anhängen
+        Answer = QString("%1 %2").arg(ZSCPI::scpiAnswer[ZSCPI::errval], errs); // das "fehlerhafte" kommando anhängen
     }
     count++;
     qDebug() << QString("LoadCmdList(%1)").arg(count);
