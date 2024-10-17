@@ -11,10 +11,10 @@ bool CpuFreq::canGetValue()
 
 float CpuFreq::getValue()
 {
-    QList<QString> pathList = SystemInfoFileLocator::getSysFreqPaths();
+    const QList<QString> pathList = SystemInfoFileLocator::getSysFreqPaths();
     float sumFrequency = 0;
     int valueCount = 0;
-    for(auto path : pathList) {
+    for(const auto &path : pathList) {
         QFile freqFile(path);
         if(freqFile.open(QIODevice::ReadOnly)) {
             QString readFreq = freqFile.readAll().trimmed();
