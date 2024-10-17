@@ -224,8 +224,8 @@ sDspCmd* findDspCmd(QString& s)
             dspCmdHash[DspCmd[i].Name] = &DspCmd[i];
         }
     }
-    QHash<QString, sDspCmd*>::const_iterator iter = dspCmdHash.find(s);
-    if(iter != dspCmdHash.end()) { // found
+    QHash<QString, sDspCmd*>::const_iterator iter = dspCmdHash.constFind(s);
+    if(iter != dspCmdHash.cend()) { // found
         return iter.value();
     }
     return NULL; // sonst 0
