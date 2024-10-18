@@ -26,4 +26,5 @@ SETUP_SYSTEM_METRICE_TESTS(
     test_disk_read_write
     test_disk_io_calculator
     test_disk_io_total_calculator
+    test_proc_pid_decoder
 )
