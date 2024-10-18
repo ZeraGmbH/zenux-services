@@ -3,7 +3,7 @@
 
 #include "abstractlogvaluegetter.h"
 
-class TotalMemoryTracker : public AbstractLogValueGetter
+class TotalMemoryTracker : public AbstractLogValueGetter<float>
 {
 public:
     bool canGetValue() override;
