@@ -2,6 +2,6 @@ rchar: 972717372
 wchar: 654519979
 syscr: 2641426
 syscw: 156286
-read_bytes: 10
+read_bytes: 0
 write_bytes: 20
 cancelled_write_bytes: 274432
