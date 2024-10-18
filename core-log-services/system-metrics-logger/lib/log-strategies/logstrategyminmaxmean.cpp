@@ -15,8 +15,11 @@ void LogStrategyMinMaxMean::addValue(float newValue)
         float min = *std::min_element(valuesForLog.begin(), valuesForLog.end());
         float max = *std::max_element(valuesForLog.begin(), valuesForLog.end());
         float mean = std::accumulate(valuesForLog.begin(), valuesForLog.end(), 0.0)/valuesForLog.size();
-        QString logString = QString("%1 (%2) min: %3, max: %4, mean: %5").
-                            arg(m_valueLabel, m_unitLabel).
+        QString unitString;
+        if(!m_unitLabel.isEmpty())
+            unitString = QString(" (%1)").arg(m_unitLabel);
+        QString logString = QString("%1%2 min: %3, max: %4, mean: %5").
+                            arg(m_valueLabel, unitString).
                             arg(min, 0, 'f', 1).
                             arg(max, 0, 'f', 1).
                             arg(mean, 0, 'f', 1);
