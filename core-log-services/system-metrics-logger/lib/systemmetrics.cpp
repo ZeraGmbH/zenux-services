@@ -28,48 +28,48 @@ void SystemMetrics::startLogComponentsTimer(int pollMs)
 
 void SystemMetrics::initLogComponents()
 {
-    std::unique_ptr<AbstractLogValueGetter<float>> currValueGetter;
+    std::unique_ptr<AbstractLogValueGetter<float>> currValueFloatGetter;
 
-    currValueGetter = std::make_unique<CpuTemp>();
-    if(currValueGetter->canGetValue())
-        m_logComponents.push_back(std::make_unique<LogComponent<float>>(std::move(currValueGetter), std::make_unique<LogStrategyMinMaxMean>(10, "CPU Temperature", "°C")));
+    currValueFloatGetter = std::make_unique<CpuTemp>();
+    if(currValueFloatGetter->canGetValue())
+        m_logComponents.push_back(std::make_unique<LogComponent<float>>(std::move(currValueFloatGetter), std::make_unique<LogStrategyMinMaxMean>(10, "CPU Temperature", "°C")));
     else
         qWarning("CpuTemp does not work in this environment - ignore!");
 
-    currValueGetter = std::make_unique<CpuLoad>(0);
-    if(currValueGetter->canGetValue())
-        m_logComponents.push_back(std::make_unique<LogComponent<float>>(std::move(currValueGetter), std::make_unique<LogStrategyMinMaxMean>(10, "CPU Load", "%")));
+    currValueFloatGetter = std::make_unique<CpuLoad>(0);
+    if(currValueFloatGetter->canGetValue())
+        m_logComponents.push_back(std::make_unique<LogComponent<float>>(std::move(currValueFloatGetter), std::make_unique<LogStrategyMinMaxMean>(10, "CPU Load", "%")));
     else
         qWarning("CpuLoad does not work in this environment - ignore");
 
-    currValueGetter = std::make_unique<CpuFreq>();
-    if(currValueGetter->canGetValue())
-        m_logComponents.push_back(std::make_unique<LogComponent<float>>(std::move(currValueGetter), std::make_unique<LogStrategyMinMaxMean>(10, "CPU Frequency", "MHz")));
+    currValueFloatGetter = std::make_unique<CpuFreq>();
+    if(currValueFloatGetter->canGetValue())
+        m_logComponents.push_back(std::make_unique<LogComponent<float>>(std::move(currValueFloatGetter), std::make_unique<LogStrategyMinMaxMean>(10, "CPU Frequency", "MHz")));
     else
         qWarning("CpuFrequency does not work in this environment - ignore");
 
-    currValueGetter = std::make_unique<TotalMemoryTracker>();
-    if(currValueGetter->canGetValue())
-        m_logComponents.push_back(std::make_unique<LogComponent<float>>(std::move(currValueGetter), std::make_unique<LogStrategyMinMaxMean>(10, "RAM usage", "%")));
+    currValueFloatGetter = std::make_unique<TotalMemoryTracker>();
+    if(currValueFloatGetter->canGetValue())
+        m_logComponents.push_back(std::make_unique<LogComponent<float>>(std::move(currValueFloatGetter), std::make_unique<LogStrategyMinMaxMean>(10, "RAM usage", "%")));
     else
         qWarning("RAM usage does not work in this environment - ignore");
 
-    currValueGetter = std::make_unique<FpgaInterrupts>();
-    if(currValueGetter->canGetValue())
-        m_logComponents.push_back(std::make_unique<LogComponent<float>>(std::move(currValueGetter), std::make_unique<LogStrategyMinMaxMean>(10, "Fpga Interrupts", "interrupt/s")));
+    currValueFloatGetter = std::make_unique<FpgaInterrupts>();
+    if(currValueFloatGetter->canGetValue())
+        m_logComponents.push_back(std::make_unique<LogComponent<float>>(std::move(currValueFloatGetter), std::make_unique<LogStrategyMinMaxMean>(10, "Fpga Interrupts", "interrupt/s")));
     else
         qWarning("FPGA interrupts do not work in this environment - ignore");
 
     QStringList diskDevices = ProcDiskStatDecoder::getDiskBlockDevicesOfInterest();
     qInfo() << "Drives to monitor:" << diskDevices;
-    currValueGetter = std::make_unique<DiskReadTotal>(std::make_unique<DiskIoTotalCalculator>(diskDevices));
-    if(currValueGetter->canGetValue())
-        m_logComponents.push_back(std::make_unique<LogComponent<float>>(std::move(currValueGetter), std::make_unique<LogStrategyMinMaxMean>(60, "Drive reads", "KiB/s")));
+    currValueFloatGetter = std::make_unique<DiskReadTotal>(std::make_unique<DiskIoTotalCalculator>(diskDevices));
+    if(currValueFloatGetter->canGetValue())
+        m_logComponents.push_back(std::make_unique<LogComponent<float>>(std::move(currValueFloatGetter), std::make_unique<LogStrategyMinMaxMean>(60, "Drive reads", "KiB/s")));
     else
         qWarning("Drive read monitoring does work in this environment - ignore");
-    currValueGetter = std::make_unique<DiskWriteTotal>(std::make_unique<DiskIoTotalCalculator>(diskDevices));
-    if(currValueGetter->canGetValue())
-        m_logComponents.push_back(std::make_unique<LogComponent<float>>(std::move(currValueGetter), std::make_unique<LogStrategyMinMaxMean>(60, "Drive writes", "KiB/s")));
+    currValueFloatGetter = std::make_unique<DiskWriteTotal>(std::make_unique<DiskIoTotalCalculator>(diskDevices));
+    if(currValueFloatGetter->canGetValue())
+        m_logComponents.push_back(std::make_unique<LogComponent<float>>(std::move(currValueFloatGetter), std::make_unique<LogStrategyMinMaxMean>(60, "Drive writes", "KiB/s")));
     else
         qWarning("Drive write monitoring does work in this environment - ignore");
 }
