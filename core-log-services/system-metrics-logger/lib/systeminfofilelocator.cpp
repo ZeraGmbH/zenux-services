@@ -7,6 +7,7 @@ QString SystemInfoFileLocator::m_sysTempRootPath = QStringLiteral("/sys/class/th
 QString SystemInfoFileLocator::m_sysCpuPath = QStringLiteral("/sys/devices/system/cpu/cpufreq/");
 QString SystemInfoFileLocator::m_procInterruptFileName = QStringLiteral("/proc/interrupts");
 QString SystemInfoFileLocator::m_procDiskStatsName = QStringLiteral("/proc/diskstats");
+QString SystemInfoFileLocator::m_procBasePath = QStringLiteral("/proc");
 QList<QString> SystemInfoFileLocator::m_sysFreqPaths;
 
 QString SystemInfoFileLocator::getProcStatusFileName()
@@ -51,4 +52,9 @@ QString SystemInfoFileLocator::getProcInterruptFileName()
 QString SystemInfoFileLocator::getProcDiskStatsName()
 {
     return m_procDiskStatsName;
+}
+
+QString SystemInfoFileLocator::getProcBasePath()
+{
+    return m_procBasePath;
 }
