@@ -7,7 +7,7 @@ import shutil
 import subprocess
 from optparse import OptionParser
 
-available_log_outputs = ["cpu_temp","cpu_load","cpu_freq","drive_read","drive_write","fpga_interrupts","ram_usage","dsp_load","dsp_read_write","meas_freq","meas_freq2","dsp_int_cnt", "linux_dsp_int"]
+available_log_outputs = ["cpu_temp","cpu_load","cpu_freq","drive_read","drive_write", "process_count","fpga_interrupts","ram_usage","dsp_load","dsp_read_write","meas_freq","meas_freq2","dsp_int_cnt", "linux_dsp_int"]
 search_string_lookup = {
     "cpu_temp": searchLookUp("cpu_temp","CPU Temperature (°C)", label="CPU temp"),
     "cpu_load": searchLookUp("cpu_load","CPU Load (%)", label="CPU load"),
@@ -15,6 +15,7 @@ search_string_lookup = {
     # TODO one diagramm for read/write
     "drive_read": searchLookUp("drive_read","Drive reads (KiB/s)", label="Drive read"),
     "drive_write": searchLookUp("drive_write","Drive writes (KiB/s)", label="Drive write"),
+    "process_count": searchLookUp("process_count","Process count", label="Process count"),
     "ram_usage": searchLookUp("ram_usage","RAM usage (%)", label="RAM usage"),
     "fpga_interrupts": searchLookUp("fpga_interrupts","Fpga Interrupts (interrupt/s)", label="FPGA interrupts"),
     "dsp_load": searchLookUp("dsp_load", "DSP max load:",extract_dsp, label="DSP load"),
