@@ -5,6 +5,7 @@
 #include "diskreadtotal.h"
 #include "diskwritetotal.h"
 #include "logstrategyminmaxmean.h"
+#include "processcount.h"
 #include "totalmemorytracker.h"
 #include "fpgainterrupts.h"
 #include "procdiskstatdecoder.h"
@@ -30,6 +31,8 @@ void SystemMetrics::initLogComponents()
 {
     std::unique_ptr<AbstractLogValueGetter<float>> currValueFloatGetter;
 
+    ////////////////////////////////////////////////////////////////////////////////
+    // every 10s
     currValueFloatGetter = std::make_unique<CpuTemp>();
     if(currValueFloatGetter->canGetValue())
         m_logComponents.push_back(std::make_unique<LogComponent<float>>(std::move(currValueFloatGetter), std::make_unique<LogStrategyMinMaxMean>(10, "CPU Temperature", "°C")));
@@ -59,7 +62,15 @@ void SystemMetrics::initLogComponents()
         m_logComponents.push_back(std::make_unique<LogComponent<float>>(std::move(currValueFloatGetter), std::make_unique<LogStrategyMinMaxMean>(10, "Fpga Interrupts", "interrupt/s")));
     else
         qWarning("FPGA interrupts do not work in this environment - ignore");
+    currValueFloatGetter = std::make_unique<ProcessCount>();
+    if(currValueFloatGetter->canGetValue())
+        m_logComponents.push_back(std::make_unique<LogComponent<float>>(std::move(currValueFloatGetter), std::make_unique<LogStrategyMinMaxMean>(10, "Process count", "")));
+    else
+        qWarning("ProcessCount does not work in this environment - ignore!");
 
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // every 60s
     QStringList diskDevices = ProcDiskStatDecoder::getDiskBlockDevicesOfInterest();
     qInfo() << "Drives to monitor:" << diskDevices;
     currValueFloatGetter = std::make_unique<DiskReadTotal>(std::make_unique<DiskIoTotalCalculator>(diskDevices));
