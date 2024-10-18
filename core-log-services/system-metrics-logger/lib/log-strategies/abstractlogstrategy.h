@@ -6,7 +6,7 @@
 class AbstractLogStrategy
 {
 public:
-    virtual void addValue(QList<float> &values, float newValue) = 0;
+    virtual void addValue(float newValue) = 0;
 };
 
 #endif // ABSTRACTLOGSTRATEGY_H

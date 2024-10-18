@@ -1,6 +1,7 @@
 file(GLOB SOURCES
     *.cpp
     decoder/*.cpp
+    log-collectors/*.cpp
     log-getters/*.cpp
     log-strategies/*.cpp
     )
@@ -9,6 +10,7 @@ file(GLOB HEADER
     *.h
     datatypes/*.h
     decoder/*.h
+    log-collectors/*.h
     log-getters/*.h
     log-strategies/*.h
     )
@@ -31,6 +33,7 @@ target_include_directories(system-metrics
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/datatypes>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/decoder>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/log-collectors>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/log-getters>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/log-strategies>
     )
