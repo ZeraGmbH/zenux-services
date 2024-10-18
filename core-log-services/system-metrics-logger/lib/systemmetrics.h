@@ -18,7 +18,7 @@ private slots:
 private:
 
     // new style??
-    std::vector<std::unique_ptr<LogComponent>> m_logComponents;
+    std::vector<std::unique_ptr<LogComponent<float>>> m_logComponents;
     TimerTemplateQtPtr m_logComponentsTimer;
 };
 

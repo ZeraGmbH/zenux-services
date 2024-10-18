@@ -4,7 +4,7 @@
 #include "abstractlogvaluegetter.h"
 #include <QMap>
 
-class CpuLoad : public AbstractLogValueGetter
+class CpuLoad : public AbstractLogValueGetter<float>
 {
 public:
     CpuLoad(int coreIdx);

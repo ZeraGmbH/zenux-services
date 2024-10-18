@@ -4,7 +4,7 @@
 #include "abstractlogvaluegetter.h"
 #include "interruptvalues.h"
 
-class FpgaInterrupts : public AbstractLogValueGetter
+class FpgaInterrupts : public AbstractLogValueGetter<float>
 {
 public:
     bool canGetValue() override;

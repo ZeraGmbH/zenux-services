@@ -5,7 +5,7 @@
 #include "diskiototalcalculator.h"
 #include <memory>
 
-class DiskWriteTotal : public AbstractLogValueGetter
+class DiskWriteTotal : public AbstractLogValueGetter<float>
 {
 public:
     DiskWriteTotal(std::unique_ptr<DiskIoTotalCalculator> diskTotalCalc);

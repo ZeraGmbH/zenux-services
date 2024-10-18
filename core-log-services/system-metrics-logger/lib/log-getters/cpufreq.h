@@ -3,7 +3,7 @@
 
 #include "abstractlogvaluegetter.h"
 
-class CpuFreq : public AbstractLogValueGetter
+class CpuFreq : public AbstractLogValueGetter<float>
 {
 public:
     bool canGetValue() override;

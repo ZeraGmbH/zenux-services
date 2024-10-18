@@ -4,7 +4,7 @@
 #include "abstractlogvaluegetter.h"
 #include <QString>
 
-class CpuTemp : public AbstractLogValueGetter
+class CpuTemp : public AbstractLogValueGetter<float>
 {
 public:
     bool canGetValue() override;
