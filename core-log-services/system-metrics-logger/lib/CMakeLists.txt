@@ -1,14 +1,16 @@
 file(GLOB SOURCES
     *.cpp
-    log-components/*.cpp
     decoder/*.cpp
+    log-getters/*.cpp
+    log-strategies/*.cpp
     )
 
 file(GLOB HEADER
     *.h
     datatypes/*.h
     decoder/*.h
-    log-components/*.h
+    log-getters/*.h
+    log-strategies/*.h
     )
 
 add_library(system-metrics STATIC
@@ -29,7 +31,8 @@ target_include_directories(system-metrics
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/datatypes>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/decoder>
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/log-components>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/log-getters>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/log-strategies>
     )
 
 set_target_properties(system-metrics PROPERTIES VERSION ${PROJECT_VERSION})
