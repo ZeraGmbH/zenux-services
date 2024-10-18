@@ -30,6 +30,11 @@ void TestSystemInfoFileLocator::setProcDiskStatsName(QString procDiskStatsName)
     m_procDiskStatsName = procDiskStatsName;
 }
 
+void TestSystemInfoFileLocator::setProcBasePath(QString procBasePath)
+{
+    m_procBasePath = procBasePath;
+}
+
 void TestSystemInfoFileLocator::resetSysFreqPaths()
 {
     m_sysFreqPaths.clear();
