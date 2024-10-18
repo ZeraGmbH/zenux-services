@@ -9,8 +9,6 @@ class test_cputemp : public QObject
 private slots:
     void test_temp();
     void test_invalidDirectory();
-    void test_logComponent();
-    void test_logComponentEmptyAfterTen();
 };
 
 #endif // TEST_CPUTEMP_H

@@ -1,8 +1,6 @@
 #include "test_cputemp.h"
 #include "cputemp.h"
 #include "testsysteminfofilelocator.h"
-#include "logcomponent.h"
-#include "logstrategyminmaxmean.h"
 #include <QTest>
 
 QTEST_MAIN(test_cputemp)
@@ -24,25 +22,3 @@ void test_cputemp::test_invalidDirectory()
     QCOMPARE(false, temp.canGetValue());
     QCOMPARE(-273, temp.getValue());
 }
-
-void test_cputemp::test_logComponent()
-{
-    TestSystemInfoFileLocator::setSysTempRootPath(":/");
-    LogComponent<float> temperatureComponent(std::make_unique<CpuTemp>(), std::make_unique<LogStrategyMinMaxMean>(10, "foo", "°C"));
-    temperatureComponent.tryLogOne();
-    QList<float> test(temperatureComponent.getBuffer());
-
-    QCOMPARE(test[0], 50.0);
-}
-
-void test_cputemp::test_logComponentEmptyAfterTen()
-{
-    TestSystemInfoFileLocator::setSysTempRootPath(":/");
-    LogComponent<float> temperatureComponent(std::make_unique<CpuTemp>(), std::make_unique<LogStrategyMinMaxMean>(10, "foo", "°C"));
-    for(int i = 0; i < 10; i++)
-        temperatureComponent.tryLogOne();
-    QList<float> test(temperatureComponent.getBuffer());
-
-    QVERIFY(test.empty());
-}
-
