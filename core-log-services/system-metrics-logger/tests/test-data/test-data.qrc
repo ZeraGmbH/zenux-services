@@ -1,5 +1,13 @@
 <RCC>
     <qresource prefix="/">
+        <file>proc_1/1/io</file>
+        <file>proc_1/2/io</file>
+        <file>proc_1/3/foo</file>
+        <file>proc_1/foo/bar</file>
+        <file>proc_down_2/1/io</file>
+        <file>proc_down_2/2/io</file>
+        <file>proc_up_2/1/io</file>
+        <file>proc_up_2/2/io</file>
         <file>cpufreq/foo/foo</file>
         <file>cpufreq/policy0/scaling_cur_freq</file>
         <file>cpufreq/policy1/scaling_cur_freq</file>
