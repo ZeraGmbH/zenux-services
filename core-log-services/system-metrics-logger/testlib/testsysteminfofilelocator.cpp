@@ -20,11 +20,6 @@ void TestSystemInfoFileLocator::setSysCpuPath(QString sysCpuPath)
     m_sysCpuPath = sysCpuPath;
 }
 
-void TestSystemInfoFileLocator::setProcDiskStatsName(QString procDiskStatsName)
-{
-    m_procDiskStatsName = procDiskStatsName;
-}
-
 void TestSystemInfoFileLocator::setProcBasePath(QString procBasePath)
 {
     m_procBasePath = procBasePath;

@@ -64,7 +64,7 @@ DiskValues ProcDiskStatDecoder::decodeSingleDiskStatLine(QString line)
 
 QString ProcDiskStatDecoder::getProcDiskStat()
 {
-    QFile file(SystemInfoFileLocator::getProcDiskStatsName());
+    QFile file(SystemInfoFileLocator::getProcFileName("diskstats"));
     QString procDiskStat;
     if(file.open(QFile::ReadOnly))
         procDiskStat = file.readAll();
