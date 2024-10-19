@@ -10,7 +10,7 @@ template <class T>
 class LogComponent
 {
 public:
-    LogComponent(std::unique_ptr<AbstractLogValueGetter<T>> logValueGetter, std::unique_ptr<AbstractLogStrategy> logStrategy) :
+    LogComponent(std::unique_ptr<AbstractLogValueGetter<T>> logValueGetter, std::unique_ptr<AbstractLogStrategy<T>> logStrategy) :
         m_logValueGetter(std::move(logValueGetter)),
         m_strategy(std::move(logStrategy)) {
         // Most getters calculate diffs from last read. For them to have a proper
@@ -23,7 +23,7 @@ public:
 
 private:
     std::unique_ptr<AbstractLogValueGetter<T>> m_logValueGetter;
-    std::unique_ptr<AbstractLogStrategy> m_strategy;
+    std::unique_ptr<AbstractLogStrategy<T>> m_strategy;
 };
 
 #endif // LOGCOMPONENT_H

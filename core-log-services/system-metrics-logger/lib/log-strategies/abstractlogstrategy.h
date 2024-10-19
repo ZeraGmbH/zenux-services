@@ -3,10 +3,11 @@
 
 #include <QList>
 
+template <class T>
 class AbstractLogStrategy
 {
 public:
-    virtual void addValue(float newValue) = 0;
+    virtual void addValue(T newValue) = 0;
 };
 
 #endif // ABSTRACTLOGSTRATEGY_H
