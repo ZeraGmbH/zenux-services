@@ -7,7 +7,7 @@ QTEST_MAIN(test_procmeminfodecoder)
 
 void test_procmeminfodecoder::initTestCase()
 {
-    TestSystemInfoFileLocator::setProcMeminfoFileName(":/procMeminfo");
+    TestSystemInfoFileLocator::setProcBasePath(":/proc_meminfo/default");
 }
 
 void test_procmeminfodecoder::decodeSingleLineMeminfo()
