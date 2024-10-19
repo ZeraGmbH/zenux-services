@@ -4,11 +4,8 @@
 
 DiskValues ProcPidIoDecoder::getReadWrites(int pid)
 {
+    const QString fileName = SystemInfoFileLocator::getProcFileName(pid, "io");
     DiskValues values;
-    QString procDir = SystemInfoFileLocator::getProcBasePath();
-    if(!procDir.endsWith("/"))
-        procDir += "/";
-    const QString fileName = QString("%1%2/io").arg(procDir).arg(pid);
     QFile ioFile(fileName);
     if(ioFile.open(QFile::ReadOnly)) {
         const QString contents = ioFile.readAll();

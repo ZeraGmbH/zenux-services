@@ -6,10 +6,7 @@
 QString ProcPidDetails::getProcesName(int pid)
 {
     QString processName;
-    QString procDir = SystemInfoFileLocator::getProcBasePath();
-    if(!procDir.endsWith("/"))
-        procDir += "/";
-    const QString fileName = QString("%1%2/comm").arg(procDir).arg(pid);
+    const QString fileName = SystemInfoFileLocator::getProcFileName(pid, "comm");
     QFile file(fileName);
     if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
         processName = file.readLine().trimmed();

@@ -58,3 +58,11 @@ QString SystemInfoFileLocator::getProcBasePath()
 {
     return m_procBasePath;
 }
+
+const QString SystemInfoFileLocator::getProcFileName(int pid, const QString &fileName)
+{
+    QString procDir = SystemInfoFileLocator::getProcBasePath();
+    if(!procDir.endsWith("/"))
+        procDir += "/";
+    return QString("%1%2/%3").arg(procDir).arg(pid).arg(fileName);
+}
