@@ -7,21 +7,21 @@ QTEST_MAIN(test_disk_read_write)
 
 void test_disk_read_write::allDiskBlockDevices()
 {
-    TestSystemInfoFileLocator::setProcDiskStatsName(":/procDisksBlockDevices");
+    TestSystemInfoFileLocator::setProcBasePath(":/proc_diskstats/default");
     QStringList devices = ProcDiskStatDecoder::getAllDiskBlockDevices();
     QCOMPARE(devices.count(), 17);
 }
 
 void test_disk_read_write::allDiskBlockDevicesInvalidProcFile()
 {
-    TestSystemInfoFileLocator::setProcDiskStatsName("foo");
+    TestSystemInfoFileLocator::setProcBasePath("foo");
     QStringList devices = ProcDiskStatDecoder::getAllDiskBlockDevices();
     QCOMPARE(devices.count(), 0);
 }
 
 void test_disk_read_write::diskBlockDevicesOfInterest()
 {
-    TestSystemInfoFileLocator::setProcDiskStatsName(":/procDisksBlockDevices");
+    TestSystemInfoFileLocator::setProcBasePath(":/proc_diskstats/default");
     QStringList devices = ProcDiskStatDecoder::getDiskBlockDevicesOfInterest();
     QCOMPARE(devices.count(), 5);
     QVERIFY(devices.contains("sda"));
@@ -55,7 +55,7 @@ void test_disk_read_write::decodeInvalidLines()
 
 void test_disk_read_write::decodeInvalidProcFile()
 {
-    TestSystemInfoFileLocator::setProcDiskStatsName("foo");
+    TestSystemInfoFileLocator::setProcBasePath("foo");
     DiskValues values;
 
     values = ProcDiskStatDecoder::getReadWriteBytes("sda");
@@ -65,7 +65,7 @@ void test_disk_read_write::decodeInvalidProcFile()
 
 void test_disk_read_write::decodeDevices()
 {
-    TestSystemInfoFileLocator::setProcDiskStatsName(":/procDisksBlockDevices");
+    TestSystemInfoFileLocator::setProcBasePath(":/proc_diskstats/default");
     DiskValues values;
 
     values = ProcDiskStatDecoder::getReadWriteBytes("sda");

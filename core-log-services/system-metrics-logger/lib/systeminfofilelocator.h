@@ -11,7 +11,6 @@ public:
     static QString getSysTempRootPath();
     static QList<QString> getSysFreqPaths();
     static QString getProcInterruptFileName();
-    static QString getProcDiskStatsName();
     static QString getProcBasePath();
     static const QString getProcFileName(const QString &fileName);
     static const QString getProcFileName(int pid, const QString &fileName);
@@ -21,7 +20,6 @@ protected:
     static QList<QString> m_sysFreqPaths;
     static QString m_sysCpuPath;
     static QString m_procInterruptFileName;
-    static QString m_procDiskStatsName;
     static QString m_procBasePath;
 };
 
