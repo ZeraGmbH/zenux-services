@@ -5,11 +5,6 @@ void TestSystemInfoFileLocator::setProcStatusFileName(QString procStatusFileName
     m_procStatusFileName = procStatusFileName;
 }
 
-void TestSystemInfoFileLocator::setProcInterruptFile(QString procInterruptFileName)
-{
-    m_procInterruptFileName = procInterruptFileName;
-}
-
 void TestSystemInfoFileLocator::setSysTempRootPath(QString sysTempRootPath)
 {
     m_sysTempRootPath = sysTempRootPath;

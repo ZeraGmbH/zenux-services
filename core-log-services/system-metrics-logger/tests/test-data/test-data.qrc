@@ -9,6 +9,9 @@
         <file>proc_diskstats/test1/diskstats</file>
         <file>proc_diskstats/test2/diskstats</file>
         <file>proc_diskstats/test3/diskstats</file>
+        <file>proc_interrupts/dev_machine/interrupts</file>
+        <file>proc_interrupts/mt310s2/interrupts</file>
+        <file>proc_interrupts/mt310s2_next/interrupts</file>
         <file>proc_meminfo/all_zero/meminfo</file>
         <file>proc_meminfo/default/meminfo</file>
         <file>proc_pid_io/down/1/io</file>
@@ -23,9 +26,6 @@
         <file>proc_pid_io/pid1_missing/2/io</file>
         <file>proc_pid_io/up/1/io</file>
         <file>proc_pid_io/up/2/io</file>
-        <file>procInterruptsDevMachine</file>
-        <file>procInterruptsMT310s2</file>
-        <file>procInterruptsMT310s2-next</file>
         <file>procStat</file>
         <file>procStatOneCpuAllZero</file>
         <file>procStatOneCpuNiceLoad</file>

@@ -17,7 +17,7 @@ InterruptValues ProcInterruptDecoder::getCurrentInterrupts()
 
 QString ProcInterruptDecoder::getInterruptInfo()
 {
-    QFile file(SystemInfoFileLocator::getProcInterruptFileName());
+    QFile file(SystemInfoFileLocator::getProcFileName("interrupts"));
     QString procInterruptInfo;
     if(file.open(QFile::ReadOnly))
         procInterruptInfo = file.readAll();

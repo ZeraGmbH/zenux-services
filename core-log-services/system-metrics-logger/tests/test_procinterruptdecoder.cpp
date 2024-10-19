@@ -7,7 +7,7 @@ QTEST_MAIN(test_procinterruptdecoder)
 
 void test_procinterruptdecoder::initTestCase()
 {
-    TestSystemInfoFileLocator::setProcInterruptFile(":/procInterruptsMT310s2");
+    TestSystemInfoFileLocator::setProcBasePath(":/proc_interrupts/mt310s2");
 }
 
 void test_procinterruptdecoder::decodeSingleLineInterruptInfo()
