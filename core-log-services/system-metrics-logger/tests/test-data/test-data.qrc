@@ -2,8 +2,11 @@
     <qresource prefix="/">
         <file>proc_down/1/io</file>
         <file>proc_down/2/io</file>
+        <file>proc_initial/1/comm</file>
         <file>proc_initial/1/io</file>
+        <file>proc_initial/2/comm</file>
         <file>proc_initial/2/io</file>
+        <file>proc_initial/3/comm</file>
         <file>proc_initial/3/foo</file>
         <file>proc_initial/foo/bar</file>
         <file>proc_pid1_missing/2/io</file>
