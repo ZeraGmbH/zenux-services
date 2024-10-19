@@ -34,13 +34,13 @@ DiskValues ProcPidIoDecoder::getReadWrites(int pid)
     return values;
 }
 
-QMap<int, DiskValues> ProcPidIoDecoder::getPidGroupReadWrites(QVector<int> pids)
+DiskValuesProcesses ProcPidIoDecoder::getPidGroupReadWrites(QVector<int> pids)
 {
-    QMap<int, DiskValues> groupValues;
+    DiskValuesProcesses processesValues;
     for(int pid : pids) {
         DiskValues values = getReadWrites(pid);
         if(values.bytesRead > 0 || values.bytesWritten > 0)
-            groupValues[pid] = values;
+            processesValues[pid] = values;
     }
-    return groupValues;
+    return processesValues;
 }
