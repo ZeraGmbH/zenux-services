@@ -25,7 +25,7 @@ MemoryValues ProcMeminfoDecoder::getCurrentMemoryValues()
 
 QString ProcMeminfoDecoder::getProcMeminfo()
 {
-    QFile file(SystemInfoFileLocator::getProcMeminfoFileName());
+    QFile file(SystemInfoFileLocator::getProcFileName("meminfo"));
     QString procMeminfo;
     if(file.open(QFile::ReadOnly))
         procMeminfo = file.readAll();

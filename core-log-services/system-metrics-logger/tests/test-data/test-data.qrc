@@ -9,6 +9,8 @@
         <file>proc_initial/3/comm</file>
         <file>proc_initial/3/foo</file>
         <file>proc_initial/foo/bar</file>
+        <file>proc_meminfo/all_zero/meminfo</file>
+        <file>proc_meminfo/default/meminfo</file>
         <file>proc_pid1_missing/2/io</file>
         <file>proc_up/1/io</file>
         <file>proc_up/2/io</file>
@@ -25,8 +27,6 @@
         <file>procInterruptsDevMachine</file>
         <file>procInterruptsMT310s2</file>
         <file>procInterruptsMT310s2-next</file>
-        <file>procMeminfo</file>
-        <file>procMeminfoAllZero</file>
         <file>procStat</file>
         <file>procStatOneCpuAllZero</file>
         <file>procStatOneCpuNiceLoad</file>

@@ -5,11 +5,6 @@ void TestSystemInfoFileLocator::setProcStatusFileName(QString procStatusFileName
     m_procStatusFileName = procStatusFileName;
 }
 
-void TestSystemInfoFileLocator::setProcMeminfoFileName(QString procMeminfoFileName)
-{
-    m_procMeminfoFileName = procMeminfoFileName;
-}
-
 void TestSystemInfoFileLocator::setProcInterruptFile(QString procInterruptFileName)
 {
     m_procInterruptFileName = procInterruptFileName;

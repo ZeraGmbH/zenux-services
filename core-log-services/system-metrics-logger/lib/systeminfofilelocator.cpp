@@ -2,7 +2,6 @@
 #include <QDir>
 
 QString SystemInfoFileLocator::m_procStatusFileName = QStringLiteral("/proc/stat");
-QString SystemInfoFileLocator::m_procMeminfoFileName = QStringLiteral("/proc/meminfo");
 QString SystemInfoFileLocator::m_sysTempRootPath = QStringLiteral("/sys/class/thermal");
 QString SystemInfoFileLocator::m_sysCpuPath = QStringLiteral("/sys/devices/system/cpu/cpufreq/");
 QString SystemInfoFileLocator::m_procInterruptFileName = QStringLiteral("/proc/interrupts");
@@ -13,11 +12,6 @@ QList<QString> SystemInfoFileLocator::m_sysFreqPaths;
 QString SystemInfoFileLocator::getProcStatusFileName()
 {
     return m_procStatusFileName;
-}
-
-QString SystemInfoFileLocator::getProcMeminfoFileName()
-{
-    return m_procMeminfoFileName;
 }
 
 QString SystemInfoFileLocator::getSysTempRootPath()
@@ -57,6 +51,14 @@ QString SystemInfoFileLocator::getProcDiskStatsName()
 QString SystemInfoFileLocator::getProcBasePath()
 {
     return m_procBasePath;
+}
+
+const QString SystemInfoFileLocator::getProcFileName(const QString &fileName)
+{
+    QString procDir = SystemInfoFileLocator::getProcBasePath();
+    if(!procDir.endsWith("/"))
+        procDir += "/";
+    return QString("%1%2").arg(procDir, fileName);
 }
 
 const QString SystemInfoFileLocator::getProcFileName(int pid, const QString &fileName)
