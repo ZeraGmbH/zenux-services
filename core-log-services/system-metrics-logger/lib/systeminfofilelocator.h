@@ -14,6 +14,7 @@ public:
     static QString getProcInterruptFileName();
     static QString getProcDiskStatsName();
     static QString getProcBasePath();
+    static const QString getProcFileName(int pid, const QString &fileName);
 protected:
     static QString m_procStatusFileName;
     static QString m_procMeminfoFileName;
