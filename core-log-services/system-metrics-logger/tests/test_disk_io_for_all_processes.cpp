@@ -14,7 +14,7 @@ void test_disk_io_for_all_processes::canRead()
 void test_disk_io_for_all_processes::firstReadNoValues()
 {
     DiskIoForAllProcesses dio;
-    TestSystemInfoFileLocator::setProcBasePath(":/proc_initial");
+    TestSystemInfoFileLocator::setProcBasePath(":/proc_pid_io/default");
     DiskValuesProcesses values = dio.getValue();
     QCOMPARE(values.size(), 0);
 }
@@ -22,10 +22,10 @@ void test_disk_io_for_all_processes::firstReadNoValues()
 void test_disk_io_for_all_processes::secondReadDiffValues()
 {
     DiskIoForAllProcesses dio;
-    TestSystemInfoFileLocator::setProcBasePath(":/proc_initial");
+    TestSystemInfoFileLocator::setProcBasePath(":/proc_pid_io/default");
     dio.getValue();
 
-    TestSystemInfoFileLocator::setProcBasePath(":/proc_up");
+    TestSystemInfoFileLocator::setProcBasePath(":/proc_pid_io/up");
     DiskValuesProcesses values = dio.getValue();
     QCOMPARE(values.size(), 2);
     QVERIFY(values.contains(1));
@@ -39,13 +39,13 @@ void test_disk_io_for_all_processes::secondReadDiffValues()
 void test_disk_io_for_all_processes::thirdReadValuesDown()
 {
     DiskIoForAllProcesses dio;
-    TestSystemInfoFileLocator::setProcBasePath(":/proc_initial");
+    TestSystemInfoFileLocator::setProcBasePath(":/proc_pid_io/default");
     dio.getValue();
 
-    TestSystemInfoFileLocator::setProcBasePath(":/proc_up");
+    TestSystemInfoFileLocator::setProcBasePath(":/proc_pid_io/up");
     dio.getValue();
 
-    TestSystemInfoFileLocator::setProcBasePath(":/proc_down");
+    TestSystemInfoFileLocator::setProcBasePath(":/proc_pid_io/down");
     DiskValuesProcesses values = dio.getValue();
     QCOMPARE(values.size(), 2);
     QVERIFY(values.contains(1));
@@ -59,10 +59,10 @@ void test_disk_io_for_all_processes::thirdReadValuesDown()
 void test_disk_io_for_all_processes::secondRemovesPid1ReadAgain()
 {
     DiskIoForAllProcesses dio;
-    TestSystemInfoFileLocator::setProcBasePath(":/proc_initial");
+    TestSystemInfoFileLocator::setProcBasePath(":/proc_pid_io/default");
     dio.getValue();
 
-    TestSystemInfoFileLocator::setProcBasePath(":/proc_pid1_missing");
+    TestSystemInfoFileLocator::setProcBasePath(":/proc_pid_io/pid1_missing");
     DiskValuesProcesses values = dio.getValue();
     QCOMPARE(values.size(), 1);
     QVERIFY(values.contains(2));
@@ -79,10 +79,10 @@ void test_disk_io_for_all_processes::secondRemovesPid1ReadAgain()
 void test_disk_io_for_all_processes::secondAddsPid1ReadAgain()
 {
     DiskIoForAllProcesses dio;
-    TestSystemInfoFileLocator::setProcBasePath(":/proc_pid1_missing");
+    TestSystemInfoFileLocator::setProcBasePath(":/proc_pid_io/pid1_missing");
     dio.getValue();
 
-    TestSystemInfoFileLocator::setProcBasePath(":/proc_up");
+    TestSystemInfoFileLocator::setProcBasePath(":/proc_pid_io/up");
     DiskValuesProcesses values = dio.getValue();
     QCOMPARE(values.size(), 1);
     QVERIFY(values.contains(2));
