@@ -29,4 +29,5 @@ SETUP_SYSTEM_METRICE_TESTS(
     test_proc_pid_decoder
     test_proc_pid_io_decoder
     test_log_collector_floating_numbers
+    test_disk_io_for_all_processes
 )

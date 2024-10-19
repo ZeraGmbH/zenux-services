@@ -1,13 +1,14 @@
 <RCC>
     <qresource prefix="/">
-        <file>proc_1/1/io</file>
-        <file>proc_1/2/io</file>
-        <file>proc_1/3/foo</file>
-        <file>proc_1/foo/bar</file>
-        <file>proc_down_2/1/io</file>
-        <file>proc_down_2/2/io</file>
-        <file>proc_up_2/1/io</file>
-        <file>proc_up_2/2/io</file>
+        <file>proc_down/1/io</file>
+        <file>proc_down/2/io</file>
+        <file>proc_initial/1/io</file>
+        <file>proc_initial/2/io</file>
+        <file>proc_initial/3/foo</file>
+        <file>proc_initial/foo/bar</file>
+        <file>proc_pid1_missing/2/io</file>
+        <file>proc_up/1/io</file>
+        <file>proc_up/2/io</file>
         <file>cpufreq/foo/foo</file>
         <file>cpufreq/policy0/scaling_cur_freq</file>
         <file>cpufreq/policy1/scaling_cur_freq</file>
