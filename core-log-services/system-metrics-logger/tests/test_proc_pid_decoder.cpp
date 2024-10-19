@@ -14,7 +14,7 @@ void test_proc_pid_decoder::checkInvalidProcPath()
 
 void test_proc_pid_decoder::checkValidProcPath()
 {
-    TestSystemInfoFileLocator::setProcBasePath(":/proc_initial");
+    TestSystemInfoFileLocator::setProcBasePath(":/proc_pid_io/default");
     QVector<int> pids = ProcPidDecoder::getPids();
     QCOMPARE(pids.size(), 3);
     QVERIFY(pids.contains(1));
