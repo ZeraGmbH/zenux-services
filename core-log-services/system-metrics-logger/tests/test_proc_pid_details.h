@@ -7,7 +7,6 @@ class test_proc_pid_details : public QObject
 {
     Q_OBJECT
 private slots:
-    void checkForRealSystemd();
     void checkDifferentFormats();
 };
 
