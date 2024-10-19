@@ -41,12 +41,12 @@ void test_proc_pid_io_decoder::pidValid12_Invalid3()
 {
     TestSystemInfoFileLocator::setProcBasePath(":/proc_1");
     QVector<int> pids = QVector<int>() << 1 << 2 << 3;
-    QMap<int, DiskValues> readWrites = ProcPidIoDecoder::getPidGroupReadWrites(pids);
+    DiskValuesProcesses readWrites = ProcPidIoDecoder::getPidGroupReadWrites(pids);
     QCOMPARE(readWrites.size(), 2);
     QVERIFY(readWrites.contains(1));
-    QVERIFY(readWrites.contains(2));
     QCOMPARE(readWrites[1].bytesRead, 0);
     QCOMPARE(readWrites[1].bytesWritten, 20);
+    QVERIFY(readWrites.contains(2));
     QCOMPARE(readWrites[2].bytesRead, 20);
     QCOMPARE(readWrites[2].bytesWritten, 0);
 }
