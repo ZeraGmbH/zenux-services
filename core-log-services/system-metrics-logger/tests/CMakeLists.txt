@@ -31,4 +31,5 @@ SETUP_SYSTEM_METRICE_TESTS(
     test_log_collector_floating_numbers
     test_disk_io_for_all_processes
     test_proc_pid_details
+    test_disk_read_write_ranking
 )
