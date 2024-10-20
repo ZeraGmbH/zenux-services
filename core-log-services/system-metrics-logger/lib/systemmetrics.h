@@ -10,16 +10,16 @@ class SystemMetrics : public QObject
 {
     Q_OBJECT
 public:
-    void startLogComponentsTimer(int pollMs);
+    void startLogComponentsTimer();
     void initLogComponents();
 
 private slots:
     void onLogComponentsTimer();
 private:
-
-    // new style??
+    void init1sClocked10sResultLoggers();
+    void init1sClocked60sResultLoggers();
     std::vector<std::unique_ptr<LogComponent<float>>> m_logComponents;
-    TimerTemplateQtPtr m_logComponentsTimer;
+    TimerTemplateQtPtr m_1sPeriodicTimer;
 };
 
 #endif // SYSTEMMETRICS_H
