@@ -18,21 +18,19 @@ void SystemMetrics::onLogComponentsTimer()
         entry->tryLogOne();
 }
 
-void SystemMetrics::startLogComponentsTimer(int pollMs)
+void SystemMetrics::startLogComponentsTimer()
 {
-    m_logComponentsTimer = TimerFactoryQt::createPeriodic(pollMs);
-    connect(m_logComponentsTimer.get(), &TimerTemplateQt::sigExpired,
+    m_1sPeriodicTimer = TimerFactoryQt::createPeriodic(1000);
+    connect(m_1sPeriodicTimer.get(), &TimerTemplateQt::sigExpired,
             this, &SystemMetrics::onLogComponentsTimer);
-    m_logComponentsTimer->start();
+    m_1sPeriodicTimer->start();
     onLogComponentsTimer();
 }
 
-void SystemMetrics::initLogComponents()
+void SystemMetrics::init1sClocked10sResultLoggers()
 {
     std::unique_ptr<AbstractLogValueGetter<float>> currValueFloatGetter;
 
-    ////////////////////////////////////////////////////////////////////////////////
-    // every 10s
     currValueFloatGetter = std::make_unique<CpuTemp>();
     if(currValueFloatGetter->canGetValue())
         m_logComponents.push_back(std::make_unique<LogComponent<float>>(std::move(currValueFloatGetter), std::make_unique<LogStrategyMinMaxMean>(10, "CPU Temperature", "°C")));
@@ -67,10 +65,12 @@ void SystemMetrics::initLogComponents()
         m_logComponents.push_back(std::make_unique<LogComponent<float>>(std::move(currValueFloatGetter), std::make_unique<LogStrategyMinMaxMean>(10, "Process count", "")));
     else
         qWarning("ProcessCount does not work in this environment - ignore!");
+}
 
+void SystemMetrics::init1sClocked60sResultLoggers()
+{
+    std::unique_ptr<AbstractLogValueGetter<float>> currValueFloatGetter;
 
-    ////////////////////////////////////////////////////////////////////////////////
-    // every 60s
     QStringList diskDevices = ProcDiskStatDecoder::getDiskBlockDevicesOfInterest();
     qInfo() << "Drives to monitor:" << diskDevices;
     currValueFloatGetter = std::make_unique<DiskReadTotal>(std::make_unique<DiskIoTotalCalculator>(diskDevices));
@@ -83,4 +83,10 @@ void SystemMetrics::initLogComponents()
         m_logComponents.push_back(std::make_unique<LogComponent<float>>(std::move(currValueFloatGetter), std::make_unique<LogStrategyMinMaxMean>(60, "Drive writes", "KiB/s")));
     else
         qWarning("Drive write monitoring does work in this environment - ignore");
+}
+
+void SystemMetrics::initLogComponents()
+{
+    init1sClocked10sResultLoggers();
+    init1sClocked60sResultLoggers();
 }
