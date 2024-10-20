@@ -32,4 +32,5 @@ SETUP_SYSTEM_METRICE_TESTS(
     test_disk_io_for_all_processes
     test_proc_pid_details
     test_disk_read_write_ranking
+    test_log_strategy_disk_io_top_ranking
 )
