@@ -45,7 +45,7 @@ CpuTimingValues ProcStatDecoder::getCpuTimingsSingle(int cpuIdx)
 
 bool ProcStatDecoder::procStatOk(int cpuIdx)
 {
-    if(QFile::exists(SystemInfoFileLocator::getProcStatusFileName()) && !getProcStat().isEmpty()) {
+    if(QFile::exists(SystemInfoFileLocator::getProcFileName("stat")) && !getProcStat().isEmpty()) {
         if(getCpuTimingsSingle(cpuIdx).isEmpty) {
             qWarning("ProcStatDecoder: Request non existant cpu core with Index %i", cpuIdx);
             return false;
@@ -70,7 +70,7 @@ QStringList ProcStatDecoder::getCpuLines()
 
 QString ProcStatDecoder::getProcStat()
 {
-    QFile file(SystemInfoFileLocator::getProcStatusFileName());
+    QFile file(SystemInfoFileLocator::getProcFileName("stat"));
     QString procStat;
     if(file.open(QFile::ReadOnly))
         procStat = file.readAll();

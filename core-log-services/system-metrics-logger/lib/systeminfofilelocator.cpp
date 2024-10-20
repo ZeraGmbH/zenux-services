@@ -1,16 +1,10 @@
 #include "systeminfofilelocator.h"
 #include <QDir>
 
-QString SystemInfoFileLocator::m_procStatusFileName = QStringLiteral("/proc/stat");
 QString SystemInfoFileLocator::m_sysTempRootPath = QStringLiteral("/sys/class/thermal");
 QString SystemInfoFileLocator::m_sysCpuPath = QStringLiteral("/sys/devices/system/cpu/cpufreq/");
 QString SystemInfoFileLocator::m_procBasePath = QStringLiteral("/proc");
 QList<QString> SystemInfoFileLocator::m_sysFreqPaths;
-
-QString SystemInfoFileLocator::getProcStatusFileName()
-{
-    return m_procStatusFileName;
-}
 
 QString SystemInfoFileLocator::getSysTempRootPath()
 {

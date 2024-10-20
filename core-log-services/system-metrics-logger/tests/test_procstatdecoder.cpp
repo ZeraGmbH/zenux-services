@@ -9,7 +9,7 @@ QTEST_MAIN(test_procstatdecoder)
 
 void test_procstatdecoder::initTestCase()
 {
-    TestSystemInfoFileLocator::setProcStatusFileName(":/procStat");
+    TestSystemInfoFileLocator::setProcBasePath(":/proc_stat/default");
 }
 
 void test_procstatdecoder::decodeProcStatLine0()

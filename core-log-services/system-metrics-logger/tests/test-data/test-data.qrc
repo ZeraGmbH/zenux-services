@@ -26,11 +26,12 @@
         <file>proc_pid_io/pid1_missing/2/io</file>
         <file>proc_pid_io/up/1/io</file>
         <file>proc_pid_io/up/2/io</file>
-        <file>procStat</file>
-        <file>procStatOneCpuAllZero</file>
-        <file>procStatOneCpuNiceLoad</file>
-        <file>procStatOneCpuUserLoad</file>
-        <file>procStatOneCpuUserLoad1</file>
-        <file>procStatOneCpuUserLoad2</file>
+        <file>proc_stat/default/stat</file>
+        <file>proc_stat/one_cpu_all_zero/stat</file>
+        <file>proc_stat/one_cpu_nice/stat</file>
+        <file>proc_stat/one_cpu_nice_load/stat</file>
+        <file>proc_stat/one_cpu_user_load/stat</file>
+        <file>proc_stat/one_cpu_user_load1/stat</file>
+        <file>proc_stat/one_cpu_user_load2/stat</file>
     </qresource>
 </RCC>
