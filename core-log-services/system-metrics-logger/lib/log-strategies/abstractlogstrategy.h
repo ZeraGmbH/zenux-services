@@ -7,6 +7,7 @@ template <class T>
 class AbstractLogStrategy
 {
 public:
+    virtual ~AbstractLogStrategy() = default;
     virtual void addValue(T newValue) = 0;
 };
 
