@@ -4,7 +4,6 @@
 
 bool DiskIoForAllProcesses::canGetValue()
 {
-    // TODO: There are areas we need root privileges
     return true;
 }
 
