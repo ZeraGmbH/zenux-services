@@ -2,6 +2,7 @@
 #include "cputemp.h"
 #include "cpuload.h"
 #include "cpufreq.h"
+#include "diskioforallprocesses.h"
 #include "diskreadtotal.h"
 #include "diskwritetotal.h"
 #include "logstrategyminmaxmean.h"
@@ -9,13 +10,27 @@
 #include "totalmemorytracker.h"
 #include "fpgainterrupts.h"
 #include "procdiskstatdecoder.h"
+#include "logstrategydiskiotopranking.h"
 #include <timerfactoryqt.h>
 #include <QDebug>
 
 void SystemMetrics::onLogComponentsTimer()
 {
-    for(auto &entry : m_logComponents)
+    for(const auto &entry : m_logComponents)
         entry->tryLogOne();
+    m_60sCounter++;
+    if(m_60sCounter >= 60) {
+        m_60sCounter = 0;
+        for(const auto &entry : m_logComponents60s)
+            entry->tryLogOne();
+    }
+}
+
+void SystemMetrics::initLogComponents()
+{
+    init1sClocked10sResultLoggers();
+    init1sClocked60sResultLoggers();
+    init60sClockedOneShotResultLoggers();
 }
 
 void SystemMetrics::startLogComponentsTimer()
@@ -85,8 +100,12 @@ void SystemMetrics::init1sClocked60sResultLoggers()
         qWarning("Drive write monitoring does work in this environment - ignore");
 }
 
-void SystemMetrics::initLogComponents()
+void SystemMetrics::init60sClockedOneShotResultLoggers()
 {
-    init1sClocked10sResultLoggers();
-    init1sClocked60sResultLoggers();
+    std::unique_ptr<AbstractLogValueGetter<DiskValuesProcesses>> currValueGetter;
+    currValueGetter = std::make_unique<DiskIoForAllProcesses>();
+    if(currValueGetter->canGetValue())
+        m_logComponents60s.push_back(std::make_unique<LogComponent<DiskValuesProcesses>>(std::move(currValueGetter), std::make_unique<LogStrategyDiskIoTopRanking>(5)));
+    else
+        qWarning("Read / Write ranking does not work here (missing root privileges?) - ignore");
 }
