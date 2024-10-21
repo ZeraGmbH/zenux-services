@@ -229,21 +229,21 @@ void test_regression_dsp_var::writeVariablesAndListenDeviceNode()
     QCOMPARE(spyWrite[0][0], "write");
     QCOMPARE(spyWrite[0][1].toInt(), startAddress);
     QByteArray data1 = spyWrite[0][2].toByteArray();
-    QCOMPARE(data1[0], 42);
+    QCOMPARE(quint8(data1[0]), 42);
     QCOMPARE(spyWrite[0][3], 1*varSize);
 
     QCOMPARE(spyWrite[1][0], "write");
     QCOMPARE(spyWrite[1][1], startAddress+1);
     QByteArray data2 = spyWrite[1][2].toByteArray();
-    QCOMPARE(data2[varSize*0], 37);
-    QCOMPARE(data2[varSize*1], 38);
+    QCOMPARE(quint8(data2[varSize*0]), 37);
+    QCOMPARE(quint8(data2[varSize*1]), 38);
     QCOMPARE(spyWrite[1][3], 2*varSize);
 
     // TODO: What exactly are the contents we see here?
     QCOMPARE(spyWrite[2][0], "write");
     QCOMPARE(spyWrite[2][1], startAddress+1+2);
     QByteArray data3 = spyWrite[2][2].toByteArray();
-    QCOMPARE(data3[varSize*0], 666);
+    QCOMPARE(quint8(data3[varSize*0]), 154);
     QCOMPARE(spyWrite[2][3], varSize);
 }
 
