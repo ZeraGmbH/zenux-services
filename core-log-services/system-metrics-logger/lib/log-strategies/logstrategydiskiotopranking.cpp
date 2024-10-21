@@ -10,20 +10,22 @@ void LogStrategyDiskIoTopRanking::addValue(DiskValuesProcesses newValue)
 {
     DiskReadWriteRanking ranking = DiskIoToTopRanking::createRanking(newValue);
 
-    QString processesStringRead = genProcessString(ranking.readRanking, ranking.totalBytesRead);
+    QString processesStringRead = genProcessString(ranking.readRanking, ranking.totalBytesRead, m_rankingDepth);
     if(!processesStringRead.isEmpty())
         m_loggingFunction("Read ranking:" + processesStringRead);
 
-    QString processesStringWrite = genProcessString(ranking.writeRanking, ranking.totalBytesWritten);
+    QString processesStringWrite = genProcessString(ranking.writeRanking, ranking.totalBytesWritten, m_rankingDepth);
     if(!processesStringWrite.isEmpty())
         m_loggingFunction("Write ranking:" + processesStringWrite);
 }
 
-QString LogStrategyDiskIoTopRanking::genProcessString(const QVector<DiskIoRankingEntry>& processRankings, const quint64 &totalIo)
+QString LogStrategyDiskIoTopRanking::genProcessString(const QVector<DiskIoRankingEntry>& processRankings,
+                                                      const quint64 &totalIo,
+                                                      int rankingDepth)
 {
     QString processesString;
     for(int i=0; i<processRankings.count(); i++) {
-        if(i>=m_rankingDepth)
+        if(i >= rankingDepth)
             break;
         DiskIoRankingEntry rankingEntry = processRankings[i];
         float ioKiBytes = float(rankingEntry.ioBytes) / 1024.0;

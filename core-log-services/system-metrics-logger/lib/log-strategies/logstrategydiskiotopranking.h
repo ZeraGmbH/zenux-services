@@ -13,7 +13,9 @@ public:
     });
     void addValue(DiskValuesProcesses newValue) override;
 private:
-    QString genProcessString(const QVector<DiskIoRankingEntry> &processRankings, const quint64 &totalIo);
+    static QString genProcessString(const QVector<DiskIoRankingEntry> &processRankings,
+                                    const quint64 &totalIo,
+                                    int rankingDepth);
     int m_rankingDepth;
     std::function<void(QString)> m_loggingFunction;
 };
