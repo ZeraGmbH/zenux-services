@@ -30,7 +30,10 @@ QString LogStrategyDiskIoTopRanking::genProcessString(const QVector<DiskIoRankin
         DiskIoRankingEntry rankingEntry = processRankings[i];
         float ioKiBytes = float(rankingEntry.ioBytes) / 1024.0;
         float percentage = float(rankingEntry.ioBytes) / float(totalIo) * 100.0;
-        QString processString = QString(" %1(%2KiB / %3%)").arg(rankingEntry.processName).arg(ioKiBytes, 0, 'f', 1).arg(percentage, 0, 'f', 1);
+        QString processString = QString(" %1(%2KiB / %3%)")
+                                    .arg(rankingEntry.processName)
+                                    .arg(ioKiBytes, 0, 'f', 1)
+                                    .arg(percentage, 0, 'f', 1);
         if(!processesString.isEmpty())
             processesString += " |";
         processesString += processString;
