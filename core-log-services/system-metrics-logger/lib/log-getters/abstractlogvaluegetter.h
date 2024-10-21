@@ -5,6 +5,7 @@ template <class T>
 class AbstractLogValueGetter
 {
 public:
+    virtual ~AbstractLogValueGetter() = default;
     virtual bool canGetValue() = 0;
     virtual T getValue() = 0;
 };

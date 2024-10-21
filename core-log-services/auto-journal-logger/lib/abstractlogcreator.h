@@ -7,6 +7,7 @@
 class AbstractLogCreator
 {
 public:
+    virtual ~AbstractLogCreator() = default;
     virtual bool storeLogs(QString dir) = 0;
 };
 
