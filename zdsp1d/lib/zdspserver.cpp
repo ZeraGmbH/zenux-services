@@ -278,9 +278,7 @@ void ZDspServer::outputDspRunState()
 {
     QString dspStatus = mGetDspStatus();
     QString message = QString("DSP is %1").arg(dspStatus);
-    if(dspStatus == dsprunning)
-        qInfo("%s", qPrintable(message));
-    else
+    if(dspStatus != dsprunning)
         qWarning("%s", qPrintable(message));
 }
 
