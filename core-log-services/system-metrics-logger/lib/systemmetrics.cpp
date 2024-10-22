@@ -105,7 +105,7 @@ void SystemMetrics::init60sClockedOneShotResultLoggers()
     std::unique_ptr<AbstractLogValueGetter<DiskValuesProcesses>> currValueGetter;
     currValueGetter = std::make_unique<DiskIoForAllProcesses>();
     if(currValueGetter->canGetValue())
-        m_logComponents60s.push_back(std::make_unique<LogComponent<DiskValuesProcesses>>(std::move(currValueGetter), std::make_unique<LogStrategyDiskIoTopRanking>(5)));
+        m_logComponents60s.push_back(std::make_unique<LogComponent<DiskValuesProcesses>>(std::move(currValueGetter), std::make_unique<LogStrategyDiskIoTopRanking>(5, 60*1000)));
     else
         qWarning("Read / Write ranking does not work here (missing root privileges?) - ignore");
 }

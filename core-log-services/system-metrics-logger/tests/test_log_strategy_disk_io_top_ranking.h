@@ -8,6 +8,7 @@ class test_log_strategy_disk_io_top_ranking : public QObject
     Q_OBJECT
 private slots:
     void multipleProcessesSameLoad();
+    void multipleProcessesSameLoadDoublePeriod();
     void limitRankingDepth();
     void multipleProcessesDifferentLoads();
     void noLogNoRead();
