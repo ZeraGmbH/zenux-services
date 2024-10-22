@@ -11,6 +11,7 @@ class SystemMetrics : public QObject
 {
     Q_OBJECT
 public:
+    SystemMetrics(std::function<void(QString)> loggingFunction);
     void startLogComponentsTimer();
     void initLogComponents();
 
@@ -20,6 +21,8 @@ private:
     void init1sClocked10sResultLoggers();
     void init1sClocked60sResultLoggers();
     void init60sClockedOneShotResultLoggers();
+
+    std::function<void(QString)> m_loggingFunction;
     std::vector<std::unique_ptr<LogComponent<float>>> m_logComponents;
     std::vector<std::unique_ptr<LogComponent<DiskValuesProcesses>>> m_logComponents60s;
     TimerTemplateQtPtr m_1sPeriodicTimer;

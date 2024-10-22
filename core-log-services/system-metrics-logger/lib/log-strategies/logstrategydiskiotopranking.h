@@ -8,9 +8,7 @@
 class LogStrategyDiskIoTopRanking : public AbstractLogStrategy<DiskValuesProcesses>
 {
 public:
-    LogStrategyDiskIoTopRanking(int rankingDepth, int measPeriodMs, std::function<void(QString)> loggingFunction = [](QString logString){
-        qInfo("%s",qPrintable(logString));
-    });
+    LogStrategyDiskIoTopRanking(int rankingDepth, int measPeriodMs, std::function<void(QString)> loggingFunction);
     void addValue(DiskValuesProcesses newValue) override;
 private:
     static QString genProcessString(const QVector<DiskIoRankingEntry> &processRankings,
