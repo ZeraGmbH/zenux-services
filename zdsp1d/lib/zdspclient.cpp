@@ -446,7 +446,7 @@ QString& cZDSP1Client::DspVarListRead(QString& s)
         {
             n = ba.size();
             char* c;
-            sOutput +=QString("%1%2").arg(DspVar->Name).arg(":");
+            sOutput +=QString("%1%2").arg(DspVar->Name, ":");
             sOutput += QString(c = qSEncryption((char*)(ba.data()),n));
             delete c;
         }
