@@ -284,12 +284,7 @@ void ZDspServer::onResourceReady()
     disconnect(&m_resourceRegister, &ResourceRegisterTransaction::registerRdy, this, &ZDspServer::onResourceReady);
     EthSettings *ethSettings = m_settings->getEthSettings();
     myProtonetServer->startServer(ethSettings->getPort(EthSettings::protobufserver)); // and can start the server now
-    if (ethSettings->isSCPIactive()) {
-        m_pSCPIServer = new QTcpServer(this);
-        m_pSCPIServer->setMaxPendingConnections(1); // we only accept 1 client to connect
-        connect(m_pSCPIServer, &QTcpServer::newConnection, this, &ZDspServer::setSCPIConnection);
-        m_pSCPIServer->listen(QHostAddress::AnyIPv4, ethSettings->getPort(EthSettings::scpiserver));
-    }
+    openTelnetScpi();
     m_periodicLogTimer = TimerFactoryQt::createPeriodic(loggingIntervalMs);
     connect(m_periodicLogTimer.get(), &TimerTemplateQt::sigExpired,
             this, &ZDspServer::outputLogs);
@@ -311,6 +306,17 @@ void ZDspServer::outputAndResetTransactionsLogs()
     AbstractDspDeviceNode::resetAllTransactions();
     QString message = QString("DSP transactions: Read: %1 / Write %2").arg(readTransactions).arg(writeTransactions);
     qInfo("%s", qPrintable(message));
+}
+
+void ZDspServer::openTelnetScpi()
+{
+    EthSettings *ethSettings = m_settings->getEthSettings();
+    if (ethSettings->isSCPIactive()) {
+        m_pSCPIServer = new QTcpServer(this);
+        m_pSCPIServer->setMaxPendingConnections(1); // we only accept 1 client to connect
+        connect(m_pSCPIServer, &QTcpServer::newConnection, this, &ZDspServer::setSCPIConnection);
+        m_pSCPIServer->listen(QHostAddress::AnyIPv4, ethSettings->getPort(EthSettings::scpiserver));
+    }
 }
 
 void ZDspServer::outputLogs()
