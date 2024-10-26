@@ -43,10 +43,28 @@ static struct sigaction sigActionMt310s2;
 
 const ServerParams cMT310S2dServer::defaultParams {ServerName, ServerVersion, "/etc/zera/mt310s2d/mt310s2d.xsd", "/etc/zera/mt310s2d/mt310s2d.xml"};
 
-cMT310S2dServer::cMT310S2dServer(SettingsContainerPtr settings, AbstractFactoryI2cCtrlPtr ctrlFactory, AbstractFactoryDeviceNodePcbPtr deviceNodeFactory) :
+cMT310S2dServer::cMT310S2dServer(SettingsContainerPtr settings,
+                                 AbstractFactoryI2cCtrlPtr ctrlFactory,
+                                 AbstractFactoryDeviceNodePcbPtr deviceNodeFactory) :
     cPCBServer(std::move(settings), ScpiSingletonFactory::getScpiObj()),
     m_ctrlFactory(ctrlFactory),
     m_deviceNodeFactory(deviceNodeFactory)
+{
+    init();
+}
+
+cMT310S2dServer::cMT310S2dServer(SettingsContainerPtr settings,
+                                 AbstractFactoryI2cCtrlPtr ctrlFactory,
+                                 AbstractFactoryDeviceNodePcbPtr deviceNodeFactory,
+                                 VeinTcp::AbstractTcpWorkerFactoryPtr tcpWorkerFactory) :
+    cPCBServer(std::move(settings), ScpiSingletonFactory::getScpiObj(), tcpWorkerFactory),
+    m_ctrlFactory(ctrlFactory),
+    m_deviceNodeFactory(deviceNodeFactory)
+{
+    init();
+}
+
+void cMT310S2dServer::init()
 {
     m_pInitializationMachine = new QStateMachine(this);
 

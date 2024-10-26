@@ -15,7 +15,6 @@
 #include "accumulatorinterface.h"
 #include "mt310s2systeminfo.h"
 #include "abstractctrlheartbeatwait.h"
-#include <memory>
 #include <QStateMachine>
 #include <QTimer>
 
@@ -36,11 +35,14 @@ public:
     explicit cMT310S2dServer(SettingsContainerPtr settings,
                              AbstractFactoryI2cCtrlPtr ctrlFactory,
                              AbstractFactoryDeviceNodePcbPtr deviceNodeFactory);
+    explicit cMT310S2dServer(SettingsContainerPtr settings,
+                             AbstractFactoryI2cCtrlPtr ctrlFactory,
+                             AbstractFactoryDeviceNodePcbPtr deviceNodeFactory,
+                             VeinTcp::AbstractTcpWorkerFactoryPtr tcpWorkerFactory);
     ~cMT310S2dServer();
     QString getCtrlDeviceNode();
     QString getMsgDeviceNode();
     static const ServerParams defaultParams;
-public slots:
 
 signals:
     void abortInit();
@@ -61,6 +63,7 @@ private slots:
     void onResourceReady();
 
 private:
+    void init();
     void SetFASync();
     void enableClampInterrupt();
     void updateI2cDevicesConnected();
