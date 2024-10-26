@@ -79,6 +79,7 @@ private:
     void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
     void outputDspRunState();
     void outputAndResetTransactionsLogs();
+    void openTelnetScpi();
 
     AbstractFactoryDeviceNodeDspPtr m_deviceNodeFactory;
     VeinTcp::AbstractTcpWorkerFactoryPtr m_tcpWorkerFactory;
