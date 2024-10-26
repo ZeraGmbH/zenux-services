@@ -33,10 +33,28 @@
 
 const ServerParams cCOM5003dServer::defaultParams {ServerName, ServerVersion, "/etc/zera/com5003d/com5003d.xsd", "/etc/zera/com5003d/com5003d.xml"};
 
-cCOM5003dServer::cCOM5003dServer(SettingsContainerPtr settings, AbstractFactoryI2cCtrlPtr ctrlFactory, AbstractFactoryDeviceNodePcbPtr deviceNodeFactory) :
+cCOM5003dServer::cCOM5003dServer(SettingsContainerPtr settings,
+                                 AbstractFactoryI2cCtrlPtr ctrlFactory,
+                                 AbstractFactoryDeviceNodePcbPtr deviceNodeFactory) :
     cPCBServer(std::move(settings), ScpiSingletonFactory::getScpiObj()),
     m_ctrlFactory(ctrlFactory),
     m_deviceNodeFactory(deviceNodeFactory)
+{
+    init();
+}
+
+cCOM5003dServer::cCOM5003dServer(SettingsContainerPtr settings,
+                                 AbstractFactoryI2cCtrlPtr ctrlFactory,
+                                 AbstractFactoryDeviceNodePcbPtr deviceNodeFactory,
+                                 VeinTcp::AbstractTcpWorkerFactoryPtr tcpWorkerFactory) :
+    cPCBServer(std::move(settings), ScpiSingletonFactory::getScpiObj(), tcpWorkerFactory),
+    m_ctrlFactory(ctrlFactory),
+    m_deviceNodeFactory(deviceNodeFactory)
+{
+    init();
+}
+
+void cCOM5003dServer::init()
 {
     m_pInitializationMachine = new QStateMachine(this);
 
@@ -75,7 +93,6 @@ cCOM5003dServer::cCOM5003dServer(SettingsContainerPtr settings, AbstractFactoryI
 
     m_pInitializationMachine->start();
 }
-
 
 cCOM5003dServer::~cCOM5003dServer()
 {
