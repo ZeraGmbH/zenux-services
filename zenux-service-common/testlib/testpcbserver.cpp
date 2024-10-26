@@ -98,8 +98,6 @@ void TestPcbServer::doSetupServer()
 
     EthSettings *ethSettings = m_settings->getEthSettings();
     m_myServer->startServer(ethSettings->getPort(EthSettings::protobufserver)); // and can start the server now
-    if(ethSettings->isSCPIactive())
-        m_pSCPIServer->listen(QHostAddress::AnyIPv4, ethSettings->getPort(EthSettings::scpiserver));
 
     m_stateconnect2RM->addTransition(m_pRMConnection, &RMConnection::connected, m_stateSendRMIdentAndRegister);
 
