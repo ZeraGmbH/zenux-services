@@ -24,6 +24,8 @@ class cSEC1000dServer: public cPCBServer
     Q_OBJECT
 public:
     explicit cSEC1000dServer(SettingsContainerPtr settings, AbstractFactoryDeviceNodeSecPtr deviceNodeFactory);
+    explicit cSEC1000dServer(SettingsContainerPtr settings, AbstractFactoryDeviceNodeSecPtr deviceNodeFactory,
+                             VeinTcp::AbstractTcpWorkerFactoryPtr tcpWorkerFactory);
     ~cSEC1000dServer();
     QString getServerVersion();
     QString getSecDeviceNode();
@@ -46,6 +48,7 @@ private slots:
     void onResourceReady();
     void onPeerDisconnected(VeinTcp::TcpPeer *peer) override;
 private:
+    void init();
     AbstractFactoryDeviceNodeSecPtr m_deviceNodeFactory;
     SecCalculatorSettings* m_pECalcSettings = nullptr;
     SecInputSettings* m_pInputSettings = nullptr;
@@ -66,7 +69,6 @@ private:
     QTimer m_retryTimer;
     QList<SecChannel*> m_ECalculatorChannelList;
     QSocketNotifier* m_pNotifier = nullptr;
-
 };
 
 

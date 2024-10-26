@@ -35,14 +35,27 @@ static void SigHandler(int)
 }
 
 struct sigaction sigActionSec1000;
-// sigset_t mySigmask, origSigmask;
-
 
 const ServerParams cSEC1000dServer::defaultParams{ServerName, ServerVersion, "/etc/zera/sec1000d/sec1000d.xsd", "/etc/zera/sec1000d/sec1000d.xml"};
 
-cSEC1000dServer::cSEC1000dServer(SettingsContainerPtr settings, AbstractFactoryDeviceNodeSecPtr deviceNodeFactory) :
+cSEC1000dServer::cSEC1000dServer(SettingsContainerPtr settings,
+                                 AbstractFactoryDeviceNodeSecPtr deviceNodeFactory) :
     cPCBServer(std::move(settings), ScpiSingletonFactory::getScpiObj()),
     m_deviceNodeFactory(deviceNodeFactory)
+{
+    init();
+}
+
+cSEC1000dServer::cSEC1000dServer(SettingsContainerPtr settings,
+                                 AbstractFactoryDeviceNodeSecPtr deviceNodeFactory,
+                                 VeinTcp::AbstractTcpWorkerFactoryPtr tcpWorkerFactory) :
+    cPCBServer(std::move(settings), ScpiSingletonFactory::getScpiObj(), tcpWorkerFactory),
+    m_deviceNodeFactory(deviceNodeFactory)
+{
+    init();
+}
+
+void cSEC1000dServer::init()
 {
     m_pInitializationMachine = new QStateMachine(this);
 
@@ -73,7 +86,6 @@ cSEC1000dServer::cSEC1000dServer(SettingsContainerPtr settings, AbstractFactoryD
 
     m_pInitializationMachine->start();
 }
-
 
 cSEC1000dServer::~cSEC1000dServer()
 {
