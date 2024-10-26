@@ -24,6 +24,14 @@ cPCBServer::cPCBServer(SettingsContainerPtr settings, cSCPI *scpiInterface) :
 {
 }
 
+cPCBServer::cPCBServer(SettingsContainerPtr settings, cSCPI *scpiInterface,
+                       VeinTcp::AbstractTcpWorkerFactoryPtr tcpWorkerFactory) :
+    ScpiConnection(scpiInterface),
+    m_tcpWorkerFactory(tcpWorkerFactory),
+    m_settings(std::move(settings))
+{
+}
+
 void cPCBServer::initSCPIConnection(QString leadingNodes)
 {
     ensureTrailingColonOnNonEmptyParentNodes(leadingNodes);
@@ -48,7 +56,10 @@ QString cPCBServer::getVersion()
 
 void cPCBServer::setupServer()
 {
-    m_myServer = new VeinTcp::TcpServer(this); // our working (talking) horse
+    if(m_tcpWorkerFactory)  // This nasty if/else will go soon hopefully
+        m_myServer = new VeinTcp::TcpServer(m_tcpWorkerFactory, this);
+    else
+        m_myServer = new VeinTcp::TcpServer(this);
     connect(m_myServer,&VeinTcp::TcpServer::sigClientConnected,this,&cPCBServer::onEstablishNewConnection);
     if(m_settings->getEthSettings()->isSCPIactive()) {
         m_pSCPIServer = new QTcpServer();

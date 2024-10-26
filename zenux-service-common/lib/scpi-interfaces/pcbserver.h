@@ -28,6 +28,8 @@ class cPCBServer : public ScpiConnection
     Q_OBJECT
 public:
     explicit cPCBServer(SettingsContainerPtr settings, cSCPI *scpiInterface);
+    explicit cPCBServer(SettingsContainerPtr settings, cSCPI *scpiInterface,
+                        VeinTcp::AbstractTcpWorkerFactoryPtr tcpWorkerFactory);
     void initSCPIConnection(QString leadingNodes) override;
     cSCPI* getSCPIInterface();
     QString getName();
@@ -70,6 +72,7 @@ private:
     void sendNotificationToClient(QString message, QByteArray clientID, VeinTcp::TcpPeer *netPeer);
     void executeCommandProto(VeinTcp::TcpPeer* peer, std::shared_ptr<google::protobuf::Message> cmd);
 
+    VeinTcp::AbstractTcpWorkerFactoryPtr m_tcpWorkerFactory;
     QString m_sInput, m_sOutput;
     QTcpSocket* resourceManagerSocket;
     QList<NotificationStructWithValue> m_notifierRegisterNext;
