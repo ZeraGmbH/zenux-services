@@ -64,6 +64,25 @@ ZDspServer::ZDspServer(SettingsContainerPtr settings, AbstractFactoryDeviceNodeD
     m_pRMConnection(new RMConnection(m_settings->getEthSettings()->getRMIPadr(), m_settings->getEthSettings()->getPort(EthSettings::resourcemanager))),
     m_resourceRegister(m_pRMConnection)
 {
+    init();
+}
+
+ZDspServer::ZDspServer(SettingsContainerPtr settings,
+                       AbstractFactoryDeviceNodeDspPtr deviceNodeFactory,
+                       VeinTcp::AbstractTcpWorkerFactoryPtr tcpWorkerFactory) :
+    ScpiConnection(ScpiSingletonFactory::getScpiObj()),
+    m_deviceNodeFactory(deviceNodeFactory),
+    m_tcpWorkerFactory(tcpWorkerFactory),
+    m_settings(std::move(settings)),
+    m_dspInterruptLogStatistics(10000),
+    m_pRMConnection(new RMConnection(m_settings->getEthSettings()->getRMIPadr(), m_settings->getEthSettings()->getPort(EthSettings::resourcemanager))),
+    m_resourceRegister(m_pRMConnection)
+{
+    init();
+}
+
+void ZDspServer::init()
+{
     m_pInitializationMachine = new QStateMachine(this);
     myXMLConfigReader = new Zera::XMLConfig::cReader();
 
@@ -160,7 +179,10 @@ void ZDspServer::doSetupServer()
     m_sDspBootPath = m_pDspSettings->getBootFile();
     ActivatedCmdList = 0; // der derzeit aktuelle kommando listen satz (0,1)
 
-    myProtonetServer =  new VeinTcp::TcpServer(this);
+    if(m_tcpWorkerFactory) // This nasty if/else will go soon hopefully
+        myProtonetServer =  new VeinTcp::TcpServer(m_tcpWorkerFactory, this);
+    else
+        myProtonetServer =  new VeinTcp::TcpServer(this);
     connect(myProtonetServer, &VeinTcp::TcpServer::sigClientConnected, this, &ZDspServer::onEstablishNewConnection);
 
     QString dspDevNodeName = getDspDeviceNode(); // we try to open the dsp device

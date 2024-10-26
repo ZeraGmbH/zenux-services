@@ -14,6 +14,7 @@
 #include <scpi.h>
 #include <vtcp_server.h>
 #include <xiqnetwrapper.h>
+#include <abstracttcpworkerfactory.h>
 #include <QStringList>
 #include <QSocketNotifier>
 #include <QByteArray>
@@ -22,7 +23,6 @@
 #include <QVector>
 #include <QStateMachine>
 #include <QTcpServer>
-
 
 class cZDSP1Client;
 
@@ -34,6 +34,8 @@ class ZDspServer: public ScpiConnection, public cbIFace
     Q_OBJECT
 public:
     ZDspServer(SettingsContainerPtr settings, AbstractFactoryDeviceNodeDspPtr deviceNodeFactory);
+    ZDspServer(SettingsContainerPtr settings, AbstractFactoryDeviceNodeDspPtr deviceNodeFactory,
+               VeinTcp::AbstractTcpWorkerFactoryPtr tcpWorkerFactory);
     virtual ~ZDspServer();
     void initSCPIConnection(QString leadingNodes) override;
     QString getServerVersion();
@@ -73,11 +75,13 @@ private slots:
 
     void outputLogs();
 private:
+    void init();
     void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
     void outputDspRunState();
     void outputAndResetTransactionsLogs();
 
     AbstractFactoryDeviceNodeDspPtr m_deviceNodeFactory;
+    VeinTcp::AbstractTcpWorkerFactoryPtr m_tcpWorkerFactory;
     SettingsContainerPtr m_settings;
     ScpiCmdInterpreter* m_cmdInterpreter = nullptr;
     VeinTcp::TcpServer* myProtonetServer; // the real server that does the communication job
