@@ -61,11 +61,6 @@ void cPCBServer::setupServer()
     else
         m_myServer = new VeinTcp::TcpServer(this);
     connect(m_myServer,&VeinTcp::TcpServer::sigClientConnected,this,&cPCBServer::onEstablishNewConnection);
-    if(m_settings->getEthSettings()->isSCPIactive()) {
-        m_pSCPIServer = new QTcpServer();
-        m_pSCPIServer->setMaxPendingConnections(1); // we only accept 1 client to connect
-        connect(m_pSCPIServer, &QTcpServer::newConnection, this, &cPCBServer::setSCPIConnection);
-    }
 }
 
 void cPCBServer::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
@@ -81,6 +76,17 @@ void cPCBServer::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
     }
     if (protoCmd->m_bwithOutput)
         emit cmdExecutionDone(protoCmd);
+}
+
+void cPCBServer::openTelnetScpi()
+{
+    EthSettings *ethSettings = m_settings->getEthSettings();
+    if(ethSettings->isSCPIactive()) {
+        m_pSCPIServer = new QTcpServer();
+        m_pSCPIServer->setMaxPendingConnections(1); // we only accept 1 client to connect
+        connect(m_pSCPIServer, &QTcpServer::newConnection, this, &cPCBServer::setSCPIConnection);
+        m_pSCPIServer->listen(QHostAddress::AnyIPv4, ethSettings->getPort(EthSettings::scpiserver));
+    }
 }
 
 void cPCBServer::sendAnswerProto(cProtonetCommand *protoCmd)

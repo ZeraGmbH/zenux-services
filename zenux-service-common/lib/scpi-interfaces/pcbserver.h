@@ -50,6 +50,7 @@ protected:
     void setupServer();
     void initSCPIConnections();
     void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
+    void openTelnetScpi();
 
     SettingsContainerPtr m_settings;
     VeinTcp::TcpServer* m_myServer; // the real server that does the communication job

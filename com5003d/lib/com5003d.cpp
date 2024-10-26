@@ -397,7 +397,6 @@ void cCOM5003dServer::onResourceReady()
     if(m_pendingResources == 0) {
         EthSettings *ethSettings = m_settings->getEthSettings();
         m_myServer->startServer(ethSettings->getPort(EthSettings::protobufserver));
-        if(ethSettings->isSCPIactive())
-            m_pSCPIServer->listen(QHostAddress::AnyIPv4, ethSettings->getPort(EthSettings::scpiserver));
+        openTelnetScpi();
     }
 }
