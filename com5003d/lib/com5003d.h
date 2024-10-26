@@ -11,7 +11,6 @@
 #include "scinsettings.h"
 #include "finsettings.h"
 #include "foutsettings.h"
-#include "samplingsettings.h"
 #include "abstractctrlheartbeatwait.h"
 #include "settingscontainer.h"
 #include <QTimer>
@@ -36,9 +35,15 @@ public:
     explicit cCOM5003dServer(SettingsContainerPtr settings,
                              AbstractFactoryI2cCtrlPtr ctrlFactory,
                              AbstractFactoryDeviceNodePcbPtr deviceNodeFactory);
+    explicit cCOM5003dServer(SettingsContainerPtr settings,
+                             AbstractFactoryI2cCtrlPtr ctrlFactory,
+                             AbstractFactoryDeviceNodePcbPtr deviceNodeFactory,
+                             VeinTcp::AbstractTcpWorkerFactoryPtr tcpWorkerFactory);
     ~cCOM5003dServer();
     QString getCtrlDeviceNode();
     static const ServerParams defaultParams;
+
+    void init();
 
 signals:
     void abortInit();
