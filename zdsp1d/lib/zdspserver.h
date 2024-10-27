@@ -85,11 +85,11 @@ private:
     VeinTcp::AbstractTcpWorkerFactoryPtr m_tcpWorkerFactory;
     SettingsContainerPtr m_settings;
     ScpiCmdInterpreter* m_cmdInterpreter = nullptr;
-    VeinTcp::TcpServer* myProtonetServer = nullptr; // the real server that does the communication job
+    VeinTcp::TcpServer* m_protoBufServer = nullptr;
     XiQNetWrapper m_protobufWrapper;
     quint16 m_nSocketIdentifier = 0; // we will use this instead of real sockets, because protobuf extension clientId
-    QTcpServer* m_pSCPIServer = nullptr;
-    QTcpSocket* m_pSCPISocket = nullptr;
+    QTcpServer* m_telnetServer = nullptr;
+    QTcpSocket* m_telnetSocket = nullptr;
 
     cDSPSettings* m_pDspSettings = nullptr;
 

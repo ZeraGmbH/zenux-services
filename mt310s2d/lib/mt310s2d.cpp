@@ -335,7 +335,7 @@ void cMT310S2dServer::onResourceReady()
     disconnect(static_cast<cResource*>(sender()), &cResource::registerRdy, this, &cMT310S2dServer::onResourceReady);
     if(m_pendingResources == 0) {
         EthSettings *ethSettings = m_settings->getEthSettings();
-        m_myServer->startServer(ethSettings->getPort(EthSettings::protobufserver));
+        m_protoBufServer->startServer(ethSettings->getPort(EthSettings::protobufserver));
         openTelnetScpi();
     }
 }

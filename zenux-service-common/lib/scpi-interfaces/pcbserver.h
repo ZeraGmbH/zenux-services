@@ -53,13 +53,13 @@ protected:
     void openTelnetScpi();
 
     SettingsContainerPtr m_settings;
-    VeinTcp::TcpServer* m_myServer = nullptr; // the real server that does the communication job
+    VeinTcp::TcpServer* m_protoBufServer = nullptr;
     Zera::XMLConfig::cReader m_xmlConfigReader;
     QString m_sConfigurationPath;
     QList<ScpiConnection*> scpiConnectionList; // a list of all scpi connections
     QList<cResource*> resourceList;
-    QTcpServer* m_pSCPIServer = nullptr;
-    QTcpSocket* m_pSCPISocket = nullptr;
+    QTcpServer* m_telnetServer = nullptr;
+    QTcpSocket* m_telnetSocket = nullptr;
 private slots:
     void onEstablishNewConnection(VeinTcp::TcpPeer *newClient);
     void onMessageReceived(VeinTcp::TcpPeer *peer, QByteArray message);
