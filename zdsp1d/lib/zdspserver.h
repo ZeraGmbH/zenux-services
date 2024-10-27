@@ -56,7 +56,7 @@ signals:
     void abortInit();
 
 private slots:
-    virtual void onEstablishNewConnection(VeinTcp::TcpPeer* newClient);
+    virtual void onProtobufClientConnected(VeinTcp::TcpPeer* newClient);
     virtual void deleteConnection(VeinTcp::TcpPeer *peer);
     void onMessageReceived(VeinTcp::TcpPeer *peer, QByteArray message);
 

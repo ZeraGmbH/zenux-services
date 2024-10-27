@@ -61,7 +61,7 @@ protected:
     QTcpServer* m_telnetServer = nullptr;
     QTcpSocket* m_telnetSocket = nullptr;
 private slots:
-    void onEstablishNewConnection(VeinTcp::TcpPeer *newClient);
+    void onProtobufClientConnected(VeinTcp::TcpPeer *newClient);
     void onMessageReceived(VeinTcp::TcpPeer *peer, QByteArray message);
     void onNotifyPeerConnectionClosed(VeinTcp::TcpPeer *peer);
     void onEstablishNewNotifier(NotificationValue *notifier);
