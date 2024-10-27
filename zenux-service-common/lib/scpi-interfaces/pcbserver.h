@@ -75,7 +75,6 @@ private:
 
     VeinTcp::AbstractTcpWorkerFactoryPtr m_tcpWorkerFactory;
     QString m_sInput, m_sOutput;
-    QTcpSocket* resourceManagerSocket = nullptr;
     QList<NotificationStructWithValue> m_notifierRegisterNext;
     QList<NotificationStructWithValue> m_notifierRegisterList;
     XiQNetWrapper m_protobufWrapper;
