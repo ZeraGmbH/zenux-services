@@ -56,9 +56,9 @@ signals:
     void abortInit();
 
 private slots:
-    virtual void onProtobufClientConnected(VeinTcp::TcpPeer* newClient);
-    virtual void deleteConnection(VeinTcp::TcpPeer *peer);
-    void onMessageReceived(VeinTcp::TcpPeer *peer, QByteArray message);
+    void onProtobufClientConnected(VeinTcp::TcpPeer* newClient);
+    void onProtobufDataReceived(VeinTcp::TcpPeer *peer, QByteArray message);
+    void onProtobufDisconnect(VeinTcp::TcpPeer *peer);
 
     void onTelnetClientConnected();
     void onTelnetDataReceived();
