@@ -64,7 +64,7 @@ quint32 cSECInterfacePrivate::writeRegister(QString chnname, quint8 reg, quint32
 
 quint32 cSECInterfacePrivate::readRegister(QString chnname, quint8 reg)
 {
-    QString cmd, par;
+    QString cmd;
     quint32 msgnr;
 
     msgnr = sendCommand(cmd = QString("ECAL:%1:R%2?").arg(chnname).arg(reg));
