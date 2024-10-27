@@ -155,17 +155,17 @@ void PCBServer::onTelnetClientConnected()
 
 void PCBServer::onTelnetDataReceived()
 {
-    m_sInput = "";
+    QString input;
     while(m_telnetSocket->canReadLine())
-        m_sInput += m_telnetSocket->readLine();
-    m_sInput.remove('\r'); // we remove cr lf
-    m_sInput.remove('\n');
-    qInfo("External SCPI command: %s", qPrintable(m_sInput));
+        input += m_telnetSocket->readLine();
+    input.remove('\r'); // we remove cr lf
+    input.remove('\n');
+    qInfo("External SCPI command: %s", qPrintable(input));
 
     QByteArray clientId = QByteArray(); // we set an empty byte array
-    cProtonetCommand* protoCmd = new cProtonetCommand(0, false, true, clientId, 0, m_sInput);
+    cProtonetCommand* protoCmd = new cProtonetCommand(0, false, true, clientId, 0, input);
     // peer = 0 means we are working on the scpi socket ....
-    cSCPIObject* scpiObject = m_pSCPIInterface->getSCPIObject(m_sInput);
+    cSCPIObject* scpiObject = m_pSCPIInterface->getSCPIObject(input);
     if(scpiObject) {
         cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
         if (!scpiDelegate->executeSCPI(protoCmd)) {
@@ -298,11 +298,11 @@ void PCBServer::executeCommandProto(VeinTcp::TcpPeer* peer, std::shared_ptr<goog
             else if (protobufCommand->has_messagenr()) {
                 quint32 messageNr = protobufCommand->messagenr();
                 ProtobufMessage::NetMessage::ScpiCommand scpiCmd = protobufCommand->scpi();
-                m_sInput = QString::fromStdString(scpiCmd.command()) +  " " + QString::fromStdString(scpiCmd.parameter());
+                QString input = QString::fromStdString(scpiCmd.command()) +  " " + QString::fromStdString(scpiCmd.parameter());
                 cProtonetCommand* protoCmd;
-                scpiObject =  m_pSCPIInterface->getSCPIObject(m_sInput);
+                scpiObject =  m_pSCPIInterface->getSCPIObject(input);
                 if (scpiObject) {
-                    protoCmd = new cProtonetCommand(peer, true, true, clientId, messageNr, m_sInput, scpiObject->getType());
+                    protoCmd = new cProtonetCommand(peer, true, true, clientId, messageNr, input, scpiObject->getType());
                     cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
                     if (!scpiDelegate->executeSCPI(protoCmd)) {
                         protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::nak];
@@ -310,7 +310,8 @@ void PCBServer::executeCommandProto(VeinTcp::TcpPeer* peer, std::shared_ptr<goog
                     }
                 }
                 else {
-                    protoCmd = new cProtonetCommand(peer, true, true, clientId, messageNr, m_sInput);
+                    QString cmd =  QString::fromStdString(protobufCommand->scpi().command());
+                    protoCmd = new cProtonetCommand(peer, true, true, clientId, messageNr, cmd);
                     protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::nak];
                     emit cmdExecutionDone(protoCmd);
                 }
@@ -318,12 +319,12 @@ void PCBServer::executeCommandProto(VeinTcp::TcpPeer* peer, std::shared_ptr<goog
             }
         }
         else {
-            m_sInput =  QString::fromStdString(protobufCommand->scpi().command());
+            QString input =  QString::fromStdString(protobufCommand->scpi().command());
             QByteArray clientId = QByteArray(); // we set an empty byte array
             cProtonetCommand* protoCmd;
-            scpiObject =  m_pSCPIInterface->getSCPIObject(m_sInput);
+            scpiObject =  m_pSCPIInterface->getSCPIObject(input);
             if (scpiObject) {
-                protoCmd = new cProtonetCommand(peer, false, true, clientId, 0, m_sInput, scpiObject->getType());
+                protoCmd = new cProtonetCommand(peer, false, true, clientId, 0, input, scpiObject->getType());
                 cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
                 if (!scpiDelegate->executeSCPI(protoCmd)) {
                     protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::nak];
@@ -331,7 +332,7 @@ void PCBServer::executeCommandProto(VeinTcp::TcpPeer* peer, std::shared_ptr<goog
                 }
             }
             else {
-                protoCmd = new cProtonetCommand(peer, false, true, clientId, 0, m_sInput, 0);
+                protoCmd = new cProtonetCommand(peer, false, true, clientId, 0, input, 0);
                 protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::nak];
                 emit cmdExecutionDone(protoCmd);
             }

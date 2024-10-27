@@ -74,7 +74,6 @@ private:
     void executeCommandProto(VeinTcp::TcpPeer* peer, std::shared_ptr<google::protobuf::Message> cmd);
 
     VeinTcp::AbstractTcpWorkerFactoryPtr m_tcpWorkerFactory;
-    QString m_sInput, m_sOutput;
     QList<NotificationStructWithValue> m_notifierRegisterNext;
     QList<NotificationStructWithValue> m_notifierRegisterList;
     XiQNetWrapper m_protobufWrapper;
