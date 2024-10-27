@@ -1418,13 +1418,13 @@ void ZDspServer::SCPIdisconnect()
     DelSCPIClient();
 }
 
-cZDSP1Client* ZDspServer::AddClient(VeinTcp::TcpPeer* m_pNetClient)
+cZDSP1Client* ZDspServer::AddClient(VeinTcp::TcpPeer* netClient)
 {
     // fügt einen client hinzu
     m_nSocketIdentifier++;
     if (m_nSocketIdentifier == 0)
         m_nSocketIdentifier++;
-    cZDSP1Client* client = new cZDSP1Client(m_nSocketIdentifier, m_pNetClient, m_deviceNodeFactory);
+    cZDSP1Client* client = new cZDSP1Client(m_nSocketIdentifier, netClient, m_deviceNodeFactory);
     m_clientList.append(client);
     return client;
 }
