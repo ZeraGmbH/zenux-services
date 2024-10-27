@@ -41,9 +41,6 @@ public slots:
     void sendAnswerProto(cProtonetCommand* protoCmd);
 protected slots:
     virtual void doConfiguration() = 0; // all servers must configure
-    void onTelnetClientConnected();
-    void onTelnetDataReceived();
-    void onTelnetDisconnect();
     virtual void onSendNotification(ScpiNotificationSubscriber subscriber);
     virtual void onPeerDisconnected(VeinTcp::TcpPeer *peer);
 protected:
@@ -57,14 +54,15 @@ protected:
     Zera::XMLConfig::cReader m_xmlConfigReader;
     QList<ScpiConnection*> scpiConnectionList; // a list of all scpi connections
     QList<cResource*> resourceList;
-    QTcpServer* m_telnetServer = nullptr;
-    QTcpSocket* m_telnetSocket = nullptr;
 private slots:
     void onProtobufClientConnected(VeinTcp::TcpPeer *newClient);
     void onMessageReceived(VeinTcp::TcpPeer *peer, QByteArray message);
     void onNotifyPeerConnectionClosed(VeinTcp::TcpPeer *peer);
     void onEstablishNewNotifier(NotificationValue *notifier);
     void onNotifierChanged(quint32 irqreg);
+    void onTelnetClientConnected();
+    void onTelnetDataReceived();
+    void onTelnetDisconnect();
 private:
     void registerNotifier(cProtonetCommand* protoCmd); // registeres 1 notifier per command
     void unregisterNotifier(cProtonetCommand *protoCmd); // unregisters all notifiers
@@ -73,6 +71,8 @@ private:
     void executeCommandProto(VeinTcp::TcpPeer* peer, std::shared_ptr<google::protobuf::Message> cmd);
 
     VeinTcp::AbstractTcpWorkerFactoryPtr m_tcpWorkerFactory;
+    QTcpServer* m_telnetServer = nullptr;
+    QTcpSocket* m_telnetSocket = nullptr;
     QList<NotificationStructWithValue> m_notifierRegisterNext;
     QList<NotificationStructWithValue> m_notifierRegisterList;
     XiQNetWrapper m_protobufWrapper;
