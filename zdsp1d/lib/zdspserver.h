@@ -60,9 +60,9 @@ private slots:
     virtual void deleteConnection(VeinTcp::TcpPeer *peer);
     void onMessageReceived(VeinTcp::TcpPeer *peer, QByteArray message);
 
-    void setSCPIConnection();
-    void SCPIInput();
-    void SCPIdisconnect();
+    void onTelnetClientConnected();
+    void onTelnetDataReceived();
+    void onTelnetDisconnect();
 
     void DspIntHandler(int);
     void doConfiguration();

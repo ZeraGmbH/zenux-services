@@ -314,7 +314,7 @@ void ZDspServer::openTelnetScpi()
     if (ethSettings->isSCPIactive()) {
         m_telnetServer = new QTcpServer(this);
         m_telnetServer->setMaxPendingConnections(1); // we only accept 1 client to connect
-        connect(m_telnetServer, &QTcpServer::newConnection, this, &ZDspServer::setSCPIConnection);
+        connect(m_telnetServer, &QTcpServer::newConnection, this, &ZDspServer::onTelnetClientConnected);
         m_telnetServer->listen(QHostAddress::AnyIPv4, ethSettings->getPort(EthSettings::scpiserver));
     }
 }
@@ -1388,16 +1388,16 @@ void ZDspServer::executeCommandProto(VeinTcp::TcpPeer *peer, std::shared_ptr<goo
     }
 }
 
-void ZDspServer::setSCPIConnection()
+void ZDspServer::onTelnetClientConnected()
 {
     qInfo("External SCPI Client connected");
     m_telnetSocket = m_telnetServer->nextPendingConnection();
     m_pSCPIClient = AddSCPIClient();
-    connect(m_telnetSocket, &QIODevice::readyRead, this, &ZDspServer::SCPIInput);
-    connect(m_telnetSocket, &QAbstractSocket::disconnected, this, &ZDspServer::SCPIdisconnect);
+    connect(m_telnetSocket, &QIODevice::readyRead, this, &ZDspServer::onTelnetDataReceived);
+    connect(m_telnetSocket, &QAbstractSocket::disconnected, this, &ZDspServer::onTelnetDisconnect);
 }
 
-void ZDspServer::SCPIInput()
+void ZDspServer::onTelnetDataReceived()
 {
     QString m_sInput;
     while ( m_telnetSocket->canReadLine() )
@@ -1411,7 +1411,7 @@ void ZDspServer::SCPIInput()
     qInfo("External SCPI response: %s", qPrintable(m_sOutput));
 }
 
-void ZDspServer::SCPIdisconnect()
+void ZDspServer::onTelnetDisconnect()
 {
     qInfo("External SCPI Client disconnected");
     disconnect(m_telnetSocket, 0, 0, 0); // we disconnect everything
