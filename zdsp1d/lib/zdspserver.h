@@ -61,8 +61,8 @@ private slots:
     void onMessageReceived(VeinTcp::TcpPeer *peer, QByteArray message);
 
     void setSCPIConnection();
-    virtual void SCPIInput();
-    virtual void SCPIdisconnect();
+    void SCPIInput();
+    void SCPIdisconnect();
 
     void DspIntHandler(int);
     void doConfiguration();
