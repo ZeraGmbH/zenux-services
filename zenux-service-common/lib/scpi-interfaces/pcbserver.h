@@ -41,9 +41,9 @@ public slots:
     void sendAnswerProto(cProtonetCommand* protoCmd);
 protected slots:
     virtual void doConfiguration() = 0; // all servers must configure
-    void setSCPIConnection();
-    void SCPIInput();
-    void SCPIdisconnect();
+    void onTelnetClientConnected();
+    void onTelnetDataReceived();
+    void onTelnetDisconnect();
     virtual void onSendNotification(ScpiNotificationSubscriber subscriber);
     virtual void onPeerDisconnected(VeinTcp::TcpPeer *peer);
 protected:

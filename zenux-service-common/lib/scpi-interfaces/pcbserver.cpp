@@ -84,7 +84,7 @@ void PCBServer::openTelnetScpi()
     if(ethSettings->isSCPIactive()) {
         m_telnetServer = new QTcpServer();
         m_telnetServer->setMaxPendingConnections(1); // we only accept 1 client to connect
-        connect(m_telnetServer, &QTcpServer::newConnection, this, &PCBServer::setSCPIConnection);
+        connect(m_telnetServer, &QTcpServer::newConnection, this, &PCBServer::onTelnetClientConnected);
         m_telnetServer->listen(QHostAddress::AnyIPv4, ethSettings->getPort(EthSettings::scpiserver));
     }
 }
@@ -145,15 +145,15 @@ void PCBServer::sendAnswerProto(cProtonetCommand *protoCmd)
     delete protoCmd;
 }
 
-void PCBServer::setSCPIConnection()
+void PCBServer::onTelnetClientConnected()
 {
     qInfo("External SCPI Client connected");
     m_telnetSocket = m_telnetServer->nextPendingConnection();
-    connect(m_telnetSocket, &QIODevice::readyRead, this, &PCBServer::SCPIInput);
-    connect(m_telnetSocket, &QAbstractSocket::disconnected, this, &PCBServer::SCPIdisconnect);
+    connect(m_telnetSocket, &QIODevice::readyRead, this, &PCBServer::onTelnetDataReceived);
+    connect(m_telnetSocket, &QAbstractSocket::disconnected, this, &PCBServer::onTelnetDisconnect);
 }
 
-void PCBServer::SCPIInput()
+void PCBServer::onTelnetDataReceived()
 {
     m_sInput = "";
     while(m_telnetSocket->canReadLine())
@@ -179,7 +179,7 @@ void PCBServer::SCPIInput()
     }
 }
 
-void PCBServer::SCPIdisconnect()
+void PCBServer::onTelnetDisconnect()
 {
     qInfo("External SCPI Client disconnected");
     disconnect(m_telnetSocket, 0, 0, 0); // we disconnect everything
