@@ -4,7 +4,7 @@
 #include "pcbserver.h"
 #include "abstractfactoryi2cctrl.h"
 
-class TestPcbServerNotifications : public cPCBServer
+class TestPcbServerNotifications : public PCBServer
 {
     Q_OBJECT
 public:

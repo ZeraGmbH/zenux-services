@@ -4,7 +4,7 @@
 #include <QDateTime>
 #include <QJsonObject>
 
-Com5003SystemInterface::Com5003SystemInterface(cPCBServer *server,
+Com5003SystemInterface::Com5003SystemInterface(PCBServer *server,
                                                SystemInfo *systemInfo,
                                                SenseInterfaceCommon *senseInterface,
                                                AbstractFactoryI2cCtrlPtr ctrlFactory) :

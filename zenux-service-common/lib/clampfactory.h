@@ -7,7 +7,7 @@
 class ClampFactory
 {
 public:
-    static cClamp* createClamp(cPCBServer *server,
+    static cClamp* createClamp(PCBServer *server,
                                I2cSettings *i2cSettings,
                                SenseInterfaceCommon *senseInterface,
                                QString channelName,
@@ -15,7 +15,7 @@ public:
                                I2cMuxerInterface::Ptr i2cMuxer,
                                quint8 ctrlChannelSecondary);
 protected:
-    static std::function<cClamp*(cPCBServer *server,
+    static std::function<cClamp*(PCBServer *server,
                                     I2cSettings *i2cSettings,
                                     SenseInterfaceCommon *senseInterface,
                                     QString channelName,

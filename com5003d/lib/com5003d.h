@@ -27,7 +27,7 @@ class HkInGroupResourceAndInterface;
 class SystemInfo;
 
 
-class cCOM5003dServer: public cPCBServer
+class cCOM5003dServer: public PCBServer
 {
     Q_OBJECT
 

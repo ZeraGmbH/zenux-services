@@ -1310,7 +1310,7 @@ void ZDspServer::executeCommandProto(VeinTcp::TcpPeer *peer, std::shared_ptr<goo
             quint32 messageNr = protobufCommand->messagenr();
             ProtobufMessage::NetMessage::ScpiCommand scpiCmd = protobufCommand->scpi();
 
-            // --- new scpi stolen from cPCBServer::executeCommandProto ---
+            // --- new scpi stolen from PCBServer::executeCommandProto ---
             cProtonetCommand* protoCmd;
             QString scpiInput = QString::fromStdString(scpiCmd.command()) +  " " + QString::fromStdString(scpiCmd.parameter());
             cSCPIObject* scpiObject =  m_pSCPIInterface->getSCPIObject(scpiInput);

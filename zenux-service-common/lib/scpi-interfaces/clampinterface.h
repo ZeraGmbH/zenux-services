@@ -25,7 +25,7 @@ enum ClampCommands
 class cClampInterface: public ScpiConnection
 {
 public:
-    cClampInterface(cPCBServer *server,
+    cClampInterface(PCBServer *server,
                     I2cSettings *i2cSettings,
                     cSenseSettings *senseSettings,
                     SenseInterfaceCommon *senseInterface,
@@ -48,7 +48,7 @@ private:
     void handleClampConnected(const SenseSystem::cChannelSettings *chSettings);
     void handleClampDisconnected(QString channelName, const SenseSystem::cChannelSettings *chSettings, quint16 bmask);
 
-    cPCBServer *m_pMyServer;
+    PCBServer *m_pMyServer;
     I2cSettings *m_i2cSettings;
     cSenseSettings *m_senseSettings;
     SenseInterfaceCommon *m_pSenseInterface;

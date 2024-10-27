@@ -18,13 +18,13 @@ enum commands
     cmdUnregister
 };
 
-cPCBServer::cPCBServer(SettingsContainerPtr settings, cSCPI *scpiInterface) :
+PCBServer::PCBServer(SettingsContainerPtr settings, cSCPI *scpiInterface) :
     ScpiConnection(scpiInterface),
     m_settings(std::move(settings))
 {
 }
 
-cPCBServer::cPCBServer(SettingsContainerPtr settings, cSCPI *scpiInterface,
+PCBServer::PCBServer(SettingsContainerPtr settings, cSCPI *scpiInterface,
                        VeinTcp::AbstractTcpWorkerFactoryPtr tcpWorkerFactory) :
     ScpiConnection(scpiInterface),
     m_tcpWorkerFactory(tcpWorkerFactory),
@@ -32,38 +32,38 @@ cPCBServer::cPCBServer(SettingsContainerPtr settings, cSCPI *scpiInterface,
 {
 }
 
-void cPCBServer::initSCPIConnection(QString leadingNodes)
+void PCBServer::initSCPIConnection(QString leadingNodes)
 {
     ensureTrailingColonOnNonEmptyParentNodes(leadingNodes);
     addDelegate(QString("%1SERVER").arg(leadingNodes), "REGISTER", SCPI::isCmdwP, m_pSCPIInterface, cmdRegister);
     addDelegate(QString("%1SERVER").arg(leadingNodes), "UNREGISTER", SCPI::isQuery | SCPI::isCmd, m_pSCPIInterface, cmdUnregister);
 }
 
-cSCPI *cPCBServer::getSCPIInterface()
+cSCPI *PCBServer::getSCPIInterface()
 {
     return m_pSCPIInterface;
 }
 
-QString cPCBServer::getName()
+QString PCBServer::getName()
 {
     return m_settings->getServerParams().name;
 }
 
-QString cPCBServer::getVersion()
+QString PCBServer::getVersion()
 {
     return m_settings->getServerParams().version;
 }
 
-void cPCBServer::setupServer()
+void PCBServer::setupServer()
 {
     if(m_tcpWorkerFactory)  // This nasty if/else will go soon hopefully
         m_protoBufServer = new VeinTcp::TcpServer(m_tcpWorkerFactory, this);
     else
         m_protoBufServer = new VeinTcp::TcpServer(this);
-    connect(m_protoBufServer,&VeinTcp::TcpServer::sigClientConnected,this,&cPCBServer::onEstablishNewConnection);
+    connect(m_protoBufServer,&VeinTcp::TcpServer::sigClientConnected,this,&PCBServer::onEstablishNewConnection);
 }
 
-void cPCBServer::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
+void PCBServer::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
 {
     switch (cmdCode)
     {
@@ -78,18 +78,18 @@ void cPCBServer::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
         emit cmdExecutionDone(protoCmd);
 }
 
-void cPCBServer::openTelnetScpi()
+void PCBServer::openTelnetScpi()
 {
     EthSettings *ethSettings = m_settings->getEthSettings();
     if(ethSettings->isSCPIactive()) {
         m_telnetServer = new QTcpServer();
         m_telnetServer->setMaxPendingConnections(1); // we only accept 1 client to connect
-        connect(m_telnetServer, &QTcpServer::newConnection, this, &cPCBServer::setSCPIConnection);
+        connect(m_telnetServer, &QTcpServer::newConnection, this, &PCBServer::setSCPIConnection);
         m_telnetServer->listen(QHostAddress::AnyIPv4, ethSettings->getPort(EthSettings::scpiserver));
     }
 }
 
-void cPCBServer::sendAnswerProto(cProtonetCommand *protoCmd)
+void PCBServer::sendAnswerProto(cProtonetCommand *protoCmd)
 {
     if(protoCmd->m_pPeer == 0) {
         // we worked on a command comming from scpi socket connection
@@ -145,15 +145,15 @@ void cPCBServer::sendAnswerProto(cProtonetCommand *protoCmd)
     delete protoCmd;
 }
 
-void cPCBServer::setSCPIConnection()
+void PCBServer::setSCPIConnection()
 {
     qInfo("External SCPI Client connected");
     m_telnetSocket = m_telnetServer->nextPendingConnection();
-    connect(m_telnetSocket, &QIODevice::readyRead, this, &cPCBServer::SCPIInput);
-    connect(m_telnetSocket, &QAbstractSocket::disconnected, this, &cPCBServer::SCPIdisconnect);
+    connect(m_telnetSocket, &QIODevice::readyRead, this, &PCBServer::SCPIInput);
+    connect(m_telnetSocket, &QAbstractSocket::disconnected, this, &PCBServer::SCPIdisconnect);
 }
 
-void cPCBServer::SCPIInput()
+void PCBServer::SCPIInput()
 {
     m_sInput = "";
     while(m_telnetSocket->canReadLine())
@@ -179,24 +179,24 @@ void cPCBServer::SCPIInput()
     }
 }
 
-void cPCBServer::SCPIdisconnect()
+void PCBServer::SCPIdisconnect()
 {
     qInfo("External SCPI Client disconnected");
     disconnect(m_telnetSocket, 0, 0, 0); // we disconnect everything
 }
 
-void cPCBServer::onSendNotification(ScpiNotificationSubscriber subscriber)
+void PCBServer::onSendNotification(ScpiNotificationSubscriber subscriber)
 {
     QString notificationMsg = QString("Notify:%1").arg(subscriber.m_notifierId);
     sendNotificationToClient(notificationMsg, subscriber.m_clientId, subscriber.m_netPeer);
 }
 
-void cPCBServer::onPeerDisconnected(VeinTcp::TcpPeer *peer)
+void PCBServer::onPeerDisconnected(VeinTcp::TcpPeer *peer)
 {
     Q_UNUSED(peer)
 }
 
-void cPCBServer::registerNotifier(cProtonetCommand *protoCmd)
+void PCBServer::registerNotifier(cProtonetCommand *protoCmd)
 {
     cSCPICommand cmd = protoCmd->m_sInput;
     if(cmd.isCommand(1)) { // SEC service receives registerNotifier with 1 param
@@ -206,7 +206,7 @@ void cPCBServer::registerNotifier(cProtonetCommand *protoCmd)
             NotificationStructWithValue notData;
             notData.netPeer = protoCmd->m_pPeer;
             notData.clientID = protoCmd->m_clientId;
-            connect(notData.netPeer, &VeinTcp::TcpPeer::sigConnectionClosed, this, &cPCBServer::onNotifyPeerConnectionClosed);
+            connect(notData.netPeer, &VeinTcp::TcpPeer::sigConnectionClosed, this, &PCBServer::onNotifyPeerConnectionClosed);
             m_notifierRegisterNext.append(notData); // we wait for a notifier signal
 
             cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
@@ -228,7 +228,7 @@ void cPCBServer::registerNotifier(cProtonetCommand *protoCmd)
         QString query = cmd.getParam(0);
         cSCPIObject* scpiObject = m_pSCPIInterface->getSCPIObject(query);
         if(scpiObject) {
-            connect( protoCmd->m_pPeer, &VeinTcp::TcpPeer::sigConnectionClosed, this, &cPCBServer::onNotifyPeerConnectionClosed);
+            connect( protoCmd->m_pPeer, &VeinTcp::TcpPeer::sigConnectionClosed, this, &PCBServer::onNotifyPeerConnectionClosed);
             cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
             cProtonetCommand* procmd = new cProtonetCommand(protoCmd);
             procmd->m_bwithOutput = false;
@@ -244,7 +244,7 @@ void cPCBServer::registerNotifier(cProtonetCommand *protoCmd)
     }
 }
 
-void cPCBServer::unregisterNotifier(cProtonetCommand *protoCmd)
+void PCBServer::unregisterNotifier(cProtonetCommand *protoCmd)
 {
     cSCPICommand cmd = protoCmd->m_sInput;
     if(cmd.isCommand(1) && (cmd.getParam(0) == "") ) {
@@ -255,7 +255,7 @@ void cPCBServer::unregisterNotifier(cProtonetCommand *protoCmd)
         protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-void cPCBServer::doUnregisterNotifier(VeinTcp::TcpPeer* peer, const QByteArray &clientID)
+void PCBServer::doUnregisterNotifier(VeinTcp::TcpPeer* peer, const QByteArray &clientID)
 {
     emit removeSubscribers(peer, clientID);
     if(m_notifierRegisterList.count() > 0) {
@@ -273,18 +273,18 @@ void cPCBServer::doUnregisterNotifier(VeinTcp::TcpPeer* peer, const QByteArray &
     }
 }
 
-void cPCBServer::onEstablishNewConnection(VeinTcp::TcpPeer *newClient)
+void PCBServer::onEstablishNewConnection(VeinTcp::TcpPeer *newClient)
 {
-    connect(newClient, &VeinTcp::TcpPeer::sigMessageReceived, this, &cPCBServer::onMessageReceived);
-    connect(newClient, &VeinTcp::TcpPeer::sigConnectionClosed, this, &cPCBServer::onPeerDisconnected);
+    connect(newClient, &VeinTcp::TcpPeer::sigMessageReceived, this, &PCBServer::onMessageReceived);
+    connect(newClient, &VeinTcp::TcpPeer::sigConnectionClosed, this, &PCBServer::onPeerDisconnected);
 }
 
-void cPCBServer::onMessageReceived(VeinTcp::TcpPeer *peer, QByteArray message)
+void PCBServer::onMessageReceived(VeinTcp::TcpPeer *peer, QByteArray message)
 {
     executeCommandProto(peer, m_protobufWrapper.byteArrayToProtobuf(message));
 }
 
-void cPCBServer::executeCommandProto(VeinTcp::TcpPeer* peer, std::shared_ptr<google::protobuf::Message> cmd)
+void PCBServer::executeCommandProto(VeinTcp::TcpPeer* peer, std::shared_ptr<google::protobuf::Message> cmd)
 {
     cSCPIObject* scpiObject;
     std::shared_ptr<ProtobufMessage::NetMessage> protobufCommand = std::static_pointer_cast<ProtobufMessage::NetMessage>(cmd);
@@ -339,7 +339,7 @@ void cPCBServer::executeCommandProto(VeinTcp::TcpPeer* peer, std::shared_ptr<goo
     }
 }
 
-void cPCBServer::onEstablishNewNotifier(NotificationValue *notifier)
+void PCBServer::onEstablishNewNotifier(NotificationValue *notifier)
 {
     if (m_notifierRegisterNext.count() > 0) // if we're waiting for notifier
     {
@@ -347,11 +347,11 @@ void cPCBServer::onEstablishNewNotifier(NotificationValue *notifier)
         NotificationStructWithValue notData = m_notifierRegisterNext.takeFirst(); // we pick the notification data
         notData.notValue = notifier;
         m_notifierRegisterList.append(notData); //
-        connect(notifier, &NotificationValue::risingEdge, this, &cPCBServer::onNotifierChanged);
+        connect(notifier, &NotificationValue::risingEdge, this, &PCBServer::onNotifierChanged);
     }
 }
 
-void cPCBServer::sendNotificationToClient(QString message, QByteArray clientID, VeinTcp::TcpPeer *netPeer)
+void PCBServer::sendNotificationToClient(QString message, QByteArray clientID, VeinTcp::TcpPeer *netPeer)
 {
     if (clientID.isEmpty()) { // old style communication
         QByteArray block;
@@ -375,7 +375,7 @@ void cPCBServer::sendNotificationToClient(QString message, QByteArray clientID, 
 }
 
 
-void cPCBServer::onNotifierChanged(quint32 irqreg)
+void PCBServer::onNotifierChanged(quint32 irqreg)
 {
     NotificationValue* notifier = qobject_cast<NotificationValue*>(sender());
     if (m_notifierRegisterList.count() > 0) {
@@ -390,20 +390,20 @@ void cPCBServer::onNotifierChanged(quint32 irqreg)
     }
 }
 
-void cPCBServer::onNotifyPeerConnectionClosed(VeinTcp::TcpPeer *peer)
+void PCBServer::onNotifyPeerConnectionClosed(VeinTcp::TcpPeer *peer)
 {
     doUnregisterNotifier(peer);
 }
 
-void cPCBServer::initSCPIConnections()
+void PCBServer::initSCPIConnections()
 {
     for (int i = 0; i < scpiConnectionList.count(); i++)
     {
         scpiConnectionList.at(i)->initSCPIConnection(""); // we have our interface
-        connect(scpiConnectionList.at(i), &ScpiConnection::valNotifier, this, &cPCBServer::onEstablishNewNotifier);
-        connect(scpiConnectionList.at(i), &ScpiConnection::sendNotification, this, &cPCBServer::onSendNotification);
-        connect(scpiConnectionList.at(i), &ScpiConnection::cmdExecutionDone, this, &cPCBServer::sendAnswerProto);
-        connect(this, &cPCBServer::notifierRegistred, scpiConnectionList.at(i), &ScpiConnection::onNotifierRegistered);
-        connect(this, &cPCBServer::removeSubscribers, scpiConnectionList.at(i), &ScpiConnection::onRemoveSubscribers);
+        connect(scpiConnectionList.at(i), &ScpiConnection::valNotifier, this, &PCBServer::onEstablishNewNotifier);
+        connect(scpiConnectionList.at(i), &ScpiConnection::sendNotification, this, &PCBServer::onSendNotification);
+        connect(scpiConnectionList.at(i), &ScpiConnection::cmdExecutionDone, this, &PCBServer::sendAnswerProto);
+        connect(this, &PCBServer::notifierRegistred, scpiConnectionList.at(i), &ScpiConnection::onNotifierRegistered);
+        connect(this, &PCBServer::removeSubscribers, scpiConnectionList.at(i), &ScpiConnection::onRemoveSubscribers);
     }
 }

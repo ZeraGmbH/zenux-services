@@ -28,7 +28,7 @@ class HkInGroupResourceAndInterface;
 class QSocketNotifier;
 class cClampInterface;
 
-class cMT310S2dServer: public cPCBServer
+class cMT310S2dServer: public PCBServer
 {
     Q_OBJECT
 public:

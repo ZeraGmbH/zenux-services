@@ -31,7 +31,7 @@ cClamp::cClamp() :
 {
 }
 
-cClamp::cClamp(cPCBServer *server,
+cClamp::cClamp(PCBServer *server,
                I2cSettings *i2cSettings,
                SenseInterfaceCommon *senseInterface,
                QString channelName,
@@ -56,8 +56,8 @@ cClamp::cClamp(cPCBServer *server,
 
     // This blocks us from getting free of server
     // Problem: clamps are generated dynamically all other interfaces are setup once
-    connect(this, &ScpiConnection::cmdExecutionDone, server, &cPCBServer::sendAnswerProto);
-    connect(server, &cPCBServer::removeSubscribers, this, &ScpiConnection::onRemoveSubscribers);
+    connect(this, &ScpiConnection::cmdExecutionDone, server, &PCBServer::sendAnswerProto);
+    connect(server, &PCBServer::removeSubscribers, this, &ScpiConnection::onRemoveSubscribers);
 
     if (type != undefined) {
         importClampAdjData();
