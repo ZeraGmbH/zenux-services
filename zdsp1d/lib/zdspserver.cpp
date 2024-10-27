@@ -1399,16 +1399,16 @@ void ZDspServer::onTelnetClientConnected()
 
 void ZDspServer::onTelnetDataReceived()
 {
-    QString m_sInput;
+    QString input;
     while ( m_telnetSocket->canReadLine() )
-        m_sInput += m_telnetSocket->readLine();
-    m_sInput.remove('\r'); // we remove cr lf
-    m_sInput.remove('\n');
-    qInfo("External SCPI command: %s", qPrintable(m_sInput));
-    QString m_sOutput = m_cmdInterpreter->CmdExecute(m_sInput) + "\n";
-    QByteArray ba = m_sOutput.toLatin1();
+        input += m_telnetSocket->readLine();
+    input.remove('\r'); // we remove cr lf
+    input.remove('\n');
+    qInfo("External SCPI command: %s", qPrintable(input));
+    QString output = m_cmdInterpreter->CmdExecute(input) + "\n";
+    QByteArray ba = output.toLatin1();
     m_telnetSocket->write(ba);
-    qInfo("External SCPI response: %s", qPrintable(m_sOutput));
+    qInfo("External SCPI response: %s", qPrintable(output));
 }
 
 void ZDspServer::onTelnetDisconnect()
