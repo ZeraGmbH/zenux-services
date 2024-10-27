@@ -191,7 +191,7 @@ void PCBServer::onSendNotification(ScpiNotificationSubscriber subscriber)
     sendNotificationToClient(notificationMsg, subscriber.m_clientId, subscriber.m_netPeer);
 }
 
-void PCBServer::onPeerDisconnected(VeinTcp::TcpPeer *peer)
+void PCBServer::onProtobufDisconnect(VeinTcp::TcpPeer *peer)
 {
     Q_UNUSED(peer)
 }
@@ -275,11 +275,11 @@ void PCBServer::doUnregisterNotifier(VeinTcp::TcpPeer* peer, const QByteArray &c
 
 void PCBServer::onProtobufClientConnected(VeinTcp::TcpPeer *newClient)
 {
-    connect(newClient, &VeinTcp::TcpPeer::sigMessageReceived, this, &PCBServer::onMessageReceived);
-    connect(newClient, &VeinTcp::TcpPeer::sigConnectionClosed, this, &PCBServer::onPeerDisconnected);
+    connect(newClient, &VeinTcp::TcpPeer::sigMessageReceived, this, &PCBServer::onProtobufDataReceived);
+    connect(newClient, &VeinTcp::TcpPeer::sigConnectionClosed, this, &PCBServer::onProtobufDisconnect);
 }
 
-void PCBServer::onMessageReceived(VeinTcp::TcpPeer *peer, QByteArray message)
+void PCBServer::onProtobufDataReceived(VeinTcp::TcpPeer *peer, QByteArray message)
 {
     executeCommandProto(peer, m_protobufWrapper.byteArrayToProtobuf(message));
 }

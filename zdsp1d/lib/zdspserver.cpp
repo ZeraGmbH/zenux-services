@@ -1281,17 +1281,17 @@ cZDSP1Client* ZDspServer::GetClient(VeinTcp::TcpPeer *peer)
 
 void ZDspServer::onProtobufClientConnected(VeinTcp::TcpPeer *newClient)
 {
-    connect(newClient, &VeinTcp::TcpPeer::sigMessageReceived, this, &ZDspServer::onMessageReceived);
-    connect(newClient, &VeinTcp::TcpPeer::sigConnectionClosed, this, &ZDspServer::deleteConnection);
+    connect(newClient, &VeinTcp::TcpPeer::sigMessageReceived, this, &ZDspServer::onProtobufDataReceived);
+    connect(newClient, &VeinTcp::TcpPeer::sigConnectionClosed, this, &ZDspServer::onProtobufDisconnect);
     AddClient(newClient); // we additionally add the client to our list
 }
 
-void ZDspServer::deleteConnection(VeinTcp::TcpPeer *peer)
+void ZDspServer::onProtobufDisconnect(VeinTcp::TcpPeer *peer)
 {
     DelClients(peer);
 }
 
-void ZDspServer::onMessageReceived(VeinTcp::TcpPeer *peer, QByteArray message)
+void ZDspServer::onProtobufDataReceived(VeinTcp::TcpPeer *peer, QByteArray message)
 {
     executeCommandProto(peer, m_protobufWrapper.byteArrayToProtobuf(message));
 }

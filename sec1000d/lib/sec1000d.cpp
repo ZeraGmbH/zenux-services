@@ -247,7 +247,7 @@ void cSEC1000dServer::onResourceReady()
     }
 }
 
-void cSEC1000dServer::onPeerDisconnected(VeinTcp::TcpPeer* peer)
+void cSEC1000dServer::onProtobufDisconnect(VeinTcp::TcpPeer* peer)
 {
     if(!m_pECalculatorInterface->freeChannelsForThisPeer(peer))
         qWarning("Client disconnected. But SEC resources could not be freed!");

@@ -46,7 +46,7 @@ private slots:
     void connect2RMError();
     void doIdentAndRegister();
     void onResourceReady();
-    void onPeerDisconnected(VeinTcp::TcpPeer *peer) override;
+    void onProtobufDisconnect(VeinTcp::TcpPeer *peer) override;
 private:
     void init();
     AbstractFactoryDeviceNodeSecPtr m_deviceNodeFactory;

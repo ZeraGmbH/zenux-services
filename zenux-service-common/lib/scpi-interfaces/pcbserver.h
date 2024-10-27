@@ -42,7 +42,7 @@ public slots:
 protected slots:
     virtual void doConfiguration() = 0; // all servers must configure
     virtual void onSendNotification(ScpiNotificationSubscriber subscriber);
-    virtual void onPeerDisconnected(VeinTcp::TcpPeer *peer);
+    virtual void onProtobufDisconnect(VeinTcp::TcpPeer *peer);
 protected:
     void setupServer();
     void initSCPIConnections();
@@ -56,7 +56,7 @@ protected:
     QList<cResource*> resourceList;
 private slots:
     void onProtobufClientConnected(VeinTcp::TcpPeer *newClient);
-    void onMessageReceived(VeinTcp::TcpPeer *peer, QByteArray message);
+    void onProtobufDataReceived(VeinTcp::TcpPeer *peer, QByteArray message);
     void onNotifyPeerConnectionClosed(VeinTcp::TcpPeer *peer);
     void onEstablishNewNotifier(NotificationValue *notifier);
     void onNotifierChanged(quint32 irqreg);
