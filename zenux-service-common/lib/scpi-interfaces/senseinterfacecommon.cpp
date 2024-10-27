@@ -127,8 +127,8 @@ void SenseInterfaceCommon::injectAdjToChannelRanges()
 {
     for(auto &channel : m_channelList) {
         QString channelName = channel->getName();
-        QList<SenseRangeCommon*>& rangeList = channel->getRangeList();
-        for(auto &range : rangeList) {
+        const QList<SenseRangeCommon*>& rangeList = channel->getRangeList();
+        for(const auto &range : rangeList) {
             QString rangeName = range->getRangeName();
             if(m_adjData->isChannelRangeAvailable(channelName, rangeName)) {
                 AdjDataRange rangeAdjData = m_adjData->getRangeAdjData(channelName, rangeName);
