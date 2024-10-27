@@ -85,7 +85,7 @@ private:
     VeinTcp::AbstractTcpWorkerFactoryPtr m_tcpWorkerFactory;
     SettingsContainerPtr m_settings;
     ScpiCmdInterpreter* m_cmdInterpreter = nullptr;
-    VeinTcp::TcpServer* myProtonetServer; // the real server that does the communication job
+    VeinTcp::TcpServer* myProtonetServer = nullptr; // the real server that does the communication job
     XiQNetWrapper m_protobufWrapper;
     quint16 m_nSocketIdentifier = 0; // we will use this instead of real sockets, because protobuf extension clientId
     QTcpServer* m_pSCPIServer = nullptr;
@@ -99,11 +99,11 @@ private:
     uchar ActivatedCmdList;
     QByteArray CmdMem; // unsere dsp programm listen
     QByteArray CmdIntMem;
-    QSocketNotifier* m_pNotifier;
+    QSocketNotifier* m_pNotifier = nullptr;
 
     QHash<QByteArray, cZDSP1Client*> m_zdspdClientHash;
     QHash<cZDSP1Client*, QByteArray> m_clientIDHash; // liste der clientID's für die dspclients die über protobuf erzeugt wurden
-    cZDSP1Client* m_pSCPIClient;
+    cZDSP1Client* m_pSCPIClient = nullptr;
     QList<cZDSP1Client*> m_clientList;
 
     ulong UserWorkSpaceGlobalSegmentAdr;
