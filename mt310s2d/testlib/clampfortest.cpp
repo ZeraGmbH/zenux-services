@@ -1,7 +1,7 @@
 #include "clampfortest.h"
 #include "clampfactorytest.h"
 
-ClampForTest::ClampForTest(cPCBServer *server,
+ClampForTest::ClampForTest(PCBServer *server,
                            I2cSettings *i2cSettings,
                            SenseInterfaceCommon *senseInterface,
                            QString channelName,

@@ -40,7 +40,7 @@ const ServerParams cSEC1000dServer::defaultParams{ServerName, ServerVersion, "/e
 
 cSEC1000dServer::cSEC1000dServer(SettingsContainerPtr settings,
                                  AbstractFactoryDeviceNodeSecPtr deviceNodeFactory) :
-    cPCBServer(std::move(settings), ScpiSingletonFactory::getScpiObj()),
+    PCBServer(std::move(settings), ScpiSingletonFactory::getScpiObj()),
     m_deviceNodeFactory(deviceNodeFactory)
 {
     init();
@@ -49,7 +49,7 @@ cSEC1000dServer::cSEC1000dServer(SettingsContainerPtr settings,
 cSEC1000dServer::cSEC1000dServer(SettingsContainerPtr settings,
                                  AbstractFactoryDeviceNodeSecPtr deviceNodeFactory,
                                  VeinTcp::AbstractTcpWorkerFactoryPtr tcpWorkerFactory) :
-    cPCBServer(std::move(settings), ScpiSingletonFactory::getScpiObj(), tcpWorkerFactory),
+    PCBServer(std::move(settings), ScpiSingletonFactory::getScpiObj(), tcpWorkerFactory),
     m_deviceNodeFactory(deviceNodeFactory)
 {
     init();

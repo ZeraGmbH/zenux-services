@@ -5,7 +5,7 @@
 #include <QJsonDocument>
 #include <QDateTime>
 
-Mt310s2SystemInterface::Mt310s2SystemInterface(cPCBServer *server,
+Mt310s2SystemInterface::Mt310s2SystemInterface(PCBServer *server,
                                                Mt310s2SystemInfo *systemInfo,
                                                cSenseSettings *senseSettings,
                                                SenseInterfaceCommon* senseInterface,

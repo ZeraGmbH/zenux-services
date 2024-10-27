@@ -37,7 +37,7 @@ public:
         anzCL
     };
     cClamp();
-    cClamp(cPCBServer *server,
+    cClamp(PCBServer *server,
            I2cSettings *i2cSettings,
            SenseInterfaceCommon *senseInterface,
            QString channelName,

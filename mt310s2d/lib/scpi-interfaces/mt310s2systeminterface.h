@@ -33,7 +33,7 @@ class Mt310s2SystemInterface: public ScpiConnection
     Q_OBJECT
 
 public:
-    Mt310s2SystemInterface(cPCBServer* server,
+    Mt310s2SystemInterface(PCBServer* server,
                            Mt310s2SystemInfo *systemInfo,
                            cSenseSettings *senseSettings,
                            SenseInterfaceCommon *senseInterface,
@@ -67,7 +67,7 @@ private:
 
     void m_genAnswer(int select, QString& answer);
 
-    cPCBServer* m_pMyServer;
+    PCBServer* m_pMyServer;
     Mt310s2SystemInfo *m_systemInfo;
     cSenseSettings *m_senseSettings;
     SenseInterfaceCommon* m_senseInterface;

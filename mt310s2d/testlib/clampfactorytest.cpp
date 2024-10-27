@@ -5,7 +5,7 @@ int ClampFactoryTest::m_clampForTestType = cClamp::CL800ADC1000VDC;
 
 void ClampFactoryTest::enableTest()
 {
-    m_createFunction = [](cPCBServer *server,
+    m_createFunction = [](PCBServer *server,
                           I2cSettings *i2cSettings,
                           SenseInterfaceCommon *senseInterface,
                           QString channelName,

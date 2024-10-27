@@ -5,7 +5,7 @@
 #include <QDir>
 
 TestPcbServer::TestPcbServer(QString serviceName) :
-    cPCBServer(std::make_unique<SettingsContainer>(MockServerParamGenerator::createParams(serviceName)), ScpiSingletonFactory::getScpiObj())
+    PCBServer(std::make_unique<SettingsContainer>(MockServerParamGenerator::createParams(serviceName)), ScpiSingletonFactory::getScpiObj())
 {
     m_pInitializationMachine = new QStateMachine(this);
 

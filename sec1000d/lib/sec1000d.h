@@ -19,7 +19,7 @@ class SecChannel;
 class Sec1000SystemInfo;
 
 
-class cSEC1000dServer: public cPCBServer
+class cSEC1000dServer: public PCBServer
 {
     Q_OBJECT
 public:

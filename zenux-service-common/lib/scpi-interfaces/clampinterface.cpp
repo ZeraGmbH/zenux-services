@@ -7,7 +7,7 @@
 #include <i2cutils.h>
 #include <i2cmuxerscopedonoff.h>
 
-cClampInterface::cClampInterface(cPCBServer *server,
+cClampInterface::cClampInterface(PCBServer *server,
                                  I2cSettings *i2cSettings,
                                  cSenseSettings *senseSettings,
                                  SenseInterfaceCommon *senseInterface,

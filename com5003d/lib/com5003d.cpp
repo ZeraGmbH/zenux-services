@@ -36,7 +36,7 @@ const ServerParams cCOM5003dServer::defaultParams {ServerName, ServerVersion, "/
 cCOM5003dServer::cCOM5003dServer(SettingsContainerPtr settings,
                                  AbstractFactoryI2cCtrlPtr ctrlFactory,
                                  AbstractFactoryDeviceNodePcbPtr deviceNodeFactory) :
-    cPCBServer(std::move(settings), ScpiSingletonFactory::getScpiObj()),
+    PCBServer(std::move(settings), ScpiSingletonFactory::getScpiObj()),
     m_ctrlFactory(ctrlFactory),
     m_deviceNodeFactory(deviceNodeFactory)
 {
@@ -47,7 +47,7 @@ cCOM5003dServer::cCOM5003dServer(SettingsContainerPtr settings,
                                  AbstractFactoryI2cCtrlPtr ctrlFactory,
                                  AbstractFactoryDeviceNodePcbPtr deviceNodeFactory,
                                  VeinTcp::AbstractTcpWorkerFactoryPtr tcpWorkerFactory) :
-    cPCBServer(std::move(settings), ScpiSingletonFactory::getScpiObj(), tcpWorkerFactory),
+    PCBServer(std::move(settings), ScpiSingletonFactory::getScpiObj(), tcpWorkerFactory),
     m_ctrlFactory(ctrlFactory),
     m_deviceNodeFactory(deviceNodeFactory)
 {

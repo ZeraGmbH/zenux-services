@@ -6,7 +6,7 @@
 class ClampForTest : public cClamp
 {
 public:
-    ClampForTest(cPCBServer *server,
+    ClampForTest(PCBServer *server,
                  I2cSettings *i2cSettings,
                  SenseInterfaceCommon *senseInterface,
                  QString channelName,

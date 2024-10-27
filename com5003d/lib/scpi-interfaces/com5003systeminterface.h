@@ -32,7 +32,7 @@ class Com5003SystemInterface: public ScpiConnection
 {
     Q_OBJECT
 public:
-    Com5003SystemInterface(cPCBServer* server,
+    Com5003SystemInterface(PCBServer* server,
                            SystemInfo* systemInfo,
                            SenseInterfaceCommon *senseInterface,
                            AbstractFactoryI2cCtrlPtr ctrlFactory);
@@ -62,7 +62,7 @@ private:
 
     void m_genAnswer(int select, QString& answer);
 
-    cPCBServer* m_pMyServer;
+    PCBServer* m_pMyServer;
     SystemInfo* m_systemInfo;
     SenseInterfaceCommon *m_senseInterface;
     AbstractFactoryI2cCtrlPtr m_ctrlFactory;

@@ -23,12 +23,12 @@ enum ServerErrors
     atmelProgError,
 };
 
-class cPCBServer : public ScpiConnection
+class PCBServer : public ScpiConnection
 {
     Q_OBJECT
 public:
-    explicit cPCBServer(SettingsContainerPtr settings, cSCPI *scpiInterface);
-    explicit cPCBServer(SettingsContainerPtr settings, cSCPI *scpiInterface,
+    explicit PCBServer(SettingsContainerPtr settings, cSCPI *scpiInterface);
+    explicit PCBServer(SettingsContainerPtr settings, cSCPI *scpiInterface,
                         VeinTcp::AbstractTcpWorkerFactoryPtr tcpWorkerFactory);
     void initSCPIConnection(QString leadingNodes) override;
     cSCPI* getSCPIInterface();
