@@ -41,7 +41,7 @@ public:
     QString getServerVersion();
     QString getDspDeviceNode();
 
-    cZDSP1Client* AddClient(VeinTcp::TcpPeer *m_pNetClient);
+    cZDSP1Client* AddClient(VeinTcp::TcpPeer *netClient);
     void DelClients(VeinTcp::TcpPeer *netClient);
     void DelClient(QByteArray clientId);
     cZDSP1Client* AddSCPIClient();
