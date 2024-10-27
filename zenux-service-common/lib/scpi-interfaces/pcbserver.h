@@ -53,13 +53,13 @@ protected:
     void openTelnetScpi();
 
     SettingsContainerPtr m_settings;
-    VeinTcp::TcpServer* m_myServer; // the real server that does the communication job
+    VeinTcp::TcpServer* m_myServer = nullptr; // the real server that does the communication job
     Zera::XMLConfig::cReader m_xmlConfigReader;
     QString m_sConfigurationPath;
     QList<ScpiConnection*> scpiConnectionList; // a list of all scpi connections
     QList<cResource*> resourceList;
-    QTcpServer* m_pSCPIServer;
-    QTcpSocket* m_pSCPISocket;
+    QTcpServer* m_pSCPIServer = nullptr;
+    QTcpSocket* m_pSCPISocket = nullptr;
 private slots:
     void onEstablishNewConnection(VeinTcp::TcpPeer *newClient);
     void onMessageReceived(VeinTcp::TcpPeer *peer, QByteArray message);
@@ -75,7 +75,7 @@ private:
 
     VeinTcp::AbstractTcpWorkerFactoryPtr m_tcpWorkerFactory;
     QString m_sInput, m_sOutput;
-    QTcpSocket* resourceManagerSocket;
+    QTcpSocket* resourceManagerSocket = nullptr;
     QList<NotificationStructWithValue> m_notifierRegisterNext;
     QList<NotificationStructWithValue> m_notifierRegisterList;
     XiQNetWrapper m_protobufWrapper;
