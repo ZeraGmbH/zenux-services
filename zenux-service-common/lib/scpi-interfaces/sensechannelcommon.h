@@ -35,7 +35,7 @@ public:
     virtual ~SenseChannelCommon();
 
     void setRangeList(QList<SenseRangeCommon*>& list);
-    QList<SenseRangeCommon*>& getRangeList();
+    const QList<SenseRangeCommon *> &getRangeList();
     SenseRangeCommon* getRange(QString& name);
     void addRangeList(QList<SenseRangeCommon*>& list);
     void removeRangeList(QList<SenseRangeCommon *> &list);

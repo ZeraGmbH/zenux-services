@@ -15,7 +15,7 @@ QString XmlHelperForTest::loadXml(QString xmlFile)
 QString XmlHelperForTest::prettify(QString xml)
 {
     const QString multiDocSeparator = "<!DOCTYPE";
-    QStringList listXmlQuickAndDirty = xml.split(multiDocSeparator, Qt::SkipEmptyParts);
+    const QStringList listXmlQuickAndDirty = xml.split(multiDocSeparator, Qt::SkipEmptyParts);
 
     QMap<QString, QString> sorted;
     for(QString xmlSingle : listXmlQuickAndDirty) {

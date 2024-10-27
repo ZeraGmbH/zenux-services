@@ -7,11 +7,11 @@ bool TestAdjStatusSetter::setAdjStatusAllChannelRanges(bool adjusted)
 {
     QString adjStatSendVal = adjusted ? "128" : 0;
     QString channels = ScpiSingleTransactionBlocked::query("SENSE:CHANNEL:CATALOG?");
-    QStringList channelList = channels.split(";");
+    const QStringList channelList = channels.split(";");
     bool allOk = channelList.count() >= 6;
     for(const auto &channel : channelList) {
         QString ranges = ScpiSingleTransactionBlocked::query(QString("SENSE:%1:RANGE:CATALOG?").arg(channel));
-        QStringList rangeList = ranges.split(";");
+        const QStringList rangeList = ranges.split(";");
         for(const auto &range : rangeList) {
             QString ret = ScpiSingleTransactionBlocked::cmd(QString("SENSE:%1:%2:CORR:GAIN:STAT").arg(channel, range), adjStatSendVal);
             if(ret != ZSCPI::scpiAnswer[ZSCPI::ack])
