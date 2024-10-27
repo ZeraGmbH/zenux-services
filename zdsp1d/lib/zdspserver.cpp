@@ -183,7 +183,7 @@ void ZDspServer::doSetupServer()
         m_protoBufServer =  new VeinTcp::TcpServer(m_tcpWorkerFactory, this);
     else
         m_protoBufServer =  new VeinTcp::TcpServer(this);
-    connect(m_protoBufServer, &VeinTcp::TcpServer::sigClientConnected, this, &ZDspServer::onEstablishNewConnection);
+    connect(m_protoBufServer, &VeinTcp::TcpServer::sigClientConnected, this, &ZDspServer::onProtobufClientConnected);
 
     QString dspDevNodeName = getDspDeviceNode(); // we try to open the dsp device
     AbstractDspDeviceNodePtr deviceNode = m_deviceNodeFactory->getDspDeviceNode();
@@ -1279,7 +1279,7 @@ cZDSP1Client* ZDspServer::GetClient(VeinTcp::TcpPeer *peer)
     return nullptr;
 }
 
-void ZDspServer::onEstablishNewConnection(VeinTcp::TcpPeer *newClient)
+void ZDspServer::onProtobufClientConnected(VeinTcp::TcpPeer *newClient)
 {
     connect(newClient, &VeinTcp::TcpPeer::sigMessageReceived, this, &ZDspServer::onMessageReceived);
     connect(newClient, &VeinTcp::TcpPeer::sigConnectionClosed, this, &ZDspServer::deleteConnection);

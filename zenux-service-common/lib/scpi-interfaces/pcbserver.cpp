@@ -60,7 +60,7 @@ void PCBServer::setupServer()
         m_protoBufServer = new VeinTcp::TcpServer(m_tcpWorkerFactory, this);
     else
         m_protoBufServer = new VeinTcp::TcpServer(this);
-    connect(m_protoBufServer,&VeinTcp::TcpServer::sigClientConnected,this,&PCBServer::onEstablishNewConnection);
+    connect(m_protoBufServer,&VeinTcp::TcpServer::sigClientConnected,this,&PCBServer::onProtobufClientConnected);
 }
 
 void PCBServer::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
@@ -273,7 +273,7 @@ void PCBServer::doUnregisterNotifier(VeinTcp::TcpPeer* peer, const QByteArray &c
     }
 }
 
-void PCBServer::onEstablishNewConnection(VeinTcp::TcpPeer *newClient)
+void PCBServer::onProtobufClientConnected(VeinTcp::TcpPeer *newClient)
 {
     connect(newClient, &VeinTcp::TcpPeer::sigMessageReceived, this, &PCBServer::onMessageReceived);
     connect(newClient, &VeinTcp::TcpPeer::sigConnectionClosed, this, &PCBServer::onPeerDisconnected);
