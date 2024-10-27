@@ -57,10 +57,10 @@ QString cPCBServer::getVersion()
 void cPCBServer::setupServer()
 {
     if(m_tcpWorkerFactory)  // This nasty if/else will go soon hopefully
-        m_myServer = new VeinTcp::TcpServer(m_tcpWorkerFactory, this);
+        m_protoBufServer = new VeinTcp::TcpServer(m_tcpWorkerFactory, this);
     else
-        m_myServer = new VeinTcp::TcpServer(this);
-    connect(m_myServer,&VeinTcp::TcpServer::sigClientConnected,this,&cPCBServer::onEstablishNewConnection);
+        m_protoBufServer = new VeinTcp::TcpServer(this);
+    connect(m_protoBufServer,&VeinTcp::TcpServer::sigClientConnected,this,&cPCBServer::onEstablishNewConnection);
 }
 
 void cPCBServer::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
@@ -82,10 +82,10 @@ void cPCBServer::openTelnetScpi()
 {
     EthSettings *ethSettings = m_settings->getEthSettings();
     if(ethSettings->isSCPIactive()) {
-        m_pSCPIServer = new QTcpServer();
-        m_pSCPIServer->setMaxPendingConnections(1); // we only accept 1 client to connect
-        connect(m_pSCPIServer, &QTcpServer::newConnection, this, &cPCBServer::setSCPIConnection);
-        m_pSCPIServer->listen(QHostAddress::AnyIPv4, ethSettings->getPort(EthSettings::scpiserver));
+        m_telnetServer = new QTcpServer();
+        m_telnetServer->setMaxPendingConnections(1); // we only accept 1 client to connect
+        connect(m_telnetServer, &QTcpServer::newConnection, this, &cPCBServer::setSCPIConnection);
+        m_telnetServer->listen(QHostAddress::AnyIPv4, ethSettings->getPort(EthSettings::scpiserver));
     }
 }
 
@@ -95,7 +95,7 @@ void cPCBServer::sendAnswerProto(cProtonetCommand *protoCmd)
         // we worked on a command comming from scpi socket connection
         QString answer = protoCmd->m_sOutput+"\n";
         QByteArray ba = answer.toLatin1();
-        m_pSCPISocket->write(ba);
+        m_telnetSocket->write(ba);
         qInfo("External SCPI response: %s", qPrintable(answer));
     }
     else {
@@ -148,16 +148,16 @@ void cPCBServer::sendAnswerProto(cProtonetCommand *protoCmd)
 void cPCBServer::setSCPIConnection()
 {
     qInfo("External SCPI Client connected");
-    m_pSCPISocket = m_pSCPIServer->nextPendingConnection();
-    connect(m_pSCPISocket, &QIODevice::readyRead, this, &cPCBServer::SCPIInput);
-    connect(m_pSCPISocket, &QAbstractSocket::disconnected, this, &cPCBServer::SCPIdisconnect);
+    m_telnetSocket = m_telnetServer->nextPendingConnection();
+    connect(m_telnetSocket, &QIODevice::readyRead, this, &cPCBServer::SCPIInput);
+    connect(m_telnetSocket, &QAbstractSocket::disconnected, this, &cPCBServer::SCPIdisconnect);
 }
 
 void cPCBServer::SCPIInput()
 {
     m_sInput = "";
-    while(m_pSCPISocket->canReadLine())
-        m_sInput += m_pSCPISocket->readLine();
+    while(m_telnetSocket->canReadLine())
+        m_sInput += m_telnetSocket->readLine();
     m_sInput.remove('\r'); // we remove cr lf
     m_sInput.remove('\n');
     qInfo("External SCPI command: %s", qPrintable(m_sInput));
@@ -182,7 +182,7 @@ void cPCBServer::SCPIInput()
 void cPCBServer::SCPIdisconnect()
 {
     qInfo("External SCPI Client disconnected");
-    disconnect(m_pSCPISocket, 0, 0, 0); // we disconnect everything
+    disconnect(m_telnetSocket, 0, 0, 0); // we disconnect everything
 }
 
 void cPCBServer::onSendNotification(ScpiNotificationSubscriber subscriber)
