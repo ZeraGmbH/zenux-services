@@ -55,7 +55,6 @@ protected:
     SettingsContainerPtr m_settings;
     VeinTcp::TcpServer* m_protoBufServer = nullptr;
     Zera::XMLConfig::cReader m_xmlConfigReader;
-    QString m_sConfigurationPath;
     QList<ScpiConnection*> scpiConnectionList; // a list of all scpi connections
     QList<cResource*> resourceList;
     QTcpServer* m_telnetServer = nullptr;
