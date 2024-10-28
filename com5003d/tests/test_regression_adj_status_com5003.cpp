@@ -7,7 +7,7 @@
 #include "testfactoryi2cctrl.h"
 #include <timemachineobject.h>
 #include <mockeeprom24lc.h>
-#include <tcpnetworkfactory.h>
+#include <mocktcpnetworkfactory.h>
 #include <QTest>
 
 QTEST_MAIN(test_regression_adj_status_com5003);
@@ -57,7 +57,7 @@ void test_regression_adj_status_com5003::setupServers(AbstractFactoryI2cCtrlPtr 
 {
     PermissionFunctions::setPermissionCtrlFactory(ctrlFactory);
 
-    VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory = VeinTcp::TcpNetworkFactory::create();
+    VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory = VeinTcp::MockTcpNetworkFactory::create();
     m_resmanServer = std::make_unique<ResmanRunFacade>(tcpNetworkFactory);
     m_testServer = std::make_unique<TestServerForSenseInterfaceCom5003>(ctrlFactory, tcpNetworkFactory);
     TimeMachineObject::feedEventLoop();
