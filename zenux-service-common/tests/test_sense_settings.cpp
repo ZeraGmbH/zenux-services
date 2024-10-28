@@ -1,7 +1,7 @@
 #include "test_sense_settings.h"
 #include "testpcbserver.h"
 #include "sensesettings.h"
-#include <tcpnetworkfactory.h>
+#include <mocktcpnetworkfactory.h>
 #include <QTest>
 
 QTEST_MAIN(test_sense_settings);
@@ -25,7 +25,7 @@ MockForSenseSettings::MockForSenseSettings(QString deamonName, VeinTcp::Abstract
 
 void test_sense_settings::findByAlias1Com5003()
 {
-    MockForSenseSettings mock("com5003d", VeinTcp::TcpNetworkFactory::create());
+    MockForSenseSettings mock("com5003d", VeinTcp::MockTcpNetworkFactory::create());
     cSenseSettings* senseSettings = mock.getSenseSettings();
     // we have this assumption on config all over the place
     QCOMPARE(senseSettings->findChannelSettingByAlias1("UL1")->m_nameMx, "m0");
@@ -38,7 +38,7 @@ void test_sense_settings::findByAlias1Com5003()
 
 void test_sense_settings::findByAlias1Mt310s2()
 {
-    MockForSenseSettings mock("mt310s2d", VeinTcp::TcpNetworkFactory::create());
+    MockForSenseSettings mock("mt310s2d", VeinTcp::MockTcpNetworkFactory::create());
     cSenseSettings* senseSettings = mock.getSenseSettings();
     // we have this assumption on config all over the place
     QCOMPARE(senseSettings->findChannelSettingByAlias1("UL1")->m_nameMx, "m0");
@@ -53,7 +53,7 @@ void test_sense_settings::findByAlias1Mt310s2()
 
 void test_sense_settings::findByInMxCom5003()
 {
-    MockForSenseSettings mock("com5003d", VeinTcp::TcpNetworkFactory::create());
+    MockForSenseSettings mock("com5003d", VeinTcp::MockTcpNetworkFactory::create());
     cSenseSettings* senseSettings = mock.getSenseSettings();
     // we have this assumption on config all over the place
     QCOMPARE(senseSettings->findChannelSettingByMxName("m0")->m_nameMx, "m0");
