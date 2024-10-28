@@ -4,7 +4,7 @@
 #include "proxy.h"
 #include "zscpi_response_definitions.h"
 #include <timemachineobject.h>
-#include <tcpnetworkfactory.h>
+#include <mocktcpnetworkfactory.h>
 #include <QTest>
 
 QTEST_MAIN(test_regression_critical_status_com5003);
@@ -103,7 +103,7 @@ void test_regression_critical_status_com5003::resetM5()
 
 void test_regression_critical_status_com5003::setupServers(quint16 initialCriticalStatus)
 {
-    VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory = VeinTcp::TcpNetworkFactory::create();
+    VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory = VeinTcp::MockTcpNetworkFactory::create();
     m_resmanServer = std::make_unique<ResmanRunFacade>(tcpNetworkFactory);
     m_testServer = std::make_unique<TestServerForSenseInterfaceCom5003>(std::make_shared<TestFactoryI2cCtrlCriticalStatus>(initialCriticalStatus),
                                                                         tcpNetworkFactory);
