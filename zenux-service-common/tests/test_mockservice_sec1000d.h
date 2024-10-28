@@ -23,7 +23,7 @@ private:
     std::unique_ptr<ResmanRunFacade> m_resman;
     std::unique_ptr<MockSec1000d> m_sec1000d;
     std::unique_ptr<ProxyForTest> m_proxy;
-    VeinTcp::AbstractTcpWorkerFactoryPtr m_tcpWorkerFactory;
+    VeinTcp::AbstractTcpWorkerFactoryPtr m_tcpNetworkFactory;
 };
 
 #endif // TEST_MOCKSERVICE_SEC1000D_H

@@ -18,7 +18,7 @@ private slots:
 private:
     std::unique_ptr<ResmanRunFacade> m_resman;
     std::unique_ptr<MockZdsp1d> m_zsdp1d;
-    VeinTcp::AbstractTcpWorkerFactoryPtr m_tcpWorkerFactory;
+    VeinTcp::AbstractTcpWorkerFactoryPtr m_tcpNetworkFactory;
 };
 
 #endif // TEST_MOCKSERVICE_ZDSP1D_H

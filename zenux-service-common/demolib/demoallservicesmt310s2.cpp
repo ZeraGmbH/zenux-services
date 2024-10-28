@@ -12,19 +12,19 @@ DemoAllServicesMt310s2::DemoAllServicesMt310s2()
     init(VeinTcp::TcpWorkerFactory::create());
 }
 
-DemoAllServicesMt310s2::DemoAllServicesMt310s2(VeinTcp::AbstractTcpWorkerFactoryPtr tcpWorkerFactory)
+DemoAllServicesMt310s2::DemoAllServicesMt310s2(VeinTcp::AbstractTcpWorkerFactoryPtr tcpNetworkFactory)
 {
-    init(tcpWorkerFactory);
+    init(tcpNetworkFactory);
 }
 
-void DemoAllServicesMt310s2::init(VeinTcp::AbstractTcpWorkerFactoryPtr tcpWorkerFactory)
+void DemoAllServicesMt310s2::init(VeinTcp::AbstractTcpWorkerFactoryPtr tcpNetworkFactory)
 {
     m_autoLogger = new AutoJournalLoggerFacade;
-    m_resman = new ResmanRunFacade(tcpWorkerFactory);
+    m_resman = new ResmanRunFacade(tcpNetworkFactory);
     ServerParams params = MockServerParamGenerator::createParams("mt310s2d");
-    m_mt310s2d = new MockMt310s2d(std::make_shared<DemoFactoryI2cCtrl>(std::make_unique<SettingsContainer>(params)), tcpWorkerFactory);
-    m_sec1000d = new MockSec1000d(tcpWorkerFactory);
-    m_zdsp1d = new MockZdsp1d(std::make_shared<DemoFactoryDeviceNodeDsp>(), tcpWorkerFactory);
+    m_mt310s2d = new MockMt310s2d(std::make_shared<DemoFactoryI2cCtrl>(std::make_unique<SettingsContainer>(params)), tcpNetworkFactory);
+    m_sec1000d = new MockSec1000d(tcpNetworkFactory);
+    m_zdsp1d = new MockZdsp1d(std::make_shared<DemoFactoryDeviceNodeDsp>(), tcpNetworkFactory);
     DemoEventLoopFeeder::feedEventLoop();
 #ifdef GUI_SIMULATION
     m_gui = new SimulQmlGui;

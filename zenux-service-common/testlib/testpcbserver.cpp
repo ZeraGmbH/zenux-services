@@ -4,9 +4,9 @@
 #include <QFinalState>
 #include <QDir>
 
-TestPcbServer::TestPcbServer(QString serviceName, VeinTcp::AbstractTcpWorkerFactoryPtr tcpWorkerFactory) :
+TestPcbServer::TestPcbServer(QString serviceName, VeinTcp::AbstractTcpWorkerFactoryPtr tcpNetworkFactory) :
     PCBServer(std::make_unique<SettingsContainer>(MockServerParamGenerator::createParams(serviceName)),
-                ScpiSingletonFactory::getScpiObj(), tcpWorkerFactory)
+                ScpiSingletonFactory::getScpiObj(), tcpNetworkFactory)
 {
     m_pInitializationMachine = new QStateMachine(this);
 

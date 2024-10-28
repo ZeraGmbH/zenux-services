@@ -5,9 +5,9 @@
 #include <i2cmultiplexerfactory.h>
 
 TestServerForSenseInterfaceMt310s2::TestServerForSenseInterfaceMt310s2(AbstractFactoryI2cCtrlPtr ctrlFactory,
-                                                                       VeinTcp::AbstractTcpWorkerFactoryPtr tcpWorkerFactory,
+                                                                       VeinTcp::AbstractTcpWorkerFactoryPtr tcpNetworkFactory,
                                                                        bool systemInfoMock) :
-    TestPcbServer("mt310s2d", tcpWorkerFactory)
+    TestPcbServer("mt310s2d", tcpNetworkFactory)
 {
     m_senseSettings = std::make_unique<cSenseSettings>(getConfigReader(), 8);
     setXmlSettings(XmlSettingsList{m_senseSettings.get()});

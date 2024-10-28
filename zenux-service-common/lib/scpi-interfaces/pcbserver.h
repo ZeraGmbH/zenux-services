@@ -28,7 +28,7 @@ class PCBServer : public ScpiConnection
     Q_OBJECT
 public:
     explicit PCBServer(SettingsContainerPtr settings, cSCPI *scpiInterface,
-                        VeinTcp::AbstractTcpWorkerFactoryPtr tcpWorkerFactory);
+                        VeinTcp::AbstractTcpWorkerFactoryPtr tcpNetworkFactory);
     void initSCPIConnection(QString leadingNodes) override;
     cSCPI* getSCPIInterface();
     QString getName();
@@ -69,7 +69,7 @@ private:
     void sendNotificationToClient(QString message, QByteArray clientID, VeinTcp::TcpPeer *netPeer);
     void executeCommandProto(VeinTcp::TcpPeer* peer, std::shared_ptr<google::protobuf::Message> cmd);
 
-    VeinTcp::AbstractTcpWorkerFactoryPtr m_tcpWorkerFactory;
+    VeinTcp::AbstractTcpWorkerFactoryPtr m_tcpNetworkFactory;
     QTcpServer* m_telnetServer = nullptr;
     QTcpSocket* m_telnetSocket = nullptr;
     QList<NotificationStructWithValue> m_notifierRegisterNext;

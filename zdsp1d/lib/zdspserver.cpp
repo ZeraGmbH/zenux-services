@@ -58,10 +58,10 @@ const ServerParams ZDspServer::defaultParams {ServerName, ServerVersion, "/etc/z
 
 ZDspServer::ZDspServer(SettingsContainerPtr settings,
                        AbstractFactoryDeviceNodeDspPtr deviceNodeFactory,
-                       VeinTcp::AbstractTcpWorkerFactoryPtr tcpWorkerFactory) :
+                       VeinTcp::AbstractTcpWorkerFactoryPtr tcpNetworkFactory) :
     ScpiConnection(ScpiSingletonFactory::getScpiObj()),
     m_deviceNodeFactory(deviceNodeFactory),
-    m_tcpWorkerFactory(tcpWorkerFactory),
+    m_tcpNetworkFactory(tcpNetworkFactory),
     m_settings(std::move(settings)),
     m_dspInterruptLogStatistics(10000),
     m_pRMConnection(new RMConnection(m_settings->getEthSettings()->getRMIPadr(), m_settings->getEthSettings()->getPort(EthSettings::resourcemanager))),
@@ -168,8 +168,8 @@ void ZDspServer::doSetupServer()
     m_sDspBootPath = m_pDspSettings->getBootFile();
     ActivatedCmdList = 0; // der derzeit aktuelle kommando listen satz (0,1)
 
-    if(m_tcpWorkerFactory) // This nasty if/else will go soon hopefully
-        m_protoBufServer =  new VeinTcp::TcpServer(m_tcpWorkerFactory, this);
+    if(m_tcpNetworkFactory) // This nasty if/else will go soon hopefully
+        m_protoBufServer =  new VeinTcp::TcpServer(m_tcpNetworkFactory, this);
     else
         m_protoBufServer =  new VeinTcp::TcpServer(this);
     connect(m_protoBufServer, &VeinTcp::TcpServer::sigClientConnected, this, &ZDspServer::onProtobufClientConnected);

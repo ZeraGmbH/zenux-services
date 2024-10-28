@@ -9,14 +9,14 @@ QTEST_MAIN(test_sense_settings);
 class MockForSenseSettings  : public TestPcbServer
 {
 public:
-    MockForSenseSettings(QString deamonName, VeinTcp::AbstractTcpWorkerFactoryPtr tcpWorkerFactory);
+    MockForSenseSettings(QString deamonName, VeinTcp::AbstractTcpWorkerFactoryPtr tcpNetworkFactory);
     cSenseSettings* getSenseSettings() { return m_senseSettings.get(); }
 private:
     std::unique_ptr<cSenseSettings> m_senseSettings;
 };
 
-MockForSenseSettings::MockForSenseSettings(QString deamonName, VeinTcp::AbstractTcpWorkerFactoryPtr tcpWorkerFactory) :
-    TestPcbServer(deamonName, tcpWorkerFactory)
+MockForSenseSettings::MockForSenseSettings(QString deamonName, VeinTcp::AbstractTcpWorkerFactoryPtr tcpNetworkFactory) :
+    TestPcbServer(deamonName, tcpNetworkFactory)
 {
     m_senseSettings = std::make_unique<cSenseSettings>(getConfigReader(), 8);
     setXmlSettings(XmlSettingsList{m_senseSettings.get()});

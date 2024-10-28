@@ -265,12 +265,12 @@ void test_regression_adj_scpi_query_format_com5003::queryOffsetNodes()
 
 void test_regression_adj_scpi_query_format_com5003::setupServers()
 {
-    VeinTcp::AbstractTcpWorkerFactoryPtr tcpWorkerFactory = VeinTcp::TcpWorkerFactory::create();
-    m_resmanServer = std::make_unique<ResmanRunFacade>(tcpWorkerFactory);
-    m_testServer = std::make_unique<TestServerForSenseInterfaceCom5003>(std::make_shared<TestFactoryI2cCtrl>(true), tcpWorkerFactory);
+    VeinTcp::AbstractTcpWorkerFactoryPtr tcpNetworkFactory = VeinTcp::TcpWorkerFactory::create();
+    m_resmanServer = std::make_unique<ResmanRunFacade>(tcpNetworkFactory);
+    m_testServer = std::make_unique<TestServerForSenseInterfaceCom5003>(std::make_shared<TestFactoryI2cCtrl>(true), tcpNetworkFactory);
     TimeMachineObject::feedEventLoop();
 
-    m_proxyClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307, tcpWorkerFactory);
+    m_proxyClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307, tcpNetworkFactory);
     Zera::Proxy::getInstance()->startConnectionSmart(m_proxyClient);
     TimeMachineObject::feedEventLoop();
 }

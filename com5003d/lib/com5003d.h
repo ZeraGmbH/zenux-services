@@ -35,7 +35,7 @@ public:
     explicit cCOM5003dServer(SettingsContainerPtr settings,
                              AbstractFactoryI2cCtrlPtr ctrlFactory,
                              AbstractFactoryDeviceNodePcbPtr deviceNodeFactory,
-                             VeinTcp::AbstractTcpWorkerFactoryPtr tcpWorkerFactory);
+                             VeinTcp::AbstractTcpWorkerFactoryPtr tcpNetworkFactory);
     ~cCOM5003dServer();
     QString getCtrlDeviceNode();
     static const ServerParams defaultParams;

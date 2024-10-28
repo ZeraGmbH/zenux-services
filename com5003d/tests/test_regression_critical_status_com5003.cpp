@@ -103,13 +103,13 @@ void test_regression_critical_status_com5003::resetM5()
 
 void test_regression_critical_status_com5003::setupServers(quint16 initialCriticalStatus)
 {
-    VeinTcp::AbstractTcpWorkerFactoryPtr tcpWorkerFactory = VeinTcp::TcpWorkerFactory::create();
-    m_resmanServer = std::make_unique<ResmanRunFacade>(tcpWorkerFactory);
+    VeinTcp::AbstractTcpWorkerFactoryPtr tcpNetworkFactory = VeinTcp::TcpWorkerFactory::create();
+    m_resmanServer = std::make_unique<ResmanRunFacade>(tcpNetworkFactory);
     m_testServer = std::make_unique<TestServerForSenseInterfaceCom5003>(std::make_shared<TestFactoryI2cCtrlCriticalStatus>(initialCriticalStatus),
-                                                                        tcpWorkerFactory);
+                                                                        tcpNetworkFactory);
     TimeMachineObject::feedEventLoop();
 
-    m_proxyClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307, tcpWorkerFactory);
+    m_proxyClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307, tcpNetworkFactory);
     Zera::Proxy::getInstance()->startConnectionSmart(m_proxyClient);
     TimeMachineObject::feedEventLoop();
 }

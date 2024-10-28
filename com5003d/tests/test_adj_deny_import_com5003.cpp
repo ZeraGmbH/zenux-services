@@ -62,14 +62,14 @@ void test_adj_deny_import_com5003::loadEEpromAndDenyDifferentDeviceName()
 
 void test_adj_deny_import_com5003::setupServers()
 {
-    VeinTcp::AbstractTcpWorkerFactoryPtr tcpWorkerFactory = VeinTcp::MockTcpWorkerFactory::create();
-    m_resmanServer = std::make_unique<ResmanRunFacade>(tcpWorkerFactory);
+    VeinTcp::AbstractTcpWorkerFactoryPtr tcpNetworkFactory = VeinTcp::MockTcpWorkerFactory::create();
+    m_resmanServer = std::make_unique<ResmanRunFacade>(tcpNetworkFactory);
     m_testServer = std::make_unique<TestServerForSenseInterfaceCom5003>(std::make_shared<TestFactoryI2cCtrl>(true),
-                                                                        tcpWorkerFactory,
+                                                                        tcpNetworkFactory,
                                                                         true);
     TimeMachineObject::feedEventLoop();
 
-    m_proxyClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307, tcpWorkerFactory);
+    m_proxyClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307, tcpNetworkFactory);
     Zera::Proxy::getInstance()->startConnectionSmart(m_proxyClient);
     TimeMachineObject::feedEventLoop();
 }

@@ -20,12 +20,12 @@ QTEST_MAIN(test_regression_sense_interface_mt310s2);
 void test_regression_sense_interface_mt310s2::initTestCase()
 {
     ClampFactoryTest::enableTest();
-    VeinTcp::AbstractTcpWorkerFactoryPtr tcpWorkerFactory = VeinTcp::TcpWorkerFactory::create();
-    m_resmanServer = std::make_unique<ResmanRunFacade>(tcpWorkerFactory);
-    m_testServer = std::make_unique<TestServerForSenseInterfaceMt310s2>(std::make_shared<TestFactoryI2cCtrl>(true), tcpWorkerFactory);
+    VeinTcp::AbstractTcpWorkerFactoryPtr tcpNetworkFactory = VeinTcp::TcpWorkerFactory::create();
+    m_resmanServer = std::make_unique<ResmanRunFacade>(tcpNetworkFactory);
+    m_testServer = std::make_unique<TestServerForSenseInterfaceMt310s2>(std::make_shared<TestFactoryI2cCtrl>(true), tcpNetworkFactory);
     TimeMachineObject::feedEventLoop();
 
-    m_proxyClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307, tcpWorkerFactory);
+    m_proxyClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307, tcpNetworkFactory);
     m_pcbIFace = std::make_unique<Zera::cPCBInterface>();
     m_pcbIFace->setClientSmart(m_proxyClient);
     Zera::Proxy::getInstance()->startConnectionSmart(m_proxyClient);

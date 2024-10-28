@@ -163,12 +163,12 @@ void test_adj_procedure::setupServers()
     AbstractFactoryI2cCtrlPtr ctrlFactory = std::make_shared<TestFactoryI2cCtrl>(true);
     PermissionFunctions::setPermissionCtrlFactory(ctrlFactory);
 
-    VeinTcp::AbstractTcpWorkerFactoryPtr tcpWorkerFactory = VeinTcp::TcpWorkerFactory::create();
-    m_resmanServer = std::make_unique<ResmanRunFacade>(tcpWorkerFactory);
-    m_testServer = std::make_unique<TestServerForSenseInterfaceMt310s2>(ctrlFactory, tcpWorkerFactory, true);
+    VeinTcp::AbstractTcpWorkerFactoryPtr tcpNetworkFactory = VeinTcp::TcpWorkerFactory::create();
+    m_resmanServer = std::make_unique<ResmanRunFacade>(tcpNetworkFactory);
+    m_testServer = std::make_unique<TestServerForSenseInterfaceMt310s2>(ctrlFactory, tcpNetworkFactory, true);
     TimeMachineObject::feedEventLoop();
 
-    m_proxyClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307, tcpWorkerFactory);
+    m_proxyClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307, tcpNetworkFactory);
     Zera::Proxy::getInstance()->startConnectionSmart(m_proxyClient);
     TimeMachineObject::feedEventLoop();
 }

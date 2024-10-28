@@ -2,8 +2,8 @@
 
 namespace Zera {
 
-ProxyNetPeer::ProxyNetPeer(VeinTcp::AbstractTcpWorkerFactoryPtr tcpWorkerFactory, QObject *qObjParent) :
-    VeinTcp::TcpPeer(tcpWorkerFactory, qObjParent)
+ProxyNetPeer::ProxyNetPeer(VeinTcp::AbstractTcpWorkerFactoryPtr tcpNetworkFactory, QObject *qObjParent) :
+    VeinTcp::TcpPeer(tcpNetworkFactory, qObjParent)
 {
     m_bStarted = false;
 }

@@ -10,7 +10,7 @@ class TestPcbServerNotifications : public PCBServer
 public:
     TestPcbServerNotifications(SettingsContainerPtr settings, cSCPI *scpiInterface,
                                AbstractFactoryI2cCtrlPtr ctrlFactory,
-                               VeinTcp::AbstractTcpWorkerFactoryPtr tcpWorkerFactory);
+                               VeinTcp::AbstractTcpWorkerFactoryPtr tcpNetworkFactory);
     ~TestPcbServerNotifications();
     void insertScpiConnection(ScpiConnection *scpiConnection);
     void initTestSCPIConnections();

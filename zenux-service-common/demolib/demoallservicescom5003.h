@@ -14,11 +14,11 @@ class DemoAllServicesCom5003 : public AbstractMockAllServices
 {
 public:
     DemoAllServicesCom5003();
-    DemoAllServicesCom5003(VeinTcp::AbstractTcpWorkerFactoryPtr tcpWorkerFactory);
+    DemoAllServicesCom5003(VeinTcp::AbstractTcpWorkerFactoryPtr tcpNetworkFactory);
     virtual ~DemoAllServicesCom5003();
 
 private:
-    void init(VeinTcp::AbstractTcpWorkerFactoryPtr tcpWorkerFactory);
+    void init(VeinTcp::AbstractTcpWorkerFactoryPtr tcpNetworkFactory);
     ResmanRunFacade *m_resman;
     MockCom5003d *m_mockcom5003d;
     MockSec1000d *m_sec1000d;

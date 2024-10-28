@@ -35,7 +35,7 @@ class ZDspServer: public ScpiConnection, public cbIFace
 public:
     ZDspServer(SettingsContainerPtr settings,
                AbstractFactoryDeviceNodeDspPtr deviceNodeFactory,
-               VeinTcp::AbstractTcpWorkerFactoryPtr tcpWorkerFactory);
+               VeinTcp::AbstractTcpWorkerFactoryPtr tcpNetworkFactory);
     virtual ~ZDspServer();
     void initSCPIConnection(QString leadingNodes) override;
     QString getServerVersion();
@@ -82,7 +82,7 @@ private:
     void openTelnetScpi();
 
     AbstractFactoryDeviceNodeDspPtr m_deviceNodeFactory;
-    VeinTcp::AbstractTcpWorkerFactoryPtr m_tcpWorkerFactory;
+    VeinTcp::AbstractTcpWorkerFactoryPtr m_tcpNetworkFactory;
     SettingsContainerPtr m_settings;
     ScpiCmdInterpreter* m_cmdInterpreter = nullptr;
     VeinTcp::TcpServer* m_protoBufServer = nullptr;

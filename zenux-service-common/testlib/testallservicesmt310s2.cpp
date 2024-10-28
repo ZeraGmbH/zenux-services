@@ -8,20 +8,20 @@ TestAllServicesMt310s2::TestAllServicesMt310s2(AbstractFactoryI2cCtrlPtr ctrlFac
     init(VeinTcp::TcpWorkerFactory::create(), ctrlFactory);
 }
 
-TestAllServicesMt310s2::TestAllServicesMt310s2(VeinTcp::AbstractTcpWorkerFactoryPtr tcpWorkerFactory,
+TestAllServicesMt310s2::TestAllServicesMt310s2(VeinTcp::AbstractTcpWorkerFactoryPtr tcpNetworkFactory,
                                                AbstractFactoryI2cCtrlPtr ctrlFactory)
 {
-    init(tcpWorkerFactory, ctrlFactory);
+    init(tcpNetworkFactory, ctrlFactory);
 }
 
-void TestAllServicesMt310s2::init(VeinTcp::AbstractTcpWorkerFactoryPtr tcpWorkerFactory,
+void TestAllServicesMt310s2::init(VeinTcp::AbstractTcpWorkerFactoryPtr tcpNetworkFactory,
                                   AbstractFactoryI2cCtrlPtr ctrlFactory)
 {
-    m_resman = new ResmanRunFacade(tcpWorkerFactory);
+    m_resman = new ResmanRunFacade(tcpNetworkFactory);
     TimeMachineObject::feedEventLoop();;
-    m_mt310s2d = new MockMt310s2d(ctrlFactory, tcpWorkerFactory);
-    m_sec1000d = new MockSec1000d(tcpWorkerFactory);
-    m_zdsp1d = new MockZdsp1d(std::make_shared<TestFactoryDeviceNodeDsp>(), tcpWorkerFactory);
+    m_mt310s2d = new MockMt310s2d(ctrlFactory, tcpNetworkFactory);
+    m_sec1000d = new MockSec1000d(tcpNetworkFactory);
+    m_zdsp1d = new MockZdsp1d(std::make_shared<TestFactoryDeviceNodeDsp>(), tcpNetworkFactory);
     TimeMachineObject::feedEventLoop();
 }
 

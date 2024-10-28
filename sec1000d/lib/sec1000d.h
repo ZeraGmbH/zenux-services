@@ -24,7 +24,7 @@ class cSEC1000dServer: public PCBServer
     Q_OBJECT
 public:
     explicit cSEC1000dServer(SettingsContainerPtr settings, AbstractFactoryDeviceNodeSecPtr deviceNodeFactory,
-                             VeinTcp::AbstractTcpWorkerFactoryPtr tcpWorkerFactory);
+                             VeinTcp::AbstractTcpWorkerFactoryPtr tcpNetworkFactory);
     ~cSEC1000dServer();
     QString getServerVersion();
     QString getSecDeviceNode();

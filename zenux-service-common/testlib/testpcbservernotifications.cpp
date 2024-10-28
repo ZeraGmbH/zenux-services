@@ -3,8 +3,8 @@
 
 TestPcbServerNotifications::TestPcbServerNotifications(SettingsContainerPtr settings,
                                                        cSCPI *scpiInterface, AbstractFactoryI2cCtrlPtr ctrlFactory,
-                                                       VeinTcp::AbstractTcpWorkerFactoryPtr tcpWorkerFactory) :
-    PCBServer(std::move(settings), scpiInterface, tcpWorkerFactory)
+                                                       VeinTcp::AbstractTcpWorkerFactoryPtr tcpNetworkFactory) :
+    PCBServer(std::move(settings), scpiInterface, tcpNetworkFactory)
 {
     scpiConnectionList.append(this);
     PermissionFunctions::setPermissionCtrlFactory(ctrlFactory);
