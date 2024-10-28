@@ -11,7 +11,7 @@
 #include "mt310s2systeminfomock.h"
 #include <timemachineobject.h>
 #include <testloghelpers.h>
-#include <tcpnetworkfactory.h>
+#include <mocktcpnetworkfactory.h>
 #include <QFile>
 #include <QTest>
 
@@ -163,7 +163,7 @@ void test_adj_procedure::setupServers()
     AbstractFactoryI2cCtrlPtr ctrlFactory = std::make_shared<TestFactoryI2cCtrl>(true);
     PermissionFunctions::setPermissionCtrlFactory(ctrlFactory);
 
-    VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory = VeinTcp::TcpNetworkFactory::create();
+    VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory = VeinTcp::MockTcpNetworkFactory::create();
     m_resmanServer = std::make_unique<ResmanRunFacade>(tcpNetworkFactory);
     m_testServer = std::make_unique<TestServerForSenseInterfaceMt310s2>(ctrlFactory, tcpNetworkFactory, true);
     TimeMachineObject::feedEventLoop();
