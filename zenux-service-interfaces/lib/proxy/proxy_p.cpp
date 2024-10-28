@@ -16,12 +16,12 @@ ProxyPrivate::ProxyPrivate(Proxy *parent):
 {
 }
 
-ProxyClient* ProxyPrivate::getConnection(QString ipadress, quint16 port)
+ProxyClient* ProxyPrivate::getConnection(QString ipadress, quint16 port, VeinTcp::AbstractTcpWorkerFactoryPtr tcpWorkerFactory)
 {
     QUuid uuid = QUuid::createUuid(); // we use a per client uuid
     QByteArray binUUid = uuid.toRfc4122();
 
-    ProxyNetPeer *proxyPeer = getProxyNetPeer(ipadress, port);
+    ProxyNetPeer *proxyPeer = getProxyNetPeer(ipadress, port, tcpWorkerFactory);
     ProxyClientPrivate *proxyclient = new ProxyClientPrivate(this);
     ProxyConnection *connection = new ProxyConnection(ipadress, port, binUUid, proxyPeer);
     m_ConnectionHash[proxyclient] = connection;
@@ -30,9 +30,9 @@ ProxyClient* ProxyPrivate::getConnection(QString ipadress, quint16 port)
     return proxyclient;
 }
 
-ProxyClientPtr ProxyPrivate::getConnectionSmart(QString ipadress, quint16 port)
+ProxyClientPtr ProxyPrivate::getConnectionSmart(QString ipadress, quint16 port, VeinTcp::AbstractTcpWorkerFactoryPtr tcpWorkerFactory)
 {
-    ProxyClient* client = getConnection(ipadress, port);
+    ProxyClient* client = getConnection(ipadress, port, tcpWorkerFactory);
     return ProxyClientPtr(client);
 }
 
@@ -137,11 +137,11 @@ void ProxyPrivate::onMessageReceived(VeinTcp::TcpPeer *peer, QByteArray message)
     handleReceiveMessage(m_protobufWrapper.byteArrayToProtobuf(message));
 }
 
-ProxyNetPeer *ProxyPrivate::getProxyNetPeer(QString ipadress, quint16 port)
+ProxyNetPeer *ProxyPrivate::getProxyNetPeer(QString ipadress, quint16 port, VeinTcp::AbstractTcpWorkerFactoryPtr tcpWorkerFactory)
 {
     ProxyNetPeer* netClient = searchConnection(ipadress, port);
     if(!netClient)  {// look for existing connection
-        netClient = new ProxyNetPeer(this);
+        netClient = new ProxyNetPeer(tcpWorkerFactory, this);
         connect(netClient, &ProxyNetPeer::sigMessageReceived, this, &ProxyPrivate::onMessageReceived);
         connect(netClient, &ProxyNetPeer::sigSocketError, this, &ProxyPrivate::receiveTcpError);
         connect(netClient, &ProxyNetPeer::sigConnectionEstablished, this, &ProxyPrivate::registerConnection);

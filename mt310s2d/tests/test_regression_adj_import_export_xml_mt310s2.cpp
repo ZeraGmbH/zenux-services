@@ -184,7 +184,7 @@ void test_regression_adj_import_export_xml_mt310s2::setupServers()
     m_testServer = std::make_unique<TestServerForSenseInterfaceMt310s2>(std::make_shared<TestFactoryI2cCtrl>(true), tcpWorkerFactory);
     TimeMachineObject::feedEventLoop();
 
-    m_proxyClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307);
+    m_proxyClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307, tcpWorkerFactory);
     Zera::Proxy::getInstance()->startConnectionSmart(m_proxyClient);
     TimeMachineObject::feedEventLoop();
 }

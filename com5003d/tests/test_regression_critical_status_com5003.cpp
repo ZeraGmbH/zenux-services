@@ -109,7 +109,7 @@ void test_regression_critical_status_com5003::setupServers(quint16 initialCritic
                                                                         tcpWorkerFactory);
     TimeMachineObject::feedEventLoop();
 
-    m_proxyClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307);
+    m_proxyClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307, tcpWorkerFactory);
     Zera::Proxy::getInstance()->startConnectionSmart(m_proxyClient);
     TimeMachineObject::feedEventLoop();
 }

@@ -25,7 +25,7 @@ void test_regression_sense_interface_mt310s2::initTestCase()
     m_testServer = std::make_unique<TestServerForSenseInterfaceMt310s2>(std::make_shared<TestFactoryI2cCtrl>(true), tcpWorkerFactory);
     TimeMachineObject::feedEventLoop();
 
-    m_proxyClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307);
+    m_proxyClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307, tcpWorkerFactory);
     m_pcbIFace = std::make_unique<Zera::cPCBInterface>();
     m_pcbIFace->setClientSmart(m_proxyClient);
     Zera::Proxy::getInstance()->startConnectionSmart(m_proxyClient);

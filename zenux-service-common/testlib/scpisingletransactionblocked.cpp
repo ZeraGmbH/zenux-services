@@ -2,16 +2,23 @@
 #include "proxy.h"
 #include <timemachineobject.h>
 
-QString ScpiSingleTransactionBlocked::query(QString scpiQuery, quint16 port, Zera::ProxyClientPtr proxyClient)
+QString ScpiSingleTransactionBlocked::query(QString scpiQuery,
+                                            quint16 port,
+                                            VeinTcp::AbstractTcpWorkerFactoryPtr tcpWorkerFactory,
+                                            Zera::ProxyClientPtr proxyClient)
 {
     ProtobufMessage::NetMessage envelope;
     ProtobufMessage::NetMessage::ScpiCommand* message = envelope.mutable_scpi();
     message->set_command(scpiQuery.toStdString());
 
-    return sendBlocked(envelope, port, proxyClient);
+    return sendBlocked(envelope, port, tcpWorkerFactory, proxyClient);
 }
 
-QString ScpiSingleTransactionBlocked::cmd(QString scpiCmd, QString param, quint16 port, Zera::ProxyClientPtr proxyClient)
+QString ScpiSingleTransactionBlocked::cmd(QString scpiCmd,
+                                          QString param,
+                                          quint16 port,
+                                          VeinTcp::AbstractTcpWorkerFactoryPtr tcpWorkerFactory,
+                                          Zera::ProxyClientPtr proxyClient)
 {
     ProtobufMessage::NetMessage envelope;
     ProtobufMessage::NetMessage::ScpiCommand* message = envelope.mutable_scpi();
@@ -19,23 +26,30 @@ QString ScpiSingleTransactionBlocked::cmd(QString scpiCmd, QString param, quint1
     // Oh no ';' how annoying sometimes needed sometimes not - see cmdXmlParam
     message->set_parameter(param.toStdString() + ";");
 
-    return sendBlocked(envelope, port, proxyClient);
+    return sendBlocked(envelope, port, tcpWorkerFactory, proxyClient);
 }
 
-QString ScpiSingleTransactionBlocked::cmdXmlParam(QString scpiCmd, QString param, quint16 port, Zera::ProxyClientPtr proxyClient)
+QString ScpiSingleTransactionBlocked::cmdXmlParam(QString scpiCmd,
+                                                  QString param,
+                                                  quint16 port,
+                                                  VeinTcp::AbstractTcpWorkerFactoryPtr tcpWorkerFactory,
+                                                  Zera::ProxyClientPtr proxyClient)
 {
     ProtobufMessage::NetMessage envelope;
     ProtobufMessage::NetMessage::ScpiCommand* message = envelope.mutable_scpi();
     message->set_command(scpiCmd.toStdString());
     message->set_parameter(param.toStdString());
 
-    return sendBlocked(envelope, port, proxyClient);
+    return sendBlocked(envelope, port, tcpWorkerFactory, proxyClient);
 }
 
-QString ScpiSingleTransactionBlocked::sendBlocked(ProtobufMessage::NetMessage &envelope, quint16 port, Zera::ProxyClientPtr proxyClient)
+QString ScpiSingleTransactionBlocked::sendBlocked(ProtobufMessage::NetMessage &envelope,
+                                                  quint16 port,
+                                                  VeinTcp::AbstractTcpWorkerFactoryPtr tcpWorkerFactory,
+                                                  Zera::ProxyClientPtr proxyClient)
 {
     if(!proxyClient)
-        proxyClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", port);
+        proxyClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", port, tcpWorkerFactory);
     QString bareScpiAnswer;
     QObject::connect(proxyClient.get(), &Zera::ProxyClient::answerAvailable, [&](std::shared_ptr<ProtobufMessage::NetMessage> message) {
         bareScpiAnswer = QString::fromStdString(message->reply().body());

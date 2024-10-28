@@ -104,7 +104,7 @@ void test_accumulatorinterface_mock::setupServers(QString configFileXml)
     m_mt310s2d = std::make_unique<MockMt310s2d>(std::make_shared<TestFactoryI2cCtrl>(true), tcpWorkerFactory, configFileXml);
     TimeMachineObject::feedEventLoop();
 
-    m_proxyClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307);
+    m_proxyClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307, tcpWorkerFactory);
     m_pcbIFace = std::make_unique<Zera::cPCBInterface>();
     m_pcbIFace->setClientSmart(m_proxyClient);
     Zera::Proxy::getInstance()->startConnectionSmart(m_proxyClient);

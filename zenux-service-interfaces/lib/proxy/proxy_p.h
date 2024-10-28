@@ -23,8 +23,8 @@ public:
 protected:
     ProxyPrivate(Proxy *parent);
     ~ProxyPrivate(){}
-    ProxyClient* getConnection(QString ipadress, quint16 port);
-    ProxyClientPtr getConnectionSmart(QString ipadress, quint16 port);
+    ProxyClient* getConnection(QString ipadress, quint16 port, VeinTcp::AbstractTcpWorkerFactoryPtr tcpWorkerFactory);
+    ProxyClientPtr getConnectionSmart(QString ipadress, quint16 port, VeinTcp::AbstractTcpWorkerFactoryPtr tcpWorkerFactory);
     void startConnection(ProxyClientPrivate *client);
     bool releaseConnection(ProxyClientPrivate *client);
     static Proxy* singletonInstance;
@@ -36,7 +36,7 @@ protected slots:
     void onMessageReceived(VeinTcp::TcpPeer *peer, QByteArray message);
 private:
     void handleReceiveMessage(std::shared_ptr<google::protobuf::Message> message);
-    ProxyNetPeer *getProxyNetPeer(QString ipadress, quint16 port);
+    ProxyNetPeer *getProxyNetPeer(QString ipadress, quint16 port, VeinTcp::AbstractTcpWorkerFactoryPtr tcpWorkerFactory);
     ProxyNetPeer *searchConnection(QString ip, quint16 port); // we search for a netclient that matches ip, port
     XiQNetWrapper m_protobufWrapper;
     QHash<ProxyClientPrivate*, ProxyConnection*> m_ConnectionHash; // holds network connection for each client

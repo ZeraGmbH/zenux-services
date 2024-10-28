@@ -28,6 +28,7 @@ private:
     std::unique_ptr<MockZdsp1d> m_dspService;
     Zera::ProxyClientPtr m_proxyClient;
     std::unique_ptr<Zera::cDSPInterface> m_dspIFace;
+    VeinTcp::AbstractTcpWorkerFactoryPtr m_tcpWorkerFactory;
 };
 
 #endif // TEST_REGRESSION_DSP_VAR_H

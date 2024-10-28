@@ -17,10 +17,10 @@ void test_mockservice_zdsp1d::initTestCase()
 
 void test_mockservice_zdsp1d::init()
 {
-    VeinTcp::AbstractTcpWorkerFactoryPtr tcpWorkerFactory = VeinTcp::TcpWorkerFactory::create();
-    m_resman = std::make_unique<ResmanRunFacade>(tcpWorkerFactory);
+    m_tcpWorkerFactory = VeinTcp::TcpWorkerFactory::create();
+    m_resman = std::make_unique<ResmanRunFacade>(m_tcpWorkerFactory);
     TimeMachineObject::feedEventLoop();
-    m_zsdp1d = std::make_unique<MockZdsp1d>(std::make_shared<TestFactoryDeviceNodeDsp>(), tcpWorkerFactory);
+    m_zsdp1d = std::make_unique<MockZdsp1d>(std::make_shared<TestFactoryDeviceNodeDsp>(), m_tcpWorkerFactory);
     TimeMachineObject::feedEventLoop();
 }
 
@@ -34,7 +34,7 @@ void test_mockservice_zdsp1d::cleanup()
 
 void test_mockservice_zdsp1d::getDspLcaVersion()
 {
-    Zera::ProxyClientPtr dspClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6310);
+    Zera::ProxyClientPtr dspClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6310, m_tcpWorkerFactory);
     Zera::cDSPInterface dspIFace;
     dspIFace.setClientSmart(dspClient);
 
@@ -53,7 +53,7 @@ void test_mockservice_zdsp1d::getDspLcaVersion()
 
 void test_mockservice_zdsp1d::getServerVersion()
 {
-    Zera::ProxyClientPtr dspClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6310);
+    Zera::ProxyClientPtr dspClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6310, m_tcpWorkerFactory);
     Zera::cDSPInterface dspIFace;
     dspIFace.setClientSmart(dspClient);
 

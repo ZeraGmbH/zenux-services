@@ -17,12 +17,12 @@ static constexpr quint16 dspServerPort = 6310;
 
 void test_regression_dsp_var::init()
 {
-    VeinTcp::AbstractTcpWorkerFactoryPtr tcpWorkerFactory = VeinTcp::TcpWorkerFactory::create();
-    m_resmanServer = std::make_unique<ResmanRunFacade>(tcpWorkerFactory);
-    m_dspService = std::make_unique<MockZdsp1d>(std::make_shared<TestFactoryDeviceNodeDsp>(), tcpWorkerFactory);
+    m_tcpWorkerFactory = VeinTcp::TcpWorkerFactory::create();
+    m_resmanServer = std::make_unique<ResmanRunFacade>(m_tcpWorkerFactory);
+    m_dspService = std::make_unique<MockZdsp1d>(std::make_shared<TestFactoryDeviceNodeDsp>(), m_tcpWorkerFactory);
     TimeMachineObject::feedEventLoop();
 
-    m_proxyClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", dspServerPort);
+    m_proxyClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", dspServerPort, m_tcpWorkerFactory);
     m_dspIFace = std::make_unique<Zera::cDSPInterface>();
     m_dspIFace->setClientSmart(m_proxyClient);
     Zera::Proxy::getInstance()->startConnectionSmart(m_proxyClient);
@@ -54,7 +54,7 @@ void test_regression_dsp_var::createResultVariables()
     QCOMPARE(spyCreate.count(), 1);
     QCOMPARE(spyCreate[0][2], ZSCPI::scpiAnswer[ZSCPI::ack]);
 
-    QString ret = ScpiSingleTransactionBlocked::query("MEASURE:LIST:RAVLIST?", dspServerPort, m_proxyClient);
+    QString ret = ScpiSingleTransactionBlocked::query("MEASURE:LIST:RAVLIST?", dspServerPort, m_tcpWorkerFactory, m_proxyClient);
     QCOMPARE(ret, "RESULT1,1;RESULT2,3;");
 
     QSignalSpy spyRead(m_dspIFace.get(), &Zera::cDSPInterface::serverAnswer);
@@ -78,7 +78,7 @@ void test_regression_dsp_var::createTempVariables()
     QCOMPARE(spyCreate.count(), 1);
     QCOMPARE(spyCreate[0][2], ZSCPI::scpiAnswer[ZSCPI::ack]);
 
-    QString ret = ScpiSingleTransactionBlocked::query("MEASURE:LIST:RAVLIST?", dspServerPort, m_proxyClient);
+    QString ret = ScpiSingleTransactionBlocked::query("MEASURE:LIST:RAVLIST?", dspServerPort, m_tcpWorkerFactory, m_proxyClient);
     QCOMPARE(ret, "TEMP1,1;TEMP2,3;");
 
     QSignalSpy spyRead(m_dspIFace.get(), &Zera::cDSPInterface::serverAnswer);
@@ -104,7 +104,7 @@ void test_regression_dsp_var::createInternalVariables()
     QCOMPARE(spy[0][2], ZSCPI::scpiAnswer[ZSCPI::ack]);
 
     // We can neither list nor read but not EMPTY??
-    QString ret = ScpiSingleTransactionBlocked::query("MEASURE:LIST:RAVLIST?", dspServerPort, m_proxyClient);
+    QString ret = ScpiSingleTransactionBlocked::query("MEASURE:LIST:RAVLIST?", dspServerPort, m_tcpWorkerFactory, m_proxyClient);
     QCOMPARE(ret, ",0;");
 
     QSignalSpy spyRead(m_dspIFace.get(), &Zera::cDSPInterface::serverAnswer);
@@ -127,7 +127,7 @@ void test_regression_dsp_var::createTempGlobalVariables()
     QCOMPARE(spyCreate[0][2], ZSCPI::scpiAnswer[ZSCPI::ack]);
 
     // We can list but not read
-    QString ret = ScpiSingleTransactionBlocked::query("MEASURE:LIST:RAVLIST?", dspServerPort, m_proxyClient);
+    QString ret = ScpiSingleTransactionBlocked::query("MEASURE:LIST:RAVLIST?", dspServerPort, m_tcpWorkerFactory, m_proxyClient);
     QCOMPARE(ret, "TEMPGLOBAL1,1;TEMPGLOBAL2,2;");
 
     QSignalSpy spyRead(m_dspIFace.get(), &Zera::cDSPInterface::serverAnswer);
@@ -259,7 +259,7 @@ void test_regression_dsp_var::multipleClientsCreateResultVars()
     TimeMachineObject::feedEventLoop();
 
     // connect client2
-    Zera::ProxyClientPtr proxyClient2 = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", dspServerPort);
+    Zera::ProxyClientPtr proxyClient2 = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", dspServerPort, m_tcpWorkerFactory);
     std::unique_ptr<Zera::cDSPInterface> dspIFace2 = std::make_unique<Zera::cDSPInterface>();
     dspIFace2->setClientSmart(proxyClient2);
     Zera::Proxy::getInstance()->startConnectionSmart(proxyClient2);
@@ -273,7 +273,7 @@ void test_regression_dsp_var::multipleClientsCreateResultVars()
     TimeMachineObject::feedEventLoop();
 
     // client1 query vars
-    QString ret1 = ScpiSingleTransactionBlocked::query("MEASURE:LIST:RAVLIST?", dspServerPort, m_proxyClient);
+    QString ret1 = ScpiSingleTransactionBlocked::query("MEASURE:LIST:RAVLIST?", dspServerPort, m_tcpWorkerFactory, m_proxyClient);
     QCOMPARE(ret1, "CLIENT1_VAR1,1;CLIENT1_VAR2,2;");
     // client1 read client1 vars
     QSignalSpy spyRead1(m_dspIFace.get(), &Zera::cDSPInterface::serverAnswer);
@@ -289,7 +289,7 @@ void test_regression_dsp_var::multipleClientsCreateResultVars()
     QCOMPARE(spyRead1[0][2].toString(), "errexec");
 
     // client2 query vars
-    QString ret2 = ScpiSingleTransactionBlocked::query("MEASURE:LIST:RAVLIST?", dspServerPort, proxyClient2);
+    QString ret2 = ScpiSingleTransactionBlocked::query("MEASURE:LIST:RAVLIST?", dspServerPort, m_tcpWorkerFactory, proxyClient2);
     QCOMPARE(ret2, "CLIENT2_VAR1,3;CLIENT2_VAR2,4;");
     // client2 read client2 vars
     QSignalSpy spyRead2(dspIFace2.get(), &Zera::cDSPInterface::serverAnswer);

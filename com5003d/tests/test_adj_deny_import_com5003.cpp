@@ -70,7 +70,7 @@ void test_adj_deny_import_com5003::setupServers()
                                                                         true);
     TimeMachineObject::feedEventLoop();
 
-    m_proxyClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307);
+    m_proxyClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307, tcpWorkerFactory);
     Zera::Proxy::getInstance()->startConnectionSmart(m_proxyClient);
     TimeMachineObject::feedEventLoop();
 }

@@ -14,10 +14,10 @@ void test_mockservice_sec1000d::initTestCase()
 
 void test_mockservice_sec1000d::init()
 {
-    VeinTcp::AbstractTcpWorkerFactoryPtr tcpWorkerFactory = VeinTcp::TcpWorkerFactory::create();
-    m_resman = std::make_unique<ResmanRunFacade>(tcpWorkerFactory);
+    m_tcpWorkerFactory = VeinTcp::TcpWorkerFactory::create();
+    m_resman = std::make_unique<ResmanRunFacade>(m_tcpWorkerFactory);
     TimeMachineObject::feedEventLoop();
-    m_sec1000d = std::make_unique<MockSec1000d>(tcpWorkerFactory);
+    m_sec1000d = std::make_unique<MockSec1000d>(m_tcpWorkerFactory);
     TimeMachineObject::feedEventLoop();
     m_proxy = std::make_unique<ProxyForTest>();
 }
@@ -34,7 +34,7 @@ void test_mockservice_sec1000d::cleanup()
 Zera::cSECInterfacePtr test_mockservice_sec1000d::getSecInterface()
 {
     Zera::cSECInterfacePtr secInterface = std::make_unique<Zera::cSECInterface>();
-    Zera::ProxyClientPtr secClient = m_proxy->getConnectionSmart("127.0.0.1", 6305);
+    Zera::ProxyClientPtr secClient = m_proxy->getConnectionSmart("127.0.0.1", 6305, m_tcpWorkerFactory);
     secInterface->setClientSmart(secClient);
     m_proxy->startConnectionSmart(secClient);
     TimeMachineObject::feedEventLoop();

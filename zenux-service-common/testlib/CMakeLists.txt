@@ -31,6 +31,7 @@ target_link_libraries(zenuxservicecommon-testlib
     zenuxservicecommon-demolib
     zdsp1d-testlib
     service-interfaces
+    Zera::vf-tcp-mock-networklib
     Zera::zera-timers-testlib
 )
 
