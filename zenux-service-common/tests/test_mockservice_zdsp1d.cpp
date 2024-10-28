@@ -4,6 +4,7 @@
 #include "reply.h"
 #include "testfactorydevicenodedsp.h"
 #include <timemachineobject.h>
+#include <tcpworkerfactory.h>
 #include <QSignalSpy>
 #include <QTest>
 
@@ -16,9 +17,10 @@ void test_mockservice_zdsp1d::initTestCase()
 
 void test_mockservice_zdsp1d::init()
 {
-    m_resman = std::make_unique<ResmanRunFacade>();
+    VeinTcp::AbstractTcpWorkerFactoryPtr tcpWorkerFactory = VeinTcp::TcpWorkerFactory::create();
+    m_resman = std::make_unique<ResmanRunFacade>(tcpWorkerFactory);
     TimeMachineObject::feedEventLoop();
-    m_zsdp1d = std::make_unique<MockZdsp1d>(std::make_shared<TestFactoryDeviceNodeDsp>());
+    m_zsdp1d = std::make_unique<MockZdsp1d>(std::make_shared<TestFactoryDeviceNodeDsp>(), tcpWorkerFactory);
     TimeMachineObject::feedEventLoop();
 }
 

@@ -83,6 +83,7 @@ function(SETUP_TESTS)
             Zera::zera-timers-testlib
             Zera::zera-i2c-devices-testlib
             Zera::resman-lib
+            Zera::vf-tcp-mock-networklib
             )
     endforeach()
 endfunction()

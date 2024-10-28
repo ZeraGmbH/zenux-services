@@ -2,7 +2,7 @@
 #include "mockfactorydevicenodesec.h"
 #include "mockserverparamgenerator.h"
 
-MockSec1000d::MockSec1000d(QString alternateConfigXml)
+MockSec1000d::MockSec1000d(VeinTcp::AbstractTcpWorkerFactoryPtr tcpWorkerFactory, QString alternateConfigXml)
 {
     ServerParams params = MockServerParamGenerator::createParams("sec1000d");
     if(!alternateConfigXml.isEmpty())
@@ -10,5 +10,6 @@ MockSec1000d::MockSec1000d(QString alternateConfigXml)
 
     m_server = std::make_unique<cSEC1000dServer>(
         std::make_unique<SettingsContainer>(params),
-        std::make_shared<MockFactoryDeviceNodeSec>());
+        std::make_shared<MockFactoryDeviceNodeSec>(),
+        tcpWorkerFactory);
 }

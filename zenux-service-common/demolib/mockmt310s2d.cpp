@@ -3,7 +3,9 @@
 #include "mockserverparamgenerator.h"
 #include "mocki2ceepromiofactory.h"
 
-MockMt310s2d::MockMt310s2d(AbstractFactoryI2cCtrlPtr ctrlFactory, QString alternateConfigXml)
+MockMt310s2d::MockMt310s2d(AbstractFactoryI2cCtrlPtr ctrlFactory,
+                           VeinTcp::AbstractTcpWorkerFactoryPtr tcpWorkerFactory,
+                           QString alternateConfigXml)
 {
     MockI2cEEpromIoFactory::enableMock();
 
@@ -13,5 +15,6 @@ MockMt310s2d::MockMt310s2d(AbstractFactoryI2cCtrlPtr ctrlFactory, QString altern
     m_server = std::make_unique<cMT310S2dServer>(
         std::make_unique<SettingsContainer>(params),
         ctrlFactory,
-        std::make_shared<MockFactoryDeviceNodePcb>());
+        std::make_shared<MockFactoryDeviceNodePcb>(),
+        tcpWorkerFactory);
 }

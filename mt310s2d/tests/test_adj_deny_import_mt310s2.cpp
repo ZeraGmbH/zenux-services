@@ -10,6 +10,7 @@
 #include "xmlhelperfortest.h"
 #include <timemachineobject.h>
 #include <testloghelpers.h>
+#include <tcpworkerfactory.h>
 #include <QTest>
 
 QTEST_MAIN(test_adj_deny_import_mt310s2);
@@ -63,9 +64,11 @@ void test_adj_deny_import_mt310s2::loadEEpromAndDenyDifferentDeviceName()
 
 void test_adj_deny_import_mt310s2::setupServers()
 {
-    m_resmanServer = std::make_unique<ResmanRunFacade>();
+    VeinTcp::AbstractTcpWorkerFactoryPtr tcpWorkerFactory = VeinTcp::TcpWorkerFactory::create();
+    m_resmanServer = std::make_unique<ResmanRunFacade>(tcpWorkerFactory);
     m_testServer = std::make_unique<TestServerForSenseInterfaceMt310s2>(std::make_shared<TestFactoryI2cCtrl>(true),
-                                                                  true);
+                                                                        tcpWorkerFactory,
+                                                                        true);
     TimeMachineObject::feedEventLoop();
 
     m_proxyClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307);

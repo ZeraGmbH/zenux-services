@@ -6,6 +6,7 @@
 #include "scpisingletransactionblocked.h"
 #include "zscpi_response_definitions.h"
 #include <mockeeprom24lc.h>
+#include <tcpworkerfactory.h>
 #include <QSignalSpy>
 #include <QTest>
 
@@ -18,8 +19,9 @@ void test_mockservice_com5003d_full::initTestCase()
 
 void test_mockservice_com5003d_full::init()
 {
-    m_resman = std::make_unique<ResmanRunFacade>();
-    m_server = std::make_unique<MockCom5003d>(std::make_shared<TestFactoryI2cCtrl>(true));
+    VeinTcp::AbstractTcpWorkerFactoryPtr tcpWorkerFactory = VeinTcp::TcpWorkerFactory::create();
+    m_resman = std::make_unique<ResmanRunFacade>(tcpWorkerFactory);
+    m_server = std::make_unique<MockCom5003d>(std::make_shared<TestFactoryI2cCtrl>(true), tcpWorkerFactory);
     TimeMachineObject::feedEventLoop();
 
     m_proxyClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307);

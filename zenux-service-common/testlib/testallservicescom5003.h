@@ -12,8 +12,11 @@ class TestAllServicesCom5003 : public AbstractMockAllServices
 {
 public:
     TestAllServicesCom5003(AbstractFactoryI2cCtrlPtr ctrlFactory = std::make_shared<TestFactoryI2cCtrl>(true));
+    TestAllServicesCom5003(VeinTcp::AbstractTcpWorkerFactoryPtr tcpWorkerFactory,
+                           AbstractFactoryI2cCtrlPtr ctrlFactory = std::make_shared<TestFactoryI2cCtrl>(true));
     virtual ~TestAllServicesCom5003();
 private:
+    void init(VeinTcp::AbstractTcpWorkerFactoryPtr tcpWorkerFactory, AbstractFactoryI2cCtrlPtr ctrlFactory);
     ResmanRunFacade *m_resman;
     MockCom5003d *m_mockcom5003d;
     MockSec1000d *m_sec1000d;

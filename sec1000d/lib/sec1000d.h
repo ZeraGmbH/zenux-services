@@ -23,7 +23,6 @@ class cSEC1000dServer: public PCBServer
 {
     Q_OBJECT
 public:
-    explicit cSEC1000dServer(SettingsContainerPtr settings, AbstractFactoryDeviceNodeSecPtr deviceNodeFactory);
     explicit cSEC1000dServer(SettingsContainerPtr settings, AbstractFactoryDeviceNodeSecPtr deviceNodeFactory,
                              VeinTcp::AbstractTcpWorkerFactoryPtr tcpWorkerFactory);
     ~cSEC1000dServer();

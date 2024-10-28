@@ -4,6 +4,7 @@
 #include "proxy.h"
 #include "zscpi_response_definitions.h"
 #include <timemachineobject.h>
+#include <tcpworkerfactory.h>
 #include <QTest>
 
 QTEST_MAIN(test_regression_critical_status_com5003);
@@ -102,8 +103,10 @@ void test_regression_critical_status_com5003::resetM5()
 
 void test_regression_critical_status_com5003::setupServers(quint16 initialCriticalStatus)
 {
-    m_resmanServer = std::make_unique<ResmanRunFacade>();
-    m_testServer = std::make_unique<TestServerForSenseInterfaceCom5003>(std::make_shared<TestFactoryI2cCtrlCriticalStatus>(initialCriticalStatus));
+    VeinTcp::AbstractTcpWorkerFactoryPtr tcpWorkerFactory = VeinTcp::TcpWorkerFactory::create();
+    m_resmanServer = std::make_unique<ResmanRunFacade>(tcpWorkerFactory);
+    m_testServer = std::make_unique<TestServerForSenseInterfaceCom5003>(std::make_shared<TestFactoryI2cCtrlCriticalStatus>(initialCriticalStatus),
+                                                                        tcpWorkerFactory);
     TimeMachineObject::feedEventLoop();
 
     m_proxyClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307);

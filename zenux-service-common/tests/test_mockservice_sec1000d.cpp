@@ -1,6 +1,7 @@
 #include "test_mockservice_sec1000d.h"
 #include "reply.h"
 #include <timemachineobject.h>
+#include <tcpworkerfactory.h>
 #include <QSignalSpy>
 #include <QTest>
 
@@ -13,9 +14,10 @@ void test_mockservice_sec1000d::initTestCase()
 
 void test_mockservice_sec1000d::init()
 {
-    m_resman = std::make_unique<ResmanRunFacade>();
+    VeinTcp::AbstractTcpWorkerFactoryPtr tcpWorkerFactory = VeinTcp::TcpWorkerFactory::create();
+    m_resman = std::make_unique<ResmanRunFacade>(tcpWorkerFactory);
     TimeMachineObject::feedEventLoop();
-    m_sec1000d = std::make_unique<MockSec1000d>();
+    m_sec1000d = std::make_unique<MockSec1000d>(tcpWorkerFactory);
     TimeMachineObject::feedEventLoop();
     m_proxy = std::make_unique<ProxyForTest>();
 }

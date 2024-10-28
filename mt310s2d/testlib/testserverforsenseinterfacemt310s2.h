@@ -10,7 +10,9 @@
 class TestServerForSenseInterfaceMt310s2 : public TestPcbServer
 {
 public:
-    TestServerForSenseInterfaceMt310s2(AbstractFactoryI2cCtrlPtr ctrlFactory, bool systemInfoMock = false);
+    TestServerForSenseInterfaceMt310s2(AbstractFactoryI2cCtrlPtr ctrlFactory,
+                                       VeinTcp::AbstractTcpWorkerFactoryPtr tcpWorkerFactory,
+                                       bool systemInfoMock = false);
     QString getDeviceVersion() { return m_systemInfo->getDeviceVersion(); }
 
     SenseInterfaceCommon *getSenseInterface() { return m_senseInterface.get(); }

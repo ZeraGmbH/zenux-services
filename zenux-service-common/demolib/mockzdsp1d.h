@@ -6,7 +6,9 @@
 class MockZdsp1d
 {
 public:
-    MockZdsp1d(AbstractFactoryDeviceNodeDspPtr deviceNodeFactory, QString alternateConfigXml = QString());
+    MockZdsp1d(AbstractFactoryDeviceNodeDspPtr deviceNodeFactory,
+               VeinTcp::AbstractTcpWorkerFactoryPtr tcpWorkerFactory,
+               QString alternateConfigXml = QString());
 private:
     std::unique_ptr<ZDspServer> m_server;
 };

@@ -2,8 +2,10 @@
 #include "com5003senseinterface.h"
 #include "testsysteminfo.h"
 
-TestServerForSenseInterfaceCom5003::TestServerForSenseInterfaceCom5003(AbstractFactoryI2cCtrlPtr ctrlFactory, bool systemInfoMock) :
-    TestPcbServer("com5003d")
+TestServerForSenseInterfaceCom5003::TestServerForSenseInterfaceCom5003(AbstractFactoryI2cCtrlPtr ctrlFactory,
+                                                                       VeinTcp::AbstractTcpWorkerFactoryPtr tcpWorkerFactory,
+                                                                       bool systemInfoMock) :
+    TestPcbServer("com5003d", tcpWorkerFactory)
 {
     if(systemInfoMock)
         m_systemInfo = std::make_unique<TestSystemInfo>(ctrlFactory);

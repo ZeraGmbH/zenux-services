@@ -5,6 +5,7 @@
 #include <QCoreApplication>
 #include <QTextCodec>
 #include "factorydevicenodesec.h"
+#include <tcpworkerfactory.h>
 #include "sec1000d.h"
 
 int main( int argc, char *argv[] )
@@ -13,7 +14,8 @@ int main( int argc, char *argv[] )
 
     cSEC1000dServer* sec5003d = new cSEC1000dServer(
         std::make_unique<SettingsContainer>(cSEC1000dServer::defaultParams),
-        std::make_shared<FactoryDeviceNodeSec>());
+        std::make_shared<FactoryDeviceNodeSec>(),
+        VeinTcp::TcpWorkerFactory::create());
     qInfo("%s started", qPrintable(sec5003d->getServerVersion()));
 
     int r = app->exec();
