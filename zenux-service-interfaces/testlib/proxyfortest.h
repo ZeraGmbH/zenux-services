@@ -6,6 +6,7 @@
 class ProxyForTest : public Zera::Proxy
 {
 public:
+    // Zera::Proxy's ctor is protected
     explicit ProxyForTest(QObject *parent = nullptr);
 };
 
