@@ -14,7 +14,7 @@
 #include <scpi.h>
 #include <vtcp_server.h>
 #include <xiqnetwrapper.h>
-#include <abstracttcpworkerfactory.h>
+#include <abstracttcpnetworkfactory.h>
 #include <QStringList>
 #include <QSocketNotifier>
 #include <QByteArray>
@@ -35,7 +35,7 @@ class ZDspServer: public ScpiConnection, public cbIFace
 public:
     ZDspServer(SettingsContainerPtr settings,
                AbstractFactoryDeviceNodeDspPtr deviceNodeFactory,
-               VeinTcp::AbstractTcpWorkerFactoryPtr tcpNetworkFactory);
+               VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory);
     virtual ~ZDspServer();
     void initSCPIConnection(QString leadingNodes) override;
     QString getServerVersion();
@@ -82,7 +82,7 @@ private:
     void openTelnetScpi();
 
     AbstractFactoryDeviceNodeDspPtr m_deviceNodeFactory;
-    VeinTcp::AbstractTcpWorkerFactoryPtr m_tcpNetworkFactory;
+    VeinTcp::AbstractTcpNetworkFactoryPtr m_tcpNetworkFactory;
     SettingsContainerPtr m_settings;
     ScpiCmdInterpreter* m_cmdInterpreter = nullptr;
     VeinTcp::TcpServer* m_protoBufServer = nullptr;

@@ -3,7 +3,7 @@
 
 TestPcbServerNotifications::TestPcbServerNotifications(SettingsContainerPtr settings,
                                                        cSCPI *scpiInterface, AbstractFactoryI2cCtrlPtr ctrlFactory,
-                                                       VeinTcp::AbstractTcpWorkerFactoryPtr tcpNetworkFactory) :
+                                                       VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory) :
     PCBServer(std::move(settings), scpiInterface, tcpNetworkFactory)
 {
     scpiConnectionList.append(this);

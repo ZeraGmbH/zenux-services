@@ -10,13 +10,13 @@ Proxy* Proxy::getInstance()
     return ProxyPrivate::singletonInstance;
 }
 
-ProxyClient* Proxy::getConnection(QString ipadress, quint16 port, VeinTcp::AbstractTcpWorkerFactoryPtr tcpNetworkFactory)
+ProxyClient* Proxy::getConnection(QString ipadress, quint16 port, VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory)
 {
     Q_D(Proxy);
     return d->getConnection(ipadress, port, tcpNetworkFactory);
 }
 
-ProxyClientPtr Proxy::getConnectionSmart(QString ipadress, quint16 port, VeinTcp::AbstractTcpWorkerFactoryPtr tcpNetworkFactory)
+ProxyClientPtr Proxy::getConnectionSmart(QString ipadress, quint16 port, VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory)
 {
     Q_D(Proxy);
     return d->getConnectionSmart(ipadress, port, tcpNetworkFactory);

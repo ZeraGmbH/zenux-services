@@ -46,7 +46,7 @@ const ServerParams cMT310S2dServer::defaultParams {ServerName, ServerVersion, "/
 cMT310S2dServer::cMT310S2dServer(SettingsContainerPtr settings,
                                  AbstractFactoryI2cCtrlPtr ctrlFactory,
                                  AbstractFactoryDeviceNodePcbPtr deviceNodeFactory,
-                                 VeinTcp::AbstractTcpWorkerFactoryPtr tcpNetworkFactory) :
+                                 VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory) :
     PCBServer(std::move(settings), ScpiSingletonFactory::getScpiObj(), tcpNetworkFactory),
     m_ctrlFactory(ctrlFactory),
     m_deviceNodeFactory(deviceNodeFactory)

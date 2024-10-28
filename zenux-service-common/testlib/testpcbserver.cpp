@@ -4,7 +4,7 @@
 #include <QFinalState>
 #include <QDir>
 
-TestPcbServer::TestPcbServer(QString serviceName, VeinTcp::AbstractTcpWorkerFactoryPtr tcpNetworkFactory) :
+TestPcbServer::TestPcbServer(QString serviceName, VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory) :
     PCBServer(std::make_unique<SettingsContainer>(MockServerParamGenerator::createParams(serviceName)),
                 ScpiSingletonFactory::getScpiObj(), tcpNetworkFactory)
 {

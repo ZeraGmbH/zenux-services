@@ -4,7 +4,7 @@
 
 QString ScpiSingleTransactionBlocked::query(QString scpiQuery,
                                             quint16 port,
-                                            VeinTcp::AbstractTcpWorkerFactoryPtr tcpNetworkFactory,
+                                            VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory,
                                             Zera::ProxyClientPtr proxyClient)
 {
     ProtobufMessage::NetMessage envelope;
@@ -17,7 +17,7 @@ QString ScpiSingleTransactionBlocked::query(QString scpiQuery,
 QString ScpiSingleTransactionBlocked::cmd(QString scpiCmd,
                                           QString param,
                                           quint16 port,
-                                          VeinTcp::AbstractTcpWorkerFactoryPtr tcpNetworkFactory,
+                                          VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory,
                                           Zera::ProxyClientPtr proxyClient)
 {
     ProtobufMessage::NetMessage envelope;
@@ -32,7 +32,7 @@ QString ScpiSingleTransactionBlocked::cmd(QString scpiCmd,
 QString ScpiSingleTransactionBlocked::cmdXmlParam(QString scpiCmd,
                                                   QString param,
                                                   quint16 port,
-                                                  VeinTcp::AbstractTcpWorkerFactoryPtr tcpNetworkFactory,
+                                                  VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory,
                                                   Zera::ProxyClientPtr proxyClient)
 {
     ProtobufMessage::NetMessage envelope;
@@ -45,7 +45,7 @@ QString ScpiSingleTransactionBlocked::cmdXmlParam(QString scpiCmd,
 
 QString ScpiSingleTransactionBlocked::sendBlocked(ProtobufMessage::NetMessage &envelope,
                                                   quint16 port,
-                                                  VeinTcp::AbstractTcpWorkerFactoryPtr tcpNetworkFactory,
+                                                  VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory,
                                                   Zera::ProxyClientPtr proxyClient)
 {
     if(!proxyClient)

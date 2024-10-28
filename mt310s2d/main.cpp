@@ -2,7 +2,7 @@
 #include "mt310s2dglobal.h"
 #include "factoryi2cctrl.h"
 #include "factorydevicenodepcb.h"
-#include <tcpworkerfactory.h>
+#include <tcpnetworkfactory.h>
 #include <QCoreApplication>
 
 int main( int argc, char *argv[] )
@@ -15,7 +15,7 @@ int main( int argc, char *argv[] )
         std::move(settings),
         ctrlFactory,
         std::make_shared<FactoryDeviceNodePcb>(),
-        VeinTcp::TcpWorkerFactory::create());
+        VeinTcp::TcpNetworkFactory::create());
     qInfo(ServerName " started");
 
     int r = app->exec();

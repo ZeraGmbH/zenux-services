@@ -3,7 +3,7 @@
 
 #include "service-interfaces_export.h"
 #include "proxyclient.h"
-#include <abstracttcpworkerfactory.h>
+#include <abstracttcpnetworkfactory.h>
 
 namespace Zera {
 class ProxyPrivate;
@@ -13,8 +13,8 @@ class SERVICE_INTERFACES_EXPORT Proxy : public QObject
     Q_OBJECT
 public:
     static Proxy* getInstance();
-    ProxyClient* getConnection(QString ipadress, quint16 port, VeinTcp::AbstractTcpWorkerFactoryPtr tcpNetworkFactory);
-    ProxyClientPtr getConnectionSmart(QString ipadress, quint16 port, VeinTcp::AbstractTcpWorkerFactoryPtr tcpNetworkFactory);
+    ProxyClient* getConnection(QString ipadress, quint16 port, VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory);
+    ProxyClientPtr getConnectionSmart(QString ipadress, quint16 port, VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory);
     void startConnection(ProxyClient *client);
     void startConnectionSmart(ProxyClientPtr client);
     bool releaseConnection(ProxyClient* client);

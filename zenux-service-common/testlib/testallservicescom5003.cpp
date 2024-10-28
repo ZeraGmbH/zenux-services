@@ -1,20 +1,20 @@
 #include "testallservicescom5003.h"
 #include <timemachineobject.h>
 #include "testfactorydevicenodedsp.h"
-#include <tcpworkerfactory.h>
+#include <tcpnetworkfactory.h>
 
 TestAllServicesCom5003::TestAllServicesCom5003(AbstractFactoryI2cCtrlPtr ctrlFactory)
 {
-    init(VeinTcp::TcpWorkerFactory::create(), ctrlFactory);
+    init(VeinTcp::TcpNetworkFactory::create(), ctrlFactory);
 }
 
-TestAllServicesCom5003::TestAllServicesCom5003(VeinTcp::AbstractTcpWorkerFactoryPtr tcpNetworkFactory,
+TestAllServicesCom5003::TestAllServicesCom5003(VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory,
                                                AbstractFactoryI2cCtrlPtr ctrlFactory)
 {
     init(tcpNetworkFactory, ctrlFactory);
 }
 
-void TestAllServicesCom5003::init(VeinTcp::AbstractTcpWorkerFactoryPtr tcpNetworkFactory, AbstractFactoryI2cCtrlPtr ctrlFactory)
+void TestAllServicesCom5003::init(VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory, AbstractFactoryI2cCtrlPtr ctrlFactory)
 {
     m_resman = new ResmanRunFacade(tcpNetworkFactory);
     TimeMachineObject::feedEventLoop();

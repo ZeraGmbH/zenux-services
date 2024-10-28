@@ -3,7 +3,7 @@
 #include "testsysteminfo.h"
 
 TestServerForSenseInterfaceCom5003::TestServerForSenseInterfaceCom5003(AbstractFactoryI2cCtrlPtr ctrlFactory,
-                                                                       VeinTcp::AbstractTcpWorkerFactoryPtr tcpNetworkFactory,
+                                                                       VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory,
                                                                        bool systemInfoMock) :
     TestPcbServer("com5003d", tcpNetworkFactory)
 {

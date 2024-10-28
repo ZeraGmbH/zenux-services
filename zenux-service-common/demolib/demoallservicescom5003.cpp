@@ -3,20 +3,20 @@
 #include "demoeventloopfeeder.h"
 #include "demofactorydevicenodedsp.h"
 #include "mockserverparamgenerator.h"
-#include <tcpworkerfactory.h>
+#include <tcpnetworkfactory.h>
 
 DemoAllServicesCom5003::DemoAllServicesCom5003()
 {
     // for now default to real network
-    init(VeinTcp::TcpWorkerFactory::create());
+    init(VeinTcp::TcpNetworkFactory::create());
 }
 
-DemoAllServicesCom5003::DemoAllServicesCom5003(VeinTcp::AbstractTcpWorkerFactoryPtr tcpNetworkFactory)
+DemoAllServicesCom5003::DemoAllServicesCom5003(VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory)
 {
     init(tcpNetworkFactory);
 }
 
-void DemoAllServicesCom5003::init(VeinTcp::AbstractTcpWorkerFactoryPtr tcpNetworkFactory)
+void DemoAllServicesCom5003::init(VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory)
 {
     m_resman = new ResmanRunFacade(tcpNetworkFactory);
     ServerParams params = MockServerParamGenerator::createParams("com5003d");

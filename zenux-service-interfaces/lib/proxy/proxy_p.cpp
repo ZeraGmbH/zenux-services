@@ -16,7 +16,7 @@ ProxyPrivate::ProxyPrivate(Proxy *parent):
 {
 }
 
-ProxyClient* ProxyPrivate::getConnection(QString ipadress, quint16 port, VeinTcp::AbstractTcpWorkerFactoryPtr tcpNetworkFactory)
+ProxyClient* ProxyPrivate::getConnection(QString ipadress, quint16 port, VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory)
 {
     QUuid uuid = QUuid::createUuid(); // we use a per client uuid
     QByteArray binUUid = uuid.toRfc4122();
@@ -30,7 +30,7 @@ ProxyClient* ProxyPrivate::getConnection(QString ipadress, quint16 port, VeinTcp
     return proxyclient;
 }
 
-ProxyClientPtr ProxyPrivate::getConnectionSmart(QString ipadress, quint16 port, VeinTcp::AbstractTcpWorkerFactoryPtr tcpNetworkFactory)
+ProxyClientPtr ProxyPrivate::getConnectionSmart(QString ipadress, quint16 port, VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory)
 {
     ProxyClient* client = getConnection(ipadress, port, tcpNetworkFactory);
     return ProxyClientPtr(client);
@@ -137,7 +137,7 @@ void ProxyPrivate::onMessageReceived(VeinTcp::TcpPeer *peer, QByteArray message)
     handleReceiveMessage(m_protobufWrapper.byteArrayToProtobuf(message));
 }
 
-ProxyNetPeer *ProxyPrivate::getProxyNetPeer(QString ipadress, quint16 port, VeinTcp::AbstractTcpWorkerFactoryPtr tcpNetworkFactory)
+ProxyNetPeer *ProxyPrivate::getProxyNetPeer(QString ipadress, quint16 port, VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory)
 {
     ProxyNetPeer* netClient = searchConnection(ipadress, port);
     if(!netClient)  {// look for existing connection

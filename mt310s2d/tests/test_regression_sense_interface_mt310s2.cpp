@@ -7,7 +7,7 @@
 #include "zscpi_response_definitions.h"
 #include <i2cmultiplexerfactory.h>
 #include <timemachineobject.h>
-#include <tcpworkerfactory.h>
+#include <tcpnetworkfactory.h>
 #include <QFile>
 #include <QRegularExpression>
 #include <QJsonValue>
@@ -20,7 +20,7 @@ QTEST_MAIN(test_regression_sense_interface_mt310s2);
 void test_regression_sense_interface_mt310s2::initTestCase()
 {
     ClampFactoryTest::enableTest();
-    VeinTcp::AbstractTcpWorkerFactoryPtr tcpNetworkFactory = VeinTcp::TcpWorkerFactory::create();
+    VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory = VeinTcp::TcpNetworkFactory::create();
     m_resmanServer = std::make_unique<ResmanRunFacade>(tcpNetworkFactory);
     m_testServer = std::make_unique<TestServerForSenseInterfaceMt310s2>(std::make_shared<TestFactoryI2cCtrl>(true), tcpNetworkFactory);
     TimeMachineObject::feedEventLoop();

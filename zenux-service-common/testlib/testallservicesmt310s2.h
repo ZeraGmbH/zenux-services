@@ -12,11 +12,11 @@ class TestAllServicesMt310s2 : public AbstractMockAllServices
 {
 public:
     TestAllServicesMt310s2(AbstractFactoryI2cCtrlPtr ctrlFactory = std::make_shared<TestFactoryI2cCtrl>(true));
-    TestAllServicesMt310s2(VeinTcp::AbstractTcpWorkerFactoryPtr tcpNetworkFactory,
+    TestAllServicesMt310s2(VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory,
                            AbstractFactoryI2cCtrlPtr ctrlFactory = std::make_shared<TestFactoryI2cCtrl>(true));
     virtual ~TestAllServicesMt310s2();
 private:
-    void init(VeinTcp::AbstractTcpWorkerFactoryPtr tcpNetworkFactory, AbstractFactoryI2cCtrlPtr ctrlFactory);
+    void init(VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory, AbstractFactoryI2cCtrlPtr ctrlFactory);
     ResmanRunFacade *m_resman;
     MockMt310s2d *m_mt310s2d;
     MockSec1000d *m_sec1000d;

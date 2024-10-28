@@ -5,7 +5,7 @@
 #include "mockeeprom24lc.h"
 #include "scpisingletransactionblocked.h"
 #include <timemachineobject.h>
-#include <tcpworkerfactory.h>
+#include <tcpnetworkfactory.h>
 #include <QSignalSpy>
 #include <QTest>
 
@@ -80,7 +80,7 @@ void test_regression_adj_calc_com5003::offsetAdjValueTotal()
 
 void test_regression_adj_calc_com5003::setupServers()
 {
-    VeinTcp::AbstractTcpWorkerFactoryPtr tcpNetworkFactory = VeinTcp::TcpWorkerFactory::create();
+    VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory = VeinTcp::TcpNetworkFactory::create();
     m_resmanServer = std::make_unique<ResmanRunFacade>(tcpNetworkFactory);
     m_testServer = std::make_unique<TestServerForSenseInterfaceCom5003>(std::make_shared<TestFactoryI2cCtrl>(true), tcpNetworkFactory);
     TimeMachineObject::feedEventLoop();

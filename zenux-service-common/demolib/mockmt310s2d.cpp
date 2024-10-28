@@ -4,7 +4,7 @@
 #include "mocki2ceepromiofactory.h"
 
 MockMt310s2d::MockMt310s2d(AbstractFactoryI2cCtrlPtr ctrlFactory,
-                           VeinTcp::AbstractTcpWorkerFactoryPtr tcpNetworkFactory,
+                           VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory,
                            QString alternateConfigXml)
 {
     MockI2cEEpromIoFactory::enableMock();

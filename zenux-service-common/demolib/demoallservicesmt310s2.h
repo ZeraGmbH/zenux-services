@@ -16,11 +16,11 @@ class DemoAllServicesMt310s2 : public AbstractMockAllServices
 {
 public:
     DemoAllServicesMt310s2();
-    DemoAllServicesMt310s2(VeinTcp::AbstractTcpWorkerFactoryPtr tcpNetworkFactory);
+    DemoAllServicesMt310s2(VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory);
     virtual ~DemoAllServicesMt310s2();
 
 private:
-    void init(VeinTcp::AbstractTcpWorkerFactoryPtr tcpNetworkFactory);
+    void init(VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory);
     AutoJournalLoggerFacade *m_autoLogger;
     ResmanRunFacade *m_resman;
     MockMt310s2d *m_mt310s2d;

@@ -9,7 +9,7 @@
 #include "zscpi_response_definitions.h"
 #include <timemachineobject.h>
 #include <mockeeprom24lc.h>
-#include <tcpworkerfactory.h>
+#include <tcpnetworkfactory.h>
 #include <QTest>
 
 QTEST_MAIN(test_regression_adj_status_mt310s2);
@@ -77,7 +77,7 @@ void test_regression_adj_status_mt310s2::setupServers(AbstractFactoryI2cCtrlPtr 
 {
     PermissionFunctions::setPermissionCtrlFactory(ctrlFactory);
 
-    VeinTcp::AbstractTcpWorkerFactoryPtr tcpNetworkFactory = VeinTcp::TcpWorkerFactory::create();
+    VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory = VeinTcp::TcpNetworkFactory::create();
     m_resmanServer = std::make_unique<ResmanRunFacade>(tcpNetworkFactory);
     m_testServer = std::make_unique<TestServerForSenseInterfaceMt310s2>(ctrlFactory, tcpNetworkFactory);
     TimeMachineObject::feedEventLoop();

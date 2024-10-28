@@ -2,7 +2,7 @@
 #include "mockfactorydevicenodesec.h"
 #include "mockserverparamgenerator.h"
 
-MockSec1000d::MockSec1000d(VeinTcp::AbstractTcpWorkerFactoryPtr tcpNetworkFactory, QString alternateConfigXml)
+MockSec1000d::MockSec1000d(VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory, QString alternateConfigXml)
 {
     ServerParams params = MockServerParamGenerator::createParams("sec1000d");
     if(!alternateConfigXml.isEmpty())

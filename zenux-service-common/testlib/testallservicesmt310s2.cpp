@@ -1,20 +1,20 @@
 #include "testallservicesmt310s2.h"
 #include <timemachineobject.h>
 #include "testfactorydevicenodedsp.h"
-#include <tcpworkerfactory.h>
+#include <tcpnetworkfactory.h>
 
 TestAllServicesMt310s2::TestAllServicesMt310s2(AbstractFactoryI2cCtrlPtr ctrlFactory)
 {
-    init(VeinTcp::TcpWorkerFactory::create(), ctrlFactory);
+    init(VeinTcp::TcpNetworkFactory::create(), ctrlFactory);
 }
 
-TestAllServicesMt310s2::TestAllServicesMt310s2(VeinTcp::AbstractTcpWorkerFactoryPtr tcpNetworkFactory,
+TestAllServicesMt310s2::TestAllServicesMt310s2(VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory,
                                                AbstractFactoryI2cCtrlPtr ctrlFactory)
 {
     init(tcpNetworkFactory, ctrlFactory);
 }
 
-void TestAllServicesMt310s2::init(VeinTcp::AbstractTcpWorkerFactoryPtr tcpNetworkFactory,
+void TestAllServicesMt310s2::init(VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory,
                                   AbstractFactoryI2cCtrlPtr ctrlFactory)
 {
     m_resman = new ResmanRunFacade(tcpNetworkFactory);

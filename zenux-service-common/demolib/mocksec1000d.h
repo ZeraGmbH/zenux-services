@@ -6,7 +6,7 @@
 class MockSec1000d
 {
 public:
-    MockSec1000d(VeinTcp::AbstractTcpWorkerFactoryPtr tcpNetworkFactory,
+    MockSec1000d(VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory,
                  QString alternateConfigXml = QString());
 private:
     std::unique_ptr<cSEC1000dServer> m_server;

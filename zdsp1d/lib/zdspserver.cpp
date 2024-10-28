@@ -58,7 +58,7 @@ const ServerParams ZDspServer::defaultParams {ServerName, ServerVersion, "/etc/z
 
 ZDspServer::ZDspServer(SettingsContainerPtr settings,
                        AbstractFactoryDeviceNodeDspPtr deviceNodeFactory,
-                       VeinTcp::AbstractTcpWorkerFactoryPtr tcpNetworkFactory) :
+                       VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory) :
     ScpiConnection(ScpiSingletonFactory::getScpiObj()),
     m_deviceNodeFactory(deviceNodeFactory),
     m_tcpNetworkFactory(tcpNetworkFactory),

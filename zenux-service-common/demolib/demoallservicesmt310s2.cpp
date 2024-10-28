@@ -4,20 +4,20 @@
 #include "demofactorydevicenodedsp.h"
 #include "mockserverparamgenerator.h"
 #include "autojournalloggerfacade.h"
-#include <tcpworkerfactory.h>
+#include <tcpnetworkfactory.h>
 
 DemoAllServicesMt310s2::DemoAllServicesMt310s2()
 {
     // for now default to real network
-    init(VeinTcp::TcpWorkerFactory::create());
+    init(VeinTcp::TcpNetworkFactory::create());
 }
 
-DemoAllServicesMt310s2::DemoAllServicesMt310s2(VeinTcp::AbstractTcpWorkerFactoryPtr tcpNetworkFactory)
+DemoAllServicesMt310s2::DemoAllServicesMt310s2(VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory)
 {
     init(tcpNetworkFactory);
 }
 
-void DemoAllServicesMt310s2::init(VeinTcp::AbstractTcpWorkerFactoryPtr tcpNetworkFactory)
+void DemoAllServicesMt310s2::init(VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory)
 {
     m_autoLogger = new AutoJournalLoggerFacade;
     m_resman = new ResmanRunFacade(tcpNetworkFactory);

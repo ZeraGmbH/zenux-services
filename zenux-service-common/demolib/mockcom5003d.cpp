@@ -4,7 +4,7 @@
 #include "mocki2ceepromiofactory.h"
 
 MockCom5003d::MockCom5003d(AbstractFactoryI2cCtrlPtr ctrlFactory,
-                           VeinTcp::AbstractTcpWorkerFactoryPtr tcpNetworkFactory,
+                           VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory,
                            QString alternateConfigXml)
 {
     MockI2cEEpromIoFactory::enableMock();

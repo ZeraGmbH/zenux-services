@@ -5,7 +5,7 @@
 #include <timemachineobject.h>
 #include <timerfactoryqtfortest.h>
 #include <timemachinefortest.h>
-#include <tcpworkerfactory.h>
+#include <tcpnetworkfactory.h>
 #include <QSignalSpy>
 #include <QTest>
 
@@ -99,7 +99,7 @@ void test_accumulatorinterface_mock::readAccuStateOfChargeAccuEnabled()
 
 void test_accumulatorinterface_mock::setupServers(QString configFileXml)
 {
-    VeinTcp::AbstractTcpWorkerFactoryPtr tcpNetworkFactory = VeinTcp::TcpWorkerFactory::create();
+    VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory = VeinTcp::TcpNetworkFactory::create();
     m_resman = std::make_unique<ResmanRunFacade>(tcpNetworkFactory);
     m_mt310s2d = std::make_unique<MockMt310s2d>(std::make_shared<TestFactoryI2cCtrl>(true), tcpNetworkFactory, configFileXml);
     TimeMachineObject::feedEventLoop();

@@ -5,7 +5,7 @@
 #include <i2cmultiplexerfactory.h>
 
 TestServerForSenseInterfaceMt310s2::TestServerForSenseInterfaceMt310s2(AbstractFactoryI2cCtrlPtr ctrlFactory,
-                                                                       VeinTcp::AbstractTcpWorkerFactoryPtr tcpNetworkFactory,
+                                                                       VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory,
                                                                        bool systemInfoMock) :
     TestPcbServer("mt310s2d", tcpNetworkFactory)
 {
