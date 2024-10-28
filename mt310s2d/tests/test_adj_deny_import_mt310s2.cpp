@@ -10,7 +10,7 @@
 #include "xmlhelperfortest.h"
 #include <timemachineobject.h>
 #include <testloghelpers.h>
-#include <tcpnetworkfactory.h>
+#include <mocktcpnetworkfactory.h>
 #include <QTest>
 
 QTEST_MAIN(test_adj_deny_import_mt310s2);
@@ -64,7 +64,7 @@ void test_adj_deny_import_mt310s2::loadEEpromAndDenyDifferentDeviceName()
 
 void test_adj_deny_import_mt310s2::setupServers()
 {
-    VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory = VeinTcp::TcpNetworkFactory::create();
+    VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory = VeinTcp::MockTcpNetworkFactory::create();
     m_resmanServer = std::make_unique<ResmanRunFacade>(tcpNetworkFactory);
     m_testServer = std::make_unique<TestServerForSenseInterfaceMt310s2>(std::make_shared<TestFactoryI2cCtrl>(true),
                                                                         tcpNetworkFactory,
