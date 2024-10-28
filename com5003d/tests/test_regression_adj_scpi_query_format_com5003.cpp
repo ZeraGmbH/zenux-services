@@ -5,6 +5,7 @@
 #include "mockeeprom24lc.h"
 #include "scpisingletransactionblocked.h"
 #include <timemachineobject.h>
+#include <tcpworkerfactory.h>
 #include <QSignalSpy>
 #include <QTest>
 
@@ -264,8 +265,9 @@ void test_regression_adj_scpi_query_format_com5003::queryOffsetNodes()
 
 void test_regression_adj_scpi_query_format_com5003::setupServers()
 {
-    m_resmanServer = std::make_unique<ResmanRunFacade>();
-    m_testServer = std::make_unique<TestServerForSenseInterfaceCom5003>(std::make_shared<TestFactoryI2cCtrl>(true));
+    VeinTcp::AbstractTcpWorkerFactoryPtr tcpWorkerFactory = VeinTcp::TcpWorkerFactory::create();
+    m_resmanServer = std::make_unique<ResmanRunFacade>(tcpWorkerFactory);
+    m_testServer = std::make_unique<TestServerForSenseInterfaceCom5003>(std::make_shared<TestFactoryI2cCtrl>(true), tcpWorkerFactory);
     TimeMachineObject::feedEventLoop();
 
     m_proxyClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307);

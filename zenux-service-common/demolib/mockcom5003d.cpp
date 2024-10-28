@@ -3,7 +3,9 @@
 #include "mockserverparamgenerator.h"
 #include "mocki2ceepromiofactory.h"
 
-MockCom5003d::MockCom5003d(AbstractFactoryI2cCtrlPtr ctrlFactory, QString alternateConfigXml)
+MockCom5003d::MockCom5003d(AbstractFactoryI2cCtrlPtr ctrlFactory,
+                           VeinTcp::AbstractTcpWorkerFactoryPtr tcpWorkerFactory,
+                           QString alternateConfigXml)
 {
     MockI2cEEpromIoFactory::enableMock();
 
@@ -14,5 +16,6 @@ MockCom5003d::MockCom5003d(AbstractFactoryI2cCtrlPtr ctrlFactory, QString altern
     m_server = std::make_unique<cCOM5003dServer>(
         std::move(settings),
         ctrlFactory,
-        std::make_shared<MockFactoryDeviceNodePcb>());
+        std::make_shared<MockFactoryDeviceNodePcb>(),
+        tcpWorkerFactory);
 }

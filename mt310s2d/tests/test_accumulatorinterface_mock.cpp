@@ -5,7 +5,7 @@
 #include <timemachineobject.h>
 #include <timerfactoryqtfortest.h>
 #include <timemachinefortest.h>
-
+#include <tcpworkerfactory.h>
 #include <QSignalSpy>
 #include <QTest>
 
@@ -99,8 +99,9 @@ void test_accumulatorinterface_mock::readAccuStateOfChargeAccuEnabled()
 
 void test_accumulatorinterface_mock::setupServers(QString configFileXml)
 {
-    m_resman = std::make_unique<ResmanRunFacade>();
-    m_mt310s2d = std::make_unique<MockMt310s2d>(std::make_shared<TestFactoryI2cCtrl>(true), configFileXml);
+    VeinTcp::AbstractTcpWorkerFactoryPtr tcpWorkerFactory = VeinTcp::TcpWorkerFactory::create();
+    m_resman = std::make_unique<ResmanRunFacade>(tcpWorkerFactory);
+    m_mt310s2d = std::make_unique<MockMt310s2d>(std::make_shared<TestFactoryI2cCtrl>(true), tcpWorkerFactory, configFileXml);
     TimeMachineObject::feedEventLoop();
 
     m_proxyClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307);

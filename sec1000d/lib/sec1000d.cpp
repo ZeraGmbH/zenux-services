@@ -39,14 +39,6 @@ struct sigaction sigActionSec1000;
 const ServerParams cSEC1000dServer::defaultParams{ServerName, ServerVersion, "/etc/zera/sec1000d/sec1000d.xsd", "/etc/zera/sec1000d/sec1000d.xml"};
 
 cSEC1000dServer::cSEC1000dServer(SettingsContainerPtr settings,
-                                 AbstractFactoryDeviceNodeSecPtr deviceNodeFactory) :
-    PCBServer(std::move(settings), ScpiSingletonFactory::getScpiObj()),
-    m_deviceNodeFactory(deviceNodeFactory)
-{
-    init();
-}
-
-cSEC1000dServer::cSEC1000dServer(SettingsContainerPtr settings,
                                  AbstractFactoryDeviceNodeSecPtr deviceNodeFactory,
                                  VeinTcp::AbstractTcpWorkerFactoryPtr tcpWorkerFactory) :
     PCBServer(std::move(settings), ScpiSingletonFactory::getScpiObj(), tcpWorkerFactory),

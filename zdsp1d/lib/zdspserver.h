@@ -33,8 +33,8 @@ class ZDspServer: public ScpiConnection, public cbIFace
 {
     Q_OBJECT
 public:
-    ZDspServer(SettingsContainerPtr settings, AbstractFactoryDeviceNodeDspPtr deviceNodeFactory);
-    ZDspServer(SettingsContainerPtr settings, AbstractFactoryDeviceNodeDspPtr deviceNodeFactory,
+    ZDspServer(SettingsContainerPtr settings,
+               AbstractFactoryDeviceNodeDspPtr deviceNodeFactory,
                VeinTcp::AbstractTcpWorkerFactoryPtr tcpWorkerFactory);
     virtual ~ZDspServer();
     void initSCPIConnection(QString leadingNodes) override;

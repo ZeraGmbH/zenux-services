@@ -34,9 +34,6 @@ class cCOM5003dServer: public PCBServer
 public:
     explicit cCOM5003dServer(SettingsContainerPtr settings,
                              AbstractFactoryI2cCtrlPtr ctrlFactory,
-                             AbstractFactoryDeviceNodePcbPtr deviceNodeFactory);
-    explicit cCOM5003dServer(SettingsContainerPtr settings,
-                             AbstractFactoryI2cCtrlPtr ctrlFactory,
                              AbstractFactoryDeviceNodePcbPtr deviceNodeFactory,
                              VeinTcp::AbstractTcpWorkerFactoryPtr tcpWorkerFactory);
     ~cCOM5003dServer();

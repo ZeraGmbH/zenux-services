@@ -1,6 +1,7 @@
 #include "test_sense_settings.h"
 #include "testpcbserver.h"
 #include "sensesettings.h"
+#include <tcpworkerfactory.h>
 #include <QTest>
 
 QTEST_MAIN(test_sense_settings);
@@ -8,14 +9,14 @@ QTEST_MAIN(test_sense_settings);
 class MockForSenseSettings  : public TestPcbServer
 {
 public:
-    MockForSenseSettings(QString deamonName);
+    MockForSenseSettings(QString deamonName, VeinTcp::AbstractTcpWorkerFactoryPtr tcpWorkerFactory);
     cSenseSettings* getSenseSettings() { return m_senseSettings.get(); }
 private:
     std::unique_ptr<cSenseSettings> m_senseSettings;
 };
 
-MockForSenseSettings::MockForSenseSettings(QString deamonName) :
-    TestPcbServer(deamonName)
+MockForSenseSettings::MockForSenseSettings(QString deamonName, VeinTcp::AbstractTcpWorkerFactoryPtr tcpWorkerFactory) :
+    TestPcbServer(deamonName, tcpWorkerFactory)
 {
     m_senseSettings = std::make_unique<cSenseSettings>(getConfigReader(), 8);
     setXmlSettings(XmlSettingsList{m_senseSettings.get()});
@@ -24,7 +25,7 @@ MockForSenseSettings::MockForSenseSettings(QString deamonName) :
 
 void test_sense_settings::findByAlias1Com5003()
 {
-    MockForSenseSettings mock("com5003d");
+    MockForSenseSettings mock("com5003d", VeinTcp::TcpWorkerFactory::create());
     cSenseSettings* senseSettings = mock.getSenseSettings();
     // we have this assumption on config all over the place
     QCOMPARE(senseSettings->findChannelSettingByAlias1("UL1")->m_nameMx, "m0");
@@ -37,7 +38,7 @@ void test_sense_settings::findByAlias1Com5003()
 
 void test_sense_settings::findByAlias1Mt310s2()
 {
-    MockForSenseSettings mock("mt310s2d");
+    MockForSenseSettings mock("mt310s2d", VeinTcp::TcpWorkerFactory::create());
     cSenseSettings* senseSettings = mock.getSenseSettings();
     // we have this assumption on config all over the place
     QCOMPARE(senseSettings->findChannelSettingByAlias1("UL1")->m_nameMx, "m0");
@@ -52,7 +53,7 @@ void test_sense_settings::findByAlias1Mt310s2()
 
 void test_sense_settings::findByInMxCom5003()
 {
-    MockForSenseSettings mock("com5003d");
+    MockForSenseSettings mock("com5003d", VeinTcp::TcpWorkerFactory::create());
     cSenseSettings* senseSettings = mock.getSenseSettings();
     // we have this assumption on config all over the place
     QCOMPARE(senseSettings->findChannelSettingByMxName("m0")->m_nameMx, "m0");

@@ -2,6 +2,7 @@
 #include "com5003dglobal.h"
 #include "factorydevicenodepcb.h"
 #include "factoryi2cctrl.h"
+#include <tcpworkerfactory.h>
 #include <QCoreApplication>
 
 int main( int argc, char *argv[] )
@@ -13,7 +14,8 @@ int main( int argc, char *argv[] )
     cCOM5003dServer* com5003d = new cCOM5003dServer(
         std::move(settings),
         ctrlFactory,
-        std::make_shared<FactoryDeviceNodePcb>());
+        std::make_shared<FactoryDeviceNodePcb>(),
+        VeinTcp::TcpWorkerFactory::create());
     qInfo(ServerName " started");
 
     int r = app->exec();

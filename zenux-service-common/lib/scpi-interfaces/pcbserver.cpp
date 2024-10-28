@@ -18,12 +18,6 @@ enum commands
     cmdUnregister
 };
 
-PCBServer::PCBServer(SettingsContainerPtr settings, cSCPI *scpiInterface) :
-    ScpiConnection(scpiInterface),
-    m_settings(std::move(settings))
-{
-}
-
 PCBServer::PCBServer(SettingsContainerPtr settings, cSCPI *scpiInterface,
                        VeinTcp::AbstractTcpWorkerFactoryPtr tcpWorkerFactory) :
     ScpiConnection(scpiInterface),

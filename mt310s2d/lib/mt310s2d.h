@@ -34,9 +34,6 @@ class cMT310S2dServer: public PCBServer
 public:
     explicit cMT310S2dServer(SettingsContainerPtr settings,
                              AbstractFactoryI2cCtrlPtr ctrlFactory,
-                             AbstractFactoryDeviceNodePcbPtr deviceNodeFactory);
-    explicit cMT310S2dServer(SettingsContainerPtr settings,
-                             AbstractFactoryI2cCtrlPtr ctrlFactory,
                              AbstractFactoryDeviceNodePcbPtr deviceNodeFactory,
                              VeinTcp::AbstractTcpWorkerFactoryPtr tcpWorkerFactory);
     ~cMT310S2dServer();

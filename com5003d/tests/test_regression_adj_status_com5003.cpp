@@ -5,9 +5,9 @@
 #include "scpisingletransactionblocked.h"
 #include "mocki2ceepromiofactory.h"
 #include "testfactoryi2cctrl.h"
-#include "zscpi_response_definitions.h"
 #include <timemachineobject.h>
 #include <mockeeprom24lc.h>
+#include <tcpworkerfactory.h>
 #include <QTest>
 
 QTEST_MAIN(test_regression_adj_status_com5003);
@@ -57,8 +57,9 @@ void test_regression_adj_status_com5003::setupServers(AbstractFactoryI2cCtrlPtr 
 {
     PermissionFunctions::setPermissionCtrlFactory(ctrlFactory);
 
-    m_resmanServer = std::make_unique<ResmanRunFacade>();
-    m_testServer = std::make_unique<TestServerForSenseInterfaceCom5003>(ctrlFactory);
+    VeinTcp::AbstractTcpWorkerFactoryPtr tcpWorkerFactory = VeinTcp::TcpWorkerFactory::create();
+    m_resmanServer = std::make_unique<ResmanRunFacade>(tcpWorkerFactory);
+    m_testServer = std::make_unique<TestServerForSenseInterfaceCom5003>(ctrlFactory, tcpWorkerFactory);
     TimeMachineObject::feedEventLoop();
 
     m_proxyClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307);

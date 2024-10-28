@@ -6,6 +6,7 @@
 #include "xmlhelperfortest.h"
 #include <timemachineobject.h>
 #include <testloghelpers.h>
+#include <tcpworkerfactory.h>
 #include <QSignalSpy>
 #include <QTest>
 
@@ -178,8 +179,9 @@ void test_regression_adj_import_export_xml_mt310s2::scpiExportInvalidClamp()
 
 void test_regression_adj_import_export_xml_mt310s2::setupServers()
 {
-    m_resmanServer = std::make_unique<ResmanRunFacade>();
-    m_testServer = std::make_unique<TestServerForSenseInterfaceMt310s2>(std::make_shared<TestFactoryI2cCtrl>(true));
+    VeinTcp::AbstractTcpWorkerFactoryPtr tcpWorkerFactory = VeinTcp::TcpWorkerFactory::create();
+    m_resmanServer = std::make_unique<ResmanRunFacade>(tcpWorkerFactory);
+    m_testServer = std::make_unique<TestServerForSenseInterfaceMt310s2>(std::make_shared<TestFactoryI2cCtrl>(true), tcpWorkerFactory);
     TimeMachineObject::feedEventLoop();
 
     m_proxyClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307);

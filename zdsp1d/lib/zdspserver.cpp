@@ -56,17 +56,6 @@ struct sigaction sigActionZdsp1;
 
 const ServerParams ZDspServer::defaultParams {ServerName, ServerVersion, "/etc/zera/zdsp1d/zdsp1d.xsd", "/etc/zera/zdsp1d/zdsp1d.xml"};
 
-ZDspServer::ZDspServer(SettingsContainerPtr settings, AbstractFactoryDeviceNodeDspPtr deviceNodeFactory) :
-    ScpiConnection(ScpiSingletonFactory::getScpiObj()),
-    m_deviceNodeFactory(deviceNodeFactory),
-    m_settings(std::move(settings)),
-    m_dspInterruptLogStatistics(10000),
-    m_pRMConnection(new RMConnection(m_settings->getEthSettings()->getRMIPadr(), m_settings->getEthSettings()->getPort(EthSettings::resourcemanager))),
-    m_resourceRegister(m_pRMConnection)
-{
-    init();
-}
-
 ZDspServer::ZDspServer(SettingsContainerPtr settings,
                        AbstractFactoryDeviceNodeDspPtr deviceNodeFactory,
                        VeinTcp::AbstractTcpWorkerFactoryPtr tcpWorkerFactory) :

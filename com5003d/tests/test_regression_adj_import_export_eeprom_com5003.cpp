@@ -10,6 +10,7 @@
 #include "xmlhelperfortest.h"
 #include <timemachineobject.h>
 #include <testloghelpers.h>
+#include <tcpworkerfactory.h>
 #include <QSignalSpy>
 #include <QTest>
 
@@ -178,8 +179,9 @@ void test_regression_adj_import_export_eeprom_com5003::loadArbitraryVersionToEEp
 
 void test_regression_adj_import_export_eeprom_com5003::setupServers(AbstractFactoryI2cCtrlPtr ctrlFactory)
 {
-    m_resmanServer = std::make_unique<ResmanRunFacade>();
-    m_testServer = std::make_unique<TestServerForSenseInterfaceCom5003>(ctrlFactory);
+    VeinTcp::AbstractTcpWorkerFactoryPtr tcpWorkerFactory = VeinTcp::TcpWorkerFactory::create();
+    m_resmanServer = std::make_unique<ResmanRunFacade>(tcpWorkerFactory);
+    m_testServer = std::make_unique<TestServerForSenseInterfaceCom5003>(ctrlFactory, tcpWorkerFactory);
     TimeMachineObject::feedEventLoop();
 
     m_proxyClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307);

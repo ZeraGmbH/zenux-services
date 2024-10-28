@@ -11,7 +11,9 @@
 class TestServerForSenseInterfaceCom5003  : public TestPcbServer
 {
 public:
-    TestServerForSenseInterfaceCom5003(AbstractFactoryI2cCtrlPtr ctrlFactory, bool systemInfoMock = false);
+    TestServerForSenseInterfaceCom5003(AbstractFactoryI2cCtrlPtr ctrlFactory,
+                                       VeinTcp::AbstractTcpWorkerFactoryPtr tcpWorkerFactory,
+                                       bool systemInfoMock = false);
     QString getDeviceVersion() { return m_systemInfo->getDeviceVersion(); }
     SenseInterfaceCommon *getSenseInterface() { return m_senseInterface.get(); }
     cSenseSettings* getSenseSettings() { return m_senseSettings.get(); }
