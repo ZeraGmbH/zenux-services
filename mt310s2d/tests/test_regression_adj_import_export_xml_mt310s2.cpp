@@ -6,7 +6,7 @@
 #include "xmlhelperfortest.h"
 #include <timemachineobject.h>
 #include <testloghelpers.h>
-#include <tcpnetworkfactory.h>
+#include <mocktcpnetworkfactory.h>
 #include <QSignalSpy>
 #include <QTest>
 
@@ -179,7 +179,7 @@ void test_regression_adj_import_export_xml_mt310s2::scpiExportInvalidClamp()
 
 void test_regression_adj_import_export_xml_mt310s2::setupServers()
 {
-    VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory = VeinTcp::TcpNetworkFactory::create();
+    VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory = VeinTcp::MockTcpNetworkFactory::create();
     m_resmanServer = std::make_unique<ResmanRunFacade>(tcpNetworkFactory);
     m_testServer = std::make_unique<TestServerForSenseInterfaceMt310s2>(std::make_shared<TestFactoryI2cCtrl>(true), tcpNetworkFactory);
     TimeMachineObject::feedEventLoop();
