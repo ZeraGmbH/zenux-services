@@ -3,7 +3,7 @@
 #include "testfactoryi2cctrl.h"
 #include "accumulatorinterface.h"
 #include "foutgroupresourceandinterface.h"
-#include <tcpnetworkfactory.h>
+#include <mocktcpnetworkfactory.h>
 #include <QTest>
 
 QTEST_MAIN(test_serverunregisternotifier)
@@ -22,7 +22,7 @@ void test_serverunregisternotifier::init()
     m_pcbServerTest = std::make_unique<TestPcbServerNotifications>(std::make_unique<SettingsContainer>(params),
                                                                    &m_scpiInterface,
                                                                    m_ctrlFactory,
-                                                                   VeinTcp::TcpNetworkFactory::create());
+                                                                   VeinTcp::MockTcpNetworkFactory::create());
 
     m_xmlConfigReader = std::make_unique<Zera::XMLConfig::cReader>();
     m_foutSettings = std::make_unique<FOutSettings>(m_xmlConfigReader.get());
