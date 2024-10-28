@@ -7,7 +7,7 @@
 #include "xmlhelperfortest.h"
 #include "mocki2ceepromiofactory.h"
 #include <timemachineobject.h>
-#include <tcpnetworkfactory.h>
+#include <mocktcpnetworkfactory.h>
 #include <QSignalSpy>
 #include <QTest>
 
@@ -74,7 +74,7 @@ void test_regression_adj_import_permission_mt310s2::scpiImportPassFlashWrite()
 
 void test_regression_adj_import_permission_mt310s2::setupServers(AbstractFactoryI2cCtrlPtr ctrlFactory)
 {
-    VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory = VeinTcp::TcpNetworkFactory::create();
+    VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory = VeinTcp::MockTcpNetworkFactory::create();
     m_resmanServer = std::make_unique<ResmanRunFacade>(tcpNetworkFactory);
     m_testServer = std::make_unique<TestServerForSenseInterfaceMt310s2>(ctrlFactory, tcpNetworkFactory);
     TimeMachineObject::feedEventLoop();
