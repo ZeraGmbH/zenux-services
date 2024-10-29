@@ -12,6 +12,7 @@
 #include "mocki2cctrlmmode.h"
 #include "demoi2cctrlpll.h"
 #include "mocki2cctrlclampstatus.h"
+#include "demoi2cctrlcputemperature.h"
 
 DemoFactoryI2cCtrl::TPersitentControllerData DemoFactoryI2cCtrl::m_persitentData;
 
@@ -78,4 +79,9 @@ I2cCtrlClampStatusPtr DemoFactoryI2cCtrl::getClampStatusController()
 I2cCtrlBootloaderPtr DemoFactoryI2cCtrl::getBootloaderController()
 {
     return std::make_unique<MockI2cCtrlBootloader>();
+}
+
+I2cCtrlCpuTemperaturePtr DemoFactoryI2cCtrl::getCpuTemperatureController()
+{
+    return std::make_unique<DemoI2cCtrlCpuTemperature>();
 }

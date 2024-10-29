@@ -12,6 +12,7 @@
 #include "i2cctrlmmode.h"
 #include "i2cctrlpll.h"
 #include "i2cctrlranges.h"
+#include "i2cctrlcputemperature.h"
 
 FactoryI2cCtrl::FactoryI2cCtrl(I2cSettings *i2cSettings) :
     m_i2cSettings(i2cSettings),
@@ -114,4 +115,10 @@ quint8 FactoryI2cCtrl::getEmobCtrlI2cAddress()
 quint8 FactoryI2cCtrl::getEmobMuxI2cAddress()
 {
     return m_i2cSettings->getI2CAdress(i2cSettings::muxerI2cAddress);
+}
+
+
+I2cCtrlCpuTemperaturePtr FactoryI2cCtrl::getCpuTemperatureController()          // ist das richtig???
+{
+    return std::make_unique<I2cCtrlCpuTemperature>(m_deviceNode, getSystemCtrlI2cAddress(), m_debugLevel);
 }

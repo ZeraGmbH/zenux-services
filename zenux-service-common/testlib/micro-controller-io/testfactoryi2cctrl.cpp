@@ -10,6 +10,7 @@
 #include "mocki2cctrlclampstatus.h"
 #include "testi2cctrldeviceident.h"
 #include "testi2cctrleeprompermission.h"
+#include "testi2cctrlcputemperature.h"
 
 TestFactoryI2cCtrl::TPersitentControllerData TestFactoryI2cCtrl::m_persitentData;
 
@@ -76,4 +77,9 @@ I2cCtrlClampStatusPtr TestFactoryI2cCtrl::getClampStatusController()
 I2cCtrlBootloaderPtr TestFactoryI2cCtrl::getBootloaderController()
 {
     return std::make_unique<MockI2cCtrlBootloader>();
+}
+
+I2cCtrlCpuTemperaturePtr TestFactoryI2cCtrl::getCpuTemperatureController()
+{
+    return std::make_unique<TestI2cCtrlCpuTmperature>();
 }

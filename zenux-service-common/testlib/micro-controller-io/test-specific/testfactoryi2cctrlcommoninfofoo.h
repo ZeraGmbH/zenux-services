@@ -18,6 +18,7 @@ public:
     I2cCtrlPllPtr getPllController() override { return nullptr; }
     I2cCtrlClampStatusPtr getClampStatusController() override { return nullptr; }
     I2cCtrlBootloaderPtr getBootloaderController() override { return nullptr; }
+    I2cCtrlCpuTemperaturePtr getCpuTemperatureController() override { return nullptr; }
 private:
     bool m_permission = true;
     struct TPersitentControllerData
