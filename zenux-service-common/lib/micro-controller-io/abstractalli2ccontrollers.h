@@ -101,4 +101,15 @@ public:
 };
 typedef std::unique_ptr<AbstractI2cCtrlBootloader> I2cCtrlBootloaderPtr;
 
+
+class AbstractI2cCtrlCpuTemperature
+{
+public:
+    virtual ~AbstractI2cCtrlCpuTemperature() = default;
+    virtual ZeraMControllerIo::atmelRM sendCpuTemperature(float &temperature) = 0;
+};
+typedef std::unique_ptr<AbstractI2cCtrlCpuTemperature> I2cCtrlCpuTemperaturePtr;
+
+
+
 #endif // ABSTRACTCONTROLLERS_H

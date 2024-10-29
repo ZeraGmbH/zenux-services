@@ -12,6 +12,7 @@
 #include "mocki2cctrlmmode.h"
 #include "testi2cctrlpll.h"
 #include "mocki2cctrlclampstatus.h"
+#include "demoi2cctrlcputemperature.h"
 
 TestFactoryI2cCtrlCriticalStatus::TPersitentControllerData TestFactoryI2cCtrlCriticalStatus::m_persitentData;
 
@@ -78,4 +79,9 @@ I2cCtrlClampStatusPtr TestFactoryI2cCtrlCriticalStatus::getClampStatusController
 I2cCtrlBootloaderPtr TestFactoryI2cCtrlCriticalStatus::getBootloaderController()
 {
     return std::make_unique<MockI2cCtrlBootloader>();
+}
+
+I2cCtrlCpuTemperaturePtr TestFactoryI2cCtrlCriticalStatus::getCpuTemperatureController()
+{
+    return std::make_unique<DemoI2cCtrlCpuTemperature>();
 }

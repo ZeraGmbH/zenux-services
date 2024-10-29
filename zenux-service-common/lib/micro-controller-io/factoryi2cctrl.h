@@ -20,6 +20,7 @@ public:
     I2cCtrlPllPtr getPllController() override;
     I2cCtrlClampStatusPtr getClampStatusController() override;
     I2cCtrlBootloaderPtr getBootloaderController() override;
+    I2cCtrlCpuTemperaturePtr getCpuTemperatureController() override;
 private:
     quint8 getRelaisCtrlI2cAddress();
     quint8 getSystemCtrlI2cAddress();

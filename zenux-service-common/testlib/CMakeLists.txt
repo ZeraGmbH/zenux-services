@@ -13,6 +13,8 @@ file(GLOB HEADER
 add_library(zenuxservicecommon-testlib STATIC
     ${SOURCES}
     ${HEADER}
+    micro-controller-io/testi2cctrlcputemperature.h micro-controller-io/testi2cctrlcputemperature.cpp
+
 )
 
 target_include_directories(zenuxservicecommon-testlib
