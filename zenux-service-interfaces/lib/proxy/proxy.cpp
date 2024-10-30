@@ -16,10 +16,22 @@ ProxyClient* Proxy::getConnection(QString ipadress, quint16 port, VeinTcp::Abstr
     return d->getConnection(ipadress, port, tcpNetworkFactory);
 }
 
+ProxyClient *Proxy::getConnection(const NetworkConnectionInfo &netInfo, VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory)
+{
+    Q_D(Proxy);
+    return d->getConnection(netInfo.m_sIP, netInfo.m_nPort, tcpNetworkFactory);
+}
+
 ProxyClientPtr Proxy::getConnectionSmart(QString ipadress, quint16 port, VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory)
 {
     Q_D(Proxy);
     return d->getConnectionSmart(ipadress, port, tcpNetworkFactory);
+}
+
+ProxyClientPtr Proxy::getConnectionSmart(const NetworkConnectionInfo &netInfo, VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory)
+{
+    Q_D(Proxy);
+    return d->getConnectionSmart(netInfo.m_sIP, netInfo.m_nPort, tcpNetworkFactory);
 }
 
 void Proxy::startConnection(ProxyClient *client)
