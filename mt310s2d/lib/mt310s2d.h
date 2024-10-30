@@ -19,6 +19,8 @@
 #include <QTimer>
 #include <timertemplateqt.h>
 
+#include "i2cctrlcputemperature.h"
+
 class cStatusInterface;
 class Mt310s2SystemInterface;
 class cSamplingInterface;
@@ -110,6 +112,7 @@ private:
     QSocketNotifier* m_pNotifier = nullptr;
 
     TimerTemplateQtPtr m_1sPeriodicTimer;
+    I2cCtrlCpuTemperaturePtr m_i2cCtrlCpuTemperature;
     float m_temperature = 30.0;
 };
 
