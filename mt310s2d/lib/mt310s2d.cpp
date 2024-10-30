@@ -29,6 +29,8 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <signal.h>
+#include <timerfactoryqt.h>
+#include "i2cctrlcputemperature.h"
 
 static int pipeFileDescriptorMt310s2[2];
 static void SigHandler(int)
@@ -271,6 +273,8 @@ void cMT310S2dServer::doSetupServer()
             m_stateconnect2RMError->addTransition(this, &cMT310S2dServer::sigServerIsSetUp, m_stateconnect2RM);
 
             emit sigServerIsSetUp(); // so we enter state machine's next state
+
+            startCpuTemperatureSendTimer();
         }
     }
 }
@@ -391,4 +395,21 @@ void cMT310S2dServer::MTIntHandler(int)
         qWarning("cMT310S2dServer::MTIntHandler: readCriticalStatus failed - cannot actualize clamp status!");
 }
 
+void cMT310S2dServer::startCpuTemperatureSendTimer()
+{
+        qInfo("Initialise Cpu-Temperature Tiimer");
+        m_1sPeriodicTimer = TimerFactoryQt::createPeriodic(1000);
+        connect(m_1sPeriodicTimer.get(), &TimerTemplateQt::sigExpired,
+                this, &cMT310S2dServer::onCpuTemperatureSend);
+        m_1sPeriodicTimer->start();
+}
+
+
+void cMT310S2dServer::onCpuTemperatureSend()
+{
+    qInfo("Call slot Send Cpu Temperature");
+    I2cCtrlCpuTemperature i2cTest("SystemCpu", 0x22, 0);
+    m_temperature += 0.1;
+    i2cTest.sendCpuTemperature(m_temperature);
+}
 

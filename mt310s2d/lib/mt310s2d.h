@@ -17,6 +17,7 @@
 #include "abstractctrlheartbeatwait.h"
 #include <QStateMachine>
 #include <QTimer>
+#include <timertemplateqt.h>
 
 class cStatusInterface;
 class Mt310s2SystemInterface;
@@ -41,6 +42,8 @@ public:
     QString getMsgDeviceNode();
     static const ServerParams defaultParams;
 
+    void startCpuTemperatureSendTimer();
+
 signals:
     void abortInit();
     void confStarting();
@@ -58,6 +61,7 @@ private slots:
     void connect2RMError();
     void doIdentAndRegister();
     void onResourceReady();
+    void onCpuTemperatureSend();
 
 private:
     void init();
@@ -104,6 +108,9 @@ private:
     int m_retryRMConnect;
     QTimer m_retryTimer;
     QSocketNotifier* m_pNotifier = nullptr;
+
+    TimerTemplateQtPtr m_1sPeriodicTimer;
+    float m_temperature = 30.0;
 };
 
 
