@@ -30,7 +30,6 @@
 #include <fcntl.h>
 #include <signal.h>
 #include <timerfactoryqt.h>
-#include "i2cctrlcputemperature.h"
 
 static int pipeFileDescriptorMt310s2[2];
 static void SigHandler(int)
@@ -51,7 +50,8 @@ cMT310S2dServer::cMT310S2dServer(SettingsContainerPtr settings,
                                  VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory) :
     PCBServer(std::move(settings), ScpiSingletonFactory::getScpiObj(), tcpNetworkFactory),
     m_ctrlFactory(ctrlFactory),
-    m_deviceNodeFactory(deviceNodeFactory)
+    m_deviceNodeFactory(deviceNodeFactory),
+    m_i2cCtrlCpuTemperature(ctrlFactory->getCpuTemperatureController())
 {
     init();
 }
@@ -408,8 +408,7 @@ void cMT310S2dServer::startCpuTemperatureSendTimer()
 void cMT310S2dServer::onCpuTemperatureSend()
 {
     qInfo("Call slot Send Cpu Temperature");
-    I2cCtrlCpuTemperature i2cTest("SystemCpu", 0x22, 0);
     m_temperature += 0.1;
-    i2cTest.sendCpuTemperature(m_temperature);
+    m_i2cCtrlCpuTemperature->sendCpuTemperature(m_temperature);
 }
 
