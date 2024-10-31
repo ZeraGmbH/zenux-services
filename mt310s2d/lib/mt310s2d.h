@@ -113,7 +113,7 @@ private:
 
     TimerTemplateQtPtr m_1sPeriodicTimer;
     I2cCtrlCpuTemperaturePtr m_i2cCtrlCpuTemperature;
-    float m_temperature = 30.0;
+    float m_temperature = 30000.0;
 };
 
 
