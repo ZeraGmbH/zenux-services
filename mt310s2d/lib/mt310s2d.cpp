@@ -30,6 +30,7 @@
 #include <fcntl.h>
 #include <signal.h>
 #include <timerfactoryqt.h>
+#include <QDir>
 
 static int pipeFileDescriptorMt310s2[2];
 static void SigHandler(int)
@@ -408,7 +409,22 @@ void cMT310S2dServer::startCpuTemperatureSendTimer()
 void cMT310S2dServer::onCpuTemperatureSend()
 {
     qInfo("Call slot Send Cpu Temperature");
-    m_temperature += 100.0;
-    m_i2cCtrlCpuTemperature->sendCpuTemperature(m_temperature);
+
+    // read temperature
+    QString tempFileLocation = "/sys/class/thermal/thermal_zone0/temp";
+
+    if(!tempFileLocation.isEmpty()) {
+        QFile temperatureFile(tempFileLocation);
+        if (temperatureFile.open(QIODevice::ReadOnly)) {
+            float temperature = temperatureFile.readAll().trimmed().toInt();
+            m_i2cCtrlCpuTemperature->sendCpuTemperature(temperature);
+        }
+        else {
+            qInfo("Warning: Not able to read temperatureFile");
+        }
+    }
+    else {
+        qInfo("Warning: tempFileLocation is empty");
+    }
 }
 
