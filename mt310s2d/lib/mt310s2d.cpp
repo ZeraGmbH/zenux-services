@@ -398,33 +398,24 @@ void cMT310S2dServer::MTIntHandler(int)
 
 void cMT310S2dServer::startCpuTemperatureSendTimer()
 {
-        qInfo("Initialise Cpu-Temperature Tiimer");
-        m_1sPeriodicTimer = TimerFactoryQt::createPeriodic(1000);
-        connect(m_1sPeriodicTimer.get(), &TimerTemplateQt::sigExpired,
-                this, &cMT310S2dServer::onCpuTemperatureSend);
-        m_1sPeriodicTimer->start();
+    qInfo("Initialize Cpu-Temperature Tiimer");
+    m_1sPeriodicTimer = TimerFactoryQt::createPeriodic(1000);
+    connect(m_1sPeriodicTimer.get(), &TimerTemplateQt::sigExpired,
+            this, &cMT310S2dServer::onCpuTemperatureSend);
+    m_1sPeriodicTimer->start();
 }
 
 
 void cMT310S2dServer::onCpuTemperatureSend()
 {
-    qInfo("Call slot Send Cpu Temperature");
+    float temperature = m_cpuTemperature.getValue();
+    temperature *= 1000;
 
-    // read temperature
-    QString tempFileLocation = "/sys/class/thermal/thermal_zone0/temp";
-
-    if(!tempFileLocation.isEmpty()) {
-        QFile temperatureFile(tempFileLocation);
-        if (temperatureFile.open(QIODevice::ReadOnly)) {
-            float temperature = temperatureFile.readAll().trimmed().toInt();
-            m_i2cCtrlCpuTemperature->sendCpuTemperature(temperature);
+    if (temperature > 0.0) {
+        m_i2cCtrlCpuTemperature->sendCpuTemperature(temperature);
         }
-        else {
-            qInfo("Warning: Not able to read temperatureFile");
-        }
-    }
     else {
-        qInfo("Warning: tempFileLocation is empty");
-    }
+        qInfo("Warning: CPU-temperature not available");
+        }
 }
 

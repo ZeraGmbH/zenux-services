@@ -18,8 +18,8 @@
 #include <QStateMachine>
 #include <QTimer>
 #include <timertemplateqt.h>
-
 #include "i2cctrlcputemperature.h"
+#include <cputemp.h>
 
 class cStatusInterface;
 class Mt310s2SystemInterface;
@@ -113,7 +113,7 @@ private:
 
     TimerTemplateQtPtr m_1sPeriodicTimer;
     I2cCtrlCpuTemperaturePtr m_i2cCtrlCpuTemperature;
-    float m_temperature = 273000.0;
+    CpuTemp m_cpuTemperature;
 };
 
 
