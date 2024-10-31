@@ -30,6 +30,7 @@ target_link_libraries(system-metrics
 
 target_include_directories(system-metrics
     PUBLIC
+    $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/system-metrics>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/datatypes>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/decoder>
@@ -40,3 +41,14 @@ target_include_directories(system-metrics
 
 set_target_properties(system-metrics PROPERTIES VERSION ${PROJECT_VERSION})
 set_target_properties(system-metrics PROPERTIES SOVERSION ${PROJECT_VERSION_MAJOR})
+
+install(TARGETS system-metrics
+    EXPORT ZenuxServicesExport
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    )
+
+export(TARGETS system-metrics FILE ZenuxServicesTargets.cmake)
+install(
+    FILES ${HEADER}
+    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/system-metrics
+    )

@@ -40,6 +40,7 @@ target_link_libraries(mt310s2d-lib
     Qt5::Network
     Zera::zera-i2c-devices
     Zera::zeraprotobuf
+    system-metrics
     zenuxservicecommon
     )
 
