@@ -408,7 +408,7 @@ void cMT310S2dServer::startCpuTemperatureSendTimer()
 void cMT310S2dServer::onCpuTemperatureSend()
 {
     qInfo("Call slot Send Cpu Temperature");
-    m_temperature += 0.1;
+    m_temperature += 100.0;
     m_i2cCtrlCpuTemperature->sendCpuTemperature(m_temperature);
 }
 
