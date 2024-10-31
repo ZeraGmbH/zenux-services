@@ -30,7 +30,6 @@
 #include <fcntl.h>
 #include <signal.h>
 #include <timerfactoryqt.h>
-#include <QDir>
 
 static int pipeFileDescriptorMt310s2[2];
 static void SigHandler(int)
@@ -398,19 +397,16 @@ void cMT310S2dServer::MTIntHandler(int)
 
 void cMT310S2dServer::startCpuTemperatureSendTimer()
 {
-    qInfo("Initialize Cpu-Temperature Tiimer");
+    qInfo("Initialize Cpu-Temperature Timer");
     m_1sPeriodicTimer = TimerFactoryQt::createPeriodic(1000);
     connect(m_1sPeriodicTimer.get(), &TimerTemplateQt::sigExpired,
             this, &cMT310S2dServer::onCpuTemperatureSend);
     m_1sPeriodicTimer->start();
 }
 
-
 void cMT310S2dServer::onCpuTemperatureSend()
 {
     float temperature = m_cpuTemperature.getValue();
-    temperature *= 1000;
-
     if (temperature > 0.0) {
         m_i2cCtrlCpuTemperature->sendCpuTemperature(temperature);
         }
@@ -418,4 +414,3 @@ void cMT310S2dServer::onCpuTemperatureSend()
         qInfo("Warning: CPU-temperature not available");
         }
 }
-
