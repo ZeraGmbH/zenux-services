@@ -17,7 +17,7 @@ ZeraMControllerIoTemplate::atmelRM I2cCtrlCpuTemperature::sendCpuTemperature(flo
     ZeraMControllerIo::atmelRM ret;
 
     quint32 ui32Temp;
-    ui32Temp = (quint32)temperature;
+    ui32Temp = (quint32)temperature * 1000;
     quint8 ba[4];
     ba[0] = (ui32Temp >> 24) & 0xFF;
     ba[1] = (ui32Temp >> 16) & 0xFF;

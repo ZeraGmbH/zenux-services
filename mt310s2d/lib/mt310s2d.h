@@ -116,5 +116,4 @@ private:
     CpuTemp m_cpuTemperature;
 };
 
-
 #endif
