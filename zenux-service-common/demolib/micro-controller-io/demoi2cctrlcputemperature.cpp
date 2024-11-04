@@ -4,7 +4,6 @@
 
 ZeraMControllerIoTemplate::atmelRM DemoI2cCtrlCpuTemperature::sendCpuTemperature(float &temperature)
 {
-    //SimulSystemStatus::getInstance()->   todo !!!
     return ZeraMControllerIo::atmelRM::cmddone;
 }
 
