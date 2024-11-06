@@ -21,7 +21,7 @@
 #include "scingroupresourceandinterface.h"
 #include "com5003senseinterface.h"
 #include "foutgroupresourceandinterface.h"
-#include "statusinterface.h"
+#include "servicestatusinterface.h"
 #include "com5003systeminterface.h"
 #include "ethsettings.h"
 #include "finsettings.h"
@@ -306,7 +306,7 @@ void cCOM5003dServer::doSetupServer()
                                                                             m_pSenseSettings,
                                                                             m_pSystemInfo,
                                                                             m_ctrlFactory));
-    scpiConnectionList.append(m_pStatusInterface = new cStatusInterface(getSCPIInterface(), m_pSenseInterface, m_ctrlFactory));
+    scpiConnectionList.append(m_pStatusInterface = new ServiceStatusInterface(getSCPIInterface(), m_pSenseInterface, m_ctrlFactory));
     scpiConnectionList.append(m_pSystemInterface = new Com5003SystemInterface(this, m_pSystemInfo, m_pSenseInterface, m_ctrlFactory));
     scpiConnectionList.append(m_pSamplingInterface = new cSamplingInterface(getSCPIInterface(), m_settings->getSamplingSettings(), m_ctrlFactory));
     scpiConnectionList.append(m_foutInterface = new FOutGroupResourceAndInterface(getSCPIInterface(), m_foutSettings));

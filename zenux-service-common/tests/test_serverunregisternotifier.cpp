@@ -1,4 +1,4 @@
-#include "statusinterface.h"
+#include "servicestatusinterface.h"
 #include "test_serverunregisternotifier.h"
 #include "testfactoryi2cctrl.h"
 #include "accumulatorinterface.h"
@@ -41,7 +41,7 @@ cSCPIDelegate *test_serverunregisternotifier::getDelegate(QString cmd)
 
 void test_serverunregisternotifier::oneScpiConnection()
 {
-    m_pcbServerTest->insertScpiConnection(new cStatusInterface(m_pcbServerTest->getSCPIInterface(), m_adjustmentStatusNull.get(), m_ctrlFactory));
+    m_pcbServerTest->insertScpiConnection(new ServiceStatusInterface(m_pcbServerTest->getSCPIInterface(), m_adjustmentStatusNull.get(), m_ctrlFactory));
     m_pcbServerTest->initTestSCPIConnections();
 
     m_pcbServerTest->registerNotifier(statusAuthorizationCommand, NOTIFICATION_ID);
@@ -52,7 +52,7 @@ void test_serverunregisternotifier::oneScpiConnection()
 
 void test_serverunregisternotifier::twoScpiConnections()
 {
-    m_pcbServerTest->insertScpiConnection(new cStatusInterface(m_pcbServerTest->getSCPIInterface(), m_adjustmentStatusNull.get(), m_ctrlFactory));
+    m_pcbServerTest->insertScpiConnection(new ServiceStatusInterface(m_pcbServerTest->getSCPIInterface(), m_adjustmentStatusNull.get(), m_ctrlFactory));
     m_pcbServerTest->insertScpiConnection(new AccumulatorInterface(m_pcbServerTest->getSCPIInterface(), m_accSettings.get(), m_ctrlFactory));
     m_pcbServerTest->initTestSCPIConnections();
 

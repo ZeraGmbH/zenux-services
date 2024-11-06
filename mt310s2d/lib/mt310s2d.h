@@ -21,7 +21,7 @@
 #include "i2cctrlcputemperature.h"
 #include <cputemp.h>
 
-class cStatusInterface;
+class ServiceStatusInterface;
 class Mt310s2SystemInterface;
 class cSamplingInterface;
 class FOutGroupResourceAndInterface;
@@ -78,7 +78,7 @@ private:
     Mt310s2SystemInfo* m_pSystemInfo = nullptr;
 
     cSenseSettings* m_pSenseSettings = nullptr;
-    cStatusInterface* m_pStatusInterface = nullptr;
+    ServiceStatusInterface* m_pStatusInterface = nullptr;
     HkInSettings* m_hkInSettings = nullptr;
     ScInSettings* m_pSCHeadSettings = nullptr;
     FInSettings* m_finSettings = nullptr;

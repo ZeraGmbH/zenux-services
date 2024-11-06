@@ -1,4 +1,4 @@
-#include "statusinterface.h"
+#include "servicestatusinterface.h"
 #include "protonetcommand.h"
 #include <timerfactoryqt.h>
 #include "zscpi_response_definitions.h"
@@ -13,25 +13,25 @@ enum StatusCommands
     cmdAuthorization
 };
 
-cStatusInterface::cStatusInterface(cSCPI *scpiInterface, AbstractAdjStatus *adjustmentStatusInterface, AbstractFactoryI2cCtrlPtr ctrlFactory) :
+ServiceStatusInterface::ServiceStatusInterface(cSCPI *scpiInterface, AbstractAdjStatus *adjustmentStatusInterface, AbstractFactoryI2cCtrlPtr ctrlFactory) :
     ScpiConnection(scpiInterface),
     m_adjustmentStatusInterface(adjustmentStatusInterface),
     m_ctrlFactory(ctrlFactory)
 {
     m_periodicTimer = TimerFactoryQt::createPeriodic(AUTH_POLLING_PERIOD_MS);
-    connect(m_periodicTimer.get(), &TimerTemplateQt::sigExpired, this, &cStatusInterface::getAuthorizationStatus);
+    connect(m_periodicTimer.get(), &TimerTemplateQt::sigExpired, this, &ServiceStatusInterface::getAuthorizationStatus);
 }
 
-void cStatusInterface::initSCPIConnection(QString leadingNodes)
+void ServiceStatusInterface::initSCPIConnection(QString leadingNodes)
 {
     ensureTrailingColonOnNonEmptyParentNodes(leadingNodes);
     addDelegate(QString("%1STATUS").arg(leadingNodes),"DEVICE",SCPI::isQuery, m_pSCPIInterface, cmdDevice);
     addDelegate(QString("%1STATUS").arg(leadingNodes),"ADJUSTMENT", SCPI::isQuery, m_pSCPIInterface, cmdAdjustment);
     addDelegate(QString("%1STATUS").arg(leadingNodes),"AUTHORIZATION", SCPI::isQuery, m_pSCPIInterface, cmdAuthorization, &m_notifierAutorization);
-    connect(this, &ScpiConnection::removingSubscribers, this, &cStatusInterface::onNotifierUnregistered);
+    connect(this, &ScpiConnection::removingSubscribers, this, &ServiceStatusInterface::onNotifierUnregistered);
 }
 
-void cStatusInterface::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
+void ServiceStatusInterface::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
 {
     cSCPICommand cmd = protoCmd->m_sInput;
     if (cmd.isQuery()) {
@@ -55,7 +55,7 @@ void cStatusInterface::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
         emit cmdExecutionDone(protoCmd);
 }
 
-QString cStatusInterface::getControllerAvail()
+QString ServiceStatusInterface::getControllerAvail()
 {
     bool dummy;
     if (m_ctrlFactory->getPermissionCheckController()->hasPermission(dummy)) // no problem reading from atmel
@@ -64,7 +64,7 @@ QString cStatusInterface::getControllerAvail()
         return "0";
 }
 
-QString cStatusInterface::getAuthorizationStatus()
+QString ServiceStatusInterface::getAuthorizationStatus()
 {
     QString status = "0";
     bool enable;
@@ -74,13 +74,13 @@ QString cStatusInterface::getAuthorizationStatus()
     return status;
 }
 
-void cStatusInterface::onNotifierRegistered(NotificationString *notifier)
+void ServiceStatusInterface::onNotifierRegistered(NotificationString *notifier)
 {
     if(&m_notifierAutorization==notifier)
         m_periodicTimer->start();
 }
 
-void cStatusInterface::onNotifierUnregistered()
+void ServiceStatusInterface::onNotifierUnregistered()
 {
     m_periodicTimer->stop();
 }

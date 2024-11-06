@@ -17,7 +17,7 @@
 
 class QStateMachine;
 class QState;
-class cStatusInterface;
+class ServiceStatusInterface;
 class Com5003SystemInterface;
 class cSamplingInterface;
 class FOutGroupResourceAndInterface;
@@ -69,7 +69,7 @@ private:
     SystemInfo* m_pSystemInfo = nullptr;
 
     cSenseSettings* m_pSenseSettings = nullptr;
-    cStatusInterface* m_pStatusInterface = nullptr;
+    ServiceStatusInterface* m_pStatusInterface = nullptr;
     HkInSettings* m_hkInSettings = nullptr;
     ScInSettings* m_pSCHeadSettings = nullptr;
     FInSettings* m_finSettings = nullptr;

@@ -1,6 +1,6 @@
 #include "test_authorizationnotifier.h"
 #include "testadjustmentstatusinterfacenull.h"
-#include "statusinterface.h"
+#include "servicestatusinterface.h"
 #include "testfactoryi2cctrl.h"
 #include "testi2cctrleeprompermission.h"
 #include <scpisingletonfactory.h>
@@ -32,7 +32,7 @@ void test_authorizationnotifier::init()
     m_PermissionCtrl = ctrlFactory->getPermissionCheckController();
     m_pcbServerTest = std::make_unique<TestPcbServerNotifications>(std::make_unique<SettingsContainer>(params), scpiInterface, ctrlFactory, VeinTcp::MockTcpNetworkFactory::create());
     m_adjustmentStatusNull = new TestAdjustmentStatusInterfaceNull();
-    m_pcbServerTest->insertScpiConnection(new cStatusInterface(m_pcbServerTest->getSCPIInterface(), m_adjustmentStatusNull, ctrlFactory));
+    m_pcbServerTest->insertScpiConnection(new ServiceStatusInterface(m_pcbServerTest->getSCPIInterface(), m_adjustmentStatusNull, ctrlFactory));
     m_pcbServerTest->initTestSCPIConnections();
 }
 

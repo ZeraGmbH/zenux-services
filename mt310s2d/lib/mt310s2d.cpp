@@ -8,7 +8,7 @@
 #include "scingroupresourceandinterface.h"
 #include "mt310s2senseinterface.h"
 #include "foutgroupresourceandinterface.h"
-#include "statusinterface.h"
+#include "servicestatusinterface.h"
 #include "mt310s2systeminterface.h"
 #include "ethsettings.h"
 #include "finsettings.h"
@@ -214,7 +214,7 @@ void cMT310S2dServer::doSetupServer()
                                                                                     m_pSenseSettings,
                                                                                     m_pSystemInfo,
                                                                                     m_ctrlFactory));
-            scpiConnectionList.append(m_pStatusInterface = new cStatusInterface(getSCPIInterface(), m_pSenseInterface, m_ctrlFactory));
+            scpiConnectionList.append(m_pStatusInterface = new ServiceStatusInterface(getSCPIInterface(), m_pSenseInterface, m_ctrlFactory));
             HotPluggableControllerContainerPtr emobControllerContainer =
                     std::make_unique<HotPluggableControllerContainer>(i2cSettings,
                                                                       m_ctrlFactory);
