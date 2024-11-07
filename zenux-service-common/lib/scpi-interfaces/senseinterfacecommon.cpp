@@ -201,11 +201,7 @@ bool SenseInterfaceCommon::exportAdjData(QDateTime dateTimeWrite)
     for(auto channel : qAsConst(m_channelList)) {
         for(auto range : channel->getRangeList()) {
             if (isRangePartOfAdjXmlExport(range)) {
-                QString spec = QString("%1:%2:%3")
-                                   .arg("SENSE")
-                                   .arg(channel->getName())
-                                   .arg(range->getRangeName());
-
+                QString spec = QString("%1:%2:%3").arg("SENSE", channel->getName(), range->getRangeName());
                 stream << spec.toLatin1();
                 AdjDataRangeStream::toStream(range->getJustData()->getAdjGroupData(), stream);
             }
