@@ -47,7 +47,7 @@ void FInGroupResourceAndInterface::initSCPIConnection(QString leadingNodes)
 void FInGroupResourceAndInterface::registerResource(RMConnection *rmConnection, quint16 port)
 {
     for(auto channel : qAsConst(m_ChannelList))
-        register1Resource(rmConnection, NotZeroNumGen::getMsgNr(), QString("FRQINPUT;%1;1;%2;%3;").arg(channel->getName()).arg(channel->getDescription()).arg(port));
+        register1Resource(rmConnection, NotZeroNumGen::getMsgNr(), QString("FRQINPUT;%1;1;%2;%3;").arg(channel->getName(), channel->getDescription()).arg(port));
 }
 
 void FInGroupResourceAndInterface::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
