@@ -48,7 +48,7 @@ void FOutGroupResourceAndInterface::registerResource(RMConnection *rmConnection,
     for(auto channel : qAsConst(m_ChannelList))
         register1Resource(rmConnection,
                           NotZeroNumGen::getMsgNr(),
-                          QString("SOURCE;%1;1;%2;%3;").arg(channel->getName()).arg(channel->getDescription()).arg(port));
+                          QString("SOURCE;%1;1;%2;%3;").arg(channel->getName(), channel->getDescription()).arg(port));
 }
 
 void FOutGroupResourceAndInterface::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
