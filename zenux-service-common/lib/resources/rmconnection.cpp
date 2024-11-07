@@ -61,8 +61,7 @@ void RMConnection::onMessageReceived(VeinTcp::TcpPeer *peer, QByteArray message)
 void RMConnection::responseHandler(VeinTcp::TcpPeer *peer, std::shared_ptr<google::protobuf::Message> response)
 {
     Q_UNUSED(peer)
-    std::shared_ptr<ProtobufMessage::NetMessage> answer = nullptr;
-    answer = std::static_pointer_cast<ProtobufMessage::NetMessage>(response);
+    std::shared_ptr<ProtobufMessage::NetMessage> answer = std::static_pointer_cast<ProtobufMessage::NetMessage>(response);
     if (answer != nullptr) {
         if ( !(answer->has_reply() && answer->reply().rtype() == answer->reply().ACK)) {
             qWarning("command: %s, was not acknowledged", qPrintable(m_sCommand));
