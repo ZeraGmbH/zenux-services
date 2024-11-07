@@ -40,7 +40,7 @@ void ScInGroupResourceAndInterface::initSCPIConnection(QString leadingNodes)
 void ScInGroupResourceAndInterface::registerResource(RMConnection *rmConnection, quint16 port)
 {
     for(auto channel : qAsConst(m_ChannelList))
-        register1Resource(rmConnection, NotZeroNumGen::getMsgNr(), QString("SCHEAD;%1;1;%2;%3;").arg(channel->getName()).arg(channel->getDescription()).arg(port));
+        register1Resource(rmConnection, NotZeroNumGen::getMsgNr(), QString("SCHEAD;%1;1;%2;%3;").arg(channel->getName(), channel->getDescription()).arg(port));
 }
 
 void ScInGroupResourceAndInterface::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
