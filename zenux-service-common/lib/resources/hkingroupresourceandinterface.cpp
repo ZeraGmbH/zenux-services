@@ -39,7 +39,7 @@ void HkInGroupResourceAndInterface::initSCPIConnection(QString leadingNodes)
 void HkInGroupResourceAndInterface::registerResource(RMConnection *rmConnection, quint16 port)
 {
     for(auto channel : qAsConst(m_ChannelList))
-        register1Resource(rmConnection, NotZeroNumGen::getMsgNr(), QString("HKEY;%1;1;%2;%3;").arg(channel->getName()).arg(channel->getDescription()).arg(port));
+        register1Resource(rmConnection, NotZeroNumGen::getMsgNr(), QString("HKEY;%1;1;%2;%3;").arg(channel->getName(), channel->getDescription()).arg(port));
 }
 
 void HkInGroupResourceAndInterface::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
