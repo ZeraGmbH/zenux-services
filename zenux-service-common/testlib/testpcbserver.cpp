@@ -79,7 +79,9 @@ void TestPcbServer::doConfiguration()
                     setting, &XMLSettings::configXMLInfo);
         if (!m_xmlConfigReader.loadXMLFile(params.xmlFile))
             qFatal("Could not load xml config file");
-        m_pRMConnection = new RMConnection(ethSettings->getRMIPadr(), ethSettings->getPort(EthSettings::resourcemanager));
+        m_pRMConnection = new RMConnection(ethSettings->getRMIPadr(),
+                                           ethSettings->getPort(EthSettings::resourcemanager),
+                                           m_tcpNetworkFactory);
     }
     else
         qFatal("Could not load xml schema");

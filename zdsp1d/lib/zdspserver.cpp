@@ -64,7 +64,9 @@ ZDspServer::ZDspServer(SettingsContainerPtr settings,
     m_tcpNetworkFactory(tcpNetworkFactory),
     m_settings(std::move(settings)),
     m_dspInterruptLogStatistics(10000),
-    m_pRMConnection(new RMConnection(m_settings->getEthSettings()->getRMIPadr(), m_settings->getEthSettings()->getPort(EthSettings::resourcemanager))),
+    m_pRMConnection(new RMConnection(m_settings->getEthSettings()->getRMIPadr(),
+                                     m_settings->getEthSettings()->getPort(EthSettings::resourcemanager),
+                                     m_tcpNetworkFactory)),
     m_resourceRegister(m_pRMConnection)
 {
     init();

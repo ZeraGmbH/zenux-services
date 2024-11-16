@@ -1,8 +1,9 @@
 #include "rmconnection.h"
 
-RMConnection::RMConnection(QString ipadr, quint16 port) :
+RMConnection::RMConnection(QString ipadr, quint16 port, VeinTcp::AbstractTcpNetworkFactoryPtr tcpFactory) :
     m_sIPAdr(ipadr),
-    m_nPort(port)
+    m_nPort(port),
+    m_tcpFactory(tcpFactory)
 {
 }
 
@@ -17,7 +18,7 @@ void RMConnection::connect2RM()
         delete m_pResourceManagerClient;
         qCritical("RMConnection::connect2RM called with connection open!");
     }
-    m_pResourceManagerClient = new VeinTcp::TcpPeer(this);
+    m_pResourceManagerClient = new VeinTcp::TcpPeer(m_tcpFactory, this);
     connect(m_pResourceManagerClient, &VeinTcp::TcpPeer::sigSocketError, this, &RMConnection::tcpErrorHandler);
     connect(m_pResourceManagerClient, &VeinTcp::TcpPeer::sigConnectionEstablished, this, &RMConnection::connected);
     connect(m_pResourceManagerClient, &VeinTcp::TcpPeer::sigConnectionClosed, this, &RMConnection::connectionRMError);

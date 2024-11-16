@@ -296,7 +296,9 @@ void cCOM5003dServer::doSetupServer()
 
     // our resource mananager connection must be opened after configuration is done
     EthSettings *ethSettings = m_settings->getEthSettings();
-    m_pRMConnection = new RMConnection(ethSettings->getRMIPadr(), ethSettings->getPort(EthSettings::resourcemanager));
+    m_pRMConnection = new RMConnection(ethSettings->getRMIPadr(),
+                                       ethSettings->getPort(EthSettings::resourcemanager),
+                                       m_tcpNetworkFactory);
 
     scpiConnectionList.append(this); // the server itself has some commands
     scpiConnectionList.append(m_pSenseInterface = new Com5003SenseInterface(getSCPIInterface(),

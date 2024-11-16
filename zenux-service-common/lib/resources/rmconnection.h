@@ -11,7 +11,7 @@ class RMConnection: public QObject
 {
     Q_OBJECT
 public:
-    RMConnection(QString ipadr, quint16 port);
+    RMConnection(QString ipadr, quint16 port, VeinTcp::AbstractTcpNetworkFactoryPtr tcpFactory);
     virtual ~RMConnection();
     void connect2RM();
     void SendIdent(QString ident);
@@ -24,6 +24,7 @@ private:
     void responseHandler(VeinTcp::TcpPeer *peer, std::shared_ptr<google::protobuf::Message> response);
     QString m_sIPAdr;
     quint16 m_nPort;
+    VeinTcp::AbstractTcpNetworkFactoryPtr m_tcpFactory;
     QString m_sCommand;
     VeinTcp::TcpPeer* m_pResourceManagerClient = nullptr;
     XiQNetWrapper m_protobufWrapper;

@@ -262,7 +262,9 @@ void cMT310S2dServer::doSetupServer()
 
             // our resource mananager connection must be opened after configuration is done
             EthSettings *ethSettings = m_settings->getEthSettings();
-            m_pRMConnection = new RMConnection(ethSettings->getRMIPadr(), ethSettings->getPort(EthSettings::resourcemanager));
+            m_pRMConnection = new RMConnection(ethSettings->getRMIPadr(),
+                                               ethSettings->getPort(EthSettings::resourcemanager),
+                                               m_tcpNetworkFactory);
             // so we must complete our state machine here
             m_retryRMConnect = 100;
             m_retryTimer.setSingleShot(true);

@@ -175,7 +175,9 @@ void cSEC1000dServer::doSetupServer()
         sigaction(SIGIO, &sigActionSec1000, NULL); // handler für sigio definieren
         deviceNode->enableFasync();
         // our resource mananager connection must be opened after configuration is done
-        m_pRMConnection = new RMConnection(ethSettings->getRMIPadr(), ethSettings->getPort(EthSettings::resourcemanager));
+        m_pRMConnection = new RMConnection(ethSettings->getRMIPadr(),
+                                           ethSettings->getPort(EthSettings::resourcemanager),
+                                           m_tcpNetworkFactory);
         // so we must complete our state machine here
         m_retryRMConnect = 100;
         m_retryTimer.setSingleShot(true);

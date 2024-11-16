@@ -53,6 +53,7 @@ protected:
     Zera::XMLConfig::cReader m_xmlConfigReader;
     QList<ScpiConnection*> scpiConnectionList; // a list of all scpi connections
     QList<cResource*> resourceList;
+    VeinTcp::AbstractTcpNetworkFactoryPtr m_tcpNetworkFactory;
 private slots:
     void onProtobufClientConnected(VeinTcp::TcpPeer *newClient);
     void onProtobufDataReceived(VeinTcp::TcpPeer *peer, QByteArray message);
@@ -69,7 +70,6 @@ private:
     void sendNotificationToClient(QString message, QByteArray clientID, VeinTcp::TcpPeer *netPeer);
     void executeCommandProto(VeinTcp::TcpPeer* peer, std::shared_ptr<google::protobuf::Message> cmd);
 
-    VeinTcp::AbstractTcpNetworkFactoryPtr m_tcpNetworkFactory;
     QTcpServer* m_telnetServer = nullptr;
     QTcpSocket* m_telnetSocket = nullptr;
     QList<NotificationStructWithValue> m_notifierRegisterNext;
