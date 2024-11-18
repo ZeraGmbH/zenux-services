@@ -13,6 +13,7 @@ add_library(mt310s2d-testlib STATIC
 
 target_include_directories(mt310s2d-testlib
     PUBLIC
+    $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/mt310s2d-testlib>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
     )
 

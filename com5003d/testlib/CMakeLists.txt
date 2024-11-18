@@ -13,6 +13,7 @@ add_library(com5003-testlib STATIC
 
 target_include_directories(com5003-testlib
     PUBLIC
+    $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/com5003-testlib>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
     )
 
