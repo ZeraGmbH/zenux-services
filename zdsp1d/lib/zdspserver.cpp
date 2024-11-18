@@ -170,10 +170,7 @@ void ZDspServer::doSetupServer()
     m_sDspBootPath = m_pDspSettings->getBootFile();
     ActivatedCmdList = 0; // der derzeit aktuelle kommando listen satz (0,1)
 
-    if(m_tcpNetworkFactory) // This nasty if/else will go soon hopefully
-        m_protoBufServer =  new VeinTcp::TcpServer(m_tcpNetworkFactory, this);
-    else
-        m_protoBufServer =  new VeinTcp::TcpServer(this);
+    m_protoBufServer = new VeinTcp::TcpServer(m_tcpNetworkFactory, this);
     connect(m_protoBufServer, &VeinTcp::TcpServer::sigClientConnected, this, &ZDspServer::onProtobufClientConnected);
 
     QString dspDevNodeName = getDspDeviceNode(); // we try to open the dsp device

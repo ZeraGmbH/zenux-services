@@ -50,10 +50,7 @@ QString PCBServer::getVersion()
 
 void PCBServer::setupServer()
 {
-    if(m_tcpNetworkFactory)  // This nasty if/else will go soon hopefully
-        m_protoBufServer = new VeinTcp::TcpServer(m_tcpNetworkFactory, this);
-    else
-        m_protoBufServer = new VeinTcp::TcpServer(this);
+    m_protoBufServer = new VeinTcp::TcpServer(m_tcpNetworkFactory, this);
     connect(m_protoBufServer,&VeinTcp::TcpServer::sigClientConnected,this,&PCBServer::onProtobufClientConnected);
 }
 
