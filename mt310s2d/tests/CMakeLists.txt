@@ -3,7 +3,7 @@ function(SETUP_MT310S2_TESTS)
         SETUP_TESTS(${_testname})
         target_link_libraries(${_testname}
             PUBLIC
-            mt310s2d-lib-testlib
+            mt310s2d-testlib
         )
     endforeach()
 endfunction()

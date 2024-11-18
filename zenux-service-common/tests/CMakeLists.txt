@@ -5,7 +5,7 @@ function(SETUP_SERVICE_COMMON_TESTS)
             PUBLIC
             zenuxservicecommon-testlib
             service-interfaces-testlib
-            mt310s2d-lib-testlib
+            mt310s2d-testlib
         )
     endforeach()
 endfunction()
