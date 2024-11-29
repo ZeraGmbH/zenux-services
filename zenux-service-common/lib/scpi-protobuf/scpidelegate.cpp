@@ -32,7 +32,6 @@ ScpiNotificationSubscriberHandler &cSCPIDelegate::getScpiNotificationSubscriberH
 
 void cSCPIDelegate::notifyAllSubscribers()
 {
-    for(int i = 0; i < m_notificationsHandler.getTotalSubscribers(); i++) {
-        emit notify(m_notificationsHandler.getSubscriber(i));
-    }
+    for(int i = 0; i < m_notificationsHandler.getTotalSubscribers(); i++)
+        emit sigNotifySubcriber(m_notificationsHandler.getSubscriber(i));
 }

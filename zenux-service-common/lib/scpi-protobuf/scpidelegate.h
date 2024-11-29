@@ -22,7 +22,7 @@ public slots:
     void notifyAllSubscribers();
 signals:
     void sigExecuteProtoScpi(int cmdCode, cProtonetCommand* protoCmd);
-    void notify(ScpiNotificationSubscriber subscriber);
+    void sigNotifySubcriber(ScpiNotificationSubscriber subscriber);
 private:
     quint16 m_nCmdCode;
     QString m_sCommand;
