@@ -20,7 +20,7 @@ signals:
     void notificationSent(qint16 notifierId);
 private slots:
     void doConfiguration() override;
-    void onNotifySubscriber(ScpiNotificationSubscriber subscriber) override;
+    void onNotifySubscriber(ScpiNotificationSubscriber subscriber, QString newValue) override;
 };
 
 #endif // TESTPCBSERVERNOTIFICATIONS_H

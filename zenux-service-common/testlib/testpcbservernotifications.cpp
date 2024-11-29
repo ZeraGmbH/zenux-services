@@ -45,7 +45,8 @@ void TestPcbServerNotifications::doConfiguration()
 {
 }
 
-void TestPcbServerNotifications::onNotifySubscriber(ScpiNotificationSubscriber subscriber)
+void TestPcbServerNotifications::onNotifySubscriber(ScpiNotificationSubscriber subscriber, QString newValue)
 {
+    Q_UNUSED(newValue) // handling requires more thoughts
     emit notificationSent(subscriber.m_notifierId);
 }

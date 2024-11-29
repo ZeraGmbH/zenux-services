@@ -17,12 +17,13 @@ QString NotificationString::getString()
 
 void NotificationString::operator =(QString str)
 {
-    if (m_sValue != str)
-        emit valueChanged();
-    m_sValue = str;
+    if(m_sValue != str) {
+        m_sValue = str;
+        emit valueChanged(m_sValue);
+    }
 }
 
 void NotificationString::forceTrigger()
 {
-    emit valueChanged();
+    emit valueChanged(m_sValue);
 }

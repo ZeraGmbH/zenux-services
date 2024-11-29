@@ -19,10 +19,10 @@ public:
     NotificationString *getNotificationString();
     ScpiNotificationSubscriberHandler &getScpiNotificationSubscriberHandler();
 public slots:
-    void notifyAllSubscribers();
+    void notifyAllSubscribers(QString newValue);
 signals:
     void sigExecuteProtoScpi(int cmdCode, cProtonetCommand* protoCmd);
-    void sigNotifySubcriber(ScpiNotificationSubscriber subscriber);
+    void sigNotifySubcriber(ScpiNotificationSubscriber subscriber, QString newValue);
 private:
     quint16 m_nCmdCode;
     QString m_sCommand;

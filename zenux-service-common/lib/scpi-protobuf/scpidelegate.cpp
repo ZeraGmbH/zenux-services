@@ -30,8 +30,8 @@ ScpiNotificationSubscriberHandler &cSCPIDelegate::getScpiNotificationSubscriberH
     return m_notificationsHandler;
 }
 
-void cSCPIDelegate::notifyAllSubscribers()
+void cSCPIDelegate::notifyAllSubscribers(QString newValue)
 {
     for(int i = 0; i < m_notificationsHandler.getTotalSubscribers(); i++)
-        emit sigNotifySubcriber(m_notificationsHandler.getSubscriber(i));
+        emit sigNotifySubcriber(m_notificationsHandler.getSubscriber(i), newValue);
 }

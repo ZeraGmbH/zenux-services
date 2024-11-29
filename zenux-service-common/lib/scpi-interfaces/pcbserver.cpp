@@ -176,8 +176,9 @@ void PCBServer::onTelnetDisconnect()
     disconnect(m_telnetSocket, 0, 0, 0); // we disconnect everything
 }
 
-void PCBServer::onNotifySubscriber(ScpiNotificationSubscriber subscriber)
+void PCBServer::onNotifySubscriber(ScpiNotificationSubscriber subscriber, QString newValue)
 {
+    Q_UNUSED(newValue) // handling requires more thoughts
     QString notificationMsg = QString("Notify:%1").arg(subscriber.m_notifierId);
     sendNotificationToClient(notificationMsg, subscriber.m_clientId, subscriber.m_netPeer);
 }

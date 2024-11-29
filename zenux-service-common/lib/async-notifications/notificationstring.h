@@ -16,7 +16,7 @@ public:
     void forceTrigger();
 
 signals:
-    void valueChanged();
+    void valueChanged(QString newValue);
 
 private:
     QString m_sValue;
