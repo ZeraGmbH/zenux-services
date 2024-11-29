@@ -14,7 +14,6 @@ public:
     virtual ~ScpiConnection();
     virtual void initSCPIConnection(QString leadingNodes) = 0;
 signals:
-    void strNotifier(NotificationString* notifier);
     void valNotifier(NotificationValue* notifier);
     void cmdExecutionDone(cProtonetCommand* protoCmd);
     void sendNotification(ScpiNotificationSubscriber subscriber);
