@@ -107,7 +107,7 @@ void SenseInterfaceCommon::initSCPIConnection(QString leadingNodes)
     addDelegate(QString("%1SENSE:CORRECTION").arg(leadingNodes),"COMPUTE", SCPI::isCmd, m_pSCPIInterface, SenseSystem::computeAdjData);
     for(auto channel : qAsConst(m_channelList)) {
         // we also must connect the signals for notification and for output
-        connect(channel, &ScpiConnection::sendNotification, this, &ScpiConnection::sendNotification);
+        connect(channel, &ScpiConnection::sigNotifySubcriber, this, &ScpiConnection::sigNotifySubcriber);
         connect(channel, &ScpiConnection::cmdExecutionDone, this, &ScpiConnection::cmdExecutionDone);
         connect(this, &ScpiConnection::removingSubscribers, channel, &ScpiConnection::onRemoveSubscribers);
         channel->initSCPIConnection(QString("%1SENSE").arg(leadingNodes));

@@ -45,7 +45,7 @@ void TestPcbServerNotifications::doConfiguration()
 {
 }
 
-void TestPcbServerNotifications::onSendNotification(ScpiNotificationSubscriber subscriber)
+void TestPcbServerNotifications::onNotifySubscriber(ScpiNotificationSubscriber subscriber)
 {
     emit notificationSent(subscriber.m_notifierId);
 }

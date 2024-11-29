@@ -36,7 +36,7 @@ void FOutGroupResourceAndInterface::initSCPIConnection(QString leadingNodes)
     addDelegate(QString("%1SOURCE").arg(leadingNodes),"VERSION",SCPI::isQuery, m_pSCPIInterface, cmdVersion);
     addDelegate(QString("%1SOURCE:CHANNEL").arg(leadingNodes),"CATALOG", SCPI::isQuery, m_pSCPIInterface, cmdChannelCat);
     for(auto channel : qAsConst(m_ChannelList)) {
-        connect(channel, &ScpiConnection::sendNotification, this, &ScpiConnection::sendNotification);
+        connect(channel, &ScpiConnection::sigNotifySubcriber, this, &ScpiConnection::sigNotifySubcriber);
         connect(channel, &ScpiConnection::cmdExecutionDone, this, &ScpiConnection::cmdExecutionDone);
         connect(this, &ScpiConnection::removingSubscribers, channel, &ScpiConnection::onRemoveSubscribers);
         channel->initSCPIConnection(QString("%1SOURCE").arg(leadingNodes));

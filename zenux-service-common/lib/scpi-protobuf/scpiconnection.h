@@ -16,7 +16,7 @@ public:
 signals:
     void valNotifier(NotificationValue* notifier);
     void cmdExecutionDone(cProtonetCommand* protoCmd);
-    void sendNotification(ScpiNotificationSubscriber subscriber);
+    void sigNotifySubcriber(ScpiNotificationSubscriber subscriber);
     void removingSubscribers(VeinTcp::TcpPeer* peer, const QByteArray &clientID);
 public slots:
     virtual void onNotifierRegistered(NotificationString* notifier);
