@@ -4,7 +4,7 @@
 #include "testi2cctrlaccu.h"
 #include "testi2cctrlcommoninfo.h"
 #include "mocki2cctrlcriticalstatus.h"
-#include "demoi2cctrlranges.h"
+#include "testi2cctrlranges.h"
 #include "mocki2cctrlmmode.h"
 #include "testi2cctrlpll.h"
 #include "mocki2cctrlclampstatus.h"
@@ -56,7 +56,7 @@ I2cCtrlAccumulatorPtr TestFactoryI2cCtrl::getAccuController()
 
 I2cCtrlRangesPtr TestFactoryI2cCtrl::getRangesController()
 {
-    return std::make_unique<DemoI2cCtrlRanges>();
+    return std::make_unique<TestI2cCtrlRanges>();
 }
 
 I2cCtrlMModePtr TestFactoryI2cCtrl::getMModeController()
