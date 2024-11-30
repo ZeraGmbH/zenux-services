@@ -18,7 +18,7 @@ void test_notificationsubscriber::cleanup()
 
 void test_notificationsubscriber::addAndRemoveSubscriber()
 {
-    ScpiNotificationSubscriber subscriberA(nullptr, "", 1);
+    ScpiNotificationSubscriber subscriberA(nullptr, "", 1, false);
     m_notificationHandler->addSubscriber(subscriberA);
     QCOMPARE(m_notificationHandler->getTotalSubscribers(), 1);
     m_notificationHandler->removeAllSubscribers(nullptr, "");
@@ -27,7 +27,7 @@ void test_notificationsubscriber::addAndRemoveSubscriber()
 
 void test_notificationsubscriber::addSubscriberTwice()
 {
-    ScpiNotificationSubscriber subscriberA(nullptr, "", 1);
+    ScpiNotificationSubscriber subscriberA(nullptr, "", 1, false);
     m_notificationHandler->addSubscriber(subscriberA);
     m_notificationHandler->addSubscriber(subscriberA);
     QCOMPARE(m_notificationHandler->getTotalSubscribers(), 1);
@@ -35,8 +35,8 @@ void test_notificationsubscriber::addSubscriberTwice()
 
 void test_notificationsubscriber::addTwoSubscribersDifferentNetPeer()
 {
-    ScpiNotificationSubscriber subscriber1(nullptr, "", 1);
-    ScpiNotificationSubscriber subscriber2(m_netPeer, QByteArray(), 2);
+    ScpiNotificationSubscriber subscriber1(nullptr, "", 1, false);
+    ScpiNotificationSubscriber subscriber2(m_netPeer, QByteArray(), 2, false);
     m_notificationHandler->addSubscriber(subscriber1);
     m_notificationHandler->addSubscriber(subscriber2);
     QCOMPARE(m_notificationHandler->getTotalSubscribers(), 2);
@@ -44,8 +44,8 @@ void test_notificationsubscriber::addTwoSubscribersDifferentNetPeer()
 
 void test_notificationsubscriber::addTwoSubscribersSameNetPeer()
 {
-    ScpiNotificationSubscriber subscriber1(m_netPeer, QByteArray(), 1);
-    ScpiNotificationSubscriber subscriber2(m_netPeer, QByteArray(), 2);
+    ScpiNotificationSubscriber subscriber1(m_netPeer, QByteArray(), 1, false);
+    ScpiNotificationSubscriber subscriber2(m_netPeer, QByteArray(), 2, false);
     m_notificationHandler->addSubscriber(subscriber1);
     m_notificationHandler->addSubscriber(subscriber2);
     QCOMPARE(m_notificationHandler->getTotalSubscribers(), 2);
@@ -53,8 +53,8 @@ void test_notificationsubscriber::addTwoSubscribersSameNetPeer()
 
 void test_notificationsubscriber::addAndRemoveSubscribersSamePeerSameClientID()
 {
-    ScpiNotificationSubscriber subscriber1(m_netPeer, "Foo", 1);
-    ScpiNotificationSubscriber subscriber2(m_netPeer, "Foo", 2);
+    ScpiNotificationSubscriber subscriber1(m_netPeer, "Foo", 1, false);
+    ScpiNotificationSubscriber subscriber2(m_netPeer, "Foo", 2, false);
     m_notificationHandler->addSubscriber(subscriber1);
     m_notificationHandler->addSubscriber(subscriber2);
     QCOMPARE(m_notificationHandler->getTotalSubscribers(), 2);
@@ -64,8 +64,8 @@ void test_notificationsubscriber::addAndRemoveSubscribersSamePeerSameClientID()
 
 void test_notificationsubscriber::addAndRemoveSubscribersSamePeerDifferentClientID()
 {
-    ScpiNotificationSubscriber subscriber1(m_netPeer, "Foo", 1);
-    ScpiNotificationSubscriber subscriber2(m_netPeer, "Bar", 2);
+    ScpiNotificationSubscriber subscriber1(m_netPeer, "Foo", 1, false);
+    ScpiNotificationSubscriber subscriber2(m_netPeer, "Bar", 2, false);
     m_notificationHandler->addSubscriber(subscriber1);
     m_notificationHandler->addSubscriber(subscriber2);
     QCOMPARE(m_notificationHandler->getTotalSubscribers(), 2);
@@ -77,8 +77,8 @@ void test_notificationsubscriber::addAndRemoveSubscribersSamePeerDifferentClient
 
 void test_notificationsubscriber::addAndRemoveSubscribersSamePeerEmptyClientID()
 {
-    ScpiNotificationSubscriber subscriber1(m_netPeer, "", 1);
-    ScpiNotificationSubscriber subscriber2(m_netPeer, "Foo", 2);
+    ScpiNotificationSubscriber subscriber1(m_netPeer, "", 1, false);
+    ScpiNotificationSubscriber subscriber2(m_netPeer, "Foo", 2, false);
     m_notificationHandler->addSubscriber(subscriber1);
     m_notificationHandler->addSubscriber(subscriber2);
     QCOMPARE(m_notificationHandler->getTotalSubscribers(), 2);
@@ -88,9 +88,9 @@ void test_notificationsubscriber::addAndRemoveSubscribersSamePeerEmptyClientID()
 
 void test_notificationsubscriber::removeSubscribersEmptyClientIDPassed()
 {
-    ScpiNotificationSubscriber subscriber2(m_netPeer, "Foo", 1);
-    ScpiNotificationSubscriber subscriber1(m_netPeer, "Bar", 1);
-    ScpiNotificationSubscriber subscriber3(m_netPeer, "", 1);
+    ScpiNotificationSubscriber subscriber2(m_netPeer, "Foo", 1, false);
+    ScpiNotificationSubscriber subscriber1(m_netPeer, "Bar", 1, false);
+    ScpiNotificationSubscriber subscriber3(m_netPeer, "", 1, false);
     m_notificationHandler->addSubscriber(subscriber1);
     m_notificationHandler->addSubscriber(subscriber2);
     m_notificationHandler->addSubscriber(subscriber3);

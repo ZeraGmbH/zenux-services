@@ -277,10 +277,10 @@ quint32 cPCBInterface::getAliasSample(QString chnName)
 }
 
 
-quint32 cPCBInterface::registerNotifier(QString query, int notifyId)
+quint32 cPCBInterface::registerNotifier(QString query, int notifyId, bool notifyWithValue)
 {
     Q_D(cPCBInterface);
-    return d->registerNotifier(query, notifyId);
+    return d->registerNotifier(query, notifyId, notifyWithValue);
 }
 
 

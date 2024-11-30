@@ -178,8 +178,9 @@ void PCBServer::onTelnetDisconnect()
 
 void PCBServer::onNotifySubscriber(ScpiNotificationSubscriber subscriber, QString newValue)
 {
-    Q_UNUSED(newValue) // handling requires more thoughts
     QString notificationMsg = QString("Notify:%1").arg(subscriber.m_notifierId);
+    if(subscriber.m_notifyWithValue)
+        notificationMsg.append(QString(":%1").arg(newValue));
     sendNotificationToClient(notificationMsg, subscriber.m_clientId, subscriber.m_netPeer);
 }
 
@@ -216,7 +217,7 @@ void PCBServer::registerNotifier(cProtonetCommand *protoCmd)
         else
             protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::nak];
     }
-    else if(cmd.isCommand(2)) {// mt310s2/com5003 service receives registerNotifier with 2 params
+    else if(cmd.isCommand(2) || cmd.isCommand(3)) {// mt310s2/com5003 service receives registerNotifier with 2/3 params
         QString query = cmd.getParam(0);
         cSCPIObject* scpiObject = m_pSCPIInterface->getSCPIObject(query);
         if(scpiObject) {
@@ -225,7 +226,11 @@ void PCBServer::registerNotifier(cProtonetCommand *protoCmd)
             cProtonetCommand* procmd = new cProtonetCommand(protoCmd);
             procmd->m_bwithOutput = false;
             procmd->m_sInput = query;
-            ScpiNotificationSubscriber subscriber(protoCmd->m_pPeer, protoCmd->m_clientId, cmd.getParam(1).toInt());
+            int notifyId = cmd.getParam(1).toInt();
+            bool notifyWithValue = false;
+            if(cmd.isCommand(3))
+                notifyWithValue = cmd.getParam(2).toInt();
+            ScpiNotificationSubscriber subscriber(protoCmd->m_pPeer, protoCmd->m_clientId, notifyId, notifyWithValue);
             scpiDelegate->getScpiNotificationSubscriberHandler().addSubscriber(subscriber);
             scpiDelegate->executeSCPI(procmd);
             protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::ack]; // we overwrite the query's output here

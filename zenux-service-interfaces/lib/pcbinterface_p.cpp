@@ -682,12 +682,12 @@ quint32 cPCBInterfacePrivate::resourceAliasQuery(QString resourceType, QString r
 }
 
 
-quint32 cPCBInterfacePrivate::registerNotifier(QString query, int notifyId)
+quint32 cPCBInterfacePrivate::registerNotifier(QString query, int notifyId, bool notifyWithValue)
 {
     QString cmd, par;
     quint32 msgnr;
 
-    msgnr = sendCommand(cmd = QString("SERV:REG"), par = QString("%1;%2;").arg(query).arg(notifyId));
+    msgnr = sendCommand(cmd = QString("SERV:REG"), par = QString("%1;%2;%3;").arg(query).arg(notifyId).arg(notifyWithValue));
     m_MsgNrCmdList[msgnr] = PCB::regnotifier;
     return msgnr;
 }

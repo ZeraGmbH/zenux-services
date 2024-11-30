@@ -1,9 +1,13 @@
 #include "scpinotificationsubscriber.h"
 
-ScpiNotificationSubscriber::ScpiNotificationSubscriber(VeinTcp::TcpPeer *netPeer, QByteArray clientId, quint16 notifierId) :
+ScpiNotificationSubscriber::ScpiNotificationSubscriber(VeinTcp::TcpPeer *netPeer,
+                                                       QByteArray clientId,
+                                                       quint16 notifierId,
+                                                       bool notifyWithValue) :
     m_netPeer(netPeer),
     m_clientId(clientId),
-    m_notifierId(notifierId)
+    m_notifierId(notifierId),
+    m_notifyWithValue(notifyWithValue)
 {
 }
 
