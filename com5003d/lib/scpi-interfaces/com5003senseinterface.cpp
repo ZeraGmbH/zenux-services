@@ -232,28 +232,26 @@ void Com5003SenseInterface::unregisterSense()
 
 void Com5003SenseInterface::registerSense()
 {
-    QString s;
     // first we change the channels units and descriptions
     if (m_availSenseModesHash[m_currSenseMode] == SenseSystem::modeAC) {
         m_channelList.at(0)->setDescription(SenseSystem::sVoltageChannelDescription);
-        m_channelList.at(0)->setUnit(s = "V");
+        m_channelList.at(0)->setUnit("V");
         m_channelList.at(1)->setDescription(SenseSystem::sVoltageChannelDescription);
-        m_channelList.at(1)->setUnit(s = "V");
+        m_channelList.at(1)->setUnit("V");
         m_channelList.at(2)->setDescription(SenseSystem::sVoltageChannelDescription);
-        m_channelList.at(2)->setUnit(s = "V");
+        m_channelList.at(2)->setUnit("V");
 
         m_channelList.at(3)->setDescription(SenseSystem::sCurrentChannelDescription);
-        m_channelList.at(3)->setUnit(s = "A");
+        m_channelList.at(3)->setUnit("A");
         m_channelList.at(4)->setDescription(SenseSystem::sCurrentChannelDescription);
-        m_channelList.at(4)->setUnit(s = "A");
+        m_channelList.at(4)->setUnit("A");
         m_channelList.at(5)->setDescription(SenseSystem::sCurrentChannelDescription);
-        m_channelList.at(5)->setUnit(s = "A");
+        m_channelList.at(5)->setUnit("A");
     }
-    else {
-        for (qint32 i = 0; i < m_channelList.count(); i++) // for each channel
-        {
+    else { // REF
+        for (qint32 i = 0; i < m_channelList.count(); i++) { // for each channel
             m_channelList.at(i)->setDescription(SenseSystem::sReferenceChannelDescription);
-            m_channelList.at(i)->setUnit(s = "V");
+            m_channelList.at(i)->setUnit("V");
         }
     }
 

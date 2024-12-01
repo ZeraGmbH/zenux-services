@@ -47,7 +47,7 @@ public:
     quint8 getCtrlChannel();
     // see COM5003 Com5003SenseInterface::registerSense()
     void setDescription(const QString& s);
-    void setUnit(QString& s);
+    void setUnit(const QString &s);
     bool isAvail();
 
     void initJustData();

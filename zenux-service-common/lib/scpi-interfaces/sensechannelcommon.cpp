@@ -90,7 +90,7 @@ void SenseChannelCommon::setDescription(const QString &s)
     m_sDescription = s;
 }
 
-void SenseChannelCommon::setUnit(QString &s)
+void SenseChannelCommon::setUnit(const QString &s)
 {
     m_sUnit = s;
 }
