@@ -89,17 +89,11 @@ void Com5003SystemInterface::executeProtoScpi(int cmdCode, cProtonetCommand *pro
 
 QString Com5003SystemInterface::scpiReadServerVersion(QString &sInput)
 {
-    QString s;
     cSCPICommand cmd = sInput;
-
     if ( cmd.isQuery() )
-    {
-        s = m_pMyServer->getVersion();
-    }
+        return m_pMyServer->getVersion();
     else
-        s = ZSCPI::scpiAnswer[ZSCPI::nak];
-
-    return s;
+        return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 
@@ -122,9 +116,7 @@ QString Com5003SystemInterface::m_ReadDeviceVersion(QString &sInput)
 QString Com5003SystemInterface::m_ReadDeviceName(QString& sInput)
 {
     cSCPICommand cmd = sInput;
-
-    if (cmd.isQuery())
-    {
+    if (cmd.isQuery()) {
         if (m_systemInfo->dataRead())
             return m_systemInfo->getDeviceName();
         else
@@ -137,19 +129,17 @@ QString Com5003SystemInterface::m_ReadDeviceName(QString& sInput)
 
 QString Com5003SystemInterface::scpiReadPCBVersion(QString &sInput)
 {
-    QString s;
     cSCPICommand cmd = sInput;
     if (cmd.isQuery()) {
         if (m_systemInfo->dataRead()) {
             updateAllPCBsVersion();
-            s = m_allPCBVersion.getString();
+            return m_allPCBVersion.getString();
         }
         else
-            s = ZSCPI::scpiAnswer[ZSCPI::errexec];
+            return ZSCPI::scpiAnswer[ZSCPI::errexec];
     }
     else
-        s = ZSCPI::scpiAnswer[ZSCPI::nak];
-    return s;
+        return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 
@@ -172,15 +162,12 @@ QString Com5003SystemInterface::scpiReadAllCTRLVersions(QString &sInput)
 QString Com5003SystemInterface::m_ReadFPGAVersion(QString &sInput)
 {
     cSCPICommand cmd = sInput;
-
-    if (cmd.isQuery())
-    {
+    if (cmd.isQuery()) {
         if (m_systemInfo->dataRead())
             return m_systemInfo->getLCAVersion();
         else
             return ZSCPI::scpiAnswer[ZSCPI::errexec];
     }
-
     else
         return ZSCPI::scpiAnswer[ZSCPI::nak];
 }

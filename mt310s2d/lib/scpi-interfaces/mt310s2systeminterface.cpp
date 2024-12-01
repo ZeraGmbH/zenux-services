@@ -126,26 +126,18 @@ void Mt310s2SystemInterface::executeProtoScpi(int cmdCode, cProtonetCommand *pro
 
 QString Mt310s2SystemInterface::scpiReadServerVersion(QString &sInput)
 {
-    QString s;
     cSCPICommand cmd = sInput;
-
     if ( cmd.isQuery() )
-    {
-        s = m_pMyServer->getVersion();
-    }
+        return m_pMyServer->getVersion();
     else
-        s = ZSCPI::scpiAnswer[ZSCPI::nak];
-
-    return s;
+        return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 
 QString Mt310s2SystemInterface::m_ReadDeviceVersion(QString &sInput)
 {
     cSCPICommand cmd = sInput;
-
-    if (cmd.isQuery())
-    {
+    if (cmd.isQuery()) {
         if (m_systemInfo->dataRead())
             return m_systemInfo->getDeviceVersion();
         else
@@ -159,9 +151,7 @@ QString Mt310s2SystemInterface::m_ReadDeviceVersion(QString &sInput)
 QString Mt310s2SystemInterface::m_ReadDeviceName(QString& sInput)
 {
     cSCPICommand cmd = sInput;
-
-    if (cmd.isQuery())
-    {
+    if (cmd.isQuery()) {
         if (m_systemInfo->dataRead())
             return m_systemInfo->getDeviceName();
         else
@@ -174,20 +164,17 @@ QString Mt310s2SystemInterface::m_ReadDeviceName(QString& sInput)
 
 QString Mt310s2SystemInterface::scpiReadPCBVersion(QString &sInput)
 {
-    QString s;
     cSCPICommand cmd = sInput;
     if (cmd.isQuery()) {
         if (m_systemInfo->dataRead()) {
             updateAllPCBsVersion();
-            s = m_allPCBVersion.getString();
+            return m_allPCBVersion.getString();
         }
         else
-            s = ZSCPI::scpiAnswer[ZSCPI::errexec];
+            return ZSCPI::scpiAnswer[ZSCPI::errexec];
     }
     else
-        s = ZSCPI::scpiAnswer[ZSCPI::nak];
-
-    return s;
+        return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 
@@ -216,15 +203,12 @@ void Mt310s2SystemInterface::triggerVersionInfoChanges()
 QString Mt310s2SystemInterface::m_ReadFPGAVersion(QString &sInput)
 {
     cSCPICommand cmd = sInput;
-
-    if (cmd.isQuery())
-    {
+    if (cmd.isQuery()) {
         if (m_systemInfo->dataRead())
             return m_systemInfo->getLCAVersion();
         else
             return ZSCPI::scpiAnswer[ZSCPI::errexec];
     }
-
     else
         return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
@@ -385,12 +369,8 @@ QString Mt310s2SystemInterface::m_AdjXMLRead(QString &sInput)
 QString Mt310s2SystemInterface::m_AdjFlashChksum(QString &sInput)
 {
     cSCPICommand cmd = sInput;
-
     if (cmd.isQuery())
-    {
-        QString s = QString("0x%1").arg(m_senseInterface->getAdjChecksum()); // hex output
-        return s;
-    }
+        return QString("0x%1").arg(m_senseInterface->getAdjChecksum()); // hex output
     else
         return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
@@ -399,9 +379,7 @@ QString Mt310s2SystemInterface::m_AdjFlashChksum(QString &sInput)
 QString Mt310s2SystemInterface::m_InterfaceRead(QString &sInput)
 {
     cSCPICommand cmd = sInput;
-
-    if (cmd.isQuery())
-    {
+    if (cmd.isQuery()) {
         QString s;
         m_pSCPIInterface->exportSCPIModelXML(s);
         return s;

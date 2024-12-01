@@ -204,12 +204,10 @@ QString Com5003SenseInterface::scpiReadSenseGroupCatalog(QString &scpi)
 {
     cSCPICommand cmd = scpi;
     if (cmd.isQuery()) {
-        QString s;
         if (m_availSenseModesHash[m_currSenseMode] == SenseSystem::modeAC)
-            s = ";";
+            return ";";
         else
-            s = "m0,m1,m2;m3,m4,m5;";
-        return s;
+            return "m0,m1,m2;m3,m4,m5;";
     }
     else
         return ZSCPI::scpiAnswer[ZSCPI::nak];
