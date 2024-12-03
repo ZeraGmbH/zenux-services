@@ -2,6 +2,7 @@
 #define TESTSERVERFORSENSEINTERFACECOM5003_H
 
 #include "i2csettings.h"
+#include "samplinginterface.h"
 #include "testpcbserver.h"
 #include "senseinterfacecommon.h"
 #include "com5003systeminterface.h"
@@ -22,11 +23,10 @@ public:
 
 private:
     std::unique_ptr<cSenseSettings> m_senseSettings;
-
     std::unique_ptr<SenseInterfaceCommon> m_senseInterface;
     std::unique_ptr<Com5003SystemInterface> m_systemInterface;
-
     std::unique_ptr<SystemInfo> m_systemInfo;
+    std::unique_ptr<cSamplingInterface> m_samplingInterface;
 };
 
 #endif // TESTSERVERFORSENSEINTERFACECOM5003_H
