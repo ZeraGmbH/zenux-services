@@ -52,7 +52,7 @@ quint32 cDSPInterfacePrivate::resetDsp()
 
 quint32 cDSPInterfacePrivate::setSamplingSystem(int chncount, int samp_per, int samp_mper)
 {
-    quint32 msgnr = sendCommand(QString("SYST:DSP:SAMP"), QString("%1,%2,%3").arg(chncount).arg(samp_per).arg(samp_mper)); // long SYSTEM:DSP:SAMPLING
+    quint32 msgnr = sendCommand("SYST:DSP:SAMP", QString("%1,%2,%3").arg(chncount).arg(samp_per).arg(samp_mper)); // long SYSTEM:DSP:SAMPLING
     m_MsgNrCmdList[msgnr] = setsamplingsystem;
     return msgnr;
 }
@@ -72,7 +72,7 @@ QString cDSPInterfacePrivate::varList2String() const
 quint32 cDSPInterfacePrivate::varList2Dsp() // the complete list has several partial lists
 {
     QString varList = varList2String();
-    quint32 msgnr = sendCommand(QString("MEAS:LIST:RAVL"), varList); // long: MEASURE:LIST:RAVLIST
+    quint32 msgnr = sendCommand("MEAS:LIST:RAVL", varList); // long: MEASURE:LIST:RAVLIST
     m_MsgNrCmdList[msgnr] = varlist2dsp;
     return msgnr;
 }
@@ -83,7 +83,7 @@ quint32 cDSPInterfacePrivate::cmdList2Dsp()
     QTextStream ts( &plist, QIODevice::WriteOnly );
     for ( QStringList::Iterator it = CycCmdList.begin(); it != CycCmdList.end(); ++it )
         ts << *it << ";" ;
-    quint32 msgnr = sendCommand(QString("MEAS:LIST:CYCL"), plist); // long: MEASURE:LIST:CYCLIST
+    quint32 msgnr = sendCommand("MEAS:LIST:CYCL", plist); // long: MEASURE:LIST:CYCLIST
     m_MsgNrCmdList[msgnr] = cmdlist2dsp;
     return msgnr;
 }
@@ -94,7 +94,7 @@ quint32 cDSPInterfacePrivate::intList2Dsp()
     QTextStream ts( &plist, QIODevice::WriteOnly );
     for ( QStringList::Iterator it = IntCmdList.begin(); it != IntCmdList.end(); ++it )
         ts << *it << ";" ;
-    quint32 msgnr = sendCommand(QString("MEAS:LIST:INTL"), plist); // long: MEASURE:LIST:INTLIST
+    quint32 msgnr = sendCommand("MEAS:LIST:INTL", plist); // long: MEASURE:LIST:INTLIST
     m_MsgNrCmdList[msgnr] = intlist2dsp;
     return msgnr;
 }
@@ -128,17 +128,14 @@ quint32 cDSPInterfacePrivate::setSignalRouting(tRouting *routingtab)
     ts << "ETHROUTINGTAB";
     for (uint i = 0; i < (sizeof(tRouting)/sizeof(quint32)); i++)
         ts << "," << routingtab[i];
-    quint32 msgnr = sendCommand(QString("MEM:WRIT"), par); // long: MEMORY:WRITE ETHROUTINGTAB,...
+    quint32 msgnr = sendCommand("MEM:WRIT", par); // long: MEMORY:WRITE ETHROUTINGTAB,...
     m_MsgNrCmdList[msgnr] = setsignalrouting;
     return msgnr;
 }
 
 quint32 cDSPInterfacePrivate::setDsp61850PriorityTagged(quint32 priotag)
 {
-    QString cmd, par;
-    quint32 msgnr;
-
-    msgnr = sendCommand(cmd = QString("SYST:DSP:EN61:PRI"), par = QString("%1").arg(priotag));
+    quint32 msgnr = sendCommand("SYST:DSP:EN61:PRI", QString("%1").arg(priotag));
     m_MsgNrCmdList[msgnr] = setdsp61850prioritytagged;
     return msgnr;
 }
@@ -146,47 +143,31 @@ quint32 cDSPInterfacePrivate::setDsp61850PriorityTagged(quint32 priotag)
 
 quint32 cDSPInterfacePrivate::setDsp61850EthTypeAppId(quint32 typAppid)
 {
-    QString cmd, par;
-    quint32 msgnr;
-
-    msgnr = sendCommand(cmd = QString("SYST:DSP:EN61:ETHT"), par = QString("%1").arg(typAppid));
+    quint32 msgnr = sendCommand("SYST:DSP:EN61:ETHT", QString("%1").arg(typAppid));
     m_MsgNrCmdList[msgnr] = setdsp61850ethtypeappid;
     return msgnr;
 }
 
-
 quint32 cDSPInterfacePrivate::setDsp61850EthSynchronisation(quint32 syncdata)
 {
-    QString cmd, par;
-    quint32 msgnr;
-
-    msgnr = sendCommand(cmd = QString("SYST:DSP:EN61:ETHS"), par = QString("%1").arg(syncdata));
+    quint32 msgnr = sendCommand("SYST:DSP:EN61:ETHS", QString("%1").arg(syncdata));
     m_MsgNrCmdList[msgnr] = setdsp61850ethsynchronisation;
     return msgnr;
 }
 
-
 quint32 cDSPInterfacePrivate::resetMaximum()
 {
-    QString cmd;
-    quint32 msgnr;
-
-    msgnr = sendCommand(cmd = QString("SYST:DSP:MAX:RES"));
+    quint32 msgnr = sendCommand("SYST:DSP:MAX:RES");
     m_MsgNrCmdList[msgnr] = resetmaximum;
     return msgnr;
 }
 
-
 quint32 cDSPInterfacePrivate::triggerIntHKSK(quint32 hksk)
 {
-    QString cmd, par;
-    quint32 msgnr;
-
-    msgnr = sendCommand(cmd = QString("SYST:DSP:TRIG:INTL:HKSK"), par = QString("%1").arg(hksk));
+    quint32 msgnr = sendCommand("SYST:DSP:TRIG:INTL:HKSK", QString("%1").arg(hksk));
     m_MsgNrCmdList[msgnr] = triggerinthksk;
     return msgnr;
 }
-
 
 void cDSPInterfacePrivate::addCycListItem(QString cmd)
 {
@@ -203,7 +184,6 @@ void cDSPInterfacePrivate::addIntListItem(QString cmd)
     IntCmdList.push_back(cmd);
 }
 
-
 cDspMeasData* cDSPInterfacePrivate::getMemHandle(QString name)
 {
     cDspMeasData* pdmd = new cDspMeasData(name);
@@ -211,39 +191,28 @@ cDspMeasData* cDSPInterfacePrivate::getMemHandle(QString name)
     return pdmd;
 }
 
-
 void cDSPInterfacePrivate::deleteMemHandle(cDspMeasData *memhandle)
 {
-    if (m_DspMemoryDataList.contains(memhandle))
-    {
+    if (m_DspMemoryDataList.contains(memhandle)) {
         int index = m_DspMemoryDataList.indexOf(memhandle);
         cDspMeasData* pdmd = m_DspMemoryDataList.takeAt(index);
         delete pdmd;
     }
 }
 
-
 quint32 cDSPInterfacePrivate::activateInterface()
 {
-    QString cmd;
-    quint32 msgnr;
-
-    msgnr = sendCommand(cmd = QString("MEAS:LIST:SET"));
+    quint32 msgnr = sendCommand("MEAS:LIST:SET");
     m_MsgNrCmdList[msgnr] = activateinterface;
     return msgnr;
 }
 
-
 quint32 cDSPInterfacePrivate::deactivateInterface()
 {
-    QString cmd;
-    quint32 msgnr;
-
-    msgnr = sendCommand(cmd = QString("MEAS:LIST:CLE"));
+    quint32 msgnr = sendCommand("MEAS:LIST:CLE");
     m_MsgNrCmdList[msgnr] = deactivateinterface;
     return msgnr;
 }
-
 
 quint32 cDSPInterfacePrivate::dataAcquisition(cDspMeasData *memgroup)
 {
@@ -265,40 +234,28 @@ quint32 cDSPInterfacePrivate::dspMemoryRead(cDspMeasData *memgroup, DSPDATA::dTy
 
 quint32 cDSPInterfacePrivate::dspMemoryWrite(cDspMeasData *memgroup)
 {
-    quint32 msgnr;
-    QString cmd, par;
-    msgnr = sendCommand(cmd = QString("MEM:WRIT"), par = memgroup->writeCommand());
+    quint32 msgnr = sendCommand("MEM:WRIT", memgroup->writeCommand());
     m_MsgNrCmdList[msgnr] = dspmemorywrite;
     return msgnr;
 }
 
 quint32 cDSPInterfacePrivate::setGainCorrection(int chn, float val)
 {
-    QString cmd, par;
-    quint32 msgnr;
-
-    msgnr = sendCommand(cmd = QString("MEM:WRIT"), par = QString("GAINCORRECTION+%1,%2").arg(chn).arg(val));
+    quint32 msgnr = sendCommand("MEM:WRIT", QString("GAINCORRECTION+%1,%2").arg(chn).arg(val));
     m_MsgNrCmdList[msgnr] = setgaincorrection;
     return msgnr;
 }
 
 quint32 cDSPInterfacePrivate::setPhaseCorrection(int chn, float val)
 {
-    QString cmd, par;
-    quint32 msgnr;
-
-    msgnr = sendCommand(cmd = QString("MEM:WRIT"), par = QString("PHASECORRECTION+%1,%2").arg(chn).arg(val));
+    quint32 msgnr = sendCommand("MEM:WRIT", QString("PHASECORRECTION+%1,%2").arg(chn).arg(val));
     m_MsgNrCmdList[msgnr] = setphasecorrection;
     return msgnr;
 }
 
-
 quint32 cDSPInterfacePrivate::setOffsetCorrection(int chn, float val)
 {
-    QString cmd, par;
-    quint32 msgnr;
-
-    msgnr = sendCommand(cmd = QString("MEM:WRIT"), par = QString("OFFSETCORRECTION+%1,%2").arg(chn).arg(val));
+    quint32 msgnr = sendCommand("MEM:WRIT", QString("OFFSETCORRECTION+%1,%2").arg(chn).arg(val));
     m_MsgNrCmdList[msgnr] = setoffsetcorrection;
     return msgnr;
 }
@@ -315,21 +272,14 @@ QList<cDspMeasData *> cDSPInterfacePrivate::getMemoryDataList() const
 
 quint32 cDSPInterfacePrivate::readDeviceVersion()
 {
-    QString cmd;
-    quint32 msgnr;
-
-    msgnr = sendCommand(cmd = QString("SYST:VERS:DEV?"));
+    quint32 msgnr = sendCommand("SYST:VERS:DEV?");
     m_MsgNrCmdList[msgnr] = readdeviceversion;
     return msgnr;
 }
 
-
 quint32 cDSPInterfacePrivate::readServerVersion()
 {
-    QString cmd;
-    quint32 msgnr;
-
-    msgnr = sendCommand(cmd = QString("SYST:VERS:SERV?"));
+    quint32 msgnr = sendCommand("SYST:VERS:SERV?");
     m_MsgNrCmdList[msgnr] = readserverversion;
     return msgnr;
 }
@@ -350,22 +300,14 @@ quint32 cDSPInterfacePrivate::resetMaximumLoad()
 
 void cDSPInterfacePrivate::receiveAnswer(std::shared_ptr<ProtobufMessage::NetMessage> message)
 {
-    if (message->has_reply())
-    {
-        quint32 lmsgnr;
+    if (message->has_reply()) {
+        quint32 lmsgnr = message->messagenr();
         QString lmsg = "";
-        quint8 lreply;
-
-        lmsgnr = message->messagenr();
-
         if (message->reply().has_body())
-        {
             lmsg = QString::fromStdString(message->reply().body());
-        }
 
-        lreply = message->reply().rtype();
+        quint8 lreply = message->reply().rtype();
         int lastCmd;
-
         if (lmsgnr == 0)
             lastCmd = dspinterrupt;
         else
