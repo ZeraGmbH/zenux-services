@@ -88,14 +88,12 @@ quint32 cDspMeasData::getumemSize()
     return size;
 }
 
-QString &cDspMeasData::VarListLong(int section)
+QString cDspMeasData::VarListLong(int section)
 {
-    sReturn = "";
+    QString sReturn;
     QTextStream ts(&sReturn, QIODevice::WriteOnly);
-    cDspVar *pDspVar;
-    for (int i = 0; i < DspVarList.size(); ++i)
-    {
-        pDspVar = DspVarList.at(i);
+    for (int i = 0; i < DspVarList.size(); ++i) {
+        cDspVar *pDspVar = DspVarList.at(i);
         if ((section & pDspVar->type()) > 0) {
             int seg;
             if (pDspVar->type() == DSPDATA::vDspTempGlobal)
@@ -108,9 +106,9 @@ QString &cDspMeasData::VarListLong(int section)
     return sReturn;
 }
 
-QString &cDspMeasData::VarListShort(int section)
+QString cDspMeasData::VarListShort(int section)
 {
-    sReturn = "";
+    QString sReturn;
     QTextStream ts(&sReturn, QIODevice::WriteOnly);
     cDspVar *pDspVar;
     for (int i = 0; i < DspVarList.size(); ++i) {
@@ -121,44 +119,35 @@ QString &cDspMeasData::VarListShort(int section)
     return sReturn;
 }
 
-QString& cDspMeasData::writeCommand()
+QString cDspMeasData::writeCommand()
 {
-    sReturn="";
+    QString sReturn;
     QTextStream ts(&sReturn, QIODevice::WriteOnly );
-
-    for (int i = 0; i < DspVarList.count(); i++)
-    {
+    for (int i = 0; i < DspVarList.count(); i++) {
         cDspVar* pVar = DspVarList.at(i);
         ts << pVar->Name();
 
         float* fval = pVar->data();
         int type = pVar->datatype();
 
-        if (type == DSPDATA::dInt)  // wir haben integer daten
-        {
+        if (type == DSPDATA::dInt) { // wir haben integer daten
             ulong* lval = (ulong*) fval;
             for (int j = 0; j < pVar->size(); j++, lval++)
                 ts << "," << *lval;
         }
-        else
-        {
+        else {
             for (int j = 0; j < pVar->size(); j++, fval++)
                 ts << "," << *fval;
         }
-
         ts << ";";
     }
-
     return sReturn;
-
 }
-
 
 QVector<float>& cDspMeasData::getData()
 {
     vector.clear();
-    for (int i = 0; i < DspVarList.count(); i++) // we fetch all data of all vars in this memory group
-    {
+    for (int i = 0; i < DspVarList.count(); i++) { // we fetch all data of all vars in this memory group
         cDspVar* pVar = DspVarList.at(i);
         float* fval = pVar->data();
         for (int j = 0; j < pVar->size(); j++, fval++)

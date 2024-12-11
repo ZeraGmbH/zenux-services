@@ -20,9 +20,9 @@ public:
     quint32 getSize(); // number of all element in this container
     quint32 getSize(QString name); // number of elements of var name in this container
     quint32 getumemSize();
-    QString& VarListLong(int section);
-    QString& VarListShort(int section);
-    QString& writeCommand();
+    QString VarListLong(int section);
+    QString VarListShort(int section);
+    QString writeCommand();
     QVector<float>& getData();
 
 private:
@@ -32,7 +32,6 @@ private:
     QString m_handleName;
     QList<cDspVar*> DspVarList;
     QVector<float> vector;
-    QString sReturn;
 };
 
 #endif // DSPMEASDATA_H
