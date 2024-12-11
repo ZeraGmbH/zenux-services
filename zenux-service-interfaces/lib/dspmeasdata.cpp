@@ -80,14 +80,11 @@ quint32 cDspMeasData::getSize(QString name)
 quint32 cDspMeasData::getumemSize()
 {
     quint32 size = 0;
-
-    if (DspVarList.count() > 0)
-    {
+    if (DspVarList.count() > 0) {
         for (int i = 0; i < DspVarList.size(); ++i)
             if (DspVarList.at(i)->type() != DSPDATA::vDspTempGlobal)
                 size += DspVarList.at(i)->size();
     }
-
     return size;
 }
 
