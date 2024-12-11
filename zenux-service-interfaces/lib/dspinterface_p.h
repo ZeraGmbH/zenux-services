@@ -90,7 +90,10 @@ public:
     quint32 setPhaseCorrection(int chn, float val); // sets phase correction for 1 channel
     quint32 setOffsetCorrection(int chn, float val); // sets offset correction for 1 channel
 
+    // Insights for tests - a compromise...
     QStringList getCyclicCmdList() const;
+    QList<cDspMeasData*> getMemoryDataList() const;
+    QString varList2String() const; // send the var-list to dsp server
 protected slots:
     void receiveAnswer(std::shared_ptr<ProtobufMessage::NetMessage> message) override;
     void receiveError(QAbstractSocket::SocketError errorCode) override;

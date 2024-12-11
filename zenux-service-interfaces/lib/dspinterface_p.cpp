@@ -57,16 +57,22 @@ quint32 cDSPInterfacePrivate::setSamplingSystem(int chncount, int samp_per, int 
     return msgnr;
 }
 
-quint32 cDSPInterfacePrivate::varList2Dsp() // the complete list has several partial lists
+QString cDSPInterfacePrivate::varList2String() const
 {
-    QString vlist;
-    QTextStream ts(&vlist, QIODevice::WriteOnly);
+    QString varList;
+    QTextStream ts(&varList, QIODevice::WriteOnly);
     cDspMeasData* pDspMeasData;
     for (int i = 0; i < m_DspMemoryDataList.count(); i++) {
         pDspMeasData = m_DspMemoryDataList.at(i);
         ts << pDspMeasData->VarListLong(DSPDATA::vDspParam | DSPDATA::vDspTemp | DSPDATA::vDspResult | DSPDATA::vDspTempGlobal);
     }
-    quint32 msgnr = sendCommand(QString("MEAS:LIST:RAVL"), vlist); // long: MEASURE:LIST:RAVLIST
+    return varList;
+}
+
+quint32 cDSPInterfacePrivate::varList2Dsp() // the complete list has several partial lists
+{
+    QString varList = varList2String();
+    quint32 msgnr = sendCommand(QString("MEAS:LIST:RAVL"), varList); // long: MEASURE:LIST:RAVLIST
     m_MsgNrCmdList[msgnr] = varlist2dsp;
     return msgnr;
 }
@@ -300,6 +306,11 @@ quint32 cDSPInterfacePrivate::setOffsetCorrection(int chn, float val)
 QStringList cDSPInterfacePrivate::getCyclicCmdList() const
 {
     return CycCmdList;
+}
+
+QList<cDspMeasData *> cDSPInterfacePrivate::getMemoryDataList() const
+{
+    return m_DspMemoryDataList;
 }
 
 quint32 cDSPInterfacePrivate::readDeviceVersion()
