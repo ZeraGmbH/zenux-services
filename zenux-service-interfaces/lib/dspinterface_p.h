@@ -90,6 +90,7 @@ public:
     quint32 setPhaseCorrection(int chn, float val); // sets phase correction for 1 channel
     quint32 setOffsetCorrection(int chn, float val); // sets offset correction for 1 channel
 
+    QStringList getCyclicCmdList() const;
 protected slots:
     void receiveAnswer(std::shared_ptr<ProtobufMessage::NetMessage> message) override;
     void receiveError(QAbstractSocket::SocketError errorCode) override;

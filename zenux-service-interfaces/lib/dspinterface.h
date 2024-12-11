@@ -31,8 +31,8 @@ public:
     quint32 cmdList2Dsp(); // send cyclic command list to the dsp server
     int cmdListCount(); // returns the number of command in cyclist program list
     void clearCmdList(); // clears all cmd lists
-    virtual void addCycListItem(QString cmd); // appends new command to cyclic list
-    virtual void addCycListItems(const QStringList &cmds); // appends new commands to cyclic list
+    void addCycListItem(QString cmd); // appends new command to cyclic list
+    void addCycListItems(const QStringList &cmds); // appends new commands to cyclic list
     cDspMeasData* getMemHandle(QString name); // init a new memory group and return handle
     void deleteMemHandle(cDspMeasData* memhandle);
     quint32 deactivateInterface(); // unload ...
@@ -43,7 +43,7 @@ public:
     virtual quint32 readMaximumLoad();
     virtual quint32 resetMaximumLoad();
 
-private:
+protected:
     Q_DECLARE_PRIVATE(cDSPInterface)
     cDSPInterfacePrivate *d_ptr;
 };

@@ -297,6 +297,10 @@ quint32 cDSPInterfacePrivate::setOffsetCorrection(int chn, float val)
     return msgnr;
 }
 
+QStringList cDSPInterfacePrivate::getCyclicCmdList() const
+{
+    return CycCmdList;
+}
 
 quint32 cDSPInterfacePrivate::readDeviceVersion()
 {
