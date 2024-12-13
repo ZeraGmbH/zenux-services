@@ -18,8 +18,9 @@ public:
 signals:
     void sigDspMemoryWrite(QString name, QVector<float> values);
     void sigDspStarted();
-private:
+protected:
     quint32 sendCmdResponse(QString answer);
+private:
     QVector<float> m_actualValues;
 };
 
