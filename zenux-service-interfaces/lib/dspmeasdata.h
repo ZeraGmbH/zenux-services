@@ -25,6 +25,8 @@ public:
     QString writeCommand();
     QVector<float>& getData();
 
+    // Test insights
+    const QList<cDspVar*> getVars() const;
 private:
     friend class MockDspInterface;
     void setData(QVector<float> data);

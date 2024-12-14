@@ -191,6 +191,18 @@ cDspMeasData* cDSPInterfacePrivate::getMemHandle(QString name)
     return pdmd;
 }
 
+cDspMeasData *cDSPInterfacePrivate::findMemHandle(QString name) const
+{
+    cDspMeasData* memHandleFound = nullptr;
+    for(int i=0; i<m_DspMemoryDataList.count(); ++i) {
+        if(m_DspMemoryDataList[i]->getName() == name) {
+            memHandleFound = m_DspMemoryDataList[i];
+            break;
+        }
+    }
+    return memHandleFound;
+}
+
 void cDSPInterfacePrivate::deleteMemHandle(cDspMeasData *memhandle)
 {
     if (m_DspMemoryDataList.contains(memhandle)) {

@@ -93,7 +93,8 @@ public:
     // Insights for tests - a compromise...
     QStringList getCyclicCmdList() const;
     QList<cDspMeasData*> getMemoryDataList() const;
-    QString varList2String() const; // send the var-list to dsp server
+    QString varList2String() const;
+    cDspMeasData* findMemHandle(QString name) const;
 protected slots:
     void receiveAnswer(std::shared_ptr<ProtobufMessage::NetMessage> message) override;
     void receiveError(QAbstractSocket::SocketError errorCode) override;

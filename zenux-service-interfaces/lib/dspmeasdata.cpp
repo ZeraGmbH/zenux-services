@@ -156,6 +156,11 @@ QVector<float>& cDspMeasData::getData()
     return vector;
 }
 
+const QList<cDspVar *> cDspMeasData::getVars() const
+{
+    return DspVarList;
+}
+
 void cDspMeasData::setData(QVector<float> data)
 {
     int valueCount = 0;
