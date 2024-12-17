@@ -14,8 +14,8 @@ void DspInterfaceCmdDecoder::setVarData(cDspMeasData *memgroup, QString datalist
                 QString strValue = *it2;
                 strValue.remove(';');
                 if (type == DSPDATA::dInt) {
-                    ulong vul = strValue.toULong(); // test auf ulong
-                    *((ulong*) val) = vul;
+                    uint vul = strValue.toUInt(); // test auf ulong
+                    *((uint*) val) = vul;
                 }
                 else
                     *val = strValue.toFloat();

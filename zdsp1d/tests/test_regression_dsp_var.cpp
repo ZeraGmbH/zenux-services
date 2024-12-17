@@ -8,6 +8,7 @@
 #include "dspinterfacecmddecoder.h"
 #include <timemachineobject.h>
 #include <tcpnetworkfactory.h>
+#include <QDataStream>
 #include <QSignalSpy>
 #include <QTest>
 
@@ -201,14 +202,11 @@ void test_regression_dsp_var::readVariablesAndListenDeviceNode()
     QCOMPARE(spyRead[5][2], 3*varSize);
 }
 
-void test_regression_dsp_var::writeVariablesAndListenDeviceNode()
+void test_regression_dsp_var::writeFloatVariablesAndListenDeviceNode()
 {
-    // Important note: With code at the time of wtiting sending multiple integers
-    // fails
     cDspMeasData* dspData = m_dspIFace->getMemHandle("readVariablesAndListenDeviceNode");
     dspData->addVarItem(new cDspVar("ONE_FLOAT", 1, DSPDATA::vDspResult, DSPDATA::dFloat));
     dspData->addVarItem(new cDspVar("TWO_FLOAT", 2, DSPDATA::vDspResult, DSPDATA::dFloat));
-    dspData->addVarItem(new cDspVar("ONE_INT", 1, DSPDATA::vDspResult, DSPDATA::dInt));
 
     m_dspIFace->varList2Dsp();
     TimeMachineObject::feedEventLoop();
@@ -217,36 +215,115 @@ void test_regression_dsp_var::writeVariablesAndListenDeviceNode()
     m_dspIFace->activateInterface();
     TimeMachineObject::feedEventLoop();
 
-    DspInterfaceCmdDecoder::setVarData(dspData, QString("ONE_FLOAT:42;"), DSPDATA::dInt);
-    DspInterfaceCmdDecoder::setVarData(dspData, QString("TWO_FLOAT:37,38;"), DSPDATA::dInt);
-    DspInterfaceCmdDecoder::setVarData(dspData, QString("ONE_INT:666;"), DSPDATA::dInt);
+    DspInterfaceCmdDecoder::setVarData(dspData, QString("ONE_FLOAT:42.1;"), DSPDATA::dFloat);
+    DspInterfaceCmdDecoder::setVarData(dspData, QString("TWO_FLOAT:37.2,38.3;"), DSPDATA::dFloat);
 
     TestDeviceNodeDspPtr deviceNode = TestSingletonDeviceNodeDsp::getInstancePtrTest();
     QSignalSpy spyWrite(deviceNode.get(), &TestDeviceNodeDsp::sigIoOperation);
     m_dspIFace->dspMemoryWrite(dspData);
     TimeMachineObject::feedEventLoop();
 
-    QCOMPARE(spyWrite.count(), 3);
+    QCOMPARE(spyWrite.count(), 2);
 
     QCOMPARE(spyWrite[0][0], "write");
     QCOMPARE(spyWrite[0][1].toInt(), startAddress);
     QByteArray data1 = spyWrite[0][2].toByteArray();
-    QCOMPARE(quint8(data1[0]), 42);
+    QCOMPARE(data1, floatToBuff(42.1));
     QCOMPARE(spyWrite[0][3], 1*varSize);
 
     QCOMPARE(spyWrite[1][0], "write");
     QCOMPARE(spyWrite[1][1], startAddress+1);
     QByteArray data2 = spyWrite[1][2].toByteArray();
-    QCOMPARE(quint8(data2[varSize*0]), 37);
-    QCOMPARE(quint8(data2[varSize*1]), 38);
+    QCOMPARE(data2, floatToBuff(37.2) + floatToBuff(38.3));
     QCOMPARE(spyWrite[1][3], 2*varSize);
+}
 
-    // TODO: What exactly are the contents we see here?
+void test_regression_dsp_var::writeIntVariablesAndListenDeviceNode()
+{
+    cDspMeasData* dspData = m_dspIFace->getMemHandle("readVariablesAndListenDeviceNode");
+    dspData->addVarItem(new cDspVar("ONE_INT", 1, DSPDATA::vDspResult, DSPDATA::dInt));
+    dspData->addVarItem(new cDspVar("TWO_INT", 2, DSPDATA::vDspResult, DSPDATA::dInt));
+
+    m_dspIFace->varList2Dsp();
+    TimeMachineObject::feedEventLoop();
+    // Calling activateInterface is important - otherwise addresses are not initalized
+    // and all variables start on address 0
+    m_dspIFace->activateInterface();
+    TimeMachineObject::feedEventLoop();
+
+    DspInterfaceCmdDecoder::setVarData(dspData, QString("ONE_INT:666;"), DSPDATA::dInt);
+    DspInterfaceCmdDecoder::setVarData(dspData, QString("TWO_INT:37,999;"), DSPDATA::dInt);
+
+    TestDeviceNodeDspPtr deviceNode = TestSingletonDeviceNodeDsp::getInstancePtrTest();
+    QSignalSpy spyWrite(deviceNode.get(), &TestDeviceNodeDsp::sigIoOperation);
+    m_dspIFace->dspMemoryWrite(dspData);
+    TimeMachineObject::feedEventLoop();
+
+    QCOMPARE(spyWrite.count(), 2);
+
+    QCOMPARE(spyWrite[0][0], "write");
+    QCOMPARE(spyWrite[0][1], startAddress);
+    QByteArray data1 = spyWrite[0][2].toByteArray();
+    QCOMPARE(data1, intToBuff(666));
+    QCOMPARE(spyWrite[0][3], varSize);
+
+    QCOMPARE(spyWrite[1][0], "write");
+    QCOMPARE(spyWrite[1][1], startAddress+1);
+    QByteArray data2 = spyWrite[1][2].toByteArray();
+    QCOMPARE(data2, intToBuff(37) + intToBuff(999));
+    QCOMPARE(spyWrite[1][3], 2*varSize);
+}
+
+void test_regression_dsp_var::writeMixVariablesAndListenDeviceNode()
+{
+    cDspMeasData* dspData = m_dspIFace->getMemHandle("readVariablesAndListenDeviceNode");
+    dspData->addVarItem(new cDspVar("ONE_FLOAT", 1, DSPDATA::vDspResult, DSPDATA::dFloat));
+    dspData->addVarItem(new cDspVar("ONE_INT", 1, DSPDATA::vDspResult, DSPDATA::dInt));
+    dspData->addVarItem(new cDspVar("TWO_FLOAT", 2, DSPDATA::vDspResult, DSPDATA::dFloat));
+    dspData->addVarItem(new cDspVar("TWO_INT", 2, DSPDATA::vDspResult, DSPDATA::dInt));
+
+    m_dspIFace->varList2Dsp();
+    TimeMachineObject::feedEventLoop();
+    // Calling activateInterface is important - otherwise addresses are not initalized
+    // and all variables start on address 0
+    m_dspIFace->activateInterface();
+    TimeMachineObject::feedEventLoop();
+
+    DspInterfaceCmdDecoder::setVarData(dspData, QString("ONE_FLOAT:42.1;"), DSPDATA::dFloat);
+    DspInterfaceCmdDecoder::setVarData(dspData, QString("ONE_INT:666;"), DSPDATA::dInt);
+    DspInterfaceCmdDecoder::setVarData(dspData, QString("TWO_FLOAT:37.2,38.3;"), DSPDATA::dFloat);
+    DspInterfaceCmdDecoder::setVarData(dspData, QString("TWO_INT:37,999;"), DSPDATA::dInt);
+
+    TestDeviceNodeDspPtr deviceNode = TestSingletonDeviceNodeDsp::getInstancePtrTest();
+    QSignalSpy spyWrite(deviceNode.get(), &TestDeviceNodeDsp::sigIoOperation);
+    m_dspIFace->dspMemoryWrite(dspData);
+    TimeMachineObject::feedEventLoop();
+
+    QCOMPARE(spyWrite.count(), 4);
+
+    QCOMPARE(spyWrite[0][0], "write");
+    QCOMPARE(spyWrite[0][1].toInt(), startAddress);
+    QByteArray data1 = spyWrite[0][2].toByteArray();
+    QCOMPARE(data1, floatToBuff(42.1));
+    QCOMPARE(spyWrite[0][3], 1*varSize);
+
+    QCOMPARE(spyWrite[1][0], "write");
+    QCOMPARE(spyWrite[1][1], startAddress+1);
+    QByteArray data2 = spyWrite[1][2].toByteArray();
+    QCOMPARE(data2, intToBuff(666));
+    QCOMPARE(spyWrite[1][3], varSize);
+
     QCOMPARE(spyWrite[2][0], "write");
-    QCOMPARE(spyWrite[2][1], startAddress+1+2);
+    QCOMPARE(spyWrite[2][1], startAddress+1+1);
     QByteArray data3 = spyWrite[2][2].toByteArray();
-    QCOMPARE(quint8(data3[varSize*0]), 154);
-    QCOMPARE(spyWrite[2][3], varSize);
+    QCOMPARE(data3, floatToBuff(37.2) + floatToBuff(38.3));
+    QCOMPARE(spyWrite[2][3], 2*varSize);
+
+    QCOMPARE(spyWrite[3][0], "write");
+    QCOMPARE(spyWrite[3][1], startAddress+1+1+2);
+    QByteArray data4 = spyWrite[3][2].toByteArray();
+    QCOMPARE(data4, intToBuff(37) + intToBuff(999));
+    QCOMPARE(spyWrite[3][3], 2*varSize);
 }
 
 void test_regression_dsp_var::multipleClientsCreateResultVars()
@@ -303,4 +380,24 @@ void test_regression_dsp_var::multipleClientsCreateResultVars()
     dspIFace2->dspMemoryRead(dspData1);
     TimeMachineObject::feedEventLoop();
     QCOMPARE(spyRead2[0][2].toString(), "errexec");
+}
+
+QByteArray test_regression_dsp_var::floatToBuff(float value)
+{
+    QByteArray buffer(4, 0);
+    QDataStream bas (&buffer, QIODevice::Unbuffered | QIODevice::ReadWrite);
+    bas.setByteOrder(QDataStream::LittleEndian);
+    bas.setFloatingPointPrecision(QDataStream::SinglePrecision);
+    bas << value;
+    return buffer;
+}
+
+QByteArray test_regression_dsp_var::intToBuff(qint32 value)
+{
+    QByteArray buffer(4, 0);
+    QDataStream bas (&buffer, QIODevice::Unbuffered | QIODevice::ReadWrite);
+    bas.setByteOrder(QDataStream::LittleEndian);
+    bas.setFloatingPointPrecision(QDataStream::SinglePrecision);
+    bas << value;
+    return buffer;
 }

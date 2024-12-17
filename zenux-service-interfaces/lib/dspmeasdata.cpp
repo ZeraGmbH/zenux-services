@@ -131,7 +131,7 @@ QString cDspMeasData::writeCommand()
         int type = pVar->datatype();
 
         if (type == DSPDATA::dInt) { // wir haben integer daten
-            ulong* lval = (ulong*) fval;
+            uint* lval = (uint*) fval;
             for (int j = 0; j < pVar->size(); j++, lval++)
                 ts << "," << *lval;
         }

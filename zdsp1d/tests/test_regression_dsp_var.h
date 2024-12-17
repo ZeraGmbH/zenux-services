@@ -20,10 +20,15 @@ private slots:
     void globalVariablesAreNotSharedByDefault();
 
     void readVariablesAndListenDeviceNode(); // we learned dspMemoryRead details by this
-    void writeVariablesAndListenDeviceNode();
+    void writeFloatVariablesAndListenDeviceNode();
+    void writeIntVariablesAndListenDeviceNode();
+    void writeMixVariablesAndListenDeviceNode();
 
     void multipleClientsCreateResultVars();
 private:
+    QByteArray floatToBuff(float value);
+    QByteArray intToBuff(qint32 value);
+
     std::unique_ptr<ResmanRunFacade> m_resmanServer;
     std::unique_ptr<MockZdsp1d> m_dspService;
     Zera::ProxyClientPtr m_proxyClient;
