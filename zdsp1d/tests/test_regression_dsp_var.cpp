@@ -5,7 +5,6 @@
 #include "testdevicenodedsp.h"
 #include "testfactorydevicenodedsp.h"
 #include "testsingletondevicenodedsp.h"
-#include "dspinterfacecmddecoder.h"
 #include <timemachineobject.h>
 #include <tcpnetworkfactory.h>
 #include <QDataStream>
@@ -215,8 +214,8 @@ void test_regression_dsp_var::writeFloatVariablesAndListenDeviceNode()
     m_dspIFace->activateInterface();
     TimeMachineObject::feedEventLoop();
 
-    DspInterfaceCmdDecoder::setVarData(dspData, QString("ONE_FLOAT:42.1;"), DSPDATA::dFloat);
-    DspInterfaceCmdDecoder::setVarData(dspData, QString("TWO_FLOAT:37.2,38.3;"), DSPDATA::dFloat);
+    dspData->setVarData("ONE_FLOAT:42.1;");
+    dspData->setVarData("TWO_FLOAT:37.2,38.3;");
 
     TestDeviceNodeDspPtr deviceNode = TestSingletonDeviceNodeDsp::getInstancePtrTest();
     QSignalSpy spyWrite(deviceNode.get(), &TestDeviceNodeDsp::sigIoOperation);
@@ -251,8 +250,8 @@ void test_regression_dsp_var::writeIntVariablesAndListenDeviceNode()
     m_dspIFace->activateInterface();
     TimeMachineObject::feedEventLoop();
 
-    DspInterfaceCmdDecoder::setVarData(dspData, QString("ONE_INT:666;"), DSPDATA::dInt);
-    DspInterfaceCmdDecoder::setVarData(dspData, QString("TWO_INT:37,999;"), DSPDATA::dInt);
+    dspData->setVarData("ONE_INT:666;");
+    dspData->setVarData("TWO_INT:37,999;");
 
     TestDeviceNodeDspPtr deviceNode = TestSingletonDeviceNodeDsp::getInstancePtrTest();
     QSignalSpy spyWrite(deviceNode.get(), &TestDeviceNodeDsp::sigIoOperation);
@@ -289,10 +288,10 @@ void test_regression_dsp_var::writeMixVariablesAndListenDeviceNode()
     m_dspIFace->activateInterface();
     TimeMachineObject::feedEventLoop();
 
-    DspInterfaceCmdDecoder::setVarData(dspData, QString("ONE_FLOAT:42.1;"), DSPDATA::dFloat);
-    DspInterfaceCmdDecoder::setVarData(dspData, QString("ONE_INT:666;"), DSPDATA::dInt);
-    DspInterfaceCmdDecoder::setVarData(dspData, QString("TWO_FLOAT:37.2,38.3;"), DSPDATA::dFloat);
-    DspInterfaceCmdDecoder::setVarData(dspData, QString("TWO_INT:37,999;"), DSPDATA::dInt);
+    dspData->setVarData("ONE_FLOAT:42.1;");
+    dspData->setVarData("ONE_INT:666;");
+    dspData->setVarData("TWO_FLOAT:37.2,38.3;");
+    dspData->setVarData("TWO_INT:37,999;");
 
     TestDeviceNodeDspPtr deviceNode = TestSingletonDeviceNodeDsp::getInstancePtrTest();
     QSignalSpy spyWrite(deviceNode.get(), &TestDeviceNodeDsp::sigIoOperation);

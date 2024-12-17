@@ -1,6 +1,5 @@
 #include "dspinterface_p.h"
 #include "dspinterface.h"
-#include "dspinterfacecmddecoder.h"
 #include "variantconverter.h"
 #include <netmessages.pb.h>
 
@@ -363,7 +362,8 @@ void cDSPInterfacePrivate::receiveAnswer(std::shared_ptr<ProtobufMessage::NetMes
         case dspmemoryread: {
             cDspMeasData* actMemGroup = m_MsgNrMeasData.take(lmsgnr);
             DSPDATA::dType actMemType = m_MsgNrMemType.take(lmsgnr);
-            DspInterfaceCmdDecoder::setVarData(actMemGroup, lmsg, actMemType);
+            Q_UNUSED(actMemType)
+            actMemGroup->setVarData(lmsg);
             emit q->serverAnswer(lmsgnr, 0, VariantConverter::returnString(lmsg));
             break;
         }

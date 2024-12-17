@@ -12,14 +12,15 @@ public:
     cDspMeasData(QString name);
     ~cDspMeasData();
 
+    void addVarItem(cDspVar*);
+
     // Nightmare candidate: Make it go!!!
     float* data(QString name);
+    void setVarData(QString datalist); // expected 'Name1:0.2,0.4,0,3;Name2:1,2,3;' ......
 
-    void addVarItem(cDspVar*);
     QString getName();
-    quint32 getSize(); // number of all element in this container
-    quint32 getSize(QString name); // number of elements of var name in this container
-    quint32 getumemSize();
+    quint32 getSize();
+    quint32 getUserMemSize();
     QString VarListLong(int section);
     QString VarListShort(int section);
     QString writeCommand();
@@ -28,6 +29,7 @@ public:
     // Test insights
     const QList<cDspVar*> getVars() const;
 private:
+    cDspVar* findVar(QString varName);
     friend class MockDspInterface;
     void setData(QVector<float> data);
 

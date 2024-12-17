@@ -36,6 +36,31 @@ float* cDspMeasData::data(QString name) // gibt einen zeiger zurück auf die var
     return 0; // caller has to pay attention !!!!!
 }
 
+void cDspMeasData::setVarData(QString datalist)
+{
+    const QStringList dataEntryList = datalist.split(";", Qt::SkipEmptyParts);
+    for (const QString &dspVarEntry : dataEntryList) {
+        QString varName = dspVarEntry.section(":",0,0);
+        cDspVar* dspVar = findVar(varName);
+        if(dspVar) {
+            QString varValues = dspVarEntry.section(":",1,1);
+            float *val = dspVar->data();
+            int datatype = dspVar->datatype();
+            QStringList valueList = varValues.split(",");
+            for(QStringList::Iterator it2 = valueList.begin(); it2 != valueList.end(); ++it2,val++ ) {
+                QString strValue = *it2;
+                strValue.remove(';');
+                if (datatype == DSPDATA::dInt) {
+                    uint vul = strValue.toUInt(); // test auf ulong
+                    *((uint*) val) = vul;
+                }
+                else
+                    *val = strValue.toFloat();
+            }
+        }
+    }
+}
+
 void cDspMeasData::addVarItem(cDspVar* varItem)
 {
     DspVarList.append(varItem);
@@ -49,42 +74,17 @@ QString cDspMeasData::getName()
 quint32 cDspMeasData::getSize()
 {
     quint32 size = 0;
+    for (int i = 0; i < DspVarList.size(); ++i)
+        size += DspVarList.at(i)->size();
+    return size;
+}
 
-    if (DspVarList.count() > 0)
-    {
-        for (int i = 0; i < DspVarList.size(); ++i)
+quint32 cDspMeasData::getUserMemSize()
+{
+    quint32 size = 0;
+    for(int i = 0; i < DspVarList.size(); ++i)
+        if (DspVarList.at(i)->type() != DSPDATA::vDspTempGlobal)
             size += DspVarList.at(i)->size();
-    }
-    return size;
-}
-
-quint32 cDspMeasData::getSize(QString name)
-{
-    quint32 size = 0;
-
-    if (DspVarList.count() > 0)
-    {
-        cDspVar* pDspVar;
-        for (int i = 0; i < DspVarList.size(); ++i)
-        {
-            pDspVar = DspVarList.at(i);
-            if (pDspVar->Name() == name)
-                return pDspVar->size();
-        }
-    }
-
-    return size;
-}
-
-
-quint32 cDspMeasData::getumemSize()
-{
-    quint32 size = 0;
-    if (DspVarList.count() > 0) {
-        for (int i = 0; i < DspVarList.size(); ++i)
-            if (DspVarList.at(i)->type() != DSPDATA::vDspTempGlobal)
-                size += DspVarList.at(i)->size();
-    }
     return size;
 }
 
@@ -127,17 +127,18 @@ QString cDspMeasData::writeCommand()
         cDspVar* pVar = DspVarList.at(i);
         ts << pVar->Name();
 
-        float* fval = pVar->data();
+        float* floatPointer = pVar->data();
         int type = pVar->datatype();
 
         if (type == DSPDATA::dInt) { // wir haben integer daten
-            uint* lval = (uint*) fval;
-            for (int j = 0; j < pVar->size(); j++, lval++)
+            for (int j = 0; j < pVar->size(); j++, floatPointer++) {
+                uint* lval = (uint*) floatPointer;
                 ts << "," << *lval;
+            }
         }
         else {
-            for (int j = 0; j < pVar->size(); j++, fval++)
-                ts << "," << *fval;
+            for (int j = 0; j < pVar->size(); j++, floatPointer++)
+                ts << "," << *floatPointer;
         }
         ts << ";";
     }
@@ -159,6 +160,16 @@ QVector<float>& cDspMeasData::getData()
 const QList<cDspVar *> cDspMeasData::getVars() const
 {
     return DspVarList;
+}
+
+cDspVar *cDspMeasData::findVar(QString varName)
+{
+    for(int i = 0; i < DspVarList.size(); ++i) {
+        cDspVar* pDspVar = DspVarList.at(i);
+        if (pDspVar->Name() == varName)
+            return pDspVar;
+    }
+    return nullptr;
 }
 
 void cDspMeasData::setData(QVector<float> data)
