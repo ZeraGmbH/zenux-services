@@ -1,10 +1,9 @@
 #include "sec1000statusinterface.h"
 #include "zscpi_response_definitions.h"
 #include "protonetcommand.h"
-#include "scpisingletonfactory.h"
 
-Sec1000StatusInterface::Sec1000StatusInterface() :
-    ScpiConnection(ScpiSingletonFactory::getScpiObj())
+Sec1000StatusInterface::Sec1000StatusInterface(cSCPI *scpiTree) :
+    ScpiConnection(scpiTree)
 {
 }
 

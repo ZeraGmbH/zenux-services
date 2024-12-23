@@ -25,7 +25,7 @@ class cSystemInterface: public ScpiConnection
     Q_OBJECT
 
 public:
-    cSystemInterface(cSEC1000dServer* server, Sec1000SystemInfo* sInfo);
+    cSystemInterface(cSEC1000dServer* server, Sec1000SystemInfo* sInfo, cSCPI *scpiTree);
     virtual void initSCPIConnection(QString leadingNodes) override;
 protected:
     void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;

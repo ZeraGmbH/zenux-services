@@ -5,10 +5,9 @@
 #include "protonetcommand.h"
 #include <scpi.h>
 #include <scpicommand.h>
-#include <scpisingletonfactory.h>
 
-cSystemInterface::cSystemInterface(cSEC1000dServer *server, Sec1000SystemInfo *sInfo) :
-    ScpiConnection(ScpiSingletonFactory::getScpiObj()),
+cSystemInterface::cSystemInterface(cSEC1000dServer *server, Sec1000SystemInfo *sInfo, cSCPI* scpiTree) :
+    ScpiConnection(scpiTree),
     m_pMyServer(server),
     m_pSystemInfo(sInfo)
 {
@@ -149,7 +148,7 @@ QString cSystemInterface::m_InterfaceRead(QString &sInput)
     cSCPICommand cmd = sInput;
     if (cmd.isQuery()) {
         QString s;
-        ScpiSingletonFactory::getScpiObj()->exportSCPIModelXML(s);
+        m_pSCPIInterface->exportSCPIModelXML(s);
         return s;
     }
     else

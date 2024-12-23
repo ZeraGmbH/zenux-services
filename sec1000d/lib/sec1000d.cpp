@@ -152,9 +152,10 @@ void cSEC1000dServer::doSetupServer()
         setupServer(); // here our scpi interface gets instanciated, we need this for further steps
 
         scpiConnectionList.append(this); // the server itself has some commands
-        scpiConnectionList.append(m_pStatusInterface = new Sec1000StatusInterface());
-        scpiConnectionList.append(m_pSystemInterface = new cSystemInterface(this, m_pSystemInfo));
-        scpiConnectionList.append(m_pECalculatorInterface = new SecGroupResourceAndInterface(m_pECalcSettings,
+        scpiConnectionList.append(m_pStatusInterface = new Sec1000StatusInterface(m_pSCPIInterface));
+        scpiConnectionList.append(m_pSystemInterface = new cSystemInterface(this, m_pSystemInfo, m_pSCPIInterface));
+        scpiConnectionList.append(m_pECalculatorInterface = new SecGroupResourceAndInterface(m_pSCPIInterface,
+                                                                                             m_pECalcSettings,
                                                                                              m_pInputSettings,
                                                                                              SigHandler,
                                                                                              m_deviceNodeFactory));

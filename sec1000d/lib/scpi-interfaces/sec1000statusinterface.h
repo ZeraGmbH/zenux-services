@@ -20,7 +20,7 @@ class Sec1000StatusInterface: public ScpiConnection
 {
     Q_OBJECT
 public:
-    Sec1000StatusInterface();
+    Sec1000StatusInterface(cSCPI *scpiTree);
     virtual void initSCPIConnection(QString leadingNodes) override;
 protected:
     void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;

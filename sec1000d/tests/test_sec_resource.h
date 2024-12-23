@@ -20,9 +20,11 @@ private slots:
     void freeChannelsFromInvalidPeer();
 private:
     QString sendScpiCommand(VeinTcp::TcpPeer *peer, QByteArray clientID, QString cmd);
+
     std::unique_ptr<Zera::XMLConfig::cReader> m_xmlConfigReader;
     std::unique_ptr<SecCalculatorSettings> m_ecalcSettings;
     std::unique_ptr<SecInputSettings> m_inputSettings;
+    std::unique_ptr<cSCPI> m_scpiTree;
     std::unique_ptr<SecGroupResourceAndInterface> m_secResource;
 };
 

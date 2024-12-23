@@ -31,7 +31,8 @@ class SecGroupResourceAndInterface : public cResource
     Q_OBJECT
 
 public:
-    SecGroupResourceAndInterface(SecCalculatorSettings* ecalcSettings,
+    SecGroupResourceAndInterface(cSCPI *scpiTree,
+                                 SecCalculatorSettings* ecalcSettings,
                                  SecInputSettings* inputsettings,
                                  std::function<void(int)> funcSigHandler,
                                  AbstractFactoryDeviceNodeSecPtr deviceNodeFactory);

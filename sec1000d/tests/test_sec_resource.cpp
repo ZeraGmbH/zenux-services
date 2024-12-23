@@ -1,6 +1,5 @@
 #include "test_sec_resource.h"
 #include "mockfactorydevicenodesec.h"
-#include "scpisingletonfactory.h"
 #include "zscpi_response_definitions.h"
 #include <timemachineobject.h>
 #include <QTest>
@@ -22,7 +21,9 @@ void test_sec_resource::init()
     connect(m_xmlConfigReader.get(),&Zera::XMLConfig::cReader::valueChanged,m_inputSettings.get(),&SecInputSettings::configXMLInfo);
     m_xmlConfigReader->loadXMLFile(QStringLiteral(CONFIG_SOURCES_SEC1000D) + "/" + "sec1000d.xml");
     TimeMachineObject::feedEventLoop();
+    m_scpiTree = std::make_unique<cSCPI>();
     m_secResource = std::make_unique<SecGroupResourceAndInterface>(
+        m_scpiTree.get(),
         m_ecalcSettings.get(),
         m_inputSettings.get(),
         nullptr,
@@ -42,7 +43,7 @@ void test_sec_resource::cleanup()
 QString test_sec_resource::sendScpiCommand(VeinTcp::TcpPeer *peer, QByteArray clientID, QString cmd)
 {
     cProtonetCommand protoCmd(peer, false, false, clientID, 0, cmd);
-    cSCPIObject* scpiObject = ScpiSingletonFactory::getScpiObj()->getSCPIObject(cmd);
+    cSCPIObject *scpiObject = m_scpiTree->getSCPIObject(cmd);
     cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
     scpiDelegate->executeSCPI(&protoCmd);
     return protoCmd.m_sOutput;

@@ -3,7 +3,6 @@
 #include "scpiconnection.h"
 #include "secinputsettings.h"
 #include "protonetcommand.h"
-#include "scpisingletonfactory.h"
 #include <scpi.h>
 #include <scpicommand.h>
 #include <QList>
@@ -18,8 +17,13 @@ namespace ECALCCMDID {
 enum { COUNTEDGE = 1, COUNTRESET, ERRORMEASMASTER, ERRORMEASSLAVE};
 }
 
-SecChannel::SecChannel(SecCalculatorSettings* esettings, SecInputSettings *inpsettings, quint16 nr, std::function<void (int)> funcSigHandler, AbstractFactoryDeviceNodeSecPtr deviceNodeFactory) :
-    ScpiConnection(ScpiSingletonFactory::getScpiObj()),
+SecChannel::SecChannel(SecCalculatorSettings* esettings,
+                       SecInputSettings *inpsettings,
+                       quint16 nr,
+                       cSCPI* scpiTree,
+                       std::function<void (int)> funcSigHandler,
+                       AbstractFactoryDeviceNodeSecPtr deviceNodeFactory) :
+    ScpiConnection(scpiTree),
     m_deviceNodeFactory(deviceNodeFactory),
     m_pecalcsettings(esettings),
     m_pInputSettings(inpsettings),

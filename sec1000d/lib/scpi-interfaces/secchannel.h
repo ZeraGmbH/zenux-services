@@ -33,7 +33,7 @@ class SecChannel : public ScpiConnection
 public:
     SecChannel(SecCalculatorSettings* esettings,
                SecInputSettings* inpsettings,
-               quint16 nr,
+               quint16 nr, cSCPI *scpiTree,
                std::function<void(int)> funcSigHandler,
                AbstractFactoryDeviceNodeSecPtr deviceNodeFactory);
     ~SecChannel();
