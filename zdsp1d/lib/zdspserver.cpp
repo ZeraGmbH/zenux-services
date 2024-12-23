@@ -1298,17 +1298,25 @@ void ZDspServer::executeCommandProto(VeinTcp::TcpPeer *peer, std::shared_ptr<goo
             quint32 messageNr = protobufCommand->messagenr();
             ProtobufMessage::NetMessage::ScpiCommand scpiCmd = protobufCommand->scpi();
 
+            if (!m_zdspdClientHash.contains(clientId)) { // we didn't get any command from here yet
+                cZDSP1Client *zdspclient = AddClient(peer); // we add a new client with the same socket but different identifier
+                m_zdspdClientHash[clientId] = zdspclient;
+                m_clientIDHash[zdspclient] = clientId; // we need this list in case of interrupts
+            }
+
             // --- new scpi stolen from PCBServer::executeCommandProto ---
-            cProtonetCommand* protoCmd;
             QString scpiInput = QString::fromStdString(scpiCmd.command()) +  " " + QString::fromStdString(scpiCmd.parameter());
             cSCPIObject* scpiObject =  m_pSCPIInterface->getSCPIObject(scpiInput);
             if (scpiObject) {
-                protoCmd = new cProtonetCommand(peer, true, true, clientId, messageNr, scpiInput, scpiObject->getType());
                 cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
-                if (!scpiDelegate->executeSCPI(protoCmd)) {
+                cProtonetCommand* protoCmd = new cProtonetCommand(peer, true, true, clientId, messageNr, scpiInput, scpiObject->getType());
+                if (scpiDelegate->executeSCPI(protoCmd))
+                    emit cmdExecutionDone(protoCmd);
+                else {
                     protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::nak];
                     emit cmdExecutionDone(protoCmd);
                 }
+                return; // for now
             }
             // As long as old scpi is around nak is not a good idea
             /*else {
@@ -1317,13 +1325,7 @@ void ZDspServer::executeCommandProto(VeinTcp::TcpPeer *peer, std::shared_ptr<goo
                 emit cmdExecutionDone(protoCmd);
             }*/
 
-
-            if (!m_zdspdClientHash.contains(clientId)) { // we didn't get any command from here yet
-                cZDSP1Client *zdspclient = AddClient(peer); // we add a new client with the same socket but different identifier
-                m_zdspdClientHash[clientId] = zdspclient;
-                m_clientIDHash[zdspclient] = clientId; // we need this list in case of interrupts
-            }
-
+            // Old SCPI
             m_actualSocket = m_zdspdClientHash[clientId]->getSocket(); // we set the actual socket (identifier) we have to work on
             QString input = QString::fromStdString(scpiCmd.command()) +  " " + QString::fromStdString(scpiCmd.parameter());
             QString output = m_cmdInterpreter->CmdExecute(input);
