@@ -12,7 +12,8 @@ class ScInGroupResourceAndInterface : public cResource
     Q_OBJECT
 public:
     const QString Version = "V1.00";
-    ScInGroupResourceAndInterface(cSCPI *scpiInterface, ScInSettings *settings);
+    ScInGroupResourceAndInterface(std::shared_ptr<cSCPI> scpiInterface,
+                                  ScInSettings *settings);
     ~ScInGroupResourceAndInterface();
     void initSCPIConnection(QString leadingNodes) override;
     void registerResource(RMConnection *rmConnection, quint16 port) override;

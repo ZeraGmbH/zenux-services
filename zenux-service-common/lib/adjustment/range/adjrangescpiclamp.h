@@ -14,10 +14,10 @@ class AdjRangeScpiClamp: public AdjRangeScpi
 {
     Q_OBJECT
 public:
-    AdjRangeScpiClamp(cSCPI* scpiinterface,
-                   SenseRangeCommon* cascadedRange,
-                   double cvRatio,
-                   PermissionStructAdj permission = PermissionStructAdj());
+    AdjRangeScpiClamp(std::shared_ptr<cSCPI> scpiinterface,
+                      SenseRangeCommon* cascadedRange,
+                      double cvRatio,
+                      PermissionStructAdj permission = PermissionStructAdj());
 
 protected:
     virtual double getGainCorrectionTotal(double par) override;

@@ -21,7 +21,7 @@ private slots:
     void checkAtmelSelectionCode();
     void checkTypeOrMask();
 private:
-    cSCPI *m_scpi;
+    std::shared_ptr<cSCPI> m_scpiInterface;
     SenseRangeCommon *m_range;
 };
 

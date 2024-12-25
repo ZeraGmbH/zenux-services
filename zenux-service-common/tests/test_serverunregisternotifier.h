@@ -22,7 +22,6 @@ private slots:
 private:
     cSCPIDelegate* getDelegate(QString cmd);
 
-    cSCPI m_scpiInterface;
     std::unique_ptr<TestPcbServerNotifications> m_pcbServerTest;
     std::unique_ptr<TestAdjustmentStatusInterfaceNull> m_adjustmentStatusNull;
     AbstractFactoryI2cCtrlPtr m_ctrlFactory;

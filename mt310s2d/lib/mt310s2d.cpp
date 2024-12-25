@@ -18,7 +18,6 @@
 #include "scinsettings.h"
 #include "sensesettings.h"
 #include "foutsettings.h"
-#include <scpisingletonfactory.h>
 #include <xmlconfigreader.h>
 #include <vtcp_server.h>
 #include <QSocketNotifier>
@@ -48,7 +47,7 @@ cMT310S2dServer::cMT310S2dServer(SettingsContainerPtr settings,
                                  AbstractFactoryI2cCtrlPtr ctrlFactory,
                                  AbstractFactoryDeviceNodePcbPtr deviceNodeFactory,
                                  VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory) :
-    PCBServer(std::move(settings), ScpiSingletonFactory::getScpiObj(), tcpNetworkFactory),
+    PCBServer(std::move(settings), tcpNetworkFactory),
     m_ctrlFactory(ctrlFactory),
     m_deviceNodeFactory(deviceNodeFactory),
     m_i2cCtrlCpuTemperature(ctrlFactory->getCpuTemperatureController())
@@ -209,12 +208,12 @@ void cMT310S2dServer::doSetupServer()
 
             scpiConnectionList.append(this); // the server itself has some commands
             I2cSettings *i2cSettings = m_settings->getI2cSettings();
-            scpiConnectionList.append(m_pSenseInterface = new Mt310s2SenseInterface(getSCPIInterface(),
+            scpiConnectionList.append(m_pSenseInterface = new Mt310s2SenseInterface(m_scpiInterface,
                                                                                     i2cSettings,
                                                                                     m_pSenseSettings,
                                                                                     m_pSystemInfo,
                                                                                     m_ctrlFactory));
-            scpiConnectionList.append(m_pStatusInterface = new ServiceStatusInterface(getSCPIInterface(), m_pSenseInterface, m_ctrlFactory));
+            scpiConnectionList.append(m_pStatusInterface = new ServiceStatusInterface(m_scpiInterface, m_pSenseInterface, m_ctrlFactory));
             HotPluggableControllerContainerPtr emobControllerContainer =
                     std::make_unique<HotPluggableControllerContainer>(i2cSettings,
                                                                       m_ctrlFactory);
@@ -224,17 +223,17 @@ void cMT310S2dServer::doSetupServer()
                                                                                       m_pSenseInterface,
                                                                                       m_ctrlFactory,
                                                                                       std::move(emobControllerContainer)));
-            scpiConnectionList.append(m_pSamplingInterface = new cSamplingInterface(getSCPIInterface(), m_settings->getSamplingSettings(), m_ctrlFactory));
-            scpiConnectionList.append(m_foutInterface = new FOutGroupResourceAndInterface(getSCPIInterface(), m_foutSettings));
-            scpiConnectionList.append(m_pFRQInputInterface = new FInGroupResourceAndInterface(getSCPIInterface(), m_finSettings));
-            scpiConnectionList.append(m_pSCHeadInterface = new ScInGroupResourceAndInterface(getSCPIInterface(), m_pSCHeadSettings));
-            scpiConnectionList.append(m_hkInInterface = new HkInGroupResourceAndInterface(getSCPIInterface(), m_hkInSettings));
+            scpiConnectionList.append(m_pSamplingInterface = new cSamplingInterface(m_scpiInterface, m_settings->getSamplingSettings(), m_ctrlFactory));
+            scpiConnectionList.append(m_foutInterface = new FOutGroupResourceAndInterface(m_scpiInterface, m_foutSettings));
+            scpiConnectionList.append(m_pFRQInputInterface = new FInGroupResourceAndInterface(m_scpiInterface, m_finSettings));
+            scpiConnectionList.append(m_pSCHeadInterface = new ScInGroupResourceAndInterface(m_scpiInterface, m_pSCHeadSettings));
+            scpiConnectionList.append(m_hkInInterface = new HkInGroupResourceAndInterface(m_scpiInterface, m_hkInSettings));
             scpiConnectionList.append(m_pClampInterface = new cClampInterface(this,
                                                                               i2cSettings,
                                                                               m_pSenseSettings,
                                                                               m_pSenseInterface,
                                                                               m_ctrlFactory));
-            scpiConnectionList.append(m_accumulatorInterface = new AccumulatorInterface(getSCPIInterface(), m_accumulatorSettings, m_ctrlFactory));
+            scpiConnectionList.append(m_accumulatorInterface = new AccumulatorInterface(m_scpiInterface, m_accumulatorSettings, m_ctrlFactory));
             connect(m_accumulatorInterface, &AccumulatorInterface::sigAccumulatorStatusChange,
                     m_pSystemInterface, &Mt310s2SystemInterface::onAccuStatusChanged);
 

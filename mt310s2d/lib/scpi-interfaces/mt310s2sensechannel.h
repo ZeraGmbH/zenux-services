@@ -9,7 +9,7 @@ class Mt310s2SenseChannel : public SenseChannelCommon
 {
     Q_OBJECT
 public:
-    Mt310s2SenseChannel(cSCPI* scpiinterface,
+    Mt310s2SenseChannel(std::shared_ptr<cSCPI> scpiinterface,
                         QString description,
                         QString unit,
                         SenseSystem::cChannelSettings* cSettings,

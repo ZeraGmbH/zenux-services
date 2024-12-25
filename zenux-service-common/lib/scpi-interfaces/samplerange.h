@@ -7,7 +7,10 @@ class cSampleRange: public ScpiConnection
 {
     Q_OBJECT
 public:
-    cSampleRange(cSCPI* scpiinterface, QString name, quint16 srate, quint8 selcode);
+    cSampleRange(std::shared_ptr<cSCPI> scpiinterface,
+                 QString name,
+                 quint16 srate,
+                 quint8 selcode);
     virtual void initSCPIConnection(QString leadingNodes) override;
     QString &getName();
     quint8 getSelCode();

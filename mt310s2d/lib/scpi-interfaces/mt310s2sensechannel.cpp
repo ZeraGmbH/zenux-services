@@ -2,7 +2,7 @@
 #include "senserangecommon.h"
 #include "zscpi_response_definitions.h"
 
-Mt310s2SenseChannel::Mt310s2SenseChannel(cSCPI* scpiinterface,
+Mt310s2SenseChannel::Mt310s2SenseChannel(std::shared_ptr<cSCPI> scpiinterface,
                                          QString description,
                                          QString unit,
                                          SenseSystem::cChannelSettings *cSettings,

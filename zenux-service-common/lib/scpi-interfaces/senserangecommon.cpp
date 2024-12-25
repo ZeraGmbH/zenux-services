@@ -4,7 +4,7 @@
 const char* SenseRangeCommon::rangeNameCurrentNull = "0A";
 const char* SenseRangeCommon::rangeAliasNull = "--";
 
-SenseRangeCommon::SenseRangeCommon(cSCPI *scpiInterface,
+SenseRangeCommon::SenseRangeCommon(std::shared_ptr<cSCPI> scpiInterface,
                                    QString name,
                                    bool avail,
                                    double upperRangeValue,
@@ -38,13 +38,13 @@ SenseRangeCommon::~SenseRangeCommon()
 void SenseRangeCommon::initSCPIConnection(QString leadingNodes)
 {
     ensureTrailingColonOnNonEmptyParentNodes(leadingNodes);
-    addDelegate(QString("%1%2").arg(leadingNodes, m_sName), "ALIAS", SCPI::isQuery, m_pSCPIInterface, SenseRange::cmdAlias);
-    addDelegate(QString("%1%2").arg(leadingNodes, m_sName), "AVAIL", SCPI::isQuery, m_pSCPIInterface, SenseRange::cmdAvail);
-    addDelegate(QString("%1%2").arg(leadingNodes, m_sName), "URVALUE", SCPI::isQuery, m_pSCPIInterface, SenseRange::cmdUpperRangeValue);
-    addDelegate(QString("%1%2").arg(leadingNodes, m_sName), "REJECTION", SCPI::isQuery, m_pSCPIInterface, SenseRange::cmdRejection);
-    addDelegate(QString("%1%2").arg(leadingNodes, m_sName), "OVREJECTION", SCPI::isQuery, m_pSCPIInterface, SenseRange::cmdOVRejection);
-    addDelegate(QString("%1%2").arg(leadingNodes, m_sName), "ADCREJECTION", SCPI::isQuery, m_pSCPIInterface, SenseRange::cmdADCRejection);
-    addDelegate(QString("%1%2").arg(leadingNodes, m_sName), "TYPE", SCPI::isQuery, m_pSCPIInterface, SenseRange::cmdType);
+    addDelegate(QString("%1%2").arg(leadingNodes, m_sName), "ALIAS", SCPI::isQuery, m_scpiInterface, SenseRange::cmdAlias);
+    addDelegate(QString("%1%2").arg(leadingNodes, m_sName), "AVAIL", SCPI::isQuery, m_scpiInterface, SenseRange::cmdAvail);
+    addDelegate(QString("%1%2").arg(leadingNodes, m_sName), "URVALUE", SCPI::isQuery, m_scpiInterface, SenseRange::cmdUpperRangeValue);
+    addDelegate(QString("%1%2").arg(leadingNodes, m_sName), "REJECTION", SCPI::isQuery, m_scpiInterface, SenseRange::cmdRejection);
+    addDelegate(QString("%1%2").arg(leadingNodes, m_sName), "OVREJECTION", SCPI::isQuery, m_scpiInterface, SenseRange::cmdOVRejection);
+    addDelegate(QString("%1%2").arg(leadingNodes, m_sName), "ADCREJECTION", SCPI::isQuery, m_scpiInterface, SenseRange::cmdADCRejection);
+    addDelegate(QString("%1%2").arg(leadingNodes, m_sName), "TYPE", SCPI::isQuery, m_scpiInterface, SenseRange::cmdType);
 
     connect(m_justdata, &ScpiConnection::cmdExecutionDone, this, &ScpiConnection::cmdExecutionDone);
     m_justdata->initSCPIConnection(QString("%1%2").arg(leadingNodes, getRangeName()));

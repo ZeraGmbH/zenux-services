@@ -2,7 +2,6 @@
 #define HKINGROUPRESOURCEANDINTERFACE_H
 
 #include "resource.h"
-#include "scpiconnection.h"
 #include "hkinchannelinterface.h"
 #include "hkinsettings.h"
 #include <scpi.h>
@@ -13,7 +12,8 @@ class HkInGroupResourceAndInterface : public cResource
     Q_OBJECT
 public:
     const QString Version = "V1.00";
-    HkInGroupResourceAndInterface(cSCPI *scpiInterface, HkInSettings *settings);
+    HkInGroupResourceAndInterface(std::shared_ptr<cSCPI> scpiInterface,
+                                  HkInSettings *settings);
     ~HkInGroupResourceAndInterface();
     void initSCPIConnection(QString leadingNodes) override;
     void registerResource(RMConnection *rmConnection, quint16 port) override;

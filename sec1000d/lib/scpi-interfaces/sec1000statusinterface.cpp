@@ -2,17 +2,16 @@
 #include "zscpi_response_definitions.h"
 #include "protonetcommand.h"
 
-Sec1000StatusInterface::Sec1000StatusInterface(cSCPI *scpiTree) :
-    ScpiConnection(scpiTree)
+Sec1000StatusInterface::Sec1000StatusInterface(std::shared_ptr<cSCPI> scpiInterface) :
+    ScpiConnection(scpiInterface)
 {
 }
 
 void Sec1000StatusInterface::initSCPIConnection(QString leadingNodes)
 {
     ensureTrailingColonOnNonEmptyParentNodes(leadingNodes);
-    addDelegate(QString("%1STATUS").arg(leadingNodes),"DEVICE",SCPI::isQuery, m_pSCPIInterface, StatusSystem::cmdDevice);
+    addDelegate(QString("%1STATUS").arg(leadingNodes),"DEVICE",SCPI::isQuery, m_scpiInterface, StatusSystem::cmdDevice);
 }
-
 
 void Sec1000StatusInterface::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
 {

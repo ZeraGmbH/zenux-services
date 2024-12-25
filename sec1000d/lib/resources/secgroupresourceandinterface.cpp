@@ -4,12 +4,12 @@
 #include "notzeronumgen.h"
 #include <scpi.h>
 
-SecGroupResourceAndInterface::SecGroupResourceAndInterface(cSCPI* scpiTree,
+SecGroupResourceAndInterface::SecGroupResourceAndInterface(std::shared_ptr<cSCPI> scpiInterface,
                                                            SecCalculatorSettings* ecalcSettings,
                                                            SecInputSettings *inputsettings,
                                                            std::function<void (int)> funcSigHandler,
                                                            AbstractFactoryDeviceNodeSecPtr deviceNodeFactory) :
-    cResource(scpiTree),
+    cResource(scpiInterface),
     m_pecalcsettings(ecalcSettings),
     m_pInputSettings(inputsettings)
 {
@@ -18,7 +18,12 @@ SecGroupResourceAndInterface::SecGroupResourceAndInterface(cSCPI* scpiTree,
     // first we create the configured number of error calculators and attach them into a hash table for better access
     int n = m_pecalcsettings->getNumber();
     for (int i = 0; i < n; i++ ) {
-        SecChannel* eChan = new SecChannel(m_pecalcsettings, m_pInputSettings, i, m_pSCPIInterface, funcSigHandler, deviceNodeFactory);
+        SecChannel* eChan = new SecChannel(m_scpiInterface,
+                                           m_pecalcsettings,
+                                           m_pInputSettings,
+                                           i,
+                                           funcSigHandler,
+                                           deviceNodeFactory);
         m_ECalculatorChannelList.append(eChan); // we have a list for seq. access
         m_ECalculatorChannelHash[eChan->getName()] = eChan; // and a hash for access by channel name
         m_ECalculatorChannelList.at(i)->m_StopErrorCalculator(); // initially we stop all ec's
@@ -43,10 +48,10 @@ SecGroupResourceAndInterface::~SecGroupResourceAndInterface()
 void SecGroupResourceAndInterface::initSCPIConnection(QString leadingNodes)
 {
     ensureTrailingColonOnNonEmptyParentNodes(leadingNodes);
-    addDelegate(QString("%1ECALCULATOR").arg(leadingNodes),"VERSION",SCPI::isQuery,m_pSCPIInterface, ECalcSystem::cmdVersion);
-    addDelegate(QString("%1ECALCULATOR:CHANNEL").arg(leadingNodes),"CATALOG", SCPI::isQuery, m_pSCPIInterface, ECalcSystem::cmdChannelCat);
-    addDelegate(QString("%1ECALCULATOR").arg(leadingNodes),"SET",SCPI::CmdwP,m_pSCPIInterface, ECalcSystem::cmdSetChannels);
-    addDelegate(QString("%1ECALCULATOR").arg(leadingNodes),"FREE",SCPI::CmdwP,m_pSCPIInterface, ECalcSystem::cmdFreeChannels);
+    addDelegate(QString("%1ECALCULATOR").arg(leadingNodes),"VERSION",SCPI::isQuery,m_scpiInterface, ECalcSystem::cmdVersion);
+    addDelegate(QString("%1ECALCULATOR:CHANNEL").arg(leadingNodes),"CATALOG", SCPI::isQuery, m_scpiInterface, ECalcSystem::cmdChannelCat);
+    addDelegate(QString("%1ECALCULATOR").arg(leadingNodes),"SET",SCPI::CmdwP,m_scpiInterface, ECalcSystem::cmdSetChannels);
+    addDelegate(QString("%1ECALCULATOR").arg(leadingNodes),"FREE",SCPI::CmdwP,m_scpiInterface, ECalcSystem::cmdFreeChannels);
     for (int i = 0; i < m_ECalculatorChannelList.count(); i++) {
         // we also must connect the signals for notification and for output
         connect(m_ECalculatorChannelList.at(i), &ScpiConnection::valNotifier, this, &ScpiConnection::valNotifier);

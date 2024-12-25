@@ -3,7 +3,6 @@
 #include "servicestatusinterface.h"
 #include "testfactoryi2cctrl.h"
 #include "testi2cctrleeprompermission.h"
-#include <scpisingletonfactory.h>
 #include <timerfactoryqtfortest.h>
 #include <timemachinefortest.h>
 #include <mocktcpnetworkfactory.h>
@@ -26,13 +25,15 @@ void test_authorizationnotifier::initTestCase()
 void test_authorizationnotifier::init()
 {
     static ServerParams params {"foo", "0", QStringLiteral(CONFIG_SOURCES_MT310S2D) + "/" + "mt310s2d.xsd", QStringLiteral(CONFIG_SOURCES_MT310S2D) + "/" + "mt310s2d.xml"};
-    cSCPI *scpiInterface = new cSCPI();
     AbstractFactoryI2cCtrlPtr ctrlFactory = std::make_shared<TestFactoryI2cCtrl>(false);
 
     m_PermissionCtrl = ctrlFactory->getPermissionCheckController();
-    m_pcbServerTest = std::make_unique<TestPcbServerNotifications>(std::make_unique<SettingsContainer>(params), scpiInterface, ctrlFactory, VeinTcp::MockTcpNetworkFactory::create());
+    m_pcbServerTest = std::make_unique<TestPcbServerNotifications>(
+        std::make_unique<SettingsContainer>(params),
+        ctrlFactory, VeinTcp::MockTcpNetworkFactory::create());
     m_adjustmentStatusNull = new TestAdjustmentStatusInterfaceNull();
-    m_pcbServerTest->insertScpiConnection(new ServiceStatusInterface(m_pcbServerTest->getSCPIInterface(), m_adjustmentStatusNull, ctrlFactory));
+    m_pcbServerTest->insertScpiConnection(new ServiceStatusInterface(m_pcbServerTest->getSCPIInterface(),
+                                                                     m_adjustmentStatusNull, ctrlFactory));
     m_pcbServerTest->initTestSCPIConnections();
 }
 
@@ -54,8 +55,7 @@ QString test_authorizationnotifier::getAuthoStatus()
 
 void test_authorizationnotifier::findPCBServerScpiObject()
 {
-    cSCPI *m_scpiInterface = m_pcbServerTest->getSCPIInterface();
-    cSCPIObject *scpiObject = m_scpiInterface->getSCPIObject(registerNotifierCommand);
+    cSCPIObject *scpiObject = m_pcbServerTest->getSCPIInterface()->getSCPIObject(registerNotifierCommand);
     QVERIFY(scpiObject);
 }
 

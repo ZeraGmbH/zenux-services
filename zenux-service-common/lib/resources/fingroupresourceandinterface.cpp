@@ -8,7 +8,8 @@ enum Commands
     cmdChannelCat
 };
 
-FInGroupResourceAndInterface::FInGroupResourceAndInterface(cSCPI *scpiInterface, FInSettings *settings) :
+FInGroupResourceAndInterface::FInGroupResourceAndInterface(std::shared_ptr<cSCPI> scpiInterface,
+                                                           FInSettings *settings) :
     cResource(scpiInterface)
 {
     QList<FInSettings::ChannelSettings*> channelSettings;
@@ -16,13 +17,13 @@ FInGroupResourceAndInterface::FInGroupResourceAndInterface(cSCPI *scpiInterface,
 
     // we have 4 frequency input channels
     FInChannelInterface* pChannel;
-    pChannel = new FInChannelInterface(m_pSCPIInterface, "Frequency input 0..1MHz", 0, channelSettings.at(0) );
+    pChannel = new FInChannelInterface(m_scpiInterface, "Frequency input 0..1MHz", 0, channelSettings.at(0) );
     m_ChannelList.append(pChannel);
-    pChannel = new FInChannelInterface(m_pSCPIInterface, "Frequency output 0..1MHz", 1, channelSettings.at(1) );
+    pChannel = new FInChannelInterface(m_scpiInterface, "Frequency output 0..1MHz", 1, channelSettings.at(1) );
     m_ChannelList.append(pChannel);
-    pChannel = new FInChannelInterface(m_pSCPIInterface, "Frequency output 0..1MHz", 2,  channelSettings.at(2) );
+    pChannel = new FInChannelInterface(m_scpiInterface, "Frequency output 0..1MHz", 2,  channelSettings.at(2) );
     m_ChannelList.append(pChannel);
-    pChannel = new FInChannelInterface(m_pSCPIInterface, "Frequency output 0..1MHz", 3, channelSettings.at(3) );
+    pChannel = new FInChannelInterface(m_scpiInterface, "Frequency output 0..1MHz", 3, channelSettings.at(3) );
     m_ChannelList.append(pChannel);
 }
 
@@ -35,8 +36,8 @@ FInGroupResourceAndInterface::~FInGroupResourceAndInterface()
 void FInGroupResourceAndInterface::initSCPIConnection(QString leadingNodes)
 {
     ensureTrailingColonOnNonEmptyParentNodes(leadingNodes);
-    addDelegate(QString("%1FRQINPUT").arg(leadingNodes),"VERSION",SCPI::isQuery, m_pSCPIInterface, cmdVersion);
-    addDelegate(QString("%1FRQINPUT:CHANNEL").arg(leadingNodes),"CATALOG", SCPI::isQuery, m_pSCPIInterface, cmdChannelCat);
+    addDelegate(QString("%1FRQINPUT").arg(leadingNodes),"VERSION",SCPI::isQuery, m_scpiInterface, cmdVersion);
+    addDelegate(QString("%1FRQINPUT:CHANNEL").arg(leadingNodes),"CATALOG", SCPI::isQuery, m_scpiInterface, cmdChannelCat);
     for (auto channel : qAsConst(m_ChannelList)) {
         connect(channel, &ScpiConnection::sigNotifySubcriber, this, &ScpiConnection::sigNotifySubcriber);
         connect(channel, &FInChannelInterface::cmdExecutionDone, this, &FInGroupResourceAndInterface::cmdExecutionDone);

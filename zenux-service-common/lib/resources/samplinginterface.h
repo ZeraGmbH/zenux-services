@@ -29,7 +29,9 @@ class cSamplingInterface: public cResource
 {
     Q_OBJECT
 public:
-    cSamplingInterface(cSCPI *scpiInterface, SamplingSettings *samplingSettings, AbstractFactoryI2cCtrlPtr ctrlFactory);
+    cSamplingInterface(std::shared_ptr<cSCPI> scpiInterface,
+                       SamplingSettings *samplingSettings,
+                       AbstractFactoryI2cCtrlPtr ctrlFactory);
     virtual void initSCPIConnection(QString leadingNodes) override;
     virtual void registerResource(RMConnection *rmConnection, quint16 port) override;
 protected:

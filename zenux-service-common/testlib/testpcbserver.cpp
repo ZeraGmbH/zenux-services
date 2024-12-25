@@ -1,12 +1,12 @@
 #include "testpcbserver.h"
 #include "mockserverparamgenerator.h"
-#include "scpisingletonfactory.h"
 #include <QFinalState>
 #include <QDir>
 
-TestPcbServer::TestPcbServer(QString serviceName, VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory) :
+TestPcbServer::TestPcbServer(QString serviceName,
+                             VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory) :
     PCBServer(std::make_unique<SettingsContainer>(MockServerParamGenerator::createParams(serviceName)),
-                ScpiSingletonFactory::getScpiObj(), tcpNetworkFactory)
+              tcpNetworkFactory)
 {
     m_pInitializationMachine = new QStateMachine(this);
 

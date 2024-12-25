@@ -6,8 +6,8 @@
 #include <scpi.h>
 #include <scpicommand.h>
 
-cSystemInterface::cSystemInterface(cSEC1000dServer *server, Sec1000SystemInfo *sInfo, cSCPI* scpiTree) :
-    ScpiConnection(scpiTree),
+cSystemInterface::cSystemInterface(std::shared_ptr<cSCPI> scpiInterface, cSEC1000dServer *server, Sec1000SystemInfo *sInfo) :
+    ScpiConnection(scpiInterface),
     m_pMyServer(server),
     m_pSystemInfo(sInfo)
 {
@@ -16,12 +16,12 @@ cSystemInterface::cSystemInterface(cSEC1000dServer *server, Sec1000SystemInfo *s
 void cSystemInterface::initSCPIConnection(QString leadingNodes)
 {
     ensureTrailingColonOnNonEmptyParentNodes(leadingNodes);
-    addDelegate(QString("%1SYSTEM:VERSION").arg(leadingNodes),"SERVER", SCPI::isQuery, m_pSCPIInterface, SystemSystem::cmdVersionServer);
-    addDelegate(QString("%1SYSTEM:VERSION").arg(leadingNodes),"DEVICE", SCPI::isQuery, m_pSCPIInterface, SystemSystem::cmdVersionDevice);
-    addDelegate(QString("%1SYSTEM:VERSION").arg(leadingNodes), "PCB", SCPI::isQuery, m_pSCPIInterface, SystemSystem::cmdVersionPCB);
-    addDelegate(QString("%1SYSTEM:VERSION").arg(leadingNodes), "FPGA", SCPI::isQuery, m_pSCPIInterface, SystemSystem::cmdVersionFPGA);
-    addDelegate(QString("%1SYSTEM").arg(leadingNodes), "SERIAL", SCPI::isQuery | SCPI::isCmdwP , m_pSCPIInterface, SystemSystem::cmdSerialNumber);
-    addDelegate(QString("%1SYSTEM:INTERFACE").arg(leadingNodes), "READ", SCPI::isQuery, m_pSCPIInterface, SystemSystem::cmdInterfaceRead);
+    addDelegate(QString("%1SYSTEM:VERSION").arg(leadingNodes),"SERVER", SCPI::isQuery, m_scpiInterface, SystemSystem::cmdVersionServer);
+    addDelegate(QString("%1SYSTEM:VERSION").arg(leadingNodes),"DEVICE", SCPI::isQuery, m_scpiInterface, SystemSystem::cmdVersionDevice);
+    addDelegate(QString("%1SYSTEM:VERSION").arg(leadingNodes), "PCB", SCPI::isQuery, m_scpiInterface, SystemSystem::cmdVersionPCB);
+    addDelegate(QString("%1SYSTEM:VERSION").arg(leadingNodes), "FPGA", SCPI::isQuery, m_scpiInterface, SystemSystem::cmdVersionFPGA);
+    addDelegate(QString("%1SYSTEM").arg(leadingNodes), "SERIAL", SCPI::isQuery | SCPI::isCmdwP , m_scpiInterface, SystemSystem::cmdSerialNumber);
+    addDelegate(QString("%1SYSTEM:INTERFACE").arg(leadingNodes), "READ", SCPI::isQuery, m_scpiInterface, SystemSystem::cmdInterfaceRead);
 }
 
 void cSystemInterface::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
@@ -148,7 +148,7 @@ QString cSystemInterface::m_InterfaceRead(QString &sInput)
     cSCPICommand cmd = sInput;
     if (cmd.isQuery()) {
         QString s;
-        m_pSCPIInterface->exportSCPIModelXML(s);
+        m_scpiInterface->exportSCPIModelXML(s);
         return s;
     }
     else

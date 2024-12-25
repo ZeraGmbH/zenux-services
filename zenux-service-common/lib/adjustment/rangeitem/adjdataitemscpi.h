@@ -11,7 +11,7 @@ class AdjDataItemScpi: public ScpiConnection // base class for adjustment coeffi
 public:
     struct TJustDataParam
     {
-        cSCPI *scpiinterface;
+        std::shared_ptr<cSCPI> scpiinterface;
         std::function<bool(bool &)> checkPermission;
         int digits;
     };

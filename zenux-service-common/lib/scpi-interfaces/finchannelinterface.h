@@ -8,7 +8,10 @@ class FInChannelInterface : public ScpiConnection
 {
     Q_OBJECT
 public:
-    FInChannelInterface(cSCPI* scpiInterface, QString description, quint8 nr, FInSettings::ChannelSettings* cSettings);
+    FInChannelInterface(std::shared_ptr<cSCPI> scpiInterface,
+                        QString description,
+                        quint8 nr,
+                        FInSettings::ChannelSettings* cSettings);
     virtual void initSCPIConnection(QString leadingNodes) override;
     QString& getName();
     QString& getAlias();

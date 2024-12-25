@@ -7,7 +7,10 @@ enum Commands
     cmdStatus
 };
 
-FInChannelInterface::FInChannelInterface(cSCPI *scpiInterface, QString description, quint8 nr, FInSettings::ChannelSettings *cSettings) :
+FInChannelInterface::FInChannelInterface(std::shared_ptr<cSCPI> scpiInterface,
+                                         QString description,
+                                         quint8 nr,
+                                         FInSettings::ChannelSettings *cSettings) :
     ScpiConnection(scpiInterface),
     m_sDescription(description)
 {
@@ -19,8 +22,8 @@ FInChannelInterface::FInChannelInterface(cSCPI *scpiInterface, QString descripti
 void FInChannelInterface::initSCPIConnection(QString leadingNodes)
 {
     ensureTrailingColonOnNonEmptyParentNodes(leadingNodes);
-    addDelegate(QString("%1%2").arg(leadingNodes, m_sName),"ALIAS", SCPI::isQuery, m_pSCPIInterface, cmdAlias);
-    addDelegate(QString("%1%2").arg(leadingNodes, m_sName),"STATUS", SCPI::isQuery, m_pSCPIInterface, cmdStatus);
+    addDelegate(QString("%1%2").arg(leadingNodes, m_sName),"ALIAS", SCPI::isQuery, m_scpiInterface, cmdAlias);
+    addDelegate(QString("%1%2").arg(leadingNodes, m_sName),"STATUS", SCPI::isQuery, m_scpiInterface, cmdStatus);
 }
 
 void FInChannelInterface::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)

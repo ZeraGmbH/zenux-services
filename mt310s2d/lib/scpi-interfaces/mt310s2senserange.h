@@ -7,7 +7,7 @@ class Mt310s2SenseRange: public SenseRangeCommon
 {
     Q_OBJECT
 public:
-    Mt310s2SenseRange(cSCPI* scpiinterface,
+    Mt310s2SenseRange(std::shared_ptr<cSCPI> scpiinterface,
                       QString name,
                       bool avail,
                       double rValue,

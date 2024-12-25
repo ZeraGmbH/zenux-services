@@ -7,7 +7,10 @@ enum Commands
     cmdStatus
 };
 
-HkInChannelInterface::HkInChannelInterface(cSCPI *scpiinterface, QString description, quint8 nr, HkInSettings::ChannelSettings *cSettings) :
+HkInChannelInterface::HkInChannelInterface(std::shared_ptr<cSCPI> scpiinterface,
+                                           QString description,
+                                           quint8 nr,
+                                           HkInSettings::ChannelSettings *cSettings) :
     ScpiConnection(scpiinterface),
     m_sDescription(description)
 {
@@ -19,8 +22,8 @@ HkInChannelInterface::HkInChannelInterface(cSCPI *scpiinterface, QString descrip
 void HkInChannelInterface::initSCPIConnection(QString leadingNodes)
 {
     ensureTrailingColonOnNonEmptyParentNodes(leadingNodes);
-    addDelegate(QString("%1%2").arg(leadingNodes, m_sName),"ALIAS", SCPI::isQuery, m_pSCPIInterface, cmdAlias);
-    addDelegate(QString("%1%2").arg(leadingNodes, m_sName),"STATUS", SCPI::isQuery, m_pSCPIInterface, cmdStatus);
+    addDelegate(QString("%1%2").arg(leadingNodes, m_sName),"ALIAS", SCPI::isQuery, m_scpiInterface, cmdAlias);
+    addDelegate(QString("%1%2").arg(leadingNodes, m_sName),"STATUS", SCPI::isQuery, m_scpiInterface, cmdStatus);
 }
 
 void HkInChannelInterface::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)

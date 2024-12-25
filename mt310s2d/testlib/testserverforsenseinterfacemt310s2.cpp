@@ -17,7 +17,7 @@ TestServerForSenseInterfaceMt310s2::TestServerForSenseInterfaceMt310s2(AbstractF
     else
         m_systemInfo = std::make_unique<Mt310s2SystemInfo>(ctrlFactory);
 
-    m_senseInterface = std::make_unique<Mt310s2SenseInterface>(getSCPIInterface(),
+    m_senseInterface = std::make_unique<Mt310s2SenseInterface>(m_scpiInterface,
                                                                m_settings->getI2cSettings(),
                                                                m_senseSettings.get(),
                                                                m_systemInfo.get(),
@@ -27,7 +27,7 @@ TestServerForSenseInterfaceMt310s2::TestServerForSenseInterfaceMt310s2(AbstractF
                                                          m_senseSettings.get(),
                                                          m_senseInterface.get(),
                                                          ctrlFactory);
-    m_samplingInterface = std::make_unique<cSamplingInterface>(getSCPIInterface(),
+    m_samplingInterface = std::make_unique<cSamplingInterface>(m_scpiInterface,
                                                                m_settings->getSamplingSettings(),
                                                                ctrlFactory);
     setResources(ResourcesList{m_senseInterface.get(), m_samplingInterface.get()});

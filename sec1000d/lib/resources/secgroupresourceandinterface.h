@@ -31,7 +31,7 @@ class SecGroupResourceAndInterface : public cResource
     Q_OBJECT
 
 public:
-    SecGroupResourceAndInterface(cSCPI *scpiTree,
+    SecGroupResourceAndInterface(std::shared_ptr<cSCPI> scpiInterface,
                                  SecCalculatorSettings* ecalcSettings,
                                  SecInputSettings* inputsettings,
                                  std::function<void(int)> funcSigHandler,

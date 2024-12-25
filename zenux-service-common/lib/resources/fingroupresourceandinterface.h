@@ -2,7 +2,6 @@
 #define FINGROUPRESOURCEANDINTERFACE_H
 
 #include "resource.h"
-#include "scpiconnection.h"
 #include "finchannelinterface.h"
 #include "finsettings.h"
 #include <scpi.h>
@@ -13,7 +12,8 @@ class FInGroupResourceAndInterface : public cResource
     Q_OBJECT
 public:
     const QString Version = "V1.00";
-    FInGroupResourceAndInterface(cSCPI *scpiInterface, FInSettings *settings);
+    FInGroupResourceAndInterface(std::shared_ptr<cSCPI> scpiInterface,
+                                 FInSettings *settings);
     ~FInGroupResourceAndInterface();
     virtual void initSCPIConnection(QString leadingNodes) override;
     virtual void registerResource(RMConnection *rmConnection, quint16 port) override;

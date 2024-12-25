@@ -29,7 +29,6 @@
 #include "sensesettings.h"
 #include "foutsettings.h"
 #include "scinsettings.h"
-#include <scpisingletonfactory.h>
 
 const ServerParams cCOM5003dServer::defaultParams {ServerName, ServerVersion, "/etc/zera/com5003d/com5003d.xsd", "/etc/zera/com5003d/com5003d.xml"};
 
@@ -37,7 +36,7 @@ cCOM5003dServer::cCOM5003dServer(SettingsContainerPtr settings,
                                  AbstractFactoryI2cCtrlPtr ctrlFactory,
                                  AbstractFactoryDeviceNodePcbPtr deviceNodeFactory,
                                  VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory) :
-    PCBServer(std::move(settings), ScpiSingletonFactory::getScpiObj(), tcpNetworkFactory),
+    PCBServer(std::move(settings), tcpNetworkFactory),
     m_ctrlFactory(ctrlFactory),
     m_deviceNodeFactory(deviceNodeFactory)
 {
@@ -301,20 +300,20 @@ void cCOM5003dServer::doSetupServer()
                                        m_tcpNetworkFactory);
 
     scpiConnectionList.append(this); // the server itself has some commands
-    scpiConnectionList.append(m_pSenseInterface = new Com5003SenseInterface(getSCPIInterface(),
+    scpiConnectionList.append(m_pSenseInterface = new Com5003SenseInterface(m_scpiInterface,
                                                                             m_settings->getI2cSettings(),
                                                                             m_pRMConnection,
                                                                             ethSettings,
                                                                             m_pSenseSettings,
                                                                             m_pSystemInfo,
                                                                             m_ctrlFactory));
-    scpiConnectionList.append(m_pStatusInterface = new ServiceStatusInterface(getSCPIInterface(), m_pSenseInterface, m_ctrlFactory));
+    scpiConnectionList.append(m_pStatusInterface = new ServiceStatusInterface(m_scpiInterface, m_pSenseInterface, m_ctrlFactory));
     scpiConnectionList.append(m_pSystemInterface = new Com5003SystemInterface(this, m_pSystemInfo, m_pSenseInterface, m_ctrlFactory));
-    scpiConnectionList.append(m_pSamplingInterface = new cSamplingInterface(getSCPIInterface(), m_settings->getSamplingSettings(), m_ctrlFactory));
-    scpiConnectionList.append(m_foutInterface = new FOutGroupResourceAndInterface(getSCPIInterface(), m_foutSettings));
-    scpiConnectionList.append(m_pFRQInputInterface = new FInGroupResourceAndInterface(getSCPIInterface(), m_finSettings));
-    scpiConnectionList.append(m_pSCHeadInterface = new ScInGroupResourceAndInterface(getSCPIInterface(), m_pSCHeadSettings));
-    scpiConnectionList.append(m_hkInInterface = new HkInGroupResourceAndInterface(getSCPIInterface(), m_hkInSettings));
+    scpiConnectionList.append(m_pSamplingInterface = new cSamplingInterface(m_scpiInterface, m_settings->getSamplingSettings(), m_ctrlFactory));
+    scpiConnectionList.append(m_foutInterface = new FOutGroupResourceAndInterface(m_scpiInterface, m_foutSettings));
+    scpiConnectionList.append(m_pFRQInputInterface = new FInGroupResourceAndInterface(m_scpiInterface, m_finSettings));
+    scpiConnectionList.append(m_pSCHeadInterface = new ScInGroupResourceAndInterface(m_scpiInterface, m_pSCHeadSettings));
+    scpiConnectionList.append(m_hkInInterface = new HkInGroupResourceAndInterface(m_scpiInterface, m_hkInSettings));
 
     resourceList.append(m_pSenseInterface); // all our resources
     resourceList.append(m_pSamplingInterface);

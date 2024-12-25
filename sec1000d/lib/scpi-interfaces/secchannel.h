@@ -31,9 +31,10 @@ class SecChannel : public ScpiConnection
 {
     Q_OBJECT
 public:
-    SecChannel(SecCalculatorSettings* esettings,
+    SecChannel(std::shared_ptr<cSCPI> scpiInterface,
+               SecCalculatorSettings* esettings,
                SecInputSettings* inpsettings,
-               quint16 nr, cSCPI *scpiTree,
+               quint16 nr,
                std::function<void(int)> funcSigHandler,
                AbstractFactoryDeviceNodeSecPtr deviceNodeFactory);
     ~SecChannel();

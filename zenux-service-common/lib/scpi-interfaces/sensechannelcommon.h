@@ -26,7 +26,7 @@ enum Commands
 class SenseChannelCommon : public ScpiConnection
 {
 public:
-    SenseChannelCommon(cSCPI* scpiinterface,
+    SenseChannelCommon(std::shared_ptr<cSCPI> scpiinterface,
                        QString description,
                        QString unit,
                        SenseSystem::cChannelSettings* cSettings,

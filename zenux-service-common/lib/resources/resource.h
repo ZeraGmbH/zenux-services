@@ -10,7 +10,7 @@ class cResource: public ScpiConnection
 {
     Q_OBJECT
 public:
-    cResource(cSCPI *scpiInterface);
+    cResource(std::shared_ptr<cSCPI> scpiInterface);
     virtual ~cResource() = default;
     virtual void registerResource(RMConnection *rmConnection, quint16 port) = 0;
 signals:

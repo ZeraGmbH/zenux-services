@@ -7,7 +7,7 @@ class Com5003SenseRange : public SenseRangeCommon
 {
     Q_OBJECT
 public:
-    Com5003SenseRange(cSCPI *scpiinterface,
+    Com5003SenseRange(std::shared_ptr<cSCPI> scpiinterface,
                       QString name,
                       bool avail,
                       double rValue,

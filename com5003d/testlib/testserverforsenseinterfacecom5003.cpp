@@ -15,14 +15,14 @@ TestServerForSenseInterfaceCom5003::TestServerForSenseInterfaceCom5003(AbstractF
     m_senseSettings = std::make_unique<cSenseSettings>(getConfigReader(), 8);
     setXmlSettings(XmlSettingsList{m_senseSettings.get()});
 
-    m_senseInterface = std::make_unique<Com5003SenseInterface>(getSCPIInterface(),
+    m_senseInterface = std::make_unique<Com5003SenseInterface>(m_scpiInterface,
                                                                m_settings->getI2cSettings(),
                                                                getRmConnection(),
                                                                m_settings->getEthSettings(),
                                                                m_senseSettings.get(),
                                                                m_systemInfo.get(),
                                                                ctrlFactory);
-    m_samplingInterface = std::make_unique<cSamplingInterface>(getSCPIInterface(),
+    m_samplingInterface = std::make_unique<cSamplingInterface>(m_scpiInterface,
                                                                m_settings->getSamplingSettings(),
                                                                ctrlFactory);
     setResources(ResourcesList{m_senseInterface.get(), m_samplingInterface.get()});

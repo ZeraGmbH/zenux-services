@@ -9,7 +9,10 @@ class FOutChannelInterface : public ScpiConnection
 {
     Q_OBJECT
 public:
-    FOutChannelInterface(cSCPI *scpiinterface, QString description, quint8 nr, FOutSettings::ChannelSettings* cSettings);
+    FOutChannelInterface(std::shared_ptr<cSCPI> scpiinterface,
+                         QString description,
+                         quint8 nr,
+                         FOutSettings::ChannelSettings* cSettings);
     virtual void initSCPIConnection(QString leadingNodes) override;
     QString& getName();
     QString& getAlias();

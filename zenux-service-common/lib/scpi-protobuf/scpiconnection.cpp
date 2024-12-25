@@ -1,7 +1,7 @@
 #include "scpiconnection.h"
 
-ScpiConnection::ScpiConnection(cSCPI *scpiInterface)
-    : m_pSCPIInterface(scpiInterface)
+ScpiConnection::ScpiConnection(std::shared_ptr<cSCPI> scpiInterface)
+    : m_scpiInterface(scpiInterface)
 {
 }
 
@@ -12,10 +12,10 @@ ScpiConnection::~ScpiConnection()
 
 void ScpiConnection::removeSCPIConnections()
 {
-    if(m_pSCPIInterface) {
+    if(m_scpiInterface) {
         for (int i = 0; i < m_DelegateList.count(); i++) {
             cSCPIDelegate* ptr = m_DelegateList.at(i);
-            m_pSCPIInterface->delSCPICmds(ptr->getCommand());
+            m_scpiInterface->delSCPICmds(ptr->getCommand());
         }
     }
     for (int i = 0; i < m_DelegateList.count(); i++)
@@ -29,7 +29,7 @@ void ScpiConnection::ensureTrailingColonOnNonEmptyParentNodes(QString &leadingNo
         leadingNodes.append(":");
 }
 
-void ScpiConnection::addDelegate(QString cmdParent, QString cmd, quint8 type, cSCPI *scpiInterface, quint16 cmdCode, NotificationString *notificationString)
+void ScpiConnection::addDelegate(QString cmdParent, QString cmd, quint8 type, std::shared_ptr<cSCPI> scpiInterface, quint16 cmdCode, NotificationString *notificationString)
 {
     cSCPIDelegate *delegate = new cSCPIDelegate(cmdParent, cmd, type, scpiInterface, cmdCode, notificationString);
     m_DelegateList.append(delegate);

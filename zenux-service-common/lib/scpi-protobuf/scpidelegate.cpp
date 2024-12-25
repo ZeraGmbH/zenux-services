@@ -1,7 +1,14 @@
 #include "scpidelegate.h"
 
-cSCPIDelegate::cSCPIDelegate(QString cmdParent, QString cmd, quint8 type, cSCPI *scpiInterface, quint16 cmdCode, NotificationString *notificationString)
-    :cSCPIObject(cmd, type), m_nCmdCode(cmdCode), m_notificationString(notificationString)
+cSCPIDelegate::cSCPIDelegate(QString cmdParent,
+                             QString cmd,
+                             quint8 type,
+                             std::shared_ptr<cSCPI> scpiInterface,
+                             quint16 cmdCode,
+                             NotificationString *notificationString) :
+    cSCPIObject(cmd, type),
+    m_nCmdCode(cmdCode),
+    m_notificationString(notificationString)
 {
     m_sCommand = QString("%1:%2").arg(cmdParent, cmd);
     scpiInterface->insertScpiCmd(cmdParent.split(":"), this);

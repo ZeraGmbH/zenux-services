@@ -11,7 +11,9 @@ class ServiceStatusInterface: public ScpiConnection
 {
     Q_OBJECT
 public:
-    ServiceStatusInterface(cSCPI *scpiInterface, AbstractAdjStatus *adjustmentStatusInterface, AbstractFactoryI2cCtrlPtr ctrlFactory);
+    ServiceStatusInterface(std::shared_ptr<cSCPI> scpiInterface,
+                           AbstractAdjStatus *adjustmentStatusInterface,
+                           AbstractFactoryI2cCtrlPtr ctrlFactory);
     virtual void initSCPIConnection(QString leadingNodes) override;
 protected:
     void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;

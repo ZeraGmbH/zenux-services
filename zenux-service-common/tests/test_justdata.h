@@ -23,7 +23,7 @@ private slots:
     void nodeSettwoCrap();
     void coefSetCrap();
 private:
-    cSCPI *scpi;
+    std::shared_ptr<cSCPI> m_scpiInterface;
     AdjDataItemScpi *justData;
     AdjDataRange *m_adjDataGroup;
 };

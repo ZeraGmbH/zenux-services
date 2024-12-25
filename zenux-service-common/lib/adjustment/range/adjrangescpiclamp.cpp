@@ -1,9 +1,9 @@
 #include "adjrangescpiclamp.h"
 
-AdjRangeScpiClamp::AdjRangeScpiClamp(cSCPI *scpiinterface,
-                               SenseRangeCommon *cascadedRange,
-                               double cvRatio,
-                               PermissionStructAdj permission)  :
+AdjRangeScpiClamp::AdjRangeScpiClamp(std::shared_ptr<cSCPI> scpiinterface,
+                                     SenseRangeCommon *cascadedRange,
+                                     double cvRatio,
+                                     PermissionStructAdj permission)  :
     AdjRangeScpi(scpiinterface, AdjustScpiValueFormatterFactory::createMt310s2AdjFormatter(), permission),
     m_pFirstStageRange(cascadedRange),
     m_cvRatio(cvRatio)

@@ -12,7 +12,7 @@ class Com5003SenseInterface : public SenseInterfaceCommon
 {
     Q_OBJECT
 public:
-    Com5003SenseInterface(cSCPI *scpiInterface,
+    Com5003SenseInterface(std::shared_ptr<cSCPI> scpiInterface,
                           I2cSettings* i2cSettings,
                           RMConnection* rmConnection,
                           EthSettings* ethSettings,

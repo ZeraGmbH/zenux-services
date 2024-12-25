@@ -2,7 +2,7 @@
 #include "rmconnection.h"
 #include <QString>
 
-cResource::cResource(cSCPI *scpiInterface) :
+cResource::cResource(std::shared_ptr<cSCPI> scpiInterface) :
     ScpiConnection(scpiInterface)
 {
 }

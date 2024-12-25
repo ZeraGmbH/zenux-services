@@ -8,7 +8,10 @@ class HkInChannelInterface : public ScpiConnection
 {
     Q_OBJECT
 public:
-    HkInChannelInterface(cSCPI* scpiinterface, QString description, quint8 nr, HkInSettings::ChannelSettings* cSettings);
+    HkInChannelInterface(std::shared_ptr<cSCPI> scpiinterface,
+                         QString description,
+                         quint8 nr,
+                         HkInSettings::ChannelSettings* cSettings);
     virtual void initSCPIConnection(QString leadingNodes) override;
     QString& getName();
     QString& getAlias();

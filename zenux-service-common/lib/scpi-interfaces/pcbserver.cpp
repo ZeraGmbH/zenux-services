@@ -18,9 +18,9 @@ enum commands
     cmdUnregister
 };
 
-PCBServer::PCBServer(SettingsContainerPtr settings, cSCPI *scpiInterface,
-                       VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory) :
-    ScpiConnection(scpiInterface),
+PCBServer::PCBServer(SettingsContainerPtr settings,
+                     VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory) :
+    ScpiConnection(std::make_shared<cSCPI>()),
     m_tcpNetworkFactory(tcpNetworkFactory),
     m_settings(std::move(settings))
 {
@@ -29,13 +29,13 @@ PCBServer::PCBServer(SettingsContainerPtr settings, cSCPI *scpiInterface,
 void PCBServer::initSCPIConnection(QString leadingNodes)
 {
     ensureTrailingColonOnNonEmptyParentNodes(leadingNodes);
-    addDelegate(QString("%1SERVER").arg(leadingNodes), "REGISTER", SCPI::isCmdwP, m_pSCPIInterface, cmdRegister);
-    addDelegate(QString("%1SERVER").arg(leadingNodes), "UNREGISTER", SCPI::isQuery | SCPI::isCmd, m_pSCPIInterface, cmdUnregister);
+    addDelegate(QString("%1SERVER").arg(leadingNodes), "REGISTER", SCPI::isCmdwP, m_scpiInterface, cmdRegister);
+    addDelegate(QString("%1SERVER").arg(leadingNodes), "UNREGISTER", SCPI::isQuery | SCPI::isCmd, m_scpiInterface, cmdUnregister);
 }
 
-cSCPI *PCBServer::getSCPIInterface()
+std::shared_ptr<cSCPI> PCBServer::getSCPIInterface()
 {
-    return m_pSCPIInterface;
+    return m_scpiInterface;
 }
 
 QString PCBServer::getName()
@@ -156,7 +156,7 @@ void PCBServer::onTelnetDataReceived()
     QByteArray clientId = QByteArray(); // we set an empty byte array
     cProtonetCommand* protoCmd = new cProtonetCommand(0, false, true, clientId, 0, input);
     // peer = 0 means we are working on the scpi socket ....
-    cSCPIObject* scpiObject = m_pSCPIInterface->getSCPIObject(input);
+    cSCPIObject* scpiObject = m_scpiInterface->getSCPIObject(input);
     if(scpiObject) {
         cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
         if (!scpiDelegate->executeSCPI(protoCmd)) {
@@ -194,7 +194,7 @@ void PCBServer::registerNotifier(cProtonetCommand *protoCmd)
     cSCPICommand cmd = protoCmd->m_sInput;
     if(cmd.isCommand(1)) { // SEC service receives registerNotifier with 1 param
         QString query = cmd.getParam(0);
-        cSCPIObject* scpiObject = m_pSCPIInterface->getSCPIObject(query);
+        cSCPIObject* scpiObject = m_scpiInterface->getSCPIObject(query);
         if(scpiObject) {
             NotificationStructWithValue notData;
             notData.netPeer = protoCmd->m_pPeer;
@@ -219,7 +219,7 @@ void PCBServer::registerNotifier(cProtonetCommand *protoCmd)
     }
     else if(cmd.isCommand(2) || cmd.isCommand(3)) {// mt310s2/com5003 service receives registerNotifier with 2/3 params
         QString query = cmd.getParam(0);
-        cSCPIObject* scpiObject = m_pSCPIInterface->getSCPIObject(query);
+        cSCPIObject* scpiObject = m_scpiInterface->getSCPIObject(query);
         if(scpiObject) {
             connect( protoCmd->m_pPeer, &VeinTcp::TcpPeer::sigConnectionClosed, this, &PCBServer::onNotifyPeerConnectionClosed);
             cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
@@ -297,7 +297,7 @@ void PCBServer::executeCommandProto(VeinTcp::TcpPeer* peer, std::shared_ptr<goog
                 ProtobufMessage::NetMessage::ScpiCommand scpiCmd = protobufCommand->scpi();
                 QString input = QString::fromStdString(scpiCmd.command()) +  " " + QString::fromStdString(scpiCmd.parameter());
                 cProtonetCommand* protoCmd;
-                scpiObject =  m_pSCPIInterface->getSCPIObject(input);
+                scpiObject =  m_scpiInterface->getSCPIObject(input);
                 if (scpiObject) {
                     protoCmd = new cProtonetCommand(peer, true, true, clientId, messageNr, input, scpiObject->getType());
                     cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
@@ -319,7 +319,7 @@ void PCBServer::executeCommandProto(VeinTcp::TcpPeer* peer, std::shared_ptr<goog
             QString input =  QString::fromStdString(protobufCommand->scpi().command());
             QByteArray clientId = QByteArray(); // we set an empty byte array
             cProtonetCommand* protoCmd;
-            scpiObject =  m_pSCPIInterface->getSCPIObject(input);
+            scpiObject =  m_scpiInterface->getSCPIObject(input);
             if (scpiObject) {
                 protoCmd = new cProtonetCommand(peer, false, true, clientId, 0, input, scpiObject->getType());
                 cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);

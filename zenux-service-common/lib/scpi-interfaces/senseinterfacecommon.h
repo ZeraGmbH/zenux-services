@@ -28,7 +28,7 @@ namespace SenseSystem
 class SenseInterfaceCommon : public cResource, public AdjustmentXmlImportExportTemplate, public AbstractAdjStatus
 {
 public:
-    SenseInterfaceCommon(cSCPI *scpiInterface,
+    SenseInterfaceCommon(std::shared_ptr<cSCPI> scpiInterface,
                          I2cSettings* i2cSettings,
                          SystemInfo *systemInfo,
                          AbstractFactoryI2cCtrlPtr ctrlFactory);

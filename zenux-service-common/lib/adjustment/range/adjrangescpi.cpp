@@ -50,15 +50,15 @@ enum ScpiCommands
     DirectJustInit
 };
 
-AdjRangeScpi::AdjRangeScpi(cSCPI *scpiinterface,
-                                                   std::unique_ptr<AdjustScpiValueFormatter> adjustmentFormatter,
-                                                   PermissionStructAdj permissions) :
+AdjRangeScpi::AdjRangeScpi(std::shared_ptr<cSCPI> scpiinterface,
+                           std::unique_ptr<AdjustScpiValueFormatter> adjustmentFormatter,
+                           PermissionStructAdj permissions) :
     ScpiConnection(scpiinterface),
-    m_gainCorrection({m_pSCPIInterface, permissions.funcAllowAdjGain, adjustmentFormatter->m_correctionExportDigits},
+    m_gainCorrection({m_scpiInterface, permissions.funcAllowAdjGain, adjustmentFormatter->m_correctionExportDigits},
                        &m_adjGroupData.m_gainAdjData),
-    m_phaseCorrection({m_pSCPIInterface, permissions.funcAllowAdjPhase, adjustmentFormatter->m_correctionExportDigits},
+    m_phaseCorrection({m_scpiInterface, permissions.funcAllowAdjPhase, adjustmentFormatter->m_correctionExportDigits},
                         &m_adjGroupData.m_phasAdjData),
-    m_offsetCorrection({m_pSCPIInterface, permissions.funcAllowAdjOffset, adjustmentFormatter->m_correctionExportDigits},
+    m_offsetCorrection({m_scpiInterface, permissions.funcAllowAdjOffset, adjustmentFormatter->m_correctionExportDigits},
                          &m_adjGroupData.m_offsAdjData),
     m_scpiQueryFormatter(std::move(adjustmentFormatter)),
     m_permissions(permissions)
@@ -68,15 +68,15 @@ AdjRangeScpi::AdjRangeScpi(cSCPI *scpiinterface,
 void AdjRangeScpi::initSCPIConnection(QString leadingNodes)
 {
     ensureTrailingColonOnNonEmptyParentNodes(leadingNodes);
-    addDelegate(QString("%1CORRECTION").arg(leadingNodes), "GAIN", SCPI::CmdwP , m_pSCPIInterface, GainTotal);
-    addDelegate(QString("%1CORRECTION").arg(leadingNodes), "ADJGAIN", SCPI::CmdwP , m_pSCPIInterface, GainSingle);
-    addDelegate(QString("%1CORRECTION").arg(leadingNodes), "PHASE", SCPI::isCmdwP, m_pSCPIInterface, PhaseTotal);
-    addDelegate(QString("%1CORRECTION").arg(leadingNodes), "ADJPHASE", SCPI::isCmdwP, m_pSCPIInterface, PhaseSingle);
-    addDelegate(QString("%1CORRECTION").arg(leadingNodes), "OFFSET", SCPI::isCmdwP, m_pSCPIInterface, OffsetTotal);
-    addDelegate(QString("%1CORRECTION").arg(leadingNodes), "ADJOFFSET", SCPI::isCmdwP, m_pSCPIInterface, OffsetSingle);
-    addDelegate(QString("%1CORRECTION").arg(leadingNodes), "STATUS", SCPI::isQuery, m_pSCPIInterface, DirectJustStatus);
-    addDelegate(QString("%1CORRECTION").arg(leadingNodes), "COMPUTE", SCPI::isCmdwP, m_pSCPIInterface, DirectJustCompute);
-    addDelegate(QString("%1CORRECTION").arg(leadingNodes), "INIT", SCPI::isCmdwP, m_pSCPIInterface, DirectJustInit);
+    addDelegate(QString("%1CORRECTION").arg(leadingNodes), "GAIN", SCPI::CmdwP , m_scpiInterface, GainTotal);
+    addDelegate(QString("%1CORRECTION").arg(leadingNodes), "ADJGAIN", SCPI::CmdwP , m_scpiInterface, GainSingle);
+    addDelegate(QString("%1CORRECTION").arg(leadingNodes), "PHASE", SCPI::isCmdwP, m_scpiInterface, PhaseTotal);
+    addDelegate(QString("%1CORRECTION").arg(leadingNodes), "ADJPHASE", SCPI::isCmdwP, m_scpiInterface, PhaseSingle);
+    addDelegate(QString("%1CORRECTION").arg(leadingNodes), "OFFSET", SCPI::isCmdwP, m_scpiInterface, OffsetTotal);
+    addDelegate(QString("%1CORRECTION").arg(leadingNodes), "ADJOFFSET", SCPI::isCmdwP, m_scpiInterface, OffsetSingle);
+    addDelegate(QString("%1CORRECTION").arg(leadingNodes), "STATUS", SCPI::isQuery, m_scpiInterface, DirectJustStatus);
+    addDelegate(QString("%1CORRECTION").arg(leadingNodes), "COMPUTE", SCPI::isCmdwP, m_scpiInterface, DirectJustCompute);
+    addDelegate(QString("%1CORRECTION").arg(leadingNodes), "INIT", SCPI::isCmdwP, m_scpiInterface, DirectJustInit);
 
     connect(&m_gainCorrection, &ScpiConnection::cmdExecutionDone, this, &ScpiConnection::cmdExecutionDone);
     m_gainCorrection.initSCPIConnection(QString("%1CORRECTION:GAIN").arg(leadingNodes));

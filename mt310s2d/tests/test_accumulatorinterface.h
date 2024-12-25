@@ -16,7 +16,7 @@ private slots:
     void readAccuStateOfCharge();
 
 private:
-    std::unique_ptr<cSCPI> m_scpiInterface;
+    std::shared_ptr<cSCPI> m_scpiInterface;
     AccumulatorInterface *m_accumulator;
 
     std::unique_ptr<Zera::XMLConfig::cReader> m_xmlConfigReader;

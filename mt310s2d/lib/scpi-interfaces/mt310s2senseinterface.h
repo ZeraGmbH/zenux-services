@@ -7,7 +7,7 @@ class Mt310s2SenseInterface : public SenseInterfaceCommon
 {
     Q_OBJECT
 public:
-    Mt310s2SenseInterface(cSCPI *scpiInterface,
+    Mt310s2SenseInterface(std::shared_ptr<cSCPI> scpiInterface,
                           I2cSettings *i2cSettings,
                           cSenseSettings *senseSettings,
                           SystemInfo *systemInfo,

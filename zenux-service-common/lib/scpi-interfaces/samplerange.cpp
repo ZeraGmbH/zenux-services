@@ -6,7 +6,10 @@ enum SampleRangeCommands
     SampleRangeSamples
 };
 
-cSampleRange::cSampleRange(cSCPI *scpiinterface, QString name, quint16 srate, quint8 selcode) :
+cSampleRange::cSampleRange(std::shared_ptr<cSCPI> scpiinterface,
+                           QString name,
+                           quint16 srate,
+                           quint8 selcode) :
     ScpiConnection(scpiinterface),
     m_sName(name),
     m_nSRate(srate),
@@ -17,7 +20,7 @@ cSampleRange::cSampleRange(cSCPI *scpiinterface, QString name, quint16 srate, qu
 void cSampleRange::initSCPIConnection(QString leadingNodes)
 {
     ensureTrailingColonOnNonEmptyParentNodes(leadingNodes);
-    addDelegate(QString("%1%2").arg(leadingNodes, m_sName),"SRATE", SCPI::isQuery, m_pSCPIInterface, SampleRangeSamples);
+    addDelegate(QString("%1%2").arg(leadingNodes, m_sName),"SRATE", SCPI::isQuery, m_scpiInterface, SampleRangeSamples);
 }
 
 QString &cSampleRange::getName()

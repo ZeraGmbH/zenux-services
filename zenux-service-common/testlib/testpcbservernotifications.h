@@ -8,7 +8,7 @@ class TestPcbServerNotifications : public PCBServer
 {
     Q_OBJECT
 public:
-    TestPcbServerNotifications(SettingsContainerPtr settings, cSCPI *scpiInterface,
+    TestPcbServerNotifications(SettingsContainerPtr settings,
                                AbstractFactoryI2cCtrlPtr ctrlFactory,
                                VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory);
     ~TestPcbServerNotifications();

@@ -8,13 +8,14 @@ enum Commands
     cmdChannelCat
 };
 
-HkInGroupResourceAndInterface::HkInGroupResourceAndInterface(cSCPI *scpiInterface, HkInSettings *settings) :
+HkInGroupResourceAndInterface::HkInGroupResourceAndInterface(std::shared_ptr<cSCPI> scpiInterface,
+                                                             HkInSettings *settings) :
     cResource(scpiInterface)
 {
     QList<HkInSettings::ChannelSettings*> channelSettings;
     channelSettings = settings->getChannelSettings();
     // we have 1 hand key input channel
-    HkInChannelInterface* pChannel = new HkInChannelInterface(m_pSCPIInterface, "Hand key input", 0, channelSettings.at(0));
+    HkInChannelInterface* pChannel = new HkInChannelInterface(m_scpiInterface, "Hand key input", 0, channelSettings.at(0));
     m_ChannelList.append(pChannel);
 }
 
@@ -27,8 +28,8 @@ HkInGroupResourceAndInterface::~HkInGroupResourceAndInterface()
 void HkInGroupResourceAndInterface::initSCPIConnection(QString leadingNodes)
 {
     ensureTrailingColonOnNonEmptyParentNodes(leadingNodes);
-    addDelegate(QString("%1HKEY").arg(leadingNodes),"VERSION",SCPI::isQuery, m_pSCPIInterface, cmdVersion);
-    addDelegate(QString("%1HKEY:CHANNEL").arg(leadingNodes),"CATALOG", SCPI::isQuery, m_pSCPIInterface, cmdChannelCat);
+    addDelegate(QString("%1HKEY").arg(leadingNodes),"VERSION",SCPI::isQuery, m_scpiInterface, cmdVersion);
+    addDelegate(QString("%1HKEY:CHANNEL").arg(leadingNodes),"CATALOG", SCPI::isQuery, m_scpiInterface, cmdChannelCat);
     for(auto channel : qAsConst(m_ChannelList)) {
         connect(channel, &ScpiConnection::sigNotifySubcriber, this, &ScpiConnection::sigNotifySubcriber);
         connect(channel, &ScpiConnection::cmdExecutionDone, this, &ScpiConnection::cmdExecutionDone);

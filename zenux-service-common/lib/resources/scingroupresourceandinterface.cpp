@@ -8,14 +8,15 @@ enum Commands
     cmdChannelCat
 };
 
-ScInGroupResourceAndInterface::ScInGroupResourceAndInterface(cSCPI *scpiInterface, ScInSettings *settings) :
+ScInGroupResourceAndInterface::ScInGroupResourceAndInterface(std::shared_ptr<cSCPI> scpiInterface,
+                                                             ScInSettings *settings) :
     cResource(scpiInterface)
 {
     QList<ScInSettings::ChannelSettings*> channelSettings;
     channelSettings = settings->getChannelSettings();
     // we have 1 scanning head input channel
     ScInChannelInterface* pChannel;
-    pChannel = new ScInChannelInterface(m_pSCPIInterface, "Scanning head input", 0, channelSettings.at(0) );
+    pChannel = new ScInChannelInterface(m_scpiInterface, "Scanning head input", 0, channelSettings.at(0) );
     m_ChannelList.append(pChannel);
 }
 
@@ -28,8 +29,8 @@ ScInGroupResourceAndInterface::~ScInGroupResourceAndInterface()
 void ScInGroupResourceAndInterface::initSCPIConnection(QString leadingNodes)
 {
     ensureTrailingColonOnNonEmptyParentNodes(leadingNodes);
-    addDelegate(QString("%1SCHEAD").arg(leadingNodes),"VERSION",SCPI::isQuery, m_pSCPIInterface, cmdVersion);
-    addDelegate(QString("%1SCHEAD:CHANNEL").arg(leadingNodes),"CATALOG", SCPI::isQuery, m_pSCPIInterface, cmdChannelCat);
+    addDelegate(QString("%1SCHEAD").arg(leadingNodes),"VERSION",SCPI::isQuery, m_scpiInterface, cmdVersion);
+    addDelegate(QString("%1SCHEAD:CHANNEL").arg(leadingNodes),"CATALOG", SCPI::isQuery, m_scpiInterface, cmdChannelCat);
     for(auto channel : qAsConst(m_ChannelList)) {
         connect(channel, &ScpiConnection::sigNotifySubcriber, this, &ScpiConnection::sigNotifySubcriber);
         connect(channel, &ScpiConnection::cmdExecutionDone, this, &ScpiConnection::cmdExecutionDone);

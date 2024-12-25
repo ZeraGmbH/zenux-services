@@ -9,7 +9,7 @@
 QString SenseInterfaceCommon::m_version = "V1.00";
 static const char* cacheFileName = "adj-intern-cache";
 
-SenseInterfaceCommon::SenseInterfaceCommon(cSCPI *scpiInterface,
+SenseInterfaceCommon::SenseInterfaceCommon(std::shared_ptr<cSCPI> scpiInterface,
                                            I2cSettings *i2cSettings,
                                            SystemInfo *systemInfo,
                                            AbstractFactoryI2cCtrlPtr ctrlFactory) :
@@ -98,13 +98,13 @@ void SenseInterfaceCommon::registerResource(RMConnection *rmConnection, quint16 
 void SenseInterfaceCommon::initSCPIConnection(QString leadingNodes)
 {
     ensureTrailingColonOnNonEmptyParentNodes(leadingNodes);
-    addDelegate(QString("%1SENSE").arg(leadingNodes),"VERSION",SCPI::isQuery, m_pSCPIInterface, SenseSystem::cmdVersion);
-    addDelegate(QString("%1SENSE").arg(leadingNodes),"MMODE",SCPI::isQuery | SCPI::isCmdwP , m_pSCPIInterface, SenseSystem::cmdMMode, &m_notifierSenseMMode);
-    addDelegate(QString("%1SENSE:MMODE").arg(leadingNodes),"CATALOG",SCPI::isQuery, m_pSCPIInterface, SenseSystem::cmdMModeCat);
-    addDelegate(QString("%1SENSE:CHANNEL").arg(leadingNodes),"CATALOG", SCPI::isQuery, m_pSCPIInterface, SenseSystem::cmdChannelCat, &m_notifierSenseChannelCat);
-    addDelegate(QString("%1SENSE:GROUP").arg(leadingNodes),"CATALOG", SCPI::isQuery, m_pSCPIInterface, SenseSystem::cmdGroupCat);
-    addDelegate(QString("%1SENSE:CORRECTION").arg(leadingNodes),"INIT", SCPI::isCmd, m_pSCPIInterface, SenseSystem::initAdjData);
-    addDelegate(QString("%1SENSE:CORRECTION").arg(leadingNodes),"COMPUTE", SCPI::isCmd, m_pSCPIInterface, SenseSystem::computeAdjData);
+    addDelegate(QString("%1SENSE").arg(leadingNodes),"VERSION",SCPI::isQuery, m_scpiInterface, SenseSystem::cmdVersion);
+    addDelegate(QString("%1SENSE").arg(leadingNodes),"MMODE",SCPI::isQuery | SCPI::isCmdwP , m_scpiInterface, SenseSystem::cmdMMode, &m_notifierSenseMMode);
+    addDelegate(QString("%1SENSE:MMODE").arg(leadingNodes),"CATALOG",SCPI::isQuery, m_scpiInterface, SenseSystem::cmdMModeCat);
+    addDelegate(QString("%1SENSE:CHANNEL").arg(leadingNodes),"CATALOG", SCPI::isQuery, m_scpiInterface, SenseSystem::cmdChannelCat, &m_notifierSenseChannelCat);
+    addDelegate(QString("%1SENSE:GROUP").arg(leadingNodes),"CATALOG", SCPI::isQuery, m_scpiInterface, SenseSystem::cmdGroupCat);
+    addDelegate(QString("%1SENSE:CORRECTION").arg(leadingNodes),"INIT", SCPI::isCmd, m_scpiInterface, SenseSystem::initAdjData);
+    addDelegate(QString("%1SENSE:CORRECTION").arg(leadingNodes),"COMPUTE", SCPI::isCmd, m_scpiInterface, SenseSystem::computeAdjData);
     for(auto channel : qAsConst(m_channelList)) {
         // we also must connect the signals for notification and for output
         connect(channel, &ScpiConnection::sigNotifySubcriber, this, &ScpiConnection::sigNotifySubcriber);
@@ -113,7 +113,7 @@ void SenseInterfaceCommon::initSCPIConnection(QString leadingNodes)
         channel->initSCPIConnection(QString("%1SENSE").arg(leadingNodes));
     }
     QString cmdParent = QString("STATUS:PCB");
-    addDelegate(cmdParent, "ADJUSTMENT", SCPI::isQuery, m_pSCPIInterface, SenseSystem::cmdStatAdjustment);
+    addDelegate(cmdParent, "ADJUSTMENT", SCPI::isQuery, m_scpiInterface, SenseSystem::cmdStatAdjustment);
 }
 
 bool SenseInterfaceCommon::isInvalidAdjDataOrChannelRangeAvail(QString channelName, QString rangeName)

@@ -3,7 +3,6 @@
 #include "zdspserver.h"
 #include "zdspclient.h"
 #include "dsp.h"
-#include <scpisingletonfactory.h>
 #include "scpi-zdsp.h"
 #include "pcbserver.h"
 #include "devicenodedsp.h"
@@ -59,7 +58,7 @@ const ServerParams ZDspServer::defaultParams {ServerName, ServerVersion, "/etc/z
 ZDspServer::ZDspServer(SettingsContainerPtr settings,
                        AbstractFactoryDeviceNodeDspPtr deviceNodeFactory,
                        VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory) :
-    ScpiConnection(ScpiSingletonFactory::getScpiObj()),
+    ScpiConnection(std::make_shared<cSCPI>()),
     m_deviceNodeFactory(deviceNodeFactory),
     m_tcpNetworkFactory(tcpNetworkFactory),
     m_settings(std::move(settings)),
@@ -1306,7 +1305,7 @@ void ZDspServer::executeCommandProto(VeinTcp::TcpPeer *peer, std::shared_ptr<goo
 
             // --- new scpi stolen from PCBServer::executeCommandProto ---
             QString scpiInput = QString::fromStdString(scpiCmd.command()) +  " " + QString::fromStdString(scpiCmd.parameter());
-            cSCPIObject* scpiObject =  m_pSCPIInterface->getSCPIObject(scpiInput);
+            cSCPIObject* scpiObject =  m_scpiInterface->getSCPIObject(scpiInput);
             if (scpiObject) {
                 cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
                 cProtonetCommand* protoCmd = new cProtonetCommand(peer, true, true, clientId, messageNr, scpiInput, scpiObject->getType());

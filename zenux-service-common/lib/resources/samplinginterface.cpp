@@ -5,7 +5,9 @@
 #include "notzeronumgen.h"
 #include "zscpi_response_definitions.h"
 
-cSamplingInterface::cSamplingInterface(cSCPI *scpiInterface, SamplingSettings* samplingSettings, AbstractFactoryI2cCtrlPtr ctrlFactory) :
+cSamplingInterface::cSamplingInterface(std::shared_ptr<cSCPI> scpiInterface,
+                                       SamplingSettings* samplingSettings,
+                                       AbstractFactoryI2cCtrlPtr ctrlFactory) :
     cResource(scpiInterface),
     m_ctrlFactory(ctrlFactory)
 {
@@ -22,24 +24,24 @@ cSamplingInterface::cSamplingInterface(cSCPI *scpiInterface, SamplingSettings* s
     m_nType = 0;
 
     // There is no change on sampling range supported: Can this go??
-    m_SampleRangeList.append(new cSampleRange(m_pSCPIInterface, "F50Hz", 504, 0));
-    m_SampleRangeList.append(new cSampleRange(m_pSCPIInterface, "F20Hz", 720, 1));
+    m_SampleRangeList.append(new cSampleRange(m_scpiInterface, "F50Hz", 504, 0));
+    m_SampleRangeList.append(new cSampleRange(m_scpiInterface, "F20Hz", 720, 1));
     setNotifierSampleChannelRange(); // we must intialize our setting (notifier)
 }
 
 void cSamplingInterface::initSCPIConnection(QString leadingNodes)
 {
     ensureTrailingColonOnNonEmptyParentNodes(leadingNodes);
-    addDelegate(QString("%1SAMPLE").arg(leadingNodes),"VERSION", SCPI::isQuery, m_pSCPIInterface, SamplingSystem::cmdVersion);
-    addDelegate(QString("%1SAMPLE").arg(leadingNodes),"SRATE", SCPI::isQuery, m_pSCPIInterface, SamplingSystem::cmdSampleRate);
-    addDelegate(QString("%1SAMPLE:CHANNEL").arg(leadingNodes),"CATALOG", SCPI::isQuery, m_pSCPIInterface, SamplingSystem::cmdChannelCat);
-    addDelegate(QString("%1SAMPLE:%2").arg(leadingNodes, m_sName),"ALIAS", SCPI::isQuery, m_pSCPIInterface, SamplingSystem::cmdChannelAlias);
-    addDelegate(QString("%1SAMPLE:%2").arg(leadingNodes, m_sName),"TYPE", SCPI::isQuery, m_pSCPIInterface, SamplingSystem::cmdChannelType);
-    addDelegate(QString("%1SAMPLE:%2").arg(leadingNodes, m_sName),"STATUS", SCPI::isQuery, m_pSCPIInterface, SamplingSystem::cmdChannelStatus);
-    addDelegate(QString("%1SAMPLE:%2").arg(leadingNodes, m_sName),"RANGE", SCPI::isQuery | SCPI::isCmdwP , m_pSCPIInterface, SamplingSystem::cmdChannelRange, &notifierSampleChannelRange);
-    addDelegate(QString("%1SAMPLE:%2:RANGE").arg(leadingNodes, m_sName),"CATALOG", SCPI::isQuery, m_pSCPIInterface, SamplingSystem::cmdChannelRangeCat);
-    addDelegate(QString("%1SAMPLE:%2").arg(leadingNodes, m_sName),"PLL", SCPI::isQuery | SCPI::isCmdwP , m_pSCPIInterface, SamplingSystem::cmdPLL);
-    addDelegate(QString("%1SAMPLE:%2:PLL").arg(leadingNodes, m_sName),"CATALOG", SCPI::isQuery, m_pSCPIInterface, SamplingSystem::cmdPLLCat);
+    addDelegate(QString("%1SAMPLE").arg(leadingNodes),"VERSION", SCPI::isQuery, m_scpiInterface, SamplingSystem::cmdVersion);
+    addDelegate(QString("%1SAMPLE").arg(leadingNodes),"SRATE", SCPI::isQuery, m_scpiInterface, SamplingSystem::cmdSampleRate);
+    addDelegate(QString("%1SAMPLE:CHANNEL").arg(leadingNodes),"CATALOG", SCPI::isQuery, m_scpiInterface, SamplingSystem::cmdChannelCat);
+    addDelegate(QString("%1SAMPLE:%2").arg(leadingNodes, m_sName),"ALIAS", SCPI::isQuery, m_scpiInterface, SamplingSystem::cmdChannelAlias);
+    addDelegate(QString("%1SAMPLE:%2").arg(leadingNodes, m_sName),"TYPE", SCPI::isQuery, m_scpiInterface, SamplingSystem::cmdChannelType);
+    addDelegate(QString("%1SAMPLE:%2").arg(leadingNodes, m_sName),"STATUS", SCPI::isQuery, m_scpiInterface, SamplingSystem::cmdChannelStatus);
+    addDelegate(QString("%1SAMPLE:%2").arg(leadingNodes, m_sName),"RANGE", SCPI::isQuery | SCPI::isCmdwP , m_scpiInterface, SamplingSystem::cmdChannelRange, &notifierSampleChannelRange);
+    addDelegate(QString("%1SAMPLE:%2:RANGE").arg(leadingNodes, m_sName),"CATALOG", SCPI::isQuery, m_scpiInterface, SamplingSystem::cmdChannelRangeCat);
+    addDelegate(QString("%1SAMPLE:%2").arg(leadingNodes, m_sName),"PLL", SCPI::isQuery | SCPI::isCmdwP , m_scpiInterface, SamplingSystem::cmdPLL);
+    addDelegate(QString("%1SAMPLE:%2:PLL").arg(leadingNodes, m_sName),"CATALOG", SCPI::isQuery, m_scpiInterface, SamplingSystem::cmdPLLCat);
     for(auto range : qAsConst(m_SampleRangeList)) {
         connect(range, &ScpiConnection::cmdExecutionDone, this, &ScpiConnection::cmdExecutionDone);
         range->initSCPIConnection(QString("%1SAMPLE:%2").arg(leadingNodes, m_sName));

@@ -4,7 +4,7 @@
 static constexpr int rejectionScpiQueryDigitsClamp = 8;
 static constexpr int adcRejectionClamp = (1<<23) -1;
 
-ClampSenseRange::ClampSenseRange(cSCPI *scpiinterface,
+ClampSenseRange::ClampSenseRange(std::shared_ptr<cSCPI> scpiinterface,
                                  QString name,
                                  bool avail,
                                  double rValue,

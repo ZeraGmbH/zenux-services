@@ -7,7 +7,6 @@
 #include "sec1000systeminfo.h"
 #include "secgroupresourceandinterface.h"
 #include "rmconnection.h"
-#include <scpisingletonfactory.h>
 #include <vtcp_server.h>
 #include <xmlconfigreader.h>
 #include <QStateMachine>
@@ -41,7 +40,7 @@ const ServerParams cSEC1000dServer::defaultParams{ServerName, ServerVersion, "/e
 cSEC1000dServer::cSEC1000dServer(SettingsContainerPtr settings,
                                  AbstractFactoryDeviceNodeSecPtr deviceNodeFactory,
                                  VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory) :
-    PCBServer(std::move(settings), ScpiSingletonFactory::getScpiObj(), tcpNetworkFactory),
+    PCBServer(std::move(settings), tcpNetworkFactory),
     m_deviceNodeFactory(deviceNodeFactory)
 {
     init();
@@ -152,9 +151,9 @@ void cSEC1000dServer::doSetupServer()
         setupServer(); // here our scpi interface gets instanciated, we need this for further steps
 
         scpiConnectionList.append(this); // the server itself has some commands
-        scpiConnectionList.append(m_pStatusInterface = new Sec1000StatusInterface(m_pSCPIInterface));
-        scpiConnectionList.append(m_pSystemInterface = new cSystemInterface(this, m_pSystemInfo, m_pSCPIInterface));
-        scpiConnectionList.append(m_pECalculatorInterface = new SecGroupResourceAndInterface(m_pSCPIInterface,
+        scpiConnectionList.append(m_pStatusInterface = new Sec1000StatusInterface(m_scpiInterface));
+        scpiConnectionList.append(m_pSystemInterface = new cSystemInterface(m_scpiInterface, this, m_pSystemInfo));
+        scpiConnectionList.append(m_pECalculatorInterface = new SecGroupResourceAndInterface(m_scpiInterface,
                                                                                              m_pECalcSettings,
                                                                                              m_pInputSettings,
                                                                                              SigHandler,

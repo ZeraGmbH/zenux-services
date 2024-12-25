@@ -30,9 +30,9 @@ class AdjRangeScpi : public ScpiConnection
 {
     Q_OBJECT
 public:
-    AdjRangeScpi(cSCPI* scpiinterface,
-                             std::unique_ptr<AdjustScpiValueFormatter> adjustmentFormatter,
-                             PermissionStructAdj permissions = PermissionStructAdj());
+    AdjRangeScpi(std::shared_ptr<cSCPI> scpiinterface,
+                 std::unique_ptr<AdjustScpiValueFormatter> adjustmentFormatter,
+                 PermissionStructAdj permissions = PermissionStructAdj());
     virtual void initSCPIConnection(QString leadingNodes) override;
 
     void setAdjGroupData(AdjDataRange groupData);

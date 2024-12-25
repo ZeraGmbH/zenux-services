@@ -15,7 +15,10 @@ enum Commands
 
 static constexpr double FormFactor = 5.6294995e6; // fout = (Pact/Pnenn) * FPZnenn * FormFactor
 
-FOutChannelInterface::FOutChannelInterface(cSCPI *scpiinterface, QString description, quint8 nr, FOutSettings::ChannelSettings *cSettings) :
+FOutChannelInterface::FOutChannelInterface(std::shared_ptr<cSCPI> scpiinterface,
+                                           QString description,
+                                           quint8 nr,
+                                           FOutSettings::ChannelSettings *cSettings) :
     ScpiConnection(scpiinterface),
     m_sDescription(description)
 {
@@ -33,14 +36,14 @@ FOutChannelInterface::FOutChannelInterface(cSCPI *scpiinterface, QString descrip
 void FOutChannelInterface::initSCPIConnection(QString leadingNodes)
 {
     ensureTrailingColonOnNonEmptyParentNodes(leadingNodes);
-    addDelegate(QString("%1%2").arg(leadingNodes, m_sName),"ALIAS", SCPI::isQuery, m_pSCPIInterface, cmdAlias);
-    addDelegate(QString("%1%2").arg(leadingNodes, m_sName),"TYPE", SCPI::isQuery, m_pSCPIInterface, cmdType);
-    addDelegate(QString("%1%2").arg(leadingNodes, m_sName),"DSPSERVER", SCPI::isQuery, m_pSCPIInterface, cmdDspServer);
-    addDelegate(QString("%1%2").arg(leadingNodes, m_sName),"DSPCHANNEL", SCPI::isQuery, m_pSCPIInterface, cmdDspChannel);
-    addDelegate(QString("%1%2").arg(leadingNodes, m_sName),"STATUS", SCPI::isQuery, m_pSCPIInterface, cmdStatus);
-    addDelegate(QString("%1%2").arg(leadingNodes, m_sName),"FFACTOR", SCPI::isQuery, m_pSCPIInterface, cmdFormFactor);
-    addDelegate(QString("%1%2").arg(leadingNodes, m_sName),"CONSTANT", SCPI::isQuery | SCPI::isCmdwP , m_pSCPIInterface, cmdConstant,&notifierConstant);
-    addDelegate(QString("%1%2").arg(leadingNodes, m_sName),"POWTYPE", SCPI::isQuery | SCPI::isCmdwP , m_pSCPIInterface, cmdPowtype, &notifierPowerType);
+    addDelegate(QString("%1%2").arg(leadingNodes, m_sName),"ALIAS", SCPI::isQuery, m_scpiInterface, cmdAlias);
+    addDelegate(QString("%1%2").arg(leadingNodes, m_sName),"TYPE", SCPI::isQuery, m_scpiInterface, cmdType);
+    addDelegate(QString("%1%2").arg(leadingNodes, m_sName),"DSPSERVER", SCPI::isQuery, m_scpiInterface, cmdDspServer);
+    addDelegate(QString("%1%2").arg(leadingNodes, m_sName),"DSPCHANNEL", SCPI::isQuery, m_scpiInterface, cmdDspChannel);
+    addDelegate(QString("%1%2").arg(leadingNodes, m_sName),"STATUS", SCPI::isQuery, m_scpiInterface, cmdStatus);
+    addDelegate(QString("%1%2").arg(leadingNodes, m_sName),"FFACTOR", SCPI::isQuery, m_scpiInterface, cmdFormFactor);
+    addDelegate(QString("%1%2").arg(leadingNodes, m_sName),"CONSTANT", SCPI::isQuery | SCPI::isCmdwP , m_scpiInterface, cmdConstant,&notifierConstant);
+    addDelegate(QString("%1%2").arg(leadingNodes, m_sName),"POWTYPE", SCPI::isQuery | SCPI::isCmdwP , m_scpiInterface, cmdPowtype, &notifierPowerType);
 }
 
 void FOutChannelInterface::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
