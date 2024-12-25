@@ -80,13 +80,13 @@ void PCBServer::openTelnetScpi()
     }
 }
 
-void PCBServer::sendAnswerProto(cProtonetCommand *protoCmd)
+void PCBServer::sendProtoAnswerStatic(QTcpSocket *telnetSocket, XiQNetWrapper *protobufWrapper, cProtonetCommand *protoCmd)
 {
     if(protoCmd->m_pPeer == 0) {
         // we worked on a command comming from scpi socket connection
         QString answer = protoCmd->m_sOutput+"\n";
         QByteArray ba = answer.toLatin1();
-        m_telnetSocket->write(ba);
+        telnetSocket->write(ba);
         qInfo("External SCPI response: %s", qPrintable(answer));
     }
     else {
@@ -118,7 +118,7 @@ void PCBServer::sendAnswerProto(cProtonetCommand *protoCmd)
             Answer->set_body(output.toStdString()); // in any case we set the body
             protobufAnswer.set_clientid(protoCmd->m_clientId, protoCmd->m_clientId.count());
             protobufAnswer.set_messagenr(protoCmd->m_nmessageNr);
-            protoCmd->m_pPeer->sendMessage(m_protobufWrapper.protobufToByteArray(protobufAnswer));
+            protoCmd->m_pPeer->sendMessage(protobufWrapper->protobufToByteArray(protobufAnswer));
         }
         else {
             QByteArray block;
@@ -134,6 +134,11 @@ void PCBServer::sendAnswerProto(cProtonetCommand *protoCmd)
         }
     }
     delete protoCmd;
+}
+
+void PCBServer::sendAnswerProto(cProtonetCommand *protoCmd)
+{
+    sendProtoAnswerStatic(m_telnetSocket, &m_protobufWrapper, protoCmd);
 }
 
 void PCBServer::onTelnetClientConnected()
