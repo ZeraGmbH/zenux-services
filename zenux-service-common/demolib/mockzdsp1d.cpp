@@ -9,5 +9,8 @@ MockZdsp1d::MockZdsp1d(AbstractFactoryDeviceNodeDspPtr deviceNodeFactory,
     if(!alternateConfigXml.isEmpty())
         params.xmlFile = alternateConfigXml;
     SettingsContainerPtr settings = std::make_unique<SettingsContainer>(params);
-    m_server = std::make_unique<ZDspServer>(std::move(settings), deviceNodeFactory, tcpNetworkFactory);
+    m_server = std::make_unique<ZDspServer>(
+        std::move(settings),
+        deviceNodeFactory,
+        tcpNetworkFactory);
 }

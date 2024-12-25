@@ -267,7 +267,9 @@ void test_regression_adj_scpi_query_format_com5003::setupServers()
 {
     VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory = VeinTcp::MockTcpNetworkFactory::create();
     m_resmanServer = std::make_unique<ResmanRunFacade>(tcpNetworkFactory);
-    m_testServer = std::make_unique<TestServerForSenseInterfaceCom5003>(std::make_shared<TestFactoryI2cCtrl>(true), tcpNetworkFactory);
+    m_testServer = std::make_unique<TestServerForSenseInterfaceCom5003>(
+        std::make_shared<TestFactoryI2cCtrl>(true),
+        tcpNetworkFactory);
     TimeMachineObject::feedEventLoop();
 
     m_proxyClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307, tcpNetworkFactory);

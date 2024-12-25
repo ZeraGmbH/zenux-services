@@ -18,6 +18,7 @@ private slots:
     void resetM7();
 private:
     void setupServers(quint16 initialCriticalStatus);
+
     std::unique_ptr<TestServerForSenseInterfaceMt310s2> m_testServer;
     std::unique_ptr<ResmanRunFacade> m_resmanServer;
     Zera::ProxyClientPtr m_proxyClient;

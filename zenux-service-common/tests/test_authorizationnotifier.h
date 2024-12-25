@@ -26,6 +26,7 @@ private slots:
     void noNotificationAuthoStatusEnabled();
 private:
     QString getAuthoStatus();
+
     std::unique_ptr<TestPcbServerNotifications> m_pcbServerTest;
     I2cCtrlEepromPermissionPtr m_PermissionCtrl;
     AbstractAdjStatus *m_adjustmentStatusNull;

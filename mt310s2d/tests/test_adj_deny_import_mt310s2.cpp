@@ -66,9 +66,10 @@ void test_adj_deny_import_mt310s2::setupServers()
 {
     VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory = VeinTcp::MockTcpNetworkFactory::create();
     m_resmanServer = std::make_unique<ResmanRunFacade>(tcpNetworkFactory);
-    m_testServer = std::make_unique<TestServerForSenseInterfaceMt310s2>(std::make_shared<TestFactoryI2cCtrl>(true),
-                                                                        tcpNetworkFactory,
-                                                                        true);
+    m_testServer = std::make_unique<TestServerForSenseInterfaceMt310s2>(
+        std::make_shared<TestFactoryI2cCtrl>(true),
+        tcpNetworkFactory,
+        true);
     TimeMachineObject::feedEventLoop();
 
     m_proxyClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307, tcpNetworkFactory);

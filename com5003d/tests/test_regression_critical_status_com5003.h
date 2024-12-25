@@ -17,6 +17,7 @@ private slots:
     void resetM5();
 private:
     void setupServers(quint16 initialCriticalStatus);
+
     std::unique_ptr<TestServerForSenseInterfaceCom5003> m_testServer;
     std::unique_ptr<ResmanRunFacade> m_resmanServer;
     Zera::ProxyClientPtr m_proxyClient;

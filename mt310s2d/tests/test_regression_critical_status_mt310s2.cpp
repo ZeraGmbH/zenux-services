@@ -146,7 +146,9 @@ void test_regression_critical_status_mt310s2::setupServers(quint16 initialCritic
 {
     VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory = VeinTcp::MockTcpNetworkFactory::create();
     m_resmanServer = std::make_unique<ResmanRunFacade>(tcpNetworkFactory);
-    m_testServer = std::make_unique<TestServerForSenseInterfaceMt310s2>(std::make_shared<TestFactoryI2cCtrlCriticalStatus>(initialCriticalStatus), tcpNetworkFactory);
+    m_testServer = std::make_unique<TestServerForSenseInterfaceMt310s2>(
+        std::make_shared<TestFactoryI2cCtrlCriticalStatus>(initialCriticalStatus),
+        tcpNetworkFactory);
     TimeMachineObject::feedEventLoop();
 
     m_proxyClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307, tcpNetworkFactory);
