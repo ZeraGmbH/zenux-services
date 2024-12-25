@@ -422,7 +422,7 @@ char* cZDSP1Client::qSEncryption(char* ch,int n )
 }
 
 
-QString& cZDSP1Client::DspVarListRead(QString& s)
+QString& cZDSP1Client::DspVarListRead(const QString& s)
 {
     bool ok=false;
     sOutput="";
@@ -475,7 +475,7 @@ QString& cZDSP1Client::DspVarListRead(QString& s)
 }
 
 
-QString cZDSP1Client::DspVarWriteRM(QString& s)
+QString cZDSP1Client::DspVarWriteRM(const QString &s)
 {
     if ( DspVarWrite(s) )
         return ZSCPI::scpiAnswer[ZSCPI::ack];
