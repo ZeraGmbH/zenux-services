@@ -13,7 +13,9 @@ class test_regression_scpi_com5003 : public QObject
 private slots:
     void init();
     void cleanup();
+
     void serverUp();
+    void dumpScpi();
 private:
     std::unique_ptr<ResmanRunFacade> m_resman;
     std::unique_ptr<MockCom5003d> m_server;

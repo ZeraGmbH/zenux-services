@@ -5,6 +5,7 @@ function(SETUP_COM5003_TESTS)
             PUBLIC
             com5003d-lib
             com5003-testlib
+            Zera::xml-compare-testlib
         )
     endforeach()
 endfunction()
@@ -57,4 +58,9 @@ target_sources(test_regression_adj_calc_com5003
 target_sources(test_adj_deny_import_com5003
   PRIVATE
     regression_data_adj_import_export/regression_data.qrc
+)
+
+target_sources(test_regression_scpi_com5003
+    PRIVATE
+    test-data/regression_data.qrc
 )
