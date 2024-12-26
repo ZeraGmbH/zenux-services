@@ -21,6 +21,7 @@ SETUP_COM5003_TESTS(
     test_regression_critical_status_com5003
     test_adj_deny_import_com5003
     test_regression_adj_status_com5003
+    test_regression_scpi_com5003
     )
 
 target_sources(test_regression_adj_import_export_xml_com5003
