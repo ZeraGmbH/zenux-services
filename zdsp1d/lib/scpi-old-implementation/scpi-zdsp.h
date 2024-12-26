@@ -48,7 +48,11 @@ class cNodeSCPI: public cNode
 public:
     cNodeSCPI (const char* sNodeName, int nNodedef, cNode* pNextNode, cNode* pNewLevelNode, SCPICmdType Cmd, SCPICmdType Query);
     virtual  ~cNodeSCPI(){};
+    QString getName() const;
     virtual cNode* TestNode(ScpiCmdInterpreter* cmdInterpreter, QChar** inputline);
+    cNodeSCPI *getNextNode() const;
+    cNodeSCPI *getFirstChildNode() const;
+    quint8 getType() const;
 private:
     cSCPIString m_sNodeName; // name des knoten
 };

@@ -3,8 +3,47 @@
  <MODELS>
   <SYSTEM Type="Model,Node">
    <INTERFACE Type="Node">
-    <READ ScpiPath="SYSTEM:INTERFACE:READ" Type="Query"/>
+    <READ Type="Query" ScpiPath="SYSTEM:INTERFACE:READ"/>
    </INTERFACE>
+   <VERSION Type="Node">
+    <SERVER Type="Query" ScpiPath="SYSTEM:VERSION:SERVER"/>
+    <DEVICE Type="Query" ScpiPath="SYSTEM:VERSION:DEVICE"/>
+   </VERSION>
+   <COMMUNICATION Type="Node">
+    <ENCRYPTION Type="Query,Command+Par" ScpiPath="SYSTEM:COMMUNICATION:ENCRYPTION"/>
+   </COMMUNICATION>
+   <DSP Type="Node">
+    <TEST Type="Command+Par" ScpiPath="SYSTEM:DSP:TEST"/>
+    <RESET Type="Command+Par" ScpiPath="SYSTEM:DSP:RESET"/>
+    <BOOT Type="Node">
+     <EXECUTE Type="Command+Par" ScpiPath="SYSTEM:DSP:BOOT:EXECUTE"/>
+    </BOOT>
+    <SAMPLING Type="Query,Command+Par" ScpiPath="SYSTEM:DSP:SAMPLING"/>
+    <MAXIMA Type="Node">
+     <RESET Type="Command+Par" ScpiPath="SYSTEM:DSP:MAXIMA:RESET"/>
+    </MAXIMA>
+    <TRIGGER Type="Node">
+     <INTLIST Type="Node">
+      <ALL Type="Command+Par" ScpiPath="SYSTEM:DSP:TRIGGER:INTLIST:ALL"/>
+      <HKSK Type="Command+Par" ScpiPath="SYSTEM:DSP:TRIGGER:INTLIST:HKSK"/>
+     </INTLIST>
+    </TRIGGER>
+    <EN61850 Type="Node">
+     <SNLCOUNT Type="Query,Command+Par" ScpiPath="SYSTEM:DSP:EN61850:SNLCOUNT"/>
+     <DATCOUNT Type="Query,Command+Par" ScpiPath="SYSTEM:DSP:EN61850:DATCOUNT"/>
+     <MAC Type="Node">
+      <SADRESS Type="Query,Command+Par" ScpiPath="SYSTEM:DSP:EN61850:MAC:SADRESS"/>
+      <DADRESS Type="Query,Command+Par" ScpiPath="SYSTEM:DSP:EN61850:MAC:DADRESS"/>
+     </MAC>
+     <PRIORITYTAGGED Type="Query,Command+Par" ScpiPath="SYSTEM:DSP:EN61850:PRIORITYTAGGED"/>
+     <ETHTYPEAPPID Type="Query,Command+Par" ScpiPath="SYSTEM:DSP:EN61850:ETHTYPEAPPID"/>
+     <ETHSYNC Type="Query,Command+Par" ScpiPath="SYSTEM:DSP:EN61850:ETHSYNC"/>
+    </EN61850>
+    <COMMAND Type="Node">
+     <STAT Type="Query,Command+Par" ScpiPath="SYSTEM:DSP:COMMAND:STAT"/>
+    </COMMAND>
+   </DSP>
+   <SERNR Type="Query" ScpiPath="SYSTEM:SERNR"/>
   </SYSTEM>
  </MODELS>
 </MODELLIST>

@@ -2,12 +2,14 @@ file(GLOB HEADERS
     ${CMAKE_CURRENT_SOURCE_DIR}/*.h
     ${CMAKE_CURRENT_SOURCE_DIR}/device-nodes/*.h
     ${CMAKE_CURRENT_SOURCE_DIR}/dsp-memory-management/*.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/scpi-old-implementation/*.h
 )
 
 file(GLOB SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/device-nodes/*.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/dsp-memory-management/*.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/scpi-old-implementation/*.cpp
 )
 
 add_library(zdsp1d-lib STATIC
@@ -21,6 +23,7 @@ target_include_directories(zdsp1d-lib
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/device-nodes>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/dsp-memory-management>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/scpi-old-implementation>
     )
 
 if(${Systemd_FOUND})

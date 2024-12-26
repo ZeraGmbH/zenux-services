@@ -3,12 +3,13 @@
 #include "zdspserver.h"
 #include "zdspclient.h"
 #include "dsp.h"
-#include "scpi-zdsp.h"
 #include "commonscpimethods.h"
 #include "pcbserver.h"
 #include "devicenodedsp.h"
+#include "scpioldnodestaticfunctions.h"
 #include "zscpi_response_definitions.h"
 #include <timerfactoryqt.h>
+#include <scpinodestaticfunctions.h>
 #include <QDebug>
 #include <QCoreApplication>
 #include <QFinalState>
@@ -126,11 +127,6 @@ ZDspServer::~ZDspServer()
     close(pipeFileDescriptorZdsp1[1]);
 }
 
-void ZDspServer::initSCPIConnection(QString leadingNodes)
-{
-
-}
-
 void ZDspServer::doConfiguration()
 {
     if ( pipe(pipeFileDescriptorZdsp1) == -1 ) {
@@ -160,13 +156,12 @@ void ZDspServer::doConfiguration()
     }
 }
 
-
 void ZDspServer::doSetupServer()
 {
     qInfo("Starting doSetupServer");
     ScpiParserZdsp1d* parser = new(ScpiParserZdsp1d); // das ist der parser
     m_cmdInterpreter = new ScpiCmdInterpreter(this, InitCmdTree(), parser); // das ist der kommando interpreter
-    setupNewScpi();
+    initSCPIConnection(QString());
     m_sDspSerialNumber = "Unknown"; // kennen wir erst mal nicht
     m_sDspBootPath = m_pDspSettings->getBootFile();
     ActivatedCmdList = 0; // der derzeit aktuelle kommando listen satz (0,1)
@@ -314,8 +309,9 @@ void ZDspServer::outputLogs()
     outputAndResetTransactionsLogs();
 }
 
-void ZDspServer::setupNewScpi()
+void ZDspServer::initSCPIConnection(QString leadingNodes)
 {
+    Q_UNUSED(leadingNodes)
     addDelegate("SYSTEM:INTERFACE", "READ", SCPI::isQuery, m_scpiInterface, cmdInterfaceRead);
     connect(this, &ScpiConnection::cmdExecutionDone, this, &ZDspServer::sendProtoAnswer);
 }
@@ -329,9 +325,30 @@ void ZDspServer::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
     switch (cmdCode)
     {
     case cmdInterfaceRead:
-        protoCmd->m_sOutput = CommonScpiMethods::handleScpiInterfaceRead(m_scpiInterface, protoCmd->m_sInput);
+        protoCmd->m_sOutput = handleScpiInterfaceRead(protoCmd->m_sInput);
         break;
     }
+}
+
+QString ZDspServer::handleScpiInterfaceRead(const QString &scpiInput)
+{
+    // get new SCPI
+    QString newScpi = CommonScpiMethods::handleScpiInterfaceRead(m_scpiInterface, scpiInput);
+
+    // add old SCPI
+    QDomDocument domDoc("SCPIModel");
+    domDoc.setContent(newScpi);
+
+    QDomElement modelListElem = domDoc.documentElement();
+    QDomElement modelsElem = modelListElem.firstChildElement("MODELS");
+    QDomElement systemElem = modelsElem.firstChildElement("SYSTEM");
+
+    cNodeSCPI* systemNode = static_cast<cNodeSCPI*>(InitCmdTree());
+    ScpiOldNodeStaticFunctions::addNodeAndChildrenToXml(systemNode,
+                                                        domDoc,
+                                                        systemElem,
+                                                        QStringList() << "SYSTEM");
+    return domDoc.toString();
 }
 
 QString ZDspServer::mTestDsp(QChar* s)

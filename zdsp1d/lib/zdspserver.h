@@ -15,6 +15,7 @@
 #include <vtcp_server.h>
 #include <xiqnetwrapper.h>
 #include <abstracttcpnetworkfactory.h>
+#include "scpi-zdsp.h"
 #include <QStringList>
 #include <QSocketNotifier>
 #include <QByteArray>
@@ -23,6 +24,7 @@
 #include <QVector>
 #include <QStateMachine>
 #include <QTcpServer>
+#include <QDomDocument>
 
 class cZDSP1Client;
 
@@ -37,7 +39,6 @@ public:
                AbstractFactoryDeviceNodeDspPtr deviceNodeFactory,
                VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory);
     virtual ~ZDspServer();
-    void initSCPIConnection(QString leadingNodes) override;
     QString getServerVersion();
     QString getDspDeviceNode();
 
@@ -76,9 +77,10 @@ private slots:
 
     void outputLogs();
 private:
-    void setupNewScpi();
     void init();
+    void initSCPIConnection(QString leadingNodes) override;
     void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
+    QString handleScpiInterfaceRead(const QString &scpiInput);
     void outputDspRunState();
     void outputAndResetTransactionsLogs();
     void openTelnetScpi();

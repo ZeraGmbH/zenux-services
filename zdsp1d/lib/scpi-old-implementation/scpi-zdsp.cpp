@@ -1,4 +1,5 @@
 #include "scpi-zdsp.h"
+#include "scpi.h"
 #include <QString>
 
 bool cSCPIString::operator == (const QString& s)
@@ -50,6 +51,11 @@ cNodeSCPI::cNodeSCPI (const char* sNodeName, int nNodedef, cNode* pNextNode, cNo
     m_sNodeName=sNodeName;
 }
 
+QString cNodeSCPI::getName() const
+{
+    return m_sNodeName;
+}
+
 
 cNode* cNodeSCPI::TestNode(ScpiCmdInterpreter* cmdInterpreter, QChar **inputline)
 {
@@ -79,6 +85,33 @@ cNode* cNodeSCPI::TestNode(ScpiCmdInterpreter* cmdInterpreter, QChar **inputline
         *inputline=tinp; // lass dem Kommando das zeichen (reparsen)
         return (NULL);
     }
+}
+
+cNodeSCPI *cNodeSCPI::getNextNode() const
+{
+    return static_cast<cNodeSCPI *>(m_pNextNode);
+}
+
+cNodeSCPI *cNodeSCPI::getFirstChildNode() const
+{
+    return static_cast<cNodeSCPI *>(m_pNewLevelNode);
+}
+
+quint8 cNodeSCPI::getType() const
+{
+    bool isCmd = m_nCmd != nixCmd;
+    bool isQuery = m_nQuery != nixCmd;
+    if(!isCmd && !isQuery)
+        return SCPI::isNode;
+    quint8 type = 0;
+    if(isCmd)
+        // This implementation cannot distinguish cmd / cmd with param
+        // Looked into other server's dumps: With parameter an assumption
+        // matching more often
+        type |= SCPI::isCmdwP;
+    if(isQuery)
+        type |= SCPI::isQuery;
+    return type;
 }
 
 
