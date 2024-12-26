@@ -37,7 +37,7 @@ signals:
     void notifierRegistred(NotificationString* notifier);
     void removeSubscribers(VeinTcp::TcpPeer* peer, const QByteArray &clientID);
 public slots:
-    void sendAnswerProto(cProtonetCommand* protoCmd);
+    void sendProtoAnswer(cProtonetCommand* protoCmd);
 protected slots:
     virtual void doConfiguration() = 0; // all servers must configure
     virtual void onNotifySubscriber(ScpiNotificationSubscriber subscriber, QString newValue);

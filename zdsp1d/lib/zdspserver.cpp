@@ -317,7 +317,7 @@ void ZDspServer::outputLogs()
 void ZDspServer::setupNewScpi()
 {
     addDelegate("SYSTEM:INTERFACE", "READ", SCPI::isQuery, m_scpiInterface, cmdInterfaceRead);
-    connect(this, &ScpiConnection::cmdExecutionDone, this, &ZDspServer::sendAnswerProto);
+    connect(this, &ScpiConnection::cmdExecutionDone, this, &ZDspServer::sendProtoAnswer);
 }
 
 void ZDspServer::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
@@ -1541,9 +1541,7 @@ QString ZDspServer::SCPIQuery(SCPICmdType cmdEnum)
     return Answer;
 }
 
-void ZDspServer::sendAnswerProto(cProtonetCommand *protoCmd)
+void ZDspServer::sendProtoAnswer(cProtonetCommand *protoCmd)
 {
-    CommonScpiMethods::sendProtoAnswer(m_telnetSocket,
-                                             &m_protobufWrapper,
-                                             protoCmd);
+    CommonScpiMethods::sendProtoAnswer(m_telnetSocket, &m_protobufWrapper, protoCmd);
 }

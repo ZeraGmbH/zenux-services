@@ -81,7 +81,7 @@ void PCBServer::openTelnetScpi()
     }
 }
 
-void PCBServer::sendAnswerProto(cProtonetCommand *protoCmd)
+void PCBServer::sendProtoAnswer(cProtonetCommand *protoCmd)
 {
     CommonScpiMethods::sendProtoAnswer(m_telnetSocket, &m_protobufWrapper, protoCmd);
 }
@@ -350,7 +350,7 @@ void PCBServer::initSCPIConnections()
         scpiConnectionList.at(i)->initSCPIConnection(""); // we have our interface
         connect(scpiConnectionList.at(i), &ScpiConnection::valNotifier, this, &PCBServer::onEstablishNewNotifier);
         connect(scpiConnectionList.at(i), &ScpiConnection::sigNotifySubcriber, this, &PCBServer::onNotifySubscriber);
-        connect(scpiConnectionList.at(i), &ScpiConnection::cmdExecutionDone, this, &PCBServer::sendAnswerProto);
+        connect(scpiConnectionList.at(i), &ScpiConnection::cmdExecutionDone, this, &PCBServer::sendProtoAnswer);
         connect(this, &PCBServer::notifierRegistred, scpiConnectionList.at(i), &ScpiConnection::onNotifierRegistered);
         connect(this, &PCBServer::removeSubscribers, scpiConnectionList.at(i), &ScpiConnection::onRemoveSubscribers);
     }

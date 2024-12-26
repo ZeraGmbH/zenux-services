@@ -56,7 +56,7 @@ cClamp::cClamp(PCBServer *server,
 
     // This blocks us from getting free of server
     // Problem: clamps are generated dynamically all other interfaces are setup once
-    connect(this, &ScpiConnection::cmdExecutionDone, server, &PCBServer::sendAnswerProto);
+    connect(this, &ScpiConnection::cmdExecutionDone, server, &PCBServer::sendProtoAnswer);
     connect(server, &PCBServer::removeSubscribers, this, &ScpiConnection::onRemoveSubscribers);
 
     if (type != undefined) {

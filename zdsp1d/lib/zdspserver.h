@@ -56,7 +56,7 @@ signals:
     void abortInit();
 
 private slots:
-    void sendAnswerProto(cProtonetCommand *protoCmd);
+    void sendProtoAnswer(cProtonetCommand *protoCmd);
     void onProtobufClientConnected(VeinTcp::TcpPeer* newClient);
     void onProtobufDataReceived(VeinTcp::TcpPeer *peer, QByteArray message);
     void onProtobufDisconnect(VeinTcp::TcpPeer *peer);
