@@ -13,11 +13,11 @@ void test_old_scpi_implementation::query()
     ScpiParserZdsp1d parser;
     ScpiCallbackMock scpiMock(&parser);
     ScpiCmdInterpreter cmdInterpreter(&scpiMock, InitCmdTree(), &parser);
-    QString scpi("SYSTEM:VERSION:DEVICE?");
+    QString scpi("SYSTEM:DSP:EN61850:ETHSYNC?");
     cmdInterpreter.CmdExecute(scpi);
 
     QCOMPARE(scpiMock.m_queriesReceived.count(), 1);
-    QCOMPARE(scpiMock.m_queriesReceived[0], GetDeviceVersion);
+    QCOMPARE(scpiMock.m_queriesReceived[0], GetEN61850EthSync);
 }
 
 void test_old_scpi_implementation::cmd()
