@@ -1,5 +1,6 @@
 #include "com5003systeminterface.h"
 #include "systeminfo.h"
+#include "commonscpimethods.h"
 #include "zscpi_response_definitions.h"
 #include <QDateTime>
 #include <QJsonObject>
@@ -78,7 +79,7 @@ void Com5003SystemInterface::executeProtoScpi(int cmdCode, cProtonetCommand *pro
         protoCmd->m_sOutput = m_AdjFlashChksum(protoCmd->m_sInput);
         break;
     case SystemSystem::cmdInterfaceRead:
-        protoCmd->m_sOutput = scpiInterfaceRead(protoCmd->m_sInput);
+        protoCmd->m_sOutput = CommonScpiMethods::handleScpiInterfaceRead(m_scpiInterface, protoCmd->m_sInput);
         break;
     }
 
@@ -328,21 +329,6 @@ QString Com5003SystemInterface::m_AdjFlashChksum(QString &sInput)
     if (cmd.isQuery())
     {
         QString s = QString("0x%1").arg(m_senseInterface->getAdjChecksum(),0,16); // hex output
-        return s;
-    }
-    else
-        return ZSCPI::scpiAnswer[ZSCPI::nak];
-}
-
-
-QString Com5003SystemInterface::scpiInterfaceRead(const QString &sInput)
-{
-    cSCPICommand cmd = sInput;
-
-    if (cmd.isQuery())
-    {
-        QString s;
-        m_scpiInterface->exportSCPIModelXML(s);
         return s;
     }
     else

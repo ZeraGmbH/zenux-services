@@ -38,7 +38,6 @@ private:
     QString scpiReadPCBVersion(QString& sInput);
     QString m_ReadFPGAVersion(QString& sInput);
     QString m_ReadWriteSerialNumber(QString& sInput);
-    QString scpiInterfaceRead(QString& sInput);
 };
 
 

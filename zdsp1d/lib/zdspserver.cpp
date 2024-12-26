@@ -4,6 +4,7 @@
 #include "zdspclient.h"
 #include "dsp.h"
 #include "scpi-zdsp.h"
+#include "commonscpimethods.h"
 #include "pcbserver.h"
 #include "devicenodedsp.h"
 #include "zscpi_response_definitions.h"
@@ -328,7 +329,7 @@ void ZDspServer::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
     switch (cmdCode)
     {
     case cmdInterfaceRead:
-        protoCmd->m_sOutput = scpiInterfaceRead(protoCmd->m_sInput);
+        protoCmd->m_sOutput = CommonScpiMethods::handleScpiInterfaceRead(m_scpiInterface, protoCmd->m_sInput);
         break;
     }
 }
@@ -1256,18 +1257,6 @@ QString ZDspServer::mDspMemoryWrite(QChar* s)
     return Answer;
 }
 
-QString ZDspServer::scpiInterfaceRead(const QString &scpiInput)
-{
-    cSCPICommand cmd = scpiInput;
-    if (cmd.isQuery()) {
-        QString s;
-        m_scpiInterface->exportSCPIModelXML(s);
-        return s;
-    }
-    else
-        return ZSCPI::scpiAnswer[ZSCPI::nak];
-}
-
 cZDSP1Client* ZDspServer::GetClient(int s)
 {
     if (m_clientList.count() > 0) {
@@ -1554,7 +1543,7 @@ QString ZDspServer::SCPIQuery(SCPICmdType cmdEnum)
 
 void ZDspServer::sendAnswerProto(cProtonetCommand *protoCmd)
 {
-    PCBServer::sendProtoAnswerStatic(m_telnetSocket,
-                                     &m_protobufWrapper,
-                                     protoCmd);
+    CommonScpiMethods::sendProtoAnswer(m_telnetSocket,
+                                             &m_protobufWrapper,
+                                             protoCmd);
 }

@@ -171,10 +171,6 @@ private:
     QString mDspMemoryRead(QChar *);
     QString mDspMemoryWrite(QChar *);
 
-    // common
-    QString scpiInterfaceRead(const QString &scpiInput);
-
-
     bool BuildDSProgram(QString& errs);
     bool LoadDSProgram();
     bool setDspType();

@@ -1,5 +1,6 @@
 #include "mt310s2systeminterface.h"
 #include "accustatusflags.h"
+#include "commonscpimethods.h"
 #include "zscpi_response_definitions.h"
 #include <QJsonObject>
 #include <QJsonDocument>
@@ -116,7 +117,7 @@ void Mt310s2SystemInterface::executeProtoScpi(int cmdCode, cProtonetCommand *pro
         protoCmd->m_sOutput = m_AdjFlashChksum(protoCmd->m_sInput);
         break;
     case SystemSystem::cmdInterfaceRead:
-        protoCmd->m_sOutput = scpiInterfaceRead(protoCmd->m_sInput);
+        protoCmd->m_sOutput = CommonScpiMethods::handleScpiInterfaceRead(m_scpiInterface, protoCmd->m_sInput);
         break;
     }
 
@@ -371,19 +372,6 @@ QString Mt310s2SystemInterface::m_AdjFlashChksum(QString &sInput)
     cSCPICommand cmd = sInput;
     if (cmd.isQuery())
         return QString("0x%1").arg(m_senseInterface->getAdjChecksum()); // hex output
-    else
-        return ZSCPI::scpiAnswer[ZSCPI::nak];
-}
-
-
-QString Mt310s2SystemInterface::scpiInterfaceRead(QString &sInput)
-{
-    cSCPICommand cmd = sInput;
-    if (cmd.isQuery()) {
-        QString s;
-        m_scpiInterface->exportSCPIModelXML(s);
-        return s;
-    }
     else
         return ZSCPI::scpiAnswer[ZSCPI::nak];
 }

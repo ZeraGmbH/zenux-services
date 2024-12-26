@@ -1,6 +1,7 @@
 #include "sec1000systeminterface.h"
 #include "sec1000d.h"
 #include "sec1000systeminfo.h"
+#include "commonscpimethods.h"
 #include "zscpi_response_definitions.h"
 #include "protonetcommand.h"
 #include <scpi.h>
@@ -44,7 +45,7 @@ void cSystemInterface::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
         protoCmd->m_sOutput = m_ReadWriteSerialNumber(protoCmd->m_sInput);
         break;
     case SystemSystem::cmdInterfaceRead:
-        protoCmd->m_sOutput = scpiInterfaceRead(protoCmd->m_sInput);
+        protoCmd->m_sOutput = CommonScpiMethods::handleScpiInterfaceRead(m_scpiInterface, protoCmd->m_sInput);
         break;
     }
     if (protoCmd->m_bwithOutput)
@@ -141,16 +142,4 @@ QString cSystemInterface::m_ReadWriteSerialNumber(QString &sInput)
             s = ZSCPI::scpiAnswer[ZSCPI::nak];
     }
     return s;
-}
-
-QString cSystemInterface::scpiInterfaceRead(QString &sInput)
-{
-    cSCPICommand cmd = sInput;
-    if (cmd.isQuery()) {
-        QString s;
-        m_scpiInterface->exportSCPIModelXML(s);
-        return s;
-    }
-    else
-        return ZSCPI::scpiAnswer[ZSCPI::nak];
 }

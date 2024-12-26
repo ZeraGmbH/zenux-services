@@ -33,7 +33,6 @@ public:
     std::shared_ptr<cSCPI> getSCPIInterface();
     QString getName();
     QString getVersion();
-    static void sendProtoAnswerStatic(QTcpSocket* telnetSocket, XiQNetWrapper *protobufWrapper, cProtonetCommand* protoCmd);
 signals:
     void notifierRegistred(NotificationString* notifier);
     void removeSubscribers(VeinTcp::TcpPeer* peer, const QByteArray &clientID);
