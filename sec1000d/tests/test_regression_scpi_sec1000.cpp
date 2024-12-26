@@ -1,6 +1,8 @@
 #include "test_regression_scpi_sec1000.h"
 #include "proxy.h"
 #include "scpisingletransactionblocked.h"
+#include <xmldocumentcompare.h>
+#include <testloghelpers.h>
 #include <timemachineobject.h>
 #include <tcpnetworkfactory.h>
 #include <QTest>
@@ -34,4 +36,15 @@ void test_regression_scpi_sec1000::serverUp()
 {
     QString ret = ScpiSingleTransactionBlocked::query("SYSTEM:VERSION:SERVER?", 6305);
     QCOMPARE(ret, "V42.0");
+}
+
+void test_regression_scpi_sec1000::dumpScpi()
+{
+    QString expected = TestLogHelpers::loadFile("://scpi-dump.xml");
+    QString dumped = ScpiSingleTransactionBlocked::query("SYSTEM:INTERFACE:READ?", 6305);
+    XmlDocumentCompare compare;
+    bool ok = compare.compareXml(dumped, expected);
+    if(!ok)
+        TestLogHelpers::compareAndLogOnDiff(expected, dumped);
+    QVERIFY(ok);
 }

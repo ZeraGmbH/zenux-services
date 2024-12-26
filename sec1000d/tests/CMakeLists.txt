@@ -5,6 +5,7 @@ function(SETUP_SEC1000_TESTS)
             PUBLIC
             zenuxservicecommon-demolib
             zenuxservicecommon-testlib
+            Zera::xml-compare-testlib
             sec1000d-demolib
         )
     endforeach()
@@ -15,3 +16,8 @@ SETUP_SEC1000_TESTS(
     test_sec_resource
     test_regression_scpi_sec1000
     )
+
+target_sources(test_regression_scpi_sec1000
+    PRIVATE
+    test-data/regression_data.qrc
+)
