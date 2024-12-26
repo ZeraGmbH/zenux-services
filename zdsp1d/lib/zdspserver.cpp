@@ -314,6 +314,7 @@ void ZDspServer::initSCPIConnection(QString leadingNodes)
     Q_UNUSED(leadingNodes)
     addDelegate("SYSTEM:INTERFACE", "READ", SCPI::isQuery, m_scpiInterface, cmdInterfaceRead);
     addDelegate("SYSTEM:VERSION", "DEVICE", SCPI::isQuery, m_scpiInterface, cmdGetDeviceVersion);
+    addDelegate("SYSTEM:VERSION", "SERVER", SCPI::isQuery, m_scpiInterface, cmdGetServerVersion);
     connect(this, &ScpiConnection::cmdExecutionDone, this, &ZDspServer::sendProtoAnswer);
 }
 
@@ -329,6 +330,9 @@ void ZDspServer::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
         break;
     case cmdGetDeviceVersion:
         protoCmd->m_sOutput = getLcaAndDspVersion(client);
+        break;
+    case cmdGetServerVersion:
+        protoCmd->m_sOutput = getServerVersion();
         break;
     }
 }
@@ -1535,7 +1539,6 @@ QString ZDspServer::SCPIQuery(SCPICmdType cmdEnum)
     switch ((int)cmdEnum)
     {
     case 		GetPCBSerialNumber: 	return mGetPCBSerialNumber();
-    case 		GetServerVersion: 		return getServerVersion();
     case		GetDeviceLoadMax: 	return mGetDeviceLoadMax();
     case 		GetDeviceLoadAct: 	return mGetDeviceLoadAct();
     case		GetDspStatus:		return mGetDspStatus();
