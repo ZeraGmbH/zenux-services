@@ -30,7 +30,7 @@ enum SCPICmdType  {
     ResetDsp,
     BootDsp,
     GetPCBSerialNumber,
-    GetDeviceVersion,
+    cmdGetDeviceVersion,
     GetServerVersion,
     SetSamplingSystem,
     GetSamplingSystem,
