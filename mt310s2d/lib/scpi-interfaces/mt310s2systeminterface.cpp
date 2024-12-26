@@ -116,7 +116,7 @@ void Mt310s2SystemInterface::executeProtoScpi(int cmdCode, cProtonetCommand *pro
         protoCmd->m_sOutput = m_AdjFlashChksum(protoCmd->m_sInput);
         break;
     case SystemSystem::cmdInterfaceRead:
-        protoCmd->m_sOutput = m_InterfaceRead(protoCmd->m_sInput);
+        protoCmd->m_sOutput = scpiInterfaceRead(protoCmd->m_sInput);
         break;
     }
 
@@ -376,7 +376,7 @@ QString Mt310s2SystemInterface::m_AdjFlashChksum(QString &sInput)
 }
 
 
-QString Mt310s2SystemInterface::m_InterfaceRead(QString &sInput)
+QString Mt310s2SystemInterface::scpiInterfaceRead(QString &sInput)
 {
     cSCPICommand cmd = sInput;
     if (cmd.isQuery()) {

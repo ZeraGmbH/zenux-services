@@ -44,7 +44,7 @@ void cSystemInterface::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
         protoCmd->m_sOutput = m_ReadWriteSerialNumber(protoCmd->m_sInput);
         break;
     case SystemSystem::cmdInterfaceRead:
-        protoCmd->m_sOutput = m_InterfaceRead(protoCmd->m_sInput);
+        protoCmd->m_sOutput = scpiInterfaceRead(protoCmd->m_sInput);
         break;
     }
     if (protoCmd->m_bwithOutput)
@@ -143,7 +143,7 @@ QString cSystemInterface::m_ReadWriteSerialNumber(QString &sInput)
     return s;
 }
 
-QString cSystemInterface::m_InterfaceRead(QString &sInput)
+QString cSystemInterface::scpiInterfaceRead(QString &sInput)
 {
     cSCPICommand cmd = sInput;
     if (cmd.isQuery()) {

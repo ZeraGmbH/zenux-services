@@ -58,7 +58,7 @@ private:
     QString m_AdjXMLWrite(QString& sInput);
     QString m_AdjXMLRead(QString& sInput);
     QString m_AdjFlashChksum(QString& sInput);
-    QString m_InterfaceRead(QString& sInput);
+    QString scpiInterfaceRead(const QString& sInput);
 
     void m_genAnswer(int select, QString& answer);
 
