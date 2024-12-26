@@ -4,6 +4,7 @@ function(SETUP_MT310S2_TESTS)
         target_link_libraries(${_testname}
             PUBLIC
             mt310s2d-testlib
+            Zera::xml-compare-testlib
         )
     endforeach()
 endfunction()
@@ -63,4 +64,9 @@ target_sources(test_adj_deny_import_mt310s2
 target_sources(test_accumulatorinterface_mock
   PRIVATE
     regression_data_accumulator/regression_data.qrc
+)
+
+target_sources(test_regression_scpi_mt310s2
+    PRIVATE
+    test-data/regression_data.qrc
 )

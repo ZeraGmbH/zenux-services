@@ -13,7 +13,9 @@ class test_regression_scpi_mt310s2 : public QObject
 private slots:
     void init();
     void cleanup();
+
     void serverUp();
+    void dumpScpi();
 private:
     std::unique_ptr<ResmanRunFacade> m_resman;
     std::unique_ptr<MockMt310s2d> m_server;
