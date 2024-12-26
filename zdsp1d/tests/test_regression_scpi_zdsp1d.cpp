@@ -2,6 +2,8 @@
 #include "testfactorydevicenodedsp.h"
 #include "proxy.h"
 #include "scpisingletransactionblocked.h"
+#include <xmldocumentcompare.h>
+#include <testloghelpers.h>
 #include <timemachineobject.h>
 #include <tcpnetworkfactory.h>
 #include <QTest>
@@ -35,4 +37,15 @@ void test_regression_scpi_zdsp1d::serverUp()
 {
     QString ret = ScpiSingleTransactionBlocked::query("SYSTEM:VERSION:SERVER?", 6310);
     QCOMPARE(ret, "zdsp1d V1.11");
+}
+
+void test_regression_scpi_zdsp1d::dumpScpi()
+{
+    QString expected = TestLogHelpers::loadFile("://scpi-dump.xml");
+    QString dumped = ScpiSingleTransactionBlocked::query("SYSTEM:INTERFACE:READ?", 6310);
+    XmlDocumentCompare compare;
+    bool ok = compare.compareXml(dumped, expected);
+    if(!ok)
+        TestLogHelpers::compareAndLogOnDiff(expected, dumped);
+    QVERIFY(ok);
 }

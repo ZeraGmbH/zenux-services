@@ -1,0 +1,10 @@
+<!DOCTYPE SCPIModel>
+<MODELLIST>
+ <MODELS>
+  <SYSTEM Type="Model,Node">
+   <INTERFACE Type="Node">
+    <READ ScpiPath="SYSTEM:INTERFACE:READ" Type="Query"/>
+   </INTERFACE>
+  </SYSTEM>
+ </MODELS>
+</MODELLIST>

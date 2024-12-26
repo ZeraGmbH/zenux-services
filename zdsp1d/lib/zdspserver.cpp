@@ -165,6 +165,7 @@ void ZDspServer::doSetupServer()
     qInfo("Starting doSetupServer");
     ScpiParserZdsp1d* parser = new(ScpiParserZdsp1d); // das ist der parser
     m_cmdInterpreter = new ScpiCmdInterpreter(this, InitCmdTree(), parser); // das ist der kommando interpreter
+    setupNewScpi();
     m_sDspSerialNumber = "Unknown"; // kennen wir erst mal nicht
     m_sDspBootPath = m_pDspSettings->getBootFile();
     ActivatedCmdList = 0; // der derzeit aktuelle kommando listen satz (0,1)
@@ -312,11 +313,24 @@ void ZDspServer::outputLogs()
     outputAndResetTransactionsLogs();
 }
 
+void ZDspServer::setupNewScpi()
+{
+    addDelegate("SYSTEM:INTERFACE", "READ", SCPI::isQuery, m_scpiInterface, cmdInterfaceRead);
+    connect(this, &ScpiConnection::cmdExecutionDone, this, &ZDspServer::sendAnswerProto);
+}
+
 void ZDspServer::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
 {
-    // Currently just for the sake of ScpiConnection
-    Q_UNUSED(cmdCode)
-    Q_UNUSED(protoCmd)
+    cSCPICommand cmd = protoCmd->m_sInput;
+    int socketNum = m_zdspdClientHash[protoCmd->m_clientId]->getSocket();
+    cZDSP1Client* client = GetClient(socketNum);
+    Q_UNUSED(client) // Not yet
+    switch (cmdCode)
+    {
+    case cmdInterfaceRead:
+        protoCmd->m_sOutput = scpiInterfaceRead(protoCmd->m_sInput);
+        break;
+    }
 }
 
 QString ZDspServer::mTestDsp(QChar* s)
@@ -1242,6 +1256,18 @@ QString ZDspServer::mDspMemoryWrite(QChar* s)
     return Answer;
 }
 
+QString ZDspServer::scpiInterfaceRead(const QString &scpiInput)
+{
+    cSCPICommand cmd = scpiInput;
+    if (cmd.isQuery()) {
+        QString s;
+        m_scpiInterface->exportSCPIModelXML(s);
+        return s;
+    }
+    else
+        return ZSCPI::scpiAnswer[ZSCPI::nak];
+}
+
 cZDSP1Client* ZDspServer::GetClient(int s)
 {
     if (m_clientList.count() > 0) {
@@ -1524,4 +1550,11 @@ QString ZDspServer::SCPIQuery(SCPICmdType cmdEnum)
     }
     Answer = "ProgrammierFehler"; // hier sollten wir nie hinkommen
     return Answer;
+}
+
+void ZDspServer::sendAnswerProto(cProtonetCommand *protoCmd)
+{
+    PCBServer::sendProtoAnswerStatic(m_telnetSocket,
+                                     &m_protobufWrapper,
+                                     protoCmd);
 }

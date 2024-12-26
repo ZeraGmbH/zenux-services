@@ -59,7 +59,10 @@ enum SCPICmdType  {
 
     // die routinen für das memory modell
     DspMemoryRead,
-    DspMemoryWrite
+    DspMemoryWrite,
+
+    // common
+    cmdInterfaceRead
 };
 
 class cbIFace { // call back interface 

@@ -8,6 +8,7 @@ function(SETUP_SERVICE_ZDSP1D_TESTS)
             service-interfaces-testlib
             zdsp1d-demolib
             zdsp1d-testlib
+            Zera::xml-compare-testlib
         )
     endforeach()
 endfunction()
@@ -16,5 +17,10 @@ SETUP_SERVICE_ZDSP1D_TESTS(
     test_config_load_zdsp1
     test_old_scpi_implementation
     test_regression_dsp_var
+    test_regression_scpi_zdsp1d
     )
 
+target_sources(test_regression_scpi_zdsp1d
+    PRIVATE
+    test-data/regression_data.qrc
+)

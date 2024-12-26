@@ -56,6 +56,7 @@ signals:
     void abortInit();
 
 private slots:
+    void sendAnswerProto(cProtonetCommand *protoCmd);
     void onProtobufClientConnected(VeinTcp::TcpPeer* newClient);
     void onProtobufDataReceived(VeinTcp::TcpPeer *peer, QByteArray message);
     void onProtobufDisconnect(VeinTcp::TcpPeer *peer);
@@ -75,6 +76,7 @@ private slots:
 
     void outputLogs();
 private:
+    void setupNewScpi();
     void init();
     void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
     void outputDspRunState();
@@ -166,9 +168,12 @@ private:
     QString mMeasure(QChar*);
 
     // die routinen für das memory modell
-
     QString mDspMemoryRead(QChar *);
     QString mDspMemoryWrite(QChar *);
+
+    // common
+    QString scpiInterfaceRead(const QString &scpiInput);
+
 
     bool BuildDSProgram(QString& errs);
     bool LoadDSProgram();
