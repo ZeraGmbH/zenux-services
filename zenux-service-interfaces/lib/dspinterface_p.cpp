@@ -120,31 +120,6 @@ quint32 cDSPInterfacePrivate::setSignalRouting(tRouting *routingtab)
     return msgnr;
 }
 
-quint32 cDSPInterfacePrivate::setDsp61850PriorityTagged(quint32 priotag)
-{
-    quint32 msgnr = sendCommand("SYST:DSP:EN61:PRI", // long: SYSTEM:DSP:EN61850:PRIORITYTAGGED
-                                QString("%1").arg(priotag));
-    m_MsgNrCmdList[msgnr] = setdsp61850prioritytagged;
-    return msgnr;
-}
-
-
-quint32 cDSPInterfacePrivate::setDsp61850EthTypeAppId(quint32 typAppid)
-{
-    quint32 msgnr = sendCommand("SYST:DSP:EN61:ETHT", // long: SYSTEM:DSP:EN61850:ETHTYPEAPPID
-                                QString("%1").arg(typAppid));
-    m_MsgNrCmdList[msgnr] = setdsp61850ethtypeappid;
-    return msgnr;
-}
-
-quint32 cDSPInterfacePrivate::setDsp61850EthSynchronisation(quint32 syncdata)
-{
-    quint32 msgnr = sendCommand("SYST:DSP:EN61:ETHS", // long: SYSTEM:DSP:EN61850:ETHSYNC
-                                QString("%1").arg(syncdata));
-    m_MsgNrCmdList[msgnr] = setdsp61850ethsynchronisation;
-    return msgnr;
-}
-
 quint32 cDSPInterfacePrivate::resetMaximum()
 {
     quint32 msgnr = sendCommand("SYST:DSP:MAX:RES"); // long: SYSTEM:DSP:MAXIMA:RESET
@@ -334,11 +309,6 @@ void cDSPInterfacePrivate::receiveAnswer(std::shared_ptr<ProtobufMessage::NetMes
         case cmdlist2dsp:
         case intlist2dsp:
         case setsignalrouting:
-        case setdsp61850sourceadr:
-        case setdsp61850destadr:
-        case setdsp61850prioritytagged:
-        case setdsp61850ethtypeappid:
-        case setdsp61850ethsynchronisation:
         case resetmaximum:
         case triggerinthksk:
         case activateinterface:

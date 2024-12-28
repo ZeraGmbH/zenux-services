@@ -20,11 +20,6 @@ enum dspcommands
     cmdlist2dsp,
     intlist2dsp,
     setsignalrouting,
-    setdsp61850sourceadr,
-    setdsp61850destadr,
-    setdsp61850prioritytagged,
-    setdsp61850ethtypeappid,
-    setdsp61850ethsynchronisation,
     resetmaximum,
     triggerinthksk,
     activateinterface,
@@ -78,9 +73,6 @@ public:
     int intListCount(); // returns the number of command in intlist program list
     void clearMemLists(); // clears all memory lists (memhandles)
     quint32 setSignalRouting(tRouting* routingtab); // set signal routing
-    quint32 setDsp61850PriorityTagged(quint32 priotag); // set entries for eth frame decoder
-    quint32 setDsp61850EthTypeAppId(quint32 typAppid); // same
-    quint32 setDsp61850EthSynchronisation(quint32 syncdata); // setting strong sync. and dataset
     quint32 resetMaximum(); // clear maximum memory
     quint32 triggerIntHKSK(quint32 hksk); // trigger start hksk in intlist
     void addIntListItem(QString cmd); // same for interrupt list

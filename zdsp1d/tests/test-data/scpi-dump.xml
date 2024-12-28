@@ -24,17 +24,6 @@
       <HKSK Type="Command+Par" ScpiPath="SYSTEM:DSP:TRIGGER:INTLIST:HKSK"/>
      </INTLIST>
     </TRIGGER>
-    <EN61850 Type="Node">
-     <SNLCOUNT Type="Query,Command+Par" ScpiPath="SYSTEM:DSP:EN61850:SNLCOUNT"/>
-     <DATCOUNT Type="Query,Command+Par" ScpiPath="SYSTEM:DSP:EN61850:DATCOUNT"/>
-     <MAC Type="Node">
-      <SADRESS Type="Query,Command+Par" ScpiPath="SYSTEM:DSP:EN61850:MAC:SADRESS"/>
-      <DADRESS Type="Query,Command+Par" ScpiPath="SYSTEM:DSP:EN61850:MAC:DADRESS"/>
-     </MAC>
-     <PRIORITYTAGGED Type="Query,Command+Par" ScpiPath="SYSTEM:DSP:EN61850:PRIORITYTAGGED"/>
-     <ETHTYPEAPPID Type="Query,Command+Par" ScpiPath="SYSTEM:DSP:EN61850:ETHTYPEAPPID"/>
-     <ETHSYNC Type="Query,Command+Par" ScpiPath="SYSTEM:DSP:EN61850:ETHSYNC"/>
-    </EN61850>
     <COMMAND Type="Node">
      <STAT Type="Query,Command+Par" ScpiPath="SYSTEM:DSP:COMMAND:STAT"/>
     </COMMAND>
