@@ -11,6 +11,7 @@
 cNodeSCPI* System;
                    cNodeSCPI* SystemVersion;
 		           cNodeSCPI* SystemVersionServer;
+		           cNodeSCPI* SystemVersionDevice;	   
                    cNodeSCPI* SystemCommunication;
                             cNodeSCPI* SystemCommunicationEncryption;
 	     cNodeSCPI* SystemDsp;
@@ -123,7 +124,8 @@ cNode* InitCmdTree()
     SystemDsp=new cNodeSCPI("DSP",isNode,SystemSerNr,SystemDspTest,nixCmd,nixCmd);
     SystemCommunicationEncryption=new cNodeSCPI("ENCRYPTION",isQuery | isCommand,NULL,NULL,SetCommEncryption,GetCommEncryption);
     SystemCommunication=new cNodeSCPI("COMMUNICATION",isNode,SystemDsp,SystemCommunicationEncryption,nixCmd,nixCmd);
-    SystemVersionServer=new cNodeSCPI("SERVER",isQuery,NULL,NULL,nixCmd,GetServerVersion);
+    SystemVersionDevice=new cNodeSCPI("DEVICE",isQuery,NULL,NULL,nixCmd,GetDeviceVersion);
+    SystemVersionServer=new cNodeSCPI("SERVER",isQuery,SystemVersionDevice,NULL,nixCmd,GetServerVersion);  
     SystemVersion=new cNodeSCPI("VERSION",isNode,SystemCommunication,SystemVersionServer,nixCmd,nixCmd);
     System=new cNodeSCPI("SYSTEM",isNode,Status,SystemVersion,nixCmd,nixCmd);
     return (System);  

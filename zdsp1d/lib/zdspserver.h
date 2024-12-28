@@ -124,7 +124,7 @@ private:
     QString mResetDsp(QChar*);
     QString mBootDsp(QChar*);
     QString mGetPCBSerialNumber();
-    QString getLcaAndDspVersion(cZDSP1Client *client);
+    QString getLcaAndDspVersion();
     QString mSetSamplingSystem(QChar*);
     QString mGetSamplingSystem();
     QString mSetCommEncryption(QChar*);

@@ -313,7 +313,6 @@ void ZDspServer::initSCPIConnection(QString leadingNodes)
 {
     Q_UNUSED(leadingNodes)
     addDelegate("SYSTEM:INTERFACE", "READ", SCPI::isQuery, m_scpiInterface, cmdInterfaceRead);
-    addDelegate("SYSTEM:VERSION", "DEVICE", SCPI::isQuery, m_scpiInterface, cmdGetDeviceVersion);
     connect(this, &ScpiConnection::cmdExecutionDone, this, &ZDspServer::sendProtoAnswer);
 }
 
@@ -322,13 +321,11 @@ void ZDspServer::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
     cSCPICommand cmd = protoCmd->m_sInput;
     int socketNum = m_zdspdClientHash[protoCmd->m_clientId]->getSocket();
     cZDSP1Client* client = GetClient(socketNum);
+    Q_UNUSED(client) // Not yet
     switch (cmdCode)
     {
     case cmdInterfaceRead:
         protoCmd->m_sOutput = handleScpiInterfaceRead(protoCmd->m_sInput);
-        break;
-    case cmdGetDeviceVersion:
-        protoCmd->m_sOutput = getLcaAndDspVersion(client);
         break;
     }
 }
@@ -879,7 +876,7 @@ QString ZDspServer::mResetMaxima(QChar *)
     return mCommand2Dsp(QString("DSPCMDPAR,3;"));
 }
 
-QString ZDspServer::getLcaAndDspVersion(cZDSP1Client* client)
+QString ZDspServer::getLcaAndDspVersion()
 {
     AbstractDspDeviceNodePtr deviceNode = m_deviceNodeFactory->getDspDeviceNode();
     // LCA
@@ -887,6 +884,7 @@ QString ZDspServer::getLcaAndDspVersion(cZDSP1Client* client)
     if ( rawLcaVersion < 0 )
         return ZSCPI::scpiAnswer[ZSCPI::errexec]; // fehler bei der ausführung
     // DSP
+    cZDSP1Client* client = GetClient(m_actualSocket);
     QString p = "VNR,1;";
     p = client->DspVarListRead(p);  // ab "VNR"  1 wort lesen
     p = p.section(':',1,1);
@@ -1536,6 +1534,7 @@ QString ZDspServer::SCPIQuery(SCPICmdType cmdEnum)
     switch ((int)cmdEnum)
     {
     case 		GetPCBSerialNumber: 	return mGetPCBSerialNumber();
+    case 		GetDeviceVersion:		return getLcaAndDspVersion();
     case 		GetServerVersion: 		return getServerVersion();
     case		GetDeviceLoadMax: 	return mGetDeviceLoadMax();
     case 		GetDeviceLoadAct: 	return mGetDeviceLoadAct();
