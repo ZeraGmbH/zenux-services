@@ -9,14 +9,14 @@ class ScpiOldNodeStaticFunctions
 {
 public:
     static bool isNodeTypeOnly(const cNodeSCPI *node);
-    static void addNodeAndChildrenToXml(const cNodeSCPI *node,
+    static void addNodeAndChildrenToXml(const cNodeSCPI *scpiNode,
                                         QDomDocument &doc,
-                                        QDomElement &rootElement,
-                                        const QStringList parentNames);
-    static QDomElement createCmdTag(QStringList childNames,
+                                        QDomElement &parentXmlElement,
+                                        const QStringList parentScpiNames);
+    static QDomElement createXmlTag(QStringList scpiParentNameList,
                                     QDomDocument &doc,
-                                    QString childName,
-                                    const cNodeSCPI *childNode);
+                                    QString scpiName,
+                                    const cNodeSCPI *scpiNode);
 };
 
 #endif // SCPIOLDNODESTATICFUNCTIONS_H

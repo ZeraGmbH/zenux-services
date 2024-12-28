@@ -1,5 +1,4 @@
 #include "scpioldnodestaticfunctions.h"
-#include "scpi.h"
 #include <scpinodestaticfunctions.h>
 
 bool ScpiOldNodeStaticFunctions::isNodeTypeOnly(const cNodeSCPI *node)
@@ -9,34 +8,48 @@ bool ScpiOldNodeStaticFunctions::isNodeTypeOnly(const cNodeSCPI *node)
     return !isCmd && !isQuery;
 }
 
-void ScpiOldNodeStaticFunctions::addNodeAndChildrenToXml(const cNodeSCPI *node,
+void ScpiOldNodeStaticFunctions::addNodeAndChildrenToXml(const cNodeSCPI *scpiNode,
                                                          QDomDocument &doc,
-                                                         QDomElement &rootElement,
-                                                         const QStringList parentNames)
+                                                         QDomElement &parentXmlElement,
+                                                         const QStringList parentScpiNames)
 {
-    cNodeSCPI *childNode = node->getFirstChildNode();
-    while(childNode) {
-        QString childNameFull = childNode->getName();
-        QStringList childNameListFull = parentNames + QStringList(childNameFull);
-        QDomElement cmdTag = rootElement.firstChildElement(childNameFull);
-        if(childNode->getType() != SCPI::isNode || cmdTag.isNull()) {
-            cmdTag = ScpiOldNodeStaticFunctions::createCmdTag(childNameListFull,
-                                                                          doc,
-                                                                          childNameFull,
-                                                                          childNode);
-            QString typeInfo = ScpiNodeStaticFunctions::scpiTypeToString(childNode->getType());
-            cmdTag.setAttribute("Type", typeInfo);
-            rootElement.appendChild(cmdTag);
-        }
-        addNodeAndChildrenToXml(childNode, doc, cmdTag, childNameListFull);
-        childNode = childNode->getNextNode();
+    // Set XML tag for this node
+    QString scpiName = scpiNode->getName();
+    QDomElement currXmlElem = parentXmlElement.firstChildElement(scpiName);
+    if(currXmlElem.isNull()) { // do not re-create those created by new implementation
+        currXmlElem = ScpiOldNodeStaticFunctions::createXmlTag(parentScpiNames,
+                                                               doc,
+                                                               scpiName,
+                                                               scpiNode);
+        parentXmlElement.appendChild(currXmlElem);
+    }
+    // Iterate children
+    cNodeSCPI *childScpiNode = scpiNode->getFirstChildNode();
+    if(childScpiNode)
+        addNodeAndChildrenToXml(childScpiNode,
+                                doc,
+                                currXmlElem,
+                                parentScpiNames + QStringList(scpiName));
+    // Iterate neighbours
+    cNodeSCPI *nextScpiNode = scpiNode->getNextNode();
+    while(nextScpiNode) {
+        addNodeAndChildrenToXml(nextScpiNode,
+                                doc,
+                                parentXmlElement,
+                                parentScpiNames);
+        nextScpiNode = nextScpiNode->getNextNode();
     }
 }
 
-QDomElement ScpiOldNodeStaticFunctions::createCmdTag(QStringList childNames, QDomDocument &doc, QString childName, const cNodeSCPI *childNode)
+QDomElement ScpiOldNodeStaticFunctions::createXmlTag(QStringList scpiParentNameList,
+                                                     QDomDocument &doc,
+                                                     QString scpiName,
+                                                     const cNodeSCPI *scpiNode)
 {
-    QDomElement cmdTag = doc.createElement(ScpiNodeStaticFunctions::makeValidXmlTag(childName));
-    if(!isNodeTypeOnly(childNode))
-        cmdTag.setAttribute("ScpiPath", childNames.join(":"));
+    QDomElement cmdTag = doc.createElement(ScpiNodeStaticFunctions::makeValidXmlTag(scpiName));
+    if(!isNodeTypeOnly(scpiNode))
+        cmdTag.setAttribute("ScpiPath", (scpiParentNameList + QStringList(scpiName)).join(":"));
+    QString typeInfo = ScpiNodeStaticFunctions::scpiTypeToString(scpiNode->getType());
+    cmdTag.setAttribute("Type", typeInfo);
     return cmdTag;
 }

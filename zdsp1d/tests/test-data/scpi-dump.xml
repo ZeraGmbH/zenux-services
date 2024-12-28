@@ -45,5 +45,29 @@
    </DSP>
    <SERNR Type="Query" ScpiPath="SYSTEM:SERNR"/>
   </SYSTEM>
+  <STATUS Type="Node">
+   <DEVICE Type="Query" ScpiPath="STATUS:DEVICE"/>
+   <DSP Type="Query" ScpiPath="STATUS:DSP">
+    <LOAD Type="Node">
+     <ACTUAL Type="Query" ScpiPath="STATUS:DSP:LOAD:ACTUAL"/>
+     <MAXIMUM Type="Query" ScpiPath="STATUS:DSP:LOAD:MAXIMUM">
+      <RESET Type="Command+Par" ScpiPath="STATUS:DSP:LOAD:MAXIMUM:RESET"/>
+     </MAXIMUM>
+    </LOAD>
+   </DSP>
+  </STATUS>
+  <MEASURE Type="Command+Par" ScpiPath="MEASURE">
+   <LIST Type="Node">
+    <CYCLIST Type="Query,Command+Par" ScpiPath="MEASURE:LIST:CYCLIST"/>
+    <INTLIST Type="Query,Command+Par" ScpiPath="MEASURE:LIST:INTLIST"/>
+    <RAVLIST Type="Query,Command+Par" ScpiPath="MEASURE:LIST:RAVLIST"/>
+    <SET Type="Command+Par" ScpiPath="MEASURE:LIST:SET"/>
+    <CLEAR Type="Command+Par" ScpiPath="MEASURE:LIST:CLEAR"/>
+   </LIST>
+  </MEASURE>
+  <MEMORY Type="Node">
+   <READ Type="Command+Par" ScpiPath="MEMORY:READ"/>
+   <WRITE Type="Command+Par" ScpiPath="MEMORY:WRITE"/>
+  </MEMORY>
  </MODELS>
 </MODELLIST>

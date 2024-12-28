@@ -339,15 +339,14 @@ QString ZDspServer::handleScpiInterfaceRead(const QString &scpiInput)
     QDomDocument domDoc("SCPIModel");
     domDoc.setContent(newScpi);
 
-    QDomElement modelListElem = domDoc.documentElement();
-    QDomElement modelsElem = modelListElem.firstChildElement("MODELS");
-    QDomElement systemElem = modelsElem.firstChildElement("SYSTEM");
+    QDomElement rootElem = domDoc.documentElement();
+    QDomElement modelsElem = rootElem.firstChildElement("MODELS");
 
-    cNodeSCPI* systemNode = static_cast<cNodeSCPI*>(InitCmdTree());
-    ScpiOldNodeStaticFunctions::addNodeAndChildrenToXml(systemNode,
+    cNodeSCPI* scpiRootNode = static_cast<cNodeSCPI*>(InitCmdTree());
+    ScpiOldNodeStaticFunctions::addNodeAndChildrenToXml(scpiRootNode,
                                                         domDoc,
-                                                        systemElem,
-                                                        QStringList() << "SYSTEM");
+                                                        modelsElem,
+                                                        QStringList());
     return domDoc.toString();
 }
 
