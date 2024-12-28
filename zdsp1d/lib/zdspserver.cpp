@@ -1504,8 +1504,6 @@ QString ZDspServer::SCPICmd(SCPICmdType cmd, QChar *s)
     switch ((int)cmd)
     {
     case    TestDsp:            return mTestDsp(s);
-    case 	ResetDsp:           return mResetDsp(s);
-    case	BootDsp:            return mBootDsp(s);
     case 	SetRavList: 		return setRawActualValueList(s);
     case 	SetCmdList: 		return mSetCmdList(s);
     case   SetCmdIntList: 		return mSetCmdIntList(s);

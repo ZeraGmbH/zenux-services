@@ -35,20 +35,6 @@ void cDSPInterfacePrivate::setClientSmart(ProxyClientPtr client)
 // Hint: to find server SCPI implementation, search for last node name in 'long' comments
 /////////////////////////////////////////////////////////////////////////////////////////
 
-quint32 cDSPInterfacePrivate::bootDsp()
-{
-    quint32 msgnr = sendCommand(QString("SYST:DSP:BOOT:EXEC")); // long SYSTEM:DSP:BOOT:EXECUTE
-    m_MsgNrCmdList[msgnr] = bootdsp;
-    return msgnr;
-}
-
-quint32 cDSPInterfacePrivate::resetDsp()
-{
-    quint32 msgnr = sendCommand(QString("SYST:DSP:RES")); // long SYSTEM:DSP:RESET
-    m_MsgNrCmdList[msgnr] = resetdsp;
-    return msgnr;
-}
-
 quint32 cDSPInterfacePrivate::setSamplingSystem(int chncount, int samp_per, int samp_mper)
 {
     quint32 msgnr = sendCommand("SYST:DSP:SAMP", QString("%1,%2,%3").arg(chncount).arg(samp_per).arg(samp_mper)); // long SYSTEM:DSP:SAMPLING

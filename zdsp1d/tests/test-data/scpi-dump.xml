@@ -14,10 +14,6 @@
    </COMMUNICATION>
    <DSP Type="Node">
     <TEST Type="Command+Par" ScpiPath="SYSTEM:DSP:TEST"/>
-    <RESET Type="Command+Par" ScpiPath="SYSTEM:DSP:RESET"/>
-    <BOOT Type="Node">
-     <EXECUTE Type="Command+Par" ScpiPath="SYSTEM:DSP:BOOT:EXECUTE"/>
-    </BOOT>
     <SAMPLING Type="Query,Command+Par" ScpiPath="SYSTEM:DSP:SAMPLING"/>
     <MAXIMA Type="Node">
      <RESET Type="Command+Par" ScpiPath="SYSTEM:DSP:MAXIMA:RESET"/>

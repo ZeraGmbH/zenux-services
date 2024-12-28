@@ -75,8 +75,6 @@ public:
 
     // unused in ZENUX - kept for sake of future WM???
     quint32 intList2Dsp(); // send interrupt command list to the dsp server
-    quint32 bootDsp();
-    quint32 resetDsp();
     int intListCount(); // returns the number of command in intlist program list
     void clearMemLists(); // clears all memory lists (memhandles)
     quint32 setSignalRouting(tRouting* routingtab); // set signal routing
