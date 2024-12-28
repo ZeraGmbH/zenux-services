@@ -162,7 +162,6 @@ void ZDspServer::doSetupServer()
     ScpiParserZdsp1d* parser = new(ScpiParserZdsp1d); // das ist der parser
     m_cmdInterpreter = new ScpiCmdInterpreter(this, InitCmdTree(), parser); // das ist der kommando interpreter
     initSCPIConnection(QString());
-    m_sDspSerialNumber = "Unknown"; // kennen wir erst mal nicht
     m_sDspBootPath = m_pDspSettings->getBootFile();
     ActivatedCmdList = 0; // der derzeit aktuelle kommando listen satz (0,1)
 
@@ -501,11 +500,6 @@ QString ZDspServer::mBootDsp(QChar *)
 {
     bootDsp();
     return Answer;
-}
-
-QString ZDspServer::mGetPCBSerialNumber()
-{
-    return m_sDspSerialNumber;
 }
 
 QString ZDspServer::mCommand2Dsp(QString qs)
@@ -1536,7 +1530,6 @@ QString ZDspServer::SCPIQuery(SCPICmdType cmdEnum)
 {
     switch ((int)cmdEnum)
     {
-    case 		GetPCBSerialNumber: 	return mGetPCBSerialNumber();
     case		GetDeviceLoadMax: 	return mGetDeviceLoadMax();
     case 		GetDeviceLoadAct: 	return mGetDeviceLoadAct();
     case		GetDspStatus:		return mGetDspStatus();

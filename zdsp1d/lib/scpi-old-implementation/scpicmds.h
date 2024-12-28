@@ -27,7 +27,6 @@ enum SCPICmdType  {
     TriggerIntListALL,
     ResetMaxima,
     TestDsp,
-    GetPCBSerialNumber,
     cmdGetDeviceVersion,
     cmdGetServerVersion,
     SetSamplingSystem,

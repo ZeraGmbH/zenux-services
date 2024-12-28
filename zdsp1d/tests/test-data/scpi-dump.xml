@@ -39,7 +39,6 @@
      <STAT Type="Query,Command+Par" ScpiPath="SYSTEM:DSP:COMMAND:STAT"/>
     </COMMAND>
    </DSP>
-   <SERNR Type="Query" ScpiPath="SYSTEM:SERNR"/>
   </SYSTEM>
   <STATUS Type="Node">
    <DEVICE Type="Query" ScpiPath="STATUS:DEVICE"/>

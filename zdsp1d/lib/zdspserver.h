@@ -123,7 +123,6 @@ private:
     QString mTestDsp(QChar *);
     QString mResetDsp(QChar*);
     QString mBootDsp(QChar*);
-    QString mGetPCBSerialNumber();
     QString getLcaAndDspVersion(cZDSP1Client *client);
     QString mSetSamplingSystem(QChar*);
     QString mGetSamplingSystem();
@@ -182,7 +181,6 @@ private:
     cZDSP1Client* GetClient(int s);
     cZDSP1Client* GetClient(VeinTcp::TcpPeer* peer);
     void executeCommandProto(VeinTcp::TcpPeer* peer, std::shared_ptr<google::protobuf::Message> cmd);
-    QString m_sDspSerialNumber; // seriennummer der hardware
     QString m_sDspBootPath;
     Zera::XMLConfig::cReader* myXMLConfigReader;
 

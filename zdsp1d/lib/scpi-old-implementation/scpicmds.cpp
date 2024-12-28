@@ -31,9 +31,8 @@ cNodeSCPI* System;
 					     cNodeSCPI* SystemDspEN61850EthSync;		   
 		          cNodeSCPI* SystemDspCommand;
 			              cNodeSCPI* SystemDspCommandStat;
-	     cNodeSCPI* SystemSerNr;
-	     
-	                        	     
+
+
 cNodeSCPI* Status;
                    cNodeSCPI* StatusDevice;
 	     cNodeSCPI* StatusDsp;	   
@@ -89,12 +88,9 @@ cNode* InitCmdTree()
     Status=new cNodeSCPI("STATUS",isNode,MeasureNode,StatusDevice,nixCmd,nixCmd);
     
     // implementiertes system modell
-  
-    SystemSerNr=new cNodeSCPI("SERNR",isQuery,NULL,NULL,nixCmd,GetPCBSerialNumber);
     SystemDspCommandStat=new cNodeSCPI("STAT",isQuery | isCommand,NULL,NULL,SetDspCommandStat,GetDspCommandStat);      
     SystemDspCommand=new cNodeSCPI("COMMAND",isNode,NULL,SystemDspCommandStat,nixCmd,nixCmd);
-    
-    
+
     SystemDspEN61850EthSync=new cNodeSCPI("ETHSYNC",isQuery | isCommand,NULL,NULL,SetEN61850EthSync,GetEN61850EthSync);
     SystemDspEN61850EthTypeAppId=new cNodeSCPI("ETHTYPEAPPID",isQuery | isCommand,SystemDspEN61850EthSync,NULL,SetEN61850EthTypeAppId,GetEN61850EthTypeAppId);
     SystemDspEN61850PriorityTagged=new cNodeSCPI("PRIORITYTAGGED",isQuery | isCommand,SystemDspEN61850EthTypeAppId,NULL,SetEN61850PriorityTagged,GetEN61850PriorityTagged);
@@ -104,6 +100,7 @@ cNode* InitCmdTree()
     SystemDspEN61850DataCount=new cNodeSCPI("DATCOUNT",isQuery | isCommand,SystemDspEN61850Mac,NULL,SetEN61850DataCount,GetEN61850DataCount);
     SystemDspEN61850SyncLostCount=new cNodeSCPI("SNLCOUNT",isQuery | isCommand,SystemDspEN61850DataCount,NULL,SetEN61850SyncLostCount,GetEN61850SyncLostCount);
     SystemDspEN61850=new cNodeSCPI("EN61850",isNode,SystemDspCommand,SystemDspEN61850SyncLostCount,nixCmd,nixCmd);
+
     SystemDspTriggerHKSK=new cNodeSCPI("HKSK",isCommand,NULL,NULL,TriggerIntListHKSK,nixCmd);	      
     SystemDspTriggerALL=new cNodeSCPI("ALL",isCommand,SystemDspTriggerHKSK,NULL,TriggerIntListALL,nixCmd);
     SystemDspTriggerIntList=new cNodeSCPI("INTLIST",isNode,NULL,SystemDspTriggerALL,nixCmd,nixCmd);
@@ -112,7 +109,7 @@ cNode* InitCmdTree()
     SystemDspMaxima=new cNodeSCPI("MAXIMA",isNode,SystemDspTrigger,SystemDspMaximaReset,nixCmd,nixCmd);
     SystemDspSampling=new cNodeSCPI("SAMPLING",isQuery | isCommand,SystemDspMaxima,NULL,SetSamplingSystem,GetSamplingSystem);
     SystemDspTest=new cNodeSCPI("TEST",isCommand,SystemDspSampling,NULL,TestDsp,nixCmd);
-    SystemDsp=new cNodeSCPI("DSP",isNode,SystemSerNr,SystemDspTest,nixCmd,nixCmd);
+    SystemDsp=new cNodeSCPI("DSP",isNode,NULL,SystemDspTest,nixCmd,nixCmd);
     SystemCommunicationEncryption=new cNodeSCPI("ENCRYPTION",isQuery | isCommand,NULL,NULL,SetCommEncryption,GetCommEncryption);
     SystemCommunication=new cNodeSCPI("COMMUNICATION",isNode,SystemDsp,SystemCommunicationEncryption,nixCmd,nixCmd);
     System=new cNodeSCPI("SYSTEM",isNode,Status,SystemCommunication,nixCmd,nixCmd);
