@@ -39,7 +39,7 @@ void DspVarResolver::setQHash(TMemSection* psec) // zum setzen der qhash
         m_varHash[psec->DspVar[i].Name] = &(psec->DspVar[i]);
 }
 
-long DspVarResolver::offs(const QString& varNameOrValue, ulong umo, ulong globalstartadr)
+long DspVarResolver::varOffset(const QString& varNameOrValue, ulong umo, ulong globalstartadr)
 {
     QString ts = varNameOrValue.toUpper();
     const QChar* cts = ts.data();
@@ -83,7 +83,7 @@ long DspVarResolver::offs(const QString& varNameOrValue, ulong umo, ulong global
     return -1;
 }
 
-long DspVarResolver::adr(QString& varNameOrValue)
+long DspVarResolver::varAddress(QString& varNameOrValue)
 {
     QString ts = varNameOrValue.toUpper();
     const QChar* cts = ts.data();

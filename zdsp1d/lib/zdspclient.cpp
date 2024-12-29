@@ -170,7 +170,7 @@ cDspCmd cZDSP1Client::GenDspCmd(QString cmd, bool* ok, ulong userMemoryOffset, u
             short par;
             bool t = true;
             sSearch = CmdParser.GetKeyword(&cmds);
-            t &= ( (par = m_dspVarResolver.offs(sSearch, userMemoryOffset, globalstartadr)) > -1); // -1 ist fehlerbedingung
+            t &= ( (par = m_dspVarResolver.varOffset(sSearch, userMemoryOffset, globalstartadr)) > -1); // -1 ist fehlerbedingung
             sSearch = CmdParser.GetKeyword(&cmds);
             t &= sSearch.isEmpty();
             cDspCmd lcmd;
@@ -185,7 +185,7 @@ cDspCmd cZDSP1Client::GenDspCmd(QString cmd, bool* ok, ulong userMemoryOffset, u
             bool t = true;
             for (int i=0; i<2; i++) {
                 sSearch = CmdParser.GetKeyword(&cmds);
-                t &= ( (par[i] = m_dspVarResolver.offs(sSearch, userMemoryOffset, globalstartadr)) > -1);
+                t &= ( (par[i] = m_dspVarResolver.varOffset(sSearch, userMemoryOffset, globalstartadr)) > -1);
             }
             sSearch = CmdParser.GetKeyword(&cmds);
             t &= sSearch.isEmpty();
@@ -203,7 +203,7 @@ cDspCmd cZDSP1Client::GenDspCmd(QString cmd, bool* ok, ulong userMemoryOffset, u
             bool t = true;
             for (int i=0; i<3; i++) {
                 sSearch = CmdParser.GetKeyword(&cmds);
-                t &= ( (par[i] = m_dspVarResolver.offs(sSearch, userMemoryOffset, globalstartadr)) > -1);
+                t &= ( (par[i] = m_dspVarResolver.varOffset(sSearch, userMemoryOffset, globalstartadr)) > -1);
             }
             sSearch = CmdParser.GetKeyword(&cmds);
             t &= sSearch.isEmpty();
@@ -219,7 +219,7 @@ cDspCmd cZDSP1Client::GenDspCmd(QString cmd, bool* ok, ulong userMemoryOffset, u
         {
             long par;
             sSearch = CmdParser.GetKeyword(&cmds);
-            bool t = ( (par = m_dspVarResolver.offs(sSearch, userMemoryOffset, globalstartadr)) > -1);
+            bool t = ( (par = m_dspVarResolver.varOffset(sSearch, userMemoryOffset, globalstartadr)) > -1);
             sSearch = CmdParser.GetKeyword(&cmds);
             t &= sSearch.isEmpty();
             cDspCmd lcmd;
@@ -233,7 +233,7 @@ cDspCmd cZDSP1Client::GenDspCmd(QString cmd, bool* ok, ulong userMemoryOffset, u
             short par1;
             long par2 = 0;
             sSearch = CmdParser.GetKeyword(&cmds);
-            *ok = ( (par1 = m_dspVarResolver.offs(sSearch, userMemoryOffset, globalstartadr)) > -1); // -1 ist fehlerbedingung
+            *ok = ( (par1 = m_dspVarResolver.varOffset(sSearch, userMemoryOffset, globalstartadr)) > -1); // -1 ist fehlerbedingung
             cDspCmd lcmd;
             if (!(*ok))
                 return lcmd; // wenn fehler -> fertig
@@ -488,7 +488,7 @@ bool cZDSP1Client::DspVarWrite(QString s)
             break; // dann sind wir fertig
         }
         QString name = vs.section(",",0,0);
-        long adr = m_dspVarResolver.adr(name);
+        long adr = m_dspVarResolver.varAddress(name);
         if (adr == -1)
             break; // fehler, den namen gibt es nicht
 

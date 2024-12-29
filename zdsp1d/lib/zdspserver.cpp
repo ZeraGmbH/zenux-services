@@ -420,7 +420,7 @@ QString ZDspServer::mTestDsp(QChar* s)
                 }
                 cZDSP1Client* cl = GetClient(m_actualSocket);
                 QString sadr  = "UWSPACE";
-                ulong adr = cl->m_dspVarResolver.adr(sadr) ;
+                ulong adr = cl->m_dspVarResolver.varAddress(sadr) ;
                 AbstractDspDeviceNodePtr deviceNode = m_deviceNodeFactory->getDspDeviceNode();
                 for (i=0; i< nr; i++) {
                     if(!deviceNode->write(adr, ba.data(), n*4 )) {
@@ -842,11 +842,11 @@ bool ZDspServer::LoadDSProgram()
     cZDSP1Client dummyClient(0, 0, m_deviceNodeFactory); // dummyClient einrichten zum laden der kette
 
     AbstractDspDeviceNodePtr deviceNode = m_deviceNodeFactory->getDspDeviceNode();
-    ulong offset = dummyClient.m_dspVarResolver.adr(s) ;
+    ulong offset = dummyClient.m_dspVarResolver.varAddress(s) ;
     if(!deviceNode->write(offset, CmdMem.data(), CmdMem.size()))
         return false;
 
-    offset = dummyClient.m_dspVarResolver.adr(s2) ;
+    offset = dummyClient.m_dspVarResolver.varAddress(s2) ;
     if (!deviceNode->write(offset, CmdIntMem.data(), CmdIntMem.size()))
         return false;
 
