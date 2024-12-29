@@ -108,18 +108,6 @@ void cDSPInterfacePrivate::clearMemLists()
 }
 
 // Not used in public interface
-quint32 cDSPInterfacePrivate::setSignalRouting(tRouting *routingtab)
-{
-    QString par;
-    QTextStream ts(&par, QIODevice::WriteOnly);
-    ts << "ETHROUTINGTAB";
-    for (uint i = 0; i < (sizeof(tRouting)/sizeof(quint32)); i++)
-        ts << "," << routingtab[i];
-    quint32 msgnr = sendCommand("MEM:WRIT", par); // long: MEMORY:WRITE ETHROUTINGTAB,...
-    m_MsgNrCmdList[msgnr] = setsignalrouting;
-    return msgnr;
-}
-
 quint32 cDSPInterfacePrivate::resetMaximum()
 {
     quint32 msgnr = sendCommand("SYST:DSP:MAX:RES"); // long: SYSTEM:DSP:MAXIMA:RESET

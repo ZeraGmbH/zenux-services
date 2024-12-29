@@ -10,7 +10,6 @@
 
 namespace Zera {
 
-typedef quint32 tRouting[16];
 class cDSPInterfacePrivate;
 
 class cDSPInterface: public AbstractServerInterface

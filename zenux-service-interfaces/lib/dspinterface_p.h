@@ -66,13 +66,12 @@ public:
     quint32 resetMaximumLoad();
 
     // unused in ZENUX - kept for sake of future WM???
+    void addIntListItem(QString cmd); // same for interrupt list
     quint32 intList2Dsp(); // send interrupt command list to the dsp server
     int intListCount(); // returns the number of command in intlist program list
     void clearMemLists(); // clears all memory lists (memhandles)
-    quint32 setSignalRouting(tRouting* routingtab); // set signal routing
     quint32 resetMaximum(); // clear maximum memory
     quint32 triggerIntHKSK(quint32 hksk); // trigger start hksk in intlist
-    void addIntListItem(QString cmd); // same for interrupt list
 
     // Insights for tests - a compromise...
     QStringList getCyclicCmdList() const;
