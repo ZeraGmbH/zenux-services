@@ -49,7 +49,10 @@ QDomElement ScpiOldNodeStaticFunctions::createXmlTag(QStringList scpiParentNameL
     QDomElement cmdTag = doc.createElement(ScpiNodeStaticFunctions::makeValidXmlTag(scpiName));
     if(!isNodeTypeOnly(scpiNode))
         cmdTag.setAttribute("ScpiPath", (scpiParentNameList + QStringList(scpiName)).join(":"));
-    QString typeInfo = ScpiNodeStaticFunctions::scpiTypeToString(scpiNode->getType());
+    QString typeInfo;
+    if(scpiParentNameList.isEmpty())
+        typeInfo = "Model,";
+    typeInfo += ScpiNodeStaticFunctions::scpiTypeToString(scpiNode->getType());
     cmdTag.setAttribute("Type", typeInfo);
     return cmdTag;
 }

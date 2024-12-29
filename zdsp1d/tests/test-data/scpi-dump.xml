@@ -26,7 +26,7 @@
     </COMMAND>
    </DSP>
   </SYSTEM>
-  <STATUS Type="Node">
+  <STATUS Type="Model,Node">
    <DEVICE Type="Query" ScpiPath="STATUS:DEVICE"/>
    <DSP Type="Query" ScpiPath="STATUS:DSP">
     <LOAD Type="Node">
@@ -37,7 +37,7 @@
     </LOAD>
    </DSP>
   </STATUS>
-  <MEASURE Type="Command+Par" ScpiPath="MEASURE">
+  <MEASURE Type="Model,Command+Par" ScpiPath="MEASURE">
    <LIST Type="Node">
     <CYCLIST Type="Query,Command+Par" ScpiPath="MEASURE:LIST:CYCLIST"/>
     <INTLIST Type="Query,Command+Par" ScpiPath="MEASURE:LIST:INTLIST"/>
@@ -46,7 +46,7 @@
     <CLEAR Type="Command+Par" ScpiPath="MEASURE:LIST:CLEAR"/>
    </LIST>
   </MEASURE>
-  <MEMORY Type="Node">
+  <MEMORY Type="Model,Node">
    <READ Type="Command+Par" ScpiPath="MEMORY:READ"/>
    <WRITE Type="Command+Par" ScpiPath="MEMORY:WRITE"/>
   </MEMORY>
