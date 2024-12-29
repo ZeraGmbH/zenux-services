@@ -220,30 +220,6 @@ quint32 cDSPInterfacePrivate::dspMemoryWrite(cDspMeasData *memgroup)
     return msgnr;
 }
 
-quint32 cDSPInterfacePrivate::setGainCorrection(int chn, float val)
-{
-    quint32 msgnr = sendCommand("MEM:WRIT", // long: MEMORY:WRITE GAINCORRECTION+<chn>,...
-                                QString("GAINCORRECTION+%1,%2").arg(chn).arg(val));
-    m_MsgNrCmdList[msgnr] = setgaincorrection;
-    return msgnr;
-}
-
-quint32 cDSPInterfacePrivate::setPhaseCorrection(int chn, float val)
-{
-    quint32 msgnr = sendCommand("MEM:WRIT", // long: MEMORY:WRITE PHASECORRECTION+<chn>,...
-                                QString("PHASECORRECTION+%1,%2").arg(chn).arg(val));
-    m_MsgNrCmdList[msgnr] = setphasecorrection;
-    return msgnr;
-}
-
-quint32 cDSPInterfacePrivate::setOffsetCorrection(int chn, float val)
-{
-    quint32 msgnr = sendCommand("MEM:WRIT", // long: MEMORY:WRITE OFFSETCORRECTION+<chn>,...
-                                QString("OFFSETCORRECTION+%1,%2").arg(chn).arg(val));
-    m_MsgNrCmdList[msgnr] = setoffsetcorrection;
-    return msgnr;
-}
-
 QStringList cDSPInterfacePrivate::getCyclicCmdList() const
 {
     return CycCmdList;
@@ -314,9 +290,6 @@ void cDSPInterfacePrivate::receiveAnswer(std::shared_ptr<ProtobufMessage::NetMes
         case activateinterface:
         case deactivateinterface:
         case dspmemorywrite:
-        case setgaincorrection:
-        case setphasecorrection:
-        case setoffsetcorrection:
         case resetmaxload:
             emit q->serverAnswer(lmsgnr, lreply, VariantConverter::returnString(lmsg));
             break;

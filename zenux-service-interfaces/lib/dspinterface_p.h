@@ -27,9 +27,6 @@ enum dspcommands
     dataacquisition,
     dspmemoryread,
     dspmemorywrite,
-    setgaincorrection,
-    setphasecorrection,
-    setoffsetcorrection,
     readdeviceversion,
     readserverversion,
     dspinterrupt,
@@ -76,9 +73,6 @@ public:
     quint32 resetMaximum(); // clear maximum memory
     quint32 triggerIntHKSK(quint32 hksk); // trigger start hksk in intlist
     void addIntListItem(QString cmd); // same for interrupt list
-    quint32 setGainCorrection(int chn, float val); // sets gaincorrection for 1 channel
-    quint32 setPhaseCorrection(int chn, float val); // sets phase correction for 1 channel
-    quint32 setOffsetCorrection(int chn, float val); // sets offset correction for 1 channel
 
     // Insights for tests - a compromise...
     QStringList getCyclicCmdList() const;
