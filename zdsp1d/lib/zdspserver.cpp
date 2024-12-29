@@ -619,11 +619,6 @@ QString ZDspServer::mTriggerIntListALL(QChar *)
 }
 
 
-QString ZDspServer::mResetMaxima(QChar *)
-{
-    return mCommand2Dsp(QString("DSPCMDPAR,3;"));
-}
-
 QString ZDspServer::getLcaAndDspVersion(cZDSP1Client* client)
 {
     AbstractDspDeviceNodePtr deviceNode = m_deviceNodeFactory->getDspDeviceNode();
@@ -1259,7 +1254,6 @@ QString ZDspServer::SCPICmd(SCPICmdType cmd, QChar *s)
     case   SetDspCommandStat:	return mSetDspCommandStat(s);
     case   TriggerIntListHKSK:	return mTriggerIntListHKSK(s);
     case   TriggerIntListALL:		return mTriggerIntListALL(s);
-    case   ResetMaxima:		return mResetMaxima(s);
     case   ResetDeviceLoadMax:	return mResetDeviceLoadMax();
     }
     Answer = "ProgrammierFehler"; // hier sollten wir nie hinkommen

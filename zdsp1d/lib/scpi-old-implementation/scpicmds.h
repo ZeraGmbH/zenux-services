@@ -11,7 +11,6 @@ enum SCPICmdType  {
     GetDspCommandStat,
     TriggerIntListHKSK,
     TriggerIntListALL,
-    ResetMaxima,
     TestDsp,
     cmdGetDeviceVersion,
     cmdGetServerVersion,

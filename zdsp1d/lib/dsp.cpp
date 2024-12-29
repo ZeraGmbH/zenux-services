@@ -265,7 +265,10 @@ TMemSection dm32DspWorkspace = {
     StartAdr		: dm32DspWorkSpaceBase21262,
 	n 		: 15,
 	DspVar		: DspWorkspaceVar };
-	
+
+
+// Parameter details for DSPCMDPAR are found at
+// https://github.com/ZeraGmbH/SHARC-DSP-Software/blob/f4003f707849076a91010435994aa61bf9e6cfb9/NewGen32.asm#L352
 
 TDspVar DialogWorkSpaceVar[21] =
 {

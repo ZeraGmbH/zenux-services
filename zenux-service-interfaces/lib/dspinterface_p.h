@@ -69,7 +69,6 @@ public:
     void addIntListItem(QString cmd); // same for interrupt list
     quint32 intList2Dsp(); // send interrupt command list to the dsp server
     int intListCount(); // returns the number of command in intlist program list
-    quint32 resetMaximum(); // clear maximum memory
     quint32 triggerIntHKSK(quint32 hksk); // trigger start hksk in intlist
 
     // Insights for tests - a compromise...

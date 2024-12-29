@@ -15,9 +15,6 @@
    <DSP Type="Node">
     <TEST Type="Command+Par" ScpiPath="SYSTEM:DSP:TEST"/>
     <SAMPLING Type="Query,Command+Par" ScpiPath="SYSTEM:DSP:SAMPLING"/>
-    <MAXIMA Type="Node">
-     <RESET Type="Command+Par" ScpiPath="SYSTEM:DSP:MAXIMA:RESET"/>
-    </MAXIMA>
     <TRIGGER Type="Node">
      <INTLIST Type="Node">
       <ALL Type="Command+Par" ScpiPath="SYSTEM:DSP:TRIGGER:INTLIST:ALL"/>

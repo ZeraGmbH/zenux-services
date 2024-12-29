@@ -132,10 +132,8 @@ private:
     QString mGetDspCommandStat();
     QString mTriggerIntListHKSK(QChar*);
     QString mTriggerIntListALL(QChar*);
-    QString mResetMaxima(QChar*);
 
     // die routinen für das status modell
-
     QString mResetDeviceLoadMax();
     QString mGetDeviceLoadMax();
     QString mGetDeviceLoadAct();

@@ -102,13 +102,6 @@ void cDSPInterfacePrivate::clearCmdList()
 }
 
 // Not used in public interface
-quint32 cDSPInterfacePrivate::resetMaximum()
-{
-    quint32 msgnr = sendCommand("SYST:DSP:MAX:RES"); // long: SYSTEM:DSP:MAXIMA:RESET
-    m_MsgNrCmdList[msgnr] = resetmaximum;
-    return msgnr;
-}
-
 quint32 cDSPInterfacePrivate::triggerIntHKSK(quint32 hksk)
 {
     quint32 msgnr = sendCommand("SYST:DSP:TRIG:INTL:HKSK", // long: SYSTEM:DSP:TRIGGER:INTLIST:HKSK
