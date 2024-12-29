@@ -101,12 +101,6 @@ void cDSPInterfacePrivate::clearCmdList()
     IntCmdList.clear();
 }
 
-void cDSPInterfacePrivate::clearMemLists()
-{
-    while ( !m_DspMemoryDataList.isEmpty() )
-        delete m_DspMemoryDataList.takeFirst();
-}
-
 // Not used in public interface
 quint32 cDSPInterfacePrivate::resetMaximum()
 {
