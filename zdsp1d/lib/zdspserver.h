@@ -151,9 +151,6 @@ private:
     QString mGetCmdList();
     QString mMeasure(QChar*);
 
-    // die routinen für das memory modell
-    QString mDspMemoryWrite(QChar *);
-
     bool BuildDSProgram(QString& errs);
     bool LoadDSProgram();
     bool setDspType();

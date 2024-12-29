@@ -38,34 +38,22 @@ cNodeSCPI* MeasureNode;
 		          cNodeSCPI* MeasureListSet;
 		          cNodeSCPI* MeasureListClear;	  
 
-
-cNodeSCPI* Memory;	     
-	     cNodeSCPI* MemoryWrite;
-	     
-	     
 // cNodeScpi (QString,tNodeSpec,cNode*,cNode*,SCPICmdType,SCPICmdType); 
 // konstruktor, sNodeName, nNodedef, pNextNode, pNewLevelNode, Cmd, Query				
 // konstruktor, psNodeNames,psNode2Set, nNodedef, pNextNode, pNewLevelNode, Cmd, Query
 
 cNode* InitCmdTree()
 {
-    
-    // implementiertes memory modell
-    
-    MemoryWrite=new cNodeSCPI("WRITE",isCommand,NULL,NULL,DspMemoryWrite,nixCmd);
-    Memory=new cNodeSCPI("MEMORY",isNode,NULL,MemoryWrite,nixCmd,nixCmd);
-
     // implementiertes measure modell
-
     MeasureListClear=new cNodeSCPI("CLEAR",isCommand,NULL,NULL,UnloadCmdList,nixCmd);
     MeasureListSet=new cNodeSCPI("SET",isCommand,MeasureListClear,NULL,LoadCmdList,nixCmd);
     MeasureListRavList=new cNodeSCPI("RAVLIST",isQuery | isCommand,MeasureListSet,NULL,SetRavList,GetRavList);
     MeasureListIntList=new cNodeSCPI("INTLIST",isQuery | isCommand,MeasureListRavList,NULL,SetCmdIntList,GetCmdIntList);
     MeasureListCycList=new cNodeSCPI("CYCLIST",isQuery | isCommand,MeasureListIntList,NULL,SetCmdList,GetCmdList);
     MeasureList=new cNodeSCPI("LIST",isNode,NULL,MeasureListCycList,nixCmd,nixCmd);
-    MeasureNode=new cNodeSCPI("MEASURE",isNode | isCommand,Memory,MeasureList,Measure,nixCmd);	     
+    MeasureNode=new cNodeSCPI("MEASURE",isNode | isCommand,NULL,MeasureList,Measure,nixCmd);
+
     // implementiertes status modell
-    
     StatusDspLoadMaximumReset=new cNodeSCPI("RESET",isCommand,NULL,NULL,ResetDeviceLoadMax,nixCmd);
     StatusDspLoadMaximum=new cNodeSCPI("MAXIMUM",isNode | isQuery,NULL,StatusDspLoadMaximumReset,nixCmd,GetDeviceLoadMax);	
     StatusDspLoadActual=new cNodeSCPI("ACTUAL",isQuery,StatusDspLoadMaximum,NULL,nixCmd,GetDeviceLoadAct);

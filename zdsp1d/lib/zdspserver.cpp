@@ -316,6 +316,7 @@ void ZDspServer::initSCPIConnection(QString leadingNodes)
     addDelegate("SYSTEM:VERSION", "SERVER", SCPI::isQuery, m_scpiInterface, scpiGetServerVersion);
 
     addDelegate("MEMORY", "READ", SCPI::isCmdwP, m_scpiInterface, scpiDspMemoryRead);
+    addDelegate("MEMORY", "WRITE", SCPI::isCmdwP, m_scpiInterface, scpiDspMemoryWrite);
 
     connect(this, &ScpiConnection::cmdExecutionDone, this, &ZDspServer::sendProtoAnswer);
 }
@@ -338,6 +339,9 @@ void ZDspServer::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
         break;
     case scpiDspMemoryRead:
         protoCmd->m_sOutput = client->DspVarListRead(cmd.getParam());
+        break;
+    case scpiDspMemoryWrite:
+        protoCmd->m_sOutput = client->DspVarWriteRM(cmd.getParam());
         break;
     }
 }
@@ -1005,14 +1009,6 @@ bool ZDspServer::Test4DspRunning()
     return deviceNode->dspIsRunning();
 }
 
-QString ZDspServer::mDspMemoryWrite(QChar* s)
-{
-    QString par(s);
-    cZDSP1Client* cl = GetClient(m_actualSocket);
-    Answer = cl->DspVarWriteRM(par);
-    return Answer;
-}
-
 cZDSP1Client* ZDspServer::GetClient(int s)
 {
     if (m_clientList.count() > 0) {
@@ -1244,7 +1240,6 @@ QString ZDspServer::SCPICmd(SCPICmdType cmd, QChar *s)
     case 	Measure:            return mMeasure(s);
     case 	UnloadCmdList: 		return mUnloadCmdList(s);
     case 	LoadCmdList: 		return mLoadCmdList(s);
-    case   DspMemoryWrite:		return mDspMemoryWrite(s);
     case   SetSamplingSystem:	return mSetSamplingSystem(s);
     case	SetCommEncryption:	return mSetCommEncryption(s);
     case   SetDspCommandStat:	return mSetDspCommandStat(s);

@@ -41,7 +41,7 @@ enum SCPICmdType  {
 
     // die routinen für das memory modell
     scpiDspMemoryRead,
-    DspMemoryWrite,
+    scpiDspMemoryWrite,
 
     // common
     scpiInterfaceRead
