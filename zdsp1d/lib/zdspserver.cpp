@@ -311,9 +311,9 @@ void ZDspServer::outputLogs()
 void ZDspServer::initSCPIConnection(QString leadingNodes)
 {
     Q_UNUSED(leadingNodes)
-    addDelegate("SYSTEM:INTERFACE", "READ", SCPI::isQuery, m_scpiInterface, cmdInterfaceRead);
-    addDelegate("SYSTEM:VERSION", "DEVICE", SCPI::isQuery, m_scpiInterface, cmdGetDeviceVersion);
-    addDelegate("SYSTEM:VERSION", "SERVER", SCPI::isQuery, m_scpiInterface, cmdGetServerVersion);
+    addDelegate("SYSTEM:INTERFACE", "READ", SCPI::isQuery, m_scpiInterface, scpiInterfaceRead);
+    addDelegate("SYSTEM:VERSION", "DEVICE", SCPI::isQuery, m_scpiInterface, scpiGetDeviceVersion);
+    addDelegate("SYSTEM:VERSION", "SERVER", SCPI::isQuery, m_scpiInterface, scpiGetServerVersion);
     connect(this, &ScpiConnection::cmdExecutionDone, this, &ZDspServer::sendProtoAnswer);
 }
 
@@ -324,13 +324,13 @@ void ZDspServer::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
     cZDSP1Client* client = GetClient(socketNum);
     switch (cmdCode)
     {
-    case cmdInterfaceRead:
+    case scpiInterfaceRead:
         protoCmd->m_sOutput = handleScpiInterfaceRead(protoCmd->m_sInput);
         break;
-    case cmdGetDeviceVersion:
+    case scpiGetDeviceVersion:
         protoCmd->m_sOutput = getLcaAndDspVersion(client);
         break;
-    case cmdGetServerVersion:
+    case scpiGetServerVersion:
         protoCmd->m_sOutput = getServerVersion();
         break;
     }

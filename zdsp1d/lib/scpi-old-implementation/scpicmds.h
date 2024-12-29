@@ -12,8 +12,8 @@ enum SCPICmdType  {
     TriggerIntListHKSK,
     TriggerIntListALL,
     TestDsp,
-    cmdGetDeviceVersion,
-    cmdGetServerVersion,
+    scpiGetDeviceVersion,
+    scpiGetServerVersion,
     SetSamplingSystem,
     GetSamplingSystem,
     SetCommEncryption,
@@ -44,7 +44,7 @@ enum SCPICmdType  {
     DspMemoryWrite,
 
     // common
-    cmdInterfaceRead
+    scpiInterfaceRead
 };
 
 class cbIFace { // call back interface 
