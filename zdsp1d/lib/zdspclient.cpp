@@ -9,9 +9,6 @@ extern TMemSection dm32UserWorkSpace;
 extern TMemSection dm32CmdList;
 extern TMemSection symbConsts1;
 
-int cZDSP1Client::m_readTransactionsAllClients = 0;
-int cZDSP1Client::m_writeTransactionsAllClients = 0;
-
 cZDSP1Client::cZDSP1Client(AbstractFactoryDeviceNodeDspPtr deviceNodeFactory) :
     m_deviceNodeFactory(deviceNodeFactory)
 {
