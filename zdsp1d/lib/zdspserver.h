@@ -141,7 +141,6 @@ private:
     QString mGetDeviceStatus();
 
     // die routinen für das measure modell
-
     QString mUnloadCmdList(QChar*);
     QString mLoadCmdList(QChar*);
     QString setRawActualValueList(QChar*);
@@ -153,7 +152,6 @@ private:
     QString mMeasure(QChar*);
 
     // die routinen für das memory modell
-    QString mDspMemoryRead(QChar *);
     QString mDspMemoryWrite(QChar *);
 
     bool BuildDSProgram(QString& errs);

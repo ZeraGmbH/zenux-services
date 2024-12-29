@@ -40,7 +40,6 @@ cNodeSCPI* MeasureNode;
 
 
 cNodeSCPI* Memory;	     
-	     cNodeSCPI* MemoryRead;
 	     cNodeSCPI* MemoryWrite;
 	     
 	     
@@ -53,9 +52,8 @@ cNode* InitCmdTree()
     
     // implementiertes memory modell
     
-    MemoryWrite=new cNodeSCPI("WRITE",isCommand,NULL,NULL,DspMemoryWrite,nixCmd);	     
-    MemoryRead=new cNodeSCPI("READ",isCommand,MemoryWrite,NULL,DspMemoryRead,nixCmd);	     
-    Memory=new cNodeSCPI("MEMORY",isNode,NULL,MemoryRead,nixCmd,nixCmd);	     
+    MemoryWrite=new cNodeSCPI("WRITE",isCommand,NULL,NULL,DspMemoryWrite,nixCmd);
+    Memory=new cNodeSCPI("MEMORY",isNode,NULL,MemoryWrite,nixCmd,nixCmd);
 
     // implementiertes measure modell
 

@@ -314,6 +314,9 @@ void ZDspServer::initSCPIConnection(QString leadingNodes)
     addDelegate("SYSTEM:INTERFACE", "READ", SCPI::isQuery, m_scpiInterface, scpiInterfaceRead);
     addDelegate("SYSTEM:VERSION", "DEVICE", SCPI::isQuery, m_scpiInterface, scpiGetDeviceVersion);
     addDelegate("SYSTEM:VERSION", "SERVER", SCPI::isQuery, m_scpiInterface, scpiGetServerVersion);
+
+    addDelegate("MEMORY", "READ", SCPI::isCmdwP, m_scpiInterface, scpiDspMemoryRead);
+
     connect(this, &ScpiConnection::cmdExecutionDone, this, &ZDspServer::sendProtoAnswer);
 }
 
@@ -332,6 +335,9 @@ void ZDspServer::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
         break;
     case scpiGetServerVersion:
         protoCmd->m_sOutput = getServerVersion();
+        break;
+    case scpiDspMemoryRead:
+        protoCmd->m_sOutput = client->DspVarListRead(cmd.getParam());
         break;
     }
 }
@@ -935,7 +941,6 @@ QString ZDspServer::mMeasure(QChar *s)
     return Answer;
 }
 
-
 static constexpr int dm32DspWorkSpaceBase21362 = 0xE0800;
 static constexpr int dm32UserWorkSpaceGlobal21262 = 0x87000;
 static constexpr int dm32UserWorkSpaceGlobal21362 = 0x9F000;
@@ -998,14 +1003,6 @@ bool ZDspServer::Test4DspRunning()
 {
     AbstractDspDeviceNodePtr deviceNode = m_deviceNodeFactory->getDspDeviceNode();
     return deviceNode->dspIsRunning();
-}
-
-QString ZDspServer::mDspMemoryRead(QChar* s)
-{
-    QString par(s);
-    cZDSP1Client* cl = GetClient(m_actualSocket);
-    Answer = cl->DspVarListRead(par);
-    return Answer;
 }
 
 QString ZDspServer::mDspMemoryWrite(QChar* s)
@@ -1247,7 +1244,6 @@ QString ZDspServer::SCPICmd(SCPICmdType cmd, QChar *s)
     case 	Measure:            return mMeasure(s);
     case 	UnloadCmdList: 		return mUnloadCmdList(s);
     case 	LoadCmdList: 		return mLoadCmdList(s);
-    case 	DspMemoryRead: 		return mDspMemoryRead(s);
     case   DspMemoryWrite:		return mDspMemoryWrite(s);
     case   SetSamplingSystem:	return mSetSamplingSystem(s);
     case	SetCommEncryption:	return mSetCommEncryption(s);

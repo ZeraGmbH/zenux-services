@@ -40,7 +40,7 @@ enum SCPICmdType  {
     Measure,
 
     // die routinen für das memory modell
-    DspMemoryRead,
+    scpiDspMemoryRead,
     DspMemoryWrite,
 
     // common
