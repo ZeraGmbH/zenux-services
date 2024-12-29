@@ -12,7 +12,6 @@ class ZDspServer;
 class cZDSP1Client
 {
 public:
-    cZDSP1Client(AbstractFactoryDeviceNodeDspPtr deviceNodeFactory);
     cZDSP1Client(int socket, VeinTcp::TcpPeer *netclient, AbstractFactoryDeviceNodeDspPtr deviceNodeFactory);
     ~cZDSP1Client(){} //  allokierten speicher ggf. freigeben
 

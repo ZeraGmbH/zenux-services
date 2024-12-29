@@ -9,13 +9,8 @@ extern TMemSection dm32UserWorkSpace;
 extern TMemSection dm32CmdList;
 extern TMemSection symbConsts1;
 
-cZDSP1Client::cZDSP1Client(AbstractFactoryDeviceNodeDspPtr deviceNodeFactory) :
-    m_deviceNodeFactory(deviceNodeFactory)
-{
-}
-
 cZDSP1Client::cZDSP1Client(int socket, VeinTcp::TcpPeer* netclient, AbstractFactoryDeviceNodeDspPtr deviceNodeFactory) :
-    cZDSP1Client(deviceNodeFactory)
+    m_deviceNodeFactory(deviceNodeFactory)
 {
     init(socket, netclient);
 }
