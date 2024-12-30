@@ -107,26 +107,24 @@ void cZDSP1Client::SetEncryption(int i)
     Encryption = i;
 }
 
-QString& cZDSP1Client::SetCmdListDef(QString& s)
+QString cZDSP1Client::setCmdListDef(const QString &cmdListDef)
 {
-    m_sCmdListDef = s;
-    sOutput = ZSCPI::scpiAnswer[ZSCPI::ack]; // ist erstmal ok, wird später beim SET kommando geprüft
-    return sOutput;
+    m_sCmdListDef = cmdListDef;
+    return ZSCPI::scpiAnswer[ZSCPI::ack]; // ist erstmal ok, wird später beim SET kommando geprüft
 }
 
-QString& cZDSP1Client::GetCmdListDef()
+QString cZDSP1Client::getCmdListDef()
 {
     return m_sCmdListDef;
 }
 
-QString& cZDSP1Client::SetCmdIntListDef(QString& s)
+QString cZDSP1Client::setCmdIntListDef(const QString &cmdIntListDef)
 {
-    m_sIntCmdListDef = s;
-    sOutput = ZSCPI::scpiAnswer[ZSCPI::ack]; // ist erstmal ok, wird später beim SET kommando geprüft
-    return sOutput;
+    m_sIntCmdListDef = cmdIntListDef;
+    return ZSCPI::scpiAnswer[ZSCPI::ack]; // ist erstmal ok, wird später beim SET kommando geprüft
 }
 
-QString& cZDSP1Client::GetCmdIntListDef()
+QString cZDSP1Client::getCmdIntListDef()
 {
     return m_sIntCmdListDef;
 }

@@ -17,17 +17,21 @@ public:
 
     QString setRawActualValueList(const QString& varString);
     QString getRawActualValueList();
-    QString& SetCmdListDef(QString& );
-    QString& GetCmdListDef();
-    QString& SetCmdIntListDef(QString&);
-    QString& GetCmdIntListDef();
+    QString setCmdListDef(const QString& cmdListDef);
+    QString getCmdListDef();
+    QString setCmdIntListDef(const QString& cmdIntListDef);
+    QString getCmdIntListDef();
+
     void SetEncryption(int);
     int GetEncryption();
+
     bool GenCmdLists(QString&, ulong, ulong); // baut die cmdlisten  für den dsp zusammen wenn fehler -> false
     cDspCmd GenDspCmd(QString cmd, bool* ok, ulong userMemoryOffset, ulong globalstartadr); // generiert ein dsp kommando aus einem string
     QString readActValues(const QString &variablesString); // liess die messergebnisse (liste)
+
     bool isActive();
     void SetActive(bool); // merkt sich in m_bActive ob diese liste aktiv ist
+
     ulong setStartAdr(ulong startAdress, ulong globalMemStart); // zum relokalisieren der userdaten
     QString readDspVarList(const QString &variablesString); // lesen dsp daten ganze Liste
     bool readDspVarInt(QString varName, int& intval); // einen int (32bit) wert lesen
@@ -52,7 +56,6 @@ private:
     int m_socket; // socket für den die verbindung besteht
     bool m_bActive;
     int Encryption;
-    QString sOutput;
     QString m_sCmdListDef; // kommando liste defintion
     QString m_sIntCmdListDef; // interrupt kommando  liste defintion
 

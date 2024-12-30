@@ -910,14 +910,14 @@ QString ZDspServer::mSetCmdIntList(QChar *s)
 {
     QString par(s);
     cZDSP1Client* cl = GetClient(m_actualSocket);
-    Answer = cl->SetCmdIntListDef(par);
+    Answer = cl->setCmdIntListDef(par);
     return Answer;
 }
 
 QString ZDspServer::mGetCmdIntList()
 {
     cZDSP1Client* cl = GetClient(m_actualSocket);
-    Answer = cl->GetCmdIntListDef();
+    Answer = cl->getCmdIntListDef();
     return Answer;
 }
 
@@ -925,14 +925,14 @@ QString ZDspServer::mSetCmdList(QChar *s)
 {
     QString par(s);
     cZDSP1Client* cl = GetClient(m_actualSocket);
-    Answer = cl->SetCmdListDef(par);
+    Answer = cl->setCmdListDef(par);
     return Answer;
 }
 
 QString ZDspServer::mGetCmdList()
 {
     cZDSP1Client* cl = GetClient(m_actualSocket);
-    Answer = cl->GetCmdListDef();
+    Answer = cl->getCmdListDef();
     return Answer;
 }
 
