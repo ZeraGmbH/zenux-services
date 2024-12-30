@@ -32,7 +32,6 @@ void cZDSP1Client::init(int socket, VeinTcp::TcpPeer *netclient)
     m_memorySection.StartAdr = m_memorySection.n = 0; m_memorySection.Section = userSection;
     m_dspVarResolver.setVarHash(); // wir setzen die hashtabelle und initialisieren diese
 
-    Encryption = 0; // es werden alle var. abfragen im klartext gesendet
     m_bActive = false;
 }
 
@@ -95,16 +94,6 @@ QString cZDSP1Client::getRawActualValueList()
     else
         ts << "Empty";
     return ret;
-}
-
-int cZDSP1Client::GetEncryption()
-{
-    return(Encryption);
-}
-
-void cZDSP1Client::SetEncryption(int i)
-{
-    Encryption = i;
 }
 
 QString cZDSP1Client::setCmdListDef(const QString &cmdListDef)
@@ -394,21 +383,6 @@ TDspVar *cZDSP1Client::DspVarRead(QString nameLen, QByteArray *varRead)
     return readDspVar(DspVar, countVars, varRead);
 }
 
-char* cZDSP1Client::qSEncryption(char* ch,int n )
-{
-    char* tm1;
-    short* tm2=new short[n+1]; // sind dopp elt soviele bytes wie in ba (+2)
-    tm1=(char*) tm2; // zeiger um daten an string zu koppeln
-    char c;
-    for (int j=0;j<n;j++,ch++) {
-        c=*ch;
-        *tm2++ = (((c << 4) | c) & 0x0F0F) | 0x3030;
-    }
-    *tm2='!'; // delimiter ! weil ; in daten sein kann . die 0 als abschluss ist hier drin ....ich weiß
-    return tm1;
-}
-
-
 QString cZDSP1Client::readDspVarList(const QString& variablesString)
 {
     QString ret;
@@ -429,31 +403,22 @@ QString cZDSP1Client::readDspVarList(const QString& variablesString)
             break; // fehler aufgetreten
 
         int n = ba.size() / 4;
-        if (Encryption) {
-            n = ba.size();
-            char* c;
-            ret +=QString("%1%2").arg(DspVar->Name, ":");
-            ret += QString(c = qSEncryption((char*)(ba.data()),n));
-            delete c;
-        }
-        else {
-            ts << DspVar->Name << ":";
-            switch (DspVar->type)
-            {
-            case eInt :{
-                ulong *ul = (ulong*) ba.data();
-                for (int j = 0; j < n-1; j++,ul++)
-                    ts << (*ul) << "," ;
-                ts << *ul << ";" ;
-                break;}
-            case eUnknown:
-            case eFloat :{
-                float *f = (float*) ba.data();
-                for (int j = 0; j < n-1; j++,f++)
-                    ts << (*f) << "," ;
-                ts << *f << ";" ;
-                break;}
-            }
+        ts << DspVar->Name << ":";
+        switch (DspVar->type)
+        {
+        case eInt :{
+            ulong *ul = (ulong*) ba.data();
+            for (int j = 0; j < n-1; j++,ul++)
+                ts << (*ul) << "," ;
+            ts << *ul << ";" ;
+            break;}
+        case eUnknown:
+        case eFloat :{
+            float *f = (float*) ba.data();
+            for (int j = 0; j < n-1; j++,f++)
+                ts << (*f) << "," ;
+            ts << *f << ";" ;
+            break;}
         }
     }
     if (!ok)

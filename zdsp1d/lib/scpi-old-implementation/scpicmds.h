@@ -16,8 +16,6 @@ enum SCPICmdType  {
     scpiGetServerVersion,
     SetSamplingSystem,
     GetSamplingSystem,
-    SetCommEncryption,
-    GetCommEncryption,
 
     // die routinen für das status modell
     ResetDeviceLoadMax,

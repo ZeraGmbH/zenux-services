@@ -22,9 +22,6 @@ public:
     QString setCmdIntListDef(const QString& cmdIntListDef);
     QString getCmdIntListDef();
 
-    void SetEncryption(int);
-    int GetEncryption();
-
     bool GenCmdLists(QString&, ulong, ulong); // baut die cmdlisten  für den dsp zusammen wenn fehler -> false
     cDspCmd GenDspCmd(QString cmd, bool* ok, ulong userMemoryOffset, ulong globalstartadr); // generiert ein dsp kommando aus einem string
     QString readActValues(const QString &variablesString); // liess die messergebnisse (liste)
@@ -49,13 +46,11 @@ private:
     void init(int socket, VeinTcp::TcpPeer *netclient);
     bool GenCmdList(QString&, QList<cDspCmd>& ,QString&,ulong,ulong);
     bool syntaxCheck(QString&);
-    char* qSEncryption(char*,int );
     TDspVar *readDspVar(TDspVar *&DspVar, int countVars, QByteArray *varRead);
 
     AbstractFactoryDeviceNodeDspPtr m_deviceNodeFactory;
     int m_socket; // socket für den die verbindung besteht
     bool m_bActive;
-    int Encryption;
     QString m_sCmdListDef; // kommando liste defintion
     QString m_sIntCmdListDef; // interrupt kommando  liste defintion
 

@@ -568,22 +568,6 @@ QString ZDspServer::mSetSamplingSystem(QChar *s)
     return mCommand2Dsp(QString("DSPCMDPAR,2,%1;").arg(QString(s)));
 }
 
-QString ZDspServer::mSetCommEncryption(QChar *s)
-{
-    bool ok;
-    QString par = m_cmdInterpreter->m_pParser->GetKeyword(&s); // holt den parameter aus dem kommando
-    int enc=par.toInt(&ok);
-    if ((ok) && ( (enc==0) || (enc==1) )) {
-        cZDSP1Client* cl = GetClient(m_actualSocket);
-        cl->SetEncryption(enc);
-        Answer = ZSCPI::scpiAnswer[ZSCPI::ack]; // acknowledge
-    }
-    else
-        Answer = ZSCPI::scpiAnswer[ZSCPI::errval]; // fehler wert
-
-    return Answer;
-}
-
 QString ZDspServer::mGetSamplingSystem()
 {
     do
@@ -602,14 +586,6 @@ QString ZDspServer::mGetSamplingSystem()
 
         Answer = QString("%1,%2,%3").arg(n).arg(ss).arg(sm);
     } while (0);
-
-    return Answer;
-}
-
-QString ZDspServer::mGetCommEncryption()
-{
-    cZDSP1Client* cl = GetClient(m_actualSocket);
-    Answer = QString::number(cl->GetEncryption());
 
     return Answer;
 }
@@ -1214,7 +1190,6 @@ QString ZDspServer::SCPICmd(SCPICmdType cmd, QChar *s)
     case 	UnloadCmdList: 		return mUnloadCmdList(s);
     case 	LoadCmdList: 		return mLoadCmdList(s);
     case   SetSamplingSystem:	return mSetSamplingSystem(s);
-    case	SetCommEncryption:	return mSetCommEncryption(s);
     case   SetDspCommandStat:	return mSetDspCommandStat(s);
     case   TriggerIntListHKSK:	return mTriggerIntListHKSK(s);
     case   TriggerIntListALL:		return mTriggerIntListALL(s);
@@ -1234,7 +1209,6 @@ QString ZDspServer::SCPIQuery(SCPICmdType cmdEnum)
     case		GetDspStatus:		return mGetDspStatus();
     case 		GetDeviceStatus: 		return mGetDeviceStatus();
     case		GetSamplingSystem:	return mGetSamplingSystem();
-    case        GetCommEncryption:	return mGetCommEncryption();
     case 		GetDspCommandStat:	return mGetDspCommandStat();
     }
     Answer = "ProgrammierFehler"; // hier sollten wir nie hinkommen

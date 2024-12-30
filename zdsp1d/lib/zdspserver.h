@@ -128,8 +128,6 @@ private:
     QString getLcaAndDspVersion(cZDSP1Client *client);
     QString mSetSamplingSystem(QChar*);
     QString mGetSamplingSystem();
-    QString mSetCommEncryption(QChar*);
-    QString mGetCommEncryption();
     QString mSetDspCommandStat(QChar*);
     QString mGetDspCommandStat();
     QString mTriggerIntListHKSK(QChar*);

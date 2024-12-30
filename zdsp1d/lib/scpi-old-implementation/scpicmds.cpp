@@ -9,8 +9,6 @@
 // die vollständige scpi kommando liste
 
 cNodeSCPI* System;
-                   cNodeSCPI* SystemCommunication;
-                            cNodeSCPI* SystemCommunicationEncryption;
 	     cNodeSCPI* SystemDsp;
                             cNodeSCPI* SystemDspTest;
 		          cNodeSCPI* SystemDspSampling;	
@@ -20,7 +18,6 @@ cNodeSCPI* System;
 			          	                   cNodeSCPI* SystemDspTriggerHKSK;
 		          cNodeSCPI* SystemDspCommand;
 			              cNodeSCPI* SystemDspCommandStat;
-
 
 cNodeSCPI* Status;
                    cNodeSCPI* StatusDevice;
@@ -67,8 +64,6 @@ cNode* InitCmdTree()
     SystemDspSampling=new cNodeSCPI("SAMPLING",isQuery | isCommand,SystemDspTrigger,NULL,SetSamplingSystem,GetSamplingSystem);
     SystemDspTest=new cNodeSCPI("TEST",isCommand,SystemDspSampling,NULL,TestDsp,nixCmd);
     SystemDsp=new cNodeSCPI("DSP",isNode,NULL,SystemDspTest,nixCmd,nixCmd);
-    SystemCommunicationEncryption=new cNodeSCPI("ENCRYPTION",isQuery | isCommand,NULL,NULL,SetCommEncryption,GetCommEncryption);
-    SystemCommunication=new cNodeSCPI("COMMUNICATION",isNode,SystemDsp,SystemCommunicationEncryption,nixCmd,nixCmd);
-    System=new cNodeSCPI("SYSTEM",isNode,Status,SystemCommunication,nixCmd,nixCmd);
+    System=new cNodeSCPI("SYSTEM",isNode,Status,SystemDsp,nixCmd,nixCmd);
     return (System);  
 }
