@@ -145,8 +145,6 @@ private:
     // die routinen für das measure modell
     QString mUnloadCmdList(QChar*);
     QString mLoadCmdList(QChar*);
-    QString setRawActualValueList(QChar*);
-    QString getRawActualValueList();
     QString mSetCmdIntList(QChar*);
     QString mGetCmdIntList();
     QString mSetCmdList(QChar*);

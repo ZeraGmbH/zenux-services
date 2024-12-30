@@ -318,6 +318,8 @@ void ZDspServer::initSCPIConnection(QString leadingNodes)
     addDelegate("MEMORY", "READ", SCPI::isCmdwP, m_scpiInterface, scpiDspMemoryRead);
     addDelegate("MEMORY", "WRITE", SCPI::isCmdwP, m_scpiInterface, scpiDspMemoryWrite);
 
+    addDelegate("MEASURE:LIST", "RAVLIST", SCPI::isQuery | SCPI::isCmdwP, m_scpiInterface, scpiRavListGetSet);
+
     connect(this, &ScpiConnection::cmdExecutionDone, this, &ZDspServer::sendProtoAnswer);
 }
 
@@ -342,6 +344,12 @@ void ZDspServer::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
         break;
     case scpiDspMemoryWrite:
         protoCmd->m_sOutput = client->DspVarWriteRM(cmd.getParam());
+        break;
+    case scpiRavListGetSet:
+        if(cmd.isQuery())
+            protoCmd->m_sOutput = client->getRawActualValueList();
+        else
+            protoCmd->m_sOutput = client->setRawActualValueList(cmd.getParam());
         break;
     }
 }
@@ -891,21 +899,6 @@ QString ZDspServer::mLoadCmdList(QChar *)
     return Answer;
 }
 
-QString ZDspServer::setRawActualValueList(QChar *s)
-{
-    QString qs(s);
-    cZDSP1Client* cl = GetClient(m_actualSocket);
-    Answer  = cl->setRawActualValueList(qs);
-    return Answer;
-}
-
-QString ZDspServer::getRawActualValueList()
-{
-    cZDSP1Client* cl = GetClient(m_actualSocket);
-    Answer = cl->getRawActualValueList();
-    return Answer;
-}
-
 QString ZDspServer::mSetCmdIntList(QChar *s)
 {
     QString par(s);
@@ -1234,7 +1227,6 @@ QString ZDspServer::SCPICmd(SCPICmdType cmd, QChar *s)
     switch ((int)cmd)
     {
     case    TestDsp:            return mTestDsp(s);
-    case 	SetRavList: 		return setRawActualValueList(s);
     case 	SetCmdList: 		return mSetCmdList(s);
     case   SetCmdIntList: 		return mSetCmdIntList(s);
     case 	Measure:            return mMeasure(s);
@@ -1260,7 +1252,6 @@ QString ZDspServer::SCPIQuery(SCPICmdType cmdEnum)
     case 		GetDeviceLoadAct: 	return mGetDeviceLoadAct();
     case		GetDspStatus:		return mGetDspStatus();
     case 		GetDeviceStatus: 		return mGetDeviceStatus();
-    case 		GetRavList: 		return getRawActualValueList();
     case 		GetCmdIntList: 		return mGetCmdIntList();
     case 		GetCmdList: 		return mGetCmdList();
     case		GetSamplingSystem:	return mGetSamplingSystem();

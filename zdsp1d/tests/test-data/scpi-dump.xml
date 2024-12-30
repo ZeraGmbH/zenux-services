@@ -26,6 +26,19 @@
     </COMMAND>
    </DSP>
   </SYSTEM>
+  <MEMORY Type="Model,Node">
+   <READ Type="Command+Par" ScpiPath="MEMORY:READ"/>
+   <WRITE Type="Command+Par" ScpiPath="MEMORY:WRITE"/>
+  </MEMORY>
+  <MEASURE Type="Model,Node">
+   <LIST Type="Node">
+    <RAVLIST ScpiPath="MEASURE:LIST:RAVLIST" Type="Query,Command+Par"/>
+    <CYCLIST ScpiPath="MEASURE:LIST:CYCLIST" Type="Query,Command+Par"/>
+    <INTLIST ScpiPath="MEASURE:LIST:INTLIST" Type="Query,Command+Par"/>
+    <SET ScpiPath="MEASURE:LIST:SET" Type="Command+Par"/>
+    <CLEAR ScpiPath="MEASURE:LIST:CLEAR" Type="Command+Par"/>
+   </LIST>
+  </MEASURE>
   <STATUS Type="Model,Node">
    <DEVICE Type="Query" ScpiPath="STATUS:DEVICE"/>
    <DSP Type="Query" ScpiPath="STATUS:DSP">
@@ -37,18 +50,5 @@
     </LOAD>
    </DSP>
   </STATUS>
-  <MEASURE Type="Model,Command+Par" ScpiPath="MEASURE">
-   <LIST Type="Node">
-    <CYCLIST Type="Query,Command+Par" ScpiPath="MEASURE:LIST:CYCLIST"/>
-    <INTLIST Type="Query,Command+Par" ScpiPath="MEASURE:LIST:INTLIST"/>
-    <RAVLIST Type="Query,Command+Par" ScpiPath="MEASURE:LIST:RAVLIST"/>
-    <SET Type="Command+Par" ScpiPath="MEASURE:LIST:SET"/>
-    <CLEAR Type="Command+Par" ScpiPath="MEASURE:LIST:CLEAR"/>
-   </LIST>
-  </MEASURE>
-  <MEMORY Type="Model,Node">
-   <READ Type="Command+Par" ScpiPath="MEMORY:READ"/>
-   <WRITE Type="Command+Par" ScpiPath="MEMORY:WRITE"/>
-  </MEMORY>
  </MODELS>
 </MODELLIST>

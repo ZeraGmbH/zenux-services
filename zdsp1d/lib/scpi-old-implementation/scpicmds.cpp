@@ -34,7 +34,6 @@ cNodeSCPI* MeasureNode;
                   cNodeSCPI* MeasureList;
 		          cNodeSCPI* MeasureListCycList;
 		          cNodeSCPI* MeasureListIntList;
-		          cNodeSCPI* MeasureListRavList;
 		          cNodeSCPI* MeasureListSet;
 		          cNodeSCPI* MeasureListClear;	  
 
@@ -47,8 +46,7 @@ cNode* InitCmdTree()
     // implementiertes measure modell
     MeasureListClear=new cNodeSCPI("CLEAR",isCommand,NULL,NULL,UnloadCmdList,nixCmd);
     MeasureListSet=new cNodeSCPI("SET",isCommand,MeasureListClear,NULL,LoadCmdList,nixCmd);
-    MeasureListRavList=new cNodeSCPI("RAVLIST",isQuery | isCommand,MeasureListSet,NULL,SetRavList,GetRavList);
-    MeasureListIntList=new cNodeSCPI("INTLIST",isQuery | isCommand,MeasureListRavList,NULL,SetCmdIntList,GetCmdIntList);
+    MeasureListIntList=new cNodeSCPI("INTLIST",isQuery | isCommand,MeasureListSet,NULL,SetCmdIntList,GetCmdIntList);
     MeasureListCycList=new cNodeSCPI("CYCLIST",isQuery | isCommand,MeasureListIntList,NULL,SetCmdList,GetCmdList);
     MeasureList=new cNodeSCPI("LIST",isNode,NULL,MeasureListCycList,nixCmd,nixCmd);
     MeasureNode=new cNodeSCPI("MEASURE",isNode | isCommand,NULL,MeasureList,Measure,nixCmd);
