@@ -36,40 +36,40 @@ void cZDSP1Client::init(int socket, VeinTcp::TcpPeer *netclient)
     m_bActive = false;
 }
 
-QString& cZDSP1Client::setRawActualValueList(QString& s)
+QString cZDSP1Client::setRawActualValueList(const QString &varString)
 {
     m_dspRawActualValueVarList.clear();
-    sOutput = ZSCPI::scpiAnswer[ZSCPI::ack];
-    if (!s.isEmpty()) {
-        DspVarClientPerspective getDspVar;
+    QString ret = ZSCPI::scpiAnswer[ZSCPI::ack];
+    if(!varString.isEmpty()) {
+        DspVarClientPerspective dspVar;
         int localOffset = 0;
         int globaloffset = 0;
         for (int i=0; ; i++) {
-            QString section = s.section(';', i, i); // alle teil strings bearbeiten
-            if (section.isEmpty())
+            QString section = varString.section(';', i, i); // alle teil strings bearbeiten
+            if(section.isEmpty())
                 break;
-            if ( getDspVar.Init(section) ) {
-                if (getDspVar.segment() == localSegment) {
-                    getDspVar.SetOffs(localOffset);
-                    localOffset += getDspVar.size();
+            if(dspVar.Init(section)) {
+                if (dspVar.segment() == localSegment) {
+                    dspVar.SetOffs(localOffset);
+                    localOffset += dspVar.size();
                 }
                 else {
-                    getDspVar.SetOffs(globaloffset);
-                    globaloffset += getDspVar.size();
+                    dspVar.SetOffs(globaloffset);
+                    globaloffset += dspVar.size();
                 }
-                m_dspRawActualValueVarList.append(getDspVar);
+                m_dspRawActualValueVarList.append(dspVar);
             }
             else { // fehlerfall
                 m_dspRawActualValueVarList.clear();
-                sOutput = ZSCPI::scpiAnswer[ZSCPI::nak];
+                ret = ZSCPI::scpiAnswer[ZSCPI::nak];
                 break;
             }
         }
     }
     m_memorySection.n = m_dspRawActualValueVarList.count();
-    if (m_memorySection.n > 0) { // wir haben mindestens 1 variable
+    if(m_memorySection.n > 0) { // wir haben mindestens 1 variable
         m_dspVarArray.resize(m_memorySection.n);
-        for (int i = 0;i < m_memorySection.n; i++) { // und machen diese dem resolver zugänglich
+        for(int i=0; i<m_memorySection.n; i++) { // und machen diese dem resolver zugänglich
             m_dspVarArray[i].m_clientHandleName = m_dspRawActualValueVarList[i].getClientHandleName();
             m_dspVarArray[i].Name = m_dspRawActualValueVarList[i].name();
             m_dspVarArray[i].size = m_dspRawActualValueVarList[i].size();
@@ -80,21 +80,21 @@ QString& cZDSP1Client::setRawActualValueList(QString& s)
         m_memorySection.DspVar = m_dspVarArray.data();
     }
     m_dspVarResolver.setVarHash(); // wir setzen die hashtabelle neu
-    return (sOutput);
+    return ret;
 }
 
-QString& cZDSP1Client::getRawActualValueList()
+QString cZDSP1Client::getRawActualValueList()
 {
-    sOutput = "";
-    QTextStream ts( &sOutput, QIODevice::WriteOnly );
-    if ( !m_dspRawActualValueVarList.empty() ) {
+    QString ret;
+    QTextStream ts(&ret, QIODevice::WriteOnly);
+    if (!m_dspRawActualValueVarList.empty()) {
         QList<DspVarClientPerspective>::iterator it;
-        for ( it = m_dspRawActualValueVarList.begin(); it != m_dspRawActualValueVarList.end(); ++it )
+        for(it = m_dspRawActualValueVarList.begin(); it != m_dspRawActualValueVarList.end(); ++it)
             ts << (*it).name() << ',' << (*it).size() << ';';
     }
     else
         ts << "Empty";
-    return(sOutput);
+    return ret;
 }
 
 int cZDSP1Client::GetEncryption()

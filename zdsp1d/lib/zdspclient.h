@@ -15,8 +15,8 @@ public:
     cZDSP1Client(int socket, VeinTcp::TcpPeer *netclient, AbstractFactoryDeviceNodeDspPtr deviceNodeFactory);
     ~cZDSP1Client(){} //  allokierten speicher ggf. freigeben
 
-    QString& setRawActualValueList(QString&);
-    QString& getRawActualValueList();
+    QString setRawActualValueList(const QString& varString);
+    QString getRawActualValueList();
     QString& SetCmdListDef(QString& );
     QString& GetCmdListDef();
     QString& SetCmdIntListDef(QString&);
