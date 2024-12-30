@@ -103,8 +103,8 @@ private:
 
     quint8 m_nerror;
     uchar ActivatedCmdList;
-    QByteArray CmdMem; // unsere dsp programm listen
-    QByteArray CmdIntMem;
+    QByteArray m_rawCyclicCmdMem; // unsere dsp programm listen
+    QByteArray m_rawInterruptCmdMem;
     QSocketNotifier* m_pNotifier = nullptr;
 
     QHash<QByteArray, cZDSP1Client*> m_zdspdClientHash;

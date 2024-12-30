@@ -773,12 +773,12 @@ bool ZDspServer::BuildDSProgram(QString &errs)
     bool ok;
     ulong userMemoryOffset = dm32UserWorkSpace.StartAdr;
 
-    CmdMem.clear();
-    CmdIntMem.clear();
-    QDataStream mds1 ( &CmdMem, QIODevice::Unbuffered | QIODevice::ReadWrite );
-    mds1.setByteOrder(QDataStream::LittleEndian);
-    QDataStream mds2 ( &CmdIntMem, QIODevice::Unbuffered | QIODevice::ReadWrite );
-    mds2.setByteOrder(QDataStream::LittleEndian);
+    m_rawCyclicCmdMem.clear();
+    m_rawInterruptCmdMem.clear();
+    QDataStream cyclicCmdMemStream ( &m_rawCyclicCmdMem, QIODevice::Unbuffered | QIODevice::ReadWrite );
+    cyclicCmdMemStream.setByteOrder(QDataStream::LittleEndian);
+    QDataStream interruptCmdMemStream ( &m_rawInterruptCmdMem, QIODevice::Unbuffered | QIODevice::ReadWrite );
+    interruptCmdMemStream.setByteOrder(QDataStream::LittleEndian);
 
     cDspCmd cmd;
     QString s;
@@ -787,14 +787,14 @@ bool ZDspServer::BuildDSProgram(QString &errs)
         cZDSP1Client* client = m_clientList.at(0);
         s =  QString( "DSPMEMOFFSET(%1)" ).arg(dm32DspWorkspace.StartAdr);
         cmd = client->GenDspCmd(s, &ok, 0, 0);
-        mds1 << cmd;
+        cyclicCmdMemStream << cmd;
         for (int i = 0; i < m_clientList.count(); i++) {
             client = m_clientList.at(i);
             if (client->isActive()) {
                 s =  QString( "USERMEMOFFSET(%1)" ).arg(userMemoryOffset);
                 cmd = client->GenDspCmd(s, &ok, 0, 0);
-                mds1 << cmd;
-                mds2 << cmd;
+                cyclicCmdMemStream << cmd;
+                interruptCmdMemStream << cmd;
 
                 if (!client->GenCmdLists(errs, userMemoryOffset, UserWorkSpaceGlobalSegmentAdr))
                     return false;
@@ -802,23 +802,23 @@ bool ZDspServer::BuildDSProgram(QString &errs)
                 userMemoryOffset += client->setStartAdr(userMemoryOffset, UserWorkSpaceGlobalSegmentAdr); // relokalisieren der daten im dsp
 
                 QList<cDspCmd> cmdl = client->GetDspCmdList();
-                for (int j = 0; j < cmdl.size(); j++ ) mds1 << cmdl[j]; // cycl. liste
+                for (int j = 0; j < cmdl.size(); j++ ) cyclicCmdMemStream << cmdl[j]; // cycl. liste
                 QList<cDspCmd> cmdl2 = client->GetDspIntCmdList();
-                for ( int j = 0; j < cmdl2.size(); j++ ) mds2 << cmdl2[j]; // interrupt liste
+                for ( int j = 0; j < cmdl2.size(); j++ ) interruptCmdMemStream << cmdl2[j]; // interrupt liste
             }
         }
 
         client = m_clientList.at(0);
         s = QString( "DSPINTPOST()"); // wir triggern das senden der serialisierten interrupts
         cmd = client->GenDspCmd(s, &ok, 0, 0);
-        mds1 << cmd;
+        cyclicCmdMemStream << cmd;
     }
 
     cZDSP1Client dummyClient(0, 0, m_deviceNodeFactory); // dummyClient einrichten damit was jetzt kommt noch
     s =  QString( "INVALID()"); // funktioniert selbst wenn wenn wir keinen mehr haben
     cmd = dummyClient.GenDspCmd(s, &ok, 0, 0);
-    mds1 << cmd; // kommando listen ende
-    mds2 << cmd;
+    cyclicCmdMemStream << cmd; // kommando listen ende
+    interruptCmdMemStream << cmd;
 
     return true;
 }
@@ -843,11 +843,11 @@ bool ZDspServer::LoadDSProgram()
 
     AbstractDspDeviceNodePtr deviceNode = m_deviceNodeFactory->getDspDeviceNode();
     ulong offset = dummyClient.m_dspVarResolver.varAddress(s) ;
-    if(!deviceNode->write(offset, CmdMem.data(), CmdMem.size()))
+    if(!deviceNode->write(offset, m_rawCyclicCmdMem.data(), m_rawCyclicCmdMem.size()))
         return false;
 
     offset = dummyClient.m_dspVarResolver.varAddress(s2) ;
-    if (!deviceNode->write(offset, CmdIntMem.data(), CmdIntMem.size()))
+    if (!deviceNode->write(offset, m_rawInterruptCmdMem.data(), m_rawInterruptCmdMem.size()))
         return false;
 
     // dem dsp die neue liste mitteilen
