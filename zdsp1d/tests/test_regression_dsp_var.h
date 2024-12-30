@@ -1,7 +1,7 @@
 #ifndef TEST_REGRESSION_DSP_VAR_H
 #define TEST_REGRESSION_DSP_VAR_H
 
-#include "mockzdsp1d.h"
+#include "testzdsp1dforvaraccess.h"
 #include "dspinterface.h"
 #include "proxyclient.h"
 #include "resmanrunfacade.h"
@@ -25,12 +25,15 @@ private slots:
     void writeMixVariablesAndListenDeviceNode();
 
     void multipleClientsCreateResultVars();
+
+    void serverReadDspWorkspaceVariableAndListenDeviceNode();
+
 private:
     QByteArray floatToBuff(float value);
     QByteArray intToBuff(qint32 value);
 
     std::unique_ptr<ResmanRunFacade> m_resmanServer;
-    std::unique_ptr<MockZdsp1d> m_dspService;
+    std::unique_ptr<TestZdsp1dForVarAccess> m_dspService;
     Zera::ProxyClientPtr m_proxyClient;
     std::unique_ptr<Zera::cDSPInterface> m_dspIFace;
     VeinTcp::AbstractTcpNetworkFactoryPtr m_tcpNetworkFactory;

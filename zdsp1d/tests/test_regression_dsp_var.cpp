@@ -1,6 +1,7 @@
 #include "test_regression_dsp_var.h"
 #include "proxy.h"
-#include <zscpi_response_definitions.h>
+#include "zdspclient.h"
+#include "zscpi_response_definitions.h"
 #include "scpisingletransactionblocked.h"
 #include "testdevicenodedsp.h"
 #include "testfactorydevicenodedsp.h"
@@ -19,7 +20,7 @@ void test_regression_dsp_var::init()
 {
     m_tcpNetworkFactory = VeinTcp::TcpNetworkFactory::create();
     m_resmanServer = std::make_unique<ResmanRunFacade>(m_tcpNetworkFactory);
-    m_dspService = std::make_unique<MockZdsp1d>(std::make_shared<TestFactoryDeviceNodeDsp>(), m_tcpNetworkFactory);
+    m_dspService = std::make_unique<TestZdsp1dForVarAccess>(std::make_shared<TestFactoryDeviceNodeDsp>(), m_tcpNetworkFactory);
     TimeMachineObject::feedEventLoop();
 
     m_proxyClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", dspServerPort, m_tcpNetworkFactory);
@@ -166,7 +167,7 @@ void test_regression_dsp_var::readVariablesAndListenDeviceNode()
     dspData->addVarItem(new cDspVar("THREE_INT", 3, DSPDATA::vDspResult, DSPDATA::dInt));
 
     // In modules we have claimUSERMem() - we had this here during investigation
-    // It is for resman's sake - here is changes nothing
+    // It is for resman's sake - here it changes nothing
 
     m_dspIFace->varList2Dsp();
     TimeMachineObject::feedEventLoop();
@@ -379,6 +380,24 @@ void test_regression_dsp_var::multipleClientsCreateResultVars()
     dspIFace2->dspMemoryRead(dspData1);
     TimeMachineObject::feedEventLoop();
     QCOMPARE(spyRead2[0][2].toString(), "errexec");
+}
+
+extern TMemSection dm32DspWorkspace;
+
+void test_regression_dsp_var::serverReadDspWorkspaceVariableAndListenDeviceNode()
+{
+    cZDSP1Client* testServerlient = m_dspService->createTestClient();
+    TestDeviceNodeDspPtr deviceNode = TestSingletonDeviceNodeDsp::getInstancePtrTest();
+    QSignalSpy spyRead(deviceNode.get(), &TestDeviceNodeDsp::sigIoOperation);
+
+    testServerlient->DspVarListRead("FREQENCY,1;");
+
+    QCOMPARE(spyRead.count(), 2);
+    QCOMPARE(spyRead[0][0], "lseek");
+    QCOMPARE(spyRead[0][1].toInt(), dm32DspWorkspace.StartAdr);
+    QCOMPARE(spyRead[1][0], "read");
+    QCOMPARE(spyRead[1][1], "buf");
+    QCOMPARE(spyRead[1][2], 1*varSize);
 }
 
 QByteArray test_regression_dsp_var::floatToBuff(float value)
