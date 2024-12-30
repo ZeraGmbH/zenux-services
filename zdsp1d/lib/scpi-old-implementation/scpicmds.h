@@ -33,8 +33,7 @@ enum SCPICmdType  {
     LoadCmdList,
     scpiRavListGetSet,
     scpiCmdIntListGetSet,
-    SetCmdList,
-    GetCmdList,
+    scpiCmdCycListGetSet,
     Measure,
 
     // die routinen für das memory modell

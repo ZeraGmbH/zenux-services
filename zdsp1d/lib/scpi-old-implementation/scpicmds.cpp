@@ -32,7 +32,6 @@ cNodeSCPI* Status;
 	     
 cNodeSCPI* MeasureNode;
                   cNodeSCPI* MeasureList;
-		          cNodeSCPI* MeasureListCycList;
 		          cNodeSCPI* MeasureListSet;
 		          cNodeSCPI* MeasureListClear;	  
 
@@ -45,8 +44,7 @@ cNode* InitCmdTree()
     // implementiertes measure modell
     MeasureListClear=new cNodeSCPI("CLEAR",isCommand,NULL,NULL,UnloadCmdList,nixCmd);
     MeasureListSet=new cNodeSCPI("SET",isCommand,MeasureListClear,NULL,LoadCmdList,nixCmd);
-    MeasureListCycList=new cNodeSCPI("CYCLIST",isQuery | isCommand,MeasureListSet,NULL,SetCmdList,GetCmdList);
-    MeasureList=new cNodeSCPI("LIST",isNode,NULL,MeasureListCycList,nixCmd,nixCmd);
+    MeasureList=new cNodeSCPI("LIST",isNode,NULL,MeasureListSet,nixCmd,nixCmd);
     MeasureNode=new cNodeSCPI("MEASURE",isNode | isCommand,NULL,MeasureList,Measure,nixCmd);
 
     // implementiertes status modell

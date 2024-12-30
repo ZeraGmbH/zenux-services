@@ -320,6 +320,7 @@ void ZDspServer::initSCPIConnection(QString leadingNodes)
 
     addDelegate("MEASURE:LIST", "RAVLIST", SCPI::isQuery | SCPI::isCmdwP, m_scpiInterface, scpiRavListGetSet);
     addDelegate("MEASURE:LIST", "INTLIST", SCPI::isQuery | SCPI::isCmdwP, m_scpiInterface, scpiCmdIntListGetSet);
+    addDelegate("MEASURE:LIST", "CYCLIST", SCPI::isQuery | SCPI::isCmdwP, m_scpiInterface, scpiCmdCycListGetSet);
 
     connect(this, &ScpiConnection::cmdExecutionDone, this, &ZDspServer::sendProtoAnswer);
 }
@@ -357,6 +358,12 @@ void ZDspServer::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
             protoCmd->m_sOutput = client->getCmdIntListDef();
         else
             protoCmd->m_sOutput = client->setCmdIntListDef(cmd.getParam());
+        break;
+    case scpiCmdCycListGetSet:
+        if(cmd.isQuery())
+            protoCmd->m_sOutput = client->getCmdListDef();
+        else
+            protoCmd->m_sOutput = client->setCmdListDef(cmd.getParam());
         break;
     }
 }
@@ -906,22 +913,6 @@ QString ZDspServer::mLoadCmdList(QChar *)
     return Answer;
 }
 
-QString ZDspServer::mSetCmdList(QChar *s)
-{
-    QString par(s);
-    cZDSP1Client* cl = GetClient(m_actualSocket);
-    Answer = cl->setCmdListDef(par);
-    return Answer;
-}
-
-QString ZDspServer::mGetCmdList()
-{
-    cZDSP1Client* cl = GetClient(m_actualSocket);
-    Answer = cl->getCmdListDef();
-    return Answer;
-}
-
-
 QString ZDspServer::mMeasure(QChar *s)
 {
     QString par(s); // holt den parameter aus dem kommando
@@ -1219,7 +1210,6 @@ QString ZDspServer::SCPICmd(SCPICmdType cmd, QChar *s)
     switch ((int)cmd)
     {
     case    TestDsp:            return mTestDsp(s);
-    case 	SetCmdList: 		return mSetCmdList(s);
     case 	Measure:            return mMeasure(s);
     case 	UnloadCmdList: 		return mUnloadCmdList(s);
     case 	LoadCmdList: 		return mLoadCmdList(s);
@@ -1243,7 +1233,6 @@ QString ZDspServer::SCPIQuery(SCPICmdType cmdEnum)
     case 		GetDeviceLoadAct: 	return mGetDeviceLoadAct();
     case		GetDspStatus:		return mGetDspStatus();
     case 		GetDeviceStatus: 		return mGetDeviceStatus();
-    case 		GetCmdList: 		return mGetCmdList();
     case		GetSamplingSystem:	return mGetSamplingSystem();
     case        GetCommEncryption:	return mGetCommEncryption();
     case 		GetDspCommandStat:	return mGetDspCommandStat();

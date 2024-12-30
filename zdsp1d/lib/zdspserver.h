@@ -145,8 +145,6 @@ private:
     // die routinen für das measure modell
     QString mUnloadCmdList(QChar*);
     QString mLoadCmdList(QChar*);
-    QString mSetCmdList(QChar*);
-    QString mGetCmdList();
     QString mMeasure(QChar*);
 
     bool BuildDSProgram(QString& errs);
