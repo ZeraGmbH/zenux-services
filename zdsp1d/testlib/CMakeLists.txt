@@ -21,6 +21,7 @@ target_include_directories(zdsp1d-testlib
 
 target_link_libraries(zdsp1d-testlib
     PUBLIC
+    zenuxservicecommon-demolib
     zdsp1d-lib
 )
 

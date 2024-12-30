@@ -42,15 +42,6 @@ public:
     QString getServerVersion();
     QString getDspDeviceNode();
 
-    cZDSP1Client* AddClient(VeinTcp::TcpPeer *netClient);
-    void DelClients(VeinTcp::TcpPeer *netClient);
-    void DelClient(QByteArray clientId);
-    cZDSP1Client* AddSCPIClient();
-    void DelSCPIClient();
-
-    QString SCPICmd( SCPICmdType, QChar*) override;
-    QString SCPIQuery(SCPICmdType cmdEnum) override;
-
     static const ServerParams defaultParams;
 signals:
     void sigServerIsSetUp();
@@ -80,6 +71,17 @@ private:
     void init();
     void initSCPIConnection(QString leadingNodes) override;
     void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
+
+    friend class TestZdsp1dForVarAccess;
+    cZDSP1Client* AddClient(VeinTcp::TcpPeer *netClient);
+    void DelClients(VeinTcp::TcpPeer *netClient);
+    void DelClient(QByteArray clientId);
+    cZDSP1Client* AddSCPIClient();
+    void DelSCPIClient();
+
+    QString SCPICmd( SCPICmdType, QChar*) override;
+    QString SCPIQuery(SCPICmdType cmdEnum) override;
+
     QString handleScpiInterfaceRead(const QString &scpiInput);
     void outputDspRunState();
     void outputAndResetTransactionsLogs();

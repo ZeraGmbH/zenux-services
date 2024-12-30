@@ -9,7 +9,7 @@ public:
     MockZdsp1d(AbstractFactoryDeviceNodeDspPtr deviceNodeFactory,
                VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory,
                QString alternateConfigXml = QString());
-private:
+protected:
     std::unique_ptr<ZDspServer> m_server;
 };
 
