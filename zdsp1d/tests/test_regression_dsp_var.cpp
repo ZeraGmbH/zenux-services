@@ -390,7 +390,7 @@ void test_regression_dsp_var::serverReadDspWorkspaceVariableAndListenDeviceNode(
     TestDeviceNodeDspPtr deviceNode = TestSingletonDeviceNodeDsp::getInstancePtrTest();
     QSignalSpy spyRead(deviceNode.get(), &TestDeviceNodeDsp::sigIoOperation);
 
-    testServerlient->DspVarListRead("FREQENCY,1;");
+    testServerlient->readDspVarList("FREQENCY,1;");
 
     QCOMPARE(spyRead.count(), 2);
     QCOMPARE(spyRead[0][0], "lseek");

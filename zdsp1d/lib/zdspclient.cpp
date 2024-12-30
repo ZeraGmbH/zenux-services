@@ -343,19 +343,16 @@ int cZDSP1Client::getSocket()
 }
 
 
-QString& cZDSP1Client::readActValues(QString& s)
+QString cZDSP1Client::readActValues(const QString& variablesString)
 {
-    QString par(s);
-
-    if (par.isEmpty())
-    { // sonderfall liste leer -> alle messwerte lesen
-        for (int i = 0; i < m_dspRawActualValueVarList.count(); i++)
-        {
+    QString par(variablesString);
+    if(par.isEmpty()) { // sonderfall liste leer -> alle messwerte lesen
+        for (int i = 0; i < m_dspRawActualValueVarList.count(); i++) {
             DspVarClientPerspective Var = m_dspRawActualValueVarList.at(i);
             par += QString("%1,%2;").arg(Var.name()).arg(Var.size());
         }
     }
-    return DspVarListRead(par);
+    return readDspVarList(par);
 }
 
 
@@ -414,56 +411,56 @@ char* cZDSP1Client::qSEncryption(char* ch,int n )
 }
 
 
-QString& cZDSP1Client::DspVarListRead(const QString& s)
+QString cZDSP1Client::readDspVarList(const QString& variablesString)
 {
-    bool ok=false;
-    sOutput="";
-    QTextStream ts( &sOutput, QIODevice::WriteOnly );
+    QString ret;
+    bool ok = false;
+    QTextStream ts(&ret, QIODevice::WriteOnly);
     ts.setRealNumberPrecision(8);
     QByteArray ba;
 
-    for (int i=0;;i++)
-    {
-        QString vs = s.section(";",i,i); // variablen string:  varname, anzahl werte
+    for (int i=0;;i++) {
+        QString vs = variablesString.section(";",i,i); // variablen string:  varname, anzahl werte
         if (vs.isEmpty()) {
             ok = true;
             break; // dann sind wir fertig
         }
 
-        TDspVar *DspVar;
-        if ( (DspVar = DspVarRead(vs, &ba)) == 0) break; // fehler aufgetreten
+        TDspVar *DspVar = DspVarRead(vs, &ba);
+        if (!DspVar)
+            break; // fehler aufgetreten
 
-        int n = ba.size()/4;
-        if (Encryption)
-        {
+        int n = ba.size() / 4;
+        if (Encryption) {
             n = ba.size();
             char* c;
-            sOutput +=QString("%1%2").arg(DspVar->Name, ":");
-            sOutput += QString(c = qSEncryption((char*)(ba.data()),n));
+            ret +=QString("%1%2").arg(DspVar->Name, ":");
+            ret += QString(c = qSEncryption((char*)(ba.data()),n));
             delete c;
         }
-        else
-        {
+        else {
             ts << DspVar->Name << ":";
             switch (DspVar->type)
             {
             case eInt :{
                 ulong *ul = (ulong*) ba.data();
-                for (int j = 0; j < n-1; j++,ul++) ts << (*ul) << "," ;
+                for (int j = 0; j < n-1; j++,ul++)
+                    ts << (*ul) << "," ;
                 ts << *ul << ";" ;
                 break;}
             case eUnknown:
             case eFloat :{
                 float *f = (float*) ba.data();
-                for (int j = 0; j < n-1; j++,f++) ts << (*f) << "," ;
+                for (int j = 0; j < n-1; j++,f++)
+                    ts << (*f) << "," ;
                 ts << *f << ";" ;
                 break;}
             }
-        };
+        }
     }
     if (!ok)
-        sOutput = ZSCPI::scpiAnswer[ZSCPI::errexec];
-    return sOutput;
+        ret = ZSCPI::scpiAnswer[ZSCPI::errexec];
+    return ret;
 }
 
 

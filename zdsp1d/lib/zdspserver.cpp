@@ -338,7 +338,7 @@ void ZDspServer::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
         protoCmd->m_sOutput = getServerVersion();
         break;
     case scpiDspMemoryRead:
-        protoCmd->m_sOutput = client->DspVarListRead(cmd.getParam());
+        protoCmd->m_sOutput = client->readDspVarList(cmd.getParam());
         break;
     case scpiDspMemoryWrite:
         protoCmd->m_sOutput = client->DspVarWriteRM(cmd.getParam());
@@ -638,7 +638,7 @@ QString ZDspServer::getLcaAndDspVersion(cZDSP1Client* client)
         return ZSCPI::scpiAnswer[ZSCPI::errexec]; // fehler bei der ausführung
     // DSP
     QString p = "VNR,1;";
-    p = client->DspVarListRead(p);  // ab "VNR"  1 wort lesen
+    p = client->readDspVarList(p);  // ab "VNR"  1 wort lesen
     p = p.section(':',1,1);
     p = p.remove(';');
     double dspVersionFloat = p.toDouble();
@@ -677,7 +677,7 @@ QString ZDspServer::mGetDeviceLoadAct()
 {
     cZDSP1Client* cl = GetClient(m_actualSocket);
     QString p = "BUSY,1;";
-    Answer = cl->DspVarListRead(p);  // ab "BUSY"  1 wort lesen
+    Answer = cl->readDspVarList(p);  // ab "BUSY"  1 wort lesen
     return Answer;
 }
 
@@ -685,7 +685,7 @@ QString ZDspServer::mGetDeviceLoadMax()
 {
     cZDSP1Client* cl = GetClient(m_actualSocket);
     QString p = "BUSYMAX,1;";
-    Answer = cl->DspVarListRead(p);  // ab "BUSYMAX"  1 wort lesen
+    Answer = cl->readDspVarList(p);  // ab "BUSYMAX"  1 wort lesen
     return Answer;
 }
 
