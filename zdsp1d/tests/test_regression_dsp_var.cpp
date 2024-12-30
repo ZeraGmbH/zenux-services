@@ -400,6 +400,24 @@ void test_regression_dsp_var::serverReadDspWorkspaceVariableAndListenDeviceNode(
     QCOMPARE(spyRead[1][2], 1*varSize);
 }
 
+extern TMemSection dm32DialogWorkSpace;
+
+void test_regression_dsp_var::serverWriteDspDialogWorkspaceVariableAndListenDeviceNode()
+{
+    cZDSP1Client* testServerlient = m_dspService->createTestClient();
+    TestDeviceNodeDspPtr deviceNode = TestSingletonDeviceNodeDsp::getInstancePtrTest();
+    QSignalSpy spyWrite(deviceNode.get(), &TestDeviceNodeDsp::sigIoOperation);
+
+    // Note: A real world DSP write is more complex - see ZDspServer::mCommand2Dsp
+    testServerlient->DspVarWrite("DSPCMDPAR,2,42;");
+
+    QCOMPARE(spyWrite.count(), 1);
+    QCOMPARE(spyWrite[0][0], "write");
+    QCOMPARE(spyWrite[0][1].toInt(), dm32DialogWorkSpace.StartAdr);
+    QCOMPARE(spyWrite[0][2], intToBuff(2) + intToBuff(42));
+    QCOMPARE(spyWrite[0][3], 2*varSize);
+}
+
 QByteArray test_regression_dsp_var::floatToBuff(float value)
 {
     QByteArray buffer(4, 0);

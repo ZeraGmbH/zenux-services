@@ -27,6 +27,7 @@ private slots:
     void multipleClientsCreateResultVars();
 
     void serverReadDspWorkspaceVariableAndListenDeviceNode();
+    void serverWriteDspDialogWorkspaceVariableAndListenDeviceNode();
 
 private:
     QByteArray floatToBuff(float value);
