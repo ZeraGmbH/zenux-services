@@ -169,7 +169,6 @@ quint32 cDSPInterfacePrivate::deactivateInterface()
 
 quint32 cDSPInterfacePrivate::dataAcquisition(cDspMeasData *memgroup)
 {
-    // This is async -> no SCPI command
     quint32 msgnr = sendCommand(QString("MEAS"), QString("%1").arg(memgroup->VarListShort(DSPDATA::vDspResult)));
     m_MsgNrCmdList[msgnr] = dataacquisition;
     m_MsgNrMeasData[msgnr] = memgroup;
