@@ -321,6 +321,7 @@ void ZDspServer::initSCPIConnection(QString leadingNodes)
     addDelegate("MEASURE:LIST", "RAVLIST", SCPI::isQuery | SCPI::isCmdwP, m_scpiInterface, scpiRavListGetSet);
     addDelegate("MEASURE:LIST", "INTLIST", SCPI::isQuery | SCPI::isCmdwP, m_scpiInterface, scpiCmdIntListGetSet);
     addDelegate("MEASURE:LIST", "CYCLIST", SCPI::isQuery | SCPI::isCmdwP, m_scpiInterface, scpiCmdCycListGetSet);
+    addDelegate("MEASURE:LIST", "SET", SCPI::isCmdwP, m_scpiInterface, scpiLoadCmdList);
     addDelegate("MEASURE:LIST", "CLEAR", SCPI::isCmdwP, m_scpiInterface, scpiUnloadCmdList);
 
     connect(this, &ScpiConnection::cmdExecutionDone, this, &ZDspServer::sendProtoAnswer);
@@ -366,16 +367,12 @@ void ZDspServer::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
         else
             protoCmd->m_sOutput = client->setCmdListDef(cmd.getParam());
         break;
+    case scpiLoadCmdList:
+        protoCmd->m_sOutput = loadCmdList(client);
+        break;
     case scpiUnloadCmdList:
-    {
-        client->SetActive(false);
-        QString error;
-        BuildDSProgram(error);
-        if (!LoadDSProgram())
-            protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::errexec];
-        else
-            protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::ack];
-    }
+        protoCmd->m_sOutput = unloadCmdList(client);
+        break;
     }
 }
 
@@ -866,27 +863,39 @@ bool ZDspServer::LoadDSProgram()
     return true;
 }
 
-QString ZDspServer::mLoadCmdList(QChar *)
+QString ZDspServer::loadCmdList(cZDSP1Client* client)
 {
     static int count = 0;
-    cZDSP1Client* cl = GetClient(m_actualSocket);
     QString errs;
-    cl->SetActive(true);
-    if (BuildDSProgram(errs)) { // die cmdlisten und die variablen waren schlüssig
-        if (!LoadDSProgram()) {
+    client->SetActive(true);
+    if(BuildDSProgram(errs)) { // die cmdlisten und die variablen waren schlüssig
+        if(!LoadDSProgram()) {
             Answer = ZSCPI::scpiAnswer[ZSCPI::errexec];
-            cl->SetActive(false);
+            client->SetActive(false);
         }
         else
             Answer = ZSCPI::scpiAnswer[ZSCPI::ack];
     }
     else {
-        cl->SetActive(false);
+        client->SetActive(false);
         Answer = QString("%1 %2").arg(ZSCPI::scpiAnswer[ZSCPI::errval], errs); // das "fehlerhafte" kommando anhängen
     }
     count++;
     qDebug() << QString("LoadCmdList(%1)").arg(count);
     return Answer;
+}
+
+QString ZDspServer::unloadCmdList(cZDSP1Client *client)
+{
+    client->SetActive(false);
+    QString error;
+    BuildDSProgram(error);
+    QString ret;
+    if (!LoadDSProgram())
+        ret = ZSCPI::scpiAnswer[ZSCPI::errexec];
+    else
+        ret = ZSCPI::scpiAnswer[ZSCPI::ack];
+    return ret;
 }
 
 QString ZDspServer::mMeasure(QChar *s)
@@ -1187,7 +1196,6 @@ QString ZDspServer::SCPICmd(SCPICmdType cmd, QChar *s)
     {
     case    TestDsp:            return mTestDsp(s);
     case 	Measure:            return mMeasure(s);
-    case 	LoadCmdList: 		return mLoadCmdList(s);
     case   SetSamplingSystem:	return mSetSamplingSystem(s);
     case   SetDspCommandStat:	return mSetDspCommandStat(s);
     case   TriggerIntListHKSK:	return mTriggerIntListHKSK(s);

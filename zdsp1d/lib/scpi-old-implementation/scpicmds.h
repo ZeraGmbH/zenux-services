@@ -26,7 +26,7 @@ enum SCPICmdType  {
 
     // die routinen für das measure modell
     scpiUnloadCmdList,
-    LoadCmdList,
+    scpiLoadCmdList,
     scpiRavListGetSet,
     scpiCmdIntListGetSet,
     scpiCmdCycListGetSet,

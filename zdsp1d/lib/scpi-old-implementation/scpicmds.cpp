@@ -28,8 +28,6 @@ cNodeSCPI* Status;
 			                                  cNodeSCPI* StatusDspLoadMaximumReset;
 	     
 cNodeSCPI* MeasureNode;
-                  cNodeSCPI* MeasureList;
-		          cNodeSCPI* MeasureListSet;
 
 // cNodeScpi (QString,tNodeSpec,cNode*,cNode*,SCPICmdType,SCPICmdType); 
 // konstruktor, sNodeName, nNodedef, pNextNode, pNewLevelNode, Cmd, Query				
@@ -38,9 +36,7 @@ cNodeSCPI* MeasureNode;
 cNode* InitCmdTree()
 {
     // implementiertes measure modell
-    MeasureListSet=new cNodeSCPI("SET",isCommand,NULL,NULL,LoadCmdList,nixCmd);
-    MeasureList=new cNodeSCPI("LIST",isNode,NULL,MeasureListSet,nixCmd,nixCmd);
-    MeasureNode=new cNodeSCPI("MEASURE",isNode | isCommand,NULL,MeasureList,Measure,nixCmd);
+    MeasureNode=new cNodeSCPI("MEASURE",isNode | isCommand,NULL,NULL,Measure,nixCmd);
 
     // implementiertes status modell
     StatusDspLoadMaximumReset=new cNodeSCPI("RESET",isCommand,NULL,NULL,ResetDeviceLoadMax,nixCmd);
