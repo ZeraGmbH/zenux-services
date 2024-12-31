@@ -141,7 +141,6 @@ private:
     QString mGetDeviceStatus();
 
     // die routinen für das measure modell
-    QString mUnloadCmdList(QChar*);
     QString mLoadCmdList(QChar*);
     QString mMeasure(QChar*);
 

@@ -30,7 +30,6 @@ cNodeSCPI* Status;
 cNodeSCPI* MeasureNode;
                   cNodeSCPI* MeasureList;
 		          cNodeSCPI* MeasureListSet;
-		          cNodeSCPI* MeasureListClear;	  
 
 // cNodeScpi (QString,tNodeSpec,cNode*,cNode*,SCPICmdType,SCPICmdType); 
 // konstruktor, sNodeName, nNodedef, pNextNode, pNewLevelNode, Cmd, Query				
@@ -39,8 +38,7 @@ cNodeSCPI* MeasureNode;
 cNode* InitCmdTree()
 {
     // implementiertes measure modell
-    MeasureListClear=new cNodeSCPI("CLEAR",isCommand,NULL,NULL,UnloadCmdList,nixCmd);
-    MeasureListSet=new cNodeSCPI("SET",isCommand,MeasureListClear,NULL,LoadCmdList,nixCmd);
+    MeasureListSet=new cNodeSCPI("SET",isCommand,NULL,NULL,LoadCmdList,nixCmd);
     MeasureList=new cNodeSCPI("LIST",isNode,NULL,MeasureListSet,nixCmd,nixCmd);
     MeasureNode=new cNodeSCPI("MEASURE",isNode | isCommand,NULL,MeasureList,Measure,nixCmd);
 

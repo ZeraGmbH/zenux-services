@@ -321,6 +321,7 @@ void ZDspServer::initSCPIConnection(QString leadingNodes)
     addDelegate("MEASURE:LIST", "RAVLIST", SCPI::isQuery | SCPI::isCmdwP, m_scpiInterface, scpiRavListGetSet);
     addDelegate("MEASURE:LIST", "INTLIST", SCPI::isQuery | SCPI::isCmdwP, m_scpiInterface, scpiCmdIntListGetSet);
     addDelegate("MEASURE:LIST", "CYCLIST", SCPI::isQuery | SCPI::isCmdwP, m_scpiInterface, scpiCmdCycListGetSet);
+    addDelegate("MEASURE:LIST", "CLEAR", SCPI::isCmdwP, m_scpiInterface, scpiUnloadCmdList);
 
     connect(this, &ScpiConnection::cmdExecutionDone, this, &ZDspServer::sendProtoAnswer);
 }
@@ -365,6 +366,16 @@ void ZDspServer::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
         else
             protoCmd->m_sOutput = client->setCmdListDef(cmd.getParam());
         break;
+    case scpiUnloadCmdList:
+    {
+        client->SetActive(false);
+        QString error;
+        BuildDSProgram(error);
+        if (!LoadDSProgram())
+            protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::errexec];
+        else
+            protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::ack];
+    }
     }
 }
 
@@ -855,19 +866,6 @@ bool ZDspServer::LoadDSProgram()
     return true;
 }
 
-QString ZDspServer::mUnloadCmdList(QChar *)
-{
-    QString error;
-    cZDSP1Client* cl = GetClient(m_actualSocket);
-    cl->SetActive(false);
-    BuildDSProgram(error); // wir bauen neu
-    if (!LoadDSProgram()) // und laden
-        Answer = ZSCPI::scpiAnswer[ZSCPI::errexec];
-    else
-        Answer = ZSCPI::scpiAnswer[ZSCPI::ack];
-    return Answer;
-}
-
 QString ZDspServer::mLoadCmdList(QChar *)
 {
     static int count = 0;
@@ -1189,7 +1187,6 @@ QString ZDspServer::SCPICmd(SCPICmdType cmd, QChar *s)
     {
     case    TestDsp:            return mTestDsp(s);
     case 	Measure:            return mMeasure(s);
-    case 	UnloadCmdList: 		return mUnloadCmdList(s);
     case 	LoadCmdList: 		return mLoadCmdList(s);
     case   SetSamplingSystem:	return mSetSamplingSystem(s);
     case   SetDspCommandStat:	return mSetDspCommandStat(s);

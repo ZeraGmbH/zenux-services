@@ -25,7 +25,7 @@ enum SCPICmdType  {
     GetDeviceStatus,
 
     // die routinen für das measure modell
-    UnloadCmdList,
+    scpiUnloadCmdList,
     LoadCmdList,
     scpiRavListGetSet,
     scpiCmdIntListGetSet,
