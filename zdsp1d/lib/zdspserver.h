@@ -143,7 +143,6 @@ private:
     // die routinen für das measure modell
     QString loadCmdList(cZDSP1Client *client);
     QString unloadCmdList(cZDSP1Client *client);
-    QString mMeasure(QChar*);
 
     bool BuildDSProgram(QString& errs);
     bool LoadDSProgram();

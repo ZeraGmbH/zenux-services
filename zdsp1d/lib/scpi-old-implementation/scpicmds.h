@@ -30,7 +30,7 @@ enum SCPICmdType  {
     scpiRavListGetSet,
     scpiCmdIntListGetSet,
     scpiCmdCycListGetSet,
-    Measure,
+    scpiReadActualValues, // AKA data acquisition
 
     // die routinen für das memory modell
     scpiDspMemoryRead,

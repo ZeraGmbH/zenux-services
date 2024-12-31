@@ -27,7 +27,7 @@
    <READ Type="Command+Par" ScpiPath="MEMORY:READ"/>
    <WRITE Type="Command+Par" ScpiPath="MEMORY:WRITE"/>
   </MEMORY>
-  <MEASURE Type="Model,Node">
+  <MEASURE Type="Model,Command+Par" ScpiPath="MEASURE">
    <LIST Type="Node">
     <RAVLIST ScpiPath="MEASURE:LIST:RAVLIST" Type="Query,Command+Par"/>
     <CYCLIST ScpiPath="MEASURE:LIST:CYCLIST" Type="Query,Command+Par"/>

@@ -26,8 +26,6 @@ cNodeSCPI* Status;
 	                                           cNodeSCPI* StatusDspLoadActual;
 		                             cNodeSCPI* StatusDspLoadMaximum;
 			                                  cNodeSCPI* StatusDspLoadMaximumReset;
-	     
-cNodeSCPI* MeasureNode;
 
 // cNodeScpi (QString,tNodeSpec,cNode*,cNode*,SCPICmdType,SCPICmdType); 
 // konstruktor, sNodeName, nNodedef, pNextNode, pNewLevelNode, Cmd, Query				
@@ -35,9 +33,6 @@ cNodeSCPI* MeasureNode;
 
 cNode* InitCmdTree()
 {
-    // implementiertes measure modell
-    MeasureNode=new cNodeSCPI("MEASURE",isNode | isCommand,NULL,NULL,Measure,nixCmd);
-
     // implementiertes status modell
     StatusDspLoadMaximumReset=new cNodeSCPI("RESET",isCommand,NULL,NULL,ResetDeviceLoadMax,nixCmd);
     StatusDspLoadMaximum=new cNodeSCPI("MAXIMUM",isNode | isQuery,NULL,StatusDspLoadMaximumReset,nixCmd,GetDeviceLoadMax);	
@@ -45,7 +40,7 @@ cNode* InitCmdTree()
     StatusDspLoad=new cNodeSCPI("LOAD",isNode,NULL,StatusDspLoadActual,nixCmd,nixCmd);
     StatusDsp=new cNodeSCPI("DSP",isNode | isQuery,NULL,StatusDspLoad,nixCmd,GetDspStatus);
     StatusDevice=new cNodeSCPI("DEVICE",isQuery,StatusDsp,NULL,nixCmd,GetDeviceStatus);
-    Status=new cNodeSCPI("STATUS",isNode,MeasureNode,StatusDevice,nixCmd,nixCmd);
+    Status=new cNodeSCPI("STATUS",isNode,NULL,StatusDevice,nixCmd,nixCmd);
     
     // implementiertes system modell
     SystemDspCommandStat=new cNodeSCPI("STAT",isQuery | isCommand,NULL,NULL,SetDspCommandStat,GetDspCommandStat);      

@@ -318,6 +318,7 @@ void ZDspServer::initSCPIConnection(QString leadingNodes)
     addDelegate("MEMORY", "READ", SCPI::isCmdwP, m_scpiInterface, scpiDspMemoryRead);
     addDelegate("MEMORY", "WRITE", SCPI::isCmdwP, m_scpiInterface, scpiDspMemoryWrite);
 
+    addDelegate("", "MEASURE", SCPI::isCmdwP, m_scpiInterface, scpiReadActualValues);
     addDelegate("MEASURE:LIST", "RAVLIST", SCPI::isQuery | SCPI::isCmdwP, m_scpiInterface, scpiRavListGetSet);
     addDelegate("MEASURE:LIST", "INTLIST", SCPI::isQuery | SCPI::isCmdwP, m_scpiInterface, scpiCmdIntListGetSet);
     addDelegate("MEASURE:LIST", "CYCLIST", SCPI::isQuery | SCPI::isCmdwP, m_scpiInterface, scpiCmdCycListGetSet);
@@ -372,6 +373,9 @@ void ZDspServer::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
         break;
     case scpiUnloadCmdList:
         protoCmd->m_sOutput = unloadCmdList(client);
+        break;
+    case scpiReadActualValues:
+        protoCmd->m_sOutput = client->readActValues(cmd.getParam());
         break;
     }
 }
@@ -898,14 +902,6 @@ QString ZDspServer::unloadCmdList(cZDSP1Client *client)
     return ret;
 }
 
-QString ZDspServer::mMeasure(QChar *s)
-{
-    QString par(s); // holt den parameter aus dem kommando
-    cZDSP1Client* cl = GetClient(m_actualSocket);
-    Answer = cl->readActValues(par);
-    return Answer;
-}
-
 static constexpr int dm32DspWorkSpaceBase21362 = 0xE0800;
 static constexpr int dm32UserWorkSpaceGlobal21262 = 0x87000;
 static constexpr int dm32UserWorkSpaceGlobal21362 = 0x9F000;
@@ -1195,7 +1191,6 @@ QString ZDspServer::SCPICmd(SCPICmdType cmd, QChar *s)
     switch ((int)cmd)
     {
     case    TestDsp:            return mTestDsp(s);
-    case 	Measure:            return mMeasure(s);
     case   SetSamplingSystem:	return mSetSamplingSystem(s);
     case   SetDspCommandStat:	return mSetDspCommandStat(s);
     case   TriggerIntListHKSK:	return mTriggerIntListHKSK(s);
