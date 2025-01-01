@@ -276,7 +276,7 @@ void ZDspServer::onResourceReady()
 
 void ZDspServer::outputDspRunState()
 {
-    QString dspStatus = mGetDspStatus();
+    QString dspStatus = getDspStatus();
     QString message = QString("DSP is %1").arg(dspStatus);
     if(dspStatus != dsprunning)
         qWarning("%s", qPrintable(message));
@@ -324,6 +324,12 @@ void ZDspServer::initSCPIConnection(QString leadingNodes)
     addDelegate("MEASURE:LIST", "CYCLIST", SCPI::isQuery | SCPI::isCmdwP, m_scpiInterface, scpiCmdCycListGetSet);
     addDelegate("MEASURE:LIST", "SET", SCPI::isCmdwP, m_scpiInterface, scpiLoadCmdList);
     addDelegate("MEASURE:LIST", "CLEAR", SCPI::isCmdwP, m_scpiInterface, scpiUnloadCmdList);
+
+    addDelegate("STATUS", "DEVICE", SCPI::isQuery, m_scpiInterface, scpiGetDeviceStatus);
+    addDelegate("STATUS", "DSP", SCPI::isQuery, m_scpiInterface, scpiGetDspStatus);
+    addDelegate("STATUS:DSP:LOAD", "ACTUAL", SCPI::isQuery, m_scpiInterface, scpiGetDeviceLoadAct);
+    addDelegate("STATUS:DSP:LOAD", "MAXIMUM", SCPI::isQuery, m_scpiInterface, scpiGetDeviceLoadMax);
+    addDelegate("STATUS:DSP:LOAD:MAXIMUM", "RESET", SCPI::isCmdwP, m_scpiInterface, scpiResetDeviceLoadMax);
 
     connect(this, &ScpiConnection::cmdExecutionDone, this, &ZDspServer::sendProtoAnswer);
 }
@@ -376,6 +382,21 @@ void ZDspServer::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
         break;
     case scpiReadActualValues:
         protoCmd->m_sOutput = client->readActValues(cmd.getParam());
+        break;
+    case scpiGetDeviceStatus:
+        protoCmd->m_sOutput = getDeviceStatus();
+        break;
+    case scpiGetDspStatus:
+        protoCmd->m_sOutput = getDspStatus();
+        break;
+    case scpiGetDeviceLoadAct:
+        protoCmd->m_sOutput = client->readDspVarList("BUSY,1;");  // ab "BUSY"  1 wort lesen
+        break;
+    case scpiGetDeviceLoadMax:
+        protoCmd->m_sOutput = client->readDspVarList("BUSYMAX,1;");  // ab "BUSYMAX"  1 wort lesen
+        break;
+    case scpiResetDeviceLoadMax:
+        protoCmd->m_sOutput = client->DspVarWriteRM("BUSYMAX,0.0");
         break;
     }
 }
@@ -665,45 +686,20 @@ QString ZDspServer::getDspDeviceNode()
     return m_settings->getFpgaSettings()->getDspDeviceNode();
 }
 
-QString ZDspServer::mGetDspStatus()
+QString ZDspServer::getDspStatus()
 {
     if ( Test4DspRunning() )
-        Answer = dsprunning;
+        return dsprunning;
     else
-        Answer = dspnrunning;
-    return Answer;
+        return dspnrunning;
 }
 
-QString ZDspServer::mGetDeviceStatus()
+QString ZDspServer::getDeviceStatus()
 {
     if ( Test4HWPresent() )
         Answer = devavail;
     else
         Answer = devnavail;
-    return Answer;
-}
-
-QString ZDspServer::mGetDeviceLoadAct()
-{
-    cZDSP1Client* cl = GetClient(m_actualSocket);
-    QString p = "BUSY,1;";
-    Answer = cl->readDspVarList(p);  // ab "BUSY"  1 wort lesen
-    return Answer;
-}
-
-QString ZDspServer::mGetDeviceLoadMax()
-{
-    cZDSP1Client* cl = GetClient(m_actualSocket);
-    QString p = "BUSYMAX,1;";
-    Answer = cl->readDspVarList(p);  // ab "BUSYMAX"  1 wort lesen
-    return Answer;
-}
-
-QString ZDspServer::mResetDeviceLoadMax()
-{
-    cZDSP1Client* cl = GetClient(m_actualSocket);
-    QString p = "BUSYMAX,0.0";
-    Answer = cl->DspVarWriteRM(p);
     return Answer;
 }
 
@@ -1195,7 +1191,6 @@ QString ZDspServer::SCPICmd(SCPICmdType cmd, QChar *s)
     case   SetDspCommandStat:	return mSetDspCommandStat(s);
     case   TriggerIntListHKSK:	return mTriggerIntListHKSK(s);
     case   TriggerIntListALL:		return mTriggerIntListALL(s);
-    case   ResetDeviceLoadMax:	return mResetDeviceLoadMax();
     }
     Answer = "ProgrammierFehler"; // hier sollten wir nie hinkommen
 
@@ -1206,10 +1201,6 @@ QString ZDspServer::SCPIQuery(SCPICmdType cmdEnum)
 {
     switch ((int)cmdEnum)
     {
-    case		GetDeviceLoadMax: 	return mGetDeviceLoadMax();
-    case 		GetDeviceLoadAct: 	return mGetDeviceLoadAct();
-    case		GetDspStatus:		return mGetDspStatus();
-    case 		GetDeviceStatus: 		return mGetDeviceStatus();
     case		GetSamplingSystem:	return mGetSamplingSystem();
     case 		GetDspCommandStat:	return mGetDspCommandStat();
     }

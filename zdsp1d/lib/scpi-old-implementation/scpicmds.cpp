@@ -19,29 +19,12 @@ cNodeSCPI* System;
 		          cNodeSCPI* SystemDspCommand;
 			              cNodeSCPI* SystemDspCommandStat;
 
-cNodeSCPI* Status;
-                   cNodeSCPI* StatusDevice;
-	     cNodeSCPI* StatusDsp;	   
-		          cNodeSCPI* StatusDspLoad;	   
-	                                           cNodeSCPI* StatusDspLoadActual;
-		                             cNodeSCPI* StatusDspLoadMaximum;
-			                                  cNodeSCPI* StatusDspLoadMaximumReset;
-
 // cNodeScpi (QString,tNodeSpec,cNode*,cNode*,SCPICmdType,SCPICmdType); 
 // konstruktor, sNodeName, nNodedef, pNextNode, pNewLevelNode, Cmd, Query				
 // konstruktor, psNodeNames,psNode2Set, nNodedef, pNextNode, pNewLevelNode, Cmd, Query
 
 cNode* InitCmdTree()
 {
-    // implementiertes status modell
-    StatusDspLoadMaximumReset=new cNodeSCPI("RESET",isCommand,NULL,NULL,ResetDeviceLoadMax,nixCmd);
-    StatusDspLoadMaximum=new cNodeSCPI("MAXIMUM",isNode | isQuery,NULL,StatusDspLoadMaximumReset,nixCmd,GetDeviceLoadMax);	
-    StatusDspLoadActual=new cNodeSCPI("ACTUAL",isQuery,StatusDspLoadMaximum,NULL,nixCmd,GetDeviceLoadAct);
-    StatusDspLoad=new cNodeSCPI("LOAD",isNode,NULL,StatusDspLoadActual,nixCmd,nixCmd);
-    StatusDsp=new cNodeSCPI("DSP",isNode | isQuery,NULL,StatusDspLoad,nixCmd,GetDspStatus);
-    StatusDevice=new cNodeSCPI("DEVICE",isQuery,StatusDsp,NULL,nixCmd,GetDeviceStatus);
-    Status=new cNodeSCPI("STATUS",isNode,NULL,StatusDevice,nixCmd,nixCmd);
-    
     // implementiertes system modell
     SystemDspCommandStat=new cNodeSCPI("STAT",isQuery | isCommand,NULL,NULL,SetDspCommandStat,GetDspCommandStat);      
     SystemDspCommand=new cNodeSCPI("COMMAND",isNode,NULL,SystemDspCommandStat,nixCmd,nixCmd);
@@ -53,6 +36,6 @@ cNode* InitCmdTree()
     SystemDspSampling=new cNodeSCPI("SAMPLING",isQuery | isCommand,SystemDspTrigger,NULL,SetSamplingSystem,GetSamplingSystem);
     SystemDspTest=new cNodeSCPI("TEST",isCommand,SystemDspSampling,NULL,TestDsp,nixCmd);
     SystemDsp=new cNodeSCPI("DSP",isNode,NULL,SystemDspTest,nixCmd,nixCmd);
-    System=new cNodeSCPI("SYSTEM",isNode,Status,SystemDsp,nixCmd,nixCmd);
+    System=new cNodeSCPI("SYSTEM",isNode,NULL,SystemDsp,nixCmd,nixCmd);
     return (System);  
 }

@@ -18,11 +18,11 @@ enum SCPICmdType  {
     GetSamplingSystem,
 
     // die routinen für das status modell
-    ResetDeviceLoadMax,
-    GetDeviceLoadMax,
-    GetDeviceLoadAct,
-    GetDspStatus,
-    GetDeviceStatus,
+    scpiGetDeviceLoadAct,
+    scpiGetDeviceLoadMax,
+    scpiResetDeviceLoadMax,
+    scpiGetDspStatus,
+    scpiGetDeviceStatus,
 
     // die routinen für das measure modell
     scpiUnloadCmdList,

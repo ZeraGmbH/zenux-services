@@ -134,11 +134,8 @@ private:
     QString mTriggerIntListALL(QChar*);
 
     // die routinen für das status modell
-    QString mResetDeviceLoadMax();
-    QString mGetDeviceLoadMax();
-    QString mGetDeviceLoadAct();
-    QString mGetDspStatus();
-    QString mGetDeviceStatus();
+    QString getDeviceStatus();
+    QString getDspStatus();
 
     // die routinen für das measure modell
     QString loadCmdList(cZDSP1Client *client);

@@ -13,11 +13,11 @@ void test_old_scpi_implementation::query()
     ScpiParserZdsp1d parser;
     ScpiCallbackMock scpiMock(&parser);
     ScpiCmdInterpreter cmdInterpreter(&scpiMock, InitCmdTree(), &parser);
-    QString scpi("STATUS:DEVICE?");
+    QString scpi("SYSTEM:DSP:COMMAND:STAT?");
     cmdInterpreter.CmdExecute(scpi);
 
     QCOMPARE(scpiMock.m_queriesReceived.count(), 1);
-    QCOMPARE(scpiMock.m_queriesReceived[0], GetDeviceStatus);
+    QCOMPARE(scpiMock.m_queriesReceived[0], GetDspCommandStat);
 }
 
 void test_old_scpi_implementation::cmd()
