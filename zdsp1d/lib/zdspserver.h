@@ -74,6 +74,7 @@ private:
 
     friend class TestZdsp1dForVarAccess;
     cZDSP1Client* AddClient(VeinTcp::TcpPeer *netClient);
+    void addClientToHash(QByteArray clientId, VeinTcp::TcpPeer *peer);
     void DelClients(VeinTcp::TcpPeer *netClient);
     void DelClient(QByteArray clientId);
     cZDSP1Client* AddSCPIClient();

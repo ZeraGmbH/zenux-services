@@ -1003,6 +1003,15 @@ void ZDspServer::onProtobufDataReceived(VeinTcp::TcpPeer *peer, QByteArray messa
     executeCommandProto(peer, m_protobufWrapper.byteArrayToProtobuf(message));
 }
 
+void ZDspServer::addClientToHash(QByteArray clientId, VeinTcp::TcpPeer *peer)
+{
+    if (!m_zdspdClientHash.contains(clientId)) { // we didn't get any command from here yet
+        cZDSP1Client *zdspclient = AddClient(peer); // we add a new client with the same socket but different identifier
+        m_zdspdClientHash[clientId] = zdspclient;
+        m_clientIDHash[zdspclient] = clientId; // we need this list in case of interrupts
+    }
+}
+
 void ZDspServer::executeCommandProto(VeinTcp::TcpPeer *peer, std::shared_ptr<google::protobuf::Message> cmd)
 {
     std::shared_ptr<ProtobufMessage::NetMessage> protobufCommand = std::static_pointer_cast<ProtobufMessage::NetMessage>(cmd);
@@ -1017,16 +1026,12 @@ void ZDspServer::executeCommandProto(VeinTcp::TcpPeer *peer, std::shared_ptr<goo
             quint32 messageNr = protobufCommand->messagenr();
             ProtobufMessage::NetMessage::ScpiCommand scpiCmd = protobufCommand->scpi();
 
-            if (!m_zdspdClientHash.contains(clientId)) { // we didn't get any command from here yet
-                cZDSP1Client *zdspclient = AddClient(peer); // we add a new client with the same socket but different identifier
-                m_zdspdClientHash[clientId] = zdspclient;
-                m_clientIDHash[zdspclient] = clientId; // we need this list in case of interrupts
-            }
+            addClientToHash(clientId, peer);
 
             // --- new scpi stolen from PCBServer::executeCommandProto ---
             QString scpiInput = QString::fromStdString(scpiCmd.command()) +  " " + QString::fromStdString(scpiCmd.parameter());
-            cSCPIObject* scpiObject =  m_scpiInterface->getSCPIObject(scpiInput);
-            if (scpiObject) {
+            cSCPIObject* scpiObject = m_scpiInterface->getSCPIObject(scpiInput);
+            if(scpiObject) {
                 cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
                 cProtonetCommand* protoCmd = new cProtonetCommand(peer, true, true, clientId, messageNr, scpiInput, scpiObject->getType());
                 if (scpiDelegate->executeSCPI(protoCmd))
@@ -1114,6 +1119,24 @@ void ZDspServer::onTelnetDataReceived()
     input.remove('\r'); // we remove cr lf
     input.remove('\n');
     qInfo("External SCPI command: %s", qPrintable(input));
+
+    // New SCPI - stolen fom PCBServer::onTelnetDataReceived()
+    cSCPIObject* scpiObject = m_scpiInterface->getSCPIObject(input);
+    if(scpiObject) {
+        QByteArray clientId = QByteArray(); // we set an empty byte array
+        addClientToHash(clientId, nullptr);
+        cProtonetCommand* protoCmd = new cProtonetCommand(nullptr, false, true, clientId, 0, input);
+        cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
+        if (scpiDelegate->executeSCPI(protoCmd))
+            emit cmdExecutionDone(protoCmd);
+        else {
+            protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::nak];
+            emit cmdExecutionDone(protoCmd);
+        }
+        return; // for now
+    }
+
+    // old SCPI
     QString output = m_cmdInterpreter->CmdExecute(input) + "\n";
     QByteArray ba = output.toLatin1();
     m_telnetSocket->write(ba);
