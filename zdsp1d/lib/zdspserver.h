@@ -123,7 +123,7 @@ private:
     // die routinen für das system modell
     QString mCommand2Dsp(QString); // indirekt für system modell
 
-    QString mTestDsp(QChar *);
+    QString runDspTest(QChar *);
     QString mResetDsp(QChar*);
     QString mBootDsp(QChar*);
     QString getLcaAndDspVersion(cZDSP1Client *client);
