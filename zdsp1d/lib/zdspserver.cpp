@@ -457,7 +457,7 @@ QString ZDspServer::runDspTest(QChar* s)
                     if (j==100)
                         errcount++;
                     else {
-                        mBootDsp(s);
+                        bootDsp();
                         usleep(1000);
                         if (Test4DspRunning() == false)
                             errcount++;
@@ -567,12 +567,6 @@ bool ZDspServer::setSamplingSystem()
         usleep(10000); // give dsp a bit time before next try
     }
     return false;
-}
-
-QString ZDspServer::mBootDsp(QChar *)
-{
-    bootDsp();
-    return Answer;
 }
 
 QString ZDspServer::mCommand2Dsp(QString qs)
