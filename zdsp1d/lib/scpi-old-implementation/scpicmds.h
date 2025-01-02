@@ -7,8 +7,7 @@ enum SCPICmdType  {
     nixCmd, // 0 is nix
 
     // die routinen für das system modell
-    SetDspCommandStat,
-    GetDspCommandStat,
+    scpiDspCommandStatGetSet,
     TriggerIntListHKSK,
     TriggerIntListALL,
     TestDsp,

@@ -309,10 +309,12 @@ void ZDspServer::outputLogs()
 void ZDspServer::initSCPIConnection(QString leadingNodes)
 {
     Q_UNUSED(leadingNodes)
+
     addDelegate("SYSTEM:INTERFACE", "READ", SCPI::isQuery, m_scpiInterface, scpiInterfaceRead);
     addDelegate("SYSTEM:VERSION", "DEVICE", SCPI::isQuery, m_scpiInterface, scpiGetDeviceVersion);
     addDelegate("SYSTEM:VERSION", "SERVER", SCPI::isQuery, m_scpiInterface, scpiGetServerVersion);
     addDelegate("SYSTEM:DSP", "SAMPLING", SCPI::isQuery | SCPI::isCmdwP, m_scpiInterface, scpiSamplingSystemGetSet);
+    addDelegate("SYSTEM:DSP:COMMAND", "STAT", SCPI::isQuery | SCPI::isCmdwP, m_scpiInterface, scpiDspCommandStatGetSet);
 
     addDelegate("MEMORY", "READ", SCPI::isCmdwP, m_scpiInterface, scpiDspMemoryRead);
     addDelegate("MEMORY", "WRITE", SCPI::isCmdwP, m_scpiInterface, scpiDspMemoryWrite);
@@ -354,6 +356,12 @@ void ZDspServer::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
             protoCmd->m_sOutput = getSamplingSystemSetup(client);
         else
             protoCmd->m_sOutput = sendCommand2Dsp(QString("DSPCMDPAR,2,%1;").arg(cmd.getParam()));
+        break;
+    case scpiDspCommandStatGetSet:
+        if(cmd.isQuery())
+            protoCmd->m_sOutput = getDspCommandStat(client);
+        else
+            protoCmd->m_sOutput = setDspCommandStat(client, cmd.getParam());
         break;
     case scpiDspMemoryRead:
         protoCmd->m_sOutput = client->readDspVarList(cmd.getParam());
@@ -585,24 +593,21 @@ QString ZDspServer::getSamplingSystemSetup(cZDSP1Client* client)
     return QString("%1,%2,%3").arg(measmeasmeasChannelCount).arg(samplesPerMeasPeriod).arg(samplesPerSignalPeriod);
 }
 
-QString ZDspServer::mSetDspCommandStat(QChar *s)
-{
-    QString ss;
-    cZDSP1Client* cl = GetClient(m_actualSocket);
-    if (!cl->DspVarWrite(ss = QString("DSPACK,%1;").arg(QString(s))) )
-        return ZSCPI::scpiAnswer[ZSCPI::errexec];
-    else
-        return ZSCPI::scpiAnswer[ZSCPI::ack];
-}
-
-QString ZDspServer::mGetDspCommandStat()
+QString ZDspServer::getDspCommandStat(cZDSP1Client* client)
 {
     int stat;
-    cZDSP1Client* cl = GetClient(m_actualSocket);
-    if (!cl->readDspVarInt("DSPACK", stat))
+    if (!client->readDspVarInt("DSPACK", stat))
         return ZSCPI::scpiAnswer[ZSCPI::errexec];
     else
         return QString("%1").arg(stat);
+}
+
+QString ZDspServer::setDspCommandStat(cZDSP1Client* client, QString scpiParam)
+{
+    if (!client->DspVarWrite(QString("DSPACK,%1;").arg(scpiParam)) )
+        return ZSCPI::scpiAnswer[ZSCPI::errexec];
+    else
+        return ZSCPI::scpiAnswer[ZSCPI::ack];
 }
 
 QString ZDspServer::mTriggerIntListHKSK(QChar *s)
@@ -1169,7 +1174,6 @@ QString ZDspServer::SCPICmd(SCPICmdType cmd, QChar *s)
     switch ((int)cmd)
     {
     case    TestDsp:            return runDspTest(s);
-    case   SetDspCommandStat:	return mSetDspCommandStat(s);
     case   TriggerIntListHKSK:	return mTriggerIntListHKSK(s);
     case   TriggerIntListALL:		return mTriggerIntListALL(s);
     }
@@ -1178,10 +1182,7 @@ QString ZDspServer::SCPICmd(SCPICmdType cmd, QChar *s)
 
 QString ZDspServer::SCPIQuery(SCPICmdType cmdEnum)
 {
-    switch ((int)cmdEnum)
-    {
-    case 		GetDspCommandStat:	return mGetDspCommandStat();
-    }
+    Q_UNUSED(cmdEnum)
     return "ProgrammierFehler"; // hier sollten wir nie hinkommen
 }
 

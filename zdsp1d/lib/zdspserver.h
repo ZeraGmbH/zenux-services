@@ -126,8 +126,8 @@ private:
     QString runDspTest(QChar *);
     QString getLcaAndDspVersion(cZDSP1Client *client);
     QString getSamplingSystemSetup(cZDSP1Client *client);
-    QString mSetDspCommandStat(QChar*);
-    QString mGetDspCommandStat();
+    QString getDspCommandStat(cZDSP1Client *client);
+    QString setDspCommandStat(cZDSP1Client* client, QString scpiParam);
     QString mTriggerIntListHKSK(QChar*);
     QString mTriggerIntListALL(QChar*);
 
