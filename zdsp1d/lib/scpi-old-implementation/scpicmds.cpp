@@ -11,7 +11,6 @@
 cNodeSCPI* System;
 	     cNodeSCPI* SystemDsp;
                             cNodeSCPI* SystemDspTest;
-		          cNodeSCPI* SystemDspSampling;	
 		          cNodeSCPI* SystemDspTrigger;
 			              cNodeSCPI* SystemDspTriggerIntList;
 				                   cNodeSCPI* SystemDspTriggerALL;
@@ -33,8 +32,7 @@ cNode* InitCmdTree()
     SystemDspTriggerALL=new cNodeSCPI("ALL",isCommand,SystemDspTriggerHKSK,NULL,TriggerIntListALL,nixCmd);
     SystemDspTriggerIntList=new cNodeSCPI("INTLIST",isNode,NULL,SystemDspTriggerALL,nixCmd,nixCmd);
     SystemDspTrigger=new cNodeSCPI("TRIGGER",isNode,SystemDspCommand,SystemDspTriggerIntList,nixCmd,nixCmd);
-    SystemDspSampling=new cNodeSCPI("SAMPLING",isQuery | isCommand,SystemDspTrigger,NULL,SetSamplingSystem,GetSamplingSystem);
-    SystemDspTest=new cNodeSCPI("TEST",isCommand,SystemDspSampling,NULL,TestDsp,nixCmd);
+    SystemDspTest=new cNodeSCPI("TEST",isCommand,SystemDspTrigger,NULL,TestDsp,nixCmd);
     SystemDsp=new cNodeSCPI("DSP",isNode,NULL,SystemDspTest,nixCmd,nixCmd);
     System=new cNodeSCPI("SYSTEM",isNode,NULL,SystemDsp,nixCmd,nixCmd);
     return (System);  

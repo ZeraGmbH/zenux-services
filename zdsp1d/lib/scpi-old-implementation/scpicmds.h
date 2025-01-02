@@ -14,8 +14,7 @@ enum SCPICmdType  {
     TestDsp,
     scpiGetDeviceVersion,
     scpiGetServerVersion,
-    SetSamplingSystem,
-    GetSamplingSystem,
+    scpiSamplingSystemGetSet,
 
     // die routinen für das status modell
     scpiGetDeviceLoadAct,

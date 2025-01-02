@@ -127,8 +127,7 @@ private:
     QString mResetDsp(QChar*);
     QString mBootDsp(QChar*);
     QString getLcaAndDspVersion(cZDSP1Client *client);
-    QString mSetSamplingSystem(QChar*);
-    QString getSamplingSystemSetup();
+    QString getSamplingSystemSetup(cZDSP1Client *client);
     QString mSetDspCommandStat(QChar*);
     QString mGetDspCommandStat();
     QString mTriggerIntListHKSK(QChar*);
