@@ -547,12 +547,7 @@ QString ZDspServer::mResetDsp(QChar*)
 bool ZDspServer::bootDsp()
 {
     AbstractDspDeviceNodePtr deviceNode = m_deviceNodeFactory->getDspDeviceNode();
-    bool ok = deviceNode->dspBoot(m_sDspBootPath);
-    if(ok)
-        Answer = ZSCPI::scpiAnswer[ZSCPI::ack];
-    else
-        Answer = ZSCPI::scpiAnswer[ZSCPI::errexec];
-    return ok;
+    return deviceNode->dspBoot(m_sDspBootPath);
 }
 
 bool ZDspServer::setSamplingSystem()
