@@ -1049,29 +1049,29 @@ void ZDspServer::executeCommandProto(VeinTcp::TcpPeer *peer, std::shared_ptr<goo
             QString output = m_cmdInterpreter->CmdExecute(input);
 
             ProtobufMessage::NetMessage protobufAnswer;
-            ProtobufMessage::NetMessage::NetReply *Answer = protobufAnswer.mutable_reply();
+            ProtobufMessage::NetMessage::NetReply *netReply = protobufAnswer.mutable_reply();
 
             // dependent on rtype caller can se ack, nak, error
             // in case of error the body has to be analysed for details
             if (output.contains(ZSCPI::scpiAnswer[ZSCPI::ack]))
-                Answer->set_rtype(ProtobufMessage::NetMessage_NetReply_ReplyType_ACK);
+                netReply->set_rtype(ProtobufMessage::NetMessage_NetReply_ReplyType_ACK);
             else
             if (output.contains(ZSCPI::scpiAnswer[ZSCPI::nak]))
-                Answer->set_rtype(ProtobufMessage::NetMessage_NetReply_ReplyType_NACK);
+                netReply->set_rtype(ProtobufMessage::NetMessage_NetReply_ReplyType_NACK);
             else
             if (output.contains(ZSCPI::scpiAnswer[ZSCPI::busy]))
-                Answer->set_rtype(ProtobufMessage::NetMessage_NetReply_ReplyType_ERROR);
+                netReply->set_rtype(ProtobufMessage::NetMessage_NetReply_ReplyType_ERROR);
             else
             if (output.contains(ZSCPI::scpiAnswer[ZSCPI::errval]))
-                Answer->set_rtype(ProtobufMessage::NetMessage_NetReply_ReplyType_ERROR);
+                netReply->set_rtype(ProtobufMessage::NetMessage_NetReply_ReplyType_ERROR);
             else
             if (output.contains(ZSCPI::scpiAnswer[ZSCPI::errexec]))
-                Answer->set_rtype(ProtobufMessage::NetMessage_NetReply_ReplyType_ERROR);
+                netReply->set_rtype(ProtobufMessage::NetMessage_NetReply_ReplyType_ERROR);
             else
-                Answer->set_rtype(ProtobufMessage::NetMessage_NetReply_ReplyType_ACK);
+                netReply->set_rtype(ProtobufMessage::NetMessage_NetReply_ReplyType_ACK);
 
             QByteArray ba = output.toUtf8();
-            Answer->set_body(ba.data()); // in any case we set the body
+            netReply->set_body(ba.data()); // in any case we set the body
             protobufAnswer.set_clientid(clientId, clientId.count());
             protobufAnswer.set_messagenr(messageNr);
             peer->sendMessage(m_protobufWrapper.protobufToByteArray(protobufAnswer));

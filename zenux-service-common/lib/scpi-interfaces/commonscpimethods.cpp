@@ -18,30 +18,30 @@ void CommonScpiMethods::sendProtoAnswer(QTcpSocket *telnetSocket,
     else {
         if(protoCmd->m_bhasClientId) {
             ProtobufMessage::NetMessage protobufAnswer;
-            ProtobufMessage::NetMessage::NetReply *Answer = protobufAnswer.mutable_reply();
+            ProtobufMessage::NetMessage::NetReply *netReply = protobufAnswer.mutable_reply();
             // dependent on rtype caller can see ack, nak, error
             // in case of error the body has to be analyzed for details
             QString output = protoCmd->m_sOutput;
             if (output.contains(ZSCPI::scpiAnswer[ZSCPI::ack]))
-                Answer->set_rtype(ProtobufMessage::NetMessage_NetReply_ReplyType_ACK);
+                netReply->set_rtype(ProtobufMessage::NetMessage_NetReply_ReplyType_ACK);
             else if (output.contains(ZSCPI::scpiAnswer[ZSCPI::nak]))
-                Answer->set_rtype(ProtobufMessage::NetMessage_NetReply_ReplyType_NACK);
+                netReply->set_rtype(ProtobufMessage::NetMessage_NetReply_ReplyType_NACK);
             else if (output.contains(ZSCPI::scpiAnswer[ZSCPI::busy]))
-                Answer->set_rtype(ProtobufMessage::NetMessage_NetReply_ReplyType_ERROR);
+                netReply->set_rtype(ProtobufMessage::NetMessage_NetReply_ReplyType_ERROR);
             else if (output.contains(ZSCPI::scpiAnswer[ZSCPI::erraut]))
-                Answer->set_rtype(ProtobufMessage::NetMessage_NetReply_ReplyType_ERROR);
+                netReply->set_rtype(ProtobufMessage::NetMessage_NetReply_ReplyType_ERROR);
             else if (output.contains(ZSCPI::scpiAnswer[ZSCPI::errval]))
-                Answer->set_rtype(ProtobufMessage::NetMessage_NetReply_ReplyType_ERROR);
+                netReply->set_rtype(ProtobufMessage::NetMessage_NetReply_ReplyType_ERROR);
             else if (output.contains(ZSCPI::scpiAnswer[ZSCPI::errxml]))
-                Answer->set_rtype(ProtobufMessage::NetMessage_NetReply_ReplyType_ERROR);
+                netReply->set_rtype(ProtobufMessage::NetMessage_NetReply_ReplyType_ERROR);
             else if (output.contains(ZSCPI::scpiAnswer[ZSCPI::errpath])) // for zdspd only -> remove
-                Answer->set_rtype(ProtobufMessage::NetMessage_NetReply_ReplyType_ERROR);
+                netReply->set_rtype(ProtobufMessage::NetMessage_NetReply_ReplyType_ERROR);
             else if (output.contains(ZSCPI::scpiAnswer[ZSCPI::errexec]))
-                Answer->set_rtype(ProtobufMessage::NetMessage_NetReply_ReplyType_ERROR);
+                netReply->set_rtype(ProtobufMessage::NetMessage_NetReply_ReplyType_ERROR);
             else
-                Answer->set_rtype(ProtobufMessage::NetMessage_NetReply_ReplyType_ACK);
+                netReply->set_rtype(ProtobufMessage::NetMessage_NetReply_ReplyType_ACK);
 
-            Answer->set_body(output.toStdString()); // in any case we set the body
+            netReply->set_body(output.toStdString()); // in any case we set the body
             protobufAnswer.set_clientid(protoCmd->m_clientId, protoCmd->m_clientId.count());
             protobufAnswer.set_messagenr(protoCmd->m_nmessageNr);
             protoCmd->m_pPeer->sendMessage(protobufWrapper->protobufToByteArray(protobufAnswer));
