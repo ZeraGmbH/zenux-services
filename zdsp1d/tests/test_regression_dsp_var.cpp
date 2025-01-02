@@ -408,7 +408,7 @@ void test_regression_dsp_var::serverWriteDspDialogWorkspaceVariableAndListenDevi
     TestDeviceNodeDspPtr deviceNode = TestSingletonDeviceNodeDsp::getInstancePtrTest();
     QSignalSpy spyWrite(deviceNode.get(), &TestDeviceNodeDsp::sigIoOperation);
 
-    // Note: A real world DSP write is more complex - see ZDspServer::mCommand2Dsp
+    // Note: A real world DSP write is more complex - see ZDspServer::sendCommand2Dsp
     testServerlient->DspVarWrite("DSPCMDPAR,2,42;");
 
     QCOMPARE(spyWrite.count(), 1);

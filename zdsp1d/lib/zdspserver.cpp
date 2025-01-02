@@ -353,7 +353,7 @@ void ZDspServer::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
         if(cmd.isQuery())
             protoCmd->m_sOutput = getSamplingSystemSetup(client);
         else
-            protoCmd->m_sOutput = mCommand2Dsp(QString("DSPCMDPAR,2,%1;").arg(cmd.getParam()));
+            protoCmd->m_sOutput = sendCommand2Dsp(QString("DSPCMDPAR,2,%1;").arg(cmd.getParam()));
         break;
     case scpiDspMemoryRead:
         protoCmd->m_sOutput = client->readDspVarList(cmd.getParam());
@@ -540,7 +540,7 @@ bool ZDspServer::bootDsp()
 bool ZDspServer::setSamplingSystem()
 {
     for (int i = 0; i < 10; i++) { // we try max. 10 times to set .... this should work
-        QString ret = mCommand2Dsp(QString("DSPCMDPAR,2,%1,%2,%3;")
+        QString ret = sendCommand2Dsp(QString("DSPCMDPAR,2,%1,%2,%3;")
                                        .arg(m_pDspSettings->getChannelNr())
                                        .arg(m_pDspSettings->getSamplesSignalPeriod())
                                        .arg(m_pDspSettings->getsamplesMeasurePeriod()));
@@ -551,33 +551,24 @@ bool ZDspServer::setSamplingSystem()
     return false;
 }
 
-QString ZDspServer::mCommand2Dsp(QString qs)
+QString ZDspServer::sendCommand2Dsp(QString qs)
 {
     // we need a client to do the job
     cZDSP1Client cl(0, 0, m_deviceNodeFactory);
-    do
-    {
-        Answer = ZSCPI::scpiAnswer[ZSCPI::errexec];
-        int ack;
-        if (! cl.readDspVarInt("DSPACK", ack))
-            break;
 
-        if ( ack ==  InProgress) {
-            Answer = ZSCPI::scpiAnswer[ZSCPI::busy];
-            break;
-        }
+    int ack;
+    if (!cl.readDspVarInt("DSPACK", ack))
+        return ZSCPI::scpiAnswer[ZSCPI::errexec];
+    if (ack == InProgress)
+        return ZSCPI::scpiAnswer[ZSCPI::busy];
+    if (!cl.DspVarWrite("DSPACK,0;") )
+        return ZSCPI::scpiAnswer[ZSCPI::errexec]; // reset acknowledge
+    if (! cl.DspVarWrite(qs))
+        return ZSCPI::scpiAnswer[ZSCPI::errexec];
 
-        if (! cl.DspVarWrite("DSPACK,0;") )
-            break; // reset acknowledge
-        if (! cl.DspVarWrite(qs))
-            break; // kommando und parameter -> dsp
-
-        AbstractDspDeviceNodePtr deviceNode = m_deviceNodeFactory->getDspDeviceNode();
-        deviceNode->dspRequestInt(); // interrupt beim dsp auslösen
-        Answer = ZSCPI::scpiAnswer[ZSCPI::ack]; // sofort fertig melden ....sync. muss die applikation
-
-    } while (0);
-    return Answer;
+    AbstractDspDeviceNodePtr deviceNode = m_deviceNodeFactory->getDspDeviceNode();
+    deviceNode->dspRequestInt(); // interrupt beim dsp auslösen
+    return ZSCPI::scpiAnswer[ZSCPI::ack]; // sofort fertig melden ....sync. muss die applikation
 }
 
 QString ZDspServer::getSamplingSystemSetup(cZDSP1Client* client)
@@ -622,12 +613,12 @@ QString ZDspServer::mTriggerIntListHKSK(QChar *s)
     QString ss(s);
     ulong par = ss.toULong();
     par = (par & 0xFFFF )| (m_actualSocket << 16);
-    return mCommand2Dsp(QString("DSPCMDPAR,4,%1;").arg(par)); // liste mit prozessNr u. HKSK
+    return sendCommand2Dsp(QString("DSPCMDPAR,4,%1;").arg(par)); // liste mit prozessNr u. HKSK
 }
 
 QString ZDspServer::mTriggerIntListALL(QChar *)
 {
-    return mCommand2Dsp(QString("DSPCMDPAR,1;"));
+    return sendCommand2Dsp(QString("DSPCMDPAR,1;"));
 }
 
 
@@ -829,7 +820,7 @@ bool ZDspServer::LoadDSProgram()
         return false;
 
     // dem dsp die neue liste mitteilen
-    mCommand2Dsp(QString("DSPCMDPAR,7,%1;").arg(ActivatedCmdList));
+    sendCommand2Dsp(QString("DSPCMDPAR,7,%1;").arg(ActivatedCmdList));
     return true;
 }
 
