@@ -587,14 +587,12 @@ QString ZDspServer::getSamplingSystemSetup(cZDSP1Client* client)
 
 QString ZDspServer::mSetDspCommandStat(QChar *s)
 {
-    Answer = ZSCPI::scpiAnswer[ZSCPI::errexec];
     QString ss;
     cZDSP1Client* cl = GetClient(m_actualSocket);
-    if (! cl->DspVarWrite(ss = QString("DSPACK,%1;").arg(QString(s))) )
-        Answer = ZSCPI::scpiAnswer[ZSCPI::errexec];
+    if (!cl->DspVarWrite(ss = QString("DSPACK,%1;").arg(QString(s))) )
+        return ZSCPI::scpiAnswer[ZSCPI::errexec];
     else
-        Answer = ZSCPI::scpiAnswer[ZSCPI::ack];
-    return Answer;
+        return ZSCPI::scpiAnswer[ZSCPI::ack];
 }
 
 QString ZDspServer::mGetDspCommandStat()
@@ -602,10 +600,9 @@ QString ZDspServer::mGetDspCommandStat()
     int stat;
     cZDSP1Client* cl = GetClient(m_actualSocket);
     if (!cl->readDspVarInt("DSPACK", stat))
-        Answer = ZSCPI::scpiAnswer[ZSCPI::errexec];
+        return ZSCPI::scpiAnswer[ZSCPI::errexec];
     else
-        Answer = QString("%1").arg(stat);
-    return Answer;
+        return QString("%1").arg(stat);
 }
 
 QString ZDspServer::mTriggerIntListHKSK(QChar *s)
