@@ -3,8 +3,6 @@
 
 #include "abstractfactorydevicenodedsp.h"
 #include "resourceregistertransaction.h"
-#include "scpicmdinterpreter.h"
-#include "scpicmds.h"
 #include "rmconnection.h"
 #include "dspsettings.h"
 #include "scpiconnection.h"
@@ -15,7 +13,6 @@
 #include <vtcp_server.h>
 #include <xiqnetwrapper.h>
 #include <abstracttcpnetworkfactory.h>
-#include "scpi-zdsp.h"
 #include <QStringList>
 #include <QSocketNotifier>
 #include <QByteArray>
@@ -31,7 +28,7 @@ class cZDSP1Client;
 typedef QVector<float> tDspMemArray;
 
 
-class ZDspServer: public ScpiConnection, public cbIFace
+class ZDspServer: public ScpiConnection
 {
     Q_OBJECT
 public:
@@ -80,9 +77,6 @@ private:
     cZDSP1Client* AddSCPIClient();
     void DelSCPIClient();
 
-    QString SCPICmd( SCPICmdType, QChar*) override;
-    QString SCPIQuery(SCPICmdType cmdEnum) override;
-
     QString handleScpiInterfaceRead(const QString &scpiInput);
     void outputDspRunState();
     void outputAndResetTransactionsLogs();
@@ -91,7 +85,6 @@ private:
     AbstractFactoryDeviceNodeDspPtr m_deviceNodeFactory;
     VeinTcp::AbstractTcpNetworkFactoryPtr m_tcpNetworkFactory;
     SettingsContainerPtr m_settings;
-    ScpiCmdInterpreter* m_cmdInterpreter = nullptr;
     VeinTcp::TcpServer* m_protoBufServer = nullptr;
     XiQNetWrapper m_protobufWrapper;
     quint16 m_nSocketIdentifier = 0; // we will use this instead of real sockets, because protobuf extension clientId
@@ -99,9 +92,6 @@ private:
     QTcpSocket* m_telnetSocket = nullptr;
 
     cDSPSettings* m_pDspSettings = nullptr;
-
-    int m_actualSocket; // der aktive socket im Execute
-
     quint8 m_nerror;
     uchar ActivatedCmdList;
     QByteArray m_rawCyclicCmdMem; // unsere dsp programm listen

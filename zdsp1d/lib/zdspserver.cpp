@@ -4,7 +4,6 @@
 #include "commonscpimethods.h"
 #include "pcbserver.h"
 #include "devicenodedsp.h"
-#include "scpioldnodestaticfunctions.h"
 #include "zscpi_response_definitions.h"
 #include <timerfactoryqt.h>
 #include <scpinodestaticfunctions.h>
@@ -29,8 +28,6 @@ extern TMemSection symbConsts1;
 
 extern TDspVar CmdListVar;
 extern TDspVar UserWorkSpaceVar;
-
-extern cNode* InitCmdTree();
 
 constexpr int loggingIntervalMs = 10000;
 
@@ -157,8 +154,6 @@ void ZDspServer::doConfiguration()
 void ZDspServer::doSetupServer()
 {
     qInfo("Starting doSetupServer");
-    ScpiParserZdsp1d* parser = new(ScpiParserZdsp1d); // das ist der parser
-    m_cmdInterpreter = new ScpiCmdInterpreter(this, InitCmdTree(), parser); // das ist der kommando interpreter
     initSCPIConnection(QString());
     m_sDspBootPath = m_pDspSettings->getBootFile();
     ActivatedCmdList = 0; // der derzeit aktuelle kommando listen satz (0,1)
@@ -306,6 +301,38 @@ void ZDspServer::outputLogs()
     outputAndResetTransactionsLogs();
 }
 
+enum SCPICmdType  {
+    // die routinen für das system modell
+    scpiDspCommandStatGetSet,
+    scpiTriggerIntListHKSK,
+    scpiTriggerIntListALL,
+    scpiGetDeviceVersion,
+    scpiGetServerVersion,
+    scpiSamplingSystemGetSet,
+
+    // die routinen für das status modell
+    scpiGetDeviceLoadAct,
+    scpiGetDeviceLoadMax,
+    scpiResetDeviceLoadMax,
+    scpiGetDspStatus,
+    scpiGetDeviceStatus,
+
+    // die routinen für das measure modell
+    scpiUnloadCmdList,
+    scpiLoadCmdList,
+    scpiRavListGetSet,
+    scpiCmdIntListGetSet,
+    scpiCmdCycListGetSet,
+    scpiReadActualValues, // AKA data acquisition
+
+    // die routinen für das memory modell
+    scpiDspMemoryRead,
+    scpiDspMemoryWrite,
+
+    // common
+    scpiInterfaceRead
+};
+
 void ZDspServer::initSCPIConnection(QString leadingNodes)
 {
     Q_UNUSED(leadingNodes)
@@ -434,11 +461,6 @@ QString ZDspServer::handleScpiInterfaceRead(const QString &scpiInput)
     QDomElement rootElem = domDoc.documentElement();
     QDomElement modelsElem = rootElem.firstChildElement("MODELS");
 
-    cNodeSCPI* scpiRootNode = static_cast<cNodeSCPI*>(InitCmdTree());
-    ScpiOldNodeStaticFunctions::addNodeAndChildrenToXml(scpiRootNode,
-                                                        domDoc,
-                                                        modelsElem,
-                                                        QStringList());
     return domDoc.toString();
 }
 
@@ -906,64 +928,12 @@ void ZDspServer::executeCommandProto(VeinTcp::TcpPeer *peer, std::shared_ptr<goo
                     protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::nak];
                     emit cmdExecutionDone(protoCmd);
                 }
-                return; // for now
             }
-            // As long as old scpi is around nak is not a good idea
-            /*else {
-                protoCmd = new cProtonetCommand(peer, true, true, clientId, messageNr, scpiInput);
+            else {
+                cProtonetCommand* protoCmd = new cProtonetCommand(peer, true, true, clientId, messageNr, scpiInput);
                 protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::nak];
                 emit cmdExecutionDone(protoCmd);
-            }*/
-
-            // Old SCPI
-            m_actualSocket = m_zdspdClientHash[clientId]->getSocket(); // we set the actual socket (identifier) we have to work on
-            QString input = QString::fromStdString(scpiCmd.command()) +  " " + QString::fromStdString(scpiCmd.parameter());
-            QString output = m_cmdInterpreter->CmdExecute(input);
-
-            ProtobufMessage::NetMessage protobufAnswer;
-            ProtobufMessage::NetMessage::NetReply *netReply = protobufAnswer.mutable_reply();
-
-            // dependent on rtype caller can se ack, nak, error
-            // in case of error the body has to be analysed for details
-            if (output.contains(ZSCPI::scpiAnswer[ZSCPI::ack]))
-                netReply->set_rtype(ProtobufMessage::NetMessage_NetReply_ReplyType_ACK);
-            else
-            if (output.contains(ZSCPI::scpiAnswer[ZSCPI::nak]))
-                netReply->set_rtype(ProtobufMessage::NetMessage_NetReply_ReplyType_NACK);
-            else
-            if (output.contains(ZSCPI::scpiAnswer[ZSCPI::busy]))
-                netReply->set_rtype(ProtobufMessage::NetMessage_NetReply_ReplyType_ERROR);
-            else
-            if (output.contains(ZSCPI::scpiAnswer[ZSCPI::errval]))
-                netReply->set_rtype(ProtobufMessage::NetMessage_NetReply_ReplyType_ERROR);
-            else
-            if (output.contains(ZSCPI::scpiAnswer[ZSCPI::errexec]))
-                netReply->set_rtype(ProtobufMessage::NetMessage_NetReply_ReplyType_ERROR);
-            else
-                netReply->set_rtype(ProtobufMessage::NetMessage_NetReply_ReplyType_ACK);
-
-            QByteArray ba = output.toUtf8();
-            netReply->set_body(ba.data()); // in any case we set the body
-            protobufAnswer.set_clientid(clientId, clientId.count());
-            protobufAnswer.set_messagenr(messageNr);
-            peer->sendMessage(m_protobufWrapper.protobufToByteArray(protobufAnswer));
-        }
-        else {
-            m_actualSocket = GetClient(peer)->getSocket();
-
-            QString input =  QString::fromStdString(protobufCommand->scpi().command());
-            QString output = m_cmdInterpreter->CmdExecute(input);
-
-            QByteArray block;
-            QDataStream out(&block, QIODevice::WriteOnly);
-            out.setVersion(QDataStream::Qt_4_0);
-            out << (qint32)0;
-
-            out << output.toUtf8();
-            out.device()->seek(0);
-            out << (qint32)(block.size() - sizeof(qint32));
-
-            peer->writeRaw(block);
+            }
         }
     }
 }
@@ -993,20 +963,11 @@ void ZDspServer::onTelnetDataReceived()
         addClientToHash(clientId, nullptr);
         cProtonetCommand* protoCmd = new cProtonetCommand(nullptr, false, true, clientId, 0, input);
         cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
-        if (scpiDelegate->executeSCPI(protoCmd))
-            emit cmdExecutionDone(protoCmd);
-        else {
+        if (!scpiDelegate->executeSCPI(protoCmd))
             protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::nak];
-            emit cmdExecutionDone(protoCmd);
-        }
-        return; // for now
+        qInfo("External SCPI response: %s", qPrintable(protoCmd->m_sOutput));
+        emit cmdExecutionDone(protoCmd);
     }
-
-    // old SCPI
-    QString output = m_cmdInterpreter->CmdExecute(input) + "\n";
-    QByteArray ba = output.toLatin1();
-    m_telnetSocket->write(ba);
-    qInfo("External SCPI response: %s", qPrintable(output));
 }
 
 void ZDspServer::onTelnetDisconnect()
@@ -1069,19 +1030,6 @@ void ZDspServer::DelSCPIClient()
 {
     m_clientList.removeAll(m_pSCPIClient);
     LoadDSProgram(); // after deleting client we reload dsp program ... means unload dsp for this client
-}
-
-QString ZDspServer::SCPICmd(SCPICmdType cmd, QChar *s)
-{
-    Q_UNUSED(cmd)
-    Q_UNUSED(s)
-    return "ProgrammierFehler"; // hier sollten wir nie hinkommen
-}
-
-QString ZDspServer::SCPIQuery(SCPICmdType cmdEnum)
-{
-    Q_UNUSED(cmdEnum)
-    return "ProgrammierFehler"; // hier sollten wir nie hinkommen
 }
 
 void ZDspServer::sendProtoAnswer(cProtonetCommand *protoCmd)
