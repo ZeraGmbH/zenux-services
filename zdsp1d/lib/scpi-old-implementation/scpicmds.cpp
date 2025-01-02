@@ -12,7 +12,6 @@ cNodeSCPI* System;
 	     cNodeSCPI* SystemDsp;
 		          cNodeSCPI* SystemDspTrigger;
 			              cNodeSCPI* SystemDspTriggerIntList;
-				                   cNodeSCPI* SystemDspTriggerALL;
 			          	                   cNodeSCPI* SystemDspTriggerHKSK;
 
 // cNodeScpi (QString,tNodeSpec,cNode*,cNode*,SCPICmdType,SCPICmdType); 
@@ -22,9 +21,8 @@ cNodeSCPI* System;
 cNode* InitCmdTree()
 {
     // implementiertes system modell
-    SystemDspTriggerHKSK=new cNodeSCPI("HKSK",isCommand,NULL,NULL,TriggerIntListHKSK,nixCmd);	      
-    SystemDspTriggerALL=new cNodeSCPI("ALL",isCommand,SystemDspTriggerHKSK,NULL,TriggerIntListALL,nixCmd);
-    SystemDspTriggerIntList=new cNodeSCPI("INTLIST",isNode,NULL,SystemDspTriggerALL,nixCmd,nixCmd);
+    SystemDspTriggerHKSK=new cNodeSCPI("HKSK",isCommand,NULL,NULL,TriggerIntListHKSK,nixCmd);
+    SystemDspTriggerIntList=new cNodeSCPI("INTLIST",isNode,NULL,SystemDspTriggerHKSK,nixCmd,nixCmd);
     SystemDspTrigger=new cNodeSCPI("TRIGGER",isNode,NULL,SystemDspTriggerIntList,nixCmd,nixCmd);
     SystemDsp=new cNodeSCPI("DSP",isNode,NULL,SystemDspTrigger,nixCmd,nixCmd);
     System=new cNodeSCPI("SYSTEM",isNode,NULL,SystemDsp,nixCmd,nixCmd);

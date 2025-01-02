@@ -9,7 +9,7 @@ enum SCPICmdType  {
     // die routinen für das system modell
     scpiDspCommandStatGetSet,
     TriggerIntListHKSK,
-    TriggerIntListALL,
+    scpiTriggerIntListALL,
     scpiGetDeviceVersion,
     scpiGetServerVersion,
     scpiSamplingSystemGetSet,

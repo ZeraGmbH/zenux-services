@@ -13,7 +13,7 @@
     <SAMPLING Type="Query,Command+Par" ScpiPath="SYSTEM:DSP:SAMPLING"/>
     <TRIGGER Type="Node">
      <INTLIST Type="Node">
-      <ALL Type="Command+Par" ScpiPath="SYSTEM:DSP:TRIGGER:INTLIST:ALL"/>
+      <ALL Type="Command" ScpiPath="SYSTEM:DSP:TRIGGER:INTLIST:ALL"/>
       <HKSK Type="Command+Par" ScpiPath="SYSTEM:DSP:TRIGGER:INTLIST:HKSK"/>
      </INTLIST>
     </TRIGGER>
