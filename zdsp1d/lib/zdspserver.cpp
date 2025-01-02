@@ -558,10 +558,11 @@ bool ZDspServer::bootDsp()
 bool ZDspServer::setSamplingSystem()
 {
     for (int i = 0; i < 10; i++) { // we try max. 10 times to set .... this should work
-        mCommand2Dsp(QString("DSPCMDPAR,2,%1,%2,%3;").arg(m_pDspSettings->getChannelNr())
-                                                     .arg(m_pDspSettings->getSamplesSignalPeriod())
-                                                     .arg(m_pDspSettings->getsamplesMeasurePeriod()));
-        if (Answer == ZSCPI::scpiAnswer[ZSCPI::ack])
+        QString ret = mCommand2Dsp(QString("DSPCMDPAR,2,%1,%2,%3;")
+                                       .arg(m_pDspSettings->getChannelNr())
+                                       .arg(m_pDspSettings->getSamplesSignalPeriod())
+                                       .arg(m_pDspSettings->getsamplesMeasurePeriod()));
+        if (ret == ZSCPI::scpiAnswer[ZSCPI::ack])
             return true;
         usleep(10000); // give dsp a bit time before next try
     }
@@ -691,10 +692,9 @@ QString ZDspServer::getDspStatus()
 QString ZDspServer::getDeviceStatus()
 {
     if ( Test4HWPresent() )
-        Answer = devavail;
+        return devavail;
     else
-        Answer = devnavail;
-    return Answer;
+        return devnavail;
 }
 
 QDataStream& operator<<(QDataStream& ds,cDspCmd c)
@@ -862,21 +862,22 @@ QString ZDspServer::loadCmdList(cZDSP1Client* client)
     static int count = 0;
     QString errs;
     client->SetActive(true);
+    QString ret;
     if(BuildDSProgram(errs)) { // die cmdlisten und die variablen waren schlüssig
         if(!LoadDSProgram()) {
-            Answer = ZSCPI::scpiAnswer[ZSCPI::errexec];
+            ret = ZSCPI::scpiAnswer[ZSCPI::errexec];
             client->SetActive(false);
         }
         else
-            Answer = ZSCPI::scpiAnswer[ZSCPI::ack];
+            ret = ZSCPI::scpiAnswer[ZSCPI::ack];
     }
     else {
         client->SetActive(false);
-        Answer = QString("%1 %2").arg(ZSCPI::scpiAnswer[ZSCPI::errval], errs); // das "fehlerhafte" kommando anhängen
+        ret = QString("%1 %2").arg(ZSCPI::scpiAnswer[ZSCPI::errval], errs); // das "fehlerhafte" kommando anhängen
     }
     count++;
     qDebug() << QString("LoadCmdList(%1)").arg(count);
-    return Answer;
+    return ret;
 }
 
 QString ZDspServer::unloadCmdList(cZDSP1Client *client)
