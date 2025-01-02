@@ -447,7 +447,7 @@ QString ZDspServer::runDspTest(QChar* s)
         {
             case 0:
                 for (int i=0; i<nr; i++) {
-                    mResetDsp(s);
+                    resetDsp();
                     int j;
                     for (j=0; j< 100; j++) {
                         usleep(1000);
@@ -536,12 +536,6 @@ bool ZDspServer::resetDsp()
         Answer = ZSCPI::scpiAnswer[ZSCPI::errexec];
     }
     return ok;
-}
-
-QString ZDspServer::mResetDsp(QChar*)
-{
-    resetDsp();
-    return Answer;
 }
 
 bool ZDspServer::bootDsp()

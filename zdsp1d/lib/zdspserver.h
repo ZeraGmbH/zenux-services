@@ -124,7 +124,6 @@ private:
     QString mCommand2Dsp(QString); // indirekt für system modell
 
     QString runDspTest(QChar *);
-    QString mResetDsp(QChar*);
     QString getLcaAndDspVersion(cZDSP1Client *client);
     QString getSamplingSystemSetup(cZDSP1Client *client);
     QString mSetDspCommandStat(QChar*);
