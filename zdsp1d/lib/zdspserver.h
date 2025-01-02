@@ -120,10 +120,7 @@ private:
     bool bootDsp();
     bool setSamplingSystem();
 
-    // die routinen für das system modell
     QString sendCommand2Dsp(QString); // indirekt für system modell
-
-    QString runDspTest(QChar *);
     QString getLcaAndDspVersion(cZDSP1Client *client);
     QString getSamplingSystemSetup(cZDSP1Client *client);
     QString getDspCommandStat(cZDSP1Client *client);

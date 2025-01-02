@@ -10,7 +10,6 @@ enum SCPICmdType  {
     scpiDspCommandStatGetSet,
     TriggerIntListHKSK,
     TriggerIntListALL,
-    TestDsp,
     scpiGetDeviceVersion,
     scpiGetServerVersion,
     scpiSamplingSystemGetSet,

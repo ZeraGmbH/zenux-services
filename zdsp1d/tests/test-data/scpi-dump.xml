@@ -10,7 +10,6 @@
     <DEVICE Type="Query" ScpiPath="SYSTEM:VERSION:DEVICE"/>
    </VERSION>
    <DSP Type="Node">
-    <TEST Type="Command+Par" ScpiPath="SYSTEM:DSP:TEST"/>
     <SAMPLING Type="Query,Command+Par" ScpiPath="SYSTEM:DSP:SAMPLING"/>
     <TRIGGER Type="Node">
      <INTLIST Type="Node">
