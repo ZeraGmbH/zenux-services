@@ -316,7 +316,7 @@ void ZDspServer::initSCPIConnection(QString leadingNodes)
     addDelegate("SYSTEM:DSP", "SAMPLING", SCPI::isQuery | SCPI::isCmdwP, m_scpiInterface, scpiSamplingSystemGetSet);
     addDelegate("SYSTEM:DSP:COMMAND", "STAT", SCPI::isQuery | SCPI::isCmdwP, m_scpiInterface, scpiDspCommandStatGetSet);
     addDelegate("SYSTEM:DSP:TRIGGER:INTLIST", "ALL", SCPI::isCmd, m_scpiInterface, scpiTriggerIntListALL);
-
+    addDelegate("SYSTEM:DSP:TRIGGER:INTLIST", "HKSK", SCPI::isCmdwP, m_scpiInterface, scpiTriggerIntListHKSK);
 
     addDelegate("MEMORY", "READ", SCPI::isCmdwP, m_scpiInterface, scpiDspMemoryRead);
     addDelegate("MEMORY", "WRITE", SCPI::isCmdwP, m_scpiInterface, scpiDspMemoryWrite);
@@ -415,6 +415,9 @@ void ZDspServer::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
         break;
     case scpiTriggerIntListALL:
         protoCmd->m_sOutput = sendCommand2Dsp(QString("DSPCMDPAR,1;"));
+        break;
+    case scpiTriggerIntListHKSK:
+        protoCmd->m_sOutput = startTriggerIntListHKSK(cmd.getParam(0), socketNum);
         break;
     }
 }
@@ -516,11 +519,10 @@ QString ZDspServer::setDspCommandStat(cZDSP1Client* client, QString scpiParam)
         return ZSCPI::scpiAnswer[ZSCPI::ack];
 }
 
-QString ZDspServer::mTriggerIntListHKSK(QChar *s)
+QString ZDspServer::startTriggerIntListHKSK(QString scpiParam, int socket)
 {
-    QString ss(s);
-    ulong par = ss.toULong();
-    par = (par & 0xFFFF )| (m_actualSocket << 16);
+    ulong par = scpiParam.toULong();
+    par = (par & 0xFFFF )| (socket << 16);
     return sendCommand2Dsp(QString("DSPCMDPAR,4,%1;").arg(par)); // liste mit prozessNr u. HKSK
 }
 
@@ -1071,10 +1073,8 @@ void ZDspServer::DelSCPIClient()
 
 QString ZDspServer::SCPICmd(SCPICmdType cmd, QChar *s)
 {
-    switch ((int)cmd)
-    {
-    case   TriggerIntListHKSK:	return mTriggerIntListHKSK(s);
-    }
+    Q_UNUSED(cmd)
+    Q_UNUSED(s)
     return "ProgrammierFehler"; // hier sollten wir nie hinkommen
 }
 
