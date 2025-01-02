@@ -1185,9 +1185,7 @@ QString ZDspServer::SCPICmd(SCPICmdType cmd, QChar *s)
     case   TriggerIntListHKSK:	return mTriggerIntListHKSK(s);
     case   TriggerIntListALL:		return mTriggerIntListALL(s);
     }
-    Answer = "ProgrammierFehler"; // hier sollten wir nie hinkommen
-
-    return Answer;
+    return "ProgrammierFehler"; // hier sollten wir nie hinkommen
 }
 
 QString ZDspServer::SCPIQuery(SCPICmdType cmdEnum)
@@ -1196,8 +1194,7 @@ QString ZDspServer::SCPIQuery(SCPICmdType cmdEnum)
     {
     case 		GetDspCommandStat:	return mGetDspCommandStat();
     }
-    Answer = "ProgrammierFehler"; // hier sollten wir nie hinkommen
-    return Answer;
+    return "ProgrammierFehler"; // hier sollten wir nie hinkommen
 }
 
 void ZDspServer::sendProtoAnswer(cProtonetCommand *protoCmd)
