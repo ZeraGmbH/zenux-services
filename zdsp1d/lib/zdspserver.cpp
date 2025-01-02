@@ -601,26 +601,20 @@ QString ZDspServer::mSetSamplingSystem(QChar *s)
     return mCommand2Dsp(QString("DSPCMDPAR,2,%1;").arg(QString(s)));
 }
 
-QString ZDspServer::mGetSamplingSystem()
+QString ZDspServer::getSamplingSystemSetup()
 {
-    do
-    {
-        Answer = ZSCPI::scpiAnswer[ZSCPI::errexec];
-        int n, ss, sm;
+    cZDSP1Client* cl = GetClient(m_actualSocket);
 
-        cZDSP1Client* cl = GetClient(m_actualSocket);
-
-        if (!cl->readDspVarInt("NCHANNELS", n))
-            break;
-        if (!cl->readDspVarInt("NSPERIOD", ss))
-            break;
-        if (!cl->readDspVarInt("NSMEAS", sm))
-            break;
-
-        Answer = QString("%1,%2,%3").arg(n).arg(ss).arg(sm);
-    } while (0);
-
-    return Answer;
+    int measmeasmeasChannelCount = 0;
+    if (!cl->readDspVarInt("NCHANNELS", measmeasmeasChannelCount))
+        return ZSCPI::scpiAnswer[ZSCPI::errexec];
+    int samplesPerMeasPeriod = 0;
+    if (!cl->readDspVarInt("NSPERIOD", samplesPerMeasPeriod))
+        return ZSCPI::scpiAnswer[ZSCPI::errexec];
+    int samplesPerSignalPeriod = 0;
+    if (!cl->readDspVarInt("NSMEAS", samplesPerSignalPeriod))
+        return ZSCPI::scpiAnswer[ZSCPI::errexec];
+    return QString("%1,%2,%3").arg(measmeasmeasChannelCount).arg(samplesPerMeasPeriod).arg(samplesPerSignalPeriod);
 }
 
 QString ZDspServer::mSetDspCommandStat(QChar *s)
@@ -1224,7 +1218,7 @@ QString ZDspServer::SCPIQuery(SCPICmdType cmdEnum)
 {
     switch ((int)cmdEnum)
     {
-    case		GetSamplingSystem:	return mGetSamplingSystem();
+    case		GetSamplingSystem:	return getSamplingSystemSetup();
     case 		GetDspCommandStat:	return mGetDspCommandStat();
     }
     Answer = "ProgrammierFehler"; // hier sollten wir nie hinkommen
