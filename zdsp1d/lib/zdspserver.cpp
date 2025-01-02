@@ -1,5 +1,3 @@
-// implementation des eigenlichen servers zdsp1(d)
-
 #include "zdspserver.h"
 #include "zdspclient.h"
 #include "dsp.h"
