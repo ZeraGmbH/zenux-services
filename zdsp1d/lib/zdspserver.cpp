@@ -528,14 +528,7 @@ QString ZDspServer::runDspTest(QChar* s)
 bool ZDspServer::resetDsp()
 {
     AbstractDspDeviceNodePtr deviceNode = m_deviceNodeFactory->getDspDeviceNode();
-    bool ok = deviceNode->dspReset();
-    if(ok)
-        Answer = ZSCPI::scpiAnswer[ZSCPI::ack];
-    else {
-        qCritical("Error on dsp device reset");
-        Answer = ZSCPI::scpiAnswer[ZSCPI::errexec];
-    }
-    return ok;
+    return deviceNode->dspReset();
 }
 
 bool ZDspServer::bootDsp()
