@@ -1,7 +1,5 @@
-#include <QTextStream>
-
 #include "dspmeasdata.h"
-
+#include <QTextStream>
 
 cDspMeasData::cDspMeasData(QString name) :
     m_handleName(name)
@@ -10,28 +8,16 @@ cDspMeasData::cDspMeasData(QString name) :
 
 cDspMeasData::~cDspMeasData()
 {
-    if (DspVarList.count() > 0)
-    {
-        cDspVar* pDspVar;
-        for (int i = 0; i < DspVarList.size(); ++i)
-        {
-            pDspVar = DspVarList.at(i);
-            delete pDspVar;
-        }
-    }
+    for (int i = 0; i < DspVarList.size(); ++i)
+        delete DspVarList.at(i);
 }
 
 float* cDspMeasData::data(QString name) // gibt einen zeiger zurück auf die var daten
 {
-    if (DspVarList.count() > 0)
-    {
-        cDspVar* pDspVar;
-        for (int i = 0; i < DspVarList.size(); ++i)
-        {
-            pDspVar = DspVarList.at(i);
-            if (pDspVar->Name() == name)
-                return pDspVar->data();
-        }
+    for (int i=0; i<DspVarList.size(); ++i) {
+        cDspVar* pDspVar = DspVarList.at(i);
+        if (pDspVar->Name() == name)
+            return pDspVar->data();
     }
     return 0; // caller has to pay attention !!!!!
 }
@@ -92,7 +78,7 @@ QString cDspMeasData::VarListLong(int section)
 {
     QString sReturn;
     QTextStream ts(&sReturn, QIODevice::WriteOnly);
-    for (int i = 0; i < DspVarList.size(); ++i) {
+    for(int i=0; i<DspVarList.size(); ++i) {
         cDspVar *pDspVar = DspVarList.at(i);
         if ((section & pDspVar->type()) > 0) {
             int seg;
@@ -110,9 +96,8 @@ QString cDspMeasData::VarListShort(int section)
 {
     QString sReturn;
     QTextStream ts(&sReturn, QIODevice::WriteOnly);
-    cDspVar *pDspVar;
-    for (int i = 0; i < DspVarList.size(); ++i) {
-        pDspVar = DspVarList.at(i);
+    for(int i=0; i<DspVarList.size(); ++i) {
+        cDspVar *pDspVar = DspVarList.at(i);
         if ((section & pDspVar->type()) > 0)
             ts << QString("%1,%2;").arg(pDspVar->Name()).arg(pDspVar->size());
     }
@@ -123,7 +108,7 @@ QString cDspMeasData::writeCommand()
 {
     QString sReturn;
     QTextStream ts(&sReturn, QIODevice::WriteOnly );
-    for (int i = 0; i < DspVarList.count(); i++) {
+    for(int i=0; i<DspVarList.count(); i++) {
         cDspVar* pVar = DspVarList.at(i);
         ts << pVar->Name();
 
@@ -148,7 +133,7 @@ QString cDspMeasData::writeCommand()
 QVector<float>& cDspMeasData::getData()
 {
     vector.clear();
-    for (int i = 0; i < DspVarList.count(); i++) { // we fetch all data of all vars in this memory group
+    for (int i=0; i<DspVarList.count(); i++) { // we fetch all data of all vars in this memory group
         cDspVar* pVar = DspVarList.at(i);
         float* fval = pVar->data();
         for (int j = 0; j < pVar->size(); j++, fval++)
@@ -164,7 +149,7 @@ const QList<cDspVar *> cDspMeasData::getVars() const
 
 cDspVar *cDspMeasData::findVar(QString varName)
 {
-    for(int i = 0; i < DspVarList.size(); ++i) {
+    for(int i=0; i<DspVarList.size(); ++i) {
         cDspVar* pDspVar = DspVarList.at(i);
         if (pDspVar->Name() == varName)
             return pDspVar;
@@ -177,7 +162,7 @@ void cDspMeasData::setData(QVector<float> data)
     int valueCount = 0;
     for(cDspVar* dspVar : qAsConst(DspVarList)) {
         QVector<float> varData;
-        for(int singleVal = 0; singleVal<dspVar->size(); singleVal++) {
+        for(int singleVal=0; singleVal<dspVar->size(); singleVal++) {
             varData.append(data[valueCount]);
             valueCount++;
         }
