@@ -2,7 +2,6 @@
 
 DspVarResolver::DspVarResolver()
 {
-    m_varHash.clear();
     m_varParser.SetDelimiter("(,+,-,)"); // setze die trennzeichen für den parser
     m_varParser.SetWhiteSpace(" (,)");
 }
