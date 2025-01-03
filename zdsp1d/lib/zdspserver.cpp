@@ -396,7 +396,10 @@ void ZDspServer::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
         protoCmd->m_sOutput = client->readDspVarList(cmd.getParam());
         break;
     case scpiDspMemoryWrite:
-        protoCmd->m_sOutput = client->DspVarWriteRM(cmd.getParam());
+        if(client->doWriteDspVars(cmd.getParam()))
+            protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::ack];
+        else
+            protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::errexec];
         break;
     case scpiRavListGetSet:
         if(cmd.isQuery())
@@ -406,9 +409,9 @@ void ZDspServer::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
         break;
     case scpiCmdIntListGetSet:
         if(cmd.isQuery())
-            protoCmd->m_sOutput = client->getCmdIntListDef();
+            protoCmd->m_sOutput = client->getCmdForIrqListDef();
         else
-            protoCmd->m_sOutput = client->setCmdIntListDef(cmd.getParam());
+            protoCmd->m_sOutput = client->setCmdForIrqListDef(cmd.getParam());
         break;
     case scpiCmdCycListGetSet:
         if(cmd.isQuery())
@@ -438,7 +441,10 @@ void ZDspServer::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
         protoCmd->m_sOutput = client->readDspVarList("BUSYMAX,1;");  // ab "BUSYMAX"  1 wort lesen
         break;
     case scpiResetDeviceLoadMax:
-        protoCmd->m_sOutput = client->DspVarWriteRM("BUSYMAX,0.0");
+        if(client->doWriteDspVars("BUSYMAX,0.0"))
+            protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::ack];
+        else
+            protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::errexec];
         break;
     case scpiTriggerIntListALL:
         protoCmd->m_sOutput = sendCommand2Dsp(QString("DSPCMDPAR,1;"));
@@ -496,13 +502,13 @@ QString ZDspServer::sendCommand2Dsp(QString qs)
     cZDSP1Client cl(0, 0, m_deviceNodeFactory);
 
     int ack;
-    if (!cl.readDspVarInt("DSPACK", ack))
+    if (!cl.readOneDspVarInt("DSPACK", ack))
         return ZSCPI::scpiAnswer[ZSCPI::errexec];
     if (ack == InProgress)
         return ZSCPI::scpiAnswer[ZSCPI::busy];
-    if (!cl.DspVarWrite("DSPACK,0;") )
+    if (!cl.doWriteDspVars("DSPACK,0;") )
         return ZSCPI::scpiAnswer[ZSCPI::errexec]; // reset acknowledge
-    if (! cl.DspVarWrite(qs))
+    if (! cl.doWriteDspVars(qs))
         return ZSCPI::scpiAnswer[ZSCPI::errexec];
 
     AbstractDspDeviceNodePtr deviceNode = m_deviceNodeFactory->getDspDeviceNode();
@@ -513,13 +519,13 @@ QString ZDspServer::sendCommand2Dsp(QString qs)
 QString ZDspServer::getSamplingSystemSetup(cZDSP1Client* client)
 {
     int measmeasmeasChannelCount = 0;
-    if (!client->readDspVarInt("NCHANNELS", measmeasmeasChannelCount))
+    if (!client->readOneDspVarInt("NCHANNELS", measmeasmeasChannelCount))
         return ZSCPI::scpiAnswer[ZSCPI::errexec];
     int samplesPerMeasPeriod = 0;
-    if (!client->readDspVarInt("NSPERIOD", samplesPerMeasPeriod))
+    if (!client->readOneDspVarInt("NSPERIOD", samplesPerMeasPeriod))
         return ZSCPI::scpiAnswer[ZSCPI::errexec];
     int samplesPerSignalPeriod = 0;
-    if (!client->readDspVarInt("NSMEAS", samplesPerSignalPeriod))
+    if (!client->readOneDspVarInt("NSMEAS", samplesPerSignalPeriod))
         return ZSCPI::scpiAnswer[ZSCPI::errexec];
     return QString("%1,%2,%3").arg(measmeasmeasChannelCount).arg(samplesPerMeasPeriod).arg(samplesPerSignalPeriod);
 }
@@ -527,7 +533,7 @@ QString ZDspServer::getSamplingSystemSetup(cZDSP1Client* client)
 QString ZDspServer::getDspCommandStat(cZDSP1Client* client)
 {
     int stat;
-    if (!client->readDspVarInt("DSPACK", stat))
+    if (!client->readOneDspVarInt("DSPACK", stat))
         return ZSCPI::scpiAnswer[ZSCPI::errexec];
     else
         return QString("%1").arg(stat);
@@ -535,7 +541,7 @@ QString ZDspServer::getDspCommandStat(cZDSP1Client* client)
 
 QString ZDspServer::setDspCommandStat(cZDSP1Client* client, QString scpiParam)
 {
-    if (!client->DspVarWrite(QString("DSPACK,%1;").arg(scpiParam)) )
+    if (!client->doWriteDspVars(QString("DSPACK,%1;").arg(scpiParam)) )
         return ZSCPI::scpiAnswer[ZSCPI::errexec];
     else
         return ZSCPI::scpiAnswer[ZSCPI::ack];
@@ -605,7 +611,7 @@ void ZDspServer::DspIntHandler(int)
         cZDSP1Client *client = m_clientList.first();
         QByteArray ba;
         QString s = "CTRLCMDPAR,20";
-        if (client->DspVarRead(s, &ba)) { // 20 worte lesen
+        if (client->readOneDspVar(s, &ba)) { // 20 worte lesen
             ulong* pardsp = (ulong*) ba.data();
             int n = pardsp[0]; // anzahl der interrupts
             m_dspInterruptLogStatistics.addValue(n);
@@ -650,12 +656,12 @@ void ZDspServer::DspIntHandler(int)
                 }
             }
         }
-        client->DspVarWrite(s = QString("CTRLACK,%1;").arg(CmdDone)); // jetzt in jedem fall acknowledge
+        client->doWriteDspVars(s = QString("CTRLACK,%1;").arg(CmdDone)); // jetzt in jedem fall acknowledge
     }
     else {
         cZDSP1Client dummyClient(0, 0, m_deviceNodeFactory); // dummyClient einrichten
         QString s = QString("CTRLACK,%1;").arg(CmdDone);
-        dummyClient.DspVarWrite(s); // und rücksetzen
+        dummyClient.doWriteDspVars(s); // und rücksetzen
     }
 }
 
@@ -754,18 +760,18 @@ QString ZDspServer::loadCmdList(cZDSP1Client* client)
 {
     static int count = 0;
     QString errs;
-    client->SetActive(true);
+    client->setActive(true);
     QString ret;
     if(BuildDSProgram(errs)) { // die cmdlisten und die variablen waren schlüssig
         if(!LoadDSProgram()) {
             ret = ZSCPI::scpiAnswer[ZSCPI::errexec];
-            client->SetActive(false);
+            client->setActive(false);
         }
         else
             ret = ZSCPI::scpiAnswer[ZSCPI::ack];
     }
     else {
-        client->SetActive(false);
+        client->setActive(false);
         ret = QString("%1 %2").arg(ZSCPI::scpiAnswer[ZSCPI::errval], errs); // das "fehlerhafte" kommando anhängen
     }
     count++;
@@ -775,7 +781,7 @@ QString ZDspServer::loadCmdList(cZDSP1Client* client)
 
 QString ZDspServer::unloadCmdList(cZDSP1Client *client)
 {
-    client->SetActive(false);
+    client->setActive(false);
     QString error;
     BuildDSProgram(error);
     QString ret;

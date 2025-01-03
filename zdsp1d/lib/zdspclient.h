@@ -13,40 +13,40 @@ class cZDSP1Client
 {
 public:
     cZDSP1Client(int socket, VeinTcp::TcpPeer *netclient, AbstractFactoryDeviceNodeDspPtr deviceNodeFactory);
-    ~cZDSP1Client(){} //  allokierten speicher ggf. freigeben
+    ~cZDSP1Client() = default;
 
-    QString setRawActualValueList(const QString& varString);
+    bool isActive();
+    void setActive(bool active);
+
+    QString setRawActualValueList(const QString& varsSemicolonSeparated);
     QString getRawActualValueList();
     QString setCmdListDef(const QString& cmdListDef);
     QString getCmdListDef();
-    QString setCmdIntListDef(const QString& cmdIntListDef);
-    QString getCmdIntListDef();
+    QString setCmdForIrqListDef(const QString& cmdIntListDef);
+    QString getCmdForIrqListDef();
 
     bool GenCmdLists(QString& errs, ulong userMemoryOffset, ulong globalstartadr); // baut die cmdlisten  für den dsp zusammen wenn fehler -> false
     cDspCmd GenDspCmd(QString cmd, bool* ok, ulong userMemoryOffset, ulong globalstartadr); // generiert ein dsp kommando aus einem string
-    QString readActValues(const QString &variablesString); // liess die messergebnisse (liste)
+    QList<cDspCmd>& GetDspCmdList();
+    QList<cDspCmd>& GetDspIntCmdList();
 
-    bool isActive();
-    void SetActive(bool); // merkt sich in m_bActive ob diese liste aktiv ist
+    QString readDspVarList(const QString &variablesString); // format: '<name1>,<len1>;<name2>,<len2>'
+    QString readActValues(const QString &variablesStringOnEmptyActOnly);
+    bool readOneDspVarInt(const QString &varName, int& intval);
+    TDspVar *readOneDspVar(const QString &nameCommaLen, QByteArray *varRead);
+    bool doWriteDspVars(const QString &varsSemicolonSeparated);
+    DspVarResolver m_dspVarResolver;
 
     ulong setStartAdr(ulong startAdress, ulong globalMemStart); // zum relokalisieren der userdaten
-    QString readDspVarList(const QString &variablesString); // lesen dsp daten ganze Liste
-    bool readDspVarInt(QString varName, int& intval); // einen int (32bit) wert lesen
-    TDspVar *DspVarRead(const QString &nameLen, QByteArray *varRead); // lesen dsp variable;  name , länge stehen im parameter string; werte im anschluss im qbytearray
-    bool DspVarWrite(QString);  // schreiben  true wenn ok
-    QString DspVarWriteRM(const QString&); // dito schreiben mit rückmeldung
-    QList<cDspCmd>& GetDspCmdList(); // damit der server die komplette liste aller clients
-    QList<cDspCmd>& GetDspIntCmdList(); // an den dsp übertragen kann
-    int getSocket();
 
-    DspVarResolver m_dspVarResolver; // zum auflösen der variablen aus kommandos
-    VeinTcp::TcpPeer* m_pNetClient; // our network client
+    int getSocket();
+    VeinTcp::TcpPeer* m_pNetClient;
 
 private:
     void init(int socket, VeinTcp::TcpPeer *netclient);
     bool GenCmdList(QString&, QList<cDspCmd>& ,QString&,ulong,ulong);
     bool syntaxCheck(QString&);
-    TDspVar *readDspVar(TDspVar *&DspVar, int countVars, QByteArray *varRead);
+    TDspVar *doReadVarFromDsp(TDspVar *&DspVar, int countVars, QByteArray *varRead);
 
     AbstractFactoryDeviceNodeDspPtr m_deviceNodeFactory;
     int m_socket; // socket für den die verbindung besteht
