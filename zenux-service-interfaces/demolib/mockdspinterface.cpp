@@ -19,12 +19,6 @@ quint32 MockDspInterface::dataAcquisition(cDspMeasData *memgroup)
     return sendCmdResponse("");
 }
 
-quint32 MockDspInterface::dspMemoryWrite(cDspMeasData *memgroup)
-{
-    emit sigDspMemoryWrite(memgroup->getName(), memgroup->getData());
-    return sendCmdResponse("");
-}
-
 quint32 MockDspInterface::activateInterface()
 {
     quint32 ret = Zera::cDSPInterface::activateInterface();
