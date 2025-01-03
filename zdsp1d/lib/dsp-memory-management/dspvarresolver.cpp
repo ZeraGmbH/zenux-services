@@ -7,6 +7,11 @@ DspVarResolver::DspVarResolver()
     m_varParser.SetWhiteSpace(" (,)");
 }
 
+void DspVarResolver::addSection(TMemSection* section)
+{
+    MemSectionList.append(section);
+}
+
 void DspVarResolver::setVarHash()
 {
     m_varHash.clear();
@@ -16,39 +21,15 @@ void DspVarResolver::setVarHash()
     }
 }
 
-void DspVarResolver::addSection(TMemSection* section)
+TDspVar* DspVarResolver::getDspVar(const QString &varNameWithOffset)
 {
-    MemSectionList.append(section);
-}
-
-void DspVarResolver::initMemsection(TMemSection *psec)
-{
-    if (psec->Section == systemSection) { // wir initialisieren nur system sections
-        long offs = 0;
-        for (int i = 0; i< (psec->n); i++) {
-            psec->DspVar[i].offs = offs;
-            psec->DspVar[i].adr = psec->StartAdr + offs;
-            offs += psec->DspVar[i].size;
-        }
-    }
-}
-
-void DspVarResolver::setQHash(TMemSection* psec) // zum setzen der qhash
-{
-    for (int i = 0; i< (psec->n); i++)
-        m_varHash[psec->DspVar[i].Name] = &(psec->DspVar[i]);
-}
-
-long DspVarResolver::calcOffsetFromStr(const QString &str)
-{
-    bool ok;
-    long offset = str.toLong(&ok, 10); // prüfen auf dez. konstante
-    if(ok)
-        return offset;
-    offset = str.toLong(&ok, 16); // mal hex versuchen
-    if(ok)
-        return offset;
-    return -1; // sonst ist das ein fehler
+    QString upperName = varNameWithOffset.toUpper();
+    const QChar* cts = upperName.data();
+    QString baseVarName = m_varParser.GetKeyword(&cts);
+    auto iter = m_varHash.constFind(baseVarName);
+    if(iter != m_varHash.constEnd())
+        return iter.value();
+    return nullptr;
 }
 
 long DspVarResolver::varOffset(const QString& varNameWithOffset, ulong userMemOffset, ulong globalstartadr)
@@ -92,21 +73,40 @@ long DspVarResolver::varAddress(const QString &varNameWithOffset)
     return calcOffsetFromStr(varNameWithOffset);
 }
 
-TDspVar* DspVarResolver::getDspVar(const QString &varNameWithOffset)
-{
-    QString upperName = varNameWithOffset.toUpper();
-    const QChar* cts = upperName.data();
-    QString baseVarName = m_varParser.GetKeyword(&cts);
-    auto iter = m_varHash.constFind(baseVarName);
-    if(iter != m_varHash.constEnd())
-        return iter.value();
-    return nullptr;
-}
-
 int DspVarResolver::type(const QString &varNameWithOffset)
 {
     TDspVar* var = getDspVar(varNameWithOffset);
     if(var)
         return var->type;
     return eUnknown;
+}
+
+void DspVarResolver::initMemsection(TMemSection *psec)
+{
+    if (psec->Section == systemSection) { // wir initialisieren nur system sections
+        long offs = 0;
+        for (int i = 0; i< (psec->n); i++) {
+            psec->DspVar[i].offs = offs;
+            psec->DspVar[i].adr = psec->StartAdr + offs;
+            offs += psec->DspVar[i].size;
+        }
+    }
+}
+
+void DspVarResolver::setQHash(TMemSection* psec) // zum setzen der qhash
+{
+    for (int i = 0; i< (psec->n); i++)
+        m_varHash[psec->DspVar[i].Name] = &(psec->DspVar[i]);
+}
+
+long DspVarResolver::calcOffsetFromStr(const QString &str)
+{
+    bool ok;
+    long offset = str.toLong(&ok, 10); // prüfen auf dez. konstante
+    if(ok)
+        return offset;
+    offset = str.toLong(&ok, 16); // mal hex versuchen
+    if(ok)
+        return offset;
+    return -1; // sonst ist das ein fehler
 }

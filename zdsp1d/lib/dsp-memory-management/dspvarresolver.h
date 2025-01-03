@@ -10,11 +10,11 @@ class DspVarResolver
 {
 public:
     DspVarResolver();
-    void setVarHash();
     void addSection(TMemSection* section);
+    void setVarHash();
+    TDspVar* getDspVar(const QString& varNameWithOffset);
     long varOffset(const QString &varNameWithOffset, ulong userMemOffset, ulong globalstartadr);
     long varAddress(const QString& varNameWithOffset);
-    TDspVar* getDspVar(const QString& varNameWithOffset);
     int type(const QString &varNameWithOffset);
 
 private:
