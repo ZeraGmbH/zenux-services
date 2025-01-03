@@ -73,7 +73,7 @@ long DspVarResolver::varOffset(const QString& varNameWithOffset, ulong userMemOf
     return calcOffsetFromStr(varNameWithOffset);
 }
 
-long DspVarResolver::varAddress(QString& varNameWithOffset)
+long DspVarResolver::varAddress(const QString &varNameWithOffset)
 {
     TDspVar* dspVar = getDspVar(varNameWithOffset);
     if(dspVar) {
