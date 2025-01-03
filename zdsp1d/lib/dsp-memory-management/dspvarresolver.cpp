@@ -14,9 +14,10 @@ void DspVarResolver::addSection(TMemSection* section)
 void DspVarResolver::setVarHash()
 {
     m_varHash.clear();
-    for (int i = 0; i < MemSectionList.count(); i++) {
-        initMemsection(MemSectionList.at(i));
-        setQHash(MemSectionList.at(i));
+    for(TMemSection* memSection : qAsConst(MemSectionList)) {
+        initMemsection(memSection);
+        for (int i=0; i<memSection->n; i++)
+            m_varHash[memSection->DspVar[i].Name] = &(memSection->DspVar[i]);
     }
 }
 
@@ -90,12 +91,6 @@ void DspVarResolver::initMemsection(TMemSection *psec)
             offs += psec->DspVar[i].size;
         }
     }
-}
-
-void DspVarResolver::setQHash(TMemSection* psec) // zum setzen der qhash
-{
-    for (int i = 0; i< (psec->n); i++)
-        m_varHash[psec->DspVar[i].Name] = &(psec->DspVar[i]);
 }
 
 long DspVarResolver::calcOffsetFromStr(const QString &str)

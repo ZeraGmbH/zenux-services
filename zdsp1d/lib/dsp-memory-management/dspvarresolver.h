@@ -19,7 +19,6 @@ public:
 
 private:
     void initMemsection(TMemSection* psec);
-    void setQHash(TMemSection* psec);
     static long calcOffsetFromStr(const QString &str);
     QHash<QString, TDspVar*> m_varHash;
     cParse m_varParser;
