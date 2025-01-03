@@ -10,8 +10,8 @@ cSCPIDelegate::cSCPIDelegate(QString cmdParent,
     m_nCmdCode(cmdCode),
     m_notificationString(notificationString)
 {
-    m_sCommand = QString("%1:%2").arg(cmdParent, cmd);
-    scpiInterface->insertScpiCmd(cmdParent.split(":"), this);
+    m_sCommand = cmdParent.isEmpty() ? cmd : QString("%1:%2").arg(cmdParent, cmd);
+    scpiInterface->insertScpiCmd(cmdParent.split(":",Qt::SkipEmptyParts), this);
     if (m_notificationString)
         connect(m_notificationString, &NotificationString::valueChanged, this, &cSCPIDelegate::notifyAllSubscribers);
 }
