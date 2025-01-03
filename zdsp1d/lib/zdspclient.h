@@ -18,11 +18,11 @@ public:
     bool isActive();
     void setActive(bool active);
 
-    QString setRawActualValueList(const QString& varsSemicolonSeparated);
+    bool setRawActualValueList(const QString& varsSemicolonSeparated);
     QString getRawActualValueList();
-    QString setCmdListDef(const QString& cmdListDef);
+    void setCmdListDef(const QString& cmdListDef);
     QString getCmdListDef();
-    QString setCmdForIrqListDef(const QString& cmdIntListDef);
+    void setCmdForIrqListDef(const QString& cmdIntListDef);
     QString getCmdForIrqListDef();
 
     bool GenCmdLists(QString& errs, ulong userMemoryOffset, ulong globalstartadr); // baut die cmdlisten  für den dsp zusammen wenn fehler -> false

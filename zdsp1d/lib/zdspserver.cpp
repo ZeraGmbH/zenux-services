@@ -404,20 +404,26 @@ void ZDspServer::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
     case scpiRavListGetSet:
         if(cmd.isQuery())
             protoCmd->m_sOutput = client->getRawActualValueList();
+        else if(client->setRawActualValueList(cmd.getParam()))
+            protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::ack];
         else
-            protoCmd->m_sOutput = client->setRawActualValueList(cmd.getParam());
-        break;
-    case scpiCmdIntListGetSet:
-        if(cmd.isQuery())
-            protoCmd->m_sOutput = client->getCmdForIrqListDef();
-        else
-            protoCmd->m_sOutput = client->setCmdForIrqListDef(cmd.getParam());
+            protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::errexec];
         break;
     case scpiCmdCycListGetSet:
         if(cmd.isQuery())
             protoCmd->m_sOutput = client->getCmdListDef();
-        else
-            protoCmd->m_sOutput = client->setCmdListDef(cmd.getParam());
+        else {
+            client->setCmdListDef(cmd.getParam());
+            protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::ack]; // ist erstmal ok, wird später beim SET kommando geprüft
+        }
+        break;
+    case scpiCmdIntListGetSet:
+        if(cmd.isQuery())
+            protoCmd->m_sOutput = client->getCmdForIrqListDef();
+        else {
+            client->setCmdForIrqListDef(cmd.getParam());
+            protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::ack]; // ist erstmal ok, wird später beim SET kommando geprüft
+        }
         break;
     case scpiLoadCmdList:
         protoCmd->m_sOutput = loadCmdList(client);

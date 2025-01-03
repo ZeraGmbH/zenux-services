@@ -35,15 +35,14 @@ void cZDSP1Client::init(int socket, VeinTcp::TcpPeer *netclient)
     m_bActive = false;
 }
 
-QString cZDSP1Client::setRawActualValueList(const QString &varsSemicolonSeparated)
+bool cZDSP1Client::setRawActualValueList(const QString &varsSemicolonSeparated)
 {
     m_dspRawActualValueVarList.clear();
-    QString ret = ZSCPI::scpiAnswer[ZSCPI::ack];
     DspVarClientPerspective dspVar;
     int localOffset = 0;
     int globaloffset = 0;
     const QStringList varEntries = varsSemicolonSeparated.split(";", Qt::SkipEmptyParts);
-    for(int i=0; varEntries.count(); i++) {
+    for(int i=0; i<varEntries.count(); i++) {
         if(dspVar.Init(varEntries[i])) {
             if (dspVar.segment() == localSegment) {
                 dspVar.SetOffs(localOffset);
@@ -55,10 +54,9 @@ QString cZDSP1Client::setRawActualValueList(const QString &varsSemicolonSeparate
             }
             m_dspRawActualValueVarList.append(dspVar);
         }
-        else { // fehlerfall
+        else {
             m_dspRawActualValueVarList.clear();
-            ret = ZSCPI::scpiAnswer[ZSCPI::nak];
-            break;
+            return false;
         }
     }
 
@@ -76,7 +74,7 @@ QString cZDSP1Client::setRawActualValueList(const QString &varsSemicolonSeparate
         m_memorySection.DspVar = m_dspVarArray.data();
     }
     m_dspVarResolver.setVarHash(); // wir setzen die hashtabelle neu
-    return ret;
+    return true;
 }
 
 QString cZDSP1Client::getRawActualValueList()
@@ -93,10 +91,9 @@ QString cZDSP1Client::getRawActualValueList()
     return ret;
 }
 
-QString cZDSP1Client::setCmdListDef(const QString &cmdListDef)
+void cZDSP1Client::setCmdListDef(const QString &cmdListDef)
 {
     m_sCmdListDef = cmdListDef;
-    return ZSCPI::scpiAnswer[ZSCPI::ack]; // ist erstmal ok, wird später beim SET kommando geprüft
 }
 
 QString cZDSP1Client::getCmdListDef()
@@ -104,10 +101,9 @@ QString cZDSP1Client::getCmdListDef()
     return m_sCmdListDef;
 }
 
-QString cZDSP1Client::setCmdForIrqListDef(const QString &cmdIntListDef)
+void cZDSP1Client::setCmdForIrqListDef(const QString &cmdIntListDef)
 {
     m_sIntCmdListDef = cmdIntListDef;
-    return ZSCPI::scpiAnswer[ZSCPI::ack]; // ist erstmal ok, wird später beim SET kommando geprüft
 }
 
 QString cZDSP1Client::getCmdForIrqListDef()
