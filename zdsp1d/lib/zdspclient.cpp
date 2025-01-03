@@ -269,10 +269,10 @@ bool cZDSP1Client::GenCmdList(QString& s, QList<cDspCmd> &cl, QString& errs, ulo
     cl.clear();
     for (int i = 0;;i++) {
         QString cs = s.section(';',i,i);
-        if ( (cs.isEmpty()) || (cs==("Empty")) )break; // liste ist durch
+        if ( (cs.isEmpty()) || (cs==("Empty")) )
+            break; // liste ist durch
         cl.append(GenDspCmd(cs, &ok, umo,globalstartadr));
-        if (!ok)
-        {
+        if (!ok) {
             errs = cs;
             break;
         }
