@@ -297,11 +297,11 @@ bool cZDSP1Client::GenCmdList(QString& s, QList<cDspCmd> &cl, QString& errs, ulo
 }
 
 
-bool cZDSP1Client::GenCmdLists(QString& errs, ulong umo, ulong globalstartadr)
+bool cZDSP1Client::GenCmdLists(QString& errs, ulong userMemoryOffset, ulong globalstartadr)
 {
     bool ok;
-    ok = GenCmdList(m_sCmdListDef,m_DspCmdList,errs,umo,globalstartadr);
-    if (ok) ok =  GenCmdList(m_sIntCmdListDef, m_DspIntCmdList,errs,umo,globalstartadr);
+    ok = GenCmdList(m_sCmdListDef,m_DspCmdList,errs,userMemoryOffset,globalstartadr);
+    if (ok) ok =  GenCmdList(m_sIntCmdListDef, m_DspIntCmdList,errs,userMemoryOffset,globalstartadr);
     return ok;
 }
 

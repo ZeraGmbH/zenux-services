@@ -22,7 +22,7 @@ public:
     QString setCmdIntListDef(const QString& cmdIntListDef);
     QString getCmdIntListDef();
 
-    bool GenCmdLists(QString&, ulong, ulong); // baut die cmdlisten  für den dsp zusammen wenn fehler -> false
+    bool GenCmdLists(QString& errs, ulong userMemoryOffset, ulong globalstartadr); // baut die cmdlisten  für den dsp zusammen wenn fehler -> false
     cDspCmd GenDspCmd(QString cmd, bool* ok, ulong userMemoryOffset, ulong globalstartadr); // generiert ein dsp kommando aus einem string
     QString readActValues(const QString &variablesString); // liess die messergebnisse (liste)
 
