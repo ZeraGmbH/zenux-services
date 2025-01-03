@@ -24,8 +24,6 @@ public:
     virtual quint32 dataAcquisition(cDspMeasData* memgroup); // reads all vars of this memorygroup that are of type vapplication
     virtual quint32 dspMemoryWrite(cDspMeasData* memgroup); // writes all vars of this memorygroup with type
     virtual quint32 activateInterface(); // load var- and cmdlists to dsp (starts theprogram on dsp)
-    virtual quint32 readMaximumLoad();
-    virtual quint32 resetMaximumLoad();
 
     quint32 setSamplingSystem(int chncount, int samp_per, int samp_mper); // nmuber of channels, samples/signalperiod, samples/measperiod
     quint32 varList2Dsp(); // send the var-list to dsp server

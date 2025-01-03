@@ -62,8 +62,6 @@ public:
     quint32 dspMemoryWrite(cDspMeasData* memgroup); // writes all vars of this memorygroup with type
     quint32 readDeviceVersion(); // reads the dsp devices version
     quint32 readServerVersion();
-    quint32 readMaximumLoad();
-    quint32 resetMaximumLoad();
 
     // unused in ZENUX - kept for sake of future WM???
     void addIntListItem(QString cmd); // same for interrupt list

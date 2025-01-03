@@ -26,16 +26,6 @@ quint32 MockDspInterface::activateInterface()
     return ret;
 }
 
-quint32 MockDspInterface::readMaximumLoad()
-{
-    return sendCmdResponse("BUSYMAX:42.0");
-}
-
-quint32 MockDspInterface::resetMaximumLoad()
-{
-    return sendCmdResponse("");
-}
-
 quint32 MockDspInterface::sendCmdResponse(QString answer)
 {
     quint32 messageNum = NotZeroNumGen::getMsgNr();

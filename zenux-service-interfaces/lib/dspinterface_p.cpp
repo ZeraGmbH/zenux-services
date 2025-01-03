@@ -218,20 +218,6 @@ quint32 cDSPInterfacePrivate::readServerVersion()
     return msgnr;
 }
 
-quint32 cDSPInterfacePrivate::readMaximumLoad()
-{
-    quint32 msgnr = sendCommand(QString("STATUS:DSP:LOAD:MAXIMUM?"));
-    m_MsgNrCmdList[msgnr] = readmaxload;
-    return msgnr;
-}
-
-quint32 cDSPInterfacePrivate::resetMaximumLoad()
-{
-    quint32 msgnr = sendCommand(QString("STATUS:DSP:LOAD:MAXIMUM:RESET"));
-    m_MsgNrCmdList[msgnr] = resetmaxload;
-    return msgnr;
-}
-
 void cDSPInterfacePrivate::receiveAnswer(std::shared_ptr<ProtobufMessage::NetMessage> message)
 {
     if (message->has_reply()) {
