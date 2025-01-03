@@ -27,8 +27,9 @@ quint32 MockDspInterface::dspMemoryWrite(cDspMeasData *memgroup)
 
 quint32 MockDspInterface::activateInterface()
 {
-    emit sigDspStarted();
-    return sendCmdResponse("");
+    quint32 ret = Zera::cDSPInterface::activateInterface();
+    emit sigDspStarted(); // How can we get rid of this??
+    return ret;
 }
 
 quint32 MockDspInterface::readMaximumLoad()
