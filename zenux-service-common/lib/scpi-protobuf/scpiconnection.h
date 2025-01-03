@@ -24,7 +24,6 @@ public slots:
     void onRemoveSubscribers(VeinTcp::TcpPeer *peer, const QByteArray &clientID);
 protected:
     virtual void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) = 0;
-    void removeSCPIConnections();
     void ensureTrailingColonOnNonEmptyParentNodes(QString &leadingNodes);
     void addDelegate(QString cmdParent, QString cmd, quint8 type, std::shared_ptr<cSCPI> scpiInterface, quint16 cmdCode, NotificationString *notificationString = nullptr);
     std::shared_ptr<cSCPI> m_scpiInterface;

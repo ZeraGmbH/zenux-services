@@ -7,17 +7,6 @@ ScpiConnection::ScpiConnection(std::shared_ptr<cSCPI> scpiInterface)
 
 ScpiConnection::~ScpiConnection()
 {
-    removeSCPIConnections();
-}
-
-void ScpiConnection::removeSCPIConnections()
-{
-    if(m_scpiInterface) {
-        for (int i = 0; i < m_DelegateList.count(); i++) {
-            cSCPIDelegate* ptr = m_DelegateList.at(i);
-            m_scpiInterface->delSCPICmds(ptr->getCommand());
-        }
-    }
     for (int i = 0; i < m_DelegateList.count(); i++)
         delete m_DelegateList.at(i);
     m_DelegateList.clear();

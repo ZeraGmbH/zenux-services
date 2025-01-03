@@ -20,7 +20,6 @@ public:
                   NotificationString *notificationString = nullptr);
     virtual bool executeSCPI(const QString&, QString&) override { return false; }
     virtual bool executeSCPI(cProtonetCommand* protoCmd);
-    QString getCommand();
     NotificationString *getNotificationString();
     ScpiNotificationSubscriberHandler &getScpiNotificationSubscriberHandler();
 public slots:
@@ -30,7 +29,6 @@ signals:
     void sigNotifySubcriber(ScpiNotificationSubscriber subscriber, QString newValue);
 private:
     quint16 m_nCmdCode;
-    QString m_sCommand;
     ScpiNotificationSubscriberHandler m_notificationsHandler;
     NotificationString *m_notificationString = nullptr;
 };
