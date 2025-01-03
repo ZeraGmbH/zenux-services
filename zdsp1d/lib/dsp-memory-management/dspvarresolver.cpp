@@ -39,105 +39,74 @@ void DspVarResolver::setQHash(TMemSection* psec) // zum setzen der qhash
         m_varHash[psec->DspVar[i].Name] = &(psec->DspVar[i]);
 }
 
-long DspVarResolver::varOffset(const QString& varNameOrValue, ulong umo, ulong globalstartadr)
+long DspVarResolver::calcOffsetFromStr(const QString &str)
 {
-    QString ts = varNameOrValue.toUpper();
-    const QChar* cts = ts.data();
-    QString sSearch = m_varParser.GetKeyword(&cts); // der namen der variable, die gesucht ist
-    if (m_varHash.contains(sSearch)) {
-        ulong retoffs;
-        TDspVar* pDspVar = m_varHash.value(sSearch);
-        retoffs = pDspVar->offs;
+    bool ok;
+    long offset = str.toLong(&ok, 10); // prüfen auf dez. konstante
+    if(ok)
+        return offset;
+    offset = str.toLong(&ok, 16); // mal hex versuchen
+    if(ok)
+        return offset;
+    return -1; // sonst ist das ein fehler
+}
 
-        ts = ts.remove(' ');
-        ts = ts.remove(sSearch); // name raus
-        if (ts.length() > 0) { // wenn noch was da, dann muss das ein +/- offset sein
-            bool ok;
-            long offset = ts.toLong(&ok,10); // prüfen auf dez. konstante
-            if (ok)
-                retoffs += offset;
-            else {
-                offset = ts.toLong(&ok,16); // mal hex versuchen
-                if (ok)
-                    retoffs += offset;
-                else
-                    return -1; // sonst ist das ein fehler
-            }
+long DspVarResolver::varOffset(const QString& varNameWithOffset, ulong userMemOffset, ulong globalstartadr)
+{
+    TDspVar* dspVar = getDspVar(varNameWithOffset);
+    if(dspVar) {
+        QString varUpper = varNameWithOffset.toUpper();
+        varUpper = varUpper.remove(' ');
+        varUpper = varUpper.remove(dspVar->Name);
+        ulong retoffs = dspVar->offs;
+        if (varUpper.length() > 0) { // wenn noch was da, dann muss das ein +/- offset sein
+            long offset = calcOffsetFromStr(varUpper);
+            if(offset < 0)
+                return -1;
+            retoffs += offset;
         }
-
-        if (pDspVar->segment == globalSegment) // wenn daten im globalen segment liegen
-            retoffs += (globalstartadr - umo);
-
+        if (dspVar->segment == globalSegment) // wenn daten im globalen segment liegen
+            retoffs += (globalstartadr - userMemOffset);
         return retoffs;
     }
-
-    bool ok;
-    long offset = varNameOrValue.toLong(&ok, 10); // prüfen auf dez. konstante
-    if (ok)
-        return offset;
-
-    offset = varNameOrValue.toLong(&ok, 16); // mal hex versuchen
-    if (ok)
-        return offset;
-
-    return -1;
+    // offset only e.g DSPMEMOFFSET
+    return calcOffsetFromStr(varNameWithOffset);
 }
 
-long DspVarResolver::varAddress(QString& varNameOrValue)
+long DspVarResolver::varAddress(QString& varNameWithOffset)
 {
-    QString ts = varNameOrValue.toUpper();
-    const QChar* cts = ts.data();
-    QString sSearch = m_varParser.GetKeyword(&cts); // der namen der variable, die gesucht ist
-    if (m_varHash.contains(sSearch)) {
-        TDspVar* pDspVar = m_varHash.value(sSearch);
-        ts = ts.remove(' ');
-        ts = ts.remove(sSearch); // name raus
-        if (ts.length() > 0) { // wenn noch was da, dann muss das ein +/- offset sein
-            bool ok;
-            long offset = ts.toLong(&ok, 10); // prüfen auf dez. konstante
-            if (ok)
-                return pDspVar->adr + offset;
-
-            offset = ts.toLong(&ok, 16); // mal hex versuchen
-            if (ok)
-                return pDspVar->adr +offset;
-
-            return -1; // sonst ist das ein fehler
+    TDspVar* dspVar = getDspVar(varNameWithOffset);
+    if(dspVar) {
+        QString varUpper = varNameWithOffset.toUpper();
+        varUpper = varUpper.remove(' ');
+        varUpper = varUpper.remove(dspVar->Name);
+        if (varUpper.length() > 0) { // wenn noch was da, dann muss das ein +/- offset sein
+            long offset = calcOffsetFromStr(varUpper);
+            if(offset >= 0)
+                return dspVar->adr + offset;
+            return -1;
         }
-        return pDspVar->adr;
+        return dspVar->adr;
     }
-
-    bool ok;
-    long adress = varNameOrValue.toLong(&ok, 10); // prüfen auf dez. konstante
-    if (ok)
-        return adress;
-
-    adress = varNameOrValue.toLong(&ok, 16); // mal hex versuchen
-    if (ok)
-        return adress;
-
-    return -1;
+    // offset only e.g DSPMEMOFFSET
+    return calcOffsetFromStr(varNameWithOffset);
 }
 
-TDspVar* DspVarResolver::getDspVar(const QString &varName)
+TDspVar* DspVarResolver::getDspVar(const QString &varNameWithOffset)
 {
-    QString ts = varName.toUpper();
-    const QChar* cts = ts.data();
-    QString sSearch = m_varParser.GetKeyword(&cts);
-
-    if (m_varHash.contains(sSearch))
-        return m_varHash.value(sSearch);
-    else
-        return 0;
+    QString upperName = varNameWithOffset.toUpper();
+    const QChar* cts = upperName.data();
+    QString baseVarName = m_varParser.GetKeyword(&cts);
+    auto iter = m_varHash.constFind(baseVarName);
+    if(iter != m_varHash.constEnd())
+        return iter.value();
+    return nullptr;
 }
 
-int DspVarResolver::type(const QString &varName)
+int DspVarResolver::type(const QString &varNameWithOffset)
 {
-    QString ts = varName.toUpper();
-    const QChar* cts = ts.data();
-    QString sSearch = m_varParser.GetKeyword(&cts);
-    if (m_varHash.contains(sSearch))
-        return m_varHash.value(sSearch)->type;
-    else
-        return eUnknown;
+    TDspVar* var = getDspVar(varNameWithOffset);
+    if(var)
+        return var->type;
+    return eUnknown;
 }
