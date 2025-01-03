@@ -12,15 +12,10 @@ namespace Zera {
 
 enum dspcommands
 {
-    bootdsp,
-    resetdsp,
-    setbootpath,
     setsamplingsystem,
     varlist2dsp,
     cmdlist2dsp,
     intlist2dsp,
-    setsignalrouting,
-    resetmaximum,
     triggerinthksk,
     activateinterface,
     deactivateinterface,
@@ -30,9 +25,6 @@ enum dspcommands
     readdeviceversion,
     readserverversion,
     dspinterrupt,
-    readactualload,
-    readmaxload,
-    resetmaxload
 };
 
 

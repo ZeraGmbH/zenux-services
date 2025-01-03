@@ -237,26 +237,19 @@ void cDSPInterfacePrivate::receiveAnswer(std::shared_ptr<ProtobufMessage::NetMes
 
         switch (lastCmd)
         {
-        case bootdsp:
-        case resetdsp:
-        case setbootpath:
         case setsamplingsystem:
         case varlist2dsp:
         case cmdlist2dsp:
         case intlist2dsp:
-        case setsignalrouting:
-        case resetmaximum:
         case triggerinthksk:
         case activateinterface:
         case deactivateinterface:
         case dspmemorywrite:
-        case resetmaxload:
             emit q->serverAnswer(lmsgnr, lreply, VariantConverter::returnString(lmsg));
             break;
         case readdeviceversion:
         case readserverversion:
         case dspinterrupt:
-        case readmaxload:
             emit q->serverAnswer(lmsgnr, lreply, VariantConverter::returnString(lmsg));
             break;
         case dataacquisition:
