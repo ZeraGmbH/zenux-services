@@ -32,7 +32,7 @@ public:
     ulong setStartAdr(ulong startAdress, ulong globalMemStart); // zum relokalisieren der userdaten
     QString readDspVarList(const QString &variablesString); // lesen dsp daten ganze Liste
     bool readDspVarInt(QString varName, int& intval); // einen int (32bit) wert lesen
-    TDspVar *DspVarRead(QString nameLen, QByteArray *varRead); // lesen dsp variable;  name , länge stehen im parameter string; werte im anschluss im qbytearray
+    TDspVar *DspVarRead(const QString &nameLen, QByteArray *varRead); // lesen dsp variable;  name , länge stehen im parameter string; werte im anschluss im qbytearray
     bool DspVarWrite(QString);  // schreiben  true wenn ok
     QString DspVarWriteRM(const QString&); // dito schreiben mit rückmeldung
     QList<cDspCmd>& GetDspCmdList(); // damit der server die komplette liste aller clients

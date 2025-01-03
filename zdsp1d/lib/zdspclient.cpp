@@ -365,14 +365,17 @@ TDspVar *cZDSP1Client::readDspVar(TDspVar *&DspVar, int countVars, QByteArray *v
     return nullptr; // sonst fehler
 }
 
-TDspVar *cZDSP1Client::DspVarRead(QString nameLen, QByteArray *varRead)
+TDspVar *cZDSP1Client::DspVarRead(const QString &nameLen, QByteArray *varRead)
 {
-    QString name = nameLen.section(",",0,0);
+    const QStringList listNameLen = nameLen.split(",");
+    if(listNameLen.count() < 2)
+        return nullptr; // wrong parameter format
+    QString name = listNameLen[0];
     TDspVar *DspVar = m_dspVarResolver.getDspVar(name);
     if (!DspVar)
         return nullptr; // fehler, den namen gibt es nicht
 
-    QString countSection = nameLen.section(",",1,1);
+    QString countSection = listNameLen[1];
     bool ok;
     const int countVars = countSection.toInt(&ok);
     if (!ok || (countVars<1) )
