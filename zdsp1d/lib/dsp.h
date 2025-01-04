@@ -15,7 +15,15 @@ struct sDspCmd { // wird zum ausdekodieren der dsp kommandos benötigt
     char modify; // !=0 -> verändern, diese befehle erhalten die prozessnr. (fd) als parameter 
 };
 
-sDspCmd* findDspCmd(const QString& cmdName);
+class DspStaticData
+{
+public:
+    static sDspCmd* findDspCmd(const QString& cmdName);
+private:
+    static void fillCmdHashOn1stCall();
+    static QHash<QString, sDspCmd*> m_dspCmdHash;
+};
+
 
 class DspCmdWithParamsRaw { // hält einen 64bit dsp befehl incl. parameter
 public:

@@ -214,24 +214,23 @@ static sDspCmd DspCmd[78] =
 {"INTEGRALNEG", 76, CMD3i16, 0 },
 {"SUBNVC", 77, CMD3i16, 0 }};
 
-static QHash<QString, sDspCmd*> dspCmdHash;
+QHash<QString, sDspCmd*> DspStaticData::m_dspCmdHash;
 
-static void fillHashOn1stCall()
+sDspCmd *DspStaticData::findDspCmd(const QString &cmdName)
 {
-    if(dspCmdHash.isEmpty())
-        for(int i=0; i<sizeof(DspCmd)/sizeof(sDspCmd); i++)
-            dspCmdHash[DspCmd[i].Name] = &DspCmd[i];
-}
-
-sDspCmd* findDspCmd(const QString& cmdName)
-{
-    fillHashOn1stCall();
-    QHash<QString, sDspCmd*>::const_iterator iter = dspCmdHash.constFind(cmdName);
-    if(iter != dspCmdHash.cend())
+    fillCmdHashOn1stCall();
+    QHash<QString, sDspCmd*>::const_iterator iter = m_dspCmdHash.constFind(cmdName);
+    if(iter != m_dspCmdHash.cend())
         return iter.value();
     return nullptr;
 }
 
+void DspStaticData::fillCmdHashOn1stCall()
+{
+    if(m_dspCmdHash.isEmpty())
+        for(int i=0; i<sizeof(DspCmd)/sizeof(sDspCmd); i++)
+            m_dspCmdHash[DspCmd[i].Name] = &DspCmd[i];
+}
 
 TDspVar DspWorkspaceVar[15] =
 {
@@ -386,4 +385,4 @@ DspCmdWithParamsRaw::DspCmdWithParamsRaw(const unsigned short CMD, const unsigne
 DspCmdWithParamsRaw::DspCmdWithParamsRaw(const unsigned short CMD, const unsigned short P1,const unsigned long P2) // befehl und 1x  16bit uint und 1x 32bit uint
 {
     w[0]=(CMD<<16)+P1;w[1]=P2;
-}    
+}

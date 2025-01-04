@@ -25,7 +25,7 @@ DspCmdWithParamsRaw DspCmdCompiler::compileOneCmdLineAligned(const QString &cmdL
     }
     const QChar* cmds = cmdLine.data();
     QString sSearch = CmdParser.GetKeyword(&cmds); // das 1. keyword muss ein befehlscode sein
-    sDspCmd *dspcmd = findDspCmd(sSearch);
+    sDspCmd *dspcmd = DspStaticData::findDspCmd(sSearch);
     if (dspcmd)
     { // bekannter befehlscode ?
         switch (dspcmd->CmdClass) {
