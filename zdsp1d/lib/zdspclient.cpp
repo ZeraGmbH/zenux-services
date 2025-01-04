@@ -13,8 +13,10 @@ cZDSP1Client::cZDSP1Client(int socket, VeinTcp::TcpPeer* netclient, AbstractFact
     DspCmdWithParamsRaw DspCmd;
     m_DspCmdList.append(DspCmd);
     m_DspIntCmdList.append(DspCmd);
-    m_dspVarResolver.addSection( &m_memorySection);
-    m_memorySection.StartAdr = m_memorySection.n = 0; m_memorySection.Section = userSection;
+    m_dspVarResolver.addSection(&m_userMemSection);
+    m_userMemSection.StartAdr = 0;
+    m_userMemSection.n = 0;
+    m_userMemSection.Section = userSection;
     m_dspVarResolver.actualizeVarHash(); // wir setzen die hashtabelle und initialisieren diese
 }
 
@@ -43,10 +45,10 @@ bool cZDSP1Client::setRawActualValueList(const QString &varsSemicolonSeparated)
         }
     }
 
-    m_memorySection.n = m_dspRawActualValueList.count();
-    if(m_memorySection.n > 0) { // wir haben mindestens 1 variable
-        m_dspVarArray.resize(m_memorySection.n);
-        for(int i=0; i<m_memorySection.n; i++) { // und machen diese dem resolver zugänglich
+    m_userMemSection.n = m_dspRawActualValueList.count();
+    if(m_userMemSection.n > 0) { // wir haben mindestens 1 variable
+        m_dspVarArray.resize(m_userMemSection.n);
+        for(int i=0; i<m_userMemSection.n; i++) { // und machen diese dem resolver zugänglich
             m_dspVarArray[i].m_clientHandleName = m_dspRawActualValueList[i].getClientHandleName();
             m_dspVarArray[i].Name = m_dspRawActualValueList[i].name();
             m_dspVarArray[i].size = m_dspRawActualValueList[i].size();
@@ -55,7 +57,7 @@ bool cZDSP1Client::setRawActualValueList(const QString &varsSemicolonSeparated)
             m_dspVarArray[i].segment = (segmentType)m_dspRawActualValueList[i].segment();
         }
         // WTF!!!!!!!!!!!!!
-        m_memorySection.DspVar = m_dspVarArray.data();
+        m_userMemSection.DspVar = m_dspVarArray.data();
     }
     m_dspVarResolver.actualizeVarHash(); // wir setzen die hashtabelle neu
     return true;
@@ -80,15 +82,15 @@ ulong cZDSP1Client::setStartAdr(ulong startAdress, ulong globalMemStart)
 {
     ulong usermemsize = 0;
     ulong globalmemsize = 0;
-    m_memorySection.StartAdr = startAdress;
-    for (int i = 0; i < m_memorySection.n; i++) {
-        if (m_memorySection.DspVar[i].segment == localSegment) {
-            m_memorySection.DspVar[i].adr = startAdress + usermemsize; // we need the adress for reading back data
-            usermemsize += m_memorySection.DspVar[i].size;
+    m_userMemSection.StartAdr = startAdress;
+    for (int i = 0; i < m_userMemSection.n; i++) {
+        if (m_userMemSection.DspVar[i].segment == localSegment) {
+            m_userMemSection.DspVar[i].adr = startAdress + usermemsize; // we need the adress for reading back data
+            usermemsize += m_userMemSection.DspVar[i].size;
         }
         else {
-            m_memorySection.DspVar[i].adr = globalMemStart+globalmemsize;
-            globalmemsize += m_memorySection.DspVar[i].size;
+            m_userMemSection.DspVar[i].adr = globalMemStart+globalmemsize;
+            globalmemsize += m_userMemSection.DspVar[i].size;
         }
     }
     return usermemsize;
