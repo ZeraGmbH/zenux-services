@@ -690,17 +690,15 @@ bool ZDspServer::BuildDSProgram(QString &errs)
     if (m_clientList.count() > 0) {
         cZDSP1Client* firstClient = m_clientList.at(0);
         DspCmdCompiler firstCompiler(&firstClient->m_dspVarResolver, firstClient->getSocket());
-        cmd = firstCompiler.compileOneCmdLine(QString("DSPMEMOFFSET(%1)").arg(dm32DspWorkspace.StartAdr),
-                                              &ok,
-                                              0, 0);
+        cmd = firstCompiler.compileOneCmdLineZeroAligned(QString("DSPMEMOFFSET(%1)").arg(dm32DspWorkspace.StartAdr),
+                                                         &ok);
         cycCmdMemStream << cmd;
         for (int i = 0; i < m_clientList.count(); i++) {
             cZDSP1Client* client = m_clientList.at(i);
             if (client->isActive()) {
                 DspCmdCompiler compiler(&client->m_dspVarResolver, client->getSocket());
-                cmd = compiler.compileOneCmdLine(QString("USERMEMOFFSET(%1)").arg(userMemOffset),
-                                                 &ok,
-                                                 0, 0);
+                cmd = compiler.compileOneCmdLineZeroAligned(QString("USERMEMOFFSET(%1)").arg(userMemOffset),
+                                                            &ok);
                 cycCmdMemStream << cmd;
                 intCmdMemStream << cmd;
 
@@ -720,18 +718,14 @@ bool ZDspServer::BuildDSProgram(QString &errs)
         }
 
         // wir triggern das senden der serialisierten interrupts
-        cmd = firstCompiler.compileOneCmdLine("DSPINTPOST()",
-                                              &ok,
-                                              0, 0);
+        cmd = firstCompiler.compileOneCmdLineZeroAligned("DSPINTPOST()", &ok);
         cycCmdMemStream << cmd;
     }
 
     cZDSP1Client dummyClient(0, 0, m_deviceNodeFactory); // dummyClient einrichten damit was jetzt kommt noch
     DspCmdCompiler dummyCompiler(&dummyClient.m_dspVarResolver, dummyClient.getSocket());
     // funktioniert selbst wenn wenn wir keinen mehr haben
-    cmd = dummyCompiler.compileOneCmdLine("INVALID()",
-                                          &ok,
-                                          0, 0);
+    cmd = dummyCompiler.compileOneCmdLineZeroAligned("INVALID()", &ok);
     cycCmdMemStream << cmd; // kommando listen ende
     intCmdMemStream << cmd;
 

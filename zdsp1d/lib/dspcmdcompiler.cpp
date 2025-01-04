@@ -6,10 +6,15 @@ DspCmdCompiler::DspCmdCompiler(DspVarResolver *varResolver, int socket) :
 {
 }
 
-DspCmdWithParamsRaw DspCmdCompiler::compileOneCmdLine(QString cmdLine,
-                                                      bool *ok,
-                                                      ulong userMemOffset,
-                                                      ulong globalstartadr)
+DspCmdWithParamsRaw DspCmdCompiler::compileOneCmdLineZeroAligned(const QString &cmdLine, bool *ok)
+{
+    return compileOneCmdLineAligned(cmdLine, ok, 0, 0);
+}
+
+DspCmdWithParamsRaw DspCmdCompiler::compileOneCmdLineAligned(const QString &cmdLine,
+                                                             bool *ok,
+                                                             ulong userMemOffset,
+                                                             ulong globalstartadr)
 {
     cParse CmdParser;
     CmdParser.SetDelimiter("(,)"); // setze die trennzeichen für den parser

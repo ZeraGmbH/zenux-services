@@ -140,10 +140,8 @@ bool cZDSP1Client::GenCmdList(const QString &cmdsSemicolonSeparated,
         QString cs = cmdsSemicolonSeparated.section(';',i,i);
         if ( (cs.isEmpty()) || (cs==("Empty")) )
             break; // liste ist durch
-        genCmdList.append(compiler.compileOneCmdLine(cs,
-                                                     &ok,
-                                                     userMemOffset,
-                                                     globalstartadr));
+        genCmdList.append(compiler.compileOneCmdLineAligned(cs, &ok,
+                                                            userMemOffset, globalstartadr));
         if(!ok) {
             err = cs;
             break;
