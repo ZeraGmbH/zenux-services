@@ -48,9 +48,9 @@ private:
     QString m_sIntCmdListDef; // interrupt kommando  liste defintion
 
     QList<DspVarClientPerspective> m_dspRawActualValueList; // liste mit variablen beschreibungen
-    QList<DspCmdWithParamsRaw> m_DspCmdList; // liste mit dsp kommandos (periodisch)
-    QList<DspCmdWithParamsRaw>  m_DspIntCmdList; // liste mit dsp kommandos (interrupt)
-    QVector<TDspVar> m_dspVarArray; // array von TDspVar
-    TMemSection m_memorySection; // eine memory section für den DspVarResolver für die variablen des clients
+    QList<DspCmdWithParamsRaw> m_DspCmdList;
+    QList<DspCmdWithParamsRaw>  m_DspIntCmdList;
+    QVector<TDspVar> m_dspVarArray; // !!! we need permanent keeper of TDspVar pointer to data is used !!!
+    TMemSection m_memorySection;
 };
 #endif // ZDSPCLIENT_H

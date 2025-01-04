@@ -66,6 +66,7 @@ bool cZDSP1Client::setRawActualValueList(const QString &varsSemicolonSeparated)
             m_dspVarArray[i].type = (dType)m_dspRawActualValueList[i].type();
             m_dspVarArray[i].segment = (segmentType)m_dspRawActualValueList[i].segment();
         }
+        // WTF!!!!!!!!!!!!!
         m_memorySection.DspVar = m_dspVarArray.data();
     }
     m_dspVarResolver.actualizeVarHash(); // wir setzen die hashtabelle neu
