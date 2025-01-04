@@ -1,7 +1,7 @@
 #ifndef DSP_H
 #define DSP_H
 
-#include <QHash>
+#include <QString>
 
 enum DspAcks {NBusy, InProgress, CmdError, ParError, CmdDone};
 
@@ -14,7 +14,7 @@ struct sDspCmd { // wird zum ausdekodieren der dsp kommandos benötigt
     CmdType CmdClass; // der typ des befehls
     char modify; // !=0 -> verändern, diese befehle erhalten die prozessnr. (fd) als parameter 
 };
-    
+
 sDspCmd* findDspCmd(const QString& cmdName);
 
 class DspCmdWithParamsRaw { // hält einen 64bit dsp befehl incl. parameter
@@ -26,9 +26,8 @@ public:
     DspCmdWithParamsRaw(const unsigned short, const unsigned short,const unsigned short,const unsigned short); // befehl und 3x  16bit uint
     DspCmdWithParamsRaw(const unsigned short, const unsigned short,const unsigned short); // befehl und 2x  16bit uint
     DspCmdWithParamsRaw(const unsigned short, const unsigned short,const unsigned long); // befehl und 1x  16bit uint und 1x 32bit uint ... kann auch ein float sein
-//    void operator = (const DspCmdWithParamsRaw &tc) { w[0] = tc.w[0]; w[1] = tc.w[1];};
-    unsigned long w[2]; // ein DSP-Kommando besteht aus 64Bit
-private:
-};    
 
-#endif    
+    unsigned long w[2]; // ein DSP-Kommando besteht aus 64Bit
+};
+
+#endif

@@ -1,5 +1,6 @@
 #include "dsp.h"
 #include "dspvardefinitions.h"
+#include <QHash>
 
 // alle angaben aus dsp assembler programm 
 /*--------------------------- user basics -----------------------------------*/ 
