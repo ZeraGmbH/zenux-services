@@ -19,7 +19,6 @@ public:
     void setActive(bool active);
 
     bool setRawActualValueList(const QString& varsSemicolonSeparated);
-    QString getRawActualValueList();
     void setCmdListDef(const QString& cmdListDef);
     void setCmdForIrqListDef(const QString& cmdIntListDef);
 

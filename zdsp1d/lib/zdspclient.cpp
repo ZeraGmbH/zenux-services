@@ -72,18 +72,6 @@ bool cZDSP1Client::setRawActualValueList(const QString &varsSemicolonSeparated)
     return true;
 }
 
-QString cZDSP1Client::getRawActualValueList()
-{
-    QString ret;
-    QTextStream ts(&ret, QIODevice::WriteOnly);
-    if (!m_dspRawActualValueList.empty())
-        for(auto it = m_dspRawActualValueList.constBegin(); it != m_dspRawActualValueList.constEnd(); ++it)
-            ts << it->name() << ',' << it->size() << ';';
-    else
-        ts << "Empty";
-    return ret;
-}
-
 void cZDSP1Client::setCmdListDef(const QString &cmdListDef)
 {
     m_sCmdListDef = cmdListDef;
