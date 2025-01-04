@@ -48,6 +48,6 @@ private:
     QList<DspCmdWithParamsRaw> m_DspCmdList;
     QList<DspCmdWithParamsRaw>  m_DspIntCmdList;
     QVector<TDspVar> m_dspVarArray; // !!! we need permanent keeper of TDspVar pointer to data is used !!!
-    TMemSection m_memorySection;
+    TMemSection m_userMemSection;
 };
 #endif // ZDSPCLIENT_H

@@ -1,9 +1,11 @@
 #include "dspvarresolver.h"
+#include "dsp.h"
 
 DspVarResolver::DspVarResolver()
 {
     m_varParser.SetDelimiter("(,+,-,)"); // setze die trennzeichen für den parser
     m_varParser.SetWhiteSpace(" (,)");
+    m_varHash = DspStaticData::getVarHash();
 }
 
 void DspVarResolver::addSection(TMemSection* section)
@@ -13,9 +15,9 @@ void DspVarResolver::addSection(TMemSection* section)
 
 void DspVarResolver::actualizeVarHash()
 {
-    m_varHash.clear();
+    m_varHash = DspStaticData::getVarHash();
     for(TMemSection* memSection : qAsConst(MemSectionList)) {
-        initMemsection(memSection);
+        DspStaticData::initMemsection(memSection);
         for (int i=0; i<memSection->n; i++)
             m_varHash[memSection->DspVar[i].Name] = &(memSection->DspVar[i]);
     }
@@ -75,18 +77,6 @@ int DspVarResolver::getVarType(const QString &varNameWithOffset)
     if(var)
         return var->type;
     return eUnknown;
-}
-
-void DspVarResolver::initMemsection(TMemSection *psec)
-{
-    if (psec->Section == systemSection) { // wir initialisieren nur system sections
-        long offs = 0;
-        for (int i = 0; i< (psec->n); i++) {
-            psec->DspVar[i].offs = offs;
-            psec->DspVar[i].adr = psec->StartAdr + offs;
-            offs += psec->DspVar[i].size;
-        }
-    }
 }
 
 QString DspVarResolver::extractOffset(const QString &varNameWithOffset, const QString &varName)

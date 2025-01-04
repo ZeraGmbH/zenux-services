@@ -1,7 +1,9 @@
 #ifndef DSP_H
 #define DSP_H
 
+#include "dspvardefinitions.h"
 #include <QString>
+#include <QHash>
 
 enum DspAcks {NBusy, InProgress, CmdError, ParError, CmdDone};
 
@@ -19,9 +21,14 @@ class DspStaticData
 {
 public:
     static sDspCmd* findDspCmd(const QString& cmdName);
+    static const QHash<QString, TDspVar*> &getVarHash();
+    static void initMemsection(TMemSection* memSection);
 private:
     static void fillCmdHashOn1stCall();
+    static void fillMemSectionHashOn1stCall();
+
     static QHash<QString, sDspCmd*> m_dspCmdHash;
+    static QHash<QString, TDspVar*> m_varHash;
 };
 
 

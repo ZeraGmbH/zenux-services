@@ -214,24 +214,6 @@ static sDspCmd DspCmd[78] =
 {"INTEGRALNEG", 76, CMD3i16, 0 },
 {"SUBNVC", 77, CMD3i16, 0 }};
 
-QHash<QString, sDspCmd*> DspStaticData::m_dspCmdHash;
-
-sDspCmd *DspStaticData::findDspCmd(const QString &cmdName)
-{
-    fillCmdHashOn1stCall();
-    QHash<QString, sDspCmd*>::const_iterator iter = m_dspCmdHash.constFind(cmdName);
-    if(iter != m_dspCmdHash.cend())
-        return iter.value();
-    return nullptr;
-}
-
-void DspStaticData::fillCmdHashOn1stCall()
-{
-    if(m_dspCmdHash.isEmpty())
-        for(int i=0; i<sizeof(DspCmd)/sizeof(sDspCmd); i++)
-            m_dspCmdHash[DspCmd[i].Name] = &DspCmd[i];
-}
-
 TDspVar DspWorkspaceVar[15] =
 {
     {"DspWorkspace", "FREQENCY",1,eFloat,0,0, localSegment},                // 1 wert gemessene frequenz
@@ -250,7 +232,6 @@ TDspVar DspWorkspaceVar[15] =
     {"DspWorkspace", "SYNCASDU",1,eInt,0,0, localSegment},                  // ob und auf welchen datensatz synchronisiert wird
     {"DspWorkspace", "TMCH0",1,eFloat,0,0, localSegment}                    // periodendauer messsignal kanal0
 };
-
 
 static constexpr int dm32DspWorkSpaceBase21262 = 0x82800;
 static constexpr int dm32DialogWorkSpaceBase21262 = 0x83800;
@@ -355,6 +336,61 @@ TMemSection symbConsts1 = {
     StartAdr		: 0,
     n 		: 32,
 	DspVar		: ChannelNr };
+
+
+QHash<QString, sDspCmd*> DspStaticData::m_dspCmdHash;
+QHash<QString, TDspVar*> DspStaticData::m_varHash;
+
+sDspCmd *DspStaticData::findDspCmd(const QString &cmdName)
+{
+    fillCmdHashOn1stCall();
+    QHash<QString, sDspCmd*>::const_iterator iter = m_dspCmdHash.constFind(cmdName);
+    if(iter != m_dspCmdHash.cend())
+        return iter.value();
+    return nullptr;
+}
+
+const QHash<QString, TDspVar *> &DspStaticData::getVarHash()
+{
+    fillMemSectionHashOn1stCall();
+    return m_varHash;
+}
+
+void DspStaticData::fillCmdHashOn1stCall()
+{
+    if(m_dspCmdHash.isEmpty())
+        for(int i=0; i<sizeof(DspCmd)/sizeof(sDspCmd); i++)
+            m_dspCmdHash[DspCmd[i].Name] = &DspCmd[i];
+}
+
+void DspStaticData::fillMemSectionHashOn1stCall()
+{
+    if(m_varHash.isEmpty()) {
+        QList<TMemSection*> fixedSectionList;
+        fixedSectionList.append(&dm32DspWorkspace);
+        fixedSectionList.append(&dm32DialogWorkSpace);
+        fixedSectionList.append(&dm32UserWorkSpace);
+        fixedSectionList.append(&dm32CmdList);
+        fixedSectionList.append(&symbConsts1);
+        for(TMemSection* memSection : qAsConst(fixedSectionList)) {
+            initMemsection(memSection);
+            for (int i=0; i<memSection->n; i++)
+                m_varHash[memSection->DspVar[i].Name] = &(memSection->DspVar[i]);
+        }
+    }
+}
+
+void DspStaticData::initMemsection(TMemSection *memSection)
+{
+    if (memSection->Section == systemSection) { // wir initialisieren nur system sections
+        long offs = 0;
+        for (int i = 0; i< (memSection->n); i++) {
+            memSection->DspVar[i].offs = offs;
+            memSection->DspVar[i].adr = memSection->StartAdr + offs;
+            offs += memSection->DspVar[i].size;
+        }
+    }
+}
 
 
 DspCmdWithParamsRaw::DspCmdWithParamsRaw(const unsigned short CMD) // nur befehl 16bit

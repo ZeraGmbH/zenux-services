@@ -3,12 +3,6 @@
 #include "dspvardevicenodeinout.h"
 #include "zscpi_response_definitions.h"
 
-extern TMemSection dm32DspWorkspace;
-extern TMemSection dm32DialogWorkSpace;
-extern TMemSection dm32UserWorkSpace;
-extern TMemSection dm32CmdList;
-extern TMemSection symbConsts1;
-
 cZDSP1Client::cZDSP1Client(int socket, VeinTcp::TcpPeer* netclient, AbstractFactoryDeviceNodeDspPtr deviceNodeFactory) :
     m_deviceNodeFactory(deviceNodeFactory),
     m_pNetClient(netclient),
@@ -19,11 +13,6 @@ cZDSP1Client::cZDSP1Client(int socket, VeinTcp::TcpPeer* netclient, AbstractFact
     DspCmdWithParamsRaw DspCmd;
     m_DspCmdList.append(DspCmd);
     m_DspIntCmdList.append(DspCmd);
-    m_dspVarResolver.addSection( &dm32DspWorkspace);
-    m_dspVarResolver.addSection( &dm32DialogWorkSpace);
-    m_dspVarResolver.addSection( &dm32UserWorkSpace);
-    m_dspVarResolver.addSection( &dm32CmdList);
-    m_dspVarResolver.addSection( &symbConsts1);
     m_dspVarResolver.addSection( &m_memorySection);
     m_memorySection.StartAdr = m_memorySection.n = 0; m_memorySection.Section = userSection;
     m_dspVarResolver.actualizeVarHash(); // wir setzen die hashtabelle und initialisieren diese
