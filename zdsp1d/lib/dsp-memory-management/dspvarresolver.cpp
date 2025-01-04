@@ -36,12 +36,10 @@ long DspVarResolver::getVarOffset(const QString& varNameWithOffset, ulong userMe
 {
     TDspVar* dspVar = getDspVar(varNameWithOffset);
     if(dspVar) {
-        QString varUpper = varNameWithOffset.toUpper();
-        varUpper = varUpper.remove(' ');
-        varUpper = varUpper.remove(dspVar->Name);
         ulong retoffs = dspVar->offs;
-        if (varUpper.length() > 0) { // wenn noch was da, dann muss das ein +/- offset sein
-            long offset = calcOffsetFromStr(varUpper);
+        QString offsetStr = extractOffset(varNameWithOffset, dspVar->Name);
+        if(offsetStr.length() > 0) { // wenn noch was da, dann muss das ein +/- offset sein
+            long offset = calcOffsetFromStr(offsetStr);
             if(offset < 0)
                 return -1;
             retoffs += offset;
@@ -58,14 +56,12 @@ long DspVarResolver::getVarAddress(const QString &varNameWithOffset)
 {
     TDspVar* dspVar = getDspVar(varNameWithOffset);
     if(dspVar) {
-        QString varUpper = varNameWithOffset.toUpper();
-        varUpper = varUpper.remove(' ');
-        varUpper = varUpper.remove(dspVar->Name);
-        if (varUpper.length() > 0) { // wenn noch was da, dann muss das ein +/- offset sein
-            long offset = calcOffsetFromStr(varUpper);
-            if(offset >= 0)
-                return dspVar->adr + offset;
-            return -1;
+        QString offsetStr = extractOffset(varNameWithOffset, dspVar->Name);
+        if(offsetStr.length() > 0) { // wenn noch was da, dann muss das ein +/- offset sein
+            long offset = calcOffsetFromStr(offsetStr);
+            if(offset < 0)
+                return -1;
+            return dspVar->adr + offset;
         }
         return dspVar->adr;
     }
@@ -91,6 +87,13 @@ void DspVarResolver::initMemsection(TMemSection *psec)
             offs += psec->DspVar[i].size;
         }
     }
+}
+
+QString DspVarResolver::extractOffset(const QString &varNameWithOffset, const QString &varName)
+{
+    QString varUpper = varNameWithOffset.toUpper();
+    varUpper.remove(' ');
+    return varUpper.remove(varName);
 }
 
 long DspVarResolver::calcOffsetFromStr(const QString &str)
