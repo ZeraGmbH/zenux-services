@@ -67,7 +67,7 @@ quint32 cDSPInterfacePrivate::cmdList2Dsp()
 {
     QString plist;
     QTextStream ts( &plist, QIODevice::WriteOnly );
-    for ( QStringList::Iterator it = CycCmdList.begin(); it != CycCmdList.end(); ++it )
+    for (auto it = m_cycCmdList.constBegin(); it != m_cycCmdList.constEnd(); ++it )
         ts << *it << ";" ;
     quint32 msgnr = sendCommand("MEAS:LIST:CYCL", plist); // long: MEASURE:LIST:CYCLIST
     m_MsgNrCmdList[msgnr] = cmdlist2dsp;
@@ -78,7 +78,7 @@ quint32 cDSPInterfacePrivate::intList2Dsp()
 {
     QString plist;
     QTextStream ts( &plist, QIODevice::WriteOnly );
-    for ( QStringList::Iterator it = IntCmdList.begin(); it != IntCmdList.end(); ++it )
+    for (auto it = m_irqCmdList.constBegin(); it != m_irqCmdList.constEnd(); ++it )
         ts << *it << ";" ;
     quint32 msgnr = sendCommand("MEAS:LIST:INTL", plist); // long: MEASURE:LIST:INTLIST
     m_MsgNrCmdList[msgnr] = intlist2dsp;
@@ -87,18 +87,18 @@ quint32 cDSPInterfacePrivate::intList2Dsp()
 
 int cDSPInterfacePrivate::cmdListCount()
 {
-    return CycCmdList.count();
+    return m_cycCmdList.count();
 }
 
 int cDSPInterfacePrivate::intListCount()
 {
-    return IntCmdList.count();
+    return m_irqCmdList.count();
 }
 
 void cDSPInterfacePrivate::clearCmdList()
 {
-    CycCmdList.clear();
-    IntCmdList.clear();
+    m_cycCmdList.clear();
+    m_irqCmdList.clear();
 }
 
 // Not used in public interface
@@ -112,17 +112,17 @@ quint32 cDSPInterfacePrivate::triggerIntHKSK(quint32 hksk)
 
 void cDSPInterfacePrivate::addCycListItem(QString cmd)
 {
-    CycCmdList.push_back(cmd);
+    m_cycCmdList.append(cmd);
 }
 
 void cDSPInterfacePrivate::addCycListItems(const QStringList &cmds)
 {
-    CycCmdList.append(cmds);
+    m_cycCmdList.append(cmds);
 }
 
 void cDSPInterfacePrivate::addIntListItem(QString cmd)
 {
-    IntCmdList.push_back(cmd);
+    m_irqCmdList.append(cmd);
 }
 
 cDspMeasData* cDSPInterfacePrivate::getMemHandle(QString name)
@@ -196,7 +196,7 @@ quint32 cDSPInterfacePrivate::dspMemoryWrite(cDspMeasData *memgroup)
 
 QStringList cDSPInterfacePrivate::getCyclicCmdList() const
 {
-    return CycCmdList;
+    return m_cycCmdList;
 }
 
 QList<cDspMeasData *> cDSPInterfacePrivate::getMemoryDataList() const

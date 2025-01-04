@@ -75,7 +75,7 @@ private:
     cDSPInterface *q_ptr;
     Zera::ProxyClientPtr m_clientSmart;
 
-    QStringList CycCmdList, IntCmdList;
+    QStringList m_cycCmdList, m_irqCmdList;
     QList<cDspMeasData*> m_DspMemoryDataList; // eine liste mit zeigern auf dsp speicher
     QHash<quint32, cDspMeasData*> m_MsgNrMeasData;
     QHash<quint32, DSPDATA::dType> m_MsgNrMemType;
