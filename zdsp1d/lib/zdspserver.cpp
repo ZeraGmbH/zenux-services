@@ -322,8 +322,8 @@ enum SCPICmdType  {
     scpiUnloadCmdList,
     scpiLoadCmdList,
     scpiRavListGetSet,
-    scpiCmdIntListGetSet,
-    scpiCmdCycListGetSet,
+    scpiCmdIntListSet,
+    scpiCmdCycListSet,
     scpiReadActualValues, // AKA data acquisition
 
     // die routinen für das memory modell
@@ -351,8 +351,8 @@ void ZDspServer::initSCPIConnection(QString leadingNodes)
 
     addDelegate("", "MEASURE", SCPI::isCmdwP, m_scpiInterface, scpiReadActualValues);
     addDelegate("MEASURE:LIST", "RAVLIST", SCPI::isQuery | SCPI::isCmdwP, m_scpiInterface, scpiRavListGetSet);
-    addDelegate("MEASURE:LIST", "INTLIST", SCPI::isQuery | SCPI::isCmdwP, m_scpiInterface, scpiCmdIntListGetSet);
-    addDelegate("MEASURE:LIST", "CYCLIST", SCPI::isQuery | SCPI::isCmdwP, m_scpiInterface, scpiCmdCycListGetSet);
+    addDelegate("MEASURE:LIST", "INTLIST", SCPI::isCmdwP, m_scpiInterface, scpiCmdIntListSet);
+    addDelegate("MEASURE:LIST", "CYCLIST", SCPI::isCmdwP, m_scpiInterface, scpiCmdCycListSet);
     addDelegate("MEASURE:LIST", "SET", SCPI::isCmdwP, m_scpiInterface, scpiLoadCmdList);
     addDelegate("MEASURE:LIST", "CLEAR", SCPI::isCmdwP, m_scpiInterface, scpiUnloadCmdList);
 
@@ -410,21 +410,13 @@ void ZDspServer::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
         else
             protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::errexec];
         break;
-    case scpiCmdCycListGetSet:
-        if(cmd.isQuery())
-            protoCmd->m_sOutput = client->getCmdListDef();
-        else {
-            client->setCmdListDef(cmd.getParam());
-            protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::ack]; // ist erstmal ok, wird später beim SET kommando geprüft
-        }
+    case scpiCmdCycListSet:
+        client->setCmdListDef(cmd.getParam());
+        protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::ack]; // ist erstmal ok, wird später beim SET kommando geprüft
         break;
-    case scpiCmdIntListGetSet:
-        if(cmd.isQuery())
-            protoCmd->m_sOutput = client->getCmdForIrqListDef();
-        else {
-            client->setCmdForIrqListDef(cmd.getParam());
-            protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::ack]; // ist erstmal ok, wird später beim SET kommando geprüft
-        }
+    case scpiCmdIntListSet:
+        client->setCmdForIrqListDef(cmd.getParam());
+        protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::ack]; // ist erstmal ok, wird später beim SET kommando geprüft
         break;
     case scpiLoadCmdList:
         protoCmd->m_sOutput = loadCmdList(client);

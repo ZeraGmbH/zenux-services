@@ -29,8 +29,8 @@
   <MEASURE Type="Model,Command+Par" ScpiPath="MEASURE">
    <LIST Type="Node">
     <RAVLIST ScpiPath="MEASURE:LIST:RAVLIST" Type="Query,Command+Par"/>
-    <CYCLIST ScpiPath="MEASURE:LIST:CYCLIST" Type="Query,Command+Par"/>
-    <INTLIST ScpiPath="MEASURE:LIST:INTLIST" Type="Query,Command+Par"/>
+    <CYCLIST ScpiPath="MEASURE:LIST:CYCLIST" Type="Command+Par"/>
+    <INTLIST ScpiPath="MEASURE:LIST:INTLIST" Type="Command+Par"/>
     <SET ScpiPath="MEASURE:LIST:SET" Type="Command+Par"/>
     <CLEAR ScpiPath="MEASURE:LIST:CLEAR" Type="Command+Par"/>
    </LIST>

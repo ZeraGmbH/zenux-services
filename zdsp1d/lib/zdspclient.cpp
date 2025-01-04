@@ -89,19 +89,9 @@ void cZDSP1Client::setCmdListDef(const QString &cmdListDef)
     m_sCmdListDef = cmdListDef;
 }
 
-QString cZDSP1Client::getCmdListDef()
-{
-    return m_sCmdListDef;
-}
-
 void cZDSP1Client::setCmdForIrqListDef(const QString &cmdIntListDef)
 {
     m_sIntCmdListDef = cmdIntListDef;
-}
-
-QString cZDSP1Client::getCmdForIrqListDef()
-{
-    return m_sIntCmdListDef;
 }
 
 void cZDSP1Client::setActive(bool active)

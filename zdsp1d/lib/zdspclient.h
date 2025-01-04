@@ -21,9 +21,7 @@ public:
     bool setRawActualValueList(const QString& varsSemicolonSeparated);
     QString getRawActualValueList();
     void setCmdListDef(const QString& cmdListDef);
-    QString getCmdListDef();
     void setCmdForIrqListDef(const QString& cmdIntListDef);
-    QString getCmdForIrqListDef();
 
     bool GenCmdLists(QString& errs, ulong userMemOffset, ulong globalstartadr);
     QList<DspCmdWithParamsRaw>& GetDspCmdList();
