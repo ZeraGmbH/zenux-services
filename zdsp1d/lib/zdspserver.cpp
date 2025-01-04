@@ -749,11 +749,11 @@ bool ZDspServer::LoadDSProgram()
     cZDSP1Client dummyClient(0, 0, m_deviceNodeFactory); // dummyClient einrichten zum laden der kette
 
     AbstractDspDeviceNodePtr deviceNode = m_deviceNodeFactory->getDspDeviceNode();
-    ulong offset = dummyClient.m_dspVarResolver.varAddress(s) ;
+    ulong offset = dummyClient.m_dspVarResolver.getVarAddress(s) ;
     if(!deviceNode->write(offset, m_rawCyclicCmdMem.data(), m_rawCyclicCmdMem.size()))
         return false;
 
-    offset = dummyClient.m_dspVarResolver.varAddress(s2) ;
+    offset = dummyClient.m_dspVarResolver.getVarAddress(s2) ;
     if (!deviceNode->write(offset, m_rawInterruptCmdMem.data(), m_rawInterruptCmdMem.size()))
         return false;
 

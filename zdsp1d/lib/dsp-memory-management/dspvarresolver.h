@@ -11,11 +11,11 @@ class DspVarResolver
 public:
     DspVarResolver();
     void addSection(TMemSection* section);
-    void setVarHash();
+    void actualizeVarHash();
     TDspVar* getDspVar(const QString& varNameWithOffset);
-    long varOffset(const QString &varNameWithOffset, ulong userMemOffset, ulong globalstartadr);
-    long varAddress(const QString& varNameWithOffset);
-    int type(const QString &varNameWithOffset);
+    long getVarOffset(const QString &varNameWithOffset, ulong userMemOffset, ulong globalstartadr);
+    long getVarAddress(const QString& varNameWithOffset);
+    int getVarType(const QString &varNameWithOffset);
 
 private:
     void initMemsection(TMemSection* psec);

@@ -30,7 +30,7 @@ void cZDSP1Client::init(int socket, VeinTcp::TcpPeer *netclient)
     m_dspVarResolver.addSection( &symbConsts1);
     m_dspVarResolver.addSection( &m_memorySection);
     m_memorySection.StartAdr = m_memorySection.n = 0; m_memorySection.Section = userSection;
-    m_dspVarResolver.setVarHash(); // wir setzen die hashtabelle und initialisieren diese
+    m_dspVarResolver.actualizeVarHash(); // wir setzen die hashtabelle und initialisieren diese
 
     m_bActive = false;
 }
@@ -73,7 +73,7 @@ bool cZDSP1Client::setRawActualValueList(const QString &varsSemicolonSeparated)
         }
         m_memorySection.DspVar = m_dspVarArray.data();
     }
-    m_dspVarResolver.setVarHash(); // wir setzen die hashtabelle neu
+    m_dspVarResolver.actualizeVarHash(); // wir setzen die hashtabelle neu
     return true;
 }
 
@@ -150,7 +150,7 @@ cDspCmd cZDSP1Client::GenDspCmd(QString cmd, bool* ok, ulong userMemoryOffset, u
             short par;
             bool t = true;
             sSearch = CmdParser.GetKeyword(&cmds);
-            t &= ( (par = m_dspVarResolver.varOffset(sSearch, userMemoryOffset, globalstartadr)) > -1); // -1 ist fehlerbedingung
+            t &= ( (par = m_dspVarResolver.getVarOffset(sSearch, userMemoryOffset, globalstartadr)) > -1); // -1 ist fehlerbedingung
             sSearch = CmdParser.GetKeyword(&cmds);
             t &= sSearch.isEmpty();
             cDspCmd lcmd;
@@ -165,7 +165,7 @@ cDspCmd cZDSP1Client::GenDspCmd(QString cmd, bool* ok, ulong userMemoryOffset, u
             bool t = true;
             for (int i=0; i<2; i++) {
                 sSearch = CmdParser.GetKeyword(&cmds);
-                t &= ( (par[i] = m_dspVarResolver.varOffset(sSearch, userMemoryOffset, globalstartadr)) > -1);
+                t &= ( (par[i] = m_dspVarResolver.getVarOffset(sSearch, userMemoryOffset, globalstartadr)) > -1);
             }
             sSearch = CmdParser.GetKeyword(&cmds);
             t &= sSearch.isEmpty();
@@ -183,7 +183,7 @@ cDspCmd cZDSP1Client::GenDspCmd(QString cmd, bool* ok, ulong userMemoryOffset, u
             bool t = true;
             for (int i=0; i<3; i++) {
                 sSearch = CmdParser.GetKeyword(&cmds);
-                t &= ( (par[i] = m_dspVarResolver.varOffset(sSearch, userMemoryOffset, globalstartadr)) > -1);
+                t &= ( (par[i] = m_dspVarResolver.getVarOffset(sSearch, userMemoryOffset, globalstartadr)) > -1);
             }
             sSearch = CmdParser.GetKeyword(&cmds);
             t &= sSearch.isEmpty();
@@ -199,7 +199,7 @@ cDspCmd cZDSP1Client::GenDspCmd(QString cmd, bool* ok, ulong userMemoryOffset, u
         {
             long par;
             sSearch = CmdParser.GetKeyword(&cmds);
-            bool t = ( (par = m_dspVarResolver.varOffset(sSearch, userMemoryOffset, globalstartadr)) > -1);
+            bool t = ( (par = m_dspVarResolver.getVarOffset(sSearch, userMemoryOffset, globalstartadr)) > -1);
             sSearch = CmdParser.GetKeyword(&cmds);
             t &= sSearch.isEmpty();
             cDspCmd lcmd;
@@ -213,7 +213,7 @@ cDspCmd cZDSP1Client::GenDspCmd(QString cmd, bool* ok, ulong userMemoryOffset, u
             short par1;
             long par2 = 0;
             sSearch = CmdParser.GetKeyword(&cmds);
-            *ok = ( (par1 = m_dspVarResolver.varOffset(sSearch, userMemoryOffset, globalstartadr)) > -1); // -1 ist fehlerbedingung
+            *ok = ( (par1 = m_dspVarResolver.getVarOffset(sSearch, userMemoryOffset, globalstartadr)) > -1); // -1 ist fehlerbedingung
             cDspCmd lcmd;
             if (!(*ok))
                 return lcmd; // wenn fehler -> fertig
@@ -439,7 +439,7 @@ bool cZDSP1Client::doWriteDspVars(const QString &varsSemicolonSeparated)
         if(varNameVals.count() < 2)
             return false;
         QString name = varNameVals[0];
-        long adr = m_dspVarResolver.varAddress(name);
+        long adr = m_dspVarResolver.getVarAddress(name);
         if (adr == -1)
             return false;
 
@@ -449,7 +449,7 @@ bool cZDSP1Client::doWriteDspVars(const QString &varsSemicolonSeparated)
         bas.setFloatingPointPrecision(QDataStream::SinglePrecision);
 
         int n = 0, alloc = 0;
-        int type = m_dspVarResolver.type(name);
+        int type = m_dspVarResolver.getVarType(name);
         for(int valNo=1; valNo<varNameVals.count(); valNo++) {
             QString p = varNameVals[valNo];
             if(++n > alloc) {

@@ -11,7 +11,7 @@ void DspVarResolver::addSection(TMemSection* section)
     MemSectionList.append(section);
 }
 
-void DspVarResolver::setVarHash()
+void DspVarResolver::actualizeVarHash()
 {
     m_varHash.clear();
     for(TMemSection* memSection : qAsConst(MemSectionList)) {
@@ -32,7 +32,7 @@ TDspVar* DspVarResolver::getDspVar(const QString &varNameWithOffset)
     return nullptr;
 }
 
-long DspVarResolver::varOffset(const QString& varNameWithOffset, ulong userMemOffset, ulong globalstartadr)
+long DspVarResolver::getVarOffset(const QString& varNameWithOffset, ulong userMemOffset, ulong globalstartadr)
 {
     TDspVar* dspVar = getDspVar(varNameWithOffset);
     if(dspVar) {
@@ -54,7 +54,7 @@ long DspVarResolver::varOffset(const QString& varNameWithOffset, ulong userMemOf
     return calcOffsetFromStr(varNameWithOffset);
 }
 
-long DspVarResolver::varAddress(const QString &varNameWithOffset)
+long DspVarResolver::getVarAddress(const QString &varNameWithOffset)
 {
     TDspVar* dspVar = getDspVar(varNameWithOffset);
     if(dspVar) {
@@ -73,7 +73,7 @@ long DspVarResolver::varAddress(const QString &varNameWithOffset)
     return calcOffsetFromStr(varNameWithOffset);
 }
 
-int DspVarResolver::type(const QString &varNameWithOffset)
+int DspVarResolver::getVarType(const QString &varNameWithOffset)
 {
     TDspVar* var = getDspVar(varNameWithOffset);
     if(var)
