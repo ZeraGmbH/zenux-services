@@ -16,8 +16,8 @@ private slots:
     void createResultVariables();
     void createTempVariables();
     void createInternalVariables();
-    void createTempGlobalVariables();
-    void globalVariablesAreNotSharedByDefault();
+    void createTempGlobalNoRead();
+    void createGlobalNoRead();
 
     void readVariablesAndListenDeviceNode(); // we learned dspMemoryRead details by this
     void writeFloatVariablesAndListenDeviceNode();

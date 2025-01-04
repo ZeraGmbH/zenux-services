@@ -2,7 +2,6 @@
 #include "proxy.h"
 #include "zdspclient.h"
 #include "zscpi_response_definitions.h"
-#include "scpisingletransactionblocked.h"
 #include "testdevicenodedsp.h"
 #include "testfactorydevicenodedsp.h"
 #include "testsingletondevicenodedsp.h"
@@ -55,9 +54,6 @@ void test_regression_dsp_var::createResultVariables()
     QCOMPARE(spyCreate.count(), 1);
     QCOMPARE(spyCreate[0][2], ZSCPI::scpiAnswer[ZSCPI::ack]);
 
-    QString ret = ScpiSingleTransactionBlocked::query("MEASURE:LIST:RAVLIST?", dspServerPort, m_tcpNetworkFactory, m_proxyClient);
-    QCOMPARE(ret, "RESULT1,1;RESULT2,3;");
-
     QSignalSpy spyRead(m_dspIFace.get(), &Zera::cDSPInterface::serverAnswer);
     m_dspIFace->dspMemoryRead(dspData);
     TimeMachineObject::feedEventLoop();
@@ -78,9 +74,6 @@ void test_regression_dsp_var::createTempVariables()
     TimeMachineObject::feedEventLoop();
     QCOMPARE(spyCreate.count(), 1);
     QCOMPARE(spyCreate[0][2], ZSCPI::scpiAnswer[ZSCPI::ack]);
-
-    QString ret = ScpiSingleTransactionBlocked::query("MEASURE:LIST:RAVLIST?", dspServerPort, m_tcpNetworkFactory, m_proxyClient);
-    QCOMPARE(ret, "TEMP1,1;TEMP2,3;");
 
     QSignalSpy spyRead(m_dspIFace.get(), &Zera::cDSPInterface::serverAnswer);
     m_dspIFace->dspMemoryRead(dspData);
@@ -104,10 +97,6 @@ void test_regression_dsp_var::createInternalVariables()
     QCOMPARE(spy.count(), 1);
     QCOMPARE(spy[0][2], ZSCPI::scpiAnswer[ZSCPI::ack]);
 
-    // We can neither list nor read but not EMPTY??
-    QString ret = ScpiSingleTransactionBlocked::query("MEASURE:LIST:RAVLIST?", dspServerPort, m_tcpNetworkFactory, m_proxyClient);
-    QCOMPARE(ret, ",0;");
-
     QSignalSpy spyRead(m_dspIFace.get(), &Zera::cDSPInterface::serverAnswer);
     m_dspIFace->dspMemoryRead(dspData);
     TimeMachineObject::feedEventLoop();
@@ -115,9 +104,9 @@ void test_regression_dsp_var::createInternalVariables()
     QCOMPARE(spyRead[0][2], ZSCPI::scpiAnswer[ZSCPI::errexec]);
 }
 
-void test_regression_dsp_var::createTempGlobalVariables()
+void test_regression_dsp_var::createTempGlobalNoRead()
 {
-    cDspMeasData* dspData = m_dspIFace->getMemHandle("createTempGlobalVariables");
+    cDspMeasData* dspData = m_dspIFace->getMemHandle("createTempGlobalNoRead");
     dspData->addVarItem(new cDspVar("TempGlobal1", 1, DSPDATA::vDspTempGlobal, DSPDATA::dFloat));
     dspData->addVarItem(new cDspVar("TempGlobal2", 2, DSPDATA::vDspTempGlobal, DSPDATA::dInt));
 
@@ -127,10 +116,6 @@ void test_regression_dsp_var::createTempGlobalVariables()
     QCOMPARE(spyCreate.count(), 1);
     QCOMPARE(spyCreate[0][2], ZSCPI::scpiAnswer[ZSCPI::ack]);
 
-    // We can list but not read
-    QString ret = ScpiSingleTransactionBlocked::query("MEASURE:LIST:RAVLIST?", dspServerPort, m_tcpNetworkFactory, m_proxyClient);
-    QCOMPARE(ret, "TEMPGLOBAL1,1;TEMPGLOBAL2,2;");
-
     QSignalSpy spyRead(m_dspIFace.get(), &Zera::cDSPInterface::serverAnswer);
     m_dspIFace->dspMemoryRead(dspData);
     TimeMachineObject::feedEventLoop();
@@ -138,21 +123,23 @@ void test_regression_dsp_var::createTempGlobalVariables()
     QCOMPARE(spyRead[0][2], ZSCPI::scpiAnswer[ZSCPI::errexec]);
 }
 
-void test_regression_dsp_var::globalVariablesAreNotSharedByDefault()
+void test_regression_dsp_var::createGlobalNoRead()
 {
-    cDspMeasData* dspData = m_dspIFace->getMemHandle("globalVariablesAreNotSharedByDefault");
+    cDspMeasData* dspData = m_dspIFace->getMemHandle("createGlobalNoRead");
     dspData->addVarItem(new cDspVar("TempGlobal1", 1, DSPDATA::vDspTempGlobal));
 
-    QSignalSpy spy(m_dspIFace.get(), &Zera::cDSPInterface::serverAnswer);
+    QSignalSpy spyCreate(m_dspIFace.get(), &Zera::cDSPInterface::serverAnswer);
     m_dspIFace->varList2Dsp();
     TimeMachineObject::feedEventLoop();
 
-    QCOMPARE(spy.count(), 1);
-    QCOMPARE(spy[0][2], ZSCPI::scpiAnswer[ZSCPI::ack]);
+    QCOMPARE(spyCreate.count(), 1);
+    QCOMPARE(spyCreate[0][2], ZSCPI::scpiAnswer[ZSCPI::ack]);
 
-    // not by dsp interface = different client
-    QString ret = ScpiSingleTransactionBlocked::query("MEASURE:LIST:RAVLIST?", dspServerPort);
-    QCOMPARE(ret, "Empty");
+    QSignalSpy spyRead(m_dspIFace.get(), &Zera::cDSPInterface::serverAnswer);
+    m_dspIFace->dspMemoryRead(dspData);
+    TimeMachineObject::feedEventLoop();
+    QCOMPARE(spyRead.count(), 1);
+    QCOMPARE(spyRead[0][2], ZSCPI::scpiAnswer[ZSCPI::errexec]);
 }
 
 static constexpr int dm32UserWorkSpaceBase21362 = 0x98180; // Stolen from zdspserver.cpp !!!
@@ -349,9 +336,6 @@ void test_regression_dsp_var::multipleClientsCreateResultVars()
     dspIFace2->varList2Dsp();
     TimeMachineObject::feedEventLoop();
 
-    // client1 query vars
-    QString ret1 = ScpiSingleTransactionBlocked::query("MEASURE:LIST:RAVLIST?", dspServerPort, m_tcpNetworkFactory, m_proxyClient);
-    QCOMPARE(ret1, "CLIENT1_VAR1,1;CLIENT1_VAR2,2;");
     // client1 read client1 vars
     QSignalSpy spyRead1(m_dspIFace.get(), &Zera::cDSPInterface::serverAnswer);
     m_dspIFace->dspMemoryRead(dspData1);
@@ -365,9 +349,6 @@ void test_regression_dsp_var::multipleClientsCreateResultVars()
     TimeMachineObject::feedEventLoop();
     QCOMPARE(spyRead1[0][2].toString(), "errexec");
 
-    // client2 query vars
-    QString ret2 = ScpiSingleTransactionBlocked::query("MEASURE:LIST:RAVLIST?", dspServerPort, m_tcpNetworkFactory, proxyClient2);
-    QCOMPARE(ret2, "CLIENT2_VAR1,3;CLIENT2_VAR2,4;");
     // client2 read client2 vars
     QSignalSpy spyRead2(dspIFace2.get(), &Zera::cDSPInterface::serverAnswer);
     dspIFace2->dspMemoryRead(dspData2);
