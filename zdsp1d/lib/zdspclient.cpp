@@ -282,10 +282,9 @@ bool cZDSP1Client::GenCmdList(QString& s, QList<cDspCmd> &cl, QString& errs, ulo
 
 bool cZDSP1Client::GenCmdLists(QString& errs, ulong userMemoryOffset, ulong globalstartadr)
 {
-    bool ok = GenCmdList(m_sCmdListDef,m_DspCmdList,errs,userMemoryOffset,globalstartadr);
-    if(ok)
-        ok = GenCmdList(m_sIntCmdListDef, m_DspIntCmdList,errs,userMemoryOffset,globalstartadr);
-    return ok;
+    return
+        GenCmdList(m_sCmdListDef,m_DspCmdList,errs,userMemoryOffset,globalstartadr) &&
+        GenCmdList(m_sIntCmdListDef, m_DspIntCmdList,errs,userMemoryOffset,globalstartadr);
 }
 
 bool cZDSP1Client::isActive()
@@ -295,13 +294,12 @@ bool cZDSP1Client::isActive()
 
 QList<cDspCmd> &cZDSP1Client::GetDspCmdList()
 {
-    return (m_DspCmdList);
+    return m_DspCmdList;
 }
-
 
 QList<cDspCmd> &cZDSP1Client::GetDspIntCmdList()
 {
-    return (m_DspIntCmdList);
+    return m_DspIntCmdList;
 }
 
 int cZDSP1Client::getSocket()
@@ -402,22 +400,20 @@ QString cZDSP1Client::readDspVarList(const QString& variablesString)
     return ret;
 }
 
-static bool tryStreamLongValue(const QString &strValue, QDataStream &stream)
+static bool tryStreamIntegerValue(const QString &strValue, QDataStream &stream)
 {
     bool ok;
-    qint32 value = strValue.toLong(&ok);
-    if(ok)
-        stream << value;
-    return ok;
-}
-
-static bool tryStreamUlongValue(const QString &strValue, QDataStream &stream)
-{
-    bool ok;
-    quint32 value = strValue.toULong(&ok);
-    if(ok)
-        stream << value;
-    return ok;
+    qint32 lValue = strValue.toLong(&ok);
+    if(ok) {
+        stream << lValue;
+        return true;
+    }
+    quint32 uValue = strValue.toULong(&ok);
+    if(ok) {
+        stream << uValue;
+        return true;
+    }
+    return false;
 }
 
 static bool tryStreamFloatValue(const QString &strValue, QDataStream &stream)
@@ -431,51 +427,42 @@ static bool tryStreamFloatValue(const QString &strValue, QDataStream &stream)
 
 bool cZDSP1Client::doWriteDspVars(const QString &varsSemicolonSeparated)
 {
-    const int gran = 10; // immer 10 elemente allokieren
     const QStringList varEntries = varsSemicolonSeparated.split(";", Qt::SkipEmptyParts);
-    for(int i=0; i<varEntries.count(); i++) {
-        QString varString = varEntries[i];
+    for(const QString &varString : varEntries) {
+        QByteArray byteArr;
+        QDataStream stream(&byteArr, QIODevice::Unbuffered | QIODevice::ReadWrite);
+        stream.setByteOrder(QDataStream::LittleEndian);
+        stream.setFloatingPointPrecision(QDataStream::SinglePrecision);
+
         const QStringList varNameVals = varString.split(",", Qt::SkipEmptyParts);
         if(varNameVals.count() < 2)
             return false;
-        QString name = varNameVals[0];
-        long adr = m_dspVarResolver.getVarAddress(name);
-        if (adr == -1)
-            return false;
+        const QString &varName = varNameVals[0];
 
-        QByteArray ba;
-        QDataStream bas(&ba, QIODevice::Unbuffered | QIODevice::ReadWrite);
-        bas.setByteOrder(QDataStream::LittleEndian);
-        bas.setFloatingPointPrecision(QDataStream::SinglePrecision);
-
-        int n = 0, alloc = 0;
-        int type = m_dspVarResolver.getVarType(name);
-        for(int valNo=1; valNo<varNameVals.count(); valNo++) {
-            QString p = varNameVals[valNo];
-            if(++n > alloc) {
-                alloc += gran;
-                ba.resize(alloc*4);
-            }
+        int wordCount = 0;
+        int type = m_dspVarResolver.getVarType(varName);
+        for(int valIdx=1; valIdx<varNameVals.count(); valIdx++) {
+            const QString &valueStr = varNameVals[valIdx];
             if(type == eUnknown) {
-                if(!tryStreamLongValue(p, bas))
-                    if(!tryStreamUlongValue(p, bas))
-                        if(!tryStreamFloatValue(p, bas))
-                            return false;
-            }
-            else if(type == eInt) {
-                if(!tryStreamLongValue(p, bas))
-                    if(!tryStreamUlongValue(p, bas))
-                        return false;
-            }
-            else {
-                if(!tryStreamFloatValue(p, bas))
+                if(!tryStreamIntegerValue(valueStr, stream) &&
+                   !tryStreamFloatValue(valueStr, stream))
                     return false;
             }
+            else if(type == eInt) {
+                if(!tryStreamIntegerValue(valueStr, stream))
+                    return false;
+            }
+            else
+                if(!tryStreamFloatValue(valueStr, stream))
+                    return false;
+            wordCount++;
         }
+        long adr = m_dspVarResolver.getVarAddress(varName);
+        if (adr == -1)
+            return false;
         AbstractDspDeviceNodePtr deviceNode = m_deviceNodeFactory->getDspDeviceNode();
-        if (n > 0 && !deviceNode->write(adr, ba.data(), n*4 ))
+        if(wordCount>0 && !deviceNode->write(adr, byteArr.data(), wordCount*4))
             return false;
     }
     return true;
 }
-
