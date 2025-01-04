@@ -394,7 +394,7 @@ void test_regression_dsp_var::serverWriteDspDialogWorkspaceVariableAndListenDevi
 
     // Note: A real world DSP write is more complex - see ZDspServer::sendCommand2Dsp
     DspVarDeviceNodeInOut dspInOut(m_deviceNodeFactory);
-    dspInOut.doWriteDspVars("DSPCMDPAR,2,42;", &testServerlient->m_dspVarResolver);
+    dspInOut.writeDspVars("DSPCMDPAR,2,42;", &testServerlient->m_dspVarResolver);
 
     QCOMPARE(spyWrite.count(), 1);
     QCOMPARE(spyWrite[0][0], "write");

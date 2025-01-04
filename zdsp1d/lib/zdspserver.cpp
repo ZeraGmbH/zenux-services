@@ -399,7 +399,7 @@ void ZDspServer::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
         protoCmd->m_sOutput = client->readDspVarList(cmd.getParam());
         break;
     case scpiDspMemoryWrite:
-        if(dspInOut.doWriteDspVars(cmd.getParam(), &client->m_dspVarResolver))
+        if(dspInOut.writeDspVars(cmd.getParam(), &client->m_dspVarResolver))
             protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::ack];
         else
             protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::errexec];
@@ -440,7 +440,7 @@ void ZDspServer::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
         protoCmd->m_sOutput = client->readDspVarList("BUSYMAX,1;");  // ab "BUSYMAX"  1 wort lesen
         break;
     case scpiResetDeviceLoadMax:
-        if(dspInOut.doWriteDspVars("BUSYMAX,0.0", &client->m_dspVarResolver))
+        if(dspInOut.writeDspVars("BUSYMAX,0.0", &client->m_dspVarResolver))
             protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::ack];
         else
             protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::errexec];
@@ -506,9 +506,9 @@ QString ZDspServer::sendCommand2Dsp(QString qs)
         return ZSCPI::scpiAnswer[ZSCPI::errexec];
     if(ack == InProgress)
         return ZSCPI::scpiAnswer[ZSCPI::busy];
-    if(!dspInOut.doWriteDspVars("DSPACK,0;", &cl.m_dspVarResolver) )
+    if(!dspInOut.writeDspVars("DSPACK,0;", &cl.m_dspVarResolver) )
         return ZSCPI::scpiAnswer[ZSCPI::errexec]; // reset acknowledge
-    if(!dspInOut.doWriteDspVars(qs, &cl.m_dspVarResolver))
+    if(!dspInOut.writeDspVars(qs, &cl.m_dspVarResolver))
         return ZSCPI::scpiAnswer[ZSCPI::errexec];
 
     AbstractDspDeviceNodePtr deviceNode = m_deviceNodeFactory->getDspDeviceNode();
@@ -542,7 +542,7 @@ QString ZDspServer::getDspCommandStat(cZDSP1Client* client)
 QString ZDspServer::setDspCommandStat(cZDSP1Client* client, QString scpiParam)
 {
     DspVarDeviceNodeInOut dspInOut(m_deviceNodeFactory);
-    if(!dspInOut.doWriteDspVars(QString("DSPACK,%1;").arg(scpiParam), &client->m_dspVarResolver) )
+    if(!dspInOut.writeDspVars(QString("DSPACK,%1;").arg(scpiParam), &client->m_dspVarResolver) )
         return ZSCPI::scpiAnswer[ZSCPI::errexec];
     else
         return ZSCPI::scpiAnswer[ZSCPI::ack];
@@ -657,12 +657,12 @@ void ZDspServer::DspIntHandler(int)
                 }
             }
         }
-        dspInOut.doWriteDspVars(QString("CTRLACK,%1;").arg(CmdDone), &client->m_dspVarResolver); // jetzt in jedem fall acknowledge
+        dspInOut.writeDspVars(QString("CTRLACK,%1;").arg(CmdDone), &client->m_dspVarResolver); // jetzt in jedem fall acknowledge
     }
     else {
         DspVarResolver dspSystemVarResolver;
         DspVarDeviceNodeInOut dspInOut(m_deviceNodeFactory);
-        dspInOut.doWriteDspVars(QString("CTRLACK,%1;").arg(CmdDone), &dspSystemVarResolver); // und rücksetzen
+        dspInOut.writeDspVars(QString("CTRLACK,%1;").arg(CmdDone), &dspSystemVarResolver); // und rücksetzen
     }
 }
 

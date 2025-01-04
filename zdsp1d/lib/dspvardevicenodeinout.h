@@ -9,10 +9,11 @@ class DspVarDeviceNodeInOut
 {
 public:
     DspVarDeviceNodeInOut(AbstractFactoryDeviceNodeDspPtr deviceNodeFactory);
+
     TDspVar *readOneDspVar(const QString &nameCommaLen, QByteArray *varRead, DspVarResolver *dspVarResolver);
-    bool doReadVarFromDsp(TDspVar *DspVar, int countVars, QByteArray *varRead);
-    bool doWriteDspVars(const QString &varsSemicolonSeparated, DspVarResolver *dspVarResolver);
+    bool writeDspVars(const QString &varsSemicolonSeparated, DspVarResolver *dspVarResolver);
 private:
+    bool readVarFromDsp(TDspVar *DspVar, int countVars, QByteArray *varRead);
     static bool tryStreamIntegerValue(const QString &strValue, QDataStream &stream);
     static bool tryStreamFloatValue(const QString &strValue, QDataStream &stream);
     AbstractFactoryDeviceNodeDspPtr m_deviceNodeFactory;

@@ -26,12 +26,12 @@ TDspVar *DspVarDeviceNodeInOut::readOneDspVar(const QString &nameCommaLen,
         return nullptr; // fehler in der anzahl der elemente
 
     DspVarDeviceNodeInOut dspInOut(m_deviceNodeFactory);
-    if(dspInOut.doReadVarFromDsp(dspVar, countVars, varRead))
+    if(dspInOut.readVarFromDsp(dspVar, countVars, varRead))
         return dspVar;
     return nullptr;
 }
 
-bool DspVarDeviceNodeInOut::doReadVarFromDsp(TDspVar *DspVar, int countVars, QByteArray *varRead)
+bool DspVarDeviceNodeInOut::readVarFromDsp(TDspVar *DspVar, int countVars, QByteArray *varRead)
 {
     const int countBytes = countVars * 4;
     varRead->resize(countBytes);
@@ -42,7 +42,7 @@ bool DspVarDeviceNodeInOut::doReadVarFromDsp(TDspVar *DspVar, int countVars, QBy
     return false;
 }
 
-bool DspVarDeviceNodeInOut::doWriteDspVars(const QString &varsSemicolonSeparated, DspVarResolver *dspVarResolver)
+bool DspVarDeviceNodeInOut::writeDspVars(const QString &varsSemicolonSeparated, DspVarResolver *dspVarResolver)
 {
     const QStringList varEntries = varsSemicolonSeparated.split(";", Qt::SkipEmptyParts);
     for(const QString &varString : varEntries) {
