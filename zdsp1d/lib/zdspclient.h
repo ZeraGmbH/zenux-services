@@ -25,10 +25,9 @@ public:
     void setCmdForIrqListDef(const QString& cmdIntListDef);
     QString getCmdForIrqListDef();
 
-    bool GenCmdLists(QString& errs, ulong userMemoryOffset, ulong globalstartadr); // baut die cmdlisten  für den dsp zusammen wenn fehler -> false
-    cDspCmd GenDspCmd(QString cmd, bool* ok, ulong userMemoryOffset, ulong globalstartadr); // generiert ein dsp kommando aus einem string
-    QList<cDspCmd>& GetDspCmdList();
-    QList<cDspCmd>& GetDspIntCmdList();
+    bool GenCmdLists(QString& errs, ulong userMemOffset, ulong globalstartadr);
+    QList<DspCmdWithParamsRaw>& GetDspCmdList();
+    QList<DspCmdWithParamsRaw>& GetDspIntCmdList();
 
     QString readDspVarList(const QString &variablesString); // format: '<name1>,<len1>;<name2>,<len2>'
     QString readActValues(const QString &variablesStringOnEmptyActOnly);
@@ -39,13 +38,16 @@ public:
 
     ulong setStartAdr(ulong startAdress, ulong globalMemStart); // zum relokalisieren der userdaten
 
-    int getSocket();
+    int getSocket() const;
     VeinTcp::TcpPeer* m_pNetClient;
 
 private:
     void init(int socket, VeinTcp::TcpPeer *netclient);
-    bool GenCmdList(QString&, QList<cDspCmd>& ,QString&,ulong,ulong);
-    bool syntaxCheck(QString&);
+    bool GenCmdList(const QString& cmdsSemicolonSeparated,
+                    QList<DspCmdWithParamsRaw> &genCmdList,
+                    QString& err,
+                    ulong userMemOffset,
+                    ulong globalstartadr);
     TDspVar *doReadVarFromDsp(TDspVar *&DspVar, int countVars, QByteArray *varRead);
 
     AbstractFactoryDeviceNodeDspPtr m_deviceNodeFactory;
@@ -55,8 +57,8 @@ private:
     QString m_sIntCmdListDef; // interrupt kommando  liste defintion
 
     QList<DspVarClientPerspective> m_dspRawActualValueList; // liste mit variablen beschreibungen
-    QList<cDspCmd> m_DspCmdList; // liste mit dsp kommandos (periodisch)
-    QList<cDspCmd>  m_DspIntCmdList; // liste mit dsp kommandos (interrupt)
+    QList<DspCmdWithParamsRaw> m_DspCmdList; // liste mit dsp kommandos (periodisch)
+    QList<DspCmdWithParamsRaw>  m_DspIntCmdList; // liste mit dsp kommandos (interrupt)
     QVector<TDspVar> m_dspVarArray; // array von TDspVar
     TMemSection m_memorySection; // eine memory section für den DspVarResolver für die variablen des clients
 };

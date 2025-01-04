@@ -1,4 +1,5 @@
 #include "zdspclient.h"
+#include "dspcmdcompiler.h"
 #include "zscpi_response_definitions.h"
 #include <parse.h>
 #include <QDataStream>
@@ -20,7 +21,7 @@ void cZDSP1Client::init(int socket, VeinTcp::TcpPeer *netclient)
     m_socket = socket;
     m_pNetClient = netclient;
     m_sCmdListDef = m_sIntCmdListDef = "Empty"; // alle listen default leer
-    cDspCmd DspCmd;
+    DspCmdWithParamsRaw DspCmd;
     m_DspCmdList.append(DspCmd);
     m_DspIntCmdList.append(DspCmd);
     m_dspVarResolver.addSection( &dm32DspWorkspace);
@@ -109,135 +110,6 @@ QString cZDSP1Client::getCmdForIrqListDef()
     return m_sIntCmdListDef;
 }
 
-bool cZDSP1Client::syntaxCheck(QString& s)
-{
-    int openPos = s.indexOf('(');
-    int closePos = s.indexOf(')');
-    bool ok = openPos > 0 && closePos>openPos;
-    if(!ok)
-        qCritical("Invalid command syntax: '%s'", qPrintable(s));
-    return ok;
-}
-
-cDspCmd cZDSP1Client::GenDspCmd(QString cmd, bool* ok, ulong userMemoryOffset, ulong globalstartadr)
-{
-    cParse CmdParser;
-    CmdParser.SetDelimiter("(,)"); // setze die trennzeichen für den parser
-    CmdParser.SetWhiteSpace(" (,)");
-    if(!syntaxCheck(cmd)) {
-        *ok = false;
-        return cDspCmd();
-    }
-    const QChar* cmds = cmd.data();
-    QString sSearch = CmdParser.GetKeyword(&cmds); // das 1. keyword muss ein befehlscode sein
-    sDspCmd *dspcmd = findDspCmd(sSearch);
-    if (dspcmd)
-    { // bekannter befehlscode ?
-        switch (dspcmd->CmdClass) {
-        case CMD: // nur kommandowort, kein parameter
-        {
-            sSearch = CmdParser.GetKeyword(&cmds);
-            *ok = sSearch.isEmpty(); // hier darf nichts stehen
-            cDspCmd lcmd;
-            if (*ok)
-                lcmd = cDspCmd(dspcmd->CmdCode);
-            return lcmd;
-        }
-        case CMD1i16: // kommandowort, ein parameter
-        {
-            short par;
-            bool t = true;
-            sSearch = CmdParser.GetKeyword(&cmds);
-            t &= ( (par = m_dspVarResolver.getVarOffset(sSearch, userMemoryOffset, globalstartadr)) > -1); // -1 ist fehlerbedingung
-            sSearch = CmdParser.GetKeyword(&cmds);
-            t &= sSearch.isEmpty();
-            cDspCmd lcmd;
-            if (t)
-                lcmd = cDspCmd(dspcmd->CmdCode,(ushort)par);
-            *ok = t;
-            return lcmd;
-        }
-        case CMD2i16:
-        {
-            short par[2];
-            bool t = true;
-            for (int i=0; i<2; i++) {
-                sSearch = CmdParser.GetKeyword(&cmds);
-                t &= ( (par[i] = m_dspVarResolver.getVarOffset(sSearch, userMemoryOffset, globalstartadr)) > -1);
-            }
-            sSearch = CmdParser.GetKeyword(&cmds);
-            t &= sSearch.isEmpty();
-            cDspCmd lcmd;
-            if (t) {
-                lcmd = cDspCmd(dspcmd->CmdCode, (ushort)par[0], (ushort)par[1]);
-                if (dspcmd->modify) lcmd.w[1] = (lcmd.w[1] & 0xFFFF) | (m_socket << 16);
-            }
-            *ok = t;
-            return lcmd;
-        }
-        case CMD3i16:
-        {
-            short par[3];
-            bool t = true;
-            for (int i=0; i<3; i++) {
-                sSearch = CmdParser.GetKeyword(&cmds);
-                t &= ( (par[i] = m_dspVarResolver.getVarOffset(sSearch, userMemoryOffset, globalstartadr)) > -1);
-            }
-            sSearch = CmdParser.GetKeyword(&cmds);
-            t &= sSearch.isEmpty();
-            cDspCmd lcmd;
-            if (t) {
-                lcmd = cDspCmd( dspcmd->CmdCode, (ushort)par[0], (ushort)par[1], (ushort)par[2]);
-                if (dspcmd->modify) lcmd.w[1] = (lcmd.w[1] & 0xFFFF) | (m_socket << 16);
-            }
-            *ok = t;
-            return lcmd;
-        }
-        case CMD1i32:
-        {
-            long par;
-            sSearch = CmdParser.GetKeyword(&cmds);
-            bool t = ( (par = m_dspVarResolver.getVarOffset(sSearch, userMemoryOffset, globalstartadr)) > -1);
-            sSearch = CmdParser.GetKeyword(&cmds);
-            t &= sSearch.isEmpty();
-            cDspCmd lcmd;
-            if (t)
-                lcmd = cDspCmd(dspcmd->CmdCode,(ulong)par);
-            *ok = t;
-            return lcmd;
-        }
-        case CMD1i161fi32:
-        {
-            short par1;
-            long par2 = 0;
-            sSearch = CmdParser.GetKeyword(&cmds);
-            *ok = ( (par1 = m_dspVarResolver.getVarOffset(sSearch, userMemoryOffset, globalstartadr)) > -1); // -1 ist fehlerbedingung
-            cDspCmd lcmd;
-            if (!(*ok))
-                return lcmd; // wenn fehler -> fertig
-            sSearch = CmdParser.GetKeyword(&cmds);
-            bool t;
-            par2 = sSearch.toLong(&t); // test auf integer
-            if (!t)
-                par2 = sSearch.toLong(&t,16); // test auf hex
-            if (!t)  {
-                float tf = sSearch.toFloat(&t);
-                long* pl = (long*) &tf;
-                par2= *pl;
-            }
-            sSearch = CmdParser.GetKeyword(&cmds);
-            t &= sSearch.isEmpty();
-            if (t)
-                lcmd = cDspCmd(dspcmd->CmdCode,(ushort)par1,(ulong)par2);
-            *ok = t;
-            return lcmd;
-        }
-        }
-    }
-    *ok = false;
-    return cDspCmd();
-}
-
 void cZDSP1Client::setActive(bool active)
 {
     m_bActive = active;
@@ -261,28 +133,37 @@ ulong cZDSP1Client::setStartAdr(ulong startAdress, ulong globalMemStart)
     return usermemsize;
 }
 
-bool cZDSP1Client::GenCmdList(QString& s, QList<cDspCmd> &cl, QString& errs, ulong umo, ulong globalstartadr)
+bool cZDSP1Client::GenCmdList(const QString &cmdsSemicolonSeparated,
+                              QList<DspCmdWithParamsRaw> &genCmdList,
+                              QString& err,
+                              ulong userMemOffset,
+                              ulong globalstartadr)
 {
     bool ok = true;
-    cl.clear();
-    for (int i = 0;;i++) {
-        QString cs = s.section(';',i,i);
+    genCmdList.clear();
+    for(int i = 0;;i++) {
+        QString cs = cmdsSemicolonSeparated.section(';',i,i);
         if ( (cs.isEmpty()) || (cs==("Empty")) )
             break; // liste ist durch
-        cl.append(GenDspCmd(cs, &ok, umo,globalstartadr));
-        if (!ok) {
-            errs = cs;
+        genCmdList.append(DspCmdCompiler::GenDspCmd(cs,
+                                                    &ok,
+                                                    &m_dspVarResolver,
+                                                    m_socket,
+                                                    userMemOffset,
+                                                    globalstartadr));
+        if(!ok) {
+            err = cs;
             break;
         }
     }
     return ok;
 }
 
-bool cZDSP1Client::GenCmdLists(QString& errs, ulong userMemoryOffset, ulong globalstartadr)
+bool cZDSP1Client::GenCmdLists(QString& errs, ulong userMemOffset, ulong globalstartadr)
 {
     return
-        GenCmdList(m_sCmdListDef,m_DspCmdList,errs,userMemoryOffset,globalstartadr) &&
-        GenCmdList(m_sIntCmdListDef, m_DspIntCmdList,errs,userMemoryOffset,globalstartadr);
+        GenCmdList(m_sCmdListDef, m_DspCmdList,errs, userMemOffset, globalstartadr) &&
+        GenCmdList(m_sIntCmdListDef, m_DspIntCmdList, errs, userMemOffset, globalstartadr);
 }
 
 bool cZDSP1Client::isActive()
@@ -290,17 +171,17 @@ bool cZDSP1Client::isActive()
     return m_bActive;
 }
 
-QList<cDspCmd> &cZDSP1Client::GetDspCmdList()
+QList<DspCmdWithParamsRaw> &cZDSP1Client::GetDspCmdList()
 {
     return m_DspCmdList;
 }
 
-QList<cDspCmd> &cZDSP1Client::GetDspIntCmdList()
+QList<DspCmdWithParamsRaw> &cZDSP1Client::GetDspIntCmdList()
 {
     return m_DspIntCmdList;
 }
 
-int cZDSP1Client::getSocket()
+int cZDSP1Client::getSocket() const
 {
     return m_socket;
 }

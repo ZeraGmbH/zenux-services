@@ -17,16 +17,16 @@ struct sDspCmd { // wird zum ausdekodieren der dsp kommandos benötigt
     
 sDspCmd* findDspCmd(const QString& cmdName);
 
-class cDspCmd { // hält einen 64bit dsp befehl incl. parameter 
+class DspCmdWithParamsRaw { // hält einen 64bit dsp befehl incl. parameter
 public:
-    cDspCmd(){w[0]=0;w[1]=0;}; 
-    cDspCmd(const unsigned short); // nur befehl 16bit
-    cDspCmd(const unsigned short,const unsigned short); // befehl 16bit und 16bit uint
-    cDspCmd(const unsigned short, const unsigned long); // befehl und 32bit uint
-    cDspCmd(const unsigned short, const unsigned short,const unsigned short,const unsigned short); // befehl und 3x  16bit uint
-    cDspCmd(const unsigned short, const unsigned short,const unsigned short); // befehl und 2x  16bit uint
-    cDspCmd(const unsigned short, const unsigned short,const unsigned long); // befehl und 1x  16bit uint und 1x 32bit uint ... kann auch ein float sein
-//    void operator = (const cDspCmd &tc) { w[0] = tc.w[0]; w[1] = tc.w[1];};
+    DspCmdWithParamsRaw(){w[0]=0;w[1]=0;};
+    DspCmdWithParamsRaw(const unsigned short); // nur befehl 16bit
+    DspCmdWithParamsRaw(const unsigned short,const unsigned short); // befehl 16bit und 16bit uint
+    DspCmdWithParamsRaw(const unsigned short, const unsigned long); // befehl und 32bit uint
+    DspCmdWithParamsRaw(const unsigned short, const unsigned short,const unsigned short,const unsigned short); // befehl und 3x  16bit uint
+    DspCmdWithParamsRaw(const unsigned short, const unsigned short,const unsigned short); // befehl und 2x  16bit uint
+    DspCmdWithParamsRaw(const unsigned short, const unsigned short,const unsigned long); // befehl und 1x  16bit uint und 1x 32bit uint ... kann auch ein float sein
+//    void operator = (const DspCmdWithParamsRaw &tc) { w[0] = tc.w[0]; w[1] = tc.w[1];};
     unsigned long w[2]; // ein DSP-Kommando besteht aus 64Bit
 private:
 };    
