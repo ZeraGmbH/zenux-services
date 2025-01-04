@@ -7,12 +7,12 @@
 class DspCmdCompiler
 {
 public:
-    static DspCmdWithParamsRaw GenDspCmd(QString cmd,
-                                         bool* ok,
-                                         DspVarResolver* varResolver,
-                                         int socket,
-                                         ulong userMemOffset,
-                                         ulong globalstartadr);
+    static DspCmdWithParamsRaw compileOneCmdLine(QString cmdLine,
+                                                 bool* ok,
+                                                 DspVarResolver* varResolver,
+                                                 int socket,
+                                                 ulong userMemOffset,
+                                                 ulong globalstartadr);
 private:
     static bool syntaxCheck(const QString& dspCmdLine);
 };

@@ -139,12 +139,12 @@ bool cZDSP1Client::GenCmdList(const QString &cmdsSemicolonSeparated,
         QString cs = cmdsSemicolonSeparated.section(';',i,i);
         if ( (cs.isEmpty()) || (cs==("Empty")) )
             break; // liste ist durch
-        genCmdList.append(DspCmdCompiler::GenDspCmd(cs,
-                                                    &ok,
-                                                    &m_dspVarResolver,
-                                                    m_socket,
-                                                    userMemOffset,
-                                                    globalstartadr));
+        genCmdList.append(DspCmdCompiler::compileOneCmdLine(cs,
+                                                            &ok,
+                                                            &m_dspVarResolver,
+                                                            m_socket,
+                                                            userMemOffset,
+                                                            globalstartadr));
         if(!ok) {
             err = cs;
             break;

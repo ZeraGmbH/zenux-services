@@ -1,20 +1,20 @@
 #include "dspcmdcompiler.h"
 
-DspCmdWithParamsRaw DspCmdCompiler::GenDspCmd(QString cmd,
-                                              bool *ok,
-                                              DspVarResolver *varResolver,
-                                              int socket,
-                                              ulong userMemOffset,
-                                              ulong globalstartadr)
+DspCmdWithParamsRaw DspCmdCompiler::compileOneCmdLine(QString cmdLine,
+                                                      bool *ok,
+                                                      DspVarResolver *varResolver,
+                                                      int socket,
+                                                      ulong userMemOffset,
+                                                      ulong globalstartadr)
 {
     cParse CmdParser;
     CmdParser.SetDelimiter("(,)"); // setze die trennzeichen für den parser
     CmdParser.SetWhiteSpace(" (,)");
-    if(!syntaxCheck(cmd)) {
+    if(!syntaxCheck(cmdLine)) {
         *ok = false;
         return DspCmdWithParamsRaw();
     }
-    const QChar* cmds = cmd.data();
+    const QChar* cmds = cmdLine.data();
     QString sSearch = CmdParser.GetKeyword(&cmds); // das 1. keyword muss ein befehlscode sein
     sDspCmd *dspcmd = findDspCmd(sSearch);
     if (dspcmd)
