@@ -215,20 +215,20 @@ static sDspCmd DspCmd[78] =
 
 static QHash<QString, sDspCmd*> dspCmdHash;
 
-sDspCmd* findDspCmd(QString& s)
+static void fillHashOn1stCall()
 {
-    // fill hash on 1st call
-    if(dspCmdHash.isEmpty()) {
-        int len = sizeof(DspCmd) / sizeof(sDspCmd);
-        for (int i=0; i < len; i++) {
+    if(dspCmdHash.isEmpty())
+        for(int i=0; i<sizeof(DspCmd)/sizeof(sDspCmd); i++)
             dspCmdHash[DspCmd[i].Name] = &DspCmd[i];
-        }
-    }
-    QHash<QString, sDspCmd*>::const_iterator iter = dspCmdHash.constFind(s);
-    if(iter != dspCmdHash.cend()) { // found
+}
+
+sDspCmd* findDspCmd(const QString& cmdName)
+{
+    fillHashOn1stCall();
+    QHash<QString, sDspCmd*>::const_iterator iter = dspCmdHash.constFind(cmdName);
+    if(iter != dspCmdHash.cend())
         return iter.value();
-    }
-    return NULL; // sonst 0
+    return nullptr;
 }
 
 
