@@ -607,7 +607,6 @@ void ZDspServer::DspIntHandler(int)
 {
     char dummy[2];
     read(pipeFileDescriptorZdsp1[0], dummy, 1); // first we read the pipe
-
     if (!m_clientList.isEmpty()) { // wenn vorhanden nutzen wir immer den 1. client zum lesen
         cZDSP1Client *client = m_clientList.first();
         QByteArray ba;
@@ -661,9 +660,9 @@ void ZDspServer::DspIntHandler(int)
         dspInOut.doWriteDspVars(QString("CTRLACK,%1;").arg(CmdDone), &client->m_dspVarResolver); // jetzt in jedem fall acknowledge
     }
     else {
-        cZDSP1Client dummyClient(0, 0, m_deviceNodeFactory); // dummyClient einrichten
+        DspVarResolver dspSystemVarResolver;
         DspVarDeviceNodeInOut dspInOut(m_deviceNodeFactory);
-        dspInOut.doWriteDspVars(QString("CTRLACK,%1;").arg(CmdDone), &dummyClient.m_dspVarResolver); // und rücksetzen
+        dspInOut.doWriteDspVars(QString("CTRLACK,%1;").arg(CmdDone), &dspSystemVarResolver); // und rücksetzen
     }
 }
 
@@ -717,8 +716,8 @@ bool ZDspServer::BuildDSProgram(QString &errs)
         cycCmdMemStream << cmd;
     }
 
-    cZDSP1Client dummyClient(0, 0, m_deviceNodeFactory); // dummyClient einrichten damit was jetzt kommt noch
-    DspCmdCompiler dummyCompiler(&dummyClient.m_dspVarResolver, dummyClient.getSocket());
+    DspVarResolver dspSystemVarResolver;
+    DspCmdCompiler dummyCompiler(&dspSystemVarResolver, 0);
     // funktioniert selbst wenn wenn wir keinen mehr haben
     cmd = dummyCompiler.compileOneCmdLineZeroAligned("INVALID()", &ok);
     cycCmdMemStream << cmd; // kommando listen ende
@@ -743,14 +742,14 @@ bool ZDspServer::LoadDSProgram()
         s2 = QString("ALTINTCMDLIST");
     };
 
-    cZDSP1Client dummyClient(0, 0, m_deviceNodeFactory); // dummyClient einrichten zum laden der kette
-
+    DspVarResolver dspSystemVarResolver;
     AbstractDspDeviceNodePtr deviceNode = m_deviceNodeFactory->getDspDeviceNode();
-    ulong offset = dummyClient.m_dspVarResolver.getVarAddress(s) ;
+
+    ulong offset = dspSystemVarResolver.getVarAddress(s) ;
     if(!deviceNode->write(offset, m_rawCyclicCmdMem.data(), m_rawCyclicCmdMem.size()))
         return false;
 
-    offset = dummyClient.m_dspVarResolver.getVarAddress(s2) ;
+    offset = dspSystemVarResolver.getVarAddress(s2) ;
     if (!deviceNode->write(offset, m_rawInterruptCmdMem.data(), m_rawInterruptCmdMem.size()))
         return false;
 
