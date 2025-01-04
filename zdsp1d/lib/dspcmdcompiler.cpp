@@ -1,9 +1,13 @@
 #include "dspcmdcompiler.h"
 
+DspCmdCompiler::DspCmdCompiler(DspVarResolver *varResolver, int socket) :
+    m_varResolver(varResolver),
+    m_socket(socket)
+{
+}
+
 DspCmdWithParamsRaw DspCmdCompiler::compileOneCmdLine(QString cmdLine,
                                                       bool *ok,
-                                                      DspVarResolver *varResolver,
-                                                      int socket,
                                                       ulong userMemOffset,
                                                       ulong globalstartadr)
 {
@@ -34,7 +38,7 @@ DspCmdWithParamsRaw DspCmdCompiler::compileOneCmdLine(QString cmdLine,
             short par;
             bool t = true;
             sSearch = CmdParser.GetKeyword(&cmds);
-            t &= ( (par = varResolver->getVarOffset(sSearch, userMemOffset, globalstartadr)) > -1); // -1 ist fehlerbedingung
+            t &= ( (par = m_varResolver->getVarOffset(sSearch, userMemOffset, globalstartadr)) > -1); // -1 ist fehlerbedingung
             sSearch = CmdParser.GetKeyword(&cmds);
             t &= sSearch.isEmpty();
             DspCmdWithParamsRaw lcmd;
@@ -49,14 +53,14 @@ DspCmdWithParamsRaw DspCmdCompiler::compileOneCmdLine(QString cmdLine,
             bool t = true;
             for (int i=0; i<2; i++) {
                 sSearch = CmdParser.GetKeyword(&cmds);
-                t &= ( (par[i] = varResolver->getVarOffset(sSearch, userMemOffset, globalstartadr)) > -1);
+                t &= ( (par[i] = m_varResolver->getVarOffset(sSearch, userMemOffset, globalstartadr)) > -1);
             }
             sSearch = CmdParser.GetKeyword(&cmds);
             t &= sSearch.isEmpty();
             DspCmdWithParamsRaw lcmd;
             if (t) {
                 lcmd = DspCmdWithParamsRaw(dspcmd->CmdCode, (ushort)par[0], (ushort)par[1]);
-                if (dspcmd->modify) lcmd.w[1] = (lcmd.w[1] & 0xFFFF) | (socket << 16);
+                if (dspcmd->modify) lcmd.w[1] = (lcmd.w[1] & 0xFFFF) | (m_socket << 16);
             }
             *ok = t;
             return lcmd;
@@ -67,14 +71,14 @@ DspCmdWithParamsRaw DspCmdCompiler::compileOneCmdLine(QString cmdLine,
             bool t = true;
             for (int i=0; i<3; i++) {
                 sSearch = CmdParser.GetKeyword(&cmds);
-                t &= ( (par[i] = varResolver->getVarOffset(sSearch, userMemOffset, globalstartadr)) > -1);
+                t &= ( (par[i] = m_varResolver->getVarOffset(sSearch, userMemOffset, globalstartadr)) > -1);
             }
             sSearch = CmdParser.GetKeyword(&cmds);
             t &= sSearch.isEmpty();
             DspCmdWithParamsRaw lcmd;
             if (t) {
                 lcmd = DspCmdWithParamsRaw( dspcmd->CmdCode, (ushort)par[0], (ushort)par[1], (ushort)par[2]);
-                if (dspcmd->modify) lcmd.w[1] = (lcmd.w[1] & 0xFFFF) | (socket << 16);
+                if (dspcmd->modify) lcmd.w[1] = (lcmd.w[1] & 0xFFFF) | (m_socket << 16);
             }
             *ok = t;
             return lcmd;
@@ -83,7 +87,7 @@ DspCmdWithParamsRaw DspCmdCompiler::compileOneCmdLine(QString cmdLine,
         {
             long par;
             sSearch = CmdParser.GetKeyword(&cmds);
-            bool t = ( (par = varResolver->getVarOffset(sSearch, userMemOffset, globalstartadr)) > -1);
+            bool t = ( (par = m_varResolver->getVarOffset(sSearch, userMemOffset, globalstartadr)) > -1);
             sSearch = CmdParser.GetKeyword(&cmds);
             t &= sSearch.isEmpty();
             DspCmdWithParamsRaw lcmd;
@@ -97,7 +101,7 @@ DspCmdWithParamsRaw DspCmdCompiler::compileOneCmdLine(QString cmdLine,
             short par1;
             long par2 = 0;
             sSearch = CmdParser.GetKeyword(&cmds);
-            *ok = ( (par1 = varResolver->getVarOffset(sSearch, userMemOffset, globalstartadr)) > -1); // -1 ist fehlerbedingung
+            *ok = ( (par1 = m_varResolver->getVarOffset(sSearch, userMemOffset, globalstartadr)) > -1); // -1 ist fehlerbedingung
             DspCmdWithParamsRaw lcmd;
             if (!(*ok))
                 return lcmd; // wenn fehler -> fertig

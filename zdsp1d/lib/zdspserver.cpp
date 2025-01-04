@@ -687,33 +687,28 @@ bool ZDspServer::BuildDSProgram(QString &errs)
     intCmdMemStream.setByteOrder(QDataStream::LittleEndian);
 
     DspCmdWithParamsRaw cmd;
-    QString s;
-
     if (m_clientList.count() > 0) {
-        cZDSP1Client* client = m_clientList.at(0);
-        s =  QString( "DSPMEMOFFSET(%1)" ).arg(dm32DspWorkspace.StartAdr);
-        cmd = DspCmdCompiler::compileOneCmdLine(s,
-                                                &ok,
-                                                &client->m_dspVarResolver,
-                                                client->getSocket(),
-                                                0, 0);
+        cZDSP1Client* firstClient = m_clientList.at(0);
+        DspCmdCompiler firstCompiler(&firstClient->m_dspVarResolver, firstClient->getSocket());
+        cmd = firstCompiler.compileOneCmdLine(QString("DSPMEMOFFSET(%1)").arg(dm32DspWorkspace.StartAdr),
+                                              &ok,
+                                              0, 0);
         cycCmdMemStream << cmd;
         for (int i = 0; i < m_clientList.count(); i++) {
-            client = m_clientList.at(i);
+            cZDSP1Client* client = m_clientList.at(i);
             if (client->isActive()) {
-                s =  QString( "USERMEMOFFSET(%1)" ).arg(userMemOffset);
-                cmd = DspCmdCompiler::compileOneCmdLine(s,
-                                                        &ok,
-                                                        &client->m_dspVarResolver,
-                                                        client->getSocket(),
-                                                        0, 0);
+                DspCmdCompiler compiler(&client->m_dspVarResolver, client->getSocket());
+                cmd = compiler.compileOneCmdLine(QString("USERMEMOFFSET(%1)").arg(userMemOffset),
+                                                 &ok,
+                                                 0, 0);
                 cycCmdMemStream << cmd;
                 intCmdMemStream << cmd;
 
                 if (!client->GenCmdLists(errs, userMemOffset, UserWorkSpaceGlobalSegmentAdr))
                     return false;
 
-                userMemOffset += client->setStartAdr(userMemOffset, UserWorkSpaceGlobalSegmentAdr); // relokalisieren der daten im dsp
+                // relokalisieren der daten im dsp
+                userMemOffset += client->setStartAdr(userMemOffset, UserWorkSpaceGlobalSegmentAdr);
 
                 QList<DspCmdWithParamsRaw> cycCmdList = client->GetDspCmdList();
                 for (int j = 0; j < cycCmdList.size(); j++)
@@ -724,23 +719,19 @@ bool ZDspServer::BuildDSProgram(QString &errs)
             }
         }
 
-        client = m_clientList.at(0);
-        s = QString( "DSPINTPOST()"); // wir triggern das senden der serialisierten interrupts
-        cmd = DspCmdCompiler::compileOneCmdLine(s,
-                                                &ok,
-                                                &client->m_dspVarResolver,
-                                                client->getSocket(),
-                                                0, 0);
+        // wir triggern das senden der serialisierten interrupts
+        cmd = firstCompiler.compileOneCmdLine("DSPINTPOST()",
+                                              &ok,
+                                              0, 0);
         cycCmdMemStream << cmd;
     }
 
     cZDSP1Client dummyClient(0, 0, m_deviceNodeFactory); // dummyClient einrichten damit was jetzt kommt noch
-    s =  QString( "INVALID()"); // funktioniert selbst wenn wenn wir keinen mehr haben
-    cmd = DspCmdCompiler::compileOneCmdLine(s,
-                                            &ok,
-                                            &dummyClient.m_dspVarResolver,
-                                            dummyClient.getSocket(),
-                                            0, 0);
+    DspCmdCompiler dummyCompiler(&dummyClient.m_dspVarResolver, dummyClient.getSocket());
+    // funktioniert selbst wenn wenn wir keinen mehr haben
+    cmd = dummyCompiler.compileOneCmdLine("INVALID()",
+                                          &ok,
+                                          0, 0);
     cycCmdMemStream << cmd; // kommando listen ende
     intCmdMemStream << cmd;
 
