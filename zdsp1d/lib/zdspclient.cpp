@@ -136,20 +136,6 @@ QString cZDSP1Client::readActValues(const QString& variablesStringOnEmptyActOnly
     return readDspVarList(variablesStringWithActual);
 }
 
-bool cZDSP1Client::readOneDspVarInt(const QString &varName, int& intval)
-{ // einen int (32bit) wert lesen
-    bool ret = false;
-    QByteArray ba;
-    QString ss = QString("%1,1").arg(varName);
-    DspVarDeviceNodeInOut dspInOut(m_deviceNodeFactory);
-    if(dspInOut.readOneDspVar(ss, &ba, &m_dspVarResolver)) {
-        // 1 wort ab name (s) lesen
-        intval = *((int*) (ba.data()));
-        ret = true;
-    }
-    return ret;
-}
-
 QString cZDSP1Client::readDspVarList(const QString& variablesString)
 {
     QString ret;

@@ -28,7 +28,6 @@ public:
 
     QString readDspVarList(const QString &variablesString); // format: '<name1>,<len1>;<name2>,<len2>'
     QString readActValues(const QString &variablesStringOnEmptyActOnly);
-    bool readOneDspVarInt(const QString &varName, int& intval);
     DspVarResolver m_dspVarResolver;
 
     ulong setStartAdr(ulong startAdress, ulong globalMemStart); // zum relokalisieren der userdaten

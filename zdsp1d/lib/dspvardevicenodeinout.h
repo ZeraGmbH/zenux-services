@@ -11,6 +11,7 @@ public:
     DspVarDeviceNodeInOut(AbstractFactoryDeviceNodeDspPtr deviceNodeFactory);
 
     TDspVar *readOneDspVar(const QString &nameCommaLen, QByteArray *varRead, DspVarResolver *dspVarResolver);
+    bool readOneDspVarInt(const QString &varName, int& intval, DspVarResolver *dspVarResolver);
     bool writeDspVars(const QString &varsSemicolonSeparated, DspVarResolver *dspVarResolver);
 private:
     bool readVarFromDsp(TDspVar *DspVar, int countVars, QByteArray *varRead);

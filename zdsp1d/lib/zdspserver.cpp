@@ -497,18 +497,16 @@ bool ZDspServer::setSamplingSystem()
 
 QString ZDspServer::sendCommand2Dsp(QString qs)
 {
-    // we need a client to do the job
-    cZDSP1Client cl(0, 0, m_deviceNodeFactory);
     DspVarDeviceNodeInOut dspInOut(m_deviceNodeFactory);
-
+    DspVarResolver dspSystemVarResolver;
     int ack;
-    if(!cl.readOneDspVarInt("DSPACK", ack))
+    if(!dspInOut.readOneDspVarInt("DSPACK", ack, &dspSystemVarResolver))
         return ZSCPI::scpiAnswer[ZSCPI::errexec];
     if(ack == InProgress)
         return ZSCPI::scpiAnswer[ZSCPI::busy];
-    if(!dspInOut.writeDspVars("DSPACK,0;", &cl.m_dspVarResolver) )
+    if(!dspInOut.writeDspVars("DSPACK,0;", &dspSystemVarResolver) )
         return ZSCPI::scpiAnswer[ZSCPI::errexec]; // reset acknowledge
-    if(!dspInOut.writeDspVars(qs, &cl.m_dspVarResolver))
+    if(!dspInOut.writeDspVars(qs, &dspSystemVarResolver))
         return ZSCPI::scpiAnswer[ZSCPI::errexec];
 
     AbstractDspDeviceNodePtr deviceNode = m_deviceNodeFactory->getDspDeviceNode();
@@ -519,13 +517,14 @@ QString ZDspServer::sendCommand2Dsp(QString qs)
 QString ZDspServer::getSamplingSystemSetup(cZDSP1Client* client)
 {
     int measmeasmeasChannelCount = 0;
-    if (!client->readOneDspVarInt("NCHANNELS", measmeasmeasChannelCount))
+    DspVarDeviceNodeInOut dspInOut(m_deviceNodeFactory);
+    if (!dspInOut.readOneDspVarInt("NCHANNELS", measmeasmeasChannelCount, &client->m_dspVarResolver))
         return ZSCPI::scpiAnswer[ZSCPI::errexec];
     int samplesPerMeasPeriod = 0;
-    if (!client->readOneDspVarInt("NSPERIOD", samplesPerMeasPeriod))
+    if (!dspInOut.readOneDspVarInt("NSPERIOD", samplesPerMeasPeriod, &client->m_dspVarResolver))
         return ZSCPI::scpiAnswer[ZSCPI::errexec];
     int samplesPerSignalPeriod = 0;
-    if (!client->readOneDspVarInt("NSMEAS", samplesPerSignalPeriod))
+    if (!dspInOut.readOneDspVarInt("NSMEAS", samplesPerSignalPeriod, &client->m_dspVarResolver))
         return ZSCPI::scpiAnswer[ZSCPI::errexec];
     return QString("%1,%2,%3").arg(measmeasmeasChannelCount).arg(samplesPerMeasPeriod).arg(samplesPerSignalPeriod);
 }
@@ -533,7 +532,8 @@ QString ZDspServer::getSamplingSystemSetup(cZDSP1Client* client)
 QString ZDspServer::getDspCommandStat(cZDSP1Client* client)
 {
     int stat;
-    if(!client->readOneDspVarInt("DSPACK", stat))
+    DspVarDeviceNodeInOut dspInOut(m_deviceNodeFactory);
+    if(!dspInOut.readOneDspVarInt("DSPACK", stat, &client->m_dspVarResolver))
         return ZSCPI::scpiAnswer[ZSCPI::errexec];
     else
         return QString("%1").arg(stat);

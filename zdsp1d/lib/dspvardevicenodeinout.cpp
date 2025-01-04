@@ -31,6 +31,20 @@ TDspVar *DspVarDeviceNodeInOut::readOneDspVar(const QString &nameCommaLen,
     return nullptr;
 }
 
+bool DspVarDeviceNodeInOut::readOneDspVarInt(const QString &varName, int &intval, DspVarResolver *dspVarResolver)
+{ // einen int (32bit) wert lesen
+    bool ret = false;
+    QByteArray ba;
+    QString ss = QString("%1,1").arg(varName);
+    DspVarDeviceNodeInOut dspInOut(m_deviceNodeFactory);
+    if(dspInOut.readOneDspVar(ss, &ba, dspVarResolver)) {
+        // 1 wort ab name (s) lesen
+        intval = *((int*) (ba.data()));
+        ret = true;
+    }
+    return ret;
+}
+
 bool DspVarDeviceNodeInOut::readVarFromDsp(TDspVar *DspVar, int countVars, QByteArray *varRead)
 {
     const int countBytes = countVars * 4;
