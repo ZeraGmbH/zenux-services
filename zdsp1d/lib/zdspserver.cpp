@@ -611,7 +611,8 @@ void ZDspServer::DspIntHandler(int)
         cZDSP1Client *client = m_clientList.first();
         QByteArray ba;
         QString s = "CTRLCMDPAR,20";
-        if (client->readOneDspVar(s, &ba)) { // 20 worte lesen
+        DspVarDeviceNodeInOut dspInOut(m_deviceNodeFactory);
+        if(dspInOut.readOneDspVar(s, &ba, &client->m_dspVarResolver)) { // 20 worte lesen
             ulong* pardsp = (ulong*) ba.data();
             int n = pardsp[0]; // anzahl der interrupts
             m_dspInterruptLogStatistics.addValue(n);
@@ -656,7 +657,6 @@ void ZDspServer::DspIntHandler(int)
                 }
             }
         }
-        DspVarDeviceNodeInOut dspInOut(m_deviceNodeFactory);
         dspInOut.doWriteDspVars(QString("CTRLACK,%1;").arg(CmdDone), &client->m_dspVarResolver); // jetzt in jedem fall acknowledge
     }
     else {

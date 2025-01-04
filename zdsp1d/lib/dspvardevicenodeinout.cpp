@@ -7,6 +7,30 @@ DspVarDeviceNodeInOut::DspVarDeviceNodeInOut(AbstractFactoryDeviceNodeDspPtr dev
 {
 }
 
+TDspVar *DspVarDeviceNodeInOut::readOneDspVar(const QString &nameCommaLen,
+                                              QByteArray *varRead,
+                                              DspVarResolver *dspVarResolver)
+{
+    const QStringList listNameLen = nameCommaLen.split(",", Qt::SkipEmptyParts);
+    if(listNameLen.count() < 2)
+        return nullptr; // wrong parameter format
+    QString name = listNameLen[0];
+    TDspVar *dspVar = dspVarResolver->getDspVar(name);
+    if (!dspVar)
+        return nullptr; // fehler, den namen gibt es nicht
+
+    QString countSection = listNameLen[1];
+    bool ok;
+    const int countVars = countSection.toInt(&ok);
+    if (!ok || countVars < 1 )
+        return nullptr; // fehler in der anzahl der elemente
+
+    DspVarDeviceNodeInOut dspInOut(m_deviceNodeFactory);
+    if(dspInOut.doReadVarFromDsp(dspVar, countVars, varRead))
+        return dspVar;
+    return nullptr;
+}
+
 bool DspVarDeviceNodeInOut::doReadVarFromDsp(TDspVar *DspVar, int countVars, QByteArray *varRead)
 {
     const int countBytes = countVars * 4;

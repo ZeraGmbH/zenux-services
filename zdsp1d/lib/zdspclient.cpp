@@ -141,34 +141,13 @@ bool cZDSP1Client::readOneDspVarInt(const QString &varName, int& intval)
     bool ret = false;
     QByteArray ba;
     QString ss = QString("%1,1").arg(varName);
-    if(readOneDspVar(ss, &ba)) {
+    DspVarDeviceNodeInOut dspInOut(m_deviceNodeFactory);
+    if(dspInOut.readOneDspVar(ss, &ba, &m_dspVarResolver)) {
         // 1 wort ab name (s) lesen
         intval = *((int*) (ba.data()));
         ret = true;
     }
     return ret;
-}
-
-TDspVar *cZDSP1Client::readOneDspVar(const QString &nameCommaLen, QByteArray *varRead)
-{
-    const QStringList listNameLen = nameCommaLen.split(",", Qt::SkipEmptyParts);
-    if(listNameLen.count() < 2)
-        return nullptr; // wrong parameter format
-    QString name = listNameLen[0];
-    TDspVar *dspVar = m_dspVarResolver.getDspVar(name);
-    if (!dspVar)
-        return nullptr; // fehler, den namen gibt es nicht
-
-    QString countSection = listNameLen[1];
-    bool ok;
-    const int countVars = countSection.toInt(&ok);
-    if (!ok || countVars < 1 )
-        return nullptr; // fehler in der anzahl der elemente
-
-    DspVarDeviceNodeInOut dspInOut(m_deviceNodeFactory);
-    if(dspInOut.doReadVarFromDsp(dspVar, countVars, varRead))
-        return dspVar;
-    return nullptr;
 }
 
 QString cZDSP1Client::readDspVarList(const QString& variablesString)
@@ -180,7 +159,8 @@ QString cZDSP1Client::readDspVarList(const QString& variablesString)
     const QStringList varEntries = variablesString.split(";", Qt::SkipEmptyParts);
     for(int i=0; i<varEntries.count(); i++) {
         QString nameCommaLen = varEntries[i]; // format '<name>,<count>'
-        TDspVar *dspVar = readOneDspVar(nameCommaLen, &ba);
+        DspVarDeviceNodeInOut dspInOut(m_deviceNodeFactory);
+        TDspVar *dspVar = dspInOut.readOneDspVar(nameCommaLen, &ba, &m_dspVarResolver);
         if(!dspVar)
             return ZSCPI::scpiAnswer[ZSCPI::errexec];
 
