@@ -1,4 +1,5 @@
 #include "test_regression_dsp_var.h"
+#include "dspvardevicenodeinout.h"
 #include "proxy.h"
 #include "zdspclient.h"
 #include "zscpi_response_definitions.h"
@@ -19,7 +20,8 @@ void test_regression_dsp_var::init()
 {
     m_tcpNetworkFactory = VeinTcp::TcpNetworkFactory::create();
     m_resmanServer = std::make_unique<ResmanRunFacade>(m_tcpNetworkFactory);
-    m_dspService = std::make_unique<TestZdsp1dForVarAccess>(std::make_shared<TestFactoryDeviceNodeDsp>(), m_tcpNetworkFactory);
+    m_deviceNodeFactory = std::make_shared<TestFactoryDeviceNodeDsp>();
+    m_dspService = std::make_unique<TestZdsp1dForVarAccess>(m_deviceNodeFactory, m_tcpNetworkFactory);
     TimeMachineObject::feedEventLoop();
 
     m_proxyClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", dspServerPort, m_tcpNetworkFactory);
@@ -38,6 +40,7 @@ void test_regression_dsp_var::cleanup()
 
     m_dspService = nullptr;
     TimeMachineObject::feedEventLoop();
+    m_deviceNodeFactory = nullptr;
     m_resmanServer = nullptr;
     TimeMachineObject::feedEventLoop();
 }
@@ -390,7 +393,8 @@ void test_regression_dsp_var::serverWriteDspDialogWorkspaceVariableAndListenDevi
     QSignalSpy spyWrite(deviceNode.get(), &TestDeviceNodeDsp::sigIoOperation);
 
     // Note: A real world DSP write is more complex - see ZDspServer::sendCommand2Dsp
-    testServerlient->doWriteDspVars("DSPCMDPAR,2,42;");
+    DspVarDeviceNodeInOut dspInOut(m_deviceNodeFactory);
+    dspInOut.doWriteDspVars("DSPCMDPAR,2,42;", &testServerlient->m_dspVarResolver);
 
     QCOMPARE(spyWrite.count(), 1);
     QCOMPARE(spyWrite[0][0], "write");

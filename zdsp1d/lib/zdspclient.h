@@ -30,7 +30,6 @@ public:
     QString readActValues(const QString &variablesStringOnEmptyActOnly);
     bool readOneDspVarInt(const QString &varName, int& intval);
     TDspVar *readOneDspVar(const QString &nameCommaLen, QByteArray *varRead);
-    bool doWriteDspVars(const QString &varsSemicolonSeparated);
     DspVarResolver m_dspVarResolver;
 
     ulong setStartAdr(ulong startAdress, ulong globalMemStart); // zum relokalisieren der userdaten
@@ -39,8 +38,6 @@ public:
     VeinTcp::TcpPeer* m_pNetClient;
 
 private:
-    TDspVar *doReadVarFromDsp(TDspVar *&DspVar, int countVars, QByteArray *varRead);
-
     AbstractFactoryDeviceNodeDspPtr m_deviceNodeFactory;
     int m_socket; // socket für den die verbindung besteht
     bool m_bActive = false;

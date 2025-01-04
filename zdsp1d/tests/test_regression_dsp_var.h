@@ -38,6 +38,7 @@ private:
     Zera::ProxyClientPtr m_proxyClient;
     std::unique_ptr<Zera::cDSPInterface> m_dspIFace;
     VeinTcp::AbstractTcpNetworkFactoryPtr m_tcpNetworkFactory;
+    AbstractFactoryDeviceNodeDspPtr m_deviceNodeFactory;
 };
 
 #endif // TEST_REGRESSION_DSP_VAR_H

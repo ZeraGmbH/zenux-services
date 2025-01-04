@@ -1,4 +1,5 @@
 #include "zdspserver.h"
+#include "dspvardevicenodeinout.h"
 #include "zdspclient.h"
 #include "dsp.h"
 #include "dspcmdcompiler.h"
@@ -370,6 +371,7 @@ void ZDspServer::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
     cSCPICommand cmd = protoCmd->m_sInput;
     int socketNum = m_zdspdClientHash[protoCmd->m_clientId]->getSocket();
     cZDSP1Client* client = GetClient(socketNum);
+    DspVarDeviceNodeInOut dspInOut(m_deviceNodeFactory);
     switch (cmdCode)
     {
     case scpiInterfaceRead:
@@ -397,7 +399,7 @@ void ZDspServer::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
         protoCmd->m_sOutput = client->readDspVarList(cmd.getParam());
         break;
     case scpiDspMemoryWrite:
-        if(client->doWriteDspVars(cmd.getParam()))
+        if(dspInOut.doWriteDspVars(cmd.getParam(), &client->m_dspVarResolver))
             protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::ack];
         else
             protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::errexec];
@@ -438,7 +440,7 @@ void ZDspServer::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
         protoCmd->m_sOutput = client->readDspVarList("BUSYMAX,1;");  // ab "BUSYMAX"  1 wort lesen
         break;
     case scpiResetDeviceLoadMax:
-        if(client->doWriteDspVars("BUSYMAX,0.0"))
+        if(dspInOut.doWriteDspVars("BUSYMAX,0.0", &client->m_dspVarResolver))
             protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::ack];
         else
             protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::errexec];
@@ -497,15 +499,16 @@ QString ZDspServer::sendCommand2Dsp(QString qs)
 {
     // we need a client to do the job
     cZDSP1Client cl(0, 0, m_deviceNodeFactory);
+    DspVarDeviceNodeInOut dspInOut(m_deviceNodeFactory);
 
     int ack;
-    if (!cl.readOneDspVarInt("DSPACK", ack))
+    if(!cl.readOneDspVarInt("DSPACK", ack))
         return ZSCPI::scpiAnswer[ZSCPI::errexec];
-    if (ack == InProgress)
+    if(ack == InProgress)
         return ZSCPI::scpiAnswer[ZSCPI::busy];
-    if (!cl.doWriteDspVars("DSPACK,0;") )
+    if(!dspInOut.doWriteDspVars("DSPACK,0;", &cl.m_dspVarResolver) )
         return ZSCPI::scpiAnswer[ZSCPI::errexec]; // reset acknowledge
-    if (! cl.doWriteDspVars(qs))
+    if(!dspInOut.doWriteDspVars(qs, &cl.m_dspVarResolver))
         return ZSCPI::scpiAnswer[ZSCPI::errexec];
 
     AbstractDspDeviceNodePtr deviceNode = m_deviceNodeFactory->getDspDeviceNode();
@@ -530,7 +533,7 @@ QString ZDspServer::getSamplingSystemSetup(cZDSP1Client* client)
 QString ZDspServer::getDspCommandStat(cZDSP1Client* client)
 {
     int stat;
-    if (!client->readOneDspVarInt("DSPACK", stat))
+    if(!client->readOneDspVarInt("DSPACK", stat))
         return ZSCPI::scpiAnswer[ZSCPI::errexec];
     else
         return QString("%1").arg(stat);
@@ -538,7 +541,8 @@ QString ZDspServer::getDspCommandStat(cZDSP1Client* client)
 
 QString ZDspServer::setDspCommandStat(cZDSP1Client* client, QString scpiParam)
 {
-    if (!client->doWriteDspVars(QString("DSPACK,%1;").arg(scpiParam)) )
+    DspVarDeviceNodeInOut dspInOut(m_deviceNodeFactory);
+    if(!dspInOut.doWriteDspVars(QString("DSPACK,%1;").arg(scpiParam), &client->m_dspVarResolver) )
         return ZSCPI::scpiAnswer[ZSCPI::errexec];
     else
         return ZSCPI::scpiAnswer[ZSCPI::ack];
@@ -653,12 +657,13 @@ void ZDspServer::DspIntHandler(int)
                 }
             }
         }
-        client->doWriteDspVars(s = QString("CTRLACK,%1;").arg(CmdDone)); // jetzt in jedem fall acknowledge
+        DspVarDeviceNodeInOut dspInOut(m_deviceNodeFactory);
+        dspInOut.doWriteDspVars(QString("CTRLACK,%1;").arg(CmdDone), &client->m_dspVarResolver); // jetzt in jedem fall acknowledge
     }
     else {
         cZDSP1Client dummyClient(0, 0, m_deviceNodeFactory); // dummyClient einrichten
-        QString s = QString("CTRLACK,%1;").arg(CmdDone);
-        dummyClient.doWriteDspVars(s); // und rücksetzen
+        DspVarDeviceNodeInOut dspInOut(m_deviceNodeFactory);
+        dspInOut.doWriteDspVars(QString("CTRLACK,%1;").arg(CmdDone), &dummyClient.m_dspVarResolver); // und rücksetzen
     }
 }
 

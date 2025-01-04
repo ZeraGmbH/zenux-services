@@ -1,8 +1,7 @@
 #include "zdspclient.h"
 #include "dspcmdcompiler.h"
+#include "dspvardevicenodeinout.h"
 #include "zscpi_response_definitions.h"
-#include <parse.h>
-#include <QDataStream>
 
 extern TMemSection dm32DspWorkspace;
 extern TMemSection dm32DialogWorkSpace;
@@ -151,23 +150,12 @@ bool cZDSP1Client::readOneDspVarInt(const QString &varName, int& intval)
     bool ret = false;
     QByteArray ba;
     QString ss = QString("%1,1").arg(varName);
-    if(readOneDspVar(ss, &ba) != 0) {
+    if(readOneDspVar(ss, &ba)) {
         // 1 wort ab name (s) lesen
         intval = *((int*) (ba.data()));
         ret = true;
     }
     return ret;
-}
-
-TDspVar *cZDSP1Client::doReadVarFromDsp(TDspVar *&DspVar, int countVars, QByteArray *varRead)
-{
-    const int countBytes = countVars * 4;
-    varRead->resize(countBytes);
-    AbstractDspDeviceNodePtr deviceNode = m_deviceNodeFactory->getDspDeviceNode();
-    if ((deviceNode->lseek(DspVar->adr) >= 0) &&
-        (deviceNode->read(varRead->data(), countBytes) >= 0))
-        return DspVar; // dev.  seek und dev. read ok
-    return nullptr; // sonst fehler
 }
 
 TDspVar *cZDSP1Client::readOneDspVar(const QString &nameCommaLen, QByteArray *varRead)
@@ -176,8 +164,8 @@ TDspVar *cZDSP1Client::readOneDspVar(const QString &nameCommaLen, QByteArray *va
     if(listNameLen.count() < 2)
         return nullptr; // wrong parameter format
     QString name = listNameLen[0];
-    TDspVar *DspVar = m_dspVarResolver.getDspVar(name);
-    if (!DspVar)
+    TDspVar *dspVar = m_dspVarResolver.getDspVar(name);
+    if (!dspVar)
         return nullptr; // fehler, den namen gibt es nicht
 
     QString countSection = listNameLen[1];
@@ -186,7 +174,10 @@ TDspVar *cZDSP1Client::readOneDspVar(const QString &nameCommaLen, QByteArray *va
     if (!ok || countVars < 1 )
         return nullptr; // fehler in der anzahl der elemente
 
-    return doReadVarFromDsp(DspVar, countVars, varRead);
+    DspVarDeviceNodeInOut dspInOut(m_deviceNodeFactory);
+    if(dspInOut.doReadVarFromDsp(dspVar, countVars, varRead))
+        return dspVar;
+    return nullptr;
 }
 
 QString cZDSP1Client::readDspVarList(const QString& variablesString)
@@ -225,71 +216,4 @@ QString cZDSP1Client::readDspVarList(const QString& variablesString)
         }
     }
     return ret;
-}
-
-static bool tryStreamIntegerValue(const QString &strValue, QDataStream &stream)
-{
-    bool ok;
-    qint32 lValue = strValue.toLong(&ok);
-    if(ok) {
-        stream << lValue;
-        return true;
-    }
-    quint32 uValue = strValue.toULong(&ok);
-    if(ok) {
-        stream << uValue;
-        return true;
-    }
-    return false;
-}
-
-static bool tryStreamFloatValue(const QString &strValue, QDataStream &stream)
-{
-    bool ok;
-    float value = strValue.toFloat(&ok);
-    if(ok)
-        stream << value;
-    return ok;
-}
-
-bool cZDSP1Client::doWriteDspVars(const QString &varsSemicolonSeparated)
-{
-    const QStringList varEntries = varsSemicolonSeparated.split(";", Qt::SkipEmptyParts);
-    for(const QString &varString : varEntries) {
-        QByteArray byteArr;
-        QDataStream stream(&byteArr, QIODevice::Unbuffered | QIODevice::ReadWrite);
-        stream.setByteOrder(QDataStream::LittleEndian);
-        stream.setFloatingPointPrecision(QDataStream::SinglePrecision);
-
-        const QStringList varNameVals = varString.split(",", Qt::SkipEmptyParts);
-        if(varNameVals.count() < 2)
-            return false;
-        const QString &varName = varNameVals[0];
-
-        int wordCount = 0;
-        int type = m_dspVarResolver.getVarType(varName);
-        for(int valIdx=1; valIdx<varNameVals.count(); valIdx++) {
-            const QString &valueStr = varNameVals[valIdx];
-            if(type == eUnknown) {
-                if(!tryStreamIntegerValue(valueStr, stream) &&
-                   !tryStreamFloatValue(valueStr, stream))
-                    return false;
-            }
-            else if(type == eInt) {
-                if(!tryStreamIntegerValue(valueStr, stream))
-                    return false;
-            }
-            else
-                if(!tryStreamFloatValue(valueStr, stream))
-                    return false;
-            wordCount++;
-        }
-        long adr = m_dspVarResolver.getVarAddress(varName);
-        if (adr == -1)
-            return false;
-        AbstractDspDeviceNodePtr deviceNode = m_deviceNodeFactory->getDspDeviceNode();
-        if(wordCount>0 && !deviceNode->write(adr, byteArr.data(), wordCount*4))
-            return false;
-    }
-    return true;
 }
