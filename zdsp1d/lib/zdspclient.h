@@ -54,7 +54,7 @@ private:
     QString m_sCmdListDef; // kommando liste defintion
     QString m_sIntCmdListDef; // interrupt kommando  liste defintion
 
-    QList<DspVarClientPerspective> m_dspRawActualValueVarList; // liste mit variablen beschreibungen
+    QList<DspVarClientPerspective> m_dspRawActualValueList; // liste mit variablen beschreibungen
     QList<cDspCmd> m_DspCmdList; // liste mit dsp kommandos (periodisch)
     QList<cDspCmd>  m_DspIntCmdList; // liste mit dsp kommandos (interrupt)
     QVector<TDspVar> m_dspVarArray; // array von TDspVar

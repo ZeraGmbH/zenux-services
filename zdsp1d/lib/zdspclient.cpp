@@ -37,7 +37,7 @@ void cZDSP1Client::init(int socket, VeinTcp::TcpPeer *netclient)
 
 bool cZDSP1Client::setRawActualValueList(const QString &varsSemicolonSeparated)
 {
-    m_dspRawActualValueVarList.clear();
+    m_dspRawActualValueList.clear();
     DspVarClientPerspective dspVar;
     int localOffset = 0;
     int globaloffset = 0;
@@ -52,24 +52,24 @@ bool cZDSP1Client::setRawActualValueList(const QString &varsSemicolonSeparated)
                 dspVar.SetOffs(globaloffset);
                 globaloffset += dspVar.size();
             }
-            m_dspRawActualValueVarList.append(dspVar);
+            m_dspRawActualValueList.append(dspVar);
         }
         else {
-            m_dspRawActualValueVarList.clear();
+            m_dspRawActualValueList.clear();
             return false;
         }
     }
 
-    m_memorySection.n = m_dspRawActualValueVarList.count();
+    m_memorySection.n = m_dspRawActualValueList.count();
     if(m_memorySection.n > 0) { // wir haben mindestens 1 variable
         m_dspVarArray.resize(m_memorySection.n);
         for(int i=0; i<m_memorySection.n; i++) { // und machen diese dem resolver zugänglich
-            m_dspVarArray[i].m_clientHandleName = m_dspRawActualValueVarList[i].getClientHandleName();
-            m_dspVarArray[i].Name = m_dspRawActualValueVarList[i].name();
-            m_dspVarArray[i].size = m_dspRawActualValueVarList[i].size();
-            m_dspVarArray[i].offs = m_dspRawActualValueVarList[i].offs();
-            m_dspVarArray[i].type = (dType)m_dspRawActualValueVarList[i].type();
-            m_dspVarArray[i].segment = (segmentType)m_dspRawActualValueVarList[i].segment();
+            m_dspVarArray[i].m_clientHandleName = m_dspRawActualValueList[i].getClientHandleName();
+            m_dspVarArray[i].Name = m_dspRawActualValueList[i].name();
+            m_dspVarArray[i].size = m_dspRawActualValueList[i].size();
+            m_dspVarArray[i].offs = m_dspRawActualValueList[i].offs();
+            m_dspVarArray[i].type = (dType)m_dspRawActualValueList[i].type();
+            m_dspVarArray[i].segment = (segmentType)m_dspRawActualValueList[i].segment();
         }
         m_memorySection.DspVar = m_dspVarArray.data();
     }
@@ -81,11 +81,9 @@ QString cZDSP1Client::getRawActualValueList()
 {
     QString ret;
     QTextStream ts(&ret, QIODevice::WriteOnly);
-    if (!m_dspRawActualValueVarList.empty()) {
-        QList<DspVarClientPerspective>::iterator it;
-        for(it = m_dspRawActualValueVarList.begin(); it != m_dspRawActualValueVarList.end(); ++it)
-            ts << (*it).name() << ',' << (*it).size() << ';';
-    }
+    if (!m_dspRawActualValueList.empty())
+        for(auto it = m_dspRawActualValueList.constBegin(); it != m_dspRawActualValueList.constEnd(); ++it)
+            ts << it->name() << ',' << it->size() << ';';
     else
         ts << "Empty";
     return ret;
@@ -311,8 +309,8 @@ QString cZDSP1Client::readActValues(const QString& variablesStringOnEmptyActOnly
 {
     QString variablesStringWithActual(variablesStringOnEmptyActOnly);
     if(variablesStringWithActual.isEmpty()) { // sonderfall liste leer -> alle messwerte lesen
-        for (int i = 0; i < m_dspRawActualValueVarList.count(); i++) {
-            DspVarClientPerspective Var = m_dspRawActualValueVarList.at(i);
+        for (int i = 0; i < m_dspRawActualValueList.count(); i++) {
+            DspVarClientPerspective Var = m_dspRawActualValueList.at(i);
             variablesStringWithActual += QString("%1,%2;").arg(Var.name()).arg(Var.size());
         }
     }

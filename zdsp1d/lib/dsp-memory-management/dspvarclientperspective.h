@@ -7,13 +7,13 @@ class DspVarClientPerspective { // zur verwaltung der dsp variablen auf client/s
 public:
     DspVarClientPerspective();
     bool Init(const QString& varDefinition); // legt eine variable an
-    QString getClientHandleName();
-    QString& name();
+    QString getClientHandleName() const;
+    QString name() const;
     void SetOffs(long);
-    int size();
-    int type();
-    ulong offs();
-    int segment();
+    int size() const;
+    int type() const;
+    ulong offs() const;
+    int segment() const;
 
 private:
     QString m_clientHandleName;

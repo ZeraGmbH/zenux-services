@@ -42,32 +42,32 @@ bool DspVarClientPerspective::Init(const QString& varDefinition)
     return ret;
 }
 
-QString DspVarClientPerspective::getClientHandleName()
+QString DspVarClientPerspective::getClientHandleName() const
 {
     return m_clientHandleName;
 }
 
-QString& DspVarClientPerspective::name()
+QString DspVarClientPerspective::name() const
 {
     return m_sName;
 }
 
-int DspVarClientPerspective::size()
+int DspVarClientPerspective::size() const
 {
     return m_nSize;
 }
 
-int DspVarClientPerspective::type()
+int DspVarClientPerspective::type() const
 {
     return m_nType;
 }
 
-ulong DspVarClientPerspective::offs()
+ulong DspVarClientPerspective::offs() const
 {
     return m_nOffsAdr;
 }
 
-int DspVarClientPerspective::segment()
+int DspVarClientPerspective::segment() const
 {
     return m_nSegment;
 }
