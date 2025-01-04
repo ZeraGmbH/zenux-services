@@ -11,16 +11,12 @@ extern TMemSection dm32CmdList;
 extern TMemSection symbConsts1;
 
 cZDSP1Client::cZDSP1Client(int socket, VeinTcp::TcpPeer* netclient, AbstractFactoryDeviceNodeDspPtr deviceNodeFactory) :
-    m_deviceNodeFactory(deviceNodeFactory)
+    m_deviceNodeFactory(deviceNodeFactory),
+    m_pNetClient(netclient),
+    m_socket(socket),
+    m_sCmdListDef("Empty"),
+    m_sIntCmdListDef("Empty")
 {
-    init(socket, netclient);
-}
-
-void cZDSP1Client::init(int socket, VeinTcp::TcpPeer *netclient)
-{
-    m_socket = socket;
-    m_pNetClient = netclient;
-    m_sCmdListDef = m_sIntCmdListDef = "Empty"; // alle listen default leer
     DspCmdWithParamsRaw DspCmd;
     m_DspCmdList.append(DspCmd);
     m_DspIntCmdList.append(DspCmd);
@@ -32,8 +28,6 @@ void cZDSP1Client::init(int socket, VeinTcp::TcpPeer *netclient)
     m_dspVarResolver.addSection( &m_memorySection);
     m_memorySection.StartAdr = m_memorySection.n = 0; m_memorySection.Section = userSection;
     m_dspVarResolver.actualizeVarHash(); // wir setzen die hashtabelle und initialisieren diese
-
-    m_bActive = false;
 }
 
 bool cZDSP1Client::setRawActualValueList(const QString &varsSemicolonSeparated)

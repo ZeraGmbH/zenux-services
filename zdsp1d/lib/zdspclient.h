@@ -42,7 +42,6 @@ public:
     VeinTcp::TcpPeer* m_pNetClient;
 
 private:
-    void init(int socket, VeinTcp::TcpPeer *netclient);
     bool GenCmdList(const QString& cmdsSemicolonSeparated,
                     QList<DspCmdWithParamsRaw> &genCmdList,
                     QString& err,
@@ -52,7 +51,7 @@ private:
 
     AbstractFactoryDeviceNodeDspPtr m_deviceNodeFactory;
     int m_socket; // socket für den die verbindung besteht
-    bool m_bActive;
+    bool m_bActive = false;
     QString m_sCmdListDef; // kommando liste defintion
     QString m_sIntCmdListDef; // interrupt kommando  liste defintion
 
