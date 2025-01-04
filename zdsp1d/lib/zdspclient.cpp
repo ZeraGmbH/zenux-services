@@ -127,34 +127,12 @@ ulong cZDSP1Client::setStartAdr(ulong startAdress, ulong globalMemStart)
     return usermemsize;
 }
 
-bool cZDSP1Client::GenCmdList(const QString &cmdsSemicolonSeparated,
-                              QList<DspCmdWithParamsRaw> &genCmdList,
-                              QString& err,
-                              ulong userMemOffset,
-                              ulong globalstartadr)
-{
-    bool ok = true;
-    genCmdList.clear();
-    DspCmdCompiler compiler(&m_dspVarResolver, m_socket);
-    for(int i = 0;;i++) {
-        QString cs = cmdsSemicolonSeparated.section(';',i,i);
-        if ( (cs.isEmpty()) || (cs==("Empty")) )
-            break; // liste ist durch
-        genCmdList.append(compiler.compileOneCmdLineAligned(cs, &ok,
-                                                            userMemOffset, globalstartadr));
-        if(!ok) {
-            err = cs;
-            break;
-        }
-    }
-    return ok;
-}
-
 bool cZDSP1Client::GenCmdLists(QString& errs, ulong userMemOffset, ulong globalstartadr)
 {
+    DspCmdCompiler compiler(&m_dspVarResolver, m_socket);
     return
-        GenCmdList(m_sCmdListDef, m_DspCmdList,errs, userMemOffset, globalstartadr) &&
-        GenCmdList(m_sIntCmdListDef, m_DspIntCmdList, errs, userMemOffset, globalstartadr);
+        compiler.compileCmds(m_sCmdListDef, m_DspCmdList,errs, userMemOffset, globalstartadr) &&
+        compiler.compileCmds(m_sIntCmdListDef, m_DspIntCmdList, errs, userMemOffset, globalstartadr);
 }
 
 bool cZDSP1Client::isActive()

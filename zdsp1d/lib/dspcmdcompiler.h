@@ -14,6 +14,12 @@ public:
                                                  bool* ok,
                                                  ulong userMemOffset,
                                                  ulong globalstartadr);
+    bool compileCmds(const QString& cmdsSemicolonSeparated,
+                     QList<DspCmdWithParamsRaw> &genCmdList,
+                     QString& err,
+                     ulong userMemOffset,
+                     ulong globalstartadr);
+
 private:
     static bool syntaxCheck(const QString& dspCmdLine);
     DspVarResolver* m_varResolver;

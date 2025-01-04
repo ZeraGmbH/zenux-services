@@ -133,6 +133,23 @@ DspCmdWithParamsRaw DspCmdCompiler::compileOneCmdLineAligned(const QString &cmdL
     return DspCmdWithParamsRaw();
 }
 
+bool DspCmdCompiler::compileCmds(const QString &cmdsSemicolonSeparated, QList<DspCmdWithParamsRaw> &genCmdList, QString &err, ulong userMemOffset, ulong globalstartadr)
+{
+    bool ok = true;
+    genCmdList.clear();
+    for(int i = 0;;i++) {
+        QString cs = cmdsSemicolonSeparated.section(';',i,i);
+        if ( (cs.isEmpty()) || (cs==("Empty")) )
+            break; // liste ist durch
+        genCmdList.append(compileOneCmdLineAligned(cs, &ok, userMemOffset, globalstartadr));
+        if(!ok) {
+            err = cs;
+            break;
+        }
+    }
+    return ok;
+}
+
 bool DspCmdCompiler::syntaxCheck(const QString &dspCmdLine)
 {
     int openPos = dspCmdLine.indexOf('(');

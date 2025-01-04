@@ -42,11 +42,6 @@ public:
     VeinTcp::TcpPeer* m_pNetClient;
 
 private:
-    bool GenCmdList(const QString& cmdsSemicolonSeparated,
-                    QList<DspCmdWithParamsRaw> &genCmdList,
-                    QString& err,
-                    ulong userMemOffset,
-                    ulong globalstartadr);
     TDspVar *doReadVarFromDsp(TDspVar *&DspVar, int countVars, QByteArray *varRead);
 
     AbstractFactoryDeviceNodeDspPtr m_deviceNodeFactory;
