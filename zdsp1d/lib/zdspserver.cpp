@@ -392,7 +392,7 @@ void ZDspServer::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
         if(cmd.isQuery())
             protoCmd->m_sOutput = getDspCommandStat();
         else
-            protoCmd->m_sOutput = setDspCommandStat(client, cmd.getParam());
+            protoCmd->m_sOutput = setDspCommandStat(cmd.getParam());
         break;
     case scpiDspMemoryRead:
         protoCmd->m_sOutput = m_dspInOut.readDspVarList(cmd.getParam(), &client->m_dspVarResolver);
@@ -538,9 +538,10 @@ QString ZDspServer::getDspCommandStat()
         return QString("%1").arg(stat);
 }
 
-QString ZDspServer::setDspCommandStat(cZDSP1Client* client, QString scpiParam)
+QString ZDspServer::setDspCommandStat(QString scpiParam)
 {
-    if(!m_dspInOut.writeDspVars(QString("DSPACK,%1;").arg(scpiParam), &client->m_dspVarResolver) )
+    DspVarResolver dspSystemVarResolver;
+    if(!m_dspInOut.writeDspVars(QString("DSPACK,%1;").arg(scpiParam), &dspSystemVarResolver) )
         return ZSCPI::scpiAnswer[ZSCPI::errexec];
     else
         return ZSCPI::scpiAnswer[ZSCPI::ack];

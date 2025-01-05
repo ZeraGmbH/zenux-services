@@ -116,7 +116,7 @@ private:
     QString getLcaAndDspVersion();
     QString getSamplingSystemSetup(cZDSP1Client *client);
     QString getDspCommandStat();
-    QString setDspCommandStat(cZDSP1Client* client, QString scpiParam);
+    QString setDspCommandStat(QString scpiParam);
     QString startTriggerIntListHKSK(QString scpiParam, int socket);
 
     // die routinen für das status modell
