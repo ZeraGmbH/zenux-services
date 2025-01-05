@@ -121,12 +121,10 @@ int cZDSP1Client::getSocket() const
 
 QString cZDSP1Client::readActValues(const QString& variablesStringOnEmptyActOnly)
 {
-    QString variablesStringWithActual(variablesStringOnEmptyActOnly);
+    QString variablesStringWithActual = variablesStringOnEmptyActOnly;
     if(variablesStringWithActual.isEmpty()) { // sonderfall liste leer -> alle messwerte lesen
-        for (int i = 0; i < m_dspRawActualValueList.count(); i++) {
-            DspVarClientPerspective Var = m_dspRawActualValueList.at(i);
-            variablesStringWithActual += QString("%1,%2;").arg(Var.name()).arg(Var.size());
-        }
+        for(const DspVarClientPerspective &dspVar : qAsConst(m_dspRawActualValueList))
+            variablesStringWithActual += QString("%1,%2;").arg(dspVar.name()).arg(dspVar.size());
     }
     DspVarDeviceNodeInOut dspInOut(m_deviceNodeFactory);
     return dspInOut.readDspVarList(variablesStringWithActual, &m_dspVarResolver);
