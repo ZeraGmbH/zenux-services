@@ -113,7 +113,7 @@ private:
     bool setSamplingSystem();
 
     QString sendCommand2Dsp(QString); // indirekt für system modell
-    QString getLcaAndDspVersion(cZDSP1Client *client);
+    QString getLcaAndDspVersion();
     QString getSamplingSystemSetup(cZDSP1Client *client);
     QString getDspCommandStat(cZDSP1Client *client);
     QString setDspCommandStat(cZDSP1Client* client, QString scpiParam);

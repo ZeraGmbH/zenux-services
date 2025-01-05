@@ -377,7 +377,7 @@ void ZDspServer::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
         protoCmd->m_sOutput = handleScpiInterfaceRead(protoCmd->m_sInput);
         break;
     case scpiGetDeviceVersion:
-        protoCmd->m_sOutput = getLcaAndDspVersion(client);
+        protoCmd->m_sOutput = getLcaAndDspVersion();
         break;
     case scpiGetServerVersion:
         protoCmd->m_sOutput = getServerVersion();
@@ -552,7 +552,7 @@ QString ZDspServer::startTriggerIntListHKSK(QString scpiParam, int socket)
     return sendCommand2Dsp(QString("DSPCMDPAR,4,%1;").arg(par)); // liste mit prozessNr u. HKSK
 }
 
-QString ZDspServer::getLcaAndDspVersion(cZDSP1Client* client)
+QString ZDspServer::getLcaAndDspVersion()
 {
     AbstractDspDeviceNodePtr deviceNode = m_deviceNodeFactory->getDspDeviceNode();
     // LCA
@@ -560,11 +560,11 @@ QString ZDspServer::getLcaAndDspVersion(cZDSP1Client* client)
     if ( rawLcaVersion < 0 )
         return ZSCPI::scpiAnswer[ZSCPI::errexec]; // fehler bei der ausführung
     // DSP
-    QString p = "VNR,1;";
-    p = m_dspInOut.readDspVarList(p, &client->m_dspVarResolver);  // ab "VNR"  1 wort lesen
-    p = p.section(':',1,1);
-    p = p.remove(';');
-    double dspVersionFloat = p.toDouble();
+    DspVarResolver dspSystemVarResolver;
+    QString dspVer = m_dspInOut.readDspVarList("VNR,1;", &dspSystemVarResolver);  // ab "VNR"  1 wort lesen
+    dspVer = dspVer.section(':',1,1);
+    dspVer.remove(';');
+    double dspVersionFloat = dspVer.toDouble();
     return QString("DSPLCA: V%1.%2;DSP V%3").arg((rawLcaVersion >>8) & 0xff).arg(rawLcaVersion & 0xff).arg(dspVersionFloat, 0, 'f', 2);;
 }
 
