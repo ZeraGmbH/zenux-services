@@ -26,7 +26,6 @@ public:
     QList<DspCmdWithParamsRaw>& GetDspCmdList();
     QList<DspCmdWithParamsRaw>& GetDspIntCmdList();
 
-    QString readDspVarList(const QString &variablesString); // format: '<name1>,<len1>;<name2>,<len2>'
     QString readActValues(const QString &variablesStringOnEmptyActOnly);
     DspVarResolver m_dspVarResolver;
 

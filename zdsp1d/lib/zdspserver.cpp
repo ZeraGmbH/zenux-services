@@ -395,7 +395,7 @@ void ZDspServer::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
             protoCmd->m_sOutput = setDspCommandStat(client, cmd.getParam());
         break;
     case scpiDspMemoryRead:
-        protoCmd->m_sOutput = client->readDspVarList(cmd.getParam());
+        protoCmd->m_sOutput = m_dspInOut.readDspVarList(cmd.getParam(), &client->m_dspVarResolver);
         break;
     case scpiDspMemoryWrite:
         if(m_dspInOut.writeDspVars(cmd.getParam(), &client->m_dspVarResolver))
@@ -433,10 +433,12 @@ void ZDspServer::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
         protoCmd->m_sOutput = getDspStatus();
         break;
     case scpiGetDeviceLoadAct:
-        protoCmd->m_sOutput = client->readDspVarList("BUSY,1;");  // ab "BUSY"  1 wort lesen
+        // ab "BUSY"  1 wort lesen
+        protoCmd->m_sOutput = m_dspInOut.readDspVarList("BUSY,1;", &client->m_dspVarResolver);
         break;
     case scpiGetDeviceLoadMax:
-        protoCmd->m_sOutput = client->readDspVarList("BUSYMAX,1;");  // ab "BUSYMAX"  1 wort lesen
+        // ab "BUSYMAX"  1 wort lesen
+        protoCmd->m_sOutput = m_dspInOut.readDspVarList("BUSYMAX,1;", &client->m_dspVarResolver);
         break;
     case scpiResetDeviceLoadMax:
         if(m_dspInOut.writeDspVars("BUSYMAX,0.0", &client->m_dspVarResolver))
@@ -559,7 +561,7 @@ QString ZDspServer::getLcaAndDspVersion(cZDSP1Client* client)
         return ZSCPI::scpiAnswer[ZSCPI::errexec]; // fehler bei der ausführung
     // DSP
     QString p = "VNR,1;";
-    p = client->readDspVarList(p);  // ab "VNR"  1 wort lesen
+    p = m_dspInOut.readDspVarList(p, &client->m_dspVarResolver);  // ab "VNR"  1 wort lesen
     p = p.section(':',1,1);
     p = p.remove(';');
     double dspVersionFloat = p.toDouble();

@@ -1,6 +1,8 @@
 #include "dspvardevicenodeinout.h"
+#include "zscpi_response_definitions.h"
 #include <QStringList>
 #include <QDataStream>
+#include <QTextStream>
 
 DspVarDeviceNodeInOut::DspVarDeviceNodeInOut(AbstractFactoryDeviceNodeDspPtr deviceNodeFactory) :
     m_deviceNodeFactory(deviceNodeFactory)
@@ -41,6 +43,44 @@ bool DspVarDeviceNodeInOut::readOneDspVarInt(const QString &varName, int &intval
         // 1 wort ab name (s) lesen
         intval = *((int*) (ba.data()));
         ret = true;
+    }
+    return ret;
+}
+
+QString DspVarDeviceNodeInOut::readDspVarList(const QString &variablesString, DspVarResolver *dspVarResolver)
+{
+    QString ret;
+    QTextStream ts(&ret, QIODevice::WriteOnly);
+    ts.setRealNumberPrecision(8);
+    QByteArray ba;
+    const QStringList varEntries = variablesString.split(";", Qt::SkipEmptyParts);
+    for(int i=0; i<varEntries.count(); i++) {
+        QString nameCommaLen = varEntries[i]; // format '<name>,<count>'
+        TDspVar *dspVar = readOneDspVar(nameCommaLen, &ba, dspVarResolver);
+        if(!dspVar)
+            return ZSCPI::scpiAnswer[ZSCPI::errexec];
+
+        int n = ba.size() / 4;
+        ts << dspVar->Name << ":";
+        switch(dspVar->type)
+        {
+        case eInt :
+        {
+            ulong *ul = (ulong*) ba.data();
+            for (int j = 0; j < n-1; j++,ul++)
+                ts << (*ul) << "," ;
+            ts << *ul << ";" ;
+            break;
+        }
+        case eUnknown:
+        case eFloat :
+        {
+            float *f = (float*) ba.data();
+            for (int j = 0; j < n-1; j++,f++)
+                ts << (*f) << "," ;
+            ts << *f << ";" ;
+            break;}
+        }
     }
     return ret;
 }

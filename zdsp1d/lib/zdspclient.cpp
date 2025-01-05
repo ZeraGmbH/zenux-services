@@ -1,7 +1,6 @@
 #include "zdspclient.h"
 #include "dspcmdcompiler.h"
 #include "dspvardevicenodeinout.h"
-#include "zscpi_response_definitions.h"
 
 cZDSP1Client::cZDSP1Client(int socket, VeinTcp::TcpPeer* netclient, AbstractFactoryDeviceNodeDspPtr deviceNodeFactory) :
     m_deviceNodeFactory(deviceNodeFactory),
@@ -129,44 +128,6 @@ QString cZDSP1Client::readActValues(const QString& variablesStringOnEmptyActOnly
             variablesStringWithActual += QString("%1,%2;").arg(Var.name()).arg(Var.size());
         }
     }
-    return readDspVarList(variablesStringWithActual);
-}
-
-QString cZDSP1Client::readDspVarList(const QString& variablesString)
-{
-    QString ret;
-    QTextStream ts(&ret, QIODevice::WriteOnly);
-    ts.setRealNumberPrecision(8);
-    QByteArray ba;
-    const QStringList varEntries = variablesString.split(";", Qt::SkipEmptyParts);
-    for(int i=0; i<varEntries.count(); i++) {
-        QString nameCommaLen = varEntries[i]; // format '<name>,<count>'
-        DspVarDeviceNodeInOut dspInOut(m_deviceNodeFactory);
-        TDspVar *dspVar = dspInOut.readOneDspVar(nameCommaLen, &ba, &m_dspVarResolver);
-        if(!dspVar)
-            return ZSCPI::scpiAnswer[ZSCPI::errexec];
-
-        int n = ba.size() / 4;
-        ts << dspVar->Name << ":";
-        switch(dspVar->type)
-        {
-        case eInt :
-        {
-            ulong *ul = (ulong*) ba.data();
-            for (int j = 0; j < n-1; j++,ul++)
-                ts << (*ul) << "," ;
-            ts << *ul << ";" ;
-            break;
-        }
-        case eUnknown:
-        case eFloat :
-        {
-            float *f = (float*) ba.data();
-            for (int j = 0; j < n-1; j++,f++)
-                ts << (*f) << "," ;
-            ts << *f << ";" ;
-            break;}
-        }
-    }
-    return ret;
+    DspVarDeviceNodeInOut dspInOut(m_deviceNodeFactory);
+    return dspInOut.readDspVarList(variablesStringWithActual, &m_dspVarResolver);
 }
