@@ -73,7 +73,9 @@ bool TestDeviceNodeDsp::write(ulong adr, const char *buf, int len)
 
 int TestDeviceNodeDsp::read(char *buf, int len)
 {
-    Q_UNUSED(buf)
+    // make results at least reproducable
+    for(int i=0; i<len; i++)
+        *(buf+i) = 0;
     incReadTransactionCount();
     emit sigIoOperation("read", "buf", len);
     return 0;
