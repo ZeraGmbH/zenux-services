@@ -384,7 +384,7 @@ void ZDspServer::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
         break;
     case scpiSamplingSystemGetSet:
         if(cmd.isQuery())
-            protoCmd->m_sOutput = getSamplingSystemSetup(client);
+            protoCmd->m_sOutput = getSamplingSystemSetup();
         else
             protoCmd->m_sOutput = sendCommand2Dsp(QString("DSPCMDPAR,2,%1;").arg(cmd.getParam()));
         break;
@@ -514,16 +514,17 @@ QString ZDspServer::sendCommand2Dsp(QString qs)
     return ZSCPI::scpiAnswer[ZSCPI::ack]; // sofort fertig melden ....sync. muss die applikation
 }
 
-QString ZDspServer::getSamplingSystemSetup(cZDSP1Client* client)
+QString ZDspServer::getSamplingSystemSetup()
 {
+    DspVarResolver dspSystemVarResolver;
     int measmeasmeasChannelCount = 0;
-    if (!m_dspInOut.readOneDspVarInt("NCHANNELS", measmeasmeasChannelCount, &client->m_dspVarResolver))
+    if (!m_dspInOut.readOneDspVarInt("NCHANNELS", measmeasmeasChannelCount, &dspSystemVarResolver))
         return ZSCPI::scpiAnswer[ZSCPI::errexec];
     int samplesPerMeasPeriod = 0;
-    if (!m_dspInOut.readOneDspVarInt("NSPERIOD", samplesPerMeasPeriod, &client->m_dspVarResolver))
+    if (!m_dspInOut.readOneDspVarInt("NSPERIOD", samplesPerMeasPeriod, &dspSystemVarResolver))
         return ZSCPI::scpiAnswer[ZSCPI::errexec];
     int samplesPerSignalPeriod = 0;
-    if (!m_dspInOut.readOneDspVarInt("NSMEAS", samplesPerSignalPeriod, &client->m_dspVarResolver))
+    if (!m_dspInOut.readOneDspVarInt("NSMEAS", samplesPerSignalPeriod, &dspSystemVarResolver))
         return ZSCPI::scpiAnswer[ZSCPI::errexec];
     return QString("%1,%2,%3").arg(measmeasmeasChannelCount).arg(samplesPerMeasPeriod).arg(samplesPerSignalPeriod);
 }

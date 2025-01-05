@@ -114,7 +114,7 @@ private:
 
     QString sendCommand2Dsp(QString); // indirekt für system modell
     QString getLcaAndDspVersion();
-    QString getSamplingSystemSetup(cZDSP1Client *client);
+    QString getSamplingSystemSetup();
     QString getDspCommandStat();
     QString setDspCommandStat(QString scpiParam);
     QString startTriggerIntListHKSK(QString scpiParam, int socket);
