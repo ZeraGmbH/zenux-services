@@ -14,10 +14,6 @@ cZDSP1Client::cZDSP1Client(int socket, VeinTcp::TcpPeer* netclient, AbstractFact
     m_DspCmdList.append(DspCmd);
     m_DspIntCmdList.append(DspCmd);
     m_dspVarResolver.addSection(&m_userMemSection);
-    m_userMemSection.StartAdr = 0;
-    m_userMemSection.n = 0;
-    m_userMemSection.Section = userSection;
-    m_dspVarResolver.actualizeVarHash(); // wir setzen die hashtabelle und initialisieren diese
 }
 
 bool cZDSP1Client::setRawActualValueList(const QString &varsSemicolonSeparated)
