@@ -9,6 +9,7 @@ enum sectionType { systemSection, userSection};
 enum segmentType { localSegment, globalSegment};
 
 struct TDspVar {
+    bool Init(const QString& varDefinition);
     QString m_clientHandleName;
     QString Name; // name der variablen
     ushort size;  // anzahl worte

@@ -4,7 +4,6 @@
 #include "abstractfactorydevicenodedsp.h"
 #include "dsp.h"
 #include "dspvarresolver.h"
-#include "dspvarclientperspective.h"
 #include <vtcp_peer.h>
 
 class ZDspServer;
@@ -41,7 +40,6 @@ private:
     QString m_sCmdListDef; // kommando liste defintion
     QString m_sIntCmdListDef; // interrupt kommando  liste defintion
 
-    QList<DspVarClientPerspective> m_dspRawActualValueList; // liste mit variablen beschreibungen
     QList<DspCmdWithParamsRaw> m_DspCmdList;
     QList<DspCmdWithParamsRaw>  m_DspIntCmdList;
     QVector<TDspVar> m_dspVarArray; // !!! we need permanent keeper of TDspVar pointer to data is used !!!
