@@ -2,6 +2,7 @@
 #define ZDSP1D_H
 
 #include "abstractfactorydevicenodedsp.h"
+#include "dspvardevicenodeinout.h"
 #include "resourceregistertransaction.h"
 #include "rmconnection.h"
 #include "dspsettings.h"
@@ -83,6 +84,7 @@ private:
     void openTelnetScpi();
 
     AbstractFactoryDeviceNodeDspPtr m_deviceNodeFactory;
+    DspVarDeviceNodeInOut m_dspInOut;
     VeinTcp::AbstractTcpNetworkFactoryPtr m_tcpNetworkFactory;
     SettingsContainerPtr m_settings;
     VeinTcp::TcpServer* m_protoBufServer = nullptr;

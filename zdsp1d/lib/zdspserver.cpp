@@ -1,5 +1,4 @@
 #include "zdspserver.h"
-#include "dspvardevicenodeinout.h"
 #include "zdspclient.h"
 #include "dsp.h"
 #include "dspcmdcompiler.h"
@@ -59,6 +58,7 @@ ZDspServer::ZDspServer(SettingsContainerPtr settings,
                        VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory) :
     ScpiConnection(std::make_shared<cSCPI>()),
     m_deviceNodeFactory(deviceNodeFactory),
+    m_dspInOut(deviceNodeFactory),
     m_tcpNetworkFactory(tcpNetworkFactory),
     m_settings(std::move(settings)),
     m_dspInterruptLogStatistics(10000),
@@ -371,7 +371,6 @@ void ZDspServer::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
     cSCPICommand cmd = protoCmd->m_sInput;
     int socketNum = m_zdspdClientHash[protoCmd->m_clientId]->getSocket();
     cZDSP1Client* client = GetClient(socketNum);
-    DspVarDeviceNodeInOut dspInOut(m_deviceNodeFactory);
     switch (cmdCode)
     {
     case scpiInterfaceRead:
@@ -399,7 +398,7 @@ void ZDspServer::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
         protoCmd->m_sOutput = client->readDspVarList(cmd.getParam());
         break;
     case scpiDspMemoryWrite:
-        if(dspInOut.writeDspVars(cmd.getParam(), &client->m_dspVarResolver))
+        if(m_dspInOut.writeDspVars(cmd.getParam(), &client->m_dspVarResolver))
             protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::ack];
         else
             protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::errexec];
@@ -440,7 +439,7 @@ void ZDspServer::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
         protoCmd->m_sOutput = client->readDspVarList("BUSYMAX,1;");  // ab "BUSYMAX"  1 wort lesen
         break;
     case scpiResetDeviceLoadMax:
-        if(dspInOut.writeDspVars("BUSYMAX,0.0", &client->m_dspVarResolver))
+        if(m_dspInOut.writeDspVars("BUSYMAX,0.0", &client->m_dspVarResolver))
             protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::ack];
         else
             protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::errexec];
@@ -497,16 +496,15 @@ bool ZDspServer::setSamplingSystem()
 
 QString ZDspServer::sendCommand2Dsp(QString qs)
 {
-    DspVarDeviceNodeInOut dspInOut(m_deviceNodeFactory);
     DspVarResolver dspSystemVarResolver;
     int ack;
-    if(!dspInOut.readOneDspVarInt("DSPACK", ack, &dspSystemVarResolver))
+    if(!m_dspInOut.readOneDspVarInt("DSPACK", ack, &dspSystemVarResolver))
         return ZSCPI::scpiAnswer[ZSCPI::errexec];
     if(ack == InProgress)
         return ZSCPI::scpiAnswer[ZSCPI::busy];
-    if(!dspInOut.writeDspVars("DSPACK,0;", &dspSystemVarResolver) )
+    if(!m_dspInOut.writeDspVars("DSPACK,0;", &dspSystemVarResolver) )
         return ZSCPI::scpiAnswer[ZSCPI::errexec]; // reset acknowledge
-    if(!dspInOut.writeDspVars(qs, &dspSystemVarResolver))
+    if(!m_dspInOut.writeDspVars(qs, &dspSystemVarResolver))
         return ZSCPI::scpiAnswer[ZSCPI::errexec];
 
     AbstractDspDeviceNodePtr deviceNode = m_deviceNodeFactory->getDspDeviceNode();
@@ -517,14 +515,13 @@ QString ZDspServer::sendCommand2Dsp(QString qs)
 QString ZDspServer::getSamplingSystemSetup(cZDSP1Client* client)
 {
     int measmeasmeasChannelCount = 0;
-    DspVarDeviceNodeInOut dspInOut(m_deviceNodeFactory);
-    if (!dspInOut.readOneDspVarInt("NCHANNELS", measmeasmeasChannelCount, &client->m_dspVarResolver))
+    if (!m_dspInOut.readOneDspVarInt("NCHANNELS", measmeasmeasChannelCount, &client->m_dspVarResolver))
         return ZSCPI::scpiAnswer[ZSCPI::errexec];
     int samplesPerMeasPeriod = 0;
-    if (!dspInOut.readOneDspVarInt("NSPERIOD", samplesPerMeasPeriod, &client->m_dspVarResolver))
+    if (!m_dspInOut.readOneDspVarInt("NSPERIOD", samplesPerMeasPeriod, &client->m_dspVarResolver))
         return ZSCPI::scpiAnswer[ZSCPI::errexec];
     int samplesPerSignalPeriod = 0;
-    if (!dspInOut.readOneDspVarInt("NSMEAS", samplesPerSignalPeriod, &client->m_dspVarResolver))
+    if (!m_dspInOut.readOneDspVarInt("NSMEAS", samplesPerSignalPeriod, &client->m_dspVarResolver))
         return ZSCPI::scpiAnswer[ZSCPI::errexec];
     return QString("%1,%2,%3").arg(measmeasmeasChannelCount).arg(samplesPerMeasPeriod).arg(samplesPerSignalPeriod);
 }
@@ -532,8 +529,7 @@ QString ZDspServer::getSamplingSystemSetup(cZDSP1Client* client)
 QString ZDspServer::getDspCommandStat(cZDSP1Client* client)
 {
     int stat;
-    DspVarDeviceNodeInOut dspInOut(m_deviceNodeFactory);
-    if(!dspInOut.readOneDspVarInt("DSPACK", stat, &client->m_dspVarResolver))
+    if(!m_dspInOut.readOneDspVarInt("DSPACK", stat, &client->m_dspVarResolver))
         return ZSCPI::scpiAnswer[ZSCPI::errexec];
     else
         return QString("%1").arg(stat);
@@ -541,8 +537,7 @@ QString ZDspServer::getDspCommandStat(cZDSP1Client* client)
 
 QString ZDspServer::setDspCommandStat(cZDSP1Client* client, QString scpiParam)
 {
-    DspVarDeviceNodeInOut dspInOut(m_deviceNodeFactory);
-    if(!dspInOut.writeDspVars(QString("DSPACK,%1;").arg(scpiParam), &client->m_dspVarResolver) )
+    if(!m_dspInOut.writeDspVars(QString("DSPACK,%1;").arg(scpiParam), &client->m_dspVarResolver) )
         return ZSCPI::scpiAnswer[ZSCPI::errexec];
     else
         return ZSCPI::scpiAnswer[ZSCPI::ack];
@@ -611,8 +606,7 @@ void ZDspServer::DspIntHandler(int)
         cZDSP1Client *client = m_clientList.first();
         QByteArray ba;
         QString s = "CTRLCMDPAR,20";
-        DspVarDeviceNodeInOut dspInOut(m_deviceNodeFactory);
-        if(dspInOut.readOneDspVar(s, &ba, &client->m_dspVarResolver)) { // 20 worte lesen
+        if(m_dspInOut.readOneDspVar(s, &ba, &client->m_dspVarResolver)) { // 20 worte lesen
             ulong* pardsp = (ulong*) ba.data();
             int n = pardsp[0]; // anzahl der interrupts
             m_dspInterruptLogStatistics.addValue(n);
@@ -657,12 +651,11 @@ void ZDspServer::DspIntHandler(int)
                 }
             }
         }
-        dspInOut.writeDspVars(QString("CTRLACK,%1;").arg(CmdDone), &client->m_dspVarResolver); // jetzt in jedem fall acknowledge
+        m_dspInOut.writeDspVars(QString("CTRLACK,%1;").arg(CmdDone), &client->m_dspVarResolver); // jetzt in jedem fall acknowledge
     }
     else {
         DspVarResolver dspSystemVarResolver;
-        DspVarDeviceNodeInOut dspInOut(m_deviceNodeFactory);
-        dspInOut.writeDspVars(QString("CTRLACK,%1;").arg(CmdDone), &dspSystemVarResolver); // und rücksetzen
+        m_dspInOut.writeDspVars(QString("CTRLACK,%1;").arg(CmdDone), &dspSystemVarResolver); // und rücksetzen
     }
 }
 
