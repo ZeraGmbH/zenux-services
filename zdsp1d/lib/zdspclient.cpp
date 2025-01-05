@@ -40,11 +40,7 @@ bool cZDSP1Client::setRawActualValueList(const QString &varsSemicolonSeparated)
         }
     }
 
-    m_userMemSection.n = m_dspVarArray.count();
-    if(m_userMemSection.n > 0) { // wir haben mindestens 1 variable
-        // WTF!!!!!!!!!!!!!
-        m_userMemSection.DspVar = m_dspVarArray.data();
-    }
+    m_userMemSection.DspVar = m_dspVarArray;
     m_dspVarResolver.actualizeVarHash(); // wir setzen die hashtabelle neu
     return true;
 }
@@ -69,7 +65,7 @@ ulong cZDSP1Client::setStartAdr(ulong startAdress, ulong globalMemStart)
     ulong usermemsize = 0;
     ulong globalmemsize = 0;
     m_userMemSection.StartAdr = startAdress;
-    for (int i = 0; i < m_userMemSection.n; i++) {
+    for (int i = 0; i < m_userMemSection.DspVar.count(); i++) {
         if (m_userMemSection.DspVar[i].segment == localSegment) {
             m_userMemSection.DspVar[i].adr = startAdress + usermemsize; // we need the adress for reading back data
             usermemsize += m_userMemSection.DspVar[i].size;

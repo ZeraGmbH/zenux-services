@@ -2,6 +2,7 @@
 #define DSPVARDEFINITIONS_H
 
 #include <QString>
+#include <QVector>
 
 enum dType { eInt, eFloat, eUnknown};
 
@@ -20,10 +21,11 @@ struct TDspVar {
 };
 
 struct TMemSection { // beschreibt eine dsp memory section
+    TMemSection() = default;
+    TMemSection(sectionType section, long startAdr, int varCount, TDspVar vars[]);
     sectionType Section = userSection;
     long StartAdr = 0;
-    int n = 0; // anzahl der sdspvar elemente
-    TDspVar *DspVar = nullptr;
+    QVector<TDspVar> DspVar;
 };
 
 #endif // DSPVARDEFINITIONS_H
