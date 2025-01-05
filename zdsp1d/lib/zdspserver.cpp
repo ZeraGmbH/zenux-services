@@ -390,7 +390,7 @@ void ZDspServer::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
         break;
     case scpiDspCommandStatGetSet:
         if(cmd.isQuery())
-            protoCmd->m_sOutput = getDspCommandStat(client);
+            protoCmd->m_sOutput = getDspCommandStat();
         else
             protoCmd->m_sOutput = setDspCommandStat(client, cmd.getParam());
         break;
@@ -528,10 +528,11 @@ QString ZDspServer::getSamplingSystemSetup(cZDSP1Client* client)
     return QString("%1,%2,%3").arg(measmeasmeasChannelCount).arg(samplesPerMeasPeriod).arg(samplesPerSignalPeriod);
 }
 
-QString ZDspServer::getDspCommandStat(cZDSP1Client* client)
+QString ZDspServer::getDspCommandStat()
 {
     int stat;
-    if(!m_dspInOut.readOneDspVarInt("DSPACK", stat, &client->m_dspVarResolver))
+    DspVarResolver dspSystemVarResolver;
+    if(!m_dspInOut.readOneDspVarInt("DSPACK", stat, &dspSystemVarResolver))
         return ZSCPI::scpiAnswer[ZSCPI::errexec];
     else
         return QString("%1").arg(stat);
