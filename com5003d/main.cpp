@@ -19,12 +19,6 @@ int main( int argc, char *argv[] )
     qInfo(ServerName " started");
 
     int r = app->exec();
-    if (r == atmelError)
-        qCritical("Abort, atmel not running") ;
-    if (r == rmConnectionError)
-        qCritical("Abort, resourcemanager connection error") ;
-    if (r == atmelProgError)
-        qCritical("Abort, atmel flash program error") ;
 
     delete com5003d;
     return (r);

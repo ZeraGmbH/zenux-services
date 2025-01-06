@@ -1,5 +1,4 @@
 #include "zdspserver.h"
-#include "pcbserver.h"
 #include "factorydevicenodedsp.h"
 #include <tcpnetworkfactory.h>
 #include <QCoreApplication>
@@ -15,8 +14,6 @@ int main( int argc, char *argv[] )
     qInfo("%s started", qPrintable(zdsp1d->getServerVersion()));
 
     int r =  app->exec();
-    if (r == rmConnectionError)
-        qCritical("Abort, resourcemanager connection error") ;
 
     delete zdsp1d;
     return (r);

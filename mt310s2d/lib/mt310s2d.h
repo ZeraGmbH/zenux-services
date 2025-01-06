@@ -106,7 +106,6 @@ private:
     QState* m_stateconnect2RMError = nullptr;
     QState* m_stateSendRMIdentAndRegister = nullptr;
     AbstractCtrlHeartbeatWaitPtr m_ctrlHeartbeatWait;
-    quint8 m_nerror;
     int m_retryRMConnect;
     QTimer m_retryTimer;
     QSocketNotifier* m_pNotifier = nullptr;

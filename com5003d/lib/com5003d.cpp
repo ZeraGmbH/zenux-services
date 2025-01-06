@@ -171,8 +171,6 @@ void cCOM5003dServer::programAtmelFlash()
         int fd;
         QString devNode;
 
-        m_nerror = atmelProgError; // preset error
-
         devNode = getCtrlDeviceNode();
         qInfo("Starting programming atmel flash");
 
@@ -274,7 +272,6 @@ void cCOM5003dServer::programAtmelFlash()
 
 void cCOM5003dServer::doWait4Atmel()
 {
-    m_nerror = atmelError; // we preset error
     connect(m_ctrlHeartbeatWait.get(), &AbstractCtrlHeartbeatWait::sigTimeout,
             this, &cCOM5003dServer::abortInit);
     connect(m_ctrlHeartbeatWait.get(), &AbstractCtrlHeartbeatWait::sigRunning,
@@ -340,14 +337,13 @@ void cCOM5003dServer::doSetupServer()
 
 void cCOM5003dServer::doCloseServer()
 {
-    QCoreApplication::instance()->exit(m_nerror);
+    QCoreApplication::instance()->exit(-1);
 }
 
 
 void cCOM5003dServer::doConnect2RM()
 {
     qInfo("Starting doConnect2RM");
-    m_nerror = rmConnectionError; // preset error condition
     m_pRMConnection->connect2RM();
 }
 

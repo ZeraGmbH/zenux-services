@@ -15,14 +15,6 @@
 #include <QTcpSocket>
 #include <QByteArray>
 
-enum ServerErrors
-{
-    noError,
-    rmConnectionError,
-    atmelError,
-    atmelProgError,
-};
-
 class PCBServer : public ScpiConnection
 {
     Q_OBJECT

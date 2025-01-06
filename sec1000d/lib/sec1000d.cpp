@@ -193,13 +193,12 @@ void cSEC1000dServer::doSetupServer()
 
 void cSEC1000dServer::doCloseServer()
 {
-    QCoreApplication::instance()->exit(m_nerror);
+    QCoreApplication::instance()->exit(-1);
 }
 
 void cSEC1000dServer::doConnect2RM()
 {
     qInfo("Starting doConnect2RM");
-    m_nerror = rmConnectionError; // preset error condition
     m_pRMConnection->connect2RM();
 }
 

@@ -64,7 +64,6 @@ private:
     QState* m_stateconnect2RM = nullptr;
     QState* m_stateconnect2RMError = nullptr;
     QState* m_stateSendRMIdentAndRegister = nullptr;
-    quint8 m_nerror;
     int m_retryRMConnect;
     QTimer m_retryTimer;
     QList<SecChannel*> m_ECalculatorChannelList;

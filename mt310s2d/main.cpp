@@ -19,10 +19,6 @@ int main( int argc, char *argv[] )
     qInfo(ServerName " started");
 
     int r = app->exec();
-    if (r == atmelError)
-        qCritical("Abort, atmel not running") ;
-    if (r == rmConnectionError)
-        qCritical("Abort, resourcemanager connection error") ;
 
     delete mt310s2d;
     return (r);

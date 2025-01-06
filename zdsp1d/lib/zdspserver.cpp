@@ -206,13 +206,12 @@ void ZDspServer::doSetupServer()
 
 void ZDspServer::doCloseServer()
 {
-    QCoreApplication::instance()->exit(m_nerror);
+    QCoreApplication::instance()->exit(-1);
 }
 
 void ZDspServer::doConnect2RM()
 {
     qInfo("Starting doConnect2RM");
-    m_nerror = rmConnectionError; // preset error condition
     m_pRMConnection->connect2RM();
 }
 

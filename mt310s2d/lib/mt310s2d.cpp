@@ -172,7 +172,6 @@ void cMT310S2dServer::doConfiguration()
 
 void cMT310S2dServer::doWait4Atmel()
 {
-    m_nerror = atmelError; // we preset error
     connect(m_ctrlHeartbeatWait.get(), &AbstractCtrlHeartbeatWait::sigTimeout,
             this, &cMT310S2dServer::abortInit);
     connect(m_ctrlHeartbeatWait.get(), &AbstractCtrlHeartbeatWait::sigRunning,
@@ -283,14 +282,13 @@ void cMT310S2dServer::doSetupServer()
 
 void cMT310S2dServer::doCloseServer()
 {
-    QCoreApplication::instance()->exit(m_nerror);
+    QCoreApplication::instance()->exit(-1);
 }
 
 
 void cMT310S2dServer::doConnect2RM()
 {
     qInfo("Starting doConnect2RM");
-    m_nerror = rmConnectionError; // preset error condition
     m_pRMConnection->connect2RM();
 }
 
