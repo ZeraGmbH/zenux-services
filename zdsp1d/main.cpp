@@ -16,5 +16,6 @@ int main( int argc, char *argv[] )
     int r =  app->exec();
 
     delete zdsp1d;
+    delete app;
     return (r);
 }

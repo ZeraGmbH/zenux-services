@@ -19,5 +19,6 @@ int main( int argc, char *argv[] )
     int r = app->exec();
 
     delete sec5003d;
+    delete app;
     return (r);
 }

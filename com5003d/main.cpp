@@ -21,5 +21,6 @@ int main( int argc, char *argv[] )
     int r = app->exec();
 
     delete com5003d;
+    delete app;
     return (r);
 }
