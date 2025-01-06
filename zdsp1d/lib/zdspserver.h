@@ -85,11 +85,11 @@ private:
 
     Zera::XMLConfig::cReader m_xmlConfigReader;
     cDSPSettings m_dspSettings;
+    SettingsContainerPtr m_settings;
     AbstractFactoryDeviceNodeDspPtr m_deviceNodeFactory;
     DspVarDeviceNodeInOut m_dspInOut;
     VeinTcp::AbstractTcpNetworkFactoryPtr m_tcpNetworkFactory;
-    SettingsContainerPtr m_settings;
-    VeinTcp::TcpServer* m_protoBufServer = nullptr;
+    VeinTcp::TcpServer m_protoBufServer;
     XiQNetWrapper m_protobufWrapper;
     quint16 m_nSocketIdentifier = 0; // we will use this instead of real sockets, because protobuf extension clientId
     QTcpServer* m_telnetServer = nullptr;

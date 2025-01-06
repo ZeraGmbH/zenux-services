@@ -58,10 +58,11 @@ ZDspServer::ZDspServer(SettingsContainerPtr settings,
                        VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory) :
     ScpiConnection(std::make_shared<cSCPI>()),
     m_dspSettings(&m_xmlConfigReader),
+    m_settings(std::move(settings)),
     m_deviceNodeFactory(deviceNodeFactory),
     m_dspInOut(deviceNodeFactory),
     m_tcpNetworkFactory(tcpNetworkFactory),
-    m_settings(std::move(settings)),
+    m_protoBufServer(tcpNetworkFactory),
     m_dspInterruptLogStatistics(10000),
     m_pRMConnection(new RMConnection(m_settings->getEthSettings()->getRMIPadr(),
                                      m_settings->getEthSettings()->getPort(EthSettings::resourcemanager),
@@ -149,8 +150,8 @@ void ZDspServer::doSetupServer()
     m_sDspBootPath = m_dspSettings.getBootFile();
     ActivatedCmdList = 0; // der derzeit aktuelle kommando listen satz (0,1)
 
-    m_protoBufServer = new VeinTcp::TcpServer(m_tcpNetworkFactory, this);
-    connect(m_protoBufServer, &VeinTcp::TcpServer::sigClientConnected, this, &ZDspServer::onProtobufClientConnected);
+    connect(&m_protoBufServer, &VeinTcp::TcpServer::sigClientConnected,
+            this, &ZDspServer::onProtobufClientConnected);
 
     QString dspDevNodeName = getDspDeviceNode(); // we try to open the dsp device
     AbstractDspDeviceNodePtr deviceNode = m_deviceNodeFactory->getDspDeviceNode();
@@ -250,7 +251,7 @@ void ZDspServer::onResourceReady()
 {
     disconnect(&m_resourceRegister, &ResourceRegisterTransaction::registerRdy, this, &ZDspServer::onResourceReady);
     EthSettings *ethSettings = m_settings->getEthSettings();
-    m_protoBufServer->startServer(ethSettings->getPort(EthSettings::protobufserver)); // and can start the server now
+    m_protoBufServer.startServer(ethSettings->getPort(EthSettings::protobufserver)); // and can start the server now
     openTelnetScpi();
     m_periodicLogTimer = TimerFactoryQt::createPeriodic(loggingIntervalMs);
     connect(m_periodicLogTimer.get(), &TimerTemplateQt::sigExpired,
