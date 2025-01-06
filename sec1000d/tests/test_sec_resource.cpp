@@ -1,6 +1,7 @@
 #include "test_sec_resource.h"
 #include "mockfactorydevicenodesec.h"
 #include "zscpi_response_definitions.h"
+#include <tcpnetworkfactory.h>
 #include <timemachineobject.h>
 #include <QTest>
 #include <QList>
@@ -100,7 +101,7 @@ void test_sec_resource::setSecChannelsForMultipleClientsFreeOneClient()
 
 void test_sec_resource::setSecChannelsForMultipleClientsOnePeerFreePeer()
 {
-    VeinTcp::TcpPeer peer;
+    VeinTcp::TcpPeer peer(VeinTcp::TcpNetworkFactory::create());
     sendScpiCommand(&peer, QByteArray(1, '1'), setFourResourcesCommand);
     sendScpiCommand(&peer, QByteArray(1, '2'), setFourResourcesCommand);
     QVERIFY(m_secResource->freeChannelsForThisPeer(&peer));
@@ -111,11 +112,11 @@ void test_sec_resource::setSecChannelsForMultipleClientsOnePeerFreePeer()
 
 void test_sec_resource::setSecChannelsForMultipleClientsMultiplePeersFreeOnePeer()
 {
-    VeinTcp::TcpPeer peer;
+    VeinTcp::TcpPeer peer(VeinTcp::TcpNetworkFactory::create());
     sendScpiCommand(&peer, QByteArray(1, '1'), setTwoResourcesCommand);
     sendScpiCommand(&peer, QByteArray(1, '2'), setTwoResourcesCommand);
 
-    VeinTcp::TcpPeer peer1;
+    VeinTcp::TcpPeer peer1(VeinTcp::TcpNetworkFactory::create());
     QString channelsSet = sendScpiCommand(&peer1, QByteArray(1, '3'), setTwoResourcesCommand);
     channelsSet.append(sendScpiCommand(&peer1, QByteArray(1, '4'), setTwoResourcesCommand));
 
@@ -133,10 +134,10 @@ void test_sec_resource::setSecChannelsForMultipleClientsMultiplePeersFreeOnePeer
 
 void test_sec_resource::freeChannelsFromInvalidPeer()
 {
-    VeinTcp::TcpPeer peer;
+    VeinTcp::TcpPeer peer(VeinTcp::TcpNetworkFactory::create());
     sendScpiCommand(&peer, QByteArray(1, '1'), setTwoResourcesCommand);
     sendScpiCommand(&peer, QByteArray(1, '2'), setTwoResourcesCommand);
 
-    VeinTcp::TcpPeer peer1;
+    VeinTcp::TcpPeer peer1(VeinTcp::TcpNetworkFactory::create());
     QVERIFY(m_secResource->freeChannelsForThisPeer(&peer1)); //because no channels were set
 }
