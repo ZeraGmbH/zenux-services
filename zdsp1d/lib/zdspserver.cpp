@@ -74,28 +74,26 @@ void ZDspServer::init()
 {
     m_pInitializationMachine = new QStateMachine(this);
     myXMLConfigReader = new Zera::XMLConfig::cReader();
+    doConfiguration();
 
     QState* stateCONF = new QState(); // we start from here
     QFinalState* stateFINISH = new QFinalState(); // and here we finish on any error condition
 
     stateCONF->addTransition(this, &ZDspServer::abortInit, stateFINISH); // from anywhere we arrive here if some error
 
-    QState* statexmlConfiguration = new QState(stateCONF); // we configure our server with xml file
     QState* statesetupServer = new QState(stateCONF); // we setup our server now
     m_stateconnect2RM = new QState(stateCONF); // we connect to resource manager
     m_stateconnect2RMError = new QState(stateCONF);
     m_stateSendRMIdentAndRegister = new QState(stateCONF); // we send ident. to rm and register our resources
 
-    stateCONF->setInitialState(statexmlConfiguration);
+    stateCONF->setInitialState(statesetupServer);
 
-    statexmlConfiguration->addTransition(myXMLConfigReader, &Zera::XMLConfig::cReader::finishedParsingXML, statesetupServer);
     statesetupServer->addTransition(this, &ZDspServer::sigServerIsSetUp, m_stateconnect2RM);
 
     m_pInitializationMachine->addState(stateCONF);
     m_pInitializationMachine->addState(stateFINISH);
     m_pInitializationMachine->setInitialState(stateCONF);
 
-    QObject::connect(statexmlConfiguration, &QAbstractState::entered, this, &ZDspServer::doConfiguration);
     QObject::connect(statesetupServer, &QAbstractState::entered, this, &ZDspServer::doSetupServer);
     QObject::connect(m_stateconnect2RM, &QAbstractState::entered, this, &ZDspServer::doConnect2RM);
     QObject::connect(m_stateconnect2RMError, &QAbstractState::entered, this, &ZDspServer::connect2RMError);
@@ -126,30 +124,23 @@ ZDspServer::~ZDspServer()
 
 void ZDspServer::doConfiguration()
 {
-    if ( pipe(pipeFileDescriptorZdsp1) == -1 ) {
+    if(pipe(pipeFileDescriptorZdsp1) == -1)
         qCritical("Abort, could not open pipe");
-        emit abortInit();
-    }
     else {
         fcntl( pipeFileDescriptorZdsp1[1], F_SETFL, O_NONBLOCK);
         fcntl( pipeFileDescriptorZdsp1[0], F_SETFL, O_NONBLOCK);
         m_pNotifier = new QSocketNotifier(pipeFileDescriptorZdsp1[0], QSocketNotifier::Read, this);
         connect(m_pNotifier, &QSocketNotifier::activated, this, &ZDspServer::DspIntHandler);
         ServerParams params = m_settings->getServerParams();
-        if (myXMLConfigReader->loadSchema(params.xsdFile)) {
-            // we want to initialize all settings first
+        if(myXMLConfigReader->loadSchema(params.xsdFile)) {
             m_pDspSettings = new cDSPSettings(myXMLConfigReader);
-            connect(myXMLConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pDspSettings,&cDSPSettings::configXMLInfo);
-
-            if(!myXMLConfigReader->loadXMLFile(params.xmlFile)) {
+            connect(myXMLConfigReader, &Zera::XMLConfig::cReader::valueChanged,
+                    m_pDspSettings, &cDSPSettings::configXMLInfo);
+            if(!myXMLConfigReader->loadXMLFile(params.xmlFile))
                 qCritical("Abort: Could not open xml file '%s", qPrintable(params.xmlFile));
-                emit abortInit();
-            }
         }
-        else {
+        else
             qCritical("Abort: Could not open xsd file '%s", qPrintable(params.xsdFile));
-            emit abortInit();
-        }
     }
 }
 
