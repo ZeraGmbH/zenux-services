@@ -3,8 +3,8 @@
 #include "dspvardevicenodeinout.h"
 
 cZDSP1Client::cZDSP1Client(int socket, VeinTcp::TcpPeer* netclient, AbstractFactoryDeviceNodeDspPtr deviceNodeFactory) :
-    m_deviceNodeFactory(deviceNodeFactory),
     m_pNetClient(netclient),
+    m_deviceNodeFactory(deviceNodeFactory),
     m_socket(socket),
     m_sCmdListDef("Empty"),
     m_sIntCmdListDef("Empty")
@@ -18,11 +18,11 @@ cZDSP1Client::cZDSP1Client(int socket, VeinTcp::TcpPeer* netclient, AbstractFact
 bool cZDSP1Client::setRawActualValueList(const QString &varsSemicolonSeparated)
 {
     m_dspVarArray.clear();
-    TDspVar dspVar;
     int localOffset = 0;
     int globaloffset = 0;
     const QStringList varEntries = varsSemicolonSeparated.split(";", Qt::SkipEmptyParts);
     for(int i=0; i<varEntries.count(); i++) {
+        TDspVar dspVar;
         if(dspVar.Init(varEntries[i])) {
             if (dspVar.segment == localSegment) {
                 dspVar.offs = localOffset;
