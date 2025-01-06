@@ -83,6 +83,8 @@ private:
     void outputAndResetTransactionsLogs();
     void openTelnetScpi();
 
+    Zera::XMLConfig::cReader m_xmlConfigReader;
+    cDSPSettings m_dspSettings;
     AbstractFactoryDeviceNodeDspPtr m_deviceNodeFactory;
     DspVarDeviceNodeInOut m_dspInOut;
     VeinTcp::AbstractTcpNetworkFactoryPtr m_tcpNetworkFactory;
@@ -93,7 +95,6 @@ private:
     QTcpServer* m_telnetServer = nullptr;
     QTcpSocket* m_telnetSocket = nullptr;
 
-    cDSPSettings* m_pDspSettings = nullptr;
     quint8 m_nerror;
     uchar ActivatedCmdList;
     QByteArray m_rawCyclicCmdMem; // unsere dsp programm listen
@@ -137,7 +138,6 @@ private:
     cZDSP1Client* GetClient(VeinTcp::TcpPeer* peer);
     void executeCommandProto(VeinTcp::TcpPeer* peer, std::shared_ptr<google::protobuf::Message> cmd);
     QString m_sDspBootPath;
-    Zera::XMLConfig::cReader m_xmlConfigReader;
 
     QStateMachine* m_pInitializationMachine;
     QState* m_stateconnect2RM;

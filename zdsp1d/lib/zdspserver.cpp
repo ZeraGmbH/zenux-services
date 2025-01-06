@@ -57,6 +57,7 @@ ZDspServer::ZDspServer(SettingsContainerPtr settings,
                        AbstractFactoryDeviceNodeDspPtr deviceNodeFactory,
                        VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory) :
     ScpiConnection(std::make_shared<cSCPI>()),
+    m_dspSettings(&m_xmlConfigReader),
     m_deviceNodeFactory(deviceNodeFactory),
     m_dspInOut(deviceNodeFactory),
     m_tcpNetworkFactory(tcpNetworkFactory),
@@ -109,7 +110,6 @@ void ZDspServer::init()
 
 ZDspServer::~ZDspServer()
 {
-    delete m_pDspSettings;
     for (int i = 0; i < m_clientList.count(); i++)
         delete m_clientList.at(i);
     delete m_pRMConnection;
@@ -132,9 +132,8 @@ void ZDspServer::doConfiguration()
         connect(m_pNotifier, &QSocketNotifier::activated, this, &ZDspServer::DspIntHandler);
         ServerParams params = m_settings->getServerParams();
         if(m_xmlConfigReader.loadSchema(params.xsdFile)) {
-            m_pDspSettings = new cDSPSettings(&m_xmlConfigReader);
             connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged,
-                    m_pDspSettings, &cDSPSettings::configXMLInfo);
+                    &m_dspSettings, &cDSPSettings::configXMLInfo);
             if(!m_xmlConfigReader.loadXMLFile(params.xmlFile))
                 qCritical("Abort: Could not open xml file '%s", qPrintable(params.xmlFile));
         }
@@ -147,7 +146,7 @@ void ZDspServer::doSetupServer()
 {
     qInfo("Starting doSetupServer");
     initSCPIConnection(QString());
-    m_sDspBootPath = m_pDspSettings->getBootFile();
+    m_sDspBootPath = m_dspSettings.getBootFile();
     ActivatedCmdList = 0; // der derzeit aktuelle kommando listen satz (0,1)
 
     m_protoBufServer = new VeinTcp::TcpServer(m_tcpNetworkFactory, this);
@@ -171,7 +170,7 @@ void ZDspServer::doSetupServer()
         connect(&m_retryTimer, &QTimer::timeout, this, &ZDspServer::sigServerIsSetUp);
 
         if (setDspType()) { // interrogate the mounted dsp device type and bootfile match
-            if (m_pDspSettings->isBoot()) { // normally dsp gets booted by dsp server
+            if (m_dspSettings.isBoot()) { // normally dsp gets booted by dsp server
                 if (resetDsp() && bootDsp()) { // and try to reset and then boot it
                     if (setSamplingSystem()) { // now we try to set the dsp's sampling system
                         // our resource manager connection must be opened after configuration is done
@@ -476,9 +475,9 @@ bool ZDspServer::setSamplingSystem()
 {
     for (int i = 0; i < 10; i++) { // we try max. 10 times to set .... this should work
         QString ret = sendCommand2Dsp(QString("DSPCMDPAR,2,%1,%2,%3;")
-                                       .arg(m_pDspSettings->getChannelNr())
-                                       .arg(m_pDspSettings->getSamplesSignalPeriod())
-                                       .arg(m_pDspSettings->getsamplesMeasurePeriod()));
+                                       .arg(m_dspSettings.getChannelNr())
+                                       .arg(m_dspSettings.getSamplesSignalPeriod())
+                                       .arg(m_dspSettings.getsamplesMeasurePeriod()));
         if (ret == ZSCPI::scpiAnswer[ZSCPI::ack])
             return true;
         usleep(10000); // give dsp a bit time before next try
