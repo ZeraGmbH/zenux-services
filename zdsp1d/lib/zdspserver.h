@@ -137,7 +137,7 @@ private:
     cZDSP1Client* GetClient(VeinTcp::TcpPeer* peer);
     void executeCommandProto(VeinTcp::TcpPeer* peer, std::shared_ptr<google::protobuf::Message> cmd);
     QString m_sDspBootPath;
-    Zera::XMLConfig::cReader* myXMLConfigReader;
+    Zera::XMLConfig::cReader m_xmlConfigReader;
 
     QStateMachine* m_pInitializationMachine;
     QState* m_stateconnect2RM;

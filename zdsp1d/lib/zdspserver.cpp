@@ -73,7 +73,6 @@ ZDspServer::ZDspServer(SettingsContainerPtr settings,
 void ZDspServer::init()
 {
     m_pInitializationMachine = new QStateMachine(this);
-    myXMLConfigReader = new Zera::XMLConfig::cReader();
     doConfiguration();
 
     QState* stateCONF = new QState(); // we start from here
@@ -132,11 +131,11 @@ void ZDspServer::doConfiguration()
         m_pNotifier = new QSocketNotifier(pipeFileDescriptorZdsp1[0], QSocketNotifier::Read, this);
         connect(m_pNotifier, &QSocketNotifier::activated, this, &ZDspServer::DspIntHandler);
         ServerParams params = m_settings->getServerParams();
-        if(myXMLConfigReader->loadSchema(params.xsdFile)) {
-            m_pDspSettings = new cDSPSettings(myXMLConfigReader);
-            connect(myXMLConfigReader, &Zera::XMLConfig::cReader::valueChanged,
+        if(m_xmlConfigReader.loadSchema(params.xsdFile)) {
+            m_pDspSettings = new cDSPSettings(&m_xmlConfigReader);
+            connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged,
                     m_pDspSettings, &cDSPSettings::configXMLInfo);
-            if(!myXMLConfigReader->loadXMLFile(params.xmlFile))
+            if(!m_xmlConfigReader.loadXMLFile(params.xmlFile))
                 qCritical("Abort: Could not open xml file '%s", qPrintable(params.xmlFile));
         }
         else
