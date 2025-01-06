@@ -49,11 +49,11 @@ protected:
     void openTelnetScpi();
 
     SettingsContainerPtr m_settings;
-    VeinTcp::TcpServer* m_protoBufServer = nullptr;
     Zera::XMLConfig::cReader m_xmlConfigReader;
     QList<ScpiConnection*> scpiConnectionList; // a list of all scpi connections
     QList<cResource*> resourceList;
     VeinTcp::AbstractTcpNetworkFactoryPtr m_tcpNetworkFactory;
+    VeinTcp::TcpServer m_protoBufServer;
 private slots:
     void onProtobufClientConnected(VeinTcp::TcpPeer *newClient);
     void onProtobufDataReceived(VeinTcp::TcpPeer *peer, QByteArray message);

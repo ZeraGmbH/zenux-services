@@ -100,7 +100,7 @@ void TestPcbServer::doSetupServer()
     initSCPIConnections();
 
     EthSettings *ethSettings = m_settings->getEthSettings();
-    m_protoBufServer->startServer(ethSettings->getPort(EthSettings::protobufserver)); // and can start the server now
+    m_protoBufServer.startServer(ethSettings->getPort(EthSettings::protobufserver));
 
     m_stateconnect2RM->addTransition(m_pRMConnection, &RMConnection::connected, m_stateSendRMIdentAndRegister);
 

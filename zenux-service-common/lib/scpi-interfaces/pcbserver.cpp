@@ -22,8 +22,9 @@ enum commands
 PCBServer::PCBServer(SettingsContainerPtr settings,
                      VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory) :
     ScpiConnection(std::make_shared<cSCPI>()),
+    m_settings(std::move(settings)),
     m_tcpNetworkFactory(tcpNetworkFactory),
-    m_settings(std::move(settings))
+    m_protoBufServer(tcpNetworkFactory)
 {
 }
 
@@ -51,8 +52,8 @@ QString PCBServer::getVersion()
 
 void PCBServer::setupServer()
 {
-    m_protoBufServer = new VeinTcp::TcpServer(m_tcpNetworkFactory, this);
-    connect(m_protoBufServer,&VeinTcp::TcpServer::sigClientConnected,this,&PCBServer::onProtobufClientConnected);
+    connect(&m_protoBufServer,&VeinTcp::TcpServer::sigClientConnected,
+            this, &PCBServer::onProtobufClientConnected);
 }
 
 void PCBServer::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)

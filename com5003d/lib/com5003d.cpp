@@ -387,7 +387,7 @@ void cCOM5003dServer::onResourceReady()
     disconnect(static_cast<cResource*>(sender()), &cResource::registerRdy, this, &cCOM5003dServer::onResourceReady);
     if(m_pendingResources == 0) {
         EthSettings *ethSettings = m_settings->getEthSettings();
-        m_protoBufServer->startServer(ethSettings->getPort(EthSettings::protobufserver));
+        m_protoBufServer.startServer(ethSettings->getPort(EthSettings::protobufserver));
         openTelnetScpi();
     }
 }

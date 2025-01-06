@@ -251,7 +251,7 @@ void ZDspServer::onResourceReady()
 {
     disconnect(&m_resourceRegister, &ResourceRegisterTransaction::registerRdy, this, &ZDspServer::onResourceReady);
     EthSettings *ethSettings = m_settings->getEthSettings();
-    m_protoBufServer.startServer(ethSettings->getPort(EthSettings::protobufserver)); // and can start the server now
+    m_protoBufServer.startServer(ethSettings->getPort(EthSettings::protobufserver));
     openTelnetScpi();
     m_periodicLogTimer = TimerFactoryQt::createPeriodic(loggingIntervalMs);
     connect(m_periodicLogTimer.get(), &TimerTemplateQt::sigExpired,
