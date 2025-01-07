@@ -1,5 +1,5 @@
-#ifndef DSP_H
-#define DSP_H
+#ifndef DSPAPI_H
+#define DSPAPI_H
 
 #include "dspvardefinitions.h"
 #include <QString>
@@ -10,9 +10,9 @@ enum DspAcks {NBusy, InProgress, CmdError, ParError, CmdDone};
 enum CmdType { CMD, CMD1i16, CMD2i16, CMD3i16 ,CMD1i32 , CMD1i161fi32 };
 // 1fi32 kann 1 float oder 1 integer sein
 
-struct sDspCmd { // wird zum ausdekodieren der dsp kommandos benötigt
+struct DspCmdDecodingDetails {
     const char* Name; // name des befehls
-    ushort	CmdCode; // der zugehörige befehlscode
+    ushort CmdCode; // der zugehörige befehlscode
     CmdType CmdClass; // der typ des befehls
     char modify; // !=0 -> verändern, diese befehle erhalten die prozessnr. (fd) als parameter 
 };
@@ -20,14 +20,14 @@ struct sDspCmd { // wird zum ausdekodieren der dsp kommandos benötigt
 class DspStaticData
 {
 public:
-    static sDspCmd* findDspCmd(const QString& cmdName);
+    static DspCmdDecodingDetails* findDspCmd(const QString& cmdName);
     static const QHash<QString, TDspVar*> &getVarHash();
     static void initMemsection(TMemSection* memSection);
 private:
     static void fillCmdHashOn1stCall();
     static void fillMemSectionHashOn1stCall();
 
-    static QHash<QString, sDspCmd*> m_dspCmdHash;
+    static QHash<QString, DspCmdDecodingDetails*> m_dspAvailableCmds;
     static QHash<QString, TDspVar*> m_varHash;
 };
 

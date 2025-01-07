@@ -1,7 +1,7 @@
 #ifndef DSPCMDCOMPILER_H
 #define DSPCMDCOMPILER_H
 
-#include "dsp.h"
+#include "dspapi.h"
 #include "dspvarresolver.h"
 
 class DspCmdCompiler

@@ -1,5 +1,5 @@
 #include "dspvarresolver.h"
-#include "dsp.h"
+#include "dspapi.h"
 
 DspVarResolver::DspVarResolver()
 {

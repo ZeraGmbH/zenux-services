@@ -1,6 +1,6 @@
 #include "zdspserver.h"
 #include "zdspclient.h"
-#include "dsp.h"
+#include "dspapi.h"
 #include "dspcmdcompiler.h"
 #include "commonscpimethods.h"
 #include "devicenodedsp.h"

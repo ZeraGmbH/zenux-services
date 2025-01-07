@@ -1,4 +1,4 @@
-#include "dsp.h"
+#include "dspapi.h"
 #include "dspvardefinitions.h"
 #include <QHash>
 
@@ -133,7 +133,7 @@
 /* schreibt über ParallelPort die Daten _Dat auf Adresse _Adr */ 
 
 
-static sDspCmd DspCmd[78] =
+static DspCmdDecodingDetails DspCmd[78] =
 
 {{"INVALID", 0, CMD ,0},
 {"USERMEMOFFSET", 1, CMD1i32, 0 },
@@ -338,14 +338,14 @@ TMemSection symbConsts1 = {
 	DspVar		: ChannelNr };
 
 
-QHash<QString, sDspCmd*> DspStaticData::m_dspCmdHash;
+QHash<QString, DspCmdDecodingDetails*> DspStaticData::m_dspAvailableCmds;
 QHash<QString, TDspVar*> DspStaticData::m_varHash;
 
-sDspCmd *DspStaticData::findDspCmd(const QString &cmdName)
+DspCmdDecodingDetails *DspStaticData::findDspCmd(const QString &cmdName)
 {
     fillCmdHashOn1stCall();
-    QHash<QString, sDspCmd*>::const_iterator iter = m_dspCmdHash.constFind(cmdName);
-    if(iter != m_dspCmdHash.cend())
+    QHash<QString, DspCmdDecodingDetails*>::const_iterator iter = m_dspAvailableCmds.constFind(cmdName);
+    if(iter != m_dspAvailableCmds.cend())
         return iter.value();
     return nullptr;
 }
@@ -358,9 +358,9 @@ const QHash<QString, TDspVar *> &DspStaticData::getVarHash()
 
 void DspStaticData::fillCmdHashOn1stCall()
 {
-    if(m_dspCmdHash.isEmpty())
-        for(int i=0; i<sizeof(DspCmd)/sizeof(sDspCmd); i++)
-            m_dspCmdHash[DspCmd[i].Name] = &DspCmd[i];
+    if(m_dspAvailableCmds.isEmpty())
+        for(int i=0; i<sizeof(DspCmd)/sizeof(DspCmdDecodingDetails); i++)
+            m_dspAvailableCmds[DspCmd[i].Name] = &DspCmd[i];
 }
 
 void DspStaticData::fillMemSectionHashOn1stCall()

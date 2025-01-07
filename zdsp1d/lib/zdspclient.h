@@ -2,7 +2,7 @@
 #define ZDSPCLIENT_H
 
 #include "abstractfactorydevicenodedsp.h"
-#include "dsp.h"
+#include "dspapi.h"
 #include "dspvarresolver.h"
 #include <vtcp_peer.h>
 
