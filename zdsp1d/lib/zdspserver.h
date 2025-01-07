@@ -72,7 +72,7 @@ private:
 
     friend class TestZdsp1dForVarAccess;
     cZDSP1Client* AddClient(VeinTcp::TcpPeer *netClient);
-    void addClientToHash(QByteArray clientId, VeinTcp::TcpPeer *peer);
+    void addClientToHash(const QByteArray &clientId, VeinTcp::TcpPeer *peer);
     void DelClients(VeinTcp::TcpPeer *netClient);
     void DelClient(QByteArray clientId);
     cZDSP1Client* AddSCPIClient();
@@ -112,12 +112,12 @@ private:
     bool bootDsp();
     bool setSamplingSystem();
 
-    QString sendCommand2Dsp(QString); // indirekt für system modell
+    QString sendCommand2Dsp(const QString &dspCmdParLine);
     QString getLcaAndDspVersion();
     QString getSamplingSystemSetup();
     QString getDspCommandStat();
-    QString setDspCommandStat(QString scpiParam);
-    QString startTriggerIntListHKSK(QString scpiParam, int socket);
+    QString setDspCommandStat(const QString &scpiParam);
+    QString startTriggerIntListHKSK(const QString &scpiParam, int socket);
 
     // die routinen für das status modell
     QString getDeviceStatus();

@@ -3,7 +3,6 @@
 #include "dsp.h"
 #include "dspcmdcompiler.h"
 #include "commonscpimethods.h"
-#include "pcbserver.h"
 #include "devicenodedsp.h"
 #include "zscpi_response_definitions.h"
 #include <timerfactoryqt.h>
@@ -436,7 +435,7 @@ void ZDspServer::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
             protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::errexec];
         break;
     case scpiTriggerIntListALL:
-        protoCmd->m_sOutput = sendCommand2Dsp(QString("DSPCMDPAR,1;"));
+        protoCmd->m_sOutput = sendCommand2Dsp("DSPCMDPAR,1;");
         break;
     case scpiTriggerIntListHKSK:
         protoCmd->m_sOutput = startTriggerIntListHKSK(cmd.getParam(0), socketNum);
@@ -482,7 +481,7 @@ bool ZDspServer::setSamplingSystem()
     return false;
 }
 
-QString ZDspServer::sendCommand2Dsp(QString qs)
+QString ZDspServer::sendCommand2Dsp(const QString &dspCmdParLine)
 {
     DspVarResolver dspSystemVarResolver;
     int ack;
@@ -492,7 +491,7 @@ QString ZDspServer::sendCommand2Dsp(QString qs)
         return ZSCPI::scpiAnswer[ZSCPI::busy];
     if(!m_dspInOut.writeDspVars("DSPACK,0;", &dspSystemVarResolver) )
         return ZSCPI::scpiAnswer[ZSCPI::errexec]; // reset acknowledge
-    if(!m_dspInOut.writeDspVars(qs, &dspSystemVarResolver))
+    if(!m_dspInOut.writeDspVars(dspCmdParLine, &dspSystemVarResolver))
         return ZSCPI::scpiAnswer[ZSCPI::errexec];
 
     AbstractDspDeviceNodePtr deviceNode = m_deviceNodeFactory->getDspDeviceNode();
@@ -525,7 +524,7 @@ QString ZDspServer::getDspCommandStat()
         return QString("%1").arg(stat);
 }
 
-QString ZDspServer::setDspCommandStat(QString scpiParam)
+QString ZDspServer::setDspCommandStat(const QString &scpiParam)
 {
     DspVarResolver dspSystemVarResolver;
     if(!m_dspInOut.writeDspVars(QString("DSPACK,%1;").arg(scpiParam), &dspSystemVarResolver) )
@@ -534,7 +533,7 @@ QString ZDspServer::setDspCommandStat(QString scpiParam)
         return ZSCPI::scpiAnswer[ZSCPI::ack];
 }
 
-QString ZDspServer::startTriggerIntListHKSK(QString scpiParam, int socket)
+QString ZDspServer::startTriggerIntListHKSK(const QString &scpiParam, int socket)
 {
     ulong par = scpiParam.toULong();
     par = (par & 0xFFFF )| (socket << 16);
@@ -598,7 +597,7 @@ void ZDspServer::DspIntHandler(int)
         QByteArray ba;
         QString s = "CTRLCMDPAR,20";
         if(m_dspInOut.readOneDspVar(s, &ba, &client->m_dspVarResolver)) { // 20 worte lesen
-            ulong* pardsp = (ulong*) ba.data();
+            const ulong* pardsp = reinterpret_cast<ulong*>(ba.data());
             int n = pardsp[0]; // anzahl der interrupts
             m_dspInterruptLogStatistics.addValue(n);
             if (n > 20)   // in the moment magic nr
@@ -655,7 +654,6 @@ bool ZDspServer::BuildDSProgram(QString &errs)
 {
     // die programmlisten aller aktiven clients zusammen bauen
     bool ok;
-    ulong userMemOffset = dm32UserWorkSpace.StartAdr;
 
     m_rawCyclicCmdMem.clear();
     m_rawInterruptCmdMem.clear();
@@ -671,6 +669,7 @@ bool ZDspServer::BuildDSProgram(QString &errs)
         cmd = firstCompiler.compileOneCmdLineZeroAligned(QString("DSPMEMOFFSET(%1)").arg(dm32DspWorkspace.StartAdr),
                                                          &ok);
         cycCmdMemStream << cmd;
+        ulong userMemOffset = dm32UserWorkSpace.StartAdr;
         for (int i = 0; i < m_clientList.count(); i++) {
             cZDSP1Client* client = m_clientList.at(i);
             if (client->isActive()) {
@@ -883,7 +882,7 @@ void ZDspServer::onProtobufDataReceived(VeinTcp::TcpPeer *peer, QByteArray messa
     executeCommandProto(peer, m_protobufWrapper.byteArrayToProtobuf(message));
 }
 
-void ZDspServer::addClientToHash(QByteArray clientId, VeinTcp::TcpPeer *peer)
+void ZDspServer::addClientToHash(const QByteArray &clientId, VeinTcp::TcpPeer *peer)
 {
     if (!m_zdspdClientHash.contains(clientId)) { // we didn't get any command from here yet
         cZDSP1Client *zdspclient = AddClient(peer); // we add a new client with the same socket but different identifier
@@ -985,7 +984,7 @@ void ZDspServer::DelClients(VeinTcp::TcpPeer* netClient)
     QList<cZDSP1Client*> todeleteList;
     for (int i = 0; i < m_clientList.count(); i++) {
         cZDSP1Client* zdspclient = m_clientList.at(i);
-        VeinTcp::TcpPeer* peer = zdspclient->m_pNetClient;
+        const VeinTcp::TcpPeer* peer = zdspclient->m_pNetClient;
         if (peer == netClient) {
             todeleteList.append(zdspclient);
             if (m_clientIDHash.contains(zdspclient)) {
