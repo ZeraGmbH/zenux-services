@@ -5,9 +5,7 @@
 ZdspClient::ZdspClient(int socket, VeinTcp::TcpPeer* netclient, AbstractFactoryDeviceNodeDspPtr deviceNodeFactory) :
     m_pNetClient(netclient),
     m_deviceNodeFactory(deviceNodeFactory),
-    m_socket(socket),
-    m_sCmdListDef("Empty"),
-    m_sIntCmdListDef("Empty")
+    m_socket(socket)
 {
     DspCmdWithParamsRaw DspCmd;
     m_DspCmdList.append(DspCmd);

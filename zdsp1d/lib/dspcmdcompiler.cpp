@@ -137,13 +137,11 @@ bool DspCmdCompiler::compileCmds(const QString &cmdsSemicolonSeparated, QList<Ds
 {
     bool ok = true;
     genCmdList.clear();
-    for(int i = 0;;i++) {
-        QString cs = cmdsSemicolonSeparated.section(';',i,i);
-        if ( (cs.isEmpty()) || (cs==("Empty")) )
-            break; // liste ist durch
-        genCmdList.append(compileOneCmdLineAligned(cs, &ok, userMemOffset, globalstartadr));
+    const QStringList cmds = cmdsSemicolonSeparated.split(';', Qt::SkipEmptyParts);
+    for(const QString &cmd : cmds) {
+        genCmdList.append(compileOneCmdLineAligned(cmd, &ok, userMemOffset, globalstartadr));
         if(!ok) {
-            err = cs;
+            err = cmd;
             break;
         }
     }
