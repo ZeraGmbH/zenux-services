@@ -223,8 +223,9 @@ static constexpr int dm32CmdListBase21262 = 0x84000;
 static constexpr int IntCmdListLen21262 = 128;
 static constexpr int CmdListLen21262 = 896;
 
+#define DSP_VAR_COUNT(VAR_ARRAY) sizeof(VAR_ARRAY)/sizeof(TDspVar)
 
-TDspVar DspWorkspaceVar[15] =
+TDspVar DspWorkspaceVar[] =
 {
     {"DspWorkspace", "FREQENCY",1,eFloat,0,0, localSegment},                // 1 wert gemessene frequenz
     {"DspWorkspace", "FREQUENCYVALUE",4,eFloat,0,0, localSegment},          // 4 werte f. freq. ausgänge
@@ -244,10 +245,10 @@ TDspVar DspWorkspaceVar[15] =
 };
 
 
-TMemSection dm32DspWorkspace = TMemSection(systemSection, dm32DspWorkSpaceBase21262, 15, DspWorkspaceVar);
+TMemSection dm32DspWorkspace = TMemSection(systemSection, dm32DspWorkSpaceBase21262, DSP_VAR_COUNT(DspWorkspaceVar), DspWorkspaceVar);
 
 
-TDspVar DialogWorkSpaceVar[21] =
+TDspVar DialogWorkSpaceVar[] =
 {
     // Parameter details for DSPCMDPAR are found at
     // https://github.com/ZeraGmbH/SHARC-DSP-Software/blob/f4003f707849076a91010435994aa61bf9e6cfb9/NewGen32.asm#L352
@@ -273,28 +274,28 @@ TDspVar DialogWorkSpaceVar[21] =
     {"DialogWorkSpace", "POWVALS4FOUT",48,eFloat,0,0, localSegment},        // 48 leistungs werte für frequenzausgänge
     {"DialogWorkSpace", "SUBDC",1,eInt,0,0, localSegment}};                 // 32 bit 1/kanal wenn gesetzt -> subdc wenn copydata, copydiff
 
-TMemSection dm32DialogWorkSpace = TMemSection(systemSection, dm32DialogWorkSpaceBase21262, 21, DialogWorkSpaceVar);
+TMemSection dm32DialogWorkSpace = TMemSection(systemSection, dm32DialogWorkSpaceBase21262, DSP_VAR_COUNT(DialogWorkSpaceVar), DialogWorkSpaceVar);
 
 
-TDspVar UserWorkSpaceVar[1] =
+TDspVar UserWorkSpaceVar[] =
 {
     {"UserWorkSpace", "UWSPACE",uwSpaceSize21262,eFloat,0,0, localSegment}
 };
 
-TMemSection dm32UserWorkSpace = TMemSection(systemSection, dm32UserWorkSpaceBase21262, 1, UserWorkSpaceVar);
+TMemSection dm32UserWorkSpace = TMemSection(systemSection, dm32UserWorkSpaceBase21262, DSP_VAR_COUNT(UserWorkSpaceVar), UserWorkSpaceVar);
 
 
-TDspVar CmdListVar[4] =
+TDspVar CmdListVar[] =
 {
     {"CmdList", "INTCMDLIST",IntCmdListLen21262,eInt,0,0, localSegment},    // interrupt kommando
     {"CmdList", "CMDLIST",CmdListLen21262,eInt,0,0, localSegment},          // cycl. kommando liste
     {"CmdList", "ALTINTCMDLIST",IntCmdListLen21262,eInt,0,0, localSegment}, // alternative kommando listen
     {"CmdList", "ALTCMDLIST",CmdListLen21262,eInt,0,0, localSegment}};
 
-TMemSection dm32CmdList = TMemSection(systemSection, dm32CmdListBase21262, 4, CmdListVar);
+TMemSection dm32CmdList = TMemSection(systemSection, dm32CmdListBase21262, DSP_VAR_COUNT(CmdListVar), CmdListVar);
 
 
-TDspVar ChannelNr[32] =
+TDspVar ChannelNr[] =
 {
     {"ChannelNr", "CH0",1,eInt,0,0,localSegment}, {"ChannelNr", "CH1",1,eInt,0,0,localSegment},
     {"ChannelNr", "CH2",1,eInt,0,0,localSegment}, {"ChannelNr", "CH3",1,eInt,0,0,localSegment},
@@ -313,7 +314,7 @@ TDspVar ChannelNr[32] =
     {"ChannelNr", "CH28",1,eInt,0,0,localSegment},{"ChannelNr", "CH29",1,eInt,0,0,localSegment},
     {"ChannelNr", "CH30",1,eInt,0,0,localSegment},{"ChannelNr", "CH31",1,eInt,0,0,localSegment}};
 
-TMemSection symbConsts1 = TMemSection(systemSection, 0, 32, ChannelNr);
+TMemSection symbConsts1 = TMemSection(systemSection, 0, DSP_VAR_COUNT(ChannelNr), ChannelNr);
 
 
 QHash<QString, DspCmdDecodingDetails*> DspStaticData::m_dspAvailableCmds;
