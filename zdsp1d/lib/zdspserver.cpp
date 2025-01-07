@@ -446,12 +446,9 @@ void ZDspServer::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
 
 QString ZDspServer::handleScpiInterfaceRead(const QString &scpiInput)
 {
-    // get new SCPI
-    QString newScpi = CommonScpiMethods::handleScpiInterfaceRead(m_scpiInterface, scpiInput);
-
-    // add old SCPI
+    QString xmlScpi = CommonScpiMethods::handleScpiInterfaceRead(m_scpiInterface, scpiInput);
     QDomDocument domDoc("SCPIModel");
-    domDoc.setContent(newScpi);
+    domDoc.setContent(xmlScpi);
 
     QDomElement rootElem = domDoc.documentElement();
     QDomElement modelsElem = rootElem.firstChildElement("MODELS");
@@ -911,7 +908,7 @@ void ZDspServer::executeCommandProto(VeinTcp::TcpPeer *peer, std::shared_ptr<goo
 
             addClientToHash(clientId, peer);
 
-            // --- new scpi stolen from PCBServer::executeCommandProto ---
+            // Stolen from PCBServer::executeCommandProto ---
             QString scpiInput = QString::fromStdString(scpiCmd.command()) +  " " + QString::fromStdString(scpiCmd.parameter());
             cSCPIObject* scpiObject = m_scpiInterface->getSCPIObject(scpiInput);
             if(scpiObject) {
@@ -951,7 +948,7 @@ void ZDspServer::onTelnetDataReceived()
     input.remove('\n');
     qInfo("External SCPI command: %s", qPrintable(input));
 
-    // New SCPI - stolen fom PCBServer::onTelnetDataReceived()
+    // Stolen fom PCBServer::onTelnetDataReceived()
     cSCPIObject* scpiObject = m_scpiInterface->getSCPIObject(input);
     if(scpiObject) {
         QByteArray clientId = QByteArray(); // we set an empty byte array
