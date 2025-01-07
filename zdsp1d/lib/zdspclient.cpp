@@ -64,6 +64,11 @@ void cZDSP1Client::setActive(bool active)
     m_bActive = active;
 }
 
+bool cZDSP1Client::hasDspCmds() const
+{
+    return !m_sCmdListDef.isEmpty() || !m_sIntCmdListDef.isEmpty();
+}
+
 ulong cZDSP1Client::setStartAdr(ulong startAdress, ulong globalMemStart)
 {
     ulong usermemsize = 0;
@@ -90,7 +95,7 @@ bool cZDSP1Client::GenCmdLists(QString& errs, ulong userMemOffset, ulong globals
         compiler.compileCmds(m_sIntCmdListDef, m_DspIntCmdList, errs, userMemOffset, globalstartadr);
 }
 
-bool cZDSP1Client::isActive()
+bool cZDSP1Client::isActive() const
 {
     return m_bActive;
 }

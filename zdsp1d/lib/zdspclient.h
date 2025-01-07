@@ -14,8 +14,9 @@ public:
     cZDSP1Client(int socket, VeinTcp::TcpPeer *netclient, AbstractFactoryDeviceNodeDspPtr deviceNodeFactory);
     ~cZDSP1Client() = default;
 
-    bool isActive();
+    bool isActive() const;
     void setActive(bool active);
+    bool hasDspCmds() const;
 
     bool setRawActualValueList(const QString& varsSemicolonSeparated);
     void setCmdListDef(const QString& cmdListDef);

@@ -993,22 +993,28 @@ void ZDspServer::DelClients(VeinTcp::TcpPeer* netClient)
             }
         }
     }
+    bool reloadRequired = false;
     for (int i = 0; i < todeleteList.count(); i++) {
         cZDSP1Client* client = todeleteList.at(i);
+        if(client->hasDspCmds())
+            reloadRequired = true;
         m_clientList.removeOne(client);
         delete client;
     }
-    LoadDSProgram(); // after deleting clients we reload dsp program
+    if(reloadRequired)
+        LoadDSProgram();
 }
 
 void ZDspServer::DelClient(QByteArray clientId)
 {
     if (m_zdspdClientHash.contains(clientId)) {
         cZDSP1Client *client = m_zdspdClientHash.take(clientId);
+        bool realoadRequired = client->hasDspCmds();
         m_clientIDHash.remove(client);
         m_clientList.removeOne(client);
         delete client;
-        LoadDSProgram(); // after deleting client we reload dsp program ... means unload dsp for this client
+        if(realoadRequired)
+            LoadDSProgram();
     }
 }
 
@@ -1020,7 +1026,8 @@ cZDSP1Client *ZDspServer::AddSCPIClient()
 void ZDspServer::DelSCPIClient()
 {
     m_clientList.removeAll(m_pSCPIClient);
-    LoadDSProgram(); // after deleting client we reload dsp program ... means unload dsp for this client
+    if(m_pSCPIClient->hasDspCmds())
+        LoadDSProgram();
 }
 
 void ZDspServer::sendProtoAnswer(cProtonetCommand *protoCmd)
