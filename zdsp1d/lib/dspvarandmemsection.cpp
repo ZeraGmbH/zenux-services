@@ -1,4 +1,4 @@
-#include "dspvardefinitions.h"
+#include "dspvarandmemsection.h"
 
 bool TDspVar::Init(const QString& varDefinition)
 {

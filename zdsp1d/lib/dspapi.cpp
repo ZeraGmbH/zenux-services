@@ -1,5 +1,5 @@
 #include "dspapi.h"
-#include "dspvardefinitions.h"
+#include "dspvarandmemsection.h"
 #include <QHash>
 
 // alle angaben aus dsp assembler programm 

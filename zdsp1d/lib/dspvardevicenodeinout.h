@@ -2,7 +2,7 @@
 #define DSPVARDEVICENODEINOUT_H
 
 #include "abstractfactorydevicenodedsp.h"
-#include "dspvardefinitions.h"
+#include "dspvarandmemsection.h"
 #include "dspvarresolver.h"
 
 class DspVarDeviceNodeInOut

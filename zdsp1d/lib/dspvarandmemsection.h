@@ -1,5 +1,5 @@
-#ifndef DSPVARDEFINITIONS_H
-#define DSPVARDEFINITIONS_H
+#ifndef DSPVARANDMEMSECTION_H
+#define DSPVARANDMEMSECTION_H
 
 #include <QString>
 
@@ -26,4 +26,4 @@ struct TMemSection { // beschreibt eine dsp memory section
     TDspVar *DspVar = nullptr;
 };
 
-#endif // DSPVARDEFINITIONS_H
+#endif // DSPVARANDMEMSECTION_H

@@ -1,7 +1,7 @@
 #ifndef DSPVARRESOLVER_H
 #define DSPVARRESOLVER_H
 
-#include "dspvardefinitions.h"
+#include "dspvarandmemsection.h"
 #include <parse.h>
 #include <QString>
 #include <QHash>

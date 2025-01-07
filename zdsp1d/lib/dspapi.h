@@ -1,7 +1,7 @@
 #ifndef DSPAPI_H
 #define DSPAPI_H
 
-#include "dspvardefinitions.h"
+#include "dspvarandmemsection.h"
 #include <QString>
 #include <QHash>
 
