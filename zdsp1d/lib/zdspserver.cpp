@@ -666,10 +666,10 @@ bool ZDspServer::BuildDSProgram(QString &errs)
     if (m_clientList.count() > 0) {
         cZDSP1Client* firstClient = m_clientList.at(0);
         DspCmdCompiler firstCompiler(&firstClient->m_dspVarResolver, firstClient->getSocket());
-        cmd = firstCompiler.compileOneCmdLineZeroAligned(QString("DSPMEMOFFSET(%1)").arg(dm32DspWorkspace.StartAdr),
+        cmd = firstCompiler.compileOneCmdLineZeroAligned(QString("DSPMEMOFFSET(%1)").arg(dm32DspWorkspace.m_startAddress),
                                                          &ok);
         cycCmdMemStream << cmd;
-        ulong userMemOffset = dm32UserWorkSpace.StartAdr;
+        ulong userMemOffset = dm32UserWorkSpace.m_startAddress;
         for (int i = 0; i < m_clientList.count(); i++) {
             cZDSP1Client* client = m_clientList.at(i);
             if (client->isActive()) {
@@ -799,10 +799,10 @@ bool ZDspServer::setDspType()
         UserWorkSpaceGlobalSegmentAdr = dm32UserWorkSpaceGlobal21362;
         if (m_sDspBootPath.contains("zdsp21362.ldr")) {
             // für adsp21362 schreiben wir die adressen um
-            dm32DspWorkspace.StartAdr = dm32DspWorkSpaceBase21362;
-            dm32DialogWorkSpace.StartAdr = dm32DialogWorkSpaceBase21362;
-            dm32UserWorkSpace.StartAdr = dm32UserWorkSpaceBase21362;
-            dm32CmdList.StartAdr = dm32CmdListBase21362;
+            dm32DspWorkspace.m_startAddress = dm32DspWorkSpaceBase21362;
+            dm32DialogWorkSpace.m_startAddress = dm32DialogWorkSpaceBase21362;
+            dm32UserWorkSpace.m_startAddress = dm32UserWorkSpaceBase21362;
+            dm32CmdList.m_startAddress = dm32CmdListBase21362;
 
             TDspVar* pDspVar = &CmdListVar;
 

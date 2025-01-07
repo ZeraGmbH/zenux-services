@@ -28,6 +28,9 @@ private slots:
 
     void serverReadDspWorkspaceVariableAndListenDeviceNode();
     void serverWriteDspDialogWorkspaceVariableAndListenDeviceNode();
+    void serverReadDspUserWorkspaceVariableAndListenDeviceNode();
+    void serverReadDspCmdListVariableAndListenDeviceNode();
+    void serverReadDspChannelDataVariableAndListenDeviceNode();
 
 private:
     QByteArray floatToBuff(float value);

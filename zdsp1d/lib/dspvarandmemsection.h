@@ -20,10 +20,15 @@ struct TDspVar {
 };
 
 struct TMemSection { // beschreibt eine dsp memory section
-    sectionType Section = userSection;
-    long StartAdr = 0;
-    int n = 0; // anzahl der sdspvar elemente
-    TDspVar *DspVar = nullptr;
+    TMemSection() = default;
+    TMemSection(sectionType section,
+                long startAddress,
+                int varCount,
+                TDspVar *dspVars);
+    sectionType m_section = userSection;
+    long m_startAddress = 0;
+    int m_varCount = 0;
+    TDspVar *m_dspVars = nullptr;
 };
 
 #endif // DSPVARANDMEMSECTION_H

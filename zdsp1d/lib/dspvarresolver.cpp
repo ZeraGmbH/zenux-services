@@ -18,8 +18,8 @@ void DspVarResolver::actualizeVarHash()
     m_varHash = DspStaticData::getVarHash();
     for(TMemSection* memSection : qAsConst(MemSectionList)) {
         DspStaticData::initMemsection(memSection);
-        for (int i=0; i<memSection->n; i++)
-            m_varHash[memSection->DspVar[i].Name] = &(memSection->DspVar[i]);
+        for (int i=0; i<memSection->m_varCount; i++)
+            m_varHash[memSection->m_dspVars[i].Name] = &(memSection->m_dspVars[i]);
     }
 }
 

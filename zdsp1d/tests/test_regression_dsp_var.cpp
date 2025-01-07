@@ -379,7 +379,7 @@ void test_regression_dsp_var::serverReadDspWorkspaceVariableAndListenDeviceNode(
 
     QCOMPARE(spyRead.count(), 2);
     QCOMPARE(spyRead[0][0], "lseek");
-    QCOMPARE(spyRead[0][1].toInt(), dm32DspWorkspace.StartAdr);
+    QCOMPARE(spyRead[0][1].toInt(), dm32DspWorkspace.m_startAddress);
     QCOMPARE(spyRead[1][0], "read");
     QCOMPARE(spyRead[1][1], "buf");
     QCOMPARE(spyRead[1][2], 1*varSize);
@@ -399,9 +399,68 @@ void test_regression_dsp_var::serverWriteDspDialogWorkspaceVariableAndListenDevi
 
     QCOMPARE(spyWrite.count(), 1);
     QCOMPARE(spyWrite[0][0], "write");
-    QCOMPARE(spyWrite[0][1].toInt(), dm32DialogWorkSpace.StartAdr);
+    QCOMPARE(spyWrite[0][1].toInt(), dm32DialogWorkSpace.m_startAddress);
     QCOMPARE(spyWrite[0][2], intToBuff(2) + intToBuff(42));
     QCOMPARE(spyWrite[0][3], 2*varSize);
+}
+
+extern TMemSection dm32UserWorkSpace;
+
+void test_regression_dsp_var::serverReadDspUserWorkspaceVariableAndListenDeviceNode()
+{
+    cZDSP1Client* testServerlient = m_dspService->createTestClient();
+    TestDeviceNodeDspPtr deviceNode = TestSingletonDeviceNodeDsp::getInstancePtrTest();
+    QSignalSpy spyRead(deviceNode.get(), &TestDeviceNodeDsp::sigIoOperation);
+
+    DspVarDeviceNodeInOut dspInOut(m_deviceNodeFactory);
+    dspInOut.readDspVarList("UWSPACE,1;", &testServerlient->m_dspVarResolver);
+
+    QCOMPARE(spyRead.count(), 2);
+    QCOMPARE(spyRead[0][0], "lseek");
+    QCOMPARE(spyRead[0][1].toInt(), dm32UserWorkSpace.m_startAddress);
+    QCOMPARE(spyRead[1][0], "read");
+    QCOMPARE(spyRead[1][1], "buf");
+    QCOMPARE(spyRead[1][2], 1*varSize);
+}
+
+extern TMemSection dm32CmdList;
+
+void test_regression_dsp_var::serverReadDspCmdListVariableAndListenDeviceNode()
+{
+    cZDSP1Client* testServerlient = m_dspService->createTestClient();
+    TestDeviceNodeDspPtr deviceNode = TestSingletonDeviceNodeDsp::getInstancePtrTest();
+    QSignalSpy spyRead(deviceNode.get(), &TestDeviceNodeDsp::sigIoOperation);
+
+    DspVarDeviceNodeInOut dspInOut(m_deviceNodeFactory);
+    dspInOut.readDspVarList("CMDLIST,1;", &testServerlient->m_dspVarResolver);
+
+    QCOMPARE(spyRead.count(), 2);
+    QCOMPARE(spyRead[0][0], "lseek");
+    // Yes detailed implementation background but we need to test not only the first in mem section
+    // CMDLIST is second variable in dm32CmdList
+    QCOMPARE(spyRead[0][1].toInt(), dm32CmdList.m_startAddress + dm32CmdList.m_dspVars[0].size);
+    QCOMPARE(spyRead[1][0], "read");
+    QCOMPARE(spyRead[1][1], "buf");
+    QCOMPARE(spyRead[1][2], 1*varSize);
+}
+
+extern TMemSection symbConsts1;
+
+void test_regression_dsp_var::serverReadDspChannelDataVariableAndListenDeviceNode()
+{
+    cZDSP1Client* testServerlient = m_dspService->createTestClient();
+    TestDeviceNodeDspPtr deviceNode = TestSingletonDeviceNodeDsp::getInstancePtrTest();
+    QSignalSpy spyRead(deviceNode.get(), &TestDeviceNodeDsp::sigIoOperation);
+
+    DspVarDeviceNodeInOut dspInOut(m_deviceNodeFactory);
+    dspInOut.readDspVarList("CH0,32;", &testServerlient->m_dspVarResolver);
+
+    QCOMPARE(spyRead.count(), 2);
+    QCOMPARE(spyRead[0][0], "lseek");
+    QCOMPARE(spyRead[0][1].toInt(), symbConsts1.m_startAddress);
+    QCOMPARE(spyRead[1][0], "read");
+    QCOMPARE(spyRead[1][1], "buf");
+    QCOMPARE(spyRead[1][2], 32*varSize);
 }
 
 QByteArray test_regression_dsp_var::floatToBuff(float value)

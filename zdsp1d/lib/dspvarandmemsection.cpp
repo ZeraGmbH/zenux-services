@@ -35,3 +35,11 @@ bool TDspVar::Init(const QString& varDefinition)
     }
     return ret;
 }
+
+TMemSection::TMemSection(sectionType section, long startAddress, int varCount, TDspVar *dspVars) :
+    m_section(section),
+    m_startAddress(startAddress),
+    m_varCount(varCount),
+    m_dspVars(dspVars)
+{
+}
