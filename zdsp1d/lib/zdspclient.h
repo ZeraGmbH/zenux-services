@@ -6,8 +6,6 @@
 #include "dspvarresolver.h"
 #include <vtcp_peer.h>
 
-class ZDspServer;
-
 class ZdspClient
 {
 public:
