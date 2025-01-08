@@ -96,7 +96,7 @@ cSEC1000dServer::~cSEC1000dServer()
 
 QString cSEC1000dServer::getServerVersion()
 {
-    return QString("%1 %2").arg(ServerName, ServerVersion);;
+    return QString("%1 %2").arg(ServerName, ServerVersion);
 }
 
 QString cSEC1000dServer::getSecDeviceNode()

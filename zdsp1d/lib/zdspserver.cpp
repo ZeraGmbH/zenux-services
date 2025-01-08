@@ -553,12 +553,12 @@ QString ZDspServer::getLcaAndDspVersion()
     dspVer = dspVer.section(':',1,1);
     dspVer.remove(';');
     double dspVersionFloat = dspVer.toDouble();
-    return QString("DSPLCA: V%1.%2;DSP V%3").arg((rawLcaVersion >>8) & 0xff).arg(rawLcaVersion & 0xff).arg(dspVersionFloat, 0, 'f', 2);;
+    return QString("DSPLCA: V%1.%2;DSP V%3").arg((rawLcaVersion >>8) & 0xff).arg(rawLcaVersion & 0xff).arg(dspVersionFloat, 0, 'f', 2);
 }
 
 QString ZDspServer::getServerVersion()
 {
-    return QString("%1 %2").arg(ServerName, ServerVersion);;
+    return QString("%1 %2").arg(ServerName, ServerVersion);
 }
 
 QString ZDspServer::getDspDeviceNode()

@@ -18,7 +18,7 @@ void TestAllServicesMt310s2::init(VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetwo
                                   AbstractFactoryI2cCtrlPtr ctrlFactory)
 {
     m_resman = new ResmanRunFacade(tcpNetworkFactory);
-    TimeMachineObject::feedEventLoop();;
+    TimeMachineObject::feedEventLoop();
     m_mt310s2d = new MockMt310s2d(ctrlFactory, tcpNetworkFactory);
     m_sec1000d = new MockSec1000d(tcpNetworkFactory);
     m_zdsp1d = new MockZdsp1d(std::make_shared<TestFactoryDeviceNodeDsp>(), tcpNetworkFactory);
