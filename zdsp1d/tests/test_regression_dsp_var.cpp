@@ -370,7 +370,7 @@ extern TMemSection dm32DspWorkspace;
 
 void test_regression_dsp_var::serverReadDspWorkspaceVariableAndListenDeviceNode()
 {
-    cZDSP1Client* testServerlient = m_dspService->createTestClient();
+    ZdspClient* testServerlient = m_dspService->createTestClient();
     TestDeviceNodeDspPtr deviceNode = TestSingletonDeviceNodeDsp::getInstancePtrTest();
     QSignalSpy spyRead(deviceNode.get(), &TestDeviceNodeDsp::sigIoOperation);
 
@@ -389,7 +389,7 @@ extern TMemSection dm32DialogWorkSpace;
 
 void test_regression_dsp_var::serverWriteDspDialogWorkspaceVariableAndListenDeviceNode()
 {
-    cZDSP1Client* testServerlient = m_dspService->createTestClient();
+    ZdspClient* testServerlient = m_dspService->createTestClient();
     TestDeviceNodeDspPtr deviceNode = TestSingletonDeviceNodeDsp::getInstancePtrTest();
     QSignalSpy spyWrite(deviceNode.get(), &TestDeviceNodeDsp::sigIoOperation);
 
@@ -408,7 +408,7 @@ extern TMemSection dm32UserWorkSpace;
 
 void test_regression_dsp_var::serverReadDspUserWorkspaceVariableAndListenDeviceNode()
 {
-    cZDSP1Client* testServerlient = m_dspService->createTestClient();
+    ZdspClient* testServerlient = m_dspService->createTestClient();
     TestDeviceNodeDspPtr deviceNode = TestSingletonDeviceNodeDsp::getInstancePtrTest();
     QSignalSpy spyRead(deviceNode.get(), &TestDeviceNodeDsp::sigIoOperation);
 
@@ -427,7 +427,7 @@ extern TMemSection dm32CmdList;
 
 void test_regression_dsp_var::serverReadDspCmdListVariableAndListenDeviceNode()
 {
-    cZDSP1Client* testServerlient = m_dspService->createTestClient();
+    ZdspClient* testServerlient = m_dspService->createTestClient();
     TestDeviceNodeDspPtr deviceNode = TestSingletonDeviceNodeDsp::getInstancePtrTest();
     QSignalSpy spyRead(deviceNode.get(), &TestDeviceNodeDsp::sigIoOperation);
 
@@ -448,7 +448,7 @@ extern TMemSection symbConsts1;
 
 void test_regression_dsp_var::serverReadDspChannelDataVariableAndListenDeviceNode()
 {
-    cZDSP1Client* testServerlient = m_dspService->createTestClient();
+    ZdspClient* testServerlient = m_dspService->createTestClient();
     TestDeviceNodeDspPtr deviceNode = TestSingletonDeviceNodeDsp::getInstancePtrTest();
     QSignalSpy spyRead(deviceNode.get(), &TestDeviceNodeDsp::sigIoOperation);
 

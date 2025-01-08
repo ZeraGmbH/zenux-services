@@ -24,7 +24,7 @@
 #include <QTcpServer>
 #include <QDomDocument>
 
-class cZDSP1Client;
+class ZdspClient;
 
 typedef QVector<float> tDspMemArray;
 
@@ -71,11 +71,11 @@ private:
     void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
 
     friend class TestZdsp1dForVarAccess;
-    cZDSP1Client* AddClient(VeinTcp::TcpPeer *netClient);
+    ZdspClient* AddClient(VeinTcp::TcpPeer *netClient);
     void addClientToHash(const QByteArray &clientId, VeinTcp::TcpPeer *peer);
     void DelClients(VeinTcp::TcpPeer *netClient);
     void DelClient(QByteArray clientId);
-    cZDSP1Client* AddSCPIClient();
+    ZdspClient* AddSCPIClient();
     void DelSCPIClient();
 
     QString handleScpiInterfaceRead(const QString &scpiInput);
@@ -100,10 +100,10 @@ private:
     QByteArray m_rawInterruptCmdMem;
     QSocketNotifier* m_pNotifier = nullptr;
 
-    QHash<QByteArray, cZDSP1Client*> m_zdspdClientHash;
-    QHash<cZDSP1Client*, QByteArray> m_clientIDHash; // liste der clientID's für die dspclients die über protobuf erzeugt wurden
-    cZDSP1Client* m_pSCPIClient = nullptr;
-    QList<cZDSP1Client*> m_clientList;
+    QHash<QByteArray, ZdspClient*> m_zdspdClientHash;
+    QHash<ZdspClient*, QByteArray> m_clientIDHash; // liste der clientID's für die dspclients die über protobuf erzeugt wurden
+    ZdspClient* m_pSCPIClient = nullptr;
+    QList<ZdspClient*> m_clientList;
 
     ulong UserWorkSpaceGlobalSegmentAdr;
     LogStatisticsAsyncInt m_dspInterruptLogStatistics;
@@ -124,8 +124,8 @@ private:
     QString getDspStatus();
 
     // die routinen für das measure modell
-    QString loadCmdList(cZDSP1Client *client);
-    QString unloadCmdList(cZDSP1Client *client);
+    QString loadCmdList(ZdspClient *client);
+    QString unloadCmdList(ZdspClient *client);
 
     bool BuildDSProgram(QString& errs);
     bool LoadDSProgram();
@@ -133,8 +133,8 @@ private:
     int readMagicId();
     bool Test4HWPresent();
     bool Test4DspRunning();
-    cZDSP1Client* GetClient(int s);
-    cZDSP1Client* GetClient(VeinTcp::TcpPeer* peer);
+    ZdspClient* GetClient(int s);
+    ZdspClient* GetClient(VeinTcp::TcpPeer* peer);
     void executeCommandProto(VeinTcp::TcpPeer* peer, std::shared_ptr<google::protobuf::Message> cmd);
     QString m_sDspBootPath;
 

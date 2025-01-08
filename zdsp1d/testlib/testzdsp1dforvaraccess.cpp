@@ -8,7 +8,7 @@ TestZdsp1dForVarAccess::TestZdsp1dForVarAccess(AbstractFactoryDeviceNodeDspPtr d
 {
 }
 
-cZDSP1Client *TestZdsp1dForVarAccess::createTestClient()
+ZdspClient *TestZdsp1dForVarAccess::createTestClient()
 {
     return m_server->AddClient(&m_testNetClient);
 }

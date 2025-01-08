@@ -9,7 +9,7 @@ public:
     TestZdsp1dForVarAccess(AbstractFactoryDeviceNodeDspPtr deviceNodeFactory,
                            VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory,
                            QString alternateConfigXml = QString());
-    cZDSP1Client* createTestClient();
+    ZdspClient* createTestClient();
 private:
     VeinTcp::TcpPeer m_testNetClient;
 };

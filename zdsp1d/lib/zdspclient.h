@@ -8,11 +8,11 @@
 
 class ZDspServer;
 
-class cZDSP1Client
+class ZdspClient
 {
 public:
-    cZDSP1Client(int socket, VeinTcp::TcpPeer *netclient, AbstractFactoryDeviceNodeDspPtr deviceNodeFactory);
-    ~cZDSP1Client() = default;
+    ZdspClient(int socket, VeinTcp::TcpPeer *netclient, AbstractFactoryDeviceNodeDspPtr deviceNodeFactory);
+    ~ZdspClient() = default;
 
     bool isActive() const;
     void setActive(bool active);

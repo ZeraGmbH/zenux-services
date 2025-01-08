@@ -2,7 +2,7 @@
 #include "dspcmdcompiler.h"
 #include "dspvardevicenodeinout.h"
 
-cZDSP1Client::cZDSP1Client(int socket, VeinTcp::TcpPeer* netclient, AbstractFactoryDeviceNodeDspPtr deviceNodeFactory) :
+ZdspClient::ZdspClient(int socket, VeinTcp::TcpPeer* netclient, AbstractFactoryDeviceNodeDspPtr deviceNodeFactory) :
     m_pNetClient(netclient),
     m_deviceNodeFactory(deviceNodeFactory),
     m_socket(socket),
@@ -15,7 +15,7 @@ cZDSP1Client::cZDSP1Client(int socket, VeinTcp::TcpPeer* netclient, AbstractFact
     m_dspVarResolver.addSection(&m_userMemSection);
 }
 
-bool cZDSP1Client::setRawActualValueList(const QString &varsSemicolonSeparated)
+bool ZdspClient::setRawActualValueList(const QString &varsSemicolonSeparated)
 {
     m_dspVarArray.clear();
     int localOffset = 0;
@@ -49,27 +49,27 @@ bool cZDSP1Client::setRawActualValueList(const QString &varsSemicolonSeparated)
     return true;
 }
 
-void cZDSP1Client::setCmdListDef(const QString &cmdListDef)
+void ZdspClient::setCmdListDef(const QString &cmdListDef)
 {
     m_sCmdListDef = cmdListDef;
 }
 
-void cZDSP1Client::setCmdForIrqListDef(const QString &cmdIntListDef)
+void ZdspClient::setCmdForIrqListDef(const QString &cmdIntListDef)
 {
     m_sIntCmdListDef = cmdIntListDef;
 }
 
-void cZDSP1Client::setActive(bool active)
+void ZdspClient::setActive(bool active)
 {
     m_bActive = active;
 }
 
-bool cZDSP1Client::hasDspCmds() const
+bool ZdspClient::hasDspCmds() const
 {
     return !m_sCmdListDef.isEmpty() || !m_sIntCmdListDef.isEmpty();
 }
 
-ulong cZDSP1Client::setStartAdr(ulong startAdress, ulong globalMemStart)
+ulong ZdspClient::setStartAdr(ulong startAdress, ulong globalMemStart)
 {
     ulong usermemsize = 0;
     ulong globalmemsize = 0;
@@ -87,7 +87,7 @@ ulong cZDSP1Client::setStartAdr(ulong startAdress, ulong globalMemStart)
     return usermemsize;
 }
 
-bool cZDSP1Client::GenCmdLists(QString& errs, ulong userMemOffset, ulong globalstartadr)
+bool ZdspClient::GenCmdLists(QString& errs, ulong userMemOffset, ulong globalstartadr)
 {
     DspCmdCompiler compiler(&m_dspVarResolver, m_socket);
     return
@@ -95,27 +95,27 @@ bool cZDSP1Client::GenCmdLists(QString& errs, ulong userMemOffset, ulong globals
         compiler.compileCmds(m_sIntCmdListDef, m_DspIntCmdList, errs, userMemOffset, globalstartadr);
 }
 
-bool cZDSP1Client::isActive() const
+bool ZdspClient::isActive() const
 {
     return m_bActive;
 }
 
-QList<DspCmdWithParamsRaw> &cZDSP1Client::GetDspCmdList()
+QList<DspCmdWithParamsRaw> &ZdspClient::GetDspCmdList()
 {
     return m_DspCmdList;
 }
 
-QList<DspCmdWithParamsRaw> &cZDSP1Client::GetDspIntCmdList()
+QList<DspCmdWithParamsRaw> &ZdspClient::GetDspIntCmdList()
 {
     return m_DspIntCmdList;
 }
 
-int cZDSP1Client::getSocket() const
+int ZdspClient::getSocket() const
 {
     return m_socket;
 }
 
-QString cZDSP1Client::readActValues(const QString& variablesStringOnEmptyActOnly)
+QString ZdspClient::readActValues(const QString& variablesStringOnEmptyActOnly)
 {
     QString variablesStringWithActual = variablesStringOnEmptyActOnly;
     if(variablesStringWithActual.isEmpty()) { // sonderfall liste leer -> alle messwerte lesen
