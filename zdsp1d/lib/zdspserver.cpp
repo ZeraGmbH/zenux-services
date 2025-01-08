@@ -749,6 +749,7 @@ QString ZDspServer::loadCmdList(ZdspClient* client)
     QString ret;
     if(BuildDSProgram(errs)) { // die cmdlisten und die variablen waren schlüssig
         if(!LoadDSProgram()) {
+            qCritical("LoadDSProgram failed");
             ret = ZSCPI::scpiAnswer[ZSCPI::errexec];
             client->setActive(false);
         }
@@ -756,6 +757,7 @@ QString ZDspServer::loadCmdList(ZdspClient* client)
             ret = ZSCPI::scpiAnswer[ZSCPI::ack];
     }
     else {
+        qCritical("BuildDSProgram failed");
         client->setActive(false);
         ret = QString("%1 %2").arg(ZSCPI::scpiAnswer[ZSCPI::errval], errs); // das "fehlerhafte" kommando anhängen
     }
