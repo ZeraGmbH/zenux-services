@@ -683,7 +683,7 @@ bool ZDspServer::BuildDSProgram(QString &errs)
                     return false;
 
                 // relokalisieren der daten im dsp
-                userMemOffset += client->setStartAdr(userMemOffset, UserWorkSpaceGlobalSegmentAdr);
+                userMemOffset += client->relocalizeUserMemSectionVars(userMemOffset, UserWorkSpaceGlobalSegmentAdr);
 
                 QList<DspCmdWithParamsRaw> cycCmdList = client->GetDspCmdList();
                 for (int j = 0; j < cycCmdList.size(); j++)

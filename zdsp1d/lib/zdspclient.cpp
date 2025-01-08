@@ -67,7 +67,7 @@ bool ZdspClient::hasDspCmds() const
     return !m_sCmdListDef.isEmpty() || !m_sIntCmdListDef.isEmpty();
 }
 
-ulong ZdspClient::setStartAdr(ulong startAdress, ulong globalMemStart)
+ulong ZdspClient::relocalizeUserMemSectionVars(ulong startAdress, ulong globalMemStart)
 {
     ulong usermemsize = 0;
     ulong globalmemsize = 0;

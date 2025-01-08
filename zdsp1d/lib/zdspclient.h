@@ -27,7 +27,7 @@ public:
     QString readActValues(const QString &variablesStringOnEmptyActOnly);
     DspVarResolver m_dspVarResolver;
 
-    ulong setStartAdr(ulong startAdress, ulong globalMemStart); // zum relokalisieren der userdaten
+    ulong relocalizeUserMemSectionVars(ulong startAdress, ulong globalMemStart);
 
     int getSocket() const;
     VeinTcp::TcpPeer* m_pNetClient;
