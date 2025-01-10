@@ -5,8 +5,6 @@ ConditionKernelCommandLine=zera_device=com5003
 
 # Mandatory devices (see systemd.device / 'escaping' /
 # https://lists.fedoraproject.org/pipermail/devel/2012-January/160917.html)
-Requires=dev-zFPGA1reg.device
-After=dev-zFPGA1reg.device
 Requires=dev-i2c\x2d0.device
 After=dev-i2c\x2d0.device
 

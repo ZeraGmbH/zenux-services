@@ -1,9 +1,6 @@
 [Unit]
 Description=Zera DSP daemon
 
-Requires=dev-zFPGA1dsp1.device
-After=dev-zFPGA1dsp1.device
-
 [Service]
 ExecStart=/usr/bin/zdsp1d
 Type=simple
