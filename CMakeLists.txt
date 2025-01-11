@@ -39,7 +39,6 @@ endif()
 if(${useSystemd})
     find_package(PkgConfig REQUIRED)
     pkg_check_modules(Systemd REQUIRED libsystemd)
-    add_definitions(-DSYSTEMD_NOTIFICATION)
     # better suggestions?
     get_filename_component(SYSTEMD_UNIT_INSTALL_PATH "${CMAKE_INSTALL_PREFIX}/../lib/systemd/system" ABSOLUTE)
 endif()
