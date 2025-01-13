@@ -6,7 +6,7 @@
 #include "scpisingletransactionblocked.h"
 #include "zscpi_response_definitions.h"
 #include <mockeeprom24lc.h>
-#include <tcpnetworkfactory.h>
+#include <mocktcpnetworkfactory.h>
 #include <QSignalSpy>
 #include <QTest>
 
@@ -19,7 +19,7 @@ void test_mockservice_mt310s2d_full::initTestCase()
 
 void test_mockservice_mt310s2d_full::init()
 {
-    VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory = VeinTcp::TcpNetworkFactory::create();
+    VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory = VeinTcp::MockTcpNetworkFactory::create();
     m_resman = std::make_unique<ResmanRunFacade>(tcpNetworkFactory);
     m_mt310s2d = std::make_unique<MockMt310s2d>(std::make_shared<TestFactoryI2cCtrl>(true), tcpNetworkFactory);
     TimeMachineObject::feedEventLoop();

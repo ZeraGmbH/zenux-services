@@ -1,12 +1,12 @@
 #include "test_notificationsubscriber.h"
 #include <QTest>
-#include <tcpnetworkfactory.h>
+#include <mocktcpnetworkfactory.h>
 
 QTEST_MAIN(test_notificationsubscriber);
 
 void test_notificationsubscriber::init()
 {
-    m_netPeer = new VeinTcp::TcpPeer(VeinTcp::TcpNetworkFactory::create());
+    m_netPeer = new VeinTcp::TcpPeer(VeinTcp::MockTcpNetworkFactory::create());
     m_notificationHandler = new ScpiNotificationSubscriberHandler();
 }
 
