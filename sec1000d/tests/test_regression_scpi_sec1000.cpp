@@ -4,14 +4,14 @@
 #include <xmldocumentcompare.h>
 #include <testloghelpers.h>
 #include <timemachineobject.h>
-#include <tcpnetworkfactory.h>
+#include <mocktcpnetworkfactory.h>
 #include <QTest>
 
 QTEST_MAIN(test_regression_scpi_sec1000);
 
 void test_regression_scpi_sec1000::init()
 {
-    VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory = VeinTcp::TcpNetworkFactory::create();
+    VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory = VeinTcp::MockTcpNetworkFactory::create();
     m_resman = std::make_unique<ResmanRunFacade>(tcpNetworkFactory);
     m_server = std::make_unique<MockSec1000d>(tcpNetworkFactory);
     TimeMachineObject::feedEventLoop();

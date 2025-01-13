@@ -7,7 +7,7 @@
 #include "testfactorydevicenodedsp.h"
 #include "testsingletondevicenodedsp.h"
 #include <timemachineobject.h>
-#include <tcpnetworkfactory.h>
+#include <mocktcpnetworkfactory.h>
 #include <QDataStream>
 #include <QSignalSpy>
 #include <QTest>
@@ -18,7 +18,7 @@ static constexpr quint16 dspServerPort = 6310;
 
 void test_regression_dsp_var::init()
 {
-    m_tcpNetworkFactory = VeinTcp::TcpNetworkFactory::create();
+    m_tcpNetworkFactory = VeinTcp::MockTcpNetworkFactory::create();
     m_resmanServer = std::make_unique<ResmanRunFacade>(m_tcpNetworkFactory);
     m_deviceNodeFactory = std::make_shared<TestFactoryDeviceNodeDsp>();
     m_dspService = std::make_unique<TestZdsp1dForVarAccess>(m_deviceNodeFactory, m_tcpNetworkFactory);

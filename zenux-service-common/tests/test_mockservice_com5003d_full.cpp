@@ -6,7 +6,7 @@
 #include "scpisingletransactionblocked.h"
 #include "zscpi_response_definitions.h"
 #include <mockeeprom24lc.h>
-#include <tcpnetworkfactory.h>
+#include <mocktcpnetworkfactory.h>
 #include <QSignalSpy>
 #include <QTest>
 
@@ -19,7 +19,7 @@ void test_mockservice_com5003d_full::initTestCase()
 
 void test_mockservice_com5003d_full::init()
 {
-    VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory = VeinTcp::TcpNetworkFactory::create();
+    VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory = VeinTcp::MockTcpNetworkFactory::create();
     m_resman = std::make_unique<ResmanRunFacade>(tcpNetworkFactory);
     m_server = std::make_unique<MockCom5003d>(std::make_shared<TestFactoryI2cCtrl>(true), tcpNetworkFactory);
     TimeMachineObject::feedEventLoop();
