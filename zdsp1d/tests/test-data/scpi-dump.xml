@@ -11,6 +11,7 @@
    </VERSION>
    <DSP Type="Node">
     <SAMPLING Type="Query,Command+Par" ScpiPath="SYSTEM:DSP:SAMPLING"/>
+    <TEST Type="Command+Par" ScpiPath="SYSTEM:DSP:TEST"/>
     <TRIGGER Type="Node">
      <INTLIST Type="Node">
       <ALL Type="Command" ScpiPath="SYSTEM:DSP:TRIGGER:INTLIST:ALL"/>

@@ -299,6 +299,7 @@ enum SCPICmdType  {
     scpiGetDeviceVersion,
     scpiGetServerVersion,
     scpiSamplingSystemGetSet,
+    scpiRunTest,
 
     // die routinen für das status modell
     scpiGetDeviceLoadAct,
@@ -331,6 +332,7 @@ void ZDspServer::initSCPIConnection(QString leadingNodes)
     addDelegate("SYSTEM:VERSION", "DEVICE", SCPI::isQuery, m_scpiInterface, scpiGetDeviceVersion);
     addDelegate("SYSTEM:VERSION", "SERVER", SCPI::isQuery, m_scpiInterface, scpiGetServerVersion);
     addDelegate("SYSTEM:DSP", "SAMPLING", SCPI::isQuery | SCPI::isCmdwP, m_scpiInterface, scpiSamplingSystemGetSet);
+    addDelegate("SYSTEM:DSP", "TEST", SCPI::isCmdwP, m_scpiInterface, scpiRunTest);
     addDelegate("SYSTEM:DSP:COMMAND", "STAT", SCPI::isQuery | SCPI::isCmdwP, m_scpiInterface, scpiDspCommandStatGetSet);
     addDelegate("SYSTEM:DSP:TRIGGER:INTLIST", "ALL", SCPI::isCmd, m_scpiInterface, scpiTriggerIntListALL);
     addDelegate("SYSTEM:DSP:TRIGGER:INTLIST", "HKSK", SCPI::isCmdwP, m_scpiInterface, scpiTriggerIntListHKSK);
@@ -375,6 +377,9 @@ void ZDspServer::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
             protoCmd->m_sOutput = getSamplingSystemSetup();
         else
             protoCmd->m_sOutput = sendCommand2Dsp(QString("DSPCMDPAR,2,%1;").arg(cmd.getParam()));
+        break;
+    case scpiRunTest:
+        protoCmd->m_sOutput = runDspTest(cmd.getParam());
         break;
     case scpiDspCommandStatGetSet:
         if(cmd.isQuery())
@@ -531,6 +536,108 @@ QString ZDspServer::setDspCommandStat(const QString &scpiParam)
         return ZSCPI::scpiAnswer[ZSCPI::errexec];
     else
         return ZSCPI::scpiAnswer[ZSCPI::ack];
+}
+
+QString ZDspServer::runDspTest(const QString &scpiParam)
+{
+    // Unexpected command (parameter) format: 'SYSTEM:DSP:TEST <test-type [0;1]> <count>;'
+    QString scpiParamNoSemicolon = scpiParam;
+    scpiParamNoSemicolon.remove(";");
+    const QStringList params = scpiParamNoSemicolon.split(" ", Qt::SkipEmptyParts);
+    if(params.count() != 2)
+        return ZSCPI::scpiAnswer[ZSCPI::errval];
+    bool ok;
+    int tmode = params[0].toInt(&ok);
+    int nr = 0;
+    bool tstart = false;
+    if ((ok) && ( (tmode>=0) && (tmode<2) )) {
+        nr = params[1].toInt(&ok);
+        if ((ok) && ( (nr>=0) && (nr<1000) ))
+            tstart = true;
+    }
+    QString ret;
+    if (tstart == true) {
+        int errcount = 0;
+        switch (tmode)
+        {
+        case 0:
+            for (int i=0; i<nr; i++) {
+                resetDsp();
+                int j;
+                for (j=0; j< 100; j++) {
+                    usleep(1000);
+                    if (Test4DspRunning() == false)
+                        break;
+                }
+                if (j==100)
+                    errcount++;
+                else {
+                    bootDsp();
+                    usleep(1000);
+                    if (Test4DspRunning() == false)
+                        errcount++;
+                }
+                ret = QString("Test booting dsp %1 times, errors %2").arg(nr).arg(errcount);
+            }
+            break;
+
+        case 1:
+            const int n = 10000;
+            int i,j;
+            ulong faultadr;
+            int bw, br, br2;
+            QByteArray ba; // wir werden 10000 floats in das array schreiben
+            QByteArray ba2; // zurückgelesene daten
+            ba.resize(n*4);
+            ba2.resize(n*4);
+            char byte = 0;
+            for (i=0; i<n*4;i++) {
+                ba[i] = byte;
+                byte = (byte +1) % 256;
+            }
+            DspVarResolver dspSystemVarResolver;
+            QString sadr  = "UWSPACE";
+            ulong adr = dspSystemVarResolver.getVarAddress(sadr) ;
+            AbstractDspDeviceNodePtr deviceNode = m_deviceNodeFactory->getDspDeviceNode();
+            for (i=0; i< nr; i++) {
+                if(!deviceNode->write(adr, ba.data(), n*4 )) {
+                    ret = QString("Test write/read dsp data, dev write fault");
+                    break; // fehler beim schreiben
+                }
+                if (deviceNode->lseek(adr) < 0) {
+                    ret = QString("Test write/read dsp data, dev seek fault");
+                    break; // file positionieren
+                }
+                if (deviceNode->read(ba2.data(), n*4) < 0) {
+                    ret = QString("Test write/read dsp data, dev read fault");
+                    break; // fehler beim schreiben
+                }
+                bool err = false;
+                for (j=0; j<n*4; j++) {
+                    if (ba[j] != ba2[j]) {
+                        bw = ba[j]; // das geschriebene byte
+                        br = ba2[j]; // das gelesene byte
+                        faultadr = adr + j;
+                        deviceNode->read(ba2.data(), n*4);
+                        br2 = ba2[j];
+                        err = true;
+                    }
+                    if (err)
+                        break;
+                }
+                if (err) {
+                    ret = QString("Test write/read dsp data, data fault adress %1, write %2, read1 %3, read2 %4").arg(faultadr,16).arg(bw,16).arg(br,16).arg(br2,16);
+                    break; // file positionieren
+                }
+            }
+            if (i==nr)
+                ret = QString("Test write/read dsp data, %1 times %2 bytes transferred, no errors").arg(nr).arg(n*4);
+            break;
+        }
+    }
+    else
+        ret = ZSCPI::scpiAnswer[ZSCPI::errval]; // fehler wert
+    return ret;
 }
 
 QString ZDspServer::startTriggerIntListHKSK(const QString &scpiParam, int socket)

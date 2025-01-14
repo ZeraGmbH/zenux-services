@@ -117,6 +117,7 @@ private:
     QString getSamplingSystemSetup();
     QString getDspCommandStat();
     QString setDspCommandStat(const QString &scpiParam);
+    QString runDspTest(const QString &scpiParam);
     QString startTriggerIntListHKSK(const QString &scpiParam, int socket);
 
     // die routinen für das status modell
