@@ -4782,27 +4782,11 @@
    </INTERFACE>
   </SYSTEM>
   <SAMPLE Type="Model,Node">
-   <VERSION Type="Query" ScpiPath="SAMPLE:VERSION"/>
    <SRATE Type="Query" ScpiPath="SAMPLE:SRATE"/>
-   <CHANNEL Type="Node">
-    <CATALOG Type="Query" ScpiPath="SAMPLE:CHANNEL:CATALOG"/>
-   </CHANNEL>
    <S0 Type="Node">
-    <ALIAS Type="Query" ScpiPath="SAMPLE:S0:ALIAS"/>
-    <TYPE Type="Query" ScpiPath="SAMPLE:S0:TYPE"/>
-    <STATUS Type="Query" ScpiPath="SAMPLE:S0:STATUS"/>
-    <RANGE Type="Query,Command+Par" ScpiPath="SAMPLE:S0:RANGE">
-     <CATALOG Type="Query" ScpiPath="SAMPLE:S0:RANGE:CATALOG"/>
-    </RANGE>
     <PLL Type="Query,Command+Par" ScpiPath="SAMPLE:S0:PLL">
      <CATALOG Type="Query" ScpiPath="SAMPLE:S0:PLL:CATALOG"/>
     </PLL>
-    <F50HZ Type="Node">
-     <SRATE Type="Query" ScpiPath="SAMPLE:S0:F50HZ:SRATE"/>
-    </F50HZ>
-    <F20HZ Type="Node">
-     <SRATE Type="Query" ScpiPath="SAMPLE:S0:F20HZ:SRATE"/>
-    </F20HZ>
    </S0>
   </SAMPLE>
   <SOURCE Type="Model,Node">

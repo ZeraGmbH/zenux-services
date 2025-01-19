@@ -160,7 +160,6 @@
 
 <xs:complexType name="samplechannelltype">
     <xs:sequence>
-        <xs:element name="alias" type="xs:string"/>
         <xs:element name="avail" type="xs:boolean"/>
         <xs:element name="pllchannels" type="xs:string"/>
     </xs:sequence>

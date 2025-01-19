@@ -8,7 +8,6 @@ class SamplingSettings : public XMLSettings
 public:
     struct ChannelSettings // what we want to get configured
     {
-        QString m_sAlias; // the channels alias
         bool m_bAvail; // is this channel available ?
         QStringList m_pllChannels;
     };

@@ -89,7 +89,6 @@
 
     <sample>
         <s0>
-            <alias>S1</alias>
             <avail>true</avail>
             <pllchannels>0,m0,m1,m2,m3,m4,m5</pllchannels>
         </s0>

@@ -5627,27 +5627,11 @@
    </ACCUMULATOR>
   </SYSTEM>
   <SAMPLE Type="Model,Node">
-   <VERSION ScpiPath="SAMPLE:VERSION" Type="Query"/>
    <SRATE ScpiPath="SAMPLE:SRATE" Type="Query"/>
-   <CHANNEL Type="Node">
-    <CATALOG ScpiPath="SAMPLE:CHANNEL:CATALOG" Type="Query"/>
-   </CHANNEL>
    <S0 Type="Node">
-    <ALIAS ScpiPath="SAMPLE:S0:ALIAS" Type="Query"/>
-    <TYPE ScpiPath="SAMPLE:S0:TYPE" Type="Query"/>
-    <STATUS ScpiPath="SAMPLE:S0:STATUS" Type="Query"/>
-    <RANGE ScpiPath="SAMPLE:S0:RANGE" Type="Query,Command+Par">
-     <CATALOG ScpiPath="SAMPLE:S0:RANGE:CATALOG" Type="Query"/>
-    </RANGE>
     <PLL ScpiPath="SAMPLE:S0:PLL" Type="Query,Command+Par">
      <CATALOG ScpiPath="SAMPLE:S0:PLL:CATALOG" Type="Query"/>
     </PLL>
-    <F50HZ Type="Node">
-     <SRATE ScpiPath="SAMPLE:S0:F50HZ:SRATE" Type="Query"/>
-    </F50HZ>
-    <F20HZ Type="Node">
-     <SRATE ScpiPath="SAMPLE:S0:F20HZ:SRATE" Type="Query"/>
-    </F20HZ>
    </S0>
   </SAMPLE>
   <SOURCE Type="Model,Node">
