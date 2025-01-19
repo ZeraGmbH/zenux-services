@@ -270,13 +270,6 @@ quint32 cPCBInterface::getSourceCat()
     return d->transparentCommand("SOURCE:CHANNEL:CATALOG?");
 }
 
-quint32 cPCBInterface::getAliasSample(QString chnName)
-{
-    Q_D(cPCBInterface);
-    return d->getAliasSample(chnName);
-}
-
-
 quint32 cPCBInterface::registerNotifier(QString query, int notifyId, bool notifyWithValue)
 {
     Q_D(cPCBInterface);
@@ -391,20 +384,6 @@ quint32 cPCBInterface::getSampleRate()
 {
     Q_D(cPCBInterface);
     return d->getSampleRate();
-}
-
-
-quint32 cPCBInterface::getRangeListSample(QString chnName)
-{
-    Q_D(cPCBInterface);
-    return d->getRangeListSample(chnName);
-}
-
-
-quint32 cPCBInterface::setRangeSample(QString chnName, QString rngName)
-{
-    Q_D(cPCBInterface);
-    return d->setRangeSample(chnName, rngName);
 }
 
 

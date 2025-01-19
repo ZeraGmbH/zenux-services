@@ -482,17 +482,6 @@ quint32 cPCBInterfacePrivate::setPowTypeSource(QString chnName, QString ptype)
 }
 
 
-quint32 cPCBInterfacePrivate::getAliasSample(QString chnName)
-{
-    QString cmd;
-    quint32 msgnr;
-
-    msgnr = sendCommand(cmd = QString("SAMP:%1:ALIAS?").arg(chnName));
-    m_MsgNrCmdList[msgnr] = PCB::getaliassample;
-    return msgnr;
-}
-
-
 quint32 cPCBInterfacePrivate::getSampleRate()
 {
     QString cmd;
@@ -500,28 +489,6 @@ quint32 cPCBInterfacePrivate::getSampleRate()
 
     msgnr = sendCommand(cmd = QString("SAMP:SRAT?"));
     m_MsgNrCmdList[msgnr] = PCB::getsamplerate;
-    return msgnr;
-}
-
-
-quint32 cPCBInterfacePrivate::getRangeListSample(QString chnName)
-{
-    QString cmd;
-    quint32 msgnr;
-
-    msgnr = sendCommand(cmd = QString("SAMP:%1:RANG:CAT?").arg(chnName));
-    m_MsgNrCmdList[msgnr] = PCB::getrangelistsample;
-    return msgnr;
-}
-
-
-quint32 cPCBInterfacePrivate::setRangeSample(QString chnName, QString rngName)
-{
-    QString cmd, par;
-    quint32 msgnr;
-
-    msgnr = sendCommand(cmd = QString("SAMP:%1:RANG").arg(chnName), par = QString("%1;").arg(rngName));
-    m_MsgNrCmdList[msgnr] = PCB::setrangesample;
     return msgnr;
 }
 
@@ -795,7 +762,6 @@ void cPCBInterfacePrivate::receiveAnswer(std::shared_ptr<ProtobufMessage::NetMes
         case PCB::getrange:
         case PCB::getalias2:
         case PCB::getaliassource:
-        case PCB::getaliassample:
         case PCB::getaliassschead:
         case PCB::getaliasfrqinput:
         case PCB::resourcealiasquery:
@@ -815,7 +781,6 @@ void cPCBInterfacePrivate::receiveAnswer(std::shared_ptr<ProtobufMessage::NetMes
 
         case PCB::getchannellist:
         case PCB::getrangelist:
-        case PCB::getrangelistsample:
             emit q->serverAnswer(decodedAnswer.msgNr, decodedAnswer.reply, VariantConverter::returnStringList(decodedAnswer.msgBody));
             break;
 
@@ -852,7 +817,6 @@ void cPCBInterfacePrivate::receiveAnswer(std::shared_ptr<ProtobufMessage::NetMes
         case PCB::regnotifier:
         case PCB::unregnotifier:
         case PCB::pcbinterrupt:
-        case PCB::setrangesample:
         case PCB::setpllchannel:
         case PCB::setconstantsource:
         case PCB::setpowtypesource:

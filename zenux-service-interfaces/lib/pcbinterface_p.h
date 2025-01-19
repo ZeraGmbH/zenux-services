@@ -45,9 +45,6 @@ enum pcbcommands
     unregnotifier,
     pcbinterrupt,
     getsamplerate,
-    getaliassample,
-    getrangelistsample,
-    setrangesample,
     setpllchannel,
 
     getaliassource,
@@ -139,10 +136,7 @@ public:
     quint32 setPowTypeSource(QString chnName, QString ptype);
 
     // all commands to sample interface
-    quint32 getAliasSample(QString chnName); // qstring
     quint32 getSampleRate(); // int the actual set sampling rate
-    quint32 getRangeListSample(QString chnName); // qstringlist
-    quint32 setRangeSample(QString chnName, QString rngName);
     quint32 setPLLChannel(QString samplechnName, QString pllchnName);
 
     // all commands to schead interface
