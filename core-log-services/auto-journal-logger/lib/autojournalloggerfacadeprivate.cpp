@@ -1,8 +1,9 @@
 #include "autojournalloggerfacadeprivate.h"
-#include "logcreatorjournalsimple.h"
 
-AutoJournalLoggerFacadePrivate::AutoJournalLoggerFacadePrivate(QByteArray codedumpDir, int portNo) :
-    m_cmdHandler(std::make_unique<LogCreatorJournalSimple>(), codedumpDir)
+AutoJournalLoggerFacadePrivate::AutoJournalLoggerFacadePrivate(QByteArray codedumpDir,
+                                                               int portNo,
+                                                               AbstractLogCreatorPtr logGenerator) :
+    m_cmdHandler(std::move(logGenerator), codedumpDir)
 {
     QSimpleCmdParserSocketBase::SetCmdLogGlobal(true);
     m_cmdParser.SetCmdHandler(&m_cmdHandler);

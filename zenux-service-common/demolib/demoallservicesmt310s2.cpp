@@ -2,6 +2,7 @@
 #include "demofactoryi2cctrl.h"
 #include "demoeventloopfeeder.h"
 #include "demofactorydevicenodedsp.h"
+#include "logcreatorjournalsimple.h"
 #include "mockserverparamgenerator.h"
 #include "autojournalloggerfacade.h"
 #include <tcpnetworkfactory.h>
@@ -19,7 +20,7 @@ DemoAllServicesMt310s2::DemoAllServicesMt310s2(VeinTcp::AbstractTcpNetworkFactor
 
 void DemoAllServicesMt310s2::init(VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory)
 {
-    m_autoLogger = new AutoJournalLoggerFacade;
+    m_autoLogger = new AutoJournalLoggerFacade(std::make_unique<LogCreatorJournalSimple>());
     m_resman = new ResmanRunFacade(tcpNetworkFactory);
     ServerParams params = MockServerParamGenerator::createParams("mt310s2d");
     m_mt310s2d = new MockMt310s2d(std::make_shared<DemoFactoryI2cCtrl>(std::make_unique<SettingsContainer>(params)), tcpNetworkFactory);
