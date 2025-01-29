@@ -3,6 +3,7 @@
 
 #include <QByteArray>
 
+// PIMPL: Avoid linking simple-parser public
 class AutoJournalLoggerFacadePrivate;
 
 class AutoJournalLoggerFacade

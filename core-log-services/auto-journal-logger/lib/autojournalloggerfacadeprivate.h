@@ -5,6 +5,7 @@
 #include "cmdhandler.h"
 #include <cmdserver.h>
 
+// PIMPL: Avoid linking simple-parser public
 class AutoJournalLoggerFacadePrivate
 {
 public:
