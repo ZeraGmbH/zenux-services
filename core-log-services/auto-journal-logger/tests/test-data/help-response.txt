@@ -1,0 +1,18 @@
+--------------------------------------------------------------------------------
+Name: PeriodicLogControl
+
+--------------------------------------------------------------------------------
+Parameter macros:
+
+@date_time(QDateTime-format-string): expands to formatted system date/time
+@ascii_to_hex(string): expands to hexadecimal representation of `string`
+@hex_to_ascii(hex_string): expands to`hex_string` to ASCII
+@num_to_hex(integer;min_num_hex_digits): expands `integer` to hexadecimal
+
+--------------------------------------------------------------------------------
+Commands:
+--------------------------------------------------------------------------------
+Cmd: SaveLogAndDumps,string,string,string
+  Parameter: DestDir,VersionInfoFilePath(empty allowed),UpdateLogsSourceDir(empty allowed)
+  Return: Log status info
+--------------------------------------------------------------------------------
