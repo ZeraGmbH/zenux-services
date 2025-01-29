@@ -9,7 +9,7 @@ class TestLogCreator : public AbstractLogCreator
 public:
     TestLogCreator(QString testFileName);
     virtual ~TestLogCreator() = default;
-    bool storeLogs(QString dir) override;
+    bool storeLogs(QString destinationDir) override;
 private:
     QString m_testFileName;
 };

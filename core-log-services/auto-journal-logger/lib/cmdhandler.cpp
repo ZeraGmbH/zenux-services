@@ -21,16 +21,16 @@ void CmdHandler::StartCmd(SimpleCmdData *pCmd, QVariantList params)
             hostName = "unknown-host";
         QDateTime now = QDateTime::currentDateTime();
         QString dateTime = now.toString("yyyy_MM_dd-HH_mm_ss");
-        QString path = params[0].toString() + "/" + hostName + "/logs-and-dumps/" + dateTime;
+        QString destinationDir = params[0].toString() + "/" + hostName + "/logs-and-dumps/" + dateTime;
 
-        if(!makeDirWithParents(path))
+        if(!makeDirWithParents(destinationDir))
             return;
-        if(!storeLogs(path))
+        if(!storeLogs(destinationDir))
             return;
-        if(!storeCoreDumps(path))
+        if(!storeCoreDumps(destinationDir))
             return;
         QString versionFilePath = params[1].toString();
-        if(!storeVersionFile(path, versionFilePath))
+        if(!storeVersionFile(destinationDir, versionFilePath))
             return;
 
         emit OperationFinish(false, "");
@@ -48,21 +48,21 @@ bool CmdHandler::makeDirWithParents(QString path)
     return true;
 }
 
-bool CmdHandler::storeLogs(QString path)
+bool CmdHandler::storeLogs(QString destinationDir)
 {
-    if(!m_logGenerator->storeLogs(path)) {
-        emit OperationFinish(true, QStringLiteral("Could not write journal to dir %1").arg(path));
+    if(!m_logGenerator->storeLogs(destinationDir)) {
+        emit OperationFinish(true, QStringLiteral("Could not write journal to dir %1").arg(destinationDir));
         return false;
     }
     return true;
 }
 
-bool CmdHandler::storeCoreDumps(QString path)
+bool CmdHandler::storeCoreDumps(QString destinationDir)
 {
     QDir coreDir(m_coreFilePath);
     QFileInfoList fileList = coreDir.entryInfoList(QDir::NoDotAndDotDot | QDir::Files);
     for(auto &entry : fileList) {
-        QString outputPath = path + "/" + entry.fileName();
+        QString outputPath = destinationDir + "/" + entry.fileName();
         QString sourcePath = entry.absoluteFilePath();
         QString cmd = QString("mv %1 %2").arg(sourcePath, outputPath);
         if(system(qPrintable(cmd)) != 0) {
@@ -73,10 +73,10 @@ bool CmdHandler::storeCoreDumps(QString path)
     return true;
 }
 
-bool CmdHandler::storeVersionFile(QString path, QString versionFilePath)
+bool CmdHandler::storeVersionFile(QString destinationDir, QString versionFilePath)
 {
     if(!versionFilePath.isEmpty()) {
-        QString fileName = path + "/zenux-version.json";
+        QString fileName = destinationDir + "/zenux-version.json";
         QString cmd = QString("mv %1 %2").arg(versionFilePath, fileName);
         if(system(qPrintable(cmd)) != 0) {
             emit OperationFinish(true, QStringLiteral("Could not move version file from %1 to %2").arg(versionFilePath, fileName));

@@ -8,7 +8,7 @@ class AbstractLogCreator
 {
 public:
     virtual ~AbstractLogCreator() = default;
-    virtual bool storeLogs(QString dir) = 0;
+    virtual bool storeLogs(QString destinationDir) = 0;
 };
 
 typedef std::unique_ptr<AbstractLogCreator> AbstractLogCreatorPtr;

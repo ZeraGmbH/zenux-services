@@ -8,7 +8,7 @@ class LogCreatorJournalSimple : public AbstractLogCreator
 {
 public:
     virtual ~LogCreatorJournalSimple() = default;
-    bool storeLogs(QString dir) override;
+    bool storeLogs(QString destinationDir) override;
 };
 
 #endif // LOGCREATORJOURNALSIMPLE_H
