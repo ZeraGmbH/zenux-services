@@ -12,9 +12,10 @@ public:
     void StartCmd(SimpleCmdData *pCmd, QVariantList params) override;
 private:
     bool makeDirWithParents(QString path);
-    bool storeLogs(QString path);
-    bool storeCoreDumps(QString path);
-    bool storeVersionFile(QString path, QString versionFilePath);
+    bool storeLogs(QString destinationDir);
+    bool storeCoreDumps(QString destinationDir);
+    bool storeVersionFile(QString destinationDir, QString versionFilePath);
+    bool storeUpdateLogs(QString destinationDir, QString updateLogsSourceDir);
     AbstractLogCreatorPtr m_logGenerator;
     QString m_coreFilePath;
 };

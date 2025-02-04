@@ -6,9 +6,9 @@ TestLogCreator::TestLogCreator(QString testFileName) :
 {
 }
 
-bool TestLogCreator::storeLogs(QString dir)
+bool TestLogCreator::storeLogs(QString destinationDir)
 {
-    QFile file(dir + "/" + m_testFileName);
+    QFile file(destinationDir + "/" + m_testFileName);
     if(file.open(QFile::WriteOnly)) {
         file.write("Testlog content");
         return true;
