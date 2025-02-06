@@ -694,6 +694,26 @@ void cClamp::initClamp(quint8 type)
         createVDE1400VRanges();
         break;
 
+    case CL1200ADC1400VDC: // LEM-3 1200A/1400V
+        // I
+        clampJustData = new AdjRangeScpiClamp(m_scpiInterface, m_pSenseInterface->getRange(m_sChannelName, QString("5V")), 1500.0);
+        m_RangeList.append(new ClampSenseRange(m_scpiInterface, "C1200A", true, 1200.0, 2684355.0, 2684355.0 * 1.25, 0x0A, dcClampMask, clampJustData));
+        clampJustData = new AdjRangeScpiClamp(m_scpiInterface, m_pSenseInterface->getRange(m_sChannelName, QString("2V")), 1500.0);
+        m_RangeList.append(new ClampSenseRange(m_scpiInterface, "C800A", true, 800.0, 3024625.0, 3024625.0 * 1.30, 0x0B, dcClampMask, clampJustData));
+        clampJustData = new AdjRangeScpiClamp(m_scpiInterface, m_pSenseInterface->getRange(m_sChannelName, QString("1V")), 1500.0);
+        m_RangeList.append(new ClampSenseRange(m_scpiInterface, "C400A", true, 400.0, 3024625.0, 3024625.0 * 1.25, 0x0C, dcClampMask, clampJustData));
+        clampJustData = new AdjRangeScpiClamp(m_scpiInterface, m_pSenseInterface->getRange(m_sChannelName, QString("500mV")), 1500.0);
+        m_RangeList.append(new ClampSenseRange(m_scpiInterface, "C200A", true, 200.0, 3780781.0, 3780781.0 * 1.25, 0x0D, dcClampMask, clampJustData));
+        clampJustData = new AdjRangeScpiClamp(m_scpiInterface, m_pSenseInterface->getRange(m_sChannelName, QString("200mV")), 1500.0);
+        m_RangeList.append(new ClampSenseRange(m_scpiInterface,  "C80A", true,  80.0, 2863312.0, 2863312.0 * 1.25, 0x0E, dcClampMask, clampJustData));
+        clampJustData = new AdjRangeScpiClamp(m_scpiInterface, m_pSenseInterface->getRange(m_sChannelName, QString("100mV")), 1500.0);
+        m_RangeList.append(new ClampSenseRange(m_scpiInterface,  "C40A", true,  40.0, 3579139.0, 3579139.0 * 1.25, 0x0F, dcClampMask, clampJustData));
+        clampJustData = new AdjRangeScpiClamp(m_scpiInterface, m_pSenseInterface->getRange(m_sChannelName, QString("50mV")), 1500.0);
+        m_RangeList.append(new ClampSenseRange(m_scpiInterface,  "C20A", true,  20.0, 3579139.0, 3579139.0 * 1.25, 0x10, dcClampMask, clampJustData));
+        // U
+        createVDE1400VRanges();
+        break;
+
     case CL1400VDC:
         createVDE1400VRanges();
         break;
@@ -751,6 +771,9 @@ QString cClamp::getClampTypeName(quint8 type)
         break;
     case CL800ADC1400VDC:
         CLName = QString("CL800ADC1400VDC");
+        break;
+    case CL1200ADC1400VDC:
+        CLName = QString("CL1200ADC1400VDC");
         break;
     case CL1400VDC:
         CLName = QString("CL1400VDC");
