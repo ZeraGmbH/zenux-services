@@ -34,6 +34,8 @@ public:
         CL800ADC1400VDC,
         CL1400VDC,
 
+        CL1200ADC1400VDC, // LEM-3
+
         anzCL
     };
     cClamp();
