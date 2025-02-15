@@ -20,11 +20,9 @@ public:
         m_sName(name),
         m_nsize(size),
         m_nType(type),
-        m_nDataType(datatype)
+        m_nDataType(datatype),
+        m_dspVarData(size)
     {
-        // we only reserve memory for data of interrest
-        if ( (type & (DSPDATA::vDspResult | DSPDATA::vDspIntVar | DSPDATA::vDspParam)) > 0)
-            m_dspVarData.resize(size);
     }
     QString& Name() { return m_sName;}
     int size() { return m_nsize; }
