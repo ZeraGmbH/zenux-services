@@ -11,12 +11,6 @@ namespace DSPDATA
     enum segmentType { localSegment, globalSegment};
 
     enum DspValueType {vDspResult = 1, vDspTemp = 2, vDspIntVar = 4, vDspParam = 8, vDspALL = 15, vDspTempGlobal = 16};
-    // vDspResult , we need to allocate data
-    // vDspTemp , we need to allocate data
-    // vDspIntVar, internal variables so we don't need to allocate data
-    // vDspParam, we need to allocate data
-    // vDspTempGlobal , we need to allocate data
-
 }
 
 class cDspVar // dsp variable
