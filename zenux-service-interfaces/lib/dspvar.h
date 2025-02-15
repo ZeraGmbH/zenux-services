@@ -27,6 +27,8 @@ public:
     int size() { return m_dspVarData.size(); }
     int type() { return m_nType; }
     int datatype() { return m_nDataType; }
+    void setValue(int idx, float value) { m_dspVarData.replace(idx, value); }
+    // Nightmare: This must go!!!
     float* data() { return m_dspVarData.data();}
 
 private:
