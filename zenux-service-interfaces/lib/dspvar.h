@@ -22,8 +22,11 @@ namespace DSPDATA
 class cDspVar // dsp variable
 {
 public:
-    cDspVar(QString name, int size, int type, int datatype = DSPDATA::dFloat )
-        : m_sName(name), m_nsize(size), m_nType(type), m_nDataType(datatype)
+    cDspVar(QString name, int size, int type, int datatype = DSPDATA::dFloat ) :
+        m_sName(name),
+        m_nsize(size),
+        m_nType(type),
+        m_nDataType(datatype)
     {
         // we only reserve memory for data of interrest
         if ( (type & (DSPDATA::vDspResult | DSPDATA::vDspIntVar | DSPDATA::vDspParam)) > 0)
