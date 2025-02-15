@@ -27,25 +27,25 @@ public:
     {
         // we only reserve memory for data of interrest
         if ( (type & (DSPDATA::vDspResult | DSPDATA::vDspIntVar | DSPDATA::vDspParam)) > 0)
-            DspVarData.resize(size);
+            m_dspVarData.resize(size);
     }
     QString& Name() { return m_sName;}
     int size() { return m_nsize; }
     int type() { return m_nType; }
-    int datatype() {return m_nDataType; }
-    float* data() {return DspVarData.data();}
+    int datatype() { return m_nDataType; }
+    float* data() { return m_dspVarData.data();}
 
 private:
     friend class cDspMeasData;
     void setData(QVector<float> data) {
-        Q_ASSERT(DspVarData.size() == data.size());
-        DspVarData = data;
+        Q_ASSERT(m_dspVarData.size() == data.size());
+        m_dspVarData = data;
     }
 
     QString m_sName; // a var. has its name
     int m_nsize; // it has a number of elements
     int m_nType; // an it can be of different type : vDspResult, vDspTemp , vDspIntVar , vDspParam
     int m_nDataType; // it can be float or int
-    QVector<float> DspVarData; // we hold an array for data storage
+    QVector<float> m_dspVarData; // we hold an array for data storage
 };
 #endif // DSPVAR_H
