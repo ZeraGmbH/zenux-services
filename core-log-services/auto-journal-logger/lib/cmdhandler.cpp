@@ -32,6 +32,9 @@ void CmdHandler::StartCmd(SimpleCmdData *pCmd, QVariantList params)
         QString versionFilePath = params[1].toString();
         if(!storeVersionFile(destinationDir, versionFilePath))
             return;
+        QString updateLogsSourceDir = params[2].toString();
+        if(!storeUpdateLogs(destinationDir, updateLogsSourceDir))
+            return;
 
         emit OperationFinish(false, "");
         break;
@@ -84,4 +87,11 @@ bool CmdHandler::storeVersionFile(QString destinationDir, QString versionFilePat
         }
     }
     return true;
+}
+
+bool CmdHandler::storeUpdateLogs(QString destinationDir, QString updateLogsSourceDir)
+{
+    if(!updateLogsSourceDir.isEmpty()) {
+
+    }
 }
