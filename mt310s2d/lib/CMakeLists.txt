@@ -2,14 +2,12 @@ file(GLOB SOURCES
     *.cpp
     micro-controller-io/*.cpp
     scpi-interfaces/*.cpp
-    settings/*.cpp
     )
 
 file(GLOB HEADER
     *.h
     micro-controller-io/*.h
     scpi-interfaces/*.h
-    settings/*.h
     )
 
 add_library(mt310s2d-lib STATIC
@@ -23,7 +21,6 @@ target_include_directories(mt310s2d-lib
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/micro-controller-io>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/scpi-interfaces>
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/settings>
     )
 
 if(${Systemd_FOUND})
