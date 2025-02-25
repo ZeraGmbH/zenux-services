@@ -88,11 +88,6 @@ void SenseInterfaceCommon::registerResource(RMConnection *rmConnection, quint16 
                                                                        .arg(channel->getName(), channel->getDescription())
                                                                        .arg(port));
     }
-    // additional we register measuring mode switch as resource
-    QString measModeDescription = QString("Measuring mode switch %1").arg(getSenseModesSortedById().join(","));
-    register1Resource(rmConnection, NotZeroNumGen::getMsgNr(), QString("SENSE;MMODE;1;%1;%2;")
-                                                                   .arg(measModeDescription)
-                                                                   .arg(port));
 }
 
 void SenseInterfaceCommon::initSCPIConnection(QString leadingNodes)
