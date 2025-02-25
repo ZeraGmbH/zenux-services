@@ -10,7 +10,6 @@ function(SETUP_MT310S2_TESTS)
 endfunction()
 
 SETUP_MT310S2_TESTS(
-    test_accumulatorinterface
     test_config_load_mt310s2
     test_regression_sense_range_mt310s2
     test_regression_sense_interface_mt310s2
@@ -20,7 +19,6 @@ SETUP_MT310S2_TESTS(
     test_regression_adj_scpi_query_format_mt310s2
     test_regression_adj_calc_mt310s2
     test_adj_deny_import_mt310s2
-    test_accumulatorinterface_mock
     test_regression_critical_status_mt310s2
     test_regression_adj_status_mt310s2
     test_regression_scpi_mt310s2
@@ -59,11 +57,6 @@ target_sources(test_regression_adj_calc_mt310s2
 target_sources(test_adj_deny_import_mt310s2
   PRIVATE
     regression_data_adj_import_export/regression_data.qrc
-)
-
-target_sources(test_accumulatorinterface_mock
-  PRIVATE
-    regression_data_accumulator/regression_data.qrc
 )
 
 target_sources(test_regression_scpi_mt310s2

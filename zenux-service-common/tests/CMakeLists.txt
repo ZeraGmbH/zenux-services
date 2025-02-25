@@ -11,6 +11,8 @@ function(SETUP_SERVICE_COMMON_TESTS)
 endfunction()
 
 SETUP_SERVICE_COMMON_TESTS(
+    test_accumulatorinterface
+    test_accumulatorinterface_mock
     test_adj_data_cache
     test_adj_data_decoder
     test_justdata
@@ -33,6 +35,11 @@ target_sources(test_hotpluggablecontrollercontainer
   PRIVATE
   testhotplugi2cctrlcommoninfo.cpp testhotplugi2cctrlcommoninfo.h
     testhotplugctrlfactoryi2cctrl.cpp testhotplugctrlfactoryi2cctrl.h
+)
+
+target_sources(test_accumulatorinterface_mock
+  PRIVATE
+    regression_data_accumulator/regression_data.qrc
 )
 
 target_sources(test_adj_data_cache
