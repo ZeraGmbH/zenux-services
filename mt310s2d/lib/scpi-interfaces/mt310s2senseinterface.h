@@ -13,18 +13,21 @@ public:
                           SystemInfo *systemInfo,
                           AbstractFactoryI2cCtrlPtr ctrlFactory);
 // MT specifics only
-    void setChannelAndRanges(cSenseSettings* senseSettings);
+    static QList<SenseChannelCommon*> setChannelAndRanges(cSenseSettings* senseSettings,
+                                                           AdjDataPtr adjData,
+                                                           std::shared_ptr<cSCPI> scpi,
+                                                           AbstractFactoryI2cCtrlPtr ctrlFactory);
     int rangeFlagsExtern() override;
     int rangeFlagsExternDc() override;
 
 private:
-    int rangeFlagsDevice();
-    int rangeFlagsIntern();
+    static int rangeFlagsDevice();
+    static int rangeFlagsIntern();
     const char* getAdjExportedVersion() override;
     QString getPcbName() override;
     QString getXmlType() override;
     bool isRangePartOfAdjXmlExport(SenseRangeCommon* range) override;
-    AdjRangeScpi* createJustScpiInterfaceWithAtmelPermission();
+    static AdjRangeScpi* createJustScpiInterfaceWithAtmelPermission(std::shared_ptr<cSCPI> scpi);
     QString scpiReadSenseGroupCatalog(QString& scpi) override;
     void handleScpiReadWriteMMode(cProtonetCommand* protoCmd) override;
     bool setSenseMode(QString mode);

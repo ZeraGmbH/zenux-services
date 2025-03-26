@@ -20,7 +20,10 @@ public:
                           SystemInfo *systemInfo,
                           AbstractFactoryI2cCtrlPtr ctrlFactory);
 // COM specifics only
-    void setChannelAndRanges(cSenseSettings *senseSettings);
+    static QList<SenseChannelCommon*> setChannelAndRanges(cSenseSettings *senseSettings,
+                                                           AdjDataPtr adjData,
+                                                           std::shared_ptr<cSCPI> scpi,
+                                                           AbstractFactoryI2cCtrlPtr ctrlFactory);
     int rangeFlagsExtern() override;
     int rangeFlagsExternDc() override;
 
