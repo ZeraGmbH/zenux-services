@@ -112,7 +112,7 @@ void Com5003SenseInterface::setChannelAndRanges(cSenseSettings *senseSettings)
     for (i = 3; i < 6; i++)
     {
         rngList.clear();
-        rngList.append(new Com5003SenseRange(m_scpiInterface,  "200A", true, 200.0, 6257236.0, 5256077.0, 0 ));
+        rngList.append(new Com5003SenseRange(m_scpiInterface,  "200A", true, 200.0, 6257236.0, 5256077.0, 0 )); // ???
         rngList.append(new Com5003SenseRange(m_scpiInterface,  "100A", true, 100.0, 4692928.0, 5866160.0, 1 ));
         rngList.append(new Com5003SenseRange(m_scpiInterface,   "50A", true,  50.0, 4692928.0, 5866160.0, 2 ));
         rngList.append(new Com5003SenseRange(m_scpiInterface,   "25A", true, 25.0 , 4692928.0, 5866160.0, 3 ));
