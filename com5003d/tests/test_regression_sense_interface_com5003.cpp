@@ -88,19 +88,25 @@ void test_regression_sense_interface_com5003::checkRangesIL1()
     QCOMPARE(responseSpy[0][2].toStringList(), m_rangesExpectedI);
 }
 
-void test_regression_sense_interface_com5003::constantRangeValuesIL3()
+void test_regression_sense_interface_com5003::constantRangeValuesI()
 {
-    SenseSystem::cChannelSettings *channelSetting = m_testServer->getSenseSettings()->findChannelSettingByAlias1("IL3");
-    QByteArray jsonDumped = SenseRegressionHelper::genJsonConstantValuesAllRanges(channelSetting, m_pcbIFace.get());
-    QByteArray jsonExpected = TestLogHelpers::loadFile(":/all-ranges-il3.json");
+    QList<SenseSystem::cChannelSettings*> channelSettings;
+    channelSettings.append(m_testServer->getSenseSettings()->findChannelSettingByAlias1("IL1"));
+    channelSettings.append(m_testServer->getSenseSettings()->findChannelSettingByAlias1("IL2"));
+    channelSettings.append(m_testServer->getSenseSettings()->findChannelSettingByAlias1("IL3"));
+    QByteArray jsonDumped = SenseRegressionHelper::genJsonConstantValuesAllRanges(channelSettings, m_pcbIFace.get());
+    QByteArray jsonExpected = TestLogHelpers::loadFile(":/all-ranges-i.json");
     QVERIFY(TestLogHelpers::compareAndLogOnDiff(jsonExpected, jsonDumped));
 }
 
-void test_regression_sense_interface_com5003::constantRangeValuesUL3()
+void test_regression_sense_interface_com5003::constantRangeValuesU()
 {
-    SenseSystem::cChannelSettings *channelSetting = m_testServer->getSenseSettings()->findChannelSettingByAlias1("UL3");
-    QByteArray jsonDumped = SenseRegressionHelper::genJsonConstantValuesAllRanges(channelSetting, m_pcbIFace.get());
-    QByteArray jsonExpected = TestLogHelpers::loadFile(":/all-ranges-ul3.json");
+    QList<SenseSystem::cChannelSettings*> channelSettings;
+    channelSettings.append(m_testServer->getSenseSettings()->findChannelSettingByAlias1("UL1"));
+    channelSettings.append(m_testServer->getSenseSettings()->findChannelSettingByAlias1("UL2"));
+    channelSettings.append(m_testServer->getSenseSettings()->findChannelSettingByAlias1("UL3"));
+    QByteArray jsonDumped = SenseRegressionHelper::genJsonConstantValuesAllRanges(channelSettings, m_pcbIFace.get());
+    QByteArray jsonExpected = TestLogHelpers::loadFile(":/all-ranges-u.json");
     QVERIFY(TestLogHelpers::compareAndLogOnDiff(jsonExpected, jsonDumped));
 }
 

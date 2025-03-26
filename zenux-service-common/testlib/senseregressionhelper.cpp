@@ -3,7 +3,6 @@
 #include <timemachineobject.h>
 #include <QSignalSpy>
 #include <QJsonDocument>
-#include <QJsonObject>
 #include <QJsonArray>
 
 static const QString JsonNameStr = QStringLiteral("name");
@@ -112,24 +111,29 @@ bool SenseRegressionHelper::compareRangeConstantDataWithJson(QJsonObject &rangeR
 
 static QString noClampJsonId = QStringLiteral("no-clamps");
 
-QByteArray SenseRegressionHelper::genJsonConstantValuesAllRanges(SenseSystem::cChannelSettings *channelSetting, Zera::cPCBInterface* pcbIFace)
+QByteArray SenseRegressionHelper::genJsonConstantValuesAllRanges(QList<SenseSystem::cChannelSettings*> channelSettings, Zera::cPCBInterface* pcbIFace)
 {
     QJsonObject jsonAll;
+    for(const auto &channelSetting : channelSettings) {
+        QSignalSpy responseSpy(pcbIFace, &Zera::cPCBInterface::serverAnswer);
+        pcbIFace->getRangeList(channelSetting->m_nameMx);
+        TimeMachineObject::feedEventLoop();
 
-    QSignalSpy responseSpy(pcbIFace, &Zera::cPCBInterface::serverAnswer);
-    pcbIFace->getRangeList(channelSetting->m_nameMx);
-    TimeMachineObject::feedEventLoop();
+        QJsonArray jsonRanges;
+        const QStringList ranges = responseSpy[0][2].toStringList();
+        for(const QString &range : ranges) {
+            QJsonObject jsonRange;
+            SenseRegressionHelper::addRangeConstantDataToJson(range, channelSetting, jsonRange);
+            jsonRanges.append(jsonRange);
+        }
 
-    QJsonArray jsonRanges;
-    const QStringList ranges = responseSpy[0][2].toStringList();
-    for(const QString &range : ranges) {
-        QJsonObject jsonRange;
-        SenseRegressionHelper::addRangeConstantDataToJson(range, channelSetting, jsonRange);
-        jsonRanges.append(jsonRange);
+        QString channelName = channelSetting->m_nameMx;
+        if(!channelSetting->m_sAlias1.isEmpty())
+            channelName += "/" + channelSetting->m_sAlias1;
+        if(!channelSetting->m_sAlias2.isEmpty())
+            channelName += "/" + channelSetting->m_sAlias2;
+        jsonAll.insert(channelName, jsonRanges);
     }
-
-    jsonAll.insert(noClampJsonId, jsonRanges);
-
     QJsonDocument doc(jsonAll);
     return doc.toJson(QJsonDocument::Indented);
 }

@@ -195,79 +195,93 @@ void test_regression_sense_interface_mt310s2::clampIdsNamesCheck()
     }
 }
 
-void test_regression_sense_interface_mt310s2::constantRangeValuesIL3()
+void test_regression_sense_interface_mt310s2::constantRangeValuesI()
 {
-    SenseSystem::cChannelSettings *channelSetting = m_testServer->getSenseSettings()->findChannelSettingByAlias1("IL3");
-    QByteArray jsonDumped = SenseRegressionHelper::genJsonConstantValuesAllRanges(channelSetting, m_pcbIFace.get());
-    QByteArray jsonExpected = TestLogHelpers::loadFile(":/all-ranges-il3.json");
+    QList<SenseSystem::cChannelSettings*> channelSettings;
+    channelSettings.append(m_testServer->getSenseSettings()->findChannelSettingByAlias1("IL1"));
+    channelSettings.append(m_testServer->getSenseSettings()->findChannelSettingByAlias1("IL2"));
+    channelSettings.append(m_testServer->getSenseSettings()->findChannelSettingByAlias1("IL3"));
+    channelSettings.append(m_testServer->getSenseSettings()->findChannelSettingByAlias1("IAUX"));
+
+    QByteArray jsonDumped = SenseRegressionHelper::genJsonConstantValuesAllRanges(channelSettings, m_pcbIFace.get());
+    QByteArray jsonExpected = TestLogHelpers::loadFile(":/all-ranges-i.json");
     QVERIFY(TestLogHelpers::compareAndLogOnDiff(jsonExpected, jsonDumped));
 }
 
-void test_regression_sense_interface_mt310s2::constantRangeValuesUL3()
+void test_regression_sense_interface_mt310s2::constantRangeValuesU()
 {
-    SenseSystem::cChannelSettings *channelSetting = m_testServer->getSenseSettings()->findChannelSettingByAlias1("UL3");
-    QByteArray jsonDumped = SenseRegressionHelper::genJsonConstantValuesAllRanges(channelSetting, m_pcbIFace.get());
-    QByteArray jsonExpected = TestLogHelpers::loadFile(":/all-ranges-ul3.json");
+    QList<SenseSystem::cChannelSettings*> channelSettings;
+    channelSettings.append(m_testServer->getSenseSettings()->findChannelSettingByAlias1("UL1"));
+    channelSettings.append(m_testServer->getSenseSettings()->findChannelSettingByAlias1("UL2"));
+    channelSettings.append(m_testServer->getSenseSettings()->findChannelSettingByAlias1("UL3"));
+    channelSettings.append(m_testServer->getSenseSettings()->findChannelSettingByAlias1("UAUX"));
+
+    QByteArray jsonDumped = SenseRegressionHelper::genJsonConstantValuesAllRanges(channelSettings, m_pcbIFace.get());
+    QByteArray jsonExpected = TestLogHelpers::loadFile(":/all-ranges-u.json");
     QVERIFY(TestLogHelpers::compareAndLogOnDiff(jsonExpected, jsonDumped));
 }
 
-void test_regression_sense_interface_mt310s2::constantRangeValuesIAUX()
-{
-    SenseSystem::cChannelSettings *channelSetting = m_testServer->getSenseSettings()->findChannelSettingByAlias1("IAUX");
-    QByteArray jsonDumped = SenseRegressionHelper::genJsonConstantValuesAllRanges(channelSetting, m_pcbIFace.get());
-    QByteArray jsonExpected = TestLogHelpers::loadFile(":/all-ranges-iaux.json");
-    QVERIFY(TestLogHelpers::compareAndLogOnDiff(jsonExpected, jsonDumped));
-}
-
-void test_regression_sense_interface_mt310s2::constantRangeValuesUAUX()
-{
-    SenseSystem::cChannelSettings *channelSetting = m_testServer->getSenseSettings()->findChannelSettingByAlias1("UAUX");
-    QByteArray jsonDumped = SenseRegressionHelper::genJsonConstantValuesAllRanges(channelSetting, m_pcbIFace.get());
-    QByteArray jsonExpected = TestLogHelpers::loadFile(":/all-ranges-uaux.json");
-    QVERIFY(TestLogHelpers::compareAndLogOnDiff(jsonExpected, jsonDumped));
-}
-
-void test_regression_sense_interface_mt310s2::constantRangeValuesIL3ModeAdj()
+void test_regression_sense_interface_mt310s2::constantRangeValuesIModeAdj()
 {
     QString answer = ScpiSingleTransactionBlocked::cmd("SENS:MMODE", "ADJ");
     QCOMPARE(answer, ZSCPI::scpiAnswer[ZSCPI::ack]);
 
-    SenseSystem::cChannelSettings *channelSetting = m_testServer->getSenseSettings()->findChannelSettingByAlias1("IL3");
-    QByteArray jsonDumped = SenseRegressionHelper::genJsonConstantValuesAllRanges(channelSetting, m_pcbIFace.get());
-    QByteArray jsonExpected = TestLogHelpers::loadFile(":/all-ranges-il3-adj-mode.json");
+    QList<SenseSystem::cChannelSettings*> channelSettings;
+    channelSettings.append(m_testServer->getSenseSettings()->findChannelSettingByAlias1("IL1"));
+    channelSettings.append(m_testServer->getSenseSettings()->findChannelSettingByAlias1("IL2"));
+    channelSettings.append(m_testServer->getSenseSettings()->findChannelSettingByAlias1("IL3"));
+    channelSettings.append(m_testServer->getSenseSettings()->findChannelSettingByAlias1("IAUX"));
+
+    QByteArray jsonDumped = SenseRegressionHelper::genJsonConstantValuesAllRanges(channelSettings, m_pcbIFace.get());
+    QByteArray jsonExpected = TestLogHelpers::loadFile(":/all-ranges-i-adj-mode.json");
     QVERIFY(TestLogHelpers::compareAndLogOnDiff(jsonExpected, jsonDumped));
 }
 
-void test_regression_sense_interface_mt310s2::constantRangeValuesIAUXModeAdj()
+void test_regression_sense_interface_mt310s2::constantRangeValuesUModeAdj()
 {
     QString answer = ScpiSingleTransactionBlocked::cmd("SENS:MMODE", "ADJ");
     QCOMPARE(answer, ZSCPI::scpiAnswer[ZSCPI::ack]);
 
-    SenseSystem::cChannelSettings *channelSetting = m_testServer->getSenseSettings()->findChannelSettingByAlias1("IAUX");
-    QByteArray jsonDumped = SenseRegressionHelper::genJsonConstantValuesAllRanges(channelSetting, m_pcbIFace.get());
-    QByteArray jsonExpected = TestLogHelpers::loadFile(":/all-ranges-iaux-adj-mode.json");
+    QList<SenseSystem::cChannelSettings*> channelSettings;
+    channelSettings.append(m_testServer->getSenseSettings()->findChannelSettingByAlias1("UL1"));
+    channelSettings.append(m_testServer->getSenseSettings()->findChannelSettingByAlias1("UL2"));
+    channelSettings.append(m_testServer->getSenseSettings()->findChannelSettingByAlias1("UL3"));
+    channelSettings.append(m_testServer->getSenseSettings()->findChannelSettingByAlias1("UAUX"));
+
+    QByteArray jsonDumped = SenseRegressionHelper::genJsonConstantValuesAllRanges(channelSettings, m_pcbIFace.get());
+    QByteArray jsonExpected = TestLogHelpers::loadFile(":/all-ranges-u-adj-mode.json");
     QVERIFY(TestLogHelpers::compareAndLogOnDiff(jsonExpected, jsonDumped));
 }
 
-void test_regression_sense_interface_mt310s2::constantRangeValuesIL3ModeHf()
+void test_regression_sense_interface_mt310s2::constantRangeValuesIModeHf()
 {
     QString answer = ScpiSingleTransactionBlocked::cmd("SENS:MMODE", "HF");
     QCOMPARE(answer, ZSCPI::scpiAnswer[ZSCPI::ack]);
 
-    SenseSystem::cChannelSettings *channelSetting = m_testServer->getSenseSettings()->findChannelSettingByAlias1("IL3");
-    QByteArray jsonDumped = SenseRegressionHelper::genJsonConstantValuesAllRanges(channelSetting, m_pcbIFace.get());
-    QByteArray jsonExpected = TestLogHelpers::loadFile(":/all-ranges-il3-hf-mode.json");
+    QList<SenseSystem::cChannelSettings*> channelSettings;
+    channelSettings.append(m_testServer->getSenseSettings()->findChannelSettingByAlias1("IL1"));
+    channelSettings.append(m_testServer->getSenseSettings()->findChannelSettingByAlias1("IL2"));
+    channelSettings.append(m_testServer->getSenseSettings()->findChannelSettingByAlias1("IL3"));
+    channelSettings.append(m_testServer->getSenseSettings()->findChannelSettingByAlias1("IAUX"));
+
+    QByteArray jsonDumped = SenseRegressionHelper::genJsonConstantValuesAllRanges(channelSettings, m_pcbIFace.get());
+    QByteArray jsonExpected = TestLogHelpers::loadFile(":/all-ranges-i-hf-mode.json");
     QVERIFY(TestLogHelpers::compareAndLogOnDiff(jsonExpected, jsonDumped));
 }
 
-void test_regression_sense_interface_mt310s2::constantRangeValuesIAUXModeHf()
+void test_regression_sense_interface_mt310s2::constantRangeValuesUModeHf()
 {
     QString answer = ScpiSingleTransactionBlocked::cmd("SENS:MMODE", "HF");
     QCOMPARE(answer, ZSCPI::scpiAnswer[ZSCPI::ack]);
 
-    SenseSystem::cChannelSettings *channelSetting = m_testServer->getSenseSettings()->findChannelSettingByAlias1("IAUX");
-    QByteArray jsonDumped = SenseRegressionHelper::genJsonConstantValuesAllRanges(channelSetting, m_pcbIFace.get());
-    QByteArray jsonExpected = TestLogHelpers::loadFile(":/all-ranges-iaux-hf-mode.json");
+    QList<SenseSystem::cChannelSettings*> channelSettings;
+    channelSettings.append(m_testServer->getSenseSettings()->findChannelSettingByAlias1("UL1"));
+    channelSettings.append(m_testServer->getSenseSettings()->findChannelSettingByAlias1("UL2"));
+    channelSettings.append(m_testServer->getSenseSettings()->findChannelSettingByAlias1("UL3"));
+    channelSettings.append(m_testServer->getSenseSettings()->findChannelSettingByAlias1("UAUX"));
+
+    QByteArray jsonDumped = SenseRegressionHelper::genJsonConstantValuesAllRanges(channelSettings, m_pcbIFace.get());
+    QByteArray jsonExpected = TestLogHelpers::loadFile(":/all-ranges-u-hf-mode.json");
     QVERIFY(TestLogHelpers::compareAndLogOnDiff(jsonExpected, jsonDumped));
 }
 

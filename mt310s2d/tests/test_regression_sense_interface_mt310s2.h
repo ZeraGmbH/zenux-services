@@ -32,18 +32,16 @@ private slots:
     void clampIdsNamesCheck();
 
     // without clamps
-    void constantRangeValuesIL3();
-    void constantRangeValuesUL3();
-    void constantRangeValuesIAUX();
-    void constantRangeValuesUAUX();
+    void constantRangeValuesI();
+    void constantRangeValuesU();
 
     // without clamps / ADJ mode
-    void constantRangeValuesIL3ModeAdj();
-    void constantRangeValuesIAUXModeAdj();
+    void constantRangeValuesIModeAdj();
+    void constantRangeValuesUModeAdj();
 
     // without clamps / HF mode (what is that?? it just makes all ranges unavailable)
-    void constantRangeValuesIL3ModeHf();
-    void constantRangeValuesIAUXModeHf();
+    void constantRangeValuesIModeHf();
+    void constantRangeValuesUModeHf();
 
     // with all clamps
     void constantRangeValuesAllClampsIL3();
