@@ -8,6 +8,7 @@
 #include <i2cmultiplexerfactory.h>
 #include <timemachineobject.h>
 #include <mocktcpnetworkfactory.h>
+#include <testloghelpers.h>
 #include <QFile>
 #include <QRegularExpression>
 #include <QJsonValue>
@@ -193,176 +194,101 @@ void test_regression_sense_interface_mt310s2::clampIdsNamesCheck()
     }
 }
 
-void test_regression_sense_interface_mt310s2::constantRangeValuesIL3GenJson()
+void test_regression_sense_interface_mt310s2::constantRangeValuesIL3()
 {
     SenseSystem::cChannelSettings *channelSetting = m_testServer->getSenseSettings()->findChannelSettingByAlias1("IL3");
-    SenseRegressionHelper::genJsonConstantValuesAllRanges(channelSetting, m_pcbIFace.get());
+    QByteArray jsonDumped = SenseRegressionHelper::genJsonConstantValuesAllRanges(channelSetting, m_pcbIFace.get());
+    QByteArray jsonExpected = TestLogHelpers::loadFile(":/all-ranges-il3.json");
+    QVERIFY(TestLogHelpers::compareAndLogOnDiff(jsonExpected, jsonDumped));
 }
 
-void test_regression_sense_interface_mt310s2::constantRangeValuesIL3Check()
-{
-    QJsonObject json = loadJson(":/all-ranges-il3.json");
-    QVERIFY(!json.isEmpty());
-    SenseSystem::cChannelSettings *channelSetting = m_testServer->getSenseSettings()->findChannelSettingByAlias1("IL3");
-    QVERIFY(SenseRegressionHelper::checkJsonConstantValuesAllRanges(json, channelSetting, m_pcbIFace.get()));
-}
-
-void test_regression_sense_interface_mt310s2::constantRangeValuesUL3GenJson()
+void test_regression_sense_interface_mt310s2::constantRangeValuesUL3()
 {
     SenseSystem::cChannelSettings *channelSetting = m_testServer->getSenseSettings()->findChannelSettingByAlias1("UL3");
-    SenseRegressionHelper::genJsonConstantValuesAllRanges(channelSetting, m_pcbIFace.get());
+    QByteArray jsonDumped = SenseRegressionHelper::genJsonConstantValuesAllRanges(channelSetting, m_pcbIFace.get());
+    QByteArray jsonExpected = TestLogHelpers::loadFile(":/all-ranges-ul3.json");
+    QVERIFY(TestLogHelpers::compareAndLogOnDiff(jsonExpected, jsonDumped));
 }
 
-void test_regression_sense_interface_mt310s2::constantRangeValuesUL3Check()
-{
-    QJsonObject json = loadJson(":/all-ranges-ul3.json");
-    QVERIFY(!json.isEmpty());
-    SenseSystem::cChannelSettings *channelSetting = m_testServer->getSenseSettings()->findChannelSettingByAlias1("UL3");
-    QVERIFY(SenseRegressionHelper::checkJsonConstantValuesAllRanges(json, channelSetting, m_pcbIFace.get()));
-}
-
-void test_regression_sense_interface_mt310s2::constantRangeValuesIAUXGenJson()
+void test_regression_sense_interface_mt310s2::constantRangeValuesIAUX()
 {
     SenseSystem::cChannelSettings *channelSetting = m_testServer->getSenseSettings()->findChannelSettingByAlias1("IAUX");
-    SenseRegressionHelper::genJsonConstantValuesAllRanges(channelSetting, m_pcbIFace.get());
+    QByteArray jsonDumped = SenseRegressionHelper::genJsonConstantValuesAllRanges(channelSetting, m_pcbIFace.get());
+    QByteArray jsonExpected = TestLogHelpers::loadFile(":/all-ranges-iaux.json");
+    QVERIFY(TestLogHelpers::compareAndLogOnDiff(jsonExpected, jsonDumped));
 }
 
-void test_regression_sense_interface_mt310s2::constantRangeValuesIAUXCheck()
+void test_regression_sense_interface_mt310s2::constantRangeValuesUAUX()
 {
-    QJsonObject json = loadJson(":/all-ranges-iaux.json");
-    QVERIFY(!json.isEmpty());
-    SenseSystem::cChannelSettings *channelSetting = m_testServer->getSenseSettings()->findChannelSettingByAlias1("IAUX");
-    QVERIFY(SenseRegressionHelper::checkJsonConstantValuesAllRanges(json, channelSetting, m_pcbIFace.get()));
-}
-
-void test_regression_sense_interface_mt310s2::constantRangeValuesUAUXGenJson()
-{
-    SenseSystem::cChannelSettings *channelSetting = m_testServer->getSenseSettings()->findChannelSettingByAlias1("IAUX");
-    SenseRegressionHelper::genJsonConstantValuesAllRanges(channelSetting, m_pcbIFace.get());
-}
-
-void test_regression_sense_interface_mt310s2::constantRangeValuesUAUXCheck()
-{
-    QJsonObject json = loadJson(":/all-ranges-uaux.json");
-    QVERIFY(!json.isEmpty());
     SenseSystem::cChannelSettings *channelSetting = m_testServer->getSenseSettings()->findChannelSettingByAlias1("UAUX");
-    QVERIFY(SenseRegressionHelper::checkJsonConstantValuesAllRanges(json, channelSetting, m_pcbIFace.get()));
+    QByteArray jsonDumped = SenseRegressionHelper::genJsonConstantValuesAllRanges(channelSetting, m_pcbIFace.get());
+    QByteArray jsonExpected = TestLogHelpers::loadFile(":/all-ranges-uaux.json");
+    QVERIFY(TestLogHelpers::compareAndLogOnDiff(jsonExpected, jsonDumped));
 }
 
-void test_regression_sense_interface_mt310s2::constantRangeValuesIL3ModeAdjGenJson()
+void test_regression_sense_interface_mt310s2::constantRangeValuesIL3ModeAdj()
 {
     QString answer = ScpiSingleTransactionBlocked::cmd("SENS:MMODE", "ADJ");
     QCOMPARE(answer, ZSCPI::scpiAnswer[ZSCPI::ack]);
 
     SenseSystem::cChannelSettings *channelSetting = m_testServer->getSenseSettings()->findChannelSettingByAlias1("IL3");
-    SenseRegressionHelper::genJsonConstantValuesAllRanges(channelSetting, m_pcbIFace.get());
+    QByteArray jsonDumped = SenseRegressionHelper::genJsonConstantValuesAllRanges(channelSetting, m_pcbIFace.get());
+    QByteArray jsonExpected = TestLogHelpers::loadFile(":/all-ranges-il3-adj-mode.json");
+    QVERIFY(TestLogHelpers::compareAndLogOnDiff(jsonExpected, jsonDumped));
 }
 
-void test_regression_sense_interface_mt310s2::constantRangeValuesIL3ModeAdjCheck()
-{
-    QString answer = ScpiSingleTransactionBlocked::cmd("SENS:MMODE", "ADJ");
-    QCOMPARE(answer, ZSCPI::scpiAnswer[ZSCPI::ack]);
-
-    QJsonObject json = loadJson(":/all-ranges-il3-adj-mode.json");
-    QVERIFY(!json.isEmpty());
-    SenseSystem::cChannelSettings *channelSetting = m_testServer->getSenseSettings()->findChannelSettingByAlias1("IL3");
-    QVERIFY(SenseRegressionHelper::checkJsonConstantValuesAllRanges(json, channelSetting, m_pcbIFace.get()));
-}
-
-void test_regression_sense_interface_mt310s2::constantRangeValuesIAUXModeAdjGenJson()
+void test_regression_sense_interface_mt310s2::constantRangeValuesIAUXModeAdj()
 {
     QString answer = ScpiSingleTransactionBlocked::cmd("SENS:MMODE", "ADJ");
     QCOMPARE(answer, ZSCPI::scpiAnswer[ZSCPI::ack]);
 
     SenseSystem::cChannelSettings *channelSetting = m_testServer->getSenseSettings()->findChannelSettingByAlias1("IAUX");
-    SenseRegressionHelper::genJsonConstantValuesAllRanges(channelSetting, m_pcbIFace.get());
+    QByteArray jsonDumped = SenseRegressionHelper::genJsonConstantValuesAllRanges(channelSetting, m_pcbIFace.get());
+    QByteArray jsonExpected = TestLogHelpers::loadFile(":/all-ranges-iaux-adj-mode.json");
+    QVERIFY(TestLogHelpers::compareAndLogOnDiff(jsonExpected, jsonDumped));
 }
 
-void test_regression_sense_interface_mt310s2::constantRangeValuesIAUXModeAdjCheck()
-{
-    QString answer = ScpiSingleTransactionBlocked::cmd("SENS:MMODE", "ADJ");
-    QCOMPARE(answer, ZSCPI::scpiAnswer[ZSCPI::ack]);
-
-    QJsonObject json = loadJson(":/all-ranges-iaux-adj-mode.json");
-    QVERIFY(!json.isEmpty());
-    SenseSystem::cChannelSettings *channelSetting = m_testServer->getSenseSettings()->findChannelSettingByAlias1("IAUX");
-    QVERIFY(SenseRegressionHelper::checkJsonConstantValuesAllRanges(json, channelSetting, m_pcbIFace.get()));
-}
-
-void test_regression_sense_interface_mt310s2::constantRangeValuesIL3ModeHfGenJson()
+void test_regression_sense_interface_mt310s2::constantRangeValuesIL3ModeHf()
 {
     QString answer = ScpiSingleTransactionBlocked::cmd("SENS:MMODE", "HF");
     QCOMPARE(answer, ZSCPI::scpiAnswer[ZSCPI::ack]);
 
     SenseSystem::cChannelSettings *channelSetting = m_testServer->getSenseSettings()->findChannelSettingByAlias1("IL3");
-    SenseRegressionHelper::genJsonConstantValuesAllRanges(channelSetting, m_pcbIFace.get());
+    QByteArray jsonDumped = SenseRegressionHelper::genJsonConstantValuesAllRanges(channelSetting, m_pcbIFace.get());
+    QByteArray jsonExpected = TestLogHelpers::loadFile(":/all-ranges-il3-hf-mode.json");
+    QVERIFY(TestLogHelpers::compareAndLogOnDiff(jsonExpected, jsonDumped));
 }
 
-void test_regression_sense_interface_mt310s2::constantRangeValuesIL3ModeHfCheck()
-{
-    QString answer = ScpiSingleTransactionBlocked::cmd("SENS:MMODE", "HF");
-    QCOMPARE(answer, ZSCPI::scpiAnswer[ZSCPI::ack]);
-
-    QJsonObject json = loadJson(":/all-ranges-il3-hf-mode.json");
-    QVERIFY(!json.isEmpty());
-    SenseSystem::cChannelSettings *channelSetting = m_testServer->getSenseSettings()->findChannelSettingByAlias1("IL3");
-    QVERIFY(SenseRegressionHelper::checkJsonConstantValuesAllRanges(json, channelSetting, m_pcbIFace.get()));
-}
-
-void test_regression_sense_interface_mt310s2::constantRangeValuesIAUXModeHfGenJson()
+void test_regression_sense_interface_mt310s2::constantRangeValuesIAUXModeHf()
 {
     QString answer = ScpiSingleTransactionBlocked::cmd("SENS:MMODE", "HF");
     QCOMPARE(answer, ZSCPI::scpiAnswer[ZSCPI::ack]);
 
     SenseSystem::cChannelSettings *channelSetting = m_testServer->getSenseSettings()->findChannelSettingByAlias1("IAUX");
-    SenseRegressionHelper::genJsonConstantValuesAllRanges(channelSetting, m_pcbIFace.get());
+    QByteArray jsonDumped = SenseRegressionHelper::genJsonConstantValuesAllRanges(channelSetting, m_pcbIFace.get());
+    QByteArray jsonExpected = TestLogHelpers::loadFile(":/all-ranges-iaux-hf-mode.json");
+    QVERIFY(TestLogHelpers::compareAndLogOnDiff(jsonExpected, jsonDumped));
 }
 
-void test_regression_sense_interface_mt310s2::constantRangeValuesIAUXModeHfCheck()
+void test_regression_sense_interface_mt310s2::constantRangeValuesAllClampsIL3()
 {
-    QString answer = ScpiSingleTransactionBlocked::cmd("SENS:MMODE", "HF");
-    QCOMPARE(answer, ZSCPI::scpiAnswer[ZSCPI::ack]);
-
-    QJsonObject json = loadJson(":/all-ranges-iaux-hf-mode.json");
-    QVERIFY(!json.isEmpty());
-    SenseSystem::cChannelSettings *channelSetting = m_testServer->getSenseSettings()->findChannelSettingByAlias1("IAUX");
-    QVERIFY(SenseRegressionHelper::checkJsonConstantValuesAllRanges(json, channelSetting, m_pcbIFace.get()));
+    QByteArray jsonDumped = genJsonConstantValuesAllRangesForAllClamps("IL3", "IL3");
+    QByteArray jsonExpected = TestLogHelpers::loadFile(":/all-ranges-all-clamps-il3.json");
+    QVERIFY(TestLogHelpers::compareAndLogOnDiff(jsonExpected, jsonDumped));
 }
 
-void test_regression_sense_interface_mt310s2::constantRangeValuesAllClampsIL3GenJson()
+void test_regression_sense_interface_mt310s2::constantRangeValuesAllClampsIAUX()
 {
-    genJsonConstantValuesAllRangesForAllClamps("IL3", "IL3");
+    QByteArray jsonDumped = genJsonConstantValuesAllRangesForAllClamps("IAUX", "IAUX");
+    QByteArray jsonExpected = TestLogHelpers::loadFile(":/all-ranges-all-clamps-iaux.json");
+    QVERIFY(TestLogHelpers::compareAndLogOnDiff(jsonExpected, jsonDumped));
 }
 
-void test_regression_sense_interface_mt310s2::constantRangeValuesAllClampsIL3Check()
+void test_regression_sense_interface_mt310s2::constantRangeValuesAllClampsUAUX()
 {
-    QJsonObject json = loadJson(":/all-ranges-all-clamps-il3.json");
-    QVERIFY(!json.isEmpty());
-    QVERIFY(checkJsonConstantValuesAllRangesForAllClamps(json, "IL3", "IL3"));
-}
-
-void test_regression_sense_interface_mt310s2::constantRangeValuesAllClampsIAUXGenJson()
-{
-    genJsonConstantValuesAllRangesForAllClamps("IAUX", "IAUX");
-}
-
-void test_regression_sense_interface_mt310s2::constantRangeValuesAllClampsIAUXCheck()
-{
-    QJsonObject json = loadJson(":/all-ranges-all-clamps-iaux.json");
-    QVERIFY(!json.isEmpty());
-    QVERIFY(checkJsonConstantValuesAllRangesForAllClamps(json, "IAUX", "IAUX"));
-}
-
-void test_regression_sense_interface_mt310s2::constantRangeValuesAllClampsUAUXGenJson()
-{
-    genJsonConstantValuesAllRangesForAllClamps("UAUX", "IAUX");
-}
-
-void test_regression_sense_interface_mt310s2::constantRangeValuesAllClampsUAUXCheck()
-{
-    QJsonObject json = loadJson(":/all-ranges-all-clamps-uaux.json");
-    QVERIFY(!json.isEmpty());
-    QVERIFY(checkJsonConstantValuesAllRangesForAllClamps(json, "UAUX", "IAUX"));
+    QByteArray jsonDumped = genJsonConstantValuesAllRangesForAllClamps("UAUX", "IAUX");
+    QByteArray jsonExpected = TestLogHelpers::loadFile(":/all-ranges-all-clamps-uaux.json");
+    QVERIFY(TestLogHelpers::compareAndLogOnDiff(jsonExpected, jsonDumped));
 }
 
 void test_regression_sense_interface_mt310s2::mmodeCat()
@@ -419,7 +345,7 @@ void test_regression_sense_interface_mt310s2::channelAliasHfMode()
 }
 
 
-void test_regression_sense_interface_mt310s2::genJsonConstantValuesAllRangesForAllClamps(QString channelName, QString channelNameAdRemoveClamps)
+QByteArray test_regression_sense_interface_mt310s2::genJsonConstantValuesAllRangesForAllClamps(QString channelName, QString channelNameAdRemoveClamps)
 {
     if(channelNameAdRemoveClamps.isEmpty())
         channelNameAdRemoveClamps = channelName;
@@ -444,52 +370,7 @@ void test_regression_sense_interface_mt310s2::genJsonConstantValuesAllRangesForA
         jsonAll.insert(cClamp::getClampTypeName(clampTypeNo), jsonRanges);
     }
     QJsonDocument doc(jsonAll);
-    qInfo("----------------- json range constants generated for %s -----------------", qPrintable(channelName));
-    qInfo("%s", qPrintable(doc.toJson(QJsonDocument::Indented)));
-}
-
-bool test_regression_sense_interface_mt310s2::checkJsonConstantValuesAllRangesForAllClamps(QJsonObject jsonReference, QString channelName, QString channelNameAdRemoveClamps)
-{
-    if(channelNameAdRemoveClamps.isEmpty())
-        channelNameAdRemoveClamps = channelName;
-    bool allCheckOk = true;
-    SenseSystem::cChannelSettings *channelSetting = m_testServer->getSenseSettings()->findChannelSettingByAlias1(channelName);
-    for(int clampTypeNo=cClamp::undefined+1; clampTypeNo<cClamp::anzCL; clampTypeNo++) { // all clamp types
-        m_testServer->addClamp(clampTypeNo, channelNameAdRemoveClamps);
-
-        QSignalSpy responseSpy(m_pcbIFace.get(), &Zera::cPCBInterface::serverAnswer);
-        m_pcbIFace->getRangeList(channelSetting->m_nameMx);
-        TimeMachineObject::feedEventLoop();
-
-        QString clampName = cClamp::getClampTypeName(clampTypeNo);
-        if(jsonReference.contains(clampName)) {
-            QJsonObject jsonRanges = jsonReference.value(clampName).toObject();
-            if(!jsonRanges.isEmpty()) {
-                const QStringList ranges = responseSpy[0][2].toStringList();
-                if(!ranges.isEmpty()) {
-                    for(const QString &range : ranges) {
-                        QJsonObject jsonRange = jsonRanges.value(range).toObject();
-                        if(!SenseRegressionHelper::compareRangeConstantDataWithJson(jsonRange, clampName, range, channelSetting))
-                            allCheckOk = false;
-                    }
-                }
-                else {
-                    allCheckOk = false;
-                    qCritical("No ranges returned from device for clamp \"%s\"", qPrintable(clampName));
-                }
-            }
-            else {
-                allCheckOk = false;
-                qCritical("No ranges found in reference for clamp \"%s\"", qPrintable(clampName));
-            }
-        }
-        else {
-            allCheckOk = false;
-            qCritical("Clamp \"%s\" not found in reference", qPrintable(clampName));
-        }
-        m_testServer->removeAllClamps();
-    }
-    return allCheckOk;
+    return doc.toJson(QJsonDocument::Indented);
 }
 
 QJsonObject test_regression_sense_interface_mt310s2::loadJson(QString fileName)
