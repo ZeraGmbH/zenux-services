@@ -19,8 +19,8 @@ private slots:
     void checkRangesUL1();
     void checkRangesIL1();
 
-    void constantRangeValuesIL3();
-    void constantRangeValuesUL3();
+    void constantRangeValuesI();
+    void constantRangeValuesU();
 
     void channelAliasChangeOnREF();
     void mmodeCat();

@@ -3,14 +3,12 @@
         <file>all-ranges-all-clamps-iaux.json</file>
         <file>all-ranges-all-clamps-il3.json</file>
         <file>all-ranges-all-clamps-uaux.json</file>
-        <file>all-ranges-iaux-adj-mode.json</file>
-        <file>all-ranges-iaux-hf-mode.json</file>
-        <file>all-ranges-iaux.json</file>
-        <file>all-ranges-il3.json</file>
-        <file>all-ranges-il3-adj-mode.json</file>
-        <file>all-ranges-il3-hf-mode.json</file>
-        <file>all-ranges-uaux.json</file>
-        <file>all-ranges-ul3.json</file>
+        <file>all-ranges-i.json</file>
+        <file>all-ranges-i-adj-mode.json</file>
+        <file>all-ranges-i-hf-mode.json</file>
+        <file>all-ranges-u.json</file>
+        <file>all-ranges-u-adj-mode.json</file>
+        <file>all-ranges-u-hf-mode.json</file>
         <file>clamp-id-names.json</file>
     </qresource>
 </RCC>
