@@ -68,6 +68,7 @@ Mt310s2SenseInterface::Mt310s2SenseInterface(std::shared_ptr<cSCPI> scpiInterfac
     m_availSenseModesHash["ADJ"] = modeADJ;
 
     setChannelAndRanges(senseSettings);
+    injectAdjToChannelRanges();
     setSenseMode("AC");
     setNotifierSenseChannelCat(); // only prepared for !!! since we don't have hot plug for measuring channels yet
 }
@@ -236,7 +237,6 @@ void Mt310s2SenseInterface::setChannelAndRanges(cSenseSettings* senseSettings)
         rngList.append(new Mt310s2SenseRange(m_scpiInterface, rangeName, false, 0.002, 2684355.0, 3355444.0, 20, rangeFlagsIntern(), createJustScpiInterfaceWithAtmelPermission()));
 
     m_channelList.at(7)->setRangeList(rngList);
-    injectAdjToChannelRanges();
 }
 
 
