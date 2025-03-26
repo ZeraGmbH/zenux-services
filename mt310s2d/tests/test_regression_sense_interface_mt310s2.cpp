@@ -12,6 +12,7 @@
 #include <QFile>
 #include <QRegularExpression>
 #include <QJsonValue>
+#include <QJsonArray>
 #include <QJsonDocument>
 #include <QSignalSpy>
 #include <QTest>
@@ -358,12 +359,12 @@ QByteArray test_regression_sense_interface_mt310s2::genJsonConstantValuesAllRang
         m_pcbIFace->getRangeList(channelSetting->m_nameMx);
         TimeMachineObject::feedEventLoop();
 
-        QJsonObject jsonRanges;
+        QJsonArray jsonRanges;
         const QStringList ranges = responseSpy[0][2].toStringList();
         for(const QString &range : ranges) {
             QJsonObject jsonRange;
             SenseRegressionHelper::addRangeConstantDataToJson(range, channelSetting, jsonRange);
-            jsonRanges.insert(range, jsonRange);
+            jsonRanges.append(jsonRange);
         }
         m_testServer->removeAllClamps();
 
