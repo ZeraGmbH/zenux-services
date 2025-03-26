@@ -52,7 +52,7 @@ Com5003SenseInterface::Com5003SenseInterface(std::shared_ptr<cSCPI> scpiInterfac
     setNotifierSenseMMode();
 
     setChannelAndRanges(senseSettings);
-
+    injectAdjToChannelRanges();
     setNotifierSenseChannelCat(); // only prepared for !!! since we don't have hot plug for measuring channels yet
 
     // we set up our statemachine for changing sense mode
@@ -134,7 +134,6 @@ void Com5003SenseInterface::setChannelAndRanges(cSenseSettings *senseSettings)
 
         m_channelList.at(i)->setRangeList(rngList);
     }
-    injectAdjToChannelRanges();
 }
 
 int Com5003SenseInterface::rangeFlagsDevice()
