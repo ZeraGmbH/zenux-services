@@ -51,7 +51,7 @@ Com5003SenseInterface::Com5003SenseInterface(std::shared_ptr<cSCPI> scpiInterfac
     m_ctrlFactory->getMModeController()->setMeasMode(SenseSystem::modeAC); // set the atmels mode too
     setNotifierSenseMMode();
 
-    setChannelAndRanges(senseSettings);
+    m_channelList = setChannelAndRanges(senseSettings, m_adjData, m_scpiInterface, m_ctrlFactory);
     injectAdjToChannelRanges();
     setNotifierSenseChannelCat(); // only prepared for !!! since we don't have hot plug for measuring channels yet
 
@@ -70,25 +70,28 @@ Com5003SenseInterface::Com5003SenseInterface(std::shared_ptr<cSCPI> scpiInterfac
     connect(&m_NotifySenseState, &QAbstractState::entered, this, &Com5003SenseInterface::notifySense);
 }
 
-void Com5003SenseInterface::setChannelAndRanges(cSenseSettings *senseSettings)
+QList<SenseChannelCommon*> Com5003SenseInterface::setChannelAndRanges(cSenseSettings *senseSettings,
+                                                                       AdjDataPtr adjData,
+                                                                       std::shared_ptr<cSCPI> scpi,
+                                                                       AbstractFactoryI2cCtrlPtr ctrlFactory)
 {
-    QList<SenseSystem::cChannelSettings*> channelSettings;
-    channelSettings = senseSettings->getChannelSettings();
+    QList<SenseSystem::cChannelSettings*> channelSettings = senseSettings->getChannelSettings();
+    QList<SenseChannelCommon*> channels;
 
     // default our sense has 3 voltage and 3 current measuring channels
     SenseChannelCommon* pChannel;
-    pChannel = new Com5003SenseChannel(m_scpiInterface, SenseSystem::sVoltageChannelDescription,"V", channelSettings.at(0), 0, m_ctrlFactory);
-    m_channelList.append(pChannel);
-    pChannel = new Com5003SenseChannel(m_scpiInterface, SenseSystem::sVoltageChannelDescription,"V", channelSettings.at(1), 1, m_ctrlFactory);
-    m_channelList.append(pChannel);
-    pChannel = new Com5003SenseChannel(m_scpiInterface, SenseSystem::sVoltageChannelDescription,"V", channelSettings.at(2), 2, m_ctrlFactory);
-    m_channelList.append(pChannel);
-    pChannel = new Com5003SenseChannel(m_scpiInterface, SenseSystem::sCurrentChannelDescription,"A", channelSettings.at(3), 3, m_ctrlFactory);
-    m_channelList.append(pChannel);
-    pChannel = new Com5003SenseChannel(m_scpiInterface, SenseSystem::sCurrentChannelDescription,"A", channelSettings.at(4), 4, m_ctrlFactory);
-    m_channelList.append(pChannel);
-    pChannel = new Com5003SenseChannel(m_scpiInterface, SenseSystem::sCurrentChannelDescription,"A", channelSettings.at(5), 5, m_ctrlFactory);
-    m_channelList.append(pChannel);
+    pChannel = new Com5003SenseChannel(scpi, SenseSystem::sVoltageChannelDescription,"V", channelSettings.at(0), 0, ctrlFactory);
+    channels.append(pChannel);
+    pChannel = new Com5003SenseChannel(scpi, SenseSystem::sVoltageChannelDescription,"V", channelSettings.at(1), 1, ctrlFactory);
+    channels.append(pChannel);
+    pChannel = new Com5003SenseChannel(scpi, SenseSystem::sVoltageChannelDescription,"V", channelSettings.at(2), 2, ctrlFactory);
+    channels.append(pChannel);
+    pChannel = new Com5003SenseChannel(scpi, SenseSystem::sCurrentChannelDescription,"A", channelSettings.at(3), 3, ctrlFactory);
+    channels.append(pChannel);
+    pChannel = new Com5003SenseChannel(scpi, SenseSystem::sCurrentChannelDescription,"A", channelSettings.at(4), 4, ctrlFactory);
+    channels.append(pChannel);
+    pChannel = new Com5003SenseChannel(scpi, SenseSystem::sCurrentChannelDescription,"A", channelSettings.at(5), 5, ctrlFactory);
+    channels.append(pChannel);
 
     QList<SenseRangeCommon*> rngList;
 
@@ -96,44 +99,45 @@ void Com5003SenseInterface::setChannelAndRanges(cSenseSettings *senseSettings)
     for (i = 0; i < 3; i++)
     {
         rngList.clear();
-        rngList.append(new Com5003SenseRange(m_scpiInterface,  "480V", true, 480.0, 4712563.0, 5890704.0, 0));
-        rngList.append(new Com5003SenseRange(m_scpiInterface,  "240V", true, 240.0, 4712563.0, 5890704.0, 1));
-        rngList.append(new Com5003SenseRange(m_scpiInterface,  "120V", true, 120.0, 4712563.0, 5890704.0, 2));
-        rngList.append(new Com5003SenseRange(m_scpiInterface,   "60V", true,  60.0, 4712563.0, 5890704.0, 3));
+        rngList.append(new Com5003SenseRange(scpi,  "480V", true, 480.0, 4712563.0, 5890704.0, 0));
+        rngList.append(new Com5003SenseRange(scpi,  "240V", true, 240.0, 4712563.0, 5890704.0, 1));
+        rngList.append(new Com5003SenseRange(scpi,  "120V", true, 120.0, 4712563.0, 5890704.0, 2));
+        rngList.append(new Com5003SenseRange(scpi,   "60V", true,  60.0, 4712563.0, 5890704.0, 3));
 
-        rngList.append(new Com5003SenseRange(m_scpiInterface,   "12V", true,  12.0, 3887864.8, 4859831.0, 4));
-        rngList.append(new Com5003SenseRange(m_scpiInterface,    "5V", true,   5.0, 4516206.0, 5645258.0, 5));
+        rngList.append(new Com5003SenseRange(scpi,   "12V", true,  12.0, 3887864.8, 4859831.0, 4));
+        rngList.append(new Com5003SenseRange(scpi,    "5V", true,   5.0, 4516206.0, 5645258.0, 5));
 
-        rngList.append(new Com5003SenseRange(m_scpiInterface,   "R0V", false,  9.0, 3839668.2, 5332873.0, 14));
-        rngList.append(new Com5003SenseRange(m_scpiInterface,  "R10V", false, 10.0, 4266298.0, 5332873.0, 15));
-        m_channelList.at(i)->setRangeList(rngList);
+        rngList.append(new Com5003SenseRange(scpi,   "R0V", false,  9.0, 3839668.2, 5332873.0, 14));
+        rngList.append(new Com5003SenseRange(scpi,  "R10V", false, 10.0, 4266298.0, 5332873.0, 15));
+        channels.at(i)->setRangeList(rngList);
     }
 
     for (i = 3; i < 6; i++)
     {
         rngList.clear();
-        rngList.append(new Com5003SenseRange(m_scpiInterface,  "200A", true, 200.0, 6257236.0, 5256077.0, 0 )); // ???
-        rngList.append(new Com5003SenseRange(m_scpiInterface,  "100A", true, 100.0, 4692928.0, 5866160.0, 1 ));
-        rngList.append(new Com5003SenseRange(m_scpiInterface,   "50A", true,  50.0, 4692928.0, 5866160.0, 2 ));
-        rngList.append(new Com5003SenseRange(m_scpiInterface,   "25A", true, 25.0 , 4692928.0, 5866160.0, 3 ));
-        rngList.append(new Com5003SenseRange(m_scpiInterface,   "10A", true, 10.0 , 4692928.0, 5866160.0, 4 ));
-        rngList.append(new Com5003SenseRange(m_scpiInterface,    "5A", true,  5.0 , 4692928.0, 5866160.0, 5 ));
+        rngList.append(new Com5003SenseRange(scpi,  "200A", true, 200.0, 6257236.0, 5256077.0, 0 )); // ???
+        rngList.append(new Com5003SenseRange(scpi,  "100A", true, 100.0, 4692928.0, 5866160.0, 1 ));
+        rngList.append(new Com5003SenseRange(scpi,   "50A", true,  50.0, 4692928.0, 5866160.0, 2 ));
+        rngList.append(new Com5003SenseRange(scpi,   "25A", true, 25.0 , 4692928.0, 5866160.0, 3 ));
+        rngList.append(new Com5003SenseRange(scpi,   "10A", true, 10.0 , 4692928.0, 5866160.0, 4 ));
+        rngList.append(new Com5003SenseRange(scpi,    "5A", true,  5.0 , 4692928.0, 5866160.0, 5 ));
 
-        rngList.append(new Com5003SenseRange(m_scpiInterface,  "2.5A", true, 2.5  , 4692928.0, 5866160.0, 6 ));
-        rngList.append(new Com5003SenseRange(m_scpiInterface,  "1.0A", true, 1.0  , 4692928.0, 5866160.0, 7 ));
-        rngList.append(new Com5003SenseRange(m_scpiInterface, "500mA", true, 0.5  , 4692928.0, 5866160.0, 8 ));
-        rngList.append(new Com5003SenseRange(m_scpiInterface, "250mA", true, 0.25 , 4692928.0, 5866160.0, 9 ));
-        rngList.append(new Com5003SenseRange(m_scpiInterface, "100mA", true, 0.1  , 4692928.0, 5866160.0, 10 ));
-        rngList.append(new Com5003SenseRange(m_scpiInterface,  "50mA", true, 0.05 , 4692928.0, 5866160.0, 11));
-        rngList.append(new Com5003SenseRange(m_scpiInterface,  "25mA", true, 0.025, 4692928.0, 5866160.0, 12));
-        rngList.append(new Com5003SenseRange(m_scpiInterface,  "10mA", true, 0.01 , 4692928.0, 5866160.0, 13));
-        rngList.append(new Com5003SenseRange(m_scpiInterface,   "5mA", true, 0.005, 4692928.0, 5866160.0, 14));
+        rngList.append(new Com5003SenseRange(scpi,  "2.5A", true, 2.5  , 4692928.0, 5866160.0, 6 ));
+        rngList.append(new Com5003SenseRange(scpi,  "1.0A", true, 1.0  , 4692928.0, 5866160.0, 7 ));
+        rngList.append(new Com5003SenseRange(scpi, "500mA", true, 0.5  , 4692928.0, 5866160.0, 8 ));
+        rngList.append(new Com5003SenseRange(scpi, "250mA", true, 0.25 , 4692928.0, 5866160.0, 9 ));
+        rngList.append(new Com5003SenseRange(scpi, "100mA", true, 0.1  , 4692928.0, 5866160.0, 10 ));
+        rngList.append(new Com5003SenseRange(scpi,  "50mA", true, 0.05 , 4692928.0, 5866160.0, 11));
+        rngList.append(new Com5003SenseRange(scpi,  "25mA", true, 0.025, 4692928.0, 5866160.0, 12));
+        rngList.append(new Com5003SenseRange(scpi,  "10mA", true, 0.01 , 4692928.0, 5866160.0, 13));
+        rngList.append(new Com5003SenseRange(scpi,   "5mA", true, 0.005, 4692928.0, 5866160.0, 14));
 
-        rngList.append(new Com5003SenseRange(m_scpiInterface,   "R0V", false,  9.0, 3839668.2, 5332873.0, 15));
-        rngList.append(new Com5003SenseRange(m_scpiInterface,  "R10V", false, 10.0, 4266298.0, 5332873.0, 16));
+        rngList.append(new Com5003SenseRange(scpi,   "R0V", false,  9.0, 3839668.2, 5332873.0, 15));
+        rngList.append(new Com5003SenseRange(scpi,  "R10V", false, 10.0, 4266298.0, 5332873.0, 16));
 
-        m_channelList.at(i)->setRangeList(rngList);
+        channels.at(i)->setRangeList(rngList);
     }
+    return channels;
 }
 
 int Com5003SenseInterface::rangeFlagsDevice()

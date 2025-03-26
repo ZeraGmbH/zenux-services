@@ -67,37 +67,40 @@ Mt310s2SenseInterface::Mt310s2SenseInterface(std::shared_ptr<cSCPI> scpiInterfac
     m_availSenseModesHash["HF"] = modeHF;
     m_availSenseModesHash["ADJ"] = modeADJ;
 
-    setChannelAndRanges(senseSettings);
+    m_channelList = setChannelAndRanges(senseSettings, m_adjData, m_scpiInterface, m_ctrlFactory);
     injectAdjToChannelRanges();
     setSenseMode("AC");
     setNotifierSenseChannelCat(); // only prepared for !!! since we don't have hot plug for measuring channels yet
 }
 
-void Mt310s2SenseInterface::setChannelAndRanges(cSenseSettings* senseSettings)
+QList<SenseChannelCommon*> Mt310s2SenseInterface::setChannelAndRanges(cSenseSettings* senseSettings,
+                                                                       AdjDataPtr adjData,
+                                                                       std::shared_ptr<cSCPI> scpi,
+                                                                       AbstractFactoryI2cCtrlPtr ctrlFactory)
 {
-    QList<SenseSystem::cChannelSettings*> channelSettings;
-    channelSettings = senseSettings->getChannelSettings();
+    QList<SenseSystem::cChannelSettings*> channelSettings = senseSettings->getChannelSettings();
+    QList<SenseChannelCommon*> channels;
 
     // for com5003 our sense had 3 voltage and 3 current measuring channels
     // for mt310 we need 4 voltage and 4 current measuring channels
     SenseChannelCommon* pChannel;
-    pChannel = new Mt310s2SenseChannel(m_scpiInterface, sVoltageChannelDescription,"V", channelSettings.at(0), 0, m_ctrlFactory);
-    m_channelList.append(pChannel);
-    pChannel = new Mt310s2SenseChannel(m_scpiInterface, sVoltageChannelDescription,"V", channelSettings.at(1), 1, m_ctrlFactory);
-    m_channelList.append(pChannel);
-    pChannel = new Mt310s2SenseChannel(m_scpiInterface, sVoltageChannelDescription,"V", channelSettings.at(2), 2, m_ctrlFactory);
-    m_channelList.append(pChannel);
-    pChannel = new Mt310s2SenseChannel(m_scpiInterface, sVoltageChannelDescription,"V", channelSettings.at(6), 6, m_ctrlFactory);
-    m_channelList.append(pChannel);
+    pChannel = new Mt310s2SenseChannel(scpi, sVoltageChannelDescription,"V", channelSettings.at(0), 0, ctrlFactory);
+    channels.append(pChannel);
+    pChannel = new Mt310s2SenseChannel(scpi, sVoltageChannelDescription,"V", channelSettings.at(1), 1, ctrlFactory);
+    channels.append(pChannel);
+    pChannel = new Mt310s2SenseChannel(scpi, sVoltageChannelDescription,"V", channelSettings.at(2), 2, ctrlFactory);
+    channels.append(pChannel);
+    pChannel = new Mt310s2SenseChannel(scpi, sVoltageChannelDescription,"V", channelSettings.at(6), 6, ctrlFactory);
+    channels.append(pChannel);
 
-    pChannel = new Mt310s2SenseChannel(m_scpiInterface, sCurrentChannelDescription,"A", channelSettings.at(3), 3, m_ctrlFactory);
-    m_channelList.append(pChannel);
-    pChannel = new Mt310s2SenseChannel(m_scpiInterface, sCurrentChannelDescription,"A", channelSettings.at(4), 4, m_ctrlFactory);
-    m_channelList.append(pChannel);
-    pChannel = new Mt310s2SenseChannel(m_scpiInterface, sCurrentChannelDescription,"A", channelSettings.at(5), 5, m_ctrlFactory);
-    m_channelList.append(pChannel);
-    pChannel = new Mt310s2SenseChannel(m_scpiInterface, sCurrentChannelDescription,"A", channelSettings.at(7), 7, m_ctrlFactory);
-    m_channelList.append(pChannel);
+    pChannel = new Mt310s2SenseChannel(scpi, sCurrentChannelDescription,"A", channelSettings.at(3), 3, ctrlFactory);
+    channels.append(pChannel);
+    pChannel = new Mt310s2SenseChannel(scpi, sCurrentChannelDescription,"A", channelSettings.at(4), 4, ctrlFactory);
+    channels.append(pChannel);
+    pChannel = new Mt310s2SenseChannel(scpi, sCurrentChannelDescription,"A", channelSettings.at(5), 5, ctrlFactory);
+    channels.append(pChannel);
+    pChannel = new Mt310s2SenseChannel(scpi, sCurrentChannelDescription,"A", channelSettings.at(7), 7, ctrlFactory);
+    channels.append(pChannel);
 
     QList<SenseRangeCommon*> rngList;
 
@@ -106,91 +109,90 @@ void Mt310s2SenseInterface::setChannelAndRanges(cSenseSettings* senseSettings)
         rngList.clear();
 
         // TODO:
-        // * move channel/range generation to a common place
         // * Do checks isInvalidAdjDataOrChannelRangeAvail only on ranges introduced later
 
         QString rangeName = "250V";
-        if(isInvalidAdjDataOrChannelRangeAvail(m_channelList.at(i)->getName(), rangeName))
-            rngList.append(new Mt310s2SenseRange(m_scpiInterface, rangeName, true, 250.0, 4415057.0, 5518821.0, 0, rangeFlagsDevice(), createJustScpiInterfaceWithAtmelPermission()));
+        if(isInvalidAdjDataOrChannelRangeAvail(adjData, channels.at(i)->getName(), rangeName))
+            rngList.append(new Mt310s2SenseRange(scpi, rangeName, true, 250.0, 4415057.0, 5518821.0, 0, rangeFlagsDevice(), createJustScpiInterfaceWithAtmelPermission(scpi)));
         rangeName = "8V";
-        if(isInvalidAdjDataOrChannelRangeAvail(m_channelList.at(i)->getName(), rangeName))
-            rngList.append(new Mt310s2SenseRange(m_scpiInterface, rangeName, true,   8.0, 3355443.0, 4194304.0, 1, rangeFlagsDevice(), createJustScpiInterfaceWithAtmelPermission()));
+        if(isInvalidAdjDataOrChannelRangeAvail(adjData, channels.at(i)->getName(), rangeName))
+            rngList.append(new Mt310s2SenseRange(scpi, rangeName, true,   8.0, 3355443.0, 4194304.0, 1, rangeFlagsDevice(), createJustScpiInterfaceWithAtmelPermission(scpi)));
         rangeName = "100mV";
-        if(isInvalidAdjDataOrChannelRangeAvail(m_channelList.at(i)->getName(), rangeName))
-            rngList.append(new Mt310s2SenseRange(m_scpiInterface, rangeName, true,   0.1, 4026532.0, 5033165.0, 2, rangeFlagsDevice(), createJustScpiInterfaceWithAtmelPermission()));
+        if(isInvalidAdjDataOrChannelRangeAvail(adjData, channels.at(i)->getName(), rangeName))
+            rngList.append(new Mt310s2SenseRange(scpi, rangeName, true,   0.1, 4026532.0, 5033165.0, 2, rangeFlagsDevice(), createJustScpiInterfaceWithAtmelPermission(scpi)));
 
-        m_channelList.at(i)->setRangeList(rngList);
+        channels.at(i)->setRangeList(rngList);
     }
 
     for (i = 4; i < 7; i++) {
         rngList.clear();
 
         QString rangeName = "10A";
-        if(isInvalidAdjDataOrChannelRangeAvail(m_channelList.at(i)->getName(), rangeName))
-            rngList.append(new Mt310s2SenseRange(m_scpiInterface, rangeName, true,  10.0, 3197613.0, 3997016.0,  0, rangeFlagsDevice(), createJustScpiInterfaceWithAtmelPermission()));
+        if(isInvalidAdjDataOrChannelRangeAvail(adjData, channels.at(i)->getName(), rangeName))
+            rngList.append(new Mt310s2SenseRange(scpi, rangeName, true,  10.0, 3197613.0, 3997016.0,  0, rangeFlagsDevice(), createJustScpiInterfaceWithAtmelPermission(scpi)));
         rangeName = "5A";
-        if(isInvalidAdjDataOrChannelRangeAvail(m_channelList.at(i)->getName(), rangeName))
-            rngList.append(new Mt310s2SenseRange(m_scpiInterface, rangeName, true,   5.0, 3197613.0, 3997016.0,  1, rangeFlagsDevice(), createJustScpiInterfaceWithAtmelPermission()));
+        if(isInvalidAdjDataOrChannelRangeAvail(adjData, channels.at(i)->getName(), rangeName))
+            rngList.append(new Mt310s2SenseRange(scpi, rangeName, true,   5.0, 3197613.0, 3997016.0,  1, rangeFlagsDevice(), createJustScpiInterfaceWithAtmelPermission(scpi)));
         rangeName = "2.5A";
-        if(isInvalidAdjDataOrChannelRangeAvail(m_channelList.at(i)->getName(), rangeName))
-            rngList.append(new Mt310s2SenseRange(m_scpiInterface, rangeName, true,   2.5, 3997016.0, 4996270.0,  2, rangeFlagsDevice(), createJustScpiInterfaceWithAtmelPermission()));
+        if(isInvalidAdjDataOrChannelRangeAvail(adjData, channels.at(i)->getName(), rangeName))
+            rngList.append(new Mt310s2SenseRange(scpi, rangeName, true,   2.5, 3997016.0, 4996270.0,  2, rangeFlagsDevice(), createJustScpiInterfaceWithAtmelPermission(scpi)));
         rangeName = "1.0A";
-        if(isInvalidAdjDataOrChannelRangeAvail(m_channelList.at(i)->getName(), rangeName))
-            rngList.append(new Mt310s2SenseRange(m_scpiInterface, rangeName, true,   1.0, 4177527.0, 5221909.0,  3, rangeFlagsDevice(), createJustScpiInterfaceWithAtmelPermission()));
+        if(isInvalidAdjDataOrChannelRangeAvail(adjData, channels.at(i)->getName(), rangeName))
+            rngList.append(new Mt310s2SenseRange(scpi, rangeName, true,   1.0, 4177527.0, 5221909.0,  3, rangeFlagsDevice(), createJustScpiInterfaceWithAtmelPermission(scpi)));
         rangeName = "500mA";
-        if(isInvalidAdjDataOrChannelRangeAvail(m_channelList.at(i)->getName(), rangeName))
-            rngList.append(new Mt310s2SenseRange(m_scpiInterface, rangeName, true,   0.5, 4177527.0, 5221909.0,  4, rangeFlagsDevice(), createJustScpiInterfaceWithAtmelPermission()));
+        if(isInvalidAdjDataOrChannelRangeAvail(adjData, channels.at(i)->getName(), rangeName))
+            rngList.append(new Mt310s2SenseRange(scpi, rangeName, true,   0.5, 4177527.0, 5221909.0,  4, rangeFlagsDevice(), createJustScpiInterfaceWithAtmelPermission(scpi)));
         rangeName = "250mA";
-        if(isInvalidAdjDataOrChannelRangeAvail(m_channelList.at(i)->getName(), rangeName))
-            rngList.append(new Mt310s2SenseRange(m_scpiInterface, rangeName, true,  0.25, 4177527.0, 5221909.0,  5, rangeFlagsDevice(), createJustScpiInterfaceWithAtmelPermission()));
+        if(isInvalidAdjDataOrChannelRangeAvail(adjData, channels.at(i)->getName(), rangeName))
+            rngList.append(new Mt310s2SenseRange(scpi, rangeName, true,  0.25, 4177527.0, 5221909.0,  5, rangeFlagsDevice(), createJustScpiInterfaceWithAtmelPermission(scpi)));
         rangeName = "100mA";
-        if(isInvalidAdjDataOrChannelRangeAvail(m_channelList.at(i)->getName(), rangeName))
-            rngList.append(new Mt310s2SenseRange(m_scpiInterface, rangeName, true,   0.1, 4177527.0, 5221909.0,  6, rangeFlagsDevice(), createJustScpiInterfaceWithAtmelPermission()));
+        if(isInvalidAdjDataOrChannelRangeAvail(adjData, channels.at(i)->getName(), rangeName))
+            rngList.append(new Mt310s2SenseRange(scpi, rangeName, true,   0.1, 4177527.0, 5221909.0,  6, rangeFlagsDevice(), createJustScpiInterfaceWithAtmelPermission(scpi)));
         rangeName = "50mA";
-        if(isInvalidAdjDataOrChannelRangeAvail(m_channelList.at(i)->getName(), rangeName))
-            rngList.append(new Mt310s2SenseRange(m_scpiInterface, rangeName, true,  0.05, 4177527.0, 5221909.0,  7, rangeFlagsDevice(), createJustScpiInterfaceWithAtmelPermission()));
+        if(isInvalidAdjDataOrChannelRangeAvail(adjData, channels.at(i)->getName(), rangeName))
+            rngList.append(new Mt310s2SenseRange(scpi, rangeName, true,  0.05, 4177527.0, 5221909.0,  7, rangeFlagsDevice(), createJustScpiInterfaceWithAtmelPermission(scpi)));
         rangeName = "25mA";
-        if(isInvalidAdjDataOrChannelRangeAvail(m_channelList.at(i)->getName(), rangeName))
-            rngList.append(new Mt310s2SenseRange(m_scpiInterface, rangeName, true, 0.025, 4177527.0, 5221909.0,  8, rangeFlagsDevice(), createJustScpiInterfaceWithAtmelPermission()));
+        if(isInvalidAdjDataOrChannelRangeAvail(adjData, channels.at(i)->getName(), rangeName))
+            rngList.append(new Mt310s2SenseRange(scpi, rangeName, true, 0.025, 4177527.0, 5221909.0,  8, rangeFlagsDevice(), createJustScpiInterfaceWithAtmelPermission(scpi)));
 
         rangeName = "8V";
-        if(isInvalidAdjDataOrChannelRangeAvail(m_channelList.at(i)->getName(), rangeName))
-            rngList.append(new Mt310s2SenseRange(m_scpiInterface, rangeName, false,  8.0, 3355443.0, 4194304.0,  9, rangeFlagsIntern(), createJustScpiInterfaceWithAtmelPermission()));
+        if(isInvalidAdjDataOrChannelRangeAvail(adjData, channels.at(i)->getName(), rangeName))
+            rngList.append(new Mt310s2SenseRange(scpi, rangeName, false,  8.0, 3355443.0, 4194304.0,  9, rangeFlagsIntern(), createJustScpiInterfaceWithAtmelPermission(scpi)));
         rangeName = "5V";
-        if(isInvalidAdjDataOrChannelRangeAvail(m_channelList.at(i)->getName(), rangeName))
-            rngList.append(new Mt310s2SenseRange(m_scpiInterface, rangeName, false,  5.0, 4194304.0, 5242880.0, 10, rangeFlagsIntern(), createJustScpiInterfaceWithAtmelPermission()));
+        if(isInvalidAdjDataOrChannelRangeAvail(adjData, channels.at(i)->getName(), rangeName))
+            rngList.append(new Mt310s2SenseRange(scpi, rangeName, false,  5.0, 4194304.0, 5242880.0, 10, rangeFlagsIntern(), createJustScpiInterfaceWithAtmelPermission(scpi)));
         rangeName = "2V";
-        if(isInvalidAdjDataOrChannelRangeAvail(m_channelList.at(i)->getName(), rangeName))
-            rngList.append(new Mt310s2SenseRange(m_scpiInterface, rangeName, false,  2.0, 2835586.0, 3544483.0, 11, rangeFlagsIntern(), createJustScpiInterfaceWithAtmelPermission()));
+        if(isInvalidAdjDataOrChannelRangeAvail(adjData, channels.at(i)->getName(), rangeName))
+            rngList.append(new Mt310s2SenseRange(scpi, rangeName, false,  2.0, 2835586.0, 3544483.0, 11, rangeFlagsIntern(), createJustScpiInterfaceWithAtmelPermission(scpi)));
         rangeName = "1V";
-        if(isInvalidAdjDataOrChannelRangeAvail(m_channelList.at(i)->getName(), rangeName))
-            rngList.append(new Mt310s2SenseRange(m_scpiInterface, rangeName, false,  1.0, 2835586.0, 3544483.0, 12, rangeFlagsIntern(), createJustScpiInterfaceWithAtmelPermission()));
+        if(isInvalidAdjDataOrChannelRangeAvail(adjData, channels.at(i)->getName(), rangeName))
+            rngList.append(new Mt310s2SenseRange(scpi, rangeName, false,  1.0, 2835586.0, 3544483.0, 12, rangeFlagsIntern(), createJustScpiInterfaceWithAtmelPermission(scpi)));
         rangeName = "500mV";
-        if(isInvalidAdjDataOrChannelRangeAvail(m_channelList.at(i)->getName(), rangeName))
-            rngList.append(new Mt310s2SenseRange(m_scpiInterface, rangeName, false,  0.5, 3544482.0, 4430603.0, 13, rangeFlagsIntern(), createJustScpiInterfaceWithAtmelPermission()));
+        if(isInvalidAdjDataOrChannelRangeAvail(adjData, channels.at(i)->getName(), rangeName))
+            rngList.append(new Mt310s2SenseRange(scpi, rangeName, false,  0.5, 3544482.0, 4430603.0, 13, rangeFlagsIntern(), createJustScpiInterfaceWithAtmelPermission(scpi)));
         rangeName = "200mV";
-        if(isInvalidAdjDataOrChannelRangeAvail(m_channelList.at(i)->getName(), rangeName))
-            rngList.append(new Mt310s2SenseRange(m_scpiInterface, rangeName, false,  0.2, 2684355.0, 3355444.0, 14, rangeFlagsIntern(), createJustScpiInterfaceWithAtmelPermission()));
+        if(isInvalidAdjDataOrChannelRangeAvail(adjData, channels.at(i)->getName(), rangeName))
+            rngList.append(new Mt310s2SenseRange(scpi, rangeName, false,  0.2, 2684355.0, 3355444.0, 14, rangeFlagsIntern(), createJustScpiInterfaceWithAtmelPermission(scpi)));
         rangeName = "100mV";
-        if(isInvalidAdjDataOrChannelRangeAvail(m_channelList.at(i)->getName(), rangeName))
-            rngList.append(new Mt310s2SenseRange(m_scpiInterface, rangeName, false,  0.1, 3355443.0, 4194304.0, 15, rangeFlagsIntern(), createJustScpiInterfaceWithAtmelPermission()));
+        if(isInvalidAdjDataOrChannelRangeAvail(adjData, channels.at(i)->getName(), rangeName))
+            rngList.append(new Mt310s2SenseRange(scpi, rangeName, false,  0.1, 3355443.0, 4194304.0, 15, rangeFlagsIntern(), createJustScpiInterfaceWithAtmelPermission(scpi)));
         rangeName = "50mV";
-        if(isInvalidAdjDataOrChannelRangeAvail(m_channelList.at(i)->getName(), rangeName))
-            rngList.append(new Mt310s2SenseRange(m_scpiInterface, rangeName, false, 0.05, 3355443.0, 4194304.0, 16, rangeFlagsIntern(), createJustScpiInterfaceWithAtmelPermission()));
+        if(isInvalidAdjDataOrChannelRangeAvail(adjData, channels.at(i)->getName(), rangeName))
+            rngList.append(new Mt310s2SenseRange(scpi, rangeName, false, 0.05, 3355443.0, 4194304.0, 16, rangeFlagsIntern(), createJustScpiInterfaceWithAtmelPermission(scpi)));
         rangeName = "20mV";
-        if(isInvalidAdjDataOrChannelRangeAvail(m_channelList.at(i)->getName(), rangeName))
-            rngList.append(new Mt310s2SenseRange(m_scpiInterface, rangeName, false, 0.02, 2684355.0, 3355444.0, 17, rangeFlagsIntern(), createJustScpiInterfaceWithAtmelPermission()));
+        if(isInvalidAdjDataOrChannelRangeAvail(adjData, channels.at(i)->getName(), rangeName))
+            rngList.append(new Mt310s2SenseRange(scpi, rangeName, false, 0.02, 2684355.0, 3355444.0, 17, rangeFlagsIntern(), createJustScpiInterfaceWithAtmelPermission(scpi)));
         rangeName = "10mV";
-        if(isInvalidAdjDataOrChannelRangeAvail(m_channelList.at(i)->getName(), rangeName))
-            rngList.append(new Mt310s2SenseRange(m_scpiInterface, rangeName, false, 0.01, 3355443.0, 4194304.0, 18, rangeFlagsIntern(), createJustScpiInterfaceWithAtmelPermission()));
+        if(isInvalidAdjDataOrChannelRangeAvail(adjData, channels.at(i)->getName(), rangeName))
+            rngList.append(new Mt310s2SenseRange(scpi, rangeName, false, 0.01, 3355443.0, 4194304.0, 18, rangeFlagsIntern(), createJustScpiInterfaceWithAtmelPermission(scpi)));
         rangeName = "5mV";
-        if(isInvalidAdjDataOrChannelRangeAvail(m_channelList.at(i)->getName(), rangeName))
-            rngList.append(new Mt310s2SenseRange(m_scpiInterface, rangeName, false,0.005, 3355443.0, 4194304.0, 19, rangeFlagsIntern(), createJustScpiInterfaceWithAtmelPermission()));
+        if(isInvalidAdjDataOrChannelRangeAvail(adjData, channels.at(i)->getName(), rangeName))
+            rngList.append(new Mt310s2SenseRange(scpi, rangeName, false,0.005, 3355443.0, 4194304.0, 19, rangeFlagsIntern(), createJustScpiInterfaceWithAtmelPermission(scpi)));
         rangeName = "2mV";
-        if(isInvalidAdjDataOrChannelRangeAvail(m_channelList.at(i)->getName(), rangeName))
-            rngList.append(new Mt310s2SenseRange(m_scpiInterface, rangeName, false,0.002, 2684355.0, 3355444.0, 20, rangeFlagsIntern(), createJustScpiInterfaceWithAtmelPermission()));
+        if(isInvalidAdjDataOrChannelRangeAvail(adjData, channels.at(i)->getName(), rangeName))
+            rngList.append(new Mt310s2SenseRange(scpi, rangeName, false,0.002, 2684355.0, 3355444.0, 20, rangeFlagsIntern(), createJustScpiInterfaceWithAtmelPermission(scpi)));
 
-        m_channelList.at(i)->setRangeList(rngList);
+        channels.at(i)->setRangeList(rngList);
     }
 
     // IAUX
@@ -198,45 +200,46 @@ void Mt310s2SenseInterface::setChannelAndRanges(cSenseSettings* senseSettings)
     // rValue = 1e-12 (yes a pico Ampere error - for 100% range sample value):
     // We did not yet find the place but it seems 0.0 turns into a divisor causing DSP to run almost infinite
     // loop on range change when running power1module on a channnel supportin 0A
-    rngList.append(new Mt310s2SenseRange(m_scpiInterface, SenseRangeCommon::rangeNameCurrentNull, true,    1e-12, 3197613.0, 3997016.0,  0, rangeFlagsDevice(), createJustScpiInterfaceWithAtmelPermission()));
+    rngList.append(new Mt310s2SenseRange(scpi, SenseRangeCommon::rangeNameCurrentNull, true,    1e-12, 3197613.0, 3997016.0,  0, rangeFlagsDevice(), createJustScpiInterfaceWithAtmelPermission(scpi)));
     QString rangeName = "8V";
-    if(isInvalidAdjDataOrChannelRangeAvail(m_channelList.at(i)->getName(), rangeName))
-        rngList.append(new Mt310s2SenseRange(m_scpiInterface, rangeName, false,   8.0, 3355443.0, 4194304.0,  9, rangeFlagsIntern(), createJustScpiInterfaceWithAtmelPermission()));
+    if(isInvalidAdjDataOrChannelRangeAvail(adjData, channels.at(i)->getName(), rangeName))
+        rngList.append(new Mt310s2SenseRange(scpi, rangeName, false,   8.0, 3355443.0, 4194304.0,  9, rangeFlagsIntern(), createJustScpiInterfaceWithAtmelPermission(scpi)));
     rangeName = "5V";
-    if(isInvalidAdjDataOrChannelRangeAvail(m_channelList.at(i)->getName(), rangeName))
-        rngList.append(new Mt310s2SenseRange(m_scpiInterface, rangeName, false,   5.0, 4194304.0, 5242880.0, 10, rangeFlagsIntern(), createJustScpiInterfaceWithAtmelPermission()));
+    if(isInvalidAdjDataOrChannelRangeAvail(adjData, channels.at(i)->getName(), rangeName))
+        rngList.append(new Mt310s2SenseRange(scpi, rangeName, false,   5.0, 4194304.0, 5242880.0, 10, rangeFlagsIntern(), createJustScpiInterfaceWithAtmelPermission(scpi)));
     rangeName = "2V";
-    if(isInvalidAdjDataOrChannelRangeAvail(m_channelList.at(i)->getName(), rangeName))
-        rngList.append(new Mt310s2SenseRange(m_scpiInterface, rangeName, false,   2.0, 2835586.0, 3544483.0, 11, rangeFlagsIntern(), createJustScpiInterfaceWithAtmelPermission()));
+    if(isInvalidAdjDataOrChannelRangeAvail(adjData, channels.at(i)->getName(), rangeName))
+        rngList.append(new Mt310s2SenseRange(scpi, rangeName, false,   2.0, 2835586.0, 3544483.0, 11, rangeFlagsIntern(), createJustScpiInterfaceWithAtmelPermission(scpi)));
     rangeName = "1V";
-    if(isInvalidAdjDataOrChannelRangeAvail(m_channelList.at(i)->getName(), rangeName))
-        rngList.append(new Mt310s2SenseRange(m_scpiInterface, rangeName, false,   1.0, 2835586.0, 3544483.0, 12, rangeFlagsIntern(), createJustScpiInterfaceWithAtmelPermission()));
+    if(isInvalidAdjDataOrChannelRangeAvail(adjData, channels.at(i)->getName(), rangeName))
+        rngList.append(new Mt310s2SenseRange(scpi, rangeName, false,   1.0, 2835586.0, 3544483.0, 12, rangeFlagsIntern(), createJustScpiInterfaceWithAtmelPermission(scpi)));
     rangeName = "500mV";
-    if(isInvalidAdjDataOrChannelRangeAvail(m_channelList.at(i)->getName(), rangeName))
-        rngList.append(new Mt310s2SenseRange(m_scpiInterface, rangeName, false,   0.5, 3544482.0, 4430603.0, 13, rangeFlagsIntern(), createJustScpiInterfaceWithAtmelPermission()));
+    if(isInvalidAdjDataOrChannelRangeAvail(adjData, channels.at(i)->getName(), rangeName))
+        rngList.append(new Mt310s2SenseRange(scpi, rangeName, false,   0.5, 3544482.0, 4430603.0, 13, rangeFlagsIntern(), createJustScpiInterfaceWithAtmelPermission(scpi)));
     rangeName = "200mV";
-    if(isInvalidAdjDataOrChannelRangeAvail(m_channelList.at(i)->getName(), rangeName))
-        rngList.append(new Mt310s2SenseRange(m_scpiInterface, rangeName, false,   0.2, 2684355.0, 3355444.0, 14, rangeFlagsIntern(), createJustScpiInterfaceWithAtmelPermission()));
+    if(isInvalidAdjDataOrChannelRangeAvail(adjData, channels.at(i)->getName(), rangeName))
+        rngList.append(new Mt310s2SenseRange(scpi, rangeName, false,   0.2, 2684355.0, 3355444.0, 14, rangeFlagsIntern(), createJustScpiInterfaceWithAtmelPermission(scpi)));
     rangeName = "100mV";
-    if(isInvalidAdjDataOrChannelRangeAvail(m_channelList.at(i)->getName(), rangeName))
-        rngList.append(new Mt310s2SenseRange(m_scpiInterface, rangeName, false,   0.1, 3355443.0, 4194304.0, 15, rangeFlagsIntern(), createJustScpiInterfaceWithAtmelPermission()));
+    if(isInvalidAdjDataOrChannelRangeAvail(adjData, channels.at(i)->getName(), rangeName))
+        rngList.append(new Mt310s2SenseRange(scpi, rangeName, false,   0.1, 3355443.0, 4194304.0, 15, rangeFlagsIntern(), createJustScpiInterfaceWithAtmelPermission(scpi)));
     rangeName = "50mV";
-    if(isInvalidAdjDataOrChannelRangeAvail(m_channelList.at(i)->getName(), rangeName))
-        rngList.append(new Mt310s2SenseRange(m_scpiInterface, rangeName, false,  0.05, 3355443.0, 4194304.0, 16, rangeFlagsIntern(), createJustScpiInterfaceWithAtmelPermission()));
+    if(isInvalidAdjDataOrChannelRangeAvail(adjData, channels.at(i)->getName(), rangeName))
+        rngList.append(new Mt310s2SenseRange(scpi, rangeName, false,  0.05, 3355443.0, 4194304.0, 16, rangeFlagsIntern(), createJustScpiInterfaceWithAtmelPermission(scpi)));
     rangeName = "20mV";
-    if(isInvalidAdjDataOrChannelRangeAvail(m_channelList.at(i)->getName(), rangeName))
-        rngList.append(new Mt310s2SenseRange(m_scpiInterface, rangeName, false,  0.02, 2684355.0, 3355444.0, 17, rangeFlagsIntern(), createJustScpiInterfaceWithAtmelPermission()));
+    if(isInvalidAdjDataOrChannelRangeAvail(adjData, channels.at(i)->getName(), rangeName))
+        rngList.append(new Mt310s2SenseRange(scpi, rangeName, false,  0.02, 2684355.0, 3355444.0, 17, rangeFlagsIntern(), createJustScpiInterfaceWithAtmelPermission(scpi)));
     rangeName = "10mV";
-    if(isInvalidAdjDataOrChannelRangeAvail(m_channelList.at(i)->getName(), rangeName))
-        rngList.append(new Mt310s2SenseRange(m_scpiInterface, rangeName, false,  0.01, 3355443.0, 4194304.0, 18, rangeFlagsIntern(), createJustScpiInterfaceWithAtmelPermission()));
+    if(isInvalidAdjDataOrChannelRangeAvail(adjData, channels.at(i)->getName(), rangeName))
+        rngList.append(new Mt310s2SenseRange(scpi, rangeName, false,  0.01, 3355443.0, 4194304.0, 18, rangeFlagsIntern(), createJustScpiInterfaceWithAtmelPermission(scpi)));
     rangeName = "5mV";
-    if(isInvalidAdjDataOrChannelRangeAvail(m_channelList.at(i)->getName(), rangeName))
-        rngList.append(new Mt310s2SenseRange(m_scpiInterface, rangeName, false, 0.005, 3355443.0, 4194304.0, 19, rangeFlagsIntern(), createJustScpiInterfaceWithAtmelPermission()));
+    if(isInvalidAdjDataOrChannelRangeAvail(adjData, channels.at(i)->getName(), rangeName))
+        rngList.append(new Mt310s2SenseRange(scpi, rangeName, false, 0.005, 3355443.0, 4194304.0, 19, rangeFlagsIntern(), createJustScpiInterfaceWithAtmelPermission(scpi)));
     rangeName = "2mV";
-    if(isInvalidAdjDataOrChannelRangeAvail(m_channelList.at(i)->getName(), rangeName))
-        rngList.append(new Mt310s2SenseRange(m_scpiInterface, rangeName, false, 0.002, 2684355.0, 3355444.0, 20, rangeFlagsIntern(), createJustScpiInterfaceWithAtmelPermission()));
+    if(isInvalidAdjDataOrChannelRangeAvail(adjData, channels.at(i)->getName(), rangeName))
+        rngList.append(new Mt310s2SenseRange(scpi, rangeName, false, 0.002, 2684355.0, 3355444.0, 20, rangeFlagsIntern(), createJustScpiInterfaceWithAtmelPermission(scpi)));
 
-    m_channelList.at(7)->setRangeList(rngList);
+    channels.at(7)->setRangeList(rngList);
+    return channels;
 }
 
 
@@ -308,9 +311,9 @@ QString Mt310s2SenseInterface::scpiReadSenseGroupCatalog(QString &scpi)
     return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-AdjRangeScpi *Mt310s2SenseInterface::createJustScpiInterfaceWithAtmelPermission()
+AdjRangeScpi *Mt310s2SenseInterface::createJustScpiInterfaceWithAtmelPermission(std::shared_ptr<cSCPI> scpi)
 {
-    return new AdjRangeScpi(m_scpiInterface, AdjustScpiValueFormatterFactory::createMt310s2AdjFormatter());
+    return new AdjRangeScpi(scpi, AdjustScpiValueFormatterFactory::createMt310s2AdjFormatter());
 }
 
 bool Mt310s2SenseInterface::setSenseMode(QString sMode)
