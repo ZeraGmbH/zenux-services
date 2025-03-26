@@ -1,6 +1,8 @@
 <RCC>
     <qresource prefix="/">
         <file>all-ranges-i.json</file>
+        <file>all-ranges-i-ref-mode.json</file>
         <file>all-ranges-u.json</file>
+        <file>all-ranges-u-ref-mode.json</file>
     </qresource>
 </RCC>

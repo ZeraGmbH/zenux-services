@@ -110,6 +110,34 @@ void test_regression_sense_interface_com5003::constantRangeValuesU()
     QVERIFY(TestLogHelpers::compareAndLogOnDiff(jsonExpected, jsonDumped));
 }
 
+void test_regression_sense_interface_com5003::constantRangeValuesIModeREF()
+{
+    QString answer = ScpiSingleTransactionBlocked::cmd("SENS:MMODE", "REF");
+    QCOMPARE(answer, ZSCPI::scpiAnswer[ZSCPI::ack]);
+
+    QList<SenseSystem::cChannelSettings*> channelSettings;
+    channelSettings.append(m_testServer->getSenseSettings()->findChannelSettingByAlias1("IL1"));
+    channelSettings.append(m_testServer->getSenseSettings()->findChannelSettingByAlias1("IL2"));
+    channelSettings.append(m_testServer->getSenseSettings()->findChannelSettingByAlias1("IL3"));
+    QByteArray jsonDumped = SenseRegressionHelper::genJsonConstantValuesAllRanges(channelSettings, m_pcbIFace.get());
+    QByteArray jsonExpected = TestLogHelpers::loadFile(":/all-ranges-i-ref-mode.json");
+    QVERIFY(TestLogHelpers::compareAndLogOnDiff(jsonExpected, jsonDumped));
+}
+
+void test_regression_sense_interface_com5003::constantRangeValuesUModeREF()
+{
+    QString answer = ScpiSingleTransactionBlocked::cmd("SENS:MMODE", "REF");
+    QCOMPARE(answer, ZSCPI::scpiAnswer[ZSCPI::ack]);
+
+    QList<SenseSystem::cChannelSettings*> channelSettings;
+    channelSettings.append(m_testServer->getSenseSettings()->findChannelSettingByAlias1("UL1"));
+    channelSettings.append(m_testServer->getSenseSettings()->findChannelSettingByAlias1("UL2"));
+    channelSettings.append(m_testServer->getSenseSettings()->findChannelSettingByAlias1("UL3"));
+    QByteArray jsonDumped = SenseRegressionHelper::genJsonConstantValuesAllRanges(channelSettings, m_pcbIFace.get());
+    QByteArray jsonExpected = TestLogHelpers::loadFile(":/all-ranges-u-ref-mode.json");
+    QVERIFY(TestLogHelpers::compareAndLogOnDiff(jsonExpected, jsonDumped));
+}
+
 void test_regression_sense_interface_com5003::channelAliasChangeOnREF()
 {
     QString channelM0AliasBefore = ScpiSingleTransactionBlocked::query("SENSE:m0:ALIAS?");
