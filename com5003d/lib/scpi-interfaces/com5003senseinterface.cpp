@@ -1,11 +1,7 @@
 #include "com5003senseinterface.h"
-#include "adjflags.h"
 #include "com5003dglobal.h"
 #include "adjrangescpi.h"
-#include "scpiconnection.h"
-#include "resource.h"
 #include "notzeronumgen.h"
-#include "adjdataitemscpi.h"
 #include "com5003sensechannel.h"
 #include "com5003senserange.h"
 #include "protonetcommand.h"
@@ -51,7 +47,10 @@ Com5003SenseInterface::Com5003SenseInterface(std::shared_ptr<cSCPI> scpiInterfac
     m_ctrlFactory->getMModeController()->setMeasMode(SenseSystem::modeAC); // set the atmels mode too
     setNotifierSenseMMode();
 
-    m_channelList = setChannelAndRanges(senseSettings, m_adjData, m_scpiInterface, m_ctrlFactory);
+    m_channelList = setChannelAndRanges(senseSettings,
+                                        m_adjData,
+                                        m_scpiInterface,
+                                        m_ctrlFactory);
     injectAdjToChannelRanges();
     setNotifierSenseChannelCat(); // only prepared for !!! since we don't have hot plug for measuring channels yet
 
@@ -75,6 +74,9 @@ QList<SenseChannelCommon*> Com5003SenseInterface::setChannelAndRanges(cSenseSett
                                                                        std::shared_ptr<cSCPI> scpi,
                                                                        AbstractFactoryI2cCtrlPtr ctrlFactory)
 {
+    constexpr int rangeFlagsDevice = 0; // not used yet Com5003SenseChannel ctor adapt
+    constexpr int rangeFlagsIntern = 0; // not used yet no clamp plugs
+
     QList<SenseSystem::cChannelSettings*> channelSettings = senseSettings->getChannelSettings();
     QList<SenseChannelCommon*> channels;
 
@@ -138,18 +140,6 @@ QList<SenseChannelCommon*> Com5003SenseInterface::setChannelAndRanges(cSenseSett
         channels.at(i)->setRangeList(rngList);
     }
     return channels;
-}
-
-int Com5003SenseInterface::rangeFlagsDevice()
-{
-    // not used yet Com5003SenseChannel ctor adapts
-    return 0;
-}
-
-int Com5003SenseInterface::rangeFlagsIntern()
-{
-    // not used yet no clamp plugs
-    return 0;
 }
 
 int Com5003SenseInterface::rangeFlagsExtern()
