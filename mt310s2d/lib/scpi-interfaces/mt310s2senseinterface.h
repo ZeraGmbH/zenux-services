@@ -21,8 +21,6 @@ public:
     int rangeFlagsExternDc() override;
 
 private:
-    static int rangeFlagsDevice();
-    static int rangeFlagsIntern();
     const char* getAdjExportedVersion() override;
     QString getPcbName() override;
     QString getXmlType() override;

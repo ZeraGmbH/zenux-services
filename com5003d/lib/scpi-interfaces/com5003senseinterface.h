@@ -32,8 +32,6 @@ private slots:
     void registerSense();
     void notifySense();
 private:
-    int rangeFlagsDevice();
-    int rangeFlagsIntern();
     const char* getAdjExportedVersion() override;
     QString getPcbName() override;
     QString getXmlType() override;
