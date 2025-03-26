@@ -4,7 +4,9 @@
 #include <QSignalSpy>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QJsonArray>
 
+static const QString JsonNameStr = QStringLiteral("name");
 static const QString JsonAliasStr = QStringLiteral("alias");
 static const QString JsonAvailStr = QStringLiteral("avail");
 static const QString JsonUrValStr = QStringLiteral("urval");
@@ -20,6 +22,8 @@ QString SenseRegressionHelper::getJsonNumString(int clampTypeNo)
 
 void SenseRegressionHelper::addRangeConstantDataToJson(QString rangeName, SenseSystem::cChannelSettings *channelSettings, QJsonObject &range)
 {
+    range.insert(JsonNameStr, rangeName);
+
     QString channelName = channelSettings->m_nameMx;
 
     // stolen from cPCBInterfacePrivate
@@ -30,16 +34,16 @@ void SenseRegressionHelper::addRangeConstantDataToJson(QString rangeName, SenseS
     range.insert(JsonAvailStr, avail);
 
     QString urValue = ScpiSingleTransactionBlocked::query(QString("SENS:%1:%2:URV?").arg(channelName, rangeName));
-    range.insert(JsonUrValStr, urValue);
+    range.insert(JsonUrValStr, urValue.toDouble());
 
     QString rejection = ScpiSingleTransactionBlocked::query(QString("SENS:%1:%2:REJ?").arg(channelName, rangeName));
-    range.insert(JsonRejectionStr, rejection);
+    range.insert(JsonRejectionStr, rejection.toDouble());
 
     QString ovRejection = ScpiSingleTransactionBlocked::query(QString("SENS:%1:%2:OVR?").arg(channelName, rangeName));
-    range.insert(JsonOvRejectionStr, ovRejection);
+    range.insert(JsonOvRejectionStr, ovRejection.toDouble());
 
     QString adcRejection = ScpiSingleTransactionBlocked::query(QString("SENS:%1:%2:ADCR?").arg(channelName, rangeName));
-    range.insert(JsonAdcRejectionStr, adcRejection);
+    range.insert(JsonAdcRejectionStr, adcRejection.toDouble());
 
     QString adjustStatusFlags = ScpiSingleTransactionBlocked::query(QString("SENS:%1:%2:TYPE?").arg(channelName, rangeName));
     range.insert(JsonAdjustStatusFlags, adjustStatusFlags);
@@ -116,12 +120,12 @@ QByteArray SenseRegressionHelper::genJsonConstantValuesAllRanges(SenseSystem::cC
     pcbIFace->getRangeList(channelSetting->m_nameMx);
     TimeMachineObject::feedEventLoop();
 
-    QJsonObject jsonRanges;
+    QJsonArray jsonRanges;
     const QStringList ranges = responseSpy[0][2].toStringList();
     for(const QString &range : ranges) {
         QJsonObject jsonRange;
         SenseRegressionHelper::addRangeConstantDataToJson(range, channelSetting, jsonRange);
-        jsonRanges.insert(range, jsonRange);
+        jsonRanges.append(jsonRange);
     }
 
     jsonAll.insert(noClampJsonId, jsonRanges);
