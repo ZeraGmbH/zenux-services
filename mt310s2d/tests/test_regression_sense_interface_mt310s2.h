@@ -32,34 +32,23 @@ private slots:
     void clampIdsNamesCheck();
 
     // without clamps
-    void constantRangeValuesIL3GenJson();
-    void constantRangeValuesIL3Check();
-    void constantRangeValuesUL3GenJson();
-    void constantRangeValuesUL3Check();
-    void constantRangeValuesIAUXGenJson();
-    void constantRangeValuesIAUXCheck();
-    void constantRangeValuesUAUXGenJson();
-    void constantRangeValuesUAUXCheck();
+    void constantRangeValuesIL3();
+    void constantRangeValuesUL3();
+    void constantRangeValuesIAUX();
+    void constantRangeValuesUAUX();
 
     // without clamps / ADJ mode
-    void constantRangeValuesIL3ModeAdjGenJson();
-    void constantRangeValuesIL3ModeAdjCheck();
-    void constantRangeValuesIAUXModeAdjGenJson();
-    void constantRangeValuesIAUXModeAdjCheck();
+    void constantRangeValuesIL3ModeAdj();
+    void constantRangeValuesIAUXModeAdj();
 
     // without clamps / HF mode (what is that?? it just makes all ranges unavailable)
-    void constantRangeValuesIL3ModeHfGenJson();
-    void constantRangeValuesIL3ModeHfCheck();
-    void constantRangeValuesIAUXModeHfGenJson();
-    void constantRangeValuesIAUXModeHfCheck();
+    void constantRangeValuesIL3ModeHf();
+    void constantRangeValuesIAUXModeHf();
 
     // with all clamps
-    void constantRangeValuesAllClampsIL3GenJson();
-    void constantRangeValuesAllClampsIL3Check();
-    void constantRangeValuesAllClampsIAUXGenJson();
-    void constantRangeValuesAllClampsIAUXCheck();
-    void constantRangeValuesAllClampsUAUXGenJson();
-    void constantRangeValuesAllClampsUAUXCheck();
+    void constantRangeValuesAllClampsIL3();
+    void constantRangeValuesAllClampsIAUX();
+    void constantRangeValuesAllClampsUAUX();
 
     void mmodeCat();
     void invalidMode();
@@ -68,8 +57,7 @@ private slots:
     void channelAliasAdjMode();
     void channelAliasHfMode();
 private:
-    void genJsonConstantValuesAllRangesForAllClamps(QString channelName, QString channelNameAdRemoveClamps);
-    bool checkJsonConstantValuesAllRangesForAllClamps(QJsonObject jsonReference, QString channelName, QString channelNameAdRemoveClamps);
+    QByteArray genJsonConstantValuesAllRangesForAllClamps(QString channelName, QString channelNameAdRemoveClamps);
     QJsonObject loadJson(QString fileName);
 
     std::unique_ptr<TestServerForSenseInterfaceMt310s2> m_testServer;
