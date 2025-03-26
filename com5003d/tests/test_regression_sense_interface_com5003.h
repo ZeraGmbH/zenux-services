@@ -21,6 +21,8 @@ private slots:
 
     void constantRangeValuesI();
     void constantRangeValuesU();
+    void constantRangeValuesIModeREF();
+    void constantRangeValuesUModeREF();
 
     void channelAliasChangeOnREF();
     void mmodeCat();
