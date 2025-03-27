@@ -9,7 +9,8 @@ Com5003SenseRange::Com5003SenseRange(std::shared_ptr<cSCPI> scpiinterface,
                                      double rValue,
                                      double rejection,
                                      double ovrejection,
-                                     quint8 rselcode) :
+                                     quint8 rselcode,
+                                     quint16 mmask) :
     SenseRangeCommon(
         scpiinterface,
         name,
@@ -19,7 +20,7 @@ Com5003SenseRange::Com5003SenseRange(std::shared_ptr<cSCPI> scpiinterface,
         ovrejection,
         adcRejectionCom5003,
         rselcode,
-        0, // no flags used in COM5003 implementation yet
+        mmask,
         new AdjRangeScpi(scpiinterface, AdjustScpiValueFormatterFactory::createCom5003AdjFormatter()),
         rejectionScpiQueryDigitsCom5003)
 {

@@ -22,14 +22,4 @@ private:
     void setNotifierSenseChannelRange() override;
 };
 
-namespace SenseChannel
-{
-enum MMode
-{
-    modeAC,
-    modeREF,
-};
-}
-
-
 #endif // SENSECHANNEL_H

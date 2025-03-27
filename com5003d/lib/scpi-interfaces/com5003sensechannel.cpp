@@ -2,6 +2,12 @@
 #include "senserangecommon.h"
 #include "zscpi_response_definitions.h"
 
+enum MMode
+{
+    modeAC = 1,
+    modeREF = 16,
+};
+
 Com5003SenseChannel::Com5003SenseChannel(std::shared_ptr<cSCPI> scpiinterface,
                                          QString description,
                                          QString unit,
@@ -20,11 +26,15 @@ Com5003SenseChannel::Com5003SenseChannel(std::shared_ptr<cSCPI> scpiinterface,
 void Com5003SenseChannel::setMMode(int m)
 {
     m_nMMode = m;
+    for(auto range : qAsConst(m_RangeList))
+        range->setMModeToUpdateAvailability(m);
+    notifierSenseChannelRangeCat.forceTrigger(); // better we would ask for changed avail ranges and then trigger !!!
+    // but we can do this later
 }
 
 QString Com5003SenseChannel::getAlias()
 {
-    if (m_nMMode == 0)
+    if (m_nMMode == modeAC)
         return m_sAlias1;
     else
         return m_sAlias2;
@@ -34,7 +44,7 @@ void Com5003SenseChannel::setNotifierSenseChannelRange()
 {
     quint8 mode, rSelCode;
     if (m_ctrlFactory->getMModeController()->readMeasMode(mode) == ZeraMControllerIo::cmddone ) {
-        if (mode == SenseChannel::modeAC) { // wir sind im normalberieb
+        if (mode == modeAC) {
             if (m_ctrlFactory->getRangesController()->readRange(m_nCtrlChannel, rSelCode) == ZeraMControllerIo::cmddone ) {
                 for(auto range : qAsConst(m_RangeList)) {
                     if ( (range->getSelCode() == rSelCode) && (range->getAvail())) {
@@ -72,7 +82,7 @@ QString Com5003SenseChannel::scpiReadWriteRange(QString &sInput)
             }
             if ( (i < anz) && (m_RangeList.at(i)->getAvail()) ) {
                 // we know this range and it's available
-                if (m_nMMode == SenseChannel::modeAC) {
+                if (m_nMMode == modeAC) {
                     if (m_ctrlFactory->getRangesController()->setRange(m_nCtrlChannel, m_RangeList.at(i)->getSelCode()) == ZeraMControllerIo::cmddone) {
                         notifierSenseChannelRange = rng;
                         return ZSCPI::scpiAnswer[ZSCPI::ack];
