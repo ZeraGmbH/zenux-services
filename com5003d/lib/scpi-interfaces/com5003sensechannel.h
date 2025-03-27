@@ -1,5 +1,5 @@
-#ifndef SENSECHANNEL_H
-#define SENSECHANNEL_H
+#ifndef COM5003SENSECHANNEL_H
+#define COM5003SENSECHANNEL_H
 
 #include "sensesettings.h"
 #include <QList>
@@ -22,4 +22,4 @@ private:
     void setNotifierSenseChannelRange() override;
 };
 
-#endif // SENSECHANNEL_H
+#endif // COM5003SENSECHANNEL_H

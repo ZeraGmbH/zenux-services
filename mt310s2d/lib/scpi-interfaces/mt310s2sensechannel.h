@@ -1,5 +1,5 @@
-#ifndef SENSECHANNEL_H
-#define SENSECHANNEL_H
+#ifndef MT310S2SENSECHANNEL_H
+#define MT310S2SENSECHANNEL_H
 
 #include "sensesettings.h"
 #include <QList>
@@ -22,4 +22,4 @@ private:
     void setNotifierSenseChannelRange() override;
 };
 
-#endif // SENSECHANNEL_H
+#endif // MT310S2SENSECHANNEL_H

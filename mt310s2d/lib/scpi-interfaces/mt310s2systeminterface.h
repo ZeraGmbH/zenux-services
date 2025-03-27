@@ -1,5 +1,5 @@
-#ifndef SYSTEMINTERFACE_H
-#define SYSTEMINTERFACE_H
+#ifndef MT310S2SYSTEMINTERFACE_H
+#define MT310S2SYSTEMINTERFACE_H
 
 #include "scpiconnection.h"
 #include "hotpluggablecontrollercontainer.h"
@@ -82,4 +82,4 @@ private:
 };
 
 
-#endif // SYSTEMINTERFACE_H
+#endif // MT310S2SYSTEMINTERFACE_H
