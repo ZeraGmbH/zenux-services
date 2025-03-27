@@ -1,5 +1,5 @@
-#ifndef SENSEINTERFACE_H
-#define SENSEINTERFACE_H
+#ifndef MT310S2SENSEINTERFACE_H
+#define MT310S2SENSEINTERFACE_H
 
 #include "senseinterfacecommon.h"
 
@@ -29,4 +29,4 @@ private:
     bool setSenseMode(QString mode);
 };
 
-#endif // SENSEINTERFACE_H
+#endif // MT310S2SENSEINTERFACE_H

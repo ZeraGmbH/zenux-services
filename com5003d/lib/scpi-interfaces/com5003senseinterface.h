@@ -1,8 +1,7 @@
-#ifndef SENSEINTERFACE_H
-#define SENSEINTERFACE_H
+#ifndef COM5003SENSEINTERFACE_H
+#define COM5003SENSEINTERFACE_H
 
 #include "senseinterfacecommon.h"
-#include <QList>
 
 class Com5003SenseInterface : public SenseInterfaceCommon
 {
@@ -31,4 +30,4 @@ private:
     bool setSenseMode(QString modeStr);
 };
 
-#endif // SENSEINTERFACE_H
+#endif // COM5003SENSEINTERFACE_H

@@ -4,7 +4,6 @@
 #include "mt310s2senserange.h"
 #include "protonetcommand.h"
 #include "adjrangescpi.h"
-#include "scpiconnection.h"
 #include "zscpi_response_definitions.h"
 #include "i2csettings.h"
 #include "sensesettings.h"

@@ -1,5 +1,5 @@
-#ifndef SYSTEMINTERFACE_H
-#define SYSTEMINTERFACE_H
+#ifndef COM5003SYSTEMINTERFACE_H
+#define COM5003SYSTEMINTERFACE_H
 
 #include "senseinterfacecommon.h"
 #include "scpiconnection.h"
@@ -69,4 +69,4 @@ private:
     NotificationString m_allPCBVersion;
 };
 
-#endif // SYSTEMINTERFACE_H
+#endif // COM5003SYSTEMINTERFACE_H
