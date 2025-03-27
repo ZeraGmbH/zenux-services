@@ -12,10 +12,12 @@ static const char* cacheFileName = "adj-intern-cache";
 SenseInterfaceCommon::SenseInterfaceCommon(std::shared_ptr<cSCPI> scpiInterface,
                                            I2cSettings *i2cSettings,
                                            SystemInfo *systemInfo,
-                                           AbstractFactoryI2cCtrlPtr ctrlFactory) :
+                                           AbstractFactoryI2cCtrlPtr ctrlFactory,
+                                           QHash<QString, int> availSenseModesHash) :
     cResource(scpiInterface),
     m_systemInfo(systemInfo),
     m_ctrlFactory(ctrlFactory),
+    m_availSenseModesHash(availSenseModesHash),
     m_adjReadWrite(i2cSettings->getDeviceNode(),
                    i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress),
                    I2cMultiplexerFactory::createNullMuxer())

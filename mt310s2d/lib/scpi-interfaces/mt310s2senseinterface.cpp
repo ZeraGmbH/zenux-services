@@ -61,12 +61,9 @@ Mt310s2SenseInterface::Mt310s2SenseInterface(std::shared_ptr<cSCPI> scpiInterfac
     SenseInterfaceCommon(scpiInterface,
                            i2cSettings,
                            systemInfo,
-                           ctrlFactory)
+                           ctrlFactory,
+                           QHash<QString, int>{{"AC", modeAC}, {"HF", modeHF}, {"ADJ", modeADJ}})
 {
-    m_availSenseModesHash["AC"] = modeAC;
-    m_availSenseModesHash["HF"] = modeHF;
-    m_availSenseModesHash["ADJ"] = modeADJ;
-
     m_channelList = setChannelAndRanges(senseSettings,
                                         m_adjData,
                                         m_scpiInterface,
