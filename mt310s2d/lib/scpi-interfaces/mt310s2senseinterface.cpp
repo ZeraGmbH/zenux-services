@@ -313,7 +313,6 @@ bool Mt310s2SenseInterface::setSenseMode(QString sMode)
 {
     if (m_availSenseModesHash.contains(sMode)) {
         quint8 mode = m_availSenseModesHash[sMode];
-        m_ctrlFactory->getMModeController()->setMeasMode((mode >> 1) & 1); // set the atmels mode here...atmel only knows ac and hf
         for(auto channel : qAsConst(m_channelList))
             channel->setMMode(mode);
         m_currSenseMode = sMode;
