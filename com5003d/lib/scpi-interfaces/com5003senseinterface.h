@@ -40,12 +40,6 @@ private:
     AdjRangeScpi* createJustScpiInterfaceWithAtmelPermission();
     QString scpiReadSenseGroupCatalog(QString& scpi) override;
     void handleScpiReadWriteMMode(cProtonetCommand* protoCmd) override;
-    enum SetModeModeResult {
-        done,
-        start_statemachine_required,
-        failed
-    };
-    SetModeModeResult setSenseModeCom5003Style(QString mode);
     bool setSenseMode(QString modeStr);
     RMConnection* m_rmConnection;
     EthSettings* m_ethSettings;

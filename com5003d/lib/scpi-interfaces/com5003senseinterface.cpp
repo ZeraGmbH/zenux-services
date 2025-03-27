@@ -144,16 +144,6 @@ int Com5003SenseInterface::rangeFlagsExternDc()
     return 0;
 }
 
-Com5003SenseInterface::SetModeModeResult Com5003SenseInterface::setSenseModeCom5003Style(QString mode)
-{
-    if(mode == m_currSenseMode)
-        return done;
-    if(!m_availSenseModesHash.contains(mode))
-        return failed;
-    m_currSenseMode = mode;
-    return start_statemachine_required;
-}
-
 bool Com5003SenseInterface::setSenseMode(QString modeStr)
 {
     if (m_availSenseModesHash.contains(modeStr)) {
@@ -180,19 +170,6 @@ void Com5003SenseInterface::handleScpiReadWriteMMode(cProtonetCommand *protoCmd)
                 protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::ack];
             else
                 protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::nak];
-            /*switch(setSenseModeCom5003Style(mode)) {
-            case done:
-                protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::ack];
-                break;
-            case failed:
-                protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::nak];
-                break;
-            case start_statemachine_required:
-                protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::ack];
-                sensemodeProtonetCmdList.append(protoCmd);
-                m_ChangeSenseModeMachine.start();
-                return; // state machine responds
-            }*/
         }
         else
             protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::nak];
