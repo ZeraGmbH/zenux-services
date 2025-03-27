@@ -15,11 +15,6 @@
 #include <QDebug>
 #include <QFile>
 
-enum SensorType {
-    Direct = 0x100,
-    Clamp = 0x200
-};
-
 const QString sVoltageChannelDescription = "Measuring channel 0..250V 50Hz/150kHz";
 const QString sCurrentChannelDescription = "Measuring channel 0..1000A 50Hz/150kHz";
 
@@ -48,8 +43,8 @@ QList<SenseChannelCommon*> Mt310s2SenseInterface::setChannelAndRanges(cSenseSett
                                                                        std::shared_ptr<cSCPI> scpi,
                                                                        AbstractFactoryI2cCtrlPtr ctrlFactory)
 {
-    constexpr int rangeFlagsDevice = modeAC | modeADJ | Direct;
-    constexpr int rangeFlagsIntern = modeADJ | Direct;
+    constexpr quint16 rangeFlagsDevice = modeAC | modeADJ | Direct;
+    constexpr quint16 rangeFlagsIntern = modeADJ | Direct;
 
     QList<SenseSystem::cChannelSettings*> channelSettings = senseSettings->getChannelSettings();
     QList<SenseChannelCommon*> channels;
@@ -229,16 +224,6 @@ QString Mt310s2SenseInterface::getXmlType()
 bool Mt310s2SenseInterface::isRangePartOfAdjXmlExport(SenseRangeCommon *range)
 {
     return range->getMMask() & Direct;
-}
-
-int Mt310s2SenseInterface::rangeFlagsExtern()
-{
-    return modeAC | Clamp;
-}
-
-int Mt310s2SenseInterface::rangeFlagsExternDc()
-{
-    return rangeFlagsExtern() | modeDC;
 }
 
 const char *Mt310s2SenseInterface::getAdjExportedVersion()

@@ -6,13 +6,6 @@
 
 QTEST_MAIN(test_regression_sense_range_mt310s2);
 
-// These flags are used at the time of writing. No problem if these change at
-// Mt310s2SenseInterface: We are interested to find values injected
-enum SensorType {
-    Direct = 0x100,
-    Clamp = 0x200
-};
-
 void test_regression_sense_range_mt310s2::init()
 {
     m_scpiInterface = std::make_shared<cSCPI>();

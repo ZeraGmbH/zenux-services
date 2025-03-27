@@ -17,8 +17,6 @@ public:
                                                            AdjDataPtr adjData,
                                                            std::shared_ptr<cSCPI> scpi,
                                                            AbstractFactoryI2cCtrlPtr ctrlFactory);
-    int rangeFlagsExtern() override;
-    int rangeFlagsExternDc() override;
 
 private:
     const char* getAdjExportedVersion() override;
