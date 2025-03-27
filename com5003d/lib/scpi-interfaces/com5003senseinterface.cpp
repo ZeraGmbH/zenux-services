@@ -203,7 +203,7 @@ void Com5003SenseInterface::changeSense()
         }
         // correct reference mode (1/'R0V' / 2/'R10V') are set in
         // Com5003SenseChannel::scpiReadWriteRange since the modes are treated
-        // like ranges (that's why range groupung is mandatory in REF session)
+        // like ranges (that's why range grouping is mandatory in REF session)
         m_ctrlFactory->getMModeController()->setMeasMode(1);
     }
 }
