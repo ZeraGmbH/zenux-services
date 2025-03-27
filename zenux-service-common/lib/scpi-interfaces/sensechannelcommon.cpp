@@ -124,6 +124,15 @@ void SenseChannelCommon::initSCPIConnection(QString leadingNodes)
     }
 }
 
+void SenseChannelCommon::setMMode(int mode)
+{
+    m_nMMode = mode;
+    for(auto range : qAsConst(m_RangeList))
+        range->setMModeToUpdateAvailability(mode);
+    notifierSenseChannelRangeCat.forceTrigger(); // better we would ask for changed avail ranges and then trigger !!!
+    // but we can do this later
+}
+
 void SenseChannelCommon::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
 {
     switch (cmdCode)
