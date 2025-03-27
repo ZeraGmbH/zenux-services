@@ -17,8 +17,6 @@ TestServerForSenseInterfaceCom5003::TestServerForSenseInterfaceCom5003(AbstractF
 
     m_senseInterface = std::make_unique<Com5003SenseInterface>(m_scpiInterface,
                                                                m_settings->getI2cSettings(),
-                                                               getRmConnection(),
-                                                               m_settings->getEthSettings(),
                                                                m_senseSettings.get(),
                                                                m_systemInfo.get(),
                                                                ctrlFactory);

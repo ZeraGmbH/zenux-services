@@ -299,8 +299,6 @@ void cCOM5003dServer::doSetupServer()
     scpiConnectionList.append(this); // the server itself has some commands
     scpiConnectionList.append(m_pSenseInterface = new Com5003SenseInterface(m_scpiInterface,
                                                                             m_settings->getI2cSettings(),
-                                                                            m_pRMConnection,
-                                                                            ethSettings,
                                                                             m_pSenseSettings,
                                                                             m_pSystemInfo,
                                                                             m_ctrlFactory));
