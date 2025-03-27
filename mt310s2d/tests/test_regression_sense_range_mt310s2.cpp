@@ -1,4 +1,5 @@
 #include "test_regression_sense_range_mt310s2.h"
+#include "senseinterfacecommon.h"
 #include "mt310s2senserange.h"
 #include "zscpi_response_definitions.h"
 #include <QTest>
@@ -11,14 +12,6 @@ enum SensorType {
     Direct = 0x100,
     Clamp = 0x200
 };
-enum MMode
-{
-    modeAC = 1,
-    modeHF = 2,
-    modeDC = 4,
-    modeADJ = 8
-};
-
 
 void test_regression_sense_range_mt310s2::init()
 {
