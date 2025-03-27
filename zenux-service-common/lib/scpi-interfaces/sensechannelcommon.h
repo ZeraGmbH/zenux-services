@@ -54,7 +54,7 @@ public:
     void computeJustData();
     void initSCPIConnection(QString leadingNodes) override;
 
-    virtual void setMMode(int m) = 0;
+    void setMMode(int mode);
 
 protected:
     void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;

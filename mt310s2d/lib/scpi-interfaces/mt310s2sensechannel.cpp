@@ -17,15 +17,6 @@ Mt310s2SenseChannel::Mt310s2SenseChannel(std::shared_ptr<cSCPI> scpiinterface,
 {
 }
 
-void Mt310s2SenseChannel::setMMode(int m)
-{
-    m_nMMode = m;
-    for(auto range : qAsConst(m_RangeList))
-        range->setMModeToUpdateAvailability(m);
-    notifierSenseChannelRangeCat.forceTrigger(); // better we would ask for changed avail ranges and then trigger !!!
-    // but we can do this later
-}
-
 QString Mt310s2SenseChannel::getAlias()
 {
     return m_sAlias1;
