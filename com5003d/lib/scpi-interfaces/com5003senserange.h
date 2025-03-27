@@ -13,7 +13,8 @@ public:
                       double rValue,
                       double rejection,
                       double ovrejection,
-                      quint8 rselcode);
+                      quint8 rselcode,
+                      quint16 mmask);
 };
 
 #endif // COM5003SENSERANGE_H

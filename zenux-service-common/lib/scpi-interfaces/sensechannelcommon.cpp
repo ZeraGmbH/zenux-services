@@ -17,9 +17,9 @@ SenseChannelCommon::SenseChannelCommon(std::shared_ptr<cSCPI> scpiinterface,
     m_nCtrlChannel(cSettings->m_nCtrlChannel),
     m_nDspChannel(cSettings->m_nDspChannel),
     m_nOverloadBit(cSettings->m_nOverloadBit),
-    m_bAvail(cSettings->avail)
+    m_bAvail(cSettings->avail),
+    m_nMMode(0)
 {
-    m_nMMode = 0; // SenseChannel::modeAC the default
 }
 
 SenseChannelCommon::~SenseChannelCommon()

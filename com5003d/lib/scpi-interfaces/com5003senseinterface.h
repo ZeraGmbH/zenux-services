@@ -32,6 +32,7 @@ private slots:
     void registerSense();
     void notifySense();
 private:
+    void changeSense();
     const char* getAdjExportedVersion() override;
     QString getPcbName() override;
     QString getXmlType() override;
@@ -44,7 +45,8 @@ private:
         start_statemachine_required,
         failed
     };
-    SetModeModeResult setSenseMode(QString mode);
+    SetModeModeResult setSenseModeCom5003Style(QString mode);
+    bool setSenseMode(QString modeStr);
     RMConnection* m_rmConnection;
     EthSettings* m_ethSettings;
 

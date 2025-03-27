@@ -14,7 +14,8 @@ void test_regression_sense_range_com5003::init()
                                     11111.11111,
                                     22222.22222,
                                     33333.33333,
-                                    5);
+                                    5,
+                                    1); // modeAC
     m_range->initSCPIConnection("SENSE:m0");
 }
 
@@ -170,7 +171,7 @@ void test_regression_sense_range_com5003::checkTypeOrMask()
     cProtonetCommand* protoCmd = new cProtonetCommand(0, false, true, QByteArray(), 0, scpiRejectionType);
     cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
     scpiDelegate->executeSCPI(protoCmd);
-    QCOMPARE((protoCmd->m_sOutput), QString("%1").arg(0)); // was SenseRange::Phys - all ranges have that
+    QCOMPARE((protoCmd->m_sOutput), QString("%1").arg(1)); // modeAC
 
     QString scpiRejectionCmd = "SENSE:m0:240V:TYPE 1";
     scpiObject = m_scpiInterface->getSCPIObject(scpiRejectionCmd);
