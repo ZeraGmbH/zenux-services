@@ -2,11 +2,7 @@
 #define SENSEINTERFACE_H
 
 #include "senseinterfacecommon.h"
-#include "ethsettings.h"
 #include <QList>
-#include <QStateMachine>
-#include <QState>
-#include <QFinalState>
 
 class Com5003SenseInterface : public SenseInterfaceCommon
 {
@@ -22,8 +18,6 @@ public:
                                                            AdjDataPtr adjData,
                                                            std::shared_ptr<cSCPI> scpi,
                                                            AbstractFactoryI2cCtrlPtr ctrlFactory);
-    int rangeFlagsExtern() override;
-    int rangeFlagsExternDc() override;
 
 private:
     void changeSense();

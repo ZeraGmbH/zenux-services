@@ -177,6 +177,16 @@ quint16 SenseInterfaceCommon::getAdjChecksum()
     return m_adjReadWrite.getChecksum();
 }
 
+int SenseInterfaceCommon::rangeFlagsExtern()
+{
+    return modeAC | Clamp;
+}
+
+int SenseInterfaceCommon::rangeFlagsExternDc()
+{
+    return rangeFlagsExtern() | modeDC;
+}
+
 bool SenseInterfaceCommon::exportAdjData(QDateTime dateTimeWrite)
 {
     QByteArray ba;

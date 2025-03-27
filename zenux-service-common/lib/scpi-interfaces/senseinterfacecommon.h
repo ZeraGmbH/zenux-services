@@ -58,6 +58,11 @@ enum MMode
     modeREF = 1<<4,
 };
 
+enum SensorType {
+    Direct = 1<<8,
+    Clamp = 1<<9
+};
+
 class SenseInterfaceCommon : public cResource, public AdjustmentXmlImportExportTemplate, public AbstractAdjStatus
 {
 public:
@@ -77,8 +82,8 @@ public:
     bool importAdjData();
     quint16 getAdjChecksum();
 
-    virtual int rangeFlagsExtern() = 0;
-    virtual int rangeFlagsExternDc() = 0; // maybe this can go - for now just compatibility
+    int rangeFlagsExtern();
+    int rangeFlagsExternDc(); // maybe this can go - for now just compatibility
     virtual void initSCPIConnection(QString leadingNodes) override;
     QString exportXMLString(int indent = 1) override;
 

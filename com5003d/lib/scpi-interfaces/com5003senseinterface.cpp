@@ -1,7 +1,6 @@
 #include "com5003senseinterface.h"
 #include "com5003dglobal.h"
 #include "adjrangescpi.h"
-#include "notzeronumgen.h"
 #include "com5003sensechannel.h"
 #include "com5003senserange.h"
 #include "protonetcommand.h"
@@ -44,8 +43,8 @@ QList<SenseChannelCommon*> Com5003SenseInterface::setChannelAndRanges(cSenseSett
                                                                        std::shared_ptr<cSCPI> scpi,
                                                                        AbstractFactoryI2cCtrlPtr ctrlFactory)
 {
-    constexpr int rangeFlagsDevice = modeAC;
-    constexpr int rangeFlagsReference = modeREF;
+    constexpr quint16 rangeFlagsDevice = modeAC;
+    constexpr quint16 rangeFlagsReference = modeREF;
     Q_UNUSED(adjData) // not use in for same signature as mt310s2
     //constexpr int rangeFlagsIntern = 0; // not used yet no clamp plugs
 
@@ -112,18 +111,6 @@ QList<SenseChannelCommon*> Com5003SenseInterface::setChannelAndRanges(cSenseSett
         channels.at(i)->setRangeList(rngList);
     }
     return channels;
-}
-
-int Com5003SenseInterface::rangeFlagsExtern()
-{
-    // not used yet no clamps supported
-    return 0;
-}
-
-int Com5003SenseInterface::rangeFlagsExternDc()
-{
-    // not used yet no clamps supported
-    return 0;
 }
 
 bool Com5003SenseInterface::setSenseMode(QString modeStr)
