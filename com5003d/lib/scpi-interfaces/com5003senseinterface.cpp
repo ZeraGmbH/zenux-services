@@ -22,17 +22,13 @@ const QString sReferenceChannelDescription = "Reference channel 0..10V DC";
 
 Com5003SenseInterface::Com5003SenseInterface(std::shared_ptr<cSCPI> scpiInterface,
                                              I2cSettings *i2cSettings,
-                                             RMConnection* rmConnection,
-                                             EthSettings *ethSettings,
                                              cSenseSettings *senseSettings, SystemInfo *systemInfo,
                                              AbstractFactoryI2cCtrlPtr ctrlFactory) :
     SenseInterfaceCommon(scpiInterface,
                            i2cSettings,
                            systemInfo,
                            ctrlFactory,
-                           QHash<QString, int>{{"AC", modeAC}, {"REF", modeREF}}),
-    m_rmConnection(rmConnection),
-    m_ethSettings(ethSettings)
+                           QHash<QString, int>{{"AC", modeAC}, {"REF", modeREF}})
 {
     m_channelList = setChannelAndRanges(senseSettings,
                                         m_adjData,

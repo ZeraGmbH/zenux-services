@@ -14,8 +14,6 @@ class Com5003SenseInterface : public SenseInterfaceCommon
 public:
     Com5003SenseInterface(std::shared_ptr<cSCPI> scpiInterface,
                           I2cSettings* i2cSettings,
-                          RMConnection* rmConnection,
-                          EthSettings* ethSettings,
                           cSenseSettings* senseSettings,
                           SystemInfo *systemInfo,
                           AbstractFactoryI2cCtrlPtr ctrlFactory);
@@ -37,8 +35,6 @@ private:
     QString scpiReadSenseGroupCatalog(QString& scpi) override;
     void handleScpiReadWriteMMode(cProtonetCommand* protoCmd) override;
     bool setSenseMode(QString modeStr);
-    RMConnection* m_rmConnection;
-    EthSettings* m_ethSettings;
 };
 
 #endif // SENSEINTERFACE_H
