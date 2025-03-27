@@ -31,7 +31,8 @@ public:
     SenseInterfaceCommon(std::shared_ptr<cSCPI> scpiInterface,
                          I2cSettings* i2cSettings,
                          SystemInfo *systemInfo,
-                         AbstractFactoryI2cCtrlPtr ctrlFactory);
+                         AbstractFactoryI2cCtrlPtr ctrlFactory,
+                         QHash<QString, int> availSenseModesHash);
     virtual ~SenseInterfaceCommon();
     quint8 getAdjustmentStatus() override;
     SenseChannelCommon *getChannel(QString& name);
@@ -78,7 +79,7 @@ protected:
     AbstractFactoryI2cCtrlPtr m_ctrlFactory;
     QList<SenseChannelCommon*> m_channelList;
     QString m_currSenseMode;
-    QHash<QString, int> m_availSenseModesHash;
+    const QHash<QString, int> m_availSenseModesHash;
     quint8 m_nSerialStatus;
 
     NotificationString m_notifierSenseMMode;

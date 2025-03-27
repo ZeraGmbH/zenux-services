@@ -36,13 +36,12 @@ Com5003SenseInterface::Com5003SenseInterface(std::shared_ptr<cSCPI> scpiInterfac
     SenseInterfaceCommon(scpiInterface,
                            i2cSettings,
                            systemInfo,
-                           ctrlFactory),
+                           ctrlFactory,
+                           QHash<QString, int>{{"AC", modeAC}, {"REF", modeREF}}),
     m_rmConnection(rmConnection),
     m_ethSettings(ethSettings)
 {
     m_currSenseMode = "AC";
-    m_availSenseModesHash["AC"] = SenseSystem::modeAC;
-    m_availSenseModesHash["REF"] = SenseSystem::modeREF;
 
     m_ctrlFactory->getMModeController()->setMeasMode(SenseSystem::modeAC); // set the atmels mode too
     setNotifierSenseMMode();
