@@ -16,10 +16,6 @@
 #include <QDomText>
 #include <QDebug>
 
-enum MMode {
-    modeAC = 1,
-    modeREF = 16,
-};
 const QString sVoltageChannelDescription = "Measuring channel 0..480V AC";
 const QString sCurrentChannelDescription = "Measuring channel 0..160A AC";
 const QString sReferenceChannelDescription = "Reference channel 0..10V DC";
@@ -256,9 +252,9 @@ void Com5003SenseInterface::changeSense()
             m_channelList.at(i)->setDescription(sReferenceChannelDescription);
             m_channelList.at(i)->setUnit("V");
         }
-        // corrct reference mode (1/'R0V' / 2/'R10V') are set in
+        // correct reference mode (1/'R0V' / 2/'R10V') are set in
         // Com5003SenseChannel::scpiReadWriteRange since the modes are treated
-        // like measurement modes
+        // like ranges (that's why range groupung is mandatory in REF session)
         m_ctrlFactory->getMModeController()->setMeasMode(1);
     }
 }

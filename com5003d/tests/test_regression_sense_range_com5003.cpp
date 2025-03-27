@@ -1,4 +1,5 @@
 #include "test_regression_sense_range_com5003.h"
+#include "senseinterfacecommon.h"
 #include "com5003senserange.h"
 #include "zscpi_response_definitions.h"
 #include <QTest>
@@ -15,7 +16,7 @@ void test_regression_sense_range_com5003::init()
                                     22222.22222,
                                     33333.33333,
                                     5,
-                                    1); // modeAC
+                                    modeAC);
     m_range->initSCPIConnection("SENSE:m0");
 }
 
@@ -171,7 +172,7 @@ void test_regression_sense_range_com5003::checkTypeOrMask()
     cProtonetCommand* protoCmd = new cProtonetCommand(0, false, true, QByteArray(), 0, scpiRejectionType);
     cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
     scpiDelegate->executeSCPI(protoCmd);
-    QCOMPARE((protoCmd->m_sOutput), QString("%1").arg(1)); // modeAC
+    QCOMPARE((protoCmd->m_sOutput), QString("%1").arg(modeAC));
 
     QString scpiRejectionCmd = "SENSE:m0:240V:TYPE 1";
     scpiObject = m_scpiInterface->getSCPIObject(scpiRejectionCmd);

@@ -1,12 +1,7 @@
 #include "com5003sensechannel.h"
+#include "senseinterfacecommon.h"
 #include "senserangecommon.h"
 #include "zscpi_response_definitions.h"
-
-enum MMode
-{
-    modeAC = 1,
-    modeREF = 16,
-};
 
 Com5003SenseChannel::Com5003SenseChannel(std::shared_ptr<cSCPI> scpiinterface,
                                          QString description,
