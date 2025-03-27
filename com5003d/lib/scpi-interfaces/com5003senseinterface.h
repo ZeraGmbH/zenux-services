@@ -27,10 +27,6 @@ public:
     int rangeFlagsExtern() override;
     int rangeFlagsExternDc() override;
 
-private slots:
-    void unregisterSense();
-    void registerSense();
-    void notifySense();
 private:
     void changeSense();
     const char* getAdjExportedVersion() override;
@@ -43,12 +39,6 @@ private:
     bool setSenseMode(QString modeStr);
     RMConnection* m_rmConnection;
     EthSettings* m_ethSettings;
-
-    QStateMachine m_ChangeSenseModeMachine;
-    QState m_UnregisterSenseState;
-    QState m_RegisterSenseState;
-    QFinalState m_NotifySenseState;
-    QList<cProtonetCommand*> sensemodeProtonetCmdList;
 };
 
 #endif // SENSEINTERFACE_H
