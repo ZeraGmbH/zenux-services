@@ -41,20 +41,6 @@ Com5003SenseInterface::Com5003SenseInterface(std::shared_ptr<cSCPI> scpiInterfac
     injectAdjToChannelRanges();
     setSenseMode("AC");
     setNotifierSenseChannelCat(); // only prepared for !!! since we don't have hot plug for measuring channels yet
-
-    // we set up our statemachine for changing sense mode
-    // we must use a statemachine because we have to synchronize sending of notifier
-    // otherwise moduls using this notifier will crash because resources are not registered properly
-
-    m_UnregisterSenseState.addTransition(this, &Com5003SenseInterface::unregisterRdy, &m_RegisterSenseState);
-    m_RegisterSenseState.addTransition(this, &Com5003SenseInterface::registerRdy, &m_NotifySenseState);
-    m_ChangeSenseModeMachine.addState(&m_UnregisterSenseState);
-    m_ChangeSenseModeMachine.addState(&m_RegisterSenseState);
-    m_ChangeSenseModeMachine.addState(&m_NotifySenseState);
-    m_ChangeSenseModeMachine.setInitialState(&m_UnregisterSenseState);
-    connect(&m_UnregisterSenseState, &QAbstractState::entered, this, &Com5003SenseInterface::unregisterSense);
-    connect(&m_RegisterSenseState, &QAbstractState::entered, this, &Com5003SenseInterface::registerSense);
-    connect(&m_NotifySenseState, &QAbstractState::entered, this, &Com5003SenseInterface::notifySense);
 }
 
 QList<SenseChannelCommon*> Com5003SenseInterface::setChannelAndRanges(cSenseSettings *senseSettings,
@@ -196,16 +182,6 @@ AdjRangeScpi *Com5003SenseInterface::createJustScpiInterfaceWithAtmelPermission(
     return new AdjRangeScpi(m_scpiInterface, AdjustScpiValueFormatterFactory::createCom5003AdjFormatter());
 }
 
-void Com5003SenseInterface::unregisterSense()
-{
-    SenseChannelCommon* pChannel;
-    for (int i = 0; i < 6; i++) {
-        pChannel = m_channelList.at(i);
-        unregister1Resource(m_rmConnection, NotZeroNumGen::getMsgNr(), QString("SENSE;%1;")
-                                                                         .arg(pChannel->getName()));
-    }
-}
-
 void Com5003SenseInterface::changeSense()
 {
     if (m_availSenseModesHash[m_currSenseMode] == modeAC) {
@@ -234,21 +210,6 @@ void Com5003SenseInterface::changeSense()
         // like ranges (that's why range groupung is mandatory in REF session)
         m_ctrlFactory->getMModeController()->setMeasMode(1);
     }
-}
-
-void Com5003SenseInterface::registerSense()
-{
-    changeSense();
-    registerResource(m_rmConnection, m_ethSettings->getPort(EthSettings::protobufserver));
-}
-
-void Com5003SenseInterface::notifySense()
-{
-    setNotifierSenseMMode(); // we set the notifier synchron after all resources are registered again
-    cProtonetCommand *protoCmd;
-    protoCmd = sensemodeProtonetCmdList.takeFirst();
-    if (protoCmd->m_bwithOutput)
-        emit cmdExecutionDone(protoCmd);
 }
 
 const char *Com5003SenseInterface::getAdjExportedVersion()
