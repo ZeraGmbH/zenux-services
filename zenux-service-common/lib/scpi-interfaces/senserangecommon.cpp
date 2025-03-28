@@ -71,11 +71,6 @@ bool SenseRangeCommon::getAvail() const
     return m_bAvail;
 }
 
-void SenseRangeCommon::setAvail(bool avail)
-{
-    m_bAvail = avail;
-}
-
 quint16 SenseRangeCommon::getMMask()
 {
     return m_typeFlags;
