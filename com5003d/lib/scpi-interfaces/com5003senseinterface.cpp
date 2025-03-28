@@ -1,9 +1,7 @@
 #include "com5003senseinterface.h"
 #include "com5003dglobal.h"
-#include "adjrangescpi.h"
 #include "com5003sensechannel.h"
 #include "com5003senserange.h"
-#include "protonetcommand.h"
 #include "sensesettings.h"
 #include <i2cmultiplexerfactory.h>
 #include <xmlsettings.h>
@@ -14,10 +12,6 @@
 #include <QDomDocument>
 #include <QDomText>
 #include <QDebug>
-
-const QString sVoltageChannelDescription = "Measuring channel 0..480V AC";
-const QString sCurrentChannelDescription = "Measuring channel 0..160A AC";
-const QString sReferenceChannelDescription = "Reference channel 0..10V DC";
 
 Com5003SenseInterface::Com5003SenseInterface(std::shared_ptr<cSCPI> scpiInterface,
                                              I2cSettings *i2cSettings,
@@ -50,12 +44,12 @@ QList<SenseChannelCommon*> Com5003SenseInterface::setChannelAndRanges(cSenseSett
 
     QList<SenseSystem::cChannelSettings*> channelSettings = senseSettings->getChannelSettings();
     QList<SenseChannelCommon*> channels;
-    channels.append(new Com5003SenseChannel(scpi, sVoltageChannelDescription,"V", channelSettings.at(0), 0, ctrlFactory));
-    channels.append(new Com5003SenseChannel(scpi, sVoltageChannelDescription,"V", channelSettings.at(1), 1, ctrlFactory));
-    channels.append(new Com5003SenseChannel(scpi, sVoltageChannelDescription,"V", channelSettings.at(2), 2, ctrlFactory));
-    channels.append(new Com5003SenseChannel(scpi, sCurrentChannelDescription,"A", channelSettings.at(3), 3, ctrlFactory));
-    channels.append(new Com5003SenseChannel(scpi, sCurrentChannelDescription,"A", channelSettings.at(4), 4, ctrlFactory));
-    channels.append(new Com5003SenseChannel(scpi, sCurrentChannelDescription,"A", channelSettings.at(5), 5, ctrlFactory));
+    channels.append(new Com5003SenseChannel(scpi, "V", channelSettings.at(0), 0, ctrlFactory));
+    channels.append(new Com5003SenseChannel(scpi, "V", channelSettings.at(1), 1, ctrlFactory));
+    channels.append(new Com5003SenseChannel(scpi, "V", channelSettings.at(2), 2, ctrlFactory));
+    channels.append(new Com5003SenseChannel(scpi, "A", channelSettings.at(3), 3, ctrlFactory));
+    channels.append(new Com5003SenseChannel(scpi, "A", channelSettings.at(4), 4, ctrlFactory));
+    channels.append(new Com5003SenseChannel(scpi, "A", channelSettings.at(5), 5, ctrlFactory));
 
     for (int i = 0; i < 3; i++) {
         QList<SenseRangeCommon*> rngListU;
@@ -129,24 +123,17 @@ QString Com5003SenseInterface::scpiReadSenseGroupCatalog(QString &scpi)
 void Com5003SenseInterface::changeSense()
 {
     if (m_availSenseModesHash[m_currSenseMode] == modeAC) {
-        m_channelList.at(0)->setDescription(sVoltageChannelDescription);
         m_channelList.at(0)->setUnit("V");
-        m_channelList.at(1)->setDescription(sVoltageChannelDescription);
         m_channelList.at(1)->setUnit("V");
-        m_channelList.at(2)->setDescription(sVoltageChannelDescription);
         m_channelList.at(2)->setUnit("V");
 
-        m_channelList.at(3)->setDescription(sCurrentChannelDescription);
         m_channelList.at(3)->setUnit("A");
-        m_channelList.at(4)->setDescription(sCurrentChannelDescription);
         m_channelList.at(4)->setUnit("A");
-        m_channelList.at(5)->setDescription(sCurrentChannelDescription);
         m_channelList.at(5)->setUnit("A");
         m_ctrlFactory->getMModeController()->setMeasMode(0);
     }
     else { // REF
         for (qint32 i = 0; i < m_channelList.count(); i++) { // for each channel
-            m_channelList.at(i)->setDescription(sReferenceChannelDescription);
             m_channelList.at(i)->setUnit("V");
         }
         // correct reference mode (1/'R0V' / 2/'R10V') are set in

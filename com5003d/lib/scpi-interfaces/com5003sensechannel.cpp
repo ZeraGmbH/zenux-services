@@ -4,13 +4,11 @@
 #include "zscpi_response_definitions.h"
 
 Com5003SenseChannel::Com5003SenseChannel(std::shared_ptr<cSCPI> scpiinterface,
-                                         QString description,
                                          QString unit,
                                          SenseSystem::cChannelSettings *cSettings,
                                          quint8 nr,
                                          AbstractFactoryI2cCtrlPtr ctrlFactory) :
     SenseChannelCommon(scpiinterface,
-                       description,
                        unit,
                        cSettings,
                        nr,
