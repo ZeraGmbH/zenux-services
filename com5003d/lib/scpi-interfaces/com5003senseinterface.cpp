@@ -68,7 +68,7 @@ QList<SenseChannelCommon*> Com5003SenseInterface::setChannelAndRanges(cSenseSett
 
     for (int i = 3; i < 6; i++) {
         QList<SenseRangeCommon*> rngListI;
-        rngListI.append(new Com5003SenseRange(scpi,  "200A", true, 200.0, 6257236.0, 5256077.0, 0, rangeFlagsDevice)); // ???
+        rngListI.append(new Com5003SenseRange(scpi,  "200A", true, 200.0, 6257236.0, 5256077.0, 0, rangeFlagsDevice)); // 168 A max ???
         rngListI.append(new Com5003SenseRange(scpi,  "100A", true, 100.0, 4692928.0, 5866160.0, 1, rangeFlagsDevice));
         rngListI.append(new Com5003SenseRange(scpi,   "50A", true,  50.0, 4692928.0, 5866160.0, 2, rangeFlagsDevice));
         rngListI.append(new Com5003SenseRange(scpi,   "25A", true, 25.0 , 4692928.0, 5866160.0, 3, rangeFlagsDevice));
