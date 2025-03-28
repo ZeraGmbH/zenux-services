@@ -26,8 +26,7 @@ private:
     bool isRangePartOfAdjXmlExport(SenseRangeCommon* range) override;
     AdjRangeScpi* createJustScpiInterfaceWithAtmelPermission();
     QString scpiReadSenseGroupCatalog(QString& scpi) override;
-    void handleScpiReadWriteMMode(cProtonetCommand* protoCmd) override;
-    bool setSenseMode(QString modeStr);
+    bool setSenseMode(QString modeStr) override;
 };
 
 #endif // COM5003SENSEINTERFACE_H

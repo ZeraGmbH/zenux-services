@@ -91,40 +91,42 @@ protected:
     virtual const char *getAdjExportedVersion() = 0; // stored from #define forces us using const char*
     virtual QString getPcbName() = 0;
 
-    virtual void handleScpiReadWriteMMode(cProtonetCommand* protoCmd) = 0;
     virtual QString scpiReadSenseGroupCatalog(QString& scpi) = 0;
+    virtual bool setSenseMode(QString modeStr) = 0;
 
     virtual QString getXmlType() = 0;
     virtual bool isRangePartOfAdjXmlExport(SenseRangeCommon* range) = 0;
     bool importXMLDocument(QDomDocument* qdomdoc) override;
 
     void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
+
+    void setNotifierSenseMMode();
+    void setNotifierSenseChannelCat();
+    static bool isInvalidAdjDataOrChannelRangeAvail(AdjDataPtr adjData, QString channelName, QString rangeName);
+    void injectAdjToChannelRanges();
+
+    static QString m_version;
+    AbstractFactoryI2cCtrlPtr m_ctrlFactory;
+    QList<SenseChannelCommon*> m_channelList;
+    QString m_currSenseMode;
+    const QHash<QString, int> m_availSenseModesHash;
+    AdjDataPtr m_adjData;
+
+private:
+    void handleScpiReadWriteMMode(cProtonetCommand* protoCmd);
     QString scpiReadVersion(QString& scpi);
     QString scpiReadMModeCatalog(QString& scpi);
     QString scpiReadSenseChannelCatalog(QString& scpi);
     QString scpiInitSenseAdjDataAllChannelRanges(QString& scpi);
     QString scpiComputeSenseAdjDataAllChannelRanges(QString& scpi);
     QString scpiReadAdjStatus(QString& scpi);
-
-    void setNotifierSenseMMode();
-    void setNotifierSenseChannelCat();
     QStringList getSenseModesSortedById();
-    static bool isInvalidAdjDataOrChannelRangeAvail(AdjDataPtr adjData, QString channelName, QString rangeName);
-    void injectAdjToChannelRanges();
 
-    static QString m_version;
+    AdjustmentEepromReadWrite m_adjReadWrite;
     SystemInfo *m_systemInfo;
-    AbstractFactoryI2cCtrlPtr m_ctrlFactory;
-    QList<SenseChannelCommon*> m_channelList;
-    QString m_currSenseMode;
-    const QHash<QString, int> m_availSenseModesHash;
     quint8 m_nSerialStatus;
-
     NotificationString m_notifierSenseMMode;
     NotificationString m_notifierSenseChannelCat;
-
-    AdjustmentEepromReadWrite m_adjReadWrite; // go??
-    AdjDataPtr m_adjData;
 };
 
 #endif // SENSEINTERFACECOMMON_H

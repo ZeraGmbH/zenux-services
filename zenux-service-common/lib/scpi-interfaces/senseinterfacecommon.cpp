@@ -435,6 +435,26 @@ QString SenseInterfaceCommon::exportXMLString(int indent)
     return justqdom.toString(indent);
 }
 
+void SenseInterfaceCommon::handleScpiReadWriteMMode(cProtonetCommand *protoCmd)
+{
+    cSCPICommand cmd = protoCmd->m_sInput;
+    if (cmd.isQuery())
+        protoCmd->m_sOutput  = m_notifierSenseMMode.getString();
+    else {
+        if (cmd.isCommand(1)) {
+            QString mode = cmd.getParam(0);
+            if(setSenseMode(mode))
+                protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::ack];
+            else
+                protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::nak];
+        }
+        else
+            protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::nak];
+    }
+    if (protoCmd->m_bwithOutput)
+        emit cmdExecutionDone(protoCmd);
+}
+
 void SenseInterfaceCommon::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
 {
     switch (cmdCode)

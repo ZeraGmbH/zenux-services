@@ -25,8 +25,7 @@ private:
     bool isRangePartOfAdjXmlExport(SenseRangeCommon* range) override;
     static AdjRangeScpi* createJustScpiInterfaceWithAtmelPermission(std::shared_ptr<cSCPI> scpi);
     QString scpiReadSenseGroupCatalog(QString& scpi) override;
-    void handleScpiReadWriteMMode(cProtonetCommand* protoCmd) override;
-    bool setSenseMode(QString mode);
+    bool setSenseMode(QString mode) override;
 };
 
 #endif // MT310S2SENSEINTERFACE_H
