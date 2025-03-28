@@ -26,22 +26,22 @@ void SenseRegressionHelper::addRangeConstantDataToJson(QString rangeName, SenseS
     QString channelName = channelSettings->m_nameMx;
 
     // stolen from cPCBInterfacePrivate
-    QString alias = ScpiSingleTransactionBlocked::query(QString("SENS:%1:%2:ALI?").arg(channelName, rangeName));
+    QString alias = ScpiSingleTransactionBlocked::query(QString("SENS:%1:%2:ALIAS?").arg(channelName, rangeName));
     range.insert(JsonAliasStr, alias);
 
-    QString avail = ScpiSingleTransactionBlocked::query(QString("SENS:%1:%2:AVA?").arg(channelName, rangeName));
+    QString avail = ScpiSingleTransactionBlocked::query(QString("SENS:%1:%2:AVAIL?").arg(channelName, rangeName));
     range.insert(JsonAvailStr, avail);
 
-    QString urValue = ScpiSingleTransactionBlocked::query(QString("SENS:%1:%2:URV?").arg(channelName, rangeName));
+    QString urValue = ScpiSingleTransactionBlocked::query(QString("SENS:%1:%2:URVALUE?").arg(channelName, rangeName));
     range.insert(JsonUrValStr, urValue.toDouble());
 
-    QString rejection = ScpiSingleTransactionBlocked::query(QString("SENS:%1:%2:REJ?").arg(channelName, rangeName));
+    QString rejection = ScpiSingleTransactionBlocked::query(QString("SENS:%1:%2:REJECTION?").arg(channelName, rangeName));
     range.insert(JsonRejectionStr, rejection.toDouble());
 
-    QString ovRejection = ScpiSingleTransactionBlocked::query(QString("SENS:%1:%2:OVR?").arg(channelName, rangeName));
+    QString ovRejection = ScpiSingleTransactionBlocked::query(QString("SENS:%1:%2:OVREJECTION?").arg(channelName, rangeName));
     range.insert(JsonOvRejectionStr, ovRejection.toDouble());
 
-    QString adcRejection = ScpiSingleTransactionBlocked::query(QString("SENS:%1:%2:ADCR?").arg(channelName, rangeName));
+    QString adcRejection = ScpiSingleTransactionBlocked::query(QString("SENS:%1:%2:ADCREJECTION?").arg(channelName, rangeName));
     range.insert(JsonAdcRejectionStr, adcRejection.toDouble());
 
     QString adjustStatusFlags = ScpiSingleTransactionBlocked::query(QString("SENS:%1:%2:TYPE?").arg(channelName, rangeName));
