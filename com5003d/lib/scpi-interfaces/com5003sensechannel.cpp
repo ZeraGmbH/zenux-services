@@ -52,42 +52,38 @@ void Com5003SenseChannel::setNotifierSenseChannelRange()
 QString Com5003SenseChannel::scpiReadWriteRange(QString &sInput)
 {
     cSCPICommand cmd = sInput;
-    quint8 mode;
-    if (m_ctrlFactory->getMModeController()->readMeasMode(mode) == ZeraMControllerIo::cmddone ) {
-        if (cmd.isQuery())
-            return notifierSenseChannelRange.getString();
-        else if (cmd.isCommand(1)) {
-            QString rng = cmd.getParam(0);
-            int anz = m_RangeList.count();
-            int i;
-            for  (i = 0; i < anz; i++) {
-                if (m_RangeList.at(i)->getRangeName() == rng)
-                    break;
-            }
-            if ( (i < anz) && (m_RangeList.at(i)->getAvail()) ) {
-                // we know this range and it's available
-                if (m_nMMode == modeAC) {
-                    if (m_ctrlFactory->getRangesController()->setRange(m_nCtrlChannel, m_RangeList.at(i)->getSelCode()) == ZeraMControllerIo::cmddone) {
-                        notifierSenseChannelRange = rng;
-                        return ZSCPI::scpiAnswer[ZSCPI::ack];
-                    }
-                    else
-                        return ZSCPI::scpiAnswer[ZSCPI::errexec];
-                }
-                else {
-                    if (m_RangeList.at(i)->getRangeName() == "R0V") {
-                        notifierSenseChannelRange = "R0V";
-                        m_ctrlFactory->getMModeController()->setMeasMode(1);
-                    }
-                    else {
-                        notifierSenseChannelRange = "R10V";
-                        m_ctrlFactory->getMModeController()->setMeasMode(2);
-                    }
+    if (cmd.isQuery())
+        return notifierSenseChannelRange.getString();
+    else if (cmd.isCommand(1)) {
+        QString rng = cmd.getParam(0);
+        int anz = m_RangeList.count();
+        int i;
+        for (i = 0; i < anz; i++) {
+            if (m_RangeList.at(i)->getRangeName() == rng)
+                break;
+        }
+        if ( (i < anz) && (m_RangeList.at(i)->getAvail()) ) {
+            // we know this range and it's available
+            if (m_nMMode == modeAC) {
+                if (m_ctrlFactory->getRangesController()->setRange(m_nCtrlChannel, m_RangeList.at(i)->getSelCode()) == ZeraMControllerIo::cmddone) {
+                    notifierSenseChannelRange = rng;
                     return ZSCPI::scpiAnswer[ZSCPI::ack];
                 }
+                else
+                    return ZSCPI::scpiAnswer[ZSCPI::errexec];
+            }
+            else {
+                if (m_RangeList.at(i)->getRangeName() == "R0V") {
+                    notifierSenseChannelRange = "R0V";
+                    m_ctrlFactory->getMModeController()->setMeasMode(1);
+                }
+                else {
+                    notifierSenseChannelRange = "R10V";
+                    m_ctrlFactory->getMModeController()->setMeasMode(2);
+                }
+                return ZSCPI::scpiAnswer[ZSCPI::ack];
             }
         }
-        return ZSCPI::scpiAnswer[ZSCPI::nak];
     }
-    return ZSCPI::scpiAnswer[ZSCPI::errexec];
+    return ZSCPI::scpiAnswer[ZSCPI::nak];
 }

@@ -36,29 +36,25 @@ void Mt310s2SenseChannel::setNotifierSenseChannelRange()
 QString Mt310s2SenseChannel::scpiReadWriteRange(QString &sInput)
 {
     cSCPICommand cmd = sInput;
-    quint8 mode;
-    if (m_ctrlFactory->getMModeController()->readMeasMode(mode) == ZeraMControllerIo::cmddone ) {
-        if (cmd.isQuery())
-            return notifierSenseChannelRange.getString();
-        else  if (cmd.isCommand(1)) {
-            QString rng = cmd.getParam(0);
-            int anz = m_RangeList.count();
-            int i;
-            for  (i = 0; i < anz; i++) {
-                if (m_RangeList.at(i)->getRangeName() == rng)
-                    break;
-            }
-            if ( (i < anz) && (m_RangeList.at(i)->getAvail()) ) {
-                // we know this range and it's available
-                if (m_ctrlFactory->getRangesController()->setRange(m_nCtrlChannel, m_RangeList.at(i)->getSelCode()) == ZeraMControllerIo::cmddone) {
-                    notifierSenseChannelRange = rng;
-                    return ZSCPI::scpiAnswer[ZSCPI::ack];
-                }
-                else
-                    return ZSCPI::scpiAnswer[ZSCPI::errexec];
-            }
+    if (cmd.isQuery())
+        return notifierSenseChannelRange.getString();
+    else if (cmd.isCommand(1)) {
+        QString rng = cmd.getParam(0);
+        int anz = m_RangeList.count();
+        int i;
+        for (i = 0; i < anz; i++) {
+            if (m_RangeList.at(i)->getRangeName() == rng)
+                break;
         }
-        return ZSCPI::scpiAnswer[ZSCPI::nak];
+        if ( (i < anz) && (m_RangeList.at(i)->getAvail()) ) {
+            // we know this range and it's available
+            if (m_ctrlFactory->getRangesController()->setRange(m_nCtrlChannel, m_RangeList.at(i)->getSelCode()) == ZeraMControllerIo::cmddone) {
+                notifierSenseChannelRange = rng;
+                return ZSCPI::scpiAnswer[ZSCPI::ack];
+            }
+            else
+                return ZSCPI::scpiAnswer[ZSCPI::errexec];
+        }
     }
-    return ZSCPI::scpiAnswer[ZSCPI::errexec];
+    return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
