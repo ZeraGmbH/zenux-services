@@ -2,7 +2,6 @@
 #define MT310S2SENSECHANNEL_H
 
 #include "sensesettings.h"
-#include <QList>
 #include <sensechannelcommon.h>
 
 class Mt310s2SenseChannel : public SenseChannelCommon

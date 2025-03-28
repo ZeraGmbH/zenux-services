@@ -2,7 +2,6 @@
 #define COM5003SENSECHANNEL_H
 
 #include "sensesettings.h"
-#include <QList>
 #include <sensechannelcommon.h>
 
 class Com5003SenseChannel : public SenseChannelCommon
