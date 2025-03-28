@@ -43,7 +43,6 @@ public:
     double getUpperRangevalue() const;
     quint8 getSelCode() const;
     bool getAvail() const;
-    void setAvail(bool avail); // It is just for Com5003 - do we need this really?
     quint16 getMMask();
     void setMModeToUpdateAvailability(int mode);
 

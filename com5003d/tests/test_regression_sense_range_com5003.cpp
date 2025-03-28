@@ -52,23 +52,11 @@ void test_regression_sense_range_com5003::checkAlias()
 void test_regression_sense_range_com5003::checkAvail()
 {
     QCOMPARE(m_range->getAvail(), true);
-    m_range->setAvail(false);
-    QCOMPARE(m_range->getAvail(), false);
-
     QString scpiAvailQuery = "SENSE:m0:240V:AVAIL?";
     cSCPIObject *scpiObject = m_scpiInterface->getSCPIObject(scpiAvailQuery);
     QVERIFY(scpiObject != nullptr);
     cProtonetCommand *protoCmd = new cProtonetCommand(0, false, true, QByteArray(), 0, scpiAvailQuery);
     cSCPIDelegate *scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
-    scpiDelegate->executeSCPI(protoCmd);
-    QCOMPARE((protoCmd->m_sOutput), "0");
-
-    m_range->setAvail(true);
-    QCOMPARE(m_range->getAvail(), true);
-    scpiObject = m_scpiInterface->getSCPIObject(scpiAvailQuery);
-    QVERIFY(scpiObject != nullptr);
-    protoCmd = new cProtonetCommand(0, false, true, QByteArray(), 0, scpiAvailQuery);
-    scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
     scpiDelegate->executeSCPI(protoCmd);
     QCOMPARE((protoCmd->m_sOutput), "1");
 

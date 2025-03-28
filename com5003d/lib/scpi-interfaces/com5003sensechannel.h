@@ -2,7 +2,6 @@
 #define COM5003SENSECHANNEL_H
 
 #include "sensesettings.h"
-#include <QList>
 #include <sensechannelcommon.h>
 
 class Com5003SenseChannel : public SenseChannelCommon
@@ -10,7 +9,6 @@ class Com5003SenseChannel : public SenseChannelCommon
     Q_OBJECT
 public:
     Com5003SenseChannel(std::shared_ptr<cSCPI> scpiinterface,
-                        QString description,
                         QString unit,
                         SenseSystem::cChannelSettings* cSettings,
                         quint8 nr,

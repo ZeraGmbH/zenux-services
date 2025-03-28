@@ -27,7 +27,6 @@ class SenseChannelCommon : public ScpiConnection
 {
 public:
     SenseChannelCommon(std::shared_ptr<cSCPI> scpiinterface,
-                       QString description,
                        QString unit,
                        SenseSystem::cChannelSettings* cSettings,
                        quint8 nr,
@@ -43,10 +42,7 @@ public:
     quint8 getAdjustmentStatus80Mask();
 
     QString getName();
-    QString getDescription();
     quint8 getCtrlChannel();
-    // see COM5003 Com5003SenseInterface::registerSense()
-    void setDescription(const QString& s);
     void setUnit(const QString &s);
     bool isAvail();
 
@@ -78,7 +74,6 @@ protected:
     const QString m_sName; // the channels name m0...
     const QString m_sAlias1; // the channel's alias name for example UL1
     const QString m_sAlias2; // the channel's alias name for example REF1 (COM5003 only)
-    QString m_sDescription; // the channel's brief description
     QString m_sUnit; // the channel's measured unit
     const quint8 m_nCtrlChannel; // where to control the channel
     const quint8 m_nDspChannel; // where to find the channel's sampled data
