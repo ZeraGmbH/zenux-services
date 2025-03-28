@@ -14,7 +14,8 @@ enum Commands
     cmdUpperRangeValue,
     cmdRejection,
     cmdOVRejection,
-    cmdADCRejection
+    cmdADCRejection,
+    cmdCtrlSelection // attow just for test...
 };
 }
 
@@ -62,6 +63,7 @@ private:
     QString scpiRangeOVRejection(const QString& scpi) const;
     QString scpiRangeADCRejection(const QString& scpi) const;
     QString scpiRangeTypeFlags(const QString& scpi) const;
+    QString scpiControllerSelection(const QString& scpi) const;
 
     QString m_sName; // the range name
     const QString m_sAlias; // the range alias name

@@ -40,6 +40,7 @@
      <OVREJECTION Type="Query" ScpiPath="SENSE:M0:480V:OVREJECTION"/>
      <ADCREJECTION Type="Query" ScpiPath="SENSE:M0:480V:ADCREJECTION"/>
      <TYPE Type="Query" ScpiPath="SENSE:M0:480V:TYPE"/>
+     <CTRLSELECTION Type="Query" ScpiPath="SENSE:M0:480V:CTRLSELECTION"/>
      <CORRECTION Type="Node">
       <GAIN Type="Node,Query" ScpiPath="SENSE:M0:480V:CORRECTION:GAIN">
        <STATUS Type="Query,Command+Par" ScpiPath="SENSE:M0:480V:CORRECTION:GAIN:STATUS"/>
@@ -102,6 +103,7 @@
      <OVREJECTION Type="Query" ScpiPath="SENSE:M0:240V:OVREJECTION"/>
      <ADCREJECTION Type="Query" ScpiPath="SENSE:M0:240V:ADCREJECTION"/>
      <TYPE Type="Query" ScpiPath="SENSE:M0:240V:TYPE"/>
+     <CTRLSELECTION Type="Query" ScpiPath="SENSE:M0:240V:CTRLSELECTION"/>
      <CORRECTION Type="Node">
       <GAIN Type="Node,Query" ScpiPath="SENSE:M0:240V:CORRECTION:GAIN">
        <STATUS Type="Query,Command+Par" ScpiPath="SENSE:M0:240V:CORRECTION:GAIN:STATUS"/>
@@ -164,6 +166,7 @@
      <OVREJECTION Type="Query" ScpiPath="SENSE:M0:120V:OVREJECTION"/>
      <ADCREJECTION Type="Query" ScpiPath="SENSE:M0:120V:ADCREJECTION"/>
      <TYPE Type="Query" ScpiPath="SENSE:M0:120V:TYPE"/>
+     <CTRLSELECTION Type="Query" ScpiPath="SENSE:M0:120V:CTRLSELECTION"/>
      <CORRECTION Type="Node">
       <GAIN Type="Node,Query" ScpiPath="SENSE:M0:120V:CORRECTION:GAIN">
        <STATUS Type="Query,Command+Par" ScpiPath="SENSE:M0:120V:CORRECTION:GAIN:STATUS"/>
@@ -226,6 +229,7 @@
      <OVREJECTION Type="Query" ScpiPath="SENSE:M0:60V:OVREJECTION"/>
      <ADCREJECTION Type="Query" ScpiPath="SENSE:M0:60V:ADCREJECTION"/>
      <TYPE Type="Query" ScpiPath="SENSE:M0:60V:TYPE"/>
+     <CTRLSELECTION Type="Query" ScpiPath="SENSE:M0:60V:CTRLSELECTION"/>
      <CORRECTION Type="Node">
       <GAIN Type="Node,Query" ScpiPath="SENSE:M0:60V:CORRECTION:GAIN">
        <STATUS Type="Query,Command+Par" ScpiPath="SENSE:M0:60V:CORRECTION:GAIN:STATUS"/>
@@ -288,6 +292,7 @@
      <OVREJECTION Type="Query" ScpiPath="SENSE:M0:12V:OVREJECTION"/>
      <ADCREJECTION Type="Query" ScpiPath="SENSE:M0:12V:ADCREJECTION"/>
      <TYPE Type="Query" ScpiPath="SENSE:M0:12V:TYPE"/>
+     <CTRLSELECTION Type="Query" ScpiPath="SENSE:M0:12V:CTRLSELECTION"/>
      <CORRECTION Type="Node">
       <GAIN Type="Node,Query" ScpiPath="SENSE:M0:12V:CORRECTION:GAIN">
        <STATUS Type="Query,Command+Par" ScpiPath="SENSE:M0:12V:CORRECTION:GAIN:STATUS"/>
@@ -350,6 +355,7 @@
      <OVREJECTION Type="Query" ScpiPath="SENSE:M0:5V:OVREJECTION"/>
      <ADCREJECTION Type="Query" ScpiPath="SENSE:M0:5V:ADCREJECTION"/>
      <TYPE Type="Query" ScpiPath="SENSE:M0:5V:TYPE"/>
+     <CTRLSELECTION Type="Query" ScpiPath="SENSE:M0:5V:CTRLSELECTION"/>
      <CORRECTION Type="Node">
       <GAIN Type="Node,Query" ScpiPath="SENSE:M0:5V:CORRECTION:GAIN">
        <STATUS Type="Query,Command+Par" ScpiPath="SENSE:M0:5V:CORRECTION:GAIN:STATUS"/>
@@ -412,6 +418,7 @@
      <OVREJECTION Type="Query" ScpiPath="SENSE:M0:R0V:OVREJECTION"/>
      <ADCREJECTION Type="Query" ScpiPath="SENSE:M0:R0V:ADCREJECTION"/>
      <TYPE Type="Query" ScpiPath="SENSE:M0:R0V:TYPE"/>
+     <CTRLSELECTION Type="Query" ScpiPath="SENSE:M0:R0V:CTRLSELECTION"/>
      <CORRECTION Type="Node">
       <GAIN Type="Node,Query" ScpiPath="SENSE:M0:R0V:CORRECTION:GAIN">
        <STATUS Type="Query,Command+Par" ScpiPath="SENSE:M0:R0V:CORRECTION:GAIN:STATUS"/>
@@ -474,6 +481,7 @@
      <OVREJECTION Type="Query" ScpiPath="SENSE:M0:R10V:OVREJECTION"/>
      <ADCREJECTION Type="Query" ScpiPath="SENSE:M0:R10V:ADCREJECTION"/>
      <TYPE Type="Query" ScpiPath="SENSE:M0:R10V:TYPE"/>
+     <CTRLSELECTION Type="Query" ScpiPath="SENSE:M0:R10V:CTRLSELECTION"/>
      <CORRECTION Type="Node">
       <GAIN Type="Node,Query" ScpiPath="SENSE:M0:R10V:CORRECTION:GAIN">
        <STATUS Type="Query,Command+Par" ScpiPath="SENSE:M0:R10V:CORRECTION:GAIN:STATUS"/>
@@ -549,6 +557,7 @@
      <OVREJECTION Type="Query" ScpiPath="SENSE:M1:480V:OVREJECTION"/>
      <ADCREJECTION Type="Query" ScpiPath="SENSE:M1:480V:ADCREJECTION"/>
      <TYPE Type="Query" ScpiPath="SENSE:M1:480V:TYPE"/>
+     <CTRLSELECTION Type="Query" ScpiPath="SENSE:M1:480V:CTRLSELECTION"/>
      <CORRECTION Type="Node">
       <GAIN Type="Node,Query" ScpiPath="SENSE:M1:480V:CORRECTION:GAIN">
        <STATUS Type="Query,Command+Par" ScpiPath="SENSE:M1:480V:CORRECTION:GAIN:STATUS"/>
@@ -611,6 +620,7 @@
      <OVREJECTION Type="Query" ScpiPath="SENSE:M1:240V:OVREJECTION"/>
      <ADCREJECTION Type="Query" ScpiPath="SENSE:M1:240V:ADCREJECTION"/>
      <TYPE Type="Query" ScpiPath="SENSE:M1:240V:TYPE"/>
+     <CTRLSELECTION Type="Query" ScpiPath="SENSE:M1:240V:CTRLSELECTION"/>
      <CORRECTION Type="Node">
       <GAIN Type="Node,Query" ScpiPath="SENSE:M1:240V:CORRECTION:GAIN">
        <STATUS Type="Query,Command+Par" ScpiPath="SENSE:M1:240V:CORRECTION:GAIN:STATUS"/>
@@ -673,6 +683,7 @@
      <OVREJECTION Type="Query" ScpiPath="SENSE:M1:120V:OVREJECTION"/>
      <ADCREJECTION Type="Query" ScpiPath="SENSE:M1:120V:ADCREJECTION"/>
      <TYPE Type="Query" ScpiPath="SENSE:M1:120V:TYPE"/>
+     <CTRLSELECTION Type="Query" ScpiPath="SENSE:M1:120V:CTRLSELECTION"/>
      <CORRECTION Type="Node">
       <GAIN Type="Node,Query" ScpiPath="SENSE:M1:120V:CORRECTION:GAIN">
        <STATUS Type="Query,Command+Par" ScpiPath="SENSE:M1:120V:CORRECTION:GAIN:STATUS"/>
@@ -735,6 +746,7 @@
      <OVREJECTION Type="Query" ScpiPath="SENSE:M1:60V:OVREJECTION"/>
      <ADCREJECTION Type="Query" ScpiPath="SENSE:M1:60V:ADCREJECTION"/>
      <TYPE Type="Query" ScpiPath="SENSE:M1:60V:TYPE"/>
+     <CTRLSELECTION Type="Query" ScpiPath="SENSE:M1:60V:CTRLSELECTION"/>
      <CORRECTION Type="Node">
       <GAIN Type="Node,Query" ScpiPath="SENSE:M1:60V:CORRECTION:GAIN">
        <STATUS Type="Query,Command+Par" ScpiPath="SENSE:M1:60V:CORRECTION:GAIN:STATUS"/>
@@ -797,6 +809,7 @@
      <OVREJECTION Type="Query" ScpiPath="SENSE:M1:12V:OVREJECTION"/>
      <ADCREJECTION Type="Query" ScpiPath="SENSE:M1:12V:ADCREJECTION"/>
      <TYPE Type="Query" ScpiPath="SENSE:M1:12V:TYPE"/>
+     <CTRLSELECTION Type="Query" ScpiPath="SENSE:M1:12V:CTRLSELECTION"/>
      <CORRECTION Type="Node">
       <GAIN Type="Node,Query" ScpiPath="SENSE:M1:12V:CORRECTION:GAIN">
        <STATUS Type="Query,Command+Par" ScpiPath="SENSE:M1:12V:CORRECTION:GAIN:STATUS"/>
@@ -859,6 +872,7 @@
      <OVREJECTION Type="Query" ScpiPath="SENSE:M1:5V:OVREJECTION"/>
      <ADCREJECTION Type="Query" ScpiPath="SENSE:M1:5V:ADCREJECTION"/>
      <TYPE Type="Query" ScpiPath="SENSE:M1:5V:TYPE"/>
+     <CTRLSELECTION Type="Query" ScpiPath="SENSE:M1:5V:CTRLSELECTION"/>
      <CORRECTION Type="Node">
       <GAIN Type="Node,Query" ScpiPath="SENSE:M1:5V:CORRECTION:GAIN">
        <STATUS Type="Query,Command+Par" ScpiPath="SENSE:M1:5V:CORRECTION:GAIN:STATUS"/>
@@ -921,6 +935,7 @@
      <OVREJECTION Type="Query" ScpiPath="SENSE:M1:R0V:OVREJECTION"/>
      <ADCREJECTION Type="Query" ScpiPath="SENSE:M1:R0V:ADCREJECTION"/>
      <TYPE Type="Query" ScpiPath="SENSE:M1:R0V:TYPE"/>
+     <CTRLSELECTION Type="Query" ScpiPath="SENSE:M1:R0V:CTRLSELECTION"/>
      <CORRECTION Type="Node">
       <GAIN Type="Node,Query" ScpiPath="SENSE:M1:R0V:CORRECTION:GAIN">
        <STATUS Type="Query,Command+Par" ScpiPath="SENSE:M1:R0V:CORRECTION:GAIN:STATUS"/>
@@ -983,6 +998,7 @@
      <OVREJECTION Type="Query" ScpiPath="SENSE:M1:R10V:OVREJECTION"/>
      <ADCREJECTION Type="Query" ScpiPath="SENSE:M1:R10V:ADCREJECTION"/>
      <TYPE Type="Query" ScpiPath="SENSE:M1:R10V:TYPE"/>
+     <CTRLSELECTION Type="Query" ScpiPath="SENSE:M1:R10V:CTRLSELECTION"/>
      <CORRECTION Type="Node">
       <GAIN Type="Node,Query" ScpiPath="SENSE:M1:R10V:CORRECTION:GAIN">
        <STATUS Type="Query,Command+Par" ScpiPath="SENSE:M1:R10V:CORRECTION:GAIN:STATUS"/>
@@ -1058,6 +1074,7 @@
      <OVREJECTION Type="Query" ScpiPath="SENSE:M2:480V:OVREJECTION"/>
      <ADCREJECTION Type="Query" ScpiPath="SENSE:M2:480V:ADCREJECTION"/>
      <TYPE Type="Query" ScpiPath="SENSE:M2:480V:TYPE"/>
+     <CTRLSELECTION Type="Query" ScpiPath="SENSE:M2:480V:CTRLSELECTION"/>
      <CORRECTION Type="Node">
       <GAIN Type="Node,Query" ScpiPath="SENSE:M2:480V:CORRECTION:GAIN">
        <STATUS Type="Query,Command+Par" ScpiPath="SENSE:M2:480V:CORRECTION:GAIN:STATUS"/>
@@ -1120,6 +1137,7 @@
      <OVREJECTION Type="Query" ScpiPath="SENSE:M2:240V:OVREJECTION"/>
      <ADCREJECTION Type="Query" ScpiPath="SENSE:M2:240V:ADCREJECTION"/>
      <TYPE Type="Query" ScpiPath="SENSE:M2:240V:TYPE"/>
+     <CTRLSELECTION Type="Query" ScpiPath="SENSE:M2:240V:CTRLSELECTION"/>
      <CORRECTION Type="Node">
       <GAIN Type="Node,Query" ScpiPath="SENSE:M2:240V:CORRECTION:GAIN">
        <STATUS Type="Query,Command+Par" ScpiPath="SENSE:M2:240V:CORRECTION:GAIN:STATUS"/>
@@ -1182,6 +1200,7 @@
      <OVREJECTION Type="Query" ScpiPath="SENSE:M2:120V:OVREJECTION"/>
      <ADCREJECTION Type="Query" ScpiPath="SENSE:M2:120V:ADCREJECTION"/>
      <TYPE Type="Query" ScpiPath="SENSE:M2:120V:TYPE"/>
+     <CTRLSELECTION Type="Query" ScpiPath="SENSE:M2:120V:CTRLSELECTION"/>
      <CORRECTION Type="Node">
       <GAIN Type="Node,Query" ScpiPath="SENSE:M2:120V:CORRECTION:GAIN">
        <STATUS Type="Query,Command+Par" ScpiPath="SENSE:M2:120V:CORRECTION:GAIN:STATUS"/>
@@ -1244,6 +1263,7 @@
      <OVREJECTION Type="Query" ScpiPath="SENSE:M2:60V:OVREJECTION"/>
      <ADCREJECTION Type="Query" ScpiPath="SENSE:M2:60V:ADCREJECTION"/>
      <TYPE Type="Query" ScpiPath="SENSE:M2:60V:TYPE"/>
+     <CTRLSELECTION Type="Query" ScpiPath="SENSE:M2:60V:CTRLSELECTION"/>
      <CORRECTION Type="Node">
       <GAIN Type="Node,Query" ScpiPath="SENSE:M2:60V:CORRECTION:GAIN">
        <STATUS Type="Query,Command+Par" ScpiPath="SENSE:M2:60V:CORRECTION:GAIN:STATUS"/>
@@ -1306,6 +1326,7 @@
      <OVREJECTION Type="Query" ScpiPath="SENSE:M2:12V:OVREJECTION"/>
      <ADCREJECTION Type="Query" ScpiPath="SENSE:M2:12V:ADCREJECTION"/>
      <TYPE Type="Query" ScpiPath="SENSE:M2:12V:TYPE"/>
+     <CTRLSELECTION Type="Query" ScpiPath="SENSE:M2:12V:CTRLSELECTION"/>
      <CORRECTION Type="Node">
       <GAIN Type="Node,Query" ScpiPath="SENSE:M2:12V:CORRECTION:GAIN">
        <STATUS Type="Query,Command+Par" ScpiPath="SENSE:M2:12V:CORRECTION:GAIN:STATUS"/>
@@ -1368,6 +1389,7 @@
      <OVREJECTION Type="Query" ScpiPath="SENSE:M2:5V:OVREJECTION"/>
      <ADCREJECTION Type="Query" ScpiPath="SENSE:M2:5V:ADCREJECTION"/>
      <TYPE Type="Query" ScpiPath="SENSE:M2:5V:TYPE"/>
+     <CTRLSELECTION Type="Query" ScpiPath="SENSE:M2:5V:CTRLSELECTION"/>
      <CORRECTION Type="Node">
       <GAIN Type="Node,Query" ScpiPath="SENSE:M2:5V:CORRECTION:GAIN">
        <STATUS Type="Query,Command+Par" ScpiPath="SENSE:M2:5V:CORRECTION:GAIN:STATUS"/>
@@ -1430,6 +1452,7 @@
      <OVREJECTION Type="Query" ScpiPath="SENSE:M2:R0V:OVREJECTION"/>
      <ADCREJECTION Type="Query" ScpiPath="SENSE:M2:R0V:ADCREJECTION"/>
      <TYPE Type="Query" ScpiPath="SENSE:M2:R0V:TYPE"/>
+     <CTRLSELECTION Type="Query" ScpiPath="SENSE:M2:R0V:CTRLSELECTION"/>
      <CORRECTION Type="Node">
       <GAIN Type="Node,Query" ScpiPath="SENSE:M2:R0V:CORRECTION:GAIN">
        <STATUS Type="Query,Command+Par" ScpiPath="SENSE:M2:R0V:CORRECTION:GAIN:STATUS"/>
@@ -1492,6 +1515,7 @@
      <OVREJECTION Type="Query" ScpiPath="SENSE:M2:R10V:OVREJECTION"/>
      <ADCREJECTION Type="Query" ScpiPath="SENSE:M2:R10V:ADCREJECTION"/>
      <TYPE Type="Query" ScpiPath="SENSE:M2:R10V:TYPE"/>
+     <CTRLSELECTION Type="Query" ScpiPath="SENSE:M2:R10V:CTRLSELECTION"/>
      <CORRECTION Type="Node">
       <GAIN Type="Node,Query" ScpiPath="SENSE:M2:R10V:CORRECTION:GAIN">
        <STATUS Type="Query,Command+Par" ScpiPath="SENSE:M2:R10V:CORRECTION:GAIN:STATUS"/>
@@ -1567,6 +1591,7 @@
      <OVREJECTION Type="Query" ScpiPath="SENSE:M3:200A:OVREJECTION"/>
      <ADCREJECTION Type="Query" ScpiPath="SENSE:M3:200A:ADCREJECTION"/>
      <TYPE Type="Query" ScpiPath="SENSE:M3:200A:TYPE"/>
+     <CTRLSELECTION Type="Query" ScpiPath="SENSE:M3:200A:CTRLSELECTION"/>
      <CORRECTION Type="Node">
       <GAIN Type="Node,Query" ScpiPath="SENSE:M3:200A:CORRECTION:GAIN">
        <STATUS Type="Query,Command+Par" ScpiPath="SENSE:M3:200A:CORRECTION:GAIN:STATUS"/>
@@ -1629,6 +1654,7 @@
      <OVREJECTION Type="Query" ScpiPath="SENSE:M3:100A:OVREJECTION"/>
      <ADCREJECTION Type="Query" ScpiPath="SENSE:M3:100A:ADCREJECTION"/>
      <TYPE Type="Query" ScpiPath="SENSE:M3:100A:TYPE"/>
+     <CTRLSELECTION Type="Query" ScpiPath="SENSE:M3:100A:CTRLSELECTION"/>
      <CORRECTION Type="Node">
       <GAIN Type="Node,Query" ScpiPath="SENSE:M3:100A:CORRECTION:GAIN">
        <STATUS Type="Query,Command+Par" ScpiPath="SENSE:M3:100A:CORRECTION:GAIN:STATUS"/>
@@ -1691,6 +1717,7 @@
      <OVREJECTION Type="Query" ScpiPath="SENSE:M3:50A:OVREJECTION"/>
      <ADCREJECTION Type="Query" ScpiPath="SENSE:M3:50A:ADCREJECTION"/>
      <TYPE Type="Query" ScpiPath="SENSE:M3:50A:TYPE"/>
+     <CTRLSELECTION Type="Query" ScpiPath="SENSE:M3:50A:CTRLSELECTION"/>
      <CORRECTION Type="Node">
       <GAIN Type="Node,Query" ScpiPath="SENSE:M3:50A:CORRECTION:GAIN">
        <STATUS Type="Query,Command+Par" ScpiPath="SENSE:M3:50A:CORRECTION:GAIN:STATUS"/>
@@ -1753,6 +1780,7 @@
      <OVREJECTION Type="Query" ScpiPath="SENSE:M3:25A:OVREJECTION"/>
      <ADCREJECTION Type="Query" ScpiPath="SENSE:M3:25A:ADCREJECTION"/>
      <TYPE Type="Query" ScpiPath="SENSE:M3:25A:TYPE"/>
+     <CTRLSELECTION Type="Query" ScpiPath="SENSE:M3:25A:CTRLSELECTION"/>
      <CORRECTION Type="Node">
       <GAIN Type="Node,Query" ScpiPath="SENSE:M3:25A:CORRECTION:GAIN">
        <STATUS Type="Query,Command+Par" ScpiPath="SENSE:M3:25A:CORRECTION:GAIN:STATUS"/>
@@ -1815,6 +1843,7 @@
      <OVREJECTION Type="Query" ScpiPath="SENSE:M3:10A:OVREJECTION"/>
      <ADCREJECTION Type="Query" ScpiPath="SENSE:M3:10A:ADCREJECTION"/>
      <TYPE Type="Query" ScpiPath="SENSE:M3:10A:TYPE"/>
+     <CTRLSELECTION Type="Query" ScpiPath="SENSE:M3:10A:CTRLSELECTION"/>
      <CORRECTION Type="Node">
       <GAIN Type="Node,Query" ScpiPath="SENSE:M3:10A:CORRECTION:GAIN">
        <STATUS Type="Query,Command+Par" ScpiPath="SENSE:M3:10A:CORRECTION:GAIN:STATUS"/>
@@ -1877,6 +1906,7 @@
      <OVREJECTION Type="Query" ScpiPath="SENSE:M3:5A:OVREJECTION"/>
      <ADCREJECTION Type="Query" ScpiPath="SENSE:M3:5A:ADCREJECTION"/>
      <TYPE Type="Query" ScpiPath="SENSE:M3:5A:TYPE"/>
+     <CTRLSELECTION Type="Query" ScpiPath="SENSE:M3:5A:CTRLSELECTION"/>
      <CORRECTION Type="Node">
       <GAIN Type="Node,Query" ScpiPath="SENSE:M3:5A:CORRECTION:GAIN">
        <STATUS Type="Query,Command+Par" ScpiPath="SENSE:M3:5A:CORRECTION:GAIN:STATUS"/>
@@ -1939,6 +1969,7 @@
      <OVREJECTION Type="Query" ScpiPath="SENSE:M3:2.5A:OVREJECTION"/>
      <ADCREJECTION Type="Query" ScpiPath="SENSE:M3:2.5A:ADCREJECTION"/>
      <TYPE Type="Query" ScpiPath="SENSE:M3:2.5A:TYPE"/>
+     <CTRLSELECTION Type="Query" ScpiPath="SENSE:M3:2.5A:CTRLSELECTION"/>
      <CORRECTION Type="Node">
       <GAIN Type="Node,Query" ScpiPath="SENSE:M3:2.5A:CORRECTION:GAIN">
        <STATUS Type="Query,Command+Par" ScpiPath="SENSE:M3:2.5A:CORRECTION:GAIN:STATUS"/>
@@ -2001,6 +2032,7 @@
      <OVREJECTION Type="Query" ScpiPath="SENSE:M3:1.0A:OVREJECTION"/>
      <ADCREJECTION Type="Query" ScpiPath="SENSE:M3:1.0A:ADCREJECTION"/>
      <TYPE Type="Query" ScpiPath="SENSE:M3:1.0A:TYPE"/>
+     <CTRLSELECTION Type="Query" ScpiPath="SENSE:M3:1.0A:CTRLSELECTION"/>
      <CORRECTION Type="Node">
       <GAIN Type="Node,Query" ScpiPath="SENSE:M3:1.0A:CORRECTION:GAIN">
        <STATUS Type="Query,Command+Par" ScpiPath="SENSE:M3:1.0A:CORRECTION:GAIN:STATUS"/>
@@ -2063,6 +2095,7 @@
      <OVREJECTION Type="Query" ScpiPath="SENSE:M3:500MA:OVREJECTION"/>
      <ADCREJECTION Type="Query" ScpiPath="SENSE:M3:500MA:ADCREJECTION"/>
      <TYPE Type="Query" ScpiPath="SENSE:M3:500MA:TYPE"/>
+     <CTRLSELECTION Type="Query" ScpiPath="SENSE:M3:500MA:CTRLSELECTION"/>
      <CORRECTION Type="Node">
       <GAIN Type="Node,Query" ScpiPath="SENSE:M3:500MA:CORRECTION:GAIN">
        <STATUS Type="Query,Command+Par" ScpiPath="SENSE:M3:500MA:CORRECTION:GAIN:STATUS"/>
@@ -2125,6 +2158,7 @@
      <OVREJECTION Type="Query" ScpiPath="SENSE:M3:250MA:OVREJECTION"/>
      <ADCREJECTION Type="Query" ScpiPath="SENSE:M3:250MA:ADCREJECTION"/>
      <TYPE Type="Query" ScpiPath="SENSE:M3:250MA:TYPE"/>
+     <CTRLSELECTION Type="Query" ScpiPath="SENSE:M3:250MA:CTRLSELECTION"/>
      <CORRECTION Type="Node">
       <GAIN Type="Node,Query" ScpiPath="SENSE:M3:250MA:CORRECTION:GAIN">
        <STATUS Type="Query,Command+Par" ScpiPath="SENSE:M3:250MA:CORRECTION:GAIN:STATUS"/>
@@ -2187,6 +2221,7 @@
      <OVREJECTION Type="Query" ScpiPath="SENSE:M3:100MA:OVREJECTION"/>
      <ADCREJECTION Type="Query" ScpiPath="SENSE:M3:100MA:ADCREJECTION"/>
      <TYPE Type="Query" ScpiPath="SENSE:M3:100MA:TYPE"/>
+     <CTRLSELECTION Type="Query" ScpiPath="SENSE:M3:100MA:CTRLSELECTION"/>
      <CORRECTION Type="Node">
       <GAIN Type="Node,Query" ScpiPath="SENSE:M3:100MA:CORRECTION:GAIN">
        <STATUS Type="Query,Command+Par" ScpiPath="SENSE:M3:100MA:CORRECTION:GAIN:STATUS"/>
@@ -2249,6 +2284,7 @@
      <OVREJECTION Type="Query" ScpiPath="SENSE:M3:50MA:OVREJECTION"/>
      <ADCREJECTION Type="Query" ScpiPath="SENSE:M3:50MA:ADCREJECTION"/>
      <TYPE Type="Query" ScpiPath="SENSE:M3:50MA:TYPE"/>
+     <CTRLSELECTION Type="Query" ScpiPath="SENSE:M3:50MA:CTRLSELECTION"/>
      <CORRECTION Type="Node">
       <GAIN Type="Node,Query" ScpiPath="SENSE:M3:50MA:CORRECTION:GAIN">
        <STATUS Type="Query,Command+Par" ScpiPath="SENSE:M3:50MA:CORRECTION:GAIN:STATUS"/>
@@ -2311,6 +2347,7 @@
      <OVREJECTION Type="Query" ScpiPath="SENSE:M3:25MA:OVREJECTION"/>
      <ADCREJECTION Type="Query" ScpiPath="SENSE:M3:25MA:ADCREJECTION"/>
      <TYPE Type="Query" ScpiPath="SENSE:M3:25MA:TYPE"/>
+     <CTRLSELECTION Type="Query" ScpiPath="SENSE:M3:25MA:CTRLSELECTION"/>
      <CORRECTION Type="Node">
       <GAIN Type="Node,Query" ScpiPath="SENSE:M3:25MA:CORRECTION:GAIN">
        <STATUS Type="Query,Command+Par" ScpiPath="SENSE:M3:25MA:CORRECTION:GAIN:STATUS"/>
@@ -2373,6 +2410,7 @@
      <OVREJECTION Type="Query" ScpiPath="SENSE:M3:10MA:OVREJECTION"/>
      <ADCREJECTION Type="Query" ScpiPath="SENSE:M3:10MA:ADCREJECTION"/>
      <TYPE Type="Query" ScpiPath="SENSE:M3:10MA:TYPE"/>
+     <CTRLSELECTION Type="Query" ScpiPath="SENSE:M3:10MA:CTRLSELECTION"/>
      <CORRECTION Type="Node">
       <GAIN Type="Node,Query" ScpiPath="SENSE:M3:10MA:CORRECTION:GAIN">
        <STATUS Type="Query,Command+Par" ScpiPath="SENSE:M3:10MA:CORRECTION:GAIN:STATUS"/>
@@ -2435,6 +2473,7 @@
      <OVREJECTION Type="Query" ScpiPath="SENSE:M3:5MA:OVREJECTION"/>
      <ADCREJECTION Type="Query" ScpiPath="SENSE:M3:5MA:ADCREJECTION"/>
      <TYPE Type="Query" ScpiPath="SENSE:M3:5MA:TYPE"/>
+     <CTRLSELECTION Type="Query" ScpiPath="SENSE:M3:5MA:CTRLSELECTION"/>
      <CORRECTION Type="Node">
       <GAIN Type="Node,Query" ScpiPath="SENSE:M3:5MA:CORRECTION:GAIN">
        <STATUS Type="Query,Command+Par" ScpiPath="SENSE:M3:5MA:CORRECTION:GAIN:STATUS"/>
@@ -2497,6 +2536,7 @@
      <OVREJECTION Type="Query" ScpiPath="SENSE:M3:R0V:OVREJECTION"/>
      <ADCREJECTION Type="Query" ScpiPath="SENSE:M3:R0V:ADCREJECTION"/>
      <TYPE Type="Query" ScpiPath="SENSE:M3:R0V:TYPE"/>
+     <CTRLSELECTION Type="Query" ScpiPath="SENSE:M3:R0V:CTRLSELECTION"/>
      <CORRECTION Type="Node">
       <GAIN Type="Node,Query" ScpiPath="SENSE:M3:R0V:CORRECTION:GAIN">
        <STATUS Type="Query,Command+Par" ScpiPath="SENSE:M3:R0V:CORRECTION:GAIN:STATUS"/>
@@ -2559,6 +2599,7 @@
      <OVREJECTION Type="Query" ScpiPath="SENSE:M3:R10V:OVREJECTION"/>
      <ADCREJECTION Type="Query" ScpiPath="SENSE:M3:R10V:ADCREJECTION"/>
      <TYPE Type="Query" ScpiPath="SENSE:M3:R10V:TYPE"/>
+     <CTRLSELECTION Type="Query" ScpiPath="SENSE:M3:R10V:CTRLSELECTION"/>
      <CORRECTION Type="Node">
       <GAIN Type="Node,Query" ScpiPath="SENSE:M3:R10V:CORRECTION:GAIN">
        <STATUS Type="Query,Command+Par" ScpiPath="SENSE:M3:R10V:CORRECTION:GAIN:STATUS"/>
@@ -2634,6 +2675,7 @@
      <OVREJECTION Type="Query" ScpiPath="SENSE:M4:200A:OVREJECTION"/>
      <ADCREJECTION Type="Query" ScpiPath="SENSE:M4:200A:ADCREJECTION"/>
      <TYPE Type="Query" ScpiPath="SENSE:M4:200A:TYPE"/>
+     <CTRLSELECTION Type="Query" ScpiPath="SENSE:M4:200A:CTRLSELECTION"/>
      <CORRECTION Type="Node">
       <GAIN Type="Node,Query" ScpiPath="SENSE:M4:200A:CORRECTION:GAIN">
        <STATUS Type="Query,Command+Par" ScpiPath="SENSE:M4:200A:CORRECTION:GAIN:STATUS"/>
@@ -2696,6 +2738,7 @@
      <OVREJECTION Type="Query" ScpiPath="SENSE:M4:100A:OVREJECTION"/>
      <ADCREJECTION Type="Query" ScpiPath="SENSE:M4:100A:ADCREJECTION"/>
      <TYPE Type="Query" ScpiPath="SENSE:M4:100A:TYPE"/>
+     <CTRLSELECTION Type="Query" ScpiPath="SENSE:M4:100A:CTRLSELECTION"/>
      <CORRECTION Type="Node">
       <GAIN Type="Node,Query" ScpiPath="SENSE:M4:100A:CORRECTION:GAIN">
        <STATUS Type="Query,Command+Par" ScpiPath="SENSE:M4:100A:CORRECTION:GAIN:STATUS"/>
@@ -2758,6 +2801,7 @@
      <OVREJECTION Type="Query" ScpiPath="SENSE:M4:50A:OVREJECTION"/>
      <ADCREJECTION Type="Query" ScpiPath="SENSE:M4:50A:ADCREJECTION"/>
      <TYPE Type="Query" ScpiPath="SENSE:M4:50A:TYPE"/>
+     <CTRLSELECTION Type="Query" ScpiPath="SENSE:M4:50A:CTRLSELECTION"/>
      <CORRECTION Type="Node">
       <GAIN Type="Node,Query" ScpiPath="SENSE:M4:50A:CORRECTION:GAIN">
        <STATUS Type="Query,Command+Par" ScpiPath="SENSE:M4:50A:CORRECTION:GAIN:STATUS"/>
@@ -2820,6 +2864,7 @@
      <OVREJECTION Type="Query" ScpiPath="SENSE:M4:25A:OVREJECTION"/>
      <ADCREJECTION Type="Query" ScpiPath="SENSE:M4:25A:ADCREJECTION"/>
      <TYPE Type="Query" ScpiPath="SENSE:M4:25A:TYPE"/>
+     <CTRLSELECTION Type="Query" ScpiPath="SENSE:M4:25A:CTRLSELECTION"/>
      <CORRECTION Type="Node">
       <GAIN Type="Node,Query" ScpiPath="SENSE:M4:25A:CORRECTION:GAIN">
        <STATUS Type="Query,Command+Par" ScpiPath="SENSE:M4:25A:CORRECTION:GAIN:STATUS"/>
@@ -2882,6 +2927,7 @@
      <OVREJECTION Type="Query" ScpiPath="SENSE:M4:10A:OVREJECTION"/>
      <ADCREJECTION Type="Query" ScpiPath="SENSE:M4:10A:ADCREJECTION"/>
      <TYPE Type="Query" ScpiPath="SENSE:M4:10A:TYPE"/>
+     <CTRLSELECTION Type="Query" ScpiPath="SENSE:M4:10A:CTRLSELECTION"/>
      <CORRECTION Type="Node">
       <GAIN Type="Node,Query" ScpiPath="SENSE:M4:10A:CORRECTION:GAIN">
        <STATUS Type="Query,Command+Par" ScpiPath="SENSE:M4:10A:CORRECTION:GAIN:STATUS"/>
@@ -2944,6 +2990,7 @@
      <OVREJECTION Type="Query" ScpiPath="SENSE:M4:5A:OVREJECTION"/>
      <ADCREJECTION Type="Query" ScpiPath="SENSE:M4:5A:ADCREJECTION"/>
      <TYPE Type="Query" ScpiPath="SENSE:M4:5A:TYPE"/>
+     <CTRLSELECTION Type="Query" ScpiPath="SENSE:M4:5A:CTRLSELECTION"/>
      <CORRECTION Type="Node">
       <GAIN Type="Node,Query" ScpiPath="SENSE:M4:5A:CORRECTION:GAIN">
        <STATUS Type="Query,Command+Par" ScpiPath="SENSE:M4:5A:CORRECTION:GAIN:STATUS"/>
@@ -3006,6 +3053,7 @@
      <OVREJECTION Type="Query" ScpiPath="SENSE:M4:2.5A:OVREJECTION"/>
      <ADCREJECTION Type="Query" ScpiPath="SENSE:M4:2.5A:ADCREJECTION"/>
      <TYPE Type="Query" ScpiPath="SENSE:M4:2.5A:TYPE"/>
+     <CTRLSELECTION Type="Query" ScpiPath="SENSE:M4:2.5A:CTRLSELECTION"/>
      <CORRECTION Type="Node">
       <GAIN Type="Node,Query" ScpiPath="SENSE:M4:2.5A:CORRECTION:GAIN">
        <STATUS Type="Query,Command+Par" ScpiPath="SENSE:M4:2.5A:CORRECTION:GAIN:STATUS"/>
@@ -3068,6 +3116,7 @@
      <OVREJECTION Type="Query" ScpiPath="SENSE:M4:1.0A:OVREJECTION"/>
      <ADCREJECTION Type="Query" ScpiPath="SENSE:M4:1.0A:ADCREJECTION"/>
      <TYPE Type="Query" ScpiPath="SENSE:M4:1.0A:TYPE"/>
+     <CTRLSELECTION Type="Query" ScpiPath="SENSE:M4:1.0A:CTRLSELECTION"/>
      <CORRECTION Type="Node">
       <GAIN Type="Node,Query" ScpiPath="SENSE:M4:1.0A:CORRECTION:GAIN">
        <STATUS Type="Query,Command+Par" ScpiPath="SENSE:M4:1.0A:CORRECTION:GAIN:STATUS"/>
@@ -3130,6 +3179,7 @@
      <OVREJECTION Type="Query" ScpiPath="SENSE:M4:500MA:OVREJECTION"/>
      <ADCREJECTION Type="Query" ScpiPath="SENSE:M4:500MA:ADCREJECTION"/>
      <TYPE Type="Query" ScpiPath="SENSE:M4:500MA:TYPE"/>
+     <CTRLSELECTION Type="Query" ScpiPath="SENSE:M4:500MA:CTRLSELECTION"/>
      <CORRECTION Type="Node">
       <GAIN Type="Node,Query" ScpiPath="SENSE:M4:500MA:CORRECTION:GAIN">
        <STATUS Type="Query,Command+Par" ScpiPath="SENSE:M4:500MA:CORRECTION:GAIN:STATUS"/>
@@ -3192,6 +3242,7 @@
      <OVREJECTION Type="Query" ScpiPath="SENSE:M4:250MA:OVREJECTION"/>
      <ADCREJECTION Type="Query" ScpiPath="SENSE:M4:250MA:ADCREJECTION"/>
      <TYPE Type="Query" ScpiPath="SENSE:M4:250MA:TYPE"/>
+     <CTRLSELECTION Type="Query" ScpiPath="SENSE:M4:250MA:CTRLSELECTION"/>
      <CORRECTION Type="Node">
       <GAIN Type="Node,Query" ScpiPath="SENSE:M4:250MA:CORRECTION:GAIN">
        <STATUS Type="Query,Command+Par" ScpiPath="SENSE:M4:250MA:CORRECTION:GAIN:STATUS"/>
@@ -3254,6 +3305,7 @@
      <OVREJECTION Type="Query" ScpiPath="SENSE:M4:100MA:OVREJECTION"/>
      <ADCREJECTION Type="Query" ScpiPath="SENSE:M4:100MA:ADCREJECTION"/>
      <TYPE Type="Query" ScpiPath="SENSE:M4:100MA:TYPE"/>
+     <CTRLSELECTION Type="Query" ScpiPath="SENSE:M4:100MA:CTRLSELECTION"/>
      <CORRECTION Type="Node">
       <GAIN Type="Node,Query" ScpiPath="SENSE:M4:100MA:CORRECTION:GAIN">
        <STATUS Type="Query,Command+Par" ScpiPath="SENSE:M4:100MA:CORRECTION:GAIN:STATUS"/>
@@ -3316,6 +3368,7 @@
      <OVREJECTION Type="Query" ScpiPath="SENSE:M4:50MA:OVREJECTION"/>
      <ADCREJECTION Type="Query" ScpiPath="SENSE:M4:50MA:ADCREJECTION"/>
      <TYPE Type="Query" ScpiPath="SENSE:M4:50MA:TYPE"/>
+     <CTRLSELECTION Type="Query" ScpiPath="SENSE:M4:50MA:CTRLSELECTION"/>
      <CORRECTION Type="Node">
       <GAIN Type="Node,Query" ScpiPath="SENSE:M4:50MA:CORRECTION:GAIN">
        <STATUS Type="Query,Command+Par" ScpiPath="SENSE:M4:50MA:CORRECTION:GAIN:STATUS"/>
@@ -3378,6 +3431,7 @@
      <OVREJECTION Type="Query" ScpiPath="SENSE:M4:25MA:OVREJECTION"/>
      <ADCREJECTION Type="Query" ScpiPath="SENSE:M4:25MA:ADCREJECTION"/>
      <TYPE Type="Query" ScpiPath="SENSE:M4:25MA:TYPE"/>
+     <CTRLSELECTION Type="Query" ScpiPath="SENSE:M4:25MA:CTRLSELECTION"/>
      <CORRECTION Type="Node">
       <GAIN Type="Node,Query" ScpiPath="SENSE:M4:25MA:CORRECTION:GAIN">
        <STATUS Type="Query,Command+Par" ScpiPath="SENSE:M4:25MA:CORRECTION:GAIN:STATUS"/>
@@ -3440,6 +3494,7 @@
      <OVREJECTION Type="Query" ScpiPath="SENSE:M4:10MA:OVREJECTION"/>
      <ADCREJECTION Type="Query" ScpiPath="SENSE:M4:10MA:ADCREJECTION"/>
      <TYPE Type="Query" ScpiPath="SENSE:M4:10MA:TYPE"/>
+     <CTRLSELECTION Type="Query" ScpiPath="SENSE:M4:10MA:CTRLSELECTION"/>
      <CORRECTION Type="Node">
       <GAIN Type="Node,Query" ScpiPath="SENSE:M4:10MA:CORRECTION:GAIN">
        <STATUS Type="Query,Command+Par" ScpiPath="SENSE:M4:10MA:CORRECTION:GAIN:STATUS"/>
@@ -3502,6 +3557,7 @@
      <OVREJECTION Type="Query" ScpiPath="SENSE:M4:5MA:OVREJECTION"/>
      <ADCREJECTION Type="Query" ScpiPath="SENSE:M4:5MA:ADCREJECTION"/>
      <TYPE Type="Query" ScpiPath="SENSE:M4:5MA:TYPE"/>
+     <CTRLSELECTION Type="Query" ScpiPath="SENSE:M4:5MA:CTRLSELECTION"/>
      <CORRECTION Type="Node">
       <GAIN Type="Node,Query" ScpiPath="SENSE:M4:5MA:CORRECTION:GAIN">
        <STATUS Type="Query,Command+Par" ScpiPath="SENSE:M4:5MA:CORRECTION:GAIN:STATUS"/>
@@ -3564,6 +3620,7 @@
      <OVREJECTION Type="Query" ScpiPath="SENSE:M4:R0V:OVREJECTION"/>
      <ADCREJECTION Type="Query" ScpiPath="SENSE:M4:R0V:ADCREJECTION"/>
      <TYPE Type="Query" ScpiPath="SENSE:M4:R0V:TYPE"/>
+     <CTRLSELECTION Type="Query" ScpiPath="SENSE:M4:R0V:CTRLSELECTION"/>
      <CORRECTION Type="Node">
       <GAIN Type="Node,Query" ScpiPath="SENSE:M4:R0V:CORRECTION:GAIN">
        <STATUS Type="Query,Command+Par" ScpiPath="SENSE:M4:R0V:CORRECTION:GAIN:STATUS"/>
@@ -3626,6 +3683,7 @@
      <OVREJECTION Type="Query" ScpiPath="SENSE:M4:R10V:OVREJECTION"/>
      <ADCREJECTION Type="Query" ScpiPath="SENSE:M4:R10V:ADCREJECTION"/>
      <TYPE Type="Query" ScpiPath="SENSE:M4:R10V:TYPE"/>
+     <CTRLSELECTION Type="Query" ScpiPath="SENSE:M4:R10V:CTRLSELECTION"/>
      <CORRECTION Type="Node">
       <GAIN Type="Node,Query" ScpiPath="SENSE:M4:R10V:CORRECTION:GAIN">
        <STATUS Type="Query,Command+Par" ScpiPath="SENSE:M4:R10V:CORRECTION:GAIN:STATUS"/>
@@ -3701,6 +3759,7 @@
      <OVREJECTION Type="Query" ScpiPath="SENSE:M5:200A:OVREJECTION"/>
      <ADCREJECTION Type="Query" ScpiPath="SENSE:M5:200A:ADCREJECTION"/>
      <TYPE Type="Query" ScpiPath="SENSE:M5:200A:TYPE"/>
+     <CTRLSELECTION Type="Query" ScpiPath="SENSE:M5:200A:CTRLSELECTION"/>
      <CORRECTION Type="Node">
       <GAIN Type="Node,Query" ScpiPath="SENSE:M5:200A:CORRECTION:GAIN">
        <STATUS Type="Query,Command+Par" ScpiPath="SENSE:M5:200A:CORRECTION:GAIN:STATUS"/>
@@ -3763,6 +3822,7 @@
      <OVREJECTION Type="Query" ScpiPath="SENSE:M5:100A:OVREJECTION"/>
      <ADCREJECTION Type="Query" ScpiPath="SENSE:M5:100A:ADCREJECTION"/>
      <TYPE Type="Query" ScpiPath="SENSE:M5:100A:TYPE"/>
+     <CTRLSELECTION Type="Query" ScpiPath="SENSE:M5:100A:CTRLSELECTION"/>
      <CORRECTION Type="Node">
       <GAIN Type="Node,Query" ScpiPath="SENSE:M5:100A:CORRECTION:GAIN">
        <STATUS Type="Query,Command+Par" ScpiPath="SENSE:M5:100A:CORRECTION:GAIN:STATUS"/>
@@ -3825,6 +3885,7 @@
      <OVREJECTION Type="Query" ScpiPath="SENSE:M5:50A:OVREJECTION"/>
      <ADCREJECTION Type="Query" ScpiPath="SENSE:M5:50A:ADCREJECTION"/>
      <TYPE Type="Query" ScpiPath="SENSE:M5:50A:TYPE"/>
+     <CTRLSELECTION Type="Query" ScpiPath="SENSE:M5:50A:CTRLSELECTION"/>
      <CORRECTION Type="Node">
       <GAIN Type="Node,Query" ScpiPath="SENSE:M5:50A:CORRECTION:GAIN">
        <STATUS Type="Query,Command+Par" ScpiPath="SENSE:M5:50A:CORRECTION:GAIN:STATUS"/>
@@ -3887,6 +3948,7 @@
      <OVREJECTION Type="Query" ScpiPath="SENSE:M5:25A:OVREJECTION"/>
      <ADCREJECTION Type="Query" ScpiPath="SENSE:M5:25A:ADCREJECTION"/>
      <TYPE Type="Query" ScpiPath="SENSE:M5:25A:TYPE"/>
+     <CTRLSELECTION Type="Query" ScpiPath="SENSE:M5:25A:CTRLSELECTION"/>
      <CORRECTION Type="Node">
       <GAIN Type="Node,Query" ScpiPath="SENSE:M5:25A:CORRECTION:GAIN">
        <STATUS Type="Query,Command+Par" ScpiPath="SENSE:M5:25A:CORRECTION:GAIN:STATUS"/>
@@ -3949,6 +4011,7 @@
      <OVREJECTION Type="Query" ScpiPath="SENSE:M5:10A:OVREJECTION"/>
      <ADCREJECTION Type="Query" ScpiPath="SENSE:M5:10A:ADCREJECTION"/>
      <TYPE Type="Query" ScpiPath="SENSE:M5:10A:TYPE"/>
+     <CTRLSELECTION Type="Query" ScpiPath="SENSE:M5:10A:CTRLSELECTION"/>
      <CORRECTION Type="Node">
       <GAIN Type="Node,Query" ScpiPath="SENSE:M5:10A:CORRECTION:GAIN">
        <STATUS Type="Query,Command+Par" ScpiPath="SENSE:M5:10A:CORRECTION:GAIN:STATUS"/>
@@ -4011,6 +4074,7 @@
      <OVREJECTION Type="Query" ScpiPath="SENSE:M5:5A:OVREJECTION"/>
      <ADCREJECTION Type="Query" ScpiPath="SENSE:M5:5A:ADCREJECTION"/>
      <TYPE Type="Query" ScpiPath="SENSE:M5:5A:TYPE"/>
+     <CTRLSELECTION Type="Query" ScpiPath="SENSE:M5:5A:CTRLSELECTION"/>
      <CORRECTION Type="Node">
       <GAIN Type="Node,Query" ScpiPath="SENSE:M5:5A:CORRECTION:GAIN">
        <STATUS Type="Query,Command+Par" ScpiPath="SENSE:M5:5A:CORRECTION:GAIN:STATUS"/>
@@ -4073,6 +4137,7 @@
      <OVREJECTION Type="Query" ScpiPath="SENSE:M5:2.5A:OVREJECTION"/>
      <ADCREJECTION Type="Query" ScpiPath="SENSE:M5:2.5A:ADCREJECTION"/>
      <TYPE Type="Query" ScpiPath="SENSE:M5:2.5A:TYPE"/>
+     <CTRLSELECTION Type="Query" ScpiPath="SENSE:M5:2.5A:CTRLSELECTION"/>
      <CORRECTION Type="Node">
       <GAIN Type="Node,Query" ScpiPath="SENSE:M5:2.5A:CORRECTION:GAIN">
        <STATUS Type="Query,Command+Par" ScpiPath="SENSE:M5:2.5A:CORRECTION:GAIN:STATUS"/>
@@ -4135,6 +4200,7 @@
      <OVREJECTION Type="Query" ScpiPath="SENSE:M5:1.0A:OVREJECTION"/>
      <ADCREJECTION Type="Query" ScpiPath="SENSE:M5:1.0A:ADCREJECTION"/>
      <TYPE Type="Query" ScpiPath="SENSE:M5:1.0A:TYPE"/>
+     <CTRLSELECTION Type="Query" ScpiPath="SENSE:M5:1.0A:CTRLSELECTION"/>
      <CORRECTION Type="Node">
       <GAIN Type="Node,Query" ScpiPath="SENSE:M5:1.0A:CORRECTION:GAIN">
        <STATUS Type="Query,Command+Par" ScpiPath="SENSE:M5:1.0A:CORRECTION:GAIN:STATUS"/>
@@ -4197,6 +4263,7 @@
      <OVREJECTION Type="Query" ScpiPath="SENSE:M5:500MA:OVREJECTION"/>
      <ADCREJECTION Type="Query" ScpiPath="SENSE:M5:500MA:ADCREJECTION"/>
      <TYPE Type="Query" ScpiPath="SENSE:M5:500MA:TYPE"/>
+     <CTRLSELECTION Type="Query" ScpiPath="SENSE:M5:500MA:CTRLSELECTION"/>
      <CORRECTION Type="Node">
       <GAIN Type="Node,Query" ScpiPath="SENSE:M5:500MA:CORRECTION:GAIN">
        <STATUS Type="Query,Command+Par" ScpiPath="SENSE:M5:500MA:CORRECTION:GAIN:STATUS"/>
@@ -4259,6 +4326,7 @@
      <OVREJECTION Type="Query" ScpiPath="SENSE:M5:250MA:OVREJECTION"/>
      <ADCREJECTION Type="Query" ScpiPath="SENSE:M5:250MA:ADCREJECTION"/>
      <TYPE Type="Query" ScpiPath="SENSE:M5:250MA:TYPE"/>
+     <CTRLSELECTION Type="Query" ScpiPath="SENSE:M5:250MA:CTRLSELECTION"/>
      <CORRECTION Type="Node">
       <GAIN Type="Node,Query" ScpiPath="SENSE:M5:250MA:CORRECTION:GAIN">
        <STATUS Type="Query,Command+Par" ScpiPath="SENSE:M5:250MA:CORRECTION:GAIN:STATUS"/>
@@ -4321,6 +4389,7 @@
      <OVREJECTION Type="Query" ScpiPath="SENSE:M5:100MA:OVREJECTION"/>
      <ADCREJECTION Type="Query" ScpiPath="SENSE:M5:100MA:ADCREJECTION"/>
      <TYPE Type="Query" ScpiPath="SENSE:M5:100MA:TYPE"/>
+     <CTRLSELECTION Type="Query" ScpiPath="SENSE:M5:100MA:CTRLSELECTION"/>
      <CORRECTION Type="Node">
       <GAIN Type="Node,Query" ScpiPath="SENSE:M5:100MA:CORRECTION:GAIN">
        <STATUS Type="Query,Command+Par" ScpiPath="SENSE:M5:100MA:CORRECTION:GAIN:STATUS"/>
@@ -4383,6 +4452,7 @@
      <OVREJECTION Type="Query" ScpiPath="SENSE:M5:50MA:OVREJECTION"/>
      <ADCREJECTION Type="Query" ScpiPath="SENSE:M5:50MA:ADCREJECTION"/>
      <TYPE Type="Query" ScpiPath="SENSE:M5:50MA:TYPE"/>
+     <CTRLSELECTION Type="Query" ScpiPath="SENSE:M5:50MA:CTRLSELECTION"/>
      <CORRECTION Type="Node">
       <GAIN Type="Node,Query" ScpiPath="SENSE:M5:50MA:CORRECTION:GAIN">
        <STATUS Type="Query,Command+Par" ScpiPath="SENSE:M5:50MA:CORRECTION:GAIN:STATUS"/>
@@ -4445,6 +4515,7 @@
      <OVREJECTION Type="Query" ScpiPath="SENSE:M5:25MA:OVREJECTION"/>
      <ADCREJECTION Type="Query" ScpiPath="SENSE:M5:25MA:ADCREJECTION"/>
      <TYPE Type="Query" ScpiPath="SENSE:M5:25MA:TYPE"/>
+     <CTRLSELECTION Type="Query" ScpiPath="SENSE:M5:25MA:CTRLSELECTION"/>
      <CORRECTION Type="Node">
       <GAIN Type="Node,Query" ScpiPath="SENSE:M5:25MA:CORRECTION:GAIN">
        <STATUS Type="Query,Command+Par" ScpiPath="SENSE:M5:25MA:CORRECTION:GAIN:STATUS"/>
@@ -4507,6 +4578,7 @@
      <OVREJECTION Type="Query" ScpiPath="SENSE:M5:10MA:OVREJECTION"/>
      <ADCREJECTION Type="Query" ScpiPath="SENSE:M5:10MA:ADCREJECTION"/>
      <TYPE Type="Query" ScpiPath="SENSE:M5:10MA:TYPE"/>
+     <CTRLSELECTION Type="Query" ScpiPath="SENSE:M5:10MA:CTRLSELECTION"/>
      <CORRECTION Type="Node">
       <GAIN Type="Node,Query" ScpiPath="SENSE:M5:10MA:CORRECTION:GAIN">
        <STATUS Type="Query,Command+Par" ScpiPath="SENSE:M5:10MA:CORRECTION:GAIN:STATUS"/>
@@ -4569,6 +4641,7 @@
      <OVREJECTION Type="Query" ScpiPath="SENSE:M5:5MA:OVREJECTION"/>
      <ADCREJECTION Type="Query" ScpiPath="SENSE:M5:5MA:ADCREJECTION"/>
      <TYPE Type="Query" ScpiPath="SENSE:M5:5MA:TYPE"/>
+     <CTRLSELECTION Type="Query" ScpiPath="SENSE:M5:5MA:CTRLSELECTION"/>
      <CORRECTION Type="Node">
       <GAIN Type="Node,Query" ScpiPath="SENSE:M5:5MA:CORRECTION:GAIN">
        <STATUS Type="Query,Command+Par" ScpiPath="SENSE:M5:5MA:CORRECTION:GAIN:STATUS"/>
@@ -4631,6 +4704,7 @@
      <OVREJECTION Type="Query" ScpiPath="SENSE:M5:R0V:OVREJECTION"/>
      <ADCREJECTION Type="Query" ScpiPath="SENSE:M5:R0V:ADCREJECTION"/>
      <TYPE Type="Query" ScpiPath="SENSE:M5:R0V:TYPE"/>
+     <CTRLSELECTION Type="Query" ScpiPath="SENSE:M5:R0V:CTRLSELECTION"/>
      <CORRECTION Type="Node">
       <GAIN Type="Node,Query" ScpiPath="SENSE:M5:R0V:CORRECTION:GAIN">
        <STATUS Type="Query,Command+Par" ScpiPath="SENSE:M5:R0V:CORRECTION:GAIN:STATUS"/>
@@ -4693,6 +4767,7 @@
      <OVREJECTION Type="Query" ScpiPath="SENSE:M5:R10V:OVREJECTION"/>
      <ADCREJECTION Type="Query" ScpiPath="SENSE:M5:R10V:ADCREJECTION"/>
      <TYPE Type="Query" ScpiPath="SENSE:M5:R10V:TYPE"/>
+     <CTRLSELECTION Type="Query" ScpiPath="SENSE:M5:R10V:CTRLSELECTION"/>
      <CORRECTION Type="Node">
       <GAIN Type="Node,Query" ScpiPath="SENSE:M5:R10V:CORRECTION:GAIN">
        <STATUS Type="Query,Command+Par" ScpiPath="SENSE:M5:R10V:CORRECTION:GAIN:STATUS"/>
