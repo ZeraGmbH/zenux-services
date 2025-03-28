@@ -2,7 +2,6 @@
 #include "zscpi_response_definitions.h"
 
 SenseChannelCommon::SenseChannelCommon(std::shared_ptr<cSCPI> scpiinterface,
-                                       QString description,
                                        QString unit,
                                        SenseSystem::cChannelSettings *cSettings,
                                        quint8 nr,
@@ -12,7 +11,6 @@ SenseChannelCommon::SenseChannelCommon(std::shared_ptr<cSCPI> scpiinterface,
     m_sName(QString("m%1").arg(nr)),
     m_sAlias1(cSettings->m_sAlias1),
     m_sAlias2(cSettings->m_sAlias2),
-    m_sDescription(description),
     m_sUnit(unit),
     m_nCtrlChannel(cSettings->m_nCtrlChannel),
     m_nDspChannel(cSettings->m_nDspChannel),
@@ -75,19 +73,9 @@ QString SenseChannelCommon::getName()
     return m_sName;
 }
 
-QString SenseChannelCommon::getDescription()
-{
-    return m_sDescription;
-}
-
 quint8 SenseChannelCommon::getCtrlChannel()
 {
     return m_nCtrlChannel;
-}
-
-void SenseChannelCommon::setDescription(const QString &s)
-{
-    m_sDescription = s;
 }
 
 void SenseChannelCommon::setUnit(const QString &s)

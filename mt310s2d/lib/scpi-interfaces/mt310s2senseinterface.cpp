@@ -13,9 +13,6 @@
 #include <QFile>
 #include <cmath>
 
-const QString sVoltageChannelDescription = "Measuring channel 0..250V 50Hz/150kHz";
-const QString sCurrentChannelDescription = "Measuring channel 0..1000A 50Hz/150kHz";
-
 Mt310s2SenseInterface::Mt310s2SenseInterface(std::shared_ptr<cSCPI> scpiInterface,
                                              I2cSettings* i2cSettings,
                                              cSenseSettings* senseSettings,
@@ -46,14 +43,14 @@ QList<SenseChannelCommon*> Mt310s2SenseInterface::setChannelAndRanges(cSenseSett
 
     QList<SenseSystem::cChannelSettings*> channelSettings = senseSettings->getChannelSettings();
     QList<SenseChannelCommon*> channels;
-    channels.append(new Mt310s2SenseChannel(scpi, sVoltageChannelDescription, "V", channelSettings.at(0), 0, ctrlFactory));
-    channels.append(new Mt310s2SenseChannel(scpi, sVoltageChannelDescription, "V", channelSettings.at(1), 1, ctrlFactory));
-    channels.append(new Mt310s2SenseChannel(scpi, sVoltageChannelDescription, "V", channelSettings.at(2), 2, ctrlFactory));
-    channels.append(new Mt310s2SenseChannel(scpi, sVoltageChannelDescription, "V", channelSettings.at(6), 6, ctrlFactory));
-    channels.append(new Mt310s2SenseChannel(scpi, sCurrentChannelDescription, "A", channelSettings.at(3), 3, ctrlFactory));
-    channels.append(new Mt310s2SenseChannel(scpi, sCurrentChannelDescription, "A", channelSettings.at(4), 4, ctrlFactory));
-    channels.append(new Mt310s2SenseChannel(scpi, sCurrentChannelDescription, "A", channelSettings.at(5), 5, ctrlFactory));
-    channels.append(new Mt310s2SenseChannel(scpi, sCurrentChannelDescription, "A", channelSettings.at(7), 7, ctrlFactory));
+    channels.append(new Mt310s2SenseChannel(scpi, "V", channelSettings.at(0), 0, ctrlFactory));
+    channels.append(new Mt310s2SenseChannel(scpi, "V", channelSettings.at(1), 1, ctrlFactory));
+    channels.append(new Mt310s2SenseChannel(scpi, "V", channelSettings.at(2), 2, ctrlFactory));
+    channels.append(new Mt310s2SenseChannel(scpi, "V", channelSettings.at(6), 6, ctrlFactory));
+    channels.append(new Mt310s2SenseChannel(scpi, "A", channelSettings.at(3), 3, ctrlFactory));
+    channels.append(new Mt310s2SenseChannel(scpi, "A", channelSettings.at(4), 4, ctrlFactory));
+    channels.append(new Mt310s2SenseChannel(scpi, "A", channelSettings.at(5), 5, ctrlFactory));
+    channels.append(new Mt310s2SenseChannel(scpi, "A", channelSettings.at(7), 7, ctrlFactory));
 
     for (int i = 0; i < 4; i++) {
         const QString &channelName = channels.at(i)->getName();
