@@ -26,9 +26,10 @@ QString Com5003SenseChannel::getAlias()
 
 void Com5003SenseChannel::setNotifierSenseChannelRange()
 {
-    quint8 mode, rSelCode;
+    quint8 mode;
     if (m_ctrlFactory->getMModeController()->readMeasMode(mode) == ZeraMControllerIo::cmddone ) {
         if (mode == modeAC) {
+            quint8 rSelCode;
             if (m_ctrlFactory->getRangesController()->readRange(m_nCtrlChannel, rSelCode) == ZeraMControllerIo::cmddone ) {
                 for(auto range : qAsConst(m_RangeList)) {
                     if ( (range->getSelCode() == rSelCode) && (range->getAvail())) {
