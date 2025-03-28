@@ -127,26 +127,6 @@ bool Com5003SenseInterface::setSenseMode(QString modeStr)
     return false;
 }
 
-void Com5003SenseInterface::handleScpiReadWriteMMode(cProtonetCommand *protoCmd)
-{
-    cSCPICommand cmd = protoCmd->m_sInput;
-    if (cmd.isQuery())
-        protoCmd->m_sOutput  = m_notifierSenseMMode.getString();
-    else {
-        if (cmd.isCommand(1)) {
-            QString mode = cmd.getParam(0);
-            if(setSenseMode(mode))
-                protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::ack];
-            else
-                protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::nak];
-        }
-        else
-            protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::nak];
-    }
-    if (protoCmd->m_bwithOutput)
-        emit cmdExecutionDone(protoCmd);
-}
-
 QString Com5003SenseInterface::scpiReadSenseGroupCatalog(QString &scpi)
 {
     cSCPICommand cmd = scpi;
