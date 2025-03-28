@@ -13,6 +13,7 @@ static const QString JsonRejectionStr = QStringLiteral("rejection");
 static const QString JsonOvRejectionStr = QStringLiteral("ovrejection");
 static const QString JsonAdcRejectionStr = QStringLiteral("adcrejection");
 static const QString JsonAdjustStatusFlags = QStringLiteral("adjuststatusflags");
+static const QString JsonAdjustControllerSelection = QStringLiteral("ctrlselection");
 
 QString SenseRegressionHelper::getJsonNumString(int clampTypeNo)
 {
@@ -46,6 +47,9 @@ void SenseRegressionHelper::addRangeConstantDataToJson(QString rangeName, SenseS
 
     QString adjustStatusFlags = ScpiSingleTransactionBlocked::query(QString("SENS:%1:%2:TYPE?").arg(channelName, rangeName));
     range.insert(JsonAdjustStatusFlags, adjustStatusFlags);
+
+    QString ctrlSelectionNum = ScpiSingleTransactionBlocked::query(QString("SENS:%1:%2:CTRLSELECTION?").arg(channelName, rangeName));
+    range.insert(JsonAdjustControllerSelection, ctrlSelectionNum);
 }
 
 bool SenseRegressionHelper::compareRangeConstantDataWithJson(QJsonObject &rangeReference, QString clampName, QString rangeName, SenseSystem::cChannelSettings *channelSetting)
@@ -99,6 +103,13 @@ bool SenseRegressionHelper::compareRangeConstantDataWithJson(QJsonObject &rangeR
         expected = rangeReference.value(JsonAdjustStatusFlags).toString();
         if(adjustStatusFlags != expected) {
             reportError(clampName, rangeName, JsonAdjustStatusFlags, expected, adjustStatusFlags);
+            allOk = false;
+        }
+
+        QString ctrlSelectionNum = ScpiSingleTransactionBlocked::query(QString("SENS:%1:%2:CTRLSELECTION?").arg(channelName, rangeName));
+        expected = rangeReference.value(JsonAdjustControllerSelection).toString();
+        if(adjustStatusFlags != expected) {
+            reportError(clampName, rangeName, JsonAdjustControllerSelection, expected, adjustStatusFlags);
             allOk = false;
         }
     }

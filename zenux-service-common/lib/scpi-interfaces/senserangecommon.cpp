@@ -45,6 +45,7 @@ void SenseRangeCommon::initSCPIConnection(QString leadingNodes)
     addDelegate(QString("%1%2").arg(leadingNodes, m_sName), "OVREJECTION", SCPI::isQuery, m_scpiInterface, SenseRange::cmdOVRejection);
     addDelegate(QString("%1%2").arg(leadingNodes, m_sName), "ADCREJECTION", SCPI::isQuery, m_scpiInterface, SenseRange::cmdADCRejection);
     addDelegate(QString("%1%2").arg(leadingNodes, m_sName), "TYPE", SCPI::isQuery, m_scpiInterface, SenseRange::cmdType);
+    addDelegate(QString("%1%2").arg(leadingNodes, m_sName), "CTRLSELECTION", SCPI::isQuery, m_scpiInterface, SenseRange::cmdCtrlSelection);
 
     connect(m_justdata, &ScpiConnection::cmdExecutionDone, this, &ScpiConnection::cmdExecutionDone);
     m_justdata->initSCPIConnection(QString("%1%2").arg(leadingNodes, getRangeName()));
@@ -130,6 +131,9 @@ void SenseRangeCommon::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
     case SenseRange::cmdType:
         protoCmd->m_sOutput = scpiRangeTypeFlags(protoCmd->m_sInput);
         break;
+    case SenseRange::cmdCtrlSelection:
+        protoCmd->m_sOutput = scpiControllerSelection(protoCmd->m_sInput);
+        break;
     }
     if (protoCmd->m_bwithOutput)
         emit cmdExecutionDone(protoCmd);
@@ -187,6 +191,14 @@ QString SenseRangeCommon::scpiRangeTypeFlags(const QString &scpi) const
 {
     cSCPICommand cmd = scpi;
     if (cmd.isQuery())
-        return QString("%1").arg(m_typeFlags); // we return mmode mask and sensortype here
+        return QString("%1").arg(m_typeFlags);
+    return ZSCPI::scpiAnswer[ZSCPI::nak];
+}
+
+QString SenseRangeCommon::scpiControllerSelection(const QString &scpi) const
+{
+    cSCPICommand cmd = scpi;
+    if (cmd.isQuery())
+        return QString("%1").arg(m_nSelCode);
     return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
