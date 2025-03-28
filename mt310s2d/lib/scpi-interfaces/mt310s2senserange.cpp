@@ -12,8 +12,7 @@ Mt310s2SenseRange::Mt310s2SenseRange(std::shared_ptr<cSCPI> scpiinterface,
                                      double rejection,
                                      double ovrejection,
                                      quint8 rselcode,
-                                     quint16 mmask,
-                                     AdjRangeScpi* justdata) :
+                                     quint16 mmask) :
     SenseRangeCommon(
         scpiinterface,
         name,
@@ -24,7 +23,7 @@ Mt310s2SenseRange::Mt310s2SenseRange(std::shared_ptr<cSCPI> scpiinterface,
         adcRejectionMt310s2,
         rselcode,
         mmask,
-        justdata,
+        new AdjRangeScpi(scpiinterface, AdjustScpiValueFormatterFactory::createMt310s2AdjFormatter()),
         rejectionScpiQueryDigitsMt310s2)
 {
 }

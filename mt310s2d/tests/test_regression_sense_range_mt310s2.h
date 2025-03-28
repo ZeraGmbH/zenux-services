@@ -20,10 +20,8 @@ private slots:
     void checkAdcRejection();
     void checkAtmelSelectionCode();
     void checkTypeOrMask();
-    void checkGetJustData();
 private:
     std::shared_ptr<cSCPI> m_scpiInterface;
-    AdjRangeScpi *m_justData;
     SenseRangeCommon *m_range;
 };
 

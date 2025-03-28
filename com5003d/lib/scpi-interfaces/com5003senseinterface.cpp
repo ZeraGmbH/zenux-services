@@ -140,11 +140,6 @@ QString Com5003SenseInterface::scpiReadSenseGroupCatalog(QString &scpi)
         return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-AdjRangeScpi *Com5003SenseInterface::createJustScpiInterfaceWithAtmelPermission()
-{
-    return new AdjRangeScpi(m_scpiInterface, AdjustScpiValueFormatterFactory::createCom5003AdjFormatter());
-}
-
 void Com5003SenseInterface::changeSense()
 {
     if (m_availSenseModesHash[m_currSenseMode] == modeAC) {
