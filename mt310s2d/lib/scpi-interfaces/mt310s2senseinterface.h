@@ -23,7 +23,6 @@ private:
     QString getPcbName() override;
     QString getXmlType() override;
     bool isRangePartOfAdjXmlExport(SenseRangeCommon* range) override;
-    static AdjRangeScpi* createJustScpiInterfaceWithAtmelPermission(std::shared_ptr<cSCPI> scpi);
     QString scpiReadSenseGroupCatalog(QString& scpi) override;
     bool setSenseMode(QString mode) override;
 };

@@ -24,7 +24,6 @@ private:
     QString getPcbName() override;
     QString getXmlType() override;
     bool isRangePartOfAdjXmlExport(SenseRangeCommon* range) override;
-    AdjRangeScpi* createJustScpiInterfaceWithAtmelPermission();
     QString scpiReadSenseGroupCatalog(QString& scpi) override;
     bool setSenseMode(QString modeStr) override;
 };

@@ -9,7 +9,6 @@ QTEST_MAIN(test_regression_sense_range_mt310s2);
 void test_regression_sense_range_mt310s2::init()
 {
     m_scpiInterface = std::make_shared<cSCPI>();
-    m_justData = new AdjRangeScpi(m_scpiInterface, AdjustScpiValueFormatterFactory::createMt310s2AdjFormatter()); // range deletes
     m_range = new Mt310s2SenseRange(m_scpiInterface,
                               "250V",
                               true,
@@ -17,8 +16,7 @@ void test_regression_sense_range_mt310s2::init()
                               22222.22222,
                               33333.33333,
                               5,
-                              modeAC | modeADJ | Direct,
-                              m_justData);
+                              modeAC | modeADJ | Direct);
     m_range->initSCPIConnection("SENSE:m0");
 }
 
@@ -188,11 +186,4 @@ void test_regression_sense_range_mt310s2::checkTypeOrMask()
     scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
     scpiDelegate->executeSCPI(protoCmd);
     QCOMPARE((protoCmd->m_sOutput),ZSCPI::scpiAnswer[ZSCPI::nak]);
-}
-
-void test_regression_sense_range_mt310s2::checkGetJustData()
-{
-    QCOMPARE(m_range->getJustData(), m_justData);
-    // 0: Interesting but testing just data is to be done somewhere else
-    QCOMPARE(m_range->getAdjustmentStatus80Mask(), 0);
 }

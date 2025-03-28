@@ -14,8 +14,7 @@ public:
                       double rejection,
                       double ovrejection,
                       quint8 rselcode,
-                      quint16 mmask,
-                      AdjRangeScpi* justdata);
+                      quint16 mmask);
 };
 
 #endif // MT310s2SENSERANGE_H
