@@ -113,13 +113,6 @@ void SenseInterfaceCommon::initSCPIConnection(QString leadingNodes)
     addDelegate(cmdParent, "ADJUSTMENT", SCPI::isQuery, m_scpiInterface, SenseSystem::cmdStatAdjustment);
 }
 
-bool SenseInterfaceCommon::isInvalidAdjDataOrChannelRangeAvail(AdjDataPtr adjData, QString channelName, QString rangeName)
-{
-    if(adjData->isEmpty())
-        return true;
-    return adjData->isChannelRangeAvailable(channelName, rangeName);
-}
-
 void SenseInterfaceCommon::injectAdjToChannelRanges()
 {
     for(auto &channel : m_channelList) {

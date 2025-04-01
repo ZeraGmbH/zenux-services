@@ -1,6 +1,6 @@
 #include "test_regression_sense_range_mt310s2.h"
 #include "senseinterfacecommon.h"
-#include "mt310s2senserange.h"
+#include "mtxxxs2senserange.h"
 #include "zscpi_response_definitions.h"
 #include <QTest>
 
@@ -9,7 +9,7 @@ QTEST_MAIN(test_regression_sense_range_mt310s2);
 void test_regression_sense_range_mt310s2::init()
 {
     m_scpiInterface = std::make_shared<cSCPI>();
-    m_range = new Mt310s2SenseRange(m_scpiInterface,
+    m_range = new MtXXXs2SenseRange(m_scpiInterface,
                               "250V",
                               true,
                               11111.11111,

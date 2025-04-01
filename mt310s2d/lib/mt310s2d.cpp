@@ -2,6 +2,8 @@
 #include "mt310s2dglobal.h"
 #include "rmconnection.h"
 #include "clampinterface.h"
+#include "mtxxxs2sensechannel.h"
+#include "mtxxxs2senserange.h"
 #include "fingroupresourceandinterface.h"
 #include "hkingroupresourceandinterface.h"
 #include "samplinginterface.h"

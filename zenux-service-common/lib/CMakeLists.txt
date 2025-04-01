@@ -3,6 +3,7 @@ file(GLOB HEADERS
     ${CMAKE_CURRENT_SOURCE_DIR}/adjustment/*.h
     ${CMAKE_CURRENT_SOURCE_DIR}/adjustment/*/*.h
     ${CMAKE_CURRENT_SOURCE_DIR}/async-notifications/*.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/channel-range-factories/*.h
     ${CMAKE_CURRENT_SOURCE_DIR}/device-nodes/*.h
     ${CMAKE_CURRENT_SOURCE_DIR}/meas-channels/*.h
     ${CMAKE_CURRENT_SOURCE_DIR}/micro-controller-io/*.h
@@ -17,6 +18,7 @@ file(GLOB SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/adjustment/*.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/adjustment/*/*.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/async-notifications/*.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/channel-range-factories/*.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/device-nodes/*.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/meas-channels/*.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/micro-controller-io/*.cpp
@@ -56,6 +58,7 @@ target_include_directories(zenuxservicecommon
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/adjustment/range>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/adjustment/rangeitem>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/async-notifications>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/channel-range-factories>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/device-nodes>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/meas-channels>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/micro-controller-io>

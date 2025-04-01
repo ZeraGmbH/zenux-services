@@ -1,8 +1,8 @@
-#include "mt310s2sensechannel.h"
+#include "mtxxxs2sensechannel.h"
 #include "senserangecommon.h"
 #include "zscpi_response_definitions.h"
 
-Mt310s2SenseChannel::Mt310s2SenseChannel(std::shared_ptr<cSCPI> scpiinterface,
+MtXXXs2SenseChannel::MtXXXs2SenseChannel(std::shared_ptr<cSCPI> scpiinterface,
                                          QString unit,
                                          SenseSystem::cChannelSettings *cSettings,
                                          quint8 nr,
@@ -15,12 +15,12 @@ Mt310s2SenseChannel::Mt310s2SenseChannel(std::shared_ptr<cSCPI> scpiinterface,
 {
 }
 
-QString Mt310s2SenseChannel::getAlias()
+QString MtXXXs2SenseChannel::getAlias()
 {
     return m_sAlias1;
 }
 
-void Mt310s2SenseChannel::setNotifierSenseChannelRange()
+void MtXXXs2SenseChannel::setNotifierSenseChannelRange()
 {
     quint8 rSelCode;
     if (m_ctrlFactory->getRangesController()->readRange(m_nCtrlChannel, rSelCode) == ZeraMControllerIo::cmddone ) {
@@ -33,7 +33,7 @@ void Mt310s2SenseChannel::setNotifierSenseChannelRange()
     }
 }
 
-QString Mt310s2SenseChannel::scpiReadWriteRange(QString &sInput)
+QString MtXXXs2SenseChannel::scpiReadWriteRange(QString &sInput)
 {
     cSCPICommand cmd = sInput;
     if (cmd.isQuery())

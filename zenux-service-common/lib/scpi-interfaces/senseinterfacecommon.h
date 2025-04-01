@@ -102,7 +102,6 @@ protected:
 
     void setNotifierSenseMMode();
     void setNotifierSenseChannelCat();
-    static bool isInvalidAdjDataOrChannelRangeAvail(AdjDataPtr adjData, QString channelName, QString rangeName);
     void injectAdjToChannelRanges();
 
     static QString m_version;

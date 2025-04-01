@@ -3,11 +3,11 @@
 
 #include "senserangecommon.h"
 
-class Mt310s2SenseRange: public SenseRangeCommon
+class MtXXXs2SenseRange: public SenseRangeCommon
 {
     Q_OBJECT
 public:
-    Mt310s2SenseRange(std::shared_ptr<cSCPI> scpiinterface,
+    MtXXXs2SenseRange(std::shared_ptr<cSCPI> scpiinterface,
                       QString name,
                       bool avail,
                       double rValue,
