@@ -9,6 +9,7 @@ class test_fpga_settings_regression : public QObject
 private slots:
     void com5003d();
     void mt310s2d();
+    void mt581s2d();
     void sec1000d();
     void zdsp1d();
 };

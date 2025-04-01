@@ -32,14 +32,13 @@ class cCOM5003dServer: public PCBServer
     Q_OBJECT
 
 public:
-    explicit cCOM5003dServer(SettingsContainerPtr settings,
+    explicit cCOM5003dServer(const QString &serviceName,
+                             SettingsContainerPtr settings,
                              AbstractFactoryI2cCtrlPtr ctrlFactory,
                              AbstractFactoryDeviceNodePcbPtr deviceNodeFactory,
                              VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory);
     ~cCOM5003dServer();
     QString getCtrlDeviceNode();
-    static const ServerParams defaultParams;
-
     void init();
 
 signals:

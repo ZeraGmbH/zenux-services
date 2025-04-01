@@ -24,7 +24,7 @@ void test_serverunregisternotifier::init()
 {
     QFETCH_GLOBAL(QString, serviceName);
     SettingsContainer::TServiceConfig config = SettingsContainer::getServiceConfig(serviceName);
-    ServerParams params {"foo", "0", QStringLiteral(CONFIG_SOURCES_MT310S2D) + "/" + config.xsdFileName, QStringLiteral(CONFIG_SOURCES_MT310S2D) + "/" + config.xmlFileName};
+    ServerParams params {serviceName, "0", QStringLiteral(CONFIG_SOURCES_MT310S2D) + "/" + config.xsdFileName, QStringLiteral(CONFIG_SOURCES_MT310S2D) + "/" + config.xmlFileName};
     
     m_adjustmentStatusNull = std::make_unique<TestAdjustmentStatusInterfaceNull>();
     m_ctrlFactory = std::make_shared<TestFactoryI2cCtrl>(true);

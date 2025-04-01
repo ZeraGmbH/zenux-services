@@ -9,9 +9,18 @@ int main( int argc, char *argv[] )
 {
     QCoreApplication* app = new QCoreApplication (argc, argv);
 
-    SettingsContainerPtr settings = std::make_unique<SettingsContainer>(cCOM5003dServer::defaultParams);
+    QString serviceName = "com5003d";
+    SettingsContainer::TServiceConfig config = SettingsContainer::getServiceConfig(serviceName);
+    ServerParams defaultParams { ServerName,
+                               ServerVersion,
+                               "/etc/zera/com5003d/" + config.xsdFileName,
+                               "/etc/zera/com5003d/" + config.xmlFileName};
+
+
+    SettingsContainerPtr settings = std::make_unique<SettingsContainer>(defaultParams);
     std::shared_ptr<FactoryI2cCtrl> ctrlFactory = std::make_shared<FactoryI2cCtrl>(settings->getI2cSettings());
     cCOM5003dServer* com5003d = new cCOM5003dServer(
+        serviceName,
         std::move(settings),
         ctrlFactory,
         std::make_shared<FactoryDeviceNodePcb>(),

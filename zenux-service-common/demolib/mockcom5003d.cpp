@@ -15,6 +15,7 @@ MockCom5003d::MockCom5003d(const QString &serviceName,
         params.xmlFile = alternateConfigXml;
     SettingsContainerPtr settings = std::make_unique<SettingsContainer>(params);
     m_server = std::make_unique<cCOM5003dServer>(
+        serviceName,
         std::move(settings),
         ctrlFactory,
         std::make_shared<MockFactoryDeviceNodePcb>(),

@@ -18,6 +18,7 @@ void test_fpga_settings_regression::com5003d()
 {
     ServerParams params = MockServerParamGenerator::createParams("com5003d");
     cCOM5003dServer server(
+        "com5003d",
         std::make_unique<SettingsContainer>(params),
         std::make_shared<TestFactoryI2cCtrl>(true),
         std::make_shared<MockFactoryDeviceNodePcb>(),
@@ -31,6 +32,22 @@ void test_fpga_settings_regression::mt310s2d()
 {
     ServerParams params = MockServerParamGenerator::createParams("mt310s2d");
     cMT310S2dServer server(
+        "mt310s2d",
+        std::make_unique<SettingsContainer>(params),
+        std::make_shared<TestFactoryI2cCtrl>(true),
+        std::make_shared<MockFactoryDeviceNodePcb>(),
+        VeinTcp::MockTcpNetworkFactory::create());
+    TimeMachineObject::feedEventLoop();
+
+    QCOMPARE(server.getCtrlDeviceNode(), "/dev/zFPGA1reg");
+    QCOMPARE(server.getMsgDeviceNode(), "/dev/zFPGA1msg");
+}
+
+void test_fpga_settings_regression::mt581s2d()
+{
+    ServerParams params = MockServerParamGenerator::createParams("mt581s2d");
+    cMT310S2dServer server(
+        "mt581s2d",
         std::make_unique<SettingsContainer>(params),
         std::make_shared<TestFactoryI2cCtrl>(true),
         std::make_shared<MockFactoryDeviceNodePcb>(),

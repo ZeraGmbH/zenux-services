@@ -30,9 +30,8 @@
 #include "foutsettings.h"
 #include "scinsettings.h"
 
-const ServerParams cCOM5003dServer::defaultParams {ServerName, ServerVersion, "/etc/zera/com5003d/com5003d.xsd", "/etc/zera/com5003d/com5003d.xml"};
-
-cCOM5003dServer::cCOM5003dServer(SettingsContainerPtr settings,
+cCOM5003dServer::cCOM5003dServer(const QString &serviceName,
+                                 SettingsContainerPtr settings,
                                  AbstractFactoryI2cCtrlPtr ctrlFactory,
                                  AbstractFactoryDeviceNodePcbPtr deviceNodeFactory,
                                  VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory) :

@@ -34,7 +34,8 @@ class cMT310S2dServer: public PCBServer
 {
     Q_OBJECT
 public:
-    explicit cMT310S2dServer(SettingsContainerPtr settings,
+    explicit cMT310S2dServer(const QString &nameForConfigAndRanges,
+                             SettingsContainerPtr settings,
                              AbstractFactoryI2cCtrlPtr ctrlFactory,
                              AbstractFactoryDeviceNodePcbPtr deviceNodeFactory,
                              VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory);

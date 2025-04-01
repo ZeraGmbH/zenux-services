@@ -14,6 +14,7 @@ MockMt310s2d::MockMt310s2d(const QString &serviceName,
     if(!alternateConfigXml.isEmpty())
         params.xmlFile = alternateConfigXml;
     m_server = std::make_unique<cMT310S2dServer>(
+        nameForConfigAndRanges,
         std::make_unique<SettingsContainer>(params),
         ctrlFactory,
         std::make_shared<MockFactoryDeviceNodePcb>(),

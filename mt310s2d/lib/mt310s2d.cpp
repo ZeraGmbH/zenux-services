@@ -41,7 +41,8 @@ static struct sigaction sigActionMt310s2;
 // sigset_t mySigmask, origSigmask;
 
 
-cMT310S2dServer::cMT310S2dServer(SettingsContainerPtr settings,
+cMT310S2dServer::cMT310S2dServer(const QString &nameForConfigAndRanges,
+                                 SettingsContainerPtr settings,
                                  AbstractFactoryI2cCtrlPtr ctrlFactory,
                                  AbstractFactoryDeviceNodePcbPtr deviceNodeFactory,
                                  VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory) :
