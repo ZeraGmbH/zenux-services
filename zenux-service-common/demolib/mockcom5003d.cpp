@@ -3,13 +3,14 @@
 #include "mockserverparamgenerator.h"
 #include "mocki2ceepromiofactory.h"
 
-MockCom5003d::MockCom5003d(AbstractFactoryI2cCtrlPtr ctrlFactory,
+MockCom5003d::MockCom5003d(const QString &serviceName,
+                           AbstractFactoryI2cCtrlPtr ctrlFactory,
                            VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory,
-                           QString alternateConfigXml)
+                           const QString &alternateConfigXml)
 {
     MockI2cEEpromIoFactory::enableMock();
 
-    ServerParams params = MockServerParamGenerator::createParams("com5003d");
+    ServerParams params = MockServerParamGenerator::createParams(serviceName);
     if(!alternateConfigXml.isEmpty())
         params.xmlFile = alternateConfigXml;
     SettingsContainerPtr settings = std::make_unique<SettingsContainer>(params);

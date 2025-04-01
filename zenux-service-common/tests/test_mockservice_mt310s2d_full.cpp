@@ -17,11 +17,19 @@ void test_mockservice_mt310s2d_full::initTestCase()
     //qputenv("QT_FATAL_CRITICALS", "1");
 }
 
+void test_mockservice_mt310s2d_full::initTestCase_data()
+{
+    QTest::addColumn<QString>("serviceName");
+    QTest::newRow("mt310s2d") << QString("mt310s2d");
+    QTest::newRow("mt581s2d") << QString("mt581s2d");
+}
+
 void test_mockservice_mt310s2d_full::init()
 {
     VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory = VeinTcp::MockTcpNetworkFactory::create();
     m_resman = std::make_unique<ResmanRunFacade>(tcpNetworkFactory);
-    m_mt310s2d = std::make_unique<MockMt310s2d>(std::make_shared<TestFactoryI2cCtrl>(true), tcpNetworkFactory);
+    QFETCH_GLOBAL(QString, serviceName);
+    m_mt310s2d = std::make_unique<MockMt310s2d>(serviceName, std::make_shared<TestFactoryI2cCtrl>(true), tcpNetworkFactory);
     TimeMachineObject::feedEventLoop();
 
     m_proxyClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307, tcpNetworkFactory);

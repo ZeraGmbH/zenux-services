@@ -3,13 +3,14 @@
 #include "mockserverparamgenerator.h"
 #include "mocki2ceepromiofactory.h"
 
-MockMt310s2d::MockMt310s2d(AbstractFactoryI2cCtrlPtr ctrlFactory,
+MockMt310s2d::MockMt310s2d(const QString &serviceName,
+                           AbstractFactoryI2cCtrlPtr ctrlFactory,
                            VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory,
-                           QString alternateConfigXml)
+                           const QString &alternateConfigXml)
 {
     MockI2cEEpromIoFactory::enableMock();
 
-    ServerParams params = MockServerParamGenerator::createParams("mt310s2d");
+    ServerParams params = MockServerParamGenerator::createParams(serviceName);
     if(!alternateConfigXml.isEmpty())
         params.xmlFile = alternateConfigXml;
     m_server = std::make_unique<cMT310S2dServer>(

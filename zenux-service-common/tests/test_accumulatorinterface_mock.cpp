@@ -19,7 +19,6 @@ void test_accumulatorinterface_mock::initTestCase()
 void test_accumulatorinterface_mock::init()
 {
     TimeMachineForTest::reset();
-
 }
 
 void test_accumulatorinterface_mock::cleanup()
@@ -101,7 +100,8 @@ void test_accumulatorinterface_mock::setupServers(QString configFileXml)
 {
     VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory = VeinTcp::MockTcpNetworkFactory::create();
     m_resman = std::make_unique<ResmanRunFacade>(tcpNetworkFactory);
-    m_mt310s2d = std::make_unique<MockMt310s2d>(std::make_shared<TestFactoryI2cCtrl>(true), tcpNetworkFactory, configFileXml);
+    // we check against our configs so we can use mt310s2
+    m_mt310s2d = std::make_unique<MockMt310s2d>("mt310s2d", std::make_shared<TestFactoryI2cCtrl>(true), tcpNetworkFactory, configFileXml);
     TimeMachineObject::feedEventLoop();
 
     m_proxyClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307, tcpNetworkFactory);

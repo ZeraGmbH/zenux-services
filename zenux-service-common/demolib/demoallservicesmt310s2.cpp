@@ -21,8 +21,11 @@ void DemoAllServicesMt310s2::init(VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetwo
 {
     m_autoLogger = new AutoJournalLoggerFacade;
     m_resman = new ResmanRunFacade(tcpNetworkFactory);
-    ServerParams params = MockServerParamGenerator::createParams("mt310s2d");
-    m_mt310s2d = new MockMt310s2d(std::make_shared<DemoFactoryI2cCtrl>(std::make_unique<SettingsContainer>(params)), tcpNetworkFactory);
+    const QString serviceName = "mt310s2d";
+    ServerParams params = MockServerParamGenerator::createParams(serviceName);
+    m_mt310s2d = new MockMt310s2d(serviceName,
+                                  std::make_shared<DemoFactoryI2cCtrl>(std::make_unique<SettingsContainer>(params)),
+                                  tcpNetworkFactory);
     m_sec1000d = new MockSec1000d(tcpNetworkFactory);
     m_zdsp1d = new MockZdsp1d(std::make_shared<DemoFactoryDeviceNodeDsp>(), tcpNetworkFactory);
     DemoEventLoopFeeder::feedEventLoop();

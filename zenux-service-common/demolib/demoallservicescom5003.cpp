@@ -19,8 +19,11 @@ DemoAllServicesCom5003::DemoAllServicesCom5003(VeinTcp::AbstractTcpNetworkFactor
 void DemoAllServicesCom5003::init(VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory)
 {
     m_resman = new ResmanRunFacade(tcpNetworkFactory);
+    const QString serviceName = "com5003d";
     ServerParams params = MockServerParamGenerator::createParams("com5003d");
-    m_mockcom5003d = new MockCom5003d(std::make_shared<DemoFactoryI2cCtrl>(std::make_unique<SettingsContainer>(params)), tcpNetworkFactory);
+    m_mockcom5003d = new MockCom5003d(serviceName,
+                                      std::make_shared<DemoFactoryI2cCtrl>(std::make_unique<SettingsContainer>(params)),
+                                      tcpNetworkFactory);
     m_sec1000d = new MockSec1000d(tcpNetworkFactory);
     m_zdsp1d = new MockZdsp1d(std::make_shared<DemoFactoryDeviceNodeDsp>(), tcpNetworkFactory);
     DemoEventLoopFeeder::feedEventLoop();
