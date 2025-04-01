@@ -15,11 +15,12 @@ AccumulatorInterface::AccumulatorInterface(std::shared_ptr<cSCPI> scpiInterface,
     ScpiConnection(scpiInterface),
     m_ctrlFactory(ctrlFactory)
 {
-    m_pollingTimer = TimerFactoryQt::createPeriodic(ACCU_POLLING_PERIOD_MS);
-    connect(m_pollingTimer.get(), &TimerTemplateQt::sigExpired, this, &AccumulatorInterface::getAccuStateOfCharge);
-    connect(m_pollingTimer.get(), &TimerTemplateQt::sigExpired, this, &AccumulatorInterface::getAccumulatorStatus);
-    if(settings->isAvailable())
+    if(settings->isAvailable()) {
+        m_pollingTimer = TimerFactoryQt::createPeriodic(ACCU_POLLING_PERIOD_MS);
+        connect(m_pollingTimer.get(), &TimerTemplateQt::sigExpired, this, &AccumulatorInterface::getAccuStateOfCharge);
+        connect(m_pollingTimer.get(), &TimerTemplateQt::sigExpired, this, &AccumulatorInterface::getAccumulatorStatus);
         m_pollingTimer->start();
+    }
 }
 
 void AccumulatorInterface::initSCPIConnection(QString leadingNodes)
