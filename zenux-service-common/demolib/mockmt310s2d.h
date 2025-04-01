@@ -6,7 +6,7 @@
 class MockMt310s2d
 {
 public:
-    MockMt310s2d(const QString& serviceName,
+    MockMt310s2d(const QString& nameForConfigAndRanges,
                  AbstractFactoryI2cCtrlPtr ctrlFactory,
                  VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory,
                  const QString &alternateConfigXml = QString());

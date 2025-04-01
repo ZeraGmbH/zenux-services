@@ -31,7 +31,7 @@ public:
         QString xsdFileName;
         QString xmlFileName;
     };
-    static const TServiceConfig getServiceConfig(const QString &serviceName);
+    static const TServiceConfig getServiceConfig(const QString &nameForConfigAndRanges);
 private:
     ServerParams m_params;
     Zera::XMLConfig::cReader m_xmlConfigReader;

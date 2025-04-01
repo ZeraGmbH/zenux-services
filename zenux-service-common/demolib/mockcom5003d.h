@@ -6,7 +6,7 @@
 class MockCom5003d
 {
 public:
-    MockCom5003d(const QString& serviceName,
+    MockCom5003d(const QString& nameForConfigAndRanges,
                  AbstractFactoryI2cCtrlPtr ctrlFactory,
                  VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory,
                  const QString &alternateConfigXml = QString());

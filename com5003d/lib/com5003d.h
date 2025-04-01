@@ -32,7 +32,7 @@ class cCOM5003dServer: public PCBServer
     Q_OBJECT
 
 public:
-    explicit cCOM5003dServer(const QString &serviceName,
+    explicit cCOM5003dServer(const QString &nameForConfigAndRanges,
                              SettingsContainerPtr settings,
                              AbstractFactoryI2cCtrlPtr ctrlFactory,
                              AbstractFactoryDeviceNodePcbPtr deviceNodeFactory,

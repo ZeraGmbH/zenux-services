@@ -30,7 +30,7 @@
 #include "foutsettings.h"
 #include "scinsettings.h"
 
-cCOM5003dServer::cCOM5003dServer(const QString &serviceName,
+cCOM5003dServer::cCOM5003dServer(const QString &nameForConfigAndRanges,
                                  SettingsContainerPtr settings,
                                  AbstractFactoryI2cCtrlPtr ctrlFactory,
                                  AbstractFactoryDeviceNodePcbPtr deviceNodeFactory,

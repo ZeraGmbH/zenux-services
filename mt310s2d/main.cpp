@@ -13,10 +13,10 @@ int main( int argc, char *argv[] )
     const QCommandLineOption subdeviceparam("d", "device", "subdevice");
     parser.addOption(subdeviceparam);
     parser.process(*app);
-    QString serviceName = "mt310s2d";
+    QString nameForConfigAndRanges = "mt310s2d";
     if (parser.isSet(subdeviceparam))
-        serviceName = parser.value(subdeviceparam);
-    SettingsContainer::TServiceConfig config = SettingsContainer::getServiceConfig(serviceName);
+        nameForConfigAndRanges = parser.value(subdeviceparam);
+    SettingsContainer::TServiceConfig config = SettingsContainer::getServiceConfig(nameForConfigAndRanges);
     ServerParams defaultParams { ServerName,
                                  ServerVersion,
                                  "/etc/zera/mt310s2d/" + config.xsdFileName,

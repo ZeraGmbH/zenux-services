@@ -11,7 +11,7 @@
 class TestAllServicesMt310s2 : public AbstractMockAllServices
 {
 public:
-    TestAllServicesMt310s2(const QString &serviceName,
+    TestAllServicesMt310s2(const QString &nameForConfigAndRanges,
                            VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory,
                            AbstractFactoryI2cCtrlPtr ctrlFactory = std::make_shared<TestFactoryI2cCtrl>(true));
     virtual ~TestAllServicesMt310s2();

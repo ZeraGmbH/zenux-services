@@ -57,13 +57,13 @@ static const QMap<QString, SettingsContainer::TServiceConfig> supportedServiceCo
    { "zdsp1d",   {"zdsp1d.xsd",   "zdsp1d.xml"  }},
 };
 
-const SettingsContainer::TServiceConfig SettingsContainer::getServiceConfig(const QString &serviceName)
+const SettingsContainer::TServiceConfig SettingsContainer::getServiceConfig(const QString &nameForConfigAndRanges)
 {
-    if(supportedServiceConfigs.contains(serviceName))
-        return supportedServiceConfigs[serviceName];
-    if(supportedServiceConfigs.contains(serviceName + "d"))
-        return supportedServiceConfigs[serviceName + "d"];
-    qFatal("Unsupported service: %s", qPrintable(serviceName));
-    return supportedServiceConfigs[serviceName];
+    if(supportedServiceConfigs.contains(nameForConfigAndRanges))
+        return supportedServiceConfigs[nameForConfigAndRanges];
+    if(supportedServiceConfigs.contains(nameForConfigAndRanges + "d"))
+        return supportedServiceConfigs[nameForConfigAndRanges + "d"];
+    qFatal("Unsupported service: %s", qPrintable(nameForConfigAndRanges));
+    return supportedServiceConfigs[nameForConfigAndRanges];
 }
 

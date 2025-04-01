@@ -11,7 +11,7 @@
 class TestAllServicesCom5003 : public AbstractMockAllServices
 {
 public:
-    TestAllServicesCom5003(const QString &serviceName,
+    TestAllServicesCom5003(const QString &nameForConfigAndRanges,
                            VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory,
                            AbstractFactoryI2cCtrlPtr ctrlFactory = std::make_shared<TestFactoryI2cCtrl>(true));
     virtual ~TestAllServicesCom5003();

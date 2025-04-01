@@ -12,7 +12,7 @@ static const char *systemAccumulatorSoc ="SYSTEM:ACCUMULATOR:SOC?";
 
 void test_accumulatorinterface::initTestCase_data()
 {
-    QTest::addColumn<QString>("serviceName");
+    QTest::addColumn<QString>("nameForConfigAndRanges");
     QTest::newRow("mt310s2d") << QString("mt310s2d");
     QTest::newRow("mt581s2d") << QString("mt581s2d");
 }
@@ -26,8 +26,8 @@ void test_accumulatorinterface::init()
     m_accuSettings = std::make_unique<AccumulatorSettings>(m_xmlConfigReader.get());
     connect(m_xmlConfigReader.get(), &Zera::XMLConfig::cReader::valueChanged,
             m_accuSettings.get(), &AccumulatorSettings::configXMLInfo);
-    QFETCH_GLOBAL(QString, serviceName);
-    SettingsContainer::TServiceConfig config = SettingsContainer::getServiceConfig(serviceName);
+    QFETCH_GLOBAL(QString, nameForConfigAndRanges);
+    SettingsContainer::TServiceConfig config = SettingsContainer::getServiceConfig(nameForConfigAndRanges);
     m_xmlConfigReader->loadSchema(QStringLiteral(CONFIG_SOURCES_MT310S2D) + "/" + config.xsdFileName);
     m_xmlConfigReader->loadXMLFile(QStringLiteral(CONFIG_SOURCES_MT310S2D) + "/" + config.xmlFileName);
     
