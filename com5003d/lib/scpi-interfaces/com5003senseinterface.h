@@ -13,10 +13,10 @@ public:
                           SystemInfo *systemInfo,
                           AbstractFactoryI2cCtrlPtr ctrlFactory);
 // COM specifics only
-    static QList<SenseChannelCommon*> setChannelAndRanges(cSenseSettings *senseSettings,
-                                                           AdjDataPtr adjData,
-                                                           std::shared_ptr<cSCPI> scpi,
-                                                           AbstractFactoryI2cCtrlPtr ctrlFactory);
+    static QList<SenseChannelCommon*> setChannelAndRangesCom5003(cSenseSettings *senseSettings,
+                                                                 AdjDataPtr adjData,
+                                                                 std::shared_ptr<cSCPI> scpi,
+                                                                 AbstractFactoryI2cCtrlPtr ctrlFactory);
 
 private:
     void changeSense();

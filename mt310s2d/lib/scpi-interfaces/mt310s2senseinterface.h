@@ -13,10 +13,14 @@ public:
                           SystemInfo *systemInfo,
                           AbstractFactoryI2cCtrlPtr ctrlFactory);
 // MT specifics only
-    static QList<SenseChannelCommon*> setChannelAndRanges(cSenseSettings* senseSettings,
-                                                           AdjDataPtr adjData,
-                                                           std::shared_ptr<cSCPI> scpi,
-                                                           AbstractFactoryI2cCtrlPtr ctrlFactory);
+    static QList<SenseChannelCommon*> setChannelAndRangesMt310s2(cSenseSettings* senseSettings,
+                                                                 AdjDataPtr adjData,
+                                                                 std::shared_ptr<cSCPI> scpi,
+                                                                 AbstractFactoryI2cCtrlPtr ctrlFactory);
+    static QList<SenseChannelCommon*> setChannelAndRangesMt581s2(cSenseSettings* senseSettings,
+                                                                  AdjDataPtr adjData,
+                                                                  std::shared_ptr<cSCPI> scpi,
+                                                                  AbstractFactoryI2cCtrlPtr ctrlFactory);
 
 private:
     const char* getAdjExportedVersion() override;

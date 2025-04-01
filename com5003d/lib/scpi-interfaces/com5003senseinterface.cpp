@@ -23,20 +23,21 @@ Com5003SenseInterface::Com5003SenseInterface(std::shared_ptr<cSCPI> scpiInterfac
                            ctrlFactory,
                            QHash<QString, int>{{"AC", modeAC}, {"REF", modeREF}})
 {
-    m_channelList = setChannelAndRanges(senseSettings,
-                                        m_adjData,
-                                        m_scpiInterface,
-                                        m_ctrlFactory);
+    m_channelList = setChannelAndRangesCom5003(senseSettings,
+                                               m_adjData,
+                                               m_scpiInterface,
+                                               m_ctrlFactory);
     injectAdjToChannelRanges();
     setSenseMode("AC");
     setNotifierSenseChannelCat(); // only prepared for !!! since we don't have hot plug for measuring channels yet
 }
 
-QList<SenseChannelCommon*> Com5003SenseInterface::setChannelAndRanges(cSenseSettings *senseSettings,
-                                                                       AdjDataPtr adjData,
-                                                                       std::shared_ptr<cSCPI> scpi,
-                                                                       AbstractFactoryI2cCtrlPtr ctrlFactory)
+QList<SenseChannelCommon*> Com5003SenseInterface::setChannelAndRangesCom5003(cSenseSettings *senseSettings,
+                                                                             AdjDataPtr adjData,
+                                                                             std::shared_ptr<cSCPI> scpi,
+                                                                             AbstractFactoryI2cCtrlPtr ctrlFactory)
 {
+    qInfo("Set channels/ranges for COM5003");
     constexpr quint16 rangeFlagsDevice = modeAC;
     constexpr quint16 rangeFlagsReference = modeREF;
     Q_UNUSED(adjData) // not use in com5003 for same signature as mt310s2
