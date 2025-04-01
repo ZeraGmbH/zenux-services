@@ -4,13 +4,9 @@
 #include <scpi.h>
 #include <fcntl.h>
 #include <unistd.h>
-#include <QtDebug>
-#include <QFile>
 #include <QByteArray>
 #include <QList>
 #include <QString>
-#include <QTcpSocket>
-#include <QTcpServer>
 #include <QDataStream>
 
 enum commands
@@ -234,7 +230,6 @@ void PCBServer::onProtobufDataReceived(VeinTcp::TcpPeer *peer, QByteArray messag
 
 void PCBServer::executeCommandProto(VeinTcp::TcpPeer* peer, std::shared_ptr<google::protobuf::Message> cmd)
 {
-    cSCPIObject* scpiObject;
     std::shared_ptr<ProtobufMessage::NetMessage> protobufCommand = std::static_pointer_cast<ProtobufMessage::NetMessage>(cmd);
     if ( (protobufCommand != nullptr) && (peer != nullptr)) {
         if (protobufCommand->has_clientid()) {
@@ -248,7 +243,7 @@ void PCBServer::executeCommandProto(VeinTcp::TcpPeer* peer, std::shared_ptr<goog
                 ProtobufMessage::NetMessage::ScpiCommand scpiCmd = protobufCommand->scpi();
                 QString input = QString::fromStdString(scpiCmd.command()) +  " " + QString::fromStdString(scpiCmd.parameter());
                 cProtonetCommand* protoCmd;
-                scpiObject =  m_scpiInterface->getSCPIObject(input);
+                cSCPIObject* scpiObject =  m_scpiInterface->getSCPIObject(input);
                 if (scpiObject) {
                     protoCmd = new cProtonetCommand(peer, true, true, clientId, messageNr, input, scpiObject->getType());
                     cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
@@ -258,8 +253,8 @@ void PCBServer::executeCommandProto(VeinTcp::TcpPeer* peer, std::shared_ptr<goog
                     }
                 }
                 else {
-                    QString cmd =  QString::fromStdString(protobufCommand->scpi().command());
-                    protoCmd = new cProtonetCommand(peer, true, true, clientId, messageNr, cmd);
+                    QString cmdStr =  QString::fromStdString(protobufCommand->scpi().command());
+                    protoCmd = new cProtonetCommand(peer, true, true, clientId, messageNr, cmdStr);
                     protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::nak];
                     emit cmdExecutionDone(protoCmd);
                 }
@@ -270,7 +265,7 @@ void PCBServer::executeCommandProto(VeinTcp::TcpPeer* peer, std::shared_ptr<goog
             QString input =  QString::fromStdString(protobufCommand->scpi().command());
             QByteArray clientId = QByteArray(); // we set an empty byte array
             cProtonetCommand* protoCmd;
-            scpiObject =  m_scpiInterface->getSCPIObject(input);
+            cSCPIObject* scpiObject =  m_scpiInterface->getSCPIObject(input);
             if (scpiObject) {
                 protoCmd = new cProtonetCommand(peer, false, true, clientId, 0, input, scpiObject->getType());
                 cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
@@ -326,16 +321,15 @@ void PCBServer::sendNotificationToClient(QString message, QByteArray clientID, V
 
 void PCBServer::onNotifierChanged(quint32 irqreg)
 {
-    NotificationValue* notifier = qobject_cast<NotificationValue*>(sender());
+    const NotificationValue* notifier = qobject_cast<NotificationValue*>(sender());
     if (m_notifierRegisterList.count() > 0) {
-        if (m_notifierRegisterList.count() > 0)
-            for (int i = 0; i < m_notifierRegisterList.count(); i++) {
-                NotificationStructWithValue notData = m_notifierRegisterList.at(i);
-                if (notData.notValue == notifier) {
-                    QString notificationMsg = QString("IRQ:%1").arg(irqreg);
-                    sendNotificationToClient(notificationMsg, notData.clientID, notData.netPeer);
-                }
+        for (int i = 0; i < m_notifierRegisterList.count(); i++) {
+            NotificationStructWithValue notData = m_notifierRegisterList.at(i);
+            if (notData.notValue == notifier) {
+                QString notificationMsg = QString("IRQ:%1").arg(irqreg);
+                sendNotificationToClient(notificationMsg, notData.clientID, notData.netPeer);
             }
+        }
     }
 }
 
