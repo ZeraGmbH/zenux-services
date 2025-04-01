@@ -1,8 +1,9 @@
 set(CONFIG_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/mt310s2d.xml
+    ${CMAKE_CURRENT_SOURCE_DIR}/mt581s2d.xml
 )
 set(CONFIG_VALIDATOR
-    ${CMAKE_CURRENT_SOURCE_DIR}/mt310s2d.xsd
+    ${CMAKE_CURRENT_SOURCE_DIR}/mtXXXs2d.xsd
 )
 
 # check for valid config files / display in qt-creator

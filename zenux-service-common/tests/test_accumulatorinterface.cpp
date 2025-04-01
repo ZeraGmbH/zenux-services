@@ -1,4 +1,5 @@
 #include "test_accumulatorinterface.h"
+#include "settingscontainer.h"
 #include "testfactoryi2cctrl.h"
 #include <timerfactoryqtfortest.h>
 #include <timemachinefortest.h>
@@ -9,6 +10,13 @@ QTEST_MAIN(test_accumulatorinterface);
 static const char *systemAccumulatorStatus ="SYSTEM:ACCUMULATOR:STATUS?";
 static const char *systemAccumulatorSoc ="SYSTEM:ACCUMULATOR:SOC?";
 
+void test_accumulatorinterface::initTestCase_data()
+{
+    QTest::addColumn<QString>("serviceName");
+    QTest::newRow("mt310s2d") << QString("mt310s2d");
+    QTest::newRow("mt581s2d") << QString("mt581s2d");
+}
+
 void test_accumulatorinterface::init()
 {
     TimerFactoryQtForTest::enableTest();
@@ -18,8 +26,10 @@ void test_accumulatorinterface::init()
     m_accuSettings = std::make_unique<AccumulatorSettings>(m_xmlConfigReader.get());
     connect(m_xmlConfigReader.get(), &Zera::XMLConfig::cReader::valueChanged,
             m_accuSettings.get(), &AccumulatorSettings::configXMLInfo);
-    m_xmlConfigReader->loadSchema(QStringLiteral(CONFIG_SOURCES_MT310S2D) + "/" + "mt310s2d.xsd");
-    m_xmlConfigReader->loadXMLFile(QStringLiteral(CONFIG_SOURCES_MT310S2D) + "/" + "mt310s2d.xml");
+    QFETCH_GLOBAL(QString, serviceName);
+    SettingsContainer::TServiceConfig config = SettingsContainer::getServiceConfig(serviceName);
+    m_xmlConfigReader->loadSchema(QStringLiteral(CONFIG_SOURCES_MT310S2D) + "/" + config.xsdFileName);
+    m_xmlConfigReader->loadXMLFile(QStringLiteral(CONFIG_SOURCES_MT310S2D) + "/" + config.xmlFileName);
     
     m_accumulator = new AccumulatorInterface(m_scpiInterface,
                                              m_accuSettings.get(),

@@ -14,7 +14,6 @@
 #include "finsettings.h"
 #include "hkinsettings.h"
 #include "i2csettings.h"
-#include "samplingsettings.h"
 #include "scinsettings.h"
 #include "sensesettings.h"
 #include "foutsettings.h"
@@ -40,8 +39,6 @@ static void SigHandler(int)
 static struct sigaction sigActionMt310s2;
 // sigset_t mySigmask, origSigmask;
 
-
-const ServerParams cMT310S2dServer::defaultParams {ServerName, ServerVersion, "/etc/zera/mt310s2d/mt310s2d.xsd", "/etc/zera/mt310s2d/mt310s2d.xml"};
 
 cMT310S2dServer::cMT310S2dServer(SettingsContainerPtr settings,
                                  AbstractFactoryI2cCtrlPtr ctrlFactory,

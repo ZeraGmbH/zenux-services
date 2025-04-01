@@ -47,3 +47,22 @@ SamplingSettings *SettingsContainer::getSamplingSettings()
 {
     return &m_samplingSettings;
 }
+
+static const QMap<QString, SettingsContainer::TServiceConfig> supportedServiceConfigs {
+   { "com5003d", {"com5003d.xsd", "com5003d.xml"}},
+   { "mt310s2d", {"mtXXXs2d.xsd", "mt310s2d.xml"}},
+   { "mt581s2d", {"mtXXXs2d.xsd", "mt581s2d.xml"}},
+   { "sec1000d", {"sec1000d.xsd", "sec1000d.xml"}},
+   { "zdsp1d",   {"zdsp1d.xsd",   "zdsp1d.xml"  }},
+};
+
+const SettingsContainer::TServiceConfig SettingsContainer::getServiceConfig(const QString &serviceName)
+{
+    if(supportedServiceConfigs.contains(serviceName))
+        return supportedServiceConfigs[serviceName];
+    if(supportedServiceConfigs.contains(serviceName + "d"))
+        return supportedServiceConfigs[serviceName + "d"];
+    qFatal("Unsupported service: %s", qPrintable(serviceName));
+    return supportedServiceConfigs[serviceName];
+}
+

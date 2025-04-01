@@ -12,6 +12,7 @@ public:
     test_hotpluggablecontrollercontainer();
 private slots:
     void initTestCase();
+    void initTestCase_data();
     void init();
 
     void initNoController();
@@ -32,8 +33,8 @@ private slots:
 
 private:
     Zera::XMLConfig::cReader m_configReader;
-    TestI2cSettings m_i2cSettings;
-    cSenseSettings m_senseSettings;
+    std::unique_ptr<TestI2cSettings> m_i2cSettings;
+    std::unique_ptr<cSenseSettings> m_senseSettings;
     AbstractFactoryI2cCtrlPtr m_ctrlFactory;
 };
 

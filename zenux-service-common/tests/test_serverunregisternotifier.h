@@ -11,6 +11,7 @@ class test_serverunregisternotifier : public QObject
 {
     Q_OBJECT
 private slots:
+    void initTestCase_data();
     void init();
 
     void oneScpiConnection();

@@ -10,6 +10,7 @@ class test_authorizationnotifier : public QObject
     Q_OBJECT
 private slots:
     void initTestCase();
+    void initTestCase_data();
     void init();
     void cleanup();
 

@@ -6,7 +6,7 @@
 class MockServerParamGenerator
 {
 public:
-    static ServerParams createParams(QString serviceName);
+    static ServerParams createParams(const QString &serviceName);
 };
 
 #endif // MOCKSERVERPARAMGENERATOR_H

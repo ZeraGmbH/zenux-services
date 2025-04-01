@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<serviceconfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+
+<connectivity>
+    <ethernet>
+        <ipadress>
+            <resourcemanager>127.0.0.1</resourcemanager>
+        </ipadress>
+        <port>
+            <protobufserver>6307</protobufserver>
+            <scpiserver>6308</scpiserver>
+            <resourcemanager>6312</resourcemanager>
+        </port>
+        <scpiactive>1</scpiactive>
+    </ethernet>
+    <i2c>
+        <debuglevel>1</debuglevel>
+        <device>
+            <node>/dev/i2c-0</node>
+        </device>
+        <adress>
+            <atmel>33</atmel>
+            <atmelsys>34</atmelsys>
+            <atmelemob>35</atmelemob>
+            <clampmux>113</clampmux>
+            <flash>80</flash>
+            <clampflash>81</clampflash>
+        </adress>
+    </i2c>
+    <fpga>
+        <ctrl_device_node>/dev/zFPGA1reg</ctrl_device_node>
+        <msg_device_node>/dev/zFPGA1msg</msg_device_node>
+    </fpga>
+</connectivity>
+	
+<resource>
+    <sense>
+        <m0>
+            <alias1>UL1</alias1>
+            <ctrlchannel>1</ctrlchannel>
+            <dspchannel>0</dspchannel>
+            <pluggedbit>-1</pluggedbit>
+            <muxchannel>-1</muxchannel>
+            <overloadbit>-1</overloadbit>
+            <avail>true</avail>
+        </m0>
+        <m1>
+            <alias1>UL2</alias1>
+            <ctrlchannel>2</ctrlchannel>
+            <dspchannel>2</dspchannel>
+            <pluggedbit>-1</pluggedbit>
+            <muxchannel>-1</muxchannel>
+            <overloadbit>-1</overloadbit>
+            <avail>true</avail>
+        </m1>
+        <m2>
+            <alias1>UL3</alias1>
+            <ctrlchannel>3</ctrlchannel>
+            <dspchannel>4</dspchannel>
+            <pluggedbit>-1</pluggedbit>
+            <muxchannel>-1</muxchannel>
+            <overloadbit>-1</overloadbit>
+            <avail>true</avail>
+        </m2>
+        <m3>
+            <alias1>IL1</alias1>
+            <ctrlchannel>5</ctrlchannel>
+            <dspchannel>1</dspchannel>
+            <pluggedbit>4</pluggedbit>
+            <muxchannel>1</muxchannel>
+            <overloadbit>0</overloadbit>
+            <avail>true</avail>
+        </m3>
+        <m4>
+            <alias1>IL2</alias1>
+            <ctrlchannel>6</ctrlchannel>
+            <dspchannel>3</dspchannel>
+            <pluggedbit>5</pluggedbit>
+            <muxchannel>2</muxchannel>
+            <overloadbit>1</overloadbit>
+            <avail>true</avail>
+        </m4>
+        <m5>
+            <alias1>IL3</alias1>
+            <ctrlchannel>7</ctrlchannel>
+            <dspchannel>5</dspchannel>
+            <pluggedbit>6</pluggedbit>
+            <muxchannel>3</muxchannel>
+            <overloadbit>2</overloadbit>
+            <avail>true</avail>
+        </m5>
+        <m6>
+            <alias1>UAUX</alias1>
+            <ctrlchannel>4</ctrlchannel>
+            <dspchannel>6</dspchannel>
+            <pluggedbit>-1</pluggedbit>
+            <muxchannel>-1</muxchannel>
+            <overloadbit>-1</overloadbit>
+            <avail>true</avail>
+        </m6>
+        <m7>
+            <alias1>IAUX</alias1>
+            <ctrlchannel>8</ctrlchannel>
+            <dspchannel>7</dspchannel>
+            <pluggedbit>7</pluggedbit>
+            <muxchannel>4</muxchannel>
+            <overloadbit>3</overloadbit>
+            <avail>true</avail>
+        </m7>
+    </sense>
+
+    <sample>
+        <s0>
+            <avail>true</avail>
+            <pllchannels>m0,m1,m2,m6,m3,m4,m5,m7,13Hz_DPLL,50Hz_DPLL,13Hz363_Fix,48Hz441_Fix,77Hz505_Fix,External_Source</pllchannels>
+        </s0>
+    </sample>
+
+    <source>
+        <fpzout>
+            <fo0>
+                <alias>Fout1</alias>
+                <dspserver>6310</dspserver>
+                <dspchannel>0</dspchannel>
+                <avail>true</avail>
+            </fo0>
+            <fo1>
+                <alias>Fout2</alias>
+                <dspserver>6310</dspserver>
+                <dspchannel>1</dspchannel>
+                <avail>true</avail>
+            </fo1>
+            <fo2>
+                <alias>Fout3</alias>
+                <dspserver>6310</dspserver>
+                <dspchannel>2</dspchannel>
+                <avail>true</avail>
+            </fo2>
+            <fo3>
+                <alias>Fout4</alias>
+                <dspserver>6310</dspserver>
+                <dspchannel>3</dspchannel>
+                <avail>true</avail>
+            </fo3>
+        </fpzout>
+    </source>
+
+    <frqinput>
+        <fi0>
+            <alias>Fin1</alias>
+            <avail>true</avail>
+        </fi0>
+        <fi1>
+            <alias>Fin2</alias>
+            <avail>true</avail>
+        </fi1>
+        <fi2>
+            <alias>Fin3</alias>
+            <avail>true</avail>
+        </fi2>
+        <fi3>
+            <alias>Fin2</alias>
+            <avail>true</avail>
+        </fi3>
+    </frqinput>
+
+    <schead>
+        <sh0>
+            <alias>SC1</alias>
+            <avail>true</avail>
+        </sh0>
+    </schead>
+
+    <hkey>
+        <hk0>
+            <alias>HK1</alias>
+            <avail>true</avail>
+        </hk0>
+    </hkey>
+
+</resource>
+
+<interface>
+    <accumulator>
+        <avail>false</avail>
+    </accumulator>
+</interface>
+
+</serviceconfig>

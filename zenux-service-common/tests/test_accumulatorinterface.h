@@ -8,6 +8,7 @@ class test_accumulatorinterface : public QObject
 {
     Q_OBJECT
 private slots:
+    void initTestCase_data();
     void init();
     void cleanup();
 

@@ -7,6 +7,7 @@ class test_config_load_mt310s2 : public QObject
 {
     Q_OBJECT
 private slots:
+    void initTestCase_data();
     void fileFound();
     void fileLoaded();
 };

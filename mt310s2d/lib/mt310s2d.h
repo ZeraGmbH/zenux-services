@@ -18,7 +18,6 @@
 #include <QStateMachine>
 #include <QTimer>
 #include <timertemplateqt.h>
-#include "i2cctrlcputemperature.h"
 #include <cputemp.h>
 
 class ServiceStatusInterface;
@@ -42,7 +41,6 @@ public:
     ~cMT310S2dServer();
     QString getCtrlDeviceNode();
     QString getMsgDeviceNode();
-    static const ServerParams defaultParams;
 
     void startCpuTemperatureSendTimer();
 

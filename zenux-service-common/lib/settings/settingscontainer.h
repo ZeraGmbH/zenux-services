@@ -26,6 +26,12 @@ public:
     I2cSettings *getI2cSettings();
     FPGASettings *getFpgaSettings();
     SamplingSettings *getSamplingSettings();
+    struct TServiceConfig
+    {
+        QString xsdFileName;
+        QString xmlFileName;
+    };
+    static const TServiceConfig getServiceConfig(const QString &serviceName);
 private:
     ServerParams m_params;
     Zera::XMLConfig::cReader m_xmlConfigReader;

@@ -4,12 +4,25 @@
 #include "factorydevicenodepcb.h"
 #include <tcpnetworkfactory.h>
 #include <QCoreApplication>
+#include <QCommandLineParser>
 
 int main( int argc, char *argv[] )
 {
     QCoreApplication* app = new QCoreApplication (argc, argv);
+    QCommandLineParser parser;
+    const QCommandLineOption subdeviceparam("d", "device", "subdevice");
+    parser.addOption(subdeviceparam);
+    parser.process(*app);
+    QString serviceName = "mt310s2d";
+    if (parser.isSet(subdeviceparam))
+        serviceName = parser.value(subdeviceparam);
+    SettingsContainer::TServiceConfig config = SettingsContainer::getServiceConfig(serviceName);
+    ServerParams defaultParams { ServerName,
+                                 ServerVersion,
+                                 "/etc/zera/mt310s2d/" + config.xsdFileName,
+                                 "/etc/zera/mt310s2d/" + config.xmlFileName};
 
-    SettingsContainerPtr settings = std::make_unique<SettingsContainer>(cMT310S2dServer::defaultParams);
+    SettingsContainerPtr settings = std::make_unique<SettingsContainer>(defaultParams);
     std::shared_ptr<FactoryI2cCtrl> ctrlFactory = std::make_shared<FactoryI2cCtrl>(settings->getI2cSettings());
     cMT310S2dServer* mt310s2d = new cMT310S2dServer(
         std::move(settings),

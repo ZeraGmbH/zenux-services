@@ -22,9 +22,19 @@ void test_authorizationnotifier::initTestCase()
     TimerFactoryQtForTest::enableTest();
 }
 
+void test_authorizationnotifier::initTestCase_data()
+{
+    QTest::addColumn<QString>("serviceName");
+    QTest::newRow("mt310s2d") << QString("mt310s2d");
+    QTest::newRow("mt581s2d") << QString("mt581s2d");
+}
+
 void test_authorizationnotifier::init()
 {
-    static ServerParams params {"foo", "0", QStringLiteral(CONFIG_SOURCES_MT310S2D) + "/" + "mt310s2d.xsd", QStringLiteral(CONFIG_SOURCES_MT310S2D) + "/" + "mt310s2d.xml"};
+    QFETCH_GLOBAL(QString, serviceName);
+    SettingsContainer::TServiceConfig config = SettingsContainer::getServiceConfig(serviceName);
+
+    static ServerParams params {"foo", "0", QStringLiteral(CONFIG_SOURCES_MT310S2D) + "/" + config.xsdFileName, QStringLiteral(CONFIG_SOURCES_MT310S2D) + "/" + config.xmlFileName};
     AbstractFactoryI2cCtrlPtr ctrlFactory = std::make_shared<TestFactoryI2cCtrl>(false);
 
     m_PermissionCtrl = ctrlFactory->getPermissionCheckController();
