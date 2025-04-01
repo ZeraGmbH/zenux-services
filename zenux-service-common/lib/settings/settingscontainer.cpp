@@ -7,6 +7,7 @@ SettingsContainer::SettingsContainer(ServerParams params) :
     m_fpgaSettings(&m_xmlConfigReader),
     m_samplingSettings(&m_xmlConfigReader)
 {
+    qInfo("Service settings: %s / %s", qPrintable(m_params.xsdFile), qPrintable(m_params.xmlFile));
     if(!m_xmlConfigReader.loadSchema(m_params.xsdFile))
         qFatal("Abort: Could not open xsd file '%s", qPrintable(m_params.xsdFile));
 
