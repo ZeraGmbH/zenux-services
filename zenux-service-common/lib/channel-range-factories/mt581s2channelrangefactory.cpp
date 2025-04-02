@@ -1,7 +1,6 @@
 #include "mt581s2channelrangefactory.h"
 #include "senseinterfacecommon.h"
 #include "mtxxxs2sensechannel.h"
-#include "mtxxxs2senserange.h"
 #include <cmath>
 
 QList<SenseChannelCommon *> MT581s2ChannelRangeFactory::createChannelAndRanges(cSenseSettings *senseSettings,
@@ -103,14 +102,16 @@ void MT581s2ChannelRangeFactory::tryAddRange(QList<SenseRangeCommon *> &rngList,
                                              quint16 supportedMeasModeMask)
 {
     if(isInvalidAdjDataOrChannelRangeAvail(adjData, channelName, rangeName)) {
-        rngList.append(new MtXXXs2SenseRange(scpi,
-                                             rangeName,
-                                             avail,
-                                             nominalValue,
-                                             nominalSampleValue,
-                                             round(nominalSampleValue * overloadFactor),
-                                             controllerSelectionNum,
-                                             supportedMeasModeMask));
+        rngList.append(new SenseRangeCommon(scpi,
+                                            rangeName,
+                                            avail,
+                                            nominalValue,
+                                            nominalSampleValue,
+                                            round(nominalSampleValue * overloadFactor),
+                                            controllerSelectionNum,
+                                            supportedMeasModeMask,
+                                            new AdjRangeScpi(scpi, AdjustScpiValueFormatterFactory::createMt310s2AdjFormatter()),
+                                            rejectionScpiQueryDigitsMtXXXs2));
     }
 }
 

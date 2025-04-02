@@ -3,7 +3,6 @@
 #include "rmconnection.h"
 #include "clampinterface.h"
 #include "mtxxxs2sensechannel.h"
-#include "mtxxxs2senserange.h"
 #include "fingroupresourceandinterface.h"
 #include "hkingroupresourceandinterface.h"
 #include "samplinginterface.h"
