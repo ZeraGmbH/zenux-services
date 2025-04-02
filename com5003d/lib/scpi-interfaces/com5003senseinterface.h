@@ -21,7 +21,7 @@ private:
     QString getXmlType() override;
     bool isRangePartOfAdjXmlExport(SenseRangeCommon* range) override;
     QString scpiReadSenseGroupCatalog(const QString& scpi) override;
-    bool setSenseMode(QString modeStr) override;
+    bool setSenseMode(const QString &modeStr) override;
 };
 
 #endif // COM5003SENSEINTERFACE_H

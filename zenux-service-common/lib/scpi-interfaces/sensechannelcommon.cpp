@@ -1,6 +1,19 @@
 #include "sensechannelcommon.h"
 #include "zscpi_response_definitions.h"
 
+enum Commands
+{
+    cmdAlias,
+    cmdType,
+    cmdUnit,
+    cmdDspChannel,
+    cmdStatus,
+    cmdStatusReset,
+    cmdRange,
+    cmdUrvalue,
+    cmdRangeCat
+};
+
 SenseChannelCommon::SenseChannelCommon(std::shared_ptr<cSCPI> scpiinterface,
                                        const QString &unit,
                                        SenseSystem::cChannelSettings *cSettings,
@@ -97,15 +110,15 @@ void SenseChannelCommon::initJustData()
 void SenseChannelCommon::initSCPIConnection(QString leadingNodes)
 {
     ensureTrailingColonOnNonEmptyParentNodes(leadingNodes);
-    addDelegate(QString("%1%2").arg(leadingNodes, m_sName),"ALIAS", SCPI::isQuery, m_scpiInterface, SenseChannel::cmdAlias);
-    addDelegate(QString("%1%2").arg(leadingNodes, m_sName),"TYPE", SCPI::isQuery, m_scpiInterface, SenseChannel::cmdType);
-    addDelegate(QString("%1%2").arg(leadingNodes, m_sName),"UNIT", SCPI::isQuery, m_scpiInterface, SenseChannel::cmdUnit);
-    addDelegate(QString("%1%2").arg(leadingNodes, m_sName),"DSPCHANNEL", SCPI::isQuery, m_scpiInterface, SenseChannel::cmdDspChannel);
-    addDelegate(QString("%1%2").arg(leadingNodes, m_sName),"STATUS", SCPI::isQuery, m_scpiInterface, SenseChannel::cmdStatus);
-    addDelegate(QString("%1%2:STATUS").arg(leadingNodes, m_sName),"RESET", SCPI::isCmd, m_scpiInterface, SenseChannel::cmdStatusReset);
-    addDelegate(QString("%1%2").arg(leadingNodes, m_sName),"RANGE", SCPI::isQuery | SCPI::isCmdwP, m_scpiInterface, SenseChannel::cmdRange, &notifierSenseChannelRange);
-    addDelegate(QString("%1%2").arg(leadingNodes, m_sName),"URVALUE", SCPI::isQuery, m_scpiInterface, SenseChannel::cmdUrvalue);
-    addDelegate(QString("%1%2:RANGE").arg(leadingNodes, m_sName),"CATALOG", SCPI::isQuery, m_scpiInterface, SenseChannel::cmdRangeCat, &notifierSenseChannelRangeCat);
+    addDelegate(QString("%1%2").arg(leadingNodes, m_sName),"ALIAS", SCPI::isQuery, m_scpiInterface, cmdAlias);
+    addDelegate(QString("%1%2").arg(leadingNodes, m_sName),"TYPE", SCPI::isQuery, m_scpiInterface, cmdType);
+    addDelegate(QString("%1%2").arg(leadingNodes, m_sName),"UNIT", SCPI::isQuery, m_scpiInterface, cmdUnit);
+    addDelegate(QString("%1%2").arg(leadingNodes, m_sName),"DSPCHANNEL", SCPI::isQuery, m_scpiInterface, cmdDspChannel);
+    addDelegate(QString("%1%2").arg(leadingNodes, m_sName),"STATUS", SCPI::isQuery, m_scpiInterface, cmdStatus);
+    addDelegate(QString("%1%2:STATUS").arg(leadingNodes, m_sName),"RESET", SCPI::isCmd, m_scpiInterface, cmdStatusReset);
+    addDelegate(QString("%1%2").arg(leadingNodes, m_sName),"RANGE", SCPI::isQuery | SCPI::isCmdwP, m_scpiInterface, cmdRange, &notifierSenseChannelRange);
+    addDelegate(QString("%1%2").arg(leadingNodes, m_sName),"URVALUE", SCPI::isQuery, m_scpiInterface, cmdUrvalue);
+    addDelegate(QString("%1%2:RANGE").arg(leadingNodes, m_sName),"CATALOG", SCPI::isQuery, m_scpiInterface, cmdRangeCat, &notifierSenseChannelRangeCat);
     for(auto range : qAsConst(m_RangeList)) {
         connect(range, &ScpiConnection::cmdExecutionDone, this, &ScpiConnection::cmdExecutionDone);
         range->initSCPIConnection(QString("%1%2").arg(leadingNodes, m_sName));
@@ -125,31 +138,31 @@ void SenseChannelCommon::executeProtoScpi(int cmdCode, cProtonetCommand *protoCm
 {
     switch (cmdCode)
     {
-    case SenseChannel::cmdAlias:
+    case cmdAlias:
         protoCmd->m_sOutput = scpiReadAlias(protoCmd->m_sInput);
         break;
-    case SenseChannel::cmdType:
+    case cmdType:
         protoCmd->m_sOutput = scpiReadType(protoCmd->m_sInput);
         break;
-    case SenseChannel::cmdUnit:
+    case cmdUnit:
         protoCmd->m_sOutput = scpiReadUnit(protoCmd->m_sInput);
         break;
-    case SenseChannel::cmdDspChannel:
+    case cmdDspChannel:
         protoCmd->m_sOutput = scpiReadDspChannel(protoCmd->m_sInput);
         break;
-    case SenseChannel::cmdStatus:
+    case cmdStatus:
         protoCmd->m_sOutput = scpiReadChannelStatus(protoCmd->m_sInput);
         break;
-    case SenseChannel::cmdStatusReset:
+    case cmdStatusReset:
         protoCmd->m_sOutput = scpiStatusReset(protoCmd->m_sInput);
         break;
-    case SenseChannel::cmdRange:
+    case cmdRange:
         protoCmd->m_sOutput = scpiReadWriteRange(protoCmd->m_sInput);
         break;
-    case SenseChannel::cmdUrvalue:
+    case cmdUrvalue:
         protoCmd->m_sOutput = scpiReadUrvalue(protoCmd->m_sInput);
         break;
-    case SenseChannel::cmdRangeCat:
+    case cmdRangeCat:
         protoCmd->m_sOutput = scpiReadRangeCatalog(protoCmd->m_sInput);
         break;
     }

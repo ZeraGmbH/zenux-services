@@ -17,6 +17,17 @@ namespace ECALCCMDID {
 enum { COUNTEDGE = 1, COUNTRESET, ERRORMEASMASTER, ERRORMEASSLAVE};
 }
 
+enum Commands
+{
+    cmdRegister,
+    setSync,
+    setMux,
+    setCmdid,
+    start,
+    stop,
+    intAcknowledge
+};
+
 SecChannel::SecChannel(std::shared_ptr<cSCPI> scpiInterface,
                        SecCalculatorSettings* esettings,
                        SecInputSettings *inpsettings,
@@ -52,24 +63,24 @@ SecChannel::~SecChannel()
 void SecChannel::initSCPIConnection(QString leadingNodes)
 {
     ensureTrailingColonOnNonEmptyParentNodes(leadingNodes);
-    addDelegate(QString("%1%2").arg(leadingNodes, m_sName), QString("R%1").arg(ECALCREG::CMD), SCPI::isCmdwP | SCPI::isQuery, m_scpiInterface, ECalcChannel::cmdRegister);
-    addDelegate(QString("%1%2").arg(leadingNodes, m_sName), QString("R%1").arg(ECALCREG::CONF), SCPI::isCmdwP | SCPI::isQuery, m_scpiInterface, ECalcChannel::cmdRegister);
-    addDelegate(QString("%1%2").arg(leadingNodes, m_sName), QString("R%1").arg(ECALCREG::STATUS), SCPI::isQuery, m_scpiInterface, ECalcChannel::cmdRegister);
-    addDelegate(QString("%1%2").arg(leadingNodes, m_sName), QString("R%1").arg(ECALCREG::INTMASK), SCPI::isCmdwP | SCPI::isQuery, m_scpiInterface, ECalcChannel::cmdRegister);
-    addDelegate(QString("%1%2").arg(leadingNodes, m_sName), QString("R%1").arg(ECALCREG::INTREG), SCPI::isCmdwP | SCPI::isQuery, m_scpiInterface, ECalcChannel::cmdRegister);
-    addDelegate(QString("%1%2").arg(leadingNodes, m_sName), QString("R%1").arg(ECALCREG::MTCNTin), SCPI::isCmdwP | SCPI::isQuery, m_scpiInterface, ECalcChannel::cmdRegister);
-    addDelegate(QString("%1%2").arg(leadingNodes, m_sName), QString("R%1").arg(ECALCREG::MTCNTfin), SCPI::isQuery, m_scpiInterface, ECalcChannel::cmdRegister);
-    addDelegate(QString("%1%2").arg(leadingNodes, m_sName), QString("R%1").arg(ECALCREG::MTCNTact), SCPI::isQuery, m_scpiInterface, ECalcChannel::cmdRegister);
-    addDelegate(QString("%1%2").arg(leadingNodes, m_sName), QString("R%1").arg(ECALCREG::MTPULSin), SCPI::isCmdwP | SCPI::isQuery, m_scpiInterface, ECalcChannel::cmdRegister);
-    addDelegate(QString("%1%2").arg(leadingNodes, m_sName), QString("R%1").arg(ECALCREG::MTPAUSEin), SCPI::isCmdwP | SCPI::isQuery, m_scpiInterface, ECalcChannel::cmdRegister);
-    addDelegate(QString("%1%2").arg(leadingNodes, m_sName), QString("R%1").arg(ECALCREG::MTPULS), SCPI::isCmdwP | SCPI::isQuery, m_scpiInterface, ECalcChannel::cmdRegister);
-    addDelegate(QString("%1%2").arg(leadingNodes, m_sName), QString("R%1").arg(ECALCREG::MTPAUSE), SCPI::isCmdwP | SCPI::isQuery, m_scpiInterface, ECalcChannel::cmdRegister);
-    addDelegate(QString("%1%2").arg(leadingNodes, m_sName),"SYNC", SCPI::isCmdwP, m_scpiInterface, ECalcChannel::setSync);
-    addDelegate(QString("%1%2").arg(leadingNodes, m_sName),"MUX", SCPI::isCmdwP, m_scpiInterface, ECalcChannel::setMux);
-    addDelegate(QString("%1%2").arg(leadingNodes, m_sName),"CMDID", SCPI::isCmdwP, m_scpiInterface, ECalcChannel::setCmdid);
-    addDelegate(QString("%1%2").arg(leadingNodes, m_sName),"START", SCPI::isCmdwP, m_scpiInterface, ECalcChannel::start);
-    addDelegate(QString("%1%2").arg(leadingNodes, m_sName),"STOP", SCPI::isCmdwP, m_scpiInterface, ECalcChannel::stop);
-    addDelegate(QString("%1%2").arg(leadingNodes, m_sName),"INTACK", SCPI::isCmdwP, m_scpiInterface, ECalcChannel::intAcknowledge);
+    addDelegate(QString("%1%2").arg(leadingNodes, m_sName), QString("R%1").arg(ECALCREG::CMD), SCPI::isCmdwP | SCPI::isQuery, m_scpiInterface, cmdRegister);
+    addDelegate(QString("%1%2").arg(leadingNodes, m_sName), QString("R%1").arg(ECALCREG::CONF), SCPI::isCmdwP | SCPI::isQuery, m_scpiInterface, cmdRegister);
+    addDelegate(QString("%1%2").arg(leadingNodes, m_sName), QString("R%1").arg(ECALCREG::STATUS), SCPI::isQuery, m_scpiInterface, cmdRegister);
+    addDelegate(QString("%1%2").arg(leadingNodes, m_sName), QString("R%1").arg(ECALCREG::INTMASK), SCPI::isCmdwP | SCPI::isQuery, m_scpiInterface, cmdRegister);
+    addDelegate(QString("%1%2").arg(leadingNodes, m_sName), QString("R%1").arg(ECALCREG::INTREG), SCPI::isCmdwP | SCPI::isQuery, m_scpiInterface, cmdRegister);
+    addDelegate(QString("%1%2").arg(leadingNodes, m_sName), QString("R%1").arg(ECALCREG::MTCNTin), SCPI::isCmdwP | SCPI::isQuery, m_scpiInterface, cmdRegister);
+    addDelegate(QString("%1%2").arg(leadingNodes, m_sName), QString("R%1").arg(ECALCREG::MTCNTfin), SCPI::isQuery, m_scpiInterface, cmdRegister);
+    addDelegate(QString("%1%2").arg(leadingNodes, m_sName), QString("R%1").arg(ECALCREG::MTCNTact), SCPI::isQuery, m_scpiInterface, cmdRegister);
+    addDelegate(QString("%1%2").arg(leadingNodes, m_sName), QString("R%1").arg(ECALCREG::MTPULSin), SCPI::isCmdwP | SCPI::isQuery, m_scpiInterface, cmdRegister);
+    addDelegate(QString("%1%2").arg(leadingNodes, m_sName), QString("R%1").arg(ECALCREG::MTPAUSEin), SCPI::isCmdwP | SCPI::isQuery, m_scpiInterface, cmdRegister);
+    addDelegate(QString("%1%2").arg(leadingNodes, m_sName), QString("R%1").arg(ECALCREG::MTPULS), SCPI::isCmdwP | SCPI::isQuery, m_scpiInterface, cmdRegister);
+    addDelegate(QString("%1%2").arg(leadingNodes, m_sName), QString("R%1").arg(ECALCREG::MTPAUSE), SCPI::isCmdwP | SCPI::isQuery, m_scpiInterface, cmdRegister);
+    addDelegate(QString("%1%2").arg(leadingNodes, m_sName),"SYNC", SCPI::isCmdwP, m_scpiInterface, setSync);
+    addDelegate(QString("%1%2").arg(leadingNodes, m_sName),"MUX", SCPI::isCmdwP, m_scpiInterface, setMux);
+    addDelegate(QString("%1%2").arg(leadingNodes, m_sName),"CMDID", SCPI::isCmdwP, m_scpiInterface, setCmdid);
+    addDelegate(QString("%1%2").arg(leadingNodes, m_sName),"START", SCPI::isCmdwP, m_scpiInterface, start);
+    addDelegate(QString("%1%2").arg(leadingNodes, m_sName),"STOP", SCPI::isCmdwP, m_scpiInterface, stop);
+    addDelegate(QString("%1%2").arg(leadingNodes, m_sName),"INTACK", SCPI::isCmdwP, m_scpiInterface, intAcknowledge);
 }
 
 
@@ -77,25 +88,25 @@ void SecChannel::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
 {
     switch (cmdCode)
     {
-    case ECalcChannel::cmdRegister:
+    case cmdRegister:
         m_ReadWriteRegister(protoCmd);
         break;
-    case ECalcChannel::setSync:
+    case setSync:
         m_setSync(protoCmd);
         break;
-    case ECalcChannel::setMux:
+    case setMux:
         m_setMux(protoCmd);
         break;
-    case ECalcChannel::setCmdid:
+    case setCmdid:
         m_setCmdId(protoCmd);
         break;
-    case ECalcChannel::start:
+    case start:
         m_start(protoCmd);
         break;
-    case ECalcChannel::stop:
+    case stop:
         m_stop(protoCmd);
         break;
-    case ECalcChannel::intAcknowledge:
+    case intAcknowledge:
         m_resetInt(protoCmd);
         break;
     }

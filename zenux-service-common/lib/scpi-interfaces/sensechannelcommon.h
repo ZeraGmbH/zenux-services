@@ -6,23 +6,6 @@
 #include "sensesettings.h"
 #include <scpiconnection.h>
 
-namespace SenseChannel
-{
-enum Commands
-{
-    cmdAlias,
-    cmdType,
-    cmdUnit,
-    cmdDspChannel,
-    cmdStatus,
-    cmdStatusReset,
-    cmdRange,
-    cmdUrvalue,
-    cmdRangeCat
-};
-
-}
-
 class SenseChannelCommon : public ScpiConnection
 {
 public:

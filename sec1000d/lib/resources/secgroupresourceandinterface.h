@@ -12,18 +12,8 @@
 
 namespace ECalcSystem
 {
-
 const QString Version = "V1.00";
 const QString sECalculatorDescription = "Standard error calculator base unit";
-
-enum Commands
-{
-    cmdVersion,
-    cmdChannelCat,
-    cmdSetChannels,
-    cmdFreeChannels
-};
-
 }
 
 class SecGroupResourceAndInterface : public cResource
@@ -55,10 +45,10 @@ private:
     QHash<QByteArray, QString> m_ClientECalcHash; // we hold the set ecalculators by clientid
     QHash<VeinTcp::TcpPeer*, QList<QByteArray>> m_peerClientsHash;
 
-    QString m_ReadVersion(QString& sInput);
-    QString m_ReadECalculatorChannelCatalog(QString& sInput);
-    void m_SetChannels(cProtonetCommand *protoCmd);
-    void m_FreeChannels(cProtonetCommand *protoCmd);
+    QString scpiReadVersion(const QString& scpi);
+    QString scpiReadECalculatorChannelCatalog(const QString& scpi);
+    void scpiSetChannels(cProtonetCommand *protoCmd);
+    void scpiFreeChannels(cProtonetCommand *protoCmd);
     bool freeChannelsFromAClient(QByteArray clientID);
 };
 

@@ -12,21 +12,6 @@
 #include <QByteArray>
 #include <functional>
 
-namespace ECalcChannel
-{
-enum Commands
-{
-    cmdRegister,
-    setSync,
-    setMux,
-    setCmdid,
-    start,
-    stop,
-    intAcknowledge
-};
-
-}
-
 class SecChannel : public ScpiConnection
 {
     Q_OBJECT

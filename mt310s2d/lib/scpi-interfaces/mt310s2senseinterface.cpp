@@ -49,13 +49,13 @@ QString Mt310s2SenseInterface::scpiReadSenseGroupCatalog(const QString &scpi)
     return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-bool Mt310s2SenseInterface::setSenseMode(QString sMode)
+bool Mt310s2SenseInterface::setSenseMode(const QString &modeStr)
 {
-    if (m_availSenseModesHash.contains(sMode)) {
-        quint8 mode = m_availSenseModesHash[sMode];
+    if (m_availSenseModesHash.contains(modeStr)) {
+        quint8 mode = m_availSenseModesHash[modeStr];
         for(auto channel : qAsConst(m_channelList))
             channel->setMMode(mode);
-        m_currSenseMode = sMode;
+        m_currSenseMode = modeStr;
         setNotifierSenseMMode();
         return true;
     }

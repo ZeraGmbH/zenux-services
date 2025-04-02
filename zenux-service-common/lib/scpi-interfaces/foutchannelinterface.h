@@ -14,21 +14,21 @@ public:
                          quint8 nr,
                          FOutSettings::ChannelSettings* cSettings);
     virtual void initSCPIConnection(QString leadingNodes) override;
-    QString& getName();
-    QString& getAlias();
-    QString& getDescription();
+    const QString& getName();
+    const QString& getAlias();
+    const QString& getDescription();
     bool isAvail();
 protected:
     void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
 private:
-    QString readAlias(QString& sInput);
-    QString readType(QString& sInput);
-    QString readDspServer(QString& sInput);
-    QString readDspChannel(QString& sInput);
-    QString readChannelStatus(QString& sInput);
-    QString readFFactor(QString& sInput);
-    QString readWriteConstant(QString& sInput);
-    QString readWritePowerType(QString &sInput);
+    QString scpiReadAlias(const QString& scpi);
+    QString scpiReadType(const QString& scpi);
+    QString scpiReadDspServer(const QString& scpi);
+    QString scpiReadDspChannel(const QString& scpi);
+    QString scpiReadChannelStatus(const QString& scpi);
+    QString scpiReadFFactor(const QString& scpi);
+    QString scpiReadWriteConstant(const QString& scpi);
+    QString scpiReadWritePowerType(const QString &scpi);
     void initNotifier(NotificationString& notifier);
     QString m_sName; // the channel's name
     QString m_sAlias;

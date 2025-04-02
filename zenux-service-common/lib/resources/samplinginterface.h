@@ -6,16 +6,6 @@
 #include "abstractfactoryi2cctrl.h"
 #include <QStringList>
 
-namespace SamplingSystem
-{
-    enum Commands
-    {
-        cmdSampleRate,
-        cmdPLL,
-        cmdPLLCat
-    };
-}
-
 class cSamplingInterface: public cResource
 {
     Q_OBJECT
@@ -28,9 +18,9 @@ public:
 protected:
     void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
 private:
-    QString m_ReadSampleRate(QString& sInput);
-    QString m_ReadWritePLL(QString& sInput);
-    QString m_ReadPLLCatalog(QString& sInput);
+    QString scpiReadSampleRate(const QString& scpi);
+    QString scpiReadWritePLL(const QString& scpi);
+    QString scpiReadPLLCatalog(const QString& scpi);
 
     AbstractFactoryI2cCtrlPtr m_ctrlFactory;
     QString m_sDescription; // the samplingsystem's brief description

@@ -21,7 +21,7 @@ Com5003SenseInterface::Com5003SenseInterface(std::shared_ptr<cSCPI> scpiInterfac
     setNotifierSenseChannelCat(); // only prepared for !!! since we don't have hot plug for measuring channels yet
 }
 
-bool Com5003SenseInterface::setSenseMode(QString modeStr)
+bool Com5003SenseInterface::setSenseMode(const QString &modeStr)
 {
     if (m_availSenseModesHash.contains(modeStr)) {
         m_currSenseMode = modeStr;
