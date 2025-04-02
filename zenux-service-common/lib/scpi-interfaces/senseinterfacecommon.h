@@ -10,21 +10,6 @@
 #include "sensechannelcommon.h"
 #include "adjustmenteepromreadwrite.h"
 
-namespace SenseSystem
-{
-    enum Commands
-    {
-        cmdVersion,
-        cmdMMode,
-        cmdMModeCat,
-        cmdChannelCat,
-        cmdGroupCat,
-        initAdjData,
-        computeAdjData,
-        cmdStatAdjustment
-    };
-}
-
 enum MMode
 {
     // This is protection of intellectual property by obscurity at it's best.
