@@ -7,6 +7,7 @@ journalctl $@ -b -o short-monotonic \
     UNIT=com5003d.service + _SYSTEMD_UNIT=com5003d.service + \
     UNIT=com5003-fpga1file.service + _SYSTEMD_UNIT=com5003-fpga1file.service + \
     UNIT=mt310s2d.service + _SYSTEMD_UNIT=mt310s2d.service + \
+    UNIT=mt581s2d.service + _SYSTEMD_UNIT=mt581s2d.service + \
     UNIT=mt310s2-fpga1file.service + _SYSTEMD_UNIT=mt310s2-fpga1file.service + \
     UNIT=mt310s2-mcontroller-startup.service + _SYSTEMD_UNIT=mt310s2-mcontroller-startup.service + \
     UNIT=modulemanager.service + _SYSTEMD_UNIT=modulemanager.service + \
