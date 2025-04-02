@@ -1,7 +1,6 @@
 #include "com5003senserange.h"
 
 static constexpr int rejectionScpiQueryDigitsCom5003 = 6;
-static constexpr int adcRejectionCom5003 = (1<<23) -1;
 
 Com5003SenseRange::Com5003SenseRange(std::shared_ptr<cSCPI> scpiinterface,
                                      QString name,
@@ -18,7 +17,6 @@ Com5003SenseRange::Com5003SenseRange(std::shared_ptr<cSCPI> scpiinterface,
         rValue,
         rejection,
         ovrejection,
-        adcRejectionCom5003,
         rselcode,
         mmask,
         new AdjRangeScpi(scpiinterface, AdjustScpiValueFormatterFactory::createCom5003AdjFormatter()),

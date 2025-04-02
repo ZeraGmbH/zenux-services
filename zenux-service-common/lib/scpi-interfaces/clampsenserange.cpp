@@ -2,7 +2,6 @@
 #include "adjrangescpi.h"
 
 static constexpr int rejectionScpiQueryDigitsClamp = 8;
-static constexpr int adcRejectionClamp = (1<<23) -1;
 
 ClampSenseRange::ClampSenseRange(std::shared_ptr<cSCPI> scpiinterface,
                                  QString name,
@@ -20,7 +19,6 @@ ClampSenseRange::ClampSenseRange(std::shared_ptr<cSCPI> scpiinterface,
         rValue,
         rejection,
         ovrejection,
-        adcRejectionClamp,
         rselcode,
         mmask,
         justdata,

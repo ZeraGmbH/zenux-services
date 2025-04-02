@@ -32,7 +32,6 @@ public:
                      double upperRangeValue, // = nominal
                      double rejection,
                      double ovrejection,
-                     double adcrejection,
                      quint8 rselcode,
                      quint32 typeFlags,
                      AdjRangeScpi* justdata,
@@ -69,7 +68,6 @@ private:
     const double m_upperRangeValue; // more a nominal value - we keep name for SCPI name
     const double m_fRejection; // 100% rejection value
     const double m_fOVRejection; // overload rejection value
-    const double m_fADCRejection; // the adc's maximum rejection
     const quint8 m_nSelCode; // selection code
     const quint32 m_typeFlags;
     const int m_rejectionScpiQueryDigits;

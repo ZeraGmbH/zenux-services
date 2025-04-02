@@ -1,7 +1,7 @@
 {
     "m0/UL1/REF1": [
         {
-            "adcrejection": 8388610,
+            "adcrejection": 8388607,
             "adjuststatusflags": "1",
             "alias": "480V",
             "avail": "0",
@@ -12,7 +12,7 @@
             "urval": 480
         },
         {
-            "adcrejection": 8388610,
+            "adcrejection": 8388607,
             "adjuststatusflags": "1",
             "alias": "240V",
             "avail": "0",
@@ -23,7 +23,7 @@
             "urval": 240
         },
         {
-            "adcrejection": 8388610,
+            "adcrejection": 8388607,
             "adjuststatusflags": "1",
             "alias": "120V",
             "avail": "0",
@@ -34,7 +34,7 @@
             "urval": 120
         },
         {
-            "adcrejection": 8388610,
+            "adcrejection": 8388607,
             "adjuststatusflags": "1",
             "alias": "60V",
             "avail": "0",
@@ -45,7 +45,7 @@
             "urval": 60
         },
         {
-            "adcrejection": 8388610,
+            "adcrejection": 8388607,
             "adjuststatusflags": "1",
             "alias": "12V",
             "avail": "0",
@@ -56,7 +56,7 @@
             "urval": 12
         },
         {
-            "adcrejection": 8388610,
+            "adcrejection": 8388607,
             "adjuststatusflags": "1",
             "alias": "5V",
             "avail": "0",
@@ -67,7 +67,7 @@
             "urval": 5
         },
         {
-            "adcrejection": 8388610,
+            "adcrejection": 8388607,
             "adjuststatusflags": "16",
             "alias": "R0V",
             "avail": "1",
@@ -78,7 +78,7 @@
             "urval": 9
         },
         {
-            "adcrejection": 8388610,
+            "adcrejection": 8388607,
             "adjuststatusflags": "16",
             "alias": "R10V",
             "avail": "1",
@@ -91,7 +91,7 @@
     ],
     "m1/UL2/REF2": [
         {
-            "adcrejection": 8388610,
+            "adcrejection": 8388607,
             "adjuststatusflags": "1",
             "alias": "480V",
             "avail": "0",
@@ -102,7 +102,7 @@
             "urval": 480
         },
         {
-            "adcrejection": 8388610,
+            "adcrejection": 8388607,
             "adjuststatusflags": "1",
             "alias": "240V",
             "avail": "0",
@@ -113,7 +113,7 @@
             "urval": 240
         },
         {
-            "adcrejection": 8388610,
+            "adcrejection": 8388607,
             "adjuststatusflags": "1",
             "alias": "120V",
             "avail": "0",
@@ -124,7 +124,7 @@
             "urval": 120
         },
         {
-            "adcrejection": 8388610,
+            "adcrejection": 8388607,
             "adjuststatusflags": "1",
             "alias": "60V",
             "avail": "0",
@@ -135,7 +135,7 @@
             "urval": 60
         },
         {
-            "adcrejection": 8388610,
+            "adcrejection": 8388607,
             "adjuststatusflags": "1",
             "alias": "12V",
             "avail": "0",
@@ -146,7 +146,7 @@
             "urval": 12
         },
         {
-            "adcrejection": 8388610,
+            "adcrejection": 8388607,
             "adjuststatusflags": "1",
             "alias": "5V",
             "avail": "0",
@@ -157,7 +157,7 @@
             "urval": 5
         },
         {
-            "adcrejection": 8388610,
+            "adcrejection": 8388607,
             "adjuststatusflags": "16",
             "alias": "R0V",
             "avail": "1",
@@ -168,7 +168,7 @@
             "urval": 9
         },
         {
-            "adcrejection": 8388610,
+            "adcrejection": 8388607,
             "adjuststatusflags": "16",
             "alias": "R10V",
             "avail": "1",
@@ -181,7 +181,7 @@
     ],
     "m2/UL3/REF3": [
         {
-            "adcrejection": 8388610,
+            "adcrejection": 8388607,
             "adjuststatusflags": "1",
             "alias": "480V",
             "avail": "0",
@@ -192,7 +192,7 @@
             "urval": 480
         },
         {
-            "adcrejection": 8388610,
+            "adcrejection": 8388607,
             "adjuststatusflags": "1",
             "alias": "240V",
             "avail": "0",
@@ -203,7 +203,7 @@
             "urval": 240
         },
         {
-            "adcrejection": 8388610,
+            "adcrejection": 8388607,
             "adjuststatusflags": "1",
             "alias": "120V",
             "avail": "0",
@@ -214,7 +214,7 @@
             "urval": 120
         },
         {
-            "adcrejection": 8388610,
+            "adcrejection": 8388607,
             "adjuststatusflags": "1",
             "alias": "60V",
             "avail": "0",
@@ -225,7 +225,7 @@
             "urval": 60
         },
         {
-            "adcrejection": 8388610,
+            "adcrejection": 8388607,
             "adjuststatusflags": "1",
             "alias": "12V",
             "avail": "0",
@@ -236,7 +236,7 @@
             "urval": 12
         },
         {
-            "adcrejection": 8388610,
+            "adcrejection": 8388607,
             "adjuststatusflags": "1",
             "alias": "5V",
             "avail": "0",
@@ -247,7 +247,7 @@
             "urval": 5
         },
         {
-            "adcrejection": 8388610,
+            "adcrejection": 8388607,
             "adjuststatusflags": "16",
             "alias": "R0V",
             "avail": "1",
@@ -258,7 +258,7 @@
             "urval": 9
         },
         {
-            "adcrejection": 8388610,
+            "adcrejection": 8388607,
             "adjuststatusflags": "16",
             "alias": "R10V",
             "avail": "1",

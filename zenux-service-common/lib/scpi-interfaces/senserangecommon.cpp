@@ -3,6 +3,7 @@
 
 const char* SenseRangeCommon::rangeNameCurrentNull = "0A";
 const char* SenseRangeCommon::rangeAliasNull = "--";
+static constexpr int ZenuxAdcMaxValue = (1<<23)-1; // Common value for COM/MT for the past decade
 
 SenseRangeCommon::SenseRangeCommon(std::shared_ptr<cSCPI> scpiInterface,
                                    QString name,
@@ -10,7 +11,6 @@ SenseRangeCommon::SenseRangeCommon(std::shared_ptr<cSCPI> scpiInterface,
                                    double upperRangeValue,
                                    double rejection,
                                    double ovrejection,
-                                   double adcrejection,
                                    quint8 rselcode,
                                    quint32 typeFlags,
                                    AdjRangeScpi *justdata,
@@ -22,7 +22,6 @@ SenseRangeCommon::SenseRangeCommon(std::shared_ptr<cSCPI> scpiInterface,
     m_upperRangeValue(upperRangeValue),
     m_fRejection(rejection),
     m_fOVRejection(ovrejection),
-    m_fADCRejection(adcrejection),
     m_nSelCode(rselcode),
     m_typeFlags(typeFlags),
     m_rejectionScpiQueryDigits(rejectionScpiQueryDigits),
@@ -178,7 +177,7 @@ QString SenseRangeCommon::scpiRangeADCRejection(const QString &scpi) const
 {
     cSCPICommand cmd = scpi;
     if (cmd.isQuery())
-        return QString("%1").arg(m_fADCRejection, 0, 'g', m_rejectionScpiQueryDigits);
+        return QString("%1").arg(ZenuxAdcMaxValue);
     return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 

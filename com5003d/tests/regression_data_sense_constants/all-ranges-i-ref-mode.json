@@ -1,7 +1,7 @@
 {
     "m3/IL1/REF4": [
         {
-            "adcrejection": 8388610,
+            "adcrejection": 8388607,
             "adjuststatusflags": "1",
             "alias": "200A",
             "avail": "0",
@@ -12,7 +12,7 @@
             "urval": 200
         },
         {
-            "adcrejection": 8388610,
+            "adcrejection": 8388607,
             "adjuststatusflags": "1",
             "alias": "100A",
             "avail": "0",
@@ -23,7 +23,7 @@
             "urval": 100
         },
         {
-            "adcrejection": 8388610,
+            "adcrejection": 8388607,
             "adjuststatusflags": "1",
             "alias": "50A",
             "avail": "0",
@@ -34,7 +34,7 @@
             "urval": 50
         },
         {
-            "adcrejection": 8388610,
+            "adcrejection": 8388607,
             "adjuststatusflags": "1",
             "alias": "25A",
             "avail": "0",
@@ -45,7 +45,7 @@
             "urval": 25
         },
         {
-            "adcrejection": 8388610,
+            "adcrejection": 8388607,
             "adjuststatusflags": "1",
             "alias": "10A",
             "avail": "0",
@@ -56,7 +56,7 @@
             "urval": 10
         },
         {
-            "adcrejection": 8388610,
+            "adcrejection": 8388607,
             "adjuststatusflags": "1",
             "alias": "5A",
             "avail": "0",
@@ -67,7 +67,7 @@
             "urval": 5
         },
         {
-            "adcrejection": 8388610,
+            "adcrejection": 8388607,
             "adjuststatusflags": "1",
             "alias": "2.5A",
             "avail": "0",
@@ -78,7 +78,7 @@
             "urval": 2.5
         },
         {
-            "adcrejection": 8388610,
+            "adcrejection": 8388607,
             "adjuststatusflags": "1",
             "alias": "1.0A",
             "avail": "0",
@@ -89,7 +89,7 @@
             "urval": 1
         },
         {
-            "adcrejection": 8388610,
+            "adcrejection": 8388607,
             "adjuststatusflags": "1",
             "alias": "500mA",
             "avail": "0",
@@ -100,7 +100,7 @@
             "urval": 0.5
         },
         {
-            "adcrejection": 8388610,
+            "adcrejection": 8388607,
             "adjuststatusflags": "1",
             "alias": "250mA",
             "avail": "0",
@@ -111,7 +111,7 @@
             "urval": 0.25
         },
         {
-            "adcrejection": 8388610,
+            "adcrejection": 8388607,
             "adjuststatusflags": "1",
             "alias": "100mA",
             "avail": "0",
@@ -122,7 +122,7 @@
             "urval": 0.1
         },
         {
-            "adcrejection": 8388610,
+            "adcrejection": 8388607,
             "adjuststatusflags": "1",
             "alias": "50mA",
             "avail": "0",
@@ -133,7 +133,7 @@
             "urval": 0.05
         },
         {
-            "adcrejection": 8388610,
+            "adcrejection": 8388607,
             "adjuststatusflags": "1",
             "alias": "25mA",
             "avail": "0",
@@ -144,7 +144,7 @@
             "urval": 0.025
         },
         {
-            "adcrejection": 8388610,
+            "adcrejection": 8388607,
             "adjuststatusflags": "1",
             "alias": "10mA",
             "avail": "0",
@@ -155,7 +155,7 @@
             "urval": 0.01
         },
         {
-            "adcrejection": 8388610,
+            "adcrejection": 8388607,
             "adjuststatusflags": "1",
             "alias": "5mA",
             "avail": "0",
@@ -166,7 +166,7 @@
             "urval": 0.005
         },
         {
-            "adcrejection": 8388610,
+            "adcrejection": 8388607,
             "adjuststatusflags": "16",
             "alias": "R0V",
             "avail": "1",
@@ -177,7 +177,7 @@
             "urval": 9
         },
         {
-            "adcrejection": 8388610,
+            "adcrejection": 8388607,
             "adjuststatusflags": "16",
             "alias": "R10V",
             "avail": "1",
@@ -190,7 +190,7 @@
     ],
     "m4/IL2/REF5": [
         {
-            "adcrejection": 8388610,
+            "adcrejection": 8388607,
             "adjuststatusflags": "1",
             "alias": "200A",
             "avail": "0",
@@ -201,7 +201,7 @@
             "urval": 200
         },
         {
-            "adcrejection": 8388610,
+            "adcrejection": 8388607,
             "adjuststatusflags": "1",
             "alias": "100A",
             "avail": "0",
@@ -212,7 +212,7 @@
             "urval": 100
         },
         {
-            "adcrejection": 8388610,
+            "adcrejection": 8388607,
             "adjuststatusflags": "1",
             "alias": "50A",
             "avail": "0",
@@ -223,7 +223,7 @@
             "urval": 50
         },
         {
-            "adcrejection": 8388610,
+            "adcrejection": 8388607,
             "adjuststatusflags": "1",
             "alias": "25A",
             "avail": "0",
@@ -234,7 +234,7 @@
             "urval": 25
         },
         {
-            "adcrejection": 8388610,
+            "adcrejection": 8388607,
             "adjuststatusflags": "1",
             "alias": "10A",
             "avail": "0",
@@ -245,7 +245,7 @@
             "urval": 10
         },
         {
-            "adcrejection": 8388610,
+            "adcrejection": 8388607,
             "adjuststatusflags": "1",
             "alias": "5A",
             "avail": "0",
@@ -256,7 +256,7 @@
             "urval": 5
         },
         {
-            "adcrejection": 8388610,
+            "adcrejection": 8388607,
             "adjuststatusflags": "1",
             "alias": "2.5A",
             "avail": "0",
@@ -267,7 +267,7 @@
             "urval": 2.5
         },
         {
-            "adcrejection": 8388610,
+            "adcrejection": 8388607,
             "adjuststatusflags": "1",
             "alias": "1.0A",
             "avail": "0",
@@ -278,7 +278,7 @@
             "urval": 1
         },
         {
-            "adcrejection": 8388610,
+            "adcrejection": 8388607,
             "adjuststatusflags": "1",
             "alias": "500mA",
             "avail": "0",
@@ -289,7 +289,7 @@
             "urval": 0.5
         },
         {
-            "adcrejection": 8388610,
+            "adcrejection": 8388607,
             "adjuststatusflags": "1",
             "alias": "250mA",
             "avail": "0",
@@ -300,7 +300,7 @@
             "urval": 0.25
         },
         {
-            "adcrejection": 8388610,
+            "adcrejection": 8388607,
             "adjuststatusflags": "1",
             "alias": "100mA",
             "avail": "0",
@@ -311,7 +311,7 @@
             "urval": 0.1
         },
         {
-            "adcrejection": 8388610,
+            "adcrejection": 8388607,
             "adjuststatusflags": "1",
             "alias": "50mA",
             "avail": "0",
@@ -322,7 +322,7 @@
             "urval": 0.05
         },
         {
-            "adcrejection": 8388610,
+            "adcrejection": 8388607,
             "adjuststatusflags": "1",
             "alias": "25mA",
             "avail": "0",
@@ -333,7 +333,7 @@
             "urval": 0.025
         },
         {
-            "adcrejection": 8388610,
+            "adcrejection": 8388607,
             "adjuststatusflags": "1",
             "alias": "10mA",
             "avail": "0",
@@ -344,7 +344,7 @@
             "urval": 0.01
         },
         {
-            "adcrejection": 8388610,
+            "adcrejection": 8388607,
             "adjuststatusflags": "1",
             "alias": "5mA",
             "avail": "0",
@@ -355,7 +355,7 @@
             "urval": 0.005
         },
         {
-            "adcrejection": 8388610,
+            "adcrejection": 8388607,
             "adjuststatusflags": "16",
             "alias": "R0V",
             "avail": "1",
@@ -366,7 +366,7 @@
             "urval": 9
         },
         {
-            "adcrejection": 8388610,
+            "adcrejection": 8388607,
             "adjuststatusflags": "16",
             "alias": "R10V",
             "avail": "1",
@@ -379,7 +379,7 @@
     ],
     "m5/IL3/REF6": [
         {
-            "adcrejection": 8388610,
+            "adcrejection": 8388607,
             "adjuststatusflags": "1",
             "alias": "200A",
             "avail": "0",
@@ -390,7 +390,7 @@
             "urval": 200
         },
         {
-            "adcrejection": 8388610,
+            "adcrejection": 8388607,
             "adjuststatusflags": "1",
             "alias": "100A",
             "avail": "0",
@@ -401,7 +401,7 @@
             "urval": 100
         },
         {
-            "adcrejection": 8388610,
+            "adcrejection": 8388607,
             "adjuststatusflags": "1",
             "alias": "50A",
             "avail": "0",
@@ -412,7 +412,7 @@
             "urval": 50
         },
         {
-            "adcrejection": 8388610,
+            "adcrejection": 8388607,
             "adjuststatusflags": "1",
             "alias": "25A",
             "avail": "0",
@@ -423,7 +423,7 @@
             "urval": 25
         },
         {
-            "adcrejection": 8388610,
+            "adcrejection": 8388607,
             "adjuststatusflags": "1",
             "alias": "10A",
             "avail": "0",
@@ -434,7 +434,7 @@
             "urval": 10
         },
         {
-            "adcrejection": 8388610,
+            "adcrejection": 8388607,
             "adjuststatusflags": "1",
             "alias": "5A",
             "avail": "0",
@@ -445,7 +445,7 @@
             "urval": 5
         },
         {
-            "adcrejection": 8388610,
+            "adcrejection": 8388607,
             "adjuststatusflags": "1",
             "alias": "2.5A",
             "avail": "0",
@@ -456,7 +456,7 @@
             "urval": 2.5
         },
         {
-            "adcrejection": 8388610,
+            "adcrejection": 8388607,
             "adjuststatusflags": "1",
             "alias": "1.0A",
             "avail": "0",
@@ -467,7 +467,7 @@
             "urval": 1
         },
         {
-            "adcrejection": 8388610,
+            "adcrejection": 8388607,
             "adjuststatusflags": "1",
             "alias": "500mA",
             "avail": "0",
@@ -478,7 +478,7 @@
             "urval": 0.5
         },
         {
-            "adcrejection": 8388610,
+            "adcrejection": 8388607,
             "adjuststatusflags": "1",
             "alias": "250mA",
             "avail": "0",
@@ -489,7 +489,7 @@
             "urval": 0.25
         },
         {
-            "adcrejection": 8388610,
+            "adcrejection": 8388607,
             "adjuststatusflags": "1",
             "alias": "100mA",
             "avail": "0",
@@ -500,7 +500,7 @@
             "urval": 0.1
         },
         {
-            "adcrejection": 8388610,
+            "adcrejection": 8388607,
             "adjuststatusflags": "1",
             "alias": "50mA",
             "avail": "0",
@@ -511,7 +511,7 @@
             "urval": 0.05
         },
         {
-            "adcrejection": 8388610,
+            "adcrejection": 8388607,
             "adjuststatusflags": "1",
             "alias": "25mA",
             "avail": "0",
@@ -522,7 +522,7 @@
             "urval": 0.025
         },
         {
-            "adcrejection": 8388610,
+            "adcrejection": 8388607,
             "adjuststatusflags": "1",
             "alias": "10mA",
             "avail": "0",
@@ -533,7 +533,7 @@
             "urval": 0.01
         },
         {
-            "adcrejection": 8388610,
+            "adcrejection": 8388607,
             "adjuststatusflags": "1",
             "alias": "5mA",
             "avail": "0",
@@ -544,7 +544,7 @@
             "urval": 0.005
         },
         {
-            "adcrejection": 8388610,
+            "adcrejection": 8388607,
             "adjuststatusflags": "16",
             "alias": "R0V",
             "avail": "1",
@@ -555,7 +555,7 @@
             "urval": 9
         },
         {
-            "adcrejection": 8388610,
+            "adcrejection": 8388607,
             "adjuststatusflags": "16",
             "alias": "R10V",
             "avail": "1",
