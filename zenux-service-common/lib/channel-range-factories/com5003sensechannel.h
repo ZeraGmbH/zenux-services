@@ -4,6 +4,8 @@
 #include "sensesettings.h"
 #include <sensechannelcommon.h>
 
+static constexpr int rejectionScpiQueryDigitsCom5003 = 6; // Changing this changes rejection => adjustment!!!
+
 class Com5003SenseChannel : public SenseChannelCommon
 {
     Q_OBJECT

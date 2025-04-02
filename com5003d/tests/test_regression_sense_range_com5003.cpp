@@ -1,6 +1,6 @@
 #include "test_regression_sense_range_com5003.h"
+#include "com5003sensechannel.h"
 #include "senseinterfacecommon.h"
-#include "com5003senserange.h"
 #include "zscpi_response_definitions.h"
 #include <QTest>
 
@@ -9,14 +9,16 @@ QTEST_MAIN(test_regression_sense_range_com5003);
 void test_regression_sense_range_com5003::init()
 {
     m_scpiInterface = std::make_shared<cSCPI>();
-    m_range = new Com5003SenseRange(m_scpiInterface,
-                                    "240V",
-                                    true,
-                                    11111.11111,
-                                    22222.22222,
-                                    33333.33333,
-                                    5,
-                                    modeAC);
+    m_range = new SenseRangeCommon(m_scpiInterface,
+                                   "240V",
+                                   true,
+                                   11111.11111,
+                                   22222.22222,
+                                   33333.33333,
+                                   5,
+                                   modeAC,
+                                   new AdjRangeScpi(m_scpiInterface, AdjustScpiValueFormatterFactory::createCom5003AdjFormatter()),
+                                   rejectionScpiQueryDigitsCom5003);
     m_range->initSCPIConnection("SENSE:m0");
 }
 

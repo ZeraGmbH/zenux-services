@@ -1,7 +1,7 @@
 #include "com5003channelrangefactory.h"
 #include "senseinterfacecommon.h"
 #include "com5003sensechannel.h"
-#include "com5003senserange.h"
+#include <cmath>
 
 QList<SenseChannelCommon *> COM5003ChannelRangeFactory::createChannelAndRanges(cSenseSettings *senseSettings,
                                                                                AdjDataPtr adjData,
@@ -25,42 +25,64 @@ QList<SenseChannelCommon *> COM5003ChannelRangeFactory::createChannelAndRanges(c
 
     for (int i = 0; i < 3; i++) {
         QList<SenseRangeCommon*> rngListU;
-        rngListU.append(new Com5003SenseRange(scpi,  "480V", true, 480.0, 4712563.0, 5890704.0, 0, rangeFlagsDevice));
-        rngListU.append(new Com5003SenseRange(scpi,  "240V", true, 240.0, 4712563.0, 5890704.0, 1, rangeFlagsDevice));
-        rngListU.append(new Com5003SenseRange(scpi,  "120V", true, 120.0, 4712563.0, 5890704.0, 2, rangeFlagsDevice));
-        rngListU.append(new Com5003SenseRange(scpi,   "60V", true,  60.0, 4712563.0, 5890704.0, 3, rangeFlagsDevice));
+        tryAddRange(rngListU, scpi,  "480V", true, 480.0, 4712563,   1.25, 0, rangeFlagsDevice);
+        tryAddRange(rngListU, scpi,  "240V", true, 240.0, 4712563,   1.25, 1, rangeFlagsDevice);
+        tryAddRange(rngListU, scpi,  "120V", true, 120.0, 4712563,   1.25, 2, rangeFlagsDevice);
+        tryAddRange(rngListU, scpi,   "60V", true,  60.0, 4712563,   1.25, 3, rangeFlagsDevice);
 
-        rngListU.append(new Com5003SenseRange(scpi,   "12V", true,  12.0, 3887864.8, 4859831.0, 4, rangeFlagsDevice));
-        rngListU.append(new Com5003SenseRange(scpi,    "5V", true,   5.0, 4516206.0, 5645258.0, 5, rangeFlagsDevice));
+        tryAddRange(rngListU, scpi,   "12V", true,  12.0, 3887864.8, 1.25, 4, rangeFlagsDevice);
+        tryAddRange(rngListU, scpi,    "5V", true,   5.0, 4516206,   1.25, 5, rangeFlagsDevice);
 
-        rngListU.append(new Com5003SenseRange(scpi,   "R0V", false,  9.0, 3839668.2, 5332873.0, 14, rangeFlagsReference));
-        rngListU.append(new Com5003SenseRange(scpi,  "R10V", false, 10.0, 4266298.0, 5332873.0, 15, rangeFlagsReference));
+        tryAddRange(rngListU, scpi,   "R0V", false,  9.0, 3839668,  1.389, 14, rangeFlagsReference);
+        tryAddRange(rngListU, scpi,  "R10V", false, 10.0, 4266298,   1.25, 15, rangeFlagsReference);
         channels.at(i)->setRangeList(rngListU);
     }
 
     for (int i = 3; i < 6; i++) {
         QList<SenseRangeCommon*> rngListI;
-        rngListI.append(new Com5003SenseRange(scpi,  "200A", true, 200.0, 6257236.0, 5256077.0, 0, rangeFlagsDevice)); // 168 A max ???
-        rngListI.append(new Com5003SenseRange(scpi,  "100A", true, 100.0, 4692928.0, 5866160.0, 1, rangeFlagsDevice));
-        rngListI.append(new Com5003SenseRange(scpi,   "50A", true,  50.0, 4692928.0, 5866160.0, 2, rangeFlagsDevice));
-        rngListI.append(new Com5003SenseRange(scpi,   "25A", true, 25.0 , 4692928.0, 5866160.0, 3, rangeFlagsDevice));
-        rngListI.append(new Com5003SenseRange(scpi,   "10A", true, 10.0 , 4692928.0, 5866160.0, 4, rangeFlagsDevice));
-        rngListI.append(new Com5003SenseRange(scpi,    "5A", true,  5.0 , 4692928.0, 5866160.0, 5, rangeFlagsDevice));
+        tryAddRange(rngListI, scpi,  "200A", true, 200.0, 6257236, 0.84, 0, rangeFlagsDevice); // 168 A max ???
+        tryAddRange(rngListI, scpi,  "100A", true, 100.0, 4692928, 1.25, 1, rangeFlagsDevice);
+        tryAddRange(rngListI, scpi,   "50A", true,  50.0, 4692928, 1.25, 2, rangeFlagsDevice);
+        tryAddRange(rngListI, scpi,   "25A", true, 25.0 , 4692928, 1.25, 3, rangeFlagsDevice);
+        tryAddRange(rngListI, scpi,   "10A", true, 10.0 , 4692928, 1.25, 4, rangeFlagsDevice);
+        tryAddRange(rngListI, scpi,    "5A", true,  5.0 , 4692928, 1.25, 5, rangeFlagsDevice);
 
-        rngListI.append(new Com5003SenseRange(scpi,  "2.5A", true, 2.5  , 4692928.0, 5866160.0, 6, rangeFlagsDevice));
-        rngListI.append(new Com5003SenseRange(scpi,  "1.0A", true, 1.0  , 4692928.0, 5866160.0, 7, rangeFlagsDevice));
-        rngListI.append(new Com5003SenseRange(scpi, "500mA", true, 0.5  , 4692928.0, 5866160.0, 8, rangeFlagsDevice));
-        rngListI.append(new Com5003SenseRange(scpi, "250mA", true, 0.25 , 4692928.0, 5866160.0, 9, rangeFlagsDevice));
-        rngListI.append(new Com5003SenseRange(scpi, "100mA", true, 0.1  , 4692928.0, 5866160.0, 10, rangeFlagsDevice));
-        rngListI.append(new Com5003SenseRange(scpi,  "50mA", true, 0.05 , 4692928.0, 5866160.0, 11, rangeFlagsDevice));
-        rngListI.append(new Com5003SenseRange(scpi,  "25mA", true, 0.025, 4692928.0, 5866160.0, 12, rangeFlagsDevice));
-        rngListI.append(new Com5003SenseRange(scpi,  "10mA", true, 0.01 , 4692928.0, 5866160.0, 13, rangeFlagsDevice));
-        rngListI.append(new Com5003SenseRange(scpi,   "5mA", true, 0.005, 4692928.0, 5866160.0, 14, rangeFlagsDevice));
+        tryAddRange(rngListI, scpi,  "2.5A", true, 2.5  , 4692928, 1.25, 6, rangeFlagsDevice);
+        tryAddRange(rngListI, scpi,  "1.0A", true, 1.0  , 4692928, 1.25, 7, rangeFlagsDevice);
+        tryAddRange(rngListI, scpi, "500mA", true, 0.5  , 4692928, 1.25, 8, rangeFlagsDevice);
+        tryAddRange(rngListI, scpi, "250mA", true, 0.25 , 4692928, 1.25, 9, rangeFlagsDevice);
+        tryAddRange(rngListI, scpi, "100mA", true, 0.1  , 4692928, 1.25, 10, rangeFlagsDevice);
+        tryAddRange(rngListI, scpi,  "50mA", true, 0.05 , 4692928, 1.25, 11, rangeFlagsDevice);
+        tryAddRange(rngListI, scpi,  "25mA", true, 0.025, 4692928, 1.25, 12, rangeFlagsDevice);
+        tryAddRange(rngListI, scpi,  "10mA", true, 0.01 , 4692928, 1.25, 13, rangeFlagsDevice);
+        tryAddRange(rngListI, scpi,   "5mA", true, 0.005, 4692928, 1.25, 14, rangeFlagsDevice);
 
-        rngListI.append(new Com5003SenseRange(scpi,   "R0V", false,  9.0, 3839668.2, 5332873.0, 15, rangeFlagsReference));
-        rngListI.append(new Com5003SenseRange(scpi,  "R10V", false, 10.0, 4266298.0, 5332873.0, 16, rangeFlagsReference));
+        tryAddRange(rngListI, scpi,   "R0V", false,  9.0, 3839668, 1.389,15, rangeFlagsReference); // overload: don't care
+        tryAddRange(rngListI, scpi,  "R10V", false, 10.0, 4266298, 1.25, 16, rangeFlagsReference);
 
         channels.at(i)->setRangeList(rngListI);
     }
     return channels;
+}
+
+void COM5003ChannelRangeFactory::tryAddRange(QList<SenseRangeCommon *> &rngList,
+                                             std::shared_ptr<cSCPI> scpi,
+                                             const QString &rangeName,
+                                             bool avail,
+                                             double nominalValue,
+                                             double nominalSampleValue, // we have float values around for rejection ...???
+                                             double overloadFactor,
+                                             quint8 controllerSelectionNum,
+                                             quint16 supportedMeasModeMask)
+{
+    rngList.append(new SenseRangeCommon(scpi,
+                                        rangeName,
+                                        avail,
+                                        nominalValue,
+                                        nominalSampleValue,
+                                        round(nominalSampleValue * overloadFactor),
+                                        controllerSelectionNum,
+                                        supportedMeasModeMask,
+                                        new AdjRangeScpi(scpi, AdjustScpiValueFormatterFactory::createCom5003AdjFormatter()),
+                                        rejectionScpiQueryDigitsCom5003));
 }
