@@ -5,19 +5,17 @@
 
 Com5003SenseInterface::Com5003SenseInterface(std::shared_ptr<cSCPI> scpiInterface,
                                              I2cSettings *i2cSettings,
-                                             cSenseSettings *senseSettings, SystemInfo *systemInfo,
+                                             cSenseSettings *senseSettings,
+                                             SystemInfo *systemInfo,
                                              AbstractFactoryI2cCtrlPtr ctrlFactory) :
     SenseInterfaceCommon(scpiInterface,
-                           i2cSettings,
-                           systemInfo,
-                           ctrlFactory,
-                           QHash<QString, int>{{"AC", modeAC}, {"REF", modeREF}})
+                         i2cSettings,
+                         systemInfo,
+                         senseSettings,
+                         std::make_shared<COM5003ChannelRangeFactory>(),
+                         ctrlFactory,
+                         QHash<QString, int>{{"AC", modeAC}, {"REF", modeREF}})
 {
-    COM5003ChannelRangeFactory factory;
-    m_channelList = factory.createChannelAndRanges(senseSettings,
-                                                   m_adjData,
-                                                   m_scpiInterface,
-                                                   m_ctrlFactory);
     injectAdjToChannelRanges();
     setSenseMode("AC");
     setNotifierSenseChannelCat(); // only prepared for !!! since we don't have hot plug for measuring channels yet

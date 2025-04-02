@@ -2,12 +2,12 @@
 #define SENSEINTERFACECOMMON_H
 
 #include "abstractadjstatus.h"
+#include "abstractchannelrangefactory.h"
 #include "resource.h"
 #include "adjustmentxmlimportexporttemplate.h"
 #include "i2csettings.h"
 #include "systeminfo.h"
 #include "sensechannelcommon.h"
-#include "adjdatacompleteinternstream.h"
 #include "adjustmenteepromreadwrite.h"
 
 namespace SenseSystem
@@ -69,6 +69,8 @@ public:
     SenseInterfaceCommon(std::shared_ptr<cSCPI> scpiInterface,
                          I2cSettings* i2cSettings,
                          SystemInfo *systemInfo,
+                         cSenseSettings* senseSettings,
+                         AbstractChannelRangeFactoryPtr rangeFactory,
                          AbstractFactoryI2cCtrlPtr ctrlFactory,
                          QHash<QString, int> availSenseModesHash);
     virtual ~SenseInterfaceCommon();
