@@ -60,7 +60,7 @@ public:
                          QHash<QString, int> availSenseModesHash);
     virtual ~SenseInterfaceCommon();
     quint8 getAdjustmentStatus() override;
-    SenseChannelCommon *getChannel(QString& name);
+    SenseChannelCommon *getChannel(const QString &name);
     QString getChannelByCtrlChannelNo(quint16 ctrlChannel);
     SenseRangeCommon* getRange(QString channelName, QString rangeName);
     void computeSenseAdjData();
@@ -100,12 +100,12 @@ protected:
 
 private:
     void handleScpiReadWriteMMode(cProtonetCommand* protoCmd);
-    QString scpiReadVersion(QString& scpi);
-    QString scpiReadMModeCatalog(QString& scpi);
-    QString scpiReadSenseChannelCatalog(QString& scpi);
-    QString scpiInitSenseAdjDataAllChannelRanges(QString& scpi);
-    QString scpiComputeSenseAdjDataAllChannelRanges(QString& scpi);
-    QString scpiReadAdjStatus(QString& scpi);
+    QString scpiReadVersion(const QString &scpi);
+    QString scpiReadMModeCatalog(const QString& scpi);
+    QString scpiReadSenseChannelCatalog(const QString& scpi);
+    QString scpiInitSenseAdjDataAllChannelRanges(const QString& scpi);
+    QString scpiComputeSenseAdjDataAllChannelRanges(const QString& scpi);
+    QString scpiReadAdjStatus(const QString& scpi);
     QStringList getSenseModesSortedById();
 
     AdjustmentEepromReadWrite m_adjReadWrite;
