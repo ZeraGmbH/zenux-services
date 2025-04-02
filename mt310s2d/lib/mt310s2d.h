@@ -1,6 +1,7 @@
 #ifndef MT310S2D_H
 #define MT310S2D_H
 
+#include "mt310s2systeminfo.h"
 #include "abstractfactorydevicenodepcb.h"
 #include "pcbserver.h"
 #include "rmconnection.h"
@@ -13,7 +14,6 @@
 #include "foutsettings.h"
 #include "accumulatorsettings.h"
 #include "accumulatorinterface.h"
-#include "mt310s2systeminfo.h"
 #include "abstractctrlheartbeatwait.h"
 #include <QStateMachine>
 #include <QTimer>

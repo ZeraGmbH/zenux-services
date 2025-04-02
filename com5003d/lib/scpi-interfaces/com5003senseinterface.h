@@ -12,6 +12,7 @@ public:
                           I2cSettings* i2cSettings,
                           cSenseSettings* senseSettings,
                           SystemInfo *systemInfo,
+                          AbstractChannelRangeFactoryPtr rangeFactory,
                           AbstractFactoryI2cCtrlPtr ctrlFactory);
 
 private:

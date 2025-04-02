@@ -1,5 +1,4 @@
 #include "com5003senseinterface.h"
-#include "com5003channelrangefactory.h"
 #include "com5003dglobal.h"
 #include "zscpi_response_definitions.h"
 
@@ -7,12 +6,13 @@ Com5003SenseInterface::Com5003SenseInterface(std::shared_ptr<cSCPI> scpiInterfac
                                              I2cSettings *i2cSettings,
                                              cSenseSettings *senseSettings,
                                              SystemInfo *systemInfo,
+                                             AbstractChannelRangeFactoryPtr rangeFactory,
                                              AbstractFactoryI2cCtrlPtr ctrlFactory) :
     SenseInterfaceCommon(scpiInterface,
                          i2cSettings,
                          systemInfo,
                          senseSettings,
-                         std::make_shared<COM5003ChannelRangeFactory>(),
+                         rangeFactory,
                          ctrlFactory,
                          QHash<QString, int>{{"AC", modeAC}, {"REF", modeREF}})
 {

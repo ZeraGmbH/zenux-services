@@ -1,34 +1,21 @@
-#include <QStateMachine>
-#include <QState>
-#include <QFile>
-#include <QFinalState>
-#include <QStringList>
-#include <QDebug>
-#include <QHostAddress>
-#include <xmlconfigreader.h>
-#include <QCoreApplication>
-#include <vtcp_server.h>
-#include <unistd.h>
-#include <fcntl.h>
-#include "com5003dglobal.h"
 #include "com5003d.h"
-#include "pcbserver.h"
-#include "systeminfo.h"
-#include "rmconnection.h"
+#include "com5003dglobal.h"
+#include "com5003channelrangefactory.h"
+#include "com5003systeminterface.h"
+#include "com5003senseinterface.h"
 #include "fingroupresourceandinterface.h"
 #include "hkingroupresourceandinterface.h"
 #include "samplinginterface.h"
 #include "scingroupresourceandinterface.h"
-#include "com5003senseinterface.h"
 #include "foutgroupresourceandinterface.h"
 #include "servicestatusinterface.h"
-#include "com5003systeminterface.h"
-#include "ethsettings.h"
-#include "finsettings.h"
-#include "hkinsettings.h"
-#include "sensesettings.h"
-#include "foutsettings.h"
-#include "scinsettings.h"
+#include <QStateMachine>
+#include <QState>
+#include <QFile>
+#include <QFinalState>
+#include <QCoreApplication>
+#include <unistd.h>
+#include <fcntl.h>
 
 const ServerParams cCOM5003dServer::defaultParams {ServerName, ServerVersion, "/etc/zera/com5003d/com5003d.xsd", "/etc/zera/com5003d/com5003d.xml"};
 
@@ -301,6 +288,7 @@ void cCOM5003dServer::doSetupServer()
                                                                             m_settings->getI2cSettings(),
                                                                             m_pSenseSettings,
                                                                             m_pSystemInfo,
+                                                                            std::make_shared<COM5003ChannelRangeFactory>(),
                                                                             m_ctrlFactory));
     scpiConnectionList.append(m_pStatusInterface = new ServiceStatusInterface(m_scpiInterface, m_pSenseInterface, m_ctrlFactory));
     scpiConnectionList.append(m_pSystemInterface = new Com5003SystemInterface(this, m_pSystemInfo, m_pSenseInterface, m_ctrlFactory));
