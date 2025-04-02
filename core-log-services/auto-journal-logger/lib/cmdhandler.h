@@ -15,6 +15,7 @@ private:
     bool storeLogs(QString destinationDir);
     bool storeCoreDumps(QString destinationDir);
     bool storeVersionFile(QString destinationDir, QString versionFilePath);
+    bool storeUpdateLogs(QString destinationDir);
     AbstractLogCreatorPtr m_logGenerator;
     QString m_coreFilePath;
 };

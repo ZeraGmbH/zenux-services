@@ -29,6 +29,8 @@ void CmdHandler::StartCmd(SimpleCmdData *pCmd, QVariantList params)
             return;
         if(!storeCoreDumps(destinationDir))
             return;
+        if(!storeUpdateLogs(destinationDir))
+            return;
         QString versionFilePath = params[1].toString();
         if(!storeVersionFile(destinationDir, versionFilePath))
             return;
@@ -80,6 +82,31 @@ bool CmdHandler::storeVersionFile(QString destinationDir, QString versionFilePat
         QString cmd = QString("mv %1 %2").arg(versionFilePath, fileName);
         if(system(qPrintable(cmd)) != 0) {
             emit OperationFinish(true, QStringLiteral("Could not move version file from %1 to %2").arg(versionFilePath, fileName));
+            return false;
+        }
+    }
+    return true;
+}
+
+bool CmdHandler::storeUpdateLogs(QString destinationDir)
+{
+    QStringList extensionFilter;
+    extensionFilter << ".html";
+
+    QDir dir("/home/operator");
+
+    if(!dir.exists()) {
+        //qWarning() << "Directory can not be read:" << dir.dirName(); ???
+        return false;
+        }
+
+    QFileInfoList fileList = dir.entryInfoList(extensionFilter, QDir::NoDotAndDotDot | QDir::Files);  //
+    for(auto &entry : fileList) {
+        QString outputPath = destinationDir +  "/" + entry.fileName();
+        QString sourcePath = entry.absoluteFilePath();
+        QString cmd = QString("cp %1 %2").arg(sourcePath, outputPath);
+        if(system(qPrintable(cmd)) != 0) {
+            emit OperationFinish(true, QStringLiteral("Could not copy update file %1 to %2").arg(sourcePath, outputPath));
             return false;
         }
     }
