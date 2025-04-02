@@ -12,6 +12,8 @@ static const char* cacheFileName = "adj-intern-cache";
 SenseInterfaceCommon::SenseInterfaceCommon(std::shared_ptr<cSCPI> scpiInterface,
                                            I2cSettings *i2cSettings,
                                            SystemInfo *systemInfo,
+                                           cSenseSettings *senseSettings,
+                                           AbstractChannelRangeFactoryPtr rangeFactory,
                                            AbstractFactoryI2cCtrlPtr ctrlFactory,
                                            QHash<QString, int> availSenseModesHash) :
     cResource(scpiInterface),
@@ -23,6 +25,10 @@ SenseInterfaceCommon::SenseInterfaceCommon(std::shared_ptr<cSCPI> scpiInterface,
                    I2cMultiplexerFactory::createNullMuxer())
 {
     importAdjData();
+    m_channelList = rangeFactory->createChannelAndRanges(senseSettings,
+                                                         m_adjData,
+                                                         m_scpiInterface,
+                                                         m_ctrlFactory);
 }
 
 SenseInterfaceCommon::~SenseInterfaceCommon()

@@ -9,16 +9,13 @@ Mt310s2SenseInterface::Mt310s2SenseInterface(std::shared_ptr<cSCPI> scpiInterfac
                                              SystemInfo *systemInfo,
                                              AbstractFactoryI2cCtrlPtr ctrlFactory) :
     SenseInterfaceCommon(scpiInterface,
-                           i2cSettings,
-                           systemInfo,
-                           ctrlFactory,
-                           QHash<QString, int>{{"AC", modeAC}, {"HF", modeHF}, {"ADJ", modeADJ}})
+                         i2cSettings,
+                         systemInfo,
+                         senseSettings,
+                         std::make_shared<MT310s2ChannelRangeFactory>(),
+                         ctrlFactory,
+                         QHash<QString, int>{{"AC", modeAC}, {"HF", modeHF}, {"ADJ", modeADJ}})
 {
-    MT310s2ChannelRangeFactory factory;
-    m_channelList = factory.createChannelAndRanges(senseSettings,
-                                                   m_adjData,
-                                                   m_scpiInterface,
-                                                   m_ctrlFactory);
     injectAdjToChannelRanges();
     setSenseMode("AC");
     setNotifierSenseChannelCat(); // only prepared for !!! since we don't have hot plug for measuring channels yet
