@@ -27,17 +27,17 @@ class SenseChannelCommon : public ScpiConnection
 {
 public:
     SenseChannelCommon(std::shared_ptr<cSCPI> scpiinterface,
-                       QString unit,
+                       const QString &unit,
                        SenseSystem::cChannelSettings* cSettings,
                        quint8 nr,
                        AbstractFactoryI2cCtrlPtr ctrlFactory);
     virtual ~SenseChannelCommon();
 
-    void setRangeList(QList<SenseRangeCommon*>& list);
+    void setRangeList(const QList<SenseRangeCommon*>& list);
     const QList<SenseRangeCommon *> &getRangeList();
-    SenseRangeCommon* getRange(QString& name);
-    void addRangeList(QList<SenseRangeCommon*>& list);
-    void removeRangeList(QList<SenseRangeCommon *> &list);
+    SenseRangeCommon* getRange(const QString &name);
+    void addRangeList(const QList<SenseRangeCommon*>& list);
+    void removeRangeList(const QList<SenseRangeCommon *> &list);
 
     quint8 getAdjustmentStatus80Mask();
 
@@ -56,17 +56,16 @@ protected:
     void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
     virtual QString getAlias() = 0;
     virtual void setNotifierSenseChannelRange() = 0;
-    virtual QString scpiReadWriteRange(QString& sInput) = 0;
+    virtual QString scpiReadWriteRange(QString& scpi) = 0;
 
-    QString m_ReadAlias(QString& sInput);
-    QString m_ReadType(QString& sInput);
-    QString m_ReadUnit(QString& sInput);
-    QString m_ReadDspChannel(QString& sInput);
-    QString m_ReadChannelStatus(QString& sInput);
-    QString m_StatusReset(QString& sInput);
-
-    QString m_ReadUrvalue(QString& sInput);
-    QString m_ReadRangeCatalog(QString& sInput);
+    QString scpiReadAlias(const QString& scpi);
+    QString scpiReadType(const QString& scpi);
+    QString scpiReadUnit(const QString& scpi);
+    QString scpiReadDspChannel(const QString& scpi);
+    QString scpiReadChannelStatus(const QString& scpi);
+    QString scpiStatusReset(const QString& scpi);
+    QString scpiReadUrvalue(const QString& scpi);
+    QString scpiReadRangeCatalog(const QString& scpi);
 
     void setNotifierSenseChannelRangeCat();
 

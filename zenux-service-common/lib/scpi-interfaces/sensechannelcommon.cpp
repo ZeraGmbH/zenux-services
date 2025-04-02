@@ -2,7 +2,7 @@
 #include "zscpi_response_definitions.h"
 
 SenseChannelCommon::SenseChannelCommon(std::shared_ptr<cSCPI> scpiinterface,
-                                       QString unit,
+                                       const QString &unit,
                                        SenseSystem::cChannelSettings *cSettings,
                                        quint8 nr,
                                        AbstractFactoryI2cCtrlPtr ctrlFactory) :
@@ -26,7 +26,7 @@ SenseChannelCommon::~SenseChannelCommon()
         delete range;
 }
 
-void SenseChannelCommon::setRangeList(QList<SenseRangeCommon *> &list)
+void SenseChannelCommon::setRangeList(const QList<SenseRangeCommon *> &list)
 {
     m_RangeList = list;
     setNotifierSenseChannelRangeCat();
@@ -38,7 +38,7 @@ const QList<SenseRangeCommon *> &SenseChannelCommon::getRangeList()
     return m_RangeList;
 }
 
-SenseRangeCommon *SenseChannelCommon::getRange(QString &name)
+SenseRangeCommon *SenseChannelCommon::getRange(const QString &name)
 {
     for(auto range : qAsConst(m_RangeList))
         if(range->getRangeName() == name)
@@ -46,14 +46,14 @@ SenseRangeCommon *SenseChannelCommon::getRange(QString &name)
     return nullptr;
 }
 
-void SenseChannelCommon::addRangeList(QList<SenseRangeCommon *> &list)
+void SenseChannelCommon::addRangeList(const QList<SenseRangeCommon *> &list)
 {
     for(auto range : list)
         m_RangeList.append(range);
     setNotifierSenseChannelRangeCat();
 }
 
-void SenseChannelCommon::removeRangeList(QList<SenseRangeCommon *> &list)
+void SenseChannelCommon::removeRangeList(const QList<SenseRangeCommon *> &list)
 {
     for(auto range : list)
         m_RangeList.removeOne(range);
@@ -126,31 +126,31 @@ void SenseChannelCommon::executeProtoScpi(int cmdCode, cProtonetCommand *protoCm
     switch (cmdCode)
     {
     case SenseChannel::cmdAlias:
-        protoCmd->m_sOutput = m_ReadAlias(protoCmd->m_sInput);
+        protoCmd->m_sOutput = scpiReadAlias(protoCmd->m_sInput);
         break;
     case SenseChannel::cmdType:
-        protoCmd->m_sOutput = m_ReadType(protoCmd->m_sInput);
+        protoCmd->m_sOutput = scpiReadType(protoCmd->m_sInput);
         break;
     case SenseChannel::cmdUnit:
-        protoCmd->m_sOutput = m_ReadUnit(protoCmd->m_sInput);
+        protoCmd->m_sOutput = scpiReadUnit(protoCmd->m_sInput);
         break;
     case SenseChannel::cmdDspChannel:
-        protoCmd->m_sOutput = m_ReadDspChannel(protoCmd->m_sInput);
+        protoCmd->m_sOutput = scpiReadDspChannel(protoCmd->m_sInput);
         break;
     case SenseChannel::cmdStatus:
-        protoCmd->m_sOutput = m_ReadChannelStatus(protoCmd->m_sInput);
+        protoCmd->m_sOutput = scpiReadChannelStatus(protoCmd->m_sInput);
         break;
     case SenseChannel::cmdStatusReset:
-        protoCmd->m_sOutput = m_StatusReset(protoCmd->m_sInput);
+        protoCmd->m_sOutput = scpiStatusReset(protoCmd->m_sInput);
         break;
     case SenseChannel::cmdRange:
         protoCmd->m_sOutput = scpiReadWriteRange(protoCmd->m_sInput);
         break;
     case SenseChannel::cmdUrvalue:
-        protoCmd->m_sOutput = m_ReadUrvalue(protoCmd->m_sInput);
+        protoCmd->m_sOutput = scpiReadUrvalue(protoCmd->m_sInput);
         break;
     case SenseChannel::cmdRangeCat:
-        protoCmd->m_sOutput = m_ReadRangeCatalog(protoCmd->m_sInput);
+        protoCmd->m_sOutput = scpiReadRangeCatalog(protoCmd->m_sInput);
         break;
     }
     if (protoCmd->m_bwithOutput)
@@ -163,41 +163,41 @@ void SenseChannelCommon::computeJustData()
         range->computeJustData();
 }
 
-QString SenseChannelCommon::m_ReadAlias(QString &sInput)
+QString SenseChannelCommon::scpiReadAlias(const QString &scpi)
 {
-    cSCPICommand cmd = sInput;
+    cSCPICommand cmd = scpi;
     if (cmd.isQuery())
         return getAlias();
     return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-QString SenseChannelCommon::m_ReadType(QString &sInput)
+QString SenseChannelCommon::scpiReadType(const QString &scpi)
 {
-    cSCPICommand cmd = sInput;
+    cSCPICommand cmd = scpi;
     if (cmd.isQuery())
         return QString("0");
     return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-QString SenseChannelCommon::m_ReadUnit(QString &sInput)
+QString SenseChannelCommon::scpiReadUnit(const QString &scpi)
 {
-    cSCPICommand cmd = sInput;
+    cSCPICommand cmd = scpi;
     if (cmd.isQuery())
         return m_sUnit;
     return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-QString SenseChannelCommon::m_ReadDspChannel(QString &sInput)
+QString SenseChannelCommon::scpiReadDspChannel(const QString &scpi)
 {
-    cSCPICommand cmd = sInput;
+    cSCPICommand cmd = scpi;
     if (cmd.isQuery())
         return QString("%1").arg(m_nDspChannel);
     return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-QString SenseChannelCommon::m_ReadChannelStatus(QString &sInput)
+QString SenseChannelCommon::scpiReadChannelStatus(const QString &scpi)
 {
-    cSCPICommand cmd = sInput;
+    cSCPICommand cmd = scpi;
     if (cmd.isQuery()) {
         quint16 status;
         if (m_ctrlFactory->getCriticalStatusController()->readCriticalStatus(status) == ZeraMControllerIo::cmddone ) {
@@ -214,9 +214,9 @@ QString SenseChannelCommon::m_ReadChannelStatus(QString &sInput)
     return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-QString SenseChannelCommon::m_StatusReset(QString &sInput)
+QString SenseChannelCommon::scpiStatusReset(const QString &scpi)
 {
-    cSCPICommand cmd = sInput;
+    cSCPICommand cmd = scpi;
     if (cmd.isCommand(1) && (cmd.getParam(0) == "")) {
         if (m_nOverloadBit >= 0) {
             if (m_ctrlFactory->getCriticalStatusController()->resetCriticalStatus((quint16)(1 << m_nOverloadBit)) == ZeraMControllerIo::cmddone )
@@ -230,9 +230,9 @@ QString SenseChannelCommon::m_StatusReset(QString &sInput)
     return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-QString SenseChannelCommon::m_ReadUrvalue(QString &sInput)
+QString SenseChannelCommon::scpiReadUrvalue(const QString &scpi)
 {
-    cSCPICommand cmd = sInput;
+    cSCPICommand cmd = scpi;
     if (cmd.isQuery()) {
         for(auto range : qAsConst(m_RangeList))
             if (range->getRangeName() == notifierSenseChannelRange.getString())
@@ -241,9 +241,9 @@ QString SenseChannelCommon::m_ReadUrvalue(QString &sInput)
     return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-QString SenseChannelCommon::m_ReadRangeCatalog(QString &sInput)
+QString SenseChannelCommon::scpiReadRangeCatalog(const QString &scpi)
 {
-    cSCPICommand cmd = sInput;
+    cSCPICommand cmd = scpi;
     if (cmd.isQuery())
         return notifierSenseChannelRangeCat.getString();
     return ZSCPI::scpiAnswer[ZSCPI::nak];
