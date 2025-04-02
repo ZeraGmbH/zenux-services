@@ -5,8 +5,20 @@ const char* SenseRangeCommon::rangeNameCurrentNull = "0A";
 const char* SenseRangeCommon::rangeAliasNull = "--";
 static constexpr int ZenuxAdcMaxValue = (1<<23)-1; // Common value for COM/MT for the past decade
 
+enum Commands
+{
+    cmdType,
+    cmdAlias,
+    cmdAvail,
+    cmdUpperRangeValue,
+    cmdRejection,
+    cmdOVRejection,
+    cmdADCRejection,
+    cmdCtrlSelection // attow just for test...
+};
+
 SenseRangeCommon::SenseRangeCommon(std::shared_ptr<cSCPI> scpiInterface,
-                                   QString name,
+                                   const QString &name,
                                    bool avail,
                                    double upperRangeValue,
                                    double rejection,
@@ -37,14 +49,14 @@ SenseRangeCommon::~SenseRangeCommon()
 void SenseRangeCommon::initSCPIConnection(QString leadingNodes)
 {
     ensureTrailingColonOnNonEmptyParentNodes(leadingNodes);
-    addDelegate(QString("%1%2").arg(leadingNodes, m_sName), "ALIAS", SCPI::isQuery, m_scpiInterface, SenseRange::cmdAlias);
-    addDelegate(QString("%1%2").arg(leadingNodes, m_sName), "AVAIL", SCPI::isQuery, m_scpiInterface, SenseRange::cmdAvail);
-    addDelegate(QString("%1%2").arg(leadingNodes, m_sName), "URVALUE", SCPI::isQuery, m_scpiInterface, SenseRange::cmdUpperRangeValue);
-    addDelegate(QString("%1%2").arg(leadingNodes, m_sName), "REJECTION", SCPI::isQuery, m_scpiInterface, SenseRange::cmdRejection);
-    addDelegate(QString("%1%2").arg(leadingNodes, m_sName), "OVREJECTION", SCPI::isQuery, m_scpiInterface, SenseRange::cmdOVRejection);
-    addDelegate(QString("%1%2").arg(leadingNodes, m_sName), "ADCREJECTION", SCPI::isQuery, m_scpiInterface, SenseRange::cmdADCRejection);
-    addDelegate(QString("%1%2").arg(leadingNodes, m_sName), "TYPE", SCPI::isQuery, m_scpiInterface, SenseRange::cmdType);
-    addDelegate(QString("%1%2").arg(leadingNodes, m_sName), "CTRLSELECTION", SCPI::isQuery, m_scpiInterface, SenseRange::cmdCtrlSelection);
+    addDelegate(QString("%1%2").arg(leadingNodes, m_sName), "ALIAS", SCPI::isQuery, m_scpiInterface, cmdAlias);
+    addDelegate(QString("%1%2").arg(leadingNodes, m_sName), "AVAIL", SCPI::isQuery, m_scpiInterface, cmdAvail);
+    addDelegate(QString("%1%2").arg(leadingNodes, m_sName), "URVALUE", SCPI::isQuery, m_scpiInterface, cmdUpperRangeValue);
+    addDelegate(QString("%1%2").arg(leadingNodes, m_sName), "REJECTION", SCPI::isQuery, m_scpiInterface, cmdRejection);
+    addDelegate(QString("%1%2").arg(leadingNodes, m_sName), "OVREJECTION", SCPI::isQuery, m_scpiInterface, cmdOVRejection);
+    addDelegate(QString("%1%2").arg(leadingNodes, m_sName), "ADCREJECTION", SCPI::isQuery, m_scpiInterface, cmdADCRejection);
+    addDelegate(QString("%1%2").arg(leadingNodes, m_sName), "TYPE", SCPI::isQuery, m_scpiInterface, cmdType);
+    addDelegate(QString("%1%2").arg(leadingNodes, m_sName), "CTRLSELECTION", SCPI::isQuery, m_scpiInterface, cmdCtrlSelection);
 
     connect(m_justdata, &ScpiConnection::cmdExecutionDone, this, &ScpiConnection::cmdExecutionDone);
     m_justdata->initSCPIConnection(QString("%1%2").arg(leadingNodes, getRangeName()));
@@ -104,28 +116,28 @@ void SenseRangeCommon::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
 {
     switch (cmdCode)
     {
-    case SenseRange::cmdAlias:
+    case cmdAlias:
         protoCmd->m_sOutput = scpiRangeAlias(protoCmd->m_sInput);
         break;
-    case SenseRange::cmdAvail:
+    case cmdAvail:
         protoCmd->m_sOutput = scpiRangeAvail(protoCmd->m_sInput);
         break;
-    case SenseRange::cmdUpperRangeValue:
+    case cmdUpperRangeValue:
         protoCmd->m_sOutput = scpiRangeUpperRangeValue(protoCmd->m_sInput);
         break;
-    case SenseRange::cmdRejection:
+    case cmdRejection:
         protoCmd->m_sOutput = scpiRangeRejection(protoCmd->m_sInput);
         break;
-    case SenseRange::cmdOVRejection:
+    case cmdOVRejection:
         protoCmd->m_sOutput = scpiRangeOVRejection(protoCmd->m_sInput);
         break;
-    case SenseRange::cmdADCRejection:
+    case cmdADCRejection:
         protoCmd->m_sOutput = scpiRangeADCRejection(protoCmd->m_sInput);
         break;
-    case SenseRange::cmdType:
+    case cmdType:
         protoCmd->m_sOutput = scpiRangeTypeFlags(protoCmd->m_sInput);
         break;
-    case SenseRange::cmdCtrlSelection:
+    case cmdCtrlSelection:
         protoCmd->m_sOutput = scpiControllerSelection(protoCmd->m_sInput);
         break;
     }

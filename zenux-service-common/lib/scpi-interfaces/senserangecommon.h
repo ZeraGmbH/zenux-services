@@ -4,21 +4,6 @@
 #include "scpiconnection.h"
 #include "adjrangescpi.h"
 
-namespace SenseRange
-{
-enum Commands
-{
-    cmdType,
-    cmdAlias,
-    cmdAvail,
-    cmdUpperRangeValue,
-    cmdRejection,
-    cmdOVRejection,
-    cmdADCRejection,
-    cmdCtrlSelection // attow just for test...
-};
-}
-
 class SenseRangeCommon : public ScpiConnection
 {
     Q_OBJECT
@@ -27,7 +12,7 @@ public:
     static const char* rangeAliasNull;
 
     SenseRangeCommon(std::shared_ptr<cSCPI> scpiInterface,
-                     QString name,
+                     const QString &name,
                      bool avail,
                      double upperRangeValue, // = nominal
                      double rejection,

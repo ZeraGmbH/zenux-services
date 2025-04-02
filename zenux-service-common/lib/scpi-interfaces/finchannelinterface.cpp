@@ -31,27 +31,27 @@ void FInChannelInterface::executeProtoScpi(int cmdCode, cProtonetCommand *protoC
     switch (cmdCode)
     {
     case cmdAlias:
-        protoCmd->m_sOutput = readAlias(protoCmd->m_sInput);
+        protoCmd->m_sOutput = scpiReadAlias(protoCmd->m_sInput);
         break;
     case cmdStatus:
-        protoCmd->m_sOutput = readChannelStatus(protoCmd->m_sInput);
+        protoCmd->m_sOutput = scpiReadChannelStatus(protoCmd->m_sInput);
         break;
     }
     if (protoCmd->m_bwithOutput)
         emit cmdExecutionDone(protoCmd);
 }
 
-QString &FInChannelInterface::getName()
+const QString &FInChannelInterface::getName()
 {
     return m_sName;
 }
 
-QString &FInChannelInterface::getAlias()
+const QString &FInChannelInterface::getAlias()
 {
     return m_sAlias;
 }
 
-QString &FInChannelInterface::getDescription()
+const QString &FInChannelInterface::getDescription()
 {
     return m_sDescription;
 }
@@ -61,18 +61,18 @@ bool FInChannelInterface::isAvail()
     return m_bAvail;
 }
 
-QString FInChannelInterface::readAlias(QString &sInput)
+QString FInChannelInterface::scpiReadAlias(const QString &scpi)
 {
-    cSCPICommand cmd = sInput;
+    cSCPICommand cmd = scpi;
     if (cmd.isQuery())
         return m_sAlias;
     else
         return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-QString FInChannelInterface::readChannelStatus(QString &sInput)
+QString FInChannelInterface::scpiReadChannelStatus(const QString &scpi)
 {
-    cSCPICommand cmd = sInput;
+    cSCPICommand cmd = scpi;
     if (cmd.isQuery()) {
         quint32 r = ((m_bAvail) ? 0 : 1 << 31);
         return QString("%1").arg(r);

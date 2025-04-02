@@ -49,7 +49,7 @@ void ScInGroupResourceAndInterface::executeProtoScpi(int cmdCode, cProtonetComma
     switch (cmdCode)
     {
     case cmdVersion:
-        protoCmd->m_sOutput = m_ReadVersion(protoCmd->m_sInput);
+        protoCmd->m_sOutput = scpiReadVersion(protoCmd->m_sInput);
         break;
     case cmdChannelCat:
         protoCmd->m_sOutput = m_ReadChannelCatalog(protoCmd->m_sInput);
@@ -59,7 +59,7 @@ void ScInGroupResourceAndInterface::executeProtoScpi(int cmdCode, cProtonetComma
         emit cmdExecutionDone(protoCmd);
 }
 
-QString ScInGroupResourceAndInterface::m_ReadVersion(QString &sInput)
+QString ScInGroupResourceAndInterface::scpiReadVersion(QString &sInput)
 {
     cSCPICommand cmd = sInput;
     if (cmd.isQuery())

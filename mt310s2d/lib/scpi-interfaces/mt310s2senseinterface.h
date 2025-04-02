@@ -20,7 +20,7 @@ private:
     QString getXmlType() override;
     bool isRangePartOfAdjXmlExport(SenseRangeCommon* range) override;
     QString scpiReadSenseGroupCatalog(const QString& scpi) override;
-    bool setSenseMode(QString mode) override;
+    bool setSenseMode(const QString &modeStr) override;
 };
 
 #endif // MT310S2SENSEINTERFACE_H

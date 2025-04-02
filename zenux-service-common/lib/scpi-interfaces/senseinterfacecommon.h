@@ -79,7 +79,7 @@ protected:
     virtual QString getPcbName() = 0;
 
     virtual QString scpiReadSenseGroupCatalog(const QString& scpi) = 0;
-    virtual bool setSenseMode(QString modeStr) = 0;
+    virtual bool setSenseMode(const QString &modeStr) = 0;
 
     virtual QString getXmlType() = 0;
     virtual bool isRangePartOfAdjXmlExport(SenseRangeCommon* range) = 0;

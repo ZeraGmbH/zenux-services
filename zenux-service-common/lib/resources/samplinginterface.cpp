@@ -3,6 +3,13 @@
 #include "notzeronumgen.h"
 #include "zscpi_response_definitions.h"
 
+enum Commands
+{
+    cmdSampleRate,
+    cmdPLL,
+    cmdPLLCat
+};
+
 cSamplingInterface::cSamplingInterface(std::shared_ptr<cSCPI> scpiInterface,
                                        SamplingSettings* samplingSettings,
                                        AbstractFactoryI2cCtrlPtr ctrlFactory) :
@@ -21,9 +28,9 @@ cSamplingInterface::cSamplingInterface(std::shared_ptr<cSCPI> scpiInterface,
 void cSamplingInterface::initSCPIConnection(QString leadingNodes)
 {
     ensureTrailingColonOnNonEmptyParentNodes(leadingNodes);
-    addDelegate(QString("%1SAMPLE").arg(leadingNodes),"SRATE", SCPI::isQuery, m_scpiInterface, SamplingSystem::cmdSampleRate);
-    addDelegate(QString("%1SAMPLE:S0").arg(leadingNodes),"PLL", SCPI::isQuery | SCPI::isCmdwP , m_scpiInterface, SamplingSystem::cmdPLL);
-    addDelegate(QString("%1SAMPLE:S0:PLL").arg(leadingNodes),"CATALOG", SCPI::isQuery, m_scpiInterface, SamplingSystem::cmdPLLCat);
+    addDelegate(QString("%1SAMPLE").arg(leadingNodes),"SRATE", SCPI::isQuery, m_scpiInterface, cmdSampleRate);
+    addDelegate(QString("%1SAMPLE:S0").arg(leadingNodes),"PLL", SCPI::isQuery | SCPI::isCmdwP , m_scpiInterface, cmdPLL);
+    addDelegate(QString("%1SAMPLE:S0:PLL").arg(leadingNodes),"CATALOG", SCPI::isQuery, m_scpiInterface, cmdPLLCat);
 }
 
 void cSamplingInterface::registerResource(RMConnection *rmConnection, quint16 port)
@@ -35,14 +42,14 @@ void cSamplingInterface::executeProtoScpi(int cmdCode, cProtonetCommand *protoCm
 {
     switch (cmdCode)
     {
-    case SamplingSystem::cmdSampleRate:
-        protoCmd->m_sOutput = m_ReadSampleRate(protoCmd->m_sInput);
+    case cmdSampleRate:
+        protoCmd->m_sOutput = scpiReadSampleRate(protoCmd->m_sInput);
         break;
-    case SamplingSystem::cmdPLL:
-        protoCmd->m_sOutput = m_ReadWritePLL(protoCmd->m_sInput);
+    case cmdPLL:
+        protoCmd->m_sOutput = scpiReadWritePLL(protoCmd->m_sInput);
         break;
-    case SamplingSystem::cmdPLLCat:
-        protoCmd->m_sOutput = m_ReadPLLCatalog(protoCmd->m_sInput);
+    case cmdPLLCat:
+        protoCmd->m_sOutput = scpiReadPLLCatalog(protoCmd->m_sInput);
         break;
     }
     if (protoCmd->m_bwithOutput) {
@@ -51,16 +58,16 @@ void cSamplingInterface::executeProtoScpi(int cmdCode, cProtonetCommand *protoCm
 }
 
 // Why do we still ask pcb-server for samplereate?
-QString cSamplingInterface::m_ReadSampleRate(QString &sInput)
+QString cSamplingInterface::scpiReadSampleRate(const QString &scpi)
 {
-    Q_UNUSED(sInput)
+    Q_UNUSED(scpi)
     return "504";
 }
 
-QString cSamplingInterface::m_ReadWritePLL(QString &sInput)
+QString cSamplingInterface::scpiReadWritePLL(const QString &scpi)
 {
     quint8 pll;
-    cSCPICommand cmd = sInput;
+    cSCPICommand cmd = scpi;
     if (cmd.isQuery()) {
         if (m_ctrlFactory->getPllController()->readPLLChannel(pll) == ZeraMControllerIo::cmddone)
             if (pll < m_pllChannelList.count())
@@ -80,9 +87,9 @@ QString cSamplingInterface::m_ReadWritePLL(QString &sInput)
     }
 }
 
-QString cSamplingInterface::m_ReadPLLCatalog(QString &sInput)
+QString cSamplingInterface::scpiReadPLLCatalog(const QString &scpi)
 {
-    cSCPICommand cmd = sInput;
+    cSCPICommand cmd = scpi;
     if (cmd.isQuery())
         return m_pllChannelList.join(";");
     return ZSCPI::scpiAnswer[ZSCPI::nak];
