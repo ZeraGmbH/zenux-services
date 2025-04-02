@@ -96,7 +96,7 @@ bool CmdHandler::storeUpdateLogs(QString destinationDir)
     QDir dir("/home/operator");
 
     if(!dir.exists()) {
-        //qWarning() << "Directory can not be read:" << dir.dirName(); ???
+        qWarning("Directory can not be read: %s ", qPrintable(dir.dirName()));
         return false;
         }
 
@@ -105,6 +105,7 @@ bool CmdHandler::storeUpdateLogs(QString destinationDir)
         QString outputPath = destinationDir +  "/" + entry.fileName();
         QString sourcePath = entry.absoluteFilePath();
         QString cmd = QString("cp %1 %2").arg(sourcePath, outputPath);
+        qWarning("Befehl: %s", qPrintable(cmd));
         if(system(qPrintable(cmd)) != 0) {
             emit OperationFinish(true, QStringLiteral("Could not copy update file %1 to %2").arg(sourcePath, outputPath));
             return false;
