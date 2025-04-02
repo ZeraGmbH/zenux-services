@@ -31,10 +31,10 @@ void ScInChannelInterface::executeProtoScpi(int cmdCode, cProtonetCommand *proto
     switch (cmdCode)
     {
     case cmdAlias:
-        protoCmd->m_sOutput = m_ReadAlias(protoCmd->m_sInput);
+        protoCmd->m_sOutput = scpiReadAlias(protoCmd->m_sInput);
         break;
     case cmdStatus:
-        protoCmd->m_sOutput = m_ReadChannelStatus(protoCmd->m_sInput);
+        protoCmd->m_sOutput = scpiReadChannelStatus(protoCmd->m_sInput);
         break;
     }
     if (protoCmd->m_bwithOutput)
@@ -61,18 +61,18 @@ bool ScInChannelInterface::isAvail()
     return m_bAvail;
 }
 
-QString ScInChannelInterface::m_ReadAlias(QString &sInput)
+QString ScInChannelInterface::scpiReadAlias(const QString &scpi)
 {
-    cSCPICommand cmd = sInput;
+    cSCPICommand cmd = scpi;
     if (cmd.isQuery())
         return m_sAlias;
     else
         return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-QString ScInChannelInterface::m_ReadChannelStatus(QString &sInput)
+QString ScInChannelInterface::scpiReadChannelStatus(const QString &scpi)
 {
-    cSCPICommand cmd = sInput;
+    cSCPICommand cmd = scpi;
     if (cmd.isQuery()) {
         quint32 r = ((m_bAvail) ? 0 : 1 << 31);
         return QString("%1").arg(r);

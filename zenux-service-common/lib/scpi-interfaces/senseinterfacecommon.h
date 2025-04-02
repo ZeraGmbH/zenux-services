@@ -62,7 +62,7 @@ public:
     quint8 getAdjustmentStatus() override;
     SenseChannelCommon *getChannel(const QString &name);
     QString getChannelByCtrlChannelNo(quint16 ctrlChannel);
-    SenseRangeCommon* getRange(QString channelName, QString rangeName);
+    SenseRangeCommon* getRange(const QString &channelName, const QString &rangeName);
     void computeSenseAdjData();
     void registerResource(RMConnection *rmConnection, quint16 port) override;
     bool exportAdjData(QDateTime dateTimeWrite);
@@ -78,7 +78,7 @@ protected:
     virtual const char *getAdjExportedVersion() = 0; // stored from #define forces us using const char*
     virtual QString getPcbName() = 0;
 
-    virtual QString scpiReadSenseGroupCatalog(QString& scpi) = 0;
+    virtual QString scpiReadSenseGroupCatalog(const QString& scpi) = 0;
     virtual bool setSenseMode(QString modeStr) = 0;
 
     virtual QString getXmlType() = 0;

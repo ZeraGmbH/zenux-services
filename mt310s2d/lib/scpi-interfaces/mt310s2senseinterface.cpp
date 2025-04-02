@@ -41,7 +41,7 @@ const char *Mt310s2SenseInterface::getAdjExportedVersion()
     return ServerVersion;
 }
 
-QString Mt310s2SenseInterface::scpiReadSenseGroupCatalog(QString &scpi)
+QString Mt310s2SenseInterface::scpiReadSenseGroupCatalog(const QString &scpi)
 {
     cSCPICommand cmd = scpi;
     if (cmd.isQuery())

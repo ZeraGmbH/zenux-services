@@ -87,7 +87,7 @@ QString SenseInterfaceCommon::getChannelByCtrlChannelNo(quint16 ctrlChannel)
     return QString();
 }
 
-SenseRangeCommon *SenseInterfaceCommon::getRange(QString channelName, QString rangeName)
+SenseRangeCommon *SenseInterfaceCommon::getRange(const QString &channelName, const QString &rangeName)
 {
     SenseChannelCommon *channelFound = getChannel(channelName);
     if(channelFound)

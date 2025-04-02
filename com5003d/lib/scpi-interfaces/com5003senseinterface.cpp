@@ -35,7 +35,7 @@ bool Com5003SenseInterface::setSenseMode(QString modeStr)
     return false;
 }
 
-QString Com5003SenseInterface::scpiReadSenseGroupCatalog(QString &scpi)
+QString Com5003SenseInterface::scpiReadSenseGroupCatalog(const QString &scpi)
 {
     cSCPICommand cmd = scpi;
     if (cmd.isQuery()) {

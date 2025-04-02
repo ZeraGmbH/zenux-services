@@ -20,7 +20,7 @@ private:
     QString getPcbName() override;
     QString getXmlType() override;
     bool isRangePartOfAdjXmlExport(SenseRangeCommon* range) override;
-    QString scpiReadSenseGroupCatalog(QString& scpi) override;
+    QString scpiReadSenseGroupCatalog(const QString& scpi) override;
     bool setSenseMode(QString modeStr) override;
 };
 
