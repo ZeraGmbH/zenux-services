@@ -71,7 +71,7 @@ quint8 SenseInterfaceCommon::getAdjustmentStatus()
     return adjustmentStatusMask;
 }
 
-SenseChannelCommon *SenseInterfaceCommon::getChannel(QString &name)
+SenseChannelCommon *SenseInterfaceCommon::getChannel(const QString &name)
 {
     for(auto channel : qAsConst(m_channelList))
         if(channel->getName() == name)
@@ -499,7 +499,7 @@ void SenseInterfaceCommon::executeProtoScpi(int cmdCode, cProtonetCommand *proto
         emit cmdExecutionDone(protoCmd);
 }
 
-QString SenseInterfaceCommon::scpiReadVersion(QString &scpi)
+QString SenseInterfaceCommon::scpiReadVersion(const QString &scpi)
 {
     cSCPICommand cmd = scpi;
     if (cmd.isQuery())
@@ -507,7 +507,7 @@ QString SenseInterfaceCommon::scpiReadVersion(QString &scpi)
     return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-QString SenseInterfaceCommon::scpiReadMModeCatalog(QString &scpi)
+QString SenseInterfaceCommon::scpiReadMModeCatalog(const QString &scpi)
 {
     cSCPICommand cmd = scpi;
     if (cmd.isQuery())
@@ -515,7 +515,7 @@ QString SenseInterfaceCommon::scpiReadMModeCatalog(QString &scpi)
     return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-QString SenseInterfaceCommon::scpiReadSenseChannelCatalog(QString &scpi)
+QString SenseInterfaceCommon::scpiReadSenseChannelCatalog(const QString &scpi)
 {
     cSCPICommand cmd = scpi;
     if (cmd.isQuery())
@@ -523,7 +523,7 @@ QString SenseInterfaceCommon::scpiReadSenseChannelCatalog(QString &scpi)
     return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-QString SenseInterfaceCommon::scpiInitSenseAdjDataAllChannelRanges(QString &scpi)
+QString SenseInterfaceCommon::scpiInitSenseAdjDataAllChannelRanges(const QString &scpi)
 {
     cSCPICommand cmd = scpi;
     // cmd.isCommand(0) is not correct but we leave it for compatibility
@@ -542,7 +542,7 @@ QString SenseInterfaceCommon::scpiInitSenseAdjDataAllChannelRanges(QString &scpi
     return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-QString SenseInterfaceCommon::scpiComputeSenseAdjDataAllChannelRanges(QString &scpi)
+QString SenseInterfaceCommon::scpiComputeSenseAdjDataAllChannelRanges(const QString &scpi)
 {
     cSCPICommand cmd = scpi;
     if ( cmd.isCommand(1) && (cmd.getParam(0) == "") ) {
@@ -559,7 +559,7 @@ QString SenseInterfaceCommon::scpiComputeSenseAdjDataAllChannelRanges(QString &s
     return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-QString SenseInterfaceCommon::scpiReadAdjStatus(QString &scpi)
+QString SenseInterfaceCommon::scpiReadAdjStatus(const QString &scpi)
 {
     cSCPICommand cmd = scpi;
     if (cmd.isQuery())
