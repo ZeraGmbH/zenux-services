@@ -99,17 +99,26 @@ bool CmdHandler::storeUpdateLogs(QString destinationDir)
         qWarning("Directory can not be read: %s ", qPrintable(dir.dirName()));
         return false;
         }
+     else
+        qWarning("Directory: %s  CAN be read!", qPrintable(dir.dirName()));
 
-    QFileInfoList fileList = dir.entryInfoList(extensionFilter, QDir::NoDotAndDotDot | QDir::Files);  //
-    for(auto &entry : fileList) {
-        QString outputPath = destinationDir +  "/" + entry.fileName();
-        QString sourcePath = entry.absoluteFilePath();
-        QString cmd = QString("cp %1 %2").arg(sourcePath, outputPath);
-        qWarning("Befehl: %s", qPrintable(cmd));
-        if(system(qPrintable(cmd)) != 0) {
-            emit OperationFinish(true, QStringLiteral("Could not copy update file %1 to %2").arg(sourcePath, outputPath));
-            return false;
+    QFileInfoList fileList = dir.entryInfoList(extensionFilter, QDir::NoDotAndDotDot | QDir::Files);
+
+    if(fileList.size() > 0) {
+        for(auto &entry : fileList) {
+            QString outputPath = destinationDir +  "/" + entry.fileName();
+            QString sourcePath = entry.absoluteFilePath();
+            QString cmd = QString("cp %1 %2").arg(sourcePath, outputPath);
+            qWarning("Befehl: %s", qPrintable(cmd));
+            if(system(qPrintable(cmd)) != 0) {
+                emit OperationFinish(true, QStringLiteral("Could not copy update file %1 to %2").arg(sourcePath, outputPath));
+                return false;
+            }
         }
     }
+    else {
+        qWarning("No html-files found");
+    }
+
     return true;
 }
