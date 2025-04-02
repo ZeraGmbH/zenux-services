@@ -1,4 +1,5 @@
 #include "testserverforsenseinterfacecom5003.h"
+#include "com5003channelrangefactory.h"
 #include "com5003senseinterface.h"
 #include "testsysteminfo.h"
 
@@ -19,6 +20,7 @@ TestServerForSenseInterfaceCom5003::TestServerForSenseInterfaceCom5003(AbstractF
                                                                m_settings->getI2cSettings(),
                                                                m_senseSettings.get(),
                                                                m_systemInfo.get(),
+                                                               std::make_shared<COM5003ChannelRangeFactory>(),
                                                                ctrlFactory);
     m_samplingInterface = std::make_unique<cSamplingInterface>(m_scpiInterface,
                                                                m_settings->getSamplingSettings(),

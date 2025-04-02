@@ -1,5 +1,4 @@
 #include "mt310s2senseinterface.h"
-#include "mt310s2channelrangefactory.h"
 #include "mt310s2dglobal.h"
 #include "zscpi_response_definitions.h"
 
@@ -7,12 +6,13 @@ Mt310s2SenseInterface::Mt310s2SenseInterface(std::shared_ptr<cSCPI> scpiInterfac
                                              I2cSettings* i2cSettings,
                                              cSenseSettings* senseSettings,
                                              SystemInfo *systemInfo,
+                                             AbstractChannelRangeFactoryPtr rangeFactory,
                                              AbstractFactoryI2cCtrlPtr ctrlFactory) :
     SenseInterfaceCommon(scpiInterface,
                          i2cSettings,
                          systemInfo,
                          senseSettings,
-                         std::make_shared<MT310s2ChannelRangeFactory>(),
+                         rangeFactory,
                          ctrlFactory,
                          QHash<QString, int>{{"AC", modeAC}, {"HF", modeHF}, {"ADJ", modeADJ}})
 {

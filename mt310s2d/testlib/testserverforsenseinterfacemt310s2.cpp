@@ -1,5 +1,6 @@
 #include "testserverforsenseinterfacemt310s2.h"
 #include "clampfactorytest.h"
+#include "mt310s2channelrangefactory.h"
 #include "mt310s2senseinterface.h"
 #include "mt310s2systeminfomock.h"
 #include <i2cmultiplexerfactory.h>
@@ -21,6 +22,7 @@ TestServerForSenseInterfaceMt310s2::TestServerForSenseInterfaceMt310s2(AbstractF
                                                                m_settings->getI2cSettings(),
                                                                m_senseSettings.get(),
                                                                m_systemInfo.get(),
+                                                               std::make_shared<MT310s2ChannelRangeFactory>(),
                                                                ctrlFactory);
     m_clampInterface = std::make_unique<cClampInterface>(this,
                                                          m_settings->getI2cSettings(),

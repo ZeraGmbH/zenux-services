@@ -1,25 +1,15 @@
 #include "mt310s2d.h"
 #include "mt310s2dglobal.h"
-#include "rmconnection.h"
+#include "mt310s2systeminterface.h"
+#include "mt310s2channelrangefactory.h"
+#include "mt310s2senseinterface.h"
 #include "clampinterface.h"
-#include "mtxxxs2sensechannel.h"
 #include "fingroupresourceandinterface.h"
 #include "hkingroupresourceandinterface.h"
 #include "samplinginterface.h"
 #include "scingroupresourceandinterface.h"
-#include "mt310s2senseinterface.h"
 #include "foutgroupresourceandinterface.h"
 #include "servicestatusinterface.h"
-#include "mt310s2systeminterface.h"
-#include "ethsettings.h"
-#include "finsettings.h"
-#include "hkinsettings.h"
-#include "i2csettings.h"
-#include "scinsettings.h"
-#include "sensesettings.h"
-#include "foutsettings.h"
-#include <xmlconfigreader.h>
-#include <vtcp_server.h>
 #include <QSocketNotifier>
 #include <QCoreApplication>
 #include <QStateMachine>
@@ -28,7 +18,6 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <signal.h>
-#include <timerfactoryqt.h>
 
 static int pipeFileDescriptorMt310s2[2];
 static void SigHandler(int)
@@ -209,6 +198,7 @@ void cMT310S2dServer::doSetupServer()
                                                                                     i2cSettings,
                                                                                     m_pSenseSettings,
                                                                                     m_pSystemInfo,
+                                                                                    std::make_shared<MT310s2ChannelRangeFactory>(),
                                                                                     m_ctrlFactory));
             scpiConnectionList.append(m_pStatusInterface = new ServiceStatusInterface(m_scpiInterface, m_pSenseInterface, m_ctrlFactory));
             HotPluggableControllerContainerPtr emobControllerContainer =
