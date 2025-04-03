@@ -1,0 +1,186 @@
+{
+    "m0/UL1": [
+        {
+            "adcrejection": 8388607,
+            "adjuststatusflags": "265",
+            "alias": "500V",
+            "avail": "0",
+            "ctrlselection": "98",
+            "name": "500V",
+            "ovrejection": 5518821,
+            "rejection": 4415057,
+            "urval": 500
+        },
+        {
+            "adcrejection": 8388607,
+            "adjuststatusflags": "265",
+            "alias": "250V",
+            "avail": "0",
+            "ctrlselection": "0",
+            "name": "250V",
+            "ovrejection": 5518821,
+            "rejection": 4415057,
+            "urval": 250
+        },
+        {
+            "adcrejection": 8388607,
+            "adjuststatusflags": "265",
+            "alias": "8V",
+            "avail": "0",
+            "ctrlselection": "1",
+            "name": "8V",
+            "ovrejection": 4194304,
+            "rejection": 3355443,
+            "urval": 8
+        },
+        {
+            "adcrejection": 8388607,
+            "adjuststatusflags": "265",
+            "alias": "100mV",
+            "avail": "0",
+            "ctrlselection": "2",
+            "name": "100mV",
+            "ovrejection": 5033165,
+            "rejection": 4026532,
+            "urval": 0.1
+        }
+    ],
+    "m1/UL2": [
+        {
+            "adcrejection": 8388607,
+            "adjuststatusflags": "265",
+            "alias": "500V",
+            "avail": "0",
+            "ctrlselection": "98",
+            "name": "500V",
+            "ovrejection": 5518821,
+            "rejection": 4415057,
+            "urval": 500
+        },
+        {
+            "adcrejection": 8388607,
+            "adjuststatusflags": "265",
+            "alias": "250V",
+            "avail": "0",
+            "ctrlselection": "0",
+            "name": "250V",
+            "ovrejection": 5518821,
+            "rejection": 4415057,
+            "urval": 250
+        },
+        {
+            "adcrejection": 8388607,
+            "adjuststatusflags": "265",
+            "alias": "8V",
+            "avail": "0",
+            "ctrlselection": "1",
+            "name": "8V",
+            "ovrejection": 4194304,
+            "rejection": 3355443,
+            "urval": 8
+        },
+        {
+            "adcrejection": 8388607,
+            "adjuststatusflags": "265",
+            "alias": "100mV",
+            "avail": "0",
+            "ctrlselection": "2",
+            "name": "100mV",
+            "ovrejection": 5033165,
+            "rejection": 4026532,
+            "urval": 0.1
+        }
+    ],
+    "m2/UL3": [
+        {
+            "adcrejection": 8388607,
+            "adjuststatusflags": "265",
+            "alias": "500V",
+            "avail": "0",
+            "ctrlselection": "98",
+            "name": "500V",
+            "ovrejection": 5518821,
+            "rejection": 4415057,
+            "urval": 500
+        },
+        {
+            "adcrejection": 8388607,
+            "adjuststatusflags": "265",
+            "alias": "250V",
+            "avail": "0",
+            "ctrlselection": "0",
+            "name": "250V",
+            "ovrejection": 5518821,
+            "rejection": 4415057,
+            "urval": 250
+        },
+        {
+            "adcrejection": 8388607,
+            "adjuststatusflags": "265",
+            "alias": "8V",
+            "avail": "0",
+            "ctrlselection": "1",
+            "name": "8V",
+            "ovrejection": 4194304,
+            "rejection": 3355443,
+            "urval": 8
+        },
+        {
+            "adcrejection": 8388607,
+            "adjuststatusflags": "265",
+            "alias": "100mV",
+            "avail": "0",
+            "ctrlselection": "2",
+            "name": "100mV",
+            "ovrejection": 5033165,
+            "rejection": 4026532,
+            "urval": 0.1
+        }
+    ],
+    "m6/UAUX": [
+        {
+            "adcrejection": 8388607,
+            "adjuststatusflags": "265",
+            "alias": "500V",
+            "avail": "0",
+            "ctrlselection": "98",
+            "name": "500V",
+            "ovrejection": 5518821,
+            "rejection": 4415057,
+            "urval": 500
+        },
+        {
+            "adcrejection": 8388607,
+            "adjuststatusflags": "265",
+            "alias": "250V",
+            "avail": "0",
+            "ctrlselection": "0",
+            "name": "250V",
+            "ovrejection": 5518821,
+            "rejection": 4415057,
+            "urval": 250
+        },
+        {
+            "adcrejection": 8388607,
+            "adjuststatusflags": "265",
+            "alias": "8V",
+            "avail": "0",
+            "ctrlselection": "1",
+            "name": "8V",
+            "ovrejection": 4194304,
+            "rejection": 3355443,
+            "urval": 8
+        },
+        {
+            "adcrejection": 8388607,
+            "adjuststatusflags": "265",
+            "alias": "100mV",
+            "avail": "0",
+            "ctrlselection": "2",
+            "name": "100mV",
+            "ovrejection": 5033165,
+            "rejection": 4026532,
+            "urval": 0.1
+        }
+    ]
+}

@@ -27,6 +27,8 @@ QList<SenseChannelCommon *> MT581s2ChannelRangeFactory::createChannelAndRanges(c
         const QString &channelName = channels.at(i)->getName();
         QList<SenseRangeCommon*> rngListUAll;
 
+        // TODO remove invented for test range
+        tryAddRange(rngListUAll,  "500V", channelName, adjData, scpi, true, 500.0, 4415057, 1.25,98, rangeFlagsDevice);
         tryAddRange(rngListUAll,  "250V", channelName, adjData, scpi, true, 250.0, 4415057, 1.25, 0, rangeFlagsDevice);
         tryAddRange(rngListUAll,    "8V", channelName, adjData, scpi, true,   8.0, 3355443, 1.25, 1, rangeFlagsDevice);
         tryAddRange(rngListUAll, "100mV", channelName, adjData, scpi, true,   0.1, 4026532, 1.25, 2, rangeFlagsDevice);
@@ -38,6 +40,8 @@ QList<SenseChannelCommon *> MT581s2ChannelRangeFactory::createChannelAndRanges(c
         const QString &channelName = channels.at(i)->getName();
         QList<SenseRangeCommon*> rngListIExceptAux;
 
+        // TODO remove invented for test range
+        tryAddRange(rngListIExceptAux,  "100A", channelName, adjData, scpi, true, 100.0, 3197613, 1.25, 99, rangeFlagsDevice);
         tryAddRange(rngListIExceptAux,   "10A", channelName, adjData, scpi, true,  10.0, 3197613, 1.25,  0, rangeFlagsDevice);
         tryAddRange(rngListIExceptAux,    "5A", channelName, adjData, scpi, true,   5.0, 3197613, 1.25,  1, rangeFlagsDevice);
         tryAddRange(rngListIExceptAux,  "2.5A", channelName, adjData, scpi, true,   2.5, 3997016, 1.25,  2, rangeFlagsDevice);

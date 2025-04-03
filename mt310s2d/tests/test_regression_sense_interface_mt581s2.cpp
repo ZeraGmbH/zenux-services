@@ -61,7 +61,7 @@ void test_regression_sense_interface_mt581s2::checkChannelCatalogAsExpected()
 }
 
 QStringList test_regression_sense_interface_mt581s2::m_rangesExpectedU = QStringList()
-    << "250V" << "8V" << "100mV";
+    << "500V" << "250V" << "8V" << "100mV";
 
 void test_regression_sense_interface_mt581s2::checkRangesUL1()
 {
@@ -76,7 +76,7 @@ void test_regression_sense_interface_mt581s2::checkRangesUL1()
 
 // Is that a good idea to put it on modules's to hide internal current (voltage) ranges???
 QStringList test_regression_sense_interface_mt581s2::m_rangesExpectedI = QStringList()
-                                                                         << "10A" << "5A" << "2.5A" << "1.0A"
+                                                                         << "100A" << "10A" << "5A" << "2.5A" << "1.0A"
                                                                          << "500mA" << "250mA" << "100mA" << "50mA" << "25mA";
 QStringList test_regression_sense_interface_mt581s2::m_rangesExpectedI_Internal = QStringList()
                                                                          << "8V" << "5V" << "2V" << "1V"
@@ -205,7 +205,7 @@ void test_regression_sense_interface_mt581s2::constantRangeValuesI()
     channelSettings.append(m_testServer->getSenseSettings()->findChannelSettingByAlias1("IAUX"));
 
     QByteArray jsonDumped = SenseRegressionHelper::genJsonConstantValuesAllRanges(channelSettings, m_pcbIFace.get());
-    QByteArray jsonExpected = TestLogHelpers::loadFile(":/all-ranges-i.json");
+    QByteArray jsonExpected = TestLogHelpers::loadFile(":/mt581s2/all-ranges-i.json");
     QVERIFY(TestLogHelpers::compareAndLogOnDiff(jsonExpected, jsonDumped));
 }
 
@@ -218,7 +218,7 @@ void test_regression_sense_interface_mt581s2::constantRangeValuesU()
     channelSettings.append(m_testServer->getSenseSettings()->findChannelSettingByAlias1("UAUX"));
 
     QByteArray jsonDumped = SenseRegressionHelper::genJsonConstantValuesAllRanges(channelSettings, m_pcbIFace.get());
-    QByteArray jsonExpected = TestLogHelpers::loadFile(":/all-ranges-u.json");
+    QByteArray jsonExpected = TestLogHelpers::loadFile(":/mt581s2/all-ranges-u.json");
     QVERIFY(TestLogHelpers::compareAndLogOnDiff(jsonExpected, jsonDumped));
 }
 
@@ -234,7 +234,7 @@ void test_regression_sense_interface_mt581s2::constantRangeValuesIModeAdj()
     channelSettings.append(m_testServer->getSenseSettings()->findChannelSettingByAlias1("IAUX"));
 
     QByteArray jsonDumped = SenseRegressionHelper::genJsonConstantValuesAllRanges(channelSettings, m_pcbIFace.get());
-    QByteArray jsonExpected = TestLogHelpers::loadFile(":/all-ranges-i-adj-mode.json");
+    QByteArray jsonExpected = TestLogHelpers::loadFile(":/mt581s2/all-ranges-i-adj-mode.json");
     QVERIFY(TestLogHelpers::compareAndLogOnDiff(jsonExpected, jsonDumped));
 }
 
@@ -250,7 +250,7 @@ void test_regression_sense_interface_mt581s2::constantRangeValuesUModeAdj()
     channelSettings.append(m_testServer->getSenseSettings()->findChannelSettingByAlias1("UAUX"));
 
     QByteArray jsonDumped = SenseRegressionHelper::genJsonConstantValuesAllRanges(channelSettings, m_pcbIFace.get());
-    QByteArray jsonExpected = TestLogHelpers::loadFile(":/all-ranges-u-adj-mode.json");
+    QByteArray jsonExpected = TestLogHelpers::loadFile(":/mt581s2/all-ranges-u-adj-mode.json");
     QVERIFY(TestLogHelpers::compareAndLogOnDiff(jsonExpected, jsonDumped));
 }
 
@@ -266,7 +266,7 @@ void test_regression_sense_interface_mt581s2::constantRangeValuesIModeHf()
     channelSettings.append(m_testServer->getSenseSettings()->findChannelSettingByAlias1("IAUX"));
 
     QByteArray jsonDumped = SenseRegressionHelper::genJsonConstantValuesAllRanges(channelSettings, m_pcbIFace.get());
-    QByteArray jsonExpected = TestLogHelpers::loadFile(":/all-ranges-i-hf-mode.json");
+    QByteArray jsonExpected = TestLogHelpers::loadFile(":/mt581s2/all-ranges-i-hf-mode.json");
     QVERIFY(TestLogHelpers::compareAndLogOnDiff(jsonExpected, jsonDumped));
 }
 
@@ -282,28 +282,28 @@ void test_regression_sense_interface_mt581s2::constantRangeValuesUModeHf()
     channelSettings.append(m_testServer->getSenseSettings()->findChannelSettingByAlias1("UAUX"));
 
     QByteArray jsonDumped = SenseRegressionHelper::genJsonConstantValuesAllRanges(channelSettings, m_pcbIFace.get());
-    QByteArray jsonExpected = TestLogHelpers::loadFile(":/all-ranges-u-hf-mode.json");
+    QByteArray jsonExpected = TestLogHelpers::loadFile(":/mt581s2/all-ranges-u-hf-mode.json");
     QVERIFY(TestLogHelpers::compareAndLogOnDiff(jsonExpected, jsonDumped));
 }
 
 void test_regression_sense_interface_mt581s2::constantRangeValuesAllClampsIL3()
 {
     QByteArray jsonDumped = genJsonConstantValuesAllRangesForAllClamps("IL3", "IL3");
-    QByteArray jsonExpected = TestLogHelpers::loadFile(":/all-ranges-all-clamps-il3.json");
+    QByteArray jsonExpected = TestLogHelpers::loadFile(":/mt581s2/all-ranges-all-clamps-il3.json");
     QVERIFY(TestLogHelpers::compareAndLogOnDiff(jsonExpected, jsonDumped));
 }
 
 void test_regression_sense_interface_mt581s2::constantRangeValuesAllClampsIAUX()
 {
     QByteArray jsonDumped = genJsonConstantValuesAllRangesForAllClamps("IAUX", "IAUX");
-    QByteArray jsonExpected = TestLogHelpers::loadFile(":/all-ranges-all-clamps-iaux.json");
+    QByteArray jsonExpected = TestLogHelpers::loadFile(":/mt581s2/all-ranges-all-clamps-iaux.json");
     QVERIFY(TestLogHelpers::compareAndLogOnDiff(jsonExpected, jsonDumped));
 }
 
 void test_regression_sense_interface_mt581s2::constantRangeValuesAllClampsUAUX()
 {
     QByteArray jsonDumped = genJsonConstantValuesAllRangesForAllClamps("UAUX", "IAUX");
-    QByteArray jsonExpected = TestLogHelpers::loadFile(":/all-ranges-all-clamps-uaux.json");
+    QByteArray jsonExpected = TestLogHelpers::loadFile(":/mt581s2/all-ranges-all-clamps-uaux.json");
     QVERIFY(TestLogHelpers::compareAndLogOnDiff(jsonExpected, jsonDumped));
 }
 

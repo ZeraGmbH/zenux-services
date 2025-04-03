@@ -1,14 +1,25 @@
 <RCC>
     <qresource prefix="/">
-        <file>all-ranges-all-clamps-iaux.json</file>
-        <file>all-ranges-all-clamps-il3.json</file>
-        <file>all-ranges-all-clamps-uaux.json</file>
-        <file>all-ranges-i.json</file>
-        <file>all-ranges-i-adj-mode.json</file>
-        <file>all-ranges-i-hf-mode.json</file>
-        <file>all-ranges-u.json</file>
-        <file>all-ranges-u-adj-mode.json</file>
-        <file>all-ranges-u-hf-mode.json</file>
         <file>clamp-id-names.json</file>
+
+        <file>mt310s2/all-ranges-all-clamps-iaux.json</file>
+        <file>mt310s2/all-ranges-all-clamps-il3.json</file>
+        <file>mt310s2/all-ranges-all-clamps-uaux.json</file>
+        <file>mt310s2/all-ranges-i.json</file>
+        <file>mt310s2/all-ranges-i-adj-mode.json</file>
+        <file>mt310s2/all-ranges-i-hf-mode.json</file>
+        <file>mt310s2/all-ranges-u.json</file>
+        <file>mt310s2/all-ranges-u-adj-mode.json</file>
+        <file>mt310s2/all-ranges-u-hf-mode.json</file>
+
+        <file>mt581s2/all-ranges-all-clamps-iaux.json</file>
+        <file>mt581s2/all-ranges-all-clamps-il3.json</file>
+        <file>mt581s2/all-ranges-all-clamps-uaux.json</file>
+        <file>mt581s2/all-ranges-i.json</file>
+        <file>mt581s2/all-ranges-i-adj-mode.json</file>
+        <file>mt581s2/all-ranges-i-hf-mode.json</file>
+        <file>mt581s2/all-ranges-u.json</file>
+        <file>mt581s2/all-ranges-u-adj-mode.json</file>
+        <file>mt581s2/all-ranges-u-hf-mode.json</file>
     </qresource>
 </RCC>
