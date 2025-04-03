@@ -11,6 +11,7 @@ class test_regression_scpi_mt310s2 : public QObject
 {
     Q_OBJECT
 private slots:
+    void initTestCase_data();
     void init();
     void cleanup();
 

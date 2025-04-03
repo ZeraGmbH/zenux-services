@@ -11,11 +11,19 @@
 
 QTEST_MAIN(test_regression_scpi_mt310s2);
 
+void test_regression_scpi_mt310s2::initTestCase_data()
+{
+    QTest::addColumn<QString>("serviceNameForAlternateDevice");
+    QTest::newRow("mt310s2d") << QString("mt310s2d");
+    QTest::newRow("mt581s2d") << QString("mt581s2d");
+}
+
 void test_regression_scpi_mt310s2::init()
 {
     VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory = VeinTcp::MockTcpNetworkFactory::create();
     m_resman = std::make_unique<ResmanRunFacade>(tcpNetworkFactory);
-    m_server = std::make_unique<MockMt310s2d>(std::make_shared<TestFactoryI2cCtrl>(true), tcpNetworkFactory, "mt310s2d");
+    QFETCH_GLOBAL(QString, serviceNameForAlternateDevice);
+    m_server = std::make_unique<MockMt310s2d>(std::make_shared<TestFactoryI2cCtrl>(true), tcpNetworkFactory, serviceNameForAlternateDevice);
     TimeMachineObject::feedEventLoop();
 
     m_proxyClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307, tcpNetworkFactory);
@@ -43,7 +51,9 @@ void test_regression_scpi_mt310s2::serverUp()
 
 void test_regression_scpi_mt310s2::dumpScpi()
 {
-    QString expected = TestLogHelpers::loadFile("://scpi-dump.xml");
+    QFETCH_GLOBAL(QString, serviceNameForAlternateDevice);
+    QString dumpFile = QString(":/%1/scpi-dump.xml").arg(serviceNameForAlternateDevice);
+    QString expected = TestLogHelpers::loadFile(dumpFile);
     QString dumped = ScpiSingleTransactionBlocked::query("SYSTEM:INTERFACE:READ?");
     XmlDocumentCompare compare;
     bool ok = compare.compareXml(dumped, expected);

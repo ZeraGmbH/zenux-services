@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/">
-        <file>scpi-dump.xml</file>
+        <file>mt310s2d/scpi-dump.xml</file>
+        <file>mt581s2d/scpi-dump.xml</file>
     </qresource>
 </RCC>

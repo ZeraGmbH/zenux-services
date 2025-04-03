@@ -23,7 +23,6 @@ SETUP_MT310S2_TESTS(
     test_regression_critical_status_mt310s2
     test_regression_adj_status_mt310s2
     test_regression_scpi_mt310s2
-    test_regression_scpi_mt581s2
     )
 
 target_sources(test_regression_adj_import_export_xml_mt310s2
@@ -67,11 +66,6 @@ target_sources(test_adj_deny_import_mt310s2
 )
 
 target_sources(test_regression_scpi_mt310s2
-    PRIVATE
-    test-data/regression_data.qrc
-)
-
-target_sources(test_regression_scpi_mt581s2
     PRIVATE
     test-data/regression_data.qrc
 )

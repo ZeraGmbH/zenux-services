@@ -18,5 +18,5 @@ MockMt310s2d::MockMt310s2d(AbstractFactoryI2cCtrlPtr ctrlFactory,
         ctrlFactory,
         std::make_shared<MockFactoryDeviceNodePcb>(),
         tcpNetworkFactory,
-        SettingsContainer::createChannelRangeFactory("mt310s2d"));
+        SettingsContainer::createChannelRangeFactory(serviceNameForAlternateDevice));
 }
