@@ -97,17 +97,13 @@ bool CmdHandler::storeUpdateLogs(QString destinationDir)
         qWarning("Directory can not be read: %s ", qPrintable(dir.dirName()));
         return false;
         }
-     else
-        qInfo("Directory: %s  CAN be read!", qPrintable(dir.dirName()));
 
     QFileInfoList fileList = dir.entryInfoList(fileFilter, QDir::NoDotAndDotDot | QDir::Files);
-
     if(fileList.size() > 0) {
         for(auto &entry : fileList) {
             QString outputPath = destinationDir +  "/" + entry.fileName();
             QString sourcePath = entry.absoluteFilePath();
             QString cmd = QString("cp %1 %2").arg(sourcePath, outputPath);
-            qWarning("Befehl: %s", qPrintable(cmd));
             if(system(qPrintable(cmd)) != 0) {
                 emit OperationFinish(true, QStringLiteral("Could not copy update file %1 to %2").arg(sourcePath, outputPath));
                 return false;
@@ -115,8 +111,7 @@ bool CmdHandler::storeUpdateLogs(QString destinationDir)
         }
     }
     else {
-        qInfo("No zera-update.html files found");
+        qInfo("No zera-update.html files available");
     }
-
     return true;
 }
