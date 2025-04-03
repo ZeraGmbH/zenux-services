@@ -5,11 +5,12 @@
 
 MockMt310s2d::MockMt310s2d(AbstractFactoryI2cCtrlPtr ctrlFactory,
                            VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory,
+                           const QString &serviceNameForAlternateDevice,
                            QString alternateConfigXml)
 {
     MockI2cEEpromIoFactory::enableMock();
 
-    ServerParams params = MockServerParamGenerator::createParams("mt310s2d");
+    ServerParams params = MockServerParamGenerator::createParams(serviceNameForAlternateDevice);
     if(!alternateConfigXml.isEmpty())
         params.xmlFile = alternateConfigXml;
     m_server = std::make_unique<cMT310S2dServer>(

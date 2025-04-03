@@ -69,6 +69,7 @@ void test_adj_deny_import_mt310s2::setupServers()
     m_testServer = std::make_unique<TestServerForSenseInterfaceMt310s2>(
         std::make_shared<TestFactoryI2cCtrl>(true),
         tcpNetworkFactory,
+        "mt310s2",
         true);
     TimeMachineObject::feedEventLoop();
 

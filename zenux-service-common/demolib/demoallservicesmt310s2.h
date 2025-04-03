@@ -15,12 +15,12 @@ class AutoJournalLoggerFacade;
 class DemoAllServicesMt310s2 : public AbstractMockAllServices
 {
 public:
-    DemoAllServicesMt310s2();
-    DemoAllServicesMt310s2(VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory);
+    DemoAllServicesMt310s2(const QString &serviceNameForAlternateDevice);
+    DemoAllServicesMt310s2(VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory, const QString &serviceNameForAlternateDevice);
     virtual ~DemoAllServicesMt310s2();
 
 private:
-    void init(VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory);
+    void init(VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory, const QString &serviceNameForAlternateDevice);
     AutoJournalLoggerFacade *m_autoLogger;
     ResmanRunFacade *m_resman;
     MockMt310s2d *m_mt310s2d;

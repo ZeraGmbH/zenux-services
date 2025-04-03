@@ -6,23 +6,23 @@
 #include "autojournalloggerfacade.h"
 #include <tcpnetworkfactory.h>
 
-DemoAllServicesMt310s2::DemoAllServicesMt310s2()
+DemoAllServicesMt310s2::DemoAllServicesMt310s2(const QString &serviceNameForAlternateDevice)
 {
     // for now default to real network
-    init(VeinTcp::TcpNetworkFactory::create());
+    init(VeinTcp::TcpNetworkFactory::create(), serviceNameForAlternateDevice);
 }
 
-DemoAllServicesMt310s2::DemoAllServicesMt310s2(VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory)
+DemoAllServicesMt310s2::DemoAllServicesMt310s2(VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory, const QString &serviceNameForAlternateDevice)
 {
-    init(tcpNetworkFactory);
+    init(tcpNetworkFactory, serviceNameForAlternateDevice);
 }
 
-void DemoAllServicesMt310s2::init(VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory)
+void DemoAllServicesMt310s2::init(VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory, const QString &serviceNameForAlternateDevice)
 {
     m_autoLogger = new AutoJournalLoggerFacade;
     m_resman = new ResmanRunFacade(tcpNetworkFactory);
     ServerParams params = MockServerParamGenerator::createParams("mt310s2d");
-    m_mt310s2d = new MockMt310s2d(std::make_shared<DemoFactoryI2cCtrl>(std::make_unique<SettingsContainer>(params)), tcpNetworkFactory);
+    m_mt310s2d = new MockMt310s2d(std::make_shared<DemoFactoryI2cCtrl>(std::make_unique<SettingsContainer>(params)), tcpNetworkFactory, serviceNameForAlternateDevice);
     m_sec1000d = new MockSec1000d(tcpNetworkFactory);
     m_zdsp1d = new MockZdsp1d(std::make_shared<DemoFactoryDeviceNodeDsp>(), tcpNetworkFactory);
     DemoEventLoopFeeder::feedEventLoop();

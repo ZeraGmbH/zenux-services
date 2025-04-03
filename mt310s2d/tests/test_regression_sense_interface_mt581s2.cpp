@@ -1,4 +1,4 @@
-#include "test_regression_sense_interface_mt310s2.h"
+#include "test_regression_sense_interface_mt581s2.h"
 #include "testfactoryi2cctrl.h"
 #include "senseregressionhelper.h"
 #include "scpisingletransactionblocked.h"
@@ -17,9 +17,9 @@
 #include <QSignalSpy>
 #include <QTest>
 
-QTEST_MAIN(test_regression_sense_interface_mt310s2);
+QTEST_MAIN(test_regression_sense_interface_mt581s2);
 
-void test_regression_sense_interface_mt310s2::initTestCase()
+void test_regression_sense_interface_mt581s2::initTestCase()
 {
     ClampFactoryTest::enableTest();
     VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory = VeinTcp::MockTcpNetworkFactory::create();
@@ -27,7 +27,7 @@ void test_regression_sense_interface_mt310s2::initTestCase()
     m_testServer = std::make_unique<TestServerForSenseInterfaceMt310s2>(
         std::make_shared<TestFactoryI2cCtrl>(true),
         tcpNetworkFactory,
-        "mt310s2");
+        "mt581s2");
     TimeMachineObject::feedEventLoop();
 
     m_proxyClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307, tcpNetworkFactory);
@@ -37,21 +37,21 @@ void test_regression_sense_interface_mt310s2::initTestCase()
     TimeMachineObject::feedEventLoop();
 }
 
-void test_regression_sense_interface_mt310s2::init()
+void test_regression_sense_interface_mt581s2::init()
 {
     ScpiSingleTransactionBlocked::cmd("SENS:MMODE", "AC");
 }
 
-void test_regression_sense_interface_mt310s2::checkVersionsOfSystemInterface()
+void test_regression_sense_interface_mt581s2::checkVersionsOfSystemInterface()
 {
     QCOMPARE(m_testServer->getDeviceVersion(), "DEVICE: Unknown;PCB: Unknown;LCA: Unknown;CTRL: Unknown");
 }
 
-QStringList test_regression_sense_interface_mt310s2::m_channelsExpectedAllOverThePlace = QStringList()
+QStringList test_regression_sense_interface_mt581s2::m_channelsExpectedAllOverThePlace = QStringList()
                                                                                                << "m0" << "m1" << "m2" << "m6" << "m3" << "m4" << "m5" << "m7";
 
 
-void test_regression_sense_interface_mt310s2::checkChannelCatalogAsExpected()
+void test_regression_sense_interface_mt581s2::checkChannelCatalogAsExpected()
 {
     QSignalSpy responseSpy(m_pcbIFace.get(), &Zera::cPCBInterface::serverAnswer);
     m_pcbIFace->getChannelList();
@@ -60,10 +60,10 @@ void test_regression_sense_interface_mt310s2::checkChannelCatalogAsExpected()
     QCOMPARE(responseSpy[0][2].toStringList(), m_channelsExpectedAllOverThePlace);
 }
 
-QStringList test_regression_sense_interface_mt310s2::m_rangesExpectedU = QStringList()
+QStringList test_regression_sense_interface_mt581s2::m_rangesExpectedU = QStringList()
     << "250V" << "8V" << "100mV";
 
-void test_regression_sense_interface_mt310s2::checkRangesUL1()
+void test_regression_sense_interface_mt581s2::checkRangesUL1()
 {
     SenseSystem::cChannelSettings *channelSetting = m_testServer->getSenseSettings()->findChannelSettingByAlias1("UL1");
 
@@ -75,14 +75,14 @@ void test_regression_sense_interface_mt310s2::checkRangesUL1()
 }
 
 // Is that a good idea to put it on modules's to hide internal current (voltage) ranges???
-QStringList test_regression_sense_interface_mt310s2::m_rangesExpectedI = QStringList()
+QStringList test_regression_sense_interface_mt581s2::m_rangesExpectedI = QStringList()
                                                                          << "10A" << "5A" << "2.5A" << "1.0A"
                                                                          << "500mA" << "250mA" << "100mA" << "50mA" << "25mA";
-QStringList test_regression_sense_interface_mt310s2::m_rangesExpectedI_Internal = QStringList()
+QStringList test_regression_sense_interface_mt581s2::m_rangesExpectedI_Internal = QStringList()
                                                                          << "8V" << "5V" << "2V" << "1V"
                                                                          << "500mV" << "200mV" << "100mV" << "50mV" << "20mV" << "10mV" << "5mV" << "2mV";
 
-void test_regression_sense_interface_mt310s2::checkRangesIL1()
+void test_regression_sense_interface_mt581s2::checkRangesIL1()
 {
     SenseSystem::cChannelSettings *channelSetting = m_testServer->getSenseSettings()->findChannelSettingByAlias1("IL1");
 
@@ -93,12 +93,12 @@ void test_regression_sense_interface_mt310s2::checkRangesIL1()
     QCOMPARE(responseSpy[0][2].toStringList(), m_rangesExpectedI + m_rangesExpectedI_Internal);
 }
 
-QStringList test_regression_sense_interface_mt310s2::m_rangesExpectedI_CL120A = QStringList()
+QStringList test_regression_sense_interface_mt581s2::m_rangesExpectedI_CL120A = QStringList()
                                                                                 << "C100A" << "C50A" << "C10A" << "C5A" << "C1A"
                                                                                 << "C500mA" << "C100mA" << "C50mA" << "C10mA";
 
 
-void test_regression_sense_interface_mt310s2::addClampIL1_CL120A()
+void test_regression_sense_interface_mt581s2::addClampIL1_CL120A()
 {
     SenseSystem::cChannelSettings *channelSettingI = m_testServer->getSenseSettings()->findChannelSettingByAlias1("IL1");
     SenseSystem::cChannelSettings *channelSettingU = m_testServer->getSenseSettings()->findChannelSettingByAlias1("UL1");
@@ -116,12 +116,12 @@ void test_regression_sense_interface_mt310s2::addClampIL1_CL120A()
     QCOMPARE(responseSpyU[0][2].toStringList(), m_rangesExpectedU);
 }
 
-QStringList test_regression_sense_interface_mt310s2::m_rangesExpectedU_CL800ADC1000VDC = QStringList() << "C1000V";
-QStringList test_regression_sense_interface_mt310s2::m_rangesExpectedI_CL800ADC1000VDC = QStringList()
+QStringList test_regression_sense_interface_mt581s2::m_rangesExpectedU_CL800ADC1000VDC = QStringList() << "C1000V";
+QStringList test_regression_sense_interface_mt581s2::m_rangesExpectedI_CL800ADC1000VDC = QStringList()
                                                                                          << "C800A" << "C400A" << "C200A" << "C80A" << "C40A" << "C20A";
 
 
-void test_regression_sense_interface_mt310s2::addClampIL2_CL800ADC1000VDC()
+void test_regression_sense_interface_mt581s2::addClampIL2_CL800ADC1000VDC()
 {
     SenseSystem::cChannelSettings *channelSettingI = m_testServer->getSenseSettings()->findChannelSettingByAlias1("IL2");
     SenseSystem::cChannelSettings *channelSettingU = m_testServer->getSenseSettings()->findChannelSettingByAlias1("UL2");
@@ -140,9 +140,9 @@ void test_regression_sense_interface_mt310s2::addClampIL2_CL800ADC1000VDC()
 }
 
 
-QStringList test_regression_sense_interface_mt310s2::m_rangesExpectedI_DummyAux = QStringList() << "0A";
+QStringList test_regression_sense_interface_mt581s2::m_rangesExpectedI_DummyAux = QStringList() << "0A";
 
-void test_regression_sense_interface_mt310s2::addRemoveClampIAUX_CL800ADC1000VDC()
+void test_regression_sense_interface_mt581s2::addRemoveClampIAUX_CL800ADC1000VDC()
 {
     SenseSystem::cChannelSettings *channelSettingI = m_testServer->getSenseSettings()->findChannelSettingByAlias1("IAUX");
     SenseSystem::cChannelSettings *channelSettingU = m_testServer->getSenseSettings()->findChannelSettingByAlias1("UAUX");
@@ -172,7 +172,7 @@ void test_regression_sense_interface_mt310s2::addRemoveClampIAUX_CL800ADC1000VDC
     QCOMPARE(responseSpyU[0][2].toStringList(), m_rangesExpectedU);
 }
 
-void test_regression_sense_interface_mt310s2::clampIdsNamesGenJson()
+void test_regression_sense_interface_mt581s2::clampIdsNamesGenJson()
 {
     QJsonObject jsonAll;
     for(int clampTypeNo=cClamp::undefined+1; clampTypeNo<cClamp::anzCL; clampTypeNo++) {
@@ -184,7 +184,7 @@ void test_regression_sense_interface_mt310s2::clampIdsNamesGenJson()
     qInfo("%s", qPrintable(doc.toJson(QJsonDocument::Indented)));
 }
 
-void test_regression_sense_interface_mt310s2::clampIdsNamesCheck()
+void test_regression_sense_interface_mt581s2::clampIdsNamesCheck()
 {
     QJsonObject json = loadJson(":/clamp-id-names.json");
     QVERIFY(!json.isEmpty());
@@ -196,7 +196,7 @@ void test_regression_sense_interface_mt310s2::clampIdsNamesCheck()
     }
 }
 
-void test_regression_sense_interface_mt310s2::constantRangeValuesI()
+void test_regression_sense_interface_mt581s2::constantRangeValuesI()
 {
     QList<SenseSystem::cChannelSettings*> channelSettings;
     channelSettings.append(m_testServer->getSenseSettings()->findChannelSettingByAlias1("IL1"));
@@ -209,7 +209,7 @@ void test_regression_sense_interface_mt310s2::constantRangeValuesI()
     QVERIFY(TestLogHelpers::compareAndLogOnDiff(jsonExpected, jsonDumped));
 }
 
-void test_regression_sense_interface_mt310s2::constantRangeValuesU()
+void test_regression_sense_interface_mt581s2::constantRangeValuesU()
 {
     QList<SenseSystem::cChannelSettings*> channelSettings;
     channelSettings.append(m_testServer->getSenseSettings()->findChannelSettingByAlias1("UL1"));
@@ -222,7 +222,7 @@ void test_regression_sense_interface_mt310s2::constantRangeValuesU()
     QVERIFY(TestLogHelpers::compareAndLogOnDiff(jsonExpected, jsonDumped));
 }
 
-void test_regression_sense_interface_mt310s2::constantRangeValuesIModeAdj()
+void test_regression_sense_interface_mt581s2::constantRangeValuesIModeAdj()
 {
     QString answer = ScpiSingleTransactionBlocked::cmd("SENS:MMODE", "ADJ");
     QCOMPARE(answer, ZSCPI::scpiAnswer[ZSCPI::ack]);
@@ -238,7 +238,7 @@ void test_regression_sense_interface_mt310s2::constantRangeValuesIModeAdj()
     QVERIFY(TestLogHelpers::compareAndLogOnDiff(jsonExpected, jsonDumped));
 }
 
-void test_regression_sense_interface_mt310s2::constantRangeValuesUModeAdj()
+void test_regression_sense_interface_mt581s2::constantRangeValuesUModeAdj()
 {
     QString answer = ScpiSingleTransactionBlocked::cmd("SENS:MMODE", "ADJ");
     QCOMPARE(answer, ZSCPI::scpiAnswer[ZSCPI::ack]);
@@ -254,7 +254,7 @@ void test_regression_sense_interface_mt310s2::constantRangeValuesUModeAdj()
     QVERIFY(TestLogHelpers::compareAndLogOnDiff(jsonExpected, jsonDumped));
 }
 
-void test_regression_sense_interface_mt310s2::constantRangeValuesIModeHf()
+void test_regression_sense_interface_mt581s2::constantRangeValuesIModeHf()
 {
     QString answer = ScpiSingleTransactionBlocked::cmd("SENS:MMODE", "HF");
     QCOMPARE(answer, ZSCPI::scpiAnswer[ZSCPI::ack]);
@@ -270,7 +270,7 @@ void test_regression_sense_interface_mt310s2::constantRangeValuesIModeHf()
     QVERIFY(TestLogHelpers::compareAndLogOnDiff(jsonExpected, jsonDumped));
 }
 
-void test_regression_sense_interface_mt310s2::constantRangeValuesUModeHf()
+void test_regression_sense_interface_mt581s2::constantRangeValuesUModeHf()
 {
     QString answer = ScpiSingleTransactionBlocked::cmd("SENS:MMODE", "HF");
     QCOMPARE(answer, ZSCPI::scpiAnswer[ZSCPI::ack]);
@@ -286,28 +286,28 @@ void test_regression_sense_interface_mt310s2::constantRangeValuesUModeHf()
     QVERIFY(TestLogHelpers::compareAndLogOnDiff(jsonExpected, jsonDumped));
 }
 
-void test_regression_sense_interface_mt310s2::constantRangeValuesAllClampsIL3()
+void test_regression_sense_interface_mt581s2::constantRangeValuesAllClampsIL3()
 {
     QByteArray jsonDumped = genJsonConstantValuesAllRangesForAllClamps("IL3", "IL3");
     QByteArray jsonExpected = TestLogHelpers::loadFile(":/all-ranges-all-clamps-il3.json");
     QVERIFY(TestLogHelpers::compareAndLogOnDiff(jsonExpected, jsonDumped));
 }
 
-void test_regression_sense_interface_mt310s2::constantRangeValuesAllClampsIAUX()
+void test_regression_sense_interface_mt581s2::constantRangeValuesAllClampsIAUX()
 {
     QByteArray jsonDumped = genJsonConstantValuesAllRangesForAllClamps("IAUX", "IAUX");
     QByteArray jsonExpected = TestLogHelpers::loadFile(":/all-ranges-all-clamps-iaux.json");
     QVERIFY(TestLogHelpers::compareAndLogOnDiff(jsonExpected, jsonDumped));
 }
 
-void test_regression_sense_interface_mt310s2::constantRangeValuesAllClampsUAUX()
+void test_regression_sense_interface_mt581s2::constantRangeValuesAllClampsUAUX()
 {
     QByteArray jsonDumped = genJsonConstantValuesAllRangesForAllClamps("UAUX", "IAUX");
     QByteArray jsonExpected = TestLogHelpers::loadFile(":/all-ranges-all-clamps-uaux.json");
     QVERIFY(TestLogHelpers::compareAndLogOnDiff(jsonExpected, jsonDumped));
 }
 
-void test_regression_sense_interface_mt310s2::mmodeCat()
+void test_regression_sense_interface_mt581s2::mmodeCat()
 {
     // original MT implementation was hash random
     QString mmodeCat = ScpiSingleTransactionBlocked::query("SENSE:MMODE:CAT?");
@@ -318,13 +318,13 @@ void test_regression_sense_interface_mt310s2::mmodeCat()
     QVERIFY(mmodes.contains("HF"));
 }
 
-void test_regression_sense_interface_mt310s2::invalidMode()
+void test_regression_sense_interface_mt581s2::invalidMode()
 {
     QString answer = ScpiSingleTransactionBlocked::cmd("SENS:MMODE", "foo");
     QCOMPARE(answer, ZSCPI::scpiAnswer[ZSCPI::nak]);
 }
 
-void test_regression_sense_interface_mt310s2::twiceSameMode()
+void test_regression_sense_interface_mt581s2::twiceSameMode()
 {
     QString answer = ScpiSingleTransactionBlocked::cmd("SENS:MMODE", "AC");
     QCOMPARE(answer, ZSCPI::scpiAnswer[ZSCPI::ack]);
@@ -333,7 +333,7 @@ void test_regression_sense_interface_mt310s2::twiceSameMode()
     QCOMPARE(answer, ZSCPI::scpiAnswer[ZSCPI::ack]);
 }
 
-void test_regression_sense_interface_mt310s2::channelAliasAcMode()
+void test_regression_sense_interface_mt581s2::channelAliasAcMode()
 {
     QString answer = ScpiSingleTransactionBlocked::cmd("SENS:MMODE", "AC");
     QCOMPARE(answer, ZSCPI::scpiAnswer[ZSCPI::ack]);
@@ -342,7 +342,7 @@ void test_regression_sense_interface_mt310s2::channelAliasAcMode()
     QCOMPARE(channelM0AliasAfter, "UL1");
 }
 
-void test_regression_sense_interface_mt310s2::channelAliasAdjMode()
+void test_regression_sense_interface_mt581s2::channelAliasAdjMode()
 {
     QString answer = ScpiSingleTransactionBlocked::cmd("SENS:MMODE", "ADJ");
     QCOMPARE(answer, ZSCPI::scpiAnswer[ZSCPI::ack]);
@@ -351,7 +351,7 @@ void test_regression_sense_interface_mt310s2::channelAliasAdjMode()
     QCOMPARE(channelM0AliasAfter, "UL1");
 }
 
-void test_regression_sense_interface_mt310s2::channelAliasHfMode()
+void test_regression_sense_interface_mt581s2::channelAliasHfMode()
 {
     QString answer = ScpiSingleTransactionBlocked::cmd("SENS:MMODE", "HF");
     QCOMPARE(answer, ZSCPI::scpiAnswer[ZSCPI::ack]);
@@ -361,7 +361,7 @@ void test_regression_sense_interface_mt310s2::channelAliasHfMode()
 }
 
 
-QByteArray test_regression_sense_interface_mt310s2::genJsonConstantValuesAllRangesForAllClamps(QString channelName, QString channelNameAdRemoveClamps)
+QByteArray test_regression_sense_interface_mt581s2::genJsonConstantValuesAllRangesForAllClamps(QString channelName, QString channelNameAdRemoveClamps)
 {
     if(channelNameAdRemoveClamps.isEmpty())
         channelNameAdRemoveClamps = channelName;
@@ -389,7 +389,7 @@ QByteArray test_regression_sense_interface_mt310s2::genJsonConstantValuesAllRang
     return doc.toJson(QJsonDocument::Indented);
 }
 
-QJsonObject test_regression_sense_interface_mt310s2::loadJson(QString fileName)
+QJsonObject test_regression_sense_interface_mt581s2::loadJson(QString fileName)
 {
     QFile referencFile(fileName);
     referencFile.open(QFile::ReadOnly);

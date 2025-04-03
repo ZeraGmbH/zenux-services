@@ -11,6 +11,7 @@ class test_mockservice_mt310s2d_full : public QObject
     Q_OBJECT
 private slots:
     void initTestCase();
+    void initTestCase_data();
     void init();
     void cleanup();
 
