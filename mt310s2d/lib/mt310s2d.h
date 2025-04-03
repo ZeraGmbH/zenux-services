@@ -65,6 +65,7 @@ private slots:
 
 private:
     void init();
+    void earlySetup();
     void SetFASync();
     void enableClampInterrupt();
     void updateI2cDevicesConnected();

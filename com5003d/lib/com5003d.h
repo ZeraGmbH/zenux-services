@@ -61,6 +61,7 @@ private slots:
     void doIdentAndRegister();
     void onResourceReady();
 private:
+    void earlySetup();
     void setupMicroControllerIo();
 
     AbstractFactoryI2cCtrlPtr m_ctrlFactory;

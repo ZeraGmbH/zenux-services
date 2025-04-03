@@ -167,6 +167,56 @@ void cMT310S2dServer::doWait4Atmel()
 }
 
 
+void cMT310S2dServer::earlySetup()
+{
+    qInfo("Set initial PLL channel...");
+    m_ctrlFactory->getPllController()->setPLLChannel(1); // default channel m0 for pll control
+    qInfo("Initial PLL channel set");
+    m_pSystemInfo = new Mt310s2SystemInfo(m_ctrlFactory);
+
+    setupServer(); // here our scpi interface gets instanciated, we need this for further steps
+
+    m_scpiConnectionList.append(this); // the server itself has some commands
+    I2cSettings *i2cSettings = m_settings->getI2cSettings();
+    m_scpiConnectionList.append(m_pSenseInterface = new Mt310s2SenseInterface(m_scpiInterface,
+                                                                              i2cSettings,
+                                                                              m_pSenseSettings,
+                                                                              m_pSystemInfo,
+                                                                              std::make_shared<MT310s2ChannelRangeFactory>(),
+                                                                              m_ctrlFactory));
+    m_scpiConnectionList.append(m_pStatusInterface = new ServiceStatusInterface(m_scpiInterface, m_pSenseInterface, m_ctrlFactory));
+    HotPluggableControllerContainerPtr emobControllerContainer =
+        std::make_unique<HotPluggableControllerContainer>(i2cSettings,
+                                                          m_ctrlFactory);
+    m_scpiConnectionList.append(m_pSystemInterface = new Mt310s2SystemInterface(this,
+                                                                                m_pSystemInfo,
+                                                                                m_pSenseSettings,
+                                                                                m_pSenseInterface,
+                                                                                m_ctrlFactory,
+                                                                                std::move(emobControllerContainer)));
+    m_scpiConnectionList.append(m_pSamplingInterface = new cSamplingInterface(m_scpiInterface, m_settings->getSamplingSettings(), m_ctrlFactory));
+    m_scpiConnectionList.append(m_foutInterface = new FOutGroupResourceAndInterface(m_scpiInterface, m_foutSettings));
+    m_scpiConnectionList.append(m_pFRQInputInterface = new FInGroupResourceAndInterface(m_scpiInterface, m_finSettings));
+    m_scpiConnectionList.append(m_pSCHeadInterface = new ScInGroupResourceAndInterface(m_scpiInterface, m_pSCHeadSettings));
+    m_scpiConnectionList.append(m_hkInInterface = new HkInGroupResourceAndInterface(m_scpiInterface, m_hkInSettings));
+    m_scpiConnectionList.append(m_pClampInterface = new cClampInterface(this,
+                                                                        i2cSettings,
+                                                                        m_pSenseSettings,
+                                                                        m_pSenseInterface,
+                                                                        m_ctrlFactory));
+    m_scpiConnectionList.append(m_accumulatorInterface = new AccumulatorInterface(m_scpiInterface, m_accumulatorSettings, m_ctrlFactory));
+    connect(m_accumulatorInterface, &AccumulatorInterface::sigAccumulatorStatusChange,
+            m_pSystemInterface, &Mt310s2SystemInterface::onAccuStatusChanged);
+
+    m_resourceList.append(m_pSenseInterface); // all our resources
+    m_resourceList.append(m_pSamplingInterface);
+    m_resourceList.append(m_foutInterface);
+    m_resourceList.append(m_pFRQInputInterface);
+    m_resourceList.append(m_pSCHeadInterface);
+    m_resourceList.append(m_hkInInterface);
+    qInfo("SCPI interfaces set.");
+}
+
 void cMT310S2dServer::doSetupServer()
 {
     qInfo("Starting doSetupServer");
@@ -183,55 +233,8 @@ void cMT310S2dServer::doSetupServer()
             qCritical("Abort: Could not open message device '%s'", qPrintable(messageDeviceNodeName));
             emit abortInit();
         }
-        else
-        {
-            qInfo("Set initial PLL channel...");
-            m_ctrlFactory->getPllController()->setPLLChannel(1); // default channel m0 for pll control
-            qInfo("Initial PLL channel set");
-            m_pSystemInfo = new Mt310s2SystemInfo(m_ctrlFactory);
-
-            setupServer(); // here our scpi interface gets instanciated, we need this for further steps
-
-            m_scpiConnectionList.append(this); // the server itself has some commands
-            I2cSettings *i2cSettings = m_settings->getI2cSettings();
-            m_scpiConnectionList.append(m_pSenseInterface = new Mt310s2SenseInterface(m_scpiInterface,
-                                                                                    i2cSettings,
-                                                                                    m_pSenseSettings,
-                                                                                    m_pSystemInfo,
-                                                                                    std::make_shared<MT310s2ChannelRangeFactory>(),
-                                                                                    m_ctrlFactory));
-            m_scpiConnectionList.append(m_pStatusInterface = new ServiceStatusInterface(m_scpiInterface, m_pSenseInterface, m_ctrlFactory));
-            HotPluggableControllerContainerPtr emobControllerContainer =
-                    std::make_unique<HotPluggableControllerContainer>(i2cSettings,
-                                                                      m_ctrlFactory);
-            m_scpiConnectionList.append(m_pSystemInterface = new Mt310s2SystemInterface(this,
-                                                                                      m_pSystemInfo,
-                                                                                      m_pSenseSettings,
-                                                                                      m_pSenseInterface,
-                                                                                      m_ctrlFactory,
-                                                                                      std::move(emobControllerContainer)));
-            m_scpiConnectionList.append(m_pSamplingInterface = new cSamplingInterface(m_scpiInterface, m_settings->getSamplingSettings(), m_ctrlFactory));
-            m_scpiConnectionList.append(m_foutInterface = new FOutGroupResourceAndInterface(m_scpiInterface, m_foutSettings));
-            m_scpiConnectionList.append(m_pFRQInputInterface = new FInGroupResourceAndInterface(m_scpiInterface, m_finSettings));
-            m_scpiConnectionList.append(m_pSCHeadInterface = new ScInGroupResourceAndInterface(m_scpiInterface, m_pSCHeadSettings));
-            m_scpiConnectionList.append(m_hkInInterface = new HkInGroupResourceAndInterface(m_scpiInterface, m_hkInSettings));
-            m_scpiConnectionList.append(m_pClampInterface = new cClampInterface(this,
-                                                                              i2cSettings,
-                                                                              m_pSenseSettings,
-                                                                              m_pSenseInterface,
-                                                                              m_ctrlFactory));
-            m_scpiConnectionList.append(m_accumulatorInterface = new AccumulatorInterface(m_scpiInterface, m_accumulatorSettings, m_ctrlFactory));
-            connect(m_accumulatorInterface, &AccumulatorInterface::sigAccumulatorStatusChange,
-                    m_pSystemInterface, &Mt310s2SystemInterface::onAccuStatusChanged);
-
-            m_resourceList.append(m_pSenseInterface); // all our resources
-            m_resourceList.append(m_pSamplingInterface);
-            m_resourceList.append(m_foutInterface);
-            m_resourceList.append(m_pFRQInputInterface);
-            m_resourceList.append(m_pSCHeadInterface);
-            m_resourceList.append(m_hkInInterface);
-            qInfo("SCPI interfaces set.");
-
+        else {
+            earlySetup();
             initSCPIConnections();
 
             // after init. we once poll the devices connected at power up

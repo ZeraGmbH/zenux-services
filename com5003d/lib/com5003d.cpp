@@ -267,9 +267,8 @@ void cCOM5003dServer::doWait4Atmel()
 }
 
 
-void cCOM5003dServer::doSetupServer()
+void cCOM5003dServer::earlySetup()
 {
-    qInfo("Starting doSetupServer");
     qInfo("Set initial PLL channel...");
     m_ctrlFactory->getPllController()->setPLLChannel(1); // default channel m0 for pll control
     qInfo("Initial PLL channel set");
@@ -285,11 +284,11 @@ void cCOM5003dServer::doSetupServer()
 
     m_scpiConnectionList.append(this); // the server itself has some commands
     m_scpiConnectionList.append(m_pSenseInterface = new Com5003SenseInterface(m_scpiInterface,
-                                                                            m_settings->getI2cSettings(),
-                                                                            m_pSenseSettings,
-                                                                            m_pSystemInfo,
-                                                                            std::make_shared<COM5003ChannelRangeFactory>(),
-                                                                            m_ctrlFactory));
+                                                                              m_settings->getI2cSettings(),
+                                                                              m_pSenseSettings,
+                                                                              m_pSystemInfo,
+                                                                              std::make_shared<COM5003ChannelRangeFactory>(),
+                                                                              m_ctrlFactory));
     m_scpiConnectionList.append(m_pStatusInterface = new ServiceStatusInterface(m_scpiInterface, m_pSenseInterface, m_ctrlFactory));
     m_scpiConnectionList.append(m_pSystemInterface = new Com5003SystemInterface(this, m_pSystemInfo, m_pSenseInterface, m_ctrlFactory));
     m_scpiConnectionList.append(m_pSamplingInterface = new cSamplingInterface(m_scpiInterface, m_settings->getSamplingSettings(), m_ctrlFactory));
@@ -305,6 +304,12 @@ void cCOM5003dServer::doSetupServer()
     m_resourceList.append(m_pSCHeadInterface);
     m_resourceList.append(m_hkInInterface);
     qInfo("SCPI interfaces set.");
+}
+
+void cCOM5003dServer::doSetupServer()
+{
+    qInfo("Starting doSetupServer");
+    earlySetup();
 
     initSCPIConnections();
 

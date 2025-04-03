@@ -49,6 +49,7 @@ private slots:
     void onProtobufDisconnect(VeinTcp::TcpPeer *peer) override;
 private:
     void init();
+    void earlySetup();
     AbstractFactoryDeviceNodeSecPtr m_deviceNodeFactory;
     SecCalculatorSettings* m_pECalcSettings = nullptr;
     SecInputSettings* m_pInputSettings = nullptr;

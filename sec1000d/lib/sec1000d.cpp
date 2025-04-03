@@ -135,6 +135,25 @@ void cSEC1000dServer::doConfiguration()
     }
 }
 
+void cSEC1000dServer::earlySetup()
+{
+    m_pSystemInfo = new Sec1000SystemInfo();
+
+    setupServer(); // here our scpi interface gets instanciated, we need this for further steps
+
+    m_scpiConnectionList.append(this); // the server itself has some commands
+    m_scpiConnectionList.append(m_pStatusInterface = new Sec1000StatusInterface(m_scpiInterface));
+    m_scpiConnectionList.append(m_pSystemInterface = new cSystemInterface(m_scpiInterface, this, m_pSystemInfo));
+    m_scpiConnectionList.append(m_pECalculatorInterface = new SecGroupResourceAndInterface(m_scpiInterface,
+                                                                                           m_pECalcSettings,
+                                                                                           m_pInputSettings,
+                                                                                           SigHandler,
+                                                                                           m_deviceNodeFactory));
+
+    m_resourceList.append(m_pECalculatorInterface); // all our resources
+    m_ECalculatorChannelList = m_pECalculatorInterface->getECalcChannelList();
+}
+
 void cSEC1000dServer::doSetupServer()
 {
     qInfo("Starting doSetupServer");
@@ -146,21 +165,7 @@ void cSEC1000dServer::doSetupServer()
     }
     else
     {
-        m_pSystemInfo = new Sec1000SystemInfo();
-
-        setupServer(); // here our scpi interface gets instanciated, we need this for further steps
-
-        m_scpiConnectionList.append(this); // the server itself has some commands
-        m_scpiConnectionList.append(m_pStatusInterface = new Sec1000StatusInterface(m_scpiInterface));
-        m_scpiConnectionList.append(m_pSystemInterface = new cSystemInterface(m_scpiInterface, this, m_pSystemInfo));
-        m_scpiConnectionList.append(m_pECalculatorInterface = new SecGroupResourceAndInterface(m_scpiInterface,
-                                                                                             m_pECalcSettings,
-                                                                                             m_pInputSettings,
-                                                                                             SigHandler,
-                                                                                             m_deviceNodeFactory));
-
-        m_resourceList.append(m_pECalculatorInterface); // all our resources
-        m_ECalculatorChannelList = m_pECalculatorInterface->getECalcChannelList(); // we use this list in interrupt service
+        earlySetup();
 
         SECServer = this;
 
