@@ -29,6 +29,8 @@ void CmdHandler::StartCmd(SimpleCmdData *pCmd, QVariantList params)
             return;
         if(!storeCoreDumps(destinationDir))
             return;
+        if(!storeUpdateLogs(destinationDir))
+            return;
         QString versionFilePath = params[1].toString();
         if(!storeVersionFile(destinationDir, versionFilePath))
             return;
@@ -82,6 +84,34 @@ bool CmdHandler::storeVersionFile(QString destinationDir, QString versionFilePat
             emit OperationFinish(true, QStringLiteral("Could not move version file from %1 to %2").arg(versionFilePath, fileName));
             return false;
         }
+    }
+    return true;
+}
+
+bool CmdHandler::storeUpdateLogs(QString destinationDir)
+{
+    QStringList fileFilter = {"zera-update*.html"};
+    QDir dir("/home/operator");
+
+    if(!dir.exists()) {
+        qWarning("Directory can not be read: %s ", qPrintable(dir.dirName()));
+        return false;
+        }
+
+    QFileInfoList fileList = dir.entryInfoList(fileFilter, QDir::NoDotAndDotDot | QDir::Files);
+    if(fileList.size() > 0) {
+        for(auto &entry : fileList) {
+            QString outputPath = destinationDir +  "/" + entry.fileName();
+            QString sourcePath = entry.absoluteFilePath();
+            QString cmd = QString("cp %1 %2").arg(sourcePath, outputPath);
+            if(system(qPrintable(cmd)) != 0) {
+                emit OperationFinish(true, QStringLiteral("Could not copy update file %1 to %2").arg(sourcePath, outputPath));
+                return false;
+            }
+        }
+    }
+    else {
+        qInfo("No zera-update.html files available");
     }
     return true;
 }
