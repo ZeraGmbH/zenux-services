@@ -1,4 +1,8 @@
 #include "settingscontainer.h"
+#include "com5003channelrangefactory.h"
+#include "mt310s2channelrangefactory.h"
+#include "mt581s2channelrangefactory.h"
+#include <functional>
 
 SettingsContainer::SettingsContainer(ServerParams params) :
     m_params{params},
@@ -47,6 +51,22 @@ FPGASettings *SettingsContainer::getFpgaSettings()
 SamplingSettings *SettingsContainer::getSamplingSettings()
 {
     return &m_samplingSettings;
+}
+
+static const QMap<QString, std::function<AbstractChannelRangeFactoryPtr()>> supportedChannelRangeFactories {
+                                 { "com5003d", []() { return std::make_shared<COM5003ChannelRangeFactory>(); }},
+                                 { "mt310s2d", []() { return std::make_shared<MT310s2ChannelRangeFactory>(); }},
+                                 { "mt581s2d", []() { return std::make_shared<MT581s2ChannelRangeFactory>(); }}};
+
+AbstractChannelRangeFactoryPtr SettingsContainer::createChannelRangeFactory(const QString &serviceName)
+{
+    if(supportedChannelRangeFactories.contains(serviceName))
+        return supportedChannelRangeFactories[serviceName]();
+    if(supportedChannelRangeFactories.contains(serviceName + "d"))
+        return supportedChannelRangeFactories[serviceName + "d"]();
+    qFatal("Unsupported service: %s", qPrintable(serviceName));
+    return nullptr;
+
 }
 
 static const QMap<QString, SettingsContainer::TServiceConfig> supportedServiceConfigs {

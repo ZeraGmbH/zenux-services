@@ -17,5 +17,6 @@ MockCom5003d::MockCom5003d(AbstractFactoryI2cCtrlPtr ctrlFactory,
         std::move(settings),
         ctrlFactory,
         std::make_shared<MockFactoryDeviceNodePcb>(),
-        tcpNetworkFactory);
+        tcpNetworkFactory,
+        SettingsContainer::createChannelRangeFactory("com5003d"));
 }

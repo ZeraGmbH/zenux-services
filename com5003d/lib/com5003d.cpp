@@ -1,6 +1,5 @@
 #include "com5003d.h"
 #include "com5003dglobal.h"
-#include "com5003channelrangefactory.h"
 #include "com5003systeminterface.h"
 #include "com5003senseinterface.h"
 #include "fingroupresourceandinterface.h"
@@ -22,14 +21,15 @@ const ServerParams cCOM5003dServer::defaultParams {ServerName, ServerVersion, "/
 cCOM5003dServer::cCOM5003dServer(SettingsContainerPtr settings,
                                  AbstractFactoryI2cCtrlPtr ctrlFactory,
                                  AbstractFactoryDeviceNodePcbPtr deviceNodeFactory,
-                                 VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory) :
+                                 VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory,
+                                 AbstractChannelRangeFactoryPtr channelRangeFactory) :
     PCBServer(std::move(settings), tcpNetworkFactory),
     m_ctrlFactory(ctrlFactory),
     m_deviceNodeFactory(deviceNodeFactory)
 {
     doConfiguration();
     init();
-    earlySetup();
+    earlySetup(channelRangeFactory);
 }
 
 void cCOM5003dServer::init()
@@ -266,7 +266,7 @@ void cCOM5003dServer::doWait4Atmel()
 }
 
 
-void cCOM5003dServer::earlySetup()
+void cCOM5003dServer::earlySetup(AbstractChannelRangeFactoryPtr channelRangeFactory)
 {
     qInfo("Set initial PLL channel...");
     m_ctrlFactory->getPllController()->setPLLChannel(1); // default channel m0 for pll control
@@ -286,7 +286,7 @@ void cCOM5003dServer::earlySetup()
                                                                               m_settings->getI2cSettings(),
                                                                               m_pSenseSettings,
                                                                               m_pSystemInfo,
-                                                                              std::make_shared<COM5003ChannelRangeFactory>(),
+                                                                              channelRangeFactory,
                                                                               m_ctrlFactory));
     m_scpiConnectionList.append(m_pStatusInterface = new ServiceStatusInterface(m_scpiInterface, m_pSenseInterface, m_ctrlFactory));
     m_scpiConnectionList.append(m_pSystemInterface = new Com5003SystemInterface(this, m_pSystemInfo, m_pSenseInterface, m_ctrlFactory));

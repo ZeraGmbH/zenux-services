@@ -40,7 +40,6 @@ target_link_libraries(zenuxservicecommon
     Zera::SCPI
     Zera::zera-timers
     Zera::zera-xmlconfig
-    PRIVATE
     Zera::zera-math
     Zera::zera-i2c-devices
     # ask linker to help us finding unresolved symbols

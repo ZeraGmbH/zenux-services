@@ -1,6 +1,7 @@
 #ifndef SETTINGSCONTAINER_H
 #define SETTINGSCONTAINER_H
 
+#include "abstractchannelrangefactory.h"
 #include "ethsettings.h"
 #include "i2csettings.h"
 #include "fpgasettings.h"
@@ -32,6 +33,7 @@ public:
         QString xmlFileName;
     };
     static const TServiceConfig getServiceConfig(const QString &serviceName);
+    static AbstractChannelRangeFactoryPtr createChannelRangeFactory(const QString &serviceName);
 private:
     ServerParams m_params;
     Zera::XMLConfig::cReader m_xmlConfigReader;

@@ -1,7 +1,6 @@
 #include "mt310s2d.h"
 #include "mt310s2dglobal.h"
 #include "mt310s2systeminterface.h"
-#include "mt310s2channelrangefactory.h"
 #include "mt310s2senseinterface.h"
 #include "clampinterface.h"
 #include "fingroupresourceandinterface.h"
@@ -33,7 +32,8 @@ static struct sigaction sigActionMt310s2;
 cMT310S2dServer::cMT310S2dServer(SettingsContainerPtr settings,
                                  AbstractFactoryI2cCtrlPtr ctrlFactory,
                                  AbstractFactoryDeviceNodePcbPtr deviceNodeFactory,
-                                 VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory) :
+                                 VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory,
+                                 AbstractChannelRangeFactoryPtr channelRangeFactory) :
     PCBServer(std::move(settings), tcpNetworkFactory),
     m_ctrlFactory(ctrlFactory),
     m_deviceNodeFactory(deviceNodeFactory),
@@ -41,7 +41,7 @@ cMT310S2dServer::cMT310S2dServer(SettingsContainerPtr settings,
 {
     doConfiguration();
     init();
-    earlySetup();
+    earlySetup(channelRangeFactory);
 }
 
 void cMT310S2dServer::init()
@@ -166,7 +166,7 @@ void cMT310S2dServer::doWait4Atmel()
 }
 
 
-void cMT310S2dServer::earlySetup()
+void cMT310S2dServer::earlySetup(AbstractChannelRangeFactoryPtr channelRangeFactory)
 {
     qInfo("Set initial PLL channel...");
     m_ctrlFactory->getPllController()->setPLLChannel(1); // default channel m0 for pll control
@@ -181,7 +181,7 @@ void cMT310S2dServer::earlySetup()
                                                                               i2cSettings,
                                                                               m_pSenseSettings,
                                                                               m_pSystemInfo,
-                                                                              std::make_shared<MT310s2ChannelRangeFactory>(),
+                                                                              channelRangeFactory,
                                                                               m_ctrlFactory));
     m_scpiConnectionList.append(m_pStatusInterface = new ServiceStatusInterface(m_scpiInterface, m_pSenseInterface, m_ctrlFactory));
     HotPluggableControllerContainerPtr emobControllerContainer =

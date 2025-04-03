@@ -37,7 +37,8 @@ public:
     explicit cMT310S2dServer(SettingsContainerPtr settings,
                              AbstractFactoryI2cCtrlPtr ctrlFactory,
                              AbstractFactoryDeviceNodePcbPtr deviceNodeFactory,
-                             VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory);
+                             VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory,
+                             AbstractChannelRangeFactoryPtr channelRangeFactory);
     ~cMT310S2dServer();
     QString getCtrlDeviceNode();
     QString getMsgDeviceNode();
@@ -65,7 +66,7 @@ private slots:
 
 private:
     void init();
-    void earlySetup();
+    void earlySetup(AbstractChannelRangeFactoryPtr channelRangeFactory);
     void SetFASync();
     void enableClampInterrupt();
     void updateI2cDevicesConnected();

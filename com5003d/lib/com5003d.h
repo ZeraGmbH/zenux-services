@@ -35,7 +35,8 @@ public:
     explicit cCOM5003dServer(SettingsContainerPtr settings,
                              AbstractFactoryI2cCtrlPtr ctrlFactory,
                              AbstractFactoryDeviceNodePcbPtr deviceNodeFactory,
-                             VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory);
+                             VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory,
+                             AbstractChannelRangeFactoryPtr channelRangeFactory);
     ~cCOM5003dServer();
     QString getCtrlDeviceNode();
     static const ServerParams defaultParams;
@@ -61,7 +62,7 @@ private slots:
     void doIdentAndRegister();
     void onResourceReady();
 private:
-    void earlySetup();
+    void earlySetup(AbstractChannelRangeFactoryPtr channelRangeFactory);
     void setupMicroControllerIo();
 
     AbstractFactoryI2cCtrlPtr m_ctrlFactory;

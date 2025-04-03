@@ -15,7 +15,8 @@ int main( int argc, char *argv[] )
         std::move(settings),
         ctrlFactory,
         std::make_shared<FactoryDeviceNodePcb>(),
-        VeinTcp::TcpNetworkFactory::create());
+        VeinTcp::TcpNetworkFactory::create(),
+        SettingsContainer::createChannelRangeFactory("com5003d"));
     qInfo(ServerName " started");
 
     int r = app->exec();
