@@ -32,8 +32,8 @@ public:
         QString xsdFileName;
         QString xmlFileName;
     };
-    static const TServiceConfig getServiceConfig(const QString &serviceName);
-    static AbstractChannelRangeFactoryPtr createChannelRangeFactory(const QString &serviceName);
+    static const TServiceConfig getServiceConfig(const QString &serviceNameForAlternateDevice);
+    static AbstractChannelRangeFactoryPtr createChannelRangeFactory(const QString &serviceNameForAlternateDevice);
 private:
     ServerParams m_params;
     Zera::XMLConfig::cReader m_xmlConfigReader;

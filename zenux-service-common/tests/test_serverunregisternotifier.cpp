@@ -15,15 +15,15 @@ constexpr quint16 NOTIFICATION_ID = 1;
 
 void test_serverunregisternotifier::initTestCase_data()
 {
-    QTest::addColumn<QString>("serviceName");
+    QTest::addColumn<QString>("serviceNameForAlternateDevice");
     QTest::newRow("mt310s2d") << QString("mt310s2d");
     QTest::newRow("mt581s2d") << QString("mt581s2d");
 }
 
 void test_serverunregisternotifier::init()
 {
-    QFETCH_GLOBAL(QString, serviceName);
-    SettingsContainer::TServiceConfig config = SettingsContainer::getServiceConfig(serviceName);
+    QFETCH_GLOBAL(QString, serviceNameForAlternateDevice);
+    SettingsContainer::TServiceConfig config = SettingsContainer::getServiceConfig(serviceNameForAlternateDevice);
     ServerParams params {"foo", "0", QStringLiteral(CONFIG_SOURCES_MT310S2D) + "/" + config.xsdFileName, QStringLiteral(CONFIG_SOURCES_MT310S2D) + "/" + config.xmlFileName};
     
     m_adjustmentStatusNull = std::make_unique<TestAdjustmentStatusInterfaceNull>();

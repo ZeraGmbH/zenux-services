@@ -58,13 +58,13 @@ static const QMap<QString, std::function<AbstractChannelRangeFactoryPtr()>> supp
                                  { "mt310s2d", []() { return std::make_shared<MT310s2ChannelRangeFactory>(); }},
                                  { "mt581s2d", []() { return std::make_shared<MT581s2ChannelRangeFactory>(); }}};
 
-AbstractChannelRangeFactoryPtr SettingsContainer::createChannelRangeFactory(const QString &serviceName)
+AbstractChannelRangeFactoryPtr SettingsContainer::createChannelRangeFactory(const QString &serviceNameForAlternateDevice)
 {
-    if(supportedChannelRangeFactories.contains(serviceName))
-        return supportedChannelRangeFactories[serviceName]();
-    if(supportedChannelRangeFactories.contains(serviceName + "d"))
-        return supportedChannelRangeFactories[serviceName + "d"]();
-    qFatal("Unsupported service: %s", qPrintable(serviceName));
+    if(supportedChannelRangeFactories.contains(serviceNameForAlternateDevice))
+        return supportedChannelRangeFactories[serviceNameForAlternateDevice]();
+    if(supportedChannelRangeFactories.contains(serviceNameForAlternateDevice + "d"))
+        return supportedChannelRangeFactories[serviceNameForAlternateDevice + "d"]();
+    qFatal("Unsupported service: %s", qPrintable(serviceNameForAlternateDevice));
     return nullptr;
 
 }
@@ -77,13 +77,13 @@ static const QMap<QString, SettingsContainer::TServiceConfig> supportedServiceCo
    { "zdsp1d",   {"zdsp1d.xsd",   "zdsp1d.xml"  }},
 };
 
-const SettingsContainer::TServiceConfig SettingsContainer::getServiceConfig(const QString &serviceName)
+const SettingsContainer::TServiceConfig SettingsContainer::getServiceConfig(const QString &serviceNameForAlternateDevice)
 {
-    if(supportedServiceConfigs.contains(serviceName))
-        return supportedServiceConfigs[serviceName];
-    if(supportedServiceConfigs.contains(serviceName + "d"))
-        return supportedServiceConfigs[serviceName + "d"];
-    qFatal("Unsupported service: %s", qPrintable(serviceName));
-    return supportedServiceConfigs[serviceName];
+    if(supportedServiceConfigs.contains(serviceNameForAlternateDevice))
+        return supportedServiceConfigs[serviceNameForAlternateDevice];
+    if(supportedServiceConfigs.contains(serviceNameForAlternateDevice + "d"))
+        return supportedServiceConfigs[serviceNameForAlternateDevice + "d"];
+    qFatal("Unsupported service: %s", qPrintable(serviceNameForAlternateDevice));
+    return supportedServiceConfigs[serviceNameForAlternateDevice];
 }
 

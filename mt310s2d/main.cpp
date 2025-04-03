@@ -13,10 +13,10 @@ int main( int argc, char *argv[] )
     const QCommandLineOption subdeviceparam("d", "device", "subdevice");
     parser.addOption(subdeviceparam);
     parser.process(*app);
-    QString serviceName = "mt310s2d";
+    QString serviceNameForAlternateDevice = "mt310s2d";
     if (parser.isSet(subdeviceparam))
-        serviceName = parser.value(subdeviceparam);
-    SettingsContainer::TServiceConfig config = SettingsContainer::getServiceConfig(serviceName);
+        serviceNameForAlternateDevice = parser.value(subdeviceparam);
+    SettingsContainer::TServiceConfig config = SettingsContainer::getServiceConfig(serviceNameForAlternateDevice);
     ServerParams defaultParams { ServerName,
                                  ServerVersion,
                                  "/etc/zera/mt310s2d/" + config.xsdFileName,
@@ -29,7 +29,7 @@ int main( int argc, char *argv[] )
         ctrlFactory,
         std::make_shared<FactoryDeviceNodePcb>(),
         VeinTcp::TcpNetworkFactory::create(),
-        SettingsContainer::createChannelRangeFactory(serviceName));
+        SettingsContainer::createChannelRangeFactory(serviceNameForAlternateDevice));
     qInfo(ServerName " started");
 
     int r = app->exec();
