@@ -340,13 +340,13 @@ void PCBServer::onNotifyPeerConnectionClosed(VeinTcp::TcpPeer *peer)
 
 void PCBServer::initSCPIConnections()
 {
-    for (int i = 0; i < scpiConnectionList.count(); i++)
+    for (int i = 0; i < m_scpiConnectionList.count(); i++)
     {
-        scpiConnectionList.at(i)->initSCPIConnection(""); // we have our interface
-        connect(scpiConnectionList.at(i), &ScpiConnection::valNotifier, this, &PCBServer::onEstablishNewNotifier);
-        connect(scpiConnectionList.at(i), &ScpiConnection::sigNotifySubcriber, this, &PCBServer::onNotifySubscriber);
-        connect(scpiConnectionList.at(i), &ScpiConnection::cmdExecutionDone, this, &PCBServer::sendProtoAnswer);
-        connect(this, &PCBServer::notifierRegistred, scpiConnectionList.at(i), &ScpiConnection::onNotifierRegistered);
-        connect(this, &PCBServer::removeSubscribers, scpiConnectionList.at(i), &ScpiConnection::onRemoveSubscribers);
+        m_scpiConnectionList.at(i)->initSCPIConnection(""); // we have our interface
+        connect(m_scpiConnectionList.at(i), &ScpiConnection::valNotifier, this, &PCBServer::onEstablishNewNotifier);
+        connect(m_scpiConnectionList.at(i), &ScpiConnection::sigNotifySubcriber, this, &PCBServer::onNotifySubscriber);
+        connect(m_scpiConnectionList.at(i), &ScpiConnection::cmdExecutionDone, this, &PCBServer::sendProtoAnswer);
+        connect(this, &PCBServer::notifierRegistred, m_scpiConnectionList.at(i), &ScpiConnection::onNotifierRegistered);
+        connect(this, &PCBServer::removeSubscribers, m_scpiConnectionList.at(i), &ScpiConnection::onRemoveSubscribers);
     }
 }

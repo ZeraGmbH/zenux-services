@@ -42,8 +42,8 @@ protected:
 
     SettingsContainerPtr m_settings;
     Zera::XMLConfig::cReader m_xmlConfigReader;
-    QList<ScpiConnection*> scpiConnectionList; // a list of all scpi connections
-    QList<cResource*> resourceList;
+    QList<ScpiConnection*> m_scpiConnectionList; // a list of all scpi connections
+    QList<cResource*> m_resourceList;
     VeinTcp::AbstractTcpNetworkFactoryPtr m_tcpNetworkFactory;
     VeinTcp::TcpServer m_protoBufServer;
 private slots:

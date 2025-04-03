@@ -150,16 +150,16 @@ void cSEC1000dServer::doSetupServer()
 
         setupServer(); // here our scpi interface gets instanciated, we need this for further steps
 
-        scpiConnectionList.append(this); // the server itself has some commands
-        scpiConnectionList.append(m_pStatusInterface = new Sec1000StatusInterface(m_scpiInterface));
-        scpiConnectionList.append(m_pSystemInterface = new cSystemInterface(m_scpiInterface, this, m_pSystemInfo));
-        scpiConnectionList.append(m_pECalculatorInterface = new SecGroupResourceAndInterface(m_scpiInterface,
+        m_scpiConnectionList.append(this); // the server itself has some commands
+        m_scpiConnectionList.append(m_pStatusInterface = new Sec1000StatusInterface(m_scpiInterface));
+        m_scpiConnectionList.append(m_pSystemInterface = new cSystemInterface(m_scpiInterface, this, m_pSystemInfo));
+        m_scpiConnectionList.append(m_pECalculatorInterface = new SecGroupResourceAndInterface(m_scpiInterface,
                                                                                              m_pECalcSettings,
                                                                                              m_pInputSettings,
                                                                                              SigHandler,
                                                                                              m_deviceNodeFactory));
 
-        resourceList.append(m_pECalculatorInterface); // all our resources
+        m_resourceList.append(m_pECalculatorInterface); // all our resources
         m_ECalculatorChannelList = m_pECalculatorInterface->getECalcChannelList(); // we use this list in interrupt service
 
         SECServer = this;
@@ -219,14 +219,14 @@ void cSEC1000dServer::doIdentAndRegister()
 {
     qInfo("Starting doIdentAndRegister");
     m_pRMConnection->SendIdent(getName());
-    for (int i = 0; i < resourceList.count(); i++) {
-        cResource *res = resourceList.at(i);
+    for (int i = 0; i < m_resourceList.count(); i++) {
+        cResource *res = m_resourceList.at(i);
         connect(m_pRMConnection, &RMConnection::rmAck, res, &cResource::resourceManagerAck);
         EthSettings *ethSettings = m_settings->getEthSettings();
         res->registerResource(m_pRMConnection, ethSettings->getPort(EthSettings::protobufserver));
         connect(res, &cResource::registerRdy, this, &cSEC1000dServer::onResourceReady);
     }
-    m_pendingResources = resourceList.count();
+    m_pendingResources = m_resourceList.count();
 }
 
 void cSEC1000dServer::onResourceReady()

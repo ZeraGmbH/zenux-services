@@ -90,13 +90,13 @@ void TestPcbServer::doConfiguration()
 void TestPcbServer::doSetupServer()
 {
     setupServer();
-    scpiConnectionList.append(this); // the server itself has some commands
+    m_scpiConnectionList.append(this); // the server itself has some commands
     for(const auto &resource : qAsConst(m_resources)) {
-        scpiConnectionList.append(resource);
-        resourceList.append(resource);
+        m_scpiConnectionList.append(resource);
+        m_resourceList.append(resource);
     }
     for(const auto &scpiConnection : qAsConst(m_scpiConnecttionsAddedFromExtern))
-        scpiConnectionList.append(scpiConnection);
+        m_scpiConnectionList.append(scpiConnection);
     initSCPIConnections();
 
     EthSettings *ethSettings = m_settings->getEthSettings();
@@ -116,8 +116,8 @@ void TestPcbServer::doIdentAndRegister()
 {
     m_pRMConnection->SendIdent(getName());
     EthSettings *ethSettings = m_settings->getEthSettings();
-    for (int i = 0; i < resourceList.count(); i++) {
-        cResource *res = resourceList.at(i);
+    for (int i = 0; i < m_resourceList.count(); i++) {
+        cResource *res = m_resourceList.at(i);
         connect(m_pRMConnection, &RMConnection::rmAck, res, &cResource::resourceManagerAck);
         res->registerResource(m_pRMConnection, ethSettings->getPort(EthSettings::protobufserver));
     }

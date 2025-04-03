@@ -192,44 +192,44 @@ void cMT310S2dServer::doSetupServer()
 
             setupServer(); // here our scpi interface gets instanciated, we need this for further steps
 
-            scpiConnectionList.append(this); // the server itself has some commands
+            m_scpiConnectionList.append(this); // the server itself has some commands
             I2cSettings *i2cSettings = m_settings->getI2cSettings();
-            scpiConnectionList.append(m_pSenseInterface = new Mt310s2SenseInterface(m_scpiInterface,
+            m_scpiConnectionList.append(m_pSenseInterface = new Mt310s2SenseInterface(m_scpiInterface,
                                                                                     i2cSettings,
                                                                                     m_pSenseSettings,
                                                                                     m_pSystemInfo,
                                                                                     std::make_shared<MT310s2ChannelRangeFactory>(),
                                                                                     m_ctrlFactory));
-            scpiConnectionList.append(m_pStatusInterface = new ServiceStatusInterface(m_scpiInterface, m_pSenseInterface, m_ctrlFactory));
+            m_scpiConnectionList.append(m_pStatusInterface = new ServiceStatusInterface(m_scpiInterface, m_pSenseInterface, m_ctrlFactory));
             HotPluggableControllerContainerPtr emobControllerContainer =
                     std::make_unique<HotPluggableControllerContainer>(i2cSettings,
                                                                       m_ctrlFactory);
-            scpiConnectionList.append(m_pSystemInterface = new Mt310s2SystemInterface(this,
+            m_scpiConnectionList.append(m_pSystemInterface = new Mt310s2SystemInterface(this,
                                                                                       m_pSystemInfo,
                                                                                       m_pSenseSettings,
                                                                                       m_pSenseInterface,
                                                                                       m_ctrlFactory,
                                                                                       std::move(emobControllerContainer)));
-            scpiConnectionList.append(m_pSamplingInterface = new cSamplingInterface(m_scpiInterface, m_settings->getSamplingSettings(), m_ctrlFactory));
-            scpiConnectionList.append(m_foutInterface = new FOutGroupResourceAndInterface(m_scpiInterface, m_foutSettings));
-            scpiConnectionList.append(m_pFRQInputInterface = new FInGroupResourceAndInterface(m_scpiInterface, m_finSettings));
-            scpiConnectionList.append(m_pSCHeadInterface = new ScInGroupResourceAndInterface(m_scpiInterface, m_pSCHeadSettings));
-            scpiConnectionList.append(m_hkInInterface = new HkInGroupResourceAndInterface(m_scpiInterface, m_hkInSettings));
-            scpiConnectionList.append(m_pClampInterface = new cClampInterface(this,
+            m_scpiConnectionList.append(m_pSamplingInterface = new cSamplingInterface(m_scpiInterface, m_settings->getSamplingSettings(), m_ctrlFactory));
+            m_scpiConnectionList.append(m_foutInterface = new FOutGroupResourceAndInterface(m_scpiInterface, m_foutSettings));
+            m_scpiConnectionList.append(m_pFRQInputInterface = new FInGroupResourceAndInterface(m_scpiInterface, m_finSettings));
+            m_scpiConnectionList.append(m_pSCHeadInterface = new ScInGroupResourceAndInterface(m_scpiInterface, m_pSCHeadSettings));
+            m_scpiConnectionList.append(m_hkInInterface = new HkInGroupResourceAndInterface(m_scpiInterface, m_hkInSettings));
+            m_scpiConnectionList.append(m_pClampInterface = new cClampInterface(this,
                                                                               i2cSettings,
                                                                               m_pSenseSettings,
                                                                               m_pSenseInterface,
                                                                               m_ctrlFactory));
-            scpiConnectionList.append(m_accumulatorInterface = new AccumulatorInterface(m_scpiInterface, m_accumulatorSettings, m_ctrlFactory));
+            m_scpiConnectionList.append(m_accumulatorInterface = new AccumulatorInterface(m_scpiInterface, m_accumulatorSettings, m_ctrlFactory));
             connect(m_accumulatorInterface, &AccumulatorInterface::sigAccumulatorStatusChange,
                     m_pSystemInterface, &Mt310s2SystemInterface::onAccuStatusChanged);
 
-            resourceList.append(m_pSenseInterface); // all our resources
-            resourceList.append(m_pSamplingInterface);
-            resourceList.append(m_foutInterface);
-            resourceList.append(m_pFRQInputInterface);
-            resourceList.append(m_pSCHeadInterface);
-            resourceList.append(m_hkInInterface);
+            m_resourceList.append(m_pSenseInterface); // all our resources
+            m_resourceList.append(m_pSamplingInterface);
+            m_resourceList.append(m_foutInterface);
+            m_resourceList.append(m_pFRQInputInterface);
+            m_resourceList.append(m_pSCHeadInterface);
+            m_resourceList.append(m_hkInInterface);
             qInfo("SCPI interfaces set.");
 
             initSCPIConnections();
@@ -299,14 +299,14 @@ void cMT310S2dServer::doIdentAndRegister()
 {
     qInfo("Starting doIdentAndRegister");
     m_pRMConnection->SendIdent(getName());
-    for (int i = 0; i < resourceList.count(); i++) {
-        cResource *res = resourceList.at(i);
+    for (int i = 0; i < m_resourceList.count(); i++) {
+        cResource *res = m_resourceList.at(i);
         connect(m_pRMConnection, &RMConnection::rmAck, res, &cResource::resourceManagerAck );
         EthSettings *ethSettings = m_settings->getEthSettings();
         res->registerResource(m_pRMConnection, ethSettings->getPort(EthSettings::protobufserver));
         connect(res, &cResource::registerRdy, this, &cMT310S2dServer::onResourceReady);
     }
-    m_pendingResources = resourceList.count();
+    m_pendingResources = m_resourceList.count();
 }
 
 void cMT310S2dServer::onResourceReady()

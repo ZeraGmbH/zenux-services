@@ -6,7 +6,7 @@ TestPcbServerNotifications::TestPcbServerNotifications(SettingsContainerPtr sett
                                                        VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory) :
     PCBServer(std::move(settings), tcpNetworkFactory)
 {
-    scpiConnectionList.append(this);
+    m_scpiConnectionList.append(this);
     PermissionFunctions::setPermissionCtrlFactory(ctrlFactory);
 }
 
@@ -16,7 +16,7 @@ TestPcbServerNotifications::~TestPcbServerNotifications()
 
 void TestPcbServerNotifications::insertScpiConnection(ScpiConnection *scpiConnection)
 {
-    scpiConnectionList.append(scpiConnection);
+    m_scpiConnectionList.append(scpiConnection);
 }
 
 void TestPcbServerNotifications::initTestSCPIConnections()
