@@ -31,7 +31,6 @@ signals:
 public slots:
     void sendProtoAnswer(cProtonetCommand* protoCmd);
 protected slots:
-    virtual void doConfiguration() = 0; // all servers must configure
     virtual void onNotifySubscriber(ScpiNotificationSubscriber subscriber, QString newValue);
     virtual void onProtobufDisconnect(VeinTcp::TcpPeer *peer);
 protected:

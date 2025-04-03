@@ -68,13 +68,13 @@ ZDspServer::ZDspServer(SettingsContainerPtr settings,
                                      m_tcpNetworkFactory)),
     m_resourceRegister(m_pRMConnection)
 {
+    doConfiguration();
     init();
 }
 
 void ZDspServer::init()
 {
     m_pInitializationMachine = new QStateMachine(this);
-    doConfiguration();
 
     QState* stateCONF = new QState(); // we start from here
     QFinalState* stateFINISH = new QFinalState(); // and here we finish on any error condition

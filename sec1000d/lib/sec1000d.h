@@ -39,7 +39,6 @@ signals:
 
 private slots:
     void SECIntHandler(int);
-    void doConfiguration() override;
     void doSetupServer();
     void doCloseServer();
     void doConnect2RM();
@@ -48,6 +47,7 @@ private slots:
     void onResourceReady();
     void onProtobufDisconnect(VeinTcp::TcpPeer *peer) override;
 private:
+    void doConfiguration();
     void init();
     void earlySetup();
     AbstractFactoryDeviceNodeSecPtr m_deviceNodeFactory;

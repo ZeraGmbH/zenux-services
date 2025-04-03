@@ -43,6 +43,7 @@ cSEC1000dServer::cSEC1000dServer(SettingsContainerPtr settings,
     PCBServer(std::move(settings), tcpNetworkFactory),
     m_deviceNodeFactory(deviceNodeFactory)
 {
+    doConfiguration();
     init();
 }
 
@@ -55,20 +56,17 @@ void cSEC1000dServer::init()
 
     stateCONF->addTransition(this, &cSEC1000dServer::abortInit, stateFINISH); // from anywhere we arrive here if some error
 
-    QState* statexmlConfiguration = new QState(stateCONF); // we configure our server with xml file
     QState* statesetupServer = new QState(stateCONF); // we setup our server now
     m_stateconnect2RM = new QState(stateCONF); // we connect to resource manager
     m_stateconnect2RMError = new QState(stateCONF);
     m_stateSendRMIdentAndRegister = new QState(stateCONF); // we send ident. to rm and register our resources
-    stateCONF->setInitialState(statexmlConfiguration);
+    stateCONF->setInitialState(statesetupServer);
 
-    statexmlConfiguration->addTransition(&m_xmlConfigReader, &Zera::XMLConfig::cReader::finishedParsingXML, statesetupServer);
     statesetupServer->addTransition(this, &cSEC1000dServer::sigServerIsSetUp, m_stateconnect2RM);
     m_pInitializationMachine->addState(stateCONF);
     m_pInitializationMachine->addState(stateFINISH);
     m_pInitializationMachine->setInitialState(stateCONF);
 
-    QObject::connect(statexmlConfiguration, &QAbstractState::entered, this, &cSEC1000dServer::doConfiguration);
     QObject::connect(statesetupServer, &QAbstractState::entered, this, &cSEC1000dServer::doSetupServer);
     QObject::connect(m_stateconnect2RM, &QAbstractState::entered, this, &cSEC1000dServer::doConnect2RM);
     QObject::connect(m_stateconnect2RMError, &QAbstractState::entered, this, &cSEC1000dServer::connect2RMError);

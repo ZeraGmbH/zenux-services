@@ -39,6 +39,7 @@ cMT310S2dServer::cMT310S2dServer(SettingsContainerPtr settings,
     m_deviceNodeFactory(deviceNodeFactory),
     m_i2cCtrlCpuTemperature(ctrlFactory->getCpuTemperatureController())
 {
+    doConfiguration();
     init();
 }
 
@@ -51,16 +52,14 @@ void cMT310S2dServer::init()
 
     stateCONF->addTransition(this, &cMT310S2dServer::abortInit, stateFINISH); // from anywhere we arrive here if some error
 
-    QState* statexmlConfiguration = new QState(stateCONF); // we configure our server with xml file
     QState* statewait4Atmel = new QState(stateCONF); // we synchronize on atmel running
     QState* statesetupServer = new QState(stateCONF); // we setup our server now
     m_stateconnect2RM = new QState(stateCONF); // we connect to resource manager
     m_stateconnect2RMError = new QState(stateCONF);
     m_stateSendRMIdentAndRegister = new QState(stateCONF); // we send ident. to rm and register our resources
 
-    stateCONF->setInitialState(statexmlConfiguration);
+    stateCONF->setInitialState(statewait4Atmel);
 
-    statexmlConfiguration->addTransition(&m_xmlConfigReader, &Zera::XMLConfig::cReader::finishedParsingXML, statewait4Atmel);
     statewait4Atmel->addTransition(this, &cMT310S2dServer::atmelRunning, statesetupServer);
     statesetupServer->addTransition(this, &cMT310S2dServer::sigServerIsSetUp, m_stateconnect2RM);
 
@@ -68,7 +67,6 @@ void cMT310S2dServer::init()
     m_pInitializationMachine->addState(stateFINISH);
     m_pInitializationMachine->setInitialState(stateCONF);
 
-    QObject::connect(statexmlConfiguration, &QAbstractState::entered, this, &cMT310S2dServer::doConfiguration);
     QObject::connect(statewait4Atmel, &QAbstractState::entered, this, &cMT310S2dServer::doWait4Atmel);
     QObject::connect(statesetupServer, &QAbstractState::entered, this, &cMT310S2dServer::doSetupServer);
     QObject::connect(m_stateconnect2RM, &QAbstractState::entered, this, &cMT310S2dServer::doConnect2RM);

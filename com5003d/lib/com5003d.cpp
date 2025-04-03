@@ -27,6 +27,7 @@ cCOM5003dServer::cCOM5003dServer(SettingsContainerPtr settings,
     m_ctrlFactory(ctrlFactory),
     m_deviceNodeFactory(deviceNodeFactory)
 {
+    doConfiguration();
     init();
 }
 
@@ -39,7 +40,6 @@ void cCOM5003dServer::init()
 
     stateCONF->addTransition(this, &cCOM5003dServer::abortInit, stateFINISH); // from anywhere we arrive here if some error
 
-    QState* statexmlConfiguration = new QState(stateCONF); // we configure our server with xml file
     QState* stateprogAtmel = new QState(stateCONF); // maybe we have to update the atmel
     QState* statewait4Atmel = new QState(stateCONF); // we synchronize on atmel running
     QState* statesetupServer = new QState(stateCONF); // we setup our server now
@@ -47,9 +47,8 @@ void cCOM5003dServer::init()
     m_stateconnect2RMError = new QState(stateCONF);
     m_stateSendRMIdentAndRegister = new QState(stateCONF); // we send ident. to rm and register our resources
 
-    stateCONF->setInitialState(statexmlConfiguration);
+    stateCONF->setInitialState(stateprogAtmel);
 
-    statexmlConfiguration->addTransition(&m_xmlConfigReader, &Zera::XMLConfig::cReader::finishedParsingXML, stateprogAtmel);
     stateprogAtmel->addTransition(this, &cCOM5003dServer::atmelProgrammed, statewait4Atmel);
     statewait4Atmel->addTransition(this, &cCOM5003dServer::atmelRunning, statesetupServer);
     statesetupServer->addTransition(this, &cCOM5003dServer::sigServerIsSetUp, m_stateconnect2RM);
@@ -58,7 +57,6 @@ void cCOM5003dServer::init()
     m_pInitializationMachine->addState(stateFINISH);
     m_pInitializationMachine->setInitialState(stateCONF);
 
-    QObject::connect(statexmlConfiguration, &QAbstractState::entered, this, &cCOM5003dServer::doConfiguration);
     QObject::connect(stateprogAtmel, &QAbstractState::entered, this, &cCOM5003dServer::programAtmelFlash);
     QObject::connect(statewait4Atmel, &QAbstractState::entered, this, &cCOM5003dServer::doWait4Atmel);
     QObject::connect(statesetupServer, &QAbstractState::entered, this, &cCOM5003dServer::doSetupServer);
