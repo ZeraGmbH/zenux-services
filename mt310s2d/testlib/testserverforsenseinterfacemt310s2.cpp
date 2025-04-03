@@ -1,14 +1,14 @@
 #include "testserverforsenseinterfacemt310s2.h"
 #include "clampfactorytest.h"
-#include "mt310s2channelrangefactory.h"
 #include "mt310s2senseinterface.h"
 #include "mt310s2systeminfomock.h"
 #include <i2cmultiplexerfactory.h>
 
 TestServerForSenseInterfaceMt310s2::TestServerForSenseInterfaceMt310s2(AbstractFactoryI2cCtrlPtr ctrlFactory,
                                                                        VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory,
+                                                                       const QString &serviceNameForAlternateDevice,
                                                                        bool systemInfoMock) :
-    TestPcbServer("mt310s2d", tcpNetworkFactory)
+    TestPcbServer(serviceNameForAlternateDevice, tcpNetworkFactory)
 {
     m_senseSettings = std::make_unique<cSenseSettings>(getConfigReader(), 8);
     setXmlSettings(XmlSettingsList{m_senseSettings.get()});
@@ -22,7 +22,7 @@ TestServerForSenseInterfaceMt310s2::TestServerForSenseInterfaceMt310s2(AbstractF
                                                                m_settings->getI2cSettings(),
                                                                m_senseSettings.get(),
                                                                m_systemInfo.get(),
-                                                               std::make_shared<MT310s2ChannelRangeFactory>(),
+                                                               SettingsContainer::createChannelRangeFactory(serviceNameForAlternateDevice),
                                                                ctrlFactory);
     m_clampInterface = std::make_unique<cClampInterface>(this,
                                                          m_settings->getI2cSettings(),

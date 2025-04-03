@@ -1,12 +1,12 @@
 #include "testserverforsenseinterfacecom5003.h"
-#include "com5003channelrangefactory.h"
 #include "com5003senseinterface.h"
 #include "testsysteminfo.h"
 
 TestServerForSenseInterfaceCom5003::TestServerForSenseInterfaceCom5003(AbstractFactoryI2cCtrlPtr ctrlFactory,
                                                                        VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory,
+                                                                       const QString &serviceNameForAlternateDevice,
                                                                        bool systemInfoMock) :
-    TestPcbServer("com5003d", tcpNetworkFactory)
+    TestPcbServer(serviceNameForAlternateDevice, tcpNetworkFactory)
 {
     if(systemInfoMock)
         m_systemInfo = std::make_unique<TestSystemInfo>(ctrlFactory);
@@ -20,7 +20,7 @@ TestServerForSenseInterfaceCom5003::TestServerForSenseInterfaceCom5003(AbstractF
                                                                m_settings->getI2cSettings(),
                                                                m_senseSettings.get(),
                                                                m_systemInfo.get(),
-                                                               std::make_shared<COM5003ChannelRangeFactory>(),
+                                                               SettingsContainer::createChannelRangeFactory(serviceNameForAlternateDevice),
                                                                ctrlFactory);
     m_samplingInterface = std::make_unique<cSamplingInterface>(m_scpiInterface,
                                                                m_settings->getSamplingSettings(),

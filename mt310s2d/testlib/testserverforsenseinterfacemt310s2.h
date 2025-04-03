@@ -13,6 +13,7 @@ class TestServerForSenseInterfaceMt310s2 : public TestPcbServer
 public:
     TestServerForSenseInterfaceMt310s2(AbstractFactoryI2cCtrlPtr ctrlFactory,
                                        VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory,
+                                       const QString &serviceNameForAlternateDevice = "mt310s2",
                                        bool systemInfoMock = false);
     QString getDeviceVersion() { return m_systemInfo->getDeviceVersion(); }
 

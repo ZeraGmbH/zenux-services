@@ -67,6 +67,7 @@ void test_adj_deny_import_com5003::setupServers()
     m_testServer = std::make_unique<TestServerForSenseInterfaceCom5003>(
         std::make_shared<TestFactoryI2cCtrl>(true),
         tcpNetworkFactory,
+        "com5003",
         true);
     TimeMachineObject::feedEventLoop();
 

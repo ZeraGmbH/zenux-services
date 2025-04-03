@@ -1,4 +1,4 @@
-#include "test_regression_scpi_mt310s2.h"
+#include "test_regression_scpi_mt581s2.h"
 #include "testfactoryi2cctrl.h"
 #include "proxy.h"
 #include "scpisingletransactionblocked.h"
@@ -9,13 +9,13 @@
 #include <mocktcpnetworkfactory.h>
 #include <QTest>
 
-QTEST_MAIN(test_regression_scpi_mt310s2);
+QTEST_MAIN(test_regression_scpi_mt581s2);
 
-void test_regression_scpi_mt310s2::init()
+void test_regression_scpi_mt581s2::init()
 {
     VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory = VeinTcp::MockTcpNetworkFactory::create();
     m_resman = std::make_unique<ResmanRunFacade>(tcpNetworkFactory);
-    m_server = std::make_unique<MockMt310s2d>(std::make_shared<TestFactoryI2cCtrl>(true), tcpNetworkFactory, "mt310s2d");
+    m_server = std::make_unique<MockMt310s2d>(std::make_shared<TestFactoryI2cCtrl>(true), tcpNetworkFactory, "mt581s2");
     TimeMachineObject::feedEventLoop();
 
     m_proxyClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307, tcpNetworkFactory);
@@ -25,7 +25,7 @@ void test_regression_scpi_mt310s2::init()
     TimeMachineObject::feedEventLoop();
 }
 
-void test_regression_scpi_mt310s2::cleanup()
+void test_regression_scpi_mt581s2::cleanup()
 {
     MockEEprom24LC::mockCleanAll();
     m_pcbIFace = nullptr;
@@ -35,13 +35,13 @@ void test_regression_scpi_mt310s2::cleanup()
     TimeMachineObject::feedEventLoop();
 }
 
-void test_regression_scpi_mt310s2::serverUp()
+void test_regression_scpi_mt581s2::serverUp()
 {
     QString ret = ScpiSingleTransactionBlocked::query("SYSTEM:VERSION:SERVER?");
     QCOMPARE(ret, "V42.0");
 }
 
-void test_regression_scpi_mt310s2::dumpScpi()
+void test_regression_scpi_mt581s2::dumpScpi()
 {
     QString expected = TestLogHelpers::loadFile("://scpi-dump.xml");
     QString dumped = ScpiSingleTransactionBlocked::query("SYSTEM:INTERFACE:READ?");

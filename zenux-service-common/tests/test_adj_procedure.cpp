@@ -168,6 +168,7 @@ void test_adj_procedure::setupServers()
     m_testServer = std::make_unique<TestServerForSenseInterfaceMt310s2>(
         ctrlFactory,
         tcpNetworkFactory,
+        "mt310s2",
         true);
     TimeMachineObject::feedEventLoop();
 
