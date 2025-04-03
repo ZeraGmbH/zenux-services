@@ -14,7 +14,7 @@ class TestPcbServer : public PCBServer
 {
     Q_OBJECT
 public:
-    TestPcbServer(QString serviceName,
+    TestPcbServer(QString serviceNameForAlternateDevice,
                   VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory);
     ~TestPcbServer();
     Zera::XMLConfig::cReader *getConfigReader();

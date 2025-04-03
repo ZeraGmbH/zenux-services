@@ -22,14 +22,14 @@ void test_hotpluggablecontrollercontainer::initTestCase()
 
 void test_hotpluggablecontrollercontainer::initTestCase_data()
 {
-    QTest::addColumn<QString>("serviceName");
+    QTest::addColumn<QString>("serviceNameForAlternateDevice");
     QTest::newRow("mt310s2d") << QString("mt310s2d");
     QTest::newRow("mt581s2d") << QString("mt581s2d");
 }
 
 void test_hotpluggablecontrollercontainer::init()
 {
-    QFETCH_GLOBAL(QString, serviceName);
+    QFETCH_GLOBAL(QString, serviceNameForAlternateDevice);
     m_i2cSettings = std::make_unique<TestI2cSettings>(&m_configReader);
     m_senseSettings = std::make_unique<cSenseSettings>(&m_configReader, 8 /*mt310s2*/);
 
@@ -38,7 +38,7 @@ void test_hotpluggablecontrollercontainer::init()
             m_i2cSettings.get(), &I2cSettings::configXMLInfo);
     connect(&m_configReader, &Zera::XMLConfig::cReader::valueChanged,
             m_senseSettings.get(), &cSenseSettings::configXMLInfo);
-    SettingsContainer::TServiceConfig config = SettingsContainer::getServiceConfig(serviceName);
+    SettingsContainer::TServiceConfig config = SettingsContainer::getServiceConfig(serviceNameForAlternateDevice);
     m_configReader.loadSchema(QStringLiteral(CONFIG_SOURCES_MT310S2D) + "/" + config.xsdFileName);
     m_configReader.loadXMLFile(QStringLiteral(CONFIG_SOURCES_MT310S2D) + "/" + config.xmlFileName);
 }
