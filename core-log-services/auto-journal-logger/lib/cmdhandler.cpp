@@ -90,9 +90,7 @@ bool CmdHandler::storeVersionFile(QString destinationDir, QString versionFilePat
 
 bool CmdHandler::storeUpdateLogs(QString destinationDir)
 {
-    QStringList extensionFilter;
-    extensionFilter << ".html";
-
+    QStringList fileFilter = {"zera-update*.html"};
     QDir dir("/home/operator");
 
     if(!dir.exists()) {
@@ -100,9 +98,9 @@ bool CmdHandler::storeUpdateLogs(QString destinationDir)
         return false;
         }
      else
-        qWarning("Directory: %s  CAN be read!", qPrintable(dir.dirName()));
+        qInfo("Directory: %s  CAN be read!", qPrintable(dir.dirName()));
 
-    QFileInfoList fileList = dir.entryInfoList(extensionFilter, QDir::NoDotAndDotDot | QDir::Files);
+    QFileInfoList fileList = dir.entryInfoList(fileFilter, QDir::NoDotAndDotDot | QDir::Files);
 
     if(fileList.size() > 0) {
         for(auto &entry : fileList) {
@@ -117,7 +115,7 @@ bool CmdHandler::storeUpdateLogs(QString destinationDir)
         }
     }
     else {
-        qWarning("No html-files found");
+        qInfo("No zera-update.html files found");
     }
 
     return true;
