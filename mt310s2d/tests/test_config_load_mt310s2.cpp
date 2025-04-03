@@ -9,8 +9,8 @@ QTEST_MAIN(test_config_load_mt310s2)
 void test_config_load_mt310s2::initTestCase_data()
 {
     QTest::addColumn<QString>("serviceNameForAlternateDevice");
-    QTest::newRow("mt310s2d") << QString("mt310s2d");
-    QTest::newRow("mt581s2d") << QString("mt581s2d");
+    QTest::newRow("MT310s2") << QString("mt310s2d");
+    QTest::newRow("MT581s2") << QString("mt581s2d");
 }
 
 void test_config_load_mt310s2::fileFound()
