@@ -41,6 +41,7 @@ cMT310S2dServer::cMT310S2dServer(SettingsContainerPtr settings,
 {
     doConfiguration();
     init();
+    earlySetup();
 }
 
 void cMT310S2dServer::init()
@@ -232,7 +233,6 @@ void cMT310S2dServer::doSetupServer()
             emit abortInit();
         }
         else {
-            earlySetup();
             initSCPIConnections();
 
             // after init. we once poll the devices connected at power up

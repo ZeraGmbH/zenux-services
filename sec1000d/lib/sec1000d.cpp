@@ -45,6 +45,7 @@ cSEC1000dServer::cSEC1000dServer(SettingsContainerPtr settings,
 {
     doConfiguration();
     init();
+    earlySetup();
 }
 
 void cSEC1000dServer::init()
@@ -163,8 +164,6 @@ void cSEC1000dServer::doSetupServer()
     }
     else
     {
-        earlySetup();
-
         SECServer = this;
 
         initSCPIConnections();

@@ -29,6 +29,7 @@ cCOM5003dServer::cCOM5003dServer(SettingsContainerPtr settings,
 {
     doConfiguration();
     init();
+    earlySetup();
 }
 
 void cCOM5003dServer::init()
@@ -307,7 +308,6 @@ void cCOM5003dServer::earlySetup()
 void cCOM5003dServer::doSetupServer()
 {
     qInfo("Starting doSetupServer");
-    earlySetup();
 
     initSCPIConnections();
 
