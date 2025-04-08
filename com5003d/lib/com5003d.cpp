@@ -273,7 +273,7 @@ void cCOM5003dServer::earlySetup(AbstractChannelRangeFactoryPtr channelRangeFact
     qInfo("Initial PLL channel set");
     m_pSystemInfo = new SystemInfo(m_ctrlFactory);
 
-    setupServer(); // here our scpi interface gets instanciated, we need this for further steps
+    connectProtoConnectionSignals();
 
     // our resource mananager connection must be opened after configuration is done
     EthSettings *ethSettings = m_settings->getEthSettings();

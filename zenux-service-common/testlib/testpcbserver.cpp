@@ -89,7 +89,7 @@ void TestPcbServer::doConfiguration()
 
 void TestPcbServer::doSetupServer()
 {
-    setupServer();
+    connectProtoConnectionSignals();
     m_scpiConnectionList.append(this); // the server itself has some commands
     for(const auto &resource : qAsConst(m_resources)) {
         m_scpiConnectionList.append(resource);

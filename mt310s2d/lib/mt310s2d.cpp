@@ -173,7 +173,7 @@ void cMT310S2dServer::earlySetup(AbstractChannelRangeFactoryPtr channelRangeFact
     qInfo("Initial PLL channel set");
     m_pSystemInfo = new Mt310s2SystemInfo(m_ctrlFactory);
 
-    setupServer(); // here our scpi interface gets instanciated, we need this for further steps
+    connectProtoConnectionSignals();
 
     m_scpiConnectionList.append(this); // the server itself has some commands
     I2cSettings *i2cSettings = m_settings->getI2cSettings();

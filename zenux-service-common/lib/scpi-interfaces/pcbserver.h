@@ -34,7 +34,7 @@ protected slots:
     virtual void onNotifySubscriber(ScpiNotificationSubscriber subscriber, QString newValue);
     virtual void onProtobufDisconnect(VeinTcp::TcpPeer *peer);
 protected:
-    void setupServer();
+    void connectProtoConnectionSignals();
     void initSCPIConnections();
     void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
     void openTelnetScpi();

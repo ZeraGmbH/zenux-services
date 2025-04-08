@@ -46,7 +46,7 @@ QString PCBServer::getVersion()
     return m_settings->getServerParams().version;
 }
 
-void PCBServer::setupServer()
+void PCBServer::connectProtoConnectionSignals()
 {
     connect(&m_protoBufServer,&VeinTcp::TcpServer::sigClientConnected,
             this, &PCBServer::onProtobufClientConnected);

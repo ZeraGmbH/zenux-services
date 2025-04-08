@@ -141,7 +141,7 @@ void cSEC1000dServer::earlySetup()
 {
     m_pSystemInfo = new Sec1000SystemInfo();
 
-    setupServer(); // here our scpi interface gets instanciated, we need this for further steps
+    connectProtoConnectionSignals();
 
     m_scpiConnectionList.append(this); // the server itself has some commands
     m_scpiConnectionList.append(m_pStatusInterface = new Sec1000StatusInterface(m_scpiInterface));
