@@ -49,7 +49,7 @@ I2cCtrlCommonInfoPtrUnique FactoryI2cCtrl::getCommonInfoController(ControllerTyp
     case CTRL_TYPE_EMOB:
         return std::make_unique<I2cCtrlCommonInfoEmob>(m_deviceNode, getEmobCtrlI2cAddress(),
                                                            getEmobMuxI2cAddress(), muxChannel,
-                                                           m_debugLevel);
+                                                           0); // i2c error can occure if clamp is connected
         break;
 
     case CTRL_TYPE_ACCU:

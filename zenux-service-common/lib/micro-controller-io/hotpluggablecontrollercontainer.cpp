@@ -47,7 +47,7 @@ void HotPluggableControllerContainer::startAddingController(int ctrlChannel, Sen
                                                                            channelSettings->m_nMuxChannelNo));
     ZeraMcontrollerIoPtr i2cCtrl = std::make_shared<ZeraMControllerIo>(m_i2cSettings->getDeviceNode(),
                                                                        m_i2cSettings->getI2CAdress(i2cSettings::emobCtrlI2cAddress),
-                                                                       m_i2cSettings->getDebugLevel());
+                                                                       0); // i2c error can occure if clamp is connected
     ZeraMControllerBootloaderStopperPtr bootStopper = ZeraMControllerBootloaderStopperFactory::createBootloaderStopper(i2cCtrl, ctrlChannel);
     connect(bootStopper.get(), &ZeraMControllerBootloaderStopper::sigAssumeBootloaderStopped,
             this, &HotPluggableControllerContainer::onBootloaderStopAssumed);
