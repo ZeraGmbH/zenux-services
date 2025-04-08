@@ -23,8 +23,8 @@ class cSEC1000dServer: public PCBServer
 {
     Q_OBJECT
 public:
-    static constexpr int Com5003EcUnitCount = 8;
-    static constexpr int Mtxxxs2EcUnitCount = 15;
+    static const int Com5003EcUnitCount;
+    static const int Mtxxxs2EcUnitCount;
     explicit cSEC1000dServer(SettingsContainerPtr settings,
                              int ecUnitCount,
                              AbstractFactoryDeviceNodeSecPtr deviceNodeFactory,

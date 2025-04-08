@@ -24,6 +24,9 @@
 #define ServerName "sec1000d"
 #define ServerVersion "V1.00"
 
+const int cSEC1000dServer::Com5003EcUnitCount = 8;
+const int cSEC1000dServer::Mtxxxs2EcUnitCount = 15;
+
 cSEC1000dServer* SECServer;
 
 int pipeFileDescriptorSec1000[2];
