@@ -8,6 +8,7 @@ SecCalculatorSettings::SecCalculatorSettings(Zera::XMLConfig::cReader *xmlread, 
 
     m_ConfigXMLMap[QString("serviceconfig:resource:ecalcchannel:base")] = ECalculatorSystem::setbaseadress;
     m_ConfigXMLMap[QString("serviceconfig:resource:ecalcchannel:irqbase")] = ECalculatorSystem::setirqadress;
+    qInfo("Number of error calculator units: %i", m_ecUnitCount);
 }
 
 SecCalculatorSettings::~SecCalculatorSettings()

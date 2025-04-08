@@ -28,7 +28,7 @@ static int deduceEcUnitCount()
     int ecUnitCount = cSEC1000dServer::Mtxxxs2EcUnitCount;
     if (zenuxDevice.toUpper().contains("COM5003"))
         ecUnitCount = cSEC1000dServer::Com5003EcUnitCount;
-    qInfo("Available Ec units for %s: %i", qPrintable(zenuxDevice), ecUnitCount);
+    qInfo("Available error calculator units for %s: %i", qPrintable(zenuxDevice), ecUnitCount);
     return ecUnitCount;
 }
 
