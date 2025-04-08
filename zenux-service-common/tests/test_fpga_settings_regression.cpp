@@ -63,6 +63,7 @@ void test_fpga_settings_regression::sec1000d()
     ServerParams params = MockServerParamGenerator::createParams("sec1000d");
     cSEC1000dServer server(
         std::make_unique<SettingsContainer>(params),
+        cSEC1000dServer::Mtxxxs2EcUnitCount,
         std::make_shared<MockFactoryDeviceNodeSec>(),
         VeinTcp::MockTcpNetworkFactory::create());
     TimeMachineObject::feedEventLoop();

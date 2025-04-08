@@ -9,11 +9,20 @@
 
 QTEST_MAIN(test_regression_scpi_sec1000);
 
+void test_regression_scpi_sec1000::initTestCase_data()
+{
+    QTest::addColumn<int>("ecUnitCount");
+    QTest::addColumn<QString>("dumpFile");
+    QTest::newRow("COM5003") << cSEC1000dServer::Com5003EcUnitCount << "://scpi-dump-com5003.xml";
+    QTest::newRow("MTxxxs2") << cSEC1000dServer::Mtxxxs2EcUnitCount << "://scpi-dump-mtxxxs2.xml";
+}
+
 void test_regression_scpi_sec1000::init()
 {
     VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory = VeinTcp::MockTcpNetworkFactory::create();
     m_resman = std::make_unique<ResmanRunFacade>(tcpNetworkFactory);
-    m_server = std::make_unique<MockSec1000d>(tcpNetworkFactory);
+    QFETCH_GLOBAL(int, ecUnitCount);
+    m_server = std::make_unique<MockSec1000d>(tcpNetworkFactory, ecUnitCount);
     TimeMachineObject::feedEventLoop();
 
     m_proxyClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6305, tcpNetworkFactory);
@@ -40,7 +49,8 @@ void test_regression_scpi_sec1000::serverUp()
 
 void test_regression_scpi_sec1000::dumpScpi()
 {
-    QString expected = TestLogHelpers::loadFile("://scpi-dump.xml");
+    QFETCH_GLOBAL(QString, dumpFile);
+    QString expected = TestLogHelpers::loadFile(dumpFile);
     QString dumped = ScpiSingleTransactionBlocked::query("SYSTEM:INTERFACE:READ?", 6305);
     XmlDocumentCompare compare;
     bool ok = compare.compareXml(dumped, expected);

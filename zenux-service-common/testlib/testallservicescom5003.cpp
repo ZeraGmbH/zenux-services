@@ -19,7 +19,7 @@ void TestAllServicesCom5003::init(VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetwo
     m_resman = new ResmanRunFacade(tcpNetworkFactory);
     TimeMachineObject::feedEventLoop();
     m_mockcom5003d = new MockCom5003d(ctrlFactory, tcpNetworkFactory);
-    m_sec1000d = new MockSec1000d(tcpNetworkFactory);
+    m_sec1000d = new MockSec1000d(tcpNetworkFactory, cSEC1000dServer::Com5003EcUnitCount);
     m_zdsp1d = new MockZdsp1d(std::make_shared<TestFactoryDeviceNodeDsp>(), tcpNetworkFactory);
     TimeMachineObject::feedEventLoop();
 }

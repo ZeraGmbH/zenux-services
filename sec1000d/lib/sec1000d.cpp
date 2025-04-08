@@ -38,12 +38,13 @@ struct sigaction sigActionSec1000;
 const ServerParams cSEC1000dServer::defaultParams{ServerName, ServerVersion, "/etc/zera/sec1000d/sec1000d.xsd", "/etc/zera/sec1000d/sec1000d.xml"};
 
 cSEC1000dServer::cSEC1000dServer(SettingsContainerPtr settings,
+                                 int ecUnitCount,
                                  AbstractFactoryDeviceNodeSecPtr deviceNodeFactory,
                                  VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory) :
     PCBServer(std::move(settings), tcpNetworkFactory),
     m_deviceNodeFactory(deviceNodeFactory)
 {
-    doConfiguration();
+    doConfiguration(ecUnitCount);
     init();
     earlySetup();
 }
@@ -103,7 +104,7 @@ QString cSEC1000dServer::getSecDeviceNode()
     return m_settings->getFpgaSettings()->getSecDeviceNode();
 }
 
-void cSEC1000dServer::doConfiguration()
+void cSEC1000dServer::doConfiguration(int ecUnitCount)
 {
     if ( pipe(pipeFileDescriptorSec1000) == -1 ) {
         qCritical("Abort, could not open pipe");
@@ -117,7 +118,7 @@ void cSEC1000dServer::doConfiguration()
         ServerParams params = m_settings->getServerParams();
         if (m_xmlConfigReader.loadSchema(params.xsdFile)) {
             // we want to initialize all settings first
-            m_pECalcSettings = new SecCalculatorSettings(&m_xmlConfigReader, 8);
+            m_pECalcSettings = new SecCalculatorSettings(&m_xmlConfigReader, ecUnitCount);
             connect(&m_xmlConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pECalcSettings,&SecCalculatorSettings::configXMLInfo);
             m_pInputSettings = new SecInputSettings(&m_xmlConfigReader);
             connect(&m_xmlConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pInputSettings,&SecInputSettings::configXMLInfo);

@@ -13,6 +13,7 @@ class test_mockservice_sec1000d : public QObject
     Q_OBJECT
 private slots:
     void initTestCase();
+    void initTestCase_data();
     void init();
     void cleanup();
 

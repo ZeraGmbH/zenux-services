@@ -21,7 +21,7 @@ void DemoAllServicesCom5003::init(VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetwo
     m_resman = new ResmanRunFacade(tcpNetworkFactory);
     ServerParams params = MockServerParamGenerator::createParams("com5003d");
     m_mockcom5003d = new MockCom5003d(std::make_shared<DemoFactoryI2cCtrl>(std::make_unique<SettingsContainer>(params)), tcpNetworkFactory);
-    m_sec1000d = new MockSec1000d(tcpNetworkFactory);
+    m_sec1000d = new MockSec1000d(tcpNetworkFactory, cSEC1000dServer::Com5003EcUnitCount);
     m_zdsp1d = new MockZdsp1d(std::make_shared<DemoFactoryDeviceNodeDsp>(), tcpNetworkFactory);
     DemoEventLoopFeeder::feedEventLoop();
 #ifdef GUI_SIMULATION

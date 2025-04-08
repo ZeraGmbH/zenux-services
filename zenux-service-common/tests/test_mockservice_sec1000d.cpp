@@ -12,12 +12,20 @@ void test_mockservice_sec1000d::initTestCase()
     qputenv("QT_FATAL_CRITICALS", "1");
 }
 
+void test_mockservice_sec1000d::initTestCase_data()
+{
+    QTest::addColumn<int>("ecUnitCount");
+    QTest::newRow("COM5003") << cSEC1000dServer::Com5003EcUnitCount;
+    QTest::newRow("MTxxxs2") << cSEC1000dServer::Mtxxxs2EcUnitCount;
+}
+
 void test_mockservice_sec1000d::init()
 {
     m_tcpNetworkFactory = VeinTcp::TcpNetworkFactory::create();
     m_resman = std::make_unique<ResmanRunFacade>(m_tcpNetworkFactory);
     TimeMachineObject::feedEventLoop();
-    m_sec1000d = std::make_unique<MockSec1000d>(m_tcpNetworkFactory);
+    QFETCH_GLOBAL(int, ecUnitCount);
+    m_sec1000d = std::make_unique<MockSec1000d>(m_tcpNetworkFactory, ecUnitCount);
     TimeMachineObject::feedEventLoop();
     m_proxy = std::make_unique<ProxyForTest>();
 }
@@ -51,7 +59,11 @@ void test_mockservice_sec1000d::getChannelCatSec1000d()
     QCOMPARE(responseSpy.count(), 1);
     QCOMPARE(responseSpy[0][0], QVariant(msgNr));
     QCOMPARE(responseSpy[0][1], QVariant(ack));
-    QCOMPARE(responseSpy[0][2], QVariant("ec0;ec1;ec2;ec3;ec4;ec5;ec6;ec7;"));
+    QFETCH_GLOBAL(int, ecUnitCount);
+    QString ecChannels;
+    for (int i=0; i<ecUnitCount; ++i)
+        ecChannels += QString("ec%1;").arg(i);
+    QCOMPARE(responseSpy[0][2], QVariant(ecChannels));
 }
 
 void test_mockservice_sec1000d::freeSecResourcesWhenClientDisconnects()
