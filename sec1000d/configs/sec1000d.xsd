@@ -159,7 +159,6 @@
 
 <xs:complexType name="ecalcchanneltype">
     <xs:sequence>
-        <xs:element name="n" type="xs:integer"/>
         <xs:element name="base" type="xs:integer"/>
         <xs:element name="irqbase" type="xs:integer"/>
     </xs:sequence>

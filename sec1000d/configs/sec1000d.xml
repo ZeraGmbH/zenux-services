@@ -68,7 +68,6 @@
 
     <resource>
         <ecalcchannel>
-            <n>8</n>
             <base>0</base>
             <irqbase>2048</irqbase>
         </ecalcchannel>

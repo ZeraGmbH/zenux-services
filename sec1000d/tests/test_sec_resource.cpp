@@ -16,7 +16,7 @@ void test_sec_resource::init()
 {
     m_xmlConfigReader = std::make_unique<Zera::XMLConfig::cReader>();
     m_xmlConfigReader->loadSchema(QStringLiteral(CONFIG_SOURCES_SEC1000D) + "/" + "sec1000d.xsd");
-    m_ecalcSettings = std::make_unique<SecCalculatorSettings>(m_xmlConfigReader.get());
+    m_ecalcSettings = std::make_unique<SecCalculatorSettings>(m_xmlConfigReader.get(), 8);
     connect(m_xmlConfigReader.get(),&Zera::XMLConfig::cReader::valueChanged,m_ecalcSettings.get(),&SecCalculatorSettings::configXMLInfo);
     m_inputSettings = std::make_unique<SecInputSettings>(m_xmlConfigReader.get());
     connect(m_xmlConfigReader.get(),&Zera::XMLConfig::cReader::valueChanged,m_inputSettings.get(),&SecInputSettings::configXMLInfo);

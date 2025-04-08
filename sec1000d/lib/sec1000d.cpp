@@ -117,7 +117,7 @@ void cSEC1000dServer::doConfiguration()
         ServerParams params = m_settings->getServerParams();
         if (m_xmlConfigReader.loadSchema(params.xsdFile)) {
             // we want to initialize all settings first
-            m_pECalcSettings = new SecCalculatorSettings(&m_xmlConfigReader);
+            m_pECalcSettings = new SecCalculatorSettings(&m_xmlConfigReader, 8);
             connect(&m_xmlConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pECalcSettings,&SecCalculatorSettings::configXMLInfo);
             m_pInputSettings = new SecInputSettings(&m_xmlConfigReader);
             connect(&m_xmlConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pInputSettings,&SecInputSettings::configXMLInfo);

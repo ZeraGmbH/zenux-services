@@ -1,11 +1,11 @@
 #include "seccalcsettings.h"
 #include <xmlconfigreader.h>
 
-SecCalculatorSettings::SecCalculatorSettings(Zera::XMLConfig::cReader *xmlread)
+SecCalculatorSettings::SecCalculatorSettings(Zera::XMLConfig::cReader *xmlread, int ecUnitCount) :
+    m_ecUnitCount(ecUnitCount)
 {
     m_pXMLReader = xmlread;
 
-    m_ConfigXMLMap[QString("serviceconfig:resource:ecalcchannel:n")] = ECalculatorSystem::setnumber;
     m_ConfigXMLMap[QString("serviceconfig:resource:ecalcchannel:base")] = ECalculatorSystem::setbaseadress;
     m_ConfigXMLMap[QString("serviceconfig:resource:ecalcchannel:irqbase")] = ECalculatorSystem::setirqadress;
 }
@@ -14,9 +14,9 @@ SecCalculatorSettings::~SecCalculatorSettings()
 {
 }
 
-quint16 SecCalculatorSettings::getNumber()
+int SecCalculatorSettings::getNumber()
 {
-   return m_nECalcUnits;
+   return m_ecUnitCount;
 }
 
 quint32 SecCalculatorSettings::getBaseAdress()
@@ -34,9 +34,6 @@ void SecCalculatorSettings::configXMLInfo(QString key)
     if (m_ConfigXMLMap.contains(key)) {
         switch (m_ConfigXMLMap[key])
         {
-        case ECalculatorSystem::setnumber:
-            m_nECalcUnits = m_pXMLReader->getValue(key).toInt();
-            break;
         case ECalculatorSystem::setbaseadress:
             m_nECalcUnitBaseAddress = m_pXMLReader->getValue(key).toInt();
             break;
