@@ -53,7 +53,7 @@ QStringList test_regression_sense_interface_mt581s2::m_channelsExpectedAllOverTh
 
 void test_regression_sense_interface_mt581s2::checkChannelCatalogAsExpected()
 {
-    QSignalSpy responseSpy(m_pcbIFace.get(), &Zera::cPCBInterface::serverAnswer);
+    QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
     m_pcbIFace->getChannelList();
     TimeMachineObject::feedEventLoop();
 
@@ -67,7 +67,7 @@ void test_regression_sense_interface_mt581s2::checkRangesUL1()
 {
     SenseSystem::cChannelSettings *channelSetting = m_testServer->getSenseSettings()->findChannelSettingByAlias1("UL1");
 
-    QSignalSpy responseSpy(m_pcbIFace.get(), &Zera::cPCBInterface::serverAnswer);
+    QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
     m_pcbIFace->getRangeList(channelSetting->m_nameMx);
     TimeMachineObject::feedEventLoop();
 
@@ -86,7 +86,7 @@ void test_regression_sense_interface_mt581s2::checkRangesIL1()
 {
     SenseSystem::cChannelSettings *channelSetting = m_testServer->getSenseSettings()->findChannelSettingByAlias1("IL1");
 
-    QSignalSpy responseSpy(m_pcbIFace.get(), &Zera::cPCBInterface::serverAnswer);
+    QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
     m_pcbIFace->getRangeList(channelSetting->m_nameMx);
     TimeMachineObject::feedEventLoop();
 
@@ -105,12 +105,12 @@ void test_regression_sense_interface_mt581s2::addClampIL1_CL120A()
 
     m_testServer->addClamp(cClamp::CL120A, "IL1");
 
-    QSignalSpy responseSpyI(m_pcbIFace.get(), &Zera::cPCBInterface::serverAnswer);
+    QSignalSpy responseSpyI(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
     m_pcbIFace->getRangeList(channelSettingI->m_nameMx);
     TimeMachineObject::feedEventLoop();
     QCOMPARE(responseSpyI[0][2].toStringList(), m_rangesExpectedI + m_rangesExpectedI_Internal + m_rangesExpectedI_CL120A);
 
-    QSignalSpy responseSpyU(m_pcbIFace.get(), &Zera::cPCBInterface::serverAnswer);
+    QSignalSpy responseSpyU(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
     m_pcbIFace->getRangeList(channelSettingU->m_nameMx);
     TimeMachineObject::feedEventLoop();
     QCOMPARE(responseSpyU[0][2].toStringList(), m_rangesExpectedU);
@@ -128,12 +128,12 @@ void test_regression_sense_interface_mt581s2::addClampIL2_CL800ADC1000VDC()
 
     m_testServer->addClamp(cClamp::CL800ADC1000VDC, "IL2");
 
-    QSignalSpy responseSpyI(m_pcbIFace.get(), &Zera::cPCBInterface::serverAnswer);
+    QSignalSpy responseSpyI(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
     m_pcbIFace->getRangeList(channelSettingI->m_nameMx);
     TimeMachineObject::feedEventLoop();
     QCOMPARE(responseSpyI[0][2].toStringList(), m_rangesExpectedI + m_rangesExpectedI_Internal + m_rangesExpectedI_CL800ADC1000VDC);
 
-    QSignalSpy responseSpyU(m_pcbIFace.get(), &Zera::cPCBInterface::serverAnswer);
+    QSignalSpy responseSpyU(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
     m_pcbIFace->getRangeList(channelSettingU->m_nameMx);
     TimeMachineObject::feedEventLoop();
     QCOMPARE(responseSpyU[0][2].toStringList(), m_rangesExpectedU + m_rangesExpectedU_CL800ADC1000VDC);
@@ -149,24 +149,24 @@ void test_regression_sense_interface_mt581s2::addRemoveClampIAUX_CL800ADC1000VDC
 
     m_testServer->addClamp(cClamp::CL800ADC1000VDC, "IAUX");
 
-    QSignalSpy responseSpyIWishClamps(m_pcbIFace.get(), &Zera::cPCBInterface::serverAnswer);
+    QSignalSpy responseSpyIWishClamps(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
     m_pcbIFace->getRangeList(channelSettingI->m_nameMx);
     TimeMachineObject::feedEventLoop();
     QCOMPARE(responseSpyIWishClamps[0][2].toStringList(), m_rangesExpectedI_DummyAux + m_rangesExpectedI_Internal + m_rangesExpectedI_CL800ADC1000VDC);
 
-    QSignalSpy responseSpyU1(m_pcbIFace.get(), &Zera::cPCBInterface::serverAnswer);
+    QSignalSpy responseSpyU1(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
     m_pcbIFace->getRangeList(channelSettingU->m_nameMx);
     TimeMachineObject::feedEventLoop();
     QCOMPARE(responseSpyU1[0][2].toStringList(), m_rangesExpectedU + m_rangesExpectedU_CL800ADC1000VDC);
 
     m_testServer->removeAllClamps();
 
-    QSignalSpy responseSpyI(m_pcbIFace.get(), &Zera::cPCBInterface::serverAnswer);
+    QSignalSpy responseSpyI(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
     m_pcbIFace->getRangeList(channelSettingI->m_nameMx);
     TimeMachineObject::feedEventLoop();
     QCOMPARE(responseSpyI[0][2].toStringList(), m_rangesExpectedI_DummyAux + m_rangesExpectedI_Internal);
 
-    QSignalSpy responseSpyU(m_pcbIFace.get(), &Zera::cPCBInterface::serverAnswer);
+    QSignalSpy responseSpyU(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
     m_pcbIFace->getRangeList(channelSettingU->m_nameMx);
     TimeMachineObject::feedEventLoop();
     QCOMPARE(responseSpyU[0][2].toStringList(), m_rangesExpectedU);
@@ -370,7 +370,7 @@ QByteArray test_regression_sense_interface_mt581s2::genJsonConstantValuesAllRang
     for(int clampTypeNo=cClamp::undefined+1; clampTypeNo<cClamp::anzCL; clampTypeNo++) { // all clamp types
         m_testServer->addClamp(clampTypeNo, channelNameAdRemoveClamps);
 
-        QSignalSpy responseSpy(m_pcbIFace.get(), &Zera::cPCBInterface::serverAnswer);
+        QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
         m_pcbIFace->getRangeList(channelSetting->m_nameMx);
         TimeMachineObject::feedEventLoop();
 

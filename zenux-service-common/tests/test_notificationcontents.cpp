@@ -47,7 +47,7 @@ void test_notificationcontents::rangeChangeWithoutValue()
 {
     m_pcbInterface->registerNotifier("SENSE:m0:RANGE?", notifierId, false);
     TimeMachineObject::feedEventLoop();
-    QSignalSpy spy(m_pcbInterface.get(), &cPCBInterface::serverAnswer);
+    QSignalSpy spy(m_pcbInterface.get(), &AbstractServerInterface::serverAnswer);
 
     m_pcbInterface->setRange("m0", "8V");
     TimeMachineObject::feedEventLoop();
@@ -61,7 +61,7 @@ void test_notificationcontents::rangeChangeWithValue()
 {
     m_pcbInterface->registerNotifier("SENSE:m0:RANGE?", notifierId, true);
     TimeMachineObject::feedEventLoop();
-    QSignalSpy spy(m_pcbInterface.get(), &cPCBInterface::serverAnswer);
+    QSignalSpy spy(m_pcbInterface.get(), &AbstractServerInterface::serverAnswer);
 
     m_pcbInterface->setRange("m0", "8V");
     TimeMachineObject::feedEventLoop();
@@ -75,7 +75,7 @@ void test_notificationcontents::rangesChangeWithoutValue()
 {
     m_pcbInterface->registerNotifier("SENSE:m0:RANGE:CATALOG?", notifierId, false);
     TimeMachineObject::feedEventLoop();
-    QSignalSpy spy(m_pcbInterface.get(), &cPCBInterface::serverAnswer);
+    QSignalSpy spy(m_pcbInterface.get(), &AbstractServerInterface::serverAnswer);
 
     m_pcbInterface->setMMode("ADJ");
     TimeMachineObject::feedEventLoop();
@@ -90,7 +90,7 @@ void test_notificationcontents::rangesChangeWithValue()
 {
     m_pcbInterface->registerNotifier("SENSE:m0:RANGE:CATALOG?", notifierId, true);
     TimeMachineObject::feedEventLoop();
-    QSignalSpy spy(m_pcbInterface.get(), &cPCBInterface::serverAnswer);
+    QSignalSpy spy(m_pcbInterface.get(), &AbstractServerInterface::serverAnswer);
 
     m_pcbInterface->setMMode("ADJ");
     TimeMachineObject::feedEventLoop();

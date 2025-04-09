@@ -62,7 +62,7 @@ void test_mockservice_com5003d_full::smokeTestSystemInterface()
 void test_mockservice_com5003d_full::smokeTestStatusInterface()
 {
     // That caused biseceting sessions: system interface uses uninitialized sense interface
-    QSignalSpy responseSpy(m_pcbIFace.get(), &Zera::cPCBInterface::serverAnswer);
+    QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
     int msgNr = m_pcbIFace->getAdjustmentStatus();
     TimeMachineObject::feedEventLoop();
 
@@ -74,7 +74,7 @@ void test_mockservice_com5003d_full::smokeTestStatusInterface()
 
 void test_mockservice_com5003d_full::smokeTestSenseInterface()
 {
-    QSignalSpy responseSpy(m_pcbIFace.get(), &Zera::cPCBInterface::serverAnswer);
+    QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
     int msgNr = m_pcbIFace->getChannelList();
     TimeMachineObject::feedEventLoop();
 
@@ -86,7 +86,7 @@ void test_mockservice_com5003d_full::smokeTestSenseInterface()
 
 void test_mockservice_com5003d_full::smokeTestFoutGroupChannelResourceAndInterface()
 {
-    QSignalSpy responseSpy(m_pcbIFace.get(), &Zera::cPCBInterface::serverAnswer);
+    QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
     int msgNr = m_pcbIFace->getSourceCat();
     TimeMachineObject::feedEventLoop();
 

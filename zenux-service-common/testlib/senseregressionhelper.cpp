@@ -126,7 +126,7 @@ QByteArray SenseRegressionHelper::genJsonConstantValuesAllRanges(QList<SenseSyst
 {
     QJsonObject jsonAll;
     for(const auto &channelSetting : channelSettings) {
-        QSignalSpy responseSpy(pcbIFace, &Zera::cPCBInterface::serverAnswer);
+        QSignalSpy responseSpy(pcbIFace, &AbstractServerInterface::serverAnswer);
         pcbIFace->getRangeList(channelSetting->m_nameMx);
         TimeMachineObject::feedEventLoop();
 

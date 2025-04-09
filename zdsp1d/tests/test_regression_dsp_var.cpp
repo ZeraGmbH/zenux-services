@@ -51,13 +51,13 @@ void test_regression_dsp_var::createResultVariables()
     dspData->addVarItem(new cDspVar("Result1", 1, DSPDATA::vDspResult, DSPDATA::dFloat));
     dspData->addVarItem(new cDspVar("Result2", 3, DSPDATA::vDspResult, DSPDATA::dInt));
 
-    QSignalSpy spyCreate(m_dspIFace.get(), &Zera::cDSPInterface::serverAnswer);
+    QSignalSpy spyCreate(m_dspIFace.get(), &AbstractServerInterface::serverAnswer);
     m_dspIFace->varList2Dsp();
     TimeMachineObject::feedEventLoop();
     QCOMPARE(spyCreate.count(), 1);
     QCOMPARE(spyCreate[0][2], ZSCPI::scpiAnswer[ZSCPI::ack]);
 
-    QSignalSpy spyRead(m_dspIFace.get(), &Zera::cDSPInterface::serverAnswer);
+    QSignalSpy spyRead(m_dspIFace.get(), &AbstractServerInterface::serverAnswer);
     m_dspIFace->dspMemoryRead(dspData);
     TimeMachineObject::feedEventLoop();
     QCOMPARE(spyRead.count(), 1);
@@ -72,13 +72,13 @@ void test_regression_dsp_var::createTempVariables()
     dspData->addVarItem(new cDspVar("Temp1", 1, DSPDATA::vDspTemp, DSPDATA::dFloat));
     dspData->addVarItem(new cDspVar("Temp2", 3, DSPDATA::vDspTemp, DSPDATA::dInt));
 
-    QSignalSpy spyCreate(m_dspIFace.get(), &Zera::cDSPInterface::serverAnswer);
+    QSignalSpy spyCreate(m_dspIFace.get(), &AbstractServerInterface::serverAnswer);
     m_dspIFace->varList2Dsp();
     TimeMachineObject::feedEventLoop();
     QCOMPARE(spyCreate.count(), 1);
     QCOMPARE(spyCreate[0][2], ZSCPI::scpiAnswer[ZSCPI::ack]);
 
-    QSignalSpy spyRead(m_dspIFace.get(), &Zera::cDSPInterface::serverAnswer);
+    QSignalSpy spyRead(m_dspIFace.get(), &AbstractServerInterface::serverAnswer);
     m_dspIFace->dspMemoryRead(dspData);
     TimeMachineObject::feedEventLoop();
     QCOMPARE(spyRead.count(), 1);
@@ -93,14 +93,14 @@ void test_regression_dsp_var::createInternalVariables()
     dspData->addVarItem(new cDspVar("Internal1", 1, DSPDATA::vDspIntVar, DSPDATA::dFloat));
     dspData->addVarItem(new cDspVar("Internal2", 3, DSPDATA::vDspIntVar, DSPDATA::dInt));
 
-    QSignalSpy spy(m_dspIFace.get(), &Zera::cDSPInterface::serverAnswer);
+    QSignalSpy spy(m_dspIFace.get(), &AbstractServerInterface::serverAnswer);
     m_dspIFace->varList2Dsp();
     TimeMachineObject::feedEventLoop();
 
     QCOMPARE(spy.count(), 1);
     QCOMPARE(spy[0][2], ZSCPI::scpiAnswer[ZSCPI::ack]);
 
-    QSignalSpy spyRead(m_dspIFace.get(), &Zera::cDSPInterface::serverAnswer);
+    QSignalSpy spyRead(m_dspIFace.get(), &AbstractServerInterface::serverAnswer);
     m_dspIFace->dspMemoryRead(dspData);
     TimeMachineObject::feedEventLoop();
     QCOMPARE(spyRead.count(), 1);
@@ -113,13 +113,13 @@ void test_regression_dsp_var::createTempGlobalNoRead()
     dspData->addVarItem(new cDspVar("TempGlobal1", 1, DSPDATA::vDspTempGlobal, DSPDATA::dFloat));
     dspData->addVarItem(new cDspVar("TempGlobal2", 2, DSPDATA::vDspTempGlobal, DSPDATA::dInt));
 
-    QSignalSpy spyCreate(m_dspIFace.get(), &Zera::cDSPInterface::serverAnswer);
+    QSignalSpy spyCreate(m_dspIFace.get(), &AbstractServerInterface::serverAnswer);
     m_dspIFace->varList2Dsp();
     TimeMachineObject::feedEventLoop();
     QCOMPARE(spyCreate.count(), 1);
     QCOMPARE(spyCreate[0][2], ZSCPI::scpiAnswer[ZSCPI::ack]);
 
-    QSignalSpy spyRead(m_dspIFace.get(), &Zera::cDSPInterface::serverAnswer);
+    QSignalSpy spyRead(m_dspIFace.get(), &AbstractServerInterface::serverAnswer);
     m_dspIFace->dspMemoryRead(dspData);
     TimeMachineObject::feedEventLoop();
     QCOMPARE(spyRead.count(), 1);
@@ -131,14 +131,14 @@ void test_regression_dsp_var::createGlobalNoRead()
     cDspMeasData* dspData = m_dspIFace->getMemHandle("createGlobalNoRead");
     dspData->addVarItem(new cDspVar("TempGlobal1", 1, DSPDATA::vDspTempGlobal));
 
-    QSignalSpy spyCreate(m_dspIFace.get(), &Zera::cDSPInterface::serverAnswer);
+    QSignalSpy spyCreate(m_dspIFace.get(), &AbstractServerInterface::serverAnswer);
     m_dspIFace->varList2Dsp();
     TimeMachineObject::feedEventLoop();
 
     QCOMPARE(spyCreate.count(), 1);
     QCOMPARE(spyCreate[0][2], ZSCPI::scpiAnswer[ZSCPI::ack]);
 
-    QSignalSpy spyRead(m_dspIFace.get(), &Zera::cDSPInterface::serverAnswer);
+    QSignalSpy spyRead(m_dspIFace.get(), &AbstractServerInterface::serverAnswer);
     m_dspIFace->dspMemoryRead(dspData);
     TimeMachineObject::feedEventLoop();
     QCOMPARE(spyRead.count(), 1);
@@ -340,7 +340,7 @@ void test_regression_dsp_var::multipleClientsCreateResultVars()
     TimeMachineObject::feedEventLoop();
 
     // client1 read client1 vars
-    QSignalSpy spyRead1(m_dspIFace.get(), &Zera::cDSPInterface::serverAnswer);
+    QSignalSpy spyRead1(m_dspIFace.get(), &AbstractServerInterface::serverAnswer);
     m_dspIFace->dspMemoryRead(dspData1);
     TimeMachineObject::feedEventLoop();
     QCOMPARE(spyRead1[0][1], ZSCPI::ack);
@@ -353,7 +353,7 @@ void test_regression_dsp_var::multipleClientsCreateResultVars()
     QCOMPARE(spyRead1[0][2].toString(), "errexec");
 
     // client2 read client2 vars
-    QSignalSpy spyRead2(dspIFace2.get(), &Zera::cDSPInterface::serverAnswer);
+    QSignalSpy spyRead2(dspIFace2.get(), &AbstractServerInterface::serverAnswer);
     dspIFace2->dspMemoryRead(dspData2);
     TimeMachineObject::feedEventLoop();
     QCOMPARE(spyRead2[0][1], ZSCPI::ack);

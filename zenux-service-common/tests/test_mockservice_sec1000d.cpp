@@ -52,7 +52,7 @@ Zera::cSECInterfacePtr test_mockservice_sec1000d::getSecInterface()
 void test_mockservice_sec1000d::getChannelCatSec1000d()
 {
     Zera::cSECInterfacePtr secInterface = getSecInterface();
-    QSignalSpy responseSpy(secInterface.get(), &Zera::cSECInterface::serverAnswer);
+    QSignalSpy responseSpy(secInterface.get(), &AbstractServerInterface::serverAnswer);
     int msgNr = secInterface->getChannelCatalog();
     TimeMachineObject::feedEventLoop();
 
@@ -69,7 +69,7 @@ void test_mockservice_sec1000d::getChannelCatSec1000d()
 void test_mockservice_sec1000d::freeSecResourcesWhenClientDisconnects()
 {
     Zera::cSECInterfacePtr secInterface1 = getSecInterface();
-    QSignalSpy responseSpy1(secInterface1.get(), &Zera::cSECInterface::serverAnswer);
+    QSignalSpy responseSpy1(secInterface1.get(), &AbstractServerInterface::serverAnswer);
     secInterface1->setECalcUnit(4); //max 4 sec channels can be set at a time
     TimeMachineObject::feedEventLoop();
     QCOMPARE(responseSpy1.count(), 1);
@@ -77,7 +77,7 @@ void test_mockservice_sec1000d::freeSecResourcesWhenClientDisconnects()
     QCOMPARE(responseSpy1[0][2], QVariant("ec0;ec1;ec2;ec3;"));
 
     Zera::cSECInterfacePtr secInterface2 = getSecInterface();
-    QSignalSpy responseSpy2(secInterface2.get(), &Zera::cSECInterface::serverAnswer);
+    QSignalSpy responseSpy2(secInterface2.get(), &AbstractServerInterface::serverAnswer);
     secInterface2->setECalcUnit(4);
     TimeMachineObject::feedEventLoop();
     QCOMPARE(responseSpy2.count(), 1);
@@ -91,7 +91,7 @@ void test_mockservice_sec1000d::freeSecResourcesWhenClientDisconnects()
     m_proxy = std::make_unique<ProxyForTest>();
 
     Zera::cSECInterfacePtr secInterface3 = getSecInterface();
-    QSignalSpy responseSpy3(secInterface3.get(), &Zera::cSECInterface::serverAnswer);
+    QSignalSpy responseSpy3(secInterface3.get(), &AbstractServerInterface::serverAnswer);
     secInterface3->setECalcUnit(4);
     TimeMachineObject::feedEventLoop();
     QCOMPARE(responseSpy3.count(), 1);

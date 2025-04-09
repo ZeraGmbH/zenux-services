@@ -41,7 +41,7 @@ void test_mockservice_zdsp1d::getDspLcaVersion()
     Zera::Proxy::getInstance()->startConnectionSmart(dspClient);
     TimeMachineObject::feedEventLoop();
 
-    QSignalSpy responseSpy(&dspIFace, &Zera::cDSPInterface::serverAnswer);
+    QSignalSpy responseSpy(&dspIFace, &AbstractServerInterface::serverAnswer);
     int msgNr = dspIFace.readDeviceVersion();
     TimeMachineObject::feedEventLoop();
 
@@ -60,7 +60,7 @@ void test_mockservice_zdsp1d::getServerVersion()
     Zera::Proxy::getInstance()->startConnectionSmart(dspClient);
     TimeMachineObject::feedEventLoop();
 
-    QSignalSpy responseSpy(&dspIFace, &Zera::cDSPInterface::serverAnswer);
+    QSignalSpy responseSpy(&dspIFace, &AbstractServerInterface::serverAnswer);
     int msgNr = dspIFace.readServerVersion();
     TimeMachineObject::feedEventLoop();
 

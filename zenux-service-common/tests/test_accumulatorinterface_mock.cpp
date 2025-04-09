@@ -36,7 +36,7 @@ constexpr int ACCU_POLLING_PERIOD_MS = 1000;
 void test_accumulatorinterface_mock::readAccuStatusAccuDisabled()
 {
     setupServers(":/accu_disabled.xml");
-    QSignalSpy responseSpy(m_pcbIFace.get(), &Zera::cPCBInterface::serverAnswer);
+    QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
 
     TimeMachineForTest::getInstance()->processTimers(ACCU_POLLING_PERIOD_MS);
 
@@ -52,7 +52,7 @@ void test_accumulatorinterface_mock::readAccuStatusAccuDisabled()
 void test_accumulatorinterface_mock::readAccuStateOfChargeAccuDisabled()
 {
     setupServers(":/accu_disabled.xml");
-    QSignalSpy responseSpy(m_pcbIFace.get(), &Zera::cPCBInterface::serverAnswer);
+    QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
 
     TimeMachineForTest::getInstance()->processTimers(ACCU_POLLING_PERIOD_MS);
 
@@ -68,7 +68,7 @@ void test_accumulatorinterface_mock::readAccuStateOfChargeAccuDisabled()
 void test_accumulatorinterface_mock::readAccuStatusAccuEnabled()
 {
     setupServers(":/accu_enabled.xml");
-    QSignalSpy responseSpy(m_pcbIFace.get(), &Zera::cPCBInterface::serverAnswer);
+    QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
 
     TimeMachineForTest::getInstance()->processTimers(ACCU_POLLING_PERIOD_MS);
 
@@ -84,7 +84,7 @@ void test_accumulatorinterface_mock::readAccuStatusAccuEnabled()
 void test_accumulatorinterface_mock::readAccuStateOfChargeAccuEnabled()
 {
     setupServers(":/accu_enabled.xml");
-    QSignalSpy responseSpy(m_pcbIFace.get(), &Zera::cPCBInterface::serverAnswer);
+    QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
 
     TimeMachineForTest::getInstance()->processTimers(ACCU_POLLING_PERIOD_MS);
 
