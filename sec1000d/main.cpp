@@ -3,10 +3,6 @@
 #include "zenuxdevicedetection.h"
 #include <tcpnetworkfactory.h>
 #include <QCoreApplication>
-#include <QFile>
-//#include <QTextCodec>
-#include <fcntl.h>
-#include <unistd.h>
 
 static int deduceEcUnitCount()
 {
