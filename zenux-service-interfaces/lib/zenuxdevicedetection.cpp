@@ -3,7 +3,7 @@
 
 QString ZenuxDeviceDetection::getDeviceNameFromKernelParam()
 {
-    QString zenuxDevice = QStringLiteral("unknown");
+    QString zenuxDevice;
     QString procKernelParamFilename = QStringLiteral("/proc/cmdline");
     QFile file(procKernelParamFilename);
     if(file.open(QIODevice::ReadOnly)) {
