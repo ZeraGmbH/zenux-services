@@ -1,11 +1,9 @@
 #ifndef SECINTERFACE_H
 #define SECINTERFACE_H
 
+#include "abstractserverInterface.h"
 #include "service-interfaces_export.h"
 #include <proxyclient.h>
-#include <QObject>
-#include <QAbstractSocket>
-#include <QVariant>
 
 namespace ECALCREG {
     enum { CMD, CONF, STATUS, INTMASK, INTREG, MTCNTin, MTCNTfin, MTCNTact, MTPULSin = 12, MTPAUSEin, MTPULS, MTPAUSE};
@@ -44,7 +42,7 @@ namespace ECALCRESULT {
 namespace Zera {
 class cSECInterfacePrivate;
 
-class SERVICE_INTERFACES_EXPORT cSECInterface: public QObject
+class SERVICE_INTERFACES_EXPORT cSECInterface: public AbstractServerInterface
 {
     Q_OBJECT
 public:
@@ -68,9 +66,6 @@ public:
     quint32 registerNotifier(QString query); // register for notification on change
     quint32 unregisterNotifiers(); // unregister from all notifications
     static constexpr quint32 maxSecCounterInitVal = std::numeric_limits<quint32>::max() - 1;
-signals:
-    void tcpError(QAbstractSocket::SocketError errorCode);
-    void serverAnswer(quint32 msgnr, quint8 reply, QVariant answer);
 
 private:
     Q_DECLARE_PRIVATE(cSECInterface)
