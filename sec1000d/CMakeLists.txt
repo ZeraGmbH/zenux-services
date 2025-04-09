@@ -3,8 +3,9 @@ add_executable(sec1000d
     )
 
 target_link_libraries(sec1000d
-    PUBLIC
+    PRIVATE
     sec1000d-lib
+    service-interfaces
     )
 
 install(TARGETS sec1000d

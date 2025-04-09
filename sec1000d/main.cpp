@@ -1,5 +1,6 @@
 #include "sec1000d.h"
 #include "factorydevicenodesec.h"
+#include "zenuxdevicedetection.h"
 #include <tcpnetworkfactory.h>
 #include <QCoreApplication>
 #include <QFile>
@@ -9,22 +10,7 @@
 
 static int deduceEcUnitCount()
 {
-    // stolen from cStatusModuleInit::findDeviceType (another one is in ModulemanagerConfig::getDevNameFromUBoot)
-    // TODO: Find a common place
-    QString zenuxDevice = QStringLiteral("unknown");
-    QString procKernelParamFilename = QStringLiteral("/proc/cmdline");
-    QFile file(procKernelParamFilename);
-    if(file.open(QIODevice::ReadOnly)) {
-        const QStringList kernelParams = QString::fromLatin1(file.readAll()).split(QStringLiteral(" "));
-        QString paramSearch = QStringLiteral("zera_device=");
-        for(auto param : kernelParams) {
-            if(param.contains(paramSearch)) {
-                zenuxDevice = param.replace(paramSearch, QString()).trimmed();
-                break;
-            }
-        }
-        file.close();
-    }
+    const QString zenuxDevice = ZenuxDeviceDetection::getDeviceNameFromKernelParam();
     int ecUnitCount = cSEC1000dServer::Mtxxxs2EcUnitCount;
     if (zenuxDevice.toUpper().contains("COM5003"))
         ecUnitCount = cSEC1000dServer::Com5003EcUnitCount;
