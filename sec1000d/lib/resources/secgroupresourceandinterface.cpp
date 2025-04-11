@@ -87,7 +87,6 @@ void SecGroupResourceAndInterface::executeProtoScpi(int cmdCode, cProtonetComman
     }
 }
 
-
 void SecGroupResourceAndInterface::registerResource(RMConnection *rmConnection, quint16 port)
 {
     // we register all our error calculator units as resources
@@ -98,7 +97,6 @@ void SecGroupResourceAndInterface::registerResource(RMConnection *rmConnection, 
 
 }
 
-
 QList<SecChannel *> SecGroupResourceAndInterface::getECalcChannelList()
 {
     return m_ECalculatorChannelList;
@@ -106,11 +104,10 @@ QList<SecChannel *> SecGroupResourceAndInterface::getECalcChannelList()
 
 bool SecGroupResourceAndInterface::freeChannelsForThisPeer(VeinTcp::TcpPeer *peer)
 {
-    bool result = true;
     for(const QByteArray &client : qAsConst(m_peerClientsHash[peer]))
         if(!freeChannelsFromAClient(client))
-            result = false;
-    return result;
+            return false;
+    return true;
 }
 
 QString SecGroupResourceAndInterface::scpiReadVersion(const QString &scpi)
