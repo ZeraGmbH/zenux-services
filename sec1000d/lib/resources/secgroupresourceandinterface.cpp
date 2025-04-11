@@ -34,19 +34,11 @@ SecGroupResourceAndInterface::SecGroupResourceAndInterface(std::shared_ptr<cSCPI
     }
 }
 
-
 SecGroupResourceAndInterface::~SecGroupResourceAndInterface()
 {
-    SecChannel* cptr;
-
-    int n = m_ECalculatorChannelList.count();
-    for (int i = 0; i < n; i++)
-    {
-        cptr = m_ECalculatorChannelList.at(i);
-        delete cptr;
-    }
+    for (SecChannel* channel : m_ECalculatorChannelList)
+        delete channel;
 }
-
 
 void SecGroupResourceAndInterface::initSCPIConnection(QString leadingNodes)
 {
