@@ -62,24 +62,24 @@ SecChannel::~SecChannel()
 void SecChannel::initSCPIConnection(QString leadingNodes)
 {
     ensureTrailingColonOnNonEmptyParentNodes(leadingNodes);
-    addDelegate(QString("%1%2").arg(leadingNodes, m_sName), QString("R%1").arg(ECALCREG::CMD), SCPI::isCmdwP | SCPI::isQuery, m_scpiInterface, cmdRegister);
-    addDelegate(QString("%1%2").arg(leadingNodes, m_sName), QString("R%1").arg(ECALCREG::CONF), SCPI::isCmdwP | SCPI::isQuery, m_scpiInterface, cmdRegister);
-    addDelegate(QString("%1%2").arg(leadingNodes, m_sName), QString("R%1").arg(ECALCREG::STATUS), SCPI::isQuery, m_scpiInterface, cmdRegister);
-    addDelegate(QString("%1%2").arg(leadingNodes, m_sName), QString("R%1").arg(ECALCREG::INTMASK), SCPI::isCmdwP | SCPI::isQuery, m_scpiInterface, cmdRegister);
-    addDelegate(QString("%1%2").arg(leadingNodes, m_sName), QString("R%1").arg(ECALCREG::INTREG), SCPI::isCmdwP | SCPI::isQuery, m_scpiInterface, cmdRegister);
-    addDelegate(QString("%1%2").arg(leadingNodes, m_sName), QString("R%1").arg(ECALCREG::MTCNTin), SCPI::isCmdwP | SCPI::isQuery, m_scpiInterface, cmdRegister);
-    addDelegate(QString("%1%2").arg(leadingNodes, m_sName), QString("R%1").arg(ECALCREG::MTCNTfin), SCPI::isQuery, m_scpiInterface, cmdRegister);
-    addDelegate(QString("%1%2").arg(leadingNodes, m_sName), QString("R%1").arg(ECALCREG::MTCNTact), SCPI::isQuery, m_scpiInterface, cmdRegister);
-    addDelegate(QString("%1%2").arg(leadingNodes, m_sName), QString("R%1").arg(ECALCREG::MTPULSin), SCPI::isCmdwP | SCPI::isQuery, m_scpiInterface, cmdRegister);
-    addDelegate(QString("%1%2").arg(leadingNodes, m_sName), QString("R%1").arg(ECALCREG::MTPAUSEin), SCPI::isCmdwP | SCPI::isQuery, m_scpiInterface, cmdRegister);
-    addDelegate(QString("%1%2").arg(leadingNodes, m_sName), QString("R%1").arg(ECALCREG::MTPULS), SCPI::isCmdwP | SCPI::isQuery, m_scpiInterface, cmdRegister);
-    addDelegate(QString("%1%2").arg(leadingNodes, m_sName), QString("R%1").arg(ECALCREG::MTPAUSE), SCPI::isCmdwP | SCPI::isQuery, m_scpiInterface, cmdRegister);
-    addDelegate(QString("%1%2").arg(leadingNodes, m_sName),"SYNC", SCPI::isCmdwP, m_scpiInterface, setSync);
-    addDelegate(QString("%1%2").arg(leadingNodes, m_sName),"MUX", SCPI::isCmdwP, m_scpiInterface, setMux);
-    addDelegate(QString("%1%2").arg(leadingNodes, m_sName),"CMDID", SCPI::isCmdwP, m_scpiInterface, setCmdid);
-    addDelegate(QString("%1%2").arg(leadingNodes, m_sName),"START", SCPI::isCmdwP, m_scpiInterface, start);
-    addDelegate(QString("%1%2").arg(leadingNodes, m_sName),"STOP", SCPI::isCmdwP, m_scpiInterface, stop);
-    addDelegate(QString("%1%2").arg(leadingNodes, m_sName),"INTACK", SCPI::isCmdwP, m_scpiInterface, intAcknowledge);
+    addDelegate(QString("%1%2").arg(leadingNodes, getName()), QString("R%1").arg(ECALCREG::CMD), SCPI::isCmdwP | SCPI::isQuery, m_scpiInterface, cmdRegister);
+    addDelegate(QString("%1%2").arg(leadingNodes, getName()), QString("R%1").arg(ECALCREG::CONF), SCPI::isCmdwP | SCPI::isQuery, m_scpiInterface, cmdRegister);
+    addDelegate(QString("%1%2").arg(leadingNodes, getName()), QString("R%1").arg(ECALCREG::STATUS), SCPI::isQuery, m_scpiInterface, cmdRegister);
+    addDelegate(QString("%1%2").arg(leadingNodes, getName()), QString("R%1").arg(ECALCREG::INTMASK), SCPI::isCmdwP | SCPI::isQuery, m_scpiInterface, cmdRegister);
+    addDelegate(QString("%1%2").arg(leadingNodes, getName()), QString("R%1").arg(ECALCREG::INTREG), SCPI::isCmdwP | SCPI::isQuery, m_scpiInterface, cmdRegister);
+    addDelegate(QString("%1%2").arg(leadingNodes, getName()), QString("R%1").arg(ECALCREG::MTCNTin), SCPI::isCmdwP | SCPI::isQuery, m_scpiInterface, cmdRegister);
+    addDelegate(QString("%1%2").arg(leadingNodes, getName()), QString("R%1").arg(ECALCREG::MTCNTfin), SCPI::isQuery, m_scpiInterface, cmdRegister);
+    addDelegate(QString("%1%2").arg(leadingNodes, getName()), QString("R%1").arg(ECALCREG::MTCNTact), SCPI::isQuery, m_scpiInterface, cmdRegister);
+    addDelegate(QString("%1%2").arg(leadingNodes, getName()), QString("R%1").arg(ECALCREG::MTPULSin), SCPI::isCmdwP | SCPI::isQuery, m_scpiInterface, cmdRegister);
+    addDelegate(QString("%1%2").arg(leadingNodes, getName()), QString("R%1").arg(ECALCREG::MTPAUSEin), SCPI::isCmdwP | SCPI::isQuery, m_scpiInterface, cmdRegister);
+    addDelegate(QString("%1%2").arg(leadingNodes, getName()), QString("R%1").arg(ECALCREG::MTPULS), SCPI::isCmdwP | SCPI::isQuery, m_scpiInterface, cmdRegister);
+    addDelegate(QString("%1%2").arg(leadingNodes, getName()), QString("R%1").arg(ECALCREG::MTPAUSE), SCPI::isCmdwP | SCPI::isQuery, m_scpiInterface, cmdRegister);
+    addDelegate(QString("%1%2").arg(leadingNodes, getName()),"SYNC", SCPI::isCmdwP, m_scpiInterface, setSync);
+    addDelegate(QString("%1%2").arg(leadingNodes, getName()),"MUX", SCPI::isCmdwP, m_scpiInterface, setMux);
+    addDelegate(QString("%1%2").arg(leadingNodes, getName()),"CMDID", SCPI::isCmdwP, m_scpiInterface, setCmdid);
+    addDelegate(QString("%1%2").arg(leadingNodes, getName()),"START", SCPI::isCmdwP, m_scpiInterface, start);
+    addDelegate(QString("%1%2").arg(leadingNodes, getName()),"STOP", SCPI::isCmdwP, m_scpiInterface, stop);
+    addDelegate(QString("%1%2").arg(leadingNodes, getName()),"INTACK", SCPI::isCmdwP, m_scpiInterface, intAcknowledge);
 }
 
 
