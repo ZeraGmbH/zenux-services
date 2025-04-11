@@ -42,7 +42,6 @@ private:
     SecCalculatorSettings* m_pecalcsettings;
     SecInputSettings* m_pInputSettings;
     quint16 m_nNr;
-    quint32 m_nBaseAdress;
     quint32 m_nMyAdress;
 
     QList<quint32> CMDIDList;

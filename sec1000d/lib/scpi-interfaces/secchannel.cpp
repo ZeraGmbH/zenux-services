@@ -41,8 +41,7 @@ SecChannel::SecChannel(std::shared_ptr<cSCPI> scpiInterface,
     m_nNr(nr),
     m_funcSigHandler(funcSigHandler)
 {
-    m_nBaseAdress = m_pecalcsettings->getBaseAdress();
-    m_nMyAdress = m_nBaseAdress + (nr << 6);
+    m_nMyAdress = m_pecalcsettings->getBaseAdress() + (nr << 6);
     m_sName = QString("%1%2").arg(baseChnName).arg(nr);
     m_bSet = false;
 
