@@ -21,8 +21,6 @@ SecGroupResourceAndInterface::SecGroupResourceAndInterface(std::shared_ptr<cSCPI
     m_pecalcsettings(ecalcSettings),
     m_pInputSettings(inputsettings)
 {
-    m_sVersion = ECalcSystem::Version;
-
     int n = m_pecalcsettings->getNumber();
     for (int i = 0; i < n; i++ ) {
         SecChannel* eChan = new SecChannel(m_scpiInterface,
@@ -123,9 +121,8 @@ bool SecGroupResourceAndInterface::freeChannelsForThisPeer(VeinTcp::TcpPeer *pee
 QString SecGroupResourceAndInterface::scpiReadVersion(const QString &scpi)
 {
     cSCPICommand cmd = scpi;
-
     if (cmd.isQuery())
-        return m_sVersion;
+        return ECalcSystem::Version;
     else
         return ZSCPI::scpiAnswer[ZSCPI::nak];
 }

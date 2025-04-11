@@ -38,8 +38,6 @@ private:
     SecCalculatorSettings* m_pecalcsettings;
     SecInputSettings* m_pInputSettings;
 
-    QString m_sVersion;
-
     QList<SecChannel*> m_ECalculatorChannelList;
     QHash<QByteArray, QString> m_ClientECalcHash; // we hold the set ecalculators by clientid
     QHash<VeinTcp::TcpPeer*, QList<QByteArray>> m_peerClientsHash;
