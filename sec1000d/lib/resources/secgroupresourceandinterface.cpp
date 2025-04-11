@@ -23,7 +23,6 @@ SecGroupResourceAndInterface::SecGroupResourceAndInterface(std::shared_ptr<cSCPI
 {
     m_sVersion = ECalcSystem::Version;
 
-    // first we create the configured number of error calculators and attach them into a hash table for better access
     int n = m_pecalcsettings->getNumber();
     for (int i = 0; i < n; i++ ) {
         SecChannel* eChan = new SecChannel(m_scpiInterface,
@@ -33,7 +32,6 @@ SecGroupResourceAndInterface::SecGroupResourceAndInterface(std::shared_ptr<cSCPI
                                            funcSigHandler,
                                            deviceNodeFactory);
         m_ECalculatorChannelList.append(eChan); // we have a list for seq. access
-        m_ECalculatorChannelHash[eChan->getName()] = eChan; // and a hash for access by channel name
         m_ECalculatorChannelList.at(i)->m_StopErrorCalculator(); // initially we stop all ec's
         m_ECalculatorChannelList.at(i)->resetInterrupt(0xF); // and reset all interrupts
     }
@@ -213,8 +211,10 @@ bool SecGroupResourceAndInterface::freeChannelsFromAClient(QByteArray clientID)
     if (m_ClientECalcHash.contains(clientID)) {
         QStringList clientEcChannels = m_ClientECalcHash[clientID].split(";");
         for (const QString &ecChannel : clientEcChannels) {
-            if (m_ECalculatorChannelHash.contains(ecChannel))
-                m_ECalculatorChannelHash[ecChannel]->free();
+            for (SecChannel* channel : m_ECalculatorChannelList) {
+                if (channel->getName() == ecChannel)
+                    channel->free();
+            }
         }
         return true;
     }

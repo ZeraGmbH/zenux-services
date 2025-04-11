@@ -41,7 +41,6 @@ private:
     QString m_sVersion;
 
     QList<SecChannel*> m_ECalculatorChannelList;
-    QHash<QString,SecChannel*> m_ECalculatorChannelHash;
     QHash<QByteArray, QString> m_ClientECalcHash; // we hold the set ecalculators by clientid
     QHash<VeinTcp::TcpPeer*, QList<QByteArray>> m_peerClientsHash;
 
