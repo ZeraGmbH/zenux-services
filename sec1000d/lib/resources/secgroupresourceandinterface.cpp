@@ -40,24 +40,24 @@ SecGroupResourceAndInterface::~SecGroupResourceAndInterface()
         delete channel;
 }
 
-void SecGroupResourceAndInterface::connectChannelSignalsAndInitScpi(const QString &leadingNodes)
+void SecGroupResourceAndInterface::connectChannelSignalsAndInitScpi()
 {
     for (int i = 0; i < m_ECalculatorChannelList.count(); i++) {
         connect(m_ECalculatorChannelList.at(i), &ScpiConnection::valNotifier, this, &ScpiConnection::valNotifier);
         connect(m_ECalculatorChannelList.at(i), &ScpiConnection::cmdExecutionDone, this, &ScpiConnection::cmdExecutionDone);
-        m_ECalculatorChannelList.at(i)->initSCPIConnection(QString("%1ECALCULATOR").arg(leadingNodes));
+        m_ECalculatorChannelList.at(i)->initSCPIConnection("ECALCULATOR");
     }
 }
 
 void SecGroupResourceAndInterface::initSCPIConnection(QString leadingNodes)
 {
-    ensureTrailingColonOnNonEmptyParentNodes(leadingNodes);
-    addDelegate(QString("%1ECALCULATOR").arg(leadingNodes),"VERSION",SCPI::isQuery,m_scpiInterface, cmdVersion);
-    addDelegate(QString("%1ECALCULATOR:CHANNEL").arg(leadingNodes),"CATALOG", SCPI::isQuery, m_scpiInterface, cmdChannelCat);
-    addDelegate(QString("%1ECALCULATOR").arg(leadingNodes),"SET",SCPI::CmdwP,m_scpiInterface, cmdSetChannels);
-    addDelegate(QString("%1ECALCULATOR").arg(leadingNodes),"FREE",SCPI::CmdwP,m_scpiInterface, cmdFreeChannels);
+    Q_UNUSED(leadingNodes);
+    addDelegate("ECALCULATOR", "VERSION",SCPI::isQuery, m_scpiInterface, cmdVersion);
+    addDelegate("ECALCULATOR:CHANNEL", "CATALOG", SCPI::isQuery, m_scpiInterface, cmdChannelCat);
+    addDelegate("ECALCULATOR", "SET",SCPI::CmdwP, m_scpiInterface, cmdSetChannels);
+    addDelegate("ECALCULATOR", "FREE",SCPI::CmdwP, m_scpiInterface, cmdFreeChannels);
 
-    connectChannelSignalsAndInitScpi(leadingNodes);
+    connectChannelSignalsAndInitScpi();
 }
 
 void SecGroupResourceAndInterface::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)

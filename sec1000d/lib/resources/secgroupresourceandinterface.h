@@ -47,7 +47,7 @@ private:
     void scpiSetChannels(cProtonetCommand *protoCmd);
     void scpiFreeChannels(cProtonetCommand *protoCmd);
     bool freeChannelsFromAClient(QByteArray clientID);
-    void connectChannelSignalsAndInitScpi(const QString &leadingNodes);
+    void connectChannelSignalsAndInitScpi();
 };
 
 #endif // SECGROUPRESOURCEANDINTERFACE_H
