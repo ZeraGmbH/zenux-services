@@ -21,17 +21,16 @@ SecGroupResourceAndInterface::SecGroupResourceAndInterface(std::shared_ptr<cSCPI
     m_pecalcsettings(ecalcSettings),
     m_pInputSettings(inputsettings)
 {
-    int n = m_pecalcsettings->getNumber();
-    for (int i = 0; i < n; i++ ) {
+    for (int channelNo = 0; channelNo < m_pecalcsettings->getNumber(); channelNo++) {
         SecChannel* eChan = new SecChannel(m_scpiInterface,
                                            m_pecalcsettings,
                                            m_pInputSettings,
-                                           i,
+                                           channelNo,
                                            funcSigHandler,
                                            deviceNodeFactory);
-        m_ECalculatorChannelList.append(eChan); // we have a list for seq. access
-        m_ECalculatorChannelList.at(i)->m_StopErrorCalculator(); // initially we stop all ec's
-        m_ECalculatorChannelList.at(i)->resetInterrupt(0xF); // and reset all interrupts
+        m_ECalculatorChannelList.append(eChan);
+        eChan->m_StopErrorCalculator();
+        eChan->resetInterrupt(0xF);
     }
 }
 
