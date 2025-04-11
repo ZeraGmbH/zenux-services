@@ -6,12 +6,7 @@
 
 static int deduceEcUnitCount()
 {
-    const QString zenuxDevice = ZenuxDeviceDetection::getDeviceNameFromKernelParam();
-    int ecUnitCount = cSEC1000dServer::Mtxxxs2EcUnitCount;
-    if (zenuxDevice.toUpper().contains("COM5003"))
-        ecUnitCount = cSEC1000dServer::Com5003EcUnitCount;
-    qInfo("Available error calculator units for %s: %i", qPrintable(zenuxDevice), ecUnitCount);
-    return ecUnitCount;
+    return 8;
 }
 
 int main( int argc, char *argv[] )
