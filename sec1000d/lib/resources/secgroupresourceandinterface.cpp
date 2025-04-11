@@ -115,28 +115,20 @@ QString SecGroupResourceAndInterface::scpiReadVersion(const QString &scpi)
     cSCPICommand cmd = scpi;
     if (cmd.isQuery())
         return ECalcSystem::Version;
-    else
-        return ZSCPI::scpiAnswer[ZSCPI::nak];
+    return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
-
 
 QString SecGroupResourceAndInterface::scpiReadECalculatorChannelCatalog(const QString &scpi)
 {
     cSCPICommand cmd = scpi;
-
-    if (cmd.isQuery())
-    {
-        QString s;
-        int n = m_ECalculatorChannelList.count();
-        for (int i = 0; i < n; i++)
-            s += QString("%1;").arg(m_ECalculatorChannelList.at(i)->getName());
-
-        return s;
+    if (cmd.isQuery()) {
+        QString ret;
+        for (int i = 0; i < m_ECalculatorChannelList.count(); i++)
+            ret += QString("%1;").arg(m_ECalculatorChannelList.at(i)->getName());
+        return ret;
     }
-    else
-        return ZSCPI::scpiAnswer[ZSCPI::nak];
+    return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
-
 
 void SecGroupResourceAndInterface::scpiSetChannels(cProtonetCommand *protoCmd)
 {
