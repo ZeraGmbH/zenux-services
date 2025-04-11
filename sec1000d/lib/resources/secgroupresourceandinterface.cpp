@@ -40,6 +40,15 @@ SecGroupResourceAndInterface::~SecGroupResourceAndInterface()
         delete channel;
 }
 
+void SecGroupResourceAndInterface::connectChannelSignalsAndInitScpi(const QString &leadingNodes)
+{
+    for (int i = 0; i < m_ECalculatorChannelList.count(); i++) {
+        connect(m_ECalculatorChannelList.at(i), &ScpiConnection::valNotifier, this, &ScpiConnection::valNotifier);
+        connect(m_ECalculatorChannelList.at(i), &ScpiConnection::cmdExecutionDone, this, &ScpiConnection::cmdExecutionDone);
+        m_ECalculatorChannelList.at(i)->initSCPIConnection(QString("%1ECALCULATOR").arg(leadingNodes));
+    }
+}
+
 void SecGroupResourceAndInterface::initSCPIConnection(QString leadingNodes)
 {
     ensureTrailingColonOnNonEmptyParentNodes(leadingNodes);
@@ -47,14 +56,9 @@ void SecGroupResourceAndInterface::initSCPIConnection(QString leadingNodes)
     addDelegate(QString("%1ECALCULATOR:CHANNEL").arg(leadingNodes),"CATALOG", SCPI::isQuery, m_scpiInterface, cmdChannelCat);
     addDelegate(QString("%1ECALCULATOR").arg(leadingNodes),"SET",SCPI::CmdwP,m_scpiInterface, cmdSetChannels);
     addDelegate(QString("%1ECALCULATOR").arg(leadingNodes),"FREE",SCPI::CmdwP,m_scpiInterface, cmdFreeChannels);
-    for (int i = 0; i < m_ECalculatorChannelList.count(); i++) {
-        // we also must connect the signals for notification and for output
-        connect(m_ECalculatorChannelList.at(i), &ScpiConnection::valNotifier, this, &ScpiConnection::valNotifier);
-        connect(m_ECalculatorChannelList.at(i), &ScpiConnection::cmdExecutionDone, this, &ScpiConnection::cmdExecutionDone);
-        m_ECalculatorChannelList.at(i)->initSCPIConnection(QString("%1ECALCULATOR").arg(leadingNodes));
-    }
-}
 
+    connectChannelSignalsAndInitScpi(leadingNodes);
+}
 
 void SecGroupResourceAndInterface::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
 {
