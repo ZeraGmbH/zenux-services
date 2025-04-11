@@ -25,7 +25,7 @@ public:
     ~SecChannel();
     virtual void initSCPIConnection(QString leadingNodes) override;
 
-    QString& getName();
+    QString getName() const;
     bool isfree();
     bool set(QByteArray id);
     void free();

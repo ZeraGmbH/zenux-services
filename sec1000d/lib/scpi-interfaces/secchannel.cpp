@@ -116,7 +116,7 @@ void SecChannel::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
 }
 
 
-QString &SecChannel::getName()
+QString SecChannel::getName() const
 {
     return m_sName;
 }
