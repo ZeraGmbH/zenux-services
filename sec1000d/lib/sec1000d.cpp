@@ -25,7 +25,7 @@
 #define ServerVersion "V1.00"
 
 const int cSEC1000dServer::Com5003EcUnitCount = 8;
-const int cSEC1000dServer::Mtxxxs2EcUnitCount = 15;
+const int cSEC1000dServer::Mtxxxs2EcUnitCount = 8;
 
 cSEC1000dServer* SECServer;
 
