@@ -202,8 +202,7 @@ void SecGroupResourceAndInterface::scpiFreeChannels(cProtonetCommand *protoCmd)
 {
     cSCPICommand cmd = protoCmd->m_sInput;
     protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::nak]; // preset
-    if (cmd.isCommand(0))
-    {
+    if (cmd.isCommand(0)) {
        if (freeChannelsFromAClient(protoCmd->m_clientId))
            protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::ack];
     }
@@ -211,18 +210,13 @@ void SecGroupResourceAndInterface::scpiFreeChannels(cProtonetCommand *protoCmd)
 
 bool SecGroupResourceAndInterface::freeChannelsFromAClient(QByteArray clientID)
 {
-    bool result = false;
-    if (m_ClientECalcHash.contains(clientID))
-    {
-       QStringList sl = m_ClientECalcHash[clientID].split(";");
-       for (int i = 0; i < sl.count(); i++)
-       {
-           QString key;
-           key = sl.at(i);
-           if (m_ECalculatorChannelHash.contains(key))
-               m_ECalculatorChannelHash[key]->free();
-       }
-       result = true;
+    if (m_ClientECalcHash.contains(clientID)) {
+        QStringList clientEcChannels = m_ClientECalcHash[clientID].split(";");
+        for (const QString &ecChannel : clientEcChannels) {
+            if (m_ECalculatorChannelHash.contains(ecChannel))
+                m_ECalculatorChannelHash[ecChannel]->free();
+        }
+        return true;
     }
-    return result;
+    return false;
 }
