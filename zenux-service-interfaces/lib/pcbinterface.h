@@ -59,7 +59,7 @@ public:
     quint32 getSampleRate(); // int the actual set sampling rate
     quint32 setPLLChannel(QString samplechnName, QString pllchnName);
 
-    // all commands to source interface
+    // all commands to source (=reference power) interface
     quint32 getSourceCat();
     quint32 getAliasSource(QString chnName); // qstring
     quint32 getDSPChannelSource(QString chnName); // int

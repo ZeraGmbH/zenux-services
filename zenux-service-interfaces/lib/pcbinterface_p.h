@@ -126,7 +126,7 @@ public:
     quint32 setPhaseNode(QString chnName, QString rngName, int nr, double corr, double at); // node nr, correction, loadpoint = frequency
     quint32 setOffsetNode(QString chnName, QString rngName, int nr, double corr, double at); // node nr, correction, loadpoint
 
-    // all commands to source interface
+    // all commands to source (=reference power) interface
     quint32 getAliasSource(QString chnName); // qstring
     quint32 getDSPChannelSource(QString chnName); // int
     quint32 getFormFactorSource(QString chnName); // double
