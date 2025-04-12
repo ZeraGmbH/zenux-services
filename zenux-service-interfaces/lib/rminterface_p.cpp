@@ -25,6 +25,18 @@ void cRMInterfacePrivate::setClientSmart(Zera::ProxyClientPtr client)
     setClient(client.get());
 }
 
+quint32 cRMInterfacePrivate::scpiCommand(const QString &scpi)
+{
+    quint32 msgnr;
+    QList<QString> sl = scpi.split(' ');
+    if (sl.count() <= 1)
+        msgnr = sendCommand(scpi);
+    else
+        msgnr = sendCommand(sl.at(0), sl.at(1));
+
+    m_MsgNrCmdList[msgnr] = rmscpi;
+    return msgnr;
+}
 
 quint32 cRMInterfacePrivate::rmIdent(QString name)
 {
@@ -141,6 +153,7 @@ void cRMInterfacePrivate::receiveAnswer(std::shared_ptr<ProtobufMessage::NetMess
         case removeresource:
         case setresource:
         case freeresource:
+        case rmscpi:
             emit q->serverAnswer(decodedAnswer.msgNr, decodedAnswer.reply, VariantConverter::returnString(decodedAnswer.msgBody));
             break;
         case getresourcetypes:

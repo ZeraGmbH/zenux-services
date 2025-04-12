@@ -50,6 +50,8 @@ public:
     virtual ~cSECInterface();
     void setClient(Zera::ProxyClient *client);
     void setClientSmart(Zera::ProxyClientPtr client);
+
+    quint32 scpiCommand(const QString &scpi) override;
     quint32 getChannelCatalog();
     quint32 setECalcUnit(int n); // we want n eclac units, answer is the names of them
     quint32 freeECalcUnits(); // free all the units the client had set

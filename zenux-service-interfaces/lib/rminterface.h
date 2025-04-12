@@ -17,6 +17,8 @@ public:
     cRMInterface();
     virtual ~cRMInterface();
     void setClientSmart(Zera::ProxyClientPtr client);
+    quint32 scpiCommand(const QString &scpi) override;
+
     quint32 rmIdent(QString name);
     quint32 addResource(QString type, QString name, int n, QString description, quint16 port);
     quint32 removeResource(QString type, QString name);

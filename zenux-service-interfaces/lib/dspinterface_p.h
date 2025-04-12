@@ -12,6 +12,7 @@ namespace Zera {
 
 enum dspcommands
 {
+    dspscpi,
     setsamplingsystem,
     varlist2dsp,
     cmdlist2dsp,
@@ -38,6 +39,8 @@ public:
     virtual ~cDSPInterfacePrivate();
     void setClient(Zera::ProxyClient *client);
     void setClientSmart(Zera::ProxyClientPtr client);
+    quint32 scpiCommand(const QString &scpi);
+
     quint32 setSamplingSystem(int chncount, int samp_per, int samp_mper); // nmuber of channels, samples/signalperiod, samples/measperiod
     quint32 varList2Dsp(); // send the var-list to dsp server
     quint32 cmdList2Dsp(); // send cyclic command list to the dsp server

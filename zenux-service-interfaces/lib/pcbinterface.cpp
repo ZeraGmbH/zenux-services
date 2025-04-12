@@ -26,6 +26,12 @@ void cPCBInterface::setClientSmart(Zera::ProxyClientPtr client)
     return d->setClientSmart(client);
 }
 
+quint32 cPCBInterface::scpiCommand(const QString &scpi)
+{
+    Q_D(cPCBInterface);
+    return d->transparentCommand(scpi);
+}
+
 quint32 cPCBInterface::getChannelList()
 {
     Q_D(cPCBInterface);

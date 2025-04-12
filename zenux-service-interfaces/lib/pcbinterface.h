@@ -18,6 +18,9 @@ public:
     virtual ~cPCBInterface();
     void setClient(Zera::ProxyClient *client);
     void setClientSmart(Zera::ProxyClientPtr client);
+    quint32 scpiCommand(const QString &scpi) override;
+
+
     // all commands to sense interface
     quint32 getChannelList(); // qstringlist
     quint32 getDSPChannel(QString chnName); // int

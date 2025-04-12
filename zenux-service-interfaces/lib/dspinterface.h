@@ -20,6 +20,7 @@ public:
     virtual ~cDSPInterface();
     void setClient(Zera::ProxyClient *client);
     void setClientSmart(Zera::ProxyClientPtr client);
+    quint32 scpiCommand(const QString &scpi) override;
 
     virtual quint32 dataAcquisition(cDspMeasData* memgroup); // reads all vars of this memorygroup that are of type vapplication
     virtual quint32 dspMemoryWrite(cDspMeasData* memgroup); // writes all vars of this memorygroup with type

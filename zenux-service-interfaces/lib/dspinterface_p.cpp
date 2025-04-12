@@ -31,6 +31,19 @@ void cDSPInterfacePrivate::setClientSmart(ProxyClientPtr client)
     setClient(client.get());
 }
 
+quint32 cDSPInterfacePrivate::scpiCommand(const QString &scpi)
+{
+    quint32 msgnr;
+    QList<QString> sl = scpi.split(' ');
+    if (sl.count() <= 1)
+        msgnr = sendCommand(scpi);
+    else
+        msgnr = sendCommand(sl.at(0), sl.at(1));
+
+    m_MsgNrCmdList[msgnr] = dspscpi;
+    return msgnr;
+}
+
 /////////////////////////////////////////////////////////////////////////////////////////
 // Hint: to find server SCPI implementation, search for last node name in 'long' comments
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -245,6 +258,7 @@ void cDSPInterfacePrivate::receiveAnswer(std::shared_ptr<ProtobufMessage::NetMes
         case activateinterface:
         case deactivateinterface:
         case dspmemorywrite:
+        case dspscpi:
             emit q->serverAnswer(lmsgnr, lreply, VariantConverter::returnString(lmsg));
             break;
         case readdeviceversion:

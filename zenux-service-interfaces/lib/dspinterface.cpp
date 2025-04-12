@@ -26,7 +26,11 @@ void cDSPInterface::setClientSmart(ProxyClientPtr client)
     return d->setClientSmart(client);
 }
 
-
+quint32 cDSPInterface::scpiCommand(const QString &scpi)
+{
+    Q_D(cDSPInterface);
+    return d->scpiCommand(scpi);
+}
 
 quint32 cDSPInterface::setSamplingSystem(int chncount, int samp_per, int samp_mper)
 {
