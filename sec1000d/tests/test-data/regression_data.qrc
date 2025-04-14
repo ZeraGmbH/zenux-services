@@ -1,6 +1,8 @@
 <RCC>
     <qresource prefix="/">
-        <file>scpi-dump-com5003.xml</file>
-        <file>scpi-dump-mtxxxs2.xml</file>
+        <file>devnode/dump-interrupt-com5003.json</file>
+        <file>devnode/dump-interrupt-mtxxxs2.json</file>
+        <file>scpi/scpi-dump-com5003.xml</file>
+        <file>scpi/scpi-dump-mtxxxs2.xml</file>
     </qresource>
 </RCC>
