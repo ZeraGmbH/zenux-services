@@ -17,8 +17,10 @@ public:
 
     QJsonObject getRecording();
     void resetRecording();
+    void setNextReadValue(QByteArray nextReadValue); // Try simple first...
 private:
     MockDeviceNodeRecorder m_deviceNodeRecorder;
+    QByteArray m_nextReadValue;
 };
 
 #endif // MOCKDEVICENODESEC_H
