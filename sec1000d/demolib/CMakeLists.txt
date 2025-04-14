@@ -22,6 +22,7 @@ target_include_directories(sec1000d-demolib
 target_link_libraries(sec1000d-demolib
     PUBLIC
     sec1000d-lib
+    zenuxservicecommon-demolib
 )
 
 set_target_properties(sec1000d-demolib PROPERTIES VERSION ${PROJECT_VERSION})

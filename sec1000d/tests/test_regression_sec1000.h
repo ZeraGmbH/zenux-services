@@ -1,5 +1,5 @@
-#ifndef TEST_REGRESSION_SCPI_SEC1000_H
-#define TEST_REGRESSION_SCPI_SEC1000_H
+#ifndef TEST_REGRESSION_SEC1000_H
+#define TEST_REGRESSION_SEC1000_H
 
 #include "mocksec1000d.h"
 #include "secinterface.h"
@@ -7,7 +7,7 @@
 #include "resmanrunfacade.h"
 #include <QObject>
 
-class test_regression_scpi_sec1000 : public QObject
+class test_regression_sec1000 : public QObject
 {
     Q_OBJECT
 private slots:
@@ -17,7 +17,7 @@ private slots:
 
     void serverUp();
     void dumpScpi();
-    void sigioInterrupt();
+    void interruptDeviceNodeIo();
 private:
     std::unique_ptr<ResmanRunFacade> m_resman;
     std::unique_ptr<MockSec1000d> m_server;
@@ -27,4 +27,4 @@ private:
 };
 
 
-#endif // TEST_REGRESSION_SCPI_SEC1000_H
+#endif // TEST_REGRESSION_SEC1000_H

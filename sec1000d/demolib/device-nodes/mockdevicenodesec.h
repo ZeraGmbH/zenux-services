@@ -2,8 +2,7 @@
 #define MOCKDEVICENODESEC_H
 
 #include <abstractdevicenodesec.h>
-#include <QJsonArray>
-#include <QJsonObject>
+#include "mockdevicenoderecorder.h"
 
 class MockDeviceNodeSec : public AbstractDeviceNodeSec
 {
@@ -19,7 +18,7 @@ public:
     QJsonObject getRecording();
     void resetRecording();
 private:
-    QJsonArray m_dumpedIos;
+    MockDeviceNodeRecorder m_deviceNodeRecorder;
 };
 
 #endif // MOCKDEVICENODESEC_H
