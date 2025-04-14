@@ -3,6 +3,7 @@
 #include "proxy.h"
 #include "scpisingletransactionblocked.h"
 #include "mocksingletondevicenodesec.h"
+#include "zscpi_response_definitions.h"
 #include <xmldocumentcompare.h>
 #include <testloghelpers.h>
 #include <timemachineobject.h>
@@ -87,16 +88,18 @@ void test_regression_sec1000::interruptNotifications()
     QFETCH_GLOBAL(int, ecUnitCount);
     QStringList ecalChannels = claimAllEcChannels(ecUnitCount);
 
-    int answersOnRegister = 0;
+    QList<ServerSendData> answersOnRegister;
     collectServerSends(answersOnRegister);
     registerInterruptNotifiers(ecalChannels);
-    QCOMPARE(answersOnRegister, ecalChannels.count());
+    QCOMPARE(answersOnRegister.count(), ecalChannels.count());
+    QVERIFY(checkRegisterResponses(answersOnRegister));
 
     prepareInterruptMaskValue(ecalChannels);
-    int serverNotifications = 0;
+    QList<ServerSendData> serverNotifications;
     collectServerSends(serverNotifications);
     fireInterrupt();
-    QCOMPARE(serverNotifications, ecalChannels.count());
+    QCOMPARE(serverNotifications.count(), ecalChannels.count());
+    QVERIFY(checkInterruptMasks(serverNotifications));
 }
 
 void test_regression_sec1000::fireInterrupt()
@@ -113,13 +116,10 @@ QStringList test_regression_sec1000::claimAllEcChannels(int ecUnitCount)
     return ecalChannels;
 }
 
-void test_regression_sec1000::collectServerSends(int &serverSendCount)
+void test_regression_sec1000::collectServerSends(QList<ServerSendData> &serverSendList)
 {
     connect(m_secIFace.get(), &AbstractServerInterface::serverAnswer, this, [&](quint32 msgnr, quint8 reply, QVariant answer) {
-        Q_UNUSED(msgnr)
-        Q_UNUSED(reply)
-        Q_UNUSED(answer)
-        serverSendCount++;
+        serverSendList.append({msgnr, reply, answer});
     });
 }
 
@@ -133,6 +133,14 @@ void test_regression_sec1000::registerInterruptNotifiers(QStringList ecalChannel
     TimeMachineObject::feedEventLoop();
 }
 
+bool test_regression_sec1000::checkRegisterResponses(const QList<ServerSendData> &responses)
+{
+    for (const ServerSendData &response : responses)
+        if (response.answer != ZSCPI::scpiAnswer[ZSCPI::ack])
+            return false;
+    return true;
+}
+
 void test_regression_sec1000::prepareInterruptMaskValue(QStringList ecalChannels)
 {
     QByteArray interruptResponseValues;
@@ -140,13 +148,40 @@ void test_regression_sec1000::prepareInterruptMaskValue(QStringList ecalChannels
     // rising edge of interrupt flags only (makes sense but is hidden to dump readers like
     // me). So hack some rising edges here...
     for(int ecChannelNum = 0; ecChannelNum<ecalChannels.count(); ecChannelNum++) {
+        quint8 halfByteMaskLow = calcNonZeroTestMask(ecChannelNum);
         if(ecChannelNum % 2 == 0)
-            interruptResponseValues.append(0x0F);
-        else
-            interruptResponseValues.back()= 0xFF;
+            interruptResponseValues.append(halfByteMaskLow);
+        else {
+            quint8 mask = interruptResponseValues[interruptResponseValues.size()-1];
+            mask |= (halfByteMaskLow << 4);
+            interruptResponseValues[interruptResponseValues.size()-1] = mask;
+        }
     }
     AbstractDeviceNodeSecPtr deviceNode = MockSingletonDeviceNodeSec::getInstancePtr();
     MockDeviceNodeSec *secDeviceNode = static_cast<MockDeviceNodeSec*>(deviceNode.get());
     secDeviceNode->setNextReadValue(interruptResponseValues);
+}
+
+bool test_regression_sec1000::checkInterruptMasks(const QList<ServerSendData> &responses)
+{
+    for (int i=0; i<responses.count(); i++) {
+        // Yes this is a regression test assuming all interrupts send in channel order
+        QString expected = QString("IRQ:%1").arg(calcNonZeroTestMask(i));
+        QString found = responses[i].answer.toString();
+        if (expected != found) {
+            qWarning("Interrupt %i has wrong answer: expected: %s / found: %s",
+                     i, qPrintable(expected), qPrintable(found));
+            return false;
+        }
+    }
+    return true;
+}
+
+quint8 test_regression_sec1000::calcNonZeroTestMask(int ecChannelNum)
+{
+    quint8 mask = ecChannelNum & 0x0F;
+    if(mask == 0)
+        mask = 0x0F;
+    return mask;
 }
 
