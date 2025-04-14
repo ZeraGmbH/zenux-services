@@ -138,7 +138,7 @@ void SecGroupResourceAndInterface::scpiSetChannels(cProtonetCommand *protoCmd)
     {
        bool ok;
        int n = cmd.getParam(0).toInt(&ok);
-       if (ok && (n > 0) && (n < 5)) // we accept 1 .. 4 ecalc requests
+       if (ok && (n > 0) && (n <= m_ECalculatorChannelList.count()))
        {
            QString s;
            QList<SecChannel*> selEChannels;
