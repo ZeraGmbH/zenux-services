@@ -14,10 +14,10 @@ endfunction()
 SETUP_SEC1000_TESTS(
     test_config_load_sec1000
     test_sec_resource
-    test_regression_scpi_sec1000
+    test_regression_sec1000
     )
 
-target_sources(test_regression_scpi_sec1000
+target_sources(test_regression_sec1000
     PRIVATE
     test-data/regression_data.qrc
 )

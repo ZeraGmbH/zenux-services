@@ -1,4 +1,4 @@
-#include "test_regression_scpi_sec1000.h"
+#include "test_regression_sec1000.h"
 #include "mockdevicenodesec.h"
 #include "proxy.h"
 #include "scpisingletransactionblocked.h"
@@ -11,18 +11,17 @@
 #include <unistd.h>
 #include <signal.h>
 
-QTEST_MAIN(test_regression_scpi_sec1000);
+QTEST_MAIN(test_regression_sec1000);
 
-void test_regression_scpi_sec1000::initTestCase_data()
+void test_regression_sec1000::initTestCase_data()
 {
     QTest::addColumn<int>("ecUnitCount");
     QTest::addColumn<QString>("deviceFamily");
-    QTest::addColumn<QString>("devnodeInterruptDumpFile");
-    QTest::newRow("COM5003") << cSEC1000dServer::Com5003EcUnitCount << "com5003" << "://devnode/dump-interrupt-com5003.json";
-    QTest::newRow("MTxxxs2") << cSEC1000dServer::Mtxxxs2EcUnitCount << "mtxxxs2" << "://devnode/dump-interrupt-mtxxxs2.json";
+    QTest::newRow("COM5003") << cSEC1000dServer::Com5003EcUnitCount << "com5003";
+    QTest::newRow("MTxxxs2") << cSEC1000dServer::Mtxxxs2EcUnitCount << "mtxxxs2";
 }
 
-void test_regression_scpi_sec1000::init()
+void test_regression_sec1000::init()
 {
     AbstractDeviceNodeSecPtr deviceNode = MockSingletonDeviceNodeSec::getInstancePtr();
     MockDeviceNodeSec *secDeviceNode = static_cast<MockDeviceNodeSec*>(deviceNode.get());
@@ -41,7 +40,7 @@ void test_regression_scpi_sec1000::init()
     TimeMachineObject::feedEventLoop();
 }
 
-void test_regression_scpi_sec1000::cleanup()
+void test_regression_sec1000::cleanup()
 {
     m_secIFace = nullptr;
     m_proxyClient = nullptr;
@@ -50,13 +49,13 @@ void test_regression_scpi_sec1000::cleanup()
     TimeMachineObject::feedEventLoop();
 }
 
-void test_regression_scpi_sec1000::serverUp()
+void test_regression_sec1000::serverUp()
 {
     QString ret = ScpiSingleTransactionBlocked::query("SYSTEM:VERSION:SERVER?", 6305);
     QCOMPARE(ret, "V42.0");
 }
 
-void test_regression_scpi_sec1000::dumpScpi()
+void test_regression_sec1000::dumpScpi()
 {
     QFETCH_GLOBAL(QString, deviceFamily);
     QString expected = TestLogHelpers::loadFile(QString(":/scpi/scpi-dump-%1.xml").arg(deviceFamily));
@@ -69,7 +68,7 @@ void test_regression_scpi_sec1000::dumpScpi()
     QVERIFY(ok);
 }
 
-void test_regression_scpi_sec1000::sigioInterrupt()
+void test_regression_sec1000::interruptDeviceNodeIo()
 {
     AbstractDeviceNodeSecPtr deviceNode = MockSingletonDeviceNodeSec::getInstancePtr();
     MockDeviceNodeSec *secDeviceNode = static_cast<MockDeviceNodeSec*>(deviceNode.get());
@@ -83,7 +82,7 @@ void test_regression_scpi_sec1000::sigioInterrupt()
     QVERIFY(TestLogHelpers::compareAndLogOnDiff(expected, dumped));
 }
 
-void test_regression_scpi_sec1000::fireInterrupt()
+void test_regression_sec1000::fireInterrupt()
 {
     kill(getpid(), SIGIO);
     TimeMachineObject::feedEventLoop();
