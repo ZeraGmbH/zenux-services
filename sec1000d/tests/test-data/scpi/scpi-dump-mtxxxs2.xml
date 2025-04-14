@@ -187,6 +187,146 @@
     <STOP Type="Command+Par" ScpiPath="ECALCULATOR:EC7:STOP"/>
     <INTACK Type="Command+Par" ScpiPath="ECALCULATOR:EC7:INTACK"/>
    </EC7>
+   <EC8 Type="Node">
+    <R0 Type="Query,Command+Par" ScpiPath="ECALCULATOR:EC8:R0"/>
+    <R1 Type="Query,Command+Par" ScpiPath="ECALCULATOR:EC8:R1"/>
+    <R2 Type="Query" ScpiPath="ECALCULATOR:EC8:R2"/>
+    <R3 Type="Query,Command+Par" ScpiPath="ECALCULATOR:EC8:R3"/>
+    <R4 Type="Query,Command+Par" ScpiPath="ECALCULATOR:EC8:R4"/>
+    <R5 Type="Query,Command+Par" ScpiPath="ECALCULATOR:EC8:R5"/>
+    <R6 Type="Query" ScpiPath="ECALCULATOR:EC8:R6"/>
+    <R7 Type="Query" ScpiPath="ECALCULATOR:EC8:R7"/>
+    <R12 Type="Query,Command+Par" ScpiPath="ECALCULATOR:EC8:R12"/>
+    <R13 Type="Query,Command+Par" ScpiPath="ECALCULATOR:EC8:R13"/>
+    <R14 Type="Query,Command+Par" ScpiPath="ECALCULATOR:EC8:R14"/>
+    <R15 Type="Query,Command+Par" ScpiPath="ECALCULATOR:EC8:R15"/>
+    <SYNC Type="Command+Par" ScpiPath="ECALCULATOR:EC8:SYNC"/>
+    <MUX Type="Command+Par" ScpiPath="ECALCULATOR:EC8:MUX"/>
+    <CMDID Type="Command+Par" ScpiPath="ECALCULATOR:EC8:CMDID"/>
+    <START Type="Command+Par" ScpiPath="ECALCULATOR:EC8:START"/>
+    <STOP Type="Command+Par" ScpiPath="ECALCULATOR:EC8:STOP"/>
+    <INTACK Type="Command+Par" ScpiPath="ECALCULATOR:EC8:INTACK"/>
+   </EC8>
+   <EC9 Type="Node">
+    <R0 Type="Query,Command+Par" ScpiPath="ECALCULATOR:EC9:R0"/>
+    <R1 Type="Query,Command+Par" ScpiPath="ECALCULATOR:EC9:R1"/>
+    <R2 Type="Query" ScpiPath="ECALCULATOR:EC9:R2"/>
+    <R3 Type="Query,Command+Par" ScpiPath="ECALCULATOR:EC9:R3"/>
+    <R4 Type="Query,Command+Par" ScpiPath="ECALCULATOR:EC9:R4"/>
+    <R5 Type="Query,Command+Par" ScpiPath="ECALCULATOR:EC9:R5"/>
+    <R6 Type="Query" ScpiPath="ECALCULATOR:EC9:R6"/>
+    <R7 Type="Query" ScpiPath="ECALCULATOR:EC9:R7"/>
+    <R12 Type="Query,Command+Par" ScpiPath="ECALCULATOR:EC9:R12"/>
+    <R13 Type="Query,Command+Par" ScpiPath="ECALCULATOR:EC9:R13"/>
+    <R14 Type="Query,Command+Par" ScpiPath="ECALCULATOR:EC9:R14"/>
+    <R15 Type="Query,Command+Par" ScpiPath="ECALCULATOR:EC9:R15"/>
+    <SYNC Type="Command+Par" ScpiPath="ECALCULATOR:EC9:SYNC"/>
+    <MUX Type="Command+Par" ScpiPath="ECALCULATOR:EC9:MUX"/>
+    <CMDID Type="Command+Par" ScpiPath="ECALCULATOR:EC9:CMDID"/>
+    <START Type="Command+Par" ScpiPath="ECALCULATOR:EC9:START"/>
+    <STOP Type="Command+Par" ScpiPath="ECALCULATOR:EC9:STOP"/>
+    <INTACK Type="Command+Par" ScpiPath="ECALCULATOR:EC9:INTACK"/>
+   </EC9>
+   <EC10 Type="Node">
+    <R0 Type="Query,Command+Par" ScpiPath="ECALCULATOR:EC10:R0"/>
+    <R1 Type="Query,Command+Par" ScpiPath="ECALCULATOR:EC10:R1"/>
+    <R2 Type="Query" ScpiPath="ECALCULATOR:EC10:R2"/>
+    <R3 Type="Query,Command+Par" ScpiPath="ECALCULATOR:EC10:R3"/>
+    <R4 Type="Query,Command+Par" ScpiPath="ECALCULATOR:EC10:R4"/>
+    <R5 Type="Query,Command+Par" ScpiPath="ECALCULATOR:EC10:R5"/>
+    <R6 Type="Query" ScpiPath="ECALCULATOR:EC10:R6"/>
+    <R7 Type="Query" ScpiPath="ECALCULATOR:EC10:R7"/>
+    <R12 Type="Query,Command+Par" ScpiPath="ECALCULATOR:EC10:R12"/>
+    <R13 Type="Query,Command+Par" ScpiPath="ECALCULATOR:EC10:R13"/>
+    <R14 Type="Query,Command+Par" ScpiPath="ECALCULATOR:EC10:R14"/>
+    <R15 Type="Query,Command+Par" ScpiPath="ECALCULATOR:EC10:R15"/>
+    <SYNC Type="Command+Par" ScpiPath="ECALCULATOR:EC10:SYNC"/>
+    <MUX Type="Command+Par" ScpiPath="ECALCULATOR:EC10:MUX"/>
+    <CMDID Type="Command+Par" ScpiPath="ECALCULATOR:EC10:CMDID"/>
+    <START Type="Command+Par" ScpiPath="ECALCULATOR:EC10:START"/>
+    <STOP Type="Command+Par" ScpiPath="ECALCULATOR:EC10:STOP"/>
+    <INTACK Type="Command+Par" ScpiPath="ECALCULATOR:EC10:INTACK"/>
+   </EC10>
+   <EC11 Type="Node">
+    <R0 Type="Query,Command+Par" ScpiPath="ECALCULATOR:EC11:R0"/>
+    <R1 Type="Query,Command+Par" ScpiPath="ECALCULATOR:EC11:R1"/>
+    <R2 Type="Query" ScpiPath="ECALCULATOR:EC11:R2"/>
+    <R3 Type="Query,Command+Par" ScpiPath="ECALCULATOR:EC11:R3"/>
+    <R4 Type="Query,Command+Par" ScpiPath="ECALCULATOR:EC11:R4"/>
+    <R5 Type="Query,Command+Par" ScpiPath="ECALCULATOR:EC11:R5"/>
+    <R6 Type="Query" ScpiPath="ECALCULATOR:EC11:R6"/>
+    <R7 Type="Query" ScpiPath="ECALCULATOR:EC11:R7"/>
+    <R12 Type="Query,Command+Par" ScpiPath="ECALCULATOR:EC11:R12"/>
+    <R13 Type="Query,Command+Par" ScpiPath="ECALCULATOR:EC11:R13"/>
+    <R14 Type="Query,Command+Par" ScpiPath="ECALCULATOR:EC11:R14"/>
+    <R15 Type="Query,Command+Par" ScpiPath="ECALCULATOR:EC11:R15"/>
+    <SYNC Type="Command+Par" ScpiPath="ECALCULATOR:EC11:SYNC"/>
+    <MUX Type="Command+Par" ScpiPath="ECALCULATOR:EC11:MUX"/>
+    <CMDID Type="Command+Par" ScpiPath="ECALCULATOR:EC11:CMDID"/>
+    <START Type="Command+Par" ScpiPath="ECALCULATOR:EC11:START"/>
+    <STOP Type="Command+Par" ScpiPath="ECALCULATOR:EC11:STOP"/>
+    <INTACK Type="Command+Par" ScpiPath="ECALCULATOR:EC11:INTACK"/>
+   </EC11>
+   <EC12 Type="Node">
+    <R0 Type="Query,Command+Par" ScpiPath="ECALCULATOR:EC12:R0"/>
+    <R1 Type="Query,Command+Par" ScpiPath="ECALCULATOR:EC12:R1"/>
+    <R2 Type="Query" ScpiPath="ECALCULATOR:EC12:R2"/>
+    <R3 Type="Query,Command+Par" ScpiPath="ECALCULATOR:EC12:R3"/>
+    <R4 Type="Query,Command+Par" ScpiPath="ECALCULATOR:EC12:R4"/>
+    <R5 Type="Query,Command+Par" ScpiPath="ECALCULATOR:EC12:R5"/>
+    <R6 Type="Query" ScpiPath="ECALCULATOR:EC12:R6"/>
+    <R7 Type="Query" ScpiPath="ECALCULATOR:EC12:R7"/>
+    <R12 Type="Query,Command+Par" ScpiPath="ECALCULATOR:EC12:R12"/>
+    <R13 Type="Query,Command+Par" ScpiPath="ECALCULATOR:EC12:R13"/>
+    <R14 Type="Query,Command+Par" ScpiPath="ECALCULATOR:EC12:R14"/>
+    <R15 Type="Query,Command+Par" ScpiPath="ECALCULATOR:EC12:R15"/>
+    <SYNC Type="Command+Par" ScpiPath="ECALCULATOR:EC12:SYNC"/>
+    <MUX Type="Command+Par" ScpiPath="ECALCULATOR:EC12:MUX"/>
+    <CMDID Type="Command+Par" ScpiPath="ECALCULATOR:EC12:CMDID"/>
+    <START Type="Command+Par" ScpiPath="ECALCULATOR:EC12:START"/>
+    <STOP Type="Command+Par" ScpiPath="ECALCULATOR:EC12:STOP"/>
+    <INTACK Type="Command+Par" ScpiPath="ECALCULATOR:EC12:INTACK"/>
+   </EC12>
+   <EC13 Type="Node">
+    <R0 Type="Query,Command+Par" ScpiPath="ECALCULATOR:EC13:R0"/>
+    <R1 Type="Query,Command+Par" ScpiPath="ECALCULATOR:EC13:R1"/>
+    <R2 Type="Query" ScpiPath="ECALCULATOR:EC13:R2"/>
+    <R3 Type="Query,Command+Par" ScpiPath="ECALCULATOR:EC13:R3"/>
+    <R4 Type="Query,Command+Par" ScpiPath="ECALCULATOR:EC13:R4"/>
+    <R5 Type="Query,Command+Par" ScpiPath="ECALCULATOR:EC13:R5"/>
+    <R6 Type="Query" ScpiPath="ECALCULATOR:EC13:R6"/>
+    <R7 Type="Query" ScpiPath="ECALCULATOR:EC13:R7"/>
+    <R12 Type="Query,Command+Par" ScpiPath="ECALCULATOR:EC13:R12"/>
+    <R13 Type="Query,Command+Par" ScpiPath="ECALCULATOR:EC13:R13"/>
+    <R14 Type="Query,Command+Par" ScpiPath="ECALCULATOR:EC13:R14"/>
+    <R15 Type="Query,Command+Par" ScpiPath="ECALCULATOR:EC13:R15"/>
+    <SYNC Type="Command+Par" ScpiPath="ECALCULATOR:EC13:SYNC"/>
+    <MUX Type="Command+Par" ScpiPath="ECALCULATOR:EC13:MUX"/>
+    <CMDID Type="Command+Par" ScpiPath="ECALCULATOR:EC13:CMDID"/>
+    <START Type="Command+Par" ScpiPath="ECALCULATOR:EC13:START"/>
+    <STOP Type="Command+Par" ScpiPath="ECALCULATOR:EC13:STOP"/>
+    <INTACK Type="Command+Par" ScpiPath="ECALCULATOR:EC13:INTACK"/>
+   </EC13>
+   <EC14 Type="Node">
+    <R0 Type="Query,Command+Par" ScpiPath="ECALCULATOR:EC14:R0"/>
+    <R1 Type="Query,Command+Par" ScpiPath="ECALCULATOR:EC14:R1"/>
+    <R2 Type="Query" ScpiPath="ECALCULATOR:EC14:R2"/>
+    <R3 Type="Query,Command+Par" ScpiPath="ECALCULATOR:EC14:R3"/>
+    <R4 Type="Query,Command+Par" ScpiPath="ECALCULATOR:EC14:R4"/>
+    <R5 Type="Query,Command+Par" ScpiPath="ECALCULATOR:EC14:R5"/>
+    <R6 Type="Query" ScpiPath="ECALCULATOR:EC14:R6"/>
+    <R7 Type="Query" ScpiPath="ECALCULATOR:EC14:R7"/>
+    <R12 Type="Query,Command+Par" ScpiPath="ECALCULATOR:EC14:R12"/>
+    <R13 Type="Query,Command+Par" ScpiPath="ECALCULATOR:EC14:R13"/>
+    <R14 Type="Query,Command+Par" ScpiPath="ECALCULATOR:EC14:R14"/>
+    <R15 Type="Query,Command+Par" ScpiPath="ECALCULATOR:EC14:R15"/>
+    <SYNC Type="Command+Par" ScpiPath="ECALCULATOR:EC14:SYNC"/>
+    <MUX Type="Command+Par" ScpiPath="ECALCULATOR:EC14:MUX"/>
+    <CMDID Type="Command+Par" ScpiPath="ECALCULATOR:EC14:CMDID"/>
+    <START Type="Command+Par" ScpiPath="ECALCULATOR:EC14:START"/>
+    <STOP Type="Command+Par" ScpiPath="ECALCULATOR:EC14:STOP"/>
+    <INTACK Type="Command+Par" ScpiPath="ECALCULATOR:EC14:INTACK"/>
+   </EC14>
   </ECALCULATOR>
  </MODELS>
 </MODELLIST>
