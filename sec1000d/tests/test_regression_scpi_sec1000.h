@@ -17,11 +17,13 @@ private slots:
 
     void serverUp();
     void dumpScpi();
+    void sigioInterrupt();
 private:
     std::unique_ptr<ResmanRunFacade> m_resman;
     std::unique_ptr<MockSec1000d> m_server;
     Zera::ProxyClientPtr m_proxyClient;
     Zera::cSECInterfacePtr m_secIFace;
+    void fireInterrupt();
 };
 
 
