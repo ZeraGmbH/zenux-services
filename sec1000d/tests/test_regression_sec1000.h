@@ -19,6 +19,7 @@ private slots:
     void dumpScpi();
     void interruptDeviceNodeIo();
     void interruptNotifications();
+
 private:
     void fireInterrupt();
     QStringList claimAllEcChannels(int ecUnitCount);

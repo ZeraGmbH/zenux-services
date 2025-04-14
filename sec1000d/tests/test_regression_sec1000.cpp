@@ -102,6 +102,7 @@ void test_regression_sec1000::interruptNotifications()
     QVERIFY(checkInterruptMasks(serverNotifications));
 }
 
+
 void test_regression_sec1000::fireInterrupt()
 {
     kill(getpid(), SIGIO);
