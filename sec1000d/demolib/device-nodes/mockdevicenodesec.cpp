@@ -27,6 +27,11 @@ int MockDeviceNodeSec::write(const char *buf, int len)
 int MockDeviceNodeSec::read(char *buf, int len)
 {
     m_deviceNodeRecorder.read(buf, len);
+    if(!m_nextReadValue.isEmpty()) {
+        for (int byteNo = 0; byteNo<len; byteNo++)
+            buf[byteNo] = m_nextReadValue[byteNo];
+        m_nextReadValue.clear();
+    }
     return 0;
 }
 
@@ -43,4 +48,9 @@ QJsonObject MockDeviceNodeSec::getRecording()
 void MockDeviceNodeSec::resetRecording()
 {
     m_deviceNodeRecorder.resetRecording();
+}
+
+void MockDeviceNodeSec::setNextReadValue(QByteArray nextReadValue)
+{
+    m_nextReadValue = nextReadValue;
 }
