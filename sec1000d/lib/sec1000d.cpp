@@ -253,25 +253,44 @@ void cSEC1000dServer::onProtobufDisconnect(VeinTcp::TcpPeer* peer)
         qWarning("Client disconnected. But SEC resources could not be freed!");
 }
 
-void cSEC1000dServer::SECIntHandler(int)
-{ // behandelt den sec interrupt
 
+static inline int calcByteCountFromEcChannels(int ecChannelCount)
+{
+    int byteCount = ecChannelCount / 2;
+    if ((ecChannelCount & 0b1) != 0)
+        byteCount++;
+    return byteCount;
+}
+
+static inline int calc32BitStuffedCountFromByteCount(int byteCount)
+{
+    int count32BitAcesses = byteCount / 4;
+    if ((byteCount & 0b11) != 0)
+        count32BitAcesses++;
+    return count32BitAcesses * 4;
+}
+
+void cSEC1000dServer::SECIntHandler(int)
+{
     char dummy[2];
     read(pipeFileDescriptorSec1000[0], dummy, 1); // first we read the pipe
 
-    int n = m_ECalculatorChannelList.count(); // the number of error calculator entities
-    // 8 error calc entities share 1 32 bit data word for interrupts
+    int ecChannelCount = m_ECalculatorChannelList.count();
+    int bytesToReadForChannelRequiringHalfByte = calcByteCountFromEcChannels(ecChannelCount);
+    int bytesToRead32BitStuffed = calc32BitStuffedCountFromByteCount(bytesToReadForChannelRequiringHalfByte);
 
-    n /= 2; // so we have to read 4 bytes for 8 entities -> (/ 2)
-    QByteArray interruptREGS(n, 0);
-    // first word is interrupt collection word
     AbstractDeviceNodeSecPtr deviceNode = m_deviceNodeFactory->getSecDeviceNode();
-    deviceNode->lseek(m_pECalcSettings->getIrqAdress()+4); // so the dedicated words have +4 offset
-    deviceNode->read(interruptREGS.data(), n);
+    deviceNode->lseek(m_pECalcSettings->getIrqAdress()+4); // first word is interrupt collection word so the dedicated words have +4 offset
+    QByteArray interruptREGS(bytesToRead32BitStuffed, 0);
+    deviceNode->read(interruptREGS.data(), bytesToRead32BitStuffed);
 
-    for (int i = 0; i < n; i++) {
-        quint8 irq = interruptREGS[i];
-        m_ECalculatorChannelList.at(i*2)->setIntReg(irq & 0xF); // this will cause notifier to be thrown
-        m_ECalculatorChannelList.at(i*2+1)->setIntReg((irq >> 4) & 0xF);
+    for (int channel = 0; channel < ecChannelCount; channel++) {
+        quint8 irqMaskByteVal = interruptREGS[channel/2];
+        quint8 irqRegVal;
+        if((channel & 0b1) == 0)
+            irqRegVal = irqMaskByteVal & 0x0F;
+        else
+            irqRegVal = (irqMaskByteVal & 0xF0) >> 4;
+        m_ECalculatorChannelList[channel]->setIntReg(irqRegVal);
     }
 }
