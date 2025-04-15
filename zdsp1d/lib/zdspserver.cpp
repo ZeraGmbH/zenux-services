@@ -714,14 +714,15 @@ void ZDspServer::DspIntHandler(int)
                     ZdspClient *client2 = GetClient(process);
                     if (client2) { // gibts den client noch, der den interrupt haben wollte
                         const QString dspIntStr = QString("DSPINT:%1").arg(pardsp[i] & 0xFFFF);
-                        if (m_clientIDHash.contains(client2)) { // es war ein client der über protobuf (clientid) angelegt wurde
+                        auto protoClientIter = m_clientIDHash.constFind(client2);
+                        if (protoClientIter != m_clientIDHash.constEnd()) { // es war ein client der über protobuf (clientid) angelegt wurde
                             ProtobufMessage::NetMessage protobufIntMessage;
                             ProtobufMessage::NetMessage::NetReply *intMessage = protobufIntMessage.mutable_reply();
 
                             intMessage->set_body(dspIntStr.toStdString());
                             intMessage->set_rtype(ProtobufMessage::NetMessage_NetReply_ReplyType_ACK);
 
-                            QByteArray idba = m_clientIDHash[client2];
+                            QByteArray idba = protoClientIter.value();
                             protobufIntMessage.set_clientid(idba.data(), idba.size() );
                             protobufIntMessage.set_messagenr(0); // interrupt
 
