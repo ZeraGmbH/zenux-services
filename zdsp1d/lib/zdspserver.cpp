@@ -702,8 +702,7 @@ void ZDspServer::DspIntHandler(int)
     if (!m_clientList.isEmpty()) { // wenn vorhanden nutzen wir immer den 1. client zum lesen
         ZdspClient *client = m_clientList.first();
         QByteArray ba;
-        QString s = "CTRLCMDPAR,20";
-        if(m_dspInOut.readOneDspVar(s, &ba, &client->m_dspVarResolver)) { // 20 worte lesen
+        if (m_dspInOut.readOneDspVar("CTRLCMDPAR,20", &ba, &client->m_dspVarResolver)) { // 20 worte lesen
             const ulong* pardsp = reinterpret_cast<ulong*>(ba.data());
             int n = pardsp[0]; // anzahl der interrupts
             m_dspInterruptLogStatistics.addValue(n);
@@ -714,12 +713,12 @@ void ZDspServer::DspIntHandler(int)
                     int process = pardsp[i] >> 16;
                     ZdspClient *client2 = GetClient(process);
                     if (client2) { // gibts den client noch, der den interrupt haben wollte
-                        s = QString("DSPINT:%1").arg(pardsp[i] & 0xFFFF);
+                        const QString dspIntStr = QString("DSPINT:%1").arg(pardsp[i] & 0xFFFF);
                         if (m_clientIDHash.contains(client2)) { // es war ein client der über protobuf (clientid) angelegt wurde
                             ProtobufMessage::NetMessage protobufIntMessage;
                             ProtobufMessage::NetMessage::NetReply *intMessage = protobufIntMessage.mutable_reply();
 
-                            intMessage->set_body(s.toStdString());
+                            intMessage->set_body(dspIntStr.toStdString());
                             intMessage->set_rtype(ProtobufMessage::NetMessage_NetReply_ReplyType_ACK);
 
                             QByteArray idba = m_clientIDHash[client2];
@@ -734,7 +733,7 @@ void ZDspServer::DspIntHandler(int)
                             out.setVersion(QDataStream::Qt_4_0);
                             out << (qint32)0;
 
-                            out << s.toUtf8();
+                            out << dspIntStr.toUtf8();
                             out.device()->seek(0);
                             out << (qint32)(block.size() - sizeof(qint32));
 
