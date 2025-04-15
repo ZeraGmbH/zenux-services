@@ -82,8 +82,9 @@ void ProxyPrivate::handleReceiveMessage(std::shared_ptr<google::protobuf::Messag
     std::shared_ptr<ProtobufMessage::NetMessage> netMessage = std::static_pointer_cast<ProtobufMessage::NetMessage>(message);
     if(netMessage->has_clientid()) {
         QByteArray key(netMessage->clientid().data(), netMessage->clientid().size());
-        if(m_ClientHash.contains(key))
-            m_ClientHash[key]->transmitAnswer(netMessage);
+        auto iter = m_ClientHash.constFind(key);
+        if (iter != m_ClientHash.constEnd())
+            iter.value()->transmitAnswer(netMessage);
         else
             qWarning() << "Unknown ClientID; " << netMessage->clientid().size();
     }
