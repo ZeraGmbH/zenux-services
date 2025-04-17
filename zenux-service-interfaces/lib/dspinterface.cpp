@@ -97,13 +97,17 @@ quint32 cDSPInterface::activateInterface()
     return d->activateInterface();
 }
 
-
 quint32 cDSPInterface::deactivateInterface()
 {
     Q_D(cDSPInterface);
     return d->deactivateInterface();
 }
 
+quint32 cDSPInterface::deactivateAll()
+{
+    Q_D(cDSPInterface);
+    return d->deactivateAll();
+}
 
 quint32 cDSPInterface::dataAcquisition(cDspMeasData *memgroup)
 {
@@ -111,13 +115,11 @@ quint32 cDSPInterface::dataAcquisition(cDspMeasData *memgroup)
     return d->dataAcquisition(memgroup);
 }
 
-
 quint32 cDSPInterface::dspMemoryRead(cDspMeasData *memgroup, DSPDATA::dType type)
 {
     Q_D(cDSPInterface);
     return d->dspMemoryRead(memgroup, type);
 }
-
 
 quint32 cDSPInterface::dspMemoryWrite(cDspMeasData *memgroup)
 {

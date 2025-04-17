@@ -20,6 +20,7 @@ enum dspcommands
     triggerinthksk,
     activateinterface,
     deactivateinterface,
+    deactivateall,
     dataacquisition,
     dspmemoryread,
     dspmemorywrite,
@@ -51,7 +52,10 @@ public:
     cDspMeasData* getMemHandle(QString name); // init a new memory group and return handle
     void deleteMemHandle(cDspMeasData* memhandle);
     quint32 activateInterface(); // load var- and cmdlists to dsp (starts theprogram on dsp)
+
     quint32 deactivateInterface(); // unload ...
+    quint32 deactivateAll();
+
     quint32 dataAcquisition(cDspMeasData* memgroup); // reads all vars of this memorygroup that are of type vapplication
     quint32 dspMemoryRead(cDspMeasData* memgroup, DSPDATA::dType type = DSPDATA::dFloat); // reads all vars of this memorygroup
     quint32 dspMemoryWrite(cDspMeasData* memgroup); // writes all vars of this memorygroup with type
