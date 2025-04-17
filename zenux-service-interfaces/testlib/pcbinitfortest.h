@@ -2,7 +2,6 @@
 #define PCBINITFORTEST_H
 
 #include "proxyclientfortest.h"
-#include "servertestanswers.h"
 #include <pcbinterface.h>
 #include <timerfactoryqtfortest.h>
 
