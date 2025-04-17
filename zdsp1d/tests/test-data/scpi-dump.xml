@@ -34,6 +34,7 @@
     <INTLIST ScpiPath="MEASURE:LIST:INTLIST" Type="Command+Par"/>
     <SET ScpiPath="MEASURE:LIST:SET" Type="Command+Par"/>
     <CLEAR ScpiPath="MEASURE:LIST:CLEAR" Type="Command+Par"/>
+    <CLALL ScpiPath="MEASURE:LIST:CLALL" Type="Command"/>
    </LIST>
   </MEASURE>
   <STATUS Type="Model,Node">

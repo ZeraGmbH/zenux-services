@@ -310,6 +310,7 @@ enum SCPICmdType  {
 
     // die routinen für das measure modell
     scpiUnloadCmdList,
+    scpiUnloadCmdListAllClients,
     scpiLoadCmdList,
     scpiRavListSet,
     scpiCmdIntListSet,
@@ -346,6 +347,7 @@ void ZDspServer::initSCPIConnection(QString leadingNodes)
     addDelegate("MEASURE:LIST", "CYCLIST", SCPI::isCmdwP, m_scpiInterface, scpiCmdCycListSet);
     addDelegate("MEASURE:LIST", "SET", SCPI::isCmdwP, m_scpiInterface, scpiLoadCmdList);
     addDelegate("MEASURE:LIST", "CLEAR", SCPI::isCmdwP, m_scpiInterface, scpiUnloadCmdList);
+    addDelegate("MEASURE:LIST", "CLALL", SCPI::isCmd, m_scpiInterface, scpiUnloadCmdListAllClients);
 
     addDelegate("STATUS", "DEVICE", SCPI::isQuery, m_scpiInterface, scpiGetDeviceStatus);
     addDelegate("STATUS", "DSP", SCPI::isQuery, m_scpiInterface, scpiGetDspStatus);
@@ -415,6 +417,9 @@ void ZDspServer::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
         break;
     case scpiUnloadCmdList:
         protoCmd->m_sOutput = unloadCmdList(client);
+        break;
+    case scpiUnloadCmdListAllClients:
+        protoCmd->m_sOutput = unloadCmdListAllClients();
         break;
     case scpiReadActualValues:
         protoCmd->m_sOutput = client->readActValues(cmd.getParam());
@@ -876,6 +881,20 @@ QString ZDspServer::loadCmdList(ZdspClient* client)
 QString ZDspServer::unloadCmdList(ZdspClient *client)
 {
     client->setActive(false);
+    QString error;
+    BuildDSProgram(error);
+    QString ret;
+    if (!LoadDSProgram())
+        ret = ZSCPI::scpiAnswer[ZSCPI::errexec];
+    else
+        ret = ZSCPI::scpiAnswer[ZSCPI::ack];
+    return ret;
+}
+
+QString ZDspServer::unloadCmdListAllClients()
+{
+    for(ZdspClient* client : m_clientList)
+        client->setActive(false);
     QString error;
     BuildDSProgram(error);
     QString ret;
