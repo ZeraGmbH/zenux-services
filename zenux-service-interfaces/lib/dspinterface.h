@@ -49,6 +49,8 @@ protected:
     cDSPInterfacePrivate *d_ptr;
 };
 
+typedef std::shared_ptr<cDSPInterface> DspInterfacePtr;
+
 }
 
 #endif // DSPINTERFACE_H
