@@ -898,10 +898,14 @@ QString ZDspServer::unloadCmdListAllClients()
     QString error;
     BuildDSProgram(error);
     QString ret;
-    if (!LoadDSProgram())
+    if (!LoadDSProgram()) {
         ret = ZSCPI::scpiAnswer[ZSCPI::errexec];
-    else
+        qCritical("Unloading command lists for all clients failed: %s", qPrintable(error));
+    }
+    else {
         ret = ZSCPI::scpiAnswer[ZSCPI::ack];
+        qInfo("Command lists for all clients were removed sucessfully");
+    }
     return ret;
 }
 
