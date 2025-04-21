@@ -130,10 +130,10 @@ private:
     QString unloadCmdList(ZdspClient *client);
     QString unloadCmdListAllClients();
 
-    bool BuildDSProgram(QString& errs);
+    bool compileCmdListsForAllClientsToRawStream(QString& errs);
     bool uploadCommandLists();
     void flipCommandListSelector();
-    bool writeDspCmdLists();
+    bool writeDspCmdListsToDevNode();
     bool setDspType();
     int readMagicId();
     bool Test4HWPresent();

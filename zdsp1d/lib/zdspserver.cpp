@@ -761,9 +761,8 @@ void ZDspServer::DspIntHandler(int)
 }
 
 
-bool ZDspServer::BuildDSProgram(QString &errs)
+bool ZDspServer::compileCmdListsForAllClientsToRawStream(QString &errs)
 {
-    // die programmlisten aller aktiven clients zusammen bauen
     bool ok;
 
     m_rawCyclicCmdMem.clear();
@@ -825,7 +824,7 @@ bool ZDspServer::uploadCommandLists()
 {
     flipCommandListSelector();
 
-    if (!writeDspCmdLists())
+    if (!writeDspCmdListsToDevNode())
         return false;
 
     sendCommand2Dsp(QString("DSPCMDPAR,7,%1;").arg(m_currentCmdListSelector));
@@ -837,7 +836,7 @@ void ZDspServer::flipCommandListSelector()
     m_currentCmdListSelector = (m_currentCmdListSelector + 1) & 1;
 }
 
-bool ZDspServer::writeDspCmdLists()
+bool ZDspServer::writeDspCmdListsToDevNode()
 {
     AbstractDspDeviceNodePtr deviceNode = m_deviceNodeFactory->getDspDeviceNode();
     DspVarResolver dspSystemVarResolver;
@@ -861,7 +860,7 @@ QString ZDspServer::loadCmdList(ZdspClient* client)
     QString errs;
     client->setActive(true);
     QString ret;
-    if(BuildDSProgram(errs)) { // die cmdlisten und die variablen waren schlüssig
+    if(compileCmdListsForAllClientsToRawStream(errs)) { // die cmdlisten und die variablen waren schlüssig
         if(!uploadCommandLists()) {
             qCritical("uploadCommandLists failed");
             ret = ZSCPI::scpiAnswer[ZSCPI::errexec];
@@ -871,7 +870,7 @@ QString ZDspServer::loadCmdList(ZdspClient* client)
             ret = ZSCPI::scpiAnswer[ZSCPI::ack];
     }
     else {
-        qCritical("BuildDSProgram failed");
+        qCritical("compileCmdListsForAllClientsToRawStream failed");
         client->setActive(false);
         ret = QString("%1 %2").arg(ZSCPI::scpiAnswer[ZSCPI::errval], errs); // das "fehlerhafte" kommando anhängen
     }
@@ -884,7 +883,7 @@ QString ZDspServer::unloadCmdList(ZdspClient *client)
 {
     client->setActive(false);
     QString error;
-    BuildDSProgram(error);
+    compileCmdListsForAllClientsToRawStream(error);
     QString ret;
     if (!uploadCommandLists())
         ret = ZSCPI::scpiAnswer[ZSCPI::errexec];
@@ -898,7 +897,7 @@ QString ZDspServer::unloadCmdListAllClients()
     for(ZdspClient* client : m_clientList)
         client->setActive(false);
     QString error;
-    BuildDSProgram(error);
+    compileCmdListsForAllClientsToRawStream(error);
     QString ret;
     if (!uploadCommandLists()) {
         ret = ZSCPI::scpiAnswer[ZSCPI::errexec];
