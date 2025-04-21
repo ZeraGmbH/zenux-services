@@ -62,11 +62,6 @@ void ZdspClient::setActive(bool active)
     m_bActive = active;
 }
 
-bool ZdspClient::hasDspCmds() const
-{
-    return !m_sCmdListDef.isEmpty() || !m_sIntCmdListDef.isEmpty();
-}
-
 ulong ZdspClient::relocalizeUserMemSectionVars(ulong startAdress, ulong globalMemStart)
 {
     ulong usermemsize = 0;

@@ -14,7 +14,6 @@ public:
 
     bool isActive() const;
     void setActive(bool active);
-    bool hasDspCmds() const;
 
     bool setRawActualValueList(const QString& varsSemicolonSeparated);
     void setCmdListDef(const QString& cmdListDef);
