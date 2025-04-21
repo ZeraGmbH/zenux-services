@@ -716,10 +716,10 @@ void ZDspServer::DspIntHandler(int)
             else {
                 for (int i = 1; i < (n+1); i++) {
                     int process = pardsp[i] >> 16;
-                    ZdspClient *client2 = GetClient(process);
-                    if (client2) { // gibts den client noch, der den interrupt haben wollte
+                    ZdspClient *clientToNotify = GetClient(process);
+                    if (clientToNotify) { // client for interrupt still there?
                         const QString dspIntStr = QString("DSPINT:%1").arg(pardsp[i] & 0xFFFF);
-                        auto protoClientIter = m_clientIDHash.constFind(client2);
+                        auto protoClientIter = m_clientIDHash.constFind(clientToNotify);
                         if (protoClientIter != m_clientIDHash.constEnd()) { // es war ein client der über protobuf (clientid) angelegt wurde
                             ProtobufMessage::NetMessage protobufIntMessage;
                             ProtobufMessage::NetMessage::NetReply *intMessage = protobufIntMessage.mutable_reply();
@@ -731,7 +731,7 @@ void ZDspServer::DspIntHandler(int)
                             protobufIntMessage.set_clientid(idba.data(), idba.size() );
                             protobufIntMessage.set_messagenr(0); // interrupt
 
-                            client2->m_pNetClient->sendMessage(m_protobufWrapper.protobufToByteArray(protobufIntMessage));
+                            clientToNotify->m_pNetClient->sendMessage(m_protobufWrapper.protobufToByteArray(protobufIntMessage));
                         }
                         else {
                             QByteArray block;
@@ -743,7 +743,7 @@ void ZDspServer::DspIntHandler(int)
                             out.device()->seek(0);
                             out << (qint32)(block.size() - sizeof(qint32));
 
-                            VeinTcp::TcpPeer* pNetclient = client2->m_pNetClient;
+                            VeinTcp::TcpPeer* pNetclient = clientToNotify->m_pNetClient;
                             if (pNetclient == nullptr)
                                 m_telnetSocket->write(block);
                             else
