@@ -77,6 +77,7 @@ private:
     void DelClient(QByteArray clientId);
     ZdspClient* AddSCPIClient();
     void DelSCPIClient();
+    bool isClientStillThereAndActive(ZdspClient *client) const;
 
     QString handleScpiInterfaceRead(const QString &scpiInput);
     void outputDspRunState();

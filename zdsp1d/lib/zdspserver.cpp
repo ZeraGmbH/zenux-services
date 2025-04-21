@@ -717,7 +717,7 @@ void ZDspServer::DspIntHandler(int)
                 for (int i = 1; i < (n+1); i++) {
                     int process = pardsp[i] >> 16;
                     ZdspClient *clientToNotify = GetClient(process);
-                    if (clientToNotify) { // client for interrupt still there?
+                    if (isClientStillThereAndActive(clientToNotify)) {
                         const QString dspIntStr = QString("DSPINT:%1").arg(pardsp[i] & 0xFFFF);
                         auto protoClientIter = m_clientIDHash.constFind(clientToNotify);
                         if (protoClientIter != m_clientIDHash.constEnd()) { // es war ein client der über protobuf (clientid) angelegt wurde
@@ -1160,6 +1160,11 @@ void ZDspServer::DelSCPIClient()
     m_clientList.removeAll(m_pSCPIClient);
     if(m_pSCPIClient->hasDspCmds())
         LoadDSProgram();
+}
+
+bool ZDspServer::isClientStillThereAndActive(ZdspClient *client) const
+{
+    return client != nullptr && client->isActive();
 }
 
 void ZDspServer::sendProtoAnswer(cProtonetCommand *protoCmd)
