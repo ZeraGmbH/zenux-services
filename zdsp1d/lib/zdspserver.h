@@ -96,7 +96,7 @@ private:
     QTcpServer* m_telnetServer = nullptr;
     QTcpSocket* m_telnetSocket = nullptr;
 
-    uchar m_activatedCmdListCounter;
+    uchar m_activatedCmdListCounter = 0;
     QByteArray m_rawCyclicCmdMem; // unsere dsp programm listen
     QByteArray m_rawInterruptCmdMem;
     QSocketNotifier* m_pNotifier = nullptr;

@@ -147,7 +147,6 @@ void ZDspServer::doSetupServer()
     qInfo("Starting doSetupServer");
     initSCPIConnection(QString());
     m_sDspBootPath = m_dspSettings.getBootFile();
-    m_activatedCmdListCounter = 0; // der derzeit aktuelle kommando listen satz (0,1)
 
     connect(&m_protoBufServer, &VeinTcp::TcpServer::sigClientConnected,
             this, &ZDspServer::onProtobufClientConnected);
