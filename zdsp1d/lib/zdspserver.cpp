@@ -856,7 +856,6 @@ bool ZDspServer::writeDspCmdListsToDevNode()
 
 QString ZDspServer::loadCmdList(ZdspClient* client)
 {
-    static int count = 0;
     QString errs;
     client->setActive(true);
     QString ret;
@@ -874,8 +873,7 @@ QString ZDspServer::loadCmdList(ZdspClient* client)
         client->setActive(false);
         ret = QString("%1 %2").arg(ZSCPI::scpiAnswer[ZSCPI::errval], errs); // das "fehlerhafte" kommando anhängen
     }
-    count++;
-    qDebug() << QString("LoadCmdList(%1)").arg(count);
+    qDebug() << QString("LoadCmdList client socket %1").arg(client->getSocket());
     return ret;
 }
 
