@@ -1124,28 +1124,20 @@ void ZDspServer::DelClients(VeinTcp::TcpPeer* netClient)
             }
         }
     }
-    bool reloadRequired = false;
     for (int i = 0; i < todeleteList.count(); i++) {
         ZdspClient* client = todeleteList.at(i);
-        if(client->hasDspCmds())
-            reloadRequired = true;
         m_clientList.removeOne(client);
         delete client;
     }
-    if(reloadRequired)
-        uploadCommandLists();
 }
 
 void ZDspServer::DelClient(QByteArray clientId)
 {
     if (m_zdspdClientHash.contains(clientId)) {
         ZdspClient *client = m_zdspdClientHash.take(clientId);
-        bool realoadRequired = client->hasDspCmds();
         m_clientIDHash.remove(client);
         m_clientList.removeOne(client);
         delete client;
-        if(realoadRequired)
-            uploadCommandLists();
     }
 }
 
@@ -1157,8 +1149,6 @@ ZdspClient *ZDspServer::AddSCPIClient()
 void ZDspServer::DelSCPIClient()
 {
     m_clientList.removeAll(m_pSCPIClient);
-    if(m_pSCPIClient->hasDspCmds())
-        uploadCommandLists();
 }
 
 bool ZDspServer::isClientStillThereAndActive(ZdspClient *client) const
