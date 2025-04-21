@@ -132,6 +132,7 @@ private:
 
     bool BuildDSProgram(QString& errs);
     bool LoadDSProgram();
+    bool writeDspCmdLists();
     bool setDspType();
     int readMagicId();
     bool Test4HWPresent();
