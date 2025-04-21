@@ -821,16 +821,20 @@ bool ZDspServer::BuildDSProgram(QString &errs)
 }
 
 
-bool ZDspServer::LoadDSProgram()
+bool ZDspServer::uploadCommandLists()
 {
-    m_activatedCmdListCounter = (m_activatedCmdListCounter + 1) & 1;
+    flipCommandListSelector();
 
     if (!writeDspCmdLists())
         return false;
 
-    // dem dsp die neue liste mitteilen
-    sendCommand2Dsp(QString("DSPCMDPAR,7,%1;").arg(m_activatedCmdListCounter));
+    sendCommand2Dsp(QString("DSPCMDPAR,7,%1;").arg(m_currentCmdListSelector));
     return true;
+}
+
+void ZDspServer::flipCommandListSelector()
+{
+    m_currentCmdListSelector = (m_currentCmdListSelector + 1) & 1;
 }
 
 bool ZDspServer::writeDspCmdLists()
@@ -838,12 +842,12 @@ bool ZDspServer::writeDspCmdLists()
     AbstractDspDeviceNodePtr deviceNode = m_deviceNodeFactory->getDspDeviceNode();
     DspVarResolver dspSystemVarResolver;
 
-    const QString varNameCmdList = m_activatedCmdListCounter == 0 ? "CMDLIST" : "ALTCMDLIST";
+    const QString varNameCmdList = m_currentCmdListSelector == 0 ? "CMDLIST" : "ALTCMDLIST";
     ulong offsetCmdList = dspSystemVarResolver.getVarAddress(varNameCmdList) ;
     if(!deviceNode->write(offsetCmdList, m_rawCyclicCmdMem.data(), m_rawCyclicCmdMem.size()))
         return false;
 
-    const QString varNameIntCmdList = m_activatedCmdListCounter == 0 ? "INTCMDLIST" : "ALTINTCMDLIST";
+    const QString varNameIntCmdList = m_currentCmdListSelector == 0 ? "INTCMDLIST" : "ALTINTCMDLIST";
     ulong offsetIntCmdList = dspSystemVarResolver.getVarAddress(varNameIntCmdList) ;
     if (!deviceNode->write(offsetIntCmdList, m_rawInterruptCmdMem.data(), m_rawInterruptCmdMem.size()))
         return false;
@@ -858,8 +862,8 @@ QString ZDspServer::loadCmdList(ZdspClient* client)
     client->setActive(true);
     QString ret;
     if(BuildDSProgram(errs)) { // die cmdlisten und die variablen waren schlüssig
-        if(!LoadDSProgram()) {
-            qCritical("LoadDSProgram failed");
+        if(!uploadCommandLists()) {
+            qCritical("uploadCommandLists failed");
             ret = ZSCPI::scpiAnswer[ZSCPI::errexec];
             client->setActive(false);
         }
@@ -882,7 +886,7 @@ QString ZDspServer::unloadCmdList(ZdspClient *client)
     QString error;
     BuildDSProgram(error);
     QString ret;
-    if (!LoadDSProgram())
+    if (!uploadCommandLists())
         ret = ZSCPI::scpiAnswer[ZSCPI::errexec];
     else
         ret = ZSCPI::scpiAnswer[ZSCPI::ack];
@@ -896,7 +900,7 @@ QString ZDspServer::unloadCmdListAllClients()
     QString error;
     BuildDSProgram(error);
     QString ret;
-    if (!LoadDSProgram()) {
+    if (!uploadCommandLists()) {
         ret = ZSCPI::scpiAnswer[ZSCPI::errexec];
         qCritical("Unloading command lists for all clients failed: %s", qPrintable(error));
     }
@@ -1132,7 +1136,7 @@ void ZDspServer::DelClients(VeinTcp::TcpPeer* netClient)
         delete client;
     }
     if(reloadRequired)
-        LoadDSProgram();
+        uploadCommandLists();
 }
 
 void ZDspServer::DelClient(QByteArray clientId)
@@ -1144,7 +1148,7 @@ void ZDspServer::DelClient(QByteArray clientId)
         m_clientList.removeOne(client);
         delete client;
         if(realoadRequired)
-            LoadDSProgram();
+            uploadCommandLists();
     }
 }
 
@@ -1157,7 +1161,7 @@ void ZDspServer::DelSCPIClient()
 {
     m_clientList.removeAll(m_pSCPIClient);
     if(m_pSCPIClient->hasDspCmds())
-        LoadDSProgram();
+        uploadCommandLists();
 }
 
 bool ZDspServer::isClientStillThereAndActive(ZdspClient *client) const

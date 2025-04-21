@@ -96,7 +96,7 @@ private:
     QTcpServer* m_telnetServer = nullptr;
     QTcpSocket* m_telnetSocket = nullptr;
 
-    uchar m_activatedCmdListCounter = 0;
+    uchar m_currentCmdListSelector = 0;
     QByteArray m_rawCyclicCmdMem; // unsere dsp programm listen
     QByteArray m_rawInterruptCmdMem;
     QSocketNotifier* m_pNotifier = nullptr;
@@ -131,7 +131,8 @@ private:
     QString unloadCmdListAllClients();
 
     bool BuildDSProgram(QString& errs);
-    bool LoadDSProgram();
+    bool uploadCommandLists();
+    void flipCommandListSelector();
     bool writeDspCmdLists();
     bool setDspType();
     int readMagicId();
