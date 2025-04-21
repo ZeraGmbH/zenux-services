@@ -825,26 +825,26 @@ bool ZDspServer::BuildDSProgram(QString &errs)
 bool ZDspServer::LoadDSProgram()
 {
     // die programmlisten aller aktiven clients laden
-    QString s,s2;
+    QString varNameCmdList, varNameIntCmdList;
 
     ActivatedCmdList = (ActivatedCmdList + 1) & 1;
     if (ActivatedCmdList == 0) {
-        s = QString("CMDLIST");
-        s2 = QString("INTCMDLIST");
+        varNameCmdList = QString("CMDLIST");
+        varNameIntCmdList = QString("INTCMDLIST");
     }
     else {
-        s = QString("ALTCMDLIST");
-        s2 = QString("ALTINTCMDLIST");
+        varNameCmdList = QString("ALTCMDLIST");
+        varNameIntCmdList = QString("ALTINTCMDLIST");
     };
 
     DspVarResolver dspSystemVarResolver;
     AbstractDspDeviceNodePtr deviceNode = m_deviceNodeFactory->getDspDeviceNode();
 
-    ulong offset = dspSystemVarResolver.getVarAddress(s) ;
+    ulong offset = dspSystemVarResolver.getVarAddress(varNameCmdList) ;
     if(!deviceNode->write(offset, m_rawCyclicCmdMem.data(), m_rawCyclicCmdMem.size()))
         return false;
 
-    offset = dspSystemVarResolver.getVarAddress(s2) ;
+    offset = dspSystemVarResolver.getVarAddress(varNameIntCmdList) ;
     if (!deviceNode->write(offset, m_rawInterruptCmdMem.data(), m_rawInterruptCmdMem.size()))
         return false;
 
