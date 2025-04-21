@@ -147,7 +147,7 @@ void ZDspServer::doSetupServer()
     qInfo("Starting doSetupServer");
     initSCPIConnection(QString());
     m_sDspBootPath = m_dspSettings.getBootFile();
-    ActivatedCmdList = 0; // der derzeit aktuelle kommando listen satz (0,1)
+    m_activatedCmdListCounter = 0; // der derzeit aktuelle kommando listen satz (0,1)
 
     connect(&m_protoBufServer, &VeinTcp::TcpServer::sigClientConnected,
             this, &ZDspServer::onProtobufClientConnected);
@@ -824,13 +824,13 @@ bool ZDspServer::BuildDSProgram(QString &errs)
 
 bool ZDspServer::LoadDSProgram()
 {
-    ActivatedCmdList = (ActivatedCmdList + 1) & 1;
+    m_activatedCmdListCounter = (m_activatedCmdListCounter + 1) & 1;
 
     if (!writeDspCmdLists())
         return false;
 
     // dem dsp die neue liste mitteilen
-    sendCommand2Dsp(QString("DSPCMDPAR,7,%1;").arg(ActivatedCmdList));
+    sendCommand2Dsp(QString("DSPCMDPAR,7,%1;").arg(m_activatedCmdListCounter));
     return true;
 }
 
@@ -839,12 +839,12 @@ bool ZDspServer::writeDspCmdLists()
     AbstractDspDeviceNodePtr deviceNode = m_deviceNodeFactory->getDspDeviceNode();
     DspVarResolver dspSystemVarResolver;
 
-    const QString varNameCmdList = ActivatedCmdList == 0 ? "CMDLIST" : "ALTCMDLIST";
+    const QString varNameCmdList = m_activatedCmdListCounter == 0 ? "CMDLIST" : "ALTCMDLIST";
     ulong offsetCmdList = dspSystemVarResolver.getVarAddress(varNameCmdList) ;
     if(!deviceNode->write(offsetCmdList, m_rawCyclicCmdMem.data(), m_rawCyclicCmdMem.size()))
         return false;
 
-    const QString varNameIntCmdList = ActivatedCmdList == 0 ? "INTCMDLIST" : "ALTINTCMDLIST";
+    const QString varNameIntCmdList = m_activatedCmdListCounter == 0 ? "INTCMDLIST" : "ALTINTCMDLIST";
     ulong offsetIntCmdList = dspSystemVarResolver.getVarAddress(varNameIntCmdList) ;
     if (!deviceNode->write(offsetIntCmdList, m_rawInterruptCmdMem.data(), m_rawInterruptCmdMem.size()))
         return false;
