@@ -16,13 +16,9 @@ namespace DSPDATA
 class cDspVar // dsp variable
 {
 public:
-    cDspVar(QString name, int size, int type, int datatype = DSPDATA::dFloat ) :
-        m_sName(name),
-        m_nType(type),
-        m_nDataType(datatype),
-        m_dspVarData(size)
-    {
-    }
+    cDspVar(const QString &name, int size, int type, int datatype = DSPDATA::dFloat );
+    virtual ~cDspVar();
+
     QString& Name() { return m_sName;}
     int size() { return m_dspVarData.size(); }
     int type() { return m_nType; }
@@ -31,6 +27,7 @@ public:
     // Nightmare: This must go!!!
     float* data() { return m_dspVarData.data();}
 
+    static int getInstanceCount();
 private:
     friend class cDspMeasData;
     void setData(QVector<float> data) {
@@ -42,5 +39,6 @@ private:
     int m_nType; // an it can be of different type : vDspResult, vDspTemp , vDspIntVar , vDspParam
     int m_nDataType; // it can be float or int
     QVector<float> m_dspVarData; // we hold an array for data storage
+    static int m_instanceCount;
 };
 #endif // DSPVAR_H
