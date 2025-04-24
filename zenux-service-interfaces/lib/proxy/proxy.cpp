@@ -5,30 +5,34 @@ namespace Zera {
 
 Proxy* Proxy::getInstance()
 {
-    if(ProxyPrivate::singletonInstance == 0)
-        ProxyPrivate::singletonInstance = new Proxy;
-    return ProxyPrivate::singletonInstance;
+    if(ProxyPrivate::m_singletonInstance == nullptr)
+        ProxyPrivate::m_singletonInstance = new Proxy;
+    return ProxyPrivate::m_singletonInstance;
 }
 
-ProxyClient* Proxy::getConnection(QString ipadress, quint16 port, VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory)
+ProxyClient* Proxy::getConnection(QString ipadress, quint16 port,
+                                  VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory)
 {
     Q_D(Proxy);
     return d->getConnection(ipadress, port, tcpNetworkFactory);
 }
 
-ProxyClient *Proxy::getConnection(const NetworkConnectionInfo &netInfo, VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory)
+ProxyClient *Proxy::getConnection(const NetworkConnectionInfo &netInfo,
+                                  VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory)
 {
     Q_D(Proxy);
     return d->getConnection(netInfo.m_sIP, netInfo.m_nPort, tcpNetworkFactory);
 }
 
-ProxyClientPtr Proxy::getConnectionSmart(QString ipadress, quint16 port, VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory)
+ProxyClientPtr Proxy::getConnectionSmart(QString ipadress, quint16 port,
+                                         VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory)
 {
     Q_D(Proxy);
     return d->getConnectionSmart(ipadress, port, tcpNetworkFactory);
 }
 
-ProxyClientPtr Proxy::getConnectionSmart(const NetworkConnectionInfo &netInfo, VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory)
+ProxyClientPtr Proxy::getConnectionSmart(const NetworkConnectionInfo &netInfo,
+                                         VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory)
 {
     Q_D(Proxy);
     return d->getConnectionSmart(netInfo.m_sIP, netInfo.m_nPort, tcpNetworkFactory);

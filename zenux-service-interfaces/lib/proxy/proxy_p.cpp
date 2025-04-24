@@ -9,14 +9,15 @@
 
 namespace Zera {
 
-Proxy* ProxyPrivate::singletonInstance=0;
+Proxy* ProxyPrivate::m_singletonInstance = nullptr;
 
 ProxyPrivate::ProxyPrivate(Proxy *parent):
     q_ptr(parent)
 {
 }
 
-ProxyClient* ProxyPrivate::getConnection(QString ipadress, quint16 port, VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory)
+ProxyClient* ProxyPrivate::getConnection(QString ipadress, quint16 port,
+                                         VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory)
 {
     QUuid uuid = QUuid::createUuid(); // we use a per client uuid
     QByteArray binUUid = uuid.toRfc4122();
@@ -30,7 +31,8 @@ ProxyClient* ProxyPrivate::getConnection(QString ipadress, quint16 port, VeinTcp
     return proxyclient;
 }
 
-ProxyClientPtr ProxyPrivate::getConnectionSmart(QString ipadress, quint16 port, VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory)
+ProxyClientPtr ProxyPrivate::getConnectionSmart(QString ipadress, quint16 port,
+                                                VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory)
 {
     ProxyClient* client = getConnection(ipadress, port, tcpNetworkFactory);
     return ProxyClientPtr(client);
@@ -132,13 +134,14 @@ void ProxyPrivate::registerDisConnection(VeinTcp::TcpPeer *peer)
     }
 }
 
-void ProxyPrivate::onMessageReceived(VeinTcp::TcpPeer *peer, QByteArray message)
+void ProxyPrivate::onMessageReceived(VeinTcp::TcpPeer *peer, const QByteArray &message)
 {
     Q_UNUSED(peer)
     handleReceiveMessage(m_protobufWrapper.byteArrayToProtobuf(message));
 }
 
-ProxyNetPeer *ProxyPrivate::getProxyNetPeer(QString ipadress, quint16 port, VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory)
+ProxyNetPeer *ProxyPrivate::getProxyNetPeer(const QString &ipadress, quint16 port,
+                                            VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory)
 {
     ProxyNetPeer* netClient = searchConnection(ipadress, port);
     if(!netClient)  {// look for existing connection
@@ -151,19 +154,16 @@ ProxyNetPeer *ProxyPrivate::getProxyNetPeer(QString ipadress, quint16 port, Vein
     return netClient;
 }
 
-ProxyNetPeer* ProxyPrivate::searchConnection(QString ip, quint16 port)
+ProxyNetPeer* ProxyPrivate::searchConnection(const QString &ip, quint16 port)
 {
-    ProxyNetPeer* lnetClient = nullptr;
     QHashIterator<ProxyClientPrivate*, ProxyConnection*> it(m_ConnectionHash);
     while(it.hasNext()) {
         it.next();
         ProxyConnection *pC = it.value();
-        if( pC->m_sIP == ip && pC->m_nPort == port) {
-             lnetClient = pC->m_pNetClient;
-             break;
-        }
+        if( pC->m_sIP == ip && pC->m_nPort == port)
+             return pC->m_pNetClient;
     }
-    return lnetClient;
+    return nullptr;
 }
 
 }

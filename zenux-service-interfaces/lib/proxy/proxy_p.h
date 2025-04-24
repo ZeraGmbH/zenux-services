@@ -20,24 +20,27 @@ class ProxyPrivate: public QObject
     Q_OBJECT
 public:
     quint32 transmitCommand(ProxyClientPrivate *client, ProtobufMessage::NetMessage *message);
-protected:
-    ProxyPrivate(Proxy *parent);
-    ~ProxyPrivate(){}
-    ProxyClient* getConnection(QString ipadress, quint16 port, VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory);
-    ProxyClientPtr getConnectionSmart(QString ipadress, quint16 port, VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory);
-    void startConnection(ProxyClientPrivate *client);
-    bool releaseConnection(ProxyClientPrivate *client);
-    static Proxy* singletonInstance;
-    Proxy *q_ptr;
-protected slots:
+
+private slots:
     void receiveTcpError(VeinTcp::TcpPeer *peer, QAbstractSocket::SocketError errorCode);
     void registerConnection(VeinTcp::TcpPeer *peer);
     void registerDisConnection(VeinTcp::TcpPeer *peer);
-    void onMessageReceived(VeinTcp::TcpPeer *peer, QByteArray message);
+    void onMessageReceived(VeinTcp::TcpPeer *peer, const QByteArray &message);
 private:
+    ProxyPrivate(Proxy *parent);
+    ProxyClient* getConnection(QString ipadress, quint16 port,
+                               VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory);
+    ProxyClientPtr getConnectionSmart(QString ipadress, quint16 port,
+                                      VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory);
+    void startConnection(ProxyClientPrivate *client);
+    bool releaseConnection(ProxyClientPrivate *client);
     void handleReceiveMessage(std::shared_ptr<google::protobuf::Message> message);
-    ProxyNetPeer *getProxyNetPeer(QString ipadress, quint16 port, VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory);
-    ProxyNetPeer *searchConnection(QString ip, quint16 port); // we search for a netclient that matches ip, port
+    ProxyNetPeer *getProxyNetPeer(const QString &ipadress, quint16 port,
+                                  VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory);
+    ProxyNetPeer *searchConnection(const QString &ip, quint16 port); // we search for a netclient that matches ip, port
+
+    static Proxy* m_singletonInstance;
+    Proxy *q_ptr;
     XiQNetWrapper m_protobufWrapper;
     QHash<ProxyClientPrivate*, ProxyConnection*> m_ConnectionHash; // holds network connection for each client
     QHash<QByteArray, ProxyClientPrivate*> m_ClientHash; // information for faster redirecting
