@@ -13,7 +13,11 @@ namespace Zera {
 class cInterfacePrivate: public QObject
 {
     Q_OBJECT
+public:
+    static int getInstanceCount();
 protected:
+    cInterfacePrivate();
+    ~cInterfacePrivate();
     struct TAnswerDecoded
     {
         quint32 msgNr;
@@ -32,6 +36,9 @@ protected:
 protected slots:
     virtual void receiveAnswer(std::shared_ptr<ProtobufMessage::NetMessage> message) = 0;
     virtual void receiveError(QAbstractSocket::SocketError errorCode) = 0;
+
+private:
+    static int m_instanceCount;
 };
 
 }

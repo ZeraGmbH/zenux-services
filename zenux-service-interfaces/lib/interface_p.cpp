@@ -4,6 +4,23 @@
 
 namespace Zera {
 
+int cInterfacePrivate::m_instanceCount = 0;
+
+int cInterfacePrivate::getInstanceCount()
+{
+    return m_instanceCount;
+}
+
+cInterfacePrivate::cInterfacePrivate()
+{
+    m_instanceCount++;
+}
+
+cInterfacePrivate::~cInterfacePrivate()
+{
+    m_instanceCount--;
+}
+
 bool cInterfacePrivate::decodeProtobuffAnswer(std::shared_ptr<ProtobufMessage::NetMessage> message,
                                               TAnswerDecoded &decodedAnswer,
                                               int interruptEnumVal)
