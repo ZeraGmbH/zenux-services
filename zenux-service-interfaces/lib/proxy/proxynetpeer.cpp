@@ -8,7 +8,7 @@ ProxyNetPeer::ProxyNetPeer(VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFacto
     m_bStarted = false;
 }
 
-void ProxyNetPeer::startProxyConnection(QString ipAddress, quint16 port)
+void ProxyNetPeer::startProxyConnection(const QString &ipAddress, quint16 port)
 {
     startConnection(ipAddress, port);
     m_bStarted = true;

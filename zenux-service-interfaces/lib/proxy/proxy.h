@@ -14,18 +14,24 @@ class SERVICE_INTERFACES_EXPORT Proxy : public QObject
     Q_OBJECT
 public:
     static Proxy* getInstance();
-    ProxyClient* getConnection(QString ipadress, quint16 port, VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory);
-    ProxyClient* getConnection(const NetworkConnectionInfo &netInfo, VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory);
-    ProxyClientPtr getConnectionSmart(QString ipadress, quint16 port, VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory);
-    ProxyClientPtr getConnectionSmart(const NetworkConnectionInfo &netInfo, VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory);
+    ProxyClient* getConnection(const QString &ipadress, quint16 port,
+                               VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory);
+    ProxyClient* getConnection(const NetworkConnectionInfo &netInfo,
+                               VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory);
+    ProxyClientPtr getConnectionSmart(const QString &ipadress, quint16 port,
+                                      VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory);
+    ProxyClientPtr getConnectionSmart(const NetworkConnectionInfo &netInfo,
+                                      VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory);
     void startConnection(ProxyClient *client);
     void startConnectionSmart(ProxyClientPtr client);
     bool releaseConnection(ProxyClient* client);
+
 protected:
-    explicit Proxy(QObject* parent = 0);
+    explicit Proxy();
     ~Proxy();
-    ProxyPrivate *d_ptr;
 private:
+    ProxyPrivate *d_ptr;
+
     Q_DISABLE_COPY(Proxy)
     Q_DECLARE_PRIVATE(Proxy)
 };

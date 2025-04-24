@@ -10,7 +10,7 @@ Proxy* Proxy::getInstance()
     return ProxyPrivate::m_singletonInstance;
 }
 
-ProxyClient* Proxy::getConnection(QString ipadress, quint16 port,
+ProxyClient* Proxy::getConnection(const QString &ipadress, quint16 port,
                                   VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory)
 {
     Q_D(Proxy);
@@ -24,7 +24,7 @@ ProxyClient *Proxy::getConnection(const NetworkConnectionInfo &netInfo,
     return d->getConnection(netInfo.m_sIP, netInfo.m_nPort, tcpNetworkFactory);
 }
 
-ProxyClientPtr Proxy::getConnectionSmart(QString ipadress, quint16 port,
+ProxyClientPtr Proxy::getConnectionSmart(const QString &ipadress, quint16 port,
                                          VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory)
 {
     Q_D(Proxy);
@@ -56,10 +56,9 @@ bool Proxy::releaseConnection(ProxyClient *client)
     return d->releaseConnection((ProxyClientPrivate*) client);
 }
 
-Proxy::Proxy(QObject *parent):
+Proxy::Proxy():
     d_ptr(new Zera::ProxyPrivate(this))
 {
-    setParent(parent);
 }
 
 Proxy::~Proxy()

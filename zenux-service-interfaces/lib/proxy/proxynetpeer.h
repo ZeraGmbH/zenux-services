@@ -10,7 +10,7 @@ class ProxyNetPeer: public VeinTcp::TcpPeer
     Q_OBJECT
 public:
     ProxyNetPeer(VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory, QObject *qObjParent = nullptr);
-    void startProxyConnection(QString ipAddress, quint16 port);
+    void startProxyConnection(const QString &ipAddress, quint16 port);
     bool isStarted();
 private:
     bool m_bStarted;
