@@ -1,14 +1,14 @@
 #ifndef TESTALLSERVICESMT310S2_H
 #define TESTALLSERVICESMT310S2_H
 
-#include "abstractmockallservices.h"
+#include "abstracttestallservices.h"
 #include "resmanrunfacade.h"
 #include "mockmt310s2d.h"
 #include "mocksec1000d.h"
 #include "mockzdsp1d.h"
 #include "testfactoryi2cctrl.h"
 
-class TestAllServicesMt310s2 : public AbstractMockAllServices
+class TestAllServicesMt310s2 : public AbstractTestAllServices
 {
 public:
     TestAllServicesMt310s2(const QString &serviceNameForAlternateDevice,

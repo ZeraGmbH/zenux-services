@@ -1,14 +1,14 @@
 #ifndef TESTALLSERVICESCOM5003_H
 #define TESTALLSERVICESCOM5003_H
 
-#include "abstractmockallservices.h"
+#include "abstracttestallservices.h"
 #include "resmanrunfacade.h"
 #include "mockcom5003d.h"
 #include "mocksec1000d.h"
 #include "mockzdsp1d.h"
 #include "testfactoryi2cctrl.h"
 
-class TestAllServicesCom5003 : public AbstractMockAllServices
+class TestAllServicesCom5003 : public AbstractTestAllServices
 {
 public:
     TestAllServicesCom5003(AbstractFactoryI2cCtrlPtr ctrlFactory = std::make_shared<TestFactoryI2cCtrl>(true));
