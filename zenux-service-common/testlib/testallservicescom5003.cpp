@@ -33,3 +33,8 @@ TestAllServicesCom5003::~TestAllServicesCom5003()
     delete m_resman;
     TimeMachineObject::feedEventLoop();
 }
+
+ZDspServer *TestAllServicesCom5003::getZdsp1dServer()
+{
+    return m_zdsp1d->getServer();
+}

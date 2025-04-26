@@ -14,3 +14,8 @@ MockZdsp1d::MockZdsp1d(AbstractFactoryDeviceNodeDspPtr deviceNodeFactory,
         deviceNodeFactory,
         tcpNetworkFactory);
 }
+
+ZDspServer *MockZdsp1d::getServer()
+{
+    return m_server.get();
+}

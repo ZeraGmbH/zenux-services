@@ -17,6 +17,8 @@ public:
                            VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory,
                            AbstractFactoryI2cCtrlPtr ctrlFactory = std::make_shared<TestFactoryI2cCtrl>(true));
     virtual ~TestAllServicesMt310s2();
+
+    ZDspServer *getZdsp1dServer() override;
 private:
     void init(const QString &serviceNameForAlternateDevice,
               VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory,

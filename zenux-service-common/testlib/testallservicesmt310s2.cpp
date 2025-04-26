@@ -36,3 +36,8 @@ TestAllServicesMt310s2::~TestAllServicesMt310s2()
     delete m_resman;
     TimeMachineObject::feedEventLoop();
 }
+
+ZDspServer *TestAllServicesMt310s2::getZdsp1dServer()
+{
+    return m_zdsp1d->getServer();
+}

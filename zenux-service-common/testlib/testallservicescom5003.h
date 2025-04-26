@@ -15,6 +15,8 @@ public:
     TestAllServicesCom5003(VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory,
                            AbstractFactoryI2cCtrlPtr ctrlFactory = std::make_shared<TestFactoryI2cCtrl>(true));
     virtual ~TestAllServicesCom5003();
+
+    ZDspServer *getZdsp1dServer() override;
 private:
     void init(VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory, AbstractFactoryI2cCtrlPtr ctrlFactory);
     ResmanRunFacade *m_resman;
