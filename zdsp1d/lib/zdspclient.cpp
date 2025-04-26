@@ -4,10 +4,10 @@
 
 ZdspClient::ZdspClient(int socket,
                        VeinTcp::TcpPeer* veinPeer,
-                       const QByteArray &protobufClientId,
+                       const QByteArray &proxyConnectionId,
                        AbstractFactoryDeviceNodeDspPtr deviceNodeFactory) :
     m_veinPeer(veinPeer),
-    m_protobufClientId(protobufClientId),
+    m_proxyConnectionId(proxyConnectionId),
     m_deviceNodeFactory(deviceNodeFactory),
     m_socket(socket)
 {
@@ -68,7 +68,7 @@ void ZdspClient::setActive(bool active)
 
 QByteArray ZdspClient::getProtobufClientId() const
 {
-    return m_protobufClientId;
+    return m_proxyConnectionId;
 }
 
 ulong ZdspClient::relocalizeUserMemSectionVars(ulong startAdress, ulong globalMemStart)

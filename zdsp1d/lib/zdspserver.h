@@ -78,10 +78,10 @@ private:
     void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
 
     friend class TestZdsp1dForVarAccess;
-    ZdspClient* AddClient(VeinTcp::TcpPeer *netClient, const QByteArray &clientId);
-    void addClientToHash(const QByteArray &clientId, VeinTcp::TcpPeer *peer);
+    ZdspClient* AddClient(VeinTcp::TcpPeer *netClient, const QByteArray &proxyConnectionId);
+    void addClientToHash(const QByteArray &proxyConnectionId, VeinTcp::TcpPeer *peer);
     void DelClients(VeinTcp::TcpPeer *netClient);
-    void DelClient(QByteArray clientId);
+    void DelClient(QByteArray proxyConnectionId);
     ZdspClient* AddSCPIClient();
     void DelSCPIClient();
     bool isClientStillThereAndActive(ZdspClient *client) const;
@@ -99,7 +99,7 @@ private:
     VeinTcp::AbstractTcpNetworkFactoryPtr m_tcpNetworkFactory;
     VeinTcp::TcpServer m_protoBufServer;
     XiQNetWrapper m_protobufWrapper;
-    quint16 m_nSocketIdentifier = 0; // we will use this instead of real sockets, because protobuf extension clientId
+    quint16 m_nSocketIdentifier = 0; // we will use this instead of real sockets, because protobuf extension clientId aka proxyConnectionId
     QTcpServer* m_telnetServer = nullptr;
     QTcpSocket* m_telnetSocket = nullptr;
 

@@ -100,8 +100,8 @@ void PCBServer::onTelnetDataReceived()
     input.remove('\n');
     qInfo("External SCPI command: %s", qPrintable(input));
 
-    QByteArray clientId = QByteArray(); // we set an empty byte array
-    cProtonetCommand* protoCmd = new cProtonetCommand(0, false, true, clientId, 0, input);
+    QByteArray proxyConnectionId = QByteArray(); // we set an empty byte array
+    cProtonetCommand* protoCmd = new cProtonetCommand(0, false, true, proxyConnectionId, 0, input);
     // peer = 0 means we are working on the scpi socket ....
     cSCPIObject* scpiObject = m_scpiInterface->getSCPIObject(input);
     if(scpiObject) {
@@ -233,10 +233,10 @@ void PCBServer::executeCommandProto(VeinTcp::TcpPeer* peer, std::shared_ptr<goog
     std::shared_ptr<ProtobufMessage::NetMessage> protobufCommand = std::static_pointer_cast<ProtobufMessage::NetMessage>(cmd);
     if ( (protobufCommand != nullptr) && (peer != nullptr)) {
         if (protobufCommand->has_clientid()) {
-            QByteArray clientId = QByteArray(protobufCommand->clientid().data(), protobufCommand->clientid().size());
+            QByteArray proxyConnectionId = QByteArray(protobufCommand->clientid().data(), protobufCommand->clientid().size());
             if (protobufCommand->has_netcommand()) {
                 // in case of "lost" clients we delete registration for notification
-                doUnregisterNotifier(peer, clientId);
+                doUnregisterNotifier(peer, proxyConnectionId);
             }
             else if (protobufCommand->has_messagenr()) {
                 quint32 messageNr = protobufCommand->messagenr();
@@ -245,7 +245,7 @@ void PCBServer::executeCommandProto(VeinTcp::TcpPeer* peer, std::shared_ptr<goog
                 cProtonetCommand* protoCmd;
                 cSCPIObject* scpiObject =  m_scpiInterface->getSCPIObject(input);
                 if (scpiObject) {
-                    protoCmd = new cProtonetCommand(peer, true, true, clientId, messageNr, input, scpiObject->getType());
+                    protoCmd = new cProtonetCommand(peer, true, true, proxyConnectionId, messageNr, input, scpiObject->getType());
                     cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
                     if (!scpiDelegate->executeSCPI(protoCmd)) {
                         protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::nak];
@@ -254,7 +254,7 @@ void PCBServer::executeCommandProto(VeinTcp::TcpPeer* peer, std::shared_ptr<goog
                 }
                 else {
                     QString cmdStr =  QString::fromStdString(protobufCommand->scpi().command());
-                    protoCmd = new cProtonetCommand(peer, true, true, clientId, messageNr, cmdStr);
+                    protoCmd = new cProtonetCommand(peer, true, true, proxyConnectionId, messageNr, cmdStr);
                     protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::nak];
                     emit cmdExecutionDone(protoCmd);
                 }
@@ -263,11 +263,11 @@ void PCBServer::executeCommandProto(VeinTcp::TcpPeer* peer, std::shared_ptr<goog
         }
         else {
             QString input =  QString::fromStdString(protobufCommand->scpi().command());
-            QByteArray clientId = QByteArray(); // we set an empty byte array
+            QByteArray proxyConnectionId = QByteArray(); // we set an empty byte array
             cProtonetCommand* protoCmd;
             cSCPIObject* scpiObject =  m_scpiInterface->getSCPIObject(input);
             if (scpiObject) {
-                protoCmd = new cProtonetCommand(peer, false, true, clientId, 0, input, scpiObject->getType());
+                protoCmd = new cProtonetCommand(peer, false, true, proxyConnectionId, 0, input, scpiObject->getType());
                 cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
                 if (!scpiDelegate->executeSCPI(protoCmd)) {
                     protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::nak];
@@ -275,7 +275,7 @@ void PCBServer::executeCommandProto(VeinTcp::TcpPeer* peer, std::shared_ptr<goog
                 }
             }
             else {
-                protoCmd = new cProtonetCommand(peer, false, true, clientId, 0, input, 0);
+                protoCmd = new cProtonetCommand(peer, false, true, proxyConnectionId, 0, input, 0);
                 protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::nak];
                 emit cmdExecutionDone(protoCmd);
             }

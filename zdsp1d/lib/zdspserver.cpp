@@ -991,11 +991,11 @@ void ZDspServer::onProtobufDataReceived(VeinTcp::TcpPeer *peer, QByteArray messa
     executeCommandProto(peer, m_protobufWrapper.byteArrayToProtobuf(message));
 }
 
-void ZDspServer::addClientToHash(const QByteArray &clientId, VeinTcp::TcpPeer *peer)
+void ZDspServer::addClientToHash(const QByteArray &proxyConnectionId, VeinTcp::TcpPeer *peer)
 {
-    if (!m_zdspdClientHash.contains(clientId)) { // we didn't get any command from here yet
-        ZdspClient *zdspclient = AddClient(peer, clientId); // we add a new client with the same socket but different identifier
-        m_zdspdClientHash[clientId] = zdspclient;
+    if (!m_zdspdClientHash.contains(proxyConnectionId)) { // we didn't get any command from here yet
+        ZdspClient *zdspclient = AddClient(peer, proxyConnectionId); // we add a new client with the same socket but different identifier
+        m_zdspdClientHash[proxyConnectionId] = zdspclient;
     }
 }
 
@@ -1005,22 +1005,22 @@ void ZDspServer::executeCommandProto(VeinTcp::TcpPeer *peer, std::shared_ptr<goo
     if ( (protobufCommand != 0) && (peer != 0)) {
         if (protobufCommand->has_netcommand() && protobufCommand->has_clientid()) {
             // in case of "lost" clients we delete the clients and its data
-            QByteArray clientId = QByteArray(protobufCommand->clientid().data(), protobufCommand->clientid().size());
-            DelClient(clientId);
+            QByteArray proxyConnectionId = QByteArray(protobufCommand->clientid().data(), protobufCommand->clientid().size());
+            DelClient(proxyConnectionId);
         }
         else if (protobufCommand->has_clientid() && protobufCommand->has_messagenr()) {
-            QByteArray clientId = QByteArray(protobufCommand->clientid().data(), protobufCommand->clientid().size());
+            QByteArray proxyConnectionId = QByteArray(protobufCommand->clientid().data(), protobufCommand->clientid().size());
             quint32 messageNr = protobufCommand->messagenr();
             ProtobufMessage::NetMessage::ScpiCommand scpiCmd = protobufCommand->scpi();
 
-            addClientToHash(clientId, peer);
+            addClientToHash(proxyConnectionId, peer);
 
             // Stolen from PCBServer::executeCommandProto ---
             QString scpiInput = QString::fromStdString(scpiCmd.command()) +  " " + QString::fromStdString(scpiCmd.parameter());
             cSCPIObject* scpiObject = m_scpiInterface->getSCPIObject(scpiInput);
             if(scpiObject) {
                 cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
-                cProtonetCommand* protoCmd = new cProtonetCommand(peer, true, true, clientId, messageNr, scpiInput, scpiObject->getType());
+                cProtonetCommand* protoCmd = new cProtonetCommand(peer, true, true, proxyConnectionId, messageNr, scpiInput, scpiObject->getType());
                 if (scpiDelegate->executeSCPI(protoCmd))
                     emit cmdExecutionDone(protoCmd);
                 else {
@@ -1029,7 +1029,7 @@ void ZDspServer::executeCommandProto(VeinTcp::TcpPeer *peer, std::shared_ptr<goo
                 }
             }
             else {
-                cProtonetCommand* protoCmd = new cProtonetCommand(peer, true, true, clientId, messageNr, scpiInput);
+                cProtonetCommand* protoCmd = new cProtonetCommand(peer, true, true, proxyConnectionId, messageNr, scpiInput);
                 protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::nak];
                 emit cmdExecutionDone(protoCmd);
             }
@@ -1058,9 +1058,9 @@ void ZDspServer::onTelnetDataReceived()
     // Stolen fom PCBServer::onTelnetDataReceived()
     cSCPIObject* scpiObject = m_scpiInterface->getSCPIObject(input);
     if(scpiObject) {
-        QByteArray clientId = QByteArray(); // we set an empty byte array
-        addClientToHash(clientId, nullptr);
-        cProtonetCommand* protoCmd = new cProtonetCommand(nullptr, false, true, clientId, 0, input);
+        QByteArray proxyConnectionId = QByteArray(); // we set an empty byte array
+        addClientToHash(proxyConnectionId, nullptr);
+        cProtonetCommand* protoCmd = new cProtonetCommand(nullptr, false, true, proxyConnectionId, 0, input);
         cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
         if (!scpiDelegate->executeSCPI(protoCmd))
             protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::nak];
@@ -1076,13 +1076,13 @@ void ZDspServer::onTelnetDisconnect()
     DelSCPIClient();
 }
 
-ZdspClient* ZDspServer::AddClient(VeinTcp::TcpPeer* netClient, const QByteArray &clientId)
+ZdspClient* ZDspServer::AddClient(VeinTcp::TcpPeer* netClient, const QByteArray &proxyConnectionId)
 {
     // fügt einen client hinzu
     m_nSocketIdentifier++;
     if (m_nSocketIdentifier == 0)
         m_nSocketIdentifier++;
-    ZdspClient* client = new ZdspClient(m_nSocketIdentifier, netClient, clientId, m_deviceNodeFactory);
+    ZdspClient* client = new ZdspClient(m_nSocketIdentifier, netClient, proxyConnectionId, m_deviceNodeFactory);
     m_clientList.append(client);
     return client;
 }
@@ -1105,10 +1105,10 @@ void ZDspServer::DelClients(VeinTcp::TcpPeer* netClient)
     }
 }
 
-void ZDspServer::DelClient(QByteArray clientId)
+void ZDspServer::DelClient(QByteArray proxyConnectionId)
 {
-    if (m_zdspdClientHash.contains(clientId)) {
-        ZdspClient *client = m_zdspdClientHash.take(clientId);
+    if (m_zdspdClientHash.contains(proxyConnectionId)) {
+        ZdspClient *client = m_zdspdClientHash.take(proxyConnectionId);
         m_clientList.removeOne(client);
         delete client;
     }

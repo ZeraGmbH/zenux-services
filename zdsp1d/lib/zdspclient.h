@@ -11,7 +11,7 @@ class ZdspClient
 public:
     ZdspClient(int socket,
                VeinTcp::TcpPeer *veinPeer,
-               const QByteArray &protobufClientId, // protobuf / vein-peer ids are different stories
+               const QByteArray &proxyConnectionId,
                AbstractFactoryDeviceNodeDspPtr deviceNodeFactory);
     ~ZdspClient() = default;
 
@@ -36,7 +36,7 @@ public:
     VeinTcp::TcpPeer* m_veinPeer;
 
 private:
-    QByteArray m_protobufClientId;
+    QByteArray m_proxyConnectionId;
     AbstractFactoryDeviceNodeDspPtr m_deviceNodeFactory;
     int m_socket; // socket für den die verbindung besteht
     bool m_bActive = false;
