@@ -740,7 +740,7 @@ void ZDspServer::DspIntHandler(int)
                             protobufIntMessage.set_clientid(idba.data(), idba.size() );
                             protobufIntMessage.set_messagenr(0); // interrupt
 
-                            clientToNotify->m_pNetClient->sendMessage(m_protobufWrapper.protobufToByteArray(protobufIntMessage));
+                            clientToNotify->m_veinPeer->sendMessage(m_protobufWrapper.protobufToByteArray(protobufIntMessage));
                         }
                         else {
                             QByteArray block;
@@ -752,7 +752,7 @@ void ZDspServer::DspIntHandler(int)
                             out.device()->seek(0);
                             out << (qint32)(block.size() - sizeof(qint32));
 
-                            VeinTcp::TcpPeer* pNetclient = clientToNotify->m_pNetClient;
+                            VeinTcp::TcpPeer* pNetclient = clientToNotify->m_veinPeer;
                             if (pNetclient == nullptr)
                                 m_telnetSocket->write(block);
                             else
@@ -998,7 +998,6 @@ void ZDspServer::onProtobufClientConnected(VeinTcp::TcpPeer *newClient)
 {
     connect(newClient, &VeinTcp::TcpPeer::sigMessageReceived, this, &ZDspServer::onProtobufDataReceived);
     connect(newClient, &VeinTcp::TcpPeer::sigConnectionClosed, this, &ZDspServer::onProtobufDisconnect);
-    AddClient(newClient); // we additionally add the client to our list
 }
 
 void ZDspServer::onProtobufDisconnect(VeinTcp::TcpPeer *peer)
@@ -1014,7 +1013,7 @@ void ZDspServer::onProtobufDataReceived(VeinTcp::TcpPeer *peer, QByteArray messa
 void ZDspServer::addClientToHash(const QByteArray &clientId, VeinTcp::TcpPeer *peer)
 {
     if (!m_zdspdClientHash.contains(clientId)) { // we didn't get any command from here yet
-        ZdspClient *zdspclient = AddClient(peer); // we add a new client with the same socket but different identifier
+        ZdspClient *zdspclient = AddClient(peer, clientId); // we add a new client with the same socket but different identifier
         m_zdspdClientHash[clientId] = zdspclient;
         m_clientIDHash[zdspclient] = clientId; // we need this list in case of interrupts
     }
@@ -1097,13 +1096,13 @@ void ZDspServer::onTelnetDisconnect()
     DelSCPIClient();
 }
 
-ZdspClient* ZDspServer::AddClient(VeinTcp::TcpPeer* netClient)
+ZdspClient* ZDspServer::AddClient(VeinTcp::TcpPeer* netClient, const QByteArray &clientId)
 {
     // fügt einen client hinzu
     m_nSocketIdentifier++;
     if (m_nSocketIdentifier == 0)
         m_nSocketIdentifier++;
-    ZdspClient* client = new ZdspClient(m_nSocketIdentifier, netClient, m_deviceNodeFactory);
+    ZdspClient* client = new ZdspClient(m_nSocketIdentifier, netClient, clientId, m_deviceNodeFactory);
     m_clientList.append(client);
     return client;
 }
@@ -1113,7 +1112,7 @@ void ZDspServer::DelClients(VeinTcp::TcpPeer* netClient)
     QList<ZdspClient*> todeleteList;
     for (int i = 0; i < m_clientList.count(); i++) {
         ZdspClient* zdspclient = m_clientList.at(i);
-        const VeinTcp::TcpPeer* peer = zdspclient->m_pNetClient;
+        const VeinTcp::TcpPeer* peer = zdspclient->m_veinPeer;
         if (peer == netClient) {
             todeleteList.append(zdspclient);
             if (m_clientIDHash.contains(zdspclient)) {
@@ -1141,7 +1140,7 @@ void ZDspServer::DelClient(QByteArray clientId)
 
 ZdspClient *ZDspServer::AddSCPIClient()
 {
-    return AddClient(0); // we add this client with netclient (VeinTcp::TcpPeer) = 0 because it is no VeinTcp::TcpPeer but
+    return AddClient(nullptr, QByteArray()); // we add this client with netclient (VeinTcp::TcpPeer) = 0 because it is no VeinTcp::TcpPeer but
 }
 
 void ZDspServer::DelSCPIClient()

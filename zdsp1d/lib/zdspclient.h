@@ -9,11 +9,15 @@
 class ZdspClient
 {
 public:
-    ZdspClient(int socket, VeinTcp::TcpPeer *netclient, AbstractFactoryDeviceNodeDspPtr deviceNodeFactory);
+    ZdspClient(int socket,
+               VeinTcp::TcpPeer *veinPeer,
+               const QByteArray &protobufClientId, // protobuf / vein-peer ids are different stories
+               AbstractFactoryDeviceNodeDspPtr deviceNodeFactory);
     ~ZdspClient() = default;
 
     bool isActive() const;
     void setActive(bool active);
+    QByteArray getProtobufClientId() const;
 
     bool setRawActualValueList(const QString& varsSemicolonSeparated);
     void setCmdListDef(const QString& cmdListDef);
@@ -29,9 +33,10 @@ public:
     ulong relocalizeUserMemSectionVars(ulong startAdress, ulong globalMemStart);
 
     int getSocket() const;
-    VeinTcp::TcpPeer* m_pNetClient;
+    VeinTcp::TcpPeer* m_veinPeer;
 
 private:
+    QByteArray m_protobufClientId;
     AbstractFactoryDeviceNodeDspPtr m_deviceNodeFactory;
     int m_socket; // socket für den die verbindung besteht
     bool m_bActive = false;

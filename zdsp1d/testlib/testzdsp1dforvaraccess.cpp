@@ -10,5 +10,5 @@ TestZdsp1dForVarAccess::TestZdsp1dForVarAccess(AbstractFactoryDeviceNodeDspPtr d
 
 ZdspClient *TestZdsp1dForVarAccess::createTestClient()
 {
-    return m_server->AddClient(&m_testNetClient);
+    return m_server->AddClient(&m_testNetClient, QByteArray());
 }

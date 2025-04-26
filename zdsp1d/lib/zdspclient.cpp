@@ -2,8 +2,12 @@
 #include "dspcmdcompiler.h"
 #include "dspvardevicenodeinout.h"
 
-ZdspClient::ZdspClient(int socket, VeinTcp::TcpPeer* netclient, AbstractFactoryDeviceNodeDspPtr deviceNodeFactory) :
-    m_pNetClient(netclient),
+ZdspClient::ZdspClient(int socket,
+                       VeinTcp::TcpPeer* veinPeer,
+                       const QByteArray &protobufClientId,
+                       AbstractFactoryDeviceNodeDspPtr deviceNodeFactory) :
+    m_veinPeer(veinPeer),
+    m_protobufClientId(protobufClientId),
     m_deviceNodeFactory(deviceNodeFactory),
     m_socket(socket)
 {
@@ -60,6 +64,11 @@ void ZdspClient::setCmdForIrqListDef(const QString &cmdIntListDef)
 void ZdspClient::setActive(bool active)
 {
     m_bActive = active;
+}
+
+QByteArray ZdspClient::getProtobufClientId() const
+{
+    return m_protobufClientId;
 }
 
 ulong ZdspClient::relocalizeUserMemSectionVars(ulong startAdress, ulong globalMemStart)

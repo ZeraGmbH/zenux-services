@@ -79,7 +79,7 @@ private:
     void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
 
     friend class TestZdsp1dForVarAccess;
-    ZdspClient* AddClient(VeinTcp::TcpPeer *netClient);
+    ZdspClient* AddClient(VeinTcp::TcpPeer *netClient, const QByteArray &clientId);
     void addClientToHash(const QByteArray &clientId, VeinTcp::TcpPeer *peer);
     void DelClients(VeinTcp::TcpPeer *netClient);
     void DelClient(QByteArray clientId);
