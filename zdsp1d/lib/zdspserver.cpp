@@ -683,7 +683,6 @@ ZDspServer::TClientCounts ZDspServer::getClientCounts() const
     return {
         m_clientList.count(),
         m_zdspdClientHash.count(),
-        m_clientIDHash.count()
     };
 }
 
@@ -728,20 +727,18 @@ void ZDspServer::DspIntHandler(int)
                     ZdspClient *clientToNotify = GetClient(process);
                     if (isClientStillThereAndActive(clientToNotify)) {
                         const QString dspIntStr = QString("DSPINT:%1").arg(pardsp[i] & 0xFFFF);
-                        auto protoClientIter = m_clientIDHash.constFind(clientToNotify);
-                        if (protoClientIter != m_clientIDHash.constEnd()) { // es war ein client der über protobuf (clientid) angelegt wurde
-                            ProtobufMessage::NetMessage protobufIntMessage;
-                            ProtobufMessage::NetMessage::NetReply *intMessage = protobufIntMessage.mutable_reply();
 
-                            intMessage->set_body(dspIntStr.toStdString());
-                            intMessage->set_rtype(ProtobufMessage::NetMessage_NetReply_ReplyType_ACK);
+                        ProtobufMessage::NetMessage protobufIntMessage;
+                        ProtobufMessage::NetMessage::NetReply *intMessage = protobufIntMessage.mutable_reply();
 
-                            QByteArray idba = protoClientIter.value();
-                            protobufIntMessage.set_clientid(idba.data(), idba.size() );
-                            protobufIntMessage.set_messagenr(0); // interrupt
+                        intMessage->set_body(dspIntStr.toStdString());
+                        intMessage->set_rtype(ProtobufMessage::NetMessage_NetReply_ReplyType_ACK);
 
-                            clientToNotify->m_veinPeer->sendMessage(m_protobufWrapper.protobufToByteArray(protobufIntMessage));
-                        }
+                        QByteArray idba = clientToNotify->getProtobufClientId();
+                        protobufIntMessage.set_clientid(idba.data(), idba.size() );
+                        protobufIntMessage.set_messagenr(0); // interrupt
+
+                        clientToNotify->m_veinPeer->sendMessage(m_protobufWrapper.protobufToByteArray(protobufIntMessage));
                     }
                 }
             }
@@ -999,7 +996,6 @@ void ZDspServer::addClientToHash(const QByteArray &clientId, VeinTcp::TcpPeer *p
     if (!m_zdspdClientHash.contains(clientId)) { // we didn't get any command from here yet
         ZdspClient *zdspclient = AddClient(peer, clientId); // we add a new client with the same socket but different identifier
         m_zdspdClientHash[clientId] = zdspclient;
-        m_clientIDHash[zdspclient] = clientId; // we need this list in case of interrupts
     }
 }
 
@@ -1099,10 +1095,7 @@ void ZDspServer::DelClients(VeinTcp::TcpPeer* netClient)
         const VeinTcp::TcpPeer* peer = zdspclient->m_veinPeer;
         if (peer == netClient) {
             todeleteList.append(zdspclient);
-            if (m_clientIDHash.contains(zdspclient)) {
-                QByteArray ba = m_clientIDHash.take(zdspclient);
-                m_zdspdClientHash.remove(ba);
-            }
+            m_zdspdClientHash.remove(zdspclient->getProtobufClientId());
         }
     }
     for (int i = 0; i < todeleteList.count(); i++) {
@@ -1116,7 +1109,6 @@ void ZDspServer::DelClient(QByteArray clientId)
 {
     if (m_zdspdClientHash.contains(clientId)) {
         ZdspClient *client = m_zdspdClientHash.take(clientId);
-        m_clientIDHash.remove(client);
         m_clientList.removeOne(client);
         delete client;
     }

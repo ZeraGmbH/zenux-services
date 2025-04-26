@@ -44,7 +44,6 @@ public:
     struct TClientCounts {
         int m_listCount = 0;
         int m_hashCount = 0;
-        int m_interruptHashCount = 0;
     };
     TClientCounts getClientCounts() const;
 
@@ -110,7 +109,6 @@ private:
     QSocketNotifier* m_pNotifier = nullptr;
 
     QHash<QByteArray, ZdspClient*> m_zdspdClientHash;
-    QHash<ZdspClient*, QByteArray> m_clientIDHash; // liste der clientID's für die dspclients die über protobuf erzeugt wurden
     ZdspClient* m_pSCPIClient = nullptr;
     QList<ZdspClient*> m_clientList;
 
