@@ -40,6 +40,14 @@ public:
     QString getServerVersion();
     QString getDspDeviceNode();
 
+    // Test analysis
+    struct TClientCounts {
+        int m_listCount = 0;
+        int m_hashCount = 0;
+        int m_interruptHashCount = 0;
+    };
+    TClientCounts getClientCounts() const;
+
     static const ServerParams defaultParams;
 signals:
     void sigServerIsSetUp();

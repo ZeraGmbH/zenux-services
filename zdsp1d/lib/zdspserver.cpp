@@ -677,6 +677,15 @@ QString ZDspServer::getDspDeviceNode()
     return m_settings->getFpgaSettings()->getDspDeviceNode();
 }
 
+ZDspServer::TClientCounts ZDspServer::getClientCounts() const
+{
+    return {
+        m_clientList.count(),
+        m_zdspdClientHash.count(),
+        m_clientIDHash.count()
+    };
+}
+
 QString ZDspServer::getDspStatus()
 {
     if ( Test4DspRunning() )
