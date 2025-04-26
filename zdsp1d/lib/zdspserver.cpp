@@ -742,22 +742,6 @@ void ZDspServer::DspIntHandler(int)
 
                             clientToNotify->m_veinPeer->sendMessage(m_protobufWrapper.protobufToByteArray(protobufIntMessage));
                         }
-                        else {
-                            QByteArray block;
-                            QDataStream out(&block, QIODevice::WriteOnly);
-                            out.setVersion(QDataStream::Qt_4_0);
-                            out << (qint32)0;
-
-                            out << dspIntStr.toUtf8();
-                            out.device()->seek(0);
-                            out << (qint32)(block.size() - sizeof(qint32));
-
-                            VeinTcp::TcpPeer* pNetclient = clientToNotify->m_veinPeer;
-                            if (pNetclient == nullptr)
-                                m_telnetSocket->write(block);
-                            else
-                                pNetclient->writeRaw(block);
-                        }
                     }
                 }
             }
