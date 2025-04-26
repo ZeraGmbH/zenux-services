@@ -360,8 +360,7 @@ void ZDspServer::initSCPIConnection(QString leadingNodes)
 void ZDspServer::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
 {
     cSCPICommand cmd = protoCmd->m_sInput;
-    int socketNum = m_zdspdClientHash[protoCmd->m_clientId]->getSocket();
-    ZdspClient* client = GetClient(socketNum);
+    ZdspClient* client = m_zdspdClientHash[protoCmd->m_clientId];
     switch (cmdCode)
     {
     case scpiInterfaceRead:
@@ -446,9 +445,11 @@ void ZDspServer::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
     case scpiTriggerIntListALL:
         protoCmd->m_sOutput = sendCommand2Dsp("DSPCMDPAR,1;");
         break;
-    case scpiTriggerIntListHKSK:
+    case scpiTriggerIntListHKSK: {
+        int socketNum = client->getSocket();
         protoCmd->m_sOutput = startTriggerIntListHKSK(cmd.getParam(0), socketNum);
         break;
+    }
     }
 }
 
