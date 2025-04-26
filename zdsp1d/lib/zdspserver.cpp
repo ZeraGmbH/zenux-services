@@ -883,7 +883,7 @@ QString ZDspServer::unloadCmdList(ZdspClient *client)
 
 QString ZDspServer::unloadCmdListAllClients()
 {
-    for(ZdspClient* client : m_clientList)
+    for(ZdspClient* client : qAsConst(m_clientList))
         client->setActive(false);
     QString error;
     compileCmdListsForAllClientsToRawStream(error);
