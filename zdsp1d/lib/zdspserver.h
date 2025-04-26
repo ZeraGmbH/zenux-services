@@ -147,7 +147,6 @@ private:
     bool Test4HWPresent();
     bool Test4DspRunning();
     ZdspClient* GetClient(int s);
-    ZdspClient* GetClient(VeinTcp::TcpPeer* peer);
     void executeCommandProto(VeinTcp::TcpPeer* peer, std::shared_ptr<google::protobuf::Message> cmd);
     QString m_sDspBootPath;
 

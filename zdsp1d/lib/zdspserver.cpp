@@ -993,18 +993,6 @@ ZdspClient* ZDspServer::GetClient(int s)
     return nullptr;
 }
 
-ZdspClient* ZDspServer::GetClient(VeinTcp::TcpPeer *peer)
-{
-    if (m_clientList.count() > 0) {
-        for (int i = 0; i < m_clientList.count(); i++) {
-            ZdspClient* client = m_clientList.at(i);
-            if (client->m_pNetClient == peer)
-                return client;
-        }
-    }
-    return nullptr;
-}
-
 void ZDspServer::onProtobufClientConnected(VeinTcp::TcpPeer *newClient)
 {
     connect(newClient, &VeinTcp::TcpPeer::sigMessageReceived, this, &ZDspServer::onProtobufDataReceived);
