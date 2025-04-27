@@ -446,7 +446,7 @@ void ZDspServer::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
         protoCmd->m_sOutput = sendCommand2Dsp("DSPCMDPAR,1;");
         break;
     case scpiTriggerIntListHKSK: {
-        int socketNum = client->getSocket();
+        int socketNum = client->getDspInterruptId();
         protoCmd->m_sOutput = startTriggerIntListHKSK(cmd.getParam(0), socketNum);
         break;
     }
@@ -645,10 +645,10 @@ QString ZDspServer::runDspTest(const QString &scpiParam)
     return ret;
 }
 
-QString ZDspServer::startTriggerIntListHKSK(const QString &scpiParam, int socket)
+QString ZDspServer::startTriggerIntListHKSK(const QString &scpiParam, int dspInterruptId)
 {
     ulong par = scpiParam.toULong();
-    par = (par & 0xFFFF )| (socket << 16);
+    par = (par & 0xFFFF )| (dspInterruptId << 16);
     return sendCommand2Dsp(QString("DSPCMDPAR,4,%1;").arg(par)); // liste mit prozessNr u. HKSK
 }
 
@@ -766,7 +766,7 @@ bool ZDspServer::compileCmdListsForAllClientsToRawStream(QString &errs)
     DspCmdWithParamsRaw cmd;
     if (m_clientList.count() > 0) {
         ZdspClient* firstClient = m_clientList.at(0);
-        DspCmdCompiler firstCompiler(&firstClient->m_dspVarResolver, firstClient->getSocket());
+        DspCmdCompiler firstCompiler(&firstClient->m_dspVarResolver, firstClient->getDspInterruptId());
         cmd = firstCompiler.compileOneCmdLineZeroAligned(QString("DSPMEMOFFSET(%1)").arg(dm32DspWorkspace.m_startAddress),
                                                          &ok);
         cycCmdMemStream << cmd;
@@ -774,7 +774,7 @@ bool ZDspServer::compileCmdListsForAllClientsToRawStream(QString &errs)
         for (int i = 0; i < m_clientList.count(); i++) {
             ZdspClient* client = m_clientList.at(i);
             if (client->isActive()) {
-                DspCmdCompiler compiler(&client->m_dspVarResolver, client->getSocket());
+                DspCmdCompiler compiler(&client->m_dspVarResolver, client->getDspInterruptId());
                 cmd = compiler.compileOneCmdLineZeroAligned(QString("USERMEMOFFSET(%1)").arg(userMemOffset),
                                                             &ok);
                 cycCmdMemStream << cmd;
@@ -864,7 +864,7 @@ QString ZDspServer::loadCmdList(ZdspClient* client)
         client->setActive(false);
         ret = QString("%1 %2").arg(ZSCPI::scpiAnswer[ZSCPI::errval], errs); // das "fehlerhafte" kommando anhängen
     }
-    qDebug() << QString("LoadCmdList client socket %1").arg(client->getSocket());
+    qDebug() << QString("LoadCmdList client dspInterruptId %1").arg(client->getDspInterruptId());
     return ret;
 }
 
@@ -968,7 +968,7 @@ ZdspClient* ZDspServer::GetClient(int s)
     if (m_clientList.count() > 0) {
         for (int i = 0; i < m_clientList.count(); i++) {
             ZdspClient* client = m_clientList.at(i);
-            if (client->getSocket() == s)
+            if (client->getDspInterruptId() == s)
                 return client;
         }
     }
@@ -994,7 +994,7 @@ void ZDspServer::onProtobufDataReceived(VeinTcp::TcpPeer *peer, QByteArray messa
 void ZDspServer::addClientToHash(const QByteArray &proxyConnectionId, VeinTcp::TcpPeer *peer)
 {
     if (!m_zdspdClientHash.contains(proxyConnectionId)) { // we didn't get any command from here yet
-        ZdspClient *zdspclient = AddClient(peer, proxyConnectionId); // we add a new client with the same socket but different identifier
+        ZdspClient *zdspclient = AddClient(peer, proxyConnectionId);
         m_zdspdClientHash[proxyConnectionId] = zdspclient;
     }
 }

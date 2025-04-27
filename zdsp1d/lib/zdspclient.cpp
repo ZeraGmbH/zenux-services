@@ -2,14 +2,14 @@
 #include "dspcmdcompiler.h"
 #include "dspvardevicenodeinout.h"
 
-ZdspClient::ZdspClient(int socket,
+ZdspClient::ZdspClient(int dspInterruptId,
                        VeinTcp::TcpPeer* veinPeer,
                        const QByteArray &proxyConnectionId,
                        AbstractFactoryDeviceNodeDspPtr deviceNodeFactory) :
     m_veinPeer(veinPeer),
     m_proxyConnectionId(proxyConnectionId),
     m_deviceNodeFactory(deviceNodeFactory),
-    m_socket(socket)
+    m_dspInterruptId(dspInterruptId)
 {
     DspCmdWithParamsRaw DspCmd;
     m_DspCmdList.append(DspCmd);
@@ -91,7 +91,7 @@ ulong ZdspClient::relocalizeUserMemSectionVars(ulong startAdress, ulong globalMe
 
 bool ZdspClient::GenCmdLists(QString& errs, ulong userMemOffset, ulong globalstartadr)
 {
-    DspCmdCompiler compiler(&m_dspVarResolver, m_socket);
+    DspCmdCompiler compiler(&m_dspVarResolver, m_dspInterruptId);
     return
         compiler.compileCmds(m_sCmdListDef, m_DspCmdList,errs, userMemOffset, globalstartadr) &&
         compiler.compileCmds(m_sIntCmdListDef, m_DspIntCmdList, errs, userMemOffset, globalstartadr);
@@ -112,9 +112,9 @@ QList<DspCmdWithParamsRaw> &ZdspClient::GetDspIntCmdList()
     return m_DspIntCmdList;
 }
 
-int ZdspClient::getSocket() const
+int ZdspClient::getDspInterruptId() const
 {
-    return m_socket;
+    return m_dspInterruptId;
 }
 
 QString ZdspClient::readActValues(const QString& variablesStringOnEmptyActOnly)

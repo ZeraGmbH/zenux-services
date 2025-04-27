@@ -9,7 +9,7 @@
 class ZdspClient
 {
 public:
-    ZdspClient(int socket,
+    ZdspClient(int dspInterruptId,
                VeinTcp::TcpPeer *veinPeer,
                const QByteArray &proxyConnectionId,
                AbstractFactoryDeviceNodeDspPtr deviceNodeFactory);
@@ -32,13 +32,13 @@ public:
 
     ulong relocalizeUserMemSectionVars(ulong startAdress, ulong globalMemStart);
 
-    int getSocket() const;
+    int getDspInterruptId() const;
     VeinTcp::TcpPeer* m_veinPeer;
 
 private:
     QByteArray m_proxyConnectionId;
     AbstractFactoryDeviceNodeDspPtr m_deviceNodeFactory;
-    int m_socket; // socket für den die verbindung besteht
+    int m_dspInterruptId;
     bool m_bActive = false;
     QString m_sCmdListDef; // kommando liste defintion
     QString m_sIntCmdListDef; // interrupt kommando  liste defintion

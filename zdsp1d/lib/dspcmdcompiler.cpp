@@ -1,8 +1,8 @@
 #include "dspcmdcompiler.h"
 
-DspCmdCompiler::DspCmdCompiler(DspVarResolver *varResolver, int socket) :
+DspCmdCompiler::DspCmdCompiler(DspVarResolver *varResolver, int dspInterruptId) :
     m_varResolver(varResolver),
-    m_socket(socket)
+    m_dspInterruptId(dspInterruptId)
 {
 }
 
@@ -65,7 +65,7 @@ DspCmdWithParamsRaw DspCmdCompiler::compileOneCmdLineAligned(const QString &cmdL
             DspCmdWithParamsRaw lcmd;
             if (t) {
                 lcmd = DspCmdWithParamsRaw(dspcmd->CmdCode, (ushort)par[0], (ushort)par[1]);
-                if (dspcmd->modify) lcmd.w[1] = (lcmd.w[1] & 0xFFFF) | (m_socket << 16);
+                if (dspcmd->modify) lcmd.w[1] = (lcmd.w[1] & 0xFFFF) | (m_dspInterruptId << 16);
             }
             *ok = t;
             return lcmd;
@@ -83,7 +83,7 @@ DspCmdWithParamsRaw DspCmdCompiler::compileOneCmdLineAligned(const QString &cmdL
             DspCmdWithParamsRaw lcmd;
             if (t) {
                 lcmd = DspCmdWithParamsRaw( dspcmd->CmdCode, (ushort)par[0], (ushort)par[1], (ushort)par[2]);
-                if (dspcmd->modify) lcmd.w[1] = (lcmd.w[1] & 0xFFFF) | (m_socket << 16);
+                if (dspcmd->modify) lcmd.w[1] = (lcmd.w[1] & 0xFFFF) | (m_dspInterruptId << 16);
             }
             *ok = t;
             return lcmd;

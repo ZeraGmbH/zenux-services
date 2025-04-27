@@ -125,7 +125,7 @@ private:
     QString getDspCommandStat();
     QString setDspCommandStat(const QString &scpiParam);
     QString runDspTest(const QString &scpiParam);
-    QString startTriggerIntListHKSK(const QString &scpiParam, int socket);
+    QString startTriggerIntListHKSK(const QString &scpiParam, int dspInterruptId);
 
     // die routinen für das status modell
     QString getDeviceStatus();

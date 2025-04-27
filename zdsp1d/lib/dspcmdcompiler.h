@@ -7,7 +7,7 @@
 class DspCmdCompiler
 {
 public:
-    DspCmdCompiler(DspVarResolver* varResolver, int socket);
+    DspCmdCompiler(DspVarResolver* varResolver, int dspInterruptId);
     DspCmdWithParamsRaw compileOneCmdLineZeroAligned(const QString &cmdLine,
                                                      bool* ok);
     DspCmdWithParamsRaw compileOneCmdLineAligned(const QString &cmdLine,
@@ -23,7 +23,7 @@ public:
 private:
     static bool syntaxCheck(const QString& dspCmdLine);
     DspVarResolver* m_varResolver;
-    const int m_socket;
+    const int m_dspInterruptId;
 };
 
 #endif // DSPCMDCOMPILER_H
