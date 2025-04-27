@@ -13,6 +13,7 @@
 #include <QDataStream>
 #include <QTcpServer>
 #include <QTextStream>
+#include <QDomDocument>
 #include <fcntl.h>
 #include <signal.h>
 #include <unistd.h>
@@ -110,8 +111,6 @@ void ZDspServer::init()
 
 ZDspServer::~ZDspServer()
 {
-    for (int i = 0; i < m_clientList.count(); i++)
-        delete m_clientList.at(i);
     delete m_pRMConnection;
     delete m_telnetServer;
     resetDsp(); // we reset the dsp when we close the server
@@ -360,7 +359,7 @@ void ZDspServer::initSCPIConnection(QString leadingNodes)
 void ZDspServer::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
 {
     cSCPICommand cmd = protoCmd->m_sInput;
-    ZdspClient* client = m_zdspdClientHash[protoCmd->m_clientId];
+    ZdspClient* client = m_zdspClientContainer.findClient(protoCmd->m_clientId);
     switch (cmdCode)
     {
     case scpiInterfaceRead:
@@ -678,12 +677,10 @@ QString ZDspServer::getDspDeviceNode()
     return m_settings->getFpgaSettings()->getDspDeviceNode();
 }
 
-ZDspServer::TClientCounts ZDspServer::getClientCounts() const
+ZdspClient *ZDspServer::addClientForTest()
 {
-    return {
-        m_clientList.count(),
-        m_zdspdClientHash.count(),
-    };
+    m_zdspClientContainer.addClient(nullptr, QByteArray(), m_deviceNodeFactory);
+    return m_zdspClientContainer.findClient(QByteArray());
 }
 
 QString ZDspServer::getDspStatus()
@@ -712,8 +709,9 @@ void ZDspServer::DspIntHandler(int)
 {
     char dummy[2];
     read(pipeFileDescriptorZdsp1[0], dummy, 1); // first we read the pipe
-    if (!m_clientList.isEmpty()) { // wenn vorhanden nutzen wir immer den 1. client zum lesen
-        ZdspClient *client = m_clientList.first();
+    const QList<ZdspClient*> clientList = m_zdspClientContainer.getClientList();
+    if (!clientList.isEmpty()) { // wenn vorhanden nutzen wir immer den 1. client zum lesen
+        ZdspClient *client = clientList.first();
         QByteArray ba;
         if (m_dspInOut.readOneDspVar("CTRLCMDPAR,20", &ba, &client->m_dspVarResolver)) { // 20 worte lesen
             const ulong* pardsp = reinterpret_cast<ulong*>(ba.data());
@@ -724,7 +722,7 @@ void ZDspServer::DspIntHandler(int)
             else {
                 for (int i = 1; i < (n+1); i++) {
                     int process = pardsp[i] >> 16;
-                    ZdspClient *clientToNotify = GetClient(process);
+                    ZdspClient *clientToNotify = m_zdspClientContainer.findClient(process);
                     if (isClientStillThereAndActive(clientToNotify)) {
                         const QString dspIntStr = QString("DSPINT:%1").arg(pardsp[i] & 0xFFFF);
 
@@ -764,15 +762,16 @@ bool ZDspServer::compileCmdListsForAllClientsToRawStream(QString &errs)
     intCmdMemStream.setByteOrder(QDataStream::LittleEndian);
 
     DspCmdWithParamsRaw cmd;
-    if (m_clientList.count() > 0) {
-        ZdspClient* firstClient = m_clientList.at(0);
+    const QList<ZdspClient*> clientList = m_zdspClientContainer.getClientList();
+    if (clientList.count() > 0) {
+        ZdspClient* firstClient = clientList.at(0);
         DspCmdCompiler firstCompiler(&firstClient->m_dspVarResolver, firstClient->getDspInterruptId());
         cmd = firstCompiler.compileOneCmdLineZeroAligned(QString("DSPMEMOFFSET(%1)").arg(dm32DspWorkspace.m_startAddress),
                                                          &ok);
         cycCmdMemStream << cmd;
         ulong userMemOffset = dm32UserWorkSpace.m_startAddress;
-        for (int i = 0; i < m_clientList.count(); i++) {
-            ZdspClient* client = m_clientList.at(i);
+        for (int i = 0; i < clientList.count(); i++) {
+            ZdspClient* client = clientList.at(i);
             if (client->isActive()) {
                 DspCmdCompiler compiler(&client->m_dspVarResolver, client->getDspInterruptId());
                 cmd = compiler.compileOneCmdLineZeroAligned(QString("USERMEMOFFSET(%1)").arg(userMemOffset),
@@ -883,8 +882,7 @@ QString ZDspServer::unloadCmdList(ZdspClient *client)
 
 QString ZDspServer::unloadCmdListAllClients()
 {
-    for(ZdspClient* client : qAsConst(m_clientList))
-        client->setActive(false);
+    m_zdspClientContainer.delAllClients();
     QString error;
     compileCmdListsForAllClientsToRawStream(error);
     QString ret;
@@ -963,18 +961,6 @@ bool ZDspServer::Test4DspRunning()
     return deviceNode->dspIsRunning();
 }
 
-ZdspClient* ZDspServer::GetClient(int s)
-{
-    if (m_clientList.count() > 0) {
-        for (int i = 0; i < m_clientList.count(); i++) {
-            ZdspClient* client = m_clientList.at(i);
-            if (client->getDspInterruptId() == s)
-                return client;
-        }
-    }
-    return nullptr;
-}
-
 void ZDspServer::onProtobufClientConnected(VeinTcp::TcpPeer *newClient)
 {
     connect(newClient, &VeinTcp::TcpPeer::sigMessageReceived, this, &ZDspServer::onProtobufDataReceived);
@@ -983,20 +969,12 @@ void ZDspServer::onProtobufClientConnected(VeinTcp::TcpPeer *newClient)
 
 void ZDspServer::onProtobufDisconnect(VeinTcp::TcpPeer *peer)
 {
-    DelClients(peer);
+    m_zdspClientContainer.delClients(peer);
 }
 
 void ZDspServer::onProtobufDataReceived(VeinTcp::TcpPeer *peer, QByteArray message)
 {
     executeCommandProto(peer, m_protobufWrapper.byteArrayToProtobuf(message));
-}
-
-void ZDspServer::addClientToHash(const QByteArray &proxyConnectionId, VeinTcp::TcpPeer *peer)
-{
-    if (!m_zdspdClientHash.contains(proxyConnectionId)) { // we didn't get any command from here yet
-        ZdspClient *zdspclient = AddClient(peer, proxyConnectionId);
-        m_zdspdClientHash[proxyConnectionId] = zdspclient;
-    }
 }
 
 void ZDspServer::executeCommandProto(VeinTcp::TcpPeer *peer, std::shared_ptr<google::protobuf::Message> cmd)
@@ -1006,14 +984,14 @@ void ZDspServer::executeCommandProto(VeinTcp::TcpPeer *peer, std::shared_ptr<goo
         if (protobufCommand->has_netcommand() && protobufCommand->has_clientid()) {
             // in case of "lost" clients we delete the clients and its data
             QByteArray proxyConnectionId = QByteArray(protobufCommand->clientid().data(), protobufCommand->clientid().size());
-            DelClient(proxyConnectionId);
+            m_zdspClientContainer.delClient(proxyConnectionId);
         }
         else if (protobufCommand->has_clientid() && protobufCommand->has_messagenr()) {
             QByteArray proxyConnectionId = QByteArray(protobufCommand->clientid().data(), protobufCommand->clientid().size());
             quint32 messageNr = protobufCommand->messagenr();
             ProtobufMessage::NetMessage::ScpiCommand scpiCmd = protobufCommand->scpi();
 
-            addClientToHash(proxyConnectionId, peer);
+            m_zdspClientContainer.addClient(peer, proxyConnectionId, m_deviceNodeFactory);
 
             // Stolen from PCBServer::executeCommandProto ---
             QString scpiInput = QString::fromStdString(scpiCmd.command()) +  " " + QString::fromStdString(scpiCmd.parameter());
@@ -1037,11 +1015,13 @@ void ZDspServer::executeCommandProto(VeinTcp::TcpPeer *peer, std::shared_ptr<goo
     }
 }
 
+static const char* telnetClientId = "telnet_client";
+
 void ZDspServer::onTelnetClientConnected()
 {
     qInfo("External SCPI Client connected");
     m_telnetSocket = m_telnetServer->nextPendingConnection();
-    m_pSCPIClient = AddSCPIClient();
+    m_zdspClientContainer.addClient(nullptr, telnetClientId, m_deviceNodeFactory);
     connect(m_telnetSocket, &QIODevice::readyRead, this, &ZDspServer::onTelnetDataReceived);
     connect(m_telnetSocket, &QAbstractSocket::disconnected, this, &ZDspServer::onTelnetDisconnect);
 }
@@ -1059,7 +1039,7 @@ void ZDspServer::onTelnetDataReceived()
     cSCPIObject* scpiObject = m_scpiInterface->getSCPIObject(input);
     if(scpiObject) {
         QByteArray proxyConnectionId = QByteArray(); // we set an empty byte array
-        addClientToHash(proxyConnectionId, nullptr);
+        m_zdspClientContainer.addClient(nullptr, proxyConnectionId, m_deviceNodeFactory);
         cProtonetCommand* protoCmd = new cProtonetCommand(nullptr, false, true, proxyConnectionId, 0, input);
         cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
         if (!scpiDelegate->executeSCPI(protoCmd))
@@ -1073,55 +1053,7 @@ void ZDspServer::onTelnetDisconnect()
 {
     qInfo("External SCPI Client disconnected");
     disconnect(m_telnetSocket, 0, 0, 0); // we disconnect everything
-    DelSCPIClient();
-}
-
-ZdspClient* ZDspServer::AddClient(VeinTcp::TcpPeer* netClient, const QByteArray &proxyConnectionId)
-{
-    // fügt einen client hinzu
-    m_nSocketIdentifier++;
-    if (m_nSocketIdentifier == 0)
-        m_nSocketIdentifier++;
-    ZdspClient* client = new ZdspClient(m_nSocketIdentifier, netClient, proxyConnectionId, m_deviceNodeFactory);
-    m_clientList.append(client);
-    return client;
-}
-
-void ZDspServer::DelClients(VeinTcp::TcpPeer* netClient)
-{ // entfernt alle cZDSP1Clients die an diesem netClient kleben
-    QList<ZdspClient*> todeleteList;
-    for (int i = 0; i < m_clientList.count(); i++) {
-        ZdspClient* zdspclient = m_clientList.at(i);
-        const VeinTcp::TcpPeer* peer = zdspclient->getVeinPeer();
-        if (peer == netClient) {
-            todeleteList.append(zdspclient);
-            m_zdspdClientHash.remove(zdspclient->getProtobufClientId());
-        }
-    }
-    for (int i = 0; i < todeleteList.count(); i++) {
-        ZdspClient* client = todeleteList.at(i);
-        m_clientList.removeOne(client);
-        delete client;
-    }
-}
-
-void ZDspServer::DelClient(QByteArray proxyConnectionId)
-{
-    if (m_zdspdClientHash.contains(proxyConnectionId)) {
-        ZdspClient *client = m_zdspdClientHash.take(proxyConnectionId);
-        m_clientList.removeOne(client);
-        delete client;
-    }
-}
-
-ZdspClient *ZDspServer::AddSCPIClient()
-{
-    return AddClient(nullptr, QByteArray()); // we add this client with netclient (VeinTcp::TcpPeer) = 0 because it is no VeinTcp::TcpPeer but
-}
-
-void ZDspServer::DelSCPIClient()
-{
-    m_clientList.removeAll(m_pSCPIClient);
+    m_zdspClientContainer.delClient(telnetClientId);
 }
 
 bool ZDspServer::isClientStillThereAndActive(ZdspClient *client) const
