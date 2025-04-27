@@ -13,7 +13,7 @@ public:
                VeinTcp::TcpPeer *veinPeer,
                const QByteArray &proxyConnectionId,
                AbstractFactoryDeviceNodeDspPtr deviceNodeFactory);
-    ~ZdspClient() = default;
+    virtual ~ZdspClient();
 
     bool isActive() const;
     void setActive(bool active);
@@ -35,6 +35,8 @@ public:
     int getDspInterruptId() const;
     VeinTcp::TcpPeer* m_veinPeer;
 
+    static int getInstanceCount();
+
 private:
     QByteArray m_proxyConnectionId;
     AbstractFactoryDeviceNodeDspPtr m_deviceNodeFactory;
@@ -47,5 +49,6 @@ private:
     QList<DspCmdWithParamsRaw>  m_DspIntCmdList;
     QVector<TDspVar> m_dspVarArray; // !!! we need permanent keeper of TDspVar pointer to data is used !!!
     TMemSection m_userMemSection;
+    static int m_instanceCount;
 };
 #endif // ZDSPCLIENT_H

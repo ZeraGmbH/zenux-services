@@ -2,6 +2,8 @@
 #include "dspcmdcompiler.h"
 #include "dspvardevicenodeinout.h"
 
+int ZdspClient::m_instanceCount = 0;
+
 ZdspClient::ZdspClient(int dspInterruptId,
                        VeinTcp::TcpPeer* veinPeer,
                        const QByteArray &proxyConnectionId,
@@ -11,10 +13,16 @@ ZdspClient::ZdspClient(int dspInterruptId,
     m_deviceNodeFactory(deviceNodeFactory),
     m_dspInterruptId(dspInterruptId)
 {
+    m_instanceCount++;
     DspCmdWithParamsRaw DspCmd;
     m_DspCmdList.append(DspCmd);
     m_DspIntCmdList.append(DspCmd);
     m_dspVarResolver.addSection(&m_userMemSection);
+}
+
+ZdspClient::~ZdspClient()
+{
+    m_instanceCount--;
 }
 
 bool ZdspClient::setRawActualValueList(const QString &varsSemicolonSeparated)
@@ -115,6 +123,11 @@ QList<DspCmdWithParamsRaw> &ZdspClient::GetDspIntCmdList()
 int ZdspClient::getDspInterruptId() const
 {
     return m_dspInterruptId;
+}
+
+int ZdspClient::getInstanceCount()
+{
+    return m_instanceCount;
 }
 
 QString ZdspClient::readActValues(const QString& variablesStringOnEmptyActOnly)
