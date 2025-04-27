@@ -17,6 +17,7 @@ SETUP_SERVICE_ZDSP1D_TESTS(
     test_config_load_zdsp1
     test_regression_dsp_var
     test_regression_scpi_zdsp1d
+    test_zdspclientcontainer
     )
 
 target_sources(test_regression_scpi_zdsp1d
