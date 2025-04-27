@@ -125,6 +125,11 @@ int ZdspClient::getDspInterruptId() const
     return m_dspInterruptId;
 }
 
+VeinTcp::TcpPeer *ZdspClient::getVeinPeer() const
+{
+    return m_veinPeer;
+}
+
 int ZdspClient::getInstanceCount()
 {
     return m_instanceCount;

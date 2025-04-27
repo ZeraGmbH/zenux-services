@@ -33,11 +33,12 @@ public:
     ulong relocalizeUserMemSectionVars(ulong startAdress, ulong globalMemStart);
 
     int getDspInterruptId() const;
-    VeinTcp::TcpPeer* m_veinPeer;
+    VeinTcp::TcpPeer* getVeinPeer() const;
 
     static int getInstanceCount();
 
 private:
+    VeinTcp::TcpPeer* m_veinPeer;
     QByteArray m_proxyConnectionId;
     AbstractFactoryDeviceNodeDspPtr m_deviceNodeFactory;
     int m_dspInterruptId;

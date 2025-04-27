@@ -738,7 +738,7 @@ void ZDspServer::DspIntHandler(int)
                         protobufIntMessage.set_clientid(idba.data(), idba.size() );
                         protobufIntMessage.set_messagenr(0); // interrupt
 
-                        clientToNotify->m_veinPeer->sendMessage(m_protobufWrapper.protobufToByteArray(protobufIntMessage));
+                        clientToNotify->getVeinPeer()->sendMessage(m_protobufWrapper.protobufToByteArray(protobufIntMessage));
                     }
                 }
             }
@@ -1092,7 +1092,7 @@ void ZDspServer::DelClients(VeinTcp::TcpPeer* netClient)
     QList<ZdspClient*> todeleteList;
     for (int i = 0; i < m_clientList.count(); i++) {
         ZdspClient* zdspclient = m_clientList.at(i);
-        const VeinTcp::TcpPeer* peer = zdspclient->m_veinPeer;
+        const VeinTcp::TcpPeer* peer = zdspclient->getVeinPeer();
         if (peer == netClient) {
             todeleteList.append(zdspclient);
             m_zdspdClientHash.remove(zdspclient->getProtobufClientId());
