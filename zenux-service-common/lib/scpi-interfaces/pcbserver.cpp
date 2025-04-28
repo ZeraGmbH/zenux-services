@@ -261,25 +261,6 @@ void PCBServer::executeCommandProto(VeinTcp::TcpPeer* peer, std::shared_ptr<goog
                 // we get a signal when a command is finished and send answer then
             }
         }
-        else {
-            QString input =  QString::fromStdString(protobufCommand->scpi().command());
-            QByteArray proxyConnectionId = QByteArray(); // we set an empty byte array
-            cProtonetCommand* protoCmd;
-            cSCPIObject* scpiObject =  m_scpiInterface->getSCPIObject(input);
-            if (scpiObject) {
-                protoCmd = new cProtonetCommand(peer, false, true, proxyConnectionId, 0, input, scpiObject->getType());
-                cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
-                if (!scpiDelegate->executeSCPI(protoCmd)) {
-                    protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::nak];
-                    emit cmdExecutionDone(protoCmd);
-                }
-            }
-            else {
-                protoCmd = new cProtonetCommand(peer, false, true, proxyConnectionId, 0, input, 0);
-                protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::nak];
-                emit cmdExecutionDone(protoCmd);
-            }
-        }
     }
 }
 
