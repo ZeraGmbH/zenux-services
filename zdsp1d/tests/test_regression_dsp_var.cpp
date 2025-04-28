@@ -48,8 +48,8 @@ void test_regression_dsp_var::cleanup()
 void test_regression_dsp_var::createResultVariables()
 {
     cDspMeasData* dspData = m_dspIFace->getMemHandle("createResultVariables");
-    dspData->addVarItem(new cDspVar("Result1", 1, DSPDATA::vDspResult, DSPDATA::dFloat));
-    dspData->addVarItem(new cDspVar("Result2", 3, DSPDATA::vDspResult, DSPDATA::dInt));
+    dspData->addDspVar("Result1", 1, DSPDATA::vDspResult, DSPDATA::dFloat);
+    dspData->addDspVar("Result2", 3, DSPDATA::vDspResult, DSPDATA::dInt);
 
     QSignalSpy spyCreate(m_dspIFace.get(), &AbstractServerInterface::serverAnswer);
     m_dspIFace->varList2Dsp();
@@ -69,8 +69,8 @@ void test_regression_dsp_var::createResultVariables()
 void test_regression_dsp_var::createTempVariables()
 {
     cDspMeasData* dspData = m_dspIFace->getMemHandle("createTempVariables");
-    dspData->addVarItem(new cDspVar("Temp1", 1, DSPDATA::vDspTemp, DSPDATA::dFloat));
-    dspData->addVarItem(new cDspVar("Temp2", 3, DSPDATA::vDspTemp, DSPDATA::dInt));
+    dspData->addDspVar("Temp1", 1, DSPDATA::vDspTemp, DSPDATA::dFloat);
+    dspData->addDspVar("Temp2", 3, DSPDATA::vDspTemp, DSPDATA::dInt);
 
     QSignalSpy spyCreate(m_dspIFace.get(), &AbstractServerInterface::serverAnswer);
     m_dspIFace->varList2Dsp();
@@ -90,8 +90,8 @@ void test_regression_dsp_var::createTempVariables()
 void test_regression_dsp_var::createInternalVariables()
 {
     cDspMeasData* dspData = m_dspIFace->getMemHandle("createInternalVariables");
-    dspData->addVarItem(new cDspVar("Internal1", 1, DSPDATA::vDspIntVar, DSPDATA::dFloat));
-    dspData->addVarItem(new cDspVar("Internal2", 3, DSPDATA::vDspIntVar, DSPDATA::dInt));
+    dspData->addDspVar("Internal1", 1, DSPDATA::vDspIntVar, DSPDATA::dFloat);
+    dspData->addDspVar("Internal2", 3, DSPDATA::vDspIntVar, DSPDATA::dInt);
 
     QSignalSpy spy(m_dspIFace.get(), &AbstractServerInterface::serverAnswer);
     m_dspIFace->varList2Dsp();
@@ -110,8 +110,8 @@ void test_regression_dsp_var::createInternalVariables()
 void test_regression_dsp_var::createTempGlobalNoRead()
 {
     cDspMeasData* dspData = m_dspIFace->getMemHandle("createTempGlobalNoRead");
-    dspData->addVarItem(new cDspVar("TempGlobal1", 1, DSPDATA::vDspTempGlobal, DSPDATA::dFloat));
-    dspData->addVarItem(new cDspVar("TempGlobal2", 2, DSPDATA::vDspTempGlobal, DSPDATA::dInt));
+    dspData->addDspVar("TempGlobal1", 1, DSPDATA::vDspTempGlobal, DSPDATA::dFloat);
+    dspData->addDspVar("TempGlobal2", 2, DSPDATA::vDspTempGlobal, DSPDATA::dInt);
 
     QSignalSpy spyCreate(m_dspIFace.get(), &AbstractServerInterface::serverAnswer);
     m_dspIFace->varList2Dsp();
@@ -129,7 +129,7 @@ void test_regression_dsp_var::createTempGlobalNoRead()
 void test_regression_dsp_var::createGlobalNoRead()
 {
     cDspMeasData* dspData = m_dspIFace->getMemHandle("createGlobalNoRead");
-    dspData->addVarItem(new cDspVar("TempGlobal1", 1, DSPDATA::vDspTempGlobal));
+    dspData->addDspVar("TempGlobal1", 1, DSPDATA::vDspTempGlobal);
 
     QSignalSpy spyCreate(m_dspIFace.get(), &AbstractServerInterface::serverAnswer);
     m_dspIFace->varList2Dsp();
@@ -152,9 +152,9 @@ static constexpr int varSize = 4;
 void test_regression_dsp_var::readVariablesAndListenDeviceNode()
 {
     cDspMeasData* dspData = m_dspIFace->getMemHandle("readVariablesAndListenDeviceNode");
-    dspData->addVarItem(new cDspVar("ONE_FLOAT", 1, DSPDATA::vDspResult, DSPDATA::dFloat));
-    dspData->addVarItem(new cDspVar("TWO_FLOAT", 2, DSPDATA::vDspResult, DSPDATA::dFloat));
-    dspData->addVarItem(new cDspVar("THREE_INT", 3, DSPDATA::vDspResult, DSPDATA::dInt));
+    dspData->addDspVar("ONE_FLOAT", 1, DSPDATA::vDspResult, DSPDATA::dFloat);
+    dspData->addDspVar("TWO_FLOAT", 2, DSPDATA::vDspResult, DSPDATA::dFloat);
+    dspData->addDspVar("THREE_INT", 3, DSPDATA::vDspResult, DSPDATA::dInt);
 
     // In modules we have claimUSERMem() - we had this here during investigation
     // It is for resman's sake - here it changes nothing
@@ -195,8 +195,8 @@ void test_regression_dsp_var::readVariablesAndListenDeviceNode()
 void test_regression_dsp_var::writeFloatVariablesAndListenDeviceNode()
 {
     cDspMeasData* dspData = m_dspIFace->getMemHandle("readVariablesAndListenDeviceNode");
-    dspData->addVarItem(new cDspVar("ONE_FLOAT", 1, DSPDATA::vDspResult, DSPDATA::dFloat));
-    dspData->addVarItem(new cDspVar("TWO_FLOAT", 2, DSPDATA::vDspResult, DSPDATA::dFloat));
+    dspData->addDspVar("ONE_FLOAT", 1, DSPDATA::vDspResult, DSPDATA::dFloat);
+    dspData->addDspVar("TWO_FLOAT", 2, DSPDATA::vDspResult, DSPDATA::dFloat);
 
     m_dspIFace->varList2Dsp();
     TimeMachineObject::feedEventLoop();
@@ -231,8 +231,8 @@ void test_regression_dsp_var::writeFloatVariablesAndListenDeviceNode()
 void test_regression_dsp_var::writeIntVariablesAndListenDeviceNode()
 {
     cDspMeasData* dspData = m_dspIFace->getMemHandle("readVariablesAndListenDeviceNode");
-    dspData->addVarItem(new cDspVar("ONE_INT", 1, DSPDATA::vDspResult, DSPDATA::dInt));
-    dspData->addVarItem(new cDspVar("TWO_INT", 2, DSPDATA::vDspResult, DSPDATA::dInt));
+    dspData->addDspVar("ONE_INT", 1, DSPDATA::vDspResult, DSPDATA::dInt);
+    dspData->addDspVar("TWO_INT", 2, DSPDATA::vDspResult, DSPDATA::dInt);
 
     m_dspIFace->varList2Dsp();
     TimeMachineObject::feedEventLoop();
@@ -267,10 +267,10 @@ void test_regression_dsp_var::writeIntVariablesAndListenDeviceNode()
 void test_regression_dsp_var::writeMixVariablesAndListenDeviceNode()
 {
     cDspMeasData* dspData = m_dspIFace->getMemHandle("readVariablesAndListenDeviceNode");
-    dspData->addVarItem(new cDspVar("ONE_FLOAT", 1, DSPDATA::vDspResult, DSPDATA::dFloat));
-    dspData->addVarItem(new cDspVar("ONE_INT", 1, DSPDATA::vDspResult, DSPDATA::dInt));
-    dspData->addVarItem(new cDspVar("TWO_FLOAT", 2, DSPDATA::vDspResult, DSPDATA::dFloat));
-    dspData->addVarItem(new cDspVar("TWO_INT", 2, DSPDATA::vDspResult, DSPDATA::dInt));
+    dspData->addDspVar("ONE_FLOAT", 1, DSPDATA::vDspResult, DSPDATA::dFloat);
+    dspData->addDspVar("ONE_INT", 1, DSPDATA::vDspResult, DSPDATA::dInt);
+    dspData->addDspVar("TWO_FLOAT", 2, DSPDATA::vDspResult, DSPDATA::dFloat);
+    dspData->addDspVar("TWO_INT", 2, DSPDATA::vDspResult, DSPDATA::dInt);
 
     m_dspIFace->varList2Dsp();
     TimeMachineObject::feedEventLoop();
@@ -320,8 +320,8 @@ void test_regression_dsp_var::multipleClientsCreateResultVars()
 {
     // create vars client1
     cDspMeasData* dspData1 = m_dspIFace->getMemHandle("createResultVariables");
-    dspData1->addVarItem(new cDspVar("CLIENT1_VAR1", 1, DSPDATA::vDspResult, DSPDATA::dFloat));
-    dspData1->addVarItem(new cDspVar("CLIENT1_VAR2", 2, DSPDATA::vDspResult, DSPDATA::dFloat));
+    dspData1->addDspVar("CLIENT1_VAR1", 1, DSPDATA::vDspResult, DSPDATA::dFloat);
+    dspData1->addDspVar("CLIENT1_VAR2", 2, DSPDATA::vDspResult, DSPDATA::dFloat);
     m_dspIFace->varList2Dsp();
     TimeMachineObject::feedEventLoop();
 
@@ -334,8 +334,8 @@ void test_regression_dsp_var::multipleClientsCreateResultVars()
 
     // create vars client2
     cDspMeasData* dspData2 = dspIFace2->getMemHandle("createResultVariables");
-    dspData2->addVarItem(new cDspVar("CLIENT2_VAR1", 3, DSPDATA::vDspResult, DSPDATA::dFloat));
-    dspData2->addVarItem(new cDspVar("CLIENT2_VAR2", 4, DSPDATA::vDspResult, DSPDATA::dFloat));
+    dspData2->addDspVar("CLIENT2_VAR1", 3, DSPDATA::vDspResult, DSPDATA::dFloat);
+    dspData2->addDspVar("CLIENT2_VAR2", 4, DSPDATA::vDspResult, DSPDATA::dFloat);
     dspIFace2->varList2Dsp();
     TimeMachineObject::feedEventLoop();
 
