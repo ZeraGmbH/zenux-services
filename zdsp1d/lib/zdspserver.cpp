@@ -716,6 +716,7 @@ void ZDspServer::DspIntHandler(int)
 {
     char dummy[2];
     read(pipeFileDescriptorZdsp1[0], dummy, 1); // first we read the pipe
+
     const QList<ZdspClient*> clientList = m_zdspClientContainer.getClientList();
     if (!clientList.isEmpty()) { // wenn vorhanden nutzen wir immer den 1. client zum lesen
         ZdspClient *client = clientList.first();
@@ -739,8 +740,8 @@ void ZDspServer::DspIntHandler(int)
                         intMessage->set_body(dspIntStr.toStdString());
                         intMessage->set_rtype(ProtobufMessage::NetMessage_NetReply_ReplyType_ACK);
 
-                        QByteArray idba = clientToNotify->getProtobufClientId();
-                        protobufIntMessage.set_clientid(idba.data(), idba.size() );
+                        const QByteArray proxyConnectionId = clientToNotify->getProtobufClientId();
+                        protobufIntMessage.set_clientid(proxyConnectionId.data(), proxyConnectionId.size());
                         protobufIntMessage.set_messagenr(0); // interrupt
 
                         clientToNotify->getVeinPeer()->sendMessage(m_protobufWrapper.protobufToByteArray(protobufIntMessage));
