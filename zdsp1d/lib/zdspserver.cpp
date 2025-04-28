@@ -852,20 +852,15 @@ bool ZDspServer::writeDspCmdListsToDevNode()
 QString ZDspServer::loadCmdListAllClients()
 {
     QString errs;
-    QString ret;
-    if(compileCmdListsForAllClientsToRawStream(errs)) { // die cmdlisten und die variablen waren schlüssig
-        if(!uploadCommandLists()) {
-            qCritical("uploadCommandLists failed");
-            ret = ZSCPI::scpiAnswer[ZSCPI::errexec];
-        }
-        else
-            ret = ZSCPI::scpiAnswer[ZSCPI::ack];
-    }
-    else {
+    if (!compileCmdListsForAllClientsToRawStream(errs)) {
         qCritical("compileCmdListsForAllClientsToRawStream failed");
-        ret = QString("%1 %2").arg(ZSCPI::scpiAnswer[ZSCPI::errval], errs); // das "fehlerhafte" kommando anhängen
+        return QString("%1 %2").arg(ZSCPI::scpiAnswer[ZSCPI::errval], errs); // das "fehlerhafte" kommando anhängen
     }
-    return ret;
+    if (!uploadCommandLists()) {
+        qCritical("uploadCommandLists failed");
+        return ZSCPI::scpiAnswer[ZSCPI::errexec];
+    }
+    return ZSCPI::scpiAnswer[ZSCPI::ack];
 }
 
 static constexpr int dm32DspWorkSpaceBase21362 = 0xE0800;
