@@ -1,7 +1,6 @@
 #include "procpiddetails.h"
 #include "systeminfofilelocator.h"
 #include <QFile>
-#include <QTextStream>
 
 QString ProcPidDetails::getProcesName(int pid)
 {

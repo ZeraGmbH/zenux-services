@@ -12,7 +12,6 @@
 #include <QFinalState>
 #include <QDataStream>
 #include <QTcpServer>
-#include <QTextStream>
 #include <QDomDocument>
 #include <fcntl.h>
 #include <signal.h>
