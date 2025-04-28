@@ -981,16 +981,15 @@ void ZDspServer::executeCommandProto(VeinTcp::TcpPeer *peer, std::shared_ptr<goo
     }
 }
 
-static const char* telnetClientId = "telnet_client";
-
 void ZDspServer::onTelnetClientConnected()
 {
     qInfo("External SCPI Client connected");
     m_telnetSocket = m_telnetServer->nextPendingConnection();
-    m_zdspClientContainer.addClient(nullptr, telnetClientId, m_deviceNodeFactory);
     connect(m_telnetSocket, &QIODevice::readyRead, this, &ZDspServer::onTelnetDataReceived);
     connect(m_telnetSocket, &QAbstractSocket::disconnected, this, &ZDspServer::onTelnetDisconnect);
 }
+
+static const char* telnetClientId = "telnet_client";
 
 void ZDspServer::onTelnetDataReceived()
 {
@@ -1001,12 +1000,10 @@ void ZDspServer::onTelnetDataReceived()
     input.remove('\n');
     qInfo("External SCPI command: %s", qPrintable(input));
 
-    // Stolen fom PCBServer::onTelnetDataReceived()
     cSCPIObject* scpiObject = m_scpiInterface->getSCPIObject(input);
     if(scpiObject) {
-        QByteArray proxyConnectionId = QByteArray(); // we set an empty byte array
-        m_zdspClientContainer.addClient(nullptr, proxyConnectionId, m_deviceNodeFactory);
-        cProtonetCommand* protoCmd = new cProtonetCommand(nullptr, false, true, proxyConnectionId, 0, input);
+        m_zdspClientContainer.addClient(nullptr, telnetClientId, m_deviceNodeFactory);
+        cProtonetCommand* protoCmd = new cProtonetCommand(nullptr, false, true, telnetClientId, 0, input);
         cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
         if (!scpiDelegate->executeSCPI(protoCmd))
             protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::nak];
