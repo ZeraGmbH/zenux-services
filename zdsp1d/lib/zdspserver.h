@@ -69,7 +69,6 @@ private:
     void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
 
     friend class TestZdsp1dForVarAccess;
-    bool isClientStillThereAndActive(ZdspClient *client) const;
 
     QString handleScpiInterfaceRead(const QString &scpiInput);
     void outputDspRunState();
@@ -114,9 +113,7 @@ private:
     QString getDspStatus();
 
     // die routinen für das measure modell
-    QString loadCmdList(ZdspClient *client);
-    QString unloadCmdList(ZdspClient *client);
-    QString unloadCmdListAllClients();
+    QString loadCmdListAllClients();
 
     bool compileCmdListsForAllClientsToRawStream(QString& errs);
     bool uploadCommandLists();

@@ -69,11 +69,6 @@ void ZdspClient::setCmdForIrqListDef(const QString &cmdIntListDef)
     m_sIntCmdListDef = cmdIntListDef;
 }
 
-void ZdspClient::setActive(bool active)
-{
-    m_bActive = active;
-}
-
 QByteArray ZdspClient::getProtobufClientId() const
 {
     return m_proxyConnectionId;
@@ -103,11 +98,6 @@ bool ZdspClient::GenCmdLists(QString& errs, ulong userMemOffset, ulong globalsta
     return
         compiler.compileCmds(m_sCmdListDef, m_DspCmdList,errs, userMemOffset, globalstartadr) &&
         compiler.compileCmds(m_sIntCmdListDef, m_DspIntCmdList, errs, userMemOffset, globalstartadr);
-}
-
-bool ZdspClient::isActive() const
-{
-    return m_bActive;
 }
 
 QList<DspCmdWithParamsRaw> &ZdspClient::GetDspCmdList()

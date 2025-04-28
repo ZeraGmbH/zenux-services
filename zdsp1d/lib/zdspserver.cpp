@@ -410,13 +410,20 @@ void ZDspServer::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
         protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::ack]; // ist erstmal ok, wird später beim SET kommando geprüft
         break;
     case scpiLoadCmdList:
-        protoCmd->m_sOutput = loadCmdList(client);
+        protoCmd->m_sOutput = loadCmdListAllClients();
+        if (protoCmd->m_sOutput != ZSCPI::scpiAnswer[ZSCPI::ack]) {
+            m_zdspClientContainer.delClient(client->getProtobufClientId());
+            client = nullptr;
+        }
         break;
     case scpiUnloadCmdList:
-        protoCmd->m_sOutput = unloadCmdList(client);
+        m_zdspClientContainer.delClient(client->getProtobufClientId());
+        client = nullptr;
+        protoCmd->m_sOutput = loadCmdListAllClients();
         break;
     case scpiUnloadCmdListAllClients:
-        protoCmd->m_sOutput = unloadCmdListAllClients();
+        m_zdspClientContainer.delAllClients();
+        protoCmd->m_sOutput = loadCmdListAllClients();
         break;
     case scpiReadActualValues:
         protoCmd->m_sOutput = client->readActValues(cmd.getParam());
@@ -723,7 +730,7 @@ void ZDspServer::DspIntHandler(int)
                 for (int i = 1; i < (n+1); i++) {
                     int process = pardsp[i] >> 16;
                     ZdspClient *clientToNotify = m_zdspClientContainer.findClient(process);
-                    if (isClientStillThereAndActive(clientToNotify)) {
+                    if (clientToNotify) {
                         const QString dspIntStr = QString("DSPINT:%1").arg(pardsp[i] & 0xFFFF);
 
                         ProtobufMessage::NetMessage protobufIntMessage;
@@ -772,26 +779,24 @@ bool ZDspServer::compileCmdListsForAllClientsToRawStream(QString &errs)
         ulong userMemOffset = dm32UserWorkSpace.m_startAddress;
         for (int i = 0; i < clientList.count(); i++) {
             ZdspClient* client = clientList.at(i);
-            if (client->isActive()) {
-                DspCmdCompiler compiler(&client->m_dspVarResolver, client->getDspInterruptId());
-                cmd = compiler.compileOneCmdLineZeroAligned(QString("USERMEMOFFSET(%1)").arg(userMemOffset),
-                                                            &ok);
-                cycCmdMemStream << cmd;
-                intCmdMemStream << cmd;
+            DspCmdCompiler compiler(&client->m_dspVarResolver, client->getDspInterruptId());
+            cmd = compiler.compileOneCmdLineZeroAligned(QString("USERMEMOFFSET(%1)").arg(userMemOffset),
+                                                        &ok);
+            cycCmdMemStream << cmd;
+            intCmdMemStream << cmd;
 
-                if (!client->GenCmdLists(errs, userMemOffset, UserWorkSpaceGlobalSegmentAdr))
-                    return false;
+            if (!client->GenCmdLists(errs, userMemOffset, UserWorkSpaceGlobalSegmentAdr))
+                return false;
 
-                // relokalisieren der daten im dsp
-                userMemOffset += client->relocalizeUserMemSectionVars(userMemOffset, UserWorkSpaceGlobalSegmentAdr);
+            // relokalisieren der daten im dsp
+            userMemOffset += client->relocalizeUserMemSectionVars(userMemOffset, UserWorkSpaceGlobalSegmentAdr);
 
-                QList<DspCmdWithParamsRaw> cycCmdList = client->GetDspCmdList();
-                for (int j = 0; j < cycCmdList.size(); j++)
-                    cycCmdMemStream << cycCmdList[j];
-                QList<DspCmdWithParamsRaw> intCmdList = client->GetDspIntCmdList();
-                for (int j = 0; j < intCmdList.size(); j++)
-                    intCmdMemStream << intCmdList[j];
-            }
+            QList<DspCmdWithParamsRaw> cycCmdList = client->GetDspCmdList();
+            for (int j = 0; j < cycCmdList.size(); j++)
+                cycCmdMemStream << cycCmdList[j];
+            QList<DspCmdWithParamsRaw> intCmdList = client->GetDspIntCmdList();
+            for (int j = 0; j < intCmdList.size(); j++)
+                intCmdMemStream << intCmdList[j];
         }
 
         // wir triggern das senden der serialisierten interrupts
@@ -844,55 +849,21 @@ bool ZDspServer::writeDspCmdListsToDevNode()
     return true;
 }
 
-QString ZDspServer::loadCmdList(ZdspClient* client)
+QString ZDspServer::loadCmdListAllClients()
 {
     QString errs;
-    client->setActive(true);
     QString ret;
     if(compileCmdListsForAllClientsToRawStream(errs)) { // die cmdlisten und die variablen waren schlüssig
         if(!uploadCommandLists()) {
             qCritical("uploadCommandLists failed");
             ret = ZSCPI::scpiAnswer[ZSCPI::errexec];
-            client->setActive(false);
         }
         else
             ret = ZSCPI::scpiAnswer[ZSCPI::ack];
     }
     else {
         qCritical("compileCmdListsForAllClientsToRawStream failed");
-        client->setActive(false);
         ret = QString("%1 %2").arg(ZSCPI::scpiAnswer[ZSCPI::errval], errs); // das "fehlerhafte" kommando anhängen
-    }
-    qDebug() << QString("LoadCmdList client dspInterruptId %1").arg(client->getDspInterruptId());
-    return ret;
-}
-
-QString ZDspServer::unloadCmdList(ZdspClient *client)
-{
-    client->setActive(false);
-    QString error;
-    compileCmdListsForAllClientsToRawStream(error);
-    QString ret;
-    if (!uploadCommandLists())
-        ret = ZSCPI::scpiAnswer[ZSCPI::errexec];
-    else
-        ret = ZSCPI::scpiAnswer[ZSCPI::ack];
-    return ret;
-}
-
-QString ZDspServer::unloadCmdListAllClients()
-{
-    m_zdspClientContainer.delAllClients();
-    QString error;
-    compileCmdListsForAllClientsToRawStream(error);
-    QString ret;
-    if (!uploadCommandLists()) {
-        ret = ZSCPI::scpiAnswer[ZSCPI::errexec];
-        qCritical("Unloading command lists for all clients failed: %s", qPrintable(error));
-    }
-    else {
-        ret = ZSCPI::scpiAnswer[ZSCPI::ack];
-        qInfo("Command lists for all clients were removed sucessfully");
     }
     return ret;
 }
@@ -1054,11 +1025,6 @@ void ZDspServer::onTelnetDisconnect()
     qInfo("External SCPI Client disconnected");
     disconnect(m_telnetSocket, 0, 0, 0); // we disconnect everything
     m_zdspClientContainer.delClient(telnetClientId);
-}
-
-bool ZDspServer::isClientStillThereAndActive(ZdspClient *client) const
-{
-    return client != nullptr && client->isActive();
 }
 
 void ZDspServer::sendProtoAnswer(cProtonetCommand *protoCmd)

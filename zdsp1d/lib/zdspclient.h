@@ -15,8 +15,6 @@ public:
                AbstractFactoryDeviceNodeDspPtr deviceNodeFactory);
     virtual ~ZdspClient();
 
-    bool isActive() const;
-    void setActive(bool active);
     QByteArray getProtobufClientId() const;
 
     bool setRawActualValueList(const QString& varsSemicolonSeparated);
@@ -42,7 +40,6 @@ private:
     QByteArray m_proxyConnectionId;
     AbstractFactoryDeviceNodeDspPtr m_deviceNodeFactory;
     int m_dspInterruptId;
-    bool m_bActive = false;
     QString m_sCmdListDef; // kommando liste defintion
     QString m_sIntCmdListDef; // interrupt kommando  liste defintion
 
