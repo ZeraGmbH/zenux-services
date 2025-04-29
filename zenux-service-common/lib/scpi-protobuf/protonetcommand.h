@@ -8,7 +8,13 @@
 class cProtonetCommand
 {
 public:
-    cProtonetCommand(VeinTcp::TcpPeer* peer, bool hasClientId, bool withOutput, QByteArray clientid, quint32 messagenr, QString input, quint8 scpiType = 0);
+    cProtonetCommand(VeinTcp::TcpPeer* peer,
+                     bool hasClientId,
+                     bool withOutput,
+                     QByteArray clientid,
+                     quint32 messagenr,
+                     QString input,
+                     quint8 scpiType = 0);
     cProtonetCommand(const cProtonetCommand* protoCmd);
     VeinTcp::TcpPeer* m_pPeer;
     bool m_bhasClientId;
