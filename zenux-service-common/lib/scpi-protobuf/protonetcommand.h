@@ -16,6 +16,9 @@ public:
                      QString input,
                      quint8 scpiType = 0);
     cProtonetCommand(const cProtonetCommand* protoCmd);
+    virtual ~cProtonetCommand();
+    static int getInstanceCount();
+
     VeinTcp::TcpPeer* m_pPeer;
     bool m_bhasClientId;
     bool m_bwithOutput;
@@ -24,6 +27,8 @@ public:
     QString m_sInput;
     QString m_sOutput;
     quint8 m_nSCPIType = 0; // just for SEC - we have to get rid!!
+private:
+    static int m_instanceCount;
 };
 
 #endif // PROTONETCOMMAND_H

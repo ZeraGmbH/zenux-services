@@ -1,5 +1,7 @@
 #include "protonetcommand.h"
 
+int cProtonetCommand::m_instanceCount = 0;
+
 cProtonetCommand::cProtonetCommand(VeinTcp::TcpPeer *peer, bool hasClientId, bool withOutput, QByteArray clientid, quint32 messagenr, QString input, quint8 scpiType) :
     m_pPeer(peer),
     m_bhasClientId(hasClientId),
@@ -9,6 +11,7 @@ cProtonetCommand::cProtonetCommand(VeinTcp::TcpPeer *peer, bool hasClientId, boo
     m_sInput(input),
     m_nSCPIType(scpiType)
 {
+    m_instanceCount++;
 }
 
 cProtonetCommand::cProtonetCommand(const cProtonetCommand *protoCmd) :
@@ -20,4 +23,15 @@ cProtonetCommand::cProtonetCommand(const cProtonetCommand *protoCmd) :
     m_sInput(protoCmd->m_sInput),
     m_nSCPIType(protoCmd->m_nSCPIType)
 {
+    m_instanceCount++;
+}
+
+cProtonetCommand::~cProtonetCommand()
+{
+    m_instanceCount--;
+}
+
+int cProtonetCommand::getInstanceCount()
+{
+    return m_instanceCount;
 }
