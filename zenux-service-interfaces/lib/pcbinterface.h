@@ -16,7 +16,6 @@ class SERVICE_INTERFACES_EXPORT cPCBInterface: public AbstractServerInterface
 public:
     cPCBInterface();
     virtual ~cPCBInterface();
-    void setClient(Zera::ProxyClient *client);
     void setClientSmart(Zera::ProxyClientPtr client);
     quint32 scpiCommand(const QString &scpi) override;
 

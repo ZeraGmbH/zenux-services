@@ -31,7 +31,6 @@ class cRMInterfacePrivate: public cInterfacePrivate
     Q_OBJECT
 public:
     cRMInterfacePrivate(cRMInterface* iface);
-    void setClient(Zera::ProxyClient *client);
     void setClientSmart(Zera::ProxyClientPtr client);
     quint32 scpiCommand(const QString &scpi);
 
@@ -51,7 +50,6 @@ protected slots:
 private:
     Q_DECLARE_PUBLIC(cRMInterface)
     cRMInterface *q_ptr;
-    Zera::ProxyClientPtr m_clientSmart;
 
     QStringList CycCmdList, IntCmdList;
     QList<cDspMeasData*> m_DspMeasDataList; // eine liste mit zeigern auf "programmdaten"

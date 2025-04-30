@@ -38,7 +38,6 @@ class cDSPInterfacePrivate: public cInterfacePrivate
 public:
     cDSPInterfacePrivate(cDSPInterface* iface);
     virtual ~cDSPInterfacePrivate();
-    void setClient(Zera::ProxyClient *client);
     void setClientSmart(Zera::ProxyClientPtr client);
     quint32 scpiCommand(const QString &scpi);
 
@@ -80,7 +79,6 @@ protected slots:
 private:
     Q_DECLARE_PUBLIC(cDSPInterface)
     cDSPInterface *q_ptr;
-    Zera::ProxyClientPtr m_clientSmart;
 
     QStringList m_cycCmdList, m_irqCmdList;
     QList<cDspMeasData*> m_DspMemoryDataList; // eine liste mit zeigern auf dsp speicher

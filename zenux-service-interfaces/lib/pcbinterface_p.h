@@ -89,7 +89,6 @@ class cPCBInterfacePrivate: public cInterfacePrivate
 
 public:
     cPCBInterfacePrivate(cPCBInterface* iface);
-    void setClient(Zera::ProxyClient *client);
     void setClientSmart(Zera::ProxyClientPtr client);
     quint32 getChannelList(); // qstringlist
     quint32 getDSPChannel(QString chnName); // int
@@ -182,7 +181,6 @@ protected slots:
 private:
     Q_DECLARE_PUBLIC(cPCBInterface)
     cPCBInterface *q_ptr;
-    Zera::ProxyClientPtr m_clientSmart;
 };
 
 }

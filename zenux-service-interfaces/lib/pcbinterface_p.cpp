@@ -8,25 +8,15 @@ namespace Zera {
 cPCBInterfacePrivate::cPCBInterfacePrivate(cPCBInterface *iface)
     :q_ptr(iface)
 {
-    m_pClient = nullptr;
-}
-
-
-void cPCBInterfacePrivate::setClient(Zera::ProxyClient *client)
-{
-    if (m_pClient) { // we avoid multiple connections
-        disconnect(m_pClient, nullptr, this, nullptr);
-    }
-
-    m_pClient = client;
-    connect(m_pClient, &Zera::ProxyClient::answerAvailable, this, &cPCBInterfacePrivate::receiveAnswer);
-    connect(m_pClient, &Zera::ProxyClient::tcpError, this, &cPCBInterfacePrivate::receiveError);
 }
 
 void cPCBInterfacePrivate::setClientSmart(Zera::ProxyClientPtr client)
 {
+    if (m_clientSmart) // we avoid multiple connections
+        disconnect(m_clientSmart.get(), nullptr, this, nullptr);
     m_clientSmart = client;
-    setClient(client.get());
+    connect(m_clientSmart.get(), &Zera::ProxyClient::answerAvailable, this, &cPCBInterfacePrivate::receiveAnswer);
+    connect(m_clientSmart.get(), &Zera::ProxyClient::tcpError, this, &cPCBInterfacePrivate::receiveError);
 }
 
 quint32 cPCBInterfacePrivate::getChannelList()
@@ -35,7 +25,6 @@ quint32 cPCBInterfacePrivate::getChannelList()
     m_MsgNrCmdList[msgnr] = PCB::getchannellist;
     return msgnr;
 }
-
 
 quint32 cPCBInterfacePrivate::getDSPChannel(QString chnName)
 {

@@ -48,7 +48,6 @@ class SERVICE_INTERFACES_EXPORT cSECInterface: public AbstractServerInterface
 public:
     cSECInterface();
     virtual ~cSECInterface();
-    void setClient(Zera::ProxyClient *client);
     void setClientSmart(Zera::ProxyClientPtr client);
 
     quint32 scpiCommand(const QString &scpi) override;

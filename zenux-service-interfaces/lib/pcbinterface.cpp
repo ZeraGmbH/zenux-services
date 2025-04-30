@@ -13,13 +13,6 @@ cPCBInterface::~cPCBInterface()
     delete d_ptr;
 }
 
-
-void cPCBInterface::setClient(Zera::ProxyClient *client)
-{
-    Q_D(cPCBInterface);
-    return d->setClient(client);
-}
-
 void cPCBInterface::setClientSmart(Zera::ProxyClientPtr client)
 {
     Q_D(cPCBInterface);

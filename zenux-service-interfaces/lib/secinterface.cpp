@@ -13,13 +13,6 @@ cSECInterface::~cSECInterface()
     delete d_ptr;
 }
 
-
-void cSECInterface::setClient(Zera::ProxyClient *client)
-{
-    Q_D(cSECInterface);
-    return d->setClient(client);
-}
-
 void cSECInterface::setClientSmart(ProxyClientPtr client)
 {
     Q_D(cSECInterface);

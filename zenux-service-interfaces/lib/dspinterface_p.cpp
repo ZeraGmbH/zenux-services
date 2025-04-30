@@ -16,19 +16,13 @@ cDSPInterfacePrivate::~cDSPInterfacePrivate()
         delete dspMem;
 }
 
-void cDSPInterfacePrivate::setClient(Zera::ProxyClient *client)
-{
-    if (m_pClient) // we avoid multiple connections
-        disconnect(m_pClient, 0, this, 0);
-    m_pClient = client;
-    connect(m_pClient, &Zera::ProxyClient::answerAvailable, this, &cDSPInterfacePrivate::receiveAnswer);
-    connect(m_pClient, &Zera::ProxyClient::tcpError, this, &cDSPInterfacePrivate::receiveError);
-}
-
 void cDSPInterfacePrivate::setClientSmart(ProxyClientPtr client)
 {
+    if (m_clientSmart) // we avoid multiple connections
+        disconnect(m_clientSmart.get(), 0, this, 0);
     m_clientSmart = client;
-    setClient(client.get());
+    connect(m_clientSmart.get(), &Zera::ProxyClient::answerAvailable, this, &cDSPInterfacePrivate::receiveAnswer);
+    connect(m_clientSmart.get(), &Zera::ProxyClient::tcpError, this, &cDSPInterfacePrivate::receiveError);
 }
 
 quint32 cDSPInterfacePrivate::scpiCommand(const QString &scpi)

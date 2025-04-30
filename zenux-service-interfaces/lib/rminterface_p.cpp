@@ -8,21 +8,13 @@ namespace Zera {
 cRMInterfacePrivate::cRMInterfacePrivate(cRMInterface *iface)
     :q_ptr(iface)
 {
-    m_pClient = 0;
-}
-
-
-void cRMInterfacePrivate::setClient(Zera::ProxyClient *client)
-{
-    m_pClient = client;
-    connect(m_pClient, &Zera::ProxyClient::answerAvailable, this, &cRMInterfacePrivate::receiveAnswer);
-    connect(m_pClient, &Zera::ProxyClient::tcpError, this, &cRMInterfacePrivate::receiveError);
 }
 
 void cRMInterfacePrivate::setClientSmart(Zera::ProxyClientPtr client)
 {
     m_clientSmart = client;
-    setClient(client.get());
+    connect(m_clientSmart.get(), &Zera::ProxyClient::answerAvailable, this, &cRMInterfacePrivate::receiveAnswer);
+    connect(m_clientSmart.get(), &Zera::ProxyClient::tcpError, this, &cRMInterfacePrivate::receiveError);
 }
 
 quint32 cRMInterfacePrivate::scpiCommand(const QString &scpi)
@@ -47,7 +39,7 @@ quint32 cRMInterfacePrivate::rmIdent(QString name)
     message->set_rtype(ProtobufMessage::NetMessage::NetReply::IDENT);
     message->set_body(name.toStdString());
 
-    msgnr = m_pClient->transmitCommand(&envelope);
+    msgnr = m_clientSmart->transmitCommand(&envelope);
     m_MsgNrCmdList[msgnr] = rmident;
 
     return msgnr;

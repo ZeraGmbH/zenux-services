@@ -18,7 +18,6 @@ class cDSPInterface: public AbstractServerInterface
 public:
     cDSPInterface();
     virtual ~cDSPInterface();
-    void setClient(Zera::ProxyClient *client);
     void setClientSmart(Zera::ProxyClientPtr client);
     quint32 scpiCommand(const QString &scpi) override;
 

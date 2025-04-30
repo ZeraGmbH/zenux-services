@@ -9,25 +9,16 @@ namespace Zera
 cSECInterfacePrivate::cSECInterfacePrivate(cSECInterface *iface)
     :q_ptr(iface)
 {
-    m_pClient = 0;
-}
-
-
-void cSECInterfacePrivate::setClient(Zera::ProxyClient *client)
-{
-    if (m_pClient) // we avoid multiple connections
-        disconnect(m_pClient, 0, this, 0);
-    m_pClient = client;
-    connect(m_pClient, &Zera::ProxyClient::answerAvailable, this, &cSECInterfacePrivate::receiveAnswer);
-    connect(m_pClient, &Zera::ProxyClient::tcpError, this, &cSECInterfacePrivate::receiveError);
 }
 
 void cSECInterfacePrivate::setClientSmart(ProxyClientPtr client)
 {
+    if (m_clientSmart) // we avoid multiple connections
+        disconnect(m_clientSmart.get(), 0, this, 0);
     m_clientSmart = client;
-    setClient(client.get());
+    connect(m_clientSmart.get(), &Zera::ProxyClient::answerAvailable, this, &cSECInterfacePrivate::receiveAnswer);
+    connect(m_clientSmart.get(), &Zera::ProxyClient::tcpError, this, &cSECInterfacePrivate::receiveError);
 }
-
 
 quint32 cSECInterfacePrivate::setECalcUnit(int n)
 {
@@ -39,7 +30,6 @@ quint32 cSECInterfacePrivate::setECalcUnit(int n)
     return msgnr;
 }
 
-
 quint32 cSECInterfacePrivate::freeECalcUnits()
 {
     QString cmd;
@@ -49,7 +39,6 @@ quint32 cSECInterfacePrivate::freeECalcUnits()
     m_MsgNrCmdList[msgnr] = SEC::freeecalcunit;
     return msgnr;
 }
-
 
 quint32 cSECInterfacePrivate::writeRegister(QString chnname, quint8 reg, quint32 value)
 {
@@ -61,7 +50,6 @@ quint32 cSECInterfacePrivate::writeRegister(QString chnname, quint8 reg, quint32
     return msgnr;
 }
 
-
 quint32 cSECInterfacePrivate::readRegister(QString chnname, quint8 reg)
 {
     QString cmd;
@@ -71,7 +59,6 @@ quint32 cSECInterfacePrivate::readRegister(QString chnname, quint8 reg)
     m_MsgNrCmdList[msgnr] = SEC::readregister;
     return msgnr;
 }
-
 
 quint32 cSECInterfacePrivate::setSync(QString chnname, QString syncChn)
 {
@@ -83,7 +70,6 @@ quint32 cSECInterfacePrivate::setSync(QString chnname, QString syncChn)
     return msgnr;
 }
 
-
 quint32 cSECInterfacePrivate::setMux(QString chnname, QString inpname)
 {
     QString cmd, par;
@@ -93,7 +79,6 @@ quint32 cSECInterfacePrivate::setMux(QString chnname, QString inpname)
     m_MsgNrCmdList[msgnr] = SEC::setmux;
     return msgnr;
 }
-
 
 quint32 cSECInterfacePrivate::setCmdid(QString chnname, quint8 cmdid)
 {

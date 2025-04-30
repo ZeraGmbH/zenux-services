@@ -45,9 +45,8 @@ quint32 cInterfacePrivate::sendCommand(QString cmd)
     ProtobufMessage::NetMessage::ScpiCommand* message = envelope.mutable_scpi();
 
     message->set_command(cmd.toStdString());
-    return m_pClient->transmitCommand(&envelope);
+    return m_clientSmart->transmitCommand(&envelope);
 }
-
 
 quint32 cInterfacePrivate::sendCommand(QString cmd, QString par)
 {
@@ -56,10 +55,8 @@ quint32 cInterfacePrivate::sendCommand(QString cmd, QString par)
 
     message->set_command(cmd.toStdString());
     message->set_parameter(par.toStdString());
-    return m_pClient->transmitCommand(&envelope);
+    return m_clientSmart->transmitCommand(&envelope);
 }
-
-
 
 }
 
