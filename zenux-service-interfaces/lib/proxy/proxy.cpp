@@ -36,6 +36,12 @@ bool Proxy::releaseConnection(ProxyClient *client)
     return d->releaseConnection((ProxyClientPrivate*) client);
 }
 
+bool Proxy::releaseConnectionSmart(ProxyClientPtr client)
+{
+    Q_D(Proxy);
+    return d->releaseConnection((ProxyClientPrivate*) client.get());
+}
+
 Proxy::Proxy():
     d_ptr(new Zera::ProxyPrivate(this))
 {

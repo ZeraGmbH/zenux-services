@@ -20,6 +20,7 @@ public:
                                       VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory);
     void startConnectionSmart(ProxyClientPtr client);
     bool releaseConnection(ProxyClient* client);
+    bool releaseConnectionSmart(ProxyClientPtr client);
 
 protected:
     explicit Proxy();
