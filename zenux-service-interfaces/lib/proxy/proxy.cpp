@@ -10,20 +10,6 @@ Proxy* Proxy::getInstance()
     return ProxyPrivate::m_singletonInstance;
 }
 
-ProxyClient* Proxy::getConnection(const QString &ipadress, quint16 port,
-                                  VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory)
-{
-    Q_D(Proxy);
-    return d->getConnection(ipadress, port, tcpNetworkFactory);
-}
-
-ProxyClient *Proxy::getConnection(const NetworkConnectionInfo &netInfo,
-                                  VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory)
-{
-    Q_D(Proxy);
-    return d->getConnection(netInfo.m_sIP, netInfo.m_nPort, tcpNetworkFactory);
-}
-
 ProxyClientPtr Proxy::getConnectionSmart(const QString &ipadress, quint16 port,
                                          VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory)
 {
@@ -36,12 +22,6 @@ ProxyClientPtr Proxy::getConnectionSmart(const NetworkConnectionInfo &netInfo,
 {
     Q_D(Proxy);
     return d->getConnectionSmart(netInfo.m_sIP, netInfo.m_nPort, tcpNetworkFactory);
-}
-
-void Proxy::startConnection(ProxyClient *client)
-{
-    Q_D(Proxy);
-    d->startConnection((ProxyClientPrivate*)client);
 }
 
 void Proxy::startConnectionSmart(ProxyClientPtr client)

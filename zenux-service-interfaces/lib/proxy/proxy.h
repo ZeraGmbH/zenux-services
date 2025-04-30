@@ -14,15 +14,10 @@ class SERVICE_INTERFACES_EXPORT Proxy : public QObject
     Q_OBJECT
 public:
     static Proxy* getInstance();
-    ProxyClient* getConnection(const QString &ipadress, quint16 port,
-                               VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory);
-    ProxyClient* getConnection(const NetworkConnectionInfo &netInfo,
-                               VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory);
     ProxyClientPtr getConnectionSmart(const QString &ipadress, quint16 port,
                                       VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory);
     ProxyClientPtr getConnectionSmart(const NetworkConnectionInfo &netInfo,
                                       VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory);
-    void startConnection(ProxyClient *client);
     void startConnectionSmart(ProxyClientPtr client);
     bool releaseConnection(ProxyClient* client);
 

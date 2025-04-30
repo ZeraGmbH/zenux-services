@@ -29,21 +29,21 @@ private slots:
 private:
     ProxyPrivate(Proxy *parent);
     ProxyClient* getConnection(QString ipadress, quint16 port,
-                               VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory);
+                               VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory); // TODO remove
     ProxyClientPtr getConnectionSmart(QString ipadress, quint16 port,
                                       VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory);
-    void startConnection(ProxyClientPrivate *client);
-    bool releaseConnection(ProxyClientPrivate *client);
+    void startConnection(ProxyClientPrivate *client); // TODO replace by smart variant
+    bool releaseConnection(ProxyClientPrivate *client); // TODO replace by smart variant
     void handleReceiveMessage(std::shared_ptr<google::protobuf::Message> message);
     ProxyNetPeer *getProxyNetPeer(const QString &ipadress, quint16 port,
                                   VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory);
-    ProxyNetPeer *searchConnection(const QString &ip, quint16 port); // we search for a netclient that matches ip, port
+    ProxyNetPeer *searchConnection(const QString &ip, quint16 port);
 
     static Proxy* m_singletonInstance;
     Proxy *q_ptr;
     XiQNetWrapper m_protobufWrapper;
-    QHash<ProxyClientPrivate*, ProxyConnection*> m_ConnectionHash; // holds network connection for each client
-    QHash<QByteArray, ProxyClientPrivate*> m_ClientHash; // information for faster redirecting
+    QHash<ProxyClientPrivate*, ProxyConnection*> m_ConnectionHash; // TODO replace by smart variant
+    QHash<QByteArray, ProxyClientPrivate*> m_ClientHash;
 
     Q_DISABLE_COPY(ProxyPrivate)
     Q_DECLARE_PUBLIC(Proxy)
