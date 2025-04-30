@@ -16,11 +16,14 @@ public:
     void transmitAnswer(std::shared_ptr<ProtobufMessage::NetMessage> message);
     void transmitError(QAbstractSocket::SocketError errorCode);
     void transmitDisConnection();
+
+    static int getInstanceCount();
 public slots:
     void transmitConnection();
 protected:
     virtual quint32 transmitCommand(ProtobufMessage::NetMessage *message) override;
     ProxyPrivate *m_pProxy;
+    static int m_instanceCount;
 };
 
 }

@@ -6,13 +6,17 @@
 
 namespace Zera {
 
+int ProxyClientPrivate::m_instanceCount = 0;
+
 ProxyClientPrivate::ProxyClientPrivate(ProxyPrivate* proxy) : m_pProxy(proxy)
 {
+    m_instanceCount++;
     setParent(proxy);
 }
 
 ProxyClientPrivate::~ProxyClientPrivate()
 {
+    m_instanceCount--;
     Proxy::getInstance()->releaseConnection(this);
 }
 
@@ -34,6 +38,11 @@ void ProxyClientPrivate::transmitConnection()
 void ProxyClientPrivate::transmitDisConnection()
 {
     emit disconnected();
+}
+
+int ProxyClientPrivate::getInstanceCount()
+{
+    return m_instanceCount;
 }
 
 quint32 ProxyClientPrivate::transmitCommand(ProtobufMessage::NetMessage *message)
