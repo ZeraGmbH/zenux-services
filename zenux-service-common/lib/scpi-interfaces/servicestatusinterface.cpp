@@ -33,7 +33,7 @@ void ServiceStatusInterface::initSCPIConnection(QString leadingNodes)
     connect(this, &ScpiConnection::removingSubscribers, this, &ServiceStatusInterface::onNotifierUnregistered);
 }
 
-void ServiceStatusInterface::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
+void ServiceStatusInterface::executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd)
 {
     cSCPICommand cmd = protoCmd->m_sInput;
     if (cmd.isQuery()) {

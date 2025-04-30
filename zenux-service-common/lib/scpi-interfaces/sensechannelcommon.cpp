@@ -134,7 +134,7 @@ void SenseChannelCommon::setMMode(int mode)
     // but we can do this later
 }
 
-void SenseChannelCommon::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
+void SenseChannelCommon::executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd)
 {
     switch (cmdCode)
     {

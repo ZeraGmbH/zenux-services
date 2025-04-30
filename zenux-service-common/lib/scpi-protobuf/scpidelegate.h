@@ -19,14 +19,14 @@ public:
                   quint16 cmdCode,
                   NotificationString *notificationString = nullptr);
     virtual bool executeSCPI(const QString&, QString&) override { return false; }
-    virtual bool executeSCPI(cProtonetCommand* protoCmd);
+    virtual bool executeSCPI(ProtonetCommandPtr protoCmd);
     QString getCommand();
     NotificationString *getNotificationString();
     ScpiNotificationSubscriberHandler &getScpiNotificationSubscriberHandler();
 public slots:
     void notifyAllSubscribers(QString newValue);
 signals:
-    void sigExecuteProtoScpi(int cmdCode, cProtonetCommand* protoCmd);
+    void sigExecuteProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd);
     void sigNotifySubcriber(ScpiNotificationSubscriber subscriber, QString newValue);
 private:
     quint16 m_nCmdCode;

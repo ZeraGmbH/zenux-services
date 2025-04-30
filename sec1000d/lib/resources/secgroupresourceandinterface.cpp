@@ -60,7 +60,7 @@ void SecGroupResourceAndInterface::initSCPIConnection(QString leadingNodes)
     connectChannelSignalsAndInitScpi();
 }
 
-void SecGroupResourceAndInterface::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
+void SecGroupResourceAndInterface::executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd)
 {
     switch (cmdCode)
     {
@@ -130,7 +130,7 @@ QString SecGroupResourceAndInterface::scpiReadECalculatorChannelCatalog(const QS
     return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-void SecGroupResourceAndInterface::scpiSetChannels(cProtonetCommand *protoCmd)
+void SecGroupResourceAndInterface::scpiSetChannels(ProtonetCommandPtr protoCmd)
 {
     cSCPICommand cmd = protoCmd->m_sInput;
 
@@ -177,7 +177,7 @@ void SecGroupResourceAndInterface::scpiSetChannels(cProtonetCommand *protoCmd)
 }
 
 
-void SecGroupResourceAndInterface::scpiFreeChannels(cProtonetCommand *protoCmd)
+void SecGroupResourceAndInterface::scpiFreeChannels(ProtonetCommandPtr protoCmd)
 {
     cSCPICommand cmd = protoCmd->m_sInput;
     protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::nak]; // preset

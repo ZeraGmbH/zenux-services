@@ -39,7 +39,7 @@ public:
     virtual void initSCPIConnection(QString leadingNodes) override;
 
 protected:
-    void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
+    void executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd) override;
 
 private:
     QString scpiReadServerVersion(QString& sInput);

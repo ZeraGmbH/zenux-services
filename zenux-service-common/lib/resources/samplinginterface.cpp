@@ -38,7 +38,7 @@ void cSamplingInterface::registerResource(RMConnection *rmConnection, quint16 po
     register1Resource(rmConnection, NotZeroNumGen::getMsgNr(), QString("SAMPLE;S0;1;%2;%3;").arg(m_sDescription).arg(port));
 }
 
-void cSamplingInterface::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
+void cSamplingInterface::executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd)
 {
     switch (cmdCode)
     {

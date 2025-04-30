@@ -38,7 +38,7 @@ public:
 protected:
     bool m_bAvail; // range io avail or not
 private:
-    void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
+    void executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd) override;
     QString scpiRangeAlias(const QString& scpi) const;
     QString scpiRangeAvail(const QString& scpi) const;
     QString scpiRangeUpperRangeValue(const QString& scpi) const;

@@ -1,8 +1,14 @@
 #include "protonetcommand.h"
 
-int cProtonetCommand::m_instanceCount = 0;
+int ProtonetCommand::m_instanceCount = 0;
 
-cProtonetCommand::cProtonetCommand(VeinTcp::TcpPeer *peer, bool hasClientId, bool withOutput, QByteArray clientid, quint32 messagenr, QString input, quint8 scpiType) :
+ProtonetCommand::ProtonetCommand(VeinTcp::TcpPeer *peer,
+                                 bool hasClientId,
+                                 bool withOutput,
+                                 const QByteArray &clientid,
+                                 quint32 messagenr,
+                                 const QString &input,
+                                 quint8 scpiType) :
     m_pPeer(peer),
     m_bhasClientId(hasClientId),
     m_bwithOutput(withOutput),
@@ -11,27 +17,28 @@ cProtonetCommand::cProtonetCommand(VeinTcp::TcpPeer *peer, bool hasClientId, boo
     m_sInput(input),
     m_nSCPIType(scpiType)
 {
+    qRegisterMetaType<ProtonetCommandPtr>();
     m_instanceCount++;
 }
 
-cProtonetCommand::cProtonetCommand(const cProtonetCommand *protoCmd) :
-    m_pPeer(protoCmd->m_pPeer),
-    m_bhasClientId(protoCmd->m_bhasClientId),
-    m_bwithOutput(protoCmd->m_bwithOutput),
-    m_clientId(protoCmd->m_clientId),
-    m_nmessageNr(protoCmd->m_nmessageNr),
-    m_sInput(protoCmd->m_sInput),
-    m_nSCPIType(protoCmd->m_nSCPIType)
+ProtonetCommand::ProtonetCommand(const ProtonetCommand &other) :
+    m_pPeer(other.m_pPeer),
+    m_bhasClientId(other.m_bhasClientId),
+    m_bwithOutput(other.m_bwithOutput),
+    m_clientId(other.m_clientId),
+    m_nmessageNr(other.m_nmessageNr),
+    m_sInput(other.m_sInput),
+    m_nSCPIType(other.m_nSCPIType)
 {
     m_instanceCount++;
 }
 
-cProtonetCommand::~cProtonetCommand()
+ProtonetCommand::~ProtonetCommand()
 {
     m_instanceCount--;
 }
 
-int cProtonetCommand::getInstanceCount()
+int ProtonetCommand::getInstanceCount()
 {
     return m_instanceCount;
 }

@@ -23,7 +23,7 @@ public:
     Sec1000StatusInterface(std::shared_ptr<cSCPI> scpiInterface);
     virtual void initSCPIConnection(QString leadingNodes) override;
 protected:
-    void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
+    void executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd) override;
 private:
     quint16 getDeviceStatus();
 };

@@ -28,7 +28,7 @@ public:
     cSystemInterface(std::shared_ptr<cSCPI> scpiInterface, cSEC1000dServer* server, Sec1000SystemInfo* sInfo);
     virtual void initSCPIConnection(QString leadingNodes) override;
 protected:
-    void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
+    void executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd) override;
 private:
     cSEC1000dServer* m_pMyServer;
     Sec1000SystemInfo* m_pSystemInfo;

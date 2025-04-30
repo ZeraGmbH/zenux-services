@@ -19,7 +19,7 @@ public:
     const QString& getDescription();
     bool isAvail();
 protected:
-    void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
+    void executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd) override;
 private:
     QString scpiReadAlias(const QString& scpi);
     QString scpiReadType(const QString& scpi);

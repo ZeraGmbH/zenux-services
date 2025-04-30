@@ -30,7 +30,7 @@ void AccumulatorInterface::initSCPIConnection(QString leadingNodes)
     addDelegate(QString("%1SYSTEM:ACCUMULATOR").arg(leadingNodes),"SOC",SCPI::isQuery, m_scpiInterface, accumulatorCommands::cmdAccuStateOfCharge, &m_accuStateOfCharge);
 }
 
-void AccumulatorInterface::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
+void AccumulatorInterface::executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd)
 {
     switch (cmdCode)
     {

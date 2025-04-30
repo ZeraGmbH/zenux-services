@@ -12,7 +12,7 @@ class CommonScpiMethods
 public:
     static void sendProtoAnswer(QTcpSocket* telnetSocket,
                                 XiQNetWrapper *protobufWrapper,
-                                cProtonetCommand* protoCmd);
+                                ProtonetCommandPtr protoCmd);
     static QString handleScpiInterfaceRead(std::shared_ptr<cSCPI> scpiInterface,
                                            const QString &scpiInput);
 };

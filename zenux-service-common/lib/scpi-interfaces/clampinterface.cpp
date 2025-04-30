@@ -116,7 +116,7 @@ void cClampInterface::actualizeClampStatus(quint16 devConnectedMask)
     }
 }
 
-void cClampInterface::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
+void cClampInterface::executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd)
 {
     switch (cmdCode) {
     case ClampSystem::cmdClampChannelCat:

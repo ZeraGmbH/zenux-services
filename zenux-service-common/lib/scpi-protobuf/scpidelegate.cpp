@@ -16,7 +16,7 @@ cSCPIDelegate::cSCPIDelegate(QString cmdParent,
         connect(m_notificationString, &NotificationString::valueChanged, this, &cSCPIDelegate::notifyAllSubscribers);
 }
 
-bool cSCPIDelegate::executeSCPI(cProtonetCommand *protoCmd)
+bool cSCPIDelegate::executeSCPI(ProtonetCommandPtr protoCmd)
 {
     emit sigExecuteProtoScpi(m_nCmdCode, protoCmd);
     return true;

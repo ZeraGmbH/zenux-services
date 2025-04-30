@@ -43,7 +43,7 @@ void HkInGroupResourceAndInterface::registerResource(RMConnection *rmConnection,
         register1Resource(rmConnection, NotZeroNumGen::getMsgNr(), QString("HKEY;%1;1;%2;%3;").arg(channel->getName(), channel->getDescription()).arg(port));
 }
 
-void HkInGroupResourceAndInterface::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
+void HkInGroupResourceAndInterface::executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd)
 {
     switch (cmdCode)
     {

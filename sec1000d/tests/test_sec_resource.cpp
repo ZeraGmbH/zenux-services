@@ -43,11 +43,11 @@ void test_sec_resource::cleanup()
 
 QString test_sec_resource::sendScpiCommand(VeinTcp::TcpPeer *peer, QByteArray clientID, QString cmd)
 {
-    cProtonetCommand protoCmd(peer, false, false, clientID, 0, cmd);
+    ProtonetCommandPtr protoCmd = std::make_shared<ProtonetCommand>(peer, false, false, clientID, 0, cmd);
     cSCPIObject *scpiObject = m_scpiInterface->getSCPIObject(cmd);
     cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
-    scpiDelegate->executeSCPI(&protoCmd);
-    return protoCmd.m_sOutput;
+    scpiDelegate->executeSCPI(protoCmd);
+    return protoCmd->m_sOutput;
 }
 
 void test_sec_resource::setSecChannelsForAClient()

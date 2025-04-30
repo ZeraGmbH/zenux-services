@@ -6,9 +6,9 @@
 
 void CommonScpiMethods::sendProtoAnswer(QTcpSocket *telnetSocket,
                                         XiQNetWrapper *protobufWrapper,
-                                        cProtonetCommand *protoCmd)
+                                        ProtonetCommandPtr protoCmd)
 {
-    if(protoCmd->m_pPeer == 0) {
+    if(protoCmd->m_pPeer == nullptr) {
         // we worked on a command comming from scpi socket connection
         QString answer = protoCmd->m_sOutput+"\n";
         QByteArray ba = answer.toLatin1();
@@ -59,7 +59,6 @@ void CommonScpiMethods::sendProtoAnswer(QTcpSocket *telnetSocket,
             protoCmd->m_pPeer->writeRaw(block);
         }
     }
-    delete protoCmd;
 }
 
 QString CommonScpiMethods::handleScpiInterfaceRead(std::shared_ptr<cSCPI> scpiInterface,

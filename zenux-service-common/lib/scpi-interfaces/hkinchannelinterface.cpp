@@ -26,7 +26,7 @@ void HkInChannelInterface::initSCPIConnection(QString leadingNodes)
     addDelegate(QString("%1%2").arg(leadingNodes, m_sName),"STATUS", SCPI::isQuery, m_scpiInterface, cmdStatus);
 }
 
-void HkInChannelInterface::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
+void HkInChannelInterface::executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd)
 {
     switch (cmdCode)
     {

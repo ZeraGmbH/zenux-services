@@ -44,7 +44,7 @@ signals:
     void abortInit();
 
 private slots:
-    void sendProtoAnswer(cProtonetCommand *protoCmd);
+    void sendProtoAnswer(ProtonetCommandPtr protoCmd);
     void onProtobufClientConnected(VeinTcp::TcpPeer* newClient);
     void onProtobufDataReceived(VeinTcp::TcpPeer *peer, QByteArray message);
     void onProtobufDisconnect(VeinTcp::TcpPeer *peer);
@@ -66,7 +66,7 @@ private slots:
 private:
     void init();
     void initSCPIConnection(QString leadingNodes) override;
-    void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
+    void executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd) override;
 
     friend class TestZdsp1dForVarAccess;
 

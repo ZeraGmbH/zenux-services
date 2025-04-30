@@ -17,7 +17,7 @@ public:
 signals:
     void sigAccumulatorStatusChange(uint8_t status);
 private:
-    void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
+    void executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd) override;
     void getAccumulatorStatus();
     void getAccuStateOfCharge();
 

@@ -46,7 +46,7 @@ void FOutChannelInterface::initSCPIConnection(QString leadingNodes)
     addDelegate(QString("%1%2").arg(leadingNodes, m_sName),"POWTYPE", SCPI::isQuery | SCPI::isCmdwP , m_scpiInterface, cmdPowtype, &notifierPowerType);
 }
 
-void FOutChannelInterface::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
+void FOutChannelInterface::executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd)
 {
     switch (cmdCode)
     {

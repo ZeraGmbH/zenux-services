@@ -4,19 +4,20 @@
 #include <vtcp_peer.h>
 #include <QByteArray>
 #include <QString>
+#include <memory>
 
-class cProtonetCommand
+class ProtonetCommand
 {
 public:
-    cProtonetCommand(VeinTcp::TcpPeer* peer,
-                     bool hasClientId,
-                     bool withOutput,
-                     QByteArray clientid,
-                     quint32 messagenr,
-                     QString input,
-                     quint8 scpiType = 0);
-    cProtonetCommand(const cProtonetCommand* protoCmd);
-    virtual ~cProtonetCommand();
+    ProtonetCommand(VeinTcp::TcpPeer* peer,
+                    bool hasClientId,
+                    bool withOutput,
+                    const QByteArray &clientid,
+                    quint32 messagenr,
+                    const QString &input,
+                    quint8 scpiType = 0);
+    ProtonetCommand(const ProtonetCommand& other);
+    virtual ~ProtonetCommand();
     static int getInstanceCount();
 
     VeinTcp::TcpPeer* m_pPeer;
@@ -30,5 +31,8 @@ public:
 private:
     static int m_instanceCount;
 };
+
+typedef std::shared_ptr<ProtonetCommand> ProtonetCommandPtr;
+Q_DECLARE_METATYPE(ProtonetCommandPtr)
 
 #endif // PROTONETCOMMAND_H

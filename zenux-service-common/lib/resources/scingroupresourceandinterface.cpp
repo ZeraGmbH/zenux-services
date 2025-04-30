@@ -44,7 +44,7 @@ void ScInGroupResourceAndInterface::registerResource(RMConnection *rmConnection,
         register1Resource(rmConnection, NotZeroNumGen::getMsgNr(), QString("SCHEAD;%1;1;%2;%3;").arg(channel->getName(), channel->getDescription()).arg(port));
 }
 
-void ScInGroupResourceAndInterface::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
+void ScInGroupResourceAndInterface::executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd)
 {
     switch (cmdCode)
     {

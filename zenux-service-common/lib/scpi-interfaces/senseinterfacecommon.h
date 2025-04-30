@@ -85,7 +85,7 @@ protected:
     virtual bool isRangePartOfAdjXmlExport(SenseRangeCommon* range) = 0;
     bool importXMLDocument(QDomDocument* qdomdoc) override;
 
-    void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
+    void executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd) override;
 
     void setNotifierSenseMMode();
     void setNotifierSenseChannelCat();
@@ -99,7 +99,7 @@ protected:
     AdjDataPtr m_adjData;
 
 private:
-    void handleScpiReadWriteMMode(cProtonetCommand* protoCmd);
+    void handleScpiReadWriteMMode(ProtonetCommandPtr protoCmd);
     QString scpiReadVersion(const QString &scpi);
     QString scpiReadMModeCatalog(const QString& scpi);
     QString scpiReadSenseChannelCatalog(const QString& scpi);

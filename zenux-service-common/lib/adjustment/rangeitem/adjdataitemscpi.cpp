@@ -46,7 +46,7 @@ AdjDataItem *AdjDataItemScpi::getAdjItem()
     return m_adjItem;
 }
 
-void AdjDataItemScpi::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
+void AdjDataItemScpi::executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd)
 {
     switch (cmdCode)
     {

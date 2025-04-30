@@ -38,7 +38,7 @@ void Com5003SystemInterface::initSCPIConnection(QString leadingNodes)
 }
 
 
-void Com5003SystemInterface::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
+void Com5003SystemInterface::executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd)
 {
     switch (cmdCode)
     {

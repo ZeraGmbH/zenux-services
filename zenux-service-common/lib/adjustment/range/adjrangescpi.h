@@ -61,7 +61,7 @@ public:
     void computeJustData();
 
 protected:
-    void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
+    void executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd) override;
     virtual double getGainCorrectionTotal(double par);
     virtual double getPhaseCorrectionTotal(double par);
     virtual double getOffsetCorrectionTotal(double par);

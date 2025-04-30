@@ -31,7 +31,7 @@ public:
     void nodesFromString(const QString& s );
 
 protected:
-    void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
+    void executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd) override;
     std::function<bool(bool &)> m_checkPermission;
 private:
     QString scpiReadWriteStatus(QString& sInput);

@@ -35,7 +35,7 @@ public:
     void resetInterrupt(quint8 interrupt);
 
 protected:
-    virtual void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
+    virtual void executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd) override;
 
 private:
     AbstractFactoryDeviceNodeSecPtr m_deviceNodeFactory;
@@ -49,13 +49,13 @@ private:
     QString m_sName; // the channels name ec0...
     bool m_bSet; // we mark if the channel is occupied
     QByteArray m_ClientId; // we remark the clientid for arbitration purpose
-    void m_ReadWriteRegister(cProtonetCommand* protoCmd);
-    void m_setSync(cProtonetCommand* protoCmd);
-    void m_setMux(cProtonetCommand* protoCmd);
-    void m_setCmdId(cProtonetCommand* protoCmd);
-    void m_start(cProtonetCommand* protoCmd);
-    void m_stop(cProtonetCommand* protoCmd);
-    void m_resetInt(cProtonetCommand* protoCmd);
+    void m_ReadWriteRegister(ProtonetCommandPtr protoCmd);
+    void m_setSync(ProtonetCommandPtr protoCmd);
+    void m_setMux(ProtonetCommandPtr protoCmd);
+    void m_setCmdId(ProtonetCommandPtr protoCmd);
+    void m_start(ProtonetCommandPtr protoCmd);
+    void m_stop(ProtonetCommandPtr protoCmd);
+    void m_resetInt(ProtonetCommandPtr protoCmd);
 
     NotificationValue notifierECalcChannelIntReg;
     std::function<void(int)> m_funcSigHandler;

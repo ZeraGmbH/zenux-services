@@ -36,7 +36,7 @@ public:
     void setMMode(int mode);
 
 protected:
-    void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
+    void executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd) override;
     virtual QString getAlias() = 0;
     virtual void setNotifierSenseChannelRange() = 0;
     virtual QString scpiReadWriteRange(QString& scpi) = 0;

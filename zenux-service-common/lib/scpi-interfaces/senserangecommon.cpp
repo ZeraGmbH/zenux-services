@@ -112,7 +112,7 @@ void SenseRangeCommon::computeJustData()
     m_justdata->computeJustData();
 }
 
-void SenseRangeCommon::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
+void SenseRangeCommon::executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd)
 {
     switch (cmdCode)
     {

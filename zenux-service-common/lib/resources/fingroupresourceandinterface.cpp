@@ -51,7 +51,7 @@ void FInGroupResourceAndInterface::registerResource(RMConnection *rmConnection, 
         register1Resource(rmConnection, NotZeroNumGen::getMsgNr(), QString("FRQINPUT;%1;1;%2;%3;").arg(channel->getName(), channel->getDescription()).arg(port));
 }
 
-void FInGroupResourceAndInterface::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
+void FInGroupResourceAndInterface::executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd)
 {
     switch (cmdCode)
     {

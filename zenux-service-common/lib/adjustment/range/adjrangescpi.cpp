@@ -107,7 +107,7 @@ AdjDataItemScpi *AdjRangeScpi::getAdjInterface(QString name)
     return nullptr;
 }
 
-void AdjRangeScpi::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
+void AdjRangeScpi::executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd)
 {
     switch (cmdCode)
     {

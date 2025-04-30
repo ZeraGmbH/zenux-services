@@ -446,7 +446,7 @@ QString SenseInterfaceCommon::exportXMLString(int indent)
     return justqdom.toString(indent);
 }
 
-void SenseInterfaceCommon::handleScpiReadWriteMMode(cProtonetCommand *protoCmd)
+void SenseInterfaceCommon::handleScpiReadWriteMMode(ProtonetCommandPtr protoCmd)
 {
     cSCPICommand cmd = protoCmd->m_sInput;
     if (cmd.isQuery())
@@ -466,7 +466,7 @@ void SenseInterfaceCommon::handleScpiReadWriteMMode(cProtonetCommand *protoCmd)
         emit cmdExecutionDone(protoCmd);
 }
 
-void SenseInterfaceCommon::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
+void SenseInterfaceCommon::executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd)
 {
     switch (cmdCode)
     {

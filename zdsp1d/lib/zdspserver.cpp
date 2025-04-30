@@ -355,7 +355,7 @@ void ZDspServer::initSCPIConnection(QString leadingNodes)
     connect(this, &ScpiConnection::cmdExecutionDone, this, &ZDspServer::sendProtoAnswer);
 }
 
-void ZDspServer::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
+void ZDspServer::executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd)
 {
     cSCPICommand cmd = protoCmd->m_sInput;
     ZdspClient* client = m_zdspClientContainer.findClient(protoCmd->m_clientId);
@@ -964,7 +964,13 @@ void ZDspServer::executeCommandProto(VeinTcp::TcpPeer *peer, std::shared_ptr<goo
             cSCPIObject* scpiObject = m_scpiInterface->getSCPIObject(scpiInput);
             if(scpiObject) {
                 cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
-                cProtonetCommand* protoCmd = new cProtonetCommand(peer, true, true, proxyConnectionId, messageNr, scpiInput, scpiObject->getType());
+                ProtonetCommandPtr protoCmd = std::make_shared<ProtonetCommand>(peer,
+                                                                                true,
+                                                                                true,
+                                                                                proxyConnectionId,
+                                                                                messageNr,
+                                                                                scpiInput,
+                                                                                scpiObject->getType());
                 if (scpiDelegate->executeSCPI(protoCmd))
                     emit cmdExecutionDone(protoCmd);
                 else {
@@ -973,7 +979,12 @@ void ZDspServer::executeCommandProto(VeinTcp::TcpPeer *peer, std::shared_ptr<goo
                 }
             }
             else {
-                cProtonetCommand* protoCmd = new cProtonetCommand(peer, true, true, proxyConnectionId, messageNr, scpiInput);
+                ProtonetCommandPtr protoCmd = std::make_shared<ProtonetCommand>(peer,
+                                                                                true,
+                                                                                true,
+                                                                                proxyConnectionId,
+                                                                                messageNr,
+                                                                                scpiInput);
                 protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::nak];
                 emit cmdExecutionDone(protoCmd);
             }
@@ -1003,7 +1014,7 @@ void ZDspServer::onTelnetDataReceived()
     cSCPIObject* scpiObject = m_scpiInterface->getSCPIObject(input);
     if(scpiObject) {
         m_zdspClientContainer.addClient(nullptr, telnetClientId, m_deviceNodeFactory);
-        cProtonetCommand* protoCmd = new cProtonetCommand(nullptr, false, true, telnetClientId, 0, input);
+        ProtonetCommandPtr protoCmd = std::make_shared<ProtonetCommand>(nullptr, false, true, telnetClientId, 0, input);
         cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
         if (!scpiDelegate->executeSCPI(protoCmd))
             protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::nak];
@@ -1019,7 +1030,7 @@ void ZDspServer::onTelnetDisconnect()
     m_zdspClientContainer.delClient(telnetClientId);
 }
 
-void ZDspServer::sendProtoAnswer(cProtonetCommand *protoCmd)
+void ZDspServer::sendProtoAnswer(ProtonetCommandPtr protoCmd)
 {
     CommonScpiMethods::sendProtoAnswer(m_telnetSocket, &m_protobufWrapper, protoCmd);
 }

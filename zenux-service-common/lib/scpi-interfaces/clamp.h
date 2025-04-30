@@ -59,7 +59,7 @@ public:
     bool importClampAdjData();
 
 protected:
-    void executeProtoScpi(int cmdCode, cProtonetCommand* protoCmd) override;
+    void executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd) override;
     bool importXMLDocument(QDomDocument* qdomdoc) override;
 
 private:

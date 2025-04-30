@@ -26,7 +26,7 @@ void FInChannelInterface::initSCPIConnection(QString leadingNodes)
     addDelegate(QString("%1%2").arg(leadingNodes, m_sName),"STATUS", SCPI::isQuery, m_scpiInterface, cmdStatus);
 }
 
-void FInChannelInterface::executeProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
+void FInChannelInterface::executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd)
 {
     switch (cmdCode)
     {

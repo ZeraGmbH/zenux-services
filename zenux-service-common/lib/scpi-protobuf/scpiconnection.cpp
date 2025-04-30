@@ -37,7 +37,7 @@ void ScpiConnection::addDelegate(QString cmdParent, QString cmd, quint8 type, st
     connect(delegate, &cSCPIDelegate::sigNotifySubcriber, this, &ScpiConnection::sigNotifySubcriber);
 }
 
-void ScpiConnection::onExecuteProtoScpi(int cmdCode, cProtonetCommand *protoCmd)
+void ScpiConnection::onExecuteProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd)
 {
     executeProtoScpi(cmdCode, protoCmd);
 }
