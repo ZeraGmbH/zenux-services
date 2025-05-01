@@ -30,7 +30,7 @@ private:
     ProxyPrivate(Proxy *parent);
     ProxyClientPtr getConnectionSmart(QString ipadress, quint16 port,
                                       VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory);
-    void startConnection(ProxyClientPrivate *client); // TODO replace by smart variant
+    void startConnectionSmart(ProxyClientPtr client);
     bool releaseConnection(ProxyClientPrivate *client); // TODO replace by smart variant
     void handleReceiveMessage(std::shared_ptr<google::protobuf::Message> message);
     ProxyNetPeer *getProxyNetPeer(const QString &ipadress, quint16 port,

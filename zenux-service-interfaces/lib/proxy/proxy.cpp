@@ -27,7 +27,7 @@ ProxyClientPtr Proxy::getConnectionSmart(const NetworkConnectionInfo &netInfo,
 void Proxy::startConnectionSmart(ProxyClientPtr client)
 {
     Q_D(Proxy);
-    d->startConnection((ProxyClientPrivate*)(client.get()));
+    d->startConnectionSmart(client);
 }
 
 bool Proxy::releaseConnection(ProxyClient *client)

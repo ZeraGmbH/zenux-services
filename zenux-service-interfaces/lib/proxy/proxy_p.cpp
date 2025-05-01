@@ -30,13 +30,14 @@ ProxyClientPtr ProxyPrivate::getConnectionSmart(QString ipadress, quint16 port,
     return ProxyClientPtr(proxyclient);
 }
 
-void ProxyPrivate::startConnection(ProxyClientPrivate *client)
+void ProxyPrivate::startConnectionSmart(ProxyClientPtr client)
 {
-    ProxyConnection *connection = m_ConnectionHash[client];
+    ProxyClientPrivate* castHackClient = static_cast<ProxyClientPrivate*>(client.get());
+    ProxyConnection *connection = m_ConnectionHash[castHackClient];
     ProxyNetPeer *peer = connection->m_pNetClient;
     if(peer->isStarted()) {
         if(peer->isConnected())
-            client->transmitConnection();
+            castHackClient->transmitConnection();
     }
     else
         peer->startProxyConnection(connection->m_sIP, connection->m_nPort);
