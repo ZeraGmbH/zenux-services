@@ -16,8 +16,8 @@ ProxyPrivate::ProxyPrivate(Proxy *parent):
 {
 }
 
-ProxyClient* ProxyPrivate::getConnection(QString ipadress, quint16 port,
-                                         VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory)
+ProxyClientPtr ProxyPrivate::getConnectionSmart(QString ipadress, quint16 port,
+                                                VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory)
 {
     QUuid uuid = QUuid::createUuid(); // we use a per client uuid
     QByteArray binUUid = uuid.toRfc4122();
@@ -27,15 +27,7 @@ ProxyClient* ProxyPrivate::getConnection(QString ipadress, quint16 port,
     ProxyConnection *connection = new ProxyConnection(ipadress, port, binUUid, proxyPeer);
     m_ConnectionHash[proxyclient] = connection;
     m_ClientHash[binUUid] = proxyclient;
-
-    return proxyclient;
-}
-
-ProxyClientPtr ProxyPrivate::getConnectionSmart(QString ipadress, quint16 port,
-                                                VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory)
-{
-    ProxyClient* client = getConnection(ipadress, port, tcpNetworkFactory);
-    return ProxyClientPtr(client);
+    return ProxyClientPtr(proxyclient);
 }
 
 void ProxyPrivate::startConnection(ProxyClientPrivate *client)

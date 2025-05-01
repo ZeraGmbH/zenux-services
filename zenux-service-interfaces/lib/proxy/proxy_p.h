@@ -28,8 +28,6 @@ private slots:
     void onMessageReceived(VeinTcp::TcpPeer *peer, const QByteArray &message);
 private:
     ProxyPrivate(Proxy *parent);
-    ProxyClient* getConnection(QString ipadress, quint16 port,
-                               VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory); // TODO remove
     ProxyClientPtr getConnectionSmart(QString ipadress, quint16 port,
                                       VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory);
     void startConnection(ProxyClientPrivate *client); // TODO replace by smart variant
