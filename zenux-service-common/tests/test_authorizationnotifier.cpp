@@ -57,21 +57,21 @@ QString test_authorizationnotifier::getAuthoStatus()
 {
     ProtonetCommandPtr protoCmd = std::make_shared<ProtonetCommand>(nullptr, false, false, QByteArray(), 0, statusAuthorizationCommand);
 
-    cSCPIObject* scpiObject = m_pcbServerTest->getSCPIInterface()->getSCPIObject(statusAuthorizationCommand);
-    cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
+    ScpiObjectPtr scpiObject = m_pcbServerTest->getSCPIInterface()->getSCPIObject(statusAuthorizationCommand);
+    ScpiDelegate* scpiDelegate = static_cast<ScpiDelegate*>(scpiObject.get());
     scpiDelegate->executeSCPI(protoCmd);
     return protoCmd->m_sOutput;
 }
 
 void test_authorizationnotifier::findPCBServerScpiObject()
 {
-    cSCPIObject *scpiObject = m_pcbServerTest->getSCPIInterface()->getSCPIObject(registerNotifierCommand);
+    ScpiObjectPtr scpiObject = m_pcbServerTest->getSCPIInterface()->getSCPIObject(registerNotifierCommand);
     QVERIFY(scpiObject);
 }
 
 void test_authorizationnotifier::findStatusInterfaceScpiObject()
 {
-    cSCPIObject* scpiObject =  m_pcbServerTest->getSCPIInterface()->getSCPIObject(statusAuthorizationCommand);
+    ScpiObjectPtr scpiObject =  m_pcbServerTest->getSCPIInterface()->getSCPIObject(statusAuthorizationCommand);
     QVERIFY(scpiObject);
 }
 
@@ -85,8 +85,8 @@ void test_authorizationnotifier::getNotiferId()
     QString scpiAuthorizationQuery = QString("%1 %2;%3;").arg(registerNotifierCommand).arg(statusAuthorizationCommand).arg(NOTIFICATION_ID);
     ProtonetCommandPtr protoCmd = std::make_shared<ProtonetCommand>(nullptr, false, false, QByteArray(), 0, scpiAuthorizationQuery);
 
-    cSCPIObject* scpiObject = m_pcbServerTest->getSCPIInterface()->getSCPIObject(registerNotifierCommand);
-    cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
+    ScpiObjectPtr scpiObject = m_pcbServerTest->getSCPIInterface()->getSCPIObject(registerNotifierCommand);
+    ScpiDelegate* scpiDelegate = static_cast<ScpiDelegate*>(scpiObject.get());
     QSignalSpy spy(m_pcbServerTest.get(), &TestPcbServerNotifications::notificationSent);
     QVERIFY(scpiDelegate->executeSCPI(protoCmd));
 

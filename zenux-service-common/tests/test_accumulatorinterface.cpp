@@ -52,8 +52,8 @@ void test_accumulatorinterface::readAccuStatus()
 {
     TimeMachineForTest::getInstance()->processTimers(1500);
     ProtonetCommandPtr protoCmd = std::make_shared<ProtonetCommand>(nullptr, false, false, QByteArray(), 0, systemAccumulatorStatus);
-    cSCPIObject* scpiObject = m_scpiInterface->getSCPIObject(systemAccumulatorStatus);
-    cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
+    ScpiObjectPtr scpiObject = m_scpiInterface->getSCPIObject(systemAccumulatorStatus);
+    ScpiDelegate* scpiDelegate = static_cast<ScpiDelegate*>(scpiObject.get());
     scpiDelegate->executeSCPI(protoCmd);
     if(m_accuSettings->isAvailable())
         QCOMPARE(protoCmd->m_sOutput, "0");
@@ -65,8 +65,8 @@ void test_accumulatorinterface::readAccuStateOfCharge()
 {
     TimeMachineForTest::getInstance()->processTimers(1500);
     ProtonetCommandPtr protoCmd = std::make_shared<ProtonetCommand>(nullptr, false, false, QByteArray(), 0, systemAccumulatorSoc);
-    cSCPIObject* scpiObject = m_scpiInterface->getSCPIObject(systemAccumulatorSoc);
-    cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
+    ScpiObjectPtr scpiObject = m_scpiInterface->getSCPIObject(systemAccumulatorSoc);
+    ScpiDelegate* scpiDelegate = static_cast<ScpiDelegate*>(scpiObject.get());
     scpiDelegate->executeSCPI(protoCmd);
     if(m_accuSettings->isAvailable())
         QCOMPARE(protoCmd->m_sOutput, "37");

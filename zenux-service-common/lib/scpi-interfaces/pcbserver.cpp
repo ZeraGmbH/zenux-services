@@ -108,9 +108,9 @@ void PCBServer::onTelnetDataReceived()
                                                                     0,
                                                                     input);
     // peer = 0 means we are working on the scpi socket ....
-    cSCPIObject* scpiObject = m_scpiInterface->getSCPIObject(input);
+    ScpiObjectPtr scpiObject = m_scpiInterface->getSCPIObject(input);
     if(scpiObject) {
-        cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
+        ScpiDelegate* scpiDelegate = static_cast<ScpiDelegate*>(scpiObject.get());
         if (!scpiDelegate->executeSCPI(protoCmd)) {
             protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::nak];
             emit cmdExecutionDone(protoCmd);
@@ -146,7 +146,7 @@ void PCBServer::registerNotifier(ProtonetCommandPtr protoCmd)
     cSCPICommand cmd = protoCmd->m_sInput;
     if(cmd.isCommand(1)) { // SEC service receives registerNotifier with 1 param
         QString query = cmd.getParam(0);
-        cSCPIObject* scpiObject = m_scpiInterface->getSCPIObject(query);
+        ScpiObjectPtr scpiObject = m_scpiInterface->getSCPIObject(query);
         if(scpiObject) {
             NotificationStructWithValue notData;
             notData.netPeer = protoCmd->m_pPeer;
@@ -154,7 +154,7 @@ void PCBServer::registerNotifier(ProtonetCommandPtr protoCmd)
             connect(notData.netPeer, &VeinTcp::TcpPeer::sigConnectionClosed, this, &PCBServer::onNotifyPeerConnectionClosed);
             m_notifierRegisterNext.append(notData); // we wait for a notifier signal
 
-            cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
+            ScpiDelegate* scpiDelegate = static_cast<ScpiDelegate*>(scpiObject.get());
             ProtonetCommandPtr procmd = std::make_shared<ProtonetCommand>(*protoCmd);
             procmd->m_nSCPIType = SCPI::isQuery; // we need to set query type for proper execution
             procmd->m_bwithOutput = false;
@@ -171,10 +171,10 @@ void PCBServer::registerNotifier(ProtonetCommandPtr protoCmd)
     }
     else if(cmd.isCommand(2) || cmd.isCommand(3)) {// mt310s2/com5003 service receives registerNotifier with 2/3 params
         QString query = cmd.getParam(0);
-        cSCPIObject* scpiObject = m_scpiInterface->getSCPIObject(query);
+        ScpiObjectPtr scpiObject = m_scpiInterface->getSCPIObject(query);
         if(scpiObject) {
             connect( protoCmd->m_pPeer, &VeinTcp::TcpPeer::sigConnectionClosed, this, &PCBServer::onNotifyPeerConnectionClosed);
-            cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
+            ScpiDelegate* scpiDelegate = static_cast<ScpiDelegate*>(scpiObject.get());
             ProtonetCommandPtr procmd = std::make_shared<ProtonetCommand>(*protoCmd);
             procmd->m_bwithOutput = false;
             procmd->m_sInput = query;
@@ -247,10 +247,10 @@ void PCBServer::executeCommandProto(VeinTcp::TcpPeer* peer, std::shared_ptr<goog
                 quint32 messageNr = protobufCommand->messagenr();
                 ProtobufMessage::NetMessage::ScpiCommand scpiCmd = protobufCommand->scpi();
                 QString input = QString::fromStdString(scpiCmd.command()) +  " " + QString::fromStdString(scpiCmd.parameter());
-                cSCPIObject* scpiObject =  m_scpiInterface->getSCPIObject(input);
+                ScpiObjectPtr scpiObject =  m_scpiInterface->getSCPIObject(input);
                 if (scpiObject) {
                     ProtonetCommandPtr protoCmd = std::make_shared<ProtonetCommand>(peer, true, true, proxyConnectionId, messageNr, input, scpiObject->getType());
-                    cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
+                    ScpiDelegate* scpiDelegate = static_cast<ScpiDelegate*>(scpiObject.get());
                     if (!scpiDelegate->executeSCPI(protoCmd)) {
                         protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::nak];
                         emit cmdExecutionDone(protoCmd);

@@ -24,24 +24,24 @@ void test_justdata::cleanup()
 void test_justdata::findScpiObject()
 {
     QString scpiString = "sens:m0:8V:corr:offset:node:0?";
-    cSCPIObject* scpiObject = m_scpiInterface->getSCPIObject(scpiString);
+    ScpiObjectPtr scpiObject = m_scpiInterface->getSCPIObject(scpiString);
     QVERIFY(scpiObject != nullptr);
 }
 
 void test_justdata::nodeSetAndRead()
 {
     QString scpiStringWrite = "sens:m0:8V:corr:offset:node:0 0.1;0.02;";
-    cSCPIObject* scpiObjectWrite = m_scpiInterface->getSCPIObject(scpiStringWrite);
+    ScpiObjectPtr scpiObjectWrite = m_scpiInterface->getSCPIObject(scpiStringWrite);
     QVERIFY(scpiObjectWrite != nullptr);
     ProtonetCommandPtr protoCmdWrite = std::make_shared<ProtonetCommand>(nullptr, false, true, QByteArray(), 0, scpiStringWrite);
-    cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObjectWrite);
+    ScpiDelegate* scpiDelegate = static_cast<ScpiDelegate*>(scpiObjectWrite.get());
     QVERIFY(scpiDelegate->executeSCPI(protoCmdWrite));
 
     QString scpiStringRead = "sens:m0:8V:corr:offset:node:0?";
-    cSCPIObject* scpiObjectRead = m_scpiInterface->getSCPIObject(scpiStringWrite);
+    ScpiObjectPtr scpiObjectRead = m_scpiInterface->getSCPIObject(scpiStringWrite);
     QVERIFY(scpiObjectRead != nullptr);
     ProtonetCommandPtr protoCmdRead = std::make_shared<ProtonetCommand>(nullptr, false, true, QByteArray(), 0, scpiStringRead);
-    scpiDelegate = static_cast<cSCPIDelegate*>(scpiObjectRead);
+    scpiDelegate = static_cast<ScpiDelegate*>(scpiObjectRead.get());
     QVERIFY(scpiDelegate->executeSCPI(protoCmdRead));
     QCOMPARE((protoCmdRead->m_sOutput), "0.1000;0.0200;");
 }
@@ -49,17 +49,17 @@ void test_justdata::nodeSetAndRead()
 void test_justdata::coeffSetAndRead()
 {
     QString scpiStringWrite = "sens:m0:8V:corr:offset:coef:0 0.1234569;";
-    cSCPIObject* scpiObjectWrite = m_scpiInterface->getSCPIObject(scpiStringWrite);
+    ScpiObjectPtr scpiObjectWrite = m_scpiInterface->getSCPIObject(scpiStringWrite);
     QVERIFY(scpiObjectWrite != nullptr);
     ProtonetCommandPtr protoCmdWrite = std::make_shared<ProtonetCommand>(nullptr, false, true, QByteArray(), 0, scpiStringWrite);
-    cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObjectWrite);
+    ScpiDelegate* scpiDelegate = static_cast<ScpiDelegate*>(scpiObjectWrite.get());
     QVERIFY(scpiDelegate->executeSCPI(protoCmdWrite));
 
     QString scpiStringRead = "sens:m0:8V:corr:offset:coef:0?";
-    cSCPIObject* scpiObjectRead = m_scpiInterface->getSCPIObject(scpiStringWrite);
+    ScpiObjectPtr scpiObjectRead = m_scpiInterface->getSCPIObject(scpiStringWrite);
     QVERIFY(scpiObjectRead != nullptr);
     ProtonetCommandPtr protoCmdRead = std::make_shared<ProtonetCommand>(nullptr, false, true, QByteArray(), 0, scpiStringRead);
-    scpiDelegate = static_cast<cSCPIDelegate*>(scpiObjectRead);
+    scpiDelegate = static_cast<ScpiDelegate*>(scpiObjectRead.get());
     QVERIFY(scpiDelegate->executeSCPI(protoCmdRead));
     QCOMPARE((protoCmdRead->m_sOutput), "0.123457"); // no fixed digits (arg() defaults to 6 digit + rounding??)
 }
@@ -70,10 +70,10 @@ void test_justdata::nodeSetReject()
     justDataReject->initSCPIConnection("sens:m1:8V:corr:offset");
 
     QString scpiStringWrite = "sens:m1:8V:corr:offset:node:0 0.1;0.02;";
-    cSCPIObject* scpiObjectWrite = m_scpiInterface->getSCPIObject(scpiStringWrite);
+    ScpiObjectPtr scpiObjectWrite = m_scpiInterface->getSCPIObject(scpiStringWrite);
     QVERIFY(scpiObjectWrite != nullptr);
     ProtonetCommandPtr protoCmdWrite = std::make_shared<ProtonetCommand>(nullptr, false, true, QByteArray(), 0, scpiStringWrite);
-    cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObjectWrite);
+    ScpiDelegate* scpiDelegate = static_cast<ScpiDelegate*>(scpiObjectWrite.get());
     QVERIFY(scpiDelegate->executeSCPI(protoCmdWrite));
     QCOMPARE((protoCmdWrite->m_sOutput), ZSCPI::scpiAnswer[ZSCPI::erraut]);
 }
@@ -84,10 +84,10 @@ void test_justdata::coeffSetReject()
     justDataReject->initSCPIConnection("sens:m1:8V:corr:offset");
 
     QString scpiStringWrite = "sens:m1:8V:corr:offset:coef:0 0.1;";
-    cSCPIObject* scpiObjectWrite = m_scpiInterface->getSCPIObject(scpiStringWrite);
+    ScpiObjectPtr scpiObjectWrite = m_scpiInterface->getSCPIObject(scpiStringWrite);
     QVERIFY(scpiObjectWrite != nullptr);
     ProtonetCommandPtr protoCmdWrite = std::make_shared<ProtonetCommand>(nullptr, false, true, QByteArray(), 0, scpiStringWrite);
-    cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObjectWrite);
+    ScpiDelegate* scpiDelegate = static_cast<ScpiDelegate*>(scpiObjectWrite.get());
     QVERIFY(scpiDelegate->executeSCPI(protoCmdWrite));
     QCOMPARE((protoCmdWrite->m_sOutput), ZSCPI::scpiAnswer[ZSCPI::erraut]);
 }
@@ -98,10 +98,10 @@ void test_justdata::nodeSetFail()
     justDataReject->initSCPIConnection("sens:m1:8V:corr:offset");
 
     QString scpiStringWrite = "sens:m1:8V:corr:offset:node:0 0.1;0.02;";
-    cSCPIObject* scpiObjectWrite = m_scpiInterface->getSCPIObject(scpiStringWrite);
+    ScpiObjectPtr scpiObjectWrite = m_scpiInterface->getSCPIObject(scpiStringWrite);
     QVERIFY(scpiObjectWrite != nullptr);
     ProtonetCommandPtr protoCmdWrite = std::make_shared<ProtonetCommand>(nullptr, false, true, QByteArray(), 0, scpiStringWrite);
-    cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObjectWrite);
+    ScpiDelegate* scpiDelegate = static_cast<ScpiDelegate*>(scpiObjectWrite.get());
     QVERIFY(scpiDelegate->executeSCPI(protoCmdWrite));
     QCOMPARE((protoCmdWrite->m_sOutput), ZSCPI::scpiAnswer[ZSCPI::errexec]);
 }
@@ -112,10 +112,10 @@ void test_justdata::coeffSetFail()
     justDataReject->initSCPIConnection("sens:m1:8V:corr:offset");
 
     QString scpiStringWrite = "sens:m1:8V:corr:offset:coef:0 0.1;";
-    cSCPIObject* scpiObjectWrite = m_scpiInterface->getSCPIObject(scpiStringWrite);
+    ScpiObjectPtr scpiObjectWrite = m_scpiInterface->getSCPIObject(scpiStringWrite);
     QVERIFY(scpiObjectWrite != nullptr);
     ProtonetCommandPtr protoCmdWrite = std::make_shared<ProtonetCommand>(nullptr, false, true, QByteArray(), 0, scpiStringWrite);
-    cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObjectWrite);
+    ScpiDelegate* scpiDelegate = static_cast<ScpiDelegate*>(scpiObjectWrite.get());
     QVERIFY(scpiDelegate->executeSCPI(protoCmdWrite));
     QCOMPARE((protoCmdWrite->m_sOutput), ZSCPI::scpiAnswer[ZSCPI::errexec]);
 }
@@ -123,10 +123,10 @@ void test_justdata::coeffSetFail()
 void test_justdata::nodeSetOneCrap()
 {
     QString scpiStringWrite = "sens:m0:8V:corr:offset:node:0 0.01;bar;";
-    cSCPIObject* scpiObjectWrite = m_scpiInterface->getSCPIObject(scpiStringWrite);
+    ScpiObjectPtr scpiObjectWrite = m_scpiInterface->getSCPIObject(scpiStringWrite);
     QVERIFY(scpiObjectWrite != nullptr);
     ProtonetCommandPtr protoCmdWrite = std::make_shared<ProtonetCommand>(nullptr, false, true, QByteArray(), 0, scpiStringWrite);
-    cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObjectWrite);
+    ScpiDelegate* scpiDelegate = static_cast<ScpiDelegate*>(scpiObjectWrite.get());
     QVERIFY(scpiDelegate->executeSCPI(protoCmdWrite));
     QCOMPARE((protoCmdWrite->m_sOutput), ZSCPI::scpiAnswer[ZSCPI::errval]);
 }
@@ -134,10 +134,10 @@ void test_justdata::nodeSetOneCrap()
 void test_justdata::nodeSettwoCrap()
 {
     QString scpiStringWrite = "sens:m0:8V:corr:offset:node:0 foo;0.01;";
-    cSCPIObject* scpiObjectWrite = m_scpiInterface->getSCPIObject(scpiStringWrite);
+    ScpiObjectPtr scpiObjectWrite = m_scpiInterface->getSCPIObject(scpiStringWrite);
     QVERIFY(scpiObjectWrite != nullptr);
     ProtonetCommandPtr protoCmdWrite = std::make_shared<ProtonetCommand>(nullptr, false, true, QByteArray(), 0, scpiStringWrite);
-    cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObjectWrite);
+    ScpiDelegate* scpiDelegate = static_cast<ScpiDelegate*>(scpiObjectWrite.get());
     QVERIFY(scpiDelegate->executeSCPI(protoCmdWrite));
     QCOMPARE((protoCmdWrite->m_sOutput), ZSCPI::scpiAnswer[ZSCPI::errval]);
 }
@@ -145,10 +145,10 @@ void test_justdata::nodeSettwoCrap()
 void test_justdata::coefSetCrap()
 {
     QString scpiStringWrite = "sens:m0:8V:corr:offset:coef:0 foo;";
-    cSCPIObject* scpiObjectWrite = m_scpiInterface->getSCPIObject(scpiStringWrite);
+    ScpiObjectPtr scpiObjectWrite = m_scpiInterface->getSCPIObject(scpiStringWrite);
     QVERIFY(scpiObjectWrite != nullptr);
     ProtonetCommandPtr cmdWrite = std::make_shared<ProtonetCommand>(nullptr, false, true, QByteArray(), 0, scpiStringWrite);
-    cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObjectWrite);
+    ScpiDelegate* scpiDelegate = static_cast<ScpiDelegate*>(scpiObjectWrite.get());
     QVERIFY(scpiDelegate->executeSCPI(cmdWrite));
     QCOMPARE(cmdWrite->m_sOutput, ZSCPI::scpiAnswer[ZSCPI::errval]);
 }

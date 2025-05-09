@@ -41,10 +41,10 @@ void test_serverunregisternotifier::init()
     m_xmlConfigReader->loadXMLFile(params.xmlFile);
 }
 
-cSCPIDelegate *test_serverunregisternotifier::getDelegate(QString cmd)
+ScpiDelegate *test_serverunregisternotifier::getDelegate(QString cmd)
 {
-    cSCPIObject* scpiObject = m_pcbServerTest->getSCPIInterface()->getSCPIObject(cmd);
-    return static_cast<cSCPIDelegate*>(scpiObject);
+    ScpiObjectPtr scpiObject = m_pcbServerTest->getSCPIInterface()->getSCPIObject(cmd);
+    return static_cast<ScpiDelegate*>(scpiObject.get());
 }
 
 void test_serverunregisternotifier::oneScpiConnection()

@@ -28,7 +28,7 @@ void TestPcbServerNotifications::registerNotifier(QString inputCmd, int notifier
 {
     QString scpiAuthorizationQuery = QString("%1 %2;%3;").arg("SERVER:REGISTER").arg(inputCmd).arg(notifierId);
     ProtonetCommandPtr protoCmd = std::make_shared<ProtonetCommand>(nullptr, false, false, QByteArray(), 0, scpiAuthorizationQuery);
-    cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(m_scpiInterface->getSCPIObject("SERVER:REGISTER"));
+    ScpiDelegate* scpiDelegate = static_cast<ScpiDelegate*>(m_scpiInterface->getSCPIObject("SERVER:REGISTER").get());
     scpiDelegate->executeSCPI(protoCmd);
 }
 
@@ -36,8 +36,8 @@ void TestPcbServerNotifications::unregisterNotifier()
 {
     QString scpiAuthorizationQuery = QString("%1 %2;").arg("SERVER:UNREGISTER").arg("");
     ProtonetCommandPtr protoCmd = std::make_shared<ProtonetCommand>(nullptr, false, false, QByteArray(), 0, scpiAuthorizationQuery);
-    cSCPIObject* scpiObject = m_scpiInterface->getSCPIObject("SERVER:UNREGISTER");
-    cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
+    ScpiObjectPtr scpiObject = m_scpiInterface->getSCPIObject("SERVER:UNREGISTER");
+    ScpiDelegate* scpiDelegate = static_cast<ScpiDelegate*>(scpiObject.get());
     scpiDelegate->executeSCPI(protoCmd);
 }
 

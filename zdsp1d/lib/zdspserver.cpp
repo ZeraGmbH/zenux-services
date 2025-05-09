@@ -961,9 +961,9 @@ void ZDspServer::executeCommandProto(VeinTcp::TcpPeer *peer, std::shared_ptr<goo
 
             // Stolen from PCBServer::executeCommandProto ---
             QString scpiInput = QString::fromStdString(scpiCmd.command()) +  " " + QString::fromStdString(scpiCmd.parameter());
-            cSCPIObject* scpiObject = m_scpiInterface->getSCPIObject(scpiInput);
+            ScpiObjectPtr scpiObject = m_scpiInterface->getSCPIObject(scpiInput);
             if(scpiObject) {
-                cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
+                ScpiDelegate* scpiDelegate = static_cast<ScpiDelegate*>(scpiObject.get());
                 ProtonetCommandPtr protoCmd = std::make_shared<ProtonetCommand>(peer,
                                                                                 true,
                                                                                 true,
@@ -1011,11 +1011,11 @@ void ZDspServer::onTelnetDataReceived()
     input.remove('\n');
     qInfo("External SCPI command: %s", qPrintable(input));
 
-    cSCPIObject* scpiObject = m_scpiInterface->getSCPIObject(input);
+    ScpiObjectPtr scpiObject = m_scpiInterface->getSCPIObject(input);
     if(scpiObject) {
         m_zdspClientContainer.addClient(nullptr, telnetClientId, m_deviceNodeFactory);
         ProtonetCommandPtr protoCmd = std::make_shared<ProtonetCommand>(nullptr, false, true, telnetClientId, 0, input);
-        cSCPIDelegate* scpiDelegate = static_cast<cSCPIDelegate*>(scpiObject);
+        ScpiDelegate* scpiDelegate = static_cast<ScpiDelegate*>(scpiObject.get());
         if (!scpiDelegate->executeSCPI(protoCmd))
             protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::nak];
         qInfo("External SCPI response: %s", qPrintable(protoCmd->m_sOutput));

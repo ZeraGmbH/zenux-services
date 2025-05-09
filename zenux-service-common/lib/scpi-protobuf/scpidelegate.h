@@ -8,16 +8,22 @@
 #include <scpi.h>
 #include <QString>
 
-class cSCPIDelegate: public QObject, public cSCPIObject
+class ScpiDelegate: public QObject, public ScpiObject
 {
    Q_OBJECT
 public:
-    cSCPIDelegate(QString cmdParent,
-                  QString cmd,
-                  quint8 type,
-                  std::shared_ptr<cSCPI> scpiInterface,
-                  quint16 cmdCode,
-                  NotificationString *notificationString = nullptr);
+    static std::shared_ptr<ScpiDelegate> create(QString cmdParent,
+                                                QString cmd,
+                                                quint8 type,
+                                                std::shared_ptr<cSCPI> scpiInterface,
+                                                quint16 cmdCode,
+                                                NotificationString *notificationString = nullptr);
+    ScpiDelegate(QString cmdParent,
+                 QString cmd,
+                 quint8 type,
+                 quint16 cmdCode,
+                 NotificationString *notificationString);
+    ~ScpiDelegate();
     virtual bool executeSCPI(const QString&, QString&) override { return false; }
     virtual bool executeSCPI(ProtonetCommandPtr protoCmd);
     QString getCommand();
@@ -34,5 +40,7 @@ private:
     ScpiNotificationSubscriberHandler m_notificationsHandler;
     NotificationString *m_notificationString = nullptr;
 };
+
+typedef std::shared_ptr<ScpiDelegate> ScpiDelegatePtr;
 
 #endif // SCPIDELEGATE_H
