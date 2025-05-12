@@ -1,17 +1,18 @@
 #ifndef I2CEEPROMIOFACTORY_H
 #define I2CEEPROMIOFACTORY_H
 
-#include "i2cflashinterface.h"
+#include "eepromi2cdeviceinterface.h"
 #include <QString>
 #include <functional>
 
 class I2cEEpromIoFactory
 {
 public:
-    static I2cFlashInterfacePtrU create24LcTypeEeprom(QString devNode, short i2cAddr);
+    static I2cFlashInterfacePtrU create24LcTypeEeprom(QString devNode, short i2cAddr, int byteCapacity);
 protected:
-    static const std::function<I2cFlashInterfacePtrU(QString devNode, short i2cAddr)> m_createFunctionDefault;
-    static std::function<I2cFlashInterfacePtrU(QString devNode, short i2cAddr)> m_createFunction;
+    typedef std::function<I2cFlashInterfacePtrU(QString devNode, short i2cAddr, int byteCapacity)> Creator;
+    static const Creator m_createFunctionDefault;
+    static Creator m_createFunction;
 };
 
 #endif // I2CEEPROMIOFACTORY_H

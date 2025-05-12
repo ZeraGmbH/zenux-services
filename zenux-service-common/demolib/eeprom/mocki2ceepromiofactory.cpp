@@ -3,8 +3,8 @@
 
 void MockI2cEEpromIoFactory::enableMock()
 {
-    m_createFunction = [](QString devNode, short i2cAddr) {
-        return std::make_unique<MockEEprom24LC>(devNode, i2cAddr);
+    m_createFunction = [](QString devNode, short i2cAddr, int byteCapacity) {
+        return std::make_unique<MockEEprom24LC>(devNode, i2cAddr, byteCapacity);
     };
 }
 

@@ -1,14 +1,13 @@
 #include "mockeeprom24lc.h"
 #include <QFile>
 
-static constexpr int sizeFlash = 32768;
-
 QHash<QString, QHash<short, QByteArray>> MockEEprom24LC::m_flashData;
 QHash<QString, QHash<short, int>>        MockEEprom24LC::m_flashDataReadCounts;
 QHash<QString, QHash<short, int>>        MockEEprom24LC::m_flashDataWriteCounts;
 QHash<QString, QHash<short, bool>>       MockEEprom24LC::m_returnReducedDataSizeOnRead;
 
-MockEEprom24LC::MockEEprom24LC(QString devNode, short i2cAddr) :
+MockEEprom24LC::MockEEprom24LC(QString devNode, short i2cAddr, int byteCapacity) :
+    EepromI2cDeviceInterface(byteCapacity),
     m_devNode(devNode),
     m_i2cAddr(i2cAddr)
 {
@@ -16,15 +15,15 @@ MockEEprom24LC::MockEEprom24LC(QString devNode, short i2cAddr) :
         return;
     if(m_flashData[devNode].contains(i2cAddr))
         return;
-    doReset(sizeFlash);
+    doReset(getByteSize());
 }
 
 int MockEEprom24LC::WriteData(char *data, ushort count, ushort adr)
 {
     if(adr != 0)
         qFatal("Address other than 0 is not yet supported!");
-    if(count > sizeFlash)
-        qFatal("Cannot write data of length %i / max is %i", count, sizeFlash);
+    if(count > getByteSize())
+        qFatal("Cannot write data of length %i / max is %i", count, getByteSize());
 
     doReset(count);
     QByteArray &flashEntry = m_flashData[m_devNode][m_i2cAddr];
@@ -38,8 +37,8 @@ int MockEEprom24LC::ReadData(char *data, ushort count, ushort adr)
 {
     if(adr != 0)
         qFatal("Address other than 0 is not yet supported!");
-    if(count > sizeFlash)
-        qFatal("Cannot read data of length %i / max is %i", count, sizeFlash);
+    if(count > getByteSize())
+        qFatal("Cannot read data of length %i / max is %i", count, getByteSize());
 
     const QByteArray flashEntry = m_flashData[m_devNode][m_i2cAddr];
     ushort reducedCount = std::min(count, ushort(flashEntry.size()));
@@ -53,13 +52,7 @@ int MockEEprom24LC::ReadData(char *data, ushort count, ushort adr)
 int MockEEprom24LC::Reset()
 {
     doReset(0);
-    return size();
-}
-
-int MockEEprom24LC::size()
-{
-    // Current (valid) assumption: All devices have 24LC256 with 32kBytes
-    return sizeFlash;
+    return getByteSize();
 }
 
 void MockEEprom24LC::returnReduceCountOnErrorRead()

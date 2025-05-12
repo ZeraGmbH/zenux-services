@@ -7,9 +7,11 @@
 
 QString AdjustmentEepromReadWrite::m_cachePath = "/var/cache/zenux-services";
 
-AdjustmentEepromReadWrite::AdjustmentEepromReadWrite(QString devnode, quint8 i2cadr, I2cMuxerInterface::Ptr i2cMuxer) :
+AdjustmentEepromReadWrite::AdjustmentEepromReadWrite(QString devnode, quint8 i2cadr, int byteCapacity,
+                                                     I2cMuxerInterface::Ptr i2cMuxer) :
     m_sDeviceNode(devnode),
     m_i2cAdr(i2cadr),
+    m_byteCapacity(byteCapacity),
     m_i2cMuxer(i2cMuxer)
 {
 }
@@ -39,7 +41,7 @@ bool AdjustmentEepromReadWrite::readDataCached(QString cacheFileName)
         return true;
     }
     m_adjDataReadIsValid = false;
-    I2cFlashInterfacePtrU memIo = I2cEEpromIoFactory::create24LcTypeEeprom(m_sDeviceNode, m_i2cAdr);
+    I2cFlashInterfacePtrU memIo = I2cEEpromIoFactory::create24LcTypeEeprom(m_sDeviceNode, m_i2cAdr, m_byteCapacity);
     QByteArray ba;
     quint32 sizeRead;
     bool readOk = false;
@@ -74,15 +76,15 @@ bool AdjustmentEepromReadWrite::resetData()
 {
     m_adjDataReadIsValid = false;
     I2cMuxerScopedOnOff i2cMuxOnOff(m_i2cMuxer);
-    I2cFlashInterfacePtrU memIo = I2cEEpromIoFactory::create24LcTypeEeprom(m_sDeviceNode, m_i2cAdr);
-    return memIo->Reset() == memIo->size();
+    I2cFlashInterfacePtrU memIo = I2cEEpromIoFactory::create24LcTypeEeprom(m_sDeviceNode, m_i2cAdr, m_byteCapacity);
+    return memIo->Reset() == memIo->getByteSize();
 }
 
 // Current (valid) assumption: All devices have 24LC256 with 32kBytes
 quint32 AdjustmentEepromReadWrite::getMaxSize()
 {
-    I2cFlashInterfacePtrU memIo = I2cEEpromIoFactory::create24LcTypeEeprom(m_sDeviceNode, m_i2cAdr);
-    return memIo->size();
+    I2cFlashInterfacePtrU memIo = I2cEEpromIoFactory::create24LcTypeEeprom(m_sDeviceNode, m_i2cAdr, m_byteCapacity);
+    return memIo->getByteSize();
 }
 
 QByteArray AdjustmentEepromReadWrite::getData()
@@ -100,7 +102,7 @@ quint16 AdjustmentEepromReadWrite::getChecksum()
     return m_checksum;
 }
 
-bool AdjustmentEepromReadWrite::readSizeAndChecksum(I2cFlashInterface *memInterface, quint32 &sizeRead)
+bool AdjustmentEepromReadWrite::readSizeAndChecksum(EepromI2cDeviceInterface *memInterface, quint32 &sizeRead)
 {
     const int headerLen = sizeof(sizeRead) + sizeof(m_checksum);
     QByteArray ba;
@@ -113,7 +115,7 @@ bool AdjustmentEepromReadWrite::readSizeAndChecksum(I2cFlashInterface *memInterf
     QDataStream bastream(&ba, QIODevice::ReadOnly);
     bastream.setVersion(QDataStream::Qt_5_4);
     bastream >> sizeRead >> m_checksum;
-    quint32 memSize = memInterface->size();
+    quint32 memSize = memInterface->getByteSize();
     if(sizeRead > memSize) {
         qWarning("EEPROM size wanted: %u is larger than available %u - fresh EEPROM?", sizeRead, memSize);
         return false;
@@ -121,14 +123,14 @@ bool AdjustmentEepromReadWrite::readSizeAndChecksum(I2cFlashInterface *memInterf
     return true;
 }
 
-bool AdjustmentEepromReadWrite::readAllAndValidateFromChip(I2cFlashInterface *memInterface, QByteArray &ba, quint32 size)
+bool AdjustmentEepromReadWrite::readAllAndValidateFromChip(EepromI2cDeviceInterface *memInterface, QByteArray &ba, quint32 size)
 {
     qInfo("Read adjustment data from chip...");
     ba.resize(size);
     quint32 sizeRead = memInterface->ReadData(ba.data(), size, 0);
     if (sizeRead < size) {
         qCritical("Error on chip adjustment data read: wanted: %i / available %i / read %i",
-                  size, memInterface->size(), sizeRead);
+                  size, memInterface->getByteSize(), sizeRead);
         return false;
     }
     I2cMuxerScopedOnOff i2cMuxOnOff(m_i2cMuxer);
@@ -178,7 +180,7 @@ bool AdjustmentEepromReadWrite::writeRawDataToChip(QByteArray &ba)
 {
     int count = ba.size();
     I2cMuxerScopedOnOff i2cMuxOnOff(m_i2cMuxer);
-    I2cFlashInterfacePtrU memIo = I2cEEpromIoFactory::create24LcTypeEeprom(m_sDeviceNode, m_i2cAdr);
+    I2cFlashInterfacePtrU memIo = I2cEEpromIoFactory::create24LcTypeEeprom(m_sDeviceNode, m_i2cAdr, m_byteCapacity);
     int written = memIo->WriteData(ba.data(), count, 0);
     return count == written;
 }

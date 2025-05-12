@@ -29,12 +29,13 @@ SenseInterfaceCommon::SenseInterfaceCommon(std::shared_ptr<cSCPI> scpiInterface,
                                            AbstractFactoryI2cCtrlPtr ctrlFactory,
                                            QHash<QString, int> availSenseModesHash) :
     cResource(scpiInterface),
-    m_systemInfo(systemInfo),
     m_ctrlFactory(ctrlFactory),
     m_availSenseModesHash(availSenseModesHash),
     m_adjReadWrite(i2cSettings->getDeviceNode(),
                    i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress),
-                   I2cMultiplexerFactory::createNullMuxer())
+                   EepromI2cDeviceInterface::capacity24LC256,
+                   I2cMultiplexerFactory::createNullMuxer()),
+    m_systemInfo(systemInfo)
 {
     importAdjData();
     m_channelList = rangeFactory->createChannelAndRanges(senseSettings,

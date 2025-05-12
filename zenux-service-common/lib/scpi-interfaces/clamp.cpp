@@ -27,7 +27,7 @@ enum Commands
 
 cClamp::cClamp() :
     ScpiConnection(nullptr), // TODO get rid of dummy clamp
-    m_adjReadWrite("", 0, nullptr)
+    m_adjReadWrite("", 0, EepromI2cDeviceInterface::capacity24LC256, nullptr)
 {
 }
 
@@ -46,6 +46,7 @@ cClamp::cClamp(PCBServer *server,
     m_nCtrlChannelSecondary(ctrlChannelSecondary),
     m_adjReadWrite(i2cSettings->getDeviceNode(),
                    i2cSettings->getI2CAdress(i2cSettings::clampFlashI2cAddress),
+                   EepromI2cDeviceInterface::capacity24LC256,
                    i2cMuxer)
 {
     if(type == undefined)
