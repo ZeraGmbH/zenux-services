@@ -8,7 +8,7 @@
 class I2cEEpromIoFactory
 {
 public:
-    static I2cFlashInterfacePtrU create24LC256(QString devNode, short i2cAddr);
+    static I2cFlashInterfacePtrU create24LcTypeEeprom(QString devNode, short i2cAddr);
 protected:
     static const std::function<I2cFlashInterfacePtrU(QString devNode, short i2cAddr)> m_createFunctionDefault;
     static std::function<I2cFlashInterfacePtrU(QString devNode, short i2cAddr)> m_createFunction;

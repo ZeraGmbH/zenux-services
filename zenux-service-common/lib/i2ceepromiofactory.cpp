@@ -7,7 +7,7 @@ const std::function<I2cFlashInterfacePtrU(QString devNode, short i2cAddr)> I2cEE
 
 std::function<I2cFlashInterfacePtrU(QString devNode, short i2cAddr)> I2cEEpromIoFactory::m_createFunction = m_createFunctionDefault;
 
-I2cFlashInterfacePtrU I2cEEpromIoFactory::create24LC256(QString devNode, short i2cAddr)
+I2cFlashInterfacePtrU I2cEEpromIoFactory::create24LcTypeEeprom(QString devNode, short i2cAddr)
 {
     return m_createFunction(devNode, i2cAddr);
 }
