@@ -74,15 +74,15 @@ bool AdjustmentEepromReadWrite::resetData()
 {
     m_adjDataReadIsValid = false;
     I2cMuxerScopedOnOff i2cMuxOnOff(m_i2cMuxer);
-    I2cFlashInterfacePtrU flashIo = I2cEEpromIoFactory::create24LcTypeEeprom(m_sDeviceNode, m_i2cAdr);
-    return flashIo->Reset() == flashIo->size();
+    I2cFlashInterfacePtrU memIo = I2cEEpromIoFactory::create24LcTypeEeprom(m_sDeviceNode, m_i2cAdr);
+    return memIo->Reset() == memIo->size();
 }
 
 // Current (valid) assumption: All devices have 24LC256 with 32kBytes
 quint32 AdjustmentEepromReadWrite::getMaxSize()
 {
-    I2cFlashInterfacePtrU flashIo = I2cEEpromIoFactory::create24LcTypeEeprom(m_sDeviceNode, m_i2cAdr);
-    return flashIo->size();
+    I2cFlashInterfacePtrU memIo = I2cEEpromIoFactory::create24LcTypeEeprom(m_sDeviceNode, m_i2cAdr);
+    return memIo->size();
 }
 
 QByteArray AdjustmentEepromReadWrite::getData()
@@ -178,8 +178,8 @@ bool AdjustmentEepromReadWrite::writeRawDataToChip(QByteArray &ba)
 {
     int count = ba.size();
     I2cMuxerScopedOnOff i2cMuxOnOff(m_i2cMuxer);
-    I2cFlashInterfacePtrU flashIo = I2cEEpromIoFactory::create24LcTypeEeprom(m_sDeviceNode, m_i2cAdr);
-    int written = flashIo->WriteData(ba.data(), count, 0);
+    I2cFlashInterfacePtrU memIo = I2cEEpromIoFactory::create24LcTypeEeprom(m_sDeviceNode, m_i2cAdr);
+    int written = memIo->WriteData(ba.data(), count, 0);
     return count == written;
 }
 
