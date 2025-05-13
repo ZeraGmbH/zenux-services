@@ -33,7 +33,7 @@ SenseInterfaceCommon::SenseInterfaceCommon(std::shared_ptr<cSCPI> scpiInterface,
     m_availSenseModesHash(availSenseModesHash),
     m_adjReadWrite(i2cSettings->getDeviceNode(),
                    i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress),
-                   EepromI2cDeviceInterface::capacity24LC256,
+                   i2cSettings->getEepromByteSize(),
                    I2cMultiplexerFactory::createNullMuxer()),
     m_systemInfo(systemInfo)
 {

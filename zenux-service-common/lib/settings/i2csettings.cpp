@@ -1,4 +1,5 @@
 #include "i2csettings.h"
+#include <eepromi2cdeviceinterface.h>
 #include <xmlconfigreader.h>
 
 I2cSettings::I2cSettings(Zera::XMLConfig::cReader *xmlread)
@@ -51,6 +52,11 @@ quint8 I2cSettings::getI2CAdress(i2cSettings::member member)
 QString& I2cSettings::getDeviceNode()
 {
     return m_sDeviceNode;
+}
+
+int I2cSettings::getEepromByteSize()
+{
+    return EepromI2cDeviceInterface::capacity24LC256;
 }
 
 void I2cSettings::configXMLInfo(QString key)

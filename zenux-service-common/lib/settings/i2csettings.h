@@ -38,6 +38,7 @@ public:
     int getDebugLevel();
     quint8 getI2CAdress(i2cSettings::member member);
     QString& getDeviceNode();
+    int getEepromByteSize();
 public slots:
     virtual void configXMLInfo(QString key);
 protected:
