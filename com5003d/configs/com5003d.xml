@@ -23,6 +23,7 @@
             <atmel>33</atmel>
             <flash>80</flash>
         </adress>
+        <eeprom_capacity>32768</eeprom_capacity>
     </i2c>
     <fpga>
         <ctrl_device_node>/dev/zFPGA1reg</ctrl_device_node>

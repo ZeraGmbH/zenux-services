@@ -28,6 +28,7 @@
             <flash>80</flash>
             <clampflash>81</clampflash>
         </adress>
+        <eeprom_capacity>65536</eeprom_capacity>
     </i2c>
     <fpga>
         <ctrl_device_node>/dev/zFPGA1reg</ctrl_device_node>

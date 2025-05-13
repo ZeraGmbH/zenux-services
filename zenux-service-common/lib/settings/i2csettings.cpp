@@ -8,6 +8,7 @@ I2cSettings::I2cSettings(Zera::XMLConfig::cReader *xmlread)
 
     m_ConfigXMLMap["serviceconfig:connectivity:i2c:debuglevel"] = i2cSettings::SetDebugLevel;
     m_ConfigXMLMap["serviceconfig:connectivity:i2c:device:node"] = i2cSettings::SetDevNode;
+    m_ConfigXMLMap["serviceconfig:connectivity:i2c:eeprom_capacity"] = i2cSettings::SetEepromCapacity;
     m_ConfigXMLMap["serviceconfig:connectivity:i2c:adress:atmel"] = i2cSettings::SetAtmelAdr;
     m_ConfigXMLMap["serviceconfig:connectivity:i2c:adress:atmelsys"] = i2cSettings::SetAtmelSysAdr;
     m_ConfigXMLMap["serviceconfig:connectivity:i2c:adress:atmelemob"] = i2cSettings::SetAtmelEmob;
@@ -56,7 +57,7 @@ QString& I2cSettings::getDeviceNode()
 
 int I2cSettings::getEepromByteSize()
 {
-    return EepromI2cDeviceInterface::capacity24LC256;
+    return m_eepromCapacity;
 }
 
 void I2cSettings::configXMLInfo(QString key)
@@ -69,6 +70,9 @@ void I2cSettings::configXMLInfo(QString key)
             break;
         case i2cSettings::SetDevNode:
             m_sDeviceNode = m_pXMLReader->getValue(key);
+            break;
+        case i2cSettings::SetEepromCapacity:
+            m_eepromCapacity = m_pXMLReader->getValue(key).toInt();
             break;
         case i2cSettings::SetAtmelSysAdr:
             m_nAtmelSysAdr = m_pXMLReader->getValue(key).toInt();

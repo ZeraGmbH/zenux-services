@@ -20,6 +20,7 @@ enum configstate
 {
     SetDebugLevel,
     SetDevNode,
+    SetEepromCapacity,
 
     SetAtmelAdr,
     SetAtmelSysAdr,
@@ -44,6 +45,7 @@ public slots:
 protected:
     int m_debugLevel = 1;
     QString m_sDeviceNode;
+    int m_eepromCapacity = 0;
     quint8 m_nAtmelAdr;
     quint8 m_nAtmelSysAdr;
     quint8 m_nAtmelEmob;

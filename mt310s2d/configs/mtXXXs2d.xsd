@@ -130,6 +130,7 @@
                             </xs:sequence>
                         </xs:complexType>
                     </xs:element>
+                    <xs:element name="eeprom_capacity" type="xs:integer"/>
                 </xs:sequence>
             </xs:complexType>
         </xs:element>
