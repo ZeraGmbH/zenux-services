@@ -6,7 +6,7 @@
 
 namespace i2cSettings
 {
-enum member
+enum I2cDeviceAdrTypes
 {
     relaisCtrlI2cAddress,
     sysCtrlI2cAddress,
@@ -36,7 +36,7 @@ class I2cSettings : public XMLSettings
 public:
     I2cSettings(Zera::XMLConfig::cReader *xmlread);
     int getDebugLevel();
-    quint8 getI2CAdress(i2cSettings::member member);
+    quint8 getI2CAdress(i2cSettings::I2cDeviceAdrTypes deviceType);
     QString& getDeviceNode();
     int getEepromByteSize();
 public slots:

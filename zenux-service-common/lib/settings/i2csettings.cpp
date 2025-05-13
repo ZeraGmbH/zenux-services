@@ -21,10 +21,10 @@ int I2cSettings::getDebugLevel()
     return m_debugLevel;
 }
 
-quint8 I2cSettings::getI2CAdress(i2cSettings::member member)
+quint8 I2cSettings::getI2CAdress(i2cSettings::I2cDeviceAdrTypes deviceType)
 {
     quint8 r;
-    switch (member)
+    switch (deviceType)
     {
     case i2cSettings::relaisCtrlI2cAddress:
         r = m_nAtmelAdr;
