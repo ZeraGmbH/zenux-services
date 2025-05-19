@@ -7090,6 +7090,7 @@
     <CONSTANT ScpiPath="SOURCE:FO3:CONSTANT" Type="Query,Command+Par"/>
     <POWTYPE ScpiPath="SOURCE:FO3:POWTYPE" Type="Query,Command+Par"/>
    </FO3>
+   <CAPABILITIES ScpiPath="SOURCE:CAPABILITIES" Type="Query"/>
   </SOURCE>
   <FRQINPUT Type="Model,Node">
    <VERSION ScpiPath="FRQINPUT:VERSION" Type="Query"/>

@@ -181,6 +181,10 @@
         </hk0>
     </hkey>
 
+    <sourcecontrol>
+        <capabilfile>:/source-caps-mt581s2.json</capabilfile>
+    </sourcecontrol>
+
 </resource>
 
 <interface>

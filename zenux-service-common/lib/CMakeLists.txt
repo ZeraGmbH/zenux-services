@@ -28,9 +28,13 @@ file(GLOB SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/settings/*.cpp
     )
 
+file(GLOB RESOURCES
+)
+
 add_library(zenuxservicecommon SHARED
     ${HEADERS}
     ${SOURCES}
+    scpi-interfaces/resources/scpi_interfaces.qrc
 )
 
 target_link_libraries(zenuxservicecommon

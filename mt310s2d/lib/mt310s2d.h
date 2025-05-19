@@ -15,6 +15,8 @@
 #include "accumulatorsettings.h"
 #include "accumulatorinterface.h"
 #include "abstractctrlheartbeatwait.h"
+#include "sourcecontrolsettings.h"
+#include "sourcecontrolinterface.h"
 #include <QStateMachine>
 #include <QTimer>
 #include <timertemplateqt.h>
@@ -85,6 +87,7 @@ private:
     FOutSettings* m_foutSettings = nullptr;
     // Mt310s2 specifics
     AccumulatorSettings* m_accumulatorSettings = nullptr;
+    SourceControlSettings* m_sourceControlSettings = nullptr;
 
     Mt310s2SystemInterface* m_pSystemInterface = nullptr;
     SenseInterfaceCommon* m_pSenseInterface = nullptr;
@@ -96,6 +99,7 @@ private:
     RMConnection* m_pRMConnection = nullptr;
     cClampInterface* m_pClampInterface = nullptr;
     AccumulatorInterface* m_accumulatorInterface = nullptr;
+    SourceControlInterface* m_sourceControlInterface = nullptr;
     int m_pendingResources = 0;
 
     quint16 m_atmelInterruptMask = 0;

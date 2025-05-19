@@ -85,6 +85,7 @@ cMT310S2dServer::~cMT310S2dServer()
     delete m_finSettings;
     delete m_pSCHeadSettings;
     delete m_accumulatorSettings;
+    delete m_sourceControlSettings;
     delete m_pStatusInterface;
     delete m_pSystemInterface;
     delete m_pSenseInterface;
@@ -140,6 +141,8 @@ void cMT310S2dServer::doConfiguration()
             connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_hkInSettings, &HkInSettings::configXMLInfo);
             m_accumulatorSettings = new AccumulatorSettings(&m_xmlConfigReader);
             connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_accumulatorSettings, &AccumulatorSettings::configXMLInfo);
+            m_sourceControlSettings = new SourceControlSettings(&m_xmlConfigReader);
+            connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_sourceControlSettings, &SourceControlSettings::configXMLInfo);
 
             if (m_xmlConfigReader.loadXMLFile(params.xmlFile))
                 setupMicroControllerIo();
@@ -206,6 +209,7 @@ void cMT310S2dServer::earlySetup(AbstractChannelRangeFactoryPtr channelRangeFact
     m_scpiConnectionList.append(m_accumulatorInterface = new AccumulatorInterface(m_scpiInterface, m_accumulatorSettings, m_ctrlFactory));
     connect(m_accumulatorInterface, &AccumulatorInterface::sigAccumulatorStatusChange,
             m_pSystemInterface, &Mt310s2SystemInterface::onAccuStatusChanged);
+    m_scpiConnectionList.append(m_sourceControlInterface = new SourceControlInterface(m_scpiInterface, m_sourceControlSettings, m_ctrlFactory));
 
     m_resourceList.append(m_pSenseInterface); // all our resources
     m_resourceList.append(m_pSamplingInterface);

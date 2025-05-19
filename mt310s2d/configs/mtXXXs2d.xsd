@@ -277,6 +277,15 @@
                                 </xs:sequence>
                             </xs:complexType>
                         </xs:element>
+
+                        <xs:element name="sourcecontrol" minOccurs="0" maxOccurs="1">
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:element name="capabilfile" type="xs:string"/>
+                                </xs:sequence>
+                            </xs:complexType>
+                        </xs:element>
+
                     </xs:sequence>
                 </xs:complexType>
             </xs:element>
