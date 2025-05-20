@@ -1,5 +1,6 @@
 #include "sourcecontrolinterface.h"
-#include <QFile>
+#include "jsonstructureloader.h"
+#include <QJsonDocument>
 
 SourceControlInterface::SourceControlInterface(std::shared_ptr<cSCPI> scpiInterface,
                                                SourceControlSettings *settings,
@@ -18,13 +19,12 @@ enum sourceCommands {
 void SourceControlInterface::initSCPIConnection(QString leadingNodes)
 {
     if (!m_sourceCapabilityFile.isEmpty()) {
-        QFile file(m_sourceCapabilityFile);
-        if (file.open(QFile::ReadOnly)) {
-            m_sourceCapabilities = file.readAll();
-            if (!m_sourceCapabilities.isEmpty()) {
-                ensureTrailingColonOnNonEmptyParentNodes(leadingNodes);
-                addDelegate(QString("%1SOURCE").arg(leadingNodes),"CAPABILITIES",SCPI::isQuery, m_scpiInterface, sourceCommands::cmdCapabilites);
-            }
+        QJsonObject json = JsonStructureLoader::loadJsonStructureFromFile(m_sourceCapabilityFile);
+        if (!json.isEmpty()) {
+            QJsonDocument doc(json);
+            m_sourceCapabilities = doc.toJson();
+            ensureTrailingColonOnNonEmptyParentNodes(leadingNodes);
+            addDelegate(QString("%1SOURCE").arg(leadingNodes),"CAPABILITIES",SCPI::isQuery, m_scpiInterface, sourceCommands::cmdCapabilites);
         }
     }
 }
