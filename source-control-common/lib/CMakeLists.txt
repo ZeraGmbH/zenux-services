@@ -25,19 +25,19 @@ add_custom_target(source-deviceinfo-dont-forget-qrc ALL
     COMMAND ${JSONLINT} ${SOURCE_DEVINFO}
     )
 
-# check if all configs made it into resource.qrc
+# check if all configs made it into source_device_info.qrc
 foreach(sourceconfigfile ${SOURCE_DEVINFO})
     get_filename_component(filename ${sourceconfigfile} NAME)
-    file(STRINGS ${CMAKE_CURRENT_SOURCE_DIR}/resource.qrc lines REGEX "${filename}")
+    file(STRINGS ${CMAKE_CURRENT_SOURCE_DIR}/source_device_info.qrc lines REGEX "${filename}")
     if(NOT lines)
-        message(FATAL_ERROR "${filename} was not added to resource.qrc - source will not work!!")
+        message(FATAL_ERROR "${filename} was not added to source_device_info.qrc - source will not work!!")
     endif()
 endforeach()
 
 add_library(source-control-common-lib SHARED
     ${HEADERS}
     ${SOURCES}
-    resource.qrc
+    source_device_info.qrc
     )
 
 target_include_directories(source-control-common-lib

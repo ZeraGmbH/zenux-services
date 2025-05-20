@@ -34,6 +34,7 @@ QString JsonFilenames::getJsonStatePath(QString deviceName, QString deviceVersio
 
 QString JsonFilenames::getJsonFileName(SupportedSourceTypes type)
 {
+    Q_INIT_RESOURCE(source_device_info);
     QString fileName;
     switch(type) {
     case SOURCE_MT_COMMON:
