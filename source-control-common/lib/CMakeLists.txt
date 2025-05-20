@@ -34,7 +34,7 @@ foreach(sourceconfigfile ${SOURCE_DEVINFO})
     endif()
 endforeach()
 
-add_library(source-control-common-lib STATIC
+add_library(source-control-common-lib SHARED
     ${HEADERS}
     ${SOURCES}
     resource.qrc
