@@ -14,6 +14,5 @@ void test_config_load_sec1000::fileFound()
 void test_config_load_sec1000::fileLoaded()
 {
     Zera::XMLConfig::cReader configReader;
-    QVERIFY(configReader.loadSchema(QStringLiteral(CONFIG_SOURCES_SEC1000D) + "/" + "sec1000d.xsd"));
     QVERIFY(configReader.loadXMLFile(QStringLiteral(CONFIG_SOURCES_SEC1000D) + "/" + "sec1000d.xml"));
 }

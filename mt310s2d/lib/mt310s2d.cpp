@@ -128,31 +128,25 @@ void cMT310S2dServer::doConfiguration()
         connect(m_pNotifier, &QSocketNotifier::activated, this, &cMT310S2dServer::MTIntHandler);
 
         ServerParams params = m_settings->getServerParams();
-        if (m_xmlConfigReader.loadSchema(params.xsdFile)) {
-            m_pSenseSettings = new cSenseSettings(&m_xmlConfigReader, 8);
-            connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_pSenseSettings, &cSenseSettings::configXMLInfo);
-            m_foutSettings = new FOutSettings(&m_xmlConfigReader);
-            connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_foutSettings, &FOutSettings::configXMLInfo);
-            m_finSettings = new FInSettings(&m_xmlConfigReader);
-            connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_finSettings, &FInSettings::configXMLInfo);
-            m_pSCHeadSettings = new ScInSettings(&m_xmlConfigReader);
-            connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_pSCHeadSettings, &ScInSettings::configXMLInfo);
-            m_hkInSettings = new HkInSettings(&m_xmlConfigReader);
-            connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_hkInSettings, &HkInSettings::configXMLInfo);
-            m_accumulatorSettings = new AccumulatorSettings(&m_xmlConfigReader);
-            connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_accumulatorSettings, &AccumulatorSettings::configXMLInfo);
-            m_sourceControlSettings = new SourceControlSettings(&m_xmlConfigReader);
-            connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_sourceControlSettings, &SourceControlSettings::configXMLInfo);
+        m_pSenseSettings = new cSenseSettings(&m_xmlConfigReader, 8);
+        connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_pSenseSettings, &cSenseSettings::configXMLInfo);
+        m_foutSettings = new FOutSettings(&m_xmlConfigReader);
+        connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_foutSettings, &FOutSettings::configXMLInfo);
+        m_finSettings = new FInSettings(&m_xmlConfigReader);
+        connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_finSettings, &FInSettings::configXMLInfo);
+        m_pSCHeadSettings = new ScInSettings(&m_xmlConfigReader);
+        connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_pSCHeadSettings, &ScInSettings::configXMLInfo);
+        m_hkInSettings = new HkInSettings(&m_xmlConfigReader);
+        connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_hkInSettings, &HkInSettings::configXMLInfo);
+        m_accumulatorSettings = new AccumulatorSettings(&m_xmlConfigReader);
+        connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_accumulatorSettings, &AccumulatorSettings::configXMLInfo);
+        m_sourceControlSettings = new SourceControlSettings(&m_xmlConfigReader);
+        connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_sourceControlSettings, &SourceControlSettings::configXMLInfo);
 
-            if (m_xmlConfigReader.loadXMLFile(params.xmlFile))
-                setupMicroControllerIo();
-            else {
-                qCritical("Abort: Could not open xml file '%s", qPrintable(params.xmlFile));
-                emit abortInit();
-            }
-        }
+        if (m_xmlConfigReader.loadXMLFile(params.xmlFile))
+            setupMicroControllerIo();
         else {
-            qCritical("Abort: Could not open xsd file '%s", qPrintable(params.xsdFile));
+            qCritical("Abort: Could not open xml file '%s", qPrintable(params.xmlFile));
             emit abortInit();
         }
     }

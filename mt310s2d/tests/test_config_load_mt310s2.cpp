@@ -26,7 +26,6 @@ void test_config_load_mt310s2::fileLoaded()
     QFETCH_GLOBAL(QString, serviceNameForAlternateDevice);
     SettingsContainer::TServiceConfig config = SettingsContainer::getServiceConfig(serviceNameForAlternateDevice);
     Zera::XMLConfig::cReader configReader;
-    QVERIFY(configReader.loadSchema(QStringLiteral(CONFIG_SOURCES_MT310S2D) + "/" + config.xsdFileName));
     QVERIFY(configReader.loadXMLFile(QStringLiteral(CONFIG_SOURCES_MT310S2D) + "/" + config.xmlFileName));
 }
 

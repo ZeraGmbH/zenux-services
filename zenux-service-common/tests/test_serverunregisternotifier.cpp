@@ -37,7 +37,6 @@ void test_serverunregisternotifier::init()
     connect(m_xmlConfigReader.get(), &Zera::XMLConfig::cReader::valueChanged, m_foutSettings.get(), &FOutSettings::configXMLInfo);
     m_accSettings = std::make_unique<AccumulatorSettings>(m_xmlConfigReader.get());
     connect(m_xmlConfigReader.get(), &Zera::XMLConfig::cReader::valueChanged, m_accSettings.get(), &AccumulatorSettings::configXMLInfo);
-    m_xmlConfigReader->loadSchema(params.xsdFile);
     m_xmlConfigReader->loadXMLFile(params.xmlFile);
 }
 

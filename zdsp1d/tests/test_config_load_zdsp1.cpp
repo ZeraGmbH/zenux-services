@@ -14,6 +14,5 @@ void test_config_load_zdsp1::fileFound()
 void test_config_load_zdsp1::fileLoaded()
 {
     Zera::XMLConfig::cReader configReader;
-    QVERIFY(configReader.loadSchema(QStringLiteral(CONFIG_SOURCES_ZDSP1D) + "/" + "zdsp1d.xsd"));
     QVERIFY(configReader.loadXMLFile(QStringLiteral(CONFIG_SOURCES_ZDSP1D) + "/" + "zdsp1d.xml"));
 }

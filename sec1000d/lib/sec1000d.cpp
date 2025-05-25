@@ -118,20 +118,15 @@ void cSEC1000dServer::doConfiguration(int ecUnitCount)
         m_pNotifier = new QSocketNotifier(pipeFileDescriptorSec1000[0], QSocketNotifier::Read, this);
         connect(m_pNotifier, &QSocketNotifier::activated, this, &cSEC1000dServer::SECIntHandler);
         ServerParams params = m_settings->getServerParams();
-        if (m_xmlConfigReader.loadSchema(params.xsdFile)) {
-            // we want to initialize all settings first
-            m_pECalcSettings = new SecCalculatorSettings(&m_xmlConfigReader, ecUnitCount);
-            connect(&m_xmlConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pECalcSettings,&SecCalculatorSettings::configXMLInfo);
-            m_pInputSettings = new SecInputSettings(&m_xmlConfigReader);
-            connect(&m_xmlConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pInputSettings,&SecInputSettings::configXMLInfo);
 
-            if(!m_xmlConfigReader.loadXMLFile(params.xmlFile)) {
-                qCritical("Abort: Could not open xml file '%s", qPrintable(params.xmlFile));
-                emit abortInit();
-            }
-        }
-        else {
-            qCritical("Abort: Could not open xsd file '%s", qPrintable(params.xsdFile));
+        // we want to initialize all settings first
+        m_pECalcSettings = new SecCalculatorSettings(&m_xmlConfigReader, ecUnitCount);
+        connect(&m_xmlConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pECalcSettings,&SecCalculatorSettings::configXMLInfo);
+        m_pInputSettings = new SecInputSettings(&m_xmlConfigReader);
+        connect(&m_xmlConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pInputSettings,&SecInputSettings::configXMLInfo);
+
+        if(!m_xmlConfigReader.loadXMLFile(params.xmlFile)) {
+            qCritical("Abort: Could not open xml file '%s", qPrintable(params.xmlFile));
             emit abortInit();
         }
     }

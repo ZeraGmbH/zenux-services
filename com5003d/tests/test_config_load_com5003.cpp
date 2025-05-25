@@ -14,6 +14,5 @@ void test_config_load_com5003::fileFound()
 void test_config_load_com5003::fileLoaded()
 {
     Zera::XMLConfig::cReader configReader;
-    QVERIFY(configReader.loadSchema(QStringLiteral(CONFIG_SOURCES_COM5003D) + "/" + "com5003d.xsd"));
     QVERIFY(configReader.loadXMLFile(QStringLiteral(CONFIG_SOURCES_COM5003D) + "/" + "com5003d.xml"));
 }

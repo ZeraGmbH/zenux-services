@@ -28,7 +28,6 @@ void test_accumulatorinterface::init()
             m_accuSettings.get(), &AccumulatorSettings::configXMLInfo);
     QFETCH_GLOBAL(QString, serviceNameForAlternateDevice);
     SettingsContainer::TServiceConfig config = SettingsContainer::getServiceConfig(serviceNameForAlternateDevice);
-    m_xmlConfigReader->loadSchema(QStringLiteral(CONFIG_SOURCES_MT310S2D) + "/" + config.xsdFileName);
     m_xmlConfigReader->loadXMLFile(QStringLiteral(CONFIG_SOURCES_MT310S2D) + "/" + config.xmlFileName);
     
     m_accumulator = new AccumulatorInterface(m_scpiInterface,

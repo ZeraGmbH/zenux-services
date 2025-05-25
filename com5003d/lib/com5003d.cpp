@@ -109,38 +109,33 @@ void cCOM5003dServer::doConfiguration()
     write(m_nFPGAfd, &sigStart, 4);
 
     ServerParams params = m_settings->getServerParams();
-    if (m_xmlConfigReader.loadSchema(params.xsdFile)) {
+
+    sigStart = 0;
+    write(m_nFPGAfd, &sigStart, 4);
+
+    m_pSenseSettings = new cSenseSettings(&m_xmlConfigReader, 6);
+    connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_pSenseSettings, &cSenseSettings::configXMLInfo);
+    m_foutSettings = new FOutSettings(&m_xmlConfigReader);
+    connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_foutSettings, &FOutSettings::configXMLInfo);
+    m_finSettings = new FInSettings(&m_xmlConfigReader);
+    connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_finSettings, &FInSettings::configXMLInfo);
+    m_pSCHeadSettings = new ScInSettings(&m_xmlConfigReader);
+    connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_pSCHeadSettings, &ScInSettings::configXMLInfo);
+    m_hkInSettings = new HkInSettings(&m_xmlConfigReader);
+    connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_hkInSettings, &HkInSettings::configXMLInfo);
+
+    sigStart = 1;
+    write(m_nFPGAfd, &sigStart, 4);
+    if (m_xmlConfigReader.loadXMLFile(params.xmlFile)) {
+        setupMicroControllerIo();
+
         sigStart = 0;
         write(m_nFPGAfd, &sigStart, 4);
-
-        m_pSenseSettings = new cSenseSettings(&m_xmlConfigReader, 6);
-        connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_pSenseSettings, &cSenseSettings::configXMLInfo);
-        m_foutSettings = new FOutSettings(&m_xmlConfigReader);
-        connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_foutSettings, &FOutSettings::configXMLInfo);
-        m_finSettings = new FInSettings(&m_xmlConfigReader);
-        connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_finSettings, &FInSettings::configXMLInfo);
-        m_pSCHeadSettings = new ScInSettings(&m_xmlConfigReader);
-        connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_pSCHeadSettings, &ScInSettings::configXMLInfo);
-        m_hkInSettings = new HkInSettings(&m_xmlConfigReader);
-        connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_hkInSettings, &HkInSettings::configXMLInfo);
-
-        sigStart = 1;
-        write(m_nFPGAfd, &sigStart, 4);
-        if (m_xmlConfigReader.loadXMLFile(params.xmlFile)) {
-            setupMicroControllerIo();
-
-            sigStart = 0;
-            write(m_nFPGAfd, &sigStart, 4);
-            // xmlfile ok -> nothing to do .. the configreader will emit all configuration
-            // signals and after this the finishedparsingXML signal
-        }
-        else {
-            qCritical("Abort: Could not open xml file '%s", qPrintable(params.xmlFile));
-            emit abortInit();
-        }
+        // xmlfile ok -> nothing to do .. the configreader will emit all configuration
+        // signals and after this the finishedparsingXML signal
     }
     else {
-        qCritical("Abort: Could not open xsd file '%s", qPrintable(params.xsdFile));
+        qCritical("Abort: Could not open xml file '%s", qPrintable(params.xmlFile));
         emit abortInit();
     }
     close(m_nFPGAfd);

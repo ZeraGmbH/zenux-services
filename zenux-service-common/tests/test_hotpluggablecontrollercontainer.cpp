@@ -39,7 +39,6 @@ void test_hotpluggablecontrollercontainer::init()
     connect(&m_configReader, &Zera::XMLConfig::cReader::valueChanged,
             m_senseSettings.get(), &cSenseSettings::configXMLInfo);
     SettingsContainer::TServiceConfig config = SettingsContainer::getServiceConfig(serviceNameForAlternateDevice);
-    m_configReader.loadSchema(QStringLiteral(CONFIG_SOURCES_MT310S2D) + "/" + config.xsdFileName);
     m_configReader.loadXMLFile(QStringLiteral(CONFIG_SOURCES_MT310S2D) + "/" + config.xmlFileName);
 }
 

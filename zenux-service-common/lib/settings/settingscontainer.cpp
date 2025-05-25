@@ -12,8 +12,6 @@ SettingsContainer::SettingsContainer(ServerParams params) :
     m_samplingSettings(&m_xmlConfigReader)
 {
     qInfo("Service settings: %s / %s", qPrintable(m_params.xsdFile), qPrintable(m_params.xmlFile));
-    if(!m_xmlConfigReader.loadSchema(m_params.xsdFile))
-        qFatal("Abort: Could not open xsd file '%s", qPrintable(m_params.xsdFile));
 
     connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged,
             &m_ethSettings, &EthSettings::configXMLInfo);

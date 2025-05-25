@@ -129,14 +129,10 @@ void ZDspServer::doConfiguration()
         m_pNotifier = new QSocketNotifier(pipeFileDescriptorZdsp1[0], QSocketNotifier::Read, this);
         connect(m_pNotifier, &QSocketNotifier::activated, this, &ZDspServer::DspIntHandler);
         ServerParams params = m_settings->getServerParams();
-        if(m_xmlConfigReader.loadSchema(params.xsdFile)) {
-            connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged,
-                    &m_dspSettings, &cDSPSettings::configXMLInfo);
-            if(!m_xmlConfigReader.loadXMLFile(params.xmlFile))
-                qCritical("Abort: Could not open xml file '%s", qPrintable(params.xmlFile));
-        }
-        else
-            qCritical("Abort: Could not open xsd file '%s", qPrintable(params.xsdFile));
+        connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged,
+                &m_dspSettings, &cDSPSettings::configXMLInfo);
+        if(!m_xmlConfigReader.loadXMLFile(params.xmlFile))
+            qCritical("Abort: Could not open xml file '%s", qPrintable(params.xmlFile));
     }
 }
 

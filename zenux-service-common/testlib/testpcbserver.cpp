@@ -70,21 +70,17 @@ void TestPcbServer::start()
 void TestPcbServer::doConfiguration()
 {
     ServerParams params = m_settings->getServerParams();
-    if (m_xmlConfigReader.loadSchema(params.xsdFile)) {
-        EthSettings *ethSettings = m_settings->getEthSettings();
+    EthSettings *ethSettings = m_settings->getEthSettings();
+    connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged,
+            ethSettings, &EthSettings::configXMLInfo);
+    for (const auto &setting : qAsConst(m_xmlSettings))
         connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged,
-                ethSettings, &EthSettings::configXMLInfo);
-        for (const auto &setting : qAsConst(m_xmlSettings))
-            connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged,
-                    setting, &XMLSettings::configXMLInfo);
-        if (!m_xmlConfigReader.loadXMLFile(params.xmlFile))
-            qFatal("Could not load xml config file");
-        m_pRMConnection = new RMConnection(ethSettings->getRMIPadr(),
-                                           ethSettings->getPort(EthSettings::resourcemanager),
-                                           m_tcpNetworkFactory);
-    }
-    else
-        qFatal("Could not load xml schema");
+                setting, &XMLSettings::configXMLInfo);
+    if (!m_xmlConfigReader.loadXMLFile(params.xmlFile))
+        qFatal("Could not load xml config file");
+    m_pRMConnection = new RMConnection(ethSettings->getRMIPadr(),
+                                       ethSettings->getPort(EthSettings::resourcemanager),
+                                       m_tcpNetworkFactory);
 }
 
 void TestPcbServer::doSetupServer()
