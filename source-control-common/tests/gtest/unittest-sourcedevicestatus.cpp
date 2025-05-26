@@ -3,10 +3,10 @@
 #include <QStringList>
 #include "jsondevicestatusapi.h"
 
-static const QString keyBusy = "busy";
-static const QString keyErrors = "errors";
-static const QString keyWarnings = "warnings";
-static const QString keyDeviceInfo = "deviceinfo";
+static const char* keyBusy = "busy";
+static const char* keyErrors = "errors";
+static const char* keyWarnings = "warnings";
+static const char* keyDeviceInfo = "deviceinfo";
 
 TEST(TEST_SOURCEDEVICESTATUS, INIT) {
     JsonDeviceStatusApi status;

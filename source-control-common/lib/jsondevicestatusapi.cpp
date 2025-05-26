@@ -12,19 +12,16 @@ JsonDeviceStatusApi::JsonDeviceStatusApi()
 
 void JsonDeviceStatusApi::reset()
 {
-    QString deviceInfoFileName = QStringLiteral("://devicestatus/DefaultDeviceStatus.json");
-    QFile deviceInfoFile(deviceInfoFileName);
-    deviceInfoFile.open(QIODevice::Unbuffered | QIODevice::ReadOnly);
-    QByteArray jsondeviceInfoData = deviceInfoFile.readAll();
-    deviceInfoFile.close();
-
-    m_jsonStatus = QJsonDocument::fromJson(jsondeviceInfoData).object();
+    m_jsonStatus = QJsonObject();
+    setBusy(false);
+    clearWarningsErrors();
+    setDeviceInfo("");
 }
 
-static const QString keyBusy = "busy";
-static const QString keyErrors = "errors";
-static const QString keyWarnings = "warnings";
-static const QString keyDeviceInfo = "deviceinfo";
+static const char* keyBusy = "busy";
+static const char* keyErrors = "errors";
+static const char* keyWarnings = "warnings";
+static const char* keyDeviceInfo = "deviceinfo";
 
 void JsonDeviceStatusApi::clearWarningsErrors()
 {

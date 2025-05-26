@@ -1,12 +1,14 @@
 #include "sourcecontrolinterface.h"
-#include "jsonstructureloader.h"
+#include "zera-jsonfileloader.h"
+#include <zera-json-params-structure.h>
+#include <QJsonObject>
 #include <QJsonDocument>
 
 SourceControlInterface::SourceControlInterface(std::shared_ptr<cSCPI> scpiInterface,
                                                SourceControlSettings *settings,
                                                AbstractFactoryI2cCtrlPtr ctrlFactory) :
     ScpiConnection(scpiInterface),
-    m_sourceCapabilityFile(settings->getSourceCapFile()),
+    m_sourceCapabilityFileName(settings->getSourceCapFile()),
     m_ctrlFactory(ctrlFactory)
 {
     Q_INIT_RESOURCE(scpi_interfaces);
@@ -18,11 +20,12 @@ enum sourceCommands {
 
 void SourceControlInterface::initSCPIConnection(QString leadingNodes)
 {
-    if (!m_sourceCapabilityFile.isEmpty()) {
-        QJsonObject json = JsonStructureLoader::loadJsonStructureFromFile(m_sourceCapabilityFile);
-        if (!json.isEmpty()) {
-            QJsonDocument doc(json);
+    if (!m_sourceCapabilityFileName.isEmpty()) {
+        QJsonObject capabilities = expandJsonCapabilities(cJsonFileLoader::loadJsonFile(m_sourceCapabilityFileName));
+        if (!capabilities.isEmpty()) {
+            QJsonDocument doc(capabilities);
             m_sourceCapabilities = doc.toJson();
+
             ensureTrailingColonOnNonEmptyParentNodes(leadingNodes);
             addDelegate(QString("%1SOURCE").arg(leadingNodes),"CAPABILITIES",SCPI::isQuery, m_scpiInterface, sourceCommands::cmdCapabilites);
         }
@@ -40,4 +43,11 @@ void SourceControlInterface::executeProtoScpi(int cmdCode, ProtonetCommandPtr pr
     }
     if (protoCmd->m_bwithOutput)
         emit cmdExecutionDone(protoCmd);
+}
+
+QJsonObject SourceControlInterface::expandJsonCapabilities(const QJsonObject &capabilitiesRaw)
+{
+    ZeraJsonParamsStructure jsonParamsStructure;
+    jsonParamsStructure.setJson(capabilitiesRaw);
+    return jsonParamsStructure.getJson();
 }
