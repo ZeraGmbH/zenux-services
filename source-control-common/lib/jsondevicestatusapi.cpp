@@ -1,9 +1,7 @@
 #include "jsondevicestatusapi.h"
-#include <QFile>
-#include <QJsonDocument>
 #include <QJsonArray>
-#include <QVariant>
 #include <QStringList>
+#include <QVariant>
 
 JsonDeviceStatusApi::JsonDeviceStatusApi()
 {
@@ -35,22 +33,22 @@ void JsonDeviceStatusApi::setBusy(bool busy)
     m_jsonStatus[keyBusy] = busy;
 }
 
-void JsonDeviceStatusApi::addError(const QString error)
+void JsonDeviceStatusApi::addError(const QString &error)
 {
     appendToArray(keyErrors, error);
 }
 
-void JsonDeviceStatusApi::addWarning(const QString warning)
+void JsonDeviceStatusApi::addWarning(const QString &warning)
 {
     appendToArray(keyWarnings, warning);
 }
 
-void JsonDeviceStatusApi::setDeviceInfo(const QString strDeviceInfo)
+void JsonDeviceStatusApi::setDeviceInfo(const QString &strDeviceInfo)
 {
     m_jsonStatus[keyDeviceInfo] = strDeviceInfo;
 }
 
-const QJsonObject &JsonDeviceStatusApi::getJsonStatus()
+const QJsonObject &JsonDeviceStatusApi::getJsonStatus() const
 {
     return m_jsonStatus;
 }
@@ -75,18 +73,17 @@ QString JsonDeviceStatusApi::getDeviceInfo() const
     return m_jsonStatus[keyDeviceInfo].toString();
 }
 
-QStringList JsonDeviceStatusApi::getArray(QString key) const
+QStringList JsonDeviceStatusApi::getArray(const QString &key) const
 {
     QStringList strList;
     auto arr = m_jsonStatus[key].toArray();
     const auto variantList = arr.toVariantList();
-    for (const auto &entry : variantList) {
+    for (const auto &entry : variantList)
         strList.append(entry.toString());
-    }
     return strList;
 }
 
-void JsonDeviceStatusApi::appendToArray(QString key, QString value)
+void JsonDeviceStatusApi::appendToArray(const QString &key, const QString &value)
 {
     QJsonArray arr = m_jsonStatus[key].toArray();
     arr.append(value);
