@@ -25,8 +25,6 @@ target_link_libraries(source-control-common-lib
     zera-json-params
     )
 
-add_definitions(-DZC_DEV_STATE_PATH="${CMAKE_INSTALL_SYSCONFDIR}/zera/states")
-
 set_target_properties(source-control-common-lib PROPERTIES VERSION ${PROJECT_VERSION})
 set_target_properties(source-control-common-lib PROPERTIES SOVERSION ${PROJECT_VERSION_MAJOR})
 
