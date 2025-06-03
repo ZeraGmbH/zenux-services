@@ -7135,6 +7135,8 @@
   </HKEY>
   <UISRC Type="Model,Node">
    <CAPABILITIES ScpiPath="UISRC:CAPABILITIES" Type="Query"/>
+   <STATE Type="Query" ScpiPath="UISRC:STATE"/>
+   <LOAD Type="Query,Command+Par" ScpiPath="UISRC:LOAD"/>
   </UISRC>
  </MODELS>
 </MODELLIST>

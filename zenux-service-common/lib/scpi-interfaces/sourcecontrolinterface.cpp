@@ -16,6 +16,8 @@ SourceControlInterface::SourceControlInterface(std::shared_ptr<cSCPI> scpiInterf
 
 enum sourceCommands {
     cmdCapabilites,
+    cmdState,
+    cmdLoadState,
 };
 
 void SourceControlInterface::initSCPIConnection(QString leadingNodes)
@@ -27,19 +29,31 @@ void SourceControlInterface::initSCPIConnection(QString leadingNodes)
             m_sourceCapabilities = doc.toJson();
 
             ensureTrailingColonOnNonEmptyParentNodes(leadingNodes);
-            addDelegate(QString("%1SOURCE").arg(leadingNodes),"CAPABILITIES",SCPI::isQuery, m_scpiInterface, sourceCommands::cmdCapabilites);
+            addDelegate(QString("%1UISRC").arg(leadingNodes),"CAPABILITIES",SCPI::isQuery, m_scpiInterface, sourceCommands::cmdCapabilites);
+            addDelegate(QString("%1UISRC").arg(leadingNodes),"STATE",SCPI::isQuery, m_scpiInterface, sourceCommands::cmdState, &m_sourceState);
+            addDelegate(QString("%1UISRC").arg(leadingNodes),"LOAD",SCPI::isQuery | SCPI::isCmdwP, m_scpiInterface, sourceCommands::cmdState, &m_sourceLoadState);
         }
     }
 }
 
 void SourceControlInterface::executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd)
 {
+    cSCPICommand cmd = protoCmd->m_sInput;
     switch (cmdCode)
     {
-    case sourceCommands::cmdCapabilites: {
+    case sourceCommands::cmdCapabilites:
         protoCmd->m_sOutput = m_sourceCapabilities;
         break;
-    }
+    case sourceCommands::cmdState:
+        protoCmd->m_sOutput = m_sourceState.getString();
+        break;
+    case sourceCommands::cmdLoadState:
+        if (cmd.isQuery())
+            protoCmd->m_sOutput = m_sourceState.getString();
+        else {
+            // TODO
+        }
+        break;
     }
     if (protoCmd->m_bwithOutput)
         emit cmdExecutionDone(protoCmd);

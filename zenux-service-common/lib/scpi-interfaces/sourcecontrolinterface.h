@@ -19,6 +19,9 @@ private:
     QString m_sourceCapabilityFileName;
     QString m_sourceCapabilities;
     AbstractFactoryI2cCtrlPtr m_ctrlFactory;
+
+    NotificationString m_sourceState;
+    NotificationString m_sourceLoadState;
 };
 
 #endif // SOURCECONTROLINTERFACE_H
