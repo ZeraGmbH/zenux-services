@@ -1,5 +1,7 @@
 #include "sourcecontrolinterface.h"
+#include "jsonstructapi.h"
 #include "zera-jsonfileloader.h"
+#include <zera-json-params-state.h>
 #include <zera-json-params-structure.h>
 #include <QJsonObject>
 #include <QJsonDocument>
@@ -22,16 +24,24 @@ enum sourceCommands {
 
 void SourceControlInterface::initSCPIConnection(QString leadingNodes)
 {
+    Q_UNUSED(leadingNodes)
     if (!m_sourceCapabilityFileName.isEmpty()) {
         QJsonObject capabilities = expandJsonCapabilities(cJsonFileLoader::loadJsonFile(m_sourceCapabilityFileName));
         if (!capabilities.isEmpty()) {
-            QJsonDocument doc(capabilities);
-            m_sourceCapabilities = doc.toJson();
+            QJsonDocument docCapabilities(capabilities);
+            m_sourceCapabilities = docCapabilities.toJson();
+            addDelegate("UISRC", "CAPABILITIES", SCPI::isQuery, m_scpiInterface, sourceCommands::cmdCapabilites);
 
-            ensureTrailingColonOnNonEmptyParentNodes(leadingNodes);
-            addDelegate(QString("%1UISRC").arg(leadingNodes),"CAPABILITIES",SCPI::isQuery, m_scpiInterface, sourceCommands::cmdCapabilites);
-            addDelegate(QString("%1UISRC").arg(leadingNodes),"STATE",SCPI::isQuery, m_scpiInterface, sourceCommands::cmdState, &m_sourceState);
-            addDelegate(QString("%1UISRC").arg(leadingNodes),"LOAD",SCPI::isQuery | SCPI::isCmdwP, m_scpiInterface, sourceCommands::cmdState, &m_sourceLoadState);
+            JsonStructApi structApi(capabilities);
+            m_jsonSourceStateApi.setDeviceInfo(structApi.getDeviceName());
+            QJsonDocument docSourceState(m_jsonSourceStateApi.getJsonStatus());
+            m_sourceState = docSourceState.toJson();
+            addDelegate("UISRC", "STATE", SCPI::isQuery, m_scpiInterface, sourceCommands::cmdState, &m_sourceState);
+
+            ZeraJsonParamsState paramState(capabilities);
+            QJsonDocument docDefaultState(paramState.getDefaultJsonState());
+            m_sourceLoadState = docDefaultState.toJson();
+            addDelegate("UISRC", "LOAD", SCPI::isQuery|SCPI::isCmdwP, m_scpiInterface, sourceCommands::cmdLoadState, &m_sourceLoadState);
         }
     }
 }
@@ -49,7 +59,7 @@ void SourceControlInterface::executeProtoScpi(int cmdCode, ProtonetCommandPtr pr
         break;
     case sourceCommands::cmdLoadState:
         if (cmd.isQuery())
-            protoCmd->m_sOutput = m_sourceState.getString();
+            protoCmd->m_sOutput = m_sourceLoadState.getString();
         else {
             // TODO
         }

@@ -2,6 +2,7 @@
 #define SOURCECONTROLINTERFACE_H
 
 #include "abstractfactoryi2cctrl.h"
+#include "jsondevicestatusapi.h"
 #include "scpiconnection.h"
 #include "sourcecontrolsettings.h"
 
@@ -20,6 +21,7 @@ private:
     QString m_sourceCapabilities;
     AbstractFactoryI2cCtrlPtr m_ctrlFactory;
 
+    JsonDeviceStatusApi m_jsonSourceStateApi;
     NotificationString m_sourceState;
     NotificationString m_sourceLoadState;
 };

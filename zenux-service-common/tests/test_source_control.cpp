@@ -7,6 +7,8 @@
 #include <abstracttcpnetworkfactory.h>
 #include <mocktcpnetworkfactory.h>
 #include <timemachineobject.h>
+#include <zera-json-params-state.h>
+#include <testloghelpers.h>
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QTest>
@@ -48,8 +50,64 @@ void test_source_control::mt581s2Capabilities()
     QCOMPARE(m_lastReply, ZSCPI::ack);
     QJsonObject capabilities = QJsonDocument::fromJson(m_lastAnswer.toString().toUtf8()).object();
     QVERIFY(!capabilities.isEmpty());
-    JsonStructApi structApi(capabilities);;
+    JsonStructApi structApi(capabilities);
     QCOMPARE(structApi.getDeviceName(), "MT581s2");
+}
+
+void test_source_control::mt310s2InitialState()
+{
+    setupServerAndClient("mt310s2d");
+    m_pcbInterface->scpiCommand("UISRC:STATE?");
+    TimeMachineObject::feedEventLoop();
+
+    QCOMPARE(m_lastReply, ZSCPI::nak);
+    QCOMPARE(m_lastAnswer, ZSCPI::scpiAnswer[ZSCPI::nak]);
+}
+
+void test_source_control::mt581s2InitialState()
+{
+    setupServerAndClient("mt581s2d");
+
+    m_pcbInterface->scpiCommand("UISRC:CAPABILITIES?");
+    TimeMachineObject::feedEventLoop();
+    QJsonObject capabilities = QJsonDocument::fromJson(m_lastAnswer.toString().toUtf8()).object();
+    JsonStructApi structApi(capabilities);
+    JsonDeviceStatusApi jsonSourceStateApi;
+    jsonSourceStateApi.setDeviceInfo(structApi.getDeviceName());
+    QString expected = TestLogHelpers::dump(jsonSourceStateApi.getJsonStatus());
+
+    m_pcbInterface->scpiCommand("UISRC:STATE?");
+    TimeMachineObject::feedEventLoop();
+
+    QCOMPARE(m_lastReply, ZSCPI::ack);
+    QVERIFY(TestLogHelpers::compareAndLogOnDiff(expected, m_lastAnswer.toString()));
+}
+
+void test_source_control::mt310s2InitialLoad()
+{
+    setupServerAndClient("mt310s2d");
+    m_pcbInterface->scpiCommand("UISRC:LOAD?");
+    TimeMachineObject::feedEventLoop();
+
+    QCOMPARE(m_lastReply, ZSCPI::nak);
+    QCOMPARE(m_lastAnswer, ZSCPI::scpiAnswer[ZSCPI::nak]);
+}
+
+void test_source_control::mt581s2InitialLoad()
+{
+    setupServerAndClient("mt581s2d");
+
+    m_pcbInterface->scpiCommand("UISRC:CAPABILITIES?");
+    TimeMachineObject::feedEventLoop();
+    QJsonObject capabilities = QJsonDocument::fromJson(m_lastAnswer.toString().toUtf8()).object();
+    ZeraJsonParamsState paramState(capabilities);
+    QString expected = TestLogHelpers::dump(paramState.getDefaultJsonState());
+
+    m_pcbInterface->scpiCommand("UISRC:LOAD?");
+    TimeMachineObject::feedEventLoop();
+
+    QCOMPARE(m_lastReply, ZSCPI::ack);
+    QVERIFY(TestLogHelpers::compareAndLogOnDiff(expected, m_lastAnswer.toString()));
 }
 
 void test_source_control::setupServerAndClient(const QString &deviceD)

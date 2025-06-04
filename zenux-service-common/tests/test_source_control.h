@@ -11,8 +11,15 @@ class test_source_control : public QObject
 private slots:
     void init();
     void cleanup();
+
     void mt310s2Capabilities();
     void mt581s2Capabilities();
+
+    void mt310s2InitialState();
+    void mt581s2InitialState();
+
+    void mt310s2InitialLoad();
+    void mt581s2InitialLoad();
 private:
     void setupServerAndClient(const QString &deviceD);
     std::unique_ptr<ResmanRunFacade> m_resman;
