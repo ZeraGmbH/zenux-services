@@ -29,6 +29,7 @@ SETUP_SERVICE_COMMON_TESTS(
     test_criticalstatusmock
     test_adj_procedure
     test_notificationcontents
+    test_source_control
     )
 
 target_sources(test_hotpluggablecontrollercontainer
