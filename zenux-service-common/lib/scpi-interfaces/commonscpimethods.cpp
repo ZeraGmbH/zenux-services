@@ -22,21 +22,21 @@ void CommonScpiMethods::sendProtoAnswer(QTcpSocket *telnetSocket,
             // dependent on rtype caller can see ack, nak, error
             // in case of error the body has to be analyzed for details
             QString output = protoCmd->m_sOutput;
-            if (output.contains(ZSCPI::scpiAnswer[ZSCPI::ack]))
+            if (output == ZSCPI::scpiAnswer[ZSCPI::ack])
                 netReply->set_rtype(ProtobufMessage::NetMessage_NetReply_ReplyType_ACK);
-            else if (output.contains(ZSCPI::scpiAnswer[ZSCPI::nak]))
+            else if (output == ZSCPI::scpiAnswer[ZSCPI::nak])
                 netReply->set_rtype(ProtobufMessage::NetMessage_NetReply_ReplyType_NACK);
-            else if (output.contains(ZSCPI::scpiAnswer[ZSCPI::busy]))
+            else if (output == ZSCPI::scpiAnswer[ZSCPI::busy])
                 netReply->set_rtype(ProtobufMessage::NetMessage_NetReply_ReplyType_ERROR);
-            else if (output.contains(ZSCPI::scpiAnswer[ZSCPI::erraut]))
+            else if (output == ZSCPI::scpiAnswer[ZSCPI::erraut])
                 netReply->set_rtype(ProtobufMessage::NetMessage_NetReply_ReplyType_ERROR);
-            else if (output.contains(ZSCPI::scpiAnswer[ZSCPI::errval]))
+            else if (output == ZSCPI::scpiAnswer[ZSCPI::errval])
                 netReply->set_rtype(ProtobufMessage::NetMessage_NetReply_ReplyType_ERROR);
-            else if (output.contains(ZSCPI::scpiAnswer[ZSCPI::errxml]))
+            else if (output == ZSCPI::scpiAnswer[ZSCPI::errxml])
                 netReply->set_rtype(ProtobufMessage::NetMessage_NetReply_ReplyType_ERROR);
-            else if (output.contains(ZSCPI::scpiAnswer[ZSCPI::errpath])) // for zdspd only -> remove
+            else if (output == ZSCPI::scpiAnswer[ZSCPI::errpath]) // for zdspd only -> remove
                 netReply->set_rtype(ProtobufMessage::NetMessage_NetReply_ReplyType_ERROR);
-            else if (output.contains(ZSCPI::scpiAnswer[ZSCPI::errexec]))
+            else if (output == ZSCPI::scpiAnswer[ZSCPI::errexec])
                 netReply->set_rtype(ProtobufMessage::NetMessage_NetReply_ReplyType_ERROR);
             else
                 netReply->set_rtype(ProtobufMessage::NetMessage_NetReply_ReplyType_ACK);
