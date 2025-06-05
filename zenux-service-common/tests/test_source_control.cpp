@@ -68,17 +68,10 @@ void test_source_control::mt581s2InitialState()
 {
     setupServerAndClient("mt581s2d");
 
-    m_pcbInterface->scpiCommand("UISRC:CAPABILITIES?");
-    TimeMachineObject::feedEventLoop();
-    QJsonObject capabilities = QJsonDocument::fromJson(m_lastAnswer.toString().toUtf8()).object();
-    JsonStructApi structApi(capabilities);
-    JsonDeviceStatusApi jsonSourceStateApi;
-    jsonSourceStateApi.setDeviceInfo(structApi.getDeviceName());
-    QString expected = TestLogHelpers::dump(jsonSourceStateApi.getJsonStatus());
-
     m_pcbInterface->scpiCommand("UISRC:STATE?");
     TimeMachineObject::feedEventLoop();
 
+    QString expected = TestLogHelpers::loadFile(":/source_state_valid_mt581s2.json");
     QCOMPARE(m_lastReply, ZSCPI::ack);
     QVERIFY(TestLogHelpers::compareAndLogOnDiff(expected, m_lastAnswer.toString()));
 }
@@ -108,6 +101,32 @@ void test_source_control::mt581s2InitialLoad()
 
     QCOMPARE(m_lastReply, ZSCPI::ack);
     QVERIFY(TestLogHelpers::compareAndLogOnDiff(expected, m_lastAnswer.toString()));
+}
+
+void test_source_control::mt310s2RejectValidStateSet()
+{
+    setupServerAndClient("mt310s2d");
+
+    QString consideredValid = TestLogHelpers::loadFile(":/source_state_valid_mt310s2.json");
+
+    m_pcbInterface->scpiCommand(QString("UISRC:STATE %1").arg(consideredValid));
+    TimeMachineObject::feedEventLoop();
+
+    QCOMPARE(m_lastReply, ZSCPI::nak);
+    QCOMPARE(m_lastAnswer, ZSCPI::scpiAnswer[ZSCPI::nak]);
+}
+
+void test_source_control::mt581s2RejectValidStateSet()
+{
+    setupServerAndClient("mt581s2d");
+
+    QString consideredValidInOtherTest = TestLogHelpers::loadFile(":/source_state_valid_mt581s2.json");
+
+    m_pcbInterface->scpiCommand(QString("UISRC:STATE %1").arg(consideredValidInOtherTest));
+    TimeMachineObject::feedEventLoop();
+
+    QCOMPARE(m_lastReply, ZSCPI::nak);
+    QCOMPARE(m_lastAnswer, ZSCPI::scpiAnswer[ZSCPI::nak]);
 }
 
 void test_source_control::setupServerAndClient(const QString &deviceD)

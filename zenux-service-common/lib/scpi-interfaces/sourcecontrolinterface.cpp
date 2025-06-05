@@ -1,6 +1,7 @@
 #include "sourcecontrolinterface.h"
 #include "jsonstructapi.h"
 #include "zera-jsonfileloader.h"
+#include "zscpi_response_definitions.h"
 #include <zera-json-params-state.h>
 #include <zera-json-params-structure.h>
 #include <QJsonObject>
@@ -55,7 +56,10 @@ void SourceControlInterface::executeProtoScpi(int cmdCode, ProtonetCommandPtr pr
         protoCmd->m_sOutput = m_sourceCapabilities;
         break;
     case sourceCommands::cmdState:
-        protoCmd->m_sOutput = m_sourceState.getString();
+        if (cmd.isQuery())
+            protoCmd->m_sOutput = m_sourceState.getString();
+        else
+            protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::nak];
         break;
     case sourceCommands::cmdLoadState:
         if (cmd.isQuery())

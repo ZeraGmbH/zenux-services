@@ -10,5 +10,7 @@
         <file>mt310s2-050059467.xml</file>
         <file>phase_compute.xml</file>
         <file>phase_nodes_write.xml</file>
+        <file>source_state_valid_mt310s2.json</file>
+        <file>source_state_valid_mt581s2.json</file>
     </qresource>
 </RCC>

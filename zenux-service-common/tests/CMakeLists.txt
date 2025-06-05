@@ -57,3 +57,8 @@ target_sources(test_adj_procedure
   PRIVATE
   test-data/regression_data.qrc
 )
+
+target_sources(test_source_control
+  PRIVATE
+  test-data/regression_data.qrc
+)
