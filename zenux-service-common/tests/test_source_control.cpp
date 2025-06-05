@@ -158,6 +158,42 @@ void test_source_control::mt581s2RejectValidStateSet()
     QCOMPARE(m_lastAnswer, ZSCPI::scpiAnswer[ZSCPI::nak]);
 }
 
+void test_source_control::mt310s2RejectInValidLoadSet()
+{
+    setupServerAndClient("mt310s2d");
+    QString invalid = "UISRC:LOAD {\"foo\": \"bar\"}";
+    m_pcbInterface->scpiCommand(invalid);
+    TimeMachineObject::feedEventLoop();
+
+    QCOMPARE(m_lastReply, ZSCPI::nak);
+    QCOMPARE(m_lastAnswer, ZSCPI::scpiAnswer[ZSCPI::nak]);
+}
+
+void test_source_control::mt581s2RejectInValidLoadSet()
+{
+    setupServerAndClient("mt581s2d");
+    QString invalid = "UISRC:LOAD {\"foo\": \"bar\"}";
+    m_pcbInterface->scpiCommand(invalid);
+    TimeMachineObject::feedEventLoop();
+
+    QCOMPARE(m_lastReply, ZSCPI::nak);
+    QCOMPARE(m_lastAnswer, ZSCPI::scpiAnswer[ZSCPI::nak]);
+}
+
+void test_source_control::mt581s2AcceptValidLoadSetNoChange()
+{
+    setupServerAndClient("mt581s2d");
+
+    m_pcbInterface->scpiCommand("UISRC:LOAD?");
+    TimeMachineObject::feedEventLoop();
+
+    m_pcbInterface->scpiCommand(QString("UISRC:LOAD %1").arg(m_lastAnswer.toString()));
+    TimeMachineObject::feedEventLoop();
+
+    QCOMPARE(m_lastReply, ZSCPI::ack);
+    QCOMPARE(m_lastAnswer, ZSCPI::scpiAnswer[ZSCPI::ack]);
+}
+
 void test_source_control::setupServerAndClient(const QString &deviceD)
 {
     VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory = VeinTcp::MockTcpNetworkFactory::create();
@@ -166,11 +202,11 @@ void test_source_control::setupServerAndClient(const QString &deviceD)
     TimeMachineObject::feedEventLoop();
 
     Zera::ProxyClientPtr proxyClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307, tcpNetworkFactory);
-    m_pcbInterface = std::make_unique<TinyServerScpiCmdInterface>(proxyClient);
+    m_pcbInterface = std::make_unique<TinyZScpiCmdInterface>(proxyClient);
     Zera::Proxy::getInstance()->startConnectionSmart(proxyClient);
     TimeMachineObject::feedEventLoop();
 
-    connect(m_pcbInterface.get(), &TinyServerScpiCmdInterface::serverAnswer, this, [&](quint32 msgnr, quint8 reply, QVariant answer) {
+    connect(m_pcbInterface.get(), &TinyZScpiCmdInterface::serverAnswer, this, [&](quint32 msgnr, quint8 reply, QVariant answer) {
         Q_UNUSED(msgnr)
         m_lastReply = reply;
         m_lastAnswer = answer;

@@ -1,19 +1,17 @@
-#ifndef TINYSERVERSCPICMDINTERFACE_H
-#define TINYSERVERSCPICMDINTERFACE_H
+#ifndef TINYZSCPICMDINTERFACE_H
+#define TINYZSCPICMDINTERFACE_H
 
 #include "abstractserverInterface.h"
 #include "proxyclient.h"
 
-class TinyServerScpiCmdInterface : public AbstractServerInterface
+class TinyZScpiCmdInterface : public AbstractServerInterface
 {
     Q_OBJECT
 public:
-    TinyServerScpiCmdInterface(Zera::ProxyClientPtr client);
+    TinyZScpiCmdInterface(Zera::ProxyClientPtr client);
     virtual quint32 scpiCommand(const QString &scpi) override;
 
 private:
-    quint32 sendCommand(const QString &cmd);
-    quint32 sendCommand(const QString &cmd, const QString &par);
     void receiveAnswer(std::shared_ptr<ProtobufMessage::NetMessage> message);
 
     struct TAnswerDecoded
@@ -26,4 +24,4 @@ private:
     Zera::ProxyClientPtr m_clientSmart;
 };
 
-#endif // TINYSERVERSCPICMDINTERFACE_H
+#endif // TINYZSCPICMDINTERFACE_H

@@ -68,7 +68,17 @@ void SourceControlInterface::executeProtoScpi(int cmdCode, ProtonetCommandPtr pr
         if (cmd.isQuery())
             protoCmd->m_sOutput = m_sourceLoadState.getString();
         else {
-            // TODO
+            QJsonObject jsonCapabilies = QJsonDocument::fromJson(m_sourceCapabilities.toUtf8()).object();
+            ZeraJsonParamsState paramState(jsonCapabilies);
+            QString strParam = cmd.getParam();
+            QJsonObject param = QJsonDocument::fromJson(strParam.toUtf8()).object();
+            ZeraJsonParamsState::ErrList errs = paramState.validateJsonState(param);
+            if (errs.isEmpty()) {
+                // TODO: Do something
+                protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::ack];
+            }
+            else
+                protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::nak];
         }
         break;
     }
