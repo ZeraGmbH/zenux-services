@@ -52,6 +52,9 @@ void test_source_control::mt581s2Capabilities()
     QVERIFY(!capabilities.isEmpty());
     JsonStructApi structApi(capabilities);
     QCOMPARE(structApi.getDeviceName(), "MT581s2");
+
+    QString expected = TestLogHelpers::loadFile(":/source_capabilities_valid_mt581s2.json");
+    QVERIFY(TestLogHelpers::compareAndLogOnDiff(expected, m_lastAnswer.toString()));
 }
 
 void test_source_control::mt310s2InitialState()
@@ -101,6 +104,32 @@ void test_source_control::mt581s2InitialLoad()
 
     QCOMPARE(m_lastReply, ZSCPI::ack);
     QVERIFY(TestLogHelpers::compareAndLogOnDiff(expected, m_lastAnswer.toString()));
+}
+
+void test_source_control::mt310s2RejectValidCapabilitesSet()
+{
+    setupServerAndClient("mt310s2d");
+
+    QString consideredValid = TestLogHelpers::loadFile(":/source_capabilities_valid_mt310s2.json");
+
+    m_pcbInterface->scpiCommand(QString("UISRC:CAPABILITIES %1").arg(consideredValid));
+    TimeMachineObject::feedEventLoop();
+
+    QCOMPARE(m_lastReply, ZSCPI::nak);
+    QCOMPARE(m_lastAnswer, ZSCPI::scpiAnswer[ZSCPI::nak]);
+}
+
+void test_source_control::mt581s2RejectValidCapabilitesSet()
+{
+    setupServerAndClient("mt581s2d");
+
+    QString consideredValid = TestLogHelpers::loadFile(":/source_capabilities_valid_mt581s2.json");
+
+    m_pcbInterface->scpiCommand(QString("UISRC:CAPABILITIES %1").arg(consideredValid));
+    TimeMachineObject::feedEventLoop();
+
+    QCOMPARE(m_lastReply, ZSCPI::nak);
+    QCOMPARE(m_lastAnswer, ZSCPI::scpiAnswer[ZSCPI::nak]);
 }
 
 void test_source_control::mt310s2RejectValidStateSet()

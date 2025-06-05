@@ -21,8 +21,12 @@ private slots:
     void mt310s2InitialLoad();
     void mt581s2InitialLoad();
 
+    void mt310s2RejectValidCapabilitesSet();
+    void mt581s2RejectValidCapabilitesSet();
+
     void mt310s2RejectValidStateSet();
     void mt581s2RejectValidStateSet();
+
 private:
     void setupServerAndClient(const QString &deviceD);
     std::unique_ptr<ResmanRunFacade> m_resman;

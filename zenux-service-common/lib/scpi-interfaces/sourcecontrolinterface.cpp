@@ -53,7 +53,10 @@ void SourceControlInterface::executeProtoScpi(int cmdCode, ProtonetCommandPtr pr
     switch (cmdCode)
     {
     case sourceCommands::cmdCapabilites:
-        protoCmd->m_sOutput = m_sourceCapabilities;
+        if (cmd.isQuery())
+            protoCmd->m_sOutput = m_sourceCapabilities;
+        else
+            protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::nak];
         break;
     case sourceCommands::cmdState:
         if (cmd.isQuery())
