@@ -99,7 +99,7 @@ void cCOM5003dServer::setupMicroControllerIo()
 
 void cCOM5003dServer::doConfiguration()
 {
-    // What is this m_nFPGAfd I/O???
+    // What is this m_nFPGAfd I/O??? / Atmel reset???
     // Once known and still needed: Use getCtrlDeviceNode()
     m_nFPGAfd = open("/dev/zFPGA1reg",O_RDWR);
     lseek(m_nFPGAfd,0x0,0);
@@ -108,34 +108,49 @@ void cCOM5003dServer::doConfiguration()
     sigStart = 1;
     write(m_nFPGAfd, &sigStart, 4);
 
+    // THE MOST UTTER UGLINESS FOUND SO FAR:
+    // The delay caused by m_xmlConfigReader.loadSchema is mandatory
+    // to bring up Atmel properly!!!
     ServerParams params = m_settings->getServerParams();
-
-    sigStart = 0;
-    write(m_nFPGAfd, &sigStart, 4);
-
-    m_pSenseSettings = new cSenseSettings(&m_xmlConfigReader, 6);
-    connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_pSenseSettings, &cSenseSettings::configXMLInfo);
-    m_foutSettings = new FOutSettings(&m_xmlConfigReader);
-    connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_foutSettings, &FOutSettings::configXMLInfo);
-    m_finSettings = new FInSettings(&m_xmlConfigReader);
-    connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_finSettings, &FInSettings::configXMLInfo);
-    m_pSCHeadSettings = new ScInSettings(&m_xmlConfigReader);
-    connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_pSCHeadSettings, &ScInSettings::configXMLInfo);
-    m_hkInSettings = new HkInSettings(&m_xmlConfigReader);
-    connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_hkInSettings, &HkInSettings::configXMLInfo);
-
-    sigStart = 1;
-    write(m_nFPGAfd, &sigStart, 4);
-    if (m_xmlConfigReader.loadXMLFile(params.xmlFile)) {
-        setupMicroControllerIo();
-
+    qInfo("Loading schema...");
+    if (m_xmlConfigReader.loadSchema(params.xsdFile)) {
+        qInfo("Schema loaded.");
         sigStart = 0;
         write(m_nFPGAfd, &sigStart, 4);
-        // xmlfile ok -> nothing to do .. the configreader will emit all configuration
-        // signals and after this the finishedparsingXML signal
+
+        m_pSenseSettings = new cSenseSettings(&m_xmlConfigReader, 6);
+        connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_pSenseSettings, &cSenseSettings::configXMLInfo);
+        m_foutSettings = new FOutSettings(&m_xmlConfigReader);
+        connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_foutSettings, &FOutSettings::configXMLInfo);
+        m_finSettings = new FInSettings(&m_xmlConfigReader);
+        connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_finSettings, &FInSettings::configXMLInfo);
+        m_pSCHeadSettings = new ScInSettings(&m_xmlConfigReader);
+        connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_pSCHeadSettings, &ScInSettings::configXMLInfo);
+        m_hkInSettings = new HkInSettings(&m_xmlConfigReader);
+        connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_hkInSettings, &HkInSettings::configXMLInfo);
+
+        sigStart = 1;
+        write(m_nFPGAfd, &sigStart, 4);
+        // Same here (or even worse): When not loading XSD above, delay caused here
+        // will get too short - WTF???
+        // So for now measure both times by qInfo and maybe come back later...
+        qInfo("Loading XML...");
+        if (m_xmlConfigReader.loadXMLFile(params.xmlFile)) {
+            qInfo("Loading XML loaded");
+            setupMicroControllerIo();
+
+            sigStart = 0;
+            write(m_nFPGAfd, &sigStart, 4);
+            // xmlfile ok -> nothing to do .. the configreader will emit all configuration
+            // signals and after this the finishedparsingXML signal
+        }
+        else {
+            qCritical("Abort: Could not open xml file '%s", qPrintable(params.xmlFile));
+            emit abortInit();
+        }
     }
     else {
-        qCritical("Abort: Could not open xml file '%s", qPrintable(params.xmlFile));
+        qCritical("Abort: Could not open xsd file '%s", qPrintable(params.xsdFile));
         emit abortInit();
     }
     close(m_nFPGAfd);
