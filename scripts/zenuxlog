@@ -19,5 +19,6 @@ journalctl $@ -b -o short-monotonic \
     UNIT=zera-update-service.service + _SYSTEMD_UNIT=zera-update-service.service + \
     UNIT=zera-update-update-service.service + _SYSTEMD_UNIT=zera-update-update-service.service + \
     UNIT=vein-avahi.service + _SYSTEMD_UNIT=vein-avahi.service + \
+    UNIT=zera-vein-rest.service + _SYSTEMD_UNIT=zera-vein-rest.service + \
     SYSLOG_IDENTIFIER=vf-declarative-gui + \
     SYSLOG_IDENTIFIER=zera-usb-automount.sh
