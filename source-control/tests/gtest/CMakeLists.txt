@@ -20,5 +20,5 @@ target_link_libraries(source-control-common-unittest
     PUBLIC
     gtest
     gtest_main
-    source-control-common-lib
+    source-json-io-lib
 )

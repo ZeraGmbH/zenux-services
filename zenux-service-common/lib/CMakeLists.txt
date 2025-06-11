@@ -46,7 +46,7 @@ target_link_libraries(zenuxservicecommon
     Zera::zera-xmlconfig
     Zera::zera-math
     Zera::zera-i2c-devices
-    source-control-common-lib
+    source-json-io-lib
     # ask linker to help us finding unresolved symbols
     "-Wl,--no-undefined"
 )
