@@ -16,7 +16,8 @@ public:
     void initSCPIConnection(QString leadingNodes) override;
 private:
     void executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd) override;
-    QJsonObject expandJsonCapabilities(const QJsonObject &capabilitiesRaw);
+    static QJsonObject expandJsonCapabilities(const QJsonObject &capabilitiesRaw);
+
     QString m_sourceCapabilityFileName;
     QString m_sourceCapabilities;
     AbstractFactoryI2cCtrlPtr m_ctrlFactory;
