@@ -49,6 +49,7 @@ void SourceControlInterface::initSCPIConnection(QString leadingNodes)
 
 void SourceControlInterface::executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd)
 {
+    bool respondsLater = false;
     cSCPICommand cmd = protoCmd->m_sInput;
     switch (cmdCode)
     {
@@ -82,7 +83,7 @@ void SourceControlInterface::executeProtoScpi(int cmdCode, ProtonetCommandPtr pr
         }
         break;
     }
-    if (protoCmd->m_bwithOutput)
+    if (protoCmd->m_bwithOutput && !respondsLater)
         emit cmdExecutionDone(protoCmd);
 }
 
