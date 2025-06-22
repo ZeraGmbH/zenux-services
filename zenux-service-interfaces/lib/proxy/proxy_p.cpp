@@ -55,10 +55,20 @@ bool ProxyPrivate::releaseConnection(ProxyClientPrivate *client)
         Command->set_cmd(ProtobufMessage::NetMessage_NetCmd_CmdType_RELEASE);
         netCommand.set_clientid(binUUid.data(), binUUid.size());
         connection->m_pNetClient->sendMessage(m_protobufWrapper.protobufToByteArray(netCommand));
+
+        deletePeerOnAllClientsGone(connection);
         delete connection;
         return true;
     }
     return false;
+}
+
+void Zera::ProxyPrivate::deletePeerOnAllClientsGone(const ProxyConnection *connection)
+{
+    ProxyNetPeer *netPeer = connection->m_pNetClient;
+    QList<ProxyClientPrivate*> clients = getClientsConnectedToPeer(netPeer);
+    if (clients.isEmpty())
+        netPeer->deleteLater();
 }
 
 quint32 ProxyPrivate::transmitCommand(ProxyClientPrivate* client, ProtobufMessage::NetMessage *message)
