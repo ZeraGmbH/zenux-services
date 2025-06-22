@@ -16,7 +16,7 @@ ProxyPrivate::ProxyPrivate(Proxy *parent):
 {
 }
 
-ProxyClientPtr ProxyPrivate::getConnectionSmart(QString ipadress, quint16 port,
+ProxyClientPtr ProxyPrivate::getConnectionSmart(const QString &ipadress, quint16 port,
                                                 VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory)
 {
     QUuid uuid = QUuid::createUuid(); // we use a per client uuid
@@ -88,41 +88,23 @@ void ProxyPrivate::handleReceiveMessage(std::shared_ptr<google::protobuf::Messag
 
 void ProxyPrivate::receiveTcpError(VeinTcp::TcpPeer *peer, QAbstractSocket::SocketError errorCode)
 {
-    QHashIterator<ProxyClientPrivate*, ProxyConnection*> it(m_ConnectionHash);
-    while(it.hasNext()) {
-        it.next();
-        ProxyConnection *pC = it.value();
-        if(pC->m_pNetClient == peer) { // we found a client that was connected to netclient
-            ProxyClientPrivate* client = it.key();
-            client->transmitError(errorCode); // so this client will forward error
-        }
-    }
+    const QList<ProxyClientPrivate *> clients = getClientsConnectedToPeer(peer);
+    for (ProxyClientPrivate *client : clients)
+        client->transmitError(errorCode);
 }
 
 void ProxyPrivate::registerConnection(VeinTcp::TcpPeer *peer)
 {
-    QHashIterator<ProxyClientPrivate*, ProxyConnection*> it(m_ConnectionHash);
-    while(it.hasNext()) {
-        it.next();
-        ProxyConnection *pC = it.value();
-        if(pC->m_pNetClient == peer) { // we found a client that tried to connected to netclient
-            ProxyClientPrivate* client = it.key();
-            client->transmitConnection();
-        }
-    }
+    const QList<ProxyClientPrivate *> clients = getClientsConnectedToPeer(peer);
+    for (ProxyClientPrivate *client : clients)
+        client->transmitConnection();
 }
 
 void ProxyPrivate::registerDisConnection(VeinTcp::TcpPeer *peer)
 {
-    QHashIterator<ProxyClientPrivate*, ProxyConnection*> it(m_ConnectionHash);
-    while(it.hasNext()) {
-        it.next();
-        ProxyConnection *pC = it.value();
-        if(pC->m_pNetClient == peer) { // we found a client that tried to connected to netclient
-            ProxyClientPrivate* client = it.key();
-            client->transmitDisConnection(); // so this client will be forwarded connection
-        }
-    }
+    const QList<ProxyClientPrivate *> clients = getClientsConnectedToPeer(peer);
+    for (ProxyClientPrivate *client : clients)
+        client->transmitDisConnection();
 }
 
 void ProxyPrivate::onMessageReceived(VeinTcp::TcpPeer *peer, const QByteArray &message)
@@ -150,11 +132,24 @@ ProxyNetPeer* ProxyPrivate::searchConnection(const QString &ip, quint16 port)
     QHashIterator<ProxyClientPrivate*, ProxyConnection*> it(m_ConnectionHash);
     while(it.hasNext()) {
         it.next();
-        ProxyConnection *pC = it.value();
-        if( pC->m_sIP == ip && pC->m_nPort == port)
+        const ProxyConnection *pC = it.value();
+        if (pC->m_sIP == ip && pC->m_nPort == port)
              return pC->m_pNetClient;
     }
     return nullptr;
+}
+
+QList<ProxyClientPrivate *> ProxyPrivate::getClientsConnectedToPeer(const VeinTcp::TcpPeer *peer)
+{
+    QList<ProxyClientPrivate *> clients;
+    QHashIterator<ProxyClientPrivate*, ProxyConnection*> it(m_ConnectionHash);
+    while(it.hasNext()) {
+        it.next();
+        const ProxyConnection *pC = it.value();
+        if (pC->m_pNetClient == peer)
+            clients.append(it.key());
+    }
+    return clients;
 }
 
 }
