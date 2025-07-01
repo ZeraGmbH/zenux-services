@@ -13,6 +13,7 @@
 #include "i2cctrlpll.h"
 #include "i2cctrlranges.h"
 #include "i2cctrlcputemperature.h"
+#include "i2cctrlreaderror.h"
 
 FactoryI2cCtrl::FactoryI2cCtrl(I2cSettings *i2cSettings) :
     m_i2cSettings(i2cSettings),
@@ -76,6 +77,12 @@ I2cCtrlRangesPtr FactoryI2cCtrl::getRangesController()
 {
     return std::make_unique<I2cCtrlRanges>(m_deviceNode, getRelaisCtrlI2cAddress(), m_debugLevel);
 }
+
+I2cCtrlReadErrorPtr FactoryI2cCtrl::getErrorlogController()
+{
+     return std::make_unique<I2cCtrlReadError>(m_deviceNode, getSystemCtrlI2cAddress(), m_debugLevel);
+}
+
 
 I2cCtrlMModePtr FactoryI2cCtrl::getMModeController()
 {

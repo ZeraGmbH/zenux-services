@@ -13,6 +13,7 @@
 #include "testi2cctrlpll.h"
 #include "mocki2cctrlclampstatus.h"
 #include "demoi2cctrlcputemperature.h"
+#include "demoi2cctrlreaderror.h"
 
 TestFactoryI2cCtrlCriticalStatus::TPersitentControllerData TestFactoryI2cCtrlCriticalStatus::m_persitentData;
 
@@ -85,3 +86,9 @@ I2cCtrlCpuTemperaturePtr TestFactoryI2cCtrlCriticalStatus::getCpuTemperatureCont
 {
     return std::make_unique<DemoI2cCtrlCpuTemperature>();
 }
+
+I2cCtrlReadErrorPtr TestFactoryI2cCtrlCriticalStatus::getErrorlogController()
+{
+    return std::make_unique<DemoI2cCtrlReadError>();
+}
+

@@ -19,6 +19,7 @@ public:
     I2cCtrlClampStatusPtr getClampStatusController() override;
     I2cCtrlBootloaderPtr getBootloaderController() override;
     I2cCtrlCpuTemperaturePtr getCpuTemperatureController() override;
+    I2cCtrlReadErrorPtr getErrorlogController() override;
 private:
     struct TPersitentControllerData
     {

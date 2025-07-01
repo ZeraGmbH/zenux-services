@@ -25,6 +25,8 @@ public:
     I2cCtrlClampStatusPtr getClampStatusController() override { return nullptr; }
     I2cCtrlBootloaderPtr getBootloaderController() override { return nullptr; }
     I2cCtrlCpuTemperaturePtr getCpuTemperatureController() override { return nullptr; }
+    I2cCtrlReadErrorPtr getErrorlogController() override { return nullptr; }
+
 private:
     I2cSettings *m_i2cSettings;
     int m_ctrlInstanceCount = 0;

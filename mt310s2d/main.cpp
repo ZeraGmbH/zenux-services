@@ -32,6 +32,17 @@ int main( int argc, char *argv[] )
         SettingsContainer::createChannelRangeFactory(serviceNameForAlternateDevice));
     qInfo(ServerName " started");
 
+    QString ErrString;
+    ctrlFactory->getErrorlogController()->readError(ErrString);
+    qWarning("SytemCrrl error: %s", ErrString);
+
+    ctrlFactory->getErrorlogController()->readError(ErrString);
+    qWarning("SytemCrrl error: %s", ErrString);
+
+    ctrlFactory->getErrorlogController()->readError(ErrString);
+    qWarning("SytemCrrl error: %s", ErrString);
+
+
     int r = app->exec();
 
     delete mt310s2d;

@@ -11,6 +11,7 @@
 #include "testi2cctrldeviceident.h"
 #include "testi2cctrleeprompermission.h"
 #include "testi2cctrlcputemperature.h"
+#include "testi2cctrlreaderror.h"
 
 TestFactoryI2cCtrl::TPersitentControllerData TestFactoryI2cCtrl::m_persitentData;
 
@@ -82,4 +83,9 @@ I2cCtrlBootloaderPtr TestFactoryI2cCtrl::getBootloaderController()
 I2cCtrlCpuTemperaturePtr TestFactoryI2cCtrl::getCpuTemperatureController()
 {
     return std::make_unique<TestI2cCtrlCpuTmperature>();
+}
+
+I2cCtrlReadErrorPtr TestFactoryI2cCtrl::getErrorlogController()
+{
+    return std::make_unique<TestI2cCtrlReadError>();
 }

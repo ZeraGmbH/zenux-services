@@ -56,6 +56,17 @@ public:
 };
 typedef std::unique_ptr<AbstractI2cCtrlRanges> I2cCtrlRangesPtr;
 
+
+class AbstractI2cCtrlReadError
+{
+public:
+    virtual ~AbstractI2cCtrlReadError() = default;
+    virtual ZeraMControllerIo::atmelRM readError(QString& answer) = 0;
+};
+typedef std::unique_ptr<AbstractI2cCtrlReadError> I2cCtrlReadErrorPtr;
+
+
+
 class AbstractI2cCtrlMMode
 {
 public:
