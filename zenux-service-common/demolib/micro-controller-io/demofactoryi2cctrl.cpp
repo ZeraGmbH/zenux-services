@@ -85,3 +85,8 @@ I2cCtrlCpuTemperaturePtr DemoFactoryI2cCtrl::getCpuTemperatureController()
 {
     return std::make_unique<DemoI2cCtrlCpuTemperature>();
 }
+
+I2cCtrlReadErrorPtr DemoFactoryI2cCtrl::getErrorlogController()
+{
+    return nullptr;
+}
