@@ -67,4 +67,9 @@ void AccumulatorInterface::getAccuStateOfCharge()
         m_accuStateOfCharge = QString::number(charge);
     else
         m_accuStateOfCharge = QString::number(ERROR);
+
+    QString ErrReply;
+    m_ctrlFactory->getErrorlogController()->readError(ErrReply);
+    qWarning("###### uC error: %s", qPrintable(ErrReply));
+
 }
