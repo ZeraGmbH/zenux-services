@@ -32,16 +32,10 @@ int main( int argc, char *argv[] )
         SettingsContainer::createChannelRangeFactory(serviceNameForAlternateDevice));
     qInfo(ServerName " started");
 
+    qWarning("############# Start read System-uC");
     QString ErrString;
     ctrlFactory->getErrorlogController()->readError(ErrString);
-    qWarning("SytemCrrl error: %s", ErrString);
-
-    ctrlFactory->getErrorlogController()->readError(ErrString);
-    qWarning("SytemCrrl error: %s", ErrString);
-
-    ctrlFactory->getErrorlogController()->readError(ErrString);
-    qWarning("SytemCrrl error: %s", ErrString);
-
+    qWarning("System-uC error: %s", ErrString);
 
     int r = app->exec();
 

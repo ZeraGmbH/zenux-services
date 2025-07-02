@@ -88,5 +88,5 @@ I2cCtrlCpuTemperaturePtr DemoFactoryI2cCtrl::getCpuTemperatureController()
 
 I2cCtrlReadErrorPtr DemoFactoryI2cCtrl::getErrorlogController()
 {
-    return nullptr;
+    return nullptr;     // is!!!
 }
