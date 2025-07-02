@@ -35,16 +35,16 @@ int main( int argc, char *argv[] )
     qWarning("############# Start read System-uC");
     QString ErrString;
     ctrlFactory->getErrorlogController()->readError(ErrString);
-    qWarning("System-uC error: %s", ErrString);
+    qWarning("System-uC error: %s", qPrintable(ErrString));
 
     ctrlFactory->getErrorlogController()->readError(ErrString);
-    qWarning("System-uC error: %s", ErrString);
+    qWarning("System-uC error: %s", qPrintable(ErrString));
 
     ctrlFactory->getErrorlogController()->readError(ErrString);
-    qWarning("System-uC error: %s", ErrString);
+    qWarning("System-uC error: %s", qPrintable(ErrString));
 
     ctrlFactory->getErrorlogController()->readError(ErrString);
-    qWarning("System-uC error: %s", ErrString);
+    qWarning("System-uC error: %s", qPrintable(ErrString));
 
     int r = app->exec();
 
