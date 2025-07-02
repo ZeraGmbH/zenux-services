@@ -80,9 +80,8 @@ I2cCtrlRangesPtr FactoryI2cCtrl::getRangesController()
 
 I2cCtrlReadErrorPtr FactoryI2cCtrl::getErrorlogController()
 {
-     return std::make_unique<I2cCtrlReadError>(m_deviceNode, getSystemCtrlI2cAddress(), m_debugLevel);
+     return std::make_unique<I2cCtrlReadError>(m_deviceNode, getRelaisCtrlI2cAddress(), m_debugLevel);
 }
-
 
 I2cCtrlMModePtr FactoryI2cCtrl::getMModeController()
 {

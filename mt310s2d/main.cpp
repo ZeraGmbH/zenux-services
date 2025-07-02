@@ -37,6 +37,15 @@ int main( int argc, char *argv[] )
     ctrlFactory->getErrorlogController()->readError(ErrString);
     qWarning("System-uC error: %s", ErrString);
 
+    ctrlFactory->getErrorlogController()->readError(ErrString);
+    qWarning("System-uC error: %s", ErrString);
+
+    ctrlFactory->getErrorlogController()->readError(ErrString);
+    qWarning("System-uC error: %s", ErrString);
+
+    ctrlFactory->getErrorlogController()->readError(ErrString);
+    qWarning("System-uC error: %s", ErrString);
+
     int r = app->exec();
 
     delete mt310s2d;
