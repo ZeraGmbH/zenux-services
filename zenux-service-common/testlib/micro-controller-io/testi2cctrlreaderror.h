@@ -7,7 +7,9 @@ class TestI2cCtrlReadError : public AbstractI2cCtrlReadError
 {
 public:
     TestI2cCtrlReadError();
-    ZeraMControllerIo::atmelRM readError(QString& answer) override;
+    ZeraMControllerIo::atmelRM readErrorSysCtrl(QString& answer) override;
+    ZeraMControllerIo::atmelRM readErrorRelCtrl(QString& answer) override;
+
 };
 
 

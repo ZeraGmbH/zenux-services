@@ -69,7 +69,16 @@ void AccumulatorInterface::getAccuStateOfCharge()
         m_accuStateOfCharge = QString::number(ERROR);
 
     QString ErrReply;
-    m_ctrlFactory->getErrorlogController()->readError(ErrReply);
-    qWarning("###### uC error: %s", qPrintable(ErrReply));
+    m_ctrlFactory->getErrorlogController()->readErrorSysCtrl(ErrReply);
+    if(ErrReply.length() > 1)
+        qWarning("Error Systemcontroller: %s", qPrintable(ErrReply));
+    else
+        qInfo("Error system-controller: none");
+
+    m_ctrlFactory->getErrorlogController()->readErrorRelCtrl(ErrReply);
+    if(ErrReply.length() > 1)
+        qWarning("Error relay-controller: %s", qPrintable(ErrReply));
+    else
+        qInfo("Error Systemcontroller: none");
 
 }
