@@ -3,6 +3,7 @@
 
 #include <zeramcontrollerio.h>
 #include <memory>
+#include <QObject>
 
 class AbstractI2cCtrlCriticalStatus
 {
@@ -57,7 +58,7 @@ public:
 typedef std::unique_ptr<AbstractI2cCtrlRanges> I2cCtrlRangesPtr;
 
 
-class AbstractI2cCtrlReadError
+class AbstractI2cCtrlReadError : public QObject  //isu???
 {
 public:
     virtual ~AbstractI2cCtrlReadError() = default;
