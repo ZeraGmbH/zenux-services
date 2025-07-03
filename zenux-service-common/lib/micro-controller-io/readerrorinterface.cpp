@@ -13,7 +13,7 @@ ReadErrorInterface::ReadErrorInterface(AbstractFactoryI2cCtrlPtr ctrlFactory) :
 }
 
 
-void ReadErrorInterface::printControllerErrorToLog()
+void ReadErrorInterface::printControllerErrorToLog(void)
 {
     QString ErrReply;
     m_ctrlFactory->getErrorlogController()->readErrorSystemCtrl(ErrReply);

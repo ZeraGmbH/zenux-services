@@ -17,6 +17,7 @@
 #include "abstractctrlheartbeatwait.h"
 #include "sourcecontrolsettings.h"
 #include "sourcecontrolinterface.h"
+#include "readerrorinterface.h"
 #include <QStateMachine>
 #include <QTimer>
 #include <timertemplateqt.h>
@@ -100,6 +101,7 @@ private:
     cClampInterface* m_pClampInterface = nullptr;
     AccumulatorInterface* m_accumulatorInterface = nullptr;
     SourceControlInterface* m_sourceControlInterface = nullptr;
+    ReadErrorInterface m_errorInterface;
     int m_pendingResources = 0;
 
     quint16 m_atmelInterruptMask = 0;

@@ -37,7 +37,8 @@ cMT310S2dServer::cMT310S2dServer(SettingsContainerPtr settings,
     PCBServer(std::move(settings), tcpNetworkFactory),
     m_ctrlFactory(ctrlFactory),
     m_deviceNodeFactory(deviceNodeFactory),
-    m_i2cCtrlCpuTemperature(ctrlFactory->getCpuTemperatureController())
+    m_i2cCtrlCpuTemperature(ctrlFactory->getCpuTemperatureController()),
+    m_errorInterface(ctrlFactory)
 {
     doConfiguration();
     init();
