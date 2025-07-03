@@ -61,8 +61,9 @@ class AbstractI2cCtrlReadError
 {
 public:
     virtual ~AbstractI2cCtrlReadError() = default;
-    virtual ZeraMControllerIo::atmelRM readErrorSysCtrl(QString& answer) = 0;
-    virtual ZeraMControllerIo::atmelRM readErrorRelCtrl(QString& answer) = 0;
+    virtual ZeraMControllerIo::atmelRM readErrorSystemCtrl(QString& answer) = 0;
+    virtual ZeraMControllerIo::atmelRM readErrorRelayCtrl(QString& answer) = 0;
+    virtual ZeraMControllerIo::atmelRM readErrorEmobCtrl(QString& answer) = 0;
 };
 typedef std::unique_ptr<AbstractI2cCtrlReadError> I2cCtrlReadErrorPtr;
 

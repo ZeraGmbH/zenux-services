@@ -6,13 +6,15 @@
 class I2cCtrlReadError : public AbstractI2cCtrlReadError
 {
 public:
-    I2cCtrlReadError(QString deviceNodeName, quint8 i2cAddressSysCtrl, quint8 i2cAddressRelCtrl, quint8 debugLevel);
-    ZeraMControllerIo::atmelRM readErrorSysCtrl(QString &errorReply) override;
-    ZeraMControllerIo::atmelRM readErrorRelCtrl(QString &errorReply) override;
+    I2cCtrlReadError(QString deviceNodeName, quint8 i2cAddressSystemCtrl, quint8 i2cAddressRelayCtrl, quint8 i2cAddressEmobCtrl, quint8 debugLevel);
+    ZeraMControllerIo::atmelRM readErrorSystemCtrl(QString &errorReply) override;
+    ZeraMControllerIo::atmelRM readErrorRelayCtrl(QString &errorReply) override;
+    ZeraMControllerIo::atmelRM readErrorEmobCtrl(QString &errorReply) override;
 
 private:
-    ZeraMControllerIo m_ctrlIoSysCtrl;
-    ZeraMControllerIo m_ctrlIoRelCtrl;
+    ZeraMControllerIo m_ctrlIoSystemCtrl;
+    ZeraMControllerIo m_ctrlIoRelayCtrl;
+    ZeraMControllerIo m_ctrlIoEmobCtrl;
 };
 
 

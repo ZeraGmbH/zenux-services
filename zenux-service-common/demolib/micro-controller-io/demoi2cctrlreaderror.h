@@ -8,8 +8,9 @@ class DemoI2cCtrlReadError : public AbstractI2cCtrlReadError
 {
 public:
     DemoI2cCtrlReadError();
-    ZeraMControllerIo::atmelRM readErrorSysCtrl(QString& answer) override;
-    ZeraMControllerIo::atmelRM readErrorRelCtrl(QString& answer) override;
+    ZeraMControllerIo::atmelRM readErrorSystemCtrl(QString& answer) override;
+    ZeraMControllerIo::atmelRM readErrorRelayCtrl(QString& answer) override;
+    ZeraMControllerIo::atmelRM readErrorEmobCtrl(QString& answer) override;
 };
 
 
