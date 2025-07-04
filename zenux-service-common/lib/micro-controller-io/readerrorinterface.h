@@ -14,6 +14,7 @@ public:
 private:
     AbstractFactoryI2cCtrlPtr m_ctrlFactory;
     TimerTemplateQtPtr m_pollingTimer;
+    qint8 currentDevice = 0;
 
 public slots:
     void printControllerErrorToLog(void);
