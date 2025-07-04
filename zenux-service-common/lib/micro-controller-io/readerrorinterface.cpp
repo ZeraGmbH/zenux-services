@@ -13,37 +13,39 @@ ReadErrorInterface::ReadErrorInterface(AbstractFactoryI2cCtrlPtr ctrlFactory) :
     m_pollingTimer->start();
 }
 
-
 void ReadErrorInterface::printControllerErrorToLog(void)
 {
     QString ErrReply;
     switch (currentDevice) {
     case 0:
-        m_ctrlFactory->getErrorlogController()->readErrorSystemCtrl(ErrReply);
-        if(ErrReply.length() > 1)
-            qWarning("Error System-controller: %s", qPrintable(ErrReply));
-        else
-            qInfo("Error System-controller: none");
+        if(m_ctrlFactory->getErrorlogController()->readErrorSystemCtrl(ErrReply) == ZeraMControllerIo::atmelRM::cmddone) {
+            if(ErrReply.length() > 1)
+                qWarning("Error System-controller: %s", qPrintable(ErrReply));
+            else
+                qInfo("Error System-controller: none");
+        }
         break;
 
     case 1:
-        m_ctrlFactory->getErrorlogController()->readErrorRelayCtrl(ErrReply);
-        if(ErrReply.length() > 1)
-            qWarning("Error Relay-controller: %s", qPrintable(ErrReply));
-        else
-            qInfo("Error Relay-controller: none");
+        if(m_ctrlFactory->getErrorlogController()->readErrorRelayCtrl(ErrReply) == ZeraMControllerIo::atmelRM::cmddone) {
+            if(ErrReply.length() > 1)
+                qWarning("Error Relay-controller: %s", qPrintable(ErrReply));
+            else
+                qInfo("Error Relay-controller: none");
+        }
         break;
 
     case 2:
-        m_ctrlFactory->getErrorlogController()->readErrorEmobCtrl(ErrReply);
-        if(ErrReply.length() > 1)
-            qWarning("Error Emob-controller: %s", qPrintable(ErrReply));
-        else
-            qInfo("Error Emob-controller: none");
+        if(m_ctrlFactory->getErrorlogController()->readErrorEmobCtrl(ErrReply) == ZeraMControllerIo::atmelRM::cmddone) {
+            if(ErrReply.length() > 1)
+                qWarning("Error Emob-controller: %s", qPrintable(ErrReply));
+            else
+                qInfo("Error Emob-controller: none");
+        }
         break;
 
     default:
-        qWarning("Unvalid value currentDevice");
+        qWarning("Unvalid value 'currentDevice'");
         break;
     }
     currentDevice++;
