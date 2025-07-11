@@ -24,6 +24,8 @@ void ReadErrorInterface::printControllerErrorToLog(void)
             else
                 qInfo("Error System-controller: none");
         }
+        else
+            qWarning("Reading failed 'Error System-controller'");
         break;
 
     case 1:
@@ -33,6 +35,8 @@ void ReadErrorInterface::printControllerErrorToLog(void)
             else
                 qInfo("Error Relay-controller: none");
         }
+        else
+            qWarning("Reading failed 'Error Relay-controller'");
         break;
 
     case 2:
@@ -42,6 +46,8 @@ void ReadErrorInterface::printControllerErrorToLog(void)
             else
                 qInfo("Error Emob-controller: none");
         }
+        else
+            qWarning("Reading failed 'Error Emob-controller'");
         break;
 
     default:

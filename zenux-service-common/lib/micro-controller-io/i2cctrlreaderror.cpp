@@ -1,4 +1,5 @@
 #include "i2cctrlreaderror.h"
+#include "zeramcontrolleriotemplate.h"
 
 I2cCtrlReadError::I2cCtrlReadError(QString deviceNodeName, quint8 i2cAddressSystemCtrl, quint8 i2cAddressRelayCtrl, quint8 i2cAddressEmobCtrl, quint8 debugLevel) :
     m_ctrlIoSystemCtrl(deviceNodeName, i2cAddressSystemCtrl, debugLevel),
@@ -27,6 +28,9 @@ ZeraMControllerIoTemplate::atmelRM I2cCtrlReadError::readErrorRelayCtrl(QString 
 
 ZeraMControllerIoTemplate::atmelRM I2cCtrlReadError::readErrorEmobCtrl(QString &errorReply)
 {
-    return m_ctrlIoEmobCtrl.readVariableLenText(hwGetErrorEmoblCtrl, errorReply);
+    // Emob does not yet support cmd read-error
+    // Also I2C must be connected to Linux for reading (and after disconnected)
+    //return m_ctrlIoEmobCtrl.readVariableLenText(hwGetErrorEmoblCtrl, errorReply);
+    return ZeraMControllerIoTemplate::atmelRM::cmdfault;
 }
 
