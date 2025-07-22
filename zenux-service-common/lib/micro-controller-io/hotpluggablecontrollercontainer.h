@@ -17,6 +17,7 @@ public:
     HotPluggableControllerContainer(I2cSettings *i2cSettings, AbstractFactoryI2cCtrlPtr ctrlFactory);
     void startActualizeEmobControllers(quint16 bitmaskAvailable, const cSenseSettings* senseSettings, int msWaitForApplicationStart);
     QVector<I2cCtrlCommonInfoPtrShared> getCurrentCommonControllers();
+    QVector<I2cCtrlEMOBPtr> getCurrentEmobControllers();
 signals:
     void sigControllersChanged();
 private slots:
@@ -27,7 +28,12 @@ private:
 
     I2cSettings *m_i2cSettings;
     AbstractFactoryI2cCtrlPtr m_ctrlFactory;
-    QMap<int /* ctrlChannel */, I2cCtrlCommonInfoPtrShared> m_commonControllers;
+    struct HotControllers
+    {
+        I2cCtrlCommonInfoPtrShared m_commonController;
+        I2cCtrlEMOBPtr m_emobController;
+    };
+    QMap<int /* ctrlChannel */, HotControllers> m_controllers;
     struct PendingChannelInfo
     {
         ZeraMControllerBootloaderStopperPtr m_BootloaderStopper;

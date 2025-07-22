@@ -31,9 +31,9 @@ void HotPluggableControllerContainer::startActualizeEmobControllers(quint16 bitm
                 qInfo("Remove pending/not yet booted controller on channel %i", ctrlChannel);
                 m_pendingBootloaderStoppers.remove(ctrlChannel);
             }
-            if(m_commonControllers.contains(ctrlChannel)) {
+            if(m_controllers.contains(ctrlChannel)) {
                 qInfo("Remove controller on channel %i", ctrlChannel);
-                m_commonControllers.remove(ctrlChannel);
+                m_controllers.remove(ctrlChannel);
                 emit sigControllersChanged();
             }
         }
@@ -59,15 +59,23 @@ bool HotPluggableControllerContainer::isChannelKnown(int ctrlChannel)
 {
     return
             m_pendingBootloaderStoppers.contains(ctrlChannel) ||
-            m_commonControllers.contains(ctrlChannel) ||
+            m_controllers.contains(ctrlChannel) ||
             m_ChannelsWithoutController.contains(ctrlChannel);
 }
 
 QVector<I2cCtrlCommonInfoPtrShared> HotPluggableControllerContainer::getCurrentCommonControllers()
 {
     QVector<I2cCtrlCommonInfoPtrShared> controllers;
-    for(const auto &ctrl : qAsConst(m_commonControllers))
-        controllers.append(ctrl);
+    for(const auto &ctrl : qAsConst(m_controllers))
+        controllers.append(ctrl.m_commonController);
+    return controllers;
+}
+
+QVector<I2cCtrlEMOBPtr> HotPluggableControllerContainer::getCurrentEmobControllers()
+{
+    QVector<I2cCtrlEMOBPtr> controllers;
+    for(const auto &ctrl : qAsConst(m_controllers))
+        controllers.append(ctrl.m_emobController);
     return controllers;
 }
 
@@ -75,15 +83,17 @@ void HotPluggableControllerContainer::onBootloaderStopAssumed(int ctrlChannel)
 {
     qInfo("Bootloader stopped or not available. Try controller version read on channel %i...", ctrlChannel);
     if(m_pendingBootloaderStoppers.contains(ctrlChannel)) {
-        I2cCtrlCommonInfoPtrShared ctrl = m_ctrlFactory->getCommonInfoController(
+        I2cCtrlCommonInfoPtrShared commonCtrl = m_ctrlFactory->getCommonInfoController(
             AbstractFactoryI2cCtrl::CTRL_TYPE_EMOB,
             m_pendingBootloaderStoppers[ctrlChannel].m_nMuxChannelNo);
         m_pendingBootloaderStoppers.remove(ctrlChannel);
         QString version;
-        ZeraMControllerIo::atmelRM result = ctrl->readCTRLVersion(version);
+        ZeraMControllerIo::atmelRM result = commonCtrl->readCTRLVersion(version);
         if(result == ZeraMControllerIo::cmddone && !version.isEmpty()) {
             qInfo("Version %s read for channel %i - add controller", qPrintable(version), ctrlChannel);
-            m_commonControllers[ctrlChannel] = ctrl;
+            I2cCtrlEMOBPtr emobCtrl = m_ctrlFactory->getEmobController(m_pendingBootloaderStoppers[ctrlChannel].m_nMuxChannelNo);
+            HotControllers controllers{commonCtrl, emobCtrl};
+            m_controllers[ctrlChannel] = controllers;
             emit sigControllersChanged();
         }
         else {
