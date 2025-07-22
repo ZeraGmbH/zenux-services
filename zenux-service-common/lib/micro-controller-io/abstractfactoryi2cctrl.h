@@ -26,9 +26,10 @@ public:
     virtual I2cCtrlMModePtr getMModeController() = 0;
     virtual I2cCtrlPllPtr getPllController() = 0;
     virtual I2cCtrlClampStatusPtr getClampStatusController() = 0;
+    virtual I2cCtrlCpuTemperaturePtr getCpuTemperatureController() = 0;
+    virtual I2cCtrlEMOBPtr getEmobController(quint8 muxChannel) = 0;
     // TODO: Merge zera-microcontroller bootloader here
     virtual I2cCtrlBootloaderPtr getBootloaderController() = 0;
-    virtual I2cCtrlCpuTemperaturePtr getCpuTemperatureController() = 0;
 };
 
 typedef std::shared_ptr<AbstractFactoryI2cCtrl> AbstractFactoryI2cCtrlPtr;

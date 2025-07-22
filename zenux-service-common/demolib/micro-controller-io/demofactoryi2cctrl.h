@@ -18,8 +18,9 @@ public:
     I2cCtrlMModePtr getMModeController() override;
     I2cCtrlPllPtr getPllController() override;
     I2cCtrlClampStatusPtr getClampStatusController() override;
-    I2cCtrlBootloaderPtr getBootloaderController() override;
     I2cCtrlCpuTemperaturePtr getCpuTemperatureController() override;
+    I2cCtrlEMOBPtr getEmobController(quint8 muxChannel) override;
+    I2cCtrlBootloaderPtr getBootloaderController() override;
 private:
     SettingsContainerPtr m_settings;
     struct TPersitentControllerData

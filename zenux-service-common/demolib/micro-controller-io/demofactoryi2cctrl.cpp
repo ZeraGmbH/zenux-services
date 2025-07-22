@@ -1,5 +1,6 @@
 #include "demofactoryi2cctrl.h"
 #include "controllertypename.h"
+#include "mocki2cctrlemob.h"
 #include "mocki2cctrlcommoninfo.h"
 #include "mockctrlheartbeatwait.h"
 #include "mocki2cctrlbootloader.h"
@@ -76,12 +77,19 @@ I2cCtrlClampStatusPtr DemoFactoryI2cCtrl::getClampStatusController()
     return std::make_unique<MockI2cCtrlClampStatus>();
 }
 
+I2cCtrlCpuTemperaturePtr DemoFactoryI2cCtrl::getCpuTemperatureController()
+{
+    return std::make_unique<DemoI2cCtrlCpuTemperature>();
+}
+
+I2cCtrlEMOBPtr DemoFactoryI2cCtrl::getEmobController(quint8 muxChannel)
+{
+    Q_UNUSED(muxChannel)
+    return std::make_unique<MockI2cCtrlEMOB>();
+}
+
 I2cCtrlBootloaderPtr DemoFactoryI2cCtrl::getBootloaderController()
 {
     return std::make_unique<MockI2cCtrlBootloader>();
 }
 
-I2cCtrlCpuTemperaturePtr DemoFactoryI2cCtrl::getCpuTemperatureController()
-{
-    return std::make_unique<DemoI2cCtrlCpuTemperature>();
-}

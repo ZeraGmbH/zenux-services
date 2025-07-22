@@ -92,16 +92,6 @@ public:
 };
 typedef std::unique_ptr<AbstractI2cCtrlClampStatus> I2cCtrlClampStatusPtr;
 
-class AbstractI2cCtrlBootloader
-{
-public:
-    virtual ~AbstractI2cCtrlBootloader() = default;
-    virtual ZeraMControllerIo::atmelRM bootloaderStartProgram() = 0;
-    virtual ZeraMControllerIo::atmelRM bootloaderLoadFlash(cIntelHexFileIO& ihxFIO) = 0;
-};
-typedef std::unique_ptr<AbstractI2cCtrlBootloader> I2cCtrlBootloaderPtr;
-
-
 class AbstractI2cCtrlCpuTemperature
 {
 public:
@@ -111,5 +101,22 @@ public:
 typedef std::unique_ptr<AbstractI2cCtrlCpuTemperature> I2cCtrlCpuTemperaturePtr;
 
 
+class AbstractI2cCtrlEMOB
+{
+public:
+    virtual ~AbstractI2cCtrlEMOB() = default;
+    virtual ZeraMControllerIo::atmelRM sendPushbuttonPress() = 0;
+};
+typedef std::shared_ptr<AbstractI2cCtrlEMOB> I2cCtrlEMOBPtr;
+
+
+class AbstractI2cCtrlBootloader
+{
+public:
+    virtual ~AbstractI2cCtrlBootloader() = default;
+    virtual ZeraMControllerIo::atmelRM bootloaderStartProgram() = 0;
+    virtual ZeraMControllerIo::atmelRM bootloaderLoadFlash(cIntelHexFileIO& ihxFIO) = 0;
+};
+typedef std::unique_ptr<AbstractI2cCtrlBootloader> I2cCtrlBootloaderPtr;
 
 #endif // ABSTRACTCONTROLLERS_H

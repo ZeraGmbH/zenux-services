@@ -23,8 +23,9 @@ public:
     I2cCtrlMModePtr getMModeController() override { return nullptr; }
     I2cCtrlPllPtr getPllController() override { return nullptr; }
     I2cCtrlClampStatusPtr getClampStatusController() override { return nullptr; }
-    I2cCtrlBootloaderPtr getBootloaderController() override { return nullptr; }
     I2cCtrlCpuTemperaturePtr getCpuTemperatureController() override { return nullptr; }
+    I2cCtrlEMOBPtr getEmobController(quint8) override { return nullptr; }
+    I2cCtrlBootloaderPtr getBootloaderController() override { return nullptr; }
 private:
     I2cSettings *m_i2cSettings;
     int m_ctrlInstanceCount = 0;

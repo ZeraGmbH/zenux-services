@@ -9,6 +9,7 @@
 #include "demoi2cctrlaccu.h"
 #include "demoi2cctrldeviceident.h"
 #include "demoi2cctrlranges.h"
+#include "mocki2cctrlemob.h"
 #include "mocki2cctrlmmode.h"
 #include "testi2cctrlpll.h"
 #include "mocki2cctrlclampstatus.h"
@@ -76,12 +77,18 @@ I2cCtrlClampStatusPtr TestFactoryI2cCtrlCriticalStatus::getClampStatusController
     return std::make_unique<MockI2cCtrlClampStatus>();
 }
 
-I2cCtrlBootloaderPtr TestFactoryI2cCtrlCriticalStatus::getBootloaderController()
+I2cCtrlEMOBPtr TestFactoryI2cCtrlCriticalStatus::getEmobController(quint8 muxChannel)
 {
-    return std::make_unique<MockI2cCtrlBootloader>();
+    Q_UNUSED(muxChannel)
+    return std::make_unique<MockI2cCtrlEMOB>();
 }
 
 I2cCtrlCpuTemperaturePtr TestFactoryI2cCtrlCriticalStatus::getCpuTemperatureController()
 {
     return std::make_unique<DemoI2cCtrlCpuTemperature>();
+}
+
+I2cCtrlBootloaderPtr TestFactoryI2cCtrlCriticalStatus::getBootloaderController()
+{
+    return std::make_unique<MockI2cCtrlBootloader>();
 }

@@ -9,6 +9,7 @@
 #include "i2cctrlcriticalstatus.h"
 #include "i2cctrldeviceidentificationdata.h"
 #include "i2cctrleeprompermission.h"
+#include "i2cctrlemob.h"
 #include "i2cctrlmmode.h"
 #include "i2cctrlpll.h"
 #include "i2cctrlranges.h"
@@ -92,6 +93,18 @@ I2cCtrlClampStatusPtr FactoryI2cCtrl::getClampStatusController()
     return std::make_unique<I2cCtrlClampStatus>(m_deviceNode, getRelaisCtrlI2cAddress(), m_debugLevel);
 }
 
+I2cCtrlCpuTemperaturePtr FactoryI2cCtrl::getCpuTemperatureController()
+{
+    return std::make_unique<I2cCtrlCpuTemperature>(m_deviceNode, getSystemCtrlI2cAddress(), m_debugLevel);
+}
+
+I2cCtrlEMOBPtr FactoryI2cCtrl::getEmobController(quint8 muxChannel)
+{
+    return std::make_shared<I2cCtrlEMOB>(m_deviceNode, getEmobCtrlI2cAddress(),
+                                         getEmobMuxI2cAddress(), muxChannel,
+                                         m_debugLevel);
+}
+
 I2cCtrlBootloaderPtr FactoryI2cCtrl::getBootloaderController()
 {
     return std::make_unique<I2cCtrlBootloader>(m_deviceNode, getRelaisCtrlI2cAddress(), m_debugLevel);
@@ -115,10 +128,4 @@ quint8 FactoryI2cCtrl::getEmobCtrlI2cAddress()
 quint8 FactoryI2cCtrl::getEmobMuxI2cAddress()
 {
     return m_i2cSettings->getI2CAdress(i2cSettings::muxerI2cAddress);
-}
-
-
-I2cCtrlCpuTemperaturePtr FactoryI2cCtrl::getCpuTemperatureController()          // ist das richtig???
-{
-    return std::make_unique<I2cCtrlCpuTemperature>(m_deviceNode, getSystemCtrlI2cAddress(), m_debugLevel);
 }
