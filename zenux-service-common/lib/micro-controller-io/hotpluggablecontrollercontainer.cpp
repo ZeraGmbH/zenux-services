@@ -31,9 +31,9 @@ void HotPluggableControllerContainer::startActualizeEmobControllers(quint16 bitm
                 qInfo("Remove pending/not yet booted controller on channel %i", ctrlChannel);
                 m_pendingBootloaderStoppers.remove(ctrlChannel);
             }
-            if(m_Controllers.contains(ctrlChannel)) {
+            if(m_commonControllers.contains(ctrlChannel)) {
                 qInfo("Remove controller on channel %i", ctrlChannel);
-                m_Controllers.remove(ctrlChannel);
+                m_commonControllers.remove(ctrlChannel);
                 emit sigControllersChanged();
             }
         }
@@ -59,14 +59,14 @@ bool HotPluggableControllerContainer::isChannelKnown(int ctrlChannel)
 {
     return
             m_pendingBootloaderStoppers.contains(ctrlChannel) ||
-            m_Controllers.contains(ctrlChannel) ||
+            m_commonControllers.contains(ctrlChannel) ||
             m_ChannelsWithoutController.contains(ctrlChannel);
 }
 
-QVector<I2cCtrlCommonInfoPtrShared> HotPluggableControllerContainer::getCurrentControllers()
+QVector<I2cCtrlCommonInfoPtrShared> HotPluggableControllerContainer::getCurrentCommonControllers()
 {
     QVector<I2cCtrlCommonInfoPtrShared> controllers;
-    for(const auto &ctrl : qAsConst(m_Controllers))
+    for(const auto &ctrl : qAsConst(m_commonControllers))
         controllers.append(ctrl);
     return controllers;
 }
@@ -83,7 +83,7 @@ void HotPluggableControllerContainer::onBootloaderStopAssumed(int ctrlChannel)
         ZeraMControllerIo::atmelRM result = ctrl->readCTRLVersion(version);
         if(result == ZeraMControllerIo::cmddone && !version.isEmpty()) {
             qInfo("Version %s read for channel %i - add controller", qPrintable(version), ctrlChannel);
-            m_Controllers[ctrlChannel] = ctrl;
+            m_commonControllers[ctrlChannel] = ctrl;
             emit sigControllersChanged();
         }
         else {
