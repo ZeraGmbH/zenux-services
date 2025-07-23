@@ -13,22 +13,14 @@ I2cCtrlEMOB::I2cCtrlEMOB(QString deviceNodeName,
 
 enum hw_cmdcode
 {
-    hwSendPushbuttonPress = 0x0210
+    hwSendPushbuttonPress = 0x0041
 };
 
 ZeraMControllerIoTemplate::atmelRM I2cCtrlEMOB::sendPushbuttonPress()
 {
     I2cMuxerScopedOnOff i2cMuxerEnabled(m_i2cMuxer);
-
     ZeraMControllerIo::atmelRM ret;
-
-    quint32 ui32Temp = 0;
-    quint8 ba[4];
-    ba[0] = (ui32Temp >> 24) & 0xFF;
-    ba[1] = (ui32Temp >> 16) & 0xFF;
-    ba[2] = (ui32Temp >> 8) & 0xFF;
-    ba[3] = (ui32Temp & 0xFF);
-    hw_cmd CMD(hwSendPushbuttonPress, 0, ba, 4);
+    hw_cmd CMD(hwSendPushbuttonPress, 0, nullptr, 0);
     m_ctrlIo.writeCommand(&CMD);
     ret = m_ctrlIo.getErrorMaskText() == 0 ? ZeraMControllerIo::cmddone : ZeraMControllerIo::cmdexecfault;
     return ret;
