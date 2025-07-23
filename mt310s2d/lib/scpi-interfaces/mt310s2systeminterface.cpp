@@ -387,20 +387,24 @@ QString Mt310s2SystemInterface::emobPushButtonPress(const QString &scpiCmd)
     if (!cmd.isCommand(1))
         return ZSCPI::scpiAnswer[ZSCPI::nak];
     else {
+        qWarning("Command -> OK");
         bool ok = false;
         int channel = cmd.getParam(0).toInt(&ok);
         if(!ok)
             return ZSCPI::scpiAnswer[ZSCPI::errval];
         else {
+            qWarning("Channel -> OK");
             QVector<I2cCtrlEMOBPtr> emobControllers = m_hotPluggableControllerContainer->getCurrentEmobControllers();
             if(emobControllers.size() == 1) {  // it exists an E-mob controller
+                qWarning("One EMOB controller found -> OK");
                 for(auto controller : qAsConst(emobControllers)) {
                     //controller->sendPushbuttonPress();
+                    qWarning("Send command...");
                     return QString("0x%1").arg(controller->sendPushbuttonPress());
                 }
             }
             else
-                return ZSCPI::scpiAnswer[ZSCPI::errval];
+                qWarning("Unequal one EMOB controller found -> False");
         }
     }
     return ZSCPI::scpiAnswer[ZSCPI::errval];
