@@ -5700,6 +5700,9 @@
      <XML ScpiPath="SYSTEM:ADJUSTMENT:CLAMP:XML" Type="Query,Command+Par"/>
     </CLAMP>
    </ADJUSTMENT>
+   <EMOB Type="Node">
+    <PBPRESS ScpiPath="SYSTEM:EMOB:PBPRESS" Type="Command+Par"/>
+   </EMOB>
    <INTERFACE Type="Node">
     <READ ScpiPath="SYSTEM:INTERFACE:READ" Type="Query"/>
    </INTERFACE>

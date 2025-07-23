@@ -51,6 +51,7 @@ void Mt310s2SystemInterface::initSCPIConnection(QString leadingNodes)
         addDelegate(QString("%1SYSTEM:ADJUSTMENT:XML").arg(leadingNodes), "READ", SCPI::isCmdwP, m_scpiInterface, SystemSystem::cmdAdjXMLRead);
     // End Obsolete???
     addDelegate(QString("%1SYSTEM:ADJUSTMENT:FLASH").arg(leadingNodes), "CHKSUM", SCPI::isQuery, m_scpiInterface, SystemSystem::cmdAdjFlashChksum);
+    addDelegate(QString("%1SYSTEM:EMOB").arg(leadingNodes), "PBPRESS", SCPI::isCmdwP, m_scpiInterface, SystemSystem::cmdEmobPushButtonPress);
     addDelegate(QString("%1SYSTEM:INTERFACE").arg(leadingNodes), "READ", SCPI::isQuery, m_scpiInterface, SystemSystem::cmdInterfaceRead);
 }
 
@@ -115,6 +116,9 @@ void Mt310s2SystemInterface::executeProtoScpi(int cmdCode, ProtonetCommandPtr pr
         break;
     case SystemSystem::cmdAdjFlashChksum:
         protoCmd->m_sOutput = m_AdjFlashChksum(protoCmd->m_sInput);
+        break;
+    case SystemSystem::cmdEmobPushButtonPress:
+        protoCmd->m_sOutput = emobPushButtonPress(protoCmd->m_sInput);
         break;
     case SystemSystem::cmdInterfaceRead:
         protoCmd->m_sOutput = CommonScpiMethods::handleScpiInterfaceRead(m_scpiInterface, protoCmd->m_sInput);
@@ -374,6 +378,32 @@ QString Mt310s2SystemInterface::m_AdjFlashChksum(QString &sInput)
         return QString("0x%1").arg(m_senseInterface->getAdjChecksum()); // hex output
     else
         return ZSCPI::scpiAnswer[ZSCPI::nak];
+}
+
+QString Mt310s2SystemInterface::emobPushButtonPress(const QString &scpiCmd)
+{
+    cSCPICommand cmd = scpiCmd;
+
+    if (!cmd.isCommand(1))
+        return ZSCPI::scpiAnswer[ZSCPI::nak];
+    else {
+        bool ok = false;
+        int channel = cmd.getParam(0).toInt(&ok);
+        if(!ok)
+            return ZSCPI::scpiAnswer[ZSCPI::errval];
+        else {
+            QVector<I2cCtrlEMOBPtr> emobControllers = m_hotPluggableControllerContainer->getCurrentEmobControllers();
+            if(emobControllers.size() == 1) {  // it exists an E-mob controller
+                for(auto controller : qAsConst(emobControllers)) {
+                    //controller->sendPushbuttonPress();
+                    return QString("0x%1").arg(controller->sendPushbuttonPress());
+                }
+            }
+            else
+                return ZSCPI::scpiAnswer[ZSCPI::errval];
+        }
+    }
+    return ZSCPI::scpiAnswer[ZSCPI::errval];
 }
 
 void Mt310s2SystemInterface::updateAllCtrlVersionsJson()

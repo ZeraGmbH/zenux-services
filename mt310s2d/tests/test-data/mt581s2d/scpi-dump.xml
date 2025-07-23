@@ -7023,6 +7023,9 @@
      <XML ScpiPath="SYSTEM:ADJUSTMENT:CLAMP:XML" Type="Query,Command+Par"/>
     </CLAMP>
    </ADJUSTMENT>
+   <EMOB Type="Node">
+    <PBPRESS ScpiPath="SYSTEM:EMOB:PBPRESS" Type="Command+Par"/>
+   </EMOB>
    <INTERFACE Type="Node">
     <READ ScpiPath="SYSTEM:INTERFACE:READ" Type="Query"/>
    </INTERFACE>
@@ -7135,8 +7138,8 @@
   </HKEY>
   <UISRC Type="Model,Node">
    <CAPABILITIES ScpiPath="UISRC:CAPABILITIES" Type="Query"/>
-   <STATE Type="Query" ScpiPath="UISRC:STATE"/>
-   <LOAD Type="Query,Command+Par" ScpiPath="UISRC:LOAD"/>
+   <STATE ScpiPath="UISRC:STATE" Type="Query"/>
+   <LOAD ScpiPath="UISRC:LOAD" Type="Query,Command+Par"/>
   </UISRC>
  </MODELS>
 </MODELLIST>
