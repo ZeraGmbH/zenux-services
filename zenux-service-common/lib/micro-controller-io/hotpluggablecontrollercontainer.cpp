@@ -83,15 +83,16 @@ void HotPluggableControllerContainer::onBootloaderStopAssumed(int ctrlChannel)
 {
     qInfo("Bootloader stopped or not available. Try controller version read on channel %i...", ctrlChannel);
     if(m_pendingBootloaderStoppers.contains(ctrlChannel)) {
+        qint8 muxChannelNo = m_pendingBootloaderStoppers[ctrlChannel].m_nMuxChannelNo;
         I2cCtrlCommonInfoPtrShared commonCtrl = m_ctrlFactory->getCommonInfoController(
             AbstractFactoryI2cCtrl::CTRL_TYPE_EMOB,
-            m_pendingBootloaderStoppers[ctrlChannel].m_nMuxChannelNo);
+            muxChannelNo);
         m_pendingBootloaderStoppers.remove(ctrlChannel);
         QString version;
         ZeraMControllerIo::atmelRM result = commonCtrl->readCTRLVersion(version);
         if(result == ZeraMControllerIo::cmddone && !version.isEmpty()) {
             qInfo("Version %s read for channel %i - add controller", qPrintable(version), ctrlChannel);
-            I2cCtrlEMOBPtr emobCtrl = m_ctrlFactory->getEmobController(m_pendingBootloaderStoppers[ctrlChannel].m_nMuxChannelNo);
+            I2cCtrlEMOBPtr emobCtrl = m_ctrlFactory->getEmobController(muxChannelNo);
             HotControllers controllers{commonCtrl, emobCtrl};
             m_controllers[ctrlChannel] = controllers;
             emit sigControllersChanged();
