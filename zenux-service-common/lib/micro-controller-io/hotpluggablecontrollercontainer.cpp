@@ -91,7 +91,8 @@ void HotPluggableControllerContainer::onBootloaderStopAssumed(int ctrlChannel)
         QString version;
         ZeraMControllerIo::atmelRM result = commonCtrl->readCTRLVersion(version);
         if(result == ZeraMControllerIo::cmddone && !version.isEmpty()) {
-            qInfo("Version %s read for channel %i - add controller", qPrintable(version), ctrlChannel);
+            qInfo("Version %s read for controller channel %i / mux channel %i - add controller",
+                  qPrintable(version), ctrlChannel, muxChannelNo);
             I2cCtrlEMOBPtr emobCtrl = m_ctrlFactory->getEmobController(muxChannelNo);
             HotControllers controllers{commonCtrl, emobCtrl};
             m_controllers[ctrlChannel] = controllers;
