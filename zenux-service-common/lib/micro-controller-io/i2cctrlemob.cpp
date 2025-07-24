@@ -19,9 +19,9 @@ enum hw_cmdcode
 ZeraMControllerIoTemplate::atmelRM I2cCtrlEMOB::sendPushbuttonPress()
 {
     I2cMuxerScopedOnOff i2cMuxerEnabled(m_i2cMuxer);
-    ZeraMControllerIo::atmelRM ret;
     hw_cmd CMD(hwSendPushbuttonPress, 0, nullptr, 0);
     m_ctrlIo.writeCommand(&CMD);
-    ret = m_ctrlIo.getErrorMaskText() == 0 ? ZeraMControllerIo::cmddone : ZeraMControllerIo::cmdexecfault;
-    return ret;
+    if (m_ctrlIo.getLastErrorMask() != 0)
+        return ZeraMControllerIo::cmdexecfault;
+    return ZeraMControllerIo::cmddone;
 }

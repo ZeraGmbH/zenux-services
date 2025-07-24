@@ -393,14 +393,12 @@ QString Mt310s2SystemInterface::emobPushButtonPress(const QString &scpiCmd)
             return ZSCPI::scpiAnswer[ZSCPI::errval];
         else {
             QVector<I2cCtrlEMOBPtr> emobControllers = m_hotPluggableControllerContainer->getCurrentEmobControllers();
-            if(emobControllers.size() == 1) {  // it exists an E-mob controller
-                qWarning("One EMOB controller found -> OK");
-                for(auto controller : qAsConst(emobControllers)) {
-                    return QString("0x%1").arg(controller->sendPushbuttonPress());
-                }
+            if (emobControllers.size() >= 1) {
+                ZeraMControllerIoTemplate::atmelRM ctrlRet = emobControllers[0]->sendPushbuttonPress();
+                if (ctrlRet != ZeraMControllerIo::cmddone)
+                    return ZSCPI::scpiAnswer[ZSCPI::errexec];
+                return ZSCPI::scpiAnswer[ZSCPI::ack];
             }
-            else
-                qWarning("Unequal one EMOB controller found -> False");
         }
     }
     return ZSCPI::scpiAnswer[ZSCPI::errval];
