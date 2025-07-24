@@ -51,7 +51,7 @@ void Mt310s2SystemInterface::initSCPIConnection(QString leadingNodes)
         addDelegate(QString("%1SYSTEM:ADJUSTMENT:XML").arg(leadingNodes), "READ", SCPI::isCmdwP, m_scpiInterface, SystemSystem::cmdAdjXMLRead);
     // End Obsolete???
     addDelegate(QString("%1SYSTEM:ADJUSTMENT:FLASH").arg(leadingNodes), "CHKSUM", SCPI::isQuery, m_scpiInterface, SystemSystem::cmdAdjFlashChksum);
-    addDelegate(QString("%1SYSTEM:EMOB").arg(leadingNodes), "PBPRESS", SCPI::isCmdwP, m_scpiInterface, SystemSystem::cmdEmobPushButtonPress);
+    addDelegate(QString("%1SYSTEM:EMOB").arg(leadingNodes), "PBPRESS", SCPI::isCmd, m_scpiInterface, SystemSystem::cmdEmobPushButtonPress);
     addDelegate(QString("%1SYSTEM:INTERFACE").arg(leadingNodes), "READ", SCPI::isQuery, m_scpiInterface, SystemSystem::cmdInterfaceRead);
 }
 
@@ -383,25 +383,16 @@ QString Mt310s2SystemInterface::m_AdjFlashChksum(QString &sInput)
 QString Mt310s2SystemInterface::emobPushButtonPress(const QString &scpiCmd)
 {
     cSCPICommand cmd = scpiCmd;
-
-    if (!cmd.isCommand(1))
-        return ZSCPI::scpiAnswer[ZSCPI::nak];
-    else {
-        bool ok = false;
-        int channel = cmd.getParam(0).toInt(&ok);
-        if(!ok)
-            return ZSCPI::scpiAnswer[ZSCPI::errval];
-        else {
-            QVector<I2cCtrlEMOBPtr> emobControllers = m_hotPluggableControllerContainer->getCurrentEmobControllers();
-            if (emobControllers.size() >= 1) {
-                ZeraMControllerIoTemplate::atmelRM ctrlRet = emobControllers[0]->sendPushbuttonPress();
-                if (ctrlRet != ZeraMControllerIo::cmddone)
-                    return ZSCPI::scpiAnswer[ZSCPI::errexec];
-                return ZSCPI::scpiAnswer[ZSCPI::ack];
-            }
+    if (cmd.isCommand(1) && (cmd.getParam(0) == "")) {
+        QVector<I2cCtrlEMOBPtr> emobControllers = m_hotPluggableControllerContainer->getCurrentEmobControllers();
+        if (emobControllers.size() >= 1) {
+            ZeraMControllerIoTemplate::atmelRM ctrlRet = emobControllers[0]->sendPushbuttonPress();
+            if (ctrlRet != ZeraMControllerIo::cmddone)
+                return ZSCPI::scpiAnswer[ZSCPI::errexec];
+            return ZSCPI::scpiAnswer[ZSCPI::ack];
         }
     }
-    return ZSCPI::scpiAnswer[ZSCPI::errval];
+    return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 void Mt310s2SystemInterface::updateAllCtrlVersionsJson()

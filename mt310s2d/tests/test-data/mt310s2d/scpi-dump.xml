@@ -5701,7 +5701,7 @@
     </CLAMP>
    </ADJUSTMENT>
    <EMOB Type="Node">
-    <PBPRESS ScpiPath="SYSTEM:EMOB:PBPRESS" Type="Command+Par"/>
+    <PBPRESS ScpiPath="SYSTEM:EMOB:PBPRESS" Type="Command"/>
    </EMOB>
    <INTERFACE Type="Node">
     <READ ScpiPath="SYSTEM:INTERFACE:READ" Type="Query"/>
