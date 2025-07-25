@@ -591,6 +591,16 @@ quint32 cPCBInterfacePrivate::setClampAdjustmentData(QString xmlclamp)
     return msgnr;
 }
 
+quint32 cPCBInterfacePrivate::activatePushButton()
+{
+    QString cmd;
+    quint32 msgnr;
+
+    msgnr = sendCommand(cmd = QString("SYST:EMOB:PBPR"));
+    m_MsgNrCmdList[msgnr] = PCB::activatepushbutton;
+    return msgnr;
+}
+
 quint32 cPCBInterfacePrivate::getAccumulatorStatus()
 {
     QString cmd;
@@ -812,6 +822,7 @@ void cPCBInterfacePrivate::receiveAnswer(std::shared_ptr<ProtobufMessage::NetMes
         case PCB::setadjustpcbxml:
         case PCB::setadjustclampxml:
         case PCB::setserialnumber:
+        case PCB::activatepushbutton:
             emit q->serverAnswer(decodedAnswer.msgNr, decodedAnswer.reply, VariantConverter::returnString(decodedAnswer.msgBody));
             break;
         }
