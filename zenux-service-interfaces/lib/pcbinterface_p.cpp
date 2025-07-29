@@ -595,9 +595,8 @@ quint32 cPCBInterfacePrivate::activatePushButton()
 {
     QString cmd;
     quint32 msgnr;
-    qWarning("activatePushButton");
+
     msgnr = sendCommand(cmd = QString("SYST:EMOB:PBPR;"));
-    qWarning("msgnr: %i", msgnr);
     m_MsgNrCmdList[msgnr] = PCB::activatepushbutton;
     return msgnr;
 }
