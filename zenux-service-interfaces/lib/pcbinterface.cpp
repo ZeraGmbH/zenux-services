@@ -365,6 +365,12 @@ quint32 cPCBInterface::activatePushButton()
     return d->activatePushButton();
 }
 
+quint32 cPCBInterface::readEmobConnectionState()
+{
+    Q_D(cPCBInterface);
+    return d->readEmobConnState();
+}
+
 quint32 cPCBInterface::getAccumulatorStatus()
 {
     Q_D(cPCBInterface);

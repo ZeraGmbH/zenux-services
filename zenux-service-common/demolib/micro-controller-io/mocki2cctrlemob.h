@@ -7,6 +7,7 @@ class MockI2cCtrlEMOB : public AbstractI2cCtrlEMOB
 {
 public:
     ZeraMControllerIo::atmelRM sendPushbuttonPress() override;
+    ZeraMControllerIo::atmelRM readEmobConnectionStatus(quint8 &status) override;
 };
 
 #endif // MOCKI2CCTRLEMOB_H
