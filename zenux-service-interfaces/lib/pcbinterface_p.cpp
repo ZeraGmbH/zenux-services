@@ -601,6 +601,16 @@ quint32 cPCBInterfacePrivate::activatePushButton()
     return msgnr;
 }
 
+quint32 cPCBInterfacePrivate::readEmobConnState()
+{
+    QString cmd;
+    quint32 msgnr;
+
+    msgnr = sendCommand(cmd = QString("SYST:EMOB:CONST?"));
+    m_MsgNrCmdList[msgnr] = PCB::reademobconnectionstatus;
+    return msgnr;
+}
+
 quint32 cPCBInterfacePrivate::getAccumulatorStatus()
 {
     QString cmd;
@@ -752,6 +762,7 @@ void cPCBInterfacePrivate::receiveAnswer(std::shared_ptr<ProtobufMessage::NetMes
         case PCB::getauthorizationstatus:
         case PCB::getaccumulatorstatus:
         case PCB::getaccumulatorsoc:
+        case PCB::reademobconnectionstatus:
             emit q->serverAnswer(decodedAnswer.msgNr, decodedAnswer.reply, VariantConverter::returnInt(decodedAnswer.msgBody));
             break;
 

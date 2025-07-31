@@ -74,6 +74,7 @@ enum pcbcommands
     getserialnumber,
     setserialnumber,
     activatepushbutton,
+    reademobconnectionstatus,
 
     getaccumulatorstatus,
     getaccumulatorsoc,
@@ -168,6 +169,7 @@ public:
     quint32 getClampAdjustmentData();
     quint32 setClampAdjustmentData(QString xmlclamp);
     quint32 activatePushButton();
+    quint32 readEmobConnState();
 
     // all commands to accumulator interface
     quint32 getAccumulatorStatus();

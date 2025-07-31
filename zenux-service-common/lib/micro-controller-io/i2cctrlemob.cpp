@@ -13,7 +13,8 @@ I2cCtrlEMOB::I2cCtrlEMOB(QString deviceNodeName,
 
 enum hw_cmdcode
 {
-    hwSendPushbuttonPress = 0x0041
+    hwSendPushbuttonPress = 0x0041,
+    hwReadEmobConnectionState = 0x00FF
 };
 
 ZeraMControllerIoTemplate::atmelRM I2cCtrlEMOB::sendPushbuttonPress()
@@ -24,4 +25,21 @@ ZeraMControllerIoTemplate::atmelRM I2cCtrlEMOB::sendPushbuttonPress()
     if (m_ctrlIo.getLastErrorMask() != 0)
         return ZeraMControllerIo::cmdexecfault;
     return ZeraMControllerIo::cmddone;
+}
+
+ZeraMControllerIoTemplate::atmelRM I2cCtrlEMOB::readEmobConnectionStatus(quint8 &status)    //isu-1
+{
+    ZeraMControllerIo::atmelRM ret = ZeraMControllerIo::cmdexecfault;
+    quint8 answ[2];
+    //I2cMuxerScopedOnOff i2cMuxerEnable(m_i2cMuxer);           activate when i2c cmd is avaialble
+    //hw_cmd CMD(hwReadEmobConnectionState, 0, nullptr, 0);
+    // m_ctrlIo.writeCommand(&CMD, answ, 1);
+    // if (m_ctrlIo.getLastErrorMask() == 0) {
+    //     status = answ[0];
+    //     ret = ZeraMControllerIo::cmddone;
+    // }
+
+    ret = ZeraMControllerIo::cmddone;
+    status = 0x55;
+    return ret;
 }

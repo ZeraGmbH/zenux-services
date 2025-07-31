@@ -52,6 +52,7 @@ void Mt310s2SystemInterface::initSCPIConnection(QString leadingNodes)
     // End Obsolete???
     addDelegate(QString("%1SYSTEM:ADJUSTMENT:FLASH").arg(leadingNodes), "CHKSUM", SCPI::isQuery, m_scpiInterface, SystemSystem::cmdAdjFlashChksum);
     addDelegate(QString("%1SYSTEM:EMOB").arg(leadingNodes), "PBPRESS", SCPI::isCmd, m_scpiInterface, SystemSystem::cmdEmobPushButtonPress);
+    addDelegate(QString("%1SYSTEM:EMOB").arg(leadingNodes), "CONSTATUS", SCPI::isQuery, m_scpiInterface, SystemSystem::cmdEmobReadConnectionState);
     addDelegate(QString("%1SYSTEM:INTERFACE").arg(leadingNodes), "READ", SCPI::isQuery, m_scpiInterface, SystemSystem::cmdInterfaceRead);
 }
 
@@ -119,6 +120,9 @@ void Mt310s2SystemInterface::executeProtoScpi(int cmdCode, ProtonetCommandPtr pr
         break;
     case SystemSystem::cmdEmobPushButtonPress:
         protoCmd->m_sOutput = emobPushButtonPress(protoCmd->m_sInput);
+        break;
+    case SystemSystem::cmdEmobReadConnectionState:
+        protoCmd->m_sOutput = emobReadConnectionState(protoCmd->m_sInput);
         break;
     case SystemSystem::cmdInterfaceRead:
         protoCmd->m_sOutput = CommonScpiMethods::handleScpiInterfaceRead(m_scpiInterface, protoCmd->m_sInput);
@@ -393,6 +397,23 @@ QString Mt310s2SystemInterface::emobPushButtonPress(const QString &scpiCmd)
         }
     }
     return ZSCPI::scpiAnswer[ZSCPI::nak];
+}
+
+QString Mt310s2SystemInterface::emobReadConnectionState(const QString &scpiCmd)
+{
+    quint8 state;
+    cSCPICommand cmd = scpiCmd;
+
+    if (cmd.isQuery()) {
+        QVector<I2cCtrlEMOBPtr> emobControllers = m_hotPluggableControllerContainer->getCurrentEmobControllers();
+        if (emobControllers.size() >= 1) {
+            ZeraMControllerIoTemplate::atmelRM ctrlRet = emobControllers[0]->readEmobConnectionStatus(state);
+            if (ctrlRet == ZeraMControllerIo::cmddone) {
+                return QString::number(state);
+            }
+        }
+    }
+    return ZSCPI::scpiAnswer[ZSCPI::errexec];
 }
 
 void Mt310s2SystemInterface::updateAllCtrlVersionsJson()
