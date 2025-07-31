@@ -7025,6 +7025,7 @@
    </ADJUSTMENT>
    <EMOB Type="Node">
     <PBPRESS ScpiPath="SYSTEM:EMOB:PBPRESS" Type="Command"/>
+    <CONSTATUS ScpiPath="SYSTEM:EMOB:CONSTATUS" Type="Query"/>
    </EMOB>
    <INTERFACE Type="Node">
     <READ ScpiPath="SYSTEM:INTERFACE:READ" Type="Query"/>
