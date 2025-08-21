@@ -6,6 +6,7 @@ target_link_libraries(sec1000d
     PRIVATE
     sec1000d-lib
     service-interfaces
+    Zera::zenux-device-info
     )
 
 install(TARGETS sec1000d

@@ -1,12 +1,12 @@
 #include "sec1000d.h"
 #include "factorydevicenodesec.h"
-#include "zenuxdevicedetection.h"
+#include <zenuxdeviceinfo.h>
 #include <tcpnetworkfactory.h>
 #include <QCoreApplication>
 
 static int deduceEcUnitCount()
 {
-    const QString zenuxDevice = ZenuxDeviceDetection::getDeviceNameFromKernelParam();
+    const QString zenuxDevice = ZenuxDeviceInfo::getDeviceNameFromKernelParam();
     int ecUnitCount = cSEC1000dServer::Mtxxxs2EcUnitCount;
     if (zenuxDevice.toUpper().contains("COM5003"))
         ecUnitCount = cSEC1000dServer::Com5003EcUnitCount;
