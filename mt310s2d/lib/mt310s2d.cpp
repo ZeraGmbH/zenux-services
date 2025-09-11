@@ -383,20 +383,22 @@ void cMT310S2dServer::MTIntHandler(int)
 
 void cMT310S2dServer::startCpuTemperatureSendTimer()
 {
-    qInfo("Initialize Cpu-Temperature Timer");
-    m_1sPeriodicTimer = TimerFactoryQt::createPeriodic(1000);
-    connect(m_1sPeriodicTimer.get(), &TimerTemplateQt::sigExpired,
-            this, &cMT310S2dServer::onCpuTemperatureSend);
-    m_1sPeriodicTimer->start();
+    if (m_cpuTemperature.canGetValue()) {
+        qInfo("Initialize CPU-temperature timer for system-controller temperature notification");
+        m_1sPeriodicTimer = TimerFactoryQt::createPeriodic(1000);
+        connect(m_1sPeriodicTimer.get(), &TimerTemplateQt::sigExpired,
+                this, &cMT310S2dServer::onCpuTemperatureSend);
+        m_1sPeriodicTimer->start();
+    }
+    else
+        qWarning("CPU-temperature is not available on this device. Temperature is not send to system-controller!");
 }
 
 void cMT310S2dServer::onCpuTemperatureSend()
 {
     float temperature = m_cpuTemperature.getValue();
-    if (temperature > 0.0) {
+    if (temperature > 0.0)
         m_i2cCtrlCpuTemperature->sendCpuTemperature(temperature);
-        }
-    else {
-        qInfo("Warning: CPU-temperature not available");
-        }
+    else
+        qWarning("CPU-temperature read is less than 0°!");
 }
