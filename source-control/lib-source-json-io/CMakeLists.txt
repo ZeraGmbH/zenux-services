@@ -22,7 +22,7 @@ target_link_libraries(source-json-io-lib
     PUBLIC
     # ask linker to help us finding unresolved symbols
     "-Wl,--no-undefined"
-    zera-json-params
+    Zera::zera-json-params
     )
 
 set_target_properties(source-json-io-lib PROPERTIES VERSION ${PROJECT_VERSION})
