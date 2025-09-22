@@ -106,7 +106,7 @@ class AbstractI2cCtrlEMOB
 public:
     virtual ~AbstractI2cCtrlEMOB() = default;
     virtual ZeraMControllerIo::atmelRM sendPushbuttonPress() = 0;
-    virtual ZeraMControllerIo::atmelRM readEmobConnectionStatus(quint8 &status) = 0;
+    virtual ZeraMControllerIo::atmelRM readEmobLockState(quint8 &status) = 0;
 };
 typedef std::shared_ptr<AbstractI2cCtrlEMOB> I2cCtrlEMOBPtr;
 

@@ -74,7 +74,7 @@ enum pcbcommands
     getserialnumber,
     setserialnumber,
     activatepushbutton,
-    reademobconnectionstatus,
+    reademoblockstate,
 
     getaccumulatorstatus,
     getaccumulatorsoc,

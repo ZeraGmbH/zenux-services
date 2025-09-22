@@ -606,8 +606,8 @@ quint32 cPCBInterfacePrivate::readEmobConnState()
     QString cmd;
     quint32 msgnr;
 
-    msgnr = sendCommand(cmd = QString("SYST:EMOB:CONST?"));
-    m_MsgNrCmdList[msgnr] = PCB::reademobconnectionstatus;
+    msgnr = sendCommand(cmd = QString("SYST:EMOB:LOCKST?"));
+    m_MsgNrCmdList[msgnr] = PCB::reademoblockstate;
     return msgnr;
 }
 
@@ -762,7 +762,7 @@ void cPCBInterfacePrivate::receiveAnswer(std::shared_ptr<ProtobufMessage::NetMes
         case PCB::getauthorizationstatus:
         case PCB::getaccumulatorstatus:
         case PCB::getaccumulatorsoc:
-        case PCB::reademobconnectionstatus:
+        case PCB::reademoblockstate:
             emit q->serverAnswer(decodedAnswer.msgNr, decodedAnswer.reply, VariantConverter::returnInt(decodedAnswer.msgBody));
             break;
 
