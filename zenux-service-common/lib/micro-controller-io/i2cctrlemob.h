@@ -11,7 +11,7 @@ public:
                 quint8 i2cAddressMux, quint8 muxChannel,
                 quint8 debugLevel);
     ZeraMControllerIo::atmelRM sendPushbuttonPress() override;
-    ZeraMControllerIo::atmelRM readEmobConnectionStatus(quint8 &status) override;
+    ZeraMControllerIo::atmelRM readEmobLockState(quint8 &status) override;
 private:
     ZeraMControllerIo m_ctrlIo;
     I2cMuxerInterface::Ptr m_i2cMuxer;

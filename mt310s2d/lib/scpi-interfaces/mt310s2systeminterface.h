@@ -25,7 +25,7 @@ enum SystemCommands
     cmdAdjXMLRead,
     cmdAdjFlashChksum,
     cmdEmobPushButtonPress,
-    cmdEmobReadConnectionState,
+    cmdEmobReadLockState,
     cmdInterfaceRead,
 };
 }
@@ -66,7 +66,7 @@ private:
     QString m_AdjXMLRead(QString& sInput);
     QString m_AdjFlashChksum(QString& sInput);
     QString emobPushButtonPress(const QString& scpiCmd);
-    QString emobReadConnectionState(const QString& scpiCmd);
+    QString emobReadLockState(const QString& scpiCmd);
 
     void m_genAnswer(int select, QString& answer);
 
