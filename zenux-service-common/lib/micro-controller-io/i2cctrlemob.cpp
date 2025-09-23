@@ -33,7 +33,7 @@ ZeraMControllerIoTemplate::atmelRM I2cCtrlEMOB::readEmobLockState(quint8 &status
     quint8 answ[2];
     I2cMuxerScopedOnOff i2cMuxerEnable(m_i2cMuxer);
     hw_cmd CMD(hwReadEmobLockState, 0, nullptr, 0);
-    m_ctrlIo.writeCommand(&CMD, answ, 1);
+    m_ctrlIo.writeCommand(&CMD, answ, 2);
     if (m_ctrlIo.getLastErrorMask() == 0) {
         status = answ[0];
         ret = ZeraMControllerIo::cmddone;
