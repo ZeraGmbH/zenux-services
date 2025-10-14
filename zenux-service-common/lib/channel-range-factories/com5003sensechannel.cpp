@@ -66,7 +66,12 @@ QString Com5003SenseChannel::scpiReadWriteRange(QString &sInput)
         if ( (i < anz) && (m_RangeList.at(i)->getAvail()) ) {
             // we know this range and it's available
             if (m_nMMode == modeAC) {
-                if (m_ctrlFactory->getRangesController()->setRange(m_nCtrlChannel, m_RangeList.at(i)->getSelCode()) == ZeraMControllerIo::cmddone) {
+                if(notifierSenseChannelRange.getString() == rng) {
+                    qInfo("setRange skipped !");
+                    return ZSCPI::scpiAnswer[ZSCPI::ack];
+                }
+                else if (m_ctrlFactory->getRangesController()->setRange(m_nCtrlChannel, m_RangeList.at(i)->getSelCode()) == ZeraMControllerIo::cmddone) {
+                    qInfo() << "executing setRange ! Channel: " << m_nCtrlChannel << "old range: " << notifierSenseChannelRange.getString() << "new range: " << rng;
                     notifierSenseChannelRange = rng;
                     return ZSCPI::scpiAnswer[ZSCPI::ack];
                 }

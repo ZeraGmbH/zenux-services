@@ -48,7 +48,9 @@ QString MtXXXs2SenseChannel::scpiReadWriteRange(QString &sInput)
         }
         if ( (i < anz) && (m_RangeList.at(i)->getAvail()) ) {
             // we know this range and it's available
-            if (m_ctrlFactory->getRangesController()->setRange(m_nCtrlChannel, m_RangeList.at(i)->getSelCode()) == ZeraMControllerIo::cmddone) {
+            if(notifierSenseChannelRange.getString() == rng)
+                return ZSCPI::scpiAnswer[ZSCPI::ack];
+            else if (m_ctrlFactory->getRangesController()->setRange(m_nCtrlChannel, m_RangeList.at(i)->getSelCode()) == ZeraMControllerIo::cmddone) {
                 notifierSenseChannelRange = rng;
                 return ZSCPI::scpiAnswer[ZSCPI::ack];
             }
