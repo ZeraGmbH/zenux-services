@@ -2,7 +2,7 @@
 ConditionKernelCommandLine=zera_device=mt581s2
 
 [Socket]
-ListenStream=6307
+ListenStream=127.0.0.1:6307
 
 [Install]
 WantedBy=sockets.target
