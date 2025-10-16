@@ -2,6 +2,7 @@
 #define ZDSP1D_H
 
 #include "abstractfactorydevicenodedsp.h"
+#include "consoleserver.h"
 #include "dspvardevicenodeinout.h"
 #include "resourceregistertransaction.h"
 #include "rmconnection.h"
@@ -21,7 +22,6 @@
 #include <QTimer>
 #include <QVector>
 #include <QStateMachine>
-#include <QTcpServer>
 
 typedef QVector<float> tDspMemArray;
 
@@ -48,10 +48,7 @@ private slots:
     void onProtobufClientConnected(VeinTcp::TcpPeer* newClient);
     void onProtobufDataReceived(VeinTcp::TcpPeer *peer, QByteArray message);
     void onProtobufDisconnect(VeinTcp::TcpPeer *peer);
-
-    void onTelnetClientConnected();
-    void onTelnetDataReceived();
-    void onTelnetDisconnect();
+    void onTelnetReceived(const QString &input);
 
     void DspIntHandler(int);
     void doConfiguration();
@@ -83,8 +80,6 @@ private:
     VeinTcp::AbstractTcpNetworkFactoryPtr m_tcpNetworkFactory;
     VeinTcp::TcpServer m_protoBufServer;
     XiQNetWrapper m_protobufWrapper;
-    QTcpServer* m_telnetServer = nullptr;
-    QTcpSocket* m_telnetSocket = nullptr;
 
     uchar m_currentCmdListSelector = 0;
     QByteArray m_rawCyclicCmdMem; // unsere dsp programm listen
@@ -132,6 +127,7 @@ private:
     QState* m_stateSendRMIdentAndRegister;
     RMConnection* m_pRMConnection = nullptr;
     ResourceRegisterTransaction m_resourceRegister;
+    ConsoleServer m_telnetServer;
 
     int m_retryRMConnect;
     QTimer m_retryTimer;

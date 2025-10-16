@@ -69,37 +69,14 @@ void PCBServer::executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd)
 
 void PCBServer::openTelnetScpi()
 {
+    connect(&m_telnetServer, &ConsoleServer::sigLinesReceived,
+            this, &PCBServer::onTelnetReceived);
     EthSettings *ethSettings = m_settings->getEthSettings();
-    if(ethSettings->isSCPIactive()) {
-        m_telnetServer = new QTcpServer();
-        m_telnetServer->setMaxPendingConnections(1); // we only accept 1 client to connect
-        connect(m_telnetServer, &QTcpServer::newConnection, this, &PCBServer::onTelnetClientConnected);
-        m_telnetServer->listen(QHostAddress::AnyIPv4, ethSettings->getPort(EthSettings::scpiserver));
-    }
+    m_telnetServer.open(ethSettings);
 }
 
-void PCBServer::sendProtoAnswer(ProtonetCommandPtr protoCmd)
+void PCBServer::onTelnetReceived(const QString &input)
 {
-    CommonScpiMethods::sendProtoAnswer(m_telnetSocket, &m_protobufWrapper, protoCmd);
-}
-
-void PCBServer::onTelnetClientConnected()
-{
-    qInfo("External SCPI Client connected");
-    m_telnetSocket = m_telnetServer->nextPendingConnection();
-    connect(m_telnetSocket, &QIODevice::readyRead, this, &PCBServer::onTelnetDataReceived);
-    connect(m_telnetSocket, &QAbstractSocket::disconnected, this, &PCBServer::onTelnetDisconnect);
-}
-
-void PCBServer::onTelnetDataReceived()
-{
-    QString input;
-    while(m_telnetSocket->canReadLine())
-        input += m_telnetSocket->readLine();
-    input.remove('\r'); // we remove cr lf
-    input.remove('\n');
-    qInfo("External SCPI command: %s", qPrintable(input));
-
     QByteArray proxyConnectionId = QByteArray(); // we set an empty byte array
     ProtonetCommandPtr protoCmd = std::make_shared<ProtonetCommand>(nullptr,
                                                                     false,
@@ -122,10 +99,9 @@ void PCBServer::onTelnetDataReceived()
     }
 }
 
-void PCBServer::onTelnetDisconnect()
+void PCBServer::sendProtoAnswer(ProtonetCommandPtr protoCmd)
 {
-    qInfo("External SCPI Client disconnected");
-    disconnect(m_telnetSocket, 0, 0, 0); // we disconnect everything
+    CommonScpiMethods::sendProtoAnswer(m_telnetServer.getSocket(), &m_protobufWrapper, protoCmd);
 }
 
 void PCBServer::onNotifySubscriber(ScpiNotificationSubscriber subscriber, QString newValue)

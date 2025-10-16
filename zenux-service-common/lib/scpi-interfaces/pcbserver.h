@@ -5,14 +5,13 @@
 #include "resource.h"
 #include "notificationstructwithvalue.h"
 #include "settingscontainer.h"
+#include "consoleserver.h"
 #include <scpi.h>
 #include <xiqnetwrapper.h>
 #include <netmessages.pb.h>
 #include <xmlconfigreader.h>
 #include <vtcp_server.h>
 #include <QList>
-#include <QTcpServer>
-#include <QTcpSocket>
 #include <QByteArray>
 
 class PCBServer : public ScpiConnection
@@ -45,15 +44,14 @@ protected:
     QList<cResource*> m_resourceList;
     VeinTcp::AbstractTcpNetworkFactoryPtr m_tcpNetworkFactory;
     VeinTcp::TcpServer m_protoBufServer;
+    ConsoleServer m_telnetServer;
 private slots:
     void onProtobufClientConnected(VeinTcp::TcpPeer *newClient);
     void onProtobufDataReceived(VeinTcp::TcpPeer *peer, QByteArray message);
     void onNotifyPeerConnectionClosed(VeinTcp::TcpPeer *peer);
     void onEstablishNewNotifier(NotificationValue *notifier);
     void onNotifierChanged(quint32 irqreg);
-    void onTelnetClientConnected();
-    void onTelnetDataReceived();
-    void onTelnetDisconnect();
+    void onTelnetReceived(const QString &input);
 private:
     void registerNotifier(ProtonetCommandPtr protoCmd); // registeres 1 notifier per command
     void unregisterNotifier(ProtonetCommandPtr protoCmd); // unregisters all notifiers
@@ -61,8 +59,6 @@ private:
     void sendNotificationToClient(QString message, QByteArray clientID, VeinTcp::TcpPeer *netPeer);
     void executeCommandProto(VeinTcp::TcpPeer* peer, std::shared_ptr<google::protobuf::Message> cmd);
 
-    QTcpServer* m_telnetServer = nullptr;
-    QTcpSocket* m_telnetSocket = nullptr;
     QList<NotificationStructWithValue> m_notifierRegisterNext;
     QList<NotificationStructWithValue> m_notifierRegisterList;
     XiQNetWrapper m_protobufWrapper;
