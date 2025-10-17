@@ -1,9 +1,5 @@
 #include "consoleserver.h"
 
-ConsoleServer::ConsoleServer()
-{
-}
-
 void ConsoleServer::open(int portNo)
 {
     m_server = new QTcpServer(this);
