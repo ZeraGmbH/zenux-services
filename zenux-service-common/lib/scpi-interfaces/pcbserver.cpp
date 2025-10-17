@@ -69,11 +69,12 @@ void PCBServer::executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd)
 
 void PCBServer::openTelnetScpi()
 {
-    connect(&m_telnetServer, &ConsoleServer::sigLinesReceived,
-            this, &PCBServer::onTelnetReceived);
     EthSettings *ethSettings = m_settings->getEthSettings();
-    if (ethSettings->isSCPIactive())
+    if (ethSettings->isSCPIactive()) {
+        connect(&m_telnetServer, &ConsoleServer::sigLinesReceived,
+                this, &PCBServer::onTelnetReceived);
         m_telnetServer.open(ethSettings->getPort(EthSettings::scpiserver));
+    }
 }
 
 void PCBServer::onTelnetReceived(const QString &input)

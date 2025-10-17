@@ -268,11 +268,12 @@ void ZDspServer::outputAndResetTransactionsLogs()
 
 void ZDspServer::openTelnetScpi()
 {
-    connect(&m_telnetServer, &ConsoleServer::sigLinesReceived,
-            this, &ZDspServer::onTelnetReceived);
     EthSettings *ethSettings = m_settings->getEthSettings();
-    if (ethSettings->isSCPIactive())
+    if (ethSettings->isSCPIactive()) {
+        connect(&m_telnetServer, &ConsoleServer::sigLinesReceived,
+                this, &ZDspServer::onTelnetReceived);
         m_telnetServer.open(ethSettings->getPort(EthSettings::scpiserver));
+    }
 }
 
 void ZDspServer::outputLogs()
