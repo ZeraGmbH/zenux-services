@@ -4,14 +4,12 @@ ConsoleServer::ConsoleServer()
 {
 }
 
-void ConsoleServer::open(EthSettings *ethSettings)
+void ConsoleServer::open(int portNo)
 {
-    if (ethSettings->isSCPIactive()) {
-        m_server = new QTcpServer(this);
-        m_server->setMaxPendingConnections(1); // we only accept 1 client to connect
-        connect(m_server, &QTcpServer::newConnection, this, &ConsoleServer::onClientConnected);
-        m_server->listen(QHostAddress::AnyIPv4, ethSettings->getPort(EthSettings::scpiserver));
-    }
+    m_server = new QTcpServer(this);
+    m_server->setMaxPendingConnections(1); // we only accept 1 client to connect
+    connect(m_server, &QTcpServer::newConnection, this, &ConsoleServer::onClientConnected);
+    m_server->listen(QHostAddress::AnyIPv4, portNo);
 }
 
 QTcpSocket *ConsoleServer::getSocket()

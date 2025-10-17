@@ -1,7 +1,6 @@
 #ifndef CONSOLESERVER_H
 #define CONSOLESERVER_H
 
-#include "ethsettings.h"
 #include <QTcpServer>
 #include <QTcpSocket>
 
@@ -10,7 +9,7 @@ class ConsoleServer : public QObject
     Q_OBJECT
 public:
     ConsoleServer();
-    void open(EthSettings *ethSettings);
+    void open(int portNo);
     QTcpSocket* getSocket();
 
 signals:
