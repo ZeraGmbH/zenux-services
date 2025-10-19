@@ -463,6 +463,43 @@ void test_regression_dsp_var::serverReadDspChannelDataVariableAndListenDeviceNod
     QCOMPARE(spyRead[1][2], 32*varSize);
 }
 
+void test_regression_dsp_var::dspVarMemSizeInitialHack()
+{
+    cDspMeasData* dspData = m_dspIFace->getMemHandle("dspVarMemSizeInitialHack");
+    dspData->addDspVar("ONE_FLOAT", 1, DSPDATA::vDspResult, DSPDATA::dFloat);
+    dspData->addDspVar("ONE_INT", 1, DSPDATA::vDspResult, DSPDATA::dInt);
+    dspData->addDspVar("TWO_FLOAT", 2, DSPDATA::vDspResult, DSPDATA::dFloat);
+    dspData->addDspVar("TWO_INT", 2, DSPDATA::vDspResult, DSPDATA::dInt);
+    constexpr int resultSize = 1+1+2+2;
+
+    dspData->addDspVar("Temp1", 1, DSPDATA::vDspTemp, DSPDATA::dFloat);
+    dspData->addDspVar("Temp2", 3, DSPDATA::vDspTemp, DSPDATA::dInt);
+    constexpr int tempSize = 1+3;
+
+    // Internal vars are created by DSP and do not make it in server size.
+    // Clients add them just to allow access by their addresses.
+    // See cDSPInterfacePrivate::varList2String(): vDspIntVar entries are
+    // ignored because varList2String() filters for userCreatableTypes which
+    // do not contain vDspIntVar.
+    dspData->addDspVar("Internal1", 4, DSPDATA::vDspIntVar, DSPDATA::dFloat);
+    dspData->addDspVar("Internal2", 5, DSPDATA::vDspIntVar, DSPDATA::dInt);
+    constexpr int internalSizeNotAddedInServer = 4+5;
+
+    dspData->addDspVar("Param1", 2, DSPDATA::vDspParam, DSPDATA::dFloat);
+    dspData->addDspVar("Param2", 4, DSPDATA::vDspParam, DSPDATA::dInt);
+    constexpr int paramSize = 2+4;
+
+    // Access client calculation directly for now
+    const QString varString = m_dspIFace->varList2String();
+    ZdspClient* testServerlient = m_dspService->createTestClient();
+    testServerlient->setRawActualValueList(varString);
+
+    int serverMemSize = testServerlient->getDataMemSize();
+    int clientMemSize = dspData->getSize();
+    QCOMPARE(serverMemSize, clientMemSize - internalSizeNotAddedInServer);
+    QCOMPARE(serverMemSize, resultSize + tempSize + paramSize);
+}
+
 QByteArray test_regression_dsp_var::floatToBuff(float value)
 {
     QByteArray buffer(4, 0);

@@ -31,6 +31,7 @@ public:
     ulong relocalizeUserMemSectionVars(ulong startAdress, ulong globalMemStart);
 
     int getDspInterruptId() const;
+    int getDataMemSize() const;
     VeinTcp::TcpPeer* getVeinPeer() const;
 
     static int getInstanceCount();
@@ -47,6 +48,7 @@ private:
     QList<DspCmdWithParamsRaw>  m_DspIntCmdList;
     QVector<TDspVar> m_dspVarArray; // !!! we need permanent keeper of TDspVar pointer to data is used !!!
     TMemSection m_userMemSection;
+    int m_dataMemSize = 0;
     static int m_instanceCount;
 };
 #endif // ZDSPCLIENT_H

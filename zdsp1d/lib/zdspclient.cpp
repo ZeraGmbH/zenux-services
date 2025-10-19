@@ -50,7 +50,13 @@ bool ZdspClient::setRawActualValueList(const QString &varsSemicolonSeparated)
         }
     }
 
-    m_userMemSection.m_varCount = m_dspVarArray.count();
+    const int varCount = m_dspVarArray.count();
+    m_userMemSection.m_varCount = varCount;
+    int dataMemSize = 0;
+    for (int var=0; var<varCount; ++var)
+        dataMemSize += m_dspVarArray[var].size;
+    m_dataMemSize = dataMemSize;
+
     if(m_userMemSection.m_varCount > 0) { // wir haben mindestens 1 variable
         // WTF!!!!!!!!!!!!!
         m_userMemSection.m_dspVars = m_dspVarArray.data();
@@ -113,6 +119,11 @@ QList<DspCmdWithParamsRaw> &ZdspClient::GetDspIntCmdList()
 int ZdspClient::getDspInterruptId() const
 {
     return m_dspInterruptId;
+}
+
+int ZdspClient::getDataMemSize() const
+{
+    return m_dataMemSize;
 }
 
 VeinTcp::TcpPeer *ZdspClient::getVeinPeer() const

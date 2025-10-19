@@ -32,6 +32,8 @@ private slots:
     void serverReadDspCmdListVariableAndListenDeviceNode();
     void serverReadDspChannelDataVariableAndListenDeviceNode();
 
+    void dspVarMemSizeInitialHack();
+
 private:
     QByteArray floatToBuff(float value);
     QByteArray intToBuff(qint32 value);
