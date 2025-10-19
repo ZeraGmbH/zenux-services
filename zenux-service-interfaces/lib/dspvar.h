@@ -11,6 +11,8 @@ namespace DSPDATA
     enum segmentType { localSegment, globalSegment};
 
     enum DspValueType {vDspResult = 1, vDspTemp = 2, vDspIntVar = 4, vDspParam = 8, vDspALL = 15, vDspTempGlobal = 16};
+
+    static constexpr int userCreatableTypes = vDspParam | vDspTemp | vDspResult | vDspTempGlobal;
 }
 
 class cDspVar // dsp variable

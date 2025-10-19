@@ -57,7 +57,7 @@ QString cDSPInterfacePrivate::varList2String() const
     cDspMeasData* pDspMeasData;
     for (int i = 0; i < m_DspMemoryDataList.count(); i++) {
         pDspMeasData = m_DspMemoryDataList.at(i);
-        ts << pDspMeasData->VarListLong(DSPDATA::vDspParam | DSPDATA::vDspTemp | DSPDATA::vDspResult | DSPDATA::vDspTempGlobal);
+        ts << pDspMeasData->VarListLong(DSPDATA::userCreatableTypes);
     }
     return varList;
 }
