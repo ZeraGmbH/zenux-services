@@ -133,4 +133,10 @@ quint32 cDSPInterface::readServerVersion()
     return d->readServerVersion();
 }
 
+QString cDSPInterface::varList2String()
+{
+    Q_D(cDSPInterface);
+    return d->varList2String();
+}
+
 }

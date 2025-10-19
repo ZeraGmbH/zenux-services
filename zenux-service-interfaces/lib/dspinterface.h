@@ -43,6 +43,9 @@ public:
     quint32 readDeviceVersion(); // reads the dsp devices version
     quint32 readServerVersion();
 
+    // Compromise for tests
+    QString varList2String();
+
 protected:
     Q_DECLARE_PRIVATE(cDSPInterface)
     cDSPInterfacePrivate *d_ptr;
