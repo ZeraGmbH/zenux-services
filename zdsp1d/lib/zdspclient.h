@@ -37,6 +37,7 @@ public:
     static int getInstanceCount();
 
 private:
+    static int calcDataMemSize(const QVector<TDspVar> &dspVarArray);
     VeinTcp::TcpPeer* m_veinPeer;
     QByteArray m_proxyConnectionId;
     AbstractFactoryDeviceNodeDspPtr m_deviceNodeFactory;

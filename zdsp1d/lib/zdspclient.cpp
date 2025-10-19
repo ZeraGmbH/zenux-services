@@ -50,12 +50,8 @@ bool ZdspClient::setRawActualValueList(const QString &varsSemicolonSeparated)
         }
     }
 
-    const int varCount = m_dspVarArray.count();
-    m_userMemSection.m_varCount = varCount;
-    int dataMemSize = 0;
-    for (int var=0; var<varCount; ++var)
-        dataMemSize += m_dspVarArray[var].size;
-    m_dataMemSize = dataMemSize;
+    m_userMemSection.m_varCount = m_dspVarArray.count();
+    m_dataMemSize = calcDataMemSize(m_dspVarArray);
 
     if(m_userMemSection.m_varCount > 0) { // wir haben mindestens 1 variable
         // WTF!!!!!!!!!!!!!
@@ -134,6 +130,15 @@ VeinTcp::TcpPeer *ZdspClient::getVeinPeer() const
 int ZdspClient::getInstanceCount()
 {
     return m_instanceCount;
+}
+
+int ZdspClient::calcDataMemSize(const QVector<TDspVar> &dspVarArray)
+{
+    const int varCount = dspVarArray.count();
+    int dataMemSize = 0;
+    for (int var=0; var<varCount; ++var)
+        dataMemSize += dspVarArray[var].size;
+    return dataMemSize;
 }
 
 QString ZdspClient::readActValues(const QString& variablesStringOnEmptyActOnly)
