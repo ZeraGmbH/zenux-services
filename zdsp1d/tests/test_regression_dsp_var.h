@@ -33,6 +33,7 @@ private slots:
     void serverReadDspChannelDataVariableAndListenDeviceNode();
 
     void dspVarMemSizeInitialHack();
+    void dspVarCmdMemSizeTotal();
 
 private:
     QByteArray floatToBuff(float value);
