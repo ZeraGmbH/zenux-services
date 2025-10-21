@@ -16,6 +16,10 @@ public:
                        AbstractFactoryI2cCtrlPtr ctrlFactory);
     virtual ~SenseChannelCommon();
 
+    enum NotificationStatus {
+        NotificationNow,
+        NotificationDelayed
+    };
     void setRangeList(const QList<SenseRangeCommon*>& list);
     const QList<SenseRangeCommon *> &getRangeList();
     SenseRangeCommon* getRange(const QString &name);
@@ -34,13 +38,13 @@ public:
     void initSCPIConnection(QString leadingNodes) override;
 
     void setMMode(int mode);
-    QString setRangeCommon(SenseRangeCommon *range);
+    QString setRangeCommon(SenseRangeCommon *range, ProtonetCommandPtr protoCmd);
 
 protected:
     void executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd) override;
     virtual QString getAlias() = 0;
     virtual void setNotifierSenseChannelRange() = 0;
-    virtual QString scpiReadWriteRange(QString& scpi) = 0;
+    virtual QString scpiReadWriteRange(ProtonetCommandPtr protoCmd) = 0;
 
     QString scpiReadAlias(const QString& scpi);
     QString scpiReadType(const QString& scpi);

@@ -33,9 +33,9 @@ void MtXXXs2SenseChannel::setNotifierSenseChannelRange()
     }
 }
 
-QString MtXXXs2SenseChannel::scpiReadWriteRange(QString &sInput)
+QString MtXXXs2SenseChannel::scpiReadWriteRange(ProtonetCommandPtr protoCmd)
 {
-    cSCPICommand cmd = sInput;
+    cSCPICommand cmd = protoCmd->m_sInput;
     if (cmd.isQuery())
         return notifierSenseChannelRange.getString();
 
@@ -43,7 +43,7 @@ QString MtXXXs2SenseChannel::scpiReadWriteRange(QString &sInput)
         QString rangeName = cmd.getParam(0);
         SenseRangeCommon* range = getRange(rangeName);
         if ( range && range->getAvail() )
-            return setRangeCommon(range);
+            return setRangeCommon(range, protoCmd);
     }
     return ZSCPI::scpiAnswer[ZSCPI::nak];
 }

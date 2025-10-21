@@ -134,10 +134,9 @@ void SenseChannelCommon::setMMode(int mode)
     // but we can do this later
 }
 
-QString SenseChannelCommon::setRangeCommon(SenseRangeCommon* range)
+QString SenseChannelCommon::setRangeCommon(SenseRangeCommon* range, ProtonetCommandPtr protoCmd)
 {
     if ( range && range->getAvail() ) {
-        // we know this range and it's available
         if (m_ctrlFactory->getRangesController()->setRange(m_nCtrlChannel, range->getSelCode()) == ZeraMControllerIo::cmddone) {
             notifierSenseChannelRange = range->getRangeName();
             return ZSCPI::scpiAnswer[ZSCPI::ack];
@@ -171,7 +170,7 @@ void SenseChannelCommon::executeProtoScpi(int cmdCode, ProtonetCommandPtr protoC
         protoCmd->m_sOutput = scpiStatusReset(protoCmd->m_sInput);
         break;
     case cmdRange:
-        protoCmd->m_sOutput = scpiReadWriteRange(protoCmd->m_sInput);
+        protoCmd->m_sOutput = scpiReadWriteRange(protoCmd);
         break;
     case cmdUrvalue:
         protoCmd->m_sOutput = scpiReadUrvalue(protoCmd->m_sInput);

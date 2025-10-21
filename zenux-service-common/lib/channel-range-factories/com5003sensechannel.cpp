@@ -50,9 +50,9 @@ void Com5003SenseChannel::setNotifierSenseChannelRange()
         notifierSenseChannelRange = m_RangeList.at(0)->getRangeName();
 }
 
-QString Com5003SenseChannel::scpiReadWriteRange(QString &sInput)
+QString Com5003SenseChannel::scpiReadWriteRange(ProtonetCommandPtr protoCmd)
 {
-    cSCPICommand cmd = sInput;
+    cSCPICommand cmd = protoCmd->m_sInput;
     if (cmd.isQuery())
         return notifierSenseChannelRange.getString();
 
@@ -60,9 +60,8 @@ QString Com5003SenseChannel::scpiReadWriteRange(QString &sInput)
         QString rangeName = cmd.getParam(0);
         SenseRangeCommon* range = getRange(rangeName);
         if ( range && range->getAvail() ) {
-            // we know this range and it's available
             if (m_nMMode == modeAC)
-                return setRangeCommon(range);
+                return setRangeCommon(range, protoCmd);
             else {
                 if (range->getRangeName() == "R0V") {
                     notifierSenseChannelRange = "R0V";

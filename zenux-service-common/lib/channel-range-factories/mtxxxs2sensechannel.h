@@ -17,7 +17,7 @@ public:
                         AbstractFactoryI2cCtrlPtr ctrlFactory);
     QString getAlias() override;
 private:
-    QString scpiReadWriteRange(QString& sInput) override;
+    QString scpiReadWriteRange(ProtonetCommandPtr protoCmd) override;
     void setNotifierSenseChannelRange() override;
 };
 
