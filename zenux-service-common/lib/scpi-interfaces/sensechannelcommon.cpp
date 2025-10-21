@@ -134,21 +134,26 @@ void SenseChannelCommon::setMMode(int mode)
     // but we can do this later
 }
 
-QString SenseChannelCommon::setRangeCommon(SenseRangeCommon* range, ProtonetCommandPtr protoCmd)
+SenseChannelCommon::NotificationStatus SenseChannelCommon::setRangeCommon(SenseRangeCommon* range, ProtonetCommandPtr protoCmd)
 {
     if ( range && range->getAvail() ) {
         if (m_ctrlFactory->getRangesController()->setRange(m_nCtrlChannel, range->getSelCode()) == ZeraMControllerIo::cmddone) {
             notifierSenseChannelRange = range->getRangeName();
-            return ZSCPI::scpiAnswer[ZSCPI::ack];
+            protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::ack];
+            return SenseChannelCommon::NotificationNow;
         }
-        else
-            return ZSCPI::scpiAnswer[ZSCPI::errexec];
+        else {
+            protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::errexec];
+            return SenseChannelCommon::NotificationNow;
+        }
     }
-    return ZSCPI::scpiAnswer[ZSCPI::nak];
+    protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::nak];
+    return SenseChannelCommon::NotificationNow;
 }
 
 void SenseChannelCommon::executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd)
 {
+    bool notifyHere = true;
     switch (cmdCode)
     {
     case cmdAlias:
@@ -170,7 +175,7 @@ void SenseChannelCommon::executeProtoScpi(int cmdCode, ProtonetCommandPtr protoC
         protoCmd->m_sOutput = scpiStatusReset(protoCmd->m_sInput);
         break;
     case cmdRange:
-        protoCmd->m_sOutput = scpiReadWriteRange(protoCmd);
+        notifyHere = scpiReadWriteRange(protoCmd) == SenseChannelCommon::NotificationNow;
         break;
     case cmdUrvalue:
         protoCmd->m_sOutput = scpiReadUrvalue(protoCmd->m_sInput);
@@ -179,7 +184,7 @@ void SenseChannelCommon::executeProtoScpi(int cmdCode, ProtonetCommandPtr protoC
         protoCmd->m_sOutput = scpiReadRangeCatalog(protoCmd->m_sInput);
         break;
     }
-    if (protoCmd->m_bwithOutput)
+    if (protoCmd->m_bwithOutput && notifyHere)
         emit cmdExecutionDone(protoCmd);
 }
 
