@@ -34,6 +34,7 @@ public:
     void initSCPIConnection(QString leadingNodes) override;
 
     void setMMode(int mode);
+    QString setRangeCommon(SenseRangeCommon *range);
 
 protected:
     void executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd) override;

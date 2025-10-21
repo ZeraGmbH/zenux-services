@@ -38,23 +38,12 @@ QString MtXXXs2SenseChannel::scpiReadWriteRange(QString &sInput)
     cSCPICommand cmd = sInput;
     if (cmd.isQuery())
         return notifierSenseChannelRange.getString();
+
     else if (cmd.isCommand(1)) {
-        QString rng = cmd.getParam(0);
-        int anz = m_RangeList.count();
-        int i;
-        for (i = 0; i < anz; i++) {
-            if (m_RangeList.at(i)->getRangeName() == rng)
-                break;
-        }
-        if ( (i < anz) && (m_RangeList.at(i)->getAvail()) ) {
-            // we know this range and it's available
-            if (m_ctrlFactory->getRangesController()->setRange(m_nCtrlChannel, m_RangeList.at(i)->getSelCode()) == ZeraMControllerIo::cmddone) {
-                notifierSenseChannelRange = rng;
-                return ZSCPI::scpiAnswer[ZSCPI::ack];
-            }
-            else
-                return ZSCPI::scpiAnswer[ZSCPI::errexec];
-        }
+        QString rangeName = cmd.getParam(0);
+        SenseRangeCommon* range = getRange(rangeName);
+        if ( range && range->getAvail() )
+            return setRangeCommon(range);
     }
     return ZSCPI::scpiAnswer[ZSCPI::nak];
 }

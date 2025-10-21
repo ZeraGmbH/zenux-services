@@ -55,26 +55,16 @@ QString Com5003SenseChannel::scpiReadWriteRange(QString &sInput)
     cSCPICommand cmd = sInput;
     if (cmd.isQuery())
         return notifierSenseChannelRange.getString();
+
     else if (cmd.isCommand(1)) {
-        QString rng = cmd.getParam(0);
-        int anz = m_RangeList.count();
-        int i;
-        for (i = 0; i < anz; i++) {
-            if (m_RangeList.at(i)->getRangeName() == rng)
-                break;
-        }
-        if ( (i < anz) && (m_RangeList.at(i)->getAvail()) ) {
+        QString rangeName = cmd.getParam(0);
+        SenseRangeCommon* range = getRange(rangeName);
+        if ( range && range->getAvail() ) {
             // we know this range and it's available
-            if (m_nMMode == modeAC) {
-                if (m_ctrlFactory->getRangesController()->setRange(m_nCtrlChannel, m_RangeList.at(i)->getSelCode()) == ZeraMControllerIo::cmddone) {
-                    notifierSenseChannelRange = rng;
-                    return ZSCPI::scpiAnswer[ZSCPI::ack];
-                }
-                else
-                    return ZSCPI::scpiAnswer[ZSCPI::errexec];
-            }
+            if (m_nMMode == modeAC)
+                return setRangeCommon(range);
             else {
-                if (m_RangeList.at(i)->getRangeName() == "R0V") {
+                if (range->getRangeName() == "R0V") {
                     notifierSenseChannelRange = "R0V";
                     m_ctrlFactory->getMModeController()->setMeasMode(1);
                 }
