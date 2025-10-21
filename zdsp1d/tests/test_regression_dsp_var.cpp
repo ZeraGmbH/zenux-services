@@ -500,6 +500,26 @@ void test_regression_dsp_var::dspVarMemSizeInitialHack()
     QCOMPARE(serverMemSize, resultSize + tempSize + paramSize);
 }
 
+extern TDspVar CmdListVar[];
+
+void test_regression_dsp_var::dspVarCmdMemSizeTotal()
+{
+    cDspMeasData* dspData = m_dspIFace->getMemHandle("CmdList");
+    cDspVar *intCmdSizeVar = dspData->addDspVar("INTCMDLIST", 1, DSPDATA::vDspIntVar, DSPDATA::dInt);
+    cDspVar *cmdSizeVar = dspData->addDspVar("CMDLIST", 1, DSPDATA::vDspIntVar, DSPDATA::dInt);
+    cDspVar *altIntCmdSizeVar = dspData->addDspVar("ALTINTCMDLIST", 1, DSPDATA::vDspIntVar, DSPDATA::dInt);
+    cDspVar *altCmdSizeVar = dspData->addDspVar("ALTCMDLIST", 1, DSPDATA::vDspIntVar, DSPDATA::dInt);
+    m_dspIFace->dspMemoryRead(dspData);
+    TimeMachineObject::feedEventLoop();
+
+    // TODO: see ZDspServer::doIdentAndRegister()
+
+    QCOMPARE(intCmdSizeVar->size(), 512); // see IntCmdListLen21362
+    QCOMPARE(altIntCmdSizeVar->size(), 512);
+    QCOMPARE(cmdSizeVar->size(), 3584); // see CmdListLen21362
+    QCOMPARE(altCmdSizeVar->size(), 3584);
+}
+
 QByteArray test_regression_dsp_var::floatToBuff(float value)
 {
     QByteArray buffer(4, 0);
