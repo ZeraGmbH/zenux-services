@@ -36,4 +36,6 @@ private:
     static TPersitentControllerData m_persitentData;
 };
 
+typedef std::shared_ptr<TestFactoryI2cCtrl> TestFactoryI2cCtrlPtr;
+
 #endif // TESTFACTORYI2CCTRL_H

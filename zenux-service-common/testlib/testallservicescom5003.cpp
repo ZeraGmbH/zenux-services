@@ -3,25 +3,26 @@
 #include "testfactorydevicenodedsp.h"
 #include <tcpnetworkfactory.h>
 
-TestAllServicesCom5003::TestAllServicesCom5003(AbstractFactoryI2cCtrlPtr ctrlFactory)
+TestAllServicesCom5003::TestAllServicesCom5003(TestFactoryI2cCtrlPtr testCtrlFactory)
 {
-    init(VeinTcp::TcpNetworkFactory::create(), ctrlFactory);
+    init(VeinTcp::TcpNetworkFactory::create(), testCtrlFactory);
 }
 
 TestAllServicesCom5003::TestAllServicesCom5003(VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory,
-                                               AbstractFactoryI2cCtrlPtr ctrlFactory)
+                                               TestFactoryI2cCtrlPtr testCtrlFactory)
 {
-    init(tcpNetworkFactory, ctrlFactory);
+    init(tcpNetworkFactory, testCtrlFactory);
 }
 
-void TestAllServicesCom5003::init(VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory, AbstractFactoryI2cCtrlPtr ctrlFactory)
+void TestAllServicesCom5003::init(VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory, TestFactoryI2cCtrlPtr testCtrlFactory)
 {
     m_resman = new ResmanRunFacade(tcpNetworkFactory);
     TimeMachineObject::feedEventLoop();
-    m_mockcom5003d = new MockCom5003d(ctrlFactory, tcpNetworkFactory);
+    m_mockcom5003d = new MockCom5003d(testCtrlFactory, tcpNetworkFactory);
     m_sec1000d = new MockSec1000d(tcpNetworkFactory, cSEC1000dServer::Com5003EcUnitCount);
     m_zdsp1d = new MockZdsp1d(std::make_shared<TestFactoryDeviceNodeDsp>(), tcpNetworkFactory);
     TimeMachineObject::feedEventLoop();
+    m_testCtrlFactory = testCtrlFactory;
 }
 
 TestAllServicesCom5003::~TestAllServicesCom5003()
@@ -32,6 +33,11 @@ TestAllServicesCom5003::~TestAllServicesCom5003()
     TimeMachineObject::feedEventLoop();
     delete m_resman;
     TimeMachineObject::feedEventLoop();
+}
+
+void TestAllServicesCom5003::setRangeGetSetDelay(int rangeGetSetDelay)
+{
+    m_testCtrlFactory->setRangeGetSetDelay(rangeGetSetDelay);
 }
 
 ZDspServer *TestAllServicesCom5003::getZdsp1dServer()
