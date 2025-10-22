@@ -144,14 +144,14 @@ SenseChannelCommon::NotificationStatus SenseChannelCommon::setRangeCommon(SenseR
 {
     if ( range && range->getAvail() ) {
         I2cCtrlRangesPtr rangeCtrl = m_ctrlFactory->getRangesController();
-        ZeraMControllerIo::atmelRM atmelState = rangeCtrl->setRange(m_nCtrlChannel, range->getSelCode());
+        ZeraMControllerIo::atmelRM atmelCmdState = rangeCtrl->setRange(m_nCtrlChannel, range->getSelCode());
         const QString rangeName = range->getRangeName();
-        if (atmelState == ZeraMControllerIo::cmddone) {
+        if (atmelCmdState == ZeraMControllerIo::cmddone) {
             notifierSenseChannelRange = rangeName;
             protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::ack];
             return SenseChannelCommon::NotificationNow;
         }
-        else if (atmelState == ZeraMControllerIo::cmdpending) {
+        else if (atmelCmdState == ZeraMControllerIo::cmdpending) {
             m_delayedCtrlIos.addPendingIo(std::move(rangeCtrl), protoCmd, rangeName);
             return SenseChannelCommon::NotificationDelayed;
         }
