@@ -1,6 +1,7 @@
 #ifndef ABSTRACTCONTROLLERS_H
 #define ABSTRACTCONTROLLERS_H
 
+#include "abstractzeramcontrollerdelayed.h"
 #include <zeramcontrollerio.h>
 #include <memory>
 
@@ -47,10 +48,10 @@ public:
 typedef std::unique_ptr<AbstractI2cCtrlEepromPermission> I2cCtrlEepromPermissionPtr;
 
 
-class AbstractI2cCtrlRanges
+class AbstractI2cCtrlRanges : public AbstractZeraMControllerDelayed
 {
+    Q_OBJECT
 public:
-    virtual ~AbstractI2cCtrlRanges() = default;
     virtual ZeraMControllerIo::atmelRM readRange(quint8 channel, quint8& range) = 0;
     virtual ZeraMControllerIo::atmelRM setRange(quint8 channel, quint8 range) = 0;
 };

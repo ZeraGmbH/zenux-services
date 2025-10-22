@@ -7,6 +7,7 @@ class TestFactoryI2cCtrl : public AbstractFactoryI2cCtrl
 {
 public:
     TestFactoryI2cCtrl(bool initialPermission);
+    void setRangeGetSetDelay(int rangeGetSetDelay);
     AbstractCtrlHeartbeatWaitPtr createCtrlHeartbeatWait(QString devnode) override;
     I2cCtrlCriticalStatusPtr getCriticalStatusController() override;
     I2cCtrlEepromPermissionPtr getPermissionCheckController() override;
@@ -21,6 +22,7 @@ public:
     I2cCtrlEMOBPtr getEmobController(quint8 muxChannel) override;
     I2cCtrlBootloaderPtr getBootloaderController() override;
 private:
+    int m_rangeGetSetDelay = 0;
     struct TPersitentControllerData
     {
         bool m_permission = false;

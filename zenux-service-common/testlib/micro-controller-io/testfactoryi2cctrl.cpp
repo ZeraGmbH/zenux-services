@@ -20,6 +20,11 @@ TestFactoryI2cCtrl::TestFactoryI2cCtrl(bool initialPermission)
     m_persitentData.m_permission = initialPermission;
 }
 
+void TestFactoryI2cCtrl::setRangeGetSetDelay(int rangeGetSetDelay)
+{
+    m_rangeGetSetDelay = rangeGetSetDelay;
+}
+
 AbstractCtrlHeartbeatWaitPtr TestFactoryI2cCtrl::createCtrlHeartbeatWait(QString devnode)
 {
     Q_UNUSED(devnode)
@@ -57,7 +62,7 @@ I2cCtrlAccumulatorPtr TestFactoryI2cCtrl::getAccuController()
 
 I2cCtrlRangesPtr TestFactoryI2cCtrl::getRangesController()
 {
-    return std::make_unique<TestI2cCtrlRanges>();
+    return std::make_unique<TestI2cCtrlRanges>(m_rangeGetSetDelay);
 }
 
 I2cCtrlMModePtr TestFactoryI2cCtrl::getMModeController()

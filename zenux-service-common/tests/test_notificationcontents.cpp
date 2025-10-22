@@ -19,10 +19,9 @@ using namespace Zera;
 
 void test_notificationcontents::initTestCase()
 {
-    ClampFactoryTest::enableTest();
+    TimerFactoryQtForTest::enableTest();
     MockI2cEEpromIoFactory::enableMock();
     m_tcpFactory = VeinTcp::MockTcpNetworkFactory::create();
-    TimerFactoryQtForTest::enableTest();
 }
 
 void test_notificationcontents::init()
@@ -101,12 +100,42 @@ void test_notificationcontents::rangesChangeWithValue()
     QCOMPARE(notificationStr, "Notify:42:250V;8V;100mV");
 }
 
+void test_notificationcontents::rangeChangeWithoutValueDelayedRangeIo()
+{
+    m_pcbInterface->registerNotifier("SENSE:m0:RANGE?", notifierId, false);
+    TimeMachineObject::feedEventLoop();
+    QSignalSpy spy(m_pcbInterface.get(), &AbstractServerInterface::serverAnswer);
+
+    m_ctrlFactory->setRangeGetSetDelay(1);
+    m_pcbInterface->setRange("m0", "8V");
+    TimeMachineForTest::getInstance()->processTimers(1);
+
+    QCOMPARE(spy.count(), 2 /* notification first + change range response */);
+    QString notificationStr = spy[0][2].toString();
+    QCOMPARE(notificationStr, "Notify:42");
+}
+
+void test_notificationcontents::rangeChangeWithValueDelayedRangeIo()
+{
+    m_pcbInterface->registerNotifier("SENSE:m0:RANGE?", notifierId, true);
+    TimeMachineForTest::getInstance()->processTimers(1);
+    QSignalSpy spy(m_pcbInterface.get(), &AbstractServerInterface::serverAnswer);
+
+    m_ctrlFactory->setRangeGetSetDelay(1);
+    m_pcbInterface->setRange("m0", "8V");
+    TimeMachineForTest::getInstance()->processTimers(1);
+
+    QCOMPARE(spy.count(), 2);
+    QString notificationStr = spy[0][2].toString();
+    QCOMPARE(notificationStr, "Notify:42:8V");
+}
+
 void test_notificationcontents::setupServers()
 {
     TimeMachineForTest::reset();
     m_resmanServer = std::make_unique<ResmanRunFacade>(m_tcpFactory);
-    m_testServer = std::make_unique<TestServerForSenseInterfaceMt310s2>(
-        std::make_shared<TestFactoryI2cCtrl>(true), m_tcpFactory);
+    m_ctrlFactory = std::make_shared<TestFactoryI2cCtrl>(true);
+    m_testServer = std::make_unique<TestServerForSenseInterfaceMt310s2>(m_ctrlFactory, m_tcpFactory);
     TimeMachineObject::feedEventLoop();
 }
 

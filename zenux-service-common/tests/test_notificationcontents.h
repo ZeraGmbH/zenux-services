@@ -3,6 +3,7 @@
 
 #include "pcbinterface.h"
 #include "proxyclient.h"
+#include "testfactoryi2cctrl.h"
 #include "testserverforsenseinterfacemt310s2.h"
 #include <resmanrunfacade.h>
 #include <abstracttcpnetworkfactory.h>
@@ -19,9 +20,13 @@ private slots:
     void rangeChangeWithValue();
     void rangesChangeWithoutValue();
     void rangesChangeWithValue();
+
+    void rangeChangeWithoutValueDelayedRangeIo();
+    void rangeChangeWithValueDelayedRangeIo();
 private:
     void setupServers();
     void setupClient();
+    std::shared_ptr<TestFactoryI2cCtrl> m_ctrlFactory;
     VeinTcp::AbstractTcpNetworkFactoryPtr m_tcpFactory;
     std::unique_ptr<TestServerForSenseInterfaceMt310s2> m_testServer;
     std::unique_ptr<ResmanRunFacade> m_resmanServer;

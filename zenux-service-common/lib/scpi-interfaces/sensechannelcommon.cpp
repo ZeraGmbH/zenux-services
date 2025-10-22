@@ -31,6 +31,11 @@ SenseChannelCommon::SenseChannelCommon(std::shared_ptr<cSCPI> scpiinterface,
     m_bAvail(cSettings->avail),
     m_nMMode(0)
 {
+    connect(&m_delayedCtrlIos, &DelayedZeraMControllerKeepAliveContainer::sigCmdDone, this,
+            [this](ProtonetCommandPtr protoCmd, QString rangeName) {
+        notifierSenseChannelRange = rangeName;
+        emit cmdExecutionDone(protoCmd);
+    });
 }
 
 SenseChannelCommon::~SenseChannelCommon()
@@ -134,13 +139,21 @@ void SenseChannelCommon::setMMode(int mode)
     // but we can do this later
 }
 
-SenseChannelCommon::NotificationStatus SenseChannelCommon::setRangeCommon(SenseRangeCommon* range, ProtonetCommandPtr protoCmd)
+SenseChannelCommon::NotificationStatus SenseChannelCommon::setRangeCommon(SenseRangeCommon* range,
+                                                                          ProtonetCommandPtr protoCmd)
 {
     if ( range && range->getAvail() ) {
-        if (m_ctrlFactory->getRangesController()->setRange(m_nCtrlChannel, range->getSelCode()) == ZeraMControllerIo::cmddone) {
-            notifierSenseChannelRange = range->getRangeName();
+        I2cCtrlRangesPtr rangeCtrl = m_ctrlFactory->getRangesController();
+        ZeraMControllerIo::atmelRM atmelState = rangeCtrl->setRange(m_nCtrlChannel, range->getSelCode());
+        const QString rangeName = range->getRangeName();
+        if (atmelState == ZeraMControllerIo::cmddone) {
+            notifierSenseChannelRange = rangeName;
             protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::ack];
             return SenseChannelCommon::NotificationNow;
+        }
+        else if (atmelState == ZeraMControllerIo::cmdpending) {
+            m_delayedCtrlIos.addPendingIo(std::move(rangeCtrl), protoCmd, rangeName);
+            return SenseChannelCommon::NotificationDelayed;
         }
         else {
             protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::errexec];
