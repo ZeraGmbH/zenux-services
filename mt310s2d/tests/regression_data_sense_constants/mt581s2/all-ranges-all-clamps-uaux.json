@@ -1061,6 +1061,85 @@
             "urval": 1000
         }
     ],
+    "EMOB750DC": [
+        {
+            "adcrejection": 8388607,
+            "adjuststatusflags": "265",
+            "alias": "480V",
+            "avail": "1",
+            "ctrlselection": "0",
+            "name": "480V",
+            "ovrejection": 4993146,
+            "rejection": 3994517,
+            "urval": 480
+        },
+        {
+            "adcrejection": 8388607,
+            "adjuststatusflags": "265",
+            "alias": "250V",
+            "avail": "1",
+            "ctrlselection": "1",
+            "name": "250V",
+            "ovrejection": 5201194,
+            "rejection": 4160955,
+            "urval": 250
+        },
+        {
+            "adcrejection": 8388607,
+            "adjuststatusflags": "265",
+            "alias": "125V",
+            "avail": "1",
+            "ctrlselection": "2",
+            "name": "125V",
+            "ovrejection": 5468903,
+            "rejection": 4375122,
+            "urval": 125
+        },
+        {
+            "adcrejection": 8388607,
+            "adjuststatusflags": "265",
+            "alias": "60V",
+            "avail": "1",
+            "ctrlselection": "3",
+            "name": "60V",
+            "ovrejection": 4001860,
+            "rejection": 3201488,
+            "urval": 60
+        },
+        {
+            "adcrejection": 8388607,
+            "adjuststatusflags": "265",
+            "alias": "8V",
+            "avail": "1",
+            "ctrlselection": "4",
+            "name": "8V",
+            "ovrejection": 4194304,
+            "rejection": 3355443,
+            "urval": 8
+        },
+        {
+            "adcrejection": 8388607,
+            "adjuststatusflags": "265",
+            "alias": "100mV",
+            "avail": "1",
+            "ctrlselection": "5",
+            "name": "100mV",
+            "ovrejection": 5033165,
+            "rejection": 4026532,
+            "urval": 0.1
+        },
+        {
+            "adcrejection": 8388607,
+            "adjuststatusflags": "517",
+            "alias": "C1000V",
+            "avail": "1",
+            "ctrlselection": "1",
+            "name": "C1000V",
+            "ovrejection": 4332958.8,
+            "rejection": 3466367,
+            "urval": 1000
+        }
+    ],
     "EMOB80": [
         {
             "adcrejection": 8388607,

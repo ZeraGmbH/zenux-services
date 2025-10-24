@@ -14,5 +14,6 @@
     "clamp_type_no_0013": "CL8ADC1400VDC",
     "clamp_type_no_0014": "CL800ADC1400VDC",
     "clamp_type_no_0015": "CL1400VDC",
-    "clamp_type_no_0016": "CL1200ADC1400VDC"
+    "clamp_type_no_0016": "CL1200ADC1400VDC",
+    "clamp_type_no_0017": "EMOB750DC"
 }

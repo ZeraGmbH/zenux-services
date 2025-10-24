@@ -659,6 +659,21 @@ void cClamp::initClamp(quint8 type)
         m_RangeListSecondary.append(new ClampSenseRange(m_scpiInterface, "C1000V", true, 1000.0, 3466367.0, 3466367.0 * 1.25, 1 /*8V*/, dcClampMask, clampJustData));
         break;
 
+    case EMOB750DC:
+        // I
+        clampJustData = new AdjRangeScpiClamp(m_scpiInterface, m_pSenseInterface->getRange(m_sChannelName, QString("2V")), 1500.0);
+        m_RangeList.append(new ClampSenseRange(m_scpiInterface, "C750A", true, 750.0, 5316723.0, 5316723.0 *1.066, 0x0B, dcClampMask, clampJustData));
+        clampJustData = new AdjRangeScpiClamp(m_scpiInterface, m_pSenseInterface->getRange(m_sChannelName, QString("200mV")), 1500.0);
+        m_RangeList.append(new ClampSenseRange(m_scpiInterface,  "C75A", true,  75.0, 5033165.0, 5033165.0 * 1.25, 0x0E, dcClampMask, clampJustData));
+        clampJustData = new AdjRangeScpiClamp(m_scpiInterface, m_pSenseInterface->getRange(m_sChannelName, QString("20mV")), 1500.0);
+        m_RangeList.append(new ClampSenseRange(m_scpiInterface, "C7.5A", true,  7.50, 5033165.0, 5033165.0 * 1.25, 0x11, dcClampMask, clampJustData));
+
+        // This clamp has a secondary channnel U
+        m_sChannelNameSecondary = m_pSenseInterface->getChannelByCtrlChannelNo(m_nCtrlChannelSecondary);
+        clampJustData = new AdjRangeScpiClamp(m_scpiInterface, m_pSenseInterface->getRange(m_sChannelNameSecondary, QString("8V")), 121.0);
+        m_RangeListSecondary.append(new ClampSenseRange(m_scpiInterface, "C1000V", true, 1000.0, 3466367.0, 3466367.0 * 1.25, 1 /*8V*/, dcClampMask, clampJustData));
+        break;
+
     case CL8ADC1400VDC: // VDE U+I 8A/1400V
         // I
         clampJustData = new AdjRangeScpiClamp(m_scpiInterface, m_pSenseInterface->getRange(m_sChannelName, QString("1V")), 30.0);
@@ -766,6 +781,9 @@ QString cClamp::getClampTypeName(quint8 type)
         break;
     case EMOB500DC:
         CLName = QString("EMOB500DC");
+        break;
+    case EMOB750DC:
+        CLName = QString("EMOB750DC");
         break;
     case CL8ADC1400VDC:
         CLName = QString("CL8ADC1400VDC");
