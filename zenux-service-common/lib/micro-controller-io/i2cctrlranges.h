@@ -9,6 +9,7 @@ public:
     I2cCtrlRanges(QString deviceNodeName, quint8 i2cAddress, quint8 debugLevel);
     ZeraMControllerIo::atmelRM readRange(quint8 channel, quint8& range) override;
     ZeraMControllerIo::atmelRM setRange(quint8 channel, quint8 range) override;
+    void startCmdIfNotStarted() override {}
 private:
     ZeraMControllerIo m_ctrlIo;
 };
