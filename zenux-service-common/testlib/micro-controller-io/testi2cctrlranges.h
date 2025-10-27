@@ -11,6 +11,7 @@ public:
     TestI2cCtrlRanges(int delayedResponse);
     ZeraMControllerIo::atmelRM readRange(quint8 channel, quint8& range) override;
     ZeraMControllerIo::atmelRM setRange(quint8 channel, quint8 range) override;
+    void startCmdIfNotStarted() override;
 private:
     int m_delayedResponse;
     TimerTemplateQtPtr m_delayTimer;

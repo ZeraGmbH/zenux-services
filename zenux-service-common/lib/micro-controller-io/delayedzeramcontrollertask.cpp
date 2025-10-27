@@ -24,7 +24,7 @@ DelayedZeraMControllerTask::DelayedZeraMControllerTask(AbstractZeraMControllerDe
 
 void DelayedZeraMControllerTask::start()
 {
-    // controller was started and MUST operate unblocked
+    m_mcontroller->startCmdIfNotStarted();
 }
 
 void DelayedZeraMControllerTask::onCmdDone(ZeraMControllerIoTemplate::atmelRM cmdResult)

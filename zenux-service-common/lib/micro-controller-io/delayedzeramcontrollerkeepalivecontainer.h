@@ -3,7 +3,7 @@
 
 #include "abstractzeramcontrollerdelayed.h"
 #include "protonetcommand.h"
-#include <taskcontainerparallel.h>
+#include <taskcontainersequence.h>
 
 class DelayedZeraMControllerKeepAliveContainer : public QObject
 {
@@ -16,7 +16,7 @@ public:
 signals:
     void sigCmdDone(ProtonetCommandPtr protoCmd, QString rangeName);
 private:
-    TaskContainerParallel m_pendingTaskContainer;
+    TaskContainerSequence m_pendingTaskContainer;
 };
 
 #endif // DELAYEDZERAMCONTROLLERKEEPALIVECONTAINER_H

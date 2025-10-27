@@ -12,6 +12,11 @@ TestI2cCtrlRanges::TestI2cCtrlRanges(int delayedResponse) :
         });
 }
 
+void TestI2cCtrlRanges::startCmdIfNotStarted()
+{
+    m_delayTimer->start();
+}
+
 ZeraMControllerIoTemplate::atmelRM TestI2cCtrlRanges::readRange(quint8 channel, quint8 &range)
 {
     Q_UNUSED(channel)
@@ -19,7 +24,6 @@ ZeraMControllerIoTemplate::atmelRM TestI2cCtrlRanges::readRange(quint8 channel, 
     if (m_delayedResponse == 0)
         return ZeraMControllerIo::atmelRM::cmddone;
 
-    m_delayTimer->start();
     return ZeraMControllerIo::atmelRM::cmdpending;
 }
 
@@ -30,6 +34,5 @@ ZeraMControllerIoTemplate::atmelRM TestI2cCtrlRanges::setRange(quint8 channel, q
     if (m_delayedResponse == 0)
         return ZeraMControllerIo::atmelRM::cmddone;
 
-    m_delayTimer->start();
     return ZeraMControllerIo::atmelRM::cmdpending;
 }
