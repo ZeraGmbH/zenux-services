@@ -19,6 +19,8 @@ public:
     ~TestPcbServer();
     Zera::XMLConfig::cReader *getConfigReader();
     RMConnection* getRmConnection();
+    SettingsContainer *getSettings();
+    std::shared_ptr<cSCPI> getSCPIInterface();
     void setXmlSettings(XmlSettingsList xmlSettings);
     // Note: add interface either to resources ot scpi connections - not both
     void setResources(ResourcesList resources);
