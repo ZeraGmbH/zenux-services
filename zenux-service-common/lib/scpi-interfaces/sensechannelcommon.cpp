@@ -31,7 +31,7 @@ SenseChannelCommon::SenseChannelCommon(std::shared_ptr<cSCPI> scpiinterface,
     m_bAvail(cSettings->avail),
     m_nMMode(0)
 {
-    connect(&m_delayedCtrlIos, &DelayedZeraMControllerKeepAliveContainer::sigCmdDone, this,
+    connect(&m_delayedCtrlIos, &AsyncQueuedMControllerIo::sigCmdDone, this,
             [this](ProtonetCommandPtr protoCmd, QString rangeName) {
         notifierSenseChannelRange = rangeName;
         emit cmdExecutionDone(protoCmd);

@@ -2,7 +2,7 @@
 #define SENSECHANNELCOMMON_H
 
 #include "abstractfactoryi2cctrl.h"
-#include "delayedzeramcontrollerkeepalivecontainer.h"
+#include "asyncqueuedmcontrollerio.h"
 #include "senserangecommon.h"
 #include "sensesettings.h"
 #include <scpiconnection.h>
@@ -60,7 +60,7 @@ protected:
     void setNotifierSenseChannelRangeCat();
 
     const AbstractFactoryI2cCtrlPtr m_ctrlFactory;
-    DelayedZeraMControllerKeepAliveContainer m_delayedCtrlIos;
+    AsyncQueuedMControllerIo m_delayedCtrlIos;
     const QString m_sName; // the channels name m0...
     const QString m_sAlias1; // the channel's alias name for example UL1
     const QString m_sAlias2; // the channel's alias name for example REF1 (COM5003 only)
