@@ -1,15 +1,15 @@
-#ifndef DELAYEDZERAMCONTROLLERKEEPALIVECONTAINER_H
-#define DELAYEDZERAMCONTROLLERKEEPALIVECONTAINER_H
+#ifndef ASYNCQUEUEDMCONTROLLERIO_H
+#define ASYNCQUEUEDMCONTROLLERIO_H
 
 #include "abstractzeramcontrollerdelayed.h"
 #include "protonetcommand.h"
 #include <taskcontainersequence.h>
 
-class DelayedZeraMControllerKeepAliveContainer : public QObject
+class AsyncQueuedMControllerIo : public QObject
 {
     Q_OBJECT
 public:
-    ~DelayedZeraMControllerKeepAliveContainer() = default;
+    ~AsyncQueuedMControllerIo() = default;
     void addPendingIo(AbstractZeraMControllerDelayedPtr mcontroller,
                       ProtonetCommandPtr protoCmd,
                       const QString &rangeName);
@@ -19,4 +19,4 @@ private:
     TaskContainerSequence m_pendingTaskContainer;
 };
 
-#endif // DELAYEDZERAMCONTROLLERKEEPALIVECONTAINER_H
+#endif // ASYNCQUEUEDMCONTROLLERIO_H

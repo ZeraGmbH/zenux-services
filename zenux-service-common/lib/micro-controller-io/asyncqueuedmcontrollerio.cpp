@@ -1,7 +1,7 @@
-#include "delayedzeramcontrollerkeepalivecontainer.h"
+#include "asyncqueuedmcontrollerio.h"
 #include "delayedzeramcontrollertask.h"
 
-void DelayedZeraMControllerKeepAliveContainer::addPendingIo(AbstractZeraMControllerDelayedPtr mcontroller,
+void AsyncQueuedMControllerIo::addPendingIo(AbstractZeraMControllerDelayedPtr mcontroller,
                                                             ProtonetCommandPtr protoCmd,
                                                             const QString &rangeName)
 {
