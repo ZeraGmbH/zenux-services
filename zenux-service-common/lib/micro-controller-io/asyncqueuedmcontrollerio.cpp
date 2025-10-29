@@ -1,7 +1,7 @@
 #include "asyncqueuedmcontrollerio.h"
 #include "delayedzeramcontrollertask.h"
 
-void AsyncQueuedMControllerIo::addPendingIo(AbstractZeraMControllerDelayedPtr mcontroller,
+void AsyncQueuedMControllerIo::startAsyncRangeIo(AbstractZeraMControllerDelayedPtr mcontroller,
                                                             ProtonetCommandPtr protoCmd,
                                                             const QString &rangeName)
 {

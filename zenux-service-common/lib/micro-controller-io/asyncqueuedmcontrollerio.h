@@ -10,7 +10,7 @@ class AsyncQueuedMControllerIo : public QObject
     Q_OBJECT
 public:
     ~AsyncQueuedMControllerIo() = default;
-    void addPendingIo(AbstractZeraMControllerDelayedPtr mcontroller,
+    void startAsyncRangeIo(AbstractZeraMControllerDelayedPtr mcontroller,
                       ProtonetCommandPtr protoCmd,
                       const QString &rangeName);
 signals:
