@@ -151,7 +151,7 @@ SenseChannelCommon::NotificationStatus SenseChannelCommon::setRangeCommon(SenseR
             protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::ack];
             return SenseChannelCommon::NotificationNow;
         }
-        else if (atmelCmdState == ZeraMControllerIo::cmdpending) {
+        else if (atmelCmdState == ZeraMControllerIo::cmdneedsasyncio) {
             m_delayedCtrlIos.addPendingIo(std::move(rangeCtrl), protoCmd, rangeName);
             return SenseChannelCommon::NotificationDelayed;
         }
