@@ -1,18 +1,18 @@
-#ifndef DELAYEDZERAMCONTROLLERTASK_H
-#define DELAYEDZERAMCONTROLLERTASK_H
+#ifndef ASYNCZERAMCCONTROLLERTASK_H
+#define ASYNCZERAMCCONTROLLERTASK_H
 
 #include "abstractzeramcontrollerdelayed.h"
 #include "protonetcommand.h"
 #include <tasktemplate.h>
 
-class DelayedZeraMControllerTask : public TaskTemplate
+class AsyncZeraMControllerTask : public TaskTemplate
 {
     Q_OBJECT
 public:
-    static std::unique_ptr<DelayedZeraMControllerTask> create(AbstractZeraMControllerDelayedPtr mcontroller,
+    static std::unique_ptr<AsyncZeraMControllerTask> create(AbstractZeraMControllerDelayedPtr mcontroller,
                                                               ProtonetCommandPtr protoCmd,
                                                               const QString &rangeName);
-    DelayedZeraMControllerTask(AbstractZeraMControllerDelayedPtr mcontroller,
+    AsyncZeraMControllerTask(AbstractZeraMControllerDelayedPtr mcontroller,
                                ProtonetCommandPtr protoCmd,
                                const QString &rangeName);
     void start() override;
@@ -26,4 +26,4 @@ private:
     QString m_rangeName;
 };
 
-#endif // DELAYEDZERAMCONTROLLERTASK_H
+#endif // ASYNCZERAMCCONTROLLERTASK_H

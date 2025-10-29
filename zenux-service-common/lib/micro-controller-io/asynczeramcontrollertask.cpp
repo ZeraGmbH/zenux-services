@@ -1,17 +1,17 @@
-#include "delayedzeramcontrollertask.h"
+#include "asynczeramcontrollertask.h"
 #include <zscpi_response_definitions.h>
 
-std::unique_ptr<DelayedZeraMControllerTask> DelayedZeraMControllerTask::create(
+std::unique_ptr<AsyncZeraMControllerTask> AsyncZeraMControllerTask::create(
     AbstractZeraMControllerDelayedPtr mcontroller,
     ProtonetCommandPtr protoCmd,
     const QString &rangeName)
 {
-    return std::make_unique<DelayedZeraMControllerTask>(std::move(mcontroller),
+    return std::make_unique<AsyncZeraMControllerTask>(std::move(mcontroller),
                                                         protoCmd,
                                                         rangeName);
 }
 
-DelayedZeraMControllerTask::DelayedZeraMControllerTask(AbstractZeraMControllerDelayedPtr mcontroller,
+AsyncZeraMControllerTask::AsyncZeraMControllerTask(AbstractZeraMControllerDelayedPtr mcontroller,
                                                        ProtonetCommandPtr protoCmd,
                                                        const QString &rangeName) :
     m_mcontroller(std::move(mcontroller)),
@@ -19,15 +19,15 @@ DelayedZeraMControllerTask::DelayedZeraMControllerTask(AbstractZeraMControllerDe
     m_rangeName(rangeName)
 {
     connect(m_mcontroller.get(), &AbstractZeraMControllerDelayed::sigCmdDone,
-            this, &DelayedZeraMControllerTask::onCmdDone);
+            this, &AsyncZeraMControllerTask::onCmdDone);
 }
 
-void DelayedZeraMControllerTask::start()
+void AsyncZeraMControllerTask::start()
 {
     m_mcontroller->startCmdIfNotStarted();
 }
 
-void DelayedZeraMControllerTask::onCmdDone(ZeraMControllerIoTemplate::atmelRM cmdResult)
+void AsyncZeraMControllerTask::onCmdDone(ZeraMControllerIoTemplate::atmelRM cmdResult)
 {
     bool cmdOk = cmdResult == ZeraMControllerIoTemplate::cmddone;
     m_protoCmd->m_sOutput = ZSCPI::scpiAnswer[cmdOk ? ZSCPI::ack : ZSCPI::errexec];
