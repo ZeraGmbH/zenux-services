@@ -405,12 +405,16 @@ QString Mt310s2SystemInterface::emobReadLockState(const QString &scpiCmd)
     quint8 state = 0;
     cSCPICommand cmd = scpiCmd;
 
+    qWarning("Mt310s2SystemInterface::emobReadLockState");
     if (cmd.isQuery() || cmd.isQuery(1)) {
+        qWarning("Cmd is query");
         QString channelName = cmd.getParam(0);
         QVector<I2cCtrlEMOBPtr> emobControllers = m_hotPluggableControllerContainer->getCurrentEmobControllers();
         if (emobControllers.size() >= 1) {
+            qWarning("EmobController found");
             ZeraMControllerIoTemplate::atmelRM ctrlRet = emobControllers[0]->readEmobLockState(state, channelName);
             if (ctrlRet == ZeraMControllerIo::cmddone) {
+                qWarning("state value %s", qPrintable(QString::number(state)));
                 return QString::number(state);
             }
         }
