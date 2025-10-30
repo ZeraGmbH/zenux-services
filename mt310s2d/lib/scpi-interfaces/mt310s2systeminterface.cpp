@@ -51,7 +51,7 @@ void Mt310s2SystemInterface::initSCPIConnection(QString leadingNodes)
         addDelegate(QString("%1SYSTEM:ADJUSTMENT:XML").arg(leadingNodes), "READ", SCPI::isCmdwP, m_scpiInterface, SystemSystem::cmdAdjXMLRead);
     // End Obsolete???
     addDelegate(QString("%1SYSTEM:ADJUSTMENT:FLASH").arg(leadingNodes), "CHKSUM", SCPI::isQuery, m_scpiInterface, SystemSystem::cmdAdjFlashChksum);
-    addDelegate(QString("%1SYSTEM:EMOB").arg(leadingNodes), "PBPRESS", SCPI::isCmd, m_scpiInterface, SystemSystem::cmdEmobPushButtonPress);
+    addDelegate(QString("%1SYSTEM:EMOB").arg(leadingNodes), "PBPRESS", SCPI::isCmd | SCPI::isCmdwP, m_scpiInterface, SystemSystem::cmdEmobPushButtonPress);
     addDelegate(QString("%1SYSTEM:EMOB").arg(leadingNodes), "LOCKST", SCPI::isQuery, m_scpiInterface, SystemSystem::cmdEmobReadLockState);
     addDelegate(QString("%1SYSTEM:INTERFACE").arg(leadingNodes), "READ", SCPI::isQuery, m_scpiInterface, SystemSystem::cmdInterfaceRead);
 }
@@ -387,10 +387,11 @@ QString Mt310s2SystemInterface::m_AdjFlashChksum(QString &sInput)
 QString Mt310s2SystemInterface::emobPushButtonPress(const QString &scpiCmd)
 {
     cSCPICommand cmd = scpiCmd;
-    if (cmd.isCommand(1) && (cmd.getParam(0) == "")) {
+    if (cmd.isCommand(1)) {
+        QString channelName = cmd.getParam(0);
         QVector<I2cCtrlEMOBPtr> emobControllers = m_hotPluggableControllerContainer->getCurrentEmobControllers();
         if (emobControllers.size() >= 1) {
-            ZeraMControllerIoTemplate::atmelRM ctrlRet = emobControllers[0]->sendPushbuttonPress();
+            ZeraMControllerIoTemplate::atmelRM ctrlRet = emobControllers[0]->sendPushbuttonPress(channelName);
             if (ctrlRet != ZeraMControllerIo::cmddone)
                 return ZSCPI::scpiAnswer[ZSCPI::errexec];
             return ZSCPI::scpiAnswer[ZSCPI::ack];
@@ -401,13 +402,14 @@ QString Mt310s2SystemInterface::emobPushButtonPress(const QString &scpiCmd)
 
 QString Mt310s2SystemInterface::emobReadLockState(const QString &scpiCmd)
 {
-    quint8 state;
+    quint8 state = 0;
     cSCPICommand cmd = scpiCmd;
 
-    if (cmd.isQuery()) {
+    if (cmd.isQuery() || cmd.isQuery(1)) {
+        QString channelName = cmd.getParam(0);
         QVector<I2cCtrlEMOBPtr> emobControllers = m_hotPluggableControllerContainer->getCurrentEmobControllers();
         if (emobControllers.size() >= 1) {
-            ZeraMControllerIoTemplate::atmelRM ctrlRet = emobControllers[0]->readEmobLockState(state);
+            ZeraMControllerIoTemplate::atmelRM ctrlRet = emobControllers[0]->readEmobLockState(state, channelName);
             if (ctrlRet == ZeraMControllerIo::cmddone) {
                 return QString::number(state);
             }

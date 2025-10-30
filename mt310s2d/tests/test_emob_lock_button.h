@@ -11,8 +11,10 @@ class test_emob_lock_button : public QObject
 private slots:
     void init();
     void findSCPIObjects();
-    void readPushButton();
+    void pushButton();
     void readLockState();
+    void pressButtonUl1Channel();
+    void readLockStateChannelUl1();
 
 private:
     std::shared_ptr<cSCPI> m_scpiInterface;

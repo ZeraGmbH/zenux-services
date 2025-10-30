@@ -49,7 +49,7 @@ void test_emob_lock_button::findSCPIObjects()
     QVERIFY(m_scpiInterface->getSCPIObject(lockStateCmd));
 }
 
-void test_emob_lock_button::readPushButton()
+void test_emob_lock_button::pushButton()
 {
     QString pressButtonCmd = "SYSTEM:EMOB:PBPRESS;";
     ProtonetCommandPtr protoCmd = std::make_shared<ProtonetCommand>(nullptr, false, false, QByteArray(), 0, pressButtonCmd);
@@ -68,5 +68,25 @@ void test_emob_lock_button::readLockState()
     scpiDelegate->executeSCPI(protoCmd);
     QCOMPARE(protoCmd->m_sOutput, "0");
 
+}
+
+void test_emob_lock_button::pressButtonUl1Channel()
+{
+    QString pressButtonCmd = "SYSTEM:EMOB:PBPRESS UL1;";
+    ProtonetCommandPtr protoCmd = std::make_shared<ProtonetCommand>(nullptr, false, false, QByteArray(), 0, pressButtonCmd);
+    ScpiObjectPtr scpiObject = m_scpiInterface->getSCPIObject(pressButtonCmd);
+    ScpiDelegate* scpiDelegate = static_cast<ScpiDelegate*>(scpiObject.get());
+    scpiDelegate->executeSCPI(protoCmd);
+    QCOMPARE(protoCmd->m_sOutput, ZSCPI::scpiAnswer[ZSCPI::ack]);
+}
+
+void test_emob_lock_button::readLockStateChannelUl1()
+{
+    QString cmd = "SYSTEM:EMOB:LOCKST? UL1;";
+    ProtonetCommandPtr protoCmd = std::make_shared<ProtonetCommand>(nullptr, false, false, QByteArray(), 0, cmd);
+    ScpiObjectPtr scpiObject = m_scpiInterface->getSCPIObject(cmd);
+    ScpiDelegate* scpiDelegate = static_cast<ScpiDelegate*>(scpiObject.get());
+    scpiDelegate->executeSCPI(protoCmd);
+    QCOMPARE(protoCmd->m_sOutput, "0");
 }
 

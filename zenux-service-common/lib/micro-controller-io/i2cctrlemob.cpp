@@ -17,22 +17,26 @@ enum hw_cmdcode
     hwReadEmobLockState = 0x0060      // old: hwReadEmobConnectionState
 };
 
-ZeraMControllerIoTemplate::atmelRM I2cCtrlEMOB::sendPushbuttonPress()
+ZeraMControllerIoTemplate::atmelRM I2cCtrlEMOB::sendPushbuttonPress(QString channelName)
 {
     I2cMuxerScopedOnOff i2cMuxerEnabled(m_i2cMuxer);
-    hw_cmd CMD(hwSendPushbuttonPress, 0, nullptr, 0);
+    quint16 len = static_cast<quint16>(channelName.length());
+    QByteArray ba = channelName.toLatin1();
+    hw_cmd CMD(hwSendPushbuttonPress, 0, reinterpret_cast<quint8*>(ba.data()), len);
     m_ctrlIo.writeCommand(&CMD);
     if (m_ctrlIo.getLastErrorMask() != 0)
         return ZeraMControllerIo::cmdexecfault;
     return ZeraMControllerIo::cmddone;
 }
 
-ZeraMControllerIoTemplate::atmelRM I2cCtrlEMOB::readEmobLockState(quint8 &status)
+ZeraMControllerIoTemplate::atmelRM I2cCtrlEMOB::readEmobLockState(quint8 &status, QString channelName)
 {
     ZeraMControllerIo::atmelRM ret = ZeraMControllerIo::cmdexecfault;
     quint8 answ[2];
     I2cMuxerScopedOnOff i2cMuxerEnable(m_i2cMuxer);
-    hw_cmd CMD(hwReadEmobLockState, 0, nullptr, 0);
+    quint16 len = static_cast<quint16>(channelName.length());
+    QByteArray ba = channelName.toLatin1();
+    hw_cmd CMD(hwReadEmobLockState, 0, reinterpret_cast<quint8*>(ba.data()), len);
     m_ctrlIo.writeCommand(&CMD, answ, 2);
     if (m_ctrlIo.getLastErrorMask() == 0) {
         status = answ[0];
