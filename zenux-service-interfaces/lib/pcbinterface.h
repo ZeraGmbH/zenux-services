@@ -100,6 +100,15 @@ public:
     quint32 getClampAdjustmentData();
     quint32 setClampAdjustmentData(QString xmlclamp);
     quint32 activatePushButton();
+    // value returned on readEmobConnectionState - see CPU5975 / EMOB_CTRL.h
+    enum reademoblockstate
+    {
+        emobstate_unknown,
+        emobstate_open,
+        emobstate_locking,
+        emobstate_locked,
+        emobstate_error
+    };
     quint32 readEmobConnectionState();
 
     // all commands to accumulator interface
