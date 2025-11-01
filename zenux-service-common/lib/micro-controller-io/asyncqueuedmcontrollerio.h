@@ -3,7 +3,7 @@
 
 #include "abstractzeramcontrollerdelayed.h"
 #include "protonetcommand.h"
-#include <taskcontainersequence.h>
+#include <taskcontainerqueue.h>
 
 class AsyncQueuedMControllerIo : public QObject
 {
@@ -16,7 +16,7 @@ public:
 signals:
     void sigCmdDone(ProtonetCommandPtr protoCmd, QString rangeName);
 private:
-    TaskContainerSequence m_pendingTaskContainer;
+    TaskContainerQueue m_pendingTaskQueue;
 };
 
 #endif // ASYNCQUEUEDMCONTROLLERIO_H
