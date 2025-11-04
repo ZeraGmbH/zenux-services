@@ -5,13 +5,14 @@
 #include <QJsonObject>
 #include <QJsonDocument>
 #include <QDateTime>
+#include <timerfactoryqt.h>
 
 Mt310s2SystemInterface::Mt310s2SystemInterface(PCBServer *server,
                                                Mt310s2SystemInfo *systemInfo,
                                                cSenseSettings *senseSettings,
                                                SenseInterfaceCommon* senseInterface,
                                                AbstractFactoryI2cCtrlPtr ctrlFactory,
-                                               HotPluggableControllerContainerPtr hotPluggableControllerContainer) :
+                                               AbstractHotPluggableControllerContainerPtr hotPluggableControllerContainer) :
     ScpiConnection(server->getSCPIInterface()),
     m_pMyServer(server),
     m_systemInfo(systemInfo),
@@ -22,7 +23,7 @@ Mt310s2SystemInterface::Mt310s2SystemInterface(PCBServer *server,
     m_delayedChangeTriggerForMissingAccuVersionTimer(TimerFactoryQt::createSingleShot(10000))
 {
     if(m_hotPluggableControllerContainer)
-        connect(m_hotPluggableControllerContainer.get(), &HotPluggableControllerContainer::sigControllersChanged, this, [=]() {
+        connect(m_hotPluggableControllerContainer.get(), &AbstractHotPluggableControllerContainer::sigControllersChanged, this, [=]() {
             qInfo("Hot plug controllers changed.");
             triggerVersionInfoChanges();
         });

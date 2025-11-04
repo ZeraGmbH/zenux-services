@@ -141,7 +141,7 @@ void test_hotpluggablecontrollercontainer::mt310s2AddI1CheckSignals()
 
     m_i2cSettings->setI2cAddressesEmob(QString(), 0, 0);
     HotPluggableControllerContainer container(m_i2cSettings.get(), m_ctrlFactory);
-    QSignalSpy spy(&container, &HotPluggableControllerContainer::sigControllersChanged);
+    QSignalSpy spy(&container, &AbstractHotPluggableControllerContainer::sigControllersChanged);
 
     container.startActualizeEmobControllers((1<<4), m_senseSettings.get(), 1000);
     QCOMPARE(spy.count(), 0);
@@ -157,7 +157,7 @@ void test_hotpluggablecontrollercontainer::mt310s2AddI1I2CheckSignalsImmediate()
 
     m_i2cSettings->setI2cAddressesEmob(QString(), 0, 0);
     HotPluggableControllerContainer container(m_i2cSettings.get(), m_ctrlFactory);
-    QSignalSpy spy(&container, &HotPluggableControllerContainer::sigControllersChanged);
+    QSignalSpy spy(&container, &AbstractHotPluggableControllerContainer::sigControllersChanged);
 
     container.startActualizeEmobControllers((1<<4) | (1<<5), m_senseSettings.get(), 1000);
     QCOMPARE(spy.count(), 2);
@@ -173,7 +173,7 @@ void test_hotpluggablecontrollercontainer::mt310s2AddI1I2CheckSignalsDelayed()
 
     m_i2cSettings->setI2cAddressesEmob(QString(), 0, 0);
     HotPluggableControllerContainer container(m_i2cSettings.get(), m_ctrlFactory);
-    QSignalSpy spy(&container, &HotPluggableControllerContainer::sigControllersChanged);
+    QSignalSpy spy(&container, &AbstractHotPluggableControllerContainer::sigControllersChanged);
 
     container.startActualizeEmobControllers((1<<4) | (1<<5), m_senseSettings.get(), 1000);
     QCOMPARE(spy.count(), 0);
@@ -191,7 +191,7 @@ void test_hotpluggablecontrollercontainer::mt310s2AddI1AndRemoveBeforeFinish()
 
     m_i2cSettings->setI2cAddressesEmob(QString(), 0, 0);
     HotPluggableControllerContainer container(m_i2cSettings.get(), m_ctrlFactory);
-    QSignalSpy spy(&container, &HotPluggableControllerContainer::sigControllersChanged);
+    QSignalSpy spy(&container, &AbstractHotPluggableControllerContainer::sigControllersChanged);
 
     container.startActualizeEmobControllers((1<<4), m_senseSettings.get(), 1000);
     QCOMPARE(spy.count(), 0);
@@ -210,7 +210,7 @@ void test_hotpluggablecontrollercontainer::mt310s2AddI1AndAddI2BeforeFinish()
 
     m_i2cSettings->setI2cAddressesEmob(QString(), 0, 0);
     HotPluggableControllerContainer container(m_i2cSettings.get(), m_ctrlFactory);
-    QSignalSpy spy(&container, &HotPluggableControllerContainer::sigControllersChanged);
+    QSignalSpy spy(&container, &AbstractHotPluggableControllerContainer::sigControllersChanged);
 
     container.startActualizeEmobControllers((1<<4), m_senseSettings.get(), 1000);
     QCOMPARE(spy.count(), 0);
@@ -238,7 +238,7 @@ void test_hotpluggablecontrollercontainer::mt310s2AddClampNoController()
 {
     m_i2cSettings->setI2cAddressesEmob(QString(), 0, 0);
     HotPluggableControllerContainer container(m_i2cSettings.get(), m_ctrlFactory);
-    QSignalSpy spy(&container, &HotPluggableControllerContainer::sigControllersChanged);
+    QSignalSpy spy(&container, &AbstractHotPluggableControllerContainer::sigControllersChanged);
     
     TestHotPlugCtrlFactoryI2cCtrl* factory = static_cast<TestHotPlugCtrlFactoryI2cCtrl*>(m_ctrlFactory.get());
 

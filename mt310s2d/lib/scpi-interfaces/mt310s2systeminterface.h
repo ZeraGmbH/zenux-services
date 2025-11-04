@@ -2,10 +2,11 @@
 #define MT310S2SYSTEMINTERFACE_H
 
 #include "scpiconnection.h"
-#include "hotpluggablecontrollercontainer.h"
+#include "abstracthotpluggablecontrollercontainer.h"
 #include "pcbserver.h"
 #include "senseinterfacecommon.h"
 #include "mt310s2systeminfo.h"
+#include <timertemplateqt.h>
 
 namespace SystemSystem
 {
@@ -40,7 +41,7 @@ public:
                            cSenseSettings *senseSettings,
                            SenseInterfaceCommon *senseInterface,
                            AbstractFactoryI2cCtrlPtr ctrlFactory,
-                           HotPluggableControllerContainerPtr hotPluggableControllerContainer);
+                           AbstractHotPluggableControllerContainerPtr hotPluggableControllerContainer);
     virtual void initSCPIConnection(QString leadingNodes) override;
     void actualizeContollers(quint16 bitmaskAvailable);
 public slots:
@@ -75,7 +76,7 @@ private:
     cSenseSettings *m_senseSettings;
     SenseInterfaceCommon* m_senseInterface;
     AbstractFactoryI2cCtrlPtr m_ctrlFactory;
-    HotPluggableControllerContainerPtr m_hotPluggableControllerContainer;
+    AbstractHotPluggableControllerContainerPtr m_hotPluggableControllerContainer;
 
     NotificationString m_allCtrlVersion;
     NotificationString m_allPCBVersion;

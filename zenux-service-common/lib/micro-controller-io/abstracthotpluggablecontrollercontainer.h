@@ -16,4 +16,6 @@ signals:
     void sigControllersChanged();
 };
 
+typedef std::unique_ptr<AbstractHotPluggableControllerContainer> AbstractHotPluggableControllerContainerPtr;
+
 #endif // ABSTRACTHOTPLUGGABLECONTROLLERCONTAINER_H

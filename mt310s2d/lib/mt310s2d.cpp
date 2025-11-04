@@ -1,4 +1,5 @@
 #include "mt310s2d.h"
+#include "hotpluggablecontrollercontainer.h"
 #include "mt310s2dglobal.h"
 #include "mt310s2systeminterface.h"
 #include "mt310s2senseinterface.h"
@@ -181,7 +182,7 @@ void cMT310S2dServer::earlySetup(AbstractChannelRangeFactoryPtr channelRangeFact
                                                                               channelRangeFactory,
                                                                               m_ctrlFactory));
     m_scpiConnectionList.append(m_pStatusInterface = new ServiceStatusInterface(m_scpiInterface, m_pSenseInterface, m_ctrlFactory));
-    HotPluggableControllerContainerPtr emobControllerContainer =
+    AbstractHotPluggableControllerContainerPtr emobControllerContainer =
         std::make_unique<HotPluggableControllerContainer>(i2cSettings,
                                                           m_ctrlFactory);
     m_scpiConnectionList.append(m_pSystemInterface = new Mt310s2SystemInterface(this,
