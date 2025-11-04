@@ -11,21 +11,14 @@ void MockHotPluggableControllerContainer::startActualizeEmobControllers(quint16 
         QMetaObject::invokeMethod(this, "sigControllersChanged", Qt::QueuedConnection);
 }
 
-QVector<I2cCtrlCommonInfoPtrShared> MockHotPluggableControllerContainer::getCurrentCommonControllers()
+HotControllerMap MockHotPluggableControllerContainer::getCurrentControllers()
 {
-    return m_commonControllers;
+    return m_controllers;
 }
 
-QVector<I2cCtrlEMOBPtr> MockHotPluggableControllerContainer::getCurrentEmobControllers()
-{
-    return m_emobControllers;
-}
-
-void MockHotPluggableControllerContainer::setControllersToReturn(bool fireSigControllersChanged,
-                                                                 const QVector<I2cCtrlCommonInfoPtrShared> &commonControllers,
-                                                                 const QVector<I2cCtrlEMOBPtr> &emobControllers)
+void MockHotPluggableControllerContainer::setControllersForNextActualize(bool fireSigControllersChanged,
+                                                                         const HotControllerMap &controllers)
 {
     m_fireSigControllersChanged = fireSigControllersChanged;
-    m_commonControllers = commonControllers;
-    m_emobControllers = emobControllers;
+    m_controllers = controllers;
 }

@@ -11,4 +11,6 @@ private:
     static AbstractHotPluggableControllerContainerPtr m_instance;
 };
 
+typedef std::shared_ptr<MockHotPluggableControllerContainerFactory> MockHotPluggableControllerContainerFactoryPtr;
+
 #endif // MOCKHOTPLUGGABLECONTROLLERCONTAINERFACTORY_H

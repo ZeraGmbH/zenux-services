@@ -168,8 +168,8 @@ public:
     quint32 setPCBAdjustmentData(QString xmlpcb);
     quint32 getClampAdjustmentData();
     quint32 setClampAdjustmentData(QString xmlclamp);
-    quint32 activatePushButton();
-    quint32 readEmobConnState();
+    quint32 activatePushButton(QString channelName);
+    quint32 readEmobConnState(QString channelName);
 
     // all commands to accumulator interface
     quint32 getAccumulatorStatus();

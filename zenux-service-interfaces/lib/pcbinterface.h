@@ -99,7 +99,7 @@ public:
     quint32 setPCBAdjustmentData(QString xmlpcb);
     quint32 getClampAdjustmentData();
     quint32 setClampAdjustmentData(QString xmlclamp);
-    quint32 activatePushButton();
+    quint32 activatePushButton(QString channelName = "IAUX");
     // value returned on readEmobConnectionState - see CPU5975 / EMOB_CTRL.h
     enum reademoblockstate
     {
@@ -109,7 +109,7 @@ public:
         emobstate_locked,
         emobstate_error
     };
-    quint32 readEmobConnectionState();
+    quint32 readEmobConnectionState(QString channelName = "IAUX");
 
     // all commands to accumulator interface
     quint32 getAccumulatorStatus();

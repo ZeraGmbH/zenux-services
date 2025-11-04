@@ -5701,7 +5701,7 @@
     </CLAMP>
    </ADJUSTMENT>
    <EMOB Type="Node">
-    <PBPRESS ScpiPath="SYSTEM:EMOB:PBPRESS" Type="Command"/>
+    <PBPRESS ScpiPath="SYSTEM:EMOB:PBPRESS" Type="Command,Command+Par"/>
     <LOCKST ScpiPath="SYSTEM:EMOB:LOCKST" Type="Query"/>
    </EMOB>
    <INTERFACE Type="Node">

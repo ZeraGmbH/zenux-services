@@ -40,6 +40,11 @@ void HotPluggableControllerContainer::startActualizeEmobControllers(quint16 bitm
     }
 }
 
+HotControllerMap HotPluggableControllerContainer::getCurrentControllers()
+{
+    return m_controllers;
+}
+
 void HotPluggableControllerContainer::startAddingController(int ctrlChannel, SenseSystem::cChannelSettings* channelSettings, int msWaitForApplicationStart)
 {
     I2cMuxerScopedOnOff i2cMuxer(I2cMultiplexerFactory::createPCA9547Muxer(m_i2cSettings->getDeviceNode(),
@@ -61,22 +66,6 @@ bool HotPluggableControllerContainer::isChannelKnown(int ctrlChannel)
             m_pendingBootloaderStoppers.contains(ctrlChannel) ||
             m_controllers.contains(ctrlChannel) ||
             m_ChannelsWithoutController.contains(ctrlChannel);
-}
-
-QVector<I2cCtrlCommonInfoPtrShared> HotPluggableControllerContainer::getCurrentCommonControllers()
-{
-    QVector<I2cCtrlCommonInfoPtrShared> controllers;
-    for(const auto &ctrl : qAsConst(m_controllers))
-        controllers.append(ctrl.m_commonController);
-    return controllers;
-}
-
-QVector<I2cCtrlEMOBPtr> HotPluggableControllerContainer::getCurrentEmobControllers()
-{
-    QVector<I2cCtrlEMOBPtr> controllers;
-    for(const auto &ctrl : qAsConst(m_controllers))
-        controllers.append(ctrl.m_emobController);
-    return controllers;
 }
 
 void HotPluggableControllerContainer::onBootloaderStopAssumed(int ctrlChannel)

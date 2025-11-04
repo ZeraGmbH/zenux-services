@@ -62,6 +62,16 @@ RMConnection *TestPcbServer::getRmConnection()
     return m_pRMConnection;
 }
 
+SettingsContainer* TestPcbServer::getSettings()
+{
+    return m_settings.get();
+}
+
+std::shared_ptr<cSCPI> TestPcbServer::getSCPIInterface()
+{
+    return m_scpiInterface;
+}
+
 void TestPcbServer::start()
 {
     m_pInitializationMachine->start();

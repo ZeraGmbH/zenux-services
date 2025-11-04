@@ -591,22 +591,22 @@ quint32 cPCBInterfacePrivate::setClampAdjustmentData(QString xmlclamp)
     return msgnr;
 }
 
-quint32 cPCBInterfacePrivate::activatePushButton()
+quint32 cPCBInterfacePrivate::activatePushButton(QString channelName)
 {
-    QString cmd;
+    QString cmd, par;
     quint32 msgnr;
 
-    msgnr = sendCommand(cmd = QString("SYST:EMOB:PBPR;"));
+    msgnr = sendCommand(cmd = QString("SYST:EMOB:PBPR"), par = channelName);
     m_MsgNrCmdList[msgnr] = PCB::activatepushbutton;
     return msgnr;
 }
 
-quint32 cPCBInterfacePrivate::readEmobConnState()
+quint32 cPCBInterfacePrivate::readEmobConnState(QString channelName)
 {
-    QString cmd;
+    QString cmd, par;
     quint32 msgnr;
 
-    msgnr = sendCommand(cmd = QString("SYST:EMOB:LOCKST?"));
+    msgnr = sendCommand(cmd = QString("SYST:EMOB:LOCKST? %1;").arg(channelName));
     m_MsgNrCmdList[msgnr] = PCB::reademoblockstate;
     return msgnr;
 }

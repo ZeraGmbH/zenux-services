@@ -11,6 +11,8 @@ endfunction()
 
 SETUP_MT310S2_TESTS(
     test_config_load_mt310s2
+    test_emob_lock_button
+    test_emob_lock
     test_regression_sense_range_mt310s2
     test_regression_sense_interface_mt310s2
     test_regression_sense_interface_mt581s2
@@ -64,6 +66,12 @@ target_sources(test_adj_deny_import_mt310s2
   PRIVATE
     regression_data_adj_import_export/regression_data.qrc
 )
+
+target_sources(test_emob_lock
+  PRIVATE
+    regression_data_adj_import_export/regression_data.qrc
+)
+
 
 target_sources(test_regression_scpi_mt310s2
     PRIVATE

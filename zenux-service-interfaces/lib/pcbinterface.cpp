@@ -359,16 +359,16 @@ quint32 cPCBInterface::setClampAdjustmentData(QString xmlclamp)
     return d->setClampAdjustmentData(xmlclamp);
 }
 
-quint32 cPCBInterface::activatePushButton()
+quint32 cPCBInterface::activatePushButton(QString channelName)
 {
     Q_D(cPCBInterface);
-    return d->activatePushButton();
+    return d->activatePushButton(channelName);
 }
 
-quint32 cPCBInterface::readEmobConnectionState()
+quint32 cPCBInterface::readEmobConnectionState(QString channelName)
 {
     Q_D(cPCBInterface);
-    return d->readEmobConnState();
+    return d->readEmobConnState(channelName);
 }
 
 quint32 cPCBInterface::getAccumulatorStatus()
