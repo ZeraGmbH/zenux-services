@@ -43,7 +43,7 @@ public:
                            AbstractFactoryI2cCtrlPtr ctrlFactory,
                            AbstractHotPluggableControllerContainerPtr hotPluggableControllerContainer);
     virtual void initSCPIConnection(QString leadingNodes) override;
-    void actualizeContollers(quint16 bitmaskAvailable);
+    void actualizeControllers(quint16 bitmaskAvailable);
 public slots:
     void onAccuStatusChanged(uint8_t status);
 protected:

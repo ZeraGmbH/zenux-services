@@ -17,6 +17,7 @@ int main( int argc, char *argv[] )
     QString serviceNameForAlternateDevice = "mt310s2d";
     if (parser.isSet(subdeviceparam))
         serviceNameForAlternateDevice = parser.value(subdeviceparam);
+
     SettingsContainer::TServiceConfig config = SettingsContainer::getServiceConfig(serviceNameForAlternateDevice);
     ServerParams defaultParams { ServerName,
                                  ServerVersion,

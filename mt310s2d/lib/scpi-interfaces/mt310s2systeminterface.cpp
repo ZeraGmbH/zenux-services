@@ -57,7 +57,7 @@ void Mt310s2SystemInterface::initSCPIConnection(QString leadingNodes)
     addDelegate(QString("%1SYSTEM:INTERFACE").arg(leadingNodes), "READ", SCPI::isQuery, m_scpiInterface, SystemSystem::cmdInterfaceRead);
 }
 
-void Mt310s2SystemInterface::actualizeContollers(quint16 bitmaskAvailable)
+void Mt310s2SystemInterface::actualizeControllers(quint16 bitmaskAvailable)
 {
     m_hotPluggableControllerContainer->startActualizeEmobControllers(bitmaskAvailable,
                                                                      m_senseSettings,

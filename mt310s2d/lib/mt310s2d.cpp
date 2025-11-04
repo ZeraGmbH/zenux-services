@@ -348,7 +348,7 @@ void cMT310S2dServer::updateI2cDevicesConnected()
     if (m_ctrlFactory->getClampStatusController()->readClampStatus(clStat) == ZeraMControllerIo::cmddone) {
         qInfo("Devices connected mask read: 0x%02X", clStat);
         m_pClampInterface->actualizeClampStatus(clStat);
-        m_pSystemInterface->actualizeContollers(clStat);
+        m_pSystemInterface->actualizeControllers(clStat);
     }
     else
         qWarning("Devices connected mask read failed");
