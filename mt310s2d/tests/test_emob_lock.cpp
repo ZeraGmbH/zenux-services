@@ -9,9 +9,23 @@
 
 QTEST_MAIN(test_emob_lock)
 
-void test_emob_lock::pushButtonNoEmob()
+void test_emob_lock::init()
 {
     setupServers();
+}
+
+void test_emob_lock::cleanup()
+{
+    m_pcbIFace = nullptr;
+    m_proxyClient = nullptr;
+    m_mt310s2d = nullptr;
+    TimeMachineObject::feedEventLoop();
+    m_resman = nullptr;
+    TimeMachineObject::feedEventLoop();
+}
+
+void test_emob_lock::pushButtonNoEmob()
+{
     QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
 
     int msgNr = m_pcbIFace->scpiCommand("SYSTEM:EMOB:PBPRESS;");
@@ -23,9 +37,32 @@ void test_emob_lock::pushButtonNoEmob()
     QCOMPARE(responseSpy[0][2], QVariant("nak"));
 }
 
-void test_emob_lock::pushButtonIAUX()
+void test_emob_lock::pushButtonEmobIAUX()
 {
+    MockHotPluggableControllerContainerPtr hpcc = m_mt310s2d->getHotPluggableControllerContainer();
 
+    QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
+
+    int msgNr = m_pcbIFace->scpiCommand("SYSTEM:EMOB:PBPRESS;");
+    TimeMachineObject::feedEventLoop();
+
+    QCOMPARE(responseSpy.count(), 1);
+    QCOMPARE(responseSpy[0][0], QVariant(msgNr));
+    QCOMPARE(responseSpy[0][1], QVariant(ack));
+    QCOMPARE(responseSpy[0][2], QVariant("ack"));
+}
+
+void test_emob_lock::pushButtonIAUXNoEmob()
+{
+    QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
+
+    int msgNr = m_pcbIFace->scpiCommand("SYSTEM:EMOB:PBPRESS m7;");
+    TimeMachineObject::feedEventLoop();
+
+    QCOMPARE(responseSpy.count(), 1);
+    QCOMPARE(responseSpy[0][0], QVariant(msgNr));
+    QCOMPARE(responseSpy[0][1], QVariant(nack));
+    QCOMPARE(responseSpy[0][2], QVariant("nak"));
 }
 
 void test_emob_lock::readLockState()

@@ -3,13 +3,16 @@
 #include "i2cmultiplexerfactory.h"
 #include <i2cmuxerscopedonoff.h>
 
-HotPluggableControllerContainer::HotPluggableControllerContainer(I2cSettings *i2cSettings, AbstractFactoryI2cCtrlPtr ctrlFactory) :
+HotPluggableControllerContainer::HotPluggableControllerContainer(I2cSettings *i2cSettings,
+                                                                 AbstractFactoryI2cCtrlPtr ctrlFactory) :
     m_i2cSettings(i2cSettings),
     m_ctrlFactory(ctrlFactory)
 {
 }
 
-void HotPluggableControllerContainer::startActualizeEmobControllers(quint16 bitmaskAvailable, const cSenseSettings* senseSettings, int msWaitForApplicationStart)
+void HotPluggableControllerContainer::startActualizeEmobControllers(quint16 bitmaskAvailable,
+                                                                    const cSenseSettings *senseSettings,
+                                                                    int msWaitForApplicationStart)
 {
     const auto channelsSettings = senseSettings->getChannelSettings();
     for(const auto channelSettings : channelsSettings) {
@@ -42,10 +45,15 @@ void HotPluggableControllerContainer::startActualizeEmobControllers(quint16 bitm
 
 HotControllerMap HotPluggableControllerContainer::getCurrentControllers()
 {
-    return m_controllers;
+    HotControllerMap ctrlMap;
+    for (const auto &controller : qAsConst(m_controllers))
+        ctrlMap[controller.channelMName] = controller.controllers;
+    return ctrlMap;
 }
 
-void HotPluggableControllerContainer::startAddingController(int ctrlChannel, SenseSystem::cChannelSettings* channelSettings, int msWaitForApplicationStart)
+void HotPluggableControllerContainer::startAddingController(int ctrlChannel,
+                                                            SenseSystem::cChannelSettings* channelSettings,
+                                                            int msWaitForApplicationStart)
 {
     I2cMuxerScopedOnOff i2cMuxer(I2cMultiplexerFactory::createPCA9547Muxer(m_i2cSettings->getDeviceNode(),
                                                                            m_i2cSettings->getI2CAdress(i2cSettings::muxerI2cAddress),
@@ -56,7 +64,8 @@ void HotPluggableControllerContainer::startAddingController(int ctrlChannel, Sen
     ZeraMControllerBootloaderStopperPtr bootStopper = ZeraMControllerBootloaderStopperFactory::createBootloaderStopper(i2cCtrl, ctrlChannel);
     connect(bootStopper.get(), &ZeraMControllerBootloaderStopper::sigAssumeBootloaderStopped,
             this, &HotPluggableControllerContainer::onBootloaderStopAssumed);
-    m_pendingBootloaderStoppers[ctrlChannel] = PendingChannelInfo{ bootStopper, channelSettings->m_nMuxChannelNo };
+    m_pendingBootloaderStoppers[ctrlChannel] =
+        PendingChannelInfo{ bootStopper, channelSettings->m_nameMx, channelSettings->m_nMuxChannelNo };
     bootStopper->stopBootloader(msWaitForApplicationStart);
 }
 
@@ -76,7 +85,7 @@ void HotPluggableControllerContainer::onBootloaderStopAssumed(int ctrlChannel)
         I2cCtrlCommonInfoPtrShared commonCtrl = m_ctrlFactory->getCommonInfoController(
             AbstractFactoryI2cCtrl::CTRL_TYPE_EMOB,
             muxChannelNo);
-        m_pendingBootloaderStoppers.remove(ctrlChannel);
+        PendingChannelInfo channelInfo = m_pendingBootloaderStoppers.take(ctrlChannel);
         QString version;
         ZeraMControllerIo::atmelRM result = commonCtrl->readCTRLVersion(version);
         if(result == ZeraMControllerIo::cmddone && !version.isEmpty()) {
@@ -84,7 +93,8 @@ void HotPluggableControllerContainer::onBootloaderStopAssumed(int ctrlChannel)
                   qPrintable(version), ctrlChannel, muxChannelNo);
             I2cCtrlEMOBPtr emobCtrl = m_ctrlFactory->getEmobController(muxChannelNo);
             HotControllers controllers{commonCtrl, emobCtrl};
-            m_controllers[ctrlChannel] = controllers;
+
+            m_controllers[ctrlChannel] = {channelInfo.channelMName, controllers};
             emit sigControllersChanged();
         }
         else {

@@ -54,6 +54,7 @@ private:
     void triggerVersionInfoChanges();
     void updateAllCtrlVersionsJson();
     void updateAllPCBsVersion();
+    HotControllers *findHotController(const QString &channelMName);
 
     QString m_ReadDeviceVersion(QString& sInput);
     QString m_ReadDeviceName(QString& sInput);

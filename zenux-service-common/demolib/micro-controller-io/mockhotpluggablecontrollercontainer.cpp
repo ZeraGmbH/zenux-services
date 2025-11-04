@@ -5,10 +5,10 @@ void MockHotPluggableControllerContainer::startActualizeEmobControllers(quint16 
                                                                         int msWaitForApplicationStart)
 {
     Q_UNUSED(bitmaskAvailable)
-    Q_UNUSED(senseSettings)
     Q_UNUSED(msWaitForApplicationStart)
-    if(m_fireSigControllersChanged)
+    if(m_fireSigControllersChanged) {
         QMetaObject::invokeMethod(this, "sigControllersChanged", Qt::QueuedConnection);
+    }
 }
 
 HotControllerMap MockHotPluggableControllerContainer::getCurrentControllers()
@@ -16,9 +16,8 @@ HotControllerMap MockHotPluggableControllerContainer::getCurrentControllers()
     return m_controllers;
 }
 
-void MockHotPluggableControllerContainer::setControllersForNextActualize(bool fireSigControllersChanged,
-                                                                         const HotControllerMap &controllers)
+void MockHotPluggableControllerContainer::addEMOBController(const QString &channelMName)
 {
-    m_fireSigControllersChanged = fireSigControllersChanged;
-    m_controllers = controllers;
+    m_addedChannelMNames.append(channelMName);
+    m_fireSigControllersChanged = true;
 }

@@ -4,7 +4,6 @@
 #include "abstracthotpluggablecontrollercontainer.h"
 #include "abstractfactoryi2cctrl.h"
 #include "i2csettings.h"
-#include "sensesettings.h"
 #include <zeramcontrollerbootloaderstopper.h>
 #include <QMap>
 #include <QSet>
@@ -13,7 +12,8 @@ class HotPluggableControllerContainer : public AbstractHotPluggableControllerCon
 {
     Q_OBJECT
 public:
-    HotPluggableControllerContainer(I2cSettings *i2cSettings, AbstractFactoryI2cCtrlPtr ctrlFactory);
+    HotPluggableControllerContainer(I2cSettings *i2cSettings,
+                                    AbstractFactoryI2cCtrlPtr ctrlFactory);
     void startActualizeEmobControllers(quint16 bitmaskAvailable,
                                        const cSenseSettings* senseSettings,
                                        int msWaitForApplicationStart) override;
@@ -25,11 +25,17 @@ private:
     bool isChannelKnown(int ctrlChannel);
 
     I2cSettings *m_i2cSettings;
+
     AbstractFactoryI2cCtrlPtr m_ctrlFactory;
-    HotControllerMap m_controllers;
+    struct NamedHotControllers {
+        QString channelMName;
+        HotControllers controllers;
+    };
+    QMap<int /* ctrlChannel */, NamedHotControllers> m_controllers;
     struct PendingChannelInfo
     {
         ZeraMControllerBootloaderStopperPtr m_BootloaderStopper;
+        QString channelMName;
         qint8 m_nMuxChannelNo;
     };
     QMap<int /* ctrlChannel */, PendingChannelInfo> m_pendingBootloaderStoppers;

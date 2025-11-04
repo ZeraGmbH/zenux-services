@@ -468,6 +468,12 @@ void Mt310s2SystemInterface::updateAllPCBsVersion()
     qInfo("Pcb info were updated.");
 }
 
+HotControllers *Mt310s2SystemInterface::findHotController(const QString &channelMName)
+{
+    HotControllerMap hotpluggableControllers = m_hotPluggableControllerContainer->getCurrentControllers();
+
+}
+
 void Mt310s2SystemInterface::m_genAnswer(int select, QString &answer)
 {
     switch (select)

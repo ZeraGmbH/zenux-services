@@ -10,8 +10,12 @@ class test_emob_lock : public QObject
 {
     Q_OBJECT
 private slots:
+    void init();
+    void cleanup();
+
     void pushButtonNoEmob();
-    void pushButtonIAUX();
+    void pushButtonEmobIAUX();
+    void pushButtonIAUXNoEmob();
     void readLockState();
     void pressButtonUl1Channel();
     void readLockStateChannelUl1();

@@ -7,7 +7,8 @@
 MockMt310s2d::MockMt310s2d(AbstractFactoryI2cCtrlPtr ctrlFactory,
                            VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory,
                            const QString &serviceNameForAlternateDevice,
-                           QString alternateConfigXml)
+                           QString alternateConfigXml) :
+    m_hotPluggableControllerContainer(std::make_shared<MockHotPluggableControllerContainer>())
 {
     MockI2cEEpromIoFactory::enableMock();
 
@@ -20,5 +21,10 @@ MockMt310s2d::MockMt310s2d(AbstractFactoryI2cCtrlPtr ctrlFactory,
         std::make_shared<MockFactoryDeviceNodePcb>(),
         tcpNetworkFactory,
         SettingsContainer::createChannelRangeFactory(serviceNameForAlternateDevice),
-        std::make_shared<MockHotPluggableControllerContainer>());
+        m_hotPluggableControllerContainer);
+}
+
+MockHotPluggableControllerContainerPtr MockMt310s2d::getHotPluggableControllerContainer()
+{
+    return m_hotPluggableControllerContainer;
 }

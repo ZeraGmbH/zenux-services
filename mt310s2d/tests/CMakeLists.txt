@@ -11,7 +11,6 @@ endfunction()
 
 SETUP_MT310S2_TESTS(
     test_config_load_mt310s2
-    test_emob_lock_button
     test_emob_lock
     test_regression_sense_range_mt310s2
     test_regression_sense_interface_mt310s2

@@ -32,8 +32,8 @@ private slots:
 
 
 private:
-    quint16 getChannelPlugMask(const QString &channelName);
-    qint8 getChannelCtrlChannel(const QString &channelName);
+    quint16 getChannelPlugMask(const QString &channelAlias);
+    QString getChannelMName(const QString &channelAlias);
     Zera::XMLConfig::cReader m_configReader;
     std::unique_ptr<TestI2cSettings> m_i2cSettings;
     std::unique_ptr<cSenseSettings> m_senseSettings;

@@ -112,7 +112,8 @@ void test_hotpluggablecontrollercontainer::mt310s2AddI1CheckI2cSettings()
     container.startActualizeEmobControllers(getChannelPlugMask("IL1"), m_senseSettings.get(), 1000);
     HotControllerMap controllers = container.getCurrentControllers();
     QCOMPARE(controllers.size(), 1);
-    TestHotplugI2cCtrlCommonInfo *testController = static_cast<TestHotplugI2cCtrlCommonInfo*>(controllers[getChannelCtrlChannel("IL1")].m_commonController.get());
+    HotControllers controller = controllers[getChannelMName("IL1")];
+    TestHotplugI2cCtrlCommonInfo *testController = static_cast<TestHotplugI2cCtrlCommonInfo*>(controller.m_commonController.get());
     QCOMPARE(testController->getDevnode(), "foo");
     QCOMPARE(testController->getAdrCtrl(), 1);
     QCOMPARE(testController->getAdrMux(), 2);
@@ -128,13 +129,13 @@ void test_hotpluggablecontrollercontainer::mt310s2AddI1I2I3IAuxCheckMuxSettings(
                                             getChannelPlugMask("IAUX"), m_senseSettings.get(), 1000);
     HotControllerMap controllers = container.getCurrentControllers();
     QCOMPARE(controllers.size(), 4);
-    TestHotplugI2cCtrlCommonInfo* ctrlI1 = static_cast<TestHotplugI2cCtrlCommonInfo*>(controllers[getChannelCtrlChannel("IL1")].m_commonController.get());
+    TestHotplugI2cCtrlCommonInfo* ctrlI1 = static_cast<TestHotplugI2cCtrlCommonInfo*>(controllers[getChannelMName("IL1")].m_commonController.get());
     QCOMPARE(ctrlI1->getMuxChannel(), 1);
-    TestHotplugI2cCtrlCommonInfo* ctrlI2 = static_cast<TestHotplugI2cCtrlCommonInfo*>(controllers[getChannelCtrlChannel("IL2")].m_commonController.get());
+    TestHotplugI2cCtrlCommonInfo* ctrlI2 = static_cast<TestHotplugI2cCtrlCommonInfo*>(controllers[getChannelMName("IL2")].m_commonController.get());
     QCOMPARE(ctrlI2->getMuxChannel(), 2);
-    TestHotplugI2cCtrlCommonInfo* ctrlI3 = static_cast<TestHotplugI2cCtrlCommonInfo*>(controllers[getChannelCtrlChannel("IL3")].m_commonController.get());
+    TestHotplugI2cCtrlCommonInfo* ctrlI3 = static_cast<TestHotplugI2cCtrlCommonInfo*>(controllers[getChannelMName("IL3")].m_commonController.get());
     QCOMPARE(ctrlI3->getMuxChannel(), 3);
-    TestHotplugI2cCtrlCommonInfo* ctrlIAux = static_cast<TestHotplugI2cCtrlCommonInfo*>(controllers[getChannelCtrlChannel("IAUX")].m_commonController.get());
+    TestHotplugI2cCtrlCommonInfo* ctrlIAux = static_cast<TestHotplugI2cCtrlCommonInfo*>(controllers[getChannelMName("IAUX")].m_commonController.get());
     QCOMPARE(ctrlIAux->getMuxChannel(), 4);
 }
 
@@ -286,14 +287,14 @@ void test_hotpluggablecontrollercontainer::mt310s2AddClampNoController()
     QCOMPARE(ZeraMControllerBootloaderStopperFactoryForTest::checkEmpty(), true);
 }
 
-quint16 test_hotpluggablecontrollercontainer::getChannelPlugMask(const QString &channelName)
+quint16 test_hotpluggablecontrollercontainer::getChannelPlugMask(const QString &channelAlias)
 {
-    SenseSystem::cChannelSettings* channelSettings = m_senseSettings->findChannelSettingByAlias1(channelName);
+    SenseSystem::cChannelSettings* channelSettings = m_senseSettings->findChannelSettingByAlias1(channelAlias);
     return (1<<channelSettings->m_nPluggedBit);
 }
 
-qint8 test_hotpluggablecontrollercontainer::getChannelCtrlChannel(const QString &channelName)
+QString test_hotpluggablecontrollercontainer::getChannelMName(const QString &channelAlias)
 {
-    SenseSystem::cChannelSettings* channelSettings = m_senseSettings->findChannelSettingByAlias1(channelName);
-    return channelSettings->m_nCtrlChannel;
+    SenseSystem::cChannelSettings* channelSettings = m_senseSettings->findChannelSettingByAlias1(channelAlias);
+    return channelSettings->m_nameMx;
 }
