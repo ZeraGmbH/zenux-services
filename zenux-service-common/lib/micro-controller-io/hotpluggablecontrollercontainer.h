@@ -1,6 +1,7 @@
 #ifndef HOTPLUGGABLECONTROLLERCONTAINER_H
 #define HOTPLUGGABLECONTROLLERCONTAINER_H
 
+#include "abstracthotpluggablecontrollercontainer.h"
 #include "abstractfactoryi2cctrl.h"
 #include "i2csettings.h"
 #include "sensesettings.h"
@@ -10,16 +11,14 @@
 #include <QVector>
 #include <memory>
 
-class HotPluggableControllerContainer : public QObject
+class HotPluggableControllerContainer : public AbstractHotPluggableControllerContainer
 {
     Q_OBJECT
 public:
     HotPluggableControllerContainer(I2cSettings *i2cSettings, AbstractFactoryI2cCtrlPtr ctrlFactory);
-    void startActualizeEmobControllers(quint16 bitmaskAvailable, const cSenseSettings* senseSettings, int msWaitForApplicationStart);
-    QVector<I2cCtrlCommonInfoPtrShared> getCurrentCommonControllers();
-    QVector<I2cCtrlEMOBPtr> getCurrentEmobControllers();
-signals:
-    void sigControllersChanged();
+    void startActualizeEmobControllers(quint16 bitmaskAvailable, const cSenseSettings* senseSettings, int msWaitForApplicationStart) override;
+    QVector<I2cCtrlCommonInfoPtrShared> getCurrentCommonControllers() override;
+    QVector<I2cCtrlEMOBPtr> getCurrentEmobControllers() override;
 private slots:
     void onBootloaderStopAssumed(int ctrlChannel);
 private:
