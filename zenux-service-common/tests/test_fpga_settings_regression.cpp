@@ -1,5 +1,4 @@
 #include "test_fpga_settings_regression.h"
-#include "mockhotpluggablecontrollercontainerfactory.h"
 #include "mt310s2d.h"
 #include "com5003d.h"
 #include "sec1000d.h"
@@ -9,6 +8,7 @@
 #include "testfactorydevicenodedsp.h"
 #include "mockserverparamgenerator.h"
 #include "testfactoryi2cctrl.h"
+#include "mockhotpluggablecontrollercontainer.h"
 #include <timemachineobject.h>
 #include <mocktcpnetworkfactory.h>
 #include <QTest>
@@ -39,7 +39,7 @@ void test_fpga_settings_regression::mt310s2d()
         std::make_shared<MockFactoryDeviceNodePcb>(),
         VeinTcp::MockTcpNetworkFactory::create(),
         SettingsContainer::createChannelRangeFactory("mt310s2d"),
-        std::make_shared<MockHotPluggableControllerContainerFactory>());
+        std::make_shared<MockHotPluggableControllerContainer>());
     TimeMachineObject::feedEventLoop();
 
     QCOMPARE(server.getCtrlDeviceNode(), "/dev/zFPGA1reg");
@@ -56,7 +56,7 @@ void test_fpga_settings_regression::mt581s2d()
         std::make_shared<MockFactoryDeviceNodePcb>(),
         VeinTcp::MockTcpNetworkFactory::create(),
         SettingsContainer::createChannelRangeFactory("mt581s2d"),
-        std::make_shared<MockHotPluggableControllerContainerFactory>());
+        std::make_shared<MockHotPluggableControllerContainer>());
     TimeMachineObject::feedEventLoop();
 
     QCOMPARE(server.getCtrlDeviceNode(), "/dev/zFPGA1reg");

@@ -35,7 +35,7 @@ cMT310S2dServer::cMT310S2dServer(SettingsContainerPtr settings,
                                  AbstractFactoryDeviceNodePcbPtr deviceNodeFactory,
                                  VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory,
                                  AbstractChannelRangeFactoryPtr channelRangeFactory,
-                                 AbstractHotPluggableControllerContainerFactoryPtr hotplugFactory) :
+                                 AbstractHotPluggableControllerContainerPtr hotplugContainer) :
     PCBServer(std::move(settings), tcpNetworkFactory),
     m_ctrlFactory(ctrlFactory),
     m_deviceNodeFactory(deviceNodeFactory),
@@ -43,7 +43,7 @@ cMT310S2dServer::cMT310S2dServer(SettingsContainerPtr settings,
 {
     doConfiguration();
     init();
-    earlySetup(channelRangeFactory, hotplugFactory);
+    earlySetup(channelRangeFactory, hotplugContainer);
 }
 
 void cMT310S2dServer::init()
@@ -166,7 +166,7 @@ void cMT310S2dServer::doWait4Atmel()
 
 
 void cMT310S2dServer::earlySetup(AbstractChannelRangeFactoryPtr channelRangeFactory,
-                                 AbstractHotPluggableControllerContainerFactoryPtr hotplugFactory)
+                                 AbstractHotPluggableControllerContainerPtr hotplugContainer)
 {
     qInfo("Set initial PLL channel...");
     m_ctrlFactory->getPllController()->setPLLChannel(1); // default channel m0 for pll control
@@ -184,14 +184,12 @@ void cMT310S2dServer::earlySetup(AbstractChannelRangeFactoryPtr channelRangeFact
                                                                               channelRangeFactory,
                                                                               m_ctrlFactory));
     m_scpiConnectionList.append(m_pStatusInterface = new ServiceStatusInterface(m_scpiInterface, m_pSenseInterface, m_ctrlFactory));
-    AbstractHotPluggableControllerContainerPtr emobControllerContainer =
-        hotplugFactory->createHotplugContainer();
     m_scpiConnectionList.append(m_pSystemInterface = new Mt310s2SystemInterface(this,
                                                                                 m_pSystemInfo,
                                                                                 m_pSenseSettings,
                                                                                 m_pSenseInterface,
                                                                                 m_ctrlFactory,
-                                                                                std::move(emobControllerContainer)));
+                                                                                hotplugContainer));
     m_scpiConnectionList.append(m_pSamplingInterface = new cSamplingInterface(m_scpiInterface, m_settings->getSamplingSettings(), m_ctrlFactory));
     m_scpiConnectionList.append(m_foutInterface = new FOutGroupResourceAndInterface(m_scpiInterface, m_foutSettings));
     m_scpiConnectionList.append(m_pFRQInputInterface = new FInGroupResourceAndInterface(m_scpiInterface, m_finSettings));
