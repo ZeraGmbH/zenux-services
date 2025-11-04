@@ -6,7 +6,9 @@
 class MockHotPluggableControllerContainerFactory : public AbstractHotPluggableControllerContainerFactory
 {
 public:
-    AbstractHotPluggableControllerContainerPtr createHotplugContainer(I2cSettings *i2cSettings, AbstractFactoryI2cCtrlPtr ctrlFactory) override;
+    AbstractHotPluggableControllerContainerPtr createHotplugContainer() override;
+private:
+    static AbstractHotPluggableControllerContainerPtr m_instance;
 };
 
 #endif // MOCKHOTPLUGGABLECONTROLLERCONTAINERFACTORY_H

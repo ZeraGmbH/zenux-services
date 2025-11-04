@@ -1,8 +1,15 @@
 #include "hotpluggablecontrollercontainerfactory.h"
 #include "hotpluggablecontrollercontainer.h"
 
-AbstractHotPluggableControllerContainerPtr HotPluggableControllerContainerFactory::createHotplugContainer(I2cSettings *i2cSettings,
-                                                                                                          AbstractFactoryI2cCtrlPtr ctrlFactory)
+HotPluggableControllerContainerFactory::HotPluggableControllerContainerFactory(I2cSettings *i2cSettings,
+                                                                               AbstractFactoryI2cCtrlPtr ctrlFactory) :
+    m_i2cSettings(i2cSettings),
+    m_ctrlFactory(ctrlFactory)
 {
-    return std::make_unique<HotPluggableControllerContainer>(i2cSettings, ctrlFactory);
 }
+
+AbstractHotPluggableControllerContainerPtr HotPluggableControllerContainerFactory::createHotplugContainer()
+{
+    return std::make_unique<HotPluggableControllerContainer>(m_i2cSettings, m_ctrlFactory);
+}
+

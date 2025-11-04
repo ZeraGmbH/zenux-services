@@ -185,7 +185,7 @@ void cMT310S2dServer::earlySetup(AbstractChannelRangeFactoryPtr channelRangeFact
                                                                               m_ctrlFactory));
     m_scpiConnectionList.append(m_pStatusInterface = new ServiceStatusInterface(m_scpiInterface, m_pSenseInterface, m_ctrlFactory));
     AbstractHotPluggableControllerContainerPtr emobControllerContainer =
-        hotplugFactory->createHotplugContainer(i2cSettings, m_ctrlFactory);
+        hotplugFactory->createHotplugContainer();
     m_scpiConnectionList.append(m_pSystemInterface = new Mt310s2SystemInterface(this,
                                                                                 m_pSystemInfo,
                                                                                 m_pSenseSettings,

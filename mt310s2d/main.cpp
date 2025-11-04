@@ -25,7 +25,8 @@ int main( int argc, char *argv[] )
 
     SettingsContainerPtr settings = std::make_unique<SettingsContainer>(defaultParams);
     std::shared_ptr<FactoryI2cCtrl> ctrlFactory = std::make_shared<FactoryI2cCtrl>(settings->getI2cSettings());
-    AbstractHotPluggableControllerContainerFactoryPtr hotplugFactory = std::make_shared<HotPluggableControllerContainerFactory>();
+    AbstractHotPluggableControllerContainerFactoryPtr hotplugFactory =
+        std::make_shared<HotPluggableControllerContainerFactory>(settings->getI2cSettings(), ctrlFactory);
     cMT310S2dServer* mt310s2d = new cMT310S2dServer(
         std::move(settings),
         ctrlFactory,
