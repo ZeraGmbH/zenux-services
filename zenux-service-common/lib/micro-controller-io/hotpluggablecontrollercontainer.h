@@ -9,7 +9,6 @@
 #include <QMap>
 #include <QSet>
 #include <QVector>
-#include <memory>
 
 class HotPluggableControllerContainer : public AbstractHotPluggableControllerContainer
 {
