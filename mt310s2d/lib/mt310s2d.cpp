@@ -34,7 +34,8 @@ cMT310S2dServer::cMT310S2dServer(SettingsContainerPtr settings,
                                  AbstractFactoryI2cCtrlPtr ctrlFactory,
                                  AbstractFactoryDeviceNodePcbPtr deviceNodeFactory,
                                  VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory,
-                                 AbstractChannelRangeFactoryPtr channelRangeFactory) :
+                                 AbstractChannelRangeFactoryPtr channelRangeFactory,
+                                 AbstractHotPluggableControllerContainerFactoryPtr hotplugFactory) :
     PCBServer(std::move(settings), tcpNetworkFactory),
     m_ctrlFactory(ctrlFactory),
     m_deviceNodeFactory(deviceNodeFactory),
@@ -42,7 +43,7 @@ cMT310S2dServer::cMT310S2dServer(SettingsContainerPtr settings,
 {
     doConfiguration();
     init();
-    earlySetup(channelRangeFactory);
+    earlySetup(channelRangeFactory, hotplugFactory);
 }
 
 void cMT310S2dServer::init()
@@ -164,7 +165,8 @@ void cMT310S2dServer::doWait4Atmel()
 }
 
 
-void cMT310S2dServer::earlySetup(AbstractChannelRangeFactoryPtr channelRangeFactory)
+void cMT310S2dServer::earlySetup(AbstractChannelRangeFactoryPtr channelRangeFactory,
+                                 AbstractHotPluggableControllerContainerFactoryPtr hotplugFactory)
 {
     qInfo("Set initial PLL channel...");
     m_ctrlFactory->getPllController()->setPLLChannel(1); // default channel m0 for pll control
@@ -183,8 +185,7 @@ void cMT310S2dServer::earlySetup(AbstractChannelRangeFactoryPtr channelRangeFact
                                                                               m_ctrlFactory));
     m_scpiConnectionList.append(m_pStatusInterface = new ServiceStatusInterface(m_scpiInterface, m_pSenseInterface, m_ctrlFactory));
     AbstractHotPluggableControllerContainerPtr emobControllerContainer =
-        std::make_unique<HotPluggableControllerContainer>(i2cSettings,
-                                                          m_ctrlFactory);
+        hotplugFactory->createHotplugContainer(i2cSettings, m_ctrlFactory);
     m_scpiConnectionList.append(m_pSystemInterface = new Mt310s2SystemInterface(this,
                                                                                 m_pSystemInfo,
                                                                                 m_pSenseSettings,

@@ -1,4 +1,5 @@
 #include "test_fpga_settings_regression.h"
+#include "mockhotpluggablecontrollercontainerfactory.h"
 #include "mt310s2d.h"
 #include "com5003d.h"
 #include "sec1000d.h"
@@ -31,12 +32,14 @@ void test_fpga_settings_regression::com5003d()
 void test_fpga_settings_regression::mt310s2d()
 {
     ServerParams params = MockServerParamGenerator::createParams("mt310s2d");
+    AbstractFactoryI2cCtrlPtr i2cCtrlFactory = std::make_shared<TestFactoryI2cCtrl>(true);
     cMT310S2dServer server(
         std::make_unique<SettingsContainer>(params),
-        std::make_shared<TestFactoryI2cCtrl>(true),
+        i2cCtrlFactory,
         std::make_shared<MockFactoryDeviceNodePcb>(),
         VeinTcp::MockTcpNetworkFactory::create(),
-        SettingsContainer::createChannelRangeFactory("mt310s2d"));
+        SettingsContainer::createChannelRangeFactory("mt310s2d"),
+        std::make_shared<MockHotPluggableControllerContainerFactory>());
     TimeMachineObject::feedEventLoop();
 
     QCOMPARE(server.getCtrlDeviceNode(), "/dev/zFPGA1reg");
@@ -46,12 +49,14 @@ void test_fpga_settings_regression::mt310s2d()
 void test_fpga_settings_regression::mt581s2d()
 {
     ServerParams params = MockServerParamGenerator::createParams("mt581s2d");
+    AbstractFactoryI2cCtrlPtr i2cCtrlFactory = std::make_shared<TestFactoryI2cCtrl>(true);
     cMT310S2dServer server(
         std::make_unique<SettingsContainer>(params),
         std::make_shared<TestFactoryI2cCtrl>(true),
         std::make_shared<MockFactoryDeviceNodePcb>(),
         VeinTcp::MockTcpNetworkFactory::create(),
-        SettingsContainer::createChannelRangeFactory("mt581s2d"));
+        SettingsContainer::createChannelRangeFactory("mt581s2d"),
+        std::make_shared<MockHotPluggableControllerContainerFactory>());
     TimeMachineObject::feedEventLoop();
 
     QCOMPARE(server.getCtrlDeviceNode(), "/dev/zFPGA1reg");

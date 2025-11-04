@@ -1,5 +1,6 @@
 #include "mockmt310s2d.h"
 #include "mockfactorydevicenodepcb.h"
+#include "mockhotpluggablecontrollercontainerfactory.h"
 #include "mockserverparamgenerator.h"
 #include "mocki2ceepromiofactory.h"
 
@@ -18,5 +19,6 @@ MockMt310s2d::MockMt310s2d(AbstractFactoryI2cCtrlPtr ctrlFactory,
         ctrlFactory,
         std::make_shared<MockFactoryDeviceNodePcb>(),
         tcpNetworkFactory,
-        SettingsContainer::createChannelRangeFactory(serviceNameForAlternateDevice));
+        SettingsContainer::createChannelRangeFactory(serviceNameForAlternateDevice),
+        std::make_shared<MockHotPluggableControllerContainerFactory>());
 }

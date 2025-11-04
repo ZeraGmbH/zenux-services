@@ -1,6 +1,7 @@
 #ifndef MT310S2D_H
 #define MT310S2D_H
 
+#include "abstracthotpluggablecontrollercontainerfactory.h"
 #include "mt310s2systeminfo.h"
 #include "abstractfactorydevicenodepcb.h"
 #include "pcbserver.h"
@@ -40,7 +41,8 @@ public:
                              AbstractFactoryI2cCtrlPtr ctrlFactory,
                              AbstractFactoryDeviceNodePcbPtr deviceNodeFactory,
                              VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory,
-                             AbstractChannelRangeFactoryPtr channelRangeFactory);
+                             AbstractChannelRangeFactoryPtr channelRangeFactory,
+                             AbstractHotPluggableControllerContainerFactoryPtr hotplugFactory);
     ~cMT310S2dServer();
     QString getCtrlDeviceNode();
     QString getMsgDeviceNode();
@@ -68,7 +70,8 @@ private slots:
 
 private:
     void init();
-    void earlySetup(AbstractChannelRangeFactoryPtr channelRangeFactory);
+    void earlySetup(AbstractChannelRangeFactoryPtr channelRangeFactory,
+                    AbstractHotPluggableControllerContainerFactoryPtr hotplugFactory);
     void SetFASync();
     void enableClampInterrupt();
     void updateI2cDevicesConnected();
