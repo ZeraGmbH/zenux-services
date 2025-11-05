@@ -20,7 +20,7 @@ private slots:
     void mt310s2AddI1();
     void mt310s2AddI1I2();
     void mt310s2AddI1Twice();
-    void mt310s2AddI1I2AddI1();
+    void mt310s2AddI1I2RemoveI2();
     void mt310s2AddI1CheckI2cSettings();
     void mt310s2AddI1I2I3IAuxCheckMuxSettings();
     void mt310s2AddI1CheckSignals();

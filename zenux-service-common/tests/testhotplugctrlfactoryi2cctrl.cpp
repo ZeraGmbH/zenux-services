@@ -12,7 +12,7 @@ I2cCtrlCommonInfoPtrUnique TestHotPlugCtrlFactoryI2cCtrl::getCommonInfoControlle
     Q_ASSERT(ctrlType == AbstractFactoryI2cCtrl::CTRL_TYPE_EMOB);
     bool repondingCtrl = true;
     if(!m_respondOnVersionList.isEmpty())
-        repondingCtrl = m_respondOnVersionList.takeLast();
+        repondingCtrl = m_respondOnVersionList.takeFirst();
     return std::make_unique<TestHotplugI2cCtrlCommonInfo>(m_i2cSettings, muxChannel, repondingCtrl, m_ctrlInstanceCount);
 }
 
