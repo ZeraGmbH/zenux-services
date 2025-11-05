@@ -387,13 +387,11 @@ QString Mt310s2SystemInterface::m_AdjFlashChksum(QString &sInput)
 QString Mt310s2SystemInterface::emobPushButtonPress(const QString &scpiCmd)
 {
     cSCPICommand cmd = scpiCmd;
-    if (cmd.isCommand(1) && (cmd.getParam(0) == "")) {
+    if (cmd.isCommand(1)) {
         HotControllerMap emobControllers = m_hotPluggableControllerContainer->getCurrentControllers();
-        if (emobControllers.size() >= 1) {
-            QString channelName = cmd.getParam(0);
-
-            ZeraMControllerIoTemplate::atmelRM ctrlRet = emobControllers.first().m_emobController->sendPushbuttonPress();
-
+        QString channelNameFound = findEmobConnected(cmd.getParam(0));
+        if (!channelNameFound.isEmpty()) {
+            ZeraMControllerIoTemplate::atmelRM ctrlRet = emobControllers[channelNameFound].m_emobController->sendPushbuttonPress();
             if (ctrlRet != ZeraMControllerIo::cmddone)
                 return ZSCPI::scpiAnswer[ZSCPI::errexec];
             return ZSCPI::scpiAnswer[ZSCPI::ack];
@@ -404,21 +402,19 @@ QString Mt310s2SystemInterface::emobPushButtonPress(const QString &scpiCmd)
 
 QString Mt310s2SystemInterface::emobReadLockState(const QString &scpiCmd)
 {
-    quint8 state = 0;
     cSCPICommand cmd = scpiCmd;
-
-    if (cmd.isQuery()) {
+    if (cmd.isQuery() || cmd.isQuery(1)) {
         HotControllerMap emobControllers = m_hotPluggableControllerContainer->getCurrentControllers();
-        if (emobControllers.size() >= 1) {
-            QString channelName = cmd.getParam(0);
-
-            ZeraMControllerIoTemplate::atmelRM ctrlRet = emobControllers.first().m_emobController->readEmobLockState(state);
-            if (ctrlRet == ZeraMControllerIo::cmddone) {
-                return QString::number(state);
-            }
+        QString channelNameFound = findEmobConnected(cmd.getParam(0));
+        if (!channelNameFound.isEmpty()) {
+            quint8 state = 0;
+            ZeraMControllerIoTemplate::atmelRM ctrlRet = emobControllers[channelNameFound].m_emobController->readEmobLockState(state);
+            if (ctrlRet != ZeraMControllerIo::cmddone)
+                return ZSCPI::scpiAnswer[ZSCPI::errexec];
+            return QString::number(state);
         }
     }
-    return ZSCPI::scpiAnswer[ZSCPI::errexec];
+    return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 void Mt310s2SystemInterface::updateAllCtrlVersionsJson()
@@ -465,6 +461,18 @@ void Mt310s2SystemInterface::updateAllPCBsVersion()
     QJsonDocument doc(object);
     m_allPCBVersion = doc.toJson(QJsonDocument::Compact);
     qInfo("Pcb info were updated.");
+}
+
+QString Mt310s2SystemInterface::findEmobConnected(const QString &channelMNameScpiParam)
+{
+    HotControllerMap emobControllers = m_hotPluggableControllerContainer->getCurrentControllers();
+    if (emobControllers.size() >= 1) {
+        if(channelMNameScpiParam.isEmpty() && emobControllers.size() == 1)
+            return emobControllers.firstKey();
+        if(emobControllers.contains(channelMNameScpiParam))
+            return channelMNameScpiParam;
+    }
+    return QString();
 }
 
 void Mt310s2SystemInterface::m_genAnswer(int select, QString &answer)

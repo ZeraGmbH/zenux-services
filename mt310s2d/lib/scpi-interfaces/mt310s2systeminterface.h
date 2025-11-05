@@ -53,6 +53,7 @@ private:
     void triggerVersionInfoChanges();
     void updateAllCtrlVersionsJson();
     void updateAllPCBsVersion();
+    QString findEmobConnected(const QString &channelMNameScpiParam);
 
     QString m_ReadDeviceVersion(QString& sInput);
     QString m_ReadDeviceName(QString& sInput);
