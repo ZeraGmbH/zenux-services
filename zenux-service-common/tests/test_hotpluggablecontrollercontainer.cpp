@@ -69,7 +69,7 @@ void test_hotpluggablecontrollercontainer::mt310s2AddI1()
     container.startActualizeEmobControllers(getChannelPlugMask("IL1"), m_senseSettings.get(), 1000);
     HotControllerMap controllers = container.getCurrentControllers();
     QCOMPARE(controllers.size(), 1);
-
+    QVERIFY(controllers.contains(getChannelMName("IL1")));
 }
 
 void test_hotpluggablecontrollercontainer::mt310s2AddI1I2()
@@ -79,6 +79,8 @@ void test_hotpluggablecontrollercontainer::mt310s2AddI1I2()
     container.startActualizeEmobControllers(getChannelPlugMask("IL1") | getChannelPlugMask("IL2"), m_senseSettings.get(), 1000);
     HotControllerMap controllers = container.getCurrentControllers();
     QCOMPARE(controllers.size(), 2);
+    QVERIFY(controllers.contains(getChannelMName("IL1")));
+    QVERIFY(controllers.contains(getChannelMName("IL2")));
 }
 
 void test_hotpluggablecontrollercontainer::mt310s2AddI1Twice()
@@ -91,9 +93,10 @@ void test_hotpluggablecontrollercontainer::mt310s2AddI1Twice()
     QCOMPARE(controllers.size(), 1);
     TestHotPlugCtrlFactoryI2cCtrl* factory = static_cast<TestHotPlugCtrlFactoryI2cCtrl*>(m_ctrlFactory.get());
     QCOMPARE(factory->getCtrlInstanceCount(), 1);
+    QVERIFY(controllers.contains(getChannelMName("IL1")));
 }
 
-void test_hotpluggablecontrollercontainer::mt310s2AddI1I2AddI1()
+void test_hotpluggablecontrollercontainer::mt310s2AddI1I2RemoveI2()
 {
     m_i2cSettings->setI2cAddressesEmob(QString(), 0, 0);
     HotPluggableControllerContainer container(m_i2cSettings.get(), m_ctrlFactory);
@@ -103,6 +106,7 @@ void test_hotpluggablecontrollercontainer::mt310s2AddI1I2AddI1()
     QCOMPARE(controllers.size(), 1);
     TestHotPlugCtrlFactoryI2cCtrl* factory = static_cast<TestHotPlugCtrlFactoryI2cCtrl*>(m_ctrlFactory.get());
     QCOMPARE(factory->getCtrlInstanceCount(), 1);
+    QVERIFY(controllers.contains(getChannelMName("IL1")));
 }
 
 void test_hotpluggablecontrollercontainer::mt310s2AddI1CheckI2cSettings()
@@ -112,6 +116,7 @@ void test_hotpluggablecontrollercontainer::mt310s2AddI1CheckI2cSettings()
     container.startActualizeEmobControllers(getChannelPlugMask("IL1"), m_senseSettings.get(), 1000);
     HotControllerMap controllers = container.getCurrentControllers();
     QCOMPARE(controllers.size(), 1);
+    QVERIFY(controllers.contains(getChannelMName("IL1")));
     HotControllers controller = controllers[getChannelMName("IL1")];
     TestHotplugI2cCtrlCommonInfo *testController = static_cast<TestHotplugI2cCtrlCommonInfo*>(controller.m_commonController.get());
     QCOMPARE(testController->getDevnode(), "foo");
@@ -137,6 +142,10 @@ void test_hotpluggablecontrollercontainer::mt310s2AddI1I2I3IAuxCheckMuxSettings(
     QCOMPARE(ctrlI3->getMuxChannel(), 3);
     TestHotplugI2cCtrlCommonInfo* ctrlIAux = static_cast<TestHotplugI2cCtrlCommonInfo*>(controllers[getChannelMName("IAUX")].m_commonController.get());
     QCOMPARE(ctrlIAux->getMuxChannel(), 4);
+    QVERIFY(controllers.contains(getChannelMName("IL1")));
+    QVERIFY(controllers.contains(getChannelMName("IL2")));
+    QVERIFY(controllers.contains(getChannelMName("IL3")));
+    QVERIFY(controllers.contains(getChannelMName("IAUX")));
 }
 
 void test_hotpluggablecontrollercontainer::mt310s2AddI1CheckSignals()
@@ -153,6 +162,10 @@ void test_hotpluggablecontrollercontainer::mt310s2AddI1CheckSignals()
     QCOMPARE(spy.count(), 1);
 
     QCOMPARE(ZeraMControllerBootloaderStopperFactoryForTest::checkEmpty(), true);
+
+    HotControllerMap controllers = container.getCurrentControllers();
+    QCOMPARE(controllers.size(), 1);
+    QVERIFY(controllers.contains(getChannelMName("IL1")));
 }
 
 void test_hotpluggablecontrollercontainer::mt310s2AddI1I2CheckSignalsImmediate()
@@ -169,6 +182,11 @@ void test_hotpluggablecontrollercontainer::mt310s2AddI1I2CheckSignalsImmediate()
     QCOMPARE(factory->getCtrlInstanceCount(), 2);
 
     QCOMPARE(ZeraMControllerBootloaderStopperFactoryForTest::checkEmpty(), true);
+
+    HotControllerMap controllers = container.getCurrentControllers();
+    QCOMPARE(controllers.size(), 2);
+    QVERIFY(controllers.contains(getChannelMName("IL1")));
+    QVERIFY(controllers.contains(getChannelMName("IL2")));
 }
 
 void test_hotpluggablecontrollercontainer::mt310s2AddI1I2CheckSignalsDelayed()
@@ -187,6 +205,11 @@ void test_hotpluggablecontrollercontainer::mt310s2AddI1I2CheckSignalsDelayed()
     QCOMPARE(spy.count(), 2);
 
     QCOMPARE(ZeraMControllerBootloaderStopperFactoryForTest::checkEmpty(), true);
+
+    HotControllerMap controllers = container.getCurrentControllers();
+    QCOMPARE(controllers.size(), 2);
+    QVERIFY(controllers.contains(getChannelMName("IL1")));
+    QVERIFY(controllers.contains(getChannelMName("IL2")));
 }
 
 void test_hotpluggablecontrollercontainer::mt310s2AddI1AndRemoveBeforeFinish()
@@ -206,6 +229,9 @@ void test_hotpluggablecontrollercontainer::mt310s2AddI1AndRemoveBeforeFinish()
     TestHotPlugCtrlFactoryI2cCtrl* factory = static_cast<TestHotPlugCtrlFactoryI2cCtrl*>(m_ctrlFactory.get());
     QCOMPARE(factory->getCtrlInstanceCount(), 0);
     QCOMPARE(ZeraMControllerBootloaderStopperFactoryForTest::checkEmpty(), true);
+
+    HotControllerMap controllers = container.getCurrentControllers();
+    QCOMPARE(controllers.size(), 0);
 }
 
 void test_hotpluggablecontrollercontainer::mt310s2AddI1AndAddI2BeforeFinish()
@@ -236,6 +262,11 @@ void test_hotpluggablecontrollercontainer::mt310s2AddI1AndAddI2BeforeFinish()
     QCOMPARE(factory->getCtrlInstanceCount(), 2);
 
     QCOMPARE(ZeraMControllerBootloaderStopperFactoryForTest::checkEmpty(), true);
+
+    HotControllerMap controllers = container.getCurrentControllers();
+    QCOMPARE(controllers.size(), 2);
+    QVERIFY(controllers.contains(getChannelMName("IL1")));
+    QVERIFY(controllers.contains(getChannelMName("IL2")));
 }
 
 void test_hotpluggablecontrollercontainer::mt310s2AddClampNoController()
@@ -246,15 +277,18 @@ void test_hotpluggablecontrollercontainer::mt310s2AddClampNoController()
     
     TestHotPlugCtrlFactoryI2cCtrl* factory = static_cast<TestHotPlugCtrlFactoryI2cCtrl*>(m_ctrlFactory.get());
 
-    // add clamp only
+    // add clamp only IL1
     factory->prepareNextTestControllers(QVector<bool>() << false);
     ZeraMControllerBootloaderStopperFactoryForTest::setBootoaderAssumeAppStartedImmediates(QVector<bool>() << true);
     container.startActualizeEmobControllers(getChannelPlugMask("IL1"), m_senseSettings.get(), 1000);
     TimeMachineForTest::getInstance()->processTimers(1000);
     QCOMPARE(spy.count(), 0);
     QCOMPARE(factory->getCtrlInstanceCount(), 0);
+    HotControllerMap controllers = container.getCurrentControllers();
+    QCOMPARE(controllers.size(), 0);
+    controllers.clear();
 
-    // add emob to clamp
+    // add emob to clamp IL2
     factory->prepareNextTestControllers(QVector<bool>() << true); // we expect clamp known => no version query
     ZeraMControllerBootloaderStopperFactoryForTest::setBootoaderAssumeAppStartedImmediates(QVector<bool>() << true); // same
     container.startActualizeEmobControllers(getChannelPlugMask("IL1") | getChannelPlugMask("IL2"), m_senseSettings.get(), 1000);
@@ -262,21 +296,32 @@ void test_hotpluggablecontrollercontainer::mt310s2AddClampNoController()
     QCOMPARE(spy.count(), 1);
     spy.clear();
     QCOMPARE(factory->getCtrlInstanceCount(), 1);
+    controllers = container.getCurrentControllers();
+    QCOMPARE(controllers.size(), 1); // IL1 clamp only / IL2 with controller added
+    QVERIFY(controllers.contains(getChannelMName("IL2")));
+    controllers.clear();
 
-    // remove clamp
+    // remove clamp IL1
     container.startActualizeEmobControllers(getChannelPlugMask("IL2"), m_senseSettings.get(), 1000);
     TimeMachineForTest::getInstance()->processTimers(1000);
     QCOMPARE(spy.count(), 0);
     QCOMPARE(factory->getCtrlInstanceCount(), 1);
+    controllers = container.getCurrentControllers();
+    QCOMPARE(controllers.size(), 1);
+    QVERIFY(controllers.contains(getChannelMName("IL2")));
+    controllers.clear();
 
-    // remove emob
+    // remove all
     container.startActualizeEmobControllers(0, m_senseSettings.get(), 1000);
     TimeMachineForTest::getInstance()->processTimers(1000);
     QCOMPARE(spy.count(), 1);
     spy.clear();
     QCOMPARE(factory->getCtrlInstanceCount(), 0);
+    controllers = container.getCurrentControllers();
+    QCOMPARE(controllers.size(), 0);
+    controllers.clear();
 
-    // add clamp & emob only
+    // add clamp & emob only IL2
     factory->prepareNextTestControllers(QVector<bool>() << false << true);
     ZeraMControllerBootloaderStopperFactoryForTest::setBootoaderAssumeAppStartedImmediates(QVector<bool>() << true << true);
     container.startActualizeEmobControllers(getChannelPlugMask("IL1") | getChannelPlugMask("IL2"), m_senseSettings.get(), 1000);
@@ -285,6 +330,11 @@ void test_hotpluggablecontrollercontainer::mt310s2AddClampNoController()
     QCOMPARE(factory->getCtrlInstanceCount(), 1);
 
     QCOMPARE(ZeraMControllerBootloaderStopperFactoryForTest::checkEmpty(), true);
+
+    controllers = container.getCurrentControllers();
+    QCOMPARE(controllers.size(), 1);
+    QVERIFY(controllers.contains(getChannelMName("IL2")));
+    controllers.clear();
 }
 
 quint16 test_hotpluggablecontrollercontainer::getChannelPlugMask(const QString &channelAlias)
