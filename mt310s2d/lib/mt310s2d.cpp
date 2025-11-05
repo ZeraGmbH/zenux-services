@@ -394,6 +394,11 @@ void cMT310S2dServer::startCpuTemperatureSendTimer()
         qWarning("CPU-temperature is not available on this device. Temperature is not send to system-controller!");
 }
 
+cSenseSettings *cMT310S2dServer::getSenseSettings()
+{
+    return m_pSenseSettings;
+}
+
 void cMT310S2dServer::onCpuTemperatureSend()
 {
     float temperature = m_cpuTemperature.getValue();

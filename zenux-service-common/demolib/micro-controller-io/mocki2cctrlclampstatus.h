@@ -6,8 +6,10 @@
 class MockI2cCtrlClampStatus : public AbstractI2cCtrlClampStatus
 {
 public:
-    MockI2cCtrlClampStatus();
+    MockI2cCtrlClampStatus(quint16 &clampConnectMask);
     ZeraMControllerIo::atmelRM readClampStatus(quint16& stat) override;
+private:
+    quint16 &m_clampConnectMask;
 };
 
 #endif // MOCKI2CCTRLCLAMPSTATUS_H

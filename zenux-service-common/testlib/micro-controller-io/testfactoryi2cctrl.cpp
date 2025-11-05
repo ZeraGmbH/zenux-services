@@ -12,12 +12,11 @@
 #include "testi2cctrldeviceident.h"
 #include "testi2cctrleeprompermission.h"
 #include "testi2cctrlcputemperature.h"
-
-TestFactoryI2cCtrl::TPersitentControllerData TestFactoryI2cCtrl::m_persitentData;
+#include "controllerpersitentdata.h"
 
 TestFactoryI2cCtrl::TestFactoryI2cCtrl(bool initialPermission)
 {
-    m_persitentData.m_permission = initialPermission;
+    ControllerPersitentData::getData().m_permission = initialPermission;
 }
 
 void TestFactoryI2cCtrl::setRangeGetSetDelay(int rangeGetSetDelay)
@@ -33,13 +32,13 @@ AbstractCtrlHeartbeatWaitPtr TestFactoryI2cCtrl::createCtrlHeartbeatWait(QString
 
 I2cCtrlCriticalStatusPtr TestFactoryI2cCtrl::getCriticalStatusController()
 {
-    return std::make_unique<MockI2cCtrlCriticalStatus>(m_persitentData.m_criticalStatus,
-                                                       m_persitentData.m_criticalStatusMask);
+    return std::make_unique<MockI2cCtrlCriticalStatus>(ControllerPersitentData::getData().m_criticalStatus,
+                                                       ControllerPersitentData::getData().m_criticalStatusMask);
 }
 
 I2cCtrlEepromPermissionPtr TestFactoryI2cCtrl::getPermissionCheckController()
 {
-    return std::make_unique<TestI2cCtrlEepromPermission>(m_persitentData.m_permission);
+    return std::make_unique<TestI2cCtrlEepromPermission>(ControllerPersitentData::getData().m_permission);
 }
 
 I2cCtrlCommonInfoPtrUnique TestFactoryI2cCtrl::getCommonInfoController(ControllerTypes ctrlType, quint8 muxChannel)
@@ -51,8 +50,8 @@ I2cCtrlCommonInfoPtrUnique TestFactoryI2cCtrl::getCommonInfoController(Controlle
 
 I2cCtrlDeviceIdentPtr TestFactoryI2cCtrl::getDeviceIdentController()
 {
-    return std::make_unique<TestI2cCtrlDeviceIdent>(m_persitentData.m_serialNumber,
-                                                    m_persitentData.m_writablePcbVersion);
+    return std::make_unique<TestI2cCtrlDeviceIdent>(ControllerPersitentData::getData().m_serialNumber,
+                                                    ControllerPersitentData::getData().m_writablePcbVersion);
 }
 
 I2cCtrlAccumulatorPtr TestFactoryI2cCtrl::getAccuController()
@@ -72,12 +71,12 @@ I2cCtrlMModePtr TestFactoryI2cCtrl::getMModeController()
 
 I2cCtrlPllPtr TestFactoryI2cCtrl::getPllController()
 {
-    return std::make_unique<TestI2cCtrlPll>(m_persitentData.m_pllChannel);
+    return std::make_unique<TestI2cCtrlPll>(ControllerPersitentData::getData().m_pllChannel);
 }
 
 I2cCtrlClampStatusPtr TestFactoryI2cCtrl::getClampStatusController()
 {
-    return std::make_unique<MockI2cCtrlClampStatus>();
+    return std::make_unique<MockI2cCtrlClampStatus>(ControllerPersitentData::getData().m_clampConnectMask);
 }
 
 I2cCtrlCpuTemperaturePtr TestFactoryI2cCtrl::getCpuTemperatureController()
