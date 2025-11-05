@@ -388,9 +388,12 @@ QString Mt310s2SystemInterface::emobPushButtonPress(const QString &scpiCmd)
 {
     cSCPICommand cmd = scpiCmd;
     if (cmd.isCommand(1) && (cmd.getParam(0) == "")) {
-        QVector<I2cCtrlEMOBPtr> emobControllers = m_hotPluggableControllerContainer->getCurrentEmobControllers();
+        HotControllerMap emobControllers = m_hotPluggableControllerContainer->getCurrentControllers();
         if (emobControllers.size() >= 1) {
-            ZeraMControllerIoTemplate::atmelRM ctrlRet = emobControllers[0]->sendPushbuttonPress();
+            QString channelName = cmd.getParam(0);
+
+            ZeraMControllerIoTemplate::atmelRM ctrlRet = emobControllers.first().m_emobController->sendPushbuttonPress();
+
             if (ctrlRet != ZeraMControllerIo::cmddone)
                 return ZSCPI::scpiAnswer[ZSCPI::errexec];
             return ZSCPI::scpiAnswer[ZSCPI::ack];
@@ -401,13 +404,15 @@ QString Mt310s2SystemInterface::emobPushButtonPress(const QString &scpiCmd)
 
 QString Mt310s2SystemInterface::emobReadLockState(const QString &scpiCmd)
 {
-    quint8 state;
+    quint8 state = 0;
     cSCPICommand cmd = scpiCmd;
 
     if (cmd.isQuery()) {
-        QVector<I2cCtrlEMOBPtr> emobControllers = m_hotPluggableControllerContainer->getCurrentEmobControllers();
+        HotControllerMap emobControllers = m_hotPluggableControllerContainer->getCurrentControllers();
         if (emobControllers.size() >= 1) {
-            ZeraMControllerIoTemplate::atmelRM ctrlRet = emobControllers[0]->readEmobLockState(state);
+            QString channelName = cmd.getParam(0);
+
+            ZeraMControllerIoTemplate::atmelRM ctrlRet = emobControllers.first().m_emobController->readEmobLockState(state);
             if (ctrlRet == ZeraMControllerIo::cmddone) {
                 return QString::number(state);
             }
@@ -422,10 +427,10 @@ void Mt310s2SystemInterface::updateAllCtrlVersionsJson()
     QJsonObject object;
     object.insert("Relay controller version", m_systemInfo->getCTRLVersion());
     object.insert("System controller version", m_systemInfo->getSysCTRLVersion());
-    QVector<I2cCtrlCommonInfoPtrShared> hotpluggableControllers = m_hotPluggableControllerContainer->getCurrentCommonControllers();
-    for(auto controller : qAsConst(hotpluggableControllers)) {
+    HotControllerMap hotpluggableControllers = m_hotPluggableControllerContainer->getCurrentControllers();
+    for(auto &controller : qAsConst(hotpluggableControllers)) {
         QString version;
-        controller->readCTRLVersion(version);
+        controller.m_commonController->readCTRLVersion(version);
         object.insert("Emob controller version", version);
     }
     if(m_currAccuPlugged) {
@@ -445,10 +450,10 @@ void Mt310s2SystemInterface::updateAllPCBsVersion()
     QJsonObject object;
     object.insert("Relay PCB version", m_systemInfo->getPCBVersion());
     object.insert("System PCB version", m_systemInfo->getSysPCBVersion());
-    QVector<I2cCtrlCommonInfoPtrShared> hotpluggableControllers = m_hotPluggableControllerContainer->getCurrentCommonControllers();
-    for(auto controller : qAsConst(hotpluggableControllers)) {
+    HotControllerMap hotpluggableControllers = m_hotPluggableControllerContainer->getCurrentControllers();
+    for(auto &controller : qAsConst(hotpluggableControllers)) {
         QString version;
-        controller->readPCBInfo(version);
+        controller.m_commonController->readPCBInfo(version);
         object.insert("Emob PCB version", version);
     }
     if(m_currAccuPlugged) {
