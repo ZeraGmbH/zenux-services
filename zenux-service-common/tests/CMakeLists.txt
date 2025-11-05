@@ -30,6 +30,7 @@ SETUP_SERVICE_COMMON_TESTS(
     test_adj_procedure
     test_notificationcontents
     test_source_control
+    test_emob_lock
     )
 
 target_sources(test_hotpluggablecontrollercontainer
