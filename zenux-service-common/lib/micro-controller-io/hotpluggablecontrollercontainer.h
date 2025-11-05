@@ -10,14 +10,20 @@
 #include <QVector>
 #include <memory>
 
+struct HotControllers
+{
+    I2cCtrlCommonInfoPtrShared m_commonController;
+    I2cCtrlEMOBPtr m_emobController;
+};
+typedef QMap<QString /*channelMName*/, HotControllers> HotControllerMap;
+
 class HotPluggableControllerContainer : public QObject
 {
     Q_OBJECT
 public:
     HotPluggableControllerContainer(I2cSettings *i2cSettings, AbstractFactoryI2cCtrlPtr ctrlFactory);
     void startActualizeEmobControllers(quint16 bitmaskAvailable, const cSenseSettings* senseSettings, int msWaitForApplicationStart);
-    QVector<I2cCtrlCommonInfoPtrShared> getCurrentCommonControllers();
-    QVector<I2cCtrlEMOBPtr> getCurrentEmobControllers();
+    HotControllerMap getCurrentControllers();
 signals:
     void sigControllersChanged();
 private slots:
@@ -28,15 +34,15 @@ private:
 
     I2cSettings *m_i2cSettings;
     AbstractFactoryI2cCtrlPtr m_ctrlFactory;
-    struct HotControllers
-    {
-        I2cCtrlCommonInfoPtrShared m_commonController;
-        I2cCtrlEMOBPtr m_emobController;
+    struct NamedHotControllers {
+        QString channelMName;
+        HotControllers controllers;
     };
-    QMap<int /* ctrlChannel */, HotControllers> m_controllers;
+    QMap<int /* ctrlChannel */, NamedHotControllers> m_controllers;
     struct PendingChannelInfo
     {
         ZeraMControllerBootloaderStopperPtr m_BootloaderStopper;
+        QString channelMName;
         qint8 m_nMuxChannelNo;
     };
     QMap<int /* ctrlChannel */, PendingChannelInfo> m_pendingBootloaderStoppers;
