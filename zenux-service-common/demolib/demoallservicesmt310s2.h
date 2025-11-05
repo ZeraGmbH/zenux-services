@@ -18,6 +18,7 @@ public:
     DemoAllServicesMt310s2(const QString &serviceNameForAlternateDevice);
     DemoAllServicesMt310s2(VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory, const QString &serviceNameForAlternateDevice);
     virtual ~DemoAllServicesMt310s2();
+    void fireHotplugInterrupt(const QStringList &channelAliases) override;
 
 private:
     void init(VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory, const QString &serviceNameForAlternateDevice);

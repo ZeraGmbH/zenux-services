@@ -1,7 +1,9 @@
 #ifndef ABSTRACTMOCKALLSERVICES_H
 #define ABSTRACTMOCKALLSERVICES_H
 
-class AbstractMockAllServices
+#include "abstractallservices.h"
+
+class AbstractMockAllServices : public AbstractAllServices
 {
 public:
     virtual ~AbstractMockAllServices() = default;

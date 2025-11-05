@@ -16,6 +16,7 @@ public:
     DemoAllServicesCom5003();
     DemoAllServicesCom5003(VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory);
     virtual ~DemoAllServicesCom5003();
+    void fireHotplugInterrupt(const QStringList &channelAliases) override;
 
 private:
     void init(VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory);

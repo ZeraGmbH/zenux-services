@@ -42,3 +42,8 @@ DemoAllServicesMt310s2::~DemoAllServicesMt310s2()
     delete m_resman;
     delete m_autoLogger;
 }
+
+void DemoAllServicesMt310s2::fireHotplugInterrupt(const QStringList &channelAliases)
+{
+    m_mt310s2d->fireHotplugInterrupt(channelAliases);
+}

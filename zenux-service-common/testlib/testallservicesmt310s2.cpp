@@ -47,3 +47,8 @@ ZDspServer *TestAllServicesMt310s2::getZdsp1dServer()
 {
     return m_zdsp1d->getServer();
 }
+
+void TestAllServicesMt310s2::fireHotplugInterrupt(const QStringList &channelAliases)
+{
+    m_mt310s2d->fireHotplugInterrupt(channelAliases);
+}

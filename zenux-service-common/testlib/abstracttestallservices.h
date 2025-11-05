@@ -1,9 +1,10 @@
 #ifndef ABSTRACTTESTALLSERVICES_H
 #define ABSTRACTTESTALLSERVICES_H
 
+#include "abstractallservices.h"
 #include "zdspserver.h"
 
-class AbstractTestAllServices
+class AbstractTestAllServices  : public AbstractAllServices
 {
 public:
     virtual ~AbstractTestAllServices() = default;

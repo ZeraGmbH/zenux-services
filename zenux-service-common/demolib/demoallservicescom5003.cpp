@@ -39,3 +39,9 @@ DemoAllServicesCom5003::~DemoAllServicesCom5003()
     delete m_mockcom5003d;
     delete m_resman;
 }
+
+void DemoAllServicesCom5003::fireHotplugInterrupt(const QStringList &channelAliases)
+{
+    Q_UNUSED(channelAliases)
+    qWarning("Hotplug not supported on COM5003 yet!");
+}
