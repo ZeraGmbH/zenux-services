@@ -46,6 +46,9 @@ public:
     QString getMsgDeviceNode();
 
     void startCpuTemperatureSendTimer();
+    cSenseSettings* getSenseSettings();
+
+    void MTIntHandler(int);
 
 signals:
     void abortInit();
@@ -55,7 +58,6 @@ signals:
     void sigServerIsSetUp();
 
 private slots:
-    void MTIntHandler(int);
     void doConfiguration();
     void doWait4Atmel();
     void doSetupServer();

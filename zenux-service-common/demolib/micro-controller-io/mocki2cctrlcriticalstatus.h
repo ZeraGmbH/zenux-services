@@ -6,7 +6,6 @@
 class MockI2cCtrlCriticalStatus : public AbstractI2cCtrlCriticalStatus
 {
 public:
-    // TODO: critical status handling / interrupts
     MockI2cCtrlCriticalStatus(quint16 &criticalStatus, quint16 &criticalStatusMask);
     ZeraMControllerIo::atmelRM writeIntMask(quint16 criticalStatusMask) override;
     ZeraMControllerIo::atmelRM readIntMask(quint16& criticalStatusMask) override;

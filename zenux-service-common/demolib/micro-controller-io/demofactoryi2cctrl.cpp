@@ -14,12 +14,13 @@
 #include "demoi2cctrlpll.h"
 #include "mocki2cctrlclampstatus.h"
 #include "demoi2cctrlcputemperature.h"
-
-DemoFactoryI2cCtrl::TPersitentControllerData DemoFactoryI2cCtrl::m_persitentData;
+#include "controllerpersitentdata.h"
 
 DemoFactoryI2cCtrl::DemoFactoryI2cCtrl(SettingsContainerPtr settings) :
     m_settings(std::move(settings))
 {
+    ControllerPersitentData::getData().m_serialNumber = "Demo Serial number";
+    ControllerPersitentData::getData().m_FPGAVersion = "Demo FPGA version";
 }
 
 AbstractCtrlHeartbeatWaitPtr DemoFactoryI2cCtrl::createCtrlHeartbeatWait(QString devnode)
@@ -30,8 +31,8 @@ AbstractCtrlHeartbeatWaitPtr DemoFactoryI2cCtrl::createCtrlHeartbeatWait(QString
 
 I2cCtrlCriticalStatusPtr DemoFactoryI2cCtrl::getCriticalStatusController()
 {
-    return std::make_unique<MockI2cCtrlCriticalStatus>(m_persitentData.m_criticalStatus,
-                                                       m_persitentData.m_criticalStatusMask);
+    return std::make_unique<MockI2cCtrlCriticalStatus>(ControllerPersitentData::getData().m_criticalStatus,
+                                                       ControllerPersitentData::getData().m_criticalStatusMask);
 }
 
 I2cCtrlEepromPermissionPtr DemoFactoryI2cCtrl::getPermissionCheckController()
@@ -47,9 +48,9 @@ I2cCtrlCommonInfoPtrUnique DemoFactoryI2cCtrl::getCommonInfoController(Controlle
 
 I2cCtrlDeviceIdentPtr DemoFactoryI2cCtrl::getDeviceIdentController()
 {
-    return std::make_unique<DemoI2cCtrlDeviceIdent>(m_persitentData.m_serialNumber,
-                                                    m_persitentData.m_FPGAVersion,
-                                                    m_persitentData.m_writablePcbVersion);
+    return std::make_unique<DemoI2cCtrlDeviceIdent>(ControllerPersitentData::getData().m_serialNumber,
+                                                    ControllerPersitentData::getData().m_FPGAVersion,
+                                                    ControllerPersitentData::getData().m_writablePcbVersion);
 }
 
 I2cCtrlAccumulatorPtr DemoFactoryI2cCtrl::getAccuController()
@@ -69,12 +70,12 @@ I2cCtrlMModePtr DemoFactoryI2cCtrl::getMModeController()
 
 I2cCtrlPllPtr DemoFactoryI2cCtrl::getPllController()
 {
-    return std::make_unique<DemoI2cCtrlPll>(m_settings->getSamplingSettings(), m_persitentData.m_pllChannel);
+    return std::make_unique<DemoI2cCtrlPll>(m_settings->getSamplingSettings(), ControllerPersitentData::getData().m_pllChannel);
 }
 
 I2cCtrlClampStatusPtr DemoFactoryI2cCtrl::getClampStatusController()
 {
-    return std::make_unique<MockI2cCtrlClampStatus>();
+    return std::make_unique<MockI2cCtrlClampStatus>(ControllerPersitentData::getData().m_clampConnectMask);
 }
 
 I2cCtrlCpuTemperaturePtr DemoFactoryI2cCtrl::getCpuTemperatureController()

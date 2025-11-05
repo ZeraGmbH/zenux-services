@@ -8,6 +8,7 @@ class TestFactoryI2cCtrl : public AbstractFactoryI2cCtrl
 public:
     TestFactoryI2cCtrl(bool initialPermission);
     void setRangeGetSetDelay(int rangeGetSetDelay);
+
     AbstractCtrlHeartbeatWaitPtr createCtrlHeartbeatWait(QString devnode) override;
     I2cCtrlCriticalStatusPtr getCriticalStatusController() override;
     I2cCtrlEepromPermissionPtr getPermissionCheckController() override;
@@ -23,17 +24,6 @@ public:
     I2cCtrlBootloaderPtr getBootloaderController() override;
 private:
     int m_rangeGetSetDelay = 0;
-    struct TPersitentControllerData
-    {
-        bool m_permission = false;
-        quint16 m_criticalStatus = 0;
-        quint16 m_criticalStatusMask = 0;
-        QString m_serialNumber = "Unknown";
-        QString m_writablePcbVersion = "Unknown";
-
-        quint8 m_pllChannel = 0;
-    };
-    static TPersitentControllerData m_persitentData;
 };
 
 typedef std::shared_ptr<TestFactoryI2cCtrl> TestFactoryI2cCtrlPtr;

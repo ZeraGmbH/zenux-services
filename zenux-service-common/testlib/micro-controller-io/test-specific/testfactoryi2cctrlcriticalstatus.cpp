@@ -74,7 +74,7 @@ I2cCtrlPllPtr TestFactoryI2cCtrlCriticalStatus::getPllController()
 
 I2cCtrlClampStatusPtr TestFactoryI2cCtrlCriticalStatus::getClampStatusController()
 {
-    return std::make_unique<MockI2cCtrlClampStatus>();
+    return std::make_unique<MockI2cCtrlClampStatus>(m_persitentData.m_clampConnectMask);
 }
 
 I2cCtrlEMOBPtr TestFactoryI2cCtrlCriticalStatus::getEmobController(quint8 muxChannel)

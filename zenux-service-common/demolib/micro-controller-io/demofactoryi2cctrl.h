@@ -8,6 +8,7 @@ class DemoFactoryI2cCtrl : public AbstractFactoryI2cCtrl
 {
 public:
     DemoFactoryI2cCtrl(SettingsContainerPtr settings);
+
     AbstractCtrlHeartbeatWaitPtr createCtrlHeartbeatWait(QString devnode) override;
     I2cCtrlCriticalStatusPtr getCriticalStatusController() override;
     I2cCtrlEepromPermissionPtr getPermissionCheckController() override;
@@ -23,17 +24,6 @@ public:
     I2cCtrlBootloaderPtr getBootloaderController() override;
 private:
     SettingsContainerPtr m_settings;
-    struct TPersitentControllerData
-    {
-        quint16 m_criticalStatus = 0;
-        quint16 m_criticalStatusMask = 0;
-        QString m_serialNumber = "Demo Serial number";
-        QString m_FPGAVersion = "Demo FPGA version";
-        QString m_writablePcbVersion = "Unknown";
-
-        quint8 m_pllChannel = 0;
-    };
-    static TPersitentControllerData m_persitentData;
 };
 
 #endif // DEMOFACTORYI2CCTRL_H

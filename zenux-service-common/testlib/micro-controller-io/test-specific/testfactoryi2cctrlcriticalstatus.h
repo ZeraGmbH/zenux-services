@@ -25,6 +25,7 @@ private:
     {
         quint16 m_criticalStatus = 0;
         quint16 m_criticalStatusMask = 0;
+        quint16 m_clampConnectMask = 0;
         QString m_serialNumber = "Demo Serial number";
         QString m_FPGAVersion = "Demo FPGA version";
         QString m_writablePcbVersion = "Unknown";
