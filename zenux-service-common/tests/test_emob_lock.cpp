@@ -4,6 +4,7 @@
 #include "proxy.h"
 #include "reply.h"
 #include "controllerpersitentdata.h"
+#include "emobdefinitions.h"
 #include <timemachineobject.h>
 #include <QSignalSpy>
 #include <QTest>
@@ -152,7 +153,7 @@ void test_emob_lock::readLockStateNoParamEmobIAUX()
     QCOMPARE(responseSpy.count(), 1);
     QCOMPARE(responseSpy[0][0], QVariant(msgNr));
     QCOMPARE(responseSpy[0][1], QVariant(ack));
-    QCOMPARE(responseSpy[0][2], QVariant("1"));
+    QCOMPARE(responseSpy[0][2], QVariant(reademoblockstate::emobstate_open));
 }
 
 void test_emob_lock::readLockStateNoParamEmobI3IAUX()
@@ -195,7 +196,7 @@ void test_emob_lock::readLockStateIAUXEmobIAUX()
     QCOMPARE(responseSpy.count(), 1);
     QCOMPARE(responseSpy[0][0], QVariant(msgNr));
     QCOMPARE(responseSpy[0][1], QVariant(ack));
-    QCOMPARE(responseSpy[0][2], QVariant("1"));
+    QCOMPARE(responseSpy[0][2], QVariant(reademoblockstate::emobstate_open));
 }
 
 void test_emob_lock::readLockStateI3EmobI3()
@@ -210,7 +211,7 @@ void test_emob_lock::readLockStateI3EmobI3()
     QCOMPARE(responseSpy.count(), 1);
     QCOMPARE(responseSpy[0][0], QVariant(msgNr));
     QCOMPARE(responseSpy[0][1], QVariant(ack));
-    QCOMPARE(responseSpy[0][2], QVariant("1"));
+    QCOMPARE(responseSpy[0][2], QVariant(reademoblockstate::emobstate_open));
 }
 
 void test_emob_lock::readLockStateI3EmobIAUX()
