@@ -429,13 +429,14 @@ void Mt310s2SystemInterface::updateAllCtrlVersionsJson()
         const HotControllers &controller = it.value();
         QString version;
         controller.m_commonController->readCTRLVersion(version);
+
         QString channelMName = it.key();
         SenseSystem::cChannelSettings *channelSetting = m_senseSettings->findChannelSettingByMxName(channelMName);
-        QString aliasName = channelSetting->m_sAlias1;
-        emobCtrlVersions.insert(aliasName, version);
+        if (channelSetting)
+            emobCtrlVersions.insert(channelSetting->m_sAlias1, version);
     }
     if(!emobCtrlVersions.isEmpty())
-        object.insert("Emob controller version", emobCtrlVersions);
+        object.insert("Emob controller versions", emobCtrlVersions);
     if(m_currAccuPlugged) {
         I2cCtrlCommonInfoPtrUnique controller = m_ctrlFactory->getCommonInfoController(AbstractFactoryI2cCtrl::CTRL_TYPE_ACCU);
         QString version;
@@ -454,18 +455,22 @@ void Mt310s2SystemInterface::updateAllPCBsVersion()
     object.insert("Relay PCB version", m_systemInfo->getPCBVersion());
     object.insert("System PCB version", m_systemInfo->getSysPCBVersion());
     HotControllerMap hotpluggableControllers = m_hotPluggableControllerContainer->getCurrentControllers();
-    QJsonObject emobCtrlVersions;
     for (auto it = hotpluggableControllers.cbegin(); it != hotpluggableControllers.cend(); ++it) {
         const HotControllers &controller = it.value();
         QString version;
         controller.m_commonController->readPCBInfo(version);
+        QString instrumentSubType;
+        controller.m_emobController->readEmobInstrumentSubType(instrumentSubType);
+
+        QJsonObject emobCtrlVersions;
+        emobCtrlVersions.insert("Emob PCB version", version);
+        emobCtrlVersions.insert("Emob subtype", instrumentSubType);
+
         QString channelMName = it.key();
         SenseSystem::cChannelSettings *channelSetting = m_senseSettings->findChannelSettingByMxName(channelMName);
-        QString aliasName = channelSetting->m_sAlias1;
-        emobCtrlVersions.insert(aliasName, version);
+        if (channelSetting)
+            object.insert(channelSetting->m_sAlias1, emobCtrlVersions);
     }
-    if(!emobCtrlVersions.isEmpty())
-        object.insert("Emob PCB version", emobCtrlVersions);
     if(m_currAccuPlugged) {
         I2cCtrlCommonInfoPtrUnique controller = m_ctrlFactory->getCommonInfoController(AbstractFactoryI2cCtrl::CTRL_TYPE_ACCU);
         QString version;

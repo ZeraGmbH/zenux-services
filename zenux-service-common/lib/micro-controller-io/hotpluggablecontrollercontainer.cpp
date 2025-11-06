@@ -83,6 +83,7 @@ void HotPluggableControllerContainer::onBootloaderStopAssumed(int ctrlChannel)
         PendingChannelInfo channelInfo = m_pendingBootloaderStoppers.take(ctrlChannel);
         QString version;
         ZeraMControllerIo::atmelRM result = commonCtrl->readCTRLVersion(version);
+        // Currently we assume all controllers EMOB (CPU5975)
         if(result == ZeraMControllerIo::cmddone && !version.isEmpty()) {
             qInfo("Version %s read for controller channel %i / mux channel %i - add controller",
                   qPrintable(version), ctrlChannel, muxChannelNo);
