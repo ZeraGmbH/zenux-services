@@ -152,7 +152,7 @@ void test_emob_lock::readLockStateNoParamEmobIAUX()
     QCOMPARE(responseSpy.count(), 1);
     QCOMPARE(responseSpy[0][0], QVariant(msgNr));
     QCOMPARE(responseSpy[0][1], QVariant(ack));
-    QCOMPARE(responseSpy[0][2], QVariant("0"));
+    QCOMPARE(responseSpy[0][2], QVariant("1"));
 }
 
 void test_emob_lock::readLockStateNoParamEmobI3IAUX()
@@ -195,7 +195,7 @@ void test_emob_lock::readLockStateIAUXEmobIAUX()
     QCOMPARE(responseSpy.count(), 1);
     QCOMPARE(responseSpy[0][0], QVariant(msgNr));
     QCOMPARE(responseSpy[0][1], QVariant(ack));
-    QCOMPARE(responseSpy[0][2], QVariant("0"));
+    QCOMPARE(responseSpy[0][2], QVariant("1"));
 }
 
 void test_emob_lock::readLockStateI3EmobI3()
@@ -210,7 +210,7 @@ void test_emob_lock::readLockStateI3EmobI3()
     QCOMPARE(responseSpy.count(), 1);
     QCOMPARE(responseSpy[0][0], QVariant(msgNr));
     QCOMPARE(responseSpy[0][1], QVariant(ack));
-    QCOMPARE(responseSpy[0][2], QVariant("0"));
+    QCOMPARE(responseSpy[0][2], QVariant("1"));
 }
 
 void test_emob_lock::readLockStateI3EmobIAUX()
