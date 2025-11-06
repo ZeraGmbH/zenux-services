@@ -31,6 +31,7 @@ SETUP_SERVICE_COMMON_TESTS(
     test_notificationcontents
     test_source_control
     test_emob_lock
+    test_read_versions
     )
 
 target_sources(test_hotpluggablecontrollercontainer
@@ -60,6 +61,11 @@ target_sources(test_adj_procedure
 )
 
 target_sources(test_source_control
+  PRIVATE
+  test-data/regression_data.qrc
+)
+
+target_sources(test_read_versions
   PRIVATE
   test-data/regression_data.qrc
 )
