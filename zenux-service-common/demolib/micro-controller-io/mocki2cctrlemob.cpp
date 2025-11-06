@@ -11,3 +11,9 @@ ZeraMControllerIoTemplate::atmelRM MockI2cCtrlEMOB::readEmobLockState(quint8 &st
     status = reademoblockstate::emobstate_open;
     return ZeraMControllerIo::atmelRM::cmddone;
 }
+
+ZeraMControllerIoTemplate::atmelRM MockI2cCtrlEMOB::readEmobInstrumentSubType(QString &answer)
+{
+    answer = "EMOB_MOCK-00V00";
+    return ZeraMControllerIo::atmelRM::cmddone;
+}

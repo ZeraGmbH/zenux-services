@@ -13,9 +13,15 @@ I2cCtrlEMOB::I2cCtrlEMOB(QString deviceNodeName,
 
 enum hw_cmdcode
 {
+    readInstrumentSubType = 0x0010,
     hwSendPushbuttonPress = 0x0041,
     hwReadEmobLockState = 0x0060      // old: hwReadEmobConnectionState
 };
+
+ZeraMControllerIoTemplate::atmelRM I2cCtrlEMOB::readEmobInstrumentSubType(QString &answer)
+{
+    return m_ctrlIo.readVariableLenText(readInstrumentSubType, answer);
+}
 
 ZeraMControllerIoTemplate::atmelRM I2cCtrlEMOB::sendPushbuttonPress()
 {
