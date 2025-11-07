@@ -91,6 +91,11 @@ QList<int> SimulSystemStatus::channelRanges() const
     return m_channelRanges;
 }
 
+void SimulSystemStatus::changeHotplugDevice(int channelIndex, int deviceIndex)
+{
+    emit sigHotplugDevChanged(channelIndex, deviceIndex != NONE);
+}
+
 QString SimulSystemStatus::pllMode() const
 {
     return m_pllMode;

@@ -3,6 +3,7 @@
 #include "mockserverparamgenerator.h"
 #include "mocki2ceepromiofactory.h"
 #include "controllerpersitentdata.h"
+#include "simulsystemstatus.h"
 
 MockMt310s2d::MockMt310s2d(AbstractFactoryI2cCtrlPtr ctrlFactory,
                            VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory,
@@ -11,6 +12,8 @@ MockMt310s2d::MockMt310s2d(AbstractFactoryI2cCtrlPtr ctrlFactory,
     m_ctrlFactory(ctrlFactory)
 {
     MockI2cEEpromIoFactory::enableMock();
+    connect(SimulSystemStatus::getInstance(), &SimulSystemStatus::sigHotplugDevChanged,
+            this, &MockMt310s2d::onSimulGuiHotplugDevChanged);
 
     ServerParams params = MockServerParamGenerator::createParams(serviceNameForAlternateDevice);
     if(!alternateConfigXml.isEmpty())
@@ -33,4 +36,21 @@ void MockMt310s2d::fireHotplugInterrupt(const QStringList &channelAliases)
     }
     ControllerPersitentData::injectInterruptFlags(interruptMask);
     m_server->MTIntHandler(0);
+}
+
+void MockMt310s2d::onSimulGuiHotplugDevChanged(int channelIndex, bool active)
+{
+    QStringList simulChannelSequence = QStringList() << "UL1" << "UL2" << "UL3" << "UAUX" << "IL1" << "IL2" << "IL3" << "IAUX";
+    const QString channelAlias = simulChannelSequence[channelIndex];
+    bool change = false;
+    if(active) {
+        change = !m_channelAliasesWithControllers.contains(channelAlias);
+        m_channelAliasesWithControllers.insert(channelAlias);
+    }
+    else {
+        change = m_channelAliasesWithControllers.contains(channelAlias);
+        m_channelAliasesWithControllers.remove(channelAlias);
+    }
+    if(change)
+        fireHotplugInterrupt(m_channelAliasesWithControllers.values());
 }

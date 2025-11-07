@@ -9,10 +9,10 @@ ApplicationWindow {
     title: "PCB service simulation"
     x: 0
     y: 0
-    width: 800
-    height: 250
+    width: 1280
+    height: 300
     Material.accent: "#339966"
-    property real labelWidth: width * 0.25
+    property real labelWidth: width * 0.15
 
     ColumnLayout {
         anchors { fill: parent; margins: 10 }
@@ -77,6 +77,20 @@ ApplicationWindow {
             Repeater {
                 model: Simul.channelRanges.length
                 Label { text: Simul.channelRanges[index]; Layout.fillWidth: true }
+            }
+        }
+        RowLayout {
+            Layout.fillWidth: true
+            Label { text: "Hotplug:"; Layout.preferredWidth: labelWidth }
+            Repeater {
+                model: Simul.channelRanges.length
+                ComboBox {
+                    id: hotDevicesCombo
+                    readonly property int channelIdx: index
+                    Layout.fillWidth: true
+                    model: ["--", "controller"]
+                    onCurrentIndexChanged: Simul.changeHotplugDevice(channelIdx, currentIndex)
+                }
             }
         }
     }

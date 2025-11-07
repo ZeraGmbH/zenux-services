@@ -63,6 +63,13 @@ public:
     QList<int> channelRanges() const;
     Q_SIGNAL void channelRangesChanged();
 
+    enum HOTPLUG_DEVICES {
+        NONE, // Hack for now: Keep in sync to hotDevicesCombo
+        CONTROLLER_ONLY
+    };
+    Q_INVOKABLE void changeHotplugDevice(int channelIndex, int deviceIndex);
+    Q_SIGNAL void sigHotplugDevChanged(int channelIndex, bool active);
+
     // C++ only
     quint8 getAccuStatusFromFlags();
     quint8 getRange(quint8 channel);
