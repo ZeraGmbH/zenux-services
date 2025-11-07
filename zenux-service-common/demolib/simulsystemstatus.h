@@ -76,19 +76,15 @@ private:
     static SimulSystemStatus* m_instance;
 
     bool m_schnubbelPlugged = true;
-
     bool m_accuSupported = false;
-
     bool m_accuPresent = false;
     bool m_accuIsCharging  = false;
     bool m_accuLowWarning = false;
     bool m_accuLowShutdownAlert = false;
     bool m_accuMainSupplyPresent = false;
-
     quint8 m_accuStateOfCharge = 0;
 
     QString m_pllMode = "Undefined";
-
     QList<int> m_channelRanges;
 };
 
