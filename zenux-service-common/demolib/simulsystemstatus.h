@@ -15,54 +15,58 @@ public:
     static SimulSystemStatus *getInstance(QQmlEngine *engine = nullptr, QJSEngine *scriptEngine = nullptr);
 
     // QML / C++
+    Q_PROPERTY(bool schnubbelPlugged READ getSchnubbelPlugged WRITE setSchnubbelPlugged NOTIFY schnubbelPluggedChanged FINAL)
     bool getSchnubbelPlugged();
     void setSchnubbelPlugged(bool newSchnubbelPlugged);
+    Q_SIGNAL void schnubbelPluggedChanged();
 
+    Q_PROPERTY(bool accuSupported READ accuSupported NOTIFY accuSupportedChanged FINAL)
     bool accuSupported() const;
+    Q_SIGNAL void accuSupportedChanged();
 
+    Q_PROPERTY(quint8 accuStateOfCharge READ getAccuStateOfCharge WRITE setAccuStateOfCharge NOTIFY accuStateOfChargeChanged FINAL)
     quint8 getAccuStateOfCharge();
     void setAccuStateOfCharge(quint8 newAccuStateOfCharge);
+    Q_SIGNAL void accuStateOfChargeChanged();
 
+    Q_PROPERTY(bool accuPresent READ accuPresent WRITE setAccuPresent NOTIFY accuPresentChanged FINAL)
     bool accuPresent() const;
     void setAccuPresent(bool newAccuPresent);
+    Q_SIGNAL void accuPresentChanged();
 
+    Q_PROPERTY(bool accuIsCharging READ accuIsCharging WRITE setAccuIsCharging NOTIFY accuIsChargingChanged FINAL)
     bool accuIsCharging() const;
     void setAccuIsCharging(bool newAccuIsCharging);
+    Q_SIGNAL void accuIsChargingChanged();
 
+    Q_PROPERTY(bool accuLowWarning READ accuLowWarning WRITE setAccuLowWarning NOTIFY accuLowWarningChanged FINAL)
     bool accuLowWarning() const;
     void setAccuLowWarning(bool newAccuLowWarning);
+    Q_SIGNAL void accuLowWarningChanged();
 
+    Q_PROPERTY(bool accuLowShutdownAlert READ accuLowShutdownAlert WRITE setAccuLowShutdownAlert NOTIFY accuLowShutdownAlertChanged FINAL)
     bool accuLowShutdownAlert() const;
     void setAccuLowShutdownAlert(bool newAccuLowShutdownAlert);
+    Q_SIGNAL void accuLowShutdownAlertChanged();
 
+    Q_PROPERTY(bool accuMainSupplyPresent READ accuMainSupplyPresent WRITE setAccuMainSupplyPresent NOTIFY accuMainSupplyPresentChanged FINAL)
     bool accuMainSupplyPresent() const;
     void setAccuMainSupplyPresent(bool newAccuMainSupplyPresent);
+    Q_SIGNAL void accuMainSupplyPresentChanged();
 
+    Q_PROPERTY(QString pllMode READ pllMode WRITE setPllMode NOTIFY pllModeChanged FINAL)
     QString pllMode() const;
     void setPllMode(const QString &newPllMode);
+    Q_SIGNAL void pllModeChanged();
 
+    Q_PROPERTY(QList<int> channelRanges READ channelRanges NOTIFY channelRangesChanged FINAL)
     QList<int> channelRanges() const;
+    Q_SIGNAL void channelRangesChanged();
 
     // C++ only
     quint8 getAccuStatusFromFlags();
     quint8 getRange(quint8 channel);
     void setRange(quint8 channel, quint8 range);
-
-signals:
-    void schnubbelPluggedChanged();
-
-    void accuStateOfChargeChanged();
-    void accuPresentChanged();
-    void accuIsChargingChanged();
-    void accuLowWarningChanged();
-    void accuLowShutdownAlertChanged();
-    void accuMainSupplyPresentChanged();
-
-    void accuSupportedChanged();
-
-    void pllModeChanged();
-
-    void channelRangesChanged();
 
 private:
     SimulSystemStatus() = default;
@@ -71,30 +75,20 @@ private:
 
     static SimulSystemStatus* m_instance;
 
-    Q_PROPERTY(bool schnubbelPlugged READ getSchnubbelPlugged WRITE setSchnubbelPlugged NOTIFY schnubbelPluggedChanged FINAL)
     bool m_schnubbelPlugged = true;
 
-    Q_PROPERTY(bool accuSupported READ accuSupported NOTIFY accuSupportedChanged FINAL)
     bool m_accuSupported = false;
 
-    Q_PROPERTY(bool accuPresent READ accuPresent WRITE setAccuPresent NOTIFY accuPresentChanged FINAL)
     bool m_accuPresent = false;
-    Q_PROPERTY(bool accuIsCharging READ accuIsCharging WRITE setAccuIsCharging NOTIFY accuIsChargingChanged FINAL)
     bool m_accuIsCharging  = false;
-    Q_PROPERTY(bool accuLowWarning READ accuLowWarning WRITE setAccuLowWarning NOTIFY accuLowWarningChanged FINAL)
     bool m_accuLowWarning = false;
-    Q_PROPERTY(bool accuLowShutdownAlert READ accuLowShutdownAlert WRITE setAccuLowShutdownAlert NOTIFY accuLowShutdownAlertChanged FINAL)
     bool m_accuLowShutdownAlert = false;
-    Q_PROPERTY(bool accuMainSupplyPresent READ accuMainSupplyPresent WRITE setAccuMainSupplyPresent NOTIFY accuMainSupplyPresentChanged FINAL)
     bool m_accuMainSupplyPresent = false;
 
-    Q_PROPERTY(quint8 accuStateOfCharge READ getAccuStateOfCharge WRITE setAccuStateOfCharge NOTIFY accuStateOfChargeChanged FINAL)
     quint8 m_accuStateOfCharge = 0;
 
-    Q_PROPERTY(QString pllMode READ pllMode WRITE setPllMode NOTIFY pllModeChanged FINAL)
     QString m_pllMode = "Undefined";
 
-    Q_PROPERTY(QList<int> channelRanges READ channelRanges NOTIFY channelRangesChanged FINAL)
     QList<int> m_channelRanges;
 };
 
