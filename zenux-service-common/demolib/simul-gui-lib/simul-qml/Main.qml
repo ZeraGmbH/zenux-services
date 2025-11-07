@@ -12,7 +12,8 @@ ApplicationWindow {
     width: 1280
     height: 300
     Material.accent: "#339966"
-    property real labelWidth: width * 0.15
+    readonly property real labelWidth: width * 0.15
+    readonly property real channelWidth: (width - 60 - labelWidth) / Simul.channelRanges.length
 
     ColumnLayout {
         anchors { fill: parent; margins: 10 }
@@ -76,7 +77,7 @@ ApplicationWindow {
             Label { text: "Ranges:"; Layout.preferredWidth: labelWidth }
             Repeater {
                 model: Simul.channelRanges.length
-                Label { text: Simul.channelRanges[index]; Layout.fillWidth: true }
+                Label { text: Simul.channelRanges[index]; Layout.preferredWidth: channelWidth }
             }
         }
         RowLayout {
@@ -86,8 +87,10 @@ ApplicationWindow {
                 model: Simul.channelRanges.length
                 ComboBox {
                     id: hotDevicesCombo
+                    enabled: Simul.channelHotplugSupported[index]
+                    opacity: Simul.channelHotplugSupported[index] ? 1 : 0
                     readonly property int channelIdx: index
-                    Layout.fillWidth: true
+                    Layout.preferredWidth: channelWidth
                     model: ["--", "controller"]
                     onCurrentIndexChanged: Simul.changeHotplugDevice(channelIdx, currentIndex)
                 }

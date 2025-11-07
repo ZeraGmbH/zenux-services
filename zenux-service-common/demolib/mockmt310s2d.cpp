@@ -24,6 +24,7 @@ MockMt310s2d::MockMt310s2d(AbstractFactoryI2cCtrlPtr ctrlFactory,
         std::make_shared<MockFactoryDeviceNodePcb>(),
         tcpNetworkFactory,
         SettingsContainer::createChannelRangeFactory(serviceNameForAlternateDevice));
+    setupHotplugChannelEnable();
 }
 
 void MockMt310s2d::fireHotplugInterrupt(const QStringList &channelAliases)
@@ -38,9 +39,10 @@ void MockMt310s2d::fireHotplugInterrupt(const QStringList &channelAliases)
     m_server->MTIntHandler(0);
 }
 
+static const QStringList simulChannelSequence = QStringList() << "UL1" << "UL2" << "UL3" << "UAUX" << "IL1" << "IL2" << "IL3" << "IAUX";
+
 void MockMt310s2d::onSimulGuiHotplugDevChanged(int channelIndex, bool active)
 {
-    QStringList simulChannelSequence = QStringList() << "UL1" << "UL2" << "UL3" << "UAUX" << "IL1" << "IL2" << "IL3" << "IAUX";
     const QString channelAlias = simulChannelSequence[channelIndex];
     bool change = false;
     if(active) {
@@ -53,4 +55,17 @@ void MockMt310s2d::onSimulGuiHotplugDevChanged(int channelIndex, bool active)
     }
     if(change)
         fireHotplugInterrupt(m_channelAliasesWithControllers.values());
+}
+
+void MockMt310s2d::setupHotplugChannelEnable()
+{
+    cSenseSettings *senseSettings = m_server->getSenseSettings();
+    QVector<bool> enableMask(8);
+    for (int i=0; i<simulChannelSequence.size(); ++i) {
+        const QString &channelAlias = simulChannelSequence[i];
+        SenseSystem::cChannelSettings* channelSetting = senseSettings->findChannelSettingByAlias1(channelAlias);
+        if (channelSetting != nullptr && channelSetting->m_nPluggedBit >= 0)
+            enableMask[i] = true;
+    }
+    SimulSystemStatus::getInstance()->setChannelHotplugSupported(enableMask);
 }

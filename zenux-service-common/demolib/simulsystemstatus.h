@@ -69,6 +69,10 @@ public:
     };
     Q_INVOKABLE void changeHotplugDevice(int channelIndex, int deviceIndex);
     Q_SIGNAL void sigHotplugDevChanged(int channelIndex, bool active);
+    Q_PROPERTY(QVector<bool> channelHotplugSupported READ channelHotplugSupported NOTIFY channelHotplugSupportedChanged FINAL)
+    const QVector<bool> &channelHotplugSupported() const;
+    void setChannelHotplugSupported(const QVector<bool> &channelsWithHotplugSupport); // just C++
+    Q_SIGNAL void channelHotplugSupportedChanged();
 
     // C++ only
     quint8 getAccuStatusFromFlags();
@@ -93,6 +97,7 @@ private:
 
     QString m_pllMode = "Undefined";
     QList<int> m_channelRanges;
+    QVector<bool> m_channelsWithHotplugSupport = QVector<bool>(8);
 };
 
 typedef std::shared_ptr<SimulSystemStatus> SimulSystemStatusPtr;

@@ -18,6 +18,7 @@ public:
 private slots:
     void onSimulGuiHotplugDevChanged(int channelIndex, bool active);
 private:
+    void setupHotplugChannelEnable();
     std::unique_ptr<cMT310S2dServer> m_server;
     AbstractFactoryI2cCtrlPtr m_ctrlFactory;
     QSet<QString> m_channelAliasesWithControllers;

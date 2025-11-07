@@ -96,6 +96,19 @@ void SimulSystemStatus::changeHotplugDevice(int channelIndex, int deviceIndex)
     emit sigHotplugDevChanged(channelIndex, deviceIndex != NONE);
 }
 
+const QVector<bool> &SimulSystemStatus::channelHotplugSupported() const
+{
+    return m_channelsWithHotplugSupport;
+}
+
+void SimulSystemStatus::setChannelHotplugSupported(const QVector<bool> &channelsWithHotplugSupport)
+{
+    if(m_channelsWithHotplugSupport != channelsWithHotplugSupport) {
+        m_channelsWithHotplugSupport = channelsWithHotplugSupport;
+        emit channelHotplugSupportedChanged();
+    }
+}
+
 QString SimulSystemStatus::pllMode() const
 {
     return m_pllMode;
