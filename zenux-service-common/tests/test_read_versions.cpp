@@ -27,7 +27,7 @@ void test_read_versions::cleanup()
     ControllerPersitentData::cleanupPersitentData();
 }
 
-void test_read_versions::readVersionNoEmob()
+void test_read_versions::readPcbVersionNoEmob()
 {
     QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
 
@@ -43,7 +43,7 @@ void test_read_versions::readVersionNoEmob()
     QVERIFY(TestLogHelpers::compareAndLogOnDiffJson(jsonExpected, jsonDumped));
 }
 
-void test_read_versions::readVersionOneEmobChannelIAUX()
+void test_read_versions::readPcbVersionOneEmobChannelIAUX()
 {
     m_mt310s2d->fireHotplugInterrupt(QStringList() << "IAUX");
     QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
@@ -60,7 +60,7 @@ void test_read_versions::readVersionOneEmobChannelIAUX()
     QVERIFY(TestLogHelpers::compareAndLogOnDiffJson(jsonExpected, jsonDumped));
 }
 
-void test_read_versions::readVersionTwoEmobTwoChannels()
+void test_read_versions::readPcbVersionTwoEmobTwoChannels()
 {
     m_mt310s2d->fireHotplugInterrupt(QStringList() << "IL3" << "IAUX");
     QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
@@ -75,7 +75,56 @@ void test_read_versions::readVersionTwoEmobTwoChannels()
     QByteArray jsonDumped = responseSpy[0][2].toByteArray();
     QByteArray jsonExpected = TestLogHelpers::loadFile(":/controller-versions/twoEmobtwoChannels.json");
     QVERIFY(TestLogHelpers::compareAndLogOnDiffJson(jsonExpected, jsonDumped));
+}
 
+void test_read_versions::readCtrlVersionNoEmob()
+{
+    QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
+
+    int msgNr = m_pcbIFace->scpiCommand("SYSTEM:VERSION:CTRL?");
+    TimeMachineObject::feedEventLoop();
+
+    QCOMPARE(responseSpy.count(), 1);
+    QCOMPARE(responseSpy[0][0], QVariant(msgNr));
+    QCOMPARE(responseSpy[0][1], QVariant(ack));
+
+    QByteArray jsonDumped = responseSpy[0][2].toByteArray();
+    QByteArray jsonExpected = TestLogHelpers::loadFile(":/controller-versions/ctrlVersionNoEmob.json");
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffJson(jsonExpected, jsonDumped));
+}
+
+void test_read_versions::readCtrlVersionOneEmobChannelIAUX()
+{
+    m_mt310s2d->fireHotplugInterrupt(QStringList() << "IAUX");
+    QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
+
+    int msgNr = m_pcbIFace->scpiCommand("SYSTEM:VERSION:CTRL?");
+    TimeMachineObject::feedEventLoop();
+
+    QCOMPARE(responseSpy.count(), 1);
+    QCOMPARE(responseSpy[0][0], QVariant(msgNr));
+    QCOMPARE(responseSpy[0][1], QVariant(ack));
+
+    QByteArray jsonDumped = responseSpy[0][2].toByteArray();
+    QByteArray jsonExpected = TestLogHelpers::loadFile(":/controller-versions/ctrlVersionOneEmobOneChannel.json");
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffJson(jsonExpected, jsonDumped));
+}
+
+void test_read_versions::readCtrlVersionTwoEmobTwoChannels()
+{
+    m_mt310s2d->fireHotplugInterrupt(QStringList() << "IL3" << "IAUX");
+    QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
+
+    int msgNr = m_pcbIFace->scpiCommand("SYSTEM:VERSION:CTRL?");
+    TimeMachineObject::feedEventLoop();
+
+    QCOMPARE(responseSpy.count(), 1);
+    QCOMPARE(responseSpy[0][0], QVariant(msgNr));
+    QCOMPARE(responseSpy[0][1], QVariant(ack));
+
+    QByteArray jsonDumped = responseSpy[0][2].toByteArray();
+    QByteArray jsonExpected = TestLogHelpers::loadFile(":/controller-versions/ctrlVersiontwoEmobtwoChannels.json");
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffJson(jsonExpected, jsonDumped));
 }
 
 void test_read_versions::setupServers()

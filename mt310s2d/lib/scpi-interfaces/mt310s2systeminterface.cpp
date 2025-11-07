@@ -430,13 +430,12 @@ void Mt310s2SystemInterface::updateAllCtrlVersionsJson()
         QString version;
         controller.m_commonController->readCTRLVersion(version);
 
+        emobCtrlVersions.insert("Emob controller version", version);
         QString channelMName = it.key();
         SenseSystem::cChannelSettings *channelSetting = m_senseSettings->findChannelSettingByMxName(channelMName);
         if (channelSetting)
-            emobCtrlVersions.insert(channelSetting->m_sAlias1, version);
+            object.insert(channelSetting->m_sAlias1, emobCtrlVersions);
     }
-    if(!emobCtrlVersions.isEmpty())
-        object.insert("Emob controller versions", emobCtrlVersions);
     if(m_currAccuPlugged) {
         I2cCtrlCommonInfoPtrUnique controller = m_ctrlFactory->getCommonInfoController(AbstractFactoryI2cCtrl::CTRL_TYPE_ACCU);
         QString version;

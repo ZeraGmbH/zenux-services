@@ -12,9 +12,13 @@ class test_read_versions : public QObject
 private slots:
     void init();
     void cleanup();
-    void readVersionNoEmob();
-    void readVersionOneEmobChannelIAUX();
-    void readVersionTwoEmobTwoChannels();
+    void readPcbVersionNoEmob();
+    void readPcbVersionOneEmobChannelIAUX();
+    void readPcbVersionTwoEmobTwoChannels();
+
+    void readCtrlVersionNoEmob();
+    void readCtrlVersionOneEmobChannelIAUX();
+    void readCtrlVersionTwoEmobTwoChannels();
 
 private:
     void setupServers();

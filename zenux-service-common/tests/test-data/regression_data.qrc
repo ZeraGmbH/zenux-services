@@ -18,6 +18,9 @@
         <file>controller-versions/noEmob.json</file>
         <file>controller-versions/oneEmobChannelIAUX.json</file>
         <file>controller-versions/twoEmobtwoChannels.json</file>
+        <file>controller-versions/ctrlVersionNoEmob.json</file>
+        <file>controller-versions/ctrlVersionOneEmobOneChannel.json</file>
+        <file>controller-versions/ctrlVersiontwoEmobtwoChannels.json</file>
 
     </qresource>
 </RCC>
