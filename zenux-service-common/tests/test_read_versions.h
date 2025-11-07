@@ -14,10 +14,12 @@ private slots:
     void cleanup();
     void readPcbVersionNoEmob();
     void readPcbVersionOneEmobChannelIAUX();
+    void readPcbVersionOneEmobAddAndRemoveIAUX();
     void readPcbVersionTwoEmobTwoChannels();
 
     void readCtrlVersionNoEmob();
     void readCtrlVersionOneEmobChannelIAUX();
+    void readCtrlVersionOneEmobAddRemoveIAUX();
     void readCtrlVersionTwoEmobTwoChannels();
 
 private:

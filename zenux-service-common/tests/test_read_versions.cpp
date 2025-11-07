@@ -60,6 +60,24 @@ void test_read_versions::readPcbVersionOneEmobChannelIAUX()
     QVERIFY(TestLogHelpers::compareAndLogOnDiffJson(jsonExpected, jsonDumped));
 }
 
+void test_read_versions::readPcbVersionOneEmobAddAndRemoveIAUX()
+{
+    m_mt310s2d->fireHotplugInterrupt(QStringList() << "IAUX");
+    m_mt310s2d->fireHotplugInterrupt(QStringList());
+    QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
+
+    int msgNr = m_pcbIFace->scpiCommand("SYSTEM:VERSION:PCB?");
+    TimeMachineObject::feedEventLoop();
+
+    QCOMPARE(responseSpy.count(), 1);
+    QCOMPARE(responseSpy[0][0], QVariant(msgNr));
+    QCOMPARE(responseSpy[0][1], QVariant(ack));
+
+    QByteArray jsonDumped = responseSpy[0][2].toByteArray();
+    QByteArray jsonExpected = TestLogHelpers::loadFile(":/controller-versions/noEmob.json");
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffJson(jsonExpected, jsonDumped));
+}
+
 void test_read_versions::readPcbVersionTwoEmobTwoChannels()
 {
     m_mt310s2d->fireHotplugInterrupt(QStringList() << "IL3" << "IAUX");
@@ -107,6 +125,24 @@ void test_read_versions::readCtrlVersionOneEmobChannelIAUX()
 
     QByteArray jsonDumped = responseSpy[0][2].toByteArray();
     QByteArray jsonExpected = TestLogHelpers::loadFile(":/controller-versions/ctrlVersionOneEmobOneChannel.json");
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffJson(jsonExpected, jsonDumped));
+}
+
+void test_read_versions::readCtrlVersionOneEmobAddRemoveIAUX()
+{
+    m_mt310s2d->fireHotplugInterrupt(QStringList() << "IAUX");
+    m_mt310s2d->fireHotplugInterrupt(QStringList());
+    QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
+
+    int msgNr = m_pcbIFace->scpiCommand("SYSTEM:VERSION:CTRL?");
+    TimeMachineObject::feedEventLoop();
+
+    QCOMPARE(responseSpy.count(), 1);
+    QCOMPARE(responseSpy[0][0], QVariant(msgNr));
+    QCOMPARE(responseSpy[0][1], QVariant(ack));
+
+    QByteArray jsonDumped = responseSpy[0][2].toByteArray();
+    QByteArray jsonExpected = TestLogHelpers::loadFile(":/controller-versions/ctrlVersionNoEmob.json");
     QVERIFY(TestLogHelpers::compareAndLogOnDiffJson(jsonExpected, jsonDumped));
 }
 

@@ -11,7 +11,7 @@ ControllerPersitentData::TPersitentControllerData &ControllerPersitentData::getD
 void ControllerPersitentData::injectInterruptFlags(quint16 clampConnectMask)
 {
     m_persitentData.m_criticalStatus |= (1<<clampstatusInterrupt);
-    m_persitentData.m_clampConnectMask |= clampConnectMask;
+    m_persitentData.m_clampConnectMask = clampConnectMask;
 }
 
 void ControllerPersitentData::cleanupPersitentData()

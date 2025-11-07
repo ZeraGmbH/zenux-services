@@ -26,9 +26,11 @@ MockMt310s2d::MockMt310s2d(AbstractFactoryI2cCtrlPtr ctrlFactory,
 void MockMt310s2d::fireHotplugInterrupt(const QStringList &channelAliases)
 {
     cSenseSettings *senseSettings = m_server->getSenseSettings();
+    quint16 interruptMask = 0;
     for (const QString &channelAlias : channelAliases) {
         SenseSystem::cChannelSettings* channelSetting = senseSettings->findChannelSettingByAlias1(channelAlias);
-        ControllerPersitentData::injectInterruptFlags((1 << channelSetting->m_nPluggedBit));
+        interruptMask |= (1 << channelSetting->m_nPluggedBit);
     }
+    ControllerPersitentData::injectInterruptFlags(interruptMask);
     m_server->MTIntHandler(0);
 }
