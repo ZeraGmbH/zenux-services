@@ -26,6 +26,7 @@ public:
     HotControllerMap getCurrentControllers();
 signals:
     void sigControllersChanged();
+
 private slots:
     void onBootloaderStopAssumed(int ctrlChannel);
 private:
