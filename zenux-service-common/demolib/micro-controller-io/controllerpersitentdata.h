@@ -17,6 +17,9 @@ public:
         QString m_writablePcbVersion = "Unknown";
 
         quint8 m_pllChannel = 0;
+
+        quint8 m_accuStatus = 0;
+        quint8 m_accuCharge = 37;
     };
     static TPersitentControllerData &getData();
     static void injectInterruptFlags(quint16 clampConnectMask);

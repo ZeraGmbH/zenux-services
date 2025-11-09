@@ -10,23 +10,27 @@ class test_read_versions : public QObject
 {
     Q_OBJECT
 private slots:
+    void initTestCase();
     void init();
     void cleanup();
     void readPcbVersionNoEmob();
     void readPcbVersionOneEmobChannelIAUX();
     void readPcbVersionOneEmobAddAndRemoveIAUX();
     void readPcbVersionTwoEmobTwoChannels();
+    void readPcbVersionAccuNoEmob();
 
     void readCtrlVersionNoEmob();
     void readCtrlVersionOneEmobChannelIAUX();
     void readCtrlVersionOneEmobAddRemoveIAUX();
     void readCtrlVersionTwoEmobTwoChannels();
+    void readCtrlVersionAccuNoEmob();
 
 private:
     void setupServers();
     void registerNotifications();
     void unregisterNotifications();
     void catchInterfaceAnswer(quint32 msgnr, quint8 reply, QVariant answer); // is a slot
+    void waitForAccuDetected();
 
     std::unique_ptr<ResmanRunFacade> m_resman;
     std::unique_ptr<MockMt310s2d> m_mt310s2d;

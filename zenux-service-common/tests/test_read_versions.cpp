@@ -1,4 +1,5 @@
 #include "test_read_versions.h"
+#include "accustatusflags.h"
 #include "testfactoryi2cctrl.h"
 #include <mocktcpnetworkfactory.h>
 #include "proxy.h"
@@ -7,13 +8,20 @@
 #include <testloghelpers.h>
 #include <timemachineobject.h>
 #include <timerfactoryqtfortest.h>
+#include <timemachinefortest.h>
 #include <QSignalSpy>
 #include <QTest>
 
 QTEST_MAIN(test_read_versions)
 
+void test_read_versions::initTestCase()
+{
+    TimerFactoryQtForTest::enableTest();
+}
+
 void test_read_versions::init()
 {
+    TimeMachineForTest::reset();
     setupServers();
 }
 
@@ -111,6 +119,24 @@ void test_read_versions::readPcbVersionTwoEmobTwoChannels()
     QVERIFY(TestLogHelpers::compareAndLogOnDiffJson(jsonExpected, jsonDumped));
 }
 
+void test_read_versions::readPcbVersionAccuNoEmob()
+{
+    ControllerPersitentData::getData().m_accuStatus |= (1<<bp_Battery_Present);
+    waitForAccuDetected();
+
+    QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
+    int msgNr = m_pcbIFace->scpiCommand("SYSTEM:VERSION:PCB?");
+    TimeMachineObject::feedEventLoop();
+
+    QCOMPARE(responseSpy.count(), 1);
+    QCOMPARE(responseSpy[0][0], QVariant(msgNr));
+    QCOMPARE(responseSpy[0][1], QVariant(ack));
+
+    QByteArray jsonDumped = responseSpy[0][2].toByteArray();
+    QByteArray jsonExpected = TestLogHelpers::loadFile(":/controller-versions/noEmobAccu.json");
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffJson(jsonExpected, jsonDumped));
+}
+
 void test_read_versions::readCtrlVersionNoEmob()
 {
     QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
@@ -189,6 +215,30 @@ void test_read_versions::readCtrlVersionTwoEmobTwoChannels()
 
     QByteArray jsonDumped = responseSpy[0][2].toByteArray();
     QByteArray jsonExpected = TestLogHelpers::loadFile(":/controller-versions/ctrlVersiontwoEmobtwoChannels.json");
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffJson(jsonExpected, jsonDumped));
+}
+
+void test_read_versions::waitForAccuDetected()
+{
+    constexpr int ACCU_POLLING_PERIOD_MS = 1000;
+    TimeMachineForTest::getInstance()->processTimers(ACCU_POLLING_PERIOD_MS);
+}
+
+void test_read_versions::readCtrlVersionAccuNoEmob()
+{
+    ControllerPersitentData::getData().m_accuStatus |= (1<<bp_Battery_Present);
+    waitForAccuDetected();
+
+    QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
+    int msgNr = m_pcbIFace->scpiCommand("SYSTEM:VERSION:CTRL?");
+    TimeMachineObject::feedEventLoop();
+
+    QCOMPARE(responseSpy.count(), 1);
+    QCOMPARE(responseSpy[0][0], QVariant(msgNr));
+    QCOMPARE(responseSpy[0][1], QVariant(ack));
+
+    QByteArray jsonDumped = responseSpy[0][2].toByteArray();
+    QByteArray jsonExpected = TestLogHelpers::loadFile(":/controller-versions/ctrlVersionAccuNoEmob.json");
     QVERIFY(TestLogHelpers::compareAndLogOnDiffJson(jsonExpected, jsonDumped));
 }
 

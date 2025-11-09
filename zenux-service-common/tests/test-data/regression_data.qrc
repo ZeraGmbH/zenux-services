@@ -16,8 +16,10 @@
         <file>source_state_valid_mt581s2.json</file>
 
         <file>controller-versions/noEmob.json</file>
+        <file>controller-versions/noEmobAccu.json</file>
         <file>controller-versions/oneEmobChannelIAUX.json</file>
         <file>controller-versions/twoEmobtwoChannels.json</file>
+        <file>controller-versions/ctrlVersionAccuNoEmob.json</file>
         <file>controller-versions/ctrlVersionNoEmob.json</file>
         <file>controller-versions/ctrlVersionOneEmobOneChannel.json</file>
         <file>controller-versions/ctrlVersiontwoEmobtwoChannels.json</file>
