@@ -182,16 +182,14 @@ void cMT310S2dServer::earlySetup(AbstractChannelRangeFactoryPtr channelRangeFact
                                                                               channelRangeFactory,
                                                                               m_ctrlFactory));
     m_scpiConnectionList.append(m_pStatusInterface = new ServiceStatusInterface(m_scpiInterface, m_pSenseInterface, m_ctrlFactory));
-    HotPluggableControllerContainerPtr emobControllerContainer =
-        std::make_shared<HotPluggableControllerContainer>(i2cSettings,
-                                                          m_ctrlFactory);
+    m_hotPluggableControllerContainer = std::make_shared<HotPluggableControllerContainer>(i2cSettings, m_ctrlFactory);
     m_scpiConnectionList.append(m_pSystemInterface = new Mt310s2SystemInterface(this,
                                                                                 m_pSystemInfo,
                                                                                 m_pSenseSettings,
                                                                                 m_pSenseInterface,
                                                                                 m_ctrlFactory,
-                                                                                emobControllerContainer));
-    m_scpiConnectionList.append(m_pHotControllerInterface = new HotplugControllerInterface(m_scpiInterface, emobControllerContainer));
+                                                                                m_hotPluggableControllerContainer));
+    m_scpiConnectionList.append(m_pHotControllerInterface = new HotplugControllerInterface(m_scpiInterface, m_hotPluggableControllerContainer));
     m_scpiConnectionList.append(m_pSamplingInterface = new cSamplingInterface(m_scpiInterface, m_settings->getSamplingSettings(), m_ctrlFactory));
     m_scpiConnectionList.append(m_foutInterface = new FOutGroupResourceAndInterface(m_scpiInterface, m_foutSettings));
     m_scpiConnectionList.append(m_pFRQInputInterface = new FInGroupResourceAndInterface(m_scpiInterface, m_finSettings));
@@ -345,12 +343,14 @@ void cMT310S2dServer::enableClampInterrupt()
 
 void cMT310S2dServer::updateI2cDevicesConnected()
 {
-    quint16 clStat;
+    quint16 bitmaskAvailable;
     qInfo("Read device connect mask...");
-    if (m_ctrlFactory->getClampStatusController()->readClampStatus(clStat) == ZeraMControllerIo::cmddone) {
-        qInfo("Devices connected mask read: 0x%02X", clStat);
-        m_pClampInterface->actualizeClampStatus(clStat);
-        m_pSystemInterface->actualizeContollers(clStat);
+    if (m_ctrlFactory->getClampStatusController()->readClampStatus(bitmaskAvailable) == ZeraMControllerIo::cmddone) {
+        qInfo("Devices connected mask read: 0x%02X", bitmaskAvailable);
+        m_pClampInterface->actualizeClampStatus(bitmaskAvailable);
+        m_hotPluggableControllerContainer->startActualizeEmobControllers(bitmaskAvailable,
+                                                                         m_pSenseSettings,
+                                                                         10000);
     }
     else
         qWarning("Devices connected mask read failed");

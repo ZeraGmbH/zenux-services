@@ -91,6 +91,7 @@ private:
     // Mt310s2 specifics
     AccumulatorSettings* m_accumulatorSettings = nullptr;
     SourceControlSettings* m_sourceControlSettings = nullptr;
+    HotPluggableControllerContainerPtr m_hotPluggableControllerContainer;
 
     Mt310s2SystemInterface* m_pSystemInterface = nullptr;
     HotplugControllerInterface* m_pHotControllerInterface = nullptr;

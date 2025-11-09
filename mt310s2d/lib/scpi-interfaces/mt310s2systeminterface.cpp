@@ -54,13 +54,6 @@ void Mt310s2SystemInterface::initSCPIConnection(QString leadingNodes)
     addDelegate(QString("%1SYSTEM:INTERFACE").arg(leadingNodes), "READ", SCPI::isQuery, m_scpiInterface, SystemSystem::cmdInterfaceRead);
 }
 
-void Mt310s2SystemInterface::actualizeContollers(quint16 bitmaskAvailable)
-{
-    m_hotPluggableControllerContainer->startActualizeEmobControllers(bitmaskAvailable,
-                                                                     m_senseSettings,
-                                                                     10000);
-}
-
 void Mt310s2SystemInterface::onAccuStatusChanged(uint8_t status)
 {
     bool accuPlugged = status & (1<<bp_Battery_Present);
