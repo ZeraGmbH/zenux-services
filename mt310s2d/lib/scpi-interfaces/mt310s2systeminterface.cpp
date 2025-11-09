@@ -18,7 +18,7 @@ Mt310s2SystemInterface::Mt310s2SystemInterface(PCBServer *server,
     m_senseSettings(senseSettings),
     m_senseInterface(senseInterface),
     m_ctrlFactory(ctrlFactory),
-    m_hotPluggableControllerContainer(std::move(hotPluggableControllerContainer)),
+    m_hotPluggableControllerContainer(hotPluggableControllerContainer),
     m_delayedChangeTriggerForMissingAccuVersionTimer(TimerFactoryQt::createSingleShot(10000))
 {
     if(m_hotPluggableControllerContainer)

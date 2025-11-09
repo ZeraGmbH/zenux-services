@@ -182,14 +182,14 @@ void cMT310S2dServer::earlySetup(AbstractChannelRangeFactoryPtr channelRangeFact
                                                                               m_ctrlFactory));
     m_scpiConnectionList.append(m_pStatusInterface = new ServiceStatusInterface(m_scpiInterface, m_pSenseInterface, m_ctrlFactory));
     HotPluggableControllerContainerPtr emobControllerContainer =
-        std::make_unique<HotPluggableControllerContainer>(i2cSettings,
+        std::make_shared<HotPluggableControllerContainer>(i2cSettings,
                                                           m_ctrlFactory);
     m_scpiConnectionList.append(m_pSystemInterface = new Mt310s2SystemInterface(this,
                                                                                 m_pSystemInfo,
                                                                                 m_pSenseSettings,
                                                                                 m_pSenseInterface,
                                                                                 m_ctrlFactory,
-                                                                                std::move(emobControllerContainer)));
+                                                                                emobControllerContainer));
     m_scpiConnectionList.append(m_pSamplingInterface = new cSamplingInterface(m_scpiInterface, m_settings->getSamplingSettings(), m_ctrlFactory));
     m_scpiConnectionList.append(m_foutInterface = new FOutGroupResourceAndInterface(m_scpiInterface, m_foutSettings));
     m_scpiConnectionList.append(m_pFRQInputInterface = new FInGroupResourceAndInterface(m_scpiInterface, m_finSettings));
