@@ -1,0 +1,89 @@
+#include "hotplugcontrollerinterface.h"
+#include "zscpi_response_definitions.h"
+
+HotplugControllerInterface::HotplugControllerInterface(std::shared_ptr<cSCPI> scpiInterface,
+                                                       HotPluggableControllerContainerPtr hotPluggableControllerContainer) :
+    ScpiConnection(scpiInterface),
+    m_hotPluggableControllerContainer(hotPluggableControllerContainer)
+{
+    connect(hotPluggableControllerContainer.get(), &HotPluggableControllerContainer::sigControllersChanged,
+            this, &HotplugControllerInterface::onControllersChanged);
+}
+
+enum HotplugCommands
+{
+    cmdEmobPushButtonPress,
+    cmdEmobReadLockState,
+};
+
+void HotplugControllerInterface::initSCPIConnection(QString leadingNodes)
+{
+    ensureTrailingColonOnNonEmptyParentNodes(leadingNodes);
+    addDelegate(QString("%1SYSTEM:EMOB").arg(leadingNodes), "PBPRESS", SCPI::isCmd, m_scpiInterface, cmdEmobPushButtonPress);
+    addDelegate(QString("%1SYSTEM:EMOB").arg(leadingNodes), "LOCKST", SCPI::isQuery, m_scpiInterface, cmdEmobReadLockState);
+}
+
+void HotplugControllerInterface::onControllersChanged()
+{
+
+}
+
+void HotplugControllerInterface::executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd)
+{
+    switch (cmdCode)
+    {
+    case cmdEmobPushButtonPress:
+        protoCmd->m_sOutput = emobPushButtonPress(protoCmd->m_sInput);
+        break;
+    case cmdEmobReadLockState:
+        protoCmd->m_sOutput = emobReadLockState(protoCmd->m_sInput);
+        break;
+    }
+    if (protoCmd->m_bwithOutput)
+        emit cmdExecutionDone(protoCmd);
+}
+
+QString HotplugControllerInterface::emobPushButtonPress(const QString &scpiCmd)
+{
+    cSCPICommand cmd = scpiCmd;
+    if (cmd.isCommand(1)) {
+        HotControllerMap emobControllers = m_hotPluggableControllerContainer->getCurrentControllers();
+        QString channelNameFound = findEmobConnected(cmd.getParam(0));
+        if (!channelNameFound.isEmpty()) {
+            ZeraMControllerIoTemplate::atmelRM ctrlRet = emobControllers[channelNameFound].m_emobController->sendPushbuttonPress();
+            if (ctrlRet != ZeraMControllerIo::cmddone)
+                return ZSCPI::scpiAnswer[ZSCPI::errexec];
+            return ZSCPI::scpiAnswer[ZSCPI::ack];
+        }
+    }
+    return ZSCPI::scpiAnswer[ZSCPI::nak];
+}
+
+QString HotplugControllerInterface::emobReadLockState(const QString &scpiCmd)
+{
+    cSCPICommand cmd = scpiCmd;
+    if (cmd.isQuery() || cmd.isQuery(1)) {
+        HotControllerMap emobControllers = m_hotPluggableControllerContainer->getCurrentControllers();
+        QString channelNameFound = findEmobConnected(cmd.getParam(0));
+        if (!channelNameFound.isEmpty()) {
+            quint8 state = 0;
+            ZeraMControllerIoTemplate::atmelRM ctrlRet = emobControllers[channelNameFound].m_emobController->readEmobLockState(state);
+            if (ctrlRet != ZeraMControllerIo::cmddone)
+                return ZSCPI::scpiAnswer[ZSCPI::errexec];
+            return QString::number(state);
+        }
+    }
+    return ZSCPI::scpiAnswer[ZSCPI::nak];
+}
+
+QString HotplugControllerInterface::findEmobConnected(const QString &channelMNameScpiParam)
+{
+    HotControllerMap emobControllers = m_hotPluggableControllerContainer->getCurrentControllers();
+    if (emobControllers.size() >= 1) {
+        if(channelMNameScpiParam.isEmpty() && emobControllers.size() == 1)
+            return emobControllers.firstKey();
+        if(emobControllers.contains(channelMNameScpiParam))
+            return channelMNameScpiParam;
+    }
+    return QString();
+}

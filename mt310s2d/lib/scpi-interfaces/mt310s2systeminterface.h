@@ -24,8 +24,6 @@ enum SystemCommands
     cmdAdjXMLWrite,
     cmdAdjXMLRead,
     cmdAdjFlashChksum,
-    cmdEmobPushButtonPress,
-    cmdEmobReadLockState,
     cmdInterfaceRead,
 };
 }
@@ -41,7 +39,7 @@ public:
                            SenseInterfaceCommon *senseInterface,
                            AbstractFactoryI2cCtrlPtr ctrlFactory,
                            HotPluggableControllerContainerPtr hotPluggableControllerContainer);
-    virtual void initSCPIConnection(QString leadingNodes) override;
+    void initSCPIConnection(QString leadingNodes) override;
     void actualizeContollers(quint16 bitmaskAvailable);
 public slots:
     void onAccuStatusChanged(uint8_t status);
@@ -53,7 +51,6 @@ private:
     void triggerVersionInfoChanges();
     void updateAllCtrlVersionsJson();
     void updateAllPCBsVersion();
-    QString findEmobConnected(const QString &channelMNameScpiParam);
 
     QString m_ReadDeviceVersion(QString& sInput);
     QString m_ReadDeviceName(QString& sInput);
@@ -66,8 +63,6 @@ private:
     QString m_AdjXMLWrite(QString& sInput);
     QString m_AdjXMLRead(QString& sInput);
     QString m_AdjFlashChksum(QString& sInput);
-    QString emobPushButtonPress(const QString& scpiCmd);
-    QString emobReadLockState(const QString& scpiCmd);
 
     void m_genAnswer(int select, QString& answer);
 

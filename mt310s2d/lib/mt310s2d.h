@@ -1,6 +1,7 @@
 #ifndef MT310S2D_H
 #define MT310S2D_H
 
+#include "hotplugcontrollerinterface.h"
 #include "mt310s2systeminfo.h"
 #include "abstractfactorydevicenodepcb.h"
 #include "pcbserver.h"
@@ -92,6 +93,7 @@ private:
     SourceControlSettings* m_sourceControlSettings = nullptr;
 
     Mt310s2SystemInterface* m_pSystemInterface = nullptr;
+    HotplugControllerInterface* m_pHotControllerInterface = nullptr;
     SenseInterfaceCommon* m_pSenseInterface = nullptr;
     cSamplingInterface* m_pSamplingInterface = nullptr;
     FOutGroupResourceAndInterface* m_foutInterface = nullptr;

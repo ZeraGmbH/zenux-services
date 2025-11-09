@@ -87,6 +87,7 @@ cMT310S2dServer::~cMT310S2dServer()
     delete m_accumulatorSettings;
     delete m_sourceControlSettings;
     delete m_pStatusInterface;
+    delete m_pHotControllerInterface;
     delete m_pSystemInterface;
     delete m_pSenseInterface;
     delete m_pClampInterface;
@@ -190,6 +191,7 @@ void cMT310S2dServer::earlySetup(AbstractChannelRangeFactoryPtr channelRangeFact
                                                                                 m_pSenseInterface,
                                                                                 m_ctrlFactory,
                                                                                 emobControllerContainer));
+    m_scpiConnectionList.append(m_pHotControllerInterface = new HotplugControllerInterface(m_scpiInterface, emobControllerContainer));
     m_scpiConnectionList.append(m_pSamplingInterface = new cSamplingInterface(m_scpiInterface, m_settings->getSamplingSettings(), m_ctrlFactory));
     m_scpiConnectionList.append(m_foutInterface = new FOutGroupResourceAndInterface(m_scpiInterface, m_foutSettings));
     m_scpiConnectionList.append(m_pFRQInputInterface = new FInGroupResourceAndInterface(m_scpiInterface, m_finSettings));
