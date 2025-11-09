@@ -6,6 +6,7 @@
 #include "controllerpersitentdata.h"
 #include <testloghelpers.h>
 #include <timemachineobject.h>
+#include <timerfactoryqtfortest.h>
 #include <QSignalSpy>
 #include <QTest>
 
@@ -25,6 +26,8 @@ void test_read_versions::cleanup()
     m_resman = nullptr;
     TimeMachineObject::feedEventLoop();
     ControllerPersitentData::cleanupPersitentData();
+    m_notificationsReceivedCtrl.clear();
+    m_notificationsReceivedPcb.clear();
 }
 
 void test_read_versions::readPcbVersionNoEmob()
@@ -45,7 +48,11 @@ void test_read_versions::readPcbVersionNoEmob()
 
 void test_read_versions::readPcbVersionOneEmobChannelIAUX()
 {
+    registerNotifications();
     m_mt310s2d->fireHotplugInterrupt(QStringList() << "IAUX");
+    unregisterNotifications();
+    QCOMPARE(m_notificationsReceivedPcb.count(), 1);
+
     QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
 
     int msgNr = m_pcbIFace->scpiCommand("SYSTEM:VERSION:PCB?");
@@ -62,8 +69,12 @@ void test_read_versions::readPcbVersionOneEmobChannelIAUX()
 
 void test_read_versions::readPcbVersionOneEmobAddAndRemoveIAUX()
 {
+    registerNotifications();
     m_mt310s2d->fireHotplugInterrupt(QStringList() << "IAUX");
     m_mt310s2d->fireHotplugInterrupt(QStringList());
+    unregisterNotifications();
+    QCOMPARE(m_notificationsReceivedPcb.count(), 2);
+
     QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
 
     int msgNr = m_pcbIFace->scpiCommand("SYSTEM:VERSION:PCB?");
@@ -80,7 +91,12 @@ void test_read_versions::readPcbVersionOneEmobAddAndRemoveIAUX()
 
 void test_read_versions::readPcbVersionTwoEmobTwoChannels()
 {
+    registerNotifications();
     m_mt310s2d->fireHotplugInterrupt(QStringList() << "IL3" << "IAUX");
+    unregisterNotifications();
+    // add passes bootloader / delay... => each channel fires
+    QCOMPARE(m_notificationsReceivedPcb.count(), 2);
+
     QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
 
     int msgNr = m_pcbIFace->scpiCommand("SYSTEM:VERSION:PCB?");
@@ -113,7 +129,11 @@ void test_read_versions::readCtrlVersionNoEmob()
 
 void test_read_versions::readCtrlVersionOneEmobChannelIAUX()
 {
+    registerNotifications();
     m_mt310s2d->fireHotplugInterrupt(QStringList() << "IAUX");
+    unregisterNotifications();
+    QCOMPARE(m_notificationsReceivedCtrl.count(), 1);
+
     QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
 
     int msgNr = m_pcbIFace->scpiCommand("SYSTEM:VERSION:CTRL?");
@@ -130,8 +150,12 @@ void test_read_versions::readCtrlVersionOneEmobChannelIAUX()
 
 void test_read_versions::readCtrlVersionOneEmobAddRemoveIAUX()
 {
+    registerNotifications();
     m_mt310s2d->fireHotplugInterrupt(QStringList() << "IAUX");
     m_mt310s2d->fireHotplugInterrupt(QStringList());
+    unregisterNotifications();
+    QCOMPARE(m_notificationsReceivedCtrl.count(), 2);
+
     QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
 
     int msgNr = m_pcbIFace->scpiCommand("SYSTEM:VERSION:CTRL?");
@@ -148,7 +172,12 @@ void test_read_versions::readCtrlVersionOneEmobAddRemoveIAUX()
 
 void test_read_versions::readCtrlVersionTwoEmobTwoChannels()
 {
+    registerNotifications();
     m_mt310s2d->fireHotplugInterrupt(QStringList() << "IL3" << "IAUX");
+    unregisterNotifications();
+    // add passes bootloader / delay... => each channel fires
+    QCOMPARE(m_notificationsReceivedCtrl.count(), 2);
+
     QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
 
     int msgNr = m_pcbIFace->scpiCommand("SYSTEM:VERSION:CTRL?");
@@ -163,6 +192,36 @@ void test_read_versions::readCtrlVersionTwoEmobTwoChannels()
     QVERIFY(TestLogHelpers::compareAndLogOnDiffJson(jsonExpected, jsonDumped));
 }
 
+constexpr int ctrlVersionNotifierId = 5000;
+constexpr int pcbVersionNotifierId  = 5001;
+
+void test_read_versions::catchInterfaceAnswer(quint32 msgnr, quint8 reply, QVariant answer)
+{
+    Q_UNUSED(reply)
+    if (msgnr == 0) { // 0 was reserved for async. messages
+        int notifierID = answer.toString().split(':').last().toInt();
+        if(notifierID == ctrlVersionNotifierId)
+            m_notificationsReceivedCtrl.append(notifierID);
+        else if(notifierID == pcbVersionNotifierId)
+            m_notificationsReceivedPcb.append(notifierID);
+    }
+}
+
+void test_read_versions::registerNotifications()
+{
+    m_pcbIFace->registerNotifier(QString("SYSTEM:VERSION:CTRL?"), ctrlVersionNotifierId);
+    m_pcbIFace->registerNotifier(QString("SYSTEM:VERSION:PCB?"), pcbVersionNotifierId);
+    TimeMachineObject::feedEventLoop();
+    connect(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer,
+            this, &test_read_versions::catchInterfaceAnswer);
+}
+
+void test_read_versions::unregisterNotifications()
+{
+    m_pcbIFace->unregisterNotifiers();
+    TimeMachineObject::feedEventLoop();
+}
+
 void test_read_versions::setupServers()
 {
     VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory = VeinTcp::MockTcpNetworkFactory::create();
@@ -175,5 +234,5 @@ void test_read_versions::setupServers()
     m_pcbIFace->setClientSmart(m_proxyClient);
     Zera::Proxy::getInstance()->startConnectionSmart(m_proxyClient);
     TimeMachineObject::feedEventLoop();
-
 }
+
