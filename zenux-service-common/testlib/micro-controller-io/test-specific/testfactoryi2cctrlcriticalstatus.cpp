@@ -79,8 +79,7 @@ I2cCtrlClampStatusPtr TestFactoryI2cCtrlCriticalStatus::getClampStatusController
 
 I2cCtrlEMOBPtr TestFactoryI2cCtrlCriticalStatus::getEmobController(quint8 muxChannel)
 {
-    Q_UNUSED(muxChannel)
-    return std::make_unique<TestI2cCtrlEMOB>();
+    return std::make_unique<TestI2cCtrlEMOB>(muxChannel);
 }
 
 I2cCtrlCpuTemperaturePtr TestFactoryI2cCtrlCriticalStatus::getCpuTemperatureController()

@@ -86,8 +86,7 @@ I2cCtrlCpuTemperaturePtr TestFactoryI2cCtrl::getCpuTemperatureController()
 
 I2cCtrlEMOBPtr TestFactoryI2cCtrl::getEmobController(quint8 muxChannel)
 {
-    Q_UNUSED(muxChannel)
-    return std::make_unique<TestI2cCtrlEMOB>();
+    return std::make_unique<TestI2cCtrlEMOB>(muxChannel);
 }
 
 I2cCtrlBootloaderPtr TestFactoryI2cCtrl::getBootloaderController()

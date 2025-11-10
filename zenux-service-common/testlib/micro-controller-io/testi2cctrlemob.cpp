@@ -1,6 +1,11 @@
 #include "testi2cctrlemob.h"
 #include "emobdefinitions.h"
 
+TestI2cCtrlEMOB::TestI2cCtrlEMOB(int ctrlMuxChannnel) :
+    m_ctrlMuxChannnel(ctrlMuxChannnel)
+{
+}
+
 ZeraMControllerIoTemplate::atmelRM TestI2cCtrlEMOB::sendPushbuttonPress()
 {
     return ZeraMControllerIo::atmelRM::cmddone;
