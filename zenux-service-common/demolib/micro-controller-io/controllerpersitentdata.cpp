@@ -25,4 +25,7 @@ void ControllerPersitentData::cleanupPersitentData()
     m_persitentData.m_writablePcbVersion = "Unknown";
 
     m_persitentData.m_pllChannel = 0;
+
+    m_persitentData.m_accuStatus = 0;
+    m_persitentData.m_accuCharge = 37;
 }
