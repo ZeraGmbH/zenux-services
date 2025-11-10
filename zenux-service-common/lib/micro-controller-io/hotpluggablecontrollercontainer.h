@@ -33,6 +33,8 @@ private slots:
 private:
     void startAddingController(int ctrlChannel, SenseSystem::cChannelSettings* channelSettings, int msWaitForApplicationStart);
     bool isChannelKnown(int ctrlChannel);
+    bool isControllerEmob(qint8 muxChannelNo);
+    bool isControllerMt650e(qint8 muxChannelNo);
 
     I2cSettings *m_i2cSettings;
     AbstractFactoryI2cCtrlPtr m_ctrlFactory;

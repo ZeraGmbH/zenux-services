@@ -79,21 +79,39 @@ void HotPluggableControllerContainer::onBootloaderStopAssumed(int ctrlChannel)
     qInfo("Bootloader stopped or not available. Try controller version read on channel %i...", ctrlChannel);
     if(m_pendingBootloaderStoppers.contains(ctrlChannel)) {
         qint8 muxChannelNo = m_pendingBootloaderStoppers[ctrlChannel].m_nMuxChannelNo;
-        I2cCtrlCommonInfoPtrShared commonCtrl = m_ctrlFactory->getCommonInfoController(
-            AbstractFactoryI2cCtrl::CTRL_TYPE_EMOB,
-            muxChannelNo);
-        PendingChannelInfo channelInfo = m_pendingBootloaderStoppers.take(ctrlChannel);
-        QString version;
-        ZeraMControllerIo::atmelRM result = commonCtrl->readCTRLVersion(version);
-        // Currently we assume all controllers EMOB (CPU5975)
-        if(result == ZeraMControllerIo::cmddone && !version.isEmpty()) {
-            qInfo("Version %s read for controller channel %i / mux channel %i - add controller",
-                  qPrintable(version), ctrlChannel, muxChannelNo);
-            I2cCtrlEMOBPtr emobCtrl = m_ctrlFactory->getEmobController(muxChannelNo);
-            HotControllers controllers{commonCtrl, emobCtrl};
+        if(isControllerEmob(muxChannelNo)) {
+            I2cCtrlCommonInfoPtrShared commonCtrl = m_ctrlFactory->getCommonInfoController(
+                AbstractFactoryI2cCtrl::CTRL_TYPE_EMOB,
+                muxChannelNo);
+            PendingChannelInfo channelInfo = m_pendingBootloaderStoppers.take(ctrlChannel);
+            QString version;
+            ZeraMControllerIo::atmelRM result = commonCtrl->readCTRLVersion(version);
+            if(result == ZeraMControllerIo::cmddone && !version.isEmpty()) {
+                qInfo("Version %s read for controller channel %i / mux channel %i - add controller",
+                      qPrintable(version), ctrlChannel, muxChannelNo);
+                I2cCtrlEMOBPtr emobCtrl = m_ctrlFactory->getEmobController(muxChannelNo);
+                HotControllers controllers{commonCtrl, emobCtrl, nullptr};
 
-            m_controllers[ctrlChannel] = {channelInfo.channelMName, controllers};
-            emit sigControllersChanged();
+                m_controllers[ctrlChannel] = {channelInfo.channelMName, controllers};
+                emit sigControllersChanged();
+            }
+        }
+        else if(isControllerMt650e(muxChannelNo)) {
+            I2cCtrlCommonInfoPtrShared commonCtrl = m_ctrlFactory->getCommonInfoController(
+                AbstractFactoryI2cCtrl::CTRL_TYPE_MT650e,
+                muxChannelNo);
+            PendingChannelInfo channelInfo = m_pendingBootloaderStoppers.take(ctrlChannel);
+            QString version;
+            ZeraMControllerIo::atmelRM result = commonCtrl->readCTRLVersion(version);
+            if(result == ZeraMControllerIo::cmddone && !version.isEmpty()) {
+                qInfo("Version %s read for controller channel %i / mux channel %i - add controller",
+                      qPrintable(version), ctrlChannel, muxChannelNo);
+                I2cCtrlMt650ePtr mt650eCtrl = m_ctrlFactory->getMt650eController(muxChannelNo);
+                HotControllers controllers{commonCtrl, nullptr, mt650eCtrl};
+
+                m_controllers[ctrlChannel] = {channelInfo.channelMName, controllers};
+                emit sigControllersChanged();
+            }
         }
         else {
             qInfo("No version for channel %i - assume no controller (clamp)", ctrlChannel);
@@ -102,3 +120,27 @@ void HotPluggableControllerContainer::onBootloaderStopAssumed(int ctrlChannel)
     }
 }
 
+
+bool HotPluggableControllerContainer::isControllerEmob(qint8 muxChannelNo)
+{
+    I2cCtrlCommonInfoPtrShared commonCtrl = m_ctrlFactory->getCommonInfoController(
+        AbstractFactoryI2cCtrl::CTRL_TYPE_EMOB,
+        muxChannelNo);
+    QString version;
+    ZeraMControllerIo::atmelRM result = commonCtrl->readCTRLVersion(version);
+    if(result == ZeraMControllerIo::cmddone && !version.isEmpty())
+        return true;
+    return false;
+}
+
+bool HotPluggableControllerContainer::isControllerMt650e(qint8 muxChannelNo)
+{
+    I2cCtrlCommonInfoPtrShared commonCtrl = m_ctrlFactory->getCommonInfoController(
+        AbstractFactoryI2cCtrl::CTRL_TYPE_MT650e,
+        muxChannelNo);
+    QString version;
+    ZeraMControllerIo::atmelRM result = commonCtrl->readCTRLVersion(version);
+    if(result == ZeraMControllerIo::cmddone && !version.isEmpty())
+        return true;
+    return false;
+}
