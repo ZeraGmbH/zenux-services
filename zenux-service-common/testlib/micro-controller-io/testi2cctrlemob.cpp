@@ -1,4 +1,5 @@
 #include "testi2cctrlemob.h"
+#include "controllerpersitentdata.h"
 #include "emobdefinitions.h"
 
 TestI2cCtrlEMOB::TestI2cCtrlEMOB(int ctrlMuxChannnel) :
@@ -20,5 +21,7 @@ ZeraMControllerIoTemplate::atmelRM TestI2cCtrlEMOB::readEmobLockState(quint8 &st
 ZeraMControllerIoTemplate::atmelRM TestI2cCtrlEMOB::readEmobInstrumentSubType(QString &answer)
 {
     answer = "EMOB_MOCK-00V00";
+    if (ControllerPersitentData::getData().m_emobInstrumentSubtypes.contains(m_ctrlMuxChannnel))
+        answer = ControllerPersitentData::getData().m_emobInstrumentSubtypes[m_ctrlMuxChannnel];
     return ZeraMControllerIo::atmelRM::cmddone;
 }

@@ -2,6 +2,7 @@
 #define CONTROLLERPERSITENTDATA_H
 
 #include <QString>
+#include <QMap>
 
 class ControllerPersitentData
 {
@@ -20,6 +21,8 @@ public:
 
         quint8 m_accuStatus = 0;
         quint8 m_accuCharge = 37;
+
+        QMap<int, QString> m_emobInstrumentSubtypes;
     };
     static TPersitentControllerData &getData();
     static void injectInterruptFlags(quint16 clampConnectMask);

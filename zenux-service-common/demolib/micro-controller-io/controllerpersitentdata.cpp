@@ -28,4 +28,6 @@ void ControllerPersitentData::cleanupPersitentData()
 
     m_persitentData.m_accuStatus = 0;
     m_persitentData.m_accuCharge = 37;
+
+    m_persitentData.m_emobInstrumentSubtypes.clear();
 }
