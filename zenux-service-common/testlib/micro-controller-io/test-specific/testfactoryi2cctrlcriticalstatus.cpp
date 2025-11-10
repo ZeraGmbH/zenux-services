@@ -9,7 +9,7 @@
 #include "demoi2cctrlaccu.h"
 #include "demoi2cctrldeviceident.h"
 #include "demoi2cctrlranges.h"
-#include "mocki2cctrlemob.h"
+#include "testi2cctrlemob.h"
 #include "mocki2cctrlmmode.h"
 #include "testi2cctrlpll.h"
 #include "mocki2cctrlclampstatus.h"
@@ -80,7 +80,7 @@ I2cCtrlClampStatusPtr TestFactoryI2cCtrlCriticalStatus::getClampStatusController
 I2cCtrlEMOBPtr TestFactoryI2cCtrlCriticalStatus::getEmobController(quint8 muxChannel)
 {
     Q_UNUSED(muxChannel)
-    return std::make_unique<MockI2cCtrlEMOB>();
+    return std::make_unique<TestI2cCtrlEMOB>();
 }
 
 I2cCtrlCpuTemperaturePtr TestFactoryI2cCtrlCriticalStatus::getCpuTemperatureController()

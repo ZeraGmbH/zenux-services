@@ -1,7 +1,7 @@
 #include "testfactoryi2cctrl.h"
 #include "mockctrlheartbeatwait.h"
 #include "mocki2cctrlbootloader.h"
-#include "mocki2cctrlemob.h"
+#include "testi2cctrlemob.h"
 #include "testi2cctrlaccu.h"
 #include "testi2cctrlcommoninfo.h"
 #include "mocki2cctrlcriticalstatus.h"
@@ -87,7 +87,7 @@ I2cCtrlCpuTemperaturePtr TestFactoryI2cCtrl::getCpuTemperatureController()
 I2cCtrlEMOBPtr TestFactoryI2cCtrl::getEmobController(quint8 muxChannel)
 {
     Q_UNUSED(muxChannel)
-    return std::make_unique<MockI2cCtrlEMOB>();
+    return std::make_unique<TestI2cCtrlEMOB>();
 }
 
 I2cCtrlBootloaderPtr TestFactoryI2cCtrl::getBootloaderController()

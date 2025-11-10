@@ -1,9 +1,9 @@
-#ifndef MOCKI2CCTRLEMOB_H
-#define MOCKI2CCTRLEMOB_H
+#ifndef TESTI2CCTRLEMOB_H
+#define TESTI2CCTRLEMOB_H
 
 #include "abstractalli2ccontrollers.h"
 
-class MockI2cCtrlEMOB : public AbstractI2cCtrlEMOB
+class TestI2cCtrlEMOB : public AbstractI2cCtrlEMOB
 {
 public:
     ZeraMControllerIo::atmelRM sendPushbuttonPress() override;
@@ -11,4 +11,4 @@ public:
     ZeraMControllerIo::atmelRM readEmobInstrumentSubType(QString& answer) override;
 };
 
-#endif // MOCKI2CCTRLEMOB_H
+#endif // TESTI2CCTRLEMOB_H
