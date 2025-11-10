@@ -1,7 +1,7 @@
-#include "i2cctrlcommoninfoemob.h"
+#include "i2cctrlcommoninfocpu5975.h"
 #include "i2cmuxerscopedonoff.h"
 
-I2cCtrlCommonInfoEmob::I2cCtrlCommonInfoEmob(QString deviceNodeName,
+I2cCtrlCommonInfoCpu5975::I2cCtrlCommonInfoCpu5975(QString deviceNodeName,
                                              quint8 i2cAddress,
                                              quint8 i2cAddressMux,
                                              quint8 muxChannel,
@@ -17,13 +17,13 @@ enum hw_cmdcode
     hwGetPCBVersion = 0x0005,
 };
 
-ZeraMControllerIoTemplate::atmelRM I2cCtrlCommonInfoEmob::readPCBInfo(QString &answer)
+ZeraMControllerIoTemplate::atmelRM I2cCtrlCommonInfoCpu5975::readPCBInfo(QString &answer)
 {
     I2cMuxerScopedOnOff i2cMuxerEnabled(m_i2cMuxer);
     return m_ctrlIo.readVariableLenText(hwGetPCBVersion, answer);
 }
 
-ZeraMControllerIoTemplate::atmelRM I2cCtrlCommonInfoEmob::readCTRLVersion(QString &answer)
+ZeraMControllerIoTemplate::atmelRM I2cCtrlCommonInfoCpu5975::readCTRLVersion(QString &answer)
 {
     I2cMuxerScopedOnOff i2cMuxerEnabled(m_i2cMuxer);
     return m_ctrlIo.readVariableLenText(hwGetCtrlVersion, answer);
