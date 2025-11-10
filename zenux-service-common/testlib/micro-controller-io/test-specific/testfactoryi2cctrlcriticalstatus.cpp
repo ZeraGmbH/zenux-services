@@ -11,6 +11,7 @@
 #include "demoi2cctrlranges.h"
 #include "testi2cctrlemob.h"
 #include "mocki2cctrlmmode.h"
+#include "mocki2cctrlmt650e.h"
 #include "testi2cctrlpll.h"
 #include "mocki2cctrlclampstatus.h"
 #include "demoi2cctrlcputemperature.h"
@@ -80,6 +81,12 @@ I2cCtrlClampStatusPtr TestFactoryI2cCtrlCriticalStatus::getClampStatusController
 I2cCtrlEMOBPtr TestFactoryI2cCtrlCriticalStatus::getEmobController(quint8 muxChannel)
 {
     return std::make_unique<TestI2cCtrlEMOB>(muxChannel);
+}
+
+I2cCtrlMt650ePtr TestFactoryI2cCtrlCriticalStatus::getMt650eController(quint8 muxChannel)
+{
+    Q_UNUSED(muxChannel)
+    return std::make_unique<MockI2cCtrlMt650e>();
 }
 
 I2cCtrlCpuTemperaturePtr TestFactoryI2cCtrlCriticalStatus::getCpuTemperatureController()

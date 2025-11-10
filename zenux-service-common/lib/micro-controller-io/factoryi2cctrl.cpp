@@ -6,6 +6,7 @@
 #include "i2cctrlcommoninfo.h"
 #include "i2cctrlcommoninfoaccu.h"
 #include "i2cctrlcommoninfocpu5975.h"
+#include "i2cctrlmt650e.h"
 #include "i2cctrlcriticalstatus.h"
 #include "i2cctrldeviceidentificationdata.h"
 #include "i2cctrleeprompermission.h"
@@ -48,6 +49,7 @@ I2cCtrlCommonInfoPtrUnique FactoryI2cCtrl::getCommonInfoController(ControllerTyp
         break;
 
     case CTRL_TYPE_EMOB:
+    case CTRL_TYPE_MT650e:
         return std::make_unique<I2cCtrlCommonInfoCpu5975>(m_deviceNode, getEmobCtrlI2cAddress(),
                                                            getEmobMuxI2cAddress(), muxChannel,
                                                            0); // i2c error can occure if clamp is connected
@@ -101,6 +103,13 @@ I2cCtrlCpuTemperaturePtr FactoryI2cCtrl::getCpuTemperatureController()
 I2cCtrlEMOBPtr FactoryI2cCtrl::getEmobController(quint8 muxChannel)
 {
     return std::make_shared<I2cCtrlEMOB>(m_deviceNode, getEmobCtrlI2cAddress(),
+                                         getEmobMuxI2cAddress(), muxChannel,
+                                         m_debugLevel);
+}
+
+I2cCtrlMt650ePtr FactoryI2cCtrl::getMt650eController(quint8 muxChannel)
+{
+    return std::make_shared<I2cCtrlMt650e>(m_deviceNode, getEmobCtrlI2cAddress(),
                                          getEmobMuxI2cAddress(), muxChannel,
                                          m_debugLevel);
 }

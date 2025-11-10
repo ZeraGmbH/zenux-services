@@ -19,6 +19,7 @@ public:
     I2cCtrlClampStatusPtr getClampStatusController() override { return nullptr; }
     I2cCtrlCpuTemperaturePtr getCpuTemperatureController() override { return nullptr; }
     I2cCtrlEMOBPtr getEmobController(quint8) override { return nullptr; }
+    I2cCtrlMt650ePtr getMt650eController(quint8 muxChannel) override { return nullptr; };
     I2cCtrlBootloaderPtr getBootloaderController() override { return nullptr; }
 private:
     bool m_permission = true;

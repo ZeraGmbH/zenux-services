@@ -112,6 +112,13 @@ public:
 };
 typedef std::shared_ptr<AbstractI2cCtrlEMOB> I2cCtrlEMOBPtr;
 
+class AbstractI2cCtrlMt650e
+{
+public:
+    virtual ~AbstractI2cCtrlMt650e() = default;
+    virtual ZeraMControllerIo::atmelRM sendPushbuttonPress() = 0;
+};
+typedef std::shared_ptr<AbstractI2cCtrlMt650e> I2cCtrlMt650ePtr;
 
 class AbstractI2cCtrlBootloader
 {

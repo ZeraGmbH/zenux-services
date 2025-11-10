@@ -14,6 +14,7 @@ struct HotControllers
 {
     I2cCtrlCommonInfoPtrShared m_commonController;
     I2cCtrlEMOBPtr m_emobController;
+    I2cCtrlMt650ePtr m_mt650Controller;
 };
 typedef QMap<QString /*channelMName*/, HotControllers> HotControllerMap;
 

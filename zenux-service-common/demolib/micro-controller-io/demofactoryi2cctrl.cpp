@@ -15,6 +15,7 @@
 #include "mocki2cctrlclampstatus.h"
 #include "demoi2cctrlcputemperature.h"
 #include "controllerpersitentdata.h"
+#include "mocki2cctrlmt650e.h"
 
 DemoFactoryI2cCtrl::DemoFactoryI2cCtrl(SettingsContainerPtr settings) :
     m_settings(std::move(settings))
@@ -87,6 +88,12 @@ I2cCtrlEMOBPtr DemoFactoryI2cCtrl::getEmobController(quint8 muxChannel)
 {
     Q_UNUSED(muxChannel)
     return std::make_unique<DemoI2cCtrlEMOB>();
+}
+
+I2cCtrlMt650ePtr DemoFactoryI2cCtrl::getMt650eController(quint8 muxChannel)
+{
+    Q_UNUSED(muxChannel)
+    return std::make_unique<MockI2cCtrlMt650e>();
 }
 
 I2cCtrlBootloaderPtr DemoFactoryI2cCtrl::getBootloaderController()
