@@ -12,7 +12,6 @@ HotPluggableControllerContainer::HotPluggableControllerContainer(I2cSettings *i2
 void HotPluggableControllerContainer::startActualizeEmobControllers(quint16 bitmaskAvailable, const cSenseSettings* senseSettings, int msWaitForApplicationStart)
 {
     const auto channelsSettings = senseSettings->getChannelSettings();
-    bool controllersChanged = false;
     for(const auto channelSettings : channelsSettings) {
         int ctrlChannel = channelSettings->m_nCtrlChannel;
         qint8 plugBitNo = channelSettings->m_nPluggedBit;
@@ -35,7 +34,6 @@ void HotPluggableControllerContainer::startActualizeEmobControllers(quint16 bitm
             if(m_controllers.contains(ctrlChannel)) {
                 qInfo("Remove controller on channel %i", ctrlChannel);
                 m_controllers.remove(ctrlChannel);
-                controllersChanged = true;
                 emit sigControllersChanged();
             }
         }
