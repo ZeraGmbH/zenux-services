@@ -32,6 +32,8 @@ SETUP_SERVICE_COMMON_TESTS(
     test_source_control
     test_emob_lock
     test_read_versions
+    test_booloaderstopper
+    test_bootloaderstopperfactoryfortest
     )
 
 target_sources(test_hotpluggablecontrollercontainer

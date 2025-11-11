@@ -81,7 +81,6 @@ function(SETUP_TESTS)
             Qt5::Test
             Zera::testlib-common
             Zera::zera-timers-testlib
-            Zera::zera-i2c-devices-testlib
             Zera::resman-lib
             Zera::vf-tcp-mock-networklib
             )
