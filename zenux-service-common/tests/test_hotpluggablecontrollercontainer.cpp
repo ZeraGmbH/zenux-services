@@ -1,4 +1,5 @@
 #include "test_hotpluggablecontrollercontainer.h"
+#include "controllerpersitentdata.h"
 #include "testhotplugi2cctrlcommoninfo.h"
 #include "testhotplugctrlfactoryi2cctrl.h"
 #include "hotpluggablecontrollercontainer.h"
@@ -40,6 +41,11 @@ void test_hotpluggablecontrollercontainer::init()
             m_senseSettings.get(), &cSenseSettings::configXMLInfo);
     SettingsContainer::TServiceConfig config = SettingsContainer::getServiceConfig(serviceNameForAlternateDevice);
     m_configReader.loadXMLFile(QStringLiteral(CONFIG_SOURCES_MT310S2D) + "/" + config.xmlFileName);
+}
+
+void test_hotpluggablecontrollercontainer::cleanup()
+{
+    ZeraMControllerBootloaderStopperFactoryForTest::cleanup();
 }
 
 void test_hotpluggablecontrollercontainer::initNoController()
@@ -337,6 +343,34 @@ void test_hotpluggablecontrollercontainer::mt310s2AddClampNoController()
     controllers.clear();
 }
 
+void test_hotpluggablecontrollercontainer::mt310s2AddI1InstrumentDetectsMt650e()
+{
+    const QString channelAlias = "IL1";
+    m_i2cSettings->setI2cAddressesEmob(QString(), 0, 0);
+    HotPluggableControllerContainer container(m_i2cSettings.get(), m_ctrlFactory);
+    ControllerPersitentData::addInstrumentSubtype(getChannelMuxChannel(channelAlias), "MT650e");
+
+    container.startActualizeEmobControllers(getChannelPlugMask(channelAlias), m_senseSettings.get(), 1000);
+    HotControllerMap controllers = container.getCurrentControllers();
+    QCOMPARE(controllers.size(), 1);
+    QVERIFY(controllers.contains(getChannelMName(channelAlias)));
+    QCOMPARE(controllers[getChannelMName(channelAlias)].m_controllerType, MT650e);
+}
+
+void test_hotpluggablecontrollercontainer::mt310s2AddI1InstrumentDefaultsEmob()
+{
+    const QString channelAlias = "IL1";
+    m_i2cSettings->setI2cAddressesEmob(QString(), 0, 0);
+    HotPluggableControllerContainer container(m_i2cSettings.get(), m_ctrlFactory);
+    ControllerPersitentData::addInstrumentSubtype(getChannelMuxChannel(channelAlias), "foo");
+
+    container.startActualizeEmobControllers(getChannelPlugMask(channelAlias), m_senseSettings.get(), 1000);
+    HotControllerMap controllers = container.getCurrentControllers();
+    QCOMPARE(controllers.size(), 1);
+    QVERIFY(controllers.contains(getChannelMName(channelAlias)));
+    QCOMPARE(controllers[getChannelMName(channelAlias)].m_controllerType, EMOB);
+}
+
 quint16 test_hotpluggablecontrollercontainer::getChannelPlugMask(const QString &channelAlias)
 {
     SenseSystem::cChannelSettings* channelSettings = m_senseSettings->findChannelSettingByAlias1(channelAlias);
@@ -347,4 +381,10 @@ QString test_hotpluggablecontrollercontainer::getChannelMName(const QString &cha
 {
     SenseSystem::cChannelSettings* channelSettings = m_senseSettings->findChannelSettingByAlias1(channelAlias);
     return channelSettings->m_nameMx;
+}
+
+quint8 test_hotpluggablecontrollercontainer::getChannelMuxChannel(const QString &channelAlias)
+{
+    SenseSystem::cChannelSettings* channelSettings = m_senseSettings->findChannelSettingByAlias1(channelAlias);
+    return channelSettings->m_nMuxChannelNo;
 }

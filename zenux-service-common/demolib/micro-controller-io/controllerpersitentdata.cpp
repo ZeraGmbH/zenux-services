@@ -14,6 +14,11 @@ void ControllerPersitentData::injectInterruptFlags(quint16 clampConnectMask)
     m_persitentData.m_clampConnectMask = clampConnectMask;
 }
 
+void ControllerPersitentData::addInstrumentSubtype(int muxChannel, const QString &instrSubtype)
+{
+    m_persitentData.m_emobInstrumentSubtypes[muxChannel] = instrSubtype;
+}
+
 void ControllerPersitentData::cleanupPersitentData()
 {
     m_persitentData.m_permission = false;

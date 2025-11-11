@@ -48,6 +48,13 @@ HotControllerMap HotPluggableControllerContainer::getCurrentControllers()
     return ctrlMap;
 }
 
+ControllerTypes HotPluggableControllerContainer::getControllerType(const QString &subInstrumentReceived)
+{
+    if(subInstrumentReceived.contains("MT650e"))
+        return MT650e;
+    return EMOB;
+}
+
 void HotPluggableControllerContainer::startAddingController(int ctrlChannel, SenseSystem::cChannelSettings* channelSettings, int msWaitForApplicationStart)
 {
     I2cMuxerScopedOnOff i2cMuxer(I2cMultiplexerFactory::createPCA9547Muxer(m_i2cSettings->getDeviceNode(),
@@ -83,14 +90,20 @@ void HotPluggableControllerContainer::onBootloaderStopAssumed(int ctrlChannel)
         PendingChannelInfo channelInfo = m_pendingBootloaderStoppers.take(ctrlChannel);
         QString version;
         ZeraMControllerIo::atmelRM result = commonCtrl->readCTRLVersion(version);
-        // Currently we assume all controllers EMOB (CPU5975)
         if(result == ZeraMControllerIo::cmddone && !version.isEmpty()) {
             qInfo("Version %s read for controller channel %i / mux channel %i - add controller",
                   qPrintable(version), ctrlChannel, muxChannelNo);
             I2cCtrlEMOBPtr emobCtrl = m_ctrlFactory->getEmobController(muxChannelNo);
-            HotControllers controllers{commonCtrl, emobCtrl};
-
+            HotControllers controllers{commonCtrl, emobCtrl, EMOBUnknown};
             m_controllers[ctrlChannel] = {channelInfo.channelMName, controllers};
+            if (emobCtrl) {
+                QString instrumentSubType;
+                result = emobCtrl->readEmobInstrumentSubType(instrumentSubType);
+                if(result == ZeraMControllerIo::cmddone && !instrumentSubType.isEmpty()) {
+                    qInfo("Instrument type read: '%s'", qPrintable(instrumentSubType));
+                    m_controllers[ctrlChannel].controllers.m_controllerType = getControllerType(instrumentSubType);
+                }
+            }
             emit sigControllersChanged();
         }
         else {
@@ -99,4 +112,3 @@ void HotPluggableControllerContainer::onBootloaderStopAssumed(int ctrlChannel)
         }
     }
 }
-
