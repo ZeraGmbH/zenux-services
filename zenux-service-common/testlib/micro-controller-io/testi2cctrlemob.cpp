@@ -25,3 +25,15 @@ ZeraMControllerIoTemplate::atmelRM TestI2cCtrlEMOB::readEmobInstrumentSubType(QS
         answer = ControllerPersitentData::getData().m_emobInstrumentSubtypes[m_ctrlMuxChannnel];
     return ZeraMControllerIo::atmelRM::cmddone;
 }
+
+
+ZeraMControllerIoTemplate::atmelRM TestI2cCtrlEMOB::readEmobErrorStatus(quint8 &err)
+{
+    err = errorInstrumentStatus::Instrument_Status_Cable_Error;
+    return ZeraMControllerIo::atmelRM::cmddone;
+}
+
+ZeraMControllerIoTemplate::atmelRM TestI2cCtrlEMOB::clearErrorStatus()
+{
+    return ZeraMControllerIo::atmelRM::cmddone;
+}

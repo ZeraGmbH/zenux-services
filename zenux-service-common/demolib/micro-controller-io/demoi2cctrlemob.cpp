@@ -17,3 +17,14 @@ ZeraMControllerIoTemplate::atmelRM DemoI2cCtrlEMOB::readEmobInstrumentSubType(QS
     answer = "EMOB_MOCK-00V00";
     return ZeraMControllerIo::atmelRM::cmddone;
 }
+
+ZeraMControllerIoTemplate::atmelRM DemoI2cCtrlEMOB::readEmobErrorStatus(quint8 &err)
+{
+    err = errorInstrumentStatus::Instrument_Status_Cable_Error;
+    return ZeraMControllerIo::atmelRM::cmddone;
+}
+
+ZeraMControllerIoTemplate::atmelRM DemoI2cCtrlEMOB::clearErrorStatus()
+{
+    return ZeraMControllerIo::atmelRM::cmddone;
+}
