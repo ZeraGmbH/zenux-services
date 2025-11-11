@@ -14,6 +14,8 @@ enum HotplugCommands
 {
     cmdEmobPushButtonPress,
     cmdEmobReadLockState,
+    cmdEmobReadErrorStatus,
+    cmdEmobClearErrorStatus,
 };
 
 void HotplugControllerInterface::initSCPIConnection(QString leadingNodes)
@@ -21,6 +23,8 @@ void HotplugControllerInterface::initSCPIConnection(QString leadingNodes)
     ensureTrailingColonOnNonEmptyParentNodes(leadingNodes);
     addDelegate(QString("%1SYSTEM:EMOB").arg(leadingNodes), "PBPRESS", SCPI::isCmd, m_scpiInterface, cmdEmobPushButtonPress);
     addDelegate(QString("%1SYSTEM:EMOB").arg(leadingNodes), "LOCKST", SCPI::isQuery, m_scpiInterface, cmdEmobReadLockState);
+    addDelegate(QString("%1SYSTEM:EMOB").arg(leadingNodes), "ERROR", SCPI::isQuery, m_scpiInterface, cmdEmobReadErrorStatus);
+    addDelegate(QString("%1SYSTEM:EMOB").arg(leadingNodes), "CLEARERROR", SCPI::isCmd, m_scpiInterface, cmdEmobClearErrorStatus);
 }
 
 void HotplugControllerInterface::onControllersChanged()
@@ -37,6 +41,12 @@ void HotplugControllerInterface::executeProtoScpi(int cmdCode, ProtonetCommandPt
         break;
     case cmdEmobReadLockState:
         protoCmd->m_sOutput = emobReadLockState(protoCmd->m_sInput);
+        break;
+    case cmdEmobReadErrorStatus:
+        protoCmd->m_sOutput = emobReadErrorStatus(protoCmd->m_sInput);
+        break;
+    case cmdEmobClearErrorStatus:
+        protoCmd->m_sOutput = emobClearErrorStatus(protoCmd->m_sInput);
         break;
     }
     if (protoCmd->m_bwithOutput)
@@ -71,6 +81,39 @@ QString HotplugControllerInterface::emobReadLockState(const QString &scpiCmd)
             if (ctrlRet != ZeraMControllerIo::cmddone)
                 return ZSCPI::scpiAnswer[ZSCPI::errexec];
             return QString::number(state);
+        }
+    }
+    return ZSCPI::scpiAnswer[ZSCPI::nak];
+}
+
+QString HotplugControllerInterface::emobReadErrorStatus(const QString &scpiCmd)
+{
+    cSCPICommand cmd = scpiCmd;
+    if (cmd.isQuery() || cmd.isQuery(1)) {
+        HotControllerMap emobControllers = m_hotPluggableControllerContainer->getCurrentControllers();
+        QString channelNameFound = findEmobConnected(cmd.getParam(0));
+        if (!channelNameFound.isEmpty()) {
+            quint8 errorStatus = 0;
+            ZeraMControllerIoTemplate::atmelRM ctrlRet = emobControllers[channelNameFound].m_emobController->readEmobErrorStatus(errorStatus);
+            if (ctrlRet != ZeraMControllerIo::cmddone)
+                return ZSCPI::scpiAnswer[ZSCPI::errexec];
+            return QString::number(errorStatus);
+        }
+    }
+    return ZSCPI::scpiAnswer[ZSCPI::nak];
+}
+
+QString HotplugControllerInterface::emobClearErrorStatus(const QString &scpiCmd)
+{
+    cSCPICommand cmd = scpiCmd;
+    if (cmd.isCommand(1)) {
+        HotControllerMap emobControllers = m_hotPluggableControllerContainer->getCurrentControllers();
+        QString channelNameFound = findEmobConnected(cmd.getParam(0));
+        if (!channelNameFound.isEmpty()) {
+            ZeraMControllerIoTemplate::atmelRM ctrlRet = emobControllers[channelNameFound].m_emobController->clearErrorStatus();
+            if (ctrlRet != ZeraMControllerIo::cmddone)
+                return ZSCPI::scpiAnswer[ZSCPI::errexec];
+            return ZSCPI::scpiAnswer[ZSCPI::ack];
         }
     }
     return ZSCPI::scpiAnswer[ZSCPI::nak];

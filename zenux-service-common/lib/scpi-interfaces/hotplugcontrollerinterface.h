@@ -18,6 +18,8 @@ private:
     void executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd) override;
     QString emobPushButtonPress(const QString& scpiCmd);
     QString emobReadLockState(const QString& scpiCmd);
+    QString emobReadErrorStatus(const QString& scpiCmd);
+    QString emobClearErrorStatus(const QString& scpiCmd);
     QString findEmobConnected(const QString &channelMNameScpiParam);
 
     HotPluggableControllerContainerPtr m_hotPluggableControllerContainer;

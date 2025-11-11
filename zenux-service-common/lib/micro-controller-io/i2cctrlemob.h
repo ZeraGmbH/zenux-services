@@ -13,6 +13,8 @@ public:
     ZeraMControllerIo::atmelRM sendPushbuttonPress() override;
     ZeraMControllerIo::atmelRM readEmobLockState(quint8 &status) override;
     ZeraMControllerIo::atmelRM readEmobInstrumentSubType(QString& answer) override;
+    ZeraMControllerIo::atmelRM readEmobErrorStatus(quint8& err) override;
+    ZeraMControllerIo::atmelRM clearErrorStatus() override;
 private:
     ZeraMControllerIo m_ctrlIo;
     I2cMuxerInterface::Ptr m_i2cMuxer;
