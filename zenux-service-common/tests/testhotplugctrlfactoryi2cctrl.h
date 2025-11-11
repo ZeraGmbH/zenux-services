@@ -10,6 +10,7 @@ public:
     TestHotPlugCtrlFactoryI2cCtrl(I2cSettings *i2cSettings);
 
     I2cCtrlCommonInfoPtrUnique getCommonInfoController(ControllerTypes ctrlType, quint8 muxChannel = -1) override;
+    I2cCtrlEMOBPtr getEmobController(quint8 muxChannel) override;
 
     int getCtrlInstanceCount();
     void prepareNextTestControllers(QVector<bool> respondOnVersionList);
@@ -24,7 +25,6 @@ public:
     I2cCtrlPllPtr getPllController() override { return nullptr; }
     I2cCtrlClampStatusPtr getClampStatusController() override { return nullptr; }
     I2cCtrlCpuTemperaturePtr getCpuTemperatureController() override { return nullptr; }
-    I2cCtrlEMOBPtr getEmobController(quint8) override { return nullptr; }
     I2cCtrlBootloaderPtr getBootloaderController() override { return nullptr; }
 private:
     I2cSettings *m_i2cSettings;

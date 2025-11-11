@@ -2,6 +2,7 @@
 #define HOTPLUGGABLECONTROLLERCONTAINER_H
 
 #include "abstractfactoryi2cctrl.h"
+#include "emobdefinitions.h"
 #include "i2csettings.h"
 #include "sensesettings.h"
 #include <zeramcontrollerbootloaderstopper.h>
@@ -14,6 +15,7 @@ struct HotControllers
 {
     I2cCtrlCommonInfoPtrShared m_commonController;
     I2cCtrlEMOBPtr m_emobController;
+    ControllerTypes m_controllerType;
 };
 typedef QMap<QString /*channelMName*/, HotControllers> HotControllerMap;
 
@@ -24,6 +26,7 @@ public:
     HotPluggableControllerContainer(I2cSettings *i2cSettings, AbstractFactoryI2cCtrlPtr ctrlFactory);
     void startActualizeEmobControllers(quint16 bitmaskAvailable, const cSenseSettings* senseSettings, int msWaitForApplicationStart);
     HotControllerMap getCurrentControllers();
+    static ControllerTypes getControllerType(const QString &subInstrumentReceived);
 signals:
     void sigControllersChanged();
 
