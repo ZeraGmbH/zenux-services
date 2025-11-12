@@ -22,6 +22,7 @@ enum hw_cmdcode
 
 ZeraMControllerIoTemplate::atmelRM I2cCtrlEMOB::readEmobInstrumentSubType(QString &answer)
 {
+    I2cMuxerScopedOnOff i2cMuxerEnabled(m_i2cMuxer);
     return m_ctrlIo.readVariableLenText(readInstrumentSubType, answer);
 }
 
