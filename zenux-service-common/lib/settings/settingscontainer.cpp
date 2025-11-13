@@ -11,8 +11,6 @@ SettingsContainer::SettingsContainer(ServerParams params) :
     m_fpgaSettings(&m_xmlConfigReader),
     m_samplingSettings(&m_xmlConfigReader)
 {
-    qInfo("Service settings: %s / %s", qPrintable(m_params.xsdFile), qPrintable(m_params.xmlFile));
-
     connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged,
             &m_ethSettings, &EthSettings::configXMLInfo);
     connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged,
