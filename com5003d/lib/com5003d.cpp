@@ -3,6 +3,7 @@
 #include "com5003systeminterface.h"
 #include "com5003senseinterface.h"
 #include "fingroupresourceandinterface.h"
+#include "firmwareupdatenotificationfile.h"
 #include "hkingroupresourceandinterface.h"
 #include "samplinginterface.h"
 #include "scingroupresourceandinterface.h"
@@ -162,8 +163,9 @@ void cCOM5003dServer::doConfiguration()
 void cCOM5003dServer::programAtmelFlash()
 {
     QFile atmelFile(atmelFlashfilePath);
-    if (atmelFile.exists())
-    {
+    if (atmelFile.exists()) { // remember: flash files are deleted after completion :((
+        FirmwareUpdateNotificationFile notificationFile;
+
         int fd;
         QString devNode;
 
