@@ -45,3 +45,9 @@ void DemoAllServicesCom5003::fireHotplugInterrupt(const QStringList &channelAlia
     Q_UNUSED(channelAliases)
     qWarning("Hotplug not supported on COM5003 yet!");
 }
+
+void DemoAllServicesCom5003::fireHotplugInterruptControllerName(const QMap<QString, QString> &infoMap)
+{
+    Q_UNUSED(infoMap)
+    qWarning("Hotplug not supported on COM5003 yet!");
+}
