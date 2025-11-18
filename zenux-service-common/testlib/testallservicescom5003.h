@@ -19,7 +19,7 @@ public:
     void setRangeGetSetDelay(int rangeGetSetDelay) override;
     ZDspServer *getZdsp1dServer() override;
     void fireHotplugInterrupt(const QStringList &channelAliases) override;
-    void fireHotplugInterruptControllerName(const QMap<QString,QString> &infoMap) override;
+    void fireHotplugInterruptControllerName(const ChannelAliasHotplugDeviceNameMap &infoMap) override;
 private:
     void init(VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory, TestFactoryI2cCtrlPtr ctrlFactory);
     ResmanRunFacade *m_resman;

@@ -8,7 +8,8 @@ class AbstractAllServices
 public:
     virtual ~AbstractAllServices() = default;
     virtual void fireHotplugInterrupt(const QStringList &channelAliases) = 0;
-    virtual void fireHotplugInterruptControllerName(const QMap<QString/*channelAlias*/, QString/*instrumentSubtypeOrClampName*/> &infoMap) = 0;
+    typedef QMap<QString, QString> ChannelAliasHotplugDeviceNameMap;
+    virtual void fireHotplugInterruptControllerName(const ChannelAliasHotplugDeviceNameMap &infoMap) = 0;
 };
 
 #endif // ABSTRACTALLSERVICES_H
