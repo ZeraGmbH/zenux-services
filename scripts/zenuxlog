@@ -21,4 +21,5 @@ journalctl $@ -b -o short-monotonic \
     UNIT=vein-avahi.service + _SYSTEMD_UNIT=vein-avahi.service + \
     UNIT=zera-vein-rest.service + _SYSTEMD_UNIT=zera-vein-rest.service + \
     SYSLOG_IDENTIFIER=vf-declarative-gui + \
-    SYSLOG_IDENTIFIER=zera-usb-automount.sh
+    SYSLOG_IDENTIFIER=zera-usb-automount.sh + \
+    _COMM=cat
