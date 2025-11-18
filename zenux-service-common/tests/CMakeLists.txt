@@ -36,6 +36,7 @@ SETUP_SERVICE_COMMON_TESTS(
     test_bootloaderstopperfactoryfortest
     test_instrument_error_status
     test_firmwareupdatenotificationfile
+    test_adj_permissions
     )
 
 target_sources(test_hotpluggablecontrollercontainer

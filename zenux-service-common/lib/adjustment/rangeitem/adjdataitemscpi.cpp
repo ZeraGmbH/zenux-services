@@ -101,8 +101,10 @@ QString AdjDataItemScpi::scpiReadWriteStatus(QString &sInput)
                 else
                     return ZSCPI::scpiAnswer[ZSCPI::errval];
             }
-            else
+            else {
+                qFatal("foo");
                 return ZSCPI::scpiAnswer[ZSCPI::erraut];
+            }
         }
         else
             return ZSCPI::scpiAnswer[ZSCPI::errexec];
@@ -129,8 +131,10 @@ QString AdjDataItemScpi::scpiReadWriteJustCoeeficient(QString &sInput, quint8 in
                 else
                     return ZSCPI::scpiAnswer[ZSCPI::errval];
             }
-            else
+            else {
+                qFatal("foo");
                 return ZSCPI::scpiAnswer[ZSCPI::erraut];
+            }
         }
         else
             return ZSCPI::scpiAnswer[ZSCPI::errexec];
@@ -164,8 +168,10 @@ QString AdjDataItemScpi::scpiReadWriteJustNode(QString &sInput, quint8 index)
                 else
                     return ZSCPI::scpiAnswer[ZSCPI::errval];
             }
-            else
+            else {
+                qFatal("foo");
                 return ZSCPI::scpiAnswer[ZSCPI::erraut];
+            }
         }
         else
             return ZSCPI::scpiAnswer[ZSCPI::errexec];
