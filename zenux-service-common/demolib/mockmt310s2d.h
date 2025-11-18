@@ -14,6 +14,7 @@ public:
                  const QString &serviceNameForAlternateDevice,
                  QString alternateConfigXml = QString());
     void fireHotplugInterrupt(const QStringList &channelAliases);
+    void fireHotplugInterruptControllerName(const QMap<QString,QString> &infoMap);
 
 private slots:
     void onSimulGuiHotplugDevChanged(int channelIndex, bool active);

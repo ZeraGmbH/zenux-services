@@ -31,11 +31,26 @@ void MockMt310s2d::fireHotplugInterrupt(const QStringList &channelAliases)
 {
     cSenseSettings *senseSettings = m_server->getSenseSettings();
     quint16 interruptMask = 0;
+    SenseSystem::cChannelSettings* channelSetting;
     for (const QString &channelAlias : channelAliases) {
-        SenseSystem::cChannelSettings* channelSetting = senseSettings->findChannelSettingByAlias1(channelAlias);
+        channelSetting = senseSettings->findChannelSettingByAlias1(channelAlias);
         interruptMask |= (1 << channelSetting->m_nPluggedBit);
     }
     ControllerPersitentData::injectInterruptFlags(interruptMask);
+    m_server->MTIntHandler(0);
+}
+
+void MockMt310s2d::fireHotplugInterruptControllerName(const QMap<QString, QString> &infoMap)
+{
+    cSenseSettings *senseSettings = m_server->getSenseSettings();
+    quint16 interruptMask = 0;
+    SenseSystem::cChannelSettings* channelSetting;
+    for (const QString &channelAlias : infoMap.keys()) {
+        channelSetting = senseSettings->findChannelSettingByAlias1(channelAlias);
+        interruptMask |= (1 << channelSetting->m_nPluggedBit);
+        ControllerPersitentData::addInstrumentSubtype(channelSetting->m_nMuxChannelNo, infoMap.value(channelAlias));
+        ControllerPersitentData::injectInterruptFlags(interruptMask);
+    }
     m_server->MTIntHandler(0);
 }
 

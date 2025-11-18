@@ -52,3 +52,8 @@ void TestAllServicesMt310s2::fireHotplugInterrupt(const QStringList &channelAlia
 {
     m_mt310s2d->fireHotplugInterrupt(channelAliases);
 }
+
+void TestAllServicesMt310s2::fireHotplugInterruptControllerName(const QMap<QString, QString> &infoMap)
+{
+    m_mt310s2d->fireHotplugInterruptControllerName(infoMap);
+}
