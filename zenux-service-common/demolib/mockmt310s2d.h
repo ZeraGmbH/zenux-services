@@ -2,7 +2,7 @@
 #define MOCKMT310S2D_H
 
 #include "mt310s2d.h"
-#include "abstractallservices.h"
+#include "abstractmockallservices.h"
 #include "abstractfactoryi2cctrl.h"
 #include <QSet>
 
@@ -15,7 +15,7 @@ public:
                  const QString &serviceNameForAlternateDevice,
                  const QString &alternateConfigXml = QString());
     void fireHotplugInterrupt(const QStringList &channelAliases);
-    void fireHotplugInterruptControllerName(const AbstractAllServices::ChannelAliasHotplugDeviceNameMap &infoMap);
+    void fireHotplugInterruptControllerName(const AbstractMockAllServices::ChannelAliasHotplugDeviceNameMap &infoMap);
 
 private slots:
     void onSimulGuiHotplugDevChanged(int channelIndex, bool active);

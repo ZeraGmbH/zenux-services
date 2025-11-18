@@ -39,7 +39,7 @@ void MockMt310s2d::fireHotplugInterrupt(const QStringList &channelAliases)
     m_server->MTIntHandler(0);
 }
 
-void MockMt310s2d::fireHotplugInterruptControllerName(const AbstractAllServices::ChannelAliasHotplugDeviceNameMap &infoMap)
+void MockMt310s2d::fireHotplugInterruptControllerName(const AbstractMockAllServices::ChannelAliasHotplugDeviceNameMap &infoMap)
 {
     cSenseSettings *senseSettings = m_server->getSenseSettings();
     quint16 interruptMask = 0;
