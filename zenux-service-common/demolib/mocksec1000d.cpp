@@ -4,7 +4,7 @@
 
 MockSec1000d::MockSec1000d(VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory,
                            int ecUnitCount,
-                           QString alternateConfigXml)
+                           const QString &alternateConfigXml)
 {
     ServerParams params = MockServerParamGenerator::createParams("sec1000d");
     if(!alternateConfigXml.isEmpty())

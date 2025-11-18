@@ -15,9 +15,9 @@ class AutoJournalLoggerFacade;
 class DemoAllServicesMt310s2 : public AbstractMockAllServices
 {
 public:
-    DemoAllServicesMt310s2(const QString &serviceNameForAlternateDevice);
+    explicit DemoAllServicesMt310s2(const QString &serviceNameForAlternateDevice);
     DemoAllServicesMt310s2(VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory, const QString &serviceNameForAlternateDevice);
-    virtual ~DemoAllServicesMt310s2();
+    virtual ~DemoAllServicesMt310s2() override;
     void fireHotplugInterrupt(const QStringList &channelAliases) override;
     void fireHotplugInterruptControllerName(const ChannelAliasHotplugDeviceNameMap &infoMap) override;
 private:

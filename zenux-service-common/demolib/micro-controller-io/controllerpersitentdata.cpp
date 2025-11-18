@@ -19,7 +19,7 @@ void ControllerPersitentData::addInstrumentSubtype(int muxChannel, const QString
     m_persitentData.m_hotpluggedDevices[muxChannel] = instrSubtype;
 }
 
-void ControllerPersitentData::setHotplugDevices(MuxChannelDeviceNameMap hotDevicesToSet)
+void ControllerPersitentData::setHotplugDevices(const MuxChannelDeviceNameMap &hotDevicesToSet)
 {
     m_persitentData.m_hotpluggedDevices = hotDevicesToSet;
 }

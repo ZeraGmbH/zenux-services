@@ -5,7 +5,7 @@
 
 MockCom5003d::MockCom5003d(AbstractFactoryI2cCtrlPtr ctrlFactory,
                            VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory,
-                           QString alternateConfigXml)
+                           const QString &alternateConfigXml)
 {
     MockI2cEEpromIoFactory::enableMock();
 

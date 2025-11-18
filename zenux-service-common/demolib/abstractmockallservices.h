@@ -5,8 +5,6 @@
 
 class AbstractMockAllServices : public AbstractAllServices
 {
-public:
-    virtual ~AbstractMockAllServices() = default;
 };
 
 #endif // ABSTRACTMOCKALLSERVICES_H

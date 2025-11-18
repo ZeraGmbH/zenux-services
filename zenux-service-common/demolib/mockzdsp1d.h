@@ -8,7 +8,7 @@ class MockZdsp1d
 public:
     MockZdsp1d(AbstractFactoryDeviceNodeDspPtr deviceNodeFactory,
                VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory,
-               QString alternateConfigXml = QString());
+               const QString &alternateConfigXml = QString());
     // As long as there is no TestZdsp1d
     ZDspServer* getServer();
 protected:

@@ -8,7 +8,7 @@
 MockMt310s2d::MockMt310s2d(AbstractFactoryI2cCtrlPtr ctrlFactory,
                            VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory,
                            const QString &serviceNameForAlternateDevice,
-                           QString alternateConfigXml) :
+                           const QString &alternateConfigXml) :
     m_ctrlFactory(ctrlFactory)
 {
     MockI2cEEpromIoFactory::enableMock();
@@ -31,9 +31,8 @@ void MockMt310s2d::fireHotplugInterrupt(const QStringList &channelAliases)
 {
     cSenseSettings *senseSettings = m_server->getSenseSettings();
     quint16 interruptMask = 0;
-    SenseSystem::cChannelSettings* channelSetting;
     for (const QString &channelAlias : channelAliases) {
-        channelSetting = senseSettings->findChannelSettingByAlias1(channelAlias);
+        const SenseSystem::cChannelSettings* channelSetting = senseSettings->findChannelSettingByAlias1(channelAlias);
         interruptMask |= (1 << channelSetting->m_nPluggedBit);
     }
     ControllerPersitentData::injectInterruptFlags(interruptMask);
@@ -44,10 +43,9 @@ void MockMt310s2d::fireHotplugInterruptControllerName(const AbstractAllServices:
 {
     cSenseSettings *senseSettings = m_server->getSenseSettings();
     quint16 interruptMask = 0;
-    SenseSystem::cChannelSettings* channelSetting;
     ControllerPersitentData::MuxChannelDeviceNameMap hotDevicesToSet;
     for (const QString &channelAlias : infoMap.keys()) {
-        channelSetting = senseSettings->findChannelSettingByAlias1(channelAlias);
+        const SenseSystem::cChannelSettings* channelSetting = senseSettings->findChannelSettingByAlias1(channelAlias);
         interruptMask |= (1 << channelSetting->m_nPluggedBit);
         hotDevicesToSet[channelSetting->m_nMuxChannelNo] = infoMap.value(channelAlias);
     }
@@ -80,7 +78,7 @@ void MockMt310s2d::setupHotplugChannelEnable()
     QVector<bool> enableMask(8);
     for (int i=0; i<simulChannelSequence.size(); ++i) {
         const QString &channelAlias = simulChannelSequence[i];
-        SenseSystem::cChannelSettings* channelSetting = senseSettings->findChannelSettingByAlias1(channelAlias);
+        const SenseSystem::cChannelSettings* channelSetting = senseSettings->findChannelSettingByAlias1(channelAlias);
         if (channelSetting != nullptr && channelSetting->m_nPluggedBit >= 0)
             enableMask[i] = true;
     }

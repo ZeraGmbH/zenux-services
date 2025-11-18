@@ -3,7 +3,7 @@
 
 MockZdsp1d::MockZdsp1d(AbstractFactoryDeviceNodeDspPtr deviceNodeFactory,
                        VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory,
-                       QString alternateConfigXml)
+                       const QString &alternateConfigXml)
 {
     ServerParams params = MockServerParamGenerator::createParams("zdsp1d");
     if(!alternateConfigXml.isEmpty())

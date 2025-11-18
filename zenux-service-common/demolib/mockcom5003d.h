@@ -8,7 +8,7 @@ class MockCom5003d
 public:
     MockCom5003d(AbstractFactoryI2cCtrlPtr ctrlFactory,
                  VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory,
-                 QString alternateConfigXml = QString());
+                 const QString &alternateConfigXml = QString());
 private:
     std::unique_ptr<cCOM5003dServer> m_server;
 };

@@ -13,7 +13,7 @@ public:
     MockMt310s2d(AbstractFactoryI2cCtrlPtr ctrlFactory,
                  VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory,
                  const QString &serviceNameForAlternateDevice,
-                 QString alternateConfigXml = QString());
+                 const QString &alternateConfigXml = QString());
     void fireHotplugInterrupt(const QStringList &channelAliases);
     void fireHotplugInterruptControllerName(const AbstractAllServices::ChannelAliasHotplugDeviceNameMap &infoMap);
 
