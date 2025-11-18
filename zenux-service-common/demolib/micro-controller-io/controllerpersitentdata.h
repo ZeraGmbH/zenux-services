@@ -7,6 +7,7 @@
 class ControllerPersitentData
 {
 public:
+    typedef QMap<int, QString> MuxChannelDeviceNameMap;
     struct TPersitentControllerData
     {
         bool m_permission = false;
@@ -22,12 +23,12 @@ public:
         quint8 m_accuStatus = 0;
         quint8 m_accuCharge = 37;
 
-        QMap<int /* muxChannel */, QString> m_emobInstrumentSubtypes;
+        MuxChannelDeviceNameMap m_hotpluggedDevices;
     };
     static TPersitentControllerData &getData();
     static void injectInterruptFlags(quint16 clampConnectMask);
     static void addInstrumentSubtype(int muxChannel, const QString& instrSubtype);
-
+    static void setHotplugDevices(MuxChannelDeviceNameMap hotDevicesToSet);
     static void cleanupPersitentData();
 private:
     static TPersitentControllerData m_persitentData;

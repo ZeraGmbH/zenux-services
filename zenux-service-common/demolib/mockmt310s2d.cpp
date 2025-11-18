@@ -45,12 +45,14 @@ void MockMt310s2d::fireHotplugInterruptControllerName(const QMap<QString, QStrin
     cSenseSettings *senseSettings = m_server->getSenseSettings();
     quint16 interruptMask = 0;
     SenseSystem::cChannelSettings* channelSetting;
+    ControllerPersitentData::MuxChannelDeviceNameMap hotDevicesToSet;
     for (const QString &channelAlias : infoMap.keys()) {
         channelSetting = senseSettings->findChannelSettingByAlias1(channelAlias);
         interruptMask |= (1 << channelSetting->m_nPluggedBit);
-        ControllerPersitentData::addInstrumentSubtype(channelSetting->m_nMuxChannelNo, infoMap.value(channelAlias));
-        ControllerPersitentData::injectInterruptFlags(interruptMask);
+        hotDevicesToSet[channelSetting->m_nMuxChannelNo] = infoMap.value(channelAlias);
     }
+    ControllerPersitentData::setHotplugDevices(hotDevicesToSet);
+    ControllerPersitentData::injectInterruptFlags(interruptMask);
     m_server->MTIntHandler(0);
 }
 

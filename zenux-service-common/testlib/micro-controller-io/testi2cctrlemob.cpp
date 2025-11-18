@@ -21,8 +21,8 @@ ZeraMControllerIoTemplate::atmelRM TestI2cCtrlEMOB::readEmobLockState(quint8 &st
 ZeraMControllerIoTemplate::atmelRM TestI2cCtrlEMOB::readEmobInstrumentSubType(QString &answer)
 {
     answer = "EMOB_MOCK-00V00";
-    if (ControllerPersitentData::getData().m_emobInstrumentSubtypes.contains(m_ctrlMuxChannnel))
-        answer = ControllerPersitentData::getData().m_emobInstrumentSubtypes[m_ctrlMuxChannnel];
+    if (ControllerPersitentData::getData().m_hotpluggedDevices.contains(m_ctrlMuxChannnel))
+        answer = ControllerPersitentData::getData().m_hotpluggedDevices[m_ctrlMuxChannnel];
     return ZeraMControllerIo::atmelRM::cmddone;
 }
 

@@ -16,7 +16,12 @@ void ControllerPersitentData::injectInterruptFlags(quint16 clampConnectMask)
 
 void ControllerPersitentData::addInstrumentSubtype(int muxChannel, const QString &instrSubtype)
 {
-    m_persitentData.m_emobInstrumentSubtypes[muxChannel] = instrSubtype;
+    m_persitentData.m_hotpluggedDevices[muxChannel] = instrSubtype;
+}
+
+void ControllerPersitentData::setHotplugDevices(MuxChannelDeviceNameMap hotDevicesToSet)
+{
+    m_persitentData.m_hotpluggedDevices = hotDevicesToSet;
 }
 
 void ControllerPersitentData::cleanupPersitentData()
@@ -34,5 +39,5 @@ void ControllerPersitentData::cleanupPersitentData()
     m_persitentData.m_accuStatus = 0;
     m_persitentData.m_accuCharge = 37;
 
-    m_persitentData.m_emobInstrumentSubtypes.clear();
+    m_persitentData.m_hotpluggedDevices.clear();
 }
