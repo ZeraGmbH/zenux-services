@@ -1,13 +1,14 @@
 #ifndef CONTROLLERPERSITENTDATA_H
 #define CONTROLLERPERSITENTDATA_H
 
+#include "abstractmockallservices.h"
 #include <QString>
 #include <QMap>
 
 class ControllerPersitentData
 {
 public:
-    typedef QMap<int, QString> MuxChannelDeviceNameMap;
+    typedef QMap<int, AbstractMockAllServices::hotplugI2cBus> MuxChannelDeviceNameMap;
     struct TPersitentControllerData
     {
         bool m_permission = false;
@@ -27,7 +28,6 @@ public:
     };
     static TPersitentControllerData &getData();
     static void injectInterruptFlags(quint16 clampConnectMask);
-    static void addInstrumentSubtype(int muxChannel, const QString& instrSubtype);
     static void setHotplugDevices(const MuxChannelDeviceNameMap &hotDevicesToSet);
     static void cleanupPersitentData();
 private:

@@ -22,7 +22,7 @@ ZeraMControllerIoTemplate::atmelRM TestI2cCtrlEMOB::readEmobInstrumentSubType(QS
 {
     answer = "EMOB_MOCK-00V00";
     if (ControllerPersitentData::getData().m_hotpluggedDevices.contains(m_ctrlMuxChannnel))
-        answer = ControllerPersitentData::getData().m_hotpluggedDevices[m_ctrlMuxChannnel];
+        answer = ControllerPersitentData::getData().m_hotpluggedDevices[m_ctrlMuxChannnel].controllerName;
     return ZeraMControllerIo::atmelRM::cmddone;
 }
 

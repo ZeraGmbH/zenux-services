@@ -14,11 +14,6 @@ void ControllerPersitentData::injectInterruptFlags(quint16 clampConnectMask)
     m_persitentData.m_clampConnectMask = clampConnectMask;
 }
 
-void ControllerPersitentData::addInstrumentSubtype(int muxChannel, const QString &instrSubtype)
-{
-    m_persitentData.m_hotpluggedDevices[muxChannel] = instrSubtype;
-}
-
 void ControllerPersitentData::setHotplugDevices(const MuxChannelDeviceNameMap &hotDevicesToSet)
 {
     m_persitentData.m_hotpluggedDevices = hotDevicesToSet;

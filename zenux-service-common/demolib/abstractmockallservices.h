@@ -2,13 +2,19 @@
 #define ABSTRACTMOCKALLSERVICES_H
 
 #include <QStringList>
+#include "clamp.h"
 
 class AbstractMockAllServices
 {
 public:
     virtual ~AbstractMockAllServices() = default;
     virtual void fireHotplugInterrupt(const QStringList &channelAliases) = 0;
-    typedef QMap<QString, QString> ChannelAliasHotplugDeviceNameMap;
+    struct hotplugI2cBus
+    {
+        QString controllerName;
+        cClamp::ClampTypes clamp;
+    };
+    typedef QMap<QString, hotplugI2cBus> ChannelAliasHotplugDeviceNameMap;
     virtual void fireHotplugInterruptControllerName(const ChannelAliasHotplugDeviceNameMap &infoMap) = 0;
 };
 
