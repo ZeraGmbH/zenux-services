@@ -90,6 +90,7 @@ public:
     // all commands to system interface
     quint32 readServerVersion();
     quint32 readPCBInfo();
+    quint32 readChannelsConnected();
     quint32 readFPGAVersion();
     quint32 readCTRLVersion();
     quint32 readSerialNr();

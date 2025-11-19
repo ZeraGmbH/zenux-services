@@ -296,6 +296,12 @@ quint32 cPCBInterface::readPCBInfo()
     return d->readPCBInfo();
 }
 
+quint32 cPCBInterface::readChannelsConnected()
+{
+    Q_D(cPCBInterface);
+    return d->readChannelsConnected();
+}
+
 
 quint32 cPCBInterface::readFPGAVersion()
 {
