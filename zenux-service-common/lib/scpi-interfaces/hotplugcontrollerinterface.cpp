@@ -8,6 +8,9 @@ HotplugControllerInterface::HotplugControllerInterface(std::shared_ptr<cSCPI> sc
 {
     connect(hotPluggableControllerContainer.get(), &HotPluggableControllerContainer::sigControllersChanged,
             this, &HotplugControllerInterface::onControllersChanged);
+    m_periodicTimer = TimerFactoryQt::createPeriodic(1000);
+    connect(m_periodicTimer.get(), &TimerTemplateQt::sigExpired, this, &HotplugControllerInterface::readChannelsConnected);
+    m_periodicTimer->start();
 }
 
 enum HotplugCommands
@@ -16,6 +19,7 @@ enum HotplugCommands
     cmdEmobReadLockState,
     cmdEmobReadErrorStatus,
     cmdEmobClearErrorStatus,
+    cmdEmobGetChannelsConnected,
 };
 
 void HotplugControllerInterface::initSCPIConnection(QString leadingNodes)
@@ -25,6 +29,7 @@ void HotplugControllerInterface::initSCPIConnection(QString leadingNodes)
     addDelegate(QString("%1SYSTEM:EMOB").arg(leadingNodes), "LOCKST", SCPI::isQuery, m_scpiInterface, cmdEmobReadLockState);
     addDelegate(QString("%1SYSTEM:EMOB").arg(leadingNodes), "ERROR", SCPI::isQuery, m_scpiInterface, cmdEmobReadErrorStatus);
     addDelegate(QString("%1SYSTEM:EMOB").arg(leadingNodes), "CLEARERROR", SCPI::isCmd, m_scpiInterface, cmdEmobClearErrorStatus);
+    addDelegate(QString("%1SYSTEM:EMOB").arg(leadingNodes), "CHANNEL", SCPI::isQuery, m_scpiInterface, cmdEmobGetChannelsConnected, &m_channels);
 }
 
 void HotplugControllerInterface::onControllersChanged()
@@ -47,6 +52,9 @@ void HotplugControllerInterface::executeProtoScpi(int cmdCode, ProtonetCommandPt
         break;
     case cmdEmobClearErrorStatus:
         protoCmd->m_sOutput = emobClearErrorStatus(protoCmd->m_sInput);
+        break;
+    case cmdEmobGetChannelsConnected:
+        protoCmd->m_sOutput = readChannelsConnected();
         break;
     }
     if (protoCmd->m_bwithOutput)
@@ -117,6 +125,19 @@ QString HotplugControllerInterface::emobClearErrorStatus(const QString &scpiCmd)
         }
     }
     return ZSCPI::scpiAnswer[ZSCPI::nak];
+}
+
+QString HotplugControllerInterface::readChannelsConnected()
+{
+    QString answer = "";
+    HotControllerMap emobControllers = m_hotPluggableControllerContainer->getCurrentControllers();
+    QStringList channelList = emobControllers.keys();
+    if(channelList.size()==1)
+        answer = channelList.at(0);
+    else if(channelList.size() > 1)
+        answer = channelList.join(",");
+    m_channels = answer;
+    return answer;
 }
 
 QString HotplugControllerInterface::findEmobConnected(const QString &channelMNameScpiParam)

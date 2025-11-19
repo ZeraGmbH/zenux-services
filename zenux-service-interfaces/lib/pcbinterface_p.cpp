@@ -611,6 +611,16 @@ quint32 cPCBInterfacePrivate::readEmobConnState()
     return msgnr;
 }
 
+quint32 cPCBInterfacePrivate::readChannelsConnected()
+{
+    QString cmd;
+    quint32 msgnr;
+
+    msgnr = sendCommand(cmd = QString("SYST:EMOB:CHAN?"));
+    m_MsgNrCmdList[msgnr] = PCB::getChannelsConnected;
+    return msgnr;
+}
+
 quint32 cPCBInterfacePrivate::getAccumulatorStatus()
 {
     QString cmd;
@@ -834,6 +844,7 @@ void cPCBInterfacePrivate::receiveAnswer(std::shared_ptr<ProtobufMessage::NetMes
         case PCB::setadjustclampxml:
         case PCB::setserialnumber:
         case PCB::activatepushbutton:
+        case PCB::getChannelsConnected:
             emit q->serverAnswer(decodedAnswer.msgNr, decodedAnswer.reply, VariantConverter::returnString(decodedAnswer.msgBody));
             break;
         }

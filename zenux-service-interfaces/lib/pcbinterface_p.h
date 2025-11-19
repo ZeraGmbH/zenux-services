@@ -78,6 +78,7 @@ enum pcbcommands
 
     getaccumulatorstatus,
     getaccumulatorsoc,
+    getChannelsConnected,
 
     transparentcommand
 };
@@ -170,6 +171,7 @@ public:
     quint32 setClampAdjustmentData(QString xmlclamp);
     quint32 activatePushButton();
     quint32 readEmobConnState();
+    quint32 readChannelsConnected();
 
     // all commands to accumulator interface
     quint32 getAccumulatorStatus();
