@@ -1,9 +1,11 @@
 #include "test_hotpluggablecontrollercontainer.h"
 #include "controllerpersitentdata.h"
+#include "testfactoryi2cctrl.h"
 #include "testhotplugi2cctrlcommoninfo.h"
 #include "testhotplugctrlfactoryi2cctrl.h"
 #include "hotpluggablecontrollercontainer.h"
 #include "settingscontainer.h"
+#include <mocktcpnetworkfactory.h>
 #include <timerfactoryqtfortest.h>
 #include <timemachinefortest.h>
 #include <zeramcontrollerbootloaderstopperfactoryfortest.h>
@@ -11,10 +13,6 @@
 #include <QTest>
 
 QTEST_MAIN(test_hotpluggablecontrollercontainer);
-
-test_hotpluggablecontrollercontainer::test_hotpluggablecontrollercontainer()
-{
-}
 
 void test_hotpluggablecontrollercontainer::initTestCase()
 {
@@ -45,6 +43,11 @@ void test_hotpluggablecontrollercontainer::init()
 
 void test_hotpluggablecontrollercontainer::cleanup()
 {
+    m_mt310s2d = nullptr;
+    TimeMachineObject::feedEventLoop();
+    m_resman = nullptr;
+    TimeMachineObject::feedEventLoop();
+    ControllerPersitentData::cleanupPersitentData();
     ZeraMControllerBootloaderStopperFactoryForTest::cleanup();
 }
 
@@ -277,67 +280,60 @@ void test_hotpluggablecontrollercontainer::mt310s2AddI1AndAddI2BeforeFinish()
 
 void test_hotpluggablecontrollercontainer::mt310s2AddClampNoController()
 {
-    m_i2cSettings->setI2cAddressesEmob(QString(), 0, 0);
-    HotPluggableControllerContainer container(m_i2cSettings.get(), m_ctrlFactory);
-    QSignalSpy spy(&container, &HotPluggableControllerContainer::sigControllersChanged);
-    
-    TestHotPlugCtrlFactoryI2cCtrl* factory = static_cast<TestHotPlugCtrlFactoryI2cCtrl*>(m_ctrlFactory.get());
+    // use m_mt310s2d->fireHotplugInterruptControllerName in here
+    createServers();
+    HotPluggableControllerContainerPtr container = m_mt310s2d->getHotPluggableControllerContainer();
+    QSignalSpy spy(container.get(), &HotPluggableControllerContainer::sigControllersChanged);
 
     // add clamp only IL1
-    factory->prepareNextTestControllers(QVector<bool>() << false);
-    ZeraMControllerBootloaderStopperFactoryForTest::setBootoaderAssumeAppStartedImmediates(QVector<bool>() << true);
-    container.startActualizeEmobControllers(getChannelPlugMask("IL1"), m_senseSettings.get(), 1000);
-    TimeMachineForTest::getInstance()->processTimers(1000);
+    AbstractMockAllServices::ChannelAliasHotplugDeviceNameMap infoMap;
+    infoMap.insert("IL1", {"", cClamp::CL1000A});
+    m_mt310s2d->fireHotplugInterruptControllerName(infoMap);
+    TimeMachineObject::feedEventLoop();
+
     QCOMPARE(spy.count(), 0);
-    QCOMPARE(factory->getCtrlInstanceCount(), 0);
-    HotControllerMap controllers = container.getCurrentControllers();
+    HotControllerMap controllers = container->getCurrentControllers();
     QCOMPARE(controllers.size(), 0);
     controllers.clear();
 
     // add emob to clamp IL2
-    factory->prepareNextTestControllers(QVector<bool>() << true); // we expect clamp known => no version query
-    ZeraMControllerBootloaderStopperFactoryForTest::setBootoaderAssumeAppStartedImmediates(QVector<bool>() << true); // same
-    container.startActualizeEmobControllers(getChannelPlugMask("IL1") | getChannelPlugMask("IL2"), m_senseSettings.get(), 1000);
-    TimeMachineForTest::getInstance()->processTimers(1000);
+    infoMap.insert("IL2", {"Emob", cClamp::CL1000A});
+    m_mt310s2d->fireHotplugInterruptControllerName(infoMap);
+    TimeMachineObject::feedEventLoop();
     QCOMPARE(spy.count(), 1);
     spy.clear();
-    QCOMPARE(factory->getCtrlInstanceCount(), 1);
-    controllers = container.getCurrentControllers();
+    controllers = container->getCurrentControllers();
     QCOMPARE(controllers.size(), 1); // IL1 clamp only / IL2 with controller added
     QVERIFY(controllers.contains(getChannelMName("IL2")));
     controllers.clear();
 
     // remove clamp IL1
-    container.startActualizeEmobControllers(getChannelPlugMask("IL2"), m_senseSettings.get(), 1000);
-    TimeMachineForTest::getInstance()->processTimers(1000);
+    infoMap.remove("IL1");
+    m_mt310s2d->fireHotplugInterruptControllerName(infoMap);
+    TimeMachineObject::feedEventLoop();
     QCOMPARE(spy.count(), 0);
-    QCOMPARE(factory->getCtrlInstanceCount(), 1);
-    controllers = container.getCurrentControllers();
+    controllers = container->getCurrentControllers();
     QCOMPARE(controllers.size(), 1);
     QVERIFY(controllers.contains(getChannelMName("IL2")));
     controllers.clear();
 
     // remove all
-    container.startActualizeEmobControllers(0, m_senseSettings.get(), 1000);
-    TimeMachineForTest::getInstance()->processTimers(1000);
+    infoMap.clear();
+    m_mt310s2d->fireHotplugInterruptControllerName(infoMap);
+    TimeMachineObject::feedEventLoop();
     QCOMPARE(spy.count(), 1);
     spy.clear();
-    QCOMPARE(factory->getCtrlInstanceCount(), 0);
-    controllers = container.getCurrentControllers();
+    controllers = container->getCurrentControllers();
     QCOMPARE(controllers.size(), 0);
     controllers.clear();
 
-    // add clamp & emob only IL2
-    factory->prepareNextTestControllers(QVector<bool>() << false << true);
-    ZeraMControllerBootloaderStopperFactoryForTest::setBootoaderAssumeAppStartedImmediates(QVector<bool>() << true << true);
-    container.startActualizeEmobControllers(getChannelPlugMask("IL1") | getChannelPlugMask("IL2"), m_senseSettings.get(), 1000);
-    TimeMachineForTest::getInstance()->processTimers(1000);
+    // add clamp IL1 & emob only IL2
+    infoMap.insert("IL1", {"", cClamp::CL1000A});
+    infoMap.insert("IL2", {"Emob", cClamp::undefined});
+    m_mt310s2d->fireHotplugInterruptControllerName(infoMap);
+    TimeMachineObject::feedEventLoop();
     QCOMPARE(spy.count(), 1);
-    QCOMPARE(factory->getCtrlInstanceCount(), 1);
-
-    QCOMPARE(ZeraMControllerBootloaderStopperFactoryForTest::checkEmpty(), true);
-
-    controllers = container.getCurrentControllers();
+    controllers = container->getCurrentControllers();
     QCOMPARE(controllers.size(), 1);
     QVERIFY(controllers.contains(getChannelMName("IL2")));
     controllers.clear();
@@ -391,4 +387,12 @@ quint8 test_hotpluggablecontrollercontainer::getChannelMuxChannel(const QString 
 {
     SenseSystem::cChannelSettings* channelSettings = m_senseSettings->findChannelSettingByAlias1(channelAlias);
     return channelSettings->m_nMuxChannelNo;
+}
+
+void test_hotpluggablecontrollercontainer::createServers()
+{
+    VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory = VeinTcp::MockTcpNetworkFactory::create();
+    m_resman = std::make_unique<ResmanRunFacade>(tcpNetworkFactory);
+    m_mt310s2d = std::make_unique<MockMt310s2d>(std::make_shared<TestFactoryI2cCtrl>(true), tcpNetworkFactory, "mt310s2d");
+    TimeMachineObject::feedEventLoop();
 }

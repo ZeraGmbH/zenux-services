@@ -1,15 +1,15 @@
 #ifndef TEST_HOTPLUGGABLECONTROLLERCONTAINER_H
 #define TEST_HOTPLUGGABLECONTROLLERCONTAINER_H
 
+#include "mockmt310s2d.h"
 #include "testi2csettings.h"
 #include "sensesettings.h"
 #include "abstractfactoryi2cctrl.h"
+#include <resmanrunfacade.h>
 
 class test_hotpluggablecontrollercontainer : public QObject
 {
     Q_OBJECT
-public:
-    test_hotpluggablecontrollercontainer();
 private slots:
     void initTestCase();
     void initTestCase_data();
@@ -37,10 +37,15 @@ private:
     quint16 getChannelPlugMask(const QString &channelAlias);
     QString getChannelMName(const QString &channelAlias);
     quint8 getChannelMuxChannel(const QString &channelAlias);
+    void createServers();
     Zera::XMLConfig::cReader m_configReader;
     std::unique_ptr<TestI2cSettings> m_i2cSettings;
     std::unique_ptr<cSenseSettings> m_senseSettings;
     AbstractFactoryI2cCtrlPtr m_ctrlFactory;
+
+    std::unique_ptr<ResmanRunFacade> m_resman;
+    std::unique_ptr<MockMt310s2d> m_mt310s2d;
+
 };
 
 #endif // TEST_HOTPLUGGABLECONTROLLERCONTAINER_H

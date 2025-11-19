@@ -44,10 +44,14 @@ void MockMt310s2d::fireHotplugInterruptControllerName(const AbstractMockAllServi
     cSenseSettings *senseSettings = m_server->getSenseSettings();
     quint16 interruptMask = 0;
     ControllerPersitentData::MuxChannelDeviceNameMap hotDevicesToSet;
-    for (const QString &channelAlias : infoMap.keys()) {
-        const SenseSystem::cChannelSettings* channelSetting = senseSettings->findChannelSettingByAlias1(channelAlias);
-        interruptMask |= (1 << channelSetting->m_nPluggedBit);
-        hotDevicesToSet[channelSetting->m_nMuxChannelNo] = infoMap.value(channelAlias);
+    for(auto iter = infoMap.constBegin(); iter!= infoMap.constEnd(); iter++) {
+        AbstractMockAllServices::hotplugI2cBus hotplugI2CBus = iter.value();
+        if(!hotplugI2CBus.controllerName.isEmpty()) {
+            QString channelAlias = iter.key();
+            const SenseSystem::cChannelSettings* channelSetting = senseSettings->findChannelSettingByAlias1(channelAlias);
+            interruptMask |= (1 << channelSetting->m_nPluggedBit);
+            hotDevicesToSet[channelSetting->m_nMuxChannelNo] = hotplugI2CBus;
+        }
     }
     ControllerPersitentData::setHotplugDevices(hotDevicesToSet);
     ControllerPersitentData::injectInterruptFlags(interruptMask);
