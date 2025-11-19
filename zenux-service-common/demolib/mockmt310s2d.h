@@ -16,6 +16,8 @@ public:
                  const QString &alternateConfigXml = QString());
     void fireHotplugInterrupt(const QStringList &channelAliases);
     void fireHotplugInterruptControllerName(const AbstractMockAllServices::ChannelAliasHotplugDeviceNameMap &infoMap);
+    HotPluggableControllerContainerPtr getHotPluggableControllerContainer();
+
 
 private slots:
     void onSimulGuiHotplugDevChanged(int channelIndex, bool active);

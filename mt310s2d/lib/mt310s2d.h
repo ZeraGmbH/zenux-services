@@ -50,6 +50,7 @@ public:
     cSenseSettings* getSenseSettings();
 
     void MTIntHandler(int);
+    HotPluggableControllerContainerPtr getHotPluggableControllerContainer();
 
 signals:
     void abortInit();

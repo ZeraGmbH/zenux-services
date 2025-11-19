@@ -383,6 +383,11 @@ void cMT310S2dServer::MTIntHandler(int)
         qWarning("cMT310S2dServer::MTIntHandler: readCriticalStatus failed - cannot actualize clamp status!");
 }
 
+HotPluggableControllerContainerPtr cMT310S2dServer::getHotPluggableControllerContainer()
+{
+    return m_hotPluggableControllerContainer;
+}
+
 void cMT310S2dServer::startCpuTemperatureSendTimer()
 {
     if (m_cpuTemperature.canGetValue()) {

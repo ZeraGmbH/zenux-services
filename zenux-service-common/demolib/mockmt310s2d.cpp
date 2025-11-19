@@ -54,6 +54,11 @@ void MockMt310s2d::fireHotplugInterruptControllerName(const AbstractMockAllServi
     m_server->MTIntHandler(0);
 }
 
+HotPluggableControllerContainerPtr MockMt310s2d::getHotPluggableControllerContainer()
+{
+    return m_server->getHotPluggableControllerContainer();
+}
+
 static const QStringList simulChannelSequence = QStringList() << "UL1" << "UL2" << "UL3" << "UAUX" << "IL1" << "IL2" << "IL3" << "IAUX";
 
 void MockMt310s2d::onSimulGuiHotplugDevChanged(int channelIndex, bool active)
