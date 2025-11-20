@@ -1,5 +1,4 @@
 #include "hotpluggablecontrollercontainer.h"
-#include <zeramcontrollerbootloaderstopperfactory.h>
 #include "i2cmultiplexerfactory.h"
 #include <i2cmuxerscopedonoff.h>
 
@@ -60,11 +59,8 @@ void HotPluggableControllerContainer::startAddingController(int ctrlChannel, Sen
     I2cMuxerScopedOnOff i2cMuxer(I2cMultiplexerFactory::createPCA9547Muxer(m_i2cSettings->getDeviceNode(),
                                                                            m_i2cSettings->getI2CAdress(i2cSettings::muxerI2cAddress),
                                                                            channelSettings->m_nMuxChannelNo));
-    ZeraMcontrollerIoPtr i2cCtrl = std::make_shared<ZeraMControllerIo>(m_i2cSettings->getDeviceNode(),
-                                                                       m_i2cSettings->getI2CAdress(i2cSettings::emobCtrlI2cAddress),
-                                                                       0); // i2c error can occure if clamp is connected
-    ZeraMControllerBootloaderStopperPtr bootStopper = ZeraMControllerBootloaderStopperFactory::createBootloaderStopper(i2cCtrl, ctrlChannel);
-    connect(bootStopper.get(), &ZeraMControllerBootloaderStopper::sigAssumeBootloaderStopped,
+    I2cCtlBootloaderStopperPtr bootStopper = std::make_shared<I2cCtlBootloaderStopper>(m_ctrlFactory, ctrlChannel);
+    connect(bootStopper.get(), &I2cCtlBootloaderStopper::sigAssumeBootloaderStopped,
             this, &HotPluggableControllerContainer::onBootloaderStopAssumed);
     m_pendingBootloaderStoppers[ctrlChannel] =
         PendingChannelInfo{ bootStopper, channelSettings->m_nameMx, channelSettings->m_nMuxChannelNo };
@@ -94,17 +90,17 @@ void HotPluggableControllerContainer::onBootloaderStopAssumed(int ctrlChannel)
             qInfo("Version %s read for controller channel %i / mux channel %i - add controller",
                   qPrintable(version), ctrlChannel, muxChannelNo);
             I2cCtrlEMOBPtr emobCtrl = m_ctrlFactory->getEmobController(muxChannelNo);
-            HotControllers controllers{commonCtrl, emobCtrl, EMOBUnknown};
-            m_controllers[ctrlChannel] = {channelInfo.channelMName, controllers};
             if (emobCtrl) {
                 QString instrumentSubType;
                 result = emobCtrl->readEmobInstrumentSubType(instrumentSubType);
                 if(result == ZeraMControllerIo::cmddone && !instrumentSubType.isEmpty()) {
                     qInfo("Instrument type read: '%s'", qPrintable(instrumentSubType));
+                    HotControllers controllers{commonCtrl, emobCtrl, EMOBUnknown};
+                    m_controllers[ctrlChannel] = {channelInfo.channelMName, controllers};
                     m_controllers[ctrlChannel].controllers.m_controllerType = getControllerType(instrumentSubType);
+                    emit sigControllersChanged();
                 }
             }
-            emit sigControllersChanged();
         }
         else {
             qInfo("No version for channel %i - assume no controller (clamp)", ctrlChannel);

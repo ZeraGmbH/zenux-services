@@ -2,9 +2,9 @@
 #define TEST_HOTPLUGGABLECONTROLLERCONTAINER_H
 
 #include "mockmt310s2d.h"
+#include "testfactoryi2cctrl.h"
 #include "testi2csettings.h"
 #include "sensesettings.h"
-#include "abstractfactoryi2cctrl.h"
 #include <resmanrunfacade.h>
 
 class test_hotpluggablecontrollercontainer : public QObject
@@ -18,18 +18,18 @@ private slots:
 
     void initNoController();
     void mt310s2AllVoltageNotPluggable();
-    void mt310s2AddI1();
-    void mt310s2AddI1I2();
-    void mt310s2AddI1Twice();
-    void mt310s2AddI1I2RemoveI2();
-    void mt310s2AddI1CheckI2cSettings();
-    void mt310s2AddI1I2I3IAuxCheckMuxSettings();
-    void mt310s2AddI1CheckSignals();
-    void mt310s2AddI1I2CheckSignalsImmediate();
-    void mt310s2AddI1I2CheckSignalsDelayed();
-    void mt310s2AddI1AndRemoveBeforeFinish();
-    void mt310s2AddI1AndAddI2BeforeFinish();
-    void mt310s2AddClampNoController();
+    void addI1Controller();
+    void addI1I2Controllers();
+    void addI1ControllerTwice();
+    void addI1I2ControllerRemoveI2();
+    void addI1ControllerCheckI2cSettings();
+    void addI1I2I3IAuxControllerCheckMuxSettings();
+    void addI1ControllerBootloaderActiveCheckSignals();
+    void addI1I2ControllerApplicationActiveCheckSignals();
+    void addI1I2ControllerBootloaderActiveCheckSignals();
+    void addI1ControllerBootloaderActiveAndRemoveBeforeStartApplicationFinish();
+    void addI1ControllerBootloaderActiveAndAddI2ControllerBeforeI1StartApplicationFinish();
+    void clampControllerSequence();
 
     void mt310s2AddI1InstrumentDetectsMt650e();
     void mt310s2AddI1InstrumentDefaultsEmob();
@@ -41,8 +41,8 @@ private:
     Zera::XMLConfig::cReader m_configReader;
     std::unique_ptr<TestI2cSettings> m_i2cSettings;
     std::unique_ptr<cSenseSettings> m_senseSettings;
-    AbstractFactoryI2cCtrlPtr m_ctrlFactory;
 
+    TestFactoryI2cCtrlPtr m_ctrlFactory;
     std::unique_ptr<ResmanRunFacade> m_resman;
     std::unique_ptr<MockMt310s2d> m_mt310s2d;
 

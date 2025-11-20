@@ -350,7 +350,7 @@ void cMT310S2dServer::updateI2cDevicesConnected()
         m_pClampInterface->actualizeClampStatus(bitmaskAvailable);
         m_hotPluggableControllerContainer->startActualizeEmobControllers(bitmaskAvailable,
                                                                          m_pSenseSettings,
-                                                                         10000);
+                                                                         WaitControllerApplicationStartIssuedByBootloader);
     }
     else
         qWarning("Devices connected mask read failed");
@@ -386,6 +386,11 @@ void cMT310S2dServer::MTIntHandler(int)
 HotPluggableControllerContainerPtr cMT310S2dServer::getHotPluggableControllerContainer()
 {
     return m_hotPluggableControllerContainer;
+}
+
+cClampInterface *cMT310S2dServer::getClampInterface() const
+{
+    return m_pClampInterface;
 }
 
 void cMT310S2dServer::startCpuTemperatureSendTimer()

@@ -8,6 +8,8 @@ class TestFactoryI2cCtrl : public AbstractFactoryI2cCtrl
 public:
     TestFactoryI2cCtrl(bool initialPermission);
     void setRangeGetSetDelay(int rangeGetSetDelay);
+    void simulateApplicationRunnung();
+    void simulateBootloaderRunning();
 
     AbstractCtrlHeartbeatWaitPtr createCtrlHeartbeatWait(QString devnode) override;
     I2cCtrlCriticalStatusPtr getCriticalStatusController() override;
@@ -24,6 +26,11 @@ public:
     I2cCtrlBootloaderPtr getBootloaderController() override;
 private:
     int m_rangeGetSetDelay = 0;
+    enum ControllerRunState {
+        BOOTLOADER_RUNNING,
+        APPLICATION_RUNNING
+    };
+    ControllerRunState m_controllerRunState = APPLICATION_RUNNING;
 };
 
 typedef std::shared_ptr<TestFactoryI2cCtrl> TestFactoryI2cCtrlPtr;

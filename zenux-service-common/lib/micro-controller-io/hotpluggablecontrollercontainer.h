@@ -5,7 +5,7 @@
 #include "emobdefinitions.h"
 #include "i2csettings.h"
 #include "sensesettings.h"
-#include <zeramcontrollerbootloaderstopper.h>
+#include <i2cctlbootloaderstopper.h>
 #include <QMap>
 #include <QSet>
 #include <QVector>
@@ -45,7 +45,7 @@ private:
     QMap<int /* ctrlChannel */, NamedHotControllers> m_controllers;
     struct PendingChannelInfo
     {
-        ZeraMControllerBootloaderStopperPtr m_BootloaderStopper;
+        I2cCtlBootloaderStopperPtr m_BootloaderStopper;
         QString channelMName;
         qint8 m_nMuxChannelNo;
     };

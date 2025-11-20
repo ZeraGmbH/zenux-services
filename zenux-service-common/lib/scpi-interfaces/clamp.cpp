@@ -741,6 +741,11 @@ void cClamp::initClamp(quint8 type)
         qCritical("Unkown clamp type %u - no ranges set!", type);
 }
 
+bool cClamp::isValidClampType(quint8 type)
+{
+    return type > undefined && type < anzCL;
+}
+
 QString cClamp::getClampTypeName(quint8 type)
 {
     QString CLName;

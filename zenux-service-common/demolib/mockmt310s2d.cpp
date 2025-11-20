@@ -4,6 +4,7 @@
 #include "mocki2ceepromiofactory.h"
 #include "controllerpersitentdata.h"
 #include "simulsystemstatus.h"
+#include "clampinterface.h"
 
 MockMt310s2d::MockMt310s2d(AbstractFactoryI2cCtrlPtr ctrlFactory,
                            VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory,
@@ -29,14 +30,10 @@ MockMt310s2d::MockMt310s2d(AbstractFactoryI2cCtrlPtr ctrlFactory,
 
 void MockMt310s2d::fireHotplugInterrupt(const QStringList &channelAliases)
 {
-    cSenseSettings *senseSettings = m_server->getSenseSettings();
-    quint16 interruptMask = 0;
-    for (const QString &channelAlias : channelAliases) {
-        const SenseSystem::cChannelSettings* channelSetting = senseSettings->findChannelSettingByAlias1(channelAlias);
-        interruptMask |= (1 << channelSetting->m_nPluggedBit);
-    }
-    ControllerPersitentData::injectInterruptFlags(interruptMask);
-    m_server->MTIntHandler(0);
+    AbstractMockAllServices::ChannelAliasHotplugDeviceNameMap infoMap;
+    for (const QString &channelAlias : channelAliases)
+        infoMap.insert(channelAlias, {"EMOB_MOCK-00V00", cClamp::undefined});
+    fireHotplugInterruptControllerName(infoMap);
 }
 
 void MockMt310s2d::fireHotplugInterruptControllerName(const AbstractMockAllServices::ChannelAliasHotplugDeviceNameMap &infoMap)
@@ -46,11 +43,17 @@ void MockMt310s2d::fireHotplugInterruptControllerName(const AbstractMockAllServi
     ControllerPersitentData::MuxChannelDeviceNameMap hotDevicesToSet;
     for(auto iter = infoMap.constBegin(); iter!= infoMap.constEnd(); iter++) {
         AbstractMockAllServices::hotplugI2cBus hotplugI2CBus = iter.value();
-        if(!hotplugI2CBus.controllerName.isEmpty()) {
-            QString channelAlias = iter.key();
-            const SenseSystem::cChannelSettings* channelSetting = senseSettings->findChannelSettingByAlias1(channelAlias);
-            interruptMask |= (1 << channelSetting->m_nPluggedBit);
-            hotDevicesToSet[channelSetting->m_nMuxChannelNo] = hotplugI2CBus;
+        QString channelAlias = iter.key();
+        const SenseSystem::cChannelSettings* channelSetting = senseSettings->findChannelSettingByAlias1(channelAlias);
+        if(channelSetting) {
+            if(!hotplugI2CBus.controllerName.isEmpty()) {
+                interruptMask |= (1 << channelSetting->m_nPluggedBit);
+                hotDevicesToSet[channelSetting->m_nMuxChannelNo] = hotplugI2CBus;
+            }
+            if(cClamp::isValidClampType(hotplugI2CBus.clamp)) {
+                // TODO
+                interruptMask |= (1 << channelSetting->m_nPluggedBit);
+            }
         }
     }
     ControllerPersitentData::setHotplugDevices(hotDevicesToSet);

@@ -8,7 +8,6 @@
 #include <mocktcpnetworkfactory.h>
 #include <timerfactoryqtfortest.h>
 #include <timemachinefortest.h>
-#include <zeramcontrollerbootloaderstopperfactoryfortest.h>
 #include <QSignalSpy>
 #include <QTest>
 
@@ -48,7 +47,6 @@ void test_hotpluggablecontrollercontainer::cleanup()
     m_resman = nullptr;
     TimeMachineObject::feedEventLoop();
     ControllerPersitentData::cleanupPersitentData();
-    ZeraMControllerBootloaderStopperFactoryForTest::cleanup();
 }
 
 void test_hotpluggablecontrollercontainer::initNoController()
@@ -71,77 +69,115 @@ void test_hotpluggablecontrollercontainer::mt310s2AllVoltageNotPluggable()
     QCOMPARE(controllers.size(), 0);
 }
 
-void test_hotpluggablecontrollercontainer::mt310s2AddI1()
+void test_hotpluggablecontrollercontainer::addI1Controller()
 {
-    m_i2cSettings->setI2cAddressesEmob(QString(), 0, 0);
-    HotPluggableControllerContainer container(m_i2cSettings.get(), m_ctrlFactory);
-    container.startActualizeEmobControllers(getChannelPlugMask("IL1"), m_senseSettings.get(), 1000);
-    HotControllerMap controllers = container.getCurrentControllers();
+    createServers();
+    HotPluggableControllerContainerPtr container = m_mt310s2d->getHotPluggableControllerContainer();
+    QSignalSpy spy(container.get(), &HotPluggableControllerContainer::sigControllersChanged);
+
+    AbstractMockAllServices::ChannelAliasHotplugDeviceNameMap infoMap;
+    infoMap.insert("IL1", {"EMOB", cClamp::undefined});
+    m_mt310s2d->fireHotplugInterruptControllerName(infoMap);
+    TimeMachineObject::feedEventLoop();
+
+    HotControllerMap controllers = container->getCurrentControllers();
     QCOMPARE(controllers.size(), 1);
     QVERIFY(controllers.contains(getChannelMName("IL1")));
 }
 
-void test_hotpluggablecontrollercontainer::mt310s2AddI1I2()
+void test_hotpluggablecontrollercontainer::addI1I2Controllers()
 {
-    m_i2cSettings->setI2cAddressesEmob(QString(), 0, 0);
-    HotPluggableControllerContainer container(m_i2cSettings.get(), m_ctrlFactory);
-    container.startActualizeEmobControllers(getChannelPlugMask("IL1") | getChannelPlugMask("IL2"), m_senseSettings.get(), 1000);
-    HotControllerMap controllers = container.getCurrentControllers();
+    createServers();
+    HotPluggableControllerContainerPtr container = m_mt310s2d->getHotPluggableControllerContainer();
+    QSignalSpy spy(container.get(), &HotPluggableControllerContainer::sigControllersChanged);
+
+    AbstractMockAllServices::ChannelAliasHotplugDeviceNameMap infoMap;
+    infoMap.insert("IL1", {"EMOB", cClamp::undefined});
+    infoMap.insert("IL2", {"EMOB", cClamp::undefined});
+    m_mt310s2d->fireHotplugInterruptControllerName(infoMap);
+    TimeMachineObject::feedEventLoop();
+
+    HotControllerMap controllers = container->getCurrentControllers();
     QCOMPARE(controllers.size(), 2);
     QVERIFY(controllers.contains(getChannelMName("IL1")));
     QVERIFY(controllers.contains(getChannelMName("IL2")));
 }
 
-void test_hotpluggablecontrollercontainer::mt310s2AddI1Twice()
+void test_hotpluggablecontrollercontainer::addI1ControllerTwice()
 {
-    m_i2cSettings->setI2cAddressesEmob(QString(), 0, 0);
-    HotPluggableControllerContainer container(m_i2cSettings.get(), m_ctrlFactory);
-    container.startActualizeEmobControllers(getChannelPlugMask("IL1"), m_senseSettings.get(), 1000);
-    container.startActualizeEmobControllers(getChannelPlugMask("IL1"), m_senseSettings.get(), 1000);
-    HotControllerMap controllers = container.getCurrentControllers();
+    createServers();
+    HotPluggableControllerContainerPtr container = m_mt310s2d->getHotPluggableControllerContainer();
+    QSignalSpy spy(container.get(), &HotPluggableControllerContainer::sigControllersChanged);
+
+    AbstractMockAllServices::ChannelAliasHotplugDeviceNameMap infoMap;
+    infoMap.insert("IL1", {"EMOB", cClamp::undefined});
+    m_mt310s2d->fireHotplugInterruptControllerName(infoMap);
+    TimeMachineObject::feedEventLoop();
+    m_mt310s2d->fireHotplugInterruptControllerName(infoMap);
+    TimeMachineObject::feedEventLoop();
+
+    HotControllerMap controllers = container->getCurrentControllers();
     QCOMPARE(controllers.size(), 1);
-    TestHotPlugCtrlFactoryI2cCtrl* factory = static_cast<TestHotPlugCtrlFactoryI2cCtrl*>(m_ctrlFactory.get());
-    QCOMPARE(factory->getCtrlInstanceCount(), 1);
     QVERIFY(controllers.contains(getChannelMName("IL1")));
 }
 
-void test_hotpluggablecontrollercontainer::mt310s2AddI1I2RemoveI2()
+void test_hotpluggablecontrollercontainer::addI1I2ControllerRemoveI2()
 {
-    m_i2cSettings->setI2cAddressesEmob(QString(), 0, 0);
-    HotPluggableControllerContainer container(m_i2cSettings.get(), m_ctrlFactory);
-    container.startActualizeEmobControllers(getChannelPlugMask("IL1") | getChannelPlugMask("IL2"), m_senseSettings.get(), 1000);
-    container.startActualizeEmobControllers(getChannelPlugMask("IL1"), m_senseSettings.get(), 1000);
-    HotControllerMap controllers = container.getCurrentControllers();
+    createServers();
+    HotPluggableControllerContainerPtr container = m_mt310s2d->getHotPluggableControllerContainer();
+    QSignalSpy spy(container.get(), &HotPluggableControllerContainer::sigControllersChanged);
+
+    AbstractMockAllServices::ChannelAliasHotplugDeviceNameMap infoMap;
+    infoMap.insert("IL1", {"EMOB", cClamp::undefined});
+    infoMap.insert("IL2", {"EMOB", cClamp::undefined});
+    m_mt310s2d->fireHotplugInterruptControllerName(infoMap);
+    TimeMachineObject::feedEventLoop();
+    infoMap.remove("IL2");
+    m_mt310s2d->fireHotplugInterruptControllerName(infoMap);
+    TimeMachineObject::feedEventLoop();
+
+    HotControllerMap controllers = container->getCurrentControllers();
     QCOMPARE(controllers.size(), 1);
-    TestHotPlugCtrlFactoryI2cCtrl* factory = static_cast<TestHotPlugCtrlFactoryI2cCtrl*>(m_ctrlFactory.get());
-    QCOMPARE(factory->getCtrlInstanceCount(), 1);
     QVERIFY(controllers.contains(getChannelMName("IL1")));
 }
 
-void test_hotpluggablecontrollercontainer::mt310s2AddI1CheckI2cSettings()
+void test_hotpluggablecontrollercontainer::addI1ControllerCheckI2cSettings()
 {
     m_i2cSettings->setI2cAddressesEmob("foo", 1, 2);
-    HotPluggableControllerContainer container(m_i2cSettings.get(), m_ctrlFactory);
-    container.startActualizeEmobControllers(getChannelPlugMask("IL1"), m_senseSettings.get(), 1000);
-    HotControllerMap controllers = container.getCurrentControllers();
+    createServers();
+
+    AbstractMockAllServices::ChannelAliasHotplugDeviceNameMap infoMap;
+    infoMap.insert("IL1", {"EMOB", cClamp::undefined});
+    m_mt310s2d->fireHotplugInterruptControllerName(infoMap);
+    TimeMachineObject::feedEventLoop();
+
+    HotPluggableControllerContainerPtr container = m_mt310s2d->getHotPluggableControllerContainer();
+    HotControllerMap controllers = container->getCurrentControllers();
     QCOMPARE(controllers.size(), 1);
     QVERIFY(controllers.contains(getChannelMName("IL1")));
     HotControllers controller = controllers[getChannelMName("IL1")];
+
     TestHotplugI2cCtrlCommonInfo *testController = static_cast<TestHotplugI2cCtrlCommonInfo*>(controller.m_commonController.get());
     QCOMPARE(testController->getDevnode(), "foo");
     QCOMPARE(testController->getAdrCtrl(), 1);
     QCOMPARE(testController->getAdrMux(), 2);
 }
 
-void test_hotpluggablecontrollercontainer::mt310s2AddI1I2I3IAuxCheckMuxSettings()
+void test_hotpluggablecontrollercontainer::addI1I2I3IAuxControllerCheckMuxSettings()
 {
-    m_i2cSettings->setI2cAddressesEmob("foo", 1, 2);
-    HotPluggableControllerContainer container(m_i2cSettings.get(), m_ctrlFactory);
-    container.startActualizeEmobControllers(getChannelPlugMask("IL1") |
-                                            getChannelPlugMask("IL2") |
-                                            getChannelPlugMask("IL3") |
-                                            getChannelPlugMask("IAUX"), m_senseSettings.get(), 1000);
-    HotControllerMap controllers = container.getCurrentControllers();
+    createServers();
+
+    AbstractMockAllServices::ChannelAliasHotplugDeviceNameMap infoMap;
+    infoMap.insert("IL1", {"EMOB", cClamp::undefined});
+    infoMap.insert("IL2", {"EMOB", cClamp::undefined});
+    infoMap.insert("IL3", {"EMOB", cClamp::undefined});
+    infoMap.insert("IAUX", {"EMOB", cClamp::undefined});
+    m_mt310s2d->fireHotplugInterruptControllerName(infoMap);
+    TimeMachineObject::feedEventLoop();
+
+    HotPluggableControllerContainerPtr container = m_mt310s2d->getHotPluggableControllerContainer();
+    HotControllerMap controllers = container->getCurrentControllers();
+
     QCOMPARE(controllers.size(), 4);
     TestHotplugI2cCtrlCommonInfo* ctrlI1 = static_cast<TestHotplugI2cCtrlCommonInfo*>(controllers[getChannelMName("IL1")].m_commonController.get());
     QCOMPARE(ctrlI1->getMuxChannel(), 1);
@@ -157,130 +193,140 @@ void test_hotpluggablecontrollercontainer::mt310s2AddI1I2I3IAuxCheckMuxSettings(
     QVERIFY(controllers.contains(getChannelMName("IAUX")));
 }
 
-void test_hotpluggablecontrollercontainer::mt310s2AddI1CheckSignals()
+void test_hotpluggablecontrollercontainer::addI1ControllerBootloaderActiveCheckSignals()
 {
-    ZeraMControllerBootloaderStopperFactoryForTest::setBootoaderAssumeAppStartedImmediates(QVector<bool>() << false);
+    createServers();
+    m_ctrlFactory->simulateBootloaderRunning();
+    HotPluggableControllerContainerPtr container = m_mt310s2d->getHotPluggableControllerContainer();
+    QSignalSpy spy(container.get(), &HotPluggableControllerContainer::sigControllersChanged);
 
-    m_i2cSettings->setI2cAddressesEmob(QString(), 0, 0);
-    HotPluggableControllerContainer container(m_i2cSettings.get(), m_ctrlFactory);
-    QSignalSpy spy(&container, &HotPluggableControllerContainer::sigControllersChanged);
+    AbstractMockAllServices::ChannelAliasHotplugDeviceNameMap infoMap;
+    infoMap.insert("IL1", {"EMOB", cClamp::undefined});
+    m_mt310s2d->fireHotplugInterruptControllerName(infoMap);
+    TimeMachineObject::feedEventLoop();
 
-    container.startActualizeEmobControllers(getChannelPlugMask("IL1"), m_senseSettings.get(), 1000);
+    HotControllerMap controllers = container->getCurrentControllers();
+    QCOMPARE(controllers.size(), 0);
     QCOMPARE(spy.count(), 0);
-    TimeMachineForTest::getInstance()->processTimers(1000);
+
+    TimeMachineForTest::getInstance()->processTimers(WaitControllerApplicationStartIssuedByBootloader);
     QCOMPARE(spy.count(), 1);
-
-    QCOMPARE(ZeraMControllerBootloaderStopperFactoryForTest::checkEmpty(), true);
-
-    HotControllerMap controllers = container.getCurrentControllers();
+    controllers = container->getCurrentControllers();
     QCOMPARE(controllers.size(), 1);
     QVERIFY(controllers.contains(getChannelMName("IL1")));
 }
 
-void test_hotpluggablecontrollercontainer::mt310s2AddI1I2CheckSignalsImmediate()
+void test_hotpluggablecontrollercontainer::addI1I2ControllerApplicationActiveCheckSignals()
 {
-    ZeraMControllerBootloaderStopperFactoryForTest::setBootoaderAssumeAppStartedImmediates(QVector<bool>() << true << true);
+    createServers();
+    m_ctrlFactory->simulateApplicationRunnung();
+    HotPluggableControllerContainerPtr container = m_mt310s2d->getHotPluggableControllerContainer();
+    QSignalSpy spy(container.get(), &HotPluggableControllerContainer::sigControllersChanged);
 
-    m_i2cSettings->setI2cAddressesEmob(QString(), 0, 0);
-    HotPluggableControllerContainer container(m_i2cSettings.get(), m_ctrlFactory);
-    QSignalSpy spy(&container, &HotPluggableControllerContainer::sigControllersChanged);
+    AbstractMockAllServices::ChannelAliasHotplugDeviceNameMap infoMap;
+    infoMap.insert("IL1", {"EMOB", cClamp::undefined});
+    infoMap.insert("IL2", {"EMOB", cClamp::undefined});
+    m_mt310s2d->fireHotplugInterruptControllerName(infoMap);
+    TimeMachineObject::feedEventLoop();
 
-    container.startActualizeEmobControllers(getChannelPlugMask("IL1") | getChannelPlugMask("IL2"), m_senseSettings.get(), 1000);
     QCOMPARE(spy.count(), 2);
-    TestHotPlugCtrlFactoryI2cCtrl* factory = static_cast<TestHotPlugCtrlFactoryI2cCtrl*>(m_ctrlFactory.get());
-    QCOMPARE(factory->getCtrlInstanceCount(), 2);
-
-    QCOMPARE(ZeraMControllerBootloaderStopperFactoryForTest::checkEmpty(), true);
-
-    HotControllerMap controllers = container.getCurrentControllers();
+    HotControllerMap controllers = container->getCurrentControllers();
     QCOMPARE(controllers.size(), 2);
     QVERIFY(controllers.contains(getChannelMName("IL1")));
     QVERIFY(controllers.contains(getChannelMName("IL2")));
 }
 
-void test_hotpluggablecontrollercontainer::mt310s2AddI1I2CheckSignalsDelayed()
+void test_hotpluggablecontrollercontainer::addI1I2ControllerBootloaderActiveCheckSignals()
 {
-    ZeraMControllerBootloaderStopperFactoryForTest::setBootoaderAssumeAppStartedImmediates(QVector<bool>() << false << false);
+    createServers();
+    m_ctrlFactory->simulateBootloaderRunning();
+    HotPluggableControllerContainerPtr container = m_mt310s2d->getHotPluggableControllerContainer();
+    QSignalSpy spy(container.get(), &HotPluggableControllerContainer::sigControllersChanged);
 
-    m_i2cSettings->setI2cAddressesEmob(QString(), 0, 0);
-    HotPluggableControllerContainer container(m_i2cSettings.get(), m_ctrlFactory);
-    QSignalSpy spy(&container, &HotPluggableControllerContainer::sigControllersChanged);
+    AbstractMockAllServices::ChannelAliasHotplugDeviceNameMap infoMap;
+    infoMap.insert("IL1", {"EMOB", cClamp::undefined});
+    infoMap.insert("IL2", {"EMOB", cClamp::undefined});
+    m_mt310s2d->fireHotplugInterruptControllerName(infoMap);
+    TimeMachineObject::feedEventLoop();
 
-    container.startActualizeEmobControllers(getChannelPlugMask("IL1") | getChannelPlugMask("IL2"), m_senseSettings.get(), 1000);
     QCOMPARE(spy.count(), 0);
-    TimeMachineForTest::getInstance()->processTimers(1000);
-    TestHotPlugCtrlFactoryI2cCtrl* factory = static_cast<TestHotPlugCtrlFactoryI2cCtrl*>(m_ctrlFactory.get());
-    QCOMPARE(factory->getCtrlInstanceCount(), 2);
+    HotControllerMap controllers = container->getCurrentControllers();
+    QCOMPARE(controllers.size(), 0);
+
+    TimeMachineForTest::getInstance()->processTimers(WaitControllerApplicationStartIssuedByBootloader);
     QCOMPARE(spy.count(), 2);
-
-    QCOMPARE(ZeraMControllerBootloaderStopperFactoryForTest::checkEmpty(), true);
-
-    HotControllerMap controllers = container.getCurrentControllers();
+    controllers = container->getCurrentControllers();
     QCOMPARE(controllers.size(), 2);
     QVERIFY(controllers.contains(getChannelMName("IL1")));
     QVERIFY(controllers.contains(getChannelMName("IL2")));
 }
 
-void test_hotpluggablecontrollercontainer::mt310s2AddI1AndRemoveBeforeFinish()
+void test_hotpluggablecontrollercontainer::addI1ControllerBootloaderActiveAndRemoveBeforeStartApplicationFinish()
 {
-    ZeraMControllerBootloaderStopperFactoryForTest::setBootoaderAssumeAppStartedImmediates(QVector<bool>() << false);
+    createServers();
+    m_ctrlFactory->simulateBootloaderRunning();
+    HotPluggableControllerContainerPtr container = m_mt310s2d->getHotPluggableControllerContainer();
+    QSignalSpy spy(container.get(), &HotPluggableControllerContainer::sigControllersChanged);
 
-    m_i2cSettings->setI2cAddressesEmob(QString(), 0, 0);
-    HotPluggableControllerContainer container(m_i2cSettings.get(), m_ctrlFactory);
-    QSignalSpy spy(&container, &HotPluggableControllerContainer::sigControllersChanged);
+    AbstractMockAllServices::ChannelAliasHotplugDeviceNameMap infoMap;
+    infoMap.insert("IL1", {"EMOB", cClamp::undefined});
+    m_mt310s2d->fireHotplugInterruptControllerName(infoMap);
+    TimeMachineObject::feedEventLoop();
 
-    container.startActualizeEmobControllers(getChannelPlugMask("IL1"), m_senseSettings.get(), 1000);
     QCOMPARE(spy.count(), 0);
-    TimeMachineForTest::getInstance()->processTimers(500);
-    container.startActualizeEmobControllers(0, m_senseSettings.get(), 1000);
-    TimeMachineForTest::getInstance()->processTimers(1000);
+    TimeMachineForTest::getInstance()->processTimers(WaitControllerApplicationStartIssuedByBootloader/2);
     QCOMPARE(spy.count(), 0);
-    TestHotPlugCtrlFactoryI2cCtrl* factory = static_cast<TestHotPlugCtrlFactoryI2cCtrl*>(m_ctrlFactory.get());
-    QCOMPARE(factory->getCtrlInstanceCount(), 0);
-    QCOMPARE(ZeraMControllerBootloaderStopperFactoryForTest::checkEmpty(), true);
 
-    HotControllerMap controllers = container.getCurrentControllers();
+    infoMap.clear();
+    m_mt310s2d->fireHotplugInterruptControllerName(infoMap);
+    TimeMachineObject::feedEventLoop();
+
+    TimeMachineForTest::getInstance()->processTimers(WaitControllerApplicationStartIssuedByBootloader);
+    QCOMPARE(spy.count(), 0);
+    HotControllerMap controllers = container->getCurrentControllers();
     QCOMPARE(controllers.size(), 0);
 }
 
-void test_hotpluggablecontrollercontainer::mt310s2AddI1AndAddI2BeforeFinish()
+void test_hotpluggablecontrollercontainer::addI1ControllerBootloaderActiveAndAddI2ControllerBeforeI1StartApplicationFinish()
 {
-    ZeraMControllerBootloaderStopperFactoryForTest::setBootoaderAssumeAppStartedImmediates(QVector<bool>() << false << false);
+    createServers();
+    m_ctrlFactory->simulateBootloaderRunning();
+    HotPluggableControllerContainerPtr container = m_mt310s2d->getHotPluggableControllerContainer();
+    QSignalSpy spy(container.get(), &HotPluggableControllerContainer::sigControllersChanged);
 
-    m_i2cSettings->setI2cAddressesEmob(QString(), 0, 0);
-    HotPluggableControllerContainer container(m_i2cSettings.get(), m_ctrlFactory);
-    QSignalSpy spy(&container, &HotPluggableControllerContainer::sigControllersChanged);
-
-    container.startActualizeEmobControllers(getChannelPlugMask("IL1"), m_senseSettings.get(), 1000);
+    AbstractMockAllServices::ChannelAliasHotplugDeviceNameMap infoMap;
+    infoMap.insert("IL1", {"EMOB", cClamp::undefined});
+    m_mt310s2d->fireHotplugInterruptControllerName(infoMap);
+    TimeMachineObject::feedEventLoop();
     QCOMPARE(spy.count(), 0);
     
-    TestHotPlugCtrlFactoryI2cCtrl* factory = static_cast<TestHotPlugCtrlFactoryI2cCtrl*>(m_ctrlFactory.get());
-    QCOMPARE(factory->getCtrlInstanceCount(), 0);
+    HotControllerMap controllers = container->getCurrentControllers();
+    QCOMPARE(controllers.size(), 0);
 
-    TimeMachineForTest::getInstance()->processTimers(500); // 500
-    container.startActualizeEmobControllers(getChannelPlugMask("IL1") | getChannelPlugMask("IL2"), m_senseSettings.get(), 1000);
+    TimeMachineForTest::getInstance()->processTimers(WaitControllerApplicationStartIssuedByBootloader/2); // 0.5
+    infoMap.insert("IL2", {"EMOB", cClamp::undefined});
+    m_mt310s2d->fireHotplugInterruptControllerName(infoMap);
+    TimeMachineObject::feedEventLoop();
     QCOMPARE(spy.count(), 0);
-    QCOMPARE(factory->getCtrlInstanceCount(), 0);
+    controllers = container->getCurrentControllers();
+    QCOMPARE(controllers.size(), 0);
 
-    TimeMachineForTest::getInstance()->processTimers(500); // 1000
+    TimeMachineForTest::getInstance()->processTimers(WaitControllerApplicationStartIssuedByBootloader/2); // 1
     QCOMPARE(spy.count(), 1);
-    QCOMPARE(factory->getCtrlInstanceCount(), 1);
+    controllers = container->getCurrentControllers();
+    QCOMPARE(controllers.size(), 1);
 
-    TimeMachineForTest::getInstance()->processTimers(500); // 1500
+    TimeMachineForTest::getInstance()->processTimers(WaitControllerApplicationStartIssuedByBootloader/2); // 1.5
     QCOMPARE(spy.count(), 2);
-    QCOMPARE(factory->getCtrlInstanceCount(), 2);
-
-    QCOMPARE(ZeraMControllerBootloaderStopperFactoryForTest::checkEmpty(), true);
-
-    HotControllerMap controllers = container.getCurrentControllers();
+    controllers = container->getCurrentControllers();
     QCOMPARE(controllers.size(), 2);
+
     QVERIFY(controllers.contains(getChannelMName("IL1")));
     QVERIFY(controllers.contains(getChannelMName("IL2")));
 }
 
-void test_hotpluggablecontrollercontainer::mt310s2AddClampNoController()
+void test_hotpluggablecontrollercontainer::clampControllerSequence()
 {
-    // use m_mt310s2d->fireHotplugInterruptControllerName in here
     createServers();
     HotPluggableControllerContainerPtr container = m_mt310s2d->getHotPluggableControllerContainer();
     QSignalSpy spy(container.get(), &HotPluggableControllerContainer::sigControllersChanged);
@@ -392,7 +438,8 @@ quint8 test_hotpluggablecontrollercontainer::getChannelMuxChannel(const QString 
 void test_hotpluggablecontrollercontainer::createServers()
 {
     VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory = VeinTcp::MockTcpNetworkFactory::create();
+    m_ctrlFactory = std::make_shared<TestHotPlugCtrlFactoryI2cCtrl>(m_i2cSettings.get());
     m_resman = std::make_unique<ResmanRunFacade>(tcpNetworkFactory);
-    m_mt310s2d = std::make_unique<MockMt310s2d>(std::make_shared<TestFactoryI2cCtrl>(true), tcpNetworkFactory, "mt310s2d");
+    m_mt310s2d = std::make_unique<MockMt310s2d>(m_ctrlFactory, tcpNetworkFactory, "mt310s2d");
     TimeMachineObject::feedEventLoop();
 }

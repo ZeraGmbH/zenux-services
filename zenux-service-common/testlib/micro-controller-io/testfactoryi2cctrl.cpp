@@ -24,6 +24,16 @@ void TestFactoryI2cCtrl::setRangeGetSetDelay(int rangeGetSetDelay)
     m_rangeGetSetDelay = rangeGetSetDelay;
 }
 
+void TestFactoryI2cCtrl::simulateApplicationRunnung()
+{
+    m_controllerRunState = APPLICATION_RUNNING;
+}
+
+void TestFactoryI2cCtrl::simulateBootloaderRunning()
+{
+    m_controllerRunState = BOOTLOADER_RUNNING;
+}
+
 AbstractCtrlHeartbeatWaitPtr TestFactoryI2cCtrl::createCtrlHeartbeatWait(QString devnode)
 {
     Q_UNUSED(devnode)
@@ -91,6 +101,6 @@ I2cCtrlEMOBPtr TestFactoryI2cCtrl::getEmobController(quint8 muxChannel)
 
 I2cCtrlBootloaderPtr TestFactoryI2cCtrl::getBootloaderController()
 {
-    return std::make_unique<MockI2cCtrlBootloader>();
+    return std::make_unique<MockI2cCtrlBootloader>(m_controllerRunState == BOOTLOADER_RUNNING);
 }
 

@@ -51,6 +51,7 @@ public:
 
     void MTIntHandler(int);
     HotPluggableControllerContainerPtr getHotPluggableControllerContainer();
+    cClampInterface* getClampInterface() const;
 
 signals:
     void abortInit();

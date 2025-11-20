@@ -33,7 +33,6 @@ SETUP_SERVICE_COMMON_TESTS(
     test_emob_lock
     test_read_versions
     test_booloaderstopper
-    test_bootloaderstopperfactoryfortest
     test_instrument_error_status
     test_firmwareupdatenotificationfile
     )

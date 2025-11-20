@@ -1,6 +1,6 @@
 #include "test_booloaderstopper.h"
-#include "zeramcontrollerbootloaderstopper.h"
-#include "zeramcontrolleriofortest.h"
+#include "testfactoryi2cctrl.h"
+#include "i2cctlbootloaderstopper.h"
 #include <timemachinefortest.h>
 #include <timerfactoryqtfortest.h>
 #include <QSignalSpy>
@@ -16,10 +16,12 @@ void test_booloaderstopper::init()
 
 void test_booloaderstopper::applicationRunning()
 {
-    std::shared_ptr<ZeraMcontrollerIoForTest> i2cCtrl = std::make_shared<ZeraMcontrollerIoForTest>("foo", 1, 2);
-    i2cCtrl->simulateApplicationRunnung();
-    ZeraMControllerBootloaderStopper stopper(i2cCtrl, 42);
-    QSignalSpy spy(&stopper, &ZeraMControllerBootloaderStopper::sigAssumeBootloaderStopped);
+    TestFactoryI2cCtrlPtr ctrlFactory = std::make_shared<TestFactoryI2cCtrl>(true);
+    ctrlFactory->simulateApplicationRunnung();
+
+    I2cCtlBootloaderStopper stopper(ctrlFactory, 42);
+    QSignalSpy spy(&stopper, &I2cCtlBootloaderStopper::sigAssumeBootloaderStopped);
+
     // Application running: notify immediately
     stopper.stopBootloader(1000);
     QCOMPARE(spy.count(), 1);
@@ -29,10 +31,11 @@ void test_booloaderstopper::applicationRunning()
 
 void test_booloaderstopper::bootloaderRunning()
 {
-    std::shared_ptr<ZeraMcontrollerIoForTest> i2cCtrl = std::make_shared<ZeraMcontrollerIoForTest>("foo", 1, 2);
-    i2cCtrl->simulateBooloaderRunning();
-    ZeraMControllerBootloaderStopper stopper(i2cCtrl, 67);
-    QSignalSpy spy(&stopper, &ZeraMControllerBootloaderStopper::sigAssumeBootloaderStopped);
+    TestFactoryI2cCtrlPtr ctrlFactory = std::make_shared<TestFactoryI2cCtrl>(true);
+    ctrlFactory->simulateBootloaderRunning();
+    I2cCtlBootloaderStopper stopper(ctrlFactory, 67);
+    QSignalSpy spy(&stopper, &I2cCtlBootloaderStopper::sigAssumeBootloaderStopped);
+
     // Bootloader running: notify after delay
     stopper.stopBootloader(1000);
     QCOMPARE(spy.count(), 0);

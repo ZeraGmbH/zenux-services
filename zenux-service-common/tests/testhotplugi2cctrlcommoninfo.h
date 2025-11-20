@@ -7,8 +7,7 @@
 class TestHotplugI2cCtrlCommonInfo : public AbstractI2cCtrlCommonInfo
 {
 public:
-    TestHotplugI2cCtrlCommonInfo(I2cSettings *i2cSettings, quint8 muxChannel, bool responding, int &instanceCount);
-    ~TestHotplugI2cCtrlCommonInfo();
+    TestHotplugI2cCtrlCommonInfo(I2cSettings *i2cSettings, quint8 muxChannel);
     ZeraMControllerIo::atmelRM readCTRLVersion(QString&) override;
     virtual ZeraMControllerIo::atmelRM readPCBInfo(QString&) override;
 
@@ -20,8 +19,6 @@ public:
 private:
     I2cSettings *m_i2cSettings;
     quint8 m_muxChannel;
-    bool m_responding;
-    int &m_instanceCount;
 };
 
 #endif // TESTHOTPLUGI2CCTRLCOMMONINFO_H

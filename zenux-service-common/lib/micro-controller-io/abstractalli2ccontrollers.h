@@ -5,6 +5,8 @@
 #include <zeramcontrollerio.h>
 #include <memory>
 
+static constexpr int WaitControllerApplicationStartIssuedByBootloader = 10000;
+
 class AbstractI2cCtrlCriticalStatus
 {
 public:
