@@ -1,18 +1,18 @@
 #include "testfactoryi2cctrl.h"
-#include "mockctrlheartbeatwait.h"
-#include "mocki2cctrlbootloader.h"
+#include "controllerpersitentdata.h"
+#include "testi2cctrlbootloader.h"
 #include "testi2cctrlemob.h"
 #include "testi2cctrlaccu.h"
 #include "testi2cctrlcommoninfo.h"
-#include "mocki2cctrlcriticalstatus.h"
 #include "testi2cctrlranges.h"
-#include "mocki2cctrlmmode.h"
 #include "testi2cctrlpll.h"
-#include "mocki2cctrlclampstatus.h"
 #include "testi2cctrldeviceident.h"
 #include "testi2cctrleeprompermission.h"
 #include "testi2cctrlcputemperature.h"
-#include "controllerpersitentdata.h"
+#include "mockctrlheartbeatwait.h"
+#include "mocki2cctrlcriticalstatus.h"
+#include "mocki2cctrlmmode.h"
+#include "mocki2cctrlclampstatus.h"
 
 TestFactoryI2cCtrl::TestFactoryI2cCtrl(bool initialPermission)
 {
@@ -99,8 +99,7 @@ I2cCtrlEMOBPtr TestFactoryI2cCtrl::getEmobController(quint8 muxChannel)
     return std::make_unique<TestI2cCtrlEMOB>(muxChannel);
 }
 
-I2cCtrlBootloaderPtr TestFactoryI2cCtrl::getBootloaderController()
+I2cCtrlBootloaderPtr TestFactoryI2cCtrl::getBootloaderController(ControllerTypes ctrlType, quint8 muxChannel)
 {
-    return std::make_unique<MockI2cCtrlBootloader>(m_controllerRunState == BOOTLOADER_RUNNING);
+    return std::make_unique<TestI2cCtrlBootloader>(ctrlType, muxChannel, m_controllerRunState == BOOTLOADER_RUNNING);
 }
-

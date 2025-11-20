@@ -1,9 +1,9 @@
 #include "demofactoryi2cctrl.h"
 #include "controllertypename.h"
 #include "demoi2cctrlemob.h"
+#include "demoi2cctrlbootloader.h"
 #include "mocki2cctrlcommoninfo.h"
 #include "mockctrlheartbeatwait.h"
-#include "mocki2cctrlbootloader.h"
 #include "mocki2cctrlcommoninfo.h"
 #include "mocki2cctrlcriticalstatus.h"
 #include "demoi2cctrleeprompermission.h"
@@ -89,8 +89,9 @@ I2cCtrlEMOBPtr DemoFactoryI2cCtrl::getEmobController(quint8 muxChannel)
     return std::make_unique<DemoI2cCtrlEMOB>();
 }
 
-I2cCtrlBootloaderPtr DemoFactoryI2cCtrl::getBootloaderController()
+I2cCtrlBootloaderPtr DemoFactoryI2cCtrl::getBootloaderController(ControllerTypes ctrlType, quint8 muxChannel)
 {
-    return std::make_unique<MockI2cCtrlBootloader>();
+    Q_UNUSED(ctrlType)
+    Q_UNUSED(muxChannel)
+    return std::make_unique<DemoI2cCtrlBootloader>();
 }
-

@@ -1,6 +1,5 @@
 #include "hotpluggablecontrollercontainer.h"
-#include "i2cmultiplexerfactory.h"
-#include <i2cmuxerscopedonoff.h>
+#include "emobdefinitions.h"
 
 HotPluggableControllerContainer::HotPluggableControllerContainer(I2cSettings *i2cSettings, AbstractFactoryI2cCtrlPtr ctrlFactory) :
     m_i2cSettings(i2cSettings),
@@ -47,19 +46,20 @@ HotControllerMap HotPluggableControllerContainer::getCurrentControllers()
     return ctrlMap;
 }
 
-ControllerTypes HotPluggableControllerContainer::getControllerType(const QString &subInstrumentReceived)
+EmobControllerTypes HotPluggableControllerContainer::getEmobControllerType(const QString &subInstrumentReceived)
 {
     if(subInstrumentReceived.contains("MT650e"))
         return MT650e;
     return EMOB;
 }
 
-void HotPluggableControllerContainer::startAddingController(int ctrlChannel, SenseSystem::cChannelSettings* channelSettings, int msWaitForApplicationStart)
+void HotPluggableControllerContainer::startAddingController(int ctrlChannel,
+                                                            SenseSystem::cChannelSettings* channelSettings,
+                                                            int msWaitForApplicationStart)
 {
-    I2cMuxerScopedOnOff i2cMuxer(I2cMultiplexerFactory::createPCA9547Muxer(m_i2cSettings->getDeviceNode(),
-                                                                           m_i2cSettings->getI2CAdress(i2cSettings::muxerI2cAddress),
-                                                                           channelSettings->m_nMuxChannelNo));
-    I2cCtlBootloaderStopperPtr bootStopper = std::make_shared<I2cCtlBootloaderStopper>(m_ctrlFactory, ctrlChannel);
+    I2cCtlBootloaderStopperPtr bootStopper = std::make_shared<I2cCtlBootloaderStopper>(m_ctrlFactory,
+                                                                                       ctrlChannel,
+                                                                                       channelSettings->m_nMuxChannelNo);
     connect(bootStopper.get(), &I2cCtlBootloaderStopper::sigAssumeBootloaderStopped,
             this, &HotPluggableControllerContainer::onBootloaderStopAssumed);
     m_pendingBootloaderStoppers[ctrlChannel] =
@@ -97,7 +97,7 @@ void HotPluggableControllerContainer::onBootloaderStopAssumed(int ctrlChannel)
                     qInfo("Instrument type read: '%s'", qPrintable(instrumentSubType));
                     HotControllers controllers{commonCtrl, emobCtrl, EMOBUnknown};
                     m_controllers[ctrlChannel] = {channelInfo.channelMName, controllers};
-                    m_controllers[ctrlChannel].controllers.m_controllerType = getControllerType(instrumentSubType);
+                    m_controllers[ctrlChannel].controllers.m_controllerType = getEmobControllerType(instrumentSubType);
                     emit sigControllersChanged();
                 }
             }

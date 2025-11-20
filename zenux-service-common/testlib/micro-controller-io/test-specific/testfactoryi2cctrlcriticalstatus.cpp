@@ -1,17 +1,17 @@
 #include "testfactoryi2cctrlcriticalstatus.h"
 #include "controllertypename.h"
+#include "testi2cctrlbootloader.h"
+#include "testi2cctrlemob.h"
+#include "testi2cctrlpll.h"
 #include "mocki2cctrlcommoninfo.h"
 #include "mockctrlheartbeatwait.h"
-#include "mocki2cctrlbootloader.h"
 #include "mocki2cctrlcommoninfo.h"
 #include "mocki2cctrlcriticalstatus.h"
 #include "demoi2cctrleeprompermission.h"
 #include "demoi2cctrlaccu.h"
 #include "demoi2cctrldeviceident.h"
 #include "demoi2cctrlranges.h"
-#include "testi2cctrlemob.h"
 #include "mocki2cctrlmmode.h"
-#include "testi2cctrlpll.h"
 #include "mocki2cctrlclampstatus.h"
 #include "demoi2cctrlcputemperature.h"
 
@@ -87,7 +87,7 @@ I2cCtrlCpuTemperaturePtr TestFactoryI2cCtrlCriticalStatus::getCpuTemperatureCont
     return std::make_unique<DemoI2cCtrlCpuTemperature>();
 }
 
-I2cCtrlBootloaderPtr TestFactoryI2cCtrlCriticalStatus::getBootloaderController()
+I2cCtrlBootloaderPtr TestFactoryI2cCtrlCriticalStatus::getBootloaderController(ControllerTypes ctrlType, quint8 muxChannel)
 {
-    return std::make_unique<MockI2cCtrlBootloader>();
+    return std::make_unique<TestI2cCtrlBootloader>(ctrlType, muxChannel);
 }

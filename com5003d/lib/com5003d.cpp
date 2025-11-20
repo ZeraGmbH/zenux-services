@@ -224,29 +224,25 @@ void cCOM5003dServer::programAtmelFlash()
 
             // and start writing flash
             cIntelHexFileIO IntelHexData;
-            if (IntelHexData.ReadHexFile(atmelFlashfilePath))
-            {
-               qInfo("Writing %s to atmel...", atmelFlashfilePath);
-                if (m_ctrlFactory->getBootloaderController()->bootloaderLoadFlash(IntelHexData) == ZeraMControllerIo::cmddone)
-               {
-                   qInfo("Programming atmel passed");
+            if (IntelHexData.ReadHexFile(atmelFlashfilePath)) {
+                qInfo("Writing %s to atmel...", atmelFlashfilePath);
+                I2cCtrlBootloaderPtr bootloader = m_ctrlFactory->getBootloaderController(AbstractFactoryI2cCtrl::CTRL_TYPE_RELAIS);
+                if (bootloader->bootloaderLoadFlash(IntelHexData) == ZeraMControllerIo::cmddone) {
+                    qInfo("Programming atmel passed");
+                    // we must restart atmel now
+                    if (bootloader->bootloaderStartProgram() == ZeraMControllerIo::cmddone) {
+                        qInfo("Restart atmel after programming done");
+                        // once the job is done, we remove the file
+                        if(!atmelFile.remove())
+                            qCritical("Error deleting %s", atmelFlashfilePath);
 
-                   // we must restart atmel now
-                   if (m_ctrlFactory->getBootloaderController()->bootloaderStartProgram() == ZeraMControllerIo::cmddone)
-                   {
-                       qInfo("Restart atmel after programming done");
-                       // once the job is done, we remove the file
-                       if(!atmelFile.remove())
-                           qCritical("Error deleting %s", atmelFlashfilePath);
-
-                       emit atmelProgrammed();
-                   }
-                   else
-                   {
-                       qCritical("Restart atmel after programming failed");
-                       emit abortInit();
-                   }
-               }
+                        emit atmelProgrammed();
+                    }
+                    else {
+                        qCritical("Restart atmel after programming failed");
+                        emit abortInit();
+                    }
+                }
                else
                {
                    qCritical("Error writing atmel flash");

@@ -18,7 +18,7 @@ public:
     void fireHotplugInterrupt(const QStringList &channelAliases); // Add controllers only - no clamps
     void fireHotplugInterruptControllerName(const AbstractMockAllServices::ChannelAliasHotplugDeviceNameMap &infoMap);
     HotPluggableControllerContainerPtr getHotPluggableControllerContainer();
-
+    cClampInterface* getClampInterface() const;
 
 private slots:
     void onSimulGuiHotplugDevChanged(int channelIndex, bool active);

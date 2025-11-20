@@ -12,6 +12,8 @@ public:
     void simulateBootloaderRunning();
 
     AbstractCtrlHeartbeatWaitPtr createCtrlHeartbeatWait(QString devnode) override;
+    I2cCtrlBootloaderPtr getBootloaderController(ControllerTypes ctrlType, quint8 muxChannel = -1) override;
+
     I2cCtrlCriticalStatusPtr getCriticalStatusController() override;
     I2cCtrlEepromPermissionPtr getPermissionCheckController() override;
     I2cCtrlCommonInfoPtrUnique getCommonInfoController(ControllerTypes ctrlType, quint8 muxChannel = -1) override;
@@ -23,7 +25,6 @@ public:
     I2cCtrlClampStatusPtr getClampStatusController() override;
     I2cCtrlCpuTemperaturePtr getCpuTemperatureController() override;
     I2cCtrlEMOBPtr getEmobController(quint8 muxChannel) override;
-    I2cCtrlBootloaderPtr getBootloaderController() override;
 private:
     int m_rangeGetSetDelay = 0;
     enum ControllerRunState {

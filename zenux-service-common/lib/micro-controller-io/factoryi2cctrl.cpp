@@ -2,6 +2,7 @@
 #include "ctrlheartbeatwait.h"
 #include "i2cctrlaccu.h"
 #include "i2cctrlbootloader.h"
+#include "i2cctrlbootloaderonmux.h"
 #include "i2cctrlclampstatus.h"
 #include "i2cctrlcommoninfo.h"
 #include "i2cctrlcommoninfoaccu.h"
@@ -63,6 +64,27 @@ I2cCtrlCommonInfoPtrUnique FactoryI2cCtrl::getCommonInfoController(ControllerTyp
     }
 }
 
+I2cCtrlBootloaderPtr FactoryI2cCtrl::getBootloaderController(ControllerTypes ctrlType, quint8 muxChannel)
+{
+    switch(ctrlType) {
+    case CTRL_TYPE_RELAIS:
+        return std::make_unique<I2cCtrlBootloader>(m_deviceNode, getRelaisCtrlI2cAddress(), m_debugLevel);
+
+    case CTRL_TYPE_SYSTEM:
+        return std::make_unique<I2cCtrlBootloader>(m_deviceNode, getSystemCtrlI2cAddress(), m_debugLevel);
+        break;
+
+    case CTRL_TYPE_EMOB:
+        return std::make_unique<I2cCtrlBootloaderOnMux>(m_deviceNode, getEmobCtrlI2cAddress(),
+                                                        getEmobMuxI2cAddress(), muxChannel,
+                                                        0); // i2c error can occure if clamp is connected
+        break;
+    default:
+        qFatal("Controller type %i does not support bootloader", ctrlType);
+        return nullptr;
+    }
+}
+
 I2cCtrlDeviceIdentPtr FactoryI2cCtrl::getDeviceIdentController()
 {
     return std::make_unique<I2cCtrlDeviceIdent>(m_deviceNode, getRelaisCtrlI2cAddress(), m_debugLevel);
@@ -103,11 +125,6 @@ I2cCtrlEMOBPtr FactoryI2cCtrl::getEmobController(quint8 muxChannel)
     return std::make_shared<I2cCtrlEMOB>(m_deviceNode, getEmobCtrlI2cAddress(),
                                          getEmobMuxI2cAddress(), muxChannel,
                                          m_debugLevel);
-}
-
-I2cCtrlBootloaderPtr FactoryI2cCtrl::getBootloaderController()
-{
-    return std::make_unique<I2cCtrlBootloader>(m_deviceNode, getRelaisCtrlI2cAddress(), m_debugLevel);
 }
 
 quint8 FactoryI2cCtrl::getRelaisCtrlI2cAddress()

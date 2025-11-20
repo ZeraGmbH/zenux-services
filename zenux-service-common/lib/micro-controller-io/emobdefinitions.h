@@ -3,7 +3,7 @@
 
 // A full list is found at CPU5975/Ausstattungsmerkmale.h. We don't need to
 // know all the details. So reduce types to our needs:
-enum ControllerTypes {
+enum EmobControllerTypes {
     EMOBUnknown,
     EMOB,
     MT650e

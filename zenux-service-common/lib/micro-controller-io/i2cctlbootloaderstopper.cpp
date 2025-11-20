@@ -1,15 +1,21 @@
 #include "i2cctlbootloaderstopper.h"
 
-I2cCtlBootloaderStopper::I2cCtlBootloaderStopper(AbstractFactoryI2cCtrlPtr ctrlFactory, int channelId) :
+I2cCtlBootloaderStopper::I2cCtlBootloaderStopper(AbstractFactoryI2cCtrlPtr ctrlFactory,
+                                                 int channelId,
+                                                 quint8 muxChannel,
+                                                 AbstractFactoryI2cCtrl::ControllerTypes ctrlType) :
     m_ctrlFactory(ctrlFactory),
-    m_channelId(channelId)
+    m_channelId(channelId),
+    m_ctrlType(ctrlType),
+    m_muxChannel(muxChannel)
 {
 }
 
 void I2cCtlBootloaderStopper::stopBootloader(int msWaitForApplicationStart)
 {
     if(!m_bootloaderStopped && !m_appStartTimer) {
-        ZeraMControllerIoTemplate::atmelRM result = m_ctrlFactory->getBootloaderController()->bootloaderStartProgram();
+        I2cCtrlBootloaderPtr bootloader = m_ctrlFactory->getBootloaderController(m_ctrlType, m_muxChannel);
+        ZeraMControllerIoTemplate::atmelRM result = bootloader->bootloaderStartProgram();
         if(result == ZeraMControllerIoTemplate::cmddone) {
             qInfo("Stopping bootloader succeeded - wait %fs for app startup...", float(msWaitForApplicationStart/1000));
             m_appStartTimer = TimerFactoryQt::createSingleShot(msWaitForApplicationStart);

@@ -15,7 +15,7 @@ struct HotControllers
 {
     I2cCtrlCommonInfoPtrShared m_commonController;
     I2cCtrlEMOBPtr m_emobController;
-    ControllerTypes m_controllerType;
+    EmobControllerTypes m_controllerType;
 };
 typedef QMap<QString /*channelMName*/, HotControllers> HotControllerMap;
 
@@ -26,7 +26,7 @@ public:
     HotPluggableControllerContainer(I2cSettings *i2cSettings, AbstractFactoryI2cCtrlPtr ctrlFactory);
     void startActualizeEmobControllers(quint16 bitmaskAvailable, const cSenseSettings* senseSettings, int msWaitForApplicationStart);
     HotControllerMap getCurrentControllers();
-    static ControllerTypes getControllerType(const QString &subInstrumentReceived);
+    static EmobControllerTypes getEmobControllerType(const QString &subInstrumentReceived);
 signals:
     void sigControllersChanged();
 
