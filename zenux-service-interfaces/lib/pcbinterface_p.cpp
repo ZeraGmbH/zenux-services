@@ -591,26 +591,6 @@ quint32 cPCBInterfacePrivate::setClampAdjustmentData(QString xmlclamp)
     return msgnr;
 }
 
-quint32 cPCBInterfacePrivate::activatePushButton()
-{
-    QString cmd;
-    quint32 msgnr;
-
-    msgnr = sendCommand(cmd = QString("SYST:EMOB:PBPR;"));
-    m_MsgNrCmdList[msgnr] = PCB::activatepushbutton;
-    return msgnr;
-}
-
-quint32 cPCBInterfacePrivate::readEmobConnState()
-{
-    QString cmd;
-    quint32 msgnr;
-
-    msgnr = sendCommand(cmd = QString("SYST:EMOB:LOCKST?"));
-    m_MsgNrCmdList[msgnr] = PCB::reademoblockstate;
-    return msgnr;
-}
-
 quint32 cPCBInterfacePrivate::readChannelsConnected()
 {
     QString cmd;
@@ -772,7 +752,6 @@ void cPCBInterfacePrivate::receiveAnswer(std::shared_ptr<ProtobufMessage::NetMes
         case PCB::getauthorizationstatus:
         case PCB::getaccumulatorstatus:
         case PCB::getaccumulatorsoc:
-        case PCB::reademoblockstate:
             emit q->serverAnswer(decodedAnswer.msgNr, decodedAnswer.reply, VariantConverter::returnInt(decodedAnswer.msgBody));
             break;
 
@@ -843,7 +822,6 @@ void cPCBInterfacePrivate::receiveAnswer(std::shared_ptr<ProtobufMessage::NetMes
         case PCB::setadjustpcbxml:
         case PCB::setadjustclampxml:
         case PCB::setserialnumber:
-        case PCB::activatepushbutton:
         case PCB::getChannelsConnected:
             emit q->serverAnswer(decodedAnswer.msgNr, decodedAnswer.reply, VariantConverter::returnString(decodedAnswer.msgBody));
             break;

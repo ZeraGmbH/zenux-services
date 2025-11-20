@@ -100,9 +100,6 @@ public:
     quint32 setPCBAdjustmentData(QString xmlpcb);
     quint32 getClampAdjustmentData();
     quint32 setClampAdjustmentData(QString xmlclamp);
-    quint32 activatePushButton();
-    // for value returned see enum reademoblockstate
-    quint32 readEmobConnectionState();
 
     // all commands to accumulator interface
     quint32 getAccumulatorStatus();
