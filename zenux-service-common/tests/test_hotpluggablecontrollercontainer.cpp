@@ -28,10 +28,10 @@ void test_hotpluggablecontrollercontainer::initTestCase_data()
 void test_hotpluggablecontrollercontainer::init()
 {
     QFETCH_GLOBAL(QString, serviceNameForAlternateDevice);
-    m_i2cSettings = std::make_unique<TestI2cSettings>(&m_configReader);
-    m_senseSettings = std::make_unique<cSenseSettings>(&m_configReader, 8 /*mt310s2*/);
+    m_i2cSettings = std::make_shared<TestI2cSettings>(&m_configReader);
+    m_senseSettings = std::make_shared<cSenseSettings>(&m_configReader, 8 /*mt310s2*/);
 
-    m_ctrlFactory = std::make_shared<TestHotPlugCtrlFactoryI2cCtrl>(m_i2cSettings.get());
+    m_ctrlFactory = std::make_shared<TestHotPlugCtrlFactoryI2cCtrl>(m_i2cSettings, m_senseSettings);
     connect(&m_configReader, &Zera::XMLConfig::cReader::valueChanged,
             m_i2cSettings.get(), &I2cSettings::configXMLInfo);
     connect(&m_configReader, &Zera::XMLConfig::cReader::valueChanged,
@@ -438,7 +438,6 @@ quint8 test_hotpluggablecontrollercontainer::getChannelMuxChannel(const QString 
 void test_hotpluggablecontrollercontainer::createServers()
 {
     VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory = VeinTcp::MockTcpNetworkFactory::create();
-    m_ctrlFactory = std::make_shared<TestHotPlugCtrlFactoryI2cCtrl>(m_i2cSettings.get());
     m_resman = std::make_unique<ResmanRunFacade>(tcpNetworkFactory);
     m_mt310s2d = std::make_unique<MockMt310s2d>(m_ctrlFactory, tcpNetworkFactory, "mt310s2d");
     TimeMachineObject::feedEventLoop();

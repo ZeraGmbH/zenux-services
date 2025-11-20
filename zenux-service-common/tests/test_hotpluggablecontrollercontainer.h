@@ -2,7 +2,7 @@
 #define TEST_HOTPLUGGABLECONTROLLERCONTAINER_H
 
 #include "mockmt310s2d.h"
-#include "testfactoryi2cctrl.h"
+#include "testhotplugctrlfactoryi2cctrl.h"
 #include "testi2csettings.h"
 #include "sensesettings.h"
 #include <resmanrunfacade.h>
@@ -39,10 +39,10 @@ private:
     quint8 getChannelMuxChannel(const QString &channelAlias);
     void createServers();
     Zera::XMLConfig::cReader m_configReader;
-    std::unique_ptr<TestI2cSettings> m_i2cSettings;
-    std::unique_ptr<cSenseSettings> m_senseSettings;
+    std::shared_ptr<TestI2cSettings> m_i2cSettings;
+    std::shared_ptr<cSenseSettings> m_senseSettings;
 
-    TestFactoryI2cCtrlPtr m_ctrlFactory;
+    TestHotPlugCtrlFactoryI2cCtrlPtr m_ctrlFactory;
     std::unique_ptr<ResmanRunFacade> m_resman;
     std::unique_ptr<MockMt310s2d> m_mt310s2d;
 

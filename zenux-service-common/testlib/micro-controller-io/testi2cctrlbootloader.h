@@ -6,9 +6,7 @@
 class TestI2cCtrlBootloader : public AbstractI2cCtrlBootloader
 {
 public:
-    TestI2cCtrlBootloader(AbstractFactoryI2cCtrl::ControllerTypes ctrlType,
-                          quint8 muxChannel,
-                          bool replyOnBootloaderCommands = true);
+    TestI2cCtrlBootloader(bool replyOnBootloaderCommands = true);
     ZeraMControllerIo::atmelRM bootloaderStartProgram() override;
     ZeraMControllerIo::atmelRM bootloaderLoadFlash(cIntelHexFileIO& ihxFIO) override;
 private:

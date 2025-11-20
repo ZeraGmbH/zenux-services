@@ -101,5 +101,7 @@ I2cCtrlEMOBPtr TestFactoryI2cCtrl::getEmobController(quint8 muxChannel)
 
 I2cCtrlBootloaderPtr TestFactoryI2cCtrl::getBootloaderController(ControllerTypes ctrlType, quint8 muxChannel)
 {
-    return std::make_unique<TestI2cCtrlBootloader>(ctrlType, muxChannel, m_controllerRunState == BOOTLOADER_RUNNING);
+    Q_UNUSED(ctrlType)
+    Q_UNUSED(muxChannel)
+    return std::make_unique<TestI2cCtrlBootloader>(m_controllerRunState == BOOTLOADER_RUNNING);
 }

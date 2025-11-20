@@ -39,8 +39,9 @@ SETUP_SERVICE_COMMON_TESTS(
 
 target_sources(test_hotpluggablecontrollercontainer
   PRIVATE
-  testhotplugi2cctrlcommoninfo.cpp testhotplugi2cctrlcommoninfo.h
+    testhotplugi2cctrlcommoninfo.cpp testhotplugi2cctrlcommoninfo.h
     testhotplugctrlfactoryi2cctrl.cpp testhotplugctrlfactoryi2cctrl.h
+    testhotplugi2cctrlbootloader.h testhotplugi2cctrlbootloader.cpp
 )
 
 target_sources(test_accumulatorinterface_mock

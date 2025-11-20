@@ -1,8 +1,6 @@
 #include "testi2cctrlbootloader.h"
 
-TestI2cCtrlBootloader::TestI2cCtrlBootloader(AbstractFactoryI2cCtrl::ControllerTypes ctrlType,
-                                             quint8 muxChannel,
-                                             bool replyOnBootloaderCommands) :
+TestI2cCtrlBootloader::TestI2cCtrlBootloader(bool replyOnBootloaderCommands) :
     m_replyOnBootloaderCommands(replyOnBootloaderCommands)
 {
 }

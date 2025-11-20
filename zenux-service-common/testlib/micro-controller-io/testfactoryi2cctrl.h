@@ -25,13 +25,15 @@ public:
     I2cCtrlClampStatusPtr getClampStatusController() override;
     I2cCtrlCpuTemperaturePtr getCpuTemperatureController() override;
     I2cCtrlEMOBPtr getEmobController(quint8 muxChannel) override;
-private:
-    int m_rangeGetSetDelay = 0;
+
+protected:
     enum ControllerRunState {
         BOOTLOADER_RUNNING,
         APPLICATION_RUNNING
     };
     ControllerRunState m_controllerRunState = APPLICATION_RUNNING;
+private:
+    int m_rangeGetSetDelay = 0;
 };
 
 typedef std::shared_ptr<TestFactoryI2cCtrl> TestFactoryI2cCtrlPtr;

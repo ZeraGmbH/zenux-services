@@ -89,5 +89,7 @@ I2cCtrlCpuTemperaturePtr TestFactoryI2cCtrlCriticalStatus::getCpuTemperatureCont
 
 I2cCtrlBootloaderPtr TestFactoryI2cCtrlCriticalStatus::getBootloaderController(ControllerTypes ctrlType, quint8 muxChannel)
 {
-    return std::make_unique<TestI2cCtrlBootloader>(ctrlType, muxChannel);
+    Q_UNUSED(ctrlType)
+    Q_UNUSED(muxChannel)
+    return std::make_unique<TestI2cCtrlBootloader>();
 }
