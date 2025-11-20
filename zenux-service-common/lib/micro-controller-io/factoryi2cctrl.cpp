@@ -38,6 +38,7 @@ I2cCtrlEepromPermissionPtr FactoryI2cCtrl::getPermissionCheckController()
     return std::make_unique<I2cCtrlEepromPermission>(m_deviceNode, getRelaisCtrlI2cAddress(), m_debugLevel);
 }
 
+// TODO rework this for testability
 I2cCtrlCommonInfoPtrUnique FactoryI2cCtrl::getCommonInfoController(ControllerTypes ctrlType, quint8 muxChannel)
 {
     switch(ctrlType) {
