@@ -25,12 +25,6 @@ enum Commands
     cmdStatAdjustment
 };
 
-cClamp::cClamp() :
-    ScpiConnection(nullptr), // TODO get rid of dummy clamp
-    m_adjReadWrite("", 0, EepromI2cDeviceInterface::capacity24LC256, nullptr)
-{
-}
-
 cClamp::cClamp(PCBServer *server,
                I2cSettings *i2cSettings,
                SenseInterfaceCommon *senseInterface,
@@ -261,6 +255,14 @@ QString cClamp::exportXMLString(int indent)
 
 bool cClamp::importXMLDocument(QDomDocument *qdomdoc, bool ignoreType)
 {
+    return importXMLDocumentStatic(qdomdoc, ignoreType,
+                                   m_nType, m_sSerial, m_sVersion, m_RangeList, m_RangeListSecondary);
+}
+
+bool cClamp::importXMLDocumentStatic(QDomDocument *qdomdoc, bool ignoreType,
+                                     quint8 clamptype, QString &serialNo, QString &version,
+                                     const QList<SenseRangeCommon *> &rangeList, const QList<SenseRangeCommon *> &rangeListSecondary)
+{
     QDateTime DateTime; // useless - TBD
     QDomDocumentType TheDocType = qdomdoc->doctype ();
     if(TheDocType.name() != QString("ClampAdjustmentData")) {
@@ -289,7 +291,7 @@ bool cClamp::importXMLDocument(QDomDocument *qdomdoc, bool ignoreType)
                 TypeOK = true;
             }
             else {
-                TypeOK = qdElem.text() == getClampTypeName(m_nType);
+                TypeOK = qdElem.text() == getClampTypeName(clamptype);
                 if (!TypeOK) {
                     qCritical("Justdata import, wrong type information in xml file");
                     return false;
@@ -298,11 +300,11 @@ bool cClamp::importXMLDocument(QDomDocument *qdomdoc, bool ignoreType)
         }
         else if (tName == "SerialNumber") {
             SerialNrOK = true;
-            m_sSerial = qdElem.text();
+            serialNo = qdElem.text();
         }
         else if (tName == "VersionNumber") {
-           VersionNrOK = true;
-           m_sVersion = qdElem.text();
+            VersionNrOK = true;
+            version = qdElem.text();
         }
         else if (tName=="Date") {
             QDate d = QDate::fromString(qdElem.text(),Qt::TextDate);
@@ -340,9 +342,9 @@ bool cClamp::importXMLDocument(QDomDocument *qdomdoc, bool ignoreType)
                                     tName = qdElem.tagName();
                                     if (tName == "Name") {
                                         Name = qdElem.text();
-                                        rngPtr = getRange(Name);
+                                        rngPtr = getRangeStatic(Name, rangeList, rangeListSecondary);
                                     }
-                                    
+
                                     AdjDataItemScpi* pJustData = nullptr;
                                     if (rngPtr != 0)
                                         pJustData = rngPtr->getJustData()->getAdjInterface(tName);
@@ -383,6 +385,16 @@ bool cClamp::importXMLDocument(QDomDocument *qdomdoc, bool ignoreType)
         }
     }
     return true;
+}
+
+bool cClamp::importXmlForSerialNo(QDomDocument *qdomdoc, QString &serialNo)
+{
+    serialNo = ClampDefaultSerNo;
+    QString version = ClampDefaultVersion;
+    quint8 type = undefined;
+    return importXMLDocumentStatic(qdomdoc, true,
+                                   type, serialNo, version,
+                                   QList<SenseRangeCommon *>(), QList<SenseRangeCommon *>());
 }
 
 bool cClamp::importXMLDocument(QDomDocument *qdomdoc)
@@ -860,15 +872,20 @@ void cClamp::addSystAdjInterfaceChannel(QString channelName)
 
 SenseRangeCommon *cClamp::getRange(QString name)
 {
+    return getRangeStatic(name, m_RangeList, m_RangeListSecondary);
+}
+
+SenseRangeCommon *cClamp::getRangeStatic(QString name, const QList<SenseRangeCommon*> &rangeList, const QList<SenseRangeCommon*> &rangeListSecondary)
+{
     SenseRangeCommon* rangeFound = nullptr;
-    for(auto range : qAsConst(m_RangeList)) {
+    for(auto range : rangeList) {
         if (range->getRangeName() == name) {
             rangeFound = range;
             break;
         }
     }
     if(!rangeFound) {
-        for(auto range : qAsConst(m_RangeListSecondary)) {
+        for(auto range : rangeListSecondary) {
             if (range->getRangeName() == name) {
                 rangeFound = range;
                 break;

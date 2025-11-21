@@ -201,15 +201,15 @@ QString cClampInterface::importClampXmls(QString allXML, bool computeAndExport)
         QString XML = sep + sl.at(i);
         if (!justqdom.setContent(XML) )
             return ZSCPI::scpiAnswer[ZSCPI::errxml];
-        cClamp tmpClamp;
-        if (tmpClamp.importXMLDocument(&justqdom,true)) {
+        QString serNoFromXml;
+        if (cClamp::importXmlForSerialNo(&justqdom, serNoFromXml)) {
             cClamp *pClamp, *pClamp4Use;
             int anzSNR = 0;
             QList<QString> keylist = m_clampHash.keys();
             int anzClamps = keylist.count();
             for (int j = 0; j < anzClamps; j++) {
                 pClamp = m_clampHash[keylist.at(j)];
-                if (pClamp->getSerial() == tmpClamp.getSerial()) {
+                if (pClamp->getSerial() == serNoFromXml) {
                     pClamp4Use = pClamp;
                     anzSNR++;
                 }

@@ -9,6 +9,9 @@
 #include <QDateTime>
 #include <QDomElement>
 
+static const QString ClampDefaultSerNo = QStringLiteral("1234567890");
+static const QString ClampDefaultVersion = QStringLiteral("unknown");
+
 class cClamp: public AdjustmentXmlImportExportTemplate, public ScpiConnection
 {
 public:
@@ -40,7 +43,6 @@ public:
 
         anzCL
     };
-    cClamp();
     cClamp(PCBServer *server,
            I2cSettings *i2cSettings,
            SenseInterfaceCommon *senseInterface,
@@ -57,6 +59,7 @@ public:
     QString getSerial();
     virtual QString exportXMLString(int indent = 1) override;
     bool importXMLDocument(QDomDocument *qdomdoc, bool ignoreType);
+    static bool importXmlForSerialNo(QDomDocument *qdomdoc, QString &serialNo);
     bool exportClampAdjData(QDateTime dateTimeWrite);
     bool importClampAdjData();
 
@@ -65,6 +68,10 @@ protected:
     bool importXMLDocument(QDomDocument* qdomdoc) override;
 
 private:
+    static SenseRangeCommon* getRangeStatic(QString name, const QList<SenseRangeCommon *> &rangeList, const QList<SenseRangeCommon *> &rangeListSecondary);
+    static bool importXMLDocumentStatic(QDomDocument *qdomdoc, bool ignoreType,
+                                        quint8 clamptype, QString &serialNo, QString &version,
+                                        const QList<SenseRangeCommon *> &rangeList, const QList<SenseRangeCommon *> &rangeListSecondary);
     bool isValidType();
     void initClamp(quint8 type);
     void addSense();
@@ -100,8 +107,8 @@ private:
 
     quint8 m_nCtrlChannel;
     quint8 m_nCtrlChannelSecondary;
-    QString m_sSerial =  "1234567890"; // our default serial number
-    QString m_sVersion = "unknown";
+    QString m_sSerial =  ClampDefaultSerNo;
+    QString m_sVersion = ClampDefaultVersion;
     quint8 m_nType = undefined;
     quint32 m_nFlags = 0; // for future purpose
     QDateTime m_AdjDateTime;
