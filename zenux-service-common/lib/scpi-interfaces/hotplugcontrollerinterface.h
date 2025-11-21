@@ -20,10 +20,8 @@ private:
     QString emobReadLockState(const QString& scpiCmd);
     QString emobReadErrorStatus(const QString& scpiCmd);
     QString emobClearErrorStatus(const QString& scpiCmd);
-    QString readChannelsConnected();
     QString findEmobConnected(const QString &channelMNameScpiParam);
 
-    TimerTemplateQtPtr m_periodicTimer;
     NotificationString m_channels;
     HotPluggableControllerContainerPtr m_hotPluggableControllerContainer;
 };

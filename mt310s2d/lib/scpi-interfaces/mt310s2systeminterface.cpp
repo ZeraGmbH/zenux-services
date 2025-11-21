@@ -41,6 +41,7 @@ void Mt310s2SystemInterface::initSCPIConnection(QString leadingNodes)
     addDelegate(QString("%1SYSTEM:VERSION").arg(leadingNodes),"DEVICE", SCPI::isQuery, m_scpiInterface, SystemSystem::cmdVersionDevice);
     addDelegate(QString("%1SYSTEM:VERSION").arg(leadingNodes), "PCB", SCPI::isQuery, m_scpiInterface, SystemSystem::cmdVersionPCB, &m_allPCBVersion);
     addDelegate(QString("%1SYSTEM:VERSION").arg(leadingNodes), "CTRL", SCPI::isQuery, m_scpiInterface, SystemSystem::cmdVersionCTRL, &m_allCtrlVersion);
+    addDelegate(QString("%1SYSTEM:EMOB").arg(leadingNodes), "CHANNEL", SCPI::isQuery, m_scpiInterface, SystemSystem::cmdEmobGetChannelsConnected);
     addDelegate(QString("%1SYSTEM:VERSION").arg(leadingNodes), "FPGA", SCPI::isQuery, m_scpiInterface, SystemSystem::cmdVersionFPGA);
     addDelegate(QString("%1SYSTEM").arg(leadingNodes), "SERIAL", SCPI::isQuery | SCPI::isCmdwP , m_scpiInterface, SystemSystem::cmdSerialNumber);
     addDelegate(QString("%1SYSTEM:ADJUSTMENT:FLASH").arg(leadingNodes), "WRITE", SCPI::isCmd, m_scpiInterface, SystemSystem::cmdAdjFlashWrite);
@@ -111,6 +112,9 @@ void Mt310s2SystemInterface::executeProtoScpi(int cmdCode, ProtonetCommandPtr pr
         break;
     case SystemSystem::cmdInterfaceRead:
         protoCmd->m_sOutput = CommonScpiMethods::handleScpiInterfaceRead(m_scpiInterface, protoCmd->m_sInput);
+        break;
+    case SystemSystem::cmdEmobGetChannelsConnected:
+        protoCmd->m_sOutput = readChannelsConnected();
         break;
     }
 
@@ -431,6 +435,21 @@ void Mt310s2SystemInterface::updateAllPCBsVersion()
     QJsonDocument doc(object);
     m_allPCBVersion = doc.toJson(QJsonDocument::Compact);
     qInfo("Pcb info were updated.");
+}
+
+QString Mt310s2SystemInterface::readChannelsConnected()
+{
+    QString answer = "";
+    QStringList channelAliasList;
+    for(auto channel: m_senseSettings->getChannelSettings()) {
+        if(channel->m_nPluggedBit != -1)
+            channelAliasList.append(channel->m_sAlias1);
+    }
+    if(channelAliasList.size()==1)
+        answer = channelAliasList.at(0);
+    else if(channelAliasList.size() > 1)
+        answer = channelAliasList.join(",");
+    return answer;
 }
 
 void Mt310s2SystemInterface::m_genAnswer(int select, QString &answer)

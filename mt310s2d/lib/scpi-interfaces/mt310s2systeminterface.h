@@ -25,6 +25,7 @@ enum SystemCommands
     cmdAdjXMLRead,
     cmdAdjFlashChksum,
     cmdInterfaceRead,
+    cmdEmobGetChannelsConnected,
 };
 }
 
@@ -50,6 +51,7 @@ private:
     void triggerVersionInfoChanges();
     void updateAllCtrlVersionsJson();
     void updateAllPCBsVersion();
+    QString readChannelsConnected();
 
     QString m_ReadDeviceVersion(QString& sInput);
     QString m_ReadDeviceName(QString& sInput);
