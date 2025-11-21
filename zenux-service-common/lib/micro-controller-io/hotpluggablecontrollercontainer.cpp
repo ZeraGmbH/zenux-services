@@ -77,9 +77,10 @@ bool HotPluggableControllerContainer::isChannelKnown(int ctrlChannel)
 
 void HotPluggableControllerContainer::onBootloaderStopAssumed(int ctrlChannel)
 {
-    qInfo("Bootloader stopped or not available. Try controller version read on channel %i...", ctrlChannel);
+    qInfo("Bootloader assumed inactive now on channel %i.", ctrlChannel);
     if(m_pendingBootloaderStoppers.contains(ctrlChannel)) {
         qint8 muxChannelNo = m_pendingBootloaderStoppers[ctrlChannel].m_nMuxChannelNo;
+        qInfo("Read controller version on channel %i / mux channel %i...", ctrlChannel, muxChannelNo);
         I2cCtrlCommonInfoPtrShared commonCtrl = m_ctrlFactory->getCommonInfoController(
             AbstractFactoryI2cCtrl::CTRL_TYPE_EMOB,
             muxChannelNo);
@@ -87,14 +88,15 @@ void HotPluggableControllerContainer::onBootloaderStopAssumed(int ctrlChannel)
         QString version;
         ZeraMControllerIo::atmelRM result = commonCtrl->readCTRLVersion(version);
         if(result == ZeraMControllerIo::cmddone && !version.isEmpty()) {
-            qInfo("Version %s read for controller channel %i / mux channel %i - add controller",
+            qInfo("Version %s read for controller channel %i / mux channel %i",
                   qPrintable(version), ctrlChannel, muxChannelNo);
             I2cCtrlEMOBPtr emobCtrl = m_ctrlFactory->getEmobController(muxChannelNo);
             if (emobCtrl) {
                 QString instrumentSubType;
                 result = emobCtrl->readEmobInstrumentSubType(instrumentSubType);
                 if(result == ZeraMControllerIo::cmddone && !instrumentSubType.isEmpty()) {
-                    qInfo("Instrument type read: '%s'", qPrintable(instrumentSubType));
+                    qInfo("Instrument type read: '%s'. Add controller on channel %i / mux channel %i",
+                          qPrintable(instrumentSubType), ctrlChannel, muxChannelNo);
                     HotControllers controllers{commonCtrl, emobCtrl, EMOBUnknown};
                     m_controllers[ctrlChannel] = {channelInfo.channelMName, controllers};
                     m_controllers[ctrlChannel].controllers.m_controllerType = getEmobControllerType(instrumentSubType);
@@ -103,7 +105,7 @@ void HotPluggableControllerContainer::onBootloaderStopAssumed(int ctrlChannel)
             }
         }
         else {
-            qInfo("No version for channel %i - assume no controller (clamp)", ctrlChannel);
+            qInfo("No version for channel %i - assume clamp only", ctrlChannel);
             m_ChannelsWithoutController.insert(ctrlChannel);
         }
     }
