@@ -41,10 +41,10 @@ cClamp *cClampInterface::addClamp(const SenseSystem::cChannelSettings *chSetting
     cClamp* clamp = ClampFactory::createClamp(m_pMyServer, m_i2cSettings, m_pSenseInterface, chSettings, i2cMuxer, ctlChannelSecondary);
     m_clampHash[chSettings->m_nameMx] = clamp;
     qInfo("Add clamp ranges for \"%s\"", qPrintable(chSettings->m_sAlias1));
-    QString channelNameSecondary = clamp->getChannelNameSecondary();
-    if(!m_clampHash[chSettings->m_nameMx]->getChannelNameSecondary().isEmpty()) {
-        m_clampSecondarySet.insert(channelNameSecondary);
-        qInfo("Add secondary clamp ranges for \"%s\"", qPrintable(m_senseSettings->findChannelSettingByMxName(channelNameSecondary)->m_sAlias1));
+    const QString channelMNameSecondary = clamp->getChannelNameSecondary();
+    if(!channelMNameSecondary.isEmpty()) {
+        m_clampSecondarySet.insert(channelMNameSecondary);
+        qInfo("Add secondary clamp ranges for \"%s\"", qPrintable(m_senseSettings->findChannelSettingByMxName(channelMNameSecondary)->m_sAlias1));
     }
     generateAndNotifyClampChannelList();
     return clamp;
