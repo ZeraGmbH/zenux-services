@@ -38,7 +38,7 @@ cClamp *cClampInterface::addClamp(const SenseSystem::cChannelSettings *chSetting
     int phaseCount = m_senseSettings->getChannelSettings().size()/2;
     int ctlChannelSecondary = chSettings->m_nCtrlChannel - phaseCount;
 
-    cClamp* clamp = ClampFactory::createClamp(m_pMyServer, m_i2cSettings, m_pSenseInterface, chSettings->m_nameMx, chSettings->m_nCtrlChannel, i2cMuxer, ctlChannelSecondary);
+    cClamp* clamp = ClampFactory::createClamp(m_pMyServer, m_i2cSettings, m_pSenseInterface, chSettings, i2cMuxer, ctlChannelSecondary);
     m_clampHash[chSettings->m_nameMx] = clamp;
     qInfo("Add clamp ranges for \"%s\"", qPrintable(chSettings->m_sAlias1));
     QString channelNameSecondary = clamp->getChannelNameSecondary();

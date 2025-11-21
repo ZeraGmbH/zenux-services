@@ -44,8 +44,7 @@ public:
     cClamp(PCBServer *server,
            I2cSettings *i2cSettings,
            SenseInterfaceCommon *senseInterface,
-           QString channelName,
-           quint8 ctrlChannel,
+           const SenseSystem::cChannelSettings *chSettings,
            I2cMuxerInterface::Ptr i2cMuxer,
            quint8 ctrlChannelSecondary,
            quint8 type = undefined);
