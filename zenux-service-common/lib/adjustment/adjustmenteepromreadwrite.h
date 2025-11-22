@@ -2,13 +2,14 @@
 #define ADJUSTMENTEEPROMREADWRITE_H
 
 #include <eepromi2cdeviceinterface.h>
+#include <i2caddressparameter.h>
 #include <i2cmuxerinterface.h>
 #include <QString>
 
 class AdjustmentEepromReadWrite
 {
 public:
-    AdjustmentEepromReadWrite(QString devnode, quint8 i2cadr, int byteCapacity,
+    AdjustmentEepromReadWrite(const I2cAddressParameter &i2cAddress, int byteCapacity,
                               I2cMuxerInterface::Ptr i2cMuxer);
     static void setCachePath(QString path);
     static QString getCacheFullFileName(QString cacheFileName);
@@ -33,8 +34,7 @@ private:
     void setCountInBuffer(QByteArray& ba);
 
     quint16 m_checksum = 0;
-    QString m_sDeviceNode;
-    quint8 m_i2cAdr;
+    const I2cAddressParameter m_i2cAddress;
     const int m_byteCapacity;
     I2cMuxerInterface::Ptr m_i2cMuxer;
     QByteArray m_adjData;

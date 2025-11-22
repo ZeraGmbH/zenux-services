@@ -1,19 +1,16 @@
 #include "mockeeprom24lc.h"
 #include <QFile>
 
-QHash<QString, QHash<short, QByteArray>> MockEEprom24LC::m_flashData;
-QHash<QString, QHash<short, int>>        MockEEprom24LC::m_flashDataReadCounts;
-QHash<QString, QHash<short, int>>        MockEEprom24LC::m_flashDataWriteCounts;
-QHash<QString, QHash<short, bool>>       MockEEprom24LC::m_returnReducedDataSizeOnRead;
+QHash<I2cAddressParameter, QByteArray> MockEEprom24LC::m_flashData;
+QHash<I2cAddressParameter, int>        MockEEprom24LC::m_flashDataReadCounts;
+QHash<I2cAddressParameter, int>        MockEEprom24LC::m_flashDataWriteCounts;
+QHash<I2cAddressParameter, bool>       MockEEprom24LC::m_returnReducedDataSizeOnRead;
 
-MockEEprom24LC::MockEEprom24LC(QString devNode, short i2cAddr, int byteCapacity) :
+MockEEprom24LC::MockEEprom24LC(const I2cAddressParameter &i2cAddressParam, int byteCapacity) :
     EepromI2cDeviceInterface(byteCapacity),
-    m_devNode(devNode),
-    m_i2cAddr(i2cAddr)
+    m_i2cAddress(i2cAddressParam)
 {
-    if(m_flashData.contains(devNode))
-        return;
-    if(m_flashData[devNode].contains(i2cAddr))
+    if(m_flashData.contains(i2cAddressParam))
         return;
     doReset(getByteSize());
 }
@@ -26,10 +23,10 @@ int MockEEprom24LC::WriteData(char *data, ushort count, ushort adr)
         qFatal("Cannot write data of length %i / max is %i", count, getByteSize());
 
     doReset(count);
-    QByteArray &flashEntry = m_flashData[m_devNode][m_i2cAddr];
+    QByteArray &flashEntry = m_flashData[m_i2cAddress];
     for(int i=0; i<count; i++)
         flashEntry[i] = data[i];
-    m_flashDataWriteCounts[m_devNode][m_i2cAddr]++;
+    m_flashDataWriteCounts[m_i2cAddress]++;
     return count;
 }
 
@@ -40,12 +37,12 @@ int MockEEprom24LC::ReadData(char *data, ushort count, ushort adr)
     if(count > getByteSize())
         qFatal("Cannot read data of length %i / max is %i", count, getByteSize());
 
-    const QByteArray flashEntry = m_flashData[m_devNode][m_i2cAddr];
+    const QByteArray flashEntry = m_flashData[m_i2cAddress];
     ushort reducedCount = std::min(count, ushort(flashEntry.size()));
     for(int i=0; i<reducedCount; i++)
         data[i] = flashEntry[i];
-    m_flashDataReadCounts[m_devNode][m_i2cAddr]++;
-    bool reduceCount = m_returnReducedDataSizeOnRead[m_devNode][m_i2cAddr];
+    m_flashDataReadCounts[m_i2cAddress]++;
+    bool reduceCount = m_returnReducedDataSizeOnRead[m_i2cAddress];
     return reduceCount ? reducedCount: count;
 }
 
@@ -57,7 +54,7 @@ int MockEEprom24LC::Reset()
 
 void MockEEprom24LC::returnReduceCountOnErrorRead()
 {
-    m_returnReducedDataSizeOnRead[m_devNode][m_i2cAddr] = true;
+    m_returnReducedDataSizeOnRead[m_i2cAddress] = true;
 }
 
 void MockEEprom24LC::mockCleanAll()
@@ -68,33 +65,32 @@ void MockEEprom24LC::mockCleanAll()
     m_returnReducedDataSizeOnRead.clear();
 }
 
-QByteArray MockEEprom24LC::mockGetData(QString devNode, short adr)
+QByteArray MockEEprom24LC::mockGetData(const I2cAddressParameter &i2cAddressParam)
 {
     QByteArray ret;
-    if(m_flashData.contains(devNode))
-        if(m_flashData[devNode].contains(adr))
-            ret = m_flashData[devNode][adr];
+    if(m_flashData.contains(i2cAddressParam))
+        ret = m_flashData[i2cAddressParam];
     return ret;
 }
 
-void MockEEprom24LC::mockSetData(QString devNode, short adr, QByteArray data)
+void MockEEprom24LC::mockSetData(const I2cAddressParameter &i2cAddressParam, QByteArray data)
 {
-    m_flashData[devNode][adr] = data;
+    m_flashData[i2cAddressParam] = data;
 }
 
-int MockEEprom24LC::mockGetReadCount(QString devNode, short adr)
+int MockEEprom24LC::mockGetReadCount(const I2cAddressParameter &i2cAddressParam)
 {
-    return m_flashDataReadCounts[devNode][adr];
+    return m_flashDataReadCounts[i2cAddressParam];
 }
 
-int MockEEprom24LC::mockGetWriteCount(QString devNode, short adr)
+int MockEEprom24LC::mockGetWriteCount(const I2cAddressParameter &i2cAddressParam)
 {
-    return m_flashDataWriteCounts[devNode][adr];
+    return m_flashDataWriteCounts[i2cAddressParam];
 }
 
-bool MockEEprom24LC::mockWriteToFile(QString devNode, short adr, QString fileName)
+bool MockEEprom24LC::mockWriteToFile(const I2cAddressParameter &i2cAddressParam, QString fileName)
 {
-    QByteArray data = mockGetData(devNode, adr);
+    QByteArray data = mockGetData(i2cAddressParam);
     if(data.isEmpty())
         return false;
     QFile file(fileName);
@@ -103,32 +99,32 @@ bool MockEEprom24LC::mockWriteToFile(QString devNode, short adr, QString fileNam
     return false;
 }
 
-bool MockEEprom24LC::mockReadFromFile(QString devNode, short adr, QString fileName)
+bool MockEEprom24LC::mockReadFromFile(const I2cAddressParameter &i2cAddressParam, QString fileName)
 {
     QFile file(fileName);
     if(file.open(QIODevice::ReadOnly)) {
         QByteArray data = file.readAll();
         if(data.isEmpty())
             return false;
-        mockSetData(devNode, adr, data);
+        mockSetData(i2cAddressParam, data);
         return true;
     }
     return false;
 }
 
-bool MockEEprom24LC::mockCompareWithFile(QString devNode, short adr, QString fileName)
+bool MockEEprom24LC::mockCompareWithFile(const I2cAddressParameter &i2cAddressParam, QString fileName)
 {
     QFile file(fileName);
     if(file.open(QIODevice::ReadOnly)) {
         QByteArray data = file.readAll();
         if(data.isEmpty()) // for now...
             return false;
-        return data == mockGetData(devNode, adr);
+        return data == mockGetData(i2cAddressParam);
     }
     return false;
 }
 
 void MockEEprom24LC::doReset(int size)
 {
-    m_flashData[m_devNode][m_i2cAddr] = QByteArray(size, 0xff);
+    m_flashData[m_i2cAddress] = QByteArray(size, 0xff);
 }

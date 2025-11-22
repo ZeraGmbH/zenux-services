@@ -2,33 +2,46 @@
 #define MOCKEEPROM24LC_H
 
 #include <eepromi2cdeviceinterface.h>
+#include <i2caddressparameter.h>
 #include <QHash>
 
 class MockEEprom24LC : public EepromI2cDeviceInterface
 {
 public:
-    MockEEprom24LC(QString devNode, short i2cAddr, int byteCapacity);
+    MockEEprom24LC(const I2cAddressParameter &i2cAddressParam, int byteCapacity);
     int WriteData(char* data, ushort count, ushort adr) override;
     int ReadData(char* data, ushort count, ushort adr) override;
     virtual int Reset() override;
 
     void returnReduceCountOnErrorRead();
     static void mockCleanAll();
-    static QByteArray mockGetData(QString devNode, short adr);
-    static void mockSetData(QString devNode, short adr, QByteArray data);
-    static int mockGetReadCount(QString devNode, short adr);
-    static int mockGetWriteCount(QString devNode, short adr);
-    static bool mockWriteToFile(QString devNode, short adr, QString fileName);
-    static bool mockReadFromFile(QString devNode, short adr, QString fileName);
-    static bool mockCompareWithFile(QString devNode, short adr, QString fileName);
+    static QByteArray mockGetData(const I2cAddressParameter &i2cAddressParam);
+    static void mockSetData(const I2cAddressParameter &i2cAddressParam, QByteArray data);
+    static int mockGetReadCount(const I2cAddressParameter &i2cAddressParam);
+    static int mockGetWriteCount(const I2cAddressParameter &i2cAddressParam);
+    static bool mockWriteToFile(const I2cAddressParameter &i2cAddressParam, QString fileName);
+    static bool mockReadFromFile(const I2cAddressParameter &i2cAddressParam, QString fileName);
+    static bool mockCompareWithFile(const I2cAddressParameter &i2cAddressParam, QString fileName);
 private:
     void doReset(int size);
-    QString m_devNode;
-    short m_i2cAddr;
-    static QHash<QString, QHash<short, QByteArray>> m_flashData;
-    static QHash<QString, QHash<short, int>> m_flashDataReadCounts;
-    static QHash<QString, QHash<short, int>> m_flashDataWriteCounts;
-    static QHash<QString, QHash<short, bool>> m_returnReducedDataSizeOnRead;
+
+    struct I2cAddressParameter m_i2cAddress;
+
+    static QHash<I2cAddressParameter, QByteArray> m_flashData;
+    static QHash<I2cAddressParameter, int> m_flashDataReadCounts;
+    static QHash<I2cAddressParameter, int> m_flashDataWriteCounts;
+    static QHash<I2cAddressParameter, bool> m_returnReducedDataSizeOnRead;
 };
+
+inline bool operator==(const I2cAddressParameter& a1,
+                       const I2cAddressParameter& a2) {
+    return a1.i2cAddr == a2.i2cAddr &&
+           a1.devNodeFileName == a2.devNodeFileName;
+}
+inline uint qHash(const I2cAddressParameter& key, uint seed = 0) {
+    const QString hashable = key.devNodeFileName +
+                             QString::number(key.i2cAddr);
+    return qHash(hashable, seed);
+}
 
 #endif // MOCKEEPROM24LC_H

@@ -8,7 +8,7 @@ QTEST_MAIN(test_adj_data_decoder)
 
 void test_adj_data_decoder::initTestCase()
 {
-    AdjustmentEepromReadWrite eepromRw("", 0, EepromI2cDeviceInterface::capacity24LC256, nullptr);
+    AdjustmentEepromReadWrite eepromRw({"", 0}, EepromI2cDeviceInterface::capacity24LC256, nullptr);
     m_flashSizeAllDevicesAtTheTimeOfWriting = eepromRw.getMaxSize();
 }
 

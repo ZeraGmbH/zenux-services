@@ -7,10 +7,9 @@
 
 QString AdjustmentEepromReadWrite::m_cachePath = "/var/cache/zenux-services";
 
-AdjustmentEepromReadWrite::AdjustmentEepromReadWrite(QString devnode, quint8 i2cadr, int byteCapacity,
+AdjustmentEepromReadWrite::AdjustmentEepromReadWrite(const I2cAddressParameter &i2cAddress, int byteCapacity,
                                                      I2cMuxerInterface::Ptr i2cMuxer) :
-    m_sDeviceNode(devnode),
-    m_i2cAdr(i2cadr),
+    m_i2cAddress(i2cAddress),
     m_byteCapacity(byteCapacity),
     m_i2cMuxer(i2cMuxer)
 {
@@ -41,7 +40,7 @@ bool AdjustmentEepromReadWrite::readDataCached(QString cacheFileName)
         return true;
     }
     m_adjDataReadIsValid = false;
-    I2cFlashInterfacePtrU memIo = I2cEEpromIoFactory::create24LcTypeEeprom(m_sDeviceNode, m_i2cAdr, m_byteCapacity);
+    I2cFlashInterfacePtrU memIo = I2cEEpromIoFactory::create24LcTypeEeprom(m_i2cAddress, m_byteCapacity);
     QByteArray ba;
     quint32 sizeRead;
     bool readOk = false;
@@ -76,14 +75,14 @@ bool AdjustmentEepromReadWrite::resetData()
 {
     m_adjDataReadIsValid = false;
     I2cMuxerScopedOnOff i2cMuxOnOff(m_i2cMuxer);
-    I2cFlashInterfacePtrU memIo = I2cEEpromIoFactory::create24LcTypeEeprom(m_sDeviceNode, m_i2cAdr, m_byteCapacity);
+    I2cFlashInterfacePtrU memIo = I2cEEpromIoFactory::create24LcTypeEeprom(m_i2cAddress, m_byteCapacity);
     return memIo->Reset() == memIo->getByteSize();
 }
 
 // Current (valid) assumption: All devices have 24LC256 with 32kBytes
 quint32 AdjustmentEepromReadWrite::getMaxSize()
 {
-    I2cFlashInterfacePtrU memIo = I2cEEpromIoFactory::create24LcTypeEeprom(m_sDeviceNode, m_i2cAdr, m_byteCapacity);
+    I2cFlashInterfacePtrU memIo = I2cEEpromIoFactory::create24LcTypeEeprom(m_i2cAddress, m_byteCapacity);
     return memIo->getByteSize();
 }
 
@@ -180,7 +179,7 @@ bool AdjustmentEepromReadWrite::writeRawDataToChip(QByteArray &ba)
 {
     int count = ba.size();
     I2cMuxerScopedOnOff i2cMuxOnOff(m_i2cMuxer);
-    I2cFlashInterfacePtrU memIo = I2cEEpromIoFactory::create24LcTypeEeprom(m_sDeviceNode, m_i2cAdr, m_byteCapacity);
+    I2cFlashInterfacePtrU memIo = I2cEEpromIoFactory::create24LcTypeEeprom(m_i2cAddress, m_byteCapacity);
     int written = memIo->WriteData(ba.data(), count, 0);
     return count == written;
 }
