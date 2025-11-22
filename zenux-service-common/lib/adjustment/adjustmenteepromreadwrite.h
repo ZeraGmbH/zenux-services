@@ -8,7 +8,7 @@
 class AdjustmentEepromReadWrite
 {
 public:
-    AdjustmentEepromReadWrite(QString devnode, quint8 i2cadr, int byteCapacity,
+    AdjustmentEepromReadWrite(const EepromI2cDeviceInterface::AddressData &i2cAddress, int byteCapacity,
                               I2cMuxerInterface::Ptr i2cMuxer);
     static void setCachePath(QString path);
     static QString getCacheFullFileName(QString cacheFileName);
@@ -33,8 +33,7 @@ private:
     void setCountInBuffer(QByteArray& ba);
 
     quint16 m_checksum = 0;
-    QString m_sDeviceNode;
-    quint8 m_i2cAdr;
+    const EepromI2cDeviceInterface::AddressData m_i2cAddress;
     const int m_byteCapacity;
     I2cMuxerInterface::Ptr m_i2cMuxer;
     QByteArray m_adjData;

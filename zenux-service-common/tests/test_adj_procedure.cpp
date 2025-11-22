@@ -181,8 +181,8 @@ void test_adj_procedure::prepareEepromTakenFromAdjustedDevice()
 {
     std::unique_ptr<SettingsContainer> settings =  std::make_unique<SettingsContainer>(MockServerParamGenerator::createParams("com5003d"));
     I2cSettings *i2cSettings = settings->getI2cSettings();
-    QVERIFY(MockEEprom24LC::mockReadFromFile(i2cSettings->getDeviceNode(),
-                                             i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress),
+    QVERIFY(MockEEprom24LC::mockReadFromFile({ i2cSettings->getDeviceNode(),
+                                               i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress) },
                                              ":/mt310s2-050059467.eeprom"));
 }
 

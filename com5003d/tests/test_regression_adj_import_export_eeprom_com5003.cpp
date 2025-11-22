@@ -44,8 +44,8 @@ void test_regression_adj_import_export_eeprom_com5003::directExportFlashGen()
     setupServers(std::make_shared<TestFactoryI2cCtrl>(true));
     QVERIFY(m_testServer->getSenseInterface()->exportAdjData(refTime));
     I2cSettings *i2cSettings = m_testServer->getI2cSettings();
-    QVERIFY(MockEEprom24LC::mockWriteToFile(i2cSettings->getDeviceNode(),
-                                            i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress),
+    QVERIFY(MockEEprom24LC::mockWriteToFile({ i2cSettings->getDeviceNode(),
+                                              i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress) },
                                             "/tmp/export_internal_initial.eeprom"));
 }
 
@@ -54,8 +54,8 @@ void test_regression_adj_import_export_eeprom_com5003::directExportFlashCheckRef
     setupServers(std::make_shared<TestFactoryI2cCtrl>(true));
     QVERIFY(m_testServer->getSenseInterface()->exportAdjData(refTime));
     I2cSettings *i2cSettings = m_testServer->getI2cSettings();
-    QVERIFY(MockEEprom24LC::mockCompareWithFile(i2cSettings->getDeviceNode(),
-                                                i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress),
+    QVERIFY(MockEEprom24LC::mockCompareWithFile({ i2cSettings->getDeviceNode(),
+                                                  i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress) },
                                                 ":/export_internal_initial.eeprom"));
 }
 
@@ -66,17 +66,17 @@ void test_regression_adj_import_export_eeprom_com5003::scpiWriteFlashInitial()
     QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::ack]);
 
     I2cSettings *i2cSettings = m_testServer->getI2cSettings();
-    QString devNode = i2cSettings->getDeviceNode();
-    short i2cAddress = i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress);
+    QString devNodeFileName = i2cSettings->getDeviceNode();
+    const ushort i2cAddress = i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress);
 
     // SCPI write flash sets current date so we cannot compare it
     // Check if at least a write happened
-    QCOMPARE(MockEEprom24LC::mockGetWriteCount(devNode, i2cAddress), 1);
+    QCOMPARE(MockEEprom24LC::mockGetWriteCount({devNodeFileName, i2cAddress}), 1);
 
     // and do a second write with known time
     QVERIFY(m_testServer->getSenseInterface()->exportAdjData(refTime));
-    QCOMPARE(MockEEprom24LC::mockGetWriteCount(devNode, i2cAddress), 2);
-    QVERIFY(MockEEprom24LC::mockCompareWithFile(devNode, i2cAddress, ":/export_internal_initial.eeprom"));
+    QCOMPARE(MockEEprom24LC::mockGetWriteCount({devNodeFileName, i2cAddress}), 2);
+    QVERIFY(MockEEprom24LC::mockCompareWithFile({devNodeFileName, i2cAddress}, ":/export_internal_initial.eeprom"));
 }
 
 void test_regression_adj_import_export_eeprom_com5003::scpiWriteRandomFileAndFlashGen()
@@ -90,8 +90,8 @@ void test_regression_adj_import_export_eeprom_com5003::scpiWriteRandomFileAndFla
     QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::ack]);
 
     I2cSettings *i2cSettings = m_testServer->getI2cSettings();
-    QVERIFY(MockEEprom24LC::mockWriteToFile(i2cSettings->getDeviceNode(),
-                                            i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress),
+    QVERIFY(MockEEprom24LC::mockWriteToFile({ i2cSettings->getDeviceNode(),
+                                              i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress)},
                                             "/tmp/export_internal_modified_with_date_time.eeprom"));
 }
 
@@ -119,8 +119,8 @@ void test_regression_adj_import_export_eeprom_com5003::loadOriginalInvalidDateTi
 {
     std::unique_ptr<SettingsContainer> settings =  std::make_unique<SettingsContainer>(MockServerParamGenerator::createParams("com5003d"));
     I2cSettings *i2cSettings = settings->getI2cSettings();
-    QVERIFY(MockEEprom24LC::mockReadFromFile(i2cSettings->getDeviceNode(),
-                                             i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress),
+    QVERIFY(MockEEprom24LC::mockReadFromFile({ i2cSettings->getDeviceNode(),
+                                               i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress) },
                                              ":/export_internal_modified.eeprom"));
     setupServers(std::make_shared<TestFactoryI2cCtrl>(true));
 
@@ -137,8 +137,8 @@ void test_regression_adj_import_export_eeprom_com5003::loadValidDateTimeRandomTo
 {
     std::unique_ptr<SettingsContainer> settings =  std::make_unique<SettingsContainer>(MockServerParamGenerator::createParams("com5003d"));
     I2cSettings *i2cSettings = settings->getI2cSettings();
-    QVERIFY(MockEEprom24LC::mockReadFromFile(i2cSettings->getDeviceNode(),
-                                             i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress),
+    QVERIFY(MockEEprom24LC::mockReadFromFile({ i2cSettings->getDeviceNode(),
+                                               i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress) },
                                              ":/export_internal_modified_with_date_time.eeprom"));
     setupServers(std::make_shared<TestFactoryI2cCtrl>(true));
 
@@ -158,8 +158,8 @@ void test_regression_adj_import_export_eeprom_com5003::directExportFlashArbitrar
     setupServers(std::make_shared<TestFactoryI2cCtrlCommonInfoFoo>());
 
     QVERIFY(m_testServer->getSenseInterface()->exportAdjData(refTime));
-    QVERIFY(MockEEprom24LC::mockWriteToFile(i2cSettings->getDeviceNode(),
-                                            i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress),
+    QVERIFY(MockEEprom24LC::mockWriteToFile({ i2cSettings->getDeviceNode(),
+                                              i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress) },
                                             "/tmp/import_arbitrary_version.eeprom"));
     QVERIFY(m_testServer->getSenseInterface()->exportAdjData(refTime));
 }
@@ -168,8 +168,8 @@ void test_regression_adj_import_export_eeprom_com5003::loadArbitraryVersionToEEp
 {
     std::unique_ptr<SettingsContainer> settings =  std::make_unique<SettingsContainer>(MockServerParamGenerator::createParams("com5003d"));
     I2cSettings *i2cSettings = settings->getI2cSettings();
-    QVERIFY(MockEEprom24LC::mockReadFromFile(i2cSettings->getDeviceNode(),
-                                             i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress),
+    QVERIFY(MockEEprom24LC::mockReadFromFile({ i2cSettings->getDeviceNode(),
+                                               i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress) },
                                              ":/import_arbitrary_version.eeprom"));
     setupServers(std::make_shared<TestFactoryI2cCtrl>(true));
 

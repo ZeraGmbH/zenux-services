@@ -37,8 +37,7 @@ cClamp::cClamp(PCBServer *server,
     m_sChannelName(chSettings->m_nameMx),
     m_nCtrlChannel(chSettings->m_nCtrlChannel),
     m_nCtrlChannelSecondary(ctrlChannelSecondary),
-    m_adjReadWrite(i2cSettings->getDeviceNode(),
-                   i2cSettings->getI2CAdress(i2cSettings::clampFlashI2cAddress),
+    m_adjReadWrite({ i2cSettings->getDeviceNode(), i2cSettings->getI2CAdress(i2cSettings::clampFlashI2cAddress) },
                    EepromI2cDeviceInterface::capacity24LC256,
                    i2cMuxer)
 {
