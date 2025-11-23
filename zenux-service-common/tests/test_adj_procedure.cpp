@@ -2,7 +2,7 @@
 #include "adjflags.h"
 #include "testfactoryi2cctrl.h"
 #include "proxy.h"
-#include "mockeeprom24lc.h"
+#include "mockeepromdevice.h"
 #include "mocki2ceepromiofactory.h"
 #include "mockserverparamgenerator.h"
 #include "scpisingletransactionblocked.h"
@@ -26,7 +26,7 @@ void test_adj_procedure::initTestCase()
 
 void test_adj_procedure::init()
 {
-    MockEEprom24LC::mockCleanAll();
+    MockEepromDevice::mockCleanAll();
 }
 
 void test_adj_procedure::cleanup()
@@ -181,9 +181,9 @@ void test_adj_procedure::prepareEepromTakenFromAdjustedDevice()
 {
     std::unique_ptr<SettingsContainer> settings =  std::make_unique<SettingsContainer>(MockServerParamGenerator::createParams("com5003d"));
     I2cSettings *i2cSettings = settings->getI2cSettings();
-    QVERIFY(MockEEprom24LC::mockReadFromFile({ i2cSettings->getDeviceNode(),
-                                               i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress) },
-                                             ":/mt310s2-050059467.eeprom"));
+    QVERIFY(MockEepromDevice::mockReadFromFile({ i2cSettings->getDeviceNode(),
+                                                 i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress) },
+                                               ":/mt310s2-050059467.eeprom"));
 }
 
 void test_adj_procedure::setGainNodesOnTwoRanges()

@@ -4,7 +4,7 @@
 #include "scpisingletransactionblocked.h"
 #include <xmldocumentcompare.h>
 #include <testloghelpers.h>
-#include <mockeeprom24lc.h>
+#include <mockeepromdevice.h>
 #include <timemachineobject.h>
 #include <mocktcpnetworkfactory.h>
 #include <QTest>
@@ -27,7 +27,7 @@ void test_regression_scpi_com5003::init()
 
 void test_regression_scpi_com5003::cleanup()
 {
-    MockEEprom24LC::mockCleanAll();
+    MockEepromDevice::mockCleanAll();
     m_pcbIFace = nullptr;
     m_proxyClient = nullptr;
     m_server = nullptr;

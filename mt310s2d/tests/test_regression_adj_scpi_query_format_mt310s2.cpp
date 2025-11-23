@@ -1,7 +1,7 @@
 #include "test_regression_adj_scpi_query_format_mt310s2.h"
 #include "proxy.h"
 #include "mocki2ceepromiofactory.h"
-#include "mockeeprom24lc.h"
+#include "mockeepromdevice.h"
 #include "scpisingletransactionblocked.h"
 #include "testfactoryi2cctrl.h"
 #include <timemachineobject.h>
@@ -25,7 +25,7 @@ void test_regression_adj_scpi_query_format_mt310s2::initTestCase()
 
 void test_regression_adj_scpi_query_format_mt310s2::init()
 {
-    MockEEprom24LC::mockCleanAll();
+    MockEepromDevice::mockCleanAll();
 }
 
 void test_regression_adj_scpi_query_format_mt310s2::queryGainCorrectionSingleGen()

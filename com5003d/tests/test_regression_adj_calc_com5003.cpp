@@ -2,7 +2,7 @@
 #include "testfactoryi2cctrl.h"
 #include "proxy.h"
 #include "mocki2ceepromiofactory.h"
-#include "mockeeprom24lc.h"
+#include "mockeepromdevice.h"
 #include "scpisingletransactionblocked.h"
 #include <timemachineobject.h>
 #include <mocktcpnetworkfactory.h>
@@ -25,7 +25,7 @@ void test_regression_adj_calc_com5003::initTestCase()
 
 void test_regression_adj_calc_com5003::cleanup()
 {
-    MockEEprom24LC::mockCleanAll();
+    MockEepromDevice::mockCleanAll();
 }
 
 static constexpr double val = 2.0;

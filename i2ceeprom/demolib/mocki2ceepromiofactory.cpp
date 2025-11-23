@@ -1,10 +1,10 @@
 #include "mocki2ceepromiofactory.h"
-#include "mockeeprom24lc.h"
+#include "mockeepromdevice.h"
 
 void MockI2cEEpromIoFactory::enableMock()
 {
     m_createFunction = [](const I2cAddressParameter &i2cAddress, int byteCapacity) {
-        return std::make_unique<MockEEprom24LC>(i2cAddress, byteCapacity);
+        return std::make_unique<MockEepromDevice>(i2cAddress, byteCapacity);
     };
 }
 

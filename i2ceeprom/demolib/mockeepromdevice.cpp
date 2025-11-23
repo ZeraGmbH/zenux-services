@@ -1,12 +1,12 @@
-#include "mockeeprom24lc.h"
+#include "mockeepromdevice.h"
 #include <QFile>
 
-QHash<EepromWithMuxParams, QByteArray> MockEEprom24LC::m_flashData;
-QHash<EepromWithMuxParams, int>        MockEEprom24LC::m_flashDataReadCounts;
-QHash<EepromWithMuxParams, int>        MockEEprom24LC::m_flashDataWriteCounts;
-QHash<EepromWithMuxParams, bool>       MockEEprom24LC::m_returnReducedDataSizeOnRead;
+QHash<EepromWithMuxParams, QByteArray> MockEepromDevice::m_flashData;
+QHash<EepromWithMuxParams, int>        MockEepromDevice::m_flashDataReadCounts;
+QHash<EepromWithMuxParams, int>        MockEepromDevice::m_flashDataWriteCounts;
+QHash<EepromWithMuxParams, bool>       MockEepromDevice::m_returnReducedDataSizeOnRead;
 
-MockEEprom24LC::MockEEprom24LC(const I2cAddressParameter &i2cAddressParam, int byteCapacity,
+MockEepromDevice::MockEepromDevice(const I2cAddressParameter &i2cAddressParam, int byteCapacity,
                                const I2cAddressParameter &i2cAddressMux, qint8 muxChannelNo) :
     m_i2cAddress(i2cAddressParam),
     m_byteCapacity(byteCapacity),
@@ -18,7 +18,7 @@ MockEEprom24LC::MockEEprom24LC(const I2cAddressParameter &i2cAddressParam, int b
     doReset(byteCapacity);
 }
 
-int MockEEprom24LC::WriteData(char *data, ushort count, ushort adr)
+int MockEepromDevice::WriteData(char *data, ushort count, ushort adr)
 {
     if(adr != 0)
         qFatal("Address other than 0 is not yet supported!");
@@ -33,7 +33,7 @@ int MockEEprom24LC::WriteData(char *data, ushort count, ushort adr)
     return count;
 }
 
-int MockEEprom24LC::ReadData(char *data, ushort count, ushort adr)
+int MockEepromDevice::ReadData(char *data, ushort count, ushort adr)
 {
     if(adr != 0)
         qFatal("Address other than 0 is not yet supported!");
@@ -49,23 +49,23 @@ int MockEEprom24LC::ReadData(char *data, ushort count, ushort adr)
     return reduceCount ? reducedCount: count;
 }
 
-int MockEEprom24LC::Reset()
+int MockEepromDevice::Reset()
 {
     doReset(0);
     return getByteSize();
 }
 
-int MockEEprom24LC::getByteSize() const
+int MockEepromDevice::getByteSize() const
 {
     return m_byteCapacity;
 }
 
-void MockEEprom24LC::returnReduceCountOnErrorRead()
+void MockEepromDevice::returnReduceCountOnErrorRead()
 {
     m_returnReducedDataSizeOnRead[getFullParams()] = true;
 }
 
-void MockEEprom24LC::mockCleanAll()
+void MockEepromDevice::mockCleanAll()
 {
     m_flashData.clear();
     m_flashDataReadCounts.clear();
@@ -73,7 +73,7 @@ void MockEEprom24LC::mockCleanAll()
     m_returnReducedDataSizeOnRead.clear();
 }
 
-QByteArray MockEEprom24LC::mockGetData(const I2cAddressParameter &i2cAddressParam,
+QByteArray MockEepromDevice::mockGetData(const I2cAddressParameter &i2cAddressParam,
                                        const I2cAddressParameter &i2cAddressMux, qint8 muxChannelNo)
 {
     EepromWithMuxParams params{i2cAddressParam, i2cAddressMux, muxChannelNo};
@@ -83,28 +83,28 @@ QByteArray MockEEprom24LC::mockGetData(const I2cAddressParameter &i2cAddressPara
     return ret;
 }
 
-void MockEEprom24LC::mockSetData(const I2cAddressParameter &i2cAddressParam, QByteArray data,
+void MockEepromDevice::mockSetData(const I2cAddressParameter &i2cAddressParam, QByteArray data,
                                  const I2cAddressParameter &i2cAddressMux, qint8 muxChannelNo)
 {
     EepromWithMuxParams params{i2cAddressParam, i2cAddressMux, muxChannelNo};
     m_flashData[params] = data;
 }
 
-int MockEEprom24LC::mockGetReadCount(const I2cAddressParameter &i2cAddressParam,
+int MockEepromDevice::mockGetReadCount(const I2cAddressParameter &i2cAddressParam,
                                      const I2cAddressParameter &i2cAddressMux, qint8 muxChannelNo)
 {
     EepromWithMuxParams params{i2cAddressParam, i2cAddressMux, muxChannelNo};
     return m_flashDataReadCounts[params];
 }
 
-int MockEEprom24LC::mockGetWriteCount(const I2cAddressParameter &i2cAddressParam,
+int MockEepromDevice::mockGetWriteCount(const I2cAddressParameter &i2cAddressParam,
                                       const I2cAddressParameter &i2cAddressMux, qint8 muxChannelNo)
 {
     EepromWithMuxParams params{i2cAddressParam, i2cAddressMux, muxChannelNo};
     return m_flashDataWriteCounts[params];
 }
 
-bool MockEEprom24LC::mockWriteToFile(const I2cAddressParameter &i2cAddressParam,
+bool MockEepromDevice::mockWriteToFile(const I2cAddressParameter &i2cAddressParam,
                                      QString fileName,
                                      const I2cAddressParameter &i2cAddressMux, qint8 muxChannelNo)
 {
@@ -117,7 +117,7 @@ bool MockEEprom24LC::mockWriteToFile(const I2cAddressParameter &i2cAddressParam,
     return false;
 }
 
-bool MockEEprom24LC::mockReadFromFile(const I2cAddressParameter &i2cAddressParam, QString fileName,
+bool MockEepromDevice::mockReadFromFile(const I2cAddressParameter &i2cAddressParam, QString fileName,
                                       const I2cAddressParameter &i2cAddressMux, qint8 muxChannelNo)
 {
     QFile file(fileName);
@@ -131,7 +131,7 @@ bool MockEEprom24LC::mockReadFromFile(const I2cAddressParameter &i2cAddressParam
     return false;
 }
 
-bool MockEEprom24LC::mockCompareWithFile(const I2cAddressParameter &i2cAddressParam, QString fileName,
+bool MockEepromDevice::mockCompareWithFile(const I2cAddressParameter &i2cAddressParam, QString fileName,
                                          const I2cAddressParameter &i2cAddressMux, qint8 muxChannelNo)
 {
     QFile file(fileName);
@@ -144,12 +144,12 @@ bool MockEEprom24LC::mockCompareWithFile(const I2cAddressParameter &i2cAddressPa
     return false;
 }
 
-void MockEEprom24LC::doReset(int size)
+void MockEepromDevice::doReset(int size)
 {
     m_flashData[getFullParams()] = QByteArray(size, 0xff);
 }
 
-EepromWithMuxParams MockEEprom24LC::getFullParams() const
+EepromWithMuxParams MockEepromDevice::getFullParams() const
 {
     return {m_i2cAddress, m_i2cAddressMux, m_muxChannelNo};
 }

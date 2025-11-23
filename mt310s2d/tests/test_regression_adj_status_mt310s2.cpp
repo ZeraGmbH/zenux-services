@@ -8,7 +8,7 @@
 #include "testfactoryi2cctrl.h"
 #include "zscpi_response_definitions.h"
 #include <timemachineobject.h>
-#include <mockeeprom24lc.h>
+#include <mockeepromdevice.h>
 #include <mocktcpnetworkfactory.h>
 #include <QTest>
 
@@ -22,7 +22,7 @@ void test_regression_adj_status_mt310s2::initTestCase()
 
 void test_regression_adj_status_mt310s2::init()
 {
-    MockEEprom24LC::mockCleanAll();
+    MockEepromDevice::mockCleanAll();
 }
 
 void test_regression_adj_status_mt310s2::cleanup()

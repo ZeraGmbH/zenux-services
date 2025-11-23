@@ -6,7 +6,7 @@
 #include "mocki2ceepromiofactory.h"
 #include "testfactoryi2cctrl.h"
 #include <timemachineobject.h>
-#include <mockeeprom24lc.h>
+#include <mockeepromdevice.h>
 #include <mocktcpnetworkfactory.h>
 #include <QTest>
 
@@ -19,7 +19,7 @@ void test_regression_adj_status_com5003::initTestCase()
 
 void test_regression_adj_status_com5003::init()
 {
-    MockEEprom24LC::mockCleanAll();
+    MockEepromDevice::mockCleanAll();
 }
 
 void test_regression_adj_status_com5003::cleanup()

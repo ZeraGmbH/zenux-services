@@ -4,7 +4,7 @@
 #include "proxy.h"
 #include "mockserverparamgenerator.h"
 #include "mocki2ceepromiofactory.h"
-#include "mockeeprom24lc.h"
+#include "mockeepromdevice.h"
 #include "scpisingletransactionblocked.h"
 #include "zscpi_response_definitions.h"
 #include "xmlhelperfortest.h"
@@ -17,7 +17,7 @@ QTEST_MAIN(test_adj_deny_import_mt310s2);
 
 void test_adj_deny_import_mt310s2::init()
 {
-    MockEEprom24LC::mockCleanAll();
+    MockEepromDevice::mockCleanAll();
     MockI2cEEpromIoFactory::enableMock();
 }
 
@@ -33,9 +33,9 @@ void test_adj_deny_import_mt310s2::loadEEpromWithStoredNamesAndVersions()
 {
     std::unique_ptr<SettingsContainer> settings =  std::make_unique<SettingsContainer>(MockServerParamGenerator::createParams("mt310s2d"));
     I2cSettings *i2cSettings = settings->getI2cSettings();
-    QVERIFY(MockEEprom24LC::mockReadFromFile({ i2cSettings->getDeviceNode(),
-                                               i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress) },
-                                             ":/export_internal_modified.eeprom"));
+    QVERIFY(MockEepromDevice::mockReadFromFile({ i2cSettings->getDeviceNode(),
+                                                 i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress) },
+                                               ":/export_internal_modified.eeprom"));
     setupServers();
 
     QString xmlExported = XmlHelperForTest::prepareForCompare(ScpiSingleTransactionBlocked::query("SYSTEM:ADJUSTMENT:XML?"));
@@ -51,9 +51,9 @@ void test_adj_deny_import_mt310s2::loadEEpromAndDenyDifferentDeviceName()
 {
     std::unique_ptr<SettingsContainer> settings =  std::make_unique<SettingsContainer>(MockServerParamGenerator::createParams("mt310s2d"));
     I2cSettings *i2cSettings = settings->getI2cSettings();
-    QVERIFY(MockEEprom24LC::mockReadFromFile({ i2cSettings->getDeviceNode(),
-                                               i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress) },
-                                             ":/export_internal_modified.eeprom"));
+    QVERIFY(MockEepromDevice::mockReadFromFile({ i2cSettings->getDeviceNode(),
+                                                 i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress) },
+                                               ":/export_internal_modified.eeprom"));
     setupServers();
 
     static_cast<Mt310s2SystemInfoMock*>(m_testServer->getSystemInfo())->setDeviceName("Foo");

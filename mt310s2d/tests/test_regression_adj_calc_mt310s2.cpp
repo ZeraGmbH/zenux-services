@@ -4,7 +4,7 @@
 #include "testfactoryi2cctrl.h"
 #include "proxy.h"
 #include "mocki2ceepromiofactory.h"
-#include "mockeeprom24lc.h"
+#include "mockeepromdevice.h"
 #include "scpisingletransactionblocked.h"
 #include "zscpi_response_definitions.h"
 #include <timemachineobject.h>
@@ -29,7 +29,7 @@ void test_regression_adj_calc_mt310s2::initTestCase()
 
 void test_regression_adj_calc_mt310s2::cleanup()
 {
-    MockEEprom24LC::mockCleanAll();
+    MockEepromDevice::mockCleanAll();
     m_testServer->removeAllClamps();
 }
 

@@ -5,7 +5,7 @@
 #include <timemachineobject.h>
 #include "scpisingletransactionblocked.h"
 #include "zscpi_response_definitions.h"
-#include <mockeeprom24lc.h>
+#include <mockeepromdevice.h>
 #include <mocktcpnetworkfactory.h>
 #include <QSignalSpy>
 #include <QTest>
@@ -33,7 +33,7 @@ void test_mockservice_com5003d_full::init()
 
 void test_mockservice_com5003d_full::cleanup()
 {
-    MockEEprom24LC::mockCleanAll();
+    MockEepromDevice::mockCleanAll();
     m_pcbIFace = nullptr;
     m_proxyClient = nullptr;
     m_server = nullptr;

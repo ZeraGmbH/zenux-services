@@ -1,5 +1,5 @@
-#ifndef MOCKEEPROM24LC_H
-#define MOCKEEPROM24LC_H
+#ifndef MOCKEEPROMDEVICE_H
+#define MOCKEEPROMDEVICE_H
 
 #include "mockeepromi2cfactory.h"
 #include <eepromi2cdeviceinterface.h>
@@ -7,11 +7,11 @@
 #include <i2cmuxerinterface.h>
 #include <QHash>
 
-class MockEEprom24LC : public EepromI2cDeviceInterface
+class MockEepromDevice : public EepromI2cDeviceInterface
 {
 public:
     static constexpr qint8 InvalidMux = qint8(I2cMuxerInterface::InvalidMux);
-    MockEEprom24LC(const I2cAddressParameter &i2cAddressParam, int byteCapacity,
+    MockEepromDevice(const I2cAddressParameter &i2cAddressParam, int byteCapacity,
                    const I2cAddressParameter &i2cAddressMux = {"", I2cMuxerInterface::InvalidMux},
                    qint8 muxChannelNo = InvalidMux);
     int WriteData(char* data, ushort count, ushort adr) override;
@@ -74,4 +74,4 @@ inline uint qHash(const EepromWithMuxParams& key, uint seed = 0) {
     return qHash(hashable, seed);
 }
 
-#endif // MOCKEEPROM24LC_H
+#endif // MOCKEEPROMDEVICE_H
