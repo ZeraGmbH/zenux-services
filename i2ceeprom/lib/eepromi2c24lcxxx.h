@@ -3,10 +3,9 @@
 
 #include "eepromi2cdeviceinterface.h"
 #include "i2caddressparameter.h"
-#include "zera-i2c-devices_export.h"
 #include <QString>
 
-class ZERA_I2C_DEVICES_EXPORT EepromI2c24LCxxx : public EepromI2cDeviceInterface
+class EepromI2c24LCxxx : public EepromI2cDeviceInterface
 {
 public:
     EepromI2c24LCxxx(const I2cAddressParameter &i2cAddressParam, int byteCapacity);
