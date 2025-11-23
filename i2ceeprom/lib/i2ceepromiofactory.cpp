@@ -1,5 +1,5 @@
 #include "i2ceepromiofactory.h"
-#include <eepromi2c_24lcxxx.h>
+#include "eepromi2c_24lcxxx.h"
 
 const I2cEEpromIoFactory::Creator I2cEEpromIoFactory::m_createFunctionDefault = []
     (const I2cAddressParameter &i2cAddressParam, int byteCapacity) {
@@ -8,7 +8,7 @@ const I2cEEpromIoFactory::Creator I2cEEpromIoFactory::m_createFunctionDefault = 
 
 I2cEEpromIoFactory::Creator I2cEEpromIoFactory::m_createFunction = m_createFunctionDefault;
 
-I2cFlashInterfacePtrU I2cEEpromIoFactory::create24LcTypeEeprom(const I2cAddressParameter &i2cAddressParam,
+EepromI2cDeviceInterfacePtr I2cEEpromIoFactory::create24LcTypeEeprom(const I2cAddressParameter &i2cAddressParam,
                                                                int byteCapacity)
 {
     return m_createFunction(i2cAddressParam, byteCapacity);

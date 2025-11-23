@@ -11,7 +11,8 @@ public:
     MockEEprom24LC(const I2cAddressParameter &i2cAddressParam, int byteCapacity);
     int WriteData(char* data, ushort count, ushort adr) override;
     int ReadData(char* data, ushort count, ushort adr) override;
-    virtual int Reset() override;
+    int Reset() override;
+    int getByteSize() const override;
 
     void returnReduceCountOnErrorRead();
     static void mockCleanAll();
@@ -26,6 +27,7 @@ private:
     void doReset(int size);
 
     struct I2cAddressParameter m_i2cAddress;
+    const int m_byteCapacity;
 
     static QHash<I2cAddressParameter, QByteArray> m_flashData;
     static QHash<I2cAddressParameter, int> m_flashDataReadCounts;

@@ -47,6 +47,7 @@ target_link_libraries(zenuxservicecommon
     Zera::zera-math
     Zera::zera-i2c-devices
     Zera::zera-tasks-base
+    zenuxi2ceeprom
     source-json-io-lib
     # ask linker to help us finding unresolved symbols
     "-Wl,--no-undefined"

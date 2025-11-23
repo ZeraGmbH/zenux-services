@@ -9,9 +9,9 @@
 class I2cEEpromIoFactory
 {
 public:
-    static I2cFlashInterfacePtrU create24LcTypeEeprom(const I2cAddressParameter &i2cAddressParam, int byteCapacity);
+    static EepromI2cDeviceInterfacePtr create24LcTypeEeprom(const I2cAddressParameter &i2cAddressParam, int byteCapacity);
 protected:
-    typedef std::function<I2cFlashInterfacePtrU(const I2cAddressParameter &i2cAddressParam, int byteCapacity)> Creator;
+    typedef std::function<EepromI2cDeviceInterfacePtr(const I2cAddressParameter &i2cAddressParam, int byteCapacity)> Creator;
     static const Creator m_createFunctionDefault;
     static Creator m_createFunction;
 };

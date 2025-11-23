@@ -7,8 +7,8 @@ QHash<I2cAddressParameter, int>        MockEEprom24LC::m_flashDataWriteCounts;
 QHash<I2cAddressParameter, bool>       MockEEprom24LC::m_returnReducedDataSizeOnRead;
 
 MockEEprom24LC::MockEEprom24LC(const I2cAddressParameter &i2cAddressParam, int byteCapacity) :
-    EepromI2cDeviceInterface(byteCapacity),
-    m_i2cAddress(i2cAddressParam)
+    m_i2cAddress(i2cAddressParam),
+    m_byteCapacity(byteCapacity)
 {
     if(m_flashData.contains(i2cAddressParam))
         return;
@@ -50,6 +50,11 @@ int MockEEprom24LC::Reset()
 {
     doReset(0);
     return getByteSize();
+}
+
+int MockEEprom24LC::getByteSize() const
+{
+    return m_byteCapacity;
 }
 
 void MockEEprom24LC::returnReduceCountOnErrorRead()

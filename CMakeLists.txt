@@ -89,6 +89,7 @@ endfunction()
 
 add_subdirectory(com5003d)
 add_subdirectory(core-log-services)
+add_subdirectory(i2ceeprom)
 add_subdirectory(mt310s2d)
 add_subdirectory(scripts)
 add_subdirectory(source-control)
