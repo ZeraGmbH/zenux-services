@@ -1,9 +1,9 @@
 #include "i2ceepromiofactory.h"
-#include "eepromi2c_24lcxxx.h"
+#include "eepromi2c24lcxxx.h"
 
 const I2cEEpromIoFactory::Creator I2cEEpromIoFactory::m_createFunctionDefault = []
     (const I2cAddressParameter &i2cAddressParam, int byteCapacity) {
-    return std::make_unique<EepromI2c_24LCxxx>(i2cAddressParam, byteCapacity);
+    return std::make_unique<EepromI2c24LCxxx>(i2cAddressParam, byteCapacity);
 };
 
 I2cEEpromIoFactory::Creator I2cEEpromIoFactory::m_createFunction = m_createFunctionDefault;

@@ -1,15 +1,15 @@
-#include "eepromi2c_24lcxxx.h"
+#include "eepromi2c24lcxxx.h"
 #include "i2cutils.h"
 #include <linux/i2c.h>
 #include <unistd.h>
 
-EepromI2c_24LCxxx::EepromI2c_24LCxxx(const I2cAddressParameter &i2cAddressParam, int byteCapacity) :
+EepromI2c24LCxxx::EepromI2c24LCxxx(const I2cAddressParameter &i2cAddressParam, int byteCapacity) :
     m_i2cAddressParam(i2cAddressParam),
     m_byteCapacity(byteCapacity)
 {
 }
 
-int EepromI2c_24LCxxx::WriteData(char* data, ushort count, ushort memAddress)
+int EepromI2c24LCxxx::WriteData(char* data, ushort count, ushort memAddress)
 {
     qInfo("Start EEPROM write on i2c %s / 0x%02X / mem address: 0x%04X / size %u...",
           qPrintable(m_i2cAddressParam.devNodeFileName), m_i2cAddressParam.i2cAddr, memAddress, count);
@@ -57,7 +57,7 @@ int EepromI2c_24LCxxx::WriteData(char* data, ushort count, ushort memAddress)
     return (count - toWrite);
 }
 
-int EepromI2c_24LCxxx::Reset()
+int EepromI2c24LCxxx::Reset()
 {
     qInfo("Start EEPROM reset on i2c %s / 0x%02X...",
           qPrintable(m_i2cAddressParam.devNodeFileName), m_i2cAddressParam.i2cAddr);
@@ -72,14 +72,14 @@ int EepromI2c_24LCxxx::Reset()
     return bytesReset;
 }
 
-int EepromI2c_24LCxxx::getByteSize() const
+int EepromI2c24LCxxx::getByteSize() const
 {
     return m_byteCapacity;
 }
 
 #define blockReadLen 4096
 
-int EepromI2c_24LCxxx::ReadData(char* data, ushort count, ushort memAddress)
+int EepromI2c24LCxxx::ReadData(char* data, ushort count, ushort memAddress)
 {
     qInfo("Start EEPROM read on i2c %s / 0x%02X / mem address: 0x%04X / size %u...",
           qPrintable(m_i2cAddressParam.devNodeFileName), m_i2cAddressParam.i2cAddr, memAddress, count);

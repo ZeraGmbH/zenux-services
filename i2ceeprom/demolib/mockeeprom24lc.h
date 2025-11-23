@@ -3,12 +3,16 @@
 
 #include <eepromi2cdeviceinterface.h>
 #include <i2caddressparameter.h>
+#include <i2cmuxerinterface.h>
 #include <QHash>
 
 class MockEEprom24LC : public EepromI2cDeviceInterface
 {
 public:
-    MockEEprom24LC(const I2cAddressParameter &i2cAddressParam, int byteCapacity);
+    static constexpr qint8 InvalidMux = qint8(I2cMuxerInterface::InvalidMux);
+    MockEEprom24LC(const I2cAddressParameter &i2cAddressParam, int byteCapacity,
+                   const I2cAddressParameter &i2cAddressMux = {"", I2cMuxerInterface::InvalidMux},
+                   qint8 muxChannelNo = InvalidMux);
     int WriteData(char* data, ushort count, ushort adr) override;
     int ReadData(char* data, ushort count, ushort adr) override;
     int Reset() override;
@@ -28,6 +32,8 @@ private:
 
     struct I2cAddressParameter m_i2cAddress;
     const int m_byteCapacity;
+    struct I2cAddressParameter m_i2cAddressMux;
+    const qint8 m_muxChannelNo;
 
     static QHash<I2cAddressParameter, QByteArray> m_flashData;
     static QHash<I2cAddressParameter, int> m_flashDataReadCounts;
