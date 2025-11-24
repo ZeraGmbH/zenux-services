@@ -4840,6 +4840,9 @@
     <CTRL Type="Query" ScpiPath="SYSTEM:VERSION:CTRL"/>
     <FPGA Type="Query" ScpiPath="SYSTEM:VERSION:FPGA"/>
    </VERSION>
+   <EMOB Type="Node">
+    <CHANNEL Type="Query" ScpiPath="SYSTEM:EMOB:CHANNEL"/>
+   </EMOB>
    <SERIAL Type="Query,Command+Par" ScpiPath="SYSTEM:SERIAL"/>
    <ADJUSTMENT Type="Node">
     <FLASH Type="Node">

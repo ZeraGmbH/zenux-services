@@ -24,7 +24,8 @@ enum SystemCommands
     cmdAdjXMLWrite,
     cmdAdjXMLRead,
     cmdAdjFlashChksum,
-    cmdInterfaceRead
+    cmdInterfaceRead,
+    cmdGetChannels,
 };
 }
 
