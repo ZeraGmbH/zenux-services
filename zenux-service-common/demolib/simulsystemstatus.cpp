@@ -109,6 +109,11 @@ void SimulSystemStatus::setChannelHotplugSupported(const QVector<bool> &channels
     }
 }
 
+const QStringList SimulSystemStatus::hotplugDevices() const
+{
+    return QStringList() << "--" << "controller";
+}
+
 QString SimulSystemStatus::pllMode() const
 {
     return m_pllMode;

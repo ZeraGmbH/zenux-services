@@ -91,7 +91,7 @@ ApplicationWindow {
                     opacity: Simul.channelHotplugSupported[index] ? 1 : 0
                     readonly property int channelIdx: index
                     Layout.preferredWidth: channelWidth
-                    model: ["--", "controller"]
+                    model: Simul.hotplugDevices
                     onCurrentIndexChanged: Simul.changeHotplugDevice(channelIdx, currentIndex)
                 }
             }

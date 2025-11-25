@@ -70,9 +70,12 @@ public:
     Q_INVOKABLE void changeHotplugDevice(int channelIndex, int deviceIndex);
     Q_SIGNAL void sigHotplugDevChanged(int channelIndex, bool active);
     Q_PROPERTY(QVector<bool> channelHotplugSupported READ channelHotplugSupported NOTIFY channelHotplugSupportedChanged FINAL)
+    Q_PROPERTY(QStringList hotplugDevices READ hotplugDevices NOTIFY hotplugDevicesChanged FINAL)
     const QVector<bool> &channelHotplugSupported() const;
     void setChannelHotplugSupported(const QVector<bool> &channelsWithHotplugSupport); // just C++
+    const QStringList hotplugDevices() const;
     Q_SIGNAL void channelHotplugSupportedChanged();
+    Q_SIGNAL void hotplugDevicesChanged();
 
     // C++ only
     quint8 getAccuStatusFromFlags();
