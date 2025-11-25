@@ -5,6 +5,7 @@ import QtQuick.Layouts 1.14
 import SimulSystemStatus 1.0
 
 ApplicationWindow {
+    id: mainWindow
     visible: true
     title: "PCB service simulation"
     x: 0
@@ -93,6 +94,27 @@ ApplicationWindow {
                     Layout.preferredWidth: channelWidth
                     model: Simul.hotplugDevices
                     onCurrentIndexChanged: Simul.changeHotplugDevice(channelIdx, currentIndex)
+
+                    contentItem: Label {
+                        text: hotDevicesCombo.displayText
+                        font.pointSize: hotDevicesCombo.height*0.2
+                        verticalAlignment: Text.AlignVCenter
+                        leftPadding: width * 0.1
+                        rightPadding: leftPadding
+                    }
+                    popup: Popup {
+                        x: -width*0.3
+                        width: hotDevicesCombo.width * 1.5
+                        height: Math.min(contentItem.implicitHeight, mainWindow.height - topMargin - bottomMargin)
+                        padding: 1
+                        contentItem: ListView {
+                            clip: true
+                            implicitHeight: contentHeight * 0.8
+                            model: hotDevicesCombo.popup.visible ? hotDevicesCombo.delegateModel : null
+                            currentIndex: hotDevicesCombo.highlightedIndex
+                            ScrollIndicator.vertical: ScrollIndicator { }
+                        }
+                    }
                 }
             }
         }
