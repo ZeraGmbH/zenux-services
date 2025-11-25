@@ -1,5 +1,6 @@
 #include "simulsystemstatus.h"
 #include "accustatusflags.h"
+#include "mockavailablehotplugdevices.h"
 
 SimulSystemStatus* SimulSystemStatus::m_instance = nullptr;
 
@@ -93,7 +94,7 @@ QList<int> SimulSystemStatus::channelRanges() const
 
 void SimulSystemStatus::changeHotplugDevice(int channelIndex, int deviceIndex)
 {
-    emit sigHotplugDevChanged(channelIndex, deviceIndex != NONE);
+    emit sigHotplugDevChanged(channelIndex, deviceIndex);
 }
 
 const QVector<bool> &SimulSystemStatus::channelHotplugSupported() const
@@ -111,7 +112,7 @@ void SimulSystemStatus::setChannelHotplugSupported(const QVector<bool> &channels
 
 const QStringList SimulSystemStatus::hotplugDevices() const
 {
-    return QStringList() << "--" << "controller";
+    return MockAvailableHotplugDevices::getAvailableDeviceNames();
 }
 
 QString SimulSystemStatus::pllMode() const

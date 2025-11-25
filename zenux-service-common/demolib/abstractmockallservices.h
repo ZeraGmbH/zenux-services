@@ -12,7 +12,7 @@ public:
     struct hotplugI2cBus
     {
         QString controllerName;
-        cClamp::ClampTypes clamp;
+        cClamp::ClampTypes clamp = cClamp::undefined;
     };
     typedef QMap<QString, hotplugI2cBus> ChannelAliasHotplugDeviceNameMap;
     virtual void fireHotplugInterrupt(const ChannelAliasHotplugDeviceNameMap &infoMap) = 0;

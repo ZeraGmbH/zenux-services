@@ -4,7 +4,7 @@
 #include "mt310s2d.h"
 #include "abstractmockallservices.h"
 #include "abstractfactoryi2cctrl.h"
-#include <QSet>
+#include <QMap>
 
 class MockMt310s2d : public QObject
 {
@@ -20,12 +20,12 @@ public:
     cClampInterface* getClampInterface() const;
 
 private slots:
-    void onSimulGuiHotplugDevChanged(int channelIndex, bool active);
+    void onSimulGuiHotplugDevChanged(int channelIndex, int deviceIndex);
 private:
     void setupHotplugChannelEnable();
     std::unique_ptr<cMT310S2dServer> m_server;
     AbstractFactoryI2cCtrlPtr m_ctrlFactory;
-    QSet<QString> m_channelAliasesWithControllers;
+    AbstractMockAllServices::ChannelAliasHotplugDeviceNameMap m_channelAliasesHotplugI2cBus;
 };
 
 #endif // MOCKMT310S2D_H

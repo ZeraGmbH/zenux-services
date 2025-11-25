@@ -2,6 +2,8 @@
 #include "mockeepromi2cfactory.h"
 #include "mockfactorydevicenodepcb.h"
 #include "mockserverparamgenerator.h"
+#include "mockclampplugger.h"
+#include "mockavailablehotplugdevices.h"
 #include "controllerpersitentdata.h"
 #include "simulsystemstatus.h"
 #include "clampinterface.h"
@@ -51,7 +53,8 @@ void MockMt310s2d::fireHotplugInterrupt(const AbstractMockAllServices::ChannelAl
                 hotDevicesToSet[channelSetting->m_nMuxChannelNo] = hotplugI2CBus;
             }
             if(cClamp::isValidClampType(hotplugI2CBus.clamp)) {
-                // TODO
+                MockClampPlugger mockPlugger(senseSettings, m_server->getI2cSettings());
+                mockPlugger.initClampAdjMem(hotplugI2CBus.clamp, channelAlias);
                 interruptMask |= (1 << channelSetting->m_nPluggedBit);
             }
         }
@@ -73,20 +76,24 @@ cClampInterface *MockMt310s2d::getClampInterface() const
 
 static const QStringList simulChannelSequence = QStringList() << "UL1" << "UL2" << "UL3" << "UAUX" << "IL1" << "IL2" << "IL3" << "IAUX";
 
-void MockMt310s2d::onSimulGuiHotplugDevChanged(int channelIndex, bool active)
+void MockMt310s2d::onSimulGuiHotplugDevChanged(int channelIndex, int deviceIndex)
 {
     const QString channelAlias = simulChannelSequence[channelIndex];
+    const QStringList availableNames = MockAvailableHotplugDevices::getAvailableDeviceNames();
+    QString hotplugName = availableNames[deviceIndex];
+    AbstractMockAllServices::hotplugI2cBus newDevice = MockAvailableHotplugDevices::getHotDevices(hotplugName, channelAlias);
     bool change = false;
-    if(active) {
-        change = !m_channelAliasesWithControllers.contains(channelAlias);
-        m_channelAliasesWithControllers.insert(channelAlias);
+    bool addDevice = !newDevice.controllerName.isEmpty() || newDevice.clamp != cClamp::undefined;
+    if (addDevice) {
+        change = !m_channelAliasesHotplugI2cBus.contains(channelAlias);
+        m_channelAliasesHotplugI2cBus[channelAlias] = newDevice;
     }
     else {
-        change = m_channelAliasesWithControllers.contains(channelAlias);
-        m_channelAliasesWithControllers.remove(channelAlias);
+        change = m_channelAliasesHotplugI2cBus.contains(channelAlias);
+        m_channelAliasesHotplugI2cBus.remove(channelAlias);
     }
     if(change)
-        fireHotplugInterruptControllerOnly(m_channelAliasesWithControllers.values());
+        fireHotplugInterrupt(m_channelAliasesHotplugI2cBus);
 }
 
 void MockMt310s2d::setupHotplugChannelEnable()
