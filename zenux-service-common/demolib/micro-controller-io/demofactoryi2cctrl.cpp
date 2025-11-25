@@ -85,8 +85,7 @@ I2cCtrlCpuTemperaturePtr DemoFactoryI2cCtrl::getCpuTemperatureController()
 
 I2cCtrlEMOBPtr DemoFactoryI2cCtrl::getEmobController(quint8 muxChannel)
 {
-    Q_UNUSED(muxChannel)
-    return std::make_unique<DemoI2cCtrlEMOB>();
+    return std::make_unique<DemoI2cCtrlEMOB>(muxChannel);
 }
 
 I2cCtrlBootloaderPtr DemoFactoryI2cCtrl::getBootloaderController(ControllerTypes ctrlType, quint8 muxChannel)
