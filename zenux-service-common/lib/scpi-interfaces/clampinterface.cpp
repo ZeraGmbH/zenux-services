@@ -7,7 +7,7 @@
 cClampInterface::cClampInterface(PCBServer *server,
                                  cSenseSettings *senseSettings,
                                  SenseInterfaceCommon *senseInterface,
-                                 I2cSettings *i2cSettings,
+                                 const I2cSettings *i2cSettings,
                                  AbstractEepromI2cFactoryPtr adjMemFactory,
                                  AbstractFactoryI2cCtrlPtr ctrlFactory) :
     ScpiConnection(server->getSCPIInterface()),

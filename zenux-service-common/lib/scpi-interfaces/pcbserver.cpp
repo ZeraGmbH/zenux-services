@@ -46,6 +46,11 @@ QString PCBServer::getVersion()
     return m_settings->getServerParams().version;
 }
 
+const I2cSettings *PCBServer::getI2cSettings() const
+{
+    return m_settings->getI2cSettings();
+}
+
 void PCBServer::connectProtoConnectionSignals()
 {
     connect(&m_protoBufServer,&VeinTcp::TcpServer::sigClientConnected,

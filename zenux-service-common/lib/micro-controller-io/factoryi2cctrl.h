@@ -7,7 +7,7 @@
 class FactoryI2cCtrl : public AbstractFactoryI2cCtrl
 {
 public:
-    FactoryI2cCtrl(I2cSettings *i2cSettings);
+    FactoryI2cCtrl(const I2cSettings *i2cSettings);
 
     AbstractCtrlHeartbeatWaitPtr createCtrlHeartbeatWait(QString devnode) override;
     I2cCtrlBootloaderPtr getBootloaderController(ControllerTypes ctrlType, quint8 muxChannel = -1) override;
@@ -28,7 +28,7 @@ private:
     quint8 getSystemCtrlI2cAddress();
     quint8 getEmobCtrlI2cAddress();
     quint8 getEmobMuxI2cAddress();
-    I2cSettings *m_i2cSettings;
+    const I2cSettings *m_i2cSettings;
     QString m_deviceNode;
     quint8 m_debugLevel;
 };

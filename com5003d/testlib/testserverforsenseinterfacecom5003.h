@@ -19,7 +19,7 @@ public:
     QString getDeviceVersion() { return m_systemInfo->getDeviceVersion(); }
     SenseInterfaceCommon *getSenseInterface() { return m_senseInterface.get(); }
     cSenseSettings* getSenseSettings() { return m_senseSettings.get(); }
-    I2cSettings *getI2cSettings() { return m_settings->getI2cSettings(); }
+    const I2cSettings *getI2cSettings() { return m_settings->getI2cSettings(); }
     SystemInfo* getSystemInfo() { return m_systemInfo.get(); }
 
 private:

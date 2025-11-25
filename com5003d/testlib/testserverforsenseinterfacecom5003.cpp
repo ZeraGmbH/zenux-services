@@ -18,7 +18,7 @@ TestServerForSenseInterfaceCom5003::TestServerForSenseInterfaceCom5003(AbstractF
     setXmlSettings(XmlSettingsList{m_senseSettings.get()});
 
     AbstractEepromI2cFactoryPtr adjMemFactory = std::make_shared<MockEepromI2cFactory>();
-    I2cSettings *i2cSettings = m_settings->getI2cSettings();
+    const I2cSettings *i2cSettings = m_settings->getI2cSettings();
     EepromI2cDeviceInterfacePtr adjEeprom = adjMemFactory->createEeprom(
         {i2cSettings->getDeviceNode(), i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress)},
         i2cSettings->getEepromByteSize());

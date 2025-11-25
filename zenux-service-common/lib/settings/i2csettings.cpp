@@ -55,7 +55,7 @@ const QString& I2cSettings::getDeviceNode() const
     return m_sDeviceNode;
 }
 
-int I2cSettings::getEepromByteSize()
+int I2cSettings::getEepromByteSize() const
 {
     return m_eepromCapacity;
 }

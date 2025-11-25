@@ -292,7 +292,7 @@ void cCOM5003dServer::earlySetup(AbstractChannelRangeFactoryPtr channelRangeFact
                                        m_tcpNetworkFactory);
 
     m_scpiConnectionList.append(this); // the server itself has some commands
-    I2cSettings *i2cSettings = m_settings->getI2cSettings();
+    const I2cSettings *i2cSettings = m_settings->getI2cSettings();
     EepromI2cDeviceInterfacePtr eepromDev = m_adjMemFactory->createEeprom(
         {i2cSettings->getDeviceNode(), i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress)},
         i2cSettings->getEepromByteSize());

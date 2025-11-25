@@ -24,6 +24,7 @@ public:
     std::shared_ptr<cSCPI> getSCPIInterface();
     QString getName();
     QString getVersion();
+    const I2cSettings *getI2cSettings() const;
 signals:
     void notifierRegistred(NotificationString* notifier);
     void removeSubscribers(VeinTcp::TcpPeer* peer, const QByteArray &clientID);

@@ -38,7 +38,7 @@ void test_regression_adj_import_export_eeprom_mt310s2::directExportFlashGen()
 {
     setupServers(std::make_shared<TestFactoryI2cCtrl>(true));
     QVERIFY(m_testServer->getSenseInterface()->exportAdjData(refTime));
-    I2cSettings *i2cSettings = m_testServer->getI2cSettings();
+    const I2cSettings *i2cSettings = m_testServer->getI2cSettings();
     TestLogHelpers::writeFile("/tmp/export_internal_initial.eeprom",
                               MockEepromDevice::getData({i2cSettings->getDeviceNode(), i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress)}));
 }
@@ -47,7 +47,7 @@ void test_regression_adj_import_export_eeprom_mt310s2::directExportFlashCheckRef
 {
     setupServers(std::make_shared<TestFactoryI2cCtrl>(true));
     QVERIFY(m_testServer->getSenseInterface()->exportAdjData(refTime));
-    I2cSettings *i2cSettings = m_testServer->getI2cSettings();
+    const I2cSettings *i2cSettings = m_testServer->getI2cSettings();
     QByteArray expected = TestLogHelpers::loadFile(":/export_internal_initial.eeprom");
     QByteArray dumped = MockEepromDevice::getData({i2cSettings->getDeviceNode(), i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress)});
     QVERIFY(TestLogHelpers::compareAndLogOnDiff(expected, dumped));
@@ -59,7 +59,7 @@ void test_regression_adj_import_export_eeprom_mt310s2::scpiWriteFlashInitial()
     QString ret = ScpiSingleTransactionBlocked::cmd("SYSTEM:ADJUSTMENT:FLASH:WRITE", "");
     QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::ack]);
 
-    I2cSettings *i2cSettings = m_testServer->getI2cSettings();
+    const I2cSettings *i2cSettings = m_testServer->getI2cSettings();
     QString devNodeFileName = i2cSettings->getDeviceNode();
     ushort i2cAddress = i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress);
 
@@ -85,7 +85,7 @@ void test_regression_adj_import_export_eeprom_mt310s2::scpiWriteRandomFileAndFla
     ret = ScpiSingleTransactionBlocked::cmd("SYSTEM:ADJUSTMENT:FLASH:WRITE", "");
     QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::ack]);
 
-    I2cSettings *i2cSettings = m_testServer->getI2cSettings();
+    const I2cSettings *i2cSettings = m_testServer->getI2cSettings();
     TestLogHelpers::writeFile("/tmp/export_internal_modified.eeprom",
                               MockEepromDevice::getData({i2cSettings->getDeviceNode(), i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress)}));
 }
@@ -113,7 +113,7 @@ void test_regression_adj_import_export_eeprom_mt310s2::scpiWriteRandomFileFlashW
 void test_regression_adj_import_export_eeprom_mt310s2::loadRandomToEEpromWriteToFlashExportXmlAndCheck()
 {
     std::unique_ptr<SettingsContainer> settings = std::make_unique<SettingsContainer>(MockServerParamGenerator::createParams("mt310s2d"));
-    I2cSettings *i2cSettings = settings->getI2cSettings();
+    const I2cSettings *i2cSettings = settings->getI2cSettings();
     MockEepromDevice::setData({i2cSettings->getDeviceNode(), i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress)},
                               TestLogHelpers::loadFile(":/export_internal_modified.eeprom"));
     setupServers(std::make_shared<TestFactoryI2cCtrl>(true));
@@ -131,7 +131,7 @@ void test_regression_adj_import_export_eeprom_mt310s2::directExportFlashArbitrar
 {
     setupServers(std::make_shared<TestFactoryI2cCtrlCommonInfoFoo>());
     QVERIFY(m_testServer->getSenseInterface()->exportAdjData(refTime));
-    I2cSettings *i2cSettings = m_testServer->getI2cSettings();
+    const I2cSettings *i2cSettings = m_testServer->getI2cSettings();
     TestLogHelpers::writeFile("/tmp/import_arbitrary_version.eeprom",
                               MockEepromDevice::getData({i2cSettings->getDeviceNode(), i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress)}));
 }
@@ -139,7 +139,7 @@ void test_regression_adj_import_export_eeprom_mt310s2::directExportFlashArbitrar
 void test_regression_adj_import_export_eeprom_mt310s2::loadArbitraryVersionToEEprom()
 {
     std::unique_ptr<SettingsContainer> settings = std::make_unique<SettingsContainer>(MockServerParamGenerator::createParams("mt310s2d"));
-    I2cSettings *i2cSettings = settings->getI2cSettings();
+    const I2cSettings *i2cSettings = settings->getI2cSettings();
     MockEepromDevice::setData({i2cSettings->getDeviceNode(), i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress)},
                               TestLogHelpers::loadFile(":/import_arbitrary_version.eeprom"));
     setupServers(std::make_shared<TestFactoryI2cCtrl>(true));
@@ -170,7 +170,7 @@ void test_regression_adj_import_export_eeprom_mt310s2::allClampsEEpromWrite()
     QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::ack]);
     QVERIFY(clamp->exportClampAdjData(refTime));
 
-    I2cSettings *i2cSettings = m_testServer->getI2cSettings();
+    const I2cSettings *i2cSettings = m_testServer->getI2cSettings();
     const QByteArray eepromData = MockEepromDevice::getData(
         {i2cSettings->getDeviceNode(), i2cSettings->getI2CAdress(i2cSettings::clampFlashI2cAddress)},
         {i2cSettings->getDeviceNode(), i2cSettings->getI2CAdress(i2cSettings::muxerI2cAddress)},
@@ -187,7 +187,7 @@ void test_regression_adj_import_export_eeprom_mt310s2::freshClampSetTypeIOnlyEep
     QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::ack]);
     QVERIFY(clamp->exportClampAdjData(refTime));
 
-    I2cSettings *i2cSettings = m_testServer->getI2cSettings();
+    const I2cSettings *i2cSettings = m_testServer->getI2cSettings();
     QByteArray expected = TestLogHelpers::loadFile(":/initial_clamp_type_i.eeprom");
     QByteArray dumped = MockEepromDevice::getData({i2cSettings->getDeviceNode(), i2cSettings->getI2CAdress(i2cSettings::clampFlashI2cAddress)},
                                                   {i2cSettings->getDeviceNode(), i2cSettings->getI2CAdress(i2cSettings::muxerI2cAddress)},
@@ -204,7 +204,7 @@ void test_regression_adj_import_export_eeprom_mt310s2::freshClampSetTypeUOnlyEep
     QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::ack]);
     QVERIFY(clamp->exportClampAdjData(refTime));
 
-    I2cSettings *i2cSettings = m_testServer->getI2cSettings();
+    const I2cSettings *i2cSettings = m_testServer->getI2cSettings();
     QByteArray expected = TestLogHelpers::loadFile(":/initial_clamp_type_u.eeprom");
     QByteArray dumped = MockEepromDevice::getData({i2cSettings->getDeviceNode(), i2cSettings->getI2CAdress(i2cSettings::clampFlashI2cAddress)},
                                                   {i2cSettings->getDeviceNode(), i2cSettings->getI2CAdress(i2cSettings::muxerI2cAddress)},
@@ -221,7 +221,7 @@ void test_regression_adj_import_export_eeprom_mt310s2::freshClampSetTypeUIEeprom
     QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::ack]);
     QVERIFY(clamp->exportClampAdjData(refTime));
 
-    I2cSettings *i2cSettings = m_testServer->getI2cSettings();
+    const I2cSettings *i2cSettings = m_testServer->getI2cSettings();
     QByteArray expected = TestLogHelpers::loadFile(":/initial_clamp_type_ui.eeprom");
     QByteArray dumped = MockEepromDevice::getData({i2cSettings->getDeviceNode(), i2cSettings->getI2CAdress(i2cSettings::clampFlashI2cAddress)},
                                                   {i2cSettings->getDeviceNode(), i2cSettings->getI2CAdress(i2cSettings::muxerI2cAddress)},

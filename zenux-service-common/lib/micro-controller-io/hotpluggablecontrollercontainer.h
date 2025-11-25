@@ -23,7 +23,7 @@ class HotPluggableControllerContainer : public QObject
 {
     Q_OBJECT
 public:
-    HotPluggableControllerContainer(I2cSettings *i2cSettings, AbstractFactoryI2cCtrlPtr ctrlFactory);
+    HotPluggableControllerContainer(const I2cSettings *i2cSettings, AbstractFactoryI2cCtrlPtr ctrlFactory);
     void startActualizeEmobControllers(quint16 bitmaskAvailable, const cSenseSettings* senseSettings, int msWaitForApplicationStart);
     HotControllerMap getCurrentControllers();
     static EmobControllerTypes getEmobControllerType(const QString &subInstrumentReceived);
@@ -36,7 +36,7 @@ private:
     void startAddingController(int ctrlChannel, SenseSystem::cChannelSettings* channelSettings, int msWaitForApplicationStart);
     bool isChannelKnown(int ctrlChannel);
 
-    I2cSettings *m_i2cSettings;
+    const I2cSettings *m_i2cSettings;
     AbstractFactoryI2cCtrlPtr m_ctrlFactory;
     struct NamedHotControllers {
         QString channelMName;

@@ -34,7 +34,7 @@ EthSettings *SettingsContainer::getEthSettings()
     return &m_ethSettings;
 }
 
-I2cSettings *SettingsContainer::getI2cSettings()
+const I2cSettings *SettingsContainer::getI2cSettings() const
 {
     return &m_i2cSettings;
 }

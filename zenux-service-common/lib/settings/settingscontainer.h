@@ -24,7 +24,7 @@ public:
     explicit SettingsContainer(ServerParams params);
     ServerParams getServerParams();
     EthSettings *getEthSettings();
-    I2cSettings *getI2cSettings();
+    const I2cSettings *getI2cSettings() const;
     FPGASettings *getFpgaSettings();
     SamplingSettings *getSamplingSettings();
     struct TServiceConfig

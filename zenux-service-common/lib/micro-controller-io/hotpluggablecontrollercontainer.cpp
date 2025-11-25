@@ -1,7 +1,7 @@
 #include "hotpluggablecontrollercontainer.h"
 #include "emobdefinitions.h"
 
-HotPluggableControllerContainer::HotPluggableControllerContainer(I2cSettings *i2cSettings, AbstractFactoryI2cCtrlPtr ctrlFactory) :
+HotPluggableControllerContainer::HotPluggableControllerContainer(const I2cSettings *i2cSettings, AbstractFactoryI2cCtrlPtr ctrlFactory) :
     m_i2cSettings(i2cSettings),
     m_ctrlFactory(ctrlFactory)
 {

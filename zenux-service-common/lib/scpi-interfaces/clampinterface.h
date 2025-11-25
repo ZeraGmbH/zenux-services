@@ -29,7 +29,7 @@ public:
     cClampInterface(PCBServer *server,
                     cSenseSettings *senseSettings,
                     SenseInterfaceCommon *senseInterface,
-                    I2cSettings *i2cSettings,
+                    const I2cSettings *i2cSettings,
                     AbstractEepromI2cFactoryPtr adjMemFactory,
                     AbstractFactoryI2cCtrlPtr ctrlFactory);
     virtual void initSCPIConnection(QString leadingNodes) override;
@@ -53,7 +53,7 @@ private:
     PCBServer *m_pMyServer;
     cSenseSettings *m_senseSettings;
     SenseInterfaceCommon *m_pSenseInterface;
-    I2cSettings *m_i2cSettings;
+    const I2cSettings *m_i2cSettings;
     AbstractEepromI2cFactoryPtr m_adjMemFactory;
     AbstractFactoryI2cCtrlPtr m_ctrlFactory;
     NotificationString m_notifierClampChannelList;

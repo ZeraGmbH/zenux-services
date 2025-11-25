@@ -37,7 +37,7 @@ void test_regression_adj_import_export_eeprom_com5003::directExportFlashGen()
 {
     setupServers(std::make_shared<TestFactoryI2cCtrl>(true));
     QVERIFY(m_testServer->getSenseInterface()->exportAdjData(refTime));
-    I2cSettings *i2cSettings = m_testServer->getI2cSettings();
+    const I2cSettings *i2cSettings = m_testServer->getI2cSettings();
     TestLogHelpers::writeFile("/tmp/export_internal_initial.eeprom",
                               MockEepromDevice::getData({i2cSettings->getDeviceNode(), i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress)}));
 }
@@ -46,7 +46,7 @@ void test_regression_adj_import_export_eeprom_com5003::directExportFlashCheckRef
 {
     setupServers(std::make_shared<TestFactoryI2cCtrl>(true));
     QVERIFY(m_testServer->getSenseInterface()->exportAdjData(refTime));
-    I2cSettings *i2cSettings = m_testServer->getI2cSettings();
+    const I2cSettings *i2cSettings = m_testServer->getI2cSettings();
     QByteArray expected = TestLogHelpers::loadFile(":/export_internal_initial.eeprom");
     QByteArray dumped = MockEepromDevice::getData({i2cSettings->getDeviceNode(), i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress)});
     QVERIFY(TestLogHelpers::compareAndLogOnDiff(expected, dumped));
@@ -58,7 +58,7 @@ void test_regression_adj_import_export_eeprom_com5003::scpiWriteFlashInitial()
     QString ret = ScpiSingleTransactionBlocked::cmd("SYSTEM:ADJUSTMENT:FLASH:WRITE", "");
     QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::ack]);
 
-    I2cSettings *i2cSettings = m_testServer->getI2cSettings();
+    const I2cSettings *i2cSettings = m_testServer->getI2cSettings();
     QString devNodeFileName = i2cSettings->getDeviceNode();
     const ushort i2cAddress = i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress);
 
@@ -84,7 +84,7 @@ void test_regression_adj_import_export_eeprom_com5003::scpiWriteRandomFileAndFla
     ret = ScpiSingleTransactionBlocked::cmd("SYSTEM:ADJUSTMENT:FLASH:WRITE", "");
     QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::ack]);
 
-    I2cSettings *i2cSettings = m_testServer->getI2cSettings();
+    const I2cSettings *i2cSettings = m_testServer->getI2cSettings();
     TestLogHelpers::writeFile("/tmp/export_internal_modified_with_date_time.eeprom",
                               MockEepromDevice::getData({i2cSettings->getDeviceNode(), i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress)}));
 }
@@ -110,7 +110,7 @@ void test_regression_adj_import_export_eeprom_com5003::scpiWriteRandomFileFlashW
 void test_regression_adj_import_export_eeprom_com5003::loadOriginalInvalidDateTimeRandomToEEpromWriteToFlashExportXmlAndCheck()
 {
     std::unique_ptr<SettingsContainer> settings = std::make_unique<SettingsContainer>(MockServerParamGenerator::createParams("com5003d"));
-    I2cSettings *i2cSettings = settings->getI2cSettings();
+    const I2cSettings *i2cSettings = settings->getI2cSettings();
     MockEepromDevice::setData({i2cSettings->getDeviceNode(), i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress)},
                               TestLogHelpers::loadFile(":/export_internal_modified.eeprom"));
     setupServers(std::make_shared<TestFactoryI2cCtrl>(true));
@@ -125,7 +125,7 @@ void test_regression_adj_import_export_eeprom_com5003::loadOriginalInvalidDateTi
 void test_regression_adj_import_export_eeprom_com5003::loadValidDateTimeRandomToEEpromWriteToFlashExportXmlAndCheck()
 {
     std::unique_ptr<SettingsContainer> settings = std::make_unique<SettingsContainer>(MockServerParamGenerator::createParams("com5003d"));
-    I2cSettings *i2cSettings = settings->getI2cSettings();
+    const I2cSettings *i2cSettings = settings->getI2cSettings();
     MockEepromDevice::setData({i2cSettings->getDeviceNode(), i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress)},
                               TestLogHelpers::loadFile(":/export_internal_modified_with_date_time.eeprom"));
     setupServers(std::make_shared<TestFactoryI2cCtrl>(true));
@@ -140,7 +140,7 @@ void test_regression_adj_import_export_eeprom_com5003::loadValidDateTimeRandomTo
 void test_regression_adj_import_export_eeprom_com5003::directExportFlashArbitraryVersionGen()
 {
     std::unique_ptr<SettingsContainer> settings = std::make_unique<SettingsContainer>(MockServerParamGenerator::createParams("com5003d"));
-    I2cSettings *i2cSettings = settings->getI2cSettings();
+    const I2cSettings *i2cSettings = settings->getI2cSettings();
     setupServers(std::make_shared<TestFactoryI2cCtrlCommonInfoFoo>());
 
     QVERIFY(m_testServer->getSenseInterface()->exportAdjData(refTime));
@@ -152,7 +152,7 @@ void test_regression_adj_import_export_eeprom_com5003::directExportFlashArbitrar
 void test_regression_adj_import_export_eeprom_com5003::loadArbitraryVersionToEEprom()
 {
     std::unique_ptr<SettingsContainer> settings = std::make_unique<SettingsContainer>(MockServerParamGenerator::createParams("com5003d"));
-    I2cSettings *i2cSettings = settings->getI2cSettings();
+    const I2cSettings *i2cSettings = settings->getI2cSettings();
     MockEepromDevice::setData({i2cSettings->getDeviceNode(), i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress)},
                               TestLogHelpers::loadFile(":/import_arbitrary_version.eeprom"));
     setupServers(std::make_shared<TestFactoryI2cCtrl>(true));

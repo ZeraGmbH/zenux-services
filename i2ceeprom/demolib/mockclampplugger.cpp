@@ -3,7 +3,7 @@
 #include "clamp.h"
 #include <QFile>
 
-MockClampPlugger::MockClampPlugger(cSenseSettings *senseSettings, I2cSettings *i2cSettings) :
+MockClampPlugger::MockClampPlugger(const cSenseSettings *senseSettings, const I2cSettings *i2cSettings) :
     m_senseSettings(senseSettings),
     m_i2cSettings(i2cSettings)
 {
