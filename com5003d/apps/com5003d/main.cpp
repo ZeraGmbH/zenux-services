@@ -1,5 +1,6 @@
 #include "com5003d.h"
 #include "com5003dglobal.h"
+#include "eeprom24lcxxxpca9547factory.h"
 #include "factorydevicenodepcb.h"
 #include "factoryi2cctrl.h"
 #include <tcpnetworkfactory.h>
@@ -15,6 +16,7 @@ int main( int argc, char *argv[] )
         std::move(settings),
         ctrlFactory,
         std::make_shared<FactoryDeviceNodePcb>(),
+        std::make_shared<Eeprom24LCxxxPca9547Factory>(),
         VeinTcp::TcpNetworkFactory::create(),
         SettingsContainer::createChannelRangeFactory("com5003d"));
     qInfo(ServerName " started");

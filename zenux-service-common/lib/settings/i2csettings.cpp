@@ -1,5 +1,5 @@
 #include "i2csettings.h"
-#include <eepromi2cdeviceinterface.h>
+#include <abstracteepromi2cdevice.h>
 #include <xmlconfigreader.h>
 
 I2cSettings::I2cSettings(Zera::XMLConfig::cReader *xmlread)
@@ -17,12 +17,12 @@ I2cSettings::I2cSettings(Zera::XMLConfig::cReader *xmlread)
     m_ConfigXMLMap["serviceconfig:connectivity:i2c:adress:clampflash"] = i2cSettings::SetClampFlashAdr;
 }
 
-int I2cSettings::getDebugLevel()
+int I2cSettings::getDebugLevel() const
 {
     return m_debugLevel;
 }
 
-quint8 I2cSettings::getI2CAdress(i2cSettings::I2cDeviceAdrTypes deviceType)
+quint8 I2cSettings::getI2CAdress(i2cSettings::I2cDeviceAdrTypes deviceType) const
 {
     quint8 r;
     switch (deviceType)
@@ -50,7 +50,7 @@ quint8 I2cSettings::getI2CAdress(i2cSettings::I2cDeviceAdrTypes deviceType)
 }
 
 
-QString& I2cSettings::getDeviceNode()
+const QString& I2cSettings::getDeviceNode() const
 {
     return m_sDeviceNode;
 }

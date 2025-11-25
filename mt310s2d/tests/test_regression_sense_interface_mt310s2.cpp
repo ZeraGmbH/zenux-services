@@ -1,9 +1,9 @@
 #include "test_regression_sense_interface_mt310s2.h"
+#include "clamp.h"
 #include "testfactoryi2cctrl.h"
 #include "senseregressionhelper.h"
 #include "scpisingletransactionblocked.h"
 #include "proxy.h"
-#include "clampfactorytest.h"
 #include "zscpi_response_definitions.h"
 #include <i2cmultiplexerfactory.h>
 #include <timemachineobject.h>
@@ -21,7 +21,6 @@ QTEST_MAIN(test_regression_sense_interface_mt310s2);
 
 void test_regression_sense_interface_mt310s2::initTestCase()
 {
-    ClampFactoryTest::enableTest();
     VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory = VeinTcp::MockTcpNetworkFactory::create();
     m_resmanServer = std::make_unique<ResmanRunFacade>(tcpNetworkFactory);
     m_testServer = std::make_unique<TestServerForSenseInterfaceMt310s2>(

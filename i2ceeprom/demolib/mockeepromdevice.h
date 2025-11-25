@@ -2,46 +2,38 @@
 #define MOCKEEPROMDEVICE_H
 
 #include "mockeepromi2cfactory.h"
-#include <eepromi2cdeviceinterface.h>
+#include <abstracteepromi2cdevice.h>
 #include <i2caddressparameter.h>
 #include <i2cmuxerinterface.h>
 #include <QHash>
 
-class MockEepromDevice : public EepromI2cDeviceInterface
+class MockEepromDevice : public AbstractEepromI2cDevice
 {
 public:
     static constexpr qint8 InvalidMux = qint8(I2cMuxerInterface::InvalidMux);
     MockEepromDevice(const I2cAddressParameter &i2cAddressParam, int byteCapacity,
                    const I2cAddressParameter &i2cAddressMux = {"", I2cMuxerInterface::InvalidMux},
                    qint8 muxChannelNo = InvalidMux);
+    bool isMemoryPlugged() const override;
     int WriteData(char* data, ushort count, ushort adr) override;
     int ReadData(char* data, ushort count, ushort adr) override;
     int Reset() override;
     int getByteSize() const override;
 
-    void returnReduceCountOnErrorRead();
-    static void mockCleanAll();
-    static QByteArray mockGetData(const I2cAddressParameter &i2cAddressParam,
-                                  const I2cAddressParameter &i2cAddressMux = {"", I2cMuxerInterface::InvalidMux},
-                                  qint8 muxChannelNo = InvalidMux);
-    static void mockSetData(const I2cAddressParameter &i2cAddressParam, QByteArray data,
+    static void cleanAll();
+    static void setGlobalError(bool error);
+    static QByteArray getData(const I2cAddressParameter &i2cAddressParam,
+                              const I2cAddressParameter &i2cAddressMux = {"", I2cMuxerInterface::InvalidMux},
+                              qint8 muxChannelNo = InvalidMux);
+    static void setData(const I2cAddressParameter &i2cAddressParam, QByteArray data,
+                        const I2cAddressParameter &i2cAddressMux = {"", I2cMuxerInterface::InvalidMux},
+                        qint8 muxChannelNo = InvalidMux);
+    static int getReadCount(const I2cAddressParameter &i2cAddressParam,
                             const I2cAddressParameter &i2cAddressMux = {"", I2cMuxerInterface::InvalidMux},
                             qint8 muxChannelNo = InvalidMux);
-    static int mockGetReadCount(const I2cAddressParameter &i2cAddressParam,
-                                const I2cAddressParameter &i2cAddressMux = {"", I2cMuxerInterface::InvalidMux},
-                                qint8 muxChannelNo = InvalidMux);
-    static int mockGetWriteCount(const I2cAddressParameter &i2cAddressParam,
-                                 const I2cAddressParameter &i2cAddressMux = {"", I2cMuxerInterface::InvalidMux},
-                                 qint8 muxChannelNo = InvalidMux);
-    static bool mockWriteToFile(const I2cAddressParameter &i2cAddressParam, QString fileName,
-                                const I2cAddressParameter &i2cAddressMux = {"", I2cMuxerInterface::InvalidMux},
-                                qint8 muxChannelNo = InvalidMux);
-    static bool mockReadFromFile(const I2cAddressParameter &i2cAddressParam, QString fileName,
-                                 const I2cAddressParameter &i2cAddressMux = {"", I2cMuxerInterface::InvalidMux},
-                                 qint8 muxChannelNo = InvalidMux);
-    static bool mockCompareWithFile(const I2cAddressParameter &i2cAddressParam, QString fileName,
-                                    const I2cAddressParameter &i2cAddressMux = {"", I2cMuxerInterface::InvalidMux},
-                                    qint8 muxChannelNo = InvalidMux);
+    static int getWriteCount(const I2cAddressParameter &i2cAddressParam,
+                             const I2cAddressParameter &i2cAddressMux = {"", I2cMuxerInterface::InvalidMux},
+                             qint8 muxChannelNo = InvalidMux);
 private:
     void doReset(int size);
     struct EepromWithMuxParams getFullParams() const;
@@ -54,7 +46,7 @@ private:
     static QHash<EepromWithMuxParams, QByteArray> m_flashData;
     static QHash<EepromWithMuxParams, int>        m_flashDataReadCounts;
     static QHash<EepromWithMuxParams, int>        m_flashDataWriteCounts;
-    static QHash<EepromWithMuxParams, bool>       m_returnReducedDataSizeOnRead;
+    static bool                                   m_globalError;
 };
 
 inline bool operator==(const EepromWithMuxParams& a1,

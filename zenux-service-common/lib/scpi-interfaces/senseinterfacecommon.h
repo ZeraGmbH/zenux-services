@@ -52,9 +52,9 @@ class SenseInterfaceCommon : public cResource, public AdjustmentXmlImportExportT
 {
 public:
     SenseInterfaceCommon(std::shared_ptr<cSCPI> scpiInterface,
-                         I2cSettings* i2cSettings,
                          SystemInfo *systemInfo,
                          cSenseSettings* senseSettings,
+                         EepromI2cDeviceInterfacePtr adjMemory,
                          AbstractChannelRangeFactoryPtr rangeFactory,
                          AbstractFactoryI2cCtrlPtr ctrlFactory,
                          QHash<QString, int> availSenseModesHash);

@@ -1,6 +1,7 @@
 #ifndef MT310S2D_H
 #define MT310S2D_H
 
+#include "abstracteepromi2cfactory.h"
 #include "hotplugcontrollerinterface.h"
 #include "mt310s2systeminfo.h"
 #include "abstractfactorydevicenodepcb.h"
@@ -40,6 +41,7 @@ public:
     explicit cMT310S2dServer(SettingsContainerPtr settings,
                              AbstractFactoryI2cCtrlPtr ctrlFactory,
                              AbstractFactoryDeviceNodePcbPtr deviceNodeFactory,
+                             AbstractEepromI2cFactoryPtr adjMemFactory,
                              VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory,
                              AbstractChannelRangeFactoryPtr channelRangeFactory);
     ~cMT310S2dServer();
@@ -81,6 +83,7 @@ private:
 
     AbstractFactoryI2cCtrlPtr m_ctrlFactory;
     AbstractFactoryDeviceNodePcbPtr m_deviceNodeFactory;
+    AbstractEepromI2cFactoryPtr m_adjMemFactory;
 
     Mt310s2SystemInfo* m_pSystemInfo = nullptr;
 

@@ -3,7 +3,6 @@
 #include "testadjstatussetter.h"
 #include "proxy.h"
 #include "scpisingletransactionblocked.h"
-#include "mocki2ceepromiofactory.h"
 #include "testfactoryi2cctrl.h"
 #include <timemachineobject.h>
 #include <mockeepromdevice.h>
@@ -14,12 +13,11 @@ QTEST_MAIN(test_regression_adj_status_com5003);
 
 void test_regression_adj_status_com5003::initTestCase()
 {
-    MockI2cEEpromIoFactory::enableMock();
 }
 
 void test_regression_adj_status_com5003::init()
 {
-    MockEepromDevice::mockCleanAll();
+    MockEepromDevice::cleanAll();
 }
 
 void test_regression_adj_status_com5003::cleanup()

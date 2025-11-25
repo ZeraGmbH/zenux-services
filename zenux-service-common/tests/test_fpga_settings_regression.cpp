@@ -3,6 +3,7 @@
 #include "com5003d.h"
 #include "sec1000d.h"
 #include "zdspserver.h"
+#include "mockeepromi2cfactory.h"
 #include "mockfactorydevicenodepcb.h"
 #include "mockfactorydevicenodesec.h"
 #include "testfactorydevicenodedsp.h"
@@ -21,6 +22,7 @@ void test_fpga_settings_regression::com5003d()
         std::make_unique<SettingsContainer>(params),
         std::make_shared<TestFactoryI2cCtrl>(true),
         std::make_shared<MockFactoryDeviceNodePcb>(),
+        std::make_shared<MockEepromI2cFactory>(),
         VeinTcp::MockTcpNetworkFactory::create(),
         SettingsContainer::createChannelRangeFactory("com5003d"));
     TimeMachineObject::feedEventLoop();
@@ -35,6 +37,7 @@ void test_fpga_settings_regression::mt310s2d()
         std::make_unique<SettingsContainer>(params),
         std::make_shared<TestFactoryI2cCtrl>(true),
         std::make_shared<MockFactoryDeviceNodePcb>(),
+        std::make_shared<MockEepromI2cFactory>(),
         VeinTcp::MockTcpNetworkFactory::create(),
         SettingsContainer::createChannelRangeFactory("mt310s2d"));
     TimeMachineObject::feedEventLoop();
@@ -50,6 +53,7 @@ void test_fpga_settings_regression::mt581s2d()
         std::make_unique<SettingsContainer>(params),
         std::make_shared<TestFactoryI2cCtrl>(true),
         std::make_shared<MockFactoryDeviceNodePcb>(),
+        std::make_shared<MockEepromI2cFactory>(),
         VeinTcp::MockTcpNetworkFactory::create(),
         SettingsContainer::createChannelRangeFactory("mt581s2d"));
     TimeMachineObject::feedEventLoop();

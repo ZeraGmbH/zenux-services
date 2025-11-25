@@ -1,6 +1,7 @@
 #ifndef COM5003D_H
 #define COM5003D_H
 
+#include "abstracteepromi2cfactory.h"
 #include "pcbserver.h"
 #include "abstractfactorydevicenodepcb.h"
 #include "abstractfactoryi2cctrl.h"
@@ -35,6 +36,7 @@ public:
     explicit cCOM5003dServer(SettingsContainerPtr settings,
                              AbstractFactoryI2cCtrlPtr ctrlFactory,
                              AbstractFactoryDeviceNodePcbPtr deviceNodeFactory,
+                             AbstractEepromI2cFactoryPtr adjMemFactory,
                              VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory,
                              AbstractChannelRangeFactoryPtr channelRangeFactory);
     ~cCOM5003dServer();
@@ -67,6 +69,7 @@ private:
 
     AbstractFactoryI2cCtrlPtr m_ctrlFactory;
     AbstractFactoryDeviceNodePcbPtr m_deviceNodeFactory;
+    AbstractEepromI2cFactoryPtr m_adjMemFactory;
 
     SystemInfo* m_pSystemInfo = nullptr;
 

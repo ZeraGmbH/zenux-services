@@ -1,8 +1,8 @@
 #include "test_adj_data_cache.h"
 #include "adjustmenteepromreadwrite.h"
-#include "mocki2ceepromiofactory.h"
-#include <i2cmultiplexerfactory.h>
 #include "mockeepromdevice.h"
+#include <i2cmultiplexerfactory.h>
+#include <testloghelpers.h>
 #include <QDir>
 #include <QFile>
 #include <QTest>
@@ -16,23 +16,24 @@ static const quint8 testI2cAddr = 42;
 
 void test_adj_data_cache::initTestCase()
 {
-    MockI2cEEpromIoFactory::enableMock();
     AdjustmentEepromReadWrite::setCachePath(testPath);
 }
 
 void test_adj_data_cache::init()
 {
-    MockEepromDevice::mockCleanAll();
+    MockEepromDevice::cleanAll();
     QDir dir(testPath);
     dir.removeRecursively();
 }
 
 void test_adj_data_cache::cachePathCreatedOnReadValidAdj()
 {
-    QVERIFY(MockEepromDevice::mockReadFromFile({testI2cDevNode, testI2cAddr}, ":/export_internal_initial_mt310s2.eeprom"));
-    AdjustmentEepromReadWrite adjRW({testI2cDevNode, testI2cAddr},
-                                    EepromI2cDeviceInterface::capacity24LC256,
-                                    I2cMultiplexerFactory::createNullMuxer());
+    MockEepromDevice::setData({testI2cDevNode, testI2cAddr},
+                              TestLogHelpers::loadFile(":/export_internal_initial_mt310s2.eeprom"));
+    MockEepromI2cFactory eepromFactory;
+    EepromI2cDeviceInterfacePtr adjMemory = eepromFactory.createEeprom({testI2cDevNode, testI2cAddr},
+                                                                       AbstractEepromI2cDevice::capacity24LC256);
+    AdjustmentEepromReadWrite adjRW(std::move(adjMemory));
     QVERIFY(adjRW.readDataCached(cacheFileName));
 
     QVERIFY(QDir(testPath).exists());
@@ -40,9 +41,10 @@ void test_adj_data_cache::cachePathCreatedOnReadValidAdj()
 
 void test_adj_data_cache::cachePathNotCreatedOnReadinvalidAdj()
 {
-    AdjustmentEepromReadWrite adjRW({testI2cDevNode, testI2cAddr},
-                                    EepromI2cDeviceInterface::capacity24LC256,
-                                    I2cMultiplexerFactory::createNullMuxer());
+    MockEepromI2cFactory eepromFactory;
+    EepromI2cDeviceInterfacePtr adjMemory = eepromFactory.createEeprom({testI2cDevNode, testI2cAddr},
+                                                                       AbstractEepromI2cDevice::capacity24LC256);
+    AdjustmentEepromReadWrite adjRW(std::move(adjMemory));
     QVERIFY(!adjRW.readDataCached(cacheFileName));
 
     QVERIFY(!QDir(testPath).exists());
@@ -50,10 +52,12 @@ void test_adj_data_cache::cachePathNotCreatedOnReadinvalidAdj()
 
 void test_adj_data_cache::cacheFileCreatedOnReadValidAdj()
 {
-    QVERIFY(MockEepromDevice::mockReadFromFile({testI2cDevNode, testI2cAddr}, ":/export_internal_initial_mt310s2.eeprom"));
-    AdjustmentEepromReadWrite adjRW({testI2cDevNode, testI2cAddr},
-                                    EepromI2cDeviceInterface::capacity24LC256,
-                                    I2cMultiplexerFactory::createNullMuxer());
+    MockEepromDevice::setData({testI2cDevNode, testI2cAddr},
+                              TestLogHelpers::loadFile(":/export_internal_initial_mt310s2.eeprom"));
+    MockEepromI2cFactory eepromFactory;
+    EepromI2cDeviceInterfacePtr adjMemory = eepromFactory.createEeprom({testI2cDevNode, testI2cAddr},
+                                                                       AbstractEepromI2cDevice::capacity24LC256);
+    AdjustmentEepromReadWrite adjRW(std::move(adjMemory));
     QVERIFY(adjRW.readDataCached(cacheFileName));
 
     QVERIFY(QFile(adjRW.getCacheFullFileName(cacheFileName)).exists());
@@ -61,9 +65,10 @@ void test_adj_data_cache::cacheFileCreatedOnReadValidAdj()
 
 void test_adj_data_cache::cacheFileNotCreatedOnReadInvalidAdj()
 {
-    AdjustmentEepromReadWrite adjRW({testI2cDevNode, testI2cAddr},
-                                    EepromI2cDeviceInterface::capacity24LC256,
-                                    I2cMultiplexerFactory::createNullMuxer());
+    MockEepromI2cFactory eepromFactory;
+    EepromI2cDeviceInterfacePtr adjMemory = eepromFactory.createEeprom({testI2cDevNode, testI2cAddr},
+                                                                       AbstractEepromI2cDevice::capacity24LC256);
+    AdjustmentEepromReadWrite adjRW(std::move(adjMemory));
     QVERIFY(!adjRW.readDataCached(cacheFileName));
 
     QVERIFY(!QFile(adjRW.getCacheFullFileName(cacheFileName)).exists());
@@ -71,13 +76,15 @@ void test_adj_data_cache::cacheFileNotCreatedOnReadInvalidAdj()
 
 void test_adj_data_cache::cacheFileCreatedSameContentAsEeprom()
 {
-    QVERIFY(MockEepromDevice::mockReadFromFile({testI2cDevNode, testI2cAddr}, ":/export_internal_initial_mt310s2.eeprom"));
-    AdjustmentEepromReadWrite adjRW({testI2cDevNode, testI2cAddr},
-                                    EepromI2cDeviceInterface::capacity24LC256,
-                                    I2cMultiplexerFactory::createNullMuxer());
+    MockEepromDevice::setData({testI2cDevNode, testI2cAddr},
+                              TestLogHelpers::loadFile(":/export_internal_initial_mt310s2.eeprom"));
+    MockEepromI2cFactory eepromFactory;
+    EepromI2cDeviceInterfacePtr adjMemory = eepromFactory.createEeprom({testI2cDevNode, testI2cAddr},
+                                                                       AbstractEepromI2cDevice::capacity24LC256);
+    AdjustmentEepromReadWrite adjRW(std::move(adjMemory));
     QVERIFY(adjRW.readDataCached(cacheFileName));
 
-    QByteArray expected = MockEepromDevice::mockGetData({testI2cDevNode, testI2cAddr});
+    QByteArray expected = MockEepromDevice::getData({testI2cDevNode, testI2cAddr});
 
     QFile file(adjRW.getCacheFullFileName(cacheFileName));
     QVERIFY(file.open(QIODevice::ReadOnly));
@@ -92,13 +99,15 @@ void test_adj_data_cache::cacheFileCreatedSameContentAsEepromOnOverwrite()
     QVERIFY(dir.mkpath(testPath));
     QFile::copy(":/export_mt310s2_short.eeprom", AdjustmentEepromReadWrite::getCacheFullFileName(cacheFileName));
 
-    QVERIFY(MockEepromDevice::mockReadFromFile({testI2cDevNode, testI2cAddr}, ":/export_internal_initial_mt310s2.eeprom"));
-    AdjustmentEepromReadWrite adjRW({testI2cDevNode, testI2cAddr},
-                                    EepromI2cDeviceInterface::capacity24LC256,
-                                    I2cMultiplexerFactory::createNullMuxer());
+    MockEepromDevice::setData({testI2cDevNode, testI2cAddr},
+                              TestLogHelpers::loadFile(":/export_internal_initial_mt310s2.eeprom"));
+    MockEepromI2cFactory eepromFactory;
+    EepromI2cDeviceInterfacePtr adjMemory = eepromFactory.createEeprom({testI2cDevNode, testI2cAddr},
+                                                                       AbstractEepromI2cDevice::capacity24LC256);
+    AdjustmentEepromReadWrite adjRW(std::move(adjMemory));
     QVERIFY(adjRW.readDataCached(cacheFileName));
 
-    QByteArray expected = MockEepromDevice::mockGetData({testI2cDevNode, testI2cAddr});
+    QByteArray expected = MockEepromDevice::getData({testI2cDevNode, testI2cAddr});
 
     QFile file(adjRW.getCacheFullFileName(cacheFileName));
     QVERIFY(file.open(QIODevice::ReadOnly));
@@ -109,12 +118,13 @@ void test_adj_data_cache::cacheFileCreatedSameContentAsEepromOnOverwrite()
 
 void test_adj_data_cache::cacheFileNotReadOnInvalidEeprom()
 {
-    AdjustmentEepromReadWrite adjRW({testI2cDevNode, testI2cAddr},
-                                    EepromI2cDeviceInterface::capacity24LC256,
-                                    I2cMultiplexerFactory::createNullMuxer());
+    MockEepromI2cFactory eepromFactory;
+    EepromI2cDeviceInterfacePtr adjMemory = eepromFactory.createEeprom({testI2cDevNode, testI2cAddr},
+                                                                       AbstractEepromI2cDevice::capacity24LC256);
+    AdjustmentEepromReadWrite adjRW(std::move(adjMemory));
     QVERIFY(!adjRW.readDataCached(cacheFileName));
 
-    QCOMPARE(MockEepromDevice::mockGetReadCount({testI2cDevNode, testI2cAddr}), 1);
+    QCOMPARE(MockEepromDevice::getReadCount({testI2cDevNode, testI2cAddr}), 1);
 }
 
 void test_adj_data_cache::cacheFileIsEmpty()
@@ -125,13 +135,15 @@ void test_adj_data_cache::cacheFileIsEmpty()
     QVERIFY(file.open(QIODevice::WriteOnly));
     file.close();
 
-    QVERIFY(MockEepromDevice::mockReadFromFile({testI2cDevNode, testI2cAddr}, ":/export_internal_initial_mt310s2.eeprom"));
-    AdjustmentEepromReadWrite adjRW({testI2cDevNode, testI2cAddr},
-                                    EepromI2cDeviceInterface::capacity24LC256,
-                                    I2cMultiplexerFactory::createNullMuxer());
+    MockEepromDevice::setData({testI2cDevNode, testI2cAddr},
+                              TestLogHelpers::loadFile(":/export_internal_initial_mt310s2.eeprom"));
+    MockEepromI2cFactory eepromFactory;
+    EepromI2cDeviceInterfacePtr adjMemory = eepromFactory.createEeprom({testI2cDevNode, testI2cAddr},
+                                                                       AbstractEepromI2cDevice::capacity24LC256);
+    AdjustmentEepromReadWrite adjRW(std::move(adjMemory));
     QVERIFY(adjRW.readDataCached(cacheFileName));
 
-    QCOMPARE(MockEepromDevice::mockGetReadCount({testI2cDevNode, testI2cAddr}), 2);
+    QCOMPARE(MockEepromDevice::getReadCount({testI2cDevNode, testI2cAddr}), 2);
 }
 
 void test_adj_data_cache::cacheFileIsTooShort()
@@ -140,13 +152,15 @@ void test_adj_data_cache::cacheFileIsTooShort()
     QVERIFY(dir.mkpath(testPath));
     QFile::copy(":/export_mt310s2_short.eeprom", AdjustmentEepromReadWrite::getCacheFullFileName(cacheFileName));
 
-    QVERIFY(MockEepromDevice::mockReadFromFile({testI2cDevNode, testI2cAddr}, ":/export_internal_initial_mt310s2.eeprom"));
-    AdjustmentEepromReadWrite adjRW({testI2cDevNode, testI2cAddr},
-                                    EepromI2cDeviceInterface::capacity24LC256,
-                                    I2cMultiplexerFactory::createNullMuxer());
+    MockEepromDevice::setData({testI2cDevNode, testI2cAddr},
+                              TestLogHelpers::loadFile(":/export_internal_initial_mt310s2.eeprom"));
+    MockEepromI2cFactory eepromFactory;
+    EepromI2cDeviceInterfacePtr adjMemory = eepromFactory.createEeprom({testI2cDevNode, testI2cAddr},
+                                                                       AbstractEepromI2cDevice::capacity24LC256);
+    AdjustmentEepromReadWrite adjRW(std::move(adjMemory));
     QVERIFY(adjRW.readDataCached(cacheFileName));
 
-    QCOMPARE(MockEepromDevice::mockGetReadCount({testI2cDevNode, testI2cAddr}), 2);
+    QCOMPARE(MockEepromDevice::getReadCount({testI2cDevNode, testI2cAddr}), 2);
 }
 
 void test_adj_data_cache::cacheFileBitFlipped()
@@ -155,13 +169,15 @@ void test_adj_data_cache::cacheFileBitFlipped()
     QVERIFY(dir.mkpath(testPath));
     QFile::copy(":/export_mt310s2_bit_flipped.eeprom", AdjustmentEepromReadWrite::getCacheFullFileName(cacheFileName));
 
-    QVERIFY(MockEepromDevice::mockReadFromFile({testI2cDevNode, testI2cAddr}, ":/export_internal_initial_mt310s2.eeprom"));
-    AdjustmentEepromReadWrite adjRW({testI2cDevNode, testI2cAddr},
-                                    EepromI2cDeviceInterface::capacity24LC256,
-                                    I2cMultiplexerFactory::createNullMuxer());
+    MockEepromDevice::setData({testI2cDevNode, testI2cAddr},
+                              TestLogHelpers::loadFile(":/export_internal_initial_mt310s2.eeprom"));
+    MockEepromI2cFactory eepromFactory;
+    EepromI2cDeviceInterfacePtr adjMemory = eepromFactory.createEeprom({testI2cDevNode, testI2cAddr},
+                                                                       AbstractEepromI2cDevice::capacity24LC256);
+    AdjustmentEepromReadWrite adjRW(std::move(adjMemory));
     QVERIFY(adjRW.readDataCached(cacheFileName));
 
-    QCOMPARE(MockEepromDevice::mockGetReadCount({testI2cDevNode, testI2cAddr}), 2);
+    QCOMPARE(MockEepromDevice::getReadCount({testI2cDevNode, testI2cAddr}), 2);
 }
 
 void test_adj_data_cache::cacheFileReadSuccessfully()
@@ -170,13 +186,15 @@ void test_adj_data_cache::cacheFileReadSuccessfully()
     QVERIFY(dir.mkpath(testPath));
     QFile::copy(":/export_internal_initial_mt310s2.eeprom", AdjustmentEepromReadWrite::getCacheFullFileName(cacheFileName));
 
-    QVERIFY(MockEepromDevice::mockReadFromFile({testI2cDevNode, testI2cAddr}, ":/export_internal_initial_mt310s2.eeprom"));
-    AdjustmentEepromReadWrite adjRW({testI2cDevNode, testI2cAddr},
-                                    EepromI2cDeviceInterface::capacity24LC256,
-                                    I2cMultiplexerFactory::createNullMuxer());
+    MockEepromDevice::setData({testI2cDevNode, testI2cAddr},
+                              TestLogHelpers::loadFile(":/export_internal_initial_mt310s2.eeprom"));
+    MockEepromI2cFactory eepromFactory;
+    EepromI2cDeviceInterfacePtr adjMemory = eepromFactory.createEeprom({testI2cDevNode, testI2cAddr},
+                                                                       AbstractEepromI2cDevice::capacity24LC256);
+    AdjustmentEepromReadWrite adjRW(std::move(adjMemory));
     QVERIFY(adjRW.readDataCached(cacheFileName));
 
-    QCOMPARE(MockEepromDevice::mockGetReadCount({testI2cDevNode, testI2cAddr}), 1);
+    QCOMPARE(MockEepromDevice::getReadCount({testI2cDevNode, testI2cAddr}), 1);
 
     QByteArray written = adjRW.getData();
     QFile file(":/export_internal_initial_mt310s2.eeprom");
@@ -188,10 +206,12 @@ void test_adj_data_cache::cacheFileReadSuccessfully()
 
 void test_adj_data_cache::nocachePathCreatedOnReadValidAdj()
 {
-    QVERIFY(MockEepromDevice::mockReadFromFile({testI2cDevNode, testI2cAddr}, ":/export_internal_initial_mt310s2.eeprom"));
-    AdjustmentEepromReadWrite adjRW({testI2cDevNode, testI2cAddr},
-                                    EepromI2cDeviceInterface::capacity24LC256,
-                                    I2cMultiplexerFactory::createNullMuxer());
+    MockEepromDevice::setData({testI2cDevNode, testI2cAddr},
+                              TestLogHelpers::loadFile(":/export_internal_initial_mt310s2.eeprom"));
+    MockEepromI2cFactory eepromFactory;
+    EepromI2cDeviceInterfacePtr adjMemory = eepromFactory.createEeprom({testI2cDevNode, testI2cAddr},
+                                                                       AbstractEepromI2cDevice::capacity24LC256);
+    AdjustmentEepromReadWrite adjRW(std::move(adjMemory));
     QVERIFY(adjRW.readData());
 
     QVERIFY(!QDir(testPath).exists());
@@ -199,10 +219,12 @@ void test_adj_data_cache::nocachePathCreatedOnReadValidAdj()
 
 void test_adj_data_cache::nocacheFileCreatedOnReadValidAdj()
 {
-    QVERIFY(MockEepromDevice::mockReadFromFile({testI2cDevNode, testI2cAddr}, ":/export_internal_initial_mt310s2.eeprom"));
-    AdjustmentEepromReadWrite adjRW({testI2cDevNode, testI2cAddr},
-                                    EepromI2cDeviceInterface::capacity24LC256,
-                                    I2cMultiplexerFactory::createNullMuxer());
+    MockEepromDevice::setData({testI2cDevNode, testI2cAddr},
+                              TestLogHelpers::loadFile(":/export_internal_initial_mt310s2.eeprom"));
+    MockEepromI2cFactory eepromFactory;
+    EepromI2cDeviceInterfacePtr adjMemory = eepromFactory.createEeprom({testI2cDevNode, testI2cAddr},
+                                                                       AbstractEepromI2cDevice::capacity24LC256);
+    AdjustmentEepromReadWrite adjRW(std::move(adjMemory));
     QVERIFY(adjRW.readData());
 
     QVERIFY(!QFile(adjRW.getCacheFullFileName(cacheFileName)).exists());

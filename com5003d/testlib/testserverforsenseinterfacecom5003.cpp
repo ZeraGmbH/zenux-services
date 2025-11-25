@@ -1,5 +1,6 @@
 #include "testserverforsenseinterfacecom5003.h"
 #include "com5003senseinterface.h"
+#include "mockeepromi2cfactory.h"
 #include "testsysteminfo.h"
 
 TestServerForSenseInterfaceCom5003::TestServerForSenseInterfaceCom5003(AbstractFactoryI2cCtrlPtr ctrlFactory,
@@ -16,9 +17,14 @@ TestServerForSenseInterfaceCom5003::TestServerForSenseInterfaceCom5003(AbstractF
     m_senseSettings = std::make_unique<cSenseSettings>(getConfigReader(), 8);
     setXmlSettings(XmlSettingsList{m_senseSettings.get()});
 
+    AbstractEepromI2cFactoryPtr adjMemFactory = std::make_shared<MockEepromI2cFactory>();
+    I2cSettings *i2cSettings = m_settings->getI2cSettings();
+    EepromI2cDeviceInterfacePtr adjEeprom = adjMemFactory->createEeprom(
+        {i2cSettings->getDeviceNode(), i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress)},
+        i2cSettings->getEepromByteSize());
     m_senseInterface = std::make_unique<Com5003SenseInterface>(m_scpiInterface,
-                                                               m_settings->getI2cSettings(),
                                                                m_senseSettings.get(),
+                                                               std::move(adjEeprom),
                                                                m_systemInfo.get(),
                                                                SettingsContainer::createChannelRangeFactory(serviceNameForAlternateDevice),
                                                                ctrlFactory);

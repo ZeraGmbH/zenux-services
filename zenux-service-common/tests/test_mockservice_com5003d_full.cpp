@@ -33,7 +33,7 @@ void test_mockservice_com5003d_full::init()
 
 void test_mockservice_com5003d_full::cleanup()
 {
-    MockEepromDevice::mockCleanAll();
+    MockEepromDevice::cleanAll();
     m_pcbIFace = nullptr;
     m_proxyClient = nullptr;
     m_server = nullptr;

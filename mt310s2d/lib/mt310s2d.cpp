@@ -32,11 +32,13 @@ static struct sigaction sigActionMt310s2;
 cMT310S2dServer::cMT310S2dServer(SettingsContainerPtr settings,
                                  AbstractFactoryI2cCtrlPtr ctrlFactory,
                                  AbstractFactoryDeviceNodePcbPtr deviceNodeFactory,
+                                 AbstractEepromI2cFactoryPtr adjMemFactory,
                                  VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory,
                                  AbstractChannelRangeFactoryPtr channelRangeFactory) :
     PCBServer(std::move(settings), tcpNetworkFactory),
     m_ctrlFactory(ctrlFactory),
     m_deviceNodeFactory(deviceNodeFactory),
+    m_adjMemFactory(adjMemFactory),
     m_i2cCtrlCpuTemperature(ctrlFactory->getCpuTemperatureController())
 {
     doConfiguration();
@@ -175,9 +177,12 @@ void cMT310S2dServer::earlySetup(AbstractChannelRangeFactoryPtr channelRangeFact
 
     m_scpiConnectionList.append(this); // the server itself has some commands
     I2cSettings *i2cSettings = m_settings->getI2cSettings();
+    EepromI2cDeviceInterfacePtr eepromDev = m_adjMemFactory->createEeprom(
+        {i2cSettings->getDeviceNode(), i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress)},
+        i2cSettings->getEepromByteSize());
     m_scpiConnectionList.append(m_pSenseInterface = new Mt310s2SenseInterface(m_scpiInterface,
-                                                                              i2cSettings,
                                                                               m_pSenseSettings,
+                                                                              std::move(eepromDev),
                                                                               m_pSystemInfo,
                                                                               channelRangeFactory,
                                                                               m_ctrlFactory));
@@ -196,9 +201,10 @@ void cMT310S2dServer::earlySetup(AbstractChannelRangeFactoryPtr channelRangeFact
     m_scpiConnectionList.append(m_pSCHeadInterface = new ScInGroupResourceAndInterface(m_scpiInterface, m_pSCHeadSettings));
     m_scpiConnectionList.append(m_hkInInterface = new HkInGroupResourceAndInterface(m_scpiInterface, m_hkInSettings));
     m_scpiConnectionList.append(m_pClampInterface = new cClampInterface(this,
-                                                                        i2cSettings,
                                                                         m_pSenseSettings,
                                                                         m_pSenseInterface,
+                                                                        i2cSettings,
+                                                                        m_adjMemFactory,
                                                                         m_ctrlFactory));
     m_scpiConnectionList.append(m_accumulatorInterface = new AccumulatorInterface(m_scpiInterface, m_accumulatorSettings, m_ctrlFactory));
     connect(m_accumulatorInterface, &AccumulatorInterface::sigAccumulatorStatusChange,

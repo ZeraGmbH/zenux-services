@@ -1,10 +1,9 @@
 #include "test_regression_adj_status_mt310s2.h"
+#include "clamp.h"
 #include "adjflags.h"
 #include "testadjstatussetter.h"
 #include "proxy.h"
 #include "scpisingletransactionblocked.h"
-#include "mocki2ceepromiofactory.h"
-#include "clampfactorytest.h"
 #include "testfactoryi2cctrl.h"
 #include "zscpi_response_definitions.h"
 #include <timemachineobject.h>
@@ -16,13 +15,11 @@ QTEST_MAIN(test_regression_adj_status_mt310s2);
 
 void test_regression_adj_status_mt310s2::initTestCase()
 {
-    ClampFactoryTest::enableTest();
-    MockI2cEEpromIoFactory::enableMock();
 }
 
 void test_regression_adj_status_mt310s2::init()
 {
-    MockEepromDevice::mockCleanAll();
+    MockEepromDevice::cleanAll();
 }
 
 void test_regression_adj_status_mt310s2::cleanup()

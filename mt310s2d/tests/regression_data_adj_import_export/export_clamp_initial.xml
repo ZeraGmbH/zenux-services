@@ -3,10 +3,10 @@
     <Type>CL120A</Type>
     <VersionNumber>unknown</VersionNumber>
     <SerialNumber>1234567890</SerialNumber>
-    <Date>Sun Jan 7 2024</Date>
-    <Time>16:55:01</Time>
+    <Date>nodate</Date>
+    <Time>notime</Time>
     <Adjustment>
-        <Chksum>0x0</Chksum>
+        <Chksum>0x1755</Chksum>
         <Sense>
             <Range>
                 <Name>C100A</Name>
@@ -178,10 +178,10 @@
     <Type>CL200ADC1000VDC</Type>
     <VersionNumber>unknown</VersionNumber>
     <SerialNumber>1234567890</SerialNumber>
-    <Date>Sun Jan 7 2024</Date>
-    <Time>16:55:01</Time>
+    <Date>nodate</Date>
+    <Time>notime</Time>
     <Adjustment>
-        <Chksum>0x0</Chksum>
+        <Chksum>0x70a1</Chksum>
         <Sense>
             <Range>
                 <Name>C200A</Name>
@@ -407,10 +407,10 @@
     <Type>EMOB200DC</Type>
     <VersionNumber>unknown</VersionNumber>
     <SerialNumber>1234567890</SerialNumber>
-    <Date>Sun Jan 7 2024</Date>
-    <Time>16:55:01</Time>
+    <Date>nodate</Date>
+    <Time>notime</Time>
     <Adjustment>
-        <Chksum>0x0</Chksum>
+        <Chksum>0x1aa7</Chksum>
         <Sense>
             <Range>
                 <Name>C200A</Name>
@@ -492,10 +492,10 @@
     <Type>EMOB32</Type>
     <VersionNumber>unknown</VersionNumber>
     <SerialNumber>1234567890</SerialNumber>
-    <Date>Sun Jan 7 2024</Date>
-    <Time>16:55:01</Time>
+    <Date>nodate</Date>
+    <Time>notime</Time>
     <Adjustment>
-        <Chksum>0x0</Chksum>
+        <Chksum>0x411f</Chksum>
         <Sense>
             <Range>
                 <Name>C50A</Name>

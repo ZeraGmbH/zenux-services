@@ -3,7 +3,6 @@
 #include "testsysteminfo.h"
 #include "proxy.h"
 #include "mockserverparamgenerator.h"
-#include "mocki2ceepromiofactory.h"
 #include "mockeepromdevice.h"
 #include "scpisingletransactionblocked.h"
 #include "zscpi_response_definitions.h"
@@ -14,14 +13,9 @@
 
 QTEST_MAIN(test_adj_deny_import_com5003);
 
-void test_adj_deny_import_com5003::init()
-{
-    MockEepromDevice::mockCleanAll();
-    MockI2cEEpromIoFactory::enableMock();
-}
-
 void test_adj_deny_import_com5003::cleanup()
 {
+    MockEepromDevice::cleanAll();
     m_proxyClient = nullptr;
     m_testServer = nullptr;
     m_resmanServer = nullptr;
@@ -30,28 +24,25 @@ void test_adj_deny_import_com5003::cleanup()
 
 void test_adj_deny_import_com5003::loadEEpromWithStoredNamesAndVersions()
 {
-    std::unique_ptr<SettingsContainer> settings =  std::make_unique<SettingsContainer>(MockServerParamGenerator::createParams("com5003d"));
+    std::unique_ptr<SettingsContainer> settings = std::make_unique<SettingsContainer>(MockServerParamGenerator::createParams("com5003d"));
     I2cSettings *i2cSettings = settings->getI2cSettings();
-    QVERIFY(MockEepromDevice::mockReadFromFile({ i2cSettings->getDeviceNode(),
-                                                 i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress) },
-                                               ":/export_internal_modified.eeprom"));
+    MockEepromDevice::setData({i2cSettings->getDeviceNode(), i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress)},
+                              TestLogHelpers::loadFile(":/export_internal_modified.eeprom"));
     setupServers();
 
     QString xmlExported = XmlHelperForTest::prepareForCompare(ScpiSingleTransactionBlocked::query("SYSTEM:ADJUSTMENT:XML?"));
-    QFile xmlFile(":/import_modified.xml");
-    QVERIFY(xmlFile.open(QFile::ReadOnly));
-    QString xmlExpected = XmlHelperForTest::prepareForCompare(xmlFile.readAll());
+    QString xmlExpected = TestLogHelpers::loadFile(":/import_modified.xml");
+    xmlExpected = XmlHelperForTest::prepareForCompare(xmlExpected);
 
     QVERIFY(TestLogHelpers::compareAndLogOnDiff(xmlExpected, xmlExported));
 }
 
 void test_adj_deny_import_com5003::loadEEpromAndDenyDifferentDeviceName()
 {
-    std::unique_ptr<SettingsContainer> settings =  std::make_unique<SettingsContainer>(MockServerParamGenerator::createParams("com5003d"));
+    std::unique_ptr<SettingsContainer> settings = std::make_unique<SettingsContainer>(MockServerParamGenerator::createParams("com5003d"));
     I2cSettings *i2cSettings = settings->getI2cSettings();
-    QVERIFY(MockEepromDevice::mockReadFromFile({ i2cSettings->getDeviceNode(),
-                                                 i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress) },
-                                               ":/export_internal_modified.eeprom"));
+    MockEepromDevice::setData({i2cSettings->getDeviceNode(), i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress)},
+                              TestLogHelpers::loadFile(":/export_internal_modified.eeprom"));
     setupServers();
 
     static_cast<TestSystemInfo*>(m_testServer->getSystemInfo())->setDeviceName("Foo");

@@ -1,9 +1,7 @@
 #include "test_regression_adj_calc_mt310s2.h"
-#include "clampfactorytest.h"
 #include "clamp.h"
 #include "testfactoryi2cctrl.h"
 #include "proxy.h"
-#include "mocki2ceepromiofactory.h"
 #include "mockeepromdevice.h"
 #include "scpisingletransactionblocked.h"
 #include "zscpi_response_definitions.h"
@@ -16,8 +14,6 @@ QTEST_MAIN(test_regression_adj_calc_mt310s2);
 
 void test_regression_adj_calc_mt310s2::initTestCase()
 {
-    ClampFactoryTest::enableTest();
-    MockI2cEEpromIoFactory::enableMock();
     setupServers();
 
     QString filenameShort = ":/import_internal";
@@ -29,7 +25,7 @@ void test_regression_adj_calc_mt310s2::initTestCase()
 
 void test_regression_adj_calc_mt310s2::cleanup()
 {
-    MockEepromDevice::mockCleanAll();
+    MockEepromDevice::cleanAll();
     m_testServer->removeAllClamps();
 }
 

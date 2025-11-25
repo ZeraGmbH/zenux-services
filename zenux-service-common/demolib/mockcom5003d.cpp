@@ -1,14 +1,12 @@
 #include "mockcom5003d.h"
+#include "mockeepromi2cfactory.h"
 #include "mockfactorydevicenodepcb.h"
 #include "mockserverparamgenerator.h"
-#include "mocki2ceepromiofactory.h"
 
 MockCom5003d::MockCom5003d(AbstractFactoryI2cCtrlPtr ctrlFactory,
                            VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory,
                            const QString &alternateConfigXml)
 {
-    MockI2cEEpromIoFactory::enableMock();
-
     ServerParams params = MockServerParamGenerator::createParams("com5003d");
     if(!alternateConfigXml.isEmpty())
         params.xmlFile = alternateConfigXml;
@@ -17,6 +15,7 @@ MockCom5003d::MockCom5003d(AbstractFactoryI2cCtrlPtr ctrlFactory,
         std::move(settings),
         ctrlFactory,
         std::make_shared<MockFactoryDeviceNodePcb>(),
+        std::make_shared<MockEepromI2cFactory>(),
         tcpNetworkFactory,
         SettingsContainer::createChannelRangeFactory("com5003d"));
 }

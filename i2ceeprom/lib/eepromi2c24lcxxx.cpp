@@ -1,5 +1,5 @@
 #include "eepromi2c24lcxxx.h"
-#include "i2cutils.h"
+#include <i2cutils.h>
 #include <linux/i2c.h>
 #include <unistd.h>
 
@@ -7,6 +7,11 @@ EepromI2c24LCxxx::EepromI2c24LCxxx(const I2cAddressParameter &i2cAddressParam, i
     m_i2cAddressParam(i2cAddressParam),
     m_byteCapacity(byteCapacity)
 {
+}
+
+bool EepromI2c24LCxxx::isMemoryPlugged() const
+{
+    return I2cPing(m_i2cAddressParam.devNodeFileName, m_i2cAddressParam.i2cAddr);
 }
 
 int EepromI2c24LCxxx::WriteData(char* data, ushort count, ushort memAddress)

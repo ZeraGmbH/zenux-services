@@ -1,8 +1,6 @@
 #include "test_notificationcontents.h"
 #include "testfactoryi2cctrl.h"
 #include "networkconnectioninfo.h"
-#include "clampfactorytest.h"
-#include "mocki2ceepromiofactory.h"
 #include "proxy.h"
 #include <mocktcpnetworkfactory.h>
 #include <timemachineobject.h>
@@ -20,7 +18,6 @@ using namespace Zera;
 void test_notificationcontents::initTestCase()
 {
     TimerFactoryQtForTest::enableTest();
-    MockI2cEEpromIoFactory::enableMock();
     m_tcpFactory = VeinTcp::MockTcpNetworkFactory::create();
 }
 

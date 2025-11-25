@@ -3,7 +3,6 @@
 #include "testfactoryi2cctrl.h"
 #include "proxy.h"
 #include "mockeepromdevice.h"
-#include "mocki2ceepromiofactory.h"
 #include "mockserverparamgenerator.h"
 #include "scpisingletransactionblocked.h"
 #include "zscpi_response_definitions.h"
@@ -19,14 +18,13 @@ QTEST_MAIN(test_adj_procedure)
 
 void test_adj_procedure::initTestCase()
 {
-    MockI2cEEpromIoFactory::enableMock();
     Mt310s2SystemInfoMock::setDeviceName("MT310s2 ADW5859");
     Mt310s2SystemInfoMock::setSerialNumber("050059467");
 }
 
 void test_adj_procedure::init()
 {
-    MockEepromDevice::mockCleanAll();
+    MockEepromDevice::cleanAll();
 }
 
 void test_adj_procedure::cleanup()
@@ -179,11 +177,10 @@ void test_adj_procedure::setupServers()
 
 void test_adj_procedure::prepareEepromTakenFromAdjustedDevice()
 {
-    std::unique_ptr<SettingsContainer> settings =  std::make_unique<SettingsContainer>(MockServerParamGenerator::createParams("com5003d"));
+    std::unique_ptr<SettingsContainer> settings = std::make_unique<SettingsContainer>(MockServerParamGenerator::createParams("com5003d"));
     I2cSettings *i2cSettings = settings->getI2cSettings();
-    QVERIFY(MockEepromDevice::mockReadFromFile({ i2cSettings->getDeviceNode(),
-                                                 i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress) },
-                                               ":/mt310s2-050059467.eeprom"));
+    MockEepromDevice::setData({i2cSettings->getDeviceNode(), i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress)},
+                              TestLogHelpers::loadFile(":/mt310s2-050059467.eeprom"));
 }
 
 void test_adj_procedure::setGainNodesOnTwoRanges()

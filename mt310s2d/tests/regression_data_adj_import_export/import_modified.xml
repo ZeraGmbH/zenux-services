@@ -6,7 +6,7 @@
  <Date>Tue Dec 19 2023</Date>
  <Time>21:03:18</Time>
  <Adjustment>
-  <Chksum>0x0</Chksum>
+  <Chksum>0xffff</Chksum>
   <Sense>
    <Channel>
     <Name>m0</Name>

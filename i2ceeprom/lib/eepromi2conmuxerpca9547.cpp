@@ -9,6 +9,12 @@ EepromI2cOnMuxerPCA9547::EepromI2cOnMuxerPCA9547(EepromI2cDeviceInterfacePtr eep
 {
 }
 
+bool EepromI2cOnMuxerPCA9547::isMemoryPlugged() const
+{
+    I2cMuxerScopedOnOff i2cMuxOnOff(m_i2cMuxer);
+    return m_eeprom->isMemoryPlugged();
+}
+
 int EepromI2cOnMuxerPCA9547::WriteData(char *data, ushort count, ushort memAddress)
 {
     I2cMuxerScopedOnOff i2cMuxOnOff(m_i2cMuxer);

@@ -174,8 +174,6 @@ void test_regression_sense_interface_com5003::twiceSameMode()
 
 QJsonObject test_regression_sense_interface_com5003::loadJson(QString fileName)
 {
-    QFile referencFile(fileName);
-    referencFile.open(QFile::ReadOnly);
-    QJsonDocument doc = QJsonDocument::fromJson(referencFile.readAll());
+    QJsonDocument doc = QJsonDocument::fromJson(TestLogHelpers::loadFile(fileName));
     return doc.object();
 }

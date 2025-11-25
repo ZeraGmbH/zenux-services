@@ -1,16 +1,17 @@
 #ifndef EEPROMI2CONMUXERPCA9547_H
 #define EEPROMI2CONMUXERPCA9547_H
 
-#include "eepromi2cdeviceinterface.h"
+#include "abstracteepromi2cdevice.h"
 #include <i2caddressparameter.h>
 #include <i2cmuxerinterface.h>
 
 // EepromI2cDevice decorator
-class EepromI2cOnMuxerPCA9547 : public EepromI2cDeviceInterface
+class EepromI2cOnMuxerPCA9547 : public AbstractEepromI2cDevice
 {
 public:
     EepromI2cOnMuxerPCA9547(EepromI2cDeviceInterfacePtr eeprom,
                             const I2cAddressParameter &i2cAddressMux, qint8 muxChannelNo);
+    bool isMemoryPlugged() const override;
     int WriteData(char* data, ushort count, ushort memAddress) override;
     int ReadData(char* data, ushort count, ushort memAddress) override;
     int Reset() override;

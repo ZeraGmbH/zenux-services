@@ -36,9 +36,9 @@ class I2cSettings : public XMLSettings
     Q_OBJECT
 public:
     I2cSettings(Zera::XMLConfig::cReader *xmlread);
-    int getDebugLevel();
-    quint8 getI2CAdress(i2cSettings::I2cDeviceAdrTypes deviceType);
-    QString& getDeviceNode();
+    int getDebugLevel() const;
+    quint8 getI2CAdress(i2cSettings::I2cDeviceAdrTypes deviceType) const;
+    const QString &getDeviceNode() const;
     int getEepromByteSize();
 public slots:
     virtual void configXMLInfo(QString key);

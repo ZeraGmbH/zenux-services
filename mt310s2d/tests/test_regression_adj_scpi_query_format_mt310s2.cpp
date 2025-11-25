@@ -1,6 +1,5 @@
 #include "test_regression_adj_scpi_query_format_mt310s2.h"
 #include "proxy.h"
-#include "mocki2ceepromiofactory.h"
 #include "mockeepromdevice.h"
 #include "scpisingletransactionblocked.h"
 #include "testfactoryi2cctrl.h"
@@ -15,7 +14,6 @@ static const QDateTime refTime = QDateTime::fromSecsSinceEpoch(0, Qt::UTC);
 
 void test_regression_adj_scpi_query_format_mt310s2::initTestCase()
 {
-    MockI2cEEpromIoFactory::enableMock();
     setupServers();
 
     QString filenameShort = ":/import_scpi_format";
@@ -25,7 +23,7 @@ void test_regression_adj_scpi_query_format_mt310s2::initTestCase()
 
 void test_regression_adj_scpi_query_format_mt310s2::init()
 {
-    MockEepromDevice::mockCleanAll();
+    MockEepromDevice::cleanAll();
 }
 
 void test_regression_adj_scpi_query_format_mt310s2::queryGainCorrectionSingleGen()

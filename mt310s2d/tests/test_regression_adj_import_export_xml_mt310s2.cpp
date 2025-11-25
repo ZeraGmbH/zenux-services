@@ -1,5 +1,5 @@
 #include "test_regression_adj_import_export_xml_mt310s2.h"
-#include "clampfactorytest.h"
+#include "clamp.h"
 #include "testfactoryi2cctrl.h"
 #include "proxy.h"
 #include "scpisingletransactionblocked.h"
@@ -14,7 +14,6 @@ QTEST_MAIN(test_regression_adj_import_export_xml_mt310s2);
 
 void test_regression_adj_import_export_xml_mt310s2::initTestCase()
 {
-    ClampFactoryTest::enableTest();
 }
 
 void test_regression_adj_import_export_xml_mt310s2::init()
@@ -39,7 +38,6 @@ void test_regression_adj_import_export_xml_mt310s2::directAcessExportXml()
     QVERIFY(xmlFile.open(QFile::ReadOnly));
     QString xmlExpected = xmlFile.readAll();
     xmlExpected = XmlHelperForTest::removeTimeDependentEntriesFromXml(xmlExpected);
-
     QVERIFY(TestLogHelpers::compareAndLogOnDiff(xmlExpected, xmlExported));
 }
 
@@ -61,11 +59,10 @@ void test_regression_adj_import_export_xml_mt310s2::directAcessFileImportXmlPseu
 {
     QString xmlExportedInitial = m_testServer->getSenseInterface()->exportXMLString();
     xmlExportedInitial = XmlHelperForTest::removeTimeDependentEntriesFromXml(xmlExportedInitial);
-    QFile xmlFileInitial(":/export_internal_initial.xml");
-    QVERIFY(xmlFileInitial.open(QFile::ReadOnly));
-    QString xmlExpected = xmlFileInitial.readAll();
+
+    QString xmlExpected = TestLogHelpers::loadFile(":/export_internal_initial.xml");
     xmlExpected = XmlHelperForTest::removeTimeDependentEntriesFromXml(xmlExpected);
-    QCOMPARE(xmlExportedInitial, xmlExpected);
+    QVERIFY(TestLogHelpers::compareAndLogOnDiff(xmlExpected, xmlExportedInitial));
 
     QString filenameShort = ":/import_modified";
     QVERIFY(QFile::exists(filenameShort + ".xml"));
@@ -73,11 +70,11 @@ void test_regression_adj_import_export_xml_mt310s2::directAcessFileImportXmlPseu
 
     QString xmlExportedModified = m_testServer->getSenseInterface()->exportXMLString();
     xmlExportedModified = XmlHelperForTest::removeTimeDependentEntriesFromXml(xmlExportedModified);
-    QFile xmlFileModified(":/import_modified.xml");
-    QVERIFY(xmlFileModified.open(QFile::ReadOnly));
-    xmlExpected = xmlFileModified.readAll();
+
+    xmlExpected = TestLogHelpers::loadFile(":/import_modified.xml");
     xmlExpected = XmlHelperForTest::removeTimeDependentEntriesFromXml(xmlExpected);
-    QCOMPARE(xmlExportedModified, xmlExpected);
+
+    QVERIFY(TestLogHelpers::compareAndLogOnDiff(xmlExpected, xmlExportedModified));
 }
 
 void test_regression_adj_import_export_xml_mt310s2::directAcessFileImportMissingType()
@@ -103,9 +100,7 @@ void test_regression_adj_import_export_xml_mt310s2::directAcessUnknownEntry()
 
 void test_regression_adj_import_export_xml_mt310s2::scpiExportInitialAdjXml()
 {
-    QFile xmlFile(":/export_internal_initial.xml");
-    QVERIFY(xmlFile.open(QFile::ReadOnly));
-    QString xmlExpected = xmlFile.readAll();
+    QString xmlExpected = TestLogHelpers::loadFile(":/export_internal_initial.xml");
     xmlExpected = XmlHelperForTest::prettify(xmlExpected);
     xmlExpected = XmlHelperForTest::removeTimeDependentEntriesFromXml(xmlExpected);
 
@@ -123,9 +118,7 @@ void test_regression_adj_import_export_xml_mt310s2::directAcessExportXmlClamps()
     m_testServer->addClamp(cClamp::EMOB200DC, "IL3");
     m_testServer->addClamp(cClamp::CL200ADC1000VDC, "IAUX");
 
-    QFile xmlFile(":/export_clamp_initial.xml");
-    QVERIFY(xmlFile.open(QFile::ReadOnly));
-    QString xmlExpected = xmlFile.readAll();
+    QString xmlExpected = TestLogHelpers::loadFile(":/export_clamp_initial.xml");
     xmlExpected = XmlHelperForTest::prettify(xmlExpected);
     xmlExpected = XmlHelperForTest::removeTimeDependentEntriesFromXml(xmlExpected);
 
@@ -144,9 +137,7 @@ void test_regression_adj_import_export_xml_mt310s2::scpiExportInitialAdjXmlClamp
     m_testServer->addClamp(cClamp::EMOB200DC, "IL3");
     m_testServer->addClamp(cClamp::CL200ADC1000VDC, "IAUX");
 
-    QFile xmlFile(":/export_clamp_initial.xml");
-    QVERIFY(xmlFile.open(QFile::ReadOnly));
-    QString xmlExpected = xmlFile.readAll();
+    QString xmlExpected = TestLogHelpers::loadFile(":/export_clamp_initial.xml");
     xmlExpected = XmlHelperForTest::prettify(xmlExpected);
     xmlExpected = XmlHelperForTest::removeTimeDependentEntriesFromXml(xmlExpected);
 
@@ -169,7 +160,7 @@ void test_regression_adj_import_export_xml_mt310s2::scpiExportUndefinedClamp()
 
 void test_regression_adj_import_export_xml_mt310s2::scpiExportInvalidClamp()
 {
-    m_testServer->addClamp(cClamp::ClampTypes(-1), "IL1");
+    m_testServer->addClamp(-1, "IL1");
 
     QString xmlExported = ScpiSingleTransactionBlocked::query("SYSTEM:ADJUSTMENT:CLAMP:XML?");
     xmlExported = XmlHelperForTest::prettify(xmlExported);

@@ -100,8 +100,8 @@ public:
     cSenseSettings(Zera::XMLConfig::cReader *xmlread, int channelCount);
     virtual ~cSenseSettings();
     const QList<SenseSystem::cChannelSettings*>& getChannelSettings() const;
-    SenseSystem::cChannelSettings* findChannelSettingByMxName(QString intMxName);
-    SenseSystem::cChannelSettings* findChannelSettingByAlias1(QString alias1);
+    SenseSystem::cChannelSettings* findChannelSettingByMxName(QString intMxName) const;
+    SenseSystem::cChannelSettings* findChannelSettingByAlias1(QString alias1) const;
 public slots:
     virtual void configXMLInfo(QString key);
 private:

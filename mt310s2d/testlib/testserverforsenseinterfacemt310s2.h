@@ -23,7 +23,7 @@ public:
     I2cSettings *getI2cSettings() { return m_settings->getI2cSettings(); }
     Mt310s2SystemInfo *getSystemInfo() { return m_systemInfo.get(); }
 
-    cClamp *addClamp(int clampTypeNo, QString channelAlias1);
+    cClamp *addClamp(int clampType, QString channelAlias);
     void removeAllClamps();
 
 private:

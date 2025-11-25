@@ -44,20 +44,20 @@ public:
         anzCL
     };
     cClamp(PCBServer *server,
-           I2cSettings *i2cSettings,
            SenseInterfaceCommon *senseInterface,
            const SenseSystem::cChannelSettings *chSettings,
-           I2cMuxerInterface::Ptr i2cMuxer,
-           quint8 ctrlChannelSecondary,
-           quint8 type = undefined);
+           EepromI2cDeviceInterfacePtr adjMemory,
+           quint8 ctrlChannelSecondary);
     virtual ~cClamp();
     static bool isValidClampType(quint8 type);
     static QString getClampTypeName(quint8 type);
     virtual void initSCPIConnection(QString) override;
-    QString getChannelName();
-    QString getChannelNameSecondary();
-    QString getSerial();
     virtual QString exportXMLString(int indent = 1) override;
+
+    const SenseSystem::cChannelSettings *getChannelSettings() const;
+    QString getChannelName() const;
+    QString getChannelNameSecondary() const;
+    QString getSerial();
     bool importXMLDocument(QDomDocument *qdomdoc, bool ignoreType);
     static bool importXmlForSerialNo(QDomDocument *qdomdoc, QString &serialNo);
     bool exportClampAdjData(QDateTime dateTimeWrite);
@@ -99,13 +99,11 @@ private:
     QString scpiReadAdjStatus(QString &scpi);
 
     SenseInterfaceCommon *m_pSenseInterface = nullptr;
-
+    const SenseSystem::cChannelSettings *m_chSettings;
     QList<SenseRangeCommon*> m_RangeList;
-    QString m_sChannelName;
     QList<SenseRangeCommon*> m_RangeListSecondary;
     QString m_sChannelNameSecondary;
 
-    quint8 m_nCtrlChannel;
     quint8 m_nCtrlChannelSecondary;
     QString m_sSerial =  ClampDefaultSerNo;
     QString m_sVersion = ClampDefaultVersion;

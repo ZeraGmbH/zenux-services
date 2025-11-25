@@ -1,5 +1,6 @@
 #include "test_regression_adj_import_export_xml_com5003.h"
 #include "proxy.h"
+#include "mockeepromdevice.h"
 #include "scpisingletransactionblocked.h"
 #include "xmlhelperfortest.h"
 #include "testfactoryi2cctrl.h"
@@ -18,6 +19,7 @@ void test_regression_adj_import_export_xml_com5003::init()
 
 void test_regression_adj_import_export_xml_com5003::cleanup()
 {
+    MockEepromDevice::cleanAll();
     m_proxyClient = nullptr;
     m_testServer = nullptr;
     m_resmanServer = nullptr;
@@ -29,9 +31,7 @@ void test_regression_adj_import_export_xml_com5003::directAcessExportXml()
     QString xmlExported = m_testServer->getSenseInterface()->exportXMLString();
     xmlExported = XmlHelperForTest::removeTimeDependentEntriesFromXml(xmlExported);
 
-    QFile xmlFile(":/export_internal_initial.xml");
-    QVERIFY(xmlFile.open(QFile::ReadOnly));
-    QString xmlExpected = xmlFile.readAll();
+    QString xmlExpected = TestLogHelpers::loadFile(":/export_internal_initial.xml");
     xmlExpected = XmlHelperForTest::removeTimeDependentEntriesFromXml(xmlExpected);
     QVERIFY(TestLogHelpers::compareAndLogOnDiff(xmlExpected, xmlExported));
 }
@@ -54,11 +54,10 @@ void test_regression_adj_import_export_xml_com5003::directAcessFileImportXmlPseu
 {
     QString xmlExportedInitial = m_testServer->getSenseInterface()->exportXMLString();
     xmlExportedInitial = XmlHelperForTest::removeTimeDependentEntriesFromXml(xmlExportedInitial);
-    QFile xmlFileInitial(":/export_internal_initial.xml");
-    QVERIFY(xmlFileInitial.open(QFile::ReadOnly));
-    QString xmlExpected = xmlFileInitial.readAll();
+
+    QString xmlExpected = TestLogHelpers::loadFile(":/export_internal_initial.xml");
     xmlExpected = XmlHelperForTest::removeTimeDependentEntriesFromXml(xmlExpected);
-    QCOMPARE(xmlExportedInitial, xmlExpected);
+    QVERIFY(TestLogHelpers::compareAndLogOnDiff(xmlExpected, xmlExportedInitial));
 
     QString filenameShort = ":/import_modified";
     QVERIFY(QFile::exists(filenameShort + ".xml"));
@@ -66,11 +65,9 @@ void test_regression_adj_import_export_xml_com5003::directAcessFileImportXmlPseu
 
     QString xmlExportedModified = m_testServer->getSenseInterface()->exportXMLString();
     xmlExportedModified = XmlHelperForTest::removeTimeDependentEntriesFromXml(xmlExportedModified);
-    QFile xmlFileModified(":/import_modified.xml");
-    QVERIFY(xmlFileModified.open(QFile::ReadOnly));
-    xmlExpected = xmlFileModified.readAll();
-    xmlExpected = XmlHelperForTest::removeTimeDependentEntriesFromXml(xmlExpected);
 
+    xmlExpected = TestLogHelpers::loadFile(":/import_modified.xml");
+    xmlExpected = XmlHelperForTest::removeTimeDependentEntriesFromXml(xmlExpected);
     QVERIFY(TestLogHelpers::compareAndLogOnDiff(xmlExpected, xmlExportedModified));
 }
 
@@ -97,9 +94,7 @@ void test_regression_adj_import_export_xml_com5003::directAcessUnknownEntry()
 
 void test_regression_adj_import_export_xml_com5003::scpiExportInitialAdjXml()
 {
-    QFile xmlFile(":/export_internal_initial.xml");
-    QVERIFY(xmlFile.open(QFile::ReadOnly));
-    QString xmlExpected = xmlFile.readAll();
+    QString xmlExpected = TestLogHelpers::loadFile(":/export_internal_initial.xml");
     xmlExpected = XmlHelperForTest::prettify(xmlExpected);
     xmlExpected = XmlHelperForTest::removeTimeDependentEntriesFromXml(xmlExpected);
 
@@ -107,8 +102,7 @@ void test_regression_adj_import_export_xml_com5003::scpiExportInitialAdjXml()
     xmlExported = XmlHelperForTest::prettify(xmlExported);
     xmlExported = XmlHelperForTest::removeTimeDependentEntriesFromXml(xmlExported);
 
-    // if this turns fragile we have to use zera-scpi's xml-compare-testlib
-    QCOMPARE(xmlExported, xmlExpected);
+    QVERIFY(TestLogHelpers::compareAndLogOnDiff(xmlExpected, xmlExported));
 }
 
 void test_regression_adj_import_export_xml_com5003::setupServers()

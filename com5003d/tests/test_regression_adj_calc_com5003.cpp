@@ -1,7 +1,6 @@
 #include "test_regression_adj_calc_com5003.h"
 #include "testfactoryi2cctrl.h"
 #include "proxy.h"
-#include "mocki2ceepromiofactory.h"
 #include "mockeepromdevice.h"
 #include "scpisingletransactionblocked.h"
 #include <timemachineobject.h>
@@ -13,7 +12,6 @@ QTEST_MAIN(test_regression_adj_calc_com5003);
 
 void test_regression_adj_calc_com5003::initTestCase()
 {
-    MockI2cEEpromIoFactory::enableMock();
     setupServers();
 
     QString filenameShort = ":/import_internal";
@@ -25,7 +23,7 @@ void test_regression_adj_calc_com5003::initTestCase()
 
 void test_regression_adj_calc_com5003::cleanup()
 {
-    MockEepromDevice::mockCleanAll();
+    MockEepromDevice::cleanAll();
 }
 
 static constexpr double val = 2.0;

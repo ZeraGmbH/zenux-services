@@ -22,18 +22,16 @@ enum Commands
 };
 
 SenseInterfaceCommon::SenseInterfaceCommon(std::shared_ptr<cSCPI> scpiInterface,
-                                           I2cSettings *i2cSettings,
                                            SystemInfo *systemInfo,
                                            cSenseSettings *senseSettings,
+                                           EepromI2cDeviceInterfacePtr adjMemory,
                                            AbstractChannelRangeFactoryPtr rangeFactory,
                                            AbstractFactoryI2cCtrlPtr ctrlFactory,
                                            QHash<QString, int> availSenseModesHash) :
     cResource(scpiInterface),
     m_ctrlFactory(ctrlFactory),
     m_availSenseModesHash(availSenseModesHash),
-    m_adjReadWrite({ i2cSettings->getDeviceNode(), i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress) },
-                   i2cSettings->getEepromByteSize(),
-                   I2cMultiplexerFactory::createNullMuxer()),
+    m_adjReadWrite(std::move(adjMemory)),
     m_systemInfo(systemInfo)
 {
     importAdjData();

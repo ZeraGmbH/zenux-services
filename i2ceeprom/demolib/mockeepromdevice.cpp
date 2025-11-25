@@ -4,22 +4,34 @@
 QHash<EepromWithMuxParams, QByteArray> MockEepromDevice::m_flashData;
 QHash<EepromWithMuxParams, int>        MockEepromDevice::m_flashDataReadCounts;
 QHash<EepromWithMuxParams, int>        MockEepromDevice::m_flashDataWriteCounts;
-QHash<EepromWithMuxParams, bool>       MockEepromDevice::m_returnReducedDataSizeOnRead;
+bool                                   MockEepromDevice::m_globalError = false;
 
 MockEepromDevice::MockEepromDevice(const I2cAddressParameter &i2cAddressParam, int byteCapacity,
-                               const I2cAddressParameter &i2cAddressMux, qint8 muxChannelNo) :
+                                   const I2cAddressParameter &i2cAddressMux, qint8 muxChannelNo) :
     m_i2cAddress(i2cAddressParam),
     m_byteCapacity(byteCapacity),
     m_i2cAddressMux(i2cAddressMux),
     m_muxChannelNo(muxChannelNo)
 {
-    if(m_flashData.contains(getFullParams()))
+    EepromWithMuxParams fullParams = getFullParams();
+    if(m_flashData.contains(fullParams))
         return;
-    doReset(byteCapacity);
+    // Internal memory is assumed plugged and can be 'unplugged' by setGlobalError
+    if(m_muxChannelNo == InvalidMux)
+        doReset(byteCapacity);
+}
+
+bool MockEepromDevice::isMemoryPlugged() const
+{
+    if (m_globalError)
+        return false;
+    return m_flashData.contains(getFullParams());
 }
 
 int MockEepromDevice::WriteData(char *data, ushort count, ushort adr)
 {
+    if (m_globalError)
+        return 0;
     if(adr != 0)
         qFatal("Address other than 0 is not yet supported!");
     if(count > getByteSize())
@@ -35,6 +47,8 @@ int MockEepromDevice::WriteData(char *data, ushort count, ushort adr)
 
 int MockEepromDevice::ReadData(char *data, ushort count, ushort adr)
 {
+    if (m_globalError)
+        return 0;
     if(adr != 0)
         qFatal("Address other than 0 is not yet supported!");
     if(count > getByteSize())
@@ -45,12 +59,13 @@ int MockEepromDevice::ReadData(char *data, ushort count, ushort adr)
     for(int i=0; i<reducedCount; i++)
         data[i] = flashEntry[i];
     m_flashDataReadCounts[getFullParams()]++;
-    bool reduceCount = m_returnReducedDataSizeOnRead[getFullParams()];
-    return reduceCount ? reducedCount: count;
+    return count;
 }
 
 int MockEepromDevice::Reset()
 {
+    if (m_globalError)
+        return 0;
     doReset(0);
     return getByteSize();
 }
@@ -60,21 +75,21 @@ int MockEepromDevice::getByteSize() const
     return m_byteCapacity;
 }
 
-void MockEepromDevice::returnReduceCountOnErrorRead()
-{
-    m_returnReducedDataSizeOnRead[getFullParams()] = true;
-}
-
-void MockEepromDevice::mockCleanAll()
+void MockEepromDevice::cleanAll()
 {
     m_flashData.clear();
     m_flashDataReadCounts.clear();
     m_flashDataWriteCounts.clear();
-    m_returnReducedDataSizeOnRead.clear();
+    m_globalError = false;
 }
 
-QByteArray MockEepromDevice::mockGetData(const I2cAddressParameter &i2cAddressParam,
-                                       const I2cAddressParameter &i2cAddressMux, qint8 muxChannelNo)
+void MockEepromDevice::setGlobalError(bool error)
+{
+    m_globalError = error;
+}
+
+QByteArray MockEepromDevice::getData(const I2cAddressParameter &i2cAddressParam,
+                                     const I2cAddressParameter &i2cAddressMux, qint8 muxChannelNo)
 {
     EepromWithMuxParams params{i2cAddressParam, i2cAddressMux, muxChannelNo};
     QByteArray ret;
@@ -83,65 +98,25 @@ QByteArray MockEepromDevice::mockGetData(const I2cAddressParameter &i2cAddressPa
     return ret;
 }
 
-void MockEepromDevice::mockSetData(const I2cAddressParameter &i2cAddressParam, QByteArray data,
-                                 const I2cAddressParameter &i2cAddressMux, qint8 muxChannelNo)
+void MockEepromDevice::setData(const I2cAddressParameter &i2cAddressParam, QByteArray data,
+                               const I2cAddressParameter &i2cAddressMux, qint8 muxChannelNo)
 {
     EepromWithMuxParams params{i2cAddressParam, i2cAddressMux, muxChannelNo};
     m_flashData[params] = data;
 }
 
-int MockEepromDevice::mockGetReadCount(const I2cAddressParameter &i2cAddressParam,
-                                     const I2cAddressParameter &i2cAddressMux, qint8 muxChannelNo)
+int MockEepromDevice::getReadCount(const I2cAddressParameter &i2cAddressParam,
+                                   const I2cAddressParameter &i2cAddressMux, qint8 muxChannelNo)
 {
     EepromWithMuxParams params{i2cAddressParam, i2cAddressMux, muxChannelNo};
     return m_flashDataReadCounts[params];
 }
 
-int MockEepromDevice::mockGetWriteCount(const I2cAddressParameter &i2cAddressParam,
-                                      const I2cAddressParameter &i2cAddressMux, qint8 muxChannelNo)
+int MockEepromDevice::getWriteCount(const I2cAddressParameter &i2cAddressParam,
+                                    const I2cAddressParameter &i2cAddressMux, qint8 muxChannelNo)
 {
     EepromWithMuxParams params{i2cAddressParam, i2cAddressMux, muxChannelNo};
     return m_flashDataWriteCounts[params];
-}
-
-bool MockEepromDevice::mockWriteToFile(const I2cAddressParameter &i2cAddressParam,
-                                     QString fileName,
-                                     const I2cAddressParameter &i2cAddressMux, qint8 muxChannelNo)
-{
-    QByteArray data = mockGetData(i2cAddressParam, i2cAddressMux, muxChannelNo);
-    if(data.isEmpty())
-        return false;
-    QFile file(fileName);
-    if(file.open(QIODevice::WriteOnly))
-        return file.write(data) == data.length();
-    return false;
-}
-
-bool MockEepromDevice::mockReadFromFile(const I2cAddressParameter &i2cAddressParam, QString fileName,
-                                      const I2cAddressParameter &i2cAddressMux, qint8 muxChannelNo)
-{
-    QFile file(fileName);
-    if(file.open(QIODevice::ReadOnly)) {
-        QByteArray data = file.readAll();
-        if(data.isEmpty())
-            return false;
-        mockSetData(i2cAddressParam, data, i2cAddressMux, muxChannelNo);
-        return true;
-    }
-    return false;
-}
-
-bool MockEepromDevice::mockCompareWithFile(const I2cAddressParameter &i2cAddressParam, QString fileName,
-                                         const I2cAddressParameter &i2cAddressMux, qint8 muxChannelNo)
-{
-    QFile file(fileName);
-    if(file.open(QIODevice::ReadOnly)) {
-        QByteArray data = file.readAll();
-        if(data.isEmpty()) // for now...
-            return false;
-        return data == mockGetData(i2cAddressParam, i2cAddressMux, muxChannelNo);
-    }
-    return false;
 }
 
 void MockEepromDevice::doReset(int size)

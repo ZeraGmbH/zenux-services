@@ -22,11 +22,13 @@ const ServerParams cCOM5003dServer::defaultParams {ServerName, ServerVersion, "/
 cCOM5003dServer::cCOM5003dServer(SettingsContainerPtr settings,
                                  AbstractFactoryI2cCtrlPtr ctrlFactory,
                                  AbstractFactoryDeviceNodePcbPtr deviceNodeFactory,
+                                 AbstractEepromI2cFactoryPtr adjMemFactory,
                                  VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory,
                                  AbstractChannelRangeFactoryPtr channelRangeFactory) :
     PCBServer(std::move(settings), tcpNetworkFactory),
     m_ctrlFactory(ctrlFactory),
-    m_deviceNodeFactory(deviceNodeFactory)
+    m_deviceNodeFactory(deviceNodeFactory),
+    m_adjMemFactory(adjMemFactory)
 {
     doConfiguration();
     init();
@@ -290,9 +292,13 @@ void cCOM5003dServer::earlySetup(AbstractChannelRangeFactoryPtr channelRangeFact
                                        m_tcpNetworkFactory);
 
     m_scpiConnectionList.append(this); // the server itself has some commands
+    I2cSettings *i2cSettings = m_settings->getI2cSettings();
+    EepromI2cDeviceInterfacePtr eepromDev = m_adjMemFactory->createEeprom(
+        {i2cSettings->getDeviceNode(), i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress)},
+        i2cSettings->getEepromByteSize());
     m_scpiConnectionList.append(m_pSenseInterface = new Com5003SenseInterface(m_scpiInterface,
-                                                                              m_settings->getI2cSettings(),
                                                                               m_pSenseSettings,
+                                                                              std::move(eepromDev),
                                                                               m_pSystemInfo,
                                                                               channelRangeFactory,
                                                                               m_ctrlFactory));

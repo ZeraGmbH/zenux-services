@@ -1,7 +1,7 @@
 #include "mockmt310s2d.h"
+#include "mockeepromi2cfactory.h"
 #include "mockfactorydevicenodepcb.h"
 #include "mockserverparamgenerator.h"
-#include "mocki2ceepromiofactory.h"
 #include "controllerpersitentdata.h"
 #include "simulsystemstatus.h"
 #include "clampinterface.h"
@@ -12,7 +12,6 @@ MockMt310s2d::MockMt310s2d(AbstractFactoryI2cCtrlPtr ctrlFactory,
                            const QString &alternateConfigXml) :
     m_ctrlFactory(ctrlFactory)
 {
-    MockI2cEEpromIoFactory::enableMock();
     connect(SimulSystemStatus::getInstance(), &SimulSystemStatus::sigHotplugDevChanged,
             this, &MockMt310s2d::onSimulGuiHotplugDevChanged);
 
@@ -23,6 +22,7 @@ MockMt310s2d::MockMt310s2d(AbstractFactoryI2cCtrlPtr ctrlFactory,
         std::make_unique<SettingsContainer>(params),
         ctrlFactory,
         std::make_shared<MockFactoryDeviceNodePcb>(),
+        std::make_shared<MockEepromI2cFactory>(),
         tcpNetworkFactory,
         SettingsContainer::createChannelRangeFactory(serviceNameForAlternateDevice));
     setupHotplugChannelEnable();

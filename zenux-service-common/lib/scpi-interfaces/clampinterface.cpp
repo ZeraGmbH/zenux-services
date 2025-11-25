@@ -1,22 +1,21 @@
 #include "clampinterface.h"
-#include "clampfactory.h"
+#include "clamp.h"
 #include "senseinterfacecommon.h"
 #include "i2csettings.h"
 #include "zscpi_response_definitions.h"
-#include <i2cmultiplexerfactory.h>
-#include <i2cutils.h>
-#include <i2cmuxerscopedonoff.h>
 
 cClampInterface::cClampInterface(PCBServer *server,
-                                 I2cSettings *i2cSettings,
                                  cSenseSettings *senseSettings,
                                  SenseInterfaceCommon *senseInterface,
+                                 I2cSettings *i2cSettings,
+                                 AbstractEepromI2cFactoryPtr adjMemFactory,
                                  AbstractFactoryI2cCtrlPtr ctrlFactory) :
     ScpiConnection(server->getSCPIInterface()),
     m_pMyServer(server),
-    m_i2cSettings(i2cSettings),
     m_senseSettings(senseSettings),
     m_pSenseInterface(senseInterface),
+    m_i2cSettings(i2cSettings),
+    m_adjMemFactory(adjMemFactory),
     m_ctrlFactory(ctrlFactory)
 {
     m_nClampStatus = 0;
@@ -30,7 +29,7 @@ void cClampInterface::initSCPIConnection(QString leadingNodes)
     addDelegate(QString("%1SYSTEM:ADJUSTMENT:CLAMP").arg(leadingNodes),"XML",SCPI::isQuery | SCPI::isCmdwP, m_scpiInterface, ClampSystem::cmdClampImportExport);
 }
 
-cClamp *cClampInterface::addClamp(const SenseSystem::cChannelSettings *chSettings, I2cMuxerInterface::Ptr i2cMuxer)
+cClamp *cClampInterface::addClamp(const SenseSystem::cChannelSettings *chSettings, EepromI2cDeviceInterfacePtr adjMemory)
 {
     m_nClampStatus |= (1<<chSettings->m_nPluggedBit);
 
@@ -38,7 +37,11 @@ cClamp *cClampInterface::addClamp(const SenseSystem::cChannelSettings *chSetting
     int phaseCount = m_senseSettings->getChannelSettings().size()/2;
     int ctlChannelSecondary = chSettings->m_nCtrlChannel - phaseCount;
 
-    cClamp* clamp = ClampFactory::createClamp(m_pMyServer, m_i2cSettings, m_pSenseInterface, chSettings, i2cMuxer, ctlChannelSecondary);
+    cClamp* clamp = new cClamp(m_pMyServer,
+                               m_pSenseInterface,
+                               chSettings,
+                               std::move(adjMemory),
+                               ctlChannelSecondary);
     m_clampHash[chSettings->m_nameMx] = clamp;
     qInfo("Add clamp ranges for \"%s\"", qPrintable(chSettings->m_sAlias1));
     const QString channelMNameSecondary = clamp->getChannelNameSecondary();
@@ -60,18 +63,19 @@ QString cClampInterface::exportXMLString(int indent)
     return xmlTotal;
 }
 
-void cClampInterface::handleClampConnected(const SenseSystem::cChannelSettings *chSettings)
+cClamp *cClampInterface::tryAddClamp(const SenseSystem::cChannelSettings *chSettings)
 {
-    QString i2cDevNode = m_i2cSettings->getDeviceNode();
-    I2cMuxerInterface::Ptr i2cMuxer = I2cMultiplexerFactory::createPCA9547Muxer(i2cDevNode,
-                                                                                m_i2cSettings->getI2CAdress(i2cSettings::muxerI2cAddress),
-                                                                                chSettings->m_nMuxChannelNo);
-    I2cMuxerScopedOnOff i2cMuxOnOff(i2cMuxer);
-    int i2cAddress = m_i2cSettings->getI2CAdress(i2cSettings::clampFlashI2cAddress);
-    if(I2cPing(i2cDevNode, i2cAddress)) // ignore other than flash
-        addClamp(chSettings, i2cMuxer);
-    else
-        qInfo("Not a clamp on %s", qPrintable(chSettings->m_sAlias1));
+    EepromI2cDeviceInterfacePtr adjMemory = m_adjMemFactory->createEepromOnMux(
+        {m_i2cSettings->getDeviceNode(), m_i2cSettings->getI2CAdress(i2cSettings::clampFlashI2cAddress)},
+        AbstractEepromI2cDevice::capacity24LC256,
+        {m_i2cSettings->getDeviceNode(), m_i2cSettings->getI2CAdress(i2cSettings::muxerI2cAddress)},
+        chSettings->m_nMuxChannelNo);
+
+    if(adjMemory->isMemoryPlugged()) // ignore other than flash
+        return addClamp(chSettings, std::move(adjMemory));
+
+    qInfo("Not a clamp on %s", qPrintable(chSettings->m_sAlias1));
+    return nullptr;
 }
 
 void cClampInterface::handleClampDisconnected(QString channelName, const SenseSystem::cChannelSettings *chSettings, quint16 bmask)
@@ -109,7 +113,7 @@ void cClampInterface::actualizeClampStatus(quint16 devConnectedMask)
         quint16 bmask = (1 << plugBitNo);
         if ((clChange & bmask) > 0) {
             if ((m_nClampStatus & bmask) == 0)
-                handleClampConnected(channelSettings);
+                tryAddClamp(channelSettings);
             else
                 handleClampDisconnected(channelName, channelSettings, bmask);
         }

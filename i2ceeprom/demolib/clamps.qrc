@@ -1,0 +1,21 @@
+<RCC>
+    <qresource prefix="/">
+        <file>clamps/fresh/CL120A.eeprom</file>
+        <file>clamps/fresh/CL300A.eeprom</file>
+        <file>clamps/fresh/CL1000A.eeprom</file>
+        <file>clamps/fresh/EMOB32.eeprom</file>
+        <file>clamps/fresh/EMOB200DC.eeprom</file>
+        <file>clamps/fresh/EMOB80.eeprom</file>
+        <file>clamps/fresh/RC3000.eeprom</file>
+        <file>clamps/fresh/CL200ADC1000VDC.eeprom</file>
+        <file>clamps/fresh/CL1000VDC.eeprom</file>
+        <file>clamps/fresh/CL8ADC1000VDC.eeprom</file>
+        <file>clamps/fresh/CL800ADC1000VDC.eeprom</file>
+        <file>clamps/fresh/EMOB500DC.eeprom</file>
+        <file>clamps/fresh/CL8ADC1400VDC.eeprom</file>
+        <file>clamps/fresh/CL800ADC1400VDC.eeprom</file>
+        <file>clamps/fresh/CL1400VDC.eeprom</file>
+        <file>clamps/fresh/CL1200ADC1400VDC.eeprom</file>
+        <file>clamps/fresh/EMOB750DC.eeprom</file>
+    </qresource>
+</RCC>

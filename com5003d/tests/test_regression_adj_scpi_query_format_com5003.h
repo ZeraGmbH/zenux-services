@@ -11,7 +11,7 @@ class test_regression_adj_scpi_query_format_com5003 : public QObject
     Q_OBJECT
 private slots:
     void initTestCase();
-    void init();
+    void cleanup();
 
     void queryGainCorrectionSingleGen();
     void queryGainCorrectionSingle();

@@ -1,11 +1,11 @@
 #include "test_regression_adj_import_permission_com5003.h"
 #include "factoryi2cctrl.h"
 #include "testfactoryi2cctrl.h"
+#include "mockeepromdevice.h"
 #include "proxy.h"
 #include "scpisingletransactionblocked.h"
 #include "zscpi_response_definitions.h"
 #include "xmlhelperfortest.h"
-#include "mocki2ceepromiofactory.h"
 #include <timemachineobject.h>
 #include <mocktcpnetworkfactory.h>
 #include <QSignalSpy>
@@ -15,6 +15,7 @@ QTEST_MAIN(test_regression_adj_import_permission_com5003);
 
 void test_regression_adj_import_permission_com5003::cleanup()
 {
+    MockEepromDevice::cleanAll();
     m_proxyClient = nullptr;
     m_testServer = nullptr;
     m_resmanServer = nullptr;
@@ -50,6 +51,7 @@ void test_regression_adj_import_permission_com5003::scpiImportInvalidXml()
 void test_regression_adj_import_permission_com5003::scpiImportFailFlashWrite()
 {
     setupServers(std::make_shared<TestFactoryI2cCtrl>(true));
+    MockEepromDevice::setGlobalError(true);
 
     QString xmlFileName = ":/import_minimal_pass.xml";
     QString xml = XmlHelperForTest::loadXml(xmlFileName);
@@ -61,7 +63,6 @@ void test_regression_adj_import_permission_com5003::scpiImportFailFlashWrite()
 
 void test_regression_adj_import_permission_com5003::scpiImportPassFlashWrite()
 {
-    MockI2cEEpromIoFactory::enableMock();
     setupServers(std::make_shared<TestFactoryI2cCtrl>(true));
 
     QString xmlFileName = ":/import_minimal_pass.xml";

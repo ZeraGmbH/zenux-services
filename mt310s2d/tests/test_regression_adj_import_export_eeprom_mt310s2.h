@@ -10,11 +10,9 @@ class test_regression_adj_import_export_eeprom_mt310s2 : public QObject
 {
     Q_OBJECT
 private slots:
-    void initTestCase();
-    void init();
     void cleanup();
 
-    void directExportFlashNoMock();
+    void directExportFlashError();
     void directExportFlashGen();
     void directExportFlashCheckReference();
     void scpiWriteFlashInitial();
@@ -26,11 +24,11 @@ private slots:
     void directExportFlashArbitraryVersionGen();
     void loadArbitraryVersionToEEprom();
 
-    void freshClampSetTypeIOnlyEepromGen();
+    void allClampsEEpromWrite_data();
+    void allClampsEEpromWrite();
+
     void freshClampSetTypeIOnlyEepromCheck();
-    void freshClampSetTypeUOnlyEepromGen();
     void freshClampSetTypeUOnlyEepromCheck();
-    void freshClampSetTypeUIEepromGen();
     void freshClampSetTypeUIEepromCheck();
 private:
     void setupServers(AbstractFactoryI2cCtrlPtr ctrlFactory);

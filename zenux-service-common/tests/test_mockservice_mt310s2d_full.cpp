@@ -42,7 +42,7 @@ void test_mockservice_mt310s2d_full::init()
 
 void test_mockservice_mt310s2d_full::cleanup()
 {
-    MockEepromDevice::mockCleanAll();
+    MockEepromDevice::cleanAll();
     m_pcbIFace = nullptr;
     m_proxyClient = nullptr;
     m_mt310s2d = nullptr;

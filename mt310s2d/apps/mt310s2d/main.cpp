@@ -1,3 +1,4 @@
+#include "eeprom24lcxxxpca9547factory.h"
 #include "mt310s2d.h"
 #include "mt310s2dglobal.h"
 #include "factoryi2cctrl.h"
@@ -23,11 +24,13 @@ int main( int argc, char *argv[] )
                                  "/etc/zera/mt310s2d/" + config.xmlFileName};
 
     SettingsContainerPtr settings = std::make_unique<SettingsContainer>(defaultParams);
-    std::shared_ptr<FactoryI2cCtrl> ctrlFactory = std::make_shared<FactoryI2cCtrl>(settings->getI2cSettings());
+    AbstractFactoryI2cCtrlPtr ctrlFactory = std::make_shared<FactoryI2cCtrl>(settings->getI2cSettings());
+
     cMT310S2dServer* mt310s2d = new cMT310S2dServer(
         std::move(settings),
         ctrlFactory,
         std::make_shared<FactoryDeviceNodePcb>(),
+        std::make_shared<Eeprom24LCxxxPca9547Factory>(),
         VeinTcp::TcpNetworkFactory::create(),
         SettingsContainer::createChannelRangeFactory(serviceNameForAlternateDevice));
     qInfo(ServerName " started");

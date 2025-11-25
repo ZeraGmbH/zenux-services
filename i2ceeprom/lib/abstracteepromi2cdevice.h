@@ -1,22 +1,23 @@
-#ifndef EEPROMI2CDEVICEINTERFACE_H
-#define EEPROMI2CDEVICEINTERFACE_H
+#ifndef ABSTRACTEEPROMI2CDEVICE_H
+#define ABSTRACTEEPROMI2CDEVICE_H
 
 #include <QString>
 #include <memory>
 
-class EepromI2cDeviceInterface
+class AbstractEepromI2cDevice
 {
 public:
     static constexpr int capacity24LC256 = (1 << 15);
     static constexpr int capacity24LC512 = (1 << 16);
 
-    virtual ~EepromI2cDeviceInterface() = default;
+    virtual ~AbstractEepromI2cDevice() = default;
+    virtual bool isMemoryPlugged() const = 0;
     virtual int WriteData(char* data, ushort count, ushort adr) = 0;
     virtual int ReadData(char* data, ushort count, ushort adr) = 0;
     virtual int Reset() = 0;
     virtual int getByteSize() const = 0;
 };
 
-typedef std::unique_ptr<EepromI2cDeviceInterface> EepromI2cDeviceInterfacePtr;
+typedef std::unique_ptr<AbstractEepromI2cDevice> EepromI2cDeviceInterfacePtr;
 
-#endif // EEPROMI2CDEVICEINTERFACE_H
+#endif // ABSTRACTEEPROMI2CDEVICE_H

@@ -10,10 +10,9 @@ class test_regression_adj_import_export_eeprom_com5003 : public QObject
 {
     Q_OBJECT
 private slots:
-    void init();
     void cleanup();
 
-    void directExportFlashNoMock();
+    void directExportFlashError();
     void directExportFlashGen();
     void directExportFlashCheckReference();
     void scpiWriteFlashInitial();

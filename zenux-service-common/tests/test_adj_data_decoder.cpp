@@ -1,6 +1,7 @@
 #include "test_adj_data_decoder.h"
 #include "adjdatacompleteinternstream.h"
 #include "adjustmenteepromreadwrite.h"
+#include "mockeepromi2cfactory.h"
 #include <QFile>
 #include <QTest>
 
@@ -8,7 +9,10 @@ QTEST_MAIN(test_adj_data_decoder)
 
 void test_adj_data_decoder::initTestCase()
 {
-    AdjustmentEepromReadWrite eepromRw({"", 0}, EepromI2cDeviceInterface::capacity24LC256, nullptr);
+    MockEepromI2cFactory eepromFactory;
+    EepromI2cDeviceInterfacePtr adjMemory = eepromFactory.createEeprom({"", 0},
+                                                                       AbstractEepromI2cDevice::capacity24LC256);
+    AdjustmentEepromReadWrite eepromRw(std::move(adjMemory));
     m_flashSizeAllDevicesAtTheTimeOfWriting = eepromRw.getMaxSize();
 }
 

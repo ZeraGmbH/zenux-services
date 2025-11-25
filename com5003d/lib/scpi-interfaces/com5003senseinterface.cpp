@@ -3,15 +3,15 @@
 #include "zscpi_response_definitions.h"
 
 Com5003SenseInterface::Com5003SenseInterface(std::shared_ptr<cSCPI> scpiInterface,
-                                             I2cSettings *i2cSettings,
                                              cSenseSettings *senseSettings,
+                                             EepromI2cDeviceInterfacePtr adjMemory,
                                              SystemInfo *systemInfo,
                                              AbstractChannelRangeFactoryPtr rangeFactory,
                                              AbstractFactoryI2cCtrlPtr ctrlFactory) :
     SenseInterfaceCommon(scpiInterface,
-                         i2cSettings,
                          systemInfo,
                          senseSettings,
+                         std::move(adjMemory),
                          rangeFactory,
                          ctrlFactory,
                          QHash<QString, int>{{"AC", modeAC}, {"REF", modeREF}})

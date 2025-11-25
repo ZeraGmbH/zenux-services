@@ -27,7 +27,7 @@ void test_regression_scpi_com5003::init()
 
 void test_regression_scpi_com5003::cleanup()
 {
-    MockEepromDevice::mockCleanAll();
+    MockEepromDevice::cleanAll();
     m_pcbIFace = nullptr;
     m_proxyClient = nullptr;
     m_server = nullptr;

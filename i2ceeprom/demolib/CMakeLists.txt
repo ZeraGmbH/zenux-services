@@ -6,9 +6,19 @@ file(GLOB HEADER
     *.h
     )
 
+file(GLOB RESOURCES
+    *.qrc
+    )
+
+file(GLOB SCRIPTS
+    *.sh
+    )
+
 add_library(zenuxi2ceeprom-demolib STATIC
     ${SOURCES}
     ${HEADER}
+    ${RESOURCES}
+    ${SCRIPTS}
 )
 
 target_include_directories(zenuxi2ceeprom-demolib
@@ -19,6 +29,7 @@ target_include_directories(zenuxi2ceeprom-demolib
 
 target_link_libraries(zenuxi2ceeprom-demolib
     PUBLIC
+    zenuxservicecommon
     zenuxi2ceeprom
     # ask linker to help us finding unresolved symbols
     "-Wl,--no-undefined"
