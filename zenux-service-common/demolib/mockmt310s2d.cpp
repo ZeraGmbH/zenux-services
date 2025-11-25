@@ -28,15 +28,15 @@ MockMt310s2d::MockMt310s2d(AbstractFactoryI2cCtrlPtr ctrlFactory,
     setupHotplugChannelEnable();
 }
 
-void MockMt310s2d::fireHotplugInterrupt(const QStringList &channelAliases)
+void MockMt310s2d::fireHotplugInterruptControllerOnly(const QStringList &channelAliases)
 {
     AbstractMockAllServices::ChannelAliasHotplugDeviceNameMap infoMap;
     for (const QString &channelAlias : channelAliases)
         infoMap.insert(channelAlias, {"EMOB_MOCK-00V00", cClamp::undefined});
-    fireHotplugInterruptControllerName(infoMap);
+    fireHotplugInterrupt(infoMap);
 }
 
-void MockMt310s2d::fireHotplugInterruptControllerName(const AbstractMockAllServices::ChannelAliasHotplugDeviceNameMap &infoMap)
+void MockMt310s2d::fireHotplugInterrupt(const AbstractMockAllServices::ChannelAliasHotplugDeviceNameMap &infoMap)
 {
     cSenseSettings *senseSettings = m_server->getSenseSettings();
     quint16 interruptMask = 0;
@@ -86,7 +86,7 @@ void MockMt310s2d::onSimulGuiHotplugDevChanged(int channelIndex, bool active)
         m_channelAliasesWithControllers.remove(channelAlias);
     }
     if(change)
-        fireHotplugInterrupt(m_channelAliasesWithControllers.values());
+        fireHotplugInterruptControllerOnly(m_channelAliasesWithControllers.values());
 }
 
 void MockMt310s2d::setupHotplugChannelEnable()

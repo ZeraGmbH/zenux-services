@@ -48,12 +48,12 @@ ZDspServer *TestAllServicesMt310s2::getZdsp1dServer()
     return m_zdsp1d->getServer();
 }
 
-void TestAllServicesMt310s2::fireHotplugInterrupt(const QStringList &channelAliases)
+void TestAllServicesMt310s2::fireHotplugInterruptControllerOnly(const QStringList &channelAliases)
 {
-    m_mt310s2d->fireHotplugInterrupt(channelAliases);
+    m_mt310s2d->fireHotplugInterruptControllerOnly(channelAliases);
 }
 
-void TestAllServicesMt310s2::fireHotplugInterruptControllerName(const ChannelAliasHotplugDeviceNameMap &infoMap)
+void TestAllServicesMt310s2::fireHotplugInterrupt(const ChannelAliasHotplugDeviceNameMap &infoMap)
 {
-    m_mt310s2d->fireHotplugInterruptControllerName(infoMap);
+    m_mt310s2d->fireHotplugInterrupt(infoMap);
 }

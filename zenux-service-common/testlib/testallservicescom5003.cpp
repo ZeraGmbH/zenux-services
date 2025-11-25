@@ -45,13 +45,13 @@ ZDspServer *TestAllServicesCom5003::getZdsp1dServer()
     return m_zdsp1d->getServer();
 }
 
-void TestAllServicesCom5003::fireHotplugInterrupt(const QStringList &channelAliases)
+void TestAllServicesCom5003::fireHotplugInterruptControllerOnly(const QStringList &channelAliases)
 {
     Q_UNUSED(channelAliases)
     qWarning("Hotplug not supported on COM5003 yet!");
 }
 
-void TestAllServicesCom5003::fireHotplugInterruptControllerName(const ChannelAliasHotplugDeviceNameMap &infoMap)
+void TestAllServicesCom5003::fireHotplugInterrupt(const ChannelAliasHotplugDeviceNameMap &infoMap)
 {
     Q_UNUSED(infoMap)
     qWarning("Hotplug not supported on COM5003 yet!");

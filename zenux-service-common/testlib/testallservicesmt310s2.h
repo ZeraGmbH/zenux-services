@@ -20,8 +20,8 @@ public:
 
     void setRangeGetSetDelay(int rangeGetSetDelay) override;
     ZDspServer *getZdsp1dServer() override;
-    void fireHotplugInterrupt(const QStringList &channelAliases) override;
-    void fireHotplugInterruptControllerName(const ChannelAliasHotplugDeviceNameMap &infoMap) override;
+    void fireHotplugInterruptControllerOnly(const QStringList &channelAliases) override;
+    void fireHotplugInterrupt(const ChannelAliasHotplugDeviceNameMap &infoMap) override;
 private:
     void init(const QString &serviceNameForAlternateDevice,
               VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory,

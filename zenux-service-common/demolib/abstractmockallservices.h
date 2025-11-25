@@ -8,14 +8,14 @@ class AbstractMockAllServices
 {
 public:
     virtual ~AbstractMockAllServices() = default;
-    virtual void fireHotplugInterrupt(const QStringList &channelAliases) = 0;
+    virtual void fireHotplugInterruptControllerOnly(const QStringList &channelAliases) = 0;
     struct hotplugI2cBus
     {
         QString controllerName;
         cClamp::ClampTypes clamp;
     };
     typedef QMap<QString, hotplugI2cBus> ChannelAliasHotplugDeviceNameMap;
-    virtual void fireHotplugInterruptControllerName(const ChannelAliasHotplugDeviceNameMap &infoMap) = 0;
+    virtual void fireHotplugInterrupt(const ChannelAliasHotplugDeviceNameMap &infoMap) = 0;
 };
 
 #endif // ABSTRACTMOCKALLSERVICES_H

@@ -42,7 +42,7 @@ void test_emob_lock::pushButtonNoParamNoEmob()
 
 void test_emob_lock::pushButtonNoParamEmobIAUX()
 {
-    m_mt310s2d->fireHotplugInterrupt(QStringList() << "IAUX");
+    m_mt310s2d->fireHotplugInterruptControllerOnly(QStringList() << "IAUX");
 
     QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
 
@@ -57,7 +57,7 @@ void test_emob_lock::pushButtonNoParamEmobIAUX()
 
 void test_emob_lock::pushButtonNoParamEmobI3IAUX()
 {
-    m_mt310s2d->fireHotplugInterrupt(QStringList() << "IL3" << "IAUX");
+    m_mt310s2d->fireHotplugInterruptControllerOnly(QStringList() << "IL3" << "IAUX");
 
     QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
 
@@ -85,7 +85,7 @@ void test_emob_lock::pushButtonIAUXNoEmob()
 
 void test_emob_lock::pushButtonIAUXEmobIAUX()
 {
-    m_mt310s2d->fireHotplugInterrupt(QStringList() << "IAUX");
+    m_mt310s2d->fireHotplugInterruptControllerOnly(QStringList() << "IAUX");
 
     QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
 
@@ -100,7 +100,7 @@ void test_emob_lock::pushButtonIAUXEmobIAUX()
 
 void test_emob_lock::pushButtonI3EmobI3()
 {
-    m_mt310s2d->fireHotplugInterrupt(QStringList() << "IL3");
+    m_mt310s2d->fireHotplugInterruptControllerOnly(QStringList() << "IL3");
 
     QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
 
@@ -115,7 +115,7 @@ void test_emob_lock::pushButtonI3EmobI3()
 
 void test_emob_lock::pushButtonI3EmobIAUX()
 {
-    m_mt310s2d->fireHotplugInterrupt(QStringList() << "IAUX");
+    m_mt310s2d->fireHotplugInterruptControllerOnly(QStringList() << "IAUX");
 
     QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
 
@@ -143,7 +143,7 @@ void test_emob_lock::readLockStateNoParamNoEmob()
 
 void test_emob_lock::readLockStateNoParamEmobIAUX()
 {
-    m_mt310s2d->fireHotplugInterrupt(QStringList() << "IAUX");
+    m_mt310s2d->fireHotplugInterruptControllerOnly(QStringList() << "IAUX");
 
     QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
 
@@ -158,7 +158,7 @@ void test_emob_lock::readLockStateNoParamEmobIAUX()
 
 void test_emob_lock::readLockStateNoParamEmobI3IAUX()
 {
-    m_mt310s2d->fireHotplugInterrupt(QStringList() << "IL3" << "IAUX");
+    m_mt310s2d->fireHotplugInterruptControllerOnly(QStringList() << "IL3" << "IAUX");
 
     QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
 
@@ -186,7 +186,7 @@ void test_emob_lock::readLockStateIAUXNoEmob()
 
 void test_emob_lock::readLockStateIAUXEmobIAUX()
 {
-    m_mt310s2d->fireHotplugInterrupt(QStringList() << "IAUX");
+    m_mt310s2d->fireHotplugInterruptControllerOnly(QStringList() << "IAUX");
 
     QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
 
@@ -201,7 +201,7 @@ void test_emob_lock::readLockStateIAUXEmobIAUX()
 
 void test_emob_lock::readLockStateI3EmobI3()
 {
-    m_mt310s2d->fireHotplugInterrupt(QStringList() << "IL3");
+    m_mt310s2d->fireHotplugInterruptControllerOnly(QStringList() << "IL3");
 
     QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
 
@@ -216,7 +216,7 @@ void test_emob_lock::readLockStateI3EmobI3()
 
 void test_emob_lock::readLockStateI3EmobIAUX()
 {
-    m_mt310s2d->fireHotplugInterrupt(QStringList() << "IAUX");
+    m_mt310s2d->fireHotplugInterruptControllerOnly(QStringList() << "IAUX");
 
     QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
 

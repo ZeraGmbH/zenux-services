@@ -43,12 +43,12 @@ DemoAllServicesMt310s2::~DemoAllServicesMt310s2()
     delete m_autoLogger;
 }
 
-void DemoAllServicesMt310s2::fireHotplugInterrupt(const QStringList &channelAliases)
+void DemoAllServicesMt310s2::fireHotplugInterruptControllerOnly(const QStringList &channelAliases)
 {
-    m_mt310s2d->fireHotplugInterrupt(channelAliases);
+    m_mt310s2d->fireHotplugInterruptControllerOnly(channelAliases);
 }
 
-void DemoAllServicesMt310s2::fireHotplugInterruptControllerName(const ChannelAliasHotplugDeviceNameMap &infoMap)
+void DemoAllServicesMt310s2::fireHotplugInterrupt(const ChannelAliasHotplugDeviceNameMap &infoMap)
 {
-    m_mt310s2d->fireHotplugInterruptControllerName(infoMap);
+    m_mt310s2d->fireHotplugInterrupt(infoMap);
 }

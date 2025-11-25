@@ -14,9 +14,8 @@ public:
                  VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory,
                  const QString &serviceNameForAlternateDevice,
                  const QString &alternateConfigXml = QString());
-    // TODO: Find better names (monkey)
-    void fireHotplugInterrupt(const QStringList &channelAliases); // Add controllers only - no clamps
-    void fireHotplugInterruptControllerName(const AbstractMockAllServices::ChannelAliasHotplugDeviceNameMap &infoMap);
+    void fireHotplugInterruptControllerOnly(const QStringList &channelAliases); // Add controllers only - no clamps
+    void fireHotplugInterrupt(const AbstractMockAllServices::ChannelAliasHotplugDeviceNameMap &infoMap);
     HotPluggableControllerContainerPtr getHotPluggableControllerContainer();
     cClampInterface* getClampInterface() const;
 

@@ -16,8 +16,8 @@ public:
     DemoAllServicesCom5003();
     explicit DemoAllServicesCom5003(VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory);
     virtual ~DemoAllServicesCom5003() override;
-    void fireHotplugInterrupt(const QStringList &channelAliases) override;
-    void fireHotplugInterruptControllerName(const ChannelAliasHotplugDeviceNameMap &infoMap) override;
+    void fireHotplugInterruptControllerOnly(const QStringList &channelAliases) override;
+    void fireHotplugInterrupt(const ChannelAliasHotplugDeviceNameMap &infoMap) override;
 private:
     void init(VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory);
     ResmanRunFacade *m_resman;

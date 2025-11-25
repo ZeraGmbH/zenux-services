@@ -57,7 +57,7 @@ void test_read_versions::readPcbVersionNoEmob()
 void test_read_versions::readPcbVersionOneEmobChannelIAUX()
 {
     registerNotifications();
-    m_mt310s2d->fireHotplugInterrupt(QStringList() << "IAUX");
+    m_mt310s2d->fireHotplugInterruptControllerOnly(QStringList() << "IAUX");
     unregisterNotifications();
     QCOMPARE(m_notificationsReceivedPcb.count(), 1);
 
@@ -78,8 +78,8 @@ void test_read_versions::readPcbVersionOneEmobChannelIAUX()
 void test_read_versions::readPcbVersionOneEmobAddAndRemoveIAUX()
 {
     registerNotifications();
-    m_mt310s2d->fireHotplugInterrupt(QStringList() << "IAUX");
-    m_mt310s2d->fireHotplugInterrupt(QStringList());
+    m_mt310s2d->fireHotplugInterruptControllerOnly(QStringList() << "IAUX");
+    m_mt310s2d->fireHotplugInterruptControllerOnly(QStringList());
     unregisterNotifications();
     QCOMPARE(m_notificationsReceivedPcb.count(), 2);
 
@@ -100,7 +100,7 @@ void test_read_versions::readPcbVersionOneEmobAddAndRemoveIAUX()
 void test_read_versions::readPcbVersionTwoEmobTwoChannels()
 {
     registerNotifications();
-    m_mt310s2d->fireHotplugInterrupt(QStringList() << "IL3" << "IAUX");
+    m_mt310s2d->fireHotplugInterruptControllerOnly(QStringList() << "IL3" << "IAUX");
     unregisterNotifications();
     // add passes bootloader / delay... => each channel fires
     QCOMPARE(m_notificationsReceivedPcb.count(), 2);
@@ -156,7 +156,7 @@ void test_read_versions::readCtrlVersionNoEmob()
 void test_read_versions::readCtrlVersionOneEmobChannelIAUX()
 {
     registerNotifications();
-    m_mt310s2d->fireHotplugInterrupt(QStringList() << "IAUX");
+    m_mt310s2d->fireHotplugInterruptControllerOnly(QStringList() << "IAUX");
     unregisterNotifications();
     QCOMPARE(m_notificationsReceivedCtrl.count(), 1);
 
@@ -177,8 +177,8 @@ void test_read_versions::readCtrlVersionOneEmobChannelIAUX()
 void test_read_versions::readCtrlVersionOneEmobAddRemoveIAUX()
 {
     registerNotifications();
-    m_mt310s2d->fireHotplugInterrupt(QStringList() << "IAUX");
-    m_mt310s2d->fireHotplugInterrupt(QStringList());
+    m_mt310s2d->fireHotplugInterruptControllerOnly(QStringList() << "IAUX");
+    m_mt310s2d->fireHotplugInterruptControllerOnly(QStringList());
     unregisterNotifications();
     QCOMPARE(m_notificationsReceivedCtrl.count(), 2);
 
@@ -199,7 +199,7 @@ void test_read_versions::readCtrlVersionOneEmobAddRemoveIAUX()
 void test_read_versions::readCtrlVersionTwoEmobTwoChannels()
 {
     registerNotifications();
-    m_mt310s2d->fireHotplugInterrupt(QStringList() << "IL3" << "IAUX");
+    m_mt310s2d->fireHotplugInterruptControllerOnly(QStringList() << "IL3" << "IAUX");
     unregisterNotifications();
     // add passes bootloader / delay... => each channel fires
     QCOMPARE(m_notificationsReceivedCtrl.count(), 2);

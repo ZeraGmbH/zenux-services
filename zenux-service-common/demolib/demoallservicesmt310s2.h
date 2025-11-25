@@ -18,8 +18,8 @@ public:
     explicit DemoAllServicesMt310s2(const QString &serviceNameForAlternateDevice);
     DemoAllServicesMt310s2(VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory, const QString &serviceNameForAlternateDevice);
     virtual ~DemoAllServicesMt310s2() override;
-    void fireHotplugInterrupt(const QStringList &channelAliases) override;
-    void fireHotplugInterruptControllerName(const ChannelAliasHotplugDeviceNameMap &infoMap) override;
+    void fireHotplugInterruptControllerOnly(const QStringList &channelAliases) override;
+    void fireHotplugInterrupt(const ChannelAliasHotplugDeviceNameMap &infoMap) override;
 private:
     void init(VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory, const QString &serviceNameForAlternateDevice);
     AutoJournalLoggerFacade *m_autoLogger;

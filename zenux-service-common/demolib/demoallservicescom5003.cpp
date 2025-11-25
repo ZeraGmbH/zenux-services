@@ -40,13 +40,13 @@ DemoAllServicesCom5003::~DemoAllServicesCom5003()
     delete m_resman;
 }
 
-void DemoAllServicesCom5003::fireHotplugInterrupt(const QStringList &channelAliases)
+void DemoAllServicesCom5003::fireHotplugInterruptControllerOnly(const QStringList &channelAliases)
 {
     Q_UNUSED(channelAliases)
     qWarning("Hotplug not supported on COM5003 yet!");
 }
 
-void DemoAllServicesCom5003::fireHotplugInterruptControllerName(const ChannelAliasHotplugDeviceNameMap &infoMap)
+void DemoAllServicesCom5003::fireHotplugInterrupt(const ChannelAliasHotplugDeviceNameMap &infoMap)
 {
     Q_UNUSED(infoMap)
     qWarning("Hotplug not supported on COM5003 yet!");
