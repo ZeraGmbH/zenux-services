@@ -42,7 +42,7 @@ void test_instrument_error_status::readErrorStatusNoParamNoEmob()
 
 void test_instrument_error_status::readErrorStatusNoParamEmobIAUX()
 {
-    m_mt310s2d->fireHotplugInterruptControllerOnly(QStringList() << "IAUX");
+    m_mt310s2d->addStandardEmobControllers(QStringList() << "IAUX");
     QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
 
     int msgNr = m_pcbIFace->scpiCommand("SYSTEM:EMOB:ERROR?");
@@ -56,7 +56,7 @@ void test_instrument_error_status::readErrorStatusNoParamEmobIAUX()
 
 void test_instrument_error_status::readErrorStatusIAUXEmobI3IAUX()
 {
-    m_mt310s2d->fireHotplugInterruptControllerOnly(QStringList() << "IL3" << "IAUX");
+    m_mt310s2d->addStandardEmobControllers(QStringList() << "IL3" << "IAUX");
     QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
 
     int msgNr = m_pcbIFace->scpiCommand("SYSTEM:EMOB:ERROR? m7;");
@@ -70,7 +70,7 @@ void test_instrument_error_status::readErrorStatusIAUXEmobI3IAUX()
 
 void test_instrument_error_status::readErrorStatusI3EmobIAUX()
 {
-    m_mt310s2d->fireHotplugInterruptControllerOnly(QStringList() << "IAUX");
+    m_mt310s2d->addStandardEmobControllers(QStringList() << "IAUX");
 
     QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
 
@@ -98,7 +98,7 @@ void test_instrument_error_status::clearErrorStatusNoParamNoEmob()
 
 void test_instrument_error_status::clearErrorStatusNoParamEmobIAUX()
 {
-    m_mt310s2d->fireHotplugInterruptControllerOnly(QStringList() << "IAUX");
+    m_mt310s2d->addStandardEmobControllers(QStringList() << "IAUX");
     QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
 
     int msgNr = m_pcbIFace->scpiCommand("SYSTEM:EMOB:CLEARERROR;");
@@ -112,7 +112,7 @@ void test_instrument_error_status::clearErrorStatusNoParamEmobIAUX()
 
 void test_instrument_error_status::clearErrorStatusIAUXEmobI3IAUX()
 {
-    m_mt310s2d->fireHotplugInterruptControllerOnly(QStringList() << "IL3" << "IAUX");
+    m_mt310s2d->addStandardEmobControllers(QStringList() << "IL3" << "IAUX");
     QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
 
     int msgNr = m_pcbIFace->scpiCommand("SYSTEM:EMOB:CLEARERROR m7;");
@@ -126,7 +126,7 @@ void test_instrument_error_status::clearErrorStatusIAUXEmobI3IAUX()
 
 void test_instrument_error_status::clearErrorStatusI3EmobIAUX()
 {
-    m_mt310s2d->fireHotplugInterruptControllerOnly(QStringList() << "IAUX");
+    m_mt310s2d->addStandardEmobControllers(QStringList() << "IAUX");
 
     QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
 

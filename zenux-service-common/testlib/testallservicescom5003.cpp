@@ -45,14 +45,36 @@ ZDspServer *TestAllServicesCom5003::getZdsp1dServer()
     return m_zdsp1d->getServer();
 }
 
-void TestAllServicesCom5003::fireHotplugInterruptControllerOnly(const QStringList &channelAliases)
+void TestAllServicesCom5003::fireHotplugInterrupt(const ChannelAliasHotplugDeviceNameMap &deviceMap)
 {
-    Q_UNUSED(channelAliases)
-    qWarning("Hotplug not supported on COM5003 yet!");
+    Q_UNUSED(deviceMap)
+    noHotplugMsg();
 }
 
-void TestAllServicesCom5003::fireHotplugInterrupt(const ChannelAliasHotplugDeviceNameMap &infoMap)
+void TestAllServicesCom5003::addStandardEmobControllers(const QStringList &channelAliases)
 {
-    Q_UNUSED(infoMap)
-    qWarning("Hotplug not supported on COM5003 yet!");
+    Q_UNUSED(channelAliases)
+    noHotplugMsg();
+}
+
+void TestAllServicesCom5003::removeAllHotplugDevices()
+{
+    noHotplugMsg();
+}
+
+void TestAllServicesCom5003::addClamps(const QList<clampParam> &clampParams)
+{
+    Q_UNUSED(clampParams)
+    noHotplugMsg();
+}
+
+AbstractMockAllServices::ChannelAliasHotplugDeviceNameMap TestAllServicesCom5003::getCurrentHotplugMap() const
+{
+    noHotplugMsg();
+    return AbstractMockAllServices::ChannelAliasHotplugDeviceNameMap();
+}
+
+void TestAllServicesCom5003::noHotplugMsg() const
+{
+    qCritical("Hotplug not supported on COM5003 yet!");
 }

@@ -18,10 +18,17 @@ public:
 
     void setRangeGetSetDelay(int rangeGetSetDelay) override;
     ZDspServer *getZdsp1dServer() override;
-    void fireHotplugInterruptControllerOnly(const QStringList &channelAliases) override;
-    void fireHotplugInterrupt(const ChannelAliasHotplugDeviceNameMap &infoMap) override;
+
+    void fireHotplugInterrupt(const ChannelAliasHotplugDeviceNameMap &deviceMap) override;
+    ChannelAliasHotplugDeviceNameMap getCurrentHotplugMap() const override;
+
+    void addStandardEmobControllers(const QStringList &channelAliases) override;
+    virtual void removeAllHotplugDevices() override;
+    virtual void addClamps(const QList<clampParam> &clampParams) override;
 private:
     void init(VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory, TestFactoryI2cCtrlPtr ctrlFactory);
+    void noHotplugMsg() const;
+
     ResmanRunFacade *m_resman;
     MockCom5003d *m_mockcom5003d;
     MockSec1000d *m_sec1000d;

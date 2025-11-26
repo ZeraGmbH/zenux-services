@@ -48,12 +48,27 @@ ZDspServer *TestAllServicesMt310s2::getZdsp1dServer()
     return m_zdsp1d->getServer();
 }
 
-void TestAllServicesMt310s2::fireHotplugInterruptControllerOnly(const QStringList &channelAliases)
+void TestAllServicesMt310s2::fireHotplugInterrupt(const ChannelAliasHotplugDeviceNameMap &deviceMap)
 {
-    m_mt310s2d->fireHotplugInterruptControllerOnly(channelAliases);
+    m_mt310s2d->fireHotplugInterrupt(deviceMap);
 }
 
-void TestAllServicesMt310s2::fireHotplugInterrupt(const ChannelAliasHotplugDeviceNameMap &infoMap)
+void TestAllServicesMt310s2::addStandardEmobControllers(const QStringList &channelAliases)
 {
-    m_mt310s2d->fireHotplugInterrupt(infoMap);
+    m_mt310s2d->addStandardEmobControllers(channelAliases);
+}
+
+void TestAllServicesMt310s2::removeAllHotplugDevices()
+{
+    m_mt310s2d->removeAllHotplugDevices();
+}
+
+void TestAllServicesMt310s2::addClamps(const QList<clampParam> &clampParams)
+{
+    m_mt310s2d->addClamps(clampParams);
+}
+
+AbstractMockAllServices::ChannelAliasHotplugDeviceNameMap TestAllServicesMt310s2::getCurrentHotplugMap() const
+{
+    return m_mt310s2d->getCurrentHotplugMap();
 }

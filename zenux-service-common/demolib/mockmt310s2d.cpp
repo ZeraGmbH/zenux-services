@@ -30,20 +30,12 @@ MockMt310s2d::MockMt310s2d(AbstractFactoryI2cCtrlPtr ctrlFactory,
     setupHotplugChannelEnable();
 }
 
-void MockMt310s2d::fireHotplugInterruptControllerOnly(const QStringList &channelAliases)
-{
-    AbstractMockAllServices::ChannelAliasHotplugDeviceNameMap infoMap;
-    for (const QString &channelAlias : channelAliases)
-        infoMap.insert(channelAlias, {"EMOB_MOCK-00V00", cClamp::undefined});
-    fireHotplugInterrupt(infoMap);
-}
-
-void MockMt310s2d::fireHotplugInterrupt(const AbstractMockAllServices::ChannelAliasHotplugDeviceNameMap &infoMap)
+void MockMt310s2d::fireHotplugInterrupt(const AbstractMockAllServices::ChannelAliasHotplugDeviceNameMap &deviceMap)
 {
     cSenseSettings *senseSettings = m_server->getSenseSettings();
     quint16 interruptMask = 0;
     ControllerPersitentData::MuxChannelDeviceNameMap hotDevicesToSet;
-    for(auto iter = infoMap.constBegin(); iter!= infoMap.constEnd(); iter++) {
+    for(auto iter = deviceMap.constBegin(); iter!= deviceMap.constEnd(); iter++) {
         AbstractMockAllServices::hotplugI2cBus hotplugI2CBus = iter.value();
         QString channelAlias = iter.key();
         const SenseSystem::cChannelSettings* channelSetting = senseSettings->findChannelSettingByAlias1(channelAlias);
@@ -59,9 +51,36 @@ void MockMt310s2d::fireHotplugInterrupt(const AbstractMockAllServices::ChannelAl
             }
         }
     }
+    m_channelAliasesHotplugI2cBus = deviceMap;
     ControllerPersitentData::setHotplugDevices(hotDevicesToSet);
     ControllerPersitentData::injectInterruptFlags(interruptMask);
     m_server->MTIntHandler(0);
+}
+
+void MockMt310s2d::addStandardEmobControllers(const QStringList &channelAliases)
+{
+    AbstractMockAllServices::ChannelAliasHotplugDeviceNameMap deviceMap = getCurrentHotplugMap();
+    for (const QString &channelAlias : channelAliases)
+        deviceMap.insert(channelAlias, {"EMOB_MOCK-00V00", cClamp::undefined});
+    fireHotplugInterrupt(deviceMap);
+}
+
+void MockMt310s2d::addClamps(const QList<AbstractMockAllServices::clampParam> &clampParams)
+{
+    AbstractMockAllServices::ChannelAliasHotplugDeviceNameMap deviceMap = getCurrentHotplugMap();
+    for (const AbstractMockAllServices::clampParam& clampParam : clampParams)
+        deviceMap.insert(clampParam.channelAlias, {"", clampParam.clamp});
+    fireHotplugInterrupt(deviceMap);
+}
+
+void MockMt310s2d::removeAllHotplugDevices()
+{
+    fireHotplugInterrupt(AbstractMockAllServices::ChannelAliasHotplugDeviceNameMap());
+}
+
+AbstractMockAllServices::ChannelAliasHotplugDeviceNameMap MockMt310s2d::getCurrentHotplugMap() const
+{
+    return m_channelAliasesHotplugI2cBus;
 }
 
 HotPluggableControllerContainerPtr MockMt310s2d::getHotPluggableControllerContainer()

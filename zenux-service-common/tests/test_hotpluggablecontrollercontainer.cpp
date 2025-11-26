@@ -75,9 +75,9 @@ void test_hotpluggablecontrollercontainer::addI1Controller()
     HotPluggableControllerContainerPtr container = m_mt310s2d->getHotPluggableControllerContainer();
     QSignalSpy spy(container.get(), &HotPluggableControllerContainer::sigControllersChanged);
 
-    AbstractMockAllServices::ChannelAliasHotplugDeviceNameMap infoMap;
-    infoMap.insert("IL1", {"EMOB", cClamp::undefined});
-    m_mt310s2d->fireHotplugInterrupt(infoMap);
+    AbstractMockAllServices::ChannelAliasHotplugDeviceNameMap deviceMap;
+    deviceMap.insert("IL1", {"EMOB", cClamp::undefined});
+    m_mt310s2d->fireHotplugInterrupt(deviceMap);
     TimeMachineObject::feedEventLoop();
 
     HotControllerMap controllers = container->getCurrentControllers();
@@ -91,10 +91,10 @@ void test_hotpluggablecontrollercontainer::addI1I2Controllers()
     HotPluggableControllerContainerPtr container = m_mt310s2d->getHotPluggableControllerContainer();
     QSignalSpy spy(container.get(), &HotPluggableControllerContainer::sigControllersChanged);
 
-    AbstractMockAllServices::ChannelAliasHotplugDeviceNameMap infoMap;
-    infoMap.insert("IL1", {"EMOB", cClamp::undefined});
-    infoMap.insert("IL2", {"EMOB", cClamp::undefined});
-    m_mt310s2d->fireHotplugInterrupt(infoMap);
+    AbstractMockAllServices::ChannelAliasHotplugDeviceNameMap deviceMap;
+    deviceMap.insert("IL1", {"EMOB", cClamp::undefined});
+    deviceMap.insert("IL2", {"EMOB", cClamp::undefined});
+    m_mt310s2d->fireHotplugInterrupt(deviceMap);
     TimeMachineObject::feedEventLoop();
 
     HotControllerMap controllers = container->getCurrentControllers();
@@ -109,11 +109,11 @@ void test_hotpluggablecontrollercontainer::addI1ControllerTwice()
     HotPluggableControllerContainerPtr container = m_mt310s2d->getHotPluggableControllerContainer();
     QSignalSpy spy(container.get(), &HotPluggableControllerContainer::sigControllersChanged);
 
-    AbstractMockAllServices::ChannelAliasHotplugDeviceNameMap infoMap;
-    infoMap.insert("IL1", {"EMOB", cClamp::undefined});
-    m_mt310s2d->fireHotplugInterrupt(infoMap);
+    AbstractMockAllServices::ChannelAliasHotplugDeviceNameMap deviceMap;
+    deviceMap.insert("IL1", {"EMOB", cClamp::undefined});
+    m_mt310s2d->fireHotplugInterrupt(deviceMap);
     TimeMachineObject::feedEventLoop();
-    m_mt310s2d->fireHotplugInterrupt(infoMap);
+    m_mt310s2d->fireHotplugInterrupt(deviceMap);
     TimeMachineObject::feedEventLoop();
 
     HotControllerMap controllers = container->getCurrentControllers();
@@ -127,13 +127,13 @@ void test_hotpluggablecontrollercontainer::addI1I2ControllerRemoveI2()
     HotPluggableControllerContainerPtr container = m_mt310s2d->getHotPluggableControllerContainer();
     QSignalSpy spy(container.get(), &HotPluggableControllerContainer::sigControllersChanged);
 
-    AbstractMockAllServices::ChannelAliasHotplugDeviceNameMap infoMap;
-    infoMap.insert("IL1", {"EMOB", cClamp::undefined});
-    infoMap.insert("IL2", {"EMOB", cClamp::undefined});
-    m_mt310s2d->fireHotplugInterrupt(infoMap);
+    AbstractMockAllServices::ChannelAliasHotplugDeviceNameMap deviceMap;
+    deviceMap.insert("IL1", {"EMOB", cClamp::undefined});
+    deviceMap.insert("IL2", {"EMOB", cClamp::undefined});
+    m_mt310s2d->fireHotplugInterrupt(deviceMap);
     TimeMachineObject::feedEventLoop();
-    infoMap.remove("IL2");
-    m_mt310s2d->fireHotplugInterrupt(infoMap);
+    deviceMap.remove("IL2");
+    m_mt310s2d->fireHotplugInterrupt(deviceMap);
     TimeMachineObject::feedEventLoop();
 
     HotControllerMap controllers = container->getCurrentControllers();
@@ -146,9 +146,9 @@ void test_hotpluggablecontrollercontainer::addI1ControllerCheckI2cSettings()
     m_i2cSettings->setI2cAddressesEmob("foo", 1, 2);
     createServers();
 
-    AbstractMockAllServices::ChannelAliasHotplugDeviceNameMap infoMap;
-    infoMap.insert("IL1", {"EMOB", cClamp::undefined});
-    m_mt310s2d->fireHotplugInterrupt(infoMap);
+    AbstractMockAllServices::ChannelAliasHotplugDeviceNameMap deviceMap;
+    deviceMap.insert("IL1", {"EMOB", cClamp::undefined});
+    m_mt310s2d->fireHotplugInterrupt(deviceMap);
     TimeMachineObject::feedEventLoop();
 
     HotPluggableControllerContainerPtr container = m_mt310s2d->getHotPluggableControllerContainer();
@@ -167,12 +167,12 @@ void test_hotpluggablecontrollercontainer::addI1I2I3IAuxControllerCheckMuxSettin
 {
     createServers();
 
-    AbstractMockAllServices::ChannelAliasHotplugDeviceNameMap infoMap;
-    infoMap.insert("IL1", {"EMOB", cClamp::undefined});
-    infoMap.insert("IL2", {"EMOB", cClamp::undefined});
-    infoMap.insert("IL3", {"EMOB", cClamp::undefined});
-    infoMap.insert("IAUX", {"EMOB", cClamp::undefined});
-    m_mt310s2d->fireHotplugInterrupt(infoMap);
+    AbstractMockAllServices::ChannelAliasHotplugDeviceNameMap deviceMap;
+    deviceMap.insert("IL1", {"EMOB", cClamp::undefined});
+    deviceMap.insert("IL2", {"EMOB", cClamp::undefined});
+    deviceMap.insert("IL3", {"EMOB", cClamp::undefined});
+    deviceMap.insert("IAUX", {"EMOB", cClamp::undefined});
+    m_mt310s2d->fireHotplugInterrupt(deviceMap);
     TimeMachineObject::feedEventLoop();
 
     HotPluggableControllerContainerPtr container = m_mt310s2d->getHotPluggableControllerContainer();
@@ -200,9 +200,9 @@ void test_hotpluggablecontrollercontainer::addI1ControllerBootloaderActiveCheckS
     HotPluggableControllerContainerPtr container = m_mt310s2d->getHotPluggableControllerContainer();
     QSignalSpy spy(container.get(), &HotPluggableControllerContainer::sigControllersChanged);
 
-    AbstractMockAllServices::ChannelAliasHotplugDeviceNameMap infoMap;
-    infoMap.insert("IL1", {"EMOB", cClamp::undefined});
-    m_mt310s2d->fireHotplugInterrupt(infoMap);
+    AbstractMockAllServices::ChannelAliasHotplugDeviceNameMap deviceMap;
+    deviceMap.insert("IL1", {"EMOB", cClamp::undefined});
+    m_mt310s2d->fireHotplugInterrupt(deviceMap);
     TimeMachineObject::feedEventLoop();
 
     HotControllerMap controllers = container->getCurrentControllers();
@@ -223,10 +223,10 @@ void test_hotpluggablecontrollercontainer::addI1I2ControllerApplicationActiveChe
     HotPluggableControllerContainerPtr container = m_mt310s2d->getHotPluggableControllerContainer();
     QSignalSpy spy(container.get(), &HotPluggableControllerContainer::sigControllersChanged);
 
-    AbstractMockAllServices::ChannelAliasHotplugDeviceNameMap infoMap;
-    infoMap.insert("IL1", {"EMOB", cClamp::undefined});
-    infoMap.insert("IL2", {"EMOB", cClamp::undefined});
-    m_mt310s2d->fireHotplugInterrupt(infoMap);
+    AbstractMockAllServices::ChannelAliasHotplugDeviceNameMap deviceMap;
+    deviceMap.insert("IL1", {"EMOB", cClamp::undefined});
+    deviceMap.insert("IL2", {"EMOB", cClamp::undefined});
+    m_mt310s2d->fireHotplugInterrupt(deviceMap);
     TimeMachineObject::feedEventLoop();
 
     QCOMPARE(spy.count(), 2);
@@ -243,10 +243,10 @@ void test_hotpluggablecontrollercontainer::addI1I2ControllerBootloaderActiveChec
     HotPluggableControllerContainerPtr container = m_mt310s2d->getHotPluggableControllerContainer();
     QSignalSpy spy(container.get(), &HotPluggableControllerContainer::sigControllersChanged);
 
-    AbstractMockAllServices::ChannelAliasHotplugDeviceNameMap infoMap;
-    infoMap.insert("IL1", {"EMOB", cClamp::undefined});
-    infoMap.insert("IL2", {"EMOB", cClamp::undefined});
-    m_mt310s2d->fireHotplugInterrupt(infoMap);
+    AbstractMockAllServices::ChannelAliasHotplugDeviceNameMap deviceMap;
+    deviceMap.insert("IL1", {"EMOB", cClamp::undefined});
+    deviceMap.insert("IL2", {"EMOB", cClamp::undefined});
+    m_mt310s2d->fireHotplugInterrupt(deviceMap);
     TimeMachineObject::feedEventLoop();
 
     QCOMPARE(spy.count(), 0);
@@ -268,17 +268,17 @@ void test_hotpluggablecontrollercontainer::addI1ControllerBootloaderActiveAndRem
     HotPluggableControllerContainerPtr container = m_mt310s2d->getHotPluggableControllerContainer();
     QSignalSpy spy(container.get(), &HotPluggableControllerContainer::sigControllersChanged);
 
-    AbstractMockAllServices::ChannelAliasHotplugDeviceNameMap infoMap;
-    infoMap.insert("IL1", {"EMOB", cClamp::undefined});
-    m_mt310s2d->fireHotplugInterrupt(infoMap);
+    AbstractMockAllServices::ChannelAliasHotplugDeviceNameMap deviceMap;
+    deviceMap.insert("IL1", {"EMOB", cClamp::undefined});
+    m_mt310s2d->fireHotplugInterrupt(deviceMap);
     TimeMachineObject::feedEventLoop();
 
     QCOMPARE(spy.count(), 0);
     TimeMachineForTest::getInstance()->processTimers(WaitControllerApplicationStartIssuedByBootloader/2);
     QCOMPARE(spy.count(), 0);
 
-    infoMap.clear();
-    m_mt310s2d->fireHotplugInterrupt(infoMap);
+    deviceMap.clear();
+    m_mt310s2d->fireHotplugInterrupt(deviceMap);
     TimeMachineObject::feedEventLoop();
 
     TimeMachineForTest::getInstance()->processTimers(WaitControllerApplicationStartIssuedByBootloader);
@@ -294,9 +294,9 @@ void test_hotpluggablecontrollercontainer::addI1ControllerBootloaderActiveAndAdd
     HotPluggableControllerContainerPtr container = m_mt310s2d->getHotPluggableControllerContainer();
     QSignalSpy spy(container.get(), &HotPluggableControllerContainer::sigControllersChanged);
 
-    AbstractMockAllServices::ChannelAliasHotplugDeviceNameMap infoMap;
-    infoMap.insert("IL1", {"EMOB", cClamp::undefined});
-    m_mt310s2d->fireHotplugInterrupt(infoMap);
+    AbstractMockAllServices::ChannelAliasHotplugDeviceNameMap deviceMap;
+    deviceMap.insert("IL1", {"EMOB", cClamp::undefined});
+    m_mt310s2d->fireHotplugInterrupt(deviceMap);
     TimeMachineObject::feedEventLoop();
     QCOMPARE(spy.count(), 0);
     
@@ -304,8 +304,8 @@ void test_hotpluggablecontrollercontainer::addI1ControllerBootloaderActiveAndAdd
     QCOMPARE(controllers.size(), 0);
 
     TimeMachineForTest::getInstance()->processTimers(WaitControllerApplicationStartIssuedByBootloader/2); // 0.5
-    infoMap.insert("IL2", {"EMOB", cClamp::undefined});
-    m_mt310s2d->fireHotplugInterrupt(infoMap);
+    deviceMap.insert("IL2", {"EMOB", cClamp::undefined});
+    m_mt310s2d->fireHotplugInterrupt(deviceMap);
     TimeMachineObject::feedEventLoop();
     QCOMPARE(spy.count(), 0);
     controllers = container->getCurrentControllers();
@@ -332,9 +332,9 @@ void test_hotpluggablecontrollercontainer::clampControllerSequence()
     QSignalSpy spy(container.get(), &HotPluggableControllerContainer::sigControllersChanged);
 
     // add clamp only IL1
-    AbstractMockAllServices::ChannelAliasHotplugDeviceNameMap infoMap;
-    infoMap.insert("IL1", {"", cClamp::CL1000A});
-    m_mt310s2d->fireHotplugInterrupt(infoMap);
+    AbstractMockAllServices::ChannelAliasHotplugDeviceNameMap deviceMap;
+    deviceMap.insert("IL1", {"", cClamp::CL1000A});
+    m_mt310s2d->fireHotplugInterrupt(deviceMap);
     TimeMachineObject::feedEventLoop();
 
     QCOMPARE(spy.count(), 0);
@@ -343,8 +343,8 @@ void test_hotpluggablecontrollercontainer::clampControllerSequence()
     controllers.clear();
 
     // add emob to clamp IL2
-    infoMap.insert("IL2", {"Emob", cClamp::CL1000A});
-    m_mt310s2d->fireHotplugInterrupt(infoMap);
+    deviceMap.insert("IL2", {"Emob", cClamp::CL1000A});
+    m_mt310s2d->fireHotplugInterrupt(deviceMap);
     TimeMachineObject::feedEventLoop();
     QCOMPARE(spy.count(), 1);
     spy.clear();
@@ -354,8 +354,8 @@ void test_hotpluggablecontrollercontainer::clampControllerSequence()
     controllers.clear();
 
     // remove clamp IL1
-    infoMap.remove("IL1");
-    m_mt310s2d->fireHotplugInterrupt(infoMap);
+    deviceMap.remove("IL1");
+    m_mt310s2d->fireHotplugInterrupt(deviceMap);
     TimeMachineObject::feedEventLoop();
     QCOMPARE(spy.count(), 0);
     controllers = container->getCurrentControllers();
@@ -364,8 +364,8 @@ void test_hotpluggablecontrollercontainer::clampControllerSequence()
     controllers.clear();
 
     // remove all
-    infoMap.clear();
-    m_mt310s2d->fireHotplugInterrupt(infoMap);
+    deviceMap.clear();
+    m_mt310s2d->fireHotplugInterrupt(deviceMap);
     TimeMachineObject::feedEventLoop();
     QCOMPARE(spy.count(), 1);
     spy.clear();
@@ -374,9 +374,9 @@ void test_hotpluggablecontrollercontainer::clampControllerSequence()
     controllers.clear();
 
     // add clamp IL1 & emob only IL2
-    infoMap.insert("IL1", {"", cClamp::CL1000A});
-    infoMap.insert("IL2", {"Emob", cClamp::undefined});
-    m_mt310s2d->fireHotplugInterrupt(infoMap);
+    deviceMap.insert("IL1", {"", cClamp::CL1000A});
+    deviceMap.insert("IL2", {"Emob", cClamp::undefined});
+    m_mt310s2d->fireHotplugInterrupt(deviceMap);
     TimeMachineObject::feedEventLoop();
     QCOMPARE(spy.count(), 1);
     controllers = container->getCurrentControllers();

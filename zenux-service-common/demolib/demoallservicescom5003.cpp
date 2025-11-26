@@ -29,6 +29,11 @@ void DemoAllServicesCom5003::init(VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetwo
 #endif
 }
 
+void DemoAllServicesCom5003::noHotplugMsg() const
+{
+    qCritical("Hotplug not supported on COM5003 yet!");
+}
+
 DemoAllServicesCom5003::~DemoAllServicesCom5003()
 {
 #ifdef GUI_SIMULATION
@@ -40,14 +45,31 @@ DemoAllServicesCom5003::~DemoAllServicesCom5003()
     delete m_resman;
 }
 
-void DemoAllServicesCom5003::fireHotplugInterruptControllerOnly(const QStringList &channelAliases)
+void DemoAllServicesCom5003::fireHotplugInterrupt(const ChannelAliasHotplugDeviceNameMap &deviceMap)
 {
-    Q_UNUSED(channelAliases)
-    qWarning("Hotplug not supported on COM5003 yet!");
+    Q_UNUSED(deviceMap)
+    noHotplugMsg();
 }
 
-void DemoAllServicesCom5003::fireHotplugInterrupt(const ChannelAliasHotplugDeviceNameMap &infoMap)
+void DemoAllServicesCom5003::addStandardEmobControllers(const QStringList &channelAliases)
 {
-    Q_UNUSED(infoMap)
-    qWarning("Hotplug not supported on COM5003 yet!");
+    Q_UNUSED(channelAliases)
+    noHotplugMsg();
+}
+
+void DemoAllServicesCom5003::removeAllHotplugDevices()
+{
+    noHotplugMsg();
+}
+
+void DemoAllServicesCom5003::addClamps(const QList<clampParam> &clampParams)
+{
+    Q_UNUSED(clampParams)
+    noHotplugMsg();
+}
+
+AbstractMockAllServices::ChannelAliasHotplugDeviceNameMap DemoAllServicesCom5003::getCurrentHotplugMap() const
+{
+    noHotplugMsg();
+    return AbstractMockAllServices::ChannelAliasHotplugDeviceNameMap();
 }

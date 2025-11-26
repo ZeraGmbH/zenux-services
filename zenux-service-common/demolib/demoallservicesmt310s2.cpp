@@ -43,12 +43,27 @@ DemoAllServicesMt310s2::~DemoAllServicesMt310s2()
     delete m_autoLogger;
 }
 
-void DemoAllServicesMt310s2::fireHotplugInterruptControllerOnly(const QStringList &channelAliases)
+void DemoAllServicesMt310s2::fireHotplugInterrupt(const ChannelAliasHotplugDeviceNameMap &deviceMap)
 {
-    m_mt310s2d->fireHotplugInterruptControllerOnly(channelAliases);
+    m_mt310s2d->fireHotplugInterrupt(deviceMap);
 }
 
-void DemoAllServicesMt310s2::fireHotplugInterrupt(const ChannelAliasHotplugDeviceNameMap &infoMap)
+void DemoAllServicesMt310s2::addStandardEmobControllers(const QStringList &channelAliases)
 {
-    m_mt310s2d->fireHotplugInterrupt(infoMap);
+    m_mt310s2d->addStandardEmobControllers(channelAliases);
+}
+
+void DemoAllServicesMt310s2::removeAllHotplugDevices()
+{
+    m_mt310s2d->removeAllHotplugDevices();
+}
+
+void DemoAllServicesMt310s2::addClamps(const QList<clampParam> &clampParams)
+{
+    m_mt310s2d->addClamps(clampParams);
+}
+
+AbstractMockAllServices::ChannelAliasHotplugDeviceNameMap DemoAllServicesMt310s2::getCurrentHotplugMap() const
+{
+    return m_mt310s2d->getCurrentHotplugMap();
 }

@@ -14,9 +14,14 @@ public:
                  VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory,
                  const QString &serviceNameForAlternateDevice,
                  const QString &alternateConfigXml = QString());
-    void fireHotplugInterruptControllerOnly(const QStringList &channelAliases); // Add controllers only - no clamps
-    void fireHotplugInterrupt(const AbstractMockAllServices::ChannelAliasHotplugDeviceNameMap &infoMap);
+
+    void fireHotplugInterrupt(const AbstractMockAllServices::ChannelAliasHotplugDeviceNameMap &deviceMap);
+    void addStandardEmobControllers(const QStringList &channelAliases);
+    void addClamps(const QList<AbstractMockAllServices::clampParam> &clampParams);
+    void removeAllHotplugDevices();
+    AbstractMockAllServices::ChannelAliasHotplugDeviceNameMap getCurrentHotplugMap() const;
     HotPluggableControllerContainerPtr getHotPluggableControllerContainer();
+
     cClampInterface* getClampInterface() const;
 
 private slots:
