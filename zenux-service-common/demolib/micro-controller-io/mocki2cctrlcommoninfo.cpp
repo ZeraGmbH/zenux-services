@@ -1,7 +1,9 @@
 #include "mocki2cctrlcommoninfo.h"
+#include "controllertypename.h"
 
-MockI2cCtrlCommonInfo::MockI2cCtrlCommonInfo(QString ctrlTypeName) :
-    m_prefix("Demo " + ctrlTypeName)
+MockI2cCtrlCommonInfo::MockI2cCtrlCommonInfo(AbstractFactoryI2cCtrl::ControllerTypes ctrlType, quint8 muxChannel, const QString &ctrlTypeNamePrefix) :
+    m_prefix(ctrlTypeNamePrefix + "Demo " + ControllerTypeName::getCtrlTypeName(ctrlType)),
+    m_muxChannel(muxChannel)
 {
 }
 

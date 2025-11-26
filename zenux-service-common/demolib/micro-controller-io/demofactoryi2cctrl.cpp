@@ -1,5 +1,4 @@
 #include "demofactoryi2cctrl.h"
-#include "controllertypename.h"
 #include "demoi2cctrlemob.h"
 #include "demoi2cctrlbootloader.h"
 #include "mocki2cctrlcommoninfo.h"
@@ -42,8 +41,7 @@ I2cCtrlEepromPermissionPtr DemoFactoryI2cCtrl::getPermissionCheckController()
 
 I2cCtrlCommonInfoPtrUnique DemoFactoryI2cCtrl::getCommonInfoController(ControllerTypes ctrlType, quint8 muxChannel)
 {
-    Q_UNUSED(muxChannel)
-    return std::make_unique<MockI2cCtrlCommonInfo>(ControllerTypeName::getCtrlTypeName(ctrlType));
+    return std::make_unique<MockI2cCtrlCommonInfo>(ctrlType, muxChannel);
 }
 
 I2cCtrlDeviceIdentPtr DemoFactoryI2cCtrl::getDeviceIdentController()

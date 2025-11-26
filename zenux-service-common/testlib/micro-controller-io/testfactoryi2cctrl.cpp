@@ -53,9 +53,7 @@ I2cCtrlEepromPermissionPtr TestFactoryI2cCtrl::getPermissionCheckController()
 
 I2cCtrlCommonInfoPtrUnique TestFactoryI2cCtrl::getCommonInfoController(ControllerTypes ctrlType, quint8 muxChannel)
 {
-    Q_UNUSED(ctrlType)
-    Q_UNUSED(muxChannel)
-    return std::make_unique<TestI2cCtrlCommonInfo>();
+    return std::make_unique<TestI2cCtrlCommonInfo>(ctrlType, muxChannel);
 }
 
 I2cCtrlDeviceIdentPtr TestFactoryI2cCtrl::getDeviceIdentController()

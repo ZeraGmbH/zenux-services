@@ -1,5 +1,4 @@
 #include "testfactoryi2cctrlcommoninfofoo.h"
-#include "controllertypename.h"
 #include "mocki2cctrlcommoninfo.h"
 #include "demoi2cctrlranges.h"
 #include "mocki2cctrlmmode.h"
@@ -16,7 +15,7 @@ I2cCtrlEepromPermissionPtr TestFactoryI2cCtrlCommonInfoFoo::getPermissionCheckCo
 I2cCtrlCommonInfoPtrUnique TestFactoryI2cCtrlCommonInfoFoo::getCommonInfoController(ControllerTypes ctrlType, quint8 muxChannel)
 {
     Q_UNUSED(muxChannel)
-    return std::make_unique<MockI2cCtrlCommonInfo>("foo" + ControllerTypeName::getCtrlTypeName(ctrlType));
+    return std::make_unique<MockI2cCtrlCommonInfo>(ctrlType, muxChannel, "foo");
 }
 
 I2cCtrlDeviceIdentPtr TestFactoryI2cCtrlCommonInfoFoo::getDeviceIdentController()

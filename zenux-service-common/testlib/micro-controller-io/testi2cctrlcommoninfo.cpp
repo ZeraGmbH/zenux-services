@@ -1,5 +1,11 @@
 #include "testi2cctrlcommoninfo.h"
 
+TestI2cCtrlCommonInfo::TestI2cCtrlCommonInfo(AbstractFactoryI2cCtrl::ControllerTypes ctrlType, quint8 muxChannel) :
+    m_ctrlType(ctrlType),
+    m_muxChannel(muxChannel)
+{
+}
+
 // 'Unknown' was default when we introduced setup test and recoreded regeression
 // files. So changes here are expensive...
 ZeraMControllerIoTemplate::atmelRM TestI2cCtrlCommonInfo::readCTRLVersion(QString &answer)
