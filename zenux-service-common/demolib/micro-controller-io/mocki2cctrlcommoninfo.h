@@ -11,8 +11,10 @@ public:
     ZeraMControllerIo::atmelRM readCTRLVersion(QString& answer) override;
     ZeraMControllerIo::atmelRM readPCBInfo(QString& answer) override;
 private:
-    QString m_prefix;
+    QString getVersionPrefix() const;
     quint8 m_muxChannel;
+    AbstractFactoryI2cCtrl::ControllerTypes m_ctrlType;
+    QString m_ctrlTypeNamePrefix;
 };
 
 #endif // MOCKI2CCTRLCOMMONINFO_H
