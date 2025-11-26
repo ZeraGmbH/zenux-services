@@ -7,14 +7,14 @@
 class MockI2cCtrlCommonInfo : public AbstractI2cCtrlCommonInfo
 {
 public:
-    MockI2cCtrlCommonInfo(AbstractFactoryI2cCtrl::ControllerTypes ctrlType, quint8 muxChannel, const QString &ctrlTypeNamePrefix = "");
+    MockI2cCtrlCommonInfo(AbstractFactoryI2cCtrl::ControllerTypes ctrlType, quint8 muxChannel, const QString &commonInfoOverride);
     ZeraMControllerIo::atmelRM readCTRLVersion(QString& answer) override;
     ZeraMControllerIo::atmelRM readPCBInfo(QString& answer) override;
 private:
     QString getVersionPrefix() const;
     quint8 m_muxChannel;
     AbstractFactoryI2cCtrl::ControllerTypes m_ctrlType;
-    QString m_ctrlTypeNamePrefix;
+    QString m_commonInfoOverride;
 };
 
 #endif // MOCKI2CCTRLCOMMONINFO_H

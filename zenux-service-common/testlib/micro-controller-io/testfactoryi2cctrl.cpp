@@ -3,7 +3,6 @@
 #include "testi2cctrlbootloader.h"
 #include "testi2cctrlemob.h"
 #include "testi2cctrlaccu.h"
-#include "testi2cctrlcommoninfo.h"
 #include "mocki2cctrlcommoninfo.h"
 #include "testi2cctrlranges.h"
 #include "testi2cctrlpll.h"
@@ -15,8 +14,8 @@
 #include "mocki2cctrlmmode.h"
 #include "mocki2cctrlclampstatus.h"
 
-TestFactoryI2cCtrl::TestFactoryI2cCtrl(bool initialPermission, const QString &versionPrefix) :
-    m_versionPrefix(versionPrefix)
+TestFactoryI2cCtrl::TestFactoryI2cCtrl(bool initialPermission, const QString &commonInfoPrefix) :
+    m_commonInfoPrefix(commonInfoPrefix)
 {
     ControllerPersitentData::getData().m_permission = initialPermission;
 }
@@ -53,11 +52,11 @@ I2cCtrlEepromPermissionPtr TestFactoryI2cCtrl::getPermissionCheckController()
     return std::make_unique<TestI2cCtrlEepromPermission>(ControllerPersitentData::getData().m_permission);
 }
 
+// 'Unknown' was default when we introduced setup test and recoreded regeression
+// files. So changes here are expensive...
 I2cCtrlCommonInfoPtrUnique TestFactoryI2cCtrl::getCommonInfoController(ControllerTypes ctrlType, quint8 muxChannel)
 {
-    if(m_versionPrefix.isEmpty())
-        return std::make_unique<TestI2cCtrlCommonInfo>(ctrlType, muxChannel);
-    return std::make_unique<MockI2cCtrlCommonInfo>(ctrlType, muxChannel, m_versionPrefix);
+    return std::make_unique<MockI2cCtrlCommonInfo>(ctrlType, muxChannel, m_commonInfoPrefix + "Unknown");
 }
 
 I2cCtrlDeviceIdentPtr TestFactoryI2cCtrl::getDeviceIdentController()
