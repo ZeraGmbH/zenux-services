@@ -2,26 +2,31 @@
 #include "controllerpersitentdata.h"
 #include "emobdefinitions.h"
 
-TestI2cCtrlEMOB::TestI2cCtrlEMOB(int ctrlMuxChannnel) :
-    m_ctrlMuxChannnel(ctrlMuxChannnel)
+TestI2cCtrlEMOB::TestI2cCtrlEMOB(qint8 muxChannel) :
+    m_muxChannel(muxChannel)
 {
 }
 
 ZeraMControllerIoTemplate::atmelRM TestI2cCtrlEMOB::sendPushbuttonPress()
 {
-    return ZeraMControllerIo::atmelRM::cmddone;
+    if (ControllerPersitentData::isHotControllerAvailable(m_muxChannel))
+        return ZeraMControllerIo::atmelRM::cmddone;
+    return ZeraMControllerIo::atmelRM::cmdexecfault;
 }
 
 ZeraMControllerIoTemplate::atmelRM TestI2cCtrlEMOB::readEmobLockState(quint8 &status)
 {
-    status = reademoblockstate::emobstate_open;
-    return ZeraMControllerIo::atmelRM::cmddone;
+    if (ControllerPersitentData::isHotControllerAvailable(m_muxChannel)) {
+        status = reademoblockstate::emobstate_open;
+        return ZeraMControllerIo::atmelRM::cmddone;
+    }
+    return ZeraMControllerIo::atmelRM::cmdexecfault;
 }
 
 ZeraMControllerIoTemplate::atmelRM TestI2cCtrlEMOB::readEmobInstrumentSubType(QString &answer)
 {
-    if (ControllerPersitentData::getData().m_hotpluggedDevices.contains(m_ctrlMuxChannnel)) {
-        answer = ControllerPersitentData::getData().m_hotpluggedDevices[m_ctrlMuxChannnel].controllerName;
+    if (ControllerPersitentData::isHotControllerAvailable(m_muxChannel)) {
+        answer = ControllerPersitentData::getData().m_hotpluggedDevices[m_muxChannel].controllerName;
         return ZeraMControllerIo::atmelRM::cmddone;
     }
     return ZeraMControllerIo::atmelRM::cmdexecfault;
@@ -30,11 +35,16 @@ ZeraMControllerIoTemplate::atmelRM TestI2cCtrlEMOB::readEmobInstrumentSubType(QS
 
 ZeraMControllerIoTemplate::atmelRM TestI2cCtrlEMOB::readEmobErrorStatus(quint8 &err)
 {
-    err = errorInstrumentStatus::Instrument_Status_Cable_Error;
-    return ZeraMControllerIo::atmelRM::cmddone;
+    if (ControllerPersitentData::isHotControllerAvailable(m_muxChannel)) {
+        err = errorInstrumentStatus::Instrument_Status_Cable_Error;
+        return ZeraMControllerIo::atmelRM::cmddone;
+    }
+    return ZeraMControllerIo::atmelRM::cmdexecfault;
 }
 
 ZeraMControllerIoTemplate::atmelRM TestI2cCtrlEMOB::clearErrorStatus()
 {
-    return ZeraMControllerIo::atmelRM::cmddone;
+    if (ControllerPersitentData::isHotControllerAvailable(m_muxChannel))
+        return ZeraMControllerIo::atmelRM::cmddone;
+    return ZeraMControllerIo::atmelRM::cmdexecfault;
 }

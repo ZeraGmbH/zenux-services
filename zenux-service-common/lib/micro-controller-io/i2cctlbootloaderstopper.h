@@ -10,7 +10,7 @@ class I2cCtlBootloaderStopper : public QObject
 public:
     I2cCtlBootloaderStopper(AbstractFactoryI2cCtrlPtr ctrlFactory,
                             int channelId,
-                            quint8 muxChannel = -1,
+                            qint8 muxChannel = -1,
                             AbstractFactoryI2cCtrl::ControllerTypes ctrlType = AbstractFactoryI2cCtrl::CTRL_TYPE_EMOB);
     void stopBootloader(int msWaitForApplicationStart = 1000);
 signals:
@@ -22,7 +22,7 @@ private:
     AbstractFactoryI2cCtrlPtr m_ctrlFactory;
     int m_channelId;
     AbstractFactoryI2cCtrl::ControllerTypes m_ctrlType;
-    quint8 m_muxChannel;
+    qint8 m_muxChannel;
     TimerTemplateQtPtr m_appStartTimer;
     bool m_bootloaderStopped = false;
 };

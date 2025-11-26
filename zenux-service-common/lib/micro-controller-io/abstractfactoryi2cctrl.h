@@ -16,11 +16,11 @@ public:
         CTRL_TYPE_ACCU
     };
     virtual AbstractCtrlHeartbeatWaitPtr createCtrlHeartbeatWait(QString devnode) = 0; // this is more a device-node thingy...
-    virtual I2cCtrlBootloaderPtr getBootloaderController(ControllerTypes ctrlType, quint8 muxChannel = -1) = 0;
+    virtual I2cCtrlBootloaderPtr getBootloaderController(ControllerTypes ctrlType, qint8 muxChannel = -1) = 0;
 
     virtual I2cCtrlCriticalStatusPtr getCriticalStatusController() = 0;
     virtual I2cCtrlEepromPermissionPtr getPermissionCheckController() = 0;
-    virtual I2cCtrlCommonInfoPtrUnique getCommonInfoController(ControllerTypes ctrlType, quint8 muxChannel = -1) = 0;
+    virtual I2cCtrlCommonInfoPtrUnique getCommonInfoController(ControllerTypes ctrlType, qint8 muxChannel = -1) = 0;
     virtual I2cCtrlDeviceIdentPtr getDeviceIdentController() = 0;
     virtual I2cCtrlAccumulatorPtr getAccuController() = 0;
     virtual I2cCtrlRangesPtr getRangesController() = 0;
@@ -28,7 +28,7 @@ public:
     virtual I2cCtrlPllPtr getPllController() = 0;
     virtual I2cCtrlClampStatusPtr getClampStatusController() = 0;
     virtual I2cCtrlCpuTemperaturePtr getCpuTemperatureController() = 0;
-    virtual I2cCtrlEMOBPtr getEmobController(quint8 muxChannel) = 0;
+    virtual I2cCtrlEMOBPtr getEmobController(qint8 muxChannel) = 0;
 };
 
 typedef std::shared_ptr<AbstractFactoryI2cCtrl> AbstractFactoryI2cCtrlPtr;

@@ -2,7 +2,7 @@
 #include "demoi2cctrlemob.h"
 #include "controllerpersitentdata.h"
 
-DemoI2cCtrlEMOB::DemoI2cCtrlEMOB(quint8 muxChannel) :
+DemoI2cCtrlEMOB::DemoI2cCtrlEMOB(qint8 muxChannel) :
     m_muxChannel(muxChannel)
 {
 }

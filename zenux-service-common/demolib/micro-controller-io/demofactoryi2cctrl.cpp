@@ -39,7 +39,7 @@ I2cCtrlEepromPermissionPtr DemoFactoryI2cCtrl::getPermissionCheckController()
     return std::make_unique<DemoI2cCtrlEepromPermission>();
 }
 
-I2cCtrlCommonInfoPtrUnique DemoFactoryI2cCtrl::getCommonInfoController(ControllerTypes ctrlType, quint8 muxChannel)
+I2cCtrlCommonInfoPtrUnique DemoFactoryI2cCtrl::getCommonInfoController(ControllerTypes ctrlType, qint8 muxChannel)
 {
     return std::make_unique<MockI2cCtrlCommonInfo>(ctrlType, muxChannel, "");
 }
@@ -81,12 +81,12 @@ I2cCtrlCpuTemperaturePtr DemoFactoryI2cCtrl::getCpuTemperatureController()
     return std::make_unique<DemoI2cCtrlCpuTemperature>();
 }
 
-I2cCtrlEMOBPtr DemoFactoryI2cCtrl::getEmobController(quint8 muxChannel)
+I2cCtrlEMOBPtr DemoFactoryI2cCtrl::getEmobController(qint8 muxChannel)
 {
     return std::make_unique<DemoI2cCtrlEMOB>(muxChannel);
 }
 
-I2cCtrlBootloaderPtr DemoFactoryI2cCtrl::getBootloaderController(ControllerTypes ctrlType, quint8 muxChannel)
+I2cCtrlBootloaderPtr DemoFactoryI2cCtrl::getBootloaderController(ControllerTypes ctrlType, qint8 muxChannel)
 {
     Q_UNUSED(ctrlType)
     return std::make_unique<MockI2cCtrlBootloader>(muxChannel, true);

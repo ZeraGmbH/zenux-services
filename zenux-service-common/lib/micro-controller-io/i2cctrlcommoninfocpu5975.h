@@ -8,8 +8,8 @@ class I2cCtrlCommonInfoCpu5975 : public AbstractI2cCtrlCommonInfo
 {
 public:
     I2cCtrlCommonInfoCpu5975(QString deviceNodeName, quint8 i2cAddress,
-                          quint8 i2cAddressMux, quint8 muxChannel,
-                          quint8 debugLevel);
+                             quint8 i2cAddressMux, qint8 muxChannel,
+                             quint8 debugLevel);
     ZeraMControllerIo::atmelRM readPCBInfo(QString& answer) override;
     ZeraMControllerIo::atmelRM readCTRLVersion(QString& answer) override;
 private:

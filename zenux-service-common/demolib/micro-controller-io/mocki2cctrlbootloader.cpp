@@ -1,4 +1,5 @@
 #include "mocki2cctrlbootloader.h"
+#include "controllerpersitentdata.h"
 
 MockI2cCtrlBootloader::MockI2cCtrlBootloader(qint8 muxChannel, bool replyOnBootloaderCommands) :
     m_muxChannel(muxChannel),
@@ -19,7 +20,7 @@ ZeraMControllerIoTemplate::atmelRM MockI2cCtrlBootloader::bootloaderLoadFlash(cI
 
 ZeraMControllerIoTemplate::atmelRM MockI2cCtrlBootloader::genResponse()
 {
-    if(m_replyOnBootloaderCommands)
+    if(ControllerPersitentData::isHotControllerAvailable(m_muxChannel) && m_replyOnBootloaderCommands)
         return ZeraMControllerIo::atmelRM::cmddone;
     return ZeraMControllerIo::atmelRM::cmdexecfault;
 }

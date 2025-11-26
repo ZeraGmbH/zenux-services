@@ -10,13 +10,13 @@ TestHotPlugCtrlFactoryI2cCtrl::TestHotPlugCtrlFactoryI2cCtrl(std::shared_ptr<I2c
 {
 }
 
-I2cCtrlBootloaderPtr TestHotPlugCtrlFactoryI2cCtrl::getBootloaderController(ControllerTypes ctrlType, quint8 muxChannel)
+I2cCtrlBootloaderPtr TestHotPlugCtrlFactoryI2cCtrl::getBootloaderController(ControllerTypes ctrlType, qint8 muxChannel)
 {
     Q_UNUSED(ctrlType)
     return std::make_unique<MockI2cCtrlBootloader>(muxChannel, m_controllerRunState == BOOTLOADER_RUNNING);
 }
 
-I2cCtrlCommonInfoPtrUnique TestHotPlugCtrlFactoryI2cCtrl::getCommonInfoController(ControllerTypes ctrlType, quint8 muxChannel)
+I2cCtrlCommonInfoPtrUnique TestHotPlugCtrlFactoryI2cCtrl::getCommonInfoController(ControllerTypes ctrlType, qint8 muxChannel)
 {
     Q_UNUSED(ctrlType)
     Q_UNUSED(muxChannel)

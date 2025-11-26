@@ -8,7 +8,7 @@ class I2cCtrlEMOB : public AbstractI2cCtrlEMOB
 {
 public:
     I2cCtrlEMOB(QString deviceNodeName, quint8 i2cAddress,
-                quint8 i2cAddressMux, quint8 muxChannel,
+                quint8 i2cAddressMux, qint8 muxChannel,
                 quint8 debugLevel);
     ZeraMControllerIo::atmelRM sendPushbuttonPress() override;
     ZeraMControllerIo::atmelRM readEmobLockState(quint8 &status) override;

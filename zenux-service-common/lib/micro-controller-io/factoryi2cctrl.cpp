@@ -39,7 +39,7 @@ I2cCtrlEepromPermissionPtr FactoryI2cCtrl::getPermissionCheckController()
 }
 
 // TODO rework this for testability
-I2cCtrlCommonInfoPtrUnique FactoryI2cCtrl::getCommonInfoController(ControllerTypes ctrlType, quint8 muxChannel)
+I2cCtrlCommonInfoPtrUnique FactoryI2cCtrl::getCommonInfoController(ControllerTypes ctrlType, qint8 muxChannel)
 {
     switch(ctrlType) {
     case CTRL_TYPE_RELAIS:
@@ -65,7 +65,7 @@ I2cCtrlCommonInfoPtrUnique FactoryI2cCtrl::getCommonInfoController(ControllerTyp
     }
 }
 
-I2cCtrlBootloaderPtr FactoryI2cCtrl::getBootloaderController(ControllerTypes ctrlType, quint8 muxChannel)
+I2cCtrlBootloaderPtr FactoryI2cCtrl::getBootloaderController(ControllerTypes ctrlType, qint8 muxChannel)
 {
     switch(ctrlType) {
     case CTRL_TYPE_RELAIS:
@@ -121,7 +121,7 @@ I2cCtrlCpuTemperaturePtr FactoryI2cCtrl::getCpuTemperatureController()
     return std::make_unique<I2cCtrlCpuTemperature>(m_deviceNode, getSystemCtrlI2cAddress(), m_debugLevel);
 }
 
-I2cCtrlEMOBPtr FactoryI2cCtrl::getEmobController(quint8 muxChannel)
+I2cCtrlEMOBPtr FactoryI2cCtrl::getEmobController(qint8 muxChannel)
 {
     return std::make_shared<I2cCtrlEMOB>(m_deviceNode, getEmobCtrlI2cAddress(),
                                          getEmobMuxI2cAddress(), muxChannel,

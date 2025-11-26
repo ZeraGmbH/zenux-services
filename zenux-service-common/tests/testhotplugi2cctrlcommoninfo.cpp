@@ -1,6 +1,6 @@
 #include "testhotplugi2cctrlcommoninfo.h"
 
-TestHotplugI2cCtrlCommonInfo::TestHotplugI2cCtrlCommonInfo(I2cSettings *i2cSettings, quint8 muxChannel) :
+TestHotplugI2cCtrlCommonInfo::TestHotplugI2cCtrlCommonInfo(I2cSettings *i2cSettings, qint8 muxChannel) :
     m_i2cSettings(i2cSettings),
     m_muxChannel(muxChannel)
 {

@@ -54,7 +54,7 @@ I2cCtrlEepromPermissionPtr TestFactoryI2cCtrl::getPermissionCheckController()
 
 // 'Unknown' was default when we introduced setup test and recoreded regeression
 // files. So changes here are expensive...
-I2cCtrlCommonInfoPtrUnique TestFactoryI2cCtrl::getCommonInfoController(ControllerTypes ctrlType, quint8 muxChannel)
+I2cCtrlCommonInfoPtrUnique TestFactoryI2cCtrl::getCommonInfoController(ControllerTypes ctrlType, qint8 muxChannel)
 {
     return std::make_unique<MockI2cCtrlCommonInfo>(ctrlType, muxChannel, m_commonInfoPrefix + "Unknown");
 }
@@ -95,13 +95,18 @@ I2cCtrlCpuTemperaturePtr TestFactoryI2cCtrl::getCpuTemperatureController()
     return std::make_unique<TestI2cCtrlCpuTmperature>();
 }
 
-I2cCtrlEMOBPtr TestFactoryI2cCtrl::getEmobController(quint8 muxChannel)
+I2cCtrlEMOBPtr TestFactoryI2cCtrl::getEmobController(qint8 muxChannel)
 {
     return std::make_unique<TestI2cCtrlEMOB>(muxChannel);
 }
 
-I2cCtrlBootloaderPtr TestFactoryI2cCtrl::getBootloaderController(ControllerTypes ctrlType, quint8 muxChannel)
+I2cCtrlBootloaderPtr TestFactoryI2cCtrl::getBootloaderController(ControllerTypes ctrlType, qint8 muxChannel)
 {
     Q_UNUSED(ctrlType)
+    if (m_controllerRunState == BOOTLOADER_RUNNING) {
+        QString &ctrlName = ControllerPersitentData::getData().m_hotpluggedDevices[muxChannel].controllerName;
+        if (ctrlName.isEmpty())
+            ctrlName = "Test";
+    }
     return std::make_unique<MockI2cCtrlBootloader>(muxChannel, m_controllerRunState == BOOTLOADER_RUNNING);
 }

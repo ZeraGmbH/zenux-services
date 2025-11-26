@@ -10,8 +10,8 @@ class TestHotPlugCtrlFactoryI2cCtrl : public TestFactoryI2cCtrl
 public:
     TestHotPlugCtrlFactoryI2cCtrl(std::shared_ptr<I2cSettings> i2cSettings,
                                   std::shared_ptr<cSenseSettings> senseSettings);
-    I2cCtrlBootloaderPtr getBootloaderController(ControllerTypes ctrlType, quint8 muxChannel = -1) override;
-    I2cCtrlCommonInfoPtrUnique getCommonInfoController(ControllerTypes ctrlType, quint8 muxChannel = -1) override;
+    I2cCtrlBootloaderPtr getBootloaderController(ControllerTypes ctrlType, qint8 muxChannel = -1) override;
+    I2cCtrlCommonInfoPtrUnique getCommonInfoController(ControllerTypes ctrlType, qint8 muxChannel = -1) override;
 
 private:
     std::shared_ptr<I2cSettings> m_i2cSettings;

@@ -17,7 +17,7 @@ QString MockI2cCtrlCommonInfo::getVersionPrefix() const
 
 ZeraMControllerIoTemplate::atmelRM MockI2cCtrlCommonInfo::readCTRLVersion(QString &answer)
 {
-    if (m_muxChannel < 0 || ControllerPersitentData::getData().m_hotpluggedDevices.contains(m_muxChannel)) {
+    if (ControllerPersitentData::isControllerAvailable(m_muxChannel)) {
         answer = !m_commonInfoOverride.isEmpty() ?
                      m_commonInfoOverride :
                      ControllerTypeName::getCtrlTypeName(m_ctrlType) + " Ctrl Version";
@@ -28,7 +28,7 @@ ZeraMControllerIoTemplate::atmelRM MockI2cCtrlCommonInfo::readCTRLVersion(QStrin
 
 ZeraMControllerIoTemplate::atmelRM MockI2cCtrlCommonInfo::readPCBInfo(QString &answer)
 {
-    if (m_muxChannel < 0 || ControllerPersitentData::getData().m_hotpluggedDevices.contains(m_muxChannel)) {
+    if (ControllerPersitentData::isControllerAvailable(m_muxChannel)) {
         answer = !m_commonInfoOverride.isEmpty() ?
                      m_commonInfoOverride :
                      ControllerTypeName::getCtrlTypeName(m_ctrlType) + " PCB Info";

@@ -29,6 +29,8 @@ public:
     static TPersitentControllerData &getData();
     static void injectInterruptFlags(quint16 clampConnectMask);
     static void setHotplugDevices(const MuxChannelDeviceNameMap &hotDevicesToSet);
+    static bool isHotControllerAvailable(qint8 muxChannel);
+    static bool isControllerAvailable(qint8 muxChannel);
     static void cleanupPersitentData();
 private:
     static TPersitentControllerData m_persitentData;

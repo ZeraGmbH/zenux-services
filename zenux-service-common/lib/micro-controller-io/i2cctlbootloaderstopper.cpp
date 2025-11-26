@@ -2,7 +2,7 @@
 
 I2cCtlBootloaderStopper::I2cCtlBootloaderStopper(AbstractFactoryI2cCtrlPtr ctrlFactory,
                                                  int channelId,
-                                                 quint8 muxChannel,
+                                                 qint8 muxChannel,
                                                  AbstractFactoryI2cCtrl::ControllerTypes ctrlType) :
     m_ctrlFactory(ctrlFactory),
     m_channelId(channelId),
