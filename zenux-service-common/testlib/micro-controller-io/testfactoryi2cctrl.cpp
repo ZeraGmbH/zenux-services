@@ -1,6 +1,6 @@
 #include "testfactoryi2cctrl.h"
 #include "controllerpersitentdata.h"
-#include "testi2cctrlbootloader.h"
+#include "mocki2cctrlbootloader.h"
 #include "testi2cctrlemob.h"
 #include "testi2cctrlaccu.h"
 #include "mocki2cctrlcommoninfo.h"
@@ -103,6 +103,5 @@ I2cCtrlEMOBPtr TestFactoryI2cCtrl::getEmobController(quint8 muxChannel)
 I2cCtrlBootloaderPtr TestFactoryI2cCtrl::getBootloaderController(ControllerTypes ctrlType, quint8 muxChannel)
 {
     Q_UNUSED(ctrlType)
-    Q_UNUSED(muxChannel)
-    return std::make_unique<TestI2cCtrlBootloader>(m_controllerRunState == BOOTLOADER_RUNNING);
+    return std::make_unique<MockI2cCtrlBootloader>(muxChannel, m_controllerRunState == BOOTLOADER_RUNNING);
 }

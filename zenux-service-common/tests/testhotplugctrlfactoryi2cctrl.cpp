@@ -1,5 +1,5 @@
 #include "testhotplugctrlfactoryi2cctrl.h"
-#include "testhotplugi2cctrlbootloader.h"
+#include "mocki2cctrlbootloader.h"
 #include "testhotplugi2cctrlcommoninfo.h"
 
 TestHotPlugCtrlFactoryI2cCtrl::TestHotPlugCtrlFactoryI2cCtrl(std::shared_ptr<I2cSettings> i2cSettings,
@@ -12,7 +12,8 @@ TestHotPlugCtrlFactoryI2cCtrl::TestHotPlugCtrlFactoryI2cCtrl(std::shared_ptr<I2c
 
 I2cCtrlBootloaderPtr TestHotPlugCtrlFactoryI2cCtrl::getBootloaderController(ControllerTypes ctrlType, quint8 muxChannel)
 {
-    return std::make_unique<TestHotplugI2cCtrlBootloader>(ctrlType, muxChannel, m_controllerRunState == BOOTLOADER_RUNNING);
+    Q_UNUSED(ctrlType)
+    return std::make_unique<MockI2cCtrlBootloader>(muxChannel, m_controllerRunState == BOOTLOADER_RUNNING);
 }
 
 I2cCtrlCommonInfoPtrUnique TestHotPlugCtrlFactoryI2cCtrl::getCommonInfoController(ControllerTypes ctrlType, quint8 muxChannel)
