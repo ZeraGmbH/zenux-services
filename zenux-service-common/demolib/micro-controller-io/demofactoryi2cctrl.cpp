@@ -1,5 +1,5 @@
 #include "demofactoryi2cctrl.h"
-#include "demoi2cctrlemob.h"
+#include "mocki2cctrlemob.h"
 #include "mocki2cctrlbootloader.h"
 #include "mocki2cctrlcommoninfo.h"
 #include "mockctrlheartbeatwait.h"
@@ -83,7 +83,7 @@ I2cCtrlCpuTemperaturePtr DemoFactoryI2cCtrl::getCpuTemperatureController()
 
 I2cCtrlEMOBPtr DemoFactoryI2cCtrl::getEmobController(qint8 muxChannel)
 {
-    return std::make_unique<DemoI2cCtrlEMOB>(muxChannel);
+    return std::make_unique<MockI2cCtrlEMOB>(muxChannel, "-DEMO-00V00");
 }
 
 I2cCtrlBootloaderPtr DemoFactoryI2cCtrl::getBootloaderController(ControllerTypes ctrlType, qint8 muxChannel)

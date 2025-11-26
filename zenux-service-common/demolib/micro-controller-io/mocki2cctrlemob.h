@@ -1,12 +1,12 @@
-#ifndef DEMOI2CCTRLEMOB_H
-#define DEMOI2CCTRLEMOB_H
+#ifndef MOCKI2CCTRLEMOB_H
+#define MOCKI2CCTRLEMOB_H
 
 #include "abstractalli2ccontrollers.h"
 
-class DemoI2cCtrlEMOB : public AbstractI2cCtrlEMOB
+class MockI2cCtrlEMOB : public AbstractI2cCtrlEMOB
 {
 public:
-    explicit DemoI2cCtrlEMOB(qint8 muxChannel);
+    MockI2cCtrlEMOB(qint8 muxChannel, const QString &instrumentTypePostfix);
     ZeraMControllerIo::atmelRM sendPushbuttonPress() override;
     ZeraMControllerIo::atmelRM readEmobLockState(quint8 &status) override;
     ZeraMControllerIo::atmelRM readEmobInstrumentSubType(QString& answer) override;
@@ -14,6 +14,7 @@ public:
     ZeraMControllerIo::atmelRM clearErrorStatus() override;
 private:
     qint8 m_muxChannel;
+    QString m_instrumentTypePostfix;
 };
 
-#endif // DEMOI2CCTRLEMOB_H
+#endif // MOCKI2CCTRLEMOB_H

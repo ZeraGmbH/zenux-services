@@ -1,20 +1,21 @@
-#include "testi2cctrlemob.h"
+#include "mocki2cctrlemob.h"
 #include "controllerpersitentdata.h"
 #include "emobdefinitions.h"
 
-TestI2cCtrlEMOB::TestI2cCtrlEMOB(qint8 muxChannel) :
-    m_muxChannel(muxChannel)
+MockI2cCtrlEMOB::MockI2cCtrlEMOB(qint8 muxChannel, const QString &instrumentTypePostfix) :
+    m_muxChannel(muxChannel),
+    m_instrumentTypePostfix(instrumentTypePostfix)
 {
 }
 
-ZeraMControllerIoTemplate::atmelRM TestI2cCtrlEMOB::sendPushbuttonPress()
+ZeraMControllerIoTemplate::atmelRM MockI2cCtrlEMOB::sendPushbuttonPress()
 {
     if (ControllerPersitentData::isHotControllerAvailable(m_muxChannel))
         return ZeraMControllerIo::atmelRM::cmddone;
     return ZeraMControllerIo::atmelRM::cmdexecfault;
 }
 
-ZeraMControllerIoTemplate::atmelRM TestI2cCtrlEMOB::readEmobLockState(quint8 &status)
+ZeraMControllerIoTemplate::atmelRM MockI2cCtrlEMOB::readEmobLockState(quint8 &status)
 {
     if (ControllerPersitentData::isHotControllerAvailable(m_muxChannel)) {
         status = reademoblockstate::emobstate_open;
@@ -23,17 +24,18 @@ ZeraMControllerIoTemplate::atmelRM TestI2cCtrlEMOB::readEmobLockState(quint8 &st
     return ZeraMControllerIo::atmelRM::cmdexecfault;
 }
 
-ZeraMControllerIoTemplate::atmelRM TestI2cCtrlEMOB::readEmobInstrumentSubType(QString &answer)
+ZeraMControllerIoTemplate::atmelRM MockI2cCtrlEMOB::readEmobInstrumentSubType(QString &answer)
 {
     if (ControllerPersitentData::isHotControllerAvailable(m_muxChannel)) {
-        answer = ControllerPersitentData::getData().m_hotpluggedDevices[m_muxChannel].controllerName;
+        answer = ControllerPersitentData::getData().m_hotpluggedDevices[m_muxChannel].controllerName +
+                 m_instrumentTypePostfix;
         return ZeraMControllerIo::atmelRM::cmddone;
     }
     return ZeraMControllerIo::atmelRM::cmdexecfault;
 }
 
 
-ZeraMControllerIoTemplate::atmelRM TestI2cCtrlEMOB::readEmobErrorStatus(quint8 &err)
+ZeraMControllerIoTemplate::atmelRM MockI2cCtrlEMOB::readEmobErrorStatus(quint8 &err)
 {
     if (ControllerPersitentData::isHotControllerAvailable(m_muxChannel)) {
         err = errorInstrumentStatus::Instrument_Status_Cable_Error;
@@ -42,7 +44,7 @@ ZeraMControllerIoTemplate::atmelRM TestI2cCtrlEMOB::readEmobErrorStatus(quint8 &
     return ZeraMControllerIo::atmelRM::cmdexecfault;
 }
 
-ZeraMControllerIoTemplate::atmelRM TestI2cCtrlEMOB::clearErrorStatus()
+ZeraMControllerIoTemplate::atmelRM MockI2cCtrlEMOB::clearErrorStatus()
 {
     if (ControllerPersitentData::isHotControllerAvailable(m_muxChannel))
         return ZeraMControllerIo::atmelRM::cmddone;
