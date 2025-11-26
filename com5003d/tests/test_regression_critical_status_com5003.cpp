@@ -1,8 +1,9 @@
 #include "test_regression_critical_status_com5003.h"
-#include "testfactoryi2cctrlcriticalstatus.h"
+#include "testfactoryi2cctrl.h"
 #include "scpisingletransactionblocked.h"
 #include "proxy.h"
 #include "zscpi_response_definitions.h"
+#include "controllerpersitentdata.h"
 #include <timemachineobject.h>
 #include <mocktcpnetworkfactory.h>
 #include <QTest>
@@ -105,8 +106,9 @@ void test_regression_critical_status_com5003::setupServers(quint16 initialCritic
 {
     VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory = VeinTcp::MockTcpNetworkFactory::create();
     m_resmanServer = std::make_unique<ResmanRunFacade>(tcpNetworkFactory);
+    ControllerPersitentData::getData().m_criticalStatus = initialCriticalStatus;
     m_testServer = std::make_unique<TestServerForSenseInterfaceCom5003>(
-        std::make_shared<TestFactoryI2cCtrlCriticalStatus>(initialCriticalStatus), tcpNetworkFactory);
+        std::make_shared<TestFactoryI2cCtrl>(initialCriticalStatus), tcpNetworkFactory);
     TimeMachineObject::feedEventLoop();
 
     m_proxyClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307, tcpNetworkFactory);
