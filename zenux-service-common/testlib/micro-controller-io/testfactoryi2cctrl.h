@@ -6,7 +6,7 @@
 class TestFactoryI2cCtrl : public AbstractFactoryI2cCtrl
 {
 public:
-    TestFactoryI2cCtrl(bool initialPermission);
+    TestFactoryI2cCtrl(bool initialPermission, const QString &versionPrefix = "");
     void setRangeGetSetDelay(int rangeGetSetDelay);
     void simulateApplicationRunnung();
     void simulateBootloaderRunning();
@@ -33,6 +33,7 @@ protected:
     };
     ControllerRunState m_controllerRunState = APPLICATION_RUNNING;
 private:
+    QString m_versionPrefix;
     int m_rangeGetSetDelay = 0;
 };
 

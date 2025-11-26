@@ -1,7 +1,6 @@
 #include "test_regression_adj_import_export_eeprom_mt310s2.h"
 #include "clamp.h"
 #include "testfactoryi2cctrl.h"
-#include "testfactoryi2cctrlcommoninfofoo.h"
 #include "proxy.h"
 #include "mockserverparamgenerator.h"
 #include "mockeepromdevice.h"
@@ -129,7 +128,7 @@ void test_regression_adj_import_export_eeprom_mt310s2::loadRandomToEEpromWriteTo
 
 void test_regression_adj_import_export_eeprom_mt310s2::directExportFlashArbitraryVersionGen()
 {
-    setupServers(std::make_shared<TestFactoryI2cCtrlCommonInfoFoo>());
+    setupServers(std::make_shared<TestFactoryI2cCtrl>(true, "foo"));
     QVERIFY(m_testServer->getSenseInterface()->exportAdjData(refTime));
     const I2cSettings *i2cSettings = m_testServer->getI2cSettings();
     TestLogHelpers::writeFile("/tmp/import_arbitrary_version.eeprom",

@@ -1,6 +1,5 @@
 #include "test_regression_adj_import_export_eeprom_com5003.h"
 #include "testfactoryi2cctrl.h"
-#include "testfactoryi2cctrlcommoninfofoo.h"
 #include "proxy.h"
 #include "mockserverparamgenerator.h"
 #include "mockeepromdevice.h"
@@ -141,7 +140,7 @@ void test_regression_adj_import_export_eeprom_com5003::directExportFlashArbitrar
 {
     std::unique_ptr<SettingsContainer> settings = std::make_unique<SettingsContainer>(MockServerParamGenerator::createParams("com5003d"));
     const I2cSettings *i2cSettings = settings->getI2cSettings();
-    setupServers(std::make_shared<TestFactoryI2cCtrlCommonInfoFoo>());
+    setupServers(std::make_shared<TestFactoryI2cCtrl>(true, "foo"));
 
     QVERIFY(m_testServer->getSenseInterface()->exportAdjData(refTime));
     TestLogHelpers::writeFile("/tmp/import_arbitrary_version.eeprom",

@@ -4,6 +4,7 @@
 #include "testi2cctrlemob.h"
 #include "testi2cctrlaccu.h"
 #include "testi2cctrlcommoninfo.h"
+#include "mocki2cctrlcommoninfo.h"
 #include "testi2cctrlranges.h"
 #include "testi2cctrlpll.h"
 #include "testi2cctrldeviceident.h"
@@ -14,7 +15,8 @@
 #include "mocki2cctrlmmode.h"
 #include "mocki2cctrlclampstatus.h"
 
-TestFactoryI2cCtrl::TestFactoryI2cCtrl(bool initialPermission)
+TestFactoryI2cCtrl::TestFactoryI2cCtrl(bool initialPermission, const QString &versionPrefix) :
+    m_versionPrefix(versionPrefix)
 {
     ControllerPersitentData::getData().m_permission = initialPermission;
 }
@@ -53,7 +55,9 @@ I2cCtrlEepromPermissionPtr TestFactoryI2cCtrl::getPermissionCheckController()
 
 I2cCtrlCommonInfoPtrUnique TestFactoryI2cCtrl::getCommonInfoController(ControllerTypes ctrlType, quint8 muxChannel)
 {
-    return std::make_unique<TestI2cCtrlCommonInfo>(ctrlType, muxChannel);
+    if(m_versionPrefix.isEmpty())
+        return std::make_unique<TestI2cCtrlCommonInfo>(ctrlType, muxChannel);
+    return std::make_unique<MockI2cCtrlCommonInfo>(ctrlType, muxChannel, m_versionPrefix);
 }
 
 I2cCtrlDeviceIdentPtr TestFactoryI2cCtrl::getDeviceIdentController()

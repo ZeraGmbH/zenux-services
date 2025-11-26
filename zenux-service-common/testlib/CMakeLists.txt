@@ -1,13 +1,11 @@
 file(GLOB SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/micro-controller-io/*.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/micro-controller-io/test-specific/*.cpp
     )
 
 file(GLOB HEADER
     ${CMAKE_CURRENT_SOURCE_DIR}/*.h
     ${CMAKE_CURRENT_SOURCE_DIR}/micro-controller-io/*.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/micro-controller-io/test-specific/*.h
     )
 
 add_library(zenuxservicecommon-testlib STATIC
@@ -19,7 +17,6 @@ target_include_directories(zenuxservicecommon-testlib
     PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/micro-controller-io>
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/micro-controller-io/test-specific>
     $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/zenuxservicecommon-testlib>
     )
 
