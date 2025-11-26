@@ -10,8 +10,13 @@
 #include <QFile>
 #include <memory>
 
+// A shell script helper for multiple firmware update
+// It creates the file /tmp/hotplug-i2c-mux-info containing space separated
+// PCA9547 muxer values for devices detected e.g for IL1,IL2,IL3,IAUX
+// 0x09 0x0A 0x0B 0x0C
+
 // Quick-hack-lazy:
-static constexpr bool TESTMODE = false;
+static constexpr bool TESTMODE = true;
 
 static SettingsContainerPtr getSettingsContainer(const QString &serviceName)
 {
