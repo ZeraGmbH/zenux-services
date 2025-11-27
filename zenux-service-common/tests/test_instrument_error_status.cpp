@@ -139,6 +139,54 @@ void test_instrument_error_status::clearErrorStatusI3EmobIAUX()
     QCOMPARE(responseSpy[0][2], QVariant("nak"));
 }
 
+void test_instrument_error_status::readDataNoHotplug()
+{
+    QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
+
+    int msgNr = m_pcbIFace->scpiCommand("SYSTEM:EMOB:READDATA?");
+    TimeMachineObject::feedEventLoop();
+
+    QCOMPARE(responseSpy.count(), 1);
+    QCOMPARE(responseSpy[0][0], QVariant(msgNr));
+    QCOMPARE(responseSpy[0][1], QVariant(nack));
+    QCOMPARE(responseSpy[0][2], QVariant("nak"));
+}
+
+void test_instrument_error_status::readDataOneEmobIAUX()
+{
+    AbstractMockAllServices::ChannelAliasHotplugDeviceNameMap infoMap;
+    infoMap.insert("IL1", {"EMOB_MOCK-00V00", cClamp::undefined});
+    m_mt310s2d->fireHotplugInterrupt(infoMap);
+    TimeMachineObject::feedEventLoop();
+
+    QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
+    int msgNr = m_pcbIFace->scpiCommand("SYSTEM:EMOB:READDATA?");
+    TimeMachineObject::feedEventLoop();
+
+    QCOMPARE(responseSpy.count(), 1);
+    QCOMPARE(responseSpy[0][0], QVariant(msgNr));
+    QCOMPARE(responseSpy[0][1], QVariant(nack));
+    QCOMPARE(responseSpy[0][2], QVariant("nak"));
+}
+
+void test_instrument_error_status::readDataMt650eI3EmobIAUX()
+{
+    AbstractMockAllServices::ChannelAliasHotplugDeviceNameMap infoMap;
+    infoMap.insert("IL3", {"MT650e", cClamp::undefined});
+    infoMap.insert("IAUX", {"EMOB_MOCK-00V00", cClamp::undefined});
+    m_mt310s2d->fireHotplugInterrupt(infoMap);
+    TimeMachineObject::feedEventLoop();
+
+    QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
+    int msgNr = m_pcbIFace->scpiCommand("SYSTEM:EMOB:READDATA?");
+    TimeMachineObject::feedEventLoop();
+
+    QCOMPARE(responseSpy.count(), 1);
+    QCOMPARE(responseSpy[0][0], QVariant(msgNr));
+    QCOMPARE(responseSpy[0][1], QVariant(ack));
+    QCOMPARE(responseSpy[0][2], QVariant("Data"));
+}
+
 void test_instrument_error_status::setupServers()
 {
     VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory = VeinTcp::MockTcpNetworkFactory::create();

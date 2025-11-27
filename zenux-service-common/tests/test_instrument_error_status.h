@@ -23,6 +23,10 @@ private slots:
     void clearErrorStatusIAUXEmobI3IAUX();
     void clearErrorStatusI3EmobIAUX();
 
+    void readDataNoHotplug();
+    void readDataOneEmobIAUX();
+    void readDataMt650eI3EmobIAUX();
+
 private:
     void setupServers();
 

@@ -16,6 +16,7 @@ enum HotplugCommands
     cmdEmobReadLockState,
     cmdEmobReadErrorStatus,
     cmdEmobClearErrorStatus,
+    cmdEmobReadData,
 };
 
 void HotplugControllerInterface::initSCPIConnection(QString leadingNodes)
@@ -25,6 +26,7 @@ void HotplugControllerInterface::initSCPIConnection(QString leadingNodes)
     addDelegate(QString("%1SYSTEM:EMOB").arg(leadingNodes), "LOCKST", SCPI::isQuery, m_scpiInterface, cmdEmobReadLockState);
     addDelegate(QString("%1SYSTEM:EMOB").arg(leadingNodes), "ERROR", SCPI::isQuery, m_scpiInterface, cmdEmobReadErrorStatus);
     addDelegate(QString("%1SYSTEM:EMOB").arg(leadingNodes), "CLEARERROR", SCPI::isCmd, m_scpiInterface, cmdEmobClearErrorStatus);
+    addDelegate(QString("%1SYSTEM:EMOB").arg(leadingNodes), "READDATA", SCPI::isQuery, m_scpiInterface, cmdEmobReadData);
 }
 
 void HotplugControllerInterface::onControllersChanged()
@@ -47,6 +49,9 @@ void HotplugControllerInterface::executeProtoScpi(int cmdCode, ProtonetCommandPt
         break;
     case cmdEmobClearErrorStatus:
         protoCmd->m_sOutput = emobClearErrorStatus(protoCmd->m_sInput);
+        break;
+    case cmdEmobReadData:
+        protoCmd->m_sOutput = emobReadDataForExchange(protoCmd->m_sInput);
         break;
     }
     if (protoCmd->m_bwithOutput)
@@ -114,6 +119,25 @@ QString HotplugControllerInterface::emobClearErrorStatus(const QString &scpiCmd)
             if (ctrlRet != ZeraMControllerIo::cmddone)
                 return ZSCPI::scpiAnswer[ZSCPI::errexec];
             return ZSCPI::scpiAnswer[ZSCPI::ack];
+        }
+    }
+    return ZSCPI::scpiAnswer[ZSCPI::nak];
+}
+
+QString HotplugControllerInterface::emobReadDataForExchange(const QString &scpiCmd)
+{
+    cSCPICommand cmd = scpiCmd;
+    if(cmd.isQuery()) {
+        HotControllerMap emobControllers = m_hotPluggableControllerContainer->getCurrentControllers();
+        for(auto it = emobControllers.begin(); it != emobControllers.end(); it++) {
+            QString channelMName = it.key();
+            HotControllers controller = it.value();
+            if(controller.m_controllerType == EmobControllerTypes::MT650e) {
+                ZeraMControllerIoTemplate::atmelRM ctrlRet = emobControllers[channelMName].m_emobController->readData(m_data);
+                if (ctrlRet != ZeraMControllerIo::cmddone)
+                    return ZSCPI::scpiAnswer[ZSCPI::errexec];
+                return QString(m_data);
+            }
         }
     }
     return ZSCPI::scpiAnswer[ZSCPI::nak];

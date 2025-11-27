@@ -50,3 +50,9 @@ ZeraMControllerIoTemplate::atmelRM MockI2cCtrlEMOB::clearErrorStatus()
         return ZeraMControllerIo::atmelRM::cmddone;
     return ZeraMControllerIo::atmelRM::cmdexecfault;
 }
+
+ZeraMControllerIoTemplate::atmelRM MockI2cCtrlEMOB::readData(QByteArray &answer)
+{
+    answer = "Data";
+    return ZeraMControllerIo::atmelRM::cmddone;
+}
