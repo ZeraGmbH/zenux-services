@@ -20,10 +20,12 @@ private:
     QString emobReadLockState(const QString& scpiCmd);
     QString emobReadErrorStatus(const QString& scpiCmd);
     QString emobClearErrorStatus(const QString& scpiCmd);
+    QString emobReadDataForExchange(const QString& scpiCmd);
     QString findEmobConnected(const QString &channelMNameScpiParam);
 
     NotificationString m_channels;
     HotPluggableControllerContainerPtr m_hotPluggableControllerContainer;
+    QByteArray m_data;
 };
 
 #endif // HOTPLUGCONTROLLERINTERFACE_H

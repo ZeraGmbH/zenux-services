@@ -17,7 +17,8 @@ enum hw_cmdcode
     hwSendPushbuttonPress = 0x0041,
     hwReadEmobLockState = 0x0060,      // old: hwReadEmobConnectionState
     hwGetErrorStatus    = 0x0062,
-    hwClearErrorStatus = 0x0063
+    hwClearErrorStatus = 0x0063,
+    hwReadDataForExchange = 0x0082
 };
 
 ZeraMControllerIoTemplate::atmelRM I2cCtrlEMOB::readEmobInstrumentSubType(QString &answer)
@@ -72,4 +73,10 @@ ZeraMControllerIoTemplate::atmelRM I2cCtrlEMOB::clearErrorStatus()
     if (m_ctrlIo.getLastErrorMask() != 0)
         return ZeraMControllerIo::cmdexecfault;
     return ZeraMControllerIo::cmddone;
+}
+
+ZeraMControllerIoTemplate::atmelRM I2cCtrlEMOB::readData(QByteArray &answer)
+{
+    I2cMuxerScopedOnOff i2cMuxerEnabled(m_i2cMuxer);
+    return m_ctrlIo.readVariableLenData(hwReadDataForExchange, answer);
 }
