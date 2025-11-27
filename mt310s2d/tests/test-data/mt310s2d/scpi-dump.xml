@@ -5692,6 +5692,7 @@
     <ERROR Type="Query" ScpiPath="SYSTEM:EMOB:ERROR"/>
     <CLEARERROR Type="Command" ScpiPath="SYSTEM:EMOB:CLEARERROR"/>
     <READDATA Type="Query" ScpiPath="SYSTEM:EMOB:READDATA"/>
+    <WRITEDATA Type="Command" ScpiPath="SYSTEM:EMOB:WRITEDATA"/>
    </EMOB>
    <SERIAL Type="Query,Command+Par" ScpiPath="SYSTEM:SERIAL"/>
    <ADJUSTMENT Type="Node">
