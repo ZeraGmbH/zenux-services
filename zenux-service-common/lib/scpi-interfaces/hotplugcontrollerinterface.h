@@ -21,6 +21,7 @@ private:
     QString emobReadErrorStatus(const QString& scpiCmd);
     QString emobClearErrorStatus(const QString& scpiCmd);
     QString emobReadDataForExchange(const QString& scpiCmd);
+    QString emobWriteData(const QString& scpiCmd);
     QString findEmobConnected(const QString &channelMNameScpiParam);
 
     NotificationString m_channels;

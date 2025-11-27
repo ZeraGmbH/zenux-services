@@ -56,3 +56,12 @@ ZeraMControllerIoTemplate::atmelRM MockI2cCtrlEMOB::readData(QByteArray &answer)
     answer = "Data";
     return ZeraMControllerIo::atmelRM::cmddone;
 }
+
+ZeraMControllerIoTemplate::atmelRM MockI2cCtrlEMOB::writeData(QByteArray &data)
+{
+    if (ControllerPersitentData::isHotControllerAvailable(m_muxChannel))
+        return ZeraMControllerIo::atmelRM::cmddone;
+    return ZeraMControllerIo::atmelRM::cmdexecfault;
+}
+
+
