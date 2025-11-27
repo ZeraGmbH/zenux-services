@@ -1,4 +1,4 @@
-#include "test_instrument_error_status.h"
+#include "test_hotplug_scpi_cmd.h"
 #include "testfactoryi2cctrl.h"
 #include <mocktcpnetworkfactory.h>
 #include "proxy.h"
@@ -9,14 +9,14 @@
 #include <QSignalSpy>
 #include <QTest>
 
-QTEST_MAIN(test_instrument_error_status)
+QTEST_MAIN(test_hotplug_scpi_cmd)
 
-void test_instrument_error_status::init()
+void test_hotplug_scpi_cmd::init()
 {
     setupServers();
 }
 
-void test_instrument_error_status::cleanup()
+void test_hotplug_scpi_cmd::cleanup()
 {
     m_pcbIFace = nullptr;
     m_proxyClient = nullptr;
@@ -27,7 +27,7 @@ void test_instrument_error_status::cleanup()
     ControllerPersitentData::cleanupPersitentData();
 }
 
-void test_instrument_error_status::readErrorStatusNoParamNoEmob()
+void test_hotplug_scpi_cmd::readErrorStatusNoParamNoEmob()
 {
     QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
 
@@ -40,7 +40,7 @@ void test_instrument_error_status::readErrorStatusNoParamNoEmob()
     QCOMPARE(responseSpy[0][2], QVariant("nak"));
 }
 
-void test_instrument_error_status::readErrorStatusNoParamEmobIAUX()
+void test_hotplug_scpi_cmd::readErrorStatusNoParamEmobIAUX()
 {
     m_mt310s2d->addStandardEmobControllers(QStringList() << "IAUX");
     QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
@@ -54,7 +54,7 @@ void test_instrument_error_status::readErrorStatusNoParamEmobIAUX()
     QCOMPARE(responseSpy[0][2], QVariant(errorInstrumentStatus::Instrument_Status_Cable_Error));
 }
 
-void test_instrument_error_status::readErrorStatusIAUXEmobI3IAUX()
+void test_hotplug_scpi_cmd::readErrorStatusIAUXEmobI3IAUX()
 {
     m_mt310s2d->addStandardEmobControllers(QStringList() << "IL3" << "IAUX");
     QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
@@ -68,7 +68,7 @@ void test_instrument_error_status::readErrorStatusIAUXEmobI3IAUX()
     QCOMPARE(responseSpy[0][2], QVariant(errorInstrumentStatus::Instrument_Status_Cable_Error));
 }
 
-void test_instrument_error_status::readErrorStatusI3EmobIAUX()
+void test_hotplug_scpi_cmd::readErrorStatusI3EmobIAUX()
 {
     m_mt310s2d->addStandardEmobControllers(QStringList() << "IAUX");
 
@@ -83,7 +83,7 @@ void test_instrument_error_status::readErrorStatusI3EmobIAUX()
     QCOMPARE(responseSpy[0][2], QVariant("nak"));
 }
 
-void test_instrument_error_status::clearErrorStatusNoParamNoEmob()
+void test_hotplug_scpi_cmd::clearErrorStatusNoParamNoEmob()
 {
     QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
 
@@ -96,7 +96,7 @@ void test_instrument_error_status::clearErrorStatusNoParamNoEmob()
     QCOMPARE(responseSpy[0][2], QVariant("nak"));
 }
 
-void test_instrument_error_status::clearErrorStatusNoParamEmobIAUX()
+void test_hotplug_scpi_cmd::clearErrorStatusNoParamEmobIAUX()
 {
     m_mt310s2d->addStandardEmobControllers(QStringList() << "IAUX");
     QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
@@ -110,7 +110,7 @@ void test_instrument_error_status::clearErrorStatusNoParamEmobIAUX()
     QCOMPARE(responseSpy[0][2], QVariant("ack"));
 }
 
-void test_instrument_error_status::clearErrorStatusIAUXEmobI3IAUX()
+void test_hotplug_scpi_cmd::clearErrorStatusIAUXEmobI3IAUX()
 {
     m_mt310s2d->addStandardEmobControllers(QStringList() << "IL3" << "IAUX");
     QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
@@ -124,7 +124,7 @@ void test_instrument_error_status::clearErrorStatusIAUXEmobI3IAUX()
     QCOMPARE(responseSpy[0][2], QVariant("ack"));
 }
 
-void test_instrument_error_status::clearErrorStatusI3EmobIAUX()
+void test_hotplug_scpi_cmd::clearErrorStatusI3EmobIAUX()
 {
     m_mt310s2d->addStandardEmobControllers(QStringList() << "IAUX");
 
@@ -139,7 +139,7 @@ void test_instrument_error_status::clearErrorStatusI3EmobIAUX()
     QCOMPARE(responseSpy[0][2], QVariant("nak"));
 }
 
-void test_instrument_error_status::readDataNoHotplug()
+void test_hotplug_scpi_cmd::readDataNoHotplug()
 {
     QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
 
@@ -152,7 +152,7 @@ void test_instrument_error_status::readDataNoHotplug()
     QCOMPARE(responseSpy[0][2], QVariant("nak"));
 }
 
-void test_instrument_error_status::readDataOneEmobIAUX()
+void test_hotplug_scpi_cmd::readDataOneEmobIAUX()
 {
     AbstractMockAllServices::ChannelAliasHotplugDeviceNameMap infoMap;
     infoMap.insert("IL1", {"EMOB_MOCK-00V00", cClamp::undefined});
@@ -169,7 +169,7 @@ void test_instrument_error_status::readDataOneEmobIAUX()
     QCOMPARE(responseSpy[0][2], QVariant("nak"));
 }
 
-void test_instrument_error_status::readDataMt650eI3EmobIAUX()
+void test_hotplug_scpi_cmd::readDataMt650eI3EmobIAUX()
 {
     AbstractMockAllServices::ChannelAliasHotplugDeviceNameMap infoMap;
     infoMap.insert("IL3", {"MT650e", cClamp::undefined});
@@ -187,7 +187,7 @@ void test_instrument_error_status::readDataMt650eI3EmobIAUX()
     QCOMPARE(responseSpy[0][2], QVariant("Data"));
 }
 
-void test_instrument_error_status::setupServers()
+void test_hotplug_scpi_cmd::setupServers()
 {
     VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory = VeinTcp::MockTcpNetworkFactory::create();
     m_resman = std::make_unique<ResmanRunFacade>(tcpNetworkFactory);

@@ -33,7 +33,7 @@ SETUP_SERVICE_COMMON_TESTS(
     test_emob_lock
     test_read_versions
     test_booloaderstopper
-    test_instrument_error_status
+    test_hotplug_scpi_cmd
     test_firmwareupdatenotificationfile
     )
 
