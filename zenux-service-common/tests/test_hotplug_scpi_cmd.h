@@ -1,12 +1,12 @@
-#ifndef TEST_INSTRUMENT_ERROR_STATUS_H
-#define TEST_INSTRUMENT_ERROR_STATUS_H
+#ifndef TEST_HOTPLUG_SCPI_CMD_H
+#define TEST_HOTPLUG_SCPI_CMD_H
 
 #include "resmanrunfacade.h"
 #include "mockmt310s2d.h"
 #include "pcbinterface.h"
 #include "proxyclient.h"
 
-class test_instrument_error_status : public QObject
+class test_hotplug_scpi_cmd : public QObject
 {
     Q_OBJECT
 private slots:
@@ -37,4 +37,4 @@ private:
 
 };
 
-#endif // TEST_INSTRUMENT_ERROR_STATUS_H
+#endif // TEST_HOTPLUG_SCPI_CMD_H
