@@ -85,7 +85,7 @@ ZeraMControllerIoTemplate::atmelRM I2cCtrlEMOB::readData(QByteArray &answer)
 ZeraMControllerIoTemplate::atmelRM I2cCtrlEMOB::writeData(QByteArray &data)
 {
     I2cMuxerScopedOnOff i2cMuxerEnabled(m_i2cMuxer);
-    data.prepend("0");
+    data.prepend(char(0x00));;
     quint16 len = data.size();
     if(len < 1)
         return ZeraMControllerIo::cmdfault;
