@@ -621,6 +621,27 @@ quint32 cPCBInterfacePrivate::getAccuStateOfCharge()
     return msgnr;
 }
 
+quint32 cPCBInterfacePrivate::readData()
+{
+    QString cmd;
+    quint32 msgnr;
+
+    msgnr = sendCommand(cmd = QString("SYST:EMOB:READDATA?"));
+    m_MsgNrCmdList[msgnr] = PCB::readData;
+    return msgnr;
+}
+
+quint32 cPCBInterfacePrivate::writeData(QString par)
+{
+    QString cmd;
+    quint32 msgnr;
+
+    cmd = par == "" ? "SYST:EMOB:WRITEDATA;" : QString("SYST:EMOB:WRITEDATA %1;").arg(par);
+    msgnr = sendCommand(cmd);
+    m_MsgNrCmdList[msgnr] = PCB::writeData;
+    return msgnr;
+}
+
 quint32 cPCBInterfacePrivate::transparentCommand(QString cmd)
 {
     quint32 msgnr;
@@ -823,6 +844,8 @@ void cPCBInterfacePrivate::receiveAnswer(std::shared_ptr<ProtobufMessage::NetMes
         case PCB::setadjustclampxml:
         case PCB::setserialnumber:
         case PCB::getChannelsConnected:
+        case PCB::readData:
+        case PCB::writeData:
             emit q->serverAnswer(decodedAnswer.msgNr, decodedAnswer.reply, VariantConverter::returnString(decodedAnswer.msgBody));
             break;
         }
