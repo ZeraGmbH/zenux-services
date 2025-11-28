@@ -78,8 +78,8 @@ private:
     void addSenseInterface();
     void addSystAdjInterface();
     void addSystAdjInterfaceChannel(QString channelName);
-    void createLEM1000VRanges(const PermissionStructAdj &permissionsOffsetAllowedAlways);
-    void createVDE1400VRanges(const PermissionStructAdj &permissionsOffsetAllowedAlways);
+    void createLEM1000VRanges(const PermissionStructAdj &permissions);
+    void createVDE1400VRanges(const PermissionStructAdj &permissions);
     SenseRangeCommon* getRange(QString name);
     ClampTypes readClampType();
     void removeAllRanges();
