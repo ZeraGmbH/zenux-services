@@ -4,6 +4,7 @@
 #include "abstractchannelrangefactory.h"
 #include "ethsettings.h"
 #include "i2csettings.h"
+#include "sensesettings.h"
 #include "fpgasettings.h"
 #include "samplingsettings.h"
 #include <QObject>
@@ -11,10 +12,22 @@
 
 struct ServerParams
 {
-    QString name;
-    QString version;
-    QString xsdFile;
-    QString xmlFile;
+    ServerParams(int channelCount,
+                 const QString &nameReported,
+                 const QString &versionReported,
+                 const QString &xsdFile,
+                 const QString &xmlFile);
+    int getChannelCount() const;
+    QString getNameReported() const;
+    QString getVersionReported() const;
+    QString getXsdFile() const;
+    QString getXmlFile() const;
+private:
+    int m_channelCount;
+    QString m_nameReported;
+    QString m_versionReported;
+    QString m_xsdFile;
+    QString m_xmlFile;
 };
 
 class SettingsContainer : public QObject
@@ -23,24 +36,27 @@ class SettingsContainer : public QObject
 public:
     explicit SettingsContainer(ServerParams params);
     ServerParams getServerParams();
-    EthSettings *getEthSettings();
-    const I2cSettings *getI2cSettings() const;
-    FPGASettings *getFpgaSettings();
-    SamplingSettings *getSamplingSettings();
+
+    EthSettingsPtr getEthSettings() const;
+    I2cSettingsPtr getI2cSettings() const;
+    cSenseSettingsPtr getSenseSettings() const;
+    FPGASettingsPtr getFpgaSettings() const;
+    SamplingSettingsPtr getSamplingSettings() const;
     struct TServiceConfig
     {
         QString xsdFileName;
         QString xmlFileName;
     };
-    static const TServiceConfig getServiceConfig(const QString &serviceNameForAlternateDevice);
-    static AbstractChannelRangeFactoryPtr createChannelRangeFactory(const QString &serviceNameForAlternateDevice);
+    static const TServiceConfig getServiceConfig(const QString &serviceOrDeviceName);
+    static AbstractChannelRangeFactoryPtr createChannelRangeFactory(const QString &serviceOrDeviceName);
 private:
     ServerParams m_params;
     Zera::XMLConfig::cReader m_xmlConfigReader;
-    EthSettings m_ethSettings;
-    I2cSettings m_i2cSettings;
-    FPGASettings m_fpgaSettings;
-    SamplingSettings m_samplingSettings;
+    EthSettingsPtr m_ethSettings;
+    I2cSettingsPtr m_i2cSettings;
+    cSenseSettingsPtr m_senseSettings;
+    FPGASettingsPtr m_fpgaSettings;
+    SamplingSettingsPtr m_samplingSettings;
 };
 
 typedef std::unique_ptr<SettingsContainer> SettingsContainerPtr;

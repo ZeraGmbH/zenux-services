@@ -27,9 +27,9 @@ class cClampInterface: public ScpiConnection
 {
 public:
     cClampInterface(PCBServer *server,
-                    cSenseSettings *senseSettings,
+                    cSenseSettingsPtr senseSettings,
                     SenseInterfaceCommon *senseInterface,
-                    const I2cSettings *i2cSettings,
+                    I2cSettingsPtr i2cSettings,
                     AbstractEepromI2cFactoryPtr adjMemFactory,
                     AbstractFactoryI2cCtrlPtr ctrlFactory);
     virtual void initSCPIConnection(QString leadingNodes) override;
@@ -51,9 +51,9 @@ private:
     void handleClampDisconnected(QString channelName, const SenseSystem::cChannelSettings *chSettings, quint16 bmask);
 
     PCBServer *m_pMyServer;
-    cSenseSettings *m_senseSettings;
+    cSenseSettingsPtr m_senseSettings;
     SenseInterfaceCommon *m_pSenseInterface;
-    const I2cSettings *m_i2cSettings;
+    I2cSettingsPtr m_i2cSettings;
     AbstractEepromI2cFactoryPtr m_adjMemFactory;
     AbstractFactoryI2cCtrlPtr m_ctrlFactory;
     NotificationString m_notifierClampChannelList;

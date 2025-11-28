@@ -2,6 +2,7 @@
 #define SENSESETTINGS_H
 
 #include <xmlsettings.h>
+#include <memory>
 
 namespace SenseSystem
 {
@@ -108,5 +109,6 @@ private:
     QList<SenseSystem::cChannelSettings*> m_ChannelSettingsList;
 };
 
+typedef std::shared_ptr<cSenseSettings> cSenseSettingsPtr;
 
 #endif // SENSESETTINGS_H

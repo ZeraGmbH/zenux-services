@@ -3,10 +3,10 @@
 #include "mtxxxs2sensechannel.h"
 #include <cmath>
 
-QList<SenseChannelCommon *> MT581s2ChannelRangeFactory::createChannelAndRanges(cSenseSettings *senseSettings,
-                                                                             AdjDataPtr adjData,
-                                                                             std::shared_ptr<cSCPI> scpi,
-                                                                             AbstractFactoryI2cCtrlPtr ctrlFactory)
+QList<SenseChannelCommon *> MT581s2ChannelRangeFactory::createChannelAndRanges(cSenseSettingsPtr senseSettings,
+                                                                               AdjDataPtr adjData,
+                                                                               std::shared_ptr<cSCPI> scpi,
+                                                                               AbstractFactoryI2cCtrlPtr ctrlFactory)
 {
     qInfo("Set channels/ranges for MT310s2");
     constexpr quint16 rangeFlagsDevice = modeAC | modeADJ | Direct;

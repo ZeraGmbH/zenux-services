@@ -9,7 +9,7 @@ class AbstractChannelRangeFactory
 {
 public:
     virtual ~AbstractChannelRangeFactory() = default;
-    virtual QList<SenseChannelCommon*> createChannelAndRanges(cSenseSettings* senseSettings,
+    virtual QList<SenseChannelCommon*> createChannelAndRanges(cSenseSettingsPtr senseSettings,
                                                               AdjDataPtr adjData,
                                                               std::shared_ptr<cSCPI> scpi,
                                                               AbstractFactoryI2cCtrlPtr ctrlFactory) = 0;

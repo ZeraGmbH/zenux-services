@@ -1,7 +1,6 @@
 #include "testserverforsenseinterfacemt310s2.h"
 #include "mockclampplugger.h"
 #include "mockeepromi2cfactory.h"
-#include "mockeepromdevice.h"
 #include "mt310s2senseinterface.h"
 #include "mt310s2systeminfomock.h"
 #include <i2cmultiplexerfactory.h>
@@ -12,28 +11,25 @@ TestServerForSenseInterfaceMt310s2::TestServerForSenseInterfaceMt310s2(AbstractF
                                                                        bool systemInfoMock) :
     TestPcbServer(serviceNameForAlternateDevice, tcpNetworkFactory)
 {
-    m_senseSettings = std::make_unique<cSenseSettings>(getConfigReader(), 8);
-    setXmlSettings(XmlSettingsList{m_senseSettings.get()});
-    
     if(systemInfoMock)
         m_systemInfo = std::make_unique<Mt310s2SystemInfoMock>(ctrlFactory);
     else
         m_systemInfo = std::make_unique<Mt310s2SystemInfo>(ctrlFactory);
 
     AbstractEepromI2cFactoryPtr adjMemFactory = std::make_shared<MockEepromI2cFactory>();
-    const I2cSettings *i2cSettings = m_settings->getI2cSettings();
+    const I2cSettingsPtr i2cSettings = m_settings->getI2cSettings();
     EepromI2cDeviceInterfacePtr adjEeprom = adjMemFactory->createEeprom(
         {i2cSettings->getDeviceNode(), i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress)},
         i2cSettings->getEepromByteSize());
 
     m_senseInterface = std::make_unique<Mt310s2SenseInterface>(m_scpiInterface,
-                                                               m_senseSettings.get(),
+                                                               m_settings->getSenseSettings(),
                                                                std::move(adjEeprom),
                                                                m_systemInfo.get(),
                                                                SettingsContainer::createChannelRangeFactory(serviceNameForAlternateDevice),
                                                                ctrlFactory);
     m_clampInterface = std::make_unique<cClampInterface>(this,
-                                                         m_senseSettings.get(),
+                                                         m_settings->getSenseSettings(),
                                                          m_senseInterface.get(),
                                                          i2cSettings,
                                                          adjMemFactory,
@@ -45,7 +41,7 @@ TestServerForSenseInterfaceMt310s2::TestServerForSenseInterfaceMt310s2(AbstractF
 
     m_systemInterface = std::make_unique<Mt310s2SystemInterface>(this,
                                                                  m_systemInfo.get(),
-                                                                 m_senseSettings.get(),
+                                                                 m_settings->getSenseSettings(),
                                                                  m_senseInterface.get(),
                                                                  ctrlFactory,
                                                                  nullptr);

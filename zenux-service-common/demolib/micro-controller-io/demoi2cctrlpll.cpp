@@ -1,7 +1,7 @@
 #include "demoi2cctrlpll.h"
 #include "simulsystemstatus.h"
 
-DemoI2cCtrlPll::DemoI2cCtrlPll(SamplingSettings* samplingSettings, quint8 &pllChannel) :
+DemoI2cCtrlPll::DemoI2cCtrlPll(SamplingSettingsPtr samplingSettings, quint8 &pllChannel) :
     m_samplingSettings(samplingSettings),
     m_pllChannel(pllChannel)
 {

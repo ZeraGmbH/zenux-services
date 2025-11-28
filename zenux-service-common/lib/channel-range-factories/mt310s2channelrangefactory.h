@@ -6,7 +6,7 @@
 class MT310s2ChannelRangeFactory : public AbstractChannelRangeFactory
 {
 public:
-    virtual QList<SenseChannelCommon*> createChannelAndRanges(cSenseSettings* senseSettings,
+    virtual QList<SenseChannelCommon*> createChannelAndRanges(cSenseSettingsPtr senseSettings,
                                                                AdjDataPtr adjData,
                                                                std::shared_ptr<cSCPI> scpi,
                                                                AbstractFactoryI2cCtrlPtr ctrlFactory) override;

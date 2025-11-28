@@ -36,7 +36,7 @@ class Mt310s2SystemInterface: public ScpiConnection
 public:
     Mt310s2SystemInterface(PCBServer* server,
                            Mt310s2SystemInfo *systemInfo,
-                           cSenseSettings *senseSettings,
+                           cSenseSettingsPtr senseSettings,
                            SenseInterfaceCommon *senseInterface,
                            AbstractFactoryI2cCtrlPtr ctrlFactory,
                            HotPluggableControllerContainerPtr hotPluggableControllerContainer);
@@ -69,7 +69,7 @@ private:
 
     PCBServer* m_pMyServer;
     Mt310s2SystemInfo *m_systemInfo;
-    cSenseSettings *m_senseSettings;
+    cSenseSettingsPtr m_senseSettings;
     SenseInterfaceCommon* m_senseInterface;
     AbstractFactoryI2cCtrlPtr m_ctrlFactory;
     HotPluggableControllerContainerPtr m_hotPluggableControllerContainer;

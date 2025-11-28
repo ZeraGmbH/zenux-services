@@ -2,6 +2,7 @@
 #define FPGASETTINGS_H
 
 #include <xmlsettings.h>
+#include <memory>
 
 class FPGASettings : public XMLSettings
 {
@@ -20,5 +21,7 @@ private:
     QString m_secDeviceNode;
     QString m_dspDeviceNode;
 };
+
+typedef std::shared_ptr<FPGASettings> FPGASettingsPtr;
 
 #endif // FPGASETTINGS_H

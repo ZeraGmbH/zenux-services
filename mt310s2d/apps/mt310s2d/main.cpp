@@ -14,11 +14,12 @@ int main( int argc, char *argv[] )
     const QCommandLineOption subdeviceparam("d", "device", "subdevice");
     parser.addOption(subdeviceparam);
     parser.process(*app);
-    QString serviceNameForAlternateDevice = "mt310s2d";
+    QString serviceName = "mt310s2d";
     if (parser.isSet(subdeviceparam))
-        serviceNameForAlternateDevice = parser.value(subdeviceparam);
-    SettingsContainer::TServiceConfig config = SettingsContainer::getServiceConfig(serviceNameForAlternateDevice);
-    ServerParams defaultParams { ServerName,
+        serviceName = parser.value(subdeviceparam);
+    SettingsContainer::TServiceConfig config = SettingsContainer::getServiceConfig(serviceName);
+    ServerParams defaultParams { 8,
+                                 ServerName,
                                  ServerVersion,
                                  "/etc/zera/mt310s2d/" + config.xsdFileName,
                                  "/etc/zera/mt310s2d/" + config.xmlFileName};
@@ -32,7 +33,7 @@ int main( int argc, char *argv[] )
         std::make_shared<FactoryDeviceNodePcb>(),
         std::make_shared<Eeprom24LCxxxPca9547Factory>(),
         VeinTcp::TcpNetworkFactory::create(),
-        SettingsContainer::createChannelRangeFactory(serviceNameForAlternateDevice));
+        SettingsContainer::createChannelRangeFactory(serviceName));
     qInfo(ServerName " started");
 
     int r = app->exec();

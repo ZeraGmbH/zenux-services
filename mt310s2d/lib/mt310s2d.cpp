@@ -82,7 +82,6 @@ void cMT310S2dServer::init()
 
 cMT310S2dServer::~cMT310S2dServer()
 {
-    delete m_pSenseSettings;
     delete m_foutSettings;
     delete m_finSettings;
     delete m_pSCHeadSettings;
@@ -131,8 +130,6 @@ void cMT310S2dServer::doConfiguration()
         connect(m_pNotifier, &QSocketNotifier::activated, this, &cMT310S2dServer::MTIntHandler);
 
         ServerParams params = m_settings->getServerParams();
-        m_pSenseSettings = new cSenseSettings(&m_xmlConfigReader, 8);
-        connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_pSenseSettings, &cSenseSettings::configXMLInfo);
         m_foutSettings = new FOutSettings(&m_xmlConfigReader);
         connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_foutSettings, &FOutSettings::configXMLInfo);
         m_finSettings = new FInSettings(&m_xmlConfigReader);
@@ -146,10 +143,10 @@ void cMT310S2dServer::doConfiguration()
         m_sourceControlSettings = new SourceControlSettings(&m_xmlConfigReader);
         connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_sourceControlSettings, &SourceControlSettings::configXMLInfo);
 
-        if (m_xmlConfigReader.loadXMLFile(params.xmlFile))
+        if (m_xmlConfigReader.loadXMLFile(params.getXmlFile()))
             setupMicroControllerIo();
         else {
-            qCritical("Abort: Could not open xml file '%s", qPrintable(params.xmlFile));
+            qCritical("Abort: Could not open xml file '%s", qPrintable(params.getXmlFile()));
             emit abortInit();
         }
     }
@@ -176,12 +173,12 @@ void cMT310S2dServer::earlySetup(AbstractChannelRangeFactoryPtr channelRangeFact
     connectProtoConnectionSignals();
 
     m_scpiConnectionList.append(this); // the server itself has some commands
-    const I2cSettings *i2cSettings = m_settings->getI2cSettings();
+    const I2cSettingsPtr i2cSettings = m_settings->getI2cSettings();
     EepromI2cDeviceInterfacePtr eepromDev = m_adjMemFactory->createEeprom(
         {i2cSettings->getDeviceNode(), i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress)},
         i2cSettings->getEepromByteSize());
     m_scpiConnectionList.append(m_pSenseInterface = new Mt310s2SenseInterface(m_scpiInterface,
-                                                                              m_pSenseSettings,
+                                                                              getSenseSettings(),
                                                                               std::move(eepromDev),
                                                                               m_pSystemInfo,
                                                                               channelRangeFactory,
@@ -190,7 +187,7 @@ void cMT310S2dServer::earlySetup(AbstractChannelRangeFactoryPtr channelRangeFact
     m_hotPluggableControllerContainer = std::make_shared<HotPluggableControllerContainer>(i2cSettings, m_ctrlFactory);
     m_scpiConnectionList.append(m_pSystemInterface = new Mt310s2SystemInterface(this,
                                                                                 m_pSystemInfo,
-                                                                                m_pSenseSettings,
+                                                                                getSenseSettings(),
                                                                                 m_pSenseInterface,
                                                                                 m_ctrlFactory,
                                                                                 m_hotPluggableControllerContainer));
@@ -201,7 +198,7 @@ void cMT310S2dServer::earlySetup(AbstractChannelRangeFactoryPtr channelRangeFact
     m_scpiConnectionList.append(m_pSCHeadInterface = new ScInGroupResourceAndInterface(m_scpiInterface, m_pSCHeadSettings));
     m_scpiConnectionList.append(m_hkInInterface = new HkInGroupResourceAndInterface(m_scpiInterface, m_hkInSettings));
     m_scpiConnectionList.append(m_pClampInterface = new cClampInterface(this,
-                                                                        m_pSenseSettings,
+                                                                        getSenseSettings(),
                                                                         m_pSenseInterface,
                                                                         i2cSettings,
                                                                         m_adjMemFactory,
@@ -252,7 +249,7 @@ void cMT310S2dServer::doSetupServer()
             enableClampInterrupt();
 
             // our resource mananager connection must be opened after configuration is done
-            EthSettings *ethSettings = m_settings->getEthSettings();
+            EthSettingsPtr ethSettings = m_settings->getEthSettings();
             m_pRMConnection = new RMConnection(ethSettings->getRMIPadr(),
                                                ethSettings->getPort(EthSettings::resourcemanager),
                                                m_tcpNetworkFactory);
@@ -307,7 +304,7 @@ void cMT310S2dServer::doIdentAndRegister()
     for (int i = 0; i < m_resourceList.count(); i++) {
         cResource *res = m_resourceList.at(i);
         connect(m_pRMConnection, &RMConnection::rmAck, res, &cResource::resourceManagerAck );
-        EthSettings *ethSettings = m_settings->getEthSettings();
+        EthSettingsPtr ethSettings = m_settings->getEthSettings();
         res->registerResource(m_pRMConnection, ethSettings->getPort(EthSettings::protobufserver));
         connect(res, &cResource::registerRdy, this, &cMT310S2dServer::onResourceReady);
     }
@@ -320,7 +317,7 @@ void cMT310S2dServer::onResourceReady()
     m_pendingResources--;
     disconnect(static_cast<cResource*>(sender()), &cResource::registerRdy, this, &cMT310S2dServer::onResourceReady);
     if(m_pendingResources == 0) {
-        EthSettings *ethSettings = m_settings->getEthSettings();
+        EthSettingsPtr ethSettings = m_settings->getEthSettings();
         m_protoBufServer.startServer(ethSettings->getPort(EthSettings::protobufserver));
         openTelnetScpi();
     }
@@ -355,7 +352,7 @@ void cMT310S2dServer::updateI2cDevicesConnected()
         qInfo("Devices connected mask read: 0x%02X", bitmaskAvailable);
         m_pClampInterface->actualizeClampStatus(bitmaskAvailable);
         m_hotPluggableControllerContainer->startActualizeEmobControllers(bitmaskAvailable,
-                                                                         m_pSenseSettings,
+                                                                         getSenseSettings(),
                                                                          WaitControllerApplicationStartIssuedByBootloader);
     }
     else
@@ -410,11 +407,6 @@ void cMT310S2dServer::startCpuTemperatureSendTimer()
     }
     else
         qWarning("CPU-temperature is not available on this device. Temperature is not send to system-controller!");
-}
-
-cSenseSettings *cMT310S2dServer::getSenseSettings()
-{
-    return m_pSenseSettings;
 }
 
 void cMT310S2dServer::onCpuTemperatureSend()

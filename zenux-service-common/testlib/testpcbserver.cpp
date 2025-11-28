@@ -28,18 +28,17 @@ TestPcbServer::TestPcbServer(QString serviceNameForAlternateDevice,
     QObject::connect(statesetupServer, &QAbstractState::entered, this, &TestPcbServer::doSetupServer);
     QObject::connect(m_stateconnect2RM, &QAbstractState::entered, this, &TestPcbServer::doConnect2RM);
     QObject::connect(m_stateSendRMIdentAndRegister, &QAbstractState::entered, this, &TestPcbServer::doIdentAndRegister);
+
+    EthSettingsPtr ethSettings = m_settings->getEthSettings();
+    m_pRMConnection = new RMConnection(ethSettings->getRMIPadr(),
+                                       ethSettings->getPort(EthSettings::resourcemanager),
+                                       m_tcpNetworkFactory);
 }
 
 TestPcbServer::~TestPcbServer()
 {
     if (m_pInitializationMachine) delete m_pInitializationMachine;
     if (m_pRMConnection) delete m_pRMConnection;
-}
-
-void TestPcbServer::setXmlSettings(XmlSettingsList xmlSettings)
-{
-    m_xmlSettings = xmlSettings;
-    doConfiguration();
 }
 
 void TestPcbServer::setResources(ResourcesList resources)
@@ -67,22 +66,6 @@ void TestPcbServer::start()
     m_pInitializationMachine->start();
 }
 
-void TestPcbServer::doConfiguration()
-{
-    ServerParams params = m_settings->getServerParams();
-    EthSettings *ethSettings = m_settings->getEthSettings();
-    connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged,
-            ethSettings, &EthSettings::configXMLInfo);
-    for (const auto &setting : qAsConst(m_xmlSettings))
-        connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged,
-                setting, &XMLSettings::configXMLInfo);
-    if (!m_xmlConfigReader.loadXMLFile(params.xmlFile))
-        qFatal("Could not load xml config file");
-    m_pRMConnection = new RMConnection(ethSettings->getRMIPadr(),
-                                       ethSettings->getPort(EthSettings::resourcemanager),
-                                       m_tcpNetworkFactory);
-}
-
 void TestPcbServer::doSetupServer()
 {
     connectProtoConnectionSignals();
@@ -95,7 +78,7 @@ void TestPcbServer::doSetupServer()
         m_scpiConnectionList.append(scpiConnection);
     initSCPIConnections();
 
-    EthSettings *ethSettings = m_settings->getEthSettings();
+    EthSettingsPtr ethSettings = m_settings->getEthSettings();
     m_protoBufServer.startServer(ethSettings->getPort(EthSettings::protobufserver));
 
     m_stateconnect2RM->addTransition(m_pRMConnection, &RMConnection::connected, m_stateSendRMIdentAndRegister);
@@ -111,7 +94,7 @@ void TestPcbServer::doConnect2RM()
 void TestPcbServer::doIdentAndRegister()
 {
     m_pRMConnection->SendIdent(getName());
-    EthSettings *ethSettings = m_settings->getEthSettings();
+    EthSettingsPtr ethSettings = m_settings->getEthSettings();
     for (int i = 0; i < m_resourceList.count(); i++) {
         cResource *res = m_resourceList.at(i);
         connect(m_pRMConnection, &RMConnection::rmAck, res, &cResource::resourceManagerAck);

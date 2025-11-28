@@ -50,7 +50,11 @@ struct sigaction sigActionZdsp1;
 // sigset_t mySigmask, origSigmask;
 
 
-const ServerParams ZDspServer::defaultParams {ServerName, ServerVersion, "/etc/zera/zdsp1d/zdsp1d.xsd", "/etc/zera/zdsp1d/zdsp1d.xml"};
+const ServerParams ZDspServer::defaultParams(0,
+                                             ServerName,
+                                             ServerVersion,
+                                             "/etc/zera/zdsp1d/zdsp1d.xsd",
+                                             "/etc/zera/zdsp1d/zdsp1d.xml");
 
 ZDspServer::ZDspServer(SettingsContainerPtr settings,
                        AbstractFactoryDeviceNodeDspPtr deviceNodeFactory,
@@ -130,8 +134,8 @@ void ZDspServer::doConfiguration()
         ServerParams params = m_settings->getServerParams();
         connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged,
                 &m_dspSettings, &cDSPSettings::configXMLInfo);
-        if(!m_xmlConfigReader.loadXMLFile(params.xmlFile))
-            qCritical("Abort: Could not open xml file '%s", qPrintable(params.xmlFile));
+        if(!m_xmlConfigReader.loadXMLFile(params.getXmlFile()))
+            qCritical("Abort: Could not open xml file '%s", qPrintable(params.getXmlFile()));
     }
 }
 
@@ -224,7 +228,7 @@ void ZDspServer::doIdentAndRegister()
     qInfo("Starting doIdentAndRegister");
     m_pRMConnection->SendIdent(ServerName);
 
-    EthSettings *ethSettings = m_settings->getEthSettings();
+    EthSettingsPtr ethSettings = m_settings->getEthSettings();
     quint32 port = ethSettings->getPort(EthSettings::protobufserver);
 
     connect(&m_resourceRegister, &ResourceRegisterTransaction::registerRdy, this, &ZDspServer::onResourceReady);
@@ -240,7 +244,7 @@ void ZDspServer::doIdentAndRegister()
 void ZDspServer::onResourceReady()
 {
     disconnect(&m_resourceRegister, &ResourceRegisterTransaction::registerRdy, this, &ZDspServer::onResourceReady);
-    EthSettings *ethSettings = m_settings->getEthSettings();
+    EthSettingsPtr ethSettings = m_settings->getEthSettings();
     m_protoBufServer.startServer(ethSettings->getPort(EthSettings::protobufserver));
     openTelnetScpi();
     m_periodicLogTimer = TimerFactoryQt::createPeriodic(loggingIntervalMs);
@@ -268,7 +272,7 @@ void ZDspServer::outputAndResetTransactionsLogs()
 
 void ZDspServer::openTelnetScpi()
 {
-    EthSettings *ethSettings = m_settings->getEthSettings();
+    EthSettingsPtr ethSettings = m_settings->getEthSettings();
     if (ethSettings->isSCPIactive()) {
         connect(&m_telnetServer, &ConsoleServer::sigLinesReceived,
                 this, &ZDspServer::onTelnetReceived);

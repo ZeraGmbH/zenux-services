@@ -23,7 +23,7 @@ enum Commands
 
 SenseInterfaceCommon::SenseInterfaceCommon(std::shared_ptr<cSCPI> scpiInterface,
                                            SystemInfo *systemInfo,
-                                           cSenseSettings *senseSettings,
+                                           cSenseSettingsPtr senseSettings,
                                            EepromI2cDeviceInterfacePtr adjMemory,
                                            AbstractChannelRangeFactoryPtr rangeFactory,
                                            AbstractFactoryI2cCtrlPtr ctrlFactory,

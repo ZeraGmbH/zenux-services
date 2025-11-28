@@ -9,7 +9,7 @@ class Com5003SenseInterface : public SenseInterfaceCommon
 public:
     // COM specifics only
     Com5003SenseInterface(std::shared_ptr<cSCPI> scpiInterface,
-                          cSenseSettings* senseSettings,
+                          cSenseSettingsPtr senseSettings,
                           EepromI2cDeviceInterfacePtr adjMemory,
                           SystemInfo *systemInfo,
                           AbstractChannelRangeFactoryPtr rangeFactory,

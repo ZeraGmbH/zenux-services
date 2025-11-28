@@ -38,7 +38,11 @@ static void SigHandler(int)
 
 struct sigaction sigActionSec1000;
 
-const ServerParams cSEC1000dServer::defaultParams{ServerName, ServerVersion, "/etc/zera/sec1000d/sec1000d.xsd", "/etc/zera/sec1000d/sec1000d.xml"};
+const ServerParams cSEC1000dServer::defaultParams(0,
+                                                  ServerName,
+                                                  ServerVersion,
+                                                  "/etc/zera/sec1000d/sec1000d.xsd",
+                                                  "/etc/zera/sec1000d/sec1000d.xml");
 
 cSEC1000dServer::cSEC1000dServer(SettingsContainerPtr settings,
                                  int ecUnitCount,
@@ -125,8 +129,8 @@ void cSEC1000dServer::doConfiguration(int ecUnitCount)
         m_pInputSettings = new SecInputSettings(&m_xmlConfigReader);
         connect(&m_xmlConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pInputSettings,&SecInputSettings::configXMLInfo);
 
-        if(!m_xmlConfigReader.loadXMLFile(params.xmlFile)) {
-            qCritical("Abort: Could not open xml file '%s", qPrintable(params.xmlFile));
+        if(!m_xmlConfigReader.loadXMLFile(params.getXmlFile())) {
+            qCritical("Abort: Could not open xml file '%s", qPrintable(params.getXmlFile()));
             emit abortInit();
         }
     }
@@ -168,7 +172,7 @@ void cSEC1000dServer::doSetupServer()
 
         initSCPIConnections();
 
-        EthSettings *ethSettings = m_settings->getEthSettings();
+        EthSettingsPtr ethSettings = m_settings->getEthSettings();
 
         sigActionSec1000.sa_handler = &SigHandler; // signal handler einrichten
         sigemptyset(&sigActionSec1000.sa_mask);
@@ -224,7 +228,7 @@ void cSEC1000dServer::doIdentAndRegister()
     for (int i = 0; i < m_resourceList.count(); i++) {
         cResource *res = m_resourceList.at(i);
         connect(m_pRMConnection, &RMConnection::rmAck, res, &cResource::resourceManagerAck);
-        EthSettings *ethSettings = m_settings->getEthSettings();
+        EthSettingsPtr ethSettings = m_settings->getEthSettings();
         res->registerResource(m_pRMConnection, ethSettings->getPort(EthSettings::protobufserver));
         connect(res, &cResource::registerRdy, this, &cSEC1000dServer::onResourceReady);
     }
@@ -237,7 +241,7 @@ void cSEC1000dServer::onResourceReady()
     m_pendingResources--;
     disconnect(static_cast<cResource*>(sender()), &cResource::registerRdy, this, &cSEC1000dServer::onResourceReady);
     if(m_pendingResources == 0) {
-        EthSettings *ethSettings = m_settings->getEthSettings();
+        EthSettingsPtr ethSettings = m_settings->getEthSettings();
         m_protoBufServer.startServer(ethSettings->getPort(EthSettings::protobufserver));
     }
 }

@@ -16,7 +16,7 @@
 #include "i2cctrlranges.h"
 #include "i2cctrlcputemperature.h"
 
-FactoryI2cCtrl::FactoryI2cCtrl(const I2cSettings *i2cSettings) :
+FactoryI2cCtrl::FactoryI2cCtrl(const I2cSettingsPtr i2cSettings) :
     m_i2cSettings(i2cSettings),
     m_deviceNode(i2cSettings->getDeviceNode()),
     m_debugLevel(i2cSettings->getDebugLevel())

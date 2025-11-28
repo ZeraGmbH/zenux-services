@@ -6,7 +6,8 @@
 class MockServerParamGenerator
 {
 public:
-    static ServerParams createParams(const QString &serviceNameForAlternateDevice);
+    static ServerParams createParams(const QString &serviceOrDeviceName,
+                                     const QString &alternateConfigXml = "");
 };
 
 #endif // MOCKSERVERPARAMGENERATOR_H

@@ -2,6 +2,7 @@
 #define ETHSETTINGS_H
 
 #include <xmlsettings.h>
+#include <memory>
 
 class EthSettings : public XMLSettings
 {
@@ -24,5 +25,7 @@ private:
     quint16 m_nProtobufServerPort, m_nSCPIServerPort, m_nRMPort;
     bool m_bSCPIactive;
 };
+
+typedef std::shared_ptr<EthSettings> EthSettingsPtr;
 
 #endif // ETHSETTINGS_H

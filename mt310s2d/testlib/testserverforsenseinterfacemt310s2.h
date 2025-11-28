@@ -19,15 +19,12 @@ public:
 
     SenseInterfaceCommon *getSenseInterface() { return m_senseInterface.get(); }
     cClampInterface *getClampInterface() { return m_clampInterface.get(); }
-    cSenseSettings *getSenseSettings() { return m_senseSettings.get(); }
-    const I2cSettings *getI2cSettings() { return m_settings->getI2cSettings(); }
     Mt310s2SystemInfo *getSystemInfo() { return m_systemInfo.get(); }
 
     cClamp *addClamp(int clampType, QString channelAlias);
     void removeAllClamps();
 
 private:
-    std::unique_ptr<cSenseSettings> m_senseSettings;
     std::unique_ptr<Mt310s2SystemInfo> m_systemInfo;
     std::unique_ptr<SenseInterfaceCommon> m_senseInterface;
     std::unique_ptr<cClampInterface> m_clampInterface;

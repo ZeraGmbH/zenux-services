@@ -11,7 +11,7 @@ enum Commands
 };
 
 cSamplingInterface::cSamplingInterface(std::shared_ptr<cSCPI> scpiInterface,
-                                       SamplingSettings* samplingSettings,
+                                       SamplingSettingsPtr samplingSettings,
                                        AbstractFactoryI2cCtrlPtr ctrlFactory) :
     cResource(scpiInterface),
     m_ctrlFactory(ctrlFactory)

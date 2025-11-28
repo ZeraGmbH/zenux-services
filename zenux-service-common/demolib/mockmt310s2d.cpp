@@ -17,9 +17,7 @@ MockMt310s2d::MockMt310s2d(AbstractFactoryI2cCtrlPtr ctrlFactory,
     connect(SimulSystemStatus::getInstance(), &SimulSystemStatus::sigHotplugDevChanged,
             this, &MockMt310s2d::onSimulGuiHotplugDevChanged);
 
-    ServerParams params = MockServerParamGenerator::createParams(serviceNameForAlternateDevice);
-    if(!alternateConfigXml.isEmpty())
-        params.xmlFile = alternateConfigXml;
+    ServerParams params = MockServerParamGenerator::createParams(serviceNameForAlternateDevice, alternateConfigXml);
     m_server = std::make_unique<cMT310S2dServer>(
         std::make_unique<SettingsContainer>(params),
         ctrlFactory,
@@ -32,7 +30,7 @@ MockMt310s2d::MockMt310s2d(AbstractFactoryI2cCtrlPtr ctrlFactory,
 
 void MockMt310s2d::fireHotplugInterrupt(const AbstractMockAllServices::ChannelAliasHotplugDeviceNameMap &deviceMap)
 {
-    cSenseSettings *senseSettings = m_server->getSenseSettings();
+    cSenseSettingsPtr senseSettings = m_server->getSenseSettings();
     quint16 interruptMask = 0;
     ControllerPersitentData::MuxChannelDeviceNameMap hotDevicesToSet;
     for(auto iter = deviceMap.constBegin(); iter!= deviceMap.constEnd(); iter++) {
@@ -117,7 +115,7 @@ void MockMt310s2d::onSimulGuiHotplugDevChanged(int channelIndex, int deviceIndex
 
 void MockMt310s2d::setupHotplugChannelEnable()
 {
-    cSenseSettings *senseSettings = m_server->getSenseSettings();
+    cSenseSettingsPtr senseSettings = m_server->getSenseSettings();
     QVector<bool> enableMask(8);
     for (int i=0; i<simulChannelSequence.size(); ++i) {
         const QString &channelAlias = simulChannelSequence[i];

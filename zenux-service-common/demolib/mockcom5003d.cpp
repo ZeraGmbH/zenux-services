@@ -7,9 +7,7 @@ MockCom5003d::MockCom5003d(AbstractFactoryI2cCtrlPtr ctrlFactory,
                            VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory,
                            const QString &alternateConfigXml)
 {
-    ServerParams params = MockServerParamGenerator::createParams("com5003d");
-    if(!alternateConfigXml.isEmpty())
-        params.xmlFile = alternateConfigXml;
+    ServerParams params = MockServerParamGenerator::createParams("com5003d", alternateConfigXml);
     SettingsContainerPtr settings = std::make_unique<SettingsContainer>(params);
     m_server = std::make_unique<cCOM5003dServer>(
         std::move(settings),

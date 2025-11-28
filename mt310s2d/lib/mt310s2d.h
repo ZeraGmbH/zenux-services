@@ -49,7 +49,6 @@ public:
     QString getMsgDeviceNode();
 
     void startCpuTemperatureSendTimer();
-    cSenseSettings* getSenseSettings();
 
     void MTIntHandler(int);
     HotPluggableControllerContainerPtr getHotPluggableControllerContainer();
@@ -87,7 +86,6 @@ private:
 
     Mt310s2SystemInfo* m_pSystemInfo = nullptr;
 
-    cSenseSettings* m_pSenseSettings = nullptr;
     ServiceStatusInterface* m_pStatusInterface = nullptr;
     HkInSettings* m_hkInSettings = nullptr;
     ScInSettings* m_pSCHeadSettings = nullptr;

@@ -8,7 +8,7 @@
 
 Mt310s2SystemInterface::Mt310s2SystemInterface(PCBServer *server,
                                                Mt310s2SystemInfo *systemInfo,
-                                               cSenseSettings *senseSettings,
+                                               cSenseSettingsPtr senseSettings,
                                                SenseInterfaceCommon* senseInterface,
                                                AbstractFactoryI2cCtrlPtr ctrlFactory,
                                                HotPluggableControllerContainerPtr hotPluggableControllerContainer) :

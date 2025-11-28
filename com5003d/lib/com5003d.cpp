@@ -17,7 +17,11 @@
 #include <unistd.h>
 #include <fcntl.h>
 
-const ServerParams cCOM5003dServer::defaultParams {ServerName, ServerVersion, "/etc/zera/com5003d/com5003d.xsd", "/etc/zera/com5003d/com5003d.xml"};
+const ServerParams cCOM5003dServer::defaultParams(6,
+                                                  ServerName,
+                                                  ServerVersion,
+                                                  "/etc/zera/com5003d/com5003d.xsd",
+                                                  "/etc/zera/com5003d/com5003d.xml");
 
 cCOM5003dServer::cCOM5003dServer(SettingsContainerPtr settings,
                                  AbstractFactoryI2cCtrlPtr ctrlFactory,
@@ -74,7 +78,6 @@ void cCOM5003dServer::init()
 
 cCOM5003dServer::~cCOM5003dServer()
 {
-    delete m_pSenseSettings;
     delete m_foutSettings;
     delete m_finSettings;
     delete m_pSCHeadSettings;
@@ -116,13 +119,11 @@ void cCOM5003dServer::doConfiguration()
     // to bring up Atmel properly!!!
     ServerParams params = m_settings->getServerParams();
     qInfo("Loading schema...");
-    if (m_xmlConfigReader.loadSchema(params.xsdFile)) {
+    if (m_xmlConfigReader.loadSchema(params.getXsdFile())) {
         qInfo("Schema loaded.");
         sigStart = 0;
         write(m_nFPGAfd, &sigStart, 4);
 
-        m_pSenseSettings = new cSenseSettings(&m_xmlConfigReader, 6);
-        connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_pSenseSettings, &cSenseSettings::configXMLInfo);
         m_foutSettings = new FOutSettings(&m_xmlConfigReader);
         connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_foutSettings, &FOutSettings::configXMLInfo);
         m_finSettings = new FInSettings(&m_xmlConfigReader);
@@ -138,7 +139,7 @@ void cCOM5003dServer::doConfiguration()
         // will get too short - WTF???
         // So for now measure both times by qInfo and maybe come back later...
         qInfo("Loading XML...");
-        if (m_xmlConfigReader.loadXMLFile(params.xmlFile)) {
+        if (m_xmlConfigReader.loadXMLFile(params.getXmlFile())) {
             qInfo("Loading XML loaded");
             setupMicroControllerIo();
 
@@ -148,12 +149,12 @@ void cCOM5003dServer::doConfiguration()
             // signals and after this the finishedparsingXML signal
         }
         else {
-            qCritical("Abort: Could not open xml file '%s", qPrintable(params.xmlFile));
+            qCritical("Abort: Could not open xml file '%s", qPrintable(params.getXmlFile()));
             emit abortInit();
         }
     }
     else {
-        qCritical("Abort: Could not open xsd file '%s", qPrintable(params.xsdFile));
+        qCritical("Abort: Could not open xsd file '%s", qPrintable(params.getXsdFile()));
         emit abortInit();
     }
     close(m_nFPGAfd);
@@ -286,18 +287,18 @@ void cCOM5003dServer::earlySetup(AbstractChannelRangeFactoryPtr channelRangeFact
     connectProtoConnectionSignals();
 
     // our resource mananager connection must be opened after configuration is done
-    EthSettings *ethSettings = m_settings->getEthSettings();
+    EthSettingsPtr ethSettings = m_settings->getEthSettings();
     m_pRMConnection = new RMConnection(ethSettings->getRMIPadr(),
                                        ethSettings->getPort(EthSettings::resourcemanager),
                                        m_tcpNetworkFactory);
 
     m_scpiConnectionList.append(this); // the server itself has some commands
-    const I2cSettings *i2cSettings = m_settings->getI2cSettings();
+    const I2cSettingsPtr i2cSettings = m_settings->getI2cSettings();
     EepromI2cDeviceInterfacePtr eepromDev = m_adjMemFactory->createEeprom(
         {i2cSettings->getDeviceNode(), i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress)},
         i2cSettings->getEepromByteSize());
     m_scpiConnectionList.append(m_pSenseInterface = new Com5003SenseInterface(m_scpiInterface,
-                                                                              m_pSenseSettings,
+                                                                              getSenseSettings(),
                                                                               std::move(eepromDev),
                                                                               m_pSystemInfo,
                                                                               channelRangeFactory,
@@ -372,7 +373,7 @@ void cCOM5003dServer::doIdentAndRegister()
     for (int i = 0; i < m_resourceList.count(); i++) {
         cResource *res = m_resourceList.at(i);
         connect(m_pRMConnection, &RMConnection::rmAck, res, &cResource::resourceManagerAck );
-        EthSettings *ethSettings = m_settings->getEthSettings();
+        EthSettingsPtr ethSettings = m_settings->getEthSettings();
         res->registerResource(m_pRMConnection, ethSettings->getPort(EthSettings::protobufserver));
         connect(res, &cResource::registerRdy, this, &cCOM5003dServer::onResourceReady);
     }
@@ -385,7 +386,7 @@ void cCOM5003dServer::onResourceReady()
     m_pendingResources--;
     disconnect(static_cast<cResource*>(sender()), &cResource::registerRdy, this, &cCOM5003dServer::onResourceReady);
     if(m_pendingResources == 0) {
-        EthSettings *ethSettings = m_settings->getEthSettings();
+        EthSettingsPtr ethSettings = m_settings->getEthSettings();
         m_protoBufServer.startServer(ethSettings->getPort(EthSettings::protobufserver));
         openTelnetScpi();
     }

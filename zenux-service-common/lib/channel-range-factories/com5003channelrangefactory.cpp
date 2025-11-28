@@ -3,7 +3,7 @@
 #include "com5003sensechannel.h"
 #include <cmath>
 
-QList<SenseChannelCommon *> COM5003ChannelRangeFactory::createChannelAndRanges(cSenseSettings *senseSettings,
+QList<SenseChannelCommon *> COM5003ChannelRangeFactory::createChannelAndRanges(cSenseSettingsPtr senseSettings,
                                                                                AdjDataPtr adjData,
                                                                                std::shared_ptr<cSCPI> scpi,
                                                                                AbstractFactoryI2cCtrlPtr ctrlFactory)

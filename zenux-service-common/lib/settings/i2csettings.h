@@ -3,6 +3,7 @@
 
 #include <xmlsettings.h>
 #include <QString>
+#include <memory>
 
 namespace i2cSettings
 {
@@ -54,5 +55,6 @@ protected:
     quint8 m_nClampFlashAdr;
 };
 
+typedef std::shared_ptr<I2cSettings> I2cSettingsPtr;
 
 #endif // I2CSETTINGS_H

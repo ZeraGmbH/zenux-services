@@ -3,7 +3,7 @@
 #include "zscpi_response_definitions.h"
 
 Mt310s2SenseInterface::Mt310s2SenseInterface(std::shared_ptr<cSCPI> scpiInterface,
-                                             cSenseSettings* senseSettings,
+                                             cSenseSettingsPtr senseSettings,
                                              EepromI2cDeviceInterfacePtr adjMemory,
                                              SystemInfo *systemInfo,
                                              AbstractChannelRangeFactoryPtr rangeFactory,

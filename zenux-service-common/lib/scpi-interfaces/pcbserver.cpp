@@ -38,17 +38,22 @@ std::shared_ptr<cSCPI> PCBServer::getSCPIInterface()
 
 QString PCBServer::getName()
 {
-    return m_settings->getServerParams().name;
+    return m_settings->getServerParams().getNameReported();
 }
 
 QString PCBServer::getVersion()
 {
-    return m_settings->getServerParams().version;
+    return m_settings->getServerParams().getVersionReported();
 }
 
-const I2cSettings *PCBServer::getI2cSettings() const
+I2cSettingsPtr PCBServer::getI2cSettings() const
 {
     return m_settings->getI2cSettings();
+}
+
+cSenseSettingsPtr PCBServer::getSenseSettings() const
+{
+    return m_settings->getSenseSettings();
 }
 
 void PCBServer::connectProtoConnectionSignals()
@@ -74,7 +79,7 @@ void PCBServer::executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd)
 
 void PCBServer::openTelnetScpi()
 {
-    EthSettings *ethSettings = m_settings->getEthSettings();
+    EthSettingsPtr ethSettings = m_settings->getEthSettings();
     if (ethSettings->isSCPIactive()) {
         connect(&m_telnetServer, &ConsoleServer::sigLinesReceived,
                 this, &PCBServer::onTelnetReceived);

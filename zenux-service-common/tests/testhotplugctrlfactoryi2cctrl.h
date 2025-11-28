@@ -8,14 +8,14 @@
 class TestHotPlugCtrlFactoryI2cCtrl : public TestFactoryI2cCtrl
 {
 public:
-    TestHotPlugCtrlFactoryI2cCtrl(std::shared_ptr<I2cSettings> i2cSettings,
-                                  std::shared_ptr<cSenseSettings> senseSettings);
+    TestHotPlugCtrlFactoryI2cCtrl(I2cSettingsPtr i2cSettings,
+                                  cSenseSettingsPtr senseSettings);
     I2cCtrlBootloaderPtr getBootloaderController(ControllerTypes ctrlType, qint8 muxChannel = -1) override;
     I2cCtrlCommonInfoPtrUnique getCommonInfoController(ControllerTypes ctrlType, qint8 muxChannel = -1) override;
 
 private:
-    std::shared_ptr<I2cSettings> m_i2cSettings;
-    std::shared_ptr<cSenseSettings> m_senseSettings;
+    I2cSettingsPtr m_i2cSettings;
+    cSenseSettingsPtr m_senseSettings;
 };
 
 typedef std::shared_ptr<TestHotPlugCtrlFactoryI2cCtrl> TestHotPlugCtrlFactoryI2cCtrlPtr;

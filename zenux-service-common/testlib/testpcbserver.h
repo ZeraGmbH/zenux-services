@@ -19,7 +19,6 @@ public:
     ~TestPcbServer();
     Zera::XMLConfig::cReader *getConfigReader();
     RMConnection* getRmConnection();
-    void setXmlSettings(XmlSettingsList xmlSettings);
     // Note: add interface either to resources ot scpi connections - not both
     void setResources(ResourcesList resources);
     void setScpiConnections(ScpiConnectionList scpiConnections);
@@ -28,12 +27,10 @@ signals:
     void sigServerIsSetUp();
 
 private slots:
-    void doConfiguration();
     void doSetupServer();
     void doConnect2RM();
     void doIdentAndRegister();
 private:
-    XmlSettingsList m_xmlSettings;
     ResourcesList m_resources;
     ScpiConnectionList m_scpiConnecttionsAddedFromExtern;
     int m_resourcesToConnect = 0;

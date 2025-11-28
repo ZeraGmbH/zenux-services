@@ -7,12 +7,12 @@
 class DemoI2cCtrlPll : public AbstractI2cCtrlPll
 {
 public:
-    DemoI2cCtrlPll(SamplingSettings* samplingSettings, quint8& pllChannel);
+    DemoI2cCtrlPll(SamplingSettingsPtr samplingSettings, quint8& pllChannel);
     ZeraMControllerIo::atmelRM setPLLChannel(quint8 chn) override;
     ZeraMControllerIo::atmelRM readPLLChannel(quint8& chn) override;
 private:
     void setSimulPllDisplay(quint8 chn);
-    SamplingSettings* m_samplingSettings;
+    SamplingSettingsPtr m_samplingSettings;
     quint8& m_pllChannel;
 };
 

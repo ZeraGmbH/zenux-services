@@ -40,7 +40,7 @@ private:
     void createServers();
     Zera::XMLConfig::cReader m_configReader;
     std::shared_ptr<TestI2cSettings> m_i2cSettings;
-    std::shared_ptr<cSenseSettings> m_senseSettings;
+    cSenseSettingsPtr m_senseSettings;
 
     TestHotPlugCtrlFactoryI2cCtrlPtr m_ctrlFactory;
     std::unique_ptr<ResmanRunFacade> m_resman;

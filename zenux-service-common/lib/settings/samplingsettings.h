@@ -2,6 +2,7 @@
 #define SAMPLINGSETTINGS_H
 
 #include <xmlsettings.h>
+#include <memory>
 
 class SamplingSettings : public XMLSettings
 {
@@ -19,5 +20,7 @@ public slots:
 private:
     QList<ChannelSettings*> m_ChannelSettingsList;
 };
+
+typedef std::shared_ptr<SamplingSettings> SamplingSettingsPtr;
 
 #endif // SAMPLINGSETTINGS_H

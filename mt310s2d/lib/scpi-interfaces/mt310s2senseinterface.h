@@ -9,7 +9,7 @@ class Mt310s2SenseInterface : public SenseInterfaceCommon
 public:
     // MT specifics only
     Mt310s2SenseInterface(std::shared_ptr<cSCPI> scpiInterface,
-                          cSenseSettings *senseSettings,
+                          cSenseSettingsPtr senseSettings,
                           EepromI2cDeviceInterfacePtr adjMemory,
                           SystemInfo *systemInfo,
                           AbstractChannelRangeFactoryPtr rangeFactory,

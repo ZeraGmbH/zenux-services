@@ -22,10 +22,13 @@ static SettingsContainerPtr getSettingsContainer(const QString &serviceName)
 {
     SettingsContainer::TServiceConfig config = SettingsContainer::getServiceConfig(serviceName);
     const QString dirName = "/etc/zera/" + serviceName + "/";
-    ServerParams defaultParams { ServerName,
-                               ServerVersion,
-                               dirName + config.xsdFileName,
-                               dirName + config.xmlFileName};
+    ServerParams defaultParams {
+        8,
+        ServerName,
+        ServerVersion,
+        dirName + config.xsdFileName,
+        dirName + config.xmlFileName
+    };
     if(TESTMODE)
         defaultParams = MockServerParamGenerator::createParams(serviceName);
     return std::make_unique<SettingsContainer>(defaultParams);
@@ -42,7 +45,7 @@ static std::unique_ptr<cSenseSettings> getSenseSettings(const QString &xmlFileNa
 
 static AbstractFactoryI2cCtrlPtr getAndPrepareClampFactory(const QString &serviceName)
 {
-    std::unique_ptr<cSenseSettings> senseSettings = getSenseSettings(getSettingsContainer(serviceName)->getServerParams().xmlFile);
+    std::unique_ptr<cSenseSettings> senseSettings = getSenseSettings(getSettingsContainer(serviceName)->getServerParams().getXmlFile());
     const QList<SenseSystem::cChannelSettings*>& channelSettings = senseSettings->getChannelSettings();
     if(TESTMODE) {
         AbstractFactoryI2cCtrlPtr ctrlFactory = std::make_shared<DemoFactoryI2cCtrl>(getSettingsContainer(serviceName));
@@ -63,7 +66,7 @@ static QStringList getI2cMuxerValues(const QString &serviceName)
     QStringList channelAliasStrings;
     quint16 bitmaskAvailable;
     if (clampController->readClampStatus(bitmaskAvailable) == ZeraMControllerIo::cmddone) {
-        std::unique_ptr<cSenseSettings> senseSettings = getSenseSettings(getSettingsContainer(serviceName)->getServerParams().xmlFile);
+        std::unique_ptr<cSenseSettings> senseSettings = getSenseSettings(getSettingsContainer(serviceName)->getServerParams().getXmlFile());
         const QList<SenseSystem::cChannelSettings*>& channelSettings = senseSettings->getChannelSettings();
         for (const SenseSystem::cChannelSettings* channelSetting : channelSettings) {
             if (bitmaskAvailable & (1<<channelSetting->m_nPluggedBit)) {

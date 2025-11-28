@@ -3,7 +3,7 @@
 #include "zscpi_response_definitions.h"
 
 Com5003SenseInterface::Com5003SenseInterface(std::shared_ptr<cSCPI> scpiInterface,
-                                             cSenseSettings *senseSettings,
+                                             cSenseSettingsPtr senseSettings,
                                              EepromI2cDeviceInterfacePtr adjMemory,
                                              SystemInfo *systemInfo,
                                              AbstractChannelRangeFactoryPtr rangeFactory,

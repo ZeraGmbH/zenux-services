@@ -24,7 +24,7 @@ void test_serverunregisternotifier::init()
 {
     QFETCH_GLOBAL(QString, serviceNameForAlternateDevice);
     SettingsContainer::TServiceConfig config = SettingsContainer::getServiceConfig(serviceNameForAlternateDevice);
-    ServerParams params {"foo", "0", QStringLiteral(CONFIG_SOURCES_MT310S2D) + "/" + config.xsdFileName, QStringLiteral(CONFIG_SOURCES_MT310S2D) + "/" + config.xmlFileName};
+    ServerParams params {8, "foo", "0", QStringLiteral(CONFIG_SOURCES_MT310S2D) + "/" + config.xsdFileName, QStringLiteral(CONFIG_SOURCES_MT310S2D) + "/" + config.xmlFileName};
     
     m_adjustmentStatusNull = std::make_unique<TestAdjustmentStatusInterfaceNull>();
     m_ctrlFactory = std::make_shared<TestFactoryI2cCtrl>(true);
@@ -37,7 +37,7 @@ void test_serverunregisternotifier::init()
     connect(m_xmlConfigReader.get(), &Zera::XMLConfig::cReader::valueChanged, m_foutSettings.get(), &FOutSettings::configXMLInfo);
     m_accSettings = std::make_unique<AccumulatorSettings>(m_xmlConfigReader.get());
     connect(m_xmlConfigReader.get(), &Zera::XMLConfig::cReader::valueChanged, m_accSettings.get(), &AccumulatorSettings::configXMLInfo);
-    m_xmlConfigReader->loadXMLFile(params.xmlFile);
+    m_xmlConfigReader->loadXMLFile(params.getXmlFile());
 }
 
 ScpiDelegate *test_serverunregisternotifier::getDelegate(QString cmd)

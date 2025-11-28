@@ -34,7 +34,7 @@ void test_authorizationnotifier::init()
     QFETCH_GLOBAL(QString, serviceNameForAlternateDevice);
     SettingsContainer::TServiceConfig config = SettingsContainer::getServiceConfig(serviceNameForAlternateDevice);
 
-    static ServerParams params {"foo", "0", QStringLiteral(CONFIG_SOURCES_MT310S2D) + "/" + config.xsdFileName, QStringLiteral(CONFIG_SOURCES_MT310S2D) + "/" + config.xmlFileName};
+    static ServerParams params {8, "foo", "0", QStringLiteral(CONFIG_SOURCES_MT310S2D) + "/" + config.xsdFileName, QStringLiteral(CONFIG_SOURCES_MT310S2D) + "/" + config.xmlFileName};
     AbstractFactoryI2cCtrlPtr ctrlFactory = std::make_shared<TestFactoryI2cCtrl>(false);
 
     m_PermissionCtrl = ctrlFactory->getPermissionCheckController();

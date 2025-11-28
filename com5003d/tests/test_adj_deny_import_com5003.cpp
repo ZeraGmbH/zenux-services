@@ -25,7 +25,7 @@ void test_adj_deny_import_com5003::cleanup()
 void test_adj_deny_import_com5003::loadEEpromWithStoredNamesAndVersions()
 {
     std::unique_ptr<SettingsContainer> settings = std::make_unique<SettingsContainer>(MockServerParamGenerator::createParams("com5003d"));
-    const I2cSettings *i2cSettings = settings->getI2cSettings();
+    I2cSettingsPtr i2cSettings = settings->getI2cSettings();
     MockEepromDevice::setData({i2cSettings->getDeviceNode(), i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress)},
                               TestLogHelpers::loadFile(":/export_internal_modified.eeprom"));
     setupServers();
@@ -40,7 +40,7 @@ void test_adj_deny_import_com5003::loadEEpromWithStoredNamesAndVersions()
 void test_adj_deny_import_com5003::loadEEpromAndDenyDifferentDeviceName()
 {
     std::unique_ptr<SettingsContainer> settings = std::make_unique<SettingsContainer>(MockServerParamGenerator::createParams("com5003d"));
-    const I2cSettings *i2cSettings = settings->getI2cSettings();
+    const I2cSettingsPtr i2cSettings = settings->getI2cSettings();
     MockEepromDevice::setData({i2cSettings->getDeviceNode(), i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress)},
                               TestLogHelpers::loadFile(":/export_internal_modified.eeprom"));
     setupServers();

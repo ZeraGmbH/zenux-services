@@ -3,7 +3,7 @@
 #include "mtxxxs2sensechannel.h"
 #include <cmath>
 
-QList<SenseChannelCommon *> MT310s2ChannelRangeFactory::createChannelAndRanges(cSenseSettings *senseSettings,
+QList<SenseChannelCommon *> MT310s2ChannelRangeFactory::createChannelAndRanges(cSenseSettingsPtr senseSettings,
                                                                                AdjDataPtr adjData,
                                                                                std::shared_ptr<cSCPI> scpi,
                                                                                AbstractFactoryI2cCtrlPtr ctrlFactory)
