@@ -158,7 +158,8 @@ QString HotplugControllerInterface::emobWriteData(const QString &scpiCmd)
             HotControllers controller = it.value();
             if(controller.m_controllerType == EmobControllerTypes::EMOB) {
                 if(!parameter.isEmpty()) {
-                    QByteArray ba = parameter.toUtf8();
+                    QByteArray ba;
+                    ba.append(char(0x00));
                     ZeraMControllerIoTemplate::atmelRM ctrlRet = emobControllers[channelMName].m_emobController->writeData(ba);
                     if (ctrlRet != ZeraMControllerIo::cmddone)
                         return ZSCPI::scpiAnswer[ZSCPI::errexec];
