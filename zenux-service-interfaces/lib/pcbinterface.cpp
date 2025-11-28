@@ -377,6 +377,17 @@ quint32 cPCBInterface::getAccuStateOfCharge()
     return d->getAccuStateOfCharge();
 }
 
+quint32 cPCBInterface::readData()
+{
+    Q_D(cPCBInterface);
+    return d->readData();
+}
+
+quint32 cPCBInterface::writeData(QString par)
+{
+    Q_D(cPCBInterface);
+    return d->writeData(par);
+}
 
 quint32 cPCBInterface::transparentCommand(QString cmd)
 {

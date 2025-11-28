@@ -78,6 +78,9 @@ enum pcbcommands
     getaccumulatorsoc,
     getChannelsConnected,
 
+    readData,
+    writeData,
+
     transparentcommand
 };
 }
@@ -172,6 +175,10 @@ public:
     // all commands to accumulator interface
     quint32 getAccumulatorStatus();
     quint32 getAccuStateOfCharge();
+
+    //all commands to hotplugcontroller interface
+    quint32 readData();
+    quint32 writeData(QString par);
 
     // sending a transparent command
     quint32 transparentCommand(QString cmd);
