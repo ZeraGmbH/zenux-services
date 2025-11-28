@@ -28,10 +28,9 @@ public:
 
     // Test insights
     const QList<cDspVar*> getVars() const;
+    void setData(QVector<float> data);
 private:
     cDspVar* findVar(QString varName);
-    friend class MockDspInterface;
-    void setData(QVector<float> data);
 
     QString m_handleName;
     QList<cDspVar*> DspVarList;
