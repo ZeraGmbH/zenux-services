@@ -253,19 +253,23 @@ QString AdjRangeScpi::scpiCmdComputeJustData(QString& scpiInput)
 {
     cSCPICommand cmd = scpiInput;
     if(cmd.isCommand(1) && (cmd.getParam(0) == "")) {
-        bool enable;
-        if(m_permissions.funcAllowAdjCompute(enable)) {
-            if (enable) {
-                m_gainCorrection.getAdjItem()->calcCoefficientsFromNodes();
-                m_phaseCorrection.getAdjItem()->calcCoefficientsFromNodes();
-                m_offsetCorrection.getAdjItem()->calcCoefficientsFromNodes();
-                return ZSCPI::scpiAnswer[ZSCPI::ack];
-            }
-            else
-                return ZSCPI::scpiAnswer[ZSCPI::erraut];
+        bool atLeastOneComputed = false;
+        bool enable = false;
+        if (m_permissions.funcAllowAdjGain(enable) && enable) {
+            m_gainCorrection.getAdjItem()->calcCoefficientsFromNodes();
+            atLeastOneComputed = true;
         }
-        else
-            return ZSCPI::scpiAnswer[ZSCPI::errexec];
+        if (m_permissions.funcAllowAdjPhase(enable) && enable) {
+            m_phaseCorrection.getAdjItem()->calcCoefficientsFromNodes();
+            atLeastOneComputed = true;
+        }
+        if (m_permissions.funcAllowAdjOffset(enable) && enable) {
+            m_offsetCorrection.getAdjItem()->calcCoefficientsFromNodes();
+            atLeastOneComputed = true;
+        }
+        if(atLeastOneComputed)
+            return ZSCPI::scpiAnswer[ZSCPI::ack];
+        return ZSCPI::scpiAnswer[ZSCPI::erraut];
     }
     else
         return ZSCPI::scpiAnswer[ZSCPI::nak];
@@ -275,17 +279,9 @@ QString AdjRangeScpi::scpiCmdInitJustData(QString &scpiInput)
 {
     cSCPICommand cmd = scpiInput;
     if (cmd.isCommand(1) && (cmd.getParam(0) == "")) {
-        bool enable;
-        if(m_permissions.funcAllowAdjInit(enable)) {
-            if (enable) {
-                m_adjGroupData.initGroup();
-                return ZSCPI::scpiAnswer[ZSCPI::ack];
-            }
-            else
-                return ZSCPI::scpiAnswer[ZSCPI::erraut];
-        }
-        else
-            return ZSCPI::scpiAnswer[ZSCPI::errexec];
+        if(initJustData())
+            return ZSCPI::scpiAnswer[ZSCPI::ack];
+        return ZSCPI::scpiAnswer[ZSCPI::erraut];
     }
     else
         return ZSCPI::scpiAnswer[ZSCPI::nak];
@@ -296,16 +292,42 @@ quint8 AdjRangeScpi::getAdjustmentStatus80Mask()
     return m_gainCorrection.getStatus() & m_phaseCorrection.getStatus() & m_offsetCorrection.getStatus();
 }
 
-void AdjRangeScpi::initJustData()
+bool AdjRangeScpi::initJustData()
 {
-    m_adjGroupData.initGroup();
+    bool atLeastOneTouched = false;
+    bool enable = false;
+    if (m_permissions.funcAllowAdjGain(enable) && enable) {
+        m_adjGroupData.initGain();
+        atLeastOneTouched = true;
+    }
+    if (m_permissions.funcAllowAdjPhase(enable) && enable) {
+        m_adjGroupData.initPhase();
+        atLeastOneTouched = true;
+    }
+    if (m_permissions.funcAllowAdjOffset(enable) && enable) {
+        m_adjGroupData.initOffset();
+        atLeastOneTouched = true;
+    }
+    return atLeastOneTouched;
 }
 
-void AdjRangeScpi::computeJustData()
+bool AdjRangeScpi::computeJustData()
 {
-    m_gainCorrection.getAdjItem()->calcCoefficientsFromNodes();
-    m_phaseCorrection.getAdjItem()->calcCoefficientsFromNodes();
-    m_offsetCorrection.getAdjItem()->calcCoefficientsFromNodes();
+    bool atLeastOneComputed = false;
+    bool enable = false;
+    if (m_permissions.funcAllowAdjGain(enable) && enable) {
+        m_gainCorrection.getAdjItem()->calcCoefficientsFromNodes();
+        atLeastOneComputed = true;
+    }
+    if (m_permissions.funcAllowAdjPhase(enable) && enable) {
+        m_phaseCorrection.getAdjItem()->calcCoefficientsFromNodes();
+        atLeastOneComputed = true;
+    }
+    if (m_permissions.funcAllowAdjOffset(enable) && enable) {
+        m_offsetCorrection.getAdjItem()->calcCoefficientsFromNodes();
+        atLeastOneComputed = true;
+    }
+    return atLeastOneComputed;
 }
 
 double AdjRangeScpi::getGainCorrectionTotal(double par)

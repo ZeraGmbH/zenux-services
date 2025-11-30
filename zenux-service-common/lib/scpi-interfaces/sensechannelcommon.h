@@ -35,8 +35,8 @@ public:
     void setUnit(const QString &s);
     bool isAvail();
 
-    void initJustData();
-    void computeJustData();
+    bool initJustData();
+    bool computeJustData();
     void initSCPIConnection(QString leadingNodes) override;
 
     void setMMode(int mode);

@@ -458,8 +458,6 @@ void cClamp::initClamp(quint8 type)
     m_nType = type;
     AdjRangeScpiClamp* clampJustData;
     PermissionStructAdj permissionsOffsetAllowedAlways;
-    permissionsOffsetAllowedAlways.funcAllowAdjInit = PermissionFunctions::allowAlways;
-    permissionsOffsetAllowedAlways.funcAllowAdjCompute = PermissionFunctions::allowAlways;
     permissionsOffsetAllowedAlways.funcAllowAdjOffset = PermissionFunctions::allowAlways;
     const quint16 acClampFlags = m_pSenseInterface->rangeFlagsExtern();
     const quint16 dcClampMask = m_pSenseInterface->rangeFlagsExternDc();

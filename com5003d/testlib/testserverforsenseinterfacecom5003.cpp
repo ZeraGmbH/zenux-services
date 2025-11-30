@@ -9,6 +9,7 @@ TestServerForSenseInterfaceCom5003::TestServerForSenseInterfaceCom5003(AbstractF
                                                                        bool systemInfoMock) :
     TestPcbServer(serviceNameForAlternateDevice, tcpNetworkFactory)
 {
+    PermissionFunctions::setPermissionCtrlFactory(ctrlFactory);
     if(systemInfoMock)
         m_systemInfo = std::make_unique<TestSystemInfo>(ctrlFactory);
     else

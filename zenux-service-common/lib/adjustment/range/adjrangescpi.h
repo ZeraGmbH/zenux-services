@@ -45,20 +45,8 @@ public:
     double getOffsetCorrectionSingle(double par);
 
     quint8 getAdjustmentStatus80Mask();
-    // We ruined dc clamp 'on-the-fly DC offset adjustment' by da7ab853c5f1b70d888a5974e30fe63d923e90be
-    // Not only that that 'on-the-fly DC offset adjustment' was sold to us as MANDATORY (but WinSAM
-    // scripts were never implemented), it turned into a useful way to (manually) test power modules
-    //
-    // To fix it takes:
-    // * TESTS on schnubbel protected ranges (internal/clamps) / on the fly allowed clamps
-    // * Move permission query from scpiCmdInitJustData()/scpiCmdComputeJustData() into initJustData() / computeJustData()
-    // * Make these methods return ZSCPI enum value
-    // * Code corrections on init adj / compute caller loops to break on error and return enum
-    // * Remove global permission query in SenseInterfaceCommon::scpiInitSenseAdjDataAllChannelRanges
-    //   and SenseInterfaceCommon::scpiComputeSenseAdjDataAllChannelRanges
-    // * finally make adjustment module handle errors so the caller gets aware...
-    void initJustData();
-    void computeJustData();
+    bool initJustData();
+    bool computeJustData();
 
 protected:
     void executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd) override;

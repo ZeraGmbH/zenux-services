@@ -102,14 +102,14 @@ AdjRangeScpi *SenseRangeCommon::getJustData()
     return m_justdata;
 }
 
-void SenseRangeCommon::initJustData()
+bool SenseRangeCommon::initJustData()
 {
-    m_justdata->initJustData();
+    return m_justdata->initJustData();
 }
 
-void SenseRangeCommon::computeJustData()
+bool SenseRangeCommon::computeJustData()
 {
-    m_justdata->computeJustData();
+    return m_justdata->computeJustData();
 }
 
 void SenseRangeCommon::executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd)

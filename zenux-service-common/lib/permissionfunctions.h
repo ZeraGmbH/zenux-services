@@ -4,7 +4,9 @@
 #include "abstractfactoryi2cctrl.h"
 #include <functional>
 
-typedef std::function<bool (bool &)> FuncPermissionCheck;
+// return value: permission check succeeded
+// param enable: yes we are allowed
+typedef std::function<bool (bool &enable)> FuncPermissionCheck;
 
 class PermissionFunctions
 {
@@ -18,11 +20,9 @@ private:
 
 struct PermissionStructAdj
 {
-    FuncPermissionCheck funcAllowAdjInit = PermissionFunctions::checkControllerPin;
     FuncPermissionCheck funcAllowAdjOffset = PermissionFunctions::checkControllerPin;
     FuncPermissionCheck funcAllowAdjGain = PermissionFunctions::checkControllerPin;
     FuncPermissionCheck funcAllowAdjPhase = PermissionFunctions::checkControllerPin;
-    FuncPermissionCheck funcAllowAdjCompute = PermissionFunctions::checkControllerPin;
 };
 
 #endif // PERMISSIONFUNCTIONS_H

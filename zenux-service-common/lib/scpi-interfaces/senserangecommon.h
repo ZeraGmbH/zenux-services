@@ -32,8 +32,8 @@ public:
 
     quint8 getAdjustmentStatus80Mask();
     AdjRangeScpi *getJustData();
-    void initJustData();
-    void computeJustData();
+    bool initJustData();
+    bool computeJustData();
 
 protected:
     bool m_bAvail; // range io avail or not

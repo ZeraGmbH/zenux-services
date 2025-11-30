@@ -106,12 +106,6 @@ bool SenseChannelCommon::isAvail()
     return m_bAvail;
 }
 
-void SenseChannelCommon::initJustData()
-{
-    for(auto range : qAsConst(m_RangeList))
-        range->initJustData();
-}
-
 void SenseChannelCommon::initSCPIConnection(QString leadingNodes)
 {
     ensureTrailingColonOnNonEmptyParentNodes(leadingNodes);
@@ -201,10 +195,24 @@ void SenseChannelCommon::executeProtoScpi(int cmdCode, ProtonetCommandPtr protoC
         emit cmdExecutionDone(protoCmd);
 }
 
-void SenseChannelCommon::computeJustData()
+bool SenseChannelCommon::initJustData()
 {
-    for(auto range : qAsConst(m_RangeList))
-        range->computeJustData();
+    bool atLeastOneComputed = false;
+    for(auto range : qAsConst(m_RangeList)) {
+        if(range->initJustData())
+            atLeastOneComputed = true;
+    }
+    return atLeastOneComputed;
+}
+
+bool SenseChannelCommon::computeJustData()
+{
+    bool atLeastOneComputed = false;
+    for(auto range : qAsConst(m_RangeList)) {
+        if(range->computeJustData())
+            atLeastOneComputed = true;
+    }
+    return atLeastOneComputed;
 }
 
 QString SenseChannelCommon::scpiReadAlias(const QString &scpi)

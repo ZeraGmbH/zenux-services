@@ -93,10 +93,14 @@ SenseRangeCommon *SenseInterfaceCommon::getRange(const QString &channelName, con
     return nullptr;
 }
 
-void SenseInterfaceCommon::computeSenseAdjData()
+bool SenseInterfaceCommon::computeSenseAdjData()
 {
-    for(auto channel : qAsConst(m_channelList))
-        channel->computeJustData();
+    bool atLeastOneComputed = false;
+    for(auto channel : qAsConst(m_channelList)) {
+        if(channel->computeJustData())
+            atLeastOneComputed = true;
+    }
+    return atLeastOneComputed;
 }
 
 void SenseInterfaceCommon::registerResource(RMConnection *rmConnection, quint16 port)
@@ -544,15 +548,9 @@ QString SenseInterfaceCommon::scpiComputeSenseAdjDataAllChannelRanges(const QStr
 {
     cSCPICommand cmd = scpi;
     if ( cmd.isCommand(1) && (cmd.getParam(0) == "") ) {
-        bool enable;
-        if (m_ctrlFactory->getPermissionCheckController()->hasPermission(enable)) {
-            if (enable) {
-                computeSenseAdjData();
-                return ZSCPI::scpiAnswer[ZSCPI::ack];
-            }
-            return ZSCPI::scpiAnswer[ZSCPI::erraut];
-        }
-        return ZSCPI::scpiAnswer[ZSCPI::errexec];
+        if (computeSenseAdjData())
+            return ZSCPI::scpiAnswer[ZSCPI::ack];
+        return ZSCPI::scpiAnswer[ZSCPI::erraut];
     }
     return ZSCPI::scpiAnswer[ZSCPI::nak];
 }

@@ -11,6 +11,7 @@ TestServerForSenseInterfaceMt310s2::TestServerForSenseInterfaceMt310s2(AbstractF
                                                                        bool systemInfoMock) :
     TestPcbServer(serviceNameForAlternateDevice, tcpNetworkFactory)
 {
+    PermissionFunctions::setPermissionCtrlFactory(ctrlFactory);
     if(systemInfoMock)
         m_systemInfo = std::make_unique<Mt310s2SystemInfoMock>(ctrlFactory);
     else

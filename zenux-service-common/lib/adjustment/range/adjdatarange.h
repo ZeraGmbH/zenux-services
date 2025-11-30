@@ -7,7 +7,9 @@ class AdjDataRange
 {
 public:
     AdjDataRange();
-    void initGroup();
+    void initGain();
+    void initPhase();
+    void initOffset();
     AdjDataItem m_gainAdjData;
     AdjDataItem m_phasAdjData;
     AdjDataItem m_offsAdjData;
