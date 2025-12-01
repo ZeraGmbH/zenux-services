@@ -17,10 +17,7 @@ enum HotplugCommands
     cmdEmobReadErrorStatus,
     cmdEmobClearErrorStatus,
     cmdEmobReadData,
-    cmdEmobWriteData,
-
-    cmdEmobReadData1,
-    cmdEmobWriteData1
+    cmdEmobWriteData
 };
 
 void HotplugControllerInterface::initSCPIConnection(QString leadingNodes)
@@ -32,9 +29,6 @@ void HotplugControllerInterface::initSCPIConnection(QString leadingNodes)
     addDelegate(QString("%1SYSTEM:EMOB").arg(leadingNodes), "CLEARERROR", SCPI::isCmd, m_scpiInterface, cmdEmobClearErrorStatus);
     addDelegate(QString("%1SYSTEM:EMOB").arg(leadingNodes), "READDATA", SCPI::isQuery, m_scpiInterface, cmdEmobReadData);
     addDelegate(QString("%1SYSTEM:EMOB").arg(leadingNodes), "WRITEDATA", SCPI::isCmd, m_scpiInterface, cmdEmobWriteData);
-
-    addDelegate(QString("%1SYSTEM:EMO1").arg(leadingNodes), "READDATA", SCPI::isQuery, m_scpiInterface, cmdEmobReadData1);
-    addDelegate(QString("%1SYSTEM:EMO1").arg(leadingNodes), "WRITEDATA", SCPI::isCmd, m_scpiInterface, cmdEmobWriteData1);
 }
 
 QByteArray HotplugControllerInterface::decodeHexString(const QString &encoded)
@@ -83,13 +77,7 @@ void HotplugControllerInterface::executeProtoScpi(int cmdCode, ProtonetCommandPt
         protoCmd->m_sOutput = emobReadDataForExchange(protoCmd->m_sInput);
         break;
     case cmdEmobWriteData:
-        protoCmd->m_sOutput = emobWriteData(protoCmd->m_sInput);
-        break;
-    case cmdEmobReadData1:
-        protoCmd->m_sOutput = emobReadDataForExchange1(protoCmd->m_sInput);
-        break;
-    case cmdEmobWriteData1:
-        protoCmd->m_sOutput = emobWriteData1(protoCmd->m_sInput);
+        protoCmd->m_sOutput = emobWriteDataForExchange(protoCmd->m_sInput);
         break;
     }
     if (protoCmd->m_bwithOutput)
@@ -162,56 +150,6 @@ QString HotplugControllerInterface::emobClearErrorStatus(const QString &scpiCmd)
     return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-QString HotplugControllerInterface::emobReadDataForExchange(const QString &scpiCmd)
-{
-    cSCPICommand cmd = scpiCmd;
-    if(cmd.isQuery()) {
-        HotControllerMap emobControllers = m_hotPluggableControllerContainer->getCurrentControllers();
-        for(auto it = emobControllers.begin(); it != emobControllers.end(); it++) {
-            QString channelMName = it.key();
-            HotControllers controller = it.value();
-            if(controller.m_controllerType == EmobControllerTypes::MT650e) {
-                ZeraMControllerIoTemplate::atmelRM ctrlRet = emobControllers[channelMName].m_emobController->readData(m_data);
-                if (ctrlRet != ZeraMControllerIo::cmddone)
-                    return ZSCPI::scpiAnswer[ZSCPI::errexec];
-                return QString(m_data);
-            }
-        }
-    }
-    return ZSCPI::scpiAnswer[ZSCPI::nak];
-}
-
-QString HotplugControllerInterface::emobWriteData(const QString &scpiCmd)
-{
-    cSCPICommand cmd = scpiCmd;
-    if(cmd.isCommand(1)) {
-        QString parameter = cmd.getParam(0);
-        HotControllerMap emobControllers = m_hotPluggableControllerContainer->getCurrentControllers();
-        for(auto it = emobControllers.begin(); it != emobControllers.end(); it++) {
-            QString channelMName = it.key();
-            HotControllers controller = it.value();
-            if(controller.m_controllerType == EmobControllerTypes::EMOB) {
-                if(!parameter.isEmpty()) {
-                    QByteArray ba;
-                    ba.append(char(0x00));
-                    ZeraMControllerIoTemplate::atmelRM ctrlRet = emobControllers[channelMName].m_emobController->writeData(ba);
-                    if (ctrlRet != ZeraMControllerIo::cmddone)
-                        return ZSCPI::scpiAnswer[ZSCPI::errexec];
-                    return ZSCPI::scpiAnswer[ZSCPI::ack];
-                }
-                else if(!m_data.isEmpty()) {
-                    ZeraMControllerIoTemplate::atmelRM ctrlRet = emobControllers[channelMName].m_emobController->writeData(m_data);
-                    if (ctrlRet != ZeraMControllerIo::cmddone)
-                        return ZSCPI::scpiAnswer[ZSCPI::errexec];
-                    return ZSCPI::scpiAnswer[ZSCPI::ack];
-                }
-                m_data.clear();
-            }
-        }
-    }
-    return ZSCPI::scpiAnswer[ZSCPI::nak];
-}
-
 QString HotplugControllerInterface::findEmobConnected(const QString &channelMNameScpiParam)
 {
     HotControllerMap emobControllers = m_hotPluggableControllerContainer->getCurrentControllers();
@@ -224,7 +162,7 @@ QString HotplugControllerInterface::findEmobConnected(const QString &channelMNam
     return QString();
 }
 
-QString HotplugControllerInterface::emobReadDataForExchange1(const QString &scpiCmd)
+QString HotplugControllerInterface::emobReadDataForExchange(const QString &scpiCmd)
 {
     cSCPICommand cmd = scpiCmd;
     if (cmd.isQuery(1)) {
@@ -243,7 +181,7 @@ QString HotplugControllerInterface::emobReadDataForExchange1(const QString &scpi
     return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-QString HotplugControllerInterface::emobWriteData1(const QString &scpiCmd)
+QString HotplugControllerInterface::emobWriteDataForExchange(const QString &scpiCmd)
 {
     cSCPICommand cmd = scpiCmd;
     if (cmd.isCommand(2)) {
