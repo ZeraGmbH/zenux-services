@@ -9,7 +9,6 @@
 #include "rmconnection.h"
 #include "senseinterfacecommon.h"
 #include "settingscontainer.h"
-#include "sensesettings.h"
 #include "hkinsettings.h"
 #include "scinsettings.h"
 #include "finsettings.h"

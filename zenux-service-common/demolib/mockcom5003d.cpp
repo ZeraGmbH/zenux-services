@@ -17,3 +17,8 @@ MockCom5003d::MockCom5003d(AbstractFactoryI2cCtrlPtr ctrlFactory,
         tcpNetworkFactory,
         SettingsContainer::createChannelRangeFactory("com5003d"));
 }
+
+cSenseSettingsPtr MockCom5003d::getSenseSettings() const
+{
+    return m_server->getSenseSettings();
+}

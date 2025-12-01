@@ -4,6 +4,7 @@
 #include "mt310s2d.h"
 #include "abstractmockallservices.h"
 #include "abstractfactoryi2cctrl.h"
+#include "sensesettings.h"
 #include <QMap>
 
 class MockMt310s2d : public QObject
@@ -15,6 +16,7 @@ public:
                  const QString &serviceNameForAlternateDevice,
                  const QString &alternateConfigXml = QString());
 
+    cSenseSettingsPtr getSenseSettings() const;
     void fireHotplugInterrupt(const AbstractMockAllServices::ChannelAliasHotplugDeviceNameMap &deviceMap);
     void addStandardEmobControllers(const QStringList &channelAliases);
     void addClamps(const QList<AbstractMockAllServices::clampParam> &clampParams);
