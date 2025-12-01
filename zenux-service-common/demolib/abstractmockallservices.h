@@ -2,6 +2,7 @@
 #define ABSTRACTMOCKALLSERVICES_H
 
 #include <QStringList>
+#include "hotpluggablecontrollercontainer.h"
 #include "clamp.h"
 
 class AbstractMockAllServices
@@ -13,7 +14,13 @@ public:
     // Full functional methods
     struct hotplugI2cBus {
         QString controllerName;
+        QVector<QByteArray> emobDataReceived = QVector<QByteArray>(MaxHotControllerCount);
         cClamp::ClampTypes clamp = cClamp::undefined;
+        hotplugI2cBus() = default;
+        hotplugI2cBus(const QString &controllerName, cClamp::ClampTypes clamp) {
+            this->controllerName = controllerName;
+            this->clamp = clamp;
+        }
     };
     typedef QMap<QString, hotplugI2cBus> ChannelAliasHotplugDeviceNameMap;
     virtual void fireHotplugInterrupt(const ChannelAliasHotplugDeviceNameMap &deviceMap) = 0;

@@ -5,6 +5,7 @@
 #include "reply.h"
 #include "controllerpersitentdata.h"
 #include "emobdefinitions.h"
+#include "mocki2cctrlemob.h"
 #include <timemachineobject.h>
 #include <QSignalSpy>
 #include <QTest>
@@ -146,9 +147,6 @@ void test_hotplug_scpi_cmd::readDataEmobIL1()
     m_mt310s2d->fireHotplugInterrupt(infoMap);
     TimeMachineObject::feedEventLoop();
 
-    QByteArray emobExchangeData = createTestEmobExchangeData();
-    ControllerPersitentData::getData().m_emobExchangeData = emobExchangeData;
-
     QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
     int msgNr = m_pcbIFace->scpiCommand("SYSTEM:EMOB:READDATA? m3;");
     TimeMachineObject::feedEventLoop();
@@ -157,7 +155,7 @@ void test_hotplug_scpi_cmd::readDataEmobIL1()
     QCOMPARE(responseSpy[0][0], QVariant(msgNr));
     QCOMPARE(responseSpy[0][1], QVariant(ack));
     QByteArray received = HotplugControllerInterface::decodeHexString(responseSpy[0][2].toString());
-    QCOMPARE(received, emobExchangeData);
+    QCOMPARE(received, MockI2cCtrlEMOB::getDefaultExchangeData());
 }
 
 void test_hotplug_scpi_cmd::readDataEmobIL1MissingParam()
@@ -184,16 +182,20 @@ void test_hotplug_scpi_cmd::readDataEmobIL1NotAvail()
     QCOMPARE(responseSpy[0][2], QVariant("nak"));
 }
 
-void test_hotplug_scpi_cmd::writeDataEmobIL1()
+void test_hotplug_scpi_cmd::writeDataEmobIL1Id1()
 {
+    const QString channelAlias = "IL1";
+    constexpr int otherEMOBId = 1;
     AbstractMockAllServices::ChannelAliasHotplugDeviceNameMap infoMap;
-    infoMap.insert("IL1", {"EMOB_MOCK-00V00", cClamp::undefined});
+    infoMap.insert(channelAlias, {"EMOB_MOCK-00V00", cClamp::undefined});
     m_mt310s2d->fireHotplugInterrupt(infoMap);
     TimeMachineObject::feedEventLoop();
 
     QByteArray emobExchangeData = createTestEmobExchangeData();
     QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
-    QString scpiCmd = QString("SYSTEM:EMOB:WRITEDATA m3;%1;").arg(HotplugControllerInterface::encodeDataToHex(emobExchangeData).join(","));
+    QString scpiCmd = QString("SYSTEM:EMOB:WRITEDATA m3;%1;%2;").
+                      arg(otherEMOBId).
+                      arg(HotplugControllerInterface::encodeDataToHex(emobExchangeData).join(","));
     int msgNr = m_pcbIFace->scpiCommand(scpiCmd);
     TimeMachineObject::feedEventLoop();
 
@@ -201,10 +203,59 @@ void test_hotplug_scpi_cmd::writeDataEmobIL1()
     QCOMPARE(responseSpy[0][0], QVariant(msgNr));
     QCOMPARE(responseSpy[0][1], QVariant(ack));
     QCOMPARE(responseSpy[0][2], QVariant("ack"));
-    QCOMPARE(ControllerPersitentData::getData().m_emobExchangeData, emobExchangeData);
+    int muxChannel = m_mt310s2d->getSenseSettings()->findChannelSettingByAlias1(channelAlias)->m_nMuxChannelNo;
+    QCOMPARE(ControllerPersitentData::getData().m_hotpluggedDevices[muxChannel].emobDataReceived[otherEMOBId], emobExchangeData);
 }
 
-void test_hotplug_scpi_cmd::writeDataEmobIL1MissingParam()
+void test_hotplug_scpi_cmd::writeDataEmobIL1Id3()
+{
+    const QString channelAlias = "IL1";
+    constexpr int otherEMOBId = 3;
+    AbstractMockAllServices::ChannelAliasHotplugDeviceNameMap infoMap;
+    infoMap.insert(channelAlias, {"EMOB_MOCK-00V00", cClamp::undefined});
+    m_mt310s2d->fireHotplugInterrupt(infoMap);
+    TimeMachineObject::feedEventLoop();
+
+    QByteArray emobExchangeData = createTestEmobExchangeData();
+    QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
+    QString scpiCmd = QString("SYSTEM:EMOB:WRITEDATA m3;%1;%2;").
+                      arg(otherEMOBId).
+                      arg(HotplugControllerInterface::encodeDataToHex(emobExchangeData).join(","));
+    int msgNr = m_pcbIFace->scpiCommand(scpiCmd);
+    TimeMachineObject::feedEventLoop();
+
+    QCOMPARE(responseSpy.count(), 1);
+    QCOMPARE(responseSpy[0][0], QVariant(msgNr));
+    QCOMPARE(responseSpy[0][1], QVariant(ack));
+    QCOMPARE(responseSpy[0][2], QVariant("ack"));
+    int muxChannel = m_mt310s2d->getSenseSettings()->findChannelSettingByAlias1(channelAlias)->m_nMuxChannelNo;
+    QCOMPARE(ControllerPersitentData::getData().m_hotpluggedDevices[muxChannel].emobDataReceived[otherEMOBId], emobExchangeData);
+}
+
+void test_hotplug_scpi_cmd::writeDataEmobIL1Id4Invalid()
+{
+    const QString channelAlias = "IL1";
+    constexpr int otherEMOBId = 4;
+    AbstractMockAllServices::ChannelAliasHotplugDeviceNameMap infoMap;
+    infoMap.insert(channelAlias, {"EMOB_MOCK-00V00", cClamp::undefined});
+    m_mt310s2d->fireHotplugInterrupt(infoMap);
+    TimeMachineObject::feedEventLoop();
+
+    QByteArray emobExchangeData = createTestEmobExchangeData();
+    QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
+    QString scpiCmd = QString("SYSTEM:EMOB:WRITEDATA m3;%1;%2;").
+                      arg(otherEMOBId).
+                      arg(HotplugControllerInterface::encodeDataToHex(emobExchangeData).join(","));
+    int msgNr = m_pcbIFace->scpiCommand(scpiCmd);
+    TimeMachineObject::feedEventLoop();
+
+    QCOMPARE(responseSpy.count(), 1);
+    QCOMPARE(responseSpy[0][0], QVariant(msgNr));
+    QCOMPARE(responseSpy[0][1], QVariant(nack));
+    QCOMPARE(responseSpy[0][2], QVariant("nak"));
+}
+
+void test_hotplug_scpi_cmd::writeDataEmobMissingParam()
 {
     QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
     int msgNr = m_pcbIFace->scpiCommand("SYSTEM:EMOB:WRITEDATA;");
@@ -217,6 +268,15 @@ void test_hotplug_scpi_cmd::writeDataEmobIL1MissingParam()
 
     responseSpy.clear();
     msgNr = m_pcbIFace->scpiCommand("SYSTEM:EMOB:WRITEDATA m3;");
+    TimeMachineObject::feedEventLoop();
+
+    QCOMPARE(responseSpy.count(), 1);
+    QCOMPARE(responseSpy[0][0], QVariant(msgNr));
+    QCOMPARE(responseSpy[0][1], QVariant(nack));
+    QCOMPARE(responseSpy[0][2], QVariant("nak"));
+
+    responseSpy.clear();
+    msgNr = m_pcbIFace->scpiCommand("SYSTEM:EMOB:WRITEDATA m3;1;");
     TimeMachineObject::feedEventLoop();
 
     QCOMPARE(responseSpy.count(), 1);

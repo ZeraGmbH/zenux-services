@@ -53,17 +53,25 @@ ZeraMControllerIoTemplate::atmelRM MockI2cCtrlEMOB::clearErrorStatus()
 
 ZeraMControllerIoTemplate::atmelRM MockI2cCtrlEMOB::readExchangeData(QByteArray &answer)
 {
-    answer = ControllerPersitentData::getData().m_emobExchangeData;
+    answer = getDefaultExchangeData();
     return ZeraMControllerIo::atmelRM::cmddone;
 }
 
-ZeraMControllerIoTemplate::atmelRM MockI2cCtrlEMOB::writeExchangeData(QByteArray &data)
+ZeraMControllerIoTemplate::atmelRM MockI2cCtrlEMOB::writeExchangeData(QByteArray &data, int senderId)
 {
     if (ControllerPersitentData::isHotControllerAvailable(m_muxChannel)) {
-        ControllerPersitentData::getData().m_emobExchangeData = data;
+        ControllerPersitentData::getData().m_hotpluggedDevices[m_muxChannel].emobDataReceived[senderId] = data;
         return ZeraMControllerIo::atmelRM::cmddone;
     }
     return ZeraMControllerIo::atmelRM::cmdexecfault;
 }
 
+QByteArray MockI2cCtrlEMOB::getDefaultExchangeData()
+{
+    QByteArray data;
+    data.resize(256);
+    for (int i=data.size()-1; i>=0; --i)
+        data[i] = i;
+    return data;
+}
 

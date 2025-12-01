@@ -177,14 +177,14 @@ QString HotplugControllerInterface::emobReadDataForExchange(const QString &scpiC
 QString HotplugControllerInterface::emobWriteDataForExchange(const QString &scpiCmd)
 {
     cSCPICommand cmd = scpiCmd;
-    if (cmd.isCommand(2)) {
-        QString parameter = cmd.getParam(0);
-        QString channelMNameFound = findEmobConnected(parameter);
-        QString dataToWriteHex = cmd.getParam(1);
-        if (!channelMNameFound.isEmpty()) {
+    if (cmd.isCommand(3)) {
+        QString channelMNameFound = findEmobConnected(cmd.getParam(0));
+        int otherEmobId = cmd.getParam(1).toInt();
+        QString dataToWriteHex = cmd.getParam(2);
+        if (!channelMNameFound.isEmpty() && otherEmobId>=0 && otherEmobId<MaxHotControllerCount) {
             QByteArray dataToWrite = HotplugControllerInterface::decodeHexString(dataToWriteHex);
             HotControllerMap emobControllers = m_hotPluggableControllerContainer->getCurrentControllers();
-            ZeraMControllerIoTemplate::atmelRM ctrlRet = emobControllers[channelMNameFound].m_emobController->writeExchangeData(dataToWrite);
+            ZeraMControllerIoTemplate::atmelRM ctrlRet = emobControllers[channelMNameFound].m_emobController->writeExchangeData(dataToWrite, otherEmobId);
             if (ctrlRet != ZeraMControllerIo::cmddone)
                 return ZSCPI::scpiAnswer[ZSCPI::errexec];
             return ZSCPI::scpiAnswer[ZSCPI::ack];

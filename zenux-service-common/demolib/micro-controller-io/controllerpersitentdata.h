@@ -26,7 +26,6 @@ public:
         quint8 m_accuCharge = 37;
 
         MuxChannelDeviceNameMap m_hotpluggedDevices;
-        QByteArray m_emobExchangeData = "Data";
     };
     static TPersitentControllerData &getData();
     static void injectInterruptFlags(quint16 clampConnectMask);

@@ -16,7 +16,7 @@ public:
     ZeraMControllerIo::atmelRM readEmobErrorStatus(quint8& err) override;
     ZeraMControllerIo::atmelRM clearErrorStatus() override;
     ZeraMControllerIo::atmelRM readExchangeData(QByteArray &answer) override;
-    ZeraMControllerIo::atmelRM writeExchangeData(QByteArray &data) override;
+    ZeraMControllerIo::atmelRM writeExchangeData(QByteArray &data, int senderId) override;
 private:
     ZeraMControllerIo m_ctrlIo;
     I2cMuxerInterface::Ptr m_i2cMuxer;

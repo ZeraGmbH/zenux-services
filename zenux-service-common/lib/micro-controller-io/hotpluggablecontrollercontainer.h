@@ -11,6 +11,8 @@
 #include <QVector>
 #include <memory>
 
+constexpr int MaxHotControllerCount = 4;
+
 struct HotControllers
 {
     I2cCtrlCommonInfoPtrShared m_commonController;

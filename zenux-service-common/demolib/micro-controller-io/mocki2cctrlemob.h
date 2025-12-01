@@ -12,8 +12,9 @@ public:
     ZeraMControllerIo::atmelRM readEmobInstrumentSubType(QString& answer) override;
     ZeraMControllerIo::atmelRM readEmobErrorStatus(quint8& err) override;
     ZeraMControllerIo::atmelRM clearErrorStatus() override;
+    static QByteArray getDefaultExchangeData();
     ZeraMControllerIo::atmelRM readExchangeData(QByteArray& answer) override;
-    ZeraMControllerIo::atmelRM writeExchangeData(QByteArray &data) override;
+    ZeraMControllerIo::atmelRM writeExchangeData(QByteArray &data, int senderId) override;
 private:
     qint8 m_muxChannel;
     QString m_instrumentTypePostfix;

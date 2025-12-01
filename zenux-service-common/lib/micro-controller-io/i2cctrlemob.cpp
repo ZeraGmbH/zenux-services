@@ -82,10 +82,10 @@ ZeraMControllerIoTemplate::atmelRM I2cCtrlEMOB::readExchangeData(QByteArray &ans
     return m_ctrlIo.readVariableLenData(hwReadDataForExchange, answer);
 }
 
-ZeraMControllerIoTemplate::atmelRM I2cCtrlEMOB::writeExchangeData(QByteArray &data)
+ZeraMControllerIoTemplate::atmelRM I2cCtrlEMOB::writeExchangeData(QByteArray &data, int senderId)
 {
     I2cMuxerScopedOnOff i2cMuxerEnabled(m_i2cMuxer);
-    data.prepend(char(0x00));;
+    data.prepend(senderId);;
     quint16 len = data.size();
     if(len < 1)
         return ZeraMControllerIo::cmdfault;
