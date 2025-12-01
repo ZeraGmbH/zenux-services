@@ -11,6 +11,8 @@ public:
     HotplugControllerInterface(std::shared_ptr<cSCPI> scpiInterface,
                                HotPluggableControllerContainerPtr hotPluggableControllerContainer);
     void initSCPIConnection(QString leadingNodes) override;
+    static QByteArray decodeHexString(const QString &encoded);
+    static QStringList encodeDataToHex(const QByteArray &data);
 
 private slots:
     void onControllersChanged();
@@ -23,6 +25,9 @@ private:
     QString emobReadDataForExchange(const QString& scpiCmd);
     QString emobWriteData(const QString& scpiCmd);
     QString findEmobConnected(const QString &channelMNameScpiParam);
+
+    QString emobReadDataForExchange1(const QString& scpiCmd);
+    QString emobWriteData1(const QString& scpiCmd);
 
     NotificationString m_channels;
     HotPluggableControllerContainerPtr m_hotPluggableControllerContainer;

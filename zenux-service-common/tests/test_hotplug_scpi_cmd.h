@@ -28,8 +28,17 @@ private slots:
     void readWriteDataMt650eI3EmobIAUX();
     void writeDataWithParam();
 
+    void readDataEmobIL1();
+    void readDataEmobIL1MissingParam();
+    void readDataEmobIL1NotAvail();
+
+    void writeDataEmobIL1();
+    void writeDataEmobIL1MissingParam();
+    void writeDataEmobIL1NotAvail();
+
 private:
     void setupServers();
+    QByteArray createTestEmobExchangeData();
 
     std::unique_ptr<ResmanRunFacade> m_resman;
     std::unique_ptr<MockMt310s2d> m_mt310s2d;

@@ -230,6 +230,106 @@ void test_hotplug_scpi_cmd::writeDataWithParam()
     QCOMPARE(responseSpy[0][2], QVariant("ack"));
 }
 
+void test_hotplug_scpi_cmd::readDataEmobIL1()
+{
+    AbstractMockAllServices::ChannelAliasHotplugDeviceNameMap infoMap;
+    infoMap.insert("IL1", {"EMOB_MOCK-00V00", cClamp::undefined});
+    m_mt310s2d->fireHotplugInterrupt(infoMap);
+    TimeMachineObject::feedEventLoop();
+
+    QByteArray emobExchangeData = createTestEmobExchangeData();
+    ControllerPersitentData::getData().m_emobExchangeData = emobExchangeData;
+
+    QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
+    int msgNr = m_pcbIFace->scpiCommand("SYSTEM:EMO1:READDATA? m3;");
+    TimeMachineObject::feedEventLoop();
+
+    QCOMPARE(responseSpy.count(), 1);
+    QCOMPARE(responseSpy[0][0], QVariant(msgNr));
+    QCOMPARE(responseSpy[0][1], QVariant(ack));
+    QByteArray received = HotplugControllerInterface::decodeHexString(responseSpy[0][2].toString());
+    QCOMPARE(received, emobExchangeData);
+}
+
+void test_hotplug_scpi_cmd::readDataEmobIL1MissingParam()
+{
+    QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
+    int msgNr = m_pcbIFace->scpiCommand("SYSTEM:EMO1:READDATA?");
+    TimeMachineObject::feedEventLoop();
+
+    QCOMPARE(responseSpy.count(), 1);
+    QCOMPARE(responseSpy[0][0], QVariant(msgNr));
+    QCOMPARE(responseSpy[0][1], QVariant(nack));
+    QCOMPARE(responseSpy[0][2], QVariant("nak"));
+}
+
+void test_hotplug_scpi_cmd::readDataEmobIL1NotAvail()
+{
+    QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
+    int msgNr = m_pcbIFace->scpiCommand("SYSTEM:EMO1:READDATA? m3;");
+    TimeMachineObject::feedEventLoop();
+
+    QCOMPARE(responseSpy.count(), 1);
+    QCOMPARE(responseSpy[0][0], QVariant(msgNr));
+    QCOMPARE(responseSpy[0][1], QVariant(nack));
+    QCOMPARE(responseSpy[0][2], QVariant("nak"));
+}
+
+void test_hotplug_scpi_cmd::writeDataEmobIL1()
+{
+    AbstractMockAllServices::ChannelAliasHotplugDeviceNameMap infoMap;
+    infoMap.insert("IL1", {"EMOB_MOCK-00V00", cClamp::undefined});
+    m_mt310s2d->fireHotplugInterrupt(infoMap);
+    TimeMachineObject::feedEventLoop();
+
+    QByteArray emobExchangeData = createTestEmobExchangeData();
+    QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
+    QString scpiCmd = QString("SYSTEM:EMO1:WRITEDATA m3;%1;").arg(HotplugControllerInterface::encodeDataToHex(emobExchangeData).join(","));
+    int msgNr = m_pcbIFace->scpiCommand(scpiCmd);
+    TimeMachineObject::feedEventLoop();
+
+    QCOMPARE(responseSpy.count(), 1);
+    QCOMPARE(responseSpy[0][0], QVariant(msgNr));
+    QCOMPARE(responseSpy[0][1], QVariant(ack));
+    QCOMPARE(responseSpy[0][2], QVariant("ack"));
+    QCOMPARE(ControllerPersitentData::getData().m_emobExchangeData, emobExchangeData);
+}
+
+void test_hotplug_scpi_cmd::writeDataEmobIL1MissingParam()
+{
+    QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
+    int msgNr = m_pcbIFace->scpiCommand("SYSTEM:EMO1:WRITEDATA;");
+    TimeMachineObject::feedEventLoop();
+
+    QCOMPARE(responseSpy.count(), 1);
+    QCOMPARE(responseSpy[0][0], QVariant(msgNr));
+    QCOMPARE(responseSpy[0][1], QVariant(nack));
+    QCOMPARE(responseSpy[0][2], QVariant("nak"));
+
+    responseSpy.clear();
+    msgNr = m_pcbIFace->scpiCommand("SYSTEM:EMO1:WRITEDATA m3;");
+    TimeMachineObject::feedEventLoop();
+
+    QCOMPARE(responseSpy.count(), 1);
+    QCOMPARE(responseSpy[0][0], QVariant(msgNr));
+    QCOMPARE(responseSpy[0][1], QVariant(nack));
+    QCOMPARE(responseSpy[0][2], QVariant("nak"));
+}
+
+void test_hotplug_scpi_cmd::writeDataEmobIL1NotAvail()
+{
+    QByteArray emobExchangeData = createTestEmobExchangeData();
+    QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
+    QString scpiCmd = QString("SYSTEM:EMO1:WRITEDATA m3;%1;").arg(HotplugControllerInterface::encodeDataToHex(emobExchangeData).join(","));
+    int msgNr = m_pcbIFace->scpiCommand(scpiCmd);
+    TimeMachineObject::feedEventLoop();
+
+    QCOMPARE(responseSpy.count(), 1);
+    QCOMPARE(responseSpy[0][0], QVariant(msgNr));
+    QCOMPARE(responseSpy[0][1], QVariant(nack));
+    QCOMPARE(responseSpy[0][2], QVariant("nak"));
+}
+
 void test_hotplug_scpi_cmd::setupServers()
 {
     VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory = VeinTcp::MockTcpNetworkFactory::create();
@@ -242,4 +342,13 @@ void test_hotplug_scpi_cmd::setupServers()
     m_pcbIFace->setClientSmart(m_proxyClient);
     Zera::Proxy::getInstance()->startConnectionSmart(m_proxyClient);
     TimeMachineObject::feedEventLoop();
+}
+
+QByteArray test_hotplug_scpi_cmd::createTestEmobExchangeData()
+{
+    QByteArray emobExchangeData;
+    emobExchangeData.resize(256);
+    for(int i=0; i<emobExchangeData.size(); ++i)
+        emobExchangeData[i] = i;
+    return emobExchangeData;
 }

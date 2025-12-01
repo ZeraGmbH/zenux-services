@@ -17,7 +17,10 @@ enum HotplugCommands
     cmdEmobReadErrorStatus,
     cmdEmobClearErrorStatus,
     cmdEmobReadData,
-    cmdEmobWriteData
+    cmdEmobWriteData,
+
+    cmdEmobReadData1,
+    cmdEmobWriteData1
 };
 
 void HotplugControllerInterface::initSCPIConnection(QString leadingNodes)
@@ -29,6 +32,30 @@ void HotplugControllerInterface::initSCPIConnection(QString leadingNodes)
     addDelegate(QString("%1SYSTEM:EMOB").arg(leadingNodes), "CLEARERROR", SCPI::isCmd, m_scpiInterface, cmdEmobClearErrorStatus);
     addDelegate(QString("%1SYSTEM:EMOB").arg(leadingNodes), "READDATA", SCPI::isQuery, m_scpiInterface, cmdEmobReadData);
     addDelegate(QString("%1SYSTEM:EMOB").arg(leadingNodes), "WRITEDATA", SCPI::isCmd, m_scpiInterface, cmdEmobWriteData);
+
+    addDelegate(QString("%1SYSTEM:EMO1").arg(leadingNodes), "READDATA", SCPI::isQuery, m_scpiInterface, cmdEmobReadData1);
+    addDelegate(QString("%1SYSTEM:EMO1").arg(leadingNodes), "WRITEDATA", SCPI::isCmd, m_scpiInterface, cmdEmobWriteData1);
+}
+
+QByteArray HotplugControllerInterface::decodeHexString(const QString &encoded)
+{
+    QStringList hexReceived = encoded.split(",");
+    QByteArray received;
+    received.resize(hexReceived.count());
+    for (int i=0; i<hexReceived.count(); ++i)
+        received[i] = hexReceived[i].toUInt(nullptr, 16);
+    return received;
+}
+
+QStringList HotplugControllerInterface::encodeDataToHex(const QByteArray &data)
+{
+    QStringList hexBytes;
+    for (int byteNo=0; byteNo<data.count(); ++byteNo) {
+        QString hexByte = QString("%1").arg(ushort(data[byteNo]), 0, 16); // hex output
+        hexByte = QString("00" + hexByte).right(2);
+        hexBytes.append(hexByte);
+    }
+    return hexBytes;
 }
 
 void HotplugControllerInterface::onControllersChanged()
@@ -57,6 +84,13 @@ void HotplugControllerInterface::executeProtoScpi(int cmdCode, ProtonetCommandPt
         break;
     case cmdEmobWriteData:
         protoCmd->m_sOutput = emobWriteData(protoCmd->m_sInput);
+        break;
+    case cmdEmobReadData1:
+        protoCmd->m_sOutput = emobReadDataForExchange1(protoCmd->m_sInput);
+        break;
+    case cmdEmobWriteData1:
+        protoCmd->m_sOutput = emobWriteData1(protoCmd->m_sInput);
+        break;
     }
     if (protoCmd->m_bwithOutput)
         emit cmdExecutionDone(protoCmd);
@@ -188,4 +222,42 @@ QString HotplugControllerInterface::findEmobConnected(const QString &channelMNam
             return channelMNameScpiParam;
     }
     return QString();
+}
+
+QString HotplugControllerInterface::emobReadDataForExchange1(const QString &scpiCmd)
+{
+    cSCPICommand cmd = scpiCmd;
+    if (cmd.isQuery(1)) {
+        QString parameter = cmd.getParam(0);
+        QString channelMNameFound = findEmobConnected(parameter);
+        if (!channelMNameFound.isEmpty()) {
+            HotControllerMap emobControllers = m_hotPluggableControllerContainer->getCurrentControllers();
+            QByteArray dataReturned;
+            ZeraMControllerIoTemplate::atmelRM ctrlRet = emobControllers[channelMNameFound].m_emobController->readData(dataReturned);
+            if (ctrlRet == ZeraMControllerIo::cmddone) {
+                QStringList hexBytes = encodeDataToHex(dataReturned);
+                return hexBytes.join(",");
+            }
+        }
+    }
+    return ZSCPI::scpiAnswer[ZSCPI::nak];
+}
+
+QString HotplugControllerInterface::emobWriteData1(const QString &scpiCmd)
+{
+    cSCPICommand cmd = scpiCmd;
+    if (cmd.isCommand(2)) {
+        QString parameter = cmd.getParam(0);
+        QString channelMNameFound = findEmobConnected(parameter);
+        QString dataToWriteHex = cmd.getParam(1);
+        if (!channelMNameFound.isEmpty()) {
+            QByteArray dataToWrite = HotplugControllerInterface::decodeHexString(dataToWriteHex);
+            HotControllerMap emobControllers = m_hotPluggableControllerContainer->getCurrentControllers();
+            ZeraMControllerIoTemplate::atmelRM ctrlRet = emobControllers[channelMNameFound].m_emobController->writeData(dataToWrite);
+            if (ctrlRet != ZeraMControllerIo::cmddone)
+                return ZSCPI::scpiAnswer[ZSCPI::errexec];
+            return ZSCPI::scpiAnswer[ZSCPI::ack];
+        }
+    }
+    return ZSCPI::scpiAnswer[ZSCPI::nak];
 }

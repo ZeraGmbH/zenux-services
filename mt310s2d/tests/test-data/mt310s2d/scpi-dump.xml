@@ -5712,6 +5712,10 @@
    <INTERFACE Type="Node">
     <READ Type="Query" ScpiPath="SYSTEM:INTERFACE:READ"/>
    </INTERFACE>
+   <EMO1 Type="Node">
+    <READDATA Type="Query" ScpiPath="SYSTEM:EMO1:READDATA"/>
+    <WRITEDATA Type="Command" ScpiPath="SYSTEM:EMO1:WRITEDATA"/>
+   </EMO1>
    <CLAMP Type="Node">
     <CHANNEL Type="Node">
      <CATALOG Type="Query" ScpiPath="SYSTEM:CLAMP:CHANNEL:CATALOG"/>
