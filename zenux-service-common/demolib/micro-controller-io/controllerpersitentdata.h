@@ -4,6 +4,7 @@
 #include "abstractmockallservices.h"
 #include <QString>
 #include <QMap>
+#include <memory>
 
 class ControllerPersitentData
 {
@@ -25,6 +26,7 @@ public:
         quint8 m_accuCharge = 37;
 
         MuxChannelDeviceNameMap m_hotpluggedDevices;
+        QByteArray m_emobExchangeData = "Data";
     };
     static TPersitentControllerData &getData();
     static void injectInterruptFlags(quint16 clampConnectMask);
@@ -33,7 +35,7 @@ public:
     static bool isControllerAvailable(qint8 muxChannel);
     static void cleanupPersitentData();
 private:
-    static TPersitentControllerData m_persitentData;
+    static std::unique_ptr<TPersitentControllerData> m_persitentData;
 };
 
 #endif // CONTROLLERPERSITENTDATA_H
