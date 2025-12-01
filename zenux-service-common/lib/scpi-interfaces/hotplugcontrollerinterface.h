@@ -14,8 +14,6 @@ public:
     static QByteArray decodeHexString(const QString &encoded);
     static QStringList encodeDataToHex(const QByteArray &data);
 
-private slots:
-    void onControllersChanged();
 private:
     void executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd) override;
     QString emobPushButtonPress(const QString& scpiCmd);

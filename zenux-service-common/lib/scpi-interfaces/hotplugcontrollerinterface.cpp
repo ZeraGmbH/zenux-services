@@ -6,8 +6,6 @@ HotplugControllerInterface::HotplugControllerInterface(std::shared_ptr<cSCPI> sc
     ScpiConnection(scpiInterface),
     m_hotPluggableControllerContainer(hotPluggableControllerContainer)
 {
-    connect(hotPluggableControllerContainer.get(), &HotPluggableControllerContainer::sigControllersChanged,
-            this, &HotplugControllerInterface::onControllersChanged);
 }
 
 enum HotplugCommands
@@ -50,11 +48,6 @@ QStringList HotplugControllerInterface::encodeDataToHex(const QByteArray &data)
         hexBytes.append(hexByte);
     }
     return hexBytes;
-}
-
-void HotplugControllerInterface::onControllersChanged()
-{
-
 }
 
 void HotplugControllerInterface::executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd)
