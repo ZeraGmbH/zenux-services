@@ -113,8 +113,8 @@ public:
     virtual ZeraMControllerIo::atmelRM readEmobInstrumentSubType(QString& answer) = 0; // e.g EMOB32-00V00
     virtual ZeraMControllerIo::atmelRM readEmobErrorStatus(quint8& err) = 0;
     virtual ZeraMControllerIo::atmelRM clearErrorStatus() = 0;
-    virtual ZeraMControllerIo::atmelRM readData(QByteArray& answer) = 0;
-    virtual ZeraMControllerIo::atmelRM writeData(QByteArray& data) = 0;
+    virtual ZeraMControllerIo::atmelRM readExchangeData(QByteArray& answer) = 0;
+    virtual ZeraMControllerIo::atmelRM writeExchangeData(QByteArray& data) = 0;
 };
 typedef std::shared_ptr<AbstractI2cCtrlEMOB> I2cCtrlEMOBPtr;
 

@@ -164,7 +164,7 @@ QString HotplugControllerInterface::emobReadDataForExchange(const QString &scpiC
         if (!channelMNameFound.isEmpty()) {
             HotControllerMap emobControllers = m_hotPluggableControllerContainer->getCurrentControllers();
             QByteArray dataReturned;
-            ZeraMControllerIoTemplate::atmelRM ctrlRet = emobControllers[channelMNameFound].m_emobController->readData(dataReturned);
+            ZeraMControllerIoTemplate::atmelRM ctrlRet = emobControllers[channelMNameFound].m_emobController->readExchangeData(dataReturned);
             if (ctrlRet == ZeraMControllerIo::cmddone) {
                 QStringList hexBytes = encodeDataToHex(dataReturned);
                 return hexBytes.join(",");
@@ -184,7 +184,7 @@ QString HotplugControllerInterface::emobWriteDataForExchange(const QString &scpi
         if (!channelMNameFound.isEmpty()) {
             QByteArray dataToWrite = HotplugControllerInterface::decodeHexString(dataToWriteHex);
             HotControllerMap emobControllers = m_hotPluggableControllerContainer->getCurrentControllers();
-            ZeraMControllerIoTemplate::atmelRM ctrlRet = emobControllers[channelMNameFound].m_emobController->writeData(dataToWrite);
+            ZeraMControllerIoTemplate::atmelRM ctrlRet = emobControllers[channelMNameFound].m_emobController->writeExchangeData(dataToWrite);
             if (ctrlRet != ZeraMControllerIo::cmddone)
                 return ZSCPI::scpiAnswer[ZSCPI::errexec];
             return ZSCPI::scpiAnswer[ZSCPI::ack];
