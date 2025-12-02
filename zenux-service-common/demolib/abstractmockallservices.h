@@ -25,6 +25,7 @@ public:
     typedef QMap<QString, hotplugI2cBus> ChannelAliasHotplugDeviceNameMap;
     virtual void fireHotplugInterrupt(const ChannelAliasHotplugDeviceNameMap &deviceMap) = 0;
     virtual ChannelAliasHotplugDeviceNameMap getCurrentHotplugMap() const = 0;
+    virtual cSenseSettingsPtr getSenseSettings() = 0;
 
     // Convenience methods
     virtual void addStandardEmobControllers(const QStringList &channelAliases) = 0;
