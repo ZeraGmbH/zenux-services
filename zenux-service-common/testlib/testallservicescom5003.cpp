@@ -51,6 +51,11 @@ void TestAllServicesCom5003::fireHotplugInterrupt(const ChannelAliasHotplugDevic
     noHotplugMsg();
 }
 
+cSenseSettingsPtr TestAllServicesCom5003::getSenseSettings()
+{
+    return m_mockcom5003d->getSenseSettings();
+}
+
 void TestAllServicesCom5003::addStandardEmobControllers(const QStringList &channelAliases)
 {
     Q_UNUSED(channelAliases)

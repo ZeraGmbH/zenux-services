@@ -48,6 +48,11 @@ void DemoAllServicesMt310s2::fireHotplugInterrupt(const ChannelAliasHotplugDevic
     m_mt310s2d->fireHotplugInterrupt(deviceMap);
 }
 
+cSenseSettingsPtr DemoAllServicesMt310s2::getSenseSettings()
+{
+    return m_mt310s2d->getSenseSettings();
+}
+
 void DemoAllServicesMt310s2::addStandardEmobControllers(const QStringList &channelAliases)
 {
     m_mt310s2d->addStandardEmobControllers(channelAliases);

@@ -21,6 +21,7 @@ public:
 
     void fireHotplugInterrupt(const ChannelAliasHotplugDeviceNameMap &deviceMap) override;
     ChannelAliasHotplugDeviceNameMap getCurrentHotplugMap() const override;
+    cSenseSettingsPtr getSenseSettings() override;
 
     void addStandardEmobControllers(const QStringList &channelAliases) override;
     virtual void removeAllHotplugDevices() override;
