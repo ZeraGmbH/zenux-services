@@ -31,7 +31,7 @@ void HotplugControllerInterface::initSCPIConnection(QString leadingNodes)
 
 QByteArray HotplugControllerInterface::decodeHexString(const QString &encoded)
 {
-    QStringList hexReceived = encoded.split(",");
+    QStringList hexReceived = encoded.split(",", Qt::SkipEmptyParts);
     QByteArray received;
     received.resize(hexReceived.count());
     for (int i=0; i<hexReceived.count(); ++i)
@@ -177,7 +177,7 @@ QString HotplugControllerInterface::emobReadDataForExchange(const QString &scpiC
 QString HotplugControllerInterface::emobWriteDataForExchange(const QString &scpiCmd)
 {
     cSCPICommand cmd = scpiCmd;
-    if (cmd.isCommand(3)) {
+    if (cmd.isCommand(2) || cmd.isCommand(3)) {
         QString channelMNameFound = findEmobConnected(cmd.getParam(0));
         int otherEmobId = cmd.getParam(1).toInt();
         QString dataToWriteHex = cmd.getParam(2);

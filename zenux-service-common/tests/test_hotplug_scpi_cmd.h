@@ -28,6 +28,8 @@ private slots:
     void readDataEmobIL1NotAvail();
 
     void writeDataEmobIL1Id1();
+    void writeDataEmobIL1Id1Empty();
+    void writeDataEmobIL1Id1EmptyDoubleSemicolon();
     void writeDataEmobIL1Id3();
     void writeDataEmobIL1Id4Invalid();
     void writeDataEmobMissingParam();
