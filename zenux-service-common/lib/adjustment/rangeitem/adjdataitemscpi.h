@@ -16,7 +16,6 @@ public:
         int digits;
     };
     AdjDataItemScpi(TJustDataParam param, AdjDataItem* adjItem);
-    ~AdjDataItemScpi();
     virtual void initSCPIConnection(QString leadingNodes) override;
 
     AdjDataItem *getAdjItem();

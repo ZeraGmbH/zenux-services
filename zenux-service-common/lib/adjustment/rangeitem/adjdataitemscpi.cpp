@@ -22,10 +22,6 @@ AdjDataItemScpi::AdjDataItemScpi(TJustDataParam param, AdjDataItem *adjItem) :
 {
 }
 
-AdjDataItemScpi::~AdjDataItemScpi()
-{
-}
-
 void AdjDataItemScpi::initSCPIConnection(QString leadingNodes)
 {
     addDelegate(QString("%1").arg(leadingNodes), "STATUS", SCPI::isCmdwP | SCPI::isQuery, m_scpiInterface, JustStatus);
