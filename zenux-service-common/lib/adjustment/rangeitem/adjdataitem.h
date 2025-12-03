@@ -26,6 +26,9 @@ public:
     bool calcCoefficientsFromNodes();
     double getCorrection(double arg); // calculates correction value c= ax^order +bx^order-1 ...
 
+    static void fromStream(AdjDataItem &item, QDataStream& qds);
+    static void toStream(AdjDataItem item, QDataStream& qds);
+
     quint8 m_adjStatus = 0;
     QVector<AdjDataNode> m_adjNodes;
     QVector<double> m_adjCoefficients;
