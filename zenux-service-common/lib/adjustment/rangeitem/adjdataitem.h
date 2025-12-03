@@ -30,8 +30,14 @@ public:
     void computeCoefficientsFromNodes();
     double getCorrection(double arg) const; // calculates correction value c= ax^order +bx^order-1 ...
 
-    void fromStream(QDataStream& qds);
-    void toStream(QDataStream& qds) const;
+    void fromStream(QDataStream &qds);
+    void toStream(QDataStream &qds) const;
+
+    void nodesFromString(const QString &s);
+    QString nodesToString(int digits) const;
+
+    void coefficientsFromString(const QString &s);
+    QString coefficientsToString() const;
 
 private:
     int m_order;

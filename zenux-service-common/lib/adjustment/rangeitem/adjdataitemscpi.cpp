@@ -169,50 +169,35 @@ QString AdjDataItemScpi::scpiReadWriteJustNode(const QString &scpi, quint8 index
     return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
+void AdjDataItemScpi::statusFromString(const QString &s)
+{
+    m_adjItem->setAdjStatus(s.toInt());
+}
 
 QString AdjDataItemScpi::statusToString()
 {
     return QString("%1").arg(m_adjItem->getAdjStatus());
 }
 
-QString AdjDataItemScpi::coefficientsToString() const
+void AdjDataItemScpi::nodesFromString(const QString& s)
 {
-    QString s;
-    for (int i = 0; i < m_adjItem->getOrder()+1; i++)
-        s += QString("%1;").arg(m_adjItem->getCoefficient(i), 0, 'f', 12);
-    return s;
+    m_adjItem->nodesFromString(s);
 }
 
 QString AdjDataItemScpi::nodesToString() const
 {
-    QString s;
-    for (int i = 0; i < m_adjItem->getOrder()+1; i++)
-        s += m_adjItem->getNode(i).toString(m_digits);
-    return s;
+    return m_adjItem->nodesToString(m_digits);
 }
-
-void AdjDataItemScpi::statusFromString(const QString &s)
-{
-    m_adjItem->setAdjStatus(s.toInt());
-}
-
 
 void AdjDataItemScpi::coefficientsFromString(const QString& s)
 {
-    for (int i = 0; i < m_adjItem->getOrder()+1; i++)
-        m_adjItem->setCoefficient(i, s.section(';', i, i).toDouble());
+    m_adjItem->coefficientsFromString(s);
 }
 
-
-void AdjDataItemScpi::nodesFromString(const QString& s)
+QString AdjDataItemScpi::coefficientsToString() const
 {
-    for (int i = 0; i < m_adjItem->getOrder()+1; i++) {
-        AdjDataNode node;
-        node.fromString(s.section(';', i << 1, (i << 1) + 1));
-        m_adjItem->setNode(i, node);
-    }
+    return m_adjItem->coefficientsToString();
 }
-
 
 quint8 AdjDataItemScpi::getStatus() const
 {

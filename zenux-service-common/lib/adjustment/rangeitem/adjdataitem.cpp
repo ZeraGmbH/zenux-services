@@ -136,3 +136,34 @@ void AdjDataItem::toStream(QDataStream &qds) const
     for (int i = 0; i < m_adjNodes.size(); i++)
         qds << m_adjNodes[i].getCorrection() << m_adjNodes[i].getArgument();
 }
+
+void AdjDataItem::nodesFromString(const QString &s)
+{
+    for (int i = 0; i < getOrder()+1; i++) {
+        AdjDataNode node;
+        node.fromString(s.section(';', i << 1, (i << 1) + 1));
+        setNode(i, node);
+    }
+}
+
+QString AdjDataItem::nodesToString(int digits) const
+{
+    QString s;
+    for (int i = 0; i < getOrder()+1; i++)
+        s += getNode(i).toString(digits);
+    return s;
+}
+
+void AdjDataItem::coefficientsFromString(const QString &s)
+{
+    for (int i = 0; i < getOrder()+1; i++)
+        setCoefficient(i, s.section(';', i, i).toDouble());
+}
+
+QString AdjDataItem::coefficientsToString() const
+{
+    QString s;
+    for (int i = 0; i < getOrder()+1; i++)
+        s += QString("%1;").arg(getCoefficient(i), 0, 'f', 12);
+    return s;
+}
