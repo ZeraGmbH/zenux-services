@@ -99,19 +99,19 @@ double AdjDataItem::getCorrection(double arg)
     return Corr;
 }
 
-void AdjDataItem::fromStream(AdjDataItem &item, QDataStream &qds)
+void AdjDataItem::fromStream(QDataStream &qds)
 {
-    qds >> item.m_adjStatus;
-    for (int i = 0; i < item.getOrder()+1; i++) {
+    qds >> m_adjStatus;
+    for (int i = 0; i < getOrder()+1; i++) {
         double coeff;
         qds >> coeff;
-        item.m_adjCoefficients[i] = coeff;
+        m_adjCoefficients[i] = coeff;
     }
-    for (int i = 0; i < item.getOrder()+1; i++) {
+    for (int i = 0; i < getOrder()+1; i++) {
         double correction, argument;
         qds >> correction >> argument;
         AdjDataNode node(correction, argument);
-        item.m_adjNodes[i] = node;
+        m_adjNodes[i] = node;
     }
 }
 

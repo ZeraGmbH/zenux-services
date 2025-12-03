@@ -29,9 +29,9 @@ void AdjDataRange::initOffset()
 AdjDataRange AdjDataRange::fromStream(QDataStream &qds)
 {
     AdjDataRange rangeAdjData;
-    AdjDataItem::fromStream(rangeAdjData.m_gainAdjData, qds);
-    AdjDataItem::fromStream(rangeAdjData.m_phasAdjData, qds);
-    AdjDataItem::fromStream(rangeAdjData.m_offsAdjData, qds);
+    rangeAdjData.m_gainAdjData.fromStream(qds);
+    rangeAdjData.m_phasAdjData.fromStream(qds);
+    rangeAdjData.m_offsAdjData.fromStream(qds);
     return rangeAdjData;
 }
 
