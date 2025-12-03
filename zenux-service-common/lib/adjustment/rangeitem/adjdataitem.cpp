@@ -82,7 +82,7 @@ bool AdjDataItem::calcCoefficientsFromNodes()
     for (i = 0; i < realOrd+1; i++)
         setCoefficient(i, Matrix->getKoeff(realOrd-i));
     // not calculated coefficient are set to 0
-    for (i = i; i < getOrder()+1; i++)
+    for (; i < getOrder()+1; i++)
         setCoefficient(i, 0.0);
     delete Matrix;
     return true;
