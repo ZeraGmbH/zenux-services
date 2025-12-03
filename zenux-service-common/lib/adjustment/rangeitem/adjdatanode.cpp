@@ -7,7 +7,7 @@ AdjDataNode::AdjDataNode(double corr, double arg) :
 {
 }
 
-void AdjDataNode::toStream(QDataStream& qds)
+void AdjDataNode::toStream(QDataStream& qds) const
 {
     qds << m_fCorrection << m_fArgument;
 }
@@ -17,7 +17,7 @@ void AdjDataNode::fromStream(QDataStream& qds)
     qds >> m_fCorrection >> m_fArgument;
 }
 
-QString AdjDataNode::toString(int digits)
+QString AdjDataNode::toString(int digits) const
 {
     QString s = QString("%1;%2;").arg(m_fCorrection,0,'f',digits)
                            .arg(m_fArgument,0,'f',digits);

@@ -4,9 +4,9 @@
 #include <math.h>
 
 AdjDataItem::AdjDataItem(int order) :
+    m_order(order),
     m_adjNodes(order+1),
-    m_adjCoefficients(order+1),
-    m_order(order)
+    m_adjCoefficients(order+1)
 {
     Q_ASSERT(order+1 > 0);
 }
@@ -33,7 +33,7 @@ void AdjDataItem::setAdjStatus(quint8 adjStatus)
     m_adjStatus = adjStatus;
 }
 
-bool AdjDataItem::setNode(int index, AdjDataNode jn)
+bool AdjDataItem::setNode(int index, const AdjDataNode &jn)
 {
     if (index < getOrder()+1) {
         for (int i = index; i < getOrder()+1; i++)
@@ -43,7 +43,7 @@ bool AdjDataItem::setNode(int index, AdjDataNode jn)
     return false;
 }
 
-AdjDataNode AdjDataItem::getNode(int index) const
+const AdjDataNode &AdjDataItem::getNode(int index) const
 {
     return m_adjNodes[index];
 }

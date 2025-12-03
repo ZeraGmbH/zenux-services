@@ -82,9 +82,9 @@ void AdjDataItemScpi::executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd)
         emit cmdExecutionDone(protoCmd);
 }
 
-QString AdjDataItemScpi::scpiReadWriteStatus(QString &sInput)
+QString AdjDataItemScpi::scpiReadWriteStatus(const QString &scpi)
 {
-    cSCPICommand cmd = sInput;
+    cSCPICommand cmd = scpi;
     if (cmd.isQuery())
         return QString("%1").arg(m_adjItem->getAdjStatus());
     else if (cmd.isCommand(1)) {
@@ -110,9 +110,9 @@ QString AdjDataItemScpi::scpiReadWriteStatus(QString &sInput)
     return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-QString AdjDataItemScpi::scpiReadWriteJustCoeeficient(QString &sInput, quint8 index)
+QString AdjDataItemScpi::scpiReadWriteJustCoeeficient(const QString &scpi, quint8 index)
 {
-    cSCPICommand cmd = sInput;
+    cSCPICommand cmd = scpi;
     if (cmd.isQuery())
         return QString("%1").arg(getAdjItem()->getCoefficient(index));
     else if (cmd.isCommand(1)) {
@@ -139,9 +139,9 @@ QString AdjDataItemScpi::scpiReadWriteJustCoeeficient(QString &sInput, quint8 in
 }
 
 
-QString AdjDataItemScpi::scpiReadWriteJustNode(QString &sInput, quint8 index)
+QString AdjDataItemScpi::scpiReadWriteJustNode(const QString &scpi, quint8 index)
 {
-    cSCPICommand cmd = sInput;
+    cSCPICommand cmd = scpi;
     if (cmd.isQuery())
         return QString("%1").arg(getAdjItem()->getNode(index).toString(m_digits));
     else if (cmd.isCommand(2))
@@ -179,19 +179,19 @@ QString AdjDataItemScpi::statusToString()
     return QString("%1").arg(m_adjItem->getAdjStatus());
 }
 
-QString AdjDataItemScpi::coefficientsToString() // writes adjustment data to qstring
+QString AdjDataItemScpi::coefficientsToString() const
 {
     QString s;
     for (int i = 0; i < m_adjItem->getOrder()+1; i++)
-        s += QString("%1;").arg(m_adjItem->m_adjCoefficients[i],0,'f',12);
+        s += QString("%1;").arg(m_adjItem->getCoefficient(i), 0, 'f', 12);
     return s;
 }
 
-QString AdjDataItemScpi::nodesToString()
+QString AdjDataItemScpi::nodesToString() const
 {
     QString s;
     for (int i = 0; i < m_adjItem->getOrder()+1; i++)
-        s += m_adjItem->m_adjNodes[i].toString(m_digits);
+        s += m_adjItem->getNode(i).toString(m_digits);
     return s;
 }
 
@@ -204,14 +204,17 @@ void AdjDataItemScpi::statusFromString(const QString &s)
 void AdjDataItemScpi::coefficientsFromString(const QString& s)
 {
     for (int i = 0; i < m_adjItem->getOrder()+1; i++)
-        m_adjItem->m_adjCoefficients[i] = s.section(';',i,i).toDouble();
+        m_adjItem->setCoefficient(i, s.section(';', i, i).toDouble());
 }
 
 
 void AdjDataItemScpi::nodesFromString(const QString& s)
 {
-    for (int i = 0; i < m_adjItem->getOrder()+1; i++)
-        m_adjItem->m_adjNodes[i].fromString(s.section(';',i << 1,(i << 1) + 1));
+    for (int i = 0; i < m_adjItem->getOrder()+1; i++) {
+        AdjDataNode node;
+        node.fromString(s.section(';', i << 1, (i << 1) + 1));
+        m_adjItem->setNode(i, node);
+    }
 }
 
 

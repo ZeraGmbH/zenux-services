@@ -12,7 +12,7 @@
 class AdjDataItem
 {
 public:
-    AdjDataItem(int order);
+    explicit AdjDataItem(int order);
     int getOrder() const;
 
     void initData(double init);
@@ -20,8 +20,8 @@ public:
     quint8 getAdjStatus() const;
     void setAdjStatus(quint8 adjStatus);
 
-    bool setNode(int index, AdjDataNode jn); // !!! setting node sequence is relevant !!!
-    AdjDataNode getNode(int index) const;
+    bool setNode(int index, const AdjDataNode &jn); // !!! setting node sequence is relevant !!!
+    const AdjDataNode &getNode(int index) const;
 
     bool setCoefficient(int index, double value); // !!! setting coefficient also is sequence relevant !!!
     double getCoefficient(int index) const;
@@ -32,11 +32,11 @@ public:
     void fromStream(QDataStream& qds);
     void toStream(QDataStream& qds) const;
 
-    QVector<AdjDataNode> m_adjNodes;
-    QVector<double> m_adjCoefficients;
 private:
     int m_order;
     quint8 m_adjStatus = 0;
+    QVector<AdjDataNode> m_adjNodes;
+    QVector<double> m_adjCoefficients;
 };
 
 

@@ -25,18 +25,18 @@ public:
     quint8 getStatus() const;
     QString statusToString();
     void statusFromString(const QString& s);
-    QString coefficientsToString();
+    QString coefficientsToString() const;
     void coefficientsFromString(const QString& s);
-    QString nodesToString();
+    QString nodesToString() const;
     void nodesFromString(const QString& s );
 
 protected:
     void executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd) override;
     std::function<bool(bool &)> m_checkPermission;
 private:
-    QString scpiReadWriteStatus(QString& sInput);
-    QString scpiReadWriteJustCoeeficient(QString& sInput, quint8 index);
-    QString scpiReadWriteJustNode(QString& sInput, quint8 index);
+    QString scpiReadWriteStatus(const QString& scpi);
+    QString scpiReadWriteJustCoeeficient(const QString& scpi, quint8 index);
+    QString scpiReadWriteJustNode(const QString& scpi, quint8 index);
 
     AdjDataItem* m_adjItem;
     int m_digits;
