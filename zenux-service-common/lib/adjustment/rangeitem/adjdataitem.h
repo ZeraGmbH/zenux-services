@@ -16,6 +16,7 @@ public:
     int getOrder() const;
 
     void initData(double init);
+    bool isComputeRequired() const;
 
     quint8 getAdjStatus() const;
     void setAdjStatus(quint8 adjStatus);
