@@ -302,17 +302,17 @@ bool AdjRangeScpi::computeJustData()
     bool atLeastOneComputed = false;
     bool enable = false;
     AdjDataItem *gainItem = m_gainCorrection.getAdjItem();
-    if (gainItem->isComputeRequired() && m_permissions.funcAllowAdjGain(enable) && enable) {
+    if (m_permissions.funcAllowAdjGain(enable) && enable) {
         gainItem->computeCoefficientsFromNodes();
         atLeastOneComputed = true;
     }
     AdjDataItem *phaseItem = m_phaseCorrection.getAdjItem();
-    if (phaseItem->isComputeRequired() && m_permissions.funcAllowAdjPhase(enable) && enable) {
+    if (m_permissions.funcAllowAdjPhase(enable) && enable) {
         phaseItem->computeCoefficientsFromNodes();
         atLeastOneComputed = true;
     }
     AdjDataItem *offsetItem = m_offsetCorrection.getAdjItem();
-    if (offsetItem->isComputeRequired() && m_permissions.funcAllowAdjOffset(enable) && enable) {
+    if (m_permissions.funcAllowAdjOffset(enable) && enable) {
         offsetItem->computeCoefficientsFromNodes();
         atLeastOneComputed = true;
     }

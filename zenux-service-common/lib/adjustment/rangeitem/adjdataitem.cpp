@@ -23,11 +23,6 @@ void AdjDataItem::initData(double init)
     m_adjStatus = 0;
 }
 
-bool AdjDataItem::isComputeRequired() const
-{
-    return true;
-}
-
 quint8 AdjDataItem::getAdjStatus() const
 {
     return m_adjStatus;
