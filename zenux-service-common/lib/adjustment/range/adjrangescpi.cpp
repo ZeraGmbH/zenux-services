@@ -256,15 +256,15 @@ QString AdjRangeScpi::scpiCmdComputeJustData(QString& scpiInput)
         bool atLeastOneComputed = false;
         bool enable = false;
         if (m_permissions.funcAllowAdjGain(enable) && enable) {
-            m_gainCorrection.getAdjItem()->calcCoefficientsFromNodes();
+            m_gainCorrection.getAdjItem()->computeCoefficientsFromNodes();
             atLeastOneComputed = true;
         }
         if (m_permissions.funcAllowAdjPhase(enable) && enable) {
-            m_phaseCorrection.getAdjItem()->calcCoefficientsFromNodes();
+            m_phaseCorrection.getAdjItem()->computeCoefficientsFromNodes();
             atLeastOneComputed = true;
         }
         if (m_permissions.funcAllowAdjOffset(enable) && enable) {
-            m_offsetCorrection.getAdjItem()->calcCoefficientsFromNodes();
+            m_offsetCorrection.getAdjItem()->computeCoefficientsFromNodes();
             atLeastOneComputed = true;
         }
         if(atLeastOneComputed)
@@ -316,15 +316,15 @@ bool AdjRangeScpi::computeJustData()
     bool atLeastOneComputed = false;
     bool enable = false;
     if (m_permissions.funcAllowAdjGain(enable) && enable) {
-        m_gainCorrection.getAdjItem()->calcCoefficientsFromNodes();
+        m_gainCorrection.getAdjItem()->computeCoefficientsFromNodes();
         atLeastOneComputed = true;
     }
     if (m_permissions.funcAllowAdjPhase(enable) && enable) {
-        m_phaseCorrection.getAdjItem()->calcCoefficientsFromNodes();
+        m_phaseCorrection.getAdjItem()->computeCoefficientsFromNodes();
         atLeastOneComputed = true;
     }
     if (m_permissions.funcAllowAdjOffset(enable) && enable) {
-        m_offsetCorrection.getAdjItem()->calcCoefficientsFromNodes();
+        m_offsetCorrection.getAdjItem()->computeCoefficientsFromNodes();
         atLeastOneComputed = true;
     }
     return atLeastOneComputed;

@@ -19,7 +19,7 @@ int AdjDataItem::getOrder() const
 void AdjDataItem::initData(double init)
 {
     setNode(0, AdjDataNode(init, 0.0)); // setting the 1st node and all following
-    calcCoefficientsFromNodes();
+    computeCoefficientsFromNodes();
     m_adjStatus = 0;
 }
 
@@ -65,7 +65,7 @@ double AdjDataItem::getCoefficient(int index) const
     return m_adjCoefficients[index];
 }
 
-void AdjDataItem::calcCoefficientsFromNodes()
+void AdjDataItem::computeCoefficientsFromNodes()
 {
     const double epsilon = 1e-7;
     int i;

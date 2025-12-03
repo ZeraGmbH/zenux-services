@@ -26,7 +26,7 @@ public:
     bool setCoefficient(int index, double value); // !!! setting coefficient also is sequence relevant !!!
     double getCoefficient(int index) const;
 
-    void calcCoefficientsFromNodes();
+    void computeCoefficientsFromNodes();
     double getCorrection(double arg) const; // calculates correction value c= ax^order +bx^order-1 ...
 
     void fromStream(QDataStream& qds);
