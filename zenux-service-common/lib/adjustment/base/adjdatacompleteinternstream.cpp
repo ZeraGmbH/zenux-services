@@ -141,7 +141,8 @@ void AdjDataCompleteInternStream::decodeRanges(QDataStream &stream, AdjDataPtr a
                 QString channelName = rangeCmdList[1];
                 QString rangeName = rangeCmdList[2];
                 if(!adjData->isChannelRangeAvailable(channelName, rangeName)) {
-                    AdjDataRange rangeAdjData = AdjDataRange::fromStream(stream);
+                    AdjDataRange rangeAdjData;
+                    rangeAdjData.fromStream(stream);
                     adjData->setChannelRange(channelName, rangeName, rangeAdjData);
                 }
                 else

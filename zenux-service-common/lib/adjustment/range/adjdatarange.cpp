@@ -26,13 +26,11 @@ void AdjDataRange::initOffset()
     m_offsAdjData.initData(0.0);
 }
 
-AdjDataRange AdjDataRange::fromStream(QDataStream &qds)
+void AdjDataRange::fromStream(QDataStream &qds)
 {
-    AdjDataRange rangeAdjData;
-    rangeAdjData.m_gainAdjData.fromStream(qds);
-    rangeAdjData.m_phasAdjData.fromStream(qds);
-    rangeAdjData.m_offsAdjData.fromStream(qds);
-    return rangeAdjData;
+    m_gainAdjData.fromStream(qds);
+    m_phasAdjData.fromStream(qds);
+    m_offsAdjData.fromStream(qds);
 }
 
 void AdjDataRange::toStream(QDataStream &qds) const

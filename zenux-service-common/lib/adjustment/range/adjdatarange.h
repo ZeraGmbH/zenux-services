@@ -11,7 +11,7 @@ public:
     void initPhase();
     void initOffset();
 
-    static AdjDataRange fromStream(QDataStream &qds);
+    void fromStream(QDataStream &qds);
     void toStream(QDataStream &qds) const;
 
     AdjDataItem m_gainAdjData;

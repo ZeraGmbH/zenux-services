@@ -166,14 +166,12 @@ bool cClamp::importClampAdjData()
         while (!stream.atEnd()) {
             QString rngName;
             stream >> rngName;
+            AdjDataRange rangeAdjData;
+            rangeAdjData.fromStream(stream);
             SenseRangeCommon* range = getRange(rngName);
-            if (range != 0) {
+            if (range != nullptr) {
                 n++;
-                range->getJustData()->setAdjGroupData(AdjDataRange::fromStream(stream));
-            }
-            else {
-                // range not found: read dummy to keep serialization in sync
-                AdjDataRange::fromStream(stream);
+                range->getJustData()->setAdjGroupData(rangeAdjData);
             }
         }
         return (n == m_RangeList.count() + m_RangeListSecondary.count()); // it's ok if we found data for all ranges in our list
