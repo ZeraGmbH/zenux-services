@@ -65,7 +65,7 @@ double AdjDataItem::getCoefficient(int index) const
     return m_adjCoefficients[index];
 }
 
-bool AdjDataItem::calcCoefficientsFromNodes()
+void AdjDataItem::calcCoefficientsFromNodes()
 {
     const double epsilon = 1e-7;
     int i;
@@ -78,8 +78,7 @@ bool AdjDataItem::calcCoefficientsFromNodes()
         }
     }
     // fill the matrix
-    cGaussMatrix *Matrix;
-    Matrix = new cGaussMatrix(realOrd+1);
+    cGaussMatrix *Matrix = new cGaussMatrix(realOrd+1);
     cGaussNode gn;
     for (i = 0; i < realOrd+1; i++) {
         gn.m_fNode = m_adjNodes[i].getCorrection();
@@ -95,7 +94,6 @@ bool AdjDataItem::calcCoefficientsFromNodes()
     for (; i < getOrder()+1; i++)
         setCoefficient(i, 0.0);
     delete Matrix;
-    return true;
 }
 
 double AdjDataItem::getCorrection(double arg) const
