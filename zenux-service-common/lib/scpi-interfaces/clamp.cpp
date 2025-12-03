@@ -1,6 +1,5 @@
 #include "clamp.h"
 #include "adjflags.h"
-#include "adjdatarangestream.h"
 #include "clampsenserange.h"
 #include "adjdataitemscpi.h"
 #include "adjrangescpiclamp.h"
@@ -137,12 +136,12 @@ bool cClamp::exportClampAdjData(QDateTime dateTimeWrite)
     for(auto range : qAsConst(m_RangeList)) {
         spec = range->getRangeName();
         stream << spec;
-        AdjDataRangeStream::toStream(range->getJustData()->getAdjGroupData(), stream);
+        AdjDataRange::toStream(range->getJustData()->getAdjGroupData(), stream);
     }
     for(auto range : qAsConst(m_RangeListSecondary)) {
         spec = range->getRangeName();
         stream << spec;
-        AdjDataRangeStream::toStream(range->getJustData()->getAdjGroupData(), stream);
+        AdjDataRange::toStream(range->getJustData()->getAdjGroupData(), stream);
     }
     m_adjReadWrite.setData(ba);
     return m_adjReadWrite.writeData();
@@ -173,11 +172,11 @@ bool cClamp::importClampAdjData()
             SenseRangeCommon* range = getRange(rngName);
             if (range != 0) {
                 n++;
-                range->getJustData()->setAdjGroupData(AdjDataRangeStream::fromStream(stream));
+                range->getJustData()->setAdjGroupData(AdjDataRange::fromStream(stream));
             }
             else {
                 // range not found: read dummy to keep serialization in sync
-                AdjDataRangeStream::fromStream(stream);
+                AdjDataRange::fromStream(stream);
             }
         }
         return (n == m_RangeList.count() + m_RangeListSecondary.count()); // it's ok if we found data for all ranges in our list

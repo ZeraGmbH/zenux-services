@@ -10,6 +10,10 @@ public:
     void initGain();
     void initPhase();
     void initOffset();
+
+    static AdjDataRange fromStream(QDataStream &qds);
+    static void toStream(AdjDataRange adjGroup, QDataStream &qds);
+
     AdjDataItem m_gainAdjData;
     AdjDataItem m_phasAdjData;
     AdjDataItem m_offsAdjData;

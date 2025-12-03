@@ -1,6 +1,5 @@
 #include "senseinterfacecommon.h"
 #include "adjflags.h"
-#include "adjdatarangestream.h"
 #include "notzeronumgen.h"
 #include "zscpi_response_definitions.h"
 #include <i2cmultiplexerfactory.h>
@@ -223,7 +222,7 @@ bool SenseInterfaceCommon::exportAdjData(QDateTime dateTimeWrite)
             if (isRangePartOfAdjXmlExport(range)) {
                 QString spec = QString("%1:%2:%3").arg("SENSE", channel->getName(), range->getRangeName());
                 stream << spec.toLatin1();
-                AdjDataRangeStream::toStream(range->getJustData()->getAdjGroupData(), stream);
+                AdjDataRange::toStream(range->getJustData()->getAdjGroupData(), stream);
             }
         }
     }

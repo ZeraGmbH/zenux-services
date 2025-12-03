@@ -1,5 +1,4 @@
 #include "adjdatacompleteinternstream.h"
-#include "adjdatarangestream.h"
 #include <QDataStream>
 
 AdjDataCompleteInternStream::AdjDataCompleteInternStream(int maxSize) :
@@ -142,7 +141,7 @@ void AdjDataCompleteInternStream::decodeRanges(QDataStream &stream, AdjDataPtr a
                 QString channelName = rangeCmdList[1];
                 QString rangeName = rangeCmdList[2];
                 if(!adjData->isChannelRangeAvailable(channelName, rangeName)) {
-                    AdjDataRange rangeAdjData = AdjDataRangeStream::fromStream(stream);
+                    AdjDataRange rangeAdjData = AdjDataRange::fromStream(stream);
                     adjData->setChannelRange(channelName, rangeName, rangeAdjData);
                 }
                 else
