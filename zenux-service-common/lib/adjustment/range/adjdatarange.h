@@ -12,7 +12,7 @@ public:
     void initOffset();
 
     static AdjDataRange fromStream(QDataStream &qds);
-    static void toStream(AdjDataRange adjGroup, QDataStream &qds);
+    void toStream(QDataStream &qds) const;
 
     AdjDataItem m_gainAdjData;
     AdjDataItem m_phasAdjData;

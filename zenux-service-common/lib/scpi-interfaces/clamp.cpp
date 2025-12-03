@@ -132,16 +132,13 @@ bool cClamp::exportClampAdjData(QDateTime dateTimeWrite)
     stream << m_sVersion; // version
     stream << m_sSerial; //  serial
     stream << m_AdjDateTime.toString(Qt::TextDate); // date, time
-    QString spec;
     for(auto range : qAsConst(m_RangeList)) {
-        spec = range->getRangeName();
-        stream << spec;
-        AdjDataRange::toStream(range->getJustData()->getAdjGroupData(), stream);
+        stream << range->getRangeName();
+        range->getJustData()->getAdjGroupData().toStream(stream);
     }
     for(auto range : qAsConst(m_RangeListSecondary)) {
-        spec = range->getRangeName();
-        stream << spec;
-        AdjDataRange::toStream(range->getJustData()->getAdjGroupData(), stream);
+        stream << range->getRangeName();
+        range->getJustData()->getAdjGroupData().toStream(stream);
     }
     m_adjReadWrite.setData(ba);
     return m_adjReadWrite.writeData();

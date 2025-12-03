@@ -115,11 +115,11 @@ void AdjDataItem::fromStream(AdjDataItem &item, QDataStream &qds)
     }
 }
 
-void AdjDataItem::toStream(AdjDataItem item, QDataStream &qds)
+void AdjDataItem::toStream(QDataStream &qds) const
 {
-    qds << item.m_adjStatus;
-    for (int i = 0; i < item.m_adjCoefficients.size(); i++)
-        qds << item.m_adjCoefficients[i];
-    for (int i = 0; i < item.m_adjNodes.size(); i++)
-        qds << item.m_adjNodes[i].getCorrection() << item.m_adjNodes[i].getArgument();
+    qds << m_adjStatus;
+    for (int i = 0; i < m_adjCoefficients.size(); i++)
+        qds << m_adjCoefficients[i];
+    for (int i = 0; i < m_adjNodes.size(); i++)
+        qds << m_adjNodes[i].getCorrection() << m_adjNodes[i].getArgument();
 }

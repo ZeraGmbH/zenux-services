@@ -30,12 +30,12 @@ void AdjDataNode::fromString(const QString& s)
     m_fArgument = s.section(';', 1, 1).toDouble();
 }
 
-double AdjDataNode::getCorrection()
+double AdjDataNode::getCorrection() const
 {
     return m_fCorrection;
 }
 
-double AdjDataNode::getArgument()
+double AdjDataNode::getArgument() const
 {
     return m_fArgument;
 }

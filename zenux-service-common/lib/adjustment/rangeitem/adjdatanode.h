@@ -18,8 +18,8 @@ public:
     QString toString(int digits);
     void fromString(const QString&);
 
-    double getCorrection();
-    double getArgument();
+    double getCorrection() const;
+    double getArgument() const;
 
 private:
     double m_fCorrection;

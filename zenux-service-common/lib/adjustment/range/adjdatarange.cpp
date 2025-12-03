@@ -35,9 +35,9 @@ AdjDataRange AdjDataRange::fromStream(QDataStream &qds)
     return rangeAdjData;
 }
 
-void AdjDataRange::toStream(AdjDataRange adjGroup, QDataStream &qds)
+void AdjDataRange::toStream(QDataStream &qds) const
 {
-    AdjDataItem::toStream(adjGroup.m_gainAdjData, qds);
-    AdjDataItem::toStream(adjGroup.m_phasAdjData, qds);
-    AdjDataItem::toStream(adjGroup.m_offsAdjData, qds);
+    m_gainAdjData.toStream(qds);
+    m_phasAdjData.toStream(qds);
+    m_offsAdjData.toStream(qds);
 }
