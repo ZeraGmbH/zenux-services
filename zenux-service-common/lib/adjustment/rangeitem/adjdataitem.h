@@ -44,6 +44,7 @@ private:
     quint8 m_adjStatus = 0;
     QVector<AdjDataNode> m_adjNodes;
     QVector<double> m_adjCoefficients;
+    bool m_isComputeRequired = false;
 };
 
 

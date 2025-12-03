@@ -25,7 +25,7 @@ void AdjDataItem::initData(double init)
 
 bool AdjDataItem::isComputeRequired() const
 {
-    return true;
+    return m_isComputeRequired;
 }
 
 quint8 AdjDataItem::getAdjStatus() const
@@ -43,6 +43,7 @@ bool AdjDataItem::setNode(int index, const AdjDataNode &jn)
     if (index < getOrder()+1) {
         for (int i = index; i < getOrder()+1; i++)
             m_adjNodes[i] = jn;
+        m_isComputeRequired = true;
         return true;
     }
     return false;
@@ -99,6 +100,7 @@ void AdjDataItem::computeCoefficientsFromNodes()
     for (; i < getOrder()+1; i++)
         setCoefficient(i, 0.0);
     delete Matrix;
+    m_isComputeRequired = false;
 }
 
 double AdjDataItem::getCorrection(double arg) const
@@ -126,6 +128,7 @@ void AdjDataItem::fromStream(QDataStream &qds)
         AdjDataNode node(correction, argument);
         m_adjNodes[i] = node;
     }
+    m_isComputeRequired = false;
 }
 
 void AdjDataItem::toStream(QDataStream &qds) const
@@ -144,6 +147,7 @@ void AdjDataItem::nodesFromString(const QString &s)
         node.fromString(s.section(';', i << 1, (i << 1) + 1));
         setNode(i, node);
     }
+    m_isComputeRequired = false;
 }
 
 QString AdjDataItem::nodesToString(int digits) const
@@ -158,6 +162,7 @@ void AdjDataItem::coefficientsFromString(const QString &s)
 {
     for (int i = 0; i < getOrder()+1; i++)
         setCoefficient(i, s.section(';', i, i).toDouble());
+    m_isComputeRequired = false;
 }
 
 QString AdjDataItem::coefficientsToString() const
