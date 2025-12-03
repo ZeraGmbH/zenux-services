@@ -11,7 +11,7 @@ AdjDataItem::AdjDataItem(int order) :
     Q_ASSERT(order+1 > 0);
 }
 
-int AdjDataItem::getOrder()
+int AdjDataItem::getOrder() const
 {
     return m_order;
 }
@@ -21,6 +21,16 @@ void AdjDataItem::initData(double init)
     setNode(0, AdjDataNode(init, 0.0)); // setting the 1st node and all following
     calcCoefficientsFromNodes();
     m_adjStatus = 0;
+}
+
+quint8 AdjDataItem::getAdjStatus() const
+{
+    return m_adjStatus;
+}
+
+void AdjDataItem::setAdjStatus(quint8 adjStatus)
+{
+    m_adjStatus = adjStatus;
 }
 
 bool AdjDataItem::setNode(int index, AdjDataNode jn)
@@ -50,7 +60,7 @@ bool AdjDataItem::setCoefficient(int index, double value)
     return false;
 }
 
-double AdjDataItem::getCoefficient(int index)
+double AdjDataItem::getCoefficient(int index) const
 {
     return m_adjCoefficients[index];
 }
@@ -88,7 +98,7 @@ bool AdjDataItem::calcCoefficientsFromNodes()
     return true;
 }
 
-double AdjDataItem::getCorrection(double arg)
+double AdjDataItem::getCorrection(double arg) const
 {
     double Arg = 1.0;
     double Corr = 0.0;

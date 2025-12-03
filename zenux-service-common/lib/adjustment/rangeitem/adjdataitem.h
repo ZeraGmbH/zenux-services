@@ -13,27 +13,30 @@ class AdjDataItem
 {
 public:
     AdjDataItem(int order);
-    int getOrder();
+    int getOrder() const;
 
     void initData(double init);
-    
+
+    quint8 getAdjStatus() const;
+    void setAdjStatus(quint8 adjStatus);
+
     bool setNode(int index, AdjDataNode jn); // !!! setting node sequence is relevant !!!
     AdjDataNode* getNode(int index);
 
     bool setCoefficient(int index, double value); // !!! setting coefficient also is sequence relevant !!!
-    double getCoefficient(int index);
+    double getCoefficient(int index) const;
 
     bool calcCoefficientsFromNodes();
-    double getCorrection(double arg); // calculates correction value c= ax^order +bx^order-1 ...
+    double getCorrection(double arg) const; // calculates correction value c= ax^order +bx^order-1 ...
 
     void fromStream(QDataStream& qds);
     void toStream(QDataStream& qds) const;
 
-    quint8 m_adjStatus = 0;
     QVector<AdjDataNode> m_adjNodes;
     QVector<double> m_adjCoefficients;
 private:
     int m_order;
+    quint8 m_adjStatus = 0;
 };
 
 

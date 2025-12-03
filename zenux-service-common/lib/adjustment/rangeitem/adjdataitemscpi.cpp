@@ -86,7 +86,7 @@ QString AdjDataItemScpi::scpiReadWriteStatus(QString &sInput)
 {
     cSCPICommand cmd = sInput;
     if (cmd.isQuery())
-        return QString("%1").arg(m_adjItem->m_adjStatus);
+        return QString("%1").arg(m_adjItem->getAdjStatus());
     else if (cmd.isCommand(1)) {
         bool enable;
         if (m_checkPermission(enable)) {
@@ -95,7 +95,7 @@ QString AdjDataItemScpi::scpiReadWriteStatus(QString &sInput)
                 bool ok;
                 quint8 par = spar.toInt(&ok);
                 if (ok) {
-                    m_adjItem->m_adjStatus = par;
+                    m_adjItem->setAdjStatus(par);
                     return ZSCPI::scpiAnswer[ZSCPI::ack];
                 }
                 else
@@ -176,7 +176,7 @@ QString AdjDataItemScpi::scpiReadWriteJustNode(QString &sInput, quint8 index)
 
 QString AdjDataItemScpi::statusToString()
 {
-    return QString("%1").arg(m_adjItem->m_adjStatus);
+    return QString("%1").arg(m_adjItem->getAdjStatus());
 }
 
 QString AdjDataItemScpi::coefficientsToString() // writes adjustment data to qstring
@@ -197,7 +197,7 @@ QString AdjDataItemScpi::nodesToString()
 
 void AdjDataItemScpi::statusFromString(const QString &s)
 {
-    m_adjItem->m_adjStatus = s.toInt();
+    m_adjItem->setAdjStatus(s.toInt());
 }
 
 
@@ -215,7 +215,7 @@ void AdjDataItemScpi::nodesFromString(const QString& s)
 }
 
 
-quint8 AdjDataItemScpi::getStatus()
+quint8 AdjDataItemScpi::getStatus() const
 {
-    return m_adjItem->m_adjStatus;
+    return m_adjItem->getAdjStatus();
 }

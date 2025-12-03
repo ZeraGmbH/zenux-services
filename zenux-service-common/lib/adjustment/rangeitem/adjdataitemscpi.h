@@ -22,7 +22,7 @@ public:
     AdjDataItem *getAdjItem();
 
     // xml
-    quint8 getStatus();
+    quint8 getStatus() const;
     QString statusToString();
     void statusFromString(const QString& s);
     QString coefficientsToString();
