@@ -143,7 +143,7 @@ QString AdjDataItemScpi::scpiReadWriteJustNode(QString &sInput, quint8 index)
 {
     cSCPICommand cmd = sInput;
     if (cmd.isQuery())
-        return QString("%1").arg(getAdjItem()->getNode(index)->toString(m_digits));
+        return QString("%1").arg(getAdjItem()->getNode(index).toString(m_digits));
     else if (cmd.isCommand(2))
     {
         bool enable;

@@ -43,9 +43,9 @@ bool AdjDataItem::setNode(int index, AdjDataNode jn)
     return false;
 }
 
-AdjDataNode *AdjDataItem::getNode(int index)
+AdjDataNode AdjDataItem::getNode(int index) const
 {
-    return &m_adjNodes[index];
+    return m_adjNodes[index];
 }
 
 bool AdjDataItem::setCoefficient(int index, double value)

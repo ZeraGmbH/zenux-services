@@ -21,7 +21,7 @@ public:
     void setAdjStatus(quint8 adjStatus);
 
     bool setNode(int index, AdjDataNode jn); // !!! setting node sequence is relevant !!!
-    AdjDataNode* getNode(int index);
+    AdjDataNode getNode(int index) const;
 
     bool setCoefficient(int index, double value); // !!! setting coefficient also is sequence relevant !!!
     double getCoefficient(int index) const;
