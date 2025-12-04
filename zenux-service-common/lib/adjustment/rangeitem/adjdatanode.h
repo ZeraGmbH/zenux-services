@@ -10,13 +10,14 @@
 class AdjDataNode
 {
 public:
+    AdjDataNode();
     AdjDataNode(double corr, double arg);
-    AdjDataNode(){};
-    void toStream(QDataStream&) const;
-    void fromStream(QDataStream&);
+
+    void toStream(QDataStream& stream) const;
+    void fromStream(QDataStream& stream);
 
     QString toString(int digits) const;
-    void fromString(const QString&);
+    void fromString(const QString& str);
 
     double getCorrection() const;
     double getArgument() const;
