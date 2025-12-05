@@ -34,9 +34,6 @@ private slots:
     void offsetAdjValueTotalClamp();
 private:
     void setupServers();
-    void addClamp();
-    QString readFile(QString filename);
-    double calcAdjValue(double value, double coeff0, double coeff1, double coeff2);
 
     std::unique_ptr<TestServerForSenseInterfaceMt310s2> m_testServer;
     std::unique_ptr<ResmanRunFacade> m_resmanServer;

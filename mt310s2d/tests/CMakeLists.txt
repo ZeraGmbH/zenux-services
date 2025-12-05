@@ -55,11 +55,6 @@ target_sources(test_regression_adj_scpi_query_format_mt310s2
     regression_data_adj_scpi_format/regression_data.qrc
 )
 
-target_sources(test_regression_adj_calc_mt310s2
-  PRIVATE
-    regression_data_adj_calc/regression_data.qrc
-)
-
 target_sources(test_adj_deny_import_mt310s2
   PRIVATE
     regression_data_adj_import_export/regression_data.qrc

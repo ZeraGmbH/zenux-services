@@ -1,9 +1,11 @@
 #include "testserverforsenseinterfacemt310s2.h"
+#include "clamp.h"
 #include "mockclampplugger.h"
 #include "mockeepromi2cfactory.h"
 #include "mt310s2senseinterface.h"
 #include "mt310s2systeminfomock.h"
 #include <i2cmultiplexerfactory.h>
+#include <testloghelpers.h>
 
 TestServerForSenseInterfaceMt310s2::TestServerForSenseInterfaceMt310s2(AbstractFactoryI2cCtrlPtr ctrlFactory,
                                                                        VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory,
@@ -11,6 +13,7 @@ TestServerForSenseInterfaceMt310s2::TestServerForSenseInterfaceMt310s2(AbstractF
                                                                        bool systemInfoMock) :
     TestPcbServer(serviceNameForAlternateDevice, tcpNetworkFactory)
 {
+    Q_INIT_RESOURCE(regression_data_adj_calc);
     PermissionFunctions::setPermissionCtrlFactory(ctrlFactory);
     if(systemInfoMock)
         m_systemInfo = std::make_unique<Mt310s2SystemInfoMock>(ctrlFactory);
@@ -52,6 +55,46 @@ TestServerForSenseInterfaceMt310s2::TestServerForSenseInterfaceMt310s2(AbstractF
     start();
 }
 
+double TestServerForSenseInterfaceMt310s2::calcAdjValue(double value, double coeff0, double coeff1, double coeff2)
+{
+    return coeff0 + value*coeff1 + value*value*coeff2;
+}
+
+double TestServerForSenseInterfaceMt310s2::calcGainValue(double value)
+{
+    return calcAdjValue(value, 2.0, 3.0, 4.0); // matches xml
+}
+
+double TestServerForSenseInterfaceMt310s2::calcPhaseValue(double value)
+{
+    return calcAdjValue(value, 3.0, 4.0, 5.0); // matches xml
+}
+
+double TestServerForSenseInterfaceMt310s2::calcOffsetValue(double value)
+{
+    return calcAdjValue(value, 4.0, 5.0, 6.0); // matches xml
+}
+
+double TestServerForSenseInterfaceMt310s2::getCvRatioC200A()
+{
+    return 500.0;
+}
+
+double TestServerForSenseInterfaceMt310s2::calcGainValueClamp(double value)
+{
+    return calcAdjValue(value, 5.0, 6.0, 7.0); // matches xml
+}
+
+double TestServerForSenseInterfaceMt310s2::calcPhaseValueClamp(double value)
+{
+    return calcAdjValue(value, 6.0, 7.0, 8.0); // matches xml
+}
+
+double TestServerForSenseInterfaceMt310s2::calcOffsetValueClamp(double value)
+{
+    return calcAdjValue(value, 7.0, 8.0, 9.0); // matches xml
+}
+
 cClamp *TestServerForSenseInterfaceMt310s2::addClamp(int clampType, QString channelAlias)
 {
     MockClampPlugger clampPlugger(getSenseSettings(), m_settings->getI2cSettings());
@@ -59,6 +102,13 @@ cClamp *TestServerForSenseInterfaceMt310s2::addClamp(int clampType, QString chan
 
     SenseSystem::cChannelSettings *channelSettingClamps = getSenseSettings()->findChannelSettingByAlias1(channelAlias);
     return getClampInterface()->tryAddClamp(channelSettingClamps);
+}
+
+void TestServerForSenseInterfaceMt310s2::addStdClamp()
+{
+    addClamp(cClamp::CL200ADC1000VDC, "IL1");
+    QString xml = TestLogHelpers::loadFile(":/import_clamp.xml");
+    getClampInterface()->importClampXmls(xml, false);
 }
 
 void TestServerForSenseInterfaceMt310s2::removeAllClamps()

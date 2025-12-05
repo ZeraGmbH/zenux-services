@@ -21,7 +21,17 @@ public:
     cClampInterface *getClampInterface() { return m_clampInterface.get(); }
     Mt310s2SystemInfo *getSystemInfo() { return m_systemInfo.get(); }
 
+    static double calcAdjValue(double value, double coeff0, double coeff1, double coeff2);
+    static double calcGainValue(double value);
+    static double calcPhaseValue(double value);
+    static double calcOffsetValue(double value);
+    static double getCvRatioC200A();
+    static double calcGainValueClamp(double value);
+    static double calcPhaseValueClamp(double value);
+    static double calcOffsetValueClamp(double value);
+
     cClamp *addClamp(int clampType, QString channelAlias);
+    void addStdClamp();
     void removeAllClamps();
 
 private:

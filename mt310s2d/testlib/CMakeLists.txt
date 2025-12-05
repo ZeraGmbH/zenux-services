@@ -1,14 +1,19 @@
 file(GLOB SOURCES
-    ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp
+    *.cpp
     )
 
 file(GLOB HEADER
-    ${CMAKE_CURRENT_SOURCE_DIR}/*.h
+    *.h
+    )
+
+file(GLOB_RECURSE RESOURCES
+    *.qrc
     )
 
 add_library(mt310s2d-testlib STATIC
     ${SOURCES}
     ${HEADER}
+    ${RESOURCES}
 )
 
 target_include_directories(mt310s2d-testlib
@@ -23,6 +28,7 @@ target_link_libraries(mt310s2d-testlib
     mt310s2d-lib
     zenuxservicecommon-demolib
     zenuxservicecommon-testlib
+    Zera::testlib-common
 )
 
 export(TARGETS mt310s2d-testlib NAMESPACE Zera:: FILE ZenuxServicesTargets.cmake)
