@@ -152,11 +152,9 @@ QString AdjRangeScpi::scpiQueryGainCorrectionTotal(const QString &scpiInput)
         double par = spar.toDouble(&ok);
         if (ok)
             return m_scpiQueryFormatter->m_gainScpiFormatter(getGainCorrectionTotal(par));
-        else
-            return ZSCPI::scpiAnswer[ZSCPI::errval];
+        return ZSCPI::scpiAnswer[ZSCPI::errval];
     }
-    else
-        return ZSCPI::scpiAnswer[ZSCPI::nak];
+    return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 QString AdjRangeScpi::scpiQueryGainCorrectionSingle(QString &scpiInput)
@@ -168,11 +166,9 @@ QString AdjRangeScpi::scpiQueryGainCorrectionSingle(QString &scpiInput)
         double par = spar.toDouble(&ok);
         if (ok)
             return m_scpiQueryFormatter->m_gainScpiFormatter(getGainCorrectionSingle(par));
-        else
-            return ZSCPI::scpiAnswer[ZSCPI::errval];
+        return ZSCPI::scpiAnswer[ZSCPI::errval];
     }
-    else
-        return ZSCPI::scpiAnswer[ZSCPI::nak];
+    return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 QString AdjRangeScpi::scpiQueryPhaseCorrectionTotal(QString& scpiInput)
@@ -184,11 +180,9 @@ QString AdjRangeScpi::scpiQueryPhaseCorrectionTotal(QString& scpiInput)
         double par = spar.toDouble(&ok);
         if (ok)
             return m_scpiQueryFormatter->m_phaseScpiFormatter(getPhaseCorrectionTotal(par));
-        else
-            return ZSCPI::scpiAnswer[ZSCPI::errval];
+        return ZSCPI::scpiAnswer[ZSCPI::errval];
     }
-    else
-        return ZSCPI::scpiAnswer[ZSCPI::nak];
+    return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 QString AdjRangeScpi::scpiQueryPhaseCorrectionSingle(QString &scpiInput)
@@ -200,11 +194,9 @@ QString AdjRangeScpi::scpiQueryPhaseCorrectionSingle(QString &scpiInput)
         double par = spar.toDouble(&ok);
         if (ok)
             return m_scpiQueryFormatter->m_phaseScpiFormatter(getPhaseCorrectionSingle(par));
-        else
-            return ZSCPI::scpiAnswer[ZSCPI::errval];
+        return ZSCPI::scpiAnswer[ZSCPI::errval];
     }
-    else
-        return ZSCPI::scpiAnswer[ZSCPI::nak];
+    return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 QString AdjRangeScpi::scpiQueryOffsetCorrectionTotal(QString& scpiInput)
@@ -216,11 +208,9 @@ QString AdjRangeScpi::scpiQueryOffsetCorrectionTotal(QString& scpiInput)
         double par = spar.toDouble(&ok);
         if (ok)
             return m_scpiQueryFormatter->m_offsetScpiFormatter(getOffsetCorrectionTotal(par));
-        else
-            return ZSCPI::scpiAnswer[ZSCPI::errval];
+        return ZSCPI::scpiAnswer[ZSCPI::errval];
     }
-    else
-        return ZSCPI::scpiAnswer[ZSCPI::nak];
+    return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 QString AdjRangeScpi::scpiQueryOffsetCorrectionSingle(QString &scpiInput)
@@ -232,21 +222,17 @@ QString AdjRangeScpi::scpiQueryOffsetCorrectionSingle(QString &scpiInput)
         double par = spar.toDouble(&ok);
         if (ok)
             return m_scpiQueryFormatter->m_offsetScpiFormatter(getOffsetCorrectionSingle(par));
-        else
-            return ZSCPI::scpiAnswer[ZSCPI::errval];
+        return ZSCPI::scpiAnswer[ZSCPI::errval];
     }
-    else
-        return ZSCPI::scpiAnswer[ZSCPI::nak];
+    return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 QString AdjRangeScpi::scpiQueryStatus(QString& scpiInput)
 {
     cSCPICommand cmd = scpiInput;
-    if (cmd.isQuery()) {
+    if (cmd.isQuery())
         return QString("%1").arg(getAdjustmentStatus80Mask());
-    }
-    else
-        return ZSCPI::scpiAnswer[ZSCPI::nak];
+    return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 QString AdjRangeScpi::scpiCmdComputeJustData(QString& scpiInput)
@@ -257,8 +243,7 @@ QString AdjRangeScpi::scpiCmdComputeJustData(QString& scpiInput)
             return ZSCPI::scpiAnswer[ZSCPI::ack];
         return ZSCPI::scpiAnswer[ZSCPI::erraut];
     }
-    else
-        return ZSCPI::scpiAnswer[ZSCPI::nak];
+    return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 QString AdjRangeScpi::scpiCmdInitJustData(QString &scpiInput)
@@ -269,8 +254,7 @@ QString AdjRangeScpi::scpiCmdInitJustData(QString &scpiInput)
             return ZSCPI::scpiAnswer[ZSCPI::ack];
         return ZSCPI::scpiAnswer[ZSCPI::erraut];
     }
-    else
-        return ZSCPI::scpiAnswer[ZSCPI::nak];
+    return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 quint8 AdjRangeScpi::getAdjustmentStatus80Mask()
