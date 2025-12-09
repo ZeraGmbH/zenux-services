@@ -16,7 +16,7 @@
 // 0x09 0x0A 0x0B 0x0C
 
 // Quick-hack-lazy:
-static constexpr bool TESTMODE = true;
+static constexpr bool TESTMODE = false;
 
 static SettingsContainerPtr getSettingsContainer(const QString &serviceName)
 {
