@@ -712,7 +712,7 @@ void cClamp::initClamp(quint8 type)
     case CL1200ADC1400VDC: // LEM-3 1200A/1400V
         // I
         clampJustData = new AdjRangeScpiClamp(m_scpiInterface, m_pSenseInterface->getRange(channelMName, QString("5V")), 1500.0, permissionsOffsetAllowedAlways);
-        m_RangeList.append(new ClampSenseRange(m_scpiInterface, "C1200A", true, 1200.0, 2684355.0, 2684355.0 * 1.25, 0x0A, dcClampMask, clampJustData));
+        m_RangeList.append(new ClampSenseRange(m_scpiInterface, "C1200A", true, 1200.0, 2684355.0, 2684355.0 * 1.2625, 0x0A, dcClampMask, clampJustData));
         clampJustData = new AdjRangeScpiClamp(m_scpiInterface, m_pSenseInterface->getRange(channelMName, QString("2V")), 1500.0, permissionsOffsetAllowedAlways);
         m_RangeList.append(new ClampSenseRange(m_scpiInterface, "C800A", true, 800.0, 3024625.0, 3024625.0 * 1.30, 0x0B, dcClampMask, clampJustData));
         clampJustData = new AdjRangeScpiClamp(m_scpiInterface, m_pSenseInterface->getRange(channelMName, QString("1V")), 1500.0, permissionsOffsetAllowedAlways);
