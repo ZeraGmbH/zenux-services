@@ -17,7 +17,6 @@ struct HotControllers
 {
     I2cCtrlCommonInfoPtrShared m_commonController;
     I2cCtrlEMOBPtr m_emobController;
-    EmobControllerTypes m_controllerType;
 };
 typedef QMap<QString /*channelMName*/, HotControllers> HotControllerMap;
 
@@ -30,7 +29,6 @@ public:
                                        cSenseSettingsPtr senseSettings,
                                        int msWaitForApplicationStart);
     HotControllerMap getCurrentControllers();
-    static EmobControllerTypes getEmobControllerType(const QString &subInstrumentReceived);
 signals:
     void sigControllersChanged();
 

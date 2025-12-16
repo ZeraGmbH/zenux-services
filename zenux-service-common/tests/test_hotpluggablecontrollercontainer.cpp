@@ -398,7 +398,6 @@ void test_hotpluggablecontrollercontainer::mt310s2AddI1InstrumentDetectsMt650e()
     HotControllerMap controllers = container.getCurrentControllers();
     QCOMPARE(controllers.size(), 1);
     QVERIFY(controllers.contains(getChannelMName(channelAlias)));
-    QCOMPARE(controllers[getChannelMName(channelAlias)].m_controllerType, MT650e);
 }
 
 void test_hotpluggablecontrollercontainer::mt310s2AddI1InstrumentDefaultsEmob()
@@ -414,7 +413,6 @@ void test_hotpluggablecontrollercontainer::mt310s2AddI1InstrumentDefaultsEmob()
     HotControllerMap controllers = container.getCurrentControllers();
     QCOMPARE(controllers.size(), 1);
     QVERIFY(controllers.contains(getChannelMName(channelAlias)));
-    QCOMPARE(controllers[getChannelMName(channelAlias)].m_controllerType, EMOB);
 }
 
 quint16 test_hotpluggablecontrollercontainer::getChannelPlugMask(const QString &channelAlias)

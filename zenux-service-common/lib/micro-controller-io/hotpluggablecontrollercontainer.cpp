@@ -48,13 +48,6 @@ HotControllerMap HotPluggableControllerContainer::getCurrentControllers()
     return ctrlMap;
 }
 
-EmobControllerTypes HotPluggableControllerContainer::getEmobControllerType(const QString &subInstrumentReceived)
-{
-    if(subInstrumentReceived.contains("MT650e"))
-        return MT650e;
-    return EMOB;
-}
-
 void HotPluggableControllerContainer::startAddingController(int ctrlChannel,
                                                             SenseSystem::cChannelSettings* channelSettings,
                                                             int msWaitForApplicationStart)
@@ -99,9 +92,8 @@ void HotPluggableControllerContainer::onBootloaderStopAssumed(int ctrlChannel)
                 if(result == ZeraMControllerIo::cmddone && !instrumentSubType.isEmpty()) {
                     qInfo("Instrument type read: '%s'. Add controller on channel %i / mux channel %i",
                           qPrintable(instrumentSubType), ctrlChannel, muxChannelNo);
-                    HotControllers controllers{commonCtrl, emobCtrl, EMOBUnknown};
+                    HotControllers controllers{commonCtrl, emobCtrl};
                     m_controllers[ctrlChannel] = {channelInfo.channelMName, controllers};
-                    m_controllers[ctrlChannel].controllers.m_controllerType = getEmobControllerType(instrumentSubType);
                     emit sigControllersChanged();
                 }
             }
