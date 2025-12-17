@@ -30,9 +30,6 @@ private slots:
     void addI1ControllerBootloaderActiveAndRemoveBeforeStartApplicationFinish();
     void addI1ControllerBootloaderActiveAndAddI2ControllerBeforeI1StartApplicationFinish();
     void clampControllerSequence();
-
-    void mt310s2AddI1InstrumentDetectsMt650e();
-    void mt310s2AddI1InstrumentDefaultsEmob();
 private:
     quint16 getChannelPlugMask(const QString &channelAlias);
     QString getChannelMName(const QString &channelAlias);

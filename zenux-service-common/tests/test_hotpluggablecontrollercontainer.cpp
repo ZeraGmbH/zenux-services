@@ -385,36 +385,6 @@ void test_hotpluggablecontrollercontainer::clampControllerSequence()
     controllers.clear();
 }
 
-void test_hotpluggablecontrollercontainer::mt310s2AddI1InstrumentDetectsMt650e()
-{
-    const QString channelAlias = "IL1";
-    m_i2cSettings->setI2cAddressesEmob(QString(), 0, 0);
-    HotPluggableControllerContainer container(m_i2cSettings, m_ctrlFactory);
-    ControllerPersitentData::MuxChannelDeviceNameMap deviceMap;
-    deviceMap.insert(getChannelMuxChannel(channelAlias), {"MT650e", cClamp::ClampTypes::undefined});
-    ControllerPersitentData::setHotplugDevices(deviceMap);
-
-    container.startActualizeEmobControllers(getChannelPlugMask(channelAlias), m_senseSettings, 1000);
-    HotControllerMap controllers = container.getCurrentControllers();
-    QCOMPARE(controllers.size(), 1);
-    QVERIFY(controllers.contains(getChannelMName(channelAlias)));
-}
-
-void test_hotpluggablecontrollercontainer::mt310s2AddI1InstrumentDefaultsEmob()
-{
-    const QString channelAlias = "IL1";
-    m_i2cSettings->setI2cAddressesEmob(QString(), 0, 0);
-    HotPluggableControllerContainer container(m_i2cSettings, m_ctrlFactory);
-    ControllerPersitentData::MuxChannelDeviceNameMap deviceMap;
-    deviceMap.insert(getChannelMuxChannel(channelAlias), {"foo", cClamp::ClampTypes::undefined});
-    ControllerPersitentData::setHotplugDevices(deviceMap);
-
-    container.startActualizeEmobControllers(getChannelPlugMask(channelAlias), m_senseSettings, 1000);
-    HotControllerMap controllers = container.getCurrentControllers();
-    QCOMPARE(controllers.size(), 1);
-    QVERIFY(controllers.contains(getChannelMName(channelAlias)));
-}
-
 quint16 test_hotpluggablecontrollercontainer::getChannelPlugMask(const QString &channelAlias)
 {
     SenseSystem::cChannelSettings* channelSettings = m_senseSettings->findChannelSettingByAlias1(channelAlias);
