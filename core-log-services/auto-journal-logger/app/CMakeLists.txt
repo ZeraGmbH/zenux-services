@@ -13,7 +13,7 @@ add_executable(auto-journal-logger
 
 target_link_libraries(auto-journal-logger
     PUBLIC
-    Qt5::Core
+    ${QTX}::Core
     systemd
     auto-journal-logger-lib
     )

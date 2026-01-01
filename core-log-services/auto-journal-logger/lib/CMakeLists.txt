@@ -19,7 +19,7 @@ target_include_directories(auto-journal-logger-lib
 
 target_link_libraries(auto-journal-logger-lib
     PUBLIC
-    Qt5::Core
+    ${QTX}::Core
     PRIVATE
     Zera::zera-timers
     simplecmdiobase

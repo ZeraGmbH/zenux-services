@@ -18,7 +18,7 @@ target_include_directories(auto-journal-logger-testlib
 
 target_link_libraries(auto-journal-logger-testlib
     PUBLIC
-    Qt5::Core
+    ${QTX}::Core
     auto-journal-logger-lib
     )
 

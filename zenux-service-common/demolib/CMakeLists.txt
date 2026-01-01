@@ -37,7 +37,7 @@ target_include_directories(zenuxservicecommon-demolib
 
 target_link_libraries(zenuxservicecommon-demolib
     PUBLIC
-    Qt5::Core
+    ${QTX}::Core
     zenuxservicecommon
     zenuxi2ceeprom-demolib
     mt310s2d-lib
@@ -59,8 +59,8 @@ if(GUI_SIMULATION)
     target_compile_definitions(zenuxservicecommon-demolib PUBLIC $<$<CONFIG:Debug>:QT_DECLARATIVE_DEBUG>)
     target_link_libraries(zenuxservicecommon-demolib
         PUBLIC
-        Qt5::Qml
-        Qt5::Quick
+        ${QTX}::Qml
+        ${QTX}::Quick
     )
 endif()
 

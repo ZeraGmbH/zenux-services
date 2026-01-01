@@ -39,7 +39,7 @@ add_library(zenuxservicecommon SHARED
 
 target_link_libraries(zenuxservicecommon
     PUBLIC
-    Qt5::Core
+    ${QTX}::Core
     Zera::xiqnet
     Zera::SCPI
     Zera::zera-timers

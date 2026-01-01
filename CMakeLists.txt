@@ -18,8 +18,13 @@ include(FindPkgConfig)
 
 option(useSystemd "Using libsystemd" ON)
 option(GUI_SIMULATION "Build QML gui code for simulation - NOT FOR TARGET" OFF)
+set(QT_MAJOR_VER "5" CACHE STRING "Qt major version")
+set(QTX "Qt${QT_MAJOR_VER}")
 
-find_package(Qt5 COMPONENTS Core Xml Network Test CONFIG REQUIRED)
+find_package(${QTX} COMPONENTS Core Xml Network Test CONFIG REQUIRED)
+if("${QT_MAJOR_VER}" STREQUAL "6")
+    find_package(${QTX} COMPONENTS StateMachine REQUIRED)
+endif()
 find_package(SCPI REQUIRED)
 find_package(ZenuxCore REQUIRED)
 find_package(ZeraMicroController REQUIRED)
@@ -31,7 +36,7 @@ find_package(GTest REQUIRED)
 
 if(GUI_SIMULATION)
     message("Building with QML gui code for simulation")
-    find_package(Qt5 COMPONENTS Qml Quick CONFIG REQUIRED)
+    find_package(${QTX} COMPONENTS Qml Quick CONFIG REQUIRED)
     add_definitions(-DGUI_SIMULATION=TRUE)
 else()
     message("Not building QML gui code for simulation")
@@ -78,7 +83,7 @@ function(SETUP_TESTS)
             )
         target_link_libraries(${_testname}
             PUBLIC
-            Qt5::Test
+            ${QTX}::Test
             Zera::testlib-common
             Zera::zera-timers-testlib
             Zera::resman-lib

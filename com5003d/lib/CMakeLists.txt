@@ -31,13 +31,20 @@ endif()
 
 target_link_libraries(com5003d-lib
     PUBLIC
-    Qt5::Core
-    Qt5::Xml
-    Qt5::Network
+    ${QTX}::Core
+    ${QTX}::Xml
+    ${QTX}::Network
     Zera::zera-i2c-devices
     Zera::zeraprotobuf
     zenuxservicecommon
     )
+
+if("${QT_MAJOR_VER}" STREQUAL "6")
+    target_link_libraries(com5003d-lib
+        PUBLIC
+        ${QTX}::StateMachine
+    )
+endif()
 
 set_target_properties(com5003d-lib PROPERTIES VERSION ${PROJECT_VERSION})
 set_target_properties(com5003d-lib PROPERTIES SOVERSION ${PROJECT_VERSION_MAJOR})

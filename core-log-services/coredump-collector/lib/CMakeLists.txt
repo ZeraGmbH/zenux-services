@@ -18,7 +18,7 @@ target_include_directories(coredump-collector-lib
 
 target_link_libraries(coredump-collector-lib
     PUBLIC
-    Qt5::Core
+    ${QTX}::Core
     Zera::zera-timers
     )
 

@@ -22,7 +22,7 @@ add_library(system-metrics STATIC
 
 target_link_libraries(system-metrics
     PUBLIC
-    Qt5::Core
+    ${QTX}::Core
     Zera::zera-timers
     # ask linker to help us finding unresolved symbols
     "-Wl,--no-undefined"

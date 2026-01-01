@@ -13,7 +13,7 @@ add_executable(coredump-collector
 
 target_link_libraries(coredump-collector
     PUBLIC
-    Qt5::Core
+    ${QTX}::Core
     systemd
     coredump-collector-lib
     )

@@ -22,8 +22,8 @@ target_include_directories(zenuxservicecommon-testlib
 
 target_link_libraries(zenuxservicecommon-testlib
     PUBLIC
-    Qt5::Core
-    Qt5::Test
+    ${QTX}::Core
+    ${QTX}::Test
     zenuxservicecommon
     zenuxservicecommon-demolib
     zdsp1d-testlib

@@ -29,14 +29,21 @@ endif()
 
 target_link_libraries(zdsp1d-lib
     PUBLIC
-    Qt5::Xml
-    Qt5::Network
-    Qt5::Core
+    ${QTX}::Xml
+    ${QTX}::Network
+    ${QTX}::Core
     Zera::xiqnet
     Zera::zeraprotobuf
     Zera::zera-log-statistics
     zenuxservicecommon
     )
+
+if("${QT_MAJOR_VER}" STREQUAL "6")
+    target_link_libraries(zdsp1d-lib
+        PUBLIC
+        ${QTX}::StateMachine
+    )
+endif()
 
 set_target_properties(zdsp1d-lib PROPERTIES VERSION ${PROJECT_VERSION})
 set_target_properties(zdsp1d-lib PROPERTIES SOVERSION ${PROJECT_VERSION_MAJOR})

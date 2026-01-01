@@ -15,7 +15,7 @@ add_library(service-interfaces SHARED
 
 target_link_libraries(service-interfaces
     PUBLIC
-    Qt5::Network
+    ${QTX}::Network
     Zera::xiqnet
     zenuxservicecommon
     # ask linker to help us finding unresolved symbols

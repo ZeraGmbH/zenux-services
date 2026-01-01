@@ -24,7 +24,7 @@ target_include_directories(mt310s2d-testlib
 
 target_link_libraries(mt310s2d-testlib
     PUBLIC
-    Qt5::Core
+    ${QTX}::Core
     mt310s2d-lib
     zenuxservicecommon-demolib
     zenuxservicecommon-testlib

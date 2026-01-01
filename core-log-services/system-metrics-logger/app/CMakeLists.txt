@@ -13,7 +13,7 @@ add_executable(system-metrics-logger
 
 target_link_libraries(system-metrics-logger
     PUBLIC
-    Qt5::Core
+    ${QTX}::Core
     systemd
     system-metrics
     )

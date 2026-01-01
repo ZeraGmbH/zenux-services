@@ -1,8 +1,8 @@
 include(CMakeFindDependencyMacro)
 
-find_dependency(Qt5 COMPONENTS Core Xml Network Test CONFIG REQUIRED)
+find_dependency(@QTX@ COMPONENTS Core Xml Network Test CONFIG REQUIRED)
 if(@GUI_SIMULATION@)
-    find_dependency(Qt5 COMPONENTS Qml Quick CONFIG REQUIRED)
+    find_dependency(@QTX@ COMPONENTS Qml Quick CONFIG REQUIRED)
 endif()
 find_dependency(SCPI REQUIRED)
 find_dependency(ZenuxCore REQUIRED)
