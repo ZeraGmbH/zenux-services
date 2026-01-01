@@ -1,4 +1,5 @@
 #include "dspmeasdata.h"
+#include <QIODevice>
 #include <QTextStream>
 
 cDspMeasData::cDspMeasData(QString name) :

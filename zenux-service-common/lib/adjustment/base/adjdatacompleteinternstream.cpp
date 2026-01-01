@@ -1,4 +1,5 @@
 #include "adjdatacompleteinternstream.h"
+#include <QIODevice>
 #include <QDataStream>
 
 AdjDataCompleteInternStream::AdjDataCompleteInternStream(int maxSize) :

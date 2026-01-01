@@ -3,9 +3,10 @@
 #include "proxynetpeer.h"
 #include "proxyconnection.h"
 #include "notzeronumgen.h"
-#include <QUuid>
 #include <vtcp_peer.h>
 #include <netmessages.pb.h>
+#include <QUuid>
+#include <QDebug>
 
 namespace Zera {
 

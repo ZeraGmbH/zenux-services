@@ -1,5 +1,6 @@
 #include "dspvardevicenodeinout.h"
 #include "zscpi_response_definitions.h"
+#include <QIODevice>
 #include <QStringList>
 #include <QDataStream>
 #include <QTextStream>
