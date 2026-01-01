@@ -25,6 +25,6 @@ ZeraMControllerIoTemplate::atmelRM I2cCtrlCpuTemperature::sendCpuTemperature(flo
     ba[3] = (ui32Temp & 0xFF);
     hw_cmd CMD(hwSendTemperature, 0, ba, 4);
     m_ctrlIo.writeCommand(&CMD);
-    ret = m_ctrlIo.getErrorMaskText() == 0 ? ZeraMControllerIo::cmddone : ZeraMControllerIo::cmdexecfault;
+    ret = m_ctrlIo.getLastErrorMask() == 0 ? ZeraMControllerIo::cmddone : ZeraMControllerIo::cmdexecfault;
     return ret;
 }
