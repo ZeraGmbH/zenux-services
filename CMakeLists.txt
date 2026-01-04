@@ -23,7 +23,7 @@ set(QTX "Qt${QT_MAJOR_VER}")
 
 find_package(${QTX} COMPONENTS Core Xml Network Test CONFIG REQUIRED)
 if("${QT_MAJOR_VER}" STREQUAL "6")
-    find_package(${QTX} COMPONENTS StateMachine REQUIRED)
+    find_package(${QTX} COMPONENTS Core5Compat StateMachine REQUIRED)
 endif()
 find_package(SCPI REQUIRED)
 find_package(ZenuxCore REQUIRED)
