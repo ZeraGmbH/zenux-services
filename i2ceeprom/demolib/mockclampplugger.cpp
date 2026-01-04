@@ -15,8 +15,8 @@ QByteArray MockClampPlugger::getFreshEEpromData(int clampType)
     if (cClamp::isValidClampType(clampType)) {
         const QString clampName = cClamp::getClampTypeName(clampType);
         QFile eepromFile(":/clamps/fresh/" + clampName + ".eeprom");
-        eepromFile.open(QFile::ReadOnly);
-        return eepromFile.readAll();
+        if (eepromFile.open(QFile::ReadOnly))
+            return eepromFile.readAll();
     }
     return QByteArray();
 }
@@ -25,7 +25,7 @@ void MockClampPlugger::initClampAdjMem(int clampType, QString channelAlias)
 {
     const QByteArray clampData = getFreshEEpromData(clampType);
     QByteArray eepromData(AbstractEepromI2cDevice::capacity24LC256, 0xFF);
-    for (int byte=0; byte<clampData.count(); ++byte)
+    for (int byte=0; byte<clampData.size(); ++byte)
         eepromData[byte] = clampData[byte];
 
     SenseSystem::cChannelSettings *channelSettingClamp = m_senseSettings->findChannelSettingByAlias1(channelAlias);

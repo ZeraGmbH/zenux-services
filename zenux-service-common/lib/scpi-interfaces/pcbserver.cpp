@@ -285,7 +285,7 @@ void PCBServer::sendNotificationToClient(QString message, QByteArray clientID, V
         ProtobufMessage::NetMessage::NetReply *intMessage = protobufIntMessage.mutable_reply();
         intMessage->set_body(message.toStdString());
         intMessage->set_rtype(ProtobufMessage::NetMessage_NetReply_ReplyType_ACK);
-        protobufIntMessage.set_clientid(clientID, clientID.count());
+        protobufIntMessage.set_clientid(clientID, clientID.size());
         protobufIntMessage.set_messagenr(0); // interrupt
         netPeer->sendMessage(m_protobufWrapper.protobufToByteArray(protobufIntMessage));
     }

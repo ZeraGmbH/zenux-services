@@ -7,7 +7,8 @@ QString XmlHelperForTest::loadXml(QString xmlFile)
 {
     QFile file(xmlFile);
     QDomDocument doc;
-    file.open(QFile::ReadOnly);
+    if(!file.open(QFile::ReadOnly))
+        return QString();
     doc.setContent(&file);
     return doc.toString(-1).replace("\n", "");
 }

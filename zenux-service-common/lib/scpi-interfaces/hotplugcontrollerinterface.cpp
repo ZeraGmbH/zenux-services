@@ -42,7 +42,7 @@ QByteArray HotplugControllerInterface::decodeHexString(const QString &encoded)
 QStringList HotplugControllerInterface::encodeDataToHex(const QByteArray &data)
 {
     QStringList hexBytes;
-    for (int byteNo=0; byteNo<data.count(); ++byteNo) {
+    for (int byteNo=0; byteNo<data.size(); ++byteNo) {
         QString hexByte = QString("%1").arg(ushort(data[byteNo]), 0, 16); // hex output
         hexByte = QString("00" + hexByte).right(2);
         hexBytes.append(hexByte);

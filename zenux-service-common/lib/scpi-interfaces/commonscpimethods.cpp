@@ -42,7 +42,7 @@ void CommonScpiMethods::sendProtoAnswer(QTcpSocket *telnetSocket,
                 netReply->set_rtype(ProtobufMessage::NetMessage_NetReply_ReplyType_ACK);
 
             netReply->set_body(output.toStdString()); // in any case we set the body
-            protobufAnswer.set_clientid(protoCmd->m_clientId, protoCmd->m_clientId.count());
+            protobufAnswer.set_clientid(protoCmd->m_clientId, protoCmd->m_clientId.size());
             protobufAnswer.set_messagenr(protoCmd->m_nmessageNr);
             protoCmd->m_pPeer->sendMessage(protobufWrapper->protobufToByteArray(protobufAnswer));
         }
