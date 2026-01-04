@@ -81,7 +81,7 @@ void test_mockservice_com5003d_full::smokeTestSenseInterface()
     QCOMPARE(responseSpy.count(), 1);
     QCOMPARE(responseSpy[0][0], QVariant(msgNr));
     QCOMPARE(responseSpy[0][1], QVariant(ack));
-    QCOMPARE(responseSpy[0][2], QVariantList() << "m0" << "m1" << "m2" << "m3" << "m4" << "m5");
+    QCOMPARE(responseSpy[0][2], QStringList() << "m0" << "m1" << "m2" << "m3" << "m4" << "m5");
 }
 
 void test_mockservice_com5003d_full::smokeTestFoutGroupChannelResourceAndInterface()
