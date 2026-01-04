@@ -19,7 +19,7 @@ void test_adj_data_decoder::initTestCase()
 void test_adj_data_decoder::denyMaxSizeExceed()
 {
     QFile file(":/export_internal_initial_mt310s2.eeprom");
-    file.open(QIODevice::ReadOnly);
+    QVERIFY(file.open(QIODevice::ReadOnly));
     QByteArray ba = file.readAll();
     
     AdjDataCompleteInternStream reader1(ba.size());
@@ -34,7 +34,7 @@ void test_adj_data_decoder::denyMaxSizeExceed()
 void test_adj_data_decoder::readServerVersionAndDeviceNameForMT()
 {
     QFile file(":/export_internal_initial_mt310s2.eeprom");
-    file.open(QIODevice::ReadOnly);
+    QVERIFY(file.open(QIODevice::ReadOnly));
     QByteArray ba = file.readAll();
     
     AdjDataCompleteInternStream reader(m_flashSizeAllDevicesAtTheTimeOfWriting);
@@ -50,7 +50,7 @@ void test_adj_data_decoder::readServerVersionAndDeviceNameForMT()
 void test_adj_data_decoder::readServerVersionAndDeviceNameForCOM()
 {
     QFile file(":/export_internal_initial_com5003.eeprom");
-    file.open(QIODevice::ReadOnly);
+    QVERIFY(file.open(QIODevice::ReadOnly));
     QByteArray ba = file.readAll();
     
     AdjDataCompleteInternStream reader(m_flashSizeAllDevicesAtTheTimeOfWriting);
@@ -66,7 +66,7 @@ void test_adj_data_decoder::readServerVersionAndDeviceNameForCOM()
 void test_adj_data_decoder::checkChannelRangeAvailability()
 {
     QFile file(":/export_internal_initial_com5003.eeprom");
-    file.open(QIODevice::ReadOnly);
+    QVERIFY(file.open(QIODevice::ReadOnly));
     QByteArray ba = file.readAll();
     
     AdjDataCompleteInternStream reader(m_flashSizeAllDevicesAtTheTimeOfWriting);
