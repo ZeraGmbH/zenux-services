@@ -90,7 +90,7 @@ void test_mockservice_mt310s2d_full::smokeTestSenseInterface()
     QCOMPARE(responseSpy.count(), 1);
     QCOMPARE(responseSpy[0][0], QVariant(msgNr));
     QCOMPARE(responseSpy[0][1], QVariant(ack));
-    QCOMPARE(responseSpy[0][2], QVariantList() << "m0" << "m1" << "m2" << "m6" << "m3" << "m4" << "m5" << "m7");
+    QCOMPARE(responseSpy[0][2], QStringList() << "m0" << "m1" << "m2" << "m6" << "m3" << "m4" << "m5" << "m7");
 }
 
 
