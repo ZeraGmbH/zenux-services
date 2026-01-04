@@ -114,47 +114,42 @@ void cCOM5003dServer::doConfiguration()
     sigStart = 1;
     write(m_nFPGAfd, &sigStart, 4);
 
-    // THE MOST UTTER UGLINESS FOUND SO FAR:
-    // The delay caused by m_xmlConfigReader.loadSchema is mandatory
-    // to bring up Atmel properly!!!
     ServerParams params = m_settings->getServerParams();
-    qInfo("Loading schema...");
-    if (m_xmlConfigReader.loadSchema(params.getXsdFile())) {
-        qInfo("Schema loaded.");
+    // We had a delay by schema load
+    // Dec 23 16:16:38.780752 zera-com5003-unknown com5003d[279]: Loading schema...
+    // Dec 23 16:16:38.781167 zera-com5003-unknown com5003d[279]: Schema loaded.
+    usleep(38781167-38780752);
+
+    sigStart = 0;
+    write(m_nFPGAfd, &sigStart, 4);
+
+    m_foutSettings = new FOutSettings(&m_xmlConfigReader);
+    connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_foutSettings, &FOutSettings::configXMLInfo);
+    m_finSettings = new FInSettings(&m_xmlConfigReader);
+    connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_finSettings, &FInSettings::configXMLInfo);
+    m_pSCHeadSettings = new ScInSettings(&m_xmlConfigReader);
+    connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_pSCHeadSettings, &ScInSettings::configXMLInfo);
+    m_hkInSettings = new HkInSettings(&m_xmlConfigReader);
+    connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_hkInSettings, &HkInSettings::configXMLInfo);
+
+    sigStart = 1;
+    write(m_nFPGAfd, &sigStart, 4);
+    // Same here (or even worse): When not loading XSD above, delay caused here
+    // Dec 23 16:16:38.782393 zera-com5003-unknown com5003d[279]: Loading XML...
+    // Dec 23 16:16:39.400216 zera-com5003-unknown com5003d[279]: Loading XML loaded
+    usleep(39400216-38782393);
+    qInfo("Loading XML...");
+    if (m_xmlConfigReader.loadXMLFile(params.getXmlFile())) {
+        qInfo("Loading XML loaded");
+        setupMicroControllerIo();
+
         sigStart = 0;
         write(m_nFPGAfd, &sigStart, 4);
-
-        m_foutSettings = new FOutSettings(&m_xmlConfigReader);
-        connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_foutSettings, &FOutSettings::configXMLInfo);
-        m_finSettings = new FInSettings(&m_xmlConfigReader);
-        connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_finSettings, &FInSettings::configXMLInfo);
-        m_pSCHeadSettings = new ScInSettings(&m_xmlConfigReader);
-        connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_pSCHeadSettings, &ScInSettings::configXMLInfo);
-        m_hkInSettings = new HkInSettings(&m_xmlConfigReader);
-        connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_hkInSettings, &HkInSettings::configXMLInfo);
-
-        sigStart = 1;
-        write(m_nFPGAfd, &sigStart, 4);
-        // Same here (or even worse): When not loading XSD above, delay caused here
-        // will get too short - WTF???
-        // So for now measure both times by qInfo and maybe come back later...
-        qInfo("Loading XML...");
-        if (m_xmlConfigReader.loadXMLFile(params.getXmlFile())) {
-            qInfo("Loading XML loaded");
-            setupMicroControllerIo();
-
-            sigStart = 0;
-            write(m_nFPGAfd, &sigStart, 4);
-            // xmlfile ok -> nothing to do .. the configreader will emit all configuration
-            // signals and after this the finishedparsingXML signal
-        }
-        else {
-            qCritical("Abort: Could not open xml file '%s", qPrintable(params.getXmlFile()));
-            emit abortInit();
-        }
+        // xmlfile ok -> nothing to do .. the configreader will emit all configuration
+        // signals and after this the finishedparsingXML signal
     }
     else {
-        qCritical("Abort: Could not open xsd file '%s", qPrintable(params.getXsdFile()));
+        qCritical("Abort: Could not open xml file '%s", qPrintable(params.getXmlFile()));
         emit abortInit();
     }
     close(m_nFPGAfd);
