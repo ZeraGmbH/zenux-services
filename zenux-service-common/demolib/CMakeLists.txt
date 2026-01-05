@@ -56,7 +56,6 @@ target_link_libraries(zenuxservicecommon-demolib
 
 if(GUI_SIMULATION)
     target_compile_definitions(zenuxservicecommon-demolib PUBLIC $<$<CONFIG:Debug>:QT_QML_DEBUG>)
-    target_compile_definitions(zenuxservicecommon-demolib PUBLIC $<$<CONFIG:Debug>:QT_DECLARATIVE_DEBUG>)
     target_link_libraries(zenuxservicecommon-demolib
         PUBLIC
         ${QTX}::Qml
