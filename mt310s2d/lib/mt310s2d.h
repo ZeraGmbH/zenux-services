@@ -63,7 +63,7 @@ signals:
 private slots:
     void doConfiguration();
     void doWait4Atmel();
-    void doSetupServerWithAtmelRunning();
+    void doSetupServer();
     void doCloseServer();
     void doConnect2RM();
     void connect2RMError();
@@ -78,7 +78,6 @@ private:
     void enableClampInterrupt();
     void updateI2cDevicesConnected();
     void setupMicroControllerIo();
-    void setInitialPllChannel();
 
     AbstractFactoryI2cCtrlPtr m_ctrlFactory;
     AbstractFactoryDeviceNodePcbPtr m_deviceNodeFactory;

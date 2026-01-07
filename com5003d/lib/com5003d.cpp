@@ -67,7 +67,7 @@ void cCOM5003dServer::init()
 
     QObject::connect(stateprogAtmel, &QAbstractState::entered, this, &cCOM5003dServer::programAtmelFlash);
     QObject::connect(statewait4Atmel, &QAbstractState::entered, this, &cCOM5003dServer::doWait4Atmel);
-    QObject::connect(statesetupServer, &QAbstractState::entered, this, &cCOM5003dServer::doSetupServerWithAtmelRunning);
+    QObject::connect(statesetupServer, &QAbstractState::entered, this, &cCOM5003dServer::doSetupServer);
     QObject::connect(m_stateconnect2RM, &QAbstractState::entered, this, &cCOM5003dServer::doConnect2RM);
     QObject::connect(m_stateconnect2RMError, &QAbstractState::entered, this, &cCOM5003dServer::connect2RMError);
     QObject::connect(m_stateSendRMIdentAndRegister, &QAbstractState::entered, this, &cCOM5003dServer::doIdentAndRegister);
@@ -272,15 +272,11 @@ void cCOM5003dServer::doWait4Atmel()
 }
 
 
-void cCOM5003dServer::setInitialPllChannel()
+void cCOM5003dServer::earlySetup(AbstractChannelRangeFactoryPtr channelRangeFactory)
 {
     qInfo("Set initial PLL channel...");
     m_ctrlFactory->getPllController()->setPLLChannel(1); // default channel m0 for pll control
     qInfo("Initial PLL channel set");
-}
-
-void cCOM5003dServer::earlySetup(AbstractChannelRangeFactoryPtr channelRangeFactory)
-{
     m_pSystemInfo = new SystemInfo(m_ctrlFactory);
 
     connectProtoConnectionSignals();
@@ -319,10 +315,9 @@ void cCOM5003dServer::earlySetup(AbstractChannelRangeFactoryPtr channelRangeFact
     qInfo("SCPI interfaces set.");
 }
 
-void cCOM5003dServer::doSetupServerWithAtmelRunning()
+void cCOM5003dServer::doSetupServer()
 {
-    qInfo("Starting doSetupServerWithAtmelRunning");
-    setInitialPllChannel();
+    qInfo("Starting doSetupServer");
 
     initSCPIConnections();
 
