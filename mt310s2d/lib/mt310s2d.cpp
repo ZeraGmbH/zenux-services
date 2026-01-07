@@ -71,7 +71,7 @@ void cMT310S2dServer::init()
     m_pInitializationMachine->setInitialState(stateCONF);
 
     QObject::connect(statewait4Atmel, &QAbstractState::entered, this, &cMT310S2dServer::doWait4Atmel);
-    QObject::connect(statesetupServer, &QAbstractState::entered, this, &cMT310S2dServer::doSetupServer);
+    QObject::connect(statesetupServer, &QAbstractState::entered, this, &cMT310S2dServer::doSetupServerWithAtmelRunning);
     QObject::connect(m_stateconnect2RM, &QAbstractState::entered, this, &cMT310S2dServer::doConnect2RM);
     QObject::connect(m_stateconnect2RMError, &QAbstractState::entered, this, &cMT310S2dServer::connect2RMError);
     QObject::connect(m_stateSendRMIdentAndRegister, &QAbstractState::entered, this, &cMT310S2dServer::doIdentAndRegister);
@@ -163,11 +163,15 @@ void cMT310S2dServer::doWait4Atmel()
 }
 
 
-void cMT310S2dServer::earlySetup(AbstractChannelRangeFactoryPtr channelRangeFactory)
+void cMT310S2dServer::setInitialPllChannel()
 {
     qInfo("Set initial PLL channel...");
     m_ctrlFactory->getPllController()->setPLLChannel(1); // default channel m0 for pll control
     qInfo("Initial PLL channel set");
+}
+
+void cMT310S2dServer::earlySetup(AbstractChannelRangeFactoryPtr channelRangeFactory)
+{
     m_pSystemInfo = new Mt310s2SystemInfo(m_ctrlFactory);
 
     connectProtoConnectionSignals();
@@ -217,9 +221,11 @@ void cMT310S2dServer::earlySetup(AbstractChannelRangeFactoryPtr channelRangeFact
     qInfo("SCPI interfaces set.");
 }
 
-void cMT310S2dServer::doSetupServer()
+void cMT310S2dServer::doSetupServerWithAtmelRunning()
 {
-    qInfo("Starting doSetupServer");
+    qInfo("Starting doSetupServerWithAtmelRunning");
+    setInitialPllChannel();
+
     QString ctrlDeviceNodeName = getCtrlDeviceNode(); // we try to open the ctrl device
     AbstractDeviceNodePcbCtrlPtr ctrlDeviceNode = m_deviceNodeFactory->getPcbCtrlDeviceNode();
     if (ctrlDeviceNode->open(ctrlDeviceNodeName) < 0) {
