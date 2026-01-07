@@ -40,11 +40,12 @@ ZeraMControllerIoTemplate::atmelRM I2cCtrlEMOB::sendPushbuttonPress()
 
 ZeraMControllerIoTemplate::atmelRM I2cCtrlEMOB::readEmobLockState(quint8 &status)
 {
-    ZeraMControllerIo::atmelRM ret = ZeraMControllerIo::cmdexecfault;
-    quint8 answ[2];
     I2cMuxerScopedOnOff i2cMuxerEnable(m_i2cMuxer);
+    ZeraMControllerIo::atmelRM ret = ZeraMControllerIo::cmdexecfault;
+    constexpr int AnswerLen = 2;
+    quint8 answ[AnswerLen];
     hw_cmd CMD(hwReadEmobLockState, 0, nullptr, 0);
-    m_ctrlIo.writeCommand(&CMD, answ, 2);
+    m_ctrlIo.writeCommand(&CMD, answ, AnswerLen);
     if (m_ctrlIo.getLastErrorMask() == 0) {
         status = answ[0];
         ret = ZeraMControllerIo::cmddone;
