@@ -10,7 +10,7 @@ public:
     ZeraMControllerIo::atmelRM sendPushbuttonPress() override;
     ZeraMControllerIo::atmelRM readEmobLockState(quint8 &status) override;
     ZeraMControllerIo::atmelRM readEmobInstrumentSubType(QString& answer) override;
-    ZeraMControllerIo::atmelRM readEmobErrorStatus(quint8& err) override;
+    ZeraMControllerIo::atmelRM readEmobErrorStatus(quint16 &errFlags) override;
     ZeraMControllerIo::atmelRM clearErrorStatus() override;
     static QByteArray getDefaultExchangeData();
     ZeraMControllerIo::atmelRM readExchangeData(QByteArray& answer) override;

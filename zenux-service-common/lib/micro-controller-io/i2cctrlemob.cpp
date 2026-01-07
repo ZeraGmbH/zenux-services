@@ -52,15 +52,16 @@ ZeraMControllerIoTemplate::atmelRM I2cCtrlEMOB::readEmobLockState(quint8 &status
     return ret;
 }
 
-ZeraMControllerIoTemplate::atmelRM I2cCtrlEMOB::readEmobErrorStatus(quint8 &err)
+ZeraMControllerIoTemplate::atmelRM I2cCtrlEMOB::readEmobErrorStatus(quint16 &errFlags)
 {
-    ZeraMControllerIo::atmelRM ret = ZeraMControllerIo::cmdexecfault;
-    quint8 answ[2];
     I2cMuxerScopedOnOff i2cMuxerEnable(m_i2cMuxer);
+    ZeraMControllerIo::atmelRM ret = ZeraMControllerIo::cmdexecfault;
+    constexpr int AnswerLen = 3;
+    quint8 answ[AnswerLen];
     hw_cmd CMD(hwGetErrorStatus, 0, nullptr, 0);
-    m_ctrlIo.writeCommand(&CMD, answ, 2);
+    m_ctrlIo.writeCommand(&CMD, answ, AnswerLen);
     if (m_ctrlIo.getLastErrorMask() == 0) {
-        err = answ[0];
+        errFlags = static_cast<quint16>(answ[0] << 8) + answ[1];
         ret = ZeraMControllerIo::cmddone;
     }
     return ret;

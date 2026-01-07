@@ -117,7 +117,7 @@ QString HotplugControllerInterface::emobReadErrorStatus(const QString &scpiCmd)
         HotControllerMap emobControllers = m_hotPluggableControllerContainer->getCurrentControllers();
         QString channelNameFound = findEmobConnected(cmd.getParam(0));
         if (!channelNameFound.isEmpty()) {
-            quint8 errorStatus = 0;
+            quint16 errorStatus = 0;
             ZeraMControllerIoTemplate::atmelRM ctrlRet = emobControllers[channelNameFound].m_emobController->readEmobErrorStatus(errorStatus);
             if (ctrlRet != ZeraMControllerIo::cmddone)
                 return ZSCPI::scpiAnswer[ZSCPI::errexec];
