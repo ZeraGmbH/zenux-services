@@ -16,10 +16,10 @@ cSamplingInterface::cSamplingInterface(std::shared_ptr<cSCPI> scpiInterface,
     cResource(scpiInterface),
     m_ctrlFactory(ctrlFactory)
 {
-    QList<SamplingSettings::ChannelSettings*> channelSettings = samplingSettings->getChannelSettings();
-    for (const QString &pllChannel : qAsConst(channelSettings.at(0)->m_pllChannels)) {
+    const QList<SamplingSettings::ChannelSettings*> &channelSettings = samplingSettings->getChannelSettings();
+    const QStringList &pllChannels = channelSettings.at(0)->m_pllChannels;
+    for (const QString &pllChannel : pllChannels)
         m_pllChannelList.append(pllChannel);
-    }
 
     m_sDescription = "Samplingsytem base frequency 10Hz..400Hz";
     m_bAvail = channelSettings.at(0)->m_bAvail;

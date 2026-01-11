@@ -14,7 +14,7 @@ public:
     };
     SamplingSettings(Zera::XMLConfig::cReader *xmlread);
     ~SamplingSettings();
-    QList<ChannelSettings*>& getChannelSettings();
+    const QList<ChannelSettings*>& getChannelSettings();
 public slots:
     virtual void configXMLInfo(QString key);
 private:

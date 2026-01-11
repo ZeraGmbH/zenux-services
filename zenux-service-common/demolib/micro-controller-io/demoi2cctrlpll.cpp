@@ -11,7 +11,7 @@ void DemoI2cCtrlPll::setSimulPllDisplay(quint8 chn)
 {
     // Again some over engineering: Code is preparerd for multiple PLL or whatever settings
     // There have been one channel-setting eversince this code exist...
-    QList<SamplingSettings::ChannelSettings*>& channelSettings = m_samplingSettings->getChannelSettings();
+    const QList<SamplingSettings::ChannelSettings*>& channelSettings = m_samplingSettings->getChannelSettings();
     if(channelSettings.count() > 0) {
         QStringList pllModes = channelSettings[0]->m_pllChannels;
         if(chn < pllModes.count())

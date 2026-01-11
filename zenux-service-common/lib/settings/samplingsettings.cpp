@@ -22,7 +22,7 @@ SamplingSettings::~SamplingSettings()
         delete channel;
 }
 
-QList<SamplingSettings::ChannelSettings *> &SamplingSettings::getChannelSettings()
+const QList<SamplingSettings::ChannelSettings *> &SamplingSettings::getChannelSettings()
 {
     return m_ChannelSettingsList;
 }
