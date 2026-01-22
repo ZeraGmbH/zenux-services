@@ -15,7 +15,7 @@ public:
         std::function<bool(bool &)> checkPermission;
         int digits;
     };
-    AdjDataItemScpi(TJustDataParam param, AdjDataItem* adjItem);
+    AdjDataItemScpi(const TJustDataParam &param, AdjDataItem* adjItem);
     virtual void initSCPIConnection(QString leadingNodes) override;
 
     AdjDataItem *getAdjItem();

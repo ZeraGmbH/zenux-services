@@ -8,7 +8,7 @@ ResourceRegisterTransaction::ResourceRegisterTransaction(RMConnection *rmConnect
             this, &ResourceRegisterTransaction::resourceManagerAck);
 }
 
-void ResourceRegisterTransaction::register1Resource(QString registerParameter)
+void ResourceRegisterTransaction::register1Resource(const QString &registerParameter)
 {
     QString cmd = QString("RESOURCE:ADD");
     quint32 msgnr = NotZeroNumGen::getMsgNr();

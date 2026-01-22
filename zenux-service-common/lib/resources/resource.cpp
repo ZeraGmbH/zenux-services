@@ -7,14 +7,14 @@ cResource::cResource(std::shared_ptr<cSCPI> scpiInterface) :
 {
 }
 
-void cResource::register1Resource(RMConnection *rmConnection, quint32 msgnr, QString registerParameter)
+void cResource::register1Resource(RMConnection *rmConnection, quint32 msgnr, const QString &registerParameter)
 {
     QString cmd = QString("RESOURCE:ADD");
     m_msgNrListRegister.append(msgnr);
     rmConnection->SendCommand(cmd, registerParameter, msgnr);
 }
 
-void cResource::unregister1Resource(RMConnection *rmConnection, quint32 msgnr, QString unregisterParameter)
+void cResource::unregister1Resource(RMConnection *rmConnection, quint32 msgnr, const QString &unregisterParameter)
 {
     QString cmd = QString("RESOURCE:REMOVE");
     m_msgNrListUnregister.append(msgnr);

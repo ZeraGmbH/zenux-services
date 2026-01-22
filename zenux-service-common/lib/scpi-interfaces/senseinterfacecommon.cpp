@@ -199,7 +199,7 @@ int SenseInterfaceCommon::rangeFlagsExternDc()
     return rangeFlagsExtern() | modeDC;
 }
 
-bool SenseInterfaceCommon::exportAdjData(QDateTime dateTimeWrite)
+bool SenseInterfaceCommon::exportAdjData(const QDateTime &dateTimeWrite)
 {
     QByteArray ba;
     QDataStream stream(&ba,QIODevice::ReadWrite);

@@ -27,7 +27,12 @@ void ScpiConnection::ensureTrailingColonOnNonEmptyParentNodes(QString &leadingNo
         leadingNodes.append(":");
 }
 
-void ScpiConnection::addDelegate(QString cmdParent, QString cmd, quint8 type, std::shared_ptr<cSCPI> scpiInterface, quint16 cmdCode, NotificationString *notificationString)
+void ScpiConnection::addDelegate(const QString &cmdParent,
+                                 const QString &cmd,
+                                 quint8 type,
+                                 std::shared_ptr<cSCPI> scpiInterface,
+                                 quint16 cmdCode,
+                                 NotificationString *notificationString)
 {
     ScpiDelegatePtr delegate = ScpiDelegate::create(cmdParent, cmd, type, scpiInterface, cmdCode, notificationString);
     m_DelegateList.append(delegate);

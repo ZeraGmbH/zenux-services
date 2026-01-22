@@ -15,8 +15,8 @@ public:
     cDspVar *addDspVar(const QString &name, int size, int type, int datatype = DSPDATA::dFloat);
 
     // Nightmare candidate: Make it go!!!
-    float* data(QString name);
-    void setVarData(QString datalist); // expected 'Name1:0.2,0.4,0,3;Name2:1,2,3;' ......
+    float* data(const QString &name);
+    void setVarData(const QString &datalist); // expected 'Name1:0.2,0.4,0,3;Name2:1,2,3;' ......
 
     QString getName();
     quint32 getSize();
@@ -28,9 +28,9 @@ public:
 
     // Test insights
     const QList<cDspVar*> getVars() const;
-    void setData(QVector<float> data);
+    void setData(const QVector<float> &data);
 private:
-    cDspVar* findVar(QString varName);
+    cDspVar* findVar(const QString &varName);
 
     QString m_handleName;
     QList<cDspVar*> DspVarList;

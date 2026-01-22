@@ -13,7 +13,7 @@ cDspMeasData::~cDspMeasData()
         delete DspVarList.at(i);
 }
 
-float* cDspMeasData::data(QString name) // gibt einen zeiger zurück auf die var daten
+float* cDspMeasData::data(const QString &name) // gibt einen zeiger zurück auf die var daten
 {
     for (int i=0; i<DspVarList.size(); ++i) {
         cDspVar* pDspVar = DspVarList.at(i);
@@ -23,7 +23,7 @@ float* cDspMeasData::data(QString name) // gibt einen zeiger zurück auf die var
     return 0; // caller has to pay attention !!!!!
 }
 
-void cDspMeasData::setVarData(QString datalist)
+void cDspMeasData::setVarData(const QString &datalist)
 {
     const QStringList dataEntryList = datalist.split(";", Qt::SkipEmptyParts);
     for (const QString &dspVarEntry : dataEntryList) {
@@ -150,7 +150,7 @@ const QList<cDspVar *> cDspMeasData::getVars() const
     return DspVarList;
 }
 
-cDspVar *cDspMeasData::findVar(QString varName)
+cDspVar *cDspMeasData::findVar(const QString &varName)
 {
     for(int i=0; i<DspVarList.size(); ++i) {
         cDspVar* pDspVar = DspVarList.at(i);
@@ -160,7 +160,7 @@ cDspVar *cDspMeasData::findVar(QString varName)
     return nullptr;
 }
 
-void cDspMeasData::setData(QVector<float> data)
+void cDspMeasData::setData(const QVector<float> &data)
 {
     int valueCount = 0;
     for(cDspVar* dspVar : qAsConst(DspVarList)) {

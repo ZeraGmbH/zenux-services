@@ -1,7 +1,7 @@
 #include "scpidelegate.h"
 
-std::shared_ptr<ScpiDelegate> ScpiDelegate::create(QString cmdParent,
-                                                   QString cmd,
+std::shared_ptr<ScpiDelegate> ScpiDelegate::create(const QString &cmdParent,
+                                                   const QString &cmd,
                                                    quint8 type,
                                                    std::shared_ptr<cSCPI> scpiInterface,
                                                    quint16 cmdCode,
@@ -17,8 +17,8 @@ std::shared_ptr<ScpiDelegate> ScpiDelegate::create(QString cmdParent,
     return delegate;
 }
 
-ScpiDelegate::ScpiDelegate(QString cmdParent,
-                           QString cmd,
+ScpiDelegate::ScpiDelegate(const QString &cmdParent,
+                           const QString &cmd,
                            quint8 type,
                            quint16 cmdCode,
                            NotificationString *notificationString) :
@@ -42,7 +42,7 @@ bool ScpiDelegate::executeSCPI(ProtonetCommandPtr protoCmd)
     return true;
 }
 
-QString ScpiDelegate::getCommand()
+const QString &ScpiDelegate::getCommand() const
 {
     return m_sCommand;
 }

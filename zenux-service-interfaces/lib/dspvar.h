@@ -18,7 +18,7 @@ namespace DSPDATA
 class cDspVar // dsp variable
 {
 public:
-    QString& Name() { return m_sName;}
+    const QString& Name() { return m_sName;}
     int size() { return m_dspVarData.size(); }
     int type() { return m_nType; }
     int datatype() { return m_nDataType; }
@@ -31,7 +31,7 @@ private:
     friend class cDspMeasData;
     cDspVar(const QString &name, int size, int type, int datatype = DSPDATA::dFloat );
     virtual ~cDspVar();
-    void setData(QVector<float> data) {
+    void setData(const QVector<float> &data) {
         Q_ASSERT(m_dspVarData.size() == data.size());
         m_dspVarData = data;
     }

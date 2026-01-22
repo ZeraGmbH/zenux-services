@@ -95,24 +95,24 @@ public:
     cPCBInterfacePrivate(cPCBInterface* iface);
     void setClientSmart(Zera::ProxyClientPtr client);
     quint32 getChannelList(); // qstringlist
-    quint32 getDSPChannel(QString chnName); // int
-    quint32 getStatus(QString chnName); // int
-    quint32 resetStatus(QString chnName); // reply (ack, nak..)
-    quint32 getAlias(QString chnName); // qstring
-    quint32 getType(QString chnName); // qstring
-    quint32 getUnit(QString chnName); // qstring
-    quint32 getRange(QString chnName); // qstring
-    quint32 getRangeList(QString chnName); // qstringlist
-    quint32 getAlias(QString chnName, QString rngName); // qstring
-    quint32 getType(QString chnName, QString rngName); // int
-    quint32 getUrvalue(QString chnName, QString rngName); // double
-    quint32 getUrvalue(QString chnName); // double
-    quint32 getRejection(QString chnName, QString rngName); // double
-    quint32 getOVRejection(QString chnName, QString rngName); // double
-    quint32 getADCRejection(QString chnName, QString rngName); // double
-    quint32 isAvail(QString chnName, QString rngName); // bool
-    quint32 getGainCorrection(QString chnName, QString rngName, double at); // double
-    quint32 getAdjGainCorrection(QString chnName, QString rngName, double at); // double
+    quint32 getDSPChannel(const QString &chnName); // int
+    quint32 getStatus(const QString &chnName); // int
+    quint32 resetStatus(const QString &chnName); // reply (ack, nak..)
+    quint32 getAlias(const QString &chnName); // qstring
+    quint32 getType(const QString &chnName); // qstring
+    quint32 getUnit(const QString &chnName); // qstring
+    quint32 getRange(const QString &chnName); // qstring
+    quint32 getRangeList(const QString &chnName); // qstringlist
+    quint32 getAlias(const QString &chnName, const QString &rngName); // qstring
+    quint32 getType(const QString &chnName, const QString &rngName); // int
+    quint32 getUrvalue(const QString &chnName, const QString &rngName); // double
+    quint32 getUrvalue(const QString &chnName); // double
+    quint32 getRejection(const QString &chnName, const QString &rngName); // double
+    quint32 getOVRejection(const QString &chnName, const QString &rngName); // double
+    quint32 getADCRejection(const QString &chnName, const QString &rngName); // double
+    quint32 isAvail(const QString &chnName, const QString &rngName); // bool
+    quint32 getGainCorrection(const QString &chnName, const QString &rngName, double at); // double
+    quint32 getAdjGainCorrection(const QString &chnName, const QString &rngName, double at); // double
     quint32 getOffsetCorrection(QString chnName, QString rngName, double at); // double
     quint32 getAdjOffsetCorrection(QString chnName, QString rngName, double at); // double
     quint32 getPhaseCorrection(QString chnName, QString rngName, double at); // double

@@ -115,7 +115,7 @@ void cClamp::executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd)
     }
 }
 
-bool cClamp::exportClampAdjData(QDateTime dateTimeWrite)
+bool cClamp::exportClampAdjData(const QDateTime &dateTimeWrite)
 {
     QByteArray ba;
     QDataStream stream(&ba,QIODevice::ReadWrite);
@@ -835,7 +835,7 @@ void cClamp::addSystAdjInterface()
     }
 }
 
-void cClamp::addSystAdjInterfaceChannel(QString channelName)
+void cClamp::addSystAdjInterfaceChannel(const QString &channelName)
 {
     QString cmdParent = QString("SYSTEM:CLAMP:%1").arg(channelName);
     addDelegate(cmdParent, "SERIALNUMBER", SCPI::isQuery | SCPI::isCmdwP, m_scpiInterface, cmdSerial);
@@ -858,12 +858,14 @@ void cClamp::addSystAdjInterfaceChannel(QString channelName)
     addDelegate(cmdParent, "ADJUSTMENT", SCPI::isQuery, m_scpiInterface, cmdStatAdjustment);
 }
 
-SenseRangeCommon *cClamp::getRange(QString name)
+SenseRangeCommon *cClamp::getRange(const QString &name)
 {
     return getRangeStatic(name, m_RangeList, m_RangeListSecondary);
 }
 
-SenseRangeCommon *cClamp::getRangeStatic(QString name, const QList<SenseRangeCommon*> &rangeList, const QList<SenseRangeCommon*> &rangeListSecondary)
+SenseRangeCommon *cClamp::getRangeStatic(const QString &name,
+                                         const QList<SenseRangeCommon*> &rangeList,
+                                         const QList<SenseRangeCommon*> &rangeListSecondary)
 {
     SenseRangeCommon* rangeFound = nullptr;
     for(auto range : rangeList) {
@@ -938,7 +940,7 @@ void cClamp::exportRangeXml(QDomDocument &justqdom, QDomElement &typeTag, SenseR
     }
 }
 
-QString cClamp::scpiReadWriteSerial(QString& scpi)
+QString cClamp::scpiReadWriteSerial(const QString &scpi)
 {
     QString answer;
     cSCPICommand cmd =scpi;
@@ -964,7 +966,7 @@ QString cClamp::scpiReadWriteSerial(QString& scpi)
 }
 
 
-QString cClamp::scpiReadWriteVersion(QString &scpi)
+QString cClamp::scpiReadWriteVersion(const QString &scpi)
 {
     QString answer;
     cSCPICommand cmd =scpi;
@@ -990,7 +992,7 @@ QString cClamp::scpiReadWriteVersion(QString &scpi)
 }
 
 
-QString cClamp::scpiReadWriteType(QString& scpi)
+QString cClamp::scpiReadWriteType(const QString &scpi)
 {
     QString answer;
     cSCPICommand cmd =scpi;
@@ -1024,7 +1026,7 @@ QString cClamp::scpiReadWriteType(QString& scpi)
     return answer;
 }
 
-QString cClamp::scpiReadName(QString& scpi)
+QString cClamp::scpiReadName(const QString &scpi)
 {
     QString answer;
     cSCPICommand cmd =scpi;
@@ -1037,7 +1039,7 @@ QString cClamp::scpiReadName(QString& scpi)
     return answer;
 }
 
-QString cClamp::scpiWriteFlash(QString& scpi)
+QString cClamp::scpiWriteFlash(const QString &scpi)
 {
     QString answer;
     cSCPICommand cmd = scpi;
@@ -1055,7 +1057,7 @@ QString cClamp::scpiWriteFlash(QString& scpi)
     return answer;
 }
 
-QString cClamp::scpiReadFlash(QString& scpi)
+QString cClamp::scpiReadFlash(const QString &scpi)
 {
     QString answer;
     cSCPICommand cmd = scpi;
@@ -1074,7 +1076,7 @@ QString cClamp::scpiReadFlash(QString& scpi)
     return answer;
 }
 
-QString cClamp::scpiResetFlash(QString &scpi)
+QString cClamp::scpiResetFlash(const QString &scpi)
 {
     QString answer;
     cSCPICommand cmd = scpi;
@@ -1092,7 +1094,7 @@ QString cClamp::scpiResetFlash(QString &scpi)
     return answer;
 }
 
-QString cClamp::scpiReadChksum(QString& scpi)
+QString cClamp::scpiReadChksum(const QString &scpi)
 {
     QString answer;
     cSCPICommand cmd = scpi;
@@ -1105,7 +1107,7 @@ QString cClamp::scpiReadChksum(QString& scpi)
     return answer;
 }
 
-QString cClamp::scpiWriteXML(QString &scpi)
+QString cClamp::scpiWriteXML(const QString &scpi)
 {
     QString answer;
     cSCPICommand cmd = scpi;
@@ -1124,7 +1126,7 @@ QString cClamp::scpiWriteXML(QString &scpi)
     return answer;
 }
 
-QString cClamp::scpiReadXML(QString &scpi)
+QString cClamp::scpiReadXML(const QString &scpi)
 {
     QString answer;
     cSCPICommand cmd = scpi;
@@ -1143,7 +1145,7 @@ QString cClamp::scpiReadXML(QString &scpi)
     return answer;
 }
 
-QString cClamp::scpiReadAdjStatus(QString &scpi)
+QString cClamp::scpiReadAdjStatus(const QString &scpi)
 {
     QString answer;
     cSCPICommand cmd = scpi;

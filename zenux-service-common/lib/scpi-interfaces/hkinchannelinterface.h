@@ -13,9 +13,9 @@ public:
                          quint8 nr,
                          HkInSettings::ChannelSettings* cSettings);
     virtual void initSCPIConnection(QString leadingNodes) override;
-    QString& getName();
-    QString& getAlias();
-    QString& getDescription();
+    const QString &getName();
+    const QString &getAlias();
+    const QString &getDescription();
     bool isAvail();
 protected:
     void executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd) override;

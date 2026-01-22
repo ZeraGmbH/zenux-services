@@ -11,12 +11,12 @@ AdjustmentEepromReadWrite::AdjustmentEepromReadWrite(EepromI2cDeviceInterfacePtr
 {
 }
 
-void AdjustmentEepromReadWrite::setCachePath(QString path)
+void AdjustmentEepromReadWrite::setCachePath(const QString &path)
 {
     m_cachePath = path;
 }
 
-QString AdjustmentEepromReadWrite::getCacheFullFileName(QString cacheFileName)
+QString AdjustmentEepromReadWrite::getCacheFullFileName(const QString &cacheFileName)
 {
     QFileInfo fi(m_cachePath + "/" + cacheFileName);
     QString fullPath = fi.absoluteFilePath();
@@ -28,7 +28,7 @@ bool AdjustmentEepromReadWrite::readData()
     return readDataCached("");
 }
 
-bool AdjustmentEepromReadWrite::readDataCached(QString cacheFileName)
+bool AdjustmentEepromReadWrite::readDataCached(const QString &cacheFileName)
 {
     qInfo("Read adjustment data...");
     if(m_adjDataReadIsValid) {

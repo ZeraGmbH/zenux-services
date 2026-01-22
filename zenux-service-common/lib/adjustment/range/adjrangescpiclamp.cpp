@@ -3,7 +3,7 @@
 AdjRangeScpiClamp::AdjRangeScpiClamp(std::shared_ptr<cSCPI> scpiinterface,
                                      SenseRangeCommon *deviceInternalRange,
                                      double cvRatio,
-                                     PermissionStructAdj permission)  :
+                                     const PermissionStructAdj &permission)  :
     AdjRangeScpi(scpiinterface, AdjustScpiValueFormatterFactory::createMt310s2AdjFormatter(), permission),
     m_deviceInternalRange(deviceInternalRange),
     m_cvRatio(cvRatio)

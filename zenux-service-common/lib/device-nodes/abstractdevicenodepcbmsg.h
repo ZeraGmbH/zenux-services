@@ -8,7 +8,7 @@ class AbstractDeviceNodePcbMsg
 {
 public:
     virtual ~AbstractDeviceNodePcbMsg() = default;
-    virtual int open(QString devNodeFileName) = 0;
+    virtual int open(const QString &devNodeFileName) = 0;
     virtual void close() = 0;
     virtual void enableFasync() = 0;
 };

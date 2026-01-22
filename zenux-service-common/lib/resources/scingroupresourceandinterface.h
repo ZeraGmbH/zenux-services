@@ -20,8 +20,8 @@ public:
 protected:
     void executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd) override;
 private:
-    QString scpiReadVersion(QString& sInput);
-    QString m_ReadChannelCatalog(QString& sInput);
+    QString scpiReadVersion(const QString& sInput);
+    QString m_ReadChannelCatalog(const QString& sInput);
     QList<ScInChannelInterface*> m_ChannelList;
 };
 

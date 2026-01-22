@@ -2,7 +2,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 
-int DeviceNodePcbCtrl::open(QString devNodeFileName)
+int DeviceNodePcbCtrl::open(const QString &devNodeFileName)
 {
     m_devNodeFileName = devNodeFileName;
     m_devFileDescriptor = ::open(devNodeFileName.toLatin1().data(), O_RDWR);

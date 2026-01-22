@@ -117,7 +117,7 @@ quint32 cDSPInterfacePrivate::triggerIntHKSK(quint32 hksk)
     return msgnr;
 }
 
-void cDSPInterfacePrivate::addCycListItem(QString cmd)
+void cDSPInterfacePrivate::addCycListItem(const QString &cmd)
 {
     m_cycCmdList.append(cmd);
 }
@@ -127,19 +127,19 @@ void cDSPInterfacePrivate::addCycListItems(const QStringList &cmds)
     m_cycCmdList.append(cmds);
 }
 
-void cDSPInterfacePrivate::addIntListItem(QString cmd)
+void cDSPInterfacePrivate::addIntListItem(const QString &cmd)
 {
     m_irqCmdList.append(cmd);
 }
 
-cDspMeasData* cDSPInterfacePrivate::getMemHandle(QString name)
+cDspMeasData* cDSPInterfacePrivate::getMemHandle(const QString &name)
 {
     cDspMeasData* pdmd = new cDspMeasData(name);
     m_DspMemoryDataList.append(pdmd);
     return pdmd;
 }
 
-cDspMeasData *cDSPInterfacePrivate::findMemHandle(QString name) const
+cDspMeasData *cDSPInterfacePrivate::findMemHandle(const QString &name) const
 {
     cDspMeasData* memHandleFound = nullptr;
     for(int i=0; i<m_DspMemoryDataList.count(); ++i) {

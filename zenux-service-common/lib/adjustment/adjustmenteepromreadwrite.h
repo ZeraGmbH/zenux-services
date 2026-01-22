@@ -10,10 +10,10 @@ class AdjustmentEepromReadWrite
 {
 public:
     AdjustmentEepromReadWrite(EepromI2cDeviceInterfacePtr adjMemory);
-    static void setCachePath(QString path);
-    static QString getCacheFullFileName(QString cacheFileName);
+    static void setCachePath(const QString &path);
+    static QString getCacheFullFileName(const QString &cacheFileName);
     bool readData();
-    bool readDataCached(QString cacheFileName);
+    bool readDataCached(const QString &cacheFileName);
     bool writeData();
     bool resetData();
 

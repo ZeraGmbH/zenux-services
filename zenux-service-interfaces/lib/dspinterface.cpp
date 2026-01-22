@@ -59,7 +59,7 @@ void cDSPInterface::clearCmdList()
     d->clearCmdList();
 }
 
-void cDSPInterface::addCycListItem(QString cmd)
+void cDSPInterface::addCycListItem(const QString &cmd)
 {
     Q_D(cDSPInterface);
     d->addCycListItem(cmd);
@@ -71,7 +71,7 @@ void cDSPInterface::addCycListItems(const QStringList &cmds)
     d->addCycListItems(cmds);
 }
 
-cDspMeasData* cDSPInterface::getMemHandle(QString name)
+cDspMeasData* cDSPInterface::getMemHandle(const QString &name)
 {
     Q_D(cDSPInterface);
     return d->getMemHandle(name);
