@@ -9,7 +9,7 @@ class ResourceRegisterTransaction : public QObject
     Q_OBJECT
 public:
     ResourceRegisterTransaction(RMConnection *rmConnection);
-    void register1Resource(const QString &registerParameter);
+    void register1Resource(QString registerParameter);
 signals:
     void registerRdy();
 private slots:

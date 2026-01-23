@@ -65,7 +65,7 @@ public:
     SenseRangeCommon* getRange(const QString &channelName, const QString &rangeName);
     bool computeSenseAdjData();
     void registerResource(RMConnection *rmConnection, quint16 port) override;
-    bool exportAdjData(const QDateTime &dateTimeWrite);
+    bool exportAdjData(QDateTime dateTimeWrite);
     bool importAdjData();
     quint16 getAdjChecksum();
 

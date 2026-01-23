@@ -8,7 +8,7 @@ enum Commands
 };
 
 FInChannelInterface::FInChannelInterface(std::shared_ptr<cSCPI> scpiInterface,
-                                         const QString &description,
+                                         QString description,
                                          quint8 nr,
                                          FInSettings::ChannelSettings *cSettings) :
     ScpiConnection(scpiInterface),

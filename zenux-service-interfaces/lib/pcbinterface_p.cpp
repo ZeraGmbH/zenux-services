@@ -26,7 +26,7 @@ quint32 cPCBInterfacePrivate::getChannelList()
     return msgnr;
 }
 
-quint32 cPCBInterfacePrivate::getDSPChannel(const QString &chnName)
+quint32 cPCBInterfacePrivate::getDSPChannel(QString chnName)
 {
     QString cmd;
     quint32 msgnr;
@@ -37,7 +37,7 @@ quint32 cPCBInterfacePrivate::getDSPChannel(const QString &chnName)
 }
 
 
-quint32 cPCBInterfacePrivate::getStatus(const QString &chnName)
+quint32 cPCBInterfacePrivate::getStatus(QString chnName)
 {
     QString cmd;
     quint32 msgnr;
@@ -48,7 +48,7 @@ quint32 cPCBInterfacePrivate::getStatus(const QString &chnName)
 }
 
 
-quint32 cPCBInterfacePrivate::resetStatus(const QString &chnName)
+quint32 cPCBInterfacePrivate::resetStatus(QString chnName)
 {
     QString cmd;
     quint32 msgnr;
@@ -59,7 +59,7 @@ quint32 cPCBInterfacePrivate::resetStatus(const QString &chnName)
 }
 
 
-quint32 cPCBInterfacePrivate::getAlias(const QString &chnName)
+quint32 cPCBInterfacePrivate::getAlias(QString chnName)
 {
     QString cmd;
     quint32 msgnr;
@@ -70,7 +70,7 @@ quint32 cPCBInterfacePrivate::getAlias(const QString &chnName)
 }
 
 
-quint32 cPCBInterfacePrivate::getType(const QString &chnName)
+quint32 cPCBInterfacePrivate::getType(QString chnName)
 {
     QString cmd;
     quint32 msgnr;
@@ -81,7 +81,7 @@ quint32 cPCBInterfacePrivate::getType(const QString &chnName)
 }
 
 
-quint32 cPCBInterfacePrivate::getUnit(const QString &chnName)
+quint32 cPCBInterfacePrivate::getUnit(QString chnName)
 {
     QString cmd;
     quint32 msgnr;
@@ -92,7 +92,7 @@ quint32 cPCBInterfacePrivate::getUnit(const QString &chnName)
 }
 
 
-quint32 cPCBInterfacePrivate::getRange(const QString &chnName)
+quint32 cPCBInterfacePrivate::getRange(QString chnName)
 {
     QString cmd;
     quint32 msgnr;
@@ -103,7 +103,7 @@ quint32 cPCBInterfacePrivate::getRange(const QString &chnName)
 }
 
 
-quint32 cPCBInterfacePrivate::getRangeList(const QString &chnName)
+quint32 cPCBInterfacePrivate::getRangeList(QString chnName)
 {
     QString cmd;
     quint32 msgnr;
@@ -114,7 +114,7 @@ quint32 cPCBInterfacePrivate::getRangeList(const QString &chnName)
 }
 
 
-quint32 cPCBInterfacePrivate::getAlias(const QString &chnName, const QString &rngName)
+quint32 cPCBInterfacePrivate::getAlias(QString chnName, QString rngName)
 {
     QString cmd;
     quint32 msgnr;
@@ -125,7 +125,7 @@ quint32 cPCBInterfacePrivate::getAlias(const QString &chnName, const QString &rn
 }
 
 
-quint32 cPCBInterfacePrivate::getType(const QString &chnName, const QString &rngName)
+quint32 cPCBInterfacePrivate::getType(QString chnName, QString rngName)
 {
     QString cmd;
     quint32 msgnr;
@@ -136,7 +136,7 @@ quint32 cPCBInterfacePrivate::getType(const QString &chnName, const QString &rng
 }
 
 
-quint32 cPCBInterfacePrivate::getUrvalue(const QString &chnName, const QString &rngName)
+quint32 cPCBInterfacePrivate::getUrvalue(QString chnName, QString rngName)
 {
     QString cmd;
     quint32 msgnr;
@@ -147,7 +147,7 @@ quint32 cPCBInterfacePrivate::getUrvalue(const QString &chnName, const QString &
 }
 
 
-quint32 cPCBInterfacePrivate::getUrvalue(const QString &chnName)
+quint32 cPCBInterfacePrivate::getUrvalue(QString chnName)
 {
     QString cmd;
     quint32 msgnr;
@@ -158,7 +158,7 @@ quint32 cPCBInterfacePrivate::getUrvalue(const QString &chnName)
 }
 
 
-quint32 cPCBInterfacePrivate::getRejection(const QString &chnName, const QString &rngName)
+quint32 cPCBInterfacePrivate::getRejection(QString chnName, QString rngName)
 {
     QString cmd;
     quint32 msgnr;
@@ -169,7 +169,7 @@ quint32 cPCBInterfacePrivate::getRejection(const QString &chnName, const QString
 }
 
 
-quint32 cPCBInterfacePrivate::getOVRejection(const QString &chnName, const QString &rngName)
+quint32 cPCBInterfacePrivate::getOVRejection(QString chnName, QString rngName)
 {
     QString cmd;
     quint32 msgnr;
@@ -180,7 +180,7 @@ quint32 cPCBInterfacePrivate::getOVRejection(const QString &chnName, const QStri
 }
 
 
-quint32 cPCBInterfacePrivate::getADCRejection(const QString &chnName, const QString &rngName)
+quint32 cPCBInterfacePrivate::getADCRejection(QString chnName, QString rngName)
 {
     QString cmd;
     quint32 msgnr;
@@ -191,7 +191,7 @@ quint32 cPCBInterfacePrivate::getADCRejection(const QString &chnName, const QStr
 }
 
 
-quint32 cPCBInterfacePrivate::isAvail(const QString &chnName, const QString &rngName)
+quint32 cPCBInterfacePrivate::isAvail(QString chnName, QString rngName)
 {
     QString cmd;
     quint32 msgnr;
@@ -202,7 +202,7 @@ quint32 cPCBInterfacePrivate::isAvail(const QString &chnName, const QString &rng
 }
 
 
-quint32 cPCBInterfacePrivate::getGainCorrection(const QString &chnName, const QString &rngName, double at)
+quint32 cPCBInterfacePrivate::getGainCorrection(QString chnName, QString rngName, double at)
 {
     QString cmd, par;
     quint32 msgnr;
@@ -213,7 +213,7 @@ quint32 cPCBInterfacePrivate::getGainCorrection(const QString &chnName, const QS
 }
 
 
-quint32 cPCBInterfacePrivate::getAdjGainCorrection(const QString &chnName, const QString &rngName, double at)
+quint32 cPCBInterfacePrivate::getAdjGainCorrection(QString chnName, QString rngName, double at)
 {
     QString cmd, par;
     quint32 msgnr;

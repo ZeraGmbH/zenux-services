@@ -8,7 +8,7 @@ class AbstractDeviceNodePcbCtrl
 {
 public:
     virtual ~AbstractDeviceNodePcbCtrl() = default;
-    virtual int open(const QString &devNodeFileName) = 0;
+    virtual int open(QString devNodeFileName) = 0;
     virtual void close() = 0;
     virtual void enableFasync() = 0;
 };

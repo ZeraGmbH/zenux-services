@@ -46,9 +46,9 @@ public:
     quint32 cmdList2Dsp(); // send cyclic command list to the dsp server
     int cmdListCount(); // returns the number of command in cyclist program list
     void clearCmdList(); // clears all cmd lists
-    void addCycListItem(const QString &cmd); // appends new command to cyclic list
+    void addCycListItem(QString cmd); // appends new command to cyclic list
     void addCycListItems(const QStringList &cmds); // appends new commands to cyclic list
-    cDspMeasData* getMemHandle(const QString &name); // init a new memory group and return handle
+    cDspMeasData* getMemHandle(QString name); // init a new memory group and return handle
     void deleteMemHandle(cDspMeasData* memhandle);
     quint32 activateInterface(); // load var- and cmdlists to dsp (starts theprogram on dsp)
 
@@ -62,7 +62,7 @@ public:
     quint32 readServerVersion();
 
     // unused in ZENUX - kept for sake of future WM???
-    void addIntListItem(const QString &cmd); // same for interrupt list
+    void addIntListItem(QString cmd); // same for interrupt list
     quint32 intList2Dsp(); // send interrupt command list to the dsp server
     int intListCount(); // returns the number of command in intlist program list
     quint32 triggerIntHKSK(quint32 hksk); // trigger start hksk in intlist
@@ -71,7 +71,7 @@ public:
     QStringList getCyclicCmdList() const;
     QList<cDspMeasData*> getMemoryDataList() const;
     QString varList2String() const;
-    cDspMeasData* findMemHandle(const QString &name) const;
+    cDspMeasData* findMemHandle(QString name) const;
 protected slots:
     void receiveAnswer(std::shared_ptr<ProtobufMessage::NetMessage> message) override;
     void receiveError(QAbstractSocket::SocketError errorCode) override;

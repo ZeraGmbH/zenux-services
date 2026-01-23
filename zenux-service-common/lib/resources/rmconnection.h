@@ -11,12 +11,12 @@ class RMConnection: public QObject
 {
     Q_OBJECT
 public:
-    RMConnection(const QString &ipadr, quint16 port, VeinTcp::AbstractTcpNetworkFactoryPtr tcpFactory);
+    RMConnection(QString ipadr, quint16 port, VeinTcp::AbstractTcpNetworkFactoryPtr tcpFactory);
     virtual ~RMConnection();
     void connect2RM();
-    void SendIdent(const QString &ident);
-    void SendCommand(const QString &cmd, const QString &par, quint32 msgnr);
-    void SendCommand(const QString &cmd, const QString &par);
+    void SendIdent(QString ident);
+    void SendCommand(QString& cmd, QString &par, quint32 msgnr);
+    void SendCommand(QString &cmd, QString &par);
 private slots:
     void tcpErrorHandler(VeinTcp::TcpPeer *peer, QAbstractSocket::SocketError errorCode);
     void onMessageReceived(VeinTcp::TcpPeer *peer, QByteArray message);

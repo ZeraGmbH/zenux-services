@@ -1,6 +1,6 @@
 #include "mockdevicenodepcbmsg.h"
 
-int MockDeviceNodePcbMsg::open(const QString &devNodeFileName)
+int MockDeviceNodePcbMsg::open(QString devNodeFileName)
 {
     Q_UNUSED(devNodeFileName)
     return 0;

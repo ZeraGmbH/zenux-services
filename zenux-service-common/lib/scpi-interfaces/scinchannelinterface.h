@@ -9,13 +9,13 @@ class ScInChannelInterface : public ScpiConnection
     Q_OBJECT
 public:
     ScInChannelInterface(std::shared_ptr<cSCPI> scpiinterface,
-                         const QString &description,
+                         QString description,
                          quint8 nr,
                          ScInSettings::ChannelSettings* cSettings);
     virtual void initSCPIConnection(QString leadingNodes) override;
-    const QString& getName();
-    const QString& getAlias();
-    const QString& getDescription();
+    QString& getName();
+    QString& getAlias();
+    QString& getDescription();
     bool isAvail();
 protected:
     void executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd) override;

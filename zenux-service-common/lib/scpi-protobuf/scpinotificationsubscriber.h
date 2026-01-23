@@ -9,7 +9,7 @@ class ScpiNotificationSubscriber
     friend bool operator == (const ScpiNotificationSubscriber &subscriber1, const ScpiNotificationSubscriber &subscriber2);
 public:
     ScpiNotificationSubscriber(VeinTcp::TcpPeer *netPeer,
-                               const QByteArray &clientId,
+                               QByteArray clientId,
                                quint16 notifierId,
                                bool notifyWithValue);
     VeinTcp::TcpPeer *m_netPeer;

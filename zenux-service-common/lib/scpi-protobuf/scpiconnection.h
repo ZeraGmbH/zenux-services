@@ -26,12 +26,7 @@ protected:
     virtual void executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd) = 0;
     void removeSCPIConnections();
     void ensureTrailingColonOnNonEmptyParentNodes(QString &leadingNodes);
-    void addDelegate(const QString &cmdParent,
-                     const QString &cmd,
-                     quint8 type,
-                     std::shared_ptr<cSCPI> scpiInterface,
-                     quint16 cmdCode,
-                     NotificationString *notificationString = nullptr);
+    void addDelegate(QString cmdParent, QString cmd, quint8 type, std::shared_ptr<cSCPI> scpiInterface, quint16 cmdCode, NotificationString *notificationString = nullptr);
     std::shared_ptr<cSCPI> m_scpiInterface;
     QList<ScpiDelegatePtr> m_DelegateList;
 private slots:

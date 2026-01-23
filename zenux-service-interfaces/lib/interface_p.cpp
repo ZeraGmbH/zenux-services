@@ -39,7 +39,7 @@ bool cInterfacePrivate::decodeProtobuffAnswer(std::shared_ptr<ProtobufMessage::N
     return withReply;
 }
 
-quint32 cInterfacePrivate::sendCommand(const QString &cmd)
+quint32 cInterfacePrivate::sendCommand(QString cmd)
 {
     ProtobufMessage::NetMessage envelope;
     ProtobufMessage::NetMessage::ScpiCommand* message = envelope.mutable_scpi();
@@ -48,7 +48,7 @@ quint32 cInterfacePrivate::sendCommand(const QString &cmd)
     return m_clientSmart->transmitCommand(&envelope);
 }
 
-quint32 cInterfacePrivate::sendCommand(const QString &cmd, const QString &par)
+quint32 cInterfacePrivate::sendCommand(QString cmd, QString par)
 {
     ProtobufMessage::NetMessage envelope;
     ProtobufMessage::NetMessage::ScpiCommand* message = envelope.mutable_scpi();

@@ -8,7 +8,7 @@ enum Commands
 };
 
 ScInChannelInterface::ScInChannelInterface(std::shared_ptr<cSCPI> scpiinterface,
-                                           const QString &description,
+                                           QString description,
                                            quint8 nr,
                                            ScInSettings::ChannelSettings *cSettings) :
     ScpiConnection(scpiinterface),
@@ -41,17 +41,17 @@ void ScInChannelInterface::executeProtoScpi(int cmdCode, ProtonetCommandPtr prot
         emit cmdExecutionDone(protoCmd);
 }
 
-const QString &ScInChannelInterface::getName()
+QString &ScInChannelInterface::getName()
 {
     return m_sName;
 }
 
-const QString &ScInChannelInterface::getAlias()
+QString &ScInChannelInterface::getAlias()
 {
     return m_sAlias;
 }
 
-const QString &ScInChannelInterface::getDescription()
+QString &ScInChannelInterface::getDescription()
 {
     return m_sDescription;
 }

@@ -5,17 +5,17 @@ NotificationString::NotificationString()
 {
 }
 
-NotificationString::NotificationString(const QString &str)
+NotificationString::NotificationString(QString str)
     :m_sValue(str)
 {
 }
 
-const QString &NotificationString::getString() const
+QString NotificationString::getString()
 {
     return m_sValue;
 }
 
-void NotificationString::operator =(const QString &str)
+void NotificationString::operator =(QString str)
 {
     if(m_sValue != str) {
         m_sValue = str;

@@ -41,17 +41,17 @@ void HkInChannelInterface::executeProtoScpi(int cmdCode, ProtonetCommandPtr prot
         emit cmdExecutionDone(protoCmd);
 }
 
-const QString &HkInChannelInterface::getName()
+QString &HkInChannelInterface::getName()
 {
     return m_sName;
 }
 
-const QString &HkInChannelInterface::getAlias()
+QString &HkInChannelInterface::getAlias()
 {
     return m_sAlias;
 }
 
-const QString &HkInChannelInterface::getDescription()
+QString &HkInChannelInterface::getDescription()
 {
     return m_sDescription;
 }

@@ -52,7 +52,7 @@ enum ScpiCommands
 
 AdjRangeScpi::AdjRangeScpi(std::shared_ptr<cSCPI> scpiinterface,
                            std::unique_ptr<AdjustScpiValueFormatter> adjustmentFormatter,
-                           const PermissionStructAdj &permissions) :
+                           PermissionStructAdj permissions) :
     ScpiConnection(scpiinterface),
     m_gainCorrection({m_scpiInterface, permissions.funcAllowAdjGain, adjustmentFormatter->m_correctionExportDigits},
                        &m_adjGroupData.m_gainAdjData),
@@ -86,17 +86,17 @@ void AdjRangeScpi::initSCPIConnection(QString leadingNodes)
     m_offsetCorrection.initSCPIConnection(QString("%1CORRECTION:OFFSET").arg(leadingNodes));
 }
 
-void AdjRangeScpi::setAdjGroupData(const AdjDataRange &groupData)
+void AdjRangeScpi::setAdjGroupData(AdjDataRange groupData)
 {
     m_adjGroupData = groupData;
 }
 
-const AdjDataRange &AdjRangeScpi::getAdjGroupData()
+AdjDataRange AdjRangeScpi::getAdjGroupData()
 {
     return m_adjGroupData;
 }
 
-AdjDataItemScpi *AdjRangeScpi::getAdjInterface(const QString &name)
+AdjDataItemScpi *AdjRangeScpi::getAdjInterface(QString name)
 {
     if(name == "Gain")
         return &m_gainCorrection;
@@ -157,7 +157,7 @@ QString AdjRangeScpi::scpiQueryGainCorrectionTotal(const QString &scpiInput)
     return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-QString AdjRangeScpi::scpiQueryGainCorrectionSingle(const QString &scpiInput)
+QString AdjRangeScpi::scpiQueryGainCorrectionSingle(QString &scpiInput)
 {
     cSCPICommand cmd = scpiInput;
     if (cmd.isQuery(1)) {
@@ -171,7 +171,7 @@ QString AdjRangeScpi::scpiQueryGainCorrectionSingle(const QString &scpiInput)
     return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-QString AdjRangeScpi::scpiQueryPhaseCorrectionTotal(const QString &scpiInput)
+QString AdjRangeScpi::scpiQueryPhaseCorrectionTotal(QString& scpiInput)
 {
     cSCPICommand cmd = scpiInput;
     if (cmd.isQuery(1)) {
@@ -185,7 +185,7 @@ QString AdjRangeScpi::scpiQueryPhaseCorrectionTotal(const QString &scpiInput)
     return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-QString AdjRangeScpi::scpiQueryPhaseCorrectionSingle(const QString &scpiInput)
+QString AdjRangeScpi::scpiQueryPhaseCorrectionSingle(QString &scpiInput)
 {
     cSCPICommand cmd = scpiInput;
     if (cmd.isQuery(1)) {
@@ -199,7 +199,7 @@ QString AdjRangeScpi::scpiQueryPhaseCorrectionSingle(const QString &scpiInput)
     return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-QString AdjRangeScpi::scpiQueryOffsetCorrectionTotal(const QString &scpiInput)
+QString AdjRangeScpi::scpiQueryOffsetCorrectionTotal(QString& scpiInput)
 {
     cSCPICommand cmd = scpiInput;
     if (cmd.isQuery(1)) {
@@ -213,7 +213,7 @@ QString AdjRangeScpi::scpiQueryOffsetCorrectionTotal(const QString &scpiInput)
     return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-QString AdjRangeScpi::scpiQueryOffsetCorrectionSingle(const QString &scpiInput)
+QString AdjRangeScpi::scpiQueryOffsetCorrectionSingle(QString &scpiInput)
 {
     cSCPICommand cmd = scpiInput;
     if (cmd.isQuery(1)) {
@@ -227,7 +227,7 @@ QString AdjRangeScpi::scpiQueryOffsetCorrectionSingle(const QString &scpiInput)
     return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-QString AdjRangeScpi::scpiQueryStatus(const QString &scpiInput)
+QString AdjRangeScpi::scpiQueryStatus(QString& scpiInput)
 {
     cSCPICommand cmd = scpiInput;
     if (cmd.isQuery())
@@ -235,7 +235,7 @@ QString AdjRangeScpi::scpiQueryStatus(const QString &scpiInput)
     return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-QString AdjRangeScpi::scpiCmdComputeJustData(const QString &scpiInput)
+QString AdjRangeScpi::scpiCmdComputeJustData(QString& scpiInput)
 {
     cSCPICommand cmd = scpiInput;
     if(cmd.isCommand(1) && (cmd.getParam(0) == "")) {
@@ -246,7 +246,7 @@ QString AdjRangeScpi::scpiCmdComputeJustData(const QString &scpiInput)
     return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-QString AdjRangeScpi::scpiCmdInitJustData(const QString &scpiInput)
+QString AdjRangeScpi::scpiCmdInitJustData(QString &scpiInput)
 {
     cSCPICommand cmd = scpiInput;
     if (cmd.isCommand(1) && (cmd.getParam(0) == "")) {

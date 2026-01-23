@@ -32,13 +32,13 @@ class AdjRangeScpi : public ScpiConnection
 public:
     AdjRangeScpi(std::shared_ptr<cSCPI> scpiinterface,
                  std::unique_ptr<AdjustScpiValueFormatter> adjustmentFormatter,
-                 const PermissionStructAdj &permissions = PermissionStructAdj());
+                 PermissionStructAdj permissions = PermissionStructAdj());
     virtual void initSCPIConnection(QString leadingNodes) override;
 
-    void setAdjGroupData(const AdjDataRange &groupData);
-    const AdjDataRange &getAdjGroupData();
+    void setAdjGroupData(AdjDataRange groupData);
+    AdjDataRange getAdjGroupData();
 
-    AdjDataItemScpi* getAdjInterface(const QString &name);
+    AdjDataItemScpi* getAdjInterface(QString name);
 
     double getGainCorrectionSingle(double par);
     double getPhaseCorrectionSingle(double par);
@@ -56,14 +56,14 @@ protected:
 
 private:
     QString scpiQueryGainCorrectionTotal(const QString &scpiInput);
-    QString scpiQueryGainCorrectionSingle(const QString &scpiInput);
-    QString scpiQueryPhaseCorrectionTotal(const QString &scpiInput);
-    QString scpiQueryPhaseCorrectionSingle(const QString &scpiInput);
-    QString scpiQueryOffsetCorrectionTotal(const QString &scpiInput);
-    QString scpiQueryOffsetCorrectionSingle(const QString &scpiInput);
-    QString scpiQueryStatus(const QString &scpiInput);
-    QString scpiCmdComputeJustData(const QString &scpiInput);
-    QString scpiCmdInitJustData(const QString &scpiInput); // done in Adjustmentmodule - left for compatibility
+    QString scpiQueryGainCorrectionSingle(QString &scpiInput);
+    QString scpiQueryPhaseCorrectionTotal(QString &scpiInput);
+    QString scpiQueryPhaseCorrectionSingle(QString &scpiInput);
+    QString scpiQueryOffsetCorrectionTotal(QString &scpiInput);
+    QString scpiQueryOffsetCorrectionSingle(QString &scpiInput);
+    QString scpiQueryStatus(QString &scpiInput);
+    QString scpiCmdComputeJustData(QString &scpiInput);
+    QString scpiCmdInitJustData(QString &scpiInput); // done in Adjustmentmodule - left for compatibility
 
     AdjDataRange m_adjGroupData;
     AdjDataItemScpi m_gainCorrection;

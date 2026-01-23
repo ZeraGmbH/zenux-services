@@ -10,13 +10,13 @@ class NotificationString: public QObject
 
 public:
     NotificationString();
-    NotificationString(const QString &str);
-    const QString &getString() const;
-    void operator = (const QString &str);
+    NotificationString(QString str);
+    QString getString();
+    void operator = (QString str);
     void forceTrigger();
 
 signals:
-    void valueChanged(const QString &newValue);
+    void valueChanged(QString newValue);
 
 private:
     QString m_sValue;

@@ -28,8 +28,8 @@ protected:
     bool decodeProtobuffAnswer(std::shared_ptr<ProtobufMessage::NetMessage> message,
                                TAnswerDecoded &decodedAnswer,
                                int interruptEnumVal = -1);
-    quint32 sendCommand(const QString &cmd);
-    quint32 sendCommand(const QString &cmd, const QString &par);
+    quint32 sendCommand(QString cmd);
+    quint32 sendCommand(QString cmd, QString par);
 
     Zera::ProxyClientPtr m_clientSmart;
     QHash<quint32, int> m_MsgNrCmdList;

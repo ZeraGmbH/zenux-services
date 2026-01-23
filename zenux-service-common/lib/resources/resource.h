@@ -19,8 +19,8 @@ signals:
 public slots:
     void resourceManagerAck(quint32 msgnr);
 protected:
-    void register1Resource(RMConnection *rmConnection, quint32 msgnr, const QString &registerParameter);
-    void unregister1Resource(RMConnection *rmConnection, quint32 msgnr, const QString &unregisterParameter);
+    void register1Resource(RMConnection *rmConnection, quint32 msgnr, QString registerParameter);
+    void unregister1Resource(RMConnection *rmConnection, quint32 msgnr, QString unregisterParameter);
 private:
     QList<quint32> m_msgNrListRegister;
     QList<quint32> m_msgNrListUnregister;

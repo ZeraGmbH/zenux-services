@@ -12,9 +12,9 @@ public:
 
     AdjDataHeaderIntern& getAdjHeader();
 
-    bool isChannelRangeAvailable(const QString &channelName, const QString &rangeName);
-    AdjDataRange getRangeAdjData(const QString &channelName, const QString &rangeName);
-    void setChannelRange(const QString &channelName, const QString &rangeName, const AdjDataRange &adjData);
+    bool isChannelRangeAvailable(QString channelName, QString rangeName);
+    AdjDataRange getRangeAdjData(QString channelName, QString rangeName);
+    void setChannelRange(QString channelName, QString rangeName, AdjDataRange adjData);
 
 private:
     AdjDataHeaderIntern m_adjHeader;

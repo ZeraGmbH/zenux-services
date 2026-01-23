@@ -14,7 +14,7 @@ enum JustCommands
     JustNode3
 };
 
-AdjDataItemScpi::AdjDataItemScpi(const TJustDataParam &param, AdjDataItem *adjItem) :
+AdjDataItemScpi::AdjDataItemScpi(TJustDataParam param, AdjDataItem *adjItem) :
     ScpiConnection(param.scpiinterface),
     m_checkPermission(param.checkPermission),
     m_adjItem(adjItem),

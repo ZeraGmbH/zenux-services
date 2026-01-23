@@ -60,7 +60,7 @@ public:
     QString getSerial();
     bool importXMLDocument(QDomDocument *qdomdoc, bool ignoreType);
     static bool importXmlForSerialNo(QDomDocument *qdomdoc, QString &serialNo);
-    bool exportClampAdjData(const QDateTime &dateTimeWrite);
+    bool exportClampAdjData(QDateTime dateTimeWrite);
     bool importClampAdjData();
 
 protected:
@@ -68,9 +68,7 @@ protected:
     bool importXMLDocument(QDomDocument* qdomdoc) override;
 
 private:
-    static SenseRangeCommon* getRangeStatic(const QString &name,
-                                            const QList<SenseRangeCommon *> &rangeList,
-                                            const QList<SenseRangeCommon *> &rangeListSecondary);
+    static SenseRangeCommon* getRangeStatic(QString name, const QList<SenseRangeCommon *> &rangeList, const QList<SenseRangeCommon *> &rangeListSecondary);
     static bool importXMLDocumentStatic(QDomDocument *qdomdoc, bool ignoreType,
                                         quint8 clamptype, QString &serialNo, QString &version,
                                         const QList<SenseRangeCommon *> &rangeList, const QList<SenseRangeCommon *> &rangeListSecondary);
@@ -79,26 +77,26 @@ private:
     void addSense();
     void addSenseInterface();
     void addSystAdjInterface();
-    void addSystAdjInterfaceChannel(const QString &channelName);
+    void addSystAdjInterfaceChannel(QString channelName);
     void createLEM1000VRanges(const PermissionStructAdj &permissions);
     void createVDE1400VRanges(const PermissionStructAdj &permissions);
-    SenseRangeCommon* getRange(const QString &name);
+    SenseRangeCommon* getRange(QString name);
     ClampTypes readClampType();
     void removeAllRanges();
     void exportRangeXml(QDomDocument &justqdom, QDomElement &typeTag, SenseRangeCommon *range);
     quint8 getAdjStatus();
 
-    QString scpiReadWriteSerial(const QString &scpi);
-    QString scpiReadWriteVersion(const QString &scpi);
-    QString scpiReadWriteType(const QString &scpi);
-    QString scpiReadName(const QString &scpi);
-    QString scpiWriteFlash(const QString &scpi);
-    QString scpiReadFlash(const QString &scpi);
-    QString scpiResetFlash(const QString &scpi);
-    QString scpiReadChksum(const QString &scpi);
-    QString scpiWriteXML(const QString &scpi);
-    QString scpiReadXML(const QString &scpi);
-    QString scpiReadAdjStatus(const QString &scpi);
+    QString scpiReadWriteSerial(QString &scpi);
+    QString scpiReadWriteVersion(QString &scpi);
+    QString scpiReadWriteType(QString &scpi);
+    QString scpiReadName(QString &scpi);
+    QString scpiWriteFlash(QString &scpi);
+    QString scpiReadFlash(QString &scpi);
+    QString scpiResetFlash(QString &scpi);
+    QString scpiReadChksum(QString &scpi);
+    QString scpiWriteXML(QString &scpi);
+    QString scpiReadXML(QString &scpi);
+    QString scpiReadAdjStatus(QString &scpi);
 
     SenseInterfaceCommon *m_pSenseInterface = nullptr;
     const SenseSystem::cChannelSettings *m_chSettings;
