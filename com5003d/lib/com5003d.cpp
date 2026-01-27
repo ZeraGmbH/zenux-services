@@ -32,11 +32,11 @@ cCOM5003dServer::cCOM5003dServer(SettingsContainerPtr settings,
     PCBServer(std::move(settings), tcpNetworkFactory),
     m_ctrlFactory(ctrlFactory),
     m_deviceNodeFactory(deviceNodeFactory),
-    m_adjMemFactory(adjMemFactory)
+    m_adjMemFactory(adjMemFactory),
+    m_channelRangeFactory(channelRangeFactory)
 {
     doConfiguration();
     init();
-    earlySetup(channelRangeFactory);
 }
 
 void cCOM5003dServer::init()
@@ -48,25 +48,28 @@ void cCOM5003dServer::init()
 
     stateCONF->addTransition(this, &cCOM5003dServer::abortInit, stateFINISH); // from anywhere we arrive here if some error
 
-    QState* stateprogAtmel = new QState(stateCONF); // maybe we have to update the atmel
     QState* statewait4Atmel = new QState(stateCONF); // we synchronize on atmel running
+    QState* stateprogAtmel = new QState(stateCONF); // maybe we have to update the atmel
+    QState* statewait4AtmelAfterWrite = new QState(stateCONF); // we synchronize on atmel running
     QState* statesetupServer = new QState(stateCONF); // we setup our server now
     m_stateconnect2RM = new QState(stateCONF); // we connect to resource manager
     m_stateconnect2RMError = new QState(stateCONF);
     m_stateSendRMIdentAndRegister = new QState(stateCONF); // we send ident. to rm and register our resources
 
-    stateCONF->setInitialState(stateprogAtmel);
+    stateCONF->setInitialState(statewait4Atmel);
 
-    stateprogAtmel->addTransition(this, &cCOM5003dServer::atmelProgrammed, statewait4Atmel);
-    statewait4Atmel->addTransition(this, &cCOM5003dServer::atmelRunning, statesetupServer);
+    statewait4Atmel->addTransition(this, &cCOM5003dServer::atmelRunning, stateprogAtmel);
+    stateprogAtmel->addTransition(this, &cCOM5003dServer::atmelProgrammed, statewait4AtmelAfterWrite);
+    statewait4AtmelAfterWrite->addTransition(this, &cCOM5003dServer::atmelRunning, statesetupServer);
     statesetupServer->addTransition(this, &cCOM5003dServer::sigServerIsSetUp, m_stateconnect2RM);
 
     m_pInitializationMachine->addState(stateCONF);
     m_pInitializationMachine->addState(stateFINISH);
     m_pInitializationMachine->setInitialState(stateCONF);
 
-    QObject::connect(stateprogAtmel, &QAbstractState::entered, this, &cCOM5003dServer::programAtmelFlash);
     QObject::connect(statewait4Atmel, &QAbstractState::entered, this, &cCOM5003dServer::doWait4Atmel);
+    QObject::connect(stateprogAtmel, &QAbstractState::entered, this, &cCOM5003dServer::programAtmelFlash);
+    QObject::connect(statewait4AtmelAfterWrite, &QAbstractState::entered, this, &cCOM5003dServer::doWait4Atmel);
     QObject::connect(statesetupServer, &QAbstractState::entered, this, &cCOM5003dServer::doSetupServerWithAtmelRunning);
     QObject::connect(m_stateconnect2RM, &QAbstractState::entered, this, &cCOM5003dServer::doConnect2RM);
     QObject::connect(m_stateconnect2RMError, &QAbstractState::entered, this, &cCOM5003dServer::connect2RMError);
@@ -114,11 +117,6 @@ void cCOM5003dServer::doConfiguration()
     sigStart = 1;
     write(m_nFPGAfd, &sigStart, 4);
 
-    ServerParams params = m_settings->getServerParams();
-    // We had a delay by schema load
-    // Dec 23 16:16:38.780752 zera-com5003-unknown com5003d[279]: Loading schema...
-    // Dec 23 16:16:38.781167 zera-com5003-unknown com5003d[279]: Schema loaded.
-    usleep(38781167-38780752);
 
     sigStart = 0;
     write(m_nFPGAfd, &sigStart, 4);
@@ -134,11 +132,8 @@ void cCOM5003dServer::doConfiguration()
 
     sigStart = 1;
     write(m_nFPGAfd, &sigStart, 4);
-    // Same here (or even worse): When not loading XSD above, delay caused here
-    // Dec 23 16:16:38.782393 zera-com5003-unknown com5003d[279]: Loading XML...
-    // Dec 23 16:16:39.400216 zera-com5003-unknown com5003d[279]: Loading XML loaded
-    usleep(39400216-38782393);
     qInfo("Loading XML...");
+    ServerParams params = m_settings->getServerParams();
     if (m_xmlConfigReader.loadXMLFile(params.getXmlFile())) {
         qInfo("Loading XML loaded");
         setupMicroControllerIo();
@@ -256,9 +251,10 @@ void cCOM5003dServer::programAtmelFlash()
             }
         }
     }
-
-    else
+    else {
+        qInfo("File %s not found - skipping controller update", qPrintable(atmelFlashfilePath));
         emit atmelProgrammed();
+    }
 }
 
 
@@ -267,8 +263,15 @@ void cCOM5003dServer::doWait4Atmel()
     connect(m_ctrlHeartbeatWait.get(), &AbstractCtrlHeartbeatWait::sigTimeout,
             this, &cCOM5003dServer::abortInit);
     connect(m_ctrlHeartbeatWait.get(), &AbstractCtrlHeartbeatWait::sigRunning,
-            this, &cCOM5003dServer::atmelRunning);
+            this, &cCOM5003dServer::onAtmelRunning);
     m_ctrlHeartbeatWait->start();
+    qInfo("Wait for relay controller to boot...");
+}
+
+void cCOM5003dServer::onAtmelRunning()
+{
+    qInfo("Relay controller is up");
+    emit atmelRunning();
 }
 
 
@@ -279,9 +282,9 @@ void cCOM5003dServer::setInitialPllChannel()
     qInfo("Initial PLL channel set");
 }
 
-void cCOM5003dServer::earlySetup(AbstractChannelRangeFactoryPtr channelRangeFactory)
+void cCOM5003dServer::setupInterfacesRequiresAtmelRunning(AbstractChannelRangeFactoryPtr channelRangeFactory)
 {
-    m_pSystemInfo = new SystemInfo(m_ctrlFactory);
+    m_pSystemInfo = new SystemInfo(m_ctrlFactory); // Atmel IO!!!
 
     connectProtoConnectionSignals();
 
@@ -322,6 +325,8 @@ void cCOM5003dServer::earlySetup(AbstractChannelRangeFactoryPtr channelRangeFact
 void cCOM5003dServer::doSetupServerWithAtmelRunning()
 {
     qInfo("Starting doSetupServerWithAtmelRunning");
+    setupInterfacesRequiresAtmelRunning(m_channelRangeFactory);
+
     setInitialPllChannel();
 
     initSCPIConnections();

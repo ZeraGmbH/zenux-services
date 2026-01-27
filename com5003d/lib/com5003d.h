@@ -57,6 +57,7 @@ private slots:
     void doConfiguration();
     void programAtmelFlash();
     void doWait4Atmel();
+    void onAtmelRunning();
     void doSetupServerWithAtmelRunning();
     void doCloseServer();
     void doConnect2RM();
@@ -64,13 +65,14 @@ private slots:
     void doIdentAndRegister();
     void onResourceReady();
 private:
-    void earlySetup(AbstractChannelRangeFactoryPtr channelRangeFactory);
+    void setupInterfacesRequiresAtmelRunning(AbstractChannelRangeFactoryPtr channelRangeFactory);
     void setupMicroControllerIo();
     void setInitialPllChannel();
 
     AbstractFactoryI2cCtrlPtr m_ctrlFactory;
     AbstractFactoryDeviceNodePcbPtr m_deviceNodeFactory;
     AbstractEepromI2cFactoryPtr m_adjMemFactory;
+    AbstractChannelRangeFactoryPtr m_channelRangeFactory;
 
     SystemInfo* m_pSystemInfo = nullptr;
 
