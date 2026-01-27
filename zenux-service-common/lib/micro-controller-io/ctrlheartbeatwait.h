@@ -2,24 +2,26 @@
 #define CTRLHEARTBEATWAIT_H
 
 #include "abstractctrlheartbeatwait.h"
-#include <QTimer>
+#include <timertemplateqt.h>
 #include <QString>
 
 class CtrlHeartbeatWait : public AbstractCtrlHeartbeatWait
 {
     Q_OBJECT
 public:
-    CtrlHeartbeatWait(QString devNode);
+    CtrlHeartbeatWait(const QString &devNode);
 public slots:
     void start() override;
-private:
-    QString m_sDeviceNode;
-    QTimer m_TimerTO;
-    QTimer m_TimerPeriod;
-    int fd;
+
 private slots:
     void doTimeout();
     void doAtmelTest();
+private:
+    void stopTimers();
+
+    QString m_sDeviceNode;
+    TimerTemplateQtPtr m_TimerTO;
+    TimerTemplateQtPtr m_TimerPeriod;
 };
 
 #endif // CTRLHEARTBEATWAIT_H
