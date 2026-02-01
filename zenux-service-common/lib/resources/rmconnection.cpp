@@ -1,6 +1,6 @@
 #include "rmconnection.h"
 
-RMConnection::RMConnection(QString ipadr, quint16 port, VeinTcp::AbstractTcpNetworkFactoryPtr tcpFactory) :
+RMConnection::RMConnection(const QString &ipadr, quint16 port, VeinTcp::AbstractTcpNetworkFactoryPtr tcpFactory) :
     m_sIPAdr(ipadr),
     m_nPort(port),
     m_tcpFactory(tcpFactory)
@@ -26,7 +26,7 @@ void RMConnection::connect2RM()
     m_pResourceManagerClient->startConnection(m_sIPAdr, m_nPort);
 }
 
-void RMConnection::SendCommand(QString &cmd, QString &par, quint32 msgnr)
+void RMConnection::SendCommand(const QString &cmd, const QString &par, quint32 msgnr)
 {
     m_sCommand = cmd;
     ProtobufMessage::NetMessage message;
@@ -37,7 +37,7 @@ void RMConnection::SendCommand(QString &cmd, QString &par, quint32 msgnr)
     m_pResourceManagerClient->sendMessage(m_protobufWrapper.protobufToByteArray(message));
 }
 
-void RMConnection::SendCommand(QString &cmd, QString &par)
+void RMConnection::SendCommand(const QString &cmd, const QString &par)
 {
     m_sCommand = cmd;
     ProtobufMessage::NetMessage envelope;
@@ -54,7 +54,7 @@ void RMConnection::tcpErrorHandler(VeinTcp::TcpPeer *peer, QAbstractSocket::Sock
     emit connectionRMError();
 }
 
-void RMConnection::onMessageReceived(VeinTcp::TcpPeer *peer, QByteArray message)
+void RMConnection::onMessageReceived(VeinTcp::TcpPeer *peer, const QByteArray &message)
 {
     responseHandler(peer, m_protobufWrapper.byteArrayToProtobuf(message));
 }
@@ -78,7 +78,7 @@ void RMConnection::responseHandler(VeinTcp::TcpPeer *peer, std::shared_ptr<googl
     }
 }
 
-void RMConnection::SendIdent(QString ident)
+void RMConnection::SendIdent(const QString &ident)
 {
     ProtobufMessage::NetMessage envelope;
     ProtobufMessage::NetMessage::NetReply* message = envelope.mutable_reply();

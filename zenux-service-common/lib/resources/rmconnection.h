@@ -11,15 +11,15 @@ class RMConnection: public QObject
 {
     Q_OBJECT
 public:
-    RMConnection(QString ipadr, quint16 port, VeinTcp::AbstractTcpNetworkFactoryPtr tcpFactory);
+    RMConnection(const QString &ipadr, quint16 port, VeinTcp::AbstractTcpNetworkFactoryPtr tcpFactory);
     virtual ~RMConnection();
     void connect2RM();
-    void SendIdent(QString ident);
-    void SendCommand(QString& cmd, QString &par, quint32 msgnr);
-    void SendCommand(QString &cmd, QString &par);
+    void SendIdent(const QString &ident);
+    void SendCommand(const QString &cmd, const QString &par, quint32 msgnr);
+    void SendCommand(const QString &cmd, const QString &par);
 private slots:
     void tcpErrorHandler(VeinTcp::TcpPeer *peer, QAbstractSocket::SocketError errorCode);
-    void onMessageReceived(VeinTcp::TcpPeer *peer, QByteArray message);
+    void onMessageReceived(VeinTcp::TcpPeer *peer, const QByteArray &message);
 private:
     void responseHandler(VeinTcp::TcpPeer *peer, std::shared_ptr<google::protobuf::Message> response);
     QString m_sIPAdr;
