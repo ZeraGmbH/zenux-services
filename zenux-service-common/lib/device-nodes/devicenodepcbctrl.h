@@ -8,13 +8,12 @@
 class DeviceNodePcbCtrl : public AbstractDeviceNodePcbCtrl
 {
 public:
-    int open(QString devNodeFileName) override;
+    int open(const QString &devNodeFileName) override;
     void close() override;
     void enableFasync() override;
 
 private:
     int m_devFileDescriptor = -1;
-    QString m_devNodeFileName;
 };
 
 #endif // DEVICENODEPCBCTRL_H
