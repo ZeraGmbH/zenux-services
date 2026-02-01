@@ -7,8 +7,8 @@
 class ScpiNotificationSubscriberHandler
 {
 public:
-    void addSubscriber(ScpiNotificationSubscriber subscriber);
-    void removeAllSubscribers(VeinTcp::TcpPeer *netPeer, QByteArray clientId);
+    void addSubscriber(const ScpiNotificationSubscriber &subscriber);
+    void removeAllSubscribers(VeinTcp::TcpPeer *netPeer, const QByteArray &clientId);
     int getTotalSubscribers();
     ScpiNotificationSubscriber getSubscriber(int index);
 private:
