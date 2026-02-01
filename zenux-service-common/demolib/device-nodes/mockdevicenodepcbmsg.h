@@ -6,7 +6,7 @@
 class MockDeviceNodePcbMsg : public AbstractDeviceNodePcbMsg
 {
 public:
-    int open(QString devNodeFileName) override;
+    int open(const QString &devNodeFileName) override;
     void close() override;
     void enableFasync() override;
 };

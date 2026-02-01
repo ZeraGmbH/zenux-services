@@ -2,12 +2,11 @@
 #include <fcntl.h>
 #include <unistd.h>
 
-int DeviceNodePcbMsg::open(QString devNodeFileName)
+int DeviceNodePcbMsg::open(const QString &devNodeFileName)
 {
-    m_devNodeFileName = devNodeFileName;
     m_devFileDescriptor = ::open(devNodeFileName.toLatin1().data(), O_RDWR);
     if (m_devFileDescriptor  < 0)
-        qCritical("Error opening pcb ctrl device: %s", qPrintable(m_devNodeFileName));
+        qCritical("Error opening pcb ctrl device: %s", qPrintable(devNodeFileName));
     return m_devFileDescriptor;
 }
 
