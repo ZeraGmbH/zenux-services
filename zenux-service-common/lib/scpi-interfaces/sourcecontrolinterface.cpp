@@ -10,7 +10,7 @@
 SourceControlInterface::SourceControlInterface(std::shared_ptr<cSCPI> scpiInterface,
                                                SourceControlSettings *settings,
                                                AbstractFactoryI2cCtrlPtr ctrlFactory) :
-    ScpiConnection(scpiInterface),
+    ScpiServerConnection(scpiInterface),
     m_sourceCapabilityFileName(settings->getSourceCapFile()),
     m_ctrlFactory(ctrlFactory)
 {
@@ -23,9 +23,8 @@ enum sourceCommands {
     cmdLoadState,
 };
 
-void SourceControlInterface::initSCPIConnection(const QString &leadingNodes)
+void SourceControlInterface::initSCPIConnection()
 {
-    Q_UNUSED(leadingNodes)
     if (!m_sourceCapabilityFileName.isEmpty()) {
         QJsonObject capabilities = expandJsonCapabilities(cJsonFileLoader::loadJsonFile(m_sourceCapabilityFileName));
         if (!capabilities.isEmpty()) {

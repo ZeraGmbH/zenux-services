@@ -2,7 +2,7 @@
 #define STATUSINTERFACE_H
 
 #include "sec1000d.h"
-#include "scpiconnection.h"
+#include "scpiserverconnection.h"
 #include "scpidelegate.h"
 #include <QString>
 
@@ -16,12 +16,12 @@ enum StatusCommands
 }
 
 
-class Sec1000StatusInterface: public ScpiConnection
+class Sec1000StatusInterface: public ScpiServerConnection
 {
     Q_OBJECT
 public:
     Sec1000StatusInterface(std::shared_ptr<cSCPI> scpiInterface);
-    virtual void initSCPIConnection(const QString &leadingNodes) override;
+    void initSCPIConnection() override;
 protected:
     void executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd) override;
 private:

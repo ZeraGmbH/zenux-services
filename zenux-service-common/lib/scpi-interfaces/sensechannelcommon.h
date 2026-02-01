@@ -37,7 +37,7 @@ public:
 
     bool initJustData();
     bool computeJustData();
-    void initSCPIConnection(const QString &leadingNodes) override;
+    void initSCPIConnection(const QString &leadingNodes);
 
     void setMMode(int mode);
     NotificationStatus setRangeCommon(SenseRangeCommon *range, ProtonetCommandPtr protoCmd);

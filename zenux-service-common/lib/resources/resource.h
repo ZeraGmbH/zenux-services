@@ -2,15 +2,15 @@
 #define RESOURCE_H
 
 #include "rmconnection.h"
-#include "scpiconnection.h"
+#include "scpiserverconnection.h"
 #include <QList>
 
 // pure virtual base class for resources to register themselves anywhere
-class cResource: public ScpiConnection
+class cResource: public ScpiServerConnection
 {
     Q_OBJECT
 public:
-    cResource(std::shared_ptr<cSCPI> scpiInterface);
+    cResource(const std::shared_ptr<cSCPI> &scpiInterface);
     virtual ~cResource() = default;
     virtual void registerResource(RMConnection *rmConnection, quint16 port) = 0;
 signals:

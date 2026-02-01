@@ -1,7 +1,7 @@
 #ifndef PCBSERVER_H
 #define PCBSERVER_H
 
-#include "scpiconnection.h"
+#include "scpiserverconnection.h"
 #include "resource.h"
 #include "notificationstructwithvalue.h"
 #include "settingscontainer.h"
@@ -14,13 +14,13 @@
 #include <QList>
 #include <QByteArray>
 
-class PCBServer : public ScpiConnection
+class PCBServer : public ScpiServerConnection
 {
     Q_OBJECT
 public:
     explicit PCBServer(SettingsContainerPtr settings,
                        VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory);
-    void initSCPIConnection(const QString &leadingNodes) override;
+    void initSCPIConnection() override;
     std::shared_ptr<cSCPI> getSCPIInterface();
     QString getName();
     QString getVersion();
@@ -42,7 +42,7 @@ protected:
 
     SettingsContainerPtr m_settings;
     Zera::XMLConfig::cReader m_xmlConfigReader;
-    QList<ScpiConnection*> m_scpiConnectionList; // a list of all scpi connections
+    QList<ScpiServerConnection*> m_scpiConnectionList; // a list of all scpi connections
     QList<cResource*> m_resourceList;
     VeinTcp::AbstractTcpNetworkFactoryPtr m_tcpNetworkFactory;
     VeinTcp::TcpServer m_protoBufServer;

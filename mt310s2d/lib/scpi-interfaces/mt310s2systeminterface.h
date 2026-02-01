@@ -1,7 +1,7 @@
 #ifndef MT310S2SYSTEMINTERFACE_H
 #define MT310S2SYSTEMINTERFACE_H
 
-#include "scpiconnection.h"
+#include "scpiserverconnection.h"
 #include "hotpluggablecontrollercontainer.h"
 #include "pcbserver.h"
 #include "senseinterfacecommon.h"
@@ -29,7 +29,7 @@ enum SystemCommands
 };
 }
 
-class Mt310s2SystemInterface: public ScpiConnection
+class Mt310s2SystemInterface: public ScpiServerConnection
 {
     Q_OBJECT
 
@@ -40,7 +40,7 @@ public:
                            SenseInterfaceCommon *senseInterface,
                            AbstractFactoryI2cCtrlPtr ctrlFactory,
                            HotPluggableControllerContainerPtr hotPluggableControllerContainer);
-    void initSCPIConnection(const QString &leadingNodes) override;
+    void initSCPIConnection() override;
 public slots:
     void onAccuStatusChanged(uint8_t status);
 protected:

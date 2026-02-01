@@ -33,7 +33,7 @@ void test_accumulatorinterface::init()
     m_accumulator = new AccumulatorInterface(m_scpiInterface,
                                              m_accuSettings.get(),
                                              std::make_shared<TestFactoryI2cCtrl>(true));
-    m_accumulator->initSCPIConnection("");
+    m_accumulator->initSCPIConnection();
 }
 
 void test_accumulatorinterface::cleanup()

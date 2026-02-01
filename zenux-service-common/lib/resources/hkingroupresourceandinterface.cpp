@@ -25,15 +25,14 @@ HkInGroupResourceAndInterface::~HkInGroupResourceAndInterface()
         delete channel;
 }
 
-void HkInGroupResourceAndInterface::initSCPIConnection(const QString &leadingNodes)
+void HkInGroupResourceAndInterface::initSCPIConnection()
 {
-    const QString adjLeadNodes = appendTrailingColonOnNonEmptyParentNodes(leadingNodes);
-    addDelegate(QString("%1HKEY").arg(adjLeadNodes),"VERSION",SCPI::isQuery, m_scpiInterface, cmdVersion);
-    addDelegate(QString("%1HKEY:CHANNEL").arg(adjLeadNodes),"CATALOG", SCPI::isQuery, m_scpiInterface, cmdChannelCat);
+    addDelegate("HKEY", "VERSION", SCPI::isQuery, m_scpiInterface, cmdVersion);
+    addDelegate("HKEY:CHANNEL", "CATALOG", SCPI::isQuery, m_scpiInterface, cmdChannelCat);
     for(auto channel : qAsConst(m_ChannelList)) {
         connect(channel, &ScpiConnection::sigNotifySubcriber, this, &ScpiConnection::sigNotifySubcriber);
         connect(channel, &ScpiConnection::cmdExecutionDone, this, &ScpiConnection::cmdExecutionDone);
-        channel->initSCPIConnection(QString("%1HKEY").arg(adjLeadNodes));
+        channel->initSCPIConnection("HKEY");
     }
 }
 

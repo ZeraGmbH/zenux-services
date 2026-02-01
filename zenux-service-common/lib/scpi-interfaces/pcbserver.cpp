@@ -17,18 +17,17 @@ enum commands
 
 PCBServer::PCBServer(SettingsContainerPtr settings,
                      VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory) :
-    ScpiConnection(std::make_shared<cSCPI>()),
+    ScpiServerConnection(std::make_shared<cSCPI>()),
     m_settings(std::move(settings)),
     m_tcpNetworkFactory(tcpNetworkFactory),
     m_protoBufServer(tcpNetworkFactory)
 {
 }
 
-void PCBServer::initSCPIConnection(const QString &leadingNodes)
+void PCBServer::initSCPIConnection()
 {
-    const QString adjLeadNodes = appendTrailingColonOnNonEmptyParentNodes(leadingNodes);
-    addDelegate(QString("%1SERVER").arg(adjLeadNodes), "REGISTER", SCPI::isCmdwP, m_scpiInterface, cmdRegister);
-    addDelegate(QString("%1SERVER").arg(adjLeadNodes), "UNREGISTER", SCPI::isQuery | SCPI::isCmd, m_scpiInterface, cmdUnregister);
+    addDelegate("SERVER", "REGISTER", SCPI::isCmdwP, m_scpiInterface, cmdRegister);
+    addDelegate("SERVER", "UNREGISTER", SCPI::isQuery | SCPI::isCmd, m_scpiInterface, cmdUnregister);
 }
 
 std::shared_ptr<cSCPI> PCBServer::getSCPIInterface()
@@ -315,7 +314,7 @@ void PCBServer::initSCPIConnections()
 {
     for (int i = 0; i < m_scpiConnectionList.count(); i++)
     {
-        m_scpiConnectionList.at(i)->initSCPIConnection(""); // we have our interface
+        m_scpiConnectionList.at(i)->initSCPIConnection(); // we have our interface
         connect(m_scpiConnectionList.at(i), &ScpiConnection::valNotifier, this, &PCBServer::onEstablishNewNotifier);
         connect(m_scpiConnectionList.at(i), &ScpiConnection::sigNotifySubcriber, this, &PCBServer::onNotifySubscriber);
         connect(m_scpiConnectionList.at(i), &ScpiConnection::cmdExecutionDone, this, &PCBServer::sendProtoAnswer);

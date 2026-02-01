@@ -4,16 +4,16 @@
 #include "abstractfactoryi2cctrl.h"
 #include "timertemplateqt.h"
 #include "accumulatorsettings.h"
-#include <scpiconnection.h>
+#include "scpiserverconnection.h"
 
-class AccumulatorInterface : public ScpiConnection
+class AccumulatorInterface : public ScpiServerConnection
 {
     Q_OBJECT
 public:
     AccumulatorInterface(std::shared_ptr<cSCPI> scpiInterface,
                          AccumulatorSettings* settings,
                          AbstractFactoryI2cCtrlPtr ctrlFactory);
-    void initSCPIConnection(const QString &leadingNodes) override;
+    void initSCPIConnection() override;
 signals:
     void sigAccumulatorStatusChange(uint8_t status);
 private:

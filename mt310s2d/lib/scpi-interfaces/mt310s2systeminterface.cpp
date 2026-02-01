@@ -12,7 +12,7 @@ Mt310s2SystemInterface::Mt310s2SystemInterface(PCBServer *server,
                                                SenseInterfaceCommon* senseInterface,
                                                AbstractFactoryI2cCtrlPtr ctrlFactory,
                                                HotPluggableControllerContainerPtr hotPluggableControllerContainer) :
-    ScpiConnection(server->getSCPIInterface()),
+    ScpiServerConnection(server->getSCPIInterface()),
     m_pMyServer(server),
     m_systemInfo(systemInfo),
     m_senseSettings(senseSettings),
@@ -34,25 +34,24 @@ Mt310s2SystemInterface::Mt310s2SystemInterface(PCBServer *server,
 }
 
 
-void Mt310s2SystemInterface::initSCPIConnection(const QString &leadingNodes)
+void Mt310s2SystemInterface::initSCPIConnection()
 {
-    const QString adjLeadNodes = appendTrailingColonOnNonEmptyParentNodes(leadingNodes);
-    addDelegate(QString("%1SYSTEM:VERSION").arg(adjLeadNodes),"SERVER", SCPI::isQuery, m_scpiInterface, SystemSystem::cmdVersionServer);
-    addDelegate(QString("%1SYSTEM:VERSION").arg(adjLeadNodes),"DEVICE", SCPI::isQuery, m_scpiInterface, SystemSystem::cmdVersionDevice);
-    addDelegate(QString("%1SYSTEM:VERSION").arg(adjLeadNodes), "PCB", SCPI::isQuery, m_scpiInterface, SystemSystem::cmdVersionPCB, &m_allPCBVersion);
-    addDelegate(QString("%1SYSTEM:VERSION").arg(adjLeadNodes), "CTRL", SCPI::isQuery, m_scpiInterface, SystemSystem::cmdVersionCTRL, &m_allCtrlVersion);
-    addDelegate(QString("%1SYSTEM:EMOB").arg(adjLeadNodes), "CHANNEL", SCPI::isQuery, m_scpiInterface, SystemSystem::cmdGetChannels);
-    addDelegate(QString("%1SYSTEM:VERSION").arg(adjLeadNodes), "FPGA", SCPI::isQuery, m_scpiInterface, SystemSystem::cmdVersionFPGA);
-    addDelegate(QString("%1SYSTEM").arg(adjLeadNodes), "SERIAL", SCPI::isQuery | SCPI::isCmdwP , m_scpiInterface, SystemSystem::cmdSerialNumber);
-    addDelegate(QString("%1SYSTEM:ADJUSTMENT:FLASH").arg(adjLeadNodes), "WRITE", SCPI::isCmd, m_scpiInterface, SystemSystem::cmdAdjFlashWrite);
-    addDelegate(QString("%1SYSTEM:ADJUSTMENT:FLASH").arg(adjLeadNodes), "READ", SCPI::isCmd, m_scpiInterface, SystemSystem::cmdAdjFlashRead);
-    addDelegate(QString("%1SYSTEM:ADJUSTMENT").arg(adjLeadNodes), "XML", SCPI::isQuery | SCPI::isCmdwP, m_scpiInterface, SystemSystem::cmdAdjXMLImportExport);
+    addDelegate("SYSTEM:VERSION", "SERVER", SCPI::isQuery, m_scpiInterface, SystemSystem::cmdVersionServer);
+    addDelegate("SYSTEM:VERSION", "DEVICE", SCPI::isQuery, m_scpiInterface, SystemSystem::cmdVersionDevice);
+    addDelegate("SYSTEM:VERSION", "PCB", SCPI::isQuery, m_scpiInterface, SystemSystem::cmdVersionPCB, &m_allPCBVersion);
+    addDelegate("SYSTEM:VERSION", "CTRL", SCPI::isQuery, m_scpiInterface, SystemSystem::cmdVersionCTRL, &m_allCtrlVersion);
+    addDelegate("SYSTEM:EMOB", "CHANNEL", SCPI::isQuery, m_scpiInterface, SystemSystem::cmdGetChannels);
+    addDelegate("SYSTEM:VERSION", "FPGA", SCPI::isQuery, m_scpiInterface, SystemSystem::cmdVersionFPGA);
+    addDelegate("SYSTEM", "SERIAL", SCPI::isQuery | SCPI::isCmdwP , m_scpiInterface, SystemSystem::cmdSerialNumber);
+    addDelegate("SYSTEM:ADJUSTMENT:FLASH", "WRITE", SCPI::isCmd, m_scpiInterface, SystemSystem::cmdAdjFlashWrite);
+    addDelegate("SYSTEM:ADJUSTMENT:FLASH", "READ", SCPI::isCmd, m_scpiInterface, SystemSystem::cmdAdjFlashRead);
+    addDelegate("SYSTEM:ADJUSTMENT", "XML", SCPI::isQuery | SCPI::isCmdwP, m_scpiInterface, SystemSystem::cmdAdjXMLImportExport);
     // Obsolete???
-        addDelegate(QString("%1SYSTEM:ADJUSTMENT:XML").arg(adjLeadNodes), "WRITE", SCPI::isCmdwP, m_scpiInterface, SystemSystem::cmdAdjXMLWrite);
-        addDelegate(QString("%1SYSTEM:ADJUSTMENT:XML").arg(adjLeadNodes), "READ", SCPI::isCmdwP, m_scpiInterface, SystemSystem::cmdAdjXMLRead);
+        addDelegate("SYSTEM:ADJUSTMENT:XML", "WRITE", SCPI::isCmdwP, m_scpiInterface, SystemSystem::cmdAdjXMLWrite);
+        addDelegate("SYSTEM:ADJUSTMENT:XML", "READ", SCPI::isCmdwP, m_scpiInterface, SystemSystem::cmdAdjXMLRead);
     // End Obsolete???
-    addDelegate(QString("%1SYSTEM:ADJUSTMENT:FLASH").arg(adjLeadNodes), "CHKSUM", SCPI::isQuery, m_scpiInterface, SystemSystem::cmdAdjFlashChksum);
-    addDelegate(QString("%1SYSTEM:INTERFACE").arg(adjLeadNodes), "READ", SCPI::isQuery, m_scpiInterface, SystemSystem::cmdInterfaceRead);
+    addDelegate("SYSTEM:ADJUSTMENT:FLASH", "CHKSUM", SCPI::isQuery, m_scpiInterface, SystemSystem::cmdAdjFlashChksum);
+    addDelegate("SYSTEM:INTERFACE", "READ", SCPI::isQuery, m_scpiInterface, SystemSystem::cmdInterfaceRead);
 }
 
 void Mt310s2SystemInterface::onAccuStatusChanged(uint8_t status)

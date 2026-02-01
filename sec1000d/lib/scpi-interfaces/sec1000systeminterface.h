@@ -1,7 +1,7 @@
 #ifndef SYSTEMINTERFACE_H
 #define SYSTEMINTERFACE_H
 
-#include "scpiconnection.h"
+#include "scpiserverconnection.h"
 
 namespace SystemSystem
 {
@@ -20,13 +20,13 @@ enum SystemCommands
 class Sec1000SystemInfo;
 class cSEC1000dServer;
 
-class cSystemInterface: public ScpiConnection
+class cSystemInterface: public ScpiServerConnection
 {
     Q_OBJECT
 
 public:
     cSystemInterface(std::shared_ptr<cSCPI> scpiInterface, cSEC1000dServer* server, Sec1000SystemInfo* sInfo);
-    virtual void initSCPIConnection(const QString &leadingNodes) override;
+    void initSCPIConnection() override;
 protected:
     void executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd) override;
 private:

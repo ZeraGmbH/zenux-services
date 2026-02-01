@@ -8,21 +8,20 @@
 #include <scpicommand.h>
 
 cSystemInterface::cSystemInterface(std::shared_ptr<cSCPI> scpiInterface, cSEC1000dServer *server, Sec1000SystemInfo *sInfo) :
-    ScpiConnection(scpiInterface),
+    ScpiServerConnection(scpiInterface),
     m_pMyServer(server),
     m_pSystemInfo(sInfo)
 {
 }
 
-void cSystemInterface::initSCPIConnection(const QString &leadingNodes)
+void cSystemInterface::initSCPIConnection()
 {
-    const QString adjLeadNodes = appendTrailingColonOnNonEmptyParentNodes(leadingNodes);
-    addDelegate(QString("%1SYSTEM:VERSION").arg(adjLeadNodes),"SERVER", SCPI::isQuery, m_scpiInterface, SystemSystem::cmdVersionServer);
-    addDelegate(QString("%1SYSTEM:VERSION").arg(adjLeadNodes),"DEVICE", SCPI::isQuery, m_scpiInterface, SystemSystem::cmdVersionDevice);
-    addDelegate(QString("%1SYSTEM:VERSION").arg(adjLeadNodes), "PCB", SCPI::isQuery, m_scpiInterface, SystemSystem::cmdVersionPCB);
-    addDelegate(QString("%1SYSTEM:VERSION").arg(adjLeadNodes), "FPGA", SCPI::isQuery, m_scpiInterface, SystemSystem::cmdVersionFPGA);
-    addDelegate(QString("%1SYSTEM").arg(adjLeadNodes), "SERIAL", SCPI::isQuery | SCPI::isCmdwP , m_scpiInterface, SystemSystem::cmdSerialNumber);
-    addDelegate(QString("%1SYSTEM:INTERFACE").arg(adjLeadNodes), "READ", SCPI::isQuery, m_scpiInterface, SystemSystem::cmdInterfaceRead);
+    addDelegate("SYSTEM:VERSION", "SERVER", SCPI::isQuery, m_scpiInterface, SystemSystem::cmdVersionServer);
+    addDelegate("SYSTEM:VERSION", "DEVICE", SCPI::isQuery, m_scpiInterface, SystemSystem::cmdVersionDevice);
+    addDelegate("SYSTEM:VERSION", "PCB", SCPI::isQuery, m_scpiInterface, SystemSystem::cmdVersionPCB);
+    addDelegate("SYSTEM:VERSION", "FPGA", SCPI::isQuery, m_scpiInterface, SystemSystem::cmdVersionFPGA);
+    addDelegate("SYSTEM", "SERIAL", SCPI::isQuery | SCPI::isCmdwP , m_scpiInterface, SystemSystem::cmdSerialNumber);
+    addDelegate("SYSTEM:INTERFACE", "READ", SCPI::isQuery, m_scpiInterface, SystemSystem::cmdInterfaceRead);
 }
 
 void cSystemInterface::executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd)

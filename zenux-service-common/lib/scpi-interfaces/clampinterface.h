@@ -2,7 +2,7 @@
 #define CLAMPINTERFACE
 
 #include "abstracteepromi2cfactory.h"
-#include "scpiconnection.h"
+#include "scpiserverconnection.h"
 #include "pcbserver.h"
 #include "notificationstring.h"
 #include "senseinterfacecommon.h"
@@ -23,7 +23,7 @@ enum ClampCommands
 };
 }
 
-class cClampInterface: public ScpiConnection
+class cClampInterface: public ScpiServerConnection
 {
 public:
     cClampInterface(PCBServer *server,
@@ -32,7 +32,7 @@ public:
                     I2cSettingsPtr i2cSettings,
                     AbstractEepromI2cFactoryPtr adjMemFactory,
                     AbstractFactoryI2cCtrlPtr ctrlFactory);
-    virtual void initSCPIConnection(const QString &leadingNodes) override;
+    void initSCPIConnection() override;
     void actualizeClampStatus(quint16 devConnectedMask);
     // lazy: public for test
     cClamp *tryAddClamp(const SenseSystem::cChannelSettings *chSettings);

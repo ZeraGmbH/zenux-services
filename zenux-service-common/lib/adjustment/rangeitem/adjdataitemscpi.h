@@ -16,7 +16,7 @@ public:
         int digits;
     };
     AdjDataItemScpi(TJustDataParam param, AdjDataItem* adjItem);
-    virtual void initSCPIConnection(const QString &leadingNodes) override;
+    void initSCPIConnection(const QString &leadingNodes);
 
     AdjDataItem *getAdjItem();
 

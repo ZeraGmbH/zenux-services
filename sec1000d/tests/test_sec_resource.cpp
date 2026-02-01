@@ -28,7 +28,7 @@ void test_sec_resource::init()
         m_inputSettings.get(),
         nullptr,
         std::make_shared<MockFactoryDeviceNodeSec>());
-    m_secResource->initSCPIConnection("");
+    m_secResource->initSCPIConnection();
 }
 
 void test_sec_resource::cleanup()

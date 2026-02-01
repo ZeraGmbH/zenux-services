@@ -71,7 +71,7 @@ public:
 
     int rangeFlagsExtern();
     int rangeFlagsExternDc(); // maybe this can go - for now just compatibility
-    virtual void initSCPIConnection(const QString &leadingNodes) override;
+    void initSCPIConnection() override;
     QString exportXMLString(int indent = 1) override;
 
 protected:

@@ -1,20 +1,20 @@
 #ifndef SERVICESTATUSINTERFACE_H
 #define SERVICESTATUSINTERFACE_H
 
-#include "scpiconnection.h"
+#include "scpiserverconnection.h"
 #include "abstractadjstatus.h"
 #include "abstractfactoryi2cctrl.h"
 #include "timertemplateqt.h"
 #include <scpi.h>
 
-class ServiceStatusInterface: public ScpiConnection
+class ServiceStatusInterface: public ScpiServerConnection
 {
     Q_OBJECT
 public:
     ServiceStatusInterface(std::shared_ptr<cSCPI> scpiInterface,
                            AbstractAdjStatus *adjustmentStatusInterface,
                            AbstractFactoryI2cCtrlPtr ctrlFactory);
-    virtual void initSCPIConnection(const QString &leadingNodes) override;
+    void initSCPIConnection() override;
 protected:
     void executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd) override;
 private:

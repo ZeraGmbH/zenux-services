@@ -12,7 +12,7 @@ public:
                                AbstractFactoryI2cCtrlPtr ctrlFactory,
                                VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory);
     ~TestPcbServerNotifications();
-    void insertScpiConnection(ScpiConnection *scpiConnection);
+    void insertScpiConnection(ScpiServerConnection *scpiConnection);
     void initTestSCPIConnections();
     void registerNotifier(QString inputCmd, int notifierId);
     void unregisterNotifier();

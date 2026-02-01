@@ -25,12 +25,11 @@ cSamplingInterface::cSamplingInterface(std::shared_ptr<cSCPI> scpiInterface,
     m_bAvail = channelSettings.at(0)->m_bAvail;
 }
 
-void cSamplingInterface::initSCPIConnection(const QString &leadingNodes)
+void cSamplingInterface::initSCPIConnection()
 {
-    const QString adjLeadNodes = appendTrailingColonOnNonEmptyParentNodes(leadingNodes);
-    addDelegate(QString("%1SAMPLE").arg(adjLeadNodes),"SRATE", SCPI::isQuery, m_scpiInterface, cmdSampleRate);
-    addDelegate(QString("%1SAMPLE:S0").arg(adjLeadNodes),"PLL", SCPI::isQuery | SCPI::isCmdwP , m_scpiInterface, cmdPLL);
-    addDelegate(QString("%1SAMPLE:S0:PLL").arg(adjLeadNodes),"CATALOG", SCPI::isQuery, m_scpiInterface, cmdPLLCat);
+    addDelegate("SAMPLE", "SRATE", SCPI::isQuery, m_scpiInterface, cmdSampleRate);
+    addDelegate("SAMPLE:S0", "PLL", SCPI::isQuery | SCPI::isCmdwP , m_scpiInterface, cmdPLL);
+    addDelegate("SAMPLE:S0:PLL", "CATALOG", SCPI::isQuery, m_scpiInterface, cmdPLLCat);
 }
 
 void cSamplingInterface::registerResource(RMConnection *rmConnection, quint16 port)

@@ -14,7 +14,7 @@ TestPcbServerNotifications::~TestPcbServerNotifications()
 {
 }
 
-void TestPcbServerNotifications::insertScpiConnection(ScpiConnection *scpiConnection)
+void TestPcbServerNotifications::insertScpiConnection(ScpiServerConnection *scpiConnection)
 {
     m_scpiConnectionList.append(scpiConnection);
 }

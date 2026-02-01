@@ -8,7 +8,7 @@
 
 typedef QList<XMLSettings*> XmlSettingsList;
 typedef QList<cResource*> ResourcesList;
-typedef QList<ScpiConnection*> ScpiConnectionList;
+typedef QList<ScpiServerConnection*> ScpiConnectionList;
 
 class TestPcbServer : public PCBServer
 {

@@ -3,17 +3,17 @@
 
 #include "abstractfactoryi2cctrl.h"
 #include "jsondevicestatusapi.h"
-#include "scpiconnection.h"
+#include "scpiserverconnection.h"
 #include "sourcecontrolsettings.h"
 
-class SourceControlInterface : public ScpiConnection
+class SourceControlInterface : public ScpiServerConnection
 {
     Q_OBJECT
 public:
     SourceControlInterface(std::shared_ptr<cSCPI> scpiInterface,
                            SourceControlSettings* settings,
                            AbstractFactoryI2cCtrlPtr ctrlFactory);
-    void initSCPIConnection(const QString &leadingNodes) override;
+    void initSCPIConnection() override;
 private:
     void executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd) override;
     static QJsonObject expandJsonCapabilities(const QJsonObject &capabilitiesRaw);

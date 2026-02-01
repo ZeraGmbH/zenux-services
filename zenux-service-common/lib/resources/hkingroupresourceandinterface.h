@@ -15,7 +15,7 @@ public:
     HkInGroupResourceAndInterface(std::shared_ptr<cSCPI> scpiInterface,
                                   HkInSettings *settings);
     ~HkInGroupResourceAndInterface();
-    void initSCPIConnection(const QString &leadingNodes) override;
+    void initSCPIConnection() override;
     void registerResource(RMConnection *rmConnection, quint16 port) override;
 protected:
     void executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd) override;

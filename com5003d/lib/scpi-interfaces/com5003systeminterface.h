@@ -2,7 +2,7 @@
 #define COM5003SYSTEMINTERFACE_H
 
 #include "senseinterfacecommon.h"
-#include "scpiconnection.h"
+#include "scpiserverconnection.h"
 #include "pcbserver.h"
 #include <QList>
 #include <QJsonDocument>
@@ -29,7 +29,7 @@ enum SystemCommands
 };
 }
 
-class Com5003SystemInterface: public ScpiConnection
+class Com5003SystemInterface: public ScpiServerConnection
 {
     Q_OBJECT
 public:
@@ -37,7 +37,7 @@ public:
                            SystemInfo* systemInfo,
                            SenseInterfaceCommon *senseInterface,
                            AbstractFactoryI2cCtrlPtr ctrlFactory);
-    virtual void initSCPIConnection(const QString &leadingNodes) override;
+    void initSCPIConnection() override;
 
 protected:
     void executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd) override;

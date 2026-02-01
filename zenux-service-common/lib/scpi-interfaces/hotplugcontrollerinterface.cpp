@@ -3,7 +3,7 @@
 
 HotplugControllerInterface::HotplugControllerInterface(std::shared_ptr<cSCPI> scpiInterface,
                                                        HotPluggableControllerContainerPtr hotPluggableControllerContainer) :
-    ScpiConnection(scpiInterface),
+    ScpiServerConnection(scpiInterface),
     m_hotPluggableControllerContainer(hotPluggableControllerContainer)
 {
 }
@@ -18,15 +18,14 @@ enum HotplugCommands
     cmdEmobWriteData
 };
 
-void HotplugControllerInterface::initSCPIConnection(const QString &leadingNodes)
+void HotplugControllerInterface::initSCPIConnection()
 {
-    const QString adjLeadNodes = appendTrailingColonOnNonEmptyParentNodes(leadingNodes);
-    addDelegate(QString("%1SYSTEM:EMOB").arg(adjLeadNodes), "PBPRESS", SCPI::isCmd, m_scpiInterface, cmdEmobPushButtonPress);
-    addDelegate(QString("%1SYSTEM:EMOB").arg(adjLeadNodes), "LOCKST", SCPI::isQuery, m_scpiInterface, cmdEmobReadLockState);
-    addDelegate(QString("%1SYSTEM:EMOB").arg(adjLeadNodes), "ERROR", SCPI::isQuery, m_scpiInterface, cmdEmobReadErrorStatus);
-    addDelegate(QString("%1SYSTEM:EMOB").arg(adjLeadNodes), "CLEARERROR", SCPI::isCmd, m_scpiInterface, cmdEmobClearErrorStatus);
-    addDelegate(QString("%1SYSTEM:EMOB").arg(adjLeadNodes), "READDATA", SCPI::isQuery, m_scpiInterface, cmdEmobReadData);
-    addDelegate(QString("%1SYSTEM:EMOB").arg(adjLeadNodes), "WRITEDATA", SCPI::isCmd, m_scpiInterface, cmdEmobWriteData);
+    addDelegate("SYSTEM:EMOB", "PBPRESS", SCPI::isCmd, m_scpiInterface, cmdEmobPushButtonPress);
+    addDelegate("SYSTEM:EMOB", "LOCKST", SCPI::isQuery, m_scpiInterface, cmdEmobReadLockState);
+    addDelegate("SYSTEM:EMOB", "ERROR", SCPI::isQuery, m_scpiInterface, cmdEmobReadErrorStatus);
+    addDelegate("SYSTEM:EMOB", "CLEARERROR", SCPI::isCmd, m_scpiInterface, cmdEmobClearErrorStatus);
+    addDelegate("SYSTEM:EMOB", "READDATA", SCPI::isQuery, m_scpiInterface, cmdEmobReadData);
+    addDelegate("SYSTEM:EMOB", "WRITEDATA", SCPI::isCmd, m_scpiInterface, cmdEmobWriteData);
 }
 
 QByteArray HotplugControllerInterface::decodeHexString(const QString &encoded)

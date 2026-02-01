@@ -3,14 +3,13 @@
 #include "protonetcommand.h"
 
 Sec1000StatusInterface::Sec1000StatusInterface(std::shared_ptr<cSCPI> scpiInterface) :
-    ScpiConnection(scpiInterface)
+    ScpiServerConnection(scpiInterface)
 {
 }
 
-void Sec1000StatusInterface::initSCPIConnection(const QString &leadingNodes)
+void Sec1000StatusInterface::initSCPIConnection()
 {
-    const QString adjLeadNodes = appendTrailingColonOnNonEmptyParentNodes(leadingNodes);
-    addDelegate(QString("%1STATUS").arg(adjLeadNodes),"DEVICE",SCPI::isQuery, m_scpiInterface, StatusSystem::cmdDevice);
+    addDelegate("STATUS", "DEVICE",SCPI::isQuery, m_scpiInterface, StatusSystem::cmdDevice);
 }
 
 void Sec1000StatusInterface::executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd)

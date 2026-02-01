@@ -16,7 +16,7 @@ enum StatusCommands
 ServiceStatusInterface::ServiceStatusInterface(std::shared_ptr<cSCPI> scpiInterface,
                                                AbstractAdjStatus *adjustmentStatusInterface,
                                                AbstractFactoryI2cCtrlPtr ctrlFactory) :
-    ScpiConnection(scpiInterface),
+    ScpiServerConnection(scpiInterface),
     m_adjustmentStatusInterface(adjustmentStatusInterface),
     m_ctrlFactory(ctrlFactory)
 {
@@ -24,12 +24,11 @@ ServiceStatusInterface::ServiceStatusInterface(std::shared_ptr<cSCPI> scpiInterf
     connect(m_periodicTimer.get(), &TimerTemplateQt::sigExpired, this, &ServiceStatusInterface::getAuthorizationStatus);
 }
 
-void ServiceStatusInterface::initSCPIConnection(const QString &leadingNodes)
+void ServiceStatusInterface::initSCPIConnection()
 {
-    const QString adjLeadNodes = appendTrailingColonOnNonEmptyParentNodes(leadingNodes);
-    addDelegate(QString("%1STATUS").arg(adjLeadNodes),"DEVICE",SCPI::isQuery, m_scpiInterface, cmdDevice);
-    addDelegate(QString("%1STATUS").arg(adjLeadNodes),"ADJUSTMENT", SCPI::isQuery, m_scpiInterface, cmdAdjustment);
-    addDelegate(QString("%1STATUS").arg(adjLeadNodes),"AUTHORIZATION", SCPI::isQuery, m_scpiInterface, cmdAuthorization, &m_notifierAutorization);
+    addDelegate("STATUS", "DEVICE",SCPI::isQuery, m_scpiInterface, cmdDevice);
+    addDelegate("STATUS", "ADJUSTMENT", SCPI::isQuery, m_scpiInterface, cmdAdjustment);
+    addDelegate("STATUS", "AUTHORIZATION", SCPI::isQuery, m_scpiInterface, cmdAuthorization, &m_notifierAutorization);
     connect(this, &ScpiConnection::removingSubscribers, this, &ServiceStatusInterface::onNotifierUnregistered);
 }
 

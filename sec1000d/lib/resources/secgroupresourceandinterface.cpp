@@ -49,9 +49,8 @@ void SecGroupResourceAndInterface::connectChannelSignalsAndInitScpi()
     }
 }
 
-void SecGroupResourceAndInterface::initSCPIConnection(const QString &leadingNodes)
+void SecGroupResourceAndInterface::initSCPIConnection()
 {
-    Q_UNUSED(leadingNodes);
     addDelegate("ECALCULATOR", "VERSION",SCPI::isQuery, m_scpiInterface, cmdVersion);
     addDelegate("ECALCULATOR:CHANNEL", "CATALOG", SCPI::isQuery, m_scpiInterface, cmdChannelCat);
     addDelegate("ECALCULATOR", "SET",SCPI::CmdwP, m_scpiInterface, cmdSetChannels);

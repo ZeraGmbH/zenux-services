@@ -1,7 +1,7 @@
 #include "scpiconnection.h"
 
-ScpiConnection::ScpiConnection(std::shared_ptr<cSCPI> scpiInterface)
-    : m_scpiInterface(scpiInterface)
+ScpiConnection::ScpiConnection(const std::shared_ptr<cSCPI> &scpiInterface) :
+    m_scpiInterface(scpiInterface)
 {
 }
 

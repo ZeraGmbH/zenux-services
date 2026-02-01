@@ -26,15 +26,14 @@ ScInGroupResourceAndInterface::~ScInGroupResourceAndInterface()
         delete channel;
 }
 
-void ScInGroupResourceAndInterface::initSCPIConnection(const QString &leadingNodes)
+void ScInGroupResourceAndInterface::initSCPIConnection()
 {
-    const QString adjLeadNodes = appendTrailingColonOnNonEmptyParentNodes(leadingNodes);
-    addDelegate(QString("%1SCHEAD").arg(adjLeadNodes),"VERSION",SCPI::isQuery, m_scpiInterface, cmdVersion);
-    addDelegate(QString("%1SCHEAD:CHANNEL").arg(adjLeadNodes),"CATALOG", SCPI::isQuery, m_scpiInterface, cmdChannelCat);
+    addDelegate("SCHEAD", "VERSION", SCPI::isQuery, m_scpiInterface, cmdVersion);
+    addDelegate("SCHEAD:CHANNEL", "CATALOG", SCPI::isQuery, m_scpiInterface, cmdChannelCat);
     for(auto channel : qAsConst(m_ChannelList)) {
         connect(channel, &ScpiConnection::sigNotifySubcriber, this, &ScpiConnection::sigNotifySubcriber);
         connect(channel, &ScpiConnection::cmdExecutionDone, this, &ScpiConnection::cmdExecutionDone);
-        channel->initSCPIConnection(QString("%1SCHEAD").arg(adjLeadNodes));
+        channel->initSCPIConnection("SCHEAD");
     }
 }
 
