@@ -42,7 +42,7 @@ bool ScpiDelegate::executeSCPI(ProtonetCommandPtr protoCmd)
     return true;
 }
 
-QString ScpiDelegate::getCommand()
+const QString &ScpiDelegate::getCommand() const
 {
     return m_sCommand;
 }
@@ -57,7 +57,7 @@ ScpiNotificationSubscriberHandler &ScpiDelegate::getScpiNotificationSubscriberHa
     return m_notificationsHandler;
 }
 
-void ScpiDelegate::notifyAllSubscribers(QString newValue)
+void ScpiDelegate::notifyAllSubscribers(const QString &newValue)
 {
     for(int i = 0; i < m_notificationsHandler.getTotalSubscribers(); i++)
         emit sigNotifySubcriber(m_notificationsHandler.getSubscriber(i), newValue);
