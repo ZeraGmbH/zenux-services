@@ -12,14 +12,14 @@ class ScpiDelegate: public QObject, public ScpiObject
 {
    Q_OBJECT
 public:
-    static std::shared_ptr<ScpiDelegate> create(QString cmdParent,
-                                                QString cmd,
+    static std::shared_ptr<ScpiDelegate> create(const QString &cmdParent,
+                                                const QString &cmd,
                                                 quint8 type,
                                                 std::shared_ptr<cSCPI> scpiInterface,
                                                 quint16 cmdCode,
                                                 NotificationString *notificationString = nullptr);
-    ScpiDelegate(QString cmdParent,
-                 QString cmd,
+    ScpiDelegate(const QString &cmdParent,
+                 const QString &cmd,
                  quint8 type,
                  quint16 cmdCode,
                  NotificationString *notificationString);
