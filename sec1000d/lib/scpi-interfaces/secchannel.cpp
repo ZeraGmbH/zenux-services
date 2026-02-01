@@ -53,12 +53,6 @@ SecChannel::SecChannel(std::shared_ptr<cSCPI> scpiInterface,
     CMDIDList.append((1<<en_n) + (1<<direction) + (1<<bitSingle) + (3<<sssto) + (2<<ssarm));
 }
 
-
-SecChannel::~SecChannel()
-{
-}
-
-
 void SecChannel::initSCPIConnection(const QString &leadingNodes)
 {
     const QString adjLeadNodes = appendTrailingColonOnNonEmptyParentNodes(leadingNodes);
@@ -81,7 +75,6 @@ void SecChannel::initSCPIConnection(const QString &leadingNodes)
     addDelegate(QString("%1%2").arg(adjLeadNodes, getName()),"STOP", SCPI::isCmdwP, m_scpiInterface, stop);
     addDelegate(QString("%1%2").arg(adjLeadNodes, getName()),"INTACK", SCPI::isCmdwP, m_scpiInterface, intAcknowledge);
 }
-
 
 void SecChannel::executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd)
 {

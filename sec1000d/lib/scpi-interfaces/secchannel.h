@@ -22,7 +22,6 @@ public:
                quint16 nr,
                std::function<void(int)> funcSigHandler,
                AbstractFactoryDeviceNodeSecPtr deviceNodeFactory);
-    ~SecChannel();
     void initSCPIConnection(const QString &leadingNodes);
 
     QString getName() const;
