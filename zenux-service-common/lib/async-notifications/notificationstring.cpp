@@ -1,21 +1,21 @@
 #include "notificationstring.h"
 
-NotificationString::NotificationString()
-    :m_sValue("")
+NotificationString::NotificationString() :
+    m_sValue("")
 {
 }
 
-NotificationString::NotificationString(QString str)
-    :m_sValue(str)
+NotificationString::NotificationString(const QString &str) :
+    m_sValue(str)
 {
 }
 
-QString NotificationString::getString()
+const QString &NotificationString::getString()
 {
     return m_sValue;
 }
 
-void NotificationString::operator =(QString str)
+void NotificationString::operator =(const QString &str)
 {
     if(m_sValue != str) {
         m_sValue = str;

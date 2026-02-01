@@ -7,16 +7,14 @@
 class NotificationString: public QObject
 {
     Q_OBJECT
-
 public:
     NotificationString();
-    NotificationString(QString str);
-    QString getString();
-    void operator = (QString str);
+    explicit NotificationString(const QString &str);
+    const QString &getString();
+    void operator = (const QString &str);
     void forceTrigger();
-
 signals:
-    void valueChanged(QString newValue);
+    void valueChanged(const QString &newValue);
 
 private:
     QString m_sValue;
