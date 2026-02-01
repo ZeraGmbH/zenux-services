@@ -142,7 +142,7 @@ void ZDspServer::doConfiguration()
 void ZDspServer::doSetupServer()
 {
     qInfo("Starting doSetupServer");
-    initSCPIConnection(QString());
+    initSCPIConnection();
     m_sDspBootPath = m_dspSettings.getBootFile();
 
     connect(&m_protoBufServer, &VeinTcp::TcpServer::sigClientConnected,
@@ -320,10 +320,8 @@ enum SCPICmdType  {
     scpiInterfaceRead
 };
 
-void ZDspServer::initSCPIConnection(const QString &leadingNodes)
+void ZDspServer::initSCPIConnection()
 {
-    Q_UNUSED(leadingNodes)
-
     addDelegate("SYSTEM:INTERFACE", "READ", SCPI::isQuery, m_scpiInterface, scpiInterfaceRead);
     addDelegate("SYSTEM:VERSION", "DEVICE", SCPI::isQuery, m_scpiInterface, scpiGetDeviceVersion);
     addDelegate("SYSTEM:VERSION", "SERVER", SCPI::isQuery, m_scpiInterface, scpiGetServerVersion);
