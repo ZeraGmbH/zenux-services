@@ -35,15 +35,15 @@ FOutChannelInterface::FOutChannelInterface(std::shared_ptr<cSCPI> scpiinterface,
 
 void FOutChannelInterface::initSCPIConnection(QString leadingNodes)
 {
-    ensureTrailingColonOnNonEmptyParentNodes(leadingNodes);
-    addDelegate(QString("%1%2").arg(leadingNodes, m_sName),"ALIAS", SCPI::isQuery, m_scpiInterface, cmdAlias);
-    addDelegate(QString("%1%2").arg(leadingNodes, m_sName),"TYPE", SCPI::isQuery, m_scpiInterface, cmdType);
-    addDelegate(QString("%1%2").arg(leadingNodes, m_sName),"DSPSERVER", SCPI::isQuery, m_scpiInterface, cmdDspServer);
-    addDelegate(QString("%1%2").arg(leadingNodes, m_sName),"DSPCHANNEL", SCPI::isQuery, m_scpiInterface, cmdDspChannel);
-    addDelegate(QString("%1%2").arg(leadingNodes, m_sName),"STATUS", SCPI::isQuery, m_scpiInterface, cmdStatus);
-    addDelegate(QString("%1%2").arg(leadingNodes, m_sName),"FFACTOR", SCPI::isQuery, m_scpiInterface, cmdFormFactor);
-    addDelegate(QString("%1%2").arg(leadingNodes, m_sName),"CONSTANT", SCPI::isQuery | SCPI::isCmdwP , m_scpiInterface, cmdConstant,&notifierConstant);
-    addDelegate(QString("%1%2").arg(leadingNodes, m_sName),"POWTYPE", SCPI::isQuery | SCPI::isCmdwP , m_scpiInterface, cmdPowtype, &notifierPowerType);
+    const QString adjLeadNodes = appendTrailingColonOnNonEmptyParentNodes(leadingNodes);
+    addDelegate(QString("%1%2").arg(adjLeadNodes, m_sName),"ALIAS", SCPI::isQuery, m_scpiInterface, cmdAlias);
+    addDelegate(QString("%1%2").arg(adjLeadNodes, m_sName),"TYPE", SCPI::isQuery, m_scpiInterface, cmdType);
+    addDelegate(QString("%1%2").arg(adjLeadNodes, m_sName),"DSPSERVER", SCPI::isQuery, m_scpiInterface, cmdDspServer);
+    addDelegate(QString("%1%2").arg(adjLeadNodes, m_sName),"DSPCHANNEL", SCPI::isQuery, m_scpiInterface, cmdDspChannel);
+    addDelegate(QString("%1%2").arg(adjLeadNodes, m_sName),"STATUS", SCPI::isQuery, m_scpiInterface, cmdStatus);
+    addDelegate(QString("%1%2").arg(adjLeadNodes, m_sName),"FFACTOR", SCPI::isQuery, m_scpiInterface, cmdFormFactor);
+    addDelegate(QString("%1%2").arg(adjLeadNodes, m_sName),"CONSTANT", SCPI::isQuery | SCPI::isCmdwP , m_scpiInterface, cmdConstant,&notifierConstant);
+    addDelegate(QString("%1%2").arg(adjLeadNodes, m_sName),"POWTYPE", SCPI::isQuery | SCPI::isCmdwP , m_scpiInterface, cmdPowtype, &notifierPowerType);
 }
 
 void FOutChannelInterface::executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd)

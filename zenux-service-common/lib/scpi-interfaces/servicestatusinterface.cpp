@@ -26,10 +26,10 @@ ServiceStatusInterface::ServiceStatusInterface(std::shared_ptr<cSCPI> scpiInterf
 
 void ServiceStatusInterface::initSCPIConnection(QString leadingNodes)
 {
-    ensureTrailingColonOnNonEmptyParentNodes(leadingNodes);
-    addDelegate(QString("%1STATUS").arg(leadingNodes),"DEVICE",SCPI::isQuery, m_scpiInterface, cmdDevice);
-    addDelegate(QString("%1STATUS").arg(leadingNodes),"ADJUSTMENT", SCPI::isQuery, m_scpiInterface, cmdAdjustment);
-    addDelegate(QString("%1STATUS").arg(leadingNodes),"AUTHORIZATION", SCPI::isQuery, m_scpiInterface, cmdAuthorization, &m_notifierAutorization);
+    const QString adjLeadNodes = appendTrailingColonOnNonEmptyParentNodes(leadingNodes);
+    addDelegate(QString("%1STATUS").arg(adjLeadNodes),"DEVICE",SCPI::isQuery, m_scpiInterface, cmdDevice);
+    addDelegate(QString("%1STATUS").arg(adjLeadNodes),"ADJUSTMENT", SCPI::isQuery, m_scpiInterface, cmdAdjustment);
+    addDelegate(QString("%1STATUS").arg(adjLeadNodes),"AUTHORIZATION", SCPI::isQuery, m_scpiInterface, cmdAuthorization, &m_notifierAutorization);
     connect(this, &ScpiConnection::removingSubscribers, this, &ServiceStatusInterface::onNotifierUnregistered);
 }
 

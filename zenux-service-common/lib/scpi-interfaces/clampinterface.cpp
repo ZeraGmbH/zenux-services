@@ -23,10 +23,10 @@ cClampInterface::cClampInterface(PCBServer *server,
 
 void cClampInterface::initSCPIConnection(QString leadingNodes)
 {
-    ensureTrailingColonOnNonEmptyParentNodes(leadingNodes);
-    addDelegate(QString("%1SYSTEM:CLAMP:CHANNEL").arg(leadingNodes),"CATALOG",SCPI::isQuery, m_scpiInterface, ClampSystem::cmdClampChannelCat, &m_notifierClampChannelList);
-    addDelegate(QString("%1SYSTEM:CLAMP").arg(leadingNodes),"WRITE",SCPI::isCmd, m_scpiInterface, ClampSystem::cmdClampWrite);
-    addDelegate(QString("%1SYSTEM:ADJUSTMENT:CLAMP").arg(leadingNodes),"XML",SCPI::isQuery | SCPI::isCmdwP, m_scpiInterface, ClampSystem::cmdClampImportExport);
+    const QString adjLeadNodes = appendTrailingColonOnNonEmptyParentNodes(leadingNodes);
+    addDelegate(QString("%1SYSTEM:CLAMP:CHANNEL").arg(adjLeadNodes),"CATALOG",SCPI::isQuery, m_scpiInterface, ClampSystem::cmdClampChannelCat, &m_notifierClampChannelList);
+    addDelegate(QString("%1SYSTEM:CLAMP").arg(adjLeadNodes),"WRITE",SCPI::isCmd, m_scpiInterface, ClampSystem::cmdClampWrite);
+    addDelegate(QString("%1SYSTEM:ADJUSTMENT:CLAMP").arg(adjLeadNodes),"XML",SCPI::isQuery | SCPI::isCmdwP, m_scpiInterface, ClampSystem::cmdClampImportExport);
 }
 
 cClamp *cClampInterface::addClamp(const SenseSystem::cChannelSettings *chSettings, EepromI2cDeviceInterfacePtr adjMemory)

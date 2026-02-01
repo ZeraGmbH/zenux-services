@@ -108,19 +108,19 @@ bool SenseChannelCommon::isAvail()
 
 void SenseChannelCommon::initSCPIConnection(QString leadingNodes)
 {
-    ensureTrailingColonOnNonEmptyParentNodes(leadingNodes);
-    addDelegate(QString("%1%2").arg(leadingNodes, m_sName),"ALIAS", SCPI::isQuery, m_scpiInterface, cmdAlias);
-    addDelegate(QString("%1%2").arg(leadingNodes, m_sName),"TYPE", SCPI::isQuery, m_scpiInterface, cmdType);
-    addDelegate(QString("%1%2").arg(leadingNodes, m_sName),"UNIT", SCPI::isQuery, m_scpiInterface, cmdUnit);
-    addDelegate(QString("%1%2").arg(leadingNodes, m_sName),"DSPCHANNEL", SCPI::isQuery, m_scpiInterface, cmdDspChannel);
-    addDelegate(QString("%1%2").arg(leadingNodes, m_sName),"STATUS", SCPI::isQuery, m_scpiInterface, cmdStatus);
-    addDelegate(QString("%1%2:STATUS").arg(leadingNodes, m_sName),"RESET", SCPI::isCmd, m_scpiInterface, cmdStatusReset);
-    addDelegate(QString("%1%2").arg(leadingNodes, m_sName),"RANGE", SCPI::isQuery | SCPI::isCmdwP, m_scpiInterface, cmdRange, &notifierSenseChannelRange);
-    addDelegate(QString("%1%2").arg(leadingNodes, m_sName),"URVALUE", SCPI::isQuery, m_scpiInterface, cmdUrvalue);
-    addDelegate(QString("%1%2:RANGE").arg(leadingNodes, m_sName),"CATALOG", SCPI::isQuery, m_scpiInterface, cmdRangeCat, &notifierSenseChannelRangeCat);
+    const QString adjLeadNodes = appendTrailingColonOnNonEmptyParentNodes(leadingNodes);
+    addDelegate(QString("%1%2").arg(adjLeadNodes, m_sName),"ALIAS", SCPI::isQuery, m_scpiInterface, cmdAlias);
+    addDelegate(QString("%1%2").arg(adjLeadNodes, m_sName),"TYPE", SCPI::isQuery, m_scpiInterface, cmdType);
+    addDelegate(QString("%1%2").arg(adjLeadNodes, m_sName),"UNIT", SCPI::isQuery, m_scpiInterface, cmdUnit);
+    addDelegate(QString("%1%2").arg(adjLeadNodes, m_sName),"DSPCHANNEL", SCPI::isQuery, m_scpiInterface, cmdDspChannel);
+    addDelegate(QString("%1%2").arg(adjLeadNodes, m_sName),"STATUS", SCPI::isQuery, m_scpiInterface, cmdStatus);
+    addDelegate(QString("%1%2:STATUS").arg(adjLeadNodes, m_sName),"RESET", SCPI::isCmd, m_scpiInterface, cmdStatusReset);
+    addDelegate(QString("%1%2").arg(adjLeadNodes, m_sName),"RANGE", SCPI::isQuery | SCPI::isCmdwP, m_scpiInterface, cmdRange, &notifierSenseChannelRange);
+    addDelegate(QString("%1%2").arg(adjLeadNodes, m_sName),"URVALUE", SCPI::isQuery, m_scpiInterface, cmdUrvalue);
+    addDelegate(QString("%1%2:RANGE").arg(adjLeadNodes, m_sName),"CATALOG", SCPI::isQuery, m_scpiInterface, cmdRangeCat, &notifierSenseChannelRangeCat);
     for(auto range : qAsConst(m_RangeList)) {
         connect(range, &ScpiConnection::cmdExecutionDone, this, &ScpiConnection::cmdExecutionDone);
-        range->initSCPIConnection(QString("%1%2").arg(leadingNodes, m_sName));
+        range->initSCPIConnection(QString("%1%2").arg(adjLeadNodes, m_sName));
     }
 }
 

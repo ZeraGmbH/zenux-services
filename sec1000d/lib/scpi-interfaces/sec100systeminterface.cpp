@@ -16,13 +16,13 @@ cSystemInterface::cSystemInterface(std::shared_ptr<cSCPI> scpiInterface, cSEC100
 
 void cSystemInterface::initSCPIConnection(QString leadingNodes)
 {
-    ensureTrailingColonOnNonEmptyParentNodes(leadingNodes);
-    addDelegate(QString("%1SYSTEM:VERSION").arg(leadingNodes),"SERVER", SCPI::isQuery, m_scpiInterface, SystemSystem::cmdVersionServer);
-    addDelegate(QString("%1SYSTEM:VERSION").arg(leadingNodes),"DEVICE", SCPI::isQuery, m_scpiInterface, SystemSystem::cmdVersionDevice);
-    addDelegate(QString("%1SYSTEM:VERSION").arg(leadingNodes), "PCB", SCPI::isQuery, m_scpiInterface, SystemSystem::cmdVersionPCB);
-    addDelegate(QString("%1SYSTEM:VERSION").arg(leadingNodes), "FPGA", SCPI::isQuery, m_scpiInterface, SystemSystem::cmdVersionFPGA);
-    addDelegate(QString("%1SYSTEM").arg(leadingNodes), "SERIAL", SCPI::isQuery | SCPI::isCmdwP , m_scpiInterface, SystemSystem::cmdSerialNumber);
-    addDelegate(QString("%1SYSTEM:INTERFACE").arg(leadingNodes), "READ", SCPI::isQuery, m_scpiInterface, SystemSystem::cmdInterfaceRead);
+    const QString adjLeadNodes = appendTrailingColonOnNonEmptyParentNodes(leadingNodes);
+    addDelegate(QString("%1SYSTEM:VERSION").arg(adjLeadNodes),"SERVER", SCPI::isQuery, m_scpiInterface, SystemSystem::cmdVersionServer);
+    addDelegate(QString("%1SYSTEM:VERSION").arg(adjLeadNodes),"DEVICE", SCPI::isQuery, m_scpiInterface, SystemSystem::cmdVersionDevice);
+    addDelegate(QString("%1SYSTEM:VERSION").arg(adjLeadNodes), "PCB", SCPI::isQuery, m_scpiInterface, SystemSystem::cmdVersionPCB);
+    addDelegate(QString("%1SYSTEM:VERSION").arg(adjLeadNodes), "FPGA", SCPI::isQuery, m_scpiInterface, SystemSystem::cmdVersionFPGA);
+    addDelegate(QString("%1SYSTEM").arg(adjLeadNodes), "SERIAL", SCPI::isQuery | SCPI::isCmdwP , m_scpiInterface, SystemSystem::cmdSerialNumber);
+    addDelegate(QString("%1SYSTEM:INTERFACE").arg(adjLeadNodes), "READ", SCPI::isQuery, m_scpiInterface, SystemSystem::cmdInterfaceRead);
 }
 
 void cSystemInterface::executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd)

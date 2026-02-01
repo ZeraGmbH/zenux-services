@@ -67,23 +67,23 @@ AdjRangeScpi::AdjRangeScpi(std::shared_ptr<cSCPI> scpiinterface,
 
 void AdjRangeScpi::initSCPIConnection(QString leadingNodes)
 {
-    ensureTrailingColonOnNonEmptyParentNodes(leadingNodes);
-    addDelegate(QString("%1CORRECTION").arg(leadingNodes), "GAIN", SCPI::CmdwP , m_scpiInterface, GainTotal);
-    addDelegate(QString("%1CORRECTION").arg(leadingNodes), "ADJGAIN", SCPI::CmdwP , m_scpiInterface, GainSingle);
-    addDelegate(QString("%1CORRECTION").arg(leadingNodes), "PHASE", SCPI::isCmdwP, m_scpiInterface, PhaseTotal);
-    addDelegate(QString("%1CORRECTION").arg(leadingNodes), "ADJPHASE", SCPI::isCmdwP, m_scpiInterface, PhaseSingle);
-    addDelegate(QString("%1CORRECTION").arg(leadingNodes), "OFFSET", SCPI::isCmdwP, m_scpiInterface, OffsetTotal);
-    addDelegate(QString("%1CORRECTION").arg(leadingNodes), "ADJOFFSET", SCPI::isCmdwP, m_scpiInterface, OffsetSingle);
-    addDelegate(QString("%1CORRECTION").arg(leadingNodes), "STATUS", SCPI::isQuery, m_scpiInterface, DirectJustStatus);
-    addDelegate(QString("%1CORRECTION").arg(leadingNodes), "COMPUTE", SCPI::isCmdwP, m_scpiInterface, DirectJustCompute);
-    addDelegate(QString("%1CORRECTION").arg(leadingNodes), "INIT", SCPI::isCmdwP, m_scpiInterface, DirectJustInit);
+    const QString adjLeadNodes = appendTrailingColonOnNonEmptyParentNodes(leadingNodes);
+    addDelegate(QString("%1CORRECTION").arg(adjLeadNodes), "GAIN", SCPI::CmdwP , m_scpiInterface, GainTotal);
+    addDelegate(QString("%1CORRECTION").arg(adjLeadNodes), "ADJGAIN", SCPI::CmdwP , m_scpiInterface, GainSingle);
+    addDelegate(QString("%1CORRECTION").arg(adjLeadNodes), "PHASE", SCPI::isCmdwP, m_scpiInterface, PhaseTotal);
+    addDelegate(QString("%1CORRECTION").arg(adjLeadNodes), "ADJPHASE", SCPI::isCmdwP, m_scpiInterface, PhaseSingle);
+    addDelegate(QString("%1CORRECTION").arg(adjLeadNodes), "OFFSET", SCPI::isCmdwP, m_scpiInterface, OffsetTotal);
+    addDelegate(QString("%1CORRECTION").arg(adjLeadNodes), "ADJOFFSET", SCPI::isCmdwP, m_scpiInterface, OffsetSingle);
+    addDelegate(QString("%1CORRECTION").arg(adjLeadNodes), "STATUS", SCPI::isQuery, m_scpiInterface, DirectJustStatus);
+    addDelegate(QString("%1CORRECTION").arg(adjLeadNodes), "COMPUTE", SCPI::isCmdwP, m_scpiInterface, DirectJustCompute);
+    addDelegate(QString("%1CORRECTION").arg(adjLeadNodes), "INIT", SCPI::isCmdwP, m_scpiInterface, DirectJustInit);
 
     connect(&m_gainCorrection, &ScpiConnection::cmdExecutionDone, this, &ScpiConnection::cmdExecutionDone);
-    m_gainCorrection.initSCPIConnection(QString("%1CORRECTION:GAIN").arg(leadingNodes));
+    m_gainCorrection.initSCPIConnection(QString("%1CORRECTION:GAIN").arg(adjLeadNodes));
     connect(&m_phaseCorrection, &ScpiConnection::cmdExecutionDone, this, &ScpiConnection::cmdExecutionDone);
-    m_phaseCorrection.initSCPIConnection(QString("%1CORRECTION:PHASE").arg(leadingNodes));
+    m_phaseCorrection.initSCPIConnection(QString("%1CORRECTION:PHASE").arg(adjLeadNodes));
     connect(&m_offsetCorrection, &ScpiConnection::cmdExecutionDone, this, &ScpiConnection::cmdExecutionDone);
-    m_offsetCorrection.initSCPIConnection(QString("%1CORRECTION:OFFSET").arg(leadingNodes));
+    m_offsetCorrection.initSCPIConnection(QString("%1CORRECTION:OFFSET").arg(adjLeadNodes));
 }
 
 void AdjRangeScpi::setAdjGroupData(AdjDataRange groupData)

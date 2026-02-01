@@ -27,13 +27,13 @@ HkInGroupResourceAndInterface::~HkInGroupResourceAndInterface()
 
 void HkInGroupResourceAndInterface::initSCPIConnection(QString leadingNodes)
 {
-    ensureTrailingColonOnNonEmptyParentNodes(leadingNodes);
-    addDelegate(QString("%1HKEY").arg(leadingNodes),"VERSION",SCPI::isQuery, m_scpiInterface, cmdVersion);
-    addDelegate(QString("%1HKEY:CHANNEL").arg(leadingNodes),"CATALOG", SCPI::isQuery, m_scpiInterface, cmdChannelCat);
+    const QString adjLeadNodes = appendTrailingColonOnNonEmptyParentNodes(leadingNodes);
+    addDelegate(QString("%1HKEY").arg(adjLeadNodes),"VERSION",SCPI::isQuery, m_scpiInterface, cmdVersion);
+    addDelegate(QString("%1HKEY:CHANNEL").arg(adjLeadNodes),"CATALOG", SCPI::isQuery, m_scpiInterface, cmdChannelCat);
     for(auto channel : qAsConst(m_ChannelList)) {
         connect(channel, &ScpiConnection::sigNotifySubcriber, this, &ScpiConnection::sigNotifySubcriber);
         connect(channel, &ScpiConnection::cmdExecutionDone, this, &ScpiConnection::cmdExecutionDone);
-        channel->initSCPIConnection(QString("%1HKEY").arg(leadingNodes));
+        channel->initSCPIConnection(QString("%1HKEY").arg(adjLeadNodes));
     }
 }
 

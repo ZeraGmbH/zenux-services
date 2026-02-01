@@ -25,9 +25,9 @@ AccumulatorInterface::AccumulatorInterface(std::shared_ptr<cSCPI> scpiInterface,
 
 void AccumulatorInterface::initSCPIConnection(QString leadingNodes)
 {
-    ensureTrailingColonOnNonEmptyParentNodes(leadingNodes);
-    addDelegate(QString("%1SYSTEM:ACCUMULATOR").arg(leadingNodes),"STATUS",SCPI::isQuery, m_scpiInterface, accumulatorCommands::cmdStatus, &m_accumulatorStatus);
-    addDelegate(QString("%1SYSTEM:ACCUMULATOR").arg(leadingNodes),"SOC",SCPI::isQuery, m_scpiInterface, accumulatorCommands::cmdAccuStateOfCharge, &m_accuStateOfCharge);
+    const QString adjLeadNodes = appendTrailingColonOnNonEmptyParentNodes(leadingNodes);
+    addDelegate(QString("%1SYSTEM:ACCUMULATOR").arg(adjLeadNodes),"STATUS",SCPI::isQuery, m_scpiInterface, accumulatorCommands::cmdStatus, &m_accumulatorStatus);
+    addDelegate(QString("%1SYSTEM:ACCUMULATOR").arg(adjLeadNodes),"SOC",SCPI::isQuery, m_scpiInterface, accumulatorCommands::cmdAccuStateOfCharge, &m_accuStateOfCharge);
 }
 
 void AccumulatorInterface::executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd)

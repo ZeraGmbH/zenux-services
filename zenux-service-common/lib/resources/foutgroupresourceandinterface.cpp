@@ -33,14 +33,14 @@ FOutGroupResourceAndInterface::~FOutGroupResourceAndInterface()
 
 void FOutGroupResourceAndInterface::initSCPIConnection(QString leadingNodes)
 {
-    ensureTrailingColonOnNonEmptyParentNodes(leadingNodes);
-    addDelegate(QString("%1SOURCE").arg(leadingNodes),"VERSION",SCPI::isQuery, m_scpiInterface, cmdVersion);
-    addDelegate(QString("%1SOURCE:CHANNEL").arg(leadingNodes),"CATALOG", SCPI::isQuery, m_scpiInterface, cmdChannelCat);
+    const QString adjLeadNodes = appendTrailingColonOnNonEmptyParentNodes(leadingNodes);
+    addDelegate(QString("%1SOURCE").arg(adjLeadNodes),"VERSION",SCPI::isQuery, m_scpiInterface, cmdVersion);
+    addDelegate(QString("%1SOURCE:CHANNEL").arg(adjLeadNodes),"CATALOG", SCPI::isQuery, m_scpiInterface, cmdChannelCat);
     for(auto channel : qAsConst(m_ChannelList)) {
         connect(channel, &ScpiConnection::sigNotifySubcriber, this, &ScpiConnection::sigNotifySubcriber);
         connect(channel, &ScpiConnection::cmdExecutionDone, this, &ScpiConnection::cmdExecutionDone);
         connect(this, &ScpiConnection::removingSubscribers, channel, &ScpiConnection::onRemoveSubscribers);
-        channel->initSCPIConnection(QString("%1SOURCE").arg(leadingNodes));
+        channel->initSCPIConnection(QString("%1SOURCE").arg(adjLeadNodes));
     }
 }
 

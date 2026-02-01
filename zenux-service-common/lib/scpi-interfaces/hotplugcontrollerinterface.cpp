@@ -20,13 +20,13 @@ enum HotplugCommands
 
 void HotplugControllerInterface::initSCPIConnection(QString leadingNodes)
 {
-    ensureTrailingColonOnNonEmptyParentNodes(leadingNodes);
-    addDelegate(QString("%1SYSTEM:EMOB").arg(leadingNodes), "PBPRESS", SCPI::isCmd, m_scpiInterface, cmdEmobPushButtonPress);
-    addDelegate(QString("%1SYSTEM:EMOB").arg(leadingNodes), "LOCKST", SCPI::isQuery, m_scpiInterface, cmdEmobReadLockState);
-    addDelegate(QString("%1SYSTEM:EMOB").arg(leadingNodes), "ERROR", SCPI::isQuery, m_scpiInterface, cmdEmobReadErrorStatus);
-    addDelegate(QString("%1SYSTEM:EMOB").arg(leadingNodes), "CLEARERROR", SCPI::isCmd, m_scpiInterface, cmdEmobClearErrorStatus);
-    addDelegate(QString("%1SYSTEM:EMOB").arg(leadingNodes), "READDATA", SCPI::isQuery, m_scpiInterface, cmdEmobReadData);
-    addDelegate(QString("%1SYSTEM:EMOB").arg(leadingNodes), "WRITEDATA", SCPI::isCmd, m_scpiInterface, cmdEmobWriteData);
+    const QString adjLeadNodes = appendTrailingColonOnNonEmptyParentNodes(leadingNodes);
+    addDelegate(QString("%1SYSTEM:EMOB").arg(adjLeadNodes), "PBPRESS", SCPI::isCmd, m_scpiInterface, cmdEmobPushButtonPress);
+    addDelegate(QString("%1SYSTEM:EMOB").arg(adjLeadNodes), "LOCKST", SCPI::isQuery, m_scpiInterface, cmdEmobReadLockState);
+    addDelegate(QString("%1SYSTEM:EMOB").arg(adjLeadNodes), "ERROR", SCPI::isQuery, m_scpiInterface, cmdEmobReadErrorStatus);
+    addDelegate(QString("%1SYSTEM:EMOB").arg(adjLeadNodes), "CLEARERROR", SCPI::isCmd, m_scpiInterface, cmdEmobClearErrorStatus);
+    addDelegate(QString("%1SYSTEM:EMOB").arg(adjLeadNodes), "READDATA", SCPI::isQuery, m_scpiInterface, cmdEmobReadData);
+    addDelegate(QString("%1SYSTEM:EMOB").arg(adjLeadNodes), "WRITEDATA", SCPI::isCmd, m_scpiInterface, cmdEmobWriteData);
 }
 
 QByteArray HotplugControllerInterface::decodeHexString(const QString &encoded)

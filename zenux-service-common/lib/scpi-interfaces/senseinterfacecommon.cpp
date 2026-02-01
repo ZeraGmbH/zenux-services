@@ -113,20 +113,20 @@ void SenseInterfaceCommon::registerResource(RMConnection *rmConnection, quint16 
 
 void SenseInterfaceCommon::initSCPIConnection(QString leadingNodes)
 {
-    ensureTrailingColonOnNonEmptyParentNodes(leadingNodes);
-    addDelegate(QString("%1SENSE").arg(leadingNodes),"VERSION",SCPI::isQuery, m_scpiInterface, cmdVersion);
-    addDelegate(QString("%1SENSE").arg(leadingNodes),"MMODE",SCPI::isQuery | SCPI::isCmdwP , m_scpiInterface, cmdMMode, &m_notifierSenseMMode);
-    addDelegate(QString("%1SENSE:MMODE").arg(leadingNodes),"CATALOG",SCPI::isQuery, m_scpiInterface, cmdMModeCat);
-    addDelegate(QString("%1SENSE:CHANNEL").arg(leadingNodes),"CATALOG", SCPI::isQuery, m_scpiInterface, cmdChannelCat, &m_notifierSenseChannelCat);
-    addDelegate(QString("%1SENSE:GROUP").arg(leadingNodes),"CATALOG", SCPI::isQuery, m_scpiInterface, cmdGroupCat);
-    addDelegate(QString("%1SENSE:CORRECTION").arg(leadingNodes),"INIT", SCPI::isCmd, m_scpiInterface, initAdjData);
-    addDelegate(QString("%1SENSE:CORRECTION").arg(leadingNodes),"COMPUTE", SCPI::isCmd, m_scpiInterface, computeAdjData);
+    const QString adjLeadNodes = appendTrailingColonOnNonEmptyParentNodes(leadingNodes);
+    addDelegate(QString("%1SENSE").arg(adjLeadNodes),"VERSION",SCPI::isQuery, m_scpiInterface, cmdVersion);
+    addDelegate(QString("%1SENSE").arg(adjLeadNodes),"MMODE",SCPI::isQuery | SCPI::isCmdwP , m_scpiInterface, cmdMMode, &m_notifierSenseMMode);
+    addDelegate(QString("%1SENSE:MMODE").arg(adjLeadNodes),"CATALOG",SCPI::isQuery, m_scpiInterface, cmdMModeCat);
+    addDelegate(QString("%1SENSE:CHANNEL").arg(adjLeadNodes),"CATALOG", SCPI::isQuery, m_scpiInterface, cmdChannelCat, &m_notifierSenseChannelCat);
+    addDelegate(QString("%1SENSE:GROUP").arg(adjLeadNodes),"CATALOG", SCPI::isQuery, m_scpiInterface, cmdGroupCat);
+    addDelegate(QString("%1SENSE:CORRECTION").arg(adjLeadNodes),"INIT", SCPI::isCmd, m_scpiInterface, initAdjData);
+    addDelegate(QString("%1SENSE:CORRECTION").arg(adjLeadNodes),"COMPUTE", SCPI::isCmd, m_scpiInterface, computeAdjData);
     for(auto channel : qAsConst(m_channelList)) {
         // we also must connect the signals for notification and for output
         connect(channel, &ScpiConnection::sigNotifySubcriber, this, &ScpiConnection::sigNotifySubcriber);
         connect(channel, &ScpiConnection::cmdExecutionDone, this, &ScpiConnection::cmdExecutionDone);
         connect(this, &ScpiConnection::removingSubscribers, channel, &ScpiConnection::onRemoveSubscribers);
-        channel->initSCPIConnection(QString("%1SENSE").arg(leadingNodes));
+        channel->initSCPIConnection(QString("%1SENSE").arg(adjLeadNodes));
     }
     QString cmdParent = QString("STATUS:PCB");
     addDelegate(cmdParent, "ADJUSTMENT", SCPI::isQuery, m_scpiInterface, cmdStatAdjustment);

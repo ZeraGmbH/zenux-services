@@ -21,10 +21,12 @@ void ScpiConnection::removeSCPIConnections()
     m_DelegateList.clear();
 }
 
-void ScpiConnection::ensureTrailingColonOnNonEmptyParentNodes(QString &leadingNodes)
+QString ScpiConnection::appendTrailingColonOnNonEmptyParentNodes(const QString &leadingNodes)
 {
-    if(!leadingNodes.isEmpty() && !leadingNodes.endsWith(":"))
-        leadingNodes.append(":");
+    QString adjLeadNodes = leadingNodes;
+    if(!adjLeadNodes.isEmpty() && !adjLeadNodes.endsWith(":"))
+        adjLeadNodes.append(":");
+    return adjLeadNodes;
 }
 
 void ScpiConnection::addDelegate(const QString &cmdParent,

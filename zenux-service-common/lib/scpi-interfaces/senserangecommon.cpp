@@ -48,18 +48,18 @@ SenseRangeCommon::~SenseRangeCommon()
 
 void SenseRangeCommon::initSCPIConnection(QString leadingNodes)
 {
-    ensureTrailingColonOnNonEmptyParentNodes(leadingNodes);
-    addDelegate(QString("%1%2").arg(leadingNodes, m_sName), "ALIAS", SCPI::isQuery, m_scpiInterface, cmdAlias);
-    addDelegate(QString("%1%2").arg(leadingNodes, m_sName), "AVAIL", SCPI::isQuery, m_scpiInterface, cmdAvail);
-    addDelegate(QString("%1%2").arg(leadingNodes, m_sName), "URVALUE", SCPI::isQuery, m_scpiInterface, cmdUpperRangeValue);
-    addDelegate(QString("%1%2").arg(leadingNodes, m_sName), "REJECTION", SCPI::isQuery, m_scpiInterface, cmdRejection);
-    addDelegate(QString("%1%2").arg(leadingNodes, m_sName), "OVREJECTION", SCPI::isQuery, m_scpiInterface, cmdOVRejection);
-    addDelegate(QString("%1%2").arg(leadingNodes, m_sName), "ADCREJECTION", SCPI::isQuery, m_scpiInterface, cmdADCRejection);
-    addDelegate(QString("%1%2").arg(leadingNodes, m_sName), "TYPE", SCPI::isQuery, m_scpiInterface, cmdType);
-    addDelegate(QString("%1%2").arg(leadingNodes, m_sName), "CTRLSELECTION", SCPI::isQuery, m_scpiInterface, cmdCtrlSelection);
+    const QString adjLeadNodes = appendTrailingColonOnNonEmptyParentNodes(leadingNodes);
+    addDelegate(QString("%1%2").arg(adjLeadNodes, m_sName), "ALIAS", SCPI::isQuery, m_scpiInterface, cmdAlias);
+    addDelegate(QString("%1%2").arg(adjLeadNodes, m_sName), "AVAIL", SCPI::isQuery, m_scpiInterface, cmdAvail);
+    addDelegate(QString("%1%2").arg(adjLeadNodes, m_sName), "URVALUE", SCPI::isQuery, m_scpiInterface, cmdUpperRangeValue);
+    addDelegate(QString("%1%2").arg(adjLeadNodes, m_sName), "REJECTION", SCPI::isQuery, m_scpiInterface, cmdRejection);
+    addDelegate(QString("%1%2").arg(adjLeadNodes, m_sName), "OVREJECTION", SCPI::isQuery, m_scpiInterface, cmdOVRejection);
+    addDelegate(QString("%1%2").arg(adjLeadNodes, m_sName), "ADCREJECTION", SCPI::isQuery, m_scpiInterface, cmdADCRejection);
+    addDelegate(QString("%1%2").arg(adjLeadNodes, m_sName), "TYPE", SCPI::isQuery, m_scpiInterface, cmdType);
+    addDelegate(QString("%1%2").arg(adjLeadNodes, m_sName), "CTRLSELECTION", SCPI::isQuery, m_scpiInterface, cmdCtrlSelection);
 
     connect(m_justdata, &ScpiConnection::cmdExecutionDone, this, &ScpiConnection::cmdExecutionDone);
-    m_justdata->initSCPIConnection(QString("%1%2").arg(leadingNodes, getRangeName()));
+    m_justdata->initSCPIConnection(QString("%1%2").arg(adjLeadNodes, getRangeName()));
 }
 
 QString SenseRangeCommon::getRangeName()

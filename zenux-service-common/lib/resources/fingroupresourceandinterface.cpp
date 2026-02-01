@@ -35,13 +35,13 @@ FInGroupResourceAndInterface::~FInGroupResourceAndInterface()
 
 void FInGroupResourceAndInterface::initSCPIConnection(QString leadingNodes)
 {
-    ensureTrailingColonOnNonEmptyParentNodes(leadingNodes);
-    addDelegate(QString("%1FRQINPUT").arg(leadingNodes),"VERSION",SCPI::isQuery, m_scpiInterface, cmdVersion);
-    addDelegate(QString("%1FRQINPUT:CHANNEL").arg(leadingNodes),"CATALOG", SCPI::isQuery, m_scpiInterface, cmdChannelCat);
+    const QString adjLeadNodes = appendTrailingColonOnNonEmptyParentNodes(leadingNodes);
+    addDelegate(QString("%1FRQINPUT").arg(adjLeadNodes),"VERSION",SCPI::isQuery, m_scpiInterface, cmdVersion);
+    addDelegate(QString("%1FRQINPUT:CHANNEL").arg(adjLeadNodes),"CATALOG", SCPI::isQuery, m_scpiInterface, cmdChannelCat);
     for (auto channel : qAsConst(m_ChannelList)) {
         connect(channel, &ScpiConnection::sigNotifySubcriber, this, &ScpiConnection::sigNotifySubcriber);
         connect(channel, &FInChannelInterface::cmdExecutionDone, this, &FInGroupResourceAndInterface::cmdExecutionDone);
-        channel->initSCPIConnection(QString("%1FRQINPUT").arg(leadingNodes));
+        channel->initSCPIConnection(QString("%1FRQINPUT").arg(adjLeadNodes));
     }
 }
 

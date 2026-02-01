@@ -26,9 +26,9 @@ PCBServer::PCBServer(SettingsContainerPtr settings,
 
 void PCBServer::initSCPIConnection(QString leadingNodes)
 {
-    ensureTrailingColonOnNonEmptyParentNodes(leadingNodes);
-    addDelegate(QString("%1SERVER").arg(leadingNodes), "REGISTER", SCPI::isCmdwP, m_scpiInterface, cmdRegister);
-    addDelegate(QString("%1SERVER").arg(leadingNodes), "UNREGISTER", SCPI::isQuery | SCPI::isCmd, m_scpiInterface, cmdUnregister);
+    const QString adjLeadNodes = appendTrailingColonOnNonEmptyParentNodes(leadingNodes);
+    addDelegate(QString("%1SERVER").arg(adjLeadNodes), "REGISTER", SCPI::isCmdwP, m_scpiInterface, cmdRegister);
+    addDelegate(QString("%1SERVER").arg(adjLeadNodes), "UNREGISTER", SCPI::isQuery | SCPI::isCmd, m_scpiInterface, cmdUnregister);
 }
 
 std::shared_ptr<cSCPI> PCBServer::getSCPIInterface()
