@@ -11,6 +11,7 @@ CtrlHeartbeatWait::CtrlHeartbeatWait(const QString &devNode) :
 void CtrlHeartbeatWait::start()
 {
     qInfo("Atmel run-detection started");
+
     m_TimerTO = TimerFactoryQt::createSingleShot(10000);
     connect(m_TimerTO.get(), &TimerTemplateQt::sigExpired,
             this, &CtrlHeartbeatWait::doTimeout);
@@ -19,6 +20,10 @@ void CtrlHeartbeatWait::start()
             this, &CtrlHeartbeatWait::doAtmelTest);
     m_TimerTO->start();
     m_TimerPeriod->start();
+
+    QMetaObject::invokeMethod(this,
+                              "doAtmelTest",
+                              Qt::QueuedConnection);
 }
 
 void CtrlHeartbeatWait::doAtmelTest()
