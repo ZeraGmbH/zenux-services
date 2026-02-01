@@ -37,7 +37,7 @@ public:
                            SystemInfo* systemInfo,
                            SenseInterfaceCommon *senseInterface,
                            AbstractFactoryI2cCtrlPtr ctrlFactory);
-    virtual void initSCPIConnection(QString leadingNodes) override;
+    virtual void initSCPIConnection(const QString &leadingNodes) override;
 
 protected:
     void executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd) override;

@@ -25,7 +25,7 @@ cSamplingInterface::cSamplingInterface(std::shared_ptr<cSCPI> scpiInterface,
     m_bAvail = channelSettings.at(0)->m_bAvail;
 }
 
-void cSamplingInterface::initSCPIConnection(QString leadingNodes)
+void cSamplingInterface::initSCPIConnection(const QString &leadingNodes)
 {
     const QString adjLeadNodes = appendTrailingColonOnNonEmptyParentNodes(leadingNodes);
     addDelegate(QString("%1SAMPLE").arg(adjLeadNodes),"SRATE", SCPI::isQuery, m_scpiInterface, cmdSampleRate);

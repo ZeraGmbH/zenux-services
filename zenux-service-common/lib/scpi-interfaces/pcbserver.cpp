@@ -24,7 +24,7 @@ PCBServer::PCBServer(SettingsContainerPtr settings,
 {
 }
 
-void PCBServer::initSCPIConnection(QString leadingNodes)
+void PCBServer::initSCPIConnection(const QString &leadingNodes)
 {
     const QString adjLeadNodes = appendTrailingColonOnNonEmptyParentNodes(leadingNodes);
     addDelegate(QString("%1SERVER").arg(adjLeadNodes), "REGISTER", SCPI::isCmdwP, m_scpiInterface, cmdRegister);

@@ -18,7 +18,7 @@ enum HotplugCommands
     cmdEmobWriteData
 };
 
-void HotplugControllerInterface::initSCPIConnection(QString leadingNodes)
+void HotplugControllerInterface::initSCPIConnection(const QString &leadingNodes)
 {
     const QString adjLeadNodes = appendTrailingColonOnNonEmptyParentNodes(leadingNodes);
     addDelegate(QString("%1SYSTEM:EMOB").arg(adjLeadNodes), "PBPRESS", SCPI::isCmd, m_scpiInterface, cmdEmobPushButtonPress);

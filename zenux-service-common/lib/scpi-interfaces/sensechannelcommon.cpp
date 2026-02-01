@@ -106,7 +106,7 @@ bool SenseChannelCommon::isAvail()
     return m_bAvail;
 }
 
-void SenseChannelCommon::initSCPIConnection(QString leadingNodes)
+void SenseChannelCommon::initSCPIConnection(const QString &leadingNodes)
 {
     const QString adjLeadNodes = appendTrailingColonOnNonEmptyParentNodes(leadingNodes);
     addDelegate(QString("%1%2").arg(adjLeadNodes, m_sName),"ALIAS", SCPI::isQuery, m_scpiInterface, cmdAlias);

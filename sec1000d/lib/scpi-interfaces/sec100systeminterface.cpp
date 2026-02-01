@@ -14,7 +14,7 @@ cSystemInterface::cSystemInterface(std::shared_ptr<cSCPI> scpiInterface, cSEC100
 {
 }
 
-void cSystemInterface::initSCPIConnection(QString leadingNodes)
+void cSystemInterface::initSCPIConnection(const QString &leadingNodes)
 {
     const QString adjLeadNodes = appendTrailingColonOnNonEmptyParentNodes(leadingNodes);
     addDelegate(QString("%1SYSTEM:VERSION").arg(adjLeadNodes),"SERVER", SCPI::isQuery, m_scpiInterface, SystemSystem::cmdVersionServer);

@@ -49,7 +49,7 @@ void SecGroupResourceAndInterface::connectChannelSignalsAndInitScpi()
     }
 }
 
-void SecGroupResourceAndInterface::initSCPIConnection(QString leadingNodes)
+void SecGroupResourceAndInterface::initSCPIConnection(const QString &leadingNodes)
 {
     Q_UNUSED(leadingNodes);
     addDelegate("ECALCULATOR", "VERSION",SCPI::isQuery, m_scpiInterface, cmdVersion);

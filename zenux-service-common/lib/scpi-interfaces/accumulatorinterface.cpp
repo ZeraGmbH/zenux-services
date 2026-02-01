@@ -23,7 +23,7 @@ AccumulatorInterface::AccumulatorInterface(std::shared_ptr<cSCPI> scpiInterface,
     }
 }
 
-void AccumulatorInterface::initSCPIConnection(QString leadingNodes)
+void AccumulatorInterface::initSCPIConnection(const QString &leadingNodes)
 {
     const QString adjLeadNodes = appendTrailingColonOnNonEmptyParentNodes(leadingNodes);
     addDelegate(QString("%1SYSTEM:ACCUMULATOR").arg(adjLeadNodes),"STATUS",SCPI::isQuery, m_scpiInterface, accumulatorCommands::cmdStatus, &m_accumulatorStatus);

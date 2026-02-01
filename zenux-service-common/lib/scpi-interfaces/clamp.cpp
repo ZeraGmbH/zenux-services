@@ -54,8 +54,9 @@ cClamp::~cClamp()
     removeAllRanges();
 }
 
-void cClamp::initSCPIConnection(QString)
+void cClamp::initSCPIConnection(const QString &leadingNodes)
 {
+    Q_UNUSED(leadingNodes)
 }
 
 QString cClamp::getChannelName() const

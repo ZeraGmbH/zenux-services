@@ -59,7 +59,7 @@ SecChannel::~SecChannel()
 }
 
 
-void SecChannel::initSCPIConnection(QString leadingNodes)
+void SecChannel::initSCPIConnection(const QString &leadingNodes)
 {
     const QString adjLeadNodes = appendTrailingColonOnNonEmptyParentNodes(leadingNodes);
     addDelegate(QString("%1%2").arg(adjLeadNodes, getName()), QString("R%1").arg(ECALCREG::CMD), SCPI::isCmdwP | SCPI::isQuery, m_scpiInterface, cmdRegister);

@@ -62,7 +62,7 @@ private slots:
     void outputLogs();
 private:
     void init();
-    void initSCPIConnection(QString leadingNodes) override;
+    void initSCPIConnection(const QString &leadingNodes) override;
     void executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd) override;
 
     friend class TestZdsp1dForVarAccess;

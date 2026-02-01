@@ -17,7 +17,7 @@ Com5003SystemInterface::Com5003SystemInterface(PCBServer *server,
 {
 }
 
-void Com5003SystemInterface::initSCPIConnection(QString leadingNodes)
+void Com5003SystemInterface::initSCPIConnection(const QString &leadingNodes)
 {
     const QString adjLeadNodes = appendTrailingColonOnNonEmptyParentNodes(leadingNodes);
     addDelegate(QString("%1SYSTEM:VERSION").arg(adjLeadNodes),"SERVER", SCPI::isQuery, m_scpiInterface, SystemSystem::cmdVersionServer);

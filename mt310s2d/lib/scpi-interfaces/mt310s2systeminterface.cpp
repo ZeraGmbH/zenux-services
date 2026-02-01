@@ -34,7 +34,7 @@ Mt310s2SystemInterface::Mt310s2SystemInterface(PCBServer *server,
 }
 
 
-void Mt310s2SystemInterface::initSCPIConnection(QString leadingNodes)
+void Mt310s2SystemInterface::initSCPIConnection(const QString &leadingNodes)
 {
     const QString adjLeadNodes = appendTrailingColonOnNonEmptyParentNodes(leadingNodes);
     addDelegate(QString("%1SYSTEM:VERSION").arg(adjLeadNodes),"SERVER", SCPI::isQuery, m_scpiInterface, SystemSystem::cmdVersionServer);

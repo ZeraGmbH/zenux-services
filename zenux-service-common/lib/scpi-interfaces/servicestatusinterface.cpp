@@ -24,7 +24,7 @@ ServiceStatusInterface::ServiceStatusInterface(std::shared_ptr<cSCPI> scpiInterf
     connect(m_periodicTimer.get(), &TimerTemplateQt::sigExpired, this, &ServiceStatusInterface::getAuthorizationStatus);
 }
 
-void ServiceStatusInterface::initSCPIConnection(QString leadingNodes)
+void ServiceStatusInterface::initSCPIConnection(const QString &leadingNodes)
 {
     const QString adjLeadNodes = appendTrailingColonOnNonEmptyParentNodes(leadingNodes);
     addDelegate(QString("%1STATUS").arg(adjLeadNodes),"DEVICE",SCPI::isQuery, m_scpiInterface, cmdDevice);

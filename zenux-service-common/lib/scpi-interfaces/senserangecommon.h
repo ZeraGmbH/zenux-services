@@ -22,7 +22,7 @@ public:
                      AdjRangeScpi* justdata,
                      int rejectionScpiQueryDigits);
     virtual ~SenseRangeCommon();
-    void initSCPIConnection(QString leadingNodes) override;
+    void initSCPIConnection(const QString &leadingNodes) override;
     QString getRangeName();
     double getUpperRangevalue() const;
     quint8 getSelCode() const;

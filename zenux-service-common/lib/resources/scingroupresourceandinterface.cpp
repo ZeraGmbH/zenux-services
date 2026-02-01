@@ -26,7 +26,7 @@ ScInGroupResourceAndInterface::~ScInGroupResourceAndInterface()
         delete channel;
 }
 
-void ScInGroupResourceAndInterface::initSCPIConnection(QString leadingNodes)
+void ScInGroupResourceAndInterface::initSCPIConnection(const QString &leadingNodes)
 {
     const QString adjLeadNodes = appendTrailingColonOnNonEmptyParentNodes(leadingNodes);
     addDelegate(QString("%1SCHEAD").arg(adjLeadNodes),"VERSION",SCPI::isQuery, m_scpiInterface, cmdVersion);

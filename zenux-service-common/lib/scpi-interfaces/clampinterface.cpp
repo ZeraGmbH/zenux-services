@@ -21,7 +21,7 @@ cClampInterface::cClampInterface(PCBServer *server,
     m_nClampStatus = 0;
 }
 
-void cClampInterface::initSCPIConnection(QString leadingNodes)
+void cClampInterface::initSCPIConnection(const QString &leadingNodes)
 {
     const QString adjLeadNodes = appendTrailingColonOnNonEmptyParentNodes(leadingNodes);
     addDelegate(QString("%1SYSTEM:CLAMP:CHANNEL").arg(adjLeadNodes),"CATALOG",SCPI::isQuery, m_scpiInterface, ClampSystem::cmdClampChannelCat, &m_notifierClampChannelList);

@@ -12,7 +12,7 @@ public:
                          QString description,
                          quint8 nr,
                          ScInSettings::ChannelSettings* cSettings);
-    virtual void initSCPIConnection(QString leadingNodes) override;
+    virtual void initSCPIConnection(const QString &leadingNodes) override;
     QString& getName();
     QString& getAlias();
     QString& getDescription();

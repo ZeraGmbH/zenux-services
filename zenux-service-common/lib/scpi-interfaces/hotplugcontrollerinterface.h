@@ -10,7 +10,7 @@ class HotplugControllerInterface : public ScpiConnection
 public:
     HotplugControllerInterface(std::shared_ptr<cSCPI> scpiInterface,
                                HotPluggableControllerContainerPtr hotPluggableControllerContainer);
-    void initSCPIConnection(QString leadingNodes) override;
+    void initSCPIConnection(const QString &leadingNodes) override;
     static QByteArray decodeHexString(const QString &encoded);
     static QStringList encodeDataToHex(const QByteArray &data);
 

@@ -320,7 +320,7 @@ enum SCPICmdType  {
     scpiInterfaceRead
 };
 
-void ZDspServer::initSCPIConnection(QString leadingNodes)
+void ZDspServer::initSCPIConnection(const QString &leadingNodes)
 {
     Q_UNUSED(leadingNodes)
 

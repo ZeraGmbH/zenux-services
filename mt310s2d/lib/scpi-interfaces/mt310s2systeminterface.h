@@ -40,7 +40,7 @@ public:
                            SenseInterfaceCommon *senseInterface,
                            AbstractFactoryI2cCtrlPtr ctrlFactory,
                            HotPluggableControllerContainerPtr hotPluggableControllerContainer);
-    void initSCPIConnection(QString leadingNodes) override;
+    void initSCPIConnection(const QString &leadingNodes) override;
 public slots:
     void onAccuStatusChanged(uint8_t status);
 protected:

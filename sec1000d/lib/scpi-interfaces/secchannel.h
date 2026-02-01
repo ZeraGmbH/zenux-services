@@ -23,7 +23,7 @@ public:
                std::function<void(int)> funcSigHandler,
                AbstractFactoryDeviceNodeSecPtr deviceNodeFactory);
     ~SecChannel();
-    virtual void initSCPIConnection(QString leadingNodes) override;
+    virtual void initSCPIConnection(const QString &leadingNodes) override;
 
     QString getName() const;
     bool isfree();

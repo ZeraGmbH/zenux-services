@@ -7,7 +7,7 @@ Sec1000StatusInterface::Sec1000StatusInterface(std::shared_ptr<cSCPI> scpiInterf
 {
 }
 
-void Sec1000StatusInterface::initSCPIConnection(QString leadingNodes)
+void Sec1000StatusInterface::initSCPIConnection(const QString &leadingNodes)
 {
     const QString adjLeadNodes = appendTrailingColonOnNonEmptyParentNodes(leadingNodes);
     addDelegate(QString("%1STATUS").arg(adjLeadNodes),"DEVICE",SCPI::isQuery, m_scpiInterface, StatusSystem::cmdDevice);

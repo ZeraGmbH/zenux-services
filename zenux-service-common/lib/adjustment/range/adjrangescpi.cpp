@@ -65,7 +65,7 @@ AdjRangeScpi::AdjRangeScpi(std::shared_ptr<cSCPI> scpiinterface,
 {
 }
 
-void AdjRangeScpi::initSCPIConnection(QString leadingNodes)
+void AdjRangeScpi::initSCPIConnection(const QString &leadingNodes)
 {
     const QString adjLeadNodes = appendTrailingColonOnNonEmptyParentNodes(leadingNodes);
     addDelegate(QString("%1CORRECTION").arg(adjLeadNodes), "GAIN", SCPI::CmdwP , m_scpiInterface, GainTotal);

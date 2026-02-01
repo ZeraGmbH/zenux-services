@@ -15,7 +15,7 @@ public:
     FOutGroupResourceAndInterface(std::shared_ptr<cSCPI> scpiInterface,
                                   FOutSettings* settings);
     ~FOutGroupResourceAndInterface();
-    virtual void initSCPIConnection(QString leadingNodes) override;
+    virtual void initSCPIConnection(const QString &leadingNodes) override;
     virtual void registerResource(RMConnection *rmConnection, quint16 port) override;
 protected:
     void executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd) override;

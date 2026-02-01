@@ -51,7 +51,7 @@ public:
     virtual ~cClamp();
     static bool isValidClampType(quint8 type);
     static QString getClampTypeName(quint8 type);
-    virtual void initSCPIConnection(QString) override;
+    virtual void initSCPIConnection(const QString &leadingNodes) override;
     virtual QString exportXMLString(int indent = 1) override;
 
     const SenseSystem::cChannelSettings *getChannelSettings() const;

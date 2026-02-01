@@ -33,7 +33,7 @@ public:
     AdjRangeScpi(std::shared_ptr<cSCPI> scpiinterface,
                  std::unique_ptr<AdjustScpiValueFormatter> adjustmentFormatter,
                  PermissionStructAdj permissions = PermissionStructAdj());
-    virtual void initSCPIConnection(QString leadingNodes) override;
+    virtual void initSCPIConnection(const QString &leadingNodes) override;
 
     void setAdjGroupData(AdjDataRange groupData);
     AdjDataRange getAdjGroupData();

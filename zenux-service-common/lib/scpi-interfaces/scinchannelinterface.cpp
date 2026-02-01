@@ -19,7 +19,7 @@ ScInChannelInterface::ScInChannelInterface(std::shared_ptr<cSCPI> scpiinterface,
     m_bAvail = cSettings->m_avail;
 }
 
-void ScInChannelInterface::initSCPIConnection(QString leadingNodes)
+void ScInChannelInterface::initSCPIConnection(const QString &leadingNodes)
 {
     const QString adjLeadNodes = appendTrailingColonOnNonEmptyParentNodes(leadingNodes);
     addDelegate(QString("%1%2").arg(adjLeadNodes, m_sName),"ALIAS", SCPI::isQuery, m_scpiInterface, cmdAlias);

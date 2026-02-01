@@ -13,7 +13,7 @@ class ScpiConnection: public QObject // pure virtual base class for scpi model i
 public:
     ScpiConnection(std::shared_ptr<cSCPI> scpiInterface);
     virtual ~ScpiConnection();
-    virtual void initSCPIConnection(QString leadingNodes) = 0;
+    virtual void initSCPIConnection(const QString &leadingNodes) = 0;
 signals:
     void valNotifier(NotificationValue* notifier);
     void cmdExecutionDone(ProtonetCommandPtr protoCmd);

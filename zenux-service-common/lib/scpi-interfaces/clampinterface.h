@@ -32,7 +32,7 @@ public:
                     I2cSettingsPtr i2cSettings,
                     AbstractEepromI2cFactoryPtr adjMemFactory,
                     AbstractFactoryI2cCtrlPtr ctrlFactory);
-    virtual void initSCPIConnection(QString leadingNodes) override;
+    virtual void initSCPIConnection(const QString &leadingNodes) override;
     void actualizeClampStatus(quint16 devConnectedMask);
     // lazy: public for test
     cClamp *tryAddClamp(const SenseSystem::cChannelSettings *chSettings);

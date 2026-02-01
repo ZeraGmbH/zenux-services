@@ -27,7 +27,7 @@ public:
                                  std::function<void(int)> funcSigHandler,
                                  AbstractFactoryDeviceNodeSecPtr deviceNodeFactory);
     ~SecGroupResourceAndInterface();
-    void initSCPIConnection(QString leadingNodes) override;
+    void initSCPIConnection(const QString &leadingNodes) override;
     virtual void registerResource(RMConnection *rmConnection, quint16 port) override;
     QList<SecChannel*> getECalcChannelList();
     bool freeChannelsForThisPeer(VeinTcp::TcpPeer *peer);

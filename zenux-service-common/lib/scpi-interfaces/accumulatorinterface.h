@@ -13,7 +13,7 @@ public:
     AccumulatorInterface(std::shared_ptr<cSCPI> scpiInterface,
                          AccumulatorSettings* settings,
                          AbstractFactoryI2cCtrlPtr ctrlFactory);
-    void initSCPIConnection(QString leadingNodes) override;
+    void initSCPIConnection(const QString &leadingNodes) override;
 signals:
     void sigAccumulatorStatusChange(uint8_t status);
 private:

@@ -111,7 +111,7 @@ void SenseInterfaceCommon::registerResource(RMConnection *rmConnection, quint16 
     }
 }
 
-void SenseInterfaceCommon::initSCPIConnection(QString leadingNodes)
+void SenseInterfaceCommon::initSCPIConnection(const QString &leadingNodes)
 {
     const QString adjLeadNodes = appendTrailingColonOnNonEmptyParentNodes(leadingNodes);
     addDelegate(QString("%1SENSE").arg(adjLeadNodes),"VERSION",SCPI::isQuery, m_scpiInterface, cmdVersion);

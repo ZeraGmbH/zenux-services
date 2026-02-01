@@ -21,7 +21,7 @@ class Sec1000StatusInterface: public ScpiConnection
     Q_OBJECT
 public:
     Sec1000StatusInterface(std::shared_ptr<cSCPI> scpiInterface);
-    virtual void initSCPIConnection(QString leadingNodes) override;
+    virtual void initSCPIConnection(const QString &leadingNodes) override;
 protected:
     void executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd) override;
 private:

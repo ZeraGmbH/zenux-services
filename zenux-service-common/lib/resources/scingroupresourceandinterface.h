@@ -15,7 +15,7 @@ public:
     ScInGroupResourceAndInterface(std::shared_ptr<cSCPI> scpiInterface,
                                   ScInSettings *settings);
     ~ScInGroupResourceAndInterface();
-    void initSCPIConnection(QString leadingNodes) override;
+    void initSCPIConnection(const QString &leadingNodes) override;
     void registerResource(RMConnection *rmConnection, quint16 port) override;
 protected:
     void executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd) override;

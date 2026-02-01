@@ -31,7 +31,7 @@ FOutGroupResourceAndInterface::~FOutGroupResourceAndInterface()
         delete channel;
 }
 
-void FOutGroupResourceAndInterface::initSCPIConnection(QString leadingNodes)
+void FOutGroupResourceAndInterface::initSCPIConnection(const QString &leadingNodes)
 {
     const QString adjLeadNodes = appendTrailingColonOnNonEmptyParentNodes(leadingNodes);
     addDelegate(QString("%1SOURCE").arg(adjLeadNodes),"VERSION",SCPI::isQuery, m_scpiInterface, cmdVersion);

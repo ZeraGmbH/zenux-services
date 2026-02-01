@@ -13,7 +13,7 @@ public:
     SourceControlInterface(std::shared_ptr<cSCPI> scpiInterface,
                            SourceControlSettings* settings,
                            AbstractFactoryI2cCtrlPtr ctrlFactory);
-    void initSCPIConnection(QString leadingNodes) override;
+    void initSCPIConnection(const QString &leadingNodes) override;
 private:
     void executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd) override;
     static QJsonObject expandJsonCapabilities(const QJsonObject &capabilitiesRaw);

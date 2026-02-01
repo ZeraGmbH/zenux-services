@@ -20,7 +20,7 @@ class PCBServer : public ScpiConnection
 public:
     explicit PCBServer(SettingsContainerPtr settings,
                        VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory);
-    void initSCPIConnection(QString leadingNodes) override;
+    void initSCPIConnection(const QString &leadingNodes) override;
     std::shared_ptr<cSCPI> getSCPIInterface();
     QString getName();
     QString getVersion();

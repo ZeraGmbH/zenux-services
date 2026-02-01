@@ -23,7 +23,7 @@ enum sourceCommands {
     cmdLoadState,
 };
 
-void SourceControlInterface::initSCPIConnection(QString leadingNodes)
+void SourceControlInterface::initSCPIConnection(const QString &leadingNodes)
 {
     Q_UNUSED(leadingNodes)
     if (!m_sourceCapabilityFileName.isEmpty()) {

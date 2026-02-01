@@ -14,7 +14,7 @@ public:
     ServiceStatusInterface(std::shared_ptr<cSCPI> scpiInterface,
                            AbstractAdjStatus *adjustmentStatusInterface,
                            AbstractFactoryI2cCtrlPtr ctrlFactory);
-    virtual void initSCPIConnection(QString leadingNodes) override;
+    virtual void initSCPIConnection(const QString &leadingNodes) override;
 protected:
     void executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd) override;
 private:

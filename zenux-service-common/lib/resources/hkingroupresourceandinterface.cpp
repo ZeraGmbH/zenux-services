@@ -25,7 +25,7 @@ HkInGroupResourceAndInterface::~HkInGroupResourceAndInterface()
         delete channel;
 }
 
-void HkInGroupResourceAndInterface::initSCPIConnection(QString leadingNodes)
+void HkInGroupResourceAndInterface::initSCPIConnection(const QString &leadingNodes)
 {
     const QString adjLeadNodes = appendTrailingColonOnNonEmptyParentNodes(leadingNodes);
     addDelegate(QString("%1HKEY").arg(adjLeadNodes),"VERSION",SCPI::isQuery, m_scpiInterface, cmdVersion);
