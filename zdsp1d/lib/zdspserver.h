@@ -46,7 +46,7 @@ signals:
 private slots:
     void sendProtoAnswer(ProtonetCommandPtr protoCmd);
     void onProtobufClientConnected(VeinTcp::TcpPeer* newClient);
-    void onProtobufDataReceived(VeinTcp::TcpPeer *peer, QByteArray message);
+    void onProtobufDataReceived(VeinTcp::TcpPeer *peer, const QByteArray &message);
     void onProtobufDisconnect(VeinTcp::TcpPeer *peer);
     void onTelnetReceived(const QString &input);
 

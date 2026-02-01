@@ -936,7 +936,7 @@ void ZDspServer::onProtobufDisconnect(VeinTcp::TcpPeer *peer)
     m_zdspClientContainer.delClients(peer);
 }
 
-void ZDspServer::onProtobufDataReceived(VeinTcp::TcpPeer *peer, QByteArray message)
+void ZDspServer::onProtobufDataReceived(VeinTcp::TcpPeer *peer, const QByteArray &message)
 {
     executeCommandProto(peer, m_protobufWrapper.byteArrayToProtobuf(message));
 }
