@@ -116,7 +116,7 @@ void PCBServer::sendProtoAnswer(ProtonetCommandPtr protoCmd)
     CommonScpiMethods::sendProtoAnswer(m_telnetServer.getSocket(), &m_protobufWrapper, protoCmd);
 }
 
-void PCBServer::onNotifySubscriber(ScpiNotificationSubscriber subscriber, QString newValue)
+void PCBServer::onNotifySubscriber(const ScpiNotificationSubscriber &subscriber, const QString &newValue)
 {
     QString notificationMsg = QString("Notify:%1").arg(subscriber.m_notifierId);
     if(subscriber.m_notifyWithValue)
@@ -216,7 +216,7 @@ void PCBServer::onProtobufClientConnected(VeinTcp::TcpPeer *newClient)
     connect(newClient, &VeinTcp::TcpPeer::sigConnectionClosed, this, &PCBServer::onProtobufDisconnect);
 }
 
-void PCBServer::onProtobufDataReceived(VeinTcp::TcpPeer *peer, QByteArray message)
+void PCBServer::onProtobufDataReceived(VeinTcp::TcpPeer *peer, const QByteArray &message)
 {
     executeCommandProto(peer, m_protobufWrapper.byteArrayToProtobuf(message));
 }
@@ -268,7 +268,7 @@ void PCBServer::onEstablishNewNotifier(NotificationValue *notifier)
     }
 }
 
-void PCBServer::sendNotificationToClient(QString message, QByteArray clientID, VeinTcp::TcpPeer *netPeer)
+void PCBServer::sendNotificationToClient(const QString &message, const QByteArray &clientID, VeinTcp::TcpPeer *netPeer)
 {
     if (clientID.isEmpty()) { // old style communication
         QByteArray block;

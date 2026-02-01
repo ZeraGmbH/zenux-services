@@ -32,7 +32,7 @@ signals:
 public slots:
     void sendProtoAnswer(ProtonetCommandPtr protoCmd);
 protected slots:
-    virtual void onNotifySubscriber(ScpiNotificationSubscriber subscriber, QString newValue);
+    virtual void onNotifySubscriber(const ScpiNotificationSubscriber &subscriber, const QString &newValue);
     virtual void onProtobufDisconnect(VeinTcp::TcpPeer *peer);
 protected:
     void connectProtoConnectionSignals();
@@ -49,7 +49,7 @@ protected:
     ConsoleServer m_telnetServer;
 private slots:
     void onProtobufClientConnected(VeinTcp::TcpPeer *newClient);
-    void onProtobufDataReceived(VeinTcp::TcpPeer *peer, QByteArray message);
+    void onProtobufDataReceived(VeinTcp::TcpPeer *peer, const QByteArray &message);
     void onNotifyPeerConnectionClosed(VeinTcp::TcpPeer *peer);
     void onEstablishNewNotifier(NotificationValue *notifier);
     void onNotifierChanged(quint32 irqreg);
@@ -58,7 +58,7 @@ private:
     void registerNotifier(ProtonetCommandPtr protoCmd); // registeres 1 notifier per command
     void unregisterNotifier(ProtonetCommandPtr protoCmd); // unregisters all notifiers
     void doUnregisterNotifier(VeinTcp::TcpPeer *peer, const QByteArray &clientID = QByteArray());
-    void sendNotificationToClient(QString message, QByteArray clientID, VeinTcp::TcpPeer *netPeer);
+    void sendNotificationToClient(const QString &message, const QByteArray &clientID, VeinTcp::TcpPeer *netPeer);
     void executeCommandProto(VeinTcp::TcpPeer* peer, std::shared_ptr<google::protobuf::Message> cmd);
 
     QList<NotificationStructWithValue> m_notifierRegisterNext;
