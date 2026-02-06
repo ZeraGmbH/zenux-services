@@ -58,7 +58,8 @@ const ServerParams ZDspServer::defaultParams(0,
 
 ZDspServer::ZDspServer(SettingsContainerPtr settings,
                        AbstractFactoryDeviceNodeDspPtr deviceNodeFactory,
-                       VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory) :
+                       VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory,
+                       bool outputHealthLogs) :
     ScpiConnection(std::make_shared<cSCPI>()),
     m_dspSettings(&m_xmlConfigReader),
     m_settings(std::move(settings)),
@@ -67,6 +68,7 @@ ZDspServer::ZDspServer(SettingsContainerPtr settings,
     m_tcpNetworkFactory(tcpNetworkFactory),
     m_protoBufServer(tcpNetworkFactory),
     m_dspInterruptLogStatistics(10000),
+    m_outputHealthLogs(outputHealthLogs),
     m_pRMConnection(new RMConnection(m_settings->getEthSettings()->getRMIPadr(),
                                      m_settings->getEthSettings()->getPort(EthSettings::resourcemanager),
                                      m_tcpNetworkFactory)),
@@ -247,10 +249,12 @@ void ZDspServer::onResourceReady()
     EthSettingsPtr ethSettings = m_settings->getEthSettings();
     m_protoBufServer.startServer(ethSettings->getPort(EthSettings::protobufserver));
     openTelnetScpi();
-    m_periodicLogTimer = TimerFactoryQt::createPeriodic(loggingIntervalMs);
-    connect(m_periodicLogTimer.get(), &TimerTemplateQt::sigExpired,
-            this, &ZDspServer::outputLogs);
-    m_periodicLogTimer->start();
+    if (m_outputHealthLogs) {
+        m_periodicLogTimer = TimerFactoryQt::createPeriodic(loggingIntervalMs);
+        connect(m_periodicLogTimer.get(), &TimerTemplateQt::sigExpired,
+                this, &ZDspServer::outputLogs);
+        m_periodicLogTimer->start();
+    }
 }
 
 void ZDspServer::outputDspRunState()

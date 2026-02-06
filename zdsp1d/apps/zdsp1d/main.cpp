@@ -10,7 +10,8 @@ int main( int argc, char *argv[] )
     ZDspServer* zdsp1d = new ZDspServer(
         std::make_unique<SettingsContainer>(ZDspServer::defaultParams),
         std::make_shared<FactoryDeviceNodeDsp>(),
-        VeinTcp::TcpNetworkFactory::create());
+        VeinTcp::TcpNetworkFactory::create(),
+        true);
     qInfo("%s started", qPrintable(zdsp1d->getServerVersion()));
 
     int r =  app->exec();

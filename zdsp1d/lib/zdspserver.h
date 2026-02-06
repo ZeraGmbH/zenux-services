@@ -32,7 +32,8 @@ class ZDspServer: public ScpiConnection
 public:
     ZDspServer(SettingsContainerPtr settings,
                AbstractFactoryDeviceNodeDspPtr deviceNodeFactory,
-               VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory);
+               VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory,
+               bool outputHealthLogs);
     virtual ~ZDspServer();
     QString getServerVersion();
     QString getDspDeviceNode();
@@ -90,6 +91,7 @@ private:
 
     ulong UserWorkSpaceGlobalSegmentAdr;
     LogStatisticsAsyncInt m_dspInterruptLogStatistics;
+    bool m_outputHealthLogs;
 
     bool resetDsp();
     bool bootDsp();
