@@ -235,12 +235,9 @@ void ZDspServer::doIdentAndRegister()
 
     connect(&m_resourceRegister, &ResourceRegisterTransaction::registerRdy, this, &ZDspServer::onResourceReady);
     m_resourceRegister.register1Resource(QString("DSP;DSP1;;ADSP Signal Processor;%1;").arg(port));
-    TDspVar* pDspVar = &CmdListVar;
-    m_resourceRegister.register1Resource(QString("DSP1;PGRMEMI;%1;DSP ProgramMemory(Interrupt);%2;").arg(pDspVar->size).arg(port));
-    pDspVar++;
-    m_resourceRegister.register1Resource(QString("DSP1;PGRMEMC;%1;DSP ProgramMemory(Cyclic);%2;").arg(pDspVar->size).arg(port));
-    pDspVar = &UserWorkSpaceVar;
-    m_resourceRegister.register1Resource(QString("DSP1;USERMEM;%1;DSP UserMemory;%2;").arg(pDspVar->size).arg(port));
+    m_resourceRegister.register1Resource(QString("DSP1;PGRMEMI;%1;DSP ProgramMemory(Interrupt);%2;").arg(getProgMemInterruptAvailable()).arg(port));
+    m_resourceRegister.register1Resource(QString("DSP1;PGRMEMC;%1;DSP ProgramMemory(Cyclic);%2;").arg(getProgMemCyclicAvailable()).arg(port));
+    m_resourceRegister.register1Resource(QString("DSP1;USERMEM;%1;DSP UserMemory;%2;").arg(getUserMemAvailable()).arg(port));
 }
 
 void ZDspServer::onResourceReady()
@@ -681,6 +678,63 @@ QString ZDspServer::getServerVersion()
 QString ZDspServer::getDspDeviceNode()
 {
     return m_settings->getFpgaSettings()->getDspDeviceNode();
+}
+
+int ZDspServer::getUserMemAvailable() const
+{
+    for (int i=0; i<dm32UserWorkSpace.m_varCount; i++) {
+        const TDspVar &dspVar = dm32UserWorkSpace.m_dspVars[i];
+        if(dspVar.Name == "UWSPACE")
+            return dspVar.size;
+    }
+    return 0;
+}
+
+int ZDspServer::getUserMemOccupied() const
+{
+    const QList<ZdspClient*> &clientList = m_zdspClientContainer.getClientList();
+    int memOccupied = 0;
+    for (const ZdspClient* client : clientList)
+        memOccupied += client->getDataMemSize();
+    return memOccupied;
+}
+
+int ZDspServer::getProgMemCyclicAvailable() const
+{
+    for (int i=0; i<dm32CmdList.m_varCount; i++) {
+        const TDspVar &dspVar = dm32CmdList.m_dspVars[i];
+        if(dspVar.Name == "CMDLIST")
+            return dspVar.size;
+    }
+    return 0;
+}
+
+int ZDspServer::getProgMemOccupied() const
+{
+    const QList<ZdspClient*> &clientList = m_zdspClientContainer.getClientList();
+    int memOccupied = 0;
+    for (const ZdspClient* client : clientList)
+        memOccupied += client->GetDspCmdList().size();
+    return memOccupied;
+}
+
+int ZDspServer::getProgMemInterruptAvailable() const
+{
+    for (int i=0; i<dm32CmdList.m_varCount; i++) {
+        const TDspVar &dspVar = dm32CmdList.m_dspVars[i];
+        if(dspVar.Name == "INTCMDLIST")
+            return dspVar.size;
+    }
+    return 0;
+}
+
+int ZDspServer::getProgMemInterruptOccupied() const
+{
+    const QList<ZdspClient*> &clientList = m_zdspClientContainer.getClientList();
+    int memOccupied = 0;
+    for (const ZdspClient* client : clientList)
+        memOccupied += client->GetDspIntCmdList().size();
+    return memOccupied;
 }
 
 ZdspClient *ZDspServer::addClientForTest()

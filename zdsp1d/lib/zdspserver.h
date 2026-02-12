@@ -38,6 +38,13 @@ public:
     QString getServerVersion();
     QString getDspDeviceNode();
 
+    int getUserMemAvailable() const;
+    int getUserMemOccupied() const;
+    int getProgMemCyclicAvailable() const;
+    int getProgMemOccupied() const;
+    int getProgMemInterruptAvailable() const;
+    int getProgMemInterruptOccupied() const;
+
     static const ServerParams defaultParams;
     ZdspClient *addClientForTest(); // TODO: remove
 signals:
