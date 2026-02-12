@@ -709,7 +709,7 @@ int ZDspServer::getProgMemCyclicAvailable() const
     return 0;
 }
 
-int ZDspServer::getProgMemOccupied() const
+int ZDspServer::getProgMemCyclicOccupied() const
 {
     const QList<ZdspClient*> &clientList = m_zdspClientContainer.getClientList();
     int memOccupied = 0;

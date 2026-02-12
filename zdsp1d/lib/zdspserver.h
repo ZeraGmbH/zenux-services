@@ -41,7 +41,7 @@ public:
     int getUserMemAvailable() const;
     int getUserMemOccupied() const;
     int getProgMemCyclicAvailable() const;
-    int getProgMemOccupied() const;
+    int getProgMemCyclicOccupied() const;
     int getProgMemInterruptAvailable() const;
     int getProgMemInterruptOccupied() const;
 
