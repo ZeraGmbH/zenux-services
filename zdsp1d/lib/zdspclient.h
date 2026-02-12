@@ -22,8 +22,8 @@ public:
     void setCmdForIrqListDef(const QString& cmdIntListDef);
 
     bool GenCmdLists(QString& errs, ulong userMemOffset, ulong globalstartadr);
-    QList<DspCmdWithParamsRaw>& GetDspCmdList();
-    QList<DspCmdWithParamsRaw>& GetDspIntCmdList();
+    const QList<DspCmdWithParamsRaw>& GetDspCmdList() const;
+    const QList<DspCmdWithParamsRaw>& GetDspIntCmdList() const;
 
     QString readActValues(const QString &variablesStringOnEmptyActOnly);
     DspVarResolver m_dspVarResolver;

@@ -791,10 +791,10 @@ bool ZDspServer::compileCmdListsForAllClientsToRawStream(QString &errs)
             // relokalisieren der daten im dsp
             userMemOffset += client->relocalizeUserMemSectionVars(userMemOffset, UserWorkSpaceGlobalSegmentAdr);
 
-            QList<DspCmdWithParamsRaw> cycCmdList = client->GetDspCmdList();
+            const QList<DspCmdWithParamsRaw> &cycCmdList = client->GetDspCmdList();
             for (int j = 0; j < cycCmdList.size(); j++)
                 cycCmdMemStream << cycCmdList[j];
-            QList<DspCmdWithParamsRaw> intCmdList = client->GetDspIntCmdList();
+            const QList<DspCmdWithParamsRaw> &intCmdList = client->GetDspIntCmdList();
             for (int j = 0; j < intCmdList.size(); j++)
                 intCmdMemStream << intCmdList[j];
         }
