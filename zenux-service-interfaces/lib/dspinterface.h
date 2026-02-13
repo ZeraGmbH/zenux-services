@@ -34,12 +34,12 @@ public:
     cDspMeasData* getMemHandle(QString name); // init a new memory group and return handle
     void deleteMemHandle(cDspMeasData* memhandle);
 
-    quint32 deactivateInterface(); // unload ...
+    quint32 deactivateInterface();
     quint32 deactivateAll();
 
     // TODO!!! make DSPDATA::dType type go as we did on dspMemoryWrite
     quint32 dspMemoryRead(cDspMeasData* memgroup, DSPDATA::dType type = DSPDATA::dFloat); // reads all vars of this memorygroup
-    quint32 readDeviceVersion(); // reads the dsp devices version
+    quint32 readDeviceVersion();
     quint32 readServerVersion();
 
     // Compromise for tests

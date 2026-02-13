@@ -116,7 +116,6 @@ quint32 cDSPInterface::readDeviceVersion()
     return d->readDeviceVersion();
 }
 
-
 quint32 cDSPInterface::readServerVersion()
 {
     Q_D(cDSPInterface);
