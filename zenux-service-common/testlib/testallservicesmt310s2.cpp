@@ -48,6 +48,11 @@ ZDspServer *TestAllServicesMt310s2::getZdsp1dServer()
     return m_zdsp1d->getServer();
 }
 
+cSEC1000dServer *TestAllServicesMt310s2::getSecServer()
+{
+    return m_sec1000d->getServer();
+}
+
 void TestAllServicesMt310s2::fireHotplugInterrupt(const ChannelAliasHotplugDeviceNameMap &deviceMap)
 {
     m_mt310s2d->fireHotplugInterrupt(deviceMap);

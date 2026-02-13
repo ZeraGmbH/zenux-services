@@ -9,6 +9,7 @@ public:
     MockSec1000d(VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory,
                  int ecUnitCount,
                  const QString &alternateConfigXml = QString());
+    cSEC1000dServer* getServer();
 private:
     std::unique_ptr<cSEC1000dServer> m_server;
 };

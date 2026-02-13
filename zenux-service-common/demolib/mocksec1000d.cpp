@@ -13,3 +13,8 @@ MockSec1000d::MockSec1000d(VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFacto
         std::make_shared<MockFactoryDeviceNodeSec>(),
         tcpNetworkFactory);
 }
+
+cSEC1000dServer *MockSec1000d::getServer()
+{
+    return m_server.get();
+}

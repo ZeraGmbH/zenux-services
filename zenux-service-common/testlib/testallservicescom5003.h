@@ -18,6 +18,7 @@ public:
 
     void setRangeGetSetDelay(int rangeGetSetDelay) override;
     ZDspServer *getZdsp1dServer() override;
+    cSEC1000dServer *getSecServer() override;
 
     void fireHotplugInterrupt(const ChannelAliasHotplugDeviceNameMap &deviceMap) override;
     ChannelAliasHotplugDeviceNameMap getCurrentHotplugMap() const override;
