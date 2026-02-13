@@ -14,7 +14,7 @@ class SecCalculatorSettings;
 class SecInputSettings;
 class Sec1000StatusInterface;
 class cSystemInterface;
-class SecGroupResourceAndInterface;
+class SecMainAndChannelInterface;
 class SecChannel;
 class Sec1000SystemInfo;
 
@@ -46,10 +46,6 @@ private slots:
     void SECIntHandler(int);
     void doSetupServer();
     void doCloseServer();
-    void doConnect2RM();
-    void connect2RMError();
-    void doIdentAndRegister();
-    void onResourceReady();
     void onProtobufDisconnect(VeinTcp::TcpPeer *peer) override;
 private:
     void doConfiguration(int ecUnitCount);
@@ -61,17 +57,10 @@ private:
 
     Sec1000StatusInterface* m_pStatusInterface = nullptr;
     cSystemInterface* m_pSystemInterface = nullptr;
-    SecGroupResourceAndInterface* m_pECalculatorInterface = nullptr;
+    SecMainAndChannelInterface* m_pECalculatorInterface = nullptr;
     Sec1000SystemInfo* m_pSystemInfo = nullptr;
-    RMConnection* m_pRMConnection = nullptr;
-    int m_pendingResources = 0;
 
     QStateMachine* m_pInitializationMachine = nullptr;
-    QState* m_stateconnect2RM = nullptr;
-    QState* m_stateconnect2RMError = nullptr;
-    QState* m_stateSendRMIdentAndRegister = nullptr;
-    int m_retryRMConnect;
-    QTimer m_retryTimer;
     QList<SecChannel*> m_ECalculatorChannelList;
     QSocketNotifier* m_pNotifier = nullptr;
 };

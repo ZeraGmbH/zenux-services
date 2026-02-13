@@ -1,4 +1,4 @@
-#include "secgroupresourceandinterface.h"
+#include "secmainandchannelinterface.h"
 #include "scpiconnection.h"
 #include "zscpi_response_definitions.h"
 #include "notzeronumgen.h"
@@ -12,12 +12,12 @@ enum Commands
     cmdFreeChannels
 };
 
-SecGroupResourceAndInterface::SecGroupResourceAndInterface(std::shared_ptr<cSCPI> scpiInterface,
+SecMainAndChannelInterface::SecMainAndChannelInterface(std::shared_ptr<cSCPI> scpiInterface,
                                                            SecCalculatorSettings* ecalcSettings,
                                                            SecInputSettings *inputsettings,
                                                            std::function<void (int)> funcSigHandler,
                                                            AbstractFactoryDeviceNodeSecPtr deviceNodeFactory) :
-    cResource(scpiInterface),
+    ScpiServerConnection(scpiInterface),
     m_pecalcsettings(ecalcSettings),
     m_pInputSettings(inputsettings)
 {
@@ -34,13 +34,13 @@ SecGroupResourceAndInterface::SecGroupResourceAndInterface(std::shared_ptr<cSCPI
     }
 }
 
-SecGroupResourceAndInterface::~SecGroupResourceAndInterface()
+SecMainAndChannelInterface::~SecMainAndChannelInterface()
 {
     for (SecChannel* channel : m_ECalculatorChannelList)
         delete channel;
 }
 
-void SecGroupResourceAndInterface::connectChannelSignalsAndInitScpi()
+void SecMainAndChannelInterface::connectChannelSignalsAndInitScpi()
 {
     for (int i = 0; i < m_ECalculatorChannelList.count(); i++) {
         connect(m_ECalculatorChannelList.at(i), &ScpiConnection::valNotifier, this, &ScpiConnection::valNotifier);
@@ -49,7 +49,7 @@ void SecGroupResourceAndInterface::connectChannelSignalsAndInitScpi()
     }
 }
 
-void SecGroupResourceAndInterface::initSCPIConnection()
+void SecMainAndChannelInterface::initSCPIConnection()
 {
     addDelegate("ECALCULATOR", "VERSION",SCPI::isQuery, m_scpiInterface, cmdVersion);
     addDelegate("ECALCULATOR:CHANNEL", "CATALOG", SCPI::isQuery, m_scpiInterface, cmdChannelCat);
@@ -59,7 +59,7 @@ void SecGroupResourceAndInterface::initSCPIConnection()
     connectChannelSignalsAndInitScpi();
 }
 
-void SecGroupResourceAndInterface::executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd)
+void SecMainAndChannelInterface::executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd)
 {
     switch (cmdCode)
     {
@@ -86,22 +86,12 @@ void SecGroupResourceAndInterface::executeProtoScpi(int cmdCode, ProtonetCommand
     }
 }
 
-void SecGroupResourceAndInterface::registerResource(RMConnection *rmConnection, quint16 port)
-{
-    // we register all our error calculator units as resources
-    register1Resource(rmConnection, NotZeroNumGen::getMsgNr(), QString("SEC1;ECALCULATOR;%1;%2;%3;")
-                      .arg(m_pecalcsettings->getNumber())
-                      .arg(ECalcSystem::sECalculatorDescription)
-                      .arg(port));
-
-}
-
-QList<SecChannel *> SecGroupResourceAndInterface::getECalcChannelList()
+QList<SecChannel *> SecMainAndChannelInterface::getECalcChannelList()
 {
     return m_ECalculatorChannelList;
 }
 
-bool SecGroupResourceAndInterface::freeChannelsForThisPeer(VeinTcp::TcpPeer *peer)
+bool SecMainAndChannelInterface::freeChannelsForThisPeer(VeinTcp::TcpPeer *peer)
 {
     for(const QByteArray &client : qAsConst(m_peerClientsHash[peer]))
         if(!freeChannelsFromAClient(client))
@@ -109,7 +99,7 @@ bool SecGroupResourceAndInterface::freeChannelsForThisPeer(VeinTcp::TcpPeer *pee
     return true;
 }
 
-QString SecGroupResourceAndInterface::scpiReadVersion(const QString &scpi)
+QString SecMainAndChannelInterface::scpiReadVersion(const QString &scpi)
 {
     cSCPICommand cmd = scpi;
     if (cmd.isQuery())
@@ -117,7 +107,7 @@ QString SecGroupResourceAndInterface::scpiReadVersion(const QString &scpi)
     return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-QString SecGroupResourceAndInterface::scpiReadECalculatorChannelCatalog(const QString &scpi)
+QString SecMainAndChannelInterface::scpiReadECalculatorChannelCatalog(const QString &scpi)
 {
     cSCPICommand cmd = scpi;
     if (cmd.isQuery()) {
@@ -129,7 +119,7 @@ QString SecGroupResourceAndInterface::scpiReadECalculatorChannelCatalog(const QS
     return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-void SecGroupResourceAndInterface::scpiSetChannels(ProtonetCommandPtr protoCmd)
+void SecMainAndChannelInterface::scpiSetChannels(ProtonetCommandPtr protoCmd)
 {
     cSCPICommand cmd = protoCmd->m_sInput;
 
@@ -176,7 +166,7 @@ void SecGroupResourceAndInterface::scpiSetChannels(ProtonetCommandPtr protoCmd)
 }
 
 
-void SecGroupResourceAndInterface::scpiFreeChannels(ProtonetCommandPtr protoCmd)
+void SecMainAndChannelInterface::scpiFreeChannels(ProtonetCommandPtr protoCmd)
 {
     cSCPICommand cmd = protoCmd->m_sInput;
     protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::nak]; // preset
@@ -186,7 +176,7 @@ void SecGroupResourceAndInterface::scpiFreeChannels(ProtonetCommandPtr protoCmd)
     }
 }
 
-bool SecGroupResourceAndInterface::freeChannelsFromAClient(QByteArray clientID)
+bool SecMainAndChannelInterface::freeChannelsFromAClient(QByteArray clientID)
 {
     if (m_ClientECalcHash.contains(clientID)) {
         QStringList clientEcChannels = m_ClientECalcHash[clientID].split(";");

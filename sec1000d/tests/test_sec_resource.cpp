@@ -22,7 +22,7 @@ void test_sec_resource::init()
     m_xmlConfigReader->loadXMLFile(QStringLiteral(CONFIG_SOURCES_SEC1000D) + "/" + "sec1000d.xml");
     TimeMachineObject::feedEventLoop();
     m_scpiInterface = std::make_shared<cSCPI>();
-    m_secResource = std::make_unique<SecGroupResourceAndInterface>(
+    m_secResource = std::make_unique<SecMainAndChannelInterface>(
         m_scpiInterface,
         m_ecalcSettings.get(),
         m_inputSettings.get(),

@@ -5,7 +5,7 @@
 #include "sec1000statusinterface.h"
 #include "sec1000systeminterface.h"
 #include "sec1000systeminfo.h"
-#include "secgroupresourceandinterface.h"
+#include "secmainandchannelinterface.h"
 #include "rmconnection.h"
 #include <vtcp_server.h>
 #include <xmlconfigreader.h>
@@ -65,20 +65,13 @@ void cSEC1000dServer::init()
     stateCONF->addTransition(this, &cSEC1000dServer::abortInit, stateFINISH); // from anywhere we arrive here if some error
 
     QState* statesetupServer = new QState(stateCONF); // we setup our server now
-    m_stateconnect2RM = new QState(stateCONF); // we connect to resource manager
-    m_stateconnect2RMError = new QState(stateCONF);
-    m_stateSendRMIdentAndRegister = new QState(stateCONF); // we send ident. to rm and register our resources
     stateCONF->setInitialState(statesetupServer);
 
-    statesetupServer->addTransition(this, &cSEC1000dServer::sigServerIsSetUp, m_stateconnect2RM);
     m_pInitializationMachine->addState(stateCONF);
     m_pInitializationMachine->addState(stateFINISH);
     m_pInitializationMachine->setInitialState(stateCONF);
 
     QObject::connect(statesetupServer, &QAbstractState::entered, this, &cSEC1000dServer::doSetupServer);
-    QObject::connect(m_stateconnect2RM, &QAbstractState::entered, this, &cSEC1000dServer::doConnect2RM);
-    QObject::connect(m_stateconnect2RMError, &QAbstractState::entered, this, &cSEC1000dServer::connect2RMError);
-    QObject::connect(m_stateSendRMIdentAndRegister, &QAbstractState::entered, this, &cSEC1000dServer::doIdentAndRegister);
     QObject::connect(stateFINISH, &QAbstractState::entered, this, &cSEC1000dServer::doCloseServer);
 
     m_pInitializationMachine->start();
@@ -92,7 +85,6 @@ cSEC1000dServer::~cSEC1000dServer()
     delete m_pSystemInterface;
     delete m_pECalculatorInterface;
     delete m_pSystemInfo;
-    delete m_pRMConnection;
 
     AbstractDeviceNodeSecPtr deviceNode = m_deviceNodeFactory->getSecDeviceNode();
     deviceNode->close();
@@ -162,13 +154,12 @@ void cSEC1000dServer::earlySetup()
     m_scpiConnectionList.append(this); // the server itself has some commands
     m_scpiConnectionList.append(m_pStatusInterface = new Sec1000StatusInterface(m_scpiInterface));
     m_scpiConnectionList.append(m_pSystemInterface = new cSystemInterface(m_scpiInterface, this, m_pSystemInfo));
-    m_scpiConnectionList.append(m_pECalculatorInterface = new SecGroupResourceAndInterface(m_scpiInterface,
+    m_scpiConnectionList.append(m_pECalculatorInterface = new SecMainAndChannelInterface(m_scpiInterface,
                                                                                            m_pECalcSettings,
                                                                                            m_pInputSettings,
                                                                                            SigHandler,
                                                                                            m_deviceNodeFactory));
 
-    m_resourceList.append(m_pECalculatorInterface); // all our resources
     m_ECalculatorChannelList = m_pECalculatorInterface->getECalcChannelList();
 }
 
@@ -197,19 +188,8 @@ void cSEC1000dServer::doSetupServer()
         sigActionSec1000.sa_restorer = NULL;
         sigaction(SIGIO, &sigActionSec1000, NULL); // handler für sigio definieren
         deviceNode->enableFasync();
-        // our resource mananager connection must be opened after configuration is done
-        m_pRMConnection = new RMConnection(ethSettings->getRMIPadr(),
-                                           ethSettings->getPort(EthSettings::resourcemanager),
-                                           m_tcpNetworkFactory);
-        // so we must complete our state machine here
-        m_retryRMConnect = 100;
-        m_retryTimer.setSingleShot(true);
-        connect(&m_retryTimer, &QTimer::timeout, this, &cSEC1000dServer::sigServerIsSetUp);
 
-        m_stateconnect2RM->addTransition(m_pRMConnection, &RMConnection::connected, m_stateSendRMIdentAndRegister);
-        m_stateconnect2RM->addTransition(m_pRMConnection, &RMConnection::connectionRMError, m_stateconnect2RMError);
-        m_stateconnect2RMError->addTransition(this, &cSEC1000dServer::sigServerIsSetUp, m_stateconnect2RM);
-
+        m_protoBufServer.startServer(ethSettings->getPort(EthSettings::protobufserver));
         emit sigServerIsSetUp(); // so we enter state machine's next state
     }
 }
@@ -219,56 +199,11 @@ void cSEC1000dServer::doCloseServer()
     QCoreApplication::instance()->exit(-1);
 }
 
-void cSEC1000dServer::doConnect2RM()
-{
-    qInfo("Starting doConnect2RM");
-    m_pRMConnection->connect2RM();
-}
-
-void cSEC1000dServer::connect2RMError()
-{
-    m_retryRMConnect--;
-    if (m_retryRMConnect == 0) {
-        qCritical("Connect to resourcemanager failed: Abort");
-        emit abortInit();
-    }
-    else {
-        qWarning("Connect to resourcemanager failed: Retry");
-        m_retryTimer.start(200);
-    }
-}
-
-void cSEC1000dServer::doIdentAndRegister()
-{
-    qInfo("Starting doIdentAndRegister");
-    m_pRMConnection->SendIdent(getName());
-    for (int i = 0; i < m_resourceList.count(); i++) {
-        cResource *res = m_resourceList.at(i);
-        connect(m_pRMConnection, &RMConnection::rmAck, res, &cResource::resourceManagerAck);
-        EthSettingsPtr ethSettings = m_settings->getEthSettings();
-        res->registerResource(m_pRMConnection, ethSettings->getPort(EthSettings::protobufserver));
-        connect(res, &cResource::registerRdy, this, &cSEC1000dServer::onResourceReady);
-    }
-    m_pendingResources = m_resourceList.count();
-}
-
-void cSEC1000dServer::onResourceReady()
-{
-    Q_ASSERT(m_pendingResources > 0);
-    m_pendingResources--;
-    disconnect(static_cast<cResource*>(sender()), &cResource::registerRdy, this, &cSEC1000dServer::onResourceReady);
-    if(m_pendingResources == 0) {
-        EthSettingsPtr ethSettings = m_settings->getEthSettings();
-        m_protoBufServer.startServer(ethSettings->getPort(EthSettings::protobufserver));
-    }
-}
-
 void cSEC1000dServer::onProtobufDisconnect(VeinTcp::TcpPeer* peer)
 {
     if(!m_pECalculatorInterface->freeChannelsForThisPeer(peer))
         qWarning("Client disconnected. But SEC resources could not be freed!");
 }
-
 
 static inline int calcByteCountFromEcChannels(int ecChannelCount)
 {

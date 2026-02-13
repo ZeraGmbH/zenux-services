@@ -1,7 +1,7 @@
-#ifndef SECGROUPRESOURCEANDINTERFACE_H
-#define SECGROUPRESOURCEANDINTERFACE_H
+#ifndef SECMAINANDCHANNELINTERFACE_H
+#define SECMAINANDCHANNELINTERFACE_H
 
-#include "resource.h"
+#include "scpiserverconnection.h"
 #include "secchannel.h"
 #include "seccalcsettings.h"
 #include "secinputsettings.h"
@@ -16,19 +16,18 @@ const QString Version = "V1.00";
 const QString sECalculatorDescription = "Standard error calculator base unit";
 }
 
-class SecGroupResourceAndInterface : public cResource
+class SecMainAndChannelInterface : public ScpiServerConnection
 {
     Q_OBJECT
 
 public:
-    SecGroupResourceAndInterface(std::shared_ptr<cSCPI> scpiInterface,
+    SecMainAndChannelInterface(std::shared_ptr<cSCPI> scpiInterface,
                                  SecCalculatorSettings* ecalcSettings,
                                  SecInputSettings* inputsettings,
                                  std::function<void(int)> funcSigHandler,
                                  AbstractFactoryDeviceNodeSecPtr deviceNodeFactory);
-    ~SecGroupResourceAndInterface();
+    ~SecMainAndChannelInterface();
     void initSCPIConnection() override;
-    virtual void registerResource(RMConnection *rmConnection, quint16 port) override;
     QList<SecChannel*> getECalcChannelList();
     bool freeChannelsForThisPeer(VeinTcp::TcpPeer *peer);
 protected:
@@ -50,4 +49,4 @@ private:
     void connectChannelSignalsAndInitScpi();
 };
 
-#endif // SECGROUPRESOURCEANDINTERFACE_H
+#endif // SECMAINANDCHANNELINTERFACE_H

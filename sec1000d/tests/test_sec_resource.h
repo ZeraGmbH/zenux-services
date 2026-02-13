@@ -1,7 +1,7 @@
 #ifndef TEST_SEC_RESOURCE_H
 #define TEST_SEC_RESOURCE_H
 
-#include "secgroupresourceandinterface.h"
+#include "secmainandchannelinterface.h"
 #include <memory>
 #include <QObject>
 
@@ -25,7 +25,7 @@ private:
     std::unique_ptr<SecCalculatorSettings> m_ecalcSettings;
     std::unique_ptr<SecInputSettings> m_inputSettings;
     std::shared_ptr<cSCPI> m_scpiInterface;
-    std::unique_ptr<SecGroupResourceAndInterface> m_secResource;
+    std::unique_ptr<SecMainAndChannelInterface> m_secResource;
 };
 
 #endif // TEST_SEC_RESOURCE_H
