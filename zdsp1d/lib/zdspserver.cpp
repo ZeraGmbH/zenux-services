@@ -68,11 +68,7 @@ ZDspServer::ZDspServer(SettingsContainerPtr settings,
     m_tcpNetworkFactory(tcpNetworkFactory),
     m_protoBufServer(tcpNetworkFactory),
     m_dspInterruptLogStatistics(10000),
-    m_outputHealthLogs(outputHealthLogs),
-    m_pRMConnection(new RMConnection(m_settings->getEthSettings()->getRMIPadr(),
-                                     m_settings->getEthSettings()->getPort(EthSettings::resourcemanager),
-                                     m_tcpNetworkFactory)),
-    m_resourceRegister(m_pRMConnection)
+    m_outputHealthLogs(outputHealthLogs)
 {
     doConfiguration();
     init();
@@ -88,22 +84,14 @@ void ZDspServer::init()
     stateCONF->addTransition(this, &ZDspServer::abortInit, stateFINISH); // from anywhere we arrive here if some error
 
     QState* statesetupServer = new QState(stateCONF); // we setup our server now
-    m_stateconnect2RM = new QState(stateCONF); // we connect to resource manager
-    m_stateconnect2RMError = new QState(stateCONF);
-    m_stateSendRMIdentAndRegister = new QState(stateCONF); // we send ident. to rm and register our resources
 
     stateCONF->setInitialState(statesetupServer);
-
-    statesetupServer->addTransition(this, &ZDspServer::sigServerIsSetUp, m_stateconnect2RM);
 
     m_pInitializationMachine->addState(stateCONF);
     m_pInitializationMachine->addState(stateFINISH);
     m_pInitializationMachine->setInitialState(stateCONF);
 
     QObject::connect(statesetupServer, &QAbstractState::entered, this, &ZDspServer::doSetupServer);
-    QObject::connect(m_stateconnect2RM, &QAbstractState::entered, this, &ZDspServer::doConnect2RM);
-    QObject::connect(m_stateconnect2RMError, &QAbstractState::entered, this, &ZDspServer::connect2RMError);
-    QObject::connect(m_stateSendRMIdentAndRegister, &QAbstractState::entered, this, &ZDspServer::doIdentAndRegister);
     QObject::connect(stateFINISH, &QAbstractState::entered, this, &ZDspServer::doCloseServer);
 
     m_pInitializationMachine->start();
@@ -116,7 +104,6 @@ void ZDspServer::init()
 
 ZDspServer::~ZDspServer()
 {
-    delete m_pRMConnection;
     resetDsp(); // we reset the dsp when we close the server
     AbstractDspDeviceNodePtr deviceNode = m_deviceNodeFactory->getDspDeviceNode();
     deviceNode->close();
@@ -163,18 +150,12 @@ void ZDspServer::doSetupServer()
         sigActionZdsp1.sa_restorer = NULL;
         sigaction(SIGIO, &sigActionZdsp1, NULL); // handler für sigio definieren
         deviceNode->enableFasync();
-        m_retryRMConnect = 100;
-        m_retryTimer.setSingleShot(true);
-        connect(&m_retryTimer, &QTimer::timeout, this, &ZDspServer::sigServerIsSetUp);
 
         if (setDspType()) { // interrogate the mounted dsp device type and bootfile match
             if (m_dspSettings.isBoot()) { // normally dsp gets booted by dsp server
                 if (resetDsp() && bootDsp()) { // and try to reset and then boot it
                     if (setSamplingSystem()) { // now we try to set the dsp's sampling system
-                        // our resource manager connection must be opened after configuration is done
-                        m_stateconnect2RM->addTransition(m_pRMConnection, &RMConnection::connected, m_stateSendRMIdentAndRegister);
-                        m_stateconnect2RM->addTransition(m_pRMConnection, &RMConnection::connectionRMError, m_stateconnect2RMError);
-                        m_stateconnect2RMError->addTransition(this, &ZDspServer::sigServerIsSetUp, m_stateconnect2RM);
+                        doFinalSetupSteps();
                         emit sigServerIsSetUp(); // so we enter state machine's next state
                     }
                     else {
@@ -188,9 +169,7 @@ void ZDspServer::doSetupServer()
                 }
             }
             else { // but for debugging purpose dsp is booted by ice
-                m_stateconnect2RM->addTransition(m_pRMConnection, &RMConnection::connected, m_stateSendRMIdentAndRegister);
-                m_stateconnect2RM->addTransition(m_pRMConnection, &RMConnection::connectionRMError, m_stateconnect2RMError);
-                m_stateconnect2RMError->addTransition(this, &ZDspServer::sigServerIsSetUp, m_stateconnect2RM);
+                doFinalSetupSteps();
                 emit sigServerIsSetUp(); // so we enter state machine's next state
             }
         }
@@ -204,54 +183,6 @@ void ZDspServer::doSetupServer()
 void ZDspServer::doCloseServer()
 {
     QCoreApplication::instance()->exit(-1);
-}
-
-void ZDspServer::doConnect2RM()
-{
-    qInfo("Starting doConnect2RM");
-    m_pRMConnection->connect2RM();
-}
-
-void ZDspServer::connect2RMError()
-{
-    m_retryRMConnect--;
-    if (m_retryRMConnect == 0) {
-        qCritical("Connect to resourcemanager failed: Abort");
-        emit abortInit();
-    }
-    else {
-        qWarning("Connect to resourcemanager failed: Retry");
-        m_retryTimer.start(200);
-    }
-}
-
-void ZDspServer::doIdentAndRegister()
-{
-    qInfo("Starting doIdentAndRegister");
-    m_pRMConnection->SendIdent(ServerName);
-
-    EthSettingsPtr ethSettings = m_settings->getEthSettings();
-    quint32 port = ethSettings->getPort(EthSettings::protobufserver);
-
-    connect(&m_resourceRegister, &ResourceRegisterTransaction::registerRdy, this, &ZDspServer::onResourceReady);
-    m_resourceRegister.register1Resource(QString("DSP;DSP1;;ADSP Signal Processor;%1;").arg(port));
-    m_resourceRegister.register1Resource(QString("DSP1;PGRMEMI;%1;DSP ProgramMemory(Interrupt);%2;").arg(getProgMemInterruptAvailable()).arg(port));
-    m_resourceRegister.register1Resource(QString("DSP1;PGRMEMC;%1;DSP ProgramMemory(Cyclic);%2;").arg(getProgMemCyclicAvailable()).arg(port));
-    m_resourceRegister.register1Resource(QString("DSP1;USERMEM;%1;DSP UserMemory;%2;").arg(getUserMemAvailable()).arg(port));
-}
-
-void ZDspServer::onResourceReady()
-{
-    disconnect(&m_resourceRegister, &ResourceRegisterTransaction::registerRdy, this, &ZDspServer::onResourceReady);
-    EthSettingsPtr ethSettings = m_settings->getEthSettings();
-    m_protoBufServer.startServer(ethSettings->getPort(EthSettings::protobufserver));
-    openTelnetScpi();
-    if (m_outputHealthLogs) {
-        m_periodicLogTimer = TimerFactoryQt::createPeriodic(loggingIntervalMs);
-        connect(m_periodicLogTimer.get(), &TimerTemplateQt::sigExpired,
-                this, &ZDspServer::outputLogs);
-        m_periodicLogTimer->start();
-    }
 }
 
 void ZDspServer::outputDspRunState()
@@ -452,6 +383,19 @@ void ZDspServer::executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd)
         protoCmd->m_sOutput = startTriggerIntListHKSK(cmd.getParam(0), socketNum);
         break;
     }
+    }
+}
+
+void ZDspServer::doFinalSetupSteps()
+{
+    EthSettingsPtr ethSettings = m_settings->getEthSettings();
+    m_protoBufServer.startServer(ethSettings->getPort(EthSettings::protobufserver));
+    openTelnetScpi();
+    if (m_outputHealthLogs) {
+        m_periodicLogTimer = TimerFactoryQt::createPeriodic(loggingIntervalMs);
+        connect(m_periodicLogTimer.get(), &TimerTemplateQt::sigExpired,
+                this, &ZDspServer::outputLogs);
+        m_periodicLogTimer->start();
     }
 }
 

@@ -62,16 +62,13 @@ private slots:
     void doConfiguration();
     void doSetupServer();
     void doCloseServer();
-    void doConnect2RM();
-    void connect2RMError();
-    void doIdentAndRegister();
-    void onResourceReady();
 
     void outputLogs();
 private:
     void init();
     void initSCPIConnection();
     void executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd) override;
+    void doFinalSetupSteps();
 
     friend class TestZdsp1dForVarAccess;
 
@@ -79,26 +76,6 @@ private:
     void outputDspRunState();
     void outputAndResetTransactionsLogs();
     void openTelnetScpi();
-
-    Zera::XMLConfig::cReader m_xmlConfigReader;
-    cDSPSettings m_dspSettings;
-    SettingsContainerPtr m_settings;
-    AbstractFactoryDeviceNodeDspPtr m_deviceNodeFactory;
-    DspVarDeviceNodeInOut m_dspInOut;
-    VeinTcp::AbstractTcpNetworkFactoryPtr m_tcpNetworkFactory;
-    VeinTcp::TcpServer m_protoBufServer;
-    XiQNetWrapper m_protobufWrapper;
-
-    uchar m_currentCmdListSelector = 0;
-    QByteArray m_rawCyclicCmdMem; // unsere dsp programm listen
-    QByteArray m_rawInterruptCmdMem;
-    QSocketNotifier* m_pNotifier = nullptr;
-
-    ZDspClientContainer m_zdspClientContainer;
-
-    ulong UserWorkSpaceGlobalSegmentAdr;
-    LogStatisticsAsyncInt m_dspInterruptLogStatistics;
-    bool m_outputHealthLogs;
 
     bool resetDsp();
     bool bootDsp();
@@ -128,18 +105,31 @@ private:
     bool Test4HWPresent();
     bool Test4DspRunning();
     void executeCommandProto(VeinTcp::TcpPeer* peer, std::shared_ptr<google::protobuf::Message> cmd);
+
+    Zera::XMLConfig::cReader m_xmlConfigReader;
+    cDSPSettings m_dspSettings;
+    SettingsContainerPtr m_settings;
+    AbstractFactoryDeviceNodeDspPtr m_deviceNodeFactory;
+    DspVarDeviceNodeInOut m_dspInOut;
+    VeinTcp::AbstractTcpNetworkFactoryPtr m_tcpNetworkFactory;
+    VeinTcp::TcpServer m_protoBufServer;
+    XiQNetWrapper m_protobufWrapper;
+
+    uchar m_currentCmdListSelector = 0;
+    QByteArray m_rawCyclicCmdMem; // unsere dsp programm listen
+    QByteArray m_rawInterruptCmdMem;
+    QSocketNotifier* m_pNotifier = nullptr;
+
+    ZDspClientContainer m_zdspClientContainer;
+
+    ulong UserWorkSpaceGlobalSegmentAdr;
+    LogStatisticsAsyncInt m_dspInterruptLogStatistics;
+    bool m_outputHealthLogs;
     QString m_sDspBootPath;
 
     QStateMachine* m_pInitializationMachine;
-    QState* m_stateconnect2RM;
-    QState* m_stateconnect2RMError;
-    QState* m_stateSendRMIdentAndRegister;
-    RMConnection* m_pRMConnection = nullptr;
-    ResourceRegisterTransaction m_resourceRegister;
     ConsoleServer m_telnetServer;
 
-    int m_retryRMConnect;
-    QTimer m_retryTimer;
     TimerTemplateQtPtr m_periodicLogTimer;
 };
 
