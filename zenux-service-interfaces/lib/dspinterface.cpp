@@ -38,25 +38,16 @@ quint32 cDSPInterface::varList2Dsp()
     return d->varList2Dsp();
 }
 
-
 quint32 cDSPInterface::cmdList2Dsp()
 {
     Q_D(cDSPInterface);
     return d->cmdList2Dsp();
 }
 
-
 int cDSPInterface::cmdListCount()
 {
     Q_D(cDSPInterface);
     return d->cmdListCount();
-}
-
-
-void cDSPInterface::clearCmdList()
-{
-    Q_D(cDSPInterface);
-    d->clearCmdList();
 }
 
 void cDSPInterface::addCycListItem(QString cmd)
@@ -82,7 +73,6 @@ void cDSPInterface::deleteMemHandle(cDspMeasData *memhandle)
     Q_D(cDSPInterface);
     d->deleteMemHandle(memhandle);
 }
-
 
 quint32 cDSPInterface::activateInterface()
 {

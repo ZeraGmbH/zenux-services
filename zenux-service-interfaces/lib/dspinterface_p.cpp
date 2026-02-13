@@ -102,12 +102,6 @@ int cDSPInterfacePrivate::intListCount()
     return m_irqCmdList.count();
 }
 
-void cDSPInterfacePrivate::clearCmdList()
-{
-    m_cycCmdList.clear();
-    m_irqCmdList.clear();
-}
-
 // Not used in public interface
 quint32 cDSPInterfacePrivate::triggerIntHKSK(quint32 hksk)
 {

@@ -45,7 +45,6 @@ public:
     quint32 varList2Dsp(); // send the var-list to dsp server
     quint32 cmdList2Dsp(); // send cyclic command list to the dsp server
     int cmdListCount(); // returns the number of command in cyclist program list
-    void clearCmdList(); // clears all cmd lists
     void addCycListItem(QString cmd); // appends new command to cyclic list
     void addCycListItems(const QStringList &cmds); // appends new commands to cyclic list
     cDspMeasData* getMemHandle(QString name); // init a new memory group and return handle
