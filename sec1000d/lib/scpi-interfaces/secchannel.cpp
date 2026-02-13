@@ -115,7 +115,7 @@ QString SecChannel::getName() const
 }
 
 
-bool SecChannel::isfree()
+bool SecChannel::isfree() const
 {
     return !m_bSet;
 }

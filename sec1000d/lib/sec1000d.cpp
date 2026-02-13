@@ -110,6 +110,23 @@ QString cSEC1000dServer::getSecDeviceNode()
     return m_settings->getFpgaSettings()->getSecDeviceNode();
 }
 
+int cSEC1000dServer::getEcUnitsAvailable() const
+{
+    return m_pECalculatorInterface->getECalcChannelList().count();
+}
+
+int cSEC1000dServer::getEcUnitsOccupied() const
+{
+    const QList<SecChannel*> secChannels = m_pECalculatorInterface->getECalcChannelList();
+    int occupied = 0;
+    for (int i=0; i<secChannels.count(); ++i) {
+        const SecChannel* channel = secChannels[i];
+        if (!channel->isfree())
+            occupied++;
+    }
+    return occupied;
+}
+
 void cSEC1000dServer::doConfiguration(int ecUnitCount)
 {
     if ( pipe(pipeFileDescriptorSec1000) == -1 ) {

@@ -25,7 +25,7 @@ public:
     void initSCPIConnection(const QString &leadingNodes);
 
     QString getName() const;
-    bool isfree();
+    bool isfree() const;
     bool set(QByteArray id);
     void free();
     void setIntReg(quint8 reg);

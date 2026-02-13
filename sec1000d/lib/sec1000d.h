@@ -32,6 +32,8 @@ public:
     ~cSEC1000dServer();
     QString getServerVersion();
     QString getSecDeviceNode();
+    int getEcUnitsAvailable() const;
+    int getEcUnitsOccupied() const;
     static const ServerParams defaultParams;
 
 signals:
