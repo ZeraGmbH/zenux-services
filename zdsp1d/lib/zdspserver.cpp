@@ -907,7 +907,7 @@ QString ZDspServer::loadCmdListAllClients()
 {
     QString errs;
     if (!compileCmdListsForAllClientsToRawStream(errs)) {
-        qCritical("compileCmdListsForAllClientsToRawStream failed");
+        qCritical("compileCmdListsForAllClientsToRawStream failed\n%s", qPrintable(errs));
         return QString("%1 %2").arg(ZSCPI::scpiAnswer[ZSCPI::errval], errs); // das "fehlerhafte" kommando anhängen
     }
     if (!uploadCommandLists()) {
