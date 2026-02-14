@@ -14,7 +14,7 @@ public:
     QString getSecDeviceNode();
     QString getDspDeviceNode();
 public slots:
-    virtual void configXMLInfo(QString key);
+    void configXMLInfo(const QString &key) override;
 private:
     QString m_ctrlDeviceNode;
     QString m_msgDeviceNode;

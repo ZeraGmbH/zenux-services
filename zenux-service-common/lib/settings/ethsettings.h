@@ -19,7 +19,7 @@ public:
     quint16 getPort(ethmember member);
     bool isSCPIactive();
 public slots:
-    virtual void configXMLInfo(QString key);
+    void configXMLInfo(const QString &key) override;
 private:
     QString m_sRMIPAdr;
     quint16 m_nProtobufServerPort, m_nSCPIServerPort, m_nRMPort;

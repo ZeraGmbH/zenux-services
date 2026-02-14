@@ -47,7 +47,7 @@ bool EthSettings::isSCPIactive()
     return m_bSCPIactive;
 }
 
-void EthSettings::configXMLInfo(QString key)
+void EthSettings::configXMLInfo(const QString &key)
 {
     if (m_ConfigXMLMap.contains(key)) {
         switch (m_ConfigXMLMap[key])

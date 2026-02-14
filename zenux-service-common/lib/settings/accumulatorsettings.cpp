@@ -20,7 +20,7 @@ bool AccumulatorSettings::isAvailable()
     return m_bAvail;
 }
 
-void AccumulatorSettings::configXMLInfo(QString key)
+void AccumulatorSettings::configXMLInfo(const QString &key)
 {
     if (m_ConfigXMLMap.contains(key)) {
         if (m_ConfigXMLMap[key] == cfgAvail)

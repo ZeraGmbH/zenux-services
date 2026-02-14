@@ -16,7 +16,7 @@ QString SourceControlSettings::getSourceCapFile()
     return m_sourceCapFile;
 }
 
-void SourceControlSettings::configXMLInfo(QString key)
+void SourceControlSettings::configXMLInfo(const QString &key)
 {
     if (m_ConfigXMLMap.contains(key)) {
         if (m_ConfigXMLMap[key] == cfgCapabilitiesFile)

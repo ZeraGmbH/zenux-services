@@ -27,7 +27,7 @@ QList<ScInSettings::ChannelSettings *> &ScInSettings::getChannelSettings()
     return m_ChannelSettingsList;
 }
 
-void ScInSettings::configXMLInfo(QString key)
+void ScInSettings::configXMLInfo(const QString &key)
 {
     if (m_ConfigXMLMap.contains(key)) {
         switch (m_ConfigXMLMap[key])

@@ -10,7 +10,7 @@ public:
     ~AccumulatorSettings();
     bool isAvailable();
 public slots:
-    virtual void configXMLInfo(QString key);
+    void configXMLInfo(const QString &key) override;
 private:
     bool m_bAvail;
 };

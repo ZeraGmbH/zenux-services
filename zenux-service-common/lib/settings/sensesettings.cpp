@@ -47,7 +47,7 @@ SenseSystem::cChannelSettings *cSenseSettings::findChannelSettingByAlias1(QStrin
     return nullptr;
 }
 
-void cSenseSettings::configXMLInfo(QString key)
+void cSenseSettings::configXMLInfo(const QString &key)
 {
     if (m_ConfigXMLMap.contains(key)) {
         switch (m_ConfigXMLMap[key])

@@ -36,7 +36,7 @@ quint16 cDSPSettings::getsamplesMeasurePeriod()
     return m_nSamplesPerMeasurePeriod;
 }
 
-void cDSPSettings::configXMLInfo(QString key)
+void cDSPSettings::configXMLInfo(const QString &key)
 {
     if (m_ConfigXMLMap.contains(key)) {
         switch (m_ConfigXMLMap[key])

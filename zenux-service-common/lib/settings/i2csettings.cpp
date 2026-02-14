@@ -60,7 +60,7 @@ int I2cSettings::getEepromByteSize() const
     return m_eepromCapacity;
 }
 
-void I2cSettings::configXMLInfo(QString key)
+void I2cSettings::configXMLInfo(const QString &key)
 {
     if (m_pXMLReader && m_ConfigXMLMap.contains(key)) {
         switch (m_ConfigXMLMap[key])

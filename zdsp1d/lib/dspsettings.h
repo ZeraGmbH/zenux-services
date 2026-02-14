@@ -28,7 +28,7 @@ public:
     quint16 getsamplesMeasurePeriod();
 
 public slots:
-    virtual void configXMLInfo(QString key);
+    void configXMLInfo(const QString &key) override;
 
 private:
     QString m_sDeviceNode;

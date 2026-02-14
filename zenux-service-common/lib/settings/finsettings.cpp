@@ -34,7 +34,7 @@ QList<FInSettings::ChannelSettings *> &FInSettings::getChannelSettings()
     return m_ChannelSettingsList;
 }
 
-void FInSettings::configXMLInfo(QString key)
+void FInSettings::configXMLInfo(const QString &key)
 {
     if (m_ConfigXMLMap.contains(key)) {
         switch (m_ConfigXMLMap[key])

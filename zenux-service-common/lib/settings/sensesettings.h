@@ -104,7 +104,7 @@ public:
     SenseSystem::cChannelSettings* findChannelSettingByMxName(QString intMxName) const;
     SenseSystem::cChannelSettings* findChannelSettingByAlias1(QString alias1) const;
 public slots:
-    virtual void configXMLInfo(QString key);
+    void configXMLInfo(const QString &key) override;
 private:
     QList<SenseSystem::cChannelSettings*> m_ChannelSettingsList;
 };

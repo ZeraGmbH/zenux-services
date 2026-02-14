@@ -24,7 +24,7 @@ public:
     quint32 getIrqAdress(); // our base adress
 
 public slots:
-    virtual void configXMLInfo(QString key);
+    void configXMLInfo(const QString &key) override;
 
 private:
     int m_ecUnitCount;

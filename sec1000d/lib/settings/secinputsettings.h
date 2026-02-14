@@ -31,7 +31,7 @@ public:
     qint8 mux(QString name);
 
 public slots:
-    virtual void configXMLInfo(QString key);
+    void configXMLInfo(const QString &key) override;
 
 private:
     quint16 m_nCount;

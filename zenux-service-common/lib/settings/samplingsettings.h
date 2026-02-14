@@ -16,7 +16,7 @@ public:
     ~SamplingSettings();
     const QList<ChannelSettings*>& getChannelSettings();
 public slots:
-    virtual void configXMLInfo(QString key);
+    void configXMLInfo(const QString &key) override;
 private:
     QList<ChannelSettings*> m_ChannelSettingsList;
 };

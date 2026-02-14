@@ -17,7 +17,7 @@ qint8 SecInputSettings::mux(QString name)
     return muxInfoHash[name];
 }
 
-void SecInputSettings::configXMLInfo(QString key)
+void SecInputSettings::configXMLInfo(const QString &key)
 {
     if (m_ConfigXMLMap.contains(key)) {
         int cmd = m_ConfigXMLMap[key];

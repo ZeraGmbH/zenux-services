@@ -28,7 +28,7 @@ QList<HkInSettings::ChannelSettings*> &HkInSettings::getChannelSettings()
     return m_ChannelSettingsList;
 }
 
-void HkInSettings::configXMLInfo(QString key)
+void HkInSettings::configXMLInfo(const QString &key)
 {
     if (m_ConfigXMLMap.contains(key)) {
         switch (m_ConfigXMLMap[key])

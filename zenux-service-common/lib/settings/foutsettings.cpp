@@ -43,7 +43,7 @@ QList<FOutSettings::ChannelSettings*> &FOutSettings::getChannelSettings()
     return m_ChannelSettingsList;
 }
 
-void FOutSettings::configXMLInfo(QString key)
+void FOutSettings::configXMLInfo(const QString &key)
 {
     if (m_ConfigXMLMap.contains(key)) {
         switch (m_ConfigXMLMap[key])

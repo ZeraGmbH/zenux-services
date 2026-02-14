@@ -42,7 +42,7 @@ public:
     const QString &getDeviceNode() const;
     int getEepromByteSize() const;
 public slots:
-    virtual void configXMLInfo(QString key);
+    void configXMLInfo(const QString &key) override;
 protected:
     int m_debugLevel = 1;
     QString m_sDeviceNode;

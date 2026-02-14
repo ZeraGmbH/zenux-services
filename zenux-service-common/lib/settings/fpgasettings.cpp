@@ -37,7 +37,7 @@ QString FPGASettings::getDspDeviceNode()
     return m_dspDeviceNode;
 }
 
-void FPGASettings::configXMLInfo(QString key)
+void FPGASettings::configXMLInfo(const QString &key)
 {
     if (m_ConfigXMLMap.contains(key)) {
         switch (m_ConfigXMLMap[key])

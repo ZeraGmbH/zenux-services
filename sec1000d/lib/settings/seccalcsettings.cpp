@@ -30,7 +30,7 @@ quint32 SecCalculatorSettings::getIrqAdress()
     return m_nECalcUnitIrqAdress;
 }
 
-void SecCalculatorSettings::configXMLInfo(QString key)
+void SecCalculatorSettings::configXMLInfo(const QString &key)
 {
     if (m_ConfigXMLMap.contains(key)) {
         switch (m_ConfigXMLMap[key])

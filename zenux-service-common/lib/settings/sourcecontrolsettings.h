@@ -10,7 +10,7 @@ public:
     SourceControlSettings(Zera::XMLConfig::cReader *xmlread);
     QString getSourceCapFile();
 public slots:
-    void configXMLInfo(QString key) override;
+    void configXMLInfo(const QString &key) override;
 private:
     QString  m_sourceCapFile;
 };
