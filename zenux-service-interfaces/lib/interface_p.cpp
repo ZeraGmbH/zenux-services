@@ -1,6 +1,6 @@
-#include "interface_p.h"
-#include <proxy.h>
 #include <QStringList>
+
+#include "interface_p.h"
 
 namespace Zera {
 
@@ -18,7 +18,6 @@ cInterfacePrivate::cInterfacePrivate()
 
 cInterfacePrivate::~cInterfacePrivate()
 {
-    Zera::Proxy::getInstance()->releaseConnectionSmart(m_clientSmart); // no async. messages anymore
     m_instanceCount--;
 }
 
