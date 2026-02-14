@@ -723,7 +723,7 @@ void ZDspServer::DspIntHandler(int)
             int n = pardsp[0]; // anzahl der interrupts
             m_dspInterruptLogStatistics.addValue(n);
             if (n > 20)   // in the moment magic nr
-                qInfo ("Number of interrupts in a package: %i exceeds upper limit!", n);
+                qWarning("Number of interrupts in a package: %i exceeds upper limit!", n);
             else {
                 for (int i = 1; i < (n+1); i++) {
                     int process = pardsp[i] >> 16;
