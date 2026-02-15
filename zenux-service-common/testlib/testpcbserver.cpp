@@ -41,11 +41,6 @@ TestPcbServer::~TestPcbServer()
     if (m_pRMConnection) delete m_pRMConnection;
 }
 
-void TestPcbServer::setResources(ResourcesList resources)
-{
-    m_resources = resources;
-}
-
 void TestPcbServer::setScpiConnections(ScpiConnectionList scpiConnections)
 {
     m_scpiConnecttionsAddedFromExtern = scpiConnections;
@@ -70,10 +65,6 @@ void TestPcbServer::doSetupServer()
 {
     connectProtoConnectionSignals();
     m_scpiConnectionList.append(this); // the server itself has some commands
-    for(const auto &resource : qAsConst(m_resources)) {
-        m_scpiConnectionList.append(resource);
-        m_resourceList.append(resource);
-    }
     for(const auto &scpiConnection : qAsConst(m_scpiConnecttionsAddedFromExtern))
         m_scpiConnectionList.append(scpiConnection);
     initSCPIConnections();

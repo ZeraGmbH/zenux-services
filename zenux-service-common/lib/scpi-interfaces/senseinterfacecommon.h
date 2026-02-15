@@ -3,9 +3,8 @@
 
 #include "abstractadjstatus.h"
 #include "abstractchannelrangefactory.h"
-#include "resource.h"
+#include "scpiserverconnection.h"
 #include "adjustmentxmlimportexporttemplate.h"
-#include "i2csettings.h"
 #include "systeminfo.h"
 #include "sensechannelcommon.h"
 #include "adjustmenteepromreadwrite.h"
@@ -48,7 +47,7 @@ enum SensorType {
     Clamp = 1<<9
 };
 
-class SenseInterfaceCommon : public cResource, public AdjustmentXmlImportExportTemplate, public AbstractAdjStatus
+class SenseInterfaceCommon : public ScpiServerConnection, public AdjustmentXmlImportExportTemplate, public AbstractAdjStatus
 {
 public:
     SenseInterfaceCommon(std::shared_ptr<cSCPI> scpiInterface,
@@ -64,7 +63,6 @@ public:
     QString getChannelByCtrlChannelNo(quint16 ctrlChannel);
     SenseRangeCommon* getRange(const QString &channelName, const QString &rangeName);
     bool computeSenseAdjData();
-    void registerResource(RMConnection *rmConnection, quint16 port) override;
     bool exportAdjData(QDateTime dateTimeWrite);
     bool importAdjData();
     quint16 getAdjChecksum();

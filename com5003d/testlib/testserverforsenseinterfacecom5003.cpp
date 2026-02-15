@@ -29,11 +29,10 @@ TestServerForSenseInterfaceCom5003::TestServerForSenseInterfaceCom5003(AbstractF
     m_samplingInterface = std::make_unique<cSamplingInterface>(m_scpiInterface,
                                                                m_settings->getSamplingSettings(),
                                                                ctrlFactory);
-    setResources(ResourcesList{m_senseInterface.get()});
 
-    // no resources / scpi interfaces from here
+    // scpi interfaces
     m_systemInterface = std::make_unique<Com5003SystemInterface>(this, m_systemInfo.get(), m_senseInterface.get(), ctrlFactory);
-    setScpiConnections(ScpiConnectionList{m_systemInterface.get(), m_samplingInterface.get()});
+    setScpiConnections(ScpiConnectionList{m_systemInterface.get(), m_samplingInterface.get(), m_senseInterface.get()});
 
     start();
 }

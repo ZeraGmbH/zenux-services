@@ -313,8 +313,7 @@ void cCOM5003dServer::setupInterfacesRequiresAtmelRunning(AbstractChannelRangeFa
     m_scpiConnectionList.append(m_pSCHeadInterface = new ScInGroupResourceAndInterface(m_scpiInterface, m_pSCHeadSettings));
     m_scpiConnectionList.append(m_hkInInterface = new HkInGroupResourceAndInterface(m_scpiInterface, m_hkInSettings));
 
-    m_resourceList.append(m_pSenseInterface); // all our resources
-    m_resourceList.append(m_foutInterface);
+    m_resourceList.append(m_foutInterface); // all our resources
     m_resourceList.append(m_pFRQInputInterface);
     m_resourceList.append(m_pSCHeadInterface);
     m_resourceList.append(m_hkInInterface);

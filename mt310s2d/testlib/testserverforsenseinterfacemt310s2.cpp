@@ -41,7 +41,6 @@ TestServerForSenseInterfaceMt310s2::TestServerForSenseInterfaceMt310s2(AbstractF
     m_samplingInterface = std::make_unique<cSamplingInterface>(m_scpiInterface,
                                                                m_settings->getSamplingSettings(),
                                                                ctrlFactory);
-    setResources(ResourcesList{m_senseInterface.get()});
 
     m_systemInterface = std::make_unique<Mt310s2SystemInterface>(this,
                                                                  m_systemInfo.get(),
@@ -50,7 +49,7 @@ TestServerForSenseInterfaceMt310s2::TestServerForSenseInterfaceMt310s2(AbstractF
                                                                  ctrlFactory,
                                                                  nullptr);
 
-    setScpiConnections(ScpiConnectionList{m_systemInterface.get(), m_clampInterface.get(), m_samplingInterface.get()});
+    setScpiConnections(ScpiConnectionList{m_systemInterface.get(), m_clampInterface.get(), m_samplingInterface.get(), m_senseInterface.get()});
 
     start();
 }

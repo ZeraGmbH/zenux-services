@@ -27,7 +27,7 @@ SenseInterfaceCommon::SenseInterfaceCommon(std::shared_ptr<cSCPI> scpiInterface,
                                            AbstractChannelRangeFactoryPtr rangeFactory,
                                            AbstractFactoryI2cCtrlPtr ctrlFactory,
                                            QHash<QString, int> availSenseModesHash) :
-    cResource(scpiInterface),
+    ScpiServerConnection(scpiInterface),
     m_ctrlFactory(ctrlFactory),
     m_availSenseModesHash(availSenseModesHash),
     m_adjReadWrite(std::move(adjMemory)),
@@ -100,15 +100,6 @@ bool SenseInterfaceCommon::computeSenseAdjData()
             atLeastOneComputed = true;
     }
     return atLeastOneComputed;
-}
-
-void SenseInterfaceCommon::registerResource(RMConnection *rmConnection, quint16 port)
-{
-    for(auto channel : qAsConst(m_channelList)) {
-        register1Resource(rmConnection, NotZeroNumGen::getMsgNr(), QString("SENSE;%1;1;Measurement channel;%2;")
-                                                                       .arg(channel->getName())
-                                                                       .arg(port));
-    }
 }
 
 void SenseInterfaceCommon::initSCPIConnection()

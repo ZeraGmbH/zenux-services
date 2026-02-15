@@ -7,7 +7,6 @@
 #include <memory.h>
 
 typedef QList<XMLSettings*> XmlSettingsList;
-typedef QList<cResource*> ResourcesList;
 typedef QList<ScpiServerConnection*> ScpiConnectionList;
 
 class TestPcbServer : public PCBServer
@@ -19,8 +18,6 @@ public:
     ~TestPcbServer();
     Zera::XMLConfig::cReader *getConfigReader();
     RMConnection* getRmConnection();
-    // Note: add interface either to resources ot scpi connections - not both
-    void setResources(ResourcesList resources);
     void setScpiConnections(ScpiConnectionList scpiConnections);
     void start();
 signals:
@@ -31,7 +28,6 @@ private slots:
     void doConnect2RM();
     void doIdentAndRegister();
 private:
-    ResourcesList m_resources;
     ScpiConnectionList m_scpiConnecttionsAddedFromExtern;
     int m_resourcesToConnect = 0;
     QStateMachine* m_pInitializationMachine = nullptr;

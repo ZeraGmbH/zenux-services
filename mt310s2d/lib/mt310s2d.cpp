@@ -212,8 +212,7 @@ void cMT310S2dServer::earlySetup(AbstractChannelRangeFactoryPtr channelRangeFact
             m_pSystemInterface, &Mt310s2SystemInterface::onAccuStatusChanged);
     m_scpiConnectionList.append(m_sourceControlInterface = new SourceControlInterface(m_scpiInterface, m_sourceControlSettings, m_ctrlFactory));
 
-    m_resourceList.append(m_pSenseInterface); // all our resources
-    m_resourceList.append(m_foutInterface);
+    m_resourceList.append(m_foutInterface); // all our resources
     m_resourceList.append(m_pFRQInputInterface);
     m_resourceList.append(m_pSCHeadInterface);
     m_resourceList.append(m_hkInInterface);
