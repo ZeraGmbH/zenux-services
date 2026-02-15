@@ -1,12 +1,12 @@
 #ifndef SAMPLINGINTERFACE_H
 #define SAMPLINGINTERFACE_H
 
-#include "resource.h"
+#include "scpiserverconnection.h"
 #include "samplingsettings.h"
 #include "abstractfactoryi2cctrl.h"
 #include <QStringList>
 
-class cSamplingInterface: public cResource
+class cSamplingInterface: public ScpiServerConnection
 {
     Q_OBJECT
 public:
@@ -14,7 +14,6 @@ public:
                        SamplingSettingsPtr samplingSettings,
                        AbstractFactoryI2cCtrlPtr ctrlFactory);
     void initSCPIConnection() override;
-    virtual void registerResource(RMConnection *rmConnection, quint16 port) override;
 protected:
     void executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd) override;
 private:

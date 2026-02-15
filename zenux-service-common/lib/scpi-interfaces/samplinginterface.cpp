@@ -1,6 +1,5 @@
 #include "samplinginterface.h"
 #include "samplingsettings.h"
-#include "notzeronumgen.h"
 #include "zscpi_response_definitions.h"
 
 enum Commands
@@ -13,7 +12,7 @@ enum Commands
 cSamplingInterface::cSamplingInterface(std::shared_ptr<cSCPI> scpiInterface,
                                        SamplingSettingsPtr samplingSettings,
                                        AbstractFactoryI2cCtrlPtr ctrlFactory) :
-    cResource(scpiInterface),
+    ScpiServerConnection(scpiInterface),
     m_ctrlFactory(ctrlFactory)
 {
     const QList<SamplingSettings::ChannelSettings*> &channelSettings = samplingSettings->getChannelSettings();
@@ -30,11 +29,6 @@ void cSamplingInterface::initSCPIConnection()
     addDelegate("SAMPLE", "SRATE", SCPI::isQuery, m_scpiInterface, cmdSampleRate);
     addDelegate("SAMPLE:S0", "PLL", SCPI::isQuery | SCPI::isCmdwP , m_scpiInterface, cmdPLL);
     addDelegate("SAMPLE:S0:PLL", "CATALOG", SCPI::isQuery, m_scpiInterface, cmdPLLCat);
-}
-
-void cSamplingInterface::registerResource(RMConnection *rmConnection, quint16 port)
-{
-    register1Resource(rmConnection, NotZeroNumGen::getMsgNr(), QString("SAMPLE;S0;1;%2;%3;").arg(m_sDescription).arg(port));
 }
 
 void cSamplingInterface::executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd)
@@ -93,4 +87,3 @@ QString cSamplingInterface::scpiReadPLLCatalog(const QString &scpi)
         return m_pllChannelList.join(";");
     return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
-
