@@ -4,8 +4,6 @@
 #include "abstractfactorydevicenodedsp.h"
 #include "consoleserver.h"
 #include "dspvardevicenodeinout.h"
-#include "resourceregistertransaction.h"
-#include "rmconnection.h"
 #include "dspsettings.h"
 #include "zdspclientcontainer.h"
 #include "scpiconnection.h"

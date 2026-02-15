@@ -5,9 +5,9 @@
 #include "commonscpimethods.h"
 #include "devicenodedsp.h"
 #include "zscpi_response_definitions.h"
+#include <netmessages.pb.h>
 #include <timerfactoryqt.h>
 #include <scpinodestaticfunctions.h>
-#include <QDebug>
 #include <QCoreApplication>
 #include <QFinalState>
 #include <QDataStream>

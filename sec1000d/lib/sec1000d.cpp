@@ -6,14 +6,12 @@
 #include "sec1000systeminterface.h"
 #include "sec1000systeminfo.h"
 #include "secmainandchannelinterface.h"
-#include "rmconnection.h"
 #include <vtcp_server.h>
 #include <xmlconfigreader.h>
 #include <QStateMachine>
 #include <QState>
 #include <QFinalState>
 #include <QStringList>
-#include <QDebug>
 #include <QByteArray>
 #include <QCoreApplication>
 #include <QSocketNotifier>

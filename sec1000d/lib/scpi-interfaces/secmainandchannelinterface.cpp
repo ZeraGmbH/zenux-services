@@ -1,7 +1,6 @@
 #include "secmainandchannelinterface.h"
 #include "scpiconnection.h"
 #include "zscpi_response_definitions.h"
-#include "notzeronumgen.h"
 #include <scpi.h>
 
 enum Commands

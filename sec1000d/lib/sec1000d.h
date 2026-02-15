@@ -2,7 +2,6 @@
 #define SEC1000D_H
 
 #include "pcbserver.h"
-#include "rmconnection.h"
 #include "settingscontainer.h"
 #include "abstractfactorydevicenodesec.h"
 #include <QTimer>

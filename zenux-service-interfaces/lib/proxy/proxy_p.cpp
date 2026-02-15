@@ -6,7 +6,6 @@
 #include <vtcp_peer.h>
 #include <netmessages.pb.h>
 #include <QUuid>
-#include <QDebug>
 
 namespace Zera {
 
@@ -94,7 +93,7 @@ void ProxyPrivate::handleReceiveMessage(std::shared_ptr<google::protobuf::Messag
     }
     // ? todo error handling in case of unknown clientid ?
     else
-        qWarning() << "No ClientID";
+        qWarning("No ClientID");
 }
 
 void ProxyPrivate::receiveTcpError(VeinTcp::TcpPeer *peer, QAbstractSocket::SocketError errorCode)
