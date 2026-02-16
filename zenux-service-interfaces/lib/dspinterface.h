@@ -34,7 +34,6 @@ public:
     cDspMeasData* getMemHandle(QString name); // init a new memory group and return handle
     void deleteMemHandle(cDspMeasData* memhandle);
 
-    quint32 deactivateInterface();
     quint32 deactivateAll();
 
     // TODO!!! make DSPDATA::dType type go as we did on dspMemoryWrite

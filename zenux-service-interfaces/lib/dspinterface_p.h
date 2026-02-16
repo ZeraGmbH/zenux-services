@@ -19,7 +19,6 @@ enum dspcommands
     intlist2dsp,
     triggerinthksk,
     activateinterface,
-    deactivateinterface,
     deactivateall,
     dataacquisition,
     dspmemoryread,
@@ -51,7 +50,6 @@ public:
     void deleteMemHandle(cDspMeasData* memhandle);
     quint32 activateInterface(); // load var- and cmdlists to dsp (starts theprogram on dsp)
 
-    quint32 deactivateInterface();
     quint32 deactivateAll();
 
     quint32 dataAcquisition(cDspMeasData* memgroup);

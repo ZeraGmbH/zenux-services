@@ -80,12 +80,6 @@ quint32 cDSPInterface::activateInterface()
     return d->activateInterface();
 }
 
-quint32 cDSPInterface::deactivateInterface()
-{
-    Q_D(cDSPInterface);
-    return d->deactivateInterface();
-}
-
 quint32 cDSPInterface::deactivateAll()
 {
     Q_D(cDSPInterface);

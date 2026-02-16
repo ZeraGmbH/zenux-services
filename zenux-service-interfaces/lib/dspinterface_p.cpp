@@ -161,13 +161,6 @@ quint32 cDSPInterfacePrivate::activateInterface()
     return msgnr;
 }
 
-quint32 cDSPInterfacePrivate::deactivateInterface()
-{
-    quint32 msgnr = sendCommand("MEAS:LIST:CLE"); // long: MEASURE:LIST:CLEAR
-    m_MsgNrCmdList[msgnr] = deactivateinterface;
-    return msgnr;
-}
-
 quint32 cDSPInterfacePrivate::deactivateAll()
 {
     quint32 msgnr = sendCommand("MEAS:LIST:CLAL"); // long: MEASURE:LIST:CLALL
@@ -251,7 +244,6 @@ void cDSPInterfacePrivate::receiveAnswer(std::shared_ptr<ProtobufMessage::NetMes
         case intlist2dsp:
         case triggerinthksk:
         case activateinterface:
-        case deactivateinterface:
         case deactivateall:
         case dspmemorywrite:
         case dspscpi:

@@ -236,7 +236,6 @@ enum SCPICmdType  {
     scpiGetDeviceStatus,
 
     // die routinen für das measure modell
-    scpiUnloadCmdList,
     scpiUnloadCmdListAllClients,
     scpiLoadCmdList,
     scpiRavListSet,
@@ -271,7 +270,6 @@ void ZDspServer::initSCPIConnection()
     addDelegate("MEASURE:LIST", "INTLIST", SCPI::isCmdwP, m_scpiInterface, scpiCmdIntListSet);
     addDelegate("MEASURE:LIST", "CYCLIST", SCPI::isCmdwP, m_scpiInterface, scpiCmdCycListSet);
     addDelegate("MEASURE:LIST", "SET", SCPI::isCmdwP, m_scpiInterface, scpiLoadCmdList);
-    addDelegate("MEASURE:LIST", "CLEAR", SCPI::isCmdwP, m_scpiInterface, scpiUnloadCmdList);
     addDelegate("MEASURE:LIST", "CLALL", SCPI::isCmd, m_scpiInterface, scpiUnloadCmdListAllClients);
 
     addDelegate("STATUS", "DEVICE", SCPI::isQuery, m_scpiInterface, scpiGetDeviceStatus);
@@ -342,11 +340,6 @@ void ZDspServer::executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd)
             m_zdspClientContainer.delClient(client->getProtobufClientId());
             client = nullptr;
         }
-        break;
-    case scpiUnloadCmdList:
-        m_zdspClientContainer.delClient(client->getProtobufClientId());
-        client = nullptr;
-        protoCmd->m_sOutput = loadCmdListAllClients();
         break;
     case scpiUnloadCmdListAllClients:
         m_zdspClientContainer.delAllClients();
