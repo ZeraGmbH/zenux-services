@@ -12,6 +12,11 @@ namespace Zera {
 
 class cDSPInterfacePrivate;
 
+class DspBuffLenCalc {
+public:
+    static int calcAvgFilterLen(int entries) { return 2*entries+1; /* avg double precision + 1 counter */}
+};
+
 class cDSPInterface: public AbstractServerInterface
 {
     Q_OBJECT
