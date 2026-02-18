@@ -10,12 +10,13 @@
 #include <timemachineobject.h>
 #include <testloghelpers.h>
 #include <mocktcpnetworkfactory.h>
+#include <QTimeZone>
 #include <QSignalSpy>
 #include <QTest>
 
 QTEST_MAIN(test_regression_adj_import_export_eeprom_mt310s2);
 
-static const QDateTime refTime = QDateTime::fromSecsSinceEpoch(0, Qt::UTC);
+static const QDateTime refTime = QDateTime::fromSecsSinceEpoch(0, QTimeZone::utc());
 
 void test_regression_adj_import_export_eeprom_mt310s2::cleanup()
 {

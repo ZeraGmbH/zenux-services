@@ -2,6 +2,7 @@
 #include "adjdatacompleteinternstream.h"
 #include "adjustmenteepromreadwrite.h"
 #include "mockeepromi2cfactory.h"
+#include <QTimeZone>
 #include <QFile>
 #include <QTest>
 
@@ -44,7 +45,7 @@ void test_adj_data_decoder::readServerVersionAndDeviceNameForMT()
     QCOMPARE(adjData->getAdjHeader().m_serverVersion, "V1.01");
     QCOMPARE(adjData->getAdjHeader().m_serialNumber, "Unknown");
     QCOMPARE(adjData->getAdjHeader().m_deviceVersion, "DEVICE: Unknown;PCB: Unknown;LCA: Unknown;CTRL: Unknown");
-    QCOMPARE(adjData->getAdjHeader().m_adjustmentDate, QDateTime::fromSecsSinceEpoch(0, Qt::UTC));
+    QCOMPARE(adjData->getAdjHeader().m_adjustmentDate, QDateTime::fromSecsSinceEpoch(0, QTimeZone::utc()));
 }
 
 void test_adj_data_decoder::readServerVersionAndDeviceNameForCOM()
@@ -60,7 +61,7 @@ void test_adj_data_decoder::readServerVersionAndDeviceNameForCOM()
     QCOMPARE(adjData->getAdjHeader().m_serverVersion, "V1.00");
     QCOMPARE(adjData->getAdjHeader().m_serialNumber, "Unknown");
     QCOMPARE(adjData->getAdjHeader().m_deviceVersion, "DEVICE: Unknown;PCB: Unknown;LCA: Unknown;CTRL: Unknown");
-    QCOMPARE(adjData->getAdjHeader().m_adjustmentDate, QDateTime::fromSecsSinceEpoch(0, Qt::UTC));
+    QCOMPARE(adjData->getAdjHeader().m_adjustmentDate, QDateTime::fromSecsSinceEpoch(0, QTimeZone::utc()));
 }
 
 void test_adj_data_decoder::checkChannelRangeAvailability()
