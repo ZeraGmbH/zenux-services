@@ -8,14 +8,14 @@
 #include <QAbstractSocket>
 #include <QVariant>
 
+class DspBuffLen {
+public:
+    static int avgFilterLen(int entries) { return 2*entries+1; /* avg double precision + 1 counter */}
+};
+
 namespace Zera {
 
 class cDSPInterfacePrivate;
-
-class DspBuffLenCalc {
-public:
-    static int calcAvgFilterLen(int entries) { return 2*entries+1; /* avg double precision + 1 counter */}
-};
 
 class cDSPInterface: public AbstractServerInterface
 {

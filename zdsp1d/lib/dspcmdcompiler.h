@@ -22,6 +22,8 @@ public:
 
 private:
     static bool syntaxCheck(const QString& dspCmdLine);
+    bool overflowCheckCMD2i16(const DspCmdDecodingDetails *decodedCmd,
+                              const QStringList &twoParamNames, const short twoI16Params[2]);
     DspVarResolver* m_varResolver;
     const int m_dspInterruptId;
 };
