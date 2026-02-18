@@ -38,7 +38,8 @@ bool TDspVar::Init(const QString& varDefinition)
 
 QString TDspVar::toHex(int val)
 {
-    return QString("0x%1").arg(QString("%1").arg(val, 6, 16, '0').toUpper());
+    QString hexVal = QString("000000%1").arg(val, 0, 16).toUpper().right(6);
+    return QString("0x") + hexVal;
 }
 
 TMemSection::TMemSection(sectionType section, long startAddress, int varCount, TDspVar *dspVars) :
