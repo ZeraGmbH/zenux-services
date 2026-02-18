@@ -10,8 +10,6 @@
 
 QTEST_MAIN(test_regression_adj_scpi_query_format_com5003);
 
-static const QDateTime refTime = QDateTime::fromSecsSinceEpoch(0, Qt::UTC);
-
 void test_regression_adj_scpi_query_format_com5003::initTestCase()
 {
     setupServers();
