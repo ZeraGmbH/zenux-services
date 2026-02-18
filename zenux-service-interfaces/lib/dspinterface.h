@@ -11,6 +11,7 @@
 class DspBuffLen {
 public:
     static int avgFilterLen(int entries) { return 2*entries+1; /* avg double precision + 1 counter */}
+    static int avgFilterCountPos(int entries) { return 2*entries; /* avg double precision + 1 counter */}
 };
 
 namespace Zera {
