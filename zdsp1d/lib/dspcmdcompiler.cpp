@@ -54,18 +54,25 @@ DspCmdWithParamsRaw DspCmdCompiler::compileOneCmdLineAligned(const QString &cmdL
         }
         case CMD2i16:
         {
-            short par[2];
+            short twoI16Params[2];
+            QStringList paramNames;
             bool t = true;
             for (int i=0; i<2; i++) {
                 sSearch = CmdParser.GetKeyword(&cmds);
-                t &= ( (par[i] = m_varResolver->getVarOffset(sSearch, userMemOffset, globalstartadr)) > -1);
+                paramNames.append(sSearch);
+                t &= ( (twoI16Params[i] = m_varResolver->getVarOffset(sSearch, userMemOffset, globalstartadr)) > -1);
             }
             sSearch = CmdParser.GetKeyword(&cmds);
             t &= sSearch.isEmpty();
             DspCmdWithParamsRaw lcmd;
             if (t) {
-                lcmd = DspCmdWithParamsRaw(dspcmd->CmdCode, (ushort)par[0], (ushort)par[1]);
-                if (dspcmd->modify) lcmd.w[1] = (lcmd.w[1] & 0xFFFF) | (m_dspInterruptId << 16);
+                if (dspcmd->m_cmdExtraCheckFunction)
+                    t = dspcmd->m_cmdExtraCheckFunction(paramNames, twoI16Params, m_varResolver);
+                if (t) {
+                    lcmd = DspCmdWithParamsRaw(dspcmd->CmdCode, (ushort)twoI16Params[0], (ushort)twoI16Params[1]);
+                    if (dspcmd->modify)
+                        lcmd.w[1] = (lcmd.w[1] & 0xFFFF) | (m_dspInterruptId << 16);
+                }
             }
             *ok = t;
             return lcmd;

@@ -1,5 +1,6 @@
 #include "dspapi.h"
 #include "dspvarandmemsection.h"
+#include "dspcmdextrachecks.h"
 #include <QHash>
 
 // alle angaben aus dsp assembler programm 
@@ -156,7 +157,7 @@ static DspCmdDecodingDetails DspCmd[78] =
 {"COPYUD", 18, CMD3i16, 0 },
 {"COPYDU", 19, CMD3i16, 0 },
 {"CMPAVERAGE1", 20, CMD3i16, 0 },
-{"CLEARN", 21, CMD2i16, 0 },
+{"CLEARN", 21, CMD2i16, 0, DspCmdExtraChecks::CLEARN },
 {"MULCCV", 22, CMD3i16, 0 }, // wie powerx (allgemeingültiger)
 {"INTERPOLATION", 23, CMD3i16, 0 },
 {"FFTREAL", 24, CMD3i16, 0 },
@@ -401,3 +402,4 @@ DspCmdWithParamsRaw::DspCmdWithParamsRaw(const unsigned short CMD, const unsigne
 {
     w[0]=(CMD<<16)+P1;w[1]=P2;
 }
+

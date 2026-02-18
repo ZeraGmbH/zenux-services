@@ -2,8 +2,10 @@
 #define DSPAPI_H
 
 #include "dspvarandmemsection.h"
+#include "dspvarresolver.h"
 #include <QString>
 #include <QHash>
+#include <functional>
 
 enum DspAcks {NBusy, InProgress, CmdError, ParError, CmdDone};
 
@@ -14,7 +16,9 @@ struct DspCmdDecodingDetails {
     const char* Name; // name des befehls
     ushort CmdCode; // der zugehörige befehlscode
     CmdType CmdClass; // der typ des befehls
-    char modify; // !=0 -> verändern, diese befehle erhalten die prozessnr. (fd) als parameter 
+    char modify; // !=0 -> verändern, diese befehle erhalten die prozessnr. (fd) als parameter
+    std::function<bool (const QStringList &paramNames, const short i16Params[],
+                        DspVarResolver* varResolver)> m_cmdExtraCheckFunction = nullptr;
 };
 
 class DspStaticData
