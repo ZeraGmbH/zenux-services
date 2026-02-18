@@ -120,7 +120,7 @@ private:
 
     ZDspClientContainer m_zdspClientContainer;
 
-    ulong UserWorkSpaceGlobalSegmentAdr;
+    ulong m_userWorkSpaceGlobalSegmentAdr;
     LogStatisticsAsyncInt m_dspInterruptLogStatistics;
     bool m_outputHealthLogs;
     QString m_sDspBootPath;

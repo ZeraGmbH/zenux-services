@@ -776,11 +776,11 @@ bool ZDspServer::compileCmdListsForAllClientsToRawStream(QString &errs)
             cycCmdMemStream << cmd;
             intCmdMemStream << cmd;
 
-            if (!client->GenCmdLists(errs, userMemOffset, UserWorkSpaceGlobalSegmentAdr))
+            if (!client->GenCmdLists(errs, userMemOffset, m_userWorkSpaceGlobalSegmentAdr))
                 return false;
 
             // relokalisieren der daten im dsp
-            userMemOffset += client->relocalizeUserMemSectionVars(userMemOffset, UserWorkSpaceGlobalSegmentAdr);
+            userMemOffset += client->relocalizeUserMemSectionVars(userMemOffset, m_userWorkSpaceGlobalSegmentAdr);
 
             const QList<DspCmdWithParamsRaw> &cycCmdList = client->GetDspCmdList();
             for (int j = 0; j < cycCmdList.size(); j++)
@@ -868,12 +868,12 @@ bool ZDspServer::setDspType()
 {
     int r = readMagicId();
     if ( r == DeviceNodeDsp::MAGIC_ID21262 ) {
-        UserWorkSpaceGlobalSegmentAdr = dm32UserWorkSpaceGlobal21262;
+        m_userWorkSpaceGlobalSegmentAdr = dm32UserWorkSpaceGlobal21262;
         return m_sDspBootPath.contains("zdsp21262.ldr");
         // adressen im dsp stehen für adsp21262 default richtig
     }
     else if ( r == DeviceNodeDsp::MAGIC_ID21362) {
-        UserWorkSpaceGlobalSegmentAdr = dm32UserWorkSpaceGlobal21362;
+        m_userWorkSpaceGlobalSegmentAdr = dm32UserWorkSpaceGlobal21362;
         if (m_sDspBootPath.contains("zdsp21362.ldr")) {
             // für adsp21362 schreiben wir die adressen um
             dm32DspWorkspace.m_startAddress = dm32DspWorkSpaceBase21362;
