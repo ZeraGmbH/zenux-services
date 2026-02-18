@@ -17,6 +17,7 @@ struct TDspVar {
     ulong adr = 0;                      // die abs. adresse auf welcher sich die variable befindet
     ulong offs = 0;                     // der offset innerhalb der memory section
     segmentType segment = localSegment; // segment info, nur relevant für client sections
+    static QString toHex(int val);
 };
 
 struct TMemSection { // beschreibt eine dsp memory section

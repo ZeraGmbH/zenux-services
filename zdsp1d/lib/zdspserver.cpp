@@ -674,6 +674,36 @@ int ZDspServer::getProgMemInterruptOccupied() const
     return memOccupied;
 }
 
+QJsonObject ZDspServer::getStaticMemAllocation()
+{
+    QMap<QString /*clientHandleName*/, QMap<QString /* varName */, const TDspVar*>> varsSorted;
+    QHash<QString, TDspVar*> staticVariables = DspStaticData::getVarHash();
+    for (auto iter=staticVariables.cbegin(); iter!=staticVariables.cend(); ++iter) {
+        const TDspVar* dspVar = iter.value();
+        varsSorted[dspVar->m_clientHandleName][dspVar->Name] = dspVar;
+    }
+    QJsonObject json;
+    for (auto iterClient=varsSorted.cbegin(); iterClient!=varsSorted.cend(); ++iterClient) {
+        QJsonObject jsonVars;
+        for (auto iterVars=iterClient->cbegin(); iterVars!=iterClient->cend(); ++iterVars) {
+            QJsonObject jsonVar;
+            QString hexvalue = TDspVar::toHex(iterVars.value()->adr);
+            jsonVar.insert("Addr", hexvalue);
+            hexvalue = TDspVar::toHex(iterVars.value()->offs);
+            jsonVar.insert("Offset", hexvalue);
+            jsonVar.insert("Size", int(iterVars.value()->size));
+            hexvalue = TDspVar::toHex(iterVars.value()->size);
+            jsonVar.insert("SizeHex", hexvalue);
+
+            const QString varName = iterVars.key();
+            jsonVars.insert(varName, jsonVar);
+        }
+        const QString clientHandleName = iterClient.key();
+        json.insert(clientHandleName, jsonVars);
+    }
+    return json;
+}
+
 ZdspClient *ZDspServer::addClientForTest()
 {
     m_zdspClientContainer.addClient(nullptr, QByteArray(), m_deviceNodeFactory);

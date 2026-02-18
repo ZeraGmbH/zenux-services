@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/">
         <file>scpi-dump.xml</file>
+        <file>dump-static-variables.json</file>
     </qresource>
 </RCC>

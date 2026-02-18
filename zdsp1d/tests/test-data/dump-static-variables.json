@@ -1,0 +1,450 @@
+{
+    "ChannelNr": {
+        "CH0": {
+            "Addr": "0x000000",
+            "Offset": "0x000000",
+            "Size": 1,
+            "SizeHex": "0x000001"
+        },
+        "CH1": {
+            "Addr": "0x000001",
+            "Offset": "0x000001",
+            "Size": 1,
+            "SizeHex": "0x000001"
+        },
+        "CH10": {
+            "Addr": "0x00000A",
+            "Offset": "0x00000A",
+            "Size": 1,
+            "SizeHex": "0x000001"
+        },
+        "CH11": {
+            "Addr": "0x00000B",
+            "Offset": "0x00000B",
+            "Size": 1,
+            "SizeHex": "0x000001"
+        },
+        "CH12": {
+            "Addr": "0x00000C",
+            "Offset": "0x00000C",
+            "Size": 1,
+            "SizeHex": "0x000001"
+        },
+        "CH13": {
+            "Addr": "0x00000D",
+            "Offset": "0x00000D",
+            "Size": 1,
+            "SizeHex": "0x000001"
+        },
+        "CH14": {
+            "Addr": "0x00000E",
+            "Offset": "0x00000E",
+            "Size": 1,
+            "SizeHex": "0x000001"
+        },
+        "CH15": {
+            "Addr": "0x00000F",
+            "Offset": "0x00000F",
+            "Size": 1,
+            "SizeHex": "0x000001"
+        },
+        "CH16": {
+            "Addr": "0x000010",
+            "Offset": "0x000010",
+            "Size": 1,
+            "SizeHex": "0x000001"
+        },
+        "CH17": {
+            "Addr": "0x000011",
+            "Offset": "0x000011",
+            "Size": 1,
+            "SizeHex": "0x000001"
+        },
+        "CH18": {
+            "Addr": "0x000012",
+            "Offset": "0x000012",
+            "Size": 1,
+            "SizeHex": "0x000001"
+        },
+        "CH19": {
+            "Addr": "0x000013",
+            "Offset": "0x000013",
+            "Size": 1,
+            "SizeHex": "0x000001"
+        },
+        "CH2": {
+            "Addr": "0x000002",
+            "Offset": "0x000002",
+            "Size": 1,
+            "SizeHex": "0x000001"
+        },
+        "CH20": {
+            "Addr": "0x000014",
+            "Offset": "0x000014",
+            "Size": 1,
+            "SizeHex": "0x000001"
+        },
+        "CH21": {
+            "Addr": "0x000015",
+            "Offset": "0x000015",
+            "Size": 1,
+            "SizeHex": "0x000001"
+        },
+        "CH22": {
+            "Addr": "0x000016",
+            "Offset": "0x000016",
+            "Size": 1,
+            "SizeHex": "0x000001"
+        },
+        "CH23": {
+            "Addr": "0x000017",
+            "Offset": "0x000017",
+            "Size": 1,
+            "SizeHex": "0x000001"
+        },
+        "CH24": {
+            "Addr": "0x000018",
+            "Offset": "0x000018",
+            "Size": 1,
+            "SizeHex": "0x000001"
+        },
+        "CH25": {
+            "Addr": "0x000019",
+            "Offset": "0x000019",
+            "Size": 1,
+            "SizeHex": "0x000001"
+        },
+        "CH26": {
+            "Addr": "0x00001A",
+            "Offset": "0x00001A",
+            "Size": 1,
+            "SizeHex": "0x000001"
+        },
+        "CH27": {
+            "Addr": "0x00001B",
+            "Offset": "0x00001B",
+            "Size": 1,
+            "SizeHex": "0x000001"
+        },
+        "CH28": {
+            "Addr": "0x00001C",
+            "Offset": "0x00001C",
+            "Size": 1,
+            "SizeHex": "0x000001"
+        },
+        "CH29": {
+            "Addr": "0x00001D",
+            "Offset": "0x00001D",
+            "Size": 1,
+            "SizeHex": "0x000001"
+        },
+        "CH3": {
+            "Addr": "0x000003",
+            "Offset": "0x000003",
+            "Size": 1,
+            "SizeHex": "0x000001"
+        },
+        "CH30": {
+            "Addr": "0x00001E",
+            "Offset": "0x00001E",
+            "Size": 1,
+            "SizeHex": "0x000001"
+        },
+        "CH31": {
+            "Addr": "0x00001F",
+            "Offset": "0x00001F",
+            "Size": 1,
+            "SizeHex": "0x000001"
+        },
+        "CH4": {
+            "Addr": "0x000004",
+            "Offset": "0x000004",
+            "Size": 1,
+            "SizeHex": "0x000001"
+        },
+        "CH5": {
+            "Addr": "0x000005",
+            "Offset": "0x000005",
+            "Size": 1,
+            "SizeHex": "0x000001"
+        },
+        "CH6": {
+            "Addr": "0x000006",
+            "Offset": "0x000006",
+            "Size": 1,
+            "SizeHex": "0x000001"
+        },
+        "CH7": {
+            "Addr": "0x000007",
+            "Offset": "0x000007",
+            "Size": 1,
+            "SizeHex": "0x000001"
+        },
+        "CH8": {
+            "Addr": "0x000008",
+            "Offset": "0x000008",
+            "Size": 1,
+            "SizeHex": "0x000001"
+        },
+        "CH9": {
+            "Addr": "0x000009",
+            "Offset": "0x000009",
+            "Size": 1,
+            "SizeHex": "0x000001"
+        }
+    },
+    "CmdList": {
+        "ALTCMDLIST": {
+            "Addr": "0x0E3200",
+            "Offset": "0x001200",
+            "Size": 3584,
+            "SizeHex": "0x000E00"
+        },
+        "ALTINTCMDLIST": {
+            "Addr": "0x0E3000",
+            "Offset": "0x001000",
+            "Size": 512,
+            "SizeHex": "0x000200"
+        },
+        "CMDLIST": {
+            "Addr": "0x0E2200",
+            "Offset": "0x000200",
+            "Size": 3584,
+            "SizeHex": "0x000E00"
+        },
+        "INTCMDLIST": {
+            "Addr": "0x0E2000",
+            "Offset": "0x000000",
+            "Size": 512,
+            "SizeHex": "0x000200"
+        }
+    },
+    "DialogWorkSpace": {
+        "BUSY": {
+            "Addr": "0x0E1885",
+            "Offset": "0x000085",
+            "Size": 1,
+            "SizeHex": "0x000001"
+        },
+        "BUSYMAX": {
+            "Addr": "0x0E1884",
+            "Offset": "0x000084",
+            "Size": 1,
+            "SizeHex": "0x000001"
+        },
+        "CTRLACK": {
+            "Addr": "0x0E181F",
+            "Offset": "0x00001F",
+            "Size": 1,
+            "SizeHex": "0x000001"
+        },
+        "CTRLCMDPAR": {
+            "Addr": "0x0E180B",
+            "Offset": "0x00000B",
+            "Size": 20,
+            "SizeHex": "0x000014"
+        },
+        "DSPACK": {
+            "Addr": "0x0E180A",
+            "Offset": "0x00000A",
+            "Size": 1,
+            "SizeHex": "0x000001"
+        },
+        "DSPCMDPAR": {
+            "Addr": "0x0E1800",
+            "Offset": "0x000000",
+            "Size": 10,
+            "SizeHex": "0x00000A"
+        },
+        "ETHDESTSOURCEADRESS": {
+            "Addr": "0x0E18E7",
+            "Offset": "0x0000E7",
+            "Size": 3,
+            "SizeHex": "0x000003"
+        },
+        "ETHPRIORITYTAGGED": {
+            "Addr": "0x0E18EA",
+            "Offset": "0x0000EA",
+            "Size": 1,
+            "SizeHex": "0x000001"
+        },
+        "ETHROUTINGTAB": {
+            "Addr": "0x0E18EC",
+            "Offset": "0x0000EC",
+            "Size": 16,
+            "SizeHex": "0x000010"
+        },
+        "ETHTYPEAPPID": {
+            "Addr": "0x0E18EB",
+            "Offset": "0x0000EB",
+            "Size": 1,
+            "SizeHex": "0x000001"
+        },
+        "FREQUENCYNORM": {
+            "Addr": "0x0E1820",
+            "Offset": "0x000020",
+            "Size": 4,
+            "SizeHex": "0x000004"
+        },
+        "GAINCORRECTION": {
+            "Addr": "0x0E1824",
+            "Offset": "0x000024",
+            "Size": 32,
+            "SizeHex": "0x000020"
+        },
+        "GAINCORRECTION2": {
+            "Addr": "0x0E1887",
+            "Offset": "0x000087",
+            "Size": 32,
+            "SizeHex": "0x000020"
+        },
+        "INTERRUPTERROR": {
+            "Addr": "0x0E18FC",
+            "Offset": "0x0000FC",
+            "Size": 1,
+            "SizeHex": "0x000001"
+        },
+        "OFFSETCORRECTION": {
+            "Addr": "0x0E1864",
+            "Offset": "0x000064",
+            "Size": 32,
+            "SizeHex": "0x000020"
+        },
+        "OFFSETCORRECTION2": {
+            "Addr": "0x0E18C7",
+            "Offset": "0x0000C7",
+            "Size": 32,
+            "SizeHex": "0x000020"
+        },
+        "PHASECORRECTION": {
+            "Addr": "0x0E1844",
+            "Offset": "0x000044",
+            "Size": 32,
+            "SizeHex": "0x000020"
+        },
+        "PHASECORRECTION2": {
+            "Addr": "0x0E18A7",
+            "Offset": "0x0000A7",
+            "Size": 32,
+            "SizeHex": "0x000020"
+        },
+        "POWVALS4FOUT": {
+            "Addr": "0x0E18FD",
+            "Offset": "0x0000FD",
+            "Size": 48,
+            "SizeHex": "0x000030"
+        },
+        "SUBDC": {
+            "Addr": "0x0E192D",
+            "Offset": "0x00012D",
+            "Size": 1,
+            "SizeHex": "0x000001"
+        },
+        "VNR": {
+            "Addr": "0x0E1886",
+            "Offset": "0x000086",
+            "Size": 1,
+            "SizeHex": "0x000001"
+        }
+    },
+    "DspWorkspace": {
+        "ETHDATACOUNT": {
+            "Addr": "0x0E0830",
+            "Offset": "0x000030",
+            "Size": 2,
+            "SizeHex": "0x000002"
+        },
+        "ETHERRORS": {
+            "Addr": "0x0E082E",
+            "Offset": "0x00002E",
+            "Size": 1,
+            "SizeHex": "0x000001"
+        },
+        "ETHSYNCLOSTCOUNT": {
+            "Addr": "0x0E082F",
+            "Offset": "0x00002F",
+            "Size": 1,
+            "SizeHex": "0x000001"
+        },
+        "FREQENCY": {
+            "Addr": "0x0E0800",
+            "Offset": "0x000000",
+            "Size": 1,
+            "SizeHex": "0x000001"
+        },
+        "FREQUENCYSCALE": {
+            "Addr": "0x0E0829",
+            "Offset": "0x000029",
+            "Size": 4,
+            "SizeHex": "0x000004"
+        },
+        "FREQUENCYVALUE": {
+            "Addr": "0x0E0801",
+            "Offset": "0x000001",
+            "Size": 4,
+            "SizeHex": "0x000004"
+        },
+        "FREQUENCYVALUEFILTER": {
+            "Addr": "0x0E0825",
+            "Offset": "0x000025",
+            "Size": 4,
+            "SizeHex": "0x000004"
+        },
+        "KREISFREQKOEFF": {
+            "Addr": "0x0E082D",
+            "Offset": "0x00002D",
+            "Size": 1,
+            "SizeHex": "0x000001"
+        },
+        "MAXIMUMSAMPLE": {
+            "Addr": "0x0E0805",
+            "Offset": "0x000005",
+            "Size": 32,
+            "SizeHex": "0x000020"
+        },
+        "NCHANNELS": {
+            "Addr": "0x0E0832",
+            "Offset": "0x000032",
+            "Size": 1,
+            "SizeHex": "0x000001"
+        },
+        "NSMEAS": {
+            "Addr": "0x0E0833",
+            "Offset": "0x000033",
+            "Size": 1,
+            "SizeHex": "0x000001"
+        },
+        "NSPERIOD": {
+            "Addr": "0x0E0834",
+            "Offset": "0x000034",
+            "Size": 1,
+            "SizeHex": "0x000001"
+        },
+        "SYNCASDU": {
+            "Addr": "0x0E0836",
+            "Offset": "0x000036",
+            "Size": 1,
+            "SizeHex": "0x000001"
+        },
+        "TMCH0": {
+            "Addr": "0x0E0837",
+            "Offset": "0x000037",
+            "Size": 1,
+            "SizeHex": "0x000001"
+        },
+        "_NSPERIOD": {
+            "Addr": "0x0E0835",
+            "Offset": "0x000035",
+            "Size": 1,
+            "SizeHex": "0x000001"
+        }
+    },
+    "UserWorkSpace": {
+        "UWSPACE": {
+            "Addr": "0x098180",
+            "Offset": "0x000000",
+            "Size": 32383,
+            "SizeHex": "0x007E7F"
+        }
+    }
+}

@@ -34,6 +34,8 @@ private slots:
 
     void dspVarMemSizeInitialHack();
 
+    void staticVariables();
+
 private:
     QByteArray floatToBuff(float value);
     QByteArray intToBuff(qint32 value);

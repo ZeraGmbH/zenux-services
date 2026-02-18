@@ -19,6 +19,7 @@
 #include <QByteArray>
 #include <QTimer>
 #include <QVector>
+#include <QJsonObject>
 #include <QStateMachine>
 
 typedef QVector<float> tDspMemArray;
@@ -38,6 +39,7 @@ public:
 
     int getUserMemAvailable() const;
     int getUserMemOccupied() const;
+    static QJsonObject getStaticMemAllocation();
     int getProgMemCyclicAvailable() const;
     int getProgMemCyclicOccupied() const;
     int getProgMemInterruptAvailable() const;

@@ -36,6 +36,11 @@ bool TDspVar::Init(const QString& varDefinition)
     return ret;
 }
 
+QString TDspVar::toHex(int val)
+{
+    return QString("0x%1").arg(QString("%1").arg(val, 6, 16, '0').toUpper());
+}
+
 TMemSection::TMemSection(sectionType section, long startAddress, int varCount, TDspVar *dspVars) :
     m_section(section),
     m_startAddress(startAddress),

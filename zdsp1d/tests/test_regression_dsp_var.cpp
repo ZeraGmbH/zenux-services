@@ -8,6 +8,7 @@
 #include "testsingletondevicenodedsp.h"
 #include <timemachineobject.h>
 #include <mocktcpnetworkfactory.h>
+#include <testloghelpers.h>
 #include <QDataStream>
 #include <QSignalSpy>
 #include <QTest>
@@ -498,6 +499,13 @@ void test_regression_dsp_var::dspVarMemSizeInitialHack()
     int clientMemSize = dspData->getSize();
     QCOMPARE(serverMemSize, clientMemSize - internalSizeNotAddedInServer);
     QCOMPARE(serverMemSize, resultSize + tempSize + paramSize);
+}
+
+void test_regression_dsp_var::staticVariables()
+{
+    QString expected = TestLogHelpers::loadFile(":/dump-static-variables.json");
+    QString dumped = TestLogHelpers::dump(ZDspServer::getStaticMemAllocation());
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffJson(expected, dumped));
 }
 
 QByteArray test_regression_dsp_var::floatToBuff(float value)
