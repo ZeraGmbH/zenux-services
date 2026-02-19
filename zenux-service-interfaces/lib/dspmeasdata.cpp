@@ -2,15 +2,19 @@
 #include <QIODevice>
 #include <QTextStream>
 
+int cDspMeasData::m_instanceCount = 0;
+
 cDspMeasData::cDspMeasData(QString name) :
     m_handleName(name)
 {
+    m_instanceCount++;
 }
 
 cDspMeasData::~cDspMeasData()
 {
     for (int i = 0; i < DspVarList.size(); ++i)
         delete DspVarList.at(i);
+    m_instanceCount--;
 }
 
 float* cDspMeasData::data(QString name) // gibt einen zeiger zurück auf die var daten
@@ -143,6 +147,11 @@ QVector<float>& cDspMeasData::getData()
             vector.append(*fval);
     }
     return vector;
+}
+
+int cDspMeasData::getInstanceCount()
+{
+    return m_instanceCount;
 }
 
 const QList<cDspVar *> cDspMeasData::getVars() const

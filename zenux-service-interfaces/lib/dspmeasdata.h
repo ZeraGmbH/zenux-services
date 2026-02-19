@@ -27,6 +27,7 @@ public:
     QVector<float>& getData();
 
     // Test insights
+    static int getInstanceCount();
     const QList<cDspVar*> getVars() const;
     void setData(QVector<float> data);
 private:
@@ -35,6 +36,8 @@ private:
     QString m_handleName;
     QList<cDspVar*> DspVarList;
     QVector<float> vector;
+
+    static int m_instanceCount;
 };
 
 #endif // DSPMEASDATA_H
