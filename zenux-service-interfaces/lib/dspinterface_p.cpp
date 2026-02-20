@@ -5,8 +5,9 @@
 
 namespace Zera {
 
-cDSPInterfacePrivate::cDSPInterfacePrivate(cDSPInterface *iface) :
-    q_ptr(iface)
+cDSPInterfacePrivate::cDSPInterfacePrivate(cDSPInterface *iface, int entityId) :
+    q_ptr(iface),
+    m_entityId(entityId)
 {
 }
 
@@ -50,10 +51,12 @@ quint32 cDSPInterfacePrivate::setSamplingSystem(int chncount, int samp_per, int 
     return msgnr;
 }
 
-QString cDSPInterfacePrivate::varList2String() const
+QString cDSPInterfacePrivate::varList2String(VarListPrependOptions prependOption) const
 {
     QString varList;
     QTextStream ts(&varList, QIODevice::WriteOnly);
+    if(prependOption == PREPEND_ENTIY_ID_IF_SET)
+        prependEntityIdIfSet(ts);
     cDspMeasData* pDspMeasData;
     for (int i = 0; i < m_DspMemoryDataList.count(); i++) {
         pDspMeasData = m_DspMemoryDataList.at(i);
@@ -64,7 +67,7 @@ QString cDSPInterfacePrivate::varList2String() const
 
 quint32 cDSPInterfacePrivate::varList2Dsp() // the complete list has several partial lists
 {
-    QString varList = varList2String();
+    QString varList = varList2String(PREPEND_ENTIY_ID_IF_SET);
     quint32 msgnr = sendCommand("MEAS:LIST:RAVL", varList); // long: MEASURE:LIST:RAVLIST
     m_MsgNrCmdList[msgnr] = varlist2dsp;
     return msgnr;
@@ -74,6 +77,7 @@ quint32 cDSPInterfacePrivate::cmdList2Dsp()
 {
     QString plist;
     QTextStream ts( &plist, QIODevice::WriteOnly );
+    prependEntityIdIfSet(ts);
     for (auto it = m_cycCmdList.constBegin(); it != m_cycCmdList.constEnd(); ++it )
         ts << *it << ";" ;
     quint32 msgnr = sendCommand("MEAS:LIST:CYCL", plist); // long: MEASURE:LIST:CYCLIST
@@ -85,6 +89,7 @@ quint32 cDSPInterfacePrivate::intList2Dsp()
 {
     QString plist;
     QTextStream ts( &plist, QIODevice::WriteOnly );
+    prependEntityIdIfSet(ts);
     for (auto it = m_irqCmdList.constBegin(); it != m_irqCmdList.constEnd(); ++it )
         ts << *it << ";" ;
     quint32 msgnr = sendCommand("MEAS:LIST:INTL", plist); // long: MEASURE:LIST:INTLIST
@@ -268,11 +273,16 @@ void cDSPInterfacePrivate::receiveAnswer(std::shared_ptr<ProtobufMessage::NetMes
     }
 }
 
-
 void cDSPInterfacePrivate::receiveError(QAbstractSocket::SocketError errorCode)
 {
     Q_Q(cDSPInterface);
     emit q->tcpError(errorCode);
+}
+
+void cDSPInterfacePrivate::prependEntityIdIfSet(QTextStream &stream) const
+{
+    if (m_entityId >= 0)
+        stream << QString("#ENTID#%1;").arg(m_entityId);
 }
 
 }

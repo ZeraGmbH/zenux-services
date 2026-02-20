@@ -22,7 +22,7 @@ class cDSPInterface: public AbstractServerInterface
 {
     Q_OBJECT
 public:
-    cDSPInterface();
+    cDSPInterface(int entityId = -1);
     virtual ~cDSPInterface();
     void setClientSmart(Zera::ProxyClientPtr client);
     quint32 scpiCommand(const QString &scpi) override;

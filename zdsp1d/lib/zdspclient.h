@@ -15,6 +15,8 @@ public:
                AbstractFactoryDeviceNodeDspPtr deviceNodeFactory);
     virtual ~ZdspClient();
 
+    int getEntityId() const;
+
     QByteArray getProtobufClientId() const;
 
     bool setRawActualValueList(const QString& varsSemicolonSeparated);
@@ -38,10 +40,15 @@ public:
 
 private:
     static int calcDataMemSize(const QVector<TDspVar> &dspVarArray);
+    void setEntityId(int entityId);
+    QString handleAndRemoveEntityId(const QString &scpiParam);
+
     VeinTcp::TcpPeer* m_veinPeer;
     QByteArray m_proxyConnectionId;
     AbstractFactoryDeviceNodeDspPtr m_deviceNodeFactory;
     int m_dspInterruptId;
+
+    int m_entityId = -1;
     QString m_sCmdListDef; // kommando liste defintion
     QString m_sIntCmdListDef; // interrupt kommando  liste defintion
 

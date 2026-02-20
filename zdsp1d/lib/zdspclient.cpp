@@ -25,12 +25,28 @@ ZdspClient::~ZdspClient()
     m_instanceCount--;
 }
 
+void ZdspClient::setEntityId(int entityId)
+{
+    if (m_entityId >= 0 && entityId != m_entityId) {
+        qCritical("Trying to set entity Id %i on ZdspClient which has already ID %i!",
+                  entityId, m_entityId);
+        return;
+    }
+    m_entityId = entityId;
+}
+
+int ZdspClient::getEntityId() const
+{
+    return m_entityId;
+}
+
 bool ZdspClient::setRawActualValueList(const QString &varsSemicolonSeparated)
 {
     m_dspVarArray.clear();
     int localOffset = 0;
     int globaloffset = 0;
-    const QStringList varEntries = varsSemicolonSeparated.split(";", Qt::SkipEmptyParts);
+    const QString varsSemicolonSeparatedEntityIdStripped = handleAndRemoveEntityId(varsSemicolonSeparated);
+    const QStringList varEntries = varsSemicolonSeparatedEntityIdStripped.split(";", Qt::SkipEmptyParts);
     for(int i=0; i<varEntries.count(); i++) {
         TDspVar dspVar;
         if(dspVar.Init(varEntries[i])) {
@@ -63,12 +79,12 @@ bool ZdspClient::setRawActualValueList(const QString &varsSemicolonSeparated)
 
 void ZdspClient::setCmdListDef(const QString &cmdListDef)
 {
-    m_sCmdListDef = cmdListDef;
+    m_sCmdListDef = handleAndRemoveEntityId(cmdListDef);
 }
 
 void ZdspClient::setCmdForIrqListDef(const QString &cmdIntListDef)
 {
-    m_sIntCmdListDef = cmdIntListDef;
+    m_sIntCmdListDef = handleAndRemoveEntityId(cmdIntListDef);
 }
 
 QByteArray ZdspClient::getProtobufClientId() const
@@ -139,6 +155,22 @@ int ZdspClient::calcDataMemSize(const QVector<TDspVar> &dspVarArray)
     for (int var=0; var<varCount; ++var)
         dataMemSize += dspVarArray[var].size;
     return dataMemSize;
+}
+
+QString ZdspClient::handleAndRemoveEntityId(const QString &scpiParam)
+{
+    const QString entityIdPrefixReceived = " #ENTID#"; // wherever the space comes from...
+    if (!scpiParam.startsWith(entityIdPrefixReceived))
+        return scpiParam;
+
+    int firstSemicolonPos = scpiParam.indexOf(";", entityIdPrefixReceived.count());
+    QString fullPrefix = scpiParam.left(firstSemicolonPos);
+    QString entityIdStr = fullPrefix.right(fullPrefix.count() - entityIdPrefixReceived.count());
+    int entityId = entityIdStr.toInt();
+    setEntityId(entityId);
+
+    QString scpiParamNew = " " + scpiParam.mid(firstSemicolonPos+1);
+    return scpiParamNew;
 }
 
 QString ZdspClient::readActValues(const QString& variablesStringOnEmptyActOnly)

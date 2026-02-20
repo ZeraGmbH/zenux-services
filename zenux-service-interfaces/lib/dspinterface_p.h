@@ -35,7 +35,7 @@ class cDSPInterfacePrivate: public cInterfacePrivate
 {
     Q_OBJECT
 public:
-    cDSPInterfacePrivate(cDSPInterface* iface);
+    cDSPInterfacePrivate(cDSPInterface* iface, int entityId);
     virtual ~cDSPInterfacePrivate();
     void setClientSmart(Zera::ProxyClientPtr client);
     quint32 scpiCommand(const QString &scpi);
@@ -67,7 +67,11 @@ public:
     // Insights for tests - a compromise...
     QStringList getCyclicCmdList() const;
     QList<cDspMeasData*> getMemoryDataList() const;
-    QString varList2String() const;
+    enum VarListPrependOptions {
+        PREPEND_NOTHING,
+        PREPEND_ENTIY_ID_IF_SET
+    };
+    QString varList2String(VarListPrependOptions prependOption) const;
     cDspMeasData* findMemHandle(QString name) const;
 protected slots:
     void receiveAnswer(std::shared_ptr<ProtobufMessage::NetMessage> message) override;
@@ -75,7 +79,9 @@ protected slots:
 
 private:
     Q_DECLARE_PUBLIC(cDSPInterface)
+    void prependEntityIdIfSet(QTextStream &stream) const;
     cDSPInterface *q_ptr;
+    int m_entityId;
 
     QStringList m_cycCmdList, m_irqCmdList;
     QList<cDspMeasData*> m_DspMemoryDataList; // eine liste mit zeigern auf dsp speicher

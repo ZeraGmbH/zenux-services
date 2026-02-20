@@ -3,8 +3,8 @@
 
 namespace Zera {
 
-cDSPInterface::cDSPInterface() :
-    d_ptr(new cDSPInterfacePrivate(this))
+cDSPInterface::cDSPInterface(int entityId) :
+    d_ptr(new cDSPInterfacePrivate(this, entityId))
 {
 }
 
@@ -119,7 +119,7 @@ quint32 cDSPInterface::readServerVersion()
 QString cDSPInterface::varList2String()
 {
     Q_D(cDSPInterface);
-    return d->varList2String();
+    return d->varList2String(cDSPInterfacePrivate::PREPEND_ENTIY_ID_IF_SET);
 }
 
 }
