@@ -14,7 +14,8 @@ DspCmdWithParamsRaw DspCmdCompiler::compileOneCmdLineZeroAligned(const QString &
 DspCmdWithParamsRaw DspCmdCompiler::compileOneCmdLineAligned(const QString &cmdLine,
                                                              bool *ok,
                                                              ulong userMemOffset,
-                                                             ulong globalstartadr)
+                                                             ulong globalstartadr,
+                                                             DspCompilerRawCollector *rawCollector)
 {
     cParse CmdParser;
     CmdParser.SetDelimiter("(,)"); // setze die trennzeichen für den parser
@@ -31,6 +32,8 @@ DspCmdWithParamsRaw DspCmdCompiler::compileOneCmdLineAligned(const QString &cmdL
         switch (dspcmd->CmdClass) {
         case CMD: // nur kommandowort, kein parameter
         {
+            if(rawCollector)
+                rawCollector->addCmd(dspcmd);
             sSearch = CmdParser.GetKeyword(&cmds);
             *ok = sSearch.isEmpty(); // hier darf nichts stehen
             DspCmdWithParamsRaw lcmd;
@@ -44,6 +47,8 @@ DspCmdWithParamsRaw DspCmdCompiler::compileOneCmdLineAligned(const QString &cmdL
             bool t = true;
             sSearch = CmdParser.GetKeyword(&cmds);
             t &= ( (par = m_varResolver->getVarOffset(sSearch, userMemOffset, globalstartadr)) > -1); // -1 ist fehlerbedingung
+            if(rawCollector)
+                rawCollector->addCmd1Param(dspcmd, par);
             sSearch = CmdParser.GetKeyword(&cmds);
             t &= sSearch.isEmpty();
             DspCmdWithParamsRaw lcmd;
@@ -62,6 +67,8 @@ DspCmdWithParamsRaw DspCmdCompiler::compileOneCmdLineAligned(const QString &cmdL
                 paramNames.append(sSearch);
                 t &= ( (twoI16Params[i] = m_varResolver->getVarOffset(sSearch, userMemOffset, globalstartadr)) > -1);
             }
+            if(rawCollector)
+                rawCollector->addCmd2Params(dspcmd, twoI16Params[0], twoI16Params[1]);
             sSearch = CmdParser.GetKeyword(&cmds);
             t &= sSearch.isEmpty();
             DspCmdWithParamsRaw lcmd;
@@ -85,6 +92,8 @@ DspCmdWithParamsRaw DspCmdCompiler::compileOneCmdLineAligned(const QString &cmdL
                 sSearch = CmdParser.GetKeyword(&cmds);
                 t &= ( (par[i] = m_varResolver->getVarOffset(sSearch, userMemOffset, globalstartadr)) > -1);
             }
+            if(rawCollector)
+                rawCollector->addCmd3Params(dspcmd, par[0], par[1], par[2]);
             sSearch = CmdParser.GetKeyword(&cmds);
             t &= sSearch.isEmpty();
             DspCmdWithParamsRaw lcmd;
@@ -100,6 +109,8 @@ DspCmdWithParamsRaw DspCmdCompiler::compileOneCmdLineAligned(const QString &cmdL
             long par;
             sSearch = CmdParser.GetKeyword(&cmds);
             bool t = ( (par = m_varResolver->getVarOffset(sSearch, userMemOffset, globalstartadr)) > -1);
+            if(rawCollector)
+                rawCollector->addCmd1Param(dspcmd, par);
             sSearch = CmdParser.GetKeyword(&cmds);
             t &= sSearch.isEmpty();
             DspCmdWithParamsRaw lcmd;
@@ -127,6 +138,8 @@ DspCmdWithParamsRaw DspCmdCompiler::compileOneCmdLineAligned(const QString &cmdL
                 long* pl = (long*) &tf;
                 par2= *pl;
             }
+            if(rawCollector)
+                rawCollector->addCmd2Params(dspcmd, par1, par2); // this needs love
             sSearch = CmdParser.GetKeyword(&cmds);
             t &= sSearch.isEmpty();
             if (t)
@@ -140,13 +153,18 @@ DspCmdWithParamsRaw DspCmdCompiler::compileOneCmdLineAligned(const QString &cmdL
     return DspCmdWithParamsRaw();
 }
 
-bool DspCmdCompiler::compileCmds(const QString &cmdsSemicolonSeparated, QList<DspCmdWithParamsRaw> &genCmdList, QString &err, ulong userMemOffset, ulong globalstartadr)
+bool DspCmdCompiler::compileCmds(const QString &cmdsSemicolonSeparated,
+                                 QList<DspCmdWithParamsRaw> &genCmdList,
+                                 QString &err,
+                                 ulong userMemOffset,
+                                 ulong globalstartadr,
+                                 DspCompilerRawCollector *rawCollector)
 {
     bool ok = true;
     genCmdList.clear();
     const QStringList cmds = cmdsSemicolonSeparated.split(';', Qt::SkipEmptyParts);
     for(const QString &cmd : cmds) {
-        genCmdList.append(compileOneCmdLineAligned(cmd, &ok, userMemOffset, globalstartadr));
+        genCmdList.append(compileOneCmdLineAligned(cmd, &ok, userMemOffset, globalstartadr, rawCollector));
         if(!ok) {
             err = cmd;
             break;

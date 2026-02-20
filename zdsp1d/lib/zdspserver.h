@@ -40,6 +40,7 @@ public:
     int getUserMemAvailable() const;
     int getUserMemOccupied() const;
     static QJsonObject getStaticMemAllocation();
+    QJsonObject getMemoryDump() const;
     int getProgMemCyclicAvailable() const;
     int getProgMemCyclicOccupied() const;
     int getProgMemInterruptAvailable() const;

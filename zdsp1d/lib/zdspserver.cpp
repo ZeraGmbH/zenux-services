@@ -13,6 +13,7 @@
 #include <QDataStream>
 #include <QTcpServer>
 #include <QDomDocument>
+#include <QJsonArray>
 #include <fcntl.h>
 #include <signal.h>
 #include <unistd.h>
@@ -700,6 +701,45 @@ QJsonObject ZDspServer::getStaticMemAllocation()
         }
         const QString clientHandleName = iterClient.key();
         json.insert(clientHandleName, jsonVars);
+    }
+    return json;
+}
+
+QJsonObject ZDspServer::getMemoryDump() const
+{
+    const QList<ZdspClient*> &clientList = m_zdspClientContainer.getClientList();
+    QJsonObject json;
+    for (const ZdspClient* client : clientList) {
+        int entityId = client->getEntityId();
+        if (entityId >= 0) {
+            QJsonObject entityData;
+
+            QJsonArray cyclicCmds = QJsonArray::fromStringList(client->getDspCmdListRaw());
+            entityData.insert("DspCmdsRawCyclic", cyclicCmds);
+
+            QJsonArray interruptCmds = QJsonArray::fromStringList(client->getDspIntCmdListRaw());
+            entityData.insert("DspCmdsRawInterrupt", interruptCmds);
+
+            QJsonObject localVariables;
+            const QList<ZdspClient::VarLocation>* localList = client->getLocalVariableDump();
+            for (const ZdspClient::VarLocation &entry : *localList) {
+                QString key = QString("%1 / %2").arg(
+                    TDspVar::toHex(entry.m_localVariableAddress), TDspVar::toHex(entry.m_absoluteVariableAddress));
+                localVariables.insert(key, entry.m_variableName);
+            }
+            entityData.insert("DspVarsLocal", localVariables);
+
+            QJsonObject globalVariables;
+            const QList<ZdspClient::VarLocation>* globalList = client->getGlobalVariableDump();
+            for (const ZdspClient::VarLocation &entry : *globalList) {
+                QString key = QString("%1 / %2").arg(
+                    TDspVar::toHex(entry.m_localVariableAddress), TDspVar::toHex(entry.m_absoluteVariableAddress));
+                globalVariables.insert(key, entry.m_variableName);
+            }
+            entityData.insert("DspVarsGlobal", globalVariables);
+
+            json.insert(QString("%1").arg(entityId), entityData);
+        }
     }
     return json;
 }

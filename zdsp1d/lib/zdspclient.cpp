@@ -11,7 +11,11 @@ ZdspClient::ZdspClient(int dspInterruptId,
     m_veinPeer(veinPeer),
     m_proxyConnectionId(proxyConnectionId),
     m_deviceNodeFactory(deviceNodeFactory),
-    m_dspInterruptId(dspInterruptId)
+    m_dspInterruptId(dspInterruptId),
+    m_rawCyclicCommands(std::make_unique<DspCompilerRawCollector>()),
+    m_rawInterruptCommands(std::make_unique<DspCompilerRawCollector>()),
+    m_localVarDump(std::make_unique<QList<VarLocation>>()),
+    m_globalVarDump(std::make_unique<QList<VarLocation>>())
 {
     m_instanceCount++;
     DspCmdWithParamsRaw DspCmd;
@@ -38,6 +42,16 @@ void ZdspClient::setEntityId(int entityId)
 int ZdspClient::getEntityId() const
 {
     return m_entityId;
+}
+
+const QList<ZdspClient::VarLocation> *ZdspClient::getGlobalVariableDump() const
+{
+    return m_globalVarDump.get();
+}
+
+const QList<ZdspClient::VarLocation> *ZdspClient::getLocalVariableDump() const
+{
+    return m_localVarDump.get();
 }
 
 bool ZdspClient::setRawActualValueList(const QString &varsSemicolonSeparated)
@@ -97,13 +111,22 @@ ulong ZdspClient::relocalizeUserMemSectionVars(ulong startAdress, ulong globalMe
     ulong usermemsize = 0;
     ulong globalmemsize = 0;
     m_userMemSection.m_startAddress = startAdress;
+    m_localVarDump = std::make_unique<QList<VarLocation>>();
+    m_globalVarDump = std::make_unique<QList<VarLocation>>();
+
     for (int i = 0; i < m_userMemSection.m_varCount; i++) {
         if (m_userMemSection.m_dspVars[i].segment == localSegment) {
             m_userMemSection.m_dspVars[i].adr = startAdress + usermemsize; // we need the adress for reading back data
+            m_localVarDump->append( { m_userMemSection.m_dspVars[i].Name,
+                                      m_userMemSection.m_dspVars[i].offs,
+                                      m_userMemSection.m_dspVars[i].adr } );
             usermemsize += m_userMemSection.m_dspVars[i].size;
         }
         else {
             m_userMemSection.m_dspVars[i].adr = globalMemStart+globalmemsize;
+            m_globalVarDump->append( { m_userMemSection.m_dspVars[i].Name,
+                                       m_userMemSection.m_dspVars[i].offs,
+                                       m_userMemSection.m_dspVars[i].adr } );
             globalmemsize += m_userMemSection.m_dspVars[i].size;
         }
     }
@@ -113,9 +136,11 @@ ulong ZdspClient::relocalizeUserMemSectionVars(ulong startAdress, ulong globalMe
 bool ZdspClient::GenCmdLists(QString& errs, ulong userMemOffset, ulong globalstartadr)
 {
     DspCmdCompiler compiler(&m_dspVarResolver, m_dspInterruptId);
+    m_rawCyclicCommands = std::make_unique<DspCompilerRawCollector>();
+    m_rawInterruptCommands = std::make_unique<DspCompilerRawCollector>();
     return
-        compiler.compileCmds(m_sCmdListDef, m_DspCmdList,errs, userMemOffset, globalstartadr) &&
-        compiler.compileCmds(m_sIntCmdListDef, m_DspIntCmdList, errs, userMemOffset, globalstartadr);
+        compiler.compileCmds(m_sCmdListDef, m_DspCmdList,errs, userMemOffset, globalstartadr, m_rawCyclicCommands.get()) &&
+        compiler.compileCmds(m_sIntCmdListDef, m_DspIntCmdList, errs, userMemOffset, globalstartadr, m_rawInterruptCommands.get());
 }
 
 const QList<DspCmdWithParamsRaw> &ZdspClient::GetDspCmdList() const
@@ -126,6 +151,16 @@ const QList<DspCmdWithParamsRaw> &ZdspClient::GetDspCmdList() const
 const QList<DspCmdWithParamsRaw> &ZdspClient::GetDspIntCmdList() const
 {
     return m_DspIntCmdList;
+}
+
+const QStringList &ZdspClient::getDspCmdListRaw() const
+{
+    return m_rawCyclicCommands->getRawDspCommands();
+}
+
+const QStringList &ZdspClient::getDspIntCmdListRaw() const
+{
+    return m_rawInterruptCommands->getRawDspCommands();
 }
 
 int ZdspClient::getDspInterruptId() const

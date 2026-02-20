@@ -3,8 +3,10 @@
 
 #include "abstractfactorydevicenodedsp.h"
 #include "dspapi.h"
+#include "dspcompilerrawcollector.h"
 #include "dspvarresolver.h"
 #include <vtcp_peer.h>
+#include <memory>
 
 class ZdspClient
 {
@@ -14,8 +16,6 @@ public:
                const QByteArray &proxyConnectionId,
                AbstractFactoryDeviceNodeDspPtr deviceNodeFactory);
     virtual ~ZdspClient();
-
-    int getEntityId() const;
 
     QByteArray getProtobufClientId() const;
 
@@ -36,6 +36,18 @@ public:
     int getDataMemSize() const;
     VeinTcp::TcpPeer* getVeinPeer() const;
 
+    // dump / tests
+    int getEntityId() const;
+    struct VarLocation
+    {
+        QString m_variableName;
+        ulong m_localVariableAddress;
+        ulong m_absoluteVariableAddress;
+    };
+    const QList<VarLocation>* getLocalVariableDump() const;
+    const QList<VarLocation>* getGlobalVariableDump() const;
+    const QStringList& getDspCmdListRaw() const;
+    const QStringList& getDspIntCmdListRaw() const;
     static int getInstanceCount();
 
 private:
@@ -57,6 +69,12 @@ private:
     QVector<TDspVar> m_dspVarArray; // !!! we need permanent keeper of TDspVar pointer to data is used !!!
     TMemSection m_userMemSection;
     int m_dataMemSize = 0;
+
+    // dump / tests
+    std::unique_ptr<DspCompilerRawCollector> m_rawCyclicCommands;
+    std::unique_ptr<DspCompilerRawCollector> m_rawInterruptCommands;
+    std::unique_ptr<QList<VarLocation>> m_localVarDump;
+    std::unique_ptr<QList<VarLocation>> m_globalVarDump;
     static int m_instanceCount;
 };
 #endif // ZDSPCLIENT_H
