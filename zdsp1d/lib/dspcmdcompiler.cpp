@@ -86,20 +86,27 @@ DspCmdWithParamsRaw DspCmdCompiler::compileOneCmdLineAligned(const QString &cmdL
         }
         case CMD3i16:
         {
-            short par[3];
+            short threeI16Params[3];
+            QStringList paramNames;
             bool t = true;
             for (int i=0; i<3; i++) {
                 sSearch = CmdParser.GetKeyword(&cmds);
-                t &= ( (par[i] = m_varResolver->getVarOffset(sSearch, userMemOffset, globalstartadr)) > -1);
+                paramNames.append(sSearch);
+                t &= ( (threeI16Params[i] = m_varResolver->getVarOffset(sSearch, userMemOffset, globalstartadr)) > -1);
             }
             if(rawCollector)
-                rawCollector->addCmd3Params(dspcmd, par[0], par[1], par[2]);
+                rawCollector->addCmd3Params(dspcmd, threeI16Params[0], threeI16Params[1], threeI16Params[2]);
             sSearch = CmdParser.GetKeyword(&cmds);
             t &= sSearch.isEmpty();
             DspCmdWithParamsRaw lcmd;
             if (t) {
-                lcmd = DspCmdWithParamsRaw( dspcmd->CmdCode, (ushort)par[0], (ushort)par[1], (ushort)par[2]);
-                if (dspcmd->modify) lcmd.w[1] = (lcmd.w[1] & 0xFFFF) | (m_dspInterruptId << 16);
+                if (dspcmd->m_cmdExtraCheckFunction)
+                    t = dspcmd->m_cmdExtraCheckFunction(paramNames, threeI16Params, m_varResolver);
+                if (t) {
+                    lcmd = DspCmdWithParamsRaw( dspcmd->CmdCode, (ushort)threeI16Params[0], (ushort)threeI16Params[1], (ushort)threeI16Params[2]);
+                    if (dspcmd->modify)
+                        lcmd.w[1] = (lcmd.w[1] & 0xFFFF) | (m_dspInterruptId << 16);
+                }
             }
             *ok = t;
             return lcmd;

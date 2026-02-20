@@ -6,8 +6,10 @@
 class DspCmdExtraChecks
 {
 public:
+    static bool AVERAGE1(const QStringList &paramNames, const short i16Params[],
+                         DspVarResolver* varResolver);
     static bool CLEARN(const QStringList &paramNames, const short i16Params[],
-                            DspVarResolver* varResolver);
+                       DspVarResolver* varResolver);
 };
 
 #endif // DSPCMDEXTRACHECKS_H

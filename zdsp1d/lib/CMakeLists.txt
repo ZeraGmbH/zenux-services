@@ -39,6 +39,7 @@ target_link_libraries(zdsp1d-lib
     Zera::zeraprotobuf
     Zera::zera-log-statistics
     zenuxservicecommon
+    service-interfaces
     )
 
 if("${QT_MAJOR_VER}" STREQUAL "6")

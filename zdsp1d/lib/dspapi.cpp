@@ -151,7 +151,7 @@ static DspCmdDecodingDetails DspCmd[78] =
 {"MULVVV", 12, CMD3i16, 0 },
 {"ADDVVG", 13, CMD3i16, 0 }, // wie apparentg (allgemeingültiger)
 {"CLKOUT", 14, CMD, 0 },
-{"AVERAGE1", 15, CMD3i16, 0 },
+{"AVERAGE1", 15, CMD3i16, 0, DspCmdExtraChecks::AVERAGE1 },
 {"INTEGRAL", 16, CMD3i16, 0 },
 {"ADDVVV", 17, CMD3i16, 0 },
 {"COPYUD", 18, CMD3i16, 0 },
