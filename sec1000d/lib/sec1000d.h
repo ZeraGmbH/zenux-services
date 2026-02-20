@@ -26,7 +26,7 @@ public:
     static const int Mtxxxs2EcUnitCount;
     explicit cSEC1000dServer(SettingsContainerPtr settings,
                              int ecUnitCount,
-                             AbstractFactoryDeviceNodeSecPtr deviceNodeFactory,
+                             AbstractFactoryDeviceNodeSecPtr zdspSupportFactory,
                              VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory);
     ~cSEC1000dServer();
     QString getServerVersion();
@@ -50,7 +50,7 @@ private:
     void doConfiguration(int ecUnitCount);
     void init();
     void earlySetup();
-    AbstractFactoryDeviceNodeSecPtr m_deviceNodeFactory;
+    AbstractFactoryDeviceNodeSecPtr m_zdspSupportFactory;
     SecCalculatorSettings* m_pECalcSettings = nullptr;
     SecInputSettings* m_pInputSettings = nullptr;
 

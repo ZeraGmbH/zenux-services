@@ -1,6 +1,6 @@
 #include "testallservicesmt310s2.h"
 #include <timemachineobject.h>
-#include "testfactorydevicenodedsp.h"
+#include "testfactoryzdspsupport.h"
 #include <tcpnetworkfactory.h>
 
 TestAllServicesMt310s2::TestAllServicesMt310s2(const QString &serviceNameForAlternateDevice, TestFactoryI2cCtrlPtr testCtrlFactory)
@@ -23,7 +23,7 @@ void TestAllServicesMt310s2::init(const QString &serviceNameForAlternateDevice,
     TimeMachineObject::feedEventLoop();
     m_mt310s2d = new MockMt310s2d(testCtrlFactory, tcpNetworkFactory, serviceNameForAlternateDevice);
     m_sec1000d = new MockSec1000d(tcpNetworkFactory, cSEC1000dServer::Mtxxxs2EcUnitCount);
-    m_zdsp1d = new MockZdsp1d(std::make_shared<TestFactoryDeviceNodeDsp>(), tcpNetworkFactory);
+    m_zdsp1d = new MockZdsp1d(std::make_shared<TestFactoryZdspSupport>(), tcpNetworkFactory);
     TimeMachineObject::feedEventLoop();
     m_testCtrlFactory = testCtrlFactory;
 }

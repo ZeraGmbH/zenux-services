@@ -1,6 +1,6 @@
 #include "testallservicescom5003.h"
 #include <timemachineobject.h>
-#include "testfactorydevicenodedsp.h"
+#include "testfactoryzdspsupport.h"
 #include <tcpnetworkfactory.h>
 
 TestAllServicesCom5003::TestAllServicesCom5003(TestFactoryI2cCtrlPtr testCtrlFactory)
@@ -20,7 +20,7 @@ void TestAllServicesCom5003::init(VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetwo
     TimeMachineObject::feedEventLoop();
     m_mockcom5003d = new MockCom5003d(testCtrlFactory, tcpNetworkFactory);
     m_sec1000d = new MockSec1000d(tcpNetworkFactory, cSEC1000dServer::Com5003EcUnitCount);
-    m_zdsp1d = new MockZdsp1d(std::make_shared<TestFactoryDeviceNodeDsp>(), tcpNetworkFactory);
+    m_zdsp1d = new MockZdsp1d(std::make_shared<TestFactoryZdspSupport>(), tcpNetworkFactory);
     TimeMachineObject::feedEventLoop();
     m_testCtrlFactory = testCtrlFactory;
 }

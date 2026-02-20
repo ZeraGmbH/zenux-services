@@ -44,10 +44,10 @@ const ServerParams cSEC1000dServer::defaultParams(0,
 
 cSEC1000dServer::cSEC1000dServer(SettingsContainerPtr settings,
                                  int ecUnitCount,
-                                 AbstractFactoryDeviceNodeSecPtr deviceNodeFactory,
+                                 AbstractFactoryDeviceNodeSecPtr zdspSupportFactory,
                                  VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory) :
     PCBServer(std::move(settings), tcpNetworkFactory),
-    m_deviceNodeFactory(deviceNodeFactory)
+    m_zdspSupportFactory(zdspSupportFactory)
 {
     doConfiguration(ecUnitCount);
     init();
@@ -84,7 +84,7 @@ cSEC1000dServer::~cSEC1000dServer()
     delete m_pECalculatorInterface;
     delete m_pSystemInfo;
 
-    AbstractDeviceNodeSecPtr deviceNode = m_deviceNodeFactory->getSecDeviceNode();
+    AbstractDeviceNodeSecPtr deviceNode = m_zdspSupportFactory->getSecDeviceNode();
     deviceNode->close();
     close(pipeFileDescriptorSec1000[0]);
     close(pipeFileDescriptorSec1000[1]);
@@ -156,7 +156,7 @@ void cSEC1000dServer::earlySetup()
                                                                                            m_pECalcSettings,
                                                                                            m_pInputSettings,
                                                                                            SigHandler,
-                                                                                           m_deviceNodeFactory));
+                                                                                           m_zdspSupportFactory));
 
     m_ECalculatorChannelList = m_pECalculatorInterface->getECalcChannelList();
 }
@@ -165,7 +165,7 @@ void cSEC1000dServer::doSetupServer()
 {
     qInfo("Starting doSetupServer");
     QString deviceNodeName = getSecDeviceNode(); // we try to open the sec device
-    AbstractDeviceNodeSecPtr deviceNode = m_deviceNodeFactory->getSecDeviceNode();
+    AbstractDeviceNodeSecPtr deviceNode = m_zdspSupportFactory->getSecDeviceNode();
     if (deviceNode->open(deviceNodeName) < 0) {
         qCritical("Abort, could not poen device node %s", qPrintable(deviceNodeName));
         emit abortInit();
@@ -228,7 +228,7 @@ void cSEC1000dServer::SECIntHandler(int)
     int bytesToReadForChannelRequiringHalfByte = calcByteCountFromEcChannels(ecChannelCount);
     int bytesToRead32BitStuffed = calc32BitStuffedCountFromByteCount(bytesToReadForChannelRequiringHalfByte);
 
-    AbstractDeviceNodeSecPtr deviceNode = m_deviceNodeFactory->getSecDeviceNode();
+    AbstractDeviceNodeSecPtr deviceNode = m_zdspSupportFactory->getSecDeviceNode();
     deviceNode->lseek(m_pECalcSettings->getIrqAdress()+4); // first word is interrupt collection word so the dedicated words have +4 offset
     QByteArray interruptREGS(bytesToRead32BitStuffed, 0);
     deviceNode->read(interruptREGS.data(), bytesToRead32BitStuffed);

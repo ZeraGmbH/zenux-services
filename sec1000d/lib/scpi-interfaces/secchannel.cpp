@@ -33,9 +33,9 @@ SecChannel::SecChannel(std::shared_ptr<cSCPI> scpiInterface,
                        SecInputSettings *inpsettings,
                        quint16 nr,
                        std::function<void (int)> funcSigHandler,
-                       AbstractFactoryDeviceNodeSecPtr deviceNodeFactory) :
+                       AbstractFactoryDeviceNodeSecPtr zdspSupportFactory) :
     ScpiConnection(scpiInterface),
-    m_deviceNodeFactory(deviceNodeFactory),
+    m_zdspSupportFactory(zdspSupportFactory),
     m_pecalcsettings(esettings),
     m_pInputSettings(inpsettings),
     m_nNr(nr),
@@ -155,7 +155,7 @@ void SecChannel::m_ReadWriteRegister(ProtonetCommandPtr protoCmd)
     par.remove(QChar('?'));
     quint8 regInd = par.toInt(&ok);
 
-    AbstractDeviceNodeSecPtr deviceNode = m_deviceNodeFactory->getSecDeviceNode();
+    AbstractDeviceNodeSecPtr deviceNode = m_zdspSupportFactory->getSecDeviceNode();
     if ( ((protoCmd->m_nSCPIType & SCPI::isQuery) != 0) && cmd.isQuery() ) {
         switch (regInd)
         {
@@ -216,7 +216,7 @@ void SecChannel::m_setSync(ProtonetCommandPtr protoCmd)
                 quint32 chnIndex = par.toULong(&ok);
                 if (ok && (chnIndex <= m_pecalcsettings->getNumber()) ) {
                     quint32 reg;
-                    AbstractDeviceNodeSecPtr deviceNode = m_deviceNodeFactory->getSecDeviceNode();
+                    AbstractDeviceNodeSecPtr deviceNode = m_zdspSupportFactory->getSecDeviceNode();
                     deviceNode->lseek(m_nMyAdress + (ECALCREG::CONF << 2));
                     deviceNode->read((char*) &reg, 4);
                     reg = (reg & 0xFFFFFF00) | (chnIndex+1);
@@ -241,7 +241,7 @@ void SecChannel::m_setMux(ProtonetCommandPtr protoCmd)
             protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::errval]; // preset
             if (m_pInputSettings->hasInput(par)) {
                 quint32 reg;
-                AbstractDeviceNodeSecPtr deviceNode = m_deviceNodeFactory->getSecDeviceNode();
+                AbstractDeviceNodeSecPtr deviceNode = m_zdspSupportFactory->getSecDeviceNode();
                 deviceNode->lseek(m_nMyAdress + (ECALCREG::CONF << 2));
                 deviceNode->read((char*) &reg, 4);
                 reg = (reg & 0xFFFF83FF) | (m_pInputSettings->mux(par) << 10);
@@ -267,7 +267,7 @@ void SecChannel::m_setCmdId(ProtonetCommandPtr protoCmd)
             quint32 cmdId = par.toULong(&ok);
             if (ok && (cmdId < 3) ) {
                 quint32 reg;
-                AbstractDeviceNodeSecPtr deviceNode = m_deviceNodeFactory->getSecDeviceNode();
+                AbstractDeviceNodeSecPtr deviceNode = m_zdspSupportFactory->getSecDeviceNode();
                 deviceNode->lseek(m_nMyAdress + (ECALCREG::CONF << 2));
                 deviceNode->read((char*) &reg, 4);
                 reg = (reg & 0x00007CFF) | CMDIDList.at(cmdId);
@@ -288,7 +288,7 @@ void SecChannel::m_start(ProtonetCommandPtr protoCmd)
     if (cmd.isCommand(0)) {
         if (protoCmd->m_clientId == m_ClientId) { // authorized ?
             quint32 reg;
-            AbstractDeviceNodeSecPtr deviceNode = m_deviceNodeFactory->getSecDeviceNode();
+            AbstractDeviceNodeSecPtr deviceNode = m_zdspSupportFactory->getSecDeviceNode();
             deviceNode->lseek(m_nMyAdress + (ECALCREG::CMD << 2));
             //SecDeviceNodeSingleton::getInstance()->read((char*) &reg, 4);
             //reg = (reg & 0xFFFFFF3F) | 0x80;
@@ -345,7 +345,7 @@ void SecChannel::m_resetInt(ProtonetCommandPtr protoCmd)
 void SecChannel::m_StopErrorCalculator()
 {
     quint32 reg;
-    AbstractDeviceNodeSecPtr deviceNode = m_deviceNodeFactory->getSecDeviceNode();
+    AbstractDeviceNodeSecPtr deviceNode = m_zdspSupportFactory->getSecDeviceNode();
     deviceNode->lseek(m_nMyAdress + (ECALCREG::CMD << 2));
     //read(m_devFileDescriptor,(char*) &reg, 4);
     //reg = (reg & 0xFFFFFF3F) | 0x40;
@@ -362,7 +362,7 @@ void SecChannel::resetInterrupt(quint8 interrupt)
     quint32 reg;
 
     notifierECalcChannelIntReg.clrValue(interrupt);
-    AbstractDeviceNodeSecPtr deviceNode = m_deviceNodeFactory->getSecDeviceNode();
+    AbstractDeviceNodeSecPtr deviceNode = m_zdspSupportFactory->getSecDeviceNode();
     deviceNode->lseek(m_nMyAdress + (ECALCREG::INTREG << 2));
     deviceNode->read((char*) &reg, 4);
     reg = (reg & 0xF) & ~interrupt;

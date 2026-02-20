@@ -1,7 +1,7 @@
 #ifndef TEST_ZDSPCLIENTCONTAINER_H
 #define TEST_ZDSPCLIENTCONTAINER_H
 
-#include "abstractfactorydevicenodedsp.h"
+#include "abstractfactoryzdspsupport.h"
 #include <mocktcpnetworkfactory.h>
 #include <QObject>
 
@@ -34,7 +34,7 @@ private slots:
 
     void cleanup();
 private:
-    AbstractFactoryDeviceNodeDspPtr m_devNodeFactory;
+    AbstractFactoryZdspSupportPtr m_zdspSupportFactory;
     VeinTcp::MockTcpNetworkFactory m_netFactory;
 };
 

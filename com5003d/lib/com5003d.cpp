@@ -25,13 +25,13 @@ const ServerParams cCOM5003dServer::defaultParams(6,
 
 cCOM5003dServer::cCOM5003dServer(SettingsContainerPtr settings,
                                  AbstractFactoryI2cCtrlPtr ctrlFactory,
-                                 AbstractFactoryDeviceNodePcbPtr deviceNodeFactory,
+                                 AbstractFactoryDeviceNodePcbPtr zdspSupportFactory,
                                  AbstractEepromI2cFactoryPtr adjMemFactory,
                                  VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory,
                                  AbstractChannelRangeFactoryPtr channelRangeFactory) :
     PCBServer(std::move(settings), tcpNetworkFactory),
     m_ctrlFactory(ctrlFactory),
-    m_deviceNodeFactory(deviceNodeFactory),
+    m_zdspSupportFactory(zdspSupportFactory),
     m_adjMemFactory(adjMemFactory),
     m_channelRangeFactory(channelRangeFactory)
 {

@@ -15,7 +15,7 @@ SecMainAndChannelInterface::SecMainAndChannelInterface(std::shared_ptr<cSCPI> sc
                                                            SecCalculatorSettings* ecalcSettings,
                                                            SecInputSettings *inputsettings,
                                                            std::function<void (int)> funcSigHandler,
-                                                           AbstractFactoryDeviceNodeSecPtr deviceNodeFactory) :
+                                                           AbstractFactoryDeviceNodeSecPtr zdspSupportFactory) :
     ScpiServerConnection(scpiInterface),
     m_pecalcsettings(ecalcSettings),
     m_pInputSettings(inputsettings)
@@ -26,7 +26,7 @@ SecMainAndChannelInterface::SecMainAndChannelInterface(std::shared_ptr<cSCPI> sc
                                            m_pInputSettings,
                                            channelNo,
                                            funcSigHandler,
-                                           deviceNodeFactory);
+                                           zdspSupportFactory);
         m_ECalculatorChannelList.append(eChan);
         eChan->m_StopErrorCalculator();
         eChan->resetInterrupt(0xF);

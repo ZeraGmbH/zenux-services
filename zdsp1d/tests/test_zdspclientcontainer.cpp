@@ -1,63 +1,63 @@
 #include "test_zdspclientcontainer.h"
 #include "zdspclientcontainer.h"
-#include "testfactorydevicenodedsp.h"
+#include "testfactoryzdspsupport.h"
 #include <QTest>
 
 QTEST_MAIN(test_zdspclientcontainer);
 
 void test_zdspclientcontainer::initTestCase()
 {
-    m_devNodeFactory = std::make_shared<TestFactoryDeviceNodeDsp>();
+    m_zdspSupportFactory = std::make_shared<TestFactoryZdspSupport>();
 }
 
 void test_zdspclientcontainer::emptyReturnsEmptyList()
 {
-    ZDspClientContainer container;
+    ZDspClientContainer container(m_zdspSupportFactory);
     QCOMPARE(container.getClientList().count(), 0);
 }
 
 void test_zdspclientcontainer::emptyReturnsNullFirst()
 {
-    ZDspClientContainer container;
+    ZDspClientContainer container(m_zdspSupportFactory);
     QCOMPARE(container.getFirstAdded(), nullptr);
 }
 
 void test_zdspclientcontainer::emptyReturnsNullFindDspInterruptId()
 {
-    ZDspClientContainer container;
+    ZDspClientContainer container(m_zdspSupportFactory);
     QCOMPARE(container.findClient(1), nullptr);
 }
 
 void test_zdspclientcontainer::emptyReturnsNullFindProxyConnectionId()
 {
-    ZDspClientContainer container;
+    ZDspClientContainer container(m_zdspSupportFactory);
     QCOMPARE(container.findClient("proxyConnectionId0"), nullptr);
 }
 
 void test_zdspclientcontainer::getList()
 {
     VeinTcp::TcpPeer peer(m_netFactory.create());
-    ZDspClientContainer container;
+    ZDspClientContainer container(m_zdspSupportFactory);
 
-    container.addClient(&peer, "proxyConnectionId0", m_devNodeFactory);
-    container.addClient(&peer, "proxyConnectionId1", m_devNodeFactory);
+    container.addClient(&peer, "proxyConnectionId0");
+    container.addClient(&peer, "proxyConnectionId1");
     QCOMPARE(container.getClientList().count(), 2);
 
     container.delAllClients();
     QCOMPARE(container.getClientList().count(), 0);
 
-    container.addClient(&peer, "proxyConnectionId3", m_devNodeFactory);
-    container.addClient(&peer, "proxyConnectionId4", m_devNodeFactory);
+    container.addClient(&peer, "proxyConnectionId3");
+    container.addClient(&peer, "proxyConnectionId4");
     QCOMPARE(container.getClientList().count(), 2);
 }
 
 void test_zdspclientcontainer::getFirst()
 {
     VeinTcp::TcpPeer peer(m_netFactory.create());
-    ZDspClientContainer container;
+    ZDspClientContainer container(m_zdspSupportFactory);
 
-    container.addClient(&peer, "proxyConnectionId0", m_devNodeFactory);
-    container.addClient(&peer, "proxyConnectionId1", m_devNodeFactory);
+    container.addClient(&peer, "proxyConnectionId0");
+    container.addClient(&peer, "proxyConnectionId1");
 
     ZdspClient* client = container.getFirstAdded();
     QCOMPARE(client->getProtobufClientId(), "proxyConnectionId0");
@@ -65,8 +65,8 @@ void test_zdspclientcontainer::getFirst()
     container.delAllClients();
     QCOMPARE(container.getFirstAdded(), nullptr);
 
-    container.addClient(&peer, "proxyConnectionId3", m_devNodeFactory);
-    container.addClient(&peer, "proxyConnectionId4", m_devNodeFactory);
+    container.addClient(&peer, "proxyConnectionId3");
+    container.addClient(&peer, "proxyConnectionId4");
 
     client = container.getFirstAdded();
     QCOMPARE(client->getProtobufClientId(), "proxyConnectionId3");
@@ -75,11 +75,11 @@ void test_zdspclientcontainer::getFirst()
 void test_zdspclientcontainer::checkDspInterruptIds()
 {
     VeinTcp::TcpPeer peer(m_netFactory.create());
-    ZDspClientContainer container;
+    ZDspClientContainer container(m_zdspSupportFactory);
 
     constexpr int maxIds = 0xFFFF;
     for (int i=0; i<maxIds; i++)
-        container.addClient(&peer, QString("proxyConnectionId%1").arg(i).toLatin1(), m_devNodeFactory);
+        container.addClient(&peer, QString("proxyConnectionId%1").arg(i).toLatin1());
 
     QList<ZdspClient*> clients = container.getClientList();
     QCOMPARE(clients.count(), maxIds);
@@ -103,7 +103,7 @@ void test_zdspclientcontainer::checkDspInterruptIds()
 
     container.delAllClients();
     for (int i=0; i<10; i++)
-        container.addClient(&peer, QString("proxyConnectionId%1").arg(i).toLatin1(), m_devNodeFactory);
+        container.addClient(&peer, QString("proxyConnectionId%1").arg(i).toLatin1());
     clients = container.getClientList();
     QCOMPARE(clients.count(), 10);
 }
@@ -111,11 +111,11 @@ void test_zdspclientcontainer::checkDspInterruptIds()
 void test_zdspclientcontainer::checkDspInterruptIdsExceedMax()
 {
     VeinTcp::TcpPeer peer(m_netFactory.create());
-    ZDspClientContainer container;
+    ZDspClientContainer container(m_zdspSupportFactory);
 
     constexpr int maxIds = 0xFFFF;
     for (int i=0; i<maxIds+3; i++)
-        container.addClient(&peer, QString("proxyConnectionId%1").arg(i).toLatin1(), m_devNodeFactory);
+        container.addClient(&peer, QString("proxyConnectionId%1").arg(i).toLatin1());
 
     QList<ZdspClient*> clients = container.getClientList();
     QCOMPARE(clients.count(), maxIds);
@@ -124,10 +124,10 @@ void test_zdspclientcontainer::checkDspInterruptIdsExceedMax()
 void test_zdspclientcontainer::addRemoveDeletesClient()
 {
     VeinTcp::TcpPeer peer(m_netFactory.create());
-    ZDspClientContainer container;
+    ZDspClientContainer container(m_zdspSupportFactory);
 
-    container.addClient(&peer, "proxyConnectionId0", m_devNodeFactory);
-    container.addClient(&peer, "proxyConnectionId1", m_devNodeFactory);
+    container.addClient(&peer, "proxyConnectionId0");
+    container.addClient(&peer, "proxyConnectionId1");
     QCOMPARE(ZdspClient::getInstanceCount(), 2);
 
     container.delAllClients();
@@ -137,15 +137,15 @@ void test_zdspclientcontainer::addRemoveDeletesClient()
 void test_zdspclientcontainer::addSameClientIdIgnored()
 {
     VeinTcp::TcpPeer peer(m_netFactory.create());
-    ZDspClientContainer container;
+    ZDspClientContainer container(m_zdspSupportFactory);
 
-    container.addClient(&peer, "proxyConnectionId", m_devNodeFactory);
+    container.addClient(&peer, "proxyConnectionId");
     QCOMPARE(ZdspClient::getInstanceCount(), 1);
     ZdspClient *client1 = container.findClient("proxyConnectionId");
     QCOMPARE(client1->getProtobufClientId(), "proxyConnectionId");
     int interruptId1 = client1->getDspInterruptId();
 
-    container.addClient(&peer, "proxyConnectionId", m_devNodeFactory);
+    container.addClient(&peer, "proxyConnectionId");
     QCOMPARE(ZdspClient::getInstanceCount(), 1);
     ZdspClient *client2 = container.findClient("proxyConnectionId");
     QCOMPARE(client2->getProtobufClientId(), "proxyConnectionId");
@@ -157,10 +157,10 @@ void test_zdspclientcontainer::findByProxyConnectionId()
 {
     VeinTcp::TcpPeer peer1(m_netFactory.create());
     VeinTcp::TcpPeer peer2(m_netFactory.create());
-    ZDspClientContainer container;
+    ZDspClientContainer container(m_zdspSupportFactory);
 
-    container.addClient(&peer1, "proxyConnectionId0", m_devNodeFactory);
-    container.addClient(&peer2, "proxyConnectionId1", m_devNodeFactory);
+    container.addClient(&peer1, "proxyConnectionId0");
+    container.addClient(&peer2, "proxyConnectionId1");
 
     ZdspClient *client1 = container.findClient("proxyConnectionId0");
     QCOMPARE(client1->getProtobufClientId(), "proxyConnectionId0");
@@ -177,10 +177,10 @@ void test_zdspclientcontainer::findByProxyConnectionId()
 void test_zdspclientcontainer::findByDspInterruptId()
 {
     VeinTcp::TcpPeer peer(m_netFactory.create());
-    ZDspClientContainer container;
+    ZDspClientContainer container(m_zdspSupportFactory);
 
-    container.addClient(&peer, "proxyConnectionId0", m_devNodeFactory);
-    container.addClient(&peer, "proxyConnectionId1", m_devNodeFactory);
+    container.addClient(&peer, "proxyConnectionId0");
+    container.addClient(&peer, "proxyConnectionId1");
     QList<ZdspClient*> clients = container.getClientList();
 
     int dspInterruptId1 = clients[0]->getDspInterruptId();
@@ -196,10 +196,10 @@ void test_zdspclientcontainer::findByDspInterruptId()
 void test_zdspclientcontainer::deleteByProxyConnectionIdNotAdded()
 {
     VeinTcp::TcpPeer peer(m_netFactory.create());
-    ZDspClientContainer container;
+    ZDspClientContainer container(m_zdspSupportFactory);
 
-    container.addClient(&peer, "proxyConnectionId0", m_devNodeFactory);
-    container.addClient(&peer, "proxyConnectionId1", m_devNodeFactory);
+    container.addClient(&peer, "proxyConnectionId0");
+    container.addClient(&peer, "proxyConnectionId1");
 
     container.delClient("");
     QCOMPARE(container.getClientList().count(), 2);
@@ -208,10 +208,10 @@ void test_zdspclientcontainer::deleteByProxyConnectionIdNotAdded()
 void test_zdspclientcontainer::deleteByProxyConnectionId()
 {
     VeinTcp::TcpPeer peer(m_netFactory.create());
-    ZDspClientContainer container;
+    ZDspClientContainer container(m_zdspSupportFactory);
 
-    container.addClient(&peer, "proxyConnectionId0", m_devNodeFactory);
-    container.addClient(&peer, "proxyConnectionId1", m_devNodeFactory);
+    container.addClient(&peer, "proxyConnectionId0");
+    container.addClient(&peer, "proxyConnectionId1");
     QList<ZdspClient*> clientsBeforeRemove = container.getClientList();
     const int interruptId1 = clientsBeforeRemove[0]->getDspInterruptId();
     const int interruptId2 = clientsBeforeRemove[1]->getDspInterruptId();
@@ -250,10 +250,10 @@ void test_zdspclientcontainer::deleteByProxyConnectionId()
 void test_zdspclientcontainer::deleteByVeinPeerNotAdded()
 {
     VeinTcp::TcpPeer peerAdded(m_netFactory.create());
-    ZDspClientContainer container;
+    ZDspClientContainer container(m_zdspSupportFactory);
 
-    container.addClient(&peerAdded, "proxyConnectionId0", m_devNodeFactory);
-    container.addClient(&peerAdded, "proxyConnectionId1", m_devNodeFactory);
+    container.addClient(&peerAdded, "proxyConnectionId0");
+    container.addClient(&peerAdded, "proxyConnectionId1");
 
     VeinTcp::TcpPeer peerNotAdded(m_netFactory.create());
     container.delClients(&peerNotAdded);
@@ -264,12 +264,12 @@ void test_zdspclientcontainer::deleteByVeinPeer()
 {
     VeinTcp::TcpPeer peer0(m_netFactory.create());
     VeinTcp::TcpPeer peer1(m_netFactory.create());
-    ZDspClientContainer container;
+    ZDspClientContainer container(m_zdspSupportFactory);
 
-    container.addClient(&peer0, "proxyConnectionId0", m_devNodeFactory);
-    container.addClient(&peer0, "proxyConnectionId1", m_devNodeFactory);
-    container.addClient(&peer1, "proxyConnectionId2", m_devNodeFactory);
-    container.addClient(&peer1, "proxyConnectionId3", m_devNodeFactory);
+    container.addClient(&peer0, "proxyConnectionId0");
+    container.addClient(&peer0, "proxyConnectionId1");
+    container.addClient(&peer1, "proxyConnectionId2");
+    container.addClient(&peer1, "proxyConnectionId3");
     QList<ZdspClient*> clientsBeforeRemove = container.getClientList();
     const int interruptId0 = clientsBeforeRemove[0]->getDspInterruptId();
     const int interruptId1 = clientsBeforeRemove[1]->getDspInterruptId();

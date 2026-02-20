@@ -31,13 +31,13 @@ static struct sigaction sigActionMt310s2;
 
 cMT310S2dServer::cMT310S2dServer(SettingsContainerPtr settings,
                                  AbstractFactoryI2cCtrlPtr ctrlFactory,
-                                 AbstractFactoryDeviceNodePcbPtr deviceNodeFactory,
+                                 AbstractFactoryDeviceNodePcbPtr zdspSupportFactory,
                                  AbstractEepromI2cFactoryPtr adjMemFactory,
                                  VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory,
                                  AbstractChannelRangeFactoryPtr channelRangeFactory) :
     PCBServer(std::move(settings), tcpNetworkFactory),
     m_ctrlFactory(ctrlFactory),
-    m_deviceNodeFactory(deviceNodeFactory),
+    m_zdspSupportFactory(zdspSupportFactory),
     m_adjMemFactory(adjMemFactory),
     m_i2cCtrlCpuTemperature(ctrlFactory->getCpuTemperatureController())
 {
@@ -225,14 +225,14 @@ void cMT310S2dServer::doSetupServerWithAtmelRunning()
     setInitialPllChannel();
 
     QString ctrlDeviceNodeName = getCtrlDeviceNode(); // we try to open the ctrl device
-    AbstractDeviceNodePcbCtrlPtr ctrlDeviceNode = m_deviceNodeFactory->getPcbCtrlDeviceNode();
+    AbstractDeviceNodePcbCtrlPtr ctrlDeviceNode = m_zdspSupportFactory->getPcbCtrlDeviceNode();
     if (ctrlDeviceNode->open(ctrlDeviceNodeName) < 0) {
         qCritical("Abort: Could not open control device '%s'", qPrintable(ctrlDeviceNodeName));
         emit abortInit();
     }
     else {
         QString messageDeviceNodeName = getMsgDeviceNode();
-        AbstractDeviceNodePcbMsgPtr msgDeviceNode = m_deviceNodeFactory->getPcbMsgDeviceNode();
+        AbstractDeviceNodePcbMsgPtr msgDeviceNode = m_zdspSupportFactory->getPcbMsgDeviceNode();
         if (msgDeviceNode->open(messageDeviceNodeName) < 0) {
             qCritical("Abort: Could not open message device '%s'", qPrintable(messageDeviceNodeName));
             emit abortInit();
@@ -330,9 +330,9 @@ void cMT310S2dServer::onResourceReady()
 
 void cMT310S2dServer::SetFASync()
 {
-    AbstractDeviceNodePcbMsgPtr msgDeviceNode = m_deviceNodeFactory->getPcbMsgDeviceNode();
+    AbstractDeviceNodePcbMsgPtr msgDeviceNode = m_zdspSupportFactory->getPcbMsgDeviceNode();
     msgDeviceNode->enableFasync();
-    AbstractDeviceNodePcbCtrlPtr ctrlDeviceNode = m_deviceNodeFactory->getPcbCtrlDeviceNode();
+    AbstractDeviceNodePcbCtrlPtr ctrlDeviceNode = m_zdspSupportFactory->getPcbCtrlDeviceNode();
     ctrlDeviceNode->enableFasync();
 }
 

@@ -25,7 +25,7 @@ public:
                                  SecCalculatorSettings* ecalcSettings,
                                  SecInputSettings* inputsettings,
                                  std::function<void(int)> funcSigHandler,
-                                 AbstractFactoryDeviceNodeSecPtr deviceNodeFactory);
+                                 AbstractFactoryDeviceNodeSecPtr zdspSupportFactory);
     ~SecMainAndChannelInterface();
     void initSCPIConnection() override;
     QList<SecChannel*> getECalcChannelList();

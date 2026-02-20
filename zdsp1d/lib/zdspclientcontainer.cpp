@@ -1,13 +1,16 @@
 #include "zdspclientcontainer.h"
 
+ZDspClientContainer::ZDspClientContainer(AbstractFactoryZdspSupportPtr zdspSupportFactory) :
+    m_zdspSupportFactory(zdspSupportFactory)
+{
+}
+
 ZDspClientContainer::~ZDspClientContainer()
 {
     delAllClients();
 }
 
-void ZDspClientContainer::addClient(VeinTcp::TcpPeer *netClient,
-                                    const QByteArray &proxyConnectionId,
-                                    AbstractFactoryDeviceNodeDspPtr deviceNodeFactory)
+void ZDspClientContainer::addClient(VeinTcp::TcpPeer *netClient, const QByteArray &proxyConnectionId)
 {
     if (m_clientsByProxyConnectionId.contains(proxyConnectionId))
         return;
@@ -19,7 +22,7 @@ void ZDspClientContainer::addClient(VeinTcp::TcpPeer *netClient,
     ZdspClient* client = new ZdspClient(m_currentDspInterruptId,
                                         netClient,
                                         proxyConnectionId,
-                                        deviceNodeFactory);
+                                        m_zdspSupportFactory);
     m_clientsChonological.append(client);
     m_clientsByDspInterruptId[m_currentDspInterruptId] = client;
     m_clientsByProxyConnectionId[proxyConnectionId] = client;

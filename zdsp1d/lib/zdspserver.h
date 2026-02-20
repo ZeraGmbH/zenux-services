@@ -1,7 +1,7 @@
 #ifndef ZDSP1D_H
 #define ZDSP1D_H
 
-#include "abstractfactorydevicenodedsp.h"
+#include "abstractfactoryzdspsupport.h"
 #include "consoleserver.h"
 #include "dspvardevicenodeinout.h"
 #include "dspsettings.h"
@@ -30,7 +30,7 @@ class ZDspServer: public ScpiConnection
     Q_OBJECT
 public:
     ZDspServer(SettingsContainerPtr settings,
-               AbstractFactoryDeviceNodeDspPtr deviceNodeFactory,
+               AbstractFactoryZdspSupportPtr zdspSupportFactory,
                VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory,
                bool outputHealthLogs);
     virtual ~ZDspServer();
@@ -110,7 +110,7 @@ private:
     Zera::XMLConfig::cReader m_xmlConfigReader;
     cDSPSettings m_dspSettings;
     SettingsContainerPtr m_settings;
-    AbstractFactoryDeviceNodeDspPtr m_deviceNodeFactory;
+    AbstractFactoryZdspSupportPtr m_zdspSupportFactory;
     DspVarDeviceNodeInOut m_dspInOut;
     VeinTcp::AbstractTcpNetworkFactoryPtr m_tcpNetworkFactory;
     VeinTcp::TcpServer m_protoBufServer;

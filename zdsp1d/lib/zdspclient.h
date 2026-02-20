@@ -1,7 +1,7 @@
 #ifndef ZDSPCLIENT_H
 #define ZDSPCLIENT_H
 
-#include "abstractfactorydevicenodedsp.h"
+#include "abstractfactoryzdspsupport.h"
 #include "dspapi.h"
 #include "dspcompilerrawcollector.h"
 #include "dspvarresolver.h"
@@ -14,7 +14,7 @@ public:
     ZdspClient(int dspInterruptId,
                VeinTcp::TcpPeer *veinPeer,
                const QByteArray &proxyConnectionId,
-               AbstractFactoryDeviceNodeDspPtr deviceNodeFactory);
+               AbstractFactoryZdspSupportPtr zdspSupportFactory);
     virtual ~ZdspClient();
 
     QByteArray getProtobufClientId() const;
@@ -57,7 +57,7 @@ private:
 
     VeinTcp::TcpPeer* m_veinPeer;
     QByteArray m_proxyConnectionId;
-    AbstractFactoryDeviceNodeDspPtr m_deviceNodeFactory;
+    AbstractFactoryZdspSupportPtr m_zdspSupportFactory;
     int m_dspInterruptId;
 
     int m_entityId = -1;
@@ -71,8 +71,8 @@ private:
     int m_dataMemSize = 0;
 
     // dump / tests
-    std::unique_ptr<DspCompilerRawCollector> m_rawCyclicCommands;
-    std::unique_ptr<DspCompilerRawCollector> m_rawInterruptCommands;
+    AbstractDspCompilerRawCollectorPtr m_rawCyclicCommands;
+    AbstractDspCompilerRawCollectorPtr m_rawInterruptCommands;
     std::unique_ptr<QList<VarLocation>> m_localVarDump;
     std::unique_ptr<QList<VarLocation>> m_globalVarDump;
     static int m_instanceCount;

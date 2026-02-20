@@ -5,8 +5,8 @@
 #include <QDataStream>
 #include <QTextStream>
 
-DspVarDeviceNodeInOut::DspVarDeviceNodeInOut(AbstractFactoryDeviceNodeDspPtr deviceNodeFactory) :
-    m_deviceNodeFactory(deviceNodeFactory)
+DspVarDeviceNodeInOut::DspVarDeviceNodeInOut(AbstractFactoryZdspSupportPtr zdspSupportFactory) :
+    m_zdspSupportFactory(zdspSupportFactory)
 {
 }
 
@@ -28,7 +28,7 @@ TDspVar *DspVarDeviceNodeInOut::readOneDspVar(const QString &nameCommaLen,
     if (!ok || countVars < 1 )
         return nullptr; // fehler in der anzahl der elemente
 
-    DspVarDeviceNodeInOut dspInOut(m_deviceNodeFactory);
+    DspVarDeviceNodeInOut dspInOut(m_zdspSupportFactory);
     if(dspInOut.readVarFromDsp(dspVar, countVars, varRead))
         return dspVar;
     return nullptr;
@@ -39,7 +39,7 @@ bool DspVarDeviceNodeInOut::readOneDspVarInt(const QString &varName, int &intval
     bool ret = false;
     QByteArray ba;
     QString ss = QString("%1,1").arg(varName);
-    DspVarDeviceNodeInOut dspInOut(m_deviceNodeFactory);
+    DspVarDeviceNodeInOut dspInOut(m_zdspSupportFactory);
     if(dspInOut.readOneDspVar(ss, &ba, dspVarResolver)) {
         // 1 wort ab name (s) lesen
         intval = *((int*) (ba.data()));
@@ -90,7 +90,7 @@ bool DspVarDeviceNodeInOut::readVarFromDsp(TDspVar *DspVar, int countVars, QByte
 {
     const int countBytes = countVars * 4;
     varRead->resize(countBytes);
-    AbstractDspDeviceNodePtr deviceNode = m_deviceNodeFactory->getDspDeviceNode();
+    AbstractDspDeviceNodePtr deviceNode = m_zdspSupportFactory->getDspDeviceNode();
     if ((deviceNode->lseek(DspVar->adr) >= 0) &&
         (deviceNode->read(varRead->data(), countBytes) >= 0))
         return true;
@@ -132,7 +132,7 @@ bool DspVarDeviceNodeInOut::writeDspVars(const QString &varsSemicolonSeparated, 
         long adr = dspVarResolver->getVarAddress(varName);
         if (adr == -1)
             return false;
-        AbstractDspDeviceNodePtr deviceNode = m_deviceNodeFactory->getDspDeviceNode();
+        AbstractDspDeviceNodePtr deviceNode = m_zdspSupportFactory->getDspDeviceNode();
         if(wordCount>0 && !deviceNode->write(adr, byteArr.data(), wordCount*4))
             return false;
     }

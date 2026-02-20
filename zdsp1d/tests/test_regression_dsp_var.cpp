@@ -4,7 +4,7 @@
 #include "zdspclient.h"
 #include "zscpi_response_definitions.h"
 #include "testdevicenodedsp.h"
-#include "testfactorydevicenodedsp.h"
+#include "testfactoryzdspsupport.h"
 #include "testsingletondevicenodedsp.h"
 #include <timemachineobject.h>
 #include <mocktcpnetworkfactory.h>
@@ -21,8 +21,8 @@ void test_regression_dsp_var::init()
 {
     m_tcpNetworkFactory = VeinTcp::MockTcpNetworkFactory::create();
     m_resmanServer = std::make_unique<ResmanRunFacade>(m_tcpNetworkFactory);
-    m_deviceNodeFactory = std::make_shared<TestFactoryDeviceNodeDsp>();
-    m_dspService = std::make_unique<TestZdsp1dForVarAccess>(m_deviceNodeFactory, m_tcpNetworkFactory);
+    m_zdspSupportFactory = std::make_shared<TestFactoryZdspSupport>();
+    m_dspService = std::make_unique<TestZdsp1dForVarAccess>(m_zdspSupportFactory, m_tcpNetworkFactory);
     TimeMachineObject::feedEventLoop();
 
     m_proxyClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", dspServerPort, m_tcpNetworkFactory);
@@ -41,7 +41,7 @@ void test_regression_dsp_var::cleanup()
 
     m_dspService = nullptr;
     TimeMachineObject::feedEventLoop();
-    m_deviceNodeFactory = nullptr;
+    m_zdspSupportFactory = nullptr;
     m_resmanServer = nullptr;
     TimeMachineObject::feedEventLoop();
 }
@@ -375,7 +375,7 @@ void test_regression_dsp_var::serverReadDspWorkspaceVariableAndListenDeviceNode(
     TestDeviceNodeDspPtr deviceNode = TestSingletonDeviceNodeDsp::getInstancePtrTest();
     QSignalSpy spyRead(deviceNode.get(), &TestDeviceNodeDsp::sigIoOperation);
 
-    DspVarDeviceNodeInOut dspInOut(m_deviceNodeFactory);
+    DspVarDeviceNodeInOut dspInOut(m_zdspSupportFactory);
     dspInOut.readDspVarList("FREQENCY,1;", &testServerlient->m_dspVarResolver);
 
     QCOMPARE(spyRead.count(), 2);
@@ -395,7 +395,7 @@ void test_regression_dsp_var::serverWriteDspDialogWorkspaceVariableAndListenDevi
     QSignalSpy spyWrite(deviceNode.get(), &TestDeviceNodeDsp::sigIoOperation);
 
     // Note: A real world DSP write is more complex - see ZDspServer::sendCommand2Dsp
-    DspVarDeviceNodeInOut dspInOut(m_deviceNodeFactory);
+    DspVarDeviceNodeInOut dspInOut(m_zdspSupportFactory);
     dspInOut.writeDspVars("DSPCMDPAR,2,42;", &testServerlient->m_dspVarResolver);
 
     QCOMPARE(spyWrite.count(), 1);
@@ -413,7 +413,7 @@ void test_regression_dsp_var::serverReadDspUserWorkspaceVariableAndListenDeviceN
     TestDeviceNodeDspPtr deviceNode = TestSingletonDeviceNodeDsp::getInstancePtrTest();
     QSignalSpy spyRead(deviceNode.get(), &TestDeviceNodeDsp::sigIoOperation);
 
-    DspVarDeviceNodeInOut dspInOut(m_deviceNodeFactory);
+    DspVarDeviceNodeInOut dspInOut(m_zdspSupportFactory);
     dspInOut.readDspVarList("UWSPACE,1;", &testServerlient->m_dspVarResolver);
 
     QCOMPARE(spyRead.count(), 2);
@@ -432,7 +432,7 @@ void test_regression_dsp_var::serverReadDspCmdListVariableAndListenDeviceNode()
     TestDeviceNodeDspPtr deviceNode = TestSingletonDeviceNodeDsp::getInstancePtrTest();
     QSignalSpy spyRead(deviceNode.get(), &TestDeviceNodeDsp::sigIoOperation);
 
-    DspVarDeviceNodeInOut dspInOut(m_deviceNodeFactory);
+    DspVarDeviceNodeInOut dspInOut(m_zdspSupportFactory);
     dspInOut.readDspVarList("CMDLIST,1;", &testServerlient->m_dspVarResolver);
 
     QCOMPARE(spyRead.count(), 2);
@@ -453,7 +453,7 @@ void test_regression_dsp_var::serverReadDspChannelDataVariableAndListenDeviceNod
     TestDeviceNodeDspPtr deviceNode = TestSingletonDeviceNodeDsp::getInstancePtrTest();
     QSignalSpy spyRead(deviceNode.get(), &TestDeviceNodeDsp::sigIoOperation);
 
-    DspVarDeviceNodeInOut dspInOut(m_deviceNodeFactory);
+    DspVarDeviceNodeInOut dspInOut(m_zdspSupportFactory);
     dspInOut.readDspVarList("CH0,32;", &testServerlient->m_dspVarResolver);
 
     QCOMPARE(spyRead.count(), 2);

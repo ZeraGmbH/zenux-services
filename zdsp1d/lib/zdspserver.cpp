@@ -58,16 +58,17 @@ const ServerParams ZDspServer::defaultParams(0,
                                              "/etc/zera/zdsp1d/zdsp1d.xml");
 
 ZDspServer::ZDspServer(SettingsContainerPtr settings,
-                       AbstractFactoryDeviceNodeDspPtr deviceNodeFactory,
+                       AbstractFactoryZdspSupportPtr zdspSupportFactory,
                        VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory,
                        bool outputHealthLogs) :
     ScpiConnection(std::make_shared<cSCPI>()),
     m_dspSettings(&m_xmlConfigReader),
     m_settings(std::move(settings)),
-    m_deviceNodeFactory(deviceNodeFactory),
-    m_dspInOut(deviceNodeFactory),
+    m_zdspSupportFactory(zdspSupportFactory),
+    m_dspInOut(zdspSupportFactory),
     m_tcpNetworkFactory(tcpNetworkFactory),
     m_protoBufServer(tcpNetworkFactory),
+    m_zdspClientContainer(zdspSupportFactory),
     m_dspInterruptLogStatistics(10000),
     m_outputHealthLogs(outputHealthLogs)
 {
@@ -106,7 +107,7 @@ void ZDspServer::init()
 ZDspServer::~ZDspServer()
 {
     resetDsp(); // we reset the dsp when we close the server
-    AbstractDspDeviceNodePtr deviceNode = m_deviceNodeFactory->getDspDeviceNode();
+    AbstractDspDeviceNodePtr deviceNode = m_zdspSupportFactory->getDspDeviceNode();
     deviceNode->close();
     close(pipeFileDescriptorZdsp1[0]);
     close(pipeFileDescriptorZdsp1[1]);
@@ -139,7 +140,7 @@ void ZDspServer::doSetupServer()
             this, &ZDspServer::onProtobufClientConnected);
 
     QString dspDevNodeName = getDspDeviceNode(); // we try to open the dsp device
-    AbstractDspDeviceNodePtr deviceNode = m_deviceNodeFactory->getDspDeviceNode();
+    AbstractDspDeviceNodePtr deviceNode = m_zdspSupportFactory->getDspDeviceNode();
     if (deviceNode->open(dspDevNodeName) < 0) {
         qCritical("Abort: Could not open dsp device node '%s", qPrintable(dspDevNodeName));
         emit abortInit();
@@ -407,13 +408,13 @@ QString ZDspServer::handleScpiInterfaceRead(const QString &scpiInput)
 
 bool ZDspServer::resetDsp()
 {
-    AbstractDspDeviceNodePtr deviceNode = m_deviceNodeFactory->getDspDeviceNode();
+    AbstractDspDeviceNodePtr deviceNode = m_zdspSupportFactory->getDspDeviceNode();
     return deviceNode->dspReset();
 }
 
 bool ZDspServer::bootDsp()
 {
-    AbstractDspDeviceNodePtr deviceNode = m_deviceNodeFactory->getDspDeviceNode();
+    AbstractDspDeviceNodePtr deviceNode = m_zdspSupportFactory->getDspDeviceNode();
     return deviceNode->dspBoot(m_sDspBootPath);
 }
 
@@ -444,7 +445,7 @@ QString ZDspServer::sendCommand2Dsp(const QString &dspCmdParLine)
     if(!m_dspInOut.writeDspVars(dspCmdParLine, &dspSystemVarResolver))
         return ZSCPI::scpiAnswer[ZSCPI::errexec];
 
-    AbstractDspDeviceNodePtr deviceNode = m_deviceNodeFactory->getDspDeviceNode();
+    AbstractDspDeviceNodePtr deviceNode = m_zdspSupportFactory->getDspDeviceNode();
     deviceNode->dspRequestInt(); // interrupt beim dsp auslösen
     return ZSCPI::scpiAnswer[ZSCPI::ack]; // sofort fertig melden ....sync. muss die applikation
 }
@@ -543,7 +544,7 @@ QString ZDspServer::runDspTest(const QString &scpiParam)
             DspVarResolver dspSystemVarResolver;
             QString sadr  = "UWSPACE";
             ulong adr = dspSystemVarResolver.getVarAddress(sadr) ;
-            AbstractDspDeviceNodePtr deviceNode = m_deviceNodeFactory->getDspDeviceNode();
+            AbstractDspDeviceNodePtr deviceNode = m_zdspSupportFactory->getDspDeviceNode();
             for (i=0; i< nr; i++) {
                 if(!deviceNode->write(adr, ba.data(), n*4 )) {
                     ret = QString("Test write/read dsp data, dev write fault");
@@ -594,7 +595,7 @@ QString ZDspServer::startTriggerIntListHKSK(const QString &scpiParam, int dspInt
 
 QString ZDspServer::getLcaAndDspVersion()
 {
-    AbstractDspDeviceNodePtr deviceNode = m_deviceNodeFactory->getDspDeviceNode();
+    AbstractDspDeviceNodePtr deviceNode = m_zdspSupportFactory->getDspDeviceNode();
     // LCA
     int rawLcaVersion = deviceNode->lcaRawVersion();
     if ( rawLcaVersion < 0 )
@@ -746,7 +747,7 @@ QJsonObject ZDspServer::getMemoryDump() const
 
 ZdspClient *ZDspServer::addClientForTest()
 {
-    m_zdspClientContainer.addClient(nullptr, QByteArray(), m_deviceNodeFactory);
+    m_zdspClientContainer.addClient(nullptr, QByteArray());
     return m_zdspClientContainer.findClient(QByteArray());
 }
 
@@ -894,7 +895,7 @@ void ZDspServer::flipCommandListSelector()
 
 bool ZDspServer::writeDspCmdListsToDevNode()
 {
-    AbstractDspDeviceNodePtr deviceNode = m_deviceNodeFactory->getDspDeviceNode();
+    AbstractDspDeviceNodePtr deviceNode = m_zdspSupportFactory->getDspDeviceNode();
     DspVarResolver dspSystemVarResolver;
 
     const QString varNameCmdList = m_currentCmdListSelector == 0 ? "CMDLIST" : "ALTCMDLIST";
@@ -972,7 +973,7 @@ bool ZDspServer::setDspType()
 
 int ZDspServer::readMagicId()
 {
-    AbstractDspDeviceNodePtr deviceNode = m_deviceNodeFactory->getDspDeviceNode();
+    AbstractDspDeviceNodePtr deviceNode = m_zdspSupportFactory->getDspDeviceNode();
     return deviceNode->dspGetMagicId();
 }
 
@@ -984,7 +985,7 @@ bool ZDspServer::Test4HWPresent()
 
 bool ZDspServer::Test4DspRunning()
 {
-    AbstractDspDeviceNodePtr deviceNode = m_deviceNodeFactory->getDspDeviceNode();
+    AbstractDspDeviceNodePtr deviceNode = m_zdspSupportFactory->getDspDeviceNode();
     return deviceNode->dspIsRunning();
 }
 
@@ -1018,7 +1019,7 @@ void ZDspServer::executeCommandProto(VeinTcp::TcpPeer *peer, std::shared_ptr<goo
             quint32 messageNr = protobufCommand->messagenr();
             ProtobufMessage::NetMessage::ScpiCommand scpiCmd = protobufCommand->scpi();
 
-            m_zdspClientContainer.addClient(peer, proxyConnectionId, m_deviceNodeFactory);
+            m_zdspClientContainer.addClient(peer, proxyConnectionId);
 
             // Stolen from PCBServer::executeCommandProto ---
             QString scpiInput = QString::fromStdString(scpiCmd.command()) +  " " + QString::fromStdString(scpiCmd.parameter());
@@ -1059,7 +1060,7 @@ void ZDspServer::onTelnetReceived(const QString &input)
 
     ScpiObjectPtr scpiObject = m_scpiInterface->getSCPIObject(input);
     if(scpiObject) {
-        m_zdspClientContainer.addClient(nullptr, telnetClientId, m_deviceNodeFactory);
+        m_zdspClientContainer.addClient(nullptr, telnetClientId);
         ProtonetCommandPtr protoCmd = std::make_shared<ProtonetCommand>(nullptr, false, true, telnetClientId, 0, input);
         ScpiDelegate* scpiDelegate = static_cast<ScpiDelegate*>(scpiObject.get());
         if (!scpiDelegate->executeSCPI(protoCmd))

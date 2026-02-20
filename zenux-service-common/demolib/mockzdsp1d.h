@@ -6,7 +6,7 @@
 class MockZdsp1d
 {
 public:
-    MockZdsp1d(AbstractFactoryDeviceNodeDspPtr deviceNodeFactory,
+    MockZdsp1d(AbstractFactoryZdspSupportPtr zdspSupportFactory,
                VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory,
                const QString &alternateConfigXml = QString());
     // As long as there is no TestZdsp1d

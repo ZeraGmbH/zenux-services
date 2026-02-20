@@ -7,13 +7,13 @@ int ZdspClient::m_instanceCount = 0;
 ZdspClient::ZdspClient(int dspInterruptId,
                        VeinTcp::TcpPeer* veinPeer,
                        const QByteArray &proxyConnectionId,
-                       AbstractFactoryDeviceNodeDspPtr deviceNodeFactory) :
+                       AbstractFactoryZdspSupportPtr zdspSupportFactory) :
     m_veinPeer(veinPeer),
     m_proxyConnectionId(proxyConnectionId),
-    m_deviceNodeFactory(deviceNodeFactory),
+    m_zdspSupportFactory(zdspSupportFactory),
     m_dspInterruptId(dspInterruptId),
-    m_rawCyclicCommands(std::make_unique<DspCompilerRawCollector>()),
-    m_rawInterruptCommands(std::make_unique<DspCompilerRawCollector>()),
+    m_rawCyclicCommands(m_zdspSupportFactory->createDspCompilerRawCollector()),
+    m_rawInterruptCommands(m_zdspSupportFactory->createDspCompilerRawCollector()),
     m_localVarDump(std::make_unique<QList<VarLocation>>()),
     m_globalVarDump(std::make_unique<QList<VarLocation>>())
 {
@@ -136,11 +136,11 @@ ulong ZdspClient::relocalizeUserMemSectionVars(ulong startAdress, ulong globalMe
 bool ZdspClient::GenCmdLists(QString& errs, ulong userMemOffset, ulong globalstartadr)
 {
     DspCmdCompiler compiler(&m_dspVarResolver, m_dspInterruptId);
-    m_rawCyclicCommands = std::make_unique<DspCompilerRawCollector>();
-    m_rawInterruptCommands = std::make_unique<DspCompilerRawCollector>();
+    m_rawCyclicCommands = m_zdspSupportFactory->createDspCompilerRawCollector();
+    m_rawInterruptCommands = m_zdspSupportFactory->createDspCompilerRawCollector();
     return
-        compiler.compileCmds(m_sCmdListDef, m_DspCmdList,errs, userMemOffset, globalstartadr, m_rawCyclicCommands.get()) &&
-        compiler.compileCmds(m_sIntCmdListDef, m_DspIntCmdList, errs, userMemOffset, globalstartadr, m_rawInterruptCommands.get());
+        compiler.compileCmds(m_sCmdListDef, m_DspCmdList,errs, userMemOffset, globalstartadr, m_rawCyclicCommands) &&
+        compiler.compileCmds(m_sIntCmdListDef, m_DspIntCmdList, errs, userMemOffset, globalstartadr, m_rawInterruptCommands);
 }
 
 const QList<DspCmdWithParamsRaw> &ZdspClient::GetDspCmdList() const
@@ -215,6 +215,6 @@ QString ZdspClient::readActValues(const QString& variablesStringOnEmptyActOnly)
         for(const TDspVar &dspVar : qAsConst(m_dspVarArray))
             variablesStringWithActual += QString("%1,%2;").arg(dspVar.Name).arg(dspVar.size);
     }
-    DspVarDeviceNodeInOut dspInOut(m_deviceNodeFactory);
+    DspVarDeviceNodeInOut dspInOut(m_zdspSupportFactory);
     return dspInOut.readDspVarList(variablesStringWithActual, &m_dspVarResolver);
 }

@@ -39,7 +39,7 @@ class cMT310S2dServer: public PCBServer
 public:
     explicit cMT310S2dServer(SettingsContainerPtr settings,
                              AbstractFactoryI2cCtrlPtr ctrlFactory,
-                             AbstractFactoryDeviceNodePcbPtr deviceNodeFactory,
+                             AbstractFactoryDeviceNodePcbPtr zdspSupportFactory,
                              AbstractEepromI2cFactoryPtr adjMemFactory,
                              VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory,
                              AbstractChannelRangeFactoryPtr channelRangeFactory);
@@ -81,7 +81,7 @@ private:
     void setInitialPllChannel();
 
     AbstractFactoryI2cCtrlPtr m_ctrlFactory;
-    AbstractFactoryDeviceNodePcbPtr m_deviceNodeFactory;
+    AbstractFactoryDeviceNodePcbPtr m_zdspSupportFactory;
     AbstractEepromI2cFactoryPtr m_adjMemFactory;
 
     Mt310s2SystemInfo* m_pSystemInfo = nullptr;

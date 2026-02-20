@@ -2,7 +2,7 @@
 #define DSPCMDCOMPILER_H
 
 #include "dspapi.h"
-#include "dspcompilerrawcollector.h"
+#include "abstractdspcompilerrawcollector.h"
 #include "dspvarresolver.h"
 
 class DspCmdCompiler
@@ -15,13 +15,13 @@ public:
                                                  bool* ok,
                                                  ulong userMemOffset,
                                                  ulong globalstartadr,
-                                                 DspCompilerRawCollector *rawCollector = nullptr);
+                                                 AbstractDspCompilerRawCollectorPtr rawCollector);
     bool compileCmds(const QString& cmdsSemicolonSeparated,
                      QList<DspCmdWithParamsRaw> &genCmdList,
                      QString& err,
                      ulong userMemOffset,
                      ulong globalstartadr,
-                     DspCompilerRawCollector *rawCollector = nullptr);
+                     AbstractDspCompilerRawCollectorPtr rawCollector);
 
 private:
     static bool syntaxCheck(const QString& dspCmdLine);

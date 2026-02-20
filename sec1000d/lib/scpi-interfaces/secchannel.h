@@ -21,7 +21,7 @@ public:
                SecInputSettings* inpsettings,
                quint16 nr,
                std::function<void(int)> funcSigHandler,
-               AbstractFactoryDeviceNodeSecPtr deviceNodeFactory);
+               AbstractFactoryDeviceNodeSecPtr zdspSupportFactory);
     void initSCPIConnection(const QString &leadingNodes);
 
     QString getName() const;
@@ -37,7 +37,7 @@ protected:
     virtual void executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd) override;
 
 private:
-    AbstractFactoryDeviceNodeSecPtr m_deviceNodeFactory;
+    AbstractFactoryDeviceNodeSecPtr m_zdspSupportFactory;
     SecCalculatorSettings* m_pecalcsettings;
     SecInputSettings* m_pInputSettings;
     quint16 m_nNr;

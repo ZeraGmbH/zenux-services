@@ -1,7 +1,7 @@
 #include "demoallservicesmt310s2.h"
 #include "demofactoryi2cctrl.h"
 #include "demoeventloopfeeder.h"
-#include "demofactorydevicenodedsp.h"
+#include "demofactoryzdspsupport.h"
 #include "mockserverparamgenerator.h"
 #include "autojournalloggerfacade.h"
 #include <tcpnetworkfactory.h>
@@ -24,7 +24,7 @@ void DemoAllServicesMt310s2::init(VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetwo
     ServerParams params = MockServerParamGenerator::createParams("mt310s2d");
     m_mt310s2d = new MockMt310s2d(std::make_shared<DemoFactoryI2cCtrl>(std::make_unique<SettingsContainer>(params)), tcpNetworkFactory, serviceNameForAlternateDevice);
     m_sec1000d = new MockSec1000d(tcpNetworkFactory, cSEC1000dServer::Mtxxxs2EcUnitCount);
-    m_zdsp1d = new MockZdsp1d(std::make_shared<DemoFactoryDeviceNodeDsp>(), tcpNetworkFactory);
+    m_zdsp1d = new MockZdsp1d(std::make_shared<DemoFactoryZdspSupport>(), tcpNetworkFactory);
     DemoEventLoopFeeder::feedEventLoop();
 #ifdef GUI_SIMULATION
     m_gui = new SimulQmlGui;

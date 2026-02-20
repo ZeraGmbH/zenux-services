@@ -2,7 +2,7 @@
 #include "proxy.h"
 #include "dspinterface.h"
 #include "reply.h"
-#include "testfactorydevicenodedsp.h"
+#include "testfactoryzdspsupport.h"
 #include <timemachineobject.h>
 #include <mocktcpnetworkfactory.h>
 #include <QSignalSpy>
@@ -20,7 +20,7 @@ void test_mockservice_zdsp1d::init()
     m_tcpNetworkFactory = VeinTcp::MockTcpNetworkFactory::create();
     m_resman = std::make_unique<ResmanRunFacade>(m_tcpNetworkFactory);
     TimeMachineObject::feedEventLoop();
-    m_zsdp1d = std::make_unique<MockZdsp1d>(std::make_shared<TestFactoryDeviceNodeDsp>(), m_tcpNetworkFactory);
+    m_zsdp1d = std::make_unique<MockZdsp1d>(std::make_shared<TestFactoryZdspSupport>(), m_tcpNetworkFactory);
     TimeMachineObject::feedEventLoop();
 }
 

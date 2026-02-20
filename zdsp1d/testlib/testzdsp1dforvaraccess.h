@@ -6,7 +6,7 @@
 class TestZdsp1dForVarAccess : public MockZdsp1d
 {
 public:
-    TestZdsp1dForVarAccess(AbstractFactoryDeviceNodeDspPtr deviceNodeFactory,
+    TestZdsp1dForVarAccess(AbstractFactoryZdspSupportPtr zdspSupportFactory,
                            VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory,
                            QString alternateConfigXml = QString());
     ZdspClient* createTestClient();

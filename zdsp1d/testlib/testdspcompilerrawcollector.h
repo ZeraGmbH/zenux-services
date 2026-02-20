@@ -1,9 +1,9 @@
-#ifndef DSPCOMPILERRAWCOLLECTOR_H
-#define DSPCOMPILERRAWCOLLECTOR_H
+#ifndef TESTDSPCOMPILERRAWCOLLECTOR_H
+#define TESTDSPCOMPILERRAWCOLLECTOR_H
 
-#include "abstractdspcompilerrawcollector.h"
+#include <abstractdspcompilerrawcollector.h>
 
-class DspCompilerRawCollector : public AbstractDspCompilerRawCollector
+class TestDspCompilerRawCollector : public AbstractDspCompilerRawCollector
 {
 public:
     void addCmd(const DspCmdDecodingDetails *dspcmd) override;
@@ -15,4 +15,4 @@ private:
     QStringList m_rawDspCommands;
 };
 
-#endif // DSPCOMPILERRAWCOLLECTOR_H
+#endif // TESTDSPCOMPILERRAWCOLLECTOR_H

@@ -6,10 +6,10 @@
 class ZDspClientContainer
 {
 public:
+    ZDspClientContainer(AbstractFactoryZdspSupportPtr zdspSupportFactory);
     virtual ~ZDspClientContainer();
     void addClient(VeinTcp::TcpPeer* netClient,
-                   const QByteArray &proxyConnectionId,
-                   AbstractFactoryDeviceNodeDspPtr deviceNodeFactory);
+                   const QByteArray &proxyConnectionId);
 
     const QList<ZdspClient*> &getClientList() const;
     ZdspClient *getFirstAdded() const; // is first mandatory / can we get rid of this?
@@ -22,6 +22,7 @@ public:
     void delAllClients();
 
 private:
+    AbstractFactoryZdspSupportPtr m_zdspSupportFactory;
     QList<ZdspClient*> m_clientsChonological;
     QHash<QByteArray, ZdspClient*> m_clientsByProxyConnectionId;
     QHash<quint16, ZdspClient*> m_clientsByDspInterruptId;

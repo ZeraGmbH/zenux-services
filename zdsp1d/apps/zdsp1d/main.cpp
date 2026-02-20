@@ -1,5 +1,5 @@
 #include "zdspserver.h"
-#include "factorydevicenodedsp.h"
+#include "factoryzdspsupport.h"
 #include <tcpnetworkfactory.h>
 #include <QCoreApplication>
 
@@ -9,7 +9,7 @@ int main( int argc, char *argv[] )
 
     ZDspServer* zdsp1d = new ZDspServer(
         std::make_unique<SettingsContainer>(ZDspServer::defaultParams),
-        std::make_shared<FactoryDeviceNodeDsp>(),
+        std::make_shared<FactoryZdspSupport>(),
         VeinTcp::TcpNetworkFactory::create(),
         true);
     qInfo("%s started", qPrintable(zdsp1d->getServerVersion()));

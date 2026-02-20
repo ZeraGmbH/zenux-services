@@ -35,7 +35,7 @@ class cCOM5003dServer: public PCBServer
 public:
     explicit cCOM5003dServer(SettingsContainerPtr settings,
                              AbstractFactoryI2cCtrlPtr ctrlFactory,
-                             AbstractFactoryDeviceNodePcbPtr deviceNodeFactory,
+                             AbstractFactoryDeviceNodePcbPtr zdspSupportFactory,
                              AbstractEepromI2cFactoryPtr adjMemFactory,
                              VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory,
                              AbstractChannelRangeFactoryPtr channelRangeFactory);
@@ -70,7 +70,7 @@ private:
     void setInitialPllChannel();
 
     AbstractFactoryI2cCtrlPtr m_ctrlFactory;
-    AbstractFactoryDeviceNodePcbPtr m_deviceNodeFactory;
+    AbstractFactoryDeviceNodePcbPtr m_zdspSupportFactory;
     AbstractEepromI2cFactoryPtr m_adjMemFactory;
     AbstractChannelRangeFactoryPtr m_channelRangeFactory;
 

@@ -1,7 +1,7 @@
 #include "mockzdsp1d.h"
 #include "mockserverparamgenerator.h"
 
-MockZdsp1d::MockZdsp1d(AbstractFactoryDeviceNodeDspPtr deviceNodeFactory,
+MockZdsp1d::MockZdsp1d(AbstractFactoryZdspSupportPtr zdspSupportFactory,
                        VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory,
                        const QString &alternateConfigXml)
 {
@@ -9,7 +9,7 @@ MockZdsp1d::MockZdsp1d(AbstractFactoryDeviceNodeDspPtr deviceNodeFactory,
     SettingsContainerPtr settings = std::make_unique<SettingsContainer>(params);
     m_server = std::make_unique<ZDspServer>(
         std::move(settings),
-        deviceNodeFactory,
+        zdspSupportFactory,
         tcpNetworkFactory,
         false);
 }
