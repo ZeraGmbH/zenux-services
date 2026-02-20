@@ -1,11 +1,13 @@
 file(GLOB HEADERS
     ${CMAKE_CURRENT_SOURCE_DIR}/*.h
     ${CMAKE_CURRENT_SOURCE_DIR}/device-nodes/*.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/sanity-checks/*.h
 )
 
 file(GLOB SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/device-nodes/*.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/sanity-checks/*.cpp
 )
 
 add_library(zdsp1d-lib STATIC
@@ -18,6 +20,7 @@ target_include_directories(zdsp1d-lib
     $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/zdsp1d-lib>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/device-nodes>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/sanity-checks>
     )
 
 if(${Systemd_FOUND})
