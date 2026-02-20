@@ -836,14 +836,14 @@ bool ZDspServer::compileCmdListsForAllClientsToRawStream(QString &errs)
         ZdspClient* firstClient = clientList.at(0);
         DspCmdCompiler firstCompiler(&firstClient->m_dspVarResolver, firstClient->getDspInterruptId());
         cmd = firstCompiler.compileOneCmdLineZeroAligned(QString("DSPMEMOFFSET(%1)").arg(dm32DspWorkspace.m_startAddress),
-                                                         &ok);
+                                                         ok);
         cycCmdMemStream << cmd;
         ulong userMemOffset = dm32UserWorkSpace.m_startAddress;
         for (int i = 0; i < clientList.count(); i++) {
             ZdspClient* client = clientList.at(i);
             DspCmdCompiler compiler(&client->m_dspVarResolver, client->getDspInterruptId());
             cmd = compiler.compileOneCmdLineZeroAligned(QString("USERMEMOFFSET(%1)").arg(userMemOffset),
-                                                        &ok);
+                                                        ok);
             cycCmdMemStream << cmd;
             intCmdMemStream << cmd;
 
@@ -862,14 +862,14 @@ bool ZDspServer::compileCmdListsForAllClientsToRawStream(QString &errs)
         }
 
         // wir triggern das senden der serialisierten interrupts
-        cmd = firstCompiler.compileOneCmdLineZeroAligned("DSPINTPOST()", &ok);
+        cmd = firstCompiler.compileOneCmdLineZeroAligned("DSPINTPOST()", ok);
         cycCmdMemStream << cmd;
     }
 
     DspVarResolver dspSystemVarResolver;
     DspCmdCompiler dummyCompiler(&dspSystemVarResolver, 0);
     // funktioniert selbst wenn wenn wir keinen mehr haben
-    cmd = dummyCompiler.compileOneCmdLineZeroAligned("INVALID()", &ok);
+    cmd = dummyCompiler.compileOneCmdLineZeroAligned("INVALID()", ok);
     cycCmdMemStream << cmd; // kommando listen ende
     intCmdMemStream << cmd;
 

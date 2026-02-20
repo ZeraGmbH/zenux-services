@@ -10,9 +10,9 @@ class DspCmdCompiler
 public:
     DspCmdCompiler(DspVarResolver* varResolver, int dspInterruptId);
     DspCmdWithParamsRaw compileOneCmdLineZeroAligned(const QString &cmdLine,
-                                                     bool* ok);
+                                                     bool &ok);
     DspCmdWithParamsRaw compileOneCmdLineAligned(const QString &cmdLine,
-                                                 bool* ok,
+                                                 bool &ok,
                                                  ulong userMemOffset,
                                                  ulong globalstartadr,
                                                  AbstractDspCompilerRawCollectorPtr rawCollector);
