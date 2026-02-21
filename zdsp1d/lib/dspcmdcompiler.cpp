@@ -96,7 +96,7 @@ DspCmdWithParamsRaw DspCmdCompiler::compileOneCmdLineAligned(const QString &cmdL
             long par;
             sSearch = CmdParser.GetKeyword(&charCmdLine);
             ok &= ( (par = m_varResolver->getVarOffset(sSearch, userMemOffset, globalstartadr)) > -1);
-            compilerSupport->addCmdToRaw1Param(cmdLine, par, dspcmd);
+            ok &= compilerSupport->addCmdToRaw1Param(cmdLine, par, dspcmd);
             sSearch = CmdParser.GetKeyword(&charCmdLine);
             ok &= sSearch.isEmpty();
             DspCmdWithParamsRaw lcmd;
@@ -122,7 +122,7 @@ DspCmdWithParamsRaw DspCmdCompiler::compileOneCmdLineAligned(const QString &cmdL
                 long* pl = (long*) &tf;
                 par2= *pl;
             }
-            compilerSupport->addCmdToRaw2Params(cmdLine, dspcmd, par1, par2); // this needs love
+            ok &= compilerSupport->addCmdToRaw2Params(cmdLine, dspcmd, par1, par2); // this needs love
             sSearch = CmdParser.GetKeyword(&charCmdLine);
             ok &= sSearch.isEmpty();
             if (ok)
