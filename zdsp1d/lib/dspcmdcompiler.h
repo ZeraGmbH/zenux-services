@@ -24,6 +24,8 @@ public:
                      AbstractDspCompilerSupportPtr compilerSupport);
 
 private:
+    static bool areThereNoFurtherKeywords(cParse &cmdParser, const QChar* charCmdLine);
+
     DspVarResolver* m_varResolver;
     const int m_dspInterruptId;
 };
