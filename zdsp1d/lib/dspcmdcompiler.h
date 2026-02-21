@@ -24,7 +24,6 @@ public:
                      AbstractDspCompilerSupportPtr compilerSupport);
 
 private:
-    static bool syntaxCheck(const QString& dspCmdLine);
     DspVarResolver* m_varResolver;
     const int m_dspInterruptId;
 };

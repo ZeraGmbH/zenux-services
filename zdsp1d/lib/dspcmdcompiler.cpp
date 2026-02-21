@@ -23,10 +23,7 @@ DspCmdWithParamsRaw DspCmdCompiler::compileOneCmdLineAligned(const QString &cmdL
     cParse CmdParser;
     CmdParser.SetDelimiter("(,)"); // setze die trennzeichen für den parser
     CmdParser.SetWhiteSpace(" (,)");
-    if(!syntaxCheck(cmdLine)) {
-        ok = false;
-        return DspCmdWithParamsRaw();
-    }
+
     const QChar* charCmdLine = cmdLine.data();
     QString sSearch = CmdParser.GetKeyword(&charCmdLine); // das 1. keyword muss ein befehlscode sein
     DspCmdDecodingDetails *dspcmd = DspStaticData::findDspCmd(sSearch);
@@ -98,7 +95,7 @@ DspCmdWithParamsRaw DspCmdCompiler::compileOneCmdLineAligned(const QString &cmdL
         {
             long par;
             sSearch = CmdParser.GetKeyword(&charCmdLine);
-            ok = ( (par = m_varResolver->getVarOffset(sSearch, userMemOffset, globalstartadr)) > -1);
+            ok &= ( (par = m_varResolver->getVarOffset(sSearch, userMemOffset, globalstartadr)) > -1);
             compilerSupport->addCmdToRaw1Param(cmdLine, par, dspcmd);
             sSearch = CmdParser.GetKeyword(&charCmdLine);
             ok &= sSearch.isEmpty();
@@ -112,7 +109,7 @@ DspCmdWithParamsRaw DspCmdCompiler::compileOneCmdLineAligned(const QString &cmdL
             short par1;
             long par2 = 0;
             sSearch = CmdParser.GetKeyword(&charCmdLine);
-            ok = ( (par1 = m_varResolver->getVarOffset(sSearch, userMemOffset, globalstartadr)) > -1); // -1 ist fehlerbedingung
+            ok &= ( (par1 = m_varResolver->getVarOffset(sSearch, userMemOffset, globalstartadr)) > -1); // -1 ist fehlerbedingung
             DspCmdWithParamsRaw lcmd;
             if (!(ok))
                 return lcmd; // wenn fehler -> fertig
@@ -155,15 +152,5 @@ bool DspCmdCompiler::compileCmds(const QString &cmdsSemicolonSeparated,
             break;
         }
     }
-    return ok;
-}
-
-bool DspCmdCompiler::syntaxCheck(const QString &dspCmdLine)
-{
-    int openPos = dspCmdLine.indexOf('(');
-    int closePos = dspCmdLine.indexOf(')');
-    bool ok = openPos > 0 && closePos>openPos;
-    if(!ok)
-        qCritical("Invalid command syntax: '%s'", qPrintable(dspCmdLine));
     return ok;
 }
