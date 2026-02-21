@@ -42,3 +42,20 @@ bool DspCmdExtraChecks::CLEARN(const QStringList &paramNames, const short i16Par
     }
     return true;
 }
+
+bool DspCmdExtraChecks::COPYMEM(const QStringList &paramNames, const short i16Params[], DspVarResolver *varResolver)
+{
+    const QString paramNameTarget = paramNames[2];
+    const TDspVar* varTransferTarget = varResolver->getDspVar(paramNameTarget);
+    if (varTransferTarget) {
+        int startWanted = i16Params[2];
+        int countWanted = i16Params[0];
+        int startTarget = varTransferTarget->offs;
+        int sizeTarget = varTransferTarget->size;
+        if (startWanted+countWanted > startTarget+sizeTarget) {
+            qWarning("Overflow on %s", qPrintable(paramNameTarget));
+            return false;
+        }
+    }
+    return true;
+}

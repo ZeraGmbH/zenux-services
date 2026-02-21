@@ -208,7 +208,7 @@ static DspCmdDecodingDetails DspCmd[78] =
 {"SETPEAK", 69, CMD2i16, 0},
 {"COPYDATAIND", 70, CMD3i16, 0},
 {"INTERPOLATIONIND", 71, CMD3i16, 0},
-{"COPYMEM", 72, CMD3i16, 0 },
+{"COPYMEM", 72, CMD3i16, 0, DspCmdExtraChecks::COPYMEM },
 {"GENADR",73,CMD3i16,0 },
 {"COPYDATAWDC", 74, CMD3i16, 0 },
 {"INTEGRALPOS", 75, CMD3i16, 0 },

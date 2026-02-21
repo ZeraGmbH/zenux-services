@@ -10,6 +10,8 @@ public:
                          DspVarResolver* varResolver);
     static bool CLEARN(const QStringList &paramNames, const short i16Params[],
                        DspVarResolver* varResolver);
+    static bool COPYMEM(const QStringList &paramNames, const short i16Params[],
+                        DspVarResolver* varResolver);
 };
 
 #endif // DSPCMDEXTRACHECKS_H
