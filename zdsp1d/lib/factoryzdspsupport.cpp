@@ -1,5 +1,5 @@
 #include "factoryzdspsupport.h"
-#include "dspdspcompilersupport.h"
+#include "dspcompilersupport.h"
 #include "singletondevicenodedsp.h"
 
 AbstractDspDeviceNodePtr FactoryZdspSupport::getDspDeviceNode()
@@ -9,5 +9,5 @@ AbstractDspDeviceNodePtr FactoryZdspSupport::getDspDeviceNode()
 
 AbstractDspCompilerSupportPtr FactoryZdspSupport::createDspCompilerSupport()
 {
-    return std::make_shared<DspDspCompilerSupport>();
+    return std::make_shared<DspCompilerSupport>();
 }

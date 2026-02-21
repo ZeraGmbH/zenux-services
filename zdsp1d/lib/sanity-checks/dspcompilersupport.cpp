@@ -1,6 +1,6 @@
-#include "dspdspcompilersupport.h"
+#include "dspcompilersupport.h"
 
-bool DspDspCompilerSupport::addCmdToRaw(const QString &dspCmdLine,
+bool DspCompilerSupport::addCmdToRaw(const QString &dspCmdLine,
                                         const QStringList &paramNames,
                                         const short i16Params[],
                                         const DspCmdDecodingDetails *dspcmd,
@@ -14,7 +14,7 @@ bool DspDspCompilerSupport::addCmdToRaw(const QString &dspCmdLine,
     return true;
 }
 
-bool DspDspCompilerSupport::addCmdToRaw1Param(const QString &dspCmdLine,
+bool DspCompilerSupport::addCmdToRaw1Param(const QString &dspCmdLine,
                                               ulong par,
                                               const DspCmdDecodingDetails *dspcmd)
 {
@@ -24,7 +24,7 @@ bool DspDspCompilerSupport::addCmdToRaw1Param(const QString &dspCmdLine,
     return true;
 }
 
-bool DspDspCompilerSupport::addCmdToRaw2Params(const QString &dspCmdLine,
+bool DspCompilerSupport::addCmdToRaw2Params(const QString &dspCmdLine,
                                                const DspCmdDecodingDetails *dspcmd, ulong par1, ulong par2)
 {
     Q_UNUSED(dspCmdLine)
@@ -34,7 +34,7 @@ bool DspDspCompilerSupport::addCmdToRaw2Params(const QString &dspCmdLine,
     return true;
 }
 
-const QStringList &DspDspCompilerSupport::getRawDspCommands() const
+const QStringList &DspCompilerSupport::getRawDspCommands() const
 {
     return m_rawDspCommands;
 }

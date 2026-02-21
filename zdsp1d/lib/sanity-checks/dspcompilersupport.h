@@ -1,9 +1,9 @@
-#ifndef DSPDSPCOMPILERSUPPORT_H
-#define DSPDSPCOMPILERSUPPORT_H
+#ifndef DSPCOMPILERSUPPORT_H
+#define DSPCOMPILERSUPPORT_H
 
 #include "abstractdspcompilersupport.h"
 
-class DspDspCompilerSupport : public AbstractDspCompilerSupport
+class DspCompilerSupport : public AbstractDspCompilerSupport
 {
 public:
     bool addCmdToRaw(const QString &dspCmdLine,
@@ -20,4 +20,4 @@ private:
     QStringList m_rawDspCommands;
 };
 
-#endif // DSPDSPCOMPILERSUPPORT_H
+#endif // DSPCOMPILERSUPPORT_H

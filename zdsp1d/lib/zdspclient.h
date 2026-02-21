@@ -3,7 +3,7 @@
 
 #include "abstractfactoryzdspsupport.h"
 #include "dspapi.h"
-#include "dspdspcompilersupport.h"
+#include "dspcompilersupport.h"
 #include "dspvarresolver.h"
 #include <vtcp_peer.h>
 #include <memory>

@@ -1,5 +1,5 @@
 #include "dspcmdcompiler.h"
-#include "dspdspcompilersupport.h"
+#include "dspcompilersupport.h"
 
 DspCmdCompiler::DspCmdCompiler(DspVarResolver *varResolver, int dspInterruptId) :
     m_varResolver(varResolver),
@@ -10,7 +10,7 @@ DspCmdCompiler::DspCmdCompiler(DspVarResolver *varResolver, int dspInterruptId) 
 DspCmdWithParamsRaw DspCmdCompiler::compileOneCmdLineZeroAligned(const QString &cmdLine,
                                                                  bool &ok)
 {
-    return compileOneCmdLineAligned(cmdLine, ok, 0, 0, std::make_shared<DspDspCompilerSupport>());
+    return compileOneCmdLineAligned(cmdLine, ok, 0, 0, std::make_shared<DspCompilerSupport>());
 }
 
 DspCmdWithParamsRaw DspCmdCompiler::compileOneCmdLineAligned(const QString &cmdLine,

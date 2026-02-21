@@ -1,6 +1,6 @@
 #include "demofactoryzdspsupport.h"
 #include "demosingletondevicenodedsp.h"
-#include "dspdspcompilersupport.h"
+#include "dspcompilersupport.h"
 
 DemoFactoryZdspSupport::DemoFactoryZdspSupport(int dspMagicId) :
     m_dspMagicId(dspMagicId)
@@ -14,5 +14,5 @@ AbstractDspDeviceNodePtr DemoFactoryZdspSupport::getDspDeviceNode()
 
 AbstractDspCompilerSupportPtr DemoFactoryZdspSupport::createDspCompilerSupport()
 {
-    return std::make_shared<DspDspCompilerSupport>();
+    return std::make_shared<DspCompilerSupport>();
 }
