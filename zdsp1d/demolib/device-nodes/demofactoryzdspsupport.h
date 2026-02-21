@@ -9,7 +9,7 @@ class DemoFactoryZdspSupport : public AbstractFactoryZdspSupport
 public:
     DemoFactoryZdspSupport(int dspMagicId = DeviceNodeDsp::MAGIC_ID21362);
     AbstractDspDeviceNodePtr getDspDeviceNode() override;
-    AbstractDspCompilerRawCollectorPtr createDspCompilerRawCollector() override;
+    AbstractDspCompilerSupportPtr createDspCompilerSupport() override;
 private:
     int m_dspMagicId;
 };

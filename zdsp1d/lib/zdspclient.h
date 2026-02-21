@@ -3,7 +3,7 @@
 
 #include "abstractfactoryzdspsupport.h"
 #include "dspapi.h"
-#include "dspcompilerrawcollector.h"
+#include "dspdspcompilersupport.h"
 #include "dspvarresolver.h"
 #include <vtcp_peer.h>
 #include <memory>
@@ -71,8 +71,8 @@ private:
     int m_dataMemSize = 0;
 
     // dump / tests
-    AbstractDspCompilerRawCollectorPtr m_rawCyclicCommands;
-    AbstractDspCompilerRawCollectorPtr m_rawInterruptCommands;
+    AbstractDspCompilerSupportPtr m_rawCyclicCommands;
+    AbstractDspCompilerSupportPtr m_rawInterruptCommands;
     std::unique_ptr<QList<VarLocation>> m_localVarDump;
     std::unique_ptr<QList<VarLocation>> m_globalVarDump;
     static int m_instanceCount;

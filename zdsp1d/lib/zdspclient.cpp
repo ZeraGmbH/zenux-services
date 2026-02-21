@@ -12,8 +12,8 @@ ZdspClient::ZdspClient(int dspInterruptId,
     m_proxyConnectionId(proxyConnectionId),
     m_zdspSupportFactory(zdspSupportFactory),
     m_dspInterruptId(dspInterruptId),
-    m_rawCyclicCommands(m_zdspSupportFactory->createDspCompilerRawCollector()),
-    m_rawInterruptCommands(m_zdspSupportFactory->createDspCompilerRawCollector()),
+    m_rawCyclicCommands(m_zdspSupportFactory->createDspCompilerSupport()),
+    m_rawInterruptCommands(m_zdspSupportFactory->createDspCompilerSupport()),
     m_localVarDump(std::make_unique<QList<VarLocation>>()),
     m_globalVarDump(std::make_unique<QList<VarLocation>>())
 {
@@ -136,8 +136,8 @@ ulong ZdspClient::relocalizeUserMemSectionVars(ulong startAdress, ulong globalMe
 bool ZdspClient::GenCmdLists(QString& errs, ulong userMemOffset, ulong globalstartadr)
 {
     DspCmdCompiler compiler(&m_dspVarResolver, m_dspInterruptId);
-    m_rawCyclicCommands = m_zdspSupportFactory->createDspCompilerRawCollector();
-    m_rawInterruptCommands = m_zdspSupportFactory->createDspCompilerRawCollector();
+    m_rawCyclicCommands = m_zdspSupportFactory->createDspCompilerSupport();
+    m_rawInterruptCommands = m_zdspSupportFactory->createDspCompilerSupport();
     return
         compiler.compileCmds(m_sCmdListDef, m_DspCmdList,errs, userMemOffset, globalstartadr, m_rawCyclicCommands) &&
         compiler.compileCmds(m_sIntCmdListDef, m_DspIntCmdList, errs, userMemOffset, globalstartadr, m_rawInterruptCommands);

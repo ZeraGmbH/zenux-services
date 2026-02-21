@@ -1,6 +1,6 @@
 #include "demofactoryzdspsupport.h"
 #include "demosingletondevicenodedsp.h"
-#include "dspcompilerrawcollector.h"
+#include "dspdspcompilersupport.h"
 
 DemoFactoryZdspSupport::DemoFactoryZdspSupport(int dspMagicId) :
     m_dspMagicId(dspMagicId)
@@ -12,7 +12,7 @@ AbstractDspDeviceNodePtr DemoFactoryZdspSupport::getDspDeviceNode()
     return DemoSingletonDeviceNodeDsp::getInstancePtr(m_dspMagicId);
 }
 
-AbstractDspCompilerRawCollectorPtr DemoFactoryZdspSupport::createDspCompilerRawCollector()
+AbstractDspCompilerSupportPtr DemoFactoryZdspSupport::createDspCompilerSupport()
 {
-    return std::make_shared<DspCompilerRawCollector>();
+    return std::make_shared<DspDspCompilerSupport>();
 }

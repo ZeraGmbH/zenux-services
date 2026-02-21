@@ -7,7 +7,7 @@ class FactoryZdspSupport : public AbstractFactoryZdspSupport
 {
 public:
     AbstractDspDeviceNodePtr getDspDeviceNode() override;
-    AbstractDspCompilerRawCollectorPtr createDspCompilerRawCollector() override;
+    AbstractDspCompilerSupportPtr createDspCompilerSupport() override;
 };
 
 #endif // FACTORYZDSPSUPPORT_H

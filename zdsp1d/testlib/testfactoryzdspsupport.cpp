@@ -1,5 +1,5 @@
 #include "testfactoryzdspsupport.h"
-#include "testdspcompilerrawcollector.h"
+#include "testdspcompilersupport.h"
 #include "testsingletondevicenodedsp.h"
 
 TestFactoryZdspSupport::TestFactoryZdspSupport(int dspMagicId) :
@@ -12,7 +12,7 @@ AbstractDspDeviceNodePtr TestFactoryZdspSupport::getDspDeviceNode()
     return TestSingletonDeviceNodeDsp::getInstancePtr(m_dspMagicId);
 }
 
-AbstractDspCompilerRawCollectorPtr TestFactoryZdspSupport::createDspCompilerRawCollector()
+AbstractDspCompilerSupportPtr TestFactoryZdspSupport::createDspCompilerSupport()
 {
-    return std::make_shared<TestDspCompilerRawCollector>();
+    return std::make_shared<TestDspCompilerSupport>();
 }

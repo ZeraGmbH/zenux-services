@@ -1,5 +1,5 @@
 #include "factoryzdspsupport.h"
-#include "dspcompilerrawcollector.h"
+#include "dspdspcompilersupport.h"
 #include "singletondevicenodedsp.h"
 
 AbstractDspDeviceNodePtr FactoryZdspSupport::getDspDeviceNode()
@@ -7,7 +7,7 @@ AbstractDspDeviceNodePtr FactoryZdspSupport::getDspDeviceNode()
     return SingletonDeviceNodeDsp::getInstancePtr();
 }
 
-AbstractDspCompilerRawCollectorPtr FactoryZdspSupport::createDspCompilerRawCollector()
+AbstractDspCompilerSupportPtr FactoryZdspSupport::createDspCompilerSupport()
 {
-    return std::make_shared<DspCompilerRawCollector>();
+    return std::make_shared<DspDspCompilerSupport>();
 }
