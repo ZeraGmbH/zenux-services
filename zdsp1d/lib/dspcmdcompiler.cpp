@@ -27,9 +27,10 @@ DspCmdWithParamsRaw DspCmdCompiler::compileOneCmdLineAligned(const QString &cmdL
     const QChar* charCmdLine = cmdLine.data();
     QString sSearch = cmdParser.GetKeyword(&charCmdLine); // das 1. keyword muss ein befehlscode sein
     DspCmdDecodingDetails *dspcmd = DspStaticData::findDspCmd(sSearch);
-    QStringList paramNames;
-    short paramValues[3];
     if (dspcmd) {
+        QStringList paramNames;
+        short paramValues[3];
+
         switch (dspcmd->CmdClass) {
         case CMD: // command / no parameters
         {
