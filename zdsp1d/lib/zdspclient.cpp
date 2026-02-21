@@ -1,6 +1,8 @@
 #include "zdspclient.h"
 #include "dspcmdcompiler.h"
 #include "dspvardevicenodeinout.h"
+#include <pseudocrcbuffer.h>
+#include <QDataStream>
 
 int ZdspClient::m_instanceCount = 0;
 
@@ -161,6 +163,34 @@ const QStringList &ZdspClient::getDspCmdListRaw() const
 const QStringList &ZdspClient::getDspIntCmdListRaw() const
 {
     return m_rawInterruptCommands->getRawDspCommands();
+}
+
+quint32 ZdspClient::getDspCmdListCompiledCrc() const
+{
+    PseudoCrcBuffer crcBuffer;
+    crcBuffer.open(QIODevice::WriteOnly);
+    QDataStream stream(&crcBuffer);
+    stream.setByteOrder(QDataStream::LittleEndian);
+
+    const QList<DspCmdWithParamsRaw> &cmdList = GetDspCmdList();
+    for (const DspCmdWithParamsRaw &cmd : cmdList)
+        stream << (quint32) cmd.w[0] << (quint32) cmd.w[1];
+    crcBuffer.close();
+    return crcBuffer.getCrc();
+}
+
+quint32 ZdspClient::getDspIntCmdCompiledCrc() const
+{
+    PseudoCrcBuffer crcBuffer;
+    crcBuffer.open(QIODevice::WriteOnly);
+    QDataStream stream(&crcBuffer);
+    stream.setByteOrder(QDataStream::LittleEndian);
+
+    const QList<DspCmdWithParamsRaw> &cmdList = GetDspIntCmdList();
+    for (const DspCmdWithParamsRaw &cmd : cmdList)
+        stream << (quint32) cmd.w[0] << (quint32) cmd.w[1];
+    crcBuffer.close();
+    return crcBuffer.getCrc();
 }
 
 int ZdspClient::getDspInterruptId() const

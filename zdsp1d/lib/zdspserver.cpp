@@ -8,6 +8,7 @@
 #include <netmessages.pb.h>
 #include <timerfactoryqt.h>
 #include <scpinodestaticfunctions.h>
+#include <crc32isohdlc.h>
 #include <QCoreApplication>
 #include <QFinalState>
 #include <QDataStream>
@@ -706,7 +707,7 @@ QJsonObject ZDspServer::getStaticMemAllocation()
     return json;
 }
 
-QJsonObject ZDspServer::getMemoryDump() const
+QJsonObject ZDspServer::getMemoryDump()
 {
     const QList<ZdspClient*> &clientList = m_zdspClientContainer.getClientList();
     QJsonObject json;
@@ -717,9 +718,11 @@ QJsonObject ZDspServer::getMemoryDump() const
 
             QJsonArray cyclicCmds = QJsonArray::fromStringList(client->getDspCmdListRaw());
             entityData.insert("DspCmdsRawCyclic", cyclicCmds);
+            entityData.insert("DspCmdsCompiledCrcCyclic", crcToHex(client->getDspCmdListCompiledCrc()));
 
             QJsonArray interruptCmds = QJsonArray::fromStringList(client->getDspIntCmdListRaw());
             entityData.insert("DspCmdsRawInterrupt", interruptCmds);
+            entityData.insert("DspCmdsCompiledCrcInterrupt", crcToHex(client->getDspIntCmdCompiledCrc()));
 
             QJsonObject localVariables;
             const QList<ZdspClient::VarLocation>* localList = client->getLocalVariableDump();
@@ -742,6 +745,17 @@ QJsonObject ZDspServer::getMemoryDump() const
             json.insert(QString("%1").arg(entityId), entityData);
         }
     }
+    QString dummy;
+    compileCmdListsForAllClientsToRawStream(dummy);
+
+    quint32 crcTotalCyclic = Crc32IsoHdlc::calcCrc32(m_rawCyclicCmdMem.constData(), m_rawCyclicCmdMem.size());
+    QString crcTotalCyclicStr = crcToHex(crcTotalCyclic);
+    json.insert("TotalDspCmdsCompiledCrcCyclic", crcTotalCyclicStr);
+
+    quint32 crcTotalInterrupt = Crc32IsoHdlc::calcCrc32(m_rawInterruptCmdMem.constData(), m_rawInterruptCmdMem.size());
+    QString crcTotalInterruptStr = crcToHex(crcTotalInterrupt);
+    json.insert("TotalDspCmdsCompiledCrcInterrupt", crcTotalInterruptStr);
+
     return json;
 }
 
@@ -1052,6 +1066,12 @@ void ZDspServer::executeCommandProto(VeinTcp::TcpPeer *peer, std::shared_ptr<goo
             }
         }
     }
+}
+
+QString ZDspServer::crcToHex(quint32 val)
+{
+    QString hexVal = QString("00000000%1").arg(val, 0, 16).toUpper().right(8);
+    return QString("0x") + hexVal;
 }
 
 void ZDspServer::onTelnetReceived(const QString &input)

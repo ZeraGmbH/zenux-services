@@ -40,7 +40,7 @@ public:
     int getUserMemAvailable() const;
     int getUserMemOccupied() const;
     static QJsonObject getStaticMemAllocation();
-    QJsonObject getMemoryDump() const;
+    QJsonObject getMemoryDump();
     int getProgMemCyclicAvailable() const;
     int getProgMemCyclicOccupied() const;
     int getProgMemInterruptAvailable() const;
@@ -106,6 +106,7 @@ private:
     bool Test4HWPresent();
     bool Test4DspRunning();
     void executeCommandProto(VeinTcp::TcpPeer* peer, std::shared_ptr<google::protobuf::Message> cmd);
+    static QString crcToHex(quint32 val);
 
     Zera::XMLConfig::cReader m_xmlConfigReader;
     cDSPSettings m_dspSettings;

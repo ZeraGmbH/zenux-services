@@ -48,6 +48,8 @@ public:
     const QList<VarLocation>* getGlobalVariableDump() const;
     const QStringList& getDspCmdListRaw() const;
     const QStringList& getDspIntCmdListRaw() const;
+    quint32 getDspCmdListCompiledCrc() const;
+    quint32 getDspIntCmdCompiledCrc() const;
     static int getInstanceCount();
 
 private:
