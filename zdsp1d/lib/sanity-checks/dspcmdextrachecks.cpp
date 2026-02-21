@@ -14,8 +14,8 @@ bool DspCmdExtraChecks::AVERAGE1(const QStringList &paramNames, const short i16P
         int len = DspBuffLen::avgFilterLen(i16Params[0]);
         int size = varTransferTarget->size;
         if (len > size) {
-            qWarning("Overflow on %s buffer size %i wanted %i",
-                     qPrintable(paramNameTarget), size, len);
+            qWarning("Overflow on %s buffer size %i+1 wanted %i+1",
+                     qPrintable(paramNameTarget), size-1, len-1);
             return false;
         }
     }
