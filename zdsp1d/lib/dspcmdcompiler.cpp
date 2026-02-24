@@ -114,8 +114,15 @@ DspCmdWithParamsRaw DspCmdCompiler::compileOneCmdLineAligned(const QString &cmdL
                 par2 = sSearch.toLong(&ok, 16); // test auf hex
             if (!ok)  {
                 float tf = sSearch.toFloat(&ok);
-                long* pl = (long*) &tf;
-                par2= *pl;
+                if (!ok) {
+                    par2 = m_varResolver->getVarOffset(sSearch, userMemOffset, globalstartadr);
+                    if (par2 >= 0)
+                        ok = true;
+                }
+                else {
+                    long* pl = (long*) &tf; // float -> long cast hack
+                    par2= *pl;
+                }
             }
             ok &= compilerSupport->addCmdToRaw2Params(cmdLine, dspcmd, par1, par2); // this needs love
             ok &= areThereNoFurtherKeywords(cmdParser, charCmdLine);
