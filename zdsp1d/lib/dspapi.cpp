@@ -131,10 +131,10 @@
 /* multipliziert die Daten ab _Adr1 imit einer Hanningfunktion und legt */ 
 /* die Daten ab _Adr2 im speicher ab. _Adr2=_Adr1 ist möglich. */ 
 /* #define DspCmd_SetPort(_Adr1,_Dat) {(43<<16),_Adr1<<16+_Dat} */ 
-/* schreibt über ParallelPort die Daten _Dat auf Adresse _Adr */ 
+/* schreibt über ParallelPort die Daten _Dat auf Adresse _Adr */
 
 
-static DspCmdDecodingDetails DspCmd[78] =
+static DspCmdDecodingDetails DspCmd[79] =
 
 {{"INVALID", 0, CMD ,0},
 {"USERMEMOFFSET", 1, CMD1i32, 0 },
@@ -213,7 +213,9 @@ static DspCmdDecodingDetails DspCmd[78] =
 {"COPYDATAWDC", 74, CMD3i16, 0 },
 {"INTEGRALPOS", 75, CMD3i16, 0 },
 {"INTEGRALNEG", 76, CMD3i16, 0 },
-{"SUBNVC", 77, CMD3i16, 0 }};
+{"SUBNVC", 77, CMD3i16, 0 },
+{"XCOPYMEM", 78, CMD3i16, 0 }
+};
 
 
 static constexpr int dm32DspWorkSpaceBase21262 = 0x82800;
