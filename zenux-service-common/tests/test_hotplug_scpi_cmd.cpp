@@ -52,7 +52,7 @@ void test_hotplug_scpi_cmd::readErrorStatusNoParamEmobIAUX()
     QCOMPARE(responseSpy.count(), 1);
     QCOMPARE(responseSpy[0][0], QVariant(msgNr));
     QCOMPARE(responseSpy[0][1], QVariant(ack));
-    QCOMPARE(responseSpy[0][2], QVariant(errorInstrumentStatus::Instrument_Status_Cable_Error));
+    QCOMPARE(responseSpy[0][2], QVariant((1<<errorInstrumentStatus::Instrument_Status_Cable_Error)));
 }
 
 void test_hotplug_scpi_cmd::readErrorStatusIAUXEmobI3IAUX()
@@ -66,7 +66,7 @@ void test_hotplug_scpi_cmd::readErrorStatusIAUXEmobI3IAUX()
     QCOMPARE(responseSpy.count(), 1);
     QCOMPARE(responseSpy[0][0], QVariant(msgNr));
     QCOMPARE(responseSpy[0][1], QVariant(ack));
-    QCOMPARE(responseSpy[0][2], QVariant(errorInstrumentStatus::Instrument_Status_Cable_Error));
+    QCOMPARE(responseSpy[0][2], QVariant((1<<errorInstrumentStatus::Instrument_Status_Cable_Error)));
 }
 
 void test_hotplug_scpi_cmd::readErrorStatusI3EmobIAUX()

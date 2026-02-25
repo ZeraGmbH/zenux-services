@@ -38,7 +38,7 @@ ZeraMControllerIoTemplate::atmelRM MockI2cCtrlEMOB::readEmobInstrumentSubType(QS
 ZeraMControllerIoTemplate::atmelRM MockI2cCtrlEMOB::readEmobErrorStatus(quint16 &errFlags)
 {
     if (ControllerPersitentData::isHotControllerAvailable(m_muxChannel)) {
-        errFlags = errorInstrumentStatus::Instrument_Status_Cable_Error;
+        errFlags = (1<<errorInstrumentStatus::Instrument_Status_Cable_Error);
         return ZeraMControllerIo::atmelRM::cmddone;
     }
     return ZeraMControllerIo::atmelRM::cmdexecfault;
