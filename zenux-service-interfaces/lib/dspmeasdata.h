@@ -19,8 +19,8 @@ public:
     void setVarData(QString datalist); // expected 'Name1:0.2,0.4,0,3;Name2:1,2,3;' ......
 
     QString getName();
-    quint32 getSize();
     quint32 getUserMemSize();
+    quint32 getUserMemSizeGlobal();
     QString VarListLong(int section);
     QString VarListShort(int section);
     QString writeCommand();

@@ -64,19 +64,20 @@ QString cDspMeasData::getName()
     return m_handleName;
 }
 
-quint32 cDspMeasData::getSize()
-{
-    quint32 size = 0;
-    for (int i = 0; i < DspVarList.size(); ++i)
-        size += DspVarList.at(i)->size();
-    return size;
-}
-
 quint32 cDspMeasData::getUserMemSize()
 {
     quint32 size = 0;
     for(int i = 0; i < DspVarList.size(); ++i)
         if (DspVarList.at(i)->type() != DSPDATA::vDspTempGlobal)
+            size += DspVarList.at(i)->size();
+    return size;
+}
+
+quint32 cDspMeasData::getUserMemSizeGlobal()
+{
+    quint32 size = 0;
+    for(int i = 0; i < DspVarList.size(); ++i)
+        if (DspVarList.at(i)->type() == DSPDATA::vDspTempGlobal)
             size += DspVarList.at(i)->size();
     return size;
 }

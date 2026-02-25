@@ -496,7 +496,7 @@ void test_regression_dsp_var::dspVarMemSizeInitialHack()
     testServerlient->setRawActualValueList(varString);
 
     int serverMemSize = testServerlient->getDataMemSize();
-    int clientMemSize = dspData->getSize();
+    int clientMemSize = dspData->getUserMemSize();
     QCOMPARE(serverMemSize, clientMemSize - internalSizeNotAddedInServer);
     QCOMPARE(serverMemSize, resultSize + tempSize + paramSize);
 }
