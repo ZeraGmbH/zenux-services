@@ -1,12 +1,11 @@
 #ifndef DSPINTERFACE_P_H
 #define DSPINTERFACE_P_H
 
+#include "interface_p.h"
+#include "dspinterface.h"
 #include <QObject>
 #include <QList>
 #include <QStringList>
-
-#include "interface_p.h"
-#include "dspinterface.h"
 
 namespace Zera {
 
@@ -28,9 +27,6 @@ enum dspcommands
     dspinterrupt,
 };
 
-
-class cDSPInterface;
-
 class cDSPInterfacePrivate: public cInterfacePrivate
 {
     Q_OBJECT
@@ -46,10 +42,11 @@ public:
     int cmdListCount(); // returns the number of command in cyclist program list
     void addCycListItem(QString cmd); // appends new command to cyclic list
     void addCycListItems(const QStringList &cmds); // appends new commands to cyclic list
+
     cDspMeasData* getMemHandle(QString name); // init a new memory group and return handle
     void deleteMemHandle(cDspMeasData* memhandle);
-    quint32 activateInterface(); // load var- and cmdlists to dsp (starts theprogram on dsp)
 
+    quint32 activateInterface(); // load var- and cmdlists to dsp (starts theprogram on dsp)
     quint32 deactivateAll();
 
     quint32 dataAcquisition(cDspMeasData* memgroup);
