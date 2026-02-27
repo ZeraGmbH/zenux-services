@@ -9,7 +9,7 @@
 class cDspMeasData
 {
 public:
-    cDspMeasData(QString name);
+    cDspMeasData(const QString &name);
     ~cDspMeasData();
 
     cDspVar *addDspVar(const QString &name, int size, int type, int datatype = DSPDATA::dFloat);
@@ -29,9 +29,9 @@ public:
     // Test insights
     static int getInstanceCount();
     const QList<cDspVar*> getVars() const;
-    void setData(QVector<float> data);
+    void setData(const QVector<float> &data);
 private:
-    cDspVar* findVar(QString varName);
+    cDspVar* findVar(const QString &varName);
 
     QString m_handleName;
     QList<cDspVar*> DspVarList;

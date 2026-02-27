@@ -4,7 +4,7 @@
 
 int cDspMeasData::m_instanceCount = 0;
 
-cDspMeasData::cDspMeasData(QString name) :
+cDspMeasData::cDspMeasData(const QString &name) :
     m_handleName(name)
 {
     m_instanceCount++;
@@ -160,7 +160,7 @@ const QList<cDspVar *> cDspMeasData::getVars() const
     return DspVarList;
 }
 
-cDspVar *cDspMeasData::findVar(QString varName)
+cDspVar *cDspMeasData::findVar(const QString &varName)
 {
     for(int i=0; i<DspVarList.size(); ++i) {
         cDspVar* pDspVar = DspVarList.at(i);
@@ -170,7 +170,7 @@ cDspVar *cDspMeasData::findVar(QString varName)
     return nullptr;
 }
 
-void cDspMeasData::setData(QVector<float> data)
+void cDspMeasData::setData(const QVector<float> &data)
 {
     int valueCount = 0;
     for(cDspVar* dspVar : qAsConst(DspVarList)) {

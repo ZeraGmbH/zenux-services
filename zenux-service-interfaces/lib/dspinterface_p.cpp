@@ -57,9 +57,8 @@ QString cDSPInterfacePrivate::varList2String(VarListPrependOptions prependOption
     QTextStream ts(&varList, QIODevice::WriteOnly);
     if(prependOption == PREPEND_ENTIY_ID_IF_SET)
         prependEntityIdIfSet(ts);
-    cDspMeasData* pDspMeasData;
     for (int i = 0; i < m_DspMemoryDataList.count(); i++) {
-        pDspMeasData = m_DspMemoryDataList.at(i);
+        cDspMeasData* pDspMeasData = m_DspMemoryDataList.at(i);
         ts << pDspMeasData->VarListLong(DSPDATA::userCreatableTypes);
     }
     return varList;
@@ -116,7 +115,7 @@ quint32 cDSPInterfacePrivate::triggerIntHKSK(quint32 hksk)
     return msgnr;
 }
 
-void cDSPInterfacePrivate::addCycListItem(QString cmd)
+void cDSPInterfacePrivate::addCycListItem(const QString &cmd)
 {
     m_cycCmdList.append(cmd);
 }
@@ -126,19 +125,19 @@ void cDSPInterfacePrivate::addCycListItems(const QStringList &cmds)
     m_cycCmdList.append(cmds);
 }
 
-void cDSPInterfacePrivate::addIntListItem(QString cmd)
+void cDSPInterfacePrivate::addIntListItem(const QString &cmd)
 {
     m_irqCmdList.append(cmd);
 }
 
-cDspMeasData* cDSPInterfacePrivate::getMemHandle(QString name)
+cDspMeasData* cDSPInterfacePrivate::getMemHandle(const QString &name)
 {
     cDspMeasData* pdmd = new cDspMeasData(name);
     m_DspMemoryDataList.append(pdmd);
     return pdmd;
 }
 
-cDspMeasData *cDSPInterfacePrivate::findMemHandle(QString name) const
+cDspMeasData *cDSPInterfacePrivate::findMemHandle(const QString &name) const
 {
     cDspMeasData* memHandleFound = nullptr;
     for(int i=0; i<m_DspMemoryDataList.count(); ++i) {
@@ -227,13 +226,13 @@ quint32 cDSPInterfacePrivate::readServerVersion()
 void cDSPInterfacePrivate::receiveAnswer(std::shared_ptr<ProtobufMessage::NetMessage> message)
 {
     if (message->has_reply()) {
-        quint32 lmsgnr = message->messagenr();
         QString lmsg = "";
         if (message->reply().has_body())
             lmsg = QString::fromStdString(message->reply().body());
 
         quint8 lreply = message->reply().rtype();
         int lastCmd;
+        quint32 lmsgnr = message->messagenr();
         if (lmsgnr == 0)
             lastCmd = dspinterrupt;
         else
