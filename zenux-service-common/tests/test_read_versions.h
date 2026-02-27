@@ -29,7 +29,7 @@ private:
     void setupServers();
     void registerNotifications();
     void unregisterNotifications();
-    void catchInterfaceAnswer(quint32 msgnr, quint8 reply, QVariant answer); // is a slot
+    void catchInterfaceAnswer(quint32 msgnr, quint8 reply, const QVariant &answer); // is a slot
     void waitForAccuDetected();
 
     std::unique_ptr<ResmanRunFacade> m_resman;

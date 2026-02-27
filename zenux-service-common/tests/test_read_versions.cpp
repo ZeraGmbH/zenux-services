@@ -245,7 +245,7 @@ void test_read_versions::readCtrlVersionAccuNoEmob()
 constexpr int ctrlVersionNotifierId = 5000;
 constexpr int pcbVersionNotifierId  = 5001;
 
-void test_read_versions::catchInterfaceAnswer(quint32 msgnr, quint8 reply, QVariant answer)
+void test_read_versions::catchInterfaceAnswer(quint32 msgnr, quint8 reply, const QVariant &answer)
 {
     Q_UNUSED(reply)
     if (msgnr == 0) { // 0 was reserved for async. messages

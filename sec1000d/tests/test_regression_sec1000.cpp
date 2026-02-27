@@ -119,7 +119,7 @@ QStringList test_regression_sec1000::claimAllEcChannels(int ecUnitCount)
 
 void test_regression_sec1000::collectServerSends(QList<ServerSendData> &serverSendList)
 {
-    connect(m_secIFace.get(), &AbstractServerInterface::serverAnswer, this, [&](quint32 msgnr, quint8 reply, QVariant answer) {
+    connect(m_secIFace.get(), &AbstractServerInterface::serverAnswer, this, [&](quint32 msgnr, quint8 reply, const QVariant &answer) {
         serverSendList.append({msgnr, reply, answer});
     });
 }

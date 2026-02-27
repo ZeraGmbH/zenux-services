@@ -206,7 +206,7 @@ void test_source_control::setupServerAndClient(const QString &deviceD)
     Zera::Proxy::getInstance()->startConnectionSmart(proxyClient);
     TimeMachineObject::feedEventLoop();
 
-    connect(m_pcbInterface.get(), &TinyZScpiCmdInterface::serverAnswer, this, [&](quint32 msgnr, quint8 reply, QVariant answer) {
+    connect(m_pcbInterface.get(), &TinyZScpiCmdInterface::serverAnswer, this, [&](quint32 msgnr, quint8 reply, const QVariant &answer) {
         Q_UNUSED(msgnr)
         m_lastReply = reply;
         m_lastAnswer = answer;
