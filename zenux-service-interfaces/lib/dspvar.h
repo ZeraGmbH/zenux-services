@@ -20,7 +20,7 @@ class cDspVar // dsp variable
 public:
     QString& Name() { return m_sName;}
     int size() { return m_dspVarData.size(); }
-    int type() { return m_nType; }
+    int valueTypeMask() { return m_valueTypeMask; }
     int datatype() { return m_nDataType; }
     void setValue(int idx, float value);
     // Nightmare: This must go!!!
@@ -29,7 +29,7 @@ public:
     static int getInstanceCount();
 private:
     friend class cDspMeasData;
-    cDspVar(const QString &name, int size, int type, int datatype = dspDataTypeFloat );
+    cDspVar(const QString &name, int size, int valueTypeMask, int datatype = dspDataTypeFloat );
     virtual ~cDspVar();
     void setData(QVector<float> data) {
         Q_ASSERT(m_dspVarData.size() == data.size());
@@ -37,7 +37,7 @@ private:
     }
 
     QString m_sName; // a var. has its name
-    int m_nType; // an it can be of different type : vDspResult, vDspTemp , vDspIntVar , vDspParam
+    int m_valueTypeMask; // an it can be of different type : vDspResult, vDspTemp , vDspIntVar , vDspParam
     int m_nDataType; // it can be float or int
     QVector<float> m_dspVarData; // we hold an array for data storage
     static int m_instanceCount;

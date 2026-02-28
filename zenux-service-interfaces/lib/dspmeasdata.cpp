@@ -68,7 +68,7 @@ quint32 cDspMeasData::getUserMemSize()
 {
     quint32 size = 0;
     for(int i = 0; i < DspVarList.size(); ++i)
-        if (DspVarList.at(i)->type() != DSPDATA::vDspTempGlobal)
+        if (DspVarList.at(i)->valueTypeMask() != DSPDATA::vDspTempGlobal)
             size += DspVarList.at(i)->size();
     return size;
 }
@@ -77,7 +77,7 @@ quint32 cDspMeasData::getUserMemSizeGlobal()
 {
     quint32 size = 0;
     for(int i = 0; i < DspVarList.size(); ++i)
-        if (DspVarList.at(i)->type() == DSPDATA::vDspTempGlobal)
+        if (DspVarList.at(i)->valueTypeMask() == DSPDATA::vDspTempGlobal)
             size += DspVarList.at(i)->size();
     return size;
 }
@@ -88,9 +88,9 @@ QString cDspMeasData::VarListLong(int section)
     QTextStream ts(&sReturn, QIODevice::WriteOnly);
     for(int i=0; i<DspVarList.size(); ++i) {
         cDspVar *pDspVar = DspVarList.at(i);
-        if ((section & pDspVar->type()) > 0) {
+        if ((section & pDspVar->valueTypeMask()) > 0) {
             int seg;
-            if (pDspVar->type() == DSPDATA::vDspTempGlobal)
+            if (pDspVar->valueTypeMask() == DSPDATA::vDspTempGlobal)
                 seg = globalSegment;
             else
                 seg = localSegment;
@@ -106,7 +106,7 @@ QString cDspMeasData::VarListShort(int section)
     QTextStream ts(&sReturn, QIODevice::WriteOnly);
     for(int i=0; i<DspVarList.size(); ++i) {
         cDspVar *pDspVar = DspVarList.at(i);
-        if ((section & pDspVar->type()) > 0)
+        if ((section & pDspVar->valueTypeMask()) > 0)
             ts << QString("%1,%2;").arg(pDspVar->Name()).arg(pDspVar->size());
     }
     return sReturn;
