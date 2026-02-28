@@ -52,9 +52,10 @@ void cDspMeasData::setVarData(QString datalist)
     }
 }
 
-cDspVar *cDspMeasData::addDspVar(const QString &name, int size, int valueTypeMask, DspSegmentType dspSegmentType, int datatype)
+cDspVar *cDspMeasData::addDspVar(const QString &name, int size, int valueTypeMask,
+                                 DspDataType dataType, DspSegmentType dspSegmentType)
 {
-    cDspVar *var = new cDspVar(name, size, valueTypeMask, dspSegmentType, datatype);
+    cDspVar *var = new cDspVar(name, size, valueTypeMask, dataType, dspSegmentType);
     DspVarList.append(var);
     return var;
 }

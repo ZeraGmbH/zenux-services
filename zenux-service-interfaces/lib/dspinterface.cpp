@@ -92,7 +92,7 @@ quint32 cDSPInterface::dataAcquisition(cDspMeasData *memgroup)
     return d->dataAcquisition(memgroup);
 }
 
-quint32 cDSPInterface::dspMemoryRead(cDspMeasData *memgroup, dspDataType type)
+quint32 cDSPInterface::dspMemoryRead(cDspMeasData *memgroup, DspDataType type)
 {
     Q_D(cDSPInterface);
     return d->dspMemoryRead(memgroup, type);

@@ -16,7 +16,7 @@ bool TDspVar::Init(const QString& varDefinition)
             int varType = varDefinition.section(',', 3, 3).remove(' ').toInt(&ok);
             if ((ret = ret && ok)) {
                 if ( (ret = ret && ( (varType == dspDataTypeInt) || (varType == dspDataTypeFloat) )))
-                    type = (dspDataType)varType;
+                    type = (DspDataType)varType;
             }
         }
         else

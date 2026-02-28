@@ -9,7 +9,7 @@ struct TDspVar {
     QString m_clientHandleName;
     QString Name;                           // name der variablen
     ushort size = 0;                        // anzahl worte
-    dspDataType type = dspDataTypeUnknown;
+    DspDataType type = dspDataTypeUnknown;
     ulong adr = 0;                          // die abs. adresse auf welcher sich die variable befindet
     ulong offs = 0;                         // der offset innerhalb der memory section
     DspSegmentType segment = moduleLocalSegment;

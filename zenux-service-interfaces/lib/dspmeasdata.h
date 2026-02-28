@@ -12,7 +12,8 @@ public:
     cDspMeasData(const QString &name);
     ~cDspMeasData();
 
-    cDspVar *addDspVar(const QString &name, int size, int valueTypeMask, DspSegmentType dspSegmentType, int datatype = dspDataTypeFloat);
+    cDspVar *addDspVar(const QString &name, int size, int valueTypeMask,
+                       DspDataType dataType = dspDataTypeFloat, DspSegmentType dspSegmentType = moduleLocalSegment);
 
     // Nightmare candidate: Make it go!!!
     float* data(QString name);
