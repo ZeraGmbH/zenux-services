@@ -50,7 +50,7 @@ public:
     quint32 deactivateAll();
 
     quint32 dataAcquisition(cDspMeasData* memgroup);
-    quint32 dspMemoryRead(cDspMeasData* memgroup, DSPDATA::dType type = DSPDATA::dFloat);
+    quint32 dspMemoryRead(cDspMeasData* memgroup, dspDataType type = dspDataTypeFloat);
     quint32 dspMemoryWrite(cDspMeasData* memgroup);
     quint32 readDeviceVersion();
     quint32 readServerVersion();
@@ -83,7 +83,7 @@ private:
     QStringList m_cycCmdList, m_irqCmdList;
     QList<cDspMeasData*> m_DspMemoryDataList; // eine liste mit zeigern auf dsp speicher
     QHash<quint32, cDspMeasData*> m_MsgNrMeasData;
-    QHash<quint32, DSPDATA::dType> m_MsgNrMemType;
+    QHash<quint32, dspDataType> m_MsgNrMemType;
 };
 
 }

@@ -42,8 +42,8 @@ public:
 
     quint32 deactivateAll();
 
-    // TODO!!! make DSPDATA::dType type go as we did on dspMemoryWrite
-    quint32 dspMemoryRead(cDspMeasData* memgroup, DSPDATA::dType type = DSPDATA::dFloat); // reads all vars of this memorygroup
+    // TODO!!! make dspDataType type go as we did on dspMemoryWrite
+    quint32 dspMemoryRead(cDspMeasData* memgroup, dspDataType type = dspDataTypeFloat); // reads all vars of this memorygroup
     quint32 readDeviceVersion();
     quint32 readServerVersion();
 

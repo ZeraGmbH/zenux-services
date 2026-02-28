@@ -4,12 +4,12 @@
 #include <QString>
 #include <QVector>
 
+enum dspDataType { dspDataTypeInt, dspDataTypeFloat, dspDataTypeUnknown };
+
+enum segmentType { localSegment, globalSegment };
+
 namespace DSPDATA
 {
-    enum dType {dInt, dFloat}; // data value type int or float
-
-    enum segmentType { localSegment, globalSegment};
-
     enum DspValueType {vDspResult = 1, vDspTemp = 2, vDspIntVar = 4, vDspParam = 8, vDspALL = 15, vDspTempGlobal = 16};
 
     static constexpr int userCreatableTypes = vDspParam | vDspTemp | vDspResult | vDspTempGlobal;
@@ -29,7 +29,7 @@ public:
     static int getInstanceCount();
 private:
     friend class cDspMeasData;
-    cDspVar(const QString &name, int size, int type, int datatype = DSPDATA::dFloat );
+    cDspVar(const QString &name, int size, int type, int datatype = dspDataTypeFloat );
     virtual ~cDspVar();
     void setData(QVector<float> data) {
         Q_ASSERT(m_dspVarData.size() == data.size());

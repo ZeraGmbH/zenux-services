@@ -76,7 +76,7 @@ int DspVarResolver::getVarType(const QString &varNameWithOffset)
     TDspVar* var = getDspVar(varNameWithOffset);
     if(var)
         return var->type;
-    return eUnknown;
+    return dspDataTypeUnknown;
 }
 
 QString DspVarResolver::extractOffset(const QString &varNameWithOffset, const QString &varName)

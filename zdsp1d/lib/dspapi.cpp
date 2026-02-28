@@ -102,21 +102,21 @@ static constexpr int CmdListLen21262 = 896;
 
 TDspVar DspWorkspaceVar[] =
 {
-    {"DspWorkspace", "FREQENCY",1,eFloat,0,0, localSegment},                // 1 wert gemessene frequenz
-    {"DspWorkspace", "FREQUENCYVALUE",4,eFloat,0,0, localSegment},          // 4 werte f. freq. ausgänge
-    {"DspWorkspace", "MAXIMUMSAMPLE",32,eFloat,0,0, localSegment},          // 32 werte maximumspeicher
-    {"DspWorkspace", "FREQUENCYVALUEFILTER",4,eFloat,0,0, localSegment},    // 4 gefilterte freq. ausgänge
-    {"DspWorkspace", "FREQUENCYSCALE",4,eFloat,0,0, localSegment},          // 4 freq. skalierungswerte
-    {"DspWorkspace", "KREISFREQKOEFF",1,eFloat,0,0, localSegment},          // kreisfrequenz korrektur koeffizient
-    {"DspWorkspace", "ETHERRORS",1,eInt,0,0, localSegment},                 // ethernet fehler speicher
-    {"DspWorkspace", "ETHSYNCLOSTCOUNT",1,eInt,0,0, localSegment},          // ethernet synclost counter
-    {"DspWorkspace", "ETHDATACOUNT",2,eInt,0,0, localSegment},              // anzahl sync. verluste mu
-    {"DspWorkspace", "NCHANNELS",1,eInt,0,0, localSegment},                 // anzahl messkanäle sampling system
-    {"DspWorkspace", "NSMEAS",1,eInt,0,0, localSegment},                    // anzahl samples für 1 messperiode
-    {"DspWorkspace", "NSPERIOD",1,eInt,0,0, localSegment},                  // anzahl samples für eine signalperiode
-    {"DspWorkspace", "_NSPERIOD",1,eFloat,0,0, localSegment},               // 1/ anzahl samples
-    {"DspWorkspace", "SYNCASDU",1,eInt,0,0, localSegment},                  // ob und auf welchen datensatz synchronisiert wird
-    {"DspWorkspace", "TMCH0",1,eFloat,0,0, localSegment}                    // periodendauer messsignal kanal0
+    {"DspWorkspace", "FREQENCY",1,dspDataTypeFloat,0,0, localSegment},                // 1 wert gemessene frequenz
+    {"DspWorkspace", "FREQUENCYVALUE",4,dspDataTypeFloat,0,0, localSegment},          // 4 werte f. freq. ausgänge
+    {"DspWorkspace", "MAXIMUMSAMPLE",32,dspDataTypeFloat,0,0, localSegment},          // 32 werte maximumspeicher
+    {"DspWorkspace", "FREQUENCYVALUEFILTER",4,dspDataTypeFloat,0,0, localSegment},    // 4 gefilterte freq. ausgänge
+    {"DspWorkspace", "FREQUENCYSCALE",4,dspDataTypeFloat,0,0, localSegment},          // 4 freq. skalierungswerte
+    {"DspWorkspace", "KREISFREQKOEFF",1,dspDataTypeFloat,0,0, localSegment},          // kreisfrequenz korrektur koeffizient
+    {"DspWorkspace", "ETHERRORS",1,dspDataTypeInt,0,0, localSegment},                 // ethernet fehler speicher
+    {"DspWorkspace", "ETHSYNCLOSTCOUNT",1,dspDataTypeInt,0,0, localSegment},          // ethernet synclost counter
+    {"DspWorkspace", "ETHDATACOUNT",2,dspDataTypeInt,0,0, localSegment},              // anzahl sync. verluste mu
+    {"DspWorkspace", "NCHANNELS",1,dspDataTypeInt,0,0, localSegment},                 // anzahl messkanäle sampling system
+    {"DspWorkspace", "NSMEAS",1,dspDataTypeInt,0,0, localSegment},                    // anzahl samples für 1 messperiode
+    {"DspWorkspace", "NSPERIOD",1,dspDataTypeInt,0,0, localSegment},                  // anzahl samples für eine signalperiode
+    {"DspWorkspace", "_NSPERIOD",1,dspDataTypeFloat,0,0, localSegment},               // 1/ anzahl samples
+    {"DspWorkspace", "SYNCASDU",1,dspDataTypeInt,0,0, localSegment},                  // ob und auf welchen datensatz synchronisiert wird
+    {"DspWorkspace", "TMCH0",1,dspDataTypeFloat,0,0, localSegment}                    // periodendauer messsignal kanal0
 };
 
 
@@ -127,34 +127,34 @@ TDspVar DialogWorkSpaceVar[] =
 {
     // Parameter details for DSPCMDPAR are found at
     // https://github.com/ZeraGmbH/SHARC-DSP-Software/blob/f4003f707849076a91010435994aa61bf9e6cfb9/NewGen32.asm#L352
-    {"DialogWorkSpace", "DSPCMDPAR",10,eInt,0,0, localSegment},             // 10 werte cmds, paramter ... ctrl -> dsp
-    {"DialogWorkSpace", "DSPACK",1,eInt,0,0, localSegment},                 // semaphore ackn. dsp -> cntr.
-    {"DialogWorkSpace", "CTRLCMDPAR",20,eInt,0,0, localSegment},            // 20 werte cmds, paramter ... dsp -> ctrl
-    {"DialogWorkSpace", "CTRLACK",1,eInt,0,0, localSegment},                // semaphore ackn. ctrl. -> dsp
-    {"DialogWorkSpace", "FREQUENCYNORM",4,eFloat,0,0, localSegment},        // 4 freq. normierungswerte
-    {"DialogWorkSpace", "GAINCORRECTION",32,eFloat,0,0, localSegment},      // 32 verstärkungskorrekturwerte
-    {"DialogWorkSpace", "PHASECORRECTION",32,eFloat,0,0, localSegment},     // 32 phasenkorrekturwerte
-    {"DialogWorkSpace", "OFFSETCORRECTION",32,eFloat,0,0, localSegment},    // 32 offsetkorrekturwerte
-    {"DialogWorkSpace", "BUSYMAX",1,eFloat,0,0, localSegment},              // akuelle auslastung [%]
-    {"DialogWorkSpace", "BUSY",1,eFloat,0,0, localSegment},                 // max. auslastung seit reset
-    {"DialogWorkSpace", "VNR",1,eFloat,0,0, localSegment},                  // versionsnummer
-    {"DialogWorkSpace", "GAINCORRECTION2",32,eFloat,0,0, localSegment},     // 32 verstärkungskorrekturwerte 2.stufe
-    {"DialogWorkSpace", "PHASECORRECTION2",32,eFloat,0,0, localSegment},    // 32 phasenkorrekturwerte 2. stufe
-    {"DialogWorkSpace", "OFFSETCORRECTION2",32,eFloat,0,0, localSegment},   // 32 offsetkorrekturwerte 2. stufe
-    {"DialogWorkSpace", "ETHDESTSOURCEADRESS",3,eInt,0,0, localSegment},    // 3*32bit -> 2*48bit
-    {"DialogWorkSpace", "ETHPRIORITYTAGGED",1,eInt,0,0, localSegment},
-    {"DialogWorkSpace", "ETHTYPEAPPID",1,eInt,0,0, localSegment},
-    {"DialogWorkSpace", "ETHROUTINGTAB",16,eInt,0,0, localSegment},         // 8*4 = 2Byte/routing, max. 32 routings = 64byte = 16worte
-    {"DialogWorkSpace", "INTERRUPTERROR",1,eInt,0,0, localSegment},
-    {"DialogWorkSpace", "POWVALS4FOUT",48,eFloat,0,0, localSegment},        // 48 leistungs werte für frequenzausgänge
-    {"DialogWorkSpace", "SUBDC",1,eInt,0,0, localSegment}};                 // 32 bit 1/kanal wenn gesetzt -> subdc wenn copydata, copydiff
+    {"DialogWorkSpace", "DSPCMDPAR",10,dspDataTypeInt,0,0, localSegment},             // 10 werte cmds, paramter ... ctrl -> dsp
+    {"DialogWorkSpace", "DSPACK",1,dspDataTypeInt,0,0, localSegment},                 // semaphore ackn. dsp -> cntr.
+    {"DialogWorkSpace", "CTRLCMDPAR",20,dspDataTypeInt,0,0, localSegment},            // 20 werte cmds, paramter ... dsp -> ctrl
+    {"DialogWorkSpace", "CTRLACK",1,dspDataTypeInt,0,0, localSegment},                // semaphore ackn. ctrl. -> dsp
+    {"DialogWorkSpace", "FREQUENCYNORM",4,dspDataTypeFloat,0,0, localSegment},        // 4 freq. normierungswerte
+    {"DialogWorkSpace", "GAINCORRECTION",32,dspDataTypeFloat,0,0, localSegment},      // 32 verstärkungskorrekturwerte
+    {"DialogWorkSpace", "PHASECORRECTION",32,dspDataTypeFloat,0,0, localSegment},     // 32 phasenkorrekturwerte
+    {"DialogWorkSpace", "OFFSETCORRECTION",32,dspDataTypeFloat,0,0, localSegment},    // 32 offsetkorrekturwerte
+    {"DialogWorkSpace", "BUSYMAX",1,dspDataTypeFloat,0,0, localSegment},              // akuelle auslastung [%]
+    {"DialogWorkSpace", "BUSY",1,dspDataTypeFloat,0,0, localSegment},                 // max. auslastung seit reset
+    {"DialogWorkSpace", "VNR",1,dspDataTypeFloat,0,0, localSegment},                  // versionsnummer
+    {"DialogWorkSpace", "GAINCORRECTION2",32,dspDataTypeFloat,0,0, localSegment},     // 32 verstärkungskorrekturwerte 2.stufe
+    {"DialogWorkSpace", "PHASECORRECTION2",32,dspDataTypeFloat,0,0, localSegment},    // 32 phasenkorrekturwerte 2. stufe
+    {"DialogWorkSpace", "OFFSETCORRECTION2",32,dspDataTypeFloat,0,0, localSegment},   // 32 offsetkorrekturwerte 2. stufe
+    {"DialogWorkSpace", "ETHDESTSOURCEADRESS",3,dspDataTypeInt,0,0, localSegment},    // 3*32bit -> 2*48bit
+    {"DialogWorkSpace", "ETHPRIORITYTAGGED",1,dspDataTypeInt,0,0, localSegment},
+    {"DialogWorkSpace", "ETHTYPEAPPID",1,dspDataTypeInt,0,0, localSegment},
+    {"DialogWorkSpace", "ETHROUTINGTAB",16,dspDataTypeInt,0,0, localSegment},         // 8*4 = 2Byte/routing, max. 32 routings = 64byte = 16worte
+    {"DialogWorkSpace", "INTERRUPTERROR",1,dspDataTypeInt,0,0, localSegment},
+    {"DialogWorkSpace", "POWVALS4FOUT",48,dspDataTypeFloat,0,0, localSegment},        // 48 leistungs werte für frequenzausgänge
+    {"DialogWorkSpace", "SUBDC",1,dspDataTypeInt,0,0, localSegment}};                 // 32 bit 1/kanal wenn gesetzt -> subdc wenn copydata, copydiff
 
 TMemSection dm32DialogWorkSpace = TMemSection(systemSection, dm32DialogWorkSpaceBase21262, DSP_VAR_COUNT(DialogWorkSpaceVar), DialogWorkSpaceVar);
 
 
 TDspVar UserWorkSpaceVar[] =
 {
-    {"UserWorkSpace", "UWSPACE",uwSpaceSize21262,eFloat,0,0, localSegment}
+    {"UserWorkSpace", "UWSPACE",uwSpaceSize21262,dspDataTypeFloat,0,0, localSegment}
 };
 
 TMemSection dm32UserWorkSpace = TMemSection(systemSection, dm32UserWorkSpaceBase21262, DSP_VAR_COUNT(UserWorkSpaceVar), UserWorkSpaceVar);
@@ -162,32 +162,32 @@ TMemSection dm32UserWorkSpace = TMemSection(systemSection, dm32UserWorkSpaceBase
 
 TDspVar CmdListVar[] =
 {
-    {"CmdList", "INTCMDLIST",IntCmdListLen21262,eInt,0,0, localSegment},    // interrupt kommando
-    {"CmdList", "CMDLIST",CmdListLen21262,eInt,0,0, localSegment},          // cycl. kommando liste
-    {"CmdList", "ALTINTCMDLIST",IntCmdListLen21262,eInt,0,0, localSegment}, // alternative kommando listen
-    {"CmdList", "ALTCMDLIST",CmdListLen21262,eInt,0,0, localSegment}};
+    {"CmdList", "INTCMDLIST",IntCmdListLen21262,dspDataTypeInt,0,0, localSegment},    // interrupt kommando
+    {"CmdList", "CMDLIST",CmdListLen21262,dspDataTypeInt,0,0, localSegment},          // cycl. kommando liste
+    {"CmdList", "ALTINTCMDLIST",IntCmdListLen21262,dspDataTypeInt,0,0, localSegment}, // alternative kommando listen
+    {"CmdList", "ALTCMDLIST",CmdListLen21262,dspDataTypeInt,0,0, localSegment}};
 
 TMemSection dm32CmdList = TMemSection(systemSection, dm32CmdListBase21262, DSP_VAR_COUNT(CmdListVar), CmdListVar);
 
 
 TDspVar ChannelNr[] =
 {
-    {"ChannelNr", "CH0",1,eInt,0,0,localSegment}, {"ChannelNr", "CH1",1,eInt,0,0,localSegment},
-    {"ChannelNr", "CH2",1,eInt,0,0,localSegment}, {"ChannelNr", "CH3",1,eInt,0,0,localSegment},
-    {"ChannelNr", "CH4",1,eInt,0,0,localSegment}, {"ChannelNr", "CH5",1,eInt,0,0,localSegment},
-    {"ChannelNr", "CH6",1,eInt,0,0,localSegment}, {"ChannelNr", "CH7",1,eInt,0,0,localSegment},
-    {"ChannelNr", "CH8",1,eInt,0,0,localSegment}, {"ChannelNr", "CH9",1,eInt,0,0,localSegment},
-    {"ChannelNr", "CH10",1,eInt,0,0,localSegment},{"ChannelNr", "CH11",1,eInt,0,0,localSegment},
-    {"ChannelNr", "CH12",1,eInt,0,0,localSegment},{"ChannelNr", "CH13",1,eInt,0,0,localSegment},
-    {"ChannelNr", "CH14",1,eInt,0,0,localSegment},{"ChannelNr", "CH15",1,eInt,0,0,localSegment},
-    {"ChannelNr", "CH16",1,eInt,0,0,localSegment},{"ChannelNr", "CH17",1,eInt,0,0,localSegment},
-    {"ChannelNr", "CH18",1,eInt,0,0,localSegment},{"ChannelNr", "CH19",1,eInt,0,0,localSegment},
-    {"ChannelNr", "CH20",1,eInt,0,0,localSegment},{"ChannelNr", "CH21",1,eInt,0,0,localSegment},
-    {"ChannelNr", "CH22",1,eInt,0,0,localSegment},{"ChannelNr", "CH23",1,eInt,0,0,localSegment},
-    {"ChannelNr", "CH24",1,eInt,0,0,localSegment},{"ChannelNr", "CH25",1,eInt,0,0,localSegment},
-    {"ChannelNr", "CH26",1,eInt,0,0,localSegment},{"ChannelNr", "CH27",1,eInt,0,0,localSegment},
-    {"ChannelNr", "CH28",1,eInt,0,0,localSegment},{"ChannelNr", "CH29",1,eInt,0,0,localSegment},
-    {"ChannelNr", "CH30",1,eInt,0,0,localSegment},{"ChannelNr", "CH31",1,eInt,0,0,localSegment}};
+    {"ChannelNr", "CH0",1,dspDataTypeInt,0,0,localSegment}, {"ChannelNr", "CH1",1,dspDataTypeInt,0,0,localSegment},
+    {"ChannelNr", "CH2",1,dspDataTypeInt,0,0,localSegment}, {"ChannelNr", "CH3",1,dspDataTypeInt,0,0,localSegment},
+    {"ChannelNr", "CH4",1,dspDataTypeInt,0,0,localSegment}, {"ChannelNr", "CH5",1,dspDataTypeInt,0,0,localSegment},
+    {"ChannelNr", "CH6",1,dspDataTypeInt,0,0,localSegment}, {"ChannelNr", "CH7",1,dspDataTypeInt,0,0,localSegment},
+    {"ChannelNr", "CH8",1,dspDataTypeInt,0,0,localSegment}, {"ChannelNr", "CH9",1,dspDataTypeInt,0,0,localSegment},
+    {"ChannelNr", "CH10",1,dspDataTypeInt,0,0,localSegment},{"ChannelNr", "CH11",1,dspDataTypeInt,0,0,localSegment},
+    {"ChannelNr", "CH12",1,dspDataTypeInt,0,0,localSegment},{"ChannelNr", "CH13",1,dspDataTypeInt,0,0,localSegment},
+    {"ChannelNr", "CH14",1,dspDataTypeInt,0,0,localSegment},{"ChannelNr", "CH15",1,dspDataTypeInt,0,0,localSegment},
+    {"ChannelNr", "CH16",1,dspDataTypeInt,0,0,localSegment},{"ChannelNr", "CH17",1,dspDataTypeInt,0,0,localSegment},
+    {"ChannelNr", "CH18",1,dspDataTypeInt,0,0,localSegment},{"ChannelNr", "CH19",1,dspDataTypeInt,0,0,localSegment},
+    {"ChannelNr", "CH20",1,dspDataTypeInt,0,0,localSegment},{"ChannelNr", "CH21",1,dspDataTypeInt,0,0,localSegment},
+    {"ChannelNr", "CH22",1,dspDataTypeInt,0,0,localSegment},{"ChannelNr", "CH23",1,dspDataTypeInt,0,0,localSegment},
+    {"ChannelNr", "CH24",1,dspDataTypeInt,0,0,localSegment},{"ChannelNr", "CH25",1,dspDataTypeInt,0,0,localSegment},
+    {"ChannelNr", "CH26",1,dspDataTypeInt,0,0,localSegment},{"ChannelNr", "CH27",1,dspDataTypeInt,0,0,localSegment},
+    {"ChannelNr", "CH28",1,dspDataTypeInt,0,0,localSegment},{"ChannelNr", "CH29",1,dspDataTypeInt,0,0,localSegment},
+    {"ChannelNr", "CH30",1,dspDataTypeInt,0,0,localSegment},{"ChannelNr", "CH31",1,dspDataTypeInt,0,0,localSegment}};
 
 TMemSection symbConsts1 = TMemSection(systemSection, 0, DSP_VAR_COUNT(ChannelNr), ChannelNr);
 

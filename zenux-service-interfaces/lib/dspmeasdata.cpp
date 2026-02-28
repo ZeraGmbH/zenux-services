@@ -41,7 +41,7 @@ void cDspMeasData::setVarData(QString datalist)
             for(QStringList::Iterator it2 = valueList.begin(); it2 != valueList.end(); ++it2,val++ ) {
                 QString strValue = *it2;
                 strValue.remove(';');
-                if (datatype == DSPDATA::dInt) {
+                if (datatype == dspDataTypeInt) {
                     uint vul = strValue.toUInt(); // test auf ulong
                     *((uint*) val) = vul;
                 }
@@ -91,9 +91,9 @@ QString cDspMeasData::VarListLong(int section)
         if ((section & pDspVar->type()) > 0) {
             int seg;
             if (pDspVar->type() == DSPDATA::vDspTempGlobal)
-                seg = DSPDATA::globalSegment;
+                seg = globalSegment;
             else
-                seg = DSPDATA::localSegment;
+                seg = localSegment;
             ts << QString("%1,%2,%3,%4,%5;").arg(m_handleName, pDspVar->Name()).arg(pDspVar->size()).arg(pDspVar->datatype()).arg(seg);
         }
     }
@@ -123,7 +123,7 @@ QString cDspMeasData::writeCommand()
         float* floatPointer = pVar->data();
         int type = pVar->datatype();
 
-        if (type == DSPDATA::dInt) { // wir haben integer daten
+        if (type == dspDataTypeInt) {
             for (int j = 0; j < pVar->size(); j++, floatPointer++) {
                 uint* lval = (uint*) floatPointer;
                 ts << "," << *lval;

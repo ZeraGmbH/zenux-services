@@ -65,7 +65,7 @@ QString DspVarDeviceNodeInOut::readDspVarList(const QString &variablesString, Ds
         ts << dspVar->Name << ":";
         switch(dspVar->type)
         {
-        case eInt :
+        case dspDataTypeInt :
         {
             ulong *ul = (ulong*) ba.data();
             for (int j = 0; j < n-1; j++,ul++)
@@ -73,8 +73,8 @@ QString DspVarDeviceNodeInOut::readDspVarList(const QString &variablesString, Ds
             ts << *ul << ";" ;
             break;
         }
-        case eUnknown:
-        case eFloat :
+        case dspDataTypeUnknown:
+        case dspDataTypeFloat :
         {
             float *f = (float*) ba.data();
             for (int j = 0; j < n-1; j++,f++)
@@ -115,12 +115,12 @@ bool DspVarDeviceNodeInOut::writeDspVars(const QString &varsSemicolonSeparated, 
         int type = dspVarResolver->getVarType(varName);
         for(int valIdx=1; valIdx<varNameVals.count(); valIdx++) {
             const QString &valueStr = varNameVals[valIdx];
-            if(type == eUnknown) {
+            if(type == dspDataTypeUnknown) {
                 if(!tryStreamIntegerValue(valueStr, stream) &&
                     !tryStreamFloatValue(valueStr, stream))
                     return false;
             }
-            else if(type == eInt) {
+            else if(type == dspDataTypeInt) {
                 if(!tryStreamIntegerValue(valueStr, stream))
                     return false;
             }

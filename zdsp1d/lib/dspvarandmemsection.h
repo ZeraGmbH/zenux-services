@@ -1,22 +1,20 @@
 #ifndef DSPVARANDMEMSECTION_H
 #define DSPVARANDMEMSECTION_H
 
+#include "dspvar.h"
 #include <QString>
 
-enum dType { eInt, eFloat, eUnknown};
-
-enum sectionType { systemSection, userSection};
-enum segmentType { localSegment, globalSegment};
+enum sectionType { systemSection, userSection };
 
 struct TDspVar {
     bool Init(const QString& varDefinition);
     QString m_clientHandleName;
-    QString Name;                       // name der variablen
-    ushort size = 0;                    // anzahl worte
-    dType type = eUnknown;
-    ulong adr = 0;                      // die abs. adresse auf welcher sich die variable befindet
-    ulong offs = 0;                     // der offset innerhalb der memory section
-    segmentType segment = localSegment; // segment info, nur relevant für client sections
+    QString Name;                           // name der variablen
+    ushort size = 0;                        // anzahl worte
+    dspDataType type = dspDataTypeUnknown;
+    ulong adr = 0;                          // die abs. adresse auf welcher sich die variable befindet
+    ulong offs = 0;                         // der offset innerhalb der memory section
+    segmentType segment = localSegment;     // segment info, nur relevant für client sections
     static QString toHex(int val);
 };
 

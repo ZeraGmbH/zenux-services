@@ -15,12 +15,12 @@ bool TDspVar::Init(const QString& varDefinition)
         if (commaCount > 2) { // optional type
             int varType = varDefinition.section(',', 3, 3).remove(' ').toInt(&ok);
             if ((ret = ret && ok)) {
-                if ( (ret = ret && ( (varType == eInt) || (varType == eFloat) )))
-                    type = (dType)varType;
+                if ( (ret = ret && ( (varType == dspDataTypeInt) || (varType == dspDataTypeFloat) )))
+                    type = (dspDataType)varType;
             }
         }
         else
-            type = eFloat;
+            type = dspDataTypeFloat;
 
         if (commaCount > 3) { // optional segment
             int varSegment = varDefinition.section(',', 4, 4).remove(' ').toInt(&ok);
