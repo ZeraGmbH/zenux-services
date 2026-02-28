@@ -52,9 +52,9 @@ void cDspMeasData::setVarData(QString datalist)
     }
 }
 
-cDspVar *cDspMeasData::addDspVar(const QString &name, int size, int type, int datatype)
+cDspVar *cDspMeasData::addDspVar(const QString &name, int size, int valueTypeMask, DspSegmentType dspSegmentType, int datatype)
 {
-    cDspVar *var = new cDspVar(name, size, type, datatype);
+    cDspVar *var = new cDspVar(name, size, valueTypeMask, dspSegmentType, datatype);
     DspVarList.append(var);
     return var;
 }
@@ -68,7 +68,7 @@ quint32 cDspMeasData::getUserMemSize()
 {
     quint32 size = 0;
     for(int i = 0; i < DspVarList.size(); ++i)
-        if (DspVarList.at(i)->valueTypeMask() != DSPDATA::vDspTempGlobal)
+        if (DspVarList.at(i)->m_dspSegmentType == moduleLocalSegment)
             size += DspVarList.at(i)->size();
     return size;
 }
@@ -77,7 +77,7 @@ quint32 cDspMeasData::getUserMemSizeGlobal()
 {
     quint32 size = 0;
     for(int i = 0; i < DspVarList.size(); ++i)
-        if (DspVarList.at(i)->valueTypeMask() == DSPDATA::vDspTempGlobal)
+        if (DspVarList.at(i)->m_dspSegmentType == moduleGlobalSegment)
             size += DspVarList.at(i)->size();
     return size;
 }
@@ -87,15 +87,9 @@ QString cDspMeasData::VarListLong(int section)
     QString sReturn;
     QTextStream ts(&sReturn, QIODevice::WriteOnly);
     for(int i=0; i<DspVarList.size(); ++i) {
-        cDspVar *pDspVar = DspVarList.at(i);
-        if ((section & pDspVar->valueTypeMask()) > 0) {
-            int seg;
-            if (pDspVar->valueTypeMask() == DSPDATA::vDspTempGlobal)
-                seg = globalSegment;
-            else
-                seg = localSegment;
-            ts << QString("%1,%2,%3,%4,%5;").arg(m_handleName, pDspVar->Name()).arg(pDspVar->size()).arg(pDspVar->datatype()).arg(seg);
-        }
+        const cDspVar *pDspVar = DspVarList.at(i);
+        if ((section & pDspVar->valueTypeMask()) > 0)
+            ts << QString("%1,%2,%3,%4,%5;").arg(m_handleName, pDspVar->Name()).arg(pDspVar->size()).arg(pDspVar->datatype()).arg(pDspVar->m_dspSegmentType);
     }
     return sReturn;
 }

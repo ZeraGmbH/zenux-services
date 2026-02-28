@@ -46,7 +46,7 @@ long DspVarResolver::getVarOffset(const QString& varNameWithOffset, ulong userMe
                 return -1;
             retoffs += offset;
         }
-        if (dspVar->segment == globalSegment) // wenn daten im globalen segment liegen
+        if (dspVar->segment == moduleGlobalSegment) // wenn daten im globalen segment liegen
             retoffs += (globalstartadr - userMemOffset);
         return retoffs;
     }

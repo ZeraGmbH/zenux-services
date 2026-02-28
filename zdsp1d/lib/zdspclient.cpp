@@ -63,24 +63,45 @@ bool ZdspClient::setRawActualValueList(const QString &varsSemicolonSeparated)
     int globaloffset = 0;
     const QString varsSemicolonSeparatedEntityIdStripped = handleAndRemoveEntityId(varsSemicolonSeparated);
     const QStringList varEntries = varsSemicolonSeparatedEntityIdStripped.split(";", Qt::SkipEmptyParts);
+    bool allOk = true;
     for(int i=0; i<varEntries.count(); i++) {
         TDspVar dspVar;
         if(dspVar.Init(varEntries[i])) {
-            if (dspVar.segment == localSegment) {
+            if (dspVar.segment == dspInternalSegment) {
+                const TDspVar* dspVarDsp = m_dspVarResolver.getDspVar(dspVar.Name);
+                if (dspVarDsp == nullptr) {
+                    qCritical("Internal DSP Variable %s to add on client not found",
+                              qPrintable(dspVar.Name));
+                    allOk = false;
+                }
+                else if (dspVarDsp->size != dspVar.size) {
+                    qCritical("Internal DSP Variable %s to add on client has wrong size: wanted: %i / expected %i",
+                              qPrintable(dspVar.Name), dspVar.size, dspVarDsp->size);
+                    allOk = false;
+                }
+                else if (dspVarDsp->type != dspVar.type) {
+                    qCritical("Internal DSP Variable %s to add on client has wrong type: wanted: %i / expected %i",
+                              qPrintable(dspVar.Name), dspVar.type, dspVarDsp->type);
+                    allOk = false;
+                }
+            }
+            else if (dspVar.segment == moduleLocalSegment) {
                 dspVar.offs = localOffset;
                 localOffset += dspVar.size;
+                m_dspVarArray.append(dspVar);
             }
-            else {
+            else if (dspVar.segment == moduleGlobalSegment) {
                 dspVar.offs = globaloffset;
+                // TODO already there / other clients????
                 globaloffset += dspVar.size;
+                m_dspVarArray.append(dspVar);
             }
-            m_dspVarArray.append(dspVar);
         }
-        else {
-            m_dspVarArray.clear();
-            return false;
-        }
+        else
+            allOk = false;
     }
+    if (!allOk)
+        return false;
 
     m_userMemSection.m_varCount = m_dspVarArray.count();
     m_dataMemSize = calcDataMemSize(m_dspVarArray);
@@ -117,14 +138,14 @@ ulong ZdspClient::relocalizeUserMemSectionVars(ulong startAdress, ulong globalMe
     m_globalVarDump = std::make_unique<QList<VarLocation>>();
 
     for (int i = 0; i < m_userMemSection.m_varCount; i++) {
-        if (m_userMemSection.m_dspVars[i].segment == localSegment) {
+        if (m_userMemSection.m_dspVars[i].segment == moduleLocalSegment) {
             m_userMemSection.m_dspVars[i].adr = startAdress + usermemsize; // we need the adress for reading back data
             m_localVarDump->append( { m_userMemSection.m_dspVars[i].Name,
                                       m_userMemSection.m_dspVars[i].offs,
                                       m_userMemSection.m_dspVars[i].adr } );
             usermemsize += m_userMemSection.m_dspVars[i].size;
         }
-        else {
+        else if (m_userMemSection.m_dspVars[i].segment == moduleGlobalSegment) {
             m_userMemSection.m_dspVars[i].adr = globalMemStart+globalmemsize;
             m_globalVarDump->append( { m_userMemSection.m_dspVars[i].Name,
                                        m_userMemSection.m_dspVars[i].offs,

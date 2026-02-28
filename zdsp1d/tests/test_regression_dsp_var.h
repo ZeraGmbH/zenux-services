@@ -13,11 +13,18 @@ class test_regression_dsp_var : public QObject
 private slots:
     void init();
     void cleanup();
+
     void createResultVariables();
     void createTempVariables();
-    void createInternalVariables();
-    void createTempGlobalNoRead();
-    void createGlobalNoRead();
+
+    void createInternalVariableNotAvailable();
+    void createInternalVariableWrongSize();
+    void createInternalVariableWrongType();
+    void createInternalVariableOk();
+    void createInternalVariablesOk();
+    void createInternalVariablesSecondNotOk();
+
+    void createGlobalVariableOk(); // We need more here!!!
 
     void readVariablesAndListenDeviceNode(); // we learned dspMemoryRead details by this
     void writeFloatVariablesAndListenDeviceNode();

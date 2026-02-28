@@ -25,12 +25,16 @@ bool TDspVar::Init(const QString& varDefinition)
         if (commaCount > 3) { // optional segment
             int varSegment = varDefinition.section(',', 4, 4).remove(' ').toInt(&ok);
             if ((ret = ret && ok)) {
-                if ( (ret = ret && ( (varSegment == localSegment) || (varSegment == globalSegment) )))
-                    segment = (segmentType)varSegment;
+                if ( (ret = ret && (
+                                    varSegment == dspInternalSegment ||
+                                    varSegment == moduleLocalSegment ||
+                                    varSegment == moduleGlobalSegment
+                                   )))
+                    segment = (DspSegmentType)varSegment;
             }
         }
         else
-            segment = localSegment;
+            segment = moduleLocalSegment;
 
     }
     return ret;
@@ -42,8 +46,7 @@ QString TDspVar::toHex(int val)
     return QString("0x") + hexVal;
 }
 
-TMemSection::TMemSection(sectionType section, long startAddress, int varCount, TDspVar *dspVars) :
-    m_section(section),
+TMemSection::TMemSection(long startAddress, int varCount, TDspVar *dspVars) :
     m_startAddress(startAddress),
     m_varCount(varCount),
     m_dspVars(dspVars)

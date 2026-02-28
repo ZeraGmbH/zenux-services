@@ -2,8 +2,9 @@
 
 int cDspVar::m_instanceCount = 0;
 
-cDspVar::cDspVar(const QString &name, int size, int valueTypeMask, int datatype ) :
+cDspVar::cDspVar(const QString &name, int size, int valueTypeMask, DspSegmentType dspSegmentType, int datatype) :
     m_sName(name),
+    m_dspSegmentType(dspSegmentType),
     m_valueTypeMask(valueTypeMask),
     m_nDataType(datatype),
     m_dspVarData(size)
