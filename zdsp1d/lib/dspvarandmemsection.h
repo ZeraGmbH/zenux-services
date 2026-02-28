@@ -4,8 +4,6 @@
 #include "dspvar.h"
 #include <QString>
 
-enum sectionType { systemSection, userSection };
-
 struct TDspVar {
     bool Init(const QString& varDefinition);
     QString m_clientHandleName;

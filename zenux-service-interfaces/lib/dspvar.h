@@ -8,6 +8,8 @@ enum dspDataType { dspDataTypeInt, dspDataTypeFloat, dspDataTypeUnknown };
 
 enum segmentType { localSegment, globalSegment };
 
+enum sectionType { systemSection, userSection };
+
 namespace DSPDATA
 {
     enum DspValueType {vDspResult = 1, vDspTemp = 2, vDspIntVar = 4, vDspParam = 8, vDspALL = 15, vDspTempGlobal = 16};
