@@ -44,7 +44,6 @@ public:
     void addCycListItems(const QStringList &cmds); // appends new commands to cyclic list
 
     cDspMeasData* getMemHandle(const QString &name); // init a new memory group and return handle
-    void deleteMemHandle(cDspMeasData* memhandle);
 
     quint32 activateInterface(); // load var- and cmdlists to dsp (starts theprogram on dsp)
     quint32 deactivateAll();

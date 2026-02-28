@@ -38,7 +38,6 @@ public:
     void addCycListItem(QString cmd); // appends new command to cyclic list
     void addCycListItems(const QStringList &cmds); // appends new commands to cyclic list
     cDspMeasData* getMemHandle(QString name); // init a new memory group and return handle
-    void deleteMemHandle(cDspMeasData* memhandle);
 
     quint32 deactivateAll();
 

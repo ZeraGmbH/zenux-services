@@ -149,15 +149,6 @@ cDspMeasData *cDSPInterfacePrivate::findMemHandle(const QString &name) const
     return memHandleFound;
 }
 
-void cDSPInterfacePrivate::deleteMemHandle(cDspMeasData *memhandle)
-{
-    if (m_DspMemoryDataList.contains(memhandle)) {
-        int index = m_DspMemoryDataList.indexOf(memhandle);
-        cDspMeasData* pdmd = m_DspMemoryDataList.takeAt(index);
-        delete pdmd;
-    }
-}
-
 quint32 cDSPInterfacePrivate::activateInterface()
 {
     quint32 msgnr = sendCommand("MEAS:LIST:SET"); // long: MEASURE:LIST:SET

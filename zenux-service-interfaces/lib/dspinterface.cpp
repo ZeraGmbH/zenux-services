@@ -68,12 +68,6 @@ cDspMeasData* cDSPInterface::getMemHandle(QString name)
     return d->getMemHandle(name);
 }
 
-void cDSPInterface::deleteMemHandle(cDspMeasData *memhandle)
-{
-    Q_D(cDSPInterface);
-    d->deleteMemHandle(memhandle);
-}
-
 quint32 cDSPInterface::activateInterface()
 {
     Q_D(cDSPInterface);
