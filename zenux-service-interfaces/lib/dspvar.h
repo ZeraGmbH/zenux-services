@@ -22,6 +22,7 @@ public:
     int size() const { return m_dspVarData.size(); }
     int valueTypeMask() const { return m_valueTypeMask; }
     DspDataType datatype() const { return m_dataType; }
+    DspSegmentType getSegmentType() const { return m_dspSegmentType; }
     void setValue(int idx, float value);
     // Nightmare: This must go!!!
     float* data() { return m_dspVarData.data();}
