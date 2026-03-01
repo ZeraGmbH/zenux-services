@@ -238,16 +238,14 @@ enum SCPICmdType  {
     scpiGetDspStatus,
     scpiGetDeviceStatus,
 
-    // die routinen für das measure modell
+    // die routinen für das memory modell
+    scpiDspMemoryRead,
+    scpiDspMemoryWrite,
     scpiUnloadCmdListAllClients,
     scpiLoadCmdList,
     scpiVarListSet,
     scpiCmdIntListSet,
     scpiCmdCycListSet,
-
-    // die routinen für das memory modell
-    scpiDspMemoryRead,
-    scpiDspMemoryWrite,
 
     // common
     scpiInterfaceRead
