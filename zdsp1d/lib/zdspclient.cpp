@@ -249,9 +249,9 @@ QString ZdspClient::handleAndRemoveEntityId(const QString &scpiParam)
     if (!scpiParam.startsWith(entityIdPrefixReceived))
         return scpiParam;
 
-    int firstSemicolonPos = scpiParam.indexOf(";", entityIdPrefixReceived.count());
+    int firstSemicolonPos = scpiParam.indexOf(";", entityIdPrefixReceived.size());
     QString fullPrefix = scpiParam.left(firstSemicolonPos);
-    QString entityIdStr = fullPrefix.right(fullPrefix.count() - entityIdPrefixReceived.count());
+    QString entityIdStr = fullPrefix.right(fullPrefix.size() - entityIdPrefixReceived.size());
     int entityId = entityIdStr.toInt();
     setEntityId(entityId);
 
