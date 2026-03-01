@@ -9,10 +9,10 @@
 class DspVarGroupClientInterface
 {
 public:
-    DspVarGroupClientInterface(const QString &name);
+    DspVarGroupClientInterface(const QString &groupName);
     ~DspVarGroupClientInterface();
 
-    DspVarClientInterface *addDspVar(const QString &name, int size, int valueTypeMask,
+    DspVarClientInterface *addDspVar(const QString &varName, int size, int valueTypeMask,
                        DspDataType dataType = dspDataTypeFloat, DspSegmentType dspSegmentType = moduleLocalSegment);
 
     // Nightmare candidate: Make it go!!!
@@ -34,7 +34,7 @@ public:
 private:
     DspVarClientInterface* findVar(const QString &varName);
 
-    QString m_handleName;
+    QString m_groupName;
     QList<DspVarClientInterface*> DspVarList;
     QVector<float> vector;
 

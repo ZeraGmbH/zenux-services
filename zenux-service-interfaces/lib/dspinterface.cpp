@@ -62,10 +62,10 @@ void cDSPInterface::addCycListItems(const QStringList &cmds)
     d->addCycListItems(cmds);
 }
 
-DspVarGroupClientInterface* cDSPInterface::getMemHandle(QString name)
+DspVarGroupClientInterface* cDSPInterface::createVariableGroup(const QString &varGroupName)
 {
     Q_D(cDSPInterface);
-    return d->getMemHandle(name);
+    return d->createVariableGroup(varGroupName);
 }
 
 quint32 cDSPInterface::activateInterface()

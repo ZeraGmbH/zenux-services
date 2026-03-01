@@ -48,9 +48,9 @@ void test_regression_dsp_var::cleanup()
 
 void test_regression_dsp_var::createResultVariables()
 {
-    DspVarGroupClientInterface* dspData = m_dspIFace->getMemHandle("createResultVariables");
-    dspData->addDspVar("Result1", 1, DSPDATA::vDspResult, dspDataTypeFloat, moduleLocalSegment);
-    dspData->addDspVar("Result2", 3, DSPDATA::vDspResult, dspDataTypeInt, moduleLocalSegment);
+    DspVarGroupClientInterface* dspVarGroup = m_dspIFace->createVariableGroup("createResultVariables");
+    dspVarGroup->addDspVar("Result1", 1, DSPDATA::vDspResult, dspDataTypeFloat, moduleLocalSegment);
+    dspVarGroup->addDspVar("Result2", 3, DSPDATA::vDspResult, dspDataTypeInt, moduleLocalSegment);
 
     QSignalSpy spyCreate(m_dspIFace.get(), &AbstractServerInterface::serverAnswer);
     m_dspIFace->varList2Dsp();
@@ -59,7 +59,7 @@ void test_regression_dsp_var::createResultVariables()
     QCOMPARE(spyCreate[0][2], ZSCPI::scpiAnswer[ZSCPI::ack]);
 
     QSignalSpy spyRead(m_dspIFace.get(), &AbstractServerInterface::serverAnswer);
-    m_dspIFace->dspMemoryRead(dspData);
+    m_dspIFace->dspMemoryRead(dspVarGroup);
     TimeMachineObject::feedEventLoop();
     QCOMPARE(spyRead.count(), 1);
     QCOMPARE(spyRead[0][1], ZSCPI::ack);
@@ -69,9 +69,9 @@ void test_regression_dsp_var::createResultVariables()
 
 void test_regression_dsp_var::createTempVariables()
 {
-    DspVarGroupClientInterface* dspData = m_dspIFace->getMemHandle("createTempVariables");
-    dspData->addDspVar("Temp1", 1, DSPDATA::vDspTemp, dspDataTypeFloat, moduleLocalSegment);
-    dspData->addDspVar("Temp2", 3, DSPDATA::vDspTemp, dspDataTypeInt, moduleLocalSegment);
+    DspVarGroupClientInterface* dspVarGroup = m_dspIFace->createVariableGroup("createTempVariables");
+    dspVarGroup->addDspVar("Temp1", 1, DSPDATA::vDspTemp, dspDataTypeFloat, moduleLocalSegment);
+    dspVarGroup->addDspVar("Temp2", 3, DSPDATA::vDspTemp, dspDataTypeInt, moduleLocalSegment);
 
     QSignalSpy spyCreate(m_dspIFace.get(), &AbstractServerInterface::serverAnswer);
     m_dspIFace->varList2Dsp();
@@ -80,7 +80,7 @@ void test_regression_dsp_var::createTempVariables()
     QCOMPARE(spyCreate[0][2], ZSCPI::scpiAnswer[ZSCPI::ack]);
 
     QSignalSpy spyRead(m_dspIFace.get(), &AbstractServerInterface::serverAnswer);
-    m_dspIFace->dspMemoryRead(dspData);
+    m_dspIFace->dspMemoryRead(dspVarGroup);
     TimeMachineObject::feedEventLoop();
     QCOMPARE(spyRead.count(), 1);
     QCOMPARE(spyRead[0][1], ZSCPI::ack);
@@ -90,9 +90,9 @@ void test_regression_dsp_var::createTempVariables()
 
 void test_regression_dsp_var::createInternalVariableNotAvailable()
 {
-    DspVarGroupClientInterface* dspData = m_dspIFace->getMemHandle("createInternalVariableNotAvailable");
-    dspData->addDspVar("Internal1", 1, DSPDATA::vDspParam, dspDataTypeFloat, dspInternalSegment);
-    dspData->addDspVar("Internal2", 3, DSPDATA::vDspParam, dspDataTypeInt, dspInternalSegment);
+    DspVarGroupClientInterface* dspVarGroup = m_dspIFace->createVariableGroup("createInternalVariableNotAvailable");
+    dspVarGroup->addDspVar("Internal1", 1, DSPDATA::vDspParam, dspDataTypeFloat, dspInternalSegment);
+    dspVarGroup->addDspVar("Internal2", 3, DSPDATA::vDspParam, dspDataTypeInt, dspInternalSegment);
 
     QSignalSpy spy(m_dspIFace.get(), &AbstractServerInterface::serverAnswer);
     m_dspIFace->varList2Dsp();
@@ -102,7 +102,7 @@ void test_regression_dsp_var::createInternalVariableNotAvailable()
     QCOMPARE(spy[0][2], ZSCPI::scpiAnswer[ZSCPI::errexec]);
 
     QSignalSpy spyRead(m_dspIFace.get(), &AbstractServerInterface::serverAnswer);
-    m_dspIFace->dspMemoryRead(dspData);
+    m_dspIFace->dspMemoryRead(dspVarGroup);
     TimeMachineObject::feedEventLoop();
     QCOMPARE(spyRead.count(), 1);
     QCOMPARE(spyRead[0][2], ZSCPI::scpiAnswer[ZSCPI::errexec]);
@@ -110,8 +110,8 @@ void test_regression_dsp_var::createInternalVariableNotAvailable()
 
 void test_regression_dsp_var::createInternalVariableWrongSize()
 {
-    DspVarGroupClientInterface* dspData = m_dspIFace->getMemHandle("createInternalVariableWrongSize");
-    dspData->addDspVar("SUBDC", 2, DSPDATA::vDspParam, dspDataTypeInt, dspInternalSegment);
+    DspVarGroupClientInterface* dspVarGroup = m_dspIFace->createVariableGroup("createInternalVariableWrongSize");
+    dspVarGroup->addDspVar("SUBDC", 2, DSPDATA::vDspParam, dspDataTypeInt, dspInternalSegment);
 
     QSignalSpy spy(m_dspIFace.get(), &AbstractServerInterface::serverAnswer);
     m_dspIFace->varList2Dsp();
@@ -123,8 +123,8 @@ void test_regression_dsp_var::createInternalVariableWrongSize()
 
 void test_regression_dsp_var::createInternalVariableWrongType()
 {
-    DspVarGroupClientInterface* dspData = m_dspIFace->getMemHandle("createInternalVariableWrongType");
-    dspData->addDspVar("SUBDC", 1, DSPDATA::vDspParam, dspDataTypeFloat, dspInternalSegment);
+    DspVarGroupClientInterface* dspVarGroup = m_dspIFace->createVariableGroup("createInternalVariableWrongType");
+    dspVarGroup->addDspVar("SUBDC", 1, DSPDATA::vDspParam, dspDataTypeFloat, dspInternalSegment);
 
     QSignalSpy spy(m_dspIFace.get(), &AbstractServerInterface::serverAnswer);
     m_dspIFace->varList2Dsp();
@@ -136,8 +136,8 @@ void test_regression_dsp_var::createInternalVariableWrongType()
 
 void test_regression_dsp_var::createInternalVariableOk()
 {
-    DspVarGroupClientInterface* dspData = m_dspIFace->getMemHandle("createInternalVariableOk");
-    dspData->addDspVar("SUBDC", 1, DSPDATA::vDspParam, dspDataTypeInt, dspInternalSegment);
+    DspVarGroupClientInterface* dspVarGroup = m_dspIFace->createVariableGroup("createInternalVariableOk");
+    dspVarGroup->addDspVar("SUBDC", 1, DSPDATA::vDspParam, dspDataTypeInt, dspInternalSegment);
 
     QSignalSpy spy(m_dspIFace.get(), &AbstractServerInterface::serverAnswer);
     m_dspIFace->varList2Dsp();
@@ -147,15 +147,15 @@ void test_regression_dsp_var::createInternalVariableOk()
     QCOMPARE(spy[0][2], ZSCPI::scpiAnswer[ZSCPI::ack]);
 
     QSignalSpy spyRead(m_dspIFace.get(), &AbstractServerInterface::serverAnswer);
-    m_dspIFace->dspMemoryRead(dspData);
+    m_dspIFace->dspMemoryRead(dspVarGroup);
     TimeMachineObject::feedEventLoop();
     QCOMPARE(spyRead.count(), 1);
     QCOMPARE(spyRead[0][1], ZSCPI::ack);
     QVERIFY(spyRead[0][2].toString().contains("SUBDC:"));
 
     QSignalSpy spyWrite(m_dspIFace.get(), &AbstractServerInterface::serverAnswer);
-    dspData->setVarData("SUBDC:1;");
-    m_dspIFace->dspMemoryWrite(dspData);
+    dspVarGroup->setVarData("SUBDC:1;");
+    m_dspIFace->dspMemoryWrite(dspVarGroup);
     TimeMachineObject::feedEventLoop();
     QCOMPARE(spyWrite.count(), 1);
     QCOMPARE(spyWrite[0][2], ZSCPI::scpiAnswer[ZSCPI::ack]);
@@ -163,9 +163,9 @@ void test_regression_dsp_var::createInternalVariableOk()
 
 void test_regression_dsp_var::createInternalVariablesOk()
 {
-    DspVarGroupClientInterface* dspData = m_dspIFace->getMemHandle("createInternalVariableOk");
-    dspData->addDspVar("SUBDC", 1, DSPDATA::vDspParam, dspDataTypeInt, dspInternalSegment);
-    dspData->addDspVar("GAINCORRECTION", 32, DSPDATA::vDspParam, dspDataTypeFloat, dspInternalSegment);
+    DspVarGroupClientInterface* dspVarGroup = m_dspIFace->createVariableGroup("createInternalVariableOk");
+    dspVarGroup->addDspVar("SUBDC", 1, DSPDATA::vDspParam, dspDataTypeInt, dspInternalSegment);
+    dspVarGroup->addDspVar("GAINCORRECTION", 32, DSPDATA::vDspParam, dspDataTypeFloat, dspInternalSegment);
 
     QSignalSpy spy(m_dspIFace.get(), &AbstractServerInterface::serverAnswer);
     m_dspIFace->varList2Dsp();
@@ -175,7 +175,7 @@ void test_regression_dsp_var::createInternalVariablesOk()
     QCOMPARE(spy[0][2], ZSCPI::scpiAnswer[ZSCPI::ack]);
 
     QSignalSpy spyRead(m_dspIFace.get(), &AbstractServerInterface::serverAnswer);
-    m_dspIFace->dspMemoryRead(dspData);
+    m_dspIFace->dspMemoryRead(dspVarGroup);
     TimeMachineObject::feedEventLoop();
     QCOMPARE(spyRead.count(), 1);
     QCOMPARE(spyRead[0][1], ZSCPI::ack);
@@ -183,8 +183,8 @@ void test_regression_dsp_var::createInternalVariablesOk()
     QVERIFY(spyRead[0][2].toString().contains("GAINCORRECTION:"));
 
     QSignalSpy spyWrite(m_dspIFace.get(), &AbstractServerInterface::serverAnswer);
-    dspData->setVarData("SUBDC:1;");
-    m_dspIFace->dspMemoryWrite(dspData);
+    dspVarGroup->setVarData("SUBDC:1;");
+    m_dspIFace->dspMemoryWrite(dspVarGroup);
     TimeMachineObject::feedEventLoop();
     QCOMPARE(spyWrite.count(), 1);
     QCOMPARE(spyWrite[0][2], ZSCPI::scpiAnswer[ZSCPI::ack]);
@@ -192,9 +192,9 @@ void test_regression_dsp_var::createInternalVariablesOk()
 
 void test_regression_dsp_var::createInternalVariablesSecondNotOk()
 {
-    DspVarGroupClientInterface* dspData = m_dspIFace->getMemHandle("createInternalVariableOk");
-    dspData->addDspVar("SUBDC", 1, DSPDATA::vDspParam, dspDataTypeInt, dspInternalSegment);
-    dspData->addDspVar("GAINCORRECTION", 42, DSPDATA::vDspParam, dspDataTypeFloat, dspInternalSegment);
+    DspVarGroupClientInterface* dspVarGroup = m_dspIFace->createVariableGroup("createInternalVariableOk");
+    dspVarGroup->addDspVar("SUBDC", 1, DSPDATA::vDspParam, dspDataTypeInt, dspInternalSegment);
+    dspVarGroup->addDspVar("GAINCORRECTION", 42, DSPDATA::vDspParam, dspDataTypeFloat, dspInternalSegment);
 
     QSignalSpy spy(m_dspIFace.get(), &AbstractServerInterface::serverAnswer);
     m_dspIFace->varList2Dsp();
@@ -206,9 +206,9 @@ void test_regression_dsp_var::createInternalVariablesSecondNotOk()
 
 void test_regression_dsp_var::createGlobalVariableOk()
 {
-    DspVarGroupClientInterface* dspData = m_dspIFace->getMemHandle("createGlobalVariableOk");
-    dspData->addDspVar("TempGlobal1", 1, DSPDATA::vDspResult, dspDataTypeInt, moduleGlobalSegment);
-    dspData->addDspVar("TempGlobal2", 1, DSPDATA::vDspResult, dspDataTypeFloat, moduleGlobalSegment);
+    DspVarGroupClientInterface* dspVarGroup = m_dspIFace->createVariableGroup("createGlobalVariableOk");
+    dspVarGroup->addDspVar("TempGlobal1", 1, DSPDATA::vDspResult, dspDataTypeInt, moduleGlobalSegment);
+    dspVarGroup->addDspVar("TempGlobal2", 1, DSPDATA::vDspResult, dspDataTypeFloat, moduleGlobalSegment);
 
     QSignalSpy spyCreate(m_dspIFace.get(), &AbstractServerInterface::serverAnswer);
     m_dspIFace->varList2Dsp();
@@ -218,7 +218,7 @@ void test_regression_dsp_var::createGlobalVariableOk()
     QCOMPARE(spyCreate[0][2], ZSCPI::scpiAnswer[ZSCPI::ack]);
 
     QSignalSpy spyRead(m_dspIFace.get(), &AbstractServerInterface::serverAnswer);
-    m_dspIFace->dspMemoryRead(dspData);
+    m_dspIFace->dspMemoryRead(dspVarGroup);
     TimeMachineObject::feedEventLoop();
     QCOMPARE(spyRead.count(), 1);
     QCOMPARE(spyRead[0][1], ZSCPI::ack);
@@ -226,8 +226,8 @@ void test_regression_dsp_var::createGlobalVariableOk()
     QVERIFY(spyRead[0][2].toString().contains("TEMPGLOBAL2:"));
 
     QSignalSpy spyWrite(m_dspIFace.get(), &AbstractServerInterface::serverAnswer);
-    dspData->setVarData("SUBDC:1;");
-    m_dspIFace->dspMemoryWrite(dspData);
+    dspVarGroup->setVarData("SUBDC:1;");
+    m_dspIFace->dspMemoryWrite(dspVarGroup);
     TimeMachineObject::feedEventLoop();
     QCOMPARE(spyWrite.count(), 1);
     QCOMPARE(spyWrite[0][2], ZSCPI::scpiAnswer[ZSCPI::ack]);
@@ -239,10 +239,10 @@ static constexpr int varSize = 4;
 
 void test_regression_dsp_var::readVariablesAndListenDeviceNode()
 {
-    DspVarGroupClientInterface* dspData = m_dspIFace->getMemHandle("readVariablesAndListenDeviceNode");
-    dspData->addDspVar("ONE_FLOAT", 1, DSPDATA::vDspResult, dspDataTypeFloat, moduleLocalSegment);
-    dspData->addDspVar("TWO_FLOAT", 2, DSPDATA::vDspResult, dspDataTypeFloat, moduleLocalSegment);
-    dspData->addDspVar("THREE_INT", 3, DSPDATA::vDspResult, dspDataTypeInt, moduleLocalSegment);
+    DspVarGroupClientInterface* dspVarGroup = m_dspIFace->createVariableGroup("readVariablesAndListenDeviceNode");
+    dspVarGroup->addDspVar("ONE_FLOAT", 1, DSPDATA::vDspResult, dspDataTypeFloat, moduleLocalSegment);
+    dspVarGroup->addDspVar("TWO_FLOAT", 2, DSPDATA::vDspResult, dspDataTypeFloat, moduleLocalSegment);
+    dspVarGroup->addDspVar("THREE_INT", 3, DSPDATA::vDspResult, dspDataTypeInt, moduleLocalSegment);
 
     // In modules we have claimUSERMem() - we had this here during investigation
     // It is for resman's sake - here it changes nothing
@@ -256,7 +256,7 @@ void test_regression_dsp_var::readVariablesAndListenDeviceNode()
 
     TestDeviceNodeDspPtr deviceNode = TestSingletonDeviceNodeDsp::getInstancePtrTest();
     QSignalSpy spyRead(deviceNode.get(), &TestDeviceNodeDsp::sigIoOperation);
-    m_dspIFace->dspMemoryRead(dspData);
+    m_dspIFace->dspMemoryRead(dspVarGroup);
     TimeMachineObject::feedEventLoop();
 
     QCOMPARE(spyRead.count(), 3*2);
@@ -282,9 +282,9 @@ void test_regression_dsp_var::readVariablesAndListenDeviceNode()
 
 void test_regression_dsp_var::writeFloatVariablesAndListenDeviceNode()
 {
-    DspVarGroupClientInterface* dspData = m_dspIFace->getMemHandle("readVariablesAndListenDeviceNode");
-    dspData->addDspVar("ONE_FLOAT", 1, DSPDATA::vDspResult, dspDataTypeFloat, moduleLocalSegment);
-    dspData->addDspVar("TWO_FLOAT", 2, DSPDATA::vDspResult, dspDataTypeFloat, moduleLocalSegment);
+    DspVarGroupClientInterface* dspVarGroup = m_dspIFace->createVariableGroup("readVariablesAndListenDeviceNode");
+    dspVarGroup->addDspVar("ONE_FLOAT", 1, DSPDATA::vDspResult, dspDataTypeFloat, moduleLocalSegment);
+    dspVarGroup->addDspVar("TWO_FLOAT", 2, DSPDATA::vDspResult, dspDataTypeFloat, moduleLocalSegment);
 
     m_dspIFace->varList2Dsp();
     TimeMachineObject::feedEventLoop();
@@ -293,12 +293,12 @@ void test_regression_dsp_var::writeFloatVariablesAndListenDeviceNode()
     m_dspIFace->activateInterface();
     TimeMachineObject::feedEventLoop();
 
-    dspData->setVarData("ONE_FLOAT:42.1;");
-    dspData->setVarData("TWO_FLOAT:37.2,38.3;");
+    dspVarGroup->setVarData("ONE_FLOAT:42.1;");
+    dspVarGroup->setVarData("TWO_FLOAT:37.2,38.3;");
 
     TestDeviceNodeDspPtr deviceNode = TestSingletonDeviceNodeDsp::getInstancePtrTest();
     QSignalSpy spyWrite(deviceNode.get(), &TestDeviceNodeDsp::sigIoOperation);
-    m_dspIFace->dspMemoryWrite(dspData);
+    m_dspIFace->dspMemoryWrite(dspVarGroup);
     TimeMachineObject::feedEventLoop();
 
     QCOMPARE(spyWrite.count(), 2);
@@ -318,9 +318,9 @@ void test_regression_dsp_var::writeFloatVariablesAndListenDeviceNode()
 
 void test_regression_dsp_var::writeIntVariablesAndListenDeviceNode()
 {
-    DspVarGroupClientInterface* dspData = m_dspIFace->getMemHandle("readVariablesAndListenDeviceNode");
-    dspData->addDspVar("ONE_INT", 1, DSPDATA::vDspResult, dspDataTypeInt, moduleLocalSegment);
-    dspData->addDspVar("TWO_INT", 2, DSPDATA::vDspResult, dspDataTypeInt, moduleLocalSegment);
+    DspVarGroupClientInterface* dspVarGroup = m_dspIFace->createVariableGroup("readVariablesAndListenDeviceNode");
+    dspVarGroup->addDspVar("ONE_INT", 1, DSPDATA::vDspResult, dspDataTypeInt, moduleLocalSegment);
+    dspVarGroup->addDspVar("TWO_INT", 2, DSPDATA::vDspResult, dspDataTypeInt, moduleLocalSegment);
 
     m_dspIFace->varList2Dsp();
     TimeMachineObject::feedEventLoop();
@@ -329,12 +329,12 @@ void test_regression_dsp_var::writeIntVariablesAndListenDeviceNode()
     m_dspIFace->activateInterface();
     TimeMachineObject::feedEventLoop();
 
-    dspData->setVarData("ONE_INT:666;");
-    dspData->setVarData("TWO_INT:37,999;");
+    dspVarGroup->setVarData("ONE_INT:666;");
+    dspVarGroup->setVarData("TWO_INT:37,999;");
 
     TestDeviceNodeDspPtr deviceNode = TestSingletonDeviceNodeDsp::getInstancePtrTest();
     QSignalSpy spyWrite(deviceNode.get(), &TestDeviceNodeDsp::sigIoOperation);
-    m_dspIFace->dspMemoryWrite(dspData);
+    m_dspIFace->dspMemoryWrite(dspVarGroup);
     TimeMachineObject::feedEventLoop();
 
     QCOMPARE(spyWrite.count(), 2);
@@ -354,11 +354,11 @@ void test_regression_dsp_var::writeIntVariablesAndListenDeviceNode()
 
 void test_regression_dsp_var::writeMixVariablesAndListenDeviceNode()
 {
-    DspVarGroupClientInterface* dspData = m_dspIFace->getMemHandle("readVariablesAndListenDeviceNode");
-    dspData->addDspVar("ONE_FLOAT", 1, DSPDATA::vDspResult, dspDataTypeFloat, moduleLocalSegment);
-    dspData->addDspVar("ONE_INT", 1, DSPDATA::vDspResult, dspDataTypeInt, moduleLocalSegment);
-    dspData->addDspVar("TWO_FLOAT", 2, DSPDATA::vDspResult, dspDataTypeFloat, moduleLocalSegment);
-    dspData->addDspVar("TWO_INT", 2, DSPDATA::vDspResult, dspDataTypeInt, moduleLocalSegment);
+    DspVarGroupClientInterface* dspVarGroup = m_dspIFace->createVariableGroup("readVariablesAndListenDeviceNode");
+    dspVarGroup->addDspVar("ONE_FLOAT", 1, DSPDATA::vDspResult, dspDataTypeFloat, moduleLocalSegment);
+    dspVarGroup->addDspVar("ONE_INT", 1, DSPDATA::vDspResult, dspDataTypeInt, moduleLocalSegment);
+    dspVarGroup->addDspVar("TWO_FLOAT", 2, DSPDATA::vDspResult, dspDataTypeFloat, moduleLocalSegment);
+    dspVarGroup->addDspVar("TWO_INT", 2, DSPDATA::vDspResult, dspDataTypeInt, moduleLocalSegment);
 
     m_dspIFace->varList2Dsp();
     TimeMachineObject::feedEventLoop();
@@ -367,14 +367,14 @@ void test_regression_dsp_var::writeMixVariablesAndListenDeviceNode()
     m_dspIFace->activateInterface();
     TimeMachineObject::feedEventLoop();
 
-    dspData->setVarData("ONE_FLOAT:42.1;");
-    dspData->setVarData("ONE_INT:666;");
-    dspData->setVarData("TWO_FLOAT:37.2,38.3;");
-    dspData->setVarData("TWO_INT:37,999;");
+    dspVarGroup->setVarData("ONE_FLOAT:42.1;");
+    dspVarGroup->setVarData("ONE_INT:666;");
+    dspVarGroup->setVarData("TWO_FLOAT:37.2,38.3;");
+    dspVarGroup->setVarData("TWO_INT:37,999;");
 
     TestDeviceNodeDspPtr deviceNode = TestSingletonDeviceNodeDsp::getInstancePtrTest();
     QSignalSpy spyWrite(deviceNode.get(), &TestDeviceNodeDsp::sigIoOperation);
-    m_dspIFace->dspMemoryWrite(dspData);
+    m_dspIFace->dspMemoryWrite(dspVarGroup);
     TimeMachineObject::feedEventLoop();
 
     QCOMPARE(spyWrite.count(), 4);
@@ -407,9 +407,9 @@ void test_regression_dsp_var::writeMixVariablesAndListenDeviceNode()
 void test_regression_dsp_var::multipleClientsCreateResultVars()
 {
     // create vars client1
-    DspVarGroupClientInterface* dspData1 = m_dspIFace->getMemHandle("createResultVariables");
-    dspData1->addDspVar("CLIENT1_VAR1", 1, DSPDATA::vDspResult, dspDataTypeFloat, moduleLocalSegment);
-    dspData1->addDspVar("CLIENT1_VAR2", 2, DSPDATA::vDspResult, dspDataTypeFloat, moduleLocalSegment);
+    DspVarGroupClientInterface* dspVarGroup1 = m_dspIFace->createVariableGroup("createResultVariables");
+    dspVarGroup1->addDspVar("CLIENT1_VAR1", 1, DSPDATA::vDspResult, dspDataTypeFloat, moduleLocalSegment);
+    dspVarGroup1->addDspVar("CLIENT1_VAR2", 2, DSPDATA::vDspResult, dspDataTypeFloat, moduleLocalSegment);
     m_dspIFace->varList2Dsp();
     TimeMachineObject::feedEventLoop();
 
@@ -421,35 +421,35 @@ void test_regression_dsp_var::multipleClientsCreateResultVars()
     TimeMachineObject::feedEventLoop();
 
     // create vars client2
-    DspVarGroupClientInterface* dspData2 = dspIFace2->getMemHandle("createResultVariables");
-    dspData2->addDspVar("CLIENT2_VAR1", 3, DSPDATA::vDspResult, dspDataTypeFloat, moduleLocalSegment);
-    dspData2->addDspVar("CLIENT2_VAR2", 4, DSPDATA::vDspResult, dspDataTypeFloat, moduleLocalSegment);
+    DspVarGroupClientInterface* dspVarGroup2 = dspIFace2->createVariableGroup("createResultVariables");
+    dspVarGroup2->addDspVar("CLIENT2_VAR1", 3, DSPDATA::vDspResult, dspDataTypeFloat, moduleLocalSegment);
+    dspVarGroup2->addDspVar("CLIENT2_VAR2", 4, DSPDATA::vDspResult, dspDataTypeFloat, moduleLocalSegment);
     dspIFace2->varList2Dsp();
     TimeMachineObject::feedEventLoop();
 
     // client1 read client1 vars
     QSignalSpy spyRead1(m_dspIFace.get(), &AbstractServerInterface::serverAnswer);
-    m_dspIFace->dspMemoryRead(dspData1);
+    m_dspIFace->dspMemoryRead(dspVarGroup1);
     TimeMachineObject::feedEventLoop();
     QCOMPARE(spyRead1[0][1], ZSCPI::ack);
     QVERIFY(spyRead1[0][2].toString().contains("CLIENT1_VAR1:"));
     QVERIFY(spyRead1[0][2].toString().contains("CLIENT1_VAR2:"));
     spyRead1.clear();
     // client1 read client2 vars
-    m_dspIFace->dspMemoryRead(dspData2);
+    m_dspIFace->dspMemoryRead(dspVarGroup2);
     TimeMachineObject::feedEventLoop();
     QCOMPARE(spyRead1[0][2].toString(), "errexec");
 
     // client2 read client2 vars
     QSignalSpy spyRead2(dspIFace2.get(), &AbstractServerInterface::serverAnswer);
-    dspIFace2->dspMemoryRead(dspData2);
+    dspIFace2->dspMemoryRead(dspVarGroup2);
     TimeMachineObject::feedEventLoop();
     QCOMPARE(spyRead2[0][1], ZSCPI::ack);
     QVERIFY(spyRead2[0][2].toString().contains("CLIENT2_VAR1:"));
     QVERIFY(spyRead2[0][2].toString().contains("CLIENT2_VAR2:"));
     spyRead2.clear();
     // client2 read client1 vars
-    dspIFace2->dspMemoryRead(dspData1);
+    dspIFace2->dspMemoryRead(dspVarGroup1);
     TimeMachineObject::feedEventLoop();
     QCOMPARE(spyRead2[0][2].toString(), "errexec");
 }
@@ -553,24 +553,24 @@ void test_regression_dsp_var::serverReadDspChannelDataVariableAndListenDeviceNod
 
 void test_regression_dsp_var::dspVarMemSizeInitialHack()
 {
-    DspVarGroupClientInterface* dspData = m_dspIFace->getMemHandle("dspVarMemSizeInitialHack");
-    dspData->addDspVar("ONE_FLOAT", 1, DSPDATA::vDspResult, dspDataTypeFloat, moduleLocalSegment);
-    dspData->addDspVar("ONE_INT", 1, DSPDATA::vDspResult, dspDataTypeInt, moduleLocalSegment);
-    dspData->addDspVar("TWO_FLOAT", 2, DSPDATA::vDspResult, dspDataTypeFloat, moduleLocalSegment);
-    dspData->addDspVar("TWO_INT", 2, DSPDATA::vDspResult, dspDataTypeInt, moduleLocalSegment);
+    DspVarGroupClientInterface* dspVarGroup = m_dspIFace->createVariableGroup("dspVarMemSizeInitialHack");
+    dspVarGroup->addDspVar("ONE_FLOAT", 1, DSPDATA::vDspResult, dspDataTypeFloat, moduleLocalSegment);
+    dspVarGroup->addDspVar("ONE_INT", 1, DSPDATA::vDspResult, dspDataTypeInt, moduleLocalSegment);
+    dspVarGroup->addDspVar("TWO_FLOAT", 2, DSPDATA::vDspResult, dspDataTypeFloat, moduleLocalSegment);
+    dspVarGroup->addDspVar("TWO_INT", 2, DSPDATA::vDspResult, dspDataTypeInt, moduleLocalSegment);
     constexpr int resultSize = 1+1+2+2;
 
-    dspData->addDspVar("Temp1", 1, DSPDATA::vDspTemp, dspDataTypeFloat, moduleLocalSegment);
-    dspData->addDspVar("Temp2", 3, DSPDATA::vDspTemp, dspDataTypeInt, moduleLocalSegment);
+    dspVarGroup->addDspVar("Temp1", 1, DSPDATA::vDspTemp, dspDataTypeFloat, moduleLocalSegment);
+    dspVarGroup->addDspVar("Temp2", 3, DSPDATA::vDspTemp, dspDataTypeInt, moduleLocalSegment);
     constexpr int tempSize = 1+3;
 
     // Internal vars are created by DSP and do not make it in server size.
     // Clients add them just to allow access by their addresses.
-    dspData->addDspVar("SUBDC", 1, DSPDATA::vDspParam, dspDataTypeInt, dspInternalSegment);
-    dspData->addDspVar("GAINCORRECTION", 32, DSPDATA::vDspParam, dspDataTypeFloat, dspInternalSegment);
+    dspVarGroup->addDspVar("SUBDC", 1, DSPDATA::vDspParam, dspDataTypeInt, dspInternalSegment);
+    dspVarGroup->addDspVar("GAINCORRECTION", 32, DSPDATA::vDspParam, dspDataTypeFloat, dspInternalSegment);
 
-    dspData->addDspVar("Param1", 2, DSPDATA::vDspParam, dspDataTypeFloat, moduleLocalSegment);
-    dspData->addDspVar("Param2", 4, DSPDATA::vDspParam, dspDataTypeInt, moduleLocalSegment);
+    dspVarGroup->addDspVar("Param1", 2, DSPDATA::vDspParam, dspDataTypeFloat, moduleLocalSegment);
+    dspVarGroup->addDspVar("Param2", 4, DSPDATA::vDspParam, dspDataTypeInt, moduleLocalSegment);
     constexpr int paramSize = 2+4;
 
     // Access client calculation directly for now
@@ -579,7 +579,7 @@ void test_regression_dsp_var::dspVarMemSizeInitialHack()
     testServerlient->setRawActualValueList(varString);
 
     int serverMemSize = testServerlient->getDataMemSize();
-    int clientMemSize = dspData->getUserMemSize();
+    int clientMemSize = dspVarGroup->getUserMemSize();
     QCOMPARE(serverMemSize, clientMemSize);
     QCOMPARE(serverMemSize, resultSize + tempSize + paramSize);
 }

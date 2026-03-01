@@ -43,7 +43,7 @@ public:
     void addCycListItem(const QString &cmd); // appends new command to cyclic list
     void addCycListItems(const QStringList &cmds); // appends new commands to cyclic list
 
-    DspVarGroupClientInterface* getMemHandle(const QString &name); // init a new memory group and return handle
+    DspVarGroupClientInterface* createVariableGroup(const QString &varGroupName);
 
     quint32 activateInterface(); // load var- and cmdlists to dsp (starts theprogram on dsp)
     quint32 deactivateAll();
@@ -68,7 +68,7 @@ public:
         PREPEND_ENTIY_ID_IF_SET
     };
     QString varList2String(VarListPrependOptions prependOption) const;
-    DspVarGroupClientInterface* findMemHandle(const QString &name) const;
+    DspVarGroupClientInterface* findVariableGroup(const QString &name) const;
 protected slots:
     void receiveAnswer(std::shared_ptr<ProtobufMessage::NetMessage> message) override;
     void receiveError(QAbstractSocket::SocketError errorCode) override;

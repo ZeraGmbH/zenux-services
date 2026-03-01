@@ -4,8 +4,8 @@
 
 int DspVarGroupClientInterface::m_instanceCount = 0;
 
-DspVarGroupClientInterface::DspVarGroupClientInterface(const QString &name) :
-    m_handleName(name)
+DspVarGroupClientInterface::DspVarGroupClientInterface(const QString &groupName) :
+    m_groupName(groupName)
 {
     m_instanceCount++;
 }
@@ -52,17 +52,17 @@ void DspVarGroupClientInterface::setVarData(QString datalist)
     }
 }
 
-DspVarClientInterface *DspVarGroupClientInterface::addDspVar(const QString &name, int size, int valueTypeMask,
-                                 DspDataType dataType, DspSegmentType dspSegmentType)
+DspVarClientInterface *DspVarGroupClientInterface::addDspVar(const QString &varName, int size, int valueTypeMask,
+                                                             DspDataType dataType, DspSegmentType dspSegmentType)
 {
-    DspVarClientInterface *var = new DspVarClientInterface(name, size, valueTypeMask, dataType, dspSegmentType);
+    DspVarClientInterface *var = new DspVarClientInterface(varName, size, valueTypeMask, dataType, dspSegmentType);
     DspVarList.append(var);
     return var;
 }
 
 QString DspVarGroupClientInterface::getName()
 {
-    return m_handleName;
+    return m_groupName;
 }
 
 quint32 DspVarGroupClientInterface::getUserMemSize()
@@ -90,7 +90,7 @@ QString DspVarGroupClientInterface::VarListLong(int section)
     for(int i=0; i<DspVarList.size(); ++i) {
         const DspVarClientInterface *pDspVar = DspVarList.at(i);
         if ((section & pDspVar->valueTypeMask()) > 0)
-            ts << QString("%1,%2,%3,%4,%5;").arg(m_handleName, pDspVar->Name()).arg(pDspVar->size()).arg(pDspVar->datatype()).arg(pDspVar->m_dspSegmentType);
+            ts << QString("%1,%2,%3,%4,%5;").arg(m_groupName, pDspVar->Name()).arg(pDspVar->size()).arg(pDspVar->datatype()).arg(pDspVar->m_dspSegmentType);
     }
     return sReturn;
 }

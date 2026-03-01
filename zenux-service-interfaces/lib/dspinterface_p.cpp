@@ -130,23 +130,23 @@ void cDSPInterfacePrivate::addIntListItem(const QString &cmd)
     m_irqCmdList.append(cmd);
 }
 
-DspVarGroupClientInterface* cDSPInterfacePrivate::getMemHandle(const QString &name)
+DspVarGroupClientInterface* cDSPInterfacePrivate::createVariableGroup(const QString &varGroupName)
 {
-    DspVarGroupClientInterface* pdmd = new DspVarGroupClientInterface(name);
+    DspVarGroupClientInterface* pdmd = new DspVarGroupClientInterface(varGroupName);
     m_DspMemoryDataList.append(pdmd);
     return pdmd;
 }
 
-DspVarGroupClientInterface *cDSPInterfacePrivate::findMemHandle(const QString &name) const
+DspVarGroupClientInterface *cDSPInterfacePrivate::findVariableGroup(const QString &name) const
 {
-    DspVarGroupClientInterface* memHandleFound = nullptr;
+    DspVarGroupClientInterface* varGroupFound = nullptr;
     for(int i=0; i<m_DspMemoryDataList.count(); ++i) {
         if(m_DspMemoryDataList[i]->getName() == name) {
-            memHandleFound = m_DspMemoryDataList[i];
+            varGroupFound = m_DspMemoryDataList[i];
             break;
         }
     }
-    return memHandleFound;
+    return varGroupFound;
 }
 
 quint32 cDSPInterfacePrivate::activateInterface()

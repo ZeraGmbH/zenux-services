@@ -27,22 +27,24 @@ public:
     void setClientSmart(Zera::ProxyClientPtr client);
     quint32 scpiCommand(const QString &scpi) override;
 
-    virtual quint32 dataAcquisition(DspVarGroupClientInterface* varGroup); // reads all vars of this memorygroup that are of type vapplication
-    virtual quint32 dspMemoryWrite(DspVarGroupClientInterface* varGroup); // writes all vars of this memorygroup with type
+    virtual quint32 dataAcquisition(DspVarGroupClientInterface* varGroup); // reads all vars of this variable group
+    virtual quint32 dspMemoryWrite(DspVarGroupClientInterface* varGroup); // writes all vars of this variable group
     virtual quint32 activateInterface(); // load var- and cmdlists to dsp (starts theprogram on dsp)
 
     quint32 setSamplingSystem(int chncount, int samp_per, int samp_mper); // nmuber of channels, samples/signalperiod, samples/measperiod
+
+    DspVarGroupClientInterface* createVariableGroup(const QString &varGroupName);
     quint32 varList2Dsp(); // send the var-list to dsp server
-    quint32 cmdList2Dsp(); // send cyclic command list to the dsp server
+
     int cmdListCount(); // returns the number of command in cyclist program list
     void addCycListItem(QString cmd); // appends new command to cyclic list
     void addCycListItems(const QStringList &cmds); // appends new commands to cyclic list
-    DspVarGroupClientInterface* getMemHandle(QString name); // init a new memory group and return handle
+    quint32 cmdList2Dsp(); // send cyclic command list to the dsp server
 
     quint32 deactivateAll();
 
-    // TODO!!! make DspDataType type go as we did on dspMemoryWrite
-    quint32 dspMemoryRead(DspVarGroupClientInterface* varGroup, DspDataType type = dspDataTypeFloat); // reads all vars of this memorygroup
+    // TODO!!! make DspDataType type go as we did on dspMemoryWrite / what is the difference to dataAcquisition??
+    quint32 dspMemoryRead(DspVarGroupClientInterface* varGroup, DspDataType type = dspDataTypeFloat); // reads all vars of this variable group
     quint32 readDeviceVersion();
     quint32 readServerVersion();
 
