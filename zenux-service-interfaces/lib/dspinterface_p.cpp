@@ -67,7 +67,7 @@ QString cDSPInterfacePrivate::varList2String(VarListPrependOptions prependOption
 quint32 cDSPInterfacePrivate::varList2Dsp() // the complete list has several partial lists
 {
     QString varList = varList2String(PREPEND_ENTIY_ID_IF_SET);
-    quint32 msgnr = sendCommand("MEAS:LIST:RAVL", varList); // long: MEASURE:LIST:RAVLIST
+    quint32 msgnr = sendCommand("MEAS:LIST:VARL", varList); // long: MEASURE:LIST:VARLIST
     m_MsgNrCmdList[msgnr] = varlist2dsp;
     return msgnr;
 }

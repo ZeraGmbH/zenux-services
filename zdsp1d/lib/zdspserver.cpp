@@ -241,7 +241,7 @@ enum SCPICmdType  {
     // die routinen für das measure modell
     scpiUnloadCmdListAllClients,
     scpiLoadCmdList,
-    scpiRavListSet,
+    scpiVarListSet,
     scpiCmdIntListSet,
     scpiCmdCycListSet,
 
@@ -267,7 +267,7 @@ void ZDspServer::initSCPIConnection()
     addDelegate("MEMORY", "READ", SCPI::isCmdwP, m_scpiInterface, scpiDspMemoryRead);
     addDelegate("MEMORY", "WRITE", SCPI::isCmdwP, m_scpiInterface, scpiDspMemoryWrite);
 
-    addDelegate("MEASURE:LIST", "RAVLIST", SCPI::isCmdwP, m_scpiInterface, scpiRavListSet);
+    addDelegate("MEASURE:LIST", "VARLIST", SCPI::isCmdwP, m_scpiInterface, scpiVarListSet);
     addDelegate("MEASURE:LIST", "INTLIST", SCPI::isCmdwP, m_scpiInterface, scpiCmdIntListSet);
     addDelegate("MEASURE:LIST", "CYCLIST", SCPI::isCmdwP, m_scpiInterface, scpiCmdCycListSet);
     addDelegate("MEASURE:LIST", "SET", SCPI::isCmdwP, m_scpiInterface, scpiLoadCmdList);
@@ -321,7 +321,7 @@ void ZDspServer::executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd)
         else
             protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::errexec];
         break;
-    case scpiRavListSet:
+    case scpiVarListSet:
         if(client->setRawActualValueList(cmd.getParam()))
             protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::ack];
         else

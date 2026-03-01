@@ -29,7 +29,7 @@
   </MEMORY>
   <MEASURE Type="Model,Node">
    <LIST Type="Node">
-    <RAVLIST ScpiPath="MEASURE:LIST:RAVLIST" Type="Command+Par"/>
+    <VARLIST ScpiPath="MEASURE:LIST:VARLIST" Type="Command+Par"/>
     <CYCLIST ScpiPath="MEASURE:LIST:CYCLIST" Type="Command+Par"/>
     <INTLIST ScpiPath="MEASURE:LIST:INTLIST" Type="Command+Par"/>
     <SET ScpiPath="MEASURE:LIST:SET" Type="Command+Par"/>
