@@ -28,9 +28,8 @@ private slots:
     void mmodeCat();
     void invalidMode();
     void twiceSameMode();
-private:
-    QJsonObject loadJson(QString fileName);
 
+private:
     std::unique_ptr<TestServerForSenseInterfaceCom5003> m_testServer;
     std::unique_ptr<ResmanRunFacade> m_resmanServer;
     Zera::ProxyClientPtr m_proxyClient;

@@ -56,7 +56,6 @@ private slots:
     void channelAliasHfMode();
 private:
     QByteArray genJsonConstantValuesAllRangesForAllClamps(QString channelName, QString channelNameAdRemoveClamps);
-    QJsonObject loadJson(QString fileName);
 
     std::unique_ptr<TestServerForSenseInterfaceMt310s2> m_testServer;
     std::unique_ptr<ResmanRunFacade> m_resmanServer;

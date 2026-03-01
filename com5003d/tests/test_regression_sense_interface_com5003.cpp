@@ -171,9 +171,3 @@ void test_regression_sense_interface_com5003::twiceSameMode()
     answer = ScpiSingleTransactionBlocked::cmd("SENS:MMODE", "AC");
     QCOMPARE(answer, ZSCPI::scpiAnswer[ZSCPI::ack]);
 }
-
-QJsonObject test_regression_sense_interface_com5003::loadJson(QString fileName)
-{
-    QJsonDocument doc = QJsonDocument::fromJson(TestLogHelpers::loadFile(fileName));
-    return doc.object();
-}

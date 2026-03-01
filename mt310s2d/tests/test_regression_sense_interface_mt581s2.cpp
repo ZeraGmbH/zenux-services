@@ -9,6 +9,7 @@
 #include <timemachineobject.h>
 #include <mocktcpnetworkfactory.h>
 #include <testloghelpers.h>
+#include <zera-jsonfileloader.h>
 #include <QFile>
 #include <QRegularExpression>
 #include <QJsonValue>
@@ -185,7 +186,7 @@ void test_regression_sense_interface_mt581s2::clampIdsNamesGenJson()
 
 void test_regression_sense_interface_mt581s2::clampIdsNamesCheck()
 {
-    QJsonObject json = loadJson(":/clamp-id-names.json");
+    QJsonObject json = cJsonFileLoader::loadJsonFile(":/clamp-id-names.json");
     QVERIFY(!json.isEmpty());
     int countClamps = cClamp::anzCL-1; // anzCL lies!!!
     QCOMPARE(json.count(), countClamps);
@@ -386,12 +387,4 @@ QByteArray test_regression_sense_interface_mt581s2::genJsonConstantValuesAllRang
     }
     QJsonDocument doc(jsonAll);
     return doc.toJson(QJsonDocument::Indented);
-}
-
-QJsonObject test_regression_sense_interface_mt581s2::loadJson(QString fileName)
-{
-    QFile referencFile(fileName);
-    referencFile.open(QFile::ReadOnly);
-    QJsonDocument doc = QJsonDocument::fromJson(referencFile.readAll());
-    return doc.object();
 }
