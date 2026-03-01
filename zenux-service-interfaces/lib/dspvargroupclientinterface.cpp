@@ -52,10 +52,10 @@ void DspVarGroupClientInterface::setVarData(QString datalist)
     }
 }
 
-DspVarClientInterface *DspVarGroupClientInterface::addDspVar(const QString &varName, int size, int valueTypeMask,
+DspVarClientInterface *DspVarGroupClientInterface::addDspVar(const QString &varName, int size,
                                                              DspDataType dataType, DspSegmentType dspSegmentType)
 {
-    DspVarClientInterface *var = new DspVarClientInterface(varName, size, valueTypeMask, dataType, dspSegmentType);
+    DspVarClientInterface *var = new DspVarClientInterface(varName, size, dataType, dspSegmentType);
     DspVarList.append(var);
     return var;
 }
@@ -83,26 +83,24 @@ quint32 DspVarGroupClientInterface::getUserMemSizeGlobal()
     return size;
 }
 
-QString DspVarGroupClientInterface::VarListLong(int section)
+QString DspVarGroupClientInterface::VarListLong()
 {
     QString sReturn;
     QTextStream ts(&sReturn, QIODevice::WriteOnly);
     for(int i=0; i<DspVarList.size(); ++i) {
         const DspVarClientInterface *pDspVar = DspVarList.at(i);
-        if ((section & pDspVar->valueTypeMask()) > 0)
-            ts << QString("%1,%2,%3,%4,%5;").arg(m_groupName, pDspVar->Name()).arg(pDspVar->size()).arg(pDspVar->datatype()).arg(pDspVar->m_dspSegmentType);
+        ts << QString("%1,%2,%3,%4,%5;").arg(m_groupName, pDspVar->Name()).arg(pDspVar->size()).arg(pDspVar->datatype()).arg(pDspVar->m_dspSegmentType);
     }
     return sReturn;
 }
 
-QString DspVarGroupClientInterface::VarListShort(int section)
+QString DspVarGroupClientInterface::VarListShort()
 {
     QString sReturn;
     QTextStream ts(&sReturn, QIODevice::WriteOnly);
     for(int i=0; i<DspVarList.size(); ++i) {
         DspVarClientInterface *pDspVar = DspVarList.at(i);
-        if ((section & pDspVar->valueTypeMask()) > 0)
-            ts << QString("%1,%2;").arg(pDspVar->Name()).arg(pDspVar->size());
+        ts << QString("%1,%2;").arg(pDspVar->Name()).arg(pDspVar->size());
     }
     return sReturn;
 }

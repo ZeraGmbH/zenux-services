@@ -43,8 +43,8 @@ public:
 
     quint32 deactivateAll();
 
-    // TODO!!! make DspDataType type go as we did on dspMemoryWrite / what is the difference to dataAcquisition??
-    quint32 dspMemoryRead(DspVarGroupClientInterface* varGroup, DspDataType type = dspDataTypeFloat); // reads all vars of this variable group
+    // TODO!!! what is the difference to dataAcquisition??
+    quint32 dspMemoryRead(DspVarGroupClientInterface* varGroup);
     quint32 readDeviceVersion();
     quint32 readServerVersion();
 

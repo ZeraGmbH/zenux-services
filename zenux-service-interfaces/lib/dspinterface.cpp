@@ -86,10 +86,10 @@ quint32 cDSPInterface::dataAcquisition(DspVarGroupClientInterface *varGroup)
     return d->dataAcquisition(varGroup);
 }
 
-quint32 cDSPInterface::dspMemoryRead(DspVarGroupClientInterface *varGroup, DspDataType type)
+quint32 cDSPInterface::dspMemoryRead(DspVarGroupClientInterface *varGroup)
 {
     Q_D(cDSPInterface);
-    return d->dspMemoryRead(varGroup, type);
+    return d->dspMemoryRead(varGroup);
 }
 
 quint32 cDSPInterface::dspMemoryWrite(DspVarGroupClientInterface *varGroup)

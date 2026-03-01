@@ -12,7 +12,7 @@ public:
     DspVarGroupClientInterface(const QString &groupName);
     ~DspVarGroupClientInterface();
 
-    DspVarClientInterface *addDspVar(const QString &varName, int size, int valueTypeMask,
+    DspVarClientInterface *addDspVar(const QString &varName, int size,
                        DspDataType dataType = dspDataTypeFloat, DspSegmentType dspSegmentType = moduleLocalSegment);
 
     // Nightmare candidate: Make it go!!!
@@ -22,8 +22,8 @@ public:
     QString getName();
     quint32 getUserMemSize();
     quint32 getUserMemSizeGlobal();
-    QString VarListLong(int section);
-    QString VarListShort(int section);
+    QString VarListLong();
+    QString VarListShort();
     QString writeCommand();
     QVector<float>& getData();
 

@@ -8,19 +8,11 @@ enum DspDataType { dspDataTypeInt, dspDataTypeFloat, dspDataTypeUnknown };
 
 enum DspSegmentType { dspInternalSegment, moduleLocalSegment, moduleGlobalSegment };
 
-namespace DSPDATA
-{
-    enum DspValueType { vDspResult = 1, vDspTemp = 2, vDspParam = 8, vDspALL = vDspResult | vDspTemp | vDspParam };
-
-    static constexpr int userCreatableTypes = vDspALL;
-}
-
 class DspVarClientInterface
 {
 public:
     const QString& Name() const { return m_sName;}
     int size() const { return m_dspVarData.size(); }
-    int valueTypeMask() const { return m_valueTypeMask; }
     DspDataType datatype() const { return m_dataType; }
     DspSegmentType getSegmentType() const { return m_dspSegmentType; }
     void setValue(int idx, float value);
@@ -30,8 +22,7 @@ public:
     static int getInstanceCount();
 private:
     friend class DspVarGroupClientInterface;
-    DspVarClientInterface(const QString &name, int size, int valueTypeMask,
-            DspDataType dataType, DspSegmentType dspSegmentType);
+    DspVarClientInterface(const QString &name, int size, DspDataType dataType, DspSegmentType dspSegmentType);
     virtual ~DspVarClientInterface();
     void setData(QVector<float> data) {
         Q_ASSERT(m_dspVarData.size() == data.size());
@@ -40,8 +31,7 @@ private:
 
     QString m_sName; // a var. has its name
     const DspSegmentType m_dspSegmentType;
-    int m_valueTypeMask; // an it can be of different type : vDspResult, vDspTemp , vDspIntVar , vDspParam
-    DspDataType m_dataType; // it can be float or int
+    DspDataType m_dataType;
     QVector<float> m_dspVarData; // we hold an array for data storage
     static int m_instanceCount;
 };

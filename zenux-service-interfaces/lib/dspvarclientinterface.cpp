@@ -2,11 +2,9 @@
 
 int DspVarClientInterface::m_instanceCount = 0;
 
-DspVarClientInterface::DspVarClientInterface(const QString &name, int size, int valueTypeMask,
-                 DspDataType dataType, DspSegmentType dspSegmentType) :
+DspVarClientInterface::DspVarClientInterface(const QString &name, int size, DspDataType dataType, DspSegmentType dspSegmentType) :
     m_sName(name),
     m_dspSegmentType(dspSegmentType),
-    m_valueTypeMask(valueTypeMask),
     m_dataType(dataType),
     m_dspVarData(size)
 {
