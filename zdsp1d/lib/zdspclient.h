@@ -19,7 +19,7 @@ public:
 
     QByteArray getProtobufClientId() const;
 
-    bool setRawActualValueList(const QString& varsSemicolonSeparated);
+    bool setVarList(const QString& varsSemicolonSeparated);
     void setCmdListDef(const QString& cmdListDef);
     void setCmdForIrqListDef(const QString& cmdIntListDef);
 

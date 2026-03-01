@@ -56,7 +56,7 @@ const QList<ZdspClient::VarLocation> *ZdspClient::getLocalVariableDump() const
     return m_localVarDump.get();
 }
 
-bool ZdspClient::setRawActualValueList(const QString &varsSemicolonSeparated)
+bool ZdspClient::setVarList(const QString &varsSemicolonSeparated)
 {
     m_dspVarArray.clear();
     int localOffset = 0;

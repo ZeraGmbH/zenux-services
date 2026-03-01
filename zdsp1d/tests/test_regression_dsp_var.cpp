@@ -576,7 +576,7 @@ void test_regression_dsp_var::dspVarMemSizeInitialHack()
     // Access client calculation directly for now
     const QString varString = m_dspIFace->varList2String();
     ZdspClient* testServerlient = m_dspService->createTestClient();
-    testServerlient->setRawActualValueList(varString);
+    testServerlient->setVarList(varString);
 
     int serverMemSize = testServerlient->getDataMemSize();
     int clientMemSize = dspVarGroup->getUserMemSize();

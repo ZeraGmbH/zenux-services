@@ -321,7 +321,7 @@ void ZDspServer::executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd)
             protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::errexec];
         break;
     case scpiVarListSet:
-        if(client->setRawActualValueList(cmd.getParam()))
+        if(client->setVarList(cmd.getParam()))
             protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::ack];
         else
             protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::errexec];
