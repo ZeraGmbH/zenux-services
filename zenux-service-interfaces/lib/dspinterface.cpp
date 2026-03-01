@@ -80,22 +80,22 @@ quint32 cDSPInterface::deactivateAll()
     return d->deactivateAll();
 }
 
-quint32 cDSPInterface::dataAcquisition(DspVarGroupClientInterface *memgroup)
+quint32 cDSPInterface::dataAcquisition(DspVarGroupClientInterface *varGroup)
 {
     Q_D(cDSPInterface);
-    return d->dataAcquisition(memgroup);
+    return d->dataAcquisition(varGroup);
 }
 
-quint32 cDSPInterface::dspMemoryRead(DspVarGroupClientInterface *memgroup, DspDataType type)
+quint32 cDSPInterface::dspMemoryRead(DspVarGroupClientInterface *varGroup, DspDataType type)
 {
     Q_D(cDSPInterface);
-    return d->dspMemoryRead(memgroup, type);
+    return d->dspMemoryRead(varGroup, type);
 }
 
-quint32 cDSPInterface::dspMemoryWrite(DspVarGroupClientInterface *memgroup)
+quint32 cDSPInterface::dspMemoryWrite(DspVarGroupClientInterface *varGroup)
 {
     Q_D(cDSPInterface);
-    return d->dspMemoryWrite(memgroup);
+    return d->dspMemoryWrite(varGroup);
 }
 
 quint32 cDSPInterface::readDeviceVersion()

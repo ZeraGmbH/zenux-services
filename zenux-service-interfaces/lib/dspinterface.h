@@ -27,8 +27,8 @@ public:
     void setClientSmart(Zera::ProxyClientPtr client);
     quint32 scpiCommand(const QString &scpi) override;
 
-    virtual quint32 dataAcquisition(DspVarGroupClientInterface* memgroup); // reads all vars of this memorygroup that are of type vapplication
-    virtual quint32 dspMemoryWrite(DspVarGroupClientInterface* memgroup); // writes all vars of this memorygroup with type
+    virtual quint32 dataAcquisition(DspVarGroupClientInterface* varGroup); // reads all vars of this memorygroup that are of type vapplication
+    virtual quint32 dspMemoryWrite(DspVarGroupClientInterface* varGroup); // writes all vars of this memorygroup with type
     virtual quint32 activateInterface(); // load var- and cmdlists to dsp (starts theprogram on dsp)
 
     quint32 setSamplingSystem(int chncount, int samp_per, int samp_mper); // nmuber of channels, samples/signalperiod, samples/measperiod
@@ -42,7 +42,7 @@ public:
     quint32 deactivateAll();
 
     // TODO!!! make DspDataType type go as we did on dspMemoryWrite
-    quint32 dspMemoryRead(DspVarGroupClientInterface* memgroup, DspDataType type = dspDataTypeFloat); // reads all vars of this memorygroup
+    quint32 dspMemoryRead(DspVarGroupClientInterface* varGroup, DspDataType type = dspDataTypeFloat); // reads all vars of this memorygroup
     quint32 readDeviceVersion();
     quint32 readServerVersion();
 

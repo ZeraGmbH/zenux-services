@@ -163,29 +163,29 @@ quint32 cDSPInterfacePrivate::deactivateAll()
     return msgnr;
 }
 
-quint32 cDSPInterfacePrivate::dataAcquisition(DspVarGroupClientInterface *memgroup)
+quint32 cDSPInterfacePrivate::dataAcquisition(DspVarGroupClientInterface *varGroup)
 {
-    quint32 msgnr = sendCommand(QString("MEAS"), QString("%1").arg(memgroup->VarListShort(DSPDATA::vDspResult)));
+    quint32 msgnr = sendCommand(QString("MEAS"), QString("%1").arg(varGroup->VarListShort(DSPDATA::vDspResult)));
     m_MsgNrCmdList[msgnr] = dataacquisition;
-    m_MsgNrMeasData[msgnr] = memgroup;
+    m_MsgNrMeasData[msgnr] = varGroup;
     m_MsgNrMemType[msgnr] = dspDataTypeFloat;
     return msgnr;
 }
 
-quint32 cDSPInterfacePrivate::dspMemoryRead(DspVarGroupClientInterface *memgroup, DspDataType type)
+quint32 cDSPInterfacePrivate::dspMemoryRead(DspVarGroupClientInterface *varGroup, DspDataType type)
 {
     quint32 msgnr = sendCommand(QString("MEM:READ"), // long: MEMORY:READ
-                                QString("%1").arg(memgroup->VarListShort(DSPDATA::vDspALL)));
+                                QString("%1").arg(varGroup->VarListShort(DSPDATA::vDspALL)));
     m_MsgNrCmdList[msgnr] = dspmemoryread;
-    m_MsgNrMeasData[msgnr] = memgroup;
+    m_MsgNrMeasData[msgnr] = varGroup;
     m_MsgNrMemType[msgnr] = type;
     return msgnr;
 }
 
-quint32 cDSPInterfacePrivate::dspMemoryWrite(DspVarGroupClientInterface *memgroup)
+quint32 cDSPInterfacePrivate::dspMemoryWrite(DspVarGroupClientInterface *varGroup)
 {
     quint32 msgnr = sendCommand("MEM:WRIT", // long: MEMORY:WRITE
-                                memgroup->writeCommand());
+                                varGroup->writeCommand());
     m_MsgNrCmdList[msgnr] = dspmemorywrite;
     return msgnr;
 }

@@ -48,9 +48,9 @@ public:
     quint32 activateInterface(); // load var- and cmdlists to dsp (starts theprogram on dsp)
     quint32 deactivateAll();
 
-    quint32 dataAcquisition(DspVarGroupClientInterface* memgroup);
-    quint32 dspMemoryRead(DspVarGroupClientInterface* memgroup, DspDataType type = dspDataTypeFloat);
-    quint32 dspMemoryWrite(DspVarGroupClientInterface* memgroup);
+    quint32 dataAcquisition(DspVarGroupClientInterface* varGroup);
+    quint32 dspMemoryRead(DspVarGroupClientInterface* varGroup, DspDataType type = dspDataTypeFloat);
+    quint32 dspMemoryWrite(DspVarGroupClientInterface* varGroup);
     quint32 readDeviceVersion();
     quint32 readServerVersion();
 
