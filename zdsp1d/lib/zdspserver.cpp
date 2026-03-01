@@ -244,7 +244,6 @@ enum SCPICmdType  {
     scpiRavListSet,
     scpiCmdIntListSet,
     scpiCmdCycListSet,
-    scpiReadActualValues, // AKA data acquisition
 
     // die routinen für das memory modell
     scpiDspMemoryRead,
@@ -268,7 +267,6 @@ void ZDspServer::initSCPIConnection()
     addDelegate("MEMORY", "READ", SCPI::isCmdwP, m_scpiInterface, scpiDspMemoryRead);
     addDelegate("MEMORY", "WRITE", SCPI::isCmdwP, m_scpiInterface, scpiDspMemoryWrite);
 
-    addDelegate("", "MEASURE", SCPI::isCmdwP, m_scpiInterface, scpiReadActualValues);
     addDelegate("MEASURE:LIST", "RAVLIST", SCPI::isCmdwP, m_scpiInterface, scpiRavListSet);
     addDelegate("MEASURE:LIST", "INTLIST", SCPI::isCmdwP, m_scpiInterface, scpiCmdIntListSet);
     addDelegate("MEASURE:LIST", "CYCLIST", SCPI::isCmdwP, m_scpiInterface, scpiCmdCycListSet);
@@ -347,9 +345,6 @@ void ZDspServer::executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd)
     case scpiUnloadCmdListAllClients:
         m_zdspClientContainer.delAllClients();
         protoCmd->m_sOutput = loadCmdListAllClients();
-        break;
-    case scpiReadActualValues:
-        protoCmd->m_sOutput = client->readActValues(cmd.getParam());
         break;
     case scpiGetDeviceStatus:
         protoCmd->m_sOutput = getDeviceStatus();

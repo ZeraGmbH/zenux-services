@@ -163,14 +163,6 @@ quint32 cDSPInterfacePrivate::deactivateAll()
     return msgnr;
 }
 
-quint32 cDSPInterfacePrivate::dataAcquisition(DspVarGroupClientInterface *varGroup)
-{
-    quint32 msgnr = sendCommand(QString("MEAS"), QString("%1").arg(varGroup->VarListShort()));
-    m_MsgNrCmdList[msgnr] = dataacquisition;
-    m_MsgNrMeasData[msgnr] = varGroup;
-    return msgnr;
-}
-
 quint32 cDSPInterfacePrivate::dspMemoryRead(DspVarGroupClientInterface *varGroup)
 {
     quint32 msgnr = sendCommand(QString("MEM:READ"), // long: MEMORY:READ
@@ -247,7 +239,6 @@ void cDSPInterfacePrivate::receiveAnswer(std::shared_ptr<ProtobufMessage::NetMes
         case dspinterrupt:
             emit q->serverAnswer(lmsgnr, lreply, VariantConverter::returnString(lmsg));
             break;
-        case dataacquisition:
         case dspmemoryread: {
             DspVarGroupClientInterface* actMemGroup = m_MsgNrMeasData.take(lmsgnr);
             actMemGroup->setVarData(lmsg);

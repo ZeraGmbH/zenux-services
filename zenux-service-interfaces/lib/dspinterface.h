@@ -22,11 +22,12 @@ class cDSPInterface: public AbstractServerInterface
 {
     Q_OBJECT
 public:
-    cDSPInterface(int entityId = -1);
+    explicit cDSPInterface(int entityId = -1);
     virtual ~cDSPInterface();
     void setClientSmart(Zera::ProxyClientPtr client);
     quint32 scpiCommand(const QString &scpi) override;
 
+    // Same as dspMemoryRead. We keep two variants to split measurement data read from other dsp reads in client
     virtual quint32 dataAcquisition(DspVarGroupClientInterface* varGroup); // reads all vars of this variable group
     virtual quint32 dspMemoryWrite(DspVarGroupClientInterface* varGroup); // writes all vars of this variable group
     virtual quint32 activateInterface(); // load var- and cmdlists to dsp (starts theprogram on dsp)
@@ -43,7 +44,6 @@ public:
 
     quint32 deactivateAll();
 
-    // TODO!!! what is the difference to dataAcquisition??
     quint32 dspMemoryRead(DspVarGroupClientInterface* varGroup);
     quint32 readDeviceVersion();
     quint32 readServerVersion();

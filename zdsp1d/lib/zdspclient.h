@@ -27,7 +27,6 @@ public:
     const QList<DspCmdWithParamsRaw>& GetDspCmdList() const;
     const QList<DspCmdWithParamsRaw>& GetDspIntCmdList() const;
 
-    QString readActValues(const QString &variablesStringOnEmptyActOnly);
     DspVarResolver m_dspVarResolver;
 
     ulong relocalizeUserMemSectionVars(ulong startAdress, ulong globalMemStart);

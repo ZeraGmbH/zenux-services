@@ -258,14 +258,3 @@ QString ZdspClient::handleAndRemoveEntityId(const QString &scpiParam)
     QString scpiParamNew = " " + scpiParam.mid(firstSemicolonPos+1);
     return scpiParamNew;
 }
-
-QString ZdspClient::readActValues(const QString& variablesStringOnEmptyActOnly)
-{
-    QString variablesStringWithActual = variablesStringOnEmptyActOnly;
-    if(variablesStringWithActual.isEmpty()) { // sonderfall liste leer -> alle messwerte lesen
-        for(const DspVarServer &dspVar : qAsConst(m_dspVarArray))
-            variablesStringWithActual += QString("%1,%2;").arg(dspVar.Name).arg(dspVar.size);
-    }
-    DspVarDeviceNodeInOut dspInOut(m_zdspSupportFactory);
-    return dspInOut.readDspVarList(variablesStringWithActual, &m_dspVarResolver);
-}
