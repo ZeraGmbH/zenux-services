@@ -67,7 +67,7 @@ QString cDSPInterfacePrivate::varList2String(VarListPrependOptions prependOption
 quint32 cDSPInterfacePrivate::varList2Dsp() // the complete list has several partial lists
 {
     QString varList = varList2String(PREPEND_ENTIY_ID_IF_SET);
-    quint32 msgnr = sendCommand("MEAS:LIST:VARL", varList); // long: MEASURE:LIST:VARLIST
+    quint32 msgnr = sendCommand("MEM:VARL", varList); // long: MEMORY:VARLIST
     m_MsgNrCmdList[msgnr] = varlist2dsp;
     return msgnr;
 }
@@ -79,7 +79,7 @@ quint32 cDSPInterfacePrivate::cmdList2Dsp()
     prependEntityIdIfSet(ts);
     for (auto it = m_cycCmdList.constBegin(); it != m_cycCmdList.constEnd(); ++it )
         ts << *it << ";" ;
-    quint32 msgnr = sendCommand("MEAS:LIST:CYCL", plist); // long: MEASURE:LIST:CYCLIST
+    quint32 msgnr = sendCommand("MEM:CYCL", plist); // long: MEMORY:CYCLIST
     m_MsgNrCmdList[msgnr] = cmdlist2dsp;
     return msgnr;
 }
@@ -91,7 +91,7 @@ quint32 cDSPInterfacePrivate::intList2Dsp()
     prependEntityIdIfSet(ts);
     for (auto it = m_irqCmdList.constBegin(); it != m_irqCmdList.constEnd(); ++it )
         ts << *it << ";" ;
-    quint32 msgnr = sendCommand("MEAS:LIST:INTL", plist); // long: MEASURE:LIST:INTLIST
+    quint32 msgnr = sendCommand("MEM:INTL", plist); // long: MEMORY:INTLIST
     m_MsgNrCmdList[msgnr] = intlist2dsp;
     return msgnr;
 }
@@ -151,14 +151,14 @@ DspVarGroupClientInterface *cDSPInterfacePrivate::findVariableGroup(const QStrin
 
 quint32 cDSPInterfacePrivate::activateInterface()
 {
-    quint32 msgnr = sendCommand("MEAS:LIST:SET"); // long: MEASURE:LIST:SET
+    quint32 msgnr = sendCommand("MEM:SET"); // long: MEMORY:SET
     m_MsgNrCmdList[msgnr] = activateinterface;
     return msgnr;
 }
 
 quint32 cDSPInterfacePrivate::deactivateAll()
 {
-    quint32 msgnr = sendCommand("MEAS:LIST:CLAL"); // long: MEASURE:LIST:CLALL
+    quint32 msgnr = sendCommand("MEM:CLAL"); // long: MEMORY:CLALL
     m_MsgNrCmdList[msgnr] = deactivateall;
     return msgnr;
 }

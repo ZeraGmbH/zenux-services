@@ -24,18 +24,14 @@
    </DSP>
   </SYSTEM>
   <MEMORY Type="Model,Node">
-   <READ Type="Command+Par" ScpiPath="MEMORY:READ"/>
-   <WRITE Type="Command+Par" ScpiPath="MEMORY:WRITE"/>
+   <VARLIST ScpiPath="MEMORY:VARLIST" Type="Command+Par"/>
+   <READ ScpiPath="MEMORY:READ" Type="Command+Par"/>
+   <WRITE ScpiPath="MEMORY:WRITE" Type="Command+Par"/>
+   <INTLIST ScpiPath="MEMORY:INTLIST" Type="Command+Par"/>
+   <CYCLIST ScpiPath="MEMORY:CYCLIST" Type="Command+Par"/>
+   <SET ScpiPath="MEMORY:SET" Type="Command+Par"/>
+   <CLALL ScpiPath="MEMORY:CLALL" Type="Command"/>
   </MEMORY>
-  <MEASURE Type="Model,Node">
-   <LIST Type="Node">
-    <VARLIST ScpiPath="MEASURE:LIST:VARLIST" Type="Command+Par"/>
-    <CYCLIST ScpiPath="MEASURE:LIST:CYCLIST" Type="Command+Par"/>
-    <INTLIST ScpiPath="MEASURE:LIST:INTLIST" Type="Command+Par"/>
-    <SET ScpiPath="MEASURE:LIST:SET" Type="Command+Par"/>
-    <CLALL ScpiPath="MEASURE:LIST:CLALL" Type="Command"/>
-   </LIST>
-  </MEASURE>
   <STATUS Type="Model,Node">
    <DEVICE Type="Query" ScpiPath="STATUS:DEVICE"/>
    <DSP Type="Query" ScpiPath="STATUS:DSP">

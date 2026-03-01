@@ -264,14 +264,13 @@ void ZDspServer::initSCPIConnection()
     addDelegate("SYSTEM:DSP:TRIGGER:INTLIST", "ALL", SCPI::isCmd, m_scpiInterface, scpiTriggerIntListALL);
     addDelegate("SYSTEM:DSP:TRIGGER:INTLIST", "HKSK", SCPI::isCmdwP, m_scpiInterface, scpiTriggerIntListHKSK);
 
+    addDelegate("MEMORY", "VARLIST", SCPI::isCmdwP, m_scpiInterface, scpiVarListSet);
     addDelegate("MEMORY", "READ", SCPI::isCmdwP, m_scpiInterface, scpiDspMemoryRead);
     addDelegate("MEMORY", "WRITE", SCPI::isCmdwP, m_scpiInterface, scpiDspMemoryWrite);
-
-    addDelegate("MEASURE:LIST", "VARLIST", SCPI::isCmdwP, m_scpiInterface, scpiVarListSet);
-    addDelegate("MEASURE:LIST", "INTLIST", SCPI::isCmdwP, m_scpiInterface, scpiCmdIntListSet);
-    addDelegate("MEASURE:LIST", "CYCLIST", SCPI::isCmdwP, m_scpiInterface, scpiCmdCycListSet);
-    addDelegate("MEASURE:LIST", "SET", SCPI::isCmdwP, m_scpiInterface, scpiLoadCmdList);
-    addDelegate("MEASURE:LIST", "CLALL", SCPI::isCmd, m_scpiInterface, scpiUnloadCmdListAllClients);
+    addDelegate("MEMORY", "INTLIST", SCPI::isCmdwP, m_scpiInterface, scpiCmdIntListSet);
+    addDelegate("MEMORY", "CYCLIST", SCPI::isCmdwP, m_scpiInterface, scpiCmdCycListSet);
+    addDelegate("MEMORY", "SET", SCPI::isCmdwP, m_scpiInterface, scpiLoadCmdList);
+    addDelegate("MEMORY", "CLALL", SCPI::isCmd, m_scpiInterface, scpiUnloadCmdListAllClients);
 
     addDelegate("STATUS", "DEVICE", SCPI::isQuery, m_scpiInterface, scpiGetDeviceStatus);
     addDelegate("STATUS", "DSP", SCPI::isQuery, m_scpiInterface, scpiGetDspStatus);
