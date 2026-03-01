@@ -9,7 +9,7 @@ bool TestDspCompilerSupport::addCmdToRaw(const QString &dspCmdLine,
     QString raw = QString(dspcmd->Name) + "(";
     for (int paramNo=0; paramNo<paramNames.count(); paramNo++) {
         ulong par = i16Params[paramNo];
-        raw += TDspVar::toHex(par);
+        raw += DspVarServer::toHex(par);
         if (paramNo<paramNames.count()-1)
             raw += ",";
     }
@@ -24,15 +24,15 @@ bool TestDspCompilerSupport::addCmdToRaw1Param(const QString &dspCmdLine,
                                                const DspCmdDecodingDetails *dspcmd)
 {
     // This is just about fixed USERMEMOFFSET / DSPMEMOFFSET
-    QString hexPar = TDspVar::toHex(par);
+    QString hexPar = DspVarServer::toHex(par);
     m_rawDspCommands.append(QString("%1(%2)").arg(QString(dspcmd->Name), hexPar));
     return syntaxCheck(dspCmdLine);
 }
 
 bool TestDspCompilerSupport::addCmdToRaw2Params(const QString &dspCmdLine, const DspCmdDecodingDetails *dspcmd, ulong par1, ulong par2)
 {
-    QString hexPar1 = TDspVar::toHex(par1);
-    QString hexPar2 = TDspVar::toHex(par2);
+    QString hexPar1 = DspVarServer::toHex(par1);
+    QString hexPar2 = DspVarServer::toHex(par2);
     m_rawDspCommands.append(QString("%1(%2,%3)").arg(QString(dspcmd->Name), hexPar1, hexPar2));
     return syntaxCheck(dspCmdLine);
 }

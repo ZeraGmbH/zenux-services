@@ -1,18 +1,18 @@
-#ifndef DSPMEASDATA_H
-#define DSPMEASDATA_H
+#ifndef DSPVARGROUPCLIENTINTERFACE_H
+#define DSPVARGROUPCLIENTINTERFACE_H
 
 #include <QString>
 #include <QList>
 #include <QVector>
-#include "dspvar.h"
+#include "dspvarclientinterface.h"
 
-class cDspMeasData
+class DspVarGroupClientInterface
 {
 public:
-    cDspMeasData(const QString &name);
-    ~cDspMeasData();
+    DspVarGroupClientInterface(const QString &name);
+    ~DspVarGroupClientInterface();
 
-    cDspVar *addDspVar(const QString &name, int size, int valueTypeMask,
+    DspVarClientInterface *addDspVar(const QString &name, int size, int valueTypeMask,
                        DspDataType dataType = dspDataTypeFloat, DspSegmentType dspSegmentType = moduleLocalSegment);
 
     // Nightmare candidate: Make it go!!!
@@ -29,16 +29,16 @@ public:
 
     // Test insights
     static int getInstanceCount();
-    const QList<cDspVar*> getVars() const;
+    const QList<DspVarClientInterface*> getVars() const;
     void setData(const QVector<float> &data);
 private:
-    cDspVar* findVar(const QString &varName);
+    DspVarClientInterface* findVar(const QString &varName);
 
     QString m_handleName;
-    QList<cDspVar*> DspVarList;
+    QList<DspVarClientInterface*> DspVarList;
     QVector<float> vector;
 
     static int m_instanceCount;
 };
 
-#endif // DSPMEASDATA_H
+#endif // DSPVARGROUPCLIENTINTERFACE_H

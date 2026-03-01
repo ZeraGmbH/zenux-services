@@ -10,7 +10,7 @@ DspVarDeviceNodeInOut::DspVarDeviceNodeInOut(AbstractFactoryZdspSupportPtr zdspS
 {
 }
 
-TDspVar *DspVarDeviceNodeInOut::readOneDspVar(const QString &nameCommaLen,
+DspVarServer *DspVarDeviceNodeInOut::readOneDspVar(const QString &nameCommaLen,
                                               QByteArray *varRead,
                                               DspVarResolver *dspVarResolver)
 {
@@ -18,7 +18,7 @@ TDspVar *DspVarDeviceNodeInOut::readOneDspVar(const QString &nameCommaLen,
     if(listNameLen.count() < 2)
         return nullptr; // wrong parameter format
     QString name = listNameLen[0];
-    TDspVar *dspVar = dspVarResolver->getDspVar(name);
+    DspVarServer *dspVar = dspVarResolver->getDspVar(name);
     if (!dspVar)
         return nullptr; // fehler, den namen gibt es nicht
 
@@ -57,7 +57,7 @@ QString DspVarDeviceNodeInOut::readDspVarList(const QString &variablesString, Ds
     const QStringList varEntries = variablesString.split(";", Qt::SkipEmptyParts);
     for(int i=0; i<varEntries.count(); i++) {
         QString nameCommaLen = varEntries[i]; // format '<name>,<count>'
-        TDspVar *dspVar = readOneDspVar(nameCommaLen, &ba, dspVarResolver);
+        DspVarServer *dspVar = readOneDspVar(nameCommaLen, &ba, dspVarResolver);
         if(!dspVar)
             return ZSCPI::scpiAnswer[ZSCPI::errexec];
 
@@ -86,7 +86,7 @@ QString DspVarDeviceNodeInOut::readDspVarList(const QString &variablesString, Ds
     return ret;
 }
 
-bool DspVarDeviceNodeInOut::readVarFromDsp(TDspVar *DspVar, int countVars, QByteArray *varRead)
+bool DspVarDeviceNodeInOut::readVarFromDsp(DspVarServer *DspVar, int countVars, QByteArray *varRead)
 {
     const int countBytes = countVars * 4;
     varRead->resize(countBytes);

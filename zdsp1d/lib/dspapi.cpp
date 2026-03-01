@@ -1,5 +1,5 @@
 #include "dspapi.h"
-#include "dspvarandmemsection.h"
+#include "dspmemorysectioninternal.h"
 #include "dspcmdextrachecks.h"
 #include <QHash>
 
@@ -98,9 +98,9 @@ static constexpr int dm32CmdListBase21262 = 0x84000;
 static constexpr int IntCmdListLen21262 = 128;
 static constexpr int CmdListLen21262 = 896;
 
-#define DSP_VAR_COUNT(VAR_ARRAY) sizeof(VAR_ARRAY)/sizeof(TDspVar)
+#define DSP_VAR_COUNT(VAR_ARRAY) sizeof(VAR_ARRAY)/sizeof(DspVarServer)
 
-TDspVar DspWorkspaceVar[] =
+DspVarServer DspWorkspaceVar[] =
 {
     {"DspWorkspace", "FREQENCY",1,dspDataTypeFloat,0,0, dspInternalSegment},                // 1 wert gemessene frequenz
     {"DspWorkspace", "FREQUENCYVALUE",4,dspDataTypeFloat,0,0, dspInternalSegment},          // 4 werte f. freq. ausgänge
@@ -119,10 +119,10 @@ TDspVar DspWorkspaceVar[] =
     {"DspWorkspace", "TMCH0",1,dspDataTypeFloat,0,0, dspInternalSegment}                    // periodendauer messsignal kanal0
 };
 
-TMemSection dm32DspWorkspace = TMemSection(dm32DspWorkSpaceBase21262, DSP_VAR_COUNT(DspWorkspaceVar), DspWorkspaceVar);
+DspMemorySectionInternal dm32DspWorkspace = DspMemorySectionInternal(dm32DspWorkSpaceBase21262, DSP_VAR_COUNT(DspWorkspaceVar), DspWorkspaceVar);
 
 
-TDspVar DialogWorkSpaceVar[] =
+DspVarServer DialogWorkSpaceVar[] =
 {
     // Parameter details for DSPCMDPAR are found at
     // https://github.com/ZeraGmbH/SHARC-DSP-Software/blob/f4003f707849076a91010435994aa61bf9e6cfb9/NewGen32.asm#L352
@@ -148,28 +148,28 @@ TDspVar DialogWorkSpaceVar[] =
     {"DialogWorkSpace", "POWVALS4FOUT",48,dspDataTypeFloat,0,0, dspInternalSegment},        // 48 leistungs werte für frequenzausgänge
     {"DialogWorkSpace", "SUBDC",1,dspDataTypeInt,0,0, dspInternalSegment}};                 // 32 bit 1/kanal wenn gesetzt -> subdc wenn copydata, copydiff
 
-TMemSection dm32DialogWorkSpace = TMemSection(dm32DialogWorkSpaceBase21262, DSP_VAR_COUNT(DialogWorkSpaceVar), DialogWorkSpaceVar);
+DspMemorySectionInternal dm32DialogWorkSpace = DspMemorySectionInternal(dm32DialogWorkSpaceBase21262, DSP_VAR_COUNT(DialogWorkSpaceVar), DialogWorkSpaceVar);
 
 
-TDspVar UserWorkSpaceVar[] =
+DspVarServer UserWorkSpaceVar[] =
 {
     {"UserWorkSpace", "UWSPACE",uwSpaceSize21262,dspDataTypeFloat,0,0, dspInternalSegment}
 };
 
-TMemSection dm32UserWorkSpace = TMemSection(dm32UserWorkSpaceBase21262, DSP_VAR_COUNT(UserWorkSpaceVar), UserWorkSpaceVar);
+DspMemorySectionInternal dm32UserWorkSpace = DspMemorySectionInternal(dm32UserWorkSpaceBase21262, DSP_VAR_COUNT(UserWorkSpaceVar), UserWorkSpaceVar);
 
 
-TDspVar CmdListVar[] =
+DspVarServer CmdListVar[] =
 {
     {"CmdList", "INTCMDLIST",IntCmdListLen21262,dspDataTypeInt,0,0, dspInternalSegment},    // interrupt kommando
     {"CmdList", "CMDLIST",CmdListLen21262,dspDataTypeInt,0,0, dspInternalSegment},          // cycl. kommando liste
     {"CmdList", "ALTINTCMDLIST",IntCmdListLen21262,dspDataTypeInt,0,0, dspInternalSegment}, // alternative kommando listen
     {"CmdList", "ALTCMDLIST",CmdListLen21262,dspDataTypeInt,0,0, dspInternalSegment}};
 
-TMemSection dm32CmdList = TMemSection(dm32CmdListBase21262, DSP_VAR_COUNT(CmdListVar), CmdListVar);
+DspMemorySectionInternal dm32CmdList = DspMemorySectionInternal(dm32CmdListBase21262, DSP_VAR_COUNT(CmdListVar), CmdListVar);
 
 
-TDspVar ChannelNr[] =
+DspVarServer ChannelNr[] =
 {
     {"ChannelNr", "CH0",1,dspDataTypeInt,0,0,dspInternalSegment}, {"ChannelNr", "CH1",1,dspDataTypeInt,0,0,dspInternalSegment},
     {"ChannelNr", "CH2",1,dspDataTypeInt,0,0,dspInternalSegment}, {"ChannelNr", "CH3",1,dspDataTypeInt,0,0,dspInternalSegment},
@@ -188,11 +188,11 @@ TDspVar ChannelNr[] =
     {"ChannelNr", "CH28",1,dspDataTypeInt,0,0,dspInternalSegment},{"ChannelNr", "CH29",1,dspDataTypeInt,0,0,dspInternalSegment},
     {"ChannelNr", "CH30",1,dspDataTypeInt,0,0,dspInternalSegment},{"ChannelNr", "CH31",1,dspDataTypeInt,0,0,dspInternalSegment}};
 
-TMemSection symbConsts1 = TMemSection(0, DSP_VAR_COUNT(ChannelNr), ChannelNr);
+DspMemorySectionInternal symbConsts1 = DspMemorySectionInternal(0, DSP_VAR_COUNT(ChannelNr), ChannelNr);
 
 
 QHash<QString, DspCmdDecodingDetails*> DspStaticData::m_dspAvailableCmds;
-QHash<QString, TDspVar*> DspStaticData::m_varHash;
+QHash<QString, DspVarServer*> DspStaticData::m_varHash;
 
 DspCmdDecodingDetails *DspStaticData::findDspCmd(const QString &cmdName)
 {
@@ -203,7 +203,7 @@ DspCmdDecodingDetails *DspStaticData::findDspCmd(const QString &cmdName)
     return nullptr;
 }
 
-const QHash<QString, TDspVar *> &DspStaticData::getVarHash()
+const QHash<QString, DspVarServer *> &DspStaticData::getVarHash()
 {
     fillMemSectionHashOn1stCall();
     return m_varHash;
@@ -219,13 +219,13 @@ void DspStaticData::fillCmdHashOn1stCall()
 void DspStaticData::fillMemSectionHashOn1stCall()
 {
     if(m_varHash.isEmpty()) {
-        QList<TMemSection*> fixedSectionList;
+        QList<DspMemorySectionInternal*> fixedSectionList;
         fixedSectionList.append(&dm32DspWorkspace);
         fixedSectionList.append(&dm32DialogWorkSpace);
         fixedSectionList.append(&dm32UserWorkSpace);
         fixedSectionList.append(&dm32CmdList);
         fixedSectionList.append(&symbConsts1);
-        for(TMemSection* memSection : qAsConst(fixedSectionList)) {
+        for(DspMemorySectionInternal* memSection : qAsConst(fixedSectionList)) {
             initMemsection(memSection);
             for (int i=0; i<memSection->m_varCount; i++)
                 m_varHash[memSection->m_dspVars[i].Name] = &(memSection->m_dspVars[i]);
@@ -233,11 +233,11 @@ void DspStaticData::fillMemSectionHashOn1stCall()
     }
 }
 
-void DspStaticData::initMemsection(TMemSection *memSection)
+void DspStaticData::initMemsection(DspMemorySectionInternal *memSection)
 {
     long offs = 0;
     for (int i = 0; i< (memSection->m_varCount); i++) {
-        TDspVar &dspVar = memSection->m_dspVars[i];
+        DspVarServer &dspVar = memSection->m_dspVars[i];
         if (dspVar.segment == dspInternalSegment) { // initialize only dsp system variables
             dspVar.offs = offs;
             dspVar.adr = memSection->m_startAddress + offs;

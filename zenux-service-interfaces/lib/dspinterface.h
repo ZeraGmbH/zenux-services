@@ -2,7 +2,7 @@
 #define DSPINTERFACE_H
 
 #include "abstractserverInterface.h"
-#include "dspmeasdata.h"
+#include "dspvargroupclientinterface.h"
 #include <proxyclient.h>
 #include <QObject>
 #include <QAbstractSocket>
@@ -27,8 +27,8 @@ public:
     void setClientSmart(Zera::ProxyClientPtr client);
     quint32 scpiCommand(const QString &scpi) override;
 
-    virtual quint32 dataAcquisition(cDspMeasData* memgroup); // reads all vars of this memorygroup that are of type vapplication
-    virtual quint32 dspMemoryWrite(cDspMeasData* memgroup); // writes all vars of this memorygroup with type
+    virtual quint32 dataAcquisition(DspVarGroupClientInterface* memgroup); // reads all vars of this memorygroup that are of type vapplication
+    virtual quint32 dspMemoryWrite(DspVarGroupClientInterface* memgroup); // writes all vars of this memorygroup with type
     virtual quint32 activateInterface(); // load var- and cmdlists to dsp (starts theprogram on dsp)
 
     quint32 setSamplingSystem(int chncount, int samp_per, int samp_mper); // nmuber of channels, samples/signalperiod, samples/measperiod
@@ -37,12 +37,12 @@ public:
     int cmdListCount(); // returns the number of command in cyclist program list
     void addCycListItem(QString cmd); // appends new command to cyclic list
     void addCycListItems(const QStringList &cmds); // appends new commands to cyclic list
-    cDspMeasData* getMemHandle(QString name); // init a new memory group and return handle
+    DspVarGroupClientInterface* getMemHandle(QString name); // init a new memory group and return handle
 
     quint32 deactivateAll();
 
     // TODO!!! make DspDataType type go as we did on dspMemoryWrite
-    quint32 dspMemoryRead(cDspMeasData* memgroup, DspDataType type = dspDataTypeFloat); // reads all vars of this memorygroup
+    quint32 dspMemoryRead(DspVarGroupClientInterface* memgroup, DspDataType type = dspDataTypeFloat); // reads all vars of this memorygroup
     quint32 readDeviceVersion();
     quint32 readServerVersion();
 

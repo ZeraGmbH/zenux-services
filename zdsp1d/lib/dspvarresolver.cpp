@@ -8,7 +8,7 @@ DspVarResolver::DspVarResolver()
     m_varHash = DspStaticData::getVarHash();
 }
 
-void DspVarResolver::addSection(TMemSection* section)
+void DspVarResolver::addSection(DspMemorySectionInternal* section)
 {
     MemSectionList.append(section);
 }
@@ -16,14 +16,14 @@ void DspVarResolver::addSection(TMemSection* section)
 void DspVarResolver::actualizeVarHash()
 {
     m_varHash = DspStaticData::getVarHash();
-    for(TMemSection* memSection : qAsConst(MemSectionList)) {
+    for(DspMemorySectionInternal* memSection : qAsConst(MemSectionList)) {
         DspStaticData::initMemsection(memSection);
         for (int i=0; i<memSection->m_varCount; i++)
             m_varHash[memSection->m_dspVars[i].Name] = &(memSection->m_dspVars[i]);
     }
 }
 
-TDspVar* DspVarResolver::getDspVar(const QString &varNameWithOffset)
+DspVarServer* DspVarResolver::getDspVar(const QString &varNameWithOffset)
 {
     QString upperName = varNameWithOffset.toUpper();
     const QChar* cts = upperName.data();
@@ -36,7 +36,7 @@ TDspVar* DspVarResolver::getDspVar(const QString &varNameWithOffset)
 
 long DspVarResolver::getVarOffset(const QString& varNameWithOffset, ulong userMemOffset, ulong globalstartadr)
 {
-    TDspVar* dspVar = getDspVar(varNameWithOffset);
+    DspVarServer* dspVar = getDspVar(varNameWithOffset);
     if(dspVar) {
         ulong retoffs = dspVar->offs;
         QString offsetStr = extractOffset(varNameWithOffset, dspVar->Name);
@@ -56,7 +56,7 @@ long DspVarResolver::getVarOffset(const QString& varNameWithOffset, ulong userMe
 
 long DspVarResolver::getVarAddress(const QString &varNameWithOffset)
 {
-    TDspVar* dspVar = getDspVar(varNameWithOffset);
+    DspVarServer* dspVar = getDspVar(varNameWithOffset);
     if(dspVar) {
         QString offsetStr = extractOffset(varNameWithOffset, dspVar->Name);
         if(offsetStr.length() > 0) { // wenn noch was da, dann muss das ein +/- offset sein
@@ -73,7 +73,7 @@ long DspVarResolver::getVarAddress(const QString &varNameWithOffset)
 
 int DspVarResolver::getVarType(const QString &varNameWithOffset)
 {
-    TDspVar* var = getDspVar(varNameWithOffset);
+    DspVarServer* var = getDspVar(varNameWithOffset);
     if(var)
         return var->type;
     return dspDataTypeUnknown;

@@ -1,6 +1,6 @@
-#include "dspvarandmemsection.h"
+#include "dspvarserver.h"
 
-bool TDspVar::Init(const QString& varDefinition)
+bool DspVarServer::setupFromCommaSeparatedString(const QString& varDefinition)
 {
     bool ret = true;
     int commaCount = varDefinition.count(',');
@@ -26,10 +26,10 @@ bool TDspVar::Init(const QString& varDefinition)
             int varSegment = varDefinition.section(',', 4, 4).remove(' ').toInt(&ok);
             if ((ret = ret && ok)) {
                 if ( (ret = ret && (
-                                    varSegment == dspInternalSegment ||
-                                    varSegment == moduleLocalSegment ||
-                                    varSegment == moduleGlobalSegment
-                                   )))
+                               varSegment == dspInternalSegment ||
+                               varSegment == moduleLocalSegment ||
+                               varSegment == moduleGlobalSegment
+                               )))
                     segment = (DspSegmentType)varSegment;
             }
         }
@@ -40,15 +40,8 @@ bool TDspVar::Init(const QString& varDefinition)
     return ret;
 }
 
-QString TDspVar::toHex(int val)
+QString DspVarServer::toHex(int val)
 {
     QString hexVal = QString("000000%1").arg(val, 0, 16).toUpper().right(6);
     return QString("0x") + hexVal;
-}
-
-TMemSection::TMemSection(long startAddress, int varCount, TDspVar *dspVars) :
-    m_startAddress(startAddress),
-    m_varCount(varCount),
-    m_dspVars(dspVars)
-{
 }

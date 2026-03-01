@@ -9,7 +9,7 @@ bool DspCmdExtraChecks::AVERAGE1(const QStringList &paramNames, const short i16P
         qWarning("Offset used in place you shouldn't?");
         return false;
     }
-    const TDspVar* varTransferTarget = varResolver->getDspVar(paramNameTarget);
+    const DspVarServer* varTransferTarget = varResolver->getDspVar(paramNameTarget);
     if (varTransferTarget) {
         int len = DspBuffLen::avgFilterLen(i16Params[0]);
         int size = varTransferTarget->size;
@@ -30,7 +30,7 @@ bool DspCmdExtraChecks::CLEARN(const QStringList &paramNames, const short i16Par
         qWarning("Offset used in place you shouldn't?");
         return false;
     }
-    const TDspVar* varTransferTarget = varResolver->getDspVar(paramNameTarget);
+    const DspVarServer* varTransferTarget = varResolver->getDspVar(paramNameTarget);
     if (varTransferTarget) {
         int len = i16Params[0];
         int size = varTransferTarget->size;
@@ -46,7 +46,7 @@ bool DspCmdExtraChecks::CLEARN(const QStringList &paramNames, const short i16Par
 bool DspCmdExtraChecks::COPYMEM(const QStringList &paramNames, const short i16Params[], DspVarResolver *varResolver)
 {
     const QString paramNameTarget = paramNames[2];
-    const TDspVar* varTransferTarget = varResolver->getDspVar(paramNameTarget);
+    const DspVarServer* varTransferTarget = varResolver->getDspVar(paramNameTarget);
     if (varTransferTarget) {
         int startWanted = i16Params[2];
         int countWanted = i16Params[0];

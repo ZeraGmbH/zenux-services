@@ -43,14 +43,14 @@ public:
     void addCycListItem(const QString &cmd); // appends new command to cyclic list
     void addCycListItems(const QStringList &cmds); // appends new commands to cyclic list
 
-    cDspMeasData* getMemHandle(const QString &name); // init a new memory group and return handle
+    DspVarGroupClientInterface* getMemHandle(const QString &name); // init a new memory group and return handle
 
     quint32 activateInterface(); // load var- and cmdlists to dsp (starts theprogram on dsp)
     quint32 deactivateAll();
 
-    quint32 dataAcquisition(cDspMeasData* memgroup);
-    quint32 dspMemoryRead(cDspMeasData* memgroup, DspDataType type = dspDataTypeFloat);
-    quint32 dspMemoryWrite(cDspMeasData* memgroup);
+    quint32 dataAcquisition(DspVarGroupClientInterface* memgroup);
+    quint32 dspMemoryRead(DspVarGroupClientInterface* memgroup, DspDataType type = dspDataTypeFloat);
+    quint32 dspMemoryWrite(DspVarGroupClientInterface* memgroup);
     quint32 readDeviceVersion();
     quint32 readServerVersion();
 
@@ -62,13 +62,13 @@ public:
 
     // Insights for tests - a compromise...
     QStringList getCyclicCmdList() const;
-    QList<cDspMeasData*> getMemoryDataList() const;
+    QList<DspVarGroupClientInterface*> getMemoryDataList() const;
     enum VarListPrependOptions {
         PREPEND_NOTHING,
         PREPEND_ENTIY_ID_IF_SET
     };
     QString varList2String(VarListPrependOptions prependOption) const;
-    cDspMeasData* findMemHandle(const QString &name) const;
+    DspVarGroupClientInterface* findMemHandle(const QString &name) const;
 protected slots:
     void receiveAnswer(std::shared_ptr<ProtobufMessage::NetMessage> message) override;
     void receiveError(QAbstractSocket::SocketError errorCode) override;
@@ -80,8 +80,8 @@ private:
     int m_entityId;
 
     QStringList m_cycCmdList, m_irqCmdList;
-    QList<cDspMeasData*> m_DspMemoryDataList; // eine liste mit zeigern auf dsp speicher
-    QHash<quint32, cDspMeasData*> m_MsgNrMeasData;
+    QList<DspVarGroupClientInterface*> m_DspMemoryDataList; // eine liste mit zeigern auf dsp speicher
+    QHash<quint32, DspVarGroupClientInterface*> m_MsgNrMeasData;
     QHash<quint32, DspDataType> m_MsgNrMemType;
 };
 

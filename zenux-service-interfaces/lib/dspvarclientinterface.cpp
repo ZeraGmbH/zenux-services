@@ -1,8 +1,8 @@
-#include "dspvar.h"
+#include "dspvarclientinterface.h"
 
-int cDspVar::m_instanceCount = 0;
+int DspVarClientInterface::m_instanceCount = 0;
 
-cDspVar::cDspVar(const QString &name, int size, int valueTypeMask,
+DspVarClientInterface::DspVarClientInterface(const QString &name, int size, int valueTypeMask,
                  DspDataType dataType, DspSegmentType dspSegmentType) :
     m_sName(name),
     m_dspSegmentType(dspSegmentType),
@@ -13,12 +13,12 @@ cDspVar::cDspVar(const QString &name, int size, int valueTypeMask,
     m_instanceCount++;
 }
 
-cDspVar::~cDspVar()
+DspVarClientInterface::~DspVarClientInterface()
 {
     m_instanceCount--;
 }
 
-void cDspVar::setValue(int idx, float value)
+void DspVarClientInterface::setValue(int idx, float value)
 {
     if(idx < 0 || idx>=m_dspVarData.size()) {
         qCritical("DspVar %s setValue %i out of limit", qPrintable(m_sName), idx);
@@ -27,7 +27,7 @@ void cDspVar::setValue(int idx, float value)
     m_dspVarData.replace(idx, value);
 }
 
-int cDspVar::getInstanceCount()
+int DspVarClientInterface::getInstanceCount()
 {
     return m_instanceCount;
 }

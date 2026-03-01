@@ -6,7 +6,7 @@
 
 #include "interface_p.h"
 #include "rminterface.h"
-#include "dspmeasdata.h"
+#include "dspvargroupclientinterface.h"
 
 namespace Zera {
 
@@ -52,8 +52,8 @@ private:
     cRMInterface *q_ptr;
 
     QStringList CycCmdList, IntCmdList;
-    QList<cDspMeasData*> m_DspMeasDataList; // eine liste mit zeigern auf "programmdaten"
-    QList<cDspMeasData*> m_DspMemoryDataList; // eine liste mit zeigern auf  dsp speicher allgemein
+    QList<DspVarGroupClientInterface*> m_DspMeasDataList; // eine liste mit zeigern auf "programmdaten"
+    QList<DspVarGroupClientInterface*> m_DspMemoryDataList; // eine liste mit zeigern auf  dsp speicher allgemein
 
 };
 

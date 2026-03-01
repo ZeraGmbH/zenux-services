@@ -48,7 +48,7 @@ void test_regression_dsp_var::cleanup()
 
 void test_regression_dsp_var::createResultVariables()
 {
-    cDspMeasData* dspData = m_dspIFace->getMemHandle("createResultVariables");
+    DspVarGroupClientInterface* dspData = m_dspIFace->getMemHandle("createResultVariables");
     dspData->addDspVar("Result1", 1, DSPDATA::vDspResult, dspDataTypeFloat, moduleLocalSegment);
     dspData->addDspVar("Result2", 3, DSPDATA::vDspResult, dspDataTypeInt, moduleLocalSegment);
 
@@ -69,7 +69,7 @@ void test_regression_dsp_var::createResultVariables()
 
 void test_regression_dsp_var::createTempVariables()
 {
-    cDspMeasData* dspData = m_dspIFace->getMemHandle("createTempVariables");
+    DspVarGroupClientInterface* dspData = m_dspIFace->getMemHandle("createTempVariables");
     dspData->addDspVar("Temp1", 1, DSPDATA::vDspTemp, dspDataTypeFloat, moduleLocalSegment);
     dspData->addDspVar("Temp2", 3, DSPDATA::vDspTemp, dspDataTypeInt, moduleLocalSegment);
 
@@ -90,7 +90,7 @@ void test_regression_dsp_var::createTempVariables()
 
 void test_regression_dsp_var::createInternalVariableNotAvailable()
 {
-    cDspMeasData* dspData = m_dspIFace->getMemHandle("createInternalVariableNotAvailable");
+    DspVarGroupClientInterface* dspData = m_dspIFace->getMemHandle("createInternalVariableNotAvailable");
     dspData->addDspVar("Internal1", 1, DSPDATA::vDspParam, dspDataTypeFloat, dspInternalSegment);
     dspData->addDspVar("Internal2", 3, DSPDATA::vDspParam, dspDataTypeInt, dspInternalSegment);
 
@@ -110,7 +110,7 @@ void test_regression_dsp_var::createInternalVariableNotAvailable()
 
 void test_regression_dsp_var::createInternalVariableWrongSize()
 {
-    cDspMeasData* dspData = m_dspIFace->getMemHandle("createInternalVariableWrongSize");
+    DspVarGroupClientInterface* dspData = m_dspIFace->getMemHandle("createInternalVariableWrongSize");
     dspData->addDspVar("SUBDC", 2, DSPDATA::vDspParam, dspDataTypeInt, dspInternalSegment);
 
     QSignalSpy spy(m_dspIFace.get(), &AbstractServerInterface::serverAnswer);
@@ -123,7 +123,7 @@ void test_regression_dsp_var::createInternalVariableWrongSize()
 
 void test_regression_dsp_var::createInternalVariableWrongType()
 {
-    cDspMeasData* dspData = m_dspIFace->getMemHandle("createInternalVariableWrongType");
+    DspVarGroupClientInterface* dspData = m_dspIFace->getMemHandle("createInternalVariableWrongType");
     dspData->addDspVar("SUBDC", 1, DSPDATA::vDspParam, dspDataTypeFloat, dspInternalSegment);
 
     QSignalSpy spy(m_dspIFace.get(), &AbstractServerInterface::serverAnswer);
@@ -136,7 +136,7 @@ void test_regression_dsp_var::createInternalVariableWrongType()
 
 void test_regression_dsp_var::createInternalVariableOk()
 {
-    cDspMeasData* dspData = m_dspIFace->getMemHandle("createInternalVariableOk");
+    DspVarGroupClientInterface* dspData = m_dspIFace->getMemHandle("createInternalVariableOk");
     dspData->addDspVar("SUBDC", 1, DSPDATA::vDspParam, dspDataTypeInt, dspInternalSegment);
 
     QSignalSpy spy(m_dspIFace.get(), &AbstractServerInterface::serverAnswer);
@@ -163,7 +163,7 @@ void test_regression_dsp_var::createInternalVariableOk()
 
 void test_regression_dsp_var::createInternalVariablesOk()
 {
-    cDspMeasData* dspData = m_dspIFace->getMemHandle("createInternalVariableOk");
+    DspVarGroupClientInterface* dspData = m_dspIFace->getMemHandle("createInternalVariableOk");
     dspData->addDspVar("SUBDC", 1, DSPDATA::vDspParam, dspDataTypeInt, dspInternalSegment);
     dspData->addDspVar("GAINCORRECTION", 32, DSPDATA::vDspParam, dspDataTypeFloat, dspInternalSegment);
 
@@ -192,7 +192,7 @@ void test_regression_dsp_var::createInternalVariablesOk()
 
 void test_regression_dsp_var::createInternalVariablesSecondNotOk()
 {
-    cDspMeasData* dspData = m_dspIFace->getMemHandle("createInternalVariableOk");
+    DspVarGroupClientInterface* dspData = m_dspIFace->getMemHandle("createInternalVariableOk");
     dspData->addDspVar("SUBDC", 1, DSPDATA::vDspParam, dspDataTypeInt, dspInternalSegment);
     dspData->addDspVar("GAINCORRECTION", 42, DSPDATA::vDspParam, dspDataTypeFloat, dspInternalSegment);
 
@@ -206,7 +206,7 @@ void test_regression_dsp_var::createInternalVariablesSecondNotOk()
 
 void test_regression_dsp_var::createGlobalVariableOk()
 {
-    cDspMeasData* dspData = m_dspIFace->getMemHandle("createGlobalVariableOk");
+    DspVarGroupClientInterface* dspData = m_dspIFace->getMemHandle("createGlobalVariableOk");
     dspData->addDspVar("TempGlobal1", 1, DSPDATA::vDspResult, dspDataTypeInt, moduleGlobalSegment);
     dspData->addDspVar("TempGlobal2", 1, DSPDATA::vDspResult, dspDataTypeFloat, moduleGlobalSegment);
 
@@ -239,7 +239,7 @@ static constexpr int varSize = 4;
 
 void test_regression_dsp_var::readVariablesAndListenDeviceNode()
 {
-    cDspMeasData* dspData = m_dspIFace->getMemHandle("readVariablesAndListenDeviceNode");
+    DspVarGroupClientInterface* dspData = m_dspIFace->getMemHandle("readVariablesAndListenDeviceNode");
     dspData->addDspVar("ONE_FLOAT", 1, DSPDATA::vDspResult, dspDataTypeFloat, moduleLocalSegment);
     dspData->addDspVar("TWO_FLOAT", 2, DSPDATA::vDspResult, dspDataTypeFloat, moduleLocalSegment);
     dspData->addDspVar("THREE_INT", 3, DSPDATA::vDspResult, dspDataTypeInt, moduleLocalSegment);
@@ -282,7 +282,7 @@ void test_regression_dsp_var::readVariablesAndListenDeviceNode()
 
 void test_regression_dsp_var::writeFloatVariablesAndListenDeviceNode()
 {
-    cDspMeasData* dspData = m_dspIFace->getMemHandle("readVariablesAndListenDeviceNode");
+    DspVarGroupClientInterface* dspData = m_dspIFace->getMemHandle("readVariablesAndListenDeviceNode");
     dspData->addDspVar("ONE_FLOAT", 1, DSPDATA::vDspResult, dspDataTypeFloat, moduleLocalSegment);
     dspData->addDspVar("TWO_FLOAT", 2, DSPDATA::vDspResult, dspDataTypeFloat, moduleLocalSegment);
 
@@ -318,7 +318,7 @@ void test_regression_dsp_var::writeFloatVariablesAndListenDeviceNode()
 
 void test_regression_dsp_var::writeIntVariablesAndListenDeviceNode()
 {
-    cDspMeasData* dspData = m_dspIFace->getMemHandle("readVariablesAndListenDeviceNode");
+    DspVarGroupClientInterface* dspData = m_dspIFace->getMemHandle("readVariablesAndListenDeviceNode");
     dspData->addDspVar("ONE_INT", 1, DSPDATA::vDspResult, dspDataTypeInt, moduleLocalSegment);
     dspData->addDspVar("TWO_INT", 2, DSPDATA::vDspResult, dspDataTypeInt, moduleLocalSegment);
 
@@ -354,7 +354,7 @@ void test_regression_dsp_var::writeIntVariablesAndListenDeviceNode()
 
 void test_regression_dsp_var::writeMixVariablesAndListenDeviceNode()
 {
-    cDspMeasData* dspData = m_dspIFace->getMemHandle("readVariablesAndListenDeviceNode");
+    DspVarGroupClientInterface* dspData = m_dspIFace->getMemHandle("readVariablesAndListenDeviceNode");
     dspData->addDspVar("ONE_FLOAT", 1, DSPDATA::vDspResult, dspDataTypeFloat, moduleLocalSegment);
     dspData->addDspVar("ONE_INT", 1, DSPDATA::vDspResult, dspDataTypeInt, moduleLocalSegment);
     dspData->addDspVar("TWO_FLOAT", 2, DSPDATA::vDspResult, dspDataTypeFloat, moduleLocalSegment);
@@ -407,7 +407,7 @@ void test_regression_dsp_var::writeMixVariablesAndListenDeviceNode()
 void test_regression_dsp_var::multipleClientsCreateResultVars()
 {
     // create vars client1
-    cDspMeasData* dspData1 = m_dspIFace->getMemHandle("createResultVariables");
+    DspVarGroupClientInterface* dspData1 = m_dspIFace->getMemHandle("createResultVariables");
     dspData1->addDspVar("CLIENT1_VAR1", 1, DSPDATA::vDspResult, dspDataTypeFloat, moduleLocalSegment);
     dspData1->addDspVar("CLIENT1_VAR2", 2, DSPDATA::vDspResult, dspDataTypeFloat, moduleLocalSegment);
     m_dspIFace->varList2Dsp();
@@ -421,7 +421,7 @@ void test_regression_dsp_var::multipleClientsCreateResultVars()
     TimeMachineObject::feedEventLoop();
 
     // create vars client2
-    cDspMeasData* dspData2 = dspIFace2->getMemHandle("createResultVariables");
+    DspVarGroupClientInterface* dspData2 = dspIFace2->getMemHandle("createResultVariables");
     dspData2->addDspVar("CLIENT2_VAR1", 3, DSPDATA::vDspResult, dspDataTypeFloat, moduleLocalSegment);
     dspData2->addDspVar("CLIENT2_VAR2", 4, DSPDATA::vDspResult, dspDataTypeFloat, moduleLocalSegment);
     dspIFace2->varList2Dsp();
@@ -454,7 +454,7 @@ void test_regression_dsp_var::multipleClientsCreateResultVars()
     QCOMPARE(spyRead2[0][2].toString(), "errexec");
 }
 
-extern TMemSection dm32DspWorkspace;
+extern DspMemorySectionInternal dm32DspWorkspace;
 
 void test_regression_dsp_var::serverReadDspWorkspaceVariableAndListenDeviceNode()
 {
@@ -473,7 +473,7 @@ void test_regression_dsp_var::serverReadDspWorkspaceVariableAndListenDeviceNode(
     QCOMPARE(spyRead[1][2], 1*varSize);
 }
 
-extern TMemSection dm32DialogWorkSpace;
+extern DspMemorySectionInternal dm32DialogWorkSpace;
 
 void test_regression_dsp_var::serverWriteDspDialogWorkspaceVariableAndListenDeviceNode()
 {
@@ -492,7 +492,7 @@ void test_regression_dsp_var::serverWriteDspDialogWorkspaceVariableAndListenDevi
     QCOMPARE(spyWrite[0][3], 2*varSize);
 }
 
-extern TMemSection dm32UserWorkSpace;
+extern DspMemorySectionInternal dm32UserWorkSpace;
 
 void test_regression_dsp_var::serverReadDspUserWorkspaceVariableAndListenDeviceNode()
 {
@@ -511,7 +511,7 @@ void test_regression_dsp_var::serverReadDspUserWorkspaceVariableAndListenDeviceN
     QCOMPARE(spyRead[1][2], 1*varSize);
 }
 
-extern TMemSection dm32CmdList;
+extern DspMemorySectionInternal dm32CmdList;
 
 void test_regression_dsp_var::serverReadDspCmdListVariableAndListenDeviceNode()
 {
@@ -532,7 +532,7 @@ void test_regression_dsp_var::serverReadDspCmdListVariableAndListenDeviceNode()
     QCOMPARE(spyRead[1][2], 1*varSize);
 }
 
-extern TMemSection symbConsts1;
+extern DspMemorySectionInternal symbConsts1;
 
 void test_regression_dsp_var::serverReadDspChannelDataVariableAndListenDeviceNode()
 {
@@ -553,7 +553,7 @@ void test_regression_dsp_var::serverReadDspChannelDataVariableAndListenDeviceNod
 
 void test_regression_dsp_var::dspVarMemSizeInitialHack()
 {
-    cDspMeasData* dspData = m_dspIFace->getMemHandle("dspVarMemSizeInitialHack");
+    DspVarGroupClientInterface* dspData = m_dspIFace->getMemHandle("dspVarMemSizeInitialHack");
     dspData->addDspVar("ONE_FLOAT", 1, DSPDATA::vDspResult, dspDataTypeFloat, moduleLocalSegment);
     dspData->addDspVar("ONE_INT", 1, DSPDATA::vDspResult, dspDataTypeInt, moduleLocalSegment);
     dspData->addDspVar("TWO_FLOAT", 2, DSPDATA::vDspResult, dspDataTypeFloat, moduleLocalSegment);

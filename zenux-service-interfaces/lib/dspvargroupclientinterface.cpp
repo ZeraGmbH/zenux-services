@@ -1,38 +1,38 @@
-#include "dspmeasdata.h"
+#include "dspvargroupclientinterface.h"
 #include <QIODevice>
 #include <QTextStream>
 
-int cDspMeasData::m_instanceCount = 0;
+int DspVarGroupClientInterface::m_instanceCount = 0;
 
-cDspMeasData::cDspMeasData(const QString &name) :
+DspVarGroupClientInterface::DspVarGroupClientInterface(const QString &name) :
     m_handleName(name)
 {
     m_instanceCount++;
 }
 
-cDspMeasData::~cDspMeasData()
+DspVarGroupClientInterface::~DspVarGroupClientInterface()
 {
     for (int i = 0; i < DspVarList.size(); ++i)
         delete DspVarList.at(i);
     m_instanceCount--;
 }
 
-float* cDspMeasData::data(QString name) // gibt einen zeiger zurück auf die var daten
+float* DspVarGroupClientInterface::data(QString name) // gibt einen zeiger zurück auf die var daten
 {
     for (int i=0; i<DspVarList.size(); ++i) {
-        cDspVar* pDspVar = DspVarList.at(i);
+        DspVarClientInterface* pDspVar = DspVarList.at(i);
         if (pDspVar->Name() == name)
             return pDspVar->data();
     }
     return 0; // caller has to pay attention !!!!!
 }
 
-void cDspMeasData::setVarData(QString datalist)
+void DspVarGroupClientInterface::setVarData(QString datalist)
 {
     const QStringList dataEntryList = datalist.split(";", Qt::SkipEmptyParts);
     for (const QString &dspVarEntry : dataEntryList) {
         QString varName = dspVarEntry.section(":",0,0);
-        cDspVar* dspVar = findVar(varName);
+        DspVarClientInterface* dspVar = findVar(varName);
         if(dspVar) {
             QString varValues = dspVarEntry.section(":",1,1);
             float *val = dspVar->data();
@@ -52,20 +52,20 @@ void cDspMeasData::setVarData(QString datalist)
     }
 }
 
-cDspVar *cDspMeasData::addDspVar(const QString &name, int size, int valueTypeMask,
+DspVarClientInterface *DspVarGroupClientInterface::addDspVar(const QString &name, int size, int valueTypeMask,
                                  DspDataType dataType, DspSegmentType dspSegmentType)
 {
-    cDspVar *var = new cDspVar(name, size, valueTypeMask, dataType, dspSegmentType);
+    DspVarClientInterface *var = new DspVarClientInterface(name, size, valueTypeMask, dataType, dspSegmentType);
     DspVarList.append(var);
     return var;
 }
 
-QString cDspMeasData::getName()
+QString DspVarGroupClientInterface::getName()
 {
     return m_handleName;
 }
 
-quint32 cDspMeasData::getUserMemSize()
+quint32 DspVarGroupClientInterface::getUserMemSize()
 {
     quint32 size = 0;
     for(int i = 0; i < DspVarList.size(); ++i)
@@ -74,7 +74,7 @@ quint32 cDspMeasData::getUserMemSize()
     return size;
 }
 
-quint32 cDspMeasData::getUserMemSizeGlobal()
+quint32 DspVarGroupClientInterface::getUserMemSizeGlobal()
 {
     quint32 size = 0;
     for(int i = 0; i < DspVarList.size(); ++i)
@@ -83,36 +83,36 @@ quint32 cDspMeasData::getUserMemSizeGlobal()
     return size;
 }
 
-QString cDspMeasData::VarListLong(int section)
+QString DspVarGroupClientInterface::VarListLong(int section)
 {
     QString sReturn;
     QTextStream ts(&sReturn, QIODevice::WriteOnly);
     for(int i=0; i<DspVarList.size(); ++i) {
-        const cDspVar *pDspVar = DspVarList.at(i);
+        const DspVarClientInterface *pDspVar = DspVarList.at(i);
         if ((section & pDspVar->valueTypeMask()) > 0)
             ts << QString("%1,%2,%3,%4,%5;").arg(m_handleName, pDspVar->Name()).arg(pDspVar->size()).arg(pDspVar->datatype()).arg(pDspVar->m_dspSegmentType);
     }
     return sReturn;
 }
 
-QString cDspMeasData::VarListShort(int section)
+QString DspVarGroupClientInterface::VarListShort(int section)
 {
     QString sReturn;
     QTextStream ts(&sReturn, QIODevice::WriteOnly);
     for(int i=0; i<DspVarList.size(); ++i) {
-        cDspVar *pDspVar = DspVarList.at(i);
+        DspVarClientInterface *pDspVar = DspVarList.at(i);
         if ((section & pDspVar->valueTypeMask()) > 0)
             ts << QString("%1,%2;").arg(pDspVar->Name()).arg(pDspVar->size());
     }
     return sReturn;
 }
 
-QString cDspMeasData::writeCommand()
+QString DspVarGroupClientInterface::writeCommand()
 {
     QString sReturn;
     QTextStream ts(&sReturn, QIODevice::WriteOnly );
     for(int i=0; i<DspVarList.count(); i++) {
-        cDspVar* pVar = DspVarList.at(i);
+        DspVarClientInterface* pVar = DspVarList.at(i);
         ts << pVar->Name();
 
         float* floatPointer = pVar->data();
@@ -133,11 +133,11 @@ QString cDspMeasData::writeCommand()
     return sReturn;
 }
 
-QVector<float>& cDspMeasData::getData()
+QVector<float>& DspVarGroupClientInterface::getData()
 {
     vector.clear();
     for (int i=0; i<DspVarList.count(); i++) { // we fetch all data of all vars in this memory group
-        cDspVar* pVar = DspVarList.at(i);
+        DspVarClientInterface* pVar = DspVarList.at(i);
         float* fval = pVar->data();
         for (int j = 0; j < pVar->size(); j++, fval++)
             vector.append(*fval);
@@ -145,30 +145,30 @@ QVector<float>& cDspMeasData::getData()
     return vector;
 }
 
-int cDspMeasData::getInstanceCount()
+int DspVarGroupClientInterface::getInstanceCount()
 {
     return m_instanceCount;
 }
 
-const QList<cDspVar *> cDspMeasData::getVars() const
+const QList<DspVarClientInterface *> DspVarGroupClientInterface::getVars() const
 {
     return DspVarList;
 }
 
-cDspVar *cDspMeasData::findVar(const QString &varName)
+DspVarClientInterface *DspVarGroupClientInterface::findVar(const QString &varName)
 {
     for(int i=0; i<DspVarList.size(); ++i) {
-        cDspVar* pDspVar = DspVarList.at(i);
+        DspVarClientInterface* pDspVar = DspVarList.at(i);
         if (pDspVar->Name() == varName)
             return pDspVar;
     }
     return nullptr;
 }
 
-void cDspMeasData::setData(const QVector<float> &data)
+void DspVarGroupClientInterface::setData(const QVector<float> &data)
 {
     int valueCount = 0;
-    for(cDspVar* dspVar : qAsConst(DspVarList)) {
+    for(DspVarClientInterface* dspVar : qAsConst(DspVarList)) {
         QVector<float> varData;
         for(int singleVal=0; singleVal<dspVar->size(); singleVal++) {
             varData.append(data[valueCount]);

@@ -1,5 +1,5 @@
-#ifndef DSPVAR_H
-#define DSPVAR_H
+#ifndef DSPVARCLIENTINTERFACE_H
+#define DSPVARCLIENTINTERFACE_H
 
 #include <QString>
 #include <QVector>
@@ -15,7 +15,7 @@ namespace DSPDATA
     static constexpr int userCreatableTypes = vDspALL;
 }
 
-class cDspVar // dsp variable
+class DspVarClientInterface
 {
 public:
     const QString& Name() const { return m_sName;}
@@ -29,10 +29,10 @@ public:
 
     static int getInstanceCount();
 private:
-    friend class cDspMeasData;
-    cDspVar(const QString &name, int size, int valueTypeMask,
+    friend class DspVarGroupClientInterface;
+    DspVarClientInterface(const QString &name, int size, int valueTypeMask,
             DspDataType dataType, DspSegmentType dspSegmentType);
-    virtual ~cDspVar();
+    virtual ~DspVarClientInterface();
     void setData(QVector<float> data) {
         Q_ASSERT(m_dspVarData.size() == data.size());
         m_dspVarData = data;
@@ -45,4 +45,4 @@ private:
     QVector<float> m_dspVarData; // we hold an array for data storage
     static int m_instanceCount;
 };
-#endif // DSPVAR_H
+#endif // DSPVARCLIENTINTERFACE_H

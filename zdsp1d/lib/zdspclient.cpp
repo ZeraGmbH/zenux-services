@@ -65,10 +65,10 @@ bool ZdspClient::setRawActualValueList(const QString &varsSemicolonSeparated)
     const QStringList varEntries = varsSemicolonSeparatedEntityIdStripped.split(";", Qt::SkipEmptyParts);
     bool allOk = true;
     for(int i=0; i<varEntries.count(); i++) {
-        TDspVar dspVar;
-        if(dspVar.Init(varEntries[i])) {
+        DspVarServer dspVar;
+        if(dspVar.setupFromCommaSeparatedString(varEntries[i])) {
             if (dspVar.segment == dspInternalSegment) {
-                const TDspVar* dspVarDsp = m_dspVarResolver.getDspVar(dspVar.Name);
+                const DspVarServer* dspVarDsp = m_dspVarResolver.getDspVar(dspVar.Name);
                 if (dspVarDsp == nullptr) {
                     qCritical("Internal DSP Variable %s to add on client not found",
                               qPrintable(dspVar.Name));
@@ -234,7 +234,7 @@ int ZdspClient::getInstanceCount()
     return m_instanceCount;
 }
 
-int ZdspClient::calcDataMemSize(const QVector<TDspVar> &dspVarArray)
+int ZdspClient::calcDataMemSize(const QVector<DspVarServer> &dspVarArray)
 {
     const int varCount = dspVarArray.count();
     int dataMemSize = 0;
@@ -263,7 +263,7 @@ QString ZdspClient::readActValues(const QString& variablesStringOnEmptyActOnly)
 {
     QString variablesStringWithActual = variablesStringOnEmptyActOnly;
     if(variablesStringWithActual.isEmpty()) { // sonderfall liste leer -> alle messwerte lesen
-        for(const TDspVar &dspVar : qAsConst(m_dspVarArray))
+        for(const DspVarServer &dspVar : qAsConst(m_dspVarArray))
             variablesStringWithActual += QString("%1,%2;").arg(dspVar.Name).arg(dspVar.size);
     }
     DspVarDeviceNodeInOut dspInOut(m_zdspSupportFactory);

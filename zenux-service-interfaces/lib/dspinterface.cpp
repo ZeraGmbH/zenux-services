@@ -62,7 +62,7 @@ void cDSPInterface::addCycListItems(const QStringList &cmds)
     d->addCycListItems(cmds);
 }
 
-cDspMeasData* cDSPInterface::getMemHandle(QString name)
+DspVarGroupClientInterface* cDSPInterface::getMemHandle(QString name)
 {
     Q_D(cDSPInterface);
     return d->getMemHandle(name);
@@ -80,19 +80,19 @@ quint32 cDSPInterface::deactivateAll()
     return d->deactivateAll();
 }
 
-quint32 cDSPInterface::dataAcquisition(cDspMeasData *memgroup)
+quint32 cDSPInterface::dataAcquisition(DspVarGroupClientInterface *memgroup)
 {
     Q_D(cDSPInterface);
     return d->dataAcquisition(memgroup);
 }
 
-quint32 cDSPInterface::dspMemoryRead(cDspMeasData *memgroup, DspDataType type)
+quint32 cDSPInterface::dspMemoryRead(DspVarGroupClientInterface *memgroup, DspDataType type)
 {
     Q_D(cDSPInterface);
     return d->dspMemoryRead(memgroup, type);
 }
 
-quint32 cDSPInterface::dspMemoryWrite(cDspMeasData *memgroup)
+quint32 cDSPInterface::dspMemoryWrite(DspVarGroupClientInterface *memgroup)
 {
     Q_D(cDSPInterface);
     return d->dspMemoryWrite(memgroup);

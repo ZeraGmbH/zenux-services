@@ -1,11 +1,12 @@
-#ifndef DSPVARANDMEMSECTION_H
-#define DSPVARANDMEMSECTION_H
+#ifndef DSPVARSERVER_H
+#define DSPVARSERVER_H
 
-#include "dspvar.h"
+#include "dspvarclientinterface.h"
 #include <QString>
 
-struct TDspVar {
-    bool Init(const QString& varDefinition);
+struct DspVarServer {
+    bool setupFromCommaSeparatedString(const QString& varDefinition);
+
     QString m_clientHandleName;
     QString Name;                           // name der variablen
     ushort size = 0;                        // anzahl worte
@@ -16,14 +17,4 @@ struct TDspVar {
     static QString toHex(int val);
 };
 
-struct TMemSection { // beschreibt eine dsp memory section
-    TMemSection() = default;
-    TMemSection(long startAddress,
-                int varCount,
-                TDspVar *dspVars);
-    long m_startAddress = 0;
-    int m_varCount = 0;
-    TDspVar *m_dspVars = nullptr;
-};
-
-#endif // DSPVARANDMEMSECTION_H
+#endif // DSPVARSERVER_H

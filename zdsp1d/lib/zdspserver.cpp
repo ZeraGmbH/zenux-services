@@ -22,14 +22,14 @@
 #define ServerName "zdsp1d"
 #define ServerVersion "V1.11"
 
-extern TMemSection dm32DspWorkspace;
-extern TMemSection dm32DialogWorkSpace;
-extern TMemSection dm32UserWorkSpace;
-extern TMemSection dm32CmdList;
-extern TMemSection symbConsts1;
+extern DspMemorySectionInternal dm32DspWorkspace;
+extern DspMemorySectionInternal dm32DialogWorkSpace;
+extern DspMemorySectionInternal dm32UserWorkSpace;
+extern DspMemorySectionInternal dm32CmdList;
+extern DspMemorySectionInternal symbConsts1;
 
-extern TDspVar CmdListVar;
-extern TDspVar UserWorkSpaceVar;
+extern DspVarServer CmdListVar;
+extern DspVarServer UserWorkSpaceVar;
 
 constexpr int loggingIntervalMs = 10000;
 
@@ -623,7 +623,7 @@ QString ZDspServer::getDspDeviceNode()
 int ZDspServer::getUserMemAvailable() const
 {
     for (int i=0; i<dm32UserWorkSpace.m_varCount; i++) {
-        const TDspVar &dspVar = dm32UserWorkSpace.m_dspVars[i];
+        const DspVarServer &dspVar = dm32UserWorkSpace.m_dspVars[i];
         if(dspVar.Name == "UWSPACE")
             return dspVar.size;
     }
@@ -642,7 +642,7 @@ int ZDspServer::getUserMemOccupied() const
 int ZDspServer::getProgMemCyclicAvailable() const
 {
     for (int i=0; i<dm32CmdList.m_varCount; i++) {
-        const TDspVar &dspVar = dm32CmdList.m_dspVars[i];
+        const DspVarServer &dspVar = dm32CmdList.m_dspVars[i];
         if(dspVar.Name == "CMDLIST")
             return dspVar.size;
     }
@@ -661,7 +661,7 @@ int ZDspServer::getProgMemCyclicOccupied() const
 int ZDspServer::getProgMemInterruptAvailable() const
 {
     for (int i=0; i<dm32CmdList.m_varCount; i++) {
-        const TDspVar &dspVar = dm32CmdList.m_dspVars[i];
+        const DspVarServer &dspVar = dm32CmdList.m_dspVars[i];
         if(dspVar.Name == "INTCMDLIST")
             return dspVar.size;
     }
@@ -679,10 +679,10 @@ int ZDspServer::getProgMemInterruptOccupied() const
 
 QJsonObject ZDspServer::getStaticMemAllocation()
 {
-    QMap<QString /*clientHandleName*/, QMap<QString /* varName */, const TDspVar*>> varsSorted;
-    QHash<QString, TDspVar*> staticVariables = DspStaticData::getVarHash();
+    QMap<QString /*clientHandleName*/, QMap<QString /* varName */, const DspVarServer*>> varsSorted;
+    QHash<QString, DspVarServer*> staticVariables = DspStaticData::getVarHash();
     for (auto iter=staticVariables.cbegin(); iter!=staticVariables.cend(); ++iter) {
-        const TDspVar* dspVar = iter.value();
+        const DspVarServer* dspVar = iter.value();
         varsSorted[dspVar->m_clientHandleName][dspVar->Name] = dspVar;
     }
     QJsonObject json;
@@ -690,12 +690,12 @@ QJsonObject ZDspServer::getStaticMemAllocation()
         QJsonObject jsonVars;
         for (auto iterVars=iterClient->cbegin(); iterVars!=iterClient->cend(); ++iterVars) {
             QJsonObject jsonVar;
-            QString hexvalue = TDspVar::toHex(iterVars.value()->adr);
+            QString hexvalue = DspVarServer::toHex(iterVars.value()->adr);
             jsonVar.insert("Addr", hexvalue);
-            hexvalue = TDspVar::toHex(iterVars.value()->offs);
+            hexvalue = DspVarServer::toHex(iterVars.value()->offs);
             jsonVar.insert("Offset", hexvalue);
             jsonVar.insert("Size", int(iterVars.value()->size));
-            hexvalue = TDspVar::toHex(iterVars.value()->size);
+            hexvalue = DspVarServer::toHex(iterVars.value()->size);
             jsonVar.insert("SizeHex", hexvalue);
 
             const QString varName = iterVars.key();
@@ -728,7 +728,7 @@ QJsonObject ZDspServer::getMemoryDump()
             const QList<ZdspClient::VarLocation>* localList = client->getLocalVariableDump();
             for (const ZdspClient::VarLocation &entry : *localList) {
                 QString key = QString("%1 / %2").arg(
-                    TDspVar::toHex(entry.m_localVariableAddress), TDspVar::toHex(entry.m_absoluteVariableAddress));
+                    DspVarServer::toHex(entry.m_localVariableAddress), DspVarServer::toHex(entry.m_absoluteVariableAddress));
                 localVariables.insert(key, entry.m_variableName);
             }
             entityData.insert("DspVarsLocal", localVariables);
@@ -737,7 +737,7 @@ QJsonObject ZDspServer::getMemoryDump()
             const QList<ZdspClient::VarLocation>* globalList = client->getGlobalVariableDump();
             for (const ZdspClient::VarLocation &entry : *globalList) {
                 QString key = QString("%1 / %2").arg(
-                    TDspVar::toHex(entry.m_localVariableAddress), TDspVar::toHex(entry.m_absoluteVariableAddress));
+                    DspVarServer::toHex(entry.m_localVariableAddress), DspVarServer::toHex(entry.m_absoluteVariableAddress));
                 globalVariables.insert(key, entry.m_variableName);
             }
             entityData.insert("DspVarsGlobal", globalVariables);
@@ -966,7 +966,7 @@ bool ZDspServer::setDspType()
             dm32UserWorkSpace.m_startAddress = dm32UserWorkSpaceBase21362;
             dm32CmdList.m_startAddress = dm32CmdListBase21362;
 
-            TDspVar* pDspVar = &CmdListVar;
+            DspVarServer* pDspVar = &CmdListVar;
 
             pDspVar->size = IntCmdListLen21362; pDspVar++;
             pDspVar->size = CmdListLen21362; pDspVar++;

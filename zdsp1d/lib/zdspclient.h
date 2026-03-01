@@ -53,7 +53,7 @@ public:
     static int getInstanceCount();
 
 private:
-    static int calcDataMemSize(const QVector<TDspVar> &dspVarArray);
+    static int calcDataMemSize(const QVector<DspVarServer> &dspVarArray);
     void setEntityId(int entityId);
     QString handleAndRemoveEntityId(const QString &scpiParam);
 
@@ -68,8 +68,8 @@ private:
 
     QList<DspCmdWithParamsRaw> m_DspCmdList;
     QList<DspCmdWithParamsRaw>  m_DspIntCmdList;
-    QVector<TDspVar> m_dspVarArray; // !!! we need permanent keeper of TDspVar pointer to data is used !!!
-    TMemSection m_userMemSection;
+    QVector<DspVarServer> m_dspVarArray; // !!! we need permanent keeper of DspVarServer pointer to data is used !!!
+    DspMemorySectionInternal m_userMemSection;
     int m_dataMemSize = 0;
 
     // dump / tests

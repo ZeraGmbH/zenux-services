@@ -1,7 +1,7 @@
 #ifndef DSPAPI_H
 #define DSPAPI_H
 
-#include "dspvarandmemsection.h"
+#include "dspmemorysectioninternal.h"
 #include "dspvarresolver.h"
 #include <QString>
 #include <QHash>
@@ -25,14 +25,14 @@ class DspStaticData
 {
 public:
     static DspCmdDecodingDetails* findDspCmd(const QString& cmdName);
-    static const QHash<QString, TDspVar*> &getVarHash();
-    static void initMemsection(TMemSection* memSection);
+    static const QHash<QString, DspVarServer*> &getVarHash();
+    static void initMemsection(DspMemorySectionInternal* memSection);
 private:
     static void fillCmdHashOn1stCall();
     static void fillMemSectionHashOn1stCall();
 
     static QHash<QString, DspCmdDecodingDetails*> m_dspAvailableCmds;
-    static QHash<QString, TDspVar*> m_varHash;
+    static QHash<QString, DspVarServer*> m_varHash;
 };
 
 

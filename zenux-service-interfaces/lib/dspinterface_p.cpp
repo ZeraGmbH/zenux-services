@@ -58,7 +58,7 @@ QString cDSPInterfacePrivate::varList2String(VarListPrependOptions prependOption
     if(prependOption == PREPEND_ENTIY_ID_IF_SET)
         prependEntityIdIfSet(ts);
     for (int i = 0; i < m_DspMemoryDataList.count(); i++) {
-        cDspMeasData* pDspMeasData = m_DspMemoryDataList.at(i);
+        DspVarGroupClientInterface* pDspMeasData = m_DspMemoryDataList.at(i);
         ts << pDspMeasData->VarListLong(DSPDATA::userCreatableTypes);
     }
     return varList;
@@ -130,16 +130,16 @@ void cDSPInterfacePrivate::addIntListItem(const QString &cmd)
     m_irqCmdList.append(cmd);
 }
 
-cDspMeasData* cDSPInterfacePrivate::getMemHandle(const QString &name)
+DspVarGroupClientInterface* cDSPInterfacePrivate::getMemHandle(const QString &name)
 {
-    cDspMeasData* pdmd = new cDspMeasData(name);
+    DspVarGroupClientInterface* pdmd = new DspVarGroupClientInterface(name);
     m_DspMemoryDataList.append(pdmd);
     return pdmd;
 }
 
-cDspMeasData *cDSPInterfacePrivate::findMemHandle(const QString &name) const
+DspVarGroupClientInterface *cDSPInterfacePrivate::findMemHandle(const QString &name) const
 {
-    cDspMeasData* memHandleFound = nullptr;
+    DspVarGroupClientInterface* memHandleFound = nullptr;
     for(int i=0; i<m_DspMemoryDataList.count(); ++i) {
         if(m_DspMemoryDataList[i]->getName() == name) {
             memHandleFound = m_DspMemoryDataList[i];
@@ -163,7 +163,7 @@ quint32 cDSPInterfacePrivate::deactivateAll()
     return msgnr;
 }
 
-quint32 cDSPInterfacePrivate::dataAcquisition(cDspMeasData *memgroup)
+quint32 cDSPInterfacePrivate::dataAcquisition(DspVarGroupClientInterface *memgroup)
 {
     quint32 msgnr = sendCommand(QString("MEAS"), QString("%1").arg(memgroup->VarListShort(DSPDATA::vDspResult)));
     m_MsgNrCmdList[msgnr] = dataacquisition;
@@ -172,7 +172,7 @@ quint32 cDSPInterfacePrivate::dataAcquisition(cDspMeasData *memgroup)
     return msgnr;
 }
 
-quint32 cDSPInterfacePrivate::dspMemoryRead(cDspMeasData *memgroup, DspDataType type)
+quint32 cDSPInterfacePrivate::dspMemoryRead(DspVarGroupClientInterface *memgroup, DspDataType type)
 {
     quint32 msgnr = sendCommand(QString("MEM:READ"), // long: MEMORY:READ
                                 QString("%1").arg(memgroup->VarListShort(DSPDATA::vDspALL)));
@@ -182,7 +182,7 @@ quint32 cDSPInterfacePrivate::dspMemoryRead(cDspMeasData *memgroup, DspDataType 
     return msgnr;
 }
 
-quint32 cDSPInterfacePrivate::dspMemoryWrite(cDspMeasData *memgroup)
+quint32 cDSPInterfacePrivate::dspMemoryWrite(DspVarGroupClientInterface *memgroup)
 {
     quint32 msgnr = sendCommand("MEM:WRIT", // long: MEMORY:WRITE
                                 memgroup->writeCommand());
@@ -195,7 +195,7 @@ QStringList cDSPInterfacePrivate::getCyclicCmdList() const
     return m_cycCmdList;
 }
 
-QList<cDspMeasData *> cDSPInterfacePrivate::getMemoryDataList() const
+QList<DspVarGroupClientInterface *> cDSPInterfacePrivate::getMemoryDataList() const
 {
     return m_DspMemoryDataList;
 }
@@ -251,7 +251,7 @@ void cDSPInterfacePrivate::receiveAnswer(std::shared_ptr<ProtobufMessage::NetMes
             break;
         case dataacquisition:
         case dspmemoryread: {
-            cDspMeasData* actMemGroup = m_MsgNrMeasData.take(lmsgnr);
+            DspVarGroupClientInterface* actMemGroup = m_MsgNrMeasData.take(lmsgnr);
             DspDataType actMemType = m_MsgNrMemType.take(lmsgnr);
             Q_UNUSED(actMemType)
             actMemGroup->setVarData(lmsg);
