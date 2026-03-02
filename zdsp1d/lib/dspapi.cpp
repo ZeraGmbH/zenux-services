@@ -267,13 +267,13 @@ static constexpr int CmdListLen21262 = 896;
 static constexpr int uwSpaceSize21262 = 14335;
 
 static constexpr int dm32UserWorkSpaceBase21362 = 0x98180;
-static constexpr int dm32UserWorkSpaceGlobal21362 = 0x9F000;
+static constexpr int dm32UserWorkSpaceGlobal21362 = 0x9F000; // size 4095 / 0xFFF
 static constexpr int dm32DspWorkSpaceBase21362 = 0xE0800;
 static constexpr int dm32DialogWorkSpaceBase21362 = 0xE1800;
 static constexpr int dm32CmdListBase21362 = 0xE2000;
 static constexpr int CmdListLen21362 = 3584;
 static constexpr int IntCmdListLen21362 = 512;
-static constexpr int uwSpaceSize21362 = 32383;
+static constexpr int uwSpaceSize21362 = 32383; // userspace end => 0x9FFFF
 
 int DspStaticData::alignInternalMemRegionsFor21262()
 {
