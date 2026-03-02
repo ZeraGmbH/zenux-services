@@ -931,28 +931,35 @@ QString ZDspServer::loadCmdListAllClients()
     return ZSCPI::scpiAnswer[ZSCPI::ack];
 }
 
-static constexpr int dm32DspWorkSpaceBase21362 = 0xE0800;
-static constexpr int dm32UserWorkSpaceGlobal21262 = 0x87000;
-static constexpr int dm32UserWorkSpaceGlobal21362 = 0x9F000;
-static constexpr int dm32DialogWorkSpaceBase21362 = 0xE1800;
-static constexpr int dm32UserWorkSpaceBase21362 = 0x98180;
-static constexpr int dm32CmdListBase21362 = 0xE2000;
-static constexpr int CmdListLen21362 = 3584;
-static constexpr int IntCmdListLen21362 = 512;
-static constexpr int uwSpaceSize21362 = 32383;
 
 bool ZDspServer::setDspType()
 {
     int r = readMagicId();
     if ( r == DeviceNodeDsp::MAGIC_ID21262 ) {
         m_userWorkSpaceGlobalSegmentAdr = dm32UserWorkSpaceGlobal21262;
-        return m_sDspBootPath.contains("zdsp21262.ldr");
-        // adressen im dsp stehen für adsp21262 default richtig
+        if (m_sDspBootPath.contains("zdsp21262.ldr")) {
+            dm32DspWorkspace.m_startAddress = dm32DspWorkSpaceBase21262;
+            dm32DialogWorkSpace.m_startAddress = dm32DialogWorkSpaceBase21262;
+            dm32UserWorkSpace.m_startAddress = dm32UserWorkSpaceBase21262;
+            dm32CmdList.m_startAddress = dm32CmdListBase21262;
+
+            DspVarServer* pDspVar = &CmdListVar;
+
+            pDspVar->size = IntCmdListLen21262; pDspVar++;
+            pDspVar->size = CmdListLen21262; pDspVar++;
+            pDspVar->size = IntCmdListLen21262; pDspVar++;
+            pDspVar->size = CmdListLen21262;
+
+            pDspVar = &UserWorkSpaceVar;
+            pDspVar->size = uwSpaceSize21262;
+
+            return true;
+        }
+        return false;
     }
     else if ( r == DeviceNodeDsp::MAGIC_ID21362) {
         m_userWorkSpaceGlobalSegmentAdr = dm32UserWorkSpaceGlobal21362;
         if (m_sDspBootPath.contains("zdsp21362.ldr")) {
-            // für adsp21362 schreiben wir die adressen um
             dm32DspWorkspace.m_startAddress = dm32DspWorkSpaceBase21362;
             dm32DialogWorkSpace.m_startAddress = dm32DialogWorkSpaceBase21362;
             dm32UserWorkSpace.m_startAddress = dm32UserWorkSpaceBase21362;
@@ -970,11 +977,9 @@ bool ZDspServer::setDspType()
 
             return true;
         }
-        else
-            return false;
-    }
-    else
         return false;
+    }
+    return false;
 }
 
 int ZDspServer::readMagicId()

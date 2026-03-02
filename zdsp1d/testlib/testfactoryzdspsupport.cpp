@@ -7,6 +7,11 @@ TestFactoryZdspSupport::TestFactoryZdspSupport(int dspMagicId) :
 {
 }
 
+TestFactoryZdspSupport::~TestFactoryZdspSupport()
+{
+    DspStaticData::clearFor1stCall();
+}
+
 AbstractDspDeviceNodePtr TestFactoryZdspSupport::getDspDeviceNode()
 {
     return TestSingletonDeviceNodeDsp::getInstancePtr(m_dspMagicId);

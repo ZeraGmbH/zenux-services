@@ -233,7 +233,6 @@ void test_regression_dsp_var::createGlobalVariableOk()
     QCOMPARE(spyWrite[0][2], ZSCPI::scpiAnswer[ZSCPI::ack]);
 }
 
-static constexpr int dm32UserWorkSpaceBase21362 = 0x98180; // Stolen from zdspserver.cpp !!!
 static constexpr int startAddress = dm32UserWorkSpaceBase21362;
 static constexpr int varSize = 4;
 
@@ -584,9 +583,24 @@ void test_regression_dsp_var::dspVarMemSizeInitialHack()
     QCOMPARE(serverMemSize, resultSize + tempSize + paramSize);
 }
 
-void test_regression_dsp_var::staticVariables()
+void test_regression_dsp_var::dspInternalVariables21262()
 {
-    QString expected = TestLogHelpers::loadFile(":/dump-static-variables.json");
+    m_dspService.reset();
+    m_zdspSupportFactory.reset();
+    TimeMachineObject::feedEventLoop();
+
+    m_zdspSupportFactory = std::make_shared<TestFactoryZdspSupport>(DeviceNodeDsp::MAGIC_ID21262);
+    m_dspService = std::make_unique<TestZdsp1dForVarAccess>(m_zdspSupportFactory, m_tcpNetworkFactory, ":/adsp-21262.xml");
+    TimeMachineObject::feedEventLoop();
+
+    QString expected = TestLogHelpers::loadFile(":/dump-dsp-internal-vars-21262.json");
+    QString dumped = TestLogHelpers::dump(ZDspServer::getStaticMemAllocation());
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffJson(expected, dumped));
+}
+
+void test_regression_dsp_var::dspInternalVariables21362()
+{
+    QString expected = TestLogHelpers::loadFile(":/dump-dsp-internal-vars-21362.json");
     QString dumped = TestLogHelpers::dump(ZDspServer::getStaticMemAllocation());
     QVERIFY(TestLogHelpers::compareAndLogOnDiffJson(expected, dumped));
 }

@@ -1,6 +1,9 @@
 <RCC>
     <qresource prefix="/">
+        <file>adsp-21262.xml</file>
+        <file>adsp-21362.xml</file>
         <file>scpi-dump.xml</file>
-        <file>dump-static-variables.json</file>
+        <file>dump-dsp-internal-vars-21262.json</file>
+        <file>dump-dsp-internal-vars-21362.json</file>
     </qresource>
 </RCC>

@@ -12,12 +12,12 @@ TestDeviceNodeDspPtr TestSingletonDeviceNodeDsp::getInstancePtrTest(int dspMagic
 {
     if(dspMagicId == DeviceNodeDsp::MAGIC_ID21262) {
         if(m_instanceMagicId21262 == nullptr)
-            m_instanceMagicId21262 = std::make_shared<TestDeviceNodeDsp>(DeviceNodeDsp::MAGIC_ID21262);
+            m_instanceMagicId21262 = std::make_shared<TestDeviceNodeDsp>(dspMagicId);
         return m_instanceMagicId21262;
     }
-    if(dspMagicId == DeviceNodeDsp::MAGIC_ID21362) {
+    else if(dspMagicId == DeviceNodeDsp::MAGIC_ID21362) {
         if(m_instanceMagicId21362 == nullptr)
-            m_instanceMagicId21362 = std::make_shared<TestDeviceNodeDsp>(DeviceNodeDsp::MAGIC_ID21362);
+            m_instanceMagicId21362 = std::make_shared<TestDeviceNodeDsp>(dspMagicId);
         return m_instanceMagicId21362;
     }
     return nullptr;

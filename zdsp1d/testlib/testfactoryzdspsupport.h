@@ -8,6 +8,8 @@ class TestFactoryZdspSupport : public AbstractFactoryZdspSupport
 {
 public:
     TestFactoryZdspSupport(int dspMagicId = DeviceNodeDsp::MAGIC_ID21362);
+    virtual ~TestFactoryZdspSupport();
+
     AbstractDspDeviceNodePtr getDspDeviceNode() override;
     AbstractDspCompilerSupportPtr createDspCompilerSupport() override;
 private:
