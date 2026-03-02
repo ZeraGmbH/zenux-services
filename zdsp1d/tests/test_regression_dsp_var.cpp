@@ -526,7 +526,7 @@ void test_regression_dsp_var::serverReadDspCmdListVariableAndListenDeviceNode()
     QCOMPARE(spyRead[0][0], "lseek");
     // Yes detailed implementation background but we need to test not only the first in mem section
     // CMDLIST is second variable in dm32CmdList
-    QCOMPARE(spyRead[0][1].toInt(), dm32CmdList.m_startAddress + dm32CmdList.m_dspVars[0].size);
+    QCOMPARE(spyRead[0][1].toInt(), dm32CmdList.m_startAddress + dm32CmdList.getDspVar(0)->size);
     QCOMPARE(spyRead[1][0], "read");
     QCOMPARE(spyRead[1][1], "buf");
     QCOMPARE(spyRead[1][2], 1*varSize);

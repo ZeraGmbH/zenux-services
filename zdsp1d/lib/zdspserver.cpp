@@ -614,10 +614,10 @@ QString ZDspServer::getDspDeviceNode()
 
 int ZDspServer::getUserMemAvailable() const
 {
-    for (int i=0; i<dm32UserWorkSpace.m_varCount; i++) {
-        const DspVarServer &dspVar = dm32UserWorkSpace.m_dspVars[i];
-        if(dspVar.Name == "UWSPACE")
-            return dspVar.size;
+    for (int i=0; i<dm32UserWorkSpace.getVarCount(); i++) {
+        const DspVarServerPtr dspVar = dm32UserWorkSpace.getDspVar(i);
+        if(dspVar->Name == "UWSPACE")
+            return dspVar->size;
     }
     return 0;
 }
@@ -633,10 +633,10 @@ int ZDspServer::getUserMemOccupied() const
 
 int ZDspServer::getProgMemCyclicAvailable() const
 {
-    for (int i=0; i<dm32CmdList.m_varCount; i++) {
-        const DspVarServer &dspVar = dm32CmdList.m_dspVars[i];
-        if(dspVar.Name == "CMDLIST")
-            return dspVar.size;
+    for (int i=0; i<dm32CmdList.getVarCount(); i++) {
+        const DspVarServerPtr dspVar = dm32CmdList.getDspVar(i);
+        if(dspVar->Name == "CMDLIST")
+            return dspVar->size;
     }
     return 0;
 }
@@ -652,10 +652,10 @@ int ZDspServer::getProgMemCyclicOccupied() const
 
 int ZDspServer::getProgMemInterruptAvailable() const
 {
-    for (int i=0; i<dm32CmdList.m_varCount; i++) {
-        const DspVarServer &dspVar = dm32CmdList.m_dspVars[i];
-        if(dspVar.Name == "INTCMDLIST")
-            return dspVar.size;
+    for (int i=0; i<dm32CmdList.getVarCount(); i++) {
+        const DspVarServerPtr dspVar = dm32CmdList.getDspVar(i);
+        if(dspVar->Name == "INTCMDLIST")
+            return dspVar->size;
     }
     return 0;
 }
@@ -671,10 +671,10 @@ int ZDspServer::getProgMemInterruptOccupied() const
 
 QJsonObject ZDspServer::getStaticMemAllocation()
 {
-    QMap<QString /*clientHandleName*/, QMap<QString /* varName */, const DspVarServer*>> varsSorted;
-    QHash<QString, DspVarServer*> staticVariables = DspStaticData::getVarHash();
+    QMap<QString /*clientHandleName*/, QMap<QString /* varName */, DspVarServerPtr>> varsSorted;
+    const QHash<QString, DspVarServerPtr> staticVariables = DspStaticData::getVarHash();
     for (auto iter=staticVariables.cbegin(); iter!=staticVariables.cend(); ++iter) {
-        const DspVarServer* dspVar = iter.value();
+        const DspVarServerPtr dspVar = iter.value();
         varsSorted[dspVar->m_clientHandleName][dspVar->Name] = dspVar;
     }
     QJsonObject json;

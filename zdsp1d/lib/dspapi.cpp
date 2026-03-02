@@ -192,7 +192,7 @@ DspMemorySectionInternal symbConsts1 = DspMemorySectionInternal(0, DSP_VAR_COUNT
 
 
 QHash<QString, DspCmdDecodingDetails*> DspStaticData::m_dspAvailableCmds;
-QHash<QString, DspVarServer*> DspStaticData::m_varHash;
+QHash<QString, DspVarServerPtr> DspStaticData::m_varHash;
 
 DspCmdDecodingDetails *DspStaticData::findDspCmd(const QString &cmdName)
 {
@@ -203,7 +203,7 @@ DspCmdDecodingDetails *DspStaticData::findDspCmd(const QString &cmdName)
     return nullptr;
 }
 
-const QHash<QString, DspVarServer *> &DspStaticData::getVarHash()
+const QHash<QString, DspVarServerPtr> &DspStaticData::getVarHash()
 {
     fillMemSectionHashOn1stCall();
     return m_varHash;
@@ -227,8 +227,10 @@ void DspStaticData::fillMemSectionHashOn1stCall()
         fixedSectionList.append(&symbConsts1);
         for(DspMemorySectionInternal* memSection : qAsConst(fixedSectionList)) {
             initMemsection(memSection);
-            for (int i=0; i<memSection->m_varCount; i++)
-                m_varHash[memSection->m_dspVars[i].Name] = &(memSection->m_dspVars[i]);
+            for (int i=0; i<memSection->getVarCount(); i++) {
+                DspVarServerPtr dspVar = memSection->getDspVar(i);
+                m_varHash[dspVar->Name] = dspVar;
+            }
         }
     }
 }
@@ -236,12 +238,12 @@ void DspStaticData::fillMemSectionHashOn1stCall()
 void DspStaticData::initMemsection(DspMemorySectionInternal *memSection)
 {
     long offs = 0;
-    for (int i = 0; i< (memSection->m_varCount); i++) {
-        DspVarServer &dspVar = memSection->m_dspVars[i];
-        if (dspVar.segment == dspInternalSegment) { // initialize only dsp system variables
-            dspVar.offs = offs;
-            dspVar.adr = memSection->m_startAddress + offs;
-            offs += dspVar.size;
+    for (int i = 0; i< (memSection->getVarCount()); i++) {
+        DspVarServerPtr dspVar = memSection->getDspVar(i);
+        if (dspVar->segment == dspInternalSegment) { // initialize only dsp system variables
+            dspVar->offs = offs;
+            dspVar->adr = memSection->m_startAddress + offs;
+            offs += dspVar->size;
         }
     }
 }

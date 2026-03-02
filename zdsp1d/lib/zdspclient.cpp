@@ -58,7 +58,7 @@ const QList<ZdspClient::VarLocation> *ZdspClient::getLocalVariableDump() const
 
 bool ZdspClient::setVarList(const QString &varsSemicolonSeparated)
 {
-    m_dspVarArray.clear();
+    m_userMemSection.clear();
     int localOffset = 0;
     int globaloffset = 0;
     const QString varsSemicolonSeparatedEntityIdStripped = handleAndRemoveEntityId(varsSemicolonSeparated);
@@ -68,7 +68,7 @@ bool ZdspClient::setVarList(const QString &varsSemicolonSeparated)
         DspVarServer dspVar;
         if(dspVar.setupFromCommaSeparatedString(varEntries[i])) {
             if (dspVar.segment == dspInternalSegment) {
-                const DspVarServer* dspVarDsp = m_dspVarResolver.getDspVar(dspVar.Name);
+                const DspVarServerPtr dspVarDsp = m_dspVarResolver.getDspVar(dspVar.Name);
                 if (dspVarDsp == nullptr) {
                     qCritical("Internal DSP Variable %s to add on client not found",
                               qPrintable(dspVar.Name));
@@ -88,13 +88,13 @@ bool ZdspClient::setVarList(const QString &varsSemicolonSeparated)
             else if (dspVar.segment == moduleLocalSegment) {
                 dspVar.offs = localOffset;
                 localOffset += dspVar.size;
-                m_dspVarArray.append(dspVar);
+                m_userMemSection.appendDspVar(dspVar);
             }
             else if (dspVar.segment == moduleGlobalSegment) {
                 dspVar.offs = globaloffset;
                 // TODO already there / other clients????
                 globaloffset += dspVar.size;
-                m_dspVarArray.append(dspVar);
+                m_userMemSection.appendDspVar(dspVar);
             }
         }
         else
@@ -103,13 +103,7 @@ bool ZdspClient::setVarList(const QString &varsSemicolonSeparated)
     if (!allOk)
         return false;
 
-    m_userMemSection.m_varCount = m_dspVarArray.count();
-    m_dataMemSize = calcDataMemSize(m_dspVarArray);
-
-    if(m_userMemSection.m_varCount > 0) { // wir haben mindestens 1 variable
-        // WTF!!!!!!!!!!!!!
-        m_userMemSection.m_dspVars = m_dspVarArray.data();
-    }
+    m_dataMemSize = calcDataMemSize();
     m_dspVarResolver.actualizeVarHash(); // wir setzen die hashtabelle neu
     return true;
 }
@@ -137,20 +131,21 @@ ulong ZdspClient::relocalizeUserMemSectionVars(ulong startAdress, ulong globalMe
     m_localVarDump = std::make_unique<QList<VarLocation>>();
     m_globalVarDump = std::make_unique<QList<VarLocation>>();
 
-    for (int i = 0; i < m_userMemSection.m_varCount; i++) {
-        if (m_userMemSection.m_dspVars[i].segment == moduleLocalSegment) {
-            m_userMemSection.m_dspVars[i].adr = startAdress + usermemsize; // we need the adress for reading back data
-            m_localVarDump->append( { m_userMemSection.m_dspVars[i].Name,
-                                      m_userMemSection.m_dspVars[i].offs,
-                                      m_userMemSection.m_dspVars[i].adr } );
-            usermemsize += m_userMemSection.m_dspVars[i].size;
+    for (int i = 0; i < m_userMemSection.getVarCount(); i++) {
+        DspVarServerPtr dspVar = m_userMemSection.getDspVar(i);
+        if (dspVar->segment == moduleLocalSegment) {
+            dspVar->adr = startAdress + usermemsize; // we need the adress for reading back data
+            m_localVarDump->append( { dspVar->Name,
+                                      dspVar->offs,
+                                      dspVar->adr } );
+            usermemsize += dspVar->size;
         }
-        else if (m_userMemSection.m_dspVars[i].segment == moduleGlobalSegment) {
-            m_userMemSection.m_dspVars[i].adr = globalMemStart+globalmemsize;
-            m_globalVarDump->append( { m_userMemSection.m_dspVars[i].Name,
-                                       m_userMemSection.m_dspVars[i].offs,
-                                       m_userMemSection.m_dspVars[i].adr } );
-            globalmemsize += m_userMemSection.m_dspVars[i].size;
+        else if (dspVar->segment == moduleGlobalSegment) {
+            dspVar->adr = globalMemStart+globalmemsize;
+            m_globalVarDump->append( { dspVar->Name,
+                                       dspVar->offs,
+                                       dspVar->adr } );
+            globalmemsize += dspVar->size;
         }
     }
     return usermemsize;
@@ -234,12 +229,12 @@ int ZdspClient::getInstanceCount()
     return m_instanceCount;
 }
 
-int ZdspClient::calcDataMemSize(const QVector<DspVarServer> &dspVarArray)
+int ZdspClient::calcDataMemSize()
 {
-    const int varCount = dspVarArray.count();
+    const int varCount = m_userMemSection.getVarCount();
     int dataMemSize = 0;
     for (int var=0; var<varCount; ++var)
-        dataMemSize += dspVarArray[var].size;
+        dataMemSize += m_userMemSection.getDspVar(var)->size;
     return dataMemSize;
 }
 
