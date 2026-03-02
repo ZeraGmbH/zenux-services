@@ -89,17 +89,6 @@ static DspCmdDecodingDetails DspCmd[79] =
 {"XCOPYMEM", 78, CMD3i16, 0 }
 };
 
-
-static constexpr int dm32DspWorkSpaceBase21262 = 0x82800;
-static constexpr int dm32DialogWorkSpaceBase21262 = 0x83800;
-static constexpr int uwSpaceSize21262 = 14335;
-static constexpr int dm32UserWorkSpaceBase21262 = 0x84800;
-static constexpr int dm32CmdListBase21262 = 0x84000;
-static constexpr int IntCmdListLen21262 = 128;
-static constexpr int CmdListLen21262 = 896;
-
-#define DSP_VAR_COUNT(VAR_ARRAY) sizeof(VAR_ARRAY)/sizeof(DspVarServer)
-
 DspVarServer DspWorkspaceVar[] =
 {
     {"DspWorkspace", "FREQENCY",1,dspDataTypeFloat,0,0, dspInternalSegment},                // 1 wert gemessene frequenz

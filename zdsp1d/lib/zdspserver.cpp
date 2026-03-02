@@ -2,6 +2,7 @@
 #include "zdspclient.h"
 #include "dspapi.h"
 #include "dspcmdcompiler.h"
+#include "dspmemorysectioninternal.h"
 #include "commonscpimethods.h"
 #include "devicenodedsp.h"
 #include "zscpi_response_definitions.h"
@@ -931,20 +932,15 @@ QString ZDspServer::loadCmdListAllClients()
     return ZSCPI::scpiAnswer[ZSCPI::ack];
 }
 
-static constexpr int dm32DspWorkSpaceBase21362 = 0xE0800;
-static constexpr int dm32UserWorkSpaceGlobal21262 = 0x87000;
-static constexpr int dm32UserWorkSpaceGlobal21362 = 0x9F000;
-static constexpr int dm32DialogWorkSpaceBase21362 = 0xE1800;
-static constexpr int dm32UserWorkSpaceBase21362 = 0x98180;
-static constexpr int dm32CmdListBase21362 = 0xE2000;
-static constexpr int CmdListLen21362 = 3584;
-static constexpr int IntCmdListLen21362 = 512;
-static constexpr int uwSpaceSize21362 = 32383;
-
 bool ZDspServer::setDspType()
 {
     int r = readMagicId();
     if ( r == DeviceNodeDsp::MAGIC_ID21262 ) {
+        dm32DialogWorkSpace = DspMemorySectionInternal(dm32DialogWorkSpaceBase21262, DSP_VAR_COUNT(DialogWorkSpaceVar), DialogWorkSpaceVar);
+
+
+
+
         m_userWorkSpaceGlobalSegmentAdr = dm32UserWorkSpaceGlobal21262;
         return m_sDspBootPath.contains("zdsp21262.ldr");
         // adressen im dsp stehen für adsp21262 default richtig

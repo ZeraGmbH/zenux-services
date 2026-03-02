@@ -195,28 +195,28 @@
     },
     "CmdList": {
         "ALTCMDLIST": {
-            "Addr": "0x0E3200",
-            "Offset": "0x001200",
-            "Size": 3584,
-            "SizeHex": "0x000E00"
+            "Addr": "0x0E2480",
+            "Offset": "0x000480",
+            "Size": 896,
+            "SizeHex": "0x000380"
         },
         "ALTINTCMDLIST": {
-            "Addr": "0x0E3000",
-            "Offset": "0x001000",
-            "Size": 512,
-            "SizeHex": "0x000200"
+            "Addr": "0x0E2400",
+            "Offset": "0x000400",
+            "Size": 128,
+            "SizeHex": "0x000080"
         },
         "CMDLIST": {
-            "Addr": "0x0E2200",
-            "Offset": "0x000200",
-            "Size": 3584,
-            "SizeHex": "0x000E00"
+            "Addr": "0x0E2080",
+            "Offset": "0x000080",
+            "Size": 896,
+            "SizeHex": "0x000380"
         },
         "INTCMDLIST": {
             "Addr": "0x0E2000",
             "Offset": "0x000000",
-            "Size": 512,
-            "SizeHex": "0x000200"
+            "Size": 128,
+            "SizeHex": "0x000080"
         }
     },
     "DialogWorkSpace": {
@@ -443,8 +443,8 @@
         "UWSPACE": {
             "Addr": "0x098180",
             "Offset": "0x000000",
-            "Size": 32383,
-            "SizeHex": "0x007E7F"
+            "Size": 14335,
+            "SizeHex": "0x0037FF"
         }
     }
 }
