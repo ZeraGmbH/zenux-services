@@ -28,9 +28,6 @@ extern DspMemorySectionInternal dm32UserWorkSpace;
 extern DspMemorySectionInternal dm32CmdList;
 extern DspMemorySectionInternal symbConsts1;
 
-extern DspVarServer CmdListVar;
-extern DspVarServer UserWorkSpaceVar;
-
 constexpr int loggingIntervalMs = 10000;
 
 static char devavail[6] = "avail";
@@ -614,10 +611,10 @@ QString ZDspServer::getDspDeviceNode()
 
 int ZDspServer::getUserMemAvailable() const
 {
-    for (int i=0; i<dm32UserWorkSpace.m_varCount; i++) {
-        const DspVarServer &dspVar = dm32UserWorkSpace.m_dspVars[i];
-        if(dspVar.Name == "UWSPACE")
-            return dspVar.size;
+    for (int i=0; i<dm32UserWorkSpace.getVarCount(); i++) {
+        const DspVarServerPtr dspVar = dm32UserWorkSpace.getDspVar(i);
+        if(dspVar->Name == "UWSPACE")
+            return dspVar->size;
     }
     return 0;
 }
@@ -633,10 +630,10 @@ int ZDspServer::getUserMemOccupied() const
 
 int ZDspServer::getProgMemCyclicAvailable() const
 {
-    for (int i=0; i<dm32CmdList.m_varCount; i++) {
-        const DspVarServer &dspVar = dm32CmdList.m_dspVars[i];
-        if(dspVar.Name == "CMDLIST")
-            return dspVar.size;
+    for (int i=0; i<dm32CmdList.getVarCount(); i++) {
+        const DspVarServerPtr dspVar = dm32CmdList.getDspVar(i);
+        if(dspVar->Name == "CMDLIST")
+            return dspVar->size;
     }
     return 0;
 }
@@ -652,10 +649,10 @@ int ZDspServer::getProgMemCyclicOccupied() const
 
 int ZDspServer::getProgMemInterruptAvailable() const
 {
-    for (int i=0; i<dm32CmdList.m_varCount; i++) {
-        const DspVarServer &dspVar = dm32CmdList.m_dspVars[i];
-        if(dspVar.Name == "INTCMDLIST")
-            return dspVar.size;
+    for (int i=0; i<dm32CmdList.getVarCount(); i++) {
+        const DspVarServerPtr dspVar = dm32CmdList.getDspVar(i);
+        if(dspVar->Name == "INTCMDLIST")
+            return dspVar->size;
     }
     return 0;
 }
@@ -671,10 +668,10 @@ int ZDspServer::getProgMemInterruptOccupied() const
 
 QJsonObject ZDspServer::getStaticMemAllocation()
 {
-    QMap<QString /*clientHandleName*/, QMap<QString /* varName */, const DspVarServer*>> varsSorted;
-    QHash<QString, DspVarServer*> staticVariables = DspStaticData::getVarHash();
+    QMap<QString /*clientHandleName*/, QMap<QString /* varName */, DspVarServerPtr>> varsSorted;
+    const QHash<QString, DspVarServerPtr> staticVariables = DspStaticData::getVarHash();
     for (auto iter=staticVariables.cbegin(); iter!=staticVariables.cend(); ++iter) {
-        const DspVarServer* dspVar = iter.value();
+        const DspVarServerPtr dspVar = iter.value();
         varsSorted[dspVar->m_clientHandleName][dspVar->Name] = dspVar;
     }
     QJsonObject json;
@@ -931,6 +928,23 @@ QString ZDspServer::loadCmdListAllClients()
     return ZSCPI::scpiAnswer[ZSCPI::ack];
 }
 
+static constexpr int dm32DspWorkSpaceBase21262 = 0x82800;
+static constexpr int dm32UserWorkSpaceGlobal21262 = 0x87000;
+static constexpr int dm32DialogWorkSpaceBase21262 = 0x83800;
+static constexpr int uwSpaceSize21262 = 14335;
+static constexpr int dm32UserWorkSpaceBase21262 = 0x84800;
+static constexpr int dm32CmdListBase21262 = 0x84000;
+static constexpr int IntCmdListLen21262 = 128;
+static constexpr int CmdListLen21262 = 896;
+
+static constexpr int dm32DspWorkSpaceBase21362 = 0xE0800;
+static constexpr int dm32UserWorkSpaceGlobal21362 = 0x9F000;
+static constexpr int dm32DialogWorkSpaceBase21362 = 0xE1800;
+static constexpr int dm32UserWorkSpaceBase21362 = 0x98180;
+static constexpr int dm32CmdListBase21362 = 0xE2000;
+static constexpr int CmdListLen21362 = 3584;
+static constexpr int IntCmdListLen21362 = 512;
+static constexpr int uwSpaceSize21362 = 32383;
 
 bool ZDspServer::setDspType()
 {
@@ -943,15 +957,11 @@ bool ZDspServer::setDspType()
             dm32UserWorkSpace.m_startAddress = dm32UserWorkSpaceBase21262;
             dm32CmdList.m_startAddress = dm32CmdListBase21262;
 
-            DspVarServer* pDspVar = &CmdListVar;
-
-            pDspVar->size = IntCmdListLen21262; pDspVar++;
-            pDspVar->size = CmdListLen21262; pDspVar++;
-            pDspVar->size = IntCmdListLen21262; pDspVar++;
-            pDspVar->size = CmdListLen21262;
-
-            pDspVar = &UserWorkSpaceVar;
-            pDspVar->size = uwSpaceSize21262;
+            setInitialVariableSize(dm32UserWorkSpace, "UWSPACE", uwSpaceSize21262);
+            setInitialVariableSize(dm32CmdList, "INTCMDLIST", IntCmdListLen21262);
+            setInitialVariableSize(dm32CmdList, "CMDLIST", CmdListLen21262);
+            setInitialVariableSize(dm32CmdList, "ALTINTCMDLIST", IntCmdListLen21262);
+            setInitialVariableSize(dm32CmdList, "ALTCMDLIST", CmdListLen21262);
 
             return true;
         }
@@ -965,21 +975,29 @@ bool ZDspServer::setDspType()
             dm32UserWorkSpace.m_startAddress = dm32UserWorkSpaceBase21362;
             dm32CmdList.m_startAddress = dm32CmdListBase21362;
 
-            DspVarServer* pDspVar = &CmdListVar;
-
-            pDspVar->size = IntCmdListLen21362; pDspVar++;
-            pDspVar->size = CmdListLen21362; pDspVar++;
-            pDspVar->size = IntCmdListLen21362; pDspVar++;
-            pDspVar->size = CmdListLen21362;
-
-            pDspVar = &UserWorkSpaceVar;
-            pDspVar->size = uwSpaceSize21362;
+            setInitialVariableSize(dm32UserWorkSpace, "UWSPACE", uwSpaceSize21362);
+            setInitialVariableSize(dm32CmdList, "INTCMDLIST", IntCmdListLen21362);
+            setInitialVariableSize(dm32CmdList, "CMDLIST", CmdListLen21362);
+            setInitialVariableSize(dm32CmdList, "ALTINTCMDLIST", IntCmdListLen21362);
+            setInitialVariableSize(dm32CmdList, "ALTCMDLIST", CmdListLen21362);
 
             return true;
         }
         return false;
     }
     return false;
+}
+
+void ZDspServer::setInitialVariableSize(DspMemorySectionInternal &memSection, const QString variableName, int size)
+{
+    for (int i=0; i<memSection.getVarCount(); ++i) {
+        DspVarServerPtr dspVar = memSection.getDspVar(i);
+        if (dspVar->Name == variableName) {
+            dspVar->size = size;
+            return;
+        }
+    }
+    qCritical("setInitialVariableSize: Variable %s not found", qPrintable(variableName));
 }
 
 int ZDspServer::readMagicId()

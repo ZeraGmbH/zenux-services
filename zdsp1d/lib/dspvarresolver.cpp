@@ -18,12 +18,14 @@ void DspVarResolver::actualizeVarHash()
     m_varHash = DspStaticData::getVarHash();
     for(DspMemorySectionInternal* memSection : qAsConst(MemSectionList)) {
         DspStaticData::initMemsection(memSection);
-        for (int i=0; i<memSection->m_varCount; i++)
-            m_varHash[memSection->m_dspVars[i].Name] = &(memSection->m_dspVars[i]);
+        for (int i=0; i<memSection->getVarCount(); i++) {
+            DspVarServerPtr var = memSection->getDspVar(i);
+            m_varHash[var->Name] = var;
+        }
     }
 }
 
-DspVarServer* DspVarResolver::getDspVar(const QString &varNameWithOffset)
+DspVarServerPtr DspVarResolver::getDspVar(const QString &varNameWithOffset)
 {
     QString upperName = varNameWithOffset.toUpper();
     const QChar* cts = upperName.data();
@@ -36,7 +38,7 @@ DspVarServer* DspVarResolver::getDspVar(const QString &varNameWithOffset)
 
 long DspVarResolver::getVarOffset(const QString& varNameWithOffset, ulong userMemOffset, ulong globalstartadr)
 {
-    DspVarServer* dspVar = getDspVar(varNameWithOffset);
+    DspVarServerPtr dspVar = getDspVar(varNameWithOffset);
     if(dspVar) {
         ulong retoffs = dspVar->offs;
         QString offsetStr = extractOffset(varNameWithOffset, dspVar->Name);
@@ -56,7 +58,7 @@ long DspVarResolver::getVarOffset(const QString& varNameWithOffset, ulong userMe
 
 long DspVarResolver::getVarAddress(const QString &varNameWithOffset)
 {
-    DspVarServer* dspVar = getDspVar(varNameWithOffset);
+    DspVarServerPtr dspVar = getDspVar(varNameWithOffset);
     if(dspVar) {
         QString offsetStr = extractOffset(varNameWithOffset, dspVar->Name);
         if(offsetStr.length() > 0) { // wenn noch was da, dann muss das ein +/- offset sein
@@ -73,7 +75,7 @@ long DspVarResolver::getVarAddress(const QString &varNameWithOffset)
 
 int DspVarResolver::getVarType(const QString &varNameWithOffset)
 {
-    DspVarServer* var = getDspVar(varNameWithOffset);
+    DspVarServerPtr var = getDspVar(varNameWithOffset);
     if(var)
         return var->type;
     return dspDataTypeUnknown;

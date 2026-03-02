@@ -3,6 +3,7 @@
 
 #include "dspvarclientinterface.h"
 #include <QString>
+#include <memory>
 
 struct DspVarServer {
     bool setupFromCommaSeparatedString(const QString& varDefinition);
@@ -16,5 +17,7 @@ struct DspVarServer {
     DspSegmentType segment = moduleLocalSegment;
     static QString toHex(int val);
 };
+
+typedef std::shared_ptr<DspVarServer> DspVarServerPtr;
 
 #endif // DSPVARSERVER_H

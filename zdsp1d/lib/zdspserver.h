@@ -102,6 +102,7 @@ private:
     void flipCommandListSelector();
     bool writeDspCmdListsToDevNode();
     bool setDspType();
+    void setInitialVariableSize(DspMemorySectionInternal &memSection, const QString variableName, int size);
     int readMagicId();
     bool Test4HWPresent();
     bool Test4DspRunning();
