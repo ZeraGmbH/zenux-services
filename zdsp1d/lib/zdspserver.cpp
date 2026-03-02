@@ -461,8 +461,7 @@ QString ZDspServer::getDspCommandStat()
     DspVarResolver dspSystemVarResolver;
     if(!m_dspInOut.readOneDspVarInt("DSPACK", stat, &dspSystemVarResolver))
         return ZSCPI::scpiAnswer[ZSCPI::errexec];
-    else
-        return QString("%1").arg(stat);
+    return QString("%1").arg(stat);
 }
 
 QString ZDspServer::setDspCommandStat(const QString &scpiParam)
@@ -470,8 +469,7 @@ QString ZDspServer::setDspCommandStat(const QString &scpiParam)
     DspVarResolver dspSystemVarResolver;
     if(!m_dspInOut.writeDspVars(QString("DSPACK,%1;").arg(scpiParam), &dspSystemVarResolver) )
         return ZSCPI::scpiAnswer[ZSCPI::errexec];
-    else
-        return ZSCPI::scpiAnswer[ZSCPI::ack];
+    return ZSCPI::scpiAnswer[ZSCPI::ack];
 }
 
 QString ZDspServer::runDspTest(const QString &scpiParam)
@@ -758,16 +756,14 @@ QString ZDspServer::getDspStatus()
 {
     if ( Test4DspRunning() )
         return dsprunning;
-    else
-        return dspnrunning;
+    return dspnrunning;
 }
 
 QString ZDspServer::getDeviceStatus()
 {
     if ( Test4HWPresent() )
         return devavail;
-    else
-        return devnavail;
+    return devnavail;
 }
 
 QDataStream& operator<<(QDataStream& ds,DspCmdWithParamsRaw c)
