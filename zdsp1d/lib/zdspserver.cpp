@@ -928,76 +928,18 @@ QString ZDspServer::loadCmdListAllClients()
     return ZSCPI::scpiAnswer[ZSCPI::ack];
 }
 
-static constexpr int dm32DspWorkSpaceBase21262 = 0x82800;
-static constexpr int dm32UserWorkSpaceGlobal21262 = 0x87000;
-static constexpr int dm32DialogWorkSpaceBase21262 = 0x83800;
-static constexpr int uwSpaceSize21262 = 14335;
-static constexpr int dm32UserWorkSpaceBase21262 = 0x84800;
-static constexpr int dm32CmdListBase21262 = 0x84000;
-static constexpr int IntCmdListLen21262 = 128;
-static constexpr int CmdListLen21262 = 896;
-
-static constexpr int dm32DspWorkSpaceBase21362 = 0xE0800;
-static constexpr int dm32UserWorkSpaceGlobal21362 = 0x9F000;
-static constexpr int dm32DialogWorkSpaceBase21362 = 0xE1800;
-static constexpr int dm32UserWorkSpaceBase21362 = 0x98180;
-static constexpr int dm32CmdListBase21362 = 0xE2000;
-static constexpr int CmdListLen21362 = 3584;
-static constexpr int IntCmdListLen21362 = 512;
-static constexpr int uwSpaceSize21362 = 32383;
-
 bool ZDspServer::setDspType()
 {
-    int r = readMagicId();
-    if ( r == DeviceNodeDsp::MAGIC_ID21262 ) {
-        m_userWorkSpaceGlobalSegmentAdr = dm32UserWorkSpaceGlobal21262;
-        if (m_sDspBootPath.contains("zdsp21262.ldr")) {
-            dm32DspWorkspace.m_startAddress = dm32DspWorkSpaceBase21262;
-            dm32DialogWorkSpace.m_startAddress = dm32DialogWorkSpaceBase21262;
-            dm32UserWorkSpace.m_startAddress = dm32UserWorkSpaceBase21262;
-            dm32CmdList.m_startAddress = dm32CmdListBase21262;
-
-            setInitialVariableSize(dm32UserWorkSpace, "UWSPACE", uwSpaceSize21262);
-            setInitialVariableSize(dm32CmdList, "INTCMDLIST", IntCmdListLen21262);
-            setInitialVariableSize(dm32CmdList, "CMDLIST", CmdListLen21262);
-            setInitialVariableSize(dm32CmdList, "ALTINTCMDLIST", IntCmdListLen21262);
-            setInitialVariableSize(dm32CmdList, "ALTCMDLIST", CmdListLen21262);
-
-            return true;
-        }
-        return false;
+    int magicId = readMagicId();
+    if (magicId == DeviceNodeDsp::MAGIC_ID21262 && m_sDspBootPath.contains("zdsp21262.ldr")) {
+        m_userWorkSpaceGlobalSegmentAdr = DspStaticData::alignInternalMemRegionsFor21262();
+        return true;
     }
-    else if ( r == DeviceNodeDsp::MAGIC_ID21362) {
-        m_userWorkSpaceGlobalSegmentAdr = dm32UserWorkSpaceGlobal21362;
-        if (m_sDspBootPath.contains("zdsp21362.ldr")) {
-            dm32DspWorkspace.m_startAddress = dm32DspWorkSpaceBase21362;
-            dm32DialogWorkSpace.m_startAddress = dm32DialogWorkSpaceBase21362;
-            dm32UserWorkSpace.m_startAddress = dm32UserWorkSpaceBase21362;
-            dm32CmdList.m_startAddress = dm32CmdListBase21362;
-
-            setInitialVariableSize(dm32UserWorkSpace, "UWSPACE", uwSpaceSize21362);
-            setInitialVariableSize(dm32CmdList, "INTCMDLIST", IntCmdListLen21362);
-            setInitialVariableSize(dm32CmdList, "CMDLIST", CmdListLen21362);
-            setInitialVariableSize(dm32CmdList, "ALTINTCMDLIST", IntCmdListLen21362);
-            setInitialVariableSize(dm32CmdList, "ALTCMDLIST", CmdListLen21362);
-
-            return true;
-        }
-        return false;
+    else if (magicId == DeviceNodeDsp::MAGIC_ID21362 && m_sDspBootPath.contains("zdsp21362.ldr")) {
+        m_userWorkSpaceGlobalSegmentAdr = DspStaticData::alignInternalMemRegionsFor21362();
+        return true;
     }
     return false;
-}
-
-void ZDspServer::setInitialVariableSize(DspMemorySectionInternal &memSection, const QString variableName, int size)
-{
-    for (int i=0; i<memSection.getVarCount(); ++i) {
-        DspVarServerPtr dspVar = memSection.getDspVar(i);
-        if (dspVar->Name == variableName) {
-            dspVar->size = size;
-            return;
-        }
-    }
-    qCritical("setInitialVariableSize: Variable %s not found", qPrintable(variableName));
 }
 
 int ZDspServer::readMagicId()

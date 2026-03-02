@@ -26,13 +26,17 @@ class DspStaticData
 public:
     static DspCmdDecodingDetails* findDspCmd(const QString& cmdName);
     static const QHash<QString, DspVarServerPtr> &getVarHash();
+
     static void initMemsection(DspMemorySectionInternal* memSection);
+    static int alignInternalMemRegionsFor21262();
+    static int alignInternalMemRegionsFor21362();
 
     static void clearFor1stCall(); // currently for tests only
 
 private:
     static void fillCmdHashOn1stCall();
     static void fillMemSectionHashOn1stCall();
+    static void setInitialVariableSize(DspMemorySectionInternal &memSection, const QString variableName, int size);
 
     static QHash<QString, DspCmdDecodingDetails*> m_dspAvailableCmds;
     static QHash<QString, DspVarServerPtr> m_varHash;
