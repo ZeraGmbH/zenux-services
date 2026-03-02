@@ -677,12 +677,12 @@ QJsonObject ZDspServer::getStaticMemAllocation()
         QJsonObject jsonVars;
         for (auto iterVars=iterClient->cbegin(); iterVars!=iterClient->cend(); ++iterVars) {
             QJsonObject jsonVar;
-            QString hexvalue = DspVarServer::toHex(iterVars.value()->adr);
+            QString hexvalue = DspVarInServer::toHex(iterVars.value()->adr);
             jsonVar.insert("Addr", hexvalue);
-            hexvalue = DspVarServer::toHex(iterVars.value()->offs);
+            hexvalue = DspVarInServer::toHex(iterVars.value()->offs);
             jsonVar.insert("Offset", hexvalue);
             jsonVar.insert("Size", int(iterVars.value()->size));
-            hexvalue = DspVarServer::toHex(iterVars.value()->size);
+            hexvalue = DspVarInServer::toHex(iterVars.value()->size);
             jsonVar.insert("SizeHex", hexvalue);
 
             const QString varName = iterVars.key();
@@ -715,7 +715,7 @@ QJsonObject ZDspServer::getMemoryDump()
             const QList<ZdspClient::VarLocation>* localList = client->getLocalVariableDump();
             for (const ZdspClient::VarLocation &entry : *localList) {
                 QString key = QString("%1 / %2").arg(
-                    DspVarServer::toHex(entry.m_localVariableAddress), DspVarServer::toHex(entry.m_absoluteVariableAddress));
+                    DspVarInServer::toHex(entry.m_localVariableAddress), DspVarInServer::toHex(entry.m_absoluteVariableAddress));
                 localVariables.insert(key, entry.m_variableName);
             }
             entityData.insert("DspVarsLocal", localVariables);
@@ -724,7 +724,7 @@ QJsonObject ZDspServer::getMemoryDump()
             const QList<ZdspClient::VarLocation>* globalList = client->getGlobalVariableDump();
             for (const ZdspClient::VarLocation &entry : *globalList) {
                 QString key = QString("%1 / %2").arg(
-                    DspVarServer::toHex(entry.m_localVariableAddress), DspVarServer::toHex(entry.m_absoluteVariableAddress));
+                    DspVarInServer::toHex(entry.m_localVariableAddress), DspVarInServer::toHex(entry.m_absoluteVariableAddress));
                 globalVariables.insert(key, entry.m_variableName);
             }
             entityData.insert("DspVarsGlobal", globalVariables);
