@@ -91,7 +91,7 @@ static DspCmdDecodingDetails DspCmd[79] =
 
 #define DSP_VAR_COUNT(VAR_ARRAY) sizeof(VAR_ARRAY)/sizeof(DspVarServer)
 
-static const DspVarServer DspWorkspaceVar[] =
+static const DspVarInServer DspWorkspaceVar[] =
 {
     {"DspWorkspace", "FREQENCY",1,dspDataTypeFloat,0,0, dspInternalSegment},                // 1 wert gemessene frequenz
     {"DspWorkspace", "FREQUENCYVALUE",4,dspDataTypeFloat,0,0, dspInternalSegment},          // 4 werte f. freq. ausgänge
@@ -113,7 +113,7 @@ static const DspVarServer DspWorkspaceVar[] =
 DspMemorySectionInternal dm32DspWorkspace = DspMemorySectionInternal(0, DSP_VAR_COUNT(DspWorkspaceVar), DspWorkspaceVar);
 
 
-static const DspVarServer DialogWorkSpaceVar[] =
+static const DspVarInServer DialogWorkSpaceVar[] =
 {
     // Parameter details for DSPCMDPAR are found at
     // https://github.com/ZeraGmbH/SHARC-DSP-Software/blob/f4003f707849076a91010435994aa61bf9e6cfb9/NewGen32.asm#L352
@@ -142,7 +142,7 @@ static const DspVarServer DialogWorkSpaceVar[] =
 DspMemorySectionInternal dm32DialogWorkSpace = DspMemorySectionInternal(0, DSP_VAR_COUNT(DialogWorkSpaceVar), DialogWorkSpaceVar);
 
 
-static const DspVarServer UserWorkSpaceVar[] =
+static const DspVarInServer UserWorkSpaceVar[] =
 {
     {"UserWorkSpace", "UWSPACE", 0, dspDataTypeFloat,0,0, dspInternalSegment}
 };
@@ -150,7 +150,7 @@ static const DspVarServer UserWorkSpaceVar[] =
 DspMemorySectionInternal dm32UserWorkSpace = DspMemorySectionInternal(0, DSP_VAR_COUNT(UserWorkSpaceVar), UserWorkSpaceVar);
 
 
-static const DspVarServer CmdListVar[] =
+static const DspVarInServer CmdListVar[] =
 {
     {"CmdList", "INTCMDLIST", 0, dspDataTypeInt, 0, 0, dspInternalSegment},    // interrupt kommando
     {"CmdList", "CMDLIST", 0, dspDataTypeInt, 0, 0, dspInternalSegment},       // cycl. kommando liste
@@ -160,7 +160,7 @@ static const DspVarServer CmdListVar[] =
 DspMemorySectionInternal dm32CmdList = DspMemorySectionInternal(0, DSP_VAR_COUNT(CmdListVar), CmdListVar);
 
 
-static const DspVarServer ChannelNr[] =
+static const DspVarInServer ChannelNr[] =
 {
     {"ChannelNr", "CH0",1,dspDataTypeInt,0,0,dspInternalSegment}, {"ChannelNr", "CH1",1,dspDataTypeInt,0,0,dspInternalSegment},
     {"ChannelNr", "CH2",1,dspDataTypeInt,0,0,dspInternalSegment}, {"ChannelNr", "CH3",1,dspDataTypeInt,0,0,dspInternalSegment},
