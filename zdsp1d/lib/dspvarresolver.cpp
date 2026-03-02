@@ -10,13 +10,13 @@ DspVarResolver::DspVarResolver()
 
 void DspVarResolver::addSection(DspMemorySectionInternal* section)
 {
-    MemSectionList.append(section);
+    m_memSectionList.append(section);
 }
 
 void DspVarResolver::actualizeVarHash()
 {
     m_varHash = DspStaticData::getVarHash();
-    for(DspMemorySectionInternal* memSection : qAsConst(MemSectionList)) {
+    for(DspMemorySectionInternal* memSection : qAsConst(m_memSectionList)) {
         DspStaticData::initMemsection(memSection);
         for (int i=0; i<memSection->getVarCount(); i++) {
             DspVarServerPtr var = memSection->getDspVar(i);
