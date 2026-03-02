@@ -257,19 +257,19 @@ void DspStaticData::initMemsection(DspMemorySectionInternal *memSection)
     }
 }
 
+static constexpr int dm32UserWorkSpaceBase21262 = 0x84800;
 static constexpr int dm32UserWorkSpaceGlobal21262 = 0x87000;
 static constexpr int dm32DspWorkSpaceBase21262 = 0x82800;
 static constexpr int dm32DialogWorkSpaceBase21262 = 0x83800;
-static constexpr int uwSpaceSize21262 = 14335;
-static constexpr int dm32UserWorkSpaceBase21262 = 0x84800;
 static constexpr int dm32CmdListBase21262 = 0x84000;
 static constexpr int IntCmdListLen21262 = 128;
 static constexpr int CmdListLen21262 = 896;
+static constexpr int uwSpaceSize21262 = 14335;
 
+static constexpr int dm32UserWorkSpaceBase21362 = 0x98180;
 static constexpr int dm32UserWorkSpaceGlobal21362 = 0x9F000;
 static constexpr int dm32DspWorkSpaceBase21362 = 0xE0800;
 static constexpr int dm32DialogWorkSpaceBase21362 = 0xE1800;
-static constexpr int dm32UserWorkSpaceBase21362 = 0x98180;
 static constexpr int dm32CmdListBase21362 = 0xE2000;
 static constexpr int CmdListLen21362 = 3584;
 static constexpr int IntCmdListLen21362 = 512;
