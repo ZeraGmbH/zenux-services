@@ -1,6 +1,6 @@
-#include "dspvarinserver.h"
+#include "dspvarserver.h"
 
-bool DspVarInServer::setupFromCommaSeparatedString(const QString& varDefinition)
+bool DspVarServer::setupFromCommaSeparatedString(const QString& varDefinition)
 {
     bool ret = true;
     int commaCount = varDefinition.count(',');
@@ -40,7 +40,7 @@ bool DspVarInServer::setupFromCommaSeparatedString(const QString& varDefinition)
     return ret;
 }
 
-QString DspVarInServer::toHex(int val)
+QString DspVarServer::toHex(int val)
 {
     QString hexVal = QString("000000%1").arg(val, 0, 16).toUpper().right(6);
     return QString("0x") + hexVal;

@@ -1,13 +1,12 @@
-#ifndef DSPVARINSERVER_H
-#define DSPVARINSERVER_H
+#ifndef DSPVARSERVER_H
+#define DSPVARSERVER_H
 
 #include "dspvarclientinterface.h"
 #include <QString>
 #include <memory>
 
-struct DspVarInServer {
+struct DspVarServer {
     bool setupFromCommaSeparatedString(const QString& varDefinition);
-    static QString toHex(int val);
 
     QString m_clientHandleName;
     QString Name;                           // name der variablen
@@ -16,8 +15,9 @@ struct DspVarInServer {
     ulong adr = 0;                          // die abs. adresse auf welcher sich die variable befindet
     ulong offs = 0;                         // der offset innerhalb der memory section
     DspSegmentType segment = moduleLocalSegment;
+    static QString toHex(int val);
 };
 
-typedef std::shared_ptr<DspVarInServer> DspVarServerPtr;
+typedef std::shared_ptr<DspVarServer> DspVarServerPtr;
 
-#endif // DSPVARINSERVER_H
+#endif // DSPVARSERVER_H

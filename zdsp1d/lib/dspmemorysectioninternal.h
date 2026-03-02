@@ -1,17 +1,17 @@
 #ifndef DSPVMEMORYSECTIONINTERNAL_H
 #define DSPVMEMORYSECTIONINTERNAL_H
 
-#include "dspvarinserver.h"
+#include "dspvarserver.h"
 #include <QList>
 
 class DspMemorySectionInternal
 {
 public:
     DspMemorySectionInternal() = default;
-    DspMemorySectionInternal(long startAddress, int varCount, const DspVarInServer *dspVars);
+    DspMemorySectionInternal(long startAddress, int varCount, const DspVarServer *dspVars);
 
     void clear();
-    void appendDspVar(DspVarInServer &var);
+    void appendDspVar(DspVarServer &var);
 
     int getVarCount() const;
     DspVarServerPtr getDspVar(int varNum) const;

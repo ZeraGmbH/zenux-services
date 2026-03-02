@@ -65,7 +65,7 @@ bool ZdspClient::setVarList(const QString &varsSemicolonSeparated)
     const QStringList varEntries = varsSemicolonSeparatedEntityIdStripped.split(";", Qt::SkipEmptyParts);
     bool allOk = true;
     for(int i=0; i<varEntries.count(); i++) {
-        DspVarInServer dspVar;
+        DspVarServer dspVar;
         if(dspVar.setupFromCommaSeparatedString(varEntries[i])) {
             if (dspVar.segment == dspInternalSegment) {
                 const DspVarServerPtr dspVarDsp = m_dspVarResolver.getDspVar(dspVar.Name);
