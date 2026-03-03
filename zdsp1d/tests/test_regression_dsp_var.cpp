@@ -3,6 +3,7 @@
 #include "proxy.h"
 #include "zdspclient.h"
 #include "zscpi_response_definitions.h"
+#include "zdspdumpfunctions.h"
 #include "testdevicenodedsp.h"
 #include "testfactoryzdspsupport.h"
 #include "testsingletondevicenodedsp.h"
@@ -595,14 +596,14 @@ void test_regression_dsp_var::dspInternalVariables21262()
     TimeMachineObject::feedEventLoop();
 
     QString expected = TestLogHelpers::loadFile(":/dump-dsp-internal-vars-21262.json");
-    QString dumped = TestLogHelpers::dump(ZDspServer::getStaticMemAllocation());
+    QString dumped = TestLogHelpers::dump(ZDspDumpFunctions::getStaticMemAllocation());
     QVERIFY(TestLogHelpers::compareAndLogOnDiffJson(expected, dumped));
 }
 
 void test_regression_dsp_var::dspInternalVariables21362()
 {
     QString expected = TestLogHelpers::loadFile(":/dump-dsp-internal-vars-21362.json");
-    QString dumped = TestLogHelpers::dump(ZDspServer::getStaticMemAllocation());
+    QString dumped = TestLogHelpers::dump(ZDspDumpFunctions::getStaticMemAllocation());
     QVERIFY(TestLogHelpers::compareAndLogOnDiffJson(expected, dumped));
 }
 
