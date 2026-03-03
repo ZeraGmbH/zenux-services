@@ -19,11 +19,7 @@
 #include <QByteArray>
 #include <QTimer>
 #include <QVector>
-#include <QJsonObject>
 #include <QStateMachine>
-
-typedef QVector<float> tDspMemArray;
-
 
 class ZDspServer: public ScpiConnection
 {

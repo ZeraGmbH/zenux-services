@@ -32,7 +32,7 @@ QJsonObject ZDspDumpFunctions::getStaticMemAllocation()
     return json;
 }
 
-QJsonObject ZDspDumpFunctions::getMemoryDump(ZDspServer *server)
+QJsonObject ZDspDumpFunctions::getMemoryDump(const ZDspServer *server)
 {
     const QList<ZdspClient*> &clientList = server->getClients();
     QJsonObject json;
