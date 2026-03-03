@@ -131,7 +131,6 @@ void ZDspServer::doSetupServer()
 {
     qInfo("Starting doSetupServer");
     initSCPIConnection();
-    m_sDspBootPath = m_dspSettings.getBootFile();
 
     connect(&m_protoBufServer, &VeinTcp::TcpServer::sigClientConnected,
             this, &ZDspServer::onProtobufClientConnected);
@@ -404,7 +403,7 @@ bool ZDspServer::resetDsp()
 bool ZDspServer::bootDsp()
 {
     AbstractDspDeviceNodePtr deviceNode = m_zdspSupportFactory->getDspDeviceNode();
-    return deviceNode->dspBoot(m_sDspBootPath);
+    return deviceNode->dspBoot(m_dspSettings.getBootFile());
 }
 
 bool ZDspServer::setSamplingSystem()
@@ -847,11 +846,12 @@ QString ZDspServer::loadCmdListAllClients()
 bool ZDspServer::setDspType()
 {
     int magicId = readMagicId();
-    if (magicId == DeviceNodeDsp::MAGIC_ID21262 && m_sDspBootPath.contains("zdsp21262.ldr")) {
+    const QString dspBootFilePath = m_dspSettings.getBootFile();
+    if (magicId == DeviceNodeDsp::MAGIC_ID21262 && dspBootFilePath.contains("zdsp21262.ldr")) {
         m_userWorkSpaceGlobalSegmentAdr = DspStaticData::alignInternalMemRegionsFor21262();
         return true;
     }
-    else if (magicId == DeviceNodeDsp::MAGIC_ID21362 && m_sDspBootPath.contains("zdsp21362.ldr")) {
+    else if (magicId == DeviceNodeDsp::MAGIC_ID21362 && dspBootFilePath.contains("zdsp21362.ldr")) {
         m_userWorkSpaceGlobalSegmentAdr = DspStaticData::alignInternalMemRegionsFor21362();
         return true;
     }

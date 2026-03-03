@@ -123,7 +123,6 @@ private:
     ulong m_userWorkSpaceGlobalSegmentAdr;
     LogStatisticsAsyncInt m_dspInterruptLogStatistics;
     bool m_outputHealthLogs;
-    QString m_sDspBootPath;
 
     QStateMachine* m_pInitializationMachine;
     ConsoleServer m_telnetServer;
