@@ -75,3 +75,10 @@ QByteArray MockI2cCtrlEMOB::getDefaultExchangeData()
     return data;
 }
 
+ZeraMControllerIoTemplate::atmelRM MockI2cCtrlEMOB::flipSwitch(bool onOff)
+{
+    if (ControllerPersitentData::isHotControllerAvailable(m_muxChannel))
+        return ZeraMControllerIo::atmelRM::cmddone;
+    return ZeraMControllerIo::atmelRM::cmdexecfault;
+}
+
