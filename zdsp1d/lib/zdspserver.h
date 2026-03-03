@@ -10,15 +10,12 @@
 #include "settingscontainer.h"
 #include <timertemplateqt.h>
 #include <logstatisticsasyncint.h>
-#include <scpi.h>
 #include <vtcp_server.h>
 #include <xiqnetwrapper.h>
 #include <abstracttcpnetworkfactory.h>
 #include <QStringList>
 #include <QSocketNotifier>
 #include <QByteArray>
-#include <QTimer>
-#include <QVector>
 #include <QStateMachine>
 
 class ZDspServer: public ScpiConnection
