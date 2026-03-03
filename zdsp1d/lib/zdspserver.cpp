@@ -670,7 +670,7 @@ QJsonObject ZDspServer::getStaticMemAllocation()
     const QHash<QString, DspVarServerPtr> staticVariables = DspStaticData::getVarHash();
     for (auto iter=staticVariables.cbegin(); iter!=staticVariables.cend(); ++iter) {
         const DspVarServerPtr dspVar = iter.value();
-        varsSorted[dspVar->m_clientHandleName][dspVar->Name] = dspVar;
+        varsSorted[dspVar->m_clientVarGroupName][dspVar->Name] = dspVar;
     }
     QJsonObject json;
     for (auto iterClient=varsSorted.cbegin(); iterClient!=varsSorted.cend(); ++iterClient) {

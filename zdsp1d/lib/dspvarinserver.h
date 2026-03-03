@@ -9,7 +9,7 @@ struct DspVarInServer {
     bool setupFromCommaSeparatedString(const QString& varDefinition);
     static QString toHex(int val);
 
-    QString m_clientHandleName;
+    QString m_clientVarGroupName;
     QString Name;                           // name der variablen
     ushort size = 0;                        // anzahl worte
     DspDataType type = dspDataTypeUnknown;

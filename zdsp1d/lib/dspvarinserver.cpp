@@ -5,7 +5,7 @@ bool DspVarInServer::setupFromCommaSeparatedString(const QString& varDefinition)
     bool ret = true;
     int commaCount = varDefinition.count(',');
     if ( commaCount > 1 ) {
-        m_clientHandleName = varDefinition.section(',', 0, 0).remove(' ');
+        m_clientVarGroupName = varDefinition.section(',', 0, 0).remove(' ');
         Name = varDefinition.section(',', 1, 1).remove(' ').toUpper();
         bool ok;
         int varSize = varDefinition.section(',', 2, 2).remove(' ').toInt(&ok);
