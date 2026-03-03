@@ -20,6 +20,8 @@ enum hw_cmdcode
     hwClearErrorStatus = 0x0063,
     hwReadDataForExchange = 0x0082,
     hwWriteDataForExchange = 0x0083,
+    hwSendSwitchPressOn,               // ?
+    hwSendSwitchPressOff               // ?
 };
 
 ZeraMControllerIoTemplate::atmelRM I2cCtrlEMOB::readEmobInstrumentSubType(QString &answer)
@@ -97,3 +99,16 @@ ZeraMControllerIoTemplate::atmelRM I2cCtrlEMOB::writeExchangeData(QByteArray &da
         return ZeraMControllerIo::cmdexecfault;
     return ZeraMControllerIo::cmddone;
 }
+
+ZeraMControllerIoTemplate::atmelRM I2cCtrlEMOB::flipSwitch(bool onOff)
+{
+    I2cMuxerScopedOnOff i2cMuxerEnabled(m_i2cMuxer);
+    hw_cmd CMD(hwSendSwitchPressOn, 0, nullptr, 0);
+    if(!onOff)
+        CMD = hw_cmd(hwSendSwitchPressOff, 0, nullptr, 0);
+    m_ctrlIo.writeCommand(&CMD);
+    if(m_ctrlIo.getLastErrorMask() != 0)
+        return ZeraMControllerIo::cmdexecfault;
+    return ZeraMControllerIo::cmddone;
+}
+

@@ -115,6 +115,7 @@ public:
     virtual ZeraMControllerIo::atmelRM clearErrorStatus() = 0;
     virtual ZeraMControllerIo::atmelRM readExchangeData(QByteArray& answer) = 0;
     virtual ZeraMControllerIo::atmelRM writeExchangeData(QByteArray& data, int senderId) = 0;
+    virtual ZeraMControllerIo::atmelRM flipSwitch(bool onOff) = 0;
 };
 typedef std::shared_ptr<AbstractI2cCtrlEMOB> I2cCtrlEMOBPtr;
 

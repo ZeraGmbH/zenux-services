@@ -15,7 +15,9 @@ enum HotplugCommands
     cmdEmobReadErrorStatus,
     cmdEmobClearErrorStatus,
     cmdEmobReadData,
-    cmdEmobWriteData
+    cmdEmobWriteData,
+    cmdEmobFlipSwitchOn,
+    cmdEmobFlipSwitchOff
 };
 
 void HotplugControllerInterface::initSCPIConnection()
@@ -26,6 +28,8 @@ void HotplugControllerInterface::initSCPIConnection()
     addDelegate("SYSTEM:EMOB", "CLEARERROR", SCPI::isCmd, m_scpiInterface, cmdEmobClearErrorStatus);
     addDelegate("SYSTEM:EMOB", "READDATA", SCPI::isQuery, m_scpiInterface, cmdEmobReadData);
     addDelegate("SYSTEM:EMOB", "WRITEDATA", SCPI::isCmd, m_scpiInterface, cmdEmobWriteData);
+    addDelegate("SYSTEM:EMOB", "ONSWITCH", SCPI::isCmd, m_scpiInterface, cmdEmobFlipSwitchOn);
+    addDelegate("SYSTEM:EMOB", "OFFSWITCH", SCPI::isCmd, m_scpiInterface, cmdEmobFlipSwitchOff);
 }
 
 QByteArray HotplugControllerInterface::decodeHexString(const QString &encoded)
@@ -70,6 +74,12 @@ void HotplugControllerInterface::executeProtoScpi(int cmdCode, ProtonetCommandPt
         break;
     case cmdEmobWriteData:
         protoCmd->m_sOutput = emobWriteDataForExchange(protoCmd->m_sInput);
+        break;
+    case cmdEmobFlipSwitchOn:
+        protoCmd->m_sOutput = emobFlipSwitch(protoCmd->m_sInput, true);
+        break;
+    case cmdEmobFlipSwitchOff:
+        protoCmd->m_sOutput = emobFlipSwitch(protoCmd->m_sInput, false);
         break;
     }
     if (protoCmd->m_bwithOutput)
@@ -134,6 +144,22 @@ QString HotplugControllerInterface::emobClearErrorStatus(const QString &scpiCmd)
         QString channelNameFound = findEmobConnected(cmd.getParam(0));
         if (!channelNameFound.isEmpty()) {
             ZeraMControllerIoTemplate::atmelRM ctrlRet = emobControllers[channelNameFound].m_emobController->clearErrorStatus();
+            if (ctrlRet != ZeraMControllerIo::cmddone)
+                return ZSCPI::scpiAnswer[ZSCPI::errexec];
+            return ZSCPI::scpiAnswer[ZSCPI::ack];
+        }
+    }
+    return ZSCPI::scpiAnswer[ZSCPI::nak];
+}
+
+QString HotplugControllerInterface::emobFlipSwitch(const QString &scpiCmd, bool onOff)
+{
+    cSCPICommand cmd = scpiCmd;
+    if (cmd.isCommand(1)) {
+        HotControllerMap emobControllers = m_hotPluggableControllerContainer->getCurrentControllers();
+        QString channelNameFound = findEmobConnected(cmd.getParam(0));
+        if (!channelNameFound.isEmpty()) {
+            ZeraMControllerIoTemplate::atmelRM ctrlRet = emobControllers[channelNameFound].m_emobController->flipSwitch(onOff);
             if (ctrlRet != ZeraMControllerIo::cmddone)
                 return ZSCPI::scpiAnswer[ZSCPI::errexec];
             return ZSCPI::scpiAnswer[ZSCPI::ack];
