@@ -8,7 +8,6 @@
 #include <netmessages.pb.h>
 #include <timerfactoryqt.h>
 #include <scpinodestaticfunctions.h>
-#include <crc32isohdlc.h>
 #include <QCoreApplication>
 #include <QFinalState>
 #include <QDataStream>
@@ -669,58 +668,6 @@ int ZDspServer::getProgMemInterruptOccupied() const
     return memOccupied;
 }
 
-QJsonObject ZDspServer::getMemoryDump()
-{
-    const QList<ZdspClient*> &clientList = getClients();
-    QJsonObject json;
-    for (const ZdspClient* client : clientList) {
-        int entityId = client->getEntityId();
-        if (entityId >= 0) {
-            QJsonObject entityData;
-
-            QJsonArray cyclicCmds = QJsonArray::fromStringList(client->getDspCmdListRaw());
-            entityData.insert("DspCmdsRawCyclic", cyclicCmds);
-            entityData.insert("DspCmdsCompiledCrcCyclic", crcToHex(client->getDspCmdListCompiledCrc()));
-
-            QJsonArray interruptCmds = QJsonArray::fromStringList(client->getDspIntCmdListRaw());
-            entityData.insert("DspCmdsRawInterrupt", interruptCmds);
-            entityData.insert("DspCmdsCompiledCrcInterrupt", crcToHex(client->getDspIntCmdCompiledCrc()));
-
-            QJsonObject localVariables;
-            const QList<ZdspClient::VarLocation> localList = client->getLocalVariableDump();
-            for (const ZdspClient::VarLocation &entry : localList) {
-                QString key = QString("%1 / %2").arg(
-                    DspVarInServer::toHex(entry.m_localVariableAddress), DspVarInServer::toHex(entry.m_absoluteVariableAddress));
-                localVariables.insert(key, entry.m_variableName);
-            }
-            entityData.insert("DspVarsLocal", localVariables);
-
-            QJsonObject globalVariables;
-            const QList<ZdspClient::VarLocation> globalList = client->getGlobalVariableDump();
-            for (const ZdspClient::VarLocation &entry : globalList) {
-                QString key = QString("%1 / %2").arg(
-                    DspVarInServer::toHex(entry.m_localVariableAddress), DspVarInServer::toHex(entry.m_absoluteVariableAddress));
-                globalVariables.insert(key, entry.m_variableName);
-            }
-            entityData.insert("DspVarsGlobal", globalVariables);
-
-            json.insert(QString("%1").arg(entityId), entityData);
-        }
-    }
-    QString dummy;
-    compileCmdListsForAllClientsToRawStream(dummy);
-
-    quint32 crcTotalCyclic = Crc32IsoHdlc::calcCrc32(m_rawCyclicCmdMem.constData(), m_rawCyclicCmdMem.size());
-    QString crcTotalCyclicStr = crcToHex(crcTotalCyclic);
-    json.insert("TotalDspCmdsCompiledCrcCyclic", crcTotalCyclicStr);
-
-    quint32 crcTotalInterrupt = Crc32IsoHdlc::calcCrc32(m_rawInterruptCmdMem.constData(), m_rawInterruptCmdMem.size());
-    QString crcTotalInterruptStr = crcToHex(crcTotalInterrupt);
-    json.insert("TotalDspCmdsCompiledCrcInterrupt", crcTotalInterruptStr);
-
-    return json;
-}
-
 ZdspClient *ZDspServer::addClientForTest()
 {
     m_zdspClientContainer.addClient(nullptr, QByteArray());
@@ -792,20 +739,20 @@ void ZDspServer::DspIntHandler(int)
     }
 }
 
-
-bool ZDspServer::compileCmdListsForAllClientsToRawStream(QString &errs)
+bool ZDspServer::compileCmdListsForAllClientsToRawStream(QString &errs,
+                                                         QByteArray &rawCyclicCmdMemOut,
+                                                         QByteArray &rawInterruptCmdMemOut) const
 {
-    bool ok;
-
-    m_rawCyclicCmdMem.clear();
-    m_rawInterruptCmdMem.clear();
-    QDataStream cycCmdMemStream(&m_rawCyclicCmdMem, QIODevice::Unbuffered | QIODevice::ReadWrite);
+    rawCyclicCmdMemOut.clear();
+    rawInterruptCmdMemOut.clear();
+    QDataStream cycCmdMemStream(&rawCyclicCmdMemOut, QIODevice::Unbuffered | QIODevice::ReadWrite);
     cycCmdMemStream.setByteOrder(QDataStream::LittleEndian);
-    QDataStream intCmdMemStream(&m_rawInterruptCmdMem, QIODevice::Unbuffered | QIODevice::ReadWrite);
+    QDataStream intCmdMemStream(&rawInterruptCmdMemOut, QIODevice::Unbuffered | QIODevice::ReadWrite);
     intCmdMemStream.setByteOrder(QDataStream::LittleEndian);
 
     DspCmdWithParamsRaw cmd;
     const QList<ZdspClient*> clientList = getClients();
+    bool ok;
     if (clientList.count() > 0) {
         ZdspClient* firstClient = clientList.at(0);
         DspCmdCompiler firstCompiler(&firstClient->m_dspVarResolver, firstClient->getDspInterruptId());
@@ -824,7 +771,6 @@ bool ZDspServer::compileCmdListsForAllClientsToRawStream(QString &errs)
             if (!client->GenCmdLists(errs, userMemOffset, m_userWorkSpaceGlobalSegmentAdr))
                 return false;
 
-            // relokalisieren der daten im dsp
             userMemOffset += client->relocalizeUserMemSectionVars(userMemOffset, m_userWorkSpaceGlobalSegmentAdr);
 
             const QList<DspCmdWithParamsRaw> &cycCmdList = client->GetDspCmdList();
@@ -849,7 +795,6 @@ bool ZDspServer::compileCmdListsForAllClientsToRawStream(QString &errs)
 
     return true;
 }
-
 
 bool ZDspServer::uploadCommandLists()
 {
@@ -888,7 +833,7 @@ bool ZDspServer::writeDspCmdListsToDevNode()
 QString ZDspServer::loadCmdListAllClients()
 {
     QString errs;
-    if (!compileCmdListsForAllClientsToRawStream(errs)) {
+    if (!compileCmdListsForAllClientsToRawStream(errs, m_rawCyclicCmdMem, m_rawInterruptCmdMem)) {
         qCritical("compileCmdListsForAllClientsToRawStream failed\n%s", qPrintable(errs));
         return QString("%1 %2").arg(ZSCPI::scpiAnswer[ZSCPI::errval], errs); // das "fehlerhafte" kommando anhängen
     }
@@ -994,12 +939,6 @@ void ZDspServer::executeCommandProto(VeinTcp::TcpPeer *peer, std::shared_ptr<goo
             }
         }
     }
-}
-
-QString ZDspServer::crcToHex(quint32 val)
-{
-    QString hexVal = QString("00000000%1").arg(val, 0, 16).toUpper().right(8);
-    return QString("0x") + hexVal;
 }
 
 void ZDspServer::onTelnetReceived(const QString &input)

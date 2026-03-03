@@ -38,9 +38,11 @@ public:
     QString getDspDeviceNode();
 
     const QList<ZdspClient*> &getClients() const;
+    bool compileCmdListsForAllClientsToRawStream(QString& errs,
+                                                 QByteArray &rawCyclicCmdMemOut,
+                                                 QByteArray &rawInterruptCmdMemOut) const;
     int getUserMemAvailable() const;
     int getUserMemOccupied() const;
-    QJsonObject getMemoryDump();
     int getProgMemCyclicAvailable() const;
     int getProgMemCyclicOccupied() const;
     int getProgMemInterruptAvailable() const;
@@ -97,7 +99,6 @@ private:
     // die routinen für das measure modell
     QString loadCmdListAllClients();
 
-    bool compileCmdListsForAllClientsToRawStream(QString& errs);
     bool uploadCommandLists();
     void flipCommandListSelector();
     bool writeDspCmdListsToDevNode();
@@ -106,7 +107,6 @@ private:
     bool Test4HWPresent();
     bool Test4DspRunning();
     void executeCommandProto(VeinTcp::TcpPeer* peer, std::shared_ptr<google::protobuf::Message> cmd);
-    static QString crcToHex(quint32 val);
 
     Zera::XMLConfig::cReader m_xmlConfigReader;
     cDSPSettings m_dspSettings;
