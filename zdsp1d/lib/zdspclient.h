@@ -42,8 +42,8 @@ public:
         ulong m_localVariableAddress;
         ulong m_absoluteVariableAddress;
     };
-    const QList<VarLocation>* getLocalVariableDump() const;
-    const QList<VarLocation>* getGlobalVariableDump() const;
+    const QList<VarLocation> getLocalVariableDump() const;
+    const QList<VarLocation> getGlobalVariableDump() const;
     const QStringList& getDspCmdListRaw() const;
     const QStringList& getDspIntCmdListRaw() const;
     quint32 getDspCmdListCompiledCrc() const;
@@ -72,8 +72,6 @@ private:
     // dump / tests
     AbstractDspCompilerSupportPtr m_rawCyclicCommands;
     AbstractDspCompilerSupportPtr m_rawInterruptCommands;
-    std::unique_ptr<QList<VarLocation>> m_localVarDump;
-    std::unique_ptr<QList<VarLocation>> m_globalVarDump;
     static int m_instanceCount;
 };
 #endif // ZDSPCLIENT_H

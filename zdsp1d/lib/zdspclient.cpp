@@ -1,6 +1,5 @@
 #include "zdspclient.h"
 #include "dspcmdcompiler.h"
-#include "dspvardevicenodeinout.h"
 #include <pseudocrcbuffer.h>
 #include <QDataStream>
 
@@ -15,9 +14,7 @@ ZdspClient::ZdspClient(int dspInterruptId,
     m_zdspSupportFactory(zdspSupportFactory),
     m_dspInterruptId(dspInterruptId),
     m_rawCyclicCommands(m_zdspSupportFactory->createDspCompilerSupport()),
-    m_rawInterruptCommands(m_zdspSupportFactory->createDspCompilerSupport()),
-    m_localVarDump(std::make_unique<QList<VarLocation>>()),
-    m_globalVarDump(std::make_unique<QList<VarLocation>>())
+    m_rawInterruptCommands(m_zdspSupportFactory->createDspCompilerSupport())
 {
     m_instanceCount++;
     DspCmdWithParamsRaw DspCmd;
@@ -46,14 +43,30 @@ int ZdspClient::getEntityId() const
     return m_entityId;
 }
 
-const QList<ZdspClient::VarLocation> *ZdspClient::getGlobalVariableDump() const
+const QList<ZdspClient::VarLocation> ZdspClient::getGlobalVariableDump() const
 {
-    return m_globalVarDump.get();
+    QList<ZdspClient::VarLocation> globalVarDump;
+    for (int i = 0; i < m_userMemSection.getVarCount(); i++) {
+        DspVarServerPtr dspVar = m_userMemSection.getDspVar(i);
+        if (dspVar->segment == moduleGlobalSegment)
+            globalVarDump.append( { dspVar->Name,
+                                    dspVar->offs,
+                                    dspVar->adr } );
+    }
+    return globalVarDump;
 }
 
-const QList<ZdspClient::VarLocation> *ZdspClient::getLocalVariableDump() const
+const QList<ZdspClient::VarLocation> ZdspClient::getLocalVariableDump() const
 {
-    return m_localVarDump.get();
+    QList<ZdspClient::VarLocation> localVarDump;
+    for (int i = 0; i < m_userMemSection.getVarCount(); i++) {
+        DspVarServerPtr dspVar = m_userMemSection.getDspVar(i);
+        if (dspVar->segment == moduleLocalSegment)
+            localVarDump.append( { dspVar->Name,
+                                   dspVar->offs,
+                                   dspVar->adr } );
+    }
+    return localVarDump;
 }
 
 bool ZdspClient::setVarList(const QString &varsSemicolonSeparated)
@@ -128,23 +141,15 @@ ulong ZdspClient::relocalizeUserMemSectionVars(ulong startAdress, ulong globalMe
     ulong usermemsize = 0;
     ulong globalmemsize = 0;
     m_userMemSection.m_startAddress = startAdress;
-    m_localVarDump = std::make_unique<QList<VarLocation>>();
-    m_globalVarDump = std::make_unique<QList<VarLocation>>();
 
     for (int i = 0; i < m_userMemSection.getVarCount(); i++) {
         DspVarServerPtr dspVar = m_userMemSection.getDspVar(i);
         if (dspVar->segment == moduleLocalSegment) {
             dspVar->adr = startAdress + usermemsize; // we need the adress for reading back data
-            m_localVarDump->append( { dspVar->Name,
-                                      dspVar->offs,
-                                      dspVar->adr } );
             usermemsize += dspVar->size;
         }
         else if (dspVar->segment == moduleGlobalSegment) {
             dspVar->adr = globalMemStart+globalmemsize;
-            m_globalVarDump->append( { dspVar->Name,
-                                       dspVar->offs,
-                                       dspVar->adr } );
             globalmemsize += dspVar->size;
         }
     }
