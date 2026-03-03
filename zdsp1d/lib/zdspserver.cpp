@@ -607,6 +607,11 @@ QString ZDspServer::getDspDeviceNode()
     return m_settings->getFpgaSettings()->getDspDeviceNode();
 }
 
+const QList<ZdspClient *> &ZDspServer::getClients() const
+{
+    return m_zdspClientContainer.getClientList();
+}
+
 int ZDspServer::getUserMemAvailable() const
 {
     for (int i=0; i<dm32UserWorkSpace.getVarCount(); i++) {
@@ -619,7 +624,7 @@ int ZDspServer::getUserMemAvailable() const
 
 int ZDspServer::getUserMemOccupied() const
 {
-    const QList<ZdspClient*> &clientList = m_zdspClientContainer.getClientList();
+    const QList<ZdspClient*> &clientList = getClients();
     int memOccupied = 0;
     for (const ZdspClient* client : clientList)
         memOccupied += client->getDataMemSize();
@@ -638,7 +643,7 @@ int ZDspServer::getProgMemCyclicAvailable() const
 
 int ZDspServer::getProgMemCyclicOccupied() const
 {
-    const QList<ZdspClient*> &clientList = m_zdspClientContainer.getClientList();
+    const QList<ZdspClient*> &clientList = getClients();
     int memOccupied = 0;
     for (const ZdspClient* client : clientList)
         memOccupied += client->GetDspCmdList().size();
@@ -657,7 +662,7 @@ int ZDspServer::getProgMemInterruptAvailable() const
 
 int ZDspServer::getProgMemInterruptOccupied() const
 {
-    const QList<ZdspClient*> &clientList = m_zdspClientContainer.getClientList();
+    const QList<ZdspClient*> &clientList = getClients();
     int memOccupied = 0;
     for (const ZdspClient* client : clientList)
         memOccupied += client->GetDspIntCmdList().size();
@@ -696,7 +701,7 @@ QJsonObject ZDspServer::getStaticMemAllocation()
 
 QJsonObject ZDspServer::getMemoryDump()
 {
-    const QList<ZdspClient*> &clientList = m_zdspClientContainer.getClientList();
+    const QList<ZdspClient*> &clientList = getClients();
     QJsonObject json;
     for (const ZdspClient* client : clientList) {
         int entityId = client->getEntityId();
@@ -777,7 +782,7 @@ void ZDspServer::DspIntHandler(int)
     char dummy[2];
     read(pipeFileDescriptorZdsp1[0], dummy, 1); // first we read the pipe
 
-    const QList<ZdspClient*> clientList = m_zdspClientContainer.getClientList();
+    const QList<ZdspClient*> clientList = getClients();
     if (!clientList.isEmpty()) { // wenn vorhanden nutzen wir immer den 1. client zum lesen
         ZdspClient *client = clientList.first();
         QByteArray ba;
@@ -830,7 +835,7 @@ bool ZDspServer::compileCmdListsForAllClientsToRawStream(QString &errs)
     intCmdMemStream.setByteOrder(QDataStream::LittleEndian);
 
     DspCmdWithParamsRaw cmd;
-    const QList<ZdspClient*> clientList = m_zdspClientContainer.getClientList();
+    const QList<ZdspClient*> clientList = getClients();
     if (clientList.count() > 0) {
         ZdspClient* firstClient = clientList.at(0);
         DspCmdCompiler firstCompiler(&firstClient->m_dspVarResolver, firstClient->getDspInterruptId());

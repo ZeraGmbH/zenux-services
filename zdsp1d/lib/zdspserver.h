@@ -37,6 +37,7 @@ public:
     QString getServerVersion();
     QString getDspDeviceNode();
 
+    const QList<ZdspClient*> &getClients() const;
     int getUserMemAvailable() const;
     int getUserMemOccupied() const;
     static QJsonObject getStaticMemAllocation();
