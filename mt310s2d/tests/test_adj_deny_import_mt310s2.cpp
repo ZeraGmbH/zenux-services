@@ -33,9 +33,7 @@ void test_adj_deny_import_mt310s2::loadEEpromWithStoredNamesAndVersions()
 
     QString xmlExported = XmlHelperForTest::prepareForCompare(ScpiSingleTransactionBlocked::query("SYSTEM:ADJUSTMENT:XML?"));
 
-    QFile xmlFile(":/import_modified.xml");
-    QVERIFY(xmlFile.open(QFile::ReadOnly));
-    QString xmlExpected = XmlHelperForTest::prepareForCompare(xmlFile.readAll());
+    QString xmlExpected = XmlHelperForTest::prepareForCompare(TestLogHelpers::loadFile(":/import_modified.xml"));
 
     QVERIFY(TestLogHelpers::compareAndLogOnDiff(xmlExpected, xmlExported));
 }

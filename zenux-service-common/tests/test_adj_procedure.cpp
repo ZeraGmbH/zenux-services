@@ -62,9 +62,7 @@ void test_adj_procedure::adjDeviceXml()
     xmlExported = XmlHelperForTest::prepareForCompare(xmlExported);
     xmlExported = XmlHelperForTest::removeDeviceSpecificEntriesFromXml(xmlExported);
 
-    QFile xmlFile(":/mt310s2-050059467.xml");
-    QVERIFY(xmlFile.open(QFile::ReadOnly));
-    QString xmlExpected = xmlFile.readAll();
+    QString xmlExpected = TestLogHelpers::loadFile(":/mt310s2-050059467.xml");
     xmlExpected = XmlHelperForTest::prepareForCompare(xmlExpected);
     xmlExpected = XmlHelperForTest::removeDeviceSpecificEntriesFromXml(xmlExpected);
 
@@ -82,9 +80,7 @@ void test_adj_procedure::writeGainNodesStoreStartExport()
     xmlExported = XmlHelperForTest::prepareForCompare(xmlExported);
     xmlExported = XmlHelperForTest::removeDeviceSpecificEntriesFromXml(xmlExported);
 
-    QFile xmlFile(":/gain_nodes_write.xml");
-    QVERIFY(xmlFile.open(QFile::ReadOnly));
-    QString xmlExpected = xmlFile.readAll();
+    QString xmlExpected = TestLogHelpers::loadFile(":/gain_nodes_write.xml");
     xmlExpected = XmlHelperForTest::prepareForCompare(xmlExpected);
     xmlExpected = XmlHelperForTest::removeDeviceSpecificEntriesFromXml(xmlExpected);
 
@@ -103,9 +99,7 @@ void test_adj_procedure::writeGainNodesComputeStoreStartExport()
     xmlExported = XmlHelperForTest::prepareForCompare(xmlExported);
     xmlExported = XmlHelperForTest::removeDeviceSpecificEntriesFromXml(xmlExported);
 
-    QFile xmlFile(":/gain_compute.xml");
-    QVERIFY(xmlFile.open(QFile::ReadOnly));
-    QString xmlExpected = xmlFile.readAll();
+    QString xmlExpected = TestLogHelpers::loadFile(":/gain_compute.xml");
     xmlExpected = XmlHelperForTest::prepareForCompare(xmlExpected);
     xmlExpected = XmlHelperForTest::removeDeviceSpecificEntriesFromXml(xmlExpected);
 
@@ -123,9 +117,7 @@ void test_adj_procedure::writePhaseNodesStoreStartExport()
     xmlExported = XmlHelperForTest::prepareForCompare(xmlExported);
     xmlExported = XmlHelperForTest::removeDeviceSpecificEntriesFromXml(xmlExported);
 
-    QFile xmlFile(":/phase_nodes_write.xml");
-    QVERIFY(xmlFile.open(QFile::ReadOnly));
-    QString xmlExpected = xmlFile.readAll();
+    QString xmlExpected = TestLogHelpers::loadFile(":/phase_nodes_write.xml");
     xmlExpected = XmlHelperForTest::prepareForCompare(xmlExpected);
     xmlExpected = XmlHelperForTest::removeDeviceSpecificEntriesFromXml(xmlExpected);
 
@@ -147,9 +139,7 @@ void test_adj_procedure::writePhaseNodesComputeStoreStartExport()
     // Hmm: Values are slightly different from mt310s2-050059467.xml:
     // mt310s2-050059467.xml: <Coefficients>0.001351420673;-0.000045097160;0.000000000000;0.000000000000;</Coefficients>
     // phase_compute.xml:     <Coefficients>0.001351403740;-0.000045104510;0.000000000000;0.000000000000;</Coefficients>
-    QFile xmlFile(":/phase_compute.xml");
-    QVERIFY(xmlFile.open(QFile::ReadOnly));
-    QString xmlExpected = xmlFile.readAll();
+    QString xmlExpected = TestLogHelpers::loadFile(":/phase_compute.xml");
     xmlExpected = XmlHelperForTest::prepareForCompare(xmlExpected);
     xmlExpected = XmlHelperForTest::removeDeviceSpecificEntriesFromXml(xmlExpected);
 

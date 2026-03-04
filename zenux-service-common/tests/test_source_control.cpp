@@ -53,8 +53,7 @@ void test_source_control::mt581s2Capabilities()
     JsonStructApi structApi(capabilities);
     QCOMPARE(structApi.getDeviceName(), "MT581s2");
 
-    QString expected = TestLogHelpers::loadFile(":/source_capabilities_valid_mt581s2.json");
-    QVERIFY(TestLogHelpers::compareAndLogOnDiffJson(expected, m_lastAnswer.toString()));
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonFile(":/source_capabilities_valid_mt581s2.json", m_lastAnswer.toString()));
 }
 
 void test_source_control::mt310s2InitialState()
@@ -74,9 +73,8 @@ void test_source_control::mt581s2InitialState()
     m_pcbInterface->scpiCommand("UISRC:STATE?");
     TimeMachineObject::feedEventLoop();
 
-    QString expected = TestLogHelpers::loadFile(":/source_state_valid_mt581s2.json");
     QCOMPARE(m_lastReply, ZSCPI::ack);
-    QVERIFY(TestLogHelpers::compareAndLogOnDiffJson(expected, m_lastAnswer.toString()));
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonFile(":/source_state_valid_mt581s2.json", m_lastAnswer.toString()));
 }
 
 void test_source_control::mt310s2InitialLoad()

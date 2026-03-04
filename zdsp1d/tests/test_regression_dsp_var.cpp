@@ -595,16 +595,14 @@ void test_regression_dsp_var::dspInternalVariables21262()
     m_dspService = std::make_unique<TestZdsp1dForVarAccess>(m_zdspSupportFactory, m_tcpNetworkFactory, ":/adsp-21262.xml");
     TimeMachineObject::feedEventLoop();
 
-    QString expected = TestLogHelpers::loadFile(":/dump-dsp-internal-vars-21262.json");
     QString dumped = TestLogHelpers::dump(ZDspDumpFunctions::getStaticMemAllocation());
-    QVERIFY(TestLogHelpers::compareAndLogOnDiffJson(expected, dumped));
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonFile(":/dump-dsp-internal-vars-21262.json", dumped));
 }
 
 void test_regression_dsp_var::dspInternalVariables21362()
 {
-    QString expected = TestLogHelpers::loadFile(":/dump-dsp-internal-vars-21362.json");
     QString dumped = TestLogHelpers::dump(ZDspDumpFunctions::getStaticMemAllocation());
-    QVERIFY(TestLogHelpers::compareAndLogOnDiffJson(expected, dumped));
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonFile(":/dump-dsp-internal-vars-21362.json", dumped));
 }
 
 QByteArray test_regression_dsp_var::floatToBuff(float value)

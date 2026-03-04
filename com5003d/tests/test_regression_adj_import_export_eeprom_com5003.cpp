@@ -46,9 +46,8 @@ void test_regression_adj_import_export_eeprom_com5003::directExportFlashCheckRef
     setupServers(std::make_shared<TestFactoryI2cCtrl>(true));
     QVERIFY(m_testServer->getSenseInterface()->exportAdjData(refTime));
     I2cSettingsPtr i2cSettings = m_testServer->getI2cSettings();
-    QByteArray expected = TestLogHelpers::loadFile(":/export_internal_initial.eeprom");
     QByteArray dumped = MockEepromDevice::getData({i2cSettings->getDeviceNode(), i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress)});
-    QVERIFY(TestLogHelpers::compareAndLogOnDiff(expected, dumped));
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffFile(":/export_internal_initial.eeprom", dumped));
 }
 
 void test_regression_adj_import_export_eeprom_com5003::scpiWriteFlashInitial()
@@ -68,9 +67,8 @@ void test_regression_adj_import_export_eeprom_com5003::scpiWriteFlashInitial()
     // and do a second write with known time
     QVERIFY(m_testServer->getSenseInterface()->exportAdjData(refTime));
     QCOMPARE(MockEepromDevice::getWriteCount({devNodeFileName, i2cAddress}), 2);
-    QByteArray expected = TestLogHelpers::loadFile(":/export_internal_initial.eeprom");
     QByteArray dumped = MockEepromDevice::getData({devNodeFileName, i2cAddress});
-    QVERIFY(TestLogHelpers::compareAndLogOnDiff(expected, dumped));
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffFile(":/export_internal_initial.eeprom", dumped));
 }
 
 void test_regression_adj_import_export_eeprom_com5003::scpiWriteRandomFileAndFlashGen()

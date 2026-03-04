@@ -34,10 +34,9 @@ void test_regression_adj_import_export_xml_mt310s2::directAcessExportXml()
     QString xmlExported = m_testServer->getSenseInterface()->exportXMLString();
     xmlExported = XmlHelperForTest::removeTimeDependentEntriesFromXml(xmlExported);
 
-    QFile xmlFile(":/export_internal_initial.xml");
-    QVERIFY(xmlFile.open(QFile::ReadOnly));
-    QString xmlExpected = xmlFile.readAll();
+    QString xmlExpected = TestLogHelpers::loadFile(":/export_internal_initial.xml");
     xmlExpected = XmlHelperForTest::removeTimeDependentEntriesFromXml(xmlExpected);
+
     QVERIFY(TestLogHelpers::compareAndLogOnDiff(xmlExpected, xmlExported));
 }
 
