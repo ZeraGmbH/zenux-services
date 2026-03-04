@@ -9,6 +9,7 @@ class ZDspDumpFunctions
 public:
     static QJsonObject getStaticMemAllocation();
     static QJsonObject getMemoryDump(const ZDspServer *server);
+    static quint32 getDspCmdListCompiledCrc(const QList<DspCmdWithParamsRaw> &cmdList);
 private:
     static QString crcToHex(quint32 val);
 };

@@ -1,6 +1,7 @@
 #include "zdspdumpfunctions.h"
 #include <crc32isohdlc.h>
 #include <QJsonArray>
+#include <pseudocrcbuffer.h>
 
 QJsonObject ZDspDumpFunctions::getStaticMemAllocation()
 {
@@ -43,11 +44,11 @@ QJsonObject ZDspDumpFunctions::getMemoryDump(const ZDspServer *server)
 
             QJsonArray cyclicCmds = QJsonArray::fromStringList(client->getDspCmdListRaw());
             entityData.insert("DspCmdsRawCyclic", cyclicCmds);
-            entityData.insert("DspCmdsCompiledCrcCyclic", crcToHex(client->getDspCmdListCompiledCrc()));
+            entityData.insert("DspCmdsCompiledCrcCyclic", crcToHex(ZDspDumpFunctions::getDspCmdListCompiledCrc(client->GetDspCmdList())));
 
             QJsonArray interruptCmds = QJsonArray::fromStringList(client->getDspIntCmdListRaw());
             entityData.insert("DspCmdsRawInterrupt", interruptCmds);
-            entityData.insert("DspCmdsCompiledCrcInterrupt", crcToHex(client->getDspIntCmdCompiledCrc()));
+            entityData.insert("DspCmdsCompiledCrcInterrupt", crcToHex(ZDspDumpFunctions::getDspCmdListCompiledCrc(client->GetDspIntCmdList())));
 
             QJsonObject localVariables;
             const QList<ZdspClient::VarLocation> localList = client->getLocalVariableDump();
@@ -83,6 +84,19 @@ QJsonObject ZDspDumpFunctions::getMemoryDump(const ZDspServer *server)
     json.insert("TotalDspCmdsCompiledCrcInterrupt", crcTotalInterruptStr);
 
     return json;
+}
+
+quint32 ZDspDumpFunctions::getDspCmdListCompiledCrc(const QList<DspCmdWithParamsRaw> &cmdList)
+{
+    PseudoCrcBuffer crcBuffer;
+    crcBuffer.open(QIODevice::WriteOnly);
+    QDataStream stream(&crcBuffer);
+    stream.setByteOrder(QDataStream::LittleEndian);
+
+    for (const DspCmdWithParamsRaw &cmd : cmdList)
+        stream << (quint32) cmd.w[0] << (quint32) cmd.w[1];
+    crcBuffer.close();
+    return crcBuffer.getCrc();
 }
 
 QString ZDspDumpFunctions::crcToHex(quint32 val)

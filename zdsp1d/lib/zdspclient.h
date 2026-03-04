@@ -46,8 +46,6 @@ public:
     const QList<VarLocation> getGlobalVariableDump() const;
     const QStringList& getDspCmdListRaw() const;
     const QStringList& getDspIntCmdListRaw() const;
-    quint32 getDspCmdListCompiledCrc() const;
-    quint32 getDspIntCmdCompiledCrc() const;
     static int getInstanceCount();
 
 private:
@@ -70,8 +68,8 @@ private:
     int m_dataMemSize = 0;
 
     // dump / tests
-    AbstractDspCompilerSupportPtr m_rawCyclicCommands;
-    AbstractDspCompilerSupportPtr m_rawInterruptCommands;
+    AbstractDspCompilerSupportPtr m_cyclicCommandsCompilerSupport;
+    AbstractDspCompilerSupportPtr m_interruptCommandsCompilerSupport;
     static int m_instanceCount;
 };
 #endif // ZDSPCLIENT_H

@@ -13,8 +13,8 @@ ZdspClient::ZdspClient(int dspInterruptId,
     m_proxyConnectionId(proxyConnectionId),
     m_zdspSupportFactory(zdspSupportFactory),
     m_dspInterruptId(dspInterruptId),
-    m_rawCyclicCommands(m_zdspSupportFactory->createDspCompilerSupport()),
-    m_rawInterruptCommands(m_zdspSupportFactory->createDspCompilerSupport())
+    m_cyclicCommandsCompilerSupport(m_zdspSupportFactory->createDspCompilerSupport()),
+    m_interruptCommandsCompilerSupport(m_zdspSupportFactory->createDspCompilerSupport())
 {
     m_instanceCount++;
     m_dspVarResolver.addSection(&m_userMemSection);
@@ -156,11 +156,11 @@ ulong ZdspClient::relocalizeUserMemSectionVars(ulong startAdress, ulong globalMe
 bool ZdspClient::GenCmdLists(QString& errs, ulong userMemOffset, ulong globalstartadr)
 {
     DspCmdCompiler compiler(&m_dspVarResolver, m_dspInterruptId);
-    m_rawCyclicCommands = m_zdspSupportFactory->createDspCompilerSupport();
-    m_rawInterruptCommands = m_zdspSupportFactory->createDspCompilerSupport();
+    m_cyclicCommandsCompilerSupport = m_zdspSupportFactory->createDspCompilerSupport();
+    m_interruptCommandsCompilerSupport = m_zdspSupportFactory->createDspCompilerSupport();
     return
-        compiler.compileCmds(m_sCmdListDef, m_DspCmdList,errs, userMemOffset, globalstartadr, m_rawCyclicCommands) &&
-        compiler.compileCmds(m_sIntCmdListDef, m_DspIntCmdList, errs, userMemOffset, globalstartadr, m_rawInterruptCommands);
+        compiler.compileCmds(m_sCmdListDef, m_DspCmdList,errs, userMemOffset, globalstartadr, m_cyclicCommandsCompilerSupport) &&
+        compiler.compileCmds(m_sIntCmdListDef, m_DspIntCmdList, errs, userMemOffset, globalstartadr, m_interruptCommandsCompilerSupport);
 }
 
 const QList<DspCmdWithParamsRaw> &ZdspClient::GetDspCmdList() const
@@ -175,40 +175,12 @@ const QList<DspCmdWithParamsRaw> &ZdspClient::GetDspIntCmdList() const
 
 const QStringList &ZdspClient::getDspCmdListRaw() const
 {
-    return m_rawCyclicCommands->getRawDspCommands();
+    return m_cyclicCommandsCompilerSupport->getRawDspCommands();
 }
 
 const QStringList &ZdspClient::getDspIntCmdListRaw() const
 {
-    return m_rawInterruptCommands->getRawDspCommands();
-}
-
-quint32 ZdspClient::getDspCmdListCompiledCrc() const
-{
-    PseudoCrcBuffer crcBuffer;
-    crcBuffer.open(QIODevice::WriteOnly);
-    QDataStream stream(&crcBuffer);
-    stream.setByteOrder(QDataStream::LittleEndian);
-
-    const QList<DspCmdWithParamsRaw> &cmdList = GetDspCmdList();
-    for (const DspCmdWithParamsRaw &cmd : cmdList)
-        stream << (quint32) cmd.w[0] << (quint32) cmd.w[1];
-    crcBuffer.close();
-    return crcBuffer.getCrc();
-}
-
-quint32 ZdspClient::getDspIntCmdCompiledCrc() const
-{
-    PseudoCrcBuffer crcBuffer;
-    crcBuffer.open(QIODevice::WriteOnly);
-    QDataStream stream(&crcBuffer);
-    stream.setByteOrder(QDataStream::LittleEndian);
-
-    const QList<DspCmdWithParamsRaw> &cmdList = GetDspIntCmdList();
-    for (const DspCmdWithParamsRaw &cmd : cmdList)
-        stream << (quint32) cmd.w[0] << (quint32) cmd.w[1];
-    crcBuffer.close();
-    return crcBuffer.getCrc();
+    return m_interruptCommandsCompilerSupport->getRawDspCommands();
 }
 
 int ZdspClient::getDspInterruptId() const
