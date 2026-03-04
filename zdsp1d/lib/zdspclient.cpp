@@ -102,7 +102,7 @@ void ZdspClient::setCmdForIrqListDef(const QString &cmdIntListDef)
     m_sIntCmdListDef = handleAndRemoveEntityId(cmdIntListDef);
 }
 
-QByteArray ZdspClient::getProtobufClientId() const
+const QByteArray &ZdspClient::getProtobufClientId() const
 {
     return m_proxyConnectionId;
 }

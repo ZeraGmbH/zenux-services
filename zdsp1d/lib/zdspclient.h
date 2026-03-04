@@ -15,7 +15,7 @@ public:
                AbstractFactoryZdspSupportPtr zdspSupportFactory);
     virtual ~ZdspClient();
 
-    QByteArray getProtobufClientId() const;
+    const QByteArray &getProtobufClientId() const;
 
     bool setVarList(const QString& varsSemicolonSeparated);
     void setCmdListDef(const QString& cmdListDef);
