@@ -307,32 +307,32 @@ int DspStaticData::alignInternalMemRegionsFor21362()
     return dm32UserWorkSpaceGlobal21362;
 }
 
-DspCmdWithParamsRaw::DspCmdWithParamsRaw(const unsigned short CMD) // nur befehl 16bit
+DspCmdWithParamsCompiled::DspCmdWithParamsCompiled(const unsigned short CMD) // nur befehl 16bit
 {
    w[0]=CMD<<16;w[1]=0; // eigentlich....aber
 }
 
-DspCmdWithParamsRaw::DspCmdWithParamsRaw(const unsigned short CMD,const unsigned short P1) // befehl 16bit und 16bit uint
+DspCmdWithParamsCompiled::DspCmdWithParamsCompiled(const unsigned short CMD,const unsigned short P1) // befehl 16bit und 16bit uint
 {
     w[0]=CMD<<16;w[1]=P1;
 }    
 
-DspCmdWithParamsRaw::DspCmdWithParamsRaw(const unsigned short CMD, const unsigned long P1) // befehl und 32bit uint
+DspCmdWithParamsCompiled::DspCmdWithParamsCompiled(const unsigned short CMD, const unsigned long P1) // befehl und 32bit uint
 {
      w[0]=CMD<<16;w[1]=P1;
 }
 
-DspCmdWithParamsRaw::DspCmdWithParamsRaw(const unsigned short CMD, const unsigned short P1,const unsigned short P2,const unsigned short P3) // befehl und 3x  16bit uint
+DspCmdWithParamsCompiled::DspCmdWithParamsCompiled(const unsigned short CMD, const unsigned short P1,const unsigned short P2,const unsigned short P3) // befehl und 3x  16bit uint
 {
     w[0]=(CMD<<16)+P1;w[1]=(P2<<16)+P3;
 }    
  
-DspCmdWithParamsRaw::DspCmdWithParamsRaw(const unsigned short CMD, const unsigned short P1,const unsigned short P2) // befehl und 2x  16bit uint
+DspCmdWithParamsCompiled::DspCmdWithParamsCompiled(const unsigned short CMD, const unsigned short P1,const unsigned short P2) // befehl und 2x  16bit uint
 {
     w[0]=CMD<<16;w[1]=(P1<<16)+P2;
 }    
 
-DspCmdWithParamsRaw::DspCmdWithParamsRaw(const unsigned short CMD, const unsigned short P1,const unsigned long P2) // befehl und 1x  16bit uint und 1x 32bit uint
+DspCmdWithParamsCompiled::DspCmdWithParamsCompiled(const unsigned short CMD, const unsigned short P1,const unsigned long P2) // befehl und 1x  16bit uint und 1x 32bit uint
 {
     w[0]=(CMD<<16)+P1;w[1]=P2;
 }

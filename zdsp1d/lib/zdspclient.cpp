@@ -137,12 +137,12 @@ bool ZdspClient::GenCmdLists(QString& errs, ulong userMemOffset, ulong globalsta
         compiler.compileCmds(m_sIntCmdListDef, m_DspIntCmdList, errs, userMemOffset, globalstartadr, m_interruptCommandsCompilerSupport);
 }
 
-const QList<DspCmdWithParamsRaw> &ZdspClient::GetDspCmdList() const
+const QList<DspCmdWithParamsCompiled> &ZdspClient::GetDspCmdList() const
 {
     return m_DspCmdList;
 }
 
-const QList<DspCmdWithParamsRaw> &ZdspClient::GetDspIntCmdList() const
+const QList<DspCmdWithParamsCompiled> &ZdspClient::GetDspIntCmdList() const
 {
     return m_DspIntCmdList;
 }

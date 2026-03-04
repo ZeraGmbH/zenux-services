@@ -43,15 +43,15 @@ private:
 };
 
 
-class DspCmdWithParamsRaw { // hält einen 64bit dsp befehl incl. parameter
+class DspCmdWithParamsCompiled { // hält einen 64bit dsp befehl incl. parameter
 public:
-    DspCmdWithParamsRaw(){w[0]=0;w[1]=0;};
-    DspCmdWithParamsRaw(const unsigned short); // nur befehl 16bit
-    DspCmdWithParamsRaw(const unsigned short,const unsigned short); // befehl 16bit und 16bit uint
-    DspCmdWithParamsRaw(const unsigned short, const unsigned long); // befehl und 32bit uint
-    DspCmdWithParamsRaw(const unsigned short, const unsigned short,const unsigned short,const unsigned short); // befehl und 3x  16bit uint
-    DspCmdWithParamsRaw(const unsigned short, const unsigned short,const unsigned short); // befehl und 2x  16bit uint
-    DspCmdWithParamsRaw(const unsigned short, const unsigned short,const unsigned long); // befehl und 1x  16bit uint und 1x 32bit uint ... kann auch ein float sein
+    DspCmdWithParamsCompiled(){w[0]=0;w[1]=0;};
+    DspCmdWithParamsCompiled(const unsigned short); // nur befehl 16bit
+    DspCmdWithParamsCompiled(const unsigned short,const unsigned short); // befehl 16bit und 16bit uint
+    DspCmdWithParamsCompiled(const unsigned short, const unsigned long); // befehl und 32bit uint
+    DspCmdWithParamsCompiled(const unsigned short, const unsigned short,const unsigned short,const unsigned short); // befehl und 3x  16bit uint
+    DspCmdWithParamsCompiled(const unsigned short, const unsigned short,const unsigned short); // befehl und 2x  16bit uint
+    DspCmdWithParamsCompiled(const unsigned short, const unsigned short,const unsigned long); // befehl und 1x  16bit uint und 1x 32bit uint ... kann auch ein float sein
 
     unsigned long w[2]; // ein DSP-Kommando besteht aus 64Bit
 };

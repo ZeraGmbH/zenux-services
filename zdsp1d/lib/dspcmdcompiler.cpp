@@ -7,13 +7,13 @@ DspCmdCompiler::DspCmdCompiler(DspVarResolver *varResolver, int dspInterruptId) 
 {
 }
 
-DspCmdWithParamsRaw DspCmdCompiler::compileOneCmdLineZeroAligned(const QString &cmdLine,
+DspCmdWithParamsCompiled DspCmdCompiler::compileOneCmdLineZeroAligned(const QString &cmdLine,
                                                                  bool &ok)
 {
     return compileOneCmdLineAligned(cmdLine, ok, 0, 0, std::make_shared<DspCompilerSupport>());
 }
 
-DspCmdWithParamsRaw DspCmdCompiler::compileOneCmdLineAligned(const QString &cmdLine,
+DspCmdWithParamsCompiled DspCmdCompiler::compileOneCmdLineAligned(const QString &cmdLine,
                                                              bool &ok,
                                                              ulong userMemOffset,
                                                              ulong globalstartadr,
@@ -36,9 +36,9 @@ DspCmdWithParamsRaw DspCmdCompiler::compileOneCmdLineAligned(const QString &cmdL
         {
             ok &= compilerSupport->addCmdToRaw(cmdLine, paramNames, paramValues, dspcmd, m_varResolver);
             ok &= areThereNoFurtherKeywords(cmdParser, charCmdLine);
-            DspCmdWithParamsRaw lcmd;
+            DspCmdWithParamsCompiled lcmd;
             if (ok)
-                lcmd = DspCmdWithParamsRaw(dspcmd->CmdCode);
+                lcmd = DspCmdWithParamsCompiled(dspcmd->CmdCode);
             return lcmd;
         }
         case CMD1i16: // command, one i16 parameter
@@ -48,9 +48,9 @@ DspCmdWithParamsRaw DspCmdCompiler::compileOneCmdLineAligned(const QString &cmdL
             ok &= ( (paramValues[0] = m_varResolver->getVarOffset(sSearch, userMemOffset, globalstartadr)) > -1); // -1 ist fehlerbedingung
             ok &= compilerSupport->addCmdToRaw(cmdLine, paramNames, paramValues, dspcmd, m_varResolver);
             ok &= areThereNoFurtherKeywords(cmdParser, charCmdLine);
-            DspCmdWithParamsRaw lcmd;
+            DspCmdWithParamsCompiled lcmd;
             if (ok)
-                lcmd = DspCmdWithParamsRaw(dspcmd->CmdCode,(ushort)paramValues[0]);
+                lcmd = DspCmdWithParamsCompiled(dspcmd->CmdCode,(ushort)paramValues[0]);
             return lcmd;
         }
         case CMD2i16: // command, two i16 parameters
@@ -62,9 +62,9 @@ DspCmdWithParamsRaw DspCmdCompiler::compileOneCmdLineAligned(const QString &cmdL
             }
             ok &= compilerSupport->addCmdToRaw(cmdLine, paramNames, paramValues, dspcmd, m_varResolver);
             ok &= areThereNoFurtherKeywords(cmdParser, charCmdLine);
-            DspCmdWithParamsRaw lcmd;
+            DspCmdWithParamsCompiled lcmd;
             if (ok) {
-                lcmd = DspCmdWithParamsRaw(dspcmd->CmdCode, (ushort)paramValues[0], (ushort)paramValues[1]);
+                lcmd = DspCmdWithParamsCompiled(dspcmd->CmdCode, (ushort)paramValues[0], (ushort)paramValues[1]);
                 if (dspcmd->modify)
                     lcmd.w[1] = (lcmd.w[1] & 0xFFFF) | (m_dspInterruptId << 16);
             }
@@ -79,9 +79,9 @@ DspCmdWithParamsRaw DspCmdCompiler::compileOneCmdLineAligned(const QString &cmdL
             }
             ok &= compilerSupport->addCmdToRaw(cmdLine, paramNames, paramValues, dspcmd, m_varResolver);
             ok &= areThereNoFurtherKeywords(cmdParser, charCmdLine);
-            DspCmdWithParamsRaw lcmd;
+            DspCmdWithParamsCompiled lcmd;
             if (ok) {
-                lcmd = DspCmdWithParamsRaw( dspcmd->CmdCode, (ushort)paramValues[0], (ushort)paramValues[1], (ushort)paramValues[2]);
+                lcmd = DspCmdWithParamsCompiled( dspcmd->CmdCode, (ushort)paramValues[0], (ushort)paramValues[1], (ushort)paramValues[2]);
                 if (dspcmd->modify)
                     lcmd.w[1] = (lcmd.w[1] & 0xFFFF) | (m_dspInterruptId << 16);
             }
@@ -94,9 +94,9 @@ DspCmdWithParamsRaw DspCmdCompiler::compileOneCmdLineAligned(const QString &cmdL
             ok &= ( (par = m_varResolver->getVarOffset(sSearch, userMemOffset, globalstartadr)) > -1);
             ok &= compilerSupport->addCmdToRaw1Param(cmdLine, par, dspcmd);
             ok &= areThereNoFurtherKeywords(cmdParser, charCmdLine);
-            DspCmdWithParamsRaw lcmd;
+            DspCmdWithParamsCompiled lcmd;
             if (ok)
-                lcmd = DspCmdWithParamsRaw(dspcmd->CmdCode,(ulong)par);
+                lcmd = DspCmdWithParamsCompiled(dspcmd->CmdCode,(ulong)par);
             return lcmd;
         }
         case CMD1i161fi32:
@@ -105,7 +105,7 @@ DspCmdWithParamsRaw DspCmdCompiler::compileOneCmdLineAligned(const QString &cmdL
             long par2 = 0;
             sSearch = cmdParser.GetKeyword(&charCmdLine);
             ok &= ( (par1 = m_varResolver->getVarOffset(sSearch, userMemOffset, globalstartadr)) > -1); // -1 ist fehlerbedingung
-            DspCmdWithParamsRaw lcmd;
+            DspCmdWithParamsCompiled lcmd;
             if (!(ok))
                 return lcmd; // wenn fehler -> fertig
             sSearch = cmdParser.GetKeyword(&charCmdLine);
@@ -127,17 +127,17 @@ DspCmdWithParamsRaw DspCmdCompiler::compileOneCmdLineAligned(const QString &cmdL
             ok &= compilerSupport->addCmdToRaw2Params(cmdLine, dspcmd, par1, par2); // this needs love
             ok &= areThereNoFurtherKeywords(cmdParser, charCmdLine);
             if (ok)
-                lcmd = DspCmdWithParamsRaw(dspcmd->CmdCode,(ushort)par1,(ulong)par2);
+                lcmd = DspCmdWithParamsCompiled(dspcmd->CmdCode,(ushort)par1,(ulong)par2);
             return lcmd;
         }
         }
     }
     ok = false;
-    return DspCmdWithParamsRaw();
+    return DspCmdWithParamsCompiled();
 }
 
 bool DspCmdCompiler::compileCmds(const QString &cmdsSemicolonSeparated,
-                                 QList<DspCmdWithParamsRaw> &genCmdList,
+                                 QList<DspCmdWithParamsCompiled> &genCmdList,
                                  QString &err,
                                  ulong userMemOffset,
                                  ulong globalstartadr,

@@ -22,8 +22,8 @@ public:
     void setCmdForIrqListDef(const QString& cmdIntListDef);
 
     bool GenCmdLists(QString& errs, ulong userMemOffset, ulong globalstartadr);
-    const QList<DspCmdWithParamsRaw>& GetDspCmdList() const;
-    const QList<DspCmdWithParamsRaw>& GetDspIntCmdList() const;
+    const QList<DspCmdWithParamsCompiled>& GetDspCmdList() const;
+    const QList<DspCmdWithParamsCompiled>& GetDspIntCmdList() const;
     const DspMemorySectionInternal &getUserMemSection() const;
 
     DspVarResolver m_dspVarResolver;
@@ -54,8 +54,8 @@ private:
     QString m_sCmdListDef; // kommando liste defintion
     QString m_sIntCmdListDef; // interrupt kommando  liste defintion
 
-    QList<DspCmdWithParamsRaw> m_DspCmdList;
-    QList<DspCmdWithParamsRaw>  m_DspIntCmdList;
+    QList<DspCmdWithParamsCompiled> m_DspCmdList;
+    QList<DspCmdWithParamsCompiled> m_DspIntCmdList;
     DspMemorySectionInternal m_userMemSection;
     int m_dataMemSize = 0;
 

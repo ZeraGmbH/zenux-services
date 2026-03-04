@@ -86,14 +86,14 @@ QJsonObject ZDspDumpFunctions::getMemoryDump(const ZDspServer *server)
     return json;
 }
 
-quint32 ZDspDumpFunctions::getDspCmdListCompiledCrc(const QList<DspCmdWithParamsRaw> &cmdList)
+quint32 ZDspDumpFunctions::getDspCmdListCompiledCrc(const QList<DspCmdWithParamsCompiled> &cmdList)
 {
     PseudoCrcBuffer crcBuffer;
     crcBuffer.open(QIODevice::WriteOnly);
     QDataStream stream(&crcBuffer);
     stream.setByteOrder(QDataStream::LittleEndian);
 
-    for (const DspCmdWithParamsRaw &cmd : cmdList)
+    for (const DspCmdWithParamsCompiled &cmd : cmdList)
         stream << (quint32) cmd.w[0] << (quint32) cmd.w[1];
     crcBuffer.close();
     return crcBuffer.getCrc();

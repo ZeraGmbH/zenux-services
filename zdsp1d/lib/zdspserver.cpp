@@ -687,7 +687,7 @@ QString ZDspServer::getDeviceStatus()
     return devnavail;
 }
 
-QDataStream& operator<<(QDataStream& ds,DspCmdWithParamsRaw c)
+QDataStream& operator<<(QDataStream& ds,DspCmdWithParamsCompiled c)
 {
     ds << (quint32) c.w[0] << (quint32) c.w[1];
     return ds;
@@ -749,7 +749,7 @@ bool ZDspServer::compileCmdListsForAllClientsToRawStream(QString &errs,
     QDataStream intCmdMemStream(&rawInterruptCmdMemOut, QIODevice::Unbuffered | QIODevice::ReadWrite);
     intCmdMemStream.setByteOrder(QDataStream::LittleEndian);
 
-    DspCmdWithParamsRaw cmd;
+    DspCmdWithParamsCompiled cmd;
     const QList<ZdspClient*> clientList = getClients();
     bool ok;
     if (clientList.count() > 0) {
@@ -772,10 +772,10 @@ bool ZDspServer::compileCmdListsForAllClientsToRawStream(QString &errs,
 
             userMemOffset += client->relocalizeUserMemSectionVars(userMemOffset, m_userWorkSpaceGlobalSegmentAdr);
 
-            const QList<DspCmdWithParamsRaw> &cycCmdList = client->GetDspCmdList();
+            const QList<DspCmdWithParamsCompiled> &cycCmdList = client->GetDspCmdList();
             for (int j = 0; j < cycCmdList.size(); j++)
                 cycCmdMemStream << cycCmdList[j];
-            const QList<DspCmdWithParamsRaw> &intCmdList = client->GetDspIntCmdList();
+            const QList<DspCmdWithParamsCompiled> &intCmdList = client->GetDspIntCmdList();
             for (int j = 0; j < intCmdList.size(); j++)
                 intCmdMemStream << intCmdList[j];
         }
