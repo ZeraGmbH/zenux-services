@@ -17,9 +17,6 @@ ZdspClient::ZdspClient(int dspInterruptId,
     m_rawInterruptCommands(m_zdspSupportFactory->createDspCompilerSupport())
 {
     m_instanceCount++;
-    DspCmdWithParamsRaw DspCmd;
-    m_DspCmdList.append(DspCmd);
-    m_DspIntCmdList.append(DspCmd);
     m_dspVarResolver.addSection(&m_userMemSection);
 }
 
