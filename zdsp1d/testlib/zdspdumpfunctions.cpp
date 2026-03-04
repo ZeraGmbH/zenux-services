@@ -44,15 +44,15 @@ QJsonObject ZDspDumpFunctions::getMemoryDump(const ZDspServer *server)
 
             QJsonArray cyclicCmds = QJsonArray::fromStringList(client->getDspCmdListRaw());
             entityData.insert("DspCmdsRawCyclic", cyclicCmds);
-            entityData.insert("DspCmdsCompiledCrcCyclic", crcToHex(ZDspDumpFunctions::getDspCmdListCompiledCrc(client->GetDspCmdList())));
+            entityData.insert("DspCmdsCompiledCrcCyclic", crcToHex(getDspCmdListCompiledCrc(client->GetDspCmdList())));
 
             QJsonArray interruptCmds = QJsonArray::fromStringList(client->getDspIntCmdListRaw());
             entityData.insert("DspCmdsRawInterrupt", interruptCmds);
-            entityData.insert("DspCmdsCompiledCrcInterrupt", crcToHex(ZDspDumpFunctions::getDspCmdListCompiledCrc(client->GetDspIntCmdList())));
+            entityData.insert("DspCmdsCompiledCrcInterrupt", crcToHex(getDspCmdListCompiledCrc(client->GetDspIntCmdList())));
 
             QJsonObject localVariables;
-            const QList<ZdspClient::VarLocation> localList = client->getLocalVariableDump();
-            for (const ZdspClient::VarLocation &entry : localList) {
+            const QList<VarLocation> localList = getLocalVariableDump(client->getUserMemSection());
+            for (const VarLocation &entry : localList) {
                 QString key = QString("%1 / %2").arg(
                     DspVarInServer::toHex(entry.m_localVariableAddress), DspVarInServer::toHex(entry.m_absoluteVariableAddress));
                 localVariables.insert(key, entry.m_variableName);
@@ -60,8 +60,8 @@ QJsonObject ZDspDumpFunctions::getMemoryDump(const ZDspServer *server)
             entityData.insert("DspVarsLocal", localVariables);
 
             QJsonObject globalVariables;
-            const QList<ZdspClient::VarLocation> globalList = client->getGlobalVariableDump();
-            for (const ZdspClient::VarLocation &entry : globalList) {
+            const QList<VarLocation> globalList = getGlobalVariableDump(client->getUserMemSection());
+            for (const VarLocation &entry : globalList) {
                 QString key = QString("%1 / %2").arg(
                     DspVarInServer::toHex(entry.m_localVariableAddress), DspVarInServer::toHex(entry.m_absoluteVariableAddress));
                 globalVariables.insert(key, entry.m_variableName);
@@ -97,6 +97,32 @@ quint32 ZDspDumpFunctions::getDspCmdListCompiledCrc(const QList<DspCmdWithParams
         stream << (quint32) cmd.w[0] << (quint32) cmd.w[1];
     crcBuffer.close();
     return crcBuffer.getCrc();
+}
+
+QList<ZDspDumpFunctions::VarLocation> ZDspDumpFunctions::getGlobalVariableDump(const DspMemorySectionInternal &clientUserMemSection)
+{
+    QList<VarLocation> globalVarDump;
+    for (int i = 0; i < clientUserMemSection.getVarCount(); i++) {
+        DspVarServerPtr dspVar = clientUserMemSection.getDspVar(i);
+        if (dspVar->segment == moduleGlobalSegment)
+            globalVarDump.append( { dspVar->Name,
+                                  dspVar->offs,
+                                  dspVar->adr } );
+    }
+    return globalVarDump;
+}
+
+QList<ZDspDumpFunctions::VarLocation> ZDspDumpFunctions::getLocalVariableDump(const DspMemorySectionInternal &clientUserMemSection)
+{
+    QList<VarLocation> localVarDump;
+    for (int i = 0; i < clientUserMemSection.getVarCount(); i++) {
+        DspVarServerPtr dspVar = clientUserMemSection.getDspVar(i);
+        if (dspVar->segment == moduleLocalSegment)
+            localVarDump.append( { dspVar->Name,
+                                 dspVar->offs,
+                                 dspVar->adr } );
+    }
+    return localVarDump;
 }
 
 QString ZDspDumpFunctions::crcToHex(quint32 val)

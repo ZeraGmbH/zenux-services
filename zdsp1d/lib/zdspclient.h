@@ -5,7 +5,6 @@
 #include "dspapi.h"
 #include "dspvarresolver.h"
 #include <vtcp_peer.h>
-#include <memory>
 
 class ZdspClient
 {
@@ -25,6 +24,7 @@ public:
     bool GenCmdLists(QString& errs, ulong userMemOffset, ulong globalstartadr);
     const QList<DspCmdWithParamsRaw>& GetDspCmdList() const;
     const QList<DspCmdWithParamsRaw>& GetDspIntCmdList() const;
+    const DspMemorySectionInternal &getUserMemSection() const;
 
     DspVarResolver m_dspVarResolver;
 
@@ -36,14 +36,6 @@ public:
 
     // dump / tests
     int getEntityId() const;
-    struct VarLocation
-    {
-        QString m_variableName;
-        ulong m_localVariableAddress;
-        ulong m_absoluteVariableAddress;
-    };
-    const QList<VarLocation> getLocalVariableDump() const;
-    const QList<VarLocation> getGlobalVariableDump() const;
     const QStringList& getDspCmdListRaw() const;
     const QStringList& getDspIntCmdListRaw() const;
     static int getInstanceCount();

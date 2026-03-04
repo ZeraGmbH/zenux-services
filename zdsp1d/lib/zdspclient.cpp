@@ -40,32 +40,6 @@ int ZdspClient::getEntityId() const
     return m_entityId;
 }
 
-const QList<ZdspClient::VarLocation> ZdspClient::getGlobalVariableDump() const
-{
-    QList<ZdspClient::VarLocation> globalVarDump;
-    for (int i = 0; i < m_userMemSection.getVarCount(); i++) {
-        DspVarServerPtr dspVar = m_userMemSection.getDspVar(i);
-        if (dspVar->segment == moduleGlobalSegment)
-            globalVarDump.append( { dspVar->Name,
-                                    dspVar->offs,
-                                    dspVar->adr } );
-    }
-    return globalVarDump;
-}
-
-const QList<ZdspClient::VarLocation> ZdspClient::getLocalVariableDump() const
-{
-    QList<ZdspClient::VarLocation> localVarDump;
-    for (int i = 0; i < m_userMemSection.getVarCount(); i++) {
-        DspVarServerPtr dspVar = m_userMemSection.getDspVar(i);
-        if (dspVar->segment == moduleLocalSegment)
-            localVarDump.append( { dspVar->Name,
-                                   dspVar->offs,
-                                   dspVar->adr } );
-    }
-    return localVarDump;
-}
-
 bool ZdspClient::setVarList(const QString &varsSemicolonSeparated)
 {
     m_userMemSection.clear();
@@ -171,6 +145,11 @@ const QList<DspCmdWithParamsRaw> &ZdspClient::GetDspCmdList() const
 const QList<DspCmdWithParamsRaw> &ZdspClient::GetDspIntCmdList() const
 {
     return m_DspIntCmdList;
+}
+
+const DspMemorySectionInternal &ZdspClient::getUserMemSection() const
+{
+    return m_userMemSection;
 }
 
 const QStringList &ZdspClient::getDspCmdListRaw() const
