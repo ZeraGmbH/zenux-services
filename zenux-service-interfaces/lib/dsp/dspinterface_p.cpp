@@ -26,6 +26,11 @@ void cDSPInterfacePrivate::setClientSmart(ProxyClientPtr client)
     connect(m_clientSmart.get(), &Zera::ProxyClient::tcpError, this, &cDSPInterfacePrivate::receiveError);
 }
 
+ProxyClientPtr cDSPInterfacePrivate::getClientSmart()
+{
+    return m_clientSmart;
+}
+
 quint32 cDSPInterfacePrivate::scpiCommand(const QString &scpi)
 {
     quint32 msgnr;
@@ -51,12 +56,10 @@ quint32 cDSPInterfacePrivate::setSamplingSystem(int chncount, int samp_per, int 
     return msgnr;
 }
 
-QString cDSPInterfacePrivate::varList2String(VarListPrependOptions prependOption) const
+QString cDSPInterfacePrivate::varList2String() const
 {
     QString varList;
     QTextStream ts(&varList, QIODevice::WriteOnly);
-    if(prependOption == PREPEND_ENTIY_ID_IF_SET)
-        prependEntityIdIfSet(ts);
     for (int i = 0; i < m_DspMemoryDataList.count(); i++) {
         DspVarGroupClientInterface* pDspMeasData = m_DspMemoryDataList.at(i);
         ts << pDspMeasData->VarListLong();
@@ -64,9 +67,21 @@ QString cDSPInterfacePrivate::varList2String(VarListPrependOptions prependOption
     return varList;
 }
 
+quint32 cDSPInterfacePrivate::setEntityId(int entityId)
+{
+    quint32 msgnr = sendCommand("TEST:ENT", QString::number(entityId)); // long: TEST:ENTITYID
+    m_MsgNrCmdList[msgnr] = varlist2dsp;
+    return msgnr;
+}
+
+int cDSPInterfacePrivate::getEntityId() const
+{
+    return m_entityId;
+}
+
 quint32 cDSPInterfacePrivate::varList2Dsp() // the complete list has several partial lists
 {
-    QString varList = varList2String(PREPEND_ENTIY_ID_IF_SET);
+    QString varList = varList2String();
     quint32 msgnr = sendCommand("MEM:VARL", varList); // long: MEMORY:VARLIST
     m_MsgNrCmdList[msgnr] = varlist2dsp;
     return msgnr;
@@ -76,7 +91,6 @@ quint32 cDSPInterfacePrivate::cmdList2Dsp()
 {
     QString plist;
     QTextStream ts( &plist, QIODevice::WriteOnly );
-    prependEntityIdIfSet(ts);
     for (auto it = m_cycCmdList.constBegin(); it != m_cycCmdList.constEnd(); ++it )
         ts << *it << ";" ;
     quint32 msgnr = sendCommand("MEM:CYCL", plist); // long: MEMORY:CYCLIST
@@ -88,7 +102,6 @@ quint32 cDSPInterfacePrivate::intList2Dsp()
 {
     QString plist;
     QTextStream ts( &plist, QIODevice::WriteOnly );
-    prependEntityIdIfSet(ts);
     for (auto it = m_irqCmdList.constBegin(); it != m_irqCmdList.constEnd(); ++it )
         ts << *it << ";" ;
     quint32 msgnr = sendCommand("MEM:INTL", plist); // long: MEMORY:INTLIST
@@ -254,12 +267,6 @@ void cDSPInterfacePrivate::receiveError(QAbstractSocket::SocketError errorCode)
 {
     Q_Q(cDSPInterface);
     emit q->tcpError(errorCode);
-}
-
-void cDSPInterfacePrivate::prependEntityIdIfSet(QTextStream &stream) const
-{
-    if (m_entityId >= 0)
-        stream << QString("#ENTID#%1;").arg(m_entityId);
 }
 
 }

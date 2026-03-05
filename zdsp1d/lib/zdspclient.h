@@ -35,15 +35,14 @@ public:
     VeinTcp::TcpPeer* getVeinPeer() const;
 
     // dump / tests
+    void setEntityId(int entityId);
     int getEntityId() const;
-    const QStringList& getDspCmdListRaw() const;
-    const QStringList& getDspIntCmdListRaw() const;
+    AbstractDspCompilerSupportPtr getCurrCyclicCommandsCompilerSupport() const;
+    AbstractDspCompilerSupportPtr getCurrInterruptCommandsCompilerSupport() const;
     static int getInstanceCount();
 
 private:
     int calcDataMemSize();
-    void setEntityId(int entityId);
-    QString handleAndRemoveEntityId(const QString &scpiParam);
 
     VeinTcp::TcpPeer* m_veinPeer;
     QByteArray m_proxyConnectionId;

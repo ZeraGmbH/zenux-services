@@ -45,8 +45,7 @@ bool ZdspClient::setVarList(const QString &varsSemicolonSeparated)
     m_userMemSection.clear();
     int localOffset = 0;
     int globaloffset = 0;
-    const QString varsSemicolonSeparatedEntityIdStripped = handleAndRemoveEntityId(varsSemicolonSeparated);
-    const QStringList varEntries = varsSemicolonSeparatedEntityIdStripped.split(";", Qt::SkipEmptyParts);
+    const QStringList varEntries = varsSemicolonSeparated.split(";", Qt::SkipEmptyParts);
     bool allOk = true;
     for(int i=0; i<varEntries.count(); i++) {
         DspVarInServer dspVar;
@@ -94,12 +93,12 @@ bool ZdspClient::setVarList(const QString &varsSemicolonSeparated)
 
 void ZdspClient::setCmdListDef(const QString &cmdListDef)
 {
-    m_sCmdListDef = handleAndRemoveEntityId(cmdListDef);
+    m_sCmdListDef = cmdListDef;
 }
 
 void ZdspClient::setCmdForIrqListDef(const QString &cmdIntListDef)
 {
-    m_sIntCmdListDef = handleAndRemoveEntityId(cmdIntListDef);
+    m_sIntCmdListDef = cmdIntListDef;
 }
 
 const QByteArray &ZdspClient::getProtobufClientId() const
@@ -132,9 +131,17 @@ bool ZdspClient::GenCmdLists(QString& errs, ulong userMemOffset, ulong globalsta
     DspCmdCompiler compiler(&m_dspVarResolver, m_dspInterruptId);
     m_cyclicCommandsCompilerSupport = m_zdspSupportFactory->createDspCompilerSupport();
     m_interruptCommandsCompilerSupport = m_zdspSupportFactory->createDspCompilerSupport();
-    return
-        compiler.compileCmds(m_sCmdListDef, m_DspCmdList,errs, userMemOffset, globalstartadr, m_cyclicCommandsCompilerSupport) &&
-        compiler.compileCmds(m_sIntCmdListDef, m_DspIntCmdList, errs, userMemOffset, globalstartadr, m_interruptCommandsCompilerSupport);
+
+    bool ok = true;
+    if (!m_sCmdListDef.isEmpty()) {
+        getCurrCyclicCommandsCompilerSupport()->startClientArea(getEntityId(), "Cyclic sequence", AbstractDspCompilerSupport::CYCLIC);
+        ok = ok && compiler.compileCmds(m_sCmdListDef, m_DspCmdList,errs, userMemOffset, globalstartadr, m_cyclicCommandsCompilerSupport);
+    }
+    if (!m_sIntCmdListDef.isEmpty()) {
+        getCurrCyclicCommandsCompilerSupport()->startClientArea(getEntityId(), "Interrupt sequence", AbstractDspCompilerSupport::INTERRUPT);
+        ok = ok && compiler.compileCmds(m_sIntCmdListDef, m_DspIntCmdList, errs, userMemOffset, globalstartadr, m_interruptCommandsCompilerSupport);
+    }
+    return ok;
 }
 
 const QList<DspCmdWithParamsCompiled> &ZdspClient::GetDspCmdList() const
@@ -152,14 +159,14 @@ const DspMemorySectionInternal &ZdspClient::getUserMemSection() const
     return m_userMemSection;
 }
 
-const QStringList &ZdspClient::getDspCmdListRaw() const
+AbstractDspCompilerSupportPtr ZdspClient::getCurrCyclicCommandsCompilerSupport() const
 {
-    return m_cyclicCommandsCompilerSupport->getRawDspCommands();
+    return m_cyclicCommandsCompilerSupport;
 }
 
-const QStringList &ZdspClient::getDspIntCmdListRaw() const
+AbstractDspCompilerSupportPtr ZdspClient::getCurrInterruptCommandsCompilerSupport() const
 {
-    return m_interruptCommandsCompilerSupport->getRawDspCommands();
+    return m_interruptCommandsCompilerSupport;
 }
 
 int ZdspClient::getDspInterruptId() const
@@ -189,20 +196,4 @@ int ZdspClient::calcDataMemSize()
     for (int var=0; var<varCount; ++var)
         dataMemSize += m_userMemSection.getDspVar(var)->size;
     return dataMemSize;
-}
-
-QString ZdspClient::handleAndRemoveEntityId(const QString &scpiParam)
-{
-    const QString entityIdPrefixReceived = " #ENTID#"; // wherever the space comes from...
-    if (!scpiParam.startsWith(entityIdPrefixReceived))
-        return scpiParam;
-
-    int firstSemicolonPos = scpiParam.indexOf(";", entityIdPrefixReceived.size());
-    QString fullPrefix = scpiParam.left(firstSemicolonPos);
-    QString entityIdStr = fullPrefix.right(fullPrefix.size() - entityIdPrefixReceived.size());
-    int entityId = entityIdStr.toInt();
-    setEntityId(entityId);
-
-    QString scpiParamNew = " " + scpiParam.mid(firstSemicolonPos+1);
-    return scpiParamNew;
 }

@@ -1,5 +1,42 @@
 #include "testdspcompilersupport.h"
 
+QStringList TestDspCompilerSupport::m_rawDspCommandsAllCyclic;
+QStringList TestDspCompilerSupport::m_rawDspCommandsAllInterrupt;
+
+void TestDspCompilerSupport::startClientArea(int entityId, QString additionalInfo, MemType memType)
+{
+    m_currMemType = memType;
+    QString message = QString("-- Start entity ID %1 / %2 --").arg(entityId).arg(additionalInfo);
+    if (memType == CYCLIC)
+        m_rawDspCommandsAllCyclic.append(message);
+    else
+        m_rawDspCommandsAllInterrupt.append(message);
+}
+
+void TestDspCompilerSupport::clearGlobalForAllCmds()
+{
+    m_rawDspCommandsAllCyclic.clear();
+    m_rawDspCommandsAllInterrupt.clear();
+}
+
+const QStringList &TestDspCompilerSupport::getRawDspCommandsAllVerbose(MemType memType)
+{
+    if (memType == CYCLIC)
+        return m_rawDspCommandsAllCyclic;
+    return m_rawDspCommandsAllInterrupt;
+}
+
+int TestDspCompilerSupport::getRawDspCommandsCount(MemType memType)
+{
+    const QStringList &cmdsVerbose = getRawDspCommandsAllVerbose(memType);
+    int rawCount = 0;
+    for (const QString &cmd : cmdsVerbose) {
+        if (!cmd.startsWith("--"))
+            rawCount++;
+    }
+    return rawCount;
+}
+
 bool TestDspCompilerSupport::addCmdToRaw(const QString &dspCmdLine,
                                          const QStringList &paramNames,
                                          const short i16Params[],
@@ -14,7 +51,7 @@ bool TestDspCompilerSupport::addCmdToRaw(const QString &dspCmdLine,
             raw += ",";
     }
     raw += ")";
-    m_rawDspCommands.append(raw);
+    appendCmdRaw(raw);
 
     return allChecks(dspCmdLine, paramNames, i16Params, dspcmd, varResolver);
 }
@@ -25,7 +62,7 @@ bool TestDspCompilerSupport::addCmdToRaw1Param(const QString &dspCmdLine,
 {
     // This is just about fixed USERMEMOFFSET / DSPMEMOFFSET
     QString hexPar = DspVarInServer::toHex(par);
-    m_rawDspCommands.append(QString("%1(%2)").arg(QString(dspcmd->Name), hexPar));
+    appendCmdRaw(QString("%1(%2)").arg(QString(dspcmd->Name), hexPar));
     return syntaxCheck(dspCmdLine);
 }
 
@@ -33,13 +70,27 @@ bool TestDspCompilerSupport::addCmdToRaw2Params(const QString &dspCmdLine, const
 {
     QString hexPar1 = DspVarInServer::toHex(par1);
     QString hexPar2 = DspVarInServer::toHex(par2);
-    m_rawDspCommands.append(QString("%1(%2,%3)").arg(QString(dspcmd->Name), hexPar1, hexPar2));
+    appendCmdRaw(QString("%1(%2,%3)").arg(QString(dspcmd->Name), hexPar1, hexPar2));
     return syntaxCheck(dspCmdLine);
 }
 
-const QStringList &TestDspCompilerSupport::getRawDspCommands() const
+const QStringList &TestDspCompilerSupport::getRawDspCommands(MemType memType) const
 {
-    return m_rawDspCommands;
+    if (memType == CYCLIC)
+        return m_rawDspCommandsClientCyclic;
+    return m_rawDspCommandsClientInterrupt;
+}
+
+void TestDspCompilerSupport::appendCmdRaw(const QString &cmdRaw)
+{
+    if (m_currMemType == CYCLIC) {
+        m_rawDspCommandsClientCyclic.append(cmdRaw);
+        m_rawDspCommandsAllCyclic.append(cmdRaw);
+    }
+    else {
+        m_rawDspCommandsClientInterrupt.append(cmdRaw);
+        m_rawDspCommandsAllInterrupt.append(cmdRaw);
+    }
 }
 
 bool TestDspCompilerSupport::allChecks(const QString &dspCmdLine, const QStringList &paramNames,

@@ -8,16 +8,17 @@ DspCmdCompiler::DspCmdCompiler(DspVarResolver *varResolver, int dspInterruptId) 
 }
 
 DspCmdWithParamsCompiled DspCmdCompiler::compileOneCmdLineZeroAligned(const QString &cmdLine,
-                                                                 bool &ok)
+                                                                      AbstractDspCompilerSupportPtr compilerSupport,
+                                                                      bool &ok)
 {
-    return compileOneCmdLineAligned(cmdLine, ok, 0, 0, std::make_shared<DspCompilerSupport>());
+    return compileOneCmdLineAligned(cmdLine, 0, 0, compilerSupport, ok);
 }
 
 DspCmdWithParamsCompiled DspCmdCompiler::compileOneCmdLineAligned(const QString &cmdLine,
-                                                             bool &ok,
-                                                             ulong userMemOffset,
-                                                             ulong globalstartadr,
-                                                             AbstractDspCompilerSupportPtr compilerSupport)
+                                                                  ulong userMemOffset,
+                                                                  ulong globalstartadr,
+                                                                  AbstractDspCompilerSupportPtr compilerSupport,
+                                                                  bool &ok)
 {
     ok = true;
     cParse cmdParser;
@@ -147,7 +148,7 @@ bool DspCmdCompiler::compileCmds(const QString &cmdsSemicolonSeparated,
     genCmdList.clear();
     const QStringList cmds = cmdsSemicolonSeparated.split(';', Qt::SkipEmptyParts);
     for(const QString &cmd : cmds) {
-        genCmdList.append(compileOneCmdLineAligned(cmd, ok, userMemOffset, globalstartadr, compilerSupport));
+        genCmdList.append(compileOneCmdLineAligned(cmd, userMemOffset, globalstartadr, compilerSupport, ok));
         if(!ok) {
             err = cmd;
             break;

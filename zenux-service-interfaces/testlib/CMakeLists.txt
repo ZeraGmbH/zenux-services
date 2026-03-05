@@ -19,7 +19,8 @@ target_include_directories(service-interfaces-testlib
 
 target_link_libraries(service-interfaces-testlib
     PUBLIC
-    service-interfaces
+    service-interfaces-demolib
+    zdsp1d-lib
     Zera::zera-timers-testlib
 )
 

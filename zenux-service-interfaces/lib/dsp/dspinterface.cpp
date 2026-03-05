@@ -112,7 +112,13 @@ quint32 cDSPInterface::readServerVersion()
 QString cDSPInterface::varList2String()
 {
     Q_D(cDSPInterface);
-    return d->varList2String(cDSPInterfacePrivate::PREPEND_ENTIY_ID_IF_SET);
+    return d->varList2String();
+}
+
+quint32 cDSPInterface::setEntityId(int entityId)
+{
+    Q_D(cDSPInterface);
+    return d->setEntityId(entityId);
 }
 
 }

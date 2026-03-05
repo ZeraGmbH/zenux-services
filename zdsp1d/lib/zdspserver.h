@@ -31,9 +31,9 @@ public:
     QString getDspDeviceNode();
 
     const QList<ZdspClient*> &getClients() const;
-    bool compileCmdListsForAllClientsToRawStream(QString& errs,
-                                                 QByteArray &rawCyclicCmdMemOut,
-                                                 QByteArray &rawInterruptCmdMemOut) const;
+    bool compileCmdListsForAllClientsToBinaryStream(QString& errs,
+                                                    QByteArray &rawCyclicCmdMemOut,
+                                                    QByteArray &rawInterruptCmdMemOut) const;
     int getUserMemAvailable() const;
     int getUserMemOccupied() const;
     int getProgMemCyclicAvailable() const;
@@ -92,6 +92,7 @@ private:
     // die routinen für das measure modell
     QString loadCmdListAllClients();
 
+    DspCmdWithParamsCompiled genClientStartAddressCmd(ulong userMemOffset, ZdspClient* client, AbstractDspCompilerSupportPtr compilerSupport, bool &ok) const;
     bool uploadCommandLists();
     void flipCommandListSelector();
     bool writeDspCmdListsToDevNode();

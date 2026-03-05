@@ -6,6 +6,9 @@
 class DspCompilerSupport : public AbstractDspCompilerSupport
 {
 public:
+    void startClientArea(int entityId, QString additionalInfo, MemType memType) override;
+    void clearGlobalForAllCmds() override {}
+
     bool addCmdToRaw(const QString &dspCmdLine,
                      const QStringList &paramNames, const short i16Params[],
                      const DspCmdDecodingDetails *dspcmd,
@@ -15,9 +18,9 @@ public:
                            const DspCmdDecodingDetails *dspcmd) override;
     bool addCmdToRaw2Params(const QString &dspCmdLine,
                             const DspCmdDecodingDetails *dspcmd, ulong par1, ulong par2) override;
-    const QStringList &getRawDspCommands() const override;
+    const QStringList &getRawDspCommands(MemType memType) const override;
 private:
-    QStringList m_rawDspCommands;
+    const QStringList m_dummyEmptyCmdList;
 };
 
 #endif // DSPCOMPILERSUPPORT_H

@@ -9,10 +9,12 @@ class TinyZScpiCmdInterface : public AbstractServerInterface
     Q_OBJECT
 public:
     TinyZScpiCmdInterface(Zera::ProxyClientPtr client);
+    void setClientSmart(Zera::ProxyClientPtr client) override;
     virtual quint32 scpiCommand(const QString &scpi) override;
 
 private:
     void receiveAnswer(std::shared_ptr<ProtobufMessage::NetMessage> message);
+    void doConnect();
 
     struct TAnswerDecoded
     {

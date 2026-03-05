@@ -9,6 +9,14 @@ class AbstractDspCompilerSupport
 {
 public:
     virtual ~AbstractDspCompilerSupport() = default;
+
+    enum MemType {
+        CYCLIC,
+        INTERRUPT
+    };
+    virtual void startClientArea(int entityId, QString additionalInfo, MemType memType) = 0;
+    virtual void clearGlobalForAllCmds() = 0;
+
     virtual bool addCmdToRaw(const QString &dspCmdLine,
                              const QStringList &paramNames, const short i16Params[],
                              const DspCmdDecodingDetails *dspcmd,
@@ -18,7 +26,7 @@ public:
                                    const DspCmdDecodingDetails *dspcmd) = 0;
     virtual bool addCmdToRaw2Params(const QString &dspCmdLine,
                                     const DspCmdDecodingDetails *dspcmd, ulong par1, ulong par2) = 0;
-    virtual const QStringList &getRawDspCommands() const = 0;
+    virtual const QStringList &getRawDspCommands(MemType memType) const = 0;
 };
 
 typedef std::shared_ptr<AbstractDspCompilerSupport> AbstractDspCompilerSupportPtr;

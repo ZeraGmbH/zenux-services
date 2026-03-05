@@ -1,10 +1,12 @@
 file(GLOB SOURCES 
     ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/dsp/*.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/proxy/*.cpp
     )
 
 file(GLOB HEADER
     ${CMAKE_CURRENT_SOURCE_DIR}/*.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/dsp/*.h
     ${CMAKE_CURRENT_SOURCE_DIR}/proxy/*.h
     )
 
@@ -26,6 +28,7 @@ target_include_directories(service-interfaces
     PUBLIC
     $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/zenux-service-interfaces>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/dsp>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/proxy>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
     )

@@ -4,6 +4,17 @@
 TinyZScpiCmdInterface::TinyZScpiCmdInterface(Zera::ProxyClientPtr client) :
     m_clientSmart(client)
 {
+    doConnect();
+}
+
+void TinyZScpiCmdInterface::setClientSmart(Zera::ProxyClientPtr client)
+{
+    m_clientSmart = client;
+    doConnect();
+}
+
+void TinyZScpiCmdInterface::doConnect()
+{
     connect(m_clientSmart.get(), &Zera::ProxyClient::answerAvailable, this, &TinyZScpiCmdInterface::receiveAnswer);
     connect(m_clientSmart.get(), &Zera::ProxyClient::tcpError, this, &TinyZScpiCmdInterface::tcpError);
 }

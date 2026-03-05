@@ -24,7 +24,7 @@ class cDSPInterface: public AbstractServerInterface
 public:
     explicit cDSPInterface(int entityId = -1);
     virtual ~cDSPInterface();
-    void setClientSmart(Zera::ProxyClientPtr client);
+    void setClientSmart(Zera::ProxyClientPtr client) override;
     quint32 scpiCommand(const QString &scpi) override;
 
     // Same as dspMemoryRead. We keep two variants to split measurement data read from other dsp reads in client
@@ -50,6 +50,7 @@ public:
 
     // Compromise for tests
     QString varList2String();
+    quint32 setEntityId(int entityId);
 
 protected:
     Q_DECLARE_PRIVATE(cDSPInterface)

@@ -1,4 +1,5 @@
 #include "zdspserver.h"
+#include "dspcompilersupport.h"
 #include "zdspclient.h"
 #include "dspapi.h"
 #include "dspcmdcompiler.h"
@@ -243,7 +244,9 @@ enum SCPICmdType  {
     scpiCmdCycListSet,
 
     // common
-    scpiInterfaceRead
+    scpiInterfaceRead,
+
+    scpiSetEntityId
 };
 
 void ZDspServer::initSCPIConnection()
@@ -270,6 +273,8 @@ void ZDspServer::initSCPIConnection()
     addDelegate("STATUS:DSP:LOAD", "ACTUAL", SCPI::isQuery, m_scpiInterface, scpiGetDeviceLoadAct);
     addDelegate("STATUS:DSP:LOAD", "MAXIMUM", SCPI::isQuery, m_scpiInterface, scpiGetDeviceLoadMax);
     addDelegate("STATUS:DSP:LOAD:MAXIMUM", "RESET", SCPI::isCmdwP, m_scpiInterface, scpiResetDeviceLoadMax);
+
+    addDelegate("TEST", "ENTITYID", SCPI::isCmdwP, m_scpiInterface, scpiSetEntityId); // per client
 
     connect(this, &ScpiConnection::cmdExecutionDone, this, &ZDspServer::sendProtoAnswer);
 }
@@ -364,6 +369,13 @@ void ZDspServer::executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd)
     case scpiTriggerIntListHKSK: {
         int socketNum = client->getDspInterruptId();
         protoCmd->m_sOutput = startTriggerIntListHKSK(cmd.getParam(0), socketNum);
+        break;
+    }
+    case scpiSetEntityId: {
+        int entityId = cmd.getParam().toInt();
+        client->setEntityId(entityId);
+        // This is currently a fire & forget so no response required
+        //protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::ack];
         break;
     }
     }
@@ -641,11 +653,7 @@ int ZDspServer::getProgMemCyclicAvailable() const
 
 int ZDspServer::getProgMemCyclicOccupied() const
 {
-    const QList<ZdspClient*> &clientList = getClients();
-    int memOccupied = 0;
-    for (const ZdspClient* client : clientList)
-        memOccupied += client->GetDspCmdList().size();
-    return memOccupied;
+    return m_rawCyclicCmdMem.size() / 8; // each is 64Bit
 }
 
 int ZDspServer::getProgMemInterruptAvailable() const
@@ -660,11 +668,7 @@ int ZDspServer::getProgMemInterruptAvailable() const
 
 int ZDspServer::getProgMemInterruptOccupied() const
 {
-    const QList<ZdspClient*> &clientList = getClients();
-    int memOccupied = 0;
-    for (const ZdspClient* client : clientList)
-        memOccupied += client->GetDspIntCmdList().size();
-    return memOccupied;
+    return m_rawInterruptCmdMem.size() / 8; // each is 64Bit
 }
 
 ZdspClient *ZDspServer::addClientForTest()
@@ -738,9 +742,18 @@ void ZDspServer::DspIntHandler(int)
     }
 }
 
-bool ZDspServer::compileCmdListsForAllClientsToRawStream(QString &errs,
-                                                         QByteArray &rawCyclicCmdMemOut,
-                                                         QByteArray &rawInterruptCmdMemOut) const
+DspCmdWithParamsCompiled ZDspServer::genClientStartAddressCmd(ulong userMemOffset,
+                                                              ZdspClient* client,
+                                                              AbstractDspCompilerSupportPtr compilerSupport,
+                                                              bool &ok) const
+{
+    DspCmdCompiler compiler(&client->m_dspVarResolver, client->getDspInterruptId());
+    return compiler.compileOneCmdLineZeroAligned(QString("USERMEMOFFSET(%1)").arg(userMemOffset), compilerSupport, ok);
+}
+
+bool ZDspServer::compileCmdListsForAllClientsToBinaryStream(QString &errs,
+                                                            QByteArray &rawCyclicCmdMemOut,
+                                                            QByteArray &rawInterruptCmdMemOut) const
 {
     rawCyclicCmdMemOut.clear();
     rawInterruptCmdMemOut.clear();
@@ -752,20 +765,28 @@ bool ZDspServer::compileCmdListsForAllClientsToRawStream(QString &errs,
     DspCmdWithParamsCompiled cmd;
     const QList<ZdspClient*> clientList = getClients();
     bool ok;
+
     if (clientList.count() > 0) {
         ZdspClient* firstClient = clientList.at(0);
+        firstClient->getCurrCyclicCommandsCompilerSupport()->clearGlobalForAllCmds();
+        firstClient->getCurrCyclicCommandsCompilerSupport()->startClientArea(0, "Global init", AbstractDspCompilerSupport::CYCLIC);
+        ZdspClient* lastClient = firstClient;
         DspCmdCompiler firstCompiler(&firstClient->m_dspVarResolver, firstClient->getDspInterruptId());
         cmd = firstCompiler.compileOneCmdLineZeroAligned(QString("DSPMEMOFFSET(%1)").arg(dm32DspWorkspace.m_startAddress),
-                                                         ok);
+                                                         firstClient->getCurrCyclicCommandsCompilerSupport(), ok);
         cycCmdMemStream << cmd;
         ulong userMemOffset = dm32UserWorkSpace.m_startAddress;
         for (int i = 0; i < clientList.count(); i++) {
             ZdspClient* client = clientList.at(i);
-            DspCmdCompiler compiler(&client->m_dspVarResolver, client->getDspInterruptId());
-            cmd = compiler.compileOneCmdLineZeroAligned(QString("USERMEMOFFSET(%1)").arg(userMemOffset),
-                                                        ok);
-            cycCmdMemStream << cmd;
-            intCmdMemStream << cmd;
+            lastClient = client;
+
+            client->getCurrCyclicCommandsCompilerSupport()->startClientArea(client->getEntityId(), "Cyclic mem offset",
+                                                                            AbstractDspCompilerSupport::CYCLIC);
+            cycCmdMemStream << genClientStartAddressCmd(userMemOffset, client, client->getCurrCyclicCommandsCompilerSupport(), ok);
+
+            client->getCurrInterruptCommandsCompilerSupport()->startClientArea(client->getEntityId(), "Interrupt mem offset",
+                                                                               AbstractDspCompilerSupport::INTERRUPT);
+            intCmdMemStream << genClientStartAddressCmd(userMemOffset, client, client->getCurrInterruptCommandsCompilerSupport(), ok);
 
             if (!client->GenCmdLists(errs, userMemOffset, m_userWorkSpaceGlobalSegmentAdr))
                 return false;
@@ -781,14 +802,13 @@ bool ZDspServer::compileCmdListsForAllClientsToRawStream(QString &errs,
         }
 
         // wir triggern das senden der serialisierten interrupts
-        cmd = firstCompiler.compileOneCmdLineZeroAligned("DSPINTPOST()", ok);
-        cycCmdMemStream << cmd;
+        cycCmdMemStream << firstCompiler.compileOneCmdLineZeroAligned("DSPINTPOST()", lastClient->getCurrCyclicCommandsCompilerSupport(), ok);
     }
 
     DspVarResolver dspSystemVarResolver;
     DspCmdCompiler dummyCompiler(&dspSystemVarResolver, 0);
     // funktioniert selbst wenn wenn wir keinen mehr haben
-    cmd = dummyCompiler.compileOneCmdLineZeroAligned("INVALID()", ok);
+    cmd = dummyCompiler.compileOneCmdLineZeroAligned("INVALID()", std::make_shared<DspCompilerSupport>(), ok);
     cycCmdMemStream << cmd; // kommando listen ende
     intCmdMemStream << cmd;
 
@@ -832,8 +852,8 @@ bool ZDspServer::writeDspCmdListsToDevNode()
 QString ZDspServer::loadCmdListAllClients()
 {
     QString errs;
-    if (!compileCmdListsForAllClientsToRawStream(errs, m_rawCyclicCmdMem, m_rawInterruptCmdMem)) {
-        qCritical("compileCmdListsForAllClientsToRawStream failed\n%s", qPrintable(errs));
+    if (!compileCmdListsForAllClientsToBinaryStream(errs, m_rawCyclicCmdMem, m_rawInterruptCmdMem)) {
+        qCritical("compileCmdListsForAllClientsToBinaryStream failed\n%s", qPrintable(errs));
         return QString("%1 %2").arg(ZSCPI::scpiAnswer[ZSCPI::errval], errs); // das "fehlerhafte" kommando anhängen
     }
     if (!uploadCommandLists()) {

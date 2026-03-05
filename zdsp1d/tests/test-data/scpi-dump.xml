@@ -43,5 +43,8 @@
     </LOAD>
    </DSP>
   </STATUS>
+  <TEST Type="Model,Node">
+   <ENTITYID ScpiPath="TEST:ENTITYID" Type="Command+Par"/>
+  </TEST>
  </MODELS>
 </MODELLIST>

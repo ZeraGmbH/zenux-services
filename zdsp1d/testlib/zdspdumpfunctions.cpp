@@ -1,4 +1,5 @@
 #include "zdspdumpfunctions.h"
+#include "testdspcompilersupport.h"
 #include <crc32isohdlc.h>
 #include <QJsonArray>
 #include <pseudocrcbuffer.h>
@@ -42,11 +43,11 @@ QJsonObject ZDspDumpFunctions::getMemoryDump(const ZDspServer *server)
         if (entityId >= 0) {
             QJsonObject entityData;
 
-            QJsonArray cyclicCmds = QJsonArray::fromStringList(client->getDspCmdListRaw());
+            QJsonArray cyclicCmds = QJsonArray::fromStringList(client->getCurrCyclicCommandsCompilerSupport()->getRawDspCommands(AbstractDspCompilerSupport::CYCLIC));
             entityData.insert("DspCmdsRawCyclic", cyclicCmds);
             entityData.insert("DspCmdsCompiledCrcCyclic", crcToHex(getDspCmdListCompiledCrc(client->GetDspCmdList())));
 
-            QJsonArray interruptCmds = QJsonArray::fromStringList(client->getDspIntCmdListRaw());
+            QJsonArray interruptCmds = QJsonArray::fromStringList(client->getCurrInterruptCommandsCompilerSupport()->getRawDspCommands(AbstractDspCompilerSupport::INTERRUPT));
             entityData.insert("DspCmdsRawInterrupt", interruptCmds);
             entityData.insert("DspCmdsCompiledCrcInterrupt", crcToHex(getDspCmdListCompiledCrc(client->GetDspIntCmdList())));
 
@@ -73,7 +74,7 @@ QJsonObject ZDspDumpFunctions::getMemoryDump(const ZDspServer *server)
     }
     QString dummy;
     QByteArray rawCyclicCmdMem, rawInterruptCmdMem;
-    server->compileCmdListsForAllClientsToRawStream(dummy, rawCyclicCmdMem, rawInterruptCmdMem);
+    server->compileCmdListsForAllClientsToBinaryStream(dummy, rawCyclicCmdMem, rawInterruptCmdMem);
 
     quint32 crcTotalCyclic = Crc32IsoHdlc::calcCrc32(rawCyclicCmdMem.constData(), rawCyclicCmdMem.size());
     QString crcTotalCyclicStr = crcToHex(crcTotalCyclic);
@@ -82,6 +83,29 @@ QJsonObject ZDspDumpFunctions::getMemoryDump(const ZDspServer *server)
     quint32 crcTotalInterrupt = Crc32IsoHdlc::calcCrc32(rawInterruptCmdMem.constData(), rawInterruptCmdMem.size());
     QString crcTotalInterruptStr = crcToHex(crcTotalInterrupt);
     json.insert("TotalDspCmdsCompiledCrcInterrupt", crcTotalInterruptStr);
+
+    QJsonArray totalCmdListCyclic = QJsonArray::fromStringList(TestDspCompilerSupport::getRawDspCommandsAllVerbose(AbstractDspCompilerSupport::CYCLIC));
+    json.insert("TotalCmdListCyclic", totalCmdListCyclic);
+    QJsonArray totalCmdListInterrupt = QJsonArray::fromStringList(TestDspCompilerSupport::getRawDspCommandsAllVerbose(AbstractDspCompilerSupport::INTERRUPT));
+    json.insert("TotalCmdListInterrupt", totalCmdListInterrupt);
+
+    // Sanity check cyclic
+    int rawCmdCountCyclic = TestDspCompilerSupport::getRawDspCommandsCount(AbstractDspCompilerSupport::CYCLIC);
+    int binaryCmdCountCyclic = rawCyclicCmdMem.count() / 8;
+    if (rawCmdCountCyclic != binaryCmdCountCyclic-1) // -1: comiler support does not count INVALID()
+        qCritical("Cyclic cross check failed: Support: %i / binary %i", rawCmdCountCyclic, binaryCmdCountCyclic);
+    int announcedCyclic = server->getProgMemCyclicOccupied();
+    if (announcedCyclic != binaryCmdCountCyclic)
+        qCritical("Cyclic cross check failed: Announced: %i / binary %i", announcedCyclic, binaryCmdCountCyclic);
+
+    // Sanity check interrupt
+    int rawCmdCountInterrupt = TestDspCompilerSupport::getRawDspCommandsCount(AbstractDspCompilerSupport::INTERRUPT);
+    int binaryCmdCountInterrupt = rawInterruptCmdMem.count() / 8;
+    if (rawCmdCountInterrupt != binaryCmdCountInterrupt-1) // -1: comiler support does not count INVALID()
+        qCritical("Interrupt cross check failed: Support: %i / binary %i", rawCmdCountInterrupt, binaryCmdCountInterrupt);
+    int announcedInterrupt = server->getProgMemInterruptOccupied();
+    if (announcedInterrupt != binaryCmdCountInterrupt)
+        qCritical("Interrupt cross check failed: Announced: %i / binary %i", announcedInterrupt, binaryCmdCountInterrupt);
 
     return json;
 }

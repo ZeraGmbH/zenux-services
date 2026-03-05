@@ -33,6 +33,7 @@ public:
     cDSPInterfacePrivate(cDSPInterface* iface, int entityId);
     virtual ~cDSPInterfacePrivate();
     void setClientSmart(Zera::ProxyClientPtr client);
+    Zera::ProxyClientPtr getClientSmart();
     quint32 scpiCommand(const QString &scpi);
 
     quint32 setSamplingSystem(int chncount, int samp_per, int samp_mper); // nmuber of channels, samples/signalperiod, samples/measperiod
@@ -59,21 +60,19 @@ public:
     quint32 triggerIntHKSK(quint32 hksk); // trigger start hksk in intlist
 
     // Insights for tests - a compromise...
+    QString varList2String() const;
+    quint32 setEntityId(int entityId);
+    int getEntityId() const;
+
     QStringList getCyclicCmdList() const;
     QList<DspVarGroupClientInterface*> getMemoryDataList() const;
-    enum VarListPrependOptions {
-        PREPEND_NOTHING,
-        PREPEND_ENTIY_ID_IF_SET
-    };
-    QString varList2String(VarListPrependOptions prependOption) const;
     DspVarGroupClientInterface* findVariableGroup(const QString &name) const;
+
 protected slots:
     void receiveAnswer(std::shared_ptr<ProtobufMessage::NetMessage> message) override;
     void receiveError(QAbstractSocket::SocketError errorCode) override;
-
 private:
     Q_DECLARE_PUBLIC(cDSPInterface)
-    void prependEntityIdIfSet(QTextStream &stream) const;
     cDSPInterface *q_ptr;
     int m_entityId;
 

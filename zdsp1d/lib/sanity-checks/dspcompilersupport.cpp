@@ -1,5 +1,12 @@
 #include "dspcompilersupport.h"
 
+void DspCompilerSupport::startClientArea(int entityId, QString additionalInfo, MemType memType)
+{
+    Q_UNUSED(entityId)
+    Q_UNUSED(additionalInfo)
+    Q_UNUSED(memType)
+}
+
 bool DspCompilerSupport::addCmdToRaw(const QString &dspCmdLine,
                                         const QStringList &paramNames,
                                         const short i16Params[],
@@ -34,7 +41,8 @@ bool DspCompilerSupport::addCmdToRaw2Params(const QString &dspCmdLine,
     return true;
 }
 
-const QStringList &DspCompilerSupport::getRawDspCommands() const
+const QStringList &DspCompilerSupport::getRawDspCommands(MemType memType) const
 {
-    return m_rawDspCommands;
+    Q_UNUSED(memType)
+    return m_dummyEmptyCmdList;
 }
