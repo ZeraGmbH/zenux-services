@@ -32,6 +32,8 @@ public:
 
     int getDspInterruptId() const;
     int getDataMemSize() const;
+    bool hasCyclicCmds() const;
+    bool hasInterruptCmds() const;
     VeinTcp::TcpPeer* getVeinPeer() const;
 
     // dump / tests

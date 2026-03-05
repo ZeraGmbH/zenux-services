@@ -179,6 +179,16 @@ int ZdspClient::getDataMemSize() const
     return m_dataMemSize;
 }
 
+bool ZdspClient::hasCyclicCmds() const
+{
+    return !m_sCmdListDef.isEmpty();
+}
+
+bool ZdspClient::hasInterruptCmds() const
+{
+    return !m_sIntCmdListDef.isEmpty();
+}
+
 VeinTcp::TcpPeer *ZdspClient::getVeinPeer() const
 {
     return m_veinPeer;

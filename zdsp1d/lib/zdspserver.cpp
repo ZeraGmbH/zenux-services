@@ -780,14 +780,17 @@ bool ZDspServer::compileCmdListsForAllClientsToBinaryStream(QString &errs,
             ZdspClient* client = clientList.at(i);
             lastClient = client;
 
-            client->getCurrCyclicCommandsCompilerSupport()->startClientArea(client->getEntityId(), "Cyclic mem offset",
-                                                                            AbstractDspCompilerSupport::CYCLIC);
-            cycCmdMemStream << genClientStartAddressCmd(userMemOffset, client, client->getCurrCyclicCommandsCompilerSupport(), ok);
+            if (client->hasCyclicCmds()) {
+                client->getCurrCyclicCommandsCompilerSupport()->startClientArea(client->getEntityId(), "Cyclic mem offset",
+                                                                                AbstractDspCompilerSupport::CYCLIC);
+                cycCmdMemStream << genClientStartAddressCmd(userMemOffset, client, client->getCurrCyclicCommandsCompilerSupport(), ok);
+            }
 
-            client->getCurrInterruptCommandsCompilerSupport()->startClientArea(client->getEntityId(), "Interrupt mem offset",
-                                                                               AbstractDspCompilerSupport::INTERRUPT);
-            intCmdMemStream << genClientStartAddressCmd(userMemOffset, client, client->getCurrInterruptCommandsCompilerSupport(), ok);
-
+            if(client->hasInterruptCmds()) {
+                client->getCurrInterruptCommandsCompilerSupport()->startClientArea(client->getEntityId(), "Interrupt mem offset",
+                                                                                   AbstractDspCompilerSupport::INTERRUPT);
+                intCmdMemStream << genClientStartAddressCmd(userMemOffset, client, client->getCurrInterruptCommandsCompilerSupport(), ok);
+            }
             if (!client->GenCmdLists(errs, userMemOffset, m_userWorkSpaceGlobalSegmentAdr))
                 return false;
 
