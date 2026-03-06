@@ -2,9 +2,10 @@
 
 Mt310s2SystemInfo::Mt310s2SystemInfo(AbstractFactoryI2cCtrlPtr ctrlFactory) :
     SystemInfo(ctrlFactory),
-    m_ctrlFactory(ctrlFactory)
+    m_ctrlFactory(ctrlFactory),
+    m_sSysCTRLVersion("Unknown"),
+    m_sSysPCBVersion("Unknown")
 {
-    m_sSysCTRLVersion = m_sSysPCBVersion = "Unknown";
     getSystemInfo();
 }
 
