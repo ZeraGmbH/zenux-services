@@ -21,6 +21,7 @@ void CtrlHeartbeatWait::start()
     m_TimerTO->start();
     m_TimerPeriod->start();
 
+    // check first now to avoid delay
     QMetaObject::invokeMethod(this,
                               "doAtmelTest",
                               Qt::QueuedConnection);
