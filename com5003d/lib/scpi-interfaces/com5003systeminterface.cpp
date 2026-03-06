@@ -46,7 +46,7 @@ void Com5003SystemInterface::executeProtoScpi(int cmdCode, ProtonetCommandPtr pr
         protoCmd->m_sOutput = scpiReadServerVersion(protoCmd->m_sInput);
         break;
     case SystemSystem::cmdVersionDevice:
-        protoCmd->m_sOutput = m_ReadDeviceVersion(protoCmd->m_sInput);
+        protoCmd->m_sOutput = scpiReadDeviceVersion(protoCmd->m_sInput);
         break;
     case SystemSystem::cmdVersionPCB:
         protoCmd->m_sOutput = scpiReadPCBVersion(protoCmd->m_sInput);
@@ -55,28 +55,28 @@ void Com5003SystemInterface::executeProtoScpi(int cmdCode, ProtonetCommandPtr pr
         protoCmd->m_sOutput = scpiReadAllCTRLVersions(protoCmd->m_sInput);
         break;
     case SystemSystem::cmdVersionFPGA:
-        protoCmd->m_sOutput = m_ReadFPGAVersion(protoCmd->m_sInput);
+        protoCmd->m_sOutput = scpiReadFPGAVersion(protoCmd->m_sInput);
         break;
     case SystemSystem::cmdSerialNumber:
-        protoCmd->m_sOutput = m_ReadWriteSerialNumber(protoCmd->m_sInput);
+        protoCmd->m_sOutput = scpiReadWriteSerialNumber(protoCmd->m_sInput);
         break;
     case SystemSystem::cmdAdjFlashWrite:
-        protoCmd->m_sOutput = m_AdjFlashWrite(protoCmd->m_sInput);
+        protoCmd->m_sOutput = scpiAdjFlashWrite(protoCmd->m_sInput);
         break;
     case SystemSystem::cmdAdjFlashRead:
-        protoCmd->m_sOutput = m_AdjFlashRead(protoCmd->m_sInput);
+        protoCmd->m_sOutput = scpiAdjFlashRead(protoCmd->m_sInput);
         break;
     case SystemSystem::cmdAdjXMLImportExport:
-        protoCmd->m_sOutput = m_AdjXmlImportExport(protoCmd->m_sInput);
+        protoCmd->m_sOutput = scpiAdjXmlImportExport(protoCmd->m_sInput);
         break;
     case SystemSystem::cmdAdjXMLWrite:
-        protoCmd->m_sOutput = m_AdjXMLWrite(protoCmd->m_sInput);
+        protoCmd->m_sOutput = scpiAdjXMLWrite(protoCmd->m_sInput);
         break;
     case SystemSystem::cmdAdjXMLRead:
-        protoCmd->m_sOutput = m_AdjXMLRead(protoCmd->m_sInput);
+        protoCmd->m_sOutput = scpiAdjXMLRead(protoCmd->m_sInput);
         break;
     case SystemSystem::cmdAdjFlashChksum:
-        protoCmd->m_sOutput = m_AdjFlashChksum(protoCmd->m_sInput);
+        protoCmd->m_sOutput = scpiAdjFlashChksum(protoCmd->m_sInput);
         break;
     case SystemSystem::cmdInterfaceRead:
         protoCmd->m_sOutput = CommonScpiMethods::handleScpiInterfaceRead(m_scpiInterface, protoCmd->m_sInput);
@@ -90,9 +90,9 @@ void Com5003SystemInterface::executeProtoScpi(int cmdCode, ProtonetCommandPtr pr
 }
 
 
-QString Com5003SystemInterface::scpiReadServerVersion(QString &sInput)
+QString Com5003SystemInterface::scpiReadServerVersion(const QString &scpi)
 {
-    cSCPICommand cmd = sInput;
+    cSCPICommand cmd = scpi;
     if ( cmd.isQuery() )
         return m_pMyServer->getVersion();
     else
@@ -100,9 +100,9 @@ QString Com5003SystemInterface::scpiReadServerVersion(QString &sInput)
 }
 
 
-QString Com5003SystemInterface::m_ReadDeviceVersion(QString &sInput)
+QString Com5003SystemInterface::scpiReadDeviceVersion(const QString &scpi)
 {
-    cSCPICommand cmd = sInput;
+    cSCPICommand cmd = scpi;
 
     if (cmd.isQuery())
     {
@@ -116,9 +116,9 @@ QString Com5003SystemInterface::m_ReadDeviceVersion(QString &sInput)
 }
 
 
-QString Com5003SystemInterface::m_ReadDeviceName(QString& sInput)
+QString Com5003SystemInterface::scpiReadDeviceName(const QString &scpi)
 {
-    cSCPICommand cmd = sInput;
+    cSCPICommand cmd = scpi;
     if (cmd.isQuery()) {
         if (m_systemInfo->dataRead())
             return m_systemInfo->getDeviceName();
@@ -130,9 +130,9 @@ QString Com5003SystemInterface::m_ReadDeviceName(QString& sInput)
 }
 
 
-QString Com5003SystemInterface::scpiReadPCBVersion(QString &sInput)
+QString Com5003SystemInterface::scpiReadPCBVersion(const QString &scpi)
 {
-    cSCPICommand cmd = sInput;
+    cSCPICommand cmd = scpi;
     if (cmd.isQuery()) {
         if (m_systemInfo->dataRead()) {
             updateAllPCBsVersion();
@@ -146,9 +146,9 @@ QString Com5003SystemInterface::scpiReadPCBVersion(QString &sInput)
 }
 
 
-QString Com5003SystemInterface::scpiReadAllCTRLVersions(QString &sInput)
+QString Com5003SystemInterface::scpiReadAllCTRLVersions(const QString &scpi)
 {
-    cSCPICommand cmd = sInput;
+    cSCPICommand cmd = scpi;
     if (cmd.isQuery()) {
         if (m_systemInfo->dataRead()) {
             updateAllCtrlVersionsJson();
@@ -162,9 +162,9 @@ QString Com5003SystemInterface::scpiReadAllCTRLVersions(QString &sInput)
 }
 
 
-QString Com5003SystemInterface::m_ReadFPGAVersion(QString &sInput)
+QString Com5003SystemInterface::scpiReadFPGAVersion(const QString &scpi)
 {
-    cSCPICommand cmd = sInput;
+    cSCPICommand cmd = scpi;
     if (cmd.isQuery()) {
         if (m_systemInfo->dataRead())
             return m_systemInfo->getLCAVersion();
@@ -176,11 +176,11 @@ QString Com5003SystemInterface::m_ReadFPGAVersion(QString &sInput)
 }
 
 
-QString Com5003SystemInterface::m_ReadWriteSerialNumber(QString &sInput)
+QString Com5003SystemInterface::scpiReadWriteSerialNumber(const QString &scpi)
 {
     ZeraMControllerIo::atmelRM ret = ZeraMControllerIo::cmdfault;
     QString s;
-    cSCPICommand cmd = sInput;
+    cSCPICommand cmd = scpi;
 
     if (cmd.isQuery())
     {
@@ -200,18 +200,18 @@ QString Com5003SystemInterface::m_ReadWriteSerialNumber(QString &sInput)
             m_systemInfo->getSystemInfo(); // read back info
         }
 
-        m_genAnswer(ret, s);
+        genAnswer(ret, s);
     }
 
     return s;
 }
 
 
-QString Com5003SystemInterface::m_AdjFlashWrite(QString &sInput)
+QString Com5003SystemInterface::scpiAdjFlashWrite(const QString &scpi)
 {
     QString s;
     int ret = ZeraMControllerIo::cmdfault;
-    cSCPICommand cmd = sInput;
+    cSCPICommand cmd = scpi;
 
     if (cmd.isCommand(1) && (cmd.getParam(0) == ""))
     {
@@ -230,16 +230,16 @@ QString Com5003SystemInterface::m_AdjFlashWrite(QString &sInput)
         }
         else ret = ZeraMControllerIo::cmdexecfault;
     }
-    m_genAnswer(ret, s);
+    genAnswer(ret, s);
     return s;
 }
 
 
-QString Com5003SystemInterface::m_AdjFlashRead(QString &sInput)
+QString Com5003SystemInterface::scpiAdjFlashRead(const QString &scpi)
 {
     QString s;
     int ret = ZeraMControllerIo::cmdfault;
-    cSCPICommand cmd = sInput;
+    cSCPICommand cmd = scpi;
 
     if (cmd.isCommand(1) && (cmd.getParam(0) == ""))
     {
@@ -248,14 +248,14 @@ QString Com5003SystemInterface::m_AdjFlashRead(QString &sInput)
         else
             ret = ZeraMControllerIo::cmdexecfault;
     }
-    m_genAnswer(ret, s);
+    genAnswer(ret, s);
     return s;
 }
 
-QString Com5003SystemInterface::m_AdjXmlImportExport(QString &sInput)
+QString Com5003SystemInterface::scpiAdjXmlImportExport(const QString &scpi)
 {
     QString s;
-    cSCPICommand cmd = sInput;
+    cSCPICommand cmd = scpi;
     if (cmd.isQuery()) {
         s = m_senseInterface->exportXMLString(-1);
         s.replace("\n", "");
@@ -285,11 +285,11 @@ QString Com5003SystemInterface::m_AdjXmlImportExport(QString &sInput)
 }
 
 
-QString Com5003SystemInterface::m_AdjXMLWrite(QString &sInput)
+QString Com5003SystemInterface::scpiAdjXMLWrite(const QString &scpi)
 {
     QString s;
     int ret = ZeraMControllerIo::cmdfault;
-    cSCPICommand cmd = sInput;
+    cSCPICommand cmd = scpi;
 
     if (cmd.isCommand(1))
     {
@@ -299,14 +299,14 @@ QString Com5003SystemInterface::m_AdjXMLWrite(QString &sInput)
         else
             ret = ZeraMControllerIo::cmdexecfault;
     }
-    m_genAnswer(ret, s);
+    genAnswer(ret, s);
     return s;
 }
 
 
-QString Com5003SystemInterface::m_AdjXMLRead(QString &sInput)
+QString Com5003SystemInterface::scpiAdjXMLRead(QString &scpi)
 {
-    cSCPICommand cmd = sInput;
+    cSCPICommand cmd = scpi;
     if (cmd.isCommand(1)) {
         bool enable = false;
         m_ctrlFactory->getPermissionCheckController()->hasPermission(enable);
@@ -324,9 +324,9 @@ QString Com5003SystemInterface::m_AdjXMLRead(QString &sInput)
 }
 
 
-QString Com5003SystemInterface::m_AdjFlashChksum(QString &sInput)
+QString Com5003SystemInterface::scpiAdjFlashChksum(QString &scpi)
 {
-    cSCPICommand cmd = sInput;
+    cSCPICommand cmd = scpi;
 
     if (cmd.isQuery())
     {
@@ -353,7 +353,7 @@ void Com5003SystemInterface::updateAllPCBsVersion()
     m_allPCBVersion = doc.toJson(QJsonDocument::Compact);
 }
 
-void Com5003SystemInterface::m_genAnswer(int select, QString &answer)
+void Com5003SystemInterface::genAnswer(int select, QString &answer)
 {
     switch (select)
     {

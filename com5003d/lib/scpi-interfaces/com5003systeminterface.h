@@ -43,24 +43,24 @@ protected:
     void executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd) override;
 
 private:
-    QString scpiReadServerVersion(QString& sInput);
-    QString scpiReadAllCTRLVersions(QString& sInput);
+    QString scpiReadServerVersion(const QString &scpi);
+    QString scpiReadAllCTRLVersions(const QString &scpi);
     void updateAllCtrlVersionsJson();
     void updateAllPCBsVersion();
 
-    QString m_ReadDeviceVersion(QString& sInput);
-    QString m_ReadDeviceName(QString& sInput);
-    QString scpiReadPCBVersion(QString& sInput);
-    QString m_ReadFPGAVersion(QString& sInput);
-    QString m_ReadWriteSerialNumber(QString& sInput);
-    QString m_AdjFlashWrite(QString& sInput);
-    QString m_AdjFlashRead(QString& sInput);
-    QString m_AdjXmlImportExport(QString& sInput);
-    QString m_AdjXMLWrite(QString& sInput);
-    QString m_AdjXMLRead(QString& sInput);
-    QString m_AdjFlashChksum(QString& sInput);
+    QString scpiReadDeviceVersion(const QString& scpi);
+    QString scpiReadDeviceName(const QString &scpi);
+    QString scpiReadPCBVersion(const QString &scpi);
+    QString scpiReadFPGAVersion(const QString &scpi);
+    QString scpiReadWriteSerialNumber(const QString &scpi);
+    QString scpiAdjFlashWrite(const QString &scpi);
+    QString scpiAdjFlashRead(const QString &scpi);
+    QString scpiAdjXmlImportExport(const QString &scpi);
+    QString scpiAdjXMLWrite(const QString &scpi);
+    QString scpiAdjXMLRead(QString &scpi);
+    QString scpiAdjFlashChksum(QString &scpi);
 
-    void m_genAnswer(int select, QString& answer);
+    void genAnswer(int select, QString& answer);
 
     PCBServer* m_pMyServer;
     SystemInfo* m_systemInfo;

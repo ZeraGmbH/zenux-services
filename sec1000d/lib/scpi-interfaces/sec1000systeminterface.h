@@ -32,12 +32,12 @@ protected:
 private:
     cSEC1000dServer* m_pMyServer;
     Sec1000SystemInfo* m_pSystemInfo;
-    QString scpiReadServerVersion(QString& sInput);
-    QString m_ReadDeviceVersion(QString& sInput);
-    QString m_ReadDeviceName(QString& sInput);
-    QString scpiReadPCBVersion(QString& sInput);
-    QString m_ReadFPGAVersion(QString& sInput);
-    QString m_ReadWriteSerialNumber(QString& sInput);
+    QString scpiReadServerVersion(const QString &scpi);
+    QString scpiReadDeviceVersion(const QString &scpi);
+    QString scpiReadDeviceName(const QString &scpi);
+    QString scpiReadPCBVersion(const QString &scpi);
+    QString scpiReadFPGAVersion(const QString &scpi);
+    QString scpiReadWriteSerialNumber(const QString &scpi);
 };
 
 

@@ -32,16 +32,16 @@ void cSystemInterface::executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd
         protoCmd->m_sOutput = scpiReadServerVersion(protoCmd->m_sInput);
         break;
     case SystemSystem::cmdVersionDevice:
-        protoCmd->m_sOutput = m_ReadDeviceVersion(protoCmd->m_sInput);
+        protoCmd->m_sOutput = scpiReadDeviceVersion(protoCmd->m_sInput);
         break;
     case SystemSystem::cmdVersionPCB:
         protoCmd->m_sOutput = scpiReadPCBVersion(protoCmd->m_sInput);
         break;
     case SystemSystem::cmdVersionFPGA:
-        protoCmd->m_sOutput = m_ReadFPGAVersion(protoCmd->m_sInput);
+        protoCmd->m_sOutput = scpiReadFPGAVersion(protoCmd->m_sInput);
         break;
     case SystemSystem::cmdSerialNumber:
-        protoCmd->m_sOutput = m_ReadWriteSerialNumber(protoCmd->m_sInput);
+        protoCmd->m_sOutput = scpiReadWriteSerialNumber(protoCmd->m_sInput);
         break;
     case SystemSystem::cmdInterfaceRead:
         protoCmd->m_sOutput = CommonScpiMethods::handleScpiInterfaceRead(m_scpiInterface, protoCmd->m_sInput);
@@ -52,10 +52,10 @@ void cSystemInterface::executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd
 }
 
 
-QString cSystemInterface::scpiReadServerVersion(QString &sInput)
+QString cSystemInterface::scpiReadServerVersion(const QString &scpi)
 {
     QString s;
-    cSCPICommand cmd = sInput;
+    cSCPICommand cmd = scpi;
     if ( cmd.isQuery() )
         s = m_pMyServer->getVersion();
     else
@@ -64,9 +64,9 @@ QString cSystemInterface::scpiReadServerVersion(QString &sInput)
 }
 
 
-QString cSystemInterface::m_ReadDeviceVersion(QString &sInput)
+QString cSystemInterface::scpiReadDeviceVersion(const QString &scpi)
 {
-    cSCPICommand cmd = sInput;
+    cSCPICommand cmd = scpi;
     if (cmd.isQuery()) {
         if (m_pSystemInfo->dataRead())
             return m_pSystemInfo->getDeviceVersion();
@@ -78,9 +78,9 @@ QString cSystemInterface::m_ReadDeviceVersion(QString &sInput)
 }
 
 
-QString cSystemInterface::m_ReadDeviceName(QString& sInput)
+QString cSystemInterface::scpiReadDeviceName(const QString &scpi)
 {
-    cSCPICommand cmd = sInput;
+    cSCPICommand cmd = scpi;
     if (cmd.isQuery()) {
         if (m_pSystemInfo->dataRead())
             return m_pSystemInfo->getDeviceName();
@@ -92,10 +92,10 @@ QString cSystemInterface::m_ReadDeviceName(QString& sInput)
 }
 
 
-QString cSystemInterface::scpiReadPCBVersion(QString &sInput)
+QString cSystemInterface::scpiReadPCBVersion(const QString &scpi)
 {
     QString s;
-    cSCPICommand cmd = sInput;
+    cSCPICommand cmd = scpi;
     if (cmd.isQuery()) {
         if (m_pSystemInfo->dataRead())
             s = m_pSystemInfo->getPCBVersion();
@@ -107,9 +107,9 @@ QString cSystemInterface::scpiReadPCBVersion(QString &sInput)
     return s;
 }
 
-QString cSystemInterface::m_ReadFPGAVersion(QString &sInput)
+QString cSystemInterface::scpiReadFPGAVersion(const QString &scpi)
 {
-    cSCPICommand cmd = sInput;
+    cSCPICommand cmd = scpi;
     if (cmd.isQuery()) {
         if (m_pSystemInfo->dataRead())
             return m_pSystemInfo->getLCAVersion();
@@ -120,10 +120,10 @@ QString cSystemInterface::m_ReadFPGAVersion(QString &sInput)
         return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-QString cSystemInterface::m_ReadWriteSerialNumber(QString &sInput)
+QString cSystemInterface::scpiReadWriteSerialNumber(const QString &scpi)
 {
     QString s;
-    cSCPICommand cmd = sInput;
+    cSCPICommand cmd = scpi;
     if (cmd.isQuery()) {
         if (m_pSystemInfo->dataRead())
             s = m_pSystemInfo->getSerialNumber();
