@@ -18,9 +18,9 @@ ServiceStatusInterface::ServiceStatusInterface(std::shared_ptr<cSCPI> scpiInterf
                                                AbstractFactoryI2cCtrlPtr ctrlFactory) :
     ScpiServerConnection(scpiInterface),
     m_adjustmentStatusInterface(adjustmentStatusInterface),
-    m_ctrlFactory(ctrlFactory)
+    m_ctrlFactory(ctrlFactory),
+    m_periodicTimer(TimerFactoryQt::createPeriodic(AUTH_POLLING_PERIOD_MS))
 {
-    m_periodicTimer = TimerFactoryQt::createPeriodic(AUTH_POLLING_PERIOD_MS);
     connect(m_periodicTimer.get(), &TimerTemplateQt::sigExpired, this, &ServiceStatusInterface::getAuthorizationStatus);
 }
 

@@ -11,7 +11,7 @@ class Com5003SenseChannel : public SenseChannelCommon
     Q_OBJECT
 public:
     Com5003SenseChannel(std::shared_ptr<cSCPI> scpiinterface,
-                        QString unit,
+                        const QString &unit,
                         SenseSystem::cChannelSettings* cSettings,
                         quint8 nr,
                         AbstractFactoryI2cCtrlPtr ctrlFactory);
