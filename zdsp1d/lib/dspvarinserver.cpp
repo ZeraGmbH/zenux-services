@@ -25,11 +25,7 @@ bool DspVarInServer::setupFromCommaSeparatedString(const QString& varDefinition)
         if (commaCount > 3) { // optional segment
             int varSegment = varDefinition.section(',', 4, 4).remove(' ').toInt(&ok);
             if ((ret = ret && ok)) {
-                if ( (ret = ret && (
-                               varSegment == dspInternalSegment ||
-                               varSegment == moduleLocalSegment ||
-                               varSegment == moduleAlignedMemorySegment
-                               )))
+                if ( (ret = ret && varSegment >= minSegmentType && varSegment <= maxSegmentType) )
                     segment = (DspSegmentType)varSegment;
             }
         }
