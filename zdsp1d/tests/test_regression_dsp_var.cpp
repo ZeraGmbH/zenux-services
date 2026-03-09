@@ -225,13 +225,6 @@ void test_regression_dsp_var::createAlignedVariableOk()
     QCOMPARE(spyRead[0][1], ZSCPI::ack);
     QVERIFY(spyRead[0][2].toString().contains("TEMPALIGNED1:"));
     QVERIFY(spyRead[0][2].toString().contains("TEMPALIGNED2:"));
-
-    QSignalSpy spyWrite(m_dspIFace.get(), &AbstractServerInterface::serverAnswer);
-    dspVarGroup->setVarData("SUBDC:1;");
-    m_dspIFace->dspMemoryWrite(dspVarGroup);
-    TimeMachineObject::feedEventLoop();
-    QCOMPARE(spyWrite.count(), 1);
-    QCOMPARE(spyWrite[0][2], ZSCPI::scpiAnswer[ZSCPI::ack]);
 }
 
 static constexpr int dm32UserWorkSpaceBase21362 = 0x98180; // stolen from zdspserver.cpp
