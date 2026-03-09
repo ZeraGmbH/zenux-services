@@ -540,8 +540,7 @@ QString ZDspServer::runDspTest(const QString &scpiParam)
                 byte = (byte +1) % 256;
             }
             DspVarResolver dspSystemVarResolver;
-            QString sadr  = "UWSPACE";
-            ulong adr = dspSystemVarResolver.getVarAddress(sadr) ;
+            ulong adr = dspSystemVarResolver.getVarAddress("UWSPACE") ;
             AbstractDspDeviceNodePtr deviceNode = m_zdspSupportFactory->getDspDeviceNode();
             for (i=0; i< nr; i++) {
                 if(!deviceNode->write(adr, ba.data(), n*4 )) {
