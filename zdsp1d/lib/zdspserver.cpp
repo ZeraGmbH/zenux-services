@@ -627,7 +627,7 @@ int ZDspServer::getUserMemAvailable() const
     for (int i=0; i<dm32UserWorkSpace.getVarCount(); i++) {
         const DspVarServerPtr dspVar = dm32UserWorkSpace.getDspVar(i);
         if(dspVar->Name == "UWSPACE")
-            return dspVar->size;
+            return m_userWorkSpaceAlignedSegmentStartAdr - dspVar->adr;
     }
     return 0;
 }
@@ -638,6 +638,27 @@ int ZDspServer::getUserMemOccupied() const
     int memOccupied = 0;
     for (const ZdspClient* client : clientList)
         memOccupied += client->getDataMemSize();
+    return memOccupied;
+}
+
+int ZDspServer::getUserMemAlignedAvailable() const
+{
+    for (int i=0; i<dm32UserWorkSpace.getVarCount(); i++) {
+        const DspVarServerPtr dspVar = dm32UserWorkSpace.getDspVar(i);
+        if(dspVar->Name == "UWSPACE") {
+            ulong afterUserWorSpaceAdr = dspVar->adr + dspVar->size;
+            return afterUserWorSpaceAdr - m_userWorkSpaceAlignedSegmentStartAdr;
+        }
+    }
+    return 0;
+}
+
+int ZDspServer::getUserMemAlignedOccupied() const
+{
+    const QList<ZdspClient*> &clientList = getClients();
+    int memOccupied = 0;
+    for (const ZdspClient* client : clientList)
+        memOccupied += client->getDataMemSizeAligned();
     return memOccupied;
 }
 

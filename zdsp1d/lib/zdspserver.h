@@ -36,6 +36,8 @@ public:
                                                     QByteArray &rawInterruptCmdMemOut) const;
     int getUserMemAvailable() const;
     int getUserMemOccupied() const;
+    int getUserMemAlignedAvailable() const;
+    int getUserMemAlignedOccupied() const;
     int getProgMemCyclicAvailable() const;
     int getProgMemCyclicOccupied() const;
     int getProgMemInterruptAvailable() const;

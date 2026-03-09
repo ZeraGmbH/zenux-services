@@ -85,7 +85,7 @@ bool ZdspClient::setVarList(const QString &varsSemicolonSeparated)
     if (!allOk)
         return false;
 
-    m_dataMemSize = calcDataMemSize();
+    calcDataMemSizes();
     m_dspVarResolver.actualizeVarHash(); // wir setzen die hashtabelle neu
     return true;
 }
@@ -178,6 +178,11 @@ int ZdspClient::getDataMemSize() const
     return m_dataMemSize;
 }
 
+int ZdspClient::getDataMemSizeAligned() const
+{
+    return m_dataMemSizeAligned;
+}
+
 bool ZdspClient::hasCyclicCmds() const
 {
     return !m_sCmdListDef.isEmpty();
@@ -198,11 +203,19 @@ int ZdspClient::getInstanceCount()
     return m_instanceCount;
 }
 
-int ZdspClient::calcDataMemSize()
+void ZdspClient::calcDataMemSizes()
 {
     const int varCount = m_userMemSection.getVarCount();
     int dataMemSize = 0;
-    for (int var=0; var<varCount; ++var)
-        dataMemSize += m_userMemSection.getDspVar(var)->size;
-    return dataMemSize;
+    int dataMemSizeAligned = 0;
+    for (int var=0; var<varCount; ++var) {
+        DspVarServerPtr dspVar = m_userMemSection.getDspVar(var);
+        if (dspVar->segment == moduleLocalSegment)
+            dataMemSize += m_userMemSection.getDspVar(var)->size;
+        else if (dspVar->segment == moduleAlignedMemorySegment)
+            dataMemSizeAligned += m_userMemSection.getDspVar(var)->size;
+    }
+    m_dataMemSize = dataMemSize;
+    m_dataMemSizeAligned = dataMemSizeAligned;
 }
+

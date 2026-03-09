@@ -32,6 +32,7 @@ public:
 
     int getDspInterruptId() const;
     int getDataMemSize() const;
+    int getDataMemSizeAligned() const;
     bool hasCyclicCmds() const;
     bool hasInterruptCmds() const;
     VeinTcp::TcpPeer* getVeinPeer() const;
@@ -44,7 +45,7 @@ public:
     static int getInstanceCount();
 
 private:
-    int calcDataMemSize();
+    void calcDataMemSizes();
 
     VeinTcp::TcpPeer* m_veinPeer;
     QByteArray m_proxyConnectionId;
@@ -59,6 +60,7 @@ private:
     QList<DspCmdWithParamsCompiled> m_DspIntCmdList;
     DspMemorySectionInternal m_userMemSection;
     int m_dataMemSize = 0;
+    int m_dataMemSizeAligned = 0;
 
     // dump / tests
     AbstractDspCompilerSupportPtr m_cyclicCommandsCompilerSupport;
