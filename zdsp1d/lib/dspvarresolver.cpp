@@ -1,5 +1,6 @@
 #include "dspvarresolver.h"
 #include "dspapi.h"
+#include "dspvaroffsetcalc.h"
 
 DspVarResolver::DspVarResolver()
 {
@@ -39,38 +40,35 @@ DspVarServerPtr DspVarResolver::getDspVar(const QString &varNameWithOffset)
 long DspVarResolver::getVarOffset(const QString& varNameWithOffset, ulong userMemOffset, ulong alignedStartAdr)
 {
     DspVarServerPtr dspVar = getDspVar(varNameWithOffset);
+    int calcedOffset = 0;
     if(dspVar) {
-        ulong retoffs = dspVar->offs;
-        QString offsetStr = extractOffset(varNameWithOffset, dspVar->Name);
-        if(offsetStr.length() > 0) { // wenn noch was da, dann muss das ein +/- offset sein
-            long offset = calcOffsetFromStr(offsetStr);
-            if(offset < 0)
-                return -1;
-            retoffs += offset;
-        }
+        if (!DspVarOffsetCalc::calcVarOffset(dspVar->Name, varNameWithOffset, calcedOffset))
+            return -1;
+
+        int retoffs = dspVar->offs + calcedOffset;
         if (dspVar->segment == moduleAlignedMemorySegment)
             retoffs += (alignedStartAdr - userMemOffset);
         return retoffs;
     }
     // offset only e.g DSPMEMOFFSET
-    return calcOffsetFromStr(varNameWithOffset);
+    if (!DspVarOffsetCalc::calcVarOffset("", varNameWithOffset, calcedOffset))
+        return -1;
+    return calcedOffset;
 }
 
 long DspVarResolver::getVarAddress(const QString &varNameWithOffset)
 {
     DspVarServerPtr dspVar = getDspVar(varNameWithOffset);
+    int calcedOffset = 0;
     if(dspVar) {
-        QString offsetStr = extractOffset(varNameWithOffset, dspVar->Name);
-        if(offsetStr.length() > 0) { // wenn noch was da, dann muss das ein +/- offset sein
-            long offset = calcOffsetFromStr(offsetStr);
-            if(offset < 0)
-                return -1;
-            return dspVar->adr + offset;
-        }
-        return dspVar->adr;
+        if (!DspVarOffsetCalc::calcVarOffset(dspVar->Name, varNameWithOffset, calcedOffset))
+            return -1;
+        return dspVar->adr + calcedOffset;
     }
     // offset only e.g DSPMEMOFFSET
-    return calcOffsetFromStr(varNameWithOffset);
+    if (!DspVarOffsetCalc::calcVarOffset("", varNameWithOffset, calcedOffset))
+        return -1;
+    return calcedOffset;
 }
 
 int DspVarResolver::getVarType(const QString &varNameWithOffset)
@@ -79,23 +77,4 @@ int DspVarResolver::getVarType(const QString &varNameWithOffset)
     if(var)
         return var->type;
     return dspDataTypeUnknown;
-}
-
-QString DspVarResolver::extractOffset(const QString &varNameWithOffset, const QString &varName)
-{
-    QString varUpper = varNameWithOffset.toUpper();
-    varUpper.remove(' ');
-    return varUpper.remove(varName);
-}
-
-long DspVarResolver::calcOffsetFromStr(const QString &str)
-{
-    bool ok;
-    long offset = str.toLong(&ok, 10); // prüfen auf dez. konstante
-    if(ok)
-        return offset;
-    offset = str.toLong(&ok, 16); // mal hex versuchen
-    if(ok)
-        return offset;
-    return -1; // sonst ist das ein fehler
 }

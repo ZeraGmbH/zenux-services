@@ -18,9 +18,6 @@ public:
     int getVarType(const QString &varNameWithOffset);
 
 private:
-    static QString extractOffset(const QString &varNameWithOffset, const QString &varName);
-    static long calcOffsetFromStr(const QString &str);
-
     QHash<QString, DspVarServerPtr> m_varHash;
     cParse m_varParser;
     QList<DspMemorySectionInternal*> m_memSectionList;
