@@ -89,7 +89,7 @@ QJsonObject TestDspInterface::dumpMemoryGroups()
     for(DspVarGroupClientInterface* memData : dspMemoryDataList) {
         QJsonObject entry;
         entry.insert("UserMemSize", int(memData->getUserMemSize()));
-        entry.insert("UserMemSizeGlobal", int(memData->getUserMemSizeGlobal()));
+        entry.insert("UserMemSizeAligned", int(memData->getUserMemSizeAligned()));
         dumpMemGroup.insert(memData->getName(), entry);
     }
     return dumpMemGroup;
@@ -168,8 +168,8 @@ QString TestDspInterface::dspVarSegmentToJson(int segment)
         return "dspInternalSegment";
     case moduleLocalSegment:
         return "moduleLocalSegment";
-    case moduleGlobalSegment:
-        return "moduleGlobalSegment";
+    case moduleAlignedMemorySegment:
+        return "moduleAlignedMemorySegment";
     default:
         qFatal("Unknown DSP var segment");
     }

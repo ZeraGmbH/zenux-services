@@ -15,7 +15,7 @@ public:
         INTERRUPT
     };
     virtual void startClientArea(int entityId, QString additionalInfo, MemType memType) = 0;
-    virtual void clearGlobalForAllCmds() = 0;
+    virtual void clearTotalCmdLists() = 0;
 
     virtual bool addCmdToRaw(const QString &dspCmdLine,
                              const QStringList &paramNames, const short i16Params[],

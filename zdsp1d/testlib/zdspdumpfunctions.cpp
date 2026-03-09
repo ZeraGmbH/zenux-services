@@ -60,14 +60,14 @@ QJsonObject ZDspDumpFunctions::getMemoryDump(const ZDspServer *server)
             }
             entityData.insert("DspVarsLocal", localVariables);
 
-            QJsonObject globalVariables;
-            const QList<VarLocation> globalList = getGlobalVariableDump(client->getUserMemSection());
-            for (const VarLocation &entry : globalList) {
+            QJsonObject alignedVariables;
+            const QList<VarLocation> alignedList = getAlignedVariableDump(client->getUserMemSection());
+            for (const VarLocation &entry : alignedList) {
                 QString key = QString("%1 / %2").arg(
                     DspVarInServer::toHex(entry.m_localVariableAddress), DspVarInServer::toHex(entry.m_absoluteVariableAddress));
-                globalVariables.insert(key, entry.m_variableName);
+                alignedVariables.insert(key, entry.m_variableName);
             }
-            entityData.insert("DspVarsGlobal", globalVariables);
+            entityData.insert("DspVarsAligned", alignedVariables);
 
             json.insert(QString("%1").arg(entityId), entityData);
         }
@@ -123,17 +123,17 @@ quint32 ZDspDumpFunctions::getDspCmdListCompiledCrc(const QList<DspCmdWithParams
     return crcBuffer.getCrc();
 }
 
-QList<ZDspDumpFunctions::VarLocation> ZDspDumpFunctions::getGlobalVariableDump(const DspMemorySectionInternal &clientUserMemSection)
+QList<ZDspDumpFunctions::VarLocation> ZDspDumpFunctions::getAlignedVariableDump(const DspMemorySectionInternal &clientUserMemSection)
 {
-    QList<VarLocation> globalVarDump;
+    QList<VarLocation> alignedVarDump;
     for (int i = 0; i < clientUserMemSection.getVarCount(); i++) {
         DspVarServerPtr dspVar = clientUserMemSection.getDspVar(i);
-        if (dspVar->segment == moduleGlobalSegment)
-            globalVarDump.append( { dspVar->Name,
-                                  dspVar->offs,
-                                  dspVar->adr } );
+        if (dspVar->segment == moduleAlignedMemorySegment)
+            alignedVarDump.append( { dspVar->Name,
+                                     dspVar->offs,
+                                     dspVar->adr } );
     }
-    return globalVarDump;
+    return alignedVarDump;
 }
 
 QList<ZDspDumpFunctions::VarLocation> ZDspDumpFunctions::getLocalVariableDump(const DspMemorySectionInternal &clientUserMemSection)

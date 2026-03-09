@@ -74,11 +74,11 @@ quint32 DspVarGroupClientInterface::getUserMemSize()
     return size;
 }
 
-quint32 DspVarGroupClientInterface::getUserMemSizeGlobal()
+quint32 DspVarGroupClientInterface::getUserMemSizeAligned()
 {
     quint32 size = 0;
     for(int i = 0; i < DspVarList.size(); ++i)
-        if (DspVarList.at(i)->m_dspSegmentType == moduleGlobalSegment)
+        if (DspVarList.at(i)->m_dspSegmentType == moduleAlignedMemorySegment)
             size += DspVarList.at(i)->size();
     return size;
 }

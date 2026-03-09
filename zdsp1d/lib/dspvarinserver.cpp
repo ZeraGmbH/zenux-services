@@ -28,7 +28,7 @@ bool DspVarInServer::setupFromCommaSeparatedString(const QString& varDefinition)
                 if ( (ret = ret && (
                                varSegment == dspInternalSegment ||
                                varSegment == moduleLocalSegment ||
-                               varSegment == moduleGlobalSegment
+                               varSegment == moduleAlignedMemorySegment
                                )))
                     segment = (DspSegmentType)varSegment;
             }

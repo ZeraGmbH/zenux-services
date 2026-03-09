@@ -13,7 +13,7 @@ void TestDspCompilerSupport::startClientArea(int entityId, QString additionalInf
         m_rawDspCommandsAllInterrupt.append(message);
 }
 
-void TestDspCompilerSupport::clearGlobalForAllCmds()
+void TestDspCompilerSupport::clearTotalCmdLists()
 {
     m_rawDspCommandsAllCyclic.clear();
     m_rawDspCommandsAllInterrupt.clear();

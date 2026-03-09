@@ -118,7 +118,7 @@ private:
 
     ZDspClientContainer m_zdspClientContainer;
 
-    ulong m_userWorkSpaceGlobalSegmentAdr;
+    ulong m_userWorkSpaceAlignedSegmentStartAdr;
     LogStatisticsAsyncInt m_dspInterruptLogStatistics;
     bool m_outputHealthLogs;
 

@@ -14,14 +14,14 @@ public:
                                                           bool &ok);
     DspCmdWithParamsCompiled compileOneCmdLineAligned(const QString &cmdLine,
                                                       ulong userMemOffset,
-                                                      ulong globalstartadr,
+                                                      ulong alignedStartAdr,
                                                       AbstractDspCompilerSupportPtr compilerSupport,
                                                       bool &ok);
     bool compileCmds(const QString& cmdsSemicolonSeparated,
                      QList<DspCmdWithParamsCompiled> &genCmdList,
                      QString& err,
                      ulong userMemOffset,
-                     ulong globalstartadr,
+                     ulong alignedStartAdr,
                      AbstractDspCompilerSupportPtr compilerSupport);
 
 private:

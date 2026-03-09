@@ -21,14 +21,14 @@ public:
     void setCmdListDef(const QString& cmdListDef);
     void setCmdForIrqListDef(const QString& cmdIntListDef);
 
-    bool GenCmdLists(QString& errs, ulong userMemOffset, ulong globalstartadr);
+    bool GenCmdLists(QString& errs, ulong userMemOffset, ulong alignedStartAdr);
     const QList<DspCmdWithParamsCompiled>& GetDspCmdList() const;
     const QList<DspCmdWithParamsCompiled>& GetDspIntCmdList() const;
     const DspMemorySectionInternal &getUserMemSection() const;
 
     DspVarResolver m_dspVarResolver;
 
-    ulong relocalizeUserMemSectionVars(ulong startAdress, ulong globalMemStart);
+    ulong relocalizeUserMemSectionVars(ulong startAdress, ulong alignedMemStartAddress);
 
     int getDspInterruptId() const;
     int getDataMemSize() const;

@@ -6,7 +6,7 @@
 
 enum DspDataType { dspDataTypeInt, dspDataTypeFloat, dspDataTypeUnknown };
 
-enum DspSegmentType { dspInternalSegment, moduleLocalSegment, moduleGlobalSegment };
+enum DspSegmentType { dspInternalSegment, moduleLocalSegment, moduleAlignedMemorySegment };
 
 class DspVarClientInterface
 {

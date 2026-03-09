@@ -205,11 +205,11 @@ void test_regression_dsp_var::createInternalVariablesSecondNotOk()
     QCOMPARE(spy[0][2], ZSCPI::scpiAnswer[ZSCPI::errexec]);
 }
 
-void test_regression_dsp_var::createGlobalVariableOk()
+void test_regression_dsp_var::createAlignedVariableOk()
 {
-    DspVarGroupClientInterface* dspVarGroup = m_dspIFace->createVariableGroup("createGlobalVariableOk");
-    dspVarGroup->addDspVar("TempGlobal1", 1, dspDataTypeInt, moduleGlobalSegment);
-    dspVarGroup->addDspVar("TempGlobal2", 1, dspDataTypeFloat, moduleGlobalSegment);
+    DspVarGroupClientInterface* dspVarGroup = m_dspIFace->createVariableGroup("createAlignedVariableOk");
+    dspVarGroup->addDspVar("TempAligned1", 1, dspDataTypeInt, moduleAlignedMemorySegment);
+    dspVarGroup->addDspVar("TempAligned2", 1, dspDataTypeFloat, moduleAlignedMemorySegment);
 
     QSignalSpy spyCreate(m_dspIFace.get(), &AbstractServerInterface::serverAnswer);
     m_dspIFace->varList2Dsp();
@@ -223,8 +223,8 @@ void test_regression_dsp_var::createGlobalVariableOk()
     TimeMachineObject::feedEventLoop();
     QCOMPARE(spyRead.count(), 1);
     QCOMPARE(spyRead[0][1], ZSCPI::ack);
-    QVERIFY(spyRead[0][2].toString().contains("TEMPGLOBAL1:"));
-    QVERIFY(spyRead[0][2].toString().contains("TEMPGLOBAL2:"));
+    QVERIFY(spyRead[0][2].toString().contains("TEMPALIGNED1:"));
+    QVERIFY(spyRead[0][2].toString().contains("TEMPALIGNED2:"));
 
     QSignalSpy spyWrite(m_dspIFace.get(), &AbstractServerInterface::serverAnswer);
     dspVarGroup->setVarData("SUBDC:1;");

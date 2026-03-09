@@ -16,7 +16,7 @@ DspCmdWithParamsCompiled DspCmdCompiler::compileOneCmdLineZeroAligned(const QStr
 
 DspCmdWithParamsCompiled DspCmdCompiler::compileOneCmdLineAligned(const QString &cmdLine,
                                                                   ulong userMemOffset,
-                                                                  ulong globalstartadr,
+                                                                  ulong alignedStartAdr,
                                                                   AbstractDspCompilerSupportPtr compilerSupport,
                                                                   bool &ok)
 {
@@ -46,7 +46,7 @@ DspCmdWithParamsCompiled DspCmdCompiler::compileOneCmdLineAligned(const QString 
         {
             sSearch = cmdParser.GetKeyword(&charCmdLine);
             paramNames.append(sSearch);
-            ok &= ( (paramValues[0] = m_varResolver->getVarOffset(sSearch, userMemOffset, globalstartadr)) > -1); // -1 ist fehlerbedingung
+            ok &= ( (paramValues[0] = m_varResolver->getVarOffset(sSearch, userMemOffset, alignedStartAdr)) > -1); // -1 ist fehlerbedingung
             ok &= compilerSupport->addCmdToRaw(cmdLine, paramNames, paramValues, dspcmd, m_varResolver);
             ok &= areThereNoFurtherKeywords(cmdParser, charCmdLine);
             DspCmdWithParamsCompiled lcmd;
@@ -59,7 +59,7 @@ DspCmdWithParamsCompiled DspCmdCompiler::compileOneCmdLineAligned(const QString 
             for (int i=0; i<2; i++) {
                 sSearch = cmdParser.GetKeyword(&charCmdLine);
                 paramNames.append(sSearch);
-                ok &= ( (paramValues[i] = m_varResolver->getVarOffset(sSearch, userMemOffset, globalstartadr)) > -1);
+                ok &= ( (paramValues[i] = m_varResolver->getVarOffset(sSearch, userMemOffset, alignedStartAdr)) > -1);
             }
             ok &= compilerSupport->addCmdToRaw(cmdLine, paramNames, paramValues, dspcmd, m_varResolver);
             ok &= areThereNoFurtherKeywords(cmdParser, charCmdLine);
@@ -76,7 +76,7 @@ DspCmdWithParamsCompiled DspCmdCompiler::compileOneCmdLineAligned(const QString 
             for (int i=0; i<3; i++) {
                 sSearch = cmdParser.GetKeyword(&charCmdLine);
                 paramNames.append(sSearch);
-                ok &= ( (paramValues[i] = m_varResolver->getVarOffset(sSearch, userMemOffset, globalstartadr)) > -1);
+                ok &= ( (paramValues[i] = m_varResolver->getVarOffset(sSearch, userMemOffset, alignedStartAdr)) > -1);
             }
             ok &= compilerSupport->addCmdToRaw(cmdLine, paramNames, paramValues, dspcmd, m_varResolver);
             ok &= areThereNoFurtherKeywords(cmdParser, charCmdLine);
@@ -92,7 +92,7 @@ DspCmdWithParamsCompiled DspCmdCompiler::compileOneCmdLineAligned(const QString 
         {
             long par;
             sSearch = cmdParser.GetKeyword(&charCmdLine);
-            ok &= ( (par = m_varResolver->getVarOffset(sSearch, userMemOffset, globalstartadr)) > -1);
+            ok &= ( (par = m_varResolver->getVarOffset(sSearch, userMemOffset, alignedStartAdr)) > -1);
             ok &= compilerSupport->addCmdToRaw1Param(cmdLine, par, dspcmd);
             ok &= areThereNoFurtherKeywords(cmdParser, charCmdLine);
             DspCmdWithParamsCompiled lcmd;
@@ -105,7 +105,7 @@ DspCmdWithParamsCompiled DspCmdCompiler::compileOneCmdLineAligned(const QString 
             short par1;
             long par2 = 0;
             sSearch = cmdParser.GetKeyword(&charCmdLine);
-            ok &= ( (par1 = m_varResolver->getVarOffset(sSearch, userMemOffset, globalstartadr)) > -1); // -1 ist fehlerbedingung
+            ok &= ( (par1 = m_varResolver->getVarOffset(sSearch, userMemOffset, alignedStartAdr)) > -1); // -1 ist fehlerbedingung
             DspCmdWithParamsCompiled lcmd;
             if (!(ok))
                 return lcmd; // wenn fehler -> fertig
@@ -116,7 +116,7 @@ DspCmdWithParamsCompiled DspCmdCompiler::compileOneCmdLineAligned(const QString 
             if (!ok)  {
                 float tf = sSearch.toFloat(&ok);
                 if (!ok) {
-                    par2 = m_varResolver->getVarOffset(sSearch, userMemOffset, globalstartadr);
+                    par2 = m_varResolver->getVarOffset(sSearch, userMemOffset, alignedStartAdr);
                     if (par2 >= 0)
                         ok = true;
                 }
@@ -141,14 +141,14 @@ bool DspCmdCompiler::compileCmds(const QString &cmdsSemicolonSeparated,
                                  QList<DspCmdWithParamsCompiled> &genCmdList,
                                  QString &err,
                                  ulong userMemOffset,
-                                 ulong globalstartadr,
+                                 ulong alignedStartAdr,
                                  AbstractDspCompilerSupportPtr compilerSupport)
 {
     bool ok = true;
     genCmdList.clear();
     const QStringList cmds = cmdsSemicolonSeparated.split(';', Qt::SkipEmptyParts);
     for(const QString &cmd : cmds) {
-        genCmdList.append(compileOneCmdLineAligned(cmd, userMemOffset, globalstartadr, compilerSupport, ok));
+        genCmdList.append(compileOneCmdLineAligned(cmd, userMemOffset, alignedStartAdr, compilerSupport, ok));
         if(!ok) {
             err = cmd;
             break;

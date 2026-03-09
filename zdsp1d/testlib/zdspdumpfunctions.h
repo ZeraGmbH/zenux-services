@@ -17,7 +17,7 @@ public:
         ulong m_absoluteVariableAddress;
     };
     static QList<VarLocation> getLocalVariableDump(const DspMemorySectionInternal &clientUserMemSection);
-    static QList<VarLocation> getGlobalVariableDump(const DspMemorySectionInternal &clientUserMemSection);
+    static QList<VarLocation> getAlignedVariableDump(const DspMemorySectionInternal &clientUserMemSection);
 private:
     static QString crcToHex(quint32 val);
 };

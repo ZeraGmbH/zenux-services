@@ -768,7 +768,7 @@ bool ZDspServer::compileCmdListsForAllClientsToBinaryStream(QString &errs,
 
     if (clientList.count() > 0) {
         ZdspClient* firstClient = clientList.at(0);
-        firstClient->getCurrCyclicCommandsCompilerSupport()->clearGlobalForAllCmds();
+        firstClient->getCurrCyclicCommandsCompilerSupport()->clearTotalCmdLists();
         firstClient->getCurrCyclicCommandsCompilerSupport()->startClientArea(0, "Global init", AbstractDspCompilerSupport::CYCLIC);
         ZdspClient* lastClient = firstClient;
         DspCmdCompiler firstCompiler(&firstClient->m_dspVarResolver, firstClient->getDspInterruptId());
@@ -791,10 +791,10 @@ bool ZDspServer::compileCmdListsForAllClientsToBinaryStream(QString &errs,
                                                                                    AbstractDspCompilerSupport::INTERRUPT);
                 intCmdMemStream << genClientStartAddressCmd(userMemOffset, client, client->getCurrInterruptCommandsCompilerSupport(), ok);
             }
-            if (!client->GenCmdLists(errs, userMemOffset, m_userWorkSpaceGlobalSegmentAdr))
+            if (!client->GenCmdLists(errs, userMemOffset, m_userWorkSpaceAlignedSegmentStartAdr))
                 return false;
 
-            userMemOffset += client->relocalizeUserMemSectionVars(userMemOffset, m_userWorkSpaceGlobalSegmentAdr);
+            userMemOffset += client->relocalizeUserMemSectionVars(userMemOffset, m_userWorkSpaceAlignedSegmentStartAdr);
 
             const QList<DspCmdWithParamsCompiled> &cycCmdList = client->GetDspCmdList();
             for (int j = 0; j < cycCmdList.size(); j++)
@@ -871,11 +871,11 @@ bool ZDspServer::setDspType()
     int magicId = readMagicId();
     const QString dspBootFilePath = m_dspSettings.getBootFile();
     if (magicId == DeviceNodeDsp::MAGIC_ID21262 && dspBootFilePath.contains("zdsp21262.ldr")) {
-        m_userWorkSpaceGlobalSegmentAdr = DspStaticData::alignInternalMemRegionsFor21262();
+        m_userWorkSpaceAlignedSegmentStartAdr = DspStaticData::alignInternalMemRegionsFor21262();
         return true;
     }
     else if (magicId == DeviceNodeDsp::MAGIC_ID21362 && dspBootFilePath.contains("zdsp21362.ldr")) {
-        m_userWorkSpaceGlobalSegmentAdr = DspStaticData::alignInternalMemRegionsFor21362();
+        m_userWorkSpaceAlignedSegmentStartAdr = DspStaticData::alignInternalMemRegionsFor21362();
         return true;
     }
     return false;

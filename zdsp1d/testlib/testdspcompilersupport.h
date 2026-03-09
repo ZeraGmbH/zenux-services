@@ -7,7 +7,7 @@ class TestDspCompilerSupport : public AbstractDspCompilerSupport
 {
 public:
     void startClientArea(int entityId, QString additionalInfo, MemType memType) override;
-    void clearGlobalForAllCmds() override;
+    void clearTotalCmdLists() override;
     static const QStringList &getRawDspCommandsAllVerbose(MemType memType);
     static int getRawDspCommandsCount(MemType memType);
 

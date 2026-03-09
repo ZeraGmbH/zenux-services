@@ -36,7 +36,7 @@ DspVarServerPtr DspVarResolver::getDspVar(const QString &varNameWithOffset)
     return nullptr;
 }
 
-long DspVarResolver::getVarOffset(const QString& varNameWithOffset, ulong userMemOffset, ulong globalstartadr)
+long DspVarResolver::getVarOffset(const QString& varNameWithOffset, ulong userMemOffset, ulong alignedStartAdr)
 {
     DspVarServerPtr dspVar = getDspVar(varNameWithOffset);
     if(dspVar) {
@@ -48,8 +48,8 @@ long DspVarResolver::getVarOffset(const QString& varNameWithOffset, ulong userMe
                 return -1;
             retoffs += offset;
         }
-        if (dspVar->segment == moduleGlobalSegment) // wenn daten im globalen segment liegen
-            retoffs += (globalstartadr - userMemOffset);
+        if (dspVar->segment == moduleAlignedMemorySegment)
+            retoffs += (alignedStartAdr - userMemOffset);
         return retoffs;
     }
     // offset only e.g DSPMEMOFFSET

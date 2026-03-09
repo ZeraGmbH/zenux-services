@@ -21,7 +21,7 @@ public:
 
     QString getName();
     quint32 getUserMemSize();
-    quint32 getUserMemSizeGlobal();
+    quint32 getUserMemSizeAligned();
     QString VarListLong();
     QString VarListShort();
     QString writeCommand();

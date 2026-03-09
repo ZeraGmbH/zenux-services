@@ -7,7 +7,7 @@ class DspCompilerSupport : public AbstractDspCompilerSupport
 {
 public:
     void startClientArea(int entityId, QString additionalInfo, MemType memType) override;
-    void clearGlobalForAllCmds() override {}
+    void clearTotalCmdLists() override {}
 
     bool addCmdToRaw(const QString &dspCmdLine,
                      const QStringList &paramNames, const short i16Params[],

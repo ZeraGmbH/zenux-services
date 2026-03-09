@@ -44,7 +44,7 @@ bool ZdspClient::setVarList(const QString &varsSemicolonSeparated)
 {
     m_userMemSection.clear();
     int localOffset = 0;
-    int globaloffset = 0;
+    int alignedoffset = 0;
     const QStringList varEntries = varsSemicolonSeparated.split(";", Qt::SkipEmptyParts);
     bool allOk = true;
     for(int i=0; i<varEntries.count(); i++) {
@@ -73,10 +73,9 @@ bool ZdspClient::setVarList(const QString &varsSemicolonSeparated)
                 localOffset += dspVar.size;
                 m_userMemSection.appendDspVar(dspVar);
             }
-            else if (dspVar.segment == moduleGlobalSegment) {
-                dspVar.offs = globaloffset;
-                // TODO already there / other clients????
-                globaloffset += dspVar.size;
+            else if (dspVar.segment == moduleAlignedMemorySegment) {
+                dspVar.offs = alignedoffset;
+                alignedoffset += dspVar.size;
                 m_userMemSection.appendDspVar(dspVar);
             }
         }
@@ -106,10 +105,10 @@ const QByteArray &ZdspClient::getProtobufClientId() const
     return m_proxyConnectionId;
 }
 
-ulong ZdspClient::relocalizeUserMemSectionVars(ulong startAdress, ulong globalMemStart)
+ulong ZdspClient::relocalizeUserMemSectionVars(ulong startAdress, ulong alignedMemStartAddress)
 {
     ulong usermemsize = 0;
-    ulong globalmemsize = 0;
+    ulong alignedMemSize = 0;
     m_userMemSection.m_startAddress = startAdress;
 
     for (int i = 0; i < m_userMemSection.getVarCount(); i++) {
@@ -118,15 +117,15 @@ ulong ZdspClient::relocalizeUserMemSectionVars(ulong startAdress, ulong globalMe
             dspVar->adr = startAdress + usermemsize; // we need the adress for reading back data
             usermemsize += dspVar->size;
         }
-        else if (dspVar->segment == moduleGlobalSegment) {
-            dspVar->adr = globalMemStart+globalmemsize;
-            globalmemsize += dspVar->size;
+        else if (dspVar->segment == moduleAlignedMemorySegment) {
+            dspVar->adr = alignedMemStartAddress+alignedMemSize;
+            alignedMemSize += dspVar->size;
         }
     }
     return usermemsize;
 }
 
-bool ZdspClient::GenCmdLists(QString& errs, ulong userMemOffset, ulong globalstartadr)
+bool ZdspClient::GenCmdLists(QString& errs, ulong userMemOffset, ulong alignedStartAdr)
 {
     DspCmdCompiler compiler(&m_dspVarResolver, m_dspInterruptId);
     m_cyclicCommandsCompilerSupport = m_zdspSupportFactory->createDspCompilerSupport();
@@ -135,11 +134,11 @@ bool ZdspClient::GenCmdLists(QString& errs, ulong userMemOffset, ulong globalsta
     bool ok = true;
     if (!m_sCmdListDef.isEmpty()) {
         getCurrCyclicCommandsCompilerSupport()->startClientArea(getEntityId(), "Cyclic sequence", AbstractDspCompilerSupport::CYCLIC);
-        ok = ok && compiler.compileCmds(m_sCmdListDef, m_DspCmdList,errs, userMemOffset, globalstartadr, m_cyclicCommandsCompilerSupport);
+        ok = ok && compiler.compileCmds(m_sCmdListDef, m_DspCmdList,errs, userMemOffset, alignedStartAdr, m_cyclicCommandsCompilerSupport);
     }
     if (!m_sIntCmdListDef.isEmpty()) {
         getCurrCyclicCommandsCompilerSupport()->startClientArea(getEntityId(), "Interrupt sequence", AbstractDspCompilerSupport::INTERRUPT);
-        ok = ok && compiler.compileCmds(m_sIntCmdListDef, m_DspIntCmdList, errs, userMemOffset, globalstartadr, m_interruptCommandsCompilerSupport);
+        ok = ok && compiler.compileCmds(m_sIntCmdListDef, m_DspIntCmdList, errs, userMemOffset, alignedStartAdr, m_interruptCommandsCompilerSupport);
     }
     return ok;
 }
