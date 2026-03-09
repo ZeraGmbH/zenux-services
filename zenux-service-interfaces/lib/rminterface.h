@@ -16,7 +16,7 @@ class SERVICE_INTERFACES_EXPORT cRMInterface: public AbstractServerInterface
 public:
     cRMInterface();
     virtual ~cRMInterface();
-    void setClientSmart(Zera::ProxyClientPtr client);
+    void setClientSmart(Zera::ProxyClientPtr client) override;
     quint32 scpiCommand(const QString &scpi) override;
 
     quint32 rmIdent(QString name);
