@@ -20,6 +20,11 @@ bool DspVarOffsetCalc::calcVarOffset(const QString &varName, const QString varWi
         return true;
     }
 
+    return calcOffset(offsetStr, calcedOffset);
+}
+
+bool DspVarOffsetCalc::calcOffset(const QString offsetStr, int &calcedOffset)
+{
     bool ok = false;
     int offset = offsetStr.toInt(&ok, 10); // dec
     if (!ok)
