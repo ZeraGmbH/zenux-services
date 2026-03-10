@@ -59,14 +59,14 @@ long DspVarResolver::getVarOffset(const QString& varNameWithOffset, ulong userMe
 long DspVarResolver::getVarAddress(const QString &varNameWithOffset)
 {
     DspVarServerPtr dspVar = getDspVar(varNameWithOffset);
-    if(dspVar) {
-        int calcedOffset = 0;
-        // Should we really support offsets here?
-        if (!DspVarOffsetCalc::calcVarOffset(dspVar->Name, varNameWithOffset, calcedOffset))
-            return -1;
-        return dspVar->adr + calcedOffset;
-    }
-    return -1;
+    if (dspVar == nullptr)
+        return -1;
+
+    int calcedOffset = 0;
+    // Should we really support offsets here?
+    if (!DspVarOffsetCalc::calcVarOffset(dspVar->Name, varNameWithOffset, calcedOffset))
+        return -1;
+    return dspVar->adr + calcedOffset;
 }
 
 int DspVarResolver::getVarType(const QString &varNameWithOffset)
