@@ -21,7 +21,7 @@ public:
     void setCmdListDef(const QString& cmdListDef);
     void setCmdForIrqListDef(const QString& cmdIntListDef);
 
-    bool GenCmdLists(QString& errs, ulong userMemOffset, ulong alignedStartAdr);
+    bool compileCmdLists(QString& errs, ulong userMemOffset, ulong alignedStartAdr);
     const QList<DspCmdWithParamsCompiled>& GetDspCmdList() const;
     const QList<DspCmdWithParamsCompiled>& GetDspIntCmdList() const;
     const DspMemorySectionInternal &getUserMemSection() const;
@@ -32,7 +32,7 @@ public:
         ulong usermemsize = 0;
         ulong alignedMemSize = 0;
     };
-    MemSizes calcAbsoluteAdressesAndSizes(ulong startAdress, ulong alignedMemStartAddress);
+    MemSizes calcVarAdressesAndSizes(ulong startAdress, ulong alignedMemStartAddress);
 
     int getDspInterruptId() const;
     int getDataMemSize() const;

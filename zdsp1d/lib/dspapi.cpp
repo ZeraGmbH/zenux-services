@@ -266,7 +266,7 @@ void DspStaticData::initMemsection(DspMemorySectionInternal *memSection)
     for (int i = 0; i< (memSection->getVarCount()); i++) {
         DspVarServerPtr dspVar = memSection->getDspVar(i);
         if (dspVar->segment == dspInternalSegment) { // initialize only dsp system variables
-            dspVar->offs = offs;
+            dspVar->m_offsetToModuleBase = offs;
             dspVar->m_absoluteAddress = memSection->m_startAddress + offs;
             offs += dspVar->size;
         }

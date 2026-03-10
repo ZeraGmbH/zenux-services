@@ -48,7 +48,7 @@ long DspVarResolver::getVarOffset(const QString& varNameWithOffset, ulong userMe
         if (!DspVarOffsetCalc::calcVarOffset(dspVar->Name, varNameWithOffset, offsetToVar))
             return -1;
 
-        int offsetInClientMemorySpace = dspVar->offs + offsetToVar;
+        int offsetInClientMemorySpace = dspVar->m_offsetToModuleBase + offsetToVar;
         if (dspVar->segment == moduleAlignedMemorySegment)
             offsetInClientMemorySpace += (alignedMemAreaStartAdr - userMemOffset);
         return offsetInClientMemorySpace;

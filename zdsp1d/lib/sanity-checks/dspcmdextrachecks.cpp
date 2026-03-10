@@ -50,7 +50,7 @@ bool DspCmdExtraChecks::COPYMEM(const QStringList &paramNames, const short i16Pa
     if (varTransferTarget) {
         int startWanted = i16Params[2];
         int countWanted = i16Params[0];
-        int startTarget = varTransferTarget->offs;
+        int startTarget = varTransferTarget->m_offsetToModuleBase;
         int sizeTarget = varTransferTarget->size;
         if (startWanted+countWanted > startTarget+sizeTarget) {
             qWarning("Overflow on %s", qPrintable(paramNameTarget));
