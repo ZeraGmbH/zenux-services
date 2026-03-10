@@ -50,7 +50,7 @@ long DspVarResolver::getVarOffset(const QString& varNameWithOffset, ulong userMe
             retoffs += (alignedStartAdr - userMemOffset);
         return retoffs;
     }
-    // offset only e.g DSPMEMOFFSET
+    // offset only parameters e.g on DSPMEMOFFSET / STARTCHAIN...
     if (!DspVarOffsetCalc::calcVarOffset("", varNameWithOffset, calcedOffset))
         return -1;
     return calcedOffset;
