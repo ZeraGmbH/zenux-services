@@ -816,7 +816,7 @@ bool ZDspServer::compileCmdListsForAllClientsToBinaryStream(QString &errs,
             if (!client->GenCmdLists(errs, userMemOffset, userAlignedOffset))
                 return false;
 
-            ZdspClient::MemSizes memSizes = client->calcAllVarsOffsetAdressAndTotalSizes(userMemOffset, userAlignedOffset);
+            ZdspClient::MemSizes memSizes = client->calcAbsoluteAdressesAndSizes(userMemOffset, userAlignedOffset);
             userMemOffset += memSizes.usermemsize;
             userAlignedOffset += memSizes.alignedMemSize;
 
