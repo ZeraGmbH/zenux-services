@@ -36,6 +36,13 @@ void test_dsp_var_offset_calc::equalVarNamesIgnoreSpaces()
     QCOMPARE(offset, 0);
 }
 
+void test_dsp_var_offset_calc::offsetPlus0()
+{
+    int offset = 42;
+    QCOMPARE(DspVarOffsetCalc::calcVarOffset("FOO", "FOO + 0", offset), true);
+    QCOMPARE(offset, 0);
+}
+
 void test_dsp_var_offset_calc::offsetPlus1()
 {
     int offset = 42;
@@ -43,11 +50,11 @@ void test_dsp_var_offset_calc::offsetPlus1()
     QCOMPARE(offset, 1);
 }
 
-void test_dsp_var_offset_calc::offsetPlus0()
+void test_dsp_var_offset_calc::offsetPlus2()
 {
     int offset = 42;
-    QCOMPARE(DspVarOffsetCalc::calcVarOffset("FOO", "FOO + 0", offset), true);
-    QCOMPARE(offset, 0);
+    QCOMPARE(DspVarOffsetCalc::calcVarOffset("FOO", " FOO + 2 ", offset), true);
+    QCOMPARE(offset, 2);
 }
 
 void test_dsp_var_offset_calc::rejectNegativeOffsets()
