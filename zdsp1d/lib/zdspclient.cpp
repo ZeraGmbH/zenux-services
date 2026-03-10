@@ -43,14 +43,16 @@ int ZdspClient::getEntityId() const
 bool ZdspClient::setVarList(const QString &varsSemicolonSeparated)
 {
     m_userMemSection.clear();
-    int localOffset = 0;
-    int alignedoffset = 0;
     const QStringList varEntries = varsSemicolonSeparated.split(";", Qt::SkipEmptyParts);
     bool allOk = true;
     for(int i=0; i<varEntries.count(); i++) {
         DspVarInServer dspVar;
         if(dspVar.setupFromCommaSeparatedString(varEntries[i])) {
-            if (dspVar.segment == dspInternalSegment) {
+
+            if (dspVar.segment == moduleLocalSegment || dspVar.segment == moduleAlignedMemorySegment)
+                m_userMemSection.appendDspVar(dspVar);
+
+            else if (dspVar.segment == dspInternalSegment) {
                 const DspVarServerPtr dspVarDsp = m_dspVarResolver.getDspVar(dspVar.Name);
                 if (dspVarDsp == nullptr) {
                     qCritical("Internal DSP Variable %s to add on client not found",
@@ -67,16 +69,6 @@ bool ZdspClient::setVarList(const QString &varsSemicolonSeparated)
                               qPrintable(dspVar.Name), dspVar.type, dspVarDsp->type);
                     allOk = false;
                 }
-            }
-            else if (dspVar.segment == moduleLocalSegment) {
-                dspVar.offs = localOffset;
-                localOffset += dspVar.size;
-                m_userMemSection.appendDspVar(dspVar);
-            }
-            else if (dspVar.segment == moduleAlignedMemorySegment) {
-                dspVar.offs = alignedoffset;
-                alignedoffset += dspVar.size;
-                m_userMemSection.appendDspVar(dspVar);
             }
         }
         else
@@ -104,23 +96,30 @@ const QByteArray &ZdspClient::getProtobufClientId() const
     return m_proxyConnectionId;
 }
 
-ZdspClient::MemSizes ZdspClient::calcAbsoluteAdressesAndSizes(ulong startAdress, ulong alignedMemStartAddress)
+ZdspClient::MemSizes ZdspClient::calcAllVarsOffsetAdressAndTotalSizes(ulong startAdress, ulong alignedMemStartAddress)
 {
-    MemSizes memSizes;
+    int localOffset = 0;
+    int alignedoffset = 0;
+    MemSizes totalSizes;
     m_userMemSection.m_startAddress = startAdress;
 
     for (int i = 0; i < m_userMemSection.getVarCount(); i++) {
         DspVarServerPtr dspVar = m_userMemSection.getDspVar(i);
+        const int varSize = dspVar->size;
         if (dspVar->segment == moduleLocalSegment) {
-            dspVar->m_absoluteAddress = startAdress + memSizes.usermemsize; // we need the adress for reading back data
-            memSizes.usermemsize += dspVar->size;
+            dspVar->offs = localOffset;
+            localOffset += varSize;
+            dspVar->m_absoluteAddress = startAdress + totalSizes.usermemsize; // we need the adress for reading back data
+            totalSizes.usermemsize += varSize;
         }
         else if (dspVar->segment == moduleAlignedMemorySegment) {
-            dspVar->m_absoluteAddress = alignedMemStartAddress + memSizes.alignedMemSize;
-            memSizes.alignedMemSize += dspVar->size;
+            dspVar->offs = alignedoffset;
+            alignedoffset += varSize;
+            dspVar->m_absoluteAddress = alignedMemStartAddress + totalSizes.alignedMemSize;
+            totalSizes.alignedMemSize += varSize;
         }
     }
-    return memSizes;
+    return totalSizes;
 }
 
 bool ZdspClient::GenCmdLists(QString& errs, ulong userMemOffset, ulong alignedMemAreaStartAdr)
@@ -214,4 +213,3 @@ int ZdspClient::getInstanceCount()
 {
     return m_instanceCount;
 }
-
