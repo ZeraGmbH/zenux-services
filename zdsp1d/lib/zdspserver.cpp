@@ -626,7 +626,7 @@ int ZDspServer::getUserMemAvailable() const
     for (int i=0; i<dm32UserWorkSpace.getVarCount(); i++) {
         const DspVarServerPtr dspVar = dm32UserWorkSpace.getDspVar(i);
         if(dspVar->Name == "UWSPACE")
-            return m_userWorkSpaceAlignedSegmentStartAdr - dspVar->adr;
+            return m_userWorkSpaceAlignedSegmentStartAdr - dspVar->m_absoluteAddress;
     }
     return 0;
 }
@@ -645,7 +645,7 @@ int ZDspServer::getUserMemAlignedAvailable() const
     for (int i=0; i<dm32UserWorkSpace.getVarCount(); i++) {
         const DspVarServerPtr dspVar = dm32UserWorkSpace.getDspVar(i);
         if(dspVar->Name == "UWSPACE") {
-            ulong afterUserWorSpaceAdr = dspVar->adr + dspVar->size;
+            ulong afterUserWorSpaceAdr = dspVar->m_absoluteAddress + dspVar->size;
             return afterUserWorSpaceAdr - m_userWorkSpaceAlignedSegmentStartAdr;
         }
     }
@@ -814,7 +814,7 @@ bool ZDspServer::compileCmdListsForAllClientsToBinaryStream(QString &errs,
             if (!client->GenCmdLists(errs, userMemOffset, m_userWorkSpaceAlignedSegmentStartAdr))
                 return false;
 
-            userMemOffset += client->relocalizeUserMemSectionVars(userMemOffset, m_userWorkSpaceAlignedSegmentStartAdr);
+            userMemOffset += client->calcAbsoluteAdressesAndSizes(userMemOffset, m_userWorkSpaceAlignedSegmentStartAdr);
 
             const QList<DspCmdWithParamsCompiled> &cycCmdList = client->GetDspCmdList();
             for (int j = 0; j < cycCmdList.size(); j++)

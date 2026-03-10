@@ -91,7 +91,7 @@ bool DspVarDeviceNodeInOut::readVarFromDsp(DspVarServerPtr DspVar, int countVars
     const int countBytes = countVars * 4;
     varRead->resize(countBytes);
     AbstractDspDeviceNodePtr deviceNode = m_zdspSupportFactory->getDspDeviceNode();
-    if ((deviceNode->lseek(DspVar->adr) >= 0) &&
+    if ((deviceNode->lseek(DspVar->m_absoluteAddress) >= 0) &&
         (deviceNode->read(varRead->data(), countBytes) >= 0))
         return true;
     return false;

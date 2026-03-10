@@ -28,7 +28,7 @@ public:
 
     DspVarResolver m_dspVarResolver;
 
-    ulong relocalizeUserMemSectionVars(ulong startAdress, ulong alignedMemStartAddress);
+    ulong calcAbsoluteAdressesAndSizes(ulong startAdress, ulong alignedMemStartAddress);
 
     int getDspInterruptId() const;
     int getDataMemSize() const;

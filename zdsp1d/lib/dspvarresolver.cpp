@@ -71,7 +71,7 @@ long DspVarResolver::getVarAddress(const QString &varNameWithOffset)
     // Should we really support offsets here?
     if (!DspVarOffsetCalc::calcVarOffset(dspVar->Name, varNameWithOffset, calcedOffset))
         return -1;
-    return dspVar->adr + calcedOffset;
+    return dspVar->m_absoluteAddress + calcedOffset;
 }
 
 int DspVarResolver::getVarType(const QString &varNameWithOffset)

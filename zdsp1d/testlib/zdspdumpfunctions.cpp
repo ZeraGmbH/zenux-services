@@ -17,7 +17,7 @@ QJsonObject ZDspDumpFunctions::getStaticMemAllocation()
         QJsonObject jsonVars;
         for (auto iterVars=iterClient->cbegin(); iterVars!=iterClient->cend(); ++iterVars) {
             QJsonObject jsonVar;
-            QString hexvalue = DspVarInServer::toHex(iterVars.value()->adr);
+            QString hexvalue = DspVarInServer::toHex(iterVars.value()->m_absoluteAddress);
             jsonVar.insert("Addr", hexvalue);
             hexvalue = DspVarInServer::toHex(iterVars.value()->offs);
             jsonVar.insert("Offset", hexvalue);
@@ -131,7 +131,7 @@ QList<ZDspDumpFunctions::VarLocation> ZDspDumpFunctions::getAlignedVariableDump(
         if (dspVar->segment == moduleAlignedMemorySegment)
             alignedVarDump.append( { dspVar->Name,
                                      dspVar->offs,
-                                     dspVar->adr } );
+                                     dspVar->m_absoluteAddress } );
     }
     return alignedVarDump;
 }
@@ -143,8 +143,8 @@ QList<ZDspDumpFunctions::VarLocation> ZDspDumpFunctions::getLocalVariableDump(co
         DspVarServerPtr dspVar = clientUserMemSection.getDspVar(i);
         if (dspVar->segment == moduleLocalSegment)
             localVarDump.append( { dspVar->Name,
-                                 dspVar->offs,
-                                 dspVar->adr } );
+                                   dspVar->offs,
+                                   dspVar->m_absoluteAddress } );
     }
     return localVarDump;
 }

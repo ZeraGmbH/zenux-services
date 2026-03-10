@@ -13,7 +13,7 @@ struct DspVarInServer {
     QString Name;                           // name der variablen
     ushort size = 0;                        // anzahl worte
     DspDataType type = dspDataTypeUnknown;
-    ulong adr = 0;                          // die abs. adresse auf welcher sich die variable befindet
+    ulong m_absoluteAddress = 0;
     ulong offs = 0;                         // der offset innerhalb der memory section
     DspSegmentType segment = moduleLocalSegment;
 };
