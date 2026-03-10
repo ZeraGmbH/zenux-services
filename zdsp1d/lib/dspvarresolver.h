@@ -2,7 +2,6 @@
 #define DSPVARRESOLVER_H
 
 #include "dspmemorysectioninternal.h"
-#include <parse.h>
 #include <QString>
 #include <QHash>
 
@@ -19,7 +18,6 @@ public:
 
 private:
     QHash<QString, DspVarServerPtr> m_varHash;
-    cParse m_varParser;
     QList<DspMemorySectionInternal*> m_memSectionList;
 };
 

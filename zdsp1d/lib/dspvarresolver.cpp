@@ -2,11 +2,9 @@
 #include "dspapi.h"
 #include "dspvaroffsetcalc.h"
 
-DspVarResolver::DspVarResolver()
+DspVarResolver::DspVarResolver() :
+    m_varHash(DspStaticData::getVarHash())
 {
-    m_varParser.SetDelimiter("(,+,-,)"); // setze die trennzeichen für den parser
-    m_varParser.SetWhiteSpace(" (,)");
-    m_varHash = DspStaticData::getVarHash();
 }
 
 void DspVarResolver::addSection(DspMemorySectionInternal* section)
@@ -29,8 +27,13 @@ void DspVarResolver::actualizeVarHash()
 DspVarServerPtr DspVarResolver::getDspVar(const QString &varNameWithOffset)
 {
     QString upperName = varNameWithOffset.toUpper();
-    const QChar* cts = upperName.data();
-    QString baseVarName = m_varParser.GetKeyword(&cts);
+    upperName.remove(" ");
+
+    const QStringList summands = upperName.split("+", Qt::SkipEmptyParts);
+    if (summands.isEmpty())
+        return nullptr;
+
+    const QString baseVarName = summands[0];
     auto iter = m_varHash.constFind(baseVarName);
     if(iter != m_varHash.constEnd())
         return iter.value();

@@ -4,6 +4,7 @@
 #include "dspapi.h"
 #include "abstractdspcompilersupport.h"
 #include "dspvarresolver.h"
+#include <parse.h>
 
 class DspCmdCompiler
 {
