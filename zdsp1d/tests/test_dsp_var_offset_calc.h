@@ -12,6 +12,7 @@ private slots:
     void checkCaseSensivity();
     void equalVarNamesIgnoreSpaces();
     void offsetPlus1();
+    void offsetPlus0();
     void rejectNegativeOffsets();
 
     void justOffset();
