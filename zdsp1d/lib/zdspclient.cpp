@@ -125,7 +125,7 @@ ulong ZdspClient::relocalizeUserMemSectionVars(ulong startAdress, ulong alignedM
     return usermemsize;
 }
 
-bool ZdspClient::GenCmdLists(QString& errs, ulong userMemOffset, ulong alignedStartAdr)
+bool ZdspClient::GenCmdLists(QString& errs, ulong userMemOffset, ulong alignedMemAreaStartAdr)
 {
     DspCmdCompiler compiler(&m_dspVarResolver, m_dspInterruptId);
     m_cyclicCommandsCompilerSupport = m_zdspSupportFactory->createDspCompilerSupport();
@@ -134,11 +134,11 @@ bool ZdspClient::GenCmdLists(QString& errs, ulong userMemOffset, ulong alignedSt
     bool ok = true;
     if (!m_sCmdListDef.isEmpty()) {
         getCurrCyclicCommandsCompilerSupport()->startClientArea(getEntityId(), "Cyclic sequence", AbstractDspCompilerSupport::CYCLIC);
-        ok = ok && compiler.compileCmds(m_sCmdListDef, m_DspCmdList,errs, userMemOffset, alignedStartAdr, m_cyclicCommandsCompilerSupport);
+        ok = ok && compiler.compileCmds(m_sCmdListDef, m_DspCmdList,errs, userMemOffset, alignedMemAreaStartAdr, m_cyclicCommandsCompilerSupport);
     }
     if (!m_sIntCmdListDef.isEmpty()) {
         getCurrCyclicCommandsCompilerSupport()->startClientArea(getEntityId(), "Interrupt sequence", AbstractDspCompilerSupport::INTERRUPT);
-        ok = ok && compiler.compileCmds(m_sIntCmdListDef, m_DspIntCmdList, errs, userMemOffset, alignedStartAdr, m_interruptCommandsCompilerSupport);
+        ok = ok && compiler.compileCmds(m_sIntCmdListDef, m_DspIntCmdList, errs, userMemOffset, alignedMemAreaStartAdr, m_interruptCommandsCompilerSupport);
     }
     return ok;
 }

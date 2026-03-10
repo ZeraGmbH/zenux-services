@@ -40,23 +40,25 @@ DspVarServerPtr DspVarResolver::getDspVar(const QString &varNameWithOffset)
     return nullptr;
 }
 
-long DspVarResolver::getVarOffset(const QString& varNameWithOffset, ulong userMemOffset, ulong alignedStartAdr)
+long DspVarResolver::getVarOffset(const QString& varNameWithOffset, ulong userMemOffset, ulong alignedMemAreaStartAdr)
 {
     DspVarServerPtr dspVar = getDspVar(varNameWithOffset);
-    int calcedOffset = 0;
     if(dspVar) {
-        if (!DspVarOffsetCalc::calcVarOffset(dspVar->Name, varNameWithOffset, calcedOffset))
+        int offsetToVar = 0;
+        if (!DspVarOffsetCalc::calcVarOffset(dspVar->Name, varNameWithOffset, offsetToVar))
             return -1;
 
-        int retoffs = dspVar->offs + calcedOffset;
+        int offsetInClientMemorySpace = dspVar->offs + offsetToVar;
         if (dspVar->segment == moduleAlignedMemorySegment)
-            retoffs += (alignedStartAdr - userMemOffset);
-        return retoffs;
+            offsetInClientMemorySpace += (alignedMemAreaStartAdr - userMemOffset);
+        return offsetInClientMemorySpace;
     }
+
     // offset only parameters e.g on DSPMEMOFFSET / STARTCHAIN...
-    if (!DspVarOffsetCalc::calcOffset(varNameWithOffset, calcedOffset))
+    int offsetPassedIn = 0;
+    if (!DspVarOffsetCalc::calcOffset(varNameWithOffset, offsetPassedIn))
         return -1;
-    return calcedOffset;
+    return offsetPassedIn;
 }
 
 long DspVarResolver::getVarAddress(const QString &varNameWithOffset)
