@@ -105,24 +105,23 @@ const QByteArray &ZdspClient::getProtobufClientId() const
     return m_proxyConnectionId;
 }
 
-ulong ZdspClient::calcAbsoluteAdressesAndSizes(ulong startAdress, ulong alignedMemStartAddress)
+ZdspClient::MemSizes ZdspClient::calcAbsoluteAdressesAndSizes(ulong startAdress, ulong alignedMemStartAddress)
 {
-    ulong usermemsize = 0;
-    ulong alignedMemSize = 0;
+    MemSizes memSizes;
     m_userMemSection.m_startAddress = startAdress;
 
     for (int i = 0; i < m_userMemSection.getVarCount(); i++) {
         DspVarServerPtr dspVar = m_userMemSection.getDspVar(i);
         if (dspVar->segment == moduleLocalSegment) {
-            dspVar->m_absoluteAddress = startAdress + usermemsize; // we need the adress for reading back data
-            usermemsize += dspVar->size;
+            dspVar->m_absoluteAddress = startAdress + memSizes.usermemsize; // we need the adress for reading back data
+            memSizes.usermemsize += dspVar->size;
         }
         else if (dspVar->segment == moduleAlignedMemorySegment) {
-            dspVar->m_absoluteAddress = alignedMemStartAddress+alignedMemSize;
-            alignedMemSize += dspVar->size;
+            dspVar->m_absoluteAddress = alignedMemStartAddress + memSizes.alignedMemSize;
+            memSizes.alignedMemSize += dspVar->size;
         }
     }
-    return usermemsize;
+    return memSizes;
 }
 
 bool ZdspClient::GenCmdLists(QString& errs, ulong userMemOffset, ulong alignedMemAreaStartAdr)

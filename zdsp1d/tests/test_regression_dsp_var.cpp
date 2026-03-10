@@ -11,6 +11,7 @@
 #include <mocktcpnetworkfactory.h>
 #include <testloghelpers.h>
 #include <QDataStream>
+#include <QJsonDocument>
 #include <QSignalSpy>
 #include <QTest>
 
@@ -225,6 +226,41 @@ void test_regression_dsp_var::createAlignedVariableOk()
     QCOMPARE(spyRead[0][1], ZSCPI::ack);
     QVERIFY(spyRead[0][2].toString().contains("TEMPALIGNED1:"));
     QVERIFY(spyRead[0][2].toString().contains("TEMPALIGNED2:"));
+}
+
+void test_regression_dsp_var::createAlignedVariablesMultipleClients()
+{
+    // create vars/dummy prog client1
+    m_dspIFace->setEntityId(1);
+    DspVarGroupClientInterface* dspVarGroup1 = m_dspIFace->createVariableGroup("createAlignedVariablesMultipleClients");
+    dspVarGroup1->addDspVar("CLIENT1_ALIGNED_VAR1", 1, dspDataTypeFloat, moduleAlignedMemorySegment);
+    dspVarGroup1->addDspVar("CLIENT1_ALIGNED_VAR2", 2, dspDataTypeFloat, moduleAlignedMemorySegment);
+    m_dspIFace->varList2Dsp();
+    m_dspIFace->activateInterface();
+    TimeMachineObject::feedEventLoop();
+
+    // connect client2
+    Zera::ProxyClientPtr proxyClient2 = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", dspServerPort, m_tcpNetworkFactory);
+    std::unique_ptr<Zera::cDSPInterface> dspIFace2 = std::make_unique<Zera::cDSPInterface>();
+    dspIFace2->setClientSmart(proxyClient2);
+    Zera::Proxy::getInstance()->startConnectionSmart(proxyClient2);
+    TimeMachineObject::feedEventLoop();
+
+    // create vars/dummy client2
+    dspIFace2->setEntityId(2);
+    DspVarGroupClientInterface* dspVarGroup2 = dspIFace2->createVariableGroup("createAlignedVariablesMultipleClients");
+    dspVarGroup2->addDspVar("CLIENT2_ALIGNED_VAR1", 3, dspDataTypeFloat, moduleAlignedMemorySegment);
+    dspVarGroup2->addDspVar("CLIENT2_ALIGNED_VAR1", 4, dspDataTypeFloat, moduleAlignedMemorySegment);
+    dspIFace2->varList2Dsp();
+    dspIFace2->activateInterface();
+    TimeMachineObject::feedEventLoop();
+
+    ZDspServer* server = m_dspService->getServer();
+    QCOMPARE(server->getUserMemAlignedOccupied(), 1+2+3+4);
+
+    QJsonDocument jsonDoc(ZDspDumpFunctions::getMemoryDump(server));
+    QString dumped = jsonDoc.toJson(QJsonDocument::Indented);
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonFile(":/dump-dsp-memory-dual-client-aligned-mem.json", dumped));
 }
 
 static constexpr int dm32UserWorkSpaceBase21362 = 0x98180; // stolen from zdspserver.cpp

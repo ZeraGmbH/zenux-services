@@ -25,6 +25,7 @@ private slots:
     void createInternalVariablesSecondNotOk();
 
     void createAlignedVariableOk(); // We need more here!!!
+    void createAlignedVariablesMultipleClients();
 
     void readVariablesAndListenDeviceNode(); // we learned dspMemoryRead details by this
     void writeFloatVariablesAndListenDeviceNode();

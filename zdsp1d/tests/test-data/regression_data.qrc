@@ -5,5 +5,6 @@
         <file>scpi-dump.xml</file>
         <file>dump-dsp-internal-vars-21262.json</file>
         <file>dump-dsp-internal-vars-21362.json</file>
+        <file>dump-dsp-memory-dual-client-aligned-mem.json</file>
     </qresource>
 </RCC>

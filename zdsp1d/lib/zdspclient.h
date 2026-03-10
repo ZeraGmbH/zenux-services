@@ -28,7 +28,11 @@ public:
 
     DspVarResolver m_dspVarResolver;
 
-    ulong calcAbsoluteAdressesAndSizes(ulong startAdress, ulong alignedMemStartAddress);
+    struct MemSizes {
+        ulong usermemsize = 0;
+        ulong alignedMemSize = 0;
+    };
+    MemSizes calcAbsoluteAdressesAndSizes(ulong startAdress, ulong alignedMemStartAddress);
 
     int getDspInterruptId() const;
     int getDataMemSize() const;

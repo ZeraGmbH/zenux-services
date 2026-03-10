@@ -1,0 +1,40 @@
+{
+    "1": {
+        "DspCmdsCompiledCrcCyclic": "0x00000000",
+        "DspCmdsCompiledCrcInterrupt": "0x00000000",
+        "DspCmdsRawCyclic": [
+        ],
+        "DspCmdsRawInterrupt": [
+        ],
+        "DspVarsAligned": {
+            "0x000000 / 0x09F000": "CLIENT1_ALIGNED_VAR1",
+            "0x000001 / 0x09F001": "CLIENT1_ALIGNED_VAR2"
+        },
+        "DspVarsLocal": {
+        }
+    },
+    "2": {
+        "DspCmdsCompiledCrcCyclic": "0x00000000",
+        "DspCmdsCompiledCrcInterrupt": "0x00000000",
+        "DspCmdsRawCyclic": [
+            "DSPINTPOST()"
+        ],
+        "DspCmdsRawInterrupt": [
+        ],
+        "DspVarsAligned": {
+            "0x000000 / 0x09F003": "CLIENT2_ALIGNED_VAR1",
+            "0x000003 / 0x09F006": "CLIENT2_ALIGNED_VAR1"
+        },
+        "DspVarsLocal": {
+        }
+    },
+    "TotalCmdListCyclic": [
+        "-- Start entity ID 0 / Global init --",
+        "DSPMEMOFFSET(0x0E0800)",
+        "DSPINTPOST()"
+    ],
+    "TotalCmdListInterrupt": [
+    ],
+    "TotalDspCmdsCompiledCrcCyclic": "0xC5087446",
+    "TotalDspCmdsCompiledCrcInterrupt": "0x6522DF69"
+}

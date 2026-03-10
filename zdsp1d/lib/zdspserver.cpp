@@ -795,7 +795,9 @@ bool ZDspServer::compileCmdListsForAllClientsToBinaryStream(QString &errs,
         cmd = firstCompiler.compileOneCmdLineZeroAligned(QString("DSPMEMOFFSET(%1)").arg(dm32DspWorkspace.m_startAddress),
                                                          firstClient->getCurrCyclicCommandsCompilerSupport(), ok);
         cycCmdMemStream << cmd;
+
         ulong userMemOffset = dm32UserWorkSpace.m_startAddress;
+        ulong userAlignedOffset = m_userWorkSpaceAlignedSegmentStartAdr;
         for (int i = 0; i < clientList.count(); i++) {
             ZdspClient* client = clientList.at(i);
             lastClient = client;
@@ -811,10 +813,12 @@ bool ZDspServer::compileCmdListsForAllClientsToBinaryStream(QString &errs,
                                                                                    AbstractDspCompilerSupport::INTERRUPT);
                 intCmdMemStream << genClientStartAddressCmd(userMemOffset, client, client->getCurrInterruptCommandsCompilerSupport(), ok);
             }
-            if (!client->GenCmdLists(errs, userMemOffset, m_userWorkSpaceAlignedSegmentStartAdr))
+            if (!client->GenCmdLists(errs, userMemOffset, userAlignedOffset))
                 return false;
 
-            userMemOffset += client->calcAbsoluteAdressesAndSizes(userMemOffset, m_userWorkSpaceAlignedSegmentStartAdr);
+            ZdspClient::MemSizes memSizes = client->calcAbsoluteAdressesAndSizes(userMemOffset, userAlignedOffset);
+            userMemOffset += memSizes.usermemsize;
+            userAlignedOffset += memSizes.alignedMemSize;
 
             const QList<DspCmdWithParamsCompiled> &cycCmdList = client->GetDspCmdList();
             for (int j = 0; j < cycCmdList.size(); j++)
