@@ -85,7 +85,6 @@ bool ZdspClient::setVarList(const QString &varsSemicolonSeparated)
     if (!allOk)
         return false;
 
-    calcDataMemSizes();
     m_dspVarResolver.actualizeVarHash(); // wir setzen die hashtabelle neu
     return true;
 }
@@ -174,12 +173,26 @@ int ZdspClient::getDspInterruptId() const
 
 int ZdspClient::getDataMemSize() const
 {
-    return m_dataMemSize;
+    const int varCount = m_userMemSection.getVarCount();
+    int dataMemSize = 0;
+    for (int var=0; var<varCount; ++var) {
+        DspVarServerPtr dspVar = m_userMemSection.getDspVar(var);
+        if (dspVar->segment == moduleLocalSegment)
+            dataMemSize += m_userMemSection.getDspVar(var)->size;
+    }
+    return dataMemSize;
 }
 
 int ZdspClient::getDataMemSizeAligned() const
 {
-    return m_dataMemSizeAligned;
+    const int varCount = m_userMemSection.getVarCount();
+    int dataMemSizeAligned = 0;
+    for (int var=0; var<varCount; ++var) {
+        DspVarServerPtr dspVar = m_userMemSection.getDspVar(var);
+        if (dspVar->segment == moduleAlignedMemorySegment)
+            dataMemSizeAligned += m_userMemSection.getDspVar(var)->size;
+    }
+    return dataMemSizeAligned;
 }
 
 bool ZdspClient::hasCyclicCmds() const
@@ -200,21 +213,5 @@ VeinTcp::TcpPeer *ZdspClient::getVeinPeer() const
 int ZdspClient::getInstanceCount()
 {
     return m_instanceCount;
-}
-
-void ZdspClient::calcDataMemSizes()
-{
-    const int varCount = m_userMemSection.getVarCount();
-    int dataMemSize = 0;
-    int dataMemSizeAligned = 0;
-    for (int var=0; var<varCount; ++var) {
-        DspVarServerPtr dspVar = m_userMemSection.getDspVar(var);
-        if (dspVar->segment == moduleLocalSegment)
-            dataMemSize += m_userMemSection.getDspVar(var)->size;
-        else if (dspVar->segment == moduleAlignedMemorySegment)
-            dataMemSizeAligned += m_userMemSection.getDspVar(var)->size;
-    }
-    m_dataMemSize = dataMemSize;
-    m_dataMemSizeAligned = dataMemSizeAligned;
 }
 

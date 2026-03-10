@@ -49,8 +49,6 @@ public:
     static int getInstanceCount();
 
 private:
-    void calcDataMemSizes();
-
     VeinTcp::TcpPeer* m_veinPeer;
     QByteArray m_proxyConnectionId;
     AbstractFactoryZdspSupportPtr m_zdspSupportFactory;
@@ -63,8 +61,6 @@ private:
     QList<DspCmdWithParamsCompiled> m_DspCmdList;
     QList<DspCmdWithParamsCompiled> m_DspIntCmdList;
     DspMemorySectionInternal m_userMemSection;
-    int m_dataMemSize = 0;
-    int m_dataMemSizeAligned = 0;
 
     // dump / tests
     AbstractDspCompilerSupportPtr m_cyclicCommandsCompilerSupport;
