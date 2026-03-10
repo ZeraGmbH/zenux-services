@@ -4,7 +4,7 @@
 // * Should negative offsets be rejected?
 // * Should hex values without 0x be rejected?
 
-bool DspVarOffsetCalc::calcVarOffset(const QString &varName, const QString varWithOffset, int &calcedOffset)
+bool DspVarOffsetCalc::calcVarOffset(const QString &varName, const QString &varWithOffset, int &calcedOffset)
 {
     QString varWithOffsetWork = varWithOffset;
     varWithOffsetWork.remove(" ");
@@ -23,7 +23,7 @@ bool DspVarOffsetCalc::calcVarOffset(const QString &varName, const QString varWi
     return calcOffset(offsetStr, calcedOffset);
 }
 
-bool DspVarOffsetCalc::calcOffset(const QString offsetStr, int &calcedOffset)
+bool DspVarOffsetCalc::calcOffset(const QString &offsetStr, int &calcedOffset)
 {
     bool ok = false;
     int offset = offsetStr.toInt(&ok, 10); // dec
