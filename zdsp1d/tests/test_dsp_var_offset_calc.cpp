@@ -43,11 +43,11 @@ void test_dsp_var_offset_calc::offsetPlus1()
     QCOMPARE(offset, 1);
 }
 
-void test_dsp_var_offset_calc::offsetMinus1()
+void test_dsp_var_offset_calc::rejectNegativeOffsets()
 {
     int offset = 42;
-    QCOMPARE(DspVarOffsetCalc::calcVarOffset("FOO", "FOO -1", offset), true);
-    QCOMPARE(offset, -1);
+    QCOMPARE(DspVarOffsetCalc::calcVarOffset("FOO", "FOO -1", offset), false);
+    QCOMPARE(offset, 42);
 }
 
 void test_dsp_var_offset_calc::justOffset()

@@ -1,7 +1,6 @@
 #include "dspvaroffsetcalc.h"
 
 // TODO:
-// * Should negative offsets be rejected?
 // * Should hex values without 0x be rejected?
 
 bool DspVarOffsetCalc::calcVarOffset(const QString &varName, const QString &varWithOffset, int &calcedOffset)
@@ -30,7 +29,12 @@ bool DspVarOffsetCalc::calcOffset(const QString &offsetStr, int &calcedOffset)
     if (!ok)
         offset = offsetStr.toInt(&ok, 16); // hex
 
-    if (ok)
-        calcedOffset = offset;
-    return ok;
+    if (!ok)
+        return false;
+
+    if (offset < 0)
+        return false;
+
+    calcedOffset = offset;
+    return true;
 }
