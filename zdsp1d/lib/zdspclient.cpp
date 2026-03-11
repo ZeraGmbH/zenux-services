@@ -48,53 +48,40 @@ bool ZdspClient::setVarList(const QString &varsSemicolonSeparated)
 {
     m_userMemSection.clear();
     const QStringList varEntries = varsSemicolonSeparated.split(";", Qt::SkipEmptyParts);
-    bool allOk = true;
     for(int i=0; i<varEntries.count(); i++) {
         DspVarInServer dspVar;
-        if (dspVar.setupFromCommaSeparatedString(varEntries[i])) {
-            if ( dspVar.segment == moduleLocalSegment ||
-                 dspVar.segment == moduleAlignedMemorySegment )
-                m_userMemSection.appendDspVar(dspVar);
-            else if ( dspVar.segment == moduleGlobalSegment ) {
-                const QString &varName = dspVar.Name;
-                auto iter = m_globalVariables.constFind(varName);
-                if (iter == m_globalVariables.constEnd())
-                    m_userMemSection.appendDspVar(dspVar);
-                else {
-                    DspVarServerPtr globalTwin = iter.value();
-                    if(dspVar.size == globalTwin->size)
-                        m_userMemSection.appendDspVar(dspVar);
-                    else {
-                        qCritical("Size change on global DSP Variable %s detected. Found %i / Wanted %i",
-                                  qPrintable(dspVar.Name), globalTwin->size, dspVar.size);
-                        allOk = false;
-                    }
-                }
-            }
-            else if (dspVar.segment == dspInternalSegment) {
-                const DspVarServerPtr dspVarDsp = m_dspVarResolver.getDspVar(dspVar.Name);
-                if (dspVarDsp == nullptr) {
-                    qCritical("Internal DSP Variable %s to add on client not found",
-                              qPrintable(dspVar.Name));
-                    allOk = false;
-                }
-                else if (dspVarDsp->size != dspVar.size) {
-                    qCritical("Internal DSP Variable %s to add on client has wrong size: wanted: %i / expected %i",
-                              qPrintable(dspVar.Name), dspVar.size, dspVarDsp->size);
-                    allOk = false;
-                }
-                else if (dspVarDsp->type != dspVar.type) {
-                    qCritical("Internal DSP Variable %s to add on client has wrong type: wanted: %i / expected %i",
-                              qPrintable(dspVar.Name), dspVar.type, dspVarDsp->type);
-                    allOk = false;
-                }
+        if (!dspVar.setupFromCommaSeparatedString(varEntries[i]))
+            return false;
+
+        if (dspVar.segment == moduleGlobalSegment) {
+            const QString &varName = dspVar.Name;
+            auto iter = m_globalVariables.constFind(varName);
+            if (iter != m_globalVariables.constEnd() && dspVar.size != iter.value()->size) {
+                qCritical("Size change on global DSP Variable %s detected. Found %i / Wanted %i",
+                          qPrintable(dspVar.Name), iter.value()->size, dspVar.size);
+                return false;
             }
         }
-        else
-            allOk = false;
+        else if (dspVar.segment == dspInternalSegment) {
+            const DspVarServerPtr dspVarDsp = m_dspVarResolver.getDspVar(dspVar.Name);
+            if (dspVarDsp == nullptr) {
+                qCritical("Internal DSP Variable %s not found",
+                          qPrintable(dspVar.Name));
+                return false;
+            }
+            else if (dspVarDsp->size != dspVar.size) {
+                qCritical("Internal DSP Variable %s has wrong size: wanted: %i / expected %i",
+                          qPrintable(dspVar.Name), dspVar.size, dspVarDsp->size);
+                return false;
+            }
+            else if (dspVarDsp->type != dspVar.type) {
+                qCritical("Internal DSP Variable %s has wrong type: wanted: %i / expected %i",
+                          qPrintable(dspVar.Name), dspVar.type, dspVarDsp->type);
+                return false;
+            }
+        }
+        m_userMemSection.appendDspVar(dspVar);
     }
-    if (!allOk)
-        return false;
 
     m_dspVarResolver.actualizeVarHash();
     return true;
