@@ -38,17 +38,17 @@ public:
     cClamp *tryAddClamp(const SenseSystem::cChannelSettings *chSettings);
     cClamp *addClamp(const SenseSystem::cChannelSettings *chSettings, EepromI2cDeviceInterfacePtr adjMemory);
     QString exportXMLString(int indent = 1);
-    QString importClampXmls(QString allXML, bool computeAndExport);
+    QString importClampXmls(const QString &allXML, bool computeAndExport);
 
 protected:
     void executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd) override;
 
 private:
     void generateAndNotifyClampChannelList();
-    QString readClampChannelCatalog(QString& sInput);
-    QString writeAllClamps(QString& sInput);
-    QString importExportAllClamps(QString& sInput);
-    void handleClampDisconnected(QString channelName, const SenseSystem::cChannelSettings *chSettings, quint16 bmask);
+    QString readClampChannelCatalog(const QString& scpi);
+    QString writeAllClamps(const QString& scpi);
+    QString importExportAllClamps(const QString& scpi);
+    void handleClampDisconnected(const QString &channelName, const SenseSystem::cChannelSettings *chSettings, quint16 bmask);
 
     PCBServer *m_pMyServer;
     cSenseSettingsPtr m_senseSettings;

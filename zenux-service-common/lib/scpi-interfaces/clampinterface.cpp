@@ -77,7 +77,7 @@ cClamp *cClampInterface::tryAddClamp(const SenseSystem::cChannelSettings *chSett
     return nullptr;
 }
 
-void cClampInterface::handleClampDisconnected(QString channelName, const SenseSystem::cChannelSettings *chSettings, quint16 bmask)
+void cClampInterface::handleClampDisconnected(const QString &channelName, const SenseSystem::cChannelSettings *chSettings, quint16 bmask)
 {
     int ctrlChannel = chSettings->m_nCtrlChannel;
     if (m_clampHash.contains(channelName)) {
@@ -143,9 +143,9 @@ void cClampInterface::generateAndNotifyClampChannelList()
     m_notifierClampChannelList = clampList.join(";") + ";";
 }
 
-QString cClampInterface::readClampChannelCatalog(QString &sInput)
+QString cClampInterface::readClampChannelCatalog(const QString &scpi)
 {
-    cSCPICommand cmd = sInput;
+    cSCPICommand cmd = scpi;
     if (cmd.isQuery()) {
         generateAndNotifyClampChannelList();
         return m_notifierClampChannelList.getString();
@@ -155,9 +155,9 @@ QString cClampInterface::readClampChannelCatalog(QString &sInput)
     }
 }
 
-QString cClampInterface::writeAllClamps(QString &sInput)
+QString cClampInterface::writeAllClamps(const QString &scpi)
 {
-    cSCPICommand cmd = sInput;
+    cSCPICommand cmd = scpi;
     if (cmd.isCommand(1) && (cmd.getParam(0) == "")) {
         if (m_clampHash.count() > 0) {
             bool enable;
@@ -185,7 +185,7 @@ QString cClampInterface::writeAllClamps(QString &sInput)
     }
 }
 
-QString cClampInterface::importClampXmls(QString allXML, bool computeAndExport)
+QString cClampInterface::importClampXmls(const QString &allXML, bool computeAndExport)
 {
     // here we got 1 to n concenated xml document's that we want distribute to connected clamps.
     // if we got more than 1 xml document we first check if we have the correct clamps connected
@@ -242,9 +242,9 @@ QString cClampInterface::importClampXmls(QString allXML, bool computeAndExport)
     return ZSCPI::scpiAnswer[ZSCPI::ack];
 }
 
-QString cClampInterface::importExportAllClamps(QString &sInput)
+QString cClampInterface::importExportAllClamps(const QString &scpi)
 {
-    cSCPICommand cmd = sInput;
+    cSCPICommand cmd = scpi;
     if (cmd.isQuery())
         return exportXMLString(-1).replace("\n", "");
     else {
