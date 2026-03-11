@@ -35,8 +35,7 @@ public:
     MemSizes calcVarAdressesAndSizes(ulong startAdress, ulong alignedMemStartAddress);
 
     int getDspInterruptId() const;
-    int getDataMemSize() const;
-    int getDataMemSizeAligned() const;
+    int getMemSize(DspSegmentType segment) const;
     bool hasCyclicCmds() const;
     bool hasInterruptCmds() const;
     VeinTcp::TcpPeer* getVeinPeer() const;

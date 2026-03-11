@@ -52,7 +52,7 @@ QJsonObject ZDspDumpFunctions::getMemoryDump(const ZDspServer *server)
             entityData.insert("DspCmdsCompiledCrcInterrupt", crcToHex(getDspCmdListCompiledCrc(client->GetDspIntCmdList())));
 
             QJsonObject localVariables;
-            const QList<VarLocation> localList = getLocalVariableDump(client->getUserMemSection());
+            const QList<VarLocation> localList = getVariableDump(client->getUserMemSection(), moduleLocalSegment);
             for (const VarLocation &entry : localList) {
                 QString key = QString("%1 / %2").arg(
                     DspVarInServer::toHex(entry.m_localVariableAddress), DspVarInServer::toHex(entry.m_absoluteVariableAddress));
@@ -61,7 +61,7 @@ QJsonObject ZDspDumpFunctions::getMemoryDump(const ZDspServer *server)
             entityData.insert("DspVarsLocal", localVariables);
 
             QJsonObject alignedVariables;
-            const QList<VarLocation> alignedList = getAlignedVariableDump(client->getUserMemSection());
+            const QList<VarLocation> alignedList = getVariableDump(client->getUserMemSection(), moduleAlignedMemorySegment);
             for (const VarLocation &entry : alignedList) {
                 QString key = QString("%1 / %2").arg(
                     DspVarInServer::toHex(entry.m_localVariableAddress), DspVarInServer::toHex(entry.m_absoluteVariableAddress));
@@ -123,30 +123,18 @@ quint32 ZDspDumpFunctions::getDspCmdListCompiledCrc(const QList<DspCmdWithParams
     return crcBuffer.getCrc();
 }
 
-QList<ZDspDumpFunctions::VarLocation> ZDspDumpFunctions::getAlignedVariableDump(const DspMemorySectionInternal &clientUserMemSection)
+QList<ZDspDumpFunctions::VarLocation> ZDspDumpFunctions::getVariableDump(const DspMemorySectionInternal &clientUserMemSection,
+                                                                         DspSegmentType segment)
 {
     QList<VarLocation> alignedVarDump;
     for (int i = 0; i < clientUserMemSection.getVarCount(); i++) {
         DspVarServerPtr dspVar = clientUserMemSection.getDspVar(i);
-        if (dspVar->segment == moduleAlignedMemorySegment)
+        if (dspVar->segment == segment)
             alignedVarDump.append( { dspVar->Name,
                                      dspVar->m_offsetToModuleBase,
                                      dspVar->m_absoluteAddress } );
     }
     return alignedVarDump;
-}
-
-QList<ZDspDumpFunctions::VarLocation> ZDspDumpFunctions::getLocalVariableDump(const DspMemorySectionInternal &clientUserMemSection)
-{
-    QList<VarLocation> localVarDump;
-    for (int i = 0; i < clientUserMemSection.getVarCount(); i++) {
-        DspVarServerPtr dspVar = clientUserMemSection.getDspVar(i);
-        if (dspVar->segment == moduleLocalSegment)
-            localVarDump.append( { dspVar->Name,
-                                   dspVar->m_offsetToModuleBase,
-                                   dspVar->m_absoluteAddress } );
-    }
-    return localVarDump;
 }
 
 QString ZDspDumpFunctions::crcToHex(quint32 val)

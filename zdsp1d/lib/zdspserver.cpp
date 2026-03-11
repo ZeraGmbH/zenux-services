@@ -636,7 +636,7 @@ int ZDspServer::getUserMemOccupied() const
     const QList<ZdspClient*> &clientList = getClients();
     int memOccupied = 0;
     for (const ZdspClient* client : clientList)
-        memOccupied += client->getDataMemSize();
+        memOccupied += client->getMemSize(moduleLocalSegment);
     return memOccupied;
 }
 
@@ -657,7 +657,7 @@ int ZDspServer::getUserMemAlignedOccupied() const
     const QList<ZdspClient*> &clientList = getClients();
     int memOccupied = 0;
     for (const ZdspClient* client : clientList)
-        memOccupied += client->getDataMemSizeAligned();
+        memOccupied += client->getMemSize(moduleAlignedMemorySegment);
     return memOccupied;
 }
 

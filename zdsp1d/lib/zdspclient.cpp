@@ -165,28 +165,17 @@ int ZdspClient::getDspInterruptId() const
     return m_dspInterruptId;
 }
 
-int ZdspClient::getDataMemSize() const
+int ZdspClient::getMemSize(DspSegmentType segment) const
 {
     const int varCount = m_userMemSection.getVarCount();
-    int dataMemSize = 0;
+    int memSize = 0;
     for (int var=0; var<varCount; ++var) {
         DspVarServerPtr dspVar = m_userMemSection.getDspVar(var);
-        if (dspVar->segment == moduleLocalSegment)
-            dataMemSize += m_userMemSection.getDspVar(var)->size;
+        if (dspVar->segment == segment)
+            memSize += m_userMemSection.getDspVar(var)->size;
     }
-    return dataMemSize;
-}
+    return memSize;
 
-int ZdspClient::getDataMemSizeAligned() const
-{
-    const int varCount = m_userMemSection.getVarCount();
-    int dataMemSizeAligned = 0;
-    for (int var=0; var<varCount; ++var) {
-        DspVarServerPtr dspVar = m_userMemSection.getDspVar(var);
-        if (dspVar->segment == moduleAlignedMemorySegment)
-            dataMemSizeAligned += m_userMemSection.getDspVar(var)->size;
-    }
-    return dataMemSizeAligned;
 }
 
 bool ZdspClient::hasCyclicCmds() const

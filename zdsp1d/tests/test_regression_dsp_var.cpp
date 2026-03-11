@@ -608,7 +608,7 @@ void test_regression_dsp_var::dspVarMemSizeInitialHack()
     ZdspClient* testServerlient = m_dspService->createTestClient();
     testServerlient->setVarList(varString);
 
-    int serverMemSize = testServerlient->getDataMemSize();
+    int serverMemSize = testServerlient->getMemSize(moduleLocalSegment);
     int clientMemSize = dspVarGroup->getUserMemSize();
     QCOMPARE(serverMemSize, clientMemSize);
     QCOMPARE(serverMemSize, resultSize + tempSize + paramSize);
