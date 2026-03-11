@@ -121,8 +121,8 @@ DspCmdWithParamsCompiled DspCmdCompiler::compileOneCmdLineAligned(const QString 
                         ok = true;
                 }
                 else {
-                    long* pl = (long*) &tf; // float -> long cast hack
-                    par2= *pl;
+                    const long* pl = reinterpret_cast<long*>(&tf); // float -> long cast hack
+                    par2 = *pl;
                 }
             }
             ok &= compilerSupport->addCmdToRaw2Params(cmdLine, dspcmd, par1, par2); // this needs love
