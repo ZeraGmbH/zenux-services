@@ -248,7 +248,7 @@ void DspStaticData::fillMemSectionHashOn1stCall()
     }
 }
 
-void DspStaticData::setInitialVariableSize(DspMemorySectionInternal &memSection, const QString variableName, int size)
+void DspStaticData::setInitialVariableSize(DspMemorySectionInternal &memSection, const QString &variableName, int size)
 {
     for (int i=0; i<memSection.getVarCount(); ++i) {
         DspVarServerPtr dspVar = memSection.getDspVar(i);

@@ -36,7 +36,7 @@ public:
 private:
     static void fillCmdHashOn1stCall();
     static void fillMemSectionHashOn1stCall();
-    static void setInitialVariableSize(DspMemorySectionInternal &memSection, const QString variableName, int size);
+    static void setInitialVariableSize(DspMemorySectionInternal &memSection, const QString &variableName, int size);
 
     static QHash<QString, DspCmdDecodingDetails*> m_dspAvailableCmds;
     static QHash<QString, DspVarServerPtr> m_varHash;
