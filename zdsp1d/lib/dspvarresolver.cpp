@@ -40,17 +40,15 @@ DspVarServerPtr DspVarResolver::getDspVar(const QString &varNameWithOffset)
     return nullptr;
 }
 
-long DspVarResolver::getVarOffset(const QString& varNameWithOffset, ulong userMemOffset, ulong alignedMemAreaStartAdr)
+long DspVarResolver::getVarOffset(const QString& varNameWithOffset)
 {
     DspVarServerPtr dspVar = getDspVar(varNameWithOffset);
     if(dspVar) {
-        int offsetToVar = 0;
+        int offsetToVar = 0; // varNameWithOffset: "<varname>+offset"
         if (!DspVarOffsetCalc::calcVarOffset(dspVar->Name, varNameWithOffset, offsetToVar))
             return -1;
 
         int offsetInClientMemorySpace = dspVar->m_offsetToModuleBase + offsetToVar;
-        if (dspVar->segment == moduleAlignedMemorySegment)
-            offsetInClientMemorySpace += (alignedMemAreaStartAdr - userMemOffset);
         return offsetInClientMemorySpace;
     }
 

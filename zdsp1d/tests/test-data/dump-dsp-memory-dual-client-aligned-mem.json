@@ -7,9 +7,10 @@
         "DspCmdsRawInterrupt": [
         ],
         "DspVarsAligned": {
-            "0x000000 / 0x09F000": "CLIENT1_ALIGNED_VAR1",
-            "0x000001 / 0x09F001": "CLIENT1_ALIGNED_VAR2"
+            "0x006E80 / 0x09F000": "CLIENT1_ALIGNED_VAR1",
+            "0x006E81 / 0x09F001": "CLIENT1_ALIGNED_VAR2"
         },
+        "DspVarsClientBaseAddress": "0x098180",
         "DspVarsLocal": {
         }
     },
@@ -22,9 +23,10 @@
         "DspCmdsRawInterrupt": [
         ],
         "DspVarsAligned": {
-            "0x000000 / 0x09F003": "CLIENT2_ALIGNED_VAR1",
-            "0x000003 / 0x09F006": "CLIENT2_ALIGNED_VAR1"
+            "0x006E83 / 0x09F003": "CLIENT2_ALIGNED_VAR1",
+            "0x006E86 / 0x09F006": "CLIENT2_ALIGNED_VAR1"
         },
+        "DspVarsClientBaseAddress": "0x098180",
         "DspVarsLocal": {
         }
     },

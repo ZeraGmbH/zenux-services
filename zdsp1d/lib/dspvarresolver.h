@@ -12,7 +12,7 @@ public:
     void addSection(DspMemorySectionInternal* section);
     void actualizeVarHash();
     DspVarServerPtr getDspVar(const QString& varNameWithOffset);
-    long getVarOffset(const QString &varNameWithOffset, ulong userMemOffset, ulong alignedStartAdr);
+    long getVarOffset(const QString &varNameWithOffset);
     long getVarAddress(const QString& varNameWithOffset);
     int getVarType(const QString &varNameWithOffset);
 

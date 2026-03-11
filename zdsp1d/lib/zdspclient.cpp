@@ -109,7 +109,7 @@ ZdspClient::MemSizes ZdspClient::calcVarAdressesAndSizes(ulong startAdress, ulon
             userSize += varSize;
         }
         else if (dspVar->segment == moduleAlignedMemorySegment) {
-            dspVar->m_offsetToModuleBase = userAlignedSize;  // This is odd - see also DspVarResolver::getVarOffset
+            dspVar->m_offsetToModuleBase = userAlignedSize + (alignedMemStartAddress - startAdress);
             dspVar->m_absoluteAddress = alignedMemStartAddress + userAlignedSize;
             userAlignedSize += varSize;
         }
