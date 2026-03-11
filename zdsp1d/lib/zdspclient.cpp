@@ -53,9 +53,24 @@ bool ZdspClient::setVarList(const QString &varsSemicolonSeparated)
         DspVarInServer dspVar;
         if (dspVar.setupFromCommaSeparatedString(varEntries[i])) {
             if ( dspVar.segment == moduleLocalSegment ||
-                 dspVar.segment == moduleAlignedMemorySegment ||
-                 dspVar.segment == moduleGlobalSegment )
+                 dspVar.segment == moduleAlignedMemorySegment )
                 m_userMemSection.appendDspVar(dspVar);
+            else if ( dspVar.segment == moduleGlobalSegment ) {
+                const QString &varName = dspVar.Name;
+                auto iter = m_globalVariables.constFind(varName);
+                if (iter == m_globalVariables.constEnd())
+                    m_userMemSection.appendDspVar(dspVar);
+                else {
+                    DspVarServerPtr globalTwin = iter.value();
+                    if(dspVar.size == globalTwin->size)
+                        m_userMemSection.appendDspVar(dspVar);
+                    else {
+                        qCritical("Size change on global DSP Variable %s detected. Found %i / Wanted %i",
+                                  qPrintable(dspVar.Name), globalTwin->size, dspVar.size);
+                        allOk = false;
+                    }
+                }
+            }
             else if (dspVar.segment == dspInternalSegment) {
                 const DspVarServerPtr dspVarDsp = m_dspVarResolver.getDspVar(dspVar.Name);
                 if (dspVarDsp == nullptr) {

@@ -303,6 +303,38 @@ void test_regression_dsp_var::createGlobalVariablesMultipleClients()
     QCOMPARE(server->getVarMemLocalAvailable(), initialUserMemSize-globalMemSize); // global mem reduces user mem
 }
 
+void test_regression_dsp_var::createGlobalVariablesMultipleClientsVarSizesDifferent()
+{
+    ZDspServer* server = m_dspService->getServer();
+
+    // create vars/dummy prog client1
+    m_dspIFace->setEntityId(1);
+    DspVarGroupClientInterface* dspVarGroup1 = m_dspIFace->createVariableGroup("foo");
+    dspVarGroup1->addDspVar("GLOBAL_VAR_COMMON", 2, dspDataTypeFloat, moduleGlobalSegment);
+    m_dspIFace->varList2Dsp();
+    m_dspIFace->activateInterface();
+    TimeMachineObject::feedEventLoop();
+
+    // connect client2
+    Zera::ProxyClientPtr proxyClient2 = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", dspServerPort, m_tcpNetworkFactory);
+    std::unique_ptr<Zera::cDSPInterface> dspIFace2 = std::make_unique<Zera::cDSPInterface>();
+    dspIFace2->setClientSmart(proxyClient2);
+    Zera::Proxy::getInstance()->startConnectionSmart(proxyClient2);
+    TimeMachineObject::feedEventLoop();
+
+    // create vars/dummy client2
+    dspIFace2->setEntityId(2);
+    DspVarGroupClientInterface* dspVarGroup2 = dspIFace2->createVariableGroup("foo");
+    dspVarGroup2->addDspVar("GLOBAL_VAR_COMMON", 1, dspDataTypeFloat, moduleGlobalSegment);
+    dspIFace2->varList2Dsp();
+    dspIFace2->activateInterface();
+    TimeMachineObject::feedEventLoop();
+
+    QJsonDocument jsonDoc(ZDspDumpFunctions::getMemoryDump(server));
+    QString dumped = jsonDoc.toJson(QJsonDocument::Indented);
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonFile(":/dump-dsp-memory-dual-client-global-mem-different-size.json", dumped));
+}
+
 static constexpr int dm32UserWorkSpaceBase21362 = 0x98180; // stolen from zdspserver.cpp
 static constexpr int startAddress = dm32UserWorkSpaceBase21362;
 static constexpr int varSize = 4;
