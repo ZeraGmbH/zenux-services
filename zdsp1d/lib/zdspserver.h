@@ -34,10 +34,11 @@ public:
     bool compileCmdListsForAllClientsToBinaryStream(QString& errs,
                                                     QByteArray &rawCyclicCmdMemOut,
                                                     QByteArray &rawInterruptCmdMemOut) const;
-    int getUserMemAvailable() const;
-    int getUserMemOccupied() const;
-    int getUserMemAlignedAvailable() const;
-    int getUserMemAlignedOccupied() const;
+
+    int getVarMemLocalAvailable() const;
+    int getVarMemAlignedAvailable() const;
+    int getVarMemOccupied(DspSegmentType segment) const;
+
     int getProgMemCyclicAvailable() const;
     int getProgMemCyclicOccupied() const;
     int getProgMemInterruptAvailable() const;

@@ -54,23 +54,9 @@ QJsonObject ZDspDumpFunctions::getMemoryDump(const ZDspServer *server)
             const DspMemorySectionInternal &memSection = client->getUserMemSection();
             entityData.insert("DspVarsClientBaseAddress", DspVarInServer::toHex(memSection.m_startAddress));
 
-            QJsonObject localVariables;
-            const QList<VarLocation> localList = getVariableDump(memSection, moduleLocalSegment);
-            for (const VarLocation &entry : localList) {
-                QString key = QString("%1 / %2").arg(
-                    DspVarInServer::toHex(entry.m_localVariableAddress), DspVarInServer::toHex(entry.m_absoluteVariableAddress));
-                localVariables.insert(key, entry.m_variableName);
-            }
-            entityData.insert("DspVarsLocal", localVariables);
-
-            QJsonObject alignedVariables;
-            const QList<VarLocation> alignedList = getVariableDump(memSection, moduleAlignedMemorySegment);
-            for (const VarLocation &entry : alignedList) {
-                QString key = QString("%1 / %2").arg(
-                    DspVarInServer::toHex(entry.m_localVariableAddress), DspVarInServer::toHex(entry.m_absoluteVariableAddress));
-                alignedVariables.insert(key, entry.m_variableName);
-            }
-            entityData.insert("DspVarsAligned", alignedVariables);
+            entityData.insert("DspVarsLocal", dumpVariables(getVariableDump(memSection, moduleLocalSegment)));
+            entityData.insert("DspVarsAligned", dumpVariables(getVariableDump(memSection, moduleAlignedMemorySegment)));
+            entityData.insert("DspVarsGlobal", dumpVariables(getVariableDump(memSection, moduleGlobalSegment)));
 
             json.insert(QString("%1").arg(entityId), entityData);
         }
@@ -144,4 +130,15 @@ QString ZDspDumpFunctions::crcToHex(quint32 val)
 {
     QString hexVal = QString("00000000%1").arg(val, 0, 16).toUpper().right(8);
     return QString("0x") + hexVal;
+}
+
+QJsonObject ZDspDumpFunctions::dumpVariables(const QList<VarLocation> &vars)
+{
+    QJsonObject dumpTarget;
+    for (const VarLocation &var : vars) {
+        QString key = QString("%1 / %2").arg(
+            DspVarInServer::toHex(var.m_localVariableAddress), DspVarInServer::toHex(var.m_absoluteVariableAddress));
+        dumpTarget.insert(key, var.m_variableName);
+    }
+    return dumpTarget;
 }

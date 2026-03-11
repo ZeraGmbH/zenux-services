@@ -256,11 +256,51 @@ void test_regression_dsp_var::createAlignedVariablesMultipleClients()
     TimeMachineObject::feedEventLoop();
 
     ZDspServer* server = m_dspService->getServer();
-    QCOMPARE(server->getUserMemAlignedOccupied(), 1+2+3+4);
+    QCOMPARE(server->getVarMemOccupied(moduleAlignedMemorySegment), 1+2+3+4);
 
     QJsonDocument jsonDoc(ZDspDumpFunctions::getMemoryDump(server));
     QString dumped = jsonDoc.toJson(QJsonDocument::Indented);
     QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonFile(":/dump-dsp-memory-dual-client-aligned-mem.json", dumped));
+}
+
+void test_regression_dsp_var::createGlobalVariablesMultipleClients()
+{
+    ZDspServer* server = m_dspService->getServer();
+    int initialUserMemSize = server->getVarMemLocalAvailable();
+
+    // create vars/dummy prog client1
+    m_dspIFace->setEntityId(1);
+    DspVarGroupClientInterface* dspVarGroup1 = m_dspIFace->createVariableGroup("createGlobalVariablesMultipleClients");
+    dspVarGroup1->addDspVar("CLIENT1_GLOBAL_VAR1", 1, dspDataTypeFloat, moduleGlobalSegment);
+    dspVarGroup1->addDspVar("GLOBAL_VAR_COMMON", 2, dspDataTypeFloat, moduleGlobalSegment);
+    m_dspIFace->varList2Dsp();
+    m_dspIFace->activateInterface();
+    TimeMachineObject::feedEventLoop();
+
+    // connect client2
+    Zera::ProxyClientPtr proxyClient2 = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", dspServerPort, m_tcpNetworkFactory);
+    std::unique_ptr<Zera::cDSPInterface> dspIFace2 = std::make_unique<Zera::cDSPInterface>();
+    dspIFace2->setClientSmart(proxyClient2);
+    Zera::Proxy::getInstance()->startConnectionSmart(proxyClient2);
+    TimeMachineObject::feedEventLoop();
+
+    // create vars/dummy client2
+    dspIFace2->setEntityId(2);
+    DspVarGroupClientInterface* dspVarGroup2 = dspIFace2->createVariableGroup("createGlobalVariablesMultipleClients");
+    dspVarGroup2->addDspVar("CLIENT2_GLOBAL_VAR2", 1, dspDataTypeFloat, moduleGlobalSegment);
+    dspVarGroup2->addDspVar("GLOBAL_VAR_COMMON", 2, dspDataTypeFloat, moduleGlobalSegment);
+    dspIFace2->varList2Dsp();
+    dspIFace2->activateInterface();
+    TimeMachineObject::feedEventLoop();
+
+    QJsonDocument jsonDoc(ZDspDumpFunctions::getMemoryDump(server));
+    QString dumped = jsonDoc.toJson(QJsonDocument::Indented);
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonFile(":/dump-dsp-memory-dual-client-global-mem.json", dumped));
+
+    constexpr int globalMemSize = 1+1+2;
+    QCOMPARE(server->getVarMemOccupied(moduleGlobalSegment), globalMemSize);
+    QCOMPARE(ZdspClient::getGlobalMemSizeTotal(), globalMemSize);
+    QCOMPARE(server->getVarMemLocalAvailable(), initialUserMemSize-globalMemSize); // global mem reduces user mem
 }
 
 static constexpr int dm32UserWorkSpaceBase21362 = 0x98180; // stolen from zdspserver.cpp

@@ -292,16 +292,22 @@ static constexpr int IntCmdListLen21362 = 512;
 static constexpr int uwSpaceSize21362 = 32383; // userspace end => 0x9FFFF
 
 // User workspace layout:
-// ---------   UserWorkSpaceBase   --------- <-
-//            Client1 work memory              |
-// -----------------------------------------   |
-//            Client2 work memory              |
-// -----------------------------------------   |
-//           ...                               | UserWorkspace size
-// --------- UserWorkSpaceAligned  ---------   |
-//           ...                               |
-//           ...                               |
-// ----------------------------------------- <-
+//
+// ---------   UserWorkSpaceBase   --------  <-
+//            Client1 work memory             |
+// ----------------------------------------   |
+//            Client2 work memory             |
+// v--------------------------------------v   |
+//                  .....                     |
+//                                            | UserWorkspace size
+//                                            |
+// --------- GlobalEnd (floating) ---------   |
+//                  .....                     |
+// ^-------- GlobalStart (fixed) ---------^   |
+// v-------- AlignedStart (fixed) --------v   |
+//                  .....                     |
+//                                            |
+// ----------------------------------------  <-
 
 int DspStaticData::alignInternalMemRegionsFor21262()
 {

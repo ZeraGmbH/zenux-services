@@ -20,6 +20,7 @@ public:
                                               DspSegmentType segment);
 private:
     static QString crcToHex(quint32 val);
+    static QJsonObject dumpVariables(const QList<VarLocation> &vars);
 };
 
 #endif // ZDSPDUMPFUNCTIONS_H

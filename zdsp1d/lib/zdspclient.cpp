@@ -4,6 +4,8 @@
 #include <QDataStream>
 
 int ZdspClient::m_instanceCount = 0;
+QHash<QString, DspVarServerPtr> ZdspClient::m_globalVariables;
+ulong ZdspClient::m_globalVarSize = 0;
 
 ZdspClient::ZdspClient(int dspInterruptId,
                        VeinTcp::TcpPeer* veinPeer,
@@ -23,6 +25,8 @@ ZdspClient::ZdspClient(int dspInterruptId,
 ZdspClient::~ZdspClient()
 {
     m_instanceCount--;
+    if (m_instanceCount == 0)
+        resetGlobalVarList();
 }
 
 void ZdspClient::setEntityId(int entityId)
@@ -48,7 +52,9 @@ bool ZdspClient::setVarList(const QString &varsSemicolonSeparated)
     for(int i=0; i<varEntries.count(); i++) {
         DspVarInServer dspVar;
         if (dspVar.setupFromCommaSeparatedString(varEntries[i])) {
-            if (dspVar.segment == moduleLocalSegment || dspVar.segment == moduleAlignedMemorySegment)
+            if ( dspVar.segment == moduleLocalSegment ||
+                 dspVar.segment == moduleAlignedMemorySegment ||
+                 dspVar.segment == moduleGlobalSegment )
                 m_userMemSection.appendDspVar(dspVar);
             else if (dspVar.segment == dspInternalSegment) {
                 const DspVarServerPtr dspVarDsp = m_dspVarResolver.getDspVar(dspVar.Name);
@@ -77,6 +83,12 @@ bool ZdspClient::setVarList(const QString &varsSemicolonSeparated)
 
     m_dspVarResolver.actualizeVarHash();
     return true;
+}
+
+void ZdspClient::resetGlobalVarList()
+{
+    m_globalVariables.clear();
+    m_globalVarSize = 0;
 }
 
 void ZdspClient::setCmdListDef(const QString &cmdListDef)
@@ -112,6 +124,23 @@ ZdspClient::MemSizes ZdspClient::calcVarAdressesAndSizes(ulong startAdress, ulon
             dspVar->m_offsetToModuleBase = userAlignedSize + (alignedMemStartAddress - startAdress);
             dspVar->m_absoluteAddress = alignedMemStartAddress + userAlignedSize;
             userAlignedSize += varSize;
+        }
+        else if(dspVar->segment == moduleGlobalSegment) {
+            const QString &varName = dspVar->Name;
+            auto iter = m_globalVariables.constFind(varName);
+            const ulong globalMemStartAddress = alignedMemStartAddress - 1;
+            if (iter == m_globalVariables.constEnd()) {
+                // global mem pointer counts down into local segment
+                dspVar->m_offsetToModuleBase = -m_globalVarSize + (globalMemStartAddress - startAdress);
+                dspVar->m_absoluteAddress = globalMemStartAddress - m_globalVarSize;
+                m_globalVarSize += varSize;
+                m_globalVariables[varName] = dspVar;
+            }
+            else {
+                ulong absAddress = iter.value()->m_absoluteAddress;
+                dspVar->m_offsetToModuleBase = absAddress - startAdress;
+                dspVar->m_absoluteAddress = absAddress;
+            }
         }
     }
     return { userSize, userAlignedSize };
@@ -176,6 +205,11 @@ int ZdspClient::getMemSize(DspSegmentType segment) const
     }
     return memSize;
 
+}
+
+int ZdspClient::getGlobalMemSizeTotal()
+{
+    return m_globalVarSize;
 }
 
 bool ZdspClient::hasCyclicCmds() const

@@ -621,26 +621,17 @@ const QList<ZdspClient *> &ZDspServer::getClients() const
     return m_zdspClientContainer.getClientList();
 }
 
-int ZDspServer::getUserMemAvailable() const
+int ZDspServer::getVarMemLocalAvailable() const
 {
     for (int i=0; i<dm32UserWorkSpace.getVarCount(); i++) {
         const DspVarServerPtr dspVar = dm32UserWorkSpace.getDspVar(i);
         if(dspVar->Name == "UWSPACE")
-            return m_userWorkSpaceAlignedSegmentStartAdr - dspVar->m_absoluteAddress;
+            return m_userWorkSpaceAlignedSegmentStartAdr - dspVar->m_absoluteAddress - ZdspClient::getGlobalMemSizeTotal();
     }
     return 0;
 }
 
-int ZDspServer::getUserMemOccupied() const
-{
-    const QList<ZdspClient*> &clientList = getClients();
-    int memOccupied = 0;
-    for (const ZdspClient* client : clientList)
-        memOccupied += client->getMemSize(moduleLocalSegment);
-    return memOccupied;
-}
-
-int ZDspServer::getUserMemAlignedAvailable() const
+int ZDspServer::getVarMemAlignedAvailable() const
 {
     for (int i=0; i<dm32UserWorkSpace.getVarCount(); i++) {
         const DspVarServerPtr dspVar = dm32UserWorkSpace.getDspVar(i);
@@ -652,13 +643,16 @@ int ZDspServer::getUserMemAlignedAvailable() const
     return 0;
 }
 
-int ZDspServer::getUserMemAlignedOccupied() const
+int ZDspServer::getVarMemOccupied(DspSegmentType segment) const
 {
-    const QList<ZdspClient*> &clientList = getClients();
-    int memOccupied = 0;
-    for (const ZdspClient* client : clientList)
-        memOccupied += client->getMemSize(moduleAlignedMemorySegment);
-    return memOccupied;
+    if (segment != moduleGlobalSegment) {
+        const QList<ZdspClient*> &clientList = getClients();
+        int memOccupied = 0;
+        for (const ZdspClient* client : clientList)
+            memOccupied += client->getMemSize(segment);
+        return memOccupied;
+    }
+    return ZdspClient::getGlobalMemSizeTotal();
 }
 
 int ZDspServer::getProgMemCyclicAvailable() const
@@ -781,6 +775,8 @@ bool ZDspServer::compileCmdListsForAllClientsToBinaryStream(QString &errs,
     cycCmdMemStream.setByteOrder(QDataStream::LittleEndian);
     QDataStream intCmdMemStream(&rawInterruptCmdMemOut, QIODevice::Unbuffered | QIODevice::ReadWrite);
     intCmdMemStream.setByteOrder(QDataStream::LittleEndian);
+
+    ZdspClient::resetGlobalVarList();
 
     DspCmdWithParamsCompiled cmd;
     const QList<ZdspClient*> clientList = getClients();

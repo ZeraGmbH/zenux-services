@@ -6,7 +6,7 @@
 
 enum DspDataType { dspDataTypeInt, dspDataTypeFloat, dspDataTypeUnknown };
 
-enum DspSegmentType { dspInternalSegment, moduleLocalSegment, moduleAlignedMemorySegment };
+enum DspSegmentType { dspInternalSegment, moduleLocalSegment, moduleGlobalSegment, moduleAlignedMemorySegment };
 static constexpr int minSegmentType = dspInternalSegment;
 static constexpr int maxSegmentType = moduleAlignedMemorySegment;
 

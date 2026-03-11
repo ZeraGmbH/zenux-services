@@ -7,11 +7,11 @@
         "DspCmdsRawInterrupt": [
         ],
         "DspVarsAligned": {
-            "0x006E80 / 0x09F000": "CLIENT1_ALIGNED_VAR1",
-            "0x006E81 / 0x09F001": "CLIENT1_ALIGNED_VAR2"
         },
         "DspVarsClientBaseAddress": "0x098180",
         "DspVarsGlobal": {
+            "0x006E7E / 0x09EFFE": "GLOBAL_VAR_COMMON",
+            "0x006E7F / 0x09EFFF": "CLIENT1_GLOBAL_VAR1"
         },
         "DspVarsLocal": {
         }
@@ -25,11 +25,11 @@
         "DspCmdsRawInterrupt": [
         ],
         "DspVarsAligned": {
-            "0x006E83 / 0x09F003": "CLIENT2_ALIGNED_VAR1",
-            "0x006E86 / 0x09F006": "CLIENT2_ALIGNED_VAR1"
         },
         "DspVarsClientBaseAddress": "0x098180",
         "DspVarsGlobal": {
+            "0x006E7C / 0x09EFFC": "CLIENT2_GLOBAL_VAR2",
+            "0x006E7E / 0x09EFFE": "GLOBAL_VAR_COMMON"
         },
         "DspVarsLocal": {
         }

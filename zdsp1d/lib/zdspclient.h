@@ -18,6 +18,7 @@ public:
     const QByteArray &getProtobufClientId() const;
 
     bool setVarList(const QString& varsSemicolonSeparated);
+    static void resetGlobalVarList();
     void setCmdListDef(const QString& cmdListDef);
     void setCmdForIrqListDef(const QString& cmdIntListDef);
 
@@ -36,6 +37,7 @@ public:
 
     int getDspInterruptId() const;
     int getMemSize(DspSegmentType segment) const;
+    static int getGlobalMemSizeTotal();
     bool hasCyclicCmds() const;
     bool hasInterruptCmds() const;
     VeinTcp::TcpPeer* getVeinPeer() const;
@@ -60,6 +62,8 @@ private:
     QList<DspCmdWithParamsCompiled> m_DspCmdList;
     QList<DspCmdWithParamsCompiled> m_DspIntCmdList;
     DspMemorySectionInternal m_userMemSection;
+    static QHash<QString /* varName */, DspVarServerPtr> m_globalVariables;
+    static ulong m_globalVarSize;
 
     // dump / tests
     AbstractDspCompilerSupportPtr m_cyclicCommandsCompilerSupport;
