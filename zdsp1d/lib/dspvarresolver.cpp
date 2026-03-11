@@ -47,9 +47,7 @@ long DspVarResolver::getVarOffset(const QString& varNameWithOffset)
         int offsetToVar = 0; // varNameWithOffset: "<varname>+offset"
         if (!DspVarOffsetCalc::calcVarOffset(dspVar->Name, varNameWithOffset, offsetToVar))
             return -1;
-
-        int offsetInClientMemorySpace = dspVar->m_offsetToModuleBase + offsetToVar;
-        return offsetInClientMemorySpace;
+        return dspVar->m_offsetToModuleBase + offsetToVar;
     }
 
     // offset only parameters e.g on DSPMEMOFFSET / STARTCHAIN...
