@@ -1,7 +1,5 @@
 #include "zdspclient.h"
 #include "dspcmdcompiler.h"
-#include <pseudocrcbuffer.h>
-#include <QDataStream>
 
 int ZdspClient::m_instanceCount = 0;
 QHash<QString, DspVarServerPtr> ZdspClient::m_globalVariables;
@@ -154,16 +152,17 @@ bool ZdspClient::compileCmdLists(QString& errs, ulong userMemOffset, ulong align
     m_cyclicCommandsCompilerSupport = m_zdspSupportFactory->createDspCompilerSupport();
     m_interruptCommandsCompilerSupport = m_zdspSupportFactory->createDspCompilerSupport();
 
-    bool ok = true;
     if (!m_sCmdListDef.isEmpty()) {
         getCurrCyclicCommandsCompilerSupport()->startClientArea(getEntityId(), "Cyclic sequence", AbstractDspCompilerSupport::CYCLIC);
-        ok = ok && compiler.compileCmds(m_sCmdListDef, m_DspCmdList,errs, userMemOffset, alignedMemAreaStartAdr, m_cyclicCommandsCompilerSupport);
+        if(!compiler.compileCmds(m_sCmdListDef, m_DspCmdList,errs, userMemOffset, alignedMemAreaStartAdr, m_cyclicCommandsCompilerSupport))
+            return false;
     }
     if (!m_sIntCmdListDef.isEmpty()) {
         getCurrCyclicCommandsCompilerSupport()->startClientArea(getEntityId(), "Interrupt sequence", AbstractDspCompilerSupport::INTERRUPT);
-        ok = ok && compiler.compileCmds(m_sIntCmdListDef, m_DspIntCmdList, errs, userMemOffset, alignedMemAreaStartAdr, m_interruptCommandsCompilerSupport);
+        if(!compiler.compileCmds(m_sIntCmdListDef, m_DspIntCmdList, errs, userMemOffset, alignedMemAreaStartAdr, m_interruptCommandsCompilerSupport))
+            return false;
     }
-    return ok;
+    return true;
 }
 
 const QList<DspCmdWithParamsCompiled> &ZdspClient::GetDspCmdList() const
@@ -206,7 +205,6 @@ int ZdspClient::getMemSize(DspSegmentType segment) const
             memSize += m_userMemSection.getDspVar(var)->size;
     }
     return memSize;
-
 }
 
 int ZdspClient::getGlobalMemSizeTotal()
@@ -233,4 +231,3 @@ int ZdspClient::getInstanceCount()
 {
     return m_instanceCount;
 }
-
