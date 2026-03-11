@@ -22,7 +22,7 @@ public:
     void setCmdListDef(const QString& cmdListDef);
     void setCmdForIrqListDef(const QString& cmdIntListDef);
 
-    bool compileCmdLists(QString& errs, ulong userMemOffset, ulong alignedStartAdr);
+    bool compileCmdLists(QString& errs);
     const QList<DspCmdWithParamsCompiled>& GetDspCmdList() const;
     const QList<DspCmdWithParamsCompiled>& GetDspIntCmdList() const;
     const DspMemorySectionInternal &getUserMemSection() const;

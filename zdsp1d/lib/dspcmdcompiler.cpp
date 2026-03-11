@@ -7,18 +7,9 @@ DspCmdCompiler::DspCmdCompiler(DspVarResolver *varResolver, int dspInterruptId) 
 {
 }
 
-DspCmdWithParamsCompiled DspCmdCompiler::compileOneCmdLineZeroAligned(const QString &cmdLine,
-                                                                      AbstractDspCompilerSupportPtr compilerSupport,
-                                                                      bool &ok)
-{
-    return compileOneCmdLineAligned(cmdLine, 0, 0, compilerSupport, ok);
-}
-
-DspCmdWithParamsCompiled DspCmdCompiler::compileOneCmdLineAligned(const QString &cmdLine,
-                                                                  ulong userMemOffset,
-                                                                  ulong alignedMemAreaStartAdr,
-                                                                  AbstractDspCompilerSupportPtr compilerSupport,
-                                                                  bool &ok)
+DspCmdWithParamsCompiled DspCmdCompiler::compileOneCmdLine(const QString &cmdLine,
+                                                           AbstractDspCompilerSupportPtr compilerSupport,
+                                                           bool &ok)
 {
     ok = true;
     cParse cmdParser;
@@ -140,15 +131,13 @@ DspCmdWithParamsCompiled DspCmdCompiler::compileOneCmdLineAligned(const QString 
 bool DspCmdCompiler::compileCmds(const QString &cmdsSemicolonSeparated,
                                  QList<DspCmdWithParamsCompiled> &genCmdList,
                                  QString &err,
-                                 ulong userMemOffset,
-                                 ulong alignedMemAreaStartAdr,
                                  AbstractDspCompilerSupportPtr compilerSupport)
 {
     bool ok = true;
     genCmdList.clear();
     const QStringList cmds = cmdsSemicolonSeparated.split(';', Qt::SkipEmptyParts);
     for(const QString &cmd : cmds) {
-        genCmdList.append(compileOneCmdLineAligned(cmd, userMemOffset, alignedMemAreaStartAdr, compilerSupport, ok));
+        genCmdList.append(compileOneCmdLine(cmd, compilerSupport, ok));
         if(!ok) {
             err = cmd;
             break;

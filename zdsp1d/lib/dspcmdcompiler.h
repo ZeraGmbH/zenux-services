@@ -10,19 +10,12 @@ class DspCmdCompiler
 {
 public:
     DspCmdCompiler(DspVarResolver* varResolver, int dspInterruptId);
-    DspCmdWithParamsCompiled compileOneCmdLineZeroAligned(const QString &cmdLine,
-                                                          AbstractDspCompilerSupportPtr compilerSupport,
-                                                          bool &ok);
-    DspCmdWithParamsCompiled compileOneCmdLineAligned(const QString &cmdLine,
-                                                      ulong userMemOffset,
-                                                      ulong alignedStartAdr,
-                                                      AbstractDspCompilerSupportPtr compilerSupport,
-                                                      bool &ok);
+    DspCmdWithParamsCompiled compileOneCmdLine(const QString &cmdLine,
+                                               AbstractDspCompilerSupportPtr compilerSupport,
+                                               bool &ok);
     bool compileCmds(const QString& cmdsSemicolonSeparated,
                      QList<DspCmdWithParamsCompiled> &genCmdList,
                      QString& err,
-                     ulong userMemOffset,
-                     ulong alignedStartAdr,
                      AbstractDspCompilerSupportPtr compilerSupport);
 
 private:
