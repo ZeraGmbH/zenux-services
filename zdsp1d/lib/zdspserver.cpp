@@ -729,7 +729,7 @@ void ZDspServer::DspIntHandler(int)
             else {
                 for (int i = 1; i < (n+1); i++) {
                     int process = pardsp[i] >> 16;
-                    ZdspClient *clientToNotify = m_zdspClientContainer.findClient(process);
+                    const ZdspClient *clientToNotify = m_zdspClientContainer.findClient(process);
                     if (clientToNotify) {
                         const QString dspIntStr = QString("DSPINT:%1").arg(pardsp[i] & 0xFFFF);
 
@@ -987,10 +987,9 @@ void ZDspServer::executeCommandProto(VeinTcp::TcpPeer *peer, std::shared_ptr<goo
 
 void ZDspServer::onTelnetReceived(const QString &input)
 {
-    static const char* telnetClientId = "telnet_client";
-
     ScpiObjectPtr scpiObject = m_scpiInterface->getSCPIObject(input);
     if(scpiObject) {
+        static const char* telnetClientId = "telnet_client";
         m_zdspClientContainer.addClient(nullptr, telnetClientId);
         ProtonetCommandPtr protoCmd = std::make_shared<ProtonetCommand>(nullptr, false, true, telnetClientId, 0, input);
         ScpiDelegate* scpiDelegate = static_cast<ScpiDelegate*>(scpiObject.get());
