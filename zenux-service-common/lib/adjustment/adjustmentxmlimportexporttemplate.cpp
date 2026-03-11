@@ -2,7 +2,7 @@
 #include <QFile>
 #include <QTextStream>
 
-bool AdjustmentXmlImportExportTemplate::exportAdTojXMLFile(QString file)
+bool AdjustmentXmlImportExportTemplate::exportAdTojXMLFile(const QString &file)
 {
     QString filename = file + ".xml";
     QFile adjfile(filename);
@@ -17,7 +17,7 @@ bool AdjustmentXmlImportExportTemplate::exportAdTojXMLFile(QString file)
     return true;
 }
 
-bool AdjustmentXmlImportExportTemplate::importAdjXMLFile(QString file)
+bool AdjustmentXmlImportExportTemplate::importAdjXMLFile(const QString &file)
 {
     QString filename = file + ".xml";
     QFile adjfile(filename);
