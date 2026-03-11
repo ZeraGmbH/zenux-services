@@ -63,11 +63,11 @@ long DspVarResolver::getVarAddress(const QString &varNameWithOffset)
     if (dspVar == nullptr)
         return -1;
 
-    int calcedOffset = 0;
+    int offsetToVar = 0; // varNameWithOffset: "<varname>+offset"
     // Should we really support offsets here?
-    if (!DspVarOffsetCalc::calcVarOffset(dspVar->Name, varNameWithOffset, calcedOffset))
+    if (!DspVarOffsetCalc::calcVarOffset(dspVar->Name, varNameWithOffset, offsetToVar))
         return -1;
-    return dspVar->m_absoluteAddress + calcedOffset;
+    return dspVar->m_absoluteAddress + offsetToVar;
 }
 
 int DspVarResolver::getVarType(const QString &varNameWithOffset)
