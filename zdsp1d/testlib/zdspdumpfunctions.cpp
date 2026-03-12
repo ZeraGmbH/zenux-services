@@ -43,11 +43,13 @@ QJsonObject ZDspDumpFunctions::getMemoryDump(const ZDspServer *server)
         if (entityId >= 0) {
             QJsonObject entityData;
 
-            QJsonArray cyclicCmds = QJsonArray::fromStringList(client->getCurrCyclicCommandsCompilerSupport()->getRawDspCommands(AbstractDspCompilerSupport::CYCLIC));
+            const QStringList &cyclicCmdList = client->getCurrCyclicCommandsCompilerSupport()->getRawDspCommands(AbstractDspCompilerSupport::CYCLIC);
+            QJsonArray cyclicCmds = QJsonArray::fromStringList(cyclicCmdList);
             entityData.insert("DspCmdsRawCyclic", cyclicCmds);
             entityData.insert("DspCmdsCompiledCrcCyclic", crcToHex(getDspCmdListCompiledCrc(client->GetDspCmdList())));
 
-            QJsonArray interruptCmds = QJsonArray::fromStringList(client->getCurrInterruptCommandsCompilerSupport()->getRawDspCommands(AbstractDspCompilerSupport::INTERRUPT));
+            const QStringList &interruptCmdList = client->getCurrCyclicCommandsCompilerSupport()->getRawDspCommands(AbstractDspCompilerSupport::INTERRUPT);
+            QJsonArray interruptCmds = QJsonArray::fromStringList(interruptCmdList);
             entityData.insert("DspCmdsRawInterrupt", interruptCmds);
             entityData.insert("DspCmdsCompiledCrcInterrupt", crcToHex(getDspCmdListCompiledCrc(client->GetDspIntCmdList())));
 
