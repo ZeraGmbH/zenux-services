@@ -36,8 +36,10 @@
         "DSPMEMOFFSET(0x0E0800)",
         "DSPINTPOST()"
     ],
+    "TotalCmdListCyclicMaxInterruptCount": 0,
     "TotalCmdListInterrupt": [
     ],
+    "TotalCmdListInterruptMaxInterruptCount": 0,
     "TotalDspCmdsCompiledCrcCyclic": "0xC5087446",
     "TotalDspCmdsCompiledCrcInterrupt": "0x6522DF69"
 }
