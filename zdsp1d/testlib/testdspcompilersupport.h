@@ -10,6 +10,7 @@ public:
     void clearTotalCmdLists() override;
     static const QStringList &getRawDspCommandsAllVerbose(MemType memType);
     static int getRawDspCommandsCount(MemType memType);
+    static int getRawDspIntTriggerCount(MemType memType);
 
     bool addCmdToRaw(const QString &dspCmdLine,
                      const QStringList &paramNames, const short i16Params[],

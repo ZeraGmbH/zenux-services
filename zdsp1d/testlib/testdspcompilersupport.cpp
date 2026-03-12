@@ -37,6 +37,16 @@ int TestDspCompilerSupport::getRawDspCommandsCount(MemType memType)
     return rawCount;
 }
 
+int TestDspCompilerSupport::getRawDspIntTriggerCount(MemType memType)
+{
+    const QStringList &rawCommands = memType == CYCLIC ? m_rawDspCommandsAllCyclic : m_rawDspCommandsAllInterrupt;
+    int interruptTriggeCount = 0;
+    for (const QString &cmd : rawCommands)
+        if (cmd.contains("DSPINTTRIGGER"))
+            interruptTriggeCount++;
+    return interruptTriggeCount;
+}
+
 bool TestDspCompilerSupport::addCmdToRaw(const QString &dspCmdLine,
                                          const QStringList &paramNames,
                                          const short i16Params[],

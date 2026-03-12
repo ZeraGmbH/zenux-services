@@ -75,10 +75,15 @@ QJsonObject ZDspDumpFunctions::getMemoryDump(const ZDspServer *server)
     QString crcTotalInterruptStr = crcToHex(crcTotalInterrupt);
     json.insert("TotalDspCmdsCompiledCrcInterrupt", crcTotalInterruptStr);
 
-    QJsonArray totalCmdListCyclic = QJsonArray::fromStringList(TestDspCompilerSupport::getRawDspCommandsAllVerbose(AbstractDspCompilerSupport::CYCLIC));
+    const QStringList &totalCmdStrListCyclic = TestDspCompilerSupport::getRawDspCommandsAllVerbose(AbstractDspCompilerSupport::CYCLIC);
+    QJsonArray totalCmdListCyclic = QJsonArray::fromStringList(totalCmdStrListCyclic);
     json.insert("TotalCmdListCyclic", totalCmdListCyclic);
-    QJsonArray totalCmdListInterrupt = QJsonArray::fromStringList(TestDspCompilerSupport::getRawDspCommandsAllVerbose(AbstractDspCompilerSupport::INTERRUPT));
+    const QStringList &totalCmdStrListInterrupt = TestDspCompilerSupport::getRawDspCommandsAllVerbose(AbstractDspCompilerSupport::INTERRUPT);
+    QJsonArray totalCmdListInterrupt = QJsonArray::fromStringList(totalCmdStrListInterrupt);
     json.insert("TotalCmdListInterrupt", totalCmdListInterrupt);
+
+    json.insert("TotalCmdListCyclicMaxInterruptCount", TestDspCompilerSupport::getRawDspIntTriggerCount(AbstractDspCompilerSupport::CYCLIC));
+    json.insert("TotalCmdListInterruptMaxInterruptCount", TestDspCompilerSupport::getRawDspIntTriggerCount(AbstractDspCompilerSupport::INTERRUPT));
 
     // Sanity check cyclic
     int rawCmdCountCyclic = TestDspCompilerSupport::getRawDspCommandsCount(AbstractDspCompilerSupport::CYCLIC);
