@@ -724,7 +724,7 @@ void ZDspServer::DspIntHandler(int)
             const ulong* pardsp = reinterpret_cast<ulong*>(ba.data());
             int n = pardsp[0]; // anzahl der interrupts
             m_dspInterruptLogStatistics.addValue(n);
-            if (n > 20)   // in the moment magic nr
+            if (n > DSP_MAX_PENDING_INTERRUPT_COUNT)
                 qWarning("Number of interrupts in a package: %i exceeds upper limit!", n);
             else {
                 for (int i = 1; i < (n+1); i++) {

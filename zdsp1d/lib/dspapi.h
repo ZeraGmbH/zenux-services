@@ -12,6 +12,9 @@ enum DspAcks {NBusy, InProgress, CmdError, ParError, CmdDone};
 enum CmdType { CMD, CMD1i16, CMD2i16, CMD3i16 ,CMD1i32 , CMD1i161fi32 };
 // 1fi32 kann 1 float oder 1 integer sein
 
+// MUST BE IN SYNC WITH https://github.com/ZeraGmbH/SHARC-DSP-Software/blob/d326afe47f08293dfd37d376e16daa80fd654850/NewGen32.asm#L344
+static constexpr int DSP_MAX_PENDING_INTERRUPT_COUNT = 20;
+
 struct DspCmdDecodingDetails {
     const char* Name; // name des befehls
     ushort CmdCode; // der zugehörige befehlscode

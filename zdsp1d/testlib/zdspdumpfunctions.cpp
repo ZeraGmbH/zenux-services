@@ -82,8 +82,14 @@ QJsonObject ZDspDumpFunctions::getMemoryDump(const ZDspServer *server)
     QJsonArray totalCmdListInterrupt = QJsonArray::fromStringList(totalCmdStrListInterrupt);
     json.insert("TotalCmdListInterrupt", totalCmdListInterrupt);
 
-    json.insert("TotalCmdListCyclicMaxInterruptCount", TestDspCompilerSupport::getRawDspIntTriggerCount(AbstractDspCompilerSupport::CYCLIC));
-    json.insert("TotalCmdListInterruptMaxInterruptCount", TestDspCompilerSupport::getRawDspIntTriggerCount(AbstractDspCompilerSupport::INTERRUPT));
+    const int interruptCountCyclic = TestDspCompilerSupport::getRawDspIntTriggerCount(AbstractDspCompilerSupport::CYCLIC);
+    json.insert("TotalCmdListCyclicMaxInterruptCount", interruptCountCyclic);
+    const int interruptCountInterrupt = TestDspCompilerSupport::getRawDspIntTriggerCount(AbstractDspCompilerSupport::INTERRUPT);
+    json.insert("TotalCmdListInterruptMaxInterruptCount", interruptCountInterrupt);
+    const int maxInterruptsExpected = interruptCountCyclic+interruptCountInterrupt;
+    if (maxInterruptsExpected > DSP_MAX_PENDING_INTERRUPT_COUNT)
+        qCritical("Max possible interrupts exceeded: Allowed: %i / Wanted: %i",
+                  DSP_MAX_PENDING_INTERRUPT_COUNT, maxInterruptsExpected);
 
     // Sanity check cyclic
     int rawCmdCountCyclic = TestDspCompilerSupport::getRawDspCommandsCount(AbstractDspCompilerSupport::CYCLIC);
