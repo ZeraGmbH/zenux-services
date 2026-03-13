@@ -738,15 +738,17 @@ void ZDspServer::DspIntHandler(int)
         if (m_dspInOut.readOneDspVar(QString("CTRLCMDPAR,%1").arg(DSP_MAX_PENDING_INTERRUPT_COUNT),
                                      &ba, &client->m_dspVarResolver)) {
             const ulong* pardsp = reinterpret_cast<ulong*>(ba.data());
-            int n = pardsp[0]; // anzahl der interrupts
-            m_dspInterruptLogStatistics.addValue(n);
-            if (n > DSP_MAX_PENDING_INTERRUPT_COUNT)
-                qWarning("Number of interrupts in a package: %i exceeds upper limit!", n);
+            int interruptCount = pardsp[0];
+            m_dspInterruptLogStatistics.addValue(interruptCount);
+            if (interruptCount > DSP_MAX_PENDING_INTERRUPT_COUNT)
+                qWarning("Number of interrupts in a package: %i exceeds upper limit!", interruptCount);
             else {
-                for (int i = 1; i < (n+1); i++) {
+                if (m_superClient) // notify super client first
+                    m_superClient->sendInterruptNotification(0, m_protobufWrapper);
+                for (int i = 1; i < (interruptCount+1); i++) {
                     int process = pardsp[i] >> 16;
                     const ZdspClient *clientToNotify = m_zdspClientContainer.findClient(process);
-                    if (clientToNotify)
+                    if (clientToNotify && clientToNotify != m_superClient) // don't double notify super client
                         clientToNotify->sendInterruptNotification(pardsp[i] & 0xFFFF, m_protobufWrapper);
                 }
             }
