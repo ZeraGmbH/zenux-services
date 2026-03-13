@@ -6,7 +6,7 @@
 // Details found at [1]
 // [1] https://github.com/ZeraGmbH/SHARC-DSP-Software/blob/main/NewGen32.asm#L2603
 
-static DspCmdDecodingDetails DspCmd[79] =
+static DspCmdDecodingDetails DspCmd[] =
 
 {{"INVALID", 0, CMD ,0},
 {"USERMEMOFFSET", 1, CMD1i32, 0 },
