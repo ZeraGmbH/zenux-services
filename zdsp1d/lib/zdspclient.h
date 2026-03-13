@@ -5,6 +5,7 @@
 #include "dspapi.h"
 #include "dspvarresolver.h"
 #include <vtcp_peer.h>
+#include <xiqnetwrapper.h>
 
 class ZdspClient
 {
@@ -21,6 +22,7 @@ public:
     static void resetGlobalVarList();
     void setCmdListDef(const QString& cmdListDef);
     void setCmdForIrqListDef(const QString& cmdIntListDef);
+    void sendInterruptNotification(ulong parameter, XiQNetWrapper &protobufWrapper) const;
 
     bool compileCmdLists(QString& errs);
     const QList<DspCmdWithParamsCompiled>& GetDspCmdList() const;

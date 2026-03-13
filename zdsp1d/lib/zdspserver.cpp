@@ -745,21 +745,8 @@ void ZDspServer::DspIntHandler(int)
                 for (int i = 1; i < (n+1); i++) {
                     int process = pardsp[i] >> 16;
                     const ZdspClient *clientToNotify = m_zdspClientContainer.findClient(process);
-                    if (clientToNotify) {
-                        const QString dspIntStr = QString("DSPINT:%1").arg(pardsp[i] & 0xFFFF);
-
-                        ProtobufMessage::NetMessage protobufIntMessage;
-                        ProtobufMessage::NetMessage::NetReply *intMessage = protobufIntMessage.mutable_reply();
-
-                        intMessage->set_body(dspIntStr.toStdString());
-                        intMessage->set_rtype(ProtobufMessage::NetMessage_NetReply_ReplyType_ACK);
-
-                        const QByteArray proxyConnectionId = clientToNotify->getProtobufClientId();
-                        protobufIntMessage.set_clientid(proxyConnectionId.data(), proxyConnectionId.size());
-                        protobufIntMessage.set_messagenr(0); // interrupt
-
-                        clientToNotify->getVeinPeer()->sendMessage(m_protobufWrapper.protobufToByteArray(protobufIntMessage));
-                    }
+                    if (clientToNotify)
+                        clientToNotify->sendInterruptNotification(pardsp[i] & 0xFFFF, m_protobufWrapper);
                 }
             }
         }

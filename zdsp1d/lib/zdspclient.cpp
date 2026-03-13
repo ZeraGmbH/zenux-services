@@ -1,5 +1,6 @@
 #include "zdspclient.h"
 #include "dspcmdcompiler.h"
+#include <netmessages.pb.h>
 
 int ZdspClient::m_instanceCount = 0;
 QHash<QString, DspVarServerPtr> ZdspClient::m_globalVariables;
@@ -99,6 +100,22 @@ void ZdspClient::setCmdListDef(const QString &cmdListDef)
 void ZdspClient::setCmdForIrqListDef(const QString &cmdIntListDef)
 {
     m_sIntCmdListDef = cmdIntListDef;
+}
+
+void ZdspClient::sendInterruptNotification(ulong parameter, XiQNetWrapper &protobufWrapper) const
+{
+    ProtobufMessage::NetMessage protobufIntMessage;
+    ProtobufMessage::NetMessage::NetReply *intMessage = protobufIntMessage.mutable_reply();
+
+    const QString dspIntStr = QString("DSPINT:%1").arg(parameter);
+    intMessage->set_body(dspIntStr.toStdString());
+    intMessage->set_rtype(ProtobufMessage::NetMessage_NetReply_ReplyType_ACK);
+
+    const QByteArray proxyConnectionId = getProtobufClientId();
+    protobufIntMessage.set_clientid(proxyConnectionId.data(), proxyConnectionId.size());
+    protobufIntMessage.set_messagenr(0); // interrupt
+
+    getVeinPeer()->sendMessage(protobufWrapper.protobufToByteArray(protobufIntMessage));
 }
 
 const QByteArray &ZdspClient::getProtobufClientId() const
