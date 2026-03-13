@@ -12,7 +12,7 @@
    <DSP Type="Node">
     <SAMPLING Type="Query,Command+Par" ScpiPath="SYSTEM:DSP:SAMPLING"/>
     <TEST Type="Command+Par" ScpiPath="SYSTEM:DSP:TEST"/>
-    <SPECIALSUPERCLIENT ScpiPath="SYSTEM:DSP:SPECIALSUPERCLIENT" Type="Command"/>
+    <DSPSUPERCLIENT ScpiPath="SYSTEM:DSP:DSPSUPERCLIENT" Type="Command"/>
     <TRIGGER Type="Node">
      <INTLIST Type="Node">
       <ALL Type="Command" ScpiPath="SYSTEM:DSP:TRIGGER:INTLIST:ALL"/>

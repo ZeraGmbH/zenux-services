@@ -226,7 +226,7 @@ enum SCPICmdType  {
     scpiGetServerVersion,
     scpiSamplingSystemGetSet,
     scpiRunTest,
-    scpiSetSpecialSuperClientNotifyAlwaysAndFirst,
+    scpiSetDspSuperClient,
 
     // die routinen für das status modell
     scpiGetDeviceLoadAct,
@@ -257,7 +257,7 @@ void ZDspServer::initSCPIConnection()
     addDelegate("SYSTEM:VERSION", "SERVER", SCPI::isQuery, m_scpiInterface, scpiGetServerVersion);
     addDelegate("SYSTEM:DSP", "SAMPLING", SCPI::isQuery | SCPI::isCmdwP, m_scpiInterface, scpiSamplingSystemGetSet);
     addDelegate("SYSTEM:DSP", "TEST", SCPI::isCmdwP, m_scpiInterface, scpiRunTest);
-    addDelegate("SYSTEM:DSP", "SPECIALSUPERCLIENT", SCPI::isCmd, m_scpiInterface, scpiSetSpecialSuperClientNotifyAlwaysAndFirst);
+    addDelegate("SYSTEM:DSP", "DSPSUPERCLIENT", SCPI::isCmd, m_scpiInterface, scpiSetDspSuperClient);
 
     addDelegate("SYSTEM:DSP:COMMAND", "STAT", SCPI::isQuery | SCPI::isCmdwP, m_scpiInterface, scpiDspCommandStatGetSet);
     addDelegate("SYSTEM:DSP:TRIGGER:INTLIST", "ALL", SCPI::isCmd, m_scpiInterface, scpiTriggerIntListALL);
@@ -306,8 +306,8 @@ void ZDspServer::executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd)
     case scpiRunTest:
         protoCmd->m_sOutput = runDspTest(cmd.getParam());
         break;
-    case scpiSetSpecialSuperClientNotifyAlwaysAndFirst:
-        protoCmd->m_sOutput = handleSetSpecialSuperClientNotifyAlwaysAndFirst(client);
+    case scpiSetDspSuperClient:
+        protoCmd->m_sOutput = handleSetDspSuperClient(client);
         break;
     case scpiDspCommandStatGetSet:
         if(cmd.isQuery())
@@ -348,7 +348,7 @@ void ZDspServer::executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd)
     case scpiUnloadCmdListAllClients:
         m_zdspClientContainer.delAllClients();
         protoCmd->m_sOutput = loadCmdListAllClients();
-        m_superClient = nullptr;
+        m_dspSuperClient = nullptr;
         break;
     case scpiGetDeviceStatus:
         protoCmd->m_sOutput = getDeviceStatus();
@@ -413,11 +413,11 @@ QString ZDspServer::handleScpiInterfaceRead(const QString &scpiInput)
     return domDoc.toString();
 }
 
-QString ZDspServer::handleSetSpecialSuperClientNotifyAlwaysAndFirst(const ZdspClient *client)
+QString ZDspServer::handleSetDspSuperClient(const ZdspClient *client)
 {
-    if (m_superClient)
+    if (m_dspSuperClient)
         return ZSCPI::scpiAnswer[ZSCPI::nak];
-    m_superClient = client;
+    m_dspSuperClient = client;
     return ZSCPI::scpiAnswer[ZSCPI::ack];
 }
 
@@ -743,12 +743,12 @@ void ZDspServer::DspIntHandler(int)
             if (interruptCount > DSP_MAX_PENDING_INTERRUPT_COUNT)
                 qWarning("Number of interrupts in a package: %i exceeds upper limit!", interruptCount);
             else {
-                if (m_superClient) // notify super client first
-                    m_superClient->sendInterruptNotification(0, m_protobufWrapper);
+                if (m_dspSuperClient) // notify super client first
+                    m_dspSuperClient->sendInterruptNotification(0, m_protobufWrapper);
                 for (int i = 1; i < (interruptCount+1); i++) {
                     int process = pardsp[i] >> 16;
                     const ZdspClient *clientToNotify = m_zdspClientContainer.findClient(process);
-                    if (clientToNotify && clientToNotify != m_superClient) // don't double notify super client
+                    if (clientToNotify && clientToNotify != m_dspSuperClient) // don't double notify super client
                         clientToNotify->sendInterruptNotification(pardsp[i] & 0xFFFF, m_protobufWrapper);
                 }
             }
