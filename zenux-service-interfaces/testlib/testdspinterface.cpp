@@ -170,6 +170,8 @@ QString TestDspInterface::dspVarSegmentToJson(int segment)
         return "moduleLocalSegment";
     case moduleAlignedMemorySegment:
         return "moduleAlignedMemorySegment";
+    case moduleGlobalSegment:
+        return "moduleGlobalSegment";
     default:
         qFatal("Unknown DSP var segment");
     }
