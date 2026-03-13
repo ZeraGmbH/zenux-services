@@ -16,6 +16,10 @@ private slots:
 
     void serverUp();
     void dumpScpi();
+
+    void superClientResponseAck();
+    void superClientResponseTwiceAckNak();
+    void superClientResponseSetAckUnloadDspSetAck();
 private:
     std::unique_ptr<ResmanRunFacade> m_resman;
     std::unique_ptr<MockZdsp1d> m_server;

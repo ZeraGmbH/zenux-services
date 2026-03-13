@@ -226,6 +226,7 @@ enum SCPICmdType  {
     scpiGetServerVersion,
     scpiSamplingSystemGetSet,
     scpiRunTest,
+    scpiSetSpecialSuperClientNotifyAlwaysAndFirst,
 
     // die routinen für das status modell
     scpiGetDeviceLoadAct,
@@ -256,6 +257,8 @@ void ZDspServer::initSCPIConnection()
     addDelegate("SYSTEM:VERSION", "SERVER", SCPI::isQuery, m_scpiInterface, scpiGetServerVersion);
     addDelegate("SYSTEM:DSP", "SAMPLING", SCPI::isQuery | SCPI::isCmdwP, m_scpiInterface, scpiSamplingSystemGetSet);
     addDelegate("SYSTEM:DSP", "TEST", SCPI::isCmdwP, m_scpiInterface, scpiRunTest);
+    addDelegate("SYSTEM:DSP", "SPECIALSUPERCLIENT", SCPI::isCmd, m_scpiInterface, scpiSetSpecialSuperClientNotifyAlwaysAndFirst);
+
     addDelegate("SYSTEM:DSP:COMMAND", "STAT", SCPI::isQuery | SCPI::isCmdwP, m_scpiInterface, scpiDspCommandStatGetSet);
     addDelegate("SYSTEM:DSP:TRIGGER:INTLIST", "ALL", SCPI::isCmd, m_scpiInterface, scpiTriggerIntListALL);
     addDelegate("SYSTEM:DSP:TRIGGER:INTLIST", "HKSK", SCPI::isCmdwP, m_scpiInterface, scpiTriggerIntListHKSK);
@@ -303,6 +306,9 @@ void ZDspServer::executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd)
     case scpiRunTest:
         protoCmd->m_sOutput = runDspTest(cmd.getParam());
         break;
+    case scpiSetSpecialSuperClientNotifyAlwaysAndFirst:
+        protoCmd->m_sOutput = handleSetSpecialSuperClientNotifyAlwaysAndFirst(client);
+        break;
     case scpiDspCommandStatGetSet:
         if(cmd.isQuery())
             protoCmd->m_sOutput = getDspCommandStat();
@@ -342,6 +348,7 @@ void ZDspServer::executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd)
     case scpiUnloadCmdListAllClients:
         m_zdspClientContainer.delAllClients();
         protoCmd->m_sOutput = loadCmdListAllClients();
+        m_superClient = nullptr;
         break;
     case scpiGetDeviceStatus:
         protoCmd->m_sOutput = getDeviceStatus();
@@ -404,6 +411,14 @@ QString ZDspServer::handleScpiInterfaceRead(const QString &scpiInput)
     QDomElement modelsElem = rootElem.firstChildElement("MODELS");
 
     return domDoc.toString();
+}
+
+QString ZDspServer::handleSetSpecialSuperClientNotifyAlwaysAndFirst(const ZdspClient *client)
+{
+    if (m_superClient)
+        return ZSCPI::scpiAnswer[ZSCPI::nak];
+    m_superClient = client;
+    return ZSCPI::scpiAnswer[ZSCPI::ack];
 }
 
 bool ZDspServer::resetDsp()

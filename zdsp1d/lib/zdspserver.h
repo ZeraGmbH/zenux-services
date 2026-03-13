@@ -72,6 +72,7 @@ private:
     friend class TestZdsp1dForVarAccess;
 
     QString handleScpiInterfaceRead(const QString &scpiInput);
+    QString handleSetSpecialSuperClientNotifyAlwaysAndFirst(const ZdspClient* client);
     void outputDspRunState();
     void outputAndResetTransactionsLogs();
     void openTelnetScpi();
@@ -120,6 +121,7 @@ private:
     QSocketNotifier* m_pNotifier = nullptr;
 
     ZDspClientContainer m_zdspClientContainer;
+    const ZdspClient *m_superClient = nullptr;
 
     ulong m_userWorkSpaceAlignedSegmentStartAdr;
     LogStatisticsAsyncInt m_dspInterruptLogStatistics;

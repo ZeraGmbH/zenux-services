@@ -2,6 +2,7 @@
 #include "testfactoryzdspsupport.h"
 #include "proxy.h"
 #include "scpisingletransactionblocked.h"
+#include "zscpi_response_definitions.h"
 #include <xmldocumentcompare.h>
 #include <testloghelpers.h>
 #include <timemachineobject.h>
@@ -48,4 +49,30 @@ void test_regression_scpi_zdsp1d::dumpScpi()
     if(!ok)
         TestLogHelpers::compareAndLogOnDiff(expected, dumped);
     QVERIFY(ok);
+}
+
+void test_regression_scpi_zdsp1d::superClientResponseAck()
+{
+    QString ret = ScpiSingleTransactionBlocked::cmd("SYSTEM:DSP:SPECIALSUPERCLIENT", "", 6310);
+    QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::ack]);
+}
+
+void test_regression_scpi_zdsp1d::superClientResponseTwiceAckNak()
+{
+    QString ret = ScpiSingleTransactionBlocked::cmd("SYSTEM:DSP:SPECIALSUPERCLIENT", "", 6310);
+    QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::ack]);
+    ret = ScpiSingleTransactionBlocked::cmd("SYSTEM:DSP:SPECIALSUPERCLIENT", "", 6310);
+    QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::nak]);
+}
+
+void test_regression_scpi_zdsp1d::superClientResponseSetAckUnloadDspSetAck()
+{
+    QString ret = ScpiSingleTransactionBlocked::cmd("SYSTEM:DSP:SPECIALSUPERCLIENT", "", 6310);
+    QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::ack]);
+
+    ret = ScpiSingleTransactionBlocked::cmd("MEMORY:CLALL", "", 6310);
+    QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::ack]);
+
+    ret = ScpiSingleTransactionBlocked::cmd("SYSTEM:DSP:SPECIALSUPERCLIENT", "", 6310);
+    QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::ack]);
 }
