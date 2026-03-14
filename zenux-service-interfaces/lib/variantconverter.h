@@ -8,11 +8,11 @@ namespace Zera {
 class VariantConverter
 {
 public:
-    static QVariant returnInt(QString message);
-    static QVariant returnString(QString message);
-    static QVariant returnStringList(QString message);
-    static QVariant returnDouble(QString message);
-    static QVariant returnBool(QString message);
+    static QVariant returnInt(const QString &message);
+    static QVariant returnString(const QString &message);
+    static QVariant returnStringList(const QString &message);
+    static QVariant returnDouble(const QString &message);
+    static QVariant returnBool(const QString &message);
 };
 
 }
