@@ -86,7 +86,7 @@ void AdjRangeScpi::initSCPIConnection(const QString &leadingNodes)
     m_offsetCorrection.initSCPIConnection(QString("%1CORRECTION:OFFSET").arg(adjLeadNodes));
 }
 
-void AdjRangeScpi::setAdjGroupData(AdjDataRange groupData)
+void AdjRangeScpi::setAdjGroupData(const AdjDataRange &groupData)
 {
     m_adjGroupData = groupData;
 }
@@ -96,7 +96,7 @@ AdjDataRange AdjRangeScpi::getAdjGroupData()
     return m_adjGroupData;
 }
 
-AdjDataItemScpi *AdjRangeScpi::getAdjInterface(QString name)
+AdjDataItemScpi *AdjRangeScpi::getAdjInterface(const QString &name)
 {
     if(name == "Gain")
         return &m_gainCorrection;
@@ -157,7 +157,7 @@ QString AdjRangeScpi::scpiQueryGainCorrectionTotal(const QString &scpiInput)
     return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-QString AdjRangeScpi::scpiQueryGainCorrectionSingle(QString &scpiInput)
+QString AdjRangeScpi::scpiQueryGainCorrectionSingle(const QString &scpiInput)
 {
     cSCPICommand cmd = scpiInput;
     if (cmd.isQuery(1)) {
@@ -171,7 +171,7 @@ QString AdjRangeScpi::scpiQueryGainCorrectionSingle(QString &scpiInput)
     return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-QString AdjRangeScpi::scpiQueryPhaseCorrectionTotal(QString& scpiInput)
+QString AdjRangeScpi::scpiQueryPhaseCorrectionTotal(const QString &scpiInput)
 {
     cSCPICommand cmd = scpiInput;
     if (cmd.isQuery(1)) {
@@ -185,7 +185,7 @@ QString AdjRangeScpi::scpiQueryPhaseCorrectionTotal(QString& scpiInput)
     return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-QString AdjRangeScpi::scpiQueryPhaseCorrectionSingle(QString &scpiInput)
+QString AdjRangeScpi::scpiQueryPhaseCorrectionSingle(const QString &scpiInput)
 {
     cSCPICommand cmd = scpiInput;
     if (cmd.isQuery(1)) {
@@ -199,7 +199,7 @@ QString AdjRangeScpi::scpiQueryPhaseCorrectionSingle(QString &scpiInput)
     return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-QString AdjRangeScpi::scpiQueryOffsetCorrectionTotal(QString& scpiInput)
+QString AdjRangeScpi::scpiQueryOffsetCorrectionTotal(const QString &scpiInput)
 {
     cSCPICommand cmd = scpiInput;
     if (cmd.isQuery(1)) {
@@ -213,7 +213,7 @@ QString AdjRangeScpi::scpiQueryOffsetCorrectionTotal(QString& scpiInput)
     return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-QString AdjRangeScpi::scpiQueryOffsetCorrectionSingle(QString &scpiInput)
+QString AdjRangeScpi::scpiQueryOffsetCorrectionSingle(const QString &scpiInput)
 {
     cSCPICommand cmd = scpiInput;
     if (cmd.isQuery(1)) {
@@ -227,7 +227,7 @@ QString AdjRangeScpi::scpiQueryOffsetCorrectionSingle(QString &scpiInput)
     return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-QString AdjRangeScpi::scpiQueryStatus(QString& scpiInput)
+QString AdjRangeScpi::scpiQueryStatus(const QString &scpiInput)
 {
     cSCPICommand cmd = scpiInput;
     if (cmd.isQuery())
@@ -235,7 +235,7 @@ QString AdjRangeScpi::scpiQueryStatus(QString& scpiInput)
     return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-QString AdjRangeScpi::scpiCmdComputeJustData(QString& scpiInput)
+QString AdjRangeScpi::scpiCmdComputeJustData(const QString &scpiInput)
 {
     cSCPICommand cmd = scpiInput;
     if(cmd.isCommand(1) && (cmd.getParam(0) == "")) {
@@ -246,7 +246,7 @@ QString AdjRangeScpi::scpiCmdComputeJustData(QString& scpiInput)
     return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-QString AdjRangeScpi::scpiCmdInitJustData(QString &scpiInput)
+QString AdjRangeScpi::scpiCmdInitJustData(const QString &scpiInput)
 {
     cSCPICommand cmd = scpiInput;
     if (cmd.isCommand(1) && (cmd.getParam(0) == "")) {
