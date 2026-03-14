@@ -336,11 +336,11 @@ void test_zdspclientcontainer::deleteConnectionClose()
 
     dspIFace1.reset();
     TimeMachineObject::feedEventLoop();
-    //QCOMPARE(ZdspClient::getInstanceCount(), 1);
+    QCOMPARE(ZdspClient::getInstanceCount(), 1);
 
     dspIFace2.reset();
     TimeMachineObject::feedEventLoop();
-    //QCOMPARE(ZdspClient::getInstanceCount(), 0);
+    QCOMPARE(ZdspClient::getInstanceCount(), 0);
 }
 
 void test_zdspclientcontainer::cleanup()
