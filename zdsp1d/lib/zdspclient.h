@@ -7,8 +7,9 @@
 #include <vtcp_peer.h>
 #include <xiqnetwrapper.h>
 
-class ZdspClient
+class ZdspClient : public QObject
 {
+    Q_OBJECT
 public:
     ZdspClient(int dspInterruptId,
                VeinTcp::TcpPeer *veinPeer,

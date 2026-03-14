@@ -2,6 +2,7 @@
 #define TEST_ZDSPCLIENTCONTAINER_H
 
 #include "abstractfactoryzdspsupport.h"
+#include "dspinterface.h"
 #include <mocktcpnetworkfactory.h>
 #include <QObject>
 
@@ -31,11 +32,14 @@ private slots:
 
     void deleteByVeinPeerNotAdded();
     void deleteByVeinPeer();
+    void deleteConnectionClose();
 
     void cleanup();
 private:
+    std::unique_ptr<Zera::cDSPInterface> createDspInterfaceWithZdspClient();
+
     AbstractFactoryZdspSupportPtr m_zdspSupportFactory;
-    VeinTcp::MockTcpNetworkFactory m_netFactory;
+    VeinTcp::AbstractTcpNetworkFactoryPtr m_tcpNetworkFactory;
 };
 
 #endif // TEST_ZDSPCLIENTCONTAINER_H

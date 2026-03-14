@@ -53,26 +53,56 @@ void test_regression_scpi_zdsp1d::dumpScpi()
 
 void test_regression_scpi_zdsp1d::superClientResponseAck()
 {
-    QString ret = ScpiSingleTransactionBlocked::cmd("SYSTEM:DSP:DSPSUPERCLIENT", "", 6310);
-    QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::ack]);
+    quint8 replyReceived = -1;
+    connect(m_dspIFace.get(), &AbstractServerInterface::serverAnswer, [&](quint32, quint8 reply, const QVariant&) {
+        replyReceived = reply;
+    });
+    m_dspIFace->scpiCommand("SYSTEM:DSP:DSPSUPERCLIENT;");
+    TimeMachineObject::feedEventLoop();
+    QCOMPARE(replyReceived, ZSCPI::ack);
 }
 
 void test_regression_scpi_zdsp1d::superClientResponseTwiceAckNak()
 {
-    QString ret = ScpiSingleTransactionBlocked::cmd("SYSTEM:DSP:DSPSUPERCLIENT", "", 6310);
+    quint8 replyReceived = -1;
+    connect(m_dspIFace.get(), &AbstractServerInterface::serverAnswer, [&](quint32, quint8 reply, const QVariant&) {
+        replyReceived = reply;
+    });
+    m_dspIFace->scpiCommand("SYSTEM:DSP:DSPSUPERCLIENT;");
+    TimeMachineObject::feedEventLoop();
+    QCOMPARE(replyReceived, ZSCPI::ack);
+
+    m_dspIFace->scpiCommand("SYSTEM:DSP:DSPSUPERCLIENT;");
+    TimeMachineObject::feedEventLoop();
+    QCOMPARE(replyReceived, ZSCPI::nak);
+}
+
+void test_regression_scpi_zdsp1d::superClientResponseTwiceAckConnectionClosed()
+{
+    QString ret = ScpiSingleTransactionBlocked::cmd("SYSTEM:DSP:DSPSUPERCLIENT", "", 6310); // connection closed
     QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::ack]);
+
     ret = ScpiSingleTransactionBlocked::cmd("SYSTEM:DSP:DSPSUPERCLIENT", "", 6310);
-    QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::nak]);
+    QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::ack]);
 }
 
 void test_regression_scpi_zdsp1d::superClientResponseSetAckUnloadDspSetAck()
 {
-    QString ret = ScpiSingleTransactionBlocked::cmd("SYSTEM:DSP:DSPSUPERCLIENT", "", 6310);
-    QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::ack]);
+    quint8 replyReceived = -1;
+    connect(m_dspIFace.get(), &AbstractServerInterface::serverAnswer, [&](quint32, quint8 reply, const QVariant&) {
+        replyReceived = reply;
+    });
+    m_dspIFace->scpiCommand("SYSTEM:DSP:DSPSUPERCLIENT;");
+    TimeMachineObject::feedEventLoop();
+    QCOMPARE(replyReceived, ZSCPI::ack);
 
-    ret = ScpiSingleTransactionBlocked::cmd("MEMORY:CLALL", "", 6310);
-    QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::ack]);
+    replyReceived = -1;
+    m_dspIFace->scpiCommand("MEMORY:CLALL;");
+    TimeMachineObject::feedEventLoop();
+    QCOMPARE(replyReceived, ZSCPI::ack);
 
-    ret = ScpiSingleTransactionBlocked::cmd("SYSTEM:DSP:DSPSUPERCLIENT", "", 6310);
-    QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::ack]);
+    replyReceived = -1;
+    m_dspIFace->scpiCommand("SYSTEM:DSP:DSPSUPERCLIENT;");
+    TimeMachineObject::feedEventLoop();
+    QCOMPARE(replyReceived, ZSCPI::ack);
 }

@@ -19,6 +19,7 @@ private slots:
 
     void superClientResponseAck();
     void superClientResponseTwiceAckNak();
+    void superClientResponseTwiceAckConnectionClosed();
     void superClientResponseSetAckUnloadDspSetAck();
 private:
     std::unique_ptr<ResmanRunFacade> m_resman;

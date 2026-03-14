@@ -1,12 +1,17 @@
 #include "test_zdspclientcontainer.h"
+#include "mockzdsp1d.h"
+#include "proxy.h"
 #include "zdspclientcontainer.h"
 #include "testfactoryzdspsupport.h"
+#include <resmanrunfacade.h>
+#include <timemachineobject.h>
 #include <QTest>
 
 QTEST_MAIN(test_zdspclientcontainer);
 
 void test_zdspclientcontainer::initTestCase()
 {
+    m_tcpNetworkFactory = VeinTcp::MockTcpNetworkFactory::create();
     m_zdspSupportFactory = std::make_shared<TestFactoryZdspSupport>();
 }
 
@@ -36,7 +41,7 @@ void test_zdspclientcontainer::emptyReturnsNullFindProxyConnectionId()
 
 void test_zdspclientcontainer::getList()
 {
-    VeinTcp::TcpPeer peer(m_netFactory.create());
+    VeinTcp::TcpPeer peer(m_tcpNetworkFactory);
     ZDspClientContainer container(m_zdspSupportFactory);
 
     container.addClient(&peer, "proxyConnectionId0");
@@ -53,7 +58,7 @@ void test_zdspclientcontainer::getList()
 
 void test_zdspclientcontainer::getFirst()
 {
-    VeinTcp::TcpPeer peer(m_netFactory.create());
+    VeinTcp::TcpPeer peer(m_tcpNetworkFactory);
     ZDspClientContainer container(m_zdspSupportFactory);
 
     container.addClient(&peer, "proxyConnectionId0");
@@ -74,7 +79,7 @@ void test_zdspclientcontainer::getFirst()
 
 void test_zdspclientcontainer::checkDspInterruptIds()
 {
-    VeinTcp::TcpPeer peer(m_netFactory.create());
+    VeinTcp::TcpPeer peer(m_tcpNetworkFactory);
     ZDspClientContainer container(m_zdspSupportFactory);
 
     constexpr int maxIds = 0xFFFF;
@@ -110,7 +115,7 @@ void test_zdspclientcontainer::checkDspInterruptIds()
 
 void test_zdspclientcontainer::checkDspInterruptIdsExceedMax()
 {
-    VeinTcp::TcpPeer peer(m_netFactory.create());
+    VeinTcp::TcpPeer peer(m_tcpNetworkFactory);
     ZDspClientContainer container(m_zdspSupportFactory);
 
     constexpr int maxIds = 0xFFFF;
@@ -123,7 +128,7 @@ void test_zdspclientcontainer::checkDspInterruptIdsExceedMax()
 
 void test_zdspclientcontainer::addRemoveDeletesClient()
 {
-    VeinTcp::TcpPeer peer(m_netFactory.create());
+    VeinTcp::TcpPeer peer(m_tcpNetworkFactory);
     ZDspClientContainer container(m_zdspSupportFactory);
 
     container.addClient(&peer, "proxyConnectionId0");
@@ -136,7 +141,7 @@ void test_zdspclientcontainer::addRemoveDeletesClient()
 
 void test_zdspclientcontainer::addSameClientIdIgnored()
 {
-    VeinTcp::TcpPeer peer(m_netFactory.create());
+    VeinTcp::TcpPeer peer(m_tcpNetworkFactory);
     ZDspClientContainer container(m_zdspSupportFactory);
 
     container.addClient(&peer, "proxyConnectionId");
@@ -155,8 +160,8 @@ void test_zdspclientcontainer::addSameClientIdIgnored()
 
 void test_zdspclientcontainer::findByProxyConnectionId()
 {
-    VeinTcp::TcpPeer peer1(m_netFactory.create());
-    VeinTcp::TcpPeer peer2(m_netFactory.create());
+    VeinTcp::TcpPeer peer1(m_tcpNetworkFactory);
+    VeinTcp::TcpPeer peer2(m_tcpNetworkFactory);
     ZDspClientContainer container(m_zdspSupportFactory);
 
     container.addClient(&peer1, "proxyConnectionId0");
@@ -176,7 +181,7 @@ void test_zdspclientcontainer::findByProxyConnectionId()
 
 void test_zdspclientcontainer::findByDspInterruptId()
 {
-    VeinTcp::TcpPeer peer(m_netFactory.create());
+    VeinTcp::TcpPeer peer(m_tcpNetworkFactory);
     ZDspClientContainer container(m_zdspSupportFactory);
 
     container.addClient(&peer, "proxyConnectionId0");
@@ -195,7 +200,7 @@ void test_zdspclientcontainer::findByDspInterruptId()
 
 void test_zdspclientcontainer::deleteByProxyConnectionIdNotAdded()
 {
-    VeinTcp::TcpPeer peer(m_netFactory.create());
+    VeinTcp::TcpPeer peer(m_tcpNetworkFactory);
     ZDspClientContainer container(m_zdspSupportFactory);
 
     container.addClient(&peer, "proxyConnectionId0");
@@ -207,7 +212,7 @@ void test_zdspclientcontainer::deleteByProxyConnectionIdNotAdded()
 
 void test_zdspclientcontainer::deleteByProxyConnectionId()
 {
-    VeinTcp::TcpPeer peer(m_netFactory.create());
+    VeinTcp::TcpPeer peer(m_tcpNetworkFactory);
     ZDspClientContainer container(m_zdspSupportFactory);
 
     container.addClient(&peer, "proxyConnectionId0");
@@ -249,21 +254,21 @@ void test_zdspclientcontainer::deleteByProxyConnectionId()
 
 void test_zdspclientcontainer::deleteByVeinPeerNotAdded()
 {
-    VeinTcp::TcpPeer peerAdded(m_netFactory.create());
+    VeinTcp::TcpPeer peerAdded(m_tcpNetworkFactory);
     ZDspClientContainer container(m_zdspSupportFactory);
 
     container.addClient(&peerAdded, "proxyConnectionId0");
     container.addClient(&peerAdded, "proxyConnectionId1");
 
-    VeinTcp::TcpPeer peerNotAdded(m_netFactory.create());
+    VeinTcp::TcpPeer peerNotAdded(m_tcpNetworkFactory);
     container.delClients(&peerNotAdded);
     QCOMPARE(container.getClientList().count(), 2);
 }
 
 void test_zdspclientcontainer::deleteByVeinPeer()
 {
-    VeinTcp::TcpPeer peer0(m_netFactory.create());
-    VeinTcp::TcpPeer peer1(m_netFactory.create());
+    VeinTcp::TcpPeer peer0(m_tcpNetworkFactory);
+    VeinTcp::TcpPeer peer1(m_tcpNetworkFactory);
     ZDspClientContainer container(m_zdspSupportFactory);
 
     container.addClient(&peer0, "proxyConnectionId0");
@@ -315,7 +320,43 @@ void test_zdspclientcontainer::deleteByVeinPeer()
     QCOMPARE(ZdspClient::getInstanceCount(), 0);
 }
 
+static constexpr quint16 dspServerPort = 6310;
+
+void test_zdspclientcontainer::deleteConnectionClose()
+{
+    std::unique_ptr<ResmanRunFacade> resmanServer = std::make_unique<ResmanRunFacade>(m_tcpNetworkFactory);
+    MockZdsp1d zdspService(m_zdspSupportFactory, m_tcpNetworkFactory);
+    TimeMachineObject::feedEventLoop();
+
+    std::unique_ptr<Zera::cDSPInterface> dspIFace1 = createDspInterfaceWithZdspClient();
+    QCOMPARE(ZdspClient::getInstanceCount(), 1);
+
+    std::unique_ptr<Zera::cDSPInterface> dspIFace2 = createDspInterfaceWithZdspClient();;
+    QCOMPARE(ZdspClient::getInstanceCount(), 2);
+
+    dspIFace1.reset();
+    TimeMachineObject::feedEventLoop();
+    //QCOMPARE(ZdspClient::getInstanceCount(), 1);
+
+    dspIFace2.reset();
+    TimeMachineObject::feedEventLoop();
+    //QCOMPARE(ZdspClient::getInstanceCount(), 0);
+}
+
 void test_zdspclientcontainer::cleanup()
 {
     QCOMPARE(ZdspClient::getInstanceCount(), 0);
+}
+
+std::unique_ptr<Zera::cDSPInterface> test_zdspclientcontainer::createDspInterfaceWithZdspClient()
+{
+    Zera::ProxyClientPtr proxyClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", dspServerPort, m_tcpNetworkFactory);
+    std::unique_ptr<Zera::cDSPInterface> dspIFace = std::make_unique<Zera::cDSPInterface>();
+    dspIFace->setClientSmart(proxyClient);
+    Zera::Proxy::getInstance()->startConnectionSmart(proxyClient);
+    proxyClient.reset(); // lives in dspinterface
+    TimeMachineObject::feedEventLoop();
+    dspIFace->readDeviceVersion(); // required to make it into cliencontainer
+    TimeMachineObject::feedEventLoop();
+    return dspIFace;
 }

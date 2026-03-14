@@ -348,7 +348,6 @@ void ZDspServer::executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd)
     case scpiUnloadCmdListAllClients:
         m_zdspClientContainer.delAllClients();
         protoCmd->m_sOutput = loadCmdListAllClients();
-        m_dspSuperClient = nullptr;
         break;
     case scpiGetDeviceStatus:
         protoCmd->m_sOutput = getDeviceStatus();
@@ -418,6 +417,9 @@ QString ZDspServer::handleSetDspSuperClient(const ZdspClient *client)
     if (m_dspSuperClient)
         return ZSCPI::scpiAnswer[ZSCPI::nak];
     m_dspSuperClient = client;
+    connect(m_dspSuperClient, &QObject::destroyed, [&]() {
+        m_dspSuperClient = nullptr;
+    });
     return ZSCPI::scpiAnswer[ZSCPI::ack];
 }
 
