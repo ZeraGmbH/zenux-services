@@ -50,7 +50,7 @@ int cDSPInterface::cmdListCount()
     return d->cmdListCount();
 }
 
-void cDSPInterface::addCycListItem(QString cmd)
+void cDSPInterface::addCycListItem(const QString &cmd)
 {
     Q_D(cDSPInterface);
     d->addCycListItem(cmd);

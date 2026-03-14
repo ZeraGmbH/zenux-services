@@ -2,7 +2,7 @@
 #include <dspinterface_p.h>
 #include <dspvarresolver.h>
 
-TestDspInterface::TestDspInterface(QStringList valueNamesList, int entityId) :
+TestDspInterface::TestDspInterface(const QStringList &valueNamesList, int entityId) :
     MockDspInterface(entityId),
     m_valueNamesList(valueNamesList)
 {

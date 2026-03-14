@@ -26,21 +26,21 @@ quint32 cRMInterface::scpiCommand(const QString &scpi)
     return d->scpiCommand(scpi);
 }
 
-quint32 cRMInterface::rmIdent(QString name)
+quint32 cRMInterface::rmIdent(const QString &name)
 {
     Q_D(cRMInterface);
     return d->rmIdent(name);
 }
 
 
-quint32 cRMInterface::addResource(QString type, QString name, int n, QString description, quint16 port)
+quint32 cRMInterface::addResource(const QString &type, const QString &name, int n, const QString &description, quint16 port)
 {
     Q_D(cRMInterface);
     return d->addResource(type, name, n, description, port);
 }
 
 
-quint32 cRMInterface::removeResource(QString type, QString name)
+quint32 cRMInterface::removeResource(const QString &type, const QString &name)
 {
     Q_D(cRMInterface);
     return d->removeResource(type, name);
@@ -54,28 +54,28 @@ quint32 cRMInterface::getResourceTypes()
 }
 
 
-quint32 cRMInterface::getResources(QString type)
+quint32 cRMInterface::getResources(const QString &type)
 {
     Q_D(cRMInterface);
     return d->getResources(type);
 }
 
 
-quint32 cRMInterface::getResourceInfo(QString type, QString name)
+quint32 cRMInterface::getResourceInfo(const QString &type, const QString &name)
 {
     Q_D(cRMInterface);
     return d->getResourceInfo(type, name);
 }
 
 
-quint32 cRMInterface::setResource(QString type, QString name, int n)
+quint32 cRMInterface::setResource(const QString &type, const QString &name, int n)
 {
     Q_D(cRMInterface);
     return d->setResource(type, name, n);
 }
 
 
-quint32 cRMInterface::freeResource(QString type, QString name)
+quint32 cRMInterface::freeResource(const QString &type, const QString &name)
 {
     Q_D(cRMInterface);
     return d->freeResource(type, name);

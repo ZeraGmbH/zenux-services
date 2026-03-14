@@ -17,7 +17,7 @@ DspVarGroupClientInterface::~DspVarGroupClientInterface()
     m_instanceCount--;
 }
 
-float* DspVarGroupClientInterface::data(QString name) // gibt einen zeiger zurück auf die var daten
+float* DspVarGroupClientInterface::data(const QString &name) // gibt einen zeiger zurück auf die var daten
 {
     for (int i=0; i<DspVarList.size(); ++i) {
         DspVarClientInterface* pDspVar = DspVarList.at(i);
@@ -27,7 +27,7 @@ float* DspVarGroupClientInterface::data(QString name) // gibt einen zeiger zurü
     return 0; // caller has to pay attention !!!!!
 }
 
-void DspVarGroupClientInterface::setVarData(QString datalist)
+void DspVarGroupClientInterface::setVarData(const QString &datalist)
 {
     const QStringList dataEntryList = datalist.split(";", Qt::SkipEmptyParts);
     for (const QString &dspVarEntry : dataEntryList) {

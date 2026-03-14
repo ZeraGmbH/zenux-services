@@ -14,7 +14,7 @@ class ProxyClientForTest : public ProxyClient
 public:
     static std::shared_ptr<ProxyClientForTest> create();
     ProxyClientForTest();
-    void setAnswers(ServerTestAnswers answers);
+    void setAnswers(const ServerTestAnswers &answers);
     quint32 transmitCommand(ProtobufMessage::NetMessage *message) override;
 
     QStringList getReceivedIdents() const;

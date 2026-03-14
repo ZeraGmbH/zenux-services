@@ -26,7 +26,7 @@ class ServerTestAnswers
 {
 public:
     ServerTestAnswers();
-    ServerTestAnswers(ServerTestAnswerList answers);
+    ServerTestAnswers(const ServerTestAnswerList &answers);
     ServerTestAnswer take();
     bool isEmpty();
 private:

@@ -9,7 +9,7 @@ class TestDspInterface : public MockDspInterface
 {
     Q_OBJECT
 public:
-    TestDspInterface(QStringList valueNamesList, int entityId);
+    explicit TestDspInterface(const QStringList &valueNamesList, int entityId);
     void setClientSmart(Zera::ProxyClientPtr client) override;
     quint32 dspMemoryWrite(DspVarGroupClientInterface* varGroup) override;
 

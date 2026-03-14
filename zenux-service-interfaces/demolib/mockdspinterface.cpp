@@ -7,7 +7,7 @@ MockDspInterface::MockDspInterface(int entityId) :
 {
 }
 
-void MockDspInterface::fireActValInterrupt(QVector<float> actualValues, int irqNo)
+void MockDspInterface::fireActValInterrupt(const QVector<float> &actualValues, int irqNo)
 {
     m_actualValues = actualValues;
     // Dsp sends DSPINT:%1. Example clients do not seem to care about

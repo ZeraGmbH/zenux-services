@@ -16,8 +16,8 @@ public:
                        DspDataType dataType = dspDataTypeFloat, DspSegmentType dspSegmentType = moduleLocalSegment);
 
     // Nightmare candidate: Make it go!!!
-    float* data(QString name);
-    void setVarData(QString datalist); // expected 'Name1:0.2,0.4,0,3;Name2:1,2,3;' ......
+    float* data(const QString &name);
+    void setVarData(const QString &datalist); // expected 'Name1:0.2,0.4,0,3;Name2:1,2,3;' ......
 
     QString getName();
     quint32 getUserMemSize();

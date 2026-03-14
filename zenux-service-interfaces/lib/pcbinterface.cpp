@@ -32,168 +32,168 @@ quint32 cPCBInterface::getChannelList()
 }
 
 
-quint32 cPCBInterface::getDSPChannel(QString chnName)
+quint32 cPCBInterface::getDSPChannel(const QString &chnName)
 {
     Q_D(cPCBInterface);
     return d->getDSPChannel(chnName);
 }
 
 
-quint32 cPCBInterface::getStatus(QString chnName)
+quint32 cPCBInterface::getStatus(const QString &chnName)
 {
     Q_D(cPCBInterface);
     return d->getStatus(chnName);
 }
 
 
-quint32 cPCBInterface::resetStatus(QString chnName)
+quint32 cPCBInterface::resetStatus(const QString &chnName)
 {
     Q_D(cPCBInterface);
     return d->resetStatus(chnName);
 }
 
 
-quint32 cPCBInterface::getAlias(QString chnName)
+quint32 cPCBInterface::getAlias(const QString &chnName)
 {
     Q_D(cPCBInterface);
     return d->getAlias(chnName);
 }
 
 
-quint32 cPCBInterface::getType(QString chnName)
+quint32 cPCBInterface::getType(const QString &chnName)
 {
     Q_D(cPCBInterface);
     return d->getType(chnName);
 }
 
 
-quint32 cPCBInterface::getUnit(QString chnName)
+quint32 cPCBInterface::getUnit(const QString &chnName)
 {
     Q_D(cPCBInterface);
     return d->getUnit(chnName);
 }
 
 
-quint32 cPCBInterface::getRange(QString chnName)
+quint32 cPCBInterface::getRange(const QString &chnName)
 {
     Q_D(cPCBInterface);
     return d->getRange(chnName);
 }
 
 
-quint32 cPCBInterface::getRangeList(QString chnName)
+quint32 cPCBInterface::getRangeList(const QString &chnName)
 {
     Q_D(cPCBInterface);
     return d->getRangeList(chnName);
 }
 
 
-quint32 cPCBInterface::getAlias(QString chnName, QString rngName)
+quint32 cPCBInterface::getAlias(const QString &chnName, const QString &rngName)
 {
     Q_D(cPCBInterface);
     return d->getAlias(chnName, rngName);
 }
 
 
-quint32 cPCBInterface::getType(QString chnName, QString rngName)
+quint32 cPCBInterface::getType(const QString &chnName, const QString &rngName)
 {
     Q_D(cPCBInterface);
     return d->getType(chnName, rngName);
 }
 
 
-quint32 cPCBInterface::getUrvalue(QString chnName, QString rngName)
+quint32 cPCBInterface::getUrvalue(const QString &chnName, const QString &rngName)
 {
     Q_D(cPCBInterface);
     return d->getUrvalue(chnName, rngName);
 }
 
 
-quint32 cPCBInterface::getUrvalue(QString chnName)
+quint32 cPCBInterface::getUrvalue(const QString &chnName)
 {
     Q_D(cPCBInterface);
     return d->getUrvalue(chnName);
 }
 
 
-quint32 cPCBInterface::getRejection(QString chnName, QString rngName)
+quint32 cPCBInterface::getRejection(const QString &chnName, const QString &rngName)
 {
     Q_D(cPCBInterface);
     return d->getRejection(chnName, rngName);
 }
 
 
-quint32 cPCBInterface::getOVRejection(QString chnName, QString rngName)
+quint32 cPCBInterface::getOVRejection(const QString &chnName, const QString &rngName)
 {
     Q_D(cPCBInterface);
     return d->getOVRejection(chnName, rngName);
 }
 
 
-quint32 cPCBInterface::getADCRejection(QString chnName, QString rngName)
+quint32 cPCBInterface::getADCRejection(const QString &chnName, const QString &rngName)
 {
     Q_D(cPCBInterface);
     return d->getADCRejection(chnName, rngName);
 }
 
 
-quint32 cPCBInterface::isAvail(QString chnName, QString rngName)
+quint32 cPCBInterface::isAvail(const QString &chnName, const QString &rngName)
 {
     Q_D(cPCBInterface);
     return d->isAvail(chnName, rngName);
 }
 
 
-quint32 cPCBInterface::getGainCorrection(QString chnName, QString rngName, double at)
+quint32 cPCBInterface::getGainCorrection(const QString &chnName, const QString &rngName, double at)
 {
     Q_D(cPCBInterface);
     return d->getGainCorrection(chnName, rngName, at);
 }
 
 
-quint32 cPCBInterface::getAdjGainCorrection(QString chnName, QString rngName, double at)
+quint32 cPCBInterface::getAdjGainCorrection(const QString &chnName, const QString &rngName, double at)
 {
     Q_D(cPCBInterface);
     return d->getAdjGainCorrection(chnName, rngName, at);
 }
 
 
-quint32 cPCBInterface::getOffsetCorrection(QString chnName, QString rngName, double at)
+quint32 cPCBInterface::getOffsetCorrection(const QString &chnName, const QString &rngName, double at)
 {
     Q_D(cPCBInterface);
     return d->getOffsetCorrection(chnName, rngName, at);
 }
 
 
-quint32 cPCBInterface::getAdjOffsetCorrection(QString chnName, QString rngName, double at)
+quint32 cPCBInterface::getAdjOffsetCorrection(const QString &chnName, const QString &rngName, double at)
 {
     Q_D(cPCBInterface);
     return d->getAdjOffsetCorrection(chnName, rngName, at);
 }
 
 
-quint32 cPCBInterface::getPhaseCorrection(QString chnName, QString rngName, double at)
+quint32 cPCBInterface::getPhaseCorrection(const QString &chnName, const QString &rngName, double at)
 {
     Q_D(cPCBInterface);
     return d->getPhaseCorrection(chnName, rngName, at);
 }
 
 
-quint32 cPCBInterface::getAdjPhaseCorrection(QString chnName, QString rngName, double at)
+quint32 cPCBInterface::getAdjPhaseCorrection(const QString &chnName, const QString &rngName, double at)
 {
     Q_D(cPCBInterface);
     return d->getAdjPhaseCorrection(chnName, rngName, at);
 }
 
 
-quint32 cPCBInterface::setRange(QString chnName, QString rngName)
+quint32 cPCBInterface::setRange(const QString &chnName, const QString &rngName)
 {
     Q_D(cPCBInterface);
     return d->setRange(chnName, rngName);
 }
 
 
-quint32 cPCBInterface::setMMode(QString mmode)
+quint32 cPCBInterface::setMMode(const QString &mmode)
 {
     Q_D(cPCBInterface);
     return d->setMMode(mmode);
@@ -221,42 +221,42 @@ quint32 cPCBInterface::adjustStorageClamp()
 }
 
 
-quint32 cPCBInterface::setAdjustGainStatus(QString chnName, QString rngName, int stat)
+quint32 cPCBInterface::setAdjustGainStatus(const QString &chnName, const QString &rngName, int stat)
 {
     Q_D(cPCBInterface);
     return d->setAdjustGainStatus(chnName, rngName, stat);
 }
 
 
-quint32 cPCBInterface::setAdjustPhaseStatus(QString chnName, QString rngName, int stat)
+quint32 cPCBInterface::setAdjustPhaseStatus(const QString &chnName, const QString &rngName, int stat)
 {
     Q_D(cPCBInterface);
     return d->setAdjustPhaseStatus(chnName, rngName, stat);
 }
 
 
-quint32 cPCBInterface::setAdjustOffsetStatus(QString chnName, QString rngName, int stat)
+quint32 cPCBInterface::setAdjustOffsetStatus(const QString &chnName, const QString &rngName, int stat)
 {
     Q_D(cPCBInterface);
     return d->setAdjustOffsetStatus(chnName, rngName, stat);
 }
 
 
-quint32 cPCBInterface::setGainNode(QString chnName, QString rngName, int nr, double corr, double at)
+quint32 cPCBInterface::setGainNode(const QString &chnName, const QString &rngName, int nr, double corr, double at)
 {
     Q_D(cPCBInterface);
     return d->setGainNode(chnName, rngName, nr, corr, at);
 }
 
 
-quint32 cPCBInterface::setPhaseNode(QString chnName, QString rngName, int nr, double corr, double at)
+quint32 cPCBInterface::setPhaseNode(const QString &chnName, const QString &rngName, int nr, double corr, double at)
 {
     Q_D(cPCBInterface);
     return d->setPhaseNode(chnName, rngName, nr, corr, at);
 }
 
 
-quint32 cPCBInterface::setOffsetNode(QString chnName, QString rngName, int nr, double corr, double at)
+quint32 cPCBInterface::setOffsetNode(const QString &chnName, const QString &rngName, int nr, double corr, double at)
 {
     Q_D(cPCBInterface);
     return d->setOffsetNode(chnName, rngName, nr, corr, at);
@@ -269,7 +269,7 @@ quint32 cPCBInterface::getSourceCat()
     return d->transparentCommand("SOURCE:CHANNEL:CATALOG?");
 }
 
-quint32 cPCBInterface::registerNotifier(QString query, int notifyId, bool notifyWithValue)
+quint32 cPCBInterface::registerNotifier(const QString &query, int notifyId, bool notifyWithValue)
 {
     Q_D(cPCBInterface);
     return d->registerNotifier(query, notifyId, notifyWithValue);
@@ -324,7 +324,7 @@ quint32 cPCBInterface::readSerialNr()
 }
 
 
-quint32 cPCBInterface::writeSerialNr(QString serNr)
+quint32 cPCBInterface::writeSerialNr(const QString &serNr)
 {
     Q_D(cPCBInterface);
     return d->writeSerialNr(serNr);
@@ -345,7 +345,7 @@ quint32 cPCBInterface::getPCBAdjustmentData()
 }
 
 
-quint32 cPCBInterface::setPCBAdjustmentData(QString xmlpcb)
+quint32 cPCBInterface::setPCBAdjustmentData(const QString &xmlpcb)
 {
     Q_D(cPCBInterface);
     return d->setPCBAdjustmentData(xmlpcb);
@@ -359,7 +359,7 @@ quint32 cPCBInterface::getClampAdjustmentData()
 }
 
 
-quint32 cPCBInterface::setClampAdjustmentData(QString xmlclamp)
+quint32 cPCBInterface::setClampAdjustmentData(const QString &xmlclamp)
 {
     Q_D(cPCBInterface);
     return d->setClampAdjustmentData(xmlclamp);
@@ -383,13 +383,13 @@ quint32 cPCBInterface::readData()
     return d->readData();
 }
 
-quint32 cPCBInterface::writeData(QString par)
+quint32 cPCBInterface::writeData(const QString &par)
 {
     Q_D(cPCBInterface);
     return d->writeData(par);
 }
 
-quint32 cPCBInterface::transparentCommand(QString cmd)
+quint32 cPCBInterface::transparentCommand(const QString &cmd)
 {
     Q_D(cPCBInterface);
     return d->transparentCommand(cmd);
@@ -403,70 +403,70 @@ quint32 cPCBInterface::getSampleRate()
 }
 
 
-quint32 cPCBInterface::setPLLChannel(QString samplechnName, QString pllchnName)
+quint32 cPCBInterface::setPLLChannel(const QString &samplechnName, const QString &pllchnName)
 {
     Q_D(cPCBInterface);
     return d->setPLLChannel(samplechnName, pllchnName);
 }
 
 
-quint32 cPCBInterface::getAliasSource(QString chnName)
+quint32 cPCBInterface::getAliasSource(const QString &chnName)
 {
     Q_D(cPCBInterface);
     return d->getAliasSource(chnName);
 }
 
 
-quint32 cPCBInterface::getDSPChannelSource(QString chnName)
+quint32 cPCBInterface::getDSPChannelSource(const QString &chnName)
 {
     Q_D(cPCBInterface);
     return d->getDSPChannelSource(chnName);
 }
 
 
-quint32 cPCBInterface::getFormFactorSource(QString chnName)
+quint32 cPCBInterface::getFormFactorSource(const QString &chnName)
 {
     Q_D(cPCBInterface);
     return d->getFormFactorSource(chnName);
 }
 
 
-quint32 cPCBInterface::getConstantSource(QString chnName)
+quint32 cPCBInterface::getConstantSource(const QString &chnName)
 {
     Q_D(cPCBInterface);
     return d->getConstantSource(chnName);
 }
 
 
-quint32 cPCBInterface::setConstantSource(QString chnName, double constant)
+quint32 cPCBInterface::setConstantSource(const QString &chnName, double constant)
 {
     Q_D(cPCBInterface);
     return d->setConstantSource(chnName, constant);
 }
 
 
-quint32 cPCBInterface::getPowTypeSource(QString chnName)
+quint32 cPCBInterface::getPowTypeSource(const QString &chnName)
 {
     Q_D(cPCBInterface);
     return d->getPowTypeSource(chnName);
 }
 
 
-quint32 cPCBInterface::setPowTypeSource(QString chnName, QString ptype)
+quint32 cPCBInterface::setPowTypeSource(const QString &chnName, const QString &ptype)
 {
     Q_D(cPCBInterface);
     return d->setPowTypeSource(chnName, ptype);
 }
 
 
-quint32 cPCBInterface::getAliasSchead(QString chnName)
+quint32 cPCBInterface::getAliasSchead(const QString &chnName)
 {
     Q_D(cPCBInterface);
     return d->getAliasSchead(chnName);
 }
 
 
-quint32 cPCBInterface::getAliasFrqinput(QString chnName)
+quint32 cPCBInterface::getAliasFrqinput(const QString &chnName)
 {
     Q_D(cPCBInterface);
     return d->getAliasFrqinput(chnName);
@@ -486,7 +486,7 @@ quint32 cPCBInterface::getAuthorizationStatus()
     return d->getAuthorizationStatus();
 }
 
-quint32 cPCBInterface::resourceAliasQuery(QString resourceType, QString resourceName)
+quint32 cPCBInterface::resourceAliasQuery(const QString &resourceType, const QString &resourceName)
 {
     Q_D(cPCBInterface);
     return d->resourceAliasQuery(resourceType, resourceName);

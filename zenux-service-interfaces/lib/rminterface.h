@@ -19,14 +19,14 @@ public:
     void setClientSmart(Zera::ProxyClientPtr client) override;
     quint32 scpiCommand(const QString &scpi) override;
 
-    quint32 rmIdent(QString name);
-    quint32 addResource(QString type, QString name, int n, QString description, quint16 port);
-    quint32 removeResource(QString type, QString name);
+    quint32 rmIdent(const QString &name);
+    quint32 addResource(const QString &type, const QString &name, int n, const QString &description, quint16 port);
+    quint32 removeResource(const QString &type, const QString &name);
     quint32 getResourceTypes();
-    quint32 getResources(QString type);
-    quint32 getResourceInfo(QString type, QString name);
-    quint32 setResource(QString type, QString name, int n);
-    quint32 freeResource(QString type, QString name);
+    quint32 getResources(const QString &type);
+    quint32 getResourceInfo(const QString &type, const QString &name);
+    quint32 setResource(const QString &type, const QString &name, int n);
+    quint32 freeResource(const QString &type, const QString &name);
 
 private:
     Q_DECLARE_PRIVATE(cRMInterface)

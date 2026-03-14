@@ -33,25 +33,25 @@ class cSECInterfacePrivate: public cInterfacePrivate
 {
     Q_OBJECT
 public:
-    cSECInterfacePrivate(cSECInterface* iface);
+    explicit cSECInterfacePrivate(cSECInterface* iface);
     void setClientSmart(Zera::ProxyClientPtr client);
     quint32 setECalcUnit(int n); // we want n eclac units, answer is the names of them
     quint32 freeECalcUnits(); // free all the units the client had set
-    quint32 writeRegister(QString chnname, quint8 reg, quint32 value); // transp. register access
-    quint32 readRegister(QString chnname, quint8 reg);
+    quint32 writeRegister(const QString &chnname, quint8 reg, quint32 value); // transp. register access
+    quint32 readRegister(const QString &chnname, quint8 reg);
 
-    quint32 setSync(QString chnname, QString syncChn);
-    quint32 setMux(QString chnname, QString inpname);
-    quint32 setCmdid(QString chnname, quint8 cmdid);
-    quint32 start(QString chnname);
-    quint32 stop(QString chnname);
-    quint32 intAck(QString chnname, quint8 interrupt);
+    quint32 setSync(const QString &chnname, const QString &syncChn);
+    quint32 setMux(const QString &chnname, const QString &inpname);
+    quint32 setCmdid(const QString &chnname, quint8 cmdid);
+    quint32 start(const QString &chnname);
+    quint32 stop(const QString &chnname);
+    quint32 intAck(const QString &chnname, quint8 interrupt);
 
-    quint32 registerNotifier(QString query); // register for notification on change
+    quint32 registerNotifier(const QString &query); // register for notification on change
     quint32 unregisterNotifiers(); // unregister from all notifications
 
     // sending a transparent command
-    quint32 transparentCommand(QString cmd);
+    quint32 transparentCommand(const QString &cmd);
 
 protected slots:
     void receiveAnswer(std::shared_ptr<ProtobufMessage::NetMessage> message) override;

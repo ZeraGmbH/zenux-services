@@ -11,7 +11,7 @@ ServerTestAnswers::ServerTestAnswers()
 {
 }
 
-ServerTestAnswers::ServerTestAnswers(ServerTestAnswerList answers) :
+ServerTestAnswers::ServerTestAnswers(const ServerTestAnswerList &answers) :
     m_answers(answers)
 {
 }

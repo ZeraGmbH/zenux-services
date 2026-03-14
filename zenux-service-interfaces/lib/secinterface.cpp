@@ -46,63 +46,63 @@ quint32 cSECInterface::freeECalcUnits()
 }
 
 
-quint32 cSECInterface::writeRegister(QString chnname, quint8 reg, quint32 value)
+quint32 cSECInterface::writeRegister(const QString &chnname, quint8 reg, quint32 value)
 {
     Q_D(cSECInterface);
     return d->writeRegister(chnname, reg, value);
 }
 
 
-quint32 cSECInterface::readRegister(QString chnname, quint8 reg)
+quint32 cSECInterface::readRegister(const QString &chnname, quint8 reg)
 {
     Q_D(cSECInterface);
     return d->readRegister(chnname, reg);
 }
 
 
-quint32 cSECInterface::setSync(QString chnname, QString syncchn)
+quint32 cSECInterface::setSync(const QString &chnname, const QString &syncchn)
 {
     Q_D(cSECInterface);
     return d->setSync(chnname, syncchn);
 }
 
 
-quint32 cSECInterface::setMux(QString chnname, QString inpname)
+quint32 cSECInterface::setMux(const QString &chnname, const QString &inpname)
 {
     Q_D(cSECInterface);
     return d->setMux(chnname, inpname);
 }
 
 
-quint32 cSECInterface::setCmdid(QString chnname, quint8 cmdid)
+quint32 cSECInterface::setCmdid(const QString &chnname, quint8 cmdid)
 {
     Q_D(cSECInterface);
     return d->setCmdid(chnname, cmdid);
 }
 
 
-quint32 cSECInterface::start(QString chnname)
+quint32 cSECInterface::start(const QString &chnname)
 {
     Q_D(cSECInterface);
     return d->start(chnname);
 }
 
 
-quint32 cSECInterface::stop(QString chnname)
+quint32 cSECInterface::stop(const QString &chnname)
 {
     Q_D(cSECInterface);
     return d->stop(chnname);
 }
 
 
-quint32 cSECInterface::intAck(QString chnname, quint8 interrupt)
+quint32 cSECInterface::intAck(const QString &chnname, quint8 interrupt)
 {
     Q_D(cSECInterface);
     return d->intAck(chnname, interrupt);
 }
 
 
-quint32 cSECInterface::registerNotifier(QString query)
+quint32 cSECInterface::registerNotifier(const QString &query)
 {
     Q_D(cSECInterface);
     return d->registerNotifier(query);

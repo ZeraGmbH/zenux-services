@@ -15,7 +15,7 @@ ProxyClientForTest::ProxyClientForTest()
             Qt::QueuedConnection);
 }
 
-void ProxyClientForTest::setAnswers(ServerTestAnswers answers)
+void ProxyClientForTest::setAnswers(const ServerTestAnswers &answers)
 {
     m_answers = answers;
 }

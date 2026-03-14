@@ -30,28 +30,22 @@ quint32 cRMInterfacePrivate::scpiCommand(const QString &scpi)
     return msgnr;
 }
 
-quint32 cRMInterfacePrivate::rmIdent(QString name)
+quint32 cRMInterfacePrivate::rmIdent(const QString &name)
 {
-    quint32 msgnr;
-
     ProtobufMessage::NetMessage envelope;
     ProtobufMessage::NetMessage::NetReply* message = envelope.mutable_reply();
     message->set_rtype(ProtobufMessage::NetMessage::NetReply::IDENT);
     message->set_body(name.toStdString());
 
-    msgnr = m_clientSmart->transmitCommand(&envelope);
+    quint32 msgnr = m_clientSmart->transmitCommand(&envelope);
     m_MsgNrCmdList[msgnr] = rmident;
 
     return msgnr;
 }
 
-
-quint32 cRMInterfacePrivate::addResource(QString type, QString name, int n, QString description, quint16 port)
+quint32 cRMInterfacePrivate::addResource(const QString &type, const QString &name, int n, const QString &description, quint16 port)
 {
-    QString cmd, par;
-    quint32 msgnr;
-
-    msgnr = sendCommand(cmd = QString("RES:ADD"), par = QString("%1;%2;%3;%4;%5;")
+    quint32 msgnr = sendCommand(QString("RES:ADD"), QString("%1;%2;%3;%4;%5;")
             .arg(type, name)
             .arg(n)
             .arg(description)
@@ -61,78 +55,47 @@ quint32 cRMInterfacePrivate::addResource(QString type, QString name, int n, QStr
     return msgnr;
 }
 
-
-quint32 cRMInterfacePrivate::removeResource(QString type, QString name)
+quint32 cRMInterfacePrivate::removeResource(const QString &type, const QString &name)
 {
-    QString cmd, par;
-    quint32 msgnr;
-
-    msgnr = sendCommand(cmd = QString("RES:REM"), par = QString("%1;%2;").arg(type, name));
-
+    quint32 msgnr = sendCommand(QString("RES:REM"), QString("%1;%2;").arg(type, name));
     m_MsgNrCmdList[msgnr] = removeresource;
     return msgnr;
 }
 
-
 quint32 cRMInterfacePrivate::getResourceTypes()
 {
-    QString cmd;
-    quint32 msgnr;
-
-    msgnr = sendCommand(cmd = QString("RES:TYPE:CAT?"));
-
+    quint32 msgnr = sendCommand(QString("RES:TYPE:CAT?"));
     m_MsgNrCmdList[msgnr] = getresourcetypes;
     return msgnr;
 }
 
-
-quint32 cRMInterfacePrivate::getResources(QString type)
+quint32 cRMInterfacePrivate::getResources(const QString &type)
 {
-    QString cmd;
-    quint32 msgnr;
-
-    msgnr = sendCommand(cmd = QString("RES:%1:CAT?").arg(type));
-
+    quint32 msgnr = sendCommand(QString("RES:%1:CAT?").arg(type));
     m_MsgNrCmdList[msgnr] = getresources;
     return msgnr;
 }
 
-
-quint32 cRMInterfacePrivate::getResourceInfo(QString type, QString name)
+quint32 cRMInterfacePrivate::getResourceInfo(const QString &type, const QString &name)
 {
-    QString cmd;
-    quint32 msgnr;
-
-    msgnr = sendCommand(cmd = QString("RES:%1:%2?").arg(type, name));
-
+    quint32 msgnr = sendCommand(QString("RES:%1:%2?").arg(type, name));
     m_MsgNrCmdList[msgnr] = getresources;
     return msgnr;
 }
 
-
-quint32 cRMInterfacePrivate::setResource(QString type, QString name, int n)
+quint32 cRMInterfacePrivate::setResource(const QString &type, const QString &name, int n)
 {
-    QString cmd, par;
-    quint32 msgnr;
-
-    msgnr = sendCommand(cmd = QString("RES:%1:%2").arg(type, name), par = QString("SET;%1;").arg(n));
-
+    quint32 msgnr = sendCommand(QString("RES:%1:%2").arg(type, name), QString("SET;%1;").arg(n));
     m_MsgNrCmdList[msgnr] = setresource;
     return msgnr;
 }
 
-
-quint32 cRMInterfacePrivate::freeResource(QString type, QString name)
+quint32 cRMInterfacePrivate::freeResource(const QString &type, const QString &name)
 {
-    QString cmd, par;
-    quint32 msgnr;
-
-    msgnr = sendCommand(cmd = QString("RES:%1:%2").arg(type, name) , par = QString("FREE;"));
-
+    quint32 msgnr = sendCommand(QString("RES:%1:%2").arg(type, name) , QString("FREE;"));
     m_MsgNrCmdList[msgnr] = freeresource;
     return msgnr;
 }
-
 
 void cRMInterfacePrivate::receiveAnswer(std::shared_ptr<ProtobufMessage::NetMessage> message)
 {
@@ -156,7 +119,6 @@ void cRMInterfacePrivate::receiveAnswer(std::shared_ptr<ProtobufMessage::NetMess
         }
     }
 }
-
 
 void cRMInterfacePrivate::receiveError(QAbstractSocket::SocketError errorCode)
 {
