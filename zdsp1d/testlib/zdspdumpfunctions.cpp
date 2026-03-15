@@ -34,6 +34,21 @@ QJsonObject ZDspDumpFunctions::getStaticMemAllocation()
     return json;
 }
 
+QJsonObject ZDspDumpFunctions::getFullDump(const ZDspServer *server)
+{
+    QJsonObject json;
+    json.insert("ProgMemCyclicAvailable", server->getProgMemCyclicAvailable());
+    json.insert("ProgMemCyclicFree", server->getProgMemCyclicAvailable()-server->getProgMemCyclicOccupied());
+    json.insert("ProgMemInterruptAvailable", server->getProgMemInterruptAvailable());
+    json.insert("ProgMemInterruptFree", server->getProgMemInterruptAvailable() - server->getProgMemInterruptOccupied());
+    json.insert("UserMemAvailable", server->getVarMemLocalAvailable());
+    json.insert("UserMemFree", server->getVarMemLocalAvailable() - server->getVarMemOccupied(moduleLocalSegment));
+    json.insert("UserMemAlignedAvailable", server->getVarMemAlignedAvailable());
+    json.insert("UserMemAlignedFree", server->getVarMemAlignedAvailable() - server->getVarMemOccupied(moduleAlignedMemorySegment));
+    json.insert("ZdspMemDump", getMemoryDump(server));
+    return json;
+}
+
 QJsonObject ZDspDumpFunctions::getMemoryDump(const ZDspServer *server)
 {
     const QList<ZdspClient*> &clientList = server->getClients();
