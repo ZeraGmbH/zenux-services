@@ -4,7 +4,7 @@
 #include <QHash>
 
 // Details found at [1]
-// [1] https://github.com/ZeraGmbH/SHARC-DSP-Software/blob/main/NewGen32.asm#L2603
+// [1] https://github.com/ZeraGmbH/SHARC-DSP-Software/blob/43549ab5b6712565ae0bc8e13903ad9cd1d562d6/NewGen32.asm#L2609
 
 static DspCmdDecodingDetails DspCmd[] =
 
@@ -92,6 +92,7 @@ static DspCmdDecodingDetails DspCmd[] =
 
 #define DSP_VAR_COUNT(VAR_ARRAY) sizeof(VAR_ARRAY) / sizeof(DspVarInServer)
 
+// https://github.com/ZeraGmbH/SHARC-DSP-Software/blob/f4003f707849076a91010435994aa61bf9e6cfb9/NewGen32.asm#L421
 static const DspVarInServer DspWorkspaceVar[] =
 {
     {"DspWorkspace", "FREQENCY",1,dspDataTypeFloat,0,0, dspInternalSegment},                // 1 wert gemessene frequenz
@@ -114,10 +115,9 @@ static const DspVarInServer DspWorkspaceVar[] =
 DspMemorySectionInternal dm32DspWorkspace = DspMemorySectionInternal(0, DSP_VAR_COUNT(DspWorkspaceVar), DspWorkspaceVar);
 
 
+// https://github.com/ZeraGmbH/SHARC-DSP-Software/blob/f4003f707849076a91010435994aa61bf9e6cfb9/NewGen32.asm#L610
 static const DspVarInServer DialogWorkSpaceVar[] =
 {
-    // Parameter details for DSPCMDPAR are found at
-    // https://github.com/ZeraGmbH/SHARC-DSP-Software/blob/f4003f707849076a91010435994aa61bf9e6cfb9/NewGen32.asm#L352
     {"DialogWorkSpace", "DSPCMDPAR",10,dspDataTypeInt,0,0, dspInternalSegment},             // 10 werte cmds, paramter ... ctrl -> dsp
     {"DialogWorkSpace", "DSPACK",1,dspDataTypeInt,0,0, dspInternalSegment},                 // semaphore ackn. dsp -> cntr.
     {"DialogWorkSpace", "CTRLCMDPAR",20,dspDataTypeInt,0,0, dspInternalSegment},            // 20 werte cmds, paramter ... dsp -> ctrl
@@ -126,8 +126,8 @@ static const DspVarInServer DialogWorkSpaceVar[] =
     {"DialogWorkSpace", "GAINCORRECTION",32,dspDataTypeFloat,0,0, dspInternalSegment},      // 32 verstärkungskorrekturwerte
     {"DialogWorkSpace", "PHASECORRECTION",32,dspDataTypeFloat,0,0, dspInternalSegment},     // 32 phasenkorrekturwerte
     {"DialogWorkSpace", "OFFSETCORRECTION",32,dspDataTypeFloat,0,0, dspInternalSegment},    // 32 offsetkorrekturwerte
-    {"DialogWorkSpace", "BUSYMAX",1,dspDataTypeFloat,0,0, dspInternalSegment},              // akuelle auslastung [%]
-    {"DialogWorkSpace", "BUSY",1,dspDataTypeFloat,0,0, dspInternalSegment},                 // max. auslastung seit reset
+    {"DialogWorkSpace", "BUSYMAX",1,dspDataTypeFloat,0,0, dspInternalSegment},              // max. auslastung seit reset
+    {"DialogWorkSpace", "BUSY",1,dspDataTypeFloat,0,0, dspInternalSegment},                 // akuelle auslastung [%]
     {"DialogWorkSpace", "VNR",1,dspDataTypeFloat,0,0, dspInternalSegment},                  // versionsnummer
     {"DialogWorkSpace", "GAINCORRECTION2",32,dspDataTypeFloat,0,0, dspInternalSegment},     // 32 verstärkungskorrekturwerte 2.stufe
     {"DialogWorkSpace", "PHASECORRECTION2",32,dspDataTypeFloat,0,0, dspInternalSegment},    // 32 phasenkorrekturwerte 2. stufe
