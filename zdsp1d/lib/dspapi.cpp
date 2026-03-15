@@ -92,7 +92,12 @@ static DspCmdDecodingDetails DspCmd[] =
 
 #define DSP_VAR_COUNT(VAR_ARRAY) sizeof(VAR_ARRAY) / sizeof(DspVarInServer)
 
-// https://github.com/ZeraGmbH/SHARC-DSP-Software/blob/f4003f707849076a91010435994aa61bf9e6cfb9/NewGen32.asm#L421
+// Notes:
+// * dm32DspWorkspace.m_startAddress is what DSPMEMOFFSET sets
+// * COPYDU and COPYUD use DSPMEMOFFSET and we can access DspWorkspace AND DialogWorkSpace - see
+//   DspStaticData::initDspInternalMemsection
+// * For DSP Assembler view of DspWorkspace see
+//   https://github.com/ZeraGmbH/SHARC-DSP-Software/blob/f4003f707849076a91010435994aa61bf9e6cfb9/NewGen32.asm#L421
 static const DspVarInServer DspWorkspaceVar[] =
 {
     {"DspWorkspace", "FREQENCY",1,dspDataTypeFloat,0,0, dspInternalSegment},                // 1 wert gemessene frequenz
