@@ -242,9 +242,9 @@ void DspStaticData::fillMemSectionHashOn1stCall()
         for(DspMemorySectionInternal* memSection : qAsConst(fixedSectionList)) {
             // Adjust dialog workspace offset to make it accessible to COPYDU / COPYUD
             if (memSection->m_startAddress == dm32DialogWorkSpace.m_startAddress)
-                initMemsection(memSection, dm32DialogWorkSpace.m_startAddress - dm32DspWorkspace.m_startAddress);
+                initDspInternalMemsection(memSection, dm32DialogWorkSpace.m_startAddress - dm32DspWorkspace.m_startAddress);
             else
-                initMemsection(memSection, 0);
+                initDspInternalMemsection(memSection, 0);
             for (int i=0; i<memSection->getVarCount(); i++) {
                 DspVarServerPtr dspVar = memSection->getDspVar(i);
                 m_varHash[dspVar->Name] = dspVar;
@@ -265,7 +265,7 @@ void DspStaticData::setInitialVariableSize(DspMemorySectionInternal &memSection,
     qCritical("setInitialVariableSize: Variable %s not found", qPrintable(variableName));
 }
 
-void DspStaticData::initMemsection(DspMemorySectionInternal *memSection, long sectionOffsetForCopyDuCopyUd)
+void DspStaticData::initDspInternalMemsection(DspMemorySectionInternal *memSection, long sectionOffsetForCopyDuCopyUd)
 {
     long offs = 0;
     for (int i = 0; i< (memSection->getVarCount()); i++) {
