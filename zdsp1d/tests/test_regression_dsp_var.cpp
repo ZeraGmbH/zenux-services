@@ -11,7 +11,6 @@
 #include <mocktcpnetworkfactory.h>
 #include <testloghelpers.h>
 #include <QDataStream>
-#include <QJsonDocument>
 #include <QSignalSpy>
 #include <QTest>
 
@@ -258,8 +257,7 @@ void test_regression_dsp_var::createAlignedVariablesMultipleClients()
     ZDspServer* server = m_dspService->getServer();
     QCOMPARE(server->getVarMemOccupied(moduleAlignedMemorySegment), 1+2+3+4);
 
-    QJsonDocument jsonDoc(ZDspDumpFunctions::getMemoryDump(server));
-    QString dumped = jsonDoc.toJson(QJsonDocument::Indented);
+    QString dumped = TestLogHelpers::dump(ZDspDumpFunctions::getMemoryDump(server));
     QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonFile(":/dump-dsp-memory-dual-client-aligned-mem.json", dumped));
 }
 
@@ -293,8 +291,7 @@ void test_regression_dsp_var::createGlobalVariablesMultipleClients()
     dspIFace2->activateInterface();
     TimeMachineObject::feedEventLoop();
 
-    QJsonDocument jsonDoc(ZDspDumpFunctions::getMemoryDump(server));
-    QString dumped = jsonDoc.toJson(QJsonDocument::Indented);
+    QString dumped = TestLogHelpers::dump(ZDspDumpFunctions::getMemoryDump(server));
     QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonFile(":/dump-dsp-memory-dual-client-global-mem.json", dumped));
 
     constexpr int globalMemSize = 1+1+2;
@@ -330,8 +327,7 @@ void test_regression_dsp_var::createGlobalVariablesMultipleClientsVarSizesDiffer
     dspIFace2->activateInterface();
     TimeMachineObject::feedEventLoop();
 
-    QJsonDocument jsonDoc(ZDspDumpFunctions::getMemoryDump(server));
-    QString dumped = jsonDoc.toJson(QJsonDocument::Indented);
+    QString dumped = TestLogHelpers::dump(ZDspDumpFunctions::getMemoryDump(server));
     QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonFile(":/dump-dsp-memory-dual-client-global-mem-different-size.json", dumped));
 }
 
