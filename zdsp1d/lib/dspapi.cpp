@@ -240,7 +240,11 @@ void DspStaticData::fillMemSectionHashOn1stCall()
         fixedSectionList.append(&dm32CmdList);
         fixedSectionList.append(&symbConsts1);
         for(DspMemorySectionInternal* memSection : qAsConst(fixedSectionList)) {
-            initMemsection(memSection);
+            // Adjust dialog workspace offset to make it accessible to COPYDU / COPYUD
+            if (memSection->m_startAddress == dm32DialogWorkSpace.m_startAddress)
+                initMemsection(memSection, dm32DialogWorkSpace.m_startAddress - dm32DspWorkspace.m_startAddress);
+            else
+                initMemsection(memSection, 0);
             for (int i=0; i<memSection->getVarCount(); i++) {
                 DspVarServerPtr dspVar = memSection->getDspVar(i);
                 m_varHash[dspVar->Name] = dspVar;
@@ -261,13 +265,13 @@ void DspStaticData::setInitialVariableSize(DspMemorySectionInternal &memSection,
     qCritical("setInitialVariableSize: Variable %s not found", qPrintable(variableName));
 }
 
-void DspStaticData::initMemsection(DspMemorySectionInternal *memSection)
+void DspStaticData::initMemsection(DspMemorySectionInternal *memSection, long sectionOffsetForCopyDuCopyUd)
 {
     long offs = 0;
     for (int i = 0; i< (memSection->getVarCount()); i++) {
         DspVarServerPtr dspVar = memSection->getDspVar(i);
         if (dspVar->segment == dspInternalSegment) { // initialize only dsp system variables
-            dspVar->m_offsetToModuleBase = offs;
+            dspVar->m_offsetToModuleBase = offs + sectionOffsetForCopyDuCopyUd;
             dspVar->m_absoluteAddress = memSection->m_startAddress + offs;
             offs += dspVar->size;
         }

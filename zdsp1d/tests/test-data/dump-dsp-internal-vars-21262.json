@@ -222,127 +222,127 @@
     "DialogWorkSpace": {
         "BUSY": {
             "Addr": "0x083885",
-            "Offset": "0x000085",
+            "Offset": "0x001085",
             "Size": 1,
             "SizeHex": "0x000001"
         },
         "BUSYMAX": {
             "Addr": "0x083884",
-            "Offset": "0x000084",
+            "Offset": "0x001084",
             "Size": 1,
             "SizeHex": "0x000001"
         },
         "CTRLACK": {
             "Addr": "0x08381F",
-            "Offset": "0x00001F",
+            "Offset": "0x00101F",
             "Size": 1,
             "SizeHex": "0x000001"
         },
         "CTRLCMDPAR": {
             "Addr": "0x08380B",
-            "Offset": "0x00000B",
+            "Offset": "0x00100B",
             "Size": 20,
             "SizeHex": "0x000014"
         },
         "DSPACK": {
             "Addr": "0x08380A",
-            "Offset": "0x00000A",
+            "Offset": "0x00100A",
             "Size": 1,
             "SizeHex": "0x000001"
         },
         "DSPCMDPAR": {
             "Addr": "0x083800",
-            "Offset": "0x000000",
+            "Offset": "0x001000",
             "Size": 10,
             "SizeHex": "0x00000A"
         },
         "ETHDESTSOURCEADRESS": {
             "Addr": "0x0838E7",
-            "Offset": "0x0000E7",
+            "Offset": "0x0010E7",
             "Size": 3,
             "SizeHex": "0x000003"
         },
         "ETHPRIORITYTAGGED": {
             "Addr": "0x0838EA",
-            "Offset": "0x0000EA",
+            "Offset": "0x0010EA",
             "Size": 1,
             "SizeHex": "0x000001"
         },
         "ETHROUTINGTAB": {
             "Addr": "0x0838EC",
-            "Offset": "0x0000EC",
+            "Offset": "0x0010EC",
             "Size": 16,
             "SizeHex": "0x000010"
         },
         "ETHTYPEAPPID": {
             "Addr": "0x0838EB",
-            "Offset": "0x0000EB",
+            "Offset": "0x0010EB",
             "Size": 1,
             "SizeHex": "0x000001"
         },
         "FREQUENCYNORM": {
             "Addr": "0x083820",
-            "Offset": "0x000020",
+            "Offset": "0x001020",
             "Size": 4,
             "SizeHex": "0x000004"
         },
         "GAINCORRECTION": {
             "Addr": "0x083824",
-            "Offset": "0x000024",
+            "Offset": "0x001024",
             "Size": 32,
             "SizeHex": "0x000020"
         },
         "GAINCORRECTION2": {
             "Addr": "0x083887",
-            "Offset": "0x000087",
+            "Offset": "0x001087",
             "Size": 32,
             "SizeHex": "0x000020"
         },
         "INTERRUPTERROR": {
             "Addr": "0x0838FC",
-            "Offset": "0x0000FC",
+            "Offset": "0x0010FC",
             "Size": 1,
             "SizeHex": "0x000001"
         },
         "OFFSETCORRECTION": {
             "Addr": "0x083864",
-            "Offset": "0x000064",
+            "Offset": "0x001064",
             "Size": 32,
             "SizeHex": "0x000020"
         },
         "OFFSETCORRECTION2": {
             "Addr": "0x0838C7",
-            "Offset": "0x0000C7",
+            "Offset": "0x0010C7",
             "Size": 32,
             "SizeHex": "0x000020"
         },
         "PHASECORRECTION": {
             "Addr": "0x083844",
-            "Offset": "0x000044",
+            "Offset": "0x001044",
             "Size": 32,
             "SizeHex": "0x000020"
         },
         "PHASECORRECTION2": {
             "Addr": "0x0838A7",
-            "Offset": "0x0000A7",
+            "Offset": "0x0010A7",
             "Size": 32,
             "SizeHex": "0x000020"
         },
         "POWVALS4FOUT": {
             "Addr": "0x0838FD",
-            "Offset": "0x0000FD",
+            "Offset": "0x0010FD",
             "Size": 48,
             "SizeHex": "0x000030"
         },
         "SUBDC": {
             "Addr": "0x08392D",
-            "Offset": "0x00012D",
+            "Offset": "0x00112D",
             "Size": 1,
             "SizeHex": "0x000001"
         },
         "VNR": {
             "Addr": "0x083886",
-            "Offset": "0x000086",
+            "Offset": "0x001086",
             "Size": 1,
             "SizeHex": "0x000001"
         }
