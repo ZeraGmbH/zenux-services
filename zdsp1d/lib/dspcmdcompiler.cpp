@@ -1,5 +1,4 @@
 #include "dspcmdcompiler.h"
-#include "dspcompilersupport.h"
 
 DspCmdCompiler::DspCmdCompiler(DspVarResolver *varResolver, int dspInterruptId) :
     m_varResolver(varResolver),
