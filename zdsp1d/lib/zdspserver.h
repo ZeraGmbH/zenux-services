@@ -34,6 +34,9 @@ public:
     bool compileCmdListsForAllClientsToBinaryStream(QString& errs,
                                                     QByteArray &rawCyclicCmdMemOut,
                                                     QByteArray &rawInterruptCmdMemOut) const;
+    bool compileCmdListsForAllClientsToCompileLists(QString& errs,
+                                                    QList<DspCmdWithParamsCompiled> &compiledCyclicOut,
+                                                    QList<DspCmdWithParamsCompiled> &compiledInterruptOut) const;
 
     int getVarMemLocalAvailable() const;
     int getVarMemAlignedAvailable() const;

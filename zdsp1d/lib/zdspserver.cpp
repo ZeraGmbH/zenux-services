@@ -783,9 +783,24 @@ bool ZDspServer::compileCmdListsForAllClientsToBinaryStream(QString &errs,
     QDataStream intCmdMemStream(&rawInterruptCmdMemOut, QIODevice::Unbuffered | QIODevice::ReadWrite);
     intCmdMemStream.setByteOrder(QDataStream::LittleEndian);
 
+    QList<DspCmdWithParamsCompiled> compiledCyclic;
+    QList<DspCmdWithParamsCompiled> compiledInterrupt;
+    bool ret = compileCmdListsForAllClientsToCompileLists(errs, compiledCyclic, compiledInterrupt);
+    for (int i=0; i<compiledCyclic.count(); ++i)
+        cycCmdMemStream << compiledCyclic[i];
+    for (int i=0; i<compiledInterrupt.count(); ++i)
+        intCmdMemStream << compiledInterrupt[i];
+    return ret;
+}
+
+bool ZDspServer::compileCmdListsForAllClientsToCompileLists(QString &errs,
+                                                            QList<DspCmdWithParamsCompiled> &compiledCyclicOut,
+                                                            QList<DspCmdWithParamsCompiled> &compiledInterruptOut) const
+{
+    compiledCyclicOut.clear();
+    compiledInterruptOut.clear();
     ZdspClient::resetGlobalVarList();
 
-    DspCmdWithParamsCompiled cmd;
     const QList<ZdspClient*> clientList = getClients();
     bool ok;
 
@@ -794,9 +809,8 @@ bool ZDspServer::compileCmdListsForAllClientsToBinaryStream(QString &errs,
         firstClient->getCurrCyclicCommandsCompilerSupport()->clearTotalCmdLists();
         firstClient->getCurrCyclicCommandsCompilerSupport()->startClientArea(0, "Global init", AbstractDspCompilerSupport::CYCLIC);
         DspCmdCompiler firstCompiler(&firstClient->m_dspVarResolver, firstClient->getDspInterruptId());
-        cmd = firstCompiler.compileOneCmdLine(QString("DSPMEMOFFSET(%1)").arg(dm32DspWorkspace.m_startAddress),
-                                              firstClient->getCurrCyclicCommandsCompilerSupport(), ok);
-        cycCmdMemStream << cmd;
+        compiledCyclicOut.append(firstCompiler.compileOneCmdLine(QString("DSPMEMOFFSET(%1)").arg(dm32DspWorkspace.m_startAddress),
+                                                                 firstClient->getCurrCyclicCommandsCompilerSupport(), ok));
 
         ulong userMemOffset = dm32UserWorkSpace.m_startAddress;
         ulong userAlignedOffset = m_userWorkSpaceAlignedSegmentStartAdr;
@@ -806,13 +820,12 @@ bool ZDspServer::compileCmdListsForAllClientsToBinaryStream(QString &errs,
             if (client->hasCyclicCmds()) {
                 client->getCurrCyclicCommandsCompilerSupport()->startClientArea(client->getEntityId(), "Cyclic mem offset",
                                                                                 AbstractDspCompilerSupport::CYCLIC);
-                cycCmdMemStream << genClientStartAddressCmd(userMemOffset, client, client->getCurrCyclicCommandsCompilerSupport(), ok);
+                compiledCyclicOut.append(genClientStartAddressCmd(userMemOffset, client, client->getCurrCyclicCommandsCompilerSupport(), ok));
             }
-
             if(client->hasInterruptCmds()) {
                 client->getCurrInterruptCommandsCompilerSupport()->startClientArea(client->getEntityId(), "Interrupt mem offset",
                                                                                    AbstractDspCompilerSupport::INTERRUPT);
-                intCmdMemStream << genClientStartAddressCmd(userMemOffset, client, client->getCurrInterruptCommandsCompilerSupport(), ok);
+                compiledInterruptOut.append(genClientStartAddressCmd(userMemOffset, client, client->getCurrInterruptCommandsCompilerSupport(), ok));
             }
 
             ZdspClient::MemSizes memSizes = client->calcVarAdressesAndSizes(userMemOffset, userAlignedOffset);
@@ -822,24 +835,20 @@ bool ZDspServer::compileCmdListsForAllClientsToBinaryStream(QString &errs,
             userMemOffset += memSizes.usermemsize;
             userAlignedOffset += memSizes.alignedMemSize;
 
-            const QList<DspCmdWithParamsCompiled> &cycCmdList = client->GetDspCmdList();
-            for (int j = 0; j < cycCmdList.size(); j++)
-                cycCmdMemStream << cycCmdList[j];
-            const QList<DspCmdWithParamsCompiled> &intCmdList = client->GetDspIntCmdList();
-            for (int j = 0; j < intCmdList.size(); j++)
-                intCmdMemStream << intCmdList[j];
+            compiledCyclicOut.append(client->GetDspCmdList());
+            compiledInterruptOut.append(client->GetDspIntCmdList());
         }
 
         // wir triggern das senden der serialisierten interrupts
-        cycCmdMemStream << firstCompiler.compileOneCmdLine("DSPINTPOST()", std::make_shared<DspCompilerSupport>(), ok);
+        compiledCyclicOut.append(firstCompiler.compileOneCmdLine("DSPINTPOST()", std::make_shared<DspCompilerSupport>(), ok));
     }
 
     DspVarResolver dspSystemVarResolver;
     DspCmdCompiler dummyCompiler(&dspSystemVarResolver, 0);
     // funktioniert selbst wenn wenn wir keinen mehr haben
-    cmd = dummyCompiler.compileOneCmdLine("INVALID()", std::make_shared<DspCompilerSupport>(), ok);
-    cycCmdMemStream << cmd; // kommando listen ende
-    intCmdMemStream << cmd;
+    DspCmdWithParamsCompiled cmd = dummyCompiler.compileOneCmdLine("INVALID()", std::make_shared<DspCompilerSupport>(), ok);
+    compiledCyclicOut.append(cmd); // kommando listen ende
+    compiledInterruptOut.append(cmd);
 
     return true;
 }
