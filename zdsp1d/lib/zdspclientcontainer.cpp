@@ -65,6 +65,7 @@ void ZDspClientContainer::delClients(const VeinTcp::TcpPeer *veinPeer)
 
     for (const ZdspClient* clientToDelete : clientsToDelete)
         delClient(clientToDelete->getProtobufClientId());
+    resetInterruptIdOnNoClients();
 }
 
 void ZDspClientContainer::delClient(const QByteArray &proxyConnectionId)
@@ -76,6 +77,7 @@ void ZDspClientContainer::delClient(const QByteArray &proxyConnectionId)
     m_clientsByProxyConnectionId.remove(client->getProtobufClientId());
     m_clientsByDspInterruptId.remove(client->getDspInterruptId());
     delete client;
+    resetInterruptIdOnNoClients();
 }
 
 void ZDspClientContainer::delAllClients()
@@ -85,6 +87,7 @@ void ZDspClientContainer::delAllClients()
     m_clientsChonological.clear();
     m_clientsByProxyConnectionId.clear();
     m_clientsByDspInterruptId.clear();
+    resetInterruptIdOnNoClients();
 }
 
 void ZDspClientContainer::calcDspInterruptId()
@@ -92,4 +95,10 @@ void ZDspClientContainer::calcDspInterruptId()
     m_currentDspInterruptId++;
     if (m_currentDspInterruptId == 0)
         m_currentDspInterruptId++;
+}
+
+void ZDspClientContainer::resetInterruptIdOnNoClients()
+{
+    if (m_clientsByDspInterruptId.isEmpty())
+        m_currentDspInterruptId = 0;
 }

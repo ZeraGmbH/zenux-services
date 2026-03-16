@@ -22,12 +22,14 @@ public:
     void delAllClients();
 
 private:
+    void calcDspInterruptId();
+    void resetInterruptIdOnNoClients();
+
     AbstractFactoryZdspSupportPtr m_zdspSupportFactory;
     QList<ZdspClient*> m_clientsChonological;
     QHash<QByteArray, ZdspClient*> m_clientsByProxyConnectionId;
     QHash<quint16, ZdspClient*> m_clientsByDspInterruptId;
     quint16 m_currentDspInterruptId = 0;
-    void calcDspInterruptId();
 };
 
 #endif // ZDSPCLIENTCONTAINER_H
