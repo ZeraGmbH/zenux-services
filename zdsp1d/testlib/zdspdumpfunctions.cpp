@@ -53,6 +53,25 @@ QJsonObject ZDspDumpFunctions::getFullDump(const ZDspServer *server)
     return json;
 }
 
+int ZDspDumpFunctions::dumpCmdListCompiledList(QJsonArray &cyclicCmdsOut,
+                                               const QStringList &cyclicCmdListIn,
+                                               const QList<DspCmdWithParamsCompiled> &compiledListIn)
+{
+    int cyclCmdListCount = 0;
+    for (int i=0; i<int(cyclicCmdListIn.size()); ++i) {
+        const QString &cmd = cyclicCmdListIn[i];
+        if (!cmd.startsWith("--")) {
+            cyclicCmdsOut.append(cyclicCmdListIn[i]+ " -> " +
+                                 crcToHex(compiledListIn[cyclCmdListCount].w[0]) + " " +
+                                 crcToHex(compiledListIn[cyclCmdListCount].w[1]));
+            cyclCmdListCount++;
+        }
+        else
+            cyclicCmdsOut.append(cyclicCmdListIn[i]);
+    }
+    return cyclCmdListCount;
+}
+
 QJsonObject ZDspDumpFunctions::getMemoryDump(const ZDspServer *server)
 {
     const QList<ZdspClient*> &clientList = server->getClients();
@@ -63,13 +82,23 @@ QJsonObject ZDspDumpFunctions::getMemoryDump(const ZDspServer *server)
             QJsonObject entityData;
 
             const QStringList &cyclicCmdList = client->getCurrCyclicCommandsCompilerSupport()->getRawDspCommands(AbstractDspCompilerSupport::CYCLIC);
-            QJsonArray cyclicCmds = QJsonArray::fromStringList(cyclicCmdList);
+            const QList<DspCmdWithParamsCompiled> &cyclicCompiledList = client->GetDspCmdList();
+            QJsonArray cyclicCmds;
+            int cyclCmdListCount = dumpCmdListCompiledList(cyclicCmds, cyclicCmdList, cyclicCompiledList);
+            if (cyclCmdListCount != cyclicCompiledList.size())
+                qFatal("Entity Id: %i: Cyclic Cmd(%i)/Compiled(%i) mismatch!",
+                       entityId, cyclCmdListCount, int(cyclicCompiledList.size()));
             entityData.insert("DspCmdsRawCyclic", cyclicCmds);
             entityData.insert("DspCmdsCompiledCrcCyclic", crcToHex(getDspCmdListCompiledCrc(client->GetDspCmdList())));
 
-            const QStringList &interruptCmdList = client->getCurrCyclicCommandsCompilerSupport()->getRawDspCommands(AbstractDspCompilerSupport::INTERRUPT);
-            QJsonArray interruptCmds = QJsonArray::fromStringList(interruptCmdList);
-            entityData.insert("DspCmdsRawInterrupt", interruptCmds);
+            const QStringList &intCmdList = client->getCurrInterruptCommandsCompilerSupport()->getRawDspCommands(AbstractDspCompilerSupport::INTERRUPT);
+            const QList<DspCmdWithParamsCompiled> &intCompiledList = client->GetDspIntCmdList();
+            QJsonArray intCmds;
+            int intCmdListCount = dumpCmdListCompiledList(intCmds, intCmdList, intCompiledList);
+            if (intCmdListCount != intCompiledList.size())
+                qFatal("Entity Id: %i: Interrupt Cmd(%i)/Compiled(%i) mismatch!",
+                       entityId, intCmdListCount, int(intCompiledList.size()));
+            entityData.insert("DspCmdsRawInterrupt", intCmds);
             entityData.insert("DspCmdsCompiledCrcInterrupt", crcToHex(getDspCmdListCompiledCrc(client->GetDspIntCmdList())));
 
             const DspMemorySectionInternal &memSection = client->getUserMemSection();
@@ -112,8 +141,8 @@ QJsonObject ZDspDumpFunctions::getMemoryDump(const ZDspServer *server)
 
     // Sanity check cyclic
     int rawCmdCountCyclic = TestDspCompilerSupport::getRawDspCommandsCount(AbstractDspCompilerSupport::CYCLIC);
-    int binaryCmdCountCyclic = rawCyclicCmdMem.count() / 8;
-    if (rawCmdCountCyclic != binaryCmdCountCyclic-1) // -1: comiler support does not count INVALID()
+    int binaryCmdCountCyclic = rawCyclicCmdMem.size() / 8;
+    if (rawCmdCountCyclic != binaryCmdCountCyclic - 2) // -2: comiler support does not count INVALID() / DSPINTPOST
         qCritical("Cyclic cross check failed: Support: %i / binary %i", rawCmdCountCyclic, binaryCmdCountCyclic);
     int announcedCyclic = server->getProgMemCyclicOccupied();
     if (announcedCyclic != binaryCmdCountCyclic)
@@ -121,7 +150,7 @@ QJsonObject ZDspDumpFunctions::getMemoryDump(const ZDspServer *server)
 
     // Sanity check interrupt
     int rawCmdCountInterrupt = TestDspCompilerSupport::getRawDspCommandsCount(AbstractDspCompilerSupport::INTERRUPT);
-    int binaryCmdCountInterrupt = rawInterruptCmdMem.count() / 8;
+    int binaryCmdCountInterrupt = rawInterruptCmdMem.size() / 8;
     if (rawCmdCountInterrupt != binaryCmdCountInterrupt-1) // -1: comiler support does not count INVALID()
         qCritical("Interrupt cross check failed: Support: %i / binary %i", rawCmdCountInterrupt, binaryCmdCountInterrupt);
     int announcedInterrupt = server->getProgMemInterruptOccupied();

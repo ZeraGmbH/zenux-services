@@ -793,7 +793,6 @@ bool ZDspServer::compileCmdListsForAllClientsToBinaryStream(QString &errs,
         ZdspClient* firstClient = clientList.at(0);
         firstClient->getCurrCyclicCommandsCompilerSupport()->clearTotalCmdLists();
         firstClient->getCurrCyclicCommandsCompilerSupport()->startClientArea(0, "Global init", AbstractDspCompilerSupport::CYCLIC);
-        ZdspClient* lastClient = firstClient;
         DspCmdCompiler firstCompiler(&firstClient->m_dspVarResolver, firstClient->getDspInterruptId());
         cmd = firstCompiler.compileOneCmdLine(QString("DSPMEMOFFSET(%1)").arg(dm32DspWorkspace.m_startAddress),
                                               firstClient->getCurrCyclicCommandsCompilerSupport(), ok);
@@ -803,7 +802,6 @@ bool ZDspServer::compileCmdListsForAllClientsToBinaryStream(QString &errs,
         ulong userAlignedOffset = m_userWorkSpaceAlignedSegmentStartAdr;
         for (int i = 0; i < clientList.count(); i++) {
             ZdspClient* client = clientList.at(i);
-            lastClient = client;
 
             if (client->hasCyclicCmds()) {
                 client->getCurrCyclicCommandsCompilerSupport()->startClientArea(client->getEntityId(), "Cyclic mem offset",
@@ -833,7 +831,7 @@ bool ZDspServer::compileCmdListsForAllClientsToBinaryStream(QString &errs,
         }
 
         // wir triggern das senden der serialisierten interrupts
-        cycCmdMemStream << firstCompiler.compileOneCmdLine("DSPINTPOST()", lastClient->getCurrCyclicCommandsCompilerSupport(), ok);
+        cycCmdMemStream << firstCompiler.compileOneCmdLine("DSPINTPOST()", std::make_shared<DspCompilerSupport>(), ok);
     }
 
     DspVarResolver dspSystemVarResolver;

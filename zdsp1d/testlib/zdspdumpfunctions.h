@@ -22,6 +22,9 @@ public:
 private:
     static QString crcToHex(quint32 val);
     static QJsonObject dumpVariables(const QList<VarLocation> &vars);
+    static int dumpCmdListCompiledList(QJsonArray &cyclicCmdsOut,
+                                       const QStringList &cyclicCmdListIn,
+                                       const QList<DspCmdWithParamsCompiled> &compiledListIn);
 };
 
 #endif // ZDSPDUMPFUNCTIONS_H

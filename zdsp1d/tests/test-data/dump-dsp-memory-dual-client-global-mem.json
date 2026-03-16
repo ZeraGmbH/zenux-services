@@ -20,7 +20,6 @@
         "DspCmdsCompiledCrcCyclic": "0x00000000",
         "DspCmdsCompiledCrcInterrupt": "0x00000000",
         "DspCmdsRawCyclic": [
-            "DSPINTPOST()"
         ],
         "DspCmdsRawInterrupt": [
         ],
@@ -36,8 +35,7 @@
     },
     "TotalCmdListCyclic": [
         "-- Start entity ID 0 / Global init --",
-        "DSPMEMOFFSET(0x0E0800)",
-        "DSPINTPOST()"
+        "DSPMEMOFFSET(0x0E0800)"
     ],
     "TotalCmdListCyclicMaxInterruptCount": 0,
     "TotalCmdListInterrupt": [
