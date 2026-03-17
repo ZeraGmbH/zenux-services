@@ -301,23 +301,28 @@ static constexpr int CmdListLen21362 = 3584;
 static constexpr int IntCmdListLen21362 = 512;
 static constexpr int uwSpaceSize21362 = 32383; // userspace end => 0x9FFFF
 
-// User workspace layout:
-//
-// ---------   UserWorkSpaceBase   --------  <-
-//            Client1 work memory             |
-// ----------------------------------------   |
-//            Client2 work memory             |
-// v--------------------------------------v   |
-//                  .....                     |
-//                                            | UserWorkspace size
-//                                            |
-// --------- GlobalEnd (floating) ---------   |
-//                  .....                     |
-// ^-------- GlobalStart (fixed) ---------^   |
-// v-------- AlignedStart (fixed) --------v   |
-//                  .....                     |
-//                                            |
-// ----------------------------------------  <-
+//   _ _                                  _                             _                        _    _
+//  | | | ___ ___  _ _   _ _ _  ___  _ _ | |__ ___ ___  ___  ___  ___  | | ___  _ _  ___  _ _  _| |_ <_>
+//  | ' |<_-</ ._>| '_> | | | |/ . \| '_>| / /<_-<| . \<_> |/ | '/ ._> | |<_> || | |/ . \| | |  | |   _
+//  `___'/__/\___.|_|   |__/_/ \___/|_|  |_\_\/__/|  _/<___|\_|_.\___. |_|<___|`_. |\___/`___|  |_|  <_>
+//                                                |_|                          <___'
+
+// ---------   UserWorkSpaceBase   -------- <- ---------------------- <-
+//            Client1 work memory            |                         |
+// ----------------------------------------  |                         |
+//            Client2 work memory            |                         |
+// v--------------------------------------v  \                         |
+//                  .....                     UserMemAvailable         |
+//                                           /                         \
+//                                           |                          UserWorkspace size
+// --------- GlobalEnd (floating) ---------  |                         /
+//                  .....                    |                         |
+// ^-------- GlobalStart (fixed) ---------^  |                         |
+// v-------- AlignedStart (fixed) --------v <-                         |
+//                  .....                    \                         |
+//                                            UserMemAlignedAvailable  |
+//                                           /                         |
+// ---------------------------------------- <- ---------------------- <-
 
 int DspStaticData::alignInternalMemRegionsFor21262()
 {
