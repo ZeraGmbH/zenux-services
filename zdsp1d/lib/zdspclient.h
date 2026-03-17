@@ -36,7 +36,7 @@ public:
         ulong usermemsize = 0;
         ulong alignedMemSize = 0;
     };
-    MemSizes calcVarAdressesAndSizes(ulong startAdress, ulong alignedMemStartAddress);
+    MemSizes calcVarAdressesAndSizes(ulong clientStartAdress, ulong currentAlignedMemStartAddress);
 
     int getDspInterruptId() const;
     int getMemSize(DspSegmentType segment) const;
