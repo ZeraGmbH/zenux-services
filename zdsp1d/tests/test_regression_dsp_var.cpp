@@ -257,7 +257,7 @@ void test_regression_dsp_var::createAlignedVariablesMultipleClients()
     ZDspServer* server = m_dspService->getServer();
     QCOMPARE(server->getVarMemOccupied(moduleAlignedMemorySegment), 1+2+3+4);
 
-    QString dumped = TestLogHelpers::dump(ZDspDumpFunctions::getMemoryDump(server));
+    QString dumped = TestLogHelpers::dump(ZDspDumpFunctions::getFullDump(server));
     QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonFile(":/dump-dsp-memory-dual-client-aligned-mem.json", dumped));
 }
 
@@ -289,7 +289,7 @@ void test_regression_dsp_var::createGlobalVariablesMultipleClients()
     dspIFace2->activateInterface();
     TimeMachineObject::feedEventLoop();
 
-    QString dumped = TestLogHelpers::dump(ZDspDumpFunctions::getMemoryDump(server));
+    QString dumped = TestLogHelpers::dump(ZDspDumpFunctions::getFullDump(server));
     QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonFile(":/dump-dsp-memory-dual-client-global-mem.json", dumped));
 
     constexpr int globalMemSize = 1+1+2;
@@ -324,7 +324,7 @@ void test_regression_dsp_var::createGlobalVariablesMultipleClientsVarSizesDiffer
     dspIFace2->activateInterface();
     TimeMachineObject::feedEventLoop();
 
-    QString dumped = TestLogHelpers::dump(ZDspDumpFunctions::getMemoryDump(server));
+    QString dumped = TestLogHelpers::dump(ZDspDumpFunctions::getFullDump(server));
     QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonFile(":/dump-dsp-memory-dual-client-global-mem-different-size.json", dumped));
 }
 

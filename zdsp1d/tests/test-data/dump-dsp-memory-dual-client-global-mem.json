@@ -1,46 +1,61 @@
 {
-    "1": {
-        "DspCmdsCompiledCrcCyclic": "0x00000000",
-        "DspCmdsCompiledCrcInterrupt": "0x00000000",
-        "DspCmdsRawCyclic": [
-        ],
-        "DspCmdsRawInterrupt": [
-        ],
-        "DspVarsAligned": {
+    "ProgMemCyclicAvailable": 3584,
+    "ProgMemCyclicFree": 3581,
+    "ProgMemCyclicUsed": 3,
+    "ProgMemInterruptAvailable": 512,
+    "ProgMemInterruptFree": 511,
+    "ProgMemInterruptUsed": 1,
+    "UserMemAlignedAvailable": 4095,
+    "UserMemAlignedFree": 4095,
+    "UserMemAlignedUsed": 0,
+    "UserMemAvailable": 28288,
+    "UserMemFree": 28284,
+    "UserMemUsed": 0,
+    "UserMemUsedGlobal": 4,
+    "ZdspMemDump": {
+        "1": {
+            "DspCmdsCompiledCrcCyclic": "0x00000000",
+            "DspCmdsCompiledCrcInterrupt": "0x00000000",
+            "DspCmdsRawCyclic": [
+            ],
+            "DspCmdsRawInterrupt": [
+            ],
+            "DspVarsAligned": {
+            },
+            "DspVarsClientBaseAddress": "0x098180",
+            "DspVarsGlobal": {
+                "0x006E7E / 0x09EFFE": "GLOBAL_VAR_COMMON",
+                "0x006E7F / 0x09EFFF": "CLIENT1_GLOBAL_VAR1"
+            },
+            "DspVarsLocal": {
+            }
         },
-        "DspVarsClientBaseAddress": "0x098180",
-        "DspVarsGlobal": {
-            "0x006E7E / 0x09EFFE": "GLOBAL_VAR_COMMON",
-            "0x006E7F / 0x09EFFF": "CLIENT1_GLOBAL_VAR1"
+        "2": {
+            "DspCmdsCompiledCrcCyclic": "0x00000000",
+            "DspCmdsCompiledCrcInterrupt": "0x00000000",
+            "DspCmdsRawCyclic": [
+            ],
+            "DspCmdsRawInterrupt": [
+            ],
+            "DspVarsAligned": {
+            },
+            "DspVarsClientBaseAddress": "0x098180",
+            "DspVarsGlobal": {
+                "0x006E7C / 0x09EFFC": "CLIENT2_GLOBAL_VAR2",
+                "0x006E7E / 0x09EFFE": "GLOBAL_VAR_COMMON"
+            },
+            "DspVarsLocal": {
+            }
         },
-        "DspVarsLocal": {
-        }
-    },
-    "2": {
-        "DspCmdsCompiledCrcCyclic": "0x00000000",
-        "DspCmdsCompiledCrcInterrupt": "0x00000000",
-        "DspCmdsRawCyclic": [
+        "TotalCmdListCyclic": [
+            "-- Start entity ID 0 / Global init --",
+            "DSPMEMOFFSET(0x0E0800)"
         ],
-        "DspCmdsRawInterrupt": [
+        "TotalCmdListCyclicMaxInterruptCount": 0,
+        "TotalCmdListInterrupt": [
         ],
-        "DspVarsAligned": {
-        },
-        "DspVarsClientBaseAddress": "0x098180",
-        "DspVarsGlobal": {
-            "0x006E7C / 0x09EFFC": "CLIENT2_GLOBAL_VAR2",
-            "0x006E7E / 0x09EFFE": "GLOBAL_VAR_COMMON"
-        },
-        "DspVarsLocal": {
-        }
-    },
-    "TotalCmdListCyclic": [
-        "-- Start entity ID 0 / Global init --",
-        "DSPMEMOFFSET(0x0E0800)"
-    ],
-    "TotalCmdListCyclicMaxInterruptCount": 0,
-    "TotalCmdListInterrupt": [
-    ],
-    "TotalCmdListInterruptMaxInterruptCount": 0,
-    "TotalDspCmdsCompiledCrcCyclic": "0xC5087446",
-    "TotalDspCmdsCompiledCrcInterrupt": "0x6522DF69"
+        "TotalCmdListInterruptMaxInterruptCount": 0,
+        "TotalDspCmdsCompiledCrcCyclic": "0xC5087446",
+        "TotalDspCmdsCompiledCrcInterrupt": "0x6522DF69"
+    }
 }
