@@ -38,7 +38,7 @@ public:
                                                     QList<DspCmdWithParamsCompiled> &compiledCyclicOut,
                                                     QList<DspCmdWithParamsCompiled> &compiledInterruptOut) const;
 
-    int getVarMemLocalAvailable() const;
+    int getVarMemAvailable() const; // global & local - they share more or less an area
     int getVarMemAlignedAvailable() const;
     int getVarMemOccupied(DspSegmentType segment) const;
 

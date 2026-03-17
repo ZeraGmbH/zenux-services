@@ -38,17 +38,23 @@ QJsonObject ZDspDumpFunctions::getFullDump(const ZDspServer *server)
 {
     QJsonObject json;
     json.insert("ProgMemCyclicAvailable", server->getProgMemCyclicAvailable());
-    json.insert("ProgMemCyclicFree", server->getProgMemCyclicAvailable()-server->getProgMemCyclicOccupied());
+    json.insert("ProgMemCyclicFree", server->getProgMemCyclicAvailable()
+                                   - server->getProgMemCyclicOccupied());
     json.insert("ProgMemCyclicUsed", server->getProgMemCyclicOccupied());
     json.insert("ProgMemInterruptAvailable", server->getProgMemInterruptAvailable());
-    json.insert("ProgMemInterruptFree", server->getProgMemInterruptAvailable() - server->getProgMemInterruptOccupied());
+    json.insert("ProgMemInterruptFree", server->getProgMemInterruptAvailable()
+                                      - server->getProgMemInterruptOccupied());
     json.insert("ProgMemInterruptUsed", server->getProgMemInterruptOccupied());
-    json.insert("UserMemAvailable", server->getVarMemLocalAvailable());
-    json.insert("UserMemFree", server->getVarMemLocalAvailable() - server->getVarMemOccupied(moduleLocalSegment));
+    json.insert("UserMemAvailable", server->getVarMemAvailable());
+    json.insert("UserMemFree", server->getVarMemAvailable()
+                             - server->getVarMemOccupied(moduleLocalSegment)
+                             - server->getVarMemOccupied(moduleGlobalSegment));
     json.insert("UserMemUsed", server->getVarMemOccupied(moduleLocalSegment));
     json.insert("UserMemAlignedAvailable", server->getVarMemAlignedAvailable());
-    json.insert("UserMemAlignedFree", server->getVarMemAlignedAvailable() - server->getVarMemOccupied(moduleAlignedMemorySegment));
+    json.insert("UserMemAlignedFree", server->getVarMemAlignedAvailable()
+                                    - server->getVarMemOccupied(moduleAlignedMemorySegment));
     json.insert("UserMemAlignedUsed", server->getVarMemOccupied(moduleAlignedMemorySegment));
+    json.insert("UserMemUsedGlobal", server->getVarMemOccupied(moduleGlobalSegment));
     json.insert("ZdspMemDump", getMemoryDump(server));
     return json;
 }

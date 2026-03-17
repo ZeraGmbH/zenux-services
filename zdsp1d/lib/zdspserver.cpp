@@ -638,12 +638,12 @@ const QList<ZdspClient *> &ZDspServer::getClients() const
     return m_zdspClientContainer.getClientList();
 }
 
-int ZDspServer::getVarMemLocalAvailable() const
+int ZDspServer::getVarMemAvailable() const
 {
     for (int i=0; i<dm32UserWorkSpace.getVarCount(); i++) {
         const DspVarServerPtr dspVar = dm32UserWorkSpace.getDspVar(i);
         if(dspVar->Name == "UWSPACE")
-            return m_userWorkSpaceAlignedSegmentStartAdr - dspVar->m_absoluteAddress - ZdspClient::getGlobalMemSizeTotal();
+            return m_userWorkSpaceAlignedSegmentStartAdr - dspVar->m_absoluteAddress;
     }
     return 0;
 }

@@ -264,8 +264,6 @@ void test_regression_dsp_var::createAlignedVariablesMultipleClients()
 void test_regression_dsp_var::createGlobalVariablesMultipleClients()
 {
     ZDspServer* server = m_dspService->getServer();
-    int initialUserMemSize = server->getVarMemLocalAvailable();
-
     // create vars/dummy prog client1
     m_dspIFace->setEntityId(1);
     DspVarGroupClientInterface* dspVarGroup1 = m_dspIFace->createVariableGroup("createGlobalVariablesMultipleClients");
@@ -297,7 +295,6 @@ void test_regression_dsp_var::createGlobalVariablesMultipleClients()
     constexpr int globalMemSize = 1+1+2;
     QCOMPARE(server->getVarMemOccupied(moduleGlobalSegment), globalMemSize);
     QCOMPARE(ZdspClient::getGlobalMemSizeTotal(), globalMemSize);
-    QCOMPARE(server->getVarMemLocalAvailable(), initialUserMemSize-globalMemSize); // global mem reduces user mem
 }
 
 void test_regression_dsp_var::createGlobalVariablesMultipleClientsVarSizesDifferent()
@@ -334,7 +331,6 @@ void test_regression_dsp_var::createGlobalVariablesMultipleClientsVarSizesDiffer
 void test_regression_dsp_var::createAllUserTypeVariablesMultipleClients()
 {
     ZDspServer* server = m_dspService->getServer();
-    int initialUserMemSize = server->getVarMemLocalAvailable();
 
     // create vars/dummy prog client1
     m_dspIFace->setEntityId(1);
@@ -380,8 +376,6 @@ void test_regression_dsp_var::createAllUserTypeVariablesMultipleClients()
     constexpr int globalMemSize = 1+1+1; // one common / one per client (2 clients)
     QCOMPARE(server->getVarMemOccupied(moduleGlobalSegment), globalMemSize);
     QCOMPARE(ZdspClient::getGlobalMemSizeTotal(), globalMemSize);
-    QCOMPARE(server->getVarMemLocalAvailable(), initialUserMemSize-globalMemSize); // global mem reduces user mem
-
 }
 
 static constexpr int dm32UserWorkSpaceBase21362 = 0x98180; // stolen from zdspserver.cpp
