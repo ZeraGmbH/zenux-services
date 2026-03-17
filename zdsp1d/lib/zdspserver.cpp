@@ -812,28 +812,28 @@ bool ZDspServer::compileCmdListsForAllClientsToCompileLists(QString &errs,
         compiledCyclicOut.append(firstCompiler.compileOneCmdLine(QString("DSPMEMOFFSET(%1)").arg(dm32DspWorkspace.m_startAddress),
                                                                  firstClient->getCurrCyclicCommandsCompilerSupport(), ok));
 
-        ulong userMemOffset = dm32UserWorkSpace.m_startAddress;
-        ulong userAlignedOffset = m_userWorkSpaceAlignedSegmentStartAdr;
+        ulong currModuleLocalStartAdr = dm32UserWorkSpace.m_startAddress;
+        ulong currModuleAlignedStartAdr = m_userWorkSpaceAlignedSegmentStartAdr;
+        ulong currModuleGlobalStartAdr = m_userWorkSpaceAlignedSegmentStartAdr-1;
         for (int i = 0; i < clientList.count(); i++) {
             ZdspClient* client = clientList.at(i);
 
             if (client->hasCyclicCmds()) {
                 client->getCurrCyclicCommandsCompilerSupport()->startClientArea(client->getEntityId(), "Cyclic mem offset",
                                                                                 AbstractDspCompilerSupport::CYCLIC);
-                compiledCyclicOut.append(genClientStartAddressCmd(userMemOffset, client, client->getCurrCyclicCommandsCompilerSupport(), ok));
+                compiledCyclicOut.append(genClientStartAddressCmd(currModuleLocalStartAdr, client, client->getCurrCyclicCommandsCompilerSupport(), ok));
             }
             if(client->hasInterruptCmds()) {
                 client->getCurrInterruptCommandsCompilerSupport()->startClientArea(client->getEntityId(), "Interrupt mem offset",
                                                                                    AbstractDspCompilerSupport::INTERRUPT);
-                compiledInterruptOut.append(genClientStartAddressCmd(userMemOffset, client, client->getCurrInterruptCommandsCompilerSupport(), ok));
+                compiledInterruptOut.append(genClientStartAddressCmd(currModuleLocalStartAdr, client, client->getCurrInterruptCommandsCompilerSupport(), ok));
             }
 
-            ZdspClient::MemSizes memSizes = client->calcVarAdressesAndSizes(userMemOffset, userAlignedOffset);
+            client->calcVarAdressesAndSizes(currModuleLocalStartAdr,
+                                            currModuleAlignedStartAdr,
+                                            currModuleGlobalStartAdr);
             if (!client->compileCmdLists(errs))
                 return false;
-
-            userMemOffset += memSizes.usermemsize;
-            userAlignedOffset += memSizes.alignedMemSize;
 
             compiledCyclicOut.append(client->GetDspCmdList());
             compiledInterruptOut.append(client->GetDspIntCmdList());

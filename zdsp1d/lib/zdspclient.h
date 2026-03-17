@@ -32,11 +32,9 @@ public:
 
     DspVarResolver m_dspVarResolver;
 
-    struct MemSizes {
-        ulong usermemsize = 0;
-        ulong alignedMemSize = 0;
-    };
-    MemSizes calcVarAdressesAndSizes(ulong clientStartAdress, ulong currentAlignedMemStartAddress);
+    void calcVarAdressesAndSizes(ulong &currLocalAbsAdr,
+                                 ulong &currAlignedAbsAdr,
+                                 ulong &currGlobalAbsAdr);
 
     int getDspInterruptId() const;
     int getMemSize(DspSegmentType segment) const;

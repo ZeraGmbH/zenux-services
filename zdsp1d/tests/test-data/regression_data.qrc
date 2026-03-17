@@ -4,6 +4,7 @@
         <file>adsp-21362.xml</file>
         <file>dump-dsp-internal-vars-21262.json</file>
         <file>dump-dsp-internal-vars-21362.json</file>
+        <file>dump-dsp-memory-all-types-multiple-clients.json</file>
         <file>dump-dsp-memory-dual-client-aligned-mem.json</file>
         <file>dump-dsp-memory-dual-client-global-mem.json</file>
         <file>dump-dsp-memory-dual-client-global-mem-different-size.json</file>

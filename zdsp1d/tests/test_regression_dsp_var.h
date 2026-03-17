@@ -29,6 +29,7 @@ private slots:
 
     void createGlobalVariablesMultipleClients();
     void createGlobalVariablesMultipleClientsVarSizesDifferent();
+    void createAllUserTypeVariablesMultipleClients();
 
 
     void readVariablesAndListenDeviceNode(); // we learned dspMemoryRead details by this

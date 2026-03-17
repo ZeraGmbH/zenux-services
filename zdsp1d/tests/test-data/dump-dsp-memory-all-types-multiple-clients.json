@@ -1,0 +1,67 @@
+{
+    "ProgMemCyclicAvailable": 3584,
+    "ProgMemCyclicFree": 3581,
+    "ProgMemCyclicUsed": 3,
+    "ProgMemInterruptAvailable": 512,
+    "ProgMemInterruptFree": 511,
+    "ProgMemInterruptUsed": 1,
+    "UserMemAlignedAvailable": 4095,
+    "UserMemAlignedFree": 4092,
+    "UserMemAlignedUsed": 3,
+    "UserMemAvailable": 28285,
+    "UserMemFree": 28281,
+    "UserMemUsed": 4,
+    "ZdspMemDump": {
+        "1": {
+            "DspCmdsCompiledCrcCyclic": "0x00000000",
+            "DspCmdsCompiledCrcInterrupt": "0x00000000",
+            "DspCmdsRawCyclic": [
+            ],
+            "DspCmdsRawInterrupt": [
+            ],
+            "DspVarsAligned": {
+                "0x006E80 / 0x09F000": "CLIENT1_ALIGNED_VAR1",
+                "0x006E81 / 0x09F001": "CLIENT1_ALIGNED_VAR2"
+            },
+            "DspVarsClientBaseAddress": "0x098180",
+            "DspVarsGlobal": {
+                "0x006E7E / 0x09EFFE": "CLIENT1_GLOBAL_VAR1",
+                "0x006E7F / 0x09EFFF": "GLOBAL_VAR_COMMON"
+            },
+            "DspVarsLocal": {
+                "0x000000 / 0x098180": "CLIENT1_LOCAL_VAR1",
+                "0x000001 / 0x098181": "CLIENT1_LOCAL_VAR2"
+            }
+        },
+        "2": {
+            "DspCmdsCompiledCrcCyclic": "0x00000000",
+            "DspCmdsCompiledCrcInterrupt": "0x00000000",
+            "DspCmdsRawCyclic": [
+            ],
+            "DspCmdsRawInterrupt": [
+            ],
+            "DspVarsAligned": {
+                "0x006E80 / 0x09F002": "CLIENT2_ALIGNED_VAR1"
+            },
+            "DspVarsClientBaseAddress": "0x098182",
+            "DspVarsGlobal": {
+                "0x006E7B / 0x09EFFD": "CLIENT2_GLOBAL_VAR1",
+                "0x006E7D / 0x09EFFF": "GLOBAL_VAR_COMMON"
+            },
+            "DspVarsLocal": {
+                "0x000000 / 0x098182": "CLIENT2_LOCAL_VAR1",
+                "0x000001 / 0x098183": "CLIENT2_LOCAL_VAR2"
+            }
+        },
+        "TotalCmdListCyclic": [
+            "-- Start entity ID 0 / Global init --",
+            "DSPMEMOFFSET(0x0E0800)"
+        ],
+        "TotalCmdListCyclicMaxInterruptCount": 0,
+        "TotalCmdListInterrupt": [
+        ],
+        "TotalCmdListInterruptMaxInterruptCount": 0,
+        "TotalDspCmdsCompiledCrcCyclic": "0xC5087446",
+        "TotalDspCmdsCompiledCrcInterrupt": "0x6522DF69"
+    }
+}
