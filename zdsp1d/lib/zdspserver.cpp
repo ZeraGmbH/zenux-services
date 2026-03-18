@@ -737,7 +737,7 @@ void ZDspServer::DspIntHandler(int)
     if (!clientList.isEmpty()) { // wenn vorhanden nutzen wir immer den 1. client zum lesen
         ZdspClient *client = clientList.first();
         QByteArray ba;
-        if (m_dspInOut.readOneDspVar(QString("CTRLCMDPAR,%1").arg(DSP_MAX_PENDING_INTERRUPT_COUNT),
+        if (m_dspInOut.readOneDspVar(QString("CTRLCMDPAR,%1").arg(DSP_INTERRUPT_PARAM_BUFFER_LEN),
                                      &ba, &client->m_dspVarResolver)) {
             const ulong* pardsp = reinterpret_cast<ulong*>(ba.data());
             int interruptCount = pardsp[0];
