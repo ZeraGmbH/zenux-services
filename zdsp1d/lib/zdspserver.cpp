@@ -745,8 +745,21 @@ void ZDspServer::DspIntHandler(int)
             if (interruptCount > DSP_MAX_PENDING_INTERRUPT_COUNT)
                 qWarning("Number of interrupts in a package: %i exceeds upper limit!", interruptCount);
             else {
-                if (m_dspSuperClient) // notify super client first
-                    m_dspSuperClient->sendInterruptNotification(0, m_protobufWrapper);
+                if (m_dspSuperClient) { // notify super client first
+                    bool superClientFound = false;
+                    // search super client index - it is expected last => start search at end
+                    for (int i = interruptCount; i >= 1; i--) {
+                        int process = pardsp[i] >> 16;
+                        const ZdspClient *clientToNotify = m_zdspClientContainer.findClient(process);
+                        if (clientToNotify && clientToNotify == m_dspSuperClient) {
+                            clientToNotify->sendInterruptNotification(pardsp[interruptCount] & 0xFFFF, m_protobufWrapper);
+                            superClientFound = true;
+                            break;
+                        }
+                    }
+                    if (!superClientFound)
+                        qWarning("Super client not found!");
+                }
                 for (int i = 1; i < (interruptCount+1); i++) {
                     int process = pardsp[i] >> 16;
                     const ZdspClient *clientToNotify = m_zdspClientContainer.findClient(process);
