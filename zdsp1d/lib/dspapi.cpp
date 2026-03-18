@@ -87,7 +87,8 @@ static DspCmdDecodingDetails DspCmd[] =
 {"INTEGRALNEG", 76, CMD3i16, 0 },
 {"SUBNVC", 77, CMD3i16, 0 },
 {"XCOPYMEM", 78, CMD3i16, 0 },
-{"TESTSKIPNOIRQPENDING", 79, CMD, 0 }
+{"TESTSKIPNOIRQPENDING", 79, CMD, 0 },
+{"XDSPINTTRIGGER", 80, CMD2i16, 1 }
 };
 
 #define DSP_VAR_COUNT(VAR_ARRAY) sizeof(VAR_ARRAY) / sizeof(DspVarInServer)
