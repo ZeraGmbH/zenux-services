@@ -733,6 +733,7 @@ void ZDspServer::DspIntHandler(int)
     char dummy[2];
     read(pipeFileDescriptorZdsp1[0], dummy, 1); // first we read the pipe
 
+    // Can we move all this to ZDspClientContainer?
     const QList<ZdspClient*> clientList = getClients();
     if (!clientList.isEmpty()) { // wenn vorhanden nutzen wir immer den 1. client zum lesen
         ZdspClient *client = clientList.first();
@@ -752,7 +753,7 @@ void ZDspServer::DspIntHandler(int)
                         int process = pardsp[i] >> 16;
                         const ZdspClient *clientToNotify = m_zdspClientContainer.findClient(process);
                         if (clientToNotify && clientToNotify == m_dspSuperClient) {
-                            clientToNotify->sendInterruptNotification(pardsp[interruptCount] & 0xFFFF, m_protobufWrapper);
+                            clientToNotify->sendInterruptNotification(pardsp[interruptCount], m_protobufWrapper);
                             superClientFound = true;
                             break;
                         }
@@ -764,7 +765,7 @@ void ZDspServer::DspIntHandler(int)
                     int process = pardsp[i] >> 16;
                     const ZdspClient *clientToNotify = m_zdspClientContainer.findClient(process);
                     if (clientToNotify && clientToNotify != m_dspSuperClient) // don't double notify super client
-                        clientToNotify->sendInterruptNotification(pardsp[i] & 0xFFFF, m_protobufWrapper);
+                        clientToNotify->sendInterruptNotification(pardsp[i], m_protobufWrapper);
                 }
             }
         }

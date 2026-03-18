@@ -107,7 +107,7 @@ void ZdspClient::sendInterruptNotification(ulong parameter, XiQNetWrapper &proto
     ProtobufMessage::NetMessage protobufIntMessage;
     ProtobufMessage::NetMessage::NetReply *intMessage = protobufIntMessage.mutable_reply();
 
-    const QString dspIntStr = QString("DSPINT:%1").arg(parameter);
+    const QString dspIntStr = QString("DSPINT:%1").arg(parameter & 0xFFFF);
     intMessage->set_body(dspIntStr.toStdString());
     intMessage->set_rtype(ProtobufMessage::NetMessage_NetReply_ReplyType_ACK);
 
