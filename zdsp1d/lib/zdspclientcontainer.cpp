@@ -28,6 +28,22 @@ void ZDspClientContainer::addClient(VeinTcp::TcpPeer *netClient, const QByteArra
     m_clientsByProxyConnectionId[proxyConnectionId] = client;
 }
 
+bool ZDspClientContainer::makeSuperClient(const ZdspClient *dspClient)
+{
+    if (m_dspSuperClient)
+        return false;
+    m_dspSuperClient = dspClient;
+    QObject::connect(m_dspSuperClient, &QObject::destroyed, dspClient, [&]() {
+        m_dspSuperClient = nullptr;
+    });
+    return true;
+}
+
+const ZdspClient *ZDspClientContainer::getSuperClient() const
+{
+    return m_dspSuperClient;
+}
+
 const QList<ZdspClient *> &ZDspClientContainer::getClientList() const
 {
     return m_clientsChonological;

@@ -10,6 +10,8 @@ public:
     virtual ~ZDspClientContainer();
     void addClient(VeinTcp::TcpPeer* netClient,
                    const QByteArray &proxyConnectionId);
+    bool makeSuperClient(const ZdspClient *dspClient);
+    const ZdspClient *getSuperClient() const;
 
     const QList<ZdspClient*> &getClientList() const;
     ZdspClient *getFirstAdded() const; // is first mandatory / can we get rid of this?
@@ -29,6 +31,7 @@ private:
     QList<ZdspClient*> m_clientsChonological;
     QHash<QByteArray, ZdspClient*> m_clientsByProxyConnectionId;
     QHash<quint16, ZdspClient*> m_clientsByDspInterruptId;
+    const ZdspClient *m_dspSuperClient = nullptr;
     quint16 m_currentDspInterruptId = 0;
 };
 

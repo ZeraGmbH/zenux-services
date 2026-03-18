@@ -414,12 +414,8 @@ QString ZDspServer::handleScpiInterfaceRead(const QString &scpiInput)
 
 QString ZDspServer::handleSetDspSuperClient(const ZdspClient *client)
 {
-    if (m_dspSuperClient)
+    if (!m_zdspClientContainer.makeSuperClient(client))
         return ZSCPI::scpiAnswer[ZSCPI::nak];
-    m_dspSuperClient = client;
-    connect(m_dspSuperClient, &QObject::destroyed, [&]() {
-        m_dspSuperClient = nullptr;
-    });
     return ZSCPI::scpiAnswer[ZSCPI::ack];
 }
 
@@ -746,13 +742,14 @@ void ZDspServer::DspIntHandler(int)
             if (interruptCount > DSP_MAX_PENDING_INTERRUPT_COUNT)
                 qWarning("Number of interrupts in a package: %i exceeds upper limit!", interruptCount);
             else {
-                if (m_dspSuperClient) { // notify super client first
+                const ZdspClient *superClient = m_zdspClientContainer.getSuperClient();
+                if (superClient) { // notify super client first
                     bool superClientFound = false;
                     // search super client index - it is expected last => start search at end
                     for (int i = interruptCount; i >= 1; i--) {
                         int process = pardsp[i] >> 16;
                         const ZdspClient *clientToNotify = m_zdspClientContainer.findClient(process);
-                        if (clientToNotify && clientToNotify == m_dspSuperClient) {
+                        if (clientToNotify && clientToNotify == superClient) {
                             clientToNotify->sendInterruptNotification(pardsp[interruptCount], m_protobufWrapper);
                             superClientFound = true;
                             break;
@@ -764,7 +761,7 @@ void ZDspServer::DspIntHandler(int)
                 for (int i = 1; i < (interruptCount+1); i++) {
                     int process = pardsp[i] >> 16;
                     const ZdspClient *clientToNotify = m_zdspClientContainer.findClient(process);
-                    if (clientToNotify && clientToNotify != m_dspSuperClient) // don't double notify super client
+                    if (clientToNotify && clientToNotify != superClient) // don't double notify super client
                         clientToNotify->sendInterruptNotification(pardsp[i], m_protobufWrapper);
                 }
             }

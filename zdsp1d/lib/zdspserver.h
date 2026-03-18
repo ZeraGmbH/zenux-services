@@ -124,7 +124,6 @@ private:
     QSocketNotifier* m_pNotifier = nullptr;
 
     ZDspClientContainer m_zdspClientContainer;
-    const ZdspClient *m_dspSuperClient = nullptr;
 
     ulong m_userWorkSpaceAlignedSegmentStartAdr;
     LogStatisticsAsyncInt m_dspInterruptLogStatistics;
