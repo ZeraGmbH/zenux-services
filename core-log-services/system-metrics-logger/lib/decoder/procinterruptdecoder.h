@@ -8,7 +8,7 @@ class ProcInterruptDecoder
 {
 public:
     static InterruptValues getCurrentInterrupts();
-    static quint32 decodeSingleInterruptValue(QString infoLine);
+    static quint32 decodeSingleInterruptValue(const QString &infoLine);
 private:
     static QString getInterruptInfo();
 };

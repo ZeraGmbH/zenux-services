@@ -34,7 +34,7 @@ QString ProcMeminfoDecoder::getProcMeminfo()
     return procMeminfo;
 }
 
-quint32 ProcMeminfoDecoder::decodeSingleMemoryValue(QString infoLine)
+quint32 ProcMeminfoDecoder::decodeSingleMemoryValue(const QString &infoLine)
 {
     QStringList parts = infoLine.split(" ", Qt::SkipEmptyParts);
     return parts[1].toUInt();

@@ -8,7 +8,7 @@ class ProcMeminfoDecoder
 {
 public:
     static MemoryValues getCurrentMemoryValues();
-    static quint32 decodeSingleMemoryValue(QString infoLine);
+    static quint32 decodeSingleMemoryValue(const QString &infoLine);
 private:
     static QString getProcMeminfo();
 };

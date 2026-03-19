@@ -31,7 +31,7 @@ DiskValues ProcPidIoDecoder::getReadWrites(int pid)
     return values;
 }
 
-DiskValuesProcesses ProcPidIoDecoder::getPidGroupReadWrites(QVector<int> pids)
+DiskValuesProcesses ProcPidIoDecoder::getPidGroupReadWrites(const QVector<int> &pids)
 {
     DiskValuesProcesses processesValues;
     for(int pid : pids) {

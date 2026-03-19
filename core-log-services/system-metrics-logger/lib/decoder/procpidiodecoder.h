@@ -8,7 +8,7 @@ class ProcPidIoDecoder
 {
 public:
     static DiskValues getReadWrites(int pid);
-    static DiskValuesProcesses getPidGroupReadWrites(QVector<int> pids);
+    static DiskValuesProcesses getPidGroupReadWrites(const QVector<int> &pids);
 };
 
 #endif // PROCPIDIODECODER_H

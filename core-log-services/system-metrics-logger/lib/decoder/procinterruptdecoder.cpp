@@ -26,7 +26,7 @@ QString ProcInterruptDecoder::getInterruptInfo()
     return procInterruptInfo;
 }
 
-quint32 ProcInterruptDecoder::decodeSingleInterruptValue(QString infoLine)
+quint32 ProcInterruptDecoder::decodeSingleInterruptValue(const QString &infoLine)
 {
     QStringList parts = infoLine.split(" ", Qt::SkipEmptyParts);
     return parts[1].toUInt();
