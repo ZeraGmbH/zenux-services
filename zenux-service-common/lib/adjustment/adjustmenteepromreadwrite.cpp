@@ -11,12 +11,12 @@ AdjustmentEepromReadWrite::AdjustmentEepromReadWrite(EepromI2cDeviceInterfacePtr
 {
 }
 
-void AdjustmentEepromReadWrite::setCachePath(QString path)
+void AdjustmentEepromReadWrite::setCachePath(const QString &path)
 {
     m_cachePath = path;
 }
 
-QString AdjustmentEepromReadWrite::getCacheFullFileName(QString cacheFileName)
+QString AdjustmentEepromReadWrite::getCacheFullFileName(const QString &cacheFileName)
 {
     QFileInfo fi(m_cachePath + "/" + cacheFileName);
     QString fullPath = fi.absoluteFilePath();
@@ -28,7 +28,7 @@ bool AdjustmentEepromReadWrite::readData()
     return readDataCached("");
 }
 
-bool AdjustmentEepromReadWrite::readDataCached(QString cacheFileName)
+bool AdjustmentEepromReadWrite::readDataCached(const QString &cacheFileName)
 {
     qInfo("Read adjustment data...");
     if(m_adjDataReadIsValid) {
@@ -137,7 +137,7 @@ bool AdjustmentEepromReadWrite::readAllAndValidateFromChip(QByteArray &ba, quint
     return true;
 }
 
-bool AdjustmentEepromReadWrite::readAllAndValidateFromCache(QByteArray &ba, quint32 size, QString cacheFileName)
+bool AdjustmentEepromReadWrite::readAllAndValidateFromCache(QByteArray &ba, quint32 size, const QString &cacheFileName)
 {
     if(cacheFileName.isEmpty())
         return false;
@@ -172,7 +172,7 @@ bool AdjustmentEepromReadWrite::writeRawDataToChip(QByteArray &ba)
     return count == written;
 }
 
-void AdjustmentEepromReadWrite::writeRawDataToCache(QByteArray ba, QString cacheFileName)
+void AdjustmentEepromReadWrite::writeRawDataToCache(QByteArray ba, const QString &cacheFileName)
 {
     if(cacheFileName.isEmpty())
         return;

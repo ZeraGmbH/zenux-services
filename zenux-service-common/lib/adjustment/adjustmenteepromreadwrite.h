@@ -9,11 +9,11 @@
 class AdjustmentEepromReadWrite
 {
 public:
-    AdjustmentEepromReadWrite(EepromI2cDeviceInterfacePtr adjMemory);
-    static void setCachePath(QString path);
-    static QString getCacheFullFileName(QString cacheFileName);
+    explicit AdjustmentEepromReadWrite(EepromI2cDeviceInterfacePtr adjMemory);
+    static void setCachePath(const QString &path);
+    static QString getCacheFullFileName(const QString &cacheFileName);
     bool readData();
-    bool readDataCached(QString cacheFileName);
+    bool readDataCached(const QString &cacheFileName);
     bool writeData();
     bool resetData();
 
@@ -25,12 +25,12 @@ public:
 private:
     bool readSizeAndChecksum(quint32 &sizeRead);
     bool readAllAndValidateFromChip(QByteArray& ba, quint32 size);
-    bool readAllAndValidateFromCache(QByteArray& ba, quint32 size, QString cacheFileName);
+    bool readAllAndValidateFromCache(QByteArray& ba, quint32 size, const QString &cacheFileName);
     bool writeRawDataToChip(QByteArray& ba);
-    void writeRawDataToCache(QByteArray ba, QString cacheFileName);
+    void writeRawDataToCache(QByteArray ba, const QString &cacheFileName);
     void setCountAndChecksum(QByteArray& ba);
-    void setChecksumInBuffer(QByteArray& ba, quint16 checksum);
-    void setCountInBuffer(QByteArray& ba);
+    static void setChecksumInBuffer(QByteArray& ba, quint16 checksum);
+    static void setCountInBuffer(QByteArray& ba);
 
     EepromI2cDeviceInterfacePtr m_adjMemory;
     quint16 m_checksum = 0;
