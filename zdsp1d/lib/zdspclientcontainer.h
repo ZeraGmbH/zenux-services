@@ -24,7 +24,7 @@ public:
     void delClient(const QByteArray &proxyConnectionId);
     void delAllClients();
 
-    void handleDspInterrupt(DspVarDeviceNodeInOut &dspInOut) const;
+    void handleDspInterrupt(DspVarDeviceNodeInOut &dspInOut);
 
 private:
     void calcDspInterruptId();

@@ -106,7 +106,7 @@ void ZDspClientContainer::delAllClients()
     resetInterruptIdOnNoClients();
 }
 
-void ZDspClientContainer::handleDspInterrupt(DspVarDeviceNodeInOut &dspInOut) const
+void ZDspClientContainer::handleDspInterrupt(DspVarDeviceNodeInOut &dspInOut)
 {
     const QList<ZdspClient*> clientList = getClientList();
     if (!clientList.isEmpty()) { // wenn vorhanden nutzen wir immer den 1. client zum lesen
@@ -116,7 +116,7 @@ void ZDspClientContainer::handleDspInterrupt(DspVarDeviceNodeInOut &dspInOut) co
                                      &ba, &client->m_dspVarResolver)) {
             const ulong* pardsp = reinterpret_cast<ulong*>(ba.data());
             int interruptCount = pardsp[0];
-            //m_dspInterruptLogStatistics.addValue(interruptCount);
+            m_dspInterruptLogStatistics.addValue(interruptCount);
             if (interruptCount > DSP_MAX_PENDING_INTERRUPT_COUNT)
                 qWarning("Number of interrupts in a package: %i exceeds upper limit!", interruptCount);
             else {
