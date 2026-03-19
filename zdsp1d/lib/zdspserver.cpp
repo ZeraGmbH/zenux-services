@@ -67,7 +67,6 @@ ZDspServer::ZDspServer(SettingsContainerPtr settings,
     m_tcpNetworkFactory(tcpNetworkFactory),
     m_protoBufServer(tcpNetworkFactory),
     m_zdspClientContainer(zdspSupportFactory),
-    m_dspInterruptLogStatistics(10000),
     m_outputHealthLogs(outputHealthLogs)
 {
     doConfiguration();
@@ -95,11 +94,6 @@ void ZDspServer::init()
     QObject::connect(stateFINISH, &QAbstractState::entered, this, &ZDspServer::doCloseServer);
 
     m_pInitializationMachine->start();
-
-    connect(&m_dspInterruptLogStatistics, &LogStatisticsAsyncInt::sigNewStatistics, [](int min, int max, float avg, int interruptCnt) {
-        qInfo("DSP Interrupts per Linux interrupt min: %i, max: %i, mean: %.1f; Total Linux Interrupts: %i",
-              min, max, avg, interruptCnt);
-    });
 }
 
 ZDspServer::~ZDspServer()
@@ -728,50 +722,7 @@ void ZDspServer::DspIntHandler(int)
 {
     char dummy[2];
     read(pipeFileDescriptorZdsp1[0], dummy, 1); // first we read the pipe
-
-    // Can we move all this to ZDspClientContainer?
-    const QList<ZdspClient*> clientList = getClients();
-    if (!clientList.isEmpty()) { // wenn vorhanden nutzen wir immer den 1. client zum lesen
-        ZdspClient *client = clientList.first();
-        QByteArray ba;
-        if (m_dspInOut.readOneDspVar(QString("CTRLCMDPAR,%1").arg(DSP_INTERRUPT_PARAM_BUFFER_LEN),
-                                     &ba, &client->m_dspVarResolver)) {
-            const ulong* pardsp = reinterpret_cast<ulong*>(ba.data());
-            int interruptCount = pardsp[0];
-            m_dspInterruptLogStatistics.addValue(interruptCount);
-            if (interruptCount > DSP_MAX_PENDING_INTERRUPT_COUNT)
-                qWarning("Number of interrupts in a package: %i exceeds upper limit!", interruptCount);
-            else {
-                const ZdspClient *superClient = m_zdspClientContainer.getSuperClient();
-                if (superClient) { // notify super client first
-                    bool superClientFound = false;
-                    // search super client index - it is expected last => start search at end
-                    for (int i = interruptCount; i >= 1; i--) {
-                        int process = pardsp[i] >> 16;
-                        const ZdspClient *clientToNotify = m_zdspClientContainer.findClient(process);
-                        if (clientToNotify && clientToNotify == superClient) {
-                            clientToNotify->sendInterruptNotification(pardsp[interruptCount], m_protobufWrapper);
-                            superClientFound = true;
-                            break;
-                        }
-                    }
-                    if (!superClientFound)
-                        qWarning("Super client not found!");
-                }
-                for (int i = 1; i < (interruptCount+1); i++) {
-                    int process = pardsp[i] >> 16;
-                    const ZdspClient *clientToNotify = m_zdspClientContainer.findClient(process);
-                    if (clientToNotify && clientToNotify != superClient) // don't double notify super client
-                        clientToNotify->sendInterruptNotification(pardsp[i], m_protobufWrapper);
-                }
-            }
-        }
-        m_dspInOut.writeDspVars(QString("CTRLACK,%1;").arg(CmdDone), &client->m_dspVarResolver); // jetzt in jedem fall acknowledge
-    }
-    else {
-        DspVarResolver dspSystemVarResolver;
-        m_dspInOut.writeDspVars(QString("CTRLACK,%1;").arg(CmdDone), &dspSystemVarResolver); // und rücksetzen
-    }
+    m_zdspClientContainer.handleDspInterrupt(m_dspInOut);
 }
 
 DspCmdWithParamsCompiled ZDspServer::genClientStartAddressCmd(ulong userMemOffset,
@@ -958,7 +909,8 @@ void ZDspServer::onProtobufDisconnect(VeinTcp::TcpPeer *peer)
 
 void ZDspServer::onProtobufDataReceived(VeinTcp::TcpPeer *peer, const QByteArray &message)
 {
-    executeCommandProto(peer, m_protobufWrapper.byteArrayToProtobuf(message));
+    XiQNetWrapper protobufWrapper;
+    executeCommandProto(peer, protobufWrapper.byteArrayToProtobuf(message));
 }
 
 void ZDspServer::executeCommandProto(VeinTcp::TcpPeer *peer, std::shared_ptr<google::protobuf::Message> cmd)
@@ -1027,5 +979,6 @@ void ZDspServer::onTelnetReceived(const QString &input)
 
 void ZDspServer::sendProtoAnswer(ProtonetCommandPtr protoCmd)
 {
-    CommonScpiMethods::sendProtoAnswer(m_telnetServer.getSocket(), &m_protobufWrapper, protoCmd);
+    XiQNetWrapper protobufWrapper;
+    CommonScpiMethods::sendProtoAnswer(m_telnetServer.getSocket(), &protobufWrapper, protoCmd);
 }

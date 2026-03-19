@@ -1,12 +1,14 @@
 #ifndef ZDSPCLIENTCONTAINER_H
 #define ZDSPCLIENTCONTAINER_H
 
+#include "dspvardevicenodeinout.h"
 #include "zdspclient.h"
+#include <logstatisticsasyncint.h>
 
 class ZDspClientContainer
 {
 public:
-    ZDspClientContainer(AbstractFactoryZdspSupportPtr zdspSupportFactory);
+    explicit ZDspClientContainer(AbstractFactoryZdspSupportPtr zdspSupportFactory);
     virtual ~ZDspClientContainer();
     void addClient(VeinTcp::TcpPeer* netClient,
                    const QByteArray &proxyConnectionId);
@@ -23,6 +25,8 @@ public:
     void delClient(const QByteArray &proxyConnectionId);
     void delAllClients();
 
+    void handleDspInterrupt(DspVarDeviceNodeInOut &dspInOut) const;
+
 private:
     void calcDspInterruptId();
     void resetInterruptIdOnNoClients();
@@ -33,6 +37,7 @@ private:
     QHash<quint16, ZdspClient*> m_clientsByDspInterruptId;
     const ZdspClient *m_dspSuperClient = nullptr;
     quint16 m_currentDspInterruptId = 0;
+    LogStatisticsAsyncInt m_dspInterruptLogStatistics;
 };
 
 #endif // ZDSPCLIENTCONTAINER_H

@@ -9,9 +9,7 @@
 #include "scpiconnection.h"
 #include "settingscontainer.h"
 #include <timertemplateqt.h>
-#include <logstatisticsasyncint.h>
 #include <vtcp_server.h>
-#include <xiqnetwrapper.h>
 #include <abstracttcpnetworkfactory.h>
 #include <QStringList>
 #include <QSocketNotifier>
@@ -116,7 +114,6 @@ private:
     DspVarDeviceNodeInOut m_dspInOut;
     VeinTcp::AbstractTcpNetworkFactoryPtr m_tcpNetworkFactory;
     VeinTcp::TcpServer m_protoBufServer;
-    XiQNetWrapper m_protobufWrapper;
 
     uchar m_currentCmdListSelector = 0;
     QByteArray m_rawCyclicCmdMem; // unsere dsp programm listen
@@ -126,7 +123,6 @@ private:
     ZDspClientContainer m_zdspClientContainer;
 
     ulong m_userWorkSpaceAlignedSegmentStartAdr;
-    LogStatisticsAsyncInt m_dspInterruptLogStatistics;
     bool m_outputHealthLogs;
 
     QStateMachine* m_pInitializationMachine;
