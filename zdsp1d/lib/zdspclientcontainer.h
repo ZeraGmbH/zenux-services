@@ -13,7 +13,6 @@ public:
     void addClient(VeinTcp::TcpPeer* netClient,
                    const QByteArray &proxyConnectionId);
     bool makeSuperClient(const ZdspClient *dspClient);
-    const ZdspClient *getSuperClient() const;
 
     const QList<ZdspClient*> &getClientList() const;
     ZdspClient *getFirstAdded() const; // is first mandatory / can we get rid of this?

@@ -44,11 +44,6 @@ bool ZDspClientContainer::makeSuperClient(const ZdspClient *dspClient)
     return true;
 }
 
-const ZdspClient *ZDspClientContainer::getSuperClient() const
-{
-    return m_dspSuperClient;
-}
-
 const QList<ZdspClient *> &ZDspClientContainer::getClientList() const
 {
     return m_clientsChonological;
@@ -126,14 +121,13 @@ void ZDspClientContainer::handleDspInterrupt(DspVarDeviceNodeInOut &dspInOut) co
                 qWarning("Number of interrupts in a package: %i exceeds upper limit!", interruptCount);
             else {
                 XiQNetWrapper protobufWrapper;
-                const ZdspClient *superClient = getSuperClient();
-                if (superClient) { // notify super client first
+                if (m_dspSuperClient) { // notify super client first
                     bool superClientFound = false;
                     // search super client index - it is expected last => start search at end
                     for (int i = interruptCount; i >= 1; i--) {
                         int process = pardsp[i] >> 16;
                         const ZdspClient *clientToNotify = findClient(process);
-                        if (clientToNotify && clientToNotify == superClient) {
+                        if (clientToNotify && clientToNotify == m_dspSuperClient) {
                             clientToNotify->sendInterruptNotification(pardsp[interruptCount], protobufWrapper);
                             superClientFound = true;
                             break;
@@ -145,7 +139,7 @@ void ZDspClientContainer::handleDspInterrupt(DspVarDeviceNodeInOut &dspInOut) co
                 for (int i = 1; i < (interruptCount+1); i++) {
                     int process = pardsp[i] >> 16;
                     const ZdspClient *clientToNotify = findClient(process);
-                    if (clientToNotify && clientToNotify != superClient) // don't double notify super client
+                    if (clientToNotify && clientToNotify != m_dspSuperClient) // don't double notify super client
                         clientToNotify->sendInterruptNotification(pardsp[i], protobufWrapper);
                 }
             }
