@@ -1,5 +1,4 @@
 #include "hotpluggablecontrollercontainer.h"
-#include "emobdefinitions.h"
 
 HotPluggableControllerContainer::HotPluggableControllerContainer(I2cSettingsPtr i2cSettings, AbstractFactoryI2cCtrlPtr ctrlFactory) :
     m_i2cSettings(i2cSettings),

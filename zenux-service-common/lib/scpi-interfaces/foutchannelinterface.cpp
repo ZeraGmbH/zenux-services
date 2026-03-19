@@ -16,21 +16,20 @@ enum Commands
 static constexpr double FormFactor = 5.6294995e6; // fout = (Pact/Pnenn) * FPZnenn * FormFactor
 
 FOutChannelInterface::FOutChannelInterface(std::shared_ptr<cSCPI> scpiinterface,
-                                           QString description,
+                                           const QString &description,
                                            quint8 nr,
                                            FOutSettings::ChannelSettings *cSettings) :
     ScpiConnection(scpiinterface),
-    m_sDescription(description)
+    m_sName(QString("fo%1").arg(nr)),
+    m_sAlias(cSettings->m_sAlias),
+    m_sDescription(description),
+    m_nDspServer(cSettings->m_nDspServerPort),
+    m_nDspChannel(cSettings->m_nDspChannel),
+    m_fFormFactor(FormFactor),
+    m_bAvail(cSettings->avail)
 {
-    m_sName = QString("fo%1").arg(nr);
-    m_sAlias = cSettings->m_sAlias;
-    m_nDspServer = cSettings->m_nDspServerPort;
-    m_nDspChannel = cSettings->m_nDspChannel;
-    m_nType = 0;
-    m_fFormFactor = FormFactor;
     initNotifier(notifierConstant); // we hold the constant as a notifier
     initNotifier(notifierPowerType);
-    m_bAvail = cSettings->avail;
 }
 
 void FOutChannelInterface::initSCPIConnection(const QString &leadingNodes)

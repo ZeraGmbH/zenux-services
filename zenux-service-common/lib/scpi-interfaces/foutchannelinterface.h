@@ -10,7 +10,7 @@ class FOutChannelInterface : public ScpiConnection
     Q_OBJECT
 public:
     FOutChannelInterface(std::shared_ptr<cSCPI> scpiinterface,
-                         QString description,
+                         const QString &description,
                          quint8 nr,
                          FOutSettings::ChannelSettings* cSettings);
     void initSCPIConnection(const QString &leadingNodes);
@@ -35,7 +35,7 @@ private:
     QString m_sDescription; // the channel's brief description
     quint16 m_nDspServer; // the dsp servers port
     quint8 m_nDspChannel; // where to find the channel's sampled data
-    quint8 m_nType;
+    quint8 m_nType = 0;
     double m_fFormFactor;
     bool m_bAvail; // is this channel available ?
     NotificationString notifierConstant;
