@@ -23,7 +23,7 @@ public:
     quint32 getUserMemSize();
     quint32 getUserMemSizeAligned();
     QString VarListLong();
-    QString VarListShort();
+    QString VarListShort(int limitValueCount = 0);
     QString writeCommand();
     QVector<float>& getData();
 

@@ -28,7 +28,7 @@ public:
     quint32 scpiCommand(const QString &scpi) override;
 
     // Same as dspMemoryRead. We keep two variants to split measurement data read from other dsp reads in client
-    virtual quint32 dataAcquisition(DspVarGroupClientInterface* varGroup); // reads all vars of this variable group
+    virtual quint32 dataAcquisition(DspVarGroupClientInterface* varGroup, int limitValueCount = 0); // reads all vars of this variable group
     virtual quint32 dspMemoryWrite(DspVarGroupClientInterface* varGroup); // writes all vars of this variable group
     virtual quint32 activateInterface(); // load var- and cmdlists to dsp (starts theprogram on dsp)
 

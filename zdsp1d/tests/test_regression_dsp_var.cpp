@@ -47,9 +47,9 @@ void test_regression_dsp_var::cleanup()
     TimeMachineObject::feedEventLoop();
 }
 
-void test_regression_dsp_var::createResultVariables()
+void test_regression_dsp_var::createVariablesAndRead()
 {
-    DspVarGroupClientInterface* dspVarGroup = m_dspIFace->createVariableGroup("createResultVariables");
+    DspVarGroupClientInterface* dspVarGroup = m_dspIFace->createVariableGroup("createVariablesAndRead");
     dspVarGroup->addDspVar("Result1", 1, dspDataTypeFloat, moduleLocalSegment);
     dspVarGroup->addDspVar("Result2", 3, dspDataTypeInt, moduleLocalSegment);
 
@@ -64,15 +64,17 @@ void test_regression_dsp_var::createResultVariables()
     TimeMachineObject::feedEventLoop();
     QCOMPARE(spyRead.count(), 1);
     QCOMPARE(spyRead[0][1], ZSCPI::ack);
-    QVERIFY(spyRead[0][2].toString().contains("RESULT1:"));
-    QVERIFY(spyRead[0][2].toString().contains("RESULT2:"));
+    QCOMPARE(spyRead[0][2].toString(), "RESULT1:0;RESULT2:0,0,0;");
 }
 
-void test_regression_dsp_var::createTempVariables()
+static constexpr int dm32UserWorkSpaceBase21362 = 0x98180; // stolen from zdspserver.cpp
+static constexpr int startAddress = dm32UserWorkSpaceBase21362;
+static constexpr int varSize = 4;
+
+void test_regression_dsp_var::createOneVarAndAcquireLimited()
 {
-    DspVarGroupClientInterface* dspVarGroup = m_dspIFace->createVariableGroup("createTempVariables");
-    dspVarGroup->addDspVar("Temp1", 1, dspDataTypeFloat, moduleLocalSegment);
-    dspVarGroup->addDspVar("Temp2", 3, dspDataTypeInt, moduleLocalSegment);
+    DspVarGroupClientInterface* dspVarGroup = m_dspIFace->createVariableGroup("foo");
+    dspVarGroup->addDspVar("Var", 3, dspDataTypeInt, moduleLocalSegment);
 
     QSignalSpy spyCreate(m_dspIFace.get(), &AbstractServerInterface::serverAnswer);
     m_dspIFace->varList2Dsp();
@@ -80,13 +82,109 @@ void test_regression_dsp_var::createTempVariables()
     QCOMPARE(spyCreate.count(), 1);
     QCOMPARE(spyCreate[0][2], ZSCPI::scpiAnswer[ZSCPI::ack]);
 
-    QSignalSpy spyRead(m_dspIFace.get(), &AbstractServerInterface::serverAnswer);
-    m_dspIFace->dspMemoryRead(dspVarGroup);
+    m_dspIFace->activateInterface();
     TimeMachineObject::feedEventLoop();
+
+    TestDeviceNodeDspPtr deviceNode = TestSingletonDeviceNodeDsp::getInstancePtrTest();
+    QSignalSpy spyDeviceNode(deviceNode.get(), &TestDeviceNodeDsp::sigIoOperation);
+    QSignalSpy spyRead(m_dspIFace.get(), &AbstractServerInterface::serverAnswer);
+    m_dspIFace->dataAcquisition(dspVarGroup, 1);
+    TimeMachineObject::feedEventLoop();
+
+    QCOMPARE(spyDeviceNode.count(), 2);
+    QCOMPARE(spyDeviceNode[0][0], "lseek");
+    QCOMPARE(spyDeviceNode[0][1].toInt(), startAddress);
+    QCOMPARE(spyDeviceNode[1][0], "read");
+    QCOMPARE(spyDeviceNode[1][1], "buf");
+    QCOMPARE(spyDeviceNode[1][2], 1*varSize);
+
     QCOMPARE(spyRead.count(), 1);
     QCOMPARE(spyRead[0][1], ZSCPI::ack);
-    QVERIFY(spyRead[0][2].toString().contains("TEMP1:"));
-    QVERIFY(spyRead[0][2].toString().contains("TEMP2:"));
+    QCOMPARE(spyRead[0][2], "VAR:0;");
+}
+
+void test_regression_dsp_var::createTwoVarsAndAcquireLimited()
+{
+    DspVarGroupClientInterface* dspVarGroup = m_dspIFace->createVariableGroup("foo");
+    dspVarGroup->addDspVar("Var1", 3, dspDataTypeInt, moduleLocalSegment);
+    dspVarGroup->addDspVar("Var2", 3, dspDataTypeFloat, moduleLocalSegment);
+
+    QSignalSpy spyCreate(m_dspIFace.get(), &AbstractServerInterface::serverAnswer);
+    m_dspIFace->varList2Dsp();
+    TimeMachineObject::feedEventLoop();
+    QCOMPARE(spyCreate.count(), 1);
+    QCOMPARE(spyCreate[0][2], ZSCPI::scpiAnswer[ZSCPI::ack]);
+
+    m_dspIFace->activateInterface();
+    TimeMachineObject::feedEventLoop();
+
+    TestDeviceNodeDspPtr deviceNode = TestSingletonDeviceNodeDsp::getInstancePtrTest();
+    QSignalSpy spyDeviceNode(deviceNode.get(), &TestDeviceNodeDsp::sigIoOperation);
+    QSignalSpy spyRead(m_dspIFace.get(), &AbstractServerInterface::serverAnswer);
+    m_dspIFace->dataAcquisition(dspVarGroup, 4);
+    TimeMachineObject::feedEventLoop();
+
+    QCOMPARE(spyDeviceNode.count(), 4);
+    QCOMPARE(spyDeviceNode[0][0], "lseek");
+    QCOMPARE(spyDeviceNode[0][1].toInt(), startAddress);
+    QCOMPARE(spyDeviceNode[1][0], "read");
+    QCOMPARE(spyDeviceNode[1][1], "buf");
+    QCOMPARE(spyDeviceNode[1][2], 3*varSize);
+    QCOMPARE(spyDeviceNode[2][0], "lseek");
+    QCOMPARE(spyDeviceNode[2][1].toInt(), startAddress + 3);
+    QCOMPARE(spyDeviceNode[3][0], "read");
+    QCOMPARE(spyDeviceNode[3][1], "buf");
+    QCOMPARE(spyDeviceNode[3][2], 1*varSize);
+
+    QCOMPARE(spyRead.count(), 1);
+    QCOMPARE(spyRead[0][1], ZSCPI::ack);
+    QCOMPARE(spyRead[0][2], "VAR1:0,0,0;VAR2:0;");
+}
+
+void test_regression_dsp_var::createOneVarAndAcquireNegativeLimit()
+{
+    DspVarGroupClientInterface* dspVarGroup = m_dspIFace->createVariableGroup("foo");
+    dspVarGroup->addDspVar("Var", 3, dspDataTypeInt, moduleLocalSegment);
+
+    QSignalSpy spyCreate(m_dspIFace.get(), &AbstractServerInterface::serverAnswer);
+    m_dspIFace->varList2Dsp();
+    TimeMachineObject::feedEventLoop();
+    QCOMPARE(spyCreate.count(), 1);
+    QCOMPARE(spyCreate[0][2], ZSCPI::scpiAnswer[ZSCPI::ack]);
+
+    m_dspIFace->activateInterface();
+    TimeMachineObject::feedEventLoop();
+
+    QSignalSpy spyRead(m_dspIFace.get(), &AbstractServerInterface::serverAnswer);
+    m_dspIFace->dataAcquisition(dspVarGroup, -1);
+    TimeMachineObject::feedEventLoop();
+
+    QCOMPARE(spyRead.count(), 1);
+    QCOMPARE(spyRead[0][1], ZSCPI::ack);
+    QCOMPARE(spyRead[0][2], "VAR:0,0,0;");
+}
+
+void test_regression_dsp_var::createOneVarAndAcquireLimitAbove()
+{
+    DspVarGroupClientInterface* dspVarGroup = m_dspIFace->createVariableGroup("foo");
+    dspVarGroup->addDspVar("Var", 3, dspDataTypeInt, moduleLocalSegment);
+
+    QSignalSpy spyCreate(m_dspIFace.get(), &AbstractServerInterface::serverAnswer);
+    m_dspIFace->varList2Dsp();
+    TimeMachineObject::feedEventLoop();
+    QCOMPARE(spyCreate.count(), 1);
+    QCOMPARE(spyCreate[0][2], ZSCPI::scpiAnswer[ZSCPI::ack]);
+
+    m_dspIFace->activateInterface();
+    TimeMachineObject::feedEventLoop();
+
+    QSignalSpy spyRead(m_dspIFace.get(), &AbstractServerInterface::serverAnswer);
+    m_dspIFace->dataAcquisition(dspVarGroup, 42);
+    TimeMachineObject::feedEventLoop();
+
+    QCOMPARE(spyRead.count(), 1);
+    QCOMPARE(spyRead[0][1], ZSCPI::ack);
+    QCOMPARE(spyRead[0][2], "VAR:0,0,0;");
 }
 
 void test_regression_dsp_var::createInternalVariableNotAvailable()
@@ -378,10 +476,6 @@ void test_regression_dsp_var::createAllUserTypeVariablesMultipleClients()
     QCOMPARE(ZdspClient::getGlobalMemSizeTotal(), globalMemSize);
 }
 
-static constexpr int dm32UserWorkSpaceBase21362 = 0x98180; // stolen from zdspserver.cpp
-static constexpr int startAddress = dm32UserWorkSpaceBase21362;
-static constexpr int varSize = 4;
-
 void test_regression_dsp_var::readVariablesAndListenDeviceNode()
 {
     DspVarGroupClientInterface* dspVarGroup = m_dspIFace->createVariableGroup("readVariablesAndListenDeviceNode");
@@ -389,13 +483,8 @@ void test_regression_dsp_var::readVariablesAndListenDeviceNode()
     dspVarGroup->addDspVar("TWO_FLOAT", 2, dspDataTypeFloat, moduleLocalSegment);
     dspVarGroup->addDspVar("THREE_INT", 3, dspDataTypeInt, moduleLocalSegment);
 
-    // In modules we have claimUSERMem() - we had this here during investigation
-    // It is for resman's sake - here it changes nothing
-
     m_dspIFace->varList2Dsp();
     TimeMachineObject::feedEventLoop();
-    // Calling activateInterface is important - otherwise addresses are not initalized
-    // and all variables start on address 0
     m_dspIFace->activateInterface();
     TimeMachineObject::feedEventLoop();
 
@@ -433,8 +522,6 @@ void test_regression_dsp_var::writeFloatVariablesAndListenDeviceNode()
 
     m_dspIFace->varList2Dsp();
     TimeMachineObject::feedEventLoop();
-    // Calling activateInterface is important - otherwise addresses are not initalized
-    // and all variables start on address 0
     m_dspIFace->activateInterface();
     TimeMachineObject::feedEventLoop();
 
@@ -469,8 +556,6 @@ void test_regression_dsp_var::writeIntVariablesAndListenDeviceNode()
 
     m_dspIFace->varList2Dsp();
     TimeMachineObject::feedEventLoop();
-    // Calling activateInterface is important - otherwise addresses are not initalized
-    // and all variables start on address 0
     m_dspIFace->activateInterface();
     TimeMachineObject::feedEventLoop();
 
@@ -507,8 +592,6 @@ void test_regression_dsp_var::writeMixVariablesAndListenDeviceNode()
 
     m_dspIFace->varList2Dsp();
     TimeMachineObject::feedEventLoop();
-    // Calling activateInterface is important - otherwise addresses are not initalized
-    // and all variables start on address 0
     m_dspIFace->activateInterface();
     TimeMachineObject::feedEventLoop();
 
@@ -549,10 +632,10 @@ void test_regression_dsp_var::writeMixVariablesAndListenDeviceNode()
     QCOMPARE(spyWrite[3][3], 2*varSize);
 }
 
-void test_regression_dsp_var::multipleClientsCreateResultVars()
+void test_regression_dsp_var::multipleClientsCreateReadVars()
 {
     // create vars client1
-    DspVarGroupClientInterface* dspVarGroup1 = m_dspIFace->createVariableGroup("createResultVariables");
+    DspVarGroupClientInterface* dspVarGroup1 = m_dspIFace->createVariableGroup("foo");
     dspVarGroup1->addDspVar("CLIENT1_VAR1", 1, dspDataTypeFloat, moduleLocalSegment);
     dspVarGroup1->addDspVar("CLIENT1_VAR2", 2, dspDataTypeFloat, moduleLocalSegment);
     m_dspIFace->varList2Dsp();
@@ -566,7 +649,7 @@ void test_regression_dsp_var::multipleClientsCreateResultVars()
     TimeMachineObject::feedEventLoop();
 
     // create vars client2
-    DspVarGroupClientInterface* dspVarGroup2 = dspIFace2->createVariableGroup("createResultVariables");
+    DspVarGroupClientInterface* dspVarGroup2 = dspIFace2->createVariableGroup("bar");
     dspVarGroup2->addDspVar("CLIENT2_VAR1", 3, dspDataTypeFloat, moduleLocalSegment);
     dspVarGroup2->addDspVar("CLIENT2_VAR2", 4, dspDataTypeFloat, moduleLocalSegment);
     dspIFace2->varList2Dsp();
@@ -577,8 +660,7 @@ void test_regression_dsp_var::multipleClientsCreateResultVars()
     m_dspIFace->dspMemoryRead(dspVarGroup1);
     TimeMachineObject::feedEventLoop();
     QCOMPARE(spyRead1[0][1], ZSCPI::ack);
-    QVERIFY(spyRead1[0][2].toString().contains("CLIENT1_VAR1:"));
-    QVERIFY(spyRead1[0][2].toString().contains("CLIENT1_VAR2:"));
+    QCOMPARE(spyRead1[0][2].toString(), "CLIENT1_VAR1:0;CLIENT1_VAR2:0,0;");
     spyRead1.clear();
     // client1 read client2 vars
     m_dspIFace->dspMemoryRead(dspVarGroup2);
@@ -590,8 +672,7 @@ void test_regression_dsp_var::multipleClientsCreateResultVars()
     dspIFace2->dspMemoryRead(dspVarGroup2);
     TimeMachineObject::feedEventLoop();
     QCOMPARE(spyRead2[0][1], ZSCPI::ack);
-    QVERIFY(spyRead2[0][2].toString().contains("CLIENT2_VAR1:"));
-    QVERIFY(spyRead2[0][2].toString().contains("CLIENT2_VAR2:"));
+    QCOMPARE(spyRead2[0][2].toString(), "CLIENT2_VAR1:0,0,0;CLIENT2_VAR2:0,0,0,0;");
     spyRead2.clear();
     // client2 read client1 vars
     dspIFace2->dspMemoryRead(dspVarGroup1);

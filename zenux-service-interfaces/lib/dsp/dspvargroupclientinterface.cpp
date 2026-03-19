@@ -94,13 +94,23 @@ QString DspVarGroupClientInterface::VarListLong()
     return sReturn;
 }
 
-QString DspVarGroupClientInterface::VarListShort()
+QString DspVarGroupClientInterface::VarListShort(int limitValueCount)
 {
     QString sReturn;
     QTextStream ts(&sReturn, QIODevice::WriteOnly);
+    int sizeRequestedSum = 0;
     for(int i=0; i<DspVarList.size(); ++i) {
         DspVarClientInterface *pDspVar = DspVarList.at(i);
-        ts << QString("%1,%2;").arg(pDspVar->Name()).arg(pDspVar->size());
+        int varSize = pDspVar->size();
+        if (limitValueCount > 0) {
+            int sizeLeft = limitValueCount - sizeRequestedSum;
+            if (sizeLeft <= 0)
+                break;
+            if (limitValueCount > 0 && varSize > sizeLeft)
+                varSize = sizeLeft;
+        }
+        ts << QString("%1,%2;").arg(pDspVar->Name()).arg(varSize);
+        sizeRequestedSum += varSize;
     }
     return sReturn;
 }
@@ -171,7 +181,11 @@ void DspVarGroupClientInterface::setData(const QVector<float> &data)
         for(int singleVal=0; singleVal<dspVar->size(); singleVal++) {
             varData.append(data[valueCount]);
             valueCount++;
+            if (valueCount >= data.size())
+                break;
         }
         dspVar->setData(varData);
+        if (valueCount >= data.size())
+            return;
     }
 }

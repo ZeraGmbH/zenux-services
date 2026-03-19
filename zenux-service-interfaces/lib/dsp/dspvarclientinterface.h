@@ -26,10 +26,7 @@ private:
     friend class DspVarGroupClientInterface;
     DspVarClientInterface(const QString &name, int size, DspDataType dataType, DspSegmentType dspSegmentType);
     virtual ~DspVarClientInterface();
-    void setData(QVector<float> data) {
-        Q_ASSERT(m_dspVarData.size() == data.size());
-        m_dspVarData = data;
-    }
+    void setData(const QVector<float> &data);
 
     QString m_sName; // a var. has its name
     const DspSegmentType m_dspSegmentType;

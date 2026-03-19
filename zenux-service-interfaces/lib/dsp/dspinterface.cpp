@@ -80,9 +80,10 @@ quint32 cDSPInterface::deactivateAll()
     return d->deactivateAll();
 }
 
-quint32 cDSPInterface::dataAcquisition(DspVarGroupClientInterface *varGroup)
+quint32 cDSPInterface::dataAcquisition(DspVarGroupClientInterface *varGroup, int limitValueCount)
 {
-    return dspMemoryRead(varGroup);
+    Q_D(cDSPInterface);
+    return d->dspMemoryRead(varGroup, limitValueCount);
 }
 
 quint32 cDSPInterface::dspMemoryRead(DspVarGroupClientInterface *varGroup)

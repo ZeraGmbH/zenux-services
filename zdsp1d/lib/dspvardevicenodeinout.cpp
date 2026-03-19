@@ -24,12 +24,12 @@ DspVarServerPtr DspVarDeviceNodeInOut::readOneDspVar(const QString &nameCommaLen
 
     QString countSection = listNameLen[1];
     bool ok;
-    const int countVars = countSection.toInt(&ok);
-    if (!ok || countVars < 1 )
+    const int memSize = countSection.toInt(&ok);
+    if (!ok || memSize < 1 )
         return nullptr; // fehler in der anzahl der elemente
 
     DspVarDeviceNodeInOut dspInOut(m_zdspSupportFactory);
-    if(dspInOut.readVarFromDsp(dspVar, countVars, varRead))
+    if(dspInOut.readVarFromDsp(dspVar, memSize, varRead))
         return dspVar;
     return nullptr;
 }
@@ -67,7 +67,7 @@ QString DspVarDeviceNodeInOut::readDspVarList(const QString &variablesString, Ds
         {
         case dspDataTypeInt :
         {
-            ulong *ul = (ulong*) ba.data();
+            quint32 *ul = (quint32*) ba.data();
             for (int j = 0; j < n-1; j++,ul++)
                 ts << (*ul) << "," ;
             ts << *ul << ";" ;
@@ -86,9 +86,9 @@ QString DspVarDeviceNodeInOut::readDspVarList(const QString &variablesString, Ds
     return ret;
 }
 
-bool DspVarDeviceNodeInOut::readVarFromDsp(DspVarServerPtr DspVar, int countVars, QByteArray *varRead)
+bool DspVarDeviceNodeInOut::readVarFromDsp(DspVarServerPtr DspVar, int memSize, QByteArray *varRead)
 {
-    const int countBytes = countVars * 4;
+    const int countBytes = memSize * 4;
     varRead->resize(countBytes);
     AbstractDspDeviceNodePtr deviceNode = m_zdspSupportFactory->getDspDeviceNode();
     if ((deviceNode->lseek(DspVar->m_absoluteAddress) >= 0) &&

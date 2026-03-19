@@ -14,7 +14,7 @@ public:
     QString readDspVarList(const QString &variablesString, DspVarResolver *dspVarResolver); // format: '<name1>,<len1>;<name2>,<len2>'
     bool writeDspVars(const QString &varsSemicolonSeparated, DspVarResolver *dspVarResolver);
 private:
-    bool readVarFromDsp(DspVarServerPtr DspVar, int countVars, QByteArray *varRead);
+    bool readVarFromDsp(DspVarServerPtr DspVar, int memSize, QByteArray *varRead);
     static bool tryStreamIntegerValue(const QString &strValue, QDataStream &stream);
     static bool tryStreamFloatValue(const QString &strValue, QDataStream &stream);
     AbstractFactoryZdspSupportPtr m_zdspSupportFactory;

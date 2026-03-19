@@ -25,6 +25,15 @@ void DspVarClientInterface::setValue(int idx, float value)
     m_dspVarData.replace(idx, value);
 }
 
+void DspVarClientInterface::setData(const QVector<float> &data)
+{
+    for (int i=0; i<data.size(); ++i) {
+        if (i>=m_dspVarData.size())
+            break;
+        m_dspVarData[i] = data[i];
+    }
+}
+
 int DspVarClientInterface::getInstanceCount()
 {
     return m_instanceCount;

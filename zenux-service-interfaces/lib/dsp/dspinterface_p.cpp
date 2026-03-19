@@ -176,10 +176,10 @@ quint32 cDSPInterfacePrivate::deactivateAll()
     return msgnr;
 }
 
-quint32 cDSPInterfacePrivate::dspMemoryRead(DspVarGroupClientInterface *varGroup)
+quint32 cDSPInterfacePrivate::dspMemoryRead(DspVarGroupClientInterface *varGroup, int limitValueCount)
 {
     quint32 msgnr = sendCommand(QString("MEM:READ"), // long: MEMORY:READ
-                                QString("%1").arg(varGroup->VarListShort()));
+                                QString("%1").arg(varGroup->VarListShort(limitValueCount)));
     m_MsgNrCmdList[msgnr] = dspmemoryread;
     m_MsgNrMeasData[msgnr] = varGroup;
     return msgnr;

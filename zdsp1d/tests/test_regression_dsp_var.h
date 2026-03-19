@@ -14,8 +14,11 @@ private slots:
     void init();
     void cleanup();
 
-    void createResultVariables();
-    void createTempVariables();
+    void createVariablesAndRead();
+    void createOneVarAndAcquireLimited();
+    void createTwoVarsAndAcquireLimited();
+    void createOneVarAndAcquireNegativeLimit();
+    void createOneVarAndAcquireLimitAbove();
 
     void createInternalVariableNotAvailable();
     void createInternalVariableWrongSize();
@@ -37,7 +40,7 @@ private slots:
     void writeIntVariablesAndListenDeviceNode();
     void writeMixVariablesAndListenDeviceNode();
 
-    void multipleClientsCreateResultVars();
+    void multipleClientsCreateReadVars();
 
     void serverReadDspWorkspaceVariableAndListenDeviceNode();
     void serverWriteDspDialogWorkspaceVariableAndListenDeviceNode();

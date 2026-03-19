@@ -18,8 +18,9 @@ void MockDspInterface::fireActValInterrupt(const QVector<float> &actualValues, i
     emit serverAnswer(messageNum, ack, message);
 }
 
-quint32 MockDspInterface::dataAcquisition(DspVarGroupClientInterface *varGroup)
+quint32 MockDspInterface::dataAcquisition(DspVarGroupClientInterface *varGroup, int limitValueCount)
 {
+    Q_UNUSED(limitValueCount)
     varGroup->setData(m_actualValues);
     return sendCmdResponse("");
 }
