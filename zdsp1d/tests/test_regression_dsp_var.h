@@ -19,6 +19,7 @@ private slots:
     void createTwoVarsAndAcquireLimited();
     void createOneVarAndAcquireNegativeLimit();
     void createOneVarAndAcquireLimitAbove();
+    void createOneVarAndAcquireFFFFFFFFAsSignedOrUnsignedInt();
 
     void createInternalVariableNotAvailable();
     void createInternalVariableWrongSize();

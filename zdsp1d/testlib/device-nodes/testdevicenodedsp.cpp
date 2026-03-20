@@ -22,6 +22,11 @@ void TestDeviceNodeDsp::enableFasync()
     emit sigIoOperation("enableFasync");
 }
 
+void TestDeviceNodeDsp::setNextResponseBytes(const CharArray &responses)
+{
+    m_nextResponses = responses;
+}
+
 int TestDeviceNodeDsp::dspRequestInt()
 {
     emit sigIoOperation("dspRequestInt");
@@ -74,8 +79,12 @@ bool TestDeviceNodeDsp::write(ulong adr, const char *buf, int len)
 int TestDeviceNodeDsp::read(char *buf, int len)
 {
     // make results at least reproducable
-    for(int i=0; i<len; i++)
-        *(buf+i) = 0;
+    for(int i=0; i<len; i++) {
+        char value = 0;
+        if (!m_nextResponses.isEmpty())
+            value = m_nextResponses.takeFirst();
+        *(buf+i) = value;
+    }
     incReadTransactionCount();
     emit sigIoOperation("read", "buf", len);
     return 0;

@@ -167,7 +167,7 @@ DspVarClientInterface *DspVarGroupClientInterface::findVar(const QString &varNam
 {
     for(int i=0; i<DspVarList.size(); ++i) {
         DspVarClientInterface* pDspVar = DspVarList.at(i);
-        if (pDspVar->Name() == varName)
+        if (pDspVar->Name().toUpper() == varName)
             return pDspVar;
     }
     return nullptr;

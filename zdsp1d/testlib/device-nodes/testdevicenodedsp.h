@@ -9,6 +9,7 @@ class TestDeviceNodeDsp : public QObject, public AbstractDspDeviceNode
 {
     Q_OBJECT
 public:
+    typedef QList<char> CharArray;
     TestDeviceNodeDsp(int dspMagicId);
     bool dspReset() override;
     bool dspBoot(QString bootFileName) override;
@@ -24,10 +25,13 @@ public:
     int read(char* buf, int len) override;
     void enableFasync() override;
 
+    void setNextResponseBytes(const CharArray &responses);
+
 signals:
     void sigIoOperation(QString funcName, QVariant par1 = QVariant(), QVariant par2 = QVariant(), QVariant par3 = QVariant());
 private:
     int m_dspMagicId;
+    CharArray m_nextResponses;
 };
 
 typedef std::shared_ptr<TestDeviceNodeDsp> TestDeviceNodeDspPtr;

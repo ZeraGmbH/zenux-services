@@ -187,6 +187,41 @@ void test_regression_dsp_var::createOneVarAndAcquireLimitAbove()
     QCOMPARE(spyRead[0][2], "VAR:0,0,0;");
 }
 
+void test_regression_dsp_var::createOneVarAndAcquireFFFFFFFFAsSignedOrUnsignedInt()
+{
+    DspVarGroupClientInterface* dspVarGroup = m_dspIFace->createVariableGroup("foo");
+    dspVarGroup->addDspVar("Var", 1, dspDataTypeInt, moduleLocalSegment);
+
+    QSignalSpy spyCreate(m_dspIFace.get(), &AbstractServerInterface::serverAnswer);
+    m_dspIFace->varList2Dsp();
+    TimeMachineObject::feedEventLoop();
+    QCOMPARE(spyCreate.count(), 1);
+    QCOMPARE(spyCreate[0][2], ZSCPI::scpiAnswer[ZSCPI::ack]);
+
+    m_dspIFace->activateInterface();
+    TimeMachineObject::feedEventLoop();
+
+    TestDeviceNodeDspPtr deviceNode = TestSingletonDeviceNodeDsp::getInstancePtrTest();
+    TestDeviceNodeDsp::CharArray nextResponse;
+    for(int i=0; i<4; i++)
+        nextResponse.append(0xFF);
+    deviceNode->setNextResponseBytes(nextResponse);
+    QSignalSpy spyRead(m_dspIFace.get(), &AbstractServerInterface::serverAnswer);
+    m_dspIFace->dataAcquisition(dspVarGroup);
+    TimeMachineObject::feedEventLoop();
+
+    QCOMPARE(spyRead.count(), 1);
+    QCOMPARE(spyRead[0][1], ZSCPI::ack);
+    QCOMPARE(spyRead[0][2], "VAR:4294967295;");
+
+    QVector<float> dataAcquired = dspVarGroup->getData();
+    QCOMPARE(dataAcquired.count(), 1);
+    quint32 valueU = *reinterpret_cast<quint32*>(&dataAcquired[0]);
+    QCOMPARE(valueU, 4294967295);
+    qint32 valueS = *reinterpret_cast<qint32*>(&dataAcquired[0]);
+    QCOMPARE(valueS, -1);
+}
+
 void test_regression_dsp_var::createInternalVariableNotAvailable()
 {
     DspVarGroupClientInterface* dspVarGroup = m_dspIFace->createVariableGroup("createInternalVariableNotAvailable");
