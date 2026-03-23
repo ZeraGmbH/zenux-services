@@ -16,6 +16,7 @@ public:
                                 ProtonetCommandPtr protoCmd);
     static QString handleScpiInterfaceRead(std::shared_ptr<cSCPI> scpiInterface,
                                            const QString &scpiInput);
+    static bool containsValidChannelMName(cSenseSettingsPtr senseSettings, const QString &channelMName);
     static bool containsValidChannelMNames(cSenseSettingsPtr senseSettings, const QStringList &channelMNames);
 };
 

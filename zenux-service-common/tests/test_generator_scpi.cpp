@@ -144,6 +144,31 @@ void test_generator_scpi::setAmplitudeChangeRange()
     QCOMPARE(responseSpy[0][2], QVariant("nak"));
 }
 
+void test_generator_scpi::setAmplitudeChangeRangeInvalid()
+{
+    QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
+
+    responseSpy.clear();
+    m_pcbIFace->scpiCommand("GENERATOR:AMPRANGE 2.5,foo;");
+    TimeMachineObject::feedEventLoop();
+    QCOMPARE(responseSpy.count(), 1);
+    QCOMPARE(responseSpy[0][1], QVariant(error));
+    QCOMPARE(responseSpy[0][2], QVariant("errexec"));
+
+    responseSpy.clear();
+    m_pcbIFace->scpiCommand("GENERATOR:AMPRANGE 2.5,m2;");
+    TimeMachineObject::feedEventLoop();
+    QCOMPARE(responseSpy.count(), 1);
+    QCOMPARE(responseSpy[0][1], QVariant(ack));
+    QCOMPARE(responseSpy[0][2], QVariant("ack"));
+
+    responseSpy.clear();
+    m_pcbIFace->scpiCommand("GENERATOR:AMPRANGE foo,m2;");
+    TimeMachineObject::feedEventLoop();
+    QCOMPARE(responseSpy.count(), 1);
+    QCOMPARE(responseSpy[0][1], QVariant(error));
+    QCOMPARE(responseSpy[0][2], QVariant("errexec"));
+}
 
 void test_generator_scpi::setupServers()
 {

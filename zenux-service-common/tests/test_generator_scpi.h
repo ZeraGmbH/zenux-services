@@ -18,6 +18,7 @@ private slots:
 
     void getSetValidSourceOn();
     void setAmplitudeChangeRange();
+    void setAmplitudeChangeRangeInvalid();
 private:
     void setupServers();
 
