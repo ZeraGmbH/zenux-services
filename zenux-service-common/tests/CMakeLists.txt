@@ -35,6 +35,7 @@ SETUP_SERVICE_COMMON_TESTS(
     test_booloaderstopper
     test_hotplug_scpi_cmd
     test_firmwareupdatenotificationfile
+    test_binserialize
     )
 
 target_sources(test_hotpluggablecontrollercontainer

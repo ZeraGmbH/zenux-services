@@ -135,6 +135,8 @@ public:
         ILAUX,
     };
     virtual ZeraMControllerIo::atmelRM sendSourceModeOn(QList<ChannelDefinitions> channelsOn) = 0;
+    virtual ZeraMControllerIo::atmelRM sendSourceOn(QList<ChannelDefinitions> channelsOn) = 0;
+    virtual ZeraMControllerIo::atmelRM sendSourceAmplitudeChangeRange(float amplitude, ChannelDefinitions channel) = 0;
 };
 typedef std::shared_ptr<AbstractI2cCtrlGenerator> I2cCtrlGeneratorPtr;
 
