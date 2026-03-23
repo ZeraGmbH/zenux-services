@@ -87,8 +87,9 @@ I2cCtrlEMOBPtr DemoFactoryI2cCtrl::getEmobController(qint8 muxChannel)
     return std::make_unique<MockI2cCtrlEMOB>(muxChannel, "-DEMO-00V00");
 }
 
-I2cCtrlGeneratorPtr DemoFactoryI2cCtrl::getGeneratorController()
+I2cCtrlGeneratorPtr DemoFactoryI2cCtrl::getGeneratorController(cSenseSettingsPtr senseSettings)
 {
+    Q_UNUSED(senseSettings)
     return std::make_unique<MockI2cCtrlGenerator>();
 }
 

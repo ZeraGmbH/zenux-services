@@ -7,9 +7,9 @@ class MockI2cCtrlGenerator : public AbstractI2cCtrlGenerator
 {
 public:
     MockI2cCtrlGenerator();
-    ZeraMControllerIo::atmelRM sendSourceModeOn(QList<ChannelDefinitions> channelsOn) override;
-    ZeraMControllerIo::atmelRM sendSourceOn(QList<ChannelDefinitions> channelsOn) override;
-    ZeraMControllerIo::atmelRM sendSourceAmplitudeChangeRange(float amplitude, ChannelDefinitions channel) override;
+    ZeraMControllerIo::atmelRM sendSourceModeOn(const QStringList &channelMNamesOn) override;
+    ZeraMControllerIo::atmelRM sendSourceOn(const QStringList &channelMNamesOn) override;
+    ZeraMControllerIo::atmelRM sendSourceAmplitudeChangeRange(float amplitude, const QString &channelMName) override;
 };
 
 #endif // MOCKI2CCTRLGENERATOR_H

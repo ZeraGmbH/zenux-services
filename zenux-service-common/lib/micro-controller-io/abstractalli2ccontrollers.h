@@ -124,19 +124,9 @@ class AbstractI2cCtrlGenerator
 {
 public:
     virtual ~AbstractI2cCtrlGenerator() = default;
-    enum ChannelDefinitions {
-        UL1,
-        UL2,
-        UL3,
-        ULAUX,
-        IL1,
-        IL2,
-        IL3,
-        ILAUX,
-    };
-    virtual ZeraMControllerIo::atmelRM sendSourceModeOn(QList<ChannelDefinitions> channelsOn) = 0;
-    virtual ZeraMControllerIo::atmelRM sendSourceOn(QList<ChannelDefinitions> channelsOn) = 0;
-    virtual ZeraMControllerIo::atmelRM sendSourceAmplitudeChangeRange(float amplitude, ChannelDefinitions channel) = 0;
+    virtual ZeraMControllerIo::atmelRM sendSourceModeOn(const QStringList &channelMNamesOn) = 0;
+    virtual ZeraMControllerIo::atmelRM sendSourceOn(const QStringList &channelMNamesOn) = 0;
+    virtual ZeraMControllerIo::atmelRM sendSourceAmplitudeChangeRange(float amplitude, const QString &channelMName) = 0;
 };
 typedef std::shared_ptr<AbstractI2cCtrlGenerator> I2cCtrlGeneratorPtr;
 

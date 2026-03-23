@@ -3,6 +3,7 @@
 
 #include "abstractfactoryi2cctrl.h"
 #include "i2csettings.h"
+#include "sensesettings.h"
 
 class FactoryI2cCtrl : public AbstractFactoryI2cCtrl
 {
@@ -23,7 +24,8 @@ public:
     I2cCtrlClampStatusPtr getClampStatusController() override;
     I2cCtrlCpuTemperaturePtr getCpuTemperatureController() override;
     I2cCtrlEMOBPtr getEmobController(qint8 muxChannel) override;
-    I2cCtrlGeneratorPtr getGeneratorController() override;
+    I2cCtrlGeneratorPtr getGeneratorController(cSenseSettingsPtr senseSettings) override;
+
 private:
     quint8 getRelaisCtrlI2cAddress();
     quint8 getSystemCtrlI2cAddress();

@@ -2,20 +2,22 @@
 #define I2CCTRLGENERATOR_H
 
 #include "abstractalli2ccontrollers.h"
+#include "sensesettings.h"
 
 class I2cCtrlGenerator : public AbstractI2cCtrlGenerator
 {
 public:
-    I2cCtrlGenerator(const QString &deviceNodeName, quint8 i2cAddress, quint8 debugLevel);
-    ZeraMControllerIo::atmelRM sendSourceModeOn(QList<ChannelDefinitions> channelsOn) override;
-    ZeraMControllerIo::atmelRM sendSourceOn(QList<ChannelDefinitions> channelsOn) override;
-    ZeraMControllerIo::atmelRM sendSourceAmplitudeChangeRange(float amplitude, ChannelDefinitions channel) override;
+    I2cCtrlGenerator(cSenseSettingsPtr senseSettings, const QString &deviceNodeName, quint8 i2cAddress, quint8 debugLevel);
+    ZeraMControllerIo::atmelRM sendSourceModeOn(const QStringList &channelMNamesOn) override;
+    ZeraMControllerIo::atmelRM sendSourceOn(const QStringList &channelMNamesOn) override;
+    ZeraMControllerIo::atmelRM sendSourceAmplitudeChangeRange(float amplitude, const QString &channelMName) override;
 
     static QByteArray convertFloat(float value);
-private:
-    static quint8 getBitmask(const QList<ChannelDefinitions> &channels);
-    static quint8 getControllerInternalChannelNo(ChannelDefinitions channel);
+    static quint8 getBitmask(cSenseSettingsPtr senseSettings, const QStringList &channelMNames);
+    static quint8 getControllerInternalChannelNo(cSenseSettingsPtr senseSettings, const QString &channelMName);
 
+private:
+    cSenseSettingsPtr m_senseSettings;
     ZeraMControllerIo m_ctrlIo;
 };
 

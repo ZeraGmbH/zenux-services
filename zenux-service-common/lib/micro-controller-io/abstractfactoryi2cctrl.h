@@ -3,6 +3,7 @@
 
 #include "abstractalli2ccontrollers.h"
 #include "abstractctrlheartbeatwait.h"
+#include "sensesettings.h"
 #include <memory>
 
 class AbstractFactoryI2cCtrl
@@ -29,7 +30,7 @@ public:
     virtual I2cCtrlClampStatusPtr getClampStatusController() = 0;
     virtual I2cCtrlCpuTemperaturePtr getCpuTemperatureController() = 0;
     virtual I2cCtrlEMOBPtr getEmobController(qint8 muxChannel) = 0;
-    virtual I2cCtrlGeneratorPtr getGeneratorController() = 0;
+    virtual I2cCtrlGeneratorPtr getGeneratorController(cSenseSettingsPtr senseSettings) = 0;
 };
 
 typedef std::shared_ptr<AbstractFactoryI2cCtrl> AbstractFactoryI2cCtrlPtr;
