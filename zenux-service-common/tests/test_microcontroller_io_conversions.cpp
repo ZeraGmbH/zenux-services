@@ -23,8 +23,25 @@ void test_microcontroller_io_conversions::generatorBitmaskFromChannelMNames()
 
     quint8 mask = I2cCtrlGenerator::getBitmask(senseSettings, QStringList() << "m0" << "m3");
     QCOMPARE(mask, (1<<0) | (1<<4));
+
     mask = I2cCtrlGenerator::getBitmask(senseSettings, QStringList() << "m6" << "m7"); // AUX
     QCOMPARE(mask, (1<<3) | (1<<7));
+}
+
+void test_microcontroller_io_conversions::generatorChannelMNamesFromBitmask()
+{
+    TestPcbServer mock("mt310s2d", VeinTcp::MockTcpNetworkFactory::create());
+    cSenseSettingsPtr senseSettings = mock.getSenseSettings();
+
+    QStringList channelMNames = I2cCtrlGenerator::getChannelMNamesFromMask(senseSettings, (1<<0) | (1<<4));
+    QCOMPARE(channelMNames.size(), 2);
+    QVERIFY(channelMNames.contains("m0"));
+    QVERIFY(channelMNames.contains("m3"));
+
+    channelMNames = I2cCtrlGenerator::getChannelMNamesFromMask(senseSettings, (1<<3) | (1<<7));
+    QCOMPARE(channelMNames.size(), 2);
+    QVERIFY(channelMNames.contains("m6"));
+    QVERIFY(channelMNames.contains("m7"));
 }
 
 void test_microcontroller_io_conversions::controllerInternalChannelNoFromChannelMName()

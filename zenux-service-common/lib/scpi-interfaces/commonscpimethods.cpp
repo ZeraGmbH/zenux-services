@@ -73,3 +73,11 @@ QString CommonScpiMethods::handleScpiInterfaceRead(std::shared_ptr<cSCPI> scpiIn
     else
         return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
+
+bool CommonScpiMethods::containsValidChannelMNames(cSenseSettingsPtr senseSettings, const QStringList &channelMNames)
+{
+    for (const QString &channelMName : channelMNames)
+        if (senseSettings->findChannelSettingByMxName(channelMName) == nullptr)
+            return false;
+    return true;
+}

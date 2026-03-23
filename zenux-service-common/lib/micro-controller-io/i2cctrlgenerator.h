@@ -8,12 +8,16 @@ class I2cCtrlGenerator : public AbstractI2cCtrlGenerator
 {
 public:
     I2cCtrlGenerator(cSenseSettingsPtr senseSettings, const QString &deviceNodeName, quint8 i2cAddress, quint8 debugLevel);
-    ZeraMControllerIo::atmelRM sendSourceModeOn(const QStringList &channelMNamesOn) override;
+
+    ZeraMControllerIo::atmelRM readSourceModeOn(QStringList &channelMNamesModeOnRead) override;
+    ZeraMControllerIo::atmelRM sendSourceModeOn(const QStringList &channelMNamesModeOn) override;
+    ZeraMControllerIo::atmelRM readSourceOn(QStringList &channelMNamesOnRead) override;
     ZeraMControllerIo::atmelRM sendSourceOn(const QStringList &channelMNamesOn) override;
     ZeraMControllerIo::atmelRM sendSourceAmplitudeChangeRange(float amplitude, const QString &channelMName) override;
 
     static QByteArray convertFloat(float value);
     static quint8 getBitmask(cSenseSettingsPtr senseSettings, const QStringList &channelMNames);
+    static QStringList getChannelMNamesFromMask(cSenseSettingsPtr senseSettings, quint8 mask);
     static quint8 getControllerInternalChannelNo(cSenseSettingsPtr senseSettings, const QString &channelMName);
 
 private:

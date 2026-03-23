@@ -7144,6 +7144,11 @@
     <STATUS ScpiPath="HKEY:HK0:STATUS" Type="Query"/>
    </HK0>
   </HKEY>
+  <GENERATOR Type="Model,Node">
+   <MODEON Type="Query,Command+Par" ScpiPath="GENERATOR:MODEON"/>
+   <SWITCHON Type="Query,Command+Par" ScpiPath="GENERATOR:SWITCHON"/>
+   <AMPRANGE Type="Command+Par" ScpiPath="GENERATOR:AMPRANGE"/>
+  </GENERATOR>
   <UISRC Type="Model,Node">
    <CAPABILITIES ScpiPath="UISRC:CAPABILITIES" Type="Query"/>
    <STATE ScpiPath="UISRC:STATE" Type="Query"/>

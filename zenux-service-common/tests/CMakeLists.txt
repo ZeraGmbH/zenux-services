@@ -36,6 +36,7 @@ SETUP_SERVICE_COMMON_TESTS(
     test_hotplug_scpi_cmd
     test_firmwareupdatenotificationfile
     test_microcontroller_io_conversions
+    test_generator_scpi
     )
 
 target_sources(test_hotpluggablecontrollercontainer

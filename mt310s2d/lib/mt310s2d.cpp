@@ -99,6 +99,9 @@ cMT310S2dServer::~cMT310S2dServer()
     delete m_pSystemInfo;
     delete m_pRMConnection;
     delete m_accumulatorInterface;
+    delete m_generatorInterface;
+    delete m_sourceControlInterface;
+
 }
 
 QString cMT310S2dServer::getCtrlDeviceNode()
@@ -210,7 +213,12 @@ void cMT310S2dServer::earlySetup(AbstractChannelRangeFactoryPtr channelRangeFact
     m_scpiConnectionList.append(m_accumulatorInterface = new AccumulatorInterface(m_scpiInterface, m_accumulatorSettings, m_ctrlFactory));
     connect(m_accumulatorInterface, &AccumulatorInterface::sigAccumulatorStatusChange,
             m_pSystemInterface, &Mt310s2SystemInterface::onAccuStatusChanged);
-    m_scpiConnectionList.append(m_sourceControlInterface = new SourceControlInterface(m_scpiInterface, m_sourceControlSettings, m_ctrlFactory));
+
+    // All source/generator interfaces are WIP
+    if (!m_sourceControlSettings->getSourceCapFile().isEmpty()) {
+        m_scpiConnectionList.append(m_generatorInterface = new GeneratorInterface(m_scpiInterface, getSenseSettings(), m_ctrlFactory));
+        m_scpiConnectionList.append(m_sourceControlInterface = new SourceControlInterface(m_scpiInterface, m_sourceControlSettings, m_ctrlFactory));
+    }
 
     m_resourceList.append(m_foutInterface); // all our resources
     m_resourceList.append(m_pFRQInputInterface);

@@ -124,7 +124,9 @@ class AbstractI2cCtrlGenerator
 {
 public:
     virtual ~AbstractI2cCtrlGenerator() = default;
-    virtual ZeraMControllerIo::atmelRM sendSourceModeOn(const QStringList &channelMNamesOn) = 0;
+    virtual ZeraMControllerIo::atmelRM readSourceModeOn(QStringList &channelMNamesOnRead) = 0;
+    virtual ZeraMControllerIo::atmelRM sendSourceModeOn(const QStringList &channelMNamesModeOn) = 0;
+    virtual ZeraMControllerIo::atmelRM readSourceOn(QStringList &channelMNamesOnRead) = 0;
     virtual ZeraMControllerIo::atmelRM sendSourceOn(const QStringList &channelMNamesOn) = 0;
     virtual ZeraMControllerIo::atmelRM sendSourceAmplitudeChangeRange(float amplitude, const QString &channelMName) = 0;
 };

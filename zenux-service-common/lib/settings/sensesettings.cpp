@@ -31,19 +31,17 @@ const QList<SenseSystem::cChannelSettings*> &cSenseSettings::getChannelSettings(
 
 SenseSystem::cChannelSettings *cSenseSettings::findChannelSettingByMxName(const QString &intMxName) const
 {
-    for(auto channel : qAsConst(m_ChannelSettingsList)) {
+    for(auto channel : qAsConst(m_ChannelSettingsList))
         if(channel->m_nameMx == intMxName)
             return channel;
-    }
     return nullptr;
 }
 
 SenseSystem::cChannelSettings *cSenseSettings::findChannelSettingByAlias1(const QString &alias1) const
 {
-    for(auto channel : qAsConst(m_ChannelSettingsList)) {
+    for(auto channel : qAsConst(m_ChannelSettingsList))
         if(channel->m_sAlias1 == alias1)
             return channel;
-    }
     return nullptr;
 }
 

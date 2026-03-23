@@ -1,0 +1,160 @@
+#include "test_generator_scpi.h"
+#include "testfactoryi2cctrl.h"
+#include "proxy.h"
+#include "reply.h"
+#include "controllerpersitentdata.h"
+#include <mocktcpnetworkfactory.h>
+#include <timemachineobject.h>
+#include <QSignalSpy>
+#include <QTest>
+
+QTEST_MAIN(test_generator_scpi);
+
+void test_generator_scpi::init()
+{
+    setupServers();
+}
+
+void test_generator_scpi::cleanup()
+{
+    m_pcbIFace = nullptr;
+    m_proxyClient = nullptr;
+    m_mt310s2d = nullptr;
+    TimeMachineObject::feedEventLoop();
+    m_resman = nullptr;
+    TimeMachineObject::feedEventLoop();
+    ControllerPersitentData::cleanupPersitentData();
+}
+
+void test_generator_scpi::getSetValidSourceModeOn()
+{
+    QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
+
+    responseSpy.clear();
+    m_pcbIFace->scpiCommand("GENERATOR:MODEON?");
+    TimeMachineObject::feedEventLoop();
+    QCOMPARE(responseSpy.count(), 1);
+    QCOMPARE(responseSpy[0][1], QVariant(ack));
+    QCOMPARE(responseSpy[0][2], QVariant(""));
+
+    responseSpy.clear();
+    m_pcbIFace->scpiCommand("GENERATOR:MODEON m0,m3;");
+    TimeMachineObject::feedEventLoop();
+    QCOMPARE(responseSpy.count(), 1);
+    QCOMPARE(responseSpy[0][1], QVariant(ack));
+    QCOMPARE(responseSpy[0][2], QVariant("ack"));
+
+    responseSpy.clear();
+    m_pcbIFace->scpiCommand("GENERATOR:MODEON?");
+    TimeMachineObject::feedEventLoop();
+    QCOMPARE(responseSpy.count(), 1);
+    QCOMPARE(responseSpy[0][1], QVariant(ack));
+    QCOMPARE(responseSpy[0][2], QVariant("m0,m3"));
+
+    responseSpy.clear();
+    m_pcbIFace->scpiCommand("GENERATOR:MODEON;");
+    TimeMachineObject::feedEventLoop();
+    QCOMPARE(responseSpy.count(), 1);
+    QCOMPARE(responseSpy[0][1], QVariant(ack));
+    QCOMPARE(responseSpy[0][2], QVariant("ack"));
+
+    responseSpy.clear();
+    m_pcbIFace->scpiCommand("GENERATOR:MODEON?");
+    TimeMachineObject::feedEventLoop();
+    QCOMPARE(responseSpy.count(), 1);
+    QCOMPARE(responseSpy[0][1], QVariant(ack));
+    QCOMPARE(responseSpy[0][2], QVariant(""));
+}
+
+void test_generator_scpi::getSetInvalidSourceModeOn()
+{
+    QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
+
+    responseSpy.clear();
+    m_pcbIFace->scpiCommand("GENERATOR:MODEON m0,m21;");
+    TimeMachineObject::feedEventLoop();
+    QCOMPARE(responseSpy.count(), 1);
+    QCOMPARE(responseSpy[0][1], QVariant(error));
+    QCOMPARE(responseSpy[0][2], QVariant("errexec"));
+
+    responseSpy.clear();
+    m_pcbIFace->scpiCommand("GENERATOR:MODEON?");
+    TimeMachineObject::feedEventLoop();
+    QCOMPARE(responseSpy.count(), 1);
+    QCOMPARE(responseSpy[0][1], QVariant(ack));
+    QCOMPARE(responseSpy[0][2], QVariant(""));
+}
+
+void test_generator_scpi::getSetValidSourceOn()
+{
+    QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
+
+    responseSpy.clear();
+    m_pcbIFace->scpiCommand("GENERATOR:SWITCHON?");
+    TimeMachineObject::feedEventLoop();
+    QCOMPARE(responseSpy.count(), 1);
+    QCOMPARE(responseSpy[0][1], QVariant(ack));
+    QCOMPARE(responseSpy[0][2], QVariant(""));
+
+    responseSpy.clear();
+    m_pcbIFace->scpiCommand("GENERATOR:SWITCHON m0,m3;");
+    TimeMachineObject::feedEventLoop();
+    QCOMPARE(responseSpy.count(), 1);
+    QCOMPARE(responseSpy[0][1], QVariant(ack));
+    QCOMPARE(responseSpy[0][2], QVariant("ack"));
+
+    responseSpy.clear();
+    m_pcbIFace->scpiCommand("GENERATOR:SWITCHON?");
+    TimeMachineObject::feedEventLoop();
+    QCOMPARE(responseSpy.count(), 1);
+    QCOMPARE(responseSpy[0][1], QVariant(ack));
+    QCOMPARE(responseSpy[0][2], QVariant("m0,m3"));
+
+    responseSpy.clear();
+    m_pcbIFace->scpiCommand("GENERATOR:SWITCHON;");
+    TimeMachineObject::feedEventLoop();
+    QCOMPARE(responseSpy.count(), 1);
+    QCOMPARE(responseSpy[0][1], QVariant(ack));
+    QCOMPARE(responseSpy[0][2], QVariant("ack"));
+
+    responseSpy.clear();
+    m_pcbIFace->scpiCommand("GENERATOR:SWITCHON?");
+    TimeMachineObject::feedEventLoop();
+    QCOMPARE(responseSpy.count(), 1);
+    QCOMPARE(responseSpy[0][1], QVariant(ack));
+    QCOMPARE(responseSpy[0][2], QVariant(""));
+}
+
+void test_generator_scpi::setAmplitudeChangeRange()
+{
+    QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
+
+    responseSpy.clear();
+    m_pcbIFace->scpiCommand("GENERATOR:AMPRANGE 2.5,m2;");
+    TimeMachineObject::feedEventLoop();
+    QCOMPARE(responseSpy.count(), 1);
+    QCOMPARE(responseSpy[0][1], QVariant(ack));
+    QCOMPARE(responseSpy[0][2], QVariant("ack"));
+
+    responseSpy.clear();
+    m_pcbIFace->scpiCommand("GENERATOR:AMPRANGE?");
+    TimeMachineObject::feedEventLoop();
+    QCOMPARE(responseSpy.count(), 1);
+    QCOMPARE(responseSpy[0][1], QVariant(nack));
+    QCOMPARE(responseSpy[0][2], QVariant("nak"));
+}
+
+
+void test_generator_scpi::setupServers()
+{
+    VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory = VeinTcp::MockTcpNetworkFactory::create();
+    m_resman = std::make_unique<ResmanRunFacade>(tcpNetworkFactory);
+    m_mt310s2d = std::make_unique<MockMt310s2d>(std::make_shared<TestFactoryI2cCtrl>(true), tcpNetworkFactory, "mt581s2d");
+    TimeMachineObject::feedEventLoop();
+
+    m_proxyClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307, tcpNetworkFactory);
+    m_pcbIFace = std::make_unique<Zera::cPCBInterface>();
+    m_pcbIFace->setClientSmart(m_proxyClient);
+    Zera::Proxy::getInstance()->startConnectionSmart(m_proxyClient);
+    TimeMachineObject::feedEventLoop();
+}

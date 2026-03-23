@@ -2,6 +2,7 @@
 #define COMMONSCPIMETHODS_H
 
 #include "protonetcommand.h"
+#include "sensesettings.h"
 #include <scpi.h>
 #include <xiqnetwrapper.h>
 #include <QTcpSocket>
@@ -15,6 +16,7 @@ public:
                                 ProtonetCommandPtr protoCmd);
     static QString handleScpiInterfaceRead(std::shared_ptr<cSCPI> scpiInterface,
                                            const QString &scpiInput);
+    static bool containsValidChannelMNames(cSenseSettingsPtr senseSettings, const QStringList &channelMNames);
 };
 
 #endif // COMMONSCPIMETHODS_H

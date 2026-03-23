@@ -25,24 +25,22 @@ enum sourceCommands {
 
 void SourceControlInterface::initSCPIConnection()
 {
-    if (!m_sourceCapabilityFileName.isEmpty()) {
-        QJsonObject capabilities = expandJsonCapabilities(cJsonFileLoader::loadJsonFile(m_sourceCapabilityFileName));
-        if (!capabilities.isEmpty()) {
-            QJsonDocument docCapabilities(capabilities);
-            m_sourceCapabilities = docCapabilities.toJson();
-            addDelegate("UISRC", "CAPABILITIES", SCPI::isQuery, m_scpiInterface, sourceCommands::cmdCapabilites);
+    QJsonObject capabilities = expandJsonCapabilities(cJsonFileLoader::loadJsonFile(m_sourceCapabilityFileName));
+    if (!capabilities.isEmpty()) {
+        QJsonDocument docCapabilities(capabilities);
+        m_sourceCapabilities = docCapabilities.toJson();
+        addDelegate("UISRC", "CAPABILITIES", SCPI::isQuery, m_scpiInterface, sourceCommands::cmdCapabilites);
 
-            JsonStructApi structApi(capabilities);
-            m_jsonSourceStateApi.setDeviceInfo(structApi.getDeviceName());
-            QJsonDocument docSourceState(m_jsonSourceStateApi.getJsonStatus());
-            m_sourceState = docSourceState.toJson();
-            addDelegate("UISRC", "STATE", SCPI::isQuery, m_scpiInterface, sourceCommands::cmdState, &m_sourceState);
+        JsonStructApi structApi(capabilities);
+        m_jsonSourceStateApi.setDeviceInfo(structApi.getDeviceName());
+        QJsonDocument docSourceState(m_jsonSourceStateApi.getJsonStatus());
+        m_sourceState = docSourceState.toJson();
+        addDelegate("UISRC", "STATE", SCPI::isQuery, m_scpiInterface, sourceCommands::cmdState, &m_sourceState);
 
-            ZeraJsonParamsState paramState(capabilities);
-            QJsonDocument docDefaultState(paramState.getDefaultJsonState());
-            m_sourceLoadState = docDefaultState.toJson();
-            addDelegate("UISRC", "LOAD", SCPI::isQuery|SCPI::isCmdwP, m_scpiInterface, sourceCommands::cmdLoadState, &m_sourceLoadState);
-        }
+        ZeraJsonParamsState paramState(capabilities);
+        QJsonDocument docDefaultState(paramState.getDefaultJsonState());
+        m_sourceLoadState = docDefaultState.toJson();
+        addDelegate("UISRC", "LOAD", SCPI::isQuery|SCPI::isCmdwP, m_scpiInterface, sourceCommands::cmdLoadState, &m_sourceLoadState);
     }
 }
 

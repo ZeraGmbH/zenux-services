@@ -9,6 +9,7 @@ class test_microcontroller_io_conversions : public QObject
 private slots:
     void serializeFloatToMicroController();
     void generatorBitmaskFromChannelMNames();
+    void generatorChannelMNamesFromBitmask();
     void controllerInternalChannelNoFromChannelMName();
 };
 

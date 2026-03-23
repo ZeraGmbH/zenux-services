@@ -11,16 +11,46 @@ I2cCtrlGenerator::I2cCtrlGenerator(cSenseSettingsPtr senseSettings, const QStrin
 enum hw_cmdcode
 {
     hwSendSetSourceMode = 0x1210,
+    hwSendGetSourceMode = 0x1211,
     hwSendSetSourceOn = 0x1212,
+    hwSendGetSourceOn = 0x1213,
     hwSendSetSourceRangeByLevel = 0x1206
 };
 
-ZeraMControllerIoTemplate::atmelRM I2cCtrlGenerator::sendSourceModeOn(const QStringList &channelMNamesOn)
+ZeraMControllerIoTemplate::atmelRM I2cCtrlGenerator::readSourceModeOn(QStringList &channelMNamesModeOnRead)
 {
-    quint8 ba = getBitmask(m_senseSettings, channelMNamesOn);
+    hw_cmd CMD(hwSendGetSourceMode, 0, nullptr, 0);
+    quint8 answ[2];
+    m_ctrlIo.writeCommand(&CMD, answ, 2);
+    ZeraMControllerIo::atmelRM ret = ZeraMControllerIo::cmdexecfault;
+    if(m_ctrlIo.getLastErrorMask() == 0) {
+        quint8 mask = answ[0];
+        channelMNamesModeOnRead = getChannelMNamesFromMask(m_senseSettings, mask);
+        ret = ZeraMControllerIo::cmddone;
+    }
+    return ret;
+}
+
+ZeraMControllerIoTemplate::atmelRM I2cCtrlGenerator::sendSourceModeOn(const QStringList &channelMNamesModeOn)
+{
+    quint8 ba = getBitmask(m_senseSettings, channelMNamesModeOn);
     hw_cmd CMD(hwSendSetSourceMode, 0, &ba, 1);
     m_ctrlIo.writeCommand(&CMD);
     ZeraMControllerIo::atmelRM ret = m_ctrlIo.getLastErrorMask() == 0 ? ZeraMControllerIo::cmddone : ZeraMControllerIo::cmdexecfault;
+    return ret;
+}
+
+ZeraMControllerIoTemplate::atmelRM I2cCtrlGenerator::readSourceOn(QStringList &channelMNamesOnRead)
+{
+    hw_cmd CMD(hwSendGetSourceOn, 0, nullptr, 0);
+    quint8 answ[2];
+    m_ctrlIo.writeCommand(&CMD, answ, 2);
+    ZeraMControllerIo::atmelRM ret = ZeraMControllerIo::cmdexecfault;
+    if(m_ctrlIo.getLastErrorMask() == 0) {
+        quint8 mask = answ[0];
+        channelMNamesOnRead = getChannelMNamesFromMask(m_senseSettings, mask);
+        ret = ZeraMControllerIo::cmddone;
+    }
     return ret;
 }
 
@@ -63,6 +93,17 @@ quint8 I2cCtrlGenerator::getBitmask(cSenseSettingsPtr senseSettings, const QStri
             mask |= (1 << (channelSetting->m_nCtrlChannel-1));
     }
     return mask;
+}
+
+QStringList I2cCtrlGenerator::getChannelMNamesFromMask(cSenseSettingsPtr senseSettings, quint8 mask)
+{
+    QStringList channelMNames;
+    const QList<SenseSystem::cChannelSettings*> &channelSettings = senseSettings->getChannelSettings();
+    for (const SenseSystem::cChannelSettings* channelSetting : channelSettings) {
+        if (mask & (1 << (channelSetting->m_nCtrlChannel-1)))
+            channelMNames.append(channelSetting->m_nameMx);
+    }
+    return channelMNames;
 }
 
 quint8 I2cCtrlGenerator::getControllerInternalChannelNo(cSenseSettingsPtr senseSettings, const QString &channelMName)

@@ -2,6 +2,7 @@
 #define MT310S2D_H
 
 #include "abstracteepromi2cfactory.h"
+#include "generatorinterface.h"
 #include "hotplugcontrollerinterface.h"
 #include "mt310s2systeminfo.h"
 #include "abstractfactorydevicenodepcb.h"
@@ -108,6 +109,7 @@ private:
     cClampInterface* m_pClampInterface = nullptr;
     AccumulatorInterface* m_accumulatorInterface = nullptr;
     SourceControlInterface* m_sourceControlInterface = nullptr;
+    GeneratorInterface* m_generatorInterface = nullptr;
     int m_pendingResources = 0;
 
     quint16 m_atmelInterruptMask = 0;

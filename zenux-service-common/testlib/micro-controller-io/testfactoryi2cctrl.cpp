@@ -104,7 +104,8 @@ I2cCtrlEMOBPtr TestFactoryI2cCtrl::getEmobController(qint8 muxChannel)
 I2cCtrlGeneratorPtr TestFactoryI2cCtrl::getGeneratorController(cSenseSettingsPtr senseSettings)
 {
     Q_UNUSED(senseSettings)
-    return std::make_unique<MockI2cCtrlGenerator>();
+    return std::make_unique<MockI2cCtrlGenerator>(ControllerPersitentData::getData().m_generatorMNamesModeOn,
+                                                  ControllerPersitentData::getData().m_generatorMNamesOn);
 }
 
 I2cCtrlBootloaderPtr TestFactoryI2cCtrl::getBootloaderController(ControllerTypes ctrlType, qint8 muxChannel)
