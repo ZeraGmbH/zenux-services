@@ -120,6 +120,25 @@ public:
 typedef std::shared_ptr<AbstractI2cCtrlEMOB> I2cCtrlEMOBPtr;
 
 
+class AbstractI2cCtrlGenerator
+{
+public:
+    virtual ~AbstractI2cCtrlGenerator() = default;
+    enum ChannelDefinitions {
+        UL1,
+        UL2,
+        UL3,
+        ULAUX,
+        IL1,
+        IL2,
+        IL3,
+        ILAUX,
+    };
+    virtual ZeraMControllerIo::atmelRM sendSourceModeOn(QList<ChannelDefinitions> channelsOn) = 0;
+};
+typedef std::shared_ptr<AbstractI2cCtrlGenerator> I2cCtrlGeneratorPtr;
+
+
 class AbstractI2cCtrlBootloader
 {
 public:

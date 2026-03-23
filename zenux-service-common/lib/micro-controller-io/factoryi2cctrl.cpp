@@ -15,6 +15,7 @@
 #include "i2cctrlpll.h"
 #include "i2cctrlranges.h"
 #include "i2cctrlcputemperature.h"
+#include "i2cctrlgenerator.h"
 
 FactoryI2cCtrl::FactoryI2cCtrl(const I2cSettingsPtr i2cSettings) :
     m_i2cSettings(i2cSettings),
@@ -126,6 +127,11 @@ I2cCtrlEMOBPtr FactoryI2cCtrl::getEmobController(qint8 muxChannel)
     return std::make_shared<I2cCtrlEMOB>(m_deviceNode, getEmobCtrlI2cAddress(),
                                          getEmobMuxI2cAddress(), muxChannel,
                                          m_debugLevel);
+}
+
+I2cCtrlGeneratorPtr FactoryI2cCtrl::getGeneratorController()
+{
+    return std::make_unique<I2cCtrlGenerator>(m_deviceNode, getRelaisCtrlI2cAddress(), m_debugLevel);
 }
 
 quint8 FactoryI2cCtrl::getRelaisCtrlI2cAddress()

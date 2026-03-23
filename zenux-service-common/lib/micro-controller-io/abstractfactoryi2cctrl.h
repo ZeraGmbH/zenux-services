@@ -10,7 +10,7 @@ class AbstractFactoryI2cCtrl
 public:
     enum ControllerTypes
     {
-        CTRL_TYPE_RELAIS,
+        CTRL_TYPE_RELAIS, // MT581s2: generator
         CTRL_TYPE_SYSTEM,
         CTRL_TYPE_EMOB,
         CTRL_TYPE_ACCU
@@ -29,6 +29,7 @@ public:
     virtual I2cCtrlClampStatusPtr getClampStatusController() = 0;
     virtual I2cCtrlCpuTemperaturePtr getCpuTemperatureController() = 0;
     virtual I2cCtrlEMOBPtr getEmobController(qint8 muxChannel) = 0;
+    virtual I2cCtrlGeneratorPtr getGeneratorController() = 0;
 };
 
 typedef std::shared_ptr<AbstractFactoryI2cCtrl> AbstractFactoryI2cCtrlPtr;

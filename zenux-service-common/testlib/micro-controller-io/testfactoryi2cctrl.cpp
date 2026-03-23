@@ -2,6 +2,7 @@
 #include "controllerpersitentdata.h"
 #include "mocki2cctrlbootloader.h"
 #include "mocki2cctrlemob.h"
+#include "mocki2cctrlgenerator.h"
 #include "testi2cctrlaccu.h"
 #include "mocki2cctrlcommoninfo.h"
 #include "testi2cctrlranges.h"
@@ -98,6 +99,11 @@ I2cCtrlCpuTemperaturePtr TestFactoryI2cCtrl::getCpuTemperatureController()
 I2cCtrlEMOBPtr TestFactoryI2cCtrl::getEmobController(qint8 muxChannel)
 {
     return std::make_unique<MockI2cCtrlEMOB>(muxChannel, "");
+}
+
+I2cCtrlGeneratorPtr TestFactoryI2cCtrl::getGeneratorController()
+{
+    return std::make_unique<MockI2cCtrlGenerator>();
 }
 
 I2cCtrlBootloaderPtr TestFactoryI2cCtrl::getBootloaderController(ControllerTypes ctrlType, qint8 muxChannel)

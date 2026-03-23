@@ -9,6 +9,7 @@
 #include "demoi2cctrlaccu.h"
 #include "demoi2cctrldeviceident.h"
 #include "demoi2cctrlranges.h"
+#include "mocki2cctrlgenerator.h"
 #include "mocki2cctrlmmode.h"
 #include "demoi2cctrlpll.h"
 #include "mocki2cctrlclampstatus.h"
@@ -84,6 +85,11 @@ I2cCtrlCpuTemperaturePtr DemoFactoryI2cCtrl::getCpuTemperatureController()
 I2cCtrlEMOBPtr DemoFactoryI2cCtrl::getEmobController(qint8 muxChannel)
 {
     return std::make_unique<MockI2cCtrlEMOB>(muxChannel, "-DEMO-00V00");
+}
+
+I2cCtrlGeneratorPtr DemoFactoryI2cCtrl::getGeneratorController()
+{
+    return std::make_unique<MockI2cCtrlGenerator>();
 }
 
 I2cCtrlBootloaderPtr DemoFactoryI2cCtrl::getBootloaderController(ControllerTypes ctrlType, qint8 muxChannel)

@@ -25,6 +25,7 @@ public:
     I2cCtrlClampStatusPtr getClampStatusController() override;
     I2cCtrlCpuTemperaturePtr getCpuTemperatureController() override;
     I2cCtrlEMOBPtr getEmobController(qint8 muxChannel) override;
+    I2cCtrlGeneratorPtr getGeneratorController() override;
 
 protected:
     enum ControllerRunState {
