@@ -80,6 +80,7 @@ private:
     void updateI2cDevicesConnected();
     void setupMicroControllerIo();
     void setInitialPllChannel();
+    bool hasSourceGenerator() const;
 
     AbstractFactoryI2cCtrlPtr m_ctrlFactory;
     AbstractFactoryDeviceNodePcbPtr m_zdspSupportFactory;

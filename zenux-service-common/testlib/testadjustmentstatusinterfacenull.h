@@ -6,7 +6,7 @@
 class TestAdjustmentStatusInterfaceNull : public AbstractAdjStatus
 {
 public:
-    quint8 getAdjustmentStatus() override;
+    quint8 getAdjustmentStatus() const override;
 };
 
 #endif // TESTADJUSTMENTSTATUSINTERFACENULL_H

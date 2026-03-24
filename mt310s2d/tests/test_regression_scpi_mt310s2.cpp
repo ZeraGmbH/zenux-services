@@ -14,8 +14,9 @@ QTEST_MAIN(test_regression_scpi_mt310s2);
 void test_regression_scpi_mt310s2::initTestCase_data()
 {
     QTest::addColumn<QString>("serviceNameForAlternateDevice");
-    QTest::newRow("MT310s2") << QString("mt310s2d");
-    QTest::newRow("MT581s2") << QString("mt581s2d");
+    QTest::addColumn<QString>("hasSourceGenerator");
+    QTest::newRow("MT310s2") << QString("mt310s2d") << QString("0");
+    QTest::newRow("MT581s2") << QString("mt581s2d") << QString("1");
 }
 
 void test_regression_scpi_mt310s2::init()
@@ -60,4 +61,11 @@ void test_regression_scpi_mt310s2::dumpScpi()
     if(!ok)
         TestLogHelpers::compareAndLogOnDiff(expected, dumped);
     QVERIFY(ok);
+}
+
+void test_regression_scpi_mt310s2::hasSourceGenerator()
+{
+    QFETCH_GLOBAL(QString, hasSourceGenerator);
+    QString ret = ScpiSingleTransactionBlocked::query("STATUS:HASSOURCEGENERATOR?");
+    QCOMPARE(ret, hasSourceGenerator);
 }

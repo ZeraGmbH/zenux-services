@@ -17,6 +17,8 @@ private slots:
 
     void serverUp();
     void dumpScpi();
+    void hasSourceGenerator();
+
 private:
     std::unique_ptr<ResmanRunFacade> m_resman;
     std::unique_ptr<MockMt310s2d> m_server;

@@ -58,7 +58,7 @@ public:
                          AbstractFactoryI2cCtrlPtr ctrlFactory,
                          QHash<QString, int> availSenseModesHash);
     virtual ~SenseInterfaceCommon();
-    quint8 getAdjustmentStatus() override;
+    quint8 getAdjustmentStatus() const override;
     SenseChannelCommon *getChannel(const QString &name);
     QString getChannelByCtrlChannelNo(quint16 ctrlChannel);
     SenseRangeCommon* getRange(const QString &channelName, const QString &rangeName);

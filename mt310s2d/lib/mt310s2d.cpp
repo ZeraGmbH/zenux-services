@@ -169,6 +169,11 @@ void cMT310S2dServer::setInitialPllChannel()
     qInfo("Initial PLL channel set");
 }
 
+bool cMT310S2dServer::hasSourceGenerator() const
+{
+    return !m_sourceControlSettings->getSourceCapFile().isEmpty();
+}
+
 void cMT310S2dServer::earlySetup(AbstractChannelRangeFactoryPtr channelRangeFactory)
 {
     m_pSystemInfo = new Mt310s2SystemInfo(m_ctrlFactory);
@@ -186,7 +191,10 @@ void cMT310S2dServer::earlySetup(AbstractChannelRangeFactoryPtr channelRangeFact
                                                                               m_pSystemInfo,
                                                                               channelRangeFactory,
                                                                               m_ctrlFactory));
-    m_scpiConnectionList.append(m_pStatusInterface = new ServiceStatusInterface(m_scpiInterface, m_pSenseInterface, m_ctrlFactory));
+    m_scpiConnectionList.append(m_pStatusInterface = new ServiceStatusInterface(m_scpiInterface,
+                                                                                m_pSenseInterface,
+                                                                                m_ctrlFactory,
+                                                                                hasSourceGenerator()));
     m_hotPluggableControllerContainer = std::make_shared<HotPluggableControllerContainer>(i2cSettings, m_ctrlFactory);
     m_scpiConnectionList.append(m_pSystemInterface = new Mt310s2SystemInterface(this,
                                                                                 m_pSystemInfo,
@@ -210,8 +218,7 @@ void cMT310S2dServer::earlySetup(AbstractChannelRangeFactoryPtr channelRangeFact
     connect(m_accumulatorInterface, &AccumulatorInterface::sigAccumulatorStatusChange,
             m_pSystemInterface, &Mt310s2SystemInterface::onAccuStatusChanged);
 
-    // All source/generator interfaces are WIP
-    if (!m_sourceControlSettings->getSourceCapFile().isEmpty()) {
+    if (hasSourceGenerator()) {
         m_scpiConnectionList.append(m_generatorInterface = new GeneratorInterface(m_scpiInterface, getSenseSettings(), m_ctrlFactory));
         m_scpiConnectionList.append(m_sourceControlInterface = new SourceControlInterface(m_scpiInterface, m_sourceControlSettings, m_ctrlFactory));
     }

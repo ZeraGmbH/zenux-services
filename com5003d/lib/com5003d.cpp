@@ -302,7 +302,10 @@ void cCOM5003dServer::setupInterfacesRequiresAtmelRunning(AbstractChannelRangeFa
                                                                               m_pSystemInfo,
                                                                               channelRangeFactory,
                                                                               m_ctrlFactory));
-    m_scpiConnectionList.append(m_pStatusInterface = new ServiceStatusInterface(m_scpiInterface, m_pSenseInterface, m_ctrlFactory));
+    m_scpiConnectionList.append(m_pStatusInterface = new ServiceStatusInterface(m_scpiInterface,
+                                                                                m_pSenseInterface,
+                                                                                m_ctrlFactory,
+                                                                                false));
     m_scpiConnectionList.append(m_pSystemInterface = new Com5003SystemInterface(this, m_pSystemInfo, m_pSenseInterface, m_ctrlFactory));
     m_scpiConnectionList.append(m_pSamplingInterface = new cSamplingInterface(m_scpiInterface, m_settings->getSamplingSettings(), m_ctrlFactory));
     m_scpiConnectionList.append(m_foutInterface = new FOutGroupResourceAndInterface(m_scpiInterface, m_foutSettings));

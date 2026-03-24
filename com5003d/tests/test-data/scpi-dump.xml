@@ -4831,6 +4831,7 @@
    <DEVICE Type="Query" ScpiPath="STATUS:DEVICE"/>
    <ADJUSTMENT Type="Query" ScpiPath="STATUS:ADJUSTMENT"/>
    <AUTHORIZATION Type="Query" ScpiPath="STATUS:AUTHORIZATION"/>
+   <HASSOURCEGENERATOR ScpiPath="STATUS:HASSOURCEGENERATOR" Type="Query"/>
   </STATUS>
   <SYSTEM Type="Model,Node">
    <VERSION Type="Node">

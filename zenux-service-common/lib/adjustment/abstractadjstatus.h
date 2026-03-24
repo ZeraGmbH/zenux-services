@@ -7,7 +7,7 @@ class AbstractAdjStatus
 {
 public:
     virtual ~AbstractAdjStatus() = default;
-    virtual quint8 getAdjustmentStatus() = 0;
+    virtual quint8 getAdjustmentStatus() const = 0;
 };
 
 #endif // ABSTRACTADJSTATUS_H

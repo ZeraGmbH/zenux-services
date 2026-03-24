@@ -43,7 +43,9 @@ void test_authorizationnotifier::init()
         ctrlFactory, VeinTcp::MockTcpNetworkFactory::create());
     m_adjustmentStatusNull = new TestAdjustmentStatusInterfaceNull();
     m_pcbServerTest->insertScpiConnection(new ServiceStatusInterface(m_pcbServerTest->getSCPIInterface(),
-                                                                     m_adjustmentStatusNull, ctrlFactory));
+                                                                     m_adjustmentStatusNull,
+                                                                     ctrlFactory,
+                                                                     false));
     m_pcbServerTest->initTestSCPIConnections();
 }
 

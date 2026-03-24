@@ -46,7 +46,7 @@ SenseInterfaceCommon::~SenseInterfaceCommon()
     m_channelList.clear();
 }
 
-quint8 SenseInterfaceCommon::getAdjustmentStatus()
+quint8 SenseInterfaceCommon::getAdjustmentStatus() const
 {
     quint8 adjustmentStatusMask = Adjustment::adjusted;
     // Loop adjustment state for all channels

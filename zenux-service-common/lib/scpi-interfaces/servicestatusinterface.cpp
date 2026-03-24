@@ -10,16 +10,19 @@ enum StatusCommands
 {
     cmdDevice,
     cmdAdjustment,
-    cmdAuthorization
+    cmdAuthorization,
+    cmdHasSourceGenerator
 };
 
 ServiceStatusInterface::ServiceStatusInterface(std::shared_ptr<cSCPI> scpiInterface,
                                                AbstractAdjStatus *adjustmentStatusInterface,
-                                               AbstractFactoryI2cCtrlPtr ctrlFactory) :
+                                               AbstractFactoryI2cCtrlPtr ctrlFactory,
+                                               bool hasSourceGenerator) :
     ScpiServerConnection(scpiInterface),
     m_adjustmentStatusInterface(adjustmentStatusInterface),
     m_ctrlFactory(ctrlFactory),
-    m_periodicTimer(TimerFactoryQt::createPeriodic(AUTH_POLLING_PERIOD_MS))
+    m_periodicTimer(TimerFactoryQt::createPeriodic(AUTH_POLLING_PERIOD_MS)),
+    m_hasSourceGenerator(hasSourceGenerator)
 {
     connect(m_periodicTimer.get(), &TimerTemplateQt::sigExpired, this, &ServiceStatusInterface::getAuthorizationStatus);
 }
@@ -29,6 +32,7 @@ void ServiceStatusInterface::initSCPIConnection()
     addDelegate("STATUS", "DEVICE",SCPI::isQuery, m_scpiInterface, cmdDevice);
     addDelegate("STATUS", "ADJUSTMENT", SCPI::isQuery, m_scpiInterface, cmdAdjustment);
     addDelegate("STATUS", "AUTHORIZATION", SCPI::isQuery, m_scpiInterface, cmdAuthorization, &m_notifierAutorization);
+    addDelegate("STATUS", "HASSOURCEGENERATOR", SCPI::isQuery, m_scpiInterface, cmdHasSourceGenerator);
     connect(this, &ScpiConnection::removingSubscribers, this, &ServiceStatusInterface::onNotifierUnregistered);
 }
 
@@ -46,6 +50,9 @@ void ServiceStatusInterface::executeProtoScpi(int cmdCode, ProtonetCommandPtr pr
             break;
         case cmdAuthorization:
             protoCmd->m_sOutput = getAuthorizationStatus();
+            break;
+        case cmdHasSourceGenerator:
+            protoCmd->m_sOutput = m_hasSourceGenerator ? "1" : "0";
             break;
         }
     }
