@@ -122,10 +122,8 @@ void cMT310S2dServer::setupMicroControllerIo()
 
 void cMT310S2dServer::doConfiguration()
 {
-    if ( pipe(pipeFileDescriptorMt310s2) == -1) {
+    if ( pipe(pipeFileDescriptorMt310s2) == -1)
         qCritical("Abort, could not open pipe");
-        emit abortInit();
-    }
     else {
         fcntl( pipeFileDescriptorMt310s2[1], F_SETFL, O_NONBLOCK);
         fcntl( pipeFileDescriptorMt310s2[0], F_SETFL, O_NONBLOCK);
@@ -148,10 +146,8 @@ void cMT310S2dServer::doConfiguration()
 
         if (m_xmlConfigReader.loadXMLFile(params.getXmlFile()))
             setupMicroControllerIo();
-        else {
+        else
             qCritical("Abort: Could not open xml file '%s", qPrintable(params.getXmlFile()));
-            emit abortInit();
-        }
     }
 }
 

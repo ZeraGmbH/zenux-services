@@ -119,10 +119,8 @@ int cSEC1000dServer::getEcUnitsOccupied() const
 
 void cSEC1000dServer::doConfiguration(int ecUnitCount)
 {
-    if ( pipe(pipeFileDescriptorSec1000) == -1 ) {
+    if ( pipe(pipeFileDescriptorSec1000) == -1 )
         qCritical("Abort, could not open pipe");
-        emit abortInit();
-    }
     else {
         fcntl( pipeFileDescriptorSec1000[1], F_SETFL, O_NONBLOCK);
         fcntl( pipeFileDescriptorSec1000[0], F_SETFL, O_NONBLOCK);
@@ -136,10 +134,8 @@ void cSEC1000dServer::doConfiguration(int ecUnitCount)
         m_pInputSettings = new SecInputSettings(&m_xmlConfigReader);
         connect(&m_xmlConfigReader,&Zera::XMLConfig::cReader::valueChanged,m_pInputSettings,&SecInputSettings::configXMLInfo);
 
-        if(!m_xmlConfigReader.loadXMLFile(params.getXmlFile())) {
+        if(!m_xmlConfigReader.loadXMLFile(params.getXmlFile()))
             qCritical("Abort: Could not open xml file '%s", qPrintable(params.getXmlFile()));
-            emit abortInit();
-        }
     }
 }
 

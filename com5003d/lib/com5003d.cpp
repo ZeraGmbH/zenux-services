@@ -117,7 +117,6 @@ void cCOM5003dServer::doConfiguration()
     sigStart = 1;
     write(m_nFPGAfd, &sigStart, 4);
 
-
     sigStart = 0;
     write(m_nFPGAfd, &sigStart, 4);
 
@@ -143,10 +142,8 @@ void cCOM5003dServer::doConfiguration()
         // xmlfile ok -> nothing to do .. the configreader will emit all configuration
         // signals and after this the finishedparsingXML signal
     }
-    else {
+    else
         qCritical("Abort: Could not open xml file '%s", qPrintable(params.getXmlFile()));
-        emit abortInit();
-    }
     close(m_nFPGAfd);
 }
 
