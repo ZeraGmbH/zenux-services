@@ -7,12 +7,11 @@ class AccumulatorSettings : public XMLSettings
 {
 public:
     AccumulatorSettings(Zera::XMLConfig::cReader *xmlread);
-    ~AccumulatorSettings();
     bool isAvailable();
 public slots:
     void configXMLInfo(const QString &key) override;
 private:
-    bool m_bAvail;
+    bool m_bAvail = false;
 };
 
 #endif // ACCUMULATORSETTINGS_H

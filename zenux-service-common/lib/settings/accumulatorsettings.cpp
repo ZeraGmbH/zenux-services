@@ -11,10 +11,6 @@ AccumulatorSettings::AccumulatorSettings(Zera::XMLConfig::cReader *xmlread)
     m_ConfigXMLMap["serviceconfig:interface:accumulator:avail"] = cfgAvail;
 }
 
-AccumulatorSettings::~AccumulatorSettings()
-{
-}
-
 bool AccumulatorSettings::isAvailable()
 {
     return m_bAvail;
