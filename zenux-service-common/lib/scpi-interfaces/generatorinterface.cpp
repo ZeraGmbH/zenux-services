@@ -19,7 +19,7 @@ enum ScpiCommands {
 
 void GeneratorInterface::initSCPIConnection()
 {
-    addDelegate("GENERATOR", "MODEON", SCPI::isQuery | SCPI::isCmdwP, m_scpiInterface, sourceModeOn);
+    addDelegate("GENERATOR", "MODEON", SCPI::isQuery | SCPI::isCmdwP, m_scpiInterface, sourceModeOn, &m_sourceOnModesNotification);
     addDelegate("GENERATOR", "SWITCHON", SCPI::isQuery | SCPI::isCmdwP, m_scpiInterface, sourceOn);
     addDelegate("GENERATOR", "AMPRANGE", SCPI::isCmdwP, m_scpiInterface, sourceAmplitudeChangeRange);
 }
@@ -47,16 +47,19 @@ QString GeneratorInterface::scpiSourceModeOn(const QString &scpi)
     cSCPICommand cmd = scpi;
     I2cCtrlGeneratorPtr controller = m_ctrlFactory->getGeneratorController(m_senseSettings);
     if (cmd.isCommand(1)) {
-        const QStringList channelMNames = cmd.getParam(0).split(",", Qt::SkipEmptyParts);
-        if (CommonScpiMethods::containsValidChannelMNames(m_senseSettings, channelMNames) &&
-            controller->sendSourceModeOn(channelMNames) == ZeraMControllerIo::cmddone)
+        const QString channelMNames = cmd.getParam(0);
+        const QStringList channelMNameList = channelMNames.split(",", Qt::SkipEmptyParts);
+        if (CommonScpiMethods::containsValidChannelMNames(m_senseSettings, channelMNameList) &&
+            controller->sendSourceModeOn(channelMNameList) == ZeraMControllerIo::cmddone) {
+            m_sourceOnModesNotification = channelMNames;
             return  ZSCPI::scpiAnswer[ZSCPI::ack];
+        }
         return ZSCPI::scpiAnswer[ZSCPI::errexec];
     }
     else if (cmd.isQuery()) {
-        QStringList channelMNames;
-        if (controller->readSourceModeOn(channelMNames) == ZeraMControllerIo::cmddone)
-            return channelMNames.join(",");
+        QStringList channelMNameList;
+        if (controller->readSourceModeOn(channelMNameList) == ZeraMControllerIo::cmddone)
+            return channelMNameList.join(",");
         return ZSCPI::scpiAnswer[ZSCPI::errexec];
     }
     return ZSCPI::scpiAnswer[ZSCPI::nak];

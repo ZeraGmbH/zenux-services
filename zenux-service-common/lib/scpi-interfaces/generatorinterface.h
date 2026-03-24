@@ -22,6 +22,7 @@ private:
 
     cSenseSettingsPtr m_senseSettings;
     AbstractFactoryI2cCtrlPtr m_ctrlFactory;
+    NotificationString m_sourceOnModesNotification;
 };
 
 #endif // GENERATORINTERFACE_H

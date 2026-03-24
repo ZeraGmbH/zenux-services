@@ -170,6 +170,30 @@ void test_generator_scpi::setAmplitudeChangeRangeInvalid()
     QCOMPARE(responseSpy[0][2], QVariant("errexec"));
 }
 
+static constexpr int notifierId = 42;
+
+void test_generator_scpi::notifySourecModeOnChange()
+{
+    m_pcbIFace->registerNotifier("GENERATOR:MODEON?", notifierId, true);
+    TimeMachineObject::feedEventLoop();
+    QSignalSpy spy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
+
+    m_pcbIFace->scpiCommand("GENERATOR:MODEON m0,m3;");
+    TimeMachineObject::feedEventLoop();
+
+    QCOMPARE(spy.count(), 2 /* notification first + change mode on response */);
+    QString notificationStr = spy[0][2].toString();
+    QCOMPARE(notificationStr, "Notify:42:m0,m3");
+
+    spy.clear();
+    m_pcbIFace->scpiCommand("GENERATOR:MODEON;");
+    TimeMachineObject::feedEventLoop();
+
+    QCOMPARE(spy.count(), 2);
+    notificationStr = spy[0][2].toString();
+    QCOMPARE(notificationStr, "Notify:42:");
+}
+
 void test_generator_scpi::setupServers()
 {
     VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory = VeinTcp::MockTcpNetworkFactory::create();
