@@ -15,12 +15,12 @@ enum hw_cmdcode
 {
     readInstrumentSubType = 0x0010,
     hwSendPushbuttonPress = 0x0041,
-    hwReadEmobLockState = 0x0060,      // old: hwReadEmobConnectionState
+    hwSendSwitchDischargeOnOff = 0x0047, // In CPU5975 code: Set_Quellensystem
+    hwReadEmobLockState = 0x0060,
     hwGetErrorStatus    = 0x0062,
     hwClearErrorStatus = 0x0063,
     hwReadDataForExchange = 0x0082,
-    hwWriteDataForExchange = 0x0083,
-    hwSendSwitchDischargeOnOff = 0x0047 // In CPU5975 code: Set_Quellensystem
+    hwWriteDataForExchange = 0x0083
 };
 
 ZeraMControllerIoTemplate::atmelRM I2cCtrlEMOB::readEmobInstrumentSubType(QString &answer)
