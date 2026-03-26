@@ -349,6 +349,168 @@ void test_hotplug_scpi_cmd::writeDataEmobIL1NotAvail()
     QCOMPARE(responseSpy[0][2], QVariant("nak"));
 }
 
+void test_hotplug_scpi_cmd::switchEmobDischargeOnIL1WithWithoutParam()
+{
+    const QString channelAlias = "IL1";
+    AbstractMockAllServices::ChannelAliasHotplugDeviceNameMap infoMap;
+    infoMap.insert(channelAlias, {"EMOB_MOCK-00V00", cClamp::undefined});
+    m_mt310s2d->fireHotplugInterrupt(infoMap);
+    TimeMachineObject::feedEventLoop();
+
+    QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
+    int msgNr = m_pcbIFace->scpiCommand("SYSTEM:EMOB:ONSWITCH;");
+    TimeMachineObject::feedEventLoop();
+
+    QCOMPARE(responseSpy.count(), 1);
+    QCOMPARE(responseSpy[0][0], QVariant(msgNr));
+    QCOMPARE(responseSpy[0][1], QVariant(ack));
+    QCOMPARE(responseSpy[0][2], QVariant("ack"));
+
+    responseSpy.clear();
+    msgNr = m_pcbIFace->scpiCommand("SYSTEM:EMOB:ONSWITCH m3;");
+    TimeMachineObject::feedEventLoop();
+
+    QCOMPARE(responseSpy.count(), 1);
+    QCOMPARE(responseSpy[0][0], QVariant(msgNr));
+    QCOMPARE(responseSpy[0][1], QVariant(ack));
+    QCOMPARE(responseSpy[0][2], QVariant("ack"));
+}
+
+void test_hotplug_scpi_cmd::switchEmobDischargeOnIL1NotAvail()
+{
+    QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
+    int msgNr = m_pcbIFace->scpiCommand("SYSTEM:EMOB:ONSWITCH;");
+    TimeMachineObject::feedEventLoop();
+
+    QCOMPARE(responseSpy.count(), 1);
+    QCOMPARE(responseSpy[0][0], QVariant(msgNr));
+    QCOMPARE(responseSpy[0][1], QVariant(nack));
+    QCOMPARE(responseSpy[0][2], QVariant("nak"));
+
+    responseSpy.clear();
+    msgNr = m_pcbIFace->scpiCommand("SYSTEM:EMOB:ONSWITCH m3;");
+    TimeMachineObject::feedEventLoop();
+
+    QCOMPARE(responseSpy.count(), 1);
+    QCOMPARE(responseSpy[0][0], QVariant(msgNr));
+    QCOMPARE(responseSpy[0][1], QVariant(nack));
+    QCOMPARE(responseSpy[0][2], QVariant("nak"));
+}
+
+void test_hotplug_scpi_cmd::switchEmobDischargeOffIL1WithWithoutParam()
+{
+    const QString channelAlias = "IL1";
+    AbstractMockAllServices::ChannelAliasHotplugDeviceNameMap infoMap;
+    infoMap.insert(channelAlias, {"EMOB_MOCK-00V00", cClamp::undefined});
+    m_mt310s2d->fireHotplugInterrupt(infoMap);
+    TimeMachineObject::feedEventLoop();
+
+    QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
+    int msgNr = m_pcbIFace->scpiCommand("SYSTEM:EMOB:OFFSWITCH;");
+    TimeMachineObject::feedEventLoop();
+
+    QCOMPARE(responseSpy.count(), 1);
+    QCOMPARE(responseSpy[0][0], QVariant(msgNr));
+    QCOMPARE(responseSpy[0][1], QVariant(ack));
+    QCOMPARE(responseSpy[0][2], QVariant("ack"));
+
+    responseSpy.clear();
+    msgNr = m_pcbIFace->scpiCommand("SYSTEM:EMOB:OFFSWITCH m3;");
+    TimeMachineObject::feedEventLoop();
+
+    QCOMPARE(responseSpy.count(), 1);
+    QCOMPARE(responseSpy[0][0], QVariant(msgNr));
+    QCOMPARE(responseSpy[0][1], QVariant(ack));
+    QCOMPARE(responseSpy[0][2], QVariant("ack"));
+}
+
+void test_hotplug_scpi_cmd::switchEmobDischargeOffIL1NotAvail()
+{
+    QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
+    int msgNr = m_pcbIFace->scpiCommand("SYSTEM:EMOB:ONSWITCH;");
+    TimeMachineObject::feedEventLoop();
+
+    QCOMPARE(responseSpy.count(), 1);
+    QCOMPARE(responseSpy[0][0], QVariant(msgNr));
+    QCOMPARE(responseSpy[0][1], QVariant(nack));
+    QCOMPARE(responseSpy[0][2], QVariant("nak"));
+
+    responseSpy.clear();
+    msgNr = m_pcbIFace->scpiCommand("SYSTEM:EMOB:ONSWITCH m3;");
+    TimeMachineObject::feedEventLoop();
+
+    QCOMPARE(responseSpy.count(), 1);
+    QCOMPARE(responseSpy[0][0], QVariant(msgNr));
+    QCOMPARE(responseSpy[0][1], QVariant(nack));
+    QCOMPARE(responseSpy[0][2], QVariant("nak"));
+}
+
+void test_hotplug_scpi_cmd::readEmobPruefgroessenIL1WithWithoutParam()
+{
+    const QString channelAlias = "IL1";
+    AbstractMockAllServices::ChannelAliasHotplugDeviceNameMap infoMap;
+    infoMap.insert(channelAlias, {"EMOB_MOCK-00V00", cClamp::undefined});
+    m_mt310s2d->fireHotplugInterrupt(infoMap);
+    TimeMachineObject::feedEventLoop();
+
+    QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
+    int msgNr = m_pcbIFace->scpiCommand("SYSTEM:EMOB:PRUEFGROESSENSTATUS?");
+    TimeMachineObject::feedEventLoop();
+
+    QCOMPARE(responseSpy.count(), 1);
+    QCOMPARE(responseSpy[0][0], QVariant(msgNr));
+    QCOMPARE(responseSpy[0][1], QVariant(ack));
+    QCOMPARE(responseSpy[0][2], QVariant("2"));
+
+    responseSpy.clear();
+    msgNr = m_pcbIFace->scpiCommand("SYSTEM:EMOB:PRUEFGROESSENSTATUS? m3;");
+    TimeMachineObject::feedEventLoop();
+
+    QCOMPARE(responseSpy.count(), 1);
+    QCOMPARE(responseSpy[0][0], QVariant(msgNr));
+    QCOMPARE(responseSpy[0][1], QVariant(ack));
+    QCOMPARE(responseSpy[0][2], QVariant("2"));
+}
+
+void test_hotplug_scpi_cmd::readEmobPruefgroessenIL1NotAvail()
+{
+    QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
+    int msgNr = m_pcbIFace->scpiCommand("SYSTEM:EMOB:PRUEFGROESSENSTATUS?");
+    TimeMachineObject::feedEventLoop();
+
+    QCOMPARE(responseSpy.count(), 1);
+    QCOMPARE(responseSpy[0][0], QVariant(msgNr));
+    QCOMPARE(responseSpy[0][1], QVariant(nack));
+    QCOMPARE(responseSpy[0][2], QVariant("nak"));
+
+    responseSpy.clear();
+    msgNr = m_pcbIFace->scpiCommand("SYSTEM:EMOB:PRUEFGROESSENSTATUS? m3;");
+    TimeMachineObject::feedEventLoop();
+
+    QCOMPARE(responseSpy.count(), 1);
+    QCOMPARE(responseSpy[0][0], QVariant(msgNr));
+    QCOMPARE(responseSpy[0][1], QVariant(nack));
+    QCOMPARE(responseSpy[0][2], QVariant("nak"));
+}
+
+void test_hotplug_scpi_cmd::writeEmobPruefgroessenIL1Fails()
+{
+    const QString channelAlias = "IL1";
+    AbstractMockAllServices::ChannelAliasHotplugDeviceNameMap infoMap;
+    infoMap.insert(channelAlias, {"EMOB_MOCK-00V00", cClamp::undefined});
+    m_mt310s2d->fireHotplugInterrupt(infoMap);
+    TimeMachineObject::feedEventLoop();
+
+    QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
+    int msgNr = m_pcbIFace->scpiCommand("SYSTEM:EMOB:PRUEFGROESSENSTATUS 2;");
+    TimeMachineObject::feedEventLoop();
+
+    QCOMPARE(responseSpy.count(), 1);
+    QCOMPARE(responseSpy[0][0], QVariant(msgNr));
+    QCOMPARE(responseSpy[0][1], QVariant(nack));
+    QCOMPARE(responseSpy[0][2], QVariant("nak"));
+}
+
 void test_hotplug_scpi_cmd::setupServers()
 {
     VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory = VeinTcp::MockTcpNetworkFactory::create();

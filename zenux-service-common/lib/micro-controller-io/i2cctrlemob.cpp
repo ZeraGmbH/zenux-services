@@ -19,6 +19,7 @@ enum hw_cmdcode
     hwReadEmobLockState = 0x0060,
     hwGetErrorStatus    = 0x0062,
     hwClearErrorStatus = 0x0063,
+    hwGetPruefGroessenStatus = 0x0064,
     hwReadDataForExchange = 0x0082,
     hwWriteDataForExchange = 0x0083
 };
@@ -117,3 +118,17 @@ ZeraMControllerIoTemplate::atmelRM I2cCtrlEMOB::switchDischargeOnOff(bool on)
     return ZeraMControllerIo::cmddone;
 }
 
+ZeraMControllerIoTemplate::atmelRM I2cCtrlEMOB::readEmobPruefgroessenState(quint16 &status)
+{
+    I2cMuxerScopedOnOff i2cMuxerEnable(m_i2cMuxer);
+    ZeraMControllerIo::atmelRM ret = ZeraMControllerIo::cmdexecfault;
+    constexpr int AnswerLen = 3;
+    quint8 answ[AnswerLen];
+    hw_cmd CMD(hwGetPruefGroessenStatus, 0, nullptr, 0);
+    m_ctrlIo.writeCommand(&CMD, answ, AnswerLen);
+    if (m_ctrlIo.getLastErrorMask() == 0) {
+        status = static_cast<quint16>(answ[0] << 8) + answ[1];
+        ret = ZeraMControllerIo::cmddone;
+    }
+    return ret;
+}

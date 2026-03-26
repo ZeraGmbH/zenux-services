@@ -18,6 +18,7 @@ public:
     ZeraMControllerIo::atmelRM readExchangeData(QByteArray &answer) override;
     ZeraMControllerIo::atmelRM writeExchangeData(QByteArray &data, int senderId) override;
     ZeraMControllerIo::atmelRM switchDischargeOnOff(bool on) override;
+    ZeraMControllerIo::atmelRM readEmobPruefgroessenState(quint16 &status) override;
 private:
     ZeraMControllerIo m_ctrlIo;
     I2cMuxerInterface::Ptr m_i2cMuxer;

@@ -77,8 +77,18 @@ QByteArray MockI2cCtrlEMOB::getDefaultExchangeData()
 
 ZeraMControllerIoTemplate::atmelRM MockI2cCtrlEMOB::switchDischargeOnOff(bool on)
 {
+    Q_UNUSED(on)
     if (ControllerPersitentData::isHotControllerAvailable(m_muxChannel))
         return ZeraMControllerIo::atmelRM::cmddone;
+    return ZeraMControllerIo::atmelRM::cmdexecfault;
+}
+
+ZeraMControllerIoTemplate::atmelRM MockI2cCtrlEMOB::readEmobPruefgroessenState(quint16 &status)
+{
+    if (ControllerPersitentData::isHotControllerAvailable(m_muxChannel)) {
+        status = 1<<bp_Meas_Status_DC_High_Voltage_detected;
+        return ZeraMControllerIo::atmelRM::cmddone;
+    }
     return ZeraMControllerIo::atmelRM::cmdexecfault;
 }
 

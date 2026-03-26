@@ -35,6 +35,15 @@ private slots:
     void writeDataEmobMissingParam();
     void writeDataEmobIL1NotAvail();
 
+    void switchEmobDischargeOnIL1WithWithoutParam();
+    void switchEmobDischargeOnIL1NotAvail();
+    void switchEmobDischargeOffIL1WithWithoutParam();
+    void switchEmobDischargeOffIL1NotAvail();
+
+    void readEmobPruefgroessenIL1WithWithoutParam();
+    void readEmobPruefgroessenIL1NotAvail();
+    void writeEmobPruefgroessenIL1Fails();
+
 private:
     void setupServers();
     QByteArray createTestEmobExchangeData();

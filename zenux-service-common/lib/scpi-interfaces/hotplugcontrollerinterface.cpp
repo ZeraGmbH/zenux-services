@@ -17,7 +17,8 @@ enum HotplugCommands
     cmdEmobReadData,
     cmdEmobWriteData,
     cmdEmobSwitchDischargeOn,
-    cmdEmobSwitchDischargeOff
+    cmdEmobSwitchDischargeOff,
+    cmdEmobReadPruefgroessenStatus
 };
 
 void HotplugControllerInterface::initSCPIConnection()
@@ -30,6 +31,7 @@ void HotplugControllerInterface::initSCPIConnection()
     addDelegate("SYSTEM:EMOB", "WRITEDATA", SCPI::isCmd, m_scpiInterface, cmdEmobWriteData);
     addDelegate("SYSTEM:EMOB", "ONSWITCH", SCPI::isCmd, m_scpiInterface, cmdEmobSwitchDischargeOn);
     addDelegate("SYSTEM:EMOB", "OFFSWITCH", SCPI::isCmd, m_scpiInterface, cmdEmobSwitchDischargeOff);
+    addDelegate("SYSTEM:EMOB", "PRUEFGROESSENSTATUS", SCPI::isQuery, m_scpiInterface, cmdEmobReadPruefgroessenStatus);
 }
 
 QByteArray HotplugControllerInterface::decodeHexString(const QString &encoded)
@@ -80,6 +82,9 @@ void HotplugControllerInterface::executeProtoScpi(int cmdCode, ProtonetCommandPt
         break;
     case cmdEmobSwitchDischargeOff:
         protoCmd->m_sOutput = emobSwitchDischargeOnOff(protoCmd->m_sInput, false);
+        break;
+    case cmdEmobReadPruefgroessenStatus:
+        protoCmd->m_sOutput = emobReadPruefgroessenStatus(protoCmd->m_sInput);
         break;
     }
     if (protoCmd->m_bwithOutput)
@@ -163,6 +168,23 @@ QString HotplugControllerInterface::emobSwitchDischargeOnOff(const QString &scpi
             if (ctrlRet != ZeraMControllerIo::cmddone)
                 return ZSCPI::scpiAnswer[ZSCPI::errexec];
             return ZSCPI::scpiAnswer[ZSCPI::ack];
+        }
+    }
+    return ZSCPI::scpiAnswer[ZSCPI::nak];
+}
+
+QString HotplugControllerInterface::emobReadPruefgroessenStatus(const QString &scpiCmd)
+{
+    cSCPICommand cmd = scpiCmd;
+    if (cmd.isQuery() || cmd.isQuery(1)) {
+        HotControllerMap emobControllers = m_hotPluggableControllerContainer->getCurrentControllers();
+        QString channelNameFound = findEmobConnected(cmd.getParam(0));
+        if (!channelNameFound.isEmpty()) {
+            quint16 pruefGroessenStatus = 0;
+            ZeraMControllerIoTemplate::atmelRM ctrlRet = emobControllers[channelNameFound].m_emobController->readEmobPruefgroessenState(pruefGroessenStatus);
+            if (ctrlRet != ZeraMControllerIo::cmddone)
+                return ZSCPI::scpiAnswer[ZSCPI::errexec];
+            return QString::number(pruefGroessenStatus);
         }
     }
     return ZSCPI::scpiAnswer[ZSCPI::nak];
