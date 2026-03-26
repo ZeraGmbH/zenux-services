@@ -20,8 +20,7 @@ enum hw_cmdcode
     hwClearErrorStatus = 0x0063,
     hwReadDataForExchange = 0x0082,
     hwWriteDataForExchange = 0x0083,
-    hwSendSwitchPressOn,               // ?
-    hwSendSwitchPressOff               // ?
+    hwSendSwitchDischargeOnOff = 0x0047 // In CPU5975 code: Set_Quellensystem
 };
 
 ZeraMControllerIoTemplate::atmelRM I2cCtrlEMOB::readEmobInstrumentSubType(QString &answer)
@@ -103,9 +102,15 @@ ZeraMControllerIoTemplate::atmelRM I2cCtrlEMOB::writeExchangeData(QByteArray &da
 ZeraMControllerIoTemplate::atmelRM I2cCtrlEMOB::switchDischargeOnOff(bool on)
 {
     I2cMuxerScopedOnOff i2cMuxerEnabled(m_i2cMuxer);
-    hw_cmd CMD(hwSendSwitchPressOn, 0, nullptr, 0);
-    if(!on)
-        CMD = hw_cmd(hwSendSwitchPressOff, 0, nullptr, 0);
+    // taken from https://github.com/ZeraGmbH/CPU5975/blob/367c7ea185bae996691f3b4baa1e992620ef7583/CPU5975/CPU5975_Commands.h#L98
+    enum en_setting_Quellensystem {
+        bp_Quellensystem_set_Entladewiderstand,
+        // max. 8 Entries
+    };
+    // As soon as there is more than one bit in this command, the current bitmask
+    // has to be made persistent state in here
+    quint8 param = on ? (1 << bp_Quellensystem_set_Entladewiderstand) : 0;
+    hw_cmd CMD(hwSendSwitchDischargeOnOff, 1, &param, 0);
     m_ctrlIo.writeCommand(&CMD);
     if(m_ctrlIo.getLastErrorMask() != 0)
         return ZeraMControllerIo::cmdexecfault;
