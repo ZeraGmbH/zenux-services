@@ -15,7 +15,7 @@ public:
     static QByteArray getDefaultExchangeData();
     ZeraMControllerIo::atmelRM readExchangeData(QByteArray& answer) override;
     ZeraMControllerIo::atmelRM writeExchangeData(QByteArray &data, int senderId) override;
-    ZeraMControllerIoTemplate::atmelRM flipSwitch(bool onOff) override;
+    ZeraMControllerIoTemplate::atmelRM switchDischargeOnOff(bool on) override;
 private:
     qint8 m_muxChannel;
     QString m_instrumentTypePostfix;

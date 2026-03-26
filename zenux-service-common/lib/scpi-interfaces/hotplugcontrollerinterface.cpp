@@ -152,14 +152,14 @@ QString HotplugControllerInterface::emobClearErrorStatus(const QString &scpiCmd)
     return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-QString HotplugControllerInterface::emobFlipSwitch(const QString &scpiCmd, bool onOff)
+QString HotplugControllerInterface::emobFlipSwitch(const QString &scpiCmd, bool on)
 {
     cSCPICommand cmd = scpiCmd;
     if (cmd.isCommand(1)) {
         HotControllerMap emobControllers = m_hotPluggableControllerContainer->getCurrentControllers();
         QString channelNameFound = findEmobConnected(cmd.getParam(0));
         if (!channelNameFound.isEmpty()) {
-            ZeraMControllerIoTemplate::atmelRM ctrlRet = emobControllers[channelNameFound].m_emobController->flipSwitch(onOff);
+            ZeraMControllerIoTemplate::atmelRM ctrlRet = emobControllers[channelNameFound].m_emobController->switchDischargeOnOff(on);
             if (ctrlRet != ZeraMControllerIo::cmddone)
                 return ZSCPI::scpiAnswer[ZSCPI::errexec];
             return ZSCPI::scpiAnswer[ZSCPI::ack];

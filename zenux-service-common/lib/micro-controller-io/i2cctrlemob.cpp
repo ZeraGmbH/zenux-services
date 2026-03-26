@@ -100,11 +100,11 @@ ZeraMControllerIoTemplate::atmelRM I2cCtrlEMOB::writeExchangeData(QByteArray &da
     return ZeraMControllerIo::cmddone;
 }
 
-ZeraMControllerIoTemplate::atmelRM I2cCtrlEMOB::flipSwitch(bool onOff)
+ZeraMControllerIoTemplate::atmelRM I2cCtrlEMOB::switchDischargeOnOff(bool on)
 {
     I2cMuxerScopedOnOff i2cMuxerEnabled(m_i2cMuxer);
     hw_cmd CMD(hwSendSwitchPressOn, 0, nullptr, 0);
-    if(!onOff)
+    if(!on)
         CMD = hw_cmd(hwSendSwitchPressOff, 0, nullptr, 0);
     m_ctrlIo.writeCommand(&CMD);
     if(m_ctrlIo.getLastErrorMask() != 0)
