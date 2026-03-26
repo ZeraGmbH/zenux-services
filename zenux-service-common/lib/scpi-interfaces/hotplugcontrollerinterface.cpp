@@ -16,8 +16,8 @@ enum HotplugCommands
     cmdEmobClearErrorStatus,
     cmdEmobReadData,
     cmdEmobWriteData,
-    cmdEmobFlipSwitchOn,
-    cmdEmobFlipSwitchOff
+    cmdEmobSwitchDischargeOn,
+    cmdEmobSwitchDischargeOff
 };
 
 void HotplugControllerInterface::initSCPIConnection()
@@ -28,8 +28,8 @@ void HotplugControllerInterface::initSCPIConnection()
     addDelegate("SYSTEM:EMOB", "CLEARERROR", SCPI::isCmd, m_scpiInterface, cmdEmobClearErrorStatus);
     addDelegate("SYSTEM:EMOB", "READDATA", SCPI::isQuery, m_scpiInterface, cmdEmobReadData);
     addDelegate("SYSTEM:EMOB", "WRITEDATA", SCPI::isCmd, m_scpiInterface, cmdEmobWriteData);
-    addDelegate("SYSTEM:EMOB", "ONSWITCH", SCPI::isCmd, m_scpiInterface, cmdEmobFlipSwitchOn);
-    addDelegate("SYSTEM:EMOB", "OFFSWITCH", SCPI::isCmd, m_scpiInterface, cmdEmobFlipSwitchOff);
+    addDelegate("SYSTEM:EMOB", "ONSWITCH", SCPI::isCmd, m_scpiInterface, cmdEmobSwitchDischargeOn);
+    addDelegate("SYSTEM:EMOB", "OFFSWITCH", SCPI::isCmd, m_scpiInterface, cmdEmobSwitchDischargeOff);
 }
 
 QByteArray HotplugControllerInterface::decodeHexString(const QString &encoded)
@@ -75,11 +75,11 @@ void HotplugControllerInterface::executeProtoScpi(int cmdCode, ProtonetCommandPt
     case cmdEmobWriteData:
         protoCmd->m_sOutput = emobWriteDataForExchange(protoCmd->m_sInput);
         break;
-    case cmdEmobFlipSwitchOn:
-        protoCmd->m_sOutput = emobFlipSwitch(protoCmd->m_sInput, true);
+    case cmdEmobSwitchDischargeOn:
+        protoCmd->m_sOutput = emobSwitchDischargeOnOff(protoCmd->m_sInput, true);
         break;
-    case cmdEmobFlipSwitchOff:
-        protoCmd->m_sOutput = emobFlipSwitch(protoCmd->m_sInput, false);
+    case cmdEmobSwitchDischargeOff:
+        protoCmd->m_sOutput = emobSwitchDischargeOnOff(protoCmd->m_sInput, false);
         break;
     }
     if (protoCmd->m_bwithOutput)
@@ -152,7 +152,7 @@ QString HotplugControllerInterface::emobClearErrorStatus(const QString &scpiCmd)
     return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-QString HotplugControllerInterface::emobFlipSwitch(const QString &scpiCmd, bool on)
+QString HotplugControllerInterface::emobSwitchDischargeOnOff(const QString &scpiCmd, bool on)
 {
     cSCPICommand cmd = scpiCmd;
     if (cmd.isCommand(1)) {

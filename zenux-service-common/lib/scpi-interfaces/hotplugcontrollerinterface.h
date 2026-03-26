@@ -24,7 +24,7 @@ private:
 
     QString emobReadDataForExchange(const QString& scpiCmd);
     QString emobWriteDataForExchange(const QString& scpiCmd);
-    QString emobFlipSwitch(const QString& scpiCmd, bool on);
+    QString emobSwitchDischargeOnOff(const QString& scpiCmd, bool on);
     QString findEmobConnected(const QString &channelMNameScpiParam);
 
     NotificationString m_channels;
