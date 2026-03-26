@@ -18,7 +18,7 @@ ZeraMControllerIoTemplate::atmelRM MockI2cCtrlEMOB::sendPushbuttonPress()
 ZeraMControllerIoTemplate::atmelRM MockI2cCtrlEMOB::readEmobLockState(quint8 &status)
 {
     if (ControllerPersitentData::isHotControllerAvailable(m_muxChannel)) {
-        status = reademoblockstate::emobstate_open;
+        status = t_EMOB_Status_Verriegelung::EMOB_Status_Verriegelung_offen;
         return ZeraMControllerIo::atmelRM::cmddone;
     }
     return ZeraMControllerIo::atmelRM::cmdexecfault;
@@ -38,7 +38,7 @@ ZeraMControllerIoTemplate::atmelRM MockI2cCtrlEMOB::readEmobInstrumentSubType(QS
 ZeraMControllerIoTemplate::atmelRM MockI2cCtrlEMOB::readEmobErrorStatus(quint16 &errFlags)
 {
     if (ControllerPersitentData::isHotControllerAvailable(m_muxChannel)) {
-        errFlags = (1<<errorInstrumentStatus::Instrument_Status_Cable_Error);
+        errFlags = (1<<en_Instrument_Error_Status::Instrument_ErrorStatus_Cable_Error);
         return ZeraMControllerIo::atmelRM::cmddone;
     }
     return ZeraMControllerIo::atmelRM::cmdexecfault;
@@ -86,7 +86,7 @@ ZeraMControllerIoTemplate::atmelRM MockI2cCtrlEMOB::switchDischargeOnOff(bool on
 ZeraMControllerIoTemplate::atmelRM MockI2cCtrlEMOB::readEmobPruefgroessenState(quint16 &status)
 {
     if (ControllerPersitentData::isHotControllerAvailable(m_muxChannel)) {
-        status = 1<<bp_Meas_Status_DC_High_Voltage_detected;
+        status = 1<<bp_Meas_Status_AC_High_Voltage_detected;
         return ZeraMControllerIo::atmelRM::cmddone;
     }
     return ZeraMControllerIo::atmelRM::cmdexecfault;

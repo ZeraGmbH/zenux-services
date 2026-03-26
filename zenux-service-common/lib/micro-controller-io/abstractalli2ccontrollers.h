@@ -116,14 +116,6 @@ public:
     virtual ZeraMControllerIo::atmelRM readExchangeData(QByteArray& answer) = 0;
     virtual ZeraMControllerIo::atmelRM writeExchangeData(QByteArray& data, int senderId) = 0;
     virtual ZeraMControllerIo::atmelRM switchDischargeOnOff(bool on) = 0;
-
-    // Just for documentation / mock purpose
-    // see https://github.com/ZeraGmbH/CPU5975/blob/367c7ea185bae996691f3b4baa1e992620ef7583/CPU5975/CPU5975_Commands.h#L59
-    enum en_Instrument_Pruefgroessenstatus {
-        bp_Meas_Status_AC_High_Voltage_detected,
-        bp_Meas_Status_DC_High_Voltage_detected,
-        // max. 16 Entries
-    };
     virtual ZeraMControllerIo::atmelRM readEmobPruefgroessenState(quint16 &status) = 0;
 };
 typedef std::shared_ptr<AbstractI2cCtrlEMOB> I2cCtrlEMOBPtr;

@@ -52,7 +52,7 @@ void test_hotplug_scpi_cmd::readErrorStatusNoParamEmobIAUX()
     QCOMPARE(responseSpy.count(), 1);
     QCOMPARE(responseSpy[0][0], QVariant(msgNr));
     QCOMPARE(responseSpy[0][1], QVariant(ack));
-    QCOMPARE(responseSpy[0][2], QVariant((1<<errorInstrumentStatus::Instrument_Status_Cable_Error)));
+    QCOMPARE(responseSpy[0][2], QVariant((1<<en_Instrument_Error_Status::Instrument_ErrorStatus_Cable_Error)));
 }
 
 void test_hotplug_scpi_cmd::readErrorStatusIAUXEmobI3IAUX()
@@ -66,7 +66,7 @@ void test_hotplug_scpi_cmd::readErrorStatusIAUXEmobI3IAUX()
     QCOMPARE(responseSpy.count(), 1);
     QCOMPARE(responseSpy[0][0], QVariant(msgNr));
     QCOMPARE(responseSpy[0][1], QVariant(ack));
-    QCOMPARE(responseSpy[0][2], QVariant((1<<errorInstrumentStatus::Instrument_Status_Cable_Error)));
+    QCOMPARE(responseSpy[0][2], QVariant((1<<en_Instrument_Error_Status::Instrument_ErrorStatus_Cable_Error)));
 }
 
 void test_hotplug_scpi_cmd::readErrorStatusI3EmobIAUX()
@@ -460,7 +460,7 @@ void test_hotplug_scpi_cmd::readEmobPruefgroessenIL1WithWithoutParam()
     QCOMPARE(responseSpy.count(), 1);
     QCOMPARE(responseSpy[0][0], QVariant(msgNr));
     QCOMPARE(responseSpy[0][1], QVariant(ack));
-    QCOMPARE(responseSpy[0][2], QVariant("2"));
+    QCOMPARE(responseSpy[0][2], QString::number(1<<bp_Meas_Status_AC_High_Voltage_detected));
 
     responseSpy.clear();
     msgNr = m_pcbIFace->scpiCommand("SYSTEM:EMOB:PRUEFGROESSENSTATUS? m3;");
@@ -469,7 +469,7 @@ void test_hotplug_scpi_cmd::readEmobPruefgroessenIL1WithWithoutParam()
     QCOMPARE(responseSpy.count(), 1);
     QCOMPARE(responseSpy[0][0], QVariant(msgNr));
     QCOMPARE(responseSpy[0][1], QVariant(ack));
-    QCOMPARE(responseSpy[0][2], QVariant("2"));
+    QCOMPARE(responseSpy[0][2], QString::number(1<<bp_Meas_Status_AC_High_Voltage_detected));
 }
 
 void test_hotplug_scpi_cmd::readEmobPruefgroessenIL1NotAvail()
