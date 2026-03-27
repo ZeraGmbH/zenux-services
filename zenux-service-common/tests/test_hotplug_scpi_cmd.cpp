@@ -358,7 +358,7 @@ void test_hotplug_scpi_cmd::switchEmobDischargeOnIL1WithWithoutParam()
     TimeMachineObject::feedEventLoop();
 
     QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
-    int msgNr = m_pcbIFace->scpiCommand("SYSTEM:EMOB:ONSWITCH;");
+    int msgNr = m_pcbIFace->scpiCommand("SYSTEM:EMOB:ONDISCHARGE;");
     TimeMachineObject::feedEventLoop();
 
     QCOMPARE(responseSpy.count(), 1);
@@ -367,7 +367,7 @@ void test_hotplug_scpi_cmd::switchEmobDischargeOnIL1WithWithoutParam()
     QCOMPARE(responseSpy[0][2], QVariant("ack"));
 
     responseSpy.clear();
-    msgNr = m_pcbIFace->scpiCommand("SYSTEM:EMOB:ONSWITCH m3;");
+    msgNr = m_pcbIFace->scpiCommand("SYSTEM:EMOB:ONDISCHARGE m3;");
     TimeMachineObject::feedEventLoop();
 
     QCOMPARE(responseSpy.count(), 1);
@@ -379,7 +379,7 @@ void test_hotplug_scpi_cmd::switchEmobDischargeOnIL1WithWithoutParam()
 void test_hotplug_scpi_cmd::switchEmobDischargeOnIL1NotAvail()
 {
     QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
-    int msgNr = m_pcbIFace->scpiCommand("SYSTEM:EMOB:ONSWITCH;");
+    int msgNr = m_pcbIFace->scpiCommand("SYSTEM:EMOB:ONDISCHARGE;");
     TimeMachineObject::feedEventLoop();
 
     QCOMPARE(responseSpy.count(), 1);
@@ -388,7 +388,7 @@ void test_hotplug_scpi_cmd::switchEmobDischargeOnIL1NotAvail()
     QCOMPARE(responseSpy[0][2], QVariant("nak"));
 
     responseSpy.clear();
-    msgNr = m_pcbIFace->scpiCommand("SYSTEM:EMOB:ONSWITCH m3;");
+    msgNr = m_pcbIFace->scpiCommand("SYSTEM:EMOB:ONDISCHARGE m3;");
     TimeMachineObject::feedEventLoop();
 
     QCOMPARE(responseSpy.count(), 1);
@@ -406,7 +406,7 @@ void test_hotplug_scpi_cmd::switchEmobDischargeOffIL1WithWithoutParam()
     TimeMachineObject::feedEventLoop();
 
     QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
-    int msgNr = m_pcbIFace->scpiCommand("SYSTEM:EMOB:OFFSWITCH;");
+    int msgNr = m_pcbIFace->scpiCommand("SYSTEM:EMOB:OFFDISCHARGE;");
     TimeMachineObject::feedEventLoop();
 
     QCOMPARE(responseSpy.count(), 1);
@@ -415,7 +415,7 @@ void test_hotplug_scpi_cmd::switchEmobDischargeOffIL1WithWithoutParam()
     QCOMPARE(responseSpy[0][2], QVariant("ack"));
 
     responseSpy.clear();
-    msgNr = m_pcbIFace->scpiCommand("SYSTEM:EMOB:OFFSWITCH m3;");
+    msgNr = m_pcbIFace->scpiCommand("SYSTEM:EMOB:OFFDISCHARGE m3;");
     TimeMachineObject::feedEventLoop();
 
     QCOMPARE(responseSpy.count(), 1);
@@ -427,7 +427,7 @@ void test_hotplug_scpi_cmd::switchEmobDischargeOffIL1WithWithoutParam()
 void test_hotplug_scpi_cmd::switchEmobDischargeOffIL1NotAvail()
 {
     QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
-    int msgNr = m_pcbIFace->scpiCommand("SYSTEM:EMOB:ONSWITCH;");
+    int msgNr = m_pcbIFace->scpiCommand("SYSTEM:EMOB:ONDISCHARGE;");
     TimeMachineObject::feedEventLoop();
 
     QCOMPARE(responseSpy.count(), 1);
@@ -436,7 +436,7 @@ void test_hotplug_scpi_cmd::switchEmobDischargeOffIL1NotAvail()
     QCOMPARE(responseSpy[0][2], QVariant("nak"));
 
     responseSpy.clear();
-    msgNr = m_pcbIFace->scpiCommand("SYSTEM:EMOB:ONSWITCH m3;");
+    msgNr = m_pcbIFace->scpiCommand("SYSTEM:EMOB:ONDISCHARGE m3;");
     TimeMachineObject::feedEventLoop();
 
     QCOMPARE(responseSpy.count(), 1);

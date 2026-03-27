@@ -29,8 +29,8 @@ void HotplugControllerInterface::initSCPIConnection()
     addDelegate("SYSTEM:EMOB", "CLEARERROR", SCPI::isCmd, m_scpiInterface, cmdEmobClearErrorStatus);
     addDelegate("SYSTEM:EMOB", "READDATA", SCPI::isQuery, m_scpiInterface, cmdEmobReadData);
     addDelegate("SYSTEM:EMOB", "WRITEDATA", SCPI::isCmd, m_scpiInterface, cmdEmobWriteData);
-    addDelegate("SYSTEM:EMOB", "ONSWITCH", SCPI::isCmd, m_scpiInterface, cmdEmobSwitchDischargeOn);
-    addDelegate("SYSTEM:EMOB", "OFFSWITCH", SCPI::isCmd, m_scpiInterface, cmdEmobSwitchDischargeOff);
+    addDelegate("SYSTEM:EMOB", "ONDISCHARGE", SCPI::isCmd, m_scpiInterface, cmdEmobSwitchDischargeOn);
+    addDelegate("SYSTEM:EMOB", "OFFDISCHARGE", SCPI::isCmd, m_scpiInterface, cmdEmobSwitchDischargeOff);
     addDelegate("SYSTEM:EMOB", "PRUEFGROESSENSTATUS", SCPI::isQuery, m_scpiInterface, cmdEmobReadPruefgroessenStatus);
 }
 

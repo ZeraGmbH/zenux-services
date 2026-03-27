@@ -5694,8 +5694,8 @@
     <CLEARERROR ScpiPath="SYSTEM:EMOB:CLEARERROR" Type="Command"/>
     <READDATA ScpiPath="SYSTEM:EMOB:READDATA" Type="Query"/>
     <WRITEDATA ScpiPath="SYSTEM:EMOB:WRITEDATA" Type="Command"/>
-    <ONSWITCH ScpiPath="SYSTEM:EMOB:ONSWITCH" Type="Command"/>
-    <OFFSWITCH ScpiPath="SYSTEM:EMOB:OFFSWITCH" Type="Command"/>
+    <ONDISCHARGE ScpiPath="SYSTEM:EMOB:ONDISCHARGE" Type="Command"/>
+    <OFFDISCHARGE ScpiPath="SYSTEM:EMOB:OFFDISCHARGE" Type="Command"/>
     <PRUEFGROESSENSTATUS ScpiPath="SYSTEM:EMOB:PRUEFGROESSENSTATUS" Type="Query"/>
    </EMOB>
    <SERIAL ScpiPath="SYSTEM:SERIAL" Type="Query,Command+Par"/>
