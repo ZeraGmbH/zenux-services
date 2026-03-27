@@ -111,7 +111,7 @@ ZeraMControllerIoTemplate::atmelRM I2cCtrlEMOB::switchDischargeOnOff(bool on)
     // As soon as there is more than one bit in this command, the current bitmask
     // has to be made persistent state in here
     quint8 param = on ? (1 << bp_Quellensystem_set_Entladewiderstand) : 0;
-    hw_cmd CMD(hwSendSwitchDischargeOnOff, 1, &param, 0);
+    hw_cmd CMD(hwSendSwitchDischargeOnOff, 0, &param, 1);
     m_ctrlIo.writeCommand(&CMD);
     if(m_ctrlIo.getLastErrorMask() != 0)
         return ZeraMControllerIo::cmdexecfault;
