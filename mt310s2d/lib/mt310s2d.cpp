@@ -2,6 +2,7 @@
 #include "mt310s2dglobal.h"
 #include "mt310s2systeminterface.h"
 #include "mt310s2senseinterface.h"
+#include "mt581generatorchannelfactory.h"
 #include "clampinterface.h"
 #include "fingroupresourceandinterface.h"
 #include "hkingroupresourceandinterface.h"
@@ -219,7 +220,14 @@ void cMT310S2dServer::earlySetup(AbstractChannelRangeFactoryPtr channelRangeFact
             m_pSystemInterface, &Mt310s2SystemInterface::onAccuStatusChanged);
 
     if (hasSourceGenerator()) {
-        m_scpiConnectionList.append(m_generatorInterface = new GeneratorInterface(m_scpiInterface, getSenseSettings(), m_ctrlFactory));
+        Mt581GeneratorChannelFactory generatorChannelFactory;
+        QList<GeneratorChannel *> generatorChannels = generatorChannelFactory.createChannelsAndRanges(getSenseSettings(),
+                                                                                                      m_scpiInterface,
+                                                                                                      m_ctrlFactory);
+        m_scpiConnectionList.append(m_generatorInterface = new GeneratorInterface(m_scpiInterface,
+                                                                                  getSenseSettings(),
+                                                                                  generatorChannels,
+                                                                                  m_ctrlFactory));
         m_scpiConnectionList.append(m_sourceControlInterface = new SourceControlInterface(m_scpiInterface, m_sourceControlSettings, m_ctrlFactory));
     }
 

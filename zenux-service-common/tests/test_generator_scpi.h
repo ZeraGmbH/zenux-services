@@ -21,10 +21,7 @@ private slots:
     void setChangeRangeByAmplitude();
     void setChangeRangeByAmplitudeInvalidChannel();
     void setChangeRangeByAmplitudeInvalidValue();
-    void setChangeRangeByAmplitudeInvalidParamCount();
 
-    void getSetRangeNoParamQuery();
-    void getSetRangeNoParamCmd();
     void getSetRange();
     void getRangeInvalidChannel();
     void setRangeInvalidChannel();
