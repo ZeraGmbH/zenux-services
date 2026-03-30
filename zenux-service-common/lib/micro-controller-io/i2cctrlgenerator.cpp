@@ -63,7 +63,7 @@ ZeraMControllerIoTemplate::atmelRM I2cCtrlGenerator::sendSourceOn(const QStringL
     return ret;
 }
 
-ZeraMControllerIoTemplate::atmelRM I2cCtrlGenerator::sendSourceAmplitudeChangeRange(float amplitude, const QString &channelMName)
+ZeraMControllerIoTemplate::atmelRM I2cCtrlGenerator::setRangeByAmplitude(float amplitude, const QString &channelMName)
 {
     quint8 controllerChannelNo = getControllerInternalChannelNo(m_senseSettings, channelMName);
     QByteArray ba = convertFloat(amplitude);

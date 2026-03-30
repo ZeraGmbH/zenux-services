@@ -12,7 +12,7 @@ public:
     ZeraMControllerIo::atmelRM sendSourceModeOn(const QStringList &channelMNamesModeOn) override;
     ZeraMControllerIo::atmelRM readSourceOn(QStringList &channelMNamesOnRead) override;
     ZeraMControllerIo::atmelRM sendSourceOn(const QStringList &channelMNamesOn) override;
-    ZeraMControllerIo::atmelRM sendSourceAmplitudeChangeRange(float amplitude, const QString &channelMName) override;
+    ZeraMControllerIo::atmelRM setRangeByAmplitude(float amplitude, const QString &channelMName) override;
 
 private:
     QStringList &m_channelMNamesModeOn;

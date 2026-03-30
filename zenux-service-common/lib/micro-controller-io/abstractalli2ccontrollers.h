@@ -129,7 +129,7 @@ public:
     virtual ZeraMControllerIo::atmelRM sendSourceModeOn(const QStringList &channelMNamesModeOn) = 0;
     virtual ZeraMControllerIo::atmelRM readSourceOn(QStringList &channelMNamesOnRead) = 0;
     virtual ZeraMControllerIo::atmelRM sendSourceOn(const QStringList &channelMNamesOn) = 0;
-    virtual ZeraMControllerIo::atmelRM sendSourceAmplitudeChangeRange(float amplitude, const QString &channelMName) = 0;
+    virtual ZeraMControllerIo::atmelRM setRangeByAmplitude(float amplitude, const QString &channelMName) = 0;
 };
 typedef std::shared_ptr<AbstractI2cCtrlGenerator> I2cCtrlGeneratorPtr;
 
