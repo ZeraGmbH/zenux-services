@@ -21,7 +21,7 @@ SenseChannelCommon::SenseChannelCommon(std::shared_ptr<cSCPI> scpiinterface,
                                        AbstractFactoryI2cCtrlPtr ctrlFactory) :
     ScpiConnection(scpiinterface),
     m_ctrlFactory(ctrlFactory),
-    m_sName(QString("m%1").arg(nr)),
+    m_sName(cSettings->m_nameMx),
     m_sAlias1(cSettings->m_sAlias1),
     m_sAlias2(cSettings->m_sAlias2),
     m_sUnit(unit),
