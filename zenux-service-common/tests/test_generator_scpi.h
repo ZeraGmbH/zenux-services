@@ -19,7 +19,15 @@ private slots:
     void getSetValidSourceOn();
 
     void setChangeRangeByAmplitude();
-    void setChangeRangeByAmplitudeInvalid();
+    void setChangeRangeByAmplitudeInvalidChannel();
+    void setChangeRangeByAmplitudeInvalidValue();
+    void setChangeRangeByAmplitudeInvalidParamCount();
+
+    void getSetRangeNoParamQuery();
+    void getSetRangeNoParamCmd();
+    void getSetRange();
+    void getRangeInvalidChannel();
+    void setRangeInvalidChannel();
 
     void notifySourecModeOnChange();
 private:

@@ -130,7 +130,7 @@ void test_generator_scpi::setChangeRangeByAmplitude()
     QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
 
     responseSpy.clear();
-    m_pcbIFace->scpiCommand("GENERATOR:AMPRANGE 2.5,m2;");
+    m_pcbIFace->scpiCommand("GENERATOR:AMPRANGE m2,2.5;");
     TimeMachineObject::feedEventLoop();
     QCOMPARE(responseSpy.count(), 1);
     QCOMPARE(responseSpy[0][1], QVariant(ack));
@@ -144,31 +144,114 @@ void test_generator_scpi::setChangeRangeByAmplitude()
     QCOMPARE(responseSpy[0][2], QVariant("nak"));
 }
 
-void test_generator_scpi::setChangeRangeByAmplitudeInvalid()
+void test_generator_scpi::setChangeRangeByAmplitudeInvalidChannel()
+{
+    QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
+    m_pcbIFace->scpiCommand("GENERATOR:AMPRANGE foo,2.5;");
+    TimeMachineObject::feedEventLoop();
+
+    QCOMPARE(responseSpy.count(), 1);
+    QCOMPARE(responseSpy[0][1], QVariant(nack));
+    QCOMPARE(responseSpy[0][2], QVariant("nak"));
+}
+
+void test_generator_scpi::setChangeRangeByAmplitudeInvalidValue()
+{
+    QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
+    m_pcbIFace->scpiCommand("GENERATOR:AMPRANGE m2,foo;");
+    TimeMachineObject::feedEventLoop();
+
+    QCOMPARE(responseSpy.count(), 1);
+    QCOMPARE(responseSpy[0][1], QVariant(nack));
+    QCOMPARE(responseSpy[0][2], QVariant("nak"));
+}
+
+void test_generator_scpi::setChangeRangeByAmplitudeInvalidParamCount()
+{
+    QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
+    m_pcbIFace->scpiCommand("GENERATOR:AMPRANGE m2;");
+    TimeMachineObject::feedEventLoop();
+
+    QCOMPARE(responseSpy.count(), 1);
+    QCOMPARE(responseSpy[0][1], QVariant(nack));
+    QCOMPARE(responseSpy[0][2], QVariant("nak"));
+}
+
+void test_generator_scpi::getSetRangeNoParamQuery()
+{
+    QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
+    m_pcbIFace->scpiCommand("GENERATOR:RANGE?");
+    TimeMachineObject::feedEventLoop();
+
+    QCOMPARE(responseSpy.count(), 1);
+    QCOMPARE(responseSpy[0][1], QVariant(nack));
+    QCOMPARE(responseSpy[0][2], QVariant("nak"));
+}
+
+void test_generator_scpi::getSetRangeNoParamCmd()
+{
+    QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
+    m_pcbIFace->scpiCommand("GENERATOR:RANGE;");
+    TimeMachineObject::feedEventLoop();
+
+    QCOMPARE(responseSpy.count(), 1);
+    QCOMPARE(responseSpy[0][1], QVariant(nack));
+    QCOMPARE(responseSpy[0][2], QVariant("nak"));
+}
+
+void test_generator_scpi::getSetRange()
 {
     QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
 
     responseSpy.clear();
-    m_pcbIFace->scpiCommand("GENERATOR:AMPRANGE 2.5,foo;");
+    m_pcbIFace->scpiCommand("GENERATOR:RANGE? m2;");
     TimeMachineObject::feedEventLoop();
+
     QCOMPARE(responseSpy.count(), 1);
-    QCOMPARE(responseSpy[0][1], QVariant(error));
-    QCOMPARE(responseSpy[0][2], QVariant("errexec"));
+    QCOMPARE(responseSpy[0][1], QVariant(ack));
+    QCOMPARE(responseSpy[0][2], QVariant("0"));
 
     responseSpy.clear();
-    m_pcbIFace->scpiCommand("GENERATOR:AMPRANGE 2.5,m2;");
+    m_pcbIFace->scpiCommand("GENERATOR:RANGE m2,1;");
     TimeMachineObject::feedEventLoop();
+
     QCOMPARE(responseSpy.count(), 1);
     QCOMPARE(responseSpy[0][1], QVariant(ack));
     QCOMPARE(responseSpy[0][2], QVariant("ack"));
 
     responseSpy.clear();
-    m_pcbIFace->scpiCommand("GENERATOR:AMPRANGE foo,m2;");
+    m_pcbIFace->scpiCommand("GENERATOR:RANGE? m2;");
     TimeMachineObject::feedEventLoop();
+
     QCOMPARE(responseSpy.count(), 1);
-    QCOMPARE(responseSpy[0][1], QVariant(error));
-    QCOMPARE(responseSpy[0][2], QVariant("errexec"));
+    QCOMPARE(responseSpy[0][1], QVariant(ack));
+    QCOMPARE(responseSpy[0][2], QVariant("1"));
 }
+
+void test_generator_scpi::getRangeInvalidChannel()
+{
+    QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
+
+    m_pcbIFace->scpiCommand("GENERATOR:RANGE? foo;");
+    TimeMachineObject::feedEventLoop();
+
+    QCOMPARE(responseSpy.count(), 1);
+    QCOMPARE(responseSpy[0][1], QVariant(nack));
+    QCOMPARE(responseSpy[0][2], QVariant("nak"));
+}
+
+void test_generator_scpi::setRangeInvalidChannel()
+{
+    QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
+
+    m_pcbIFace->scpiCommand("GENERATOR:RANGE foo,1;");
+    TimeMachineObject::feedEventLoop();
+
+    QCOMPARE(responseSpy.count(), 1);
+    QCOMPARE(responseSpy[0][1], QVariant(nack));
+    QCOMPARE(responseSpy[0][2], QVariant("nak"));
+}
+
 
 static constexpr int notifierId = 42;
 

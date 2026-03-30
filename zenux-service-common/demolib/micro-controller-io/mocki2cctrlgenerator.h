@@ -2,12 +2,14 @@
 #define MOCKI2CCTRLGENERATOR_H
 
 #include "abstractalli2ccontrollers.h"
+#include "controllerpersitentdata.h"
 
 class MockI2cCtrlGenerator : public AbstractI2cCtrlGenerator
 {
 public:
     MockI2cCtrlGenerator(QStringList &channelMNamesModeOn,
-                         QStringList &channelMNamesOn);
+                         QStringList &channelMNamesOn,
+                         ControllerPersitentData::RangeMap &generatorRangeMap);
 
     ZeraMControllerIo::atmelRM readSourceModeOn(QStringList &channelMNamesModeOnRead) override;
     ZeraMControllerIo::atmelRM sendSourceModeOn(const QStringList &channelMNamesModeOn) override;
@@ -22,6 +24,7 @@ public:
 private:
     QStringList &m_channelMNamesModeOn;
     QStringList &m_channelMNamesOn;
+    ControllerPersitentData::RangeMap &m_generatorRangeMap;
 };
 
 #endif // MOCKI2CCTRLGENERATOR_H

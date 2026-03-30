@@ -1,8 +1,11 @@
 #include "mocki2cctrlgenerator.h"
 
-MockI2cCtrlGenerator::MockI2cCtrlGenerator(QStringList &channelMNamesModeOn, QStringList &channelMNamesOn) :
+MockI2cCtrlGenerator::MockI2cCtrlGenerator(QStringList &channelMNamesModeOn,
+                                           QStringList &channelMNamesOn,
+                                           ControllerPersitentData::RangeMap &generatorRangeMap) :
     m_channelMNamesModeOn(channelMNamesModeOn),
-    m_channelMNamesOn(channelMNamesOn)
+    m_channelMNamesOn(channelMNamesOn),
+    m_generatorRangeMap(generatorRangeMap)
 {
 }
 
@@ -39,15 +42,12 @@ ZeraMControllerIoTemplate::atmelRM MockI2cCtrlGenerator::setRangeByAmplitude(con
 
 ZeraMControllerIoTemplate::atmelRM MockI2cCtrlGenerator::setRange(const QString &channelMName, quint8 range)
 {
-    Q_UNUSED(channelMName)
-    Q_UNUSED(range)
+    m_generatorRangeMap[channelMName] = range;
     return ZeraMControllerIo::cmddone;
 }
 
 ZeraMControllerIoTemplate::atmelRM MockI2cCtrlGenerator::readRange(const QString &channelMName, quint8 &range)
 {
-    Q_UNUSED(channelMName)
-    Q_UNUSED(range)
+    range = m_generatorRangeMap[channelMName];
     return ZeraMControllerIo::cmddone;
 }
-

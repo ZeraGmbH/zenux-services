@@ -7150,6 +7150,7 @@
    <MODEON Type="Query,Command+Par" ScpiPath="GENERATOR:MODEON"/>
    <SWITCHON Type="Query,Command+Par" ScpiPath="GENERATOR:SWITCHON"/>
    <AMPRANGE Type="Command+Par" ScpiPath="GENERATOR:AMPRANGE"/>
+   <RANGE ScpiPath="GENERATOR:RANGE" Type="Query,Command+Par"/>
   </GENERATOR>
   <UISRC Type="Model,Node">
    <CAPABILITIES ScpiPath="UISRC:CAPABILITIES" Type="Query"/>

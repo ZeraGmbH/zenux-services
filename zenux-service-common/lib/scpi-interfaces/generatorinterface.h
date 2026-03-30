@@ -18,7 +18,8 @@ private:
     void executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd) override;
     QString scpiSourceModeOn(const QString &scpi);
     QString scpiSourceOn(const QString &scpi);
-    QString scpiSourceAmplitudeChangeRange(const QString &scpi);
+    QString scpiChangeRangeByAmplitude(const QString &scpi);
+    QString scpiChangeRange(const QString &scpi);
 
     cSenseSettingsPtr m_senseSettings;
     AbstractFactoryI2cCtrlPtr m_ctrlFactory;
