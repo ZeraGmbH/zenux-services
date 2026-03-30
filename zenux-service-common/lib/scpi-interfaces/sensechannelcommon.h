@@ -14,7 +14,6 @@ public:
     SenseChannelCommon(std::shared_ptr<cSCPI> scpiinterface,
                        const QString &unit,
                        SenseSystem::cChannelSettings* cSettings,
-                       quint8 nr,
                        AbstractFactoryI2cCtrlPtr ctrlFactory);
     virtual ~SenseChannelCommon();
 

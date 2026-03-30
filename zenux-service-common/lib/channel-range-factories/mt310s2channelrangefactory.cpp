@@ -14,14 +14,14 @@ QList<SenseChannelCommon *> MT310s2ChannelRangeFactory::createChannelAndRanges(c
 
     QList<SenseSystem::cChannelSettings*> channelSettings = senseSettings->getChannelSettings();
     QList<SenseChannelCommon*> channels;
-    channels.append(new MtXXXs2SenseChannel(scpi, "V", channelSettings.at(0), 0, ctrlFactory));
-    channels.append(new MtXXXs2SenseChannel(scpi, "V", channelSettings.at(1), 1, ctrlFactory));
-    channels.append(new MtXXXs2SenseChannel(scpi, "V", channelSettings.at(2), 2, ctrlFactory));
-    channels.append(new MtXXXs2SenseChannel(scpi, "V", channelSettings.at(6), 6, ctrlFactory));
-    channels.append(new MtXXXs2SenseChannel(scpi, "A", channelSettings.at(3), 3, ctrlFactory));
-    channels.append(new MtXXXs2SenseChannel(scpi, "A", channelSettings.at(4), 4, ctrlFactory));
-    channels.append(new MtXXXs2SenseChannel(scpi, "A", channelSettings.at(5), 5, ctrlFactory));
-    channels.append(new MtXXXs2SenseChannel(scpi, "A", channelSettings.at(7), 7, ctrlFactory));
+    channels.append(new MtXXXs2SenseChannel(scpi, "V", channelSettings.at(0), ctrlFactory));
+    channels.append(new MtXXXs2SenseChannel(scpi, "V", channelSettings.at(1), ctrlFactory));
+    channels.append(new MtXXXs2SenseChannel(scpi, "V", channelSettings.at(2), ctrlFactory));
+    channels.append(new MtXXXs2SenseChannel(scpi, "V", channelSettings.at(6), ctrlFactory));
+    channels.append(new MtXXXs2SenseChannel(scpi, "A", channelSettings.at(3), ctrlFactory));
+    channels.append(new MtXXXs2SenseChannel(scpi, "A", channelSettings.at(4), ctrlFactory));
+    channels.append(new MtXXXs2SenseChannel(scpi, "A", channelSettings.at(5), ctrlFactory));
+    channels.append(new MtXXXs2SenseChannel(scpi, "A", channelSettings.at(7), ctrlFactory));
 
     for (int i = 0; i < 4; i++) {
         const QString &channelName = channels.at(i)->getName();

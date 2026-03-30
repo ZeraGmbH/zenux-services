@@ -16,12 +16,12 @@ QList<SenseChannelCommon *> COM5003ChannelRangeFactory::createChannelAndRanges(c
 
     QList<SenseSystem::cChannelSettings*> channelSettings = senseSettings->getChannelSettings();
     QList<SenseChannelCommon*> channels;
-    channels.append(new Com5003SenseChannel(scpi, "V", channelSettings.at(0), 0, ctrlFactory));
-    channels.append(new Com5003SenseChannel(scpi, "V", channelSettings.at(1), 1, ctrlFactory));
-    channels.append(new Com5003SenseChannel(scpi, "V", channelSettings.at(2), 2, ctrlFactory));
-    channels.append(new Com5003SenseChannel(scpi, "A", channelSettings.at(3), 3, ctrlFactory));
-    channels.append(new Com5003SenseChannel(scpi, "A", channelSettings.at(4), 4, ctrlFactory));
-    channels.append(new Com5003SenseChannel(scpi, "A", channelSettings.at(5), 5, ctrlFactory));
+    channels.append(new Com5003SenseChannel(scpi, "V", channelSettings.at(0), ctrlFactory));
+    channels.append(new Com5003SenseChannel(scpi, "V", channelSettings.at(1), ctrlFactory));
+    channels.append(new Com5003SenseChannel(scpi, "V", channelSettings.at(2), ctrlFactory));
+    channels.append(new Com5003SenseChannel(scpi, "A", channelSettings.at(3), ctrlFactory));
+    channels.append(new Com5003SenseChannel(scpi, "A", channelSettings.at(4), ctrlFactory));
+    channels.append(new Com5003SenseChannel(scpi, "A", channelSettings.at(5), ctrlFactory));
 
     for (int i = 0; i < 3; i++) {
         QList<SenseRangeCommon*> rngListU;

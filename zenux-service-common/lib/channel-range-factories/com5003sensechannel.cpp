@@ -6,12 +6,10 @@
 Com5003SenseChannel::Com5003SenseChannel(std::shared_ptr<cSCPI> scpiinterface,
                                          const QString &unit,
                                          SenseSystem::cChannelSettings *cSettings,
-                                         quint8 nr,
                                          AbstractFactoryI2cCtrlPtr ctrlFactory) :
     SenseChannelCommon(scpiinterface,
                        unit,
                        cSettings,
-                       nr,
                        ctrlFactory)
 {
 }
