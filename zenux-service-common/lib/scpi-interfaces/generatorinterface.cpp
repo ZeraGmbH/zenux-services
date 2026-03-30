@@ -97,7 +97,7 @@ QString GeneratorInterface::scpiSourceAmplitudeChangeRange(const QString &scpi)
             if (ok) {
                 const QString channelMName = paramList[1];
                 if (CommonScpiMethods::containsValidChannelMName(m_senseSettings, channelMName) &&
-                    controller->setRangeByAmplitude(amplitude, channelMName) == ZeraMControllerIo::cmddone)
+                    controller->setRangeByAmplitude(channelMName, amplitude) == ZeraMControllerIo::cmddone)
                     return  ZSCPI::scpiAnswer[ZSCPI::ack];
             }
             return ZSCPI::scpiAnswer[ZSCPI::errexec];

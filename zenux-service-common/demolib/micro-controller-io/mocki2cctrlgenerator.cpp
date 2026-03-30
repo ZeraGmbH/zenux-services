@@ -30,9 +30,24 @@ ZeraMControllerIoTemplate::atmelRM MockI2cCtrlGenerator::sendSourceOn(const QStr
     return ZeraMControllerIo::cmddone;
 }
 
-ZeraMControllerIoTemplate::atmelRM MockI2cCtrlGenerator::setRangeByAmplitude(float amplitude, const QString &channelMName)
+ZeraMControllerIoTemplate::atmelRM MockI2cCtrlGenerator::setRangeByAmplitude(const QString &channelMName, float amplitude)
 {
     Q_UNUSED(amplitude)
     Q_UNUSED(channelMName)
     return ZeraMControllerIo::cmddone;
 }
+
+ZeraMControllerIoTemplate::atmelRM MockI2cCtrlGenerator::setRange(const QString &channelMName, quint8 range)
+{
+    Q_UNUSED(channelMName)
+    Q_UNUSED(range)
+    return ZeraMControllerIo::cmddone;
+}
+
+ZeraMControllerIoTemplate::atmelRM MockI2cCtrlGenerator::readRange(const QString &channelMName, quint8 &range)
+{
+    Q_UNUSED(channelMName)
+    Q_UNUSED(range)
+    return ZeraMControllerIo::cmddone;
+}
+

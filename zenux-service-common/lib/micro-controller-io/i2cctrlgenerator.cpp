@@ -14,7 +14,9 @@ enum hw_cmdcode
     hwSendGetSourceMode = 0x1211,
     hwSendSetSourceOn = 0x1212,
     hwSendGetSourceOn = 0x1213,
-    hwSendSetSourceRangeByLevel = 0x1206
+    hwSendSetSourceRangeByLevel = 0x1206,
+    hwSendSetSourceRange = 0x1200,
+    hwSendGetSourceRange = 0x1201,
 };
 
 ZeraMControllerIoTemplate::atmelRM I2cCtrlGenerator::readSourceModeOn(QStringList &channelMNamesModeOnRead)
@@ -63,13 +65,34 @@ ZeraMControllerIoTemplate::atmelRM I2cCtrlGenerator::sendSourceOn(const QStringL
     return ret;
 }
 
-ZeraMControllerIoTemplate::atmelRM I2cCtrlGenerator::setRangeByAmplitude(float amplitude, const QString &channelMName)
+ZeraMControllerIoTemplate::atmelRM I2cCtrlGenerator::setRangeByAmplitude(const QString &channelMName, float amplitude)
 {
     quint8 controllerChannelNo = getControllerInternalChannelNo(m_senseSettings, channelMName);
     QByteArray ba = convertFloat(amplitude);
     hw_cmd CMD(hwSendSetSourceRangeByLevel, controllerChannelNo, reinterpret_cast<quint8*>(ba.data()), ba.size());
     m_ctrlIo.writeCommand(&CMD);
     ZeraMControllerIo::atmelRM ret = m_ctrlIo.getLastErrorMask() == 0 ? ZeraMControllerIo::cmddone : ZeraMControllerIo::cmdexecfault;
+    return ret;
+}
+
+ZeraMControllerIoTemplate::atmelRM I2cCtrlGenerator::setRange(const QString &channelMName, quint8 range)
+{
+    quint8 controllerChannelNo = getControllerInternalChannelNo(m_senseSettings, channelMName);
+    hw_cmd CMD(hwSendSetSourceRange, controllerChannelNo, &range, 1);
+    m_ctrlIo.writeCommand(&CMD);
+    ZeraMControllerIo::atmelRM ret = m_ctrlIo.getLastErrorMask() == 0 ? ZeraMControllerIo::cmddone : ZeraMControllerIo::cmdexecfault;
+    return ret;
+}
+
+ZeraMControllerIoTemplate::atmelRM I2cCtrlGenerator::readRange(const QString &channelMName, quint8 &range)
+{
+    quint8 controllerChannelNo = getControllerInternalChannelNo(m_senseSettings, channelMName);
+    hw_cmd CMD(hwSendGetSourceRange, controllerChannelNo, nullptr, 0);
+    quint8 answ[2];
+    m_ctrlIo.writeCommand(&CMD, answ, 2);
+    ZeraMControllerIo::atmelRM ret = m_ctrlIo.getLastErrorMask() == 0 ? ZeraMControllerIo::cmddone : ZeraMControllerIo::cmdexecfault;
+    if(ret == ZeraMControllerIo::cmddone)
+        range = answ[0];
     return ret;
 }
 
