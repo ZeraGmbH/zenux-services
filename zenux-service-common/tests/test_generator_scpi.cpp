@@ -125,7 +125,7 @@ void test_generator_scpi::getSetValidSourceOn()
     QCOMPARE(responseSpy[0][2], QVariant(""));
 }
 
-void test_generator_scpi::setAmplitudeChangeRange()
+void test_generator_scpi::setChangeRangeByAmplitude()
 {
     QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
 
@@ -144,7 +144,7 @@ void test_generator_scpi::setAmplitudeChangeRange()
     QCOMPARE(responseSpy[0][2], QVariant("nak"));
 }
 
-void test_generator_scpi::setAmplitudeChangeRangeInvalid()
+void test_generator_scpi::setChangeRangeByAmplitudeInvalid()
 {
     QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
 

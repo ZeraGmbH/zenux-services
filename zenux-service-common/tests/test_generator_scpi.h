@@ -17,8 +17,9 @@ private slots:
     void getSetInvalidSourceModeOn();
 
     void getSetValidSourceOn();
-    void setAmplitudeChangeRange();
-    void setAmplitudeChangeRangeInvalid();
+
+    void setChangeRangeByAmplitude();
+    void setChangeRangeByAmplitudeInvalid();
 
     void notifySourecModeOnChange();
 private:
