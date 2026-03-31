@@ -2,7 +2,7 @@
 #define GENERATORINTERFACE_H
 
 #include "abstractfactoryi2cctrl.h"
-#include "generatorchannel.h"
+#include "generatorchannelinterface.h"
 #include "sensesettings.h"
 #include <scpiserverconnection.h>
 
@@ -12,7 +12,7 @@ class GeneratorInterface : public ScpiServerConnection
 public:
     GeneratorInterface(std::shared_ptr<cSCPI> scpiInterface,
                        cSenseSettingsPtr senseSettings,
-                       const QList<GeneratorChannel *> &channels,
+                       const QList<GeneratorChannelInterface *> &channels,
                        AbstractFactoryI2cCtrlPtr ctrlFactory);
     void initSCPIConnection() override;
 
@@ -22,7 +22,7 @@ private:
     QString scpiSourceOn(const QString &scpi);
 
     cSenseSettingsPtr m_senseSettings;
-    QList<GeneratorChannel *> m_channels;
+    QList<GeneratorChannelInterface *> m_channels;
     AbstractFactoryI2cCtrlPtr m_ctrlFactory;
     NotificationString m_sourceOnModesNotification;
 };

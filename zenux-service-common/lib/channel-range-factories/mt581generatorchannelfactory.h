@@ -6,7 +6,7 @@
 class Mt581GeneratorChannelFactory : public AbstractGeneratorChannelFactory
 {
 public:
-    QList<GeneratorChannel*> createChannelsAndRanges(cSenseSettingsPtr senseSettings,
+    QList<GeneratorChannelInterface*> createChannelsAndRanges(cSenseSettingsPtr senseSettings,
                                                      std::shared_ptr<cSCPI> scpi,
                                                      AbstractFactoryI2cCtrlPtr ctrlFactory) override;
 };

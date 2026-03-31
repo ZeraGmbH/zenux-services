@@ -221,7 +221,7 @@ void cMT310S2dServer::earlySetup(AbstractChannelRangeFactoryPtr channelRangeFact
 
     if (hasSourceGenerator()) {
         Mt581GeneratorChannelFactory generatorChannelFactory;
-        QList<GeneratorChannel *> generatorChannels = generatorChannelFactory.createChannelsAndRanges(getSenseSettings(),
+        QList<GeneratorChannelInterface *> generatorChannels = generatorChannelFactory.createChannelsAndRanges(getSenseSettings(),
                                                                                                       m_scpiInterface,
                                                                                                       m_ctrlFactory);
         m_scpiConnectionList.append(m_generatorInterface = new GeneratorInterface(m_scpiInterface,

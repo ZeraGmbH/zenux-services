@@ -1,7 +1,7 @@
-#include "generatorchannel.h"
+#include "generatorchannelinterface.h"
 #include "zscpi_response_definitions.h"
 
-GeneratorChannel::GeneratorChannel(std::shared_ptr<cSCPI> scpiinterface,
+GeneratorChannelInterface::GeneratorChannelInterface(std::shared_ptr<cSCPI> scpiinterface,
                                    const cSenseSettingsPtr senseSettings,
                                    const SenseSystem::cChannelSettings *channelSettings,
                                    AbstractFactoryI2cCtrlPtr ctrlFactory) :
@@ -18,7 +18,7 @@ enum ScpiCommands {
     sourceGetSetRange
 };
 
-void GeneratorChannel::initSCPIConnection()
+void GeneratorChannelInterface::initSCPIConnection()
 {
     const QString scpiLead = QString("GENERATOR:%1").arg(m_mName);
     // Do we need range lists?
@@ -26,7 +26,7 @@ void GeneratorChannel::initSCPIConnection()
     addDelegate(scpiLead, "RANGE", SCPI::isQuery | SCPI::isCmdwP, m_scpiInterface, sourceGetSetRange);
 }
 
-void GeneratorChannel::executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd)
+void GeneratorChannelInterface::executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd)
 {
     switch(cmdCode)
     {
@@ -41,7 +41,7 @@ void GeneratorChannel::executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd
         emit cmdExecutionDone(protoCmd);
 }
 
-QString GeneratorChannel::scpiChangeRangeByAmplitude(const QString &scpi)
+QString GeneratorChannelInterface::scpiChangeRangeByAmplitude(const QString &scpi)
 {
     cSCPICommand cmd = scpi;
     I2cCtrlGeneratorPtr controller = m_ctrlFactory->getGeneratorController(m_senseSettings);
@@ -57,7 +57,7 @@ QString GeneratorChannel::scpiChangeRangeByAmplitude(const QString &scpi)
     return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-QString GeneratorChannel::scpiChangeRange(const QString &scpi)
+QString GeneratorChannelInterface::scpiChangeRange(const QString &scpi)
 {
     cSCPICommand cmd = scpi;
     I2cCtrlGeneratorPtr controller = m_ctrlFactory->getGeneratorController(m_senseSettings);

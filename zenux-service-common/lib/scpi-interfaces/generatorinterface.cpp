@@ -4,7 +4,7 @@
 
 GeneratorInterface::GeneratorInterface(std::shared_ptr<cSCPI> scpiInterface,
                                        cSenseSettingsPtr senseSettings,
-                                       const QList<GeneratorChannel *> &channels,
+                                       const QList<GeneratorChannelInterface *> &channels,
                                        AbstractFactoryI2cCtrlPtr ctrlFactory) :
     ScpiServerConnection(scpiInterface),
     m_senseSettings(senseSettings),
@@ -23,7 +23,7 @@ void GeneratorInterface::initSCPIConnection()
     addDelegate("GENERATOR", "MODEON", SCPI::isQuery | SCPI::isCmdwP, m_scpiInterface, sourceModeOn, &m_sourceOnModesNotification);
     addDelegate("GENERATOR", "SWITCHON", SCPI::isQuery | SCPI::isCmdwP, m_scpiInterface, sourceOn);
 
-    for (GeneratorChannel *channel : qAsConst(m_channels)) {
+    for (GeneratorChannelInterface *channel : qAsConst(m_channels)) {
         channel->initSCPIConnection();
         connect(channel, &ScpiConnection::cmdExecutionDone, this, &ScpiConnection::cmdExecutionDone);
     }

@@ -1,16 +1,16 @@
-#ifndef GENERATORCHANNEL_H
-#define GENERATORCHANNEL_H
+#ifndef GENERATORCHANNELINTERFACE_H
+#define GENERATORCHANNELINTERFACE_H
 
 #include "abstractfactoryi2cctrl.h"
 #include "sensesettings.h"
 #include <scpiconnection.h>
 #include <memory>
 
-class GeneratorChannel : public ScpiConnection
+class GeneratorChannelInterface : public ScpiConnection
 {
     Q_OBJECT
 public:
-    explicit GeneratorChannel(std::shared_ptr<cSCPI> scpiinterface,
+    explicit GeneratorChannelInterface(std::shared_ptr<cSCPI> scpiinterface,
                               const cSenseSettingsPtr senseSettings,
                               const SenseSystem::cChannelSettings* channelSettings,
                               AbstractFactoryI2cCtrlPtr ctrlFactory);
@@ -26,4 +26,4 @@ private:
     const QString m_alias;
 };
 
-#endif // GENERATORCHANNEL_H
+#endif // GENERATORCHANNELINTERFACE_H
