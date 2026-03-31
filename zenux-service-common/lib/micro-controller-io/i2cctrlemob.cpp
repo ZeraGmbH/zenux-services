@@ -83,7 +83,7 @@ ZeraMControllerIoTemplate::atmelRM I2cCtrlEMOB::clearErrorStatus()
 ZeraMControllerIoTemplate::atmelRM I2cCtrlEMOB::readExchangeData(QByteArray &answer)
 {
     I2cMuxerScopedOnOff i2cMuxerEnabled(m_i2cMuxer);
-    return m_ctrlIo.readVariableLenData(hwReadDataForExchange, answer);
+    return m_ctrlIo.readVariableLenData(hwReadDataForExchange, 0, answer);
 }
 
 ZeraMControllerIoTemplate::atmelRM I2cCtrlEMOB::writeExchangeData(QByteArray &data, int senderId)
