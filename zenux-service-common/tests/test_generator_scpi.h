@@ -27,7 +27,7 @@ private slots:
     void getRangeInvalidChannel();
     void setRangeInvalidChannel();
 
-    void notifySourecModeOnChange();
+    void notifySourceModeOnChange();
 private:
     void setupServers();
 

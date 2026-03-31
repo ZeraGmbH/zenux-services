@@ -250,7 +250,7 @@ void test_generator_scpi::setRangeInvalidChannel()
 
 static constexpr int notifierId = 42;
 
-void test_generator_scpi::notifySourecModeOnChange()
+void test_generator_scpi::notifySourceModeOnChange()
 {
     m_pcbIFace->registerNotifier("GENERATOR:MODEON?", notifierId, true);
     TimeMachineObject::feedEventLoop();
