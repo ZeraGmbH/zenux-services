@@ -28,10 +28,18 @@ void test_generator_meas_range_notification::cleanup()
 }
 
 static constexpr int notifierId = 42;
+static constexpr int notifierIdOther = 37;
 
 void test_generator_meas_range_notification::receiveSenseRangeChangeOnSourceRangeByAmplitudeChangeNotification()
 {
     m_pcbIFace->registerNotifier("SENSE:M0:RANGE?", notifierId, true);
+    m_pcbIFace->registerNotifier("SENSE:M1:RANGE?", notifierIdOther, true);
+    m_pcbIFace->registerNotifier("SENSE:M2:RANGE?", notifierIdOther, true);
+    m_pcbIFace->registerNotifier("SENSE:M3:RANGE?", notifierIdOther, true);
+    m_pcbIFace->registerNotifier("SENSE:M4:RANGE?", notifierIdOther, true);
+    m_pcbIFace->registerNotifier("SENSE:M5:RANGE?", notifierIdOther, true);
+    m_pcbIFace->registerNotifier("SENSE:M6:RANGE?", notifierIdOther, true);
+    m_pcbIFace->registerNotifier("SENSE:M7:RANGE?", notifierIdOther, true);
     TimeMachineObject::feedEventLoop();
     QSignalSpy spy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
 
