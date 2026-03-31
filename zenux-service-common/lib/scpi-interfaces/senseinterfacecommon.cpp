@@ -436,6 +436,13 @@ QString SenseInterfaceCommon::exportXMLString(int indent)
     return justqdom.toString(indent);
 }
 
+void SenseInterfaceCommon::onMeasRangeProbablyChanged(const QString &channelMName)
+{
+    SenseChannelCommon *channel = getChannel(channelMName);
+    if (channel != nullptr)
+        channel->setNotifierSenseChannelRange();
+}
+
 void SenseInterfaceCommon::handleScpiReadWriteMMode(ProtonetCommandPtr protoCmd)
 {
     cSCPICommand cmd = protoCmd->m_sInput;

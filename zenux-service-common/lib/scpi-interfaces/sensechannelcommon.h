@@ -39,12 +39,13 @@ public:
     void initSCPIConnection(const QString &leadingNodes);
 
     void setMMode(int mode);
+
     NotificationStatus setRangeCommon(SenseRangeCommon *range, ProtonetCommandPtr protoCmd);
+    virtual void setNotifierSenseChannelRange() = 0;
 
 protected:
     void executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd) override;
     virtual QString getAlias() = 0;
-    virtual void setNotifierSenseChannelRange() = 0;
     virtual NotificationStatus scpiReadWriteRange(ProtonetCommandPtr protoCmd) = 0;
 
     QString scpiReadAlias(const QString& scpi);

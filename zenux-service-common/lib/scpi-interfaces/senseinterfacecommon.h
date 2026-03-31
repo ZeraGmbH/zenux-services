@@ -72,6 +72,9 @@ public:
     void initSCPIConnection() override;
     QString exportXMLString(int indent = 1) override;
 
+public slots:
+    void onMeasRangeProbablyChanged(const QString &channelMName);
+
 protected:
     virtual const char *getAdjExportedVersion() = 0; // stored from #define forces us using const char*
     virtual QString getPcbName() = 0;

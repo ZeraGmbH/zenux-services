@@ -228,6 +228,8 @@ void cMT310S2dServer::earlySetup(AbstractChannelRangeFactoryPtr channelRangeFact
                                                                                   getSenseSettings(),
                                                                                   generatorChannels,
                                                                                   m_ctrlFactory));
+        connect(m_generatorInterface, &GeneratorInterface::sigMeasRangeProbablyChanged,
+                m_pSenseInterface, &SenseInterfaceCommon::onMeasRangeProbablyChanged);
         m_scpiConnectionList.append(m_sourceControlInterface = new SourceControlInterface(m_scpiInterface, m_sourceControlSettings, m_ctrlFactory));
     }
 
