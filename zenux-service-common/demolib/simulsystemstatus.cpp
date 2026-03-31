@@ -47,17 +47,17 @@ quint8 SimulSystemStatus::getAccuStatusFromFlags()
     return accuFlagMask;
 }
 
-quint8 SimulSystemStatus::getRange(quint8 channel)
+quint8 SimulSystemStatus::getRange(quint8 channelOffset1)
 {
-    quint8 idx = channel-1;
+    quint8 idx = channelOffset1-1;
     if(resizeChannelRanges(idx))
         emit channelRangesChanged();
     return m_channelRanges[idx];
 }
 
-void SimulSystemStatus::setRange(quint8 channel, quint8 range)
+void SimulSystemStatus::setRange(quint8 channelOffset1, quint8 range)
 {
-    quint8 idx = channel-1;
+    quint8 idx = channelOffset1-1;
     if(resizeChannelRanges(idx) || m_channelRanges[idx] != range) {
         m_channelRanges[idx] = range;
         emit channelRangesChanged();

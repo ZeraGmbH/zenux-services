@@ -79,8 +79,8 @@ public:
 
     // C++ only
     quint8 getAccuStatusFromFlags();
-    quint8 getRange(quint8 channel);
-    void setRange(quint8 channel, quint8 range);
+    quint8 getRange(quint8 channelOffset1);
+    void setRange(quint8 channelOffset1, quint8 range);
 
 private:
     SimulSystemStatus() = default;
