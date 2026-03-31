@@ -17,6 +17,7 @@ enum hw_cmdcode
     hwSendSetSourceRangeByLevel = 0x1206,
     hwSendSetSourceRange = 0x1200,
     hwSendGetSourceRange = 0x1201,
+    hwSendDspTunnel = 0x1220,
 };
 
 ZeraMControllerIoTemplate::atmelRM I2cCtrlGenerator::readSourceModeOn(QStringList &channelMNamesModeOnRead)
@@ -94,6 +95,16 @@ ZeraMControllerIoTemplate::atmelRM I2cCtrlGenerator::readRange(const QString &ch
     if(ret == ZeraMControllerIo::cmddone)
         range = answ[0];
     return ret;
+}
+
+ZeraMControllerIoTemplate::atmelRM I2cCtrlGenerator::tunnelToDsp(const QString &channelMName, DspTunnelParamAndResponse &dspIo)
+{
+    quint8 controllerChannelNo = getControllerInternalChannelNo(m_senseSettings, channelMName);
+    return m_ctrlIo.readVariableLenData(hwSendDspTunnel,
+                                        controllerChannelNo,
+                                        dspIo.m_dspDataResponse,
+                                        reinterpret_cast<quint8*>(dspIo.m_dspCmdData.data()),
+                                        dspIo.m_dspCmdData.size());
 }
 
 QByteArray I2cCtrlGenerator::convertFloat(float value)

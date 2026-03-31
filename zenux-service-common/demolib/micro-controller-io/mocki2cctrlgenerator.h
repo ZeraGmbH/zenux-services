@@ -21,6 +21,8 @@ public:
     ZeraMControllerIo::atmelRM readRange(const QString& channelMName, quint8& range) override;
     ZeraMControllerIo::atmelRM setRange(const QString& channelMName, quint8 range) override;
 
+    ZeraMControllerIo::atmelRM tunnelToDsp(const QString& channelMName, DspTunnelParamAndResponse &dspIo) override;
+
 private:
     QStringList &m_channelMNamesModeOn;
     QStringList &m_channelMNamesOn;

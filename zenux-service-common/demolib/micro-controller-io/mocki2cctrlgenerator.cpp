@@ -51,3 +51,10 @@ ZeraMControllerIoTemplate::atmelRM MockI2cCtrlGenerator::readRange(const QString
     range = m_generatorRangeMap[channelMName];
     return ZeraMControllerIo::cmddone;
 }
+
+ZeraMControllerIoTemplate::atmelRM MockI2cCtrlGenerator::tunnelToDsp(const QString &channelMName, DspTunnelParamAndResponse &dspIo)
+{
+    Q_UNUSED(channelMName)
+    Q_UNUSED(dspIo)
+    return ZeraMControllerIo::cmddone;
+}
