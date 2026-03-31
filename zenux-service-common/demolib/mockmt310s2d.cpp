@@ -96,6 +96,11 @@ cClampInterface *MockMt310s2d::getClampInterface() const
     return m_server->getClampInterface();
 }
 
+GeneratorInterface *MockMt310s2d::getGeneratorInterface() const
+{
+    return m_server->getGeneratorInterface();
+}
+
 static const QStringList simulChannelSequence = QStringList() << "UL1" << "UL2" << "UL3" << "UAUX" << "IL1" << "IL2" << "IL3" << "IAUX";
 
 void MockMt310s2d::onSimulGuiHotplugDevChanged(int channelIndex, int deviceIndex)

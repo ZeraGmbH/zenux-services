@@ -25,6 +25,7 @@ public:
     HotPluggableControllerContainerPtr getHotPluggableControllerContainer();
 
     cClampInterface* getClampInterface() const;
+    GeneratorInterface *getGeneratorInterface() const;
 
 private slots:
     void onSimulGuiHotplugDevChanged(int channelIndex, int deviceIndex);

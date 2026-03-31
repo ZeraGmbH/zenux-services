@@ -15,6 +15,9 @@ public:
                               const SenseSystem::cChannelSettings* channelSettings,
                               AbstractFactoryI2cCtrlPtr ctrlFactory);
     void initSCPIConnection();
+signals:
+    void sigMeasRangeProbablyChanged(const QString &channelMName);
+
 private:
     void executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd) override;
     QString scpiChangeRangeByAmplitude(const QString &scpi);

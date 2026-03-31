@@ -19,6 +19,7 @@ private slots:
     void getSetValidSourceOn();
 
     void setChangeRangeByAmplitude();
+    void queryRangeByAmplitudeDenied();
     void setChangeRangeByAmplitudeInvalidChannel();
     void setChangeRangeByAmplitudeInvalidValue();
 

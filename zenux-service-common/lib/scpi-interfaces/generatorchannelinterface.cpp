@@ -49,8 +49,10 @@ QString GeneratorChannelInterface::scpiChangeRangeByAmplitude(const QString &scp
         bool ok;
         float amplitude = cmd.getParam(0).toFloat(&ok);
         if (ok) {
-            if(controller->setRangeByAmplitude(m_mName, amplitude) == ZeraMControllerIo::cmddone)
+            if(controller->setRangeByAmplitude(m_mName, amplitude) == ZeraMControllerIo::cmddone) {
+                emit sigMeasRangeProbablyChanged(m_mName);
                 return ZSCPI::scpiAnswer[ZSCPI::ack];
+            }
             return ZSCPI::scpiAnswer[ZSCPI::errexec];
         }
     }
@@ -65,8 +67,10 @@ QString GeneratorChannelInterface::scpiChangeRange(const QString &scpi)
         bool ok;
         quint8 range = cmd.getParam(0).toUInt(&ok);
         if (ok) {
-            if(controller->setRange(m_mName, range) == ZeraMControllerIo::cmddone)
+            if(controller->setRange(m_mName, range) == ZeraMControllerIo::cmddone) {
+                emit sigMeasRangeProbablyChanged(m_mName);
                 return  ZSCPI::scpiAnswer[ZSCPI::ack];
+            }
             return ZSCPI::scpiAnswer[ZSCPI::errexec];
         }
     }

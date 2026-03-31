@@ -419,6 +419,11 @@ cClampInterface *cMT310S2dServer::getClampInterface() const
     return m_pClampInterface;
 }
 
+GeneratorInterface *cMT310S2dServer::getGeneratorInterface() const
+{
+    return m_generatorInterface;
+}
+
 void cMT310S2dServer::startCpuTemperatureSendTimer()
 {
     if (m_cpuTemperature.canGetValue()) {

@@ -128,76 +128,101 @@ void test_generator_scpi::getSetValidSourceOn()
 void test_generator_scpi::setChangeRangeByAmplitude()
 {
     QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
+    QSignalSpy channelChangeProbablySpy(m_mt310s2d->getGeneratorInterface(), &GeneratorInterface::sigMeasRangeProbablyChanged);
 
-    responseSpy.clear();
     m_pcbIFace->scpiCommand("GENERATOR:m2:AMPRANGE 2.5;");
     TimeMachineObject::feedEventLoop();
     QCOMPARE(responseSpy.count(), 1);
     QCOMPARE(responseSpy[0][1], QVariant(ack));
     QCOMPARE(responseSpy[0][2], QVariant("ack"));
 
-    responseSpy.clear();
+    QCOMPARE(channelChangeProbablySpy.count(), 1);
+    QCOMPARE(channelChangeProbablySpy[0][0], "m2");
+}
+
+void test_generator_scpi::queryRangeByAmplitudeDenied()
+{
+    QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
+    QSignalSpy channelChangeProbablySpy(m_mt310s2d->getGeneratorInterface(), &GeneratorInterface::sigMeasRangeProbablyChanged);
+
     m_pcbIFace->scpiCommand("GENERATOR:m2:AMPRANGE?");
     TimeMachineObject::feedEventLoop();
     QCOMPARE(responseSpy.count(), 1);
     QCOMPARE(responseSpy[0][1], QVariant(nack));
     QCOMPARE(responseSpy[0][2], QVariant("nak"));
+
+    QCOMPARE(channelChangeProbablySpy.count(), 0);
 }
 
 void test_generator_scpi::setChangeRangeByAmplitudeInvalidChannel()
 {
     QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
+    QSignalSpy channelChangeProbablySpy(m_mt310s2d->getGeneratorInterface(), &GeneratorInterface::sigMeasRangeProbablyChanged);
     m_pcbIFace->scpiCommand("GENERATOR:m6:AMPRANGE?");
     TimeMachineObject::feedEventLoop();
 
     QCOMPARE(responseSpy.count(), 1);
     QCOMPARE(responseSpy[0][1], QVariant(nack));
     QCOMPARE(responseSpy[0][2], QVariant("nak"));
+
+    QCOMPARE(channelChangeProbablySpy.count(), 0);
 }
 
 void test_generator_scpi::setChangeRangeByAmplitudeInvalidValue()
 {
     QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
+    QSignalSpy channelChangeProbablySpy(m_mt310s2d->getGeneratorInterface(), &GeneratorInterface::sigMeasRangeProbablyChanged);
     m_pcbIFace->scpiCommand("GENERATOR:m2:AMPRANGE foo;");
     TimeMachineObject::feedEventLoop();
 
     QCOMPARE(responseSpy.count(), 1);
     QCOMPARE(responseSpy[0][1], QVariant(nack));
     QCOMPARE(responseSpy[0][2], QVariant("nak"));
+
+    QCOMPARE(channelChangeProbablySpy.count(), 0);
 }
 
 void test_generator_scpi::getSetRange()
 {
     QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
+    QSignalSpy channelChangeProbablySpy(m_mt310s2d->getGeneratorInterface(), &GeneratorInterface::sigMeasRangeProbablyChanged);
 
     responseSpy.clear();
+    channelChangeProbablySpy.clear();
     m_pcbIFace->scpiCommand("GENERATOR:m0:RANGE?");
     TimeMachineObject::feedEventLoop();
 
     QCOMPARE(responseSpy.count(), 1);
     QCOMPARE(responseSpy[0][1], QVariant(ack));
     QCOMPARE(responseSpy[0][2], QVariant("0"));
+    QCOMPARE(channelChangeProbablySpy.count(), 0);
 
     responseSpy.clear();
+    channelChangeProbablySpy.clear();
     m_pcbIFace->scpiCommand("GENERATOR:m0:RANGE 1;");
     TimeMachineObject::feedEventLoop();
 
     QCOMPARE(responseSpy.count(), 1);
     QCOMPARE(responseSpy[0][1], QVariant(ack));
     QCOMPARE(responseSpy[0][2], QVariant("ack"));
+    QCOMPARE(channelChangeProbablySpy.count(), 1);
+    QCOMPARE(channelChangeProbablySpy[0][0], "m0");
 
     responseSpy.clear();
+    channelChangeProbablySpy.clear();
     m_pcbIFace->scpiCommand("GENERATOR:m0:RANGE?");
     TimeMachineObject::feedEventLoop();
 
     QCOMPARE(responseSpy.count(), 1);
     QCOMPARE(responseSpy[0][1], QVariant(ack));
     QCOMPARE(responseSpy[0][2], QVariant("1"));
+    QCOMPARE(channelChangeProbablySpy.count(), 0);
 }
 
 void test_generator_scpi::getRangeInvalidChannel()
 {
     QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
+    QSignalSpy channelChangeProbablySpy(m_mt310s2d->getGeneratorInterface(), &GeneratorInterface::sigMeasRangeProbablyChanged);
 
     m_pcbIFace->scpiCommand("GENERATOR:m6:RANGE?");
     TimeMachineObject::feedEventLoop();
@@ -205,11 +230,13 @@ void test_generator_scpi::getRangeInvalidChannel()
     QCOMPARE(responseSpy.count(), 1);
     QCOMPARE(responseSpy[0][1], QVariant(nack));
     QCOMPARE(responseSpy[0][2], QVariant("nak"));
+    QCOMPARE(channelChangeProbablySpy.count(), 0);
 }
 
 void test_generator_scpi::setRangeInvalidChannel()
 {
     QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
+    QSignalSpy channelChangeProbablySpy(m_mt310s2d->getGeneratorInterface(), &GeneratorInterface::sigMeasRangeProbablyChanged);
 
     m_pcbIFace->scpiCommand("GENERATOR:m6:RANGE 1;");
     TimeMachineObject::feedEventLoop();
@@ -217,6 +244,7 @@ void test_generator_scpi::setRangeInvalidChannel()
     QCOMPARE(responseSpy.count(), 1);
     QCOMPARE(responseSpy[0][1], QVariant(nack));
     QCOMPARE(responseSpy[0][2], QVariant("nak"));
+    QCOMPARE(channelChangeProbablySpy.count(), 0);
 }
 
 

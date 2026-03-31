@@ -16,6 +16,9 @@ public:
                        AbstractFactoryI2cCtrlPtr ctrlFactory);
     void initSCPIConnection() override;
 
+signals:
+    void sigMeasRangeProbablyChanged(const QString &channelMName);
+
 private:
     void executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd) override;
     QString scpiSourceModeOn(const QString &scpi);

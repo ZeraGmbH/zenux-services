@@ -25,7 +25,10 @@ void GeneratorInterface::initSCPIConnection()
 
     for (GeneratorChannelInterface *channel : qAsConst(m_channels)) {
         channel->initSCPIConnection();
-        connect(channel, &ScpiConnection::cmdExecutionDone, this, &ScpiConnection::cmdExecutionDone);
+        connect(channel, &ScpiConnection::cmdExecutionDone,
+                this, &ScpiConnection::cmdExecutionDone);
+        connect(channel, &GeneratorChannelInterface::sigMeasRangeProbablyChanged,
+                this, &GeneratorInterface::sigMeasRangeProbablyChanged);
     }
 }
 
