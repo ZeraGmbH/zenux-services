@@ -7,7 +7,7 @@
 class MockI2cCtrlGenerator : public AbstractI2cCtrlGenerator
 {
 public:
-    MockI2cCtrlGenerator(ControllerPersitentData::TPersitentControllerData &persistentData);
+    explicit MockI2cCtrlGenerator(ControllerPersitentData::TPersitentControllerData &persistentData);
 
     ZeraMControllerIo::atmelRM readSourceModeOn(QStringList &channelMNamesModeOnRead) override;
     ZeraMControllerIo::atmelRM sendSourceModeOn(const QStringList &channelMNamesModeOn) override;
@@ -21,14 +21,17 @@ public:
 
     ZeraMControllerIo::atmelRM setDspAmplitude(const QString& channelMName, float amplitude) override;
     ZeraMControllerIo::atmelRM getDspAmplitude(const QString& channelMName, float &amplitude) override;
+    ZeraMControllerIo::atmelRM setDspFrequency(const QString& channelMName, float frequency) override;
+    ZeraMControllerIo::atmelRM getDspFrequency(const QString& channelMName, float &frequency) override;
 
     ZeraMControllerIo::atmelRM tunnelToDsp(const QString& channelMName, const QByteArray &cmd, QByteArray &response) override;
 
 private:
     QStringList &m_channelMNamesModeOn;
     QStringList &m_channelMNamesOn;
-    ControllerPersitentData::RangeMap &m_generatorRangeMap;
-    ControllerPersitentData::DspAmplitudeMap &m_dspAmplitudeMap;
+    ControllerPersitentData::ChannelRangeMap &m_generatorRangeMap;
+    ControllerPersitentData::ChannelFloatMap &m_dspAmplitudeMap;
+    ControllerPersitentData::ChannelFloatMap &m_dspFrequencyMap;
 };
 
 #endif // MOCKI2CCTRLGENERATOR_H

@@ -21,6 +21,8 @@ public:
 
     ZeraMControllerIo::atmelRM getDspAmplitude(const QString& channelMName, float &amplitude) override;
     ZeraMControllerIo::atmelRM setDspAmplitude(const QString& channelMName, float amplitude) override;
+    ZeraMControllerIo::atmelRM setDspFrequency(const QString& channelMName, float frequency) override;
+    ZeraMControllerIo::atmelRM getDspFrequency(const QString& channelMName, float &frequency) override;
 
     ZeraMControllerIo::atmelRM tunnelToDsp(const QString& channelMName, const QByteArray &cmd, QByteArray &response) override;
 

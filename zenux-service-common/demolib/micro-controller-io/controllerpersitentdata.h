@@ -10,8 +10,8 @@ class ControllerPersitentData
 {
 public:
     typedef QMap<int, AbstractMockAllServices::hotplugI2cBus> MuxChannelDeviceNameMap;
-    typedef QMap<QString, quint8> RangeMap;
-    typedef QMap<QString, float> DspAmplitudeMap;
+    typedef QMap<QString, quint8> ChannelRangeMap;
+    typedef QMap<QString, float> ChannelFloatMap;
     struct TPersitentControllerData
     {
         bool m_permission = false;
@@ -31,8 +31,9 @@ public:
 
         QStringList m_generatorMNamesModeOn;
         QStringList m_generatorMNamesOn;
-        RangeMap m_generatorRangeMap;
-        DspAmplitudeMap m_generatorDspAmplitudeMap;
+        ChannelRangeMap m_generatorRangeMap;
+        ChannelFloatMap m_generatorDspAmplitudeMap;
+        ChannelFloatMap m_generatorDspFrequencyMap;
     };
     static TPersitentControllerData &getData();
     static void injectInterruptFlags(quint16 clampConnectMask);

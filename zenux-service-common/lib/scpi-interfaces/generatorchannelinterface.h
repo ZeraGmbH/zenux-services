@@ -23,6 +23,7 @@ private:
     QString scpiChangeRangeByAmplitude(const QString &scpi);
     QString scpiChangeRange(const QString &scpi);
     QString scpiDspAmplitude(const QString &scpi);
+    QString scpiDspFrequency(const QString &scpi);
 
     const cSenseSettingsPtr m_senseSettings;
     AbstractFactoryI2cCtrlPtr m_ctrlFactory;

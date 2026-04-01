@@ -115,6 +115,23 @@ ZeraMControllerIoTemplate::atmelRM I2cCtrlGenerator::setDspAmplitude(const QStri
     return tunnelToDsp(channelMName, binCmd, dummy);
 }
 
+ZeraMControllerIoTemplate::atmelRM I2cCtrlGenerator::getDspFrequency(const QString &channelMName, float &frequency)
+{
+    QByteArray binCmd = I2cDspGenerator::getCmdGetFrequency();
+    QByteArray binFrequency;
+    ZeraMControllerIo::atmelRM ret = tunnelToDsp(channelMName, binCmd, binFrequency);
+    if(ret == ZeraMControllerIo::cmddone)
+        frequency = I2cUtilities::unconvertFloat(binFrequency);
+    return ret;
+}
+
+ZeraMControllerIoTemplate::atmelRM I2cCtrlGenerator::setDspFrequency(const QString &channelMName, float frequency)
+{
+    QByteArray binCmd = I2cDspGenerator::getCmdSetFrequency(frequency);
+    QByteArray dummy;
+    return tunnelToDsp(channelMName, binCmd, dummy);
+}
+
 ZeraMControllerIoTemplate::atmelRM I2cCtrlGenerator::tunnelToDsp(const QString& channelMName, const QByteArray &cmd, QByteArray &response)
 {
     quint8 controllerChannelNo = getControllerInternalChannelNo(m_senseSettings, channelMName);

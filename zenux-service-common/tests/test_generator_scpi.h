@@ -30,6 +30,9 @@ private slots:
     void notifySourceModeOnChange();
 
     void getSetDspAmplitude();
+    void getSetDspFrequency();
+
+    void noCrossWrite();
 
 private:
     void setupServers();

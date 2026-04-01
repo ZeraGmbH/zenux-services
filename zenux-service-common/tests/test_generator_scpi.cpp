@@ -3,6 +3,7 @@
 #include "proxy.h"
 #include "reply.h"
 #include "controllerpersitentdata.h"
+#include "scpisingletransactionblocked.h"
 #include <mocktcpnetworkfactory.h>
 #include <timemachineobject.h>
 #include <QSignalSpy>
@@ -278,27 +279,22 @@ void test_generator_scpi::getSetDspAmplitude()
     QSignalSpy channelChangeProbablySpy(m_mt310s2d->getGeneratorInterface(), &GeneratorInterface::sigMeasRangeProbablyChanged);
 
     responseSpy.clear();
-    channelChangeProbablySpy.clear();
     m_pcbIFace->scpiCommand("GENERATOR:m0:DSAMPLITUDE?");
     TimeMachineObject::feedEventLoop();
 
     QCOMPARE(responseSpy.count(), 1);
     QCOMPARE(responseSpy[0][1], QVariant(ack));
     QCOMPARE(responseSpy[0][2], QVariant("0"));
-    QCOMPARE(channelChangeProbablySpy.count(), 0);
 
     responseSpy.clear();
-    channelChangeProbablySpy.clear();
     m_pcbIFace->scpiCommand("GENERATOR:m0:DSAMPLITUDE 1.5;");
     TimeMachineObject::feedEventLoop();
 
     QCOMPARE(responseSpy.count(), 1);
     QCOMPARE(responseSpy[0][1], QVariant(ack));
     QCOMPARE(responseSpy[0][2], QVariant("ack"));
-    QCOMPARE(channelChangeProbablySpy.count(), 0);
 
     responseSpy.clear();
-    channelChangeProbablySpy.clear();
     m_pcbIFace->scpiCommand("GENERATOR:m0:DSAMPLITUDE?");
     TimeMachineObject::feedEventLoop();
 
@@ -306,6 +302,53 @@ void test_generator_scpi::getSetDspAmplitude()
     QCOMPARE(responseSpy[0][1], QVariant(ack));
     QCOMPARE(responseSpy[0][2], QVariant("1.5"));
     QCOMPARE(channelChangeProbablySpy.count(), 0);
+}
+
+void test_generator_scpi::getSetDspFrequency()
+{
+    QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
+    QSignalSpy channelChangeProbablySpy(m_mt310s2d->getGeneratorInterface(), &GeneratorInterface::sigMeasRangeProbablyChanged);
+
+    responseSpy.clear();
+    m_pcbIFace->scpiCommand("GENERATOR:m0:DSFREQUENCY?");
+    TimeMachineObject::feedEventLoop();
+
+    QCOMPARE(responseSpy.count(), 1);
+    QCOMPARE(responseSpy[0][1], QVariant(ack));
+    QCOMPARE(responseSpy[0][2], QVariant("0"));
+
+    responseSpy.clear();
+    m_pcbIFace->scpiCommand("GENERATOR:m0:DSFREQUENCY 50;");
+    TimeMachineObject::feedEventLoop();
+
+    QCOMPARE(responseSpy.count(), 1);
+    QCOMPARE(responseSpy[0][1], QVariant(ack));
+    QCOMPARE(responseSpy[0][2], QVariant("ack"));
+
+    responseSpy.clear();
+    m_pcbIFace->scpiCommand("GENERATOR:m0:DSFREQUENCY?");
+    TimeMachineObject::feedEventLoop();
+
+    QCOMPARE(responseSpy.count(), 1);
+    QCOMPARE(responseSpy[0][1], QVariant(ack));
+    QCOMPARE(responseSpy[0][2], QVariant("50"));
+    QCOMPARE(channelChangeProbablySpy.count(), 0);
+}
+
+void test_generator_scpi::noCrossWrite()
+{
+    m_pcbIFace->scpiCommand("GENERATOR:MODEON m0,m3;");
+    m_pcbIFace->scpiCommand("GENERATOR:SWITCHON m0,m2;");
+    m_pcbIFace->scpiCommand("GENERATOR:m0:RANGE 1;");
+    m_pcbIFace->scpiCommand("GENERATOR:m0:DSAMPLITUDE 1.5;");
+    m_pcbIFace->scpiCommand("GENERATOR:m0:DSFREQUENCY 50;");
+    TimeMachineObject::feedEventLoop();
+
+    QCOMPARE(ScpiSingleTransactionBlocked::query("GENERATOR:MODEON?"), "m0,m3");
+    QCOMPARE(ScpiSingleTransactionBlocked::query("GENERATOR:SWITCHON?"), "m0,m2");
+    QCOMPARE(ScpiSingleTransactionBlocked::query("GENERATOR:m0:RANGE?"), "1");
+    QCOMPARE(ScpiSingleTransactionBlocked::query("GENERATOR:m0:DSAMPLITUDE?"), "1.5");
+    QCOMPARE(ScpiSingleTransactionBlocked::query("GENERATOR:m0:DSFREQUENCY?"), "50");
 }
 
 void test_generator_scpi::setupServers()

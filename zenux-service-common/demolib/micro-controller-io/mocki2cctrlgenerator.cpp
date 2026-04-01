@@ -4,7 +4,8 @@ MockI2cCtrlGenerator::MockI2cCtrlGenerator(ControllerPersitentData::TPersitentCo
     m_channelMNamesModeOn(persistentData.m_generatorMNamesModeOn),
     m_channelMNamesOn(persistentData.m_generatorMNamesOn),
     m_generatorRangeMap(persistentData.m_generatorRangeMap),
-    m_dspAmplitudeMap(persistentData.m_generatorDspAmplitudeMap)
+    m_dspAmplitudeMap(persistentData.m_generatorDspAmplitudeMap),
+    m_dspFrequencyMap(persistentData.m_generatorDspFrequencyMap)
 {
 }
 
@@ -60,6 +61,18 @@ ZeraMControllerIoTemplate::atmelRM MockI2cCtrlGenerator::getDspAmplitude(const Q
 ZeraMControllerIoTemplate::atmelRM MockI2cCtrlGenerator::setDspAmplitude(const QString &channelMName, float amplitude)
 {
     m_dspAmplitudeMap[channelMName] = amplitude;
+    return ZeraMControllerIo::cmddone;
+}
+
+ZeraMControllerIoTemplate::atmelRM MockI2cCtrlGenerator::getDspFrequency(const QString &channelMName, float &frequency)
+{
+    frequency = m_dspFrequencyMap[channelMName];
+    return ZeraMControllerIo::cmddone;
+}
+
+ZeraMControllerIoTemplate::atmelRM MockI2cCtrlGenerator::setDspFrequency(const QString &channelMName, float frequency)
+{
+    m_dspFrequencyMap[channelMName] = frequency;
     return ZeraMControllerIo::cmddone;
 }
 

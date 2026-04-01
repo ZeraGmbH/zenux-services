@@ -16,7 +16,8 @@ GeneratorChannelInterface::GeneratorChannelInterface(std::shared_ptr<cSCPI> scpi
 enum ScpiCommands {
     controllerSetRangeByAmplitude,
     controllerGetSetRange,
-    dspSetAmplitude,
+    dspGetSetAmplitude,
+    dspGetSetFrequency,
 };
 
 void GeneratorChannelInterface::initSCPIConnection()
@@ -25,7 +26,8 @@ void GeneratorChannelInterface::initSCPIConnection()
     // Do we need range lists?
     addDelegate(scpiLead, "AMPRANGE", SCPI::isCmdwP, m_scpiInterface, controllerSetRangeByAmplitude);
     addDelegate(scpiLead, "RANGE", SCPI::isQuery | SCPI::isCmdwP, m_scpiInterface, controllerGetSetRange);
-    addDelegate(scpiLead, "DSAMPLITUDE", SCPI::isQuery | SCPI::isCmdwP, m_scpiInterface, dspSetAmplitude);
+    addDelegate(scpiLead, "DSAMPLITUDE", SCPI::isQuery | SCPI::isCmdwP, m_scpiInterface, dspGetSetAmplitude);
+    addDelegate(scpiLead, "DSFREQUENCY", SCPI::isQuery | SCPI::isCmdwP, m_scpiInterface, dspGetSetFrequency);
 }
 
 void GeneratorChannelInterface::executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd)
@@ -38,8 +40,11 @@ void GeneratorChannelInterface::executeProtoScpi(int cmdCode, ProtonetCommandPtr
     case controllerGetSetRange:
         protoCmd->m_sOutput = scpiChangeRange(protoCmd->m_sInput);
         break;
-    case dspSetAmplitude:
+    case dspGetSetAmplitude:
         protoCmd->m_sOutput = scpiDspAmplitude(protoCmd->m_sInput);
+        break;
+    case dspGetSetFrequency:
+        protoCmd->m_sOutput = scpiDspFrequency(protoCmd->m_sInput);
         break;
     }
     if (protoCmd->m_bwithOutput)
@@ -104,6 +109,27 @@ QString GeneratorChannelInterface::scpiDspAmplitude(const QString &scpi)
         float amplitude;
         if(controller->getDspAmplitude(m_mName, amplitude) == ZeraMControllerIo::cmddone)
             return QString::number(amplitude);
+    }
+    return ZSCPI::scpiAnswer[ZSCPI::nak];
+}
+
+QString GeneratorChannelInterface::scpiDspFrequency(const QString &scpi)
+{
+    cSCPICommand cmd = scpi;
+    I2cCtrlGeneratorPtr controller = m_ctrlFactory->getGeneratorController(m_senseSettings);
+    if (cmd.isCommand(1)) {
+        bool ok;
+        float frequency = cmd.getParam(0).toFloat(&ok);
+        if (ok) {
+            if(controller->setDspFrequency(m_mName, frequency) == ZeraMControllerIo::cmddone)
+                return  ZSCPI::scpiAnswer[ZSCPI::ack];
+            return ZSCPI::scpiAnswer[ZSCPI::errexec];
+        }
+    }
+    else if(cmd.isQuery()) {
+        float frequency;
+        if(controller->getDspFrequency(m_mName, frequency) == ZeraMControllerIo::cmddone)
+            return QString::number(frequency);
     }
     return ZSCPI::scpiAnswer[ZSCPI::nak];
 }

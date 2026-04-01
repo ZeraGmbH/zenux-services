@@ -9,6 +9,9 @@ class test_i2c_dspgenerator : public QObject
 private slots:
     void getAmplitudeCmd();
     void setAmplitudeCmd();
+
+    void getFrequencyCmd();
+    void setFrequencyCmd();
 };
 
 #endif // TEST_I2C_DSPGENERATOR_H
