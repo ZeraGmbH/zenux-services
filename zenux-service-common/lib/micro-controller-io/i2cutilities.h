@@ -1,0 +1,12 @@
+#ifndef I2CUTILITIES_H
+#define I2CUTILITIES_H
+
+#include <QByteArray>
+
+class I2cUtilities
+{
+public:
+    static QByteArray convertFloat(float value);
+};
+
+#endif // I2CUTILITIES_H

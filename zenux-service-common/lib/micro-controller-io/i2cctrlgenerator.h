@@ -21,7 +21,6 @@ public:
 
     ZeraMControllerIo::atmelRM tunnelToDsp(const QString& channelMName, DspTunnelParamAndResponse &dspIo) override;
 
-    static QByteArray convertFloat(float value);
     static quint8 getBitmask(cSenseSettingsPtr senseSettings, const QStringList &channelMNames);
     static QStringList getChannelMNamesFromMask(cSenseSettingsPtr senseSettings, quint8 mask);
     static quint8 getControllerInternalChannelNo(cSenseSettingsPtr senseSettings, const QString &channelMName);

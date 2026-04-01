@@ -1,5 +1,5 @@
 #include "i2cctrlgenerator.h"
-#include <QDataStream>
+#include "i2cutilities.h"
 #include <QIODevice>
 
 I2cCtrlGenerator::I2cCtrlGenerator(cSenseSettingsPtr senseSettings, const QString &deviceNodeName, quint8 i2cAddress, quint8 debugLevel) :
@@ -69,7 +69,7 @@ ZeraMControllerIoTemplate::atmelRM I2cCtrlGenerator::sendSourceOn(const QStringL
 ZeraMControllerIoTemplate::atmelRM I2cCtrlGenerator::setRangeByAmplitude(const QString &channelMName, float amplitude)
 {
     quint8 controllerChannelNo = getControllerInternalChannelNo(m_senseSettings, channelMName);
-    QByteArray ba = convertFloat(amplitude);
+    QByteArray ba = I2cUtilities::convertFloat(amplitude);
     hw_cmd CMD(hwSendSetSourceRangeByLevel, controllerChannelNo, reinterpret_cast<quint8*>(ba.data()), ba.size());
     m_ctrlIo.writeCommand(&CMD);
     ZeraMControllerIo::atmelRM ret = m_ctrlIo.getLastErrorMask() == 0 ? ZeraMControllerIo::cmddone : ZeraMControllerIo::cmdexecfault;
@@ -105,16 +105,6 @@ ZeraMControllerIoTemplate::atmelRM I2cCtrlGenerator::tunnelToDsp(const QString &
                                         dspIo.m_dspDataResponse,
                                         reinterpret_cast<quint8*>(dspIo.m_dspCmdData.data()),
                                         dspIo.m_dspCmdData.size());
-}
-
-QByteArray I2cCtrlGenerator::convertFloat(float value)
-{
-    QByteArray memOut;
-    QDataStream stream(&memOut, QIODevice::Unbuffered | QIODevice::WriteOnly);
-    stream.setByteOrder(QDataStream::BigEndian);
-    stream.setFloatingPointPrecision(QDataStream::SinglePrecision);
-    stream<<value;
-    return memOut;
 }
 
 quint8 I2cCtrlGenerator::getBitmask(cSenseSettingsPtr senseSettings, const QStringList &channelMNames)
