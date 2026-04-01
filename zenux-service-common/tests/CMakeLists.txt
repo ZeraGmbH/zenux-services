@@ -38,6 +38,7 @@ SETUP_SERVICE_COMMON_TESTS(
     test_microcontroller_io_conversions
     test_generator_scpi
     test_generator_meas_range_notification
+    test_i2c_utilities
     )
 
 target_sources(test_hotpluggablecontrollercontainer
