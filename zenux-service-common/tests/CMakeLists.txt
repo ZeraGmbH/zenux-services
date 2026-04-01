@@ -39,6 +39,7 @@ SETUP_SERVICE_COMMON_TESTS(
     test_generator_scpi
     test_generator_meas_range_notification
     test_i2c_utilities
+    test_i2c_dspgenerator
     )
 
 target_sources(test_hotpluggablecontrollercontainer
