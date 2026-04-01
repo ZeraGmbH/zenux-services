@@ -14,27 +14,32 @@ GeneratorChannelInterface::GeneratorChannelInterface(std::shared_ptr<cSCPI> scpi
 }
 
 enum ScpiCommands {
-    sourceSetRangeByAmplitude,
-    sourceGetSetRange
+    controllerSetRangeByAmplitude,
+    controllerGetSetRange,
+    dspSetAmplitude,
 };
 
 void GeneratorChannelInterface::initSCPIConnection()
 {
     const QString scpiLead = QString("GENERATOR:%1").arg(m_mName);
     // Do we need range lists?
-    addDelegate(scpiLead, "AMPRANGE", SCPI::isCmdwP, m_scpiInterface, sourceSetRangeByAmplitude);
-    addDelegate(scpiLead, "RANGE", SCPI::isQuery | SCPI::isCmdwP, m_scpiInterface, sourceGetSetRange);
+    addDelegate(scpiLead, "AMPRANGE", SCPI::isCmdwP, m_scpiInterface, controllerSetRangeByAmplitude);
+    addDelegate(scpiLead, "RANGE", SCPI::isQuery | SCPI::isCmdwP, m_scpiInterface, controllerGetSetRange);
+    addDelegate(scpiLead, "DSAMPLITUDE", SCPI::isQuery | SCPI::isCmdwP, m_scpiInterface, dspSetAmplitude);
 }
 
 void GeneratorChannelInterface::executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd)
 {
     switch(cmdCode)
     {
-    case sourceSetRangeByAmplitude:
+    case controllerSetRangeByAmplitude:
         protoCmd->m_sOutput = scpiChangeRangeByAmplitude(protoCmd->m_sInput);
         break;
-    case sourceGetSetRange:
+    case controllerGetSetRange:
         protoCmd->m_sOutput = scpiChangeRange(protoCmd->m_sInput);
+        break;
+    case dspSetAmplitude:
+        protoCmd->m_sOutput = scpiDspAmplitude(protoCmd->m_sInput);
         break;
     }
     if (protoCmd->m_bwithOutput)
@@ -78,6 +83,27 @@ QString GeneratorChannelInterface::scpiChangeRange(const QString &scpi)
         quint8 range;
         if(controller->readRange(m_mName, range) == ZeraMControllerIo::cmddone)
             return QString::number(range);
+    }
+    return ZSCPI::scpiAnswer[ZSCPI::nak];
+}
+
+QString GeneratorChannelInterface::scpiDspAmplitude(const QString &scpi)
+{
+    cSCPICommand cmd = scpi;
+    I2cCtrlGeneratorPtr controller = m_ctrlFactory->getGeneratorController(m_senseSettings);
+    if (cmd.isCommand(1)) {
+        bool ok;
+        float amplitude = cmd.getParam(0).toFloat(&ok);
+        if (ok) {
+            if(controller->setDspAmplitude(m_mName, amplitude) == ZeraMControllerIo::cmddone)
+                return  ZSCPI::scpiAnswer[ZSCPI::ack];
+            return ZSCPI::scpiAnswer[ZSCPI::errexec];
+        }
+    }
+    else if(cmd.isQuery()) {
+        float amplitude;
+        if(controller->getDspAmplitude(m_mName, amplitude) == ZeraMControllerIo::cmddone)
+            return QString::number(amplitude);
     }
     return ZSCPI::scpiAnswer[ZSCPI::nak];
 }

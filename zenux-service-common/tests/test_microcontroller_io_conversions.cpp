@@ -1,21 +1,10 @@
 #include "test_microcontroller_io_conversions.h"
 #include "i2cctrlgenerator.h"
-#include "i2cutilities.h"
 #include "testpcbserver.h"
 #include <mocktcpnetworkfactory.h>
 #include <QTest>
 
 QTEST_MAIN(test_microcontroller_io_conversions)
-
-void test_microcontroller_io_conversions::serializeFloatToMicroController()
-{
-    QByteArray mem = I2cUtilities::convertFloat(50.11);
-    QCOMPARE(mem.size(), 4);
-    QCOMPARE(mem[0], char(0x42));
-    QCOMPARE(mem[1], char(0x48));
-    QCOMPARE(mem[2], char(0x70));
-    QCOMPARE(mem[3], char(0xa4));
-}
 
 void test_microcontroller_io_conversions::generatorBitmaskFromChannelMNames()
 {

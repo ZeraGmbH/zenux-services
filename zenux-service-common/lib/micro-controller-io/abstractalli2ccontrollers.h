@@ -121,11 +121,6 @@ public:
 typedef std::shared_ptr<AbstractI2cCtrlEMOB> I2cCtrlEMOBPtr;
 
 
-struct DspTunnelParamAndResponse {
-    QByteArray m_dspCmdData;
-    QByteArray m_dspDataResponse;
-};
-
 class AbstractI2cCtrlGenerator
 {
 public:
@@ -140,7 +135,10 @@ public:
     virtual ZeraMControllerIo::atmelRM readRange(const QString& channelMName, quint8& range) = 0;
     virtual ZeraMControllerIo::atmelRM setRange(const QString& channelMName, quint8 range) = 0;
 
-    virtual ZeraMControllerIo::atmelRM tunnelToDsp(const QString& channelMName, DspTunnelParamAndResponse &dspIo) = 0;
+    virtual ZeraMControllerIo::atmelRM setDspAmplitude(const QString& channelMName, float amplitude) = 0;
+    virtual ZeraMControllerIo::atmelRM getDspAmplitude(const QString& channelMName, float &amplitude) = 0;
+
+    virtual ZeraMControllerIo::atmelRM tunnelToDsp(const QString& channelMName, const QByteArray &cmd, QByteArray &response) = 0;
 };
 typedef std::shared_ptr<AbstractI2cCtrlGenerator> I2cCtrlGeneratorPtr;
 

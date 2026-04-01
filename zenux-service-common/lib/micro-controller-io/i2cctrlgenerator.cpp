@@ -1,4 +1,5 @@
 #include "i2cctrlgenerator.h"
+#include "i2cdspgenerator.h"
 #include "i2cutilities.h"
 #include <QIODevice>
 
@@ -97,14 +98,31 @@ ZeraMControllerIoTemplate::atmelRM I2cCtrlGenerator::readRange(const QString &ch
     return ret;
 }
 
-ZeraMControllerIoTemplate::atmelRM I2cCtrlGenerator::tunnelToDsp(const QString &channelMName, DspTunnelParamAndResponse &dspIo)
+ZeraMControllerIoTemplate::atmelRM I2cCtrlGenerator::getDspAmplitude(const QString &channelMName, float &amplitude)
+{
+    QByteArray binCmd = I2cDspGenerator::getCmdGetAmplitude();
+    QByteArray binAmplitude;
+    ZeraMControllerIo::atmelRM ret = tunnelToDsp(channelMName, binCmd, binAmplitude);
+    if(ret == ZeraMControllerIo::cmddone)
+        amplitude = I2cUtilities::unconvertFloat(binAmplitude);
+    return ret;
+}
+
+ZeraMControllerIoTemplate::atmelRM I2cCtrlGenerator::setDspAmplitude(const QString &channelMName, float amplitude)
+{
+    QByteArray binCmd = I2cDspGenerator::getCmdSetAmplitude(amplitude);
+    QByteArray dummy;
+    return tunnelToDsp(channelMName, binCmd, dummy);
+}
+
+ZeraMControllerIoTemplate::atmelRM I2cCtrlGenerator::tunnelToDsp(const QString& channelMName, const QByteArray &cmd, QByteArray &response)
 {
     quint8 controllerChannelNo = getControllerInternalChannelNo(m_senseSettings, channelMName);
     return m_ctrlIo.readVariableLenData(hwSendDspTunnel,
                                         controllerChannelNo,
-                                        dspIo.m_dspDataResponse,
-                                        reinterpret_cast<quint8*>(dspIo.m_dspCmdData.data()),
-                                        dspIo.m_dspCmdData.size());
+                                        response,
+                                        reinterpret_cast<const quint8*>(cmd.data()),
+                                        cmd.size());
 }
 
 quint8 I2cCtrlGenerator::getBitmask(cSenseSettingsPtr senseSettings, const QStringList &channelMNames)

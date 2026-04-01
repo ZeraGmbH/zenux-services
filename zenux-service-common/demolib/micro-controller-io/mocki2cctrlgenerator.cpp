@@ -1,11 +1,10 @@
 #include "mocki2cctrlgenerator.h"
 
-MockI2cCtrlGenerator::MockI2cCtrlGenerator(QStringList &channelMNamesModeOn,
-                                           QStringList &channelMNamesOn,
-                                           ControllerPersitentData::RangeMap &generatorRangeMap) :
-    m_channelMNamesModeOn(channelMNamesModeOn),
-    m_channelMNamesOn(channelMNamesOn),
-    m_generatorRangeMap(generatorRangeMap)
+MockI2cCtrlGenerator::MockI2cCtrlGenerator(ControllerPersitentData::TPersitentControllerData &persistentData) :
+    m_channelMNamesModeOn(persistentData.m_generatorMNamesModeOn),
+    m_channelMNamesOn(persistentData.m_generatorMNamesOn),
+    m_generatorRangeMap(persistentData.m_generatorRangeMap),
+    m_dspAmplitudeMap(persistentData.m_generatorDspAmplitudeMap)
 {
 }
 
@@ -52,9 +51,22 @@ ZeraMControllerIoTemplate::atmelRM MockI2cCtrlGenerator::readRange(const QString
     return ZeraMControllerIo::cmddone;
 }
 
-ZeraMControllerIoTemplate::atmelRM MockI2cCtrlGenerator::tunnelToDsp(const QString &channelMName, DspTunnelParamAndResponse &dspIo)
+ZeraMControllerIoTemplate::atmelRM MockI2cCtrlGenerator::getDspAmplitude(const QString &channelMName, float &amplitude)
+{
+    amplitude = m_dspAmplitudeMap[channelMName];
+    return ZeraMControllerIo::cmddone;
+}
+
+ZeraMControllerIoTemplate::atmelRM MockI2cCtrlGenerator::setDspAmplitude(const QString &channelMName, float amplitude)
+{
+    m_dspAmplitudeMap[channelMName] = amplitude;
+    return ZeraMControllerIo::cmddone;
+}
+
+ZeraMControllerIoTemplate::atmelRM MockI2cCtrlGenerator::tunnelToDsp(const QString& channelMName, const QByteArray &cmd, QByteArray &response)
 {
     Q_UNUSED(channelMName)
-    Q_UNUSED(dspIo)
+    Q_UNUSED(cmd)
+    Q_UNUSED(response)
     return ZeraMControllerIo::cmddone;
 }

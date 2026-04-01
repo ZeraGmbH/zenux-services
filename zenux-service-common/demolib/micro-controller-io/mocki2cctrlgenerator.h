@@ -7,9 +7,7 @@
 class MockI2cCtrlGenerator : public AbstractI2cCtrlGenerator
 {
 public:
-    MockI2cCtrlGenerator(QStringList &channelMNamesModeOn,
-                         QStringList &channelMNamesOn,
-                         ControllerPersitentData::RangeMap &generatorRangeMap);
+    MockI2cCtrlGenerator(ControllerPersitentData::TPersitentControllerData &persistentData);
 
     ZeraMControllerIo::atmelRM readSourceModeOn(QStringList &channelMNamesModeOnRead) override;
     ZeraMControllerIo::atmelRM sendSourceModeOn(const QStringList &channelMNamesModeOn) override;
@@ -21,12 +19,16 @@ public:
     ZeraMControllerIo::atmelRM readRange(const QString& channelMName, quint8& range) override;
     ZeraMControllerIo::atmelRM setRange(const QString& channelMName, quint8 range) override;
 
-    ZeraMControllerIo::atmelRM tunnelToDsp(const QString& channelMName, DspTunnelParamAndResponse &dspIo) override;
+    ZeraMControllerIo::atmelRM setDspAmplitude(const QString& channelMName, float amplitude) override;
+    ZeraMControllerIo::atmelRM getDspAmplitude(const QString& channelMName, float &amplitude) override;
+
+    ZeraMControllerIo::atmelRM tunnelToDsp(const QString& channelMName, const QByteArray &cmd, QByteArray &response) override;
 
 private:
     QStringList &m_channelMNamesModeOn;
     QStringList &m_channelMNamesOn;
     ControllerPersitentData::RangeMap &m_generatorRangeMap;
+    ControllerPersitentData::DspAmplitudeMap &m_dspAmplitudeMap;
 };
 
 #endif // MOCKI2CCTRLGENERATOR_H

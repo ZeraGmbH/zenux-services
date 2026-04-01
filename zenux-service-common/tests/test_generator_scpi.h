@@ -28,6 +28,9 @@ private slots:
     void setRangeInvalidChannel();
 
     void notifySourceModeOnChange();
+
+    void getSetDspAmplitude();
+
 private:
     void setupServers();
 

@@ -19,7 +19,10 @@ public:
     ZeraMControllerIo::atmelRM readRange(const QString& channelMName, quint8& range) override;
     ZeraMControllerIo::atmelRM setRange(const QString& channelMName, quint8 range) override;
 
-    ZeraMControllerIo::atmelRM tunnelToDsp(const QString& channelMName, DspTunnelParamAndResponse &dspIo) override;
+    ZeraMControllerIo::atmelRM getDspAmplitude(const QString& channelMName, float &amplitude) override;
+    ZeraMControllerIo::atmelRM setDspAmplitude(const QString& channelMName, float amplitude) override;
+
+    ZeraMControllerIo::atmelRM tunnelToDsp(const QString& channelMName, const QByteArray &cmd, QByteArray &response) override;
 
     static quint8 getBitmask(cSenseSettingsPtr senseSettings, const QStringList &channelMNames);
     static QStringList getChannelMNamesFromMask(cSenseSettingsPtr senseSettings, quint8 mask);

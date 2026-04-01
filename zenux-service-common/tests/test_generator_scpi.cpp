@@ -272,6 +272,42 @@ void test_generator_scpi::notifySourceModeOnChange()
     QCOMPARE(notificationStr, "Notify:42:");
 }
 
+void test_generator_scpi::getSetDspAmplitude()
+{
+    QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
+    QSignalSpy channelChangeProbablySpy(m_mt310s2d->getGeneratorInterface(), &GeneratorInterface::sigMeasRangeProbablyChanged);
+
+    responseSpy.clear();
+    channelChangeProbablySpy.clear();
+    m_pcbIFace->scpiCommand("GENERATOR:m0:DSAMPLITUDE?");
+    TimeMachineObject::feedEventLoop();
+
+    QCOMPARE(responseSpy.count(), 1);
+    QCOMPARE(responseSpy[0][1], QVariant(ack));
+    QCOMPARE(responseSpy[0][2], QVariant("0"));
+    QCOMPARE(channelChangeProbablySpy.count(), 0);
+
+    responseSpy.clear();
+    channelChangeProbablySpy.clear();
+    m_pcbIFace->scpiCommand("GENERATOR:m0:DSAMPLITUDE 1.5;");
+    TimeMachineObject::feedEventLoop();
+
+    QCOMPARE(responseSpy.count(), 1);
+    QCOMPARE(responseSpy[0][1], QVariant(ack));
+    QCOMPARE(responseSpy[0][2], QVariant("ack"));
+    QCOMPARE(channelChangeProbablySpy.count(), 0);
+
+    responseSpy.clear();
+    channelChangeProbablySpy.clear();
+    m_pcbIFace->scpiCommand("GENERATOR:m0:DSAMPLITUDE?");
+    TimeMachineObject::feedEventLoop();
+
+    QCOMPARE(responseSpy.count(), 1);
+    QCOMPARE(responseSpy[0][1], QVariant(ack));
+    QCOMPARE(responseSpy[0][2], QVariant("1.5"));
+    QCOMPARE(channelChangeProbablySpy.count(), 0);
+}
+
 void test_generator_scpi::setupServers()
 {
     VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory = VeinTcp::MockTcpNetworkFactory::create();
