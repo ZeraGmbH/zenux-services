@@ -2,14 +2,18 @@
 
 ZDspClientContainer::ZDspClientContainer(AbstractFactoryZdspSupportPtr zdspSupportFactory) :
     m_zdspSupportFactory(zdspSupportFactory),
-    m_dspInterruptStatisticGenerator(10000)
+    m_dspDspInterruptStatisticsGenerator(10000)
 {
-    QObject::connect(&m_dspInterruptStatisticGenerator, &LogStatisticsAsyncInt::sigNewStatistics, [&](int min, int max, float avg,
+    QObject::connect(&m_dspDspInterruptStatisticsGenerator, &LogStatisticsAsyncInt::sigNewStatistics, [&](int min, int max, float avg,
                                                                                                       int linuxInterruptCount) {
-        m_interruptStatisticLastPeriod.minDspInterruptsPerLinuxInterrupt = min;
-        m_interruptStatisticLastPeriod.maxDspInterruptsPerLinuxInterrupt = max;
-        m_interruptStatisticLastPeriod.avgDspInterruptsPerLinuxInterrupt = avg;
-        m_interruptStatisticLastPeriod.linuxInterruptCount = linuxInterruptCount;
+        m_dspIoStatisticsLastPeriod.minDspInterruptsPerLinuxInterrupt = min;
+        m_dspIoStatisticsLastPeriod.maxDspInterruptsPerLinuxInterrupt = max;
+        m_dspIoStatisticsLastPeriod.avgDspInterruptsPerLinuxInterrupt = avg;
+        m_dspIoStatisticsLastPeriod.linuxInterruptCount = linuxInterruptCount;
+
+        m_dspIoStatisticsLastPeriod.dspReadTransactions = AbstractDspDeviceNode::getReadTransactions();
+        m_dspIoStatisticsLastPeriod.dspWriteTransactions = AbstractDspDeviceNode::getWriteTransactions();
+        AbstractDspDeviceNode::resetAllTransactions();
     });
 }
 
@@ -119,7 +123,7 @@ void ZDspClientContainer::handleDspInterrupt(DspVarDeviceNodeInOut &dspInOut)
                                      &ba, &client->m_dspVarResolver)) {
             const ulong* pardsp = reinterpret_cast<ulong*>(ba.data());
             int interruptCount = pardsp[0];
-            m_dspInterruptStatisticGenerator.addValue(interruptCount);
+            m_dspDspInterruptStatisticsGenerator.addValue(interruptCount);
             if (interruptCount > DSP_MAX_PENDING_INTERRUPT_COUNT)
                 qWarning("Number of interrupts in a package: %i exceeds upper limit!", interruptCount);
             else {

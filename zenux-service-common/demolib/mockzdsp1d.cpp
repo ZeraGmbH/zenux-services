@@ -10,8 +10,7 @@ MockZdsp1d::MockZdsp1d(AbstractFactoryZdspSupportPtr zdspSupportFactory,
     m_server = std::make_unique<ZDspServer>(
         std::move(settings),
         zdspSupportFactory,
-        tcpNetworkFactory,
-        false);
+        tcpNetworkFactory);
 }
 
 ZDspServer *MockZdsp1d::getServer()

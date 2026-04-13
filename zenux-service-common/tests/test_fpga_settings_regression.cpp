@@ -81,8 +81,7 @@ void test_fpga_settings_regression::zdsp1d()
     ZDspServer server(
         std::make_unique<SettingsContainer>(params),
         std::make_shared<TestFactoryZdspSupport>(),
-        VeinTcp::MockTcpNetworkFactory::create(),
-        false);
+        VeinTcp::MockTcpNetworkFactory::create());
     TimeMachineObject::feedEventLoop();
 
     QCOMPARE(server.getDspDeviceNode(), "/dev/zFPGA1dsp1");

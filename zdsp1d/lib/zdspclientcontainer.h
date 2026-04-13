@@ -38,16 +38,19 @@ private:
     quint16 m_currentDspInterruptId = 0;
 
     // We logged interrupt statistics and did interesting analysis long ago
-    // Currently logged data is not analysed anmore. To enable future analysis
+    // Currently logged data is not analysed anymore. To enable future analysis
     // we just keep data and don't use it.
-    LogStatisticsAsyncInt m_dspInterruptStatisticGenerator;
-    struct InterruptStatistic {
+    LogStatisticsAsyncInt m_dspDspInterruptStatisticsGenerator;
+    struct DspIoStatistics {
         int minDspInterruptsPerLinuxInterrupt = 0;
         int maxDspInterruptsPerLinuxInterrupt = 0;
         float avgDspInterruptsPerLinuxInterrupt = 0.0;
         int linuxInterruptCount = 0;
+
+        int dspReadTransactions = 0;
+        int dspWriteTransactions = 0;
     };
-    InterruptStatistic m_interruptStatisticLastPeriod;
+    DspIoStatistics m_dspIoStatisticsLastPeriod;
 };
 
 #endif // ZDSPCLIENTCONTAINER_H

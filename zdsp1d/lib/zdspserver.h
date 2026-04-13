@@ -22,8 +22,7 @@ class ZDspServer: public ScpiConnection
 public:
     ZDspServer(SettingsContainerPtr settings,
                AbstractFactoryZdspSupportPtr zdspSupportFactory,
-               VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory,
-               bool outputHealthLogs);
+               VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory);
     virtual ~ZDspServer();
     QString getServerVersion();
     QString getDspDeviceNode();
@@ -63,7 +62,7 @@ private slots:
     void doSetupServer();
     void doCloseServer();
 
-    void outputLogs();
+    void warnOnDspNotRunning();
 private:
     void init();
     void initSCPIConnection();
@@ -74,8 +73,6 @@ private:
 
     QString handleScpiInterfaceRead(const QString &scpiInput);
     QString handleSetDspSuperClient(const ZdspClient* client);
-    void outputDspRunState();
-    void outputAndResetTransactionsLogs();
     void openTelnetScpi();
 
     bool resetDsp();
@@ -123,7 +120,6 @@ private:
     ZDspClientContainer m_zdspClientContainer;
 
     ulong m_userWorkSpaceAlignedSegmentStartAdr;
-    bool m_outputHealthLogs;
 
     QStateMachine* m_pInitializationMachine;
     ConsoleServer m_telnetServer;

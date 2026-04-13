@@ -57,8 +57,7 @@ const ServerParams ZDspServer::defaultParams(0,
 
 ZDspServer::ZDspServer(SettingsContainerPtr settings,
                        AbstractFactoryZdspSupportPtr zdspSupportFactory,
-                       VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory,
-                       bool outputHealthLogs) :
+                       VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory) :
     ScpiConnection(std::make_shared<cSCPI>()),
     m_dspSettings(&m_xmlConfigReader),
     m_settings(std::move(settings)),
@@ -66,8 +65,7 @@ ZDspServer::ZDspServer(SettingsContainerPtr settings,
     m_dspInOut(zdspSupportFactory),
     m_tcpNetworkFactory(tcpNetworkFactory),
     m_protoBufServer(tcpNetworkFactory),
-    m_zdspClientContainer(zdspSupportFactory),
-    m_outputHealthLogs(outputHealthLogs)
+    m_zdspClientContainer(zdspSupportFactory)
 {
     doConfiguration();
     init();
@@ -178,21 +176,12 @@ void ZDspServer::doCloseServer()
     QCoreApplication::instance()->exit(-1);
 }
 
-void ZDspServer::outputDspRunState()
+void ZDspServer::warnOnDspNotRunning()
 {
     QString dspStatus = getDspStatus();
     QString message = QString("DSP is %1").arg(dspStatus);
     if(dspStatus != dsprunning)
         qWarning("%s", qPrintable(message));
-}
-
-void ZDspServer::outputAndResetTransactionsLogs()
-{
-    int readTransactions = AbstractDspDeviceNode::getReadTransactions();
-    int writeTransactions = AbstractDspDeviceNode::getWriteTransactions();
-    AbstractDspDeviceNode::resetAllTransactions();
-    QString message = QString("DSP transactions: Read: %1 / Write %2").arg(readTransactions).arg(writeTransactions);
-    qInfo("%s", qPrintable(message));
 }
 
 void ZDspServer::openTelnetScpi()
@@ -203,12 +192,6 @@ void ZDspServer::openTelnetScpi()
                 this, &ZDspServer::onTelnetReceived);
         m_telnetServer.open(ethSettings->getPort(EthSettings::scpiserver));
     }
-}
-
-void ZDspServer::outputLogs()
-{
-    outputDspRunState();
-    outputAndResetTransactionsLogs();
 }
 
 enum SCPICmdType  {
@@ -386,12 +369,11 @@ void ZDspServer::doFinalSetupSteps()
     EthSettingsPtr ethSettings = m_settings->getEthSettings();
     m_protoBufServer.startServer(ethSettings->getPort(EthSettings::protobufserver));
     openTelnetScpi();
-    if (m_outputHealthLogs) {
-        m_periodicLogTimer = TimerFactoryQt::createPeriodic(loggingIntervalMs);
-        connect(m_periodicLogTimer.get(), &TimerTemplateQt::sigExpired,
-                this, &ZDspServer::outputLogs);
-        m_periodicLogTimer->start();
-    }
+
+    m_periodicLogTimer = TimerFactoryQt::createPeriodic(loggingIntervalMs);
+    connect(m_periodicLogTimer.get(), &TimerTemplateQt::sigExpired,
+            this, &ZDspServer::warnOnDspNotRunning);
+    m_periodicLogTimer->start();
 }
 
 QString ZDspServer::handleScpiInterfaceRead(const QString &scpiInput)
