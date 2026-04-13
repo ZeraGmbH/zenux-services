@@ -369,7 +369,11 @@ void ZDspServer::doFinalSetupSteps()
     EthSettingsPtr ethSettings = m_settings->getEthSettings();
     m_protoBufServer.startServer(ethSettings->getPort(EthSettings::protobufserver));
     openTelnetScpi();
+    startDspRunWatchdog();
+}
 
+void ZDspServer::startDspRunWatchdog()
+{
     m_periodicLogTimer = TimerFactoryQt::createPeriodic(loggingIntervalMs);
     connect(m_periodicLogTimer.get(), &TimerTemplateQt::sigExpired,
             this, &ZDspServer::warnOnDspNotRunning);

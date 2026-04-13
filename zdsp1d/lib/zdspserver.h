@@ -68,6 +68,7 @@ private:
     void initSCPIConnection();
     void executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd) override;
     void doFinalSetupSteps();
+    void startDspRunWatchdog();
 
     friend class TestZdsp1dForVarAccess;
 
