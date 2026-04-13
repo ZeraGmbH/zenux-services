@@ -2,11 +2,14 @@
 
 ZDspClientContainer::ZDspClientContainer(AbstractFactoryZdspSupportPtr zdspSupportFactory) :
     m_zdspSupportFactory(zdspSupportFactory),
-    m_dspInterruptLogStatistics(10000)
+    m_dspInterruptStatisticGenerator(10000)
 {
-    QObject::connect(&m_dspInterruptLogStatistics, &LogStatisticsAsyncInt::sigNewStatistics, [](int min, int max, float avg, int interruptCnt) {
-        qInfo("DSP Interrupts per Linux interrupt min: %i, max: %i, mean: %.1f; Total Linux Interrupts: %i",
-              min, max, avg, interruptCnt);
+    QObject::connect(&m_dspInterruptStatisticGenerator, &LogStatisticsAsyncInt::sigNewStatistics, [&](int min, int max, float avg,
+                                                                                                      int linuxInterruptCount) {
+        m_interruptStatisticLastPeriod.minDspInterruptsPerLinuxInterrupt = min;
+        m_interruptStatisticLastPeriod.maxDspInterruptsPerLinuxInterrupt = max;
+        m_interruptStatisticLastPeriod.avgDspInterruptsPerLinuxInterrupt = avg;
+        m_interruptStatisticLastPeriod.linuxInterruptCount = linuxInterruptCount;
     });
 }
 
@@ -116,7 +119,7 @@ void ZDspClientContainer::handleDspInterrupt(DspVarDeviceNodeInOut &dspInOut)
                                      &ba, &client->m_dspVarResolver)) {
             const ulong* pardsp = reinterpret_cast<ulong*>(ba.data());
             int interruptCount = pardsp[0];
-            m_dspInterruptLogStatistics.addValue(interruptCount);
+            m_dspInterruptStatisticGenerator.addValue(interruptCount);
             if (interruptCount > DSP_MAX_PENDING_INTERRUPT_COUNT)
                 qWarning("Number of interrupts in a package: %i exceeds upper limit!", interruptCount);
             else {

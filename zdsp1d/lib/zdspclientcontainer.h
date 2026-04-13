@@ -36,7 +36,18 @@ private:
     QHash<quint16, ZdspClient*> m_clientsByDspInterruptId;
     const ZdspClient *m_dspSuperClient = nullptr;
     quint16 m_currentDspInterruptId = 0;
-    LogStatisticsAsyncInt m_dspInterruptLogStatistics;
+
+    // We logged interrupt statistics and did interesting analysis long ago
+    // Currently logged data is not analysed anmore. To enable future analysis
+    // we just keep data and don't use it.
+    LogStatisticsAsyncInt m_dspInterruptStatisticGenerator;
+    struct InterruptStatistic {
+        int minDspInterruptsPerLinuxInterrupt = 0;
+        int maxDspInterruptsPerLinuxInterrupt = 0;
+        float avgDspInterruptsPerLinuxInterrupt = 0.0;
+        int linuxInterruptCount = 0;
+    };
+    InterruptStatistic m_interruptStatisticLastPeriod;
 };
 
 #endif // ZDSPCLIENTCONTAINER_H
