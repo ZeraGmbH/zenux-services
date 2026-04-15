@@ -6,16 +6,23 @@ enum hw_cmdcode
     hwSendSetAmplitude = 0xA006,
     hwSendGetFrequency = 0xA00B,
     hwSendSetFrequency = 0xA00C,
+    hwSendGetAngle     = 0xA017,
+    hwSendSetAngle     = 0xA018,
 };
+
+QByteArray I2cDspGenerator::getCmdSetAmplitude(float amplitude)
+{
+    return createSetterFloat(hwSendSetAmplitude, amplitude);
+}
 
 QByteArray I2cDspGenerator::getCmdGetAmplitude()
 {
     return createGetterFloat(hwSendGetAmplitude);
 }
 
-QByteArray I2cDspGenerator::getCmdSetAmplitude(float amplitude)
+QByteArray I2cDspGenerator::getCmdSetFrequency(float frequency)
 {
-    return createSetterFloat(hwSendSetAmplitude, amplitude);
+    return createSetterFloat(hwSendSetFrequency, frequency);
 }
 
 QByteArray I2cDspGenerator::getCmdGetFrequency()
@@ -23,10 +30,16 @@ QByteArray I2cDspGenerator::getCmdGetFrequency()
     return createGetterFloat(hwSendGetFrequency);
 }
 
-QByteArray I2cDspGenerator::getCmdSetFrequency(float frequency)
+QByteArray I2cDspGenerator::getCmdSetAngle(float angleDeg)
 {
-    return createSetterFloat(hwSendSetFrequency, frequency);
+    return createSetterFloat(hwSendSetAngle, angleDeg);
 }
+
+QByteArray I2cDspGenerator::getCmdGetAngle()
+{
+    return createGetterFloat(hwSendGetAngle);
+}
+
 
 QByteArray I2cDspGenerator::createSetterFloat(quint16 cmdId, float value)
 {

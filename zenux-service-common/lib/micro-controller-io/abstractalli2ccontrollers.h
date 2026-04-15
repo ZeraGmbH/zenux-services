@@ -139,6 +139,8 @@ public:
     virtual ZeraMControllerIo::atmelRM getDspAmplitude(const QString& channelMName, float &amplitude) = 0;
     virtual ZeraMControllerIo::atmelRM setDspFrequency(const QString& channelMName, float amplitude) = 0;
     virtual ZeraMControllerIo::atmelRM getDspFrequency(const QString& channelMName, float &amplitude) = 0;
+    virtual ZeraMControllerIo::atmelRM setDspAngle(const QString& channelMName, float angleDeg) = 0;
+    virtual ZeraMControllerIo::atmelRM getDspAngle(const QString& channelMName, float &angleDeg) = 0;
 
     virtual ZeraMControllerIo::atmelRM tunnelToDsp(const QString& channelMName, const QByteArray &cmd, QByteArray &response) = 0;
 };

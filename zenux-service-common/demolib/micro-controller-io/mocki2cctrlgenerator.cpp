@@ -5,7 +5,8 @@ MockI2cCtrlGenerator::MockI2cCtrlGenerator(ControllerPersitentData::TPersitentCo
     m_channelMNamesOn(persistentData.m_generatorMNamesOn),
     m_generatorRangeMap(persistentData.m_generatorRangeMap),
     m_dspAmplitudeMap(persistentData.m_generatorDspAmplitudeMap),
-    m_dspFrequencyMap(persistentData.m_generatorDspFrequencyMap)
+    m_dspFrequencyMap(persistentData.m_generatorDspFrequencyMap),
+    m_dspAngleMap(persistentData.m_generatorDspAngleMap)
 {
 }
 
@@ -52,15 +53,21 @@ ZeraMControllerIoTemplate::atmelRM MockI2cCtrlGenerator::readRange(const QString
     return ZeraMControllerIo::cmddone;
 }
 
+ZeraMControllerIoTemplate::atmelRM MockI2cCtrlGenerator::setDspAmplitude(const QString &channelMName, float amplitude)
+{
+    m_dspAmplitudeMap[channelMName] = amplitude;
+    return ZeraMControllerIo::cmddone;
+}
+
 ZeraMControllerIoTemplate::atmelRM MockI2cCtrlGenerator::getDspAmplitude(const QString &channelMName, float &amplitude)
 {
     amplitude = m_dspAmplitudeMap[channelMName];
     return ZeraMControllerIo::cmddone;
 }
 
-ZeraMControllerIoTemplate::atmelRM MockI2cCtrlGenerator::setDspAmplitude(const QString &channelMName, float amplitude)
+ZeraMControllerIoTemplate::atmelRM MockI2cCtrlGenerator::setDspFrequency(const QString &channelMName, float frequency)
 {
-    m_dspAmplitudeMap[channelMName] = amplitude;
+    m_dspFrequencyMap[channelMName] = frequency;
     return ZeraMControllerIo::cmddone;
 }
 
@@ -70,9 +77,15 @@ ZeraMControllerIoTemplate::atmelRM MockI2cCtrlGenerator::getDspFrequency(const Q
     return ZeraMControllerIo::cmddone;
 }
 
-ZeraMControllerIoTemplate::atmelRM MockI2cCtrlGenerator::setDspFrequency(const QString &channelMName, float frequency)
+ZeraMControllerIoTemplate::atmelRM MockI2cCtrlGenerator::setDspAngle(const QString &channelMName, float angleDeg)
 {
-    m_dspFrequencyMap[channelMName] = frequency;
+    m_dspAngleMap[channelMName] = angleDeg;
+    return ZeraMControllerIo::cmddone;
+}
+
+ZeraMControllerIoTemplate::atmelRM MockI2cCtrlGenerator::getDspAngle(const QString &channelMName, float &angleDeg)
+{
+    angleDeg = m_dspAngleMap[channelMName];
     return ZeraMControllerIo::cmddone;
 }
 

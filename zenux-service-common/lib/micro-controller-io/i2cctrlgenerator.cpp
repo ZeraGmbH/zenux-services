@@ -111,8 +111,8 @@ ZeraMControllerIoTemplate::atmelRM I2cCtrlGenerator::getDspAmplitude(const QStri
 ZeraMControllerIoTemplate::atmelRM I2cCtrlGenerator::setDspAmplitude(const QString &channelMName, float amplitude)
 {
     QByteArray binCmd = I2cDspGenerator::getCmdSetAmplitude(amplitude);
-    QByteArray dummy;
-    return tunnelToDsp(channelMName, binCmd, dummy);
+    QByteArray noDataReturned;
+    return tunnelToDsp(channelMName, binCmd, noDataReturned);
 }
 
 ZeraMControllerIoTemplate::atmelRM I2cCtrlGenerator::getDspFrequency(const QString &channelMName, float &frequency)
@@ -128,16 +128,34 @@ ZeraMControllerIoTemplate::atmelRM I2cCtrlGenerator::getDspFrequency(const QStri
 ZeraMControllerIoTemplate::atmelRM I2cCtrlGenerator::setDspFrequency(const QString &channelMName, float frequency)
 {
     QByteArray binCmd = I2cDspGenerator::getCmdSetFrequency(frequency);
-    QByteArray dummy;
-    return tunnelToDsp(channelMName, binCmd, dummy);
+    QByteArray noDataReturned;
+    return tunnelToDsp(channelMName, binCmd, noDataReturned);
 }
 
-ZeraMControllerIoTemplate::atmelRM I2cCtrlGenerator::tunnelToDsp(const QString& channelMName, const QByteArray &cmd, QByteArray &response)
+ZeraMControllerIoTemplate::atmelRM I2cCtrlGenerator::getDspAngle(const QString &channelMName, float &angleDeg)
+{
+    QByteArray binCmd = I2cDspGenerator::getCmdGetAngle();
+    QByteArray binAngle;
+    ZeraMControllerIo::atmelRM ret = tunnelToDsp(channelMName, binCmd, binAngle);
+    if(ret == ZeraMControllerIo::cmddone)
+        angleDeg = I2cUtilities::unconvertFloat(binAngle);
+    return ret;
+}
+
+ZeraMControllerIoTemplate::atmelRM I2cCtrlGenerator::setDspAngle(const QString &channelMName, float angleDeg)
+{
+    QByteArray binCmd = I2cDspGenerator::getCmdSetAngle(angleDeg);
+    QByteArray noDataReturned;
+    return tunnelToDsp(channelMName, binCmd, noDataReturned);
+}
+
+
+ZeraMControllerIoTemplate::atmelRM I2cCtrlGenerator::tunnelToDsp(const QString& channelMName, const QByteArray &cmd, QByteArray &dataReturned)
 {
     quint8 controllerChannelNo = getControllerInternalChannelNo(m_senseSettings, channelMName);
     return m_ctrlIo.readVariableLenData(hwSendDspTunnel,
                                         controllerChannelNo,
-                                        response,
+                                        dataReturned,
                                         reinterpret_cast<const quint8*>(cmd.data()),
                                         cmd.size());
 }

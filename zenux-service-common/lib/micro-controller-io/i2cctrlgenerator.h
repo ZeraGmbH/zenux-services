@@ -23,8 +23,10 @@ public:
     ZeraMControllerIo::atmelRM setDspAmplitude(const QString& channelMName, float amplitude) override;
     ZeraMControllerIo::atmelRM setDspFrequency(const QString& channelMName, float frequency) override;
     ZeraMControllerIo::atmelRM getDspFrequency(const QString& channelMName, float &frequency) override;
+    ZeraMControllerIo::atmelRM setDspAngle(const QString& channelMName, float angleDeg) override;
+    ZeraMControllerIo::atmelRM getDspAngle(const QString& channelMName, float &angleDeg) override;
 
-    ZeraMControllerIo::atmelRM tunnelToDsp(const QString& channelMName, const QByteArray &cmd, QByteArray &response) override;
+    ZeraMControllerIo::atmelRM tunnelToDsp(const QString& channelMName, const QByteArray &cmd, QByteArray &dataReturned) override;
 
     static quint8 getBitmask(cSenseSettingsPtr senseSettings, const QStringList &channelMNames);
     static QStringList getChannelMNamesFromMask(cSenseSettingsPtr senseSettings, quint8 mask);

@@ -23,6 +23,8 @@ public:
     ZeraMControllerIo::atmelRM getDspAmplitude(const QString& channelMName, float &amplitude) override;
     ZeraMControllerIo::atmelRM setDspFrequency(const QString& channelMName, float frequency) override;
     ZeraMControllerIo::atmelRM getDspFrequency(const QString& channelMName, float &frequency) override;
+    ZeraMControllerIo::atmelRM setDspAngle(const QString& channelMName, float angleDeg) override;
+    ZeraMControllerIo::atmelRM getDspAngle(const QString& channelMName, float &angleDeg) override;
 
     ZeraMControllerIo::atmelRM tunnelToDsp(const QString& channelMName, const QByteArray &cmd, QByteArray &response) override;
 
@@ -32,6 +34,7 @@ private:
     ControllerPersitentData::ChannelRangeMap &m_generatorRangeMap;
     ControllerPersitentData::ChannelFloatMap &m_dspAmplitudeMap;
     ControllerPersitentData::ChannelFloatMap &m_dspFrequencyMap;
+    ControllerPersitentData::ChannelFloatMap &m_dspAngleMap;
 };
 
 #endif // MOCKI2CCTRLGENERATOR_H

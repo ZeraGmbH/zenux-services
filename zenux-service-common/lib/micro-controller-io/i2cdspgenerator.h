@@ -11,6 +11,8 @@ public:
     static QByteArray getCmdGetAmplitude();
     static QByteArray getCmdSetFrequency(float frequency);
     static QByteArray getCmdGetFrequency();
+    static QByteArray getCmdSetAngle(float angleDeg);
+    static QByteArray getCmdGetAngle();
 
 private:
     static QByteArray createSetterFloat(quint16 cmdId, float value);

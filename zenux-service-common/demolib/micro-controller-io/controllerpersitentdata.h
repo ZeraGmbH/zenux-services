@@ -34,6 +34,7 @@ public:
         ChannelRangeMap m_generatorRangeMap;
         ChannelFloatMap m_generatorDspAmplitudeMap;
         ChannelFloatMap m_generatorDspFrequencyMap;
+        ChannelFloatMap m_generatorDspAngleMap;
     };
     static TPersitentControllerData &getData();
     static void injectInterruptFlags(quint16 clampConnectMask);
