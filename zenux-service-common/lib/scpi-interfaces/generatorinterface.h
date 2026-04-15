@@ -6,6 +6,7 @@
 #include "sensesettings.h"
 #include "sourcecontrolsettings.h"
 #include <scpiserverconnection.h>
+#include <QJsonObject>
 
 class GeneratorInterface : public ScpiServerConnection
 {
@@ -17,7 +18,6 @@ public:
                        const QList<GeneratorChannelInterface *> &channels,
                        AbstractFactoryI2cCtrlPtr ctrlFactory);
     void initSCPIConnection() override;
-
 signals:
     void sigMeasRangeProbablyChanged(const QString &channelMName);
 
@@ -27,8 +27,7 @@ private:
     QString scpiSourceOn(const QString &scpi);
     static QJsonObject expandJsonCapabilities(const QJsonObject &capabilitiesRaw);
 
-    QString m_sourceCapabilityFileName;
-    QString m_sourceCapabilities;
+    QJsonObject m_generatorCapabilities;
     cSenseSettingsPtr m_senseSettings;
     QList<GeneratorChannelInterface *> m_channels;
     AbstractFactoryI2cCtrlPtr m_ctrlFactory;

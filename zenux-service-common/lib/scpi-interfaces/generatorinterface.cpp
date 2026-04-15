@@ -10,7 +10,7 @@ GeneratorInterface::GeneratorInterface(std::shared_ptr<cSCPI> scpiInterface,
                                        const QList<GeneratorChannelInterface *> &channels,
                                        AbstractFactoryI2cCtrlPtr ctrlFactory) :
     ScpiServerConnection(scpiInterface),
-    m_sourceCapabilityFileName(settings->getSourceCapFile()),
+    m_generatorCapabilities(expandJsonCapabilities(cJsonFileLoader::loadJsonFile(settings->getSourceCapFile()))),
     m_senseSettings(senseSettings),
     m_channels(channels),
     m_ctrlFactory(ctrlFactory)
@@ -25,12 +25,7 @@ enum ScpiCommands {
 
 void GeneratorInterface::initSCPIConnection()
 {
-    QJsonObject capabilities = expandJsonCapabilities(cJsonFileLoader::loadJsonFile(m_sourceCapabilityFileName));
-    if (!capabilities.isEmpty()) {
-        QJsonDocument docCapabilities(capabilities);
-        m_sourceCapabilities = docCapabilities.toJson();
-        addDelegate("GENERATOR", "CAPABILITIES", SCPI::isQuery, m_scpiInterface, sourceCapabilities);
-    }
+    addDelegate("GENERATOR", "CAPABILITIES", SCPI::isQuery, m_scpiInterface, sourceCapabilities);
     addDelegate("GENERATOR", "MODEON", SCPI::isQuery | SCPI::isCmdwP, m_scpiInterface, sourceModeOn, &m_sourceOnModesNotification);
     addDelegate("GENERATOR", "SWITCHON", SCPI::isQuery | SCPI::isCmdwP, m_scpiInterface, sourceOn);
 
@@ -49,8 +44,10 @@ void GeneratorInterface::executeProtoScpi(int cmdCode, ProtonetCommandPtr protoC
     switch (cmdCode)
     {
     case sourceCapabilities:
-        if (cmd.isQuery())
-            protoCmd->m_sOutput = m_sourceCapabilities;
+        if (cmd.isQuery()) {
+            QJsonDocument docCapabilities(m_generatorCapabilities);
+            protoCmd->m_sOutput = docCapabilities.toJson();
+        }
         else
             protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::nak];
         break;
