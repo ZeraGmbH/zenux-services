@@ -17,7 +17,6 @@ private slots:
 
     void serverUp();
     void dumpScpi();
-    void hasSourceGenerator();
 
 private:
     std::unique_ptr<ResmanRunFacade> m_resman;

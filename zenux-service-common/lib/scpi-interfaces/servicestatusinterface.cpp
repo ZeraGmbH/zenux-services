@@ -11,7 +11,6 @@ enum StatusCommands
     cmdDevice,
     cmdAdjustment,
     cmdAuthorization,
-    cmdHasSourceGenerator
 };
 
 ServiceStatusInterface::ServiceStatusInterface(std::shared_ptr<cSCPI> scpiInterface,
@@ -32,7 +31,6 @@ void ServiceStatusInterface::initSCPIConnection()
     addDelegate("STATUS", "DEVICE",SCPI::isQuery, m_scpiInterface, cmdDevice);
     addDelegate("STATUS", "ADJUSTMENT", SCPI::isQuery, m_scpiInterface, cmdAdjustment);
     addDelegate("STATUS", "AUTHORIZATION", SCPI::isQuery, m_scpiInterface, cmdAuthorization, &m_notifierAutorization);
-    addDelegate("STATUS", "HASSOURCEGENERATOR", SCPI::isQuery, m_scpiInterface, cmdHasSourceGenerator);
     connect(this, &ScpiConnection::removingSubscribers, this, &ServiceStatusInterface::onNotifierUnregistered);
 }
 
@@ -50,9 +48,6 @@ void ServiceStatusInterface::executeProtoScpi(int cmdCode, ProtonetCommandPtr pr
             break;
         case cmdAuthorization:
             protoCmd->m_sOutput = getAuthorizationStatus();
-            break;
-        case cmdHasSourceGenerator:
-            protoCmd->m_sOutput = m_hasSourceGenerator ? "1" : "0";
             break;
         }
     }

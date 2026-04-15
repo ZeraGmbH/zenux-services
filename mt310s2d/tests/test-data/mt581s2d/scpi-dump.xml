@@ -6999,7 +6999,6 @@
    <DEVICE ScpiPath="STATUS:DEVICE" Type="Query"/>
    <ADJUSTMENT ScpiPath="STATUS:ADJUSTMENT" Type="Query"/>
    <AUTHORIZATION ScpiPath="STATUS:AUTHORIZATION" Type="Query"/>
-   <HASSOURCEGENERATOR ScpiPath="STATUS:HASSOURCEGENERATOR" Type="Query"/>
   </STATUS>
   <SYSTEM Type="Model,Node">
    <VERSION Type="Node">
