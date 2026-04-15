@@ -31,6 +31,7 @@ private slots:
 
     void getSetDspAmplitude();
     void getSetDspFrequency();
+    void getSetDspAngle();
 
     void noCrossWrite();
 

@@ -18,6 +18,7 @@ enum ScpiCommands {
     controllerGetSetRange,
     dspGetSetAmplitude,
     dspGetSetFrequency,
+    dspGetSetAngle,
 };
 
 void GeneratorChannelInterface::initSCPIConnection()
@@ -28,6 +29,7 @@ void GeneratorChannelInterface::initSCPIConnection()
     addDelegate(scpiLead, "RANGE", SCPI::isQuery | SCPI::isCmdwP, m_scpiInterface, controllerGetSetRange);
     addDelegate(scpiLead, "DSAMPLITUDE", SCPI::isQuery | SCPI::isCmdwP, m_scpiInterface, dspGetSetAmplitude);
     addDelegate(scpiLead, "DSFREQUENCY", SCPI::isQuery | SCPI::isCmdwP, m_scpiInterface, dspGetSetFrequency);
+    addDelegate(scpiLead, "DSANGLE", SCPI::isQuery | SCPI::isCmdwP, m_scpiInterface, dspGetSetAngle);
 }
 
 void GeneratorChannelInterface::executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd)
@@ -45,6 +47,9 @@ void GeneratorChannelInterface::executeProtoScpi(int cmdCode, ProtonetCommandPtr
         break;
     case dspGetSetFrequency:
         protoCmd->m_sOutput = scpiDspFrequency(protoCmd->m_sInput);
+        break;
+    case dspGetSetAngle:
+        protoCmd->m_sOutput = scpiDspAngle(protoCmd->m_sInput);
         break;
     }
     if (protoCmd->m_bwithOutput)
@@ -130,6 +135,27 @@ QString GeneratorChannelInterface::scpiDspFrequency(const QString &scpi)
         float frequency;
         if(controller->getDspFrequency(m_mName, frequency) == ZeraMControllerIo::cmddone)
             return QString::number(frequency);
+    }
+    return ZSCPI::scpiAnswer[ZSCPI::nak];
+}
+
+QString GeneratorChannelInterface::scpiDspAngle(const QString &scpi)
+{
+    cSCPICommand cmd = scpi;
+    I2cCtrlGeneratorPtr controller = m_ctrlFactory->getGeneratorController(m_senseSettings);
+    if (cmd.isCommand(1)) {
+        bool ok;
+        float angleDeg = cmd.getParam(0).toFloat(&ok);
+        if (ok) {
+            if(controller->setDspAngle(m_mName, angleDeg) == ZeraMControllerIo::cmddone)
+                return  ZSCPI::scpiAnswer[ZSCPI::ack];
+            return ZSCPI::scpiAnswer[ZSCPI::errexec];
+        }
+    }
+    else if(cmd.isQuery()) {
+        float angleDeg;
+        if(controller->getDspAngle(m_mName, angleDeg) == ZeraMControllerIo::cmddone)
+            return QString::number(angleDeg);
     }
     return ZSCPI::scpiAnswer[ZSCPI::nak];
 }

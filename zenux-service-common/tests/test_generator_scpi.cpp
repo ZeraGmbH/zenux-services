@@ -335,6 +335,37 @@ void test_generator_scpi::getSetDspFrequency()
     QCOMPARE(channelChangeProbablySpy.count(), 0);
 }
 
+void test_generator_scpi::getSetDspAngle()
+{
+    QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
+    QSignalSpy channelChangeProbablySpy(m_mt310s2d->getGeneratorInterface(), &GeneratorInterface::sigMeasRangeProbablyChanged);
+
+    responseSpy.clear();
+    m_pcbIFace->scpiCommand("GENERATOR:m0:DSANGLE?");
+    TimeMachineObject::feedEventLoop();
+
+    QCOMPARE(responseSpy.count(), 1);
+    QCOMPARE(responseSpy[0][1], QVariant(ack));
+    QCOMPARE(responseSpy[0][2], QVariant("0"));
+
+    responseSpy.clear();
+    m_pcbIFace->scpiCommand("GENERATOR:m0:DSANGLE 45;");
+    TimeMachineObject::feedEventLoop();
+
+    QCOMPARE(responseSpy.count(), 1);
+    QCOMPARE(responseSpy[0][1], QVariant(ack));
+    QCOMPARE(responseSpy[0][2], QVariant("ack"));
+
+    responseSpy.clear();
+    m_pcbIFace->scpiCommand("GENERATOR:m0:DSANGLE?");
+    TimeMachineObject::feedEventLoop();
+
+    QCOMPARE(responseSpy.count(), 1);
+    QCOMPARE(responseSpy[0][1], QVariant(ack));
+    QCOMPARE(responseSpy[0][2], QVariant("45"));
+    QCOMPARE(channelChangeProbablySpy.count(), 0);
+}
+
 void test_generator_scpi::noCrossWrite()
 {
     m_pcbIFace->scpiCommand("GENERATOR:MODEON m0,m3;");
@@ -342,6 +373,7 @@ void test_generator_scpi::noCrossWrite()
     m_pcbIFace->scpiCommand("GENERATOR:m0:RANGE 1;");
     m_pcbIFace->scpiCommand("GENERATOR:m0:DSAMPLITUDE 1.5;");
     m_pcbIFace->scpiCommand("GENERATOR:m0:DSFREQUENCY 50;");
+    m_pcbIFace->scpiCommand("GENERATOR:m0:DSANGLE 45;");
     TimeMachineObject::feedEventLoop();
 
     QCOMPARE(ScpiSingleTransactionBlocked::query("GENERATOR:MODEON?"), "m0,m3");
@@ -349,6 +381,7 @@ void test_generator_scpi::noCrossWrite()
     QCOMPARE(ScpiSingleTransactionBlocked::query("GENERATOR:m0:RANGE?"), "1");
     QCOMPARE(ScpiSingleTransactionBlocked::query("GENERATOR:m0:DSAMPLITUDE?"), "1.5");
     QCOMPARE(ScpiSingleTransactionBlocked::query("GENERATOR:m0:DSFREQUENCY?"), "50");
+    QCOMPARE(ScpiSingleTransactionBlocked::query("GENERATOR:m0:DSANGLE?"), "45");
 }
 
 void test_generator_scpi::setupServers()

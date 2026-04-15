@@ -24,6 +24,7 @@ private:
     QString scpiChangeRange(const QString &scpi);
     QString scpiDspAmplitude(const QString &scpi);
     QString scpiDspFrequency(const QString &scpi);
+    QString scpiDspAngle(const QString &scpi);
 
     const cSenseSettingsPtr m_senseSettings;
     AbstractFactoryI2cCtrlPtr m_ctrlFactory;

@@ -7154,36 +7154,42 @@
     <RANGE ScpiPath="GENERATOR:M0:RANGE" Type="Query,Command+Par"/>
     <DSAMPLITUDE ScpiPath="GENERATOR:M0:DSAMPLITUDE" Type="Query,Command+Par"/>
     <DSFREQUENCY ScpiPath="GENERATOR:M0:DSFREQUENCY" Type="Query,Command+Par"/>
+    <DSANGLE ScpiPath="GENERATOR:M0:DSANGLE" Type="Query,Command+Par"/>
    </M0>
    <M1 Type="Node">
     <AMPRANGE ScpiPath="GENERATOR:M1:AMPRANGE" Type="Command+Par"/>
     <RANGE ScpiPath="GENERATOR:M1:RANGE" Type="Query,Command+Par"/>
     <DSAMPLITUDE ScpiPath="GENERATOR:M1:DSAMPLITUDE" Type="Query,Command+Par"/>
     <DSFREQUENCY ScpiPath="GENERATOR:M1:DSFREQUENCY" Type="Query,Command+Par"/>
+    <DSANGLE ScpiPath="GENERATOR:M1:DSANGLE" Type="Query,Command+Par"/>
    </M1>
    <M2 Type="Node">
     <AMPRANGE ScpiPath="GENERATOR:M2:AMPRANGE" Type="Command+Par"/>
     <RANGE ScpiPath="GENERATOR:M2:RANGE" Type="Query,Command+Par"/>
     <DSAMPLITUDE ScpiPath="GENERATOR:M2:DSAMPLITUDE" Type="Query,Command+Par"/>
     <DSFREQUENCY ScpiPath="GENERATOR:M2:DSFREQUENCY" Type="Query,Command+Par"/>
+    <DSANGLE ScpiPath="GENERATOR:M2:DSANGLE" Type="Query,Command+Par"/>
    </M2>
    <M3 Type="Node">
     <AMPRANGE ScpiPath="GENERATOR:M3:AMPRANGE" Type="Command+Par"/>
     <RANGE ScpiPath="GENERATOR:M3:RANGE" Type="Query,Command+Par"/>
     <DSAMPLITUDE ScpiPath="GENERATOR:M3:DSAMPLITUDE" Type="Query,Command+Par"/>
     <DSFREQUENCY ScpiPath="GENERATOR:M3:DSFREQUENCY" Type="Query,Command+Par"/>
+    <DSANGLE ScpiPath="GENERATOR:M3:DSANGLE" Type="Query,Command+Par"/>
    </M3>
    <M4 Type="Node">
     <AMPRANGE ScpiPath="GENERATOR:M4:AMPRANGE" Type="Command+Par"/>
     <RANGE ScpiPath="GENERATOR:M4:RANGE" Type="Query,Command+Par"/>
     <DSAMPLITUDE ScpiPath="GENERATOR:M4:DSAMPLITUDE" Type="Query,Command+Par"/>
     <DSFREQUENCY ScpiPath="GENERATOR:M4:DSFREQUENCY" Type="Query,Command+Par"/>
+    <DSANGLE ScpiPath="GENERATOR:M4:DSANGLE" Type="Query,Command+Par"/>
    </M4>
    <M5 Type="Node">
     <AMPRANGE ScpiPath="GENERATOR:M5:AMPRANGE" Type="Command+Par"/>
     <RANGE ScpiPath="GENERATOR:M5:RANGE" Type="Query,Command+Par"/>
     <DSAMPLITUDE ScpiPath="GENERATOR:M5:DSAMPLITUDE" Type="Query,Command+Par"/>
     <DSFREQUENCY ScpiPath="GENERATOR:M5:DSFREQUENCY" Type="Query,Command+Par"/>
+    <DSANGLE ScpiPath="GENERATOR:M5:DSANGLE" Type="Query,Command+Par"/>
    </M5>
   </GENERATOR>
   <UISRC Type="Model,Node">
