@@ -7146,6 +7146,7 @@
    </HK0>
   </HKEY>
   <GENERATOR Type="Model,Node">
+   <CAPABILITIES ScpiPath="GENERATOR:CAPABILITIES" Type="Query"/>
    <MODEON Type="Query,Command+Par" ScpiPath="GENERATOR:MODEON"/>
    <SWITCHON Type="Query,Command+Par" ScpiPath="GENERATOR:SWITCHON"/>
    <M0 Type="Node">

@@ -34,7 +34,7 @@ void test_source_control::cleanup()
 void test_source_control::mt310s2Capabilities()
 {
     setupServerAndClient("mt310s2d");
-    m_pcbInterface->scpiCommand("UISRC:CAPABILITIES?");
+    m_pcbInterface->scpiCommand("GENERATOR:CAPABILITIES?");
     TimeMachineObject::feedEventLoop();
 
     QCOMPARE(m_lastReply, ZSCPI::nak);
@@ -44,7 +44,7 @@ void test_source_control::mt310s2Capabilities()
 void test_source_control::mt581s2Capabilities()
 {
     setupServerAndClient("mt581s2d");
-    m_pcbInterface->scpiCommand("UISRC:CAPABILITIES?");
+    m_pcbInterface->scpiCommand("GENERATOR:CAPABILITIES?");
     TimeMachineObject::feedEventLoop();
 
     QCOMPARE(m_lastReply, ZSCPI::ack);
@@ -62,7 +62,7 @@ void test_source_control::mt310s2RejectValidCapabilitesSet()
 
     QString consideredValid = TestLogHelpers::loadFile(":/source_capabilities_valid_mt310s2.json");
 
-    m_pcbInterface->scpiCommand(QString("UISRC:CAPABILITIES %1").arg(consideredValid));
+    m_pcbInterface->scpiCommand(QString("GENERATOR:CAPABILITIES %1").arg(consideredValid));
     TimeMachineObject::feedEventLoop();
 
     QCOMPARE(m_lastReply, ZSCPI::nak);
@@ -75,7 +75,7 @@ void test_source_control::mt581s2RejectValidCapabilitesSet()
 
     QString consideredValid = TestLogHelpers::loadFile(":/source_capabilities_valid_mt581s2.json");
 
-    m_pcbInterface->scpiCommand(QString("UISRC:CAPABILITIES %1").arg(consideredValid));
+    m_pcbInterface->scpiCommand(QString("GENERATOR:CAPABILITIES %1").arg(consideredValid));
     TimeMachineObject::feedEventLoop();
 
     QCOMPARE(m_lastReply, ZSCPI::nak);

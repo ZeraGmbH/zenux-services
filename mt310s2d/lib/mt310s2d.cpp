@@ -225,6 +225,7 @@ void cMT310S2dServer::earlySetup(AbstractChannelRangeFactoryPtr channelRangeFact
                                                                                                       m_scpiInterface,
                                                                                                       m_ctrlFactory);
         m_scpiConnectionList.append(m_generatorInterface = new GeneratorInterface(m_scpiInterface,
+                                                                                  m_sourceControlSettings,
                                                                                   getSenseSettings(),
                                                                                   generatorChannels,
                                                                                   m_ctrlFactory));

@@ -1,12 +1,16 @@
 #include "generatorinterface.h"
+#include "zera-jsonfileloader.h"
 #include "zscpi_response_definitions.h"
 #include "commonscpimethods.h"
+#include <zera-json-params-structure.h>
 
 GeneratorInterface::GeneratorInterface(std::shared_ptr<cSCPI> scpiInterface,
+                                       SourceControlSettings *settings,
                                        cSenseSettingsPtr senseSettings,
                                        const QList<GeneratorChannelInterface *> &channels,
                                        AbstractFactoryI2cCtrlPtr ctrlFactory) :
     ScpiServerConnection(scpiInterface),
+    m_sourceCapabilityFileName(settings->getSourceCapFile()),
     m_senseSettings(senseSettings),
     m_channels(channels),
     m_ctrlFactory(ctrlFactory)
@@ -14,12 +18,19 @@ GeneratorInterface::GeneratorInterface(std::shared_ptr<cSCPI> scpiInterface,
 }
 
 enum ScpiCommands {
+    sourceCapabilities,
     sourceModeOn,
     sourceOn,
 };
 
 void GeneratorInterface::initSCPIConnection()
 {
+    QJsonObject capabilities = expandJsonCapabilities(cJsonFileLoader::loadJsonFile(m_sourceCapabilityFileName));
+    if (!capabilities.isEmpty()) {
+        QJsonDocument docCapabilities(capabilities);
+        m_sourceCapabilities = docCapabilities.toJson();
+        addDelegate("GENERATOR", "CAPABILITIES", SCPI::isQuery, m_scpiInterface, sourceCapabilities);
+    }
     addDelegate("GENERATOR", "MODEON", SCPI::isQuery | SCPI::isCmdwP, m_scpiInterface, sourceModeOn, &m_sourceOnModesNotification);
     addDelegate("GENERATOR", "SWITCHON", SCPI::isQuery | SCPI::isCmdwP, m_scpiInterface, sourceOn);
 
@@ -34,8 +45,15 @@ void GeneratorInterface::initSCPIConnection()
 
 void GeneratorInterface::executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd)
 {
+    cSCPICommand cmd = protoCmd->m_sInput;
     switch (cmdCode)
     {
+    case sourceCapabilities:
+        if (cmd.isQuery())
+            protoCmd->m_sOutput = m_sourceCapabilities;
+        else
+            protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::nak];
+        break;
     case sourceModeOn:
         protoCmd->m_sOutput = scpiSourceModeOn(protoCmd->m_sInput);
         break;
@@ -88,4 +106,11 @@ QString GeneratorInterface::scpiSourceOn(const QString &scpi)
         return ZSCPI::scpiAnswer[ZSCPI::errexec];
     }
     return ZSCPI::scpiAnswer[ZSCPI::nak];
+}
+
+QJsonObject GeneratorInterface::expandJsonCapabilities(const QJsonObject &capabilitiesRaw)
+{
+    ZeraJsonParamsStructure jsonParamsStructure;
+    jsonParamsStructure.setJson(capabilitiesRaw);
+    return jsonParamsStructure.getJson();
 }
