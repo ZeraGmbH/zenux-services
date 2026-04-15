@@ -56,54 +56,6 @@ void test_source_control::mt581s2Capabilities()
     QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonFile(":/source_capabilities_valid_mt581s2.json", m_lastAnswer.toString()));
 }
 
-void test_source_control::mt310s2InitialState()
-{
-    setupServerAndClient("mt310s2d");
-    m_pcbInterface->scpiCommand("UISRC:STATE?");
-    TimeMachineObject::feedEventLoop();
-
-    QCOMPARE(m_lastReply, ZSCPI::nak);
-    QCOMPARE(m_lastAnswer, ZSCPI::scpiAnswer[ZSCPI::nak]);
-}
-
-void test_source_control::mt581s2InitialState()
-{
-    setupServerAndClient("mt581s2d");
-
-    m_pcbInterface->scpiCommand("UISRC:STATE?");
-    TimeMachineObject::feedEventLoop();
-
-    QCOMPARE(m_lastReply, ZSCPI::ack);
-    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonFile(":/source_state_valid_mt581s2.json", m_lastAnswer.toString()));
-}
-
-void test_source_control::mt310s2InitialLoad()
-{
-    setupServerAndClient("mt310s2d");
-    m_pcbInterface->scpiCommand("UISRC:LOAD?");
-    TimeMachineObject::feedEventLoop();
-
-    QCOMPARE(m_lastReply, ZSCPI::nak);
-    QCOMPARE(m_lastAnswer, ZSCPI::scpiAnswer[ZSCPI::nak]);
-}
-
-void test_source_control::mt581s2InitialLoad()
-{
-    setupServerAndClient("mt581s2d");
-
-    m_pcbInterface->scpiCommand("UISRC:CAPABILITIES?");
-    TimeMachineObject::feedEventLoop();
-    QJsonObject capabilities = QJsonDocument::fromJson(m_lastAnswer.toString().toUtf8()).object();
-    ZeraJsonParamsState paramState(capabilities);
-    QString expected = TestLogHelpers::dump(paramState.getDefaultJsonState());
-
-    m_pcbInterface->scpiCommand("UISRC:LOAD?");
-    TimeMachineObject::feedEventLoop();
-
-    QCOMPARE(m_lastReply, ZSCPI::ack);
-    QVERIFY(TestLogHelpers::compareAndLogOnDiffJson(expected, m_lastAnswer.toString()));
-}
-
 void test_source_control::mt310s2RejectValidCapabilitesSet()
 {
     setupServerAndClient("mt310s2d");
@@ -128,68 +80,6 @@ void test_source_control::mt581s2RejectValidCapabilitesSet()
 
     QCOMPARE(m_lastReply, ZSCPI::nak);
     QCOMPARE(m_lastAnswer, ZSCPI::scpiAnswer[ZSCPI::nak]);
-}
-
-void test_source_control::mt310s2RejectValidStateSet()
-{
-    setupServerAndClient("mt310s2d");
-
-    QString consideredValid = TestLogHelpers::loadFile(":/source_state_valid_mt310s2.json");
-
-    m_pcbInterface->scpiCommand(QString("UISRC:STATE %1").arg(consideredValid));
-    TimeMachineObject::feedEventLoop();
-
-    QCOMPARE(m_lastReply, ZSCPI::nak);
-    QCOMPARE(m_lastAnswer, ZSCPI::scpiAnswer[ZSCPI::nak]);
-}
-
-void test_source_control::mt581s2RejectValidStateSet()
-{
-    setupServerAndClient("mt581s2d");
-
-    QString consideredValidInOtherTest = TestLogHelpers::loadFile(":/source_state_valid_mt581s2.json");
-
-    m_pcbInterface->scpiCommand(QString("UISRC:STATE %1").arg(consideredValidInOtherTest));
-    TimeMachineObject::feedEventLoop();
-
-    QCOMPARE(m_lastReply, ZSCPI::nak);
-    QCOMPARE(m_lastAnswer, ZSCPI::scpiAnswer[ZSCPI::nak]);
-}
-
-void test_source_control::mt310s2RejectInValidLoadSet()
-{
-    setupServerAndClient("mt310s2d");
-    QString invalid = "UISRC:LOAD {\"foo\": \"bar\"}";
-    m_pcbInterface->scpiCommand(invalid);
-    TimeMachineObject::feedEventLoop();
-
-    QCOMPARE(m_lastReply, ZSCPI::nak);
-    QCOMPARE(m_lastAnswer, ZSCPI::scpiAnswer[ZSCPI::nak]);
-}
-
-void test_source_control::mt581s2RejectInValidLoadSet()
-{
-    setupServerAndClient("mt581s2d");
-    QString invalid = "UISRC:LOAD {\"foo\": \"bar\"}";
-    m_pcbInterface->scpiCommand(invalid);
-    TimeMachineObject::feedEventLoop();
-
-    QCOMPARE(m_lastReply, ZSCPI::nak);
-    QCOMPARE(m_lastAnswer, ZSCPI::scpiAnswer[ZSCPI::nak]);
-}
-
-void test_source_control::mt581s2AcceptValidLoadSetNoChange()
-{
-    setupServerAndClient("mt581s2d");
-
-    m_pcbInterface->scpiCommand("UISRC:LOAD?");
-    TimeMachineObject::feedEventLoop();
-
-    m_pcbInterface->scpiCommand(QString("UISRC:LOAD %1").arg(m_lastAnswer.toString()));
-    TimeMachineObject::feedEventLoop();
-
-    QCOMPARE(m_lastReply, ZSCPI::ack);
-    QCOMPARE(m_lastAnswer, ZSCPI::scpiAnswer[ZSCPI::ack]);
 }
 
 void test_source_control::setupServerAndClient(const QString &deviceD)

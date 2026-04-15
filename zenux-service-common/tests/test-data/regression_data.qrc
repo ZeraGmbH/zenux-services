@@ -12,8 +12,6 @@
         <file>phase_nodes_write.xml</file>
         <file>source_capabilities_valid_mt310s2.json</file>
         <file>source_capabilities_valid_mt581s2.json</file>
-        <file>source_state_valid_mt310s2.json</file>
-        <file>source_state_valid_mt581s2.json</file>
 
         <file>controller-versions/noEmob.json</file>
         <file>controller-versions/noEmobAccu.json</file>

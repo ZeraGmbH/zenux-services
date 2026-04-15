@@ -7194,8 +7194,6 @@
   </GENERATOR>
   <UISRC Type="Model,Node">
    <CAPABILITIES ScpiPath="UISRC:CAPABILITIES" Type="Query"/>
-   <STATE ScpiPath="UISRC:STATE" Type="Query"/>
-   <LOAD ScpiPath="UISRC:LOAD" Type="Query,Command+Par"/>
   </UISRC>
  </MODELS>
 </MODELLIST>
