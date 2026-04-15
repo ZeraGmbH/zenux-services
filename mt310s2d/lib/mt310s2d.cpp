@@ -101,8 +101,6 @@ cMT310S2dServer::~cMT310S2dServer()
     delete m_pRMConnection;
     delete m_accumulatorInterface;
     delete m_generatorInterface;
-    delete m_sourceControlInterface;
-
 }
 
 QString cMT310S2dServer::getCtrlDeviceNode()
@@ -231,7 +229,6 @@ void cMT310S2dServer::earlySetup(AbstractChannelRangeFactoryPtr channelRangeFact
                                                                                   m_ctrlFactory));
         connect(m_generatorInterface, &GeneratorInterface::sigMeasRangeProbablyChanged,
                 m_pSenseInterface, &SenseInterfaceCommon::onMeasRangeProbablyChanged);
-        m_scpiConnectionList.append(m_sourceControlInterface = new SourceControlInterface(m_scpiInterface, m_sourceControlSettings, m_ctrlFactory));
     }
 
     m_resourceList.append(m_foutInterface); // all our resources

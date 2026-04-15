@@ -18,7 +18,6 @@
 #include "accumulatorinterface.h"
 #include "abstractctrlheartbeatwait.h"
 #include "sourcecontrolsettings.h"
-#include "sourcecontrolinterface.h"
 #include <QStateMachine>
 #include <QTimer>
 #include <timertemplateqt.h>
@@ -110,7 +109,6 @@ private:
     RMConnection* m_pRMConnection = nullptr;
     cClampInterface* m_pClampInterface = nullptr;
     AccumulatorInterface* m_accumulatorInterface = nullptr;
-    SourceControlInterface* m_sourceControlInterface = nullptr;
     GeneratorInterface* m_generatorInterface = nullptr;
     int m_pendingResources = 0;
 

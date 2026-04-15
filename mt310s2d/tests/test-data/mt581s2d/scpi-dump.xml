@@ -7192,8 +7192,5 @@
     <DSANGLE ScpiPath="GENERATOR:M5:DSANGLE" Type="Query,Command+Par"/>
    </M5>
   </GENERATOR>
-  <UISRC Type="Model,Node">
-   <CAPABILITIES ScpiPath="UISRC:CAPABILITIES" Type="Query"/>
-  </UISRC>
  </MODELS>
 </MODELLIST>
