@@ -1,4 +1,5 @@
 #include "i2cdspgenerator.h"
+#include <QIODevice>
 
 enum hw_cmdcode
 {

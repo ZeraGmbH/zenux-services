@@ -1,5 +1,6 @@
 #include "i2cutilities.h"
 #include <QDataStream>
+#include <QIODevice>
 
 QByteArray I2cUtilities::convertFloat(float value)
 {
