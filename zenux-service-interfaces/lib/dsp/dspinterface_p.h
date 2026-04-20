@@ -62,7 +62,7 @@ public:
     quint32 setEntityId(int entityId);
     int getEntityId() const;
 
-    QStringList getCyclicCmdList() const;
+    QStringList getCyclicCmdListForTest() const;
     QList<DspVarGroupClientInterface*> getMemoryDataList() const;
     DspVarGroupClientInterface* findVariableGroup(const QString &name) const;
 

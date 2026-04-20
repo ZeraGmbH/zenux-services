@@ -183,8 +183,10 @@ quint32 cDSPInterfacePrivate::dspMemoryWrite(DspVarGroupClientInterface *varGrou
     return msgnr;
 }
 
-QStringList cDSPInterfacePrivate::getCyclicCmdList() const
+QStringList cDSPInterfacePrivate::getCyclicCmdListForTest() const
 {
+    if (m_entityId >= 0 && !m_cycCmdList.isEmpty())
+        return QStringList() << QString("COMMENT(--- Entity %1 / Cyclic list start ---)").arg(m_entityId) << m_cycCmdList;
     return m_cycCmdList;
 }
 

@@ -127,7 +127,7 @@ QJsonObject TestDspInterface::dumpVarList(QJsonObject inData)
 
 QStringList TestDspInterface::dumpCycListItem()
 {
-    return d_ptr->getCyclicCmdList();
+    return d_ptr->getCyclicCmdListForTest();
 }
 
 QJsonObject TestDspInterface::dumpVariablesWritten()
