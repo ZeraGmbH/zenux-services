@@ -39,7 +39,6 @@ public:
     quint32 setSamplingSystem(int chncount, int samp_per, int samp_mper); // nmuber of channels, samples/signalperiod, samples/measperiod
     quint32 varList2Dsp(); // send the var-list to dsp server
     quint32 cmdList2Dsp(); // send cyclic command list to the dsp server
-    int cmdListCount(); // returns the number of command in cyclist program list
     void addCycListItem(const QString &cmd); // appends new command to cyclic list
     void addCycListItems(const QStringList &cmds); // appends new commands to cyclic list
 
@@ -56,7 +55,6 @@ public:
     // unused in ZENUX - kept for sake of future WM???
     void addIntListItem(const QString &cmd); // same for interrupt list
     quint32 intList2Dsp(); // send interrupt command list to the dsp server
-    int intListCount(); // returns the number of command in intlist program list
     quint32 triggerIntHKSK(quint32 hksk); // trigger start hksk in intlist
 
     // Insights for tests - a compromise...

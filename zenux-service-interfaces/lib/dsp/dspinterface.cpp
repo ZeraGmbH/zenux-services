@@ -44,12 +44,6 @@ quint32 cDSPInterface::cmdList2Dsp()
     return d->cmdList2Dsp();
 }
 
-int cDSPInterface::cmdListCount()
-{
-    Q_D(cDSPInterface);
-    return d->cmdListCount();
-}
-
 void cDSPInterface::addCycListItem(const QString &cmd)
 {
     Q_D(cDSPInterface);
