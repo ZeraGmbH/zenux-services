@@ -20,6 +20,7 @@ public:
 
 private:
     static bool areThereNoFurtherKeywords(cParse &cmdParser, const QChar* charCmdLine);
+    static bool isComment(const QString &cmd);
 
     DspVarResolver* m_varResolver;
     const int m_dspInterruptId;
