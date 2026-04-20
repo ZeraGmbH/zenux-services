@@ -32,7 +32,7 @@ DspVarServerPtr DspVarResolver::getDspVar(const QString &varNameWithOffset)
     if (summands.isEmpty())
         return nullptr;
 
-    const QString baseVarName = summands[0];
+    const QString &baseVarName = summands[0];
     auto iter = m_varHash.constFind(baseVarName);
     if(iter != m_varHash.constEnd())
         return iter.value();
