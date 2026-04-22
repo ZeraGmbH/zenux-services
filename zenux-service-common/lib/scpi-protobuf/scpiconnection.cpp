@@ -38,13 +38,8 @@ void ScpiConnection::addDelegate(const QString &cmdParent,
 {
     ScpiDelegatePtr delegate = ScpiDelegate::create(cmdParent, cmd, type, scpiInterface, cmdCode, notificationString);
     m_DelegateList.append(delegate);
-    connect(delegate.get(), &ScpiDelegate::sigExecuteProtoScpi, this, &ScpiConnection::onExecuteProtoScpi);
+    connect(delegate.get(), &ScpiDelegate::sigExecuteProtoScpi, this, &ScpiConnection::executeProtoScpi);
     connect(delegate.get(), &ScpiDelegate::sigNotifySubcriber, this, &ScpiConnection::sigNotifySubcriber);
-}
-
-void ScpiConnection::onExecuteProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd)
-{
-    executeProtoScpi(cmdCode, protoCmd);
 }
 
 void ScpiConnection::onNotifierRegistered(NotificationString *notifier)

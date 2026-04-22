@@ -21,8 +21,8 @@ signals:
 public slots:
     virtual void onNotifierRegistered(NotificationString* notifier);
     void onRemoveSubscribers(VeinTcp::TcpPeer *peer, const QByteArray &clientID);
+
 protected:
-    virtual void executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd) = 0;
     void removeSCPIConnections();
     QString appendTrailingColonOnNonEmptyParentNodes(const QString &leadingNodes);
     void addDelegate(const QString &cmdParent,
@@ -33,7 +33,7 @@ protected:
     std::shared_ptr<cSCPI> m_scpiInterface;
     QList<ScpiDelegatePtr> m_DelegateList;
 private slots:
-    void onExecuteProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd);
+    virtual void executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd) = 0;
 };
 
 #endif // SCPICONNECTION_H
