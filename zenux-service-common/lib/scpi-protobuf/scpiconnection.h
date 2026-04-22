@@ -24,7 +24,7 @@ public slots:
 
 protected:
     void removeSCPIConnections();
-    QString appendTrailingColonOnNonEmptyParentNodes(const QString &leadingNodes);
+    static QString appendTrailingColonOnNonEmptyParentNodes(const QString &leadingNodes);
     void addDelegate(const QString &cmdParent,
                      const QString &cmd,
                      quint8 type, std::shared_ptr<cSCPI> scpiInterface,
