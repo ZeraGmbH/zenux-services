@@ -21,7 +21,7 @@ void CommonScpiMethods::sendProtoAnswer(QTcpSocket *telnetSocket,
             ProtobufMessage::NetMessage::NetReply *netReply = protobufAnswer.mutable_reply();
             // dependent on rtype caller can see ack, nak, error
             // in case of error the body has to be analyzed for details
-            QString output = protoCmd->m_sOutput;
+            const QString &output = protoCmd->m_sOutput;
             if (output == ZSCPI::scpiAnswer[ZSCPI::ack])
                 netReply->set_rtype(ProtobufMessage::NetMessage_NetReply_ReplyType_ACK);
             else if (output == ZSCPI::scpiAnswer[ZSCPI::nak])
