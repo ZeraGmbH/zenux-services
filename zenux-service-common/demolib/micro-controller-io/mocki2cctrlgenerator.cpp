@@ -18,8 +18,11 @@ ZeraMControllerIoTemplate::atmelRM MockI2cCtrlGenerator::readSourceModeOn(QStrin
 
 ZeraMControllerIoTemplate::atmelRM MockI2cCtrlGenerator::sendSourceModeOn(const QStringList &channelMNamesModeOn)
 {
-    m_channelMNamesModeOn = channelMNamesModeOn;
-    return ZeraMControllerIo::cmddone;
+    if (canSwitchOffSourceMode(channelMNamesModeOn)) {
+        m_channelMNamesModeOn = channelMNamesModeOn;
+        return ZeraMControllerIo::cmddone;
+    }
+    return ZeraMControllerIo::cmdexecfault;
 }
 
 ZeraMControllerIoTemplate::atmelRM MockI2cCtrlGenerator::readSourceOn(QStringList &channelMNamesOnRead)
@@ -30,7 +33,16 @@ ZeraMControllerIoTemplate::atmelRM MockI2cCtrlGenerator::readSourceOn(QStringLis
 
 ZeraMControllerIoTemplate::atmelRM MockI2cCtrlGenerator::sendSourceOn(const QStringList &channelMNamesOn)
 {
-    m_channelMNamesOn = channelMNamesOn;
+    if (canSwitchOn(channelMNamesOn)) {
+        m_channelMNamesOn = channelMNamesOn;
+        return ZeraMControllerIo::cmddone;
+    }
+    return ZeraMControllerIo::cmdexecfault;
+}
+
+ZeraMControllerIoTemplate::atmelRM MockI2cCtrlGenerator::readRange(const QString &channelMName, quint8 &range)
+{
+    range = m_generatorRangeMap[channelMName];
     return ZeraMControllerIo::cmddone;
 }
 
@@ -38,19 +50,18 @@ ZeraMControllerIoTemplate::atmelRM MockI2cCtrlGenerator::setRangeByAmplitude(con
 {
     Q_UNUSED(amplitude)
     Q_UNUSED(channelMName)
-    return ZeraMControllerIo::cmddone;
+    if (canChangeRange(channelMName))
+        return ZeraMControllerIo::cmddone;
+    return ZeraMControllerIo::cmdexecfault;
 }
 
 ZeraMControllerIoTemplate::atmelRM MockI2cCtrlGenerator::setRange(const QString &channelMName, quint8 range)
 {
-    m_generatorRangeMap[channelMName] = range;
-    return ZeraMControllerIo::cmddone;
-}
-
-ZeraMControllerIoTemplate::atmelRM MockI2cCtrlGenerator::readRange(const QString &channelMName, quint8 &range)
-{
-    range = m_generatorRangeMap[channelMName];
-    return ZeraMControllerIo::cmddone;
+    if (canChangeRange(channelMName)) {
+        m_generatorRangeMap[channelMName] = range;
+        return ZeraMControllerIo::cmddone;
+    }
+    return ZeraMControllerIo::cmdexecfault;
 }
 
 ZeraMControllerIoTemplate::atmelRM MockI2cCtrlGenerator::setDspAmplitude(const QString &channelMName, float amplitude)
@@ -96,3 +107,49 @@ ZeraMControllerIoTemplate::atmelRM MockI2cCtrlGenerator::tunnelToDsp(const QStri
     Q_UNUSED(response)
     return ZeraMControllerIo::cmddone;
 }
+
+// At the time of writing there are 3 constraints on channels:
+
+// 1. SourceRanges cannot be changed when source mode is not active
+//    https://github.com/ZeraGmbH/ADW5859/blob/9cff2865b3f6bb9032be12a915f2cf8ae058d852/ADW5859/Commands.c#L501
+bool MockI2cCtrlGenerator::canChangeRange(const QString &channelMName)
+{
+    if (m_channelMNamesModeOn.contains(channelMName))
+        return true;
+    qWarning("Cannot change source range on %s - source mode is not on!", qPrintable(channelMName));
+    return false;
+}
+
+// 2. Changing from source mode to measurement mode is not allowed if source channel is on
+//    https://github.com/ZeraGmbH/ADW5859/blob/9cff2865b3f6bb9032be12a915f2cf8ae058d852/ADW5859/Commands.c#L832
+bool MockI2cCtrlGenerator::canSwitchOffSourceMode(const QStringList &channelMNamesModeOn)
+{
+    QStringList notAllowedChannels;
+    for (const QString &channelMNameOn : qAsConst(m_channelMNamesOn)) { // assume a channel on has source mode on - see 3.
+        if (!channelMNamesModeOn.contains(channelMNameOn))
+            notAllowedChannels.append(channelMNameOn);
+    }
+    if (notAllowedChannels.isEmpty())
+        return true;
+    qWarning("Cannot switch off source mode for channels %s. They are currently switched on!",
+             qPrintable(notAllowedChannels.join(" / ")));
+    return false;
+}
+
+// 3. Switch on is allowed only on channels with source mode on
+//    https://github.com/ZeraGmbH/ADW5859/blob/9cff2865b3f6bb9032be12a915f2cf8ae058d852/ADW5859/Commands.c#L856
+bool MockI2cCtrlGenerator::canSwitchOn(const QStringList &channelMNamesModeOn)
+{
+    QStringList notAllowedChannels;
+    for (const QString &channelMNameOn : qAsConst(channelMNamesModeOn)) {
+        bool sourceModeIsOn = m_channelMNamesModeOn.contains(channelMNameOn);
+        if (!sourceModeIsOn)
+            notAllowedChannels.append(channelMNameOn);
+    }
+    if (notAllowedChannels.isEmpty())
+        return true;
+    qWarning("Cannot switch on channels %s - they are not in source mode!",
+             qPrintable(notAllowedChannels.join(" / ")));
+    return false;
+}
+

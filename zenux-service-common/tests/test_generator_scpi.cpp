@@ -97,6 +97,9 @@ void test_generator_scpi::getSetValidSourceOn()
     QCOMPARE(responseSpy[0][1], QVariant(ack));
     QCOMPARE(responseSpy[0][2], QVariant(""));
 
+    m_pcbIFace->scpiCommand("GENERATOR:MODEON m0,m3;"); // necessary to change range
+    TimeMachineObject::feedEventLoop();
+
     responseSpy.clear();
     m_pcbIFace->scpiCommand("GENERATOR:SWITCHON m0,m3;");
     TimeMachineObject::feedEventLoop();
@@ -128,6 +131,9 @@ void test_generator_scpi::getSetValidSourceOn()
 
 void test_generator_scpi::setChangeRangeByAmplitude()
 {
+    m_pcbIFace->scpiCommand("GENERATOR:MODEON m2;"); // necessary to change range
+    TimeMachineObject::feedEventLoop();
+
     QSignalSpy responseSpy(m_pcbIFace.get(), &AbstractServerInterface::serverAnswer);
     QSignalSpy channelChangeProbablySpy(m_mt310s2d->getGeneratorInterface(), &GeneratorInterface::sigMeasRangeProbablyChanged);
 
@@ -197,6 +203,9 @@ void test_generator_scpi::getSetRange()
     QCOMPARE(responseSpy[0][1], QVariant(ack));
     QCOMPARE(responseSpy[0][2], QVariant("0"));
     QCOMPARE(channelChangeProbablySpy.count(), 0);
+
+    m_pcbIFace->scpiCommand("GENERATOR:MODEON m0;"); // necessary to change range
+    TimeMachineObject::feedEventLoop();
 
     responseSpy.clear();
     channelChangeProbablySpy.clear();
@@ -368,7 +377,7 @@ void test_generator_scpi::getSetDspAngle()
 
 void test_generator_scpi::noCrossWrite()
 {
-    m_pcbIFace->scpiCommand("GENERATOR:MODEON m0,m3;");
+    m_pcbIFace->scpiCommand("GENERATOR:MODEON m0,m2,m3;");
     m_pcbIFace->scpiCommand("GENERATOR:SWITCHON m0,m2;");
     m_pcbIFace->scpiCommand("GENERATOR:m0:RANGE 1;");
     m_pcbIFace->scpiCommand("GENERATOR:m0:DSAMPLITUDE 1.5;");
@@ -376,7 +385,7 @@ void test_generator_scpi::noCrossWrite()
     m_pcbIFace->scpiCommand("GENERATOR:m0:DSANGLE 45;");
     TimeMachineObject::feedEventLoop();
 
-    QCOMPARE(ScpiSingleTransactionBlocked::query("GENERATOR:MODEON?"), "m0,m3");
+    QCOMPARE(ScpiSingleTransactionBlocked::query("GENERATOR:MODEON?"), "m0,m2,m3");
     QCOMPARE(ScpiSingleTransactionBlocked::query("GENERATOR:SWITCHON?"), "m0,m2");
     QCOMPARE(ScpiSingleTransactionBlocked::query("GENERATOR:m0:RANGE?"), "1");
     QCOMPARE(ScpiSingleTransactionBlocked::query("GENERATOR:m0:DSAMPLITUDE?"), "1.5");

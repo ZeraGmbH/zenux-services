@@ -32,6 +32,9 @@ static constexpr int notifierIdOther = 37;
 
 void test_generator_meas_range_notification::receiveSenseRangeChangeOnSourceRangeByAmplitudeChangeNotification()
 {
+    m_pcbIFace->scpiCommand("GENERATOR:MODEON m0;"); // necessary to change range
+    TimeMachineObject::feedEventLoop();
+
     m_pcbIFace->registerNotifier("SENSE:M0:RANGE?", notifierId, true);
     m_pcbIFace->registerNotifier("SENSE:M1:RANGE?", notifierIdOther, true);
     m_pcbIFace->registerNotifier("SENSE:M2:RANGE?", notifierIdOther, true);
@@ -46,8 +49,8 @@ void test_generator_meas_range_notification::receiveSenseRangeChangeOnSourceRang
     SimulSystemStatus *simulStatus = SimulSystemStatus::getInstance();
     simulStatus->setRange(1, 2); // first channel is 1 / range 0 is default => to get a notification a change is needed
     m_pcbIFace->scpiCommand("GENERATOR:m0:AMPRANGE 2.5;");
-
     TimeMachineObject::feedEventLoop();
+
     QCOMPARE(spy.count(), 2);
     QString notificationStr = spy[0][2].toString();
     QCOMPARE(notificationStr, "Notify:42:125V"); // Mt581!
