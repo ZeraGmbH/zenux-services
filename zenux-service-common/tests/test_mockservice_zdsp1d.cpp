@@ -4,6 +4,7 @@
 #include "reply.h"
 #include "testfactoryzdspsupport.h"
 #include <timemachineobject.h>
+#include <timerfactoryqtfortest.h>
 #include <mocktcpnetworkfactory.h>
 #include <QSignalSpy>
 #include <QTest>
@@ -12,6 +13,7 @@ QTEST_MAIN(test_mockservice_zdsp1d)
 
 void test_mockservice_zdsp1d::initTestCase()
 {
+    TimerFactoryQtForTest::enableTest();
     qputenv("QT_FATAL_CRITICALS", "1");
 }
 
