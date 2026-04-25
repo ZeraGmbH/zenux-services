@@ -9,6 +9,7 @@ class test_source_control : public QObject
 {
     Q_OBJECT
 private slots:
+    void initTaseCase();
     void init();
     void cleanup();
 
@@ -20,6 +21,8 @@ private slots:
 
 private:
     void setupServerAndClient(const QString &deviceD);
+
+    VeinTcp::AbstractTcpNetworkFactoryPtr m_tcpNetworkFactory;
     std::unique_ptr<ResmanRunFacade> m_resman;
     std::unique_ptr<MockMt310s2d> m_mtXXXs2d;
     std::unique_ptr<TinyZScpiCmdInterface> m_pcbInterface;

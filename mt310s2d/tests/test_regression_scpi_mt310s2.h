@@ -11,6 +11,7 @@ class test_regression_scpi_mt310s2 : public QObject
 {
     Q_OBJECT
 private slots:
+    void initTestCase();
     void initTestCase_data();
     void init();
     void cleanup();
@@ -19,6 +20,7 @@ private slots:
     void dumpScpi();
 
 private:
+    VeinTcp::AbstractTcpNetworkFactoryPtr m_tcpNetworkFactory;
     std::unique_ptr<ResmanRunFacade> m_resman;
     std::unique_ptr<MockMt310s2d> m_server;
     Zera::ProxyClientPtr m_proxyClient;

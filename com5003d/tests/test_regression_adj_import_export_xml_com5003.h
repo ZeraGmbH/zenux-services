@@ -10,6 +10,7 @@ class test_regression_adj_import_export_xml_com5003 : public QObject
 {
     Q_OBJECT
 private slots:
+    void initTestCase();
     void init();
     void cleanup();
 
@@ -27,8 +28,9 @@ private slots:
 private:
     void setupServers();
 
+    VeinTcp::AbstractTcpNetworkFactoryPtr m_tcpNetworkFactory;
+    std::unique_ptr<ResmanRunFacade> m_resman;
     std::unique_ptr<TestServerForSenseInterfaceCom5003> m_testServer;
-    std::unique_ptr<ResmanRunFacade> m_resmanServer;
     Zera::ProxyClientPtr m_proxyClient;
 };
 

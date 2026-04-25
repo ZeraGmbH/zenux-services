@@ -17,8 +17,10 @@ using namespace Zera;
 
 void test_notificationcontents::initTestCase()
 {
+    qputenv("QT_FATAL_CRITICALS", "1");
     TimerFactoryQtForTest::enableTest();
-    m_tcpFactory = VeinTcp::MockTcpNetworkFactory::create();
+    m_tcpNetworkFactory = VeinTcp::MockTcpNetworkFactory::create();
+    m_resman = std::make_unique<ResmanRunFacade>(m_tcpNetworkFactory);
 }
 
 void test_notificationcontents::init()
@@ -33,7 +35,6 @@ void test_notificationcontents::cleanup()
     m_pcbClient = nullptr;
     TimeMachineObject::feedEventLoop();
     m_testServer = nullptr;
-    m_resmanServer = nullptr;
     TimeMachineObject::feedEventLoop();
 }
 
@@ -130,15 +131,14 @@ void test_notificationcontents::rangeChangeWithValueDelayedRangeIo()
 void test_notificationcontents::setupServers()
 {
     TimeMachineForTest::reset();
-    m_resmanServer = std::make_unique<ResmanRunFacade>(m_tcpFactory);
     m_ctrlFactory = std::make_shared<TestFactoryI2cCtrl>(true);
-    m_testServer = std::make_unique<TestServerForSenseInterfaceMt310s2>(m_ctrlFactory, m_tcpFactory);
+    m_testServer = std::make_unique<TestServerForSenseInterfaceMt310s2>(m_ctrlFactory, m_tcpNetworkFactory);
     TimeMachineObject::feedEventLoop();
 }
 
 void test_notificationcontents::setupClient()
 {
-    m_pcbClient = Zera::Proxy::getInstance()->getConnectionSmart(netInfo, m_tcpFactory);
+    m_pcbClient = Zera::Proxy::getInstance()->getConnectionSmart(netInfo, m_tcpNetworkFactory);
     m_pcbInterface = std::make_shared<Zera::cPCBInterface>();
     m_pcbInterface->setClientSmart(m_pcbClient);
     Zera::Proxy::getInstance()->startConnectionSmart(m_pcbClient);

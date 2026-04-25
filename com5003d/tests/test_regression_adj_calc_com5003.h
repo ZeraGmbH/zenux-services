@@ -27,8 +27,9 @@ private:
     void setupServers();
     double calcAdjValue(double value, double coeff0, double coeff1, double coeff2);
 
+    VeinTcp::AbstractTcpNetworkFactoryPtr m_tcpNetworkFactory;
+    std::unique_ptr<ResmanRunFacade> m_resman;
     std::unique_ptr<TestServerForSenseInterfaceCom5003> m_testServer;
-    std::unique_ptr<ResmanRunFacade> m_resmanServer;
     Zera::ProxyClientPtr m_proxyClient;
     I2cCtrlEepromPermissionPtr m_permissionMock;
     std::unique_ptr<AdjustScpiValueFormatter> m_valueFormatter;

@@ -8,6 +8,7 @@
 #include "testfactoryzdspsupport.h"
 #include "testsingletondevicenodedsp.h"
 #include <timemachineobject.h>
+#include <timerfactoryqtfortest.h>
 #include <mocktcpnetworkfactory.h>
 #include <testloghelpers.h>
 #include <QDataStream>
@@ -18,10 +19,15 @@ QTEST_MAIN(test_regression_dsp_var)
 
 static constexpr quint16 dspServerPort = 6310;
 
+void test_regression_dsp_var::initTestCase()
+{
+    TimerFactoryQtForTest::enableTest();
+    m_tcpNetworkFactory = VeinTcp::MockTcpNetworkFactory::create();
+    m_resman = std::make_unique<ResmanRunFacade>(m_tcpNetworkFactory);
+}
+
 void test_regression_dsp_var::init()
 {
-    m_tcpNetworkFactory = VeinTcp::MockTcpNetworkFactory::create();
-    m_resmanServer = std::make_unique<ResmanRunFacade>(m_tcpNetworkFactory);
     m_zdspSupportFactory = std::make_shared<TestFactoryZdspSupport>();
     m_dspService = std::make_unique<TestZdsp1dForVarAccess>(m_zdspSupportFactory, m_tcpNetworkFactory);
     TimeMachineObject::feedEventLoop();
@@ -43,7 +49,6 @@ void test_regression_dsp_var::cleanup()
     m_dspService = nullptr;
     TimeMachineObject::feedEventLoop();
     m_zdspSupportFactory = nullptr;
-    m_resmanServer = nullptr;
     TimeMachineObject::feedEventLoop();
 }
 

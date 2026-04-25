@@ -6,10 +6,19 @@
 #include <testloghelpers.h>
 #include <mockeepromdevice.h>
 #include <timemachineobject.h>
+#include <timerfactoryqtfortest.h>
 #include <mocktcpnetworkfactory.h>
 #include <QTest>
 
 QTEST_MAIN(test_regression_scpi_mt310s2);
+
+void test_regression_scpi_mt310s2::initTestCase()
+{
+    qputenv("QT_FATAL_CRITICALS", "1");
+    TimerFactoryQtForTest::enableTest();
+    m_tcpNetworkFactory = VeinTcp::MockTcpNetworkFactory::create();
+    m_resman = std::make_unique<ResmanRunFacade>(m_tcpNetworkFactory);
+}
 
 void test_regression_scpi_mt310s2::initTestCase_data()
 {
@@ -20,13 +29,11 @@ void test_regression_scpi_mt310s2::initTestCase_data()
 
 void test_regression_scpi_mt310s2::init()
 {
-    VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory = VeinTcp::MockTcpNetworkFactory::create();
-    m_resman = std::make_unique<ResmanRunFacade>(tcpNetworkFactory);
     QFETCH_GLOBAL(QString, serviceNameForAlternateDevice);
-    m_server = std::make_unique<MockMt310s2d>(std::make_shared<TestFactoryI2cCtrl>(true), tcpNetworkFactory, serviceNameForAlternateDevice);
+    m_server = std::make_unique<MockMt310s2d>(std::make_shared<TestFactoryI2cCtrl>(true), m_tcpNetworkFactory, serviceNameForAlternateDevice);
     TimeMachineObject::feedEventLoop();
 
-    m_proxyClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307, tcpNetworkFactory);
+    m_proxyClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307, m_tcpNetworkFactory);
     m_pcbIFace = std::make_unique<Zera::cPCBInterface>();
     m_pcbIFace->setClientSmart(m_proxyClient);
     Zera::Proxy::getInstance()->startConnectionSmart(m_proxyClient);
@@ -39,7 +46,6 @@ void test_regression_scpi_mt310s2::cleanup()
     m_pcbIFace = nullptr;
     m_proxyClient = nullptr;
     m_server = nullptr;
-    m_resman = nullptr;
     TimeMachineObject::feedEventLoop();
 }
 

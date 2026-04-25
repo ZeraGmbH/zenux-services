@@ -11,12 +11,14 @@ class test_regression_scpi_com5003 : public QObject
 {
     Q_OBJECT
 private slots:
+    void initTestCase();
     void init();
     void cleanup();
 
     void serverUp();
     void dumpScpi();
 private:
+    VeinTcp::AbstractTcpNetworkFactoryPtr m_tcpNetworkFactory;
     std::unique_ptr<ResmanRunFacade> m_resman;
     std::unique_ptr<MockCom5003d> m_server;
     Zera::ProxyClientPtr m_proxyClient;

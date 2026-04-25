@@ -26,10 +26,11 @@ private slots:
 private:
     void setupServers();
     void setupClient();
+
+    VeinTcp::AbstractTcpNetworkFactoryPtr m_tcpNetworkFactory;
+    std::unique_ptr<ResmanRunFacade> m_resman;
     std::shared_ptr<TestFactoryI2cCtrl> m_ctrlFactory;
-    VeinTcp::AbstractTcpNetworkFactoryPtr m_tcpFactory;
     std::unique_ptr<TestServerForSenseInterfaceMt310s2> m_testServer;
-    std::unique_ptr<ResmanRunFacade> m_resmanServer;
 
     Zera::ProxyClientPtr m_pcbClient;
     Zera::PcbInterfacePtr m_pcbInterface;

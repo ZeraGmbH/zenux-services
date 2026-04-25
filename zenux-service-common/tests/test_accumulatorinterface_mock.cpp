@@ -14,12 +14,14 @@ QTEST_MAIN(test_accumulatorinterface_mock)
 void test_accumulatorinterface_mock::initTestCase()
 {
     TimerFactoryQtForTest::enableTest();
+    qputenv("QT_FATAL_CRITICALS", "1");
+    m_tcpNetworkFactory = VeinTcp::MockTcpNetworkFactory::create();
+    m_resman = std::make_unique<ResmanRunFacade>(m_tcpNetworkFactory);
 }
 
 void test_accumulatorinterface_mock::init()
 {
     TimeMachineForTest::reset();
-
 }
 
 void test_accumulatorinterface_mock::cleanup()
@@ -27,7 +29,6 @@ void test_accumulatorinterface_mock::cleanup()
     m_pcbIFace = nullptr;
     m_proxyClient = nullptr;
     m_mt310s2d = nullptr;
-    m_resman = nullptr;
     TimeMachineObject::feedEventLoop();
 }
 
@@ -99,12 +100,10 @@ void test_accumulatorinterface_mock::readAccuStateOfChargeAccuEnabled()
 
 void test_accumulatorinterface_mock::setupServers(QString configFileXml)
 {
-    VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory = VeinTcp::MockTcpNetworkFactory::create();
-    m_resman = std::make_unique<ResmanRunFacade>(tcpNetworkFactory);
-    m_mt310s2d = std::make_unique<MockMt310s2d>(std::make_shared<TestFactoryI2cCtrl>(true), tcpNetworkFactory, "mt310s2d", configFileXml);
+    m_mt310s2d = std::make_unique<MockMt310s2d>(std::make_shared<TestFactoryI2cCtrl>(true), m_tcpNetworkFactory, "mt310s2d", configFileXml);
     TimeMachineObject::feedEventLoop();
 
-    m_proxyClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307, tcpNetworkFactory);
+    m_proxyClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307, m_tcpNetworkFactory);
     m_pcbIFace = std::make_unique<Zera::cPCBInterface>();
     m_pcbIFace->setClientSmart(m_proxyClient);
     Zera::Proxy::getInstance()->startConnectionSmart(m_proxyClient);

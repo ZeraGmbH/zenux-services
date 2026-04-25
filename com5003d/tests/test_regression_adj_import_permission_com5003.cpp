@@ -7,18 +7,25 @@
 #include "zscpi_response_definitions.h"
 #include "xmlhelperfortest.h"
 #include <timemachineobject.h>
+#include <timerfactoryqtfortest.h>
 #include <mocktcpnetworkfactory.h>
 #include <QSignalSpy>
 #include <QTest>
 
 QTEST_MAIN(test_regression_adj_import_permission_com5003);
 
+void test_regression_adj_import_permission_com5003::initTestCase()
+{
+    TimerFactoryQtForTest::enableTest();
+    m_tcpNetworkFactory = VeinTcp::MockTcpNetworkFactory::create();
+    m_resman = std::make_unique<ResmanRunFacade>(m_tcpNetworkFactory);
+}
+
 void test_regression_adj_import_permission_com5003::cleanup()
 {
     MockEepromDevice::cleanAll();
     m_proxyClient = nullptr;
     m_testServer = nullptr;
-    m_resmanServer = nullptr;
     TimeMachineObject::feedEventLoop();
 }
 
@@ -75,12 +82,10 @@ void test_regression_adj_import_permission_com5003::scpiImportPassFlashWrite()
 
 void test_regression_adj_import_permission_com5003::setupServers(AbstractFactoryI2cCtrlPtr ctrlFactory)
 {
-    VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory = VeinTcp::MockTcpNetworkFactory::create();
-    m_resmanServer = std::make_unique<ResmanRunFacade>(tcpNetworkFactory);
-    m_testServer = std::make_unique<TestServerForSenseInterfaceCom5003>(ctrlFactory, tcpNetworkFactory);
+    m_testServer = std::make_unique<TestServerForSenseInterfaceCom5003>(ctrlFactory, m_tcpNetworkFactory);
     TimeMachineObject::feedEventLoop();
 
-    m_proxyClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307, tcpNetworkFactory);
+    m_proxyClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307, m_tcpNetworkFactory);
     Zera::Proxy::getInstance()->startConnectionSmart(m_proxyClient);
     TimeMachineObject::feedEventLoop();
 }

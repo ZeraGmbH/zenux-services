@@ -31,8 +31,9 @@ private:
     void computeAdj();
     void simulReboot();
 
+    VeinTcp::AbstractTcpNetworkFactoryPtr m_tcpNetworkFactory;
+    std::unique_ptr<ResmanRunFacade> m_resman;
     std::unique_ptr<TestServerForSenseInterfaceMt310s2> m_testServer;
-    std::unique_ptr<ResmanRunFacade> m_resmanServer;
     Zera::ProxyClientPtr m_proxyClient;
 
 };

@@ -32,6 +32,7 @@ private:
     void catchInterfaceAnswer(quint32 msgnr, quint8 reply, const QVariant &answer); // is a slot
     void waitForAccuDetected();
 
+    VeinTcp::AbstractTcpNetworkFactoryPtr m_tcpNetworkFactory;
     std::unique_ptr<ResmanRunFacade> m_resman;
     std::unique_ptr<MockMt310s2d> m_mt310s2d;
     Zera::ProxyClientPtr m_proxyClient;

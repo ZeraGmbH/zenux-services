@@ -14,6 +14,13 @@
 
 QTEST_MAIN(test_regression_sec1000);
 
+void test_regression_sec1000::initTestCase()
+{
+    qputenv("QT_FATAL_CRITICALS", "1");
+    m_tcpNetworkFactory = VeinTcp::MockTcpNetworkFactory::create();
+    m_resman = std::make_unique<ResmanRunFacade>(m_tcpNetworkFactory);
+}
+
 void test_regression_sec1000::initTestCase_data()
 {
     QTest::addColumn<int>("ecUnitCount");
@@ -28,13 +35,11 @@ void test_regression_sec1000::init()
     MockDeviceNodeSec *secDeviceNode = static_cast<MockDeviceNodeSec*>(deviceNode.get());
     secDeviceNode->resetRecording();
 
-    VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory = VeinTcp::MockTcpNetworkFactory::create();
-    m_resman = std::make_unique<ResmanRunFacade>(tcpNetworkFactory);
     QFETCH_GLOBAL(int, ecUnitCount);
-    m_server = std::make_unique<MockSec1000d>(tcpNetworkFactory, ecUnitCount);
+    m_server = std::make_unique<MockSec1000d>(m_tcpNetworkFactory, ecUnitCount);
     TimeMachineObject::feedEventLoop();
 
-    m_proxyClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6305, tcpNetworkFactory);
+    m_proxyClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6305, m_tcpNetworkFactory);
     m_secIFace = std::make_unique<Zera::cSECInterface>();
     m_secIFace->setClientSmart(m_proxyClient);
     Zera::Proxy::getInstance()->startConnectionSmart(m_proxyClient);
@@ -46,7 +51,6 @@ void test_regression_sec1000::cleanup()
     m_secIFace = nullptr;
     m_proxyClient = nullptr;
     m_server = nullptr;
-    m_resman = nullptr;
     TimeMachineObject::feedEventLoop();
 }
 

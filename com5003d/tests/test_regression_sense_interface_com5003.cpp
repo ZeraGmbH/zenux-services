@@ -5,6 +5,7 @@
 #include "proxy.h"
 #include "zscpi_response_definitions.h"
 #include <timemachineobject.h>
+#include <timerfactoryqtfortest.h>
 #include <mocktcpnetworkfactory.h>
 #include <testloghelpers.h>
 #include <QRegularExpression>
@@ -15,16 +16,22 @@
 
 QTEST_MAIN(test_regression_sense_interface_com5003);
 
+void test_regression_sense_interface_com5003::initTestCase()
+{
+    TimerFactoryQtForTest::enableTest();
+    qputenv("QT_FATAL_CRITICALS", "1");
+    m_tcpNetworkFactory = VeinTcp::MockTcpNetworkFactory::create();
+    m_resman = std::make_unique<ResmanRunFacade>(m_tcpNetworkFactory);
+}
+
 void test_regression_sense_interface_com5003::init()
 {
-    VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory = VeinTcp::MockTcpNetworkFactory::create();
-    m_resmanServer = std::make_unique<ResmanRunFacade>(tcpNetworkFactory);
     m_testServer = std::make_unique<TestServerForSenseInterfaceCom5003>(
         std::make_shared<TestFactoryI2cCtrl>(true),
-        tcpNetworkFactory);
+        m_tcpNetworkFactory);
     TimeMachineObject::feedEventLoop();
 
-    m_proxyClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307, tcpNetworkFactory);
+    m_proxyClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307, m_tcpNetworkFactory);
     m_pcbIFace = std::make_unique<Zera::cPCBInterface>();
     m_pcbIFace->setClientSmart(m_proxyClient);
     Zera::Proxy::getInstance()->startConnectionSmart(m_proxyClient);
@@ -36,7 +43,6 @@ void test_regression_sense_interface_com5003::cleanup()
     m_pcbIFace = nullptr;
     m_proxyClient = nullptr;
     m_testServer = nullptr;
-    m_resmanServer = nullptr;
     TimeMachineObject::feedEventLoop();
 }
 

@@ -5,20 +5,27 @@
 #include "zscpi_response_definitions.h"
 #include <xmldocumentcompare.h>
 #include <testloghelpers.h>
+#include <timerfactoryqtfortest.h>
 #include <timemachineobject.h>
 #include <mocktcpnetworkfactory.h>
 #include <QTest>
 
 QTEST_MAIN(test_regression_scpi_zdsp1d);
 
+void test_regression_scpi_zdsp1d::initTestCase()
+{
+    qputenv("QT_FATAL_CRITICALS", "1");
+    TimerFactoryQtForTest::enableTest();
+    m_tcpNetworkFactory = VeinTcp::MockTcpNetworkFactory::create();
+    m_resman = std::make_unique<ResmanRunFacade>(m_tcpNetworkFactory);
+}
+
 void test_regression_scpi_zdsp1d::init()
 {
-    VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory = VeinTcp::MockTcpNetworkFactory::create();
-    m_resman = std::make_unique<ResmanRunFacade>(tcpNetworkFactory);
-    m_server = std::make_unique<MockZdsp1d>(std::make_shared<TestFactoryZdspSupport>(), tcpNetworkFactory);
+    m_server = std::make_unique<MockZdsp1d>(std::make_shared<TestFactoryZdspSupport>(), m_tcpNetworkFactory);
     TimeMachineObject::feedEventLoop();
 
-    m_proxyClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6310, tcpNetworkFactory);
+    m_proxyClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6310, m_tcpNetworkFactory);
     m_dspIFace = std::make_unique<Zera::cDSPInterface>();
     m_dspIFace->setClientSmart(m_proxyClient);
     Zera::Proxy::getInstance()->startConnectionSmart(m_proxyClient);
@@ -30,7 +37,6 @@ void test_regression_scpi_zdsp1d::cleanup()
     m_dspIFace = nullptr;
     m_proxyClient = nullptr;
     m_server = nullptr;
-    m_resman = nullptr;
     TimeMachineObject::feedEventLoop();
 }
 

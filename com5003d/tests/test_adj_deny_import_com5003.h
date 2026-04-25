@@ -10,6 +10,7 @@ class test_adj_deny_import_com5003 : public QObject
 {
     Q_OBJECT
 private slots:
+    void initTestCase();
     void cleanup();
 
     void loadEEpromWithStoredNamesAndVersions();
@@ -18,8 +19,9 @@ private slots:
 private:
     void setupServers();
 
+    VeinTcp::AbstractTcpNetworkFactoryPtr m_tcpNetworkFactory;
     std::unique_ptr<TestServerForSenseInterfaceCom5003> m_testServer;
-    std::unique_ptr<ResmanRunFacade> m_resmanServer;
+    std::unique_ptr<ResmanRunFacade> m_resman;
     Zera::ProxyClientPtr m_proxyClient;
 };
 

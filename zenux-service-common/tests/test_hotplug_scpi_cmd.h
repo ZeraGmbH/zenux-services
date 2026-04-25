@@ -10,6 +10,7 @@ class test_hotplug_scpi_cmd : public QObject
 {
     Q_OBJECT
 private slots:
+    void initTestCase();
     void init();
     void cleanup();
 
@@ -48,6 +49,7 @@ private:
     void setupServers();
     QByteArray createTestEmobExchangeData();
 
+    VeinTcp::AbstractTcpNetworkFactoryPtr m_tcpNetworkFactory;
     std::unique_ptr<ResmanRunFacade> m_resman;
     std::unique_ptr<MockMt310s2d> m_mt310s2d;
     Zera::ProxyClientPtr m_proxyClient;

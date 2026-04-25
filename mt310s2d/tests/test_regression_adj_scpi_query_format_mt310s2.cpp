@@ -4,6 +4,8 @@
 #include "scpisingletransactionblocked.h"
 #include "testfactoryi2cctrl.h"
 #include <timemachineobject.h>
+#include <timerfactoryqtfortest.h>
+#include <timerfactoryqtfortest.h>
 #include <mocktcpnetworkfactory.h>
 #include <QSignalSpy>
 #include <QTest>
@@ -12,6 +14,10 @@ QTEST_MAIN(test_regression_adj_scpi_query_format_mt310s2);
 
 void test_regression_adj_scpi_query_format_mt310s2::initTestCase()
 {
+    qputenv("QT_FATAL_CRITICALS", "1");
+    TimerFactoryQtForTest::enableTest();
+    m_tcpNetworkFactory = VeinTcp::MockTcpNetworkFactory::create();
+    m_resman = std::make_unique<ResmanRunFacade>(m_tcpNetworkFactory);
     setupServers();
 
     QString filenameShort = ":/import_scpi_format";
@@ -260,14 +266,12 @@ void test_regression_adj_scpi_query_format_mt310s2::queryOffsetNodes()
 
 void test_regression_adj_scpi_query_format_mt310s2::setupServers()
 {
-    VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory = VeinTcp::MockTcpNetworkFactory::create();
-    m_resmanServer = std::make_unique<ResmanRunFacade>(tcpNetworkFactory);
     m_testServer = std::make_unique<TestServerForSenseInterfaceMt310s2>(
         std::make_shared<TestFactoryI2cCtrl>(true),
-        tcpNetworkFactory);
+        m_tcpNetworkFactory);
     TimeMachineObject::feedEventLoop();
 
-    m_proxyClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307, tcpNetworkFactory);
+    m_proxyClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307, m_tcpNetworkFactory);
     Zera::Proxy::getInstance()->startConnectionSmart(m_proxyClient);
     TimeMachineObject::feedEventLoop();
 }

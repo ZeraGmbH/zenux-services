@@ -1,6 +1,5 @@
 #include "test_hotpluggablecontrollercontainer.h"
 #include "controllerpersitentdata.h"
-#include "testfactoryi2cctrl.h"
 #include "testhotplugi2cctrlcommoninfo.h"
 #include "testhotplugctrlfactoryi2cctrl.h"
 #include "hotpluggablecontrollercontainer.h"
@@ -15,7 +14,10 @@ QTEST_MAIN(test_hotpluggablecontrollercontainer);
 
 void test_hotpluggablecontrollercontainer::initTestCase()
 {
+    qputenv("QT_FATAL_CRITICALS", "1");
     TimerFactoryQtForTest::enableTest();
+    m_tcpNetworkFactory = VeinTcp::MockTcpNetworkFactory::create();
+    m_resman = std::make_unique<ResmanRunFacade>(m_tcpNetworkFactory);
 }
 
 void test_hotpluggablecontrollercontainer::initTestCase_data()
@@ -43,8 +45,6 @@ void test_hotpluggablecontrollercontainer::init()
 void test_hotpluggablecontrollercontainer::cleanup()
 {
     m_mt310s2d = nullptr;
-    TimeMachineObject::feedEventLoop();
-    m_resman = nullptr;
     TimeMachineObject::feedEventLoop();
     ControllerPersitentData::cleanupPersitentData();
 }
@@ -387,26 +387,24 @@ void test_hotpluggablecontrollercontainer::clampControllerSequence()
 
 quint16 test_hotpluggablecontrollercontainer::getChannelPlugMask(const QString &channelAlias)
 {
-    SenseSystem::cChannelSettings* channelSettings = m_senseSettings->findChannelSettingByAlias1(channelAlias);
+    const SenseSystem::cChannelSettings* channelSettings = m_senseSettings->findChannelSettingByAlias1(channelAlias);
     return (1<<channelSettings->m_nPluggedBit);
 }
 
 QString test_hotpluggablecontrollercontainer::getChannelMName(const QString &channelAlias)
 {
-    SenseSystem::cChannelSettings* channelSettings = m_senseSettings->findChannelSettingByAlias1(channelAlias);
+    const SenseSystem::cChannelSettings* channelSettings = m_senseSettings->findChannelSettingByAlias1(channelAlias);
     return channelSettings->m_nameMx;
 }
 
 quint8 test_hotpluggablecontrollercontainer::getChannelMuxChannel(const QString &channelAlias)
 {
-    SenseSystem::cChannelSettings* channelSettings = m_senseSettings->findChannelSettingByAlias1(channelAlias);
+    const SenseSystem::cChannelSettings* channelSettings = m_senseSettings->findChannelSettingByAlias1(channelAlias);
     return channelSettings->m_nMuxChannelNo;
 }
 
 void test_hotpluggablecontrollercontainer::createServers()
 {
-    VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory = VeinTcp::MockTcpNetworkFactory::create();
-    m_resman = std::make_unique<ResmanRunFacade>(tcpNetworkFactory);
-    m_mt310s2d = std::make_unique<MockMt310s2d>(m_ctrlFactory, tcpNetworkFactory, "mt310s2d");
+    m_mt310s2d = std::make_unique<MockMt310s2d>(m_ctrlFactory, m_tcpNetworkFactory, "mt310s2d");
     TimeMachineObject::feedEventLoop();
 }

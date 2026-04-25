@@ -11,6 +11,7 @@ class test_regression_sec1000 : public QObject
 {
     Q_OBJECT
 private slots:
+    void initTestCase();
     void initTestCase_data();
     void init();
     void cleanup();
@@ -36,6 +37,7 @@ private:
     bool checkInterruptMasks(const QList<ServerSendData> &responses);
     quint8 calcNonZeroTestMask(int ecChannelNum);
 
+    VeinTcp::AbstractTcpNetworkFactoryPtr m_tcpNetworkFactory;
     std::unique_ptr<ResmanRunFacade> m_resman;
     std::unique_ptr<MockSec1000d> m_server;
     Zera::ProxyClientPtr m_proxyClient;

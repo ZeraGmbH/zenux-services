@@ -10,6 +10,7 @@ class test_regression_adj_import_permission_com5003 : public QObject
 {
     Q_OBJECT
 private slots:
+    void initTestCase();
     void cleanup();
 
     void scpiImportPermissionQueryFail();
@@ -20,8 +21,9 @@ private slots:
 private:
     void setupServers(AbstractFactoryI2cCtrlPtr ctrlFactory);
 
+    VeinTcp::AbstractTcpNetworkFactoryPtr m_tcpNetworkFactory;
+    std::unique_ptr<ResmanRunFacade> m_resman;
     std::unique_ptr<TestServerForSenseInterfaceCom5003> m_testServer;
-    std::unique_ptr<ResmanRunFacade> m_resmanServer;
     Zera::ProxyClientPtr m_proxyClient;
 };
 

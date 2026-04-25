@@ -20,6 +20,7 @@ private slots:
     void smokeTestSenseInterface();
     void smokeTestFoutGroupChannelResourceAndInterface();
 private:
+    VeinTcp::AbstractTcpNetworkFactoryPtr m_tcpNetworkFactory;
     std::unique_ptr<ResmanRunFacade> m_resman;
     std::unique_ptr<MockCom5003d> m_server;
     Zera::ProxyClientPtr m_proxyClient;

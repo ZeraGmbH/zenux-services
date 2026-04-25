@@ -57,10 +57,12 @@ private slots:
 private:
     QByteArray genJsonConstantValuesAllRangesForAllClamps(QString channelName, QString channelNameAdRemoveClamps);
 
+    VeinTcp::AbstractTcpNetworkFactoryPtr m_tcpNetworkFactory;
+    std::unique_ptr<ResmanRunFacade> m_resman;
     std::unique_ptr<TestServerForSenseInterfaceMt310s2> m_testServer;
-    std::unique_ptr<ResmanRunFacade> m_resmanServer;
     Zera::ProxyClientPtr m_proxyClient;
     std::unique_ptr<Zera::cPCBInterface> m_pcbIFace;
+
     static QStringList m_channelsExpectedAllOverThePlace;
     static QStringList m_rangesExpectedU;
     static QStringList m_rangesExpectedI;

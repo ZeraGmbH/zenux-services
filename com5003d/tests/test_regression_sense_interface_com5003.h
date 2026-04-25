@@ -12,8 +12,10 @@ class test_regression_sense_interface_com5003 : public QObject
 {
     Q_OBJECT
 private slots:
+    void initTestCase();
     void init();
     void cleanup();
+
     void checkVersionsOfSystemInterface();
     void checkChannelCatalogAsExpected();
     void checkRangesUL1();
@@ -30,8 +32,9 @@ private slots:
     void twiceSameMode();
 
 private:
+    VeinTcp::AbstractTcpNetworkFactoryPtr m_tcpNetworkFactory;
+    std::unique_ptr<ResmanRunFacade> m_resman;
     std::unique_ptr<TestServerForSenseInterfaceCom5003> m_testServer;
-    std::unique_ptr<ResmanRunFacade> m_resmanServer;
     Zera::ProxyClientPtr m_proxyClient;
     std::unique_ptr<Zera::cPCBInterface> m_pcbIFace;
     static QStringList m_channelsExpectedAllOverThePlace;

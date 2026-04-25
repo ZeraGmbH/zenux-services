@@ -40,9 +40,9 @@ private:
     cSenseSettingsPtr m_senseSettings;
 
     TestHotPlugCtrlFactoryI2cCtrlPtr m_ctrlFactory;
+    VeinTcp::AbstractTcpNetworkFactoryPtr m_tcpNetworkFactory;
     std::unique_ptr<ResmanRunFacade> m_resman;
     std::unique_ptr<MockMt310s2d> m_mt310s2d;
-
 };
 
 #endif // TEST_HOTPLUGGABLECONTROLLERCONTAINER_H

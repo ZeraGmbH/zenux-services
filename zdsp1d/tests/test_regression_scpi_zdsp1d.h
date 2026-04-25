@@ -11,6 +11,7 @@ class test_regression_scpi_zdsp1d : public QObject
 {
     Q_OBJECT
 private slots:
+    void initTestCase();
     void init();
     void cleanup();
 
@@ -22,6 +23,7 @@ private slots:
     void superClientResponseTwiceAckConnectionClosed();
     void superClientResponseSetAckUnloadDspSetAck();
 private:
+    VeinTcp::AbstractTcpNetworkFactoryPtr m_tcpNetworkFactory;
     std::unique_ptr<ResmanRunFacade> m_resman;
     std::unique_ptr<MockZdsp1d> m_server;
     Zera::ProxyClientPtr m_proxyClient;

@@ -9,6 +9,7 @@
 #include "xmlhelperfortest.h"
 #include "mt310s2systeminfomock.h"
 #include <timemachineobject.h>
+#include <timerfactoryqtfortest.h>
 #include <testloghelpers.h>
 #include <mocktcpnetworkfactory.h>
 #include <QFile>
@@ -18,6 +19,11 @@ QTEST_MAIN(test_adj_procedure)
 
 void test_adj_procedure::initTestCase()
 {
+    qputenv("QT_FATAL_CRITICALS", "1");
+    TimerFactoryQtForTest::enableTest();
+    m_tcpNetworkFactory = VeinTcp::MockTcpNetworkFactory::create();
+    m_resman = std::make_unique<ResmanRunFacade>(m_tcpNetworkFactory);
+
     Mt310s2SystemInfoMock::setDeviceName("MT310s2 ADW5859");
     Mt310s2SystemInfoMock::setSerialNumber("050059467");
 }
@@ -31,7 +37,6 @@ void test_adj_procedure::cleanup()
 {
     m_proxyClient = nullptr;
     m_testServer = nullptr;
-    m_resmanServer = nullptr;
     TimeMachineObject::feedEventLoop();
 }
 
@@ -151,16 +156,14 @@ void test_adj_procedure::setupServers()
     AbstractFactoryI2cCtrlPtr ctrlFactory = std::make_shared<TestFactoryI2cCtrl>(true);
     PermissionFunctions::setPermissionCtrlFactory(ctrlFactory);
 
-    VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory = VeinTcp::MockTcpNetworkFactory::create();
-    m_resmanServer = std::make_unique<ResmanRunFacade>(tcpNetworkFactory);
     m_testServer = std::make_unique<TestServerForSenseInterfaceMt310s2>(
         ctrlFactory,
-        tcpNetworkFactory,
+        m_tcpNetworkFactory,
         "mt310s2",
         true);
     TimeMachineObject::feedEventLoop();
 
-    m_proxyClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307, tcpNetworkFactory);
+    m_proxyClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307, m_tcpNetworkFactory);
     Zera::Proxy::getInstance()->startConnectionSmart(m_proxyClient);
     TimeMachineObject::feedEventLoop();
 }

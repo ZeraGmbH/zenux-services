@@ -10,6 +10,7 @@ class test_regression_adj_import_export_eeprom_mt310s2 : public QObject
 {
     Q_OBJECT
 private slots:
+    void initTestCase();
     void cleanup();
 
     void directExportFlashError();
@@ -33,8 +34,9 @@ private slots:
 private:
     void setupServers(AbstractFactoryI2cCtrlPtr ctrlFactory);
 
+    VeinTcp::AbstractTcpNetworkFactoryPtr m_tcpNetworkFactory;
+    std::unique_ptr<ResmanRunFacade> m_resman;
     std::unique_ptr<TestServerForSenseInterfaceMt310s2> m_testServer;
-    std::unique_ptr<ResmanRunFacade> m_resmanServer;
     Zera::ProxyClientPtr m_proxyClient;
 };
 

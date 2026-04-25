@@ -10,7 +10,9 @@ class test_regression_critical_status_com5003 : public QObject
 {
     Q_OBJECT
 private slots:
+    void initTestCase();
     void cleanup();
+
     void receiveOnAllFlagsSet();
     void resetM3();
     void resetM4();
@@ -18,8 +20,9 @@ private slots:
 private:
     void setupServers(quint16 initialCriticalStatus);
 
+    VeinTcp::AbstractTcpNetworkFactoryPtr m_tcpNetworkFactory;
+    std::unique_ptr<ResmanRunFacade> m_resman;
     std::unique_ptr<TestServerForSenseInterfaceCom5003> m_testServer;
-    std::unique_ptr<ResmanRunFacade> m_resmanServer;
     Zera::ProxyClientPtr m_proxyClient;
 };
 

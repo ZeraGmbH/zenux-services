@@ -7,18 +7,25 @@
 #include "scpisingletransactionblocked.h"
 #include "zscpi_response_definitions.h"
 #include "xmlhelperfortest.h"
+#include <timerfactoryqtfortest.h>
 #include <timemachineobject.h>
 #include <testloghelpers.h>
 #include <QTest>
 
 QTEST_MAIN(test_adj_deny_import_com5003);
 
+void test_adj_deny_import_com5003::initTestCase()
+{
+    TimerFactoryQtForTest::enableTest();
+    m_tcpNetworkFactory = VeinTcp::MockTcpNetworkFactory::create();
+    m_resman = std::make_unique<ResmanRunFacade>(m_tcpNetworkFactory);
+}
+
 void test_adj_deny_import_com5003::cleanup()
 {
     MockEepromDevice::cleanAll();
     m_proxyClient = nullptr;
     m_testServer = nullptr;
-    m_resmanServer = nullptr;
     TimeMachineObject::feedEventLoop();
 }
 
@@ -53,16 +60,14 @@ void test_adj_deny_import_com5003::loadEEpromAndDenyDifferentDeviceName()
 
 void test_adj_deny_import_com5003::setupServers()
 {
-    VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory = VeinTcp::MockTcpNetworkFactory::create();
-    m_resmanServer = std::make_unique<ResmanRunFacade>(tcpNetworkFactory);
     m_testServer = std::make_unique<TestServerForSenseInterfaceCom5003>(
         std::make_shared<TestFactoryI2cCtrl>(true),
-        tcpNetworkFactory,
+        m_tcpNetworkFactory,
         "com5003",
         true);
     TimeMachineObject::feedEventLoop();
 
-    m_proxyClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307, tcpNetworkFactory);
+    m_proxyClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307, m_tcpNetworkFactory);
     Zera::Proxy::getInstance()->startConnectionSmart(m_proxyClient);
     TimeMachineObject::feedEventLoop();
 }

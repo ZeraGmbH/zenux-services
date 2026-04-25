@@ -5,6 +5,7 @@
 #include "scpisingletransactionblocked.h"
 #include "testfactoryi2cctrl.h"
 #include <timemachineobject.h>
+#include <timerfactoryqtfortest.h>
 #include <mockeepromdevice.h>
 #include <mocktcpnetworkfactory.h>
 #include <QTest>
@@ -13,6 +14,10 @@ QTEST_MAIN(test_regression_adj_status_com5003);
 
 void test_regression_adj_status_com5003::initTestCase()
 {
+    TimerFactoryQtForTest::enableTest();
+    qputenv("QT_FATAL_CRITICALS", "1");
+    m_tcpNetworkFactory = VeinTcp::MockTcpNetworkFactory::create();
+    m_resman = std::make_unique<ResmanRunFacade>(m_tcpNetworkFactory);
 }
 
 void test_regression_adj_status_com5003::init()
@@ -24,7 +29,6 @@ void test_regression_adj_status_com5003::cleanup()
 {
     m_proxyClient = nullptr;
     m_testServer = nullptr;
-    m_resmanServer = nullptr;
     TimeMachineObject::feedEventLoop();
 }
 
@@ -55,12 +59,10 @@ void test_regression_adj_status_com5003::setupServers(AbstractFactoryI2cCtrlPtr 
 {
     PermissionFunctions::setPermissionCtrlFactory(ctrlFactory);
 
-    VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory = VeinTcp::MockTcpNetworkFactory::create();
-    m_resmanServer = std::make_unique<ResmanRunFacade>(tcpNetworkFactory);
-    m_testServer = std::make_unique<TestServerForSenseInterfaceCom5003>(ctrlFactory, tcpNetworkFactory);
+    m_testServer = std::make_unique<TestServerForSenseInterfaceCom5003>(ctrlFactory, m_tcpNetworkFactory);
     TimeMachineObject::feedEventLoop();
 
-    m_proxyClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307, tcpNetworkFactory);
+    m_proxyClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307, m_tcpNetworkFactory);
     Zera::Proxy::getInstance()->startConnectionSmart(m_proxyClient);
     TimeMachineObject::feedEventLoop();
 }

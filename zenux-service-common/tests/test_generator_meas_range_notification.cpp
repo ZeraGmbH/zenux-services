@@ -5,10 +5,19 @@
 #include <mocktcpnetworkfactory.h>
 #include <mockserverparamgenerator.h>
 #include <timemachineobject.h>
+#include <timerfactoryqtfortest.h>
 #include <QSignalSpy>
 #include <QTest>
 
 QTEST_MAIN(test_generator_meas_range_notification);
+
+void test_generator_meas_range_notification::initTestCase()
+{
+    qputenv("QT_FATAL_CRITICALS", "1");
+    TimerFactoryQtForTest::enableTest();
+    m_tcpNetworkFactory = VeinTcp::MockTcpNetworkFactory::create();
+    m_resman = std::make_unique<ResmanRunFacade>(m_tcpNetworkFactory);
+}
 
 void test_generator_meas_range_notification::init()
 {
@@ -23,7 +32,6 @@ void test_generator_meas_range_notification::cleanup()
     m_proxyClient = nullptr;
     m_mt310s2d = nullptr;
     TimeMachineObject::feedEventLoop();
-    m_resman = nullptr;
     TimeMachineObject::feedEventLoop();
 }
 
@@ -74,16 +82,13 @@ void test_generator_meas_range_notification::receiveSenseRangeChangeOnSourceRang
 
 void test_generator_meas_range_notification::setupServers()
 {
-    VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory = VeinTcp::MockTcpNetworkFactory::create();
-    m_resman = std::make_unique<ResmanRunFacade>(tcpNetworkFactory);
-
     ServerParams params = MockServerParamGenerator::createParams("mt581s2d");
     m_mt310s2d = std::make_unique<MockMt310s2d>(std::make_shared<DemoFactoryI2cCtrl>(std::make_unique<SettingsContainer>(params)),
-                                                tcpNetworkFactory,
+                                                m_tcpNetworkFactory,
                                                 "mt581s2");
     TimeMachineObject::feedEventLoop();
 
-    m_proxyClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307, tcpNetworkFactory);
+    m_proxyClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307, m_tcpNetworkFactory);
     m_pcbIFace = std::make_unique<Zera::cPCBInterface>();
     m_pcbIFace->setClientSmart(m_proxyClient);
     Zera::Proxy::getInstance()->startConnectionSmart(m_proxyClient);

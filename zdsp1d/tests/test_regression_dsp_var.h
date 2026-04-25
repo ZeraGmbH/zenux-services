@@ -11,6 +11,7 @@ class test_regression_dsp_var : public QObject
 {
     Q_OBJECT
 private slots:
+    void initTestCase();
     void init();
     void cleanup();
 
@@ -58,11 +59,11 @@ private:
     QByteArray floatToBuff(float value);
     QByteArray intToBuff(qint32 value);
 
-    std::unique_ptr<ResmanRunFacade> m_resmanServer;
+    VeinTcp::AbstractTcpNetworkFactoryPtr m_tcpNetworkFactory;
+    std::unique_ptr<ResmanRunFacade> m_resman;
     std::unique_ptr<TestZdsp1dForVarAccess> m_dspService;
     Zera::ProxyClientPtr m_proxyClient;
     std::unique_ptr<Zera::cDSPInterface> m_dspIFace;
-    VeinTcp::AbstractTcpNetworkFactoryPtr m_tcpNetworkFactory;
     AbstractFactoryZdspSupportPtr m_zdspSupportFactory;
 };
 
