@@ -16,8 +16,8 @@ DspCmdWithParamsCompiled DspCmdCompiler::compileOneCmdLine(const QString &cmdLin
     cmdParser.SetWhiteSpace(" (,)");
 
     const QChar* charCmdLine = cmdLine.data();
-    QString sSearch = cmdParser.GetKeyword(&charCmdLine); // das 1. keyword muss ein befehlscode sein
-    DspCmdDecodingDetails *dspcmd = DspStaticData::findDspCmd(sSearch);
+    const QString &cmdCode = cmdParser.GetKeyword(&charCmdLine); // das 1. keyword muss ein befehlscode sein
+    DspCmdDecodingDetails *dspcmd = DspStaticData::findDspCmd(cmdCode);
     if (dspcmd) {
         QStringList paramNames;
         short paramValues[3];
@@ -34,9 +34,9 @@ DspCmdWithParamsCompiled DspCmdCompiler::compileOneCmdLine(const QString &cmdLin
         }
         case CMD1i16: // command, one i16 parameter
         {
-            sSearch = cmdParser.GetKeyword(&charCmdLine);
-            paramNames.append(sSearch);
-            ok &= ( (paramValues[0] = m_varResolver->getVarOffset(sSearch)) > -1); // -1 ist fehlerbedingung
+            const QString &param = cmdParser.GetKeyword(&charCmdLine);
+            paramNames.append(param);
+            ok &= ( (paramValues[0] = m_varResolver->getVarOffset(param)) > -1); // -1 ist fehlerbedingung
             ok &= compilerSupport->addCmdToRaw(cmdLine, paramNames, paramValues, dspcmd, m_varResolver);
             ok &= areThereNoFurtherKeywords(cmdParser, charCmdLine);
             DspCmdWithParamsCompiled lcmd;
@@ -47,9 +47,9 @@ DspCmdWithParamsCompiled DspCmdCompiler::compileOneCmdLine(const QString &cmdLin
         case CMD2i16: // command, two i16 parameters
         {
             for (int i=0; i<2; i++) {
-                sSearch = cmdParser.GetKeyword(&charCmdLine);
-                paramNames.append(sSearch);
-                ok &= ( (paramValues[i] = m_varResolver->getVarOffset(sSearch)) > -1);
+                const QString &param = cmdParser.GetKeyword(&charCmdLine);
+                paramNames.append(param);
+                ok &= ( (paramValues[i] = m_varResolver->getVarOffset(param)) > -1);
             }
             ok &= compilerSupport->addCmdToRaw(cmdLine, paramNames, paramValues, dspcmd, m_varResolver);
             ok &= areThereNoFurtherKeywords(cmdParser, charCmdLine);
@@ -64,9 +64,9 @@ DspCmdWithParamsCompiled DspCmdCompiler::compileOneCmdLine(const QString &cmdLin
         case CMD3i16: // command, three i16 parameters
         {
             for (int i=0; i<3; i++) {
-                sSearch = cmdParser.GetKeyword(&charCmdLine);
-                paramNames.append(sSearch);
-                ok &= ( (paramValues[i] = m_varResolver->getVarOffset(sSearch)) > -1);
+                const QString &param = cmdParser.GetKeyword(&charCmdLine);
+                paramNames.append(param);
+                ok &= ( (paramValues[i] = m_varResolver->getVarOffset(param)) > -1);
             }
             ok &= compilerSupport->addCmdToRaw(cmdLine, paramNames, paramValues, dspcmd, m_varResolver);
             ok &= areThereNoFurtherKeywords(cmdParser, charCmdLine);
@@ -81,8 +81,8 @@ DspCmdWithParamsCompiled DspCmdCompiler::compileOneCmdLine(const QString &cmdLin
         case CMD1i32: // command, one i32 parameter (USERMEMOFFSET / DSPMEMOFFSET only)
         {
             long par;
-            sSearch = cmdParser.GetKeyword(&charCmdLine);
-            ok &= ( (par = m_varResolver->getVarOffset(sSearch)) > -1);
+            const QString &param = cmdParser.GetKeyword(&charCmdLine);
+            ok &= ( (par = m_varResolver->getVarOffset(param)) > -1);
             ok &= compilerSupport->addCmdToRaw1Param(cmdLine, par, dspcmd);
             ok &= areThereNoFurtherKeywords(cmdParser, charCmdLine);
             DspCmdWithParamsCompiled lcmd;
@@ -94,19 +94,19 @@ DspCmdWithParamsCompiled DspCmdCompiler::compileOneCmdLine(const QString &cmdLin
         {
             short par1;
             long par2 = 0;
-            sSearch = cmdParser.GetKeyword(&charCmdLine);
-            ok &= ( (par1 = m_varResolver->getVarOffset(sSearch)) > -1); // -1 ist fehlerbedingung
+            const QString &param1 = cmdParser.GetKeyword(&charCmdLine);
+            ok &= ( (par1 = m_varResolver->getVarOffset(param1)) > -1); // -1 ist fehlerbedingung
             DspCmdWithParamsCompiled lcmd;
             if (!(ok))
                 return lcmd; // wenn fehler -> fertig
-            sSearch = cmdParser.GetKeyword(&charCmdLine);
-            par2 = sSearch.toLong(&ok); // test auf integer
+            const QString &param2 = cmdParser.GetKeyword(&charCmdLine);
+            par2 = param2.toLong(&ok); // test auf integer
             if (!ok)
-                par2 = sSearch.toLong(&ok, 16); // test auf hex
+                par2 = param2.toLong(&ok, 16); // test auf hex
             if (!ok)  {
-                float tf = sSearch.toFloat(&ok);
+                float tf = param2.toFloat(&ok);
                 if (!ok) {
-                    par2 = m_varResolver->getVarOffset(sSearch);
+                    par2 = m_varResolver->getVarOffset(param2);
                     if (par2 >= 0)
                         ok = true;
                 }
