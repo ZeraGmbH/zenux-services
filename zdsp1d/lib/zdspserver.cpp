@@ -895,8 +895,7 @@ void ZDspServer::onProtobufDisconnect(VeinTcp::TcpPeer *peer)
 
 void ZDspServer::onProtobufDataReceived(VeinTcp::TcpPeer *peer, const QByteArray &message)
 {
-    XiQNetWrapper protobufWrapper;
-    executeCommandProto(peer, protobufWrapper.byteArrayToProtobuf(message));
+    executeCommandProto(peer, XiQNetWrapper::byteArrayToProto(message));
 }
 
 void ZDspServer::executeCommandProto(VeinTcp::TcpPeer *peer, std::shared_ptr<google::protobuf::Message> cmd)
@@ -965,6 +964,5 @@ void ZDspServer::onTelnetReceived(const QString &input)
 
 void ZDspServer::sendProtoAnswer(ProtonetCommandPtr protoCmd)
 {
-    XiQNetWrapper protobufWrapper;
-    CommonScpiMethods::sendProtoAnswer(m_telnetServer.getSocket(), &protobufWrapper, protoCmd);
+    CommonScpiMethods::sendProtoAnswer(m_telnetServer.getSocket(), protoCmd);
 }

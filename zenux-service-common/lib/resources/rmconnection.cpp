@@ -1,4 +1,5 @@
 #include "rmconnection.h"
+#include <xiqnetwrapper.h>
 
 RMConnection::RMConnection(const QString &ipadr, quint16 port, VeinTcp::AbstractTcpNetworkFactoryPtr tcpFactory) :
     m_sIPAdr(ipadr),
@@ -34,7 +35,7 @@ void RMConnection::SendCommand(const QString &cmd, const QString &par, quint32 m
     scpiCmd->set_command(cmd.toStdString());
     scpiCmd->set_parameter(par.toStdString());
     message.set_messagenr(msgnr);
-    m_pResourceManagerClient->sendMessage(m_protobufWrapper.protobufToByteArray(message));
+    m_pResourceManagerClient->sendMessage(XiQNetWrapper::protoToByteArray(message));
 }
 
 void RMConnection::SendCommand(const QString &cmd, const QString &par)
@@ -44,7 +45,7 @@ void RMConnection::SendCommand(const QString &cmd, const QString &par)
     ProtobufMessage::NetMessage::ScpiCommand* message = envelope.mutable_scpi();
     message->set_command(cmd.toStdString());
     message->set_parameter(par.toStdString());
-    m_pResourceManagerClient->sendMessage(m_protobufWrapper.protobufToByteArray(envelope));
+    m_pResourceManagerClient->sendMessage(XiQNetWrapper::protoToByteArray(envelope));
 }
 
 void RMConnection::tcpErrorHandler(VeinTcp::TcpPeer *peer, QAbstractSocket::SocketError errorCode)
@@ -56,7 +57,7 @@ void RMConnection::tcpErrorHandler(VeinTcp::TcpPeer *peer, QAbstractSocket::Sock
 
 void RMConnection::onMessageReceived(VeinTcp::TcpPeer *peer, const QByteArray &message)
 {
-    responseHandler(peer, m_protobufWrapper.byteArrayToProtobuf(message));
+    responseHandler(peer, XiQNetWrapper::byteArrayToProto(message));
 }
 
 void RMConnection::responseHandler(VeinTcp::TcpPeer *peer, std::shared_ptr<google::protobuf::Message> response)
@@ -84,5 +85,5 @@ void RMConnection::SendIdent(const QString &ident)
     ProtobufMessage::NetMessage::NetReply* message = envelope.mutable_reply();
     message->set_rtype(ProtobufMessage::NetMessage::NetReply::IDENT);
     message->set_body(ident.toStdString());
-    m_pResourceManagerClient->sendMessage(m_protobufWrapper.protobufToByteArray(envelope));
+    m_pResourceManagerClient->sendMessage(XiQNetWrapper::protoToByteArray(envelope));
 }

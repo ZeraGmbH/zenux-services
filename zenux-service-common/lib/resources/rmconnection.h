@@ -1,7 +1,6 @@
 #ifndef RMCONNECTION_H
 #define RMCONNECTION_H
 
-#include <xiqnetwrapper.h>
 #include <vtcp_peer.h>
 #include <netmessages.pb.h>
 #include <QString>
@@ -27,7 +26,6 @@ private:
     VeinTcp::AbstractTcpNetworkFactoryPtr m_tcpFactory;
     QString m_sCommand;
     VeinTcp::TcpPeer* m_pResourceManagerClient = nullptr;
-    XiQNetWrapper m_protobufWrapper;
 signals:
     void connectionRMError();
     void connected();

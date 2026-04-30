@@ -3,7 +3,6 @@
 
 #include "proxy.h"
 #include <vtcp_peer.h>
-#include <xiqnetwrapper.h>
 #include <QHash>
 #include <QString>
 
@@ -41,7 +40,6 @@ private:
 
     static Proxy* m_singletonInstance;
     Proxy *q_ptr;
-    XiQNetWrapper m_protobufWrapper;
     QHash<ProxyClientPrivate*, ProxyConnection*> m_ConnectionHash; // TODO replace by smart variant
     QHash<QByteArray, ProxyClientPrivate*> m_ClientHash;
 

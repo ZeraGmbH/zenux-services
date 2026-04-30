@@ -2,6 +2,7 @@
 #include "commonscpimethods.h"
 #include "zscpi_response_definitions.h"
 #include <scpi.h>
+#include <xiqnetwrapper.h>
 #include <fcntl.h>
 #include <unistd.h>
 #include <QByteArray>
@@ -112,7 +113,7 @@ void PCBServer::onTelnetReceived(const QString &input)
 
 void PCBServer::sendProtoAnswer(ProtonetCommandPtr protoCmd)
 {
-    CommonScpiMethods::sendProtoAnswer(m_telnetServer.getSocket(), &m_protobufWrapper, protoCmd);
+    CommonScpiMethods::sendProtoAnswer(m_telnetServer.getSocket(), protoCmd);
 }
 
 void PCBServer::onNotifySubscriber(const ScpiNotificationSubscriber &subscriber, const QString &newValue)
@@ -217,7 +218,7 @@ void PCBServer::onProtobufClientConnected(VeinTcp::TcpPeer *newClient)
 
 void PCBServer::onProtobufDataReceived(VeinTcp::TcpPeer *peer, const QByteArray &message)
 {
-    executeCommandProto(peer, m_protobufWrapper.byteArrayToProtobuf(message));
+    executeCommandProto(peer, XiQNetWrapper::byteArrayToProto(message));
 }
 
 void PCBServer::executeCommandProto(VeinTcp::TcpPeer* peer, std::shared_ptr<google::protobuf::Message> cmd)
@@ -286,7 +287,7 @@ void PCBServer::sendNotificationToClient(const QString &message, const QByteArra
         intMessage->set_rtype(ProtobufMessage::NetMessage_NetReply_ReplyType_ACK);
         protobufIntMessage.set_clientid(clientID, clientID.size());
         protobufIntMessage.set_messagenr(0); // interrupt
-        netPeer->sendMessage(m_protobufWrapper.protobufToByteArray(protobufIntMessage));
+        netPeer->sendMessage(XiQNetWrapper::protoToByteArray(protobufIntMessage));
     }
 }
 

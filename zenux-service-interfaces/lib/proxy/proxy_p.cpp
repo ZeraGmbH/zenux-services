@@ -3,6 +3,7 @@
 #include "proxynetpeer.h"
 #include "proxyconnection.h"
 #include "notzeronumgen.h"
+#include <xiqnetwrapper.h>
 #include <vtcp_peer.h>
 #include <netmessages.pb.h>
 #include <QUuid>
@@ -54,7 +55,7 @@ bool ProxyPrivate::releaseConnection(ProxyClientPrivate *client)
         ProtobufMessage::NetMessage::NetCmd *Command = netCommand.mutable_netcommand();
         Command->set_cmd(ProtobufMessage::NetMessage_NetCmd_CmdType_RELEASE);
         netCommand.set_clientid(binUUid.data(), binUUid.size());
-        connection->m_pNetClient->sendMessage(m_protobufWrapper.protobufToByteArray(netCommand));
+        connection->m_pNetClient->sendMessage(XiQNetWrapper::protoToByteArray(netCommand));
 
         deletePeerOnAllClientsGone(connection);
         delete connection;
@@ -78,7 +79,7 @@ quint32 ProxyPrivate::transmitCommand(ProxyClientPrivate* client, ProtobufMessag
 
     quint32 nr = NotZeroNumGen::getMsgNr();
     message->set_messagenr(nr);
-    m_ConnectionHash[client]->m_pNetClient->sendMessage(m_protobufWrapper.protobufToByteArray(*message));
+    m_ConnectionHash[client]->m_pNetClient->sendMessage(XiQNetWrapper::protoToByteArray(*message));
     return nr;
 }
 
@@ -120,7 +121,7 @@ void ProxyPrivate::registerDisConnection(VeinTcp::TcpPeer *peer)
 void ProxyPrivate::onMessageReceived(VeinTcp::TcpPeer *peer, const QByteArray &message)
 {
     Q_UNUSED(peer)
-    handleReceiveMessage(m_protobufWrapper.byteArrayToProtobuf(message));
+    handleReceiveMessage(XiQNetWrapper::byteArrayToProto(message));
 }
 
 ProxyNetPeer *ProxyPrivate::getProxyNetPeer(const QString &ipadress, quint16 port,

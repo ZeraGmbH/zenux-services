@@ -5,7 +5,6 @@
 #include <QDataStream>
 
 void CommonScpiMethods::sendProtoAnswer(QTcpSocket *telnetSocket,
-                                        XiQNetWrapper *protobufWrapper,
                                         ProtonetCommandPtr protoCmd)
 {
     if(protoCmd->m_pPeer == nullptr) {
@@ -44,7 +43,7 @@ void CommonScpiMethods::sendProtoAnswer(QTcpSocket *telnetSocket,
             netReply->set_body(output.toStdString()); // in any case we set the body
             protobufAnswer.set_clientid(protoCmd->m_clientId, protoCmd->m_clientId.size());
             protobufAnswer.set_messagenr(protoCmd->m_nmessageNr);
-            protoCmd->m_pPeer->sendMessage(protobufWrapper->protobufToByteArray(protobufAnswer));
+            protoCmd->m_pPeer->sendMessage(XiQNetWrapper::protoToByteArray(protobufAnswer));
         }
         else {
             QByteArray block;

@@ -23,7 +23,7 @@ public:
     static void resetGlobalVarList();
     void setCmdListDef(const QString& cmdListDef);
     void setCmdForIrqListDef(const QString& cmdIntListDef);
-    void sendInterruptNotification(ulong parameter, XiQNetWrapper &protobufWrapper) const;
+    void sendInterruptNotification(ulong parameter) const;
 
     bool compileCmdLists(QString& errs);
     const QList<DspCmdWithParamsCompiled>& GetDspCmdList() const;

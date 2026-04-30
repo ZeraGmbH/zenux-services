@@ -127,7 +127,6 @@ void ZDspClientContainer::handleDspInterrupt(DspVarDeviceNodeInOut &dspInOut)
             if (interruptCount > DSP_MAX_PENDING_INTERRUPT_COUNT)
                 qWarning("Number of interrupts in a package: %i exceeds upper limit!", interruptCount);
             else {
-                XiQNetWrapper protobufWrapper;
                 if (m_dspSuperClient) { // notify super client first
                     bool superClientFound = false;
                     // search super client index - it is expected last => start search at end
@@ -135,7 +134,7 @@ void ZDspClientContainer::handleDspInterrupt(DspVarDeviceNodeInOut &dspInOut)
                         int process = pardsp[i] >> 16;
                         const ZdspClient *clientToNotify = findClient(process);
                         if (clientToNotify && clientToNotify == m_dspSuperClient) {
-                            clientToNotify->sendInterruptNotification(pardsp[interruptCount], protobufWrapper);
+                            clientToNotify->sendInterruptNotification(pardsp[interruptCount]);
                             superClientFound = true;
                             break;
                         }
@@ -147,7 +146,7 @@ void ZDspClientContainer::handleDspInterrupt(DspVarDeviceNodeInOut &dspInOut)
                     int process = pardsp[i] >> 16;
                     const ZdspClient *clientToNotify = findClient(process);
                     if (clientToNotify && clientToNotify != m_dspSuperClient) // don't double notify super client
-                        clientToNotify->sendInterruptNotification(pardsp[i], protobufWrapper);
+                        clientToNotify->sendInterruptNotification(pardsp[i]);
                 }
             }
         }

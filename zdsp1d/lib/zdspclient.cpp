@@ -102,7 +102,7 @@ void ZdspClient::setCmdForIrqListDef(const QString &cmdIntListDef)
     m_sIntCmdListDef = cmdIntListDef;
 }
 
-void ZdspClient::sendInterruptNotification(ulong parameter, XiQNetWrapper &protobufWrapper) const
+void ZdspClient::sendInterruptNotification(ulong parameter) const
 {
     ProtobufMessage::NetMessage protobufIntMessage;
     ProtobufMessage::NetMessage::NetReply *intMessage = protobufIntMessage.mutable_reply();
@@ -115,7 +115,7 @@ void ZdspClient::sendInterruptNotification(ulong parameter, XiQNetWrapper &proto
     protobufIntMessage.set_clientid(proxyConnectionId.data(), proxyConnectionId.size());
     protobufIntMessage.set_messagenr(0); // interrupt
 
-    getVeinPeer()->sendMessage(protobufWrapper.protobufToByteArray(protobufIntMessage));
+    getVeinPeer()->sendMessage(XiQNetWrapper::protoToByteArray(protobufIntMessage));
 }
 
 const QByteArray &ZdspClient::getProtobufClientId() const

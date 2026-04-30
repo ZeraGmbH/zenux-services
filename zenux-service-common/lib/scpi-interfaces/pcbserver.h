@@ -7,7 +7,6 @@
 #include "settingscontainer.h"
 #include "consoleserver.h"
 #include <scpi.h>
-#include <xiqnetwrapper.h>
 #include <netmessages.pb.h>
 #include <xmlconfigreader.h>
 #include <vtcp_server.h>
@@ -63,7 +62,6 @@ private:
 
     QList<NotificationStructWithValue> m_notifierRegisterNext;
     QList<NotificationStructWithValue> m_notifierRegisterList;
-    XiQNetWrapper m_protobufWrapper;
 };
 
 #endif // PCBSERVER_H
