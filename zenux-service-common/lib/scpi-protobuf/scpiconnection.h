@@ -15,7 +15,7 @@ public:
     virtual ~ScpiConnection();
 signals:
     void valNotifier(NotificationValue* notifier);
-    void cmdExecutionDone(ProtonetCommandPtr protoCmd);
+    void cmdExecutionDone(const ProtonetCommandPtr &protoCmd);
     void sigNotifySubcriber(const ScpiNotificationSubscriber &subscriber, const QString &newValue);
     void removingSubscribers(VeinTcp::TcpPeer* peer, const QByteArray &clientID);
 public slots:

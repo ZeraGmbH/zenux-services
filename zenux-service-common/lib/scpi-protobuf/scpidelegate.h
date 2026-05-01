@@ -32,7 +32,7 @@ public:
 public slots:
     void notifyAllSubscribers(const QString &newValue);
 signals:
-    void sigExecuteProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd);
+    void sigExecuteProtoScpi(int cmdCode, const ProtonetCommandPtr &protoCmd);
     void sigNotifySubcriber(const ScpiNotificationSubscriber &subscriber, const QString &newValue);
 private:
     quint16 m_nCmdCode;
