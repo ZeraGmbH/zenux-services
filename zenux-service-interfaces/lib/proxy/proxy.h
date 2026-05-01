@@ -9,9 +9,8 @@
 namespace Zera {
 class ProxyPrivate;
 
-class SERVICE_INTERFACES_EXPORT Proxy : public QObject
+class SERVICE_INTERFACES_EXPORT Proxy
 {
-    Q_OBJECT
 public:
     static Proxy* getInstance();
     ProxyClientPtr getConnectionSmart(const QString &ipadress, quint16 port,
