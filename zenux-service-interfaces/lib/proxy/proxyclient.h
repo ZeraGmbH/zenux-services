@@ -16,7 +16,7 @@ class SERVICE_INTERFACES_EXPORT ProxyClient : public QObject
 public:
     virtual quint32 transmitCommand(ProtobufMessage::NetMessage *message) = 0;
 signals:
-    void answerAvailable(std::shared_ptr<ProtobufMessage::NetMessage>);
+    void answerAvailable(const std::shared_ptr<ProtobufMessage::NetMessage>&);
     void tcpError(QAbstractSocket::SocketError errorCode);
     void disconnected();
     void connected();
