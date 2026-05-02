@@ -14,11 +14,11 @@ enum Commands
     cmdRangeCat
 };
 
-SenseChannelCommon::SenseChannelCommon(std::shared_ptr<cSCPI> scpiinterface,
+SenseChannelCommon::SenseChannelCommon(const std::shared_ptr<cSCPI> &scpiInterface,
                                        const QString &unit,
                                        SenseSystem::cChannelSettings *cSettings,
                                        AbstractFactoryI2cCtrlPtr ctrlFactory) :
-    ScpiConnection(scpiinterface),
+    ScpiConnection(scpiInterface),
     m_ctrlFactory(ctrlFactory),
     m_sName(cSettings->m_nameMx),
     m_sAlias1(cSettings->m_sAlias1),
@@ -31,7 +31,7 @@ SenseChannelCommon::SenseChannelCommon(std::shared_ptr<cSCPI> scpiinterface,
     m_nMMode(0)
 {
     connect(&m_delayedCtrlIos, &AsyncQueuedMControllerIo::sigCmdDone, this,
-            [this](ProtonetCommandPtr protoCmd, QString rangeName) {
+            [this](const ProtonetCommandPtr &protoCmd, QString rangeName) {
         notifierSenseChannelRange = rangeName;
         emit cmdExecutionDone(protoCmd);
     });
@@ -133,7 +133,7 @@ void SenseChannelCommon::setMMode(int mode)
 }
 
 SenseChannelCommon::NotificationStatus SenseChannelCommon::setRangeCommon(SenseRangeCommon* range,
-                                                                          ProtonetCommandPtr protoCmd)
+                                                                          const ProtonetCommandPtr &protoCmd)
 {
     if ( range && range->getAvail() ) {
         I2cCtrlRangesPtr rangeCtrl = m_ctrlFactory->getRangesController();
@@ -157,7 +157,7 @@ SenseChannelCommon::NotificationStatus SenseChannelCommon::setRangeCommon(SenseR
     return SenseChannelCommon::NotificationNow;
 }
 
-void SenseChannelCommon::executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd)
+void SenseChannelCommon::executeProtoScpi(int cmdCode, const ProtonetCommandPtr &protoCmd)
 {
     bool notifyHere = true;
     switch (cmdCode)

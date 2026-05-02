@@ -15,7 +15,7 @@ public:
     static std::shared_ptr<ScpiDelegate> create(const QString &cmdParent,
                                                 const QString &cmd,
                                                 quint8 type,
-                                                std::shared_ptr<cSCPI> scpiInterface,
+                                                const std::shared_ptr<cSCPI> &scpiInterface,
                                                 quint16 cmdCode,
                                                 NotificationString *notificationString = nullptr);
     ScpiDelegate(const QString &cmdParent,
@@ -25,7 +25,7 @@ public:
                  NotificationString *notificationString);
     ~ScpiDelegate();
     virtual bool executeSCPI(const QString&, QString&) override { return false; }
-    virtual bool executeSCPI(ProtonetCommandPtr protoCmd);
+    virtual bool executeSCPI(const ProtonetCommandPtr &protoCmd);
     const QString &getCommand() const;
     NotificationString *getNotificationString();
     ScpiNotificationSubscriberHandler &getScpiNotificationSubscriberHandler();

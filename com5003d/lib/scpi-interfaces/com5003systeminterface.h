@@ -40,7 +40,7 @@ public:
     void initSCPIConnection() override;
 
 protected:
-    void executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd) override;
+    void executeProtoScpi(int cmdCode, const ProtonetCommandPtr &protoCmd) override;
 
 private:
     QString scpiReadServerVersion(const QString &scpi);

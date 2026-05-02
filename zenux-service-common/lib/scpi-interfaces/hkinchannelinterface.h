@@ -8,7 +8,7 @@ class HkInChannelInterface : public ScpiConnection
 {
     Q_OBJECT
 public:
-    HkInChannelInterface(std::shared_ptr<cSCPI> scpiinterface,
+    HkInChannelInterface(const std::shared_ptr<cSCPI> &scpiInterface,
                          QString description,
                          quint8 nr,
                          HkInSettings::ChannelSettings* cSettings);
@@ -18,7 +18,7 @@ public:
     QString& getDescription();
     bool isAvail();
 protected:
-    void executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd) override;
+    void executeProtoScpi(int cmdCode, const ProtonetCommandPtr &protoCmd) override;
 private:
     QString scpiReadAlias(const QString& scpi);
     QString scpiReadChannelStatus(const QString& scpi);

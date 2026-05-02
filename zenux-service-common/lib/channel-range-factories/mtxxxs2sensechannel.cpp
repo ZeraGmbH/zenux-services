@@ -2,11 +2,11 @@
 #include "senserangecommon.h"
 #include "zscpi_response_definitions.h"
 
-MtXXXs2SenseChannel::MtXXXs2SenseChannel(std::shared_ptr<cSCPI> scpiinterface,
+MtXXXs2SenseChannel::MtXXXs2SenseChannel(const std::shared_ptr<cSCPI> &scpiInterface,
                                          const QString &unit,
                                          SenseSystem::cChannelSettings *cSettings,
                                          AbstractFactoryI2cCtrlPtr ctrlFactory) :
-    SenseChannelCommon(scpiinterface,
+    SenseChannelCommon(scpiInterface,
                        unit,
                        cSettings,
                        ctrlFactory)
@@ -31,7 +31,7 @@ void MtXXXs2SenseChannel::setNotifierSenseChannelRange()
     }
 }
 
-SenseChannelCommon::NotificationStatus MtXXXs2SenseChannel::scpiReadWriteRange(ProtonetCommandPtr protoCmd)
+SenseChannelCommon::NotificationStatus MtXXXs2SenseChannel::scpiReadWriteRange(const ProtonetCommandPtr &protoCmd)
 {
     cSCPICommand cmd = protoCmd->m_sInput;
     if (cmd.isQuery()) {

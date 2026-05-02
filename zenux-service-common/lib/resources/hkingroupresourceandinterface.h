@@ -18,7 +18,7 @@ public:
     void initSCPIConnection() override;
     void registerResource(RMConnection *rmConnection, quint16 port) override;
 protected:
-    void executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd) override;
+    void executeProtoScpi(int cmdCode, const ProtonetCommandPtr &protoCmd) override;
 private:
     QString readVersion(QString& sInput);
     QString readChannelCatalog(QString& sInput);

@@ -9,7 +9,7 @@ class AdjRangeScpiClamp: public AdjRangeScpi
 {
     Q_OBJECT
 public:
-    AdjRangeScpiClamp(std::shared_ptr<cSCPI> scpiinterface,
+    AdjRangeScpiClamp(const std::shared_ptr<cSCPI> &scpiInterface,
                       SenseRangeCommon* deviceInternalRange,
                       double cvRatio,
                       PermissionStructAdj permission = PermissionStructAdj());

@@ -15,7 +15,7 @@ public:
     static QStringList encodeDataToHex(const QByteArray &data);
 
 private:
-    void executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd) override;
+    void executeProtoScpi(int cmdCode, const ProtonetCommandPtr &protoCmd) override;
     QString emobPushButtonPress(const QString& scpiCmd);
     QString emobReadLockState(const QString& scpiCmd);
 

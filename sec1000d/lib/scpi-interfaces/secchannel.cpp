@@ -76,7 +76,7 @@ void SecChannel::initSCPIConnection(const QString &leadingNodes)
     addDelegate(QString("%1%2").arg(adjLeadNodes, getName()),"INTACK", SCPI::isCmdwP, m_scpiInterface, intAcknowledge);
 }
 
-void SecChannel::executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd)
+void SecChannel::executeProtoScpi(int cmdCode, const ProtonetCommandPtr &protoCmd)
 {
     switch (cmdCode)
     {
@@ -143,7 +143,7 @@ void SecChannel::setIntReg(quint8 reg)
 }
 
 
-void SecChannel::m_ReadWriteRegister(ProtonetCommandPtr protoCmd)
+void SecChannel::m_ReadWriteRegister(const ProtonetCommandPtr &protoCmd)
 {
     bool ok;
     quint32 reg;
@@ -203,7 +203,7 @@ void SecChannel::m_ReadWriteRegister(ProtonetCommandPtr protoCmd)
         protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-void SecChannel::m_setSync(ProtonetCommandPtr protoCmd)
+void SecChannel::m_setSync(const ProtonetCommandPtr &protoCmd)
 {
     cSCPICommand cmd = protoCmd->m_sInput;
     if (cmd.isCommand(1)) {
@@ -232,7 +232,7 @@ void SecChannel::m_setSync(ProtonetCommandPtr protoCmd)
         protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-void SecChannel::m_setMux(ProtonetCommandPtr protoCmd)
+void SecChannel::m_setMux(const ProtonetCommandPtr &protoCmd)
 {
     cSCPICommand cmd = protoCmd->m_sInput;
     if (cmd.isCommand(1)) {
@@ -256,7 +256,7 @@ void SecChannel::m_setMux(ProtonetCommandPtr protoCmd)
         protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-void SecChannel::m_setCmdId(ProtonetCommandPtr protoCmd)
+void SecChannel::m_setCmdId(const ProtonetCommandPtr &protoCmd)
 {
     cSCPICommand cmd = protoCmd->m_sInput;
     if (cmd.isCommand(1)) {
@@ -282,7 +282,7 @@ void SecChannel::m_setCmdId(ProtonetCommandPtr protoCmd)
         protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-void SecChannel::m_start(ProtonetCommandPtr protoCmd)
+void SecChannel::m_start(const ProtonetCommandPtr &protoCmd)
 {
     cSCPICommand cmd = protoCmd->m_sInput;
     if (cmd.isCommand(0)) {
@@ -304,7 +304,7 @@ void SecChannel::m_start(ProtonetCommandPtr protoCmd)
 }
 
 
-void SecChannel::m_stop(ProtonetCommandPtr protoCmd)
+void SecChannel::m_stop(const ProtonetCommandPtr &protoCmd)
 {
     cSCPICommand cmd = protoCmd->m_sInput;
     if (cmd.isCommand(0)) {
@@ -319,7 +319,7 @@ void SecChannel::m_stop(ProtonetCommandPtr protoCmd)
         protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-void SecChannel::m_resetInt(ProtonetCommandPtr protoCmd)
+void SecChannel::m_resetInt(const ProtonetCommandPtr &protoCmd)
 {
     cSCPICommand cmd = protoCmd->m_sInput;
     if (cmd.isCommand(1)) {

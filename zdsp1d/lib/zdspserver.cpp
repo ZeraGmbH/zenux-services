@@ -259,7 +259,7 @@ void ZDspServer::initSCPIConnection()
     connect(this, &ScpiConnection::cmdExecutionDone, this, &ZDspServer::sendProtoAnswer);
 }
 
-void ZDspServer::executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd)
+void ZDspServer::executeProtoScpi(int cmdCode, const ProtonetCommandPtr &protoCmd)
 {
     cSCPICommand cmd = protoCmd->m_sInput;
     ZdspClient* client = m_zdspClientContainer.findClient(protoCmd->m_clientId);
@@ -962,7 +962,7 @@ void ZDspServer::onTelnetReceived(const QString &input)
     }
 }
 
-void ZDspServer::sendProtoAnswer(ProtonetCommandPtr protoCmd)
+void ZDspServer::sendProtoAnswer(const ProtonetCommandPtr &protoCmd)
 {
     CommonScpiMethods::sendProtoAnswer(m_telnetServer.getSocket(), protoCmd);
 }

@@ -51,7 +51,7 @@ void FOutGroupResourceAndInterface::registerResource(RMConnection *rmConnection,
                           QString("SOURCE;%1;1;%2;%3;").arg(channel->getName(), channel->getDescription()).arg(port));
 }
 
-void FOutGroupResourceAndInterface::executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd)
+void FOutGroupResourceAndInterface::executeProtoScpi(int cmdCode, const ProtonetCommandPtr &protoCmd)
 {
     switch (cmdCode)
     {

@@ -10,7 +10,7 @@ class GeneratorChannelInterface : public ScpiConnection
 {
     Q_OBJECT
 public:
-    explicit GeneratorChannelInterface(std::shared_ptr<cSCPI> scpiinterface,
+    explicit GeneratorChannelInterface(const std::shared_ptr<cSCPI> &scpiInterface,
                               const cSenseSettingsPtr senseSettings,
                               const SenseSystem::cChannelSettings* channelSettings,
                               AbstractFactoryI2cCtrlPtr ctrlFactory);
@@ -19,7 +19,7 @@ signals:
     void sigMeasRangeProbablyChanged(const QString &channelMName);
 
 private:
-    void executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd) override;
+    void executeProtoScpi(int cmdCode, const ProtonetCommandPtr &protoCmd) override;
     QString scpiChangeRangeByAmplitude(const QString &scpi);
     QString scpiChangeRange(const QString &scpi);
     QString scpiDspAmplitude(const QString &scpi);

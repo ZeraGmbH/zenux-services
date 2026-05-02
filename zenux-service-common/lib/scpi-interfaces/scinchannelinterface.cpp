@@ -7,11 +7,11 @@ enum Commands
     cmdStatus
 };
 
-ScInChannelInterface::ScInChannelInterface(std::shared_ptr<cSCPI> scpiinterface,
+ScInChannelInterface::ScInChannelInterface(const std::shared_ptr<cSCPI> &scpiInterface,
                                            QString description,
                                            quint8 nr,
                                            ScInSettings::ChannelSettings *cSettings) :
-    ScpiConnection(scpiinterface),
+    ScpiConnection(scpiInterface),
     m_sDescription(description)
 {
     m_sName = QString("sh%1").arg(nr);
@@ -26,7 +26,7 @@ void ScInChannelInterface::initSCPIConnection(const QString &leadingNodes)
     addDelegate(QString("%1%2").arg(adjLeadNodes, m_sName),"STATUS", SCPI::isQuery, m_scpiInterface, cmdStatus);
 }
 
-void ScInChannelInterface::executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd)
+void ScInChannelInterface::executeProtoScpi(int cmdCode, const ProtonetCommandPtr &protoCmd)
 {
     switch (cmdCode)
     {

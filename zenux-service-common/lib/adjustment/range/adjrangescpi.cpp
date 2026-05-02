@@ -50,10 +50,10 @@ enum ScpiCommands
     DirectJustInit
 };
 
-AdjRangeScpi::AdjRangeScpi(std::shared_ptr<cSCPI> scpiinterface,
+AdjRangeScpi::AdjRangeScpi(const std::shared_ptr<cSCPI> &scpiInterface,
                            std::unique_ptr<AdjustScpiValueFormatter> adjustmentFormatter,
                            PermissionStructAdj permissions) :
-    ScpiConnection(scpiinterface),
+    ScpiConnection(scpiInterface),
     m_gainCorrection({m_scpiInterface, permissions.funcAllowAdjGain, adjustmentFormatter->m_correctionExportDigits},
                        &m_adjGroupData.m_gainAdjData),
     m_phaseCorrection({m_scpiInterface, permissions.funcAllowAdjPhase, adjustmentFormatter->m_correctionExportDigits},
@@ -107,7 +107,7 @@ AdjDataItemScpi *AdjRangeScpi::getAdjInterface(const QString &name)
     return nullptr;
 }
 
-void AdjRangeScpi::executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd)
+void AdjRangeScpi::executeProtoScpi(int cmdCode, const ProtonetCommandPtr &protoCmd)
 {
     switch (cmdCode)
     {

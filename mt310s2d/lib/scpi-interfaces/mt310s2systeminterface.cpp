@@ -69,7 +69,7 @@ void Mt310s2SystemInterface::onAccuStatusChanged(uint8_t status)
     }
 }
 
-void Mt310s2SystemInterface::executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd)
+void Mt310s2SystemInterface::executeProtoScpi(int cmdCode, const ProtonetCommandPtr &protoCmd)
 {
     switch (cmdCode)
     {

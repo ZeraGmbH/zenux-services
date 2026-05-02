@@ -443,7 +443,7 @@ void SenseInterfaceCommon::onMeasRangeProbablyChanged(const QString &channelMNam
         channel->setNotifierSenseChannelRange();
 }
 
-void SenseInterfaceCommon::handleScpiReadWriteMMode(ProtonetCommandPtr protoCmd)
+void SenseInterfaceCommon::handleScpiReadWriteMMode(const ProtonetCommandPtr &protoCmd)
 {
     cSCPICommand cmd = protoCmd->m_sInput;
     if (cmd.isQuery())
@@ -463,7 +463,7 @@ void SenseInterfaceCommon::handleScpiReadWriteMMode(ProtonetCommandPtr protoCmd)
         emit cmdExecutionDone(protoCmd);
 }
 
-void SenseInterfaceCommon::executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd)
+void SenseInterfaceCommon::executeProtoScpi(int cmdCode, const ProtonetCommandPtr &protoCmd)
 {
     switch (cmdCode)
     {

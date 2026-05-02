@@ -29,7 +29,7 @@ void AccumulatorInterface::initSCPIConnection()
     addDelegate("SYSTEM:ACCUMULATOR", "SOC", SCPI::isQuery, m_scpiInterface, accumulatorCommands::cmdAccuStateOfCharge, &m_accuStateOfCharge);
 }
 
-void AccumulatorInterface::executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd)
+void AccumulatorInterface::executeProtoScpi(int cmdCode, const ProtonetCommandPtr &protoCmd)
 {
     switch (cmdCode)
     {

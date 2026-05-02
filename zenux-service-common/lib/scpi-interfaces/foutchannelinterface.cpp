@@ -15,11 +15,11 @@ enum Commands
 
 static constexpr double FormFactor = 5.6294995e6; // fout = (Pact/Pnenn) * FPZnenn * FormFactor
 
-FOutChannelInterface::FOutChannelInterface(std::shared_ptr<cSCPI> scpiinterface,
+FOutChannelInterface::FOutChannelInterface(const std::shared_ptr<cSCPI> &scpiInterface,
                                            const QString &description,
                                            quint8 nr,
                                            FOutSettings::ChannelSettings *cSettings) :
-    ScpiConnection(scpiinterface),
+    ScpiConnection(scpiInterface),
     m_sName(QString("fo%1").arg(nr)),
     m_sAlias(cSettings->m_sAlias),
     m_sDescription(description),
@@ -45,7 +45,7 @@ void FOutChannelInterface::initSCPIConnection(const QString &leadingNodes)
     addDelegate(QString("%1%2").arg(adjLeadNodes, m_sName),"POWTYPE", SCPI::isQuery | SCPI::isCmdwP , m_scpiInterface, cmdPowtype, &notifierPowerType);
 }
 
-void FOutChannelInterface::executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd)
+void FOutChannelInterface::executeProtoScpi(int cmdCode, const ProtonetCommandPtr &protoCmd)
 {
     switch (cmdCode)
     {

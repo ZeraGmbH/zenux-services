@@ -10,14 +10,14 @@ class AsyncZeraMControllerTask : public TaskTemplate
     Q_OBJECT
 public:
     static std::unique_ptr<AsyncZeraMControllerTask> create(AbstractZeraMControllerDelayedPtr mcontroller,
-                                                              ProtonetCommandPtr protoCmd,
+                                                              const ProtonetCommandPtr &protoCmd,
                                                               const QString &rangeName);
     AsyncZeraMControllerTask(AbstractZeraMControllerDelayedPtr mcontroller,
-                               ProtonetCommandPtr protoCmd,
+                               const ProtonetCommandPtr &protoCmd,
                                const QString &rangeName);
     void start() override;
 signals:
-    void sigCmdDone(ProtonetCommandPtr protoCmd, QString rangeName);
+    void sigCmdDone(const ProtonetCommandPtr &protoCmd, QString rangeName);
 private slots:
     void onCmdDone(ZeraMControllerIoTemplate::atmelRM cmdResult);
 private:

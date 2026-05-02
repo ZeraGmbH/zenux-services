@@ -12,7 +12,7 @@ void Sec1000StatusInterface::initSCPIConnection()
     addDelegate("STATUS", "DEVICE",SCPI::isQuery, m_scpiInterface, StatusSystem::cmdDevice);
 }
 
-void Sec1000StatusInterface::executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd)
+void Sec1000StatusInterface::executeProtoScpi(int cmdCode, const ProtonetCommandPtr &protoCmd)
 {
     cSCPICommand cmd = protoCmd->m_sInput;
 

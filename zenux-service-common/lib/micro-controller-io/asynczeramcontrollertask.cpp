@@ -3,7 +3,7 @@
 
 std::unique_ptr<AsyncZeraMControllerTask> AsyncZeraMControllerTask::create(
     AbstractZeraMControllerDelayedPtr mcontroller,
-    ProtonetCommandPtr protoCmd,
+    const ProtonetCommandPtr &protoCmd,
     const QString &rangeName)
 {
     return std::make_unique<AsyncZeraMControllerTask>(std::move(mcontroller),
@@ -12,7 +12,7 @@ std::unique_ptr<AsyncZeraMControllerTask> AsyncZeraMControllerTask::create(
 }
 
 AsyncZeraMControllerTask::AsyncZeraMControllerTask(AbstractZeraMControllerDelayedPtr mcontroller,
-                                                       ProtonetCommandPtr protoCmd,
+                                                       const ProtonetCommandPtr &protoCmd,
                                                        const QString &rangeName) :
     m_mcontroller(std::move(mcontroller)),
     m_protoCmd(protoCmd),

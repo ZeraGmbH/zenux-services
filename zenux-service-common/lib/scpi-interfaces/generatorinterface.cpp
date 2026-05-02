@@ -38,7 +38,7 @@ void GeneratorInterface::initSCPIConnection()
     }
 }
 
-void GeneratorInterface::executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd)
+void GeneratorInterface::executeProtoScpi(int cmdCode, const ProtonetCommandPtr &protoCmd)
 {
     cSCPICommand cmd = protoCmd->m_sInput;
     switch (cmdCode)

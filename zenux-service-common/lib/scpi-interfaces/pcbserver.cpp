@@ -62,7 +62,7 @@ void PCBServer::connectProtoConnectionSignals()
             this, &PCBServer::onProtobufClientConnected);
 }
 
-void PCBServer::executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd)
+void PCBServer::executeProtoScpi(int cmdCode, const ProtonetCommandPtr &protoCmd)
 {
     switch (cmdCode)
     {
@@ -111,7 +111,7 @@ void PCBServer::onTelnetReceived(const QString &input)
     }
 }
 
-void PCBServer::sendProtoAnswer(ProtonetCommandPtr protoCmd)
+void PCBServer::sendProtoAnswer(const ProtonetCommandPtr &protoCmd)
 {
     CommonScpiMethods::sendProtoAnswer(m_telnetServer.getSocket(), protoCmd);
 }
@@ -129,7 +129,7 @@ void PCBServer::onProtobufDisconnect(VeinTcp::TcpPeer *peer)
     Q_UNUSED(peer)
 }
 
-void PCBServer::registerNotifier(ProtonetCommandPtr protoCmd)
+void PCBServer::registerNotifier(const ProtonetCommandPtr &protoCmd)
 {
     cSCPICommand cmd = protoCmd->m_sInput;
     if(cmd.isCommand(1)) { // SEC service receives registerNotifier with 1 param
@@ -181,7 +181,7 @@ void PCBServer::registerNotifier(ProtonetCommandPtr protoCmd)
     }
 }
 
-void PCBServer::unregisterNotifier(ProtonetCommandPtr protoCmd)
+void PCBServer::unregisterNotifier(const ProtonetCommandPtr &protoCmd)
 {
     cSCPICommand cmd = protoCmd->m_sInput;
     if(cmd.isCommand(1) && (cmd.getParam(0) == "") ) {

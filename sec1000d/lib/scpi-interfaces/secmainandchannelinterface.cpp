@@ -58,7 +58,7 @@ void SecMainAndChannelInterface::initSCPIConnection()
     connectChannelSignalsAndInitScpi();
 }
 
-void SecMainAndChannelInterface::executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd)
+void SecMainAndChannelInterface::executeProtoScpi(int cmdCode, const ProtonetCommandPtr &protoCmd)
 {
     switch (cmdCode)
     {
@@ -118,7 +118,7 @@ QString SecMainAndChannelInterface::scpiReadECalculatorChannelCatalog(const QStr
     return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-void SecMainAndChannelInterface::scpiSetChannels(ProtonetCommandPtr protoCmd)
+void SecMainAndChannelInterface::scpiSetChannels(const ProtonetCommandPtr &protoCmd)
 {
     cSCPICommand cmd = protoCmd->m_sInput;
 
@@ -165,7 +165,7 @@ void SecMainAndChannelInterface::scpiSetChannels(ProtonetCommandPtr protoCmd)
 }
 
 
-void SecMainAndChannelInterface::scpiFreeChannels(ProtonetCommandPtr protoCmd)
+void SecMainAndChannelInterface::scpiFreeChannels(const ProtonetCommandPtr &protoCmd)
 {
     cSCPICommand cmd = protoCmd->m_sInput;
     protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::nak]; // preset

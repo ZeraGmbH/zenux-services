@@ -11,7 +11,7 @@ class SenseChannelCommon : public ScpiConnection
 {
     Q_OBJECT
 public:
-    SenseChannelCommon(std::shared_ptr<cSCPI> scpiinterface,
+    SenseChannelCommon(const std::shared_ptr<cSCPI> &scpiInterface,
                        const QString &unit,
                        SenseSystem::cChannelSettings* cSettings,
                        AbstractFactoryI2cCtrlPtr ctrlFactory);
@@ -40,13 +40,13 @@ public:
 
     void setMMode(int mode);
 
-    NotificationStatus setRangeCommon(SenseRangeCommon *range, ProtonetCommandPtr protoCmd);
+    NotificationStatus setRangeCommon(SenseRangeCommon *range, const ProtonetCommandPtr &protoCmd);
     virtual void setNotifierSenseChannelRange() = 0;
 
 protected:
-    void executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd) override;
+    void executeProtoScpi(int cmdCode, const ProtonetCommandPtr &protoCmd) override;
     virtual QString getAlias() = 0;
-    virtual NotificationStatus scpiReadWriteRange(ProtonetCommandPtr protoCmd) = 0;
+    virtual NotificationStatus scpiReadWriteRange(const ProtonetCommandPtr &protoCmd) = 0;
 
     QString scpiReadAlias(const QString& scpi);
     QString scpiReadType(const QString& scpi);

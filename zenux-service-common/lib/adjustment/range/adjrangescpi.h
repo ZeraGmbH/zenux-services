@@ -30,7 +30,7 @@ class AdjRangeScpi : public ScpiConnection
 {
     Q_OBJECT
 public:
-    AdjRangeScpi(std::shared_ptr<cSCPI> scpiinterface,
+    AdjRangeScpi(const std::shared_ptr<cSCPI> &scpiInterface,
                  std::unique_ptr<AdjustScpiValueFormatter> adjustmentFormatter,
                  PermissionStructAdj permissions = PermissionStructAdj());
     void initSCPIConnection(const QString &leadingNodes);
@@ -49,7 +49,7 @@ public:
     bool computeJustData();
 
 protected:
-    void executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd) override;
+    void executeProtoScpi(int cmdCode, const ProtonetCommandPtr &protoCmd) override;
     virtual double getGainCorrectionTotal(double par);
     virtual double getPhaseCorrectionTotal(double par);
     virtual double getOffsetCorrectionTotal(double par);

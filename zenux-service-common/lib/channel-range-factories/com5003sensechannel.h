@@ -10,13 +10,13 @@ class Com5003SenseChannel : public SenseChannelCommon
 {
     Q_OBJECT
 public:
-    Com5003SenseChannel(std::shared_ptr<cSCPI> scpiinterface,
+    Com5003SenseChannel(const std::shared_ptr<cSCPI> &scpiInterface,
                         const QString &unit,
                         SenseSystem::cChannelSettings* cSettings,
                         AbstractFactoryI2cCtrlPtr ctrlFactory);
     QString getAlias() override;
 private:
-    NotificationStatus scpiReadWriteRange(ProtonetCommandPtr protoCmd) override;
+    NotificationStatus scpiReadWriteRange(const ProtonetCommandPtr &protoCmd) override;
     void setNotifierSenseChannelRange() override;
 };
 

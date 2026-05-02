@@ -44,7 +44,7 @@ public:
 public slots:
     void onAccuStatusChanged(uint8_t status);
 protected:
-    void executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd) override;
+    void executeProtoScpi(int cmdCode, const ProtonetCommandPtr &protoCmd) override;
 private:
     QString scpiReadServerVersion(const QString &scpi);
     QString scpiReadAllCTRLVersions(const QString& scpi);

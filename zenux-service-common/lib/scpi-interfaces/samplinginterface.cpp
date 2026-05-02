@@ -31,7 +31,7 @@ void cSamplingInterface::initSCPIConnection()
     addDelegate("SAMPLE:S0:PLL", "CATALOG", SCPI::isQuery, m_scpiInterface, cmdPLLCat);
 }
 
-void cSamplingInterface::executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd)
+void cSamplingInterface::executeProtoScpi(int cmdCode, const ProtonetCommandPtr &protoCmd)
 {
     switch (cmdCode)
     {

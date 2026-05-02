@@ -1,11 +1,11 @@
 #include "generatorchannelinterface.h"
 #include "zscpi_response_definitions.h"
 
-GeneratorChannelInterface::GeneratorChannelInterface(std::shared_ptr<cSCPI> scpiinterface,
+GeneratorChannelInterface::GeneratorChannelInterface(const std::shared_ptr<cSCPI> &scpiInterface,
                                    const cSenseSettingsPtr senseSettings,
                                    const SenseSystem::cChannelSettings *channelSettings,
                                    AbstractFactoryI2cCtrlPtr ctrlFactory) :
-    ScpiConnection(scpiinterface),
+    ScpiConnection(scpiInterface),
     m_senseSettings(senseSettings),
     m_ctrlFactory(ctrlFactory),
     m_mName(channelSettings->m_nameMx),
@@ -32,7 +32,7 @@ void GeneratorChannelInterface::initSCPIConnection()
     addDelegate(scpiLead, "DSANGLE", SCPI::isQuery | SCPI::isCmdwP, m_scpiInterface, dspGetSetAngle);
 }
 
-void GeneratorChannelInterface::executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd)
+void GeneratorChannelInterface::executeProtoScpi(int cmdCode, const ProtonetCommandPtr &protoCmd)
 {
     switch(cmdCode)
     {

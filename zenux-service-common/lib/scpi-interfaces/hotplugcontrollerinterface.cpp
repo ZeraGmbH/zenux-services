@@ -55,7 +55,7 @@ QStringList HotplugControllerInterface::encodeDataToHex(const QByteArray &data)
     return hexBytes;
 }
 
-void HotplugControllerInterface::executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd)
+void HotplugControllerInterface::executeProtoScpi(int cmdCode, const ProtonetCommandPtr &protoCmd)
 {
     switch (cmdCode)
     {

@@ -24,7 +24,7 @@ void cSystemInterface::initSCPIConnection()
     addDelegate("SYSTEM:INTERFACE", "READ", SCPI::isQuery, m_scpiInterface, SystemSystem::cmdInterfaceRead);
 }
 
-void cSystemInterface::executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd)
+void cSystemInterface::executeProtoScpi(int cmdCode, const ProtonetCommandPtr &protoCmd)
 {
     switch (cmdCode)
     {

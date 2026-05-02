@@ -7,7 +7,7 @@ class ClampSenseRange: public SenseRangeCommon
 {
     Q_OBJECT
 public:
-    ClampSenseRange(std::shared_ptr<cSCPI> scpiinterface,
+    ClampSenseRange(const std::shared_ptr<cSCPI> &scpiInterface,
                     const QString &name,
                     bool avail,
                     double rValue,

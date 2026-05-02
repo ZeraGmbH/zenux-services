@@ -11,7 +11,7 @@ class AdjDataItemScpi: public ScpiConnection // base class for adjustment coeffi
 public:
     struct TJustDataParam
     {
-        std::shared_ptr<cSCPI> scpiinterface;
+        std::shared_ptr<cSCPI> scpiInterface;
         std::function<bool(bool &)> checkPermission;
         int digits;
     };
@@ -30,7 +30,7 @@ public:
     void nodesFromString(const QString& s );
 
 protected:
-    void executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd) override;
+    void executeProtoScpi(int cmdCode, const ProtonetCommandPtr &protoCmd) override;
     std::function<bool(bool &)> m_checkPermission;
 private:
     QString scpiReadWriteStatus(const QString& scpi);

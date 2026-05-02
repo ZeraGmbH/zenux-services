@@ -15,7 +15,7 @@ public:
                        AbstractFactoryI2cCtrlPtr ctrlFactory);
     void initSCPIConnection() override;
 protected:
-    void executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd) override;
+    void executeProtoScpi(int cmdCode, const ProtonetCommandPtr &protoCmd) override;
 private:
     QString scpiReadSampleRate(const QString& scpi);
     QString scpiReadWritePLL(const QString& scpi);

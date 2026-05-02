@@ -22,7 +22,7 @@ signals:
     void sigMeasRangeProbablyChanged(const QString &channelMName);
 
 private:
-    void executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd) override;
+    void executeProtoScpi(int cmdCode, const ProtonetCommandPtr &protoCmd) override;
     QString scpiSourceModeOn(const QString &scpi);
     QString scpiSourceOn(const QString &scpi);
     static QJsonObject expandJsonCapabilities(const QJsonObject &capabilitiesRaw);

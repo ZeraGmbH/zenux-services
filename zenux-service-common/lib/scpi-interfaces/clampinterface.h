@@ -41,7 +41,7 @@ public:
     QString importClampXmls(const QString &allXML, bool computeAndExport);
 
 protected:
-    void executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd) override;
+    void executeProtoScpi(int cmdCode, const ProtonetCommandPtr &protoCmd) override;
 
 private:
     void generateAndNotifyClampChannelList();

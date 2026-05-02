@@ -15,7 +15,7 @@ enum JustCommands
 };
 
 AdjDataItemScpi::AdjDataItemScpi(TJustDataParam param, AdjDataItem *adjItem) :
-    ScpiConnection(param.scpiinterface),
+    ScpiConnection(param.scpiInterface),
     m_checkPermission(param.checkPermission),
     m_adjItem(adjItem),
     m_digits(param.digits)
@@ -42,7 +42,7 @@ AdjDataItem *AdjDataItemScpi::getAdjItem()
     return m_adjItem;
 }
 
-void AdjDataItemScpi::executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd)
+void AdjDataItemScpi::executeProtoScpi(int cmdCode, const ProtonetCommandPtr &protoCmd)
 {
     switch (cmdCode)
     {

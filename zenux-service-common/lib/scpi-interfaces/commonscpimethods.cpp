@@ -5,7 +5,7 @@
 #include <QDataStream>
 
 void CommonScpiMethods::sendProtoAnswer(QTcpSocket *telnetSocket,
-                                        ProtonetCommandPtr protoCmd)
+                                        const ProtonetCommandPtr &protoCmd)
 {
     if(protoCmd->m_pPeer == nullptr) {
         // we worked on a command comming from scpi socket connection

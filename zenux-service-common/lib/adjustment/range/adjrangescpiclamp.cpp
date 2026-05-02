@@ -1,10 +1,10 @@
 #include "adjrangescpiclamp.h"
 
-AdjRangeScpiClamp::AdjRangeScpiClamp(std::shared_ptr<cSCPI> scpiinterface,
+AdjRangeScpiClamp::AdjRangeScpiClamp(const std::shared_ptr<cSCPI> &scpiInterface,
                                      SenseRangeCommon *deviceInternalRange,
                                      double cvRatio,
                                      PermissionStructAdj permission)  :
-    AdjRangeScpi(scpiinterface, AdjustScpiValueFormatterFactory::createMt310s2AdjFormatter(), permission),
+    AdjRangeScpi(scpiInterface, AdjustScpiValueFormatterFactory::createMt310s2AdjFormatter(), permission),
     m_deviceInternalRange(deviceInternalRange),
     m_cvRatio(cvRatio)
 {

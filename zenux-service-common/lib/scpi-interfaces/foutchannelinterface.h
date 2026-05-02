@@ -9,7 +9,7 @@ class FOutChannelInterface : public ScpiConnection
 {
     Q_OBJECT
 public:
-    FOutChannelInterface(std::shared_ptr<cSCPI> scpiinterface,
+    FOutChannelInterface(const std::shared_ptr<cSCPI> &scpiInterface,
                          const QString &description,
                          quint8 nr,
                          FOutSettings::ChannelSettings* cSettings);
@@ -19,7 +19,7 @@ public:
     const QString& getDescription();
     bool isAvail();
 protected:
-    void executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd) override;
+    void executeProtoScpi(int cmdCode, const ProtonetCommandPtr &protoCmd) override;
 private:
     QString scpiReadAlias(const QString& scpi);
     QString scpiReadType(const QString& scpi);

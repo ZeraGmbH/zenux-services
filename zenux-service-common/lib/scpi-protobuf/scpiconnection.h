@@ -33,7 +33,7 @@ protected:
     std::shared_ptr<cSCPI> m_scpiInterface;
     QList<ScpiDelegatePtr> m_DelegateList;
 private slots:
-    virtual void executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd) = 0;
+    virtual void executeProtoScpi(int cmdCode, const ProtonetCommandPtr &protoCmd) = 0;
 };
 
 #endif // SCPICONNECTION_H

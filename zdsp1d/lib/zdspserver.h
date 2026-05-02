@@ -51,7 +51,7 @@ signals:
     void abortInit();
 
 private slots:
-    void sendProtoAnswer(ProtonetCommandPtr protoCmd);
+    void sendProtoAnswer(const ProtonetCommandPtr &protoCmd);
     void onProtobufClientConnected(VeinTcp::TcpPeer* newClient);
     void onProtobufDataReceived(VeinTcp::TcpPeer *peer, const QByteArray &message);
     void onProtobufDisconnect(VeinTcp::TcpPeer *peer);
@@ -66,7 +66,7 @@ private slots:
 private:
     void init();
     void initSCPIConnection();
-    void executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd) override;
+    void executeProtoScpi(int cmdCode, const ProtonetCommandPtr &protoCmd) override;
     void doFinalSetupSteps();
     void startDspRunWatchdog();
 

@@ -31,7 +31,7 @@ public:
     QList<SecChannel*> getECalcChannelList();
     bool freeChannelsForThisPeer(VeinTcp::TcpPeer *peer);
 protected:
-    void executeProtoScpi(int cmdCode, ProtonetCommandPtr protoCmd) override;
+    void executeProtoScpi(int cmdCode, const ProtonetCommandPtr &protoCmd) override;
 
 private:
     SecCalculatorSettings* m_pecalcsettings;
@@ -43,8 +43,8 @@ private:
 
     QString scpiReadVersion(const QString& scpi);
     QString scpiReadECalculatorChannelCatalog(const QString& scpi);
-    void scpiSetChannels(ProtonetCommandPtr protoCmd);
-    void scpiFreeChannels(ProtonetCommandPtr protoCmd);
+    void scpiSetChannels(const ProtonetCommandPtr &protoCmd);
+    void scpiFreeChannels(const ProtonetCommandPtr &protoCmd);
     bool freeChannelsFromAClient(QByteArray clientID);
     void connectChannelSignalsAndInitScpi();
 };

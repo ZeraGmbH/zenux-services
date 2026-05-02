@@ -3,7 +3,7 @@
 
 static constexpr int rejectionScpiQueryDigitsClamp = 8;
 
-ClampSenseRange::ClampSenseRange(std::shared_ptr<cSCPI> scpiinterface,
+ClampSenseRange::ClampSenseRange(const std::shared_ptr<cSCPI> &scpiInterface,
                                  const QString &name,
                                  bool avail,
                                  double rValue,
@@ -13,7 +13,7 @@ ClampSenseRange::ClampSenseRange(std::shared_ptr<cSCPI> scpiinterface,
                                  quint16 mmask,
                                  AdjRangeScpi* justdata) :
     SenseRangeCommon(
-        scpiinterface,
+        scpiInterface,
         name,
         avail,
         rValue,

@@ -3,7 +3,7 @@
 std::shared_ptr<ScpiDelegate> ScpiDelegate::create(const QString &cmdParent,
                                                    const QString &cmd,
                                                    quint8 type,
-                                                   std::shared_ptr<cSCPI> scpiInterface,
+                                                   const std::shared_ptr<cSCPI> &scpiInterface,
                                                    quint16 cmdCode,
                                                    NotificationString *notificationString)
 {
@@ -36,7 +36,7 @@ ScpiDelegate::~ScpiDelegate()
 
 }
 
-bool ScpiDelegate::executeSCPI(ProtonetCommandPtr protoCmd)
+bool ScpiDelegate::executeSCPI(const ProtonetCommandPtr &protoCmd)
 {
     emit sigExecuteProtoScpi(m_nCmdCode, protoCmd);
     return true;
