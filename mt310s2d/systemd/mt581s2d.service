@@ -9,6 +9,9 @@ Requires=dev-i2c\x2d0.device
 After=dev-i2c\x2d0.device
 
 [Service]
+# Temporary workaround: As long as we cannot rely on toggle pin to detect
+# controller booted, add delay hack
+ExecStartPre=/bin/sleep 2
 ExecStart=/usr/bin/mt310s2d -dmt581s2
 Type=simple
 User=zera-services
