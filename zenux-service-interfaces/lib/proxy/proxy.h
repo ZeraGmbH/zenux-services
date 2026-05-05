@@ -14,9 +14,9 @@ class SERVICE_INTERFACES_EXPORT Proxy
 public:
     static Proxy* getInstance();
     ProxyClientPtr getConnectionSmart(const QString &ipadress, quint16 port,
-                                      VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory);
+                                      const VeinTcp::AbstractTcpNetworkFactoryPtr &tcpNetworkFactory);
     ProxyClientPtr getConnectionSmart(const NetworkConnectionInfo &netInfo,
-                                      VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory);
+                                      const VeinTcp::AbstractTcpNetworkFactoryPtr &tcpNetworkFactory);
     void startConnectionSmart(ProxyClientPtr client);
     bool releaseConnection(ProxyClient* client);
     bool releaseConnectionSmart(ProxyClientPtr client);

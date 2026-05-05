@@ -11,14 +11,14 @@ Proxy* Proxy::getInstance()
 }
 
 ProxyClientPtr Proxy::getConnectionSmart(const QString &ipadress, quint16 port,
-                                         VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory)
+                                         const VeinTcp::AbstractTcpNetworkFactoryPtr &tcpNetworkFactory)
 {
     Q_D(Proxy);
     return d->getConnectionSmart(ipadress, port, tcpNetworkFactory);
 }
 
 ProxyClientPtr Proxy::getConnectionSmart(const NetworkConnectionInfo &netInfo,
-                                         VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory)
+                                         const VeinTcp::AbstractTcpNetworkFactoryPtr &tcpNetworkFactory)
 {
     Q_D(Proxy);
     return d->getConnectionSmart(netInfo.m_sIP, netInfo.m_nPort, tcpNetworkFactory);
