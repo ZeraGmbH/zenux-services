@@ -7,12 +7,12 @@ SecInputSettings::SecInputSettings(Zera::XMLConfig::cReader *xmlread)
     m_ConfigXMLMap[QString("serviceconfig:connectivity:inputs:n")] = InputSettings::setnumber;
 }
 
-bool SecInputSettings::hasInput(QString name)
+bool SecInputSettings::hasInput(const QString &name)
 {
     return muxInfoHash.contains(name);
 }
 
-qint8 SecInputSettings::mux(QString name)
+qint8 SecInputSettings::mux(const QString &name)
 {
     return muxInfoHash[name];
 }
@@ -25,8 +25,8 @@ void SecInputSettings::configXMLInfo(const QString &key)
         {
         case InputSettings::setnumber:
         {
-            m_nCount = m_pXMLReader->getValue(key).toInt();
-            for (int i = 0; i < m_nCount; i++) {
+            int count = m_pXMLReader->getValue(key).toInt();
+            for (int i = 0; i < count; i++) {
                 m_ConfigXMLMap[QString("serviceconfig:connectivity:inputs:inp%1:name").arg(i+1)] = InputSettings::setinputname1+i;
                 m_ConfigXMLMap[QString("serviceconfig:connectivity:inputs:inp%1:muxer").arg(i+1)] = InputSettings::setinputmuxer1+i;
 

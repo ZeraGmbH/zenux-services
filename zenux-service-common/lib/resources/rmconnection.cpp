@@ -60,7 +60,7 @@ void RMConnection::onMessageReceived(VeinTcp::TcpPeer *peer, const QByteArray &m
     responseHandler(peer, XiQNetWrapper::byteArrayToProto(message));
 }
 
-void RMConnection::responseHandler(VeinTcp::TcpPeer *peer, std::shared_ptr<google::protobuf::Message> response)
+void RMConnection::responseHandler(VeinTcp::TcpPeer *peer, const std::shared_ptr<google::protobuf::Message> &response)
 {
     Q_UNUSED(peer)
     std::shared_ptr<ProtobufMessage::NetMessage> answer = std::static_pointer_cast<ProtobufMessage::NetMessage>(response);

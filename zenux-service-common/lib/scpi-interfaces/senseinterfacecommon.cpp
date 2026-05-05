@@ -19,7 +19,7 @@ enum Commands
     cmdStatAdjustment
 };
 
-SenseInterfaceCommon::SenseInterfaceCommon(std::shared_ptr<cSCPI> scpiInterface,
+SenseInterfaceCommon::SenseInterfaceCommon(const std::shared_ptr<cSCPI> &scpiInterface,
                                            SystemInfo *systemInfo,
                                            cSenseSettingsPtr senseSettings,
                                            EepromI2cDeviceInterfacePtr adjMemory,

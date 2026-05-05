@@ -20,7 +20,7 @@ private slots:
     void tcpErrorHandler(VeinTcp::TcpPeer *peer, QAbstractSocket::SocketError errorCode);
     void onMessageReceived(VeinTcp::TcpPeer *peer, const QByteArray &message);
 private:
-    void responseHandler(VeinTcp::TcpPeer *peer, std::shared_ptr<google::protobuf::Message> response);
+    void responseHandler(VeinTcp::TcpPeer *peer, const std::shared_ptr<google::protobuf::Message> &response);
     QString m_sIPAdr;
     quint16 m_nPort;
     VeinTcp::AbstractTcpNetworkFactoryPtr m_tcpFactory;

@@ -31,7 +31,7 @@ public:
     static DspCmdDecodingDetails* findDspCmd(const QString& cmdName);
     static const QHash<QString, DspVarServerPtr> &getVarHash();
 
-    static void initDspInternalMemsection(DspMemorySectionInternal* memSection, long sectionOffsetForCopyDuCopyUd);
+    static void initDspInternalMemsection(const DspMemorySectionInternal *memSection, long sectionOffsetForCopyDuCopyUd);
     static int alignInternalMemRegionsFor21262();
     static int alignInternalMemRegionsFor21362();
 
@@ -40,7 +40,7 @@ public:
 private:
     static void fillCmdHashOn1stCall();
     static void fillMemSectionHashOn1stCall();
-    static void setInitialVariableSize(DspMemorySectionInternal &memSection, const QString &variableName, int size);
+    static void setInitialVariableSize(const DspMemorySectionInternal &memSection, const QString &variableName, int size);
 
     static QHash<QString, DspCmdDecodingDetails*> m_dspAvailableCmds;
     static QHash<QString, DspVarServerPtr> m_varHash;

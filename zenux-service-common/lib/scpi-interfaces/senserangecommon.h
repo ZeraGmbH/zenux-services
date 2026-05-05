@@ -11,7 +11,7 @@ public:
     static const char* rangeNameCurrentNull;
     static const char* rangeAliasNull;
 
-    SenseRangeCommon(std::shared_ptr<cSCPI> scpiInterface,
+    SenseRangeCommon(const std::shared_ptr<cSCPI> &scpiInterface,
                      const QString &name,
                      bool avail,
                      double upperRangeValue, // = nominal

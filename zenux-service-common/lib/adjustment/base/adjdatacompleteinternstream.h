@@ -15,7 +15,7 @@ public:
     AdjDataCompleteInternStream(int maxSize);
     ~AdjDataCompleteInternStream();
 
-    AdjDataPtr decodeAdjBytes(QByteArray ba);
+    AdjDataPtr decodeAdjBytes(const QByteArray ba);
 private:
     bool decodeHeader(QDataStream &stream, AdjDataPtr adjData);
     bool decodeServerVersion(QDataStream &stream, AdjDataPtr adjData);

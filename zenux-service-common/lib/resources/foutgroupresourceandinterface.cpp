@@ -66,18 +66,18 @@ void FOutGroupResourceAndInterface::executeProtoScpi(int cmdCode, const Protonet
         emit cmdExecutionDone(protoCmd);
 }
 
-QString FOutGroupResourceAndInterface::readVersion(QString &sInput)
+QString FOutGroupResourceAndInterface::readVersion(const QString &scpi)
 {
-    cSCPICommand cmd = sInput;
+    cSCPICommand cmd = scpi;
     if (cmd.isQuery())
         return Version;
     else
         return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-QString FOutGroupResourceAndInterface::readSourceChannelCatalog(QString &sInput)
+QString FOutGroupResourceAndInterface::readSourceChannelCatalog(const QString &scpi)
 {
-    cSCPICommand cmd = sInput;
+    cSCPICommand cmd = scpi;
     if (cmd.isQuery()) {
         QStringList channelList;
         for(const auto &channel : qAsConst(m_ChannelList))

@@ -8,7 +8,7 @@ enum Commands
     cmdChannelCat
 };
 
-ScInGroupResourceAndInterface::ScInGroupResourceAndInterface(std::shared_ptr<cSCPI> scpiInterface,
+ScInGroupResourceAndInterface::ScInGroupResourceAndInterface(const std::shared_ptr<cSCPI> &scpiInterface,
                                                              ScInSettings *settings) :
     cResource(scpiInterface)
 {
@@ -51,25 +51,25 @@ void ScInGroupResourceAndInterface::executeProtoScpi(int cmdCode, const Protonet
         protoCmd->m_sOutput = scpiReadVersion(protoCmd->m_sInput);
         break;
     case cmdChannelCat:
-        protoCmd->m_sOutput = m_ReadChannelCatalog(protoCmd->m_sInput);
+        protoCmd->m_sOutput = readChannelCatalog(protoCmd->m_sInput);
         break;
     }
     if (protoCmd->m_bwithOutput)
         emit cmdExecutionDone(protoCmd);
 }
 
-QString ScInGroupResourceAndInterface::scpiReadVersion(QString &sInput)
+QString ScInGroupResourceAndInterface::scpiReadVersion(const QString &scpi)
 {
-    cSCPICommand cmd = sInput;
+    cSCPICommand cmd = scpi;
     if (cmd.isQuery())
         return Version;
     else
         return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-QString ScInGroupResourceAndInterface::m_ReadChannelCatalog(QString &sInput)
+QString ScInGroupResourceAndInterface::readChannelCatalog(const QString &scpi)
 {
-    cSCPICommand cmd = sInput;
+    cSCPICommand cmd = scpi;
     if (cmd.isQuery()) {
         int i;
         QString s;

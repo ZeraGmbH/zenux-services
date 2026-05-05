@@ -27,14 +27,13 @@ class SecInputSettings : public XMLSettings
 public:
     SecInputSettings(Zera::XMLConfig::cReader *xmlread);
 
-    bool hasInput(QString name);
-    qint8 mux(QString name);
+    bool hasInput(const QString &name);
+    qint8 mux(const QString &name);
 
 public slots:
     void configXMLInfo(const QString &key) override;
 
 private:
-    quint16 m_nCount;
     QString actName;
     QHash<QString, quint8> muxInfoHash;
 };

@@ -259,7 +259,7 @@ void DspStaticData::fillMemSectionHashOn1stCall()
     }
 }
 
-void DspStaticData::setInitialVariableSize(DspMemorySectionInternal &memSection, const QString &variableName, int size)
+void DspStaticData::setInitialVariableSize(const DspMemorySectionInternal &memSection, const QString &variableName, int size)
 {
     for (int i=0; i<memSection.getVarCount(); ++i) {
         DspVarServerPtr dspVar = memSection.getDspVar(i);
@@ -271,7 +271,7 @@ void DspStaticData::setInitialVariableSize(DspMemorySectionInternal &memSection,
     qCritical("setInitialVariableSize: Variable %s not found", qPrintable(variableName));
 }
 
-void DspStaticData::initDspInternalMemsection(DspMemorySectionInternal *memSection, long sectionOffsetForCopyDuCopyUd)
+void DspStaticData::initDspInternalMemsection(const DspMemorySectionInternal *memSection, long sectionOffsetForCopyDuCopyUd)
 {
     long offs = 0;
     for (int i = 0; i< (memSection->getVarCount()); i++) {

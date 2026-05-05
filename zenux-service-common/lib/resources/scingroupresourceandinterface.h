@@ -12,7 +12,7 @@ class ScInGroupResourceAndInterface : public cResource
     Q_OBJECT
 public:
     const QString Version = "V1.00";
-    ScInGroupResourceAndInterface(std::shared_ptr<cSCPI> scpiInterface,
+    ScInGroupResourceAndInterface(const std::shared_ptr<cSCPI> &scpiInterface,
                                   ScInSettings *settings);
     ~ScInGroupResourceAndInterface();
     void initSCPIConnection() override;
@@ -20,8 +20,8 @@ public:
 protected:
     void executeProtoScpi(int cmdCode, const ProtonetCommandPtr &protoCmd) override;
 private:
-    QString scpiReadVersion(QString& sInput);
-    QString m_ReadChannelCatalog(QString& sInput);
+    QString scpiReadVersion(const QString& scpi);
+    QString readChannelCatalog(const QString& scpi);
     QList<ScInChannelInterface*> m_ChannelList;
 };
 

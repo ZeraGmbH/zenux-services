@@ -17,7 +17,7 @@ enum Commands
     cmdCtrlSelection // attow just for test...
 };
 
-SenseRangeCommon::SenseRangeCommon(std::shared_ptr<cSCPI> scpiInterface,
+SenseRangeCommon::SenseRangeCommon(const std::shared_ptr<cSCPI> &scpiInterface,
                                    const QString &name,
                                    bool avail,
                                    double upperRangeValue,

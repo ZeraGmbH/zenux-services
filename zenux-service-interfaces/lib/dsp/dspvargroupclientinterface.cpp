@@ -100,7 +100,7 @@ QString DspVarGroupClientInterface::VarListShort(int limitValueCount)
     QTextStream ts(&sReturn, QIODevice::WriteOnly);
     int sizeRequestedSum = 0;
     for(int i=0; i<DspVarList.size(); ++i) {
-        DspVarClientInterface *pDspVar = DspVarList.at(i);
+        const DspVarClientInterface *pDspVar = DspVarList.at(i);
         int varSize = pDspVar->size();
         if (limitValueCount > 0) {
             int sizeLeft = limitValueCount - sizeRequestedSum;
