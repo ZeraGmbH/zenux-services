@@ -1,5 +1,5 @@
 [Unit]
-Description=MT310s2 daemon on MT581s2
+Description=MT581s2 on mt310s2d
 
 ConditionKernelCommandLine=zera_device=mt581s2
 
