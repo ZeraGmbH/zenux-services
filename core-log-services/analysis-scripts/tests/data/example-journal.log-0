@@ -604,7 +604,7 @@ Jun 24 13:15:26.917650 zera-mt310s2-unknown mt310s2-controller-full-update.sh[36
 Jun 24 13:15:26.917650 zera-mt310s2-unknown mt310s2-controller-full-update.sh[364]: System-controller: write /opt/zera/conf/last-checked-atmel-mt310s2-system.txt
 Jun 24 13:15:26.908027 zera-mt310s2-unknown zera-modulemanager[381]: ZERA Device from kernel cmdline:  "mt310s2"
 Jun 24 13:15:26.910467 zera-mt310s2-unknown NetworkManager[371]: <warn>  [1719234926.9102] ifupdown: interfaces file /etc/network/interfaces doesn't exist
-Jun 24 13:15:26.911138 zera-mt310s2-unknown zera-modulemanager[381]: Moduleamanger configuration file: "/etc/zera/modules/modulemanager_config.json"
+Jun 24 13:15:26.911138 zera-mt310s2-unknown zera-modulemanager[381]: Modulemanager configuration file: "/etc/zera/modules/modulemanager_config.json"
 Jun 24 13:15:26.911335 zera-mt310s2-unknown zera-modulemanager[381]: Loading session data for "mt310s2"
 Jun 24 13:15:26.942017 zera-mt310s2-unknown NetworkManager[371]: <info>  [1719234926.9416] device (lo): carrier: link connected
 Jun 24 13:15:26.945108 zera-mt310s2-unknown NetworkManager[371]: <info>  [1719234926.9448] manager: (lo): new Generic device (/org/freedesktop/NetworkManager/Devices/1)
@@ -1207,7 +1207,7 @@ Jun 24 13:25:07.409967 zera-mt310s2-unknown systemd[1]: modulemanager.service: F
 Jun 24 13:25:10.402336 zera-mt310s2-unknown vf-declarative-gui[633]: Repeat connecting to modman...
 Jun 24 13:25:10.419184 zera-mt310s2-unknown systemd[1]: Started Zera Module Manager.
 Jun 24 13:25:10.713515 zera-mt310s2-unknown zera-modulemanager[738]: ZERA Device from kernel cmdline:  "mt310s2"
-Jun 24 13:25:10.718469 zera-mt310s2-unknown zera-modulemanager[738]: Moduleamanger configuration file: "/etc/zera/modules/modulemanager_config.json"
+Jun 24 13:25:10.718469 zera-mt310s2-unknown zera-modulemanager[738]: Modulemanager configuration file: "/etc/zera/modules/modulemanager_config.json"
 Jun 24 13:25:10.718618 zera-mt310s2-unknown zera-modulemanager[738]: Loading session data for "mt310s2"
 Jun 24 13:25:10.781741 zera-mt310s2-unknown zera-modulemanager[738]: Created plaintext logger: "_LoggingSystem" with id: 2
 Jun 24 13:25:10.782957 zera-mt310s2-unknown zera-modulemanager[738]: Starting vf-files...

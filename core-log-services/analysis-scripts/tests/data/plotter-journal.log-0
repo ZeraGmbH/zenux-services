@@ -580,7 +580,7 @@ Jul 18 09:01:10 imx6qdl-variscite-som NetworkManager[368]: <info>  [1721293270.7
 Jul 18 09:01:10 imx6qdl-variscite-som NetworkManager[368]: <info>  [1721293270.7531] settings: Loaded settings plugin: keyfile (internal)
 Jul 18 09:01:10 imx6qdl-variscite-som NetworkManager[368]: <info>  [1721293270.7533] ifupdown: management mode: unmanaged
 Jul 18 09:01:10 imx6qdl-variscite-som zera-modulemanager[370]: ZERA Device from kernel cmdline:  "mt310s2"
-Jul 18 09:01:10 imx6qdl-variscite-som zera-modulemanager[370]: Moduleamanger configuration file: "/etc/zera/modules/modulemanager_config.json"
+Jul 18 09:01:10 imx6qdl-variscite-som zera-modulemanager[370]: Modulemanager configuration file: "/etc/zera/modules/modulemanager_config.json"
 Jul 18 09:01:10 imx6qdl-variscite-som zera-modulemanager[370]: Loading session data for "mt310s2"
 Jul 18 09:01:10 imx6qdl-variscite-som NetworkManager[368]: <warn>  [1721293270.7587] ifupdown: interfaces file /etc/network/interfaces doesn't exist
 Jul 18 09:01:10 imx6qdl-variscite-som NetworkManager[368]: <info>  [1721293270.7811] device (lo): carrier: link connected
@@ -2022,7 +2022,7 @@ Jul 18 09:05:34 zera-mt310s2-unknown xinetd[328]: Reading included configuration
 Jul 18 09:05:34 zera-mt310s2-unknown xinetd[328]: Reading included configuration file: /etc/xinetd.d/ftp-sensor [file=/etc/xinetd.d/ftp-sensor] [line=67]
 Jul 18 09:05:34 zera-mt310s2-unknown zera-modulemanager[282]: ZERA Device from kernel cmdline:  "mt310s2"
 Jul 18 09:05:34 zera-mt310s2-unknown xinetd[328]: Reading included configuration file: /etc/xinetd.d/tcpmux-server [file=/etc/xinetd.d/tcpmux-server] [line=70]
-Jul 18 09:05:34 zera-mt310s2-unknown zera-modulemanager[282]: Moduleamanger configuration file: "/etc/zera/modules/modulemanager_config.json"
+Jul 18 09:05:34 zera-mt310s2-unknown zera-modulemanager[282]: Modulemanager configuration file: "/etc/zera/modules/modulemanager_config.json"
 Jul 18 09:05:34 zera-mt310s2-unknown xinetd[328]: Reading included configuration file: /etc/xinetd.d/time-dgram [file=/etc/xinetd.d/time-dgram] [line=68]
 Jul 18 09:05:34 zera-mt310s2-unknown zera-modulemanager[282]: Loading session data for "mt310s2"
 Jul 18 09:05:34 zera-mt310s2-unknown xinetd[328]: Reading included configuration file: /etc/xinetd.d/time-stream [file=/etc/xinetd.d/time-stream] [line=67]
