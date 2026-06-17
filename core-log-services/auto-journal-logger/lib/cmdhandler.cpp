@@ -66,7 +66,7 @@ bool CmdHandler::storeCoreDumps(QString destinationDir)
     for(auto &entry : fileList) {
         QString outputPath = destinationDir + "/" + entry.fileName();
         QString sourcePath = entry.absoluteFilePath();
-        QString cmd = QString("cp %1 %2").arg(sourcePath, outputPath);
+        QString cmd = QString("mv %1 %2").arg(sourcePath, outputPath);
         if(system(qPrintable(cmd)) != 0) {
             emit OperationFinish(true, QStringLiteral("Could not move core file %1 to %2").arg(sourcePath, outputPath));
             return false;
