@@ -51,7 +51,7 @@ private slots:
     void onProtobufDataReceived(VeinTcp::TcpPeer *peer, const QByteArray &message);
     void onNotifyPeerConnectionClosed(VeinTcp::TcpPeer *peer);
     void onEstablishNewNotifier(NotificationValue *notifier);
-    void onNotifierChanged(quint32 irqreg);
+    void onNotifierChanged(quint32 irqreg, const NotificationValue* notifier);
     void onTelnetReceived(const QString &input);
 private:
     void registerNotifier(const ProtonetCommandPtr &protoCmd); // registeres 1 notifier per command

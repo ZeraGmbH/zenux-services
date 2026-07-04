@@ -292,9 +292,8 @@ void PCBServer::sendNotificationToClient(const QString &message, const QByteArra
 }
 
 
-void PCBServer::onNotifierChanged(quint32 irqreg)
+void PCBServer::onNotifierChanged(quint32 irqreg, const NotificationValue *notifier)
 {
-    const NotificationValue* notifier = qobject_cast<NotificationValue*>(sender());
     if (m_notifierRegisterList.count() > 0) {
         for (int i = 0; i < m_notifierRegisterList.count(); i++) {
             NotificationStructWithValue notData = m_notifierRegisterList.at(i);

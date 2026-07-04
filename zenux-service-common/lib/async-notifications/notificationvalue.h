@@ -16,7 +16,7 @@ public:
     void clrValue(quint32 val);
 
 signals:
-    void risingEdge(quint32);
+    void risingEdge(quint32 irqreg, const NotificationValue *notifier);
 
 private:
     quint32 m_nValue;

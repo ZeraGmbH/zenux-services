@@ -19,7 +19,7 @@ void NotificationValue::setValue(quint32 val)
 {
     quint32 edge;
     if ((edge = ((m_nValue ^ val) & val)) > 0)
-        emit risingEdge(edge);
+        emit risingEdge(edge, this);
     m_nValue |= val;
 }
 
