@@ -40,6 +40,7 @@ SETUP_SERVICE_COMMON_TESTS(
     test_generator_meas_range_notification
     test_i2c_utilities
     test_i2c_dspgenerator
+    test_resetadjustment
     )
 
 target_sources(test_hotpluggablecontrollercontainer
@@ -74,6 +75,11 @@ target_sources(test_source_control
 )
 
 target_sources(test_read_versions
+  PRIVATE
+  test-data/regression_data.qrc
+)
+
+target_sources(test_resetadjustment
   PRIVATE
   test-data/regression_data.qrc
 )
