@@ -16,7 +16,8 @@ enum Commands
     cmdGroupCat,
     initAdjData,
     computeAdjData,
-    cmdStatAdjustment
+    cmdStatAdjustment,
+    cmdResetAdj
 };
 
 SenseInterfaceCommon::SenseInterfaceCommon(const std::shared_ptr<cSCPI> &scpiInterface,
@@ -118,7 +119,8 @@ void SenseInterfaceCommon::initSCPIConnection()
         channel->initSCPIConnection("SENSE");
     }
     QString cmdParent = QString("STATUS:PCB");
-    addDelegate(cmdParent, "ADJUSTMENT", SCPI::isQuery, m_scpiInterface, cmdStatAdjustment);
+    addDelegate(cmdParent, "ADJUSTMENT", SCPI::isQuery, m_scpiInterface, cmdStatAdjustment, &m_notifierAdjStatus);
+    addDelegate("SENSE:RESET", "ADJUSTMENT", SCPI::isCmd, m_scpiInterface, cmdResetAdj);
 }
 
 void SenseInterfaceCommon::injectAdjToChannelRanges()
@@ -171,6 +173,18 @@ bool SenseInterfaceCommon::importAdjData()
             m_nSerialStatus = 0; // ok
     }
     return true;
+}
+
+bool SenseInterfaceCommon::resetAdjValues()
+{
+    bool ok = false;
+    for(auto channel : qAsConst(m_channelList))  {
+        if(channel->initJustData())
+            ok = true;
+    }
+    if(ok)
+        return exportAdjData(QDateTime::currentDateTime());
+    return ok;
 }
 
 quint16 SenseInterfaceCommon::getAdjChecksum()
@@ -491,6 +505,9 @@ void SenseInterfaceCommon::executeProtoScpi(int cmdCode, const ProtonetCommandPt
     case cmdStatAdjustment:
         protoCmd->m_sOutput = scpiReadAdjStatus(protoCmd->m_sInput);
         break;
+    case cmdResetAdj:
+        protoCmd->m_sOutput = scpiResetAdjValues(protoCmd->m_sInput);
+        break;
     }
     if (protoCmd->m_bwithOutput)
         emit cmdExecutionDone(protoCmd);
@@ -553,8 +570,21 @@ QString SenseInterfaceCommon::scpiComputeSenseAdjDataAllChannelRanges(const QStr
 QString SenseInterfaceCommon::scpiReadAdjStatus(const QString &scpi)
 {
     cSCPICommand cmd = scpi;
-    if (cmd.isQuery())
-        return  QString("%1").arg(getAdjustmentStatus());
+    if (cmd.isQuery()) {
+        m_notifierAdjStatus = QString("%1").arg(getAdjustmentStatus());
+        return  m_notifierAdjStatus.getString();
+    }
+    return ZSCPI::scpiAnswer[ZSCPI::nak];
+}
+
+QString SenseInterfaceCommon::scpiResetAdjValues(const QString &scpi)
+{
+    cSCPICommand cmd = scpi;
+    if (cmd.isCommand(1) && (cmd.getParam(0) == ""))
+        if(resetAdjValues()) {
+            m_notifierAdjStatus = QString("%1").arg(getAdjustmentStatus());
+            return ZSCPI::scpiAnswer[ZSCPI::ack];
+        }
     return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 

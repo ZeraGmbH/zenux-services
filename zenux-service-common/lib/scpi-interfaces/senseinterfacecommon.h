@@ -65,6 +65,7 @@ public:
     bool computeSenseAdjData();
     bool exportAdjData(QDateTime dateTimeWrite);
     bool importAdjData();
+    bool resetAdjValues();
     quint16 getAdjChecksum();
 
     int rangeFlagsExtern();
@@ -107,6 +108,7 @@ private:
     QString scpiInitSenseAdjDataAllChannelRanges(const QString& scpi);
     QString scpiComputeSenseAdjDataAllChannelRanges(const QString& scpi);
     QString scpiReadAdjStatus(const QString& scpi);
+    QString scpiResetAdjValues(const QString& scpi);
     QStringList getSenseModesSortedById();
 
     AdjustmentEepromReadWrite m_adjReadWrite;
@@ -114,6 +116,7 @@ private:
     quint8 m_nSerialStatus;
     NotificationString m_notifierSenseMMode;
     NotificationString m_notifierSenseChannelCat;
+    NotificationString m_notifierAdjStatus;
 };
 
 #endif // SENSEINTERFACECOMMON_H

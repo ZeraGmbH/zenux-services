@@ -5668,6 +5668,9 @@
      </CORRECTION>
     </N_2MV>
    </M7>
+   <RESET Type="Node">
+    <ADJUSTMENT ScpiPath="SENSE:RESET:ADJUSTMENT" Type="Command"/>
+   </RESET>
   </SENSE>
   <STATUS Type="Model,Node">
    <PCB Type="Node">

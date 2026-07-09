@@ -4823,6 +4823,9 @@
      </CORRECTION>
     </R10V>
    </M5>
+   <RESET Type="Node">
+    <ADJUSTMENT Type="Command" ScpiPath="SENSE:RESET:ADJUSTMENT"/>
+   </RESET>
   </SENSE>
   <STATUS Type="Model,Node">
    <PCB Type="Node">

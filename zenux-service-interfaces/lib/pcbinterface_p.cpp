@@ -342,7 +342,7 @@ quint32 cPCBInterfacePrivate::getAliasFrqinput(const QString &chnName)
 
 quint32 cPCBInterfacePrivate::getAdjustmentStatus()
 {
-    quint32 msgnr = sendCommand(QString("STAT:ADJ?"));
+    quint32 msgnr = sendCommand(QString("STAT:PCB:ADJ?"));
     m_MsgNrCmdList[msgnr] = PCB::getadjustmentstatus;
     return msgnr;
 }
