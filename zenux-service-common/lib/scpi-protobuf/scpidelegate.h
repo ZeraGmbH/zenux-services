@@ -8,7 +8,7 @@
 #include <scpi.h>
 #include <QString>
 
-class ScpiDelegate: public QObject, public ScpiObject
+class ScpiDelegate: public ScpiObject
 {
    Q_OBJECT
 public:
