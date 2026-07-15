@@ -42,7 +42,8 @@ public:
                              AbstractFactoryDeviceNodePcbPtr zdspSupportFactory,
                              AbstractEepromI2cFactoryPtr adjMemFactory,
                              VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory,
-                             AbstractChannelRangeFactoryPtr channelRangeFactory);
+                             AbstractChannelRangeFactoryPtr channelRangeFactory,
+                             Mt310s2SystemInfo* alternateSystemInfo = nullptr);
     ~cMT310S2dServer();
     QString getCtrlDeviceNode();
     QString getMsgDeviceNode();

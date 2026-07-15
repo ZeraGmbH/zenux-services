@@ -35,11 +35,13 @@ cMT310S2dServer::cMT310S2dServer(SettingsContainerPtr settings,
                                  AbstractFactoryDeviceNodePcbPtr zdspSupportFactory,
                                  AbstractEepromI2cFactoryPtr adjMemFactory,
                                  VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory,
-                                 AbstractChannelRangeFactoryPtr channelRangeFactory) :
+                                 AbstractChannelRangeFactoryPtr channelRangeFactory,
+                                 Mt310s2SystemInfo* alternateSystemInfo) :
     PCBServer(std::move(settings), tcpNetworkFactory),
     m_ctrlFactory(ctrlFactory),
     m_zdspSupportFactory(zdspSupportFactory),
     m_adjMemFactory(adjMemFactory),
+    m_pSystemInfo(alternateSystemInfo),
     m_i2cCtrlCpuTemperature(ctrlFactory->getCpuTemperatureController())
 {
     doConfiguration();
@@ -175,7 +177,8 @@ bool cMT310S2dServer::hasSourceGenerator() const
 
 void cMT310S2dServer::earlySetup(AbstractChannelRangeFactoryPtr channelRangeFactory)
 {
-    m_pSystemInfo = new Mt310s2SystemInfo(m_ctrlFactory);
+    if (m_pSystemInfo == nullptr)
+        m_pSystemInfo = new Mt310s2SystemInfo(m_ctrlFactory);
 
     connectProtoConnectionSignals();
 

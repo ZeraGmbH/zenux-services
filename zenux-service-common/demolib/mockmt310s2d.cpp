@@ -11,7 +11,8 @@
 MockMt310s2d::MockMt310s2d(AbstractFactoryI2cCtrlPtr ctrlFactory,
                            VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory,
                            const QString &serviceNameForAlternateDevice,
-                           const QString &alternateConfigXml) :
+                           const QString &alternateConfigXml,
+                           Mt310s2SystemInfo *alternateSystemInfo) :
     m_ctrlFactory(ctrlFactory)
 {
     connect(SimulSystemStatus::getInstance(), &SimulSystemStatus::sigHotplugDevChanged,
@@ -24,7 +25,8 @@ MockMt310s2d::MockMt310s2d(AbstractFactoryI2cCtrlPtr ctrlFactory,
         std::make_shared<MockFactoryDeviceNodePcb>(),
         std::make_shared<MockEepromI2cFactory>(),
         tcpNetworkFactory,
-        SettingsContainer::createChannelRangeFactory(serviceNameForAlternateDevice));
+        SettingsContainer::createChannelRangeFactory(serviceNameForAlternateDevice),
+        alternateSystemInfo);
     setupHotplugChannelEnable();
 }
 

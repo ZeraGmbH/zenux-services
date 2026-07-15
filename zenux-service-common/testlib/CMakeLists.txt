@@ -26,6 +26,7 @@ target_link_libraries(zenuxservicecommon-testlib
     ${QTX}::Test
     zenuxservicecommon
     zenuxservicecommon-demolib
+    mt310s2d-testlib
     zdsp1d-testlib
     service-interfaces
     Zera::vf-tcp-mock-networklib
