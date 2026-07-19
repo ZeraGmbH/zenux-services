@@ -1,5 +1,6 @@
 set(SCRIPTS
     zenuxlog
+    journal2html.py
     )
 
 add_custom_target(scripts SOURCES
