@@ -6,7 +6,7 @@ void ScpiNotificationSubscriberHandler::addSubscriber(const ScpiNotificationSubs
         m_subscriberVector.push_back(subscriber);
 }
 
-void ScpiNotificationSubscriberHandler::removeAllSubscribers(VeinTcp::TcpPeer *netPeer, const QByteArray &clientId)
+void ScpiNotificationSubscriberHandler::removeAllSubscribers(const VeinTcp::TcpPeer *netPeer, const QByteArray &clientId)
 {
     for(int i = m_subscriberVector.size() - 1; i >= 0; i--) {
         if (m_subscriberVector.at(i).m_netPeer == netPeer) {

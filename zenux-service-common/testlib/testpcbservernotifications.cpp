@@ -41,10 +41,6 @@ void TestPcbServerNotifications::unregisterNotifier()
     scpiDelegate->executeSCPI(protoCmd);
 }
 
-void TestPcbServerNotifications::doConfiguration()
-{
-}
-
 void TestPcbServerNotifications::onNotifySubscriber(const ScpiNotificationSubscriber &subscriber, const QString &newValue)
 {
     Q_UNUSED(newValue)

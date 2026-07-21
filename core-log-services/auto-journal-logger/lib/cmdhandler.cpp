@@ -4,7 +4,7 @@
 #include <QDir>
 #include <QDateTime>
 
-CmdHandler::CmdHandler(AbstractLogCreatorPtr logGenerator, QString coreFilePath, QObject *parent) :
+CmdHandler::CmdHandler(AbstractLogCreatorPtr logGenerator, const QString &coreFilePath, QObject *parent) :
     QSimpleCmdHandlerBase(parent),
     m_logGenerator(std::move(logGenerator)),
     m_coreFilePath(coreFilePath.endsWith("/") ? coreFilePath : coreFilePath + "/")
@@ -40,7 +40,7 @@ void CmdHandler::StartCmd(SimpleCmdData *pCmd, QVariantList params)
     }
 }
 
-bool CmdHandler::makeDirWithParents(QString path)
+bool CmdHandler::makeDirWithParents(const QString &path)
 {
     QDir dir;
     if(!dir.mkpath(path)) {
@@ -50,7 +50,7 @@ bool CmdHandler::makeDirWithParents(QString path)
     return true;
 }
 
-bool CmdHandler::storeLogs(QString destinationDir)
+bool CmdHandler::storeLogs(const QString &destinationDir)
 {
     if(!m_logGenerator->storeLogs(destinationDir)) {
         emit OperationFinish(true, QStringLiteral("Could not write journal to dir %1").arg(destinationDir));
@@ -59,7 +59,7 @@ bool CmdHandler::storeLogs(QString destinationDir)
     return true;
 }
 
-bool CmdHandler::storeCoreDumps(QString destinationDir)
+bool CmdHandler::storeCoreDumps(const QString &destinationDir)
 {
     QDir coreDir(m_coreFilePath);
     QFileInfoList fileList = coreDir.entryInfoList(QDir::NoDotAndDotDot | QDir::Files);
@@ -75,7 +75,7 @@ bool CmdHandler::storeCoreDumps(QString destinationDir)
     return true;
 }
 
-bool CmdHandler::storeVersionFile(QString destinationDir, QString versionFilePath)
+bool CmdHandler::storeVersionFile(const QString &destinationDir, const QString &versionFilePath)
 {
     if(!versionFilePath.isEmpty()) {
         QString fileName = destinationDir + "/zenux-version.json";
@@ -88,7 +88,7 @@ bool CmdHandler::storeVersionFile(QString destinationDir, QString versionFilePat
     return true;
 }
 
-bool CmdHandler::storeUpdateLogs(QString destinationDir)
+bool CmdHandler::storeUpdateLogs(const QString &destinationDir)
 {
     QStringList fileFilter = {"zera-update*.html"};
     QDir dir("/home/operator");

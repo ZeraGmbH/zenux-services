@@ -6,7 +6,7 @@
 class I2cCtrlCpuTemperature : public AbstractI2cCtrlCpuTemperature
 {
 public:
-    I2cCtrlCpuTemperature(QString deviceNodeName, quint8 i2cAddress, quint8 debugLevel);
+    I2cCtrlCpuTemperature(const QString &deviceNodeName, quint8 i2cAddress, quint8 debugLevel);
     ZeraMControllerIo::atmelRM sendCpuTemperature(float &temperature) override;
 
 private:
