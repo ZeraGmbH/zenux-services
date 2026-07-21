@@ -147,7 +147,7 @@ void cSEC1000dServer::earlySetup()
 
     m_scpiConnectionList.append(this); // the server itself has some commands
     m_scpiConnectionList.append(m_pStatusInterface = new Sec1000StatusInterface(m_scpiInterface));
-    m_scpiConnectionList.append(m_pSystemInterface = new cSystemInterface(m_scpiInterface, this, m_pSystemInfo));
+    m_scpiConnectionList.append(m_pSystemInterface = new Sec1000SystemInterface(m_scpiInterface, this, m_pSystemInfo));
     m_scpiConnectionList.append(m_pECalculatorInterface = new SecMainAndChannelInterface(m_scpiInterface,
                                                                                            m_pECalcSettings,
                                                                                            m_pInputSettings,

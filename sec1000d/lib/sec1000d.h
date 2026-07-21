@@ -12,7 +12,7 @@ class QSocketNotifier;
 class SecCalculatorSettings;
 class SecInputSettings;
 class Sec1000StatusInterface;
-class cSystemInterface;
+class Sec1000SystemInterface;
 class SecMainAndChannelInterface;
 class SecChannel;
 class Sec1000SystemInfo;
@@ -55,7 +55,7 @@ private:
     SecInputSettings* m_pInputSettings = nullptr;
 
     Sec1000StatusInterface* m_pStatusInterface = nullptr;
-    cSystemInterface* m_pSystemInterface = nullptr;
+    Sec1000SystemInterface* m_pSystemInterface = nullptr;
     SecMainAndChannelInterface* m_pECalculatorInterface = nullptr;
     Sec1000SystemInfo* m_pSystemInfo = nullptr;
 
