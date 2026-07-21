@@ -1,30 +1,17 @@
 #ifndef STATUSINTERFACE_H
 #define STATUSINTERFACE_H
 
-#include "sec1000d.h"
 #include "scpiserverconnection.h"
-#include "scpidelegate.h"
-#include <QString>
-
-namespace StatusSystem
-{
-
-enum StatusCommands
-{
-    cmdDevice,
-};
-}
-
 
 class Sec1000StatusInterface: public ScpiServerConnection
 {
     Q_OBJECT
 public:
-    Sec1000StatusInterface(std::shared_ptr<cSCPI> scpiInterface);
+    explicit Sec1000StatusInterface(std::shared_ptr<cSCPI> scpiInterface);
     void initSCPIConnection() override;
-protected:
-    void executeProtoScpi(int cmdCode, const ProtonetCommandPtr &protoCmd) override;
+
 private:
+    void executeProtoScpi(int cmdCode, const ProtonetCommandPtr &protoCmd) override;
     quint16 getDeviceStatus();
 };
 

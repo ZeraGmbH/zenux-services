@@ -1,15 +1,19 @@
 #include "sec1000statusinterface.h"
 #include "zscpi_response_definitions.h"
-#include "protonetcommand.h"
 
 Sec1000StatusInterface::Sec1000StatusInterface(std::shared_ptr<cSCPI> scpiInterface) :
     ScpiServerConnection(scpiInterface)
 {
 }
 
+enum StatusCommands
+{
+    cmdDevice,
+};
+
 void Sec1000StatusInterface::initSCPIConnection()
 {
-    addDelegate("STATUS", "DEVICE",SCPI::isQuery, m_scpiInterface, StatusSystem::cmdDevice);
+    addDelegate("STATUS", "DEVICE",SCPI::isQuery, m_scpiInterface, cmdDevice);
 }
 
 void Sec1000StatusInterface::executeProtoScpi(int cmdCode, const ProtonetCommandPtr &protoCmd)
@@ -20,7 +24,7 @@ void Sec1000StatusInterface::executeProtoScpi(int cmdCode, const ProtonetCommand
     {
         switch (cmdCode)
         {
-        case StatusSystem::cmdDevice:
+        case cmdDevice:
             protoCmd->m_sOutput = QString("%1").arg(getDeviceStatus());
             break; // StatusDevice
         }
@@ -31,7 +35,6 @@ void Sec1000StatusInterface::executeProtoScpi(int cmdCode, const ProtonetCommand
     if (protoCmd->m_bwithOutput)
         emit cmdExecutionDone(protoCmd);
 }
-
 
 quint16 Sec1000StatusInterface::getDeviceStatus()
 {
