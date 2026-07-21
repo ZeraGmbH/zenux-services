@@ -1,7 +1,6 @@
 #ifndef SECCHANNEL_H
 #define SECCHANNEL_H
 
-#include "abstractfactorydevicenodepcb.h"
 #include "abstractfactorydevicenodesec.h"
 #include "scpiconnection.h"
 #include "secinputsettings.h"
@@ -26,17 +25,23 @@ public:
 
     QString getName() const;
     bool isfree() const;
-    bool set(QByteArray id);
+    bool set(const QByteArray &id);
     void free();
     void setIntReg(quint8 reg);
 
-    void m_StopErrorCalculator();
+    void stopErrorCalculator();
     void resetInterrupt(quint8 interrupt);
 
-protected:
-    virtual void executeProtoScpi(int cmdCode, const ProtonetCommandPtr &protoCmd) override;
-
 private:
+    void executeProtoScpi(int cmdCode, const ProtonetCommandPtr &protoCmd) override;
+    void readWriteRegister(const ProtonetCommandPtr &protoCmd);
+    void setSync(const ProtonetCommandPtr &protoCmd);
+    void setMux(const ProtonetCommandPtr &protoCmd);
+    void setCmdId(const ProtonetCommandPtr &protoCmd);
+    void start(const ProtonetCommandPtr &protoCmd);
+    void stop(const ProtonetCommandPtr &protoCmd);
+    void resetInt(const ProtonetCommandPtr &protoCmd);
+
     AbstractFactoryDeviceNodeSecPtr m_zdspSupportFactory;
     SecCalculatorSettings* m_pecalcsettings;
     SecInputSettings* m_pInputSettings;
@@ -48,27 +53,9 @@ private:
     QString m_sName; // the channels name ec0...
     bool m_bSet; // we mark if the channel is occupied
     QByteArray m_ClientId; // we remark the clientid for arbitration purpose
-    void m_ReadWriteRegister(const ProtonetCommandPtr &protoCmd);
-    void m_setSync(const ProtonetCommandPtr &protoCmd);
-    void m_setMux(const ProtonetCommandPtr &protoCmd);
-    void m_setCmdId(const ProtonetCommandPtr &protoCmd);
-    void m_start(const ProtonetCommandPtr &protoCmd);
-    void m_stop(const ProtonetCommandPtr &protoCmd);
-    void m_resetInt(const ProtonetCommandPtr &protoCmd);
 
     NotificationValue notifierECalcChannelIntReg;
     std::function<void(int)> m_funcSigHandler;
-
-    static constexpr const char* baseChnName = "ec";
-    static constexpr int en_n = 8;
-    static constexpr int en_p = 9;
-    static constexpr int direction = 15;
-    static constexpr int bitSingle = 16;
-    static constexpr int sssto = 17;
-    static constexpr int ssarm = 19;
-    static constexpr int imp_en = 21;
-    static constexpr int impout_en = 22;
-    static constexpr int cnt2carry = 23;
 };
 
 #endif // SECCHANNEL_H

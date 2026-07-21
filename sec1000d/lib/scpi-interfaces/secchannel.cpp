@@ -17,16 +17,16 @@ namespace ECALCCMDID {
 enum { COUNTEDGE = 1, COUNTRESET, ERRORMEASMASTER, ERRORMEASSLAVE};
 }
 
-enum Commands
-{
-    cmdRegister,
-    setSync,
-    setMux,
-    setCmdid,
-    start,
-    stop,
-    intAcknowledge
-};
+static constexpr const char* baseChnName = "ec";
+static constexpr int en_n = 8;
+static constexpr int en_p = 9;
+static constexpr int direction = 15;
+static constexpr int bitSingle = 16;
+static constexpr int sssto = 17;
+static constexpr int ssarm = 19;
+static constexpr int imp_en = 21;
+static constexpr int impout_en = 22;
+static constexpr int cnt2carry = 23;
 
 SecChannel::SecChannel(std::shared_ptr<cSCPI> scpiInterface,
                        SecCalculatorSettings* esettings,
@@ -53,6 +53,17 @@ SecChannel::SecChannel(std::shared_ptr<cSCPI> scpiInterface,
     CMDIDList.append((1<<en_n) + (1<<direction) + (1<<bitSingle) + (3<<sssto) + (2<<ssarm));
 }
 
+enum Commands
+{
+    cmdRegister,
+    cmdSetSync,
+    cmdSetMux,
+    cmdSetCmdid,
+    cmdStart,
+    cmdStop,
+    intAcknowledge
+};
+
 void SecChannel::initSCPIConnection(const QString &leadingNodes)
 {
     const QString adjLeadNodes = appendTrailingColonOnNonEmptyParentNodes(leadingNodes);
@@ -68,11 +79,11 @@ void SecChannel::initSCPIConnection(const QString &leadingNodes)
     addDelegate(QString("%1%2").arg(adjLeadNodes, getName()), QString("R%1").arg(ECALCREG::MTPAUSEin), SCPI::isCmdwP | SCPI::isQuery, m_scpiInterface, cmdRegister);
     addDelegate(QString("%1%2").arg(adjLeadNodes, getName()), QString("R%1").arg(ECALCREG::MTPULS), SCPI::isCmdwP | SCPI::isQuery, m_scpiInterface, cmdRegister);
     addDelegate(QString("%1%2").arg(adjLeadNodes, getName()), QString("R%1").arg(ECALCREG::MTPAUSE), SCPI::isCmdwP | SCPI::isQuery, m_scpiInterface, cmdRegister);
-    addDelegate(QString("%1%2").arg(adjLeadNodes, getName()),"SYNC", SCPI::isCmdwP, m_scpiInterface, setSync);
-    addDelegate(QString("%1%2").arg(adjLeadNodes, getName()),"MUX", SCPI::isCmdwP, m_scpiInterface, setMux);
-    addDelegate(QString("%1%2").arg(adjLeadNodes, getName()),"CMDID", SCPI::isCmdwP, m_scpiInterface, setCmdid);
-    addDelegate(QString("%1%2").arg(adjLeadNodes, getName()),"START", SCPI::isCmdwP, m_scpiInterface, start);
-    addDelegate(QString("%1%2").arg(adjLeadNodes, getName()),"STOP", SCPI::isCmdwP, m_scpiInterface, stop);
+    addDelegate(QString("%1%2").arg(adjLeadNodes, getName()),"SYNC", SCPI::isCmdwP, m_scpiInterface, cmdSetSync);
+    addDelegate(QString("%1%2").arg(adjLeadNodes, getName()),"MUX", SCPI::isCmdwP, m_scpiInterface, cmdSetMux);
+    addDelegate(QString("%1%2").arg(adjLeadNodes, getName()),"CMDID", SCPI::isCmdwP, m_scpiInterface, cmdSetCmdid);
+    addDelegate(QString("%1%2").arg(adjLeadNodes, getName()),"START", SCPI::isCmdwP, m_scpiInterface, cmdStart);
+    addDelegate(QString("%1%2").arg(adjLeadNodes, getName()),"STOP", SCPI::isCmdwP, m_scpiInterface, cmdStop);
     addDelegate(QString("%1%2").arg(adjLeadNodes, getName()),"INTACK", SCPI::isCmdwP, m_scpiInterface, intAcknowledge);
 }
 
@@ -81,25 +92,25 @@ void SecChannel::executeProtoScpi(int cmdCode, const ProtonetCommandPtr &protoCm
     switch (cmdCode)
     {
     case cmdRegister:
-        m_ReadWriteRegister(protoCmd);
+        readWriteRegister(protoCmd);
         break;
-    case setSync:
-        m_setSync(protoCmd);
+    case cmdSetSync:
+        setSync(protoCmd);
         break;
-    case setMux:
-        m_setMux(protoCmd);
+    case cmdSetMux:
+        setMux(protoCmd);
         break;
-    case setCmdid:
-        m_setCmdId(protoCmd);
+    case cmdSetCmdid:
+        setCmdId(protoCmd);
         break;
-    case start:
-        m_start(protoCmd);
+    case cmdStart:
+        start(protoCmd);
         break;
-    case stop:
-        m_stop(protoCmd);
+    case cmdStop:
+        stop(protoCmd);
         break;
     case intAcknowledge:
-        m_resetInt(protoCmd);
+        resetInt(protoCmd);
         break;
     }
 
@@ -108,20 +119,17 @@ void SecChannel::executeProtoScpi(int cmdCode, const ProtonetCommandPtr &protoCm
 
 }
 
-
 QString SecChannel::getName() const
 {
     return m_sName;
 }
-
 
 bool SecChannel::isfree() const
 {
     return !m_bSet;
 }
 
-
-bool SecChannel::set(QByteArray id)
+bool SecChannel::set(const QByteArray &id)
 {
     bool ret = !m_bSet;
     if (ret)
@@ -130,20 +138,17 @@ bool SecChannel::set(QByteArray id)
     return ret;
 }
 
-
 void SecChannel::free()
 {
     m_bSet = false;
 }
-
 
 void SecChannel::setIntReg(quint8 reg)
 {
     notifierECalcChannelIntReg.setValue(reg);
 }
 
-
-void SecChannel::m_ReadWriteRegister(const ProtonetCommandPtr &protoCmd)
+void SecChannel::readWriteRegister(const ProtonetCommandPtr &protoCmd)
 {
     bool ok;
     quint32 reg;
@@ -203,7 +208,7 @@ void SecChannel::m_ReadWriteRegister(const ProtonetCommandPtr &protoCmd)
         protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-void SecChannel::m_setSync(const ProtonetCommandPtr &protoCmd)
+void SecChannel::setSync(const ProtonetCommandPtr &protoCmd)
 {
     cSCPICommand cmd = protoCmd->m_sInput;
     if (cmd.isCommand(1)) {
@@ -232,7 +237,7 @@ void SecChannel::m_setSync(const ProtonetCommandPtr &protoCmd)
         protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-void SecChannel::m_setMux(const ProtonetCommandPtr &protoCmd)
+void SecChannel::setMux(const ProtonetCommandPtr &protoCmd)
 {
     cSCPICommand cmd = protoCmd->m_sInput;
     if (cmd.isCommand(1)) {
@@ -256,7 +261,7 @@ void SecChannel::m_setMux(const ProtonetCommandPtr &protoCmd)
         protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-void SecChannel::m_setCmdId(const ProtonetCommandPtr &protoCmd)
+void SecChannel::setCmdId(const ProtonetCommandPtr &protoCmd)
 {
     cSCPICommand cmd = protoCmd->m_sInput;
     if (cmd.isCommand(1)) {
@@ -282,7 +287,7 @@ void SecChannel::m_setCmdId(const ProtonetCommandPtr &protoCmd)
         protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-void SecChannel::m_start(const ProtonetCommandPtr &protoCmd)
+void SecChannel::start(const ProtonetCommandPtr &protoCmd)
 {
     cSCPICommand cmd = protoCmd->m_sInput;
     if (cmd.isCommand(0)) {
@@ -304,12 +309,12 @@ void SecChannel::m_start(const ProtonetCommandPtr &protoCmd)
 }
 
 
-void SecChannel::m_stop(const ProtonetCommandPtr &protoCmd)
+void SecChannel::stop(const ProtonetCommandPtr &protoCmd)
 {
     cSCPICommand cmd = protoCmd->m_sInput;
     if (cmd.isCommand(0)) {
         if (protoCmd->m_clientId == m_ClientId) { // authorized ?
-            m_StopErrorCalculator();
+            stopErrorCalculator();
             protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::ack];
         }
         else
@@ -319,7 +324,7 @@ void SecChannel::m_stop(const ProtonetCommandPtr &protoCmd)
         protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-void SecChannel::m_resetInt(const ProtonetCommandPtr &protoCmd)
+void SecChannel::resetInt(const ProtonetCommandPtr &protoCmd)
 {
     cSCPICommand cmd = protoCmd->m_sInput;
     if (cmd.isCommand(1)) {
@@ -342,7 +347,7 @@ void SecChannel::m_resetInt(const ProtonetCommandPtr &protoCmd)
 
 }
 
-void SecChannel::m_StopErrorCalculator()
+void SecChannel::stopErrorCalculator()
 {
     quint32 reg;
     AbstractDeviceNodeSecPtr deviceNode = m_zdspSupportFactory->getSecDeviceNode();

@@ -28,7 +28,7 @@ SecMainAndChannelInterface::SecMainAndChannelInterface(std::shared_ptr<cSCPI> sc
                                            funcSigHandler,
                                            zdspSupportFactory);
         m_ECalculatorChannelList.append(eChan);
-        eChan->m_StopErrorCalculator();
+        eChan->stopErrorCalculator();
         eChan->resetInterrupt(0xF);
     }
 }
