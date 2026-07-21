@@ -89,7 +89,10 @@ bool CmdHandler::storeVersionFile(const QString &destinationDir, const QString &
 
 bool CmdHandler::storeUpdateLogs(const QString &destinationDir)
 {
-    QStringList fileFilter = {"zera-update*.html"};
+    // convert old update logs to ANSI formmatted texts
+    system("updatehtmls2llog");
+
+    QStringList fileFilter = {"zera-update*.log"};
     QDir dir("/home/operator");
 
     if(!dir.exists()) {

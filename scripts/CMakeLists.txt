@@ -1,5 +1,6 @@
 set(SCRIPTS
     zenuxlog
+    updatehtmls2llog
     )
 
 add_custom_target(scripts SOURCES

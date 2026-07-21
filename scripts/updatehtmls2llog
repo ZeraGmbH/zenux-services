@@ -1,0 +1,17 @@
+#!/bin/sh
+
+HTMLPATH="/home/operator"
+
+cd "${HTMLPATH}"
+for htmlfile in `find -maxdepth 1 -name 'zera-update*.html'`; do
+    sed -i \
+        -e "s:</br>::g" \
+        -e "s:</font>:$(printf '\033[0m'):g" \
+        -e "s:<font color=\"green\">:$(printf '\033[32m'):g" \
+        -e "s:<font color=\"orange\">:$(printf '\033[33m'):g" \
+        -e "s:<font color=\"red\">:$(printf '\033[31m'):g" \
+        "${htmlfile}"
+
+    logfilename=`echo ${htmlfile} | sed 's:\.html:\.log:'`
+    mv "$htmlfile" "$logfilename"
+done
