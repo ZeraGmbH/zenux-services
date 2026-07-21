@@ -13,7 +13,6 @@ CmdHandler::CmdHandler(AbstractLogCreatorPtr logGenerator, const QString &coreFi
 
 void CmdHandler::StartCmd(SimpleCmdData *pCmd, QVariantList params)
 {
-    QStringList errInfo;
     switch(static_cast<enum ControlCmdIds>(pCmd->GetCmdID())) {
     case CMD_SAVE_LOG_AND_DUMPS:
         QString hostName = FileUtils::getLocalHostname();
