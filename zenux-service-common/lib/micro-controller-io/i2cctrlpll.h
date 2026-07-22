@@ -6,7 +6,7 @@
 class I2cCtrlPll : public AbstractI2cCtrlPll
 {
 public:
-    I2cCtrlPll(QString deviceNodeName, quint8 i2cAddress, quint8 debugLevel);
+    I2cCtrlPll(QString deviceNodeName, quint8 i2cAddress);
     ZeraMControllerIo::atmelRM setPLLChannel(quint8 chn) override;
     ZeraMControllerIo::atmelRM readPLLChannel(quint8& chn) override;
 private:

@@ -8,8 +8,7 @@ class I2cCtrlBootloaderOnMux : public AbstractI2cCtrlBootloader
 {
 public:
     I2cCtrlBootloaderOnMux(QString deviceNodeName, quint8 i2cAddress,
-                           quint8 i2cAddressMux, qint8 muxChannel,
-                           quint8 debugLevel);
+                           quint8 i2cAddressMux, qint8 muxChannel);
     ZeraMControllerIo::atmelRM bootloaderLoadFlash(cIntelHexFileIO& ihxFIO) override;
     ZeraMControllerIo::atmelRM bootloaderStartProgram() override;
 private:

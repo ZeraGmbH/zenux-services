@@ -6,7 +6,7 @@
 class I2cCtrlCriticalStatus : public AbstractI2cCtrlCriticalStatus
 {
 public:
-    I2cCtrlCriticalStatus(const QString &deviceNodeName, quint8 i2cAddress, quint8 debugLevel);
+    I2cCtrlCriticalStatus(const QString &deviceNodeName, quint8 i2cAddress);
     ZeraMControllerIo::atmelRM writeIntMask(quint16 mask) override;
     ZeraMControllerIo::atmelRM readIntMask(quint16& mask) override;
     ZeraMControllerIo::atmelRM readCriticalStatus(quint16& stat) override;

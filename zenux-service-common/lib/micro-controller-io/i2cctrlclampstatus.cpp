@@ -1,7 +1,7 @@
 #include "i2cctrlclampstatus.h"
 
-I2cCtrlClampStatus::I2cCtrlClampStatus(QString deviceNodeName, quint8 i2cAddress, quint8 debugLevel) :
-    m_ctrlIo(deviceNodeName, i2cAddress, debugLevel)
+I2cCtrlClampStatus::I2cCtrlClampStatus(QString deviceNodeName, quint8 i2cAddress) :
+    m_ctrlIo(deviceNodeName, i2cAddress)
 {
 }
 

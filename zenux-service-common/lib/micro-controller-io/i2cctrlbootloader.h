@@ -6,7 +6,7 @@
 class I2cCtrlBootloader : public AbstractI2cCtrlBootloader
 {
 public:
-    I2cCtrlBootloader(QString deviceNodeName, quint8 i2cAddress, quint8 debugLevel);
+    I2cCtrlBootloader(QString deviceNodeName, quint8 i2cAddress);
     ZeraMControllerIo::atmelRM bootloaderLoadFlash(cIntelHexFileIO& ihxFIO) override;
     ZeraMControllerIo::atmelRM bootloaderStartProgram() override;
 private:

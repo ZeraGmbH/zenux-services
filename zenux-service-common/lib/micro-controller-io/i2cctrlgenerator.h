@@ -7,7 +7,7 @@
 class I2cCtrlGenerator : public AbstractI2cCtrlGenerator
 {
 public:
-    I2cCtrlGenerator(cSenseSettingsPtr senseSettings, const QString &deviceNodeName, quint8 i2cAddress, quint8 debugLevel);
+    I2cCtrlGenerator(cSenseSettingsPtr senseSettings, const QString &deviceNodeName, quint8 i2cAddress);
 
     ZeraMControllerIo::atmelRM readSourceModeOn(QStringList &channelMNamesModeOnRead) override;
     ZeraMControllerIo::atmelRM sendSourceModeOn(const QStringList &channelMNamesModeOn) override;

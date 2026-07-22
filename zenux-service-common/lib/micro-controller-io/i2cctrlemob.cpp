@@ -4,9 +4,8 @@
 I2cCtrlEMOB::I2cCtrlEMOB(QString deviceNodeName,
                          quint8 i2cAddress,
                          quint8 i2cAddressMux,
-                         qint8 muxChannel,
-                         quint8 debugLevel) :
-    m_ctrlIo(deviceNodeName, i2cAddress, debugLevel),
+                         qint8 muxChannel) :
+    m_ctrlIo(deviceNodeName, i2cAddress),
     m_i2cMuxer(I2cMultiplexerFactory::createPCA9547Muxer(deviceNodeName, i2cAddressMux, muxChannel))
 {
 }

@@ -6,7 +6,7 @@
 class I2cCtrlCommonInfo : public AbstractI2cCtrlCommonInfo
 {
 public:
-    I2cCtrlCommonInfo(const QString &deviceNodeName, quint8 i2cAddress, quint8 debugLevel);
+    I2cCtrlCommonInfo(const QString &deviceNodeName, quint8 i2cAddress);
     ZeraMControllerIo::atmelRM readPCBInfo(QString& answer) override;
     ZeraMControllerIo::atmelRM readCTRLVersion(QString& answer) override;
 private:

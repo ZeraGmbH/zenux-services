@@ -6,7 +6,7 @@
 class I2cCtrlEepromPermission : public AbstractI2cCtrlEepromPermission
 {
 public:
-    I2cCtrlEepromPermission(const QString &deviceNodeName, quint8 i2cAddress, quint8 debugLevel);
+    I2cCtrlEepromPermission(const QString &deviceNodeName, quint8 i2cAddress);
     ZeraMControllerIo::atmelRM getEEPROMAccessEnable(bool &enable) override;
 private:
     ZeraMControllerIo m_ctrlIo;

@@ -19,7 +19,6 @@ enum I2cDeviceAdrTypes
 
 enum configstate
 {
-    SetDebugLevel,
     SetDevNode,
     SetEepromCapacity,
 
@@ -37,14 +36,12 @@ class I2cSettings : public XMLSettings
     Q_OBJECT
 public:
     I2cSettings(Zera::XMLConfig::cReader *xmlread);
-    int getDebugLevel() const;
     quint8 getI2CAdress(i2cSettings::I2cDeviceAdrTypes deviceType) const;
     const QString &getDeviceNode() const;
     int getEepromByteSize() const;
 public slots:
     void configXMLInfo(const QString &key) override;
 protected:
-    int m_debugLevel = 1;
     QString m_sDeviceNode;
     int m_eepromCapacity = 0;
     quint8 m_nAtmelAdr;

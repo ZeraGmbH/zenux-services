@@ -1,8 +1,8 @@
 #include "i2cctrlcputemperature.h"
 
 
-I2cCtrlCpuTemperature::I2cCtrlCpuTemperature(const QString &deviceNodeName, quint8 i2cAddress, quint8 debugLevel) :
-    m_ctrlIo(deviceNodeName, i2cAddress, debugLevel)
+I2cCtrlCpuTemperature::I2cCtrlCpuTemperature(const QString &deviceNodeName, quint8 i2cAddress) :
+    m_ctrlIo(deviceNodeName, i2cAddress)
 {
 }
 

@@ -6,7 +6,7 @@
 class I2cCtrlClampStatus : public AbstractI2cCtrlClampStatus
 {
 public:
-    I2cCtrlClampStatus(QString deviceNodeName, quint8 i2cAddress, quint8 debugLevel);
+    I2cCtrlClampStatus(QString deviceNodeName, quint8 i2cAddress);
     ZeraMControllerIo::atmelRM readClampStatus(quint16& stat) override;
 private:
     ZeraMControllerIo m_ctrlIo;

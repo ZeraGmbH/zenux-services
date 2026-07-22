@@ -3,9 +3,9 @@
 #include "i2cutilities.h"
 #include <QIODevice>
 
-I2cCtrlGenerator::I2cCtrlGenerator(cSenseSettingsPtr senseSettings, const QString &deviceNodeName, quint8 i2cAddress, quint8 debugLevel) :
+I2cCtrlGenerator::I2cCtrlGenerator(cSenseSettingsPtr senseSettings, const QString &deviceNodeName, quint8 i2cAddress) :
     m_senseSettings(senseSettings),
-    m_ctrlIo(deviceNodeName, i2cAddress, debugLevel)
+    m_ctrlIo(deviceNodeName, i2cAddress)
 {
 }
 

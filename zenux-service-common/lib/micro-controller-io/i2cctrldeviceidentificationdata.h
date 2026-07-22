@@ -6,7 +6,7 @@
 class I2cCtrlDeviceIdent : public AbstractI2cCtrlDeviceIdent
 {
 public:
-    I2cCtrlDeviceIdent(QString deviceNodeName, quint8 i2cAddress, quint8 debugLevel);
+    I2cCtrlDeviceIdent(QString deviceNodeName, quint8 i2cAddress);
     ZeraMControllerIo::atmelRM readDeviceName(QString& answer) override;
     ZeraMControllerIo::atmelRM readSerialNumber(QString& answer) override;
     ZeraMControllerIo::atmelRM writeSerialNumber(QString &sNumber) override;

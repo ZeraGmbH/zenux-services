@@ -6,7 +6,7 @@
 class I2cCtrlAccu : public AbstractI2cCtrlAccu
 {
 public:
-    I2cCtrlAccu(QString deviceNodeName, quint8 i2cAddress, quint8 debugLevel);
+    I2cCtrlAccu(QString deviceNodeName, quint8 i2cAddress);
     ZeraMControllerIo::atmelRM readAccuStatus(quint8& stat) override;
     ZeraMControllerIo::atmelRM readAccuStateOfCharge(quint8& charge) override;
 private:

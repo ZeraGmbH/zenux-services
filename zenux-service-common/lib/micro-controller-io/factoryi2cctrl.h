@@ -33,7 +33,6 @@ private:
     quint8 getEmobMuxI2cAddress();
     const I2cSettingsPtr m_i2cSettings;
     QString m_deviceNode;
-    quint8 m_debugLevel;
 };
 
 #endif // FACTORYI2CCTRL_H

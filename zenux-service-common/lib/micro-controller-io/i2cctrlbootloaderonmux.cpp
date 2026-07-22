@@ -4,9 +4,9 @@
 I2cCtrlBootloaderOnMux::I2cCtrlBootloaderOnMux(QString deviceNodeName,
                                                quint8 i2cAddress,
                                                quint8 i2cAddressMux,
-                                               qint8 muxChannel,
-                                               quint8 debugLevel) :
-    m_ctrlIo(deviceNodeName, i2cAddress, debugLevel),
+                                               qint8 muxChannel) :
+    m_ctrlIo(deviceNodeName, i2cAddress,
+             ZeraMControllerIo::MSG_NONE /* i2c error can occure if clamp is connected */),
     m_i2cMuxer(I2cMultiplexerFactory::createPCA9547Muxer(deviceNodeName, i2cAddressMux, muxChannel))
 {
 }
