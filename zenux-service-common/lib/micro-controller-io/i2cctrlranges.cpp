@@ -1,7 +1,7 @@
 #include "i2cctrlranges.h"
 
-I2cCtrlRanges::I2cCtrlRanges(const QString &deviceNodeName, quint8 i2cAddress) :
-    m_ctrlIo(deviceNodeName, i2cAddress)
+I2cCtrlRanges::I2cCtrlRanges(const QString &deviceNodeName, quint8 i2cAddress, quint8 debugLevel) :
+    m_ctrlIo(deviceNodeName, i2cAddress, debugLevel)
 {
 }
 

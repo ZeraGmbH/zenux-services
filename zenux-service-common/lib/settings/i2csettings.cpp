@@ -6,6 +6,7 @@ I2cSettings::I2cSettings(Zera::XMLConfig::cReader *xmlread)
 {
     m_pXMLReader = xmlread;
 
+    m_ConfigXMLMap["serviceconfig:connectivity:i2c:debuglevel"] = i2cSettings::SetDebugLevel;
     m_ConfigXMLMap["serviceconfig:connectivity:i2c:device:node"] = i2cSettings::SetDevNode;
     m_ConfigXMLMap["serviceconfig:connectivity:i2c:eeprom_capacity"] = i2cSettings::SetEepromCapacity;
     m_ConfigXMLMap["serviceconfig:connectivity:i2c:adress:atmel"] = i2cSettings::SetAtmelAdr;
@@ -14,6 +15,11 @@ I2cSettings::I2cSettings(Zera::XMLConfig::cReader *xmlread)
     m_ConfigXMLMap["serviceconfig:connectivity:i2c:adress:clampmux"] = i2cSettings::SetFlashMuxAdr;
     m_ConfigXMLMap["serviceconfig:connectivity:i2c:adress:flash"] = i2cSettings::SetFlashAdr;
     m_ConfigXMLMap["serviceconfig:connectivity:i2c:adress:clampflash"] = i2cSettings::SetClampFlashAdr;
+}
+
+int I2cSettings::getDebugLevel() const
+{
+    return m_debugLevel;
 }
 
 quint8 I2cSettings::getI2CAdress(i2cSettings::I2cDeviceAdrTypes deviceType) const
@@ -59,6 +65,9 @@ void I2cSettings::configXMLInfo(const QString &key)
     if (m_pXMLReader && m_ConfigXMLMap.contains(key)) {
         switch (m_ConfigXMLMap[key])
         {
+        case i2cSettings::SetDebugLevel:
+            m_debugLevel = m_pXMLReader->getValue(key).toInt();
+            break;
         case i2cSettings::SetDevNode:
             m_sDeviceNode = m_pXMLReader->getValue(key);
             break;

@@ -1,7 +1,7 @@
 #include "i2cctrlaccu.h"
 
-I2cCtrlAccu::I2cCtrlAccu(QString deviceNodeName, quint8 i2cAddress) :
-    m_ctrlIo(deviceNodeName, i2cAddress)
+I2cCtrlAccu::I2cCtrlAccu(QString deviceNodeName, quint8 i2cAddress, quint8 debugLevel) :
+    m_ctrlIo(deviceNodeName, i2cAddress, debugLevel)
 {
 }
 

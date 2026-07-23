@@ -6,7 +6,7 @@
 class I2cCtrlMMode : public AbstractI2cCtrlMMode
 {
 public:
-    I2cCtrlMMode(QString deviceNodeName, quint8 i2cAddress);
+    I2cCtrlMMode(QString deviceNodeName, quint8 i2cAddress, quint8 debugLevel);
     ZeraMControllerIo::atmelRM setMeasMode(quint8 mmode) override;
     ZeraMControllerIo::atmelRM readMeasMode(quint8& mmode) override;
 private:
