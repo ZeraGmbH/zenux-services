@@ -34,11 +34,11 @@ class cCOM5003dServer: public PCBServer
 
 public:
     explicit cCOM5003dServer(SettingsContainerPtr settings,
-                             AbstractFactoryI2cCtrlPtr ctrlFactory,
-                             AbstractFactoryDeviceNodePcbPtr zdspSupportFactory,
-                             AbstractEepromI2cFactoryPtr adjMemFactory,
-                             VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory,
-                             AbstractChannelRangeFactoryPtr channelRangeFactory);
+                             const AbstractFactoryI2cCtrlPtr &ctrlFactory,
+                             const AbstractFactoryDeviceNodePcbPtr &zdspSupportFactory,
+                             const AbstractEepromI2cFactoryPtr &adjMemFactory,
+                             const VeinTcp::AbstractTcpNetworkFactoryPtr &tcpNetworkFactory,
+                             const AbstractChannelRangeFactoryPtr &channelRangeFactory);
     ~cCOM5003dServer();
     QString getCtrlDeviceNode();
     static const ServerParams defaultParams;

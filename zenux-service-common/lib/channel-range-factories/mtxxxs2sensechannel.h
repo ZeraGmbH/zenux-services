@@ -13,7 +13,7 @@ public:
     MtXXXs2SenseChannel(const std::shared_ptr<cSCPI> &scpiInterface,
                         const QString &unit,
                         SenseSystem::cChannelSettings* cSettings,
-                        AbstractFactoryI2cCtrlPtr ctrlFactory);
+                        const AbstractFactoryI2cCtrlPtr &ctrlFactory);
     QString getAlias() override;
 private:
     NotificationStatus scpiReadWriteRange(const ProtonetCommandPtr &protoCmd) override;

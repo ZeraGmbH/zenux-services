@@ -2,8 +2,8 @@
 #include "permissionfunctions.h"
 
 TestPcbServerNotifications::TestPcbServerNotifications(SettingsContainerPtr settings,
-                                                       AbstractFactoryI2cCtrlPtr ctrlFactory,
-                                                       VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory) :
+                                                       const AbstractFactoryI2cCtrlPtr &ctrlFactory,
+                                                       const VeinTcp::AbstractTcpNetworkFactoryPtr &tcpNetworkFactory) :
     PCBServer(std::move(settings), tcpNetworkFactory)
 {
     m_scpiConnectionList.append(this);
@@ -24,7 +24,7 @@ void TestPcbServerNotifications::initTestSCPIConnections()
     initSCPIConnections();
 }
 
-void TestPcbServerNotifications::registerNotifier(QString inputCmd, int notifierId)
+void TestPcbServerNotifications::registerNotifier(const QString &inputCmd, int notifierId)
 {
     QString scpiAuthorizationQuery = QString("%1 %2;%3;").arg("SERVER:REGISTER").arg(inputCmd).arg(notifierId);
     ProtonetCommandPtr protoCmd = std::make_shared<ProtonetCommand>(nullptr, false, false, QByteArray(), 0, scpiAuthorizationQuery);

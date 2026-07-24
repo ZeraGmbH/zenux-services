@@ -8,12 +8,12 @@ class Com5003SenseInterface : public SenseInterfaceCommon
     Q_OBJECT
 public:
     // COM specifics only
-    Com5003SenseInterface(std::shared_ptr<cSCPI> scpiInterface,
-                          cSenseSettingsPtr senseSettings,
+    Com5003SenseInterface(const std::shared_ptr<cSCPI> &scpiInterface,
+                          const cSenseSettingsPtr &senseSettings,
                           EepromI2cDeviceInterfacePtr adjMemory,
                           SystemInfo *systemInfo,
-                          AbstractChannelRangeFactoryPtr rangeFactory,
-                          AbstractFactoryI2cCtrlPtr ctrlFactory);
+                          const AbstractChannelRangeFactoryPtr &rangeFactory,
+                          const AbstractFactoryI2cCtrlPtr &ctrlFactory);
 
 private:
     void changeSense();

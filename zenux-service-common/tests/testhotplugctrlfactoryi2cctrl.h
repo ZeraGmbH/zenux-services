@@ -8,8 +8,8 @@
 class TestHotPlugCtrlFactoryI2cCtrl : public TestFactoryI2cCtrl
 {
 public:
-    TestHotPlugCtrlFactoryI2cCtrl(I2cSettingsPtr i2cSettings,
-                                  cSenseSettingsPtr senseSettings);
+    TestHotPlugCtrlFactoryI2cCtrl(const I2cSettingsPtr &i2cSettings,
+                                  const cSenseSettingsPtr &senseSettings);
     I2cCtrlBootloaderPtr getBootloaderController(ControllerTypes ctrlType, qint8 muxChannel = -1) override;
     I2cCtrlCommonInfoPtrUnique getCommonInfoController(ControllerTypes ctrlType, qint8 muxChannel = -1) override;
 

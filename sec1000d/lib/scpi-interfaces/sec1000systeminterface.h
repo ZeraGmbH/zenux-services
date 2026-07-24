@@ -10,7 +10,9 @@ class Sec1000SystemInterface: public ScpiServerConnection
 {
     Q_OBJECT
 public:
-    explicit Sec1000SystemInterface(std::shared_ptr<cSCPI> scpiInterface, cSEC1000dServer* server, Sec1000SystemInfo* sInfo);
+    explicit Sec1000SystemInterface(const std::shared_ptr<cSCPI> &scpiInterface,
+                                    cSEC1000dServer* server,
+                                    Sec1000SystemInfo* sInfo);
     void initSCPIConnection() override;
 
 private:

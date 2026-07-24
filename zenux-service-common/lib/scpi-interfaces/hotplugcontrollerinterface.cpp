@@ -1,7 +1,7 @@
 #include "hotplugcontrollerinterface.h"
 #include "zscpi_response_definitions.h"
 
-HotplugControllerInterface::HotplugControllerInterface(std::shared_ptr<cSCPI> scpiInterface,
+HotplugControllerInterface::HotplugControllerInterface(const std::shared_ptr<cSCPI> &scpiInterface,
                                                        HotPluggableControllerContainerPtr hotPluggableControllerContainer) :
     ScpiServerConnection(scpiInterface),
     m_hotPluggableControllerContainer(hotPluggableControllerContainer)

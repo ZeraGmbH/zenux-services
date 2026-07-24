@@ -7,8 +7,8 @@
 #include <i2cmultiplexerfactory.h>
 #include <testloghelpers.h>
 
-TestServerForSenseInterfaceMt310s2::TestServerForSenseInterfaceMt310s2(AbstractFactoryI2cCtrlPtr ctrlFactory,
-                                                                       VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory,
+TestServerForSenseInterfaceMt310s2::TestServerForSenseInterfaceMt310s2(const AbstractFactoryI2cCtrlPtr &ctrlFactory,
+                                                                       const VeinTcp::AbstractTcpNetworkFactoryPtr &tcpNetworkFactory,
                                                                        const QString &serviceNameForAlternateDevice,
                                                                        bool systemInfoMock) :
     TestPcbServer(serviceNameForAlternateDevice, tcpNetworkFactory)

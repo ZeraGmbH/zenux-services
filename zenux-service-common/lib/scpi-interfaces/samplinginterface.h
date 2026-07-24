@@ -10,9 +10,9 @@ class cSamplingInterface: public ScpiServerConnection
 {
     Q_OBJECT
 public:
-    cSamplingInterface(std::shared_ptr<cSCPI> scpiInterface,
-                       SamplingSettingsPtr samplingSettings,
-                       AbstractFactoryI2cCtrlPtr ctrlFactory);
+    cSamplingInterface(const std::shared_ptr<cSCPI> &scpiInterface,
+                       const SamplingSettingsPtr &samplingSettings,
+                       const AbstractFactoryI2cCtrlPtr &ctrlFactory);
     void initSCPIConnection() override;
 protected:
     void executeProtoScpi(int cmdCode, const ProtonetCommandPtr &protoCmd) override;

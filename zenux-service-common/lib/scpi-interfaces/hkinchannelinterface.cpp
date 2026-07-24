@@ -8,7 +8,7 @@ enum Commands
 };
 
 HkInChannelInterface::HkInChannelInterface(const std::shared_ptr<cSCPI> &scpiInterface,
-                                           QString description,
+                                           const QString &description,
                                            quint8 nr,
                                            HkInSettings::ChannelSettings *cSettings) :
     ScpiConnection(scpiInterface),

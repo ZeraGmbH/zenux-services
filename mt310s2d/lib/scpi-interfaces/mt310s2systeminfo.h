@@ -7,7 +7,7 @@
 class Mt310s2SystemInfo : public SystemInfo
 {
 public:
-    explicit Mt310s2SystemInfo(AbstractFactoryI2cCtrlPtr ctrlFactory);
+    explicit Mt310s2SystemInfo(const AbstractFactoryI2cCtrlPtr &ctrlFactory);
     void getSystemInfo(); // here we fetch all system info
     bool dataRead(); // false if we were not able to read required information
     virtual QString getSysCTRLVersion();

@@ -80,7 +80,7 @@ void test_regression_adj_import_permission_mt310s2::scpiImportPassFlashWrite()
     QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::ack]);
 }
 
-void test_regression_adj_import_permission_mt310s2::setupServers(AbstractFactoryI2cCtrlPtr ctrlFactory)
+void test_regression_adj_import_permission_mt310s2::setupServers(const AbstractFactoryI2cCtrlPtr &ctrlFactory)
 {
     m_testServer = std::make_unique<TestServerForSenseInterfaceMt310s2>(ctrlFactory, m_tcpNetworkFactory);
     TimeMachineObject::feedEventLoop();

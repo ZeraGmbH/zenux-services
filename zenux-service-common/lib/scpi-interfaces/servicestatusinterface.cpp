@@ -13,9 +13,9 @@ enum StatusCommands
     cmdAuthorization,
 };
 
-ServiceStatusInterface::ServiceStatusInterface(std::shared_ptr<cSCPI> scpiInterface,
+ServiceStatusInterface::ServiceStatusInterface(const std::shared_ptr<cSCPI> &scpiInterface,
                                                AbstractAdjStatus *adjustmentStatusInterface,
-                                               AbstractFactoryI2cCtrlPtr ctrlFactory,
+                                               const AbstractFactoryI2cCtrlPtr &ctrlFactory,
                                                bool hasSourceGenerator) :
     ScpiServerConnection(scpiInterface),
     m_adjustmentStatusInterface(adjustmentStatusInterface),

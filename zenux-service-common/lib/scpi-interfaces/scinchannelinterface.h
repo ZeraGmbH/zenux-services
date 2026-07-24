@@ -9,7 +9,7 @@ class ScInChannelInterface : public ScpiConnection
     Q_OBJECT
 public:
     ScInChannelInterface(const std::shared_ptr<cSCPI> &scpiInterface,
-                         QString description,
+                         const QString &description,
                          quint8 nr,
                          ScInSettings::ChannelSettings* cSettings);
     void initSCPIConnection(const QString &leadingNodes);

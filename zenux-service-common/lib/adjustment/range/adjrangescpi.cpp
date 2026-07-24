@@ -52,7 +52,7 @@ enum ScpiCommands
 
 AdjRangeScpi::AdjRangeScpi(const std::shared_ptr<cSCPI> &scpiInterface,
                            std::unique_ptr<AdjustScpiValueFormatter> adjustmentFormatter,
-                           PermissionStructAdj permissions) :
+                           const PermissionStructAdj &permissions) :
     ScpiConnection(scpiInterface),
     m_gainCorrection({m_scpiInterface, permissions.funcAllowAdjGain, adjustmentFormatter->m_correctionExportDigits},
                        &m_adjGroupData.m_gainAdjData),

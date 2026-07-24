@@ -52,11 +52,11 @@ class SenseInterfaceCommon : public ScpiServerConnection, public AdjustmentXmlIm
 public:
     SenseInterfaceCommon(const std::shared_ptr<cSCPI> &scpiInterface,
                          SystemInfo *systemInfo,
-                         cSenseSettingsPtr senseSettings,
+                         const cSenseSettingsPtr &senseSettings,
                          EepromI2cDeviceInterfacePtr adjMemory,
-                         AbstractChannelRangeFactoryPtr rangeFactory,
-                         AbstractFactoryI2cCtrlPtr ctrlFactory,
-                         QHash<QString, int> availSenseModesHash);
+                         const AbstractChannelRangeFactoryPtr &rangeFactory,
+                         const AbstractFactoryI2cCtrlPtr &ctrlFactory,
+                         const QHash<QString, int> &availSenseModesHash);
     virtual ~SenseInterfaceCommon();
     quint8 getAdjustmentStatus() const override;
     SenseChannelCommon *getChannel(const QString &name);

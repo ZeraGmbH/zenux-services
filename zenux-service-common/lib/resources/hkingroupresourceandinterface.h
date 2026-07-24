@@ -12,7 +12,7 @@ class HkInGroupResourceAndInterface : public cResource
     Q_OBJECT
 public:
     const QString Version = "V1.00";
-    HkInGroupResourceAndInterface(std::shared_ptr<cSCPI> scpiInterface,
+    HkInGroupResourceAndInterface(const std::shared_ptr<cSCPI> &scpiInterface,
                                   HkInSettings *settings);
     ~HkInGroupResourceAndInterface();
     void initSCPIConnection() override;

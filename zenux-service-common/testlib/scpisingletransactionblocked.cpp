@@ -2,10 +2,10 @@
 #include "proxy.h"
 #include <timemachineobject.h>
 
-QString ScpiSingleTransactionBlocked::query(QString scpiQuery,
+QString ScpiSingleTransactionBlocked::query(const QString &scpiQuery,
                                             quint16 port,
-                                            VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory,
-                                            Zera::ProxyClientPtr proxyClient)
+                                            const VeinTcp::AbstractTcpNetworkFactoryPtr &tcpNetworkFactory,
+                                            const Zera::ProxyClientPtr &proxyClient)
 {
     ProtobufMessage::NetMessage envelope;
     ProtobufMessage::NetMessage::ScpiCommand* message = envelope.mutable_scpi();
@@ -14,11 +14,11 @@ QString ScpiSingleTransactionBlocked::query(QString scpiQuery,
     return sendBlocked(envelope, port, tcpNetworkFactory, proxyClient);
 }
 
-QString ScpiSingleTransactionBlocked::cmd(QString scpiCmd,
-                                          QString param,
+QString ScpiSingleTransactionBlocked::cmd(const QString &scpiCmd,
+                                          const QString &param,
                                           quint16 port,
-                                          VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory,
-                                          Zera::ProxyClientPtr proxyClient)
+                                          const VeinTcp::AbstractTcpNetworkFactoryPtr &tcpNetworkFactory,
+                                          const Zera::ProxyClientPtr &proxyClient)
 {
     ProtobufMessage::NetMessage envelope;
     ProtobufMessage::NetMessage::ScpiCommand* message = envelope.mutable_scpi();
@@ -29,11 +29,11 @@ QString ScpiSingleTransactionBlocked::cmd(QString scpiCmd,
     return sendBlocked(envelope, port, tcpNetworkFactory, proxyClient);
 }
 
-QString ScpiSingleTransactionBlocked::cmdXmlParam(QString scpiCmd,
-                                                  QString param,
+QString ScpiSingleTransactionBlocked::cmdXmlParam(const QString &scpiCmd,
+                                                  const QString &param,
                                                   quint16 port,
-                                                  VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory,
-                                                  Zera::ProxyClientPtr proxyClient)
+                                                  const VeinTcp::AbstractTcpNetworkFactoryPtr &tcpNetworkFactory,
+                                                  const Zera::ProxyClientPtr &proxyClient)
 {
     ProtobufMessage::NetMessage envelope;
     ProtobufMessage::NetMessage::ScpiCommand* message = envelope.mutable_scpi();
@@ -45,7 +45,7 @@ QString ScpiSingleTransactionBlocked::cmdXmlParam(QString scpiCmd,
 
 QString ScpiSingleTransactionBlocked::sendBlocked(ProtobufMessage::NetMessage &envelope,
                                                   quint16 port,
-                                                  VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory,
+                                                  const VeinTcp::AbstractTcpNetworkFactoryPtr &tcpNetworkFactory,
                                                   Zera::ProxyClientPtr proxyClient)
 {
     if(!proxyClient)

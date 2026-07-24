@@ -20,7 +20,7 @@ ProxyClientPrivate::~ProxyClientPrivate()
     Proxy::getInstance()->releaseConnection(this);
 }
 
-void ProxyClientPrivate::transmitAnswer(std::shared_ptr<ProtobufMessage::NetMessage> message)
+void ProxyClientPrivate::transmitAnswer(const std::shared_ptr<ProtobufMessage::NetMessage> &message)
 {
     emit answerAvailable(message);
 }

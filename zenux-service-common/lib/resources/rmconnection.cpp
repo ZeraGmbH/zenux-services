@@ -1,7 +1,7 @@
 #include "rmconnection.h"
 #include <xiqnetwrapper.h>
 
-RMConnection::RMConnection(const QString &ipadr, quint16 port, VeinTcp::AbstractTcpNetworkFactoryPtr tcpFactory) :
+RMConnection::RMConnection(const QString &ipadr, quint16 port, const VeinTcp::AbstractTcpNetworkFactoryPtr &tcpFactory) :
     m_sIPAdr(ipadr),
     m_nPort(port),
     m_tcpFactory(tcpFactory)

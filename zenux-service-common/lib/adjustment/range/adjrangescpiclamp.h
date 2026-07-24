@@ -12,7 +12,7 @@ public:
     AdjRangeScpiClamp(const std::shared_ptr<cSCPI> &scpiInterface,
                       SenseRangeCommon* deviceInternalRange,
                       double cvRatio,
-                      PermissionStructAdj permission = PermissionStructAdj());
+                      const PermissionStructAdj &permission = PermissionStructAdj());
 
 protected:
     virtual double getGainCorrectionTotal(double par) override;

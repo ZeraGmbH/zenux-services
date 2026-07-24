@@ -31,11 +31,11 @@ static struct sigaction sigActionMt310s2;
 
 
 cMT310S2dServer::cMT310S2dServer(SettingsContainerPtr settings,
-                                 AbstractFactoryI2cCtrlPtr ctrlFactory,
-                                 AbstractFactoryDeviceNodePcbPtr zdspSupportFactory,
-                                 AbstractEepromI2cFactoryPtr adjMemFactory,
-                                 VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory,
-                                 AbstractChannelRangeFactoryPtr channelRangeFactory,
+                                 const AbstractFactoryI2cCtrlPtr &ctrlFactory,
+                                 const AbstractFactoryDeviceNodePcbPtr &zdspSupportFactory,
+                                 const AbstractEepromI2cFactoryPtr &adjMemFactory,
+                                 const VeinTcp::AbstractTcpNetworkFactoryPtr &tcpNetworkFactory,
+                                 const AbstractChannelRangeFactoryPtr &channelRangeFactory,
                                  Mt310s2SystemInfo* alternateSystemInfo) :
     PCBServer(std::move(settings), tcpNetworkFactory),
     m_ctrlFactory(ctrlFactory),

@@ -9,12 +9,12 @@ class TestPcbServerNotifications : public PCBServer
     Q_OBJECT
 public:
     TestPcbServerNotifications(SettingsContainerPtr settings,
-                               AbstractFactoryI2cCtrlPtr ctrlFactory,
-                               VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory);
+                               const AbstractFactoryI2cCtrlPtr &ctrlFactory,
+                               const VeinTcp::AbstractTcpNetworkFactoryPtr &tcpNetworkFactory);
     ~TestPcbServerNotifications();
     void insertScpiConnection(ScpiServerConnection *scpiConnection);
     void initTestSCPIConnections();
-    void registerNotifier(QString inputCmd, int notifierId);
+    void registerNotifier(const QString &inputCmd, int notifierId);
     void unregisterNotifier();
 signals:
     void notificationSent(qint16 notifierId);

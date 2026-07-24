@@ -26,8 +26,8 @@ public:
     static const int Mtxxxs2EcUnitCount;
     explicit cSEC1000dServer(SettingsContainerPtr settings,
                              int ecUnitCount,
-                             AbstractFactoryDeviceNodeSecPtr zdspSupportFactory,
-                             VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory);
+                             const AbstractFactoryDeviceNodeSecPtr &zdspSupportFactory,
+                             const VeinTcp::AbstractTcpNetworkFactoryPtr &tcpNetworkFactory);
     ~cSEC1000dServer();
     QString getServerVersion();
     QString getSecDeviceNode();

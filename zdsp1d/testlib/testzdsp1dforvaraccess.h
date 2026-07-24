@@ -6,9 +6,9 @@
 class TestZdsp1dForVarAccess : public MockZdsp1d
 {
 public:
-    TestZdsp1dForVarAccess(AbstractFactoryZdspSupportPtr zdspSupportFactory,
-                           VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory,
-                           QString alternateConfigXml = QString());
+    TestZdsp1dForVarAccess(const AbstractFactoryZdspSupportPtr &zdspSupportFactory,
+                           const VeinTcp::AbstractTcpNetworkFactoryPtr &tcpNetworkFactory,
+                           const QString &alternateConfigXml = QString());
     ZdspClient* createTestClient();
 private:
     VeinTcp::TcpPeer m_testNetClient;

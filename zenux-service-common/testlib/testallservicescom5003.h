@@ -11,9 +11,9 @@
 class TestAllServicesCom5003 : public AbstractTestAllServices
 {
 public:
-    TestAllServicesCom5003(TestFactoryI2cCtrlPtr testCtrlFactory = std::make_shared<TestFactoryI2cCtrl>(true));
-    TestAllServicesCom5003(VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory,
-                           TestFactoryI2cCtrlPtr testCtrlFactory = std::make_shared<TestFactoryI2cCtrl>(true));
+    TestAllServicesCom5003(const TestFactoryI2cCtrlPtr &testCtrlFactory = std::make_shared<TestFactoryI2cCtrl>(true));
+    TestAllServicesCom5003(const VeinTcp::AbstractTcpNetworkFactoryPtr &tcpNetworkFactory,
+                           const TestFactoryI2cCtrlPtr &testCtrlFactory = std::make_shared<TestFactoryI2cCtrl>(true));
     virtual ~TestAllServicesCom5003();
 
     void setRangeGetSetDelay(int rangeGetSetDelay) override;
@@ -28,7 +28,8 @@ public:
     virtual void removeAllHotplugDevices() override;
     virtual void addClamps(const QList<clampParam> &clampParams) override;
 private:
-    void init(VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory, TestFactoryI2cCtrlPtr ctrlFactory);
+    void init(const VeinTcp::AbstractTcpNetworkFactoryPtr &tcpNetworkFactory,
+              const TestFactoryI2cCtrlPtr &ctrlFactory);
     void noHotplugMsg() const;
 
     ResmanRunFacade *m_resman;

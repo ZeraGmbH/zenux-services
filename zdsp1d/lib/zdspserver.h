@@ -21,8 +21,8 @@ class ZDspServer: public ScpiConnection
     Q_OBJECT
 public:
     ZDspServer(SettingsContainerPtr settings,
-               AbstractFactoryZdspSupportPtr zdspSupportFactory,
-               VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory);
+               const AbstractFactoryZdspSupportPtr &zdspSupportFactory,
+               const VeinTcp::AbstractTcpNetworkFactoryPtr &tcpNetworkFactory);
     virtual ~ZDspServer();
     QString getServerVersion();
     QString getDspDeviceNode();

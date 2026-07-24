@@ -6,8 +6,8 @@
 class MockCom5003d
 {
 public:
-    MockCom5003d(AbstractFactoryI2cCtrlPtr ctrlFactory,
-                 VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory,
+    MockCom5003d(const AbstractFactoryI2cCtrlPtr &ctrlFactory,
+                 const VeinTcp::AbstractTcpNetworkFactoryPtr &tcpNetworkFactory,
                  const QString &alternateConfigXml = QString());
     cSenseSettingsPtr getSenseSettings() const;
 private:

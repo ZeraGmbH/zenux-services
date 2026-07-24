@@ -3,8 +3,8 @@
 #include <QFinalState>
 #include <QDir>
 
-TestPcbServer::TestPcbServer(QString serviceNameForAlternateDevice,
-                             VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory) :
+TestPcbServer::TestPcbServer(const QString &serviceNameForAlternateDevice,
+                             const VeinTcp::AbstractTcpNetworkFactoryPtr &tcpNetworkFactory) :
     PCBServer(std::make_unique<SettingsContainer>(MockServerParamGenerator::createParams(serviceNameForAlternateDevice)),
               tcpNetworkFactory)
 {
@@ -41,7 +41,7 @@ TestPcbServer::~TestPcbServer()
     if (m_pRMConnection) delete m_pRMConnection;
 }
 
-void TestPcbServer::setScpiConnections(ScpiConnectionList scpiConnections)
+void TestPcbServer::setScpiConnections(const ScpiConnectionList &scpiConnections)
 {
     m_scpiConnecttionsAddedFromExtern = scpiConnections;
 }

@@ -32,7 +32,7 @@ class AdjRangeScpi : public ScpiConnection
 public:
     AdjRangeScpi(const std::shared_ptr<cSCPI> &scpiInterface,
                  std::unique_ptr<AdjustScpiValueFormatter> adjustmentFormatter,
-                 PermissionStructAdj permissions = PermissionStructAdj());
+                 const PermissionStructAdj &permissions = PermissionStructAdj());
     void initSCPIConnection(const QString &leadingNodes);
 
     void setAdjGroupData(const AdjDataRange &groupData);

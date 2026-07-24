@@ -15,12 +15,12 @@ class SecChannel : public ScpiConnection
 {
     Q_OBJECT
 public:
-    SecChannel(std::shared_ptr<cSCPI> scpiInterface,
+    SecChannel(const std::shared_ptr<cSCPI> &scpiInterface,
                SecCalculatorSettings* esettings,
                SecInputSettings* inpsettings,
                quint16 nr,
                std::function<void(int)> funcSigHandler,
-               AbstractFactoryDeviceNodeSecPtr zdspSupportFactory);
+               const AbstractFactoryDeviceNodeSecPtr &zdspSupportFactory);
     void initSCPIConnection(const QString &leadingNodes);
 
     QString getName() const;

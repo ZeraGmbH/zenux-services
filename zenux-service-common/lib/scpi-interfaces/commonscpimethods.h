@@ -13,10 +13,10 @@ class CommonScpiMethods
 public:
     static void sendProtoAnswer(QTcpSocket* telnetSocket,
                                 const ProtonetCommandPtr &protoCmd);
-    static QString handleScpiInterfaceRead(std::shared_ptr<cSCPI> scpiInterface,
+    static QString handleScpiInterfaceRead(const std::shared_ptr<cSCPI> &scpiInterface,
                                            const QString &scpiInput);
-    static bool containsValidChannelMName(cSenseSettingsPtr senseSettings, const QString &channelMName);
-    static bool containsValidChannelMNames(cSenseSettingsPtr senseSettings, const QStringList &channelMNames);
+    static bool containsValidChannelMName(const cSenseSettingsPtr &senseSettings, const QString &channelMName);
+    static bool containsValidChannelMNames(const cSenseSettingsPtr &senseSettings, const QStringList &channelMNames);
 };
 
 #endif // COMMONSCPIMETHODS_H

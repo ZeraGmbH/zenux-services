@@ -8,7 +8,7 @@ enum Commands
     cmdChannelCat
 };
 
-HkInGroupResourceAndInterface::HkInGroupResourceAndInterface(std::shared_ptr<cSCPI> scpiInterface,
+HkInGroupResourceAndInterface::HkInGroupResourceAndInterface(const std::shared_ptr<cSCPI> &scpiInterface,
                                                              HkInSettings *settings) :
     cResource(scpiInterface)
 {

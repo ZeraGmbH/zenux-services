@@ -129,7 +129,7 @@ I2cCtrlEMOBPtr FactoryI2cCtrl::getEmobController(qint8 muxChannel)
                                          m_debugLevel);
 }
 
-I2cCtrlGeneratorPtr FactoryI2cCtrl::getGeneratorController(cSenseSettingsPtr senseSettings)
+I2cCtrlGeneratorPtr FactoryI2cCtrl::getGeneratorController(const cSenseSettingsPtr &senseSettings)
 {
     return std::make_unique<I2cCtrlGenerator>(senseSettings, m_deviceNode, getRelaisCtrlI2cAddress(), m_debugLevel);
 }

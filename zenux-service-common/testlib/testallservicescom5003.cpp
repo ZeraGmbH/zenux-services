@@ -3,18 +3,19 @@
 #include "testfactoryzdspsupport.h"
 #include <tcpnetworkfactory.h>
 
-TestAllServicesCom5003::TestAllServicesCom5003(TestFactoryI2cCtrlPtr testCtrlFactory)
+TestAllServicesCom5003::TestAllServicesCom5003(const TestFactoryI2cCtrlPtr &testCtrlFactory)
 {
     init(VeinTcp::TcpNetworkFactory::create(), testCtrlFactory);
 }
 
-TestAllServicesCom5003::TestAllServicesCom5003(VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory,
-                                               TestFactoryI2cCtrlPtr testCtrlFactory)
+TestAllServicesCom5003::TestAllServicesCom5003(const VeinTcp::AbstractTcpNetworkFactoryPtr &tcpNetworkFactory,
+                                               const TestFactoryI2cCtrlPtr &testCtrlFactory)
 {
     init(tcpNetworkFactory, testCtrlFactory);
 }
 
-void TestAllServicesCom5003::init(VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory, TestFactoryI2cCtrlPtr testCtrlFactory)
+void TestAllServicesCom5003::init(const VeinTcp::AbstractTcpNetworkFactoryPtr &tcpNetworkFactory,
+                                  const TestFactoryI2cCtrlPtr &testCtrlFactory)
 {
     m_resman = new ResmanRunFacade(tcpNetworkFactory);
     TimeMachineObject::feedEventLoop();

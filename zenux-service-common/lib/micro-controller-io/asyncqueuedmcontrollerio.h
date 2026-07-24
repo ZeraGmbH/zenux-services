@@ -11,10 +11,10 @@ class AsyncQueuedMControllerIo : public QObject
 public:
     ~AsyncQueuedMControllerIo() = default;
     void startAsyncRangeIo(AbstractZeraMControllerDelayedPtr mcontroller,
-                      const ProtonetCommandPtr &protoCmd,
-                      const QString &rangeName);
+                           const ProtonetCommandPtr &protoCmd,
+                           const QString &rangeName);
 signals:
-    void sigCmdDone(const ProtonetCommandPtr &protoCmd, QString rangeName);
+    void sigCmdDone(const ProtonetCommandPtr &protoCmd, const QString &rangeName);
 private:
     TaskContainerQueue m_pendingTaskQueue;
 };

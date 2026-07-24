@@ -1,8 +1,8 @@
 #include "mockzdsp1d.h"
 #include "mockserverparamgenerator.h"
 
-MockZdsp1d::MockZdsp1d(AbstractFactoryZdspSupportPtr zdspSupportFactory,
-                       VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory,
+MockZdsp1d::MockZdsp1d(const AbstractFactoryZdspSupportPtr &zdspSupportFactory,
+                       const VeinTcp::AbstractTcpNetworkFactoryPtr &tcpNetworkFactory,
                        const QString &alternateConfigXml)
 {
     const ServerParams params = MockServerParamGenerator::createParams("zdsp1d", alternateConfigXml);

@@ -1,7 +1,7 @@
 #include "sec1000statusinterface.h"
 #include "zscpi_response_definitions.h"
 
-Sec1000StatusInterface::Sec1000StatusInterface(std::shared_ptr<cSCPI> scpiInterface) :
+Sec1000StatusInterface::Sec1000StatusInterface(const std::shared_ptr<cSCPI> &scpiInterface) :
     ScpiServerConnection(scpiInterface)
 {
 }

@@ -1,6 +1,6 @@
 #include "i2cctlbootloaderstopper.h"
 
-I2cCtlBootloaderStopper::I2cCtlBootloaderStopper(AbstractFactoryI2cCtrlPtr ctrlFactory,
+I2cCtlBootloaderStopper::I2cCtlBootloaderStopper(const AbstractFactoryI2cCtrlPtr &ctrlFactory,
                                                  int channelId,
                                                  qint8 muxChannel,
                                                  AbstractFactoryI2cCtrl::ControllerTypes ctrlType) :

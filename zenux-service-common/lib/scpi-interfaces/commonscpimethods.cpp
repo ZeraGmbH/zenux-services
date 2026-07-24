@@ -60,7 +60,7 @@ void CommonScpiMethods::sendProtoAnswer(QTcpSocket *telnetSocket,
     }
 }
 
-QString CommonScpiMethods::handleScpiInterfaceRead(std::shared_ptr<cSCPI> scpiInterface,
+QString CommonScpiMethods::handleScpiInterfaceRead(const std::shared_ptr<cSCPI> &scpiInterface,
                                                    const QString &scpiInput)
 {
     cSCPICommand cmd = scpiInput;
@@ -73,14 +73,14 @@ QString CommonScpiMethods::handleScpiInterfaceRead(std::shared_ptr<cSCPI> scpiIn
         return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-bool CommonScpiMethods::containsValidChannelMName(cSenseSettingsPtr senseSettings, const QString &channelMName)
+bool CommonScpiMethods::containsValidChannelMName(const cSenseSettingsPtr &senseSettings, const QString &channelMName)
 {
     if (senseSettings->findChannelSettingByMxName(channelMName) == nullptr)
         return false;
     return true;
 }
 
-bool CommonScpiMethods::containsValidChannelMNames(cSenseSettingsPtr senseSettings, const QStringList &channelMNames)
+bool CommonScpiMethods::containsValidChannelMNames(const cSenseSettingsPtr &senseSettings, const QStringList &channelMNames)
 {
     for (const QString &channelMName : channelMNames)
         if (senseSettings->findChannelSettingByMxName(channelMName) == nullptr)

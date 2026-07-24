@@ -8,10 +8,10 @@
 
 Mt310s2SystemInterface::Mt310s2SystemInterface(PCBServer *server,
                                                Mt310s2SystemInfo *systemInfo,
-                                               cSenseSettingsPtr senseSettings,
+                                               const cSenseSettingsPtr &senseSettings,
                                                SenseInterfaceCommon* senseInterface,
-                                               AbstractFactoryI2cCtrlPtr ctrlFactory,
-                                               HotPluggableControllerContainerPtr hotPluggableControllerContainer) :
+                                               const AbstractFactoryI2cCtrlPtr &ctrlFactory,
+                                               const HotPluggableControllerContainerPtr &hotPluggableControllerContainer) :
     ScpiServerConnection(server->getSCPIInterface()),
     m_pMyServer(server),
     m_systemInfo(systemInfo),

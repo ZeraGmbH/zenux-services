@@ -36,7 +36,7 @@ public:
     Com5003SystemInterface(PCBServer* server,
                            SystemInfo* systemInfo,
                            SenseInterfaceCommon *senseInterface,
-                           AbstractFactoryI2cCtrlPtr ctrlFactory);
+                           const AbstractFactoryI2cCtrlPtr &ctrlFactory);
     void initSCPIConnection() override;
 
 protected:

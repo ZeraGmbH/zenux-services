@@ -83,7 +83,7 @@ quint32 ProxyPrivate::transmitCommand(ProxyClientPrivate* client, ProtobufMessag
     return nr;
 }
 
-void ProxyPrivate::handleReceiveMessage(std::shared_ptr<google::protobuf::Message> message)
+void ProxyPrivate::handleReceiveMessage(const std::shared_ptr<google::protobuf::Message> &message)
 {
     std::shared_ptr<ProtobufMessage::NetMessage> netMessage = std::static_pointer_cast<ProtobufMessage::NetMessage>(message);
     if(netMessage->has_clientid()) {

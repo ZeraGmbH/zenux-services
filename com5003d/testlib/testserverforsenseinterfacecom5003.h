@@ -12,8 +12,8 @@
 class TestServerForSenseInterfaceCom5003  : public TestPcbServer
 {
 public:
-    TestServerForSenseInterfaceCom5003(AbstractFactoryI2cCtrlPtr ctrlFactory,
-                                       VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory,
+    TestServerForSenseInterfaceCom5003(const AbstractFactoryI2cCtrlPtr &ctrlFactory,
+                                       const VeinTcp::AbstractTcpNetworkFactoryPtr &tcpNetworkFactory,
                                        const QString &serviceNameForAlternateDevice = "com5003",
                                        bool systemInfoMock = false);
     QString getDeviceVersion() { return m_systemInfo->getDeviceVersion(); }

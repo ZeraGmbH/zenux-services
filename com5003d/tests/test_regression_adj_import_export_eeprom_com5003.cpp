@@ -166,7 +166,7 @@ void test_regression_adj_import_export_eeprom_com5003::loadArbitraryVersionToEEp
     QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::ack]);
 }
 
-void test_regression_adj_import_export_eeprom_com5003::setupServers(AbstractFactoryI2cCtrlPtr ctrlFactory)
+void test_regression_adj_import_export_eeprom_com5003::setupServers(const AbstractFactoryI2cCtrlPtr &ctrlFactory)
 {
     m_testServer = std::make_unique<TestServerForSenseInterfaceCom5003>(ctrlFactory, m_tcpNetworkFactory);
     TimeMachineObject::feedEventLoop();

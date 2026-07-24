@@ -12,10 +12,10 @@ class TestAllServicesMt310s2 : public AbstractTestAllServices
 {
 public:
     TestAllServicesMt310s2(const QString &serviceNameForAlternateDevice,
-                           TestFactoryI2cCtrlPtr testCtrlFactory = std::make_shared<TestFactoryI2cCtrl>(true));
+                           const TestFactoryI2cCtrlPtr &testCtrlFactory = std::make_shared<TestFactoryI2cCtrl>(true));
     TestAllServicesMt310s2(const QString &serviceNameForAlternateDevice,
-                           VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory,
-                           TestFactoryI2cCtrlPtr testCtrlFactory = std::make_shared<TestFactoryI2cCtrl>(true));
+                           const VeinTcp::AbstractTcpNetworkFactoryPtr &tcpNetworkFactory,
+                           const TestFactoryI2cCtrlPtr &testCtrlFactory = std::make_shared<TestFactoryI2cCtrl>(true));
     virtual ~TestAllServicesMt310s2();
 
     void setRangeGetSetDelay(int rangeGetSetDelay) override;
@@ -32,8 +32,8 @@ public:
 
 private:
     void init(const QString &serviceNameForAlternateDevice,
-              VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory,
-              TestFactoryI2cCtrlPtr ctrlFactory);
+              const VeinTcp::AbstractTcpNetworkFactoryPtr &tcpNetworkFactory,
+              const TestFactoryI2cCtrlPtr &ctrlFactory);
     ResmanRunFacade *m_resman;
     MockMt310s2d *m_mt310s2d;
     MockSec1000d *m_sec1000d;

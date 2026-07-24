@@ -17,7 +17,7 @@ enum Commands
 SenseChannelCommon::SenseChannelCommon(const std::shared_ptr<cSCPI> &scpiInterface,
                                        const QString &unit,
                                        SenseSystem::cChannelSettings *cSettings,
-                                       AbstractFactoryI2cCtrlPtr ctrlFactory) :
+                                       const AbstractFactoryI2cCtrlPtr &ctrlFactory) :
     ScpiConnection(scpiInterface),
     m_ctrlFactory(ctrlFactory),
     m_sName(cSettings->m_nameMx),

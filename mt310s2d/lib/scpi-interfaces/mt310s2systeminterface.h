@@ -36,10 +36,10 @@ class Mt310s2SystemInterface: public ScpiServerConnection
 public:
     Mt310s2SystemInterface(PCBServer* server,
                            Mt310s2SystemInfo *systemInfo,
-                           cSenseSettingsPtr senseSettings,
+                           const cSenseSettingsPtr &senseSettings,
                            SenseInterfaceCommon *senseInterface,
-                           AbstractFactoryI2cCtrlPtr ctrlFactory,
-                           HotPluggableControllerContainerPtr hotPluggableControllerContainer);
+                           const AbstractFactoryI2cCtrlPtr &ctrlFactory,
+                           const HotPluggableControllerContainerPtr &hotPluggableControllerContainer);
     void initSCPIConnection() override;
 public slots:
     void onAccuStatusChanged(uint8_t status);

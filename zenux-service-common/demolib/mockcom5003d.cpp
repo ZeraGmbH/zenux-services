@@ -3,8 +3,8 @@
 #include "mockfactorydevicenodepcb.h"
 #include "mockserverparamgenerator.h"
 
-MockCom5003d::MockCom5003d(AbstractFactoryI2cCtrlPtr ctrlFactory,
-                           VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory,
+MockCom5003d::MockCom5003d(const AbstractFactoryI2cCtrlPtr &ctrlFactory,
+                           const VeinTcp::AbstractTcpNetworkFactoryPtr &tcpNetworkFactory,
                            const QString &alternateConfigXml)
 {
     ServerParams params = MockServerParamGenerator::createParams("com5003d", alternateConfigXml);

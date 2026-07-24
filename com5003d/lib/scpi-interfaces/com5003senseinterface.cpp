@@ -2,12 +2,12 @@
 #include "com5003dglobal.h"
 #include "zscpi_response_definitions.h"
 
-Com5003SenseInterface::Com5003SenseInterface(std::shared_ptr<cSCPI> scpiInterface,
-                                             cSenseSettingsPtr senseSettings,
+Com5003SenseInterface::Com5003SenseInterface(const std::shared_ptr<cSCPI> &scpiInterface,
+                                             const cSenseSettingsPtr &senseSettings,
                                              EepromI2cDeviceInterfacePtr adjMemory,
                                              SystemInfo *systemInfo,
-                                             AbstractChannelRangeFactoryPtr rangeFactory,
-                                             AbstractFactoryI2cCtrlPtr ctrlFactory) :
+                                             const AbstractChannelRangeFactoryPtr &rangeFactory,
+                                             const AbstractFactoryI2cCtrlPtr &ctrlFactory) :
     SenseInterfaceCommon(scpiInterface,
                          systemInfo,
                          senseSettings,

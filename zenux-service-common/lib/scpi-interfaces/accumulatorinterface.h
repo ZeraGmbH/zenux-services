@@ -10,9 +10,9 @@ class AccumulatorInterface : public ScpiServerConnection
 {
     Q_OBJECT
 public:
-    AccumulatorInterface(std::shared_ptr<cSCPI> scpiInterface,
+    AccumulatorInterface(const std::shared_ptr<cSCPI> &scpiInterface,
                          AccumulatorSettings* settings,
-                         AbstractFactoryI2cCtrlPtr ctrlFactory);
+                         const AbstractFactoryI2cCtrlPtr &ctrlFactory);
     void initSCPIConnection() override;
 signals:
     void sigAccumulatorStatusChange(uint8_t status);

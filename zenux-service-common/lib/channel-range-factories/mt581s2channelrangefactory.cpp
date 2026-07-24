@@ -3,10 +3,10 @@
 #include "mtxxxs2sensechannel.h"
 #include <cmath>
 
-QList<SenseChannelCommon *> MT581s2ChannelRangeFactory::createChannelAndRanges(cSenseSettingsPtr senseSettings,
-                                                                               AdjDataPtr adjData,
-                                                                               std::shared_ptr<cSCPI> scpi,
-                                                                               AbstractFactoryI2cCtrlPtr ctrlFactory)
+QList<SenseChannelCommon *> MT581s2ChannelRangeFactory::createChannelAndRanges(const cSenseSettingsPtr &senseSettings,
+                                                                               const AdjDataPtr &adjData,
+                                                                               const std::shared_ptr<cSCPI> &scpi,
+                                                                               const AbstractFactoryI2cCtrlPtr &ctrlFactory)
 {
     qInfo("Set channels/ranges for MT310s2");
     constexpr quint16 rangeFlagsDevice = modeAC | modeADJ | Direct;
@@ -100,7 +100,7 @@ void MT581s2ChannelRangeFactory::tryAddRange(QList<SenseRangeCommon *> &rngList,
                                              const QString &rangeName,
                                              const QString &channelName,
                                              AdjDataPtr adjData,
-                                             std::shared_ptr<cSCPI> scpi,
+                                             const std::shared_ptr<cSCPI> &scpi,
                                              bool avail,
                                              double nominalValue,
                                              int nominalSampleValue,
@@ -122,7 +122,7 @@ void MT581s2ChannelRangeFactory::tryAddRange(QList<SenseRangeCommon *> &rngList,
     }
 }
 
-bool MT581s2ChannelRangeFactory::isInvalidAdjDataOrChannelRangeAvail(AdjDataPtr adjData, QString channelName, QString rangeName)
+bool MT581s2ChannelRangeFactory::isInvalidAdjDataOrChannelRangeAvail(const AdjDataPtr &adjData, const QString &channelName, const QString &rangeName)
 {
     if(adjData->isEmpty())
         return true;

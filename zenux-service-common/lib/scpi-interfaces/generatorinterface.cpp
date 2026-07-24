@@ -4,11 +4,11 @@
 #include "commonscpimethods.h"
 #include <zera-json-params-structure.h>
 
-GeneratorInterface::GeneratorInterface(std::shared_ptr<cSCPI> scpiInterface,
+GeneratorInterface::GeneratorInterface(const std::shared_ptr<cSCPI> &scpiInterface,
                                        SourceControlSettings *settings,
-                                       cSenseSettingsPtr senseSettings,
+                                       const cSenseSettingsPtr &senseSettings,
                                        const QList<GeneratorChannelInterface *> &channels,
-                                       AbstractFactoryI2cCtrlPtr ctrlFactory) :
+                                       const AbstractFactoryI2cCtrlPtr &ctrlFactory) :
     ScpiServerConnection(scpiInterface),
     m_generatorCapabilities(expandJsonCapabilities(cJsonFileLoader::loadJsonFile(settings->getSourceCapFile()))),
     m_senseSettings(senseSettings),

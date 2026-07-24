@@ -24,11 +24,11 @@ const ServerParams cCOM5003dServer::defaultParams(6,
                                                   "/etc/zera/com5003d/com5003d.xml");
 
 cCOM5003dServer::cCOM5003dServer(SettingsContainerPtr settings,
-                                 AbstractFactoryI2cCtrlPtr ctrlFactory,
-                                 AbstractFactoryDeviceNodePcbPtr zdspSupportFactory,
-                                 AbstractEepromI2cFactoryPtr adjMemFactory,
-                                 VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory,
-                                 AbstractChannelRangeFactoryPtr channelRangeFactory) :
+                                 const AbstractFactoryI2cCtrlPtr &ctrlFactory,
+                                 const AbstractFactoryDeviceNodePcbPtr &zdspSupportFactory,
+                                 const AbstractEepromI2cFactoryPtr &adjMemFactory,
+                                 const VeinTcp::AbstractTcpNetworkFactoryPtr &tcpNetworkFactory,
+                                 const AbstractChannelRangeFactoryPtr &channelRangeFactory) :
     PCBServer(std::move(settings), tcpNetworkFactory),
     m_ctrlFactory(ctrlFactory),
     m_zdspSupportFactory(zdspSupportFactory),

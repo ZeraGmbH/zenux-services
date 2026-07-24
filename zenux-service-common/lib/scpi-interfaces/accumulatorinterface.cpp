@@ -9,9 +9,9 @@ enum accumulatorCommands {
     cmdAccuStateOfCharge
 };
 
-AccumulatorInterface::AccumulatorInterface(std::shared_ptr<cSCPI> scpiInterface,
+AccumulatorInterface::AccumulatorInterface(const std::shared_ptr<cSCPI> &scpiInterface,
                                            AccumulatorSettings *settings,
-                                           AbstractFactoryI2cCtrlPtr ctrlFactory) :
+                                           const AbstractFactoryI2cCtrlPtr &ctrlFactory) :
     ScpiServerConnection(scpiInterface),
     m_ctrlFactory(ctrlFactory)
 {

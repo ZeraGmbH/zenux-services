@@ -11,11 +11,11 @@ enum Commands
     cmdFreeChannels
 };
 
-SecMainAndChannelInterface::SecMainAndChannelInterface(std::shared_ptr<cSCPI> scpiInterface,
-                                                           SecCalculatorSettings* ecalcSettings,
-                                                           SecInputSettings *inputsettings,
-                                                           std::function<void (int)> funcSigHandler,
-                                                           AbstractFactoryDeviceNodeSecPtr zdspSupportFactory) :
+SecMainAndChannelInterface::SecMainAndChannelInterface(const std::shared_ptr<cSCPI> &scpiInterface,
+                                                       SecCalculatorSettings* ecalcSettings,
+                                                       SecInputSettings *inputsettings,
+                                                       std::function<void (int)> funcSigHandler,
+                                                       const AbstractFactoryDeviceNodeSecPtr &zdspSupportFactory) :
     ScpiServerConnection(scpiInterface),
     m_pecalcsettings(ecalcSettings),
     m_pInputSettings(inputsettings)

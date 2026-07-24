@@ -11,9 +11,9 @@ class GeneratorChannelInterface : public ScpiConnection
     Q_OBJECT
 public:
     explicit GeneratorChannelInterface(const std::shared_ptr<cSCPI> &scpiInterface,
-                              const cSenseSettingsPtr senseSettings,
-                              const SenseSystem::cChannelSettings* channelSettings,
-                              AbstractFactoryI2cCtrlPtr ctrlFactory);
+                                       const cSenseSettingsPtr senseSettings,
+                                       const SenseSystem::cChannelSettings* channelSettings,
+                                       const AbstractFactoryI2cCtrlPtr &ctrlFactory);
     void initSCPIConnection();
 signals:
     void sigMeasRangeProbablyChanged(const QString &channelMName);

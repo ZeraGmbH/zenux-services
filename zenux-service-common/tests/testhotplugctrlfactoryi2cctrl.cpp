@@ -2,8 +2,8 @@
 #include "mocki2cctrlbootloader.h"
 #include "testhotplugi2cctrlcommoninfo.h"
 
-TestHotPlugCtrlFactoryI2cCtrl::TestHotPlugCtrlFactoryI2cCtrl(I2cSettingsPtr i2cSettings,
-                                                             cSenseSettingsPtr senseSettings) :
+TestHotPlugCtrlFactoryI2cCtrl::TestHotPlugCtrlFactoryI2cCtrl(const I2cSettingsPtr &i2cSettings,
+                                                             const cSenseSettingsPtr &senseSettings) :
     TestFactoryI2cCtrl(true),
     m_i2cSettings(i2cSettings),
     m_senseSettings(senseSettings)

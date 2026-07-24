@@ -17,7 +17,7 @@ enum commands
 };
 
 PCBServer::PCBServer(SettingsContainerPtr settings,
-                     VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory) :
+                     const VeinTcp::AbstractTcpNetworkFactoryPtr &tcpNetworkFactory) :
     ScpiServerConnection(std::make_shared<cSCPI>()),
     m_settings(std::move(settings)),
     m_tcpNetworkFactory(tcpNetworkFactory),

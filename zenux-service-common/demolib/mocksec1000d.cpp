@@ -2,7 +2,7 @@
 #include "mockfactorydevicenodesec.h"
 #include "mockserverparamgenerator.h"
 
-MockSec1000d::MockSec1000d(VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory,
+MockSec1000d::MockSec1000d(const VeinTcp::AbstractTcpNetworkFactoryPtr &tcpNetworkFactory,
                            int ecUnitCount,
                            const QString &alternateConfigXml)
 {

@@ -55,7 +55,7 @@ void test_regression_adj_status_com5003::statusAllAdjusted()
     QCOMPARE(ret, QString::number(Adjustment::adjusted));
 }
 
-void test_regression_adj_status_com5003::setupServers(AbstractFactoryI2cCtrlPtr ctrlFactory)
+void test_regression_adj_status_com5003::setupServers(const AbstractFactoryI2cCtrlPtr &ctrlFactory)
 {
     PermissionFunctions::setPermissionCtrlFactory(ctrlFactory);
 

@@ -2,12 +2,12 @@
 #include "mt310s2dglobal.h"
 #include "zscpi_response_definitions.h"
 
-Mt310s2SenseInterface::Mt310s2SenseInterface(std::shared_ptr<cSCPI> scpiInterface,
-                                             cSenseSettingsPtr senseSettings,
+Mt310s2SenseInterface::Mt310s2SenseInterface(const std::shared_ptr<cSCPI> &scpiInterface,
+                                             const cSenseSettingsPtr &senseSettings,
                                              EepromI2cDeviceInterfacePtr adjMemory,
                                              SystemInfo *systemInfo,
-                                             AbstractChannelRangeFactoryPtr rangeFactory,
-                                             AbstractFactoryI2cCtrlPtr ctrlFactory) :
+                                             const AbstractChannelRangeFactoryPtr &rangeFactory,
+                                             const AbstractFactoryI2cCtrlPtr &ctrlFactory) :
     SenseInterfaceCommon(scpiInterface,
                          systemInfo,
                          senseSettings,

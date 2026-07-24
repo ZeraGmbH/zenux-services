@@ -3,7 +3,7 @@
 #include "i2cutilities.h"
 #include <QIODevice>
 
-I2cCtrlGenerator::I2cCtrlGenerator(cSenseSettingsPtr senseSettings, const QString &deviceNodeName, quint8 i2cAddress, quint8 debugLevel) :
+I2cCtrlGenerator::I2cCtrlGenerator(const cSenseSettingsPtr &senseSettings, const QString &deviceNodeName, quint8 i2cAddress, quint8 debugLevel) :
     m_senseSettings(senseSettings),
     m_ctrlIo(deviceNodeName, i2cAddress, debugLevel)
 {
@@ -160,7 +160,7 @@ ZeraMControllerIoTemplate::atmelRM I2cCtrlGenerator::tunnelToDsp(const QString& 
                                         cmd.size());
 }
 
-quint8 I2cCtrlGenerator::getBitmask(cSenseSettingsPtr senseSettings, const QStringList &channelMNames)
+quint8 I2cCtrlGenerator::getBitmask(const cSenseSettingsPtr &senseSettings, const QStringList &channelMNames)
 {
     quint8 mask = 0;
     for (const QString &channelMName : channelMNames) {
@@ -172,7 +172,7 @@ quint8 I2cCtrlGenerator::getBitmask(cSenseSettingsPtr senseSettings, const QStri
     return mask;
 }
 
-QStringList I2cCtrlGenerator::getChannelMNamesFromMask(cSenseSettingsPtr senseSettings, quint8 mask)
+QStringList I2cCtrlGenerator::getChannelMNamesFromMask(const cSenseSettingsPtr &senseSettings, quint8 mask)
 {
     QStringList channelMNames;
     const QList<SenseSystem::cChannelSettings*> &channelSettings = senseSettings->getChannelSettings();
@@ -183,7 +183,7 @@ QStringList I2cCtrlGenerator::getChannelMNamesFromMask(cSenseSettingsPtr senseSe
     return channelMNames;
 }
 
-quint8 I2cCtrlGenerator::getControllerInternalChannelNo(cSenseSettingsPtr senseSettings, const QString &channelMName)
+quint8 I2cCtrlGenerator::getControllerInternalChannelNo(const cSenseSettingsPtr &senseSettings, const QString &channelMName)
 {
     SenseSystem::cChannelSettings* channelSetting = senseSettings->findChannelSettingByMxName(channelMName);
     if (channelSetting)

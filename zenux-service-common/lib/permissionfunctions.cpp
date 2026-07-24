@@ -13,7 +13,7 @@ const FuncPermissionCheck PermissionFunctions::allowAlways =
         return true;
 };
 
-void PermissionFunctions::setPermissionCtrlFactory(AbstractFactoryI2cCtrlPtr ctrlFactory)
+void PermissionFunctions::setPermissionCtrlFactory(const AbstractFactoryI2cCtrlPtr &ctrlFactory)
 {
     m_ctrlFactory = ctrlFactory;
 }

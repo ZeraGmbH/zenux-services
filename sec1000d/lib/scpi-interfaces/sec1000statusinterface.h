@@ -7,7 +7,7 @@ class Sec1000StatusInterface: public ScpiServerConnection
 {
     Q_OBJECT
 public:
-    explicit Sec1000StatusInterface(std::shared_ptr<cSCPI> scpiInterface);
+    explicit Sec1000StatusInterface(const std::shared_ptr<cSCPI> &scpiInterface);
     void initSCPIConnection() override;
 
 private:

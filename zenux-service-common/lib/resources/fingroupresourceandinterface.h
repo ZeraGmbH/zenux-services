@@ -12,7 +12,7 @@ class FInGroupResourceAndInterface : public cResource
     Q_OBJECT
 public:
     const QString Version = "V1.00";
-    FInGroupResourceAndInterface(std::shared_ptr<cSCPI> scpiInterface,
+    FInGroupResourceAndInterface(const std::shared_ptr<cSCPI> &scpiInterface,
                                  FInSettings *settings);
     ~FInGroupResourceAndInterface();
     void initSCPIConnection() override;

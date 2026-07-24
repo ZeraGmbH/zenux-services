@@ -8,7 +8,7 @@ class HotplugControllerInterface : public ScpiServerConnection
 {
     Q_OBJECT
 public:
-    HotplugControllerInterface(std::shared_ptr<cSCPI> scpiInterface,
+    HotplugControllerInterface(const std::shared_ptr<cSCPI> &scpiInterface,
                                HotPluggableControllerContainerPtr hotPluggableControllerContainer);
     void initSCPIConnection() override;
     static QByteArray decodeHexString(const QString &encoded);

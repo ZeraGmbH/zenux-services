@@ -13,7 +13,7 @@ class ProxyClientPrivate: public ProxyClient
 public:
     ProxyClientPrivate(ProxyPrivate* proxy);
     virtual ~ProxyClientPrivate();
-    void transmitAnswer(std::shared_ptr<ProtobufMessage::NetMessage> message);
+    void transmitAnswer(const std::shared_ptr<ProtobufMessage::NetMessage> &message);
     void transmitError(QAbstractSocket::SocketError errorCode);
     void transmitDisConnection();
 

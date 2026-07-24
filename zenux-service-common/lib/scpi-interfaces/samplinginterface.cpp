@@ -9,9 +9,9 @@ enum Commands
     cmdPLLCat
 };
 
-cSamplingInterface::cSamplingInterface(std::shared_ptr<cSCPI> scpiInterface,
-                                       SamplingSettingsPtr samplingSettings,
-                                       AbstractFactoryI2cCtrlPtr ctrlFactory) :
+cSamplingInterface::cSamplingInterface(const std::shared_ptr<cSCPI> &scpiInterface,
+                                       const SamplingSettingsPtr &samplingSettings,
+                                       const AbstractFactoryI2cCtrlPtr &ctrlFactory) :
     ScpiServerConnection(scpiInterface),
     m_ctrlFactory(ctrlFactory)
 {

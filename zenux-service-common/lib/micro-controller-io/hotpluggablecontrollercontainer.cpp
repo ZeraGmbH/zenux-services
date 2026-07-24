@@ -1,13 +1,14 @@
 #include "hotpluggablecontrollercontainer.h"
 
-HotPluggableControllerContainer::HotPluggableControllerContainer(I2cSettingsPtr i2cSettings, AbstractFactoryI2cCtrlPtr ctrlFactory) :
+HotPluggableControllerContainer::HotPluggableControllerContainer(const I2cSettingsPtr &i2cSettings,
+                                                                 const AbstractFactoryI2cCtrlPtr &ctrlFactory) :
     m_i2cSettings(i2cSettings),
     m_ctrlFactory(ctrlFactory)
 {
 }
 
 void HotPluggableControllerContainer::startActualizeEmobControllers(quint16 bitmaskAvailable,
-                                                                    cSenseSettingsPtr senseSettings,
+                                                                    const cSenseSettingsPtr &senseSettings,
                                                                     int msWaitForApplicationStart)
 {
     const auto channelsSettings = senseSettings->getChannelSettings();

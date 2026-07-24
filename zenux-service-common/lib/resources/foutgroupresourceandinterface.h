@@ -12,7 +12,7 @@ class FOutGroupResourceAndInterface : public cResource
     Q_OBJECT
 public:
     const QString Version = "V1.00";
-    FOutGroupResourceAndInterface(std::shared_ptr<cSCPI> scpiInterface,
+    FOutGroupResourceAndInterface(const std::shared_ptr<cSCPI> &scpiInterface,
                                   FOutSettings* settings);
     ~FOutGroupResourceAndInterface();
     void initSCPIConnection() override;

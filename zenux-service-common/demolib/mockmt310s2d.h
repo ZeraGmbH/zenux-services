@@ -11,8 +11,8 @@ class MockMt310s2d : public QObject
 {
     Q_OBJECT
 public:
-    MockMt310s2d(AbstractFactoryI2cCtrlPtr ctrlFactory,
-                 VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory,
+    MockMt310s2d(const AbstractFactoryI2cCtrlPtr &ctrlFactory,
+                 const VeinTcp::AbstractTcpNetworkFactoryPtr &tcpNetworkFactory,
                  const QString &serviceNameForAlternateDevice,
                  const QString &alternateConfigXml = QString(),
                  Mt310s2SystemInfo* alternateSystemInfo = nullptr);

@@ -12,12 +12,14 @@ DemoAllServicesMt310s2::DemoAllServicesMt310s2(const QString &serviceNameForAlte
     init(VeinTcp::TcpNetworkFactory::create(), serviceNameForAlternateDevice);
 }
 
-DemoAllServicesMt310s2::DemoAllServicesMt310s2(VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory, const QString &serviceNameForAlternateDevice)
+DemoAllServicesMt310s2::DemoAllServicesMt310s2(const VeinTcp::AbstractTcpNetworkFactoryPtr &tcpNetworkFactory,
+                                               const QString &serviceNameForAlternateDevice)
 {
     init(tcpNetworkFactory, serviceNameForAlternateDevice);
 }
 
-void DemoAllServicesMt310s2::init(VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory, const QString &serviceNameForAlternateDevice)
+void DemoAllServicesMt310s2::init(const VeinTcp::AbstractTcpNetworkFactoryPtr &tcpNetworkFactory,
+                                  const QString &serviceNameForAlternateDevice)
 {
     m_autoLogger = new AutoJournalLoggerFacade;
     m_resman = new ResmanRunFacade(tcpNetworkFactory);

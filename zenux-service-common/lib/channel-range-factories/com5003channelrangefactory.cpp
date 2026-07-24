@@ -3,10 +3,10 @@
 #include "com5003sensechannel.h"
 #include <cmath>
 
-QList<SenseChannelCommon *> COM5003ChannelRangeFactory::createChannelAndRanges(cSenseSettingsPtr senseSettings,
-                                                                               AdjDataPtr adjData,
-                                                                               std::shared_ptr<cSCPI> scpi,
-                                                                               AbstractFactoryI2cCtrlPtr ctrlFactory)
+QList<SenseChannelCommon *> COM5003ChannelRangeFactory::createChannelAndRanges(const cSenseSettingsPtr &senseSettings,
+                                                                               const AdjDataPtr &adjData,
+                                                                               const std::shared_ptr<cSCPI> &scpi,
+                                                                               const AbstractFactoryI2cCtrlPtr &ctrlFactory)
 {
     qInfo("Set channels/ranges for COM5003");
     constexpr quint16 rangeFlagsDevice = modeAC;

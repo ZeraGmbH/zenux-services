@@ -29,7 +29,7 @@ private slots:
     void loadArbitraryVersionToEEprom();
 
 private:
-    void setupServers(AbstractFactoryI2cCtrlPtr ctrlFactory);
+    void setupServers(const AbstractFactoryI2cCtrlPtr &ctrlFactory);
 
     VeinTcp::AbstractTcpNetworkFactoryPtr m_tcpNetworkFactory;
     std::unique_ptr<ResmanRunFacade> m_resman;

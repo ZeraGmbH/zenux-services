@@ -11,7 +11,7 @@ typedef std::function<bool (bool &enable)> FuncPermissionCheck;
 class PermissionFunctions
 {
 public:
-    static void setPermissionCtrlFactory(AbstractFactoryI2cCtrlPtr ctrlFactory);
+    static void setPermissionCtrlFactory(const AbstractFactoryI2cCtrlPtr &ctrlFactory);
     const static FuncPermissionCheck checkControllerPin;
     const static FuncPermissionCheck allowAlways;
 private:

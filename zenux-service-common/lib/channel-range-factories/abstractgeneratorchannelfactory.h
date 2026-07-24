@@ -11,9 +11,9 @@ class AbstractGeneratorChannelFactory
 {
 public:
     virtual ~AbstractGeneratorChannelFactory() = default;
-    virtual QList<GeneratorChannelInterface*> createChannelsAndRanges(cSenseSettingsPtr senseSettings,
-                                                             std::shared_ptr<cSCPI> scpi,
-                                                             AbstractFactoryI2cCtrlPtr ctrlFactory) = 0;
+    virtual QList<GeneratorChannelInterface*> createChannelsAndRanges(const cSenseSettingsPtr &senseSettings,
+                                                                      const std::shared_ptr<cSCPI> &scpi,
+                                                                      const AbstractFactoryI2cCtrlPtr &ctrlFactory) = 0;
 };
 
 #endif // ABSTRACTGENERATORCHANNELFACTORY_H

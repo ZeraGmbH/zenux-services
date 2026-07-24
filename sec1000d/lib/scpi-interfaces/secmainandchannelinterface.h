@@ -21,11 +21,11 @@ class SecMainAndChannelInterface : public ScpiServerConnection
     Q_OBJECT
 
 public:
-    SecMainAndChannelInterface(std::shared_ptr<cSCPI> scpiInterface,
-                                 SecCalculatorSettings* ecalcSettings,
-                                 SecInputSettings* inputsettings,
-                                 std::function<void(int)> funcSigHandler,
-                                 AbstractFactoryDeviceNodeSecPtr zdspSupportFactory);
+    SecMainAndChannelInterface(const std::shared_ptr<cSCPI> &scpiInterface,
+                               SecCalculatorSettings* ecalcSettings,
+                               SecInputSettings* inputsettings,
+                               std::function<void(int)> funcSigHandler,
+                               const AbstractFactoryDeviceNodeSecPtr &zdspSupportFactory);
     ~SecMainAndChannelInterface();
     void initSCPIConnection() override;
     QList<SecChannel*> getECalcChannelList();

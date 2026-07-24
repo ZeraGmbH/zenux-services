@@ -14,7 +14,7 @@ class DemoAllServicesCom5003 : public AbstractMockAllServices
 {
 public:
     DemoAllServicesCom5003();
-    explicit DemoAllServicesCom5003(VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory);
+    explicit DemoAllServicesCom5003(const VeinTcp::AbstractTcpNetworkFactoryPtr &tcpNetworkFactory);
     virtual ~DemoAllServicesCom5003() override;
 
     void fireHotplugInterrupt(const ChannelAliasHotplugDeviceNameMap &deviceMap) override;
@@ -25,7 +25,7 @@ public:
     virtual void removeAllHotplugDevices() override;
     virtual void addClamps(const QList<clampParam> &clampParams) override;
 private:
-    void init(VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory);
+    void init(const VeinTcp::AbstractTcpNetworkFactoryPtr &tcpNetworkFactory);
     void noHotplugMsg() const;
 
     ResmanRunFacade *m_resman;

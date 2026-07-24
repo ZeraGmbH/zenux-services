@@ -11,12 +11,12 @@ DemoAllServicesCom5003::DemoAllServicesCom5003()
     init(VeinTcp::TcpNetworkFactory::create());
 }
 
-DemoAllServicesCom5003::DemoAllServicesCom5003(VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory)
+DemoAllServicesCom5003::DemoAllServicesCom5003(const VeinTcp::AbstractTcpNetworkFactoryPtr &tcpNetworkFactory)
 {
     init(tcpNetworkFactory);
 }
 
-void DemoAllServicesCom5003::init(VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory)
+void DemoAllServicesCom5003::init(const VeinTcp::AbstractTcpNetworkFactoryPtr &tcpNetworkFactory)
 {
     m_resman = new ResmanRunFacade(tcpNetworkFactory);
     ServerParams params = MockServerParamGenerator::createParams("com5003d");

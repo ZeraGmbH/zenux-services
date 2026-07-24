@@ -4,21 +4,21 @@
 #include <tcpnetworkfactory.h>
 #include "mt310s2systeminfomock.h"
 
-TestAllServicesMt310s2::TestAllServicesMt310s2(const QString &serviceNameForAlternateDevice, TestFactoryI2cCtrlPtr testCtrlFactory)
+TestAllServicesMt310s2::TestAllServicesMt310s2(const QString &serviceNameForAlternateDevice, const TestFactoryI2cCtrlPtr &testCtrlFactory)
 {
     init(serviceNameForAlternateDevice, VeinTcp::TcpNetworkFactory::create(), testCtrlFactory);
 }
 
 TestAllServicesMt310s2::TestAllServicesMt310s2(const QString &serviceNameForAlternateDevice,
-                                               VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory,
-                                               TestFactoryI2cCtrlPtr testCtrlFactory)
+                                               const VeinTcp::AbstractTcpNetworkFactoryPtr &tcpNetworkFactory,
+                                               const TestFactoryI2cCtrlPtr &testCtrlFactory)
 {
     init(serviceNameForAlternateDevice, tcpNetworkFactory, testCtrlFactory);
 }
 
 void TestAllServicesMt310s2::init(const QString &serviceNameForAlternateDevice,
-                                  VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory,
-                                  TestFactoryI2cCtrlPtr testCtrlFactory)
+                                  const VeinTcp::AbstractTcpNetworkFactoryPtr &tcpNetworkFactory,
+                                  const TestFactoryI2cCtrlPtr &testCtrlFactory)
 {
     m_resman = new ResmanRunFacade(tcpNetworkFactory);
     TimeMachineObject::feedEventLoop();

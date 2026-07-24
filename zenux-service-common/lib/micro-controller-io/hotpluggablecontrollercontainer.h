@@ -24,9 +24,10 @@ class HotPluggableControllerContainer : public QObject
 {
     Q_OBJECT
 public:
-    HotPluggableControllerContainer(I2cSettingsPtr i2cSettings, AbstractFactoryI2cCtrlPtr ctrlFactory);
+    HotPluggableControllerContainer(const I2cSettingsPtr &i2cSettings,
+                                    const AbstractFactoryI2cCtrlPtr &ctrlFactory);
     void startActualizeEmobControllers(quint16 bitmaskAvailable,
-                                       cSenseSettingsPtr senseSettings,
+                                       const cSenseSettingsPtr &senseSettings,
                                        int msWaitForApplicationStart);
     HotControllerMap getCurrentControllers();
 signals:

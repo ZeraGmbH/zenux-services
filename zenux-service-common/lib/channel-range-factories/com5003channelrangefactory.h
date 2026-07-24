@@ -6,10 +6,10 @@
 class COM5003ChannelRangeFactory : public AbstractChannelRangeFactory
 {
 public:
-    virtual QList<SenseChannelCommon*> createChannelAndRanges(cSenseSettingsPtr senseSettings,
-                                                               AdjDataPtr adjData,
-                                                               std::shared_ptr<cSCPI> scpi,
-                                                               AbstractFactoryI2cCtrlPtr ctrlFactory) override;
+    virtual QList<SenseChannelCommon*> createChannelAndRanges(const cSenseSettingsPtr &senseSettings,
+                                                              const AdjDataPtr &adjData,
+                                                              const std::shared_ptr<cSCPI> &scpi,
+                                                              const AbstractFactoryI2cCtrlPtr &ctrlFactory) override;
 private:
     static void tryAddRange(QList<SenseRangeCommon *> &rngList,
                             std::shared_ptr<cSCPI> scpi,

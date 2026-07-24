@@ -27,11 +27,11 @@ class cClampInterface: public ScpiServerConnection
 {
 public:
     cClampInterface(PCBServer *server,
-                    cSenseSettingsPtr senseSettings,
+                    const cSenseSettingsPtr &senseSettings,
                     SenseInterfaceCommon *senseInterface,
-                    I2cSettingsPtr i2cSettings,
-                    AbstractEepromI2cFactoryPtr adjMemFactory,
-                    AbstractFactoryI2cCtrlPtr ctrlFactory);
+                    const I2cSettingsPtr &i2cSettings,
+                    const AbstractEepromI2cFactoryPtr &adjMemFactory,
+                    const AbstractFactoryI2cCtrlPtr &ctrlFactory);
     void initSCPIConnection() override;
     void actualizeClampStatus(quint16 devConnectedMask);
     // lazy: public for test

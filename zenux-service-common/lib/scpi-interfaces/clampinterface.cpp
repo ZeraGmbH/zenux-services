@@ -5,11 +5,11 @@
 #include "zscpi_response_definitions.h"
 
 cClampInterface::cClampInterface(PCBServer *server,
-                                 cSenseSettingsPtr senseSettings,
+                                 const cSenseSettingsPtr &senseSettings,
                                  SenseInterfaceCommon *senseInterface,
-                                 I2cSettingsPtr i2cSettings,
-                                 AbstractEepromI2cFactoryPtr adjMemFactory,
-                                 AbstractFactoryI2cCtrlPtr ctrlFactory) :
+                                 const I2cSettingsPtr &i2cSettings,
+                                 const AbstractEepromI2cFactoryPtr &adjMemFactory,
+                                 const AbstractFactoryI2cCtrlPtr &ctrlFactory) :
     ScpiServerConnection(server->getSCPIInterface()),
     m_pMyServer(server),
     m_senseSettings(senseSettings),

@@ -74,7 +74,7 @@ void test_regression_adj_status_mt310s2::statusClampsI1DefaultCL120A()
     QCOMPARE(ret, QString::number(Adjustment::notAdjusted));
 }
 
-void test_regression_adj_status_mt310s2::setupServers(AbstractFactoryI2cCtrlPtr ctrlFactory)
+void test_regression_adj_status_mt310s2::setupServers(const AbstractFactoryI2cCtrlPtr &ctrlFactory)
 {
     PermissionFunctions::setPermissionCtrlFactory(ctrlFactory);
 

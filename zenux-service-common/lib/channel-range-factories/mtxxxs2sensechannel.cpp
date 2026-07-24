@@ -5,7 +5,7 @@
 MtXXXs2SenseChannel::MtXXXs2SenseChannel(const std::shared_ptr<cSCPI> &scpiInterface,
                                          const QString &unit,
                                          SenseSystem::cChannelSettings *cSettings,
-                                         AbstractFactoryI2cCtrlPtr ctrlFactory) :
+                                         const AbstractFactoryI2cCtrlPtr &ctrlFactory) :
     SenseChannelCommon(scpiInterface,
                        unit,
                        cSettings,

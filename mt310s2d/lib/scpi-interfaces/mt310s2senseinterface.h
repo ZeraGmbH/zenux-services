@@ -8,12 +8,12 @@ class Mt310s2SenseInterface : public SenseInterfaceCommon
     Q_OBJECT
 public:
     // MT specifics only
-    Mt310s2SenseInterface(std::shared_ptr<cSCPI> scpiInterface,
-                          cSenseSettingsPtr senseSettings,
+    Mt310s2SenseInterface(const std::shared_ptr<cSCPI> &scpiInterface,
+                          const cSenseSettingsPtr &senseSettings,
                           EepromI2cDeviceInterfacePtr adjMemory,
                           SystemInfo *systemInfo,
-                          AbstractChannelRangeFactoryPtr rangeFactory,
-                          AbstractFactoryI2cCtrlPtr ctrlFactory);
+                          const AbstractChannelRangeFactoryPtr &rangeFactory,
+                          const AbstractFactoryI2cCtrlPtr &ctrlFactory);
 
 private:
     const char* getAdjExportedVersion() override;

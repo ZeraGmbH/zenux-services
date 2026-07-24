@@ -8,7 +8,7 @@ class I2cCtlBootloaderStopper : public QObject
 {
     Q_OBJECT
 public:
-    I2cCtlBootloaderStopper(AbstractFactoryI2cCtrlPtr ctrlFactory,
+    I2cCtlBootloaderStopper(const AbstractFactoryI2cCtrlPtr &ctrlFactory,
                             int channelId,
                             qint8 muxChannel = -1,
                             AbstractFactoryI2cCtrl::ControllerTypes ctrlType = AbstractFactoryI2cCtrl::CTRL_TYPE_EMOB);

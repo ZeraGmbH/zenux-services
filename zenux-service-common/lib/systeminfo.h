@@ -6,7 +6,7 @@
 class SystemInfo
 {
 public:
-    SystemInfo(AbstractFactoryI2cCtrlPtr ctrlFactory);
+    SystemInfo(const AbstractFactoryI2cCtrlPtr &ctrlFactory);
     virtual ~SystemInfo() = default;
     void getSystemInfo(); // here we fetch all system info
     bool dataRead(); // false if we were not able to read required information

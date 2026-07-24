@@ -56,8 +56,8 @@ const ServerParams ZDspServer::defaultParams(0,
                                              "/etc/zera/zdsp1d/zdsp1d.xml");
 
 ZDspServer::ZDspServer(SettingsContainerPtr settings,
-                       AbstractFactoryZdspSupportPtr zdspSupportFactory,
-                       VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory) :
+                       const AbstractFactoryZdspSupportPtr &zdspSupportFactory,
+                       const VeinTcp::AbstractTcpNetworkFactoryPtr &tcpNetworkFactory) :
     ScpiConnection(std::make_shared<cSCPI>()),
     m_dspSettings(&m_xmlConfigReader),
     m_settings(std::move(settings)),

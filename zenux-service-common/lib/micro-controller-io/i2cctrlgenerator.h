@@ -7,7 +7,7 @@
 class I2cCtrlGenerator : public AbstractI2cCtrlGenerator
 {
 public:
-    I2cCtrlGenerator(cSenseSettingsPtr senseSettings, const QString &deviceNodeName, quint8 i2cAddress, quint8 debugLevel);
+    I2cCtrlGenerator(const cSenseSettingsPtr &senseSettings, const QString &deviceNodeName, quint8 i2cAddress, quint8 debugLevel);
 
     ZeraMControllerIo::atmelRM readSourceModeOn(QStringList &channelMNamesModeOnRead) override;
     ZeraMControllerIo::atmelRM sendSourceModeOn(const QStringList &channelMNamesModeOn) override;
@@ -28,9 +28,9 @@ public:
 
     ZeraMControllerIo::atmelRM tunnelToDsp(const QString& channelMName, const QByteArray &cmd, QByteArray &dataReturned) override;
 
-    static quint8 getBitmask(cSenseSettingsPtr senseSettings, const QStringList &channelMNames);
-    static QStringList getChannelMNamesFromMask(cSenseSettingsPtr senseSettings, quint8 mask);
-    static quint8 getControllerInternalChannelNo(cSenseSettingsPtr senseSettings, const QString &channelMName);
+    static quint8 getBitmask(const cSenseSettingsPtr &senseSettings, const QStringList &channelMNames);
+    static QStringList getChannelMNamesFromMask(const cSenseSettingsPtr &senseSettings, quint8 mask);
+    static quint8 getControllerInternalChannelNo(const cSenseSettingsPtr &senseSettings, const QString &channelMName);
 
 private:
     cSenseSettingsPtr m_senseSettings;

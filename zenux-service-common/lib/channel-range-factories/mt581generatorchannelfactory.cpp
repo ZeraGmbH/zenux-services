@@ -1,8 +1,8 @@
 #include "mt581generatorchannelfactory.h"
 
-QList<GeneratorChannelInterface *> Mt581GeneratorChannelFactory::createChannelsAndRanges(cSenseSettingsPtr senseSettings,
-                                                                                std::shared_ptr<cSCPI> scpi,
-                                                                                AbstractFactoryI2cCtrlPtr ctrlFactory)
+QList<GeneratorChannelInterface *> Mt581GeneratorChannelFactory::createChannelsAndRanges(const cSenseSettingsPtr &senseSettings,
+                                                                                         const std::shared_ptr<cSCPI> &scpi,
+                                                                                         const AbstractFactoryI2cCtrlPtr &ctrlFactory)
 {
     const QList<SenseSystem::cChannelSettings*> &channelsSettings = senseSettings->getChannelSettings();
     QList<GeneratorChannelInterface *> generatorChannels;

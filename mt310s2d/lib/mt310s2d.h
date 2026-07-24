@@ -38,11 +38,11 @@ class cMT310S2dServer: public PCBServer
     Q_OBJECT
 public:
     explicit cMT310S2dServer(SettingsContainerPtr settings,
-                             AbstractFactoryI2cCtrlPtr ctrlFactory,
-                             AbstractFactoryDeviceNodePcbPtr zdspSupportFactory,
-                             AbstractEepromI2cFactoryPtr adjMemFactory,
-                             VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory,
-                             AbstractChannelRangeFactoryPtr channelRangeFactory,
+                             const AbstractFactoryI2cCtrlPtr &ctrlFactory,
+                             const AbstractFactoryDeviceNodePcbPtr &zdspSupportFactory,
+                             const AbstractEepromI2cFactoryPtr &adjMemFactory,
+                             const VeinTcp::AbstractTcpNetworkFactoryPtr &tcpNetworkFactory,
+                             const AbstractChannelRangeFactoryPtr &channelRangeFactory,
                              Mt310s2SystemInfo* alternateSystemInfo = nullptr);
     ~cMT310S2dServer();
     QString getCtrlDeviceNode();

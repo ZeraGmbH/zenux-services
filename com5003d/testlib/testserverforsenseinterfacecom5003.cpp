@@ -3,8 +3,8 @@
 #include "mockeepromi2cfactory.h"
 #include "testsysteminfo.h"
 
-TestServerForSenseInterfaceCom5003::TestServerForSenseInterfaceCom5003(AbstractFactoryI2cCtrlPtr ctrlFactory,
-                                                                       VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory,
+TestServerForSenseInterfaceCom5003::TestServerForSenseInterfaceCom5003(const AbstractFactoryI2cCtrlPtr &ctrlFactory,
+                                                                       const VeinTcp::AbstractTcpNetworkFactoryPtr &tcpNetworkFactory,
                                                                        const QString &serviceNameForAlternateDevice,
                                                                        bool systemInfoMock) :
     TestPcbServer(serviceNameForAlternateDevice, tcpNetworkFactory)

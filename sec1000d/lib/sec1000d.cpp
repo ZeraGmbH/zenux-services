@@ -44,8 +44,8 @@ const ServerParams cSEC1000dServer::defaultParams(0,
 
 cSEC1000dServer::cSEC1000dServer(SettingsContainerPtr settings,
                                  int ecUnitCount,
-                                 AbstractFactoryDeviceNodeSecPtr zdspSupportFactory,
-                                 VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory) :
+                                 const AbstractFactoryDeviceNodeSecPtr &zdspSupportFactory,
+                                 const VeinTcp::AbstractTcpNetworkFactoryPtr &tcpNetworkFactory) :
     PCBServer(std::move(settings), tcpNetworkFactory),
     m_zdspSupportFactory(zdspSupportFactory)
 {

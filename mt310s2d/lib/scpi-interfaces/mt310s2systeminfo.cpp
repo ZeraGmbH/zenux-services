@@ -1,6 +1,6 @@
 #include "mt310s2systeminfo.h"
 
-Mt310s2SystemInfo::Mt310s2SystemInfo(AbstractFactoryI2cCtrlPtr ctrlFactory) :
+Mt310s2SystemInfo::Mt310s2SystemInfo(const AbstractFactoryI2cCtrlPtr &ctrlFactory) :
     SystemInfo(ctrlFactory),
     m_ctrlFactory(ctrlFactory),
     m_sSysCTRLVersion("Unknown"),

@@ -8,7 +8,7 @@ enum Commands
     cmdChannelCat
 };
 
-FOutGroupResourceAndInterface::FOutGroupResourceAndInterface(std::shared_ptr<cSCPI> scpiInterface,
+FOutGroupResourceAndInterface::FOutGroupResourceAndInterface(const std::shared_ptr<cSCPI> &scpiInterface,
                                                              FOutSettings *settings) :
     cResource(scpiInterface)
 {

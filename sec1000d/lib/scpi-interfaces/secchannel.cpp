@@ -28,12 +28,12 @@ static constexpr int imp_en = 21;
 static constexpr int impout_en = 22;
 static constexpr int cnt2carry = 23;
 
-SecChannel::SecChannel(std::shared_ptr<cSCPI> scpiInterface,
+SecChannel::SecChannel(const std::shared_ptr<cSCPI> &scpiInterface,
                        SecCalculatorSettings* esettings,
                        SecInputSettings *inpsettings,
                        quint16 nr,
                        std::function<void (int)> funcSigHandler,
-                       AbstractFactoryDeviceNodeSecPtr zdspSupportFactory) :
+                       const AbstractFactoryDeviceNodeSecPtr &zdspSupportFactory) :
     ScpiConnection(scpiInterface),
     m_zdspSupportFactory(zdspSupportFactory),
     m_pecalcsettings(esettings),

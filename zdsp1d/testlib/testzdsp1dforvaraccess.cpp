@@ -1,8 +1,8 @@
 #include "testzdsp1dforvaraccess.h"
 
-TestZdsp1dForVarAccess::TestZdsp1dForVarAccess(AbstractFactoryZdspSupportPtr zdspSupportFactory,
-                                               VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory,
-                                               QString alternateConfigXml) :
+TestZdsp1dForVarAccess::TestZdsp1dForVarAccess(const AbstractFactoryZdspSupportPtr &zdspSupportFactory,
+                                               const VeinTcp::AbstractTcpNetworkFactoryPtr &tcpNetworkFactory,
+                                               const QString &alternateConfigXml) :
     MockZdsp1d(zdspSupportFactory, tcpNetworkFactory, alternateConfigXml),
     m_testNetClient(tcpNetworkFactory)
 {

@@ -10,7 +10,7 @@ class RMConnection: public QObject
 {
     Q_OBJECT
 public:
-    RMConnection(const QString &ipadr, quint16 port, VeinTcp::AbstractTcpNetworkFactoryPtr tcpFactory);
+    RMConnection(const QString &ipadr, quint16 port, const VeinTcp::AbstractTcpNetworkFactoryPtr &tcpFactory);
     virtual ~RMConnection();
     void connect2RM();
     void SendIdent(const QString &ident);

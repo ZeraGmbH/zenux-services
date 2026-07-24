@@ -2,9 +2,9 @@
 #include "zscpi_response_definitions.h"
 
 GeneratorChannelInterface::GeneratorChannelInterface(const std::shared_ptr<cSCPI> &scpiInterface,
-                                   const cSenseSettingsPtr senseSettings,
-                                   const SenseSystem::cChannelSettings *channelSettings,
-                                   AbstractFactoryI2cCtrlPtr ctrlFactory) :
+                                                     const cSenseSettingsPtr senseSettings,
+                                                     const SenseSystem::cChannelSettings *channelSettings,
+                                                     const AbstractFactoryI2cCtrlPtr &ctrlFactory) :
     ScpiConnection(scpiInterface),
     m_senseSettings(senseSettings),
     m_ctrlFactory(ctrlFactory),

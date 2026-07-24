@@ -7,7 +7,9 @@
 #include <scpi.h>
 #include <scpicommand.h>
 
-Sec1000SystemInterface::Sec1000SystemInterface(std::shared_ptr<cSCPI> scpiInterface, cSEC1000dServer *server, Sec1000SystemInfo *sInfo) :
+Sec1000SystemInterface::Sec1000SystemInterface(const std::shared_ptr<cSCPI> &scpiInterface,
+                                               cSEC1000dServer *server,
+                                               Sec1000SystemInfo *sInfo) :
     ScpiServerConnection(scpiInterface),
     m_pMyServer(server),
     m_pSystemInfo(sInfo)

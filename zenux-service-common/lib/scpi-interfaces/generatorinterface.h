@@ -12,11 +12,11 @@ class GeneratorInterface : public ScpiServerConnection
 {
     Q_OBJECT
 public:
-    GeneratorInterface(std::shared_ptr<cSCPI> scpiInterface,
+    GeneratorInterface(const std::shared_ptr<cSCPI> &scpiInterface,
                        SourceControlSettings* settings,
-                       cSenseSettingsPtr senseSettings,
+                       const cSenseSettingsPtr &senseSettings,
                        const QList<GeneratorChannelInterface *> &channels,
-                       AbstractFactoryI2cCtrlPtr ctrlFactory);
+                       const AbstractFactoryI2cCtrlPtr &ctrlFactory);
     void initSCPIConnection() override;
 signals:
     void sigMeasRangeProbablyChanged(const QString &channelMName);
