@@ -4,91 +4,11 @@
 #include "interface_p.h"
 #include "pcbinterface.h"
 
-namespace Zera { namespace PCB {
-enum pcbcommands
-{
-    getchannellist,
-    getdspchannel,
-    getstatus,
-    resetstatus,
-    getalias,
-    gettype,
-    getunit,
-    getrange,
-    getrangelist,
-    getalias2,
-    gettype2,
-    geturvalue,
-    geturvalue2,
-    getrejection,
-    getovrejection,
-    getadcrejection,
-    isavail,
-    getgaincorrection,
-    getoffsetcorrection,
-    getphasecorrection,
-    setrange,
-    setmeasuringmode,
-    adjustcomputation,
-    adjuststorage,
-    adjuststorageclamp,
-    adjustinit,
-    setadjustgainstatus,
-    setadjustphasestatus,
-    setadjustoffsetstatus,
-    setgainnode,
-    setphasenode,
-    setoffsetnode,
-
-    regnotifier,
-    unregnotifier,
-    pcbinterrupt,
-    getsamplerate,
-    setpllchannel,
-
-    getaliassource,
-    getdspchannelsource,
-    getadjustmentstatus,
-    getauthorizationstatus,
-    getpcberrorstatus,
-    getadjustmentchksum,
-    getadjustpcbxml,
-    setadjustpcbxml,
-    getadjustclampxml,
-    setadjustclampxml,
-    getformfactorsource,
-    getconstantsource,
-    setconstantsource,
-    getpowtypesource,
-    setpowtypesource,
-
-    getaliassschead,
-    getaliasfrqinput,
-    resourcealiasquery,
-
-    getserverversion,
-    getpcbversion,
-    getfpgaversion,
-    getctrlversion,
-    getserialnumber,
-    setserialnumber,
-
-    getaccumulatorstatus,
-    getaccumulatorsoc,
-    getChannelsConnected,
-
-    readData,
-    writeData,
-
-    transparentcommand
-};
-}
-
+namespace Zera {
 
 class cPCBInterfacePrivate: public cInterfacePrivate
 {
     Q_OBJECT
-
 public:
     explicit cPCBInterfacePrivate(cPCBInterface* iface);
     void setClientSmart(Zera::ProxyClientPtr client);
@@ -187,7 +107,7 @@ private slots:
 
 private:
     Q_DECLARE_PUBLIC(cPCBInterface)
-    cPCBInterface *q_ptr;
+    cPCBInterface *q_ptr = nullptr;
 };
 
 }

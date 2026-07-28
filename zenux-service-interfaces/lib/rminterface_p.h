@@ -1,28 +1,12 @@
 #ifndef RMINTERFACE_P_H
 #define RMINTERFACE_P_H
 
-#include <QObject>
-#include <QStringList>
-
 #include "interface_p.h"
 #include "rminterface.h"
 #include "dspvargroupclientinterface.h"
+#include <QStringList>
 
 namespace Zera {
-
-enum rmcommands
-{
-    rmident,
-    rmscpi,
-    addresource,
-    removeresource,
-    getresourcetypes,
-    getresources,
-    getresourceinfo,
-    setresource,
-    freeresource
-};
-
 
 class cRMInterfacePrivate: public cInterfacePrivate
 {
@@ -47,12 +31,11 @@ private slots:
 
 private:
     Q_DECLARE_PUBLIC(cRMInterface)
-    cRMInterface *q_ptr;
+    cRMInterface *q_ptr = nullptr;
 
     QStringList CycCmdList, IntCmdList;
     QList<DspVarGroupClientInterface*> m_DspMeasDataList; // eine liste mit zeigern auf "programmdaten"
     QList<DspVarGroupClientInterface*> m_DspMemoryDataList; // eine liste mit zeigern auf  dsp speicher allgemein
-
 };
 
 }

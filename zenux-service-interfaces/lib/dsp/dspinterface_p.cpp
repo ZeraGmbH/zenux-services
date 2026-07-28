@@ -31,6 +31,23 @@ ProxyClientPtr cDSPInterfacePrivate::getClientSmart()
     return m_clientSmart;
 }
 
+enum dspcommands
+{
+    dspscpi,
+    setsamplingsystem,
+    varlist2dsp,
+    cmdlist2dsp,
+    intlist2dsp,
+    triggerinthksk,
+    activateinterface,
+    deactivateall,
+    dspmemoryread,
+    dspmemorywrite,
+    readdeviceversion,
+    readserverversion,
+    dspinterrupt,
+};
+
 quint32 cDSPInterfacePrivate::scpiCommand(const QString &scpi)
 {
     quint32 msgnr;

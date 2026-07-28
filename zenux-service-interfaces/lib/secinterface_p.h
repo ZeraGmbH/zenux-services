@@ -1,31 +1,10 @@
 #ifndef SECINTERFACE_P_H
 #define SECINTERFACE_P_H
 
-
-#include <QObject>
-#include <QStringList>
-
 #include "interface_p.h"
 #include "secinterface.h"
 
-namespace Zera { namespace SEC {
-enum seccommands
-{
-    setecalcunit,
-    freeecalcunit,
-    writeregister,
-    readregister,
-    setsync,
-    setmux,
-    setcmdid,
-    startecalc,
-    stopecalc,
-    regnotifier,
-    unregnotifier,
-    intacknowledge,
-    transparentcommand
-};
-}
+namespace Zera {
 
 class cSECInterfacePrivate: public cInterfacePrivate
 {

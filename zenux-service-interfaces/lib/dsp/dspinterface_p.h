@@ -3,34 +3,16 @@
 
 #include "interface_p.h"
 #include "dspinterface.h"
-#include <QObject>
 #include <QList>
 #include <QStringList>
 
 namespace Zera {
 
-enum dspcommands
-{
-    dspscpi,
-    setsamplingsystem,
-    varlist2dsp,
-    cmdlist2dsp,
-    intlist2dsp,
-    triggerinthksk,
-    activateinterface,
-    deactivateall,
-    dspmemoryread,
-    dspmemorywrite,
-    readdeviceversion,
-    readserverversion,
-    dspinterrupt,
-};
-
 class cDSPInterfacePrivate: public cInterfacePrivate
 {
     Q_OBJECT
 public:
-    cDSPInterfacePrivate(cDSPInterface* iface, int entityId);
+    explicit cDSPInterfacePrivate(cDSPInterface* iface, int entityId);
     virtual ~cDSPInterfacePrivate();
     void setClientSmart(Zera::ProxyClientPtr client);
     Zera::ProxyClientPtr getClientSmart();
@@ -71,8 +53,8 @@ private slots:
     void receiveError(QAbstractSocket::SocketError errorCode);
 private:
     Q_DECLARE_PUBLIC(cDSPInterface)
-    cDSPInterface *q_ptr;
-    int m_entityId;
+    cDSPInterface *q_ptr = nullptr;
+    int m_entityId = 0;
 
     QStringList m_cycCmdList, m_irqCmdList;
     QList<DspVarGroupClientInterface*> m_DspMemoryDataList; // eine liste mit zeigern auf dsp speicher

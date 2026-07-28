@@ -17,6 +17,19 @@ void cRMInterfacePrivate::setClientSmart(Zera::ProxyClientPtr client)
     connect(m_clientSmart.get(), &Zera::ProxyClient::tcpError, this, &cRMInterfacePrivate::receiveError);
 }
 
+enum rmcommands
+{
+    rmident,
+    rmscpi,
+    addresource,
+    removeresource,
+    getresourcetypes,
+    getresources,
+    getresourceinfo,
+    setresource,
+    freeresource
+};
+
 quint32 cRMInterfacePrivate::scpiCommand(const QString &scpi)
 {
     quint32 msgnr;
