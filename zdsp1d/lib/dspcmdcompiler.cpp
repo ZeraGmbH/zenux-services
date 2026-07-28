@@ -93,14 +93,13 @@ DspCmdWithParamsCompiled DspCmdCompiler::compileOneCmdLine(const QString &cmdLin
         case CMD1i161fi32:
         {
             short par1;
-            long par2 = 0;
             const QString &param1 = cmdParser.GetKeyword(&charCmdLine);
             ok &= ( (par1 = m_varResolver->getVarOffset(param1)) > -1); // -1 ist fehlerbedingung
             DspCmdWithParamsCompiled lcmd;
             if (!(ok))
                 return lcmd; // wenn fehler -> fertig
             const QString &param2 = cmdParser.GetKeyword(&charCmdLine);
-            par2 = param2.toLong(&ok); // test auf integer
+            long par2 = param2.toLong(&ok); // test auf integer
             if (!ok)
                 par2 = param2.toLong(&ok, 16); // test auf hex
             if (!ok)  {
