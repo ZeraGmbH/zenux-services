@@ -23,7 +23,6 @@ public:
                  quint8 type,
                  quint16 cmdCode,
                  NotificationString *notificationString);
-    ~ScpiDelegate();
     virtual bool executeSCPI(const QString&, QString&) override { return false; }
     virtual bool executeSCPI(const ProtonetCommandPtr &protoCmd);
     const QString &getCommand() const;

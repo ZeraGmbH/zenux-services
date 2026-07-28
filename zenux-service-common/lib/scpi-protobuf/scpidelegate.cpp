@@ -31,11 +31,6 @@ ScpiDelegate::ScpiDelegate(const QString &cmdParent,
         connect(m_notificationString, &NotificationString::valueChanged, this, &ScpiDelegate::notifyAllSubscribers);
 }
 
-ScpiDelegate::~ScpiDelegate()
-{
-
-}
-
 bool ScpiDelegate::executeSCPI(const ProtonetCommandPtr &protoCmd)
 {
     emit sigExecuteProtoScpi(m_nCmdCode, protoCmd);
