@@ -183,9 +183,9 @@ public:
     // sending a transparent command
     quint32 transparentCommand(const QString &cmd);
 
-protected slots:
-    void receiveAnswer(const std::shared_ptr<ProtobufMessage::NetMessage> &message) override;
-    void receiveError(QAbstractSocket::SocketError errorCode) override;
+private slots:
+    void receiveAnswer(const std::shared_ptr<ProtobufMessage::NetMessage> &message);
+    void receiveError(QAbstractSocket::SocketError errorCode);
 
 private:
     Q_DECLARE_PUBLIC(cPCBInterface)

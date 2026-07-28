@@ -33,9 +33,6 @@ protected:
 
     Zera::ProxyClientPtr m_clientSmart;
     QHash<quint32, int> m_MsgNrCmdList;
-protected slots:
-    virtual void receiveAnswer(const std::shared_ptr<ProtobufMessage::NetMessage> &message) = 0;
-    virtual void receiveError(QAbstractSocket::SocketError errorCode) = 0;
 
 private:
     static int m_instanceCount;
