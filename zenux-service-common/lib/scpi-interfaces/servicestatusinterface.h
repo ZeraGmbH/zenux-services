@@ -18,7 +18,7 @@ public:
     void initSCPIConnection() override;
 
 private slots:
-    void onNotifierRegistered(NotificationString* notifier) override;
+    void onNotifierRegistered(const NotificationString* notifier) override;
     void onNotifierUnregistered();
 private:
     void executeProtoScpi(int cmdCode, const ProtonetCommandPtr &protoCmd) override;

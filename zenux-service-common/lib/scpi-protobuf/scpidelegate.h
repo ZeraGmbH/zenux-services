@@ -27,7 +27,7 @@ public:
     virtual bool executeSCPI(const QString&, QString&) override { return false; }
     virtual bool executeSCPI(const ProtonetCommandPtr &protoCmd);
     const QString &getCommand() const;
-    NotificationString *getNotificationString();
+    const NotificationString *getNotificationString();
     ScpiNotificationSubscriberHandler &getScpiNotificationSubscriberHandler();
 public slots:
     void notifyAllSubscribers(const QString &newValue);

@@ -77,7 +77,7 @@ QString ServiceStatusInterface::getAuthorizationStatus()
     return status;
 }
 
-void ServiceStatusInterface::onNotifierRegistered(NotificationString *notifier)
+void ServiceStatusInterface::onNotifierRegistered(const NotificationString *notifier)
 {
     if(&m_notifierAutorization==notifier)
         m_periodicTimer->start();
@@ -87,4 +87,3 @@ void ServiceStatusInterface::onNotifierUnregistered()
 {
     m_periodicTimer->stop();
 }
-

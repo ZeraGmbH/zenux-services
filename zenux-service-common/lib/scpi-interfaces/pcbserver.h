@@ -26,7 +26,7 @@ public:
     I2cSettingsPtr getI2cSettings() const;
     cSenseSettingsPtr getSenseSettings() const;
 signals:
-    void notifierRegistred(NotificationString* notifier);
+    void notifierRegistered(const NotificationString* notifier);
     void removeSubscribers(VeinTcp::TcpPeer* peer, const QByteArray &clientID);
 public slots:
     void sendProtoAnswer(const ProtonetCommandPtr &protoCmd);

@@ -19,7 +19,7 @@ signals:
     void sigNotifySubcriber(const ScpiNotificationSubscriber &subscriber, const QString &newValue);
     void removingSubscribers(VeinTcp::TcpPeer* peer, const QByteArray &clientID);
 public slots:
-    virtual void onNotifierRegistered(NotificationString* notifier);
+    virtual void onNotifierRegistered(const NotificationString *notifier);
     void onRemoveSubscribers(VeinTcp::TcpPeer *peer, const QByteArray &clientID);
 
 protected:

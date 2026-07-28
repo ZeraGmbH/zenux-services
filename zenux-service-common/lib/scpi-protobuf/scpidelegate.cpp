@@ -47,7 +47,7 @@ const QString &ScpiDelegate::getCommand() const
     return m_sCommand;
 }
 
-NotificationString *ScpiDelegate::getNotificationString()
+const NotificationString *ScpiDelegate::getNotificationString()
 {
     return m_notificationString;
 }

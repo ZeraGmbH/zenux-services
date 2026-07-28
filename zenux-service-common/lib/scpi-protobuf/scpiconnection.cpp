@@ -42,7 +42,7 @@ void ScpiConnection::addDelegate(const QString &cmdParent,
     connect(delegate.get(), &ScpiDelegate::sigNotifySubcriber, this, &ScpiConnection::sigNotifySubcriber);
 }
 
-void ScpiConnection::onNotifierRegistered(NotificationString *notifier)
+void ScpiConnection::onNotifierRegistered(const NotificationString *notifier)
 {
 }
 
