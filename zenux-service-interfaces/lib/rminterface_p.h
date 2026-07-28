@@ -24,8 +24,6 @@ enum rmcommands
 };
 
 
-class cRMInterface;
-
 class cRMInterfacePrivate: public cInterfacePrivate
 {
     Q_OBJECT

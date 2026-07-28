@@ -27,8 +27,6 @@ enum seccommands
 };
 }
 
-class cSECInterface;
-
 class cSECInterfacePrivate: public cInterfacePrivate
 {
     Q_OBJECT

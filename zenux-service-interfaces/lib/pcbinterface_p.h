@@ -1,9 +1,8 @@
 #ifndef PCBINTERFACE_P_H
 #define PCBINTERFACE_P_H
 
-#include <QObject>
-
 #include "interface_p.h"
+#include "pcbinterface.h"
 
 namespace Zera { namespace PCB {
 enum pcbcommands
@@ -85,7 +84,6 @@ enum pcbcommands
 };
 }
 
-class cPCBInterface;
 
 class cPCBInterfacePrivate: public cInterfacePrivate
 {
