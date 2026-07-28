@@ -44,7 +44,7 @@ public:
     quint32 freeResource(const QString &type, const QString &name);
 
 protected slots:
-    void receiveAnswer(std::shared_ptr<ProtobufMessage::NetMessage> message) override;
+    void receiveAnswer(const std::shared_ptr<ProtobufMessage::NetMessage> &message) override;
     void receiveError(QAbstractSocket::SocketError errorCode) override;
 
 private:

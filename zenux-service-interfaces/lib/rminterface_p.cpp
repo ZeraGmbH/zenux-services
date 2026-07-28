@@ -97,7 +97,7 @@ quint32 cRMInterfacePrivate::freeResource(const QString &type, const QString &na
     return msgnr;
 }
 
-void cRMInterfacePrivate::receiveAnswer(std::shared_ptr<ProtobufMessage::NetMessage> message)
+void cRMInterfacePrivate::receiveAnswer(const std::shared_ptr<ProtobufMessage::NetMessage> &message)
 {
     TAnswerDecoded decodedAnswer;
     if(decodeProtobuffAnswer(message, decodedAnswer)) {

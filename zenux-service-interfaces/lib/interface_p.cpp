@@ -21,7 +21,7 @@ cInterfacePrivate::~cInterfacePrivate()
     m_instanceCount--;
 }
 
-bool cInterfacePrivate::decodeProtobuffAnswer(std::shared_ptr<ProtobufMessage::NetMessage> message,
+bool cInterfacePrivate::decodeProtobuffAnswer(const std::shared_ptr<ProtobufMessage::NetMessage> &message,
                                               TAnswerDecoded &decodedAnswer,
                                               int interruptEnumVal)
 {

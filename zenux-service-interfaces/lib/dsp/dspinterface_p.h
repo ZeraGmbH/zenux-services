@@ -67,7 +67,7 @@ public:
     DspVarGroupClientInterface* findVariableGroup(const QString &name) const;
 
 protected slots:
-    void receiveAnswer(std::shared_ptr<ProtobufMessage::NetMessage> message) override;
+    void receiveAnswer(const std::shared_ptr<ProtobufMessage::NetMessage> &message) override;
     void receiveError(QAbstractSocket::SocketError errorCode) override;
 private:
     Q_DECLARE_PUBLIC(cDSPInterface)

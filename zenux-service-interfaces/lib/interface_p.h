@@ -25,7 +25,7 @@ protected:
         int reply;
         int cmdSendEnumVal;
     };
-    bool decodeProtobuffAnswer(std::shared_ptr<ProtobufMessage::NetMessage> message,
+    bool decodeProtobuffAnswer(const std::shared_ptr<ProtobufMessage::NetMessage> &message,
                                TAnswerDecoded &decodedAnswer,
                                int interruptEnumVal = -1);
     quint32 sendCommand(const QString &cmd);
@@ -34,7 +34,7 @@ protected:
     Zera::ProxyClientPtr m_clientSmart;
     QHash<quint32, int> m_MsgNrCmdList;
 protected slots:
-    virtual void receiveAnswer(std::shared_ptr<ProtobufMessage::NetMessage> message) = 0;
+    virtual void receiveAnswer(const std::shared_ptr<ProtobufMessage::NetMessage> &message) = 0;
     virtual void receiveError(QAbstractSocket::SocketError errorCode) = 0;
 
 private:

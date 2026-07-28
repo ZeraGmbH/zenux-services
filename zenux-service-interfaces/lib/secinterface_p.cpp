@@ -117,7 +117,7 @@ quint32 cSECInterfacePrivate::transparentCommand(const QString &cmd)
     return msgnr;
 }
 
-void cSECInterfacePrivate::receiveAnswer(std::shared_ptr<ProtobufMessage::NetMessage> message)
+void cSECInterfacePrivate::receiveAnswer(const std::shared_ptr<ProtobufMessage::NetMessage> &message)
 {
     if (message->has_reply()) {
         quint32 lmsgnr = message->messagenr();

@@ -501,7 +501,7 @@ quint32 cPCBInterfacePrivate::writeSerialNr(const QString &serNr)
     return msgnr;
 }
 
-void cPCBInterfacePrivate::receiveAnswer(std::shared_ptr<ProtobufMessage::NetMessage> message)
+void cPCBInterfacePrivate::receiveAnswer(const std::shared_ptr<ProtobufMessage::NetMessage> &message)
 {
     TAnswerDecoded decodedAnswer;
     if(decodeProtobuffAnswer(message, decodedAnswer, PCB::pcbinterrupt)) {
