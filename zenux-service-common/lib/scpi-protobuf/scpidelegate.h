@@ -35,10 +35,10 @@ signals:
     void sigExecuteProtoScpi(int cmdCode, const ProtonetCommandPtr &protoCmd);
     void sigNotifySubcriber(const ScpiNotificationSubscriber &subscriber, const QString &newValue);
 private:
-    quint16 m_nCmdCode;
-    QString m_sCommand;
+    const quint16 m_nCmdCode;
+    const QString m_sCommand;
+    const NotificationString *m_notificationString = nullptr;
     ScpiNotificationSubscriberHandler m_notificationsHandler;
-    NotificationString *m_notificationString = nullptr;
 };
 
 typedef std::shared_ptr<ScpiDelegate> ScpiDelegatePtr;
