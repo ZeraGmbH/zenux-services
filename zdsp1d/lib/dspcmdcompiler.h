@@ -11,12 +11,12 @@ class DspCmdCompiler
 public:
     DspCmdCompiler(DspVarResolver* varResolver, int dspInterruptId);
     DspCmdWithParamsCompiled compileOneCmdLine(const QString &cmdLine,
-                                               AbstractDspCompilerSupportPtr compilerSupport,
+                                               const AbstractDspCompilerSupportPtr &compilerSupport,
                                                bool &ok);
     bool compileCmds(const QString& cmdsSemicolonSeparated,
                      QList<DspCmdWithParamsCompiled> &genCmdList,
                      QString& err,
-                     AbstractDspCompilerSupportPtr compilerSupport);
+                     const AbstractDspCompilerSupportPtr &compilerSupport);
 
 private:
     static bool areThereNoFurtherKeywords(cParse &cmdParser, const QChar* charCmdLine);

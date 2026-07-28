@@ -7,7 +7,7 @@ DspCmdCompiler::DspCmdCompiler(DspVarResolver *varResolver, int dspInterruptId) 
 }
 
 DspCmdWithParamsCompiled DspCmdCompiler::compileOneCmdLine(const QString &cmdLine,
-                                                           AbstractDspCompilerSupportPtr compilerSupport,
+                                                           const AbstractDspCompilerSupportPtr &compilerSupport,
                                                            bool &ok)
 {
     ok = true;
@@ -130,7 +130,7 @@ DspCmdWithParamsCompiled DspCmdCompiler::compileOneCmdLine(const QString &cmdLin
 bool DspCmdCompiler::compileCmds(const QString &cmdsSemicolonSeparated,
                                  QList<DspCmdWithParamsCompiled> &genCmdList,
                                  QString &err,
-                                 AbstractDspCompilerSupportPtr compilerSupport)
+                                 const AbstractDspCompilerSupportPtr &compilerSupport)
 {
     bool ok = true;
     genCmdList.clear();

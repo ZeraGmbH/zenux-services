@@ -95,7 +95,10 @@ private:
     // die routinen für das measure modell
     QString loadCmdListAllClients();
 
-    DspCmdWithParamsCompiled genClientStartAddressCmd(ulong userMemOffset, ZdspClient* client, AbstractDspCompilerSupportPtr compilerSupport, bool &ok) const;
+    DspCmdWithParamsCompiled genClientStartAddressCmd(ulong userMemOffset,
+                                                      ZdspClient* client,
+                                                      const AbstractDspCompilerSupportPtr &compilerSupport,
+                                                      bool &ok) const;
     bool uploadCommandLists();
     void flipCommandListSelector();
     bool writeDspCmdListsToDevNode();
@@ -103,7 +106,7 @@ private:
     int readMagicId();
     bool Test4HWPresent();
     bool Test4DspRunning();
-    void executeCommandProto(VeinTcp::TcpPeer* peer, std::shared_ptr<google::protobuf::Message> cmd);
+    void executeCommandProto(VeinTcp::TcpPeer* peer, const std::shared_ptr<google::protobuf::Message> &cmd);
 
     Zera::XMLConfig::cReader m_xmlConfigReader;
     cDSPSettings m_dspSettings;

@@ -713,7 +713,7 @@ void ZDspServer::DspIntHandler(int)
 
 DspCmdWithParamsCompiled ZDspServer::genClientStartAddressCmd(ulong userMemOffset,
                                                               ZdspClient* client,
-                                                              AbstractDspCompilerSupportPtr compilerSupport,
+                                                              const AbstractDspCompilerSupportPtr &compilerSupport,
                                                               bool &ok) const
 {
     DspCmdCompiler compiler(&client->m_dspVarResolver, client->getDspInterruptId());
@@ -898,7 +898,7 @@ void ZDspServer::onProtobufDataReceived(VeinTcp::TcpPeer *peer, const QByteArray
     executeCommandProto(peer, XiQNetWrapper::byteArrayToProto(message));
 }
 
-void ZDspServer::executeCommandProto(VeinTcp::TcpPeer *peer, std::shared_ptr<google::protobuf::Message> cmd)
+void ZDspServer::executeCommandProto(VeinTcp::TcpPeer *peer, const std::shared_ptr<google::protobuf::Message> &cmd)
 {
     std::shared_ptr<ProtobufMessage::NetMessage> protobufCommand = std::static_pointer_cast<ProtobufMessage::NetMessage>(cmd);
     if ( (protobufCommand != 0) && (peer != 0)) {
