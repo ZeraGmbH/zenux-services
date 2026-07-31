@@ -3,7 +3,7 @@
 #include <QFileInfo>
 #include <QDir>
 
-CoreDumpWatcher::CoreDumpWatcher(QString coreDumpDir, QString outputDir, QList<int> userIdsToWatch):
+CoreDumpWatcher::CoreDumpWatcher(const QString &coreDumpDir, const QString &outputDir, const QList<int> &userIdsToWatch):
     m_coreDumpDir(coreDumpDir),
     m_outputDir(outputDir),
     m_userIdsToWatch(userIdsToWatch)
@@ -31,7 +31,7 @@ void CoreDumpWatcher::startWatching()
         qWarning("Cannot watch directory %s!", qPrintable(m_coreDumpDir));
 }
 
-void CoreDumpWatcher::newCoreDumpFound(QString path)
+void CoreDumpWatcher::newCoreDumpFound(const QString &path)
 {
     QDir coreDumpDir(path);
     QFileInfoList filesInDir(coreDumpDir.entryInfoList(QDir::NoDotAndDotDot | QDir::Files));
@@ -56,7 +56,7 @@ void CoreDumpWatcher::newCoreDumpFound(QString path)
 
 }
 
-bool CoreDumpWatcher::fixPermissions(QString filePath)
+bool CoreDumpWatcher::fixPermissions(const QString &filePath)
 {
     QFile file(filePath);
     if(file.setPermissions(QFileDevice::ReadOwner | QFileDevice::WriteOwner |
@@ -67,7 +67,7 @@ bool CoreDumpWatcher::fixPermissions(QString filePath)
     return false;
 }
 
-int CoreDumpWatcher::extractUserId(QString fileName)
+int CoreDumpWatcher::extractUserId(const QString &fileName)
 {
     QStringList splitString = fileName.split(".");
     if(splitString.count() > 3)

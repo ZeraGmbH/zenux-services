@@ -9,18 +9,18 @@ class CoreDumpWatcher : public QObject
 {
     Q_OBJECT
 public:
-    explicit CoreDumpWatcher(QString coreDumpDir, QString outputDir, QList<int> userIdsToWatch);
+    explicit CoreDumpWatcher(const QString &coreDumpDir, const QString &outputDir, const QList<int> &userIdsToWatch);
     void startWatching();
 
 signals:
     void sigCoredumpMoved();
 
 private slots:
-    void newCoreDumpFound(QString path);
+    void newCoreDumpFound(const QString &path);
 
 private:
-    bool fixPermissions(QString filePath);
-    int extractUserId(QString fileName);
+    bool fixPermissions(const QString &filePath);
+    int extractUserId(const QString &fileName);
 
     QString m_coreDumpDir;
     QString m_outputDir;
