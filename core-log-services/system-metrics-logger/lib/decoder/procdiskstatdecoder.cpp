@@ -27,7 +27,7 @@ QStringList ProcDiskStatDecoder::getDiskBlockDevicesOfInterest()
     return diskDevices;
 }
 
-DiskValues ProcDiskStatDecoder::getReadWriteBytes(QString device)
+DiskValues ProcDiskStatDecoder::getReadWriteBytes(const QString &device)
 {
     const QStringList lines = getProcDiskStat().split("\n", Qt::SkipEmptyParts);
     DiskValues values;
@@ -44,7 +44,7 @@ DiskValues ProcDiskStatDecoder::getReadWriteBytes(QString device)
     return values;
 }
 
-DiskValues ProcDiskStatDecoder::decodeSingleDiskStatLine(QString line)
+DiskValues ProcDiskStatDecoder::decodeSingleDiskStatLine(const QString &line)
 {
     QStringList entries = line.split(" ", Qt::SkipEmptyParts);
     DiskValues values;

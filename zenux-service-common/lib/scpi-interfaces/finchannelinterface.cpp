@@ -12,11 +12,11 @@ FInChannelInterface::FInChannelInterface(const std::shared_ptr<cSCPI> &scpiInter
                                          quint8 nr,
                                          FInSettings::ChannelSettings *cSettings) :
     ScpiConnection(scpiInterface),
-    m_sDescription(description)
+    m_sName(QString("fi%1").arg(nr)),
+    m_sAlias(cSettings->m_sAlias),
+    m_sDescription(description),
+    m_bAvail(cSettings->avail)
 {
-    m_sName = QString("fi%1").arg(nr);
-    m_sAlias = cSettings->m_sAlias;
-    m_bAvail = cSettings->avail;
 }
 
 void FInChannelInterface::initSCPIConnection(const QString &leadingNodes)

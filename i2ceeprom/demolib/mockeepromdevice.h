@@ -25,7 +25,7 @@ public:
     static QByteArray getData(const I2cAddressParameter &i2cAddressParam,
                               const I2cAddressParameter &i2cAddressMux = {"", I2cMuxerInterface::InvalidMux},
                               qint8 muxChannelNo = InvalidMux);
-    static void setData(const I2cAddressParameter &i2cAddressParam, QByteArray data,
+    static void setData(const I2cAddressParameter &i2cAddressParam, const QByteArray &data,
                         const I2cAddressParameter &i2cAddressMux = {"", I2cMuxerInterface::InvalidMux},
                         qint8 muxChannelNo = InvalidMux);
     static int getReadCount(const I2cAddressParameter &i2cAddressParam,

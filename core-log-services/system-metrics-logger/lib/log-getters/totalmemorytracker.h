@@ -10,7 +10,7 @@ public:
     float getValue() override;
 
 private:
-    float calcPercentageOneDecimal(float value);
+    static float calcPercentageOneDecimal(float value);
 };
 
 #endif // TOTALMEMORYTRACKER_H

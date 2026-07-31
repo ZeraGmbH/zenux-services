@@ -18,14 +18,15 @@ public:
     virtual QString getSerialNumber();
 
 protected:
-    QString m_sDeviceName;
-    QString m_sSerialNumber;
+    const char* defaultName = "Unknown";
+    QString m_sDeviceName = defaultName;
+    QString m_sSerialNumber = defaultName;
 
 private:
     AbstractFactoryI2cCtrlPtr m_ctrlFactory;
     bool m_bRead; // we keep in mind whether we could read the information
-    QString m_sPCBVersion;
-    QString m_sLCAVersion;
-    QString m_sCTRLVersion;
+    QString m_sPCBVersion = defaultName;
+    QString m_sLCAVersion = defaultName;
+    QString m_sCTRLVersion = defaultName;
 };
 #endif // SYSTEMINFO_H

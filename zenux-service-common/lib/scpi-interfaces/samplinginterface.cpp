@@ -50,7 +50,6 @@ void cSamplingInterface::executeProtoScpi(int cmdCode, const ProtonetCommandPtr 
     }
 }
 
-// Why do we still ask pcb-server for samplereate?
 QString cSamplingInterface::scpiReadSampleRate(const QString &scpi)
 {
     Q_UNUSED(scpi)

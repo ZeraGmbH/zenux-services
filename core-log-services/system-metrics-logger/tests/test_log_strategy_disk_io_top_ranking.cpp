@@ -11,7 +11,7 @@ void test_log_strategy_disk_io_top_ranking::multipleProcessesSameLoad()
 {
     TestSystemInfoFileLocator::setProcBasePath(":/proc_pid_io/default");
     QStringList logOutput;
-    LogStrategyDiskIoTopRanking strat(3, defaultPeriodMs, [&](QString log) {
+    LogStrategyDiskIoTopRanking strat(3, defaultPeriodMs, [&](const QString &log) {
         logOutput.append(log);
     });
     DiskValuesProcesses processValues;
@@ -28,7 +28,7 @@ void test_log_strategy_disk_io_top_ranking::multipleProcessesSameLoadDoublePerio
 {
     TestSystemInfoFileLocator::setProcBasePath(":/proc_pid_io/default");
     QStringList logOutput;
-    LogStrategyDiskIoTopRanking strat(3, 2*defaultPeriodMs, [&](QString log) {
+    LogStrategyDiskIoTopRanking strat(3, 2*defaultPeriodMs, [&](const QString &log) {
         logOutput.append(log);
     });
     DiskValuesProcesses processValues;
@@ -45,7 +45,7 @@ void test_log_strategy_disk_io_top_ranking::limitRankingDepth()
 {
     TestSystemInfoFileLocator::setProcBasePath(":/proc_pid_io/default");
     QStringList logOutput;
-    LogStrategyDiskIoTopRanking strat(2, defaultPeriodMs, [&](QString log) {
+    LogStrategyDiskIoTopRanking strat(2, defaultPeriodMs, [&](const QString &log) {
         logOutput.append(log);
     });
     DiskValuesProcesses processValues;
@@ -62,7 +62,7 @@ void test_log_strategy_disk_io_top_ranking::multipleProcessesDifferentLoads()
 {
     TestSystemInfoFileLocator::setProcBasePath(":/proc_pid_io/default");
     QStringList logOutput;
-    LogStrategyDiskIoTopRanking strat(3, defaultPeriodMs, [&](QString log) {
+    LogStrategyDiskIoTopRanking strat(3, defaultPeriodMs, [&](const QString &log) {
         logOutput.append(log);
     });
     DiskValuesProcesses processValues;
@@ -78,7 +78,7 @@ void test_log_strategy_disk_io_top_ranking::noLogNoRead()
 {
     TestSystemInfoFileLocator::setProcBasePath(":/proc_pid_io/default");
     QStringList logOutput;
-    LogStrategyDiskIoTopRanking strat(3, defaultPeriodMs, [&](QString log) {
+    LogStrategyDiskIoTopRanking strat(3, defaultPeriodMs, [&](const QString &log) {
         logOutput.append(log);
     });
     DiskValuesProcesses processValues;
@@ -94,7 +94,7 @@ void test_log_strategy_disk_io_top_ranking::noLogNoWrite()
 {
     TestSystemInfoFileLocator::setProcBasePath(":/proc_pid_io/default");
     QStringList logOutput;
-    LogStrategyDiskIoTopRanking strat(3, defaultPeriodMs, [&](QString log) {
+    LogStrategyDiskIoTopRanking strat(3, defaultPeriodMs, [&](const QString &log) {
         logOutput.append(log);
     });
     DiskValuesProcesses processValues;

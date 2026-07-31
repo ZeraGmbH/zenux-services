@@ -12,11 +12,11 @@ ScInChannelInterface::ScInChannelInterface(const std::shared_ptr<cSCPI> &scpiInt
                                            quint8 nr,
                                            ScInSettings::ChannelSettings *cSettings) :
     ScpiConnection(scpiInterface),
-    m_sDescription(description)
+    m_sName(QString("sh%1").arg(nr)),
+    m_sAlias(cSettings->m_alias),
+    m_sDescription(description),
+    m_bAvail(cSettings->m_avail)
 {
-    m_sName = QString("sh%1").arg(nr);
-    m_sAlias = cSettings->m_alias;
-    m_bAvail = cSettings->m_avail;
 }
 
 void ScInChannelInterface::initSCPIConnection(const QString &leadingNodes)

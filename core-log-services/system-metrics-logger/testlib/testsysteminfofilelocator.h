@@ -6,9 +6,9 @@
 class TestSystemInfoFileLocator : public SystemInfoFileLocator
 {
 public:
-    static void setSysTempRootPath(QString sysTempRootPath);
-    static void setSysCpuPath(QString sysCpuPath);
-    static void setProcBasePath(QString procBasePath);
+    static void setSysTempRootPath(const QString &sysTempRootPath);
+    static void setSysCpuPath(const QString &sysCpuPath);
+    static void setProcBasePath(const QString &procBasePath);
     static void resetSysFreqPaths();
 };
 

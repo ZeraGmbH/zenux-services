@@ -1,6 +1,6 @@
 #include "i2cctrlmmode.h"
 
-I2cCtrlMMode::I2cCtrlMMode(QString deviceNodeName, quint8 i2cAddress, quint8 debugLevel) :
+I2cCtrlMMode::I2cCtrlMMode(const QString &deviceNodeName, quint8 i2cAddress, quint8 debugLevel) :
     m_ctrlIo(deviceNodeName, i2cAddress, debugLevel)
 {
 }

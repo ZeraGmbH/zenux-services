@@ -98,7 +98,7 @@ QByteArray MockEepromDevice::getData(const I2cAddressParameter &i2cAddressParam,
     return ret;
 }
 
-void MockEepromDevice::setData(const I2cAddressParameter &i2cAddressParam, QByteArray data,
+void MockEepromDevice::setData(const I2cAddressParameter &i2cAddressParam, const QByteArray &data,
                                const I2cAddressParameter &i2cAddressMux, qint8 muxChannelNo)
 {
     EepromWithMuxParams params{i2cAddressParam, i2cAddressMux, muxChannelNo};

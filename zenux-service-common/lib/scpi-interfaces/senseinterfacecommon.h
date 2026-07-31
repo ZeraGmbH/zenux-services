@@ -68,7 +68,7 @@ public:
     bool resetAdjValues();
     quint16 getAdjChecksum();
 
-    int rangeFlagsExtern();
+    static int rangeFlagsExtern();
     int rangeFlagsExternDc(); // maybe this can go - for now just compatibility
     void initSCPIConnection() override;
     QString exportXMLString(int indent = 1) override;

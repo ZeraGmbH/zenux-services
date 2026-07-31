@@ -245,7 +245,7 @@ void DspStaticData::fillMemSectionHashOn1stCall()
         fixedSectionList.append(&dm32UserWorkSpace);
         fixedSectionList.append(&dm32CmdList);
         fixedSectionList.append(&symbConsts1);
-        for(DspMemorySectionInternal* memSection : qAsConst(fixedSectionList)) {
+        for(const DspMemorySectionInternal* memSection : qAsConst(fixedSectionList)) {
             // Adjust dialog workspace offset to make it accessible to COPYDU / COPYUD
             if (memSection->m_startAddress == dm32DialogWorkSpace.m_startAddress)
                 initDspInternalMemsection(memSection, dm32DialogWorkSpace.m_startAddress - dm32DspWorkspace.m_startAddress);

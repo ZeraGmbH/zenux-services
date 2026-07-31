@@ -80,7 +80,7 @@ void test_serverunregisternotifier::twoScpiConnections()
 
 void test_serverunregisternotifier::mtConfigLoaded()
 {
-    QList<FOutSettings::ChannelSettings*>& chSettings =  m_foutSettings->getChannelSettings();
+    const QList<FOutSettings::ChannelSettings*>& chSettings =  m_foutSettings->getChannelSettings();
     QCOMPARE(chSettings.size(), 4);
 }
 

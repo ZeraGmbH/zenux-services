@@ -29,7 +29,8 @@ private:
     QString scpiReadFFactor(const QString& scpi);
     QString scpiReadWriteConstant(const QString& scpi);
     QString scpiReadWritePowerType(const QString &scpi);
-    void initNotifier(NotificationString& notifier);
+    static void initNotifier(NotificationString& notifier);
+
     QString m_sName; // the channel's name
     QString m_sAlias;
     QString m_sDescription; // the channel's brief description

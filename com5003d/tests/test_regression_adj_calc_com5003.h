@@ -25,7 +25,7 @@ private slots:
 
 private:
     void setupServers();
-    double calcAdjValue(double value, double coeff0, double coeff1, double coeff2);
+    static double calcAdjValue(double value, double coeff0, double coeff1, double coeff2);
 
     VeinTcp::AbstractTcpNetworkFactoryPtr m_tcpNetworkFactory;
     std::unique_ptr<ResmanRunFacade> m_resman;

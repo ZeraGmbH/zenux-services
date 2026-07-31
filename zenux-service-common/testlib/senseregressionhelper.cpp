@@ -20,7 +20,9 @@ QString SenseRegressionHelper::getJsonNumString(int clampTypeNo)
     return "clamp_type_no_" + (QString("0000") + QString("%1").arg(clampTypeNo)).right(4);
 }
 
-void SenseRegressionHelper::addRangeConstantDataToJson(QString rangeName, SenseSystem::cChannelSettings *channelSettings, QJsonObject &range)
+void SenseRegressionHelper::addRangeConstantDataToJson(const QString &rangeName,
+                                                       const SenseSystem::cChannelSettings *channelSettings,
+                                                       QJsonObject &range)
 {
     range.insert(JsonNameStr, rangeName);
 
@@ -52,11 +54,14 @@ void SenseRegressionHelper::addRangeConstantDataToJson(QString rangeName, SenseS
     range.insert(JsonAdjustControllerSelection, ctrlSelectionNum);
 }
 
-bool SenseRegressionHelper::compareRangeConstantDataWithJson(QJsonObject &rangeReference, QString clampName, QString rangeName, SenseSystem::cChannelSettings *channelSetting)
+bool SenseRegressionHelper::compareRangeConstantDataWithJson(const QJsonObject &rangeReference,
+                                                             const QString &clampName,
+                                                             const QString &rangeName,
+                                                             const SenseSystem::cChannelSettings *channelSetting)
 {
-    QString channelName = channelSetting->m_nameMx;
     bool allOk = !rangeReference.isEmpty();
     if(allOk) {
+        QString channelName = channelSetting->m_nameMx;
         QString alias = ScpiSingleTransactionBlocked::query(QString("SENS:%1:%2:ALI?").arg(channelName, rangeName));
         QString expected = rangeReference.value(JsonAliasStr).toString();
         if(alias != expected) {
@@ -122,7 +127,8 @@ bool SenseRegressionHelper::compareRangeConstantDataWithJson(QJsonObject &rangeR
 
 static QString noClampJsonId = QStringLiteral("no-clamps");
 
-QByteArray SenseRegressionHelper::genJsonConstantValuesAllRanges(QList<SenseSystem::cChannelSettings*> channelSettings, Zera::cPCBInterface* pcbIFace)
+QByteArray SenseRegressionHelper::genJsonConstantValuesAllRanges(QList<SenseSystem::cChannelSettings*> channelSettings,
+                                                                 Zera::cPCBInterface* pcbIFace)
 {
     QJsonObject jsonAll;
     for(const auto &channelSetting : channelSettings) {
@@ -149,7 +155,7 @@ QByteArray SenseRegressionHelper::genJsonConstantValuesAllRanges(QList<SenseSyst
     return doc.toJson(QJsonDocument::Indented);
 }
 
-void SenseRegressionHelper::reportError(QString clampName, QString range, QString entry, QString expected, QString found)
+void SenseRegressionHelper::reportError(const QString &clampName, const QString &range, const QString &entry, const QString &expected, const QString &found)
 {
     qCritical("Clamp: \"%s\" / Range: \"%s\" / Entry: \"%s\": Constant incorrect. Expected: \"%s\" / Found: \"%s\"",
               qPrintable(clampName),

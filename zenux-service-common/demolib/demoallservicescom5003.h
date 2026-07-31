@@ -26,7 +26,7 @@ public:
     virtual void addClamps(const QList<clampParam> &clampParams) override;
 private:
     void init(const VeinTcp::AbstractTcpNetworkFactoryPtr &tcpNetworkFactory);
-    void noHotplugMsg() const;
+    static void noHotplugMsg();
 
     ResmanRunFacade *m_resman;
     MockCom5003d *m_mockcom5003d;

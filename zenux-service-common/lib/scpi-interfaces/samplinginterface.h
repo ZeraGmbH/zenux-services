@@ -17,7 +17,7 @@ public:
 protected:
     void executeProtoScpi(int cmdCode, const ProtonetCommandPtr &protoCmd) override;
 private:
-    QString scpiReadSampleRate(const QString& scpi);
+    static QString scpiReadSampleRate(const QString& scpi);
     QString scpiReadWritePLL(const QString& scpi);
     QString scpiReadPLLCatalog(const QString& scpi);
 

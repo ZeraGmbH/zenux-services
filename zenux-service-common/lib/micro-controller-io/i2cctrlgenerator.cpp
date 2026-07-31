@@ -185,7 +185,7 @@ QStringList I2cCtrlGenerator::getChannelMNamesFromMask(const cSenseSettingsPtr &
 
 quint8 I2cCtrlGenerator::getControllerInternalChannelNo(const cSenseSettingsPtr &senseSettings, const QString &channelMName)
 {
-    SenseSystem::cChannelSettings* channelSetting = senseSettings->findChannelSettingByMxName(channelMName);
+    const SenseSystem::cChannelSettings* channelSetting = senseSettings->findChannelSettingByMxName(channelMName);
     if (channelSetting)
         return channelSetting->m_nCtrlChannel;
     return 0;

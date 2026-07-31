@@ -12,11 +12,11 @@ HkInChannelInterface::HkInChannelInterface(const std::shared_ptr<cSCPI> &scpiInt
                                            quint8 nr,
                                            HkInSettings::ChannelSettings *cSettings) :
     ScpiConnection(scpiInterface),
-    m_sDescription(description)
+    m_sName(QString("hk%1").arg(nr)),
+    m_sAlias(cSettings->m_sAlias),
+    m_sDescription(description),
+    m_bAvail(cSettings->avail)
 {
-    m_sName = QString("hk%1").arg(nr);
-    m_sAlias = cSettings->m_sAlias;
-    m_bAvail = cSettings->avail;
 }
 
 void HkInChannelInterface::initSCPIConnection(const QString &leadingNodes)

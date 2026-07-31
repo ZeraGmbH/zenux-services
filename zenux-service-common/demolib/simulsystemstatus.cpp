@@ -110,7 +110,7 @@ void SimulSystemStatus::setChannelHotplugSupported(const QVector<bool> &channels
     }
 }
 
-const QStringList SimulSystemStatus::hotplugDevices() const
+const QStringList SimulSystemStatus::hotplugDevices()
 {
     return MockAvailableHotplugDevices::getAvailableDeviceNames();
 }

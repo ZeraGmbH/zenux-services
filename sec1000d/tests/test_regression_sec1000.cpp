@@ -128,7 +128,7 @@ void test_regression_sec1000::collectServerSends(QList<ServerSendData> &serverSe
     });
 }
 
-void test_regression_sec1000::registerInterruptNotifiers(QStringList ecalChannels)
+void test_regression_sec1000::registerInterruptNotifiers(const QStringList &ecalChannels)
 {
     for(const QString &ecChannel : ecalChannels) {
         // This assembly language was stolen from secmodule (and friends)...
@@ -146,7 +146,7 @@ bool test_regression_sec1000::checkRegisterResponses(const QList<ServerSendData>
     return true;
 }
 
-void test_regression_sec1000::prepareInterruptMaskValue(QStringList ecalChannels)
+void test_regression_sec1000::prepareInterruptMaskValue(const QStringList &ecalChannels)
 {
     QByteArray interruptResponseValues;
     // Wow: In NotificationValue::setValue we learn that notifications are spawned on

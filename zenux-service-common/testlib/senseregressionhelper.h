@@ -11,12 +11,22 @@ class SenseRegressionHelper
 public:
     static QString getJsonNumString(int clampTypeNo);
 
-    static QByteArray genJsonConstantValuesAllRanges(QList<SenseSystem::cChannelSettings*> channelSettings, Zera::cPCBInterface* pcbIFace);
+    static QByteArray genJsonConstantValuesAllRanges(QList<SenseSystem::cChannelSettings*> channelSettings,
+                                                     Zera::cPCBInterface* pcbIFace);
 
-    static void addRangeConstantDataToJson(QString rangeName, SenseSystem::cChannelSettings *channelSettings, QJsonObject &range);
-    static bool compareRangeConstantDataWithJson(QJsonObject &rangeReference, QString clampName, QString rangeName, SenseSystem::cChannelSettings *channelSetting);
+    static void addRangeConstantDataToJson(const QString &rangeName,
+                                           const SenseSystem::cChannelSettings *channelSettings,
+                                           QJsonObject &range);
+    static bool compareRangeConstantDataWithJson(const QJsonObject &rangeReference,
+                                                 const QString &clampName,
+                                                 const QString &rangeName,
+                                                 const SenseSystem::cChannelSettings *channelSetting);
 private:
-    static void reportError(QString clampName, QString range, QString entry, QString expected, QString found);
+    static void reportError(const QString &clampName,
+                            const QString &range,
+                            const QString &entry,
+                            const QString &expected,
+                            const QString &found);
 };
 
 #endif // SENSEREGRESSIONHELPER_H

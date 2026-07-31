@@ -3,7 +3,6 @@
 SystemInfo::SystemInfo(const AbstractFactoryI2cCtrlPtr &ctrlFactory) :
     m_ctrlFactory(ctrlFactory)
 {
-    m_sDeviceName = m_sPCBVersion = m_sLCAVersion = m_sCTRLVersion = m_sSerialNumber = "Unknown";
     getSystemInfo();
 }
 

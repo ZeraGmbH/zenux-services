@@ -68,7 +68,9 @@ protected:
     bool importXMLDocument(QDomDocument* qdomdoc) override;
 
 private:
-    static SenseRangeCommon* getRangeStatic(QString name, const QList<SenseRangeCommon *> &rangeList, const QList<SenseRangeCommon *> &rangeListSecondary);
+    static SenseRangeCommon* getRangeStatic(const QString &name,
+                                            const QList<SenseRangeCommon *> &rangeList,
+                                            const QList<SenseRangeCommon *> &rangeListSecondary);
     static bool importXMLDocumentStatic(QDomDocument *qdomdoc, bool ignoreType,
                                         quint8 clamptype, QString &serialNo, QString &version,
                                         const QList<SenseRangeCommon *> &rangeList, const QList<SenseRangeCommon *> &rangeListSecondary);
@@ -77,10 +79,10 @@ private:
     void addSense();
     void addSenseInterface();
     void addSystAdjInterface();
-    void addSystAdjInterfaceChannel(QString channelName);
+    void addSystAdjInterfaceChannel(const QString &channelName);
     void createLEM1000VRanges(const PermissionStructAdj &permissions);
     void createVDE1400VRanges(const PermissionStructAdj &permissions);
-    SenseRangeCommon* getRange(QString name);
+    SenseRangeCommon* getRange(const QString &name);
     ClampTypes readClampType();
     void removeAllRanges();
     void exportRangeXml(QDomDocument &justqdom, QDomElement &typeTag, SenseRangeCommon *range);

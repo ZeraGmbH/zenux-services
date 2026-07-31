@@ -1,6 +1,6 @@
 #include "i2cctrlclampstatus.h"
 
-I2cCtrlClampStatus::I2cCtrlClampStatus(QString deviceNodeName, quint8 i2cAddress, quint8 debugLevel) :
+I2cCtrlClampStatus::I2cCtrlClampStatus(const QString &deviceNodeName, quint8 i2cAddress, quint8 debugLevel) :
     m_ctrlIo(deviceNodeName, i2cAddress, debugLevel)
 {
 }

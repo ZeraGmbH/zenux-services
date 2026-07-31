@@ -9,7 +9,7 @@ void AsyncQueuedMControllerIo::startAsyncRangeIo(AbstractZeraMControllerDelayedP
         std::move(mcontroller),
         protoCmd,
         rangeName);
-    connect(task.get(), &AsyncZeraMControllerTask::sigCmdDone, this, [this](const ProtonetCommandPtr &protoCmd, QString rangeName) {
+    connect(task.get(), &AsyncZeraMControllerTask::sigCmdDone, this, [this](const ProtonetCommandPtr &protoCmd, const QString &rangeName) {
         emit sigCmdDone(protoCmd, rangeName);
     });
     m_pendingTaskQueue.addSub(std::move(task));

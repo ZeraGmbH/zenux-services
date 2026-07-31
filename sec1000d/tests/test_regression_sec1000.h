@@ -31,11 +31,11 @@ private:
         QVariant answer;
     };
     void collectServerSends(QList<ServerSendData> &serverSendList);
-    void registerInterruptNotifiers(QStringList ecalChannels);
+    void registerInterruptNotifiers(const QStringList &ecalChannels);
     bool checkRegisterResponses(const QList<ServerSendData> &responses);
-    void prepareInterruptMaskValue(QStringList ecalChannels);
+    void prepareInterruptMaskValue(const QStringList &ecalChannels);
     bool checkInterruptMasks(const QList<ServerSendData> &responses);
-    quint8 calcNonZeroTestMask(int ecChannelNum);
+    static quint8 calcNonZeroTestMask(int ecChannelNum);
 
     VeinTcp::AbstractTcpNetworkFactoryPtr m_tcpNetworkFactory;
     std::unique_ptr<ResmanRunFacade> m_resman;

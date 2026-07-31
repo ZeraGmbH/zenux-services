@@ -16,8 +16,8 @@ public:
     int getCountIPhases() const;
     QByteArray getIoPrefix() const;
 
-    void setDeviceName(QString name);
-    void setDeviceVersion(QString version);
+    void setDeviceName(const QString &name);
+    void setDeviceVersion(const QString &version);
 private:
     QJsonObject m_paramStructure;
 };

@@ -29,7 +29,7 @@ void DemoAllServicesCom5003::init(const VeinTcp::AbstractTcpNetworkFactoryPtr &t
 #endif
 }
 
-void DemoAllServicesCom5003::noHotplugMsg() const
+void DemoAllServicesCom5003::noHotplugMsg()
 {
     qCritical("Hotplug not supported on COM5003 yet!");
 }

@@ -35,12 +35,12 @@ QByteArray JsonStructApi::getIoPrefix() const
     return m_paramStructure["IoPrefix"].toString().toLatin1();
 }
 
-void JsonStructApi::setDeviceName(QString name)
+void JsonStructApi::setDeviceName(const QString &name)
 {
     m_paramStructure["Name"] = name;
 }
 
-void JsonStructApi::setDeviceVersion(QString version)
+void JsonStructApi::setDeviceVersion(const QString &version)
 {
     m_paramStructure["Version"] = version;
 }

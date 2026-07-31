@@ -318,8 +318,6 @@ bool cClamp::importXMLDocumentStatic(QDomDocument *qdomdoc, bool ignoreType,
                         QDomNodeList sensNl = qdNode.childNodes(); // we iterate over all ranges
                         SenseRangeCommon* rngPtr = nullptr;
                         for (qint32 j = 0; j < sensNl.length(); j++) {
-                            QString Name;
-
                             QDomNode RangeJustNode = sensNl.item(j);
                             qdElem = RangeJustNode.toElement();
                             QString tName = qdElem.tagName();
@@ -331,7 +329,7 @@ bool cClamp::importXMLDocumentStatic(QDomDocument *qdomdoc, bool ignoreType,
                                     qdElem = RangeJustNode.toElement();
                                     tName = qdElem.tagName();
                                     if (tName == "Name") {
-                                        Name = qdElem.text();
+                                        QString Name = qdElem.text();
                                         rngPtr = getRangeStatic(Name, rangeList, rangeListSecondary);
                                     }
 
@@ -836,7 +834,7 @@ void cClamp::addSystAdjInterface()
     }
 }
 
-void cClamp::addSystAdjInterfaceChannel(QString channelName)
+void cClamp::addSystAdjInterfaceChannel(const QString &channelName)
 {
     QString cmdParent = QString("SYSTEM:CLAMP:%1").arg(channelName);
     addDelegate(cmdParent, "SERIALNUMBER", SCPI::isQuery | SCPI::isCmdwP, m_scpiInterface, cmdSerial);
@@ -859,12 +857,14 @@ void cClamp::addSystAdjInterfaceChannel(QString channelName)
     addDelegate(cmdParent, "ADJUSTMENT", SCPI::isQuery, m_scpiInterface, cmdStatAdjustment);
 }
 
-SenseRangeCommon *cClamp::getRange(QString name)
+SenseRangeCommon *cClamp::getRange(const QString &name)
 {
     return getRangeStatic(name, m_RangeList, m_RangeListSecondary);
 }
 
-SenseRangeCommon *cClamp::getRangeStatic(QString name, const QList<SenseRangeCommon*> &rangeList, const QList<SenseRangeCommon*> &rangeListSecondary)
+SenseRangeCommon *cClamp::getRangeStatic(const QString &name,
+                                         const QList<SenseRangeCommon*> &rangeList,
+                                         const QList<SenseRangeCommon*> &rangeListSecondary)
 {
     SenseRangeCommon* rangeFound = nullptr;
     for(auto range : rangeList) {

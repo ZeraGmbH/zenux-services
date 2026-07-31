@@ -7,7 +7,7 @@ QTEST_MAIN(test_logstrategy)
 void test_logstrategy::test_someNaNInput()
 {
     QString logOutput;
-    LogStrategyMinMaxMean strat(4, "foo", "bar", [&](QString log){
+    LogStrategyMinMaxMean strat(4, "foo", "bar", [&](const QString &log){
         logOutput = log;
     });
     strat.addValue(qQNaN());
@@ -25,7 +25,7 @@ void test_logstrategy::test_someNaNInput()
 void test_logstrategy::test_allNaNInput()
 {
     QString logOutput = "foo";
-    LogStrategyMinMaxMean strat(10, "foo", "bar", [&](QString log){
+    LogStrategyMinMaxMean strat(10, "foo", "bar", [&](const QString &log){
         logOutput = log;
     });
     QList<float> values;
@@ -39,7 +39,7 @@ void test_logstrategy::test_allNaNInput()
 void test_logstrategy::test_allZeroInput()
 {
     QString logOutput = "foo";
-    LogStrategyMinMaxMean strat(10, "foo", "bar", [&](QString log){
+    LogStrategyMinMaxMean strat(10, "foo", "bar", [&](const QString &log){
         logOutput = log;
     });
     QList<float> values;
@@ -54,7 +54,7 @@ void test_logstrategy::test_allZeroInput()
 void test_logstrategy::test_6Values()
 {
     QString logOutput;
-    LogStrategyMinMaxMean strat(6, "foo", "bar", [&](QString log){
+    LogStrategyMinMaxMean strat(6, "foo", "bar", [&](const QString &log){
         logOutput = log;
     });
     QList<float> values;

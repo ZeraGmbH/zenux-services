@@ -1,16 +1,16 @@
 #include "testsysteminfofilelocator.h"
 
-void TestSystemInfoFileLocator::setSysTempRootPath(QString sysTempRootPath)
+void TestSystemInfoFileLocator::setSysTempRootPath(const QString &sysTempRootPath)
 {
     m_sysTempRootPath = sysTempRootPath;
 }
 
-void TestSystemInfoFileLocator::setSysCpuPath(QString sysCpuPath)
+void TestSystemInfoFileLocator::setSysCpuPath(const QString &sysCpuPath)
 {
     m_sysCpuPath = sysCpuPath;
 }
 
-void TestSystemInfoFileLocator::setProcBasePath(QString procBasePath)
+void TestSystemInfoFileLocator::setProcBasePath(const QString &procBasePath)
 {
     m_procBasePath = procBasePath;
 }

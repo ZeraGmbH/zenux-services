@@ -9,8 +9,8 @@ class ProcDiskStatDecoder
 public:
     static QStringList getAllDiskBlockDevices();
     static QStringList getDiskBlockDevicesOfInterest();
-    static DiskValues getReadWriteBytes(QString device);
-    static DiskValues decodeSingleDiskStatLine(QString line);
+    static DiskValues getReadWriteBytes(const QString &device);
+    static DiskValues decodeSingleDiskStatLine(const QString &line);
 private:
     static QString getProcDiskStat();
 };

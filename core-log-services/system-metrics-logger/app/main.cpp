@@ -6,7 +6,7 @@ int main( int argc, char *argv[] )
 {
     std::unique_ptr<QCoreApplication> app = std::make_unique<QCoreApplication>(argc, argv);
 
-    std::unique_ptr<SystemMetrics> systemMetrics = std::make_unique<SystemMetrics>([](QString logString){
+    std::unique_ptr<SystemMetrics> systemMetrics = std::make_unique<SystemMetrics>([](const QString &logString){
         qInfo("%s",qPrintable(logString));
     });
     systemMetrics->initLogComponents();
