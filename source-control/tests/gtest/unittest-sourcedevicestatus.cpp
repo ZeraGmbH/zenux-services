@@ -50,7 +50,7 @@ TEST(TEST_SOURCEDEVICESTATUS, WARNINGS) {
     EXPECT_EQ(status.getWarnings().count(), 0);
     status.addWarning("foo");
     EXPECT_EQ(status.getWarnings().count(), 1);
-    EXPECT_EQ(status.getWarnings()[0], "foo");
+    EXPECT_EQ(status.getWarnings().at(0), "foo");
     // key typo test
     json = status.getJsonStatus();
     int newCount = json.count();
@@ -64,7 +64,7 @@ TEST(TEST_SOURCEDEVICESTATUS, ERRORS) {
     EXPECT_EQ(status.getErrors().count(), 0);
     status.addError("foo");
     EXPECT_EQ(status.getErrors().count(), 1);
-    EXPECT_EQ(status.getErrors()[0], "foo");
+    EXPECT_EQ(status.getErrors().at(0), "foo");
     // key typo test
     json = status.getJsonStatus();
     int newCount = json.count();
