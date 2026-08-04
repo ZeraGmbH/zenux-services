@@ -127,7 +127,7 @@ bool SenseRegressionHelper::compareRangeConstantDataWithJson(const QJsonObject &
 
 static QString noClampJsonId = QStringLiteral("no-clamps");
 
-QByteArray SenseRegressionHelper::genJsonConstantValuesAllRanges(QList<SenseSystem::cChannelSettings*> channelSettings,
+QByteArray SenseRegressionHelper::genJsonConstantValuesAllRanges(const QList<SenseSystem::cChannelSettings *> &channelSettings,
                                                                  Zera::cPCBInterface* pcbIFace)
 {
     QJsonObject jsonAll;

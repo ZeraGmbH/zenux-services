@@ -11,7 +11,7 @@ class SenseRegressionHelper
 public:
     static QString getJsonNumString(int clampTypeNo);
 
-    static QByteArray genJsonConstantValuesAllRanges(QList<SenseSystem::cChannelSettings*> channelSettings,
+    static QByteArray genJsonConstantValuesAllRanges(const QList<SenseSystem::cChannelSettings*> &channelSettings,
                                                      Zera::cPCBInterface* pcbIFace);
 
     static void addRangeConstantDataToJson(const QString &rangeName,

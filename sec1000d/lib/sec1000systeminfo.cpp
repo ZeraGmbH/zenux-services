@@ -31,7 +31,6 @@ QString &Sec1000SystemInfo::getDeviceName()
     return m_sDeviceName;
 }
 
-
 QString &Sec1000SystemInfo::getPCBVersion()
 {
     return m_sPCBVersion;

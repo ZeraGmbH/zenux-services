@@ -6,7 +6,7 @@
 class Mt310s2SystemInfoMock : public Mt310s2SystemInfo
 {
 public:
-    Mt310s2SystemInfoMock(const AbstractFactoryI2cCtrlPtr &ctrlFactory);
+    explicit Mt310s2SystemInfoMock(const AbstractFactoryI2cCtrlPtr &ctrlFactory);
 
     QString getDeviceName() override;
     QString getPCBVersion() override;
@@ -14,11 +14,11 @@ public:
     QString getCTRLVersion() override;
     QString getSerialNumber() override;
 
-    static void setDeviceName(QString name);
-    static void setPCBVersion(QString version);
-    static void setLCAVersion(QString version);
-    static void setCTRLVersion(QString version);
-    static void setSerialNumber(QString serno);
+    static void setDeviceName(const QString &name);
+    static void setPCBVersion(const QString &version);
+    static void setLCAVersion(const QString &version);
+    static void setCTRLVersion(const QString &version);
+    static void setSerialNumber(const QString &serno);
 
     QString getSysCTRLVersion() override;
     QString getSysPCBVersion() override;

@@ -36,27 +36,27 @@ QString Mt310s2SystemInfoMock::getSerialNumber()
     return m_serialNumber;
 }
 
-void Mt310s2SystemInfoMock::setDeviceName(QString name)
+void Mt310s2SystemInfoMock::setDeviceName(const QString &name)
 {
     m_deviceName = name;
 }
 
-void Mt310s2SystemInfoMock::setPCBVersion(QString version)
+void Mt310s2SystemInfoMock::setPCBVersion(const QString &version)
 {
     m_pcpVersion = version;
 }
 
-void Mt310s2SystemInfoMock::setLCAVersion(QString version)
+void Mt310s2SystemInfoMock::setLCAVersion(const QString &version)
 {
     m_FPGAVersion = version;
 }
 
-void Mt310s2SystemInfoMock::setCTRLVersion(QString version)
+void Mt310s2SystemInfoMock::setCTRLVersion(const QString &version)
 {
     m_ctrlVersion = version;
 }
 
-void Mt310s2SystemInfoMock::setSerialNumber(QString serno)
+void Mt310s2SystemInfoMock::setSerialNumber(const QString &serno)
 {
     m_serialNumber = serno;
 }
