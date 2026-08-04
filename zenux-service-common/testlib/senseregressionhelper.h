@@ -17,10 +17,6 @@ public:
     static void addRangeConstantDataToJson(const QString &rangeName,
                                            const SenseSystem::cChannelSettings *channelSettings,
                                            QJsonObject &range);
-    static bool compareRangeConstantDataWithJson(const QJsonObject &rangeReference,
-                                                 const QString &clampName,
-                                                 const QString &rangeName,
-                                                 const SenseSystem::cChannelSettings *channelSetting);
 private:
     static void reportError(const QString &clampName,
                             const QString &range,
