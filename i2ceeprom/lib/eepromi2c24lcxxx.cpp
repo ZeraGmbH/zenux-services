@@ -34,7 +34,7 @@ int EepromI2c24LCxxx::WriteData(char* data, ushort count, ushort memAddress)
 
         int pl = 64 - (memAddress & 0x3f); // how many bytes for the actual page
         int l = (toWrite > pl) ? pl : toWrite; // so we decide how many bytes to write now
-        memcpy((void*)&outpBuf[2],(void*)mydata,l);
+        memcpy(&outpBuf[2], mydata, l);
         mydata += l;
         Msgs.len = l+2; // set length for i2c driver
         int r;
