@@ -100,7 +100,7 @@ int EepromI2c24LCxxx::ReadData(char* data, ushort count, ushort memAddress)
         outpBuf[0]=(memAddress >> 8) & 0xff; outpBuf[1]=memAddress & 0xff; // we set the adress for the next transfer
         Msgs[1].len = l; // and it's length
         if ( I2CTransfer(m_i2cAddressParam.devNodeFileName, m_i2cAddressParam.i2cAddr, &EEPromData) == I2C_IO_OK ) {
-            memcpy((void*)data,(void*)&inpBuf[0],l);
+            memcpy(data, &inpBuf[0], l);
             memAddress += l;
             data += l;
             toRead -= l;
