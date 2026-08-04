@@ -35,7 +35,7 @@ SecMainAndChannelInterface::SecMainAndChannelInterface(const std::shared_ptr<cSC
 
 SecMainAndChannelInterface::~SecMainAndChannelInterface()
 {
-    for (SecChannel* channel : m_ECalculatorChannelList)
+    for (SecChannel* channel : qAsConst(m_ECalculatorChannelList))
         delete channel;
 }
 
@@ -178,9 +178,9 @@ void SecMainAndChannelInterface::scpiFreeChannels(const ProtonetCommandPtr &prot
 bool SecMainAndChannelInterface::freeChannelsFromAClient(QByteArray clientID)
 {
     if (m_ClientECalcHash.contains(clientID)) {
-        QStringList clientEcChannels = m_ClientECalcHash[clientID].split(";");
+        const QStringList clientEcChannels = m_ClientECalcHash[clientID].split(";");
         for (const QString &ecChannel : clientEcChannels) {
-            for (SecChannel* channel : m_ECalculatorChannelList) {
+            for (SecChannel* channel : qAsConst(m_ECalculatorChannelList)) {
                 if (channel->getName() == ecChannel)
                     channel->free();
             }
