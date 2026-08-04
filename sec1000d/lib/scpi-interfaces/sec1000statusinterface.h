@@ -12,7 +12,7 @@ public:
 
 private:
     void executeProtoScpi(int cmdCode, const ProtonetCommandPtr &protoCmd) override;
-    quint16 getDeviceStatus();
+    static quint16 getDeviceStatus();
 };
 
 #endif // STATUSINTERFACE_H

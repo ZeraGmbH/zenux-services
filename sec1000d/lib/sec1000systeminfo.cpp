@@ -1,29 +1,30 @@
 #include "sec1000systeminfo.h"
 
-Sec1000SystemInfo::Sec1000SystemInfo()
+static const char* defaultName = "Unknown";
+
+Sec1000SystemInfo::Sec1000SystemInfo() :
+    m_sDeviceName(defaultName),
+    m_sPCBVersion(defaultName),
+    m_sLCAVersion(defaultName),
+    m_sSerialNumber(defaultName)
 {
-    m_sDeviceName = m_sPCBVersion = m_sLCAVersion = m_sSerialNumber = "Unknown";
     getSystemInfo();
 }
-
 
 void Sec1000SystemInfo::getSystemInfo()
 {
     m_bRead = true;
 }
 
-
 bool Sec1000SystemInfo::dataRead()
 {
     return m_bRead;
 }
 
-
 QString Sec1000SystemInfo::getDeviceVersion()
 {
     return QString ("DEVICE: %1;PCB: %2;LCA: %3").arg(m_sDeviceName, m_sPCBVersion, m_sLCAVersion);
 }
-
 
 QString &Sec1000SystemInfo::getDeviceName()
 {
@@ -36,21 +37,12 @@ QString &Sec1000SystemInfo::getPCBVersion()
     return m_sPCBVersion;
 }
 
-
 QString &Sec1000SystemInfo::getLCAVersion()
 {
     return m_sLCAVersion;
 }
 
-
 QString &Sec1000SystemInfo::getSerialNumber()
 {
     return m_sSerialNumber;
 }
-
-
-
-
-
-
-
