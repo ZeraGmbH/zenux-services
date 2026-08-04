@@ -54,8 +54,6 @@ void SenseRegressionHelper::addRangeConstantDataToJson(const QString &rangeName,
     range.insert(JsonAdjustControllerSelection, ctrlSelectionNum);
 }
 
-static QString noClampJsonId = QStringLiteral("no-clamps");
-
 QByteArray SenseRegressionHelper::genJsonConstantValuesAllRanges(const QList<SenseSystem::cChannelSettings *> &channelSettings,
                                                                  Zera::cPCBInterface* pcbIFace)
 {
