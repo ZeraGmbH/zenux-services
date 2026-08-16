@@ -135,9 +135,10 @@ bool DspCmdCompiler::compileCmds(const QString &cmdsSemicolonSeparated,
     genCmdList.clear();
     const QStringList cmds = cmdsSemicolonSeparated.split(';', Qt::SkipEmptyParts);
     for(const QString &cmd : cmds) {
-        if (isComment(cmd))
+        const QString cmdTrimmed = cmd.trimmed();
+        if (isComment(cmdTrimmed))
             continue;
-        genCmdList.append(compileOneCmdLine(cmd, compilerSupport, ok));
+        genCmdList.append(compileOneCmdLine(cmdTrimmed, compilerSupport, ok));
         if(!ok) {
             err = cmd;
             break;
@@ -151,8 +152,7 @@ bool DspCmdCompiler::areThereNoFurtherKeywords(cParse &cmdParser, const QChar *c
     return cmdParser.GetKeyword(&charCmdLine).isEmpty();
 }
 
-bool DspCmdCompiler::isComment(const QString &cmd)
+bool DspCmdCompiler::isComment(const QString &cmdTrimmed)
 {
-    QString trimmedCmd = cmd.trimmed();
-    return trimmedCmd.startsWith("COMMENT(") && cmd.endsWith(")");
+    return cmdTrimmed.startsWith("COMMENT(") && cmdTrimmed.endsWith(")");
 }
