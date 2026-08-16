@@ -31,9 +31,6 @@ public:
     bool compileCmdListsForAllClientsToBinaryStream(QString& errs,
                                                     QByteArray &rawCyclicCmdMemOut,
                                                     QByteArray &rawInterruptCmdMemOut) const;
-    bool compileCmdListsForAllClientsToCompileLists(QString& errs,
-                                                    QList<DspCmdWithParamsCompiled> &compiledCyclicOut,
-                                                    QList<DspCmdWithParamsCompiled> &compiledInterruptOut) const;
 
     int getVarMemAvailable() const; // global & local - they share more or less an area
     int getVarMemAlignedAvailable() const;
@@ -69,6 +66,9 @@ private:
     void executeProtoScpi(int cmdCode, const ProtonetCommandPtr &protoCmd) override;
     void doFinalSetupSteps();
     void startDspRunWatchdog();
+    bool compileCmdListsForAllClientsToCompileLists(QString& errs,
+                                                    QList<DspCmdWithParamsCompiled> &compiledCyclicOut,
+                                                    QList<DspCmdWithParamsCompiled> &compiledInterruptOut) const;
 
     friend class TestZdsp1dForVarAccess;
 
