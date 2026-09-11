@@ -11,4 +11,3 @@ install(TARGETS wait-for-relay-controller
     EXPORT wait-for-relay-controllerExport
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
     )
-

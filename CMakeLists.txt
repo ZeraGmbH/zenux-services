@@ -92,6 +92,7 @@ function(SETUP_TESTS)
     endforeach()
 endfunction()
 
+add_subdirectory(boot-services)
 add_subdirectory(com5003d)
 add_subdirectory(core-log-services)
 add_subdirectory(i2ceeprom)
