@@ -16,7 +16,6 @@ include(GenerateExportHeader)
 include(CMakePackageConfigHelpers)
 include(FindPkgConfig)
 
-option(useSystemd "Using libsystemd" ON)
 option(GUI_SIMULATION "Build QML gui code for simulation - NOT FOR TARGET" OFF)
 set(QT_MAJOR_VER "5" CACHE STRING "Qt major version")
 set(QTX "Qt${QT_MAJOR_VER}")
@@ -42,12 +41,10 @@ else()
     message("Not building QML gui code for simulation")
 endif()
 
-if(${useSystemd})
-    find_package(PkgConfig REQUIRED)
-    pkg_check_modules(Systemd REQUIRED libsystemd)
-    # better suggestions?
-    get_filename_component(SYSTEMD_UNIT_INSTALL_PATH "${CMAKE_INSTALL_PREFIX}/../lib/systemd/system" ABSOLUTE)
-endif()
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(Systemd REQUIRED libsystemd)
+# better suggestions?
+get_filename_component(SYSTEMD_UNIT_INSTALL_PATH "${CMAKE_INSTALL_PREFIX}/../lib/systemd/system" ABSOLUTE)
 
 macro(SET_SERVICE_ENV SERVICE_NAME)
     set(SERVICE_CONFIG_PATH "${CMAKE_CURRENT_SOURCE_DIR}/${SERVICE_NAME}/configs")
