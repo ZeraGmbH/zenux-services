@@ -5,6 +5,7 @@ add_executable(mt310s2d
 target_link_libraries(mt310s2d
     PUBLIC
     mt310s2d-lib
+    Zera::zenux-device-info
     )
 
 install(TARGETS mt310s2d

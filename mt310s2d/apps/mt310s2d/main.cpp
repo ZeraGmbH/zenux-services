@@ -4,19 +4,16 @@
 #include "factoryi2cctrl.h"
 #include "factorydevicenodepcb.h"
 #include <tcpnetworkfactory.h>
+#include <zenuxdeviceinfo.h>
 #include <QCoreApplication>
-#include <QCommandLineParser>
 
 int main( int argc, char *argv[] )
 {
     QCoreApplication* app = new QCoreApplication (argc, argv);
-    QCommandLineParser parser;
-    const QCommandLineOption subdeviceparam("d", "device", "subdevice");
-    parser.addOption(subdeviceparam);
-    parser.process(*app);
     QString serviceName = "mt310s2d";
-    if (parser.isSet(subdeviceparam))
-        serviceName = parser.value(subdeviceparam);
+    QString deviceName = ZenuxDeviceInfo::getDeviceNameFromKernelParam();
+    if (!deviceName.isEmpty())
+        serviceName = deviceName +"d";
     SettingsContainer::TServiceConfig config = SettingsContainer::getServiceConfig(serviceName);
     ServerParams defaultParams { 8,
                                  ServerName,
@@ -34,7 +31,7 @@ int main( int argc, char *argv[] )
         std::make_shared<Eeprom24LCxxxPca9547Factory>(),
         VeinTcp::TcpNetworkFactory::create(),
         SettingsContainer::createChannelRangeFactory(serviceName));
-    qInfo(ServerName " started");
+    qInfo(ServerName " started on %s", qPrintable(deviceName));
 
     int r = app->exec();
 

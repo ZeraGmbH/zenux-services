@@ -1,5 +1,6 @@
 [Unit]
-ConditionKernelCommandLine=zera_device=mt310s2
+ConditionKernelCommandLine=|zera_device=mt310s2
+ConditionKernelCommandLine=|zera_device=mt581s2
 
 [Socket]
 ListenStream=127.0.0.1:6307
