@@ -58,22 +58,19 @@ void cMT310S2dServer::init()
 
     stateCONF->addTransition(this, &cMT310S2dServer::abortInit, stateFINISH); // from anywhere we arrive here if some error
 
-    QState* statewait4Atmel = new QState(stateCONF); // we synchronize on atmel running
     QState* statesetupServer = new QState(stateCONF); // we setup our server now
     m_stateconnect2RM = new QState(stateCONF); // we connect to resource manager
     m_stateconnect2RMError = new QState(stateCONF);
     m_stateSendRMIdentAndRegister = new QState(stateCONF); // we send ident. to rm and register our resources
 
-    stateCONF->setInitialState(statewait4Atmel);
+    stateCONF->setInitialState(statesetupServer);
 
-    statewait4Atmel->addTransition(this, &cMT310S2dServer::atmelRunning, statesetupServer);
     statesetupServer->addTransition(this, &cMT310S2dServer::sigServerIsSetUp, m_stateconnect2RM);
 
     m_pInitializationMachine->addState(stateCONF);
     m_pInitializationMachine->addState(stateFINISH);
     m_pInitializationMachine->setInitialState(stateCONF);
 
-    QObject::connect(statewait4Atmel, &QAbstractState::entered, this, &cMT310S2dServer::doWait4Atmel);
     QObject::connect(statesetupServer, &QAbstractState::entered, this, &cMT310S2dServer::doSetupServerWithAtmelRunning);
     QObject::connect(m_stateconnect2RM, &QAbstractState::entered, this, &cMT310S2dServer::doConnect2RM);
     QObject::connect(m_stateconnect2RMError, &QAbstractState::entered, this, &cMT310S2dServer::connect2RMError);
@@ -118,7 +115,6 @@ QString cMT310S2dServer::getMsgDeviceNode()
 void cMT310S2dServer::setupMicroControllerIo()
 {
     PermissionFunctions::setPermissionCtrlFactory(m_ctrlFactory);
-    m_ctrlHeartbeatWait = m_ctrlFactory->createCtrlHeartbeatWait(getCtrlDeviceNode());
 }
 
 void cMT310S2dServer::doConfiguration()
@@ -151,17 +147,6 @@ void cMT310S2dServer::doConfiguration()
             qCritical("Abort: Could not open xml file '%s", qPrintable(params.getXmlFile()));
     }
 }
-
-
-void cMT310S2dServer::doWait4Atmel()
-{
-    connect(m_ctrlHeartbeatWait.get(), &AbstractCtrlHeartbeatWait::sigTimeout,
-            this, &cMT310S2dServer::abortInit);
-    connect(m_ctrlHeartbeatWait.get(), &AbstractCtrlHeartbeatWait::sigRunning,
-            this, &cMT310S2dServer::atmelRunning);
-    m_ctrlHeartbeatWait->start();
-}
-
 
 void cMT310S2dServer::setInitialPllChannel()
 {

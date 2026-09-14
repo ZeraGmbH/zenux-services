@@ -16,7 +16,6 @@
 #include "foutsettings.h"
 #include "accumulatorsettings.h"
 #include "accumulatorinterface.h"
-#include "abstractctrlheartbeatwait.h"
 #include "sourcecontrolsettings.h"
 #include <QStateMachine>
 #include <QTimer>
@@ -59,12 +58,10 @@ signals:
     void abortInit();
     void confStarting();
     void confFinished();
-    void atmelRunning();
     void sigServerIsSetUp();
 
 private slots:
     void doConfiguration();
-    void doWait4Atmel();
     void doSetupServerWithAtmelRunning();
     void doCloseServer();
     void doConnect2RM();
@@ -120,7 +117,6 @@ private:
     QState* m_stateconnect2RM = nullptr;
     QState* m_stateconnect2RMError = nullptr;
     QState* m_stateSendRMIdentAndRegister = nullptr;
-    AbstractCtrlHeartbeatWaitPtr m_ctrlHeartbeatWait;
     int m_retryRMConnect;
     QTimer m_retryTimer;
     QSocketNotifier* m_pNotifier = nullptr;
