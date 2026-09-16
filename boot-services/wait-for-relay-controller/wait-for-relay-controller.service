@@ -15,4 +15,8 @@ StandardOutput=journal
 SyslogLevel=info
 
 [Install]
-WantedBy=multi-user.target
+# Important on update: If this unit ist stopped the RequiredBy services are stopped too
+# Inverse brainsalad: E.g same as com5003d.service gets Requires=wait-for-relay-controller.service
+# Docs of Requires=: Besides, with or without specifying After=, this unit (com5003.service) will be stopped (or restarted) if
+# one of the other units (wait-for-relay-controller.service) is explicitly stopped (or restarted).
+RequiredBy=com5003d.service mt310s2d.service mt310s2-mcontroller-startup.service
