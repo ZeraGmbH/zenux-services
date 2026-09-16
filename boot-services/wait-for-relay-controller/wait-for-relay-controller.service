@@ -6,7 +6,6 @@ Requires=dev-i2c\x2d0.device
 After=dev-i2c\x2d0.device
 
 # Avoid i2c access conflicts
-Conflicts=com5003d.service mt310s2d.service mt310s2-mcontroller-startup.service
 Before=com5003d.service mt310s2d.service mt310s2-mcontroller-startup.service
 
 [Service]
