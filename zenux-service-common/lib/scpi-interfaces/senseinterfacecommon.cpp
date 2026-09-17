@@ -154,13 +154,13 @@ bool SenseInterfaceCommon::importAdjData()
         AdjDataHeaderIntern adjHeader = m_adjData->getAdjHeader();
         QString sysDevName = m_systemInfo->getDeviceName();
         if (adjHeader.m_deviceName != sysDevName) {
-            qCritical("Flashmemory read: Wrong device name: flash %s / µC %s",
+            qCritical("Invalid adjustment data: Wrong device name: EEPROM %s / µC %s",
                       qPrintable(adjHeader.m_deviceName), qPrintable(sysDevName));
             return false;
         }
         QString sysSerNo = m_systemInfo->getSerialNumber();
         if (adjHeader.m_serialNumber != sysSerNo) {
-            qCritical("Flashmemory read, contains wrong serialnumber: flash %s / µC: %s",
+            qCritical("Invalid adjustment data: Wrong serialnumber: EEPROM %s / µC: %s",
                       qPrintable(adjHeader.m_serialNumber), qPrintable(sysSerNo));
             m_nSerialStatus |= Adjustment::wrongSNR;
             // accept wrong serial number with schnubbel
