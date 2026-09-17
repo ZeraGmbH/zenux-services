@@ -13,19 +13,19 @@ private slots:
     void initTestCase();
     void cleanup();
 
-    void directExportMemError();
-    void directExportMemGen();
-    void directExportMemCheckReference();
-    void scpiWriteMemInitial();
+    void directExportFlashError();
+    void directExportFlashGen();
+    void directExportFlashCheckReference();
+    void scpiWriteFlashInitial();
 
-    void scpiWriteRandomFileAndMemGen();
-    void scpiWriteRandomFileMemWriteMemReadExportXmlAndCheck();
+    void scpiWriteRandomFileAndFlashGen();
+    void scpiWriteRandomFileFlashWriteFlashReadExportXmlAndCheck();
 
     // initial version saved invalid date time (up to ZENUX 4.4.3)
-    void loadOriginalInvalidDateTimeRandomToMemExportXmlAndCheck();
-    void loadValidDateTimeRandomToMemWriteToMemExportXmlAndCheck();
+    void loadOriginalInvalidDateTimeRandomToEEpromWriteToFlashExportXmlAndCheck();
+    void loadValidDateTimeRandomToEEpromWriteToFlashExportXmlAndCheck();
 
-    void directExportMemArbitraryVersionGen();
+    void directExportFlashArbitraryVersionGen();
     void loadArbitraryVersionToEEprom();
 
 private:

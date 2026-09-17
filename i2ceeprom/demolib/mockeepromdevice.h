@@ -43,9 +43,9 @@ private:
     struct I2cAddressParameter m_i2cAddressMux;
     const qint8 m_muxChannelNo;
 
-    static QHash<EepromWithMuxParams, QByteArray> m_memData;
-    static QHash<EepromWithMuxParams, int>        m_memDataReadCounts;
-    static QHash<EepromWithMuxParams, int>        m_memDataWriteCounts;
+    static QHash<EepromWithMuxParams, QByteArray> m_flashData;
+    static QHash<EepromWithMuxParams, int>        m_flashDataReadCounts;
+    static QHash<EepromWithMuxParams, int>        m_flashDataWriteCounts;
     static bool                                   m_globalError;
 };
 

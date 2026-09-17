@@ -16,8 +16,8 @@ private slots:
     void scpiImportPermissionQueryFail();
     void scpiImportNoPermission();
     void scpiImportInvalidXml();
-    void scpiImportFailMemWrite();
-    void scpiImportPassMemWrite();
+    void scpiImportFailFlashWrite();
+    void scpiImportPassFlashWrite();
 private:
     void setupServers(const AbstractFactoryI2cCtrlPtr &ctrlFactory);
 

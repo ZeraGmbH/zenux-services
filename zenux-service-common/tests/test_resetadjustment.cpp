@@ -41,7 +41,7 @@ void test_resetAdjustment::resetAdjDataOk()
 {
     std::unique_ptr<SettingsContainer> settings = std::make_unique<SettingsContainer>(MockServerParamGenerator::createParams("mt310s2d"));
     I2cSettingsPtr i2cSettings = settings->getI2cSettings();
-    MockEepromDevice::setData({i2cSettings->getDeviceNode(), i2cSettings->getI2CAdress(i2cSettings::adjMemI2cAddress)},
+    MockEepromDevice::setData({i2cSettings->getDeviceNode(), i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress)},
                               TestLogHelpers::loadFile(":/mt310s2-050059467.eeprom"));
     setupServers();
 

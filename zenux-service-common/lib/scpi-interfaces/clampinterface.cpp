@@ -65,7 +65,7 @@ QString cClampInterface::exportXMLString(int indent)
 cClamp *cClampInterface::tryAddClamp(const SenseSystem::cChannelSettings *chSettings)
 {
     EepromI2cDeviceInterfacePtr adjMemory = m_adjMemFactory->createEepromOnMux(
-        {m_i2cSettings->getDeviceNode(), m_i2cSettings->getI2CAdress(i2cSettings::clampAdjMemI2cAddress)},
+        {m_i2cSettings->getDeviceNode(), m_i2cSettings->getI2CAdress(i2cSettings::clampFlashI2cAddress)},
         AbstractEepromI2cDevice::capacity24LC256,
         {m_i2cSettings->getDeviceNode(), m_i2cSettings->getI2CAdress(i2cSettings::muxerI2cAddress)},
         chSettings->m_nMuxChannelNo);

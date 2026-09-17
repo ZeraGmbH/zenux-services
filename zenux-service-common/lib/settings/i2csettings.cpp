@@ -12,9 +12,9 @@ I2cSettings::I2cSettings(Zera::XMLConfig::cReader *xmlread)
     m_ConfigXMLMap["serviceconfig:connectivity:i2c:adress:atmel"] = i2cSettings::SetAtmelAdr;
     m_ConfigXMLMap["serviceconfig:connectivity:i2c:adress:atmelsys"] = i2cSettings::SetAtmelSysAdr;
     m_ConfigXMLMap["serviceconfig:connectivity:i2c:adress:atmelemob"] = i2cSettings::SetAtmelEmob;
-    m_ConfigXMLMap["serviceconfig:connectivity:i2c:adress:clampmux"] = i2cSettings::SetMuxAdr;
-    m_ConfigXMLMap["serviceconfig:connectivity:i2c:adress:flash"] = i2cSettings::SetAdjMemAdr;
-    m_ConfigXMLMap["serviceconfig:connectivity:i2c:adress:clampflash"] = i2cSettings::SetClampAdjMemAdr;
+    m_ConfigXMLMap["serviceconfig:connectivity:i2c:adress:clampmux"] = i2cSettings::SetFlashMuxAdr;
+    m_ConfigXMLMap["serviceconfig:connectivity:i2c:adress:flash"] = i2cSettings::SetFlashAdr;
+    m_ConfigXMLMap["serviceconfig:connectivity:i2c:adress:clampflash"] = i2cSettings::SetClampFlashAdr;
 }
 
 int I2cSettings::getDebugLevel() const
@@ -39,10 +39,10 @@ quint8 I2cSettings::getI2CAdress(i2cSettings::I2cDeviceAdrTypes deviceType) cons
     case i2cSettings::muxerI2cAddress:
         r = m_nFlashMuxAdr;
         break;
-    case i2cSettings::adjMemI2cAddress:
+    case i2cSettings::flashlI2cAddress:
         r = m_nFlashAdr;
         break;
-    case i2cSettings::clampAdjMemI2cAddress:
+    case i2cSettings::clampFlashI2cAddress:
         r = m_nClampFlashAdr;
         break;
     }
@@ -83,13 +83,13 @@ void I2cSettings::configXMLInfo(const QString &key)
         case i2cSettings::SetAtmelAdr:
             m_nAtmelAdr = m_pXMLReader->getValue(key).toInt();
             break;
-        case i2cSettings::SetMuxAdr:
+        case i2cSettings::SetFlashMuxAdr:
             m_nFlashMuxAdr = m_pXMLReader->getValue(key).toInt();
             break;
-        case i2cSettings::SetAdjMemAdr:
+        case i2cSettings::SetFlashAdr:
             m_nFlashAdr = m_pXMLReader->getValue(key).toInt();
             break;
-        case i2cSettings::SetClampAdjMemAdr:
+        case i2cSettings::SetClampFlashAdr:
             m_nClampFlashAdr = m_pXMLReader->getValue(key).toInt();
             break;
         }

@@ -55,7 +55,7 @@ void test_regression_adj_import_permission_com5003::scpiImportInvalidXml()
     QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::errxml]);
 }
 
-void test_regression_adj_import_permission_com5003::scpiImportFailMemWrite()
+void test_regression_adj_import_permission_com5003::scpiImportFailFlashWrite()
 {
     setupServers(std::make_shared<TestFactoryI2cCtrl>(true));
     MockEepromDevice::setGlobalError(true);
@@ -68,7 +68,7 @@ void test_regression_adj_import_permission_com5003::scpiImportFailMemWrite()
     QCOMPARE(ret, ZSCPI::scpiAnswer[ZSCPI::errexec]);
 }
 
-void test_regression_adj_import_permission_com5003::scpiImportPassMemWrite()
+void test_regression_adj_import_permission_com5003::scpiImportPassFlashWrite()
 {
     setupServers(std::make_shared<TestFactoryI2cCtrl>(true));
 

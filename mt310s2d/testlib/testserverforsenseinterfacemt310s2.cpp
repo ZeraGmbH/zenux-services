@@ -23,7 +23,7 @@ TestServerForSenseInterfaceMt310s2::TestServerForSenseInterfaceMt310s2(const Abs
     AbstractEepromI2cFactoryPtr adjMemFactory = std::make_shared<MockEepromI2cFactory>();
     const I2cSettingsPtr i2cSettings = m_settings->getI2cSettings();
     EepromI2cDeviceInterfacePtr adjEeprom = adjMemFactory->createEeprom(
-        {i2cSettings->getDeviceNode(), i2cSettings->getI2CAdress(i2cSettings::adjMemI2cAddress)},
+        {i2cSettings->getDeviceNode(), i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress)},
         i2cSettings->getEepromByteSize());
 
     m_senseInterface = std::make_unique<Mt310s2SenseInterface>(m_scpiInterface,

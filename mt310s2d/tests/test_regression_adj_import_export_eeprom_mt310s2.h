@@ -13,16 +13,16 @@ private slots:
     void initTestCase();
     void cleanup();
 
-    void directExportMemError();
-    void directExportMemGen();
-    void directExportMemCheckReference();
-    void scpiWriteMemInitial();
+    void directExportFlashError();
+    void directExportFlashGen();
+    void directExportFlashCheckReference();
+    void scpiWriteFlashInitial();
 
-    void scpiWriteRandomFileAndMemGen();
-    void scpiWriteRandomFileMemWriteMemReadExportXmlAndCheck();
-    void loadRandomToEEpromWriteToMemExportXmlAndCheck();
+    void scpiWriteRandomFileAndFlashGen();
+    void scpiWriteRandomFileFlashWriteFlashReadExportXmlAndCheck();
+    void loadRandomToEEpromWriteToFlashExportXmlAndCheck();
 
-    void directExportMemArbitraryVersionGen();
+    void directExportFlashArbitraryVersionGen();
     void loadArbitraryVersionToEEprom();
 
     void allClampsEEpromWrite_data();

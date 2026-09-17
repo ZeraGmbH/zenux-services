@@ -34,7 +34,7 @@ void test_adj_deny_import_mt310s2::loadEEpromWithStoredNamesAndVersions()
 {
     std::unique_ptr<SettingsContainer> settings = std::make_unique<SettingsContainer>(MockServerParamGenerator::createParams("mt310s2d"));
     I2cSettingsPtr i2cSettings = settings->getI2cSettings();
-    MockEepromDevice::setData({i2cSettings->getDeviceNode(), i2cSettings->getI2CAdress(i2cSettings::adjMemI2cAddress)},
+    MockEepromDevice::setData({i2cSettings->getDeviceNode(), i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress)},
                               TestLogHelpers::loadFile(":/export_internal_modified.eeprom"));
     setupServers();
 
@@ -49,7 +49,7 @@ void test_adj_deny_import_mt310s2::loadEEpromAndDenyDifferentDeviceName()
 {
     std::unique_ptr<SettingsContainer> settings = std::make_unique<SettingsContainer>(MockServerParamGenerator::createParams("mt310s2d"));
     I2cSettingsPtr i2cSettings = settings->getI2cSettings();
-    MockEepromDevice::setData({i2cSettings->getDeviceNode(), i2cSettings->getI2CAdress(i2cSettings::adjMemI2cAddress)},
+    MockEepromDevice::setData({i2cSettings->getDeviceNode(), i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress)},
                               TestLogHelpers::loadFile(":/export_internal_modified.eeprom"));
     setupServers();
 

@@ -13,8 +13,8 @@ enum I2cDeviceAdrTypes
     sysCtrlI2cAddress,
     emobCtrlI2cAddress,
     muxerI2cAddress,
-    adjMemI2cAddress,
-    clampAdjMemI2cAddress
+    flashlI2cAddress,
+    clampFlashI2cAddress
 };
 
 enum configstate
@@ -26,9 +26,9 @@ enum configstate
     SetAtmelAdr,
     SetAtmelSysAdr,
     SetAtmelEmob,
-    SetMuxAdr,
-    SetAdjMemAdr,
-    SetClampAdjMemAdr
+    SetFlashMuxAdr,
+    SetFlashAdr,
+    SetClampFlashAdr
 };
 }
 
