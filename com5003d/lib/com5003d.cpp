@@ -291,7 +291,7 @@ void cCOM5003dServer::setupInterfacesRequiresAtmelRunning(AbstractChannelRangeFa
     m_scpiConnectionList.append(this); // the server itself has some commands
     const I2cSettingsPtr i2cSettings = m_settings->getI2cSettings();
     EepromI2cDeviceInterfacePtr eepromDev = m_adjMemFactory->createEeprom(
-        {i2cSettings->getDeviceNode(), i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress)},
+        {i2cSettings->getDeviceNode(), i2cSettings->getI2CAdress(i2cSettings::adjMemI2cAddress)},
         i2cSettings->getEepromByteSize());
     m_scpiConnectionList.append(m_pSenseInterface = new Com5003SenseInterface(m_scpiInterface,
                                                                               getSenseSettings(),

@@ -26,14 +26,14 @@ void Com5003SystemInterface::initSCPIConnection()
     addDelegate("SYSTEM:EMOB", "CHANNEL", SCPI::isQuery, m_scpiInterface, SystemSystem::cmdGetChannels);
     addDelegate("SYSTEM:VERSION", "FPGA", SCPI::isQuery, m_scpiInterface, SystemSystem::cmdVersionFPGA);
     addDelegate("SYSTEM", "SERIAL", SCPI::isQuery | SCPI::isCmdwP , m_scpiInterface, SystemSystem::cmdSerialNumber);
-    addDelegate("SYSTEM:ADJUSTMENT:FLASH", "WRITE", SCPI::isCmd, m_scpiInterface, SystemSystem::cmdAdjFlashWrite);
-    addDelegate("SYSTEM:ADJUSTMENT:FLASH", "READ", SCPI::isCmd, m_scpiInterface, SystemSystem::cmdAdjFlashRead);
+    addDelegate("SYSTEM:ADJUSTMENT:FLASH", "WRITE", SCPI::isCmd, m_scpiInterface, SystemSystem::cmdAdjmemWrite);
+    addDelegate("SYSTEM:ADJUSTMENT:FLASH", "READ", SCPI::isCmd, m_scpiInterface, SystemSystem::cmdAdjMemRead);
     addDelegate("SYSTEM:ADJUSTMENT", "XML", SCPI::isQuery | SCPI::isCmdwP, m_scpiInterface, SystemSystem::cmdAdjXMLImportExport);
     // Obsolete???
         addDelegate("SYSTEM:ADJUSTMENT:XML", "WRITE", SCPI::isCmdwP, m_scpiInterface, SystemSystem::cmdAdjXMLWrite);
         addDelegate("SYSTEM:ADJUSTMENT:XML", "READ", SCPI::isCmdwP, m_scpiInterface, SystemSystem::cmdAdjXMLRead);
     // End Obsolete???
-    addDelegate("SYSTEM:ADJUSTMENT:FLASH", "CHKSUM", SCPI::isQuery, m_scpiInterface, SystemSystem::cmdAdjFlashChksum);
+    addDelegate("SYSTEM:ADJUSTMENT:FLASH", "CHKSUM", SCPI::isQuery, m_scpiInterface, SystemSystem::cmdAdjMemChksum);
     addDelegate("SYSTEM:INTERFACE", "READ", SCPI::isQuery, m_scpiInterface, SystemSystem::cmdInterfaceRead);
 }
 
@@ -60,10 +60,10 @@ void Com5003SystemInterface::executeProtoScpi(int cmdCode, const ProtonetCommand
     case SystemSystem::cmdSerialNumber:
         protoCmd->m_sOutput = scpiReadWriteSerialNumber(protoCmd->m_sInput);
         break;
-    case SystemSystem::cmdAdjFlashWrite:
+    case SystemSystem::cmdAdjmemWrite:
         protoCmd->m_sOutput = scpiAdjFlashWrite(protoCmd->m_sInput);
         break;
-    case SystemSystem::cmdAdjFlashRead:
+    case SystemSystem::cmdAdjMemRead:
         protoCmd->m_sOutput = scpiAdjFlashRead(protoCmd->m_sInput);
         break;
     case SystemSystem::cmdAdjXMLImportExport:
@@ -75,7 +75,7 @@ void Com5003SystemInterface::executeProtoScpi(int cmdCode, const ProtonetCommand
     case SystemSystem::cmdAdjXMLRead:
         protoCmd->m_sOutput = scpiAdjXMLRead(protoCmd->m_sInput);
         break;
-    case SystemSystem::cmdAdjFlashChksum:
+    case SystemSystem::cmdAdjMemChksum:
         protoCmd->m_sOutput = scpiAdjFlashChksum(protoCmd->m_sInput);
         break;
     case SystemSystem::cmdInterfaceRead:

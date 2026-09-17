@@ -1,9 +1,9 @@
 #include "mockeepromdevice.h"
 #include <QFile>
 
-QHash<EepromWithMuxParams, QByteArray> MockEepromDevice::m_flashData;
-QHash<EepromWithMuxParams, int>        MockEepromDevice::m_flashDataReadCounts;
-QHash<EepromWithMuxParams, int>        MockEepromDevice::m_flashDataWriteCounts;
+QHash<EepromWithMuxParams, QByteArray> MockEepromDevice::m_memData;
+QHash<EepromWithMuxParams, int>        MockEepromDevice::m_memDataReadCounts;
+QHash<EepromWithMuxParams, int>        MockEepromDevice::m_memDataWriteCounts;
 bool                                   MockEepromDevice::m_globalError = false;
 
 MockEepromDevice::MockEepromDevice(const I2cAddressParameter &i2cAddressParam, int byteCapacity,
@@ -14,7 +14,7 @@ MockEepromDevice::MockEepromDevice(const I2cAddressParameter &i2cAddressParam, i
     m_muxChannelNo(muxChannelNo)
 {
     EepromWithMuxParams fullParams = getFullParams();
-    if(m_flashData.contains(fullParams))
+    if(m_memData.contains(fullParams))
         return;
     // Internal memory is assumed plugged and can be 'unplugged' by setGlobalError
     if(m_muxChannelNo == InvalidMux)
@@ -25,7 +25,7 @@ bool MockEepromDevice::isMemoryPlugged() const
 {
     if (m_globalError)
         return false;
-    return m_flashData.contains(getFullParams());
+    return m_memData.contains(getFullParams());
 }
 
 int MockEepromDevice::WriteData(char *data, ushort count, ushort adr)
@@ -38,10 +38,10 @@ int MockEepromDevice::WriteData(char *data, ushort count, ushort adr)
         qFatal("Cannot write data of length %i / max is %i", count, getByteSize());
 
     doReset(count);
-    QByteArray &flashEntry = m_flashData[getFullParams()];
+    QByteArray &flashEntry = m_memData[getFullParams()];
     for(int i=0; i<count; i++)
         flashEntry[i] = data[i];
-    m_flashDataWriteCounts[getFullParams()]++;
+    m_memDataWriteCounts[getFullParams()]++;
     return count;
 }
 
@@ -54,11 +54,11 @@ int MockEepromDevice::ReadData(char *data, ushort count, ushort adr)
     if(count > getByteSize())
         qFatal("Cannot read data of length %i / max is %i", count, getByteSize());
 
-    const QByteArray flashEntry = m_flashData[getFullParams()];
+    const QByteArray flashEntry = m_memData[getFullParams()];
     ushort reducedCount = std::min(count, ushort(flashEntry.size()));
     for(int i=0; i<reducedCount; i++)
         data[i] = flashEntry[i];
-    m_flashDataReadCounts[getFullParams()]++;
+    m_memDataReadCounts[getFullParams()]++;
     return count;
 }
 
@@ -77,9 +77,9 @@ int MockEepromDevice::getByteSize() const
 
 void MockEepromDevice::cleanAll()
 {
-    m_flashData.clear();
-    m_flashDataReadCounts.clear();
-    m_flashDataWriteCounts.clear();
+    m_memData.clear();
+    m_memDataReadCounts.clear();
+    m_memDataWriteCounts.clear();
     m_globalError = false;
 }
 
@@ -93,8 +93,8 @@ QByteArray MockEepromDevice::getData(const I2cAddressParameter &i2cAddressParam,
 {
     EepromWithMuxParams params{i2cAddressParam, i2cAddressMux, muxChannelNo};
     QByteArray ret;
-    if(m_flashData.contains(params))
-        ret = m_flashData[params];
+    if(m_memData.contains(params))
+        ret = m_memData[params];
     return ret;
 }
 
@@ -102,26 +102,26 @@ void MockEepromDevice::setData(const I2cAddressParameter &i2cAddressParam, const
                                const I2cAddressParameter &i2cAddressMux, qint8 muxChannelNo)
 {
     EepromWithMuxParams params{i2cAddressParam, i2cAddressMux, muxChannelNo};
-    m_flashData[params] = data;
+    m_memData[params] = data;
 }
 
 int MockEepromDevice::getReadCount(const I2cAddressParameter &i2cAddressParam,
                                    const I2cAddressParameter &i2cAddressMux, qint8 muxChannelNo)
 {
     EepromWithMuxParams params{i2cAddressParam, i2cAddressMux, muxChannelNo};
-    return m_flashDataReadCounts[params];
+    return m_memDataReadCounts[params];
 }
 
 int MockEepromDevice::getWriteCount(const I2cAddressParameter &i2cAddressParam,
                                     const I2cAddressParameter &i2cAddressMux, qint8 muxChannelNo)
 {
     EepromWithMuxParams params{i2cAddressParam, i2cAddressMux, muxChannelNo};
-    return m_flashDataWriteCounts[params];
+    return m_memDataWriteCounts[params];
 }
 
 void MockEepromDevice::doReset(int size)
 {
-    m_flashData[getFullParams()] = QByteArray(size, 0xff);
+    m_memData[getFullParams()] = QByteArray(size, 0xff);
 }
 
 EepromWithMuxParams MockEepromDevice::getFullParams() const

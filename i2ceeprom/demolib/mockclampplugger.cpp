@@ -30,7 +30,7 @@ void MockClampPlugger::initClampAdjMem(int clampType, QString channelAlias)
 
     SenseSystem::cChannelSettings *channelSettingClamp = m_senseSettings->findChannelSettingByAlias1(channelAlias);
     Q_ASSERT(channelSettingClamp);
-    MockEepromDevice::setData({m_i2cSettings->getDeviceNode(), m_i2cSettings->getI2CAdress(i2cSettings::clampFlashI2cAddress)},
+    MockEepromDevice::setData({m_i2cSettings->getDeviceNode(), m_i2cSettings->getI2CAdress(i2cSettings::clampAdjMemI2cAddress)},
                               eepromData,
                               {m_i2cSettings->getDeviceNode(), m_i2cSettings->getI2CAdress(i2cSettings::muxerI2cAddress)},
                               channelSettingClamp->m_nMuxChannelNo);
