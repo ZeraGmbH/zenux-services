@@ -1,0 +1,25 @@
+#!/bin/sh
+
+# all zenux services that
+# * are logged in zenuxlog
+# * checked for beieng started properly in autobuilder-dut-tests
+
+SERVICES="
+    auto-journal-logger
+    coredump-collector
+    system-metrics-logger
+    wait-for-relay-controller
+
+    com5003d com5003-fpga1file
+    mt310s2d mt310s2-fpga1file mt581s2-fpga1file mt310s2-mcontroller-startup
+
+    modulemanager
+    sec1000d
+    zdsp1d
+    resourcemanager
+    varsom-eeprom-dump
+    zera-auto-hostname
+    zera-vein-rest
+"
+
+echo $SERVICES

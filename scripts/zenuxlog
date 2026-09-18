@@ -1,23 +1,12 @@
 #!/bin/sh
 
+SERVICES_IN_JOURNAL_PARAM=
+for SERVICE in $(all-zenux-services); do
+    SERVICES_IN_JOURNAL_PARAM="${SERVICES_IN_JOURNAL_PARAM} UNIT=${SERVICE}.service + _SYSTEMD_UNIT=${SERVICE}.service +"
+done
+
 journalctl $@ -b -o short-monotonic \
-    UNIT=auto-journal-logger.service + _SYSTEMD_UNIT=auto-journal-logger.service + \
-    UNIT=coredump-collector.service + _SYSTEMD_UNIT=coredump-collector.service + \
-    UNIT=system-metrics-logger.service + _SYSTEMD_UNIT=system-metrics-logger.service + \
-    UNIT=wait-for-relay-controller.service + _SYSTEMD_UNIT=wait-for-relay-controller.service + \
-    UNIT=com5003d.service + _SYSTEMD_UNIT=com5003d.service + \
-    UNIT=com5003-fpga1file.service + _SYSTEMD_UNIT=com5003-fpga1file.service + \
-    UNIT=mt310s2d.service + _SYSTEMD_UNIT=mt310s2d.service + \
-    UNIT=mt310s2-fpga1file.service + _SYSTEMD_UNIT=mt310s2-fpga1file.service + \
-    UNIT=mt581s2-fpga1file.service + _SYSTEMD_UNIT=mt581s2-fpga1file.service + \
-    UNIT=mt310s2-mcontroller-startup.service + _SYSTEMD_UNIT=mt310s2-mcontroller-startup.service + \
-    UNIT=modulemanager.service + _SYSTEMD_UNIT=modulemanager.service + \
-    UNIT=sec1000d.service + _SYSTEMD_UNIT=sec1000d.service + \
-    UNIT=zdsp1d.service + _SYSTEMD_UNIT=zdsp1d.service + \
-    UNIT=resourcemanager.service + _SYSTEMD_UNIT=resourcemanager.service + \
-    UNIT=varsom-eeprom-dump.service + _SYSTEMD_UNIT=varsom-eeprom-dump.service + \
-    UNIT=zera-auto-hostname.service + _SYSTEMD_UNIT=zera-auto-hostname.service + \
-    UNIT=zera-vein-rest.service + _SYSTEMD_UNIT=zera-vein-rest.service + \
+    ${SERVICES_IN_JOURNAL_PARAM} \
     SYSLOG_IDENTIFIER=vf-declarative-gui + \
     SYSLOG_IDENTIFIER=zera-usb-automount.sh + \
     _COMM=cat
