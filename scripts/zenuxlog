@@ -1,13 +1,5 @@
 #!/bin/sh
 
-# !!!!!!!!!! IMPORTANT !!!!!!!!!!
-# autobuilder-dut-testsuite/test_boot.py deduces mandatory services from
-#   UNIT=<name>.service + _SYSTEMD_UNIT=<name>.service
-# in here
-#
-# TODO: Create new files containg names of the services
-# maybe with extra info if they should be ignored by autobuilder-dut-testsuite
-
 journalctl $@ -b -o short-monotonic \
     UNIT=auto-journal-logger.service + _SYSTEMD_UNIT=auto-journal-logger.service + \
     UNIT=coredump-collector.service + _SYSTEMD_UNIT=coredump-collector.service + \
