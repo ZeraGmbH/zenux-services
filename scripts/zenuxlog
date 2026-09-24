@@ -8,5 +8,6 @@ done
 journalctl $@ -b -o short-monotonic \
     ${SERVICES_IN_JOURNAL_PARAM} \
     SYSLOG_IDENTIFIER=vf-declarative-gui + \
+    SYSLOG_IDENTIFIER=zera-setup2 + \
     SYSLOG_IDENTIFIER=zera-usb-automount.sh + \
     _COMM=cat
