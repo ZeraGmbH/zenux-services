@@ -1,14 +1,12 @@
 #ifndef LOGCREATORJOURNALSIMPLE_H
 #define LOGCREATORJOURNALSIMPLE_H
 
-#include "abstractlogcreator.h"
 #include <QString>
 
-class LogCreatorJournalSimple : public AbstractLogCreator
+class LogCreatorJournalSimple
 {
 public:
-    virtual ~LogCreatorJournalSimple() = default;
-    bool storeLogs(QString destinationDir) override;
+    static bool storeLogs(QString destinationDir);
 };
 
 #endif // LOGCREATORJOURNALSIMPLE_H

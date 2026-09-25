@@ -4,9 +4,8 @@
 #include <QDir>
 #include <QDateTime>
 
-CmdHandler::CmdHandler(AbstractLogCreatorPtr logGenerator, const QString &coreFilePath, QObject *parent) :
+CmdHandler::CmdHandler(const QString &coreFilePath, QObject *parent) :
     QSimpleCmdHandlerBase(parent),
-    m_logGenerator(std::move(logGenerator)),
     m_coreFilePath(coreFilePath.endsWith("/") ? coreFilePath : coreFilePath + "/")
 {
 }
@@ -51,7 +50,7 @@ bool CmdHandler::makeDirWithParents(const QString &path)
 
 bool CmdHandler::storeLogs(const QString &destinationDir)
 {
-    if(!m_logGenerator->storeLogs(destinationDir)) {
+    if(!m_logGenerator.storeLogs(destinationDir)) {
         emit OperationFinish(true, QStringLiteral("Could not write journal to dir %1").arg(destinationDir));
         return false;
     }
