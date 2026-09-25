@@ -5,7 +5,7 @@ for SERVICE in $(all-zenux-services); do
     SERVICES_IN_JOURNAL_PARAM="${SERVICES_IN_JOURNAL_PARAM} UNIT=${SERVICE}.service + _SYSTEMD_UNIT=${SERVICE}.service +"
 done
 
-journalctl $@ -b -o short-monotonic \
+    journalctl $@ -b -o short-monotonic --no-hostname \
     ${SERVICES_IN_JOURNAL_PARAM} \
     SYSLOG_IDENTIFIER=vf-declarative-gui + \
     SYSLOG_IDENTIFIER=zera-setup2 + \
