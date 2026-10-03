@@ -1,9 +1,11 @@
 #ifndef ABSTRACTSERVERINTERFACE_H
 #define ABSTRACTSERVERINTERFACE_H
 
+#include "networkconnectioninfo.h"
 #include "proxyclient.h"
 #include <QAbstractSocket>
 #include <QVariant>
+#include <abstracttcpnetworkfactory.h>
 
 [[maybe_unused]] constexpr int CONNECTION_TIMEOUT = 25000;
 [[maybe_unused]] constexpr int TRANSACTION_TIMEOUT = 3000;
@@ -12,6 +14,8 @@ class AbstractServerInterface : public QObject
 {
     Q_OBJECT
 public:
+    void setClientSuperSmart(const NetworkConnectionInfo &netInfo,
+                             const VeinTcp::AbstractTcpNetworkFactoryPtr &tcpNetworkFactory);
     virtual void setClientSmart(const Zera::ProxyClientPtr &client) = 0;
     virtual Zera::ProxyClientPtr getClientSmart() = 0;
 
