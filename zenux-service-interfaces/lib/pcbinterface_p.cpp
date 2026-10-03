@@ -19,6 +19,11 @@ void cPCBInterfacePrivate::setClientSmart(const ProxyClientPtr &client)
     connect(m_clientSmart.get(), &Zera::ProxyClient::tcpError, this, &cPCBInterfacePrivate::receiveError);
 }
 
+ProxyClientPtr cPCBInterfacePrivate::getClientSmart()
+{
+    return m_clientSmart;
+}
+
 enum pcbcommands
 {
     getchannellist,

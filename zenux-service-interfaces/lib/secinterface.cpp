@@ -19,6 +19,12 @@ void cSECInterface::setClientSmart(const ProxyClientPtr &client)
     return d->setClientSmart(client);
 }
 
+ProxyClientPtr cSECInterface::getClientSmart()
+{
+    Q_D(cSECInterface);
+    return d->getClientSmart();
+}
+
 quint32 cSECInterface::scpiCommand(const QString &scpi)
 {
     Q_D(cSECInterface);

@@ -17,6 +17,11 @@ void cRMInterfacePrivate::setClientSmart(const ProxyClientPtr &client)
     connect(m_clientSmart.get(), &Zera::ProxyClient::tcpError, this, &cRMInterfacePrivate::receiveError);
 }
 
+ProxyClientPtr cRMInterfacePrivate::getClientSmart()
+{
+    return m_clientSmart;
+}
+
 enum rmcommands
 {
     rmident,

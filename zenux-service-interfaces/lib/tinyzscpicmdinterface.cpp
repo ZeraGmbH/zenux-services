@@ -13,6 +13,11 @@ void TinyZScpiCmdInterface::setClientSmart(const Zera::ProxyClientPtr &client)
     doConnect();
 }
 
+Zera::ProxyClientPtr TinyZScpiCmdInterface::getClientSmart()
+{
+    return m_clientSmart;
+}
+
 void TinyZScpiCmdInterface::doConnect()
 {
     connect(m_clientSmart.get(), &Zera::ProxyClient::answerAvailable, this, &TinyZScpiCmdInterface::receiveAnswer);

@@ -19,6 +19,12 @@ void cPCBInterface::setClientSmart(const ProxyClientPtr &client)
     return d->setClientSmart(client);
 }
 
+ProxyClientPtr cPCBInterface::getClientSmart()
+{
+    Q_D(cPCBInterface);
+    return d->getClientSmart();
+}
+
 quint32 cPCBInterface::scpiCommand(const QString &scpi)
 {
     Q_D(cPCBInterface);

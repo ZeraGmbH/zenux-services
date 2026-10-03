@@ -20,6 +20,12 @@ void cRMInterface::setClientSmart(const ProxyClientPtr &client)
     return d->setClientSmart(client);
 }
 
+ProxyClientPtr cRMInterface::getClientSmart()
+{
+    Q_D(cRMInterface);
+    return d->getClientSmart();
+}
+
 quint32 cRMInterface::scpiCommand(const QString &scpi)
 {
     Q_D(cRMInterface);

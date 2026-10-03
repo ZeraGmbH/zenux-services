@@ -20,6 +20,11 @@ void cSECInterfacePrivate::setClientSmart(const ProxyClientPtr &client)
     connect(m_clientSmart.get(), &Zera::ProxyClient::tcpError, this, &cSECInterfacePrivate::receiveError);
 }
 
+ProxyClientPtr cSECInterfacePrivate::getClientSmart()
+{
+    return m_clientSmart;
+}
+
 enum seccommands
 {
     setecalcunit,
