@@ -11,7 +11,7 @@ class cPCBInterfacePrivate: public cInterfacePrivate
     Q_OBJECT
 public:
     explicit cPCBInterfacePrivate(cPCBInterface* iface);
-    void setClientSmart(Zera::ProxyClientPtr client);
+    void setClientSmart(const Zera::ProxyClientPtr &client);
     quint32 getChannelList(); // qstringlist
     quint32 getDSPChannel(const QString &chnName); // int
     quint32 getStatus(const QString &chnName); // int

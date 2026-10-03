@@ -13,7 +13,7 @@ class cRMInterfacePrivate: public cInterfacePrivate
     Q_OBJECT
 public:
     explicit cRMInterfacePrivate(cRMInterface* iface);
-    void setClientSmart(Zera::ProxyClientPtr client);
+    void setClientSmart(const Zera::ProxyClientPtr &client);
     quint32 scpiCommand(const QString &scpi);
 
     quint32 rmIdent(const QString &name);

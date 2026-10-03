@@ -17,7 +17,7 @@ cDSPInterfacePrivate::~cDSPInterfacePrivate()
         delete dspMem;
 }
 
-void cDSPInterfacePrivate::setClientSmart(ProxyClientPtr client)
+void cDSPInterfacePrivate::setClientSmart(const ProxyClientPtr &client)
 {
     if (m_clientSmart) // we avoid multiple connections
         disconnect(m_clientSmart.get(), 0, this, 0);

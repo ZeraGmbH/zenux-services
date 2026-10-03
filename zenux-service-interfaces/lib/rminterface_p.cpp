@@ -10,7 +10,7 @@ cRMInterfacePrivate::cRMInterfacePrivate(cRMInterface *iface)
 {
 }
 
-void cRMInterfacePrivate::setClientSmart(Zera::ProxyClientPtr client)
+void cRMInterfacePrivate::setClientSmart(const ProxyClientPtr &client)
 {
     m_clientSmart = client;
     connect(m_clientSmart.get(), &Zera::ProxyClient::answerAvailable, this, &cRMInterfacePrivate::receiveAnswer);

@@ -7,7 +7,7 @@ TinyZScpiCmdInterface::TinyZScpiCmdInterface(Zera::ProxyClientPtr client) :
     doConnect();
 }
 
-void TinyZScpiCmdInterface::setClientSmart(Zera::ProxyClientPtr client)
+void TinyZScpiCmdInterface::setClientSmart(const Zera::ProxyClientPtr &client)
 {
     m_clientSmart = client;
     doConnect();

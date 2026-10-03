@@ -11,7 +11,7 @@ class cSECInterfacePrivate: public cInterfacePrivate
     Q_OBJECT
 public:
     explicit cSECInterfacePrivate(cSECInterface* iface);
-    void setClientSmart(Zera::ProxyClientPtr client);
+    void setClientSmart(const Zera::ProxyClientPtr &client);
     quint32 setECalcUnit(int n); // we want n eclac units, answer is the names of them
     quint32 freeECalcUnits(); // free all the units the client had set
     quint32 writeRegister(const QString &chnname, quint8 reg, quint32 value); // transp. register access

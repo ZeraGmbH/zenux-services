@@ -10,7 +10,7 @@ cPCBInterfacePrivate::cPCBInterfacePrivate(cPCBInterface *iface)
 {
 }
 
-void cPCBInterfacePrivate::setClientSmart(Zera::ProxyClientPtr client)
+void cPCBInterfacePrivate::setClientSmart(const ProxyClientPtr &client)
 {
     if (m_clientSmart) // we avoid multiple connections
         disconnect(m_clientSmart.get(), nullptr, this, nullptr);

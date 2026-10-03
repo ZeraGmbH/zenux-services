@@ -13,7 +13,7 @@ cSECInterface::~cSECInterface()
     delete d_ptr;
 }
 
-void cSECInterface::setClientSmart(ProxyClientPtr client)
+void cSECInterface::setClientSmart(const ProxyClientPtr &client)
 {
     Q_D(cSECInterface);
     return d->setClientSmart(client);

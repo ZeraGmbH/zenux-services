@@ -11,7 +11,7 @@ cSECInterfacePrivate::cSECInterfacePrivate(cSECInterface *iface)
 {
 }
 
-void cSECInterfacePrivate::setClientSmart(ProxyClientPtr client)
+void cSECInterfacePrivate::setClientSmart(const ProxyClientPtr &client)
 {
     if (m_clientSmart) // we avoid multiple connections
         disconnect(m_clientSmart.get(), 0, this, 0);

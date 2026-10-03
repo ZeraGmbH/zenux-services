@@ -13,7 +13,7 @@ cDSPInterface::~cDSPInterface()
     delete d_ptr;
 }
 
-void cDSPInterface::setClientSmart(ProxyClientPtr client)
+void cDSPInterface::setClientSmart(const ProxyClientPtr &client)
 {
     Q_D(cDSPInterface);
     return d->setClientSmart(client);

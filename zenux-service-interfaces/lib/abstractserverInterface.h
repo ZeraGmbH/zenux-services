@@ -12,7 +12,7 @@ class AbstractServerInterface : public QObject
 {
     Q_OBJECT
 public:
-    virtual void setClientSmart(Zera::ProxyClientPtr client) = 0;
+    virtual void setClientSmart(const Zera::ProxyClientPtr &client) = 0;
     virtual quint32 scpiCommand(const QString &scpi) = 0;
 signals:
     void tcpError(QAbstractSocket::SocketError errorCode);
