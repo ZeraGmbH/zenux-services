@@ -56,8 +56,6 @@ public:
     quint32 getFormFactorSource(const QString &chnName); // double
     quint32 getConstantSource(const QString &chnName); // double
     quint32 setConstantSource(const QString &chnName, double constant); // double
-    quint32 getPowTypeSource(const QString &chnName); // qstring
-    quint32 setPowTypeSource(const QString &chnName, const QString &ptype);
 
     // all commands to sample interface
     quint32 getSampleRate(); // int the actual set sampling rate

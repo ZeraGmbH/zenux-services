@@ -451,20 +451,6 @@ quint32 cPCBInterface::setConstantSource(const QString &chnName, double constant
 }
 
 
-quint32 cPCBInterface::getPowTypeSource(const QString &chnName)
-{
-    Q_D(cPCBInterface);
-    return d->getPowTypeSource(chnName);
-}
-
-
-quint32 cPCBInterface::setPowTypeSource(const QString &chnName, const QString &ptype)
-{
-    Q_D(cPCBInterface);
-    return d->setPowTypeSource(chnName, ptype);
-}
-
-
 quint32 cPCBInterface::getAliasSchead(const QString &chnName)
 {
     Q_D(cPCBInterface);

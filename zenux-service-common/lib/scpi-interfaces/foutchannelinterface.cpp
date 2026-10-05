@@ -10,7 +10,6 @@ enum Commands
     cmdStatus,
     cmdFormFactor,
     cmdConstant,
-    cmdPowtype
 };
 
 static constexpr double FormFactor = 5.6294995e6; // fout = (Pact/Pnenn) * FPZnenn * FormFactor
@@ -29,7 +28,6 @@ FOutChannelInterface::FOutChannelInterface(const std::shared_ptr<cSCPI> &scpiInt
     m_bAvail(cSettings->avail)
 {
     initNotifier(notifierConstant); // we hold the constant as a notifier
-    initNotifier(notifierPowerType);
 }
 
 void FOutChannelInterface::initSCPIConnection(const QString &leadingNodes)
@@ -42,7 +40,6 @@ void FOutChannelInterface::initSCPIConnection(const QString &leadingNodes)
     addDelegate(QString("%1%2").arg(adjLeadNodes, m_sName),"STATUS", SCPI::isQuery, m_scpiInterface, cmdStatus);
     addDelegate(QString("%1%2").arg(adjLeadNodes, m_sName),"FFACTOR", SCPI::isQuery, m_scpiInterface, cmdFormFactor);
     addDelegate(QString("%1%2").arg(adjLeadNodes, m_sName),"CONSTANT", SCPI::isQuery | SCPI::isCmdwP , m_scpiInterface, cmdConstant,&notifierConstant);
-    addDelegate(QString("%1%2").arg(adjLeadNodes, m_sName),"POWTYPE", SCPI::isQuery | SCPI::isCmdwP , m_scpiInterface, cmdPowtype, &notifierPowerType);
 }
 
 void FOutChannelInterface::executeProtoScpi(int cmdCode, const ProtonetCommandPtr &protoCmd)
@@ -69,9 +66,6 @@ void FOutChannelInterface::executeProtoScpi(int cmdCode, const ProtonetCommandPt
         break;
     case cmdConstant:
         protoCmd->m_sOutput = scpiReadWriteConstant(protoCmd->m_sInput);
-        break;
-    case cmdPowtype:
-        protoCmd->m_sOutput = scpiReadWritePowerType(protoCmd->m_sInput);
         break;
     }
     if (protoCmd->m_bwithOutput)
@@ -169,21 +163,6 @@ QString FOutChannelInterface::scpiReadWriteConstant(const QString &scpi)
     else if (cmd.isCommand(1)) {
         QString constant = cmd.getParam(0);
         notifierConstant = constant;
-        return ZSCPI::scpiAnswer[ZSCPI::ack];
-    }
-    else
-        return ZSCPI::scpiAnswer[ZSCPI::nak];
-}
-
-QString FOutChannelInterface::scpiReadWritePowerType(const QString &scpi)
-{
-    cSCPICommand cmd = scpi;
-    if (cmd.isQuery()) {
-        return notifierPowerType.getString();
-    }
-    else if (cmd.isCommand(1)) {
-        QString powertype = cmd.getParam(0);
-        notifierPowerType = powertype;
         return ZSCPI::scpiAnswer[ZSCPI::ack];
     }
     else

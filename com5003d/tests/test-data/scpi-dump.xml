@@ -4883,7 +4883,6 @@
     <STATUS Type="Query" ScpiPath="SOURCE:FO0:STATUS"/>
     <FFACTOR Type="Query" ScpiPath="SOURCE:FO0:FFACTOR"/>
     <CONSTANT Type="Query,Command+Par" ScpiPath="SOURCE:FO0:CONSTANT"/>
-    <POWTYPE Type="Query,Command+Par" ScpiPath="SOURCE:FO0:POWTYPE"/>
    </FO0>
    <FO1 Type="Node">
     <ALIAS Type="Query" ScpiPath="SOURCE:FO1:ALIAS"/>
@@ -4893,7 +4892,6 @@
     <STATUS Type="Query" ScpiPath="SOURCE:FO1:STATUS"/>
     <FFACTOR Type="Query" ScpiPath="SOURCE:FO1:FFACTOR"/>
     <CONSTANT Type="Query,Command+Par" ScpiPath="SOURCE:FO1:CONSTANT"/>
-    <POWTYPE Type="Query,Command+Par" ScpiPath="SOURCE:FO1:POWTYPE"/>
    </FO1>
    <FO2 Type="Node">
     <ALIAS Type="Query" ScpiPath="SOURCE:FO2:ALIAS"/>
@@ -4903,7 +4901,6 @@
     <STATUS Type="Query" ScpiPath="SOURCE:FO2:STATUS"/>
     <FFACTOR Type="Query" ScpiPath="SOURCE:FO2:FFACTOR"/>
     <CONSTANT Type="Query,Command+Par" ScpiPath="SOURCE:FO2:CONSTANT"/>
-    <POWTYPE Type="Query,Command+Par" ScpiPath="SOURCE:FO2:POWTYPE"/>
    </FO2>
    <FO3 Type="Node">
     <ALIAS Type="Query" ScpiPath="SOURCE:FO3:ALIAS"/>
@@ -4913,7 +4910,6 @@
     <STATUS Type="Query" ScpiPath="SOURCE:FO3:STATUS"/>
     <FFACTOR Type="Query" ScpiPath="SOURCE:FO3:FFACTOR"/>
     <CONSTANT Type="Query,Command+Par" ScpiPath="SOURCE:FO3:CONSTANT"/>
-    <POWTYPE Type="Query,Command+Par" ScpiPath="SOURCE:FO3:POWTYPE"/>
    </FO3>
   </SOURCE>
   <FRQINPUT Type="Model,Node">
