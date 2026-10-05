@@ -19,7 +19,7 @@ void cPCBInterface::setClientSmart(const ProxyClientPtr &client)
     return d->setClientSmart(client);
 }
 
-ProxyClientPtr cPCBInterface::getClientSmart()
+const ProxyClientPtr &cPCBInterface::getClientSmart()
 {
     Q_D(cPCBInterface);
     return d->getClientSmart();

@@ -15,7 +15,7 @@ public:
     explicit cRMInterfacePrivate(cRMInterface* iface);
 
     void setClientSmart(const Zera::ProxyClientPtr &client);
-    Zera::ProxyClientPtr getClientSmart();
+    const Zera::ProxyClientPtr &getClientSmart();
 
     quint32 scpiCommand(const QString &scpi);
 

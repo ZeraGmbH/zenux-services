@@ -20,7 +20,7 @@ void cRMInterface::setClientSmart(const ProxyClientPtr &client)
     return d->setClientSmart(client);
 }
 
-ProxyClientPtr cRMInterface::getClientSmart()
+const Zera::ProxyClientPtr &cRMInterface::getClientSmart()
 {
     Q_D(cRMInterface);
     return d->getClientSmart();

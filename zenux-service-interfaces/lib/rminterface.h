@@ -18,7 +18,7 @@ public:
     virtual ~cRMInterface();
 
     void setClientSmart(const Zera::ProxyClientPtr &client) override;
-    Zera::ProxyClientPtr getClientSmart() override;
+    const Zera::ProxyClientPtr &getClientSmart() override;
 
     quint32 scpiCommand(const QString &scpi) override;
 

@@ -13,7 +13,7 @@ public:
     explicit cPCBInterfacePrivate(cPCBInterface* iface);
 
     void setClientSmart(const Zera::ProxyClientPtr &client);
-    Zera::ProxyClientPtr getClientSmart();
+    const Zera::ProxyClientPtr &getClientSmart();
 
     quint32 getChannelList(); // qstringlist
     quint32 getDSPChannel(const QString &chnName); // int

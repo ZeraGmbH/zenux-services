@@ -11,7 +11,7 @@ public:
     TinyZScpiCmdInterface(Zera::ProxyClientPtr client);
 
     void setClientSmart(const Zera::ProxyClientPtr &client) override;
-    Zera::ProxyClientPtr getClientSmart() override;
+    const Zera::ProxyClientPtr &getClientSmart() override;
 
     virtual quint32 scpiCommand(const QString &scpi) override;
 

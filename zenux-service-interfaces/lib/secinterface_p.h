@@ -13,7 +13,7 @@ public:
     explicit cSECInterfacePrivate(cSECInterface* iface);
 
     void setClientSmart(const Zera::ProxyClientPtr &client);
-    Zera::ProxyClientPtr getClientSmart();
+    const Zera::ProxyClientPtr &getClientSmart();
 
     quint32 setECalcUnit(int n); // we want n eclac units, answer is the names of them
     quint32 freeECalcUnits(); // free all the units the client had set

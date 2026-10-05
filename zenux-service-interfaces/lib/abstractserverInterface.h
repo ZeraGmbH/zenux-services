@@ -17,7 +17,7 @@ public:
     void setClientSuperSmart(const NetworkConnectionInfo &netInfo,
                              const VeinTcp::AbstractTcpNetworkFactoryPtr &tcpNetworkFactory);
     virtual void setClientSmart(const Zera::ProxyClientPtr &client) = 0;
-    virtual Zera::ProxyClientPtr getClientSmart() = 0;
+    virtual const Zera::ProxyClientPtr &getClientSmart() = 0;
 
     virtual quint32 scpiCommand(const QString &scpi) = 0;
 signals:

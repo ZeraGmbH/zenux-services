@@ -26,7 +26,7 @@ void cDSPInterfacePrivate::setClientSmart(const ProxyClientPtr &client)
     connect(m_clientSmart.get(), &Zera::ProxyClient::tcpError, this, &cDSPInterfacePrivate::receiveError);
 }
 
-ProxyClientPtr cDSPInterfacePrivate::getClientSmart()
+const ProxyClientPtr &cDSPInterfacePrivate::getClientSmart()
 {
     return m_clientSmart;
 }
