@@ -83,18 +83,3 @@ void test_serverunregisternotifier::mtConfigLoaded()
     const QList<FOutSettings::ChannelSettings*>& chSettings =  m_foutSettings->getChannelSettings();
     QCOMPARE(chSettings.size(), 4);
 }
-
-void test_serverunregisternotifier::scpiConnectionWithInternalScpiConnections()
-{
-    m_pcbServerTest->insertScpiConnection(new FOutGroupResourceAndInterface(m_pcbServerTest->getSCPIInterface(), m_foutSettings.get()));
-    m_pcbServerTest->initTestSCPIConnections();
-
-    m_pcbServerTest->registerNotifier("SOURCE:fo1:CONSTANT?", NOTIFICATION_ID);
-    QCOMPARE(getDelegate("SOURCE:fo1:CONSTANT?")->getScpiNotificationSubscriberHandler().getTotalSubscribers(), 1);
-    m_pcbServerTest->registerNotifier("SOURCE:fo3:CONSTANT?", NOTIFICATION_ID);
-    QCOMPARE(getDelegate("SOURCE:fo3:CONSTANT?")->getScpiNotificationSubscriberHandler().getTotalSubscribers(), 1);
-
-    m_pcbServerTest->unregisterNotifier();
-    QCOMPARE(getDelegate("SOURCE:fo1:CONSTANT?")->getScpiNotificationSubscriberHandler().getTotalSubscribers(), 0);
-    QCOMPARE(getDelegate("SOURCE:fo3:CONSTANT?")->getScpiNotificationSubscriberHandler().getTotalSubscribers(), 0);
-}

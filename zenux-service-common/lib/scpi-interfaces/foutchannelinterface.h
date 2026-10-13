@@ -28,7 +28,6 @@ private:
     QString scpiReadChannelStatus(const QString& scpi);
     QString scpiReadFFactor(const QString& scpi);
     QString scpiReadWriteConstant(const QString& scpi);
-    static void initNotifier(NotificationString& notifier);
 
     QString m_sName; // the channel's name
     QString m_sAlias;
@@ -38,7 +37,6 @@ private:
     quint8 m_nType = 0;
     double m_fFormFactor;
     bool m_bAvail; // is this channel available ?
-    NotificationString notifierConstant;
 };
 
 #endif // FOUTCHANNELINTERFACE_H

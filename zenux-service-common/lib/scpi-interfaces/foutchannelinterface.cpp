@@ -9,7 +9,6 @@ enum Commands
     cmdDspChannel,
     cmdStatus,
     cmdFormFactor,
-    cmdConstant,
 };
 
 static constexpr double FormFactor = 5.6294995e6; // fout = (Pact/Pnenn) * FPZnenn * FormFactor
@@ -27,7 +26,6 @@ FOutChannelInterface::FOutChannelInterface(const std::shared_ptr<cSCPI> &scpiInt
     m_fFormFactor(FormFactor),
     m_bAvail(cSettings->avail)
 {
-    initNotifier(notifierConstant); // we hold the constant as a notifier
 }
 
 void FOutChannelInterface::initSCPIConnection(const QString &leadingNodes)
@@ -39,7 +37,6 @@ void FOutChannelInterface::initSCPIConnection(const QString &leadingNodes)
     addDelegate(QString("%1%2").arg(adjLeadNodes, m_sName),"DSPCHANNEL", SCPI::isQuery, m_scpiInterface, cmdDspChannel);
     addDelegate(QString("%1%2").arg(adjLeadNodes, m_sName),"STATUS", SCPI::isQuery, m_scpiInterface, cmdStatus);
     addDelegate(QString("%1%2").arg(adjLeadNodes, m_sName),"FFACTOR", SCPI::isQuery, m_scpiInterface, cmdFormFactor);
-    addDelegate(QString("%1%2").arg(adjLeadNodes, m_sName),"CONSTANT", SCPI::isQuery | SCPI::isCmdwP , m_scpiInterface, cmdConstant,&notifierConstant);
 }
 
 void FOutChannelInterface::executeProtoScpi(int cmdCode, const ProtonetCommandPtr &protoCmd)
@@ -64,17 +61,9 @@ void FOutChannelInterface::executeProtoScpi(int cmdCode, const ProtonetCommandPt
     case cmdFormFactor:
         protoCmd->m_sOutput = scpiReadFFactor(protoCmd->m_sInput);
         break;
-    case cmdConstant:
-        protoCmd->m_sOutput = scpiReadWriteConstant(protoCmd->m_sInput);
-        break;
     }
     if (protoCmd->m_bwithOutput)
         emit cmdExecutionDone(protoCmd);
-}
-
-void FOutChannelInterface::initNotifier(NotificationString &notifier)
-{
-    notifier = "0.0";
 }
 
 const QString &FOutChannelInterface::getName()
@@ -150,21 +139,6 @@ QString FOutChannelInterface::scpiReadFFactor(const QString &scpi)
     cSCPICommand cmd = scpi;
     if (cmd.isQuery())
         return QString("%1").arg(m_fFormFactor);
-    else
-        return ZSCPI::scpiAnswer[ZSCPI::nak];
-}
-
-QString FOutChannelInterface::scpiReadWriteConstant(const QString &scpi)
-{
-    cSCPICommand cmd = scpi;
-    if (cmd.isQuery()) {
-        return notifierConstant.getString();
-    }
-    else if (cmd.isCommand(1)) {
-        QString constant = cmd.getParam(0);
-        notifierConstant = constant;
-        return ZSCPI::scpiAnswer[ZSCPI::ack];
-    }
     else
         return ZSCPI::scpiAnswer[ZSCPI::nak];
 }

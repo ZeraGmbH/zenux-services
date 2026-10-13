@@ -54,8 +54,6 @@ public:
     quint32 getAliasSource(const QString &chnName); // qstring
     quint32 getDSPChannelSource(const QString &chnName); // int
     quint32 getFormFactorSource(const QString &chnName); // double
-    quint32 getConstantSource(const QString &chnName); // double
-    quint32 setConstantSource(const QString &chnName, double constant); // double
 
     // all commands to sample interface
     quint32 getSampleRate(); // int the actual set sampling rate

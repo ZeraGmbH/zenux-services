@@ -437,20 +437,6 @@ quint32 cPCBInterface::getFormFactorSource(const QString &chnName)
 }
 
 
-quint32 cPCBInterface::getConstantSource(const QString &chnName)
-{
-    Q_D(cPCBInterface);
-    return d->getConstantSource(chnName);
-}
-
-
-quint32 cPCBInterface::setConstantSource(const QString &chnName, double constant)
-{
-    Q_D(cPCBInterface);
-    return d->setConstantSource(chnName, constant);
-}
-
-
 quint32 cPCBInterface::getAliasSchead(const QString &chnName)
 {
     Q_D(cPCBInterface);

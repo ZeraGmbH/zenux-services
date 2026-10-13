@@ -76,8 +76,6 @@ enum pcbcommands
     getadjustclampxml,
     setadjustclampxml,
     getformfactorsource,
-    getconstantsource,
-    setconstantsource,
 
     getaliassschead,
     getaliasfrqinput,
@@ -365,20 +363,6 @@ quint32 cPCBInterfacePrivate::getFormFactorSource(const QString &chnName)
     return msgnr;
 }
 
-quint32 cPCBInterfacePrivate::getConstantSource(const QString &chnName)
-{
-    quint32 msgnr = sendCommand(QString("SOUR:%1:CONS?").arg(chnName));
-    m_MsgNrCmdList[msgnr] = getconstantsource;
-    return msgnr;
-}
-
-quint32 cPCBInterfacePrivate::setConstantSource(const QString &chnName, double constant)
-{
-    quint32 msgnr = sendCommand(QString("SOUR:%1:CONS").arg(chnName), QString("%1;").arg(constant));
-    m_MsgNrCmdList[msgnr] = setconstantsource;
-    return msgnr;
-}
-
 quint32 cPCBInterfacePrivate::getSampleRate()
 {
     quint32 msgnr = sendCommand(QString("SAMP:SRAT?"));
@@ -623,7 +607,6 @@ void cPCBInterfacePrivate::receiveAnswer(const std::shared_ptr<ProtobufMessage::
         case getoffsetcorrection:
         case getphasecorrection:
         case getformfactorsource:
-        case getconstantsource:
             emit q->serverAnswer(decodedAnswer.msgNr, decodedAnswer.reply, VariantConverter::returnDouble(decodedAnswer.msgBody));
             break;
 
@@ -648,7 +631,6 @@ void cPCBInterfacePrivate::receiveAnswer(const std::shared_ptr<ProtobufMessage::
         case unregnotifier:
         case pcbinterrupt:
         case setpllchannel:
-        case setconstantsource:
         case setadjustpcbxml:
         case setadjustclampxml:
         case setserialnumber:

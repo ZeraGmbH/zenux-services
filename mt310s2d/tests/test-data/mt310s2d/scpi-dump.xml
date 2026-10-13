@@ -5749,7 +5749,6 @@
     <DSPCHANNEL ScpiPath="SOURCE:FO0:DSPCHANNEL" Type="Query"/>
     <STATUS ScpiPath="SOURCE:FO0:STATUS" Type="Query"/>
     <FFACTOR ScpiPath="SOURCE:FO0:FFACTOR" Type="Query"/>
-    <CONSTANT ScpiPath="SOURCE:FO0:CONSTANT" Type="Query,Command+Par"/>
    </FO0>
    <FO1 Type="Node">
     <ALIAS ScpiPath="SOURCE:FO1:ALIAS" Type="Query"/>
@@ -5758,7 +5757,6 @@
     <DSPCHANNEL ScpiPath="SOURCE:FO1:DSPCHANNEL" Type="Query"/>
     <STATUS ScpiPath="SOURCE:FO1:STATUS" Type="Query"/>
     <FFACTOR ScpiPath="SOURCE:FO1:FFACTOR" Type="Query"/>
-    <CONSTANT ScpiPath="SOURCE:FO1:CONSTANT" Type="Query,Command+Par"/>
    </FO1>
    <FO2 Type="Node">
     <ALIAS ScpiPath="SOURCE:FO2:ALIAS" Type="Query"/>
@@ -5767,7 +5765,6 @@
     <DSPCHANNEL ScpiPath="SOURCE:FO2:DSPCHANNEL" Type="Query"/>
     <STATUS ScpiPath="SOURCE:FO2:STATUS" Type="Query"/>
     <FFACTOR ScpiPath="SOURCE:FO2:FFACTOR" Type="Query"/>
-    <CONSTANT ScpiPath="SOURCE:FO2:CONSTANT" Type="Query,Command+Par"/>
    </FO2>
    <FO3 Type="Node">
     <ALIAS ScpiPath="SOURCE:FO3:ALIAS" Type="Query"/>
@@ -5776,7 +5773,6 @@
     <DSPCHANNEL ScpiPath="SOURCE:FO3:DSPCHANNEL" Type="Query"/>
     <STATUS ScpiPath="SOURCE:FO3:STATUS" Type="Query"/>
     <FFACTOR ScpiPath="SOURCE:FO3:FFACTOR" Type="Query"/>
-    <CONSTANT ScpiPath="SOURCE:FO3:CONSTANT" Type="Query,Command+Par"/>
    </FO3>
   </SOURCE>
   <FRQINPUT Type="Model,Node">

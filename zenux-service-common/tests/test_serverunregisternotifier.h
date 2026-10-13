@@ -18,8 +18,6 @@ private slots:
     void twoScpiConnections();
 
     void mtConfigLoaded();
-
-    void scpiConnectionWithInternalScpiConnections();
 private:
     ScpiDelegate* getDelegate(QString cmd);
 
