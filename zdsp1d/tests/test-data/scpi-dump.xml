@@ -1,51 +1,51 @@
 <!DOCTYPE SCPIModel>
 <MODELLIST>
- <MODELS>
-  <SYSTEM Type="Model,Node">
-   <INTERFACE Type="Node">
-    <READ Type="Query" ScpiPath="SYSTEM:INTERFACE:READ"/>
-   </INTERFACE>
-   <VERSION Type="Node">
-    <SERVER Type="Query" ScpiPath="SYSTEM:VERSION:SERVER"/>
-    <DEVICE Type="Query" ScpiPath="SYSTEM:VERSION:DEVICE"/>
-   </VERSION>
-   <DSP Type="Node">
-    <SAMPLING Type="Query,Command+Par" ScpiPath="SYSTEM:DSP:SAMPLING"/>
-    <TEST Type="Command+Par" ScpiPath="SYSTEM:DSP:TEST"/>
-    <DSPSUPERCLIENT ScpiPath="SYSTEM:DSP:DSPSUPERCLIENT" Type="Command"/>
-    <TRIGGER Type="Node">
-     <INTLIST Type="Node">
-      <ALL Type="Command" ScpiPath="SYSTEM:DSP:TRIGGER:INTLIST:ALL"/>
-      <HKSK Type="Command+Par" ScpiPath="SYSTEM:DSP:TRIGGER:INTLIST:HKSK"/>
-     </INTLIST>
-    </TRIGGER>
-    <COMMAND Type="Node">
-     <STAT Type="Query,Command+Par" ScpiPath="SYSTEM:DSP:COMMAND:STAT"/>
-    </COMMAND>
-   </DSP>
-  </SYSTEM>
-  <MEMORY Type="Model,Node">
-   <VARLIST ScpiPath="MEMORY:VARLIST" Type="Command+Par"/>
-   <READ ScpiPath="MEMORY:READ" Type="Command+Par"/>
-   <WRITE ScpiPath="MEMORY:WRITE" Type="Command+Par"/>
-   <INTLIST ScpiPath="MEMORY:INTLIST" Type="Command+Par"/>
-   <CYCLIST ScpiPath="MEMORY:CYCLIST" Type="Command+Par"/>
-   <SET ScpiPath="MEMORY:SET" Type="Command+Par"/>
-   <CLALL ScpiPath="MEMORY:CLALL" Type="Command"/>
-  </MEMORY>
-  <STATUS Type="Model,Node">
-   <DEVICE Type="Query" ScpiPath="STATUS:DEVICE"/>
-   <DSP Type="Query" ScpiPath="STATUS:DSP">
-    <LOAD Type="Node">
-     <ACTUAL Type="Query" ScpiPath="STATUS:DSP:LOAD:ACTUAL"/>
-     <MAXIMUM Type="Query" ScpiPath="STATUS:DSP:LOAD:MAXIMUM">
-      <RESET Type="Command+Par" ScpiPath="STATUS:DSP:LOAD:MAXIMUM:RESET"/>
-     </MAXIMUM>
-    </LOAD>
-   </DSP>
-  </STATUS>
-  <TEST Type="Model,Node">
-   <ENTITYID ScpiPath="TEST:ENTITYID" Type="Command+Par"/>
-  </TEST>
- </MODELS>
+  <MODELS>
+    <MEMORY Type="Model,Node">
+      <CLALL ScpiPath="MEMORY:CLALL" Type="Command"/>
+      <CYCLIST ScpiPath="MEMORY:CYCLIST" Type="Command+Par"/>
+      <INTLIST ScpiPath="MEMORY:INTLIST" Type="Command+Par"/>
+      <READ ScpiPath="MEMORY:READ" Type="Command+Par"/>
+      <SET ScpiPath="MEMORY:SET" Type="Command+Par"/>
+      <VARLIST ScpiPath="MEMORY:VARLIST" Type="Command+Par"/>
+      <WRITE ScpiPath="MEMORY:WRITE" Type="Command+Par"/>
+    </MEMORY>
+    <STATUS Type="Model,Node">
+      <DEVICE ScpiPath="STATUS:DEVICE" Type="Query"/>
+      <DSP ScpiPath="STATUS:DSP" Type="Query">
+        <LOAD Type="Node">
+          <ACTUAL ScpiPath="STATUS:DSP:LOAD:ACTUAL" Type="Query"/>
+          <MAXIMUM ScpiPath="STATUS:DSP:LOAD:MAXIMUM" Type="Query">
+            <RESET ScpiPath="STATUS:DSP:LOAD:MAXIMUM:RESET" Type="Command+Par"/>
+          </MAXIMUM>
+        </LOAD>
+      </DSP>
+    </STATUS>
+    <SYSTEM Type="Model,Node">
+      <DSP Type="Node">
+        <COMMAND Type="Node">
+          <STAT ScpiPath="SYSTEM:DSP:COMMAND:STAT" Type="Query,Command+Par"/>
+        </COMMAND>
+        <DSPSUPERCLIENT ScpiPath="SYSTEM:DSP:DSPSUPERCLIENT" Type="Command"/>
+        <SAMPLING ScpiPath="SYSTEM:DSP:SAMPLING" Type="Query,Command+Par"/>
+        <TEST ScpiPath="SYSTEM:DSP:TEST" Type="Command+Par"/>
+        <TRIGGER Type="Node">
+          <INTLIST Type="Node">
+            <ALL ScpiPath="SYSTEM:DSP:TRIGGER:INTLIST:ALL" Type="Command"/>
+            <HKSK ScpiPath="SYSTEM:DSP:TRIGGER:INTLIST:HKSK" Type="Command+Par"/>
+          </INTLIST>
+        </TRIGGER>
+      </DSP>
+      <INTERFACE Type="Node">
+        <READ ScpiPath="SYSTEM:INTERFACE:READ" Type="Query"/>
+      </INTERFACE>
+      <VERSION Type="Node">
+        <DEVICE ScpiPath="SYSTEM:VERSION:DEVICE" Type="Query"/>
+        <SERVER ScpiPath="SYSTEM:VERSION:SERVER" Type="Query"/>
+      </VERSION>
+    </SYSTEM>
+    <TEST Type="Model,Node">
+      <ENTITYID ScpiPath="TEST:ENTITYID" Type="Command+Par"/>
+    </TEST>
+  </MODELS>
 </MODELLIST>
