@@ -58,12 +58,6 @@ void test_regression_scpi_mt310s2::serverUp()
 void test_regression_scpi_mt310s2::dumpScpi()
 {
     QFETCH_GLOBAL(QString, serviceNameForAlternateDevice);
-    QString dumpFile = QString(":/%1/scpi-dump.xml").arg(serviceNameForAlternateDevice);
-    QString expected = TestLogHelpers::loadFile(dumpFile);
     QString dumped = ScpiSingleTransactionBlocked::query("SYSTEM:INTERFACE:READ?");
-    XmlDocumentCompare compare;
-    bool ok = compare.compareXml(dumped, expected);
-    if(!ok)
-        TestLogHelpers::compareAndLogOnDiff(expected, dumped);
-    QVERIFY(ok);
+    QVERIFY(XmlDocumentCompare::compareXmlFile(QString(":/%1/scpi-dump.xml").arg(serviceNameForAlternateDevice), dumped));
 }

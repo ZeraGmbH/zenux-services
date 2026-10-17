@@ -48,13 +48,8 @@ void test_regression_scpi_zdsp1d::serverUp()
 
 void test_regression_scpi_zdsp1d::dumpScpi()
 {
-    QString expected = TestLogHelpers::loadFile("://scpi-dump.xml");
     QString dumped = ScpiSingleTransactionBlocked::query("SYSTEM:INTERFACE:READ?", 6310);
-    XmlDocumentCompare compare;
-    bool ok = compare.compareXml(dumped, expected);
-    if(!ok)
-        TestLogHelpers::compareAndLogOnDiff(expected, dumped);
-    QVERIFY(ok);
+    QVERIFY(XmlDocumentCompare::compareXmlFile("://scpi-dump.xml", dumped));
 }
 
 void test_regression_scpi_zdsp1d::superClientResponseAck()
