@@ -8,7 +8,6 @@
 #include "protonetcommand.h"
 #include <QList>
 #include <QHash>
-#include <functional>
 
 namespace ECalcSystem
 {
@@ -24,7 +23,6 @@ public:
     SecMainAndChannelInterface(const std::shared_ptr<cSCPI> &scpiInterface,
                                SecCalculatorSettings* ecalcSettings,
                                SecInputSettings* inputsettings,
-                               std::function<void(int)> funcSigHandler,
                                const AbstractFactoryDeviceNodeSecPtr &zdspSupportFactory);
     ~SecMainAndChannelInterface();
     void initSCPIConnection() override;

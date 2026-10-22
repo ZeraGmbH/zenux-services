@@ -14,7 +14,6 @@ enum Commands
 SecMainAndChannelInterface::SecMainAndChannelInterface(const std::shared_ptr<cSCPI> &scpiInterface,
                                                        SecCalculatorSettings* ecalcSettings,
                                                        SecInputSettings *inputsettings,
-                                                       std::function<void (int)> funcSigHandler,
                                                        const AbstractFactoryDeviceNodeSecPtr &zdspSupportFactory) :
     ScpiServerConnection(scpiInterface),
     m_pecalcsettings(ecalcSettings),
@@ -25,7 +24,6 @@ SecMainAndChannelInterface::SecMainAndChannelInterface(const std::shared_ptr<cSC
                                            m_pecalcsettings,
                                            m_pInputSettings,
                                            channelNo,
-                                           funcSigHandler,
                                            zdspSupportFactory);
         m_ECalculatorChannelList.append(eChan);
         eChan->stopErrorCalculator();

@@ -9,7 +9,6 @@
 #include "protonetcommand.h"
 #include <QList>
 #include <QByteArray>
-#include <functional>
 
 class SecChannel : public ScpiConnection
 {
@@ -19,7 +18,6 @@ public:
                SecCalculatorSettings* esettings,
                SecInputSettings* inpsettings,
                quint16 nr,
-               std::function<void(int)> funcSigHandler,
                const AbstractFactoryDeviceNodeSecPtr &zdspSupportFactory);
     void initSCPIConnection(const QString &leadingNodes);
 
@@ -55,7 +53,6 @@ private:
     QByteArray m_ClientId; // we remark the clientid for arbitration purpose
 
     NotificationValue notifierECalcChannelIntReg;
-    std::function<void(int)> m_funcSigHandler;
 };
 
 #endif // SECCHANNEL_H

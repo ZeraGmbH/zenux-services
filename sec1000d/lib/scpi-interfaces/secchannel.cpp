@@ -32,14 +32,12 @@ SecChannel::SecChannel(const std::shared_ptr<cSCPI> &scpiInterface,
                        SecCalculatorSettings* esettings,
                        SecInputSettings *inpsettings,
                        quint16 nr,
-                       std::function<void (int)> funcSigHandler,
                        const AbstractFactoryDeviceNodeSecPtr &zdspSupportFactory) :
     ScpiConnection(scpiInterface),
     m_zdspSupportFactory(zdspSupportFactory),
     m_pecalcsettings(esettings),
     m_pInputSettings(inpsettings),
-    m_nNr(nr),
-    m_funcSigHandler(funcSigHandler)
+    m_nNr(nr)
 {
     m_nMyAdress = m_pecalcsettings->getBaseAdress() + (nr << 6);
     m_sName = QString("%1%2").arg(baseChnName).arg(nr);
@@ -332,10 +330,8 @@ void SecChannel::resetInt(const ProtonetCommandPtr &protoCmd)
             QString par = cmd.getParam(0);
             bool ok;
             quint32 interrupt = par.toULong(&ok);
-            if(ok) {
+            if(ok)
                 resetInterrupt(interrupt);
-                m_funcSigHandler(0); // we do so as if the interrupt handler had seen another edge
-            }
             else
                 protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::nak];
         }

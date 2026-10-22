@@ -151,7 +151,6 @@ void cSEC1000dServer::earlySetup()
     m_scpiConnectionList.append(m_pECalculatorInterface = new SecMainAndChannelInterface(m_scpiInterface,
                                                                                            m_pECalcSettings,
                                                                                            m_pInputSettings,
-                                                                                           SigHandler,
                                                                                            m_zdspSupportFactory));
 
     m_ECalculatorChannelList = m_pECalculatorInterface->getECalcChannelList();
