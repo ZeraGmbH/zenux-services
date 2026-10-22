@@ -17,9 +17,10 @@ quint32 NotificationValue::getValue()
 
 void NotificationValue::setValue(quint32 val)
 {
-    quint32 edge;
-    if ((edge = ((m_nValue ^ val) & val)) > 0)
-        emit risingEdge(edge, this);
+    const quint32 changedBitMask = (m_nValue ^ val);
+    const quint32 risingEdgeBits = changedBitMask & val;
+    if (risingEdgeBits > 0)
+        emit risingEdge(risingEdgeBits, this);
     m_nValue |= val;
 }
 
