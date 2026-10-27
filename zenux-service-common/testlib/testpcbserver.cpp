@@ -2,6 +2,7 @@
 #include "mockserverparamgenerator.h"
 #include <QFinalState>
 #include <QDir>
+#include <memory>
 
 TestPcbServer::TestPcbServer(const QString &serviceNameForAlternateDevice,
                              const VeinTcp::AbstractTcpNetworkFactoryPtr &tcpNetworkFactory) :
@@ -14,31 +15,18 @@ TestPcbServer::TestPcbServer(const QString &serviceNameForAlternateDevice,
     QFinalState* stateFINISH = new QFinalState();
 
     QState* statesetupServer = new QState(stateCONF);
-    m_stateconnect2RM = new QState(stateCONF);
-    m_stateSendRMIdentAndRegister = new QState(stateCONF); // we send ident. to rm and register our resources
-
     stateCONF->setInitialState(statesetupServer);
     
-    statesetupServer->addTransition(this, &TestPcbServer::sigServerIsSetUp, m_stateconnect2RM);
-
     m_pInitializationMachine->addState(stateCONF);
     m_pInitializationMachine->addState(stateFINISH);
     m_pInitializationMachine->setInitialState(stateCONF);
     
     QObject::connect(statesetupServer, &QAbstractState::entered, this, &TestPcbServer::doSetupServer);
-    QObject::connect(m_stateconnect2RM, &QAbstractState::entered, this, &TestPcbServer::doConnect2RM);
-    QObject::connect(m_stateSendRMIdentAndRegister, &QAbstractState::entered, this, &TestPcbServer::doIdentAndRegister);
-
-    EthSettingsPtr ethSettings = m_settings->getEthSettings();
-    m_pRMConnection = new RMConnection(ethSettings->getRMIPadr(),
-                                       ethSettings->getPort(EthSettings::resourcemanager),
-                                       m_tcpNetworkFactory);
 }
 
 TestPcbServer::~TestPcbServer()
 {
     if (m_pInitializationMachine) delete m_pInitializationMachine;
-    if (m_pRMConnection) delete m_pRMConnection;
 }
 
 void TestPcbServer::setScpiConnections(const ScpiConnectionList &scpiConnections)
@@ -49,11 +37,6 @@ void TestPcbServer::setScpiConnections(const ScpiConnectionList &scpiConnections
 Zera::XMLConfig::cReader *TestPcbServer::getConfigReader()
 {
     return &m_xmlConfigReader;
-}
-
-RMConnection *TestPcbServer::getRmConnection()
-{
-    return m_pRMConnection;
 }
 
 void TestPcbServer::start()
@@ -72,23 +55,5 @@ void TestPcbServer::doSetupServer()
     EthSettingsPtr ethSettings = m_settings->getEthSettings();
     m_protoBufServer.startServer(ethSettings->getPort(EthSettings::protobufserver));
 
-    m_stateconnect2RM->addTransition(m_pRMConnection, &RMConnection::connected, m_stateSendRMIdentAndRegister);
-
     emit sigServerIsSetUp();
-}
-
-void TestPcbServer::doConnect2RM()
-{
-    m_pRMConnection->connect2RM();
-}
-
-void TestPcbServer::doIdentAndRegister()
-{
-    m_pRMConnection->SendIdent(getName());
-    EthSettingsPtr ethSettings = m_settings->getEthSettings();
-    for (int i = 0; i < m_resourceList.count(); i++) {
-        cResource *res = m_resourceList.at(i);
-        connect(m_pRMConnection, &RMConnection::rmAck, res, &cResource::resourceManagerAck);
-        res->registerResource(m_pRMConnection, ethSettings->getPort(EthSettings::protobufserver));
-    }
 }

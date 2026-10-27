@@ -4,7 +4,6 @@
 #include "pcbserver.h"
 #include <xmlsettings.h>
 #include <QStateMachine>
-#include <memory.h>
 
 typedef QList<XMLSettings*> XmlSettingsList;
 typedef QList<ScpiServerConnection*> ScpiConnectionList;
@@ -17,7 +16,6 @@ public:
                   const VeinTcp::AbstractTcpNetworkFactoryPtr &tcpNetworkFactory);
     ~TestPcbServer();
     Zera::XMLConfig::cReader *getConfigReader();
-    RMConnection* getRmConnection();
     void setScpiConnections(const ScpiConnectionList &scpiConnections);
     void start();
 signals:
@@ -25,15 +23,9 @@ signals:
 
 private slots:
     void doSetupServer();
-    void doConnect2RM();
-    void doIdentAndRegister();
 private:
     ScpiConnectionList m_scpiConnecttionsAddedFromExtern;
-    int m_resourcesToConnect = 0;
     QStateMachine* m_pInitializationMachine = nullptr;
-    QState* m_stateconnect2RM = nullptr;
-    QState* m_stateSendRMIdentAndRegister = nullptr;
-    RMConnection* m_pRMConnection = nullptr;
 };
 
 #endif // TESTPCBSERVER_H
