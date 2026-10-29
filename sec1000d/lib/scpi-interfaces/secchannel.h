@@ -46,10 +46,8 @@ private:
     quint16 m_nNr;
     quint32 m_nMyAdress;
 
-    QList<quint32> CMDIDList;
-
     QString m_sName; // the channels name ec0...
-    bool m_bSet; // we mark if the channel is occupied
+    bool m_bSet = false; // we mark if the channel is occupied
     QByteArray m_ClientId; // we remark the clientid for arbitration purpose
 
     NotificationValue notifierECalcChannelIntReg;
