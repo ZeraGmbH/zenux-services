@@ -138,7 +138,15 @@ bool SecChannel::set(const QByteArray &id)
 
 void SecChannel::free()
 {
-    m_bSet = false;
+    if (m_bSet) {
+        // In case:
+        // * A module implementor forgets
+        // * We do TDD with remote modulemanager where unclean termination during measurement is likely
+        // => Be polite and stop measurement so next module using this channel won't find channel in undefined
+        //    and possibly non working condition
+        stopErrorCalculator();
+        m_bSet = false;
+    }
 }
 
 void SecChannel::setIntReg(quint8 reg)
