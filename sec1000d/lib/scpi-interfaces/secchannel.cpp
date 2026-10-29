@@ -194,8 +194,7 @@ void SecChannel::readWriteRegister(const ProtonetCommandPtr &protoCmd)
         if (protoCmd->m_clientId == m_ClientId) { // authorized ?
             par = cmd.getParam(0);
             reg = par.toULong(&ok);
-            if (ok)
-            {
+            if (ok) {
                 deviceNode->lseek(m_nMyAdress + (regInd << 2));
                 deviceNode->write(reinterpret_cast<char*>(&reg), 4);
                 protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::ack];
@@ -217,11 +216,11 @@ void SecChannel::setSync(const ProtonetCommandPtr &protoCmd)
         if (protoCmd->m_clientId == m_ClientId) { // authorized ?
             QString par = cmd.getParam(0);
             protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::errval]; // preset
-            if (par.contains("ec")) {
+            if (par.contains(baseChnName)) {
                 par.remove(baseChnName);
                 bool ok;
-                quint32 chnIndex = par.toULong(&ok);
-                if (ok && (chnIndex <= m_pecalcsettings->getNumber()) ) {
+                int chnIndex = par.toULong(&ok);
+                if (ok && chnIndex >= 0 && chnIndex <= m_pecalcsettings->getNumber()) {
                     quint32 reg;
                     AbstractDeviceNodeSecPtr deviceNode = m_zdspSupportFactory->getSecDeviceNode();
                     deviceNode->lseek(m_nMyAdress + (ECALCREG::CONF << 2));
@@ -245,7 +244,6 @@ void SecChannel::setMux(const ProtonetCommandPtr &protoCmd)
     if (cmd.isCommand(1)) {
         if (protoCmd->m_clientId == m_ClientId) { // authorized ?
             QString par = cmd.getParam(0);
-            protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::errval]; // preset
             if (m_pInputSettings->hasInput(par)) {
                 quint32 reg;
                 AbstractDeviceNodeSecPtr deviceNode = m_zdspSupportFactory->getSecDeviceNode();
@@ -255,6 +253,8 @@ void SecChannel::setMux(const ProtonetCommandPtr &protoCmd)
                 deviceNode->write(reinterpret_cast<char*>(&reg), 4);
                 protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::ack];
             }
+            else
+                protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::errval];
         }
         else
            protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::erraut];
@@ -269,8 +269,9 @@ void SecChannel::setCmdId(const ProtonetCommandPtr &protoCmd)
     if (cmd.isCommand(1)) {
         if (protoCmd->m_clientId == m_ClientId) { // authorized ?
             QString par = cmd.getParam(0);
-            int cmdId = par.toInt();
-            if (cmdId >= 0 && cmdId < SecConfigCount) {
+            bool ok;
+            int cmdId = par.toInt(&ok);
+            if (ok && cmdId >= 0 && cmdId < SecConfigCount) {
                 quint32 reg;
                 AbstractDeviceNodeSecPtr deviceNode = m_zdspSupportFactory->getSecDeviceNode();
                 deviceNode->lseek(m_nMyAdress + (ECALCREG::CONF << 2));
@@ -365,7 +366,6 @@ void SecChannel::stopErrorCalculator()
 void SecChannel::resetInterrupt(quint8 interrupt)
 {
     quint32 reg;
-
     notifierECalcChannelIntReg.clrValue(interrupt);
     AbstractDeviceNodeSecPtr deviceNode = m_zdspSupportFactory->getSecDeviceNode();
     deviceNode->lseek(m_nMyAdress + (ECALCREG::INTREG << 2));
