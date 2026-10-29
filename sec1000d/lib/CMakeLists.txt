@@ -42,6 +42,7 @@ target_link_libraries(sec1000d-lib
     ${QTX}::Network
     Zera::zeraprotobuf
     zenuxservicecommon
+    service-interfaces
     )
 
 if("${QT_MAJOR_VER}" STREQUAL "6")

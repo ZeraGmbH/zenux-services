@@ -5,6 +5,16 @@
 #include "service-interfaces_export.h"
 #include <proxyclient.h>
 
+static constexpr int en_n = 8;
+static constexpr int en_p = 9;
+static constexpr int direction = 15;
+static constexpr int bitSingle = 16;
+static constexpr int sssto = 17;
+static constexpr int ssarm = 19;
+static constexpr int imp_en = 21;
+static constexpr int impout_en = 22;
+static constexpr int cnt2carry = 23;
+
 namespace ECALCREG {
     enum { CMD, CONF, STATUS, INTMASK, INTREG, MTCNTin, MTCNTfin, MTCNTact, MTPULSin = 12, MTPAUSEin, MTPULS, MTPAUSE};
 }

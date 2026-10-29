@@ -1,4 +1,5 @@
 #include "secchannel.h"
+#include "secinterface.h"
 #include "zscpi_response_definitions.h"
 #include "scpiconnection.h"
 #include "secinputsettings.h"
@@ -9,24 +10,7 @@
 #include <QString>
 #include <unistd.h>
 
-namespace ECALCREG {
-enum { CMD, CONF, STATUS, INTMASK, INTREG, MTCNTin, MTCNTfin, MTCNTact, MTPULSin = 12, MTPAUSEin, MTPULS, MTPAUSE};
-}
-
-namespace ECALCCMDID {
-enum { COUNTEDGE = 1, COUNTRESET, ERRORMEASMASTER, ERRORMEASSLAVE};
-}
-
 static constexpr const char* baseChnName = "ec";
-static constexpr int en_n = 8;
-static constexpr int en_p = 9;
-static constexpr int direction = 15;
-static constexpr int bitSingle = 16;
-static constexpr int sssto = 17;
-static constexpr int ssarm = 19;
-static constexpr int imp_en = 21;
-static constexpr int impout_en = 22;
-static constexpr int cnt2carry = 23;
 
 SecChannel::SecChannel(const std::shared_ptr<cSCPI> &scpiInterface,
                        SecCalculatorSettings* esettings,
