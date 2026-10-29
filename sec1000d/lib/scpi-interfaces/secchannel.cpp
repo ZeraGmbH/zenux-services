@@ -27,7 +27,9 @@ static const quint32 SecConfigs[] = {
     // CONTERRORMASTER: mrate counter for error measurement or energy comparison in continous mode
     (1<<en_n) + (1<<cnt2carry),
     // ERRORMEASSLAVE: vi counter for error measurement or energy comparison
-    (1<<en_n) + (1<<direction) + (1<<bitSingle) + (3<<sssto) + (2<<ssarm)
+    (1<<en_n) + (1<<direction) + (1<<bitSingle) + (3<<sssto) + (2<<ssarm),
+    // FLANKCOUNT
+    (1<<bitSingle) + (1<<direction) + (1<<en_p) + (1<<en_n)
 };
 
 static constexpr int SecConfigCount = sizeof(SecConfigs) / sizeof(quint32);

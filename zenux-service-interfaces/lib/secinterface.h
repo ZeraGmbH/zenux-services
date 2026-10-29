@@ -9,12 +9,8 @@ namespace ECALCREG {
     enum { CMD, CONF, STATUS, INTMASK, INTREG, MTCNTin, MTCNTfin, MTCNTact, MTPULSin = 12, MTPAUSEin, MTPULS, MTPAUSE};
 }
 
-// THIS IS TOTALLY INSANE CRAP - or how can I waste visitor's time?!!!
-// The Ids have NOTHING in common with CmdIds mentioned in FPGA docs
-// We are super clever disagree to what others do by default and invent our own -
-// see SecChannel::SecChannel !!!!
-namespace ECALCCMDID {
-    enum { SINGLEERRORMASTER, CONTERRORMASTER, ERRORMEASSLAVE };
+namespace ECALCCMDID { // THESE ARE NOT THE IDS MENTIONED IN FPGA DOC - we invent our own - see SecConfigs[] !!!!!
+    enum { SINGLEERRORMASTER, CONTERRORMASTER, ERRORMEASSLAVE, FLANKCOUNT };
 }
 
 namespace ECALCSTATUS {
