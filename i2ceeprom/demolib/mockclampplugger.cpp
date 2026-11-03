@@ -14,9 +14,12 @@ QByteArray MockClampPlugger::getFreshEEpromData(int clampType)
     Q_INIT_RESOURCE(clamps);
     if (cClamp::isValidClampType(clampType)) {
         const QString clampName = cClamp::getClampTypeName(clampType);
-        QFile eepromFile(":/clamps/fresh/" + clampName + ".eeprom");
+        const QString fileName = ":/clamps/fresh/" + clampName + ".eeprom";
+        QFile eepromFile(fileName);
         if (eepromFile.open(QFile::ReadOnly))
             return eepromFile.readAll();
+        else
+            qCritical("Mock EEPROM file %s not found! All clamp EEPROMS are generated in /tmp/clamps/fresh", qPrintable(fileName));
     }
     return QByteArray();
 }
