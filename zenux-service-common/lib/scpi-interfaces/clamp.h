@@ -40,6 +40,7 @@ public:
         CL1200ADC1400VDC, // LEM-3
 
         EMOB750DC,
+        EMOB500_01DC, // EMOB 750 as EMOB 500
 
         anzCL
     };

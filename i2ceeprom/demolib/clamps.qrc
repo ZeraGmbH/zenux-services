@@ -17,5 +17,6 @@
         <file>clamps/fresh/CL1400VDC.eeprom</file>
         <file>clamps/fresh/CL1200ADC1400VDC.eeprom</file>
         <file>clamps/fresh/EMOB750DC.eeprom</file>
+        <file>clamps/fresh/EMOB500-01DC.eeprom</file>
     </qresource>
 </RCC>
