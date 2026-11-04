@@ -18,6 +18,7 @@ public:
                        const QList<GeneratorChannelInterface *> &channels,
                        const AbstractFactoryI2cCtrlPtr &ctrlFactory);
     void initSCPIConnection() override;
+    bool setSourceOnModes(const QStringList &channelMNamesOn);
 signals:
     void sigMeasRangeProbablyChanged(const QString &channelMName);
 

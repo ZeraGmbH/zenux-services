@@ -38,6 +38,17 @@ void GeneratorInterface::initSCPIConnection()
     }
 }
 
+bool GeneratorInterface::setSourceOnModes(const QStringList &channelMNamesOn)
+{
+    I2cCtrlGeneratorPtr controller = m_ctrlFactory->getGeneratorController(m_senseSettings);
+    if (CommonScpiMethods::containsValidChannelMNames(m_senseSettings, channelMNamesOn) &&
+        controller->sendSourceModeOn(channelMNamesOn) == ZeraMControllerIo::cmddone) {
+        m_sourceOnModesNotification = channelMNamesOn.join(",");
+        return true;
+    }
+    return false;
+}
+
 void GeneratorInterface::executeProtoScpi(int cmdCode, const ProtonetCommandPtr &protoCmd)
 {
     cSCPICommand cmd = protoCmd->m_sInput;
@@ -67,13 +78,9 @@ QString GeneratorInterface::scpiSourceModeOn(const QString &scpi)
     cSCPICommand cmd = scpi;
     I2cCtrlGeneratorPtr controller = m_ctrlFactory->getGeneratorController(m_senseSettings);
     if (cmd.isCommand(1)) {
-        const QString channelMNames = cmd.getParam(0);
-        const QStringList channelMNameList = channelMNames.split(",", Qt::SkipEmptyParts);
-        if (CommonScpiMethods::containsValidChannelMNames(m_senseSettings, channelMNameList) &&
-            controller->sendSourceModeOn(channelMNameList) == ZeraMControllerIo::cmddone) {
-            m_sourceOnModesNotification = channelMNames;
+        const QStringList channelMNameList = cmd.getParam(0).split(",", Qt::SkipEmptyParts);
+        if (setSourceOnModes(channelMNameList))
             return  ZSCPI::scpiAnswer[ZSCPI::ack];
-        }
         return ZSCPI::scpiAnswer[ZSCPI::errexec];
     }
     else if (cmd.isQuery()) {
