@@ -27,7 +27,7 @@ void test_regression_sense_interface_mt581s2::initTestCase()
     TimerFactoryQtForTest::enableTest();
     m_tcpNetworkFactory = VeinTcp::MockTcpNetworkFactory::create();
     m_resman = std::make_unique<ResmanRunFacade>(m_tcpNetworkFactory);
-    m_testServer = std::make_unique<TestServerForSenseInterfaceMt310s2>(
+    m_testServer = std::make_unique<TestServerForSenseInterfaceMtxxxs2>(
         std::make_shared<TestFactoryI2cCtrl>(true),
         m_tcpNetworkFactory,
         "mt581s2");

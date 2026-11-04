@@ -266,7 +266,7 @@ void test_regression_adj_scpi_query_format_mt310s2::queryOffsetNodes()
 
 void test_regression_adj_scpi_query_format_mt310s2::setupServers()
 {
-    m_testServer = std::make_unique<TestServerForSenseInterfaceMt310s2>(
+    m_testServer = std::make_unique<TestServerForSenseInterfaceMtxxxs2>(
         std::make_shared<TestFactoryI2cCtrl>(true),
         m_tcpNetworkFactory);
     TimeMachineObject::feedEventLoop();

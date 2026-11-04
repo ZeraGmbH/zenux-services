@@ -172,7 +172,7 @@ void test_regression_adj_import_export_xml_mt310s2::scpiExportInvalidClamp()
 
 void test_regression_adj_import_export_xml_mt310s2::setupServers()
 {
-    m_testServer = std::make_unique<TestServerForSenseInterfaceMt310s2>(
+    m_testServer = std::make_unique<TestServerForSenseInterfaceMtxxxs2>(
         std::make_shared<TestFactoryI2cCtrl>(true),
         m_tcpNetworkFactory);
     TimeMachineObject::feedEventLoop();

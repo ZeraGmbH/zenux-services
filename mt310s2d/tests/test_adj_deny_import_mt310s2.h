@@ -1,7 +1,7 @@
 #ifndef TEST_ADJ_DENY_EEPROM_IMPORT_COM5003_H
 #define TEST_ADJ_DENY_EEPROM_IMPORT_COM5003_H
 
-#include "testserverforsenseinterfacemt310s2.h"
+#include "testserverforsenseinterfacemtxxxs2.h"
 #include "proxyclient.h"
 #include "resmanrunfacade.h"
 #include <QObject>
@@ -21,7 +21,7 @@ private:
 
     VeinTcp::AbstractTcpNetworkFactoryPtr m_tcpNetworkFactory;
     std::unique_ptr<ResmanRunFacade> m_resman;
-    std::unique_ptr<TestServerForSenseInterfaceMt310s2> m_testServer;
+    std::unique_ptr<TestServerForSenseInterfaceMtxxxs2> m_testServer;
     Zera::ProxyClientPtr m_proxyClient;
 };
 

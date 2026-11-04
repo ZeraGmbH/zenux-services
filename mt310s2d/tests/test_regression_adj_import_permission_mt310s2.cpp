@@ -82,7 +82,7 @@ void test_regression_adj_import_permission_mt310s2::scpiImportPassFlashWrite()
 
 void test_regression_adj_import_permission_mt310s2::setupServers(const AbstractFactoryI2cCtrlPtr &ctrlFactory)
 {
-    m_testServer = std::make_unique<TestServerForSenseInterfaceMt310s2>(ctrlFactory, m_tcpNetworkFactory);
+    m_testServer = std::make_unique<TestServerForSenseInterfaceMtxxxs2>(ctrlFactory, m_tcpNetworkFactory);
     TimeMachineObject::feedEventLoop();
 
     m_proxyClient = Zera::Proxy::getInstance()->getConnectionSmart("127.0.0.1", 6307, m_tcpNetworkFactory);

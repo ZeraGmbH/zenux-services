@@ -61,7 +61,7 @@ void test_adj_deny_import_mt310s2::loadEEpromAndDenyDifferentDeviceName()
 
 void test_adj_deny_import_mt310s2::setupServers()
 {
-    m_testServer = std::make_unique<TestServerForSenseInterfaceMt310s2>(
+    m_testServer = std::make_unique<TestServerForSenseInterfaceMtxxxs2>(
         std::make_shared<TestFactoryI2cCtrl>(true),
         m_tcpNetworkFactory,
         "mt310s2",

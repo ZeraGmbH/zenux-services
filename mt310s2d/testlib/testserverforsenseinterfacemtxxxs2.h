@@ -1,17 +1,18 @@
-#ifndef TESTSERVERFORSENSEINTERFACEMT310S2_H
-#define TESTSERVERFORSENSEINTERFACEMT310S2_H
+#ifndef TESTSERVERFORSENSEINTERFACEMTXXXS2_H
+#define TESTSERVERFORSENSEINTERFACEMTXXXS2_H
 
 #include "testpcbserver.h"
 #include "senseinterfacecommon.h"
 #include "mt310s2systeminterface.h"
 #include "clampinterface.h"
+#include "generatorinterface.h"
 #include "samplinginterface.h"
 #include "abstractfactoryi2cctrl.h"
 
-class TestServerForSenseInterfaceMt310s2 : public TestPcbServer
+class TestServerForSenseInterfaceMtxxxs2 : public TestPcbServer
 {
 public:
-    TestServerForSenseInterfaceMt310s2(const AbstractFactoryI2cCtrlPtr &ctrlFactory,
+    TestServerForSenseInterfaceMtxxxs2(const AbstractFactoryI2cCtrlPtr &ctrlFactory,
                                        const VeinTcp::AbstractTcpNetworkFactoryPtr &tcpNetworkFactory,
                                        const QString &serviceNameForAlternateDevice = "mt310s2",
                                        bool systemInfoMock = false);
@@ -38,8 +39,9 @@ private:
     std::unique_ptr<Mt310s2SystemInfo> m_systemInfo;
     std::unique_ptr<SenseInterfaceCommon> m_senseInterface;
     std::unique_ptr<cClampInterface> m_clampInterface;
+    std::unique_ptr<GeneratorInterface> m_generatorInterface;
     std::unique_ptr<Mt310s2SystemInterface> m_systemInterface;
     std::unique_ptr<cSamplingInterface> m_samplingInterface;
 };
 
-#endif // TESTSERVERFORSENSEINTERFACEMT310S2_H
+#endif // TESTSERVERFORSENSEINTERFACEMTXXXS2_H

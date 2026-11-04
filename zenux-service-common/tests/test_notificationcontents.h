@@ -4,7 +4,7 @@
 #include "pcbinterface.h"
 #include "proxyclient.h"
 #include "testfactoryi2cctrl.h"
-#include "testserverforsenseinterfacemt310s2.h"
+#include "testserverforsenseinterfacemtxxxs2.h"
 #include <resmanrunfacade.h>
 #include <abstracttcpnetworkfactory.h>
 
@@ -30,7 +30,7 @@ private:
     VeinTcp::AbstractTcpNetworkFactoryPtr m_tcpNetworkFactory;
     std::unique_ptr<ResmanRunFacade> m_resman;
     std::shared_ptr<TestFactoryI2cCtrl> m_ctrlFactory;
-    std::unique_ptr<TestServerForSenseInterfaceMt310s2> m_testServer;
+    std::unique_ptr<TestServerForSenseInterfaceMtxxxs2> m_testServer;
 
     Zera::ProxyClientPtr m_pcbClient;
     Zera::PcbInterfacePtr m_pcbInterface;

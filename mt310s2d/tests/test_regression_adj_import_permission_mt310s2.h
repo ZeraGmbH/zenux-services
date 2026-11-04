@@ -1,7 +1,7 @@
 #ifndef TEST_REGRESSION_ADJ_IMPORT_PERMISSION_MT310S2_H
 #define TEST_REGRESSION_ADJ_IMPORT_PERMISSION_MT310S2_H
 
-#include "testserverforsenseinterfacemt310s2.h"
+#include "testserverforsenseinterfacemtxxxs2.h"
 #include "proxyclient.h"
 #include "resmanrunfacade.h"
 #include <QObject>
@@ -23,7 +23,7 @@ private:
 
     VeinTcp::AbstractTcpNetworkFactoryPtr m_tcpNetworkFactory;
     std::unique_ptr<ResmanRunFacade> m_resman;
-    std::unique_ptr<TestServerForSenseInterfaceMt310s2> m_testServer;
+    std::unique_ptr<TestServerForSenseInterfaceMtxxxs2> m_testServer;
     Zera::ProxyClientPtr m_proxyClient;
 };
 

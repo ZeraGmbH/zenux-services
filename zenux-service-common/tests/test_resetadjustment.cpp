@@ -60,7 +60,7 @@ void test_resetAdjustment::setupServers()
     AbstractFactoryI2cCtrlPtr ctrlFactory = std::make_shared<TestFactoryI2cCtrl>(true);
     PermissionFunctions::setPermissionCtrlFactory(ctrlFactory);
 
-    m_testServer = std::make_unique<TestServerForSenseInterfaceMt310s2>(
+    m_testServer = std::make_unique<TestServerForSenseInterfaceMtxxxs2>(
         ctrlFactory,
         m_tcpNetworkFactory,
         "mt310s2",

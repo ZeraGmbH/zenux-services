@@ -132,7 +132,7 @@ void test_notificationcontents::setupServers()
 {
     TimeMachineForTest::reset();
     m_ctrlFactory = std::make_shared<TestFactoryI2cCtrl>(true);
-    m_testServer = std::make_unique<TestServerForSenseInterfaceMt310s2>(m_ctrlFactory, m_tcpNetworkFactory);
+    m_testServer = std::make_unique<TestServerForSenseInterfaceMtxxxs2>(m_ctrlFactory, m_tcpNetworkFactory);
     TimeMachineObject::feedEventLoop();
 }
 

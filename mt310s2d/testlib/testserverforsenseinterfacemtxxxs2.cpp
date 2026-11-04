@@ -1,4 +1,4 @@
-#include "testserverforsenseinterfacemt310s2.h"
+#include "testserverforsenseinterfacemtxxxs2.h"
 #include "clamp.h"
 #include "mockclampplugger.h"
 #include "mockeepromi2cfactory.h"
@@ -7,7 +7,7 @@
 #include <i2cmultiplexerfactory.h>
 #include <testloghelpers.h>
 
-TestServerForSenseInterfaceMt310s2::TestServerForSenseInterfaceMt310s2(const AbstractFactoryI2cCtrlPtr &ctrlFactory,
+TestServerForSenseInterfaceMtxxxs2::TestServerForSenseInterfaceMtxxxs2(const AbstractFactoryI2cCtrlPtr &ctrlFactory,
                                                                        const VeinTcp::AbstractTcpNetworkFactoryPtr &tcpNetworkFactory,
                                                                        const QString &serviceNameForAlternateDevice,
                                                                        bool systemInfoMock) :
@@ -38,6 +38,7 @@ TestServerForSenseInterfaceMt310s2::TestServerForSenseInterfaceMt310s2(const Abs
                                                          i2cSettings,
                                                          adjMemFactory,
                                                          ctrlFactory);
+
     m_samplingInterface = std::make_unique<cSamplingInterface>(m_scpiInterface,
                                                                m_settings->getSamplingSettings(),
                                                                ctrlFactory);
@@ -54,47 +55,47 @@ TestServerForSenseInterfaceMt310s2::TestServerForSenseInterfaceMt310s2(const Abs
     start();
 }
 
-double TestServerForSenseInterfaceMt310s2::calcAdjValue(double value, double coeff0, double coeff1, double coeff2)
+double TestServerForSenseInterfaceMtxxxs2::calcAdjValue(double value, double coeff0, double coeff1, double coeff2)
 {
     return coeff0 + value*coeff1 + value*value*coeff2;
 }
 
-double TestServerForSenseInterfaceMt310s2::calcGainValue(double value)
+double TestServerForSenseInterfaceMtxxxs2::calcGainValue(double value)
 {
     return calcAdjValue(value, 2.0, 3.0, 4.0); // matches xml
 }
 
-double TestServerForSenseInterfaceMt310s2::calcPhaseValue(double value)
+double TestServerForSenseInterfaceMtxxxs2::calcPhaseValue(double value)
 {
     return calcAdjValue(value, 3.0, 4.0, 5.0); // matches xml
 }
 
-double TestServerForSenseInterfaceMt310s2::calcOffsetValue(double value)
+double TestServerForSenseInterfaceMtxxxs2::calcOffsetValue(double value)
 {
     return calcAdjValue(value, 4.0, 5.0, 6.0); // matches xml
 }
 
-double TestServerForSenseInterfaceMt310s2::getCvRatioC200A()
+double TestServerForSenseInterfaceMtxxxs2::getCvRatioC200A()
 {
     return 500.0;
 }
 
-double TestServerForSenseInterfaceMt310s2::calcGainValueClamp(double value)
+double TestServerForSenseInterfaceMtxxxs2::calcGainValueClamp(double value)
 {
     return calcAdjValue(value, 5.0, 6.0, 7.0); // matches xml
 }
 
-double TestServerForSenseInterfaceMt310s2::calcPhaseValueClamp(double value)
+double TestServerForSenseInterfaceMtxxxs2::calcPhaseValueClamp(double value)
 {
     return calcAdjValue(value, 6.0, 7.0, 8.0); // matches xml
 }
 
-double TestServerForSenseInterfaceMt310s2::calcOffsetValueClamp(double value)
+double TestServerForSenseInterfaceMtxxxs2::calcOffsetValueClamp(double value)
 {
     return calcAdjValue(value, 7.0, 8.0, 9.0); // matches xml
 }
 
-cClamp *TestServerForSenseInterfaceMt310s2::addClamp(int clampType, QString channelAlias)
+cClamp *TestServerForSenseInterfaceMtxxxs2::addClamp(int clampType, QString channelAlias)
 {
     MockClampPlugger clampPlugger(getSenseSettings(), m_settings->getI2cSettings());
     clampPlugger.initClampAdjMem(clampType, channelAlias);
@@ -103,14 +104,14 @@ cClamp *TestServerForSenseInterfaceMt310s2::addClamp(int clampType, QString chan
     return getClampInterface()->tryAddClamp(channelSettingClamps);
 }
 
-void TestServerForSenseInterfaceMt310s2::addStdClamp()
+void TestServerForSenseInterfaceMtxxxs2::addStdClamp()
 {
     addClamp(cClamp::CL200ADC1000VDC, "IL1");
     QString xml = TestLogHelpers::loadFile(":/import_clamp.xml");
     getClampInterface()->importClampXmls(xml, false);
 }
 
-void TestServerForSenseInterfaceMt310s2::removeAllClamps()
+void TestServerForSenseInterfaceMtxxxs2::removeAllClamps()
 {
     // to execute as much production code as possible we use actualizeClampStatus
     getClampInterface()->actualizeClampStatus(0);
