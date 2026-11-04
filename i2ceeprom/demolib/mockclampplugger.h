@@ -9,7 +9,7 @@ class MockClampPlugger
 public:
     MockClampPlugger(const cSenseSettingsPtr &senseSettings, const I2cSettingsPtr &i2cSettings);
     static QByteArray getFreshEEpromData(int clampType);
-    void initClampAdjMem(int clampType, QString channelAlias);
+    void initClampAdjMem(int clampType, const QString &channelAlias);
 private:
     cSenseSettingsPtr m_senseSettings;
     I2cSettingsPtr m_i2cSettings;

@@ -95,7 +95,7 @@ double TestServerForSenseInterfaceMtxxxs2::calcOffsetValueClamp(double value)
     return calcAdjValue(value, 7.0, 8.0, 9.0); // matches xml
 }
 
-cClamp *TestServerForSenseInterfaceMtxxxs2::addClamp(int clampType, QString channelAlias)
+cClamp *TestServerForSenseInterfaceMtxxxs2::addClamp(int clampType, const QString &channelAlias)
 {
     MockClampPlugger clampPlugger(getSenseSettings(), m_settings->getI2cSettings());
     clampPlugger.initClampAdjMem(clampType, channelAlias);

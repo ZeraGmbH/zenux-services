@@ -24,7 +24,7 @@ QByteArray MockClampPlugger::getFreshEEpromData(int clampType)
     return QByteArray();
 }
 
-void MockClampPlugger::initClampAdjMem(int clampType, QString channelAlias)
+void MockClampPlugger::initClampAdjMem(int clampType, const QString &channelAlias)
 {
     const QByteArray clampData = getFreshEEpromData(clampType);
     QByteArray eepromData(AbstractEepromI2cDevice::capacity24LC256, 0xFF);

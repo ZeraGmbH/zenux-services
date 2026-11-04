@@ -31,7 +31,7 @@ public:
     static double calcPhaseValueClamp(double value);
     static double calcOffsetValueClamp(double value);
 
-    cClamp *addClamp(int clampType, QString channelAlias);
+    cClamp *addClamp(int clampType, const QString &channelAlias);
     void addStdClamp();
     void removeAllClamps();
 
