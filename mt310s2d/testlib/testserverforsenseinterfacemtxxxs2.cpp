@@ -4,6 +4,7 @@
 #include "mockeepromi2cfactory.h"
 #include "mt310s2senseinterface.h"
 #include "mt310s2systeminfomock.h"
+#include "mt581generatorchannelfactory.h"
 #include <i2cmultiplexerfactory.h>
 #include <testloghelpers.h>
 
@@ -39,6 +40,18 @@ TestServerForSenseInterfaceMtxxxs2::TestServerForSenseInterfaceMtxxxs2(const Abs
                                                          adjMemFactory,
                                                          ctrlFactory);
 
+    m_sourceControlSettings = new SourceControlSettings(&m_xmlConfigReader);
+    connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_sourceControlSettings, &SourceControlSettings::configXMLInfo);
+    Mt581GeneratorChannelFactory generatorChannelFactory;
+    QList<GeneratorChannelInterface *> generatorChannels = generatorChannelFactory.createChannelsAndRanges(getSenseSettings(),
+                                                                                                           m_scpiInterface,
+                                                                                                           ctrlFactory);
+    m_generatorInterface = std::make_unique<GeneratorInterface>(getSCPIInterface(),
+                                                                m_sourceControlSettings,
+                                                                m_settings->getSenseSettings(),
+                                                                generatorChannels,
+                                                                ctrlFactory);
+
     m_samplingInterface = std::make_unique<cSamplingInterface>(m_scpiInterface,
                                                                m_settings->getSamplingSettings(),
                                                                ctrlFactory);
@@ -50,9 +63,18 @@ TestServerForSenseInterfaceMtxxxs2::TestServerForSenseInterfaceMtxxxs2(const Abs
                                                                  ctrlFactory,
                                                                  nullptr);
 
-    setScpiConnections(ScpiConnectionList{m_systemInterface.get(), m_clampInterface.get(), m_samplingInterface.get(), m_senseInterface.get()});
+    setScpiConnections(ScpiConnectionList{m_systemInterface.get(),
+                                          m_clampInterface.get(),
+                                          m_generatorInterface.get(),
+                                          m_samplingInterface.get(),
+                                          m_senseInterface.get()});
 
     start();
+}
+
+TestServerForSenseInterfaceMtxxxs2::~TestServerForSenseInterfaceMtxxxs2()
+{
+    delete m_sourceControlSettings;
 }
 
 double TestServerForSenseInterfaceMtxxxs2::calcAdjValue(double value, double coeff0, double coeff1, double coeff2)
@@ -115,4 +137,9 @@ void TestServerForSenseInterfaceMtxxxs2::removeAllClamps()
 {
     // to execute as much production code as possible we use actualizeClampStatus
     getClampInterface()->actualizeClampStatus(0);
+}
+
+void TestServerForSenseInterfaceMtxxxs2::setSourceOnMode(const QStringList &channelMNamesOn)
+{
+    getGeneratorInterface()->setSourceOnModes(channelMNamesOn);
 }

@@ -16,10 +16,12 @@ public:
                                        const VeinTcp::AbstractTcpNetworkFactoryPtr &tcpNetworkFactory,
                                        const QString &serviceNameForAlternateDevice = "mt310s2",
                                        bool systemInfoMock = false);
+    ~TestServerForSenseInterfaceMtxxxs2() override;
     QString getDeviceVersion() { return m_systemInfo->getDeviceVersion(); }
 
     SenseInterfaceCommon *getSenseInterface() { return m_senseInterface.get(); }
     cClampInterface *getClampInterface() { return m_clampInterface.get(); }
+    GeneratorInterface* getGeneratorInterface() { return m_generatorInterface.get(); }
     Mt310s2SystemInfo *getSystemInfo() { return m_systemInfo.get(); }
 
     static double calcAdjValue(double value, double coeff0, double coeff1, double coeff2);
@@ -35,6 +37,8 @@ public:
     void addStdClamp();
     void removeAllClamps();
 
+    void setSourceOnMode(const QStringList &channelMNamesOn);
+
 private:
     std::unique_ptr<Mt310s2SystemInfo> m_systemInfo;
     std::unique_ptr<SenseInterfaceCommon> m_senseInterface;
@@ -42,6 +46,7 @@ private:
     std::unique_ptr<GeneratorInterface> m_generatorInterface;
     std::unique_ptr<Mt310s2SystemInterface> m_systemInterface;
     std::unique_ptr<cSamplingInterface> m_samplingInterface;
+    SourceControlSettings* m_sourceControlSettings = nullptr;
 };
 
 #endif // TESTSERVERFORSENSEINTERFACEMTXXXS2_H
