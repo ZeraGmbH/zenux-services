@@ -454,7 +454,7 @@ void SenseInterfaceCommon::onMeasRangeProbablyChanged(const QString &channelMNam
 {
     SenseChannelCommon *channel = getChannel(channelMName);
     if (channel != nullptr)
-        channel->setNotifierSenseChannelRange();
+        channel->refreshNotifierForActualRange();
 }
 
 void SenseInterfaceCommon::handleScpiReadWriteMMode(const ProtonetCommandPtr &protoCmd)

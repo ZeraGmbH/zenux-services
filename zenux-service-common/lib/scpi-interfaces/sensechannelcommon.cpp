@@ -47,7 +47,7 @@ void SenseChannelCommon::setRangeList(const QList<SenseRangeCommon *> &list)
 {
     m_RangeList = list;
     setNotifierSenseChannelRangeCat();
-    setNotifierSenseChannelRange();
+    refreshNotifierForActualRange();
 }
 
 const QList<SenseRangeCommon *> &SenseChannelCommon::getRangeList()

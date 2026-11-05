@@ -41,7 +41,7 @@ public:
     void setMMode(int mode);
 
     NotificationStatus setRangeCommon(SenseRangeCommon *range, const ProtonetCommandPtr &protoCmd);
-    virtual void setNotifierSenseChannelRange() = 0;
+    virtual void refreshNotifierForActualRange() = 0;
 
 protected:
     void executeProtoScpi(int cmdCode, const ProtonetCommandPtr &protoCmd) override;

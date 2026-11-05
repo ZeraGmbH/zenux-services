@@ -18,17 +18,20 @@ QString MtXXXs2SenseChannel::getAlias()
     return m_sAlias1;
 }
 
-void MtXXXs2SenseChannel::setNotifierSenseChannelRange()
+void MtXXXs2SenseChannel::refreshNotifierForActualRange()
 {
     quint8 rSelCode;
     if (m_ctrlFactory->getRangesController()->readRange(m_nCtrlChannel, rSelCode) == ZeraMControllerIo::cmddone ) {
         for(auto range : qAsConst(m_RangeList)) {
             if ( (range->getSelCode() == rSelCode) && (range->getAvail())) {
                 notifierSenseChannelRange = range->getRangeName();
-                break;
+                return;
             }
         }
+        qWarning("On channel %s range for selection code %i was not found!", qPrintable(m_sAlias1), rSelCode);
     }
+    else
+        qWarning("Reading range for notification failed for %s", qPrintable(m_sAlias1));
 }
 
 SenseChannelCommon::NotificationStatus MtXXXs2SenseChannel::scpiReadWriteRange(const ProtonetCommandPtr &protoCmd)

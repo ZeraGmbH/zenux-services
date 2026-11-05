@@ -22,7 +22,7 @@ QString Com5003SenseChannel::getAlias()
         return m_sAlias2;
 }
 
-void Com5003SenseChannel::setNotifierSenseChannelRange()
+void Com5003SenseChannel::refreshNotifierForActualRange()
 {
     quint8 mode;
     if (m_ctrlFactory->getMModeController()->readMeasMode(mode) == ZeraMControllerIo::cmddone ) {

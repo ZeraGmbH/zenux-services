@@ -17,7 +17,7 @@ public:
     QString getAlias() override;
 private:
     NotificationStatus scpiReadWriteRange(const ProtonetCommandPtr &protoCmd) override;
-    void setNotifierSenseChannelRange() override;
+    void refreshNotifierForActualRange() override;
 };
 
 #endif // COM5003SENSECHANNEL_H
