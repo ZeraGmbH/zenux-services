@@ -6,19 +6,15 @@
         <CATALOG ScpiPath="FRQINPUT:CHANNEL:CATALOG" Type="Query"/>
       </CHANNEL>
       <FI0 Type="Node">
-        <ALIAS ScpiPath="FRQINPUT:FI0:ALIAS" Type="Query"/>
         <STATUS ScpiPath="FRQINPUT:FI0:STATUS" Type="Query"/>
       </FI0>
       <FI1 Type="Node">
-        <ALIAS ScpiPath="FRQINPUT:FI1:ALIAS" Type="Query"/>
         <STATUS ScpiPath="FRQINPUT:FI1:STATUS" Type="Query"/>
       </FI1>
       <FI2 Type="Node">
-        <ALIAS ScpiPath="FRQINPUT:FI2:ALIAS" Type="Query"/>
         <STATUS ScpiPath="FRQINPUT:FI2:STATUS" Type="Query"/>
       </FI2>
       <FI3 Type="Node">
-        <ALIAS ScpiPath="FRQINPUT:FI3:ALIAS" Type="Query"/>
         <STATUS ScpiPath="FRQINPUT:FI3:STATUS" Type="Query"/>
       </FI3>
       <VERSION ScpiPath="FRQINPUT:VERSION" Type="Query"/>
@@ -28,7 +24,6 @@
         <CATALOG ScpiPath="HKEY:CHANNEL:CATALOG" Type="Query"/>
       </CHANNEL>
       <HK0 Type="Node">
-        <ALIAS ScpiPath="HKEY:HK0:ALIAS" Type="Query"/>
         <STATUS ScpiPath="HKEY:HK0:STATUS" Type="Query"/>
       </HK0>
       <VERSION ScpiPath="HKEY:VERSION" Type="Query"/>
@@ -46,7 +41,6 @@
         <CATALOG ScpiPath="SCHEAD:CHANNEL:CATALOG" Type="Query"/>
       </CHANNEL>
       <SH0 Type="Node">
-        <ALIAS ScpiPath="SCHEAD:SH0:ALIAS" Type="Query"/>
         <STATUS ScpiPath="SCHEAD:SH0:STATUS" Type="Query"/>
       </SH0>
       <VERSION ScpiPath="SCHEAD:VERSION" Type="Query"/>

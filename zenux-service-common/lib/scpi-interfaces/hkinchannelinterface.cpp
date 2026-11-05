@@ -3,7 +3,6 @@
 
 enum Commands
 {
-    cmdAlias,
     cmdStatus
 };
 
@@ -22,7 +21,6 @@ HkInChannelInterface::HkInChannelInterface(const std::shared_ptr<cSCPI> &scpiInt
 void HkInChannelInterface::initSCPIConnection(const QString &leadingNodes)
 {
     const QString adjLeadNodes = appendTrailingColonOnNonEmptyParentNodes(leadingNodes);
-    addDelegate(QString("%1%2").arg(adjLeadNodes, m_sName),"ALIAS", SCPI::isQuery, m_scpiInterface, cmdAlias);
     addDelegate(QString("%1%2").arg(adjLeadNodes, m_sName),"STATUS", SCPI::isQuery, m_scpiInterface, cmdStatus);
 }
 
@@ -30,9 +28,6 @@ void HkInChannelInterface::executeProtoScpi(int cmdCode, const ProtonetCommandPt
 {
     switch (cmdCode)
     {
-    case cmdAlias:
-        protoCmd->m_sOutput = scpiReadAlias(protoCmd->m_sInput);
-        break;
     case cmdStatus:
         protoCmd->m_sOutput = scpiReadChannelStatus(protoCmd->m_sInput);
         break;

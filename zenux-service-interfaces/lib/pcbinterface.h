@@ -69,18 +69,9 @@ public:
     quint32 getDSPChannelSource(const QString &chnName); // int
     quint32 getFormFactorSource(const QString &chnName); // double
 
-    // all commands to schead interface
-    quint32 getAliasSchead(const QString &chnName); // qstring
-
-    // all commands to frqinput interface
-    quint32 getAliasFrqinput(const QString &chnName); // qstring
-
     // all commands to status interface
     quint32 getAdjustmentStatus(); // int
     quint32 getAuthorizationStatus();
-
-    // resource query more generell
-    quint32 resourceAliasQuery(const QString &resourceType, const QString &resourceName);
 
     quint32 registerNotifier(const QString &query, int notifyId, bool notifyWithValue = false); // register for notification on change
     quint32 unregisterNotifiers(); // unregister from all notifications
