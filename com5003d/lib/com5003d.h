@@ -87,7 +87,6 @@ private:
     cSamplingInterface* m_pSamplingInterface = nullptr;
     FOutGroupResourceAndInterface* m_foutInterface = nullptr;
     FInGroupResourceAndInterface* m_pFRQInputInterface = nullptr;
-    ScInGroupResourceAndInterface* m_pSCHeadInterface = nullptr;
     HkInGroupResourceAndInterface* m_hkInInterface = nullptr;
     RMConnection* m_pRMConnection = nullptr;
     int m_pendingResources = 0;

@@ -36,15 +36,6 @@
       </S0>
       <SRATE ScpiPath="SAMPLE:SRATE" Type="Query"/>
     </SAMPLE>
-    <SCHEAD Type="Model,Node">
-      <CHANNEL Type="Node">
-        <CATALOG ScpiPath="SCHEAD:CHANNEL:CATALOG" Type="Query"/>
-      </CHANNEL>
-      <SH0 Type="Node">
-        <STATUS ScpiPath="SCHEAD:SH0:STATUS" Type="Query"/>
-      </SH0>
-      <VERSION ScpiPath="SCHEAD:VERSION" Type="Query"/>
-    </SCHEAD>
     <SENSE Type="Model,Node">
       <CHANNEL Type="Node">
         <CATALOG ScpiPath="SENSE:CHANNEL:CATALOG" Type="Query"/>
