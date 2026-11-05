@@ -81,7 +81,6 @@ void cMT310S2dServer::init()
 cMT310S2dServer::~cMT310S2dServer()
 {
     delete m_foutSettings;
-    delete m_finSettings;
     delete m_accumulatorSettings;
     delete m_sourceControlSettings;
     delete m_pStatusInterface;
@@ -125,8 +124,6 @@ void cMT310S2dServer::doConfiguration()
         ServerParams params = m_settings->getServerParams();
         m_foutSettings = new FOutSettings(&m_xmlConfigReader);
         connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_foutSettings, &FOutSettings::configXMLInfo);
-        m_finSettings = new FInSettings(&m_xmlConfigReader);
-        connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_finSettings, &FInSettings::configXMLInfo);
         m_hkInSettings = new HkInSettings(&m_xmlConfigReader);
         connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_hkInSettings, &HkInSettings::configXMLInfo);
         m_accumulatorSettings = new AccumulatorSettings(&m_xmlConfigReader);

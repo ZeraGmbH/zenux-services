@@ -74,7 +74,6 @@ private:
 
     ServiceStatusInterface* m_pStatusInterface = nullptr;
     HkInSettings* m_hkInSettings = nullptr;
-    FInSettings* m_finSettings = nullptr;
     FOutSettings* m_foutSettings = nullptr;
 
     Com5003SystemInterface* m_pSystemInterface = nullptr;
