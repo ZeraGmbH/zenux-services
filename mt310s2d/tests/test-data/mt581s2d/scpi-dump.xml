@@ -48,15 +48,6 @@
       <MODEON ScpiPath="GENERATOR:MODEON" Type="Query,Command+Par"/>
       <SWITCHON ScpiPath="GENERATOR:SWITCHON" Type="Query,Command+Par"/>
     </GENERATOR>
-    <HKEY Type="Model,Node">
-      <CHANNEL Type="Node">
-        <CATALOG ScpiPath="HKEY:CHANNEL:CATALOG" Type="Query"/>
-      </CHANNEL>
-      <HK0 Type="Node">
-        <STATUS ScpiPath="HKEY:HK0:STATUS" Type="Query"/>
-      </HK0>
-      <VERSION ScpiPath="HKEY:VERSION" Type="Query"/>
-    </HKEY>
     <SAMPLE Type="Model,Node">
       <S0 Type="Node">
         <PLL ScpiPath="SAMPLE:S0:PLL" Type="Query,Command+Par">

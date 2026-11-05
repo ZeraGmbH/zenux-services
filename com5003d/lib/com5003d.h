@@ -80,7 +80,6 @@ private:
     SenseInterfaceCommon* m_pSenseInterface = nullptr;
     cSamplingInterface* m_pSamplingInterface = nullptr;
     FOutGroupResourceAndInterface* m_foutInterface = nullptr;
-    HkInGroupResourceAndInterface* m_hkInInterface = nullptr;
     RMConnection* m_pRMConnection = nullptr;
     int m_pendingResources = 0;
 
