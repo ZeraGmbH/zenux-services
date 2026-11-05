@@ -88,7 +88,6 @@ private:
 
     ServiceStatusInterface* m_pStatusInterface = nullptr;
     HkInSettings* m_hkInSettings = nullptr;
-    ScInSettings* m_pSCHeadSettings = nullptr;
     FInSettings* m_finSettings = nullptr;
     FOutSettings* m_foutSettings = nullptr;
     // Mt310s2 specifics

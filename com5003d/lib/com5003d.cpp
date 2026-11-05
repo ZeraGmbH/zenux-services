@@ -79,7 +79,6 @@ cCOM5003dServer::~cCOM5003dServer()
 {
     delete m_foutSettings;
     delete m_finSettings;
-    delete m_pSCHeadSettings;
     delete m_pStatusInterface;
     delete m_pSystemInterface;
     delete m_pSenseInterface;
@@ -119,8 +118,6 @@ void cCOM5003dServer::doConfiguration()
     connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_foutSettings, &FOutSettings::configXMLInfo);
     m_finSettings = new FInSettings(&m_xmlConfigReader);
     connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_finSettings, &FInSettings::configXMLInfo);
-    m_pSCHeadSettings = new ScInSettings(&m_xmlConfigReader);
-    connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_pSCHeadSettings, &ScInSettings::configXMLInfo);
     m_hkInSettings = new HkInSettings(&m_xmlConfigReader);
     connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_hkInSettings, &HkInSettings::configXMLInfo);
 
