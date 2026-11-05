@@ -4,7 +4,6 @@
 #include "mt310s2senseinterface.h"
 #include "mt581generatorchannelfactory.h"
 #include "clampinterface.h"
-#include "fingroupresourceandinterface.h"
 #include "hkingroupresourceandinterface.h"
 #include "samplinginterface.h"
 #include "foutgroupresourceandinterface.h"
@@ -91,7 +90,6 @@ cMT310S2dServer::~cMT310S2dServer()
     delete m_pSenseInterface;
     delete m_pClampInterface;
     delete m_foutInterface;
-    delete m_pFRQInputInterface;
     delete m_hkInInterface;
     delete m_pSystemInfo;
     delete m_pRMConnection;
@@ -187,7 +185,6 @@ void cMT310S2dServer::earlySetup(AbstractChannelRangeFactoryPtr channelRangeFact
     m_scpiConnectionList.append(m_pHotControllerInterface = new HotplugControllerInterface(m_scpiInterface, m_hotPluggableControllerContainer));
     m_scpiConnectionList.append(m_pSamplingInterface = new cSamplingInterface(m_scpiInterface, m_settings->getSamplingSettings(), m_ctrlFactory));
     m_scpiConnectionList.append(m_foutInterface = new FOutGroupResourceAndInterface(m_scpiInterface, m_foutSettings));
-    m_scpiConnectionList.append(m_pFRQInputInterface = new FInGroupResourceAndInterface(m_scpiInterface, m_finSettings));
     m_scpiConnectionList.append(m_hkInInterface = new HkInGroupResourceAndInterface(m_scpiInterface, m_hkInSettings));
     m_scpiConnectionList.append(m_pClampInterface = new cClampInterface(this,
                                                                         getSenseSettings(),
@@ -214,7 +211,6 @@ void cMT310S2dServer::earlySetup(AbstractChannelRangeFactoryPtr channelRangeFact
     }
 
     m_resourceList.append(m_foutInterface); // all our resources
-    m_resourceList.append(m_pFRQInputInterface);
     m_resourceList.append(m_hkInInterface);
     qInfo("SCPI interfaces set.");
 }

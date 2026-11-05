@@ -11,7 +11,6 @@
 #include "senseinterfacecommon.h"
 #include "settingscontainer.h"
 #include "hkinsettings.h"
-#include "scinsettings.h"
 #include "finsettings.h"
 #include "foutsettings.h"
 #include "accumulatorsettings.h"
@@ -26,8 +25,6 @@ class ServiceStatusInterface;
 class Mt310s2SystemInterface;
 class cSamplingInterface;
 class FOutGroupResourceAndInterface;
-class FInGroupResourceAndInterface;
-class ScInGroupResourceAndInterface;
 class HkInGroupResourceAndInterface;
 class QSocketNotifier;
 class cClampInterface;
@@ -100,7 +97,6 @@ private:
     SenseInterfaceCommon* m_pSenseInterface = nullptr;
     cSamplingInterface* m_pSamplingInterface = nullptr;
     FOutGroupResourceAndInterface* m_foutInterface = nullptr;
-    FInGroupResourceAndInterface* m_pFRQInputInterface = nullptr;
     HkInGroupResourceAndInterface* m_hkInInterface = nullptr;
     RMConnection* m_pRMConnection = nullptr;
     cClampInterface* m_pClampInterface = nullptr;

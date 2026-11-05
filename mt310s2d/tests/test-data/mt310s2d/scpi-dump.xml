@@ -1,24 +1,6 @@
 <!DOCTYPE SCPIModel>
 <MODELLIST>
   <MODELS>
-    <FRQINPUT Type="Model,Node">
-      <CHANNEL Type="Node">
-        <CATALOG ScpiPath="FRQINPUT:CHANNEL:CATALOG" Type="Query"/>
-      </CHANNEL>
-      <FI0 Type="Node">
-        <STATUS ScpiPath="FRQINPUT:FI0:STATUS" Type="Query"/>
-      </FI0>
-      <FI1 Type="Node">
-        <STATUS ScpiPath="FRQINPUT:FI1:STATUS" Type="Query"/>
-      </FI1>
-      <FI2 Type="Node">
-        <STATUS ScpiPath="FRQINPUT:FI2:STATUS" Type="Query"/>
-      </FI2>
-      <FI3 Type="Node">
-        <STATUS ScpiPath="FRQINPUT:FI3:STATUS" Type="Query"/>
-      </FI3>
-      <VERSION ScpiPath="FRQINPUT:VERSION" Type="Query"/>
-    </FRQINPUT>
     <HKEY Type="Model,Node">
       <CHANNEL Type="Node">
         <CATALOG ScpiPath="HKEY:CHANNEL:CATALOG" Type="Query"/>

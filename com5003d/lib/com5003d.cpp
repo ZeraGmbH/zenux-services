@@ -2,7 +2,6 @@
 #include "com5003dglobal.h"
 #include "com5003systeminterface.h"
 #include "com5003senseinterface.h"
-#include "fingroupresourceandinterface.h"
 #include "firmwareupdatenotificationfile.h"
 #include "hkingroupresourceandinterface.h"
 #include "samplinginterface.h"
@@ -83,7 +82,6 @@ cCOM5003dServer::~cCOM5003dServer()
     delete m_pSystemInterface;
     delete m_pSenseInterface;
     delete m_foutInterface;
-    delete m_pFRQInputInterface;
     delete m_hkInInterface;
     delete m_pSystemInfo;
     delete m_pRMConnection;
@@ -301,11 +299,9 @@ void cCOM5003dServer::setupInterfacesRequiresAtmelRunning(AbstractChannelRangeFa
     m_scpiConnectionList.append(m_pSystemInterface = new Com5003SystemInterface(this, m_pSystemInfo, m_pSenseInterface, m_ctrlFactory));
     m_scpiConnectionList.append(m_pSamplingInterface = new cSamplingInterface(m_scpiInterface, m_settings->getSamplingSettings(), m_ctrlFactory));
     m_scpiConnectionList.append(m_foutInterface = new FOutGroupResourceAndInterface(m_scpiInterface, m_foutSettings));
-    m_scpiConnectionList.append(m_pFRQInputInterface = new FInGroupResourceAndInterface(m_scpiInterface, m_finSettings));
     m_scpiConnectionList.append(m_hkInInterface = new HkInGroupResourceAndInterface(m_scpiInterface, m_hkInSettings));
 
     m_resourceList.append(m_foutInterface); // all our resources
-    m_resourceList.append(m_pFRQInputInterface);
     m_resourceList.append(m_hkInInterface);
     qInfo("SCPI interfaces set.");
 }
