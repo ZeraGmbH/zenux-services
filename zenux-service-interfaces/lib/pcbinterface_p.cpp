@@ -377,6 +377,20 @@ quint32 cPCBInterfacePrivate::setPLLChannel(const QString &samplechnName, const 
     return msgnr;
 }
 
+quint32 cPCBInterfacePrivate::getAliasSchead(const QString &chnName)
+{
+    quint32 msgnr = sendCommand(QString("SCHEAD:%1:ALIAS?").arg(chnName));
+    m_MsgNrCmdList[msgnr] = getaliassschead;
+    return msgnr;
+}
+
+quint32 cPCBInterfacePrivate::getAliasFrqinput(const QString &chnName)
+{
+    quint32 msgnr = sendCommand(QString("FRQINPUT:%1:ALIAS?").arg(chnName));
+    m_MsgNrCmdList[msgnr] = getaliasfrqinput;
+    return msgnr;
+}
+
 quint32 cPCBInterfacePrivate::getAdjustmentStatus()
 {
     quint32 msgnr = sendCommand(QString("STAT:PCB:ADJ?"));
@@ -472,6 +486,13 @@ quint32 cPCBInterfacePrivate::transparentCommand(const QString &cmd)
         msgnr = sendCommand(sl.at(0), sl.at(1));
 
     m_MsgNrCmdList[msgnr] = transparentcommand;
+    return msgnr;
+}
+
+quint32 cPCBInterfacePrivate::resourceAliasQuery(const QString &resourceType, const QString &resourceName)
+{
+    quint32 msgnr = sendCommand(QString("%1:%2:ALI?").arg(resourceType, resourceName));
+    m_MsgNrCmdList[msgnr] = resourcealiasquery;
     return msgnr;
 }
 

@@ -437,6 +437,20 @@ quint32 cPCBInterface::getFormFactorSource(const QString &chnName)
 }
 
 
+quint32 cPCBInterface::getAliasSchead(const QString &chnName)
+{
+    Q_D(cPCBInterface);
+    return d->getAliasSchead(chnName);
+}
+
+
+quint32 cPCBInterface::getAliasFrqinput(const QString &chnName)
+{
+    Q_D(cPCBInterface);
+    return d->getAliasFrqinput(chnName);
+}
+
+
 quint32 cPCBInterface::getAdjustmentStatus()
 {
     Q_D(cPCBInterface);
@@ -448,6 +462,12 @@ quint32 cPCBInterface::getAuthorizationStatus()
 {
     Q_D(cPCBInterface);
     return d->getAuthorizationStatus();
+}
+
+quint32 cPCBInterface::resourceAliasQuery(const QString &resourceType, const QString &resourceName)
+{
+    Q_D(cPCBInterface);
+    return d->resourceAliasQuery(resourceType, resourceName);
 }
 
 }

@@ -59,9 +59,18 @@ public:
     quint32 getSampleRate(); // int the actual set sampling rate
     quint32 setPLLChannel(const QString &samplechnName, const QString &pllchnName);
 
+    // all commands to schead interface
+    quint32 getAliasSchead(const QString &chnName); // qstring
+
+    // all commands to frqinput interface
+    quint32 getAliasFrqinput(const QString &chnName); // qstring
+
     // all commands to status interface
     quint32 getAdjustmentStatus(); // int
     quint32 getAuthorizationStatus();
+
+    // resource query more generell
+    quint32 resourceAliasQuery(const QString &resourceType, const QString &resourceName);
 
     quint32 registerNotifier(const QString &query, int notifyId, bool notifyWithValue); // register for notification on change
     quint32 unregisterNotifiers(); // unregister from all notifications
