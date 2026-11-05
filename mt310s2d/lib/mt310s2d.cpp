@@ -122,8 +122,6 @@ void cMT310S2dServer::doConfiguration()
         ServerParams params = m_settings->getServerParams();
         m_foutSettings = new FOutSettings(&m_xmlConfigReader);
         connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_foutSettings, &FOutSettings::configXMLInfo);
-        m_hkInSettings = new HkInSettings(&m_xmlConfigReader);
-        connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_hkInSettings, &HkInSettings::configXMLInfo);
         m_accumulatorSettings = new AccumulatorSettings(&m_xmlConfigReader);
         connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_accumulatorSettings, &AccumulatorSettings::configXMLInfo);
         m_sourceControlSettings = new SourceControlSettings(&m_xmlConfigReader);

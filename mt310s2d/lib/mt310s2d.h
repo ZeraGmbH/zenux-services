@@ -10,8 +10,6 @@
 #include "rmconnection.h"
 #include "senseinterfacecommon.h"
 #include "settingscontainer.h"
-#include "hkinsettings.h"
-#include "finsettings.h"
 #include "foutsettings.h"
 #include "accumulatorsettings.h"
 #include "accumulatorinterface.h"
@@ -25,7 +23,6 @@ class ServiceStatusInterface;
 class Mt310s2SystemInterface;
 class cSamplingInterface;
 class FOutGroupResourceAndInterface;
-class HkInGroupResourceAndInterface;
 class QSocketNotifier;
 class cClampInterface;
 
@@ -84,7 +81,6 @@ private:
     Mt310s2SystemInfo* m_pSystemInfo = nullptr;
 
     ServiceStatusInterface* m_pStatusInterface = nullptr;
-    HkInSettings* m_hkInSettings = nullptr;
     FOutSettings* m_foutSettings = nullptr;
     // Mt310s2 specifics
     AccumulatorSettings* m_accumulatorSettings = nullptr;

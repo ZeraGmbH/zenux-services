@@ -7,8 +7,6 @@
 #include "abstractfactoryi2cctrl.h"
 #include "rmconnection.h"
 #include "senseinterfacecommon.h"
-#include "hkinsettings.h"
-#include "finsettings.h"
 #include "foutsettings.h"
 #include "abstractctrlheartbeatwait.h"
 #include "settingscontainer.h"
@@ -20,7 +18,6 @@ class ServiceStatusInterface;
 class Com5003SystemInterface;
 class cSamplingInterface;
 class FOutGroupResourceAndInterface;
-class HkInGroupResourceAndInterface;
 class SystemInfo;
 
 
@@ -73,7 +70,6 @@ private:
     SystemInfo* m_pSystemInfo = nullptr;
 
     ServiceStatusInterface* m_pStatusInterface = nullptr;
-    HkInSettings* m_hkInSettings = nullptr;
     FOutSettings* m_foutSettings = nullptr;
 
     Com5003SystemInterface* m_pSystemInterface = nullptr;

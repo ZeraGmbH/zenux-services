@@ -111,8 +111,6 @@ void cCOM5003dServer::doConfiguration()
 
     m_foutSettings = new FOutSettings(&m_xmlConfigReader);
     connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_foutSettings, &FOutSettings::configXMLInfo);
-    m_hkInSettings = new HkInSettings(&m_xmlConfigReader);
-    connect(&m_xmlConfigReader, &Zera::XMLConfig::cReader::valueChanged, m_hkInSettings, &HkInSettings::configXMLInfo);
 
     sigStart = 1;
     write(m_nFPGAfd, &sigStart, 4);
