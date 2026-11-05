@@ -1,5 +1,5 @@
-#ifndef SCHEADSETTINGS_H
-#define SCHEADSETTINGS_H
+#ifndef SCINSETTINGS_H
+#define SCINSETTINGS_H
 
 #include <xmlsettings.h>
 
@@ -21,6 +21,4 @@ private:
     QList<ChannelSettings*> m_ChannelSettingsList;
 };
 
-
-
-#endif // SCHEADSETTINGS_H
+#endif // SCINSETTINGS_H
