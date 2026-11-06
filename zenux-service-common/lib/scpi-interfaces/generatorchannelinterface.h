@@ -21,7 +21,7 @@ signals:
 private:
     void executeProtoScpi(int cmdCode, const ProtonetCommandPtr &protoCmd) override;
     QString scpiChangeRangeByAmplitude(const QString &scpi);
-    QString scpiChangeRange(const QString &scpi);
+    QString scpiChangeRangeByEnum(const QString &scpi);
     QString scpiDspAmplitude(const QString &scpi);
     QString scpiDspFrequency(const QString &scpi);
     QString scpiDspAngle(const QString &scpi);

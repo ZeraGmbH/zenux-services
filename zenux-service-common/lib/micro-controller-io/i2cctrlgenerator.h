@@ -16,8 +16,8 @@ public:
     ZeraMControllerIo::atmelRM sendSourceOn(const QStringList &channelMNamesOn) override;
 
     ZeraMControllerIo::atmelRM setRangeByAmplitude(const QString &channelMName, float amplitude) override;
-    ZeraMControllerIo::atmelRM readRange(const QString& channelMName, quint8& range) override;
-    ZeraMControllerIo::atmelRM setRange(const QString& channelMName, quint8 range) override;
+    ZeraMControllerIo::atmelRM readRangeByEnum(const QString& channelMName, quint8& range) override;
+    ZeraMControllerIo::atmelRM setRangeByEnum(const QString& channelMName, quint8 range) override;
 
     ZeraMControllerIo::atmelRM getDspAmplitude(const QString& channelMName, float &amplitude) override;
     ZeraMControllerIo::atmelRM setDspAmplitude(const QString& channelMName, float amplitude) override;

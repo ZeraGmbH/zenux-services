@@ -40,7 +40,7 @@ ZeraMControllerIoTemplate::atmelRM MockI2cCtrlGenerator::sendSourceOn(const QStr
     return ZeraMControllerIo::cmdexecfault;
 }
 
-ZeraMControllerIoTemplate::atmelRM MockI2cCtrlGenerator::readRange(const QString &channelMName, quint8 &range)
+ZeraMControllerIoTemplate::atmelRM MockI2cCtrlGenerator::readRangeByEnum(const QString &channelMName, quint8 &range)
 {
     range = m_generatorRangeMap[channelMName];
     return ZeraMControllerIo::cmddone;
@@ -55,7 +55,7 @@ ZeraMControllerIoTemplate::atmelRM MockI2cCtrlGenerator::setRangeByAmplitude(con
     return ZeraMControllerIo::cmdexecfault;
 }
 
-ZeraMControllerIoTemplate::atmelRM MockI2cCtrlGenerator::setRange(const QString &channelMName, quint8 range)
+ZeraMControllerIoTemplate::atmelRM MockI2cCtrlGenerator::setRangeByEnum(const QString &channelMName, quint8 range)
 {
     if (canChangeRange(channelMName)) {
         m_generatorRangeMap[channelMName] = range;

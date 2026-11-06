@@ -40,7 +40,7 @@ void GeneratorChannelInterface::executeProtoScpi(int cmdCode, const ProtonetComm
         protoCmd->m_sOutput = scpiChangeRangeByAmplitude(protoCmd->m_sInput);
         break;
     case controllerGetSetRange:
-        protoCmd->m_sOutput = scpiChangeRange(protoCmd->m_sInput);
+        protoCmd->m_sOutput = scpiChangeRangeByEnum(protoCmd->m_sInput);
         break;
     case dspGetSetAmplitude:
         protoCmd->m_sOutput = scpiDspAmplitude(protoCmd->m_sInput);
@@ -74,7 +74,7 @@ QString GeneratorChannelInterface::scpiChangeRangeByAmplitude(const QString &scp
     return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
-QString GeneratorChannelInterface::scpiChangeRange(const QString &scpi)
+QString GeneratorChannelInterface::scpiChangeRangeByEnum(const QString &scpi)
 {
     cSCPICommand cmd = scpi;
     I2cCtrlGeneratorPtr controller = m_ctrlFactory->getGeneratorController(m_senseSettings);
@@ -82,7 +82,7 @@ QString GeneratorChannelInterface::scpiChangeRange(const QString &scpi)
         bool ok;
         quint8 range = cmd.getParam(0).toUInt(&ok);
         if (ok) {
-            if(controller->setRange(m_mName, range) == ZeraMControllerIo::cmddone) {
+            if(controller->setRangeByEnum(m_mName, range) == ZeraMControllerIo::cmddone) {
                 emit sigMeasRangeProbablyChanged(m_mName);
                 return  ZSCPI::scpiAnswer[ZSCPI::ack];
             }
@@ -91,7 +91,7 @@ QString GeneratorChannelInterface::scpiChangeRange(const QString &scpi)
     }
     else if(cmd.isQuery()) {
         quint8 range;
-        if(controller->readRange(m_mName, range) == ZeraMControllerIo::cmddone)
+        if(controller->readRangeByEnum(m_mName, range) == ZeraMControllerIo::cmddone)
             return QString::number(range);
     }
     return ZSCPI::scpiAnswer[ZSCPI::nak];

@@ -77,7 +77,7 @@ ZeraMControllerIoTemplate::atmelRM I2cCtrlGenerator::setRangeByAmplitude(const Q
     return ret;
 }
 
-ZeraMControllerIoTemplate::atmelRM I2cCtrlGenerator::setRange(const QString &channelMName, quint8 range)
+ZeraMControllerIoTemplate::atmelRM I2cCtrlGenerator::setRangeByEnum(const QString &channelMName, quint8 range)
 {
     quint8 controllerChannelNo = getControllerInternalChannelNo(m_senseSettings, channelMName);
     hw_cmd CMD(hwSendSetSourceRange, controllerChannelNo, &range, 1);
@@ -86,7 +86,7 @@ ZeraMControllerIoTemplate::atmelRM I2cCtrlGenerator::setRange(const QString &cha
     return ret;
 }
 
-ZeraMControllerIoTemplate::atmelRM I2cCtrlGenerator::readRange(const QString &channelMName, quint8 &range)
+ZeraMControllerIoTemplate::atmelRM I2cCtrlGenerator::readRangeByEnum(const QString &channelMName, quint8 &range)
 {
     quint8 controllerChannelNo = getControllerInternalChannelNo(m_senseSettings, channelMName);
     hw_cmd CMD(hwSendGetSourceRange, controllerChannelNo, nullptr, 0);

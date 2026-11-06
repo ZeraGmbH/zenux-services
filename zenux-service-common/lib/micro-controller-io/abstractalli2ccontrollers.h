@@ -132,8 +132,9 @@ public:
     virtual ZeraMControllerIo::atmelRM sendSourceOn(const QStringList &channelMNamesOn) = 0;
 
     virtual ZeraMControllerIo::atmelRM setRangeByAmplitude(const QString &channelMName, float amplitude) = 0;
-    virtual ZeraMControllerIo::atmelRM readRange(const QString& channelMName, quint8& range) = 0;
-    virtual ZeraMControllerIo::atmelRM setRange(const QString& channelMName, quint8 range) = 0;
+    // Do we really need set/read by enum?
+    virtual ZeraMControllerIo::atmelRM readRangeByEnum(const QString& channelMName, quint8& range) = 0;
+    virtual ZeraMControllerIo::atmelRM setRangeByEnum(const QString& channelMName, quint8 range) = 0;
 
     virtual ZeraMControllerIo::atmelRM setDspAmplitude(const QString& channelMName, float amplitude) = 0;
     virtual ZeraMControllerIo::atmelRM getDspAmplitude(const QString& channelMName, float &amplitude) = 0;
