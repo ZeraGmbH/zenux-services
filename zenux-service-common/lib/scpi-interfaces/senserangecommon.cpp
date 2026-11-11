@@ -30,7 +30,7 @@ SenseRangeCommon::SenseRangeCommon(const std::shared_ptr<cSCPI> &scpiInterface,
     ScpiConnection(scpiInterface),
     m_bAvail(avail),
     m_sName(name),
-    m_sAlias(name != rangeNameCurrentNull ? name : rangeAliasNull),
+    m_sAlias(name != rangeNameCurrentNull ? name : rangeAliasNull), // WOW: A MEGA dance in zera-classes for this single line
     m_upperRangeValue(upperRangeValue),
     m_fRejection(rejection),
     m_fOVRejection(ovrejection),
