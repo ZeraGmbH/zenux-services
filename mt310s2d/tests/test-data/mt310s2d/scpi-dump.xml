@@ -25,7 +25,6 @@
         <DSPCHANNEL ScpiPath="SENSE:M0:DSPCHANNEL" Type="Query"/>
         <N_100MV Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M0:100MV:ADCREJECTION" Type="Query"/>
-          <ALIAS ScpiPath="SENSE:M0:100MV:ALIAS" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M0:100MV:AVAIL" Type="Query"/>
           <CORRECTION Type="Node">
             <ADJGAIN ScpiPath="SENSE:M0:100MV:CORRECTION:ADJGAIN" Type="Node,Query"/>
@@ -88,7 +87,6 @@
         </N_100MV>
         <N_250V Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M0:250V:ADCREJECTION" Type="Query"/>
-          <ALIAS ScpiPath="SENSE:M0:250V:ALIAS" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M0:250V:AVAIL" Type="Query"/>
           <CORRECTION Type="Node">
             <ADJGAIN ScpiPath="SENSE:M0:250V:CORRECTION:ADJGAIN" Type="Node,Query"/>
@@ -151,7 +149,6 @@
         </N_250V>
         <N_8V Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M0:8V:ADCREJECTION" Type="Query"/>
-          <ALIAS ScpiPath="SENSE:M0:8V:ALIAS" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M0:8V:AVAIL" Type="Query"/>
           <CORRECTION Type="Node">
             <ADJGAIN ScpiPath="SENSE:M0:8V:CORRECTION:ADJGAIN" Type="Node,Query"/>
@@ -227,7 +224,6 @@
         <DSPCHANNEL ScpiPath="SENSE:M1:DSPCHANNEL" Type="Query"/>
         <N_100MV Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M1:100MV:ADCREJECTION" Type="Query"/>
-          <ALIAS ScpiPath="SENSE:M1:100MV:ALIAS" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M1:100MV:AVAIL" Type="Query"/>
           <CORRECTION Type="Node">
             <ADJGAIN ScpiPath="SENSE:M1:100MV:CORRECTION:ADJGAIN" Type="Node,Query"/>
@@ -290,7 +286,6 @@
         </N_100MV>
         <N_250V Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M1:250V:ADCREJECTION" Type="Query"/>
-          <ALIAS ScpiPath="SENSE:M1:250V:ALIAS" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M1:250V:AVAIL" Type="Query"/>
           <CORRECTION Type="Node">
             <ADJGAIN ScpiPath="SENSE:M1:250V:CORRECTION:ADJGAIN" Type="Node,Query"/>
@@ -353,7 +348,6 @@
         </N_250V>
         <N_8V Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M1:8V:ADCREJECTION" Type="Query"/>
-          <ALIAS ScpiPath="SENSE:M1:8V:ALIAS" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M1:8V:AVAIL" Type="Query"/>
           <CORRECTION Type="Node">
             <ADJGAIN ScpiPath="SENSE:M1:8V:CORRECTION:ADJGAIN" Type="Node,Query"/>
@@ -429,7 +423,6 @@
         <DSPCHANNEL ScpiPath="SENSE:M2:DSPCHANNEL" Type="Query"/>
         <N_100MV Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M2:100MV:ADCREJECTION" Type="Query"/>
-          <ALIAS ScpiPath="SENSE:M2:100MV:ALIAS" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M2:100MV:AVAIL" Type="Query"/>
           <CORRECTION Type="Node">
             <ADJGAIN ScpiPath="SENSE:M2:100MV:CORRECTION:ADJGAIN" Type="Node,Query"/>
@@ -492,7 +485,6 @@
         </N_100MV>
         <N_250V Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M2:250V:ADCREJECTION" Type="Query"/>
-          <ALIAS ScpiPath="SENSE:M2:250V:ALIAS" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M2:250V:AVAIL" Type="Query"/>
           <CORRECTION Type="Node">
             <ADJGAIN ScpiPath="SENSE:M2:250V:CORRECTION:ADJGAIN" Type="Node,Query"/>
@@ -555,7 +547,6 @@
         </N_250V>
         <N_8V Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M2:8V:ADCREJECTION" Type="Query"/>
-          <ALIAS ScpiPath="SENSE:M2:8V:ALIAS" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M2:8V:AVAIL" Type="Query"/>
           <CORRECTION Type="Node">
             <ADJGAIN ScpiPath="SENSE:M2:8V:CORRECTION:ADJGAIN" Type="Node,Query"/>
@@ -631,7 +622,6 @@
         <DSPCHANNEL ScpiPath="SENSE:M3:DSPCHANNEL" Type="Query"/>
         <N_1.0A Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M3:1.0A:ADCREJECTION" Type="Query"/>
-          <ALIAS ScpiPath="SENSE:M3:1.0A:ALIAS" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M3:1.0A:AVAIL" Type="Query"/>
           <CORRECTION Type="Node">
             <ADJGAIN ScpiPath="SENSE:M3:1.0A:CORRECTION:ADJGAIN" Type="Node,Query"/>
@@ -694,7 +684,6 @@
         </N_1.0A>
         <N_100MA Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M3:100MA:ADCREJECTION" Type="Query"/>
-          <ALIAS ScpiPath="SENSE:M3:100MA:ALIAS" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M3:100MA:AVAIL" Type="Query"/>
           <CORRECTION Type="Node">
             <ADJGAIN ScpiPath="SENSE:M3:100MA:CORRECTION:ADJGAIN" Type="Node,Query"/>
@@ -757,7 +746,6 @@
         </N_100MA>
         <N_100MV Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M3:100MV:ADCREJECTION" Type="Query"/>
-          <ALIAS ScpiPath="SENSE:M3:100MV:ALIAS" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M3:100MV:AVAIL" Type="Query"/>
           <CORRECTION Type="Node">
             <ADJGAIN ScpiPath="SENSE:M3:100MV:CORRECTION:ADJGAIN" Type="Node,Query"/>
@@ -820,7 +808,6 @@
         </N_100MV>
         <N_10A Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M3:10A:ADCREJECTION" Type="Query"/>
-          <ALIAS ScpiPath="SENSE:M3:10A:ALIAS" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M3:10A:AVAIL" Type="Query"/>
           <CORRECTION Type="Node">
             <ADJGAIN ScpiPath="SENSE:M3:10A:CORRECTION:ADJGAIN" Type="Node,Query"/>
@@ -883,7 +870,6 @@
         </N_10A>
         <N_10MV Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M3:10MV:ADCREJECTION" Type="Query"/>
-          <ALIAS ScpiPath="SENSE:M3:10MV:ALIAS" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M3:10MV:AVAIL" Type="Query"/>
           <CORRECTION Type="Node">
             <ADJGAIN ScpiPath="SENSE:M3:10MV:CORRECTION:ADJGAIN" Type="Node,Query"/>
@@ -946,7 +932,6 @@
         </N_10MV>
         <N_1V Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M3:1V:ADCREJECTION" Type="Query"/>
-          <ALIAS ScpiPath="SENSE:M3:1V:ALIAS" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M3:1V:AVAIL" Type="Query"/>
           <CORRECTION Type="Node">
             <ADJGAIN ScpiPath="SENSE:M3:1V:CORRECTION:ADJGAIN" Type="Node,Query"/>
@@ -1009,7 +994,6 @@
         </N_1V>
         <N_2.5A Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M3:2.5A:ADCREJECTION" Type="Query"/>
-          <ALIAS ScpiPath="SENSE:M3:2.5A:ALIAS" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M3:2.5A:AVAIL" Type="Query"/>
           <CORRECTION Type="Node">
             <ADJGAIN ScpiPath="SENSE:M3:2.5A:CORRECTION:ADJGAIN" Type="Node,Query"/>
@@ -1072,7 +1056,6 @@
         </N_2.5A>
         <N_200MV Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M3:200MV:ADCREJECTION" Type="Query"/>
-          <ALIAS ScpiPath="SENSE:M3:200MV:ALIAS" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M3:200MV:AVAIL" Type="Query"/>
           <CORRECTION Type="Node">
             <ADJGAIN ScpiPath="SENSE:M3:200MV:CORRECTION:ADJGAIN" Type="Node,Query"/>
@@ -1135,7 +1118,6 @@
         </N_200MV>
         <N_20MV Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M3:20MV:ADCREJECTION" Type="Query"/>
-          <ALIAS ScpiPath="SENSE:M3:20MV:ALIAS" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M3:20MV:AVAIL" Type="Query"/>
           <CORRECTION Type="Node">
             <ADJGAIN ScpiPath="SENSE:M3:20MV:CORRECTION:ADJGAIN" Type="Node,Query"/>
@@ -1198,7 +1180,6 @@
         </N_20MV>
         <N_250MA Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M3:250MA:ADCREJECTION" Type="Query"/>
-          <ALIAS ScpiPath="SENSE:M3:250MA:ALIAS" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M3:250MA:AVAIL" Type="Query"/>
           <CORRECTION Type="Node">
             <ADJGAIN ScpiPath="SENSE:M3:250MA:CORRECTION:ADJGAIN" Type="Node,Query"/>
@@ -1261,7 +1242,6 @@
         </N_250MA>
         <N_25MA Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M3:25MA:ADCREJECTION" Type="Query"/>
-          <ALIAS ScpiPath="SENSE:M3:25MA:ALIAS" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M3:25MA:AVAIL" Type="Query"/>
           <CORRECTION Type="Node">
             <ADJGAIN ScpiPath="SENSE:M3:25MA:CORRECTION:ADJGAIN" Type="Node,Query"/>
@@ -1324,7 +1304,6 @@
         </N_25MA>
         <N_2MV Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M3:2MV:ADCREJECTION" Type="Query"/>
-          <ALIAS ScpiPath="SENSE:M3:2MV:ALIAS" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M3:2MV:AVAIL" Type="Query"/>
           <CORRECTION Type="Node">
             <ADJGAIN ScpiPath="SENSE:M3:2MV:CORRECTION:ADJGAIN" Type="Node,Query"/>
@@ -1387,7 +1366,6 @@
         </N_2MV>
         <N_2V Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M3:2V:ADCREJECTION" Type="Query"/>
-          <ALIAS ScpiPath="SENSE:M3:2V:ALIAS" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M3:2V:AVAIL" Type="Query"/>
           <CORRECTION Type="Node">
             <ADJGAIN ScpiPath="SENSE:M3:2V:CORRECTION:ADJGAIN" Type="Node,Query"/>
@@ -1450,7 +1428,6 @@
         </N_2V>
         <N_500MA Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M3:500MA:ADCREJECTION" Type="Query"/>
-          <ALIAS ScpiPath="SENSE:M3:500MA:ALIAS" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M3:500MA:AVAIL" Type="Query"/>
           <CORRECTION Type="Node">
             <ADJGAIN ScpiPath="SENSE:M3:500MA:CORRECTION:ADJGAIN" Type="Node,Query"/>
@@ -1513,7 +1490,6 @@
         </N_500MA>
         <N_500MV Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M3:500MV:ADCREJECTION" Type="Query"/>
-          <ALIAS ScpiPath="SENSE:M3:500MV:ALIAS" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M3:500MV:AVAIL" Type="Query"/>
           <CORRECTION Type="Node">
             <ADJGAIN ScpiPath="SENSE:M3:500MV:CORRECTION:ADJGAIN" Type="Node,Query"/>
@@ -1576,7 +1552,6 @@
         </N_500MV>
         <N_50MA Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M3:50MA:ADCREJECTION" Type="Query"/>
-          <ALIAS ScpiPath="SENSE:M3:50MA:ALIAS" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M3:50MA:AVAIL" Type="Query"/>
           <CORRECTION Type="Node">
             <ADJGAIN ScpiPath="SENSE:M3:50MA:CORRECTION:ADJGAIN" Type="Node,Query"/>
@@ -1639,7 +1614,6 @@
         </N_50MA>
         <N_50MV Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M3:50MV:ADCREJECTION" Type="Query"/>
-          <ALIAS ScpiPath="SENSE:M3:50MV:ALIAS" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M3:50MV:AVAIL" Type="Query"/>
           <CORRECTION Type="Node">
             <ADJGAIN ScpiPath="SENSE:M3:50MV:CORRECTION:ADJGAIN" Type="Node,Query"/>
@@ -1702,7 +1676,6 @@
         </N_50MV>
         <N_5A Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M3:5A:ADCREJECTION" Type="Query"/>
-          <ALIAS ScpiPath="SENSE:M3:5A:ALIAS" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M3:5A:AVAIL" Type="Query"/>
           <CORRECTION Type="Node">
             <ADJGAIN ScpiPath="SENSE:M3:5A:CORRECTION:ADJGAIN" Type="Node,Query"/>
@@ -1765,7 +1738,6 @@
         </N_5A>
         <N_5MV Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M3:5MV:ADCREJECTION" Type="Query"/>
-          <ALIAS ScpiPath="SENSE:M3:5MV:ALIAS" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M3:5MV:AVAIL" Type="Query"/>
           <CORRECTION Type="Node">
             <ADJGAIN ScpiPath="SENSE:M3:5MV:CORRECTION:ADJGAIN" Type="Node,Query"/>
@@ -1828,7 +1800,6 @@
         </N_5MV>
         <N_5V Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M3:5V:ADCREJECTION" Type="Query"/>
-          <ALIAS ScpiPath="SENSE:M3:5V:ALIAS" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M3:5V:AVAIL" Type="Query"/>
           <CORRECTION Type="Node">
             <ADJGAIN ScpiPath="SENSE:M3:5V:CORRECTION:ADJGAIN" Type="Node,Query"/>
@@ -1891,7 +1862,6 @@
         </N_5V>
         <N_8V Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M3:8V:ADCREJECTION" Type="Query"/>
-          <ALIAS ScpiPath="SENSE:M3:8V:ALIAS" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M3:8V:AVAIL" Type="Query"/>
           <CORRECTION Type="Node">
             <ADJGAIN ScpiPath="SENSE:M3:8V:CORRECTION:ADJGAIN" Type="Node,Query"/>
@@ -1967,7 +1937,6 @@
         <DSPCHANNEL ScpiPath="SENSE:M4:DSPCHANNEL" Type="Query"/>
         <N_1.0A Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M4:1.0A:ADCREJECTION" Type="Query"/>
-          <ALIAS ScpiPath="SENSE:M4:1.0A:ALIAS" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M4:1.0A:AVAIL" Type="Query"/>
           <CORRECTION Type="Node">
             <ADJGAIN ScpiPath="SENSE:M4:1.0A:CORRECTION:ADJGAIN" Type="Node,Query"/>
@@ -2030,7 +1999,6 @@
         </N_1.0A>
         <N_100MA Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M4:100MA:ADCREJECTION" Type="Query"/>
-          <ALIAS ScpiPath="SENSE:M4:100MA:ALIAS" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M4:100MA:AVAIL" Type="Query"/>
           <CORRECTION Type="Node">
             <ADJGAIN ScpiPath="SENSE:M4:100MA:CORRECTION:ADJGAIN" Type="Node,Query"/>
@@ -2093,7 +2061,6 @@
         </N_100MA>
         <N_100MV Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M4:100MV:ADCREJECTION" Type="Query"/>
-          <ALIAS ScpiPath="SENSE:M4:100MV:ALIAS" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M4:100MV:AVAIL" Type="Query"/>
           <CORRECTION Type="Node">
             <ADJGAIN ScpiPath="SENSE:M4:100MV:CORRECTION:ADJGAIN" Type="Node,Query"/>
@@ -2156,7 +2123,6 @@
         </N_100MV>
         <N_10A Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M4:10A:ADCREJECTION" Type="Query"/>
-          <ALIAS ScpiPath="SENSE:M4:10A:ALIAS" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M4:10A:AVAIL" Type="Query"/>
           <CORRECTION Type="Node">
             <ADJGAIN ScpiPath="SENSE:M4:10A:CORRECTION:ADJGAIN" Type="Node,Query"/>
@@ -2219,7 +2185,6 @@
         </N_10A>
         <N_10MV Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M4:10MV:ADCREJECTION" Type="Query"/>
-          <ALIAS ScpiPath="SENSE:M4:10MV:ALIAS" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M4:10MV:AVAIL" Type="Query"/>
           <CORRECTION Type="Node">
             <ADJGAIN ScpiPath="SENSE:M4:10MV:CORRECTION:ADJGAIN" Type="Node,Query"/>
@@ -2282,7 +2247,6 @@
         </N_10MV>
         <N_1V Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M4:1V:ADCREJECTION" Type="Query"/>
-          <ALIAS ScpiPath="SENSE:M4:1V:ALIAS" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M4:1V:AVAIL" Type="Query"/>
           <CORRECTION Type="Node">
             <ADJGAIN ScpiPath="SENSE:M4:1V:CORRECTION:ADJGAIN" Type="Node,Query"/>
@@ -2345,7 +2309,6 @@
         </N_1V>
         <N_2.5A Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M4:2.5A:ADCREJECTION" Type="Query"/>
-          <ALIAS ScpiPath="SENSE:M4:2.5A:ALIAS" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M4:2.5A:AVAIL" Type="Query"/>
           <CORRECTION Type="Node">
             <ADJGAIN ScpiPath="SENSE:M4:2.5A:CORRECTION:ADJGAIN" Type="Node,Query"/>
@@ -2408,7 +2371,6 @@
         </N_2.5A>
         <N_200MV Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M4:200MV:ADCREJECTION" Type="Query"/>
-          <ALIAS ScpiPath="SENSE:M4:200MV:ALIAS" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M4:200MV:AVAIL" Type="Query"/>
           <CORRECTION Type="Node">
             <ADJGAIN ScpiPath="SENSE:M4:200MV:CORRECTION:ADJGAIN" Type="Node,Query"/>
@@ -2471,7 +2433,6 @@
         </N_200MV>
         <N_20MV Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M4:20MV:ADCREJECTION" Type="Query"/>
-          <ALIAS ScpiPath="SENSE:M4:20MV:ALIAS" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M4:20MV:AVAIL" Type="Query"/>
           <CORRECTION Type="Node">
             <ADJGAIN ScpiPath="SENSE:M4:20MV:CORRECTION:ADJGAIN" Type="Node,Query"/>
@@ -2534,7 +2495,6 @@
         </N_20MV>
         <N_250MA Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M4:250MA:ADCREJECTION" Type="Query"/>
-          <ALIAS ScpiPath="SENSE:M4:250MA:ALIAS" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M4:250MA:AVAIL" Type="Query"/>
           <CORRECTION Type="Node">
             <ADJGAIN ScpiPath="SENSE:M4:250MA:CORRECTION:ADJGAIN" Type="Node,Query"/>
@@ -2597,7 +2557,6 @@
         </N_250MA>
         <N_25MA Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M4:25MA:ADCREJECTION" Type="Query"/>
-          <ALIAS ScpiPath="SENSE:M4:25MA:ALIAS" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M4:25MA:AVAIL" Type="Query"/>
           <CORRECTION Type="Node">
             <ADJGAIN ScpiPath="SENSE:M4:25MA:CORRECTION:ADJGAIN" Type="Node,Query"/>
@@ -2660,7 +2619,6 @@
         </N_25MA>
         <N_2MV Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M4:2MV:ADCREJECTION" Type="Query"/>
-          <ALIAS ScpiPath="SENSE:M4:2MV:ALIAS" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M4:2MV:AVAIL" Type="Query"/>
           <CORRECTION Type="Node">
             <ADJGAIN ScpiPath="SENSE:M4:2MV:CORRECTION:ADJGAIN" Type="Node,Query"/>
@@ -2723,7 +2681,6 @@
         </N_2MV>
         <N_2V Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M4:2V:ADCREJECTION" Type="Query"/>
-          <ALIAS ScpiPath="SENSE:M4:2V:ALIAS" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M4:2V:AVAIL" Type="Query"/>
           <CORRECTION Type="Node">
             <ADJGAIN ScpiPath="SENSE:M4:2V:CORRECTION:ADJGAIN" Type="Node,Query"/>
@@ -2786,7 +2743,6 @@
         </N_2V>
         <N_500MA Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M4:500MA:ADCREJECTION" Type="Query"/>
-          <ALIAS ScpiPath="SENSE:M4:500MA:ALIAS" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M4:500MA:AVAIL" Type="Query"/>
           <CORRECTION Type="Node">
             <ADJGAIN ScpiPath="SENSE:M4:500MA:CORRECTION:ADJGAIN" Type="Node,Query"/>
@@ -2849,7 +2805,6 @@
         </N_500MA>
         <N_500MV Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M4:500MV:ADCREJECTION" Type="Query"/>
-          <ALIAS ScpiPath="SENSE:M4:500MV:ALIAS" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M4:500MV:AVAIL" Type="Query"/>
           <CORRECTION Type="Node">
             <ADJGAIN ScpiPath="SENSE:M4:500MV:CORRECTION:ADJGAIN" Type="Node,Query"/>
@@ -2912,7 +2867,6 @@
         </N_500MV>
         <N_50MA Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M4:50MA:ADCREJECTION" Type="Query"/>
-          <ALIAS ScpiPath="SENSE:M4:50MA:ALIAS" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M4:50MA:AVAIL" Type="Query"/>
           <CORRECTION Type="Node">
             <ADJGAIN ScpiPath="SENSE:M4:50MA:CORRECTION:ADJGAIN" Type="Node,Query"/>
@@ -2975,7 +2929,6 @@
         </N_50MA>
         <N_50MV Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M4:50MV:ADCREJECTION" Type="Query"/>
-          <ALIAS ScpiPath="SENSE:M4:50MV:ALIAS" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M4:50MV:AVAIL" Type="Query"/>
           <CORRECTION Type="Node">
             <ADJGAIN ScpiPath="SENSE:M4:50MV:CORRECTION:ADJGAIN" Type="Node,Query"/>
@@ -3038,7 +2991,6 @@
         </N_50MV>
         <N_5A Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M4:5A:ADCREJECTION" Type="Query"/>
-          <ALIAS ScpiPath="SENSE:M4:5A:ALIAS" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M4:5A:AVAIL" Type="Query"/>
           <CORRECTION Type="Node">
             <ADJGAIN ScpiPath="SENSE:M4:5A:CORRECTION:ADJGAIN" Type="Node,Query"/>
@@ -3101,7 +3053,6 @@
         </N_5A>
         <N_5MV Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M4:5MV:ADCREJECTION" Type="Query"/>
-          <ALIAS ScpiPath="SENSE:M4:5MV:ALIAS" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M4:5MV:AVAIL" Type="Query"/>
           <CORRECTION Type="Node">
             <ADJGAIN ScpiPath="SENSE:M4:5MV:CORRECTION:ADJGAIN" Type="Node,Query"/>
@@ -3164,7 +3115,6 @@
         </N_5MV>
         <N_5V Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M4:5V:ADCREJECTION" Type="Query"/>
-          <ALIAS ScpiPath="SENSE:M4:5V:ALIAS" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M4:5V:AVAIL" Type="Query"/>
           <CORRECTION Type="Node">
             <ADJGAIN ScpiPath="SENSE:M4:5V:CORRECTION:ADJGAIN" Type="Node,Query"/>
@@ -3227,7 +3177,6 @@
         </N_5V>
         <N_8V Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M4:8V:ADCREJECTION" Type="Query"/>
-          <ALIAS ScpiPath="SENSE:M4:8V:ALIAS" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M4:8V:AVAIL" Type="Query"/>
           <CORRECTION Type="Node">
             <ADJGAIN ScpiPath="SENSE:M4:8V:CORRECTION:ADJGAIN" Type="Node,Query"/>
@@ -3303,7 +3252,6 @@
         <DSPCHANNEL ScpiPath="SENSE:M5:DSPCHANNEL" Type="Query"/>
         <N_1.0A Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M5:1.0A:ADCREJECTION" Type="Query"/>
-          <ALIAS ScpiPath="SENSE:M5:1.0A:ALIAS" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M5:1.0A:AVAIL" Type="Query"/>
           <CORRECTION Type="Node">
             <ADJGAIN ScpiPath="SENSE:M5:1.0A:CORRECTION:ADJGAIN" Type="Node,Query"/>
@@ -3366,7 +3314,6 @@
         </N_1.0A>
         <N_100MA Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M5:100MA:ADCREJECTION" Type="Query"/>
-          <ALIAS ScpiPath="SENSE:M5:100MA:ALIAS" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M5:100MA:AVAIL" Type="Query"/>
           <CORRECTION Type="Node">
             <ADJGAIN ScpiPath="SENSE:M5:100MA:CORRECTION:ADJGAIN" Type="Node,Query"/>
@@ -3429,7 +3376,6 @@
         </N_100MA>
         <N_100MV Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M5:100MV:ADCREJECTION" Type="Query"/>
-          <ALIAS ScpiPath="SENSE:M5:100MV:ALIAS" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M5:100MV:AVAIL" Type="Query"/>
           <CORRECTION Type="Node">
             <ADJGAIN ScpiPath="SENSE:M5:100MV:CORRECTION:ADJGAIN" Type="Node,Query"/>
@@ -3492,7 +3438,6 @@
         </N_100MV>
         <N_10A Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M5:10A:ADCREJECTION" Type="Query"/>
-          <ALIAS ScpiPath="SENSE:M5:10A:ALIAS" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M5:10A:AVAIL" Type="Query"/>
           <CORRECTION Type="Node">
             <ADJGAIN ScpiPath="SENSE:M5:10A:CORRECTION:ADJGAIN" Type="Node,Query"/>
@@ -3555,7 +3500,6 @@
         </N_10A>
         <N_10MV Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M5:10MV:ADCREJECTION" Type="Query"/>
-          <ALIAS ScpiPath="SENSE:M5:10MV:ALIAS" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M5:10MV:AVAIL" Type="Query"/>
           <CORRECTION Type="Node">
             <ADJGAIN ScpiPath="SENSE:M5:10MV:CORRECTION:ADJGAIN" Type="Node,Query"/>
@@ -3618,7 +3562,6 @@
         </N_10MV>
         <N_1V Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M5:1V:ADCREJECTION" Type="Query"/>
-          <ALIAS ScpiPath="SENSE:M5:1V:ALIAS" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M5:1V:AVAIL" Type="Query"/>
           <CORRECTION Type="Node">
             <ADJGAIN ScpiPath="SENSE:M5:1V:CORRECTION:ADJGAIN" Type="Node,Query"/>
@@ -3681,7 +3624,6 @@
         </N_1V>
         <N_2.5A Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M5:2.5A:ADCREJECTION" Type="Query"/>
-          <ALIAS ScpiPath="SENSE:M5:2.5A:ALIAS" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M5:2.5A:AVAIL" Type="Query"/>
           <CORRECTION Type="Node">
             <ADJGAIN ScpiPath="SENSE:M5:2.5A:CORRECTION:ADJGAIN" Type="Node,Query"/>
@@ -3744,7 +3686,6 @@
         </N_2.5A>
         <N_200MV Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M5:200MV:ADCREJECTION" Type="Query"/>
-          <ALIAS ScpiPath="SENSE:M5:200MV:ALIAS" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M5:200MV:AVAIL" Type="Query"/>
           <CORRECTION Type="Node">
             <ADJGAIN ScpiPath="SENSE:M5:200MV:CORRECTION:ADJGAIN" Type="Node,Query"/>
@@ -3807,7 +3748,6 @@
         </N_200MV>
         <N_20MV Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M5:20MV:ADCREJECTION" Type="Query"/>
-          <ALIAS ScpiPath="SENSE:M5:20MV:ALIAS" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M5:20MV:AVAIL" Type="Query"/>
           <CORRECTION Type="Node">
             <ADJGAIN ScpiPath="SENSE:M5:20MV:CORRECTION:ADJGAIN" Type="Node,Query"/>
@@ -3870,7 +3810,6 @@
         </N_20MV>
         <N_250MA Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M5:250MA:ADCREJECTION" Type="Query"/>
-          <ALIAS ScpiPath="SENSE:M5:250MA:ALIAS" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M5:250MA:AVAIL" Type="Query"/>
           <CORRECTION Type="Node">
             <ADJGAIN ScpiPath="SENSE:M5:250MA:CORRECTION:ADJGAIN" Type="Node,Query"/>
@@ -3933,7 +3872,6 @@
         </N_250MA>
         <N_25MA Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M5:25MA:ADCREJECTION" Type="Query"/>
-          <ALIAS ScpiPath="SENSE:M5:25MA:ALIAS" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M5:25MA:AVAIL" Type="Query"/>
           <CORRECTION Type="Node">
             <ADJGAIN ScpiPath="SENSE:M5:25MA:CORRECTION:ADJGAIN" Type="Node,Query"/>
@@ -3996,7 +3934,6 @@
         </N_25MA>
         <N_2MV Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M5:2MV:ADCREJECTION" Type="Query"/>
-          <ALIAS ScpiPath="SENSE:M5:2MV:ALIAS" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M5:2MV:AVAIL" Type="Query"/>
           <CORRECTION Type="Node">
             <ADJGAIN ScpiPath="SENSE:M5:2MV:CORRECTION:ADJGAIN" Type="Node,Query"/>
@@ -4059,7 +3996,6 @@
         </N_2MV>
         <N_2V Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M5:2V:ADCREJECTION" Type="Query"/>
-          <ALIAS ScpiPath="SENSE:M5:2V:ALIAS" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M5:2V:AVAIL" Type="Query"/>
           <CORRECTION Type="Node">
             <ADJGAIN ScpiPath="SENSE:M5:2V:CORRECTION:ADJGAIN" Type="Node,Query"/>
@@ -4122,7 +4058,6 @@
         </N_2V>
         <N_500MA Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M5:500MA:ADCREJECTION" Type="Query"/>
-          <ALIAS ScpiPath="SENSE:M5:500MA:ALIAS" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M5:500MA:AVAIL" Type="Query"/>
           <CORRECTION Type="Node">
             <ADJGAIN ScpiPath="SENSE:M5:500MA:CORRECTION:ADJGAIN" Type="Node,Query"/>
@@ -4185,7 +4120,6 @@
         </N_500MA>
         <N_500MV Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M5:500MV:ADCREJECTION" Type="Query"/>
-          <ALIAS ScpiPath="SENSE:M5:500MV:ALIAS" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M5:500MV:AVAIL" Type="Query"/>
           <CORRECTION Type="Node">
             <ADJGAIN ScpiPath="SENSE:M5:500MV:CORRECTION:ADJGAIN" Type="Node,Query"/>
@@ -4248,7 +4182,6 @@
         </N_500MV>
         <N_50MA Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M5:50MA:ADCREJECTION" Type="Query"/>
-          <ALIAS ScpiPath="SENSE:M5:50MA:ALIAS" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M5:50MA:AVAIL" Type="Query"/>
           <CORRECTION Type="Node">
             <ADJGAIN ScpiPath="SENSE:M5:50MA:CORRECTION:ADJGAIN" Type="Node,Query"/>
@@ -4311,7 +4244,6 @@
         </N_50MA>
         <N_50MV Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M5:50MV:ADCREJECTION" Type="Query"/>
-          <ALIAS ScpiPath="SENSE:M5:50MV:ALIAS" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M5:50MV:AVAIL" Type="Query"/>
           <CORRECTION Type="Node">
             <ADJGAIN ScpiPath="SENSE:M5:50MV:CORRECTION:ADJGAIN" Type="Node,Query"/>
@@ -4374,7 +4306,6 @@
         </N_50MV>
         <N_5A Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M5:5A:ADCREJECTION" Type="Query"/>
-          <ALIAS ScpiPath="SENSE:M5:5A:ALIAS" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M5:5A:AVAIL" Type="Query"/>
           <CORRECTION Type="Node">
             <ADJGAIN ScpiPath="SENSE:M5:5A:CORRECTION:ADJGAIN" Type="Node,Query"/>
@@ -4437,7 +4368,6 @@
         </N_5A>
         <N_5MV Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M5:5MV:ADCREJECTION" Type="Query"/>
-          <ALIAS ScpiPath="SENSE:M5:5MV:ALIAS" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M5:5MV:AVAIL" Type="Query"/>
           <CORRECTION Type="Node">
             <ADJGAIN ScpiPath="SENSE:M5:5MV:CORRECTION:ADJGAIN" Type="Node,Query"/>
@@ -4500,7 +4430,6 @@
         </N_5MV>
         <N_5V Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M5:5V:ADCREJECTION" Type="Query"/>
-          <ALIAS ScpiPath="SENSE:M5:5V:ALIAS" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M5:5V:AVAIL" Type="Query"/>
           <CORRECTION Type="Node">
             <ADJGAIN ScpiPath="SENSE:M5:5V:CORRECTION:ADJGAIN" Type="Node,Query"/>
@@ -4563,7 +4492,6 @@
         </N_5V>
         <N_8V Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M5:8V:ADCREJECTION" Type="Query"/>
-          <ALIAS ScpiPath="SENSE:M5:8V:ALIAS" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M5:8V:AVAIL" Type="Query"/>
           <CORRECTION Type="Node">
             <ADJGAIN ScpiPath="SENSE:M5:8V:CORRECTION:ADJGAIN" Type="Node,Query"/>
@@ -4639,7 +4567,6 @@
         <DSPCHANNEL ScpiPath="SENSE:M6:DSPCHANNEL" Type="Query"/>
         <N_100MV Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M6:100MV:ADCREJECTION" Type="Query"/>
-          <ALIAS ScpiPath="SENSE:M6:100MV:ALIAS" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M6:100MV:AVAIL" Type="Query"/>
           <CORRECTION Type="Node">
             <ADJGAIN ScpiPath="SENSE:M6:100MV:CORRECTION:ADJGAIN" Type="Node,Query"/>
@@ -4702,7 +4629,6 @@
         </N_100MV>
         <N_250V Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M6:250V:ADCREJECTION" Type="Query"/>
-          <ALIAS ScpiPath="SENSE:M6:250V:ALIAS" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M6:250V:AVAIL" Type="Query"/>
           <CORRECTION Type="Node">
             <ADJGAIN ScpiPath="SENSE:M6:250V:CORRECTION:ADJGAIN" Type="Node,Query"/>
@@ -4765,7 +4691,6 @@
         </N_250V>
         <N_8V Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M6:8V:ADCREJECTION" Type="Query"/>
-          <ALIAS ScpiPath="SENSE:M6:8V:ALIAS" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M6:8V:AVAIL" Type="Query"/>
           <CORRECTION Type="Node">
             <ADJGAIN ScpiPath="SENSE:M6:8V:CORRECTION:ADJGAIN" Type="Node,Query"/>
@@ -4841,7 +4766,6 @@
         <DSPCHANNEL ScpiPath="SENSE:M7:DSPCHANNEL" Type="Query"/>
         <N_0A Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M7:0A:ADCREJECTION" Type="Query"/>
-          <ALIAS ScpiPath="SENSE:M7:0A:ALIAS" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M7:0A:AVAIL" Type="Query"/>
           <CORRECTION Type="Node">
             <ADJGAIN ScpiPath="SENSE:M7:0A:CORRECTION:ADJGAIN" Type="Node,Query"/>
@@ -4904,7 +4828,6 @@
         </N_0A>
         <N_100MV Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M7:100MV:ADCREJECTION" Type="Query"/>
-          <ALIAS ScpiPath="SENSE:M7:100MV:ALIAS" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M7:100MV:AVAIL" Type="Query"/>
           <CORRECTION Type="Node">
             <ADJGAIN ScpiPath="SENSE:M7:100MV:CORRECTION:ADJGAIN" Type="Node,Query"/>
@@ -4967,7 +4890,6 @@
         </N_100MV>
         <N_10MV Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M7:10MV:ADCREJECTION" Type="Query"/>
-          <ALIAS ScpiPath="SENSE:M7:10MV:ALIAS" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M7:10MV:AVAIL" Type="Query"/>
           <CORRECTION Type="Node">
             <ADJGAIN ScpiPath="SENSE:M7:10MV:CORRECTION:ADJGAIN" Type="Node,Query"/>
@@ -5030,7 +4952,6 @@
         </N_10MV>
         <N_1V Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M7:1V:ADCREJECTION" Type="Query"/>
-          <ALIAS ScpiPath="SENSE:M7:1V:ALIAS" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M7:1V:AVAIL" Type="Query"/>
           <CORRECTION Type="Node">
             <ADJGAIN ScpiPath="SENSE:M7:1V:CORRECTION:ADJGAIN" Type="Node,Query"/>
@@ -5093,7 +5014,6 @@
         </N_1V>
         <N_200MV Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M7:200MV:ADCREJECTION" Type="Query"/>
-          <ALIAS ScpiPath="SENSE:M7:200MV:ALIAS" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M7:200MV:AVAIL" Type="Query"/>
           <CORRECTION Type="Node">
             <ADJGAIN ScpiPath="SENSE:M7:200MV:CORRECTION:ADJGAIN" Type="Node,Query"/>
@@ -5156,7 +5076,6 @@
         </N_200MV>
         <N_20MV Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M7:20MV:ADCREJECTION" Type="Query"/>
-          <ALIAS ScpiPath="SENSE:M7:20MV:ALIAS" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M7:20MV:AVAIL" Type="Query"/>
           <CORRECTION Type="Node">
             <ADJGAIN ScpiPath="SENSE:M7:20MV:CORRECTION:ADJGAIN" Type="Node,Query"/>
@@ -5219,7 +5138,6 @@
         </N_20MV>
         <N_2MV Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M7:2MV:ADCREJECTION" Type="Query"/>
-          <ALIAS ScpiPath="SENSE:M7:2MV:ALIAS" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M7:2MV:AVAIL" Type="Query"/>
           <CORRECTION Type="Node">
             <ADJGAIN ScpiPath="SENSE:M7:2MV:CORRECTION:ADJGAIN" Type="Node,Query"/>
@@ -5282,7 +5200,6 @@
         </N_2MV>
         <N_2V Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M7:2V:ADCREJECTION" Type="Query"/>
-          <ALIAS ScpiPath="SENSE:M7:2V:ALIAS" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M7:2V:AVAIL" Type="Query"/>
           <CORRECTION Type="Node">
             <ADJGAIN ScpiPath="SENSE:M7:2V:CORRECTION:ADJGAIN" Type="Node,Query"/>
@@ -5345,7 +5262,6 @@
         </N_2V>
         <N_500MV Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M7:500MV:ADCREJECTION" Type="Query"/>
-          <ALIAS ScpiPath="SENSE:M7:500MV:ALIAS" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M7:500MV:AVAIL" Type="Query"/>
           <CORRECTION Type="Node">
             <ADJGAIN ScpiPath="SENSE:M7:500MV:CORRECTION:ADJGAIN" Type="Node,Query"/>
@@ -5408,7 +5324,6 @@
         </N_500MV>
         <N_50MV Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M7:50MV:ADCREJECTION" Type="Query"/>
-          <ALIAS ScpiPath="SENSE:M7:50MV:ALIAS" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M7:50MV:AVAIL" Type="Query"/>
           <CORRECTION Type="Node">
             <ADJGAIN ScpiPath="SENSE:M7:50MV:CORRECTION:ADJGAIN" Type="Node,Query"/>
@@ -5471,7 +5386,6 @@
         </N_50MV>
         <N_5MV Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M7:5MV:ADCREJECTION" Type="Query"/>
-          <ALIAS ScpiPath="SENSE:M7:5MV:ALIAS" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M7:5MV:AVAIL" Type="Query"/>
           <CORRECTION Type="Node">
             <ADJGAIN ScpiPath="SENSE:M7:5MV:CORRECTION:ADJGAIN" Type="Node,Query"/>
@@ -5534,7 +5448,6 @@
         </N_5MV>
         <N_5V Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M7:5V:ADCREJECTION" Type="Query"/>
-          <ALIAS ScpiPath="SENSE:M7:5V:ALIAS" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M7:5V:AVAIL" Type="Query"/>
           <CORRECTION Type="Node">
             <ADJGAIN ScpiPath="SENSE:M7:5V:CORRECTION:ADJGAIN" Type="Node,Query"/>
@@ -5597,7 +5510,6 @@
         </N_5V>
         <N_8V Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M7:8V:ADCREJECTION" Type="Query"/>
-          <ALIAS ScpiPath="SENSE:M7:8V:ALIAS" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M7:8V:AVAIL" Type="Query"/>
           <CORRECTION Type="Node">
             <ADJGAIN ScpiPath="SENSE:M7:8V:CORRECTION:ADJGAIN" Type="Node,Query"/>

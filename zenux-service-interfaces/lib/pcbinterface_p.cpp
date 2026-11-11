@@ -161,13 +161,6 @@ quint32 cPCBInterfacePrivate::getRangeList(const QString &chnName)
     return msgnr;
 }
 
-quint32 cPCBInterfacePrivate::getAlias(const QString &chnName, const QString &rngName)
-{
-    quint32 msgnr = sendCommand(QString("SENS:%1:%2:ALI?").arg(chnName, rngName));
-    m_MsgNrCmdList[msgnr] = getalias2;
-    return msgnr;
-}
-
 quint32 cPCBInterfacePrivate::getType(const QString &chnName, const QString &rngName)
 {
     quint32 msgnr = sendCommand(QString("SENS:%1:%2:TYPE?").arg(chnName, rngName));

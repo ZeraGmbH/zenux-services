@@ -94,13 +94,6 @@ quint32 cPCBInterface::getRangeList(const QString &chnName)
 }
 
 
-quint32 cPCBInterface::getAlias(const QString &chnName, const QString &rngName)
-{
-    Q_D(cPCBInterface);
-    return d->getAlias(chnName, rngName);
-}
-
-
 quint32 cPCBInterface::getType(const QString &chnName, const QString &rngName)
 {
     Q_D(cPCBInterface);

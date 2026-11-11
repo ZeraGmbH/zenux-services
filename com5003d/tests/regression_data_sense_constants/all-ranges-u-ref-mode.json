@@ -3,7 +3,6 @@
         {
             "adcrejection": 8388607,
             "adjuststatusflags": "1",
-            "alias": "480V",
             "avail": "0",
             "ctrlselection": "0",
             "name": "480V",
@@ -14,7 +13,6 @@
         {
             "adcrejection": 8388607,
             "adjuststatusflags": "1",
-            "alias": "240V",
             "avail": "0",
             "ctrlselection": "1",
             "name": "240V",
@@ -25,7 +23,6 @@
         {
             "adcrejection": 8388607,
             "adjuststatusflags": "1",
-            "alias": "120V",
             "avail": "0",
             "ctrlselection": "2",
             "name": "120V",
@@ -36,7 +33,6 @@
         {
             "adcrejection": 8388607,
             "adjuststatusflags": "1",
-            "alias": "60V",
             "avail": "0",
             "ctrlselection": "3",
             "name": "60V",
@@ -47,7 +43,6 @@
         {
             "adcrejection": 8388607,
             "adjuststatusflags": "1",
-            "alias": "12V",
             "avail": "0",
             "ctrlselection": "4",
             "name": "12V",
@@ -58,7 +53,6 @@
         {
             "adcrejection": 8388607,
             "adjuststatusflags": "1",
-            "alias": "5V",
             "avail": "0",
             "ctrlselection": "5",
             "name": "5V",
@@ -69,7 +63,6 @@
         {
             "adcrejection": 8388607,
             "adjuststatusflags": "16",
-            "alias": "R0V",
             "avail": "1",
             "ctrlselection": "14",
             "name": "R0V",
@@ -80,7 +73,6 @@
         {
             "adcrejection": 8388607,
             "adjuststatusflags": "16",
-            "alias": "R10V",
             "avail": "1",
             "ctrlselection": "15",
             "name": "R10V",
@@ -93,7 +85,6 @@
         {
             "adcrejection": 8388607,
             "adjuststatusflags": "1",
-            "alias": "480V",
             "avail": "0",
             "ctrlselection": "0",
             "name": "480V",
@@ -104,7 +95,6 @@
         {
             "adcrejection": 8388607,
             "adjuststatusflags": "1",
-            "alias": "240V",
             "avail": "0",
             "ctrlselection": "1",
             "name": "240V",
@@ -115,7 +105,6 @@
         {
             "adcrejection": 8388607,
             "adjuststatusflags": "1",
-            "alias": "120V",
             "avail": "0",
             "ctrlselection": "2",
             "name": "120V",
@@ -126,7 +115,6 @@
         {
             "adcrejection": 8388607,
             "adjuststatusflags": "1",
-            "alias": "60V",
             "avail": "0",
             "ctrlselection": "3",
             "name": "60V",
@@ -137,7 +125,6 @@
         {
             "adcrejection": 8388607,
             "adjuststatusflags": "1",
-            "alias": "12V",
             "avail": "0",
             "ctrlselection": "4",
             "name": "12V",
@@ -148,7 +135,6 @@
         {
             "adcrejection": 8388607,
             "adjuststatusflags": "1",
-            "alias": "5V",
             "avail": "0",
             "ctrlselection": "5",
             "name": "5V",
@@ -159,7 +145,6 @@
         {
             "adcrejection": 8388607,
             "adjuststatusflags": "16",
-            "alias": "R0V",
             "avail": "1",
             "ctrlselection": "14",
             "name": "R0V",
@@ -170,7 +155,6 @@
         {
             "adcrejection": 8388607,
             "adjuststatusflags": "16",
-            "alias": "R10V",
             "avail": "1",
             "ctrlselection": "15",
             "name": "R10V",
@@ -183,7 +167,6 @@
         {
             "adcrejection": 8388607,
             "adjuststatusflags": "1",
-            "alias": "480V",
             "avail": "0",
             "ctrlselection": "0",
             "name": "480V",
@@ -194,7 +177,6 @@
         {
             "adcrejection": 8388607,
             "adjuststatusflags": "1",
-            "alias": "240V",
             "avail": "0",
             "ctrlselection": "1",
             "name": "240V",
@@ -205,7 +187,6 @@
         {
             "adcrejection": 8388607,
             "adjuststatusflags": "1",
-            "alias": "120V",
             "avail": "0",
             "ctrlselection": "2",
             "name": "120V",
@@ -216,7 +197,6 @@
         {
             "adcrejection": 8388607,
             "adjuststatusflags": "1",
-            "alias": "60V",
             "avail": "0",
             "ctrlselection": "3",
             "name": "60V",
@@ -227,7 +207,6 @@
         {
             "adcrejection": 8388607,
             "adjuststatusflags": "1",
-            "alias": "12V",
             "avail": "0",
             "ctrlselection": "4",
             "name": "12V",
@@ -238,7 +217,6 @@
         {
             "adcrejection": 8388607,
             "adjuststatusflags": "1",
-            "alias": "5V",
             "avail": "0",
             "ctrlselection": "5",
             "name": "5V",
@@ -249,7 +227,6 @@
         {
             "adcrejection": 8388607,
             "adjuststatusflags": "16",
-            "alias": "R0V",
             "avail": "1",
             "ctrlselection": "14",
             "name": "R0V",
@@ -260,7 +237,6 @@
         {
             "adcrejection": 8388607,
             "adjuststatusflags": "16",
-            "alias": "R10V",
             "avail": "1",
             "ctrlselection": "15",
             "name": "R10V",

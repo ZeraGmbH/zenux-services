@@ -39,7 +39,6 @@ protected:
     bool m_bAvail; // range io avail or not
 private:
     void executeProtoScpi(int cmdCode, const ProtonetCommandPtr &protoCmd) override;
-    QString scpiRangeAlias(const QString& scpi) const;
     QString scpiRangeAvail(const QString& scpi) const;
     QString scpiRangeUpperRangeValue(const QString& scpi) const;
     QString scpiRangeRejection(const QString& scpi) const;
@@ -49,7 +48,6 @@ private:
     QString scpiControllerSelection(const QString& scpi) const;
 
     QString m_sName; // the range name
-    const QString m_sAlias; // the range alias name
     const double m_upperRangeValue; // more a nominal value - we keep name for SCPI name
     const double m_fRejection; // 100% rejection value
     const double m_fOVRejection; // overload rejection value

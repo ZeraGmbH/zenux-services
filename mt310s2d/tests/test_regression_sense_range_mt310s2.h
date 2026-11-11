@@ -12,7 +12,6 @@ private slots:
     void cleanup();
 
     void checkName();
-    void checkAlias();
     void checkAvail();
     void checkUrValue();
     void checkRejection();

@@ -29,9 +29,6 @@ void SenseRegressionHelper::addRangeConstantDataToJson(const QString &rangeName,
     QString channelName = channelSettings->m_nameMx;
 
     // stolen from cPCBInterfacePrivate
-    QString alias = ScpiSingleTransactionBlocked::query(QString("SENS:%1:%2:ALIAS?").arg(channelName, rangeName));
-    range.insert(JsonAliasStr, alias);
-
     QString avail = ScpiSingleTransactionBlocked::query(QString("SENS:%1:%2:AVAIL?").arg(channelName, rangeName));
     range.insert(JsonAvailStr, avail);
 

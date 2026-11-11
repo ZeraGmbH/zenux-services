@@ -8,7 +8,6 @@ static constexpr int ZenuxAdcMaxValue = (1<<23)-1; // Common value for COM/MT fo
 enum Commands
 {
     cmdType,
-    cmdAlias,
     cmdAvail,
     cmdUpperRangeValue,
     cmdRejection,
@@ -30,7 +29,6 @@ SenseRangeCommon::SenseRangeCommon(const std::shared_ptr<cSCPI> &scpiInterface,
     ScpiConnection(scpiInterface),
     m_bAvail(avail),
     m_sName(name),
-    m_sAlias(name != rangeNameCurrentNull ? name : rangeAliasNull), // WOW: A MEGA dance in zera-classes for this single line
     m_upperRangeValue(upperRangeValue),
     m_fRejection(rejection),
     m_fOVRejection(ovrejection),
@@ -49,7 +47,6 @@ SenseRangeCommon::~SenseRangeCommon()
 void SenseRangeCommon::initSCPIConnection(const QString &leadingNodes)
 {
     const QString adjLeadNodes = appendTrailingColonOnNonEmptyParentNodes(leadingNodes);
-    addDelegate(QString("%1%2").arg(adjLeadNodes, m_sName), "ALIAS", SCPI::isQuery, m_scpiInterface, cmdAlias);
     addDelegate(QString("%1%2").arg(adjLeadNodes, m_sName), "AVAIL", SCPI::isQuery, m_scpiInterface, cmdAvail);
     addDelegate(QString("%1%2").arg(adjLeadNodes, m_sName), "URVALUE", SCPI::isQuery, m_scpiInterface, cmdUpperRangeValue);
     addDelegate(QString("%1%2").arg(adjLeadNodes, m_sName), "REJECTION", SCPI::isQuery, m_scpiInterface, cmdRejection);
@@ -116,9 +113,6 @@ void SenseRangeCommon::executeProtoScpi(int cmdCode, const ProtonetCommandPtr &p
 {
     switch (cmdCode)
     {
-    case cmdAlias:
-        protoCmd->m_sOutput = scpiRangeAlias(protoCmd->m_sInput);
-        break;
     case cmdAvail:
         protoCmd->m_sOutput = scpiRangeAvail(protoCmd->m_sInput);
         break;
@@ -143,14 +137,6 @@ void SenseRangeCommon::executeProtoScpi(int cmdCode, const ProtonetCommandPtr &p
     }
     if (protoCmd->m_bwithOutput)
         emit cmdExecutionDone(protoCmd);
-}
-
-QString SenseRangeCommon::scpiRangeAlias(const QString &scpi) const
-{
-    cSCPICommand cmd = scpi;
-    if (cmd.isQuery())
-        return m_sAlias;
-    return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
 QString SenseRangeCommon::scpiRangeAvail(const QString &scpi) const

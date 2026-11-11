@@ -3,7 +3,6 @@
         {
             "adcrejection": 8388607,
             "adjuststatusflags": "265",
-            "alias": "10A",
             "avail": "1",
             "ctrlselection": "0",
             "name": "10A",
@@ -14,7 +13,6 @@
         {
             "adcrejection": 8388607,
             "adjuststatusflags": "265",
-            "alias": "5A",
             "avail": "1",
             "ctrlselection": "1",
             "name": "5A",
@@ -25,7 +23,6 @@
         {
             "adcrejection": 8388607,
             "adjuststatusflags": "265",
-            "alias": "2.5A",
             "avail": "1",
             "ctrlselection": "2",
             "name": "2.5A",
@@ -36,7 +33,6 @@
         {
             "adcrejection": 8388607,
             "adjuststatusflags": "265",
-            "alias": "1.0A",
             "avail": "1",
             "ctrlselection": "3",
             "name": "1.0A",
@@ -47,7 +43,6 @@
         {
             "adcrejection": 8388607,
             "adjuststatusflags": "265",
-            "alias": "500mA",
             "avail": "1",
             "ctrlselection": "4",
             "name": "500mA",
@@ -58,7 +53,6 @@
         {
             "adcrejection": 8388607,
             "adjuststatusflags": "265",
-            "alias": "250mA",
             "avail": "1",
             "ctrlselection": "5",
             "name": "250mA",
@@ -69,7 +63,6 @@
         {
             "adcrejection": 8388607,
             "adjuststatusflags": "265",
-            "alias": "100mA",
             "avail": "1",
             "ctrlselection": "6",
             "name": "100mA",
@@ -80,7 +73,6 @@
         {
             "adcrejection": 8388607,
             "adjuststatusflags": "265",
-            "alias": "50mA",
             "avail": "1",
             "ctrlselection": "7",
             "name": "50mA",
@@ -91,7 +83,6 @@
         {
             "adcrejection": 8388607,
             "adjuststatusflags": "265",
-            "alias": "25mA",
             "avail": "1",
             "ctrlselection": "8",
             "name": "25mA",
@@ -102,7 +93,6 @@
         {
             "adcrejection": 8388607,
             "adjuststatusflags": "264",
-            "alias": "8V",
             "avail": "0",
             "ctrlselection": "9",
             "name": "8V",
@@ -113,7 +103,6 @@
         {
             "adcrejection": 8388607,
             "adjuststatusflags": "264",
-            "alias": "5V",
             "avail": "0",
             "ctrlselection": "10",
             "name": "5V",
@@ -124,7 +113,6 @@
         {
             "adcrejection": 8388607,
             "adjuststatusflags": "264",
-            "alias": "2V",
             "avail": "0",
             "ctrlselection": "11",
             "name": "2V",
@@ -135,7 +123,6 @@
         {
             "adcrejection": 8388607,
             "adjuststatusflags": "264",
-            "alias": "1V",
             "avail": "0",
             "ctrlselection": "12",
             "name": "1V",
@@ -146,7 +133,6 @@
         {
             "adcrejection": 8388607,
             "adjuststatusflags": "264",
-            "alias": "500mV",
             "avail": "0",
             "ctrlselection": "13",
             "name": "500mV",
@@ -157,7 +143,6 @@
         {
             "adcrejection": 8388607,
             "adjuststatusflags": "264",
-            "alias": "200mV",
             "avail": "0",
             "ctrlselection": "14",
             "name": "200mV",
@@ -168,7 +153,6 @@
         {
             "adcrejection": 8388607,
             "adjuststatusflags": "264",
-            "alias": "100mV",
             "avail": "0",
             "ctrlselection": "15",
             "name": "100mV",
@@ -179,7 +163,6 @@
         {
             "adcrejection": 8388607,
             "adjuststatusflags": "264",
-            "alias": "50mV",
             "avail": "0",
             "ctrlselection": "16",
             "name": "50mV",
@@ -190,7 +173,6 @@
         {
             "adcrejection": 8388607,
             "adjuststatusflags": "264",
-            "alias": "20mV",
             "avail": "0",
             "ctrlselection": "17",
             "name": "20mV",
@@ -201,7 +183,6 @@
         {
             "adcrejection": 8388607,
             "adjuststatusflags": "264",
-            "alias": "10mV",
             "avail": "0",
             "ctrlselection": "18",
             "name": "10mV",
@@ -212,7 +193,6 @@
         {
             "adcrejection": 8388607,
             "adjuststatusflags": "264",
-            "alias": "5mV",
             "avail": "0",
             "ctrlselection": "19",
             "name": "5mV",
@@ -223,7 +203,6 @@
         {
             "adcrejection": 8388607,
             "adjuststatusflags": "264",
-            "alias": "2mV",
             "avail": "0",
             "ctrlselection": "20",
             "name": "2mV",
@@ -236,7 +215,6 @@
         {
             "adcrejection": 8388607,
             "adjuststatusflags": "265",
-            "alias": "10A",
             "avail": "1",
             "ctrlselection": "0",
             "name": "10A",
@@ -247,7 +225,6 @@
         {
             "adcrejection": 8388607,
             "adjuststatusflags": "265",
-            "alias": "5A",
             "avail": "1",
             "ctrlselection": "1",
             "name": "5A",
@@ -258,7 +235,6 @@
         {
             "adcrejection": 8388607,
             "adjuststatusflags": "265",
-            "alias": "2.5A",
             "avail": "1",
             "ctrlselection": "2",
             "name": "2.5A",
@@ -269,7 +245,6 @@
         {
             "adcrejection": 8388607,
             "adjuststatusflags": "265",
-            "alias": "1.0A",
             "avail": "1",
             "ctrlselection": "3",
             "name": "1.0A",
@@ -280,7 +255,6 @@
         {
             "adcrejection": 8388607,
             "adjuststatusflags": "265",
-            "alias": "500mA",
             "avail": "1",
             "ctrlselection": "4",
             "name": "500mA",
@@ -291,7 +265,6 @@
         {
             "adcrejection": 8388607,
             "adjuststatusflags": "265",
-            "alias": "250mA",
             "avail": "1",
             "ctrlselection": "5",
             "name": "250mA",
@@ -302,7 +275,6 @@
         {
             "adcrejection": 8388607,
             "adjuststatusflags": "265",
-            "alias": "100mA",
             "avail": "1",
             "ctrlselection": "6",
             "name": "100mA",
@@ -313,7 +285,6 @@
         {
             "adcrejection": 8388607,
             "adjuststatusflags": "265",
-            "alias": "50mA",
             "avail": "1",
             "ctrlselection": "7",
             "name": "50mA",
@@ -324,7 +295,6 @@
         {
             "adcrejection": 8388607,
             "adjuststatusflags": "265",
-            "alias": "25mA",
             "avail": "1",
             "ctrlselection": "8",
             "name": "25mA",
@@ -335,7 +305,6 @@
         {
             "adcrejection": 8388607,
             "adjuststatusflags": "264",
-            "alias": "8V",
             "avail": "0",
             "ctrlselection": "9",
             "name": "8V",
@@ -346,7 +315,6 @@
         {
             "adcrejection": 8388607,
             "adjuststatusflags": "264",
-            "alias": "5V",
             "avail": "0",
             "ctrlselection": "10",
             "name": "5V",
@@ -357,7 +325,6 @@
         {
             "adcrejection": 8388607,
             "adjuststatusflags": "264",
-            "alias": "2V",
             "avail": "0",
             "ctrlselection": "11",
             "name": "2V",
@@ -368,7 +335,6 @@
         {
             "adcrejection": 8388607,
             "adjuststatusflags": "264",
-            "alias": "1V",
             "avail": "0",
             "ctrlselection": "12",
             "name": "1V",
@@ -379,7 +345,6 @@
         {
             "adcrejection": 8388607,
             "adjuststatusflags": "264",
-            "alias": "500mV",
             "avail": "0",
             "ctrlselection": "13",
             "name": "500mV",
@@ -390,7 +355,6 @@
         {
             "adcrejection": 8388607,
             "adjuststatusflags": "264",
-            "alias": "200mV",
             "avail": "0",
             "ctrlselection": "14",
             "name": "200mV",
@@ -401,7 +365,6 @@
         {
             "adcrejection": 8388607,
             "adjuststatusflags": "264",
-            "alias": "100mV",
             "avail": "0",
             "ctrlselection": "15",
             "name": "100mV",
@@ -412,7 +375,6 @@
         {
             "adcrejection": 8388607,
             "adjuststatusflags": "264",
-            "alias": "50mV",
             "avail": "0",
             "ctrlselection": "16",
             "name": "50mV",
@@ -423,7 +385,6 @@
         {
             "adcrejection": 8388607,
             "adjuststatusflags": "264",
-            "alias": "20mV",
             "avail": "0",
             "ctrlselection": "17",
             "name": "20mV",
@@ -434,7 +395,6 @@
         {
             "adcrejection": 8388607,
             "adjuststatusflags": "264",
-            "alias": "10mV",
             "avail": "0",
             "ctrlselection": "18",
             "name": "10mV",
@@ -445,7 +405,6 @@
         {
             "adcrejection": 8388607,
             "adjuststatusflags": "264",
-            "alias": "5mV",
             "avail": "0",
             "ctrlselection": "19",
             "name": "5mV",
@@ -456,7 +415,6 @@
         {
             "adcrejection": 8388607,
             "adjuststatusflags": "264",
-            "alias": "2mV",
             "avail": "0",
             "ctrlselection": "20",
             "name": "2mV",
@@ -469,7 +427,6 @@
         {
             "adcrejection": 8388607,
             "adjuststatusflags": "265",
-            "alias": "10A",
             "avail": "1",
             "ctrlselection": "0",
             "name": "10A",
@@ -480,7 +437,6 @@
         {
             "adcrejection": 8388607,
             "adjuststatusflags": "265",
-            "alias": "5A",
             "avail": "1",
             "ctrlselection": "1",
             "name": "5A",
@@ -491,7 +447,6 @@
         {
             "adcrejection": 8388607,
             "adjuststatusflags": "265",
-            "alias": "2.5A",
             "avail": "1",
             "ctrlselection": "2",
             "name": "2.5A",
@@ -502,7 +457,6 @@
         {
             "adcrejection": 8388607,
             "adjuststatusflags": "265",
-            "alias": "1.0A",
             "avail": "1",
             "ctrlselection": "3",
             "name": "1.0A",
@@ -513,7 +467,6 @@
         {
             "adcrejection": 8388607,
             "adjuststatusflags": "265",
-            "alias": "500mA",
             "avail": "1",
             "ctrlselection": "4",
             "name": "500mA",
@@ -524,7 +477,6 @@
         {
             "adcrejection": 8388607,
             "adjuststatusflags": "265",
-            "alias": "250mA",
             "avail": "1",
             "ctrlselection": "5",
             "name": "250mA",
@@ -535,7 +487,6 @@
         {
             "adcrejection": 8388607,
             "adjuststatusflags": "265",
-            "alias": "100mA",
             "avail": "1",
             "ctrlselection": "6",
             "name": "100mA",
@@ -546,7 +497,6 @@
         {
             "adcrejection": 8388607,
             "adjuststatusflags": "265",
-            "alias": "50mA",
             "avail": "1",
             "ctrlselection": "7",
             "name": "50mA",
@@ -557,7 +507,6 @@
         {
             "adcrejection": 8388607,
             "adjuststatusflags": "265",
-            "alias": "25mA",
             "avail": "1",
             "ctrlselection": "8",
             "name": "25mA",
@@ -568,7 +517,6 @@
         {
             "adcrejection": 8388607,
             "adjuststatusflags": "264",
-            "alias": "8V",
             "avail": "0",
             "ctrlselection": "9",
             "name": "8V",
@@ -579,7 +527,6 @@
         {
             "adcrejection": 8388607,
             "adjuststatusflags": "264",
-            "alias": "5V",
             "avail": "0",
             "ctrlselection": "10",
             "name": "5V",
@@ -590,7 +537,6 @@
         {
             "adcrejection": 8388607,
             "adjuststatusflags": "264",
-            "alias": "2V",
             "avail": "0",
             "ctrlselection": "11",
             "name": "2V",
@@ -601,7 +547,6 @@
         {
             "adcrejection": 8388607,
             "adjuststatusflags": "264",
-            "alias": "1V",
             "avail": "0",
             "ctrlselection": "12",
             "name": "1V",
@@ -612,7 +557,6 @@
         {
             "adcrejection": 8388607,
             "adjuststatusflags": "264",
-            "alias": "500mV",
             "avail": "0",
             "ctrlselection": "13",
             "name": "500mV",
@@ -623,7 +567,6 @@
         {
             "adcrejection": 8388607,
             "adjuststatusflags": "264",
-            "alias": "200mV",
             "avail": "0",
             "ctrlselection": "14",
             "name": "200mV",
@@ -634,7 +577,6 @@
         {
             "adcrejection": 8388607,
             "adjuststatusflags": "264",
-            "alias": "100mV",
             "avail": "0",
             "ctrlselection": "15",
             "name": "100mV",
@@ -645,7 +587,6 @@
         {
             "adcrejection": 8388607,
             "adjuststatusflags": "264",
-            "alias": "50mV",
             "avail": "0",
             "ctrlselection": "16",
             "name": "50mV",
@@ -656,7 +597,6 @@
         {
             "adcrejection": 8388607,
             "adjuststatusflags": "264",
-            "alias": "20mV",
             "avail": "0",
             "ctrlselection": "17",
             "name": "20mV",
@@ -667,7 +607,6 @@
         {
             "adcrejection": 8388607,
             "adjuststatusflags": "264",
-            "alias": "10mV",
             "avail": "0",
             "ctrlselection": "18",
             "name": "10mV",
@@ -678,7 +617,6 @@
         {
             "adcrejection": 8388607,
             "adjuststatusflags": "264",
-            "alias": "5mV",
             "avail": "0",
             "ctrlselection": "19",
             "name": "5mV",
@@ -689,7 +627,6 @@
         {
             "adcrejection": 8388607,
             "adjuststatusflags": "264",
-            "alias": "2mV",
             "avail": "0",
             "ctrlselection": "20",
             "name": "2mV",
@@ -702,7 +639,6 @@
         {
             "adcrejection": 8388607,
             "adjuststatusflags": "265",
-            "alias": "--",
             "avail": "1",
             "ctrlselection": "0",
             "name": "0A",
@@ -713,7 +649,6 @@
         {
             "adcrejection": 8388607,
             "adjuststatusflags": "264",
-            "alias": "8V",
             "avail": "0",
             "ctrlselection": "9",
             "name": "8V",
@@ -724,7 +659,6 @@
         {
             "adcrejection": 8388607,
             "adjuststatusflags": "264",
-            "alias": "5V",
             "avail": "0",
             "ctrlselection": "10",
             "name": "5V",
@@ -735,7 +669,6 @@
         {
             "adcrejection": 8388607,
             "adjuststatusflags": "264",
-            "alias": "2V",
             "avail": "0",
             "ctrlselection": "11",
             "name": "2V",
@@ -746,7 +679,6 @@
         {
             "adcrejection": 8388607,
             "adjuststatusflags": "264",
-            "alias": "1V",
             "avail": "0",
             "ctrlselection": "12",
             "name": "1V",
@@ -757,7 +689,6 @@
         {
             "adcrejection": 8388607,
             "adjuststatusflags": "264",
-            "alias": "500mV",
             "avail": "0",
             "ctrlselection": "13",
             "name": "500mV",
@@ -768,7 +699,6 @@
         {
             "adcrejection": 8388607,
             "adjuststatusflags": "264",
-            "alias": "200mV",
             "avail": "0",
             "ctrlselection": "14",
             "name": "200mV",
@@ -779,7 +709,6 @@
         {
             "adcrejection": 8388607,
             "adjuststatusflags": "264",
-            "alias": "100mV",
             "avail": "0",
             "ctrlselection": "15",
             "name": "100mV",
@@ -790,7 +719,6 @@
         {
             "adcrejection": 8388607,
             "adjuststatusflags": "264",
-            "alias": "50mV",
             "avail": "0",
             "ctrlselection": "16",
             "name": "50mV",
@@ -801,7 +729,6 @@
         {
             "adcrejection": 8388607,
             "adjuststatusflags": "264",
-            "alias": "20mV",
             "avail": "0",
             "ctrlselection": "17",
             "name": "20mV",
@@ -812,7 +739,6 @@
         {
             "adcrejection": 8388607,
             "adjuststatusflags": "264",
-            "alias": "10mV",
             "avail": "0",
             "ctrlselection": "18",
             "name": "10mV",
@@ -823,7 +749,6 @@
         {
             "adcrejection": 8388607,
             "adjuststatusflags": "264",
-            "alias": "5mV",
             "avail": "0",
             "ctrlselection": "19",
             "name": "5mV",
@@ -834,7 +759,6 @@
         {
             "adcrejection": 8388607,
             "adjuststatusflags": "264",
-            "alias": "2mV",
             "avail": "0",
             "ctrlselection": "20",
             "name": "2mV",

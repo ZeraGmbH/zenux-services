@@ -24,7 +24,6 @@ public:
     quint32 getUnit(const QString &chnName); // qstring
     quint32 getRange(const QString &chnName); // qstring
     quint32 getRangeList(const QString &chnName); // qstringlist
-    quint32 getAlias(const QString &chnName, const QString &rngName); // qstring
     quint32 getType(const QString &chnName, const QString &rngName); // int
     quint32 getUrvalue(const QString &chnName, const QString &rngName); // double
     quint32 getUrvalue(const QString &chnName); // double

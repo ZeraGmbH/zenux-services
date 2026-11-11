@@ -32,25 +32,6 @@ void test_regression_sense_range_com5003::checkName()
     QCOMPARE(m_range->getRangeName(), "240V");
 }
 
-void test_regression_sense_range_com5003::checkAlias()
-{
-    QString scpiAliasQuery = "SENSE:m0:240V:ALIAS?";
-    ScpiObjectPtr scpiObject = m_scpiInterface->getSCPIObject(scpiAliasQuery);
-    QVERIFY(scpiObject != nullptr);
-    ProtonetCommandPtr protoCmd = std::make_shared<ProtonetCommand>(nullptr, false, true, QByteArray(), 0, scpiAliasQuery);
-    ScpiDelegate *scpiDelegate = static_cast<ScpiDelegate*>(scpiObject.get());
-    scpiDelegate->executeSCPI(protoCmd);
-    QCOMPARE((protoCmd->m_sOutput), "240V");
-
-    QString scpiAliasCmd = "SENSE:m0:240V:ALIAS FOO;";
-    scpiObject = m_scpiInterface->getSCPIObject(scpiAliasCmd);
-    QVERIFY(scpiObject != nullptr);
-    protoCmd = std::make_shared<ProtonetCommand>(nullptr, false, true, QByteArray(), 0, scpiAliasCmd);
-    scpiDelegate = static_cast<ScpiDelegate*>(scpiObject.get());
-    scpiDelegate->executeSCPI(protoCmd);
-    QCOMPARE((protoCmd->m_sOutput), ZSCPI::scpiAnswer[ZSCPI::nak]);
-}
-
 void test_regression_sense_range_com5003::checkAvail()
 {
     QCOMPARE(m_range->getAvail(), true);
