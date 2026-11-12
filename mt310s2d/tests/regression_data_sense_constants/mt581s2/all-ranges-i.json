@@ -6,8 +6,8 @@
             "avail": "1",
             "ctrlselection": "0",
             "name": "100A",
-            "ovrejection": 3097332,
-            "rejection": 2581110,
+            "ovrejection": 8026138,
+            "rejection": 6420910,
             "urval": 100
         },
         {
@@ -16,8 +16,8 @@
             "avail": "1",
             "ctrlselection": "1",
             "name": "50A",
-            "ovrejection": 3097332,
-            "rejection": 2581110,
+            "ovrejection": 4013069,
+            "rejection": 3210455,
             "urval": 50
         },
         {
@@ -26,8 +26,8 @@
             "avail": "1",
             "ctrlselection": "2",
             "name": "25A",
-            "ovrejection": 3871666,
-            "rejection": 3226388,
+            "ovrejection": 4013069,
+            "rejection": 3210455,
             "urval": 25
         },
         {
@@ -36,8 +36,8 @@
             "avail": "1",
             "ctrlselection": "3",
             "name": "10A",
-            "ovrejection": 3097332,
-            "rejection": 2581110,
+            "ovrejection": 4013069,
+            "rejection": 3210455,
             "urval": 10
         },
         {
@@ -46,8 +46,8 @@
             "avail": "1",
             "ctrlselection": "4",
             "name": "5A",
-            "ovrejection": 3097332,
-            "rejection": 2581110,
+            "ovrejection": 4013069,
+            "rejection": 3210455,
             "urval": 5
         },
         {
@@ -56,8 +56,8 @@
             "avail": "1",
             "ctrlselection": "5",
             "name": "2.5A",
-            "ovrejection": 3871666,
-            "rejection": 3226388,
+            "ovrejection": 4013069,
+            "rejection": 3210455,
             "urval": 2.5
         },
         {
@@ -66,8 +66,8 @@
             "avail": "1",
             "ctrlselection": "6",
             "name": "1.0A",
-            "ovrejection": 4160749,
-            "rejection": 3467291,
+            "ovrejection": 4976208,
+            "rejection": 3980966,
             "urval": 1
         },
         {
@@ -76,8 +76,8 @@
             "avail": "1",
             "ctrlselection": "7",
             "name": "500mA",
-            "ovrejection": 4160749,
-            "rejection": 3467291,
+            "ovrejection": 3250585,
+            "rejection": 2600468,
             "urval": 0.5
         },
         {
@@ -86,8 +86,8 @@
             "avail": "1",
             "ctrlselection": "8",
             "name": "250mA",
-            "ovrejection": 5200937,
-            "rejection": 4334114,
+            "ovrejection": 3250585,
+            "rejection": 2600468,
             "urval": 0.25
         },
         {
@@ -96,8 +96,8 @@
             "avail": "1",
             "ctrlselection": "9",
             "name": "100mA",
-            "ovrejection": 4160749,
-            "rejection": 3467291,
+            "ovrejection": 3250585,
+            "rejection": 2600468,
             "urval": 0.1
         },
         {
@@ -106,8 +106,8 @@
             "avail": "1",
             "ctrlselection": "10",
             "name": "50mA",
-            "ovrejection": 4160749,
-            "rejection": 3467291,
+            "ovrejection": 3250585,
+            "rejection": 2600468,
             "urval": 0.05
         },
         {
@@ -116,9 +116,19 @@
             "avail": "1",
             "ctrlselection": "11",
             "name": "25mA",
-            "ovrejection": 5200937,
-            "rejection": 4334114,
+            "ovrejection": 3250585,
+            "rejection": 2600468,
             "urval": 0.025
+        },
+        {
+            "adcrejection": 8388607,
+            "adjuststatusflags": "265",
+            "avail": "1",
+            "ctrlselection": "12",
+            "name": "10mA",
+            "ovrejection": 3250585,
+            "rejection": 2600468,
+            "urval": 0.01
         },
         {
             "adcrejection": 8388607,
@@ -248,8 +258,8 @@
             "avail": "1",
             "ctrlselection": "0",
             "name": "100A",
-            "ovrejection": 3097332,
-            "rejection": 2581110,
+            "ovrejection": 8026138,
+            "rejection": 6420910,
             "urval": 100
         },
         {
@@ -258,8 +268,8 @@
             "avail": "1",
             "ctrlselection": "1",
             "name": "50A",
-            "ovrejection": 3097332,
-            "rejection": 2581110,
+            "ovrejection": 4013069,
+            "rejection": 3210455,
             "urval": 50
         },
         {
@@ -268,8 +278,8 @@
             "avail": "1",
             "ctrlselection": "2",
             "name": "25A",
-            "ovrejection": 3871666,
-            "rejection": 3226388,
+            "ovrejection": 4013069,
+            "rejection": 3210455,
             "urval": 25
         },
         {
@@ -278,8 +288,8 @@
             "avail": "1",
             "ctrlselection": "3",
             "name": "10A",
-            "ovrejection": 3097332,
-            "rejection": 2581110,
+            "ovrejection": 4013069,
+            "rejection": 3210455,
             "urval": 10
         },
         {
@@ -288,8 +298,8 @@
             "avail": "1",
             "ctrlselection": "4",
             "name": "5A",
-            "ovrejection": 3097332,
-            "rejection": 2581110,
+            "ovrejection": 4013069,
+            "rejection": 3210455,
             "urval": 5
         },
         {
@@ -298,8 +308,8 @@
             "avail": "1",
             "ctrlselection": "5",
             "name": "2.5A",
-            "ovrejection": 3871666,
-            "rejection": 3226388,
+            "ovrejection": 4013069,
+            "rejection": 3210455,
             "urval": 2.5
         },
         {
@@ -308,8 +318,8 @@
             "avail": "1",
             "ctrlselection": "6",
             "name": "1.0A",
-            "ovrejection": 4160749,
-            "rejection": 3467291,
+            "ovrejection": 4976208,
+            "rejection": 3980966,
             "urval": 1
         },
         {
@@ -318,8 +328,8 @@
             "avail": "1",
             "ctrlselection": "7",
             "name": "500mA",
-            "ovrejection": 4160749,
-            "rejection": 3467291,
+            "ovrejection": 3250585,
+            "rejection": 2600468,
             "urval": 0.5
         },
         {
@@ -328,8 +338,8 @@
             "avail": "1",
             "ctrlselection": "8",
             "name": "250mA",
-            "ovrejection": 5200937,
-            "rejection": 4334114,
+            "ovrejection": 3250585,
+            "rejection": 2600468,
             "urval": 0.25
         },
         {
@@ -338,8 +348,8 @@
             "avail": "1",
             "ctrlselection": "9",
             "name": "100mA",
-            "ovrejection": 4160749,
-            "rejection": 3467291,
+            "ovrejection": 3250585,
+            "rejection": 2600468,
             "urval": 0.1
         },
         {
@@ -348,8 +358,8 @@
             "avail": "1",
             "ctrlselection": "10",
             "name": "50mA",
-            "ovrejection": 4160749,
-            "rejection": 3467291,
+            "ovrejection": 3250585,
+            "rejection": 2600468,
             "urval": 0.05
         },
         {
@@ -358,9 +368,19 @@
             "avail": "1",
             "ctrlselection": "11",
             "name": "25mA",
-            "ovrejection": 5200937,
-            "rejection": 4334114,
+            "ovrejection": 3250585,
+            "rejection": 2600468,
             "urval": 0.025
+        },
+        {
+            "adcrejection": 8388607,
+            "adjuststatusflags": "265",
+            "avail": "1",
+            "ctrlselection": "12",
+            "name": "10mA",
+            "ovrejection": 3250585,
+            "rejection": 2600468,
+            "urval": 0.01
         },
         {
             "adcrejection": 8388607,
@@ -490,8 +510,8 @@
             "avail": "1",
             "ctrlselection": "0",
             "name": "100A",
-            "ovrejection": 3097332,
-            "rejection": 2581110,
+            "ovrejection": 8026138,
+            "rejection": 6420910,
             "urval": 100
         },
         {
@@ -500,8 +520,8 @@
             "avail": "1",
             "ctrlselection": "1",
             "name": "50A",
-            "ovrejection": 3097332,
-            "rejection": 2581110,
+            "ovrejection": 4013069,
+            "rejection": 3210455,
             "urval": 50
         },
         {
@@ -510,8 +530,8 @@
             "avail": "1",
             "ctrlselection": "2",
             "name": "25A",
-            "ovrejection": 3871666,
-            "rejection": 3226388,
+            "ovrejection": 4013069,
+            "rejection": 3210455,
             "urval": 25
         },
         {
@@ -520,8 +540,8 @@
             "avail": "1",
             "ctrlselection": "3",
             "name": "10A",
-            "ovrejection": 3097332,
-            "rejection": 2581110,
+            "ovrejection": 4013069,
+            "rejection": 3210455,
             "urval": 10
         },
         {
@@ -530,8 +550,8 @@
             "avail": "1",
             "ctrlselection": "4",
             "name": "5A",
-            "ovrejection": 3097332,
-            "rejection": 2581110,
+            "ovrejection": 4013069,
+            "rejection": 3210455,
             "urval": 5
         },
         {
@@ -540,8 +560,8 @@
             "avail": "1",
             "ctrlselection": "5",
             "name": "2.5A",
-            "ovrejection": 3871666,
-            "rejection": 3226388,
+            "ovrejection": 4013069,
+            "rejection": 3210455,
             "urval": 2.5
         },
         {
@@ -550,8 +570,8 @@
             "avail": "1",
             "ctrlselection": "6",
             "name": "1.0A",
-            "ovrejection": 4160749,
-            "rejection": 3467291,
+            "ovrejection": 4976208,
+            "rejection": 3980966,
             "urval": 1
         },
         {
@@ -560,8 +580,8 @@
             "avail": "1",
             "ctrlselection": "7",
             "name": "500mA",
-            "ovrejection": 4160749,
-            "rejection": 3467291,
+            "ovrejection": 3250585,
+            "rejection": 2600468,
             "urval": 0.5
         },
         {
@@ -570,8 +590,8 @@
             "avail": "1",
             "ctrlselection": "8",
             "name": "250mA",
-            "ovrejection": 5200937,
-            "rejection": 4334114,
+            "ovrejection": 3250585,
+            "rejection": 2600468,
             "urval": 0.25
         },
         {
@@ -580,8 +600,8 @@
             "avail": "1",
             "ctrlselection": "9",
             "name": "100mA",
-            "ovrejection": 4160749,
-            "rejection": 3467291,
+            "ovrejection": 3250585,
+            "rejection": 2600468,
             "urval": 0.1
         },
         {
@@ -590,8 +610,8 @@
             "avail": "1",
             "ctrlselection": "10",
             "name": "50mA",
-            "ovrejection": 4160749,
-            "rejection": 3467291,
+            "ovrejection": 3250585,
+            "rejection": 2600468,
             "urval": 0.05
         },
         {
@@ -600,9 +620,19 @@
             "avail": "1",
             "ctrlselection": "11",
             "name": "25mA",
-            "ovrejection": 5200937,
-            "rejection": 4334114,
+            "ovrejection": 3250585,
+            "rejection": 2600468,
             "urval": 0.025
+        },
+        {
+            "adcrejection": 8388607,
+            "adjuststatusflags": "265",
+            "avail": "1",
+            "ctrlselection": "12",
+            "name": "10mA",
+            "ovrejection": 3250585,
+            "rejection": 2600468,
+            "urval": 0.01
         },
         {
             "adcrejection": 8388607,

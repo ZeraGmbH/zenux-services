@@ -27,12 +27,17 @@ QList<SenseChannelCommon *> MT581s2ChannelRangeFactory::createChannelAndRanges(c
         const QString &channelName = channels.at(i)->getName();
         QList<SenseRangeCommon*> rngListUAll;
 
-        tryAddRange(rngListUAll,  "480V", channelName, adjData, scpi, true, 480.0, 3994517, 1.25, 0, rangeFlagsDevice);
+        // !!!! Dev device still has MT310s2 ADW
+        tryAddRange(rngListUAll,  "250V", channelName, adjData, scpi, true, 250.0, 4415057, 1.25, 0, rangeFlagsDevice);
+        tryAddRange(rngListUAll,    "8V", channelName, adjData, scpi, true,   8.0, 3355443, 1.25, 1, rangeFlagsDevice);
+        tryAddRange(rngListUAll, "100mV", channelName, adjData, scpi, true,   0.1, 4026532, 1.25, 2, rangeFlagsDevice);
+
+        /*tryAddRange(rngListUAll,  "480V", channelName, adjData, scpi, true, 480.0, 3994517, 1.25, 0, rangeFlagsDevice);
         tryAddRange(rngListUAll,  "250V", channelName, adjData, scpi, true, 250.0, 4160955, 1.25, 1, rangeFlagsDevice);
         tryAddRange(rngListUAll,  "125V", channelName, adjData, scpi, true, 125.0, 4375122, 1.25, 2, rangeFlagsDevice);
         tryAddRange(rngListUAll,   "60V", channelName, adjData, scpi, true,  60.0, 3201488, 1.25, 3, rangeFlagsDevice);
         tryAddRange(rngListUAll,    "8V", channelName, adjData, scpi, true,   8.0, 3355443, 1.25, 4, rangeFlagsDevice);
-        tryAddRange(rngListUAll, "100mV", channelName, adjData, scpi, true,   0.1, 4026532, 1.25, 5, rangeFlagsDevice);
+        tryAddRange(rngListUAll, "100mV", channelName, adjData, scpi, true,   0.1, 4026532, 1.25, 5, rangeFlagsDevice);*/
 
         channels.at(i)->setRangeList(rngListUAll);
     }
@@ -42,18 +47,19 @@ QList<SenseChannelCommon *> MT581s2ChannelRangeFactory::createChannelAndRanges(c
         QList<SenseRangeCommon*> rngListIExceptAux;
 
         // TODO remove invented for test range
-        tryAddRange(rngListIExceptAux,  "100A", channelName, adjData, scpi, true, 100.0, 2581110, 1.20,  0, rangeFlagsDevice);
-        tryAddRange(rngListIExceptAux,   "50A", channelName, adjData, scpi, true,  50.0, 2581110, 1.20,  1, rangeFlagsDevice);
-        tryAddRange(rngListIExceptAux,   "25A", channelName, adjData, scpi, true,  25.0, 3226388, 1.20,  2, rangeFlagsDevice);
-        tryAddRange(rngListIExceptAux,   "10A", channelName, adjData, scpi, true,  10.0, 2581110, 1.20,  3, rangeFlagsDevice);
-        tryAddRange(rngListIExceptAux,    "5A", channelName, adjData, scpi, true,   5.0, 2581110, 1.20,  4, rangeFlagsDevice);
-        tryAddRange(rngListIExceptAux,  "2.5A", channelName, adjData, scpi, true,   2.5, 3226388, 1.20,  5, rangeFlagsDevice);
-        tryAddRange(rngListIExceptAux,  "1.0A", channelName, adjData, scpi, true,   1.0, 3467291, 1.20,  6, rangeFlagsDevice);
-        tryAddRange(rngListIExceptAux, "500mA", channelName, adjData, scpi, true,   0.5, 3467291, 1.20,  7, rangeFlagsDevice);
-        tryAddRange(rngListIExceptAux, "250mA", channelName, adjData, scpi, true,  0.25, 4334114, 1.20,  8, rangeFlagsDevice);
-        tryAddRange(rngListIExceptAux, "100mA", channelName, adjData, scpi, true,   0.1, 3467291, 1.20,  9, rangeFlagsDevice);
-        tryAddRange(rngListIExceptAux,  "50mA", channelName, adjData, scpi, true,  0.05, 3467291, 1.20, 10, rangeFlagsDevice);
-        tryAddRange(rngListIExceptAux,  "25mA", channelName, adjData, scpi, true, 0.025, 4334114, 1.20, 11, rangeFlagsDevice);
+        tryAddRange(rngListIExceptAux,  "100A", channelName, adjData, scpi, true, 100.0, 6420910, 1.25,  0, rangeFlagsDevice); // Subject of change
+        tryAddRange(rngListIExceptAux,   "50A", channelName, adjData, scpi, true,  50.0, 3210455, 1.25,  1, rangeFlagsDevice);
+        tryAddRange(rngListIExceptAux,   "25A", channelName, adjData, scpi, true,  25.0, 3210455, 1.25,  2, rangeFlagsDevice);
+        tryAddRange(rngListIExceptAux,   "10A", channelName, adjData, scpi, true,  10.0, 3210455, 1.25,  3, rangeFlagsDevice);
+        tryAddRange(rngListIExceptAux,    "5A", channelName, adjData, scpi, true,   5.0, 3210455, 1.25,  4, rangeFlagsDevice);
+        tryAddRange(rngListIExceptAux,  "2.5A", channelName, adjData, scpi, true,   2.5, 3210455, 1.25,  5, rangeFlagsDevice);
+        tryAddRange(rngListIExceptAux,  "1.0A", channelName, adjData, scpi, true,   1.0, 3980966, 1.25,  6, rangeFlagsDevice);
+        tryAddRange(rngListIExceptAux, "500mA", channelName, adjData, scpi, true,   0.5, 2600468, 1.25,  7, rangeFlagsDevice);
+        tryAddRange(rngListIExceptAux, "250mA", channelName, adjData, scpi, true,  0.25, 2600468, 1.25,  8, rangeFlagsDevice);
+        tryAddRange(rngListIExceptAux, "100mA", channelName, adjData, scpi, true,   0.1, 2600468, 1.25,  9, rangeFlagsDevice);
+        tryAddRange(rngListIExceptAux,  "50mA", channelName, adjData, scpi, true,  0.05, 2600468, 1.25, 10, rangeFlagsDevice);
+        tryAddRange(rngListIExceptAux,  "25mA", channelName, adjData, scpi, true, 0.025, 2600468, 1.25, 11, rangeFlagsDevice);
+        tryAddRange(rngListIExceptAux,  "10mA", channelName, adjData, scpi, true, 0.010, 2600468, 1.25, 12, rangeFlagsDevice);
 
         tryAddRange(rngListIExceptAux,    "8V", channelName, adjData, scpi, true,   8.0, 3355443, 1.25, 12, rangeFlagsIntern);
         tryAddRange(rngListIExceptAux,    "5V", channelName, adjData, scpi, true,   5.0, 4194304, 1.25, 13, rangeFlagsIntern);

@@ -132,68 +132,6 @@
           <TYPE ScpiPath="SENSE:M0:100MV:TYPE" Type="Query"/>
           <URVALUE ScpiPath="SENSE:M0:100MV:URVALUE" Type="Query"/>
         </N_100MV>
-        <N_125V Type="Node">
-          <ADCREJECTION ScpiPath="SENSE:M0:125V:ADCREJECTION" Type="Query"/>
-          <AVAIL ScpiPath="SENSE:M0:125V:AVAIL" Type="Query"/>
-          <CORRECTION Type="Node">
-            <ADJGAIN ScpiPath="SENSE:M0:125V:CORRECTION:ADJGAIN" Type="Node,Query"/>
-            <ADJOFFSET ScpiPath="SENSE:M0:125V:CORRECTION:ADJOFFSET" Type="Command+Par"/>
-            <ADJPHASE ScpiPath="SENSE:M0:125V:CORRECTION:ADJPHASE" Type="Command+Par"/>
-            <COMPUTE ScpiPath="SENSE:M0:125V:CORRECTION:COMPUTE" Type="Command+Par"/>
-            <GAIN ScpiPath="SENSE:M0:125V:CORRECTION:GAIN" Type="Node,Query">
-              <COEFFICIENT Type="Node">
-                <N_0 ScpiPath="SENSE:M0:125V:CORRECTION:GAIN:COEFFICIENT:0" Type="Query,Command+Par"/>
-                <N_1 ScpiPath="SENSE:M0:125V:CORRECTION:GAIN:COEFFICIENT:1" Type="Query,Command+Par"/>
-                <N_2 ScpiPath="SENSE:M0:125V:CORRECTION:GAIN:COEFFICIENT:2" Type="Query,Command+Par"/>
-                <N_3 ScpiPath="SENSE:M0:125V:CORRECTION:GAIN:COEFFICIENT:3" Type="Query,Command+Par"/>
-              </COEFFICIENT>
-              <NODE Type="Node">
-                <N_0 ScpiPath="SENSE:M0:125V:CORRECTION:GAIN:NODE:0" Type="Query,Command+Par"/>
-                <N_1 ScpiPath="SENSE:M0:125V:CORRECTION:GAIN:NODE:1" Type="Query,Command+Par"/>
-                <N_2 ScpiPath="SENSE:M0:125V:CORRECTION:GAIN:NODE:2" Type="Query,Command+Par"/>
-                <N_3 ScpiPath="SENSE:M0:125V:CORRECTION:GAIN:NODE:3" Type="Query,Command+Par"/>
-              </NODE>
-              <STATUS ScpiPath="SENSE:M0:125V:CORRECTION:GAIN:STATUS" Type="Query,Command+Par"/>
-            </GAIN>
-            <INIT ScpiPath="SENSE:M0:125V:CORRECTION:INIT" Type="Command+Par"/>
-            <OFFSET ScpiPath="SENSE:M0:125V:CORRECTION:OFFSET" Type="Command+Par">
-              <COEFFICIENT Type="Node">
-                <N_0 ScpiPath="SENSE:M0:125V:CORRECTION:OFFSET:COEFFICIENT:0" Type="Query,Command+Par"/>
-                <N_1 ScpiPath="SENSE:M0:125V:CORRECTION:OFFSET:COEFFICIENT:1" Type="Query,Command+Par"/>
-                <N_2 ScpiPath="SENSE:M0:125V:CORRECTION:OFFSET:COEFFICIENT:2" Type="Query,Command+Par"/>
-                <N_3 ScpiPath="SENSE:M0:125V:CORRECTION:OFFSET:COEFFICIENT:3" Type="Query,Command+Par"/>
-              </COEFFICIENT>
-              <NODE Type="Node">
-                <N_0 ScpiPath="SENSE:M0:125V:CORRECTION:OFFSET:NODE:0" Type="Query,Command+Par"/>
-                <N_1 ScpiPath="SENSE:M0:125V:CORRECTION:OFFSET:NODE:1" Type="Query,Command+Par"/>
-                <N_2 ScpiPath="SENSE:M0:125V:CORRECTION:OFFSET:NODE:2" Type="Query,Command+Par"/>
-                <N_3 ScpiPath="SENSE:M0:125V:CORRECTION:OFFSET:NODE:3" Type="Query,Command+Par"/>
-              </NODE>
-              <STATUS ScpiPath="SENSE:M0:125V:CORRECTION:OFFSET:STATUS" Type="Query,Command+Par"/>
-            </OFFSET>
-            <PHASE ScpiPath="SENSE:M0:125V:CORRECTION:PHASE" Type="Command+Par">
-              <COEFFICIENT Type="Node">
-                <N_0 ScpiPath="SENSE:M0:125V:CORRECTION:PHASE:COEFFICIENT:0" Type="Query,Command+Par"/>
-                <N_1 ScpiPath="SENSE:M0:125V:CORRECTION:PHASE:COEFFICIENT:1" Type="Query,Command+Par"/>
-                <N_2 ScpiPath="SENSE:M0:125V:CORRECTION:PHASE:COEFFICIENT:2" Type="Query,Command+Par"/>
-                <N_3 ScpiPath="SENSE:M0:125V:CORRECTION:PHASE:COEFFICIENT:3" Type="Query,Command+Par"/>
-              </COEFFICIENT>
-              <NODE Type="Node">
-                <N_0 ScpiPath="SENSE:M0:125V:CORRECTION:PHASE:NODE:0" Type="Query,Command+Par"/>
-                <N_1 ScpiPath="SENSE:M0:125V:CORRECTION:PHASE:NODE:1" Type="Query,Command+Par"/>
-                <N_2 ScpiPath="SENSE:M0:125V:CORRECTION:PHASE:NODE:2" Type="Query,Command+Par"/>
-                <N_3 ScpiPath="SENSE:M0:125V:CORRECTION:PHASE:NODE:3" Type="Query,Command+Par"/>
-              </NODE>
-              <STATUS ScpiPath="SENSE:M0:125V:CORRECTION:PHASE:STATUS" Type="Query,Command+Par"/>
-            </PHASE>
-            <STATUS ScpiPath="SENSE:M0:125V:CORRECTION:STATUS" Type="Query"/>
-          </CORRECTION>
-          <CTRLSELECTION ScpiPath="SENSE:M0:125V:CTRLSELECTION" Type="Query"/>
-          <OVREJECTION ScpiPath="SENSE:M0:125V:OVREJECTION" Type="Query"/>
-          <REJECTION ScpiPath="SENSE:M0:125V:REJECTION" Type="Query"/>
-          <TYPE ScpiPath="SENSE:M0:125V:TYPE" Type="Query"/>
-          <URVALUE ScpiPath="SENSE:M0:125V:URVALUE" Type="Query"/>
-        </N_125V>
         <N_250V Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M0:250V:ADCREJECTION" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M0:250V:AVAIL" Type="Query"/>
@@ -256,130 +194,6 @@
           <TYPE ScpiPath="SENSE:M0:250V:TYPE" Type="Query"/>
           <URVALUE ScpiPath="SENSE:M0:250V:URVALUE" Type="Query"/>
         </N_250V>
-        <N_480V Type="Node">
-          <ADCREJECTION ScpiPath="SENSE:M0:480V:ADCREJECTION" Type="Query"/>
-          <AVAIL ScpiPath="SENSE:M0:480V:AVAIL" Type="Query"/>
-          <CORRECTION Type="Node">
-            <ADJGAIN ScpiPath="SENSE:M0:480V:CORRECTION:ADJGAIN" Type="Node,Query"/>
-            <ADJOFFSET ScpiPath="SENSE:M0:480V:CORRECTION:ADJOFFSET" Type="Command+Par"/>
-            <ADJPHASE ScpiPath="SENSE:M0:480V:CORRECTION:ADJPHASE" Type="Command+Par"/>
-            <COMPUTE ScpiPath="SENSE:M0:480V:CORRECTION:COMPUTE" Type="Command+Par"/>
-            <GAIN ScpiPath="SENSE:M0:480V:CORRECTION:GAIN" Type="Node,Query">
-              <COEFFICIENT Type="Node">
-                <N_0 ScpiPath="SENSE:M0:480V:CORRECTION:GAIN:COEFFICIENT:0" Type="Query,Command+Par"/>
-                <N_1 ScpiPath="SENSE:M0:480V:CORRECTION:GAIN:COEFFICIENT:1" Type="Query,Command+Par"/>
-                <N_2 ScpiPath="SENSE:M0:480V:CORRECTION:GAIN:COEFFICIENT:2" Type="Query,Command+Par"/>
-                <N_3 ScpiPath="SENSE:M0:480V:CORRECTION:GAIN:COEFFICIENT:3" Type="Query,Command+Par"/>
-              </COEFFICIENT>
-              <NODE Type="Node">
-                <N_0 ScpiPath="SENSE:M0:480V:CORRECTION:GAIN:NODE:0" Type="Query,Command+Par"/>
-                <N_1 ScpiPath="SENSE:M0:480V:CORRECTION:GAIN:NODE:1" Type="Query,Command+Par"/>
-                <N_2 ScpiPath="SENSE:M0:480V:CORRECTION:GAIN:NODE:2" Type="Query,Command+Par"/>
-                <N_3 ScpiPath="SENSE:M0:480V:CORRECTION:GAIN:NODE:3" Type="Query,Command+Par"/>
-              </NODE>
-              <STATUS ScpiPath="SENSE:M0:480V:CORRECTION:GAIN:STATUS" Type="Query,Command+Par"/>
-            </GAIN>
-            <INIT ScpiPath="SENSE:M0:480V:CORRECTION:INIT" Type="Command+Par"/>
-            <OFFSET ScpiPath="SENSE:M0:480V:CORRECTION:OFFSET" Type="Command+Par">
-              <COEFFICIENT Type="Node">
-                <N_0 ScpiPath="SENSE:M0:480V:CORRECTION:OFFSET:COEFFICIENT:0" Type="Query,Command+Par"/>
-                <N_1 ScpiPath="SENSE:M0:480V:CORRECTION:OFFSET:COEFFICIENT:1" Type="Query,Command+Par"/>
-                <N_2 ScpiPath="SENSE:M0:480V:CORRECTION:OFFSET:COEFFICIENT:2" Type="Query,Command+Par"/>
-                <N_3 ScpiPath="SENSE:M0:480V:CORRECTION:OFFSET:COEFFICIENT:3" Type="Query,Command+Par"/>
-              </COEFFICIENT>
-              <NODE Type="Node">
-                <N_0 ScpiPath="SENSE:M0:480V:CORRECTION:OFFSET:NODE:0" Type="Query,Command+Par"/>
-                <N_1 ScpiPath="SENSE:M0:480V:CORRECTION:OFFSET:NODE:1" Type="Query,Command+Par"/>
-                <N_2 ScpiPath="SENSE:M0:480V:CORRECTION:OFFSET:NODE:2" Type="Query,Command+Par"/>
-                <N_3 ScpiPath="SENSE:M0:480V:CORRECTION:OFFSET:NODE:3" Type="Query,Command+Par"/>
-              </NODE>
-              <STATUS ScpiPath="SENSE:M0:480V:CORRECTION:OFFSET:STATUS" Type="Query,Command+Par"/>
-            </OFFSET>
-            <PHASE ScpiPath="SENSE:M0:480V:CORRECTION:PHASE" Type="Command+Par">
-              <COEFFICIENT Type="Node">
-                <N_0 ScpiPath="SENSE:M0:480V:CORRECTION:PHASE:COEFFICIENT:0" Type="Query,Command+Par"/>
-                <N_1 ScpiPath="SENSE:M0:480V:CORRECTION:PHASE:COEFFICIENT:1" Type="Query,Command+Par"/>
-                <N_2 ScpiPath="SENSE:M0:480V:CORRECTION:PHASE:COEFFICIENT:2" Type="Query,Command+Par"/>
-                <N_3 ScpiPath="SENSE:M0:480V:CORRECTION:PHASE:COEFFICIENT:3" Type="Query,Command+Par"/>
-              </COEFFICIENT>
-              <NODE Type="Node">
-                <N_0 ScpiPath="SENSE:M0:480V:CORRECTION:PHASE:NODE:0" Type="Query,Command+Par"/>
-                <N_1 ScpiPath="SENSE:M0:480V:CORRECTION:PHASE:NODE:1" Type="Query,Command+Par"/>
-                <N_2 ScpiPath="SENSE:M0:480V:CORRECTION:PHASE:NODE:2" Type="Query,Command+Par"/>
-                <N_3 ScpiPath="SENSE:M0:480V:CORRECTION:PHASE:NODE:3" Type="Query,Command+Par"/>
-              </NODE>
-              <STATUS ScpiPath="SENSE:M0:480V:CORRECTION:PHASE:STATUS" Type="Query,Command+Par"/>
-            </PHASE>
-            <STATUS ScpiPath="SENSE:M0:480V:CORRECTION:STATUS" Type="Query"/>
-          </CORRECTION>
-          <CTRLSELECTION ScpiPath="SENSE:M0:480V:CTRLSELECTION" Type="Query"/>
-          <OVREJECTION ScpiPath="SENSE:M0:480V:OVREJECTION" Type="Query"/>
-          <REJECTION ScpiPath="SENSE:M0:480V:REJECTION" Type="Query"/>
-          <TYPE ScpiPath="SENSE:M0:480V:TYPE" Type="Query"/>
-          <URVALUE ScpiPath="SENSE:M0:480V:URVALUE" Type="Query"/>
-        </N_480V>
-        <N_60V Type="Node">
-          <ADCREJECTION ScpiPath="SENSE:M0:60V:ADCREJECTION" Type="Query"/>
-          <AVAIL ScpiPath="SENSE:M0:60V:AVAIL" Type="Query"/>
-          <CORRECTION Type="Node">
-            <ADJGAIN ScpiPath="SENSE:M0:60V:CORRECTION:ADJGAIN" Type="Node,Query"/>
-            <ADJOFFSET ScpiPath="SENSE:M0:60V:CORRECTION:ADJOFFSET" Type="Command+Par"/>
-            <ADJPHASE ScpiPath="SENSE:M0:60V:CORRECTION:ADJPHASE" Type="Command+Par"/>
-            <COMPUTE ScpiPath="SENSE:M0:60V:CORRECTION:COMPUTE" Type="Command+Par"/>
-            <GAIN ScpiPath="SENSE:M0:60V:CORRECTION:GAIN" Type="Node,Query">
-              <COEFFICIENT Type="Node">
-                <N_0 ScpiPath="SENSE:M0:60V:CORRECTION:GAIN:COEFFICIENT:0" Type="Query,Command+Par"/>
-                <N_1 ScpiPath="SENSE:M0:60V:CORRECTION:GAIN:COEFFICIENT:1" Type="Query,Command+Par"/>
-                <N_2 ScpiPath="SENSE:M0:60V:CORRECTION:GAIN:COEFFICIENT:2" Type="Query,Command+Par"/>
-                <N_3 ScpiPath="SENSE:M0:60V:CORRECTION:GAIN:COEFFICIENT:3" Type="Query,Command+Par"/>
-              </COEFFICIENT>
-              <NODE Type="Node">
-                <N_0 ScpiPath="SENSE:M0:60V:CORRECTION:GAIN:NODE:0" Type="Query,Command+Par"/>
-                <N_1 ScpiPath="SENSE:M0:60V:CORRECTION:GAIN:NODE:1" Type="Query,Command+Par"/>
-                <N_2 ScpiPath="SENSE:M0:60V:CORRECTION:GAIN:NODE:2" Type="Query,Command+Par"/>
-                <N_3 ScpiPath="SENSE:M0:60V:CORRECTION:GAIN:NODE:3" Type="Query,Command+Par"/>
-              </NODE>
-              <STATUS ScpiPath="SENSE:M0:60V:CORRECTION:GAIN:STATUS" Type="Query,Command+Par"/>
-            </GAIN>
-            <INIT ScpiPath="SENSE:M0:60V:CORRECTION:INIT" Type="Command+Par"/>
-            <OFFSET ScpiPath="SENSE:M0:60V:CORRECTION:OFFSET" Type="Command+Par">
-              <COEFFICIENT Type="Node">
-                <N_0 ScpiPath="SENSE:M0:60V:CORRECTION:OFFSET:COEFFICIENT:0" Type="Query,Command+Par"/>
-                <N_1 ScpiPath="SENSE:M0:60V:CORRECTION:OFFSET:COEFFICIENT:1" Type="Query,Command+Par"/>
-                <N_2 ScpiPath="SENSE:M0:60V:CORRECTION:OFFSET:COEFFICIENT:2" Type="Query,Command+Par"/>
-                <N_3 ScpiPath="SENSE:M0:60V:CORRECTION:OFFSET:COEFFICIENT:3" Type="Query,Command+Par"/>
-              </COEFFICIENT>
-              <NODE Type="Node">
-                <N_0 ScpiPath="SENSE:M0:60V:CORRECTION:OFFSET:NODE:0" Type="Query,Command+Par"/>
-                <N_1 ScpiPath="SENSE:M0:60V:CORRECTION:OFFSET:NODE:1" Type="Query,Command+Par"/>
-                <N_2 ScpiPath="SENSE:M0:60V:CORRECTION:OFFSET:NODE:2" Type="Query,Command+Par"/>
-                <N_3 ScpiPath="SENSE:M0:60V:CORRECTION:OFFSET:NODE:3" Type="Query,Command+Par"/>
-              </NODE>
-              <STATUS ScpiPath="SENSE:M0:60V:CORRECTION:OFFSET:STATUS" Type="Query,Command+Par"/>
-            </OFFSET>
-            <PHASE ScpiPath="SENSE:M0:60V:CORRECTION:PHASE" Type="Command+Par">
-              <COEFFICIENT Type="Node">
-                <N_0 ScpiPath="SENSE:M0:60V:CORRECTION:PHASE:COEFFICIENT:0" Type="Query,Command+Par"/>
-                <N_1 ScpiPath="SENSE:M0:60V:CORRECTION:PHASE:COEFFICIENT:1" Type="Query,Command+Par"/>
-                <N_2 ScpiPath="SENSE:M0:60V:CORRECTION:PHASE:COEFFICIENT:2" Type="Query,Command+Par"/>
-                <N_3 ScpiPath="SENSE:M0:60V:CORRECTION:PHASE:COEFFICIENT:3" Type="Query,Command+Par"/>
-              </COEFFICIENT>
-              <NODE Type="Node">
-                <N_0 ScpiPath="SENSE:M0:60V:CORRECTION:PHASE:NODE:0" Type="Query,Command+Par"/>
-                <N_1 ScpiPath="SENSE:M0:60V:CORRECTION:PHASE:NODE:1" Type="Query,Command+Par"/>
-                <N_2 ScpiPath="SENSE:M0:60V:CORRECTION:PHASE:NODE:2" Type="Query,Command+Par"/>
-                <N_3 ScpiPath="SENSE:M0:60V:CORRECTION:PHASE:NODE:3" Type="Query,Command+Par"/>
-              </NODE>
-              <STATUS ScpiPath="SENSE:M0:60V:CORRECTION:PHASE:STATUS" Type="Query,Command+Par"/>
-            </PHASE>
-            <STATUS ScpiPath="SENSE:M0:60V:CORRECTION:STATUS" Type="Query"/>
-          </CORRECTION>
-          <CTRLSELECTION ScpiPath="SENSE:M0:60V:CTRLSELECTION" Type="Query"/>
-          <OVREJECTION ScpiPath="SENSE:M0:60V:OVREJECTION" Type="Query"/>
-          <REJECTION ScpiPath="SENSE:M0:60V:REJECTION" Type="Query"/>
-          <TYPE ScpiPath="SENSE:M0:60V:TYPE" Type="Query"/>
-          <URVALUE ScpiPath="SENSE:M0:60V:URVALUE" Type="Query"/>
-        </N_60V>
         <N_8V Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M0:8V:ADCREJECTION" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M0:8V:AVAIL" Type="Query"/>
@@ -517,68 +331,6 @@
           <TYPE ScpiPath="SENSE:M1:100MV:TYPE" Type="Query"/>
           <URVALUE ScpiPath="SENSE:M1:100MV:URVALUE" Type="Query"/>
         </N_100MV>
-        <N_125V Type="Node">
-          <ADCREJECTION ScpiPath="SENSE:M1:125V:ADCREJECTION" Type="Query"/>
-          <AVAIL ScpiPath="SENSE:M1:125V:AVAIL" Type="Query"/>
-          <CORRECTION Type="Node">
-            <ADJGAIN ScpiPath="SENSE:M1:125V:CORRECTION:ADJGAIN" Type="Node,Query"/>
-            <ADJOFFSET ScpiPath="SENSE:M1:125V:CORRECTION:ADJOFFSET" Type="Command+Par"/>
-            <ADJPHASE ScpiPath="SENSE:M1:125V:CORRECTION:ADJPHASE" Type="Command+Par"/>
-            <COMPUTE ScpiPath="SENSE:M1:125V:CORRECTION:COMPUTE" Type="Command+Par"/>
-            <GAIN ScpiPath="SENSE:M1:125V:CORRECTION:GAIN" Type="Node,Query">
-              <COEFFICIENT Type="Node">
-                <N_0 ScpiPath="SENSE:M1:125V:CORRECTION:GAIN:COEFFICIENT:0" Type="Query,Command+Par"/>
-                <N_1 ScpiPath="SENSE:M1:125V:CORRECTION:GAIN:COEFFICIENT:1" Type="Query,Command+Par"/>
-                <N_2 ScpiPath="SENSE:M1:125V:CORRECTION:GAIN:COEFFICIENT:2" Type="Query,Command+Par"/>
-                <N_3 ScpiPath="SENSE:M1:125V:CORRECTION:GAIN:COEFFICIENT:3" Type="Query,Command+Par"/>
-              </COEFFICIENT>
-              <NODE Type="Node">
-                <N_0 ScpiPath="SENSE:M1:125V:CORRECTION:GAIN:NODE:0" Type="Query,Command+Par"/>
-                <N_1 ScpiPath="SENSE:M1:125V:CORRECTION:GAIN:NODE:1" Type="Query,Command+Par"/>
-                <N_2 ScpiPath="SENSE:M1:125V:CORRECTION:GAIN:NODE:2" Type="Query,Command+Par"/>
-                <N_3 ScpiPath="SENSE:M1:125V:CORRECTION:GAIN:NODE:3" Type="Query,Command+Par"/>
-              </NODE>
-              <STATUS ScpiPath="SENSE:M1:125V:CORRECTION:GAIN:STATUS" Type="Query,Command+Par"/>
-            </GAIN>
-            <INIT ScpiPath="SENSE:M1:125V:CORRECTION:INIT" Type="Command+Par"/>
-            <OFFSET ScpiPath="SENSE:M1:125V:CORRECTION:OFFSET" Type="Command+Par">
-              <COEFFICIENT Type="Node">
-                <N_0 ScpiPath="SENSE:M1:125V:CORRECTION:OFFSET:COEFFICIENT:0" Type="Query,Command+Par"/>
-                <N_1 ScpiPath="SENSE:M1:125V:CORRECTION:OFFSET:COEFFICIENT:1" Type="Query,Command+Par"/>
-                <N_2 ScpiPath="SENSE:M1:125V:CORRECTION:OFFSET:COEFFICIENT:2" Type="Query,Command+Par"/>
-                <N_3 ScpiPath="SENSE:M1:125V:CORRECTION:OFFSET:COEFFICIENT:3" Type="Query,Command+Par"/>
-              </COEFFICIENT>
-              <NODE Type="Node">
-                <N_0 ScpiPath="SENSE:M1:125V:CORRECTION:OFFSET:NODE:0" Type="Query,Command+Par"/>
-                <N_1 ScpiPath="SENSE:M1:125V:CORRECTION:OFFSET:NODE:1" Type="Query,Command+Par"/>
-                <N_2 ScpiPath="SENSE:M1:125V:CORRECTION:OFFSET:NODE:2" Type="Query,Command+Par"/>
-                <N_3 ScpiPath="SENSE:M1:125V:CORRECTION:OFFSET:NODE:3" Type="Query,Command+Par"/>
-              </NODE>
-              <STATUS ScpiPath="SENSE:M1:125V:CORRECTION:OFFSET:STATUS" Type="Query,Command+Par"/>
-            </OFFSET>
-            <PHASE ScpiPath="SENSE:M1:125V:CORRECTION:PHASE" Type="Command+Par">
-              <COEFFICIENT Type="Node">
-                <N_0 ScpiPath="SENSE:M1:125V:CORRECTION:PHASE:COEFFICIENT:0" Type="Query,Command+Par"/>
-                <N_1 ScpiPath="SENSE:M1:125V:CORRECTION:PHASE:COEFFICIENT:1" Type="Query,Command+Par"/>
-                <N_2 ScpiPath="SENSE:M1:125V:CORRECTION:PHASE:COEFFICIENT:2" Type="Query,Command+Par"/>
-                <N_3 ScpiPath="SENSE:M1:125V:CORRECTION:PHASE:COEFFICIENT:3" Type="Query,Command+Par"/>
-              </COEFFICIENT>
-              <NODE Type="Node">
-                <N_0 ScpiPath="SENSE:M1:125V:CORRECTION:PHASE:NODE:0" Type="Query,Command+Par"/>
-                <N_1 ScpiPath="SENSE:M1:125V:CORRECTION:PHASE:NODE:1" Type="Query,Command+Par"/>
-                <N_2 ScpiPath="SENSE:M1:125V:CORRECTION:PHASE:NODE:2" Type="Query,Command+Par"/>
-                <N_3 ScpiPath="SENSE:M1:125V:CORRECTION:PHASE:NODE:3" Type="Query,Command+Par"/>
-              </NODE>
-              <STATUS ScpiPath="SENSE:M1:125V:CORRECTION:PHASE:STATUS" Type="Query,Command+Par"/>
-            </PHASE>
-            <STATUS ScpiPath="SENSE:M1:125V:CORRECTION:STATUS" Type="Query"/>
-          </CORRECTION>
-          <CTRLSELECTION ScpiPath="SENSE:M1:125V:CTRLSELECTION" Type="Query"/>
-          <OVREJECTION ScpiPath="SENSE:M1:125V:OVREJECTION" Type="Query"/>
-          <REJECTION ScpiPath="SENSE:M1:125V:REJECTION" Type="Query"/>
-          <TYPE ScpiPath="SENSE:M1:125V:TYPE" Type="Query"/>
-          <URVALUE ScpiPath="SENSE:M1:125V:URVALUE" Type="Query"/>
-        </N_125V>
         <N_250V Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M1:250V:ADCREJECTION" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M1:250V:AVAIL" Type="Query"/>
@@ -641,130 +393,6 @@
           <TYPE ScpiPath="SENSE:M1:250V:TYPE" Type="Query"/>
           <URVALUE ScpiPath="SENSE:M1:250V:URVALUE" Type="Query"/>
         </N_250V>
-        <N_480V Type="Node">
-          <ADCREJECTION ScpiPath="SENSE:M1:480V:ADCREJECTION" Type="Query"/>
-          <AVAIL ScpiPath="SENSE:M1:480V:AVAIL" Type="Query"/>
-          <CORRECTION Type="Node">
-            <ADJGAIN ScpiPath="SENSE:M1:480V:CORRECTION:ADJGAIN" Type="Node,Query"/>
-            <ADJOFFSET ScpiPath="SENSE:M1:480V:CORRECTION:ADJOFFSET" Type="Command+Par"/>
-            <ADJPHASE ScpiPath="SENSE:M1:480V:CORRECTION:ADJPHASE" Type="Command+Par"/>
-            <COMPUTE ScpiPath="SENSE:M1:480V:CORRECTION:COMPUTE" Type="Command+Par"/>
-            <GAIN ScpiPath="SENSE:M1:480V:CORRECTION:GAIN" Type="Node,Query">
-              <COEFFICIENT Type="Node">
-                <N_0 ScpiPath="SENSE:M1:480V:CORRECTION:GAIN:COEFFICIENT:0" Type="Query,Command+Par"/>
-                <N_1 ScpiPath="SENSE:M1:480V:CORRECTION:GAIN:COEFFICIENT:1" Type="Query,Command+Par"/>
-                <N_2 ScpiPath="SENSE:M1:480V:CORRECTION:GAIN:COEFFICIENT:2" Type="Query,Command+Par"/>
-                <N_3 ScpiPath="SENSE:M1:480V:CORRECTION:GAIN:COEFFICIENT:3" Type="Query,Command+Par"/>
-              </COEFFICIENT>
-              <NODE Type="Node">
-                <N_0 ScpiPath="SENSE:M1:480V:CORRECTION:GAIN:NODE:0" Type="Query,Command+Par"/>
-                <N_1 ScpiPath="SENSE:M1:480V:CORRECTION:GAIN:NODE:1" Type="Query,Command+Par"/>
-                <N_2 ScpiPath="SENSE:M1:480V:CORRECTION:GAIN:NODE:2" Type="Query,Command+Par"/>
-                <N_3 ScpiPath="SENSE:M1:480V:CORRECTION:GAIN:NODE:3" Type="Query,Command+Par"/>
-              </NODE>
-              <STATUS ScpiPath="SENSE:M1:480V:CORRECTION:GAIN:STATUS" Type="Query,Command+Par"/>
-            </GAIN>
-            <INIT ScpiPath="SENSE:M1:480V:CORRECTION:INIT" Type="Command+Par"/>
-            <OFFSET ScpiPath="SENSE:M1:480V:CORRECTION:OFFSET" Type="Command+Par">
-              <COEFFICIENT Type="Node">
-                <N_0 ScpiPath="SENSE:M1:480V:CORRECTION:OFFSET:COEFFICIENT:0" Type="Query,Command+Par"/>
-                <N_1 ScpiPath="SENSE:M1:480V:CORRECTION:OFFSET:COEFFICIENT:1" Type="Query,Command+Par"/>
-                <N_2 ScpiPath="SENSE:M1:480V:CORRECTION:OFFSET:COEFFICIENT:2" Type="Query,Command+Par"/>
-                <N_3 ScpiPath="SENSE:M1:480V:CORRECTION:OFFSET:COEFFICIENT:3" Type="Query,Command+Par"/>
-              </COEFFICIENT>
-              <NODE Type="Node">
-                <N_0 ScpiPath="SENSE:M1:480V:CORRECTION:OFFSET:NODE:0" Type="Query,Command+Par"/>
-                <N_1 ScpiPath="SENSE:M1:480V:CORRECTION:OFFSET:NODE:1" Type="Query,Command+Par"/>
-                <N_2 ScpiPath="SENSE:M1:480V:CORRECTION:OFFSET:NODE:2" Type="Query,Command+Par"/>
-                <N_3 ScpiPath="SENSE:M1:480V:CORRECTION:OFFSET:NODE:3" Type="Query,Command+Par"/>
-              </NODE>
-              <STATUS ScpiPath="SENSE:M1:480V:CORRECTION:OFFSET:STATUS" Type="Query,Command+Par"/>
-            </OFFSET>
-            <PHASE ScpiPath="SENSE:M1:480V:CORRECTION:PHASE" Type="Command+Par">
-              <COEFFICIENT Type="Node">
-                <N_0 ScpiPath="SENSE:M1:480V:CORRECTION:PHASE:COEFFICIENT:0" Type="Query,Command+Par"/>
-                <N_1 ScpiPath="SENSE:M1:480V:CORRECTION:PHASE:COEFFICIENT:1" Type="Query,Command+Par"/>
-                <N_2 ScpiPath="SENSE:M1:480V:CORRECTION:PHASE:COEFFICIENT:2" Type="Query,Command+Par"/>
-                <N_3 ScpiPath="SENSE:M1:480V:CORRECTION:PHASE:COEFFICIENT:3" Type="Query,Command+Par"/>
-              </COEFFICIENT>
-              <NODE Type="Node">
-                <N_0 ScpiPath="SENSE:M1:480V:CORRECTION:PHASE:NODE:0" Type="Query,Command+Par"/>
-                <N_1 ScpiPath="SENSE:M1:480V:CORRECTION:PHASE:NODE:1" Type="Query,Command+Par"/>
-                <N_2 ScpiPath="SENSE:M1:480V:CORRECTION:PHASE:NODE:2" Type="Query,Command+Par"/>
-                <N_3 ScpiPath="SENSE:M1:480V:CORRECTION:PHASE:NODE:3" Type="Query,Command+Par"/>
-              </NODE>
-              <STATUS ScpiPath="SENSE:M1:480V:CORRECTION:PHASE:STATUS" Type="Query,Command+Par"/>
-            </PHASE>
-            <STATUS ScpiPath="SENSE:M1:480V:CORRECTION:STATUS" Type="Query"/>
-          </CORRECTION>
-          <CTRLSELECTION ScpiPath="SENSE:M1:480V:CTRLSELECTION" Type="Query"/>
-          <OVREJECTION ScpiPath="SENSE:M1:480V:OVREJECTION" Type="Query"/>
-          <REJECTION ScpiPath="SENSE:M1:480V:REJECTION" Type="Query"/>
-          <TYPE ScpiPath="SENSE:M1:480V:TYPE" Type="Query"/>
-          <URVALUE ScpiPath="SENSE:M1:480V:URVALUE" Type="Query"/>
-        </N_480V>
-        <N_60V Type="Node">
-          <ADCREJECTION ScpiPath="SENSE:M1:60V:ADCREJECTION" Type="Query"/>
-          <AVAIL ScpiPath="SENSE:M1:60V:AVAIL" Type="Query"/>
-          <CORRECTION Type="Node">
-            <ADJGAIN ScpiPath="SENSE:M1:60V:CORRECTION:ADJGAIN" Type="Node,Query"/>
-            <ADJOFFSET ScpiPath="SENSE:M1:60V:CORRECTION:ADJOFFSET" Type="Command+Par"/>
-            <ADJPHASE ScpiPath="SENSE:M1:60V:CORRECTION:ADJPHASE" Type="Command+Par"/>
-            <COMPUTE ScpiPath="SENSE:M1:60V:CORRECTION:COMPUTE" Type="Command+Par"/>
-            <GAIN ScpiPath="SENSE:M1:60V:CORRECTION:GAIN" Type="Node,Query">
-              <COEFFICIENT Type="Node">
-                <N_0 ScpiPath="SENSE:M1:60V:CORRECTION:GAIN:COEFFICIENT:0" Type="Query,Command+Par"/>
-                <N_1 ScpiPath="SENSE:M1:60V:CORRECTION:GAIN:COEFFICIENT:1" Type="Query,Command+Par"/>
-                <N_2 ScpiPath="SENSE:M1:60V:CORRECTION:GAIN:COEFFICIENT:2" Type="Query,Command+Par"/>
-                <N_3 ScpiPath="SENSE:M1:60V:CORRECTION:GAIN:COEFFICIENT:3" Type="Query,Command+Par"/>
-              </COEFFICIENT>
-              <NODE Type="Node">
-                <N_0 ScpiPath="SENSE:M1:60V:CORRECTION:GAIN:NODE:0" Type="Query,Command+Par"/>
-                <N_1 ScpiPath="SENSE:M1:60V:CORRECTION:GAIN:NODE:1" Type="Query,Command+Par"/>
-                <N_2 ScpiPath="SENSE:M1:60V:CORRECTION:GAIN:NODE:2" Type="Query,Command+Par"/>
-                <N_3 ScpiPath="SENSE:M1:60V:CORRECTION:GAIN:NODE:3" Type="Query,Command+Par"/>
-              </NODE>
-              <STATUS ScpiPath="SENSE:M1:60V:CORRECTION:GAIN:STATUS" Type="Query,Command+Par"/>
-            </GAIN>
-            <INIT ScpiPath="SENSE:M1:60V:CORRECTION:INIT" Type="Command+Par"/>
-            <OFFSET ScpiPath="SENSE:M1:60V:CORRECTION:OFFSET" Type="Command+Par">
-              <COEFFICIENT Type="Node">
-                <N_0 ScpiPath="SENSE:M1:60V:CORRECTION:OFFSET:COEFFICIENT:0" Type="Query,Command+Par"/>
-                <N_1 ScpiPath="SENSE:M1:60V:CORRECTION:OFFSET:COEFFICIENT:1" Type="Query,Command+Par"/>
-                <N_2 ScpiPath="SENSE:M1:60V:CORRECTION:OFFSET:COEFFICIENT:2" Type="Query,Command+Par"/>
-                <N_3 ScpiPath="SENSE:M1:60V:CORRECTION:OFFSET:COEFFICIENT:3" Type="Query,Command+Par"/>
-              </COEFFICIENT>
-              <NODE Type="Node">
-                <N_0 ScpiPath="SENSE:M1:60V:CORRECTION:OFFSET:NODE:0" Type="Query,Command+Par"/>
-                <N_1 ScpiPath="SENSE:M1:60V:CORRECTION:OFFSET:NODE:1" Type="Query,Command+Par"/>
-                <N_2 ScpiPath="SENSE:M1:60V:CORRECTION:OFFSET:NODE:2" Type="Query,Command+Par"/>
-                <N_3 ScpiPath="SENSE:M1:60V:CORRECTION:OFFSET:NODE:3" Type="Query,Command+Par"/>
-              </NODE>
-              <STATUS ScpiPath="SENSE:M1:60V:CORRECTION:OFFSET:STATUS" Type="Query,Command+Par"/>
-            </OFFSET>
-            <PHASE ScpiPath="SENSE:M1:60V:CORRECTION:PHASE" Type="Command+Par">
-              <COEFFICIENT Type="Node">
-                <N_0 ScpiPath="SENSE:M1:60V:CORRECTION:PHASE:COEFFICIENT:0" Type="Query,Command+Par"/>
-                <N_1 ScpiPath="SENSE:M1:60V:CORRECTION:PHASE:COEFFICIENT:1" Type="Query,Command+Par"/>
-                <N_2 ScpiPath="SENSE:M1:60V:CORRECTION:PHASE:COEFFICIENT:2" Type="Query,Command+Par"/>
-                <N_3 ScpiPath="SENSE:M1:60V:CORRECTION:PHASE:COEFFICIENT:3" Type="Query,Command+Par"/>
-              </COEFFICIENT>
-              <NODE Type="Node">
-                <N_0 ScpiPath="SENSE:M1:60V:CORRECTION:PHASE:NODE:0" Type="Query,Command+Par"/>
-                <N_1 ScpiPath="SENSE:M1:60V:CORRECTION:PHASE:NODE:1" Type="Query,Command+Par"/>
-                <N_2 ScpiPath="SENSE:M1:60V:CORRECTION:PHASE:NODE:2" Type="Query,Command+Par"/>
-                <N_3 ScpiPath="SENSE:M1:60V:CORRECTION:PHASE:NODE:3" Type="Query,Command+Par"/>
-              </NODE>
-              <STATUS ScpiPath="SENSE:M1:60V:CORRECTION:PHASE:STATUS" Type="Query,Command+Par"/>
-            </PHASE>
-            <STATUS ScpiPath="SENSE:M1:60V:CORRECTION:STATUS" Type="Query"/>
-          </CORRECTION>
-          <CTRLSELECTION ScpiPath="SENSE:M1:60V:CTRLSELECTION" Type="Query"/>
-          <OVREJECTION ScpiPath="SENSE:M1:60V:OVREJECTION" Type="Query"/>
-          <REJECTION ScpiPath="SENSE:M1:60V:REJECTION" Type="Query"/>
-          <TYPE ScpiPath="SENSE:M1:60V:TYPE" Type="Query"/>
-          <URVALUE ScpiPath="SENSE:M1:60V:URVALUE" Type="Query"/>
-        </N_60V>
         <N_8V Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M1:8V:ADCREJECTION" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M1:8V:AVAIL" Type="Query"/>
@@ -902,68 +530,6 @@
           <TYPE ScpiPath="SENSE:M2:100MV:TYPE" Type="Query"/>
           <URVALUE ScpiPath="SENSE:M2:100MV:URVALUE" Type="Query"/>
         </N_100MV>
-        <N_125V Type="Node">
-          <ADCREJECTION ScpiPath="SENSE:M2:125V:ADCREJECTION" Type="Query"/>
-          <AVAIL ScpiPath="SENSE:M2:125V:AVAIL" Type="Query"/>
-          <CORRECTION Type="Node">
-            <ADJGAIN ScpiPath="SENSE:M2:125V:CORRECTION:ADJGAIN" Type="Node,Query"/>
-            <ADJOFFSET ScpiPath="SENSE:M2:125V:CORRECTION:ADJOFFSET" Type="Command+Par"/>
-            <ADJPHASE ScpiPath="SENSE:M2:125V:CORRECTION:ADJPHASE" Type="Command+Par"/>
-            <COMPUTE ScpiPath="SENSE:M2:125V:CORRECTION:COMPUTE" Type="Command+Par"/>
-            <GAIN ScpiPath="SENSE:M2:125V:CORRECTION:GAIN" Type="Node,Query">
-              <COEFFICIENT Type="Node">
-                <N_0 ScpiPath="SENSE:M2:125V:CORRECTION:GAIN:COEFFICIENT:0" Type="Query,Command+Par"/>
-                <N_1 ScpiPath="SENSE:M2:125V:CORRECTION:GAIN:COEFFICIENT:1" Type="Query,Command+Par"/>
-                <N_2 ScpiPath="SENSE:M2:125V:CORRECTION:GAIN:COEFFICIENT:2" Type="Query,Command+Par"/>
-                <N_3 ScpiPath="SENSE:M2:125V:CORRECTION:GAIN:COEFFICIENT:3" Type="Query,Command+Par"/>
-              </COEFFICIENT>
-              <NODE Type="Node">
-                <N_0 ScpiPath="SENSE:M2:125V:CORRECTION:GAIN:NODE:0" Type="Query,Command+Par"/>
-                <N_1 ScpiPath="SENSE:M2:125V:CORRECTION:GAIN:NODE:1" Type="Query,Command+Par"/>
-                <N_2 ScpiPath="SENSE:M2:125V:CORRECTION:GAIN:NODE:2" Type="Query,Command+Par"/>
-                <N_3 ScpiPath="SENSE:M2:125V:CORRECTION:GAIN:NODE:3" Type="Query,Command+Par"/>
-              </NODE>
-              <STATUS ScpiPath="SENSE:M2:125V:CORRECTION:GAIN:STATUS" Type="Query,Command+Par"/>
-            </GAIN>
-            <INIT ScpiPath="SENSE:M2:125V:CORRECTION:INIT" Type="Command+Par"/>
-            <OFFSET ScpiPath="SENSE:M2:125V:CORRECTION:OFFSET" Type="Command+Par">
-              <COEFFICIENT Type="Node">
-                <N_0 ScpiPath="SENSE:M2:125V:CORRECTION:OFFSET:COEFFICIENT:0" Type="Query,Command+Par"/>
-                <N_1 ScpiPath="SENSE:M2:125V:CORRECTION:OFFSET:COEFFICIENT:1" Type="Query,Command+Par"/>
-                <N_2 ScpiPath="SENSE:M2:125V:CORRECTION:OFFSET:COEFFICIENT:2" Type="Query,Command+Par"/>
-                <N_3 ScpiPath="SENSE:M2:125V:CORRECTION:OFFSET:COEFFICIENT:3" Type="Query,Command+Par"/>
-              </COEFFICIENT>
-              <NODE Type="Node">
-                <N_0 ScpiPath="SENSE:M2:125V:CORRECTION:OFFSET:NODE:0" Type="Query,Command+Par"/>
-                <N_1 ScpiPath="SENSE:M2:125V:CORRECTION:OFFSET:NODE:1" Type="Query,Command+Par"/>
-                <N_2 ScpiPath="SENSE:M2:125V:CORRECTION:OFFSET:NODE:2" Type="Query,Command+Par"/>
-                <N_3 ScpiPath="SENSE:M2:125V:CORRECTION:OFFSET:NODE:3" Type="Query,Command+Par"/>
-              </NODE>
-              <STATUS ScpiPath="SENSE:M2:125V:CORRECTION:OFFSET:STATUS" Type="Query,Command+Par"/>
-            </OFFSET>
-            <PHASE ScpiPath="SENSE:M2:125V:CORRECTION:PHASE" Type="Command+Par">
-              <COEFFICIENT Type="Node">
-                <N_0 ScpiPath="SENSE:M2:125V:CORRECTION:PHASE:COEFFICIENT:0" Type="Query,Command+Par"/>
-                <N_1 ScpiPath="SENSE:M2:125V:CORRECTION:PHASE:COEFFICIENT:1" Type="Query,Command+Par"/>
-                <N_2 ScpiPath="SENSE:M2:125V:CORRECTION:PHASE:COEFFICIENT:2" Type="Query,Command+Par"/>
-                <N_3 ScpiPath="SENSE:M2:125V:CORRECTION:PHASE:COEFFICIENT:3" Type="Query,Command+Par"/>
-              </COEFFICIENT>
-              <NODE Type="Node">
-                <N_0 ScpiPath="SENSE:M2:125V:CORRECTION:PHASE:NODE:0" Type="Query,Command+Par"/>
-                <N_1 ScpiPath="SENSE:M2:125V:CORRECTION:PHASE:NODE:1" Type="Query,Command+Par"/>
-                <N_2 ScpiPath="SENSE:M2:125V:CORRECTION:PHASE:NODE:2" Type="Query,Command+Par"/>
-                <N_3 ScpiPath="SENSE:M2:125V:CORRECTION:PHASE:NODE:3" Type="Query,Command+Par"/>
-              </NODE>
-              <STATUS ScpiPath="SENSE:M2:125V:CORRECTION:PHASE:STATUS" Type="Query,Command+Par"/>
-            </PHASE>
-            <STATUS ScpiPath="SENSE:M2:125V:CORRECTION:STATUS" Type="Query"/>
-          </CORRECTION>
-          <CTRLSELECTION ScpiPath="SENSE:M2:125V:CTRLSELECTION" Type="Query"/>
-          <OVREJECTION ScpiPath="SENSE:M2:125V:OVREJECTION" Type="Query"/>
-          <REJECTION ScpiPath="SENSE:M2:125V:REJECTION" Type="Query"/>
-          <TYPE ScpiPath="SENSE:M2:125V:TYPE" Type="Query"/>
-          <URVALUE ScpiPath="SENSE:M2:125V:URVALUE" Type="Query"/>
-        </N_125V>
         <N_250V Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M2:250V:ADCREJECTION" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M2:250V:AVAIL" Type="Query"/>
@@ -1026,130 +592,6 @@
           <TYPE ScpiPath="SENSE:M2:250V:TYPE" Type="Query"/>
           <URVALUE ScpiPath="SENSE:M2:250V:URVALUE" Type="Query"/>
         </N_250V>
-        <N_480V Type="Node">
-          <ADCREJECTION ScpiPath="SENSE:M2:480V:ADCREJECTION" Type="Query"/>
-          <AVAIL ScpiPath="SENSE:M2:480V:AVAIL" Type="Query"/>
-          <CORRECTION Type="Node">
-            <ADJGAIN ScpiPath="SENSE:M2:480V:CORRECTION:ADJGAIN" Type="Node,Query"/>
-            <ADJOFFSET ScpiPath="SENSE:M2:480V:CORRECTION:ADJOFFSET" Type="Command+Par"/>
-            <ADJPHASE ScpiPath="SENSE:M2:480V:CORRECTION:ADJPHASE" Type="Command+Par"/>
-            <COMPUTE ScpiPath="SENSE:M2:480V:CORRECTION:COMPUTE" Type="Command+Par"/>
-            <GAIN ScpiPath="SENSE:M2:480V:CORRECTION:GAIN" Type="Node,Query">
-              <COEFFICIENT Type="Node">
-                <N_0 ScpiPath="SENSE:M2:480V:CORRECTION:GAIN:COEFFICIENT:0" Type="Query,Command+Par"/>
-                <N_1 ScpiPath="SENSE:M2:480V:CORRECTION:GAIN:COEFFICIENT:1" Type="Query,Command+Par"/>
-                <N_2 ScpiPath="SENSE:M2:480V:CORRECTION:GAIN:COEFFICIENT:2" Type="Query,Command+Par"/>
-                <N_3 ScpiPath="SENSE:M2:480V:CORRECTION:GAIN:COEFFICIENT:3" Type="Query,Command+Par"/>
-              </COEFFICIENT>
-              <NODE Type="Node">
-                <N_0 ScpiPath="SENSE:M2:480V:CORRECTION:GAIN:NODE:0" Type="Query,Command+Par"/>
-                <N_1 ScpiPath="SENSE:M2:480V:CORRECTION:GAIN:NODE:1" Type="Query,Command+Par"/>
-                <N_2 ScpiPath="SENSE:M2:480V:CORRECTION:GAIN:NODE:2" Type="Query,Command+Par"/>
-                <N_3 ScpiPath="SENSE:M2:480V:CORRECTION:GAIN:NODE:3" Type="Query,Command+Par"/>
-              </NODE>
-              <STATUS ScpiPath="SENSE:M2:480V:CORRECTION:GAIN:STATUS" Type="Query,Command+Par"/>
-            </GAIN>
-            <INIT ScpiPath="SENSE:M2:480V:CORRECTION:INIT" Type="Command+Par"/>
-            <OFFSET ScpiPath="SENSE:M2:480V:CORRECTION:OFFSET" Type="Command+Par">
-              <COEFFICIENT Type="Node">
-                <N_0 ScpiPath="SENSE:M2:480V:CORRECTION:OFFSET:COEFFICIENT:0" Type="Query,Command+Par"/>
-                <N_1 ScpiPath="SENSE:M2:480V:CORRECTION:OFFSET:COEFFICIENT:1" Type="Query,Command+Par"/>
-                <N_2 ScpiPath="SENSE:M2:480V:CORRECTION:OFFSET:COEFFICIENT:2" Type="Query,Command+Par"/>
-                <N_3 ScpiPath="SENSE:M2:480V:CORRECTION:OFFSET:COEFFICIENT:3" Type="Query,Command+Par"/>
-              </COEFFICIENT>
-              <NODE Type="Node">
-                <N_0 ScpiPath="SENSE:M2:480V:CORRECTION:OFFSET:NODE:0" Type="Query,Command+Par"/>
-                <N_1 ScpiPath="SENSE:M2:480V:CORRECTION:OFFSET:NODE:1" Type="Query,Command+Par"/>
-                <N_2 ScpiPath="SENSE:M2:480V:CORRECTION:OFFSET:NODE:2" Type="Query,Command+Par"/>
-                <N_3 ScpiPath="SENSE:M2:480V:CORRECTION:OFFSET:NODE:3" Type="Query,Command+Par"/>
-              </NODE>
-              <STATUS ScpiPath="SENSE:M2:480V:CORRECTION:OFFSET:STATUS" Type="Query,Command+Par"/>
-            </OFFSET>
-            <PHASE ScpiPath="SENSE:M2:480V:CORRECTION:PHASE" Type="Command+Par">
-              <COEFFICIENT Type="Node">
-                <N_0 ScpiPath="SENSE:M2:480V:CORRECTION:PHASE:COEFFICIENT:0" Type="Query,Command+Par"/>
-                <N_1 ScpiPath="SENSE:M2:480V:CORRECTION:PHASE:COEFFICIENT:1" Type="Query,Command+Par"/>
-                <N_2 ScpiPath="SENSE:M2:480V:CORRECTION:PHASE:COEFFICIENT:2" Type="Query,Command+Par"/>
-                <N_3 ScpiPath="SENSE:M2:480V:CORRECTION:PHASE:COEFFICIENT:3" Type="Query,Command+Par"/>
-              </COEFFICIENT>
-              <NODE Type="Node">
-                <N_0 ScpiPath="SENSE:M2:480V:CORRECTION:PHASE:NODE:0" Type="Query,Command+Par"/>
-                <N_1 ScpiPath="SENSE:M2:480V:CORRECTION:PHASE:NODE:1" Type="Query,Command+Par"/>
-                <N_2 ScpiPath="SENSE:M2:480V:CORRECTION:PHASE:NODE:2" Type="Query,Command+Par"/>
-                <N_3 ScpiPath="SENSE:M2:480V:CORRECTION:PHASE:NODE:3" Type="Query,Command+Par"/>
-              </NODE>
-              <STATUS ScpiPath="SENSE:M2:480V:CORRECTION:PHASE:STATUS" Type="Query,Command+Par"/>
-            </PHASE>
-            <STATUS ScpiPath="SENSE:M2:480V:CORRECTION:STATUS" Type="Query"/>
-          </CORRECTION>
-          <CTRLSELECTION ScpiPath="SENSE:M2:480V:CTRLSELECTION" Type="Query"/>
-          <OVREJECTION ScpiPath="SENSE:M2:480V:OVREJECTION" Type="Query"/>
-          <REJECTION ScpiPath="SENSE:M2:480V:REJECTION" Type="Query"/>
-          <TYPE ScpiPath="SENSE:M2:480V:TYPE" Type="Query"/>
-          <URVALUE ScpiPath="SENSE:M2:480V:URVALUE" Type="Query"/>
-        </N_480V>
-        <N_60V Type="Node">
-          <ADCREJECTION ScpiPath="SENSE:M2:60V:ADCREJECTION" Type="Query"/>
-          <AVAIL ScpiPath="SENSE:M2:60V:AVAIL" Type="Query"/>
-          <CORRECTION Type="Node">
-            <ADJGAIN ScpiPath="SENSE:M2:60V:CORRECTION:ADJGAIN" Type="Node,Query"/>
-            <ADJOFFSET ScpiPath="SENSE:M2:60V:CORRECTION:ADJOFFSET" Type="Command+Par"/>
-            <ADJPHASE ScpiPath="SENSE:M2:60V:CORRECTION:ADJPHASE" Type="Command+Par"/>
-            <COMPUTE ScpiPath="SENSE:M2:60V:CORRECTION:COMPUTE" Type="Command+Par"/>
-            <GAIN ScpiPath="SENSE:M2:60V:CORRECTION:GAIN" Type="Node,Query">
-              <COEFFICIENT Type="Node">
-                <N_0 ScpiPath="SENSE:M2:60V:CORRECTION:GAIN:COEFFICIENT:0" Type="Query,Command+Par"/>
-                <N_1 ScpiPath="SENSE:M2:60V:CORRECTION:GAIN:COEFFICIENT:1" Type="Query,Command+Par"/>
-                <N_2 ScpiPath="SENSE:M2:60V:CORRECTION:GAIN:COEFFICIENT:2" Type="Query,Command+Par"/>
-                <N_3 ScpiPath="SENSE:M2:60V:CORRECTION:GAIN:COEFFICIENT:3" Type="Query,Command+Par"/>
-              </COEFFICIENT>
-              <NODE Type="Node">
-                <N_0 ScpiPath="SENSE:M2:60V:CORRECTION:GAIN:NODE:0" Type="Query,Command+Par"/>
-                <N_1 ScpiPath="SENSE:M2:60V:CORRECTION:GAIN:NODE:1" Type="Query,Command+Par"/>
-                <N_2 ScpiPath="SENSE:M2:60V:CORRECTION:GAIN:NODE:2" Type="Query,Command+Par"/>
-                <N_3 ScpiPath="SENSE:M2:60V:CORRECTION:GAIN:NODE:3" Type="Query,Command+Par"/>
-              </NODE>
-              <STATUS ScpiPath="SENSE:M2:60V:CORRECTION:GAIN:STATUS" Type="Query,Command+Par"/>
-            </GAIN>
-            <INIT ScpiPath="SENSE:M2:60V:CORRECTION:INIT" Type="Command+Par"/>
-            <OFFSET ScpiPath="SENSE:M2:60V:CORRECTION:OFFSET" Type="Command+Par">
-              <COEFFICIENT Type="Node">
-                <N_0 ScpiPath="SENSE:M2:60V:CORRECTION:OFFSET:COEFFICIENT:0" Type="Query,Command+Par"/>
-                <N_1 ScpiPath="SENSE:M2:60V:CORRECTION:OFFSET:COEFFICIENT:1" Type="Query,Command+Par"/>
-                <N_2 ScpiPath="SENSE:M2:60V:CORRECTION:OFFSET:COEFFICIENT:2" Type="Query,Command+Par"/>
-                <N_3 ScpiPath="SENSE:M2:60V:CORRECTION:OFFSET:COEFFICIENT:3" Type="Query,Command+Par"/>
-              </COEFFICIENT>
-              <NODE Type="Node">
-                <N_0 ScpiPath="SENSE:M2:60V:CORRECTION:OFFSET:NODE:0" Type="Query,Command+Par"/>
-                <N_1 ScpiPath="SENSE:M2:60V:CORRECTION:OFFSET:NODE:1" Type="Query,Command+Par"/>
-                <N_2 ScpiPath="SENSE:M2:60V:CORRECTION:OFFSET:NODE:2" Type="Query,Command+Par"/>
-                <N_3 ScpiPath="SENSE:M2:60V:CORRECTION:OFFSET:NODE:3" Type="Query,Command+Par"/>
-              </NODE>
-              <STATUS ScpiPath="SENSE:M2:60V:CORRECTION:OFFSET:STATUS" Type="Query,Command+Par"/>
-            </OFFSET>
-            <PHASE ScpiPath="SENSE:M2:60V:CORRECTION:PHASE" Type="Command+Par">
-              <COEFFICIENT Type="Node">
-                <N_0 ScpiPath="SENSE:M2:60V:CORRECTION:PHASE:COEFFICIENT:0" Type="Query,Command+Par"/>
-                <N_1 ScpiPath="SENSE:M2:60V:CORRECTION:PHASE:COEFFICIENT:1" Type="Query,Command+Par"/>
-                <N_2 ScpiPath="SENSE:M2:60V:CORRECTION:PHASE:COEFFICIENT:2" Type="Query,Command+Par"/>
-                <N_3 ScpiPath="SENSE:M2:60V:CORRECTION:PHASE:COEFFICIENT:3" Type="Query,Command+Par"/>
-              </COEFFICIENT>
-              <NODE Type="Node">
-                <N_0 ScpiPath="SENSE:M2:60V:CORRECTION:PHASE:NODE:0" Type="Query,Command+Par"/>
-                <N_1 ScpiPath="SENSE:M2:60V:CORRECTION:PHASE:NODE:1" Type="Query,Command+Par"/>
-                <N_2 ScpiPath="SENSE:M2:60V:CORRECTION:PHASE:NODE:2" Type="Query,Command+Par"/>
-                <N_3 ScpiPath="SENSE:M2:60V:CORRECTION:PHASE:NODE:3" Type="Query,Command+Par"/>
-              </NODE>
-              <STATUS ScpiPath="SENSE:M2:60V:CORRECTION:PHASE:STATUS" Type="Query,Command+Par"/>
-            </PHASE>
-            <STATUS ScpiPath="SENSE:M2:60V:CORRECTION:STATUS" Type="Query"/>
-          </CORRECTION>
-          <CTRLSELECTION ScpiPath="SENSE:M2:60V:CTRLSELECTION" Type="Query"/>
-          <OVREJECTION ScpiPath="SENSE:M2:60V:OVREJECTION" Type="Query"/>
-          <REJECTION ScpiPath="SENSE:M2:60V:REJECTION" Type="Query"/>
-          <TYPE ScpiPath="SENSE:M2:60V:TYPE" Type="Query"/>
-          <URVALUE ScpiPath="SENSE:M2:60V:URVALUE" Type="Query"/>
-        </N_60V>
         <N_8V Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M2:8V:ADCREJECTION" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M2:8V:AVAIL" Type="Query"/>
@@ -1535,6 +977,68 @@
           <TYPE ScpiPath="SENSE:M3:10A:TYPE" Type="Query"/>
           <URVALUE ScpiPath="SENSE:M3:10A:URVALUE" Type="Query"/>
         </N_10A>
+        <N_10MA Type="Node">
+          <ADCREJECTION ScpiPath="SENSE:M3:10MA:ADCREJECTION" Type="Query"/>
+          <AVAIL ScpiPath="SENSE:M3:10MA:AVAIL" Type="Query"/>
+          <CORRECTION Type="Node">
+            <ADJGAIN ScpiPath="SENSE:M3:10MA:CORRECTION:ADJGAIN" Type="Node,Query"/>
+            <ADJOFFSET ScpiPath="SENSE:M3:10MA:CORRECTION:ADJOFFSET" Type="Command+Par"/>
+            <ADJPHASE ScpiPath="SENSE:M3:10MA:CORRECTION:ADJPHASE" Type="Command+Par"/>
+            <COMPUTE ScpiPath="SENSE:M3:10MA:CORRECTION:COMPUTE" Type="Command+Par"/>
+            <GAIN ScpiPath="SENSE:M3:10MA:CORRECTION:GAIN" Type="Node,Query">
+              <COEFFICIENT Type="Node">
+                <N_0 ScpiPath="SENSE:M3:10MA:CORRECTION:GAIN:COEFFICIENT:0" Type="Query,Command+Par"/>
+                <N_1 ScpiPath="SENSE:M3:10MA:CORRECTION:GAIN:COEFFICIENT:1" Type="Query,Command+Par"/>
+                <N_2 ScpiPath="SENSE:M3:10MA:CORRECTION:GAIN:COEFFICIENT:2" Type="Query,Command+Par"/>
+                <N_3 ScpiPath="SENSE:M3:10MA:CORRECTION:GAIN:COEFFICIENT:3" Type="Query,Command+Par"/>
+              </COEFFICIENT>
+              <NODE Type="Node">
+                <N_0 ScpiPath="SENSE:M3:10MA:CORRECTION:GAIN:NODE:0" Type="Query,Command+Par"/>
+                <N_1 ScpiPath="SENSE:M3:10MA:CORRECTION:GAIN:NODE:1" Type="Query,Command+Par"/>
+                <N_2 ScpiPath="SENSE:M3:10MA:CORRECTION:GAIN:NODE:2" Type="Query,Command+Par"/>
+                <N_3 ScpiPath="SENSE:M3:10MA:CORRECTION:GAIN:NODE:3" Type="Query,Command+Par"/>
+              </NODE>
+              <STATUS ScpiPath="SENSE:M3:10MA:CORRECTION:GAIN:STATUS" Type="Query,Command+Par"/>
+            </GAIN>
+            <INIT ScpiPath="SENSE:M3:10MA:CORRECTION:INIT" Type="Command+Par"/>
+            <OFFSET ScpiPath="SENSE:M3:10MA:CORRECTION:OFFSET" Type="Command+Par">
+              <COEFFICIENT Type="Node">
+                <N_0 ScpiPath="SENSE:M3:10MA:CORRECTION:OFFSET:COEFFICIENT:0" Type="Query,Command+Par"/>
+                <N_1 ScpiPath="SENSE:M3:10MA:CORRECTION:OFFSET:COEFFICIENT:1" Type="Query,Command+Par"/>
+                <N_2 ScpiPath="SENSE:M3:10MA:CORRECTION:OFFSET:COEFFICIENT:2" Type="Query,Command+Par"/>
+                <N_3 ScpiPath="SENSE:M3:10MA:CORRECTION:OFFSET:COEFFICIENT:3" Type="Query,Command+Par"/>
+              </COEFFICIENT>
+              <NODE Type="Node">
+                <N_0 ScpiPath="SENSE:M3:10MA:CORRECTION:OFFSET:NODE:0" Type="Query,Command+Par"/>
+                <N_1 ScpiPath="SENSE:M3:10MA:CORRECTION:OFFSET:NODE:1" Type="Query,Command+Par"/>
+                <N_2 ScpiPath="SENSE:M3:10MA:CORRECTION:OFFSET:NODE:2" Type="Query,Command+Par"/>
+                <N_3 ScpiPath="SENSE:M3:10MA:CORRECTION:OFFSET:NODE:3" Type="Query,Command+Par"/>
+              </NODE>
+              <STATUS ScpiPath="SENSE:M3:10MA:CORRECTION:OFFSET:STATUS" Type="Query,Command+Par"/>
+            </OFFSET>
+            <PHASE ScpiPath="SENSE:M3:10MA:CORRECTION:PHASE" Type="Command+Par">
+              <COEFFICIENT Type="Node">
+                <N_0 ScpiPath="SENSE:M3:10MA:CORRECTION:PHASE:COEFFICIENT:0" Type="Query,Command+Par"/>
+                <N_1 ScpiPath="SENSE:M3:10MA:CORRECTION:PHASE:COEFFICIENT:1" Type="Query,Command+Par"/>
+                <N_2 ScpiPath="SENSE:M3:10MA:CORRECTION:PHASE:COEFFICIENT:2" Type="Query,Command+Par"/>
+                <N_3 ScpiPath="SENSE:M3:10MA:CORRECTION:PHASE:COEFFICIENT:3" Type="Query,Command+Par"/>
+              </COEFFICIENT>
+              <NODE Type="Node">
+                <N_0 ScpiPath="SENSE:M3:10MA:CORRECTION:PHASE:NODE:0" Type="Query,Command+Par"/>
+                <N_1 ScpiPath="SENSE:M3:10MA:CORRECTION:PHASE:NODE:1" Type="Query,Command+Par"/>
+                <N_2 ScpiPath="SENSE:M3:10MA:CORRECTION:PHASE:NODE:2" Type="Query,Command+Par"/>
+                <N_3 ScpiPath="SENSE:M3:10MA:CORRECTION:PHASE:NODE:3" Type="Query,Command+Par"/>
+              </NODE>
+              <STATUS ScpiPath="SENSE:M3:10MA:CORRECTION:PHASE:STATUS" Type="Query,Command+Par"/>
+            </PHASE>
+            <STATUS ScpiPath="SENSE:M3:10MA:CORRECTION:STATUS" Type="Query"/>
+          </CORRECTION>
+          <CTRLSELECTION ScpiPath="SENSE:M3:10MA:CTRLSELECTION" Type="Query"/>
+          <OVREJECTION ScpiPath="SENSE:M3:10MA:OVREJECTION" Type="Query"/>
+          <REJECTION ScpiPath="SENSE:M3:10MA:REJECTION" Type="Query"/>
+          <TYPE ScpiPath="SENSE:M3:10MA:TYPE" Type="Query"/>
+          <URVALUE ScpiPath="SENSE:M3:10MA:URVALUE" Type="Query"/>
+        </N_10MA>
         <N_10MV Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M3:10MV:ADCREJECTION" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M3:10MV:AVAIL" Type="Query"/>
@@ -3036,6 +2540,68 @@
           <TYPE ScpiPath="SENSE:M4:10A:TYPE" Type="Query"/>
           <URVALUE ScpiPath="SENSE:M4:10A:URVALUE" Type="Query"/>
         </N_10A>
+        <N_10MA Type="Node">
+          <ADCREJECTION ScpiPath="SENSE:M4:10MA:ADCREJECTION" Type="Query"/>
+          <AVAIL ScpiPath="SENSE:M4:10MA:AVAIL" Type="Query"/>
+          <CORRECTION Type="Node">
+            <ADJGAIN ScpiPath="SENSE:M4:10MA:CORRECTION:ADJGAIN" Type="Node,Query"/>
+            <ADJOFFSET ScpiPath="SENSE:M4:10MA:CORRECTION:ADJOFFSET" Type="Command+Par"/>
+            <ADJPHASE ScpiPath="SENSE:M4:10MA:CORRECTION:ADJPHASE" Type="Command+Par"/>
+            <COMPUTE ScpiPath="SENSE:M4:10MA:CORRECTION:COMPUTE" Type="Command+Par"/>
+            <GAIN ScpiPath="SENSE:M4:10MA:CORRECTION:GAIN" Type="Node,Query">
+              <COEFFICIENT Type="Node">
+                <N_0 ScpiPath="SENSE:M4:10MA:CORRECTION:GAIN:COEFFICIENT:0" Type="Query,Command+Par"/>
+                <N_1 ScpiPath="SENSE:M4:10MA:CORRECTION:GAIN:COEFFICIENT:1" Type="Query,Command+Par"/>
+                <N_2 ScpiPath="SENSE:M4:10MA:CORRECTION:GAIN:COEFFICIENT:2" Type="Query,Command+Par"/>
+                <N_3 ScpiPath="SENSE:M4:10MA:CORRECTION:GAIN:COEFFICIENT:3" Type="Query,Command+Par"/>
+              </COEFFICIENT>
+              <NODE Type="Node">
+                <N_0 ScpiPath="SENSE:M4:10MA:CORRECTION:GAIN:NODE:0" Type="Query,Command+Par"/>
+                <N_1 ScpiPath="SENSE:M4:10MA:CORRECTION:GAIN:NODE:1" Type="Query,Command+Par"/>
+                <N_2 ScpiPath="SENSE:M4:10MA:CORRECTION:GAIN:NODE:2" Type="Query,Command+Par"/>
+                <N_3 ScpiPath="SENSE:M4:10MA:CORRECTION:GAIN:NODE:3" Type="Query,Command+Par"/>
+              </NODE>
+              <STATUS ScpiPath="SENSE:M4:10MA:CORRECTION:GAIN:STATUS" Type="Query,Command+Par"/>
+            </GAIN>
+            <INIT ScpiPath="SENSE:M4:10MA:CORRECTION:INIT" Type="Command+Par"/>
+            <OFFSET ScpiPath="SENSE:M4:10MA:CORRECTION:OFFSET" Type="Command+Par">
+              <COEFFICIENT Type="Node">
+                <N_0 ScpiPath="SENSE:M4:10MA:CORRECTION:OFFSET:COEFFICIENT:0" Type="Query,Command+Par"/>
+                <N_1 ScpiPath="SENSE:M4:10MA:CORRECTION:OFFSET:COEFFICIENT:1" Type="Query,Command+Par"/>
+                <N_2 ScpiPath="SENSE:M4:10MA:CORRECTION:OFFSET:COEFFICIENT:2" Type="Query,Command+Par"/>
+                <N_3 ScpiPath="SENSE:M4:10MA:CORRECTION:OFFSET:COEFFICIENT:3" Type="Query,Command+Par"/>
+              </COEFFICIENT>
+              <NODE Type="Node">
+                <N_0 ScpiPath="SENSE:M4:10MA:CORRECTION:OFFSET:NODE:0" Type="Query,Command+Par"/>
+                <N_1 ScpiPath="SENSE:M4:10MA:CORRECTION:OFFSET:NODE:1" Type="Query,Command+Par"/>
+                <N_2 ScpiPath="SENSE:M4:10MA:CORRECTION:OFFSET:NODE:2" Type="Query,Command+Par"/>
+                <N_3 ScpiPath="SENSE:M4:10MA:CORRECTION:OFFSET:NODE:3" Type="Query,Command+Par"/>
+              </NODE>
+              <STATUS ScpiPath="SENSE:M4:10MA:CORRECTION:OFFSET:STATUS" Type="Query,Command+Par"/>
+            </OFFSET>
+            <PHASE ScpiPath="SENSE:M4:10MA:CORRECTION:PHASE" Type="Command+Par">
+              <COEFFICIENT Type="Node">
+                <N_0 ScpiPath="SENSE:M4:10MA:CORRECTION:PHASE:COEFFICIENT:0" Type="Query,Command+Par"/>
+                <N_1 ScpiPath="SENSE:M4:10MA:CORRECTION:PHASE:COEFFICIENT:1" Type="Query,Command+Par"/>
+                <N_2 ScpiPath="SENSE:M4:10MA:CORRECTION:PHASE:COEFFICIENT:2" Type="Query,Command+Par"/>
+                <N_3 ScpiPath="SENSE:M4:10MA:CORRECTION:PHASE:COEFFICIENT:3" Type="Query,Command+Par"/>
+              </COEFFICIENT>
+              <NODE Type="Node">
+                <N_0 ScpiPath="SENSE:M4:10MA:CORRECTION:PHASE:NODE:0" Type="Query,Command+Par"/>
+                <N_1 ScpiPath="SENSE:M4:10MA:CORRECTION:PHASE:NODE:1" Type="Query,Command+Par"/>
+                <N_2 ScpiPath="SENSE:M4:10MA:CORRECTION:PHASE:NODE:2" Type="Query,Command+Par"/>
+                <N_3 ScpiPath="SENSE:M4:10MA:CORRECTION:PHASE:NODE:3" Type="Query,Command+Par"/>
+              </NODE>
+              <STATUS ScpiPath="SENSE:M4:10MA:CORRECTION:PHASE:STATUS" Type="Query,Command+Par"/>
+            </PHASE>
+            <STATUS ScpiPath="SENSE:M4:10MA:CORRECTION:STATUS" Type="Query"/>
+          </CORRECTION>
+          <CTRLSELECTION ScpiPath="SENSE:M4:10MA:CTRLSELECTION" Type="Query"/>
+          <OVREJECTION ScpiPath="SENSE:M4:10MA:OVREJECTION" Type="Query"/>
+          <REJECTION ScpiPath="SENSE:M4:10MA:REJECTION" Type="Query"/>
+          <TYPE ScpiPath="SENSE:M4:10MA:TYPE" Type="Query"/>
+          <URVALUE ScpiPath="SENSE:M4:10MA:URVALUE" Type="Query"/>
+        </N_10MA>
         <N_10MV Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M4:10MV:ADCREJECTION" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M4:10MV:AVAIL" Type="Query"/>
@@ -4537,6 +4103,68 @@
           <TYPE ScpiPath="SENSE:M5:10A:TYPE" Type="Query"/>
           <URVALUE ScpiPath="SENSE:M5:10A:URVALUE" Type="Query"/>
         </N_10A>
+        <N_10MA Type="Node">
+          <ADCREJECTION ScpiPath="SENSE:M5:10MA:ADCREJECTION" Type="Query"/>
+          <AVAIL ScpiPath="SENSE:M5:10MA:AVAIL" Type="Query"/>
+          <CORRECTION Type="Node">
+            <ADJGAIN ScpiPath="SENSE:M5:10MA:CORRECTION:ADJGAIN" Type="Node,Query"/>
+            <ADJOFFSET ScpiPath="SENSE:M5:10MA:CORRECTION:ADJOFFSET" Type="Command+Par"/>
+            <ADJPHASE ScpiPath="SENSE:M5:10MA:CORRECTION:ADJPHASE" Type="Command+Par"/>
+            <COMPUTE ScpiPath="SENSE:M5:10MA:CORRECTION:COMPUTE" Type="Command+Par"/>
+            <GAIN ScpiPath="SENSE:M5:10MA:CORRECTION:GAIN" Type="Node,Query">
+              <COEFFICIENT Type="Node">
+                <N_0 ScpiPath="SENSE:M5:10MA:CORRECTION:GAIN:COEFFICIENT:0" Type="Query,Command+Par"/>
+                <N_1 ScpiPath="SENSE:M5:10MA:CORRECTION:GAIN:COEFFICIENT:1" Type="Query,Command+Par"/>
+                <N_2 ScpiPath="SENSE:M5:10MA:CORRECTION:GAIN:COEFFICIENT:2" Type="Query,Command+Par"/>
+                <N_3 ScpiPath="SENSE:M5:10MA:CORRECTION:GAIN:COEFFICIENT:3" Type="Query,Command+Par"/>
+              </COEFFICIENT>
+              <NODE Type="Node">
+                <N_0 ScpiPath="SENSE:M5:10MA:CORRECTION:GAIN:NODE:0" Type="Query,Command+Par"/>
+                <N_1 ScpiPath="SENSE:M5:10MA:CORRECTION:GAIN:NODE:1" Type="Query,Command+Par"/>
+                <N_2 ScpiPath="SENSE:M5:10MA:CORRECTION:GAIN:NODE:2" Type="Query,Command+Par"/>
+                <N_3 ScpiPath="SENSE:M5:10MA:CORRECTION:GAIN:NODE:3" Type="Query,Command+Par"/>
+              </NODE>
+              <STATUS ScpiPath="SENSE:M5:10MA:CORRECTION:GAIN:STATUS" Type="Query,Command+Par"/>
+            </GAIN>
+            <INIT ScpiPath="SENSE:M5:10MA:CORRECTION:INIT" Type="Command+Par"/>
+            <OFFSET ScpiPath="SENSE:M5:10MA:CORRECTION:OFFSET" Type="Command+Par">
+              <COEFFICIENT Type="Node">
+                <N_0 ScpiPath="SENSE:M5:10MA:CORRECTION:OFFSET:COEFFICIENT:0" Type="Query,Command+Par"/>
+                <N_1 ScpiPath="SENSE:M5:10MA:CORRECTION:OFFSET:COEFFICIENT:1" Type="Query,Command+Par"/>
+                <N_2 ScpiPath="SENSE:M5:10MA:CORRECTION:OFFSET:COEFFICIENT:2" Type="Query,Command+Par"/>
+                <N_3 ScpiPath="SENSE:M5:10MA:CORRECTION:OFFSET:COEFFICIENT:3" Type="Query,Command+Par"/>
+              </COEFFICIENT>
+              <NODE Type="Node">
+                <N_0 ScpiPath="SENSE:M5:10MA:CORRECTION:OFFSET:NODE:0" Type="Query,Command+Par"/>
+                <N_1 ScpiPath="SENSE:M5:10MA:CORRECTION:OFFSET:NODE:1" Type="Query,Command+Par"/>
+                <N_2 ScpiPath="SENSE:M5:10MA:CORRECTION:OFFSET:NODE:2" Type="Query,Command+Par"/>
+                <N_3 ScpiPath="SENSE:M5:10MA:CORRECTION:OFFSET:NODE:3" Type="Query,Command+Par"/>
+              </NODE>
+              <STATUS ScpiPath="SENSE:M5:10MA:CORRECTION:OFFSET:STATUS" Type="Query,Command+Par"/>
+            </OFFSET>
+            <PHASE ScpiPath="SENSE:M5:10MA:CORRECTION:PHASE" Type="Command+Par">
+              <COEFFICIENT Type="Node">
+                <N_0 ScpiPath="SENSE:M5:10MA:CORRECTION:PHASE:COEFFICIENT:0" Type="Query,Command+Par"/>
+                <N_1 ScpiPath="SENSE:M5:10MA:CORRECTION:PHASE:COEFFICIENT:1" Type="Query,Command+Par"/>
+                <N_2 ScpiPath="SENSE:M5:10MA:CORRECTION:PHASE:COEFFICIENT:2" Type="Query,Command+Par"/>
+                <N_3 ScpiPath="SENSE:M5:10MA:CORRECTION:PHASE:COEFFICIENT:3" Type="Query,Command+Par"/>
+              </COEFFICIENT>
+              <NODE Type="Node">
+                <N_0 ScpiPath="SENSE:M5:10MA:CORRECTION:PHASE:NODE:0" Type="Query,Command+Par"/>
+                <N_1 ScpiPath="SENSE:M5:10MA:CORRECTION:PHASE:NODE:1" Type="Query,Command+Par"/>
+                <N_2 ScpiPath="SENSE:M5:10MA:CORRECTION:PHASE:NODE:2" Type="Query,Command+Par"/>
+                <N_3 ScpiPath="SENSE:M5:10MA:CORRECTION:PHASE:NODE:3" Type="Query,Command+Par"/>
+              </NODE>
+              <STATUS ScpiPath="SENSE:M5:10MA:CORRECTION:PHASE:STATUS" Type="Query,Command+Par"/>
+            </PHASE>
+            <STATUS ScpiPath="SENSE:M5:10MA:CORRECTION:STATUS" Type="Query"/>
+          </CORRECTION>
+          <CTRLSELECTION ScpiPath="SENSE:M5:10MA:CTRLSELECTION" Type="Query"/>
+          <OVREJECTION ScpiPath="SENSE:M5:10MA:OVREJECTION" Type="Query"/>
+          <REJECTION ScpiPath="SENSE:M5:10MA:REJECTION" Type="Query"/>
+          <TYPE ScpiPath="SENSE:M5:10MA:TYPE" Type="Query"/>
+          <URVALUE ScpiPath="SENSE:M5:10MA:URVALUE" Type="Query"/>
+        </N_10MA>
         <N_10MV Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M5:10MV:ADCREJECTION" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M5:10MV:AVAIL" Type="Query"/>
@@ -5790,68 +5418,6 @@
           <TYPE ScpiPath="SENSE:M6:100MV:TYPE" Type="Query"/>
           <URVALUE ScpiPath="SENSE:M6:100MV:URVALUE" Type="Query"/>
         </N_100MV>
-        <N_125V Type="Node">
-          <ADCREJECTION ScpiPath="SENSE:M6:125V:ADCREJECTION" Type="Query"/>
-          <AVAIL ScpiPath="SENSE:M6:125V:AVAIL" Type="Query"/>
-          <CORRECTION Type="Node">
-            <ADJGAIN ScpiPath="SENSE:M6:125V:CORRECTION:ADJGAIN" Type="Node,Query"/>
-            <ADJOFFSET ScpiPath="SENSE:M6:125V:CORRECTION:ADJOFFSET" Type="Command+Par"/>
-            <ADJPHASE ScpiPath="SENSE:M6:125V:CORRECTION:ADJPHASE" Type="Command+Par"/>
-            <COMPUTE ScpiPath="SENSE:M6:125V:CORRECTION:COMPUTE" Type="Command+Par"/>
-            <GAIN ScpiPath="SENSE:M6:125V:CORRECTION:GAIN" Type="Node,Query">
-              <COEFFICIENT Type="Node">
-                <N_0 ScpiPath="SENSE:M6:125V:CORRECTION:GAIN:COEFFICIENT:0" Type="Query,Command+Par"/>
-                <N_1 ScpiPath="SENSE:M6:125V:CORRECTION:GAIN:COEFFICIENT:1" Type="Query,Command+Par"/>
-                <N_2 ScpiPath="SENSE:M6:125V:CORRECTION:GAIN:COEFFICIENT:2" Type="Query,Command+Par"/>
-                <N_3 ScpiPath="SENSE:M6:125V:CORRECTION:GAIN:COEFFICIENT:3" Type="Query,Command+Par"/>
-              </COEFFICIENT>
-              <NODE Type="Node">
-                <N_0 ScpiPath="SENSE:M6:125V:CORRECTION:GAIN:NODE:0" Type="Query,Command+Par"/>
-                <N_1 ScpiPath="SENSE:M6:125V:CORRECTION:GAIN:NODE:1" Type="Query,Command+Par"/>
-                <N_2 ScpiPath="SENSE:M6:125V:CORRECTION:GAIN:NODE:2" Type="Query,Command+Par"/>
-                <N_3 ScpiPath="SENSE:M6:125V:CORRECTION:GAIN:NODE:3" Type="Query,Command+Par"/>
-              </NODE>
-              <STATUS ScpiPath="SENSE:M6:125V:CORRECTION:GAIN:STATUS" Type="Query,Command+Par"/>
-            </GAIN>
-            <INIT ScpiPath="SENSE:M6:125V:CORRECTION:INIT" Type="Command+Par"/>
-            <OFFSET ScpiPath="SENSE:M6:125V:CORRECTION:OFFSET" Type="Command+Par">
-              <COEFFICIENT Type="Node">
-                <N_0 ScpiPath="SENSE:M6:125V:CORRECTION:OFFSET:COEFFICIENT:0" Type="Query,Command+Par"/>
-                <N_1 ScpiPath="SENSE:M6:125V:CORRECTION:OFFSET:COEFFICIENT:1" Type="Query,Command+Par"/>
-                <N_2 ScpiPath="SENSE:M6:125V:CORRECTION:OFFSET:COEFFICIENT:2" Type="Query,Command+Par"/>
-                <N_3 ScpiPath="SENSE:M6:125V:CORRECTION:OFFSET:COEFFICIENT:3" Type="Query,Command+Par"/>
-              </COEFFICIENT>
-              <NODE Type="Node">
-                <N_0 ScpiPath="SENSE:M6:125V:CORRECTION:OFFSET:NODE:0" Type="Query,Command+Par"/>
-                <N_1 ScpiPath="SENSE:M6:125V:CORRECTION:OFFSET:NODE:1" Type="Query,Command+Par"/>
-                <N_2 ScpiPath="SENSE:M6:125V:CORRECTION:OFFSET:NODE:2" Type="Query,Command+Par"/>
-                <N_3 ScpiPath="SENSE:M6:125V:CORRECTION:OFFSET:NODE:3" Type="Query,Command+Par"/>
-              </NODE>
-              <STATUS ScpiPath="SENSE:M6:125V:CORRECTION:OFFSET:STATUS" Type="Query,Command+Par"/>
-            </OFFSET>
-            <PHASE ScpiPath="SENSE:M6:125V:CORRECTION:PHASE" Type="Command+Par">
-              <COEFFICIENT Type="Node">
-                <N_0 ScpiPath="SENSE:M6:125V:CORRECTION:PHASE:COEFFICIENT:0" Type="Query,Command+Par"/>
-                <N_1 ScpiPath="SENSE:M6:125V:CORRECTION:PHASE:COEFFICIENT:1" Type="Query,Command+Par"/>
-                <N_2 ScpiPath="SENSE:M6:125V:CORRECTION:PHASE:COEFFICIENT:2" Type="Query,Command+Par"/>
-                <N_3 ScpiPath="SENSE:M6:125V:CORRECTION:PHASE:COEFFICIENT:3" Type="Query,Command+Par"/>
-              </COEFFICIENT>
-              <NODE Type="Node">
-                <N_0 ScpiPath="SENSE:M6:125V:CORRECTION:PHASE:NODE:0" Type="Query,Command+Par"/>
-                <N_1 ScpiPath="SENSE:M6:125V:CORRECTION:PHASE:NODE:1" Type="Query,Command+Par"/>
-                <N_2 ScpiPath="SENSE:M6:125V:CORRECTION:PHASE:NODE:2" Type="Query,Command+Par"/>
-                <N_3 ScpiPath="SENSE:M6:125V:CORRECTION:PHASE:NODE:3" Type="Query,Command+Par"/>
-              </NODE>
-              <STATUS ScpiPath="SENSE:M6:125V:CORRECTION:PHASE:STATUS" Type="Query,Command+Par"/>
-            </PHASE>
-            <STATUS ScpiPath="SENSE:M6:125V:CORRECTION:STATUS" Type="Query"/>
-          </CORRECTION>
-          <CTRLSELECTION ScpiPath="SENSE:M6:125V:CTRLSELECTION" Type="Query"/>
-          <OVREJECTION ScpiPath="SENSE:M6:125V:OVREJECTION" Type="Query"/>
-          <REJECTION ScpiPath="SENSE:M6:125V:REJECTION" Type="Query"/>
-          <TYPE ScpiPath="SENSE:M6:125V:TYPE" Type="Query"/>
-          <URVALUE ScpiPath="SENSE:M6:125V:URVALUE" Type="Query"/>
-        </N_125V>
         <N_250V Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M6:250V:ADCREJECTION" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M6:250V:AVAIL" Type="Query"/>
@@ -5914,130 +5480,6 @@
           <TYPE ScpiPath="SENSE:M6:250V:TYPE" Type="Query"/>
           <URVALUE ScpiPath="SENSE:M6:250V:URVALUE" Type="Query"/>
         </N_250V>
-        <N_480V Type="Node">
-          <ADCREJECTION ScpiPath="SENSE:M6:480V:ADCREJECTION" Type="Query"/>
-          <AVAIL ScpiPath="SENSE:M6:480V:AVAIL" Type="Query"/>
-          <CORRECTION Type="Node">
-            <ADJGAIN ScpiPath="SENSE:M6:480V:CORRECTION:ADJGAIN" Type="Node,Query"/>
-            <ADJOFFSET ScpiPath="SENSE:M6:480V:CORRECTION:ADJOFFSET" Type="Command+Par"/>
-            <ADJPHASE ScpiPath="SENSE:M6:480V:CORRECTION:ADJPHASE" Type="Command+Par"/>
-            <COMPUTE ScpiPath="SENSE:M6:480V:CORRECTION:COMPUTE" Type="Command+Par"/>
-            <GAIN ScpiPath="SENSE:M6:480V:CORRECTION:GAIN" Type="Node,Query">
-              <COEFFICIENT Type="Node">
-                <N_0 ScpiPath="SENSE:M6:480V:CORRECTION:GAIN:COEFFICIENT:0" Type="Query,Command+Par"/>
-                <N_1 ScpiPath="SENSE:M6:480V:CORRECTION:GAIN:COEFFICIENT:1" Type="Query,Command+Par"/>
-                <N_2 ScpiPath="SENSE:M6:480V:CORRECTION:GAIN:COEFFICIENT:2" Type="Query,Command+Par"/>
-                <N_3 ScpiPath="SENSE:M6:480V:CORRECTION:GAIN:COEFFICIENT:3" Type="Query,Command+Par"/>
-              </COEFFICIENT>
-              <NODE Type="Node">
-                <N_0 ScpiPath="SENSE:M6:480V:CORRECTION:GAIN:NODE:0" Type="Query,Command+Par"/>
-                <N_1 ScpiPath="SENSE:M6:480V:CORRECTION:GAIN:NODE:1" Type="Query,Command+Par"/>
-                <N_2 ScpiPath="SENSE:M6:480V:CORRECTION:GAIN:NODE:2" Type="Query,Command+Par"/>
-                <N_3 ScpiPath="SENSE:M6:480V:CORRECTION:GAIN:NODE:3" Type="Query,Command+Par"/>
-              </NODE>
-              <STATUS ScpiPath="SENSE:M6:480V:CORRECTION:GAIN:STATUS" Type="Query,Command+Par"/>
-            </GAIN>
-            <INIT ScpiPath="SENSE:M6:480V:CORRECTION:INIT" Type="Command+Par"/>
-            <OFFSET ScpiPath="SENSE:M6:480V:CORRECTION:OFFSET" Type="Command+Par">
-              <COEFFICIENT Type="Node">
-                <N_0 ScpiPath="SENSE:M6:480V:CORRECTION:OFFSET:COEFFICIENT:0" Type="Query,Command+Par"/>
-                <N_1 ScpiPath="SENSE:M6:480V:CORRECTION:OFFSET:COEFFICIENT:1" Type="Query,Command+Par"/>
-                <N_2 ScpiPath="SENSE:M6:480V:CORRECTION:OFFSET:COEFFICIENT:2" Type="Query,Command+Par"/>
-                <N_3 ScpiPath="SENSE:M6:480V:CORRECTION:OFFSET:COEFFICIENT:3" Type="Query,Command+Par"/>
-              </COEFFICIENT>
-              <NODE Type="Node">
-                <N_0 ScpiPath="SENSE:M6:480V:CORRECTION:OFFSET:NODE:0" Type="Query,Command+Par"/>
-                <N_1 ScpiPath="SENSE:M6:480V:CORRECTION:OFFSET:NODE:1" Type="Query,Command+Par"/>
-                <N_2 ScpiPath="SENSE:M6:480V:CORRECTION:OFFSET:NODE:2" Type="Query,Command+Par"/>
-                <N_3 ScpiPath="SENSE:M6:480V:CORRECTION:OFFSET:NODE:3" Type="Query,Command+Par"/>
-              </NODE>
-              <STATUS ScpiPath="SENSE:M6:480V:CORRECTION:OFFSET:STATUS" Type="Query,Command+Par"/>
-            </OFFSET>
-            <PHASE ScpiPath="SENSE:M6:480V:CORRECTION:PHASE" Type="Command+Par">
-              <COEFFICIENT Type="Node">
-                <N_0 ScpiPath="SENSE:M6:480V:CORRECTION:PHASE:COEFFICIENT:0" Type="Query,Command+Par"/>
-                <N_1 ScpiPath="SENSE:M6:480V:CORRECTION:PHASE:COEFFICIENT:1" Type="Query,Command+Par"/>
-                <N_2 ScpiPath="SENSE:M6:480V:CORRECTION:PHASE:COEFFICIENT:2" Type="Query,Command+Par"/>
-                <N_3 ScpiPath="SENSE:M6:480V:CORRECTION:PHASE:COEFFICIENT:3" Type="Query,Command+Par"/>
-              </COEFFICIENT>
-              <NODE Type="Node">
-                <N_0 ScpiPath="SENSE:M6:480V:CORRECTION:PHASE:NODE:0" Type="Query,Command+Par"/>
-                <N_1 ScpiPath="SENSE:M6:480V:CORRECTION:PHASE:NODE:1" Type="Query,Command+Par"/>
-                <N_2 ScpiPath="SENSE:M6:480V:CORRECTION:PHASE:NODE:2" Type="Query,Command+Par"/>
-                <N_3 ScpiPath="SENSE:M6:480V:CORRECTION:PHASE:NODE:3" Type="Query,Command+Par"/>
-              </NODE>
-              <STATUS ScpiPath="SENSE:M6:480V:CORRECTION:PHASE:STATUS" Type="Query,Command+Par"/>
-            </PHASE>
-            <STATUS ScpiPath="SENSE:M6:480V:CORRECTION:STATUS" Type="Query"/>
-          </CORRECTION>
-          <CTRLSELECTION ScpiPath="SENSE:M6:480V:CTRLSELECTION" Type="Query"/>
-          <OVREJECTION ScpiPath="SENSE:M6:480V:OVREJECTION" Type="Query"/>
-          <REJECTION ScpiPath="SENSE:M6:480V:REJECTION" Type="Query"/>
-          <TYPE ScpiPath="SENSE:M6:480V:TYPE" Type="Query"/>
-          <URVALUE ScpiPath="SENSE:M6:480V:URVALUE" Type="Query"/>
-        </N_480V>
-        <N_60V Type="Node">
-          <ADCREJECTION ScpiPath="SENSE:M6:60V:ADCREJECTION" Type="Query"/>
-          <AVAIL ScpiPath="SENSE:M6:60V:AVAIL" Type="Query"/>
-          <CORRECTION Type="Node">
-            <ADJGAIN ScpiPath="SENSE:M6:60V:CORRECTION:ADJGAIN" Type="Node,Query"/>
-            <ADJOFFSET ScpiPath="SENSE:M6:60V:CORRECTION:ADJOFFSET" Type="Command+Par"/>
-            <ADJPHASE ScpiPath="SENSE:M6:60V:CORRECTION:ADJPHASE" Type="Command+Par"/>
-            <COMPUTE ScpiPath="SENSE:M6:60V:CORRECTION:COMPUTE" Type="Command+Par"/>
-            <GAIN ScpiPath="SENSE:M6:60V:CORRECTION:GAIN" Type="Node,Query">
-              <COEFFICIENT Type="Node">
-                <N_0 ScpiPath="SENSE:M6:60V:CORRECTION:GAIN:COEFFICIENT:0" Type="Query,Command+Par"/>
-                <N_1 ScpiPath="SENSE:M6:60V:CORRECTION:GAIN:COEFFICIENT:1" Type="Query,Command+Par"/>
-                <N_2 ScpiPath="SENSE:M6:60V:CORRECTION:GAIN:COEFFICIENT:2" Type="Query,Command+Par"/>
-                <N_3 ScpiPath="SENSE:M6:60V:CORRECTION:GAIN:COEFFICIENT:3" Type="Query,Command+Par"/>
-              </COEFFICIENT>
-              <NODE Type="Node">
-                <N_0 ScpiPath="SENSE:M6:60V:CORRECTION:GAIN:NODE:0" Type="Query,Command+Par"/>
-                <N_1 ScpiPath="SENSE:M6:60V:CORRECTION:GAIN:NODE:1" Type="Query,Command+Par"/>
-                <N_2 ScpiPath="SENSE:M6:60V:CORRECTION:GAIN:NODE:2" Type="Query,Command+Par"/>
-                <N_3 ScpiPath="SENSE:M6:60V:CORRECTION:GAIN:NODE:3" Type="Query,Command+Par"/>
-              </NODE>
-              <STATUS ScpiPath="SENSE:M6:60V:CORRECTION:GAIN:STATUS" Type="Query,Command+Par"/>
-            </GAIN>
-            <INIT ScpiPath="SENSE:M6:60V:CORRECTION:INIT" Type="Command+Par"/>
-            <OFFSET ScpiPath="SENSE:M6:60V:CORRECTION:OFFSET" Type="Command+Par">
-              <COEFFICIENT Type="Node">
-                <N_0 ScpiPath="SENSE:M6:60V:CORRECTION:OFFSET:COEFFICIENT:0" Type="Query,Command+Par"/>
-                <N_1 ScpiPath="SENSE:M6:60V:CORRECTION:OFFSET:COEFFICIENT:1" Type="Query,Command+Par"/>
-                <N_2 ScpiPath="SENSE:M6:60V:CORRECTION:OFFSET:COEFFICIENT:2" Type="Query,Command+Par"/>
-                <N_3 ScpiPath="SENSE:M6:60V:CORRECTION:OFFSET:COEFFICIENT:3" Type="Query,Command+Par"/>
-              </COEFFICIENT>
-              <NODE Type="Node">
-                <N_0 ScpiPath="SENSE:M6:60V:CORRECTION:OFFSET:NODE:0" Type="Query,Command+Par"/>
-                <N_1 ScpiPath="SENSE:M6:60V:CORRECTION:OFFSET:NODE:1" Type="Query,Command+Par"/>
-                <N_2 ScpiPath="SENSE:M6:60V:CORRECTION:OFFSET:NODE:2" Type="Query,Command+Par"/>
-                <N_3 ScpiPath="SENSE:M6:60V:CORRECTION:OFFSET:NODE:3" Type="Query,Command+Par"/>
-              </NODE>
-              <STATUS ScpiPath="SENSE:M6:60V:CORRECTION:OFFSET:STATUS" Type="Query,Command+Par"/>
-            </OFFSET>
-            <PHASE ScpiPath="SENSE:M6:60V:CORRECTION:PHASE" Type="Command+Par">
-              <COEFFICIENT Type="Node">
-                <N_0 ScpiPath="SENSE:M6:60V:CORRECTION:PHASE:COEFFICIENT:0" Type="Query,Command+Par"/>
-                <N_1 ScpiPath="SENSE:M6:60V:CORRECTION:PHASE:COEFFICIENT:1" Type="Query,Command+Par"/>
-                <N_2 ScpiPath="SENSE:M6:60V:CORRECTION:PHASE:COEFFICIENT:2" Type="Query,Command+Par"/>
-                <N_3 ScpiPath="SENSE:M6:60V:CORRECTION:PHASE:COEFFICIENT:3" Type="Query,Command+Par"/>
-              </COEFFICIENT>
-              <NODE Type="Node">
-                <N_0 ScpiPath="SENSE:M6:60V:CORRECTION:PHASE:NODE:0" Type="Query,Command+Par"/>
-                <N_1 ScpiPath="SENSE:M6:60V:CORRECTION:PHASE:NODE:1" Type="Query,Command+Par"/>
-                <N_2 ScpiPath="SENSE:M6:60V:CORRECTION:PHASE:NODE:2" Type="Query,Command+Par"/>
-                <N_3 ScpiPath="SENSE:M6:60V:CORRECTION:PHASE:NODE:3" Type="Query,Command+Par"/>
-              </NODE>
-              <STATUS ScpiPath="SENSE:M6:60V:CORRECTION:PHASE:STATUS" Type="Query,Command+Par"/>
-            </PHASE>
-            <STATUS ScpiPath="SENSE:M6:60V:CORRECTION:STATUS" Type="Query"/>
-          </CORRECTION>
-          <CTRLSELECTION ScpiPath="SENSE:M6:60V:CTRLSELECTION" Type="Query"/>
-          <OVREJECTION ScpiPath="SENSE:M6:60V:OVREJECTION" Type="Query"/>
-          <REJECTION ScpiPath="SENSE:M6:60V:REJECTION" Type="Query"/>
-          <TYPE ScpiPath="SENSE:M6:60V:TYPE" Type="Query"/>
-          <URVALUE ScpiPath="SENSE:M6:60V:URVALUE" Type="Query"/>
-        </N_60V>
         <N_8V Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M6:8V:ADCREJECTION" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M6:8V:AVAIL" Type="Query"/>
