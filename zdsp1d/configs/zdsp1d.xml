@@ -12,7 +12,7 @@
                                 <scpiserver>6311</scpiserver>
 				<resourcemanager>6312</resourcemanager>
 			</port>
-                        <scpiactive>1</scpiactive>
+                        <scpiactive>0</scpiactive>
 		</ethernet>
                 <fpga>
                         <dsp_device_node>/dev/zFPGA1dsp1</dsp_device_node>
