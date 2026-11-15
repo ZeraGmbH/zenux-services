@@ -13,7 +13,6 @@ public:
     quint32 activateInterface() override;
 
 signals:
-    void sigDspMemoryWrite(QString name, QVector<float> values);
     void sigDspStarted();
 protected:
     quint32 sendCmdResponse(QString answer);
