@@ -113,6 +113,7 @@ void PCBServer::onTelnetReceived(const QString &input)
 
 void PCBServer::sendProtoAnswer(const ProtonetCommandPtr &protoCmd)
 {
+    emit sigNotifyScpiIo(protoCmd->m_sInput, protoCmd->m_sOutput);
     CommonScpiMethods::sendProtoAnswer(m_telnetServer.getSocket(), protoCmd);
 }
 

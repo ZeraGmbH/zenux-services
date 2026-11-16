@@ -17,6 +17,8 @@ public:
     virtual ~TestAllServicesCom5003();
 
     void setRangeGetSetDelay(int rangeGetSetDelay) override;
+
+    PCBServer* getPcbServer() override;
     ZDspServer *getZdsp1dServer() override;
     cSEC1000dServer *getSecServer() override;
 

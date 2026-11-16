@@ -9,6 +9,8 @@ public:
     MockCom5003d(const AbstractFactoryI2cCtrlPtr &ctrlFactory,
                  const VeinTcp::AbstractTcpNetworkFactoryPtr &tcpNetworkFactory,
                  const QString &alternateConfigXml = QString());
+
+    cCOM5003dServer* getServer() const;
     cSenseSettingsPtr getSenseSettings() const;
 private:
     std::unique_ptr<cCOM5003dServer> m_server;

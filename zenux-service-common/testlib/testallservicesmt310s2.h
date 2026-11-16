@@ -19,6 +19,8 @@ public:
     virtual ~TestAllServicesMt310s2();
 
     void setRangeGetSetDelay(int rangeGetSetDelay) override;
+
+    PCBServer* getPcbServer() override;
     ZDspServer *getZdsp1dServer() override;
     cSEC1000dServer *getSecServer() override;
 

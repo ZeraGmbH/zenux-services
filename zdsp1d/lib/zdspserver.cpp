@@ -964,5 +964,6 @@ void ZDspServer::onTelnetReceived(const QString &input)
 
 void ZDspServer::sendProtoAnswer(const ProtonetCommandPtr &protoCmd)
 {
+    emit sigNotifyScpiIo(protoCmd->m_sInput, protoCmd->m_sOutput);
     CommonScpiMethods::sendProtoAnswer(m_telnetServer.getSocket(), protoCmd);
 }

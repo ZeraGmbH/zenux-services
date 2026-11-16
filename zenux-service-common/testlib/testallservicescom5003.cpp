@@ -41,6 +41,11 @@ void TestAllServicesCom5003::setRangeGetSetDelay(int rangeGetSetDelay)
     m_testCtrlFactory->setRangeGetSetDelay(rangeGetSetDelay);
 }
 
+PCBServer *TestAllServicesCom5003::getPcbServer()
+{
+    return m_mockcom5003d->getServer();
+}
+
 ZDspServer *TestAllServicesCom5003::getZdsp1dServer()
 {
     return m_zdsp1d->getServer();

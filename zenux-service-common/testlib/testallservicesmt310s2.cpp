@@ -44,6 +44,11 @@ void TestAllServicesMt310s2::setRangeGetSetDelay(int rangeGetSetDelay)
     m_testCtrlFactory->setRangeGetSetDelay(rangeGetSetDelay);
 }
 
+PCBServer *TestAllServicesMt310s2::getPcbServer()
+{
+    return m_mt310s2d->getServer();
+}
+
 ZDspServer *TestAllServicesMt310s2::getZdsp1dServer()
 {
     return m_zdsp1d->getServer();

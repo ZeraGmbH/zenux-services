@@ -18,6 +18,8 @@ signals:
     void cmdExecutionDone(const ProtonetCommandPtr &protoCmd);
     void sigNotifySubcriber(const ScpiNotificationSubscriber &subscriber, const QString &newValue);
     void removingSubscribers(VeinTcp::TcpPeer* peer, const QByteArray &clientID);
+
+    void sigNotifyScpiIo(const QString &scpi, const QString &response); // for test dump-listener
 public slots:
     virtual void onNotifierRegistered(const NotificationString *notifier);
     void onRemoveSubscribers(VeinTcp::TcpPeer *peer, const QByteArray &clientID);

@@ -30,6 +30,11 @@ MockMt310s2d::MockMt310s2d(const AbstractFactoryI2cCtrlPtr &ctrlFactory,
     setupHotplugChannelEnable();
 }
 
+cMT310S2dServer *MockMt310s2d::getServer() const
+{
+    return m_server.get();
+}
+
 cSenseSettingsPtr MockMt310s2d::getSenseSettings() const
 {
     return m_server->getSenseSettings();

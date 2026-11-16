@@ -17,6 +17,7 @@ public:
                  const QString &alternateConfigXml = QString(),
                  Mt310s2SystemInfo* alternateSystemInfo = nullptr);
 
+    cMT310S2dServer* getServer() const;
     cSenseSettingsPtr getSenseSettings() const;
     void fireHotplugInterrupt(const AbstractMockAllServices::ChannelAliasHotplugDeviceNameMap &deviceMap);
     void addStandardEmobControllers(const QStringList &channelAliases);

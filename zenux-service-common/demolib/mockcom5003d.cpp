@@ -18,6 +18,11 @@ MockCom5003d::MockCom5003d(const AbstractFactoryI2cCtrlPtr &ctrlFactory,
         SettingsContainer::createChannelRangeFactory("com5003d"));
 }
 
+cCOM5003dServer *MockCom5003d::getServer() const
+{
+    return m_server.get();
+}
+
 cSenseSettingsPtr MockCom5003d::getSenseSettings() const
 {
     return m_server->getSenseSettings();

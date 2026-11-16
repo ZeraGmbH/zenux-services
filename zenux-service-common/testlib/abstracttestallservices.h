@@ -9,8 +9,11 @@ class AbstractTestAllServices : public AbstractMockAllServices
 {
 public:
     virtual ~AbstractTestAllServices() = default;
+
+    virtual PCBServer* getPcbServer() = 0;
     virtual ZDspServer *getZdsp1dServer() = 0;
     virtual cSEC1000dServer *getSecServer() = 0;
+
     virtual void setRangeGetSetDelay(int rangeGetSetDelay) = 0;
 };
 
