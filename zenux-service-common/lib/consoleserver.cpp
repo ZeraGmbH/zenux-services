@@ -2,10 +2,18 @@
 
 void ConsoleServer::open(int portNo)
 {
-    m_server = new QTcpServer(this);
-    m_server->setMaxPendingConnections(1); // we only accept 1 client to connect
-    connect(m_server, &QTcpServer::newConnection, this, &ConsoleServer::onClientConnected);
+    if (m_server == nullptr) {
+        m_server = new QTcpServer(this);
+        m_server->setMaxPendingConnections(1); // we only accept 1 client to connect
+        connect(m_server, &QTcpServer::newConnection, this, &ConsoleServer::onClientConnected);
+    }
     m_server->listen(QHostAddress::AnyIPv4, portNo);
+}
+
+void ConsoleServer::close()
+{
+    if(m_server)
+        m_server->close();
 }
 
 QTcpSocket *ConsoleServer::getSocket()

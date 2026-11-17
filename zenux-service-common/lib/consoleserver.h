@@ -9,6 +9,7 @@ class ConsoleServer : public QObject
     Q_OBJECT
 public:
     void open(int portNo);
+    void close();
     QTcpSocket* getSocket();
 
 signals:
