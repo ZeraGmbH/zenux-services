@@ -187,11 +187,12 @@ void ZDspServer::warnOnDspNotRunning()
 void ZDspServer::openTelnetScpi()
 {
     EthSettingsPtr ethSettings = m_settings->getEthSettings();
-    if (ethSettings->isSCPIactive()) {
-        connect(&m_telnetServer, &ConsoleServer::sigLinesReceived,
-                this, &ZDspServer::onTelnetReceived);
-        m_telnetServer.open(ethSettings->getPort(EthSettings::scpiserver));
-    }
+    m_telnetServer.open(ethSettings->getPort(EthSettings::scpiserver));
+}
+
+void ZDspServer::closeTelnetScpi()
+{
+    m_telnetServer.close();
 }
 
 enum SCPICmdType  {
@@ -368,7 +369,10 @@ void ZDspServer::doFinalSetupSteps()
 {
     EthSettingsPtr ethSettings = m_settings->getEthSettings();
     m_protoBufServer.startServer(ethSettings->getPort(EthSettings::protobufserver));
-    openTelnetScpi();
+    connect(&m_telnetServer, &ConsoleServer::sigLinesReceived,
+            this, &ZDspServer::onTelnetReceived);
+    if (ethSettings->isSCPIactive())
+        openTelnetScpi();
     startDspRunWatchdog();
 }
 

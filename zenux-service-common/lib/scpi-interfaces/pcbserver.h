@@ -30,6 +30,7 @@ signals:
     void removeSubscribers(VeinTcp::TcpPeer* peer, const QByteArray &clientID);
 public slots:
     void sendProtoAnswer(const ProtonetCommandPtr &protoCmd);
+    void onTelnetReceived(const QString &input);
 protected slots:
     virtual void onNotifySubscriber(const ScpiNotificationSubscriber &subscriber, const QString &newValue);
     virtual void onProtobufDisconnect(VeinTcp::TcpPeer *peer);
@@ -38,6 +39,7 @@ protected:
     void initSCPIConnections();
     void executeProtoScpi(int cmdCode, const ProtonetCommandPtr &protoCmd) override;
     void openTelnetScpi();
+    void closeTelnetScpi();
 
     SettingsContainerPtr m_settings;
     Zera::XMLConfig::cReader m_xmlConfigReader;
@@ -52,7 +54,6 @@ private slots:
     void onNotifyPeerConnectionClosed(VeinTcp::TcpPeer *peer);
     void onEstablishNewNotifier(NotificationValue *notifier);
     void onNotifierChanged(quint32 irqreg, const NotificationValue* notifier);
-    void onTelnetReceived(const QString &input);
 private:
     void registerNotifier(const ProtonetCommandPtr &protoCmd); // registeres 1 notifier per command
     void unregisterNotifier(const ProtonetCommandPtr &protoCmd); // unregisters all notifiers

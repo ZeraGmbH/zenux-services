@@ -368,6 +368,9 @@ void cCOM5003dServer::onResourceReady()
     if(m_pendingResources == 0) {
         EthSettingsPtr ethSettings = m_settings->getEthSettings();
         m_protoBufServer.startServer(ethSettings->getPort(EthSettings::protobufserver));
-        openTelnetScpi();
+        connect(&m_telnetServer, &ConsoleServer::sigLinesReceived,
+                this, &PCBServer::onTelnetReceived);
+        if (ethSettings->isSCPIactive())
+            openTelnetScpi();
     }
 }

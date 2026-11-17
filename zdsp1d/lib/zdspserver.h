@@ -75,6 +75,7 @@ private:
     QString handleScpiInterfaceRead(const QString &scpiInput);
     QString handleSetDspSuperClient(const ZdspClient* client);
     void openTelnetScpi();
+    void closeTelnetScpi();
 
     bool resetDsp();
     bool bootDsp();
