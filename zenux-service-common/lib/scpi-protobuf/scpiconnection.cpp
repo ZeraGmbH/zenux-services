@@ -42,10 +42,6 @@ void ScpiConnection::addDelegate(const QString &cmdParent,
     connect(delegate.get(), &ScpiDelegate::sigNotifySubcriber, this, &ScpiConnection::sigNotifySubcriber);
 }
 
-void ScpiConnection::onNotifierRegistered(const NotificationString *notifier)
-{
-}
-
 void ScpiConnection::onRemoveSubscribers(VeinTcp::TcpPeer *peer, const QByteArray &clientID)
 {
     for (int i = 0; i < m_DelegateList.count(); i++) {

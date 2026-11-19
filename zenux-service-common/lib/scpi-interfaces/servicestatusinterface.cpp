@@ -31,7 +31,7 @@ void ServiceStatusInterface::initSCPIConnection()
     addDelegate("STATUS", "DEVICE",SCPI::isQuery, m_scpiInterface, cmdDevice);
     addDelegate("STATUS", "ADJUSTMENT", SCPI::isQuery, m_scpiInterface, cmdAdjustment);
     addDelegate("STATUS", "AUTHORIZATION", SCPI::isQuery, m_scpiInterface, cmdAuthorization, &m_notifierAutorization);
-    connect(this, &ScpiConnection::removingSubscribers, this, &ServiceStatusInterface::onNotifierUnregistered);
+    m_periodicTimer->start();
 }
 
 void ServiceStatusInterface::executeProtoScpi(int cmdCode, const ProtonetCommandPtr &protoCmd)
@@ -75,15 +75,4 @@ QString ServiceStatusInterface::getAuthorizationStatus()
         status = "1";
     m_notifierAutorization = status;
     return status;
-}
-
-void ServiceStatusInterface::onNotifierRegistered(const NotificationString *notifier)
-{
-    if(&m_notifierAutorization==notifier)
-        m_periodicTimer->start();
-}
-
-void ServiceStatusInterface::onNotifierUnregistered()
-{
-    m_periodicTimer->stop();
 }

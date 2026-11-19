@@ -175,7 +175,6 @@ void PCBServer::registerNotifier(const ProtonetCommandPtr &protoCmd)
             scpiDelegate->getScpiNotificationSubscriberHandler().addSubscriber(subscriber);
             scpiDelegate->executeSCPI(procmd);
             protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::ack]; // we overwrite the query's output here
-            emit notifierRegistered(scpiDelegate->getNotificationString());
         }
         else
             protoCmd->m_sOutput = ZSCPI::scpiAnswer[ZSCPI::nak];
@@ -319,7 +318,6 @@ void PCBServer::initSCPIConnections()
         connect(m_scpiConnectionList.at(i), &ScpiConnection::valNotifier, this, &PCBServer::onEstablishNewNotifier);
         connect(m_scpiConnectionList.at(i), &ScpiConnection::sigNotifySubcriber, this, &PCBServer::onNotifySubscriber);
         connect(m_scpiConnectionList.at(i), &ScpiConnection::cmdExecutionDone, this, &PCBServer::sendProtoAnswer);
-        connect(this, &PCBServer::notifierRegistered, m_scpiConnectionList.at(i), &ScpiConnection::onNotifierRegistered);
         connect(this, &PCBServer::removeSubscribers, m_scpiConnectionList.at(i), &ScpiConnection::onRemoveSubscribers);
     }
 }

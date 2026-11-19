@@ -21,7 +21,6 @@ signals:
 
     void sigNotifyScpiIo(const QString &scpi, const QString &response); // for test dump-listener
 public slots:
-    virtual void onNotifierRegistered(const NotificationString *notifier);
     void onRemoveSubscribers(VeinTcp::TcpPeer *peer, const QByteArray &clientID);
 
 protected:

@@ -17,9 +17,6 @@ public:
                            bool hasSourceGenerator);
     void initSCPIConnection() override;
 
-private slots:
-    void onNotifierRegistered(const NotificationString* notifier) override;
-    void onNotifierUnregistered();
 private:
     void executeProtoScpi(int cmdCode, const ProtonetCommandPtr &protoCmd) override;
     QString getControllerAvail();
