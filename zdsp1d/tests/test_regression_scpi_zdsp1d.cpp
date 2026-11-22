@@ -49,7 +49,7 @@ void test_regression_scpi_zdsp1d::serverUp()
 void test_regression_scpi_zdsp1d::dumpScpi()
 {
     QString dumped = ScpiSingleTransactionBlocked::query("SYSTEM:INTERFACE:READ?", 6310);
-    QVERIFY(XmlDocumentCompare::compareXmlFile("://scpi-dump.xml", dumped));
+    QVERIFY(XmlDocumentCompare::compareXmlSrc("scpi-dump.xml", dumped, TEST_SRC_DIR));
 }
 
 void test_regression_scpi_zdsp1d::superClientResponseAck()

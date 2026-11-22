@@ -1,6 +1,19 @@
+# Dumps dummy target to see them in IDE
+file(GLOB_RECURSE TESTFILES
+    test-data/*
+)
+# Unique target name!
+add_custom_target(com5003-test-data ALL
+    SOURCES ${TESTFILES}
+    )
+
 function(SETUP_COM5003_TESTS)
     foreach(_testname ${ARGN})
         SETUP_TESTS(${_testname})
+        target_compile_definitions(${_testname}
+            PRIVATE
+            TEST_SRC_DIR="${CMAKE_CURRENT_SOURCE_DIR}"
+        )
         target_link_libraries(${_testname}
             PUBLIC
             com5003d-lib
@@ -58,9 +71,4 @@ target_sources(test_regression_adj_calc_com5003
 target_sources(test_adj_deny_import_com5003
   PRIVATE
     regression_data_adj_import_export/regression_data.qrc
-)
-
-target_sources(test_regression_scpi_com5003
-    PRIVATE
-    test-data/regression_data.qrc
 )

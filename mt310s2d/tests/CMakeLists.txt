@@ -1,6 +1,19 @@
+# Dumps dummy target to see them in IDE
+file(GLOB_RECURSE TESTFILES
+    test-data/*
+)
+# Unique target name!
+add_custom_target(mt310s2-test-data ALL
+    SOURCES ${TESTFILES}
+    )
+
 function(SETUP_MT310S2_TESTS)
     foreach(_testname ${ARGN})
         SETUP_TESTS(${_testname})
+        target_compile_definitions(${_testname}
+            PRIVATE
+            TEST_SRC_DIR="${CMAKE_CURRENT_SOURCE_DIR}"
+        )
         target_link_libraries(${_testname}
             PUBLIC
             mt310s2d-testlib
@@ -58,9 +71,4 @@ target_sources(test_regression_adj_scpi_query_format_mt310s2
 target_sources(test_adj_deny_import_mt310s2
   PRIVATE
     regression_data_adj_import_export/regression_data.qrc
-)
-
-target_sources(test_regression_scpi_mt310s2
-    PRIVATE
-    test-data/regression_data.qrc
 )

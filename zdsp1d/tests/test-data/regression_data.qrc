@@ -8,6 +8,5 @@
         <file>dump-dsp-memory-dual-client-aligned-mem.json</file>
         <file>dump-dsp-memory-dual-client-global-mem.json</file>
         <file>dump-dsp-memory-dual-client-global-mem-different-size.json</file>
-        <file>scpi-dump.xml</file>
     </qresource>
 </RCC>
