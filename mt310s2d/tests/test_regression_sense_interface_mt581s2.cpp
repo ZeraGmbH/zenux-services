@@ -209,7 +209,7 @@ void test_regression_sense_interface_mt581s2::constantRangeValuesI()
     channelSettings.append(m_testServer->getSenseSettings()->findChannelSettingByAlias1("IAUX"));
 
     QByteArray jsonDumped = SenseRegressionHelper::genJsonConstantValuesAllRanges(channelSettings, m_pcbIFace.get());
-    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonSrc("mt581s2/all-ranges-i.json", jsonDumped, TEST_SRC_DIR));
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonSrc("mt581s2/range-dumps/all-ranges-i.json", jsonDumped, TEST_SRC_DIR));
 }
 
 void test_regression_sense_interface_mt581s2::constantRangeValuesU()
@@ -221,7 +221,7 @@ void test_regression_sense_interface_mt581s2::constantRangeValuesU()
     channelSettings.append(m_testServer->getSenseSettings()->findChannelSettingByAlias1("UAUX"));
 
     QByteArray jsonDumped = SenseRegressionHelper::genJsonConstantValuesAllRanges(channelSettings, m_pcbIFace.get());
-    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonSrc("mt581s2/all-ranges-u.json", jsonDumped, TEST_SRC_DIR));
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonSrc("mt581s2/range-dumps/all-ranges-u.json", jsonDumped, TEST_SRC_DIR));
 }
 
 void test_regression_sense_interface_mt581s2::constantRangeValuesIModeAdj()
@@ -236,7 +236,7 @@ void test_regression_sense_interface_mt581s2::constantRangeValuesIModeAdj()
     channelSettings.append(m_testServer->getSenseSettings()->findChannelSettingByAlias1("IAUX"));
 
     QByteArray jsonDumped = SenseRegressionHelper::genJsonConstantValuesAllRanges(channelSettings, m_pcbIFace.get());
-    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonSrc("mt581s2/all-ranges-i-adj-mode.json", jsonDumped, TEST_SRC_DIR));
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonSrc("mt581s2/range-dumps/all-ranges-i-adj-mode.json", jsonDumped, TEST_SRC_DIR));
 }
 
 void test_regression_sense_interface_mt581s2::constantRangeValuesUModeAdj()
@@ -251,7 +251,7 @@ void test_regression_sense_interface_mt581s2::constantRangeValuesUModeAdj()
     channelSettings.append(m_testServer->getSenseSettings()->findChannelSettingByAlias1("UAUX"));
 
     QByteArray jsonDumped = SenseRegressionHelper::genJsonConstantValuesAllRanges(channelSettings, m_pcbIFace.get());
-    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonSrc("mt581s2/all-ranges-u-adj-mode.json", jsonDumped, TEST_SRC_DIR));
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonSrc("mt581s2/range-dumps/all-ranges-u-adj-mode.json", jsonDumped, TEST_SRC_DIR));
 }
 
 void test_regression_sense_interface_mt581s2::constantRangeValuesIModeHf()
@@ -266,7 +266,7 @@ void test_regression_sense_interface_mt581s2::constantRangeValuesIModeHf()
     channelSettings.append(m_testServer->getSenseSettings()->findChannelSettingByAlias1("IAUX"));
 
     QByteArray jsonDumped = SenseRegressionHelper::genJsonConstantValuesAllRanges(channelSettings, m_pcbIFace.get());
-    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonSrc("mt581s2/all-ranges-i-hf-mode.json", jsonDumped, TEST_SRC_DIR));
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonSrc("mt581s2/range-dumps/all-ranges-i-hf-mode.json", jsonDumped, TEST_SRC_DIR));
 }
 
 void test_regression_sense_interface_mt581s2::constantRangeValuesUModeHf()
@@ -281,25 +281,25 @@ void test_regression_sense_interface_mt581s2::constantRangeValuesUModeHf()
     channelSettings.append(m_testServer->getSenseSettings()->findChannelSettingByAlias1("UAUX"));
 
     QByteArray jsonDumped = SenseRegressionHelper::genJsonConstantValuesAllRanges(channelSettings, m_pcbIFace.get());
-    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonSrc("mt581s2/all-ranges-u-hf-mode.json", jsonDumped, TEST_SRC_DIR));
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonSrc("mt581s2/range-dumps/all-ranges-u-hf-mode.json", jsonDumped, TEST_SRC_DIR));
 }
 
 void test_regression_sense_interface_mt581s2::constantRangeValuesAllClampsIL3()
 {
     QByteArray jsonDumped = genJsonConstantValuesAllRangesForAllClamps("IL3", "IL3");
-    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonSrc("mt581s2/all-ranges-all-clamps-il3.json", jsonDumped, TEST_SRC_DIR));
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonSrc("mt581s2/range-dumps/all-ranges-all-clamps-il3.json", jsonDumped, TEST_SRC_DIR));
 }
 
 void test_regression_sense_interface_mt581s2::constantRangeValuesAllClampsIAUX()
 {
     QByteArray jsonDumped = genJsonConstantValuesAllRangesForAllClamps("IAUX", "IAUX");
-    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonSrc("mt581s2/all-ranges-all-clamps-iaux.json", jsonDumped, TEST_SRC_DIR));
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonSrc("mt581s2/range-dumps/all-ranges-all-clamps-iaux.json", jsonDumped, TEST_SRC_DIR));
 }
 
 void test_regression_sense_interface_mt581s2::constantRangeValuesAllClampsUAUX()
 {
     QByteArray jsonDumped = genJsonConstantValuesAllRangesForAllClamps("UAUX", "IAUX");
-    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonSrc("mt581s2/all-ranges-all-clamps-uaux.json", jsonDumped, TEST_SRC_DIR));
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonSrc("mt581s2/range-dumps/all-ranges-all-clamps-uaux.json", jsonDumped, TEST_SRC_DIR));
 }
 
 void test_regression_sense_interface_mt581s2::mmodeCat()

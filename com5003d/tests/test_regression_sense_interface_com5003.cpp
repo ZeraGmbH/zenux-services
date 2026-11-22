@@ -101,7 +101,7 @@ void test_regression_sense_interface_com5003::constantRangeValuesI()
     channelSettings.append(m_testServer->getSenseSettings()->findChannelSettingByAlias1("IL2"));
     channelSettings.append(m_testServer->getSenseSettings()->findChannelSettingByAlias1("IL3"));
     QByteArray jsonDumped = SenseRegressionHelper::genJsonConstantValuesAllRanges(channelSettings, m_pcbIFace.get());
-    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonSrc("all-ranges-i.json", jsonDumped, TEST_SRC_DIR));
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonSrc("range-dumps/all-ranges-i.json", jsonDumped, TEST_SRC_DIR));
 }
 
 void test_regression_sense_interface_com5003::constantRangeValuesU()
@@ -111,7 +111,7 @@ void test_regression_sense_interface_com5003::constantRangeValuesU()
     channelSettings.append(m_testServer->getSenseSettings()->findChannelSettingByAlias1("UL2"));
     channelSettings.append(m_testServer->getSenseSettings()->findChannelSettingByAlias1("UL3"));
     QByteArray jsonDumped = SenseRegressionHelper::genJsonConstantValuesAllRanges(channelSettings, m_pcbIFace.get());
-    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonSrc("all-ranges-u.json", jsonDumped, TEST_SRC_DIR));
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonSrc("range-dumps/all-ranges-u.json", jsonDumped, TEST_SRC_DIR));
 }
 
 void test_regression_sense_interface_com5003::constantRangeValuesIModeREF()
@@ -124,7 +124,7 @@ void test_regression_sense_interface_com5003::constantRangeValuesIModeREF()
     channelSettings.append(m_testServer->getSenseSettings()->findChannelSettingByAlias1("IL2"));
     channelSettings.append(m_testServer->getSenseSettings()->findChannelSettingByAlias1("IL3"));
     QByteArray jsonDumped = SenseRegressionHelper::genJsonConstantValuesAllRanges(channelSettings, m_pcbIFace.get());
-    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonSrc("all-ranges-i-ref-mode.json", jsonDumped, TEST_SRC_DIR));
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonSrc("range-dumps/all-ranges-i-ref-mode.json", jsonDumped, TEST_SRC_DIR));
 }
 
 void test_regression_sense_interface_com5003::constantRangeValuesUModeREF()
@@ -137,7 +137,7 @@ void test_regression_sense_interface_com5003::constantRangeValuesUModeREF()
     channelSettings.append(m_testServer->getSenseSettings()->findChannelSettingByAlias1("UL2"));
     channelSettings.append(m_testServer->getSenseSettings()->findChannelSettingByAlias1("UL3"));
     QByteArray jsonDumped = SenseRegressionHelper::genJsonConstantValuesAllRanges(channelSettings, m_pcbIFace.get());
-    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonSrc("all-ranges-u-ref-mode.json", jsonDumped, TEST_SRC_DIR));
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonSrc("range-dumps/all-ranges-u-ref-mode.json", jsonDumped, TEST_SRC_DIR));
 }
 
 void test_regression_sense_interface_com5003::channelAliasChangeOnREF()

@@ -58,6 +58,7 @@ void test_regression_scpi_mt310s2::serverUp()
 void test_regression_scpi_mt310s2::dumpScpi()
 {
     QFETCH_GLOBAL(QString, serviceNameForAlternateDevice);
+    QString path = serviceNameForAlternateDevice.replace("d", ""); // to not create new folder
     QString dumped = ScpiSingleTransactionBlocked::query("SYSTEM:INTERFACE:READ?");
-    QVERIFY(XmlDocumentCompare::compareXmlSrc(QString("%1/scpi-dump.xml").arg(serviceNameForAlternateDevice), dumped, TEST_SRC_DIR));
+    QVERIFY(XmlDocumentCompare::compareXmlSrc(QString("%1/scpi-dumps/scpi-dump.xml").arg(path), dumped, TEST_SRC_DIR));
 }
