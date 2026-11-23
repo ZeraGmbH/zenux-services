@@ -60,7 +60,7 @@ void test_source_control::mt581s2Capabilities()
     JsonStructApi structApi(capabilities);
     QCOMPARE(structApi.getDeviceName(), "MT581s2");
 
-    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonFile(":/source_capabilities_valid_mt581s2.json", m_lastAnswer.toString()));
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonSrc("source_capabilities_valid_mt581s2.json", m_lastAnswer.toString(), TEST_SRC_DIR));
 }
 
 void test_source_control::mt310s2RejectValidCapabilitesSet()

@@ -51,7 +51,7 @@ void test_read_versions::readPcbVersionNoEmob()
     QCOMPARE(responseSpy[0][1], QVariant(ack));
 
     QByteArray jsonDumped = responseSpy[0][2].toByteArray();
-    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonFile(":/controller-versions/noEmob.json", jsonDumped));
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonSrc("controller-versions/noEmob.json", jsonDumped, TEST_SRC_DIR));
 }
 
 void test_read_versions::readPcbVersionOneEmobChannelIAUX()
@@ -71,7 +71,7 @@ void test_read_versions::readPcbVersionOneEmobChannelIAUX()
     QCOMPARE(responseSpy[0][1], QVariant(ack));
 
     QByteArray jsonDumped = responseSpy[0][2].toByteArray();
-    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonFile(":/controller-versions/oneEmobChannelIAUX.json", jsonDumped));
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonSrc("controller-versions/oneEmobChannelIAUX.json", jsonDumped, TEST_SRC_DIR));
 }
 
 void test_read_versions::readPcbVersionOneEmobAddAndRemoveIAUX()
@@ -92,7 +92,7 @@ void test_read_versions::readPcbVersionOneEmobAddAndRemoveIAUX()
     QCOMPARE(responseSpy[0][1], QVariant(ack));
 
     QByteArray jsonDumped = responseSpy[0][2].toByteArray();
-    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonFile(":/controller-versions/noEmob.json", jsonDumped));
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonSrc("controller-versions/noEmob.json", jsonDumped, TEST_SRC_DIR));
 }
 
 void test_read_versions::readPcbVersionTwoEmobTwoChannels()
@@ -113,7 +113,7 @@ void test_read_versions::readPcbVersionTwoEmobTwoChannels()
     QCOMPARE(responseSpy[0][1], QVariant(ack));
 
     QByteArray jsonDumped = responseSpy[0][2].toByteArray();
-    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonFile(":/controller-versions/twoEmobtwoChannels.json", jsonDumped));
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonSrc("controller-versions/twoEmobtwoChannels.json", jsonDumped, TEST_SRC_DIR));
 }
 
 void test_read_versions::readPcbVersionAccuNoEmob()
@@ -130,7 +130,7 @@ void test_read_versions::readPcbVersionAccuNoEmob()
     QCOMPARE(responseSpy[0][1], QVariant(ack));
 
     QByteArray jsonDumped = responseSpy[0][2].toByteArray();
-    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonFile(":/controller-versions/noEmobAccu.json", jsonDumped));
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonSrc("controller-versions/noEmobAccu.json", jsonDumped, TEST_SRC_DIR));
 }
 
 void test_read_versions::readCtrlVersionNoEmob()
@@ -145,7 +145,7 @@ void test_read_versions::readCtrlVersionNoEmob()
     QCOMPARE(responseSpy[0][1], QVariant(ack));
 
     QByteArray jsonDumped = responseSpy[0][2].toByteArray();
-    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonFile(":/controller-versions/ctrlVersionNoEmob.json", jsonDumped));
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonSrc("controller-versions/ctrlVersionNoEmob.json", jsonDumped, TEST_SRC_DIR));
 }
 
 void test_read_versions::readCtrlVersionOneEmobChannelIAUX()
@@ -165,7 +165,7 @@ void test_read_versions::readCtrlVersionOneEmobChannelIAUX()
     QCOMPARE(responseSpy[0][1], QVariant(ack));
 
     QByteArray jsonDumped = responseSpy[0][2].toByteArray();
-    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonFile(":/controller-versions/ctrlVersionOneEmobOneChannel.json", jsonDumped));
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonSrc("controller-versions/ctrlVersionOneEmobOneChannel.json", jsonDumped, TEST_SRC_DIR));
 }
 
 void test_read_versions::readCtrlVersionOneEmobAddRemoveIAUX()
@@ -186,7 +186,7 @@ void test_read_versions::readCtrlVersionOneEmobAddRemoveIAUX()
     QCOMPARE(responseSpy[0][1], QVariant(ack));
 
     QByteArray jsonDumped = responseSpy[0][2].toByteArray();
-    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonFile(":/controller-versions/ctrlVersionNoEmob.json", jsonDumped));
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonSrc("controller-versions/ctrlVersionNoEmob.json", jsonDumped, TEST_SRC_DIR));
 }
 
 void test_read_versions::readCtrlVersionTwoEmobTwoChannels()
@@ -207,7 +207,7 @@ void test_read_versions::readCtrlVersionTwoEmobTwoChannels()
     QCOMPARE(responseSpy[0][1], QVariant(ack));
 
     QByteArray jsonDumped = responseSpy[0][2].toByteArray();
-    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonFile(":/controller-versions/ctrlVersiontwoEmobtwoChannels.json", jsonDumped));
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonSrc("controller-versions/ctrlVersiontwoEmobtwoChannels.json", jsonDumped, TEST_SRC_DIR));
 }
 
 void test_read_versions::waitForAccuDetected()
@@ -230,7 +230,7 @@ void test_read_versions::readCtrlVersionAccuNoEmob()
     QCOMPARE(responseSpy[0][1], QVariant(ack));
 
     QByteArray jsonDumped = responseSpy[0][2].toByteArray();
-    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonFile(":/controller-versions/ctrlVersionAccuNoEmob.json", jsonDumped));
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonSrc("controller-versions/ctrlVersionAccuNoEmob.json", jsonDumped, TEST_SRC_DIR));
 }
 
 constexpr int ctrlVersionNotifierId = 5000;
