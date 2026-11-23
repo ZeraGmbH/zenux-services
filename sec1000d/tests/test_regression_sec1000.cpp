@@ -64,7 +64,7 @@ void test_regression_sec1000::dumpScpi()
 {
     QFETCH_GLOBAL(QString, deviceFamily);
     QString dumped = ScpiSingleTransactionBlocked::query("SYSTEM:INTERFACE:READ?", 6305);
-    QVERIFY(XmlDocumentCompare::compareXmlFile(QString(":/scpi/scpi-dump-%1.xml").arg(deviceFamily), dumped));
+    QVERIFY(XmlDocumentCompare::compareXmlSrc(QString("scpi/scpi-dump-%1.xml").arg(deviceFamily), dumped, TEST_SRC_DIR));
 }
 
 void test_regression_sec1000::interruptDeviceNodeIo()
@@ -76,9 +76,8 @@ void test_regression_sec1000::interruptDeviceNodeIo()
     fireInterrupt();
 
     QFETCH_GLOBAL(QString, deviceFamily);
-    QString expected = TestLogHelpers::loadFile(QString(":/devnode/dump-interrupt-%1.json").arg(deviceFamily));
     QByteArray dumped = TestLogHelpers::dump(secDeviceNode->getRecording());
-    QVERIFY(TestLogHelpers::compareAndLogOnDiff(expected, dumped));
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffSrc(QString("devnode/dump-interrupt-%1.json").arg(deviceFamily), dumped, TEST_SRC_DIR));
 }
 
 void test_regression_sec1000::interruptNotifications()
