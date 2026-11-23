@@ -55,7 +55,7 @@ void test_regression_adj_import_export_eeprom_mt310s2::directExportFlashCheckRef
     QVERIFY(m_testServer->getSenseInterface()->exportAdjData(refTime));
     I2cSettingsPtr i2cSettings = m_testServer->getI2cSettings();
     QByteArray dumped = MockEepromDevice::getData({i2cSettings->getDeviceNode(), i2cSettings->getI2CAdress(i2cSettings::flashlI2cAddress)});
-    QVERIFY(TestLogHelpers::compareAndLogOnDiffFile(":/export_internal_initial.eeprom", dumped));
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffSrc("export_internal_initial.eeprom", dumped, TEST_SRC_DIR));
 }
 
 void test_regression_adj_import_export_eeprom_mt310s2::scpiWriteFlashInitial()
@@ -76,7 +76,7 @@ void test_regression_adj_import_export_eeprom_mt310s2::scpiWriteFlashInitial()
     QVERIFY(m_testServer->getSenseInterface()->exportAdjData(refTime));
     QCOMPARE(MockEepromDevice::getWriteCount({devNodeFileName, i2cAddress}), 2);
     QByteArray dumped = MockEepromDevice::getData({devNodeFileName, i2cAddress});
-    QVERIFY(TestLogHelpers::compareAndLogOnDiffFile(":/export_internal_initial.eeprom", dumped));
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffSrc("export_internal_initial.eeprom", dumped, TEST_SRC_DIR));
 }
 
 void test_regression_adj_import_export_eeprom_mt310s2::scpiWriteRandomFileAndFlashGen()
@@ -187,7 +187,7 @@ void test_regression_adj_import_export_eeprom_mt310s2::freshClampSetTypeIOnlyEep
     QByteArray dumped = MockEepromDevice::getData({i2cSettings->getDeviceNode(), i2cSettings->getI2CAdress(i2cSettings::clampFlashI2cAddress)},
                                                   {i2cSettings->getDeviceNode(), i2cSettings->getI2CAdress(i2cSettings::muxerI2cAddress)},
                                                   clamp->getChannelSettings()->m_nMuxChannelNo);
-    QVERIFY(TestLogHelpers::compareAndLogOnDiffFile(":/initial_clamp_type_i.eeprom", dumped));
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffSrc("initial_clamp_type_i.eeprom", dumped, TEST_SRC_DIR));
 }
 
 void test_regression_adj_import_export_eeprom_mt310s2::freshClampSetTypeUOnlyEepromCheck()
@@ -203,7 +203,7 @@ void test_regression_adj_import_export_eeprom_mt310s2::freshClampSetTypeUOnlyEep
     QByteArray dumped = MockEepromDevice::getData({i2cSettings->getDeviceNode(), i2cSettings->getI2CAdress(i2cSettings::clampFlashI2cAddress)},
                                                   {i2cSettings->getDeviceNode(), i2cSettings->getI2CAdress(i2cSettings::muxerI2cAddress)},
                                                   clamp->getChannelSettings()->m_nMuxChannelNo);
-    QVERIFY(TestLogHelpers::compareAndLogOnDiffFile(":/initial_clamp_type_u.eeprom", dumped));
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffSrc("initial_clamp_type_u.eeprom", dumped, TEST_SRC_DIR));
 }
 
 void test_regression_adj_import_export_eeprom_mt310s2::freshClampSetTypeUIEepromCheck()
@@ -219,7 +219,7 @@ void test_regression_adj_import_export_eeprom_mt310s2::freshClampSetTypeUIEeprom
     QByteArray dumped = MockEepromDevice::getData({i2cSettings->getDeviceNode(), i2cSettings->getI2CAdress(i2cSettings::clampFlashI2cAddress)},
                                                   {i2cSettings->getDeviceNode(), i2cSettings->getI2CAdress(i2cSettings::muxerI2cAddress)},
                                                   clamp->getChannelSettings()->m_nMuxChannelNo);
-    QVERIFY(TestLogHelpers::compareAndLogOnDiffFile(":/initial_clamp_type_ui.eeprom", dumped));
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffSrc("initial_clamp_type_ui.eeprom", dumped, TEST_SRC_DIR));
 }
 
 void test_regression_adj_import_export_eeprom_mt310s2::setupServers(const AbstractFactoryI2cCtrlPtr &ctrlFactory)

@@ -1,7 +1,6 @@
 <RCC>
     <qresource prefix="/">
         <file>export_clamp_initial.xml</file>
-        <file>export_internal_initial.eeprom</file>
         <file>export_internal_initial.xml</file>
         <file>export_internal_modified.eeprom</file>
         <file>import_abribrary_version.xml</file>
@@ -11,8 +10,5 @@
         <file>import_missing_type.xml</file>
         <file>import_modified.xml</file>
         <file>import_unknown_entry.xml</file>
-        <file>initial_clamp_type_i.eeprom</file>
-        <file>initial_clamp_type_u.eeprom</file>
-        <file>initial_clamp_type_ui.eeprom</file>
     </qresource>
 </RCC>
