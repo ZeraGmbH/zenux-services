@@ -64,7 +64,7 @@ void MockMt310s2d::fireHotplugInterrupt(const AbstractMockAllServices::ChannelAl
     m_channelAliasesHotplugI2cBus = deviceMap;
     ControllerPersitentData::setHotplugDevices(hotDevicesToSet);
     ControllerPersitentData::injectInterruptFlags(interruptMask);
-    m_server->MTIntHandler(0);
+    m_server->MTIntHandler();
 }
 
 void MockMt310s2d::addStandardEmobControllers(const QStringList &channelAliases)

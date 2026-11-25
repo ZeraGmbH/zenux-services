@@ -43,7 +43,7 @@ public:
 
     void startCpuTemperatureSendTimer();
 
-    void MTIntHandler(int);
+    void MTIntHandler();
     HotPluggableControllerContainerPtr getHotPluggableControllerContainer();
     cClampInterface* getClampInterface() const;
     GeneratorInterface *getGeneratorInterface() const;

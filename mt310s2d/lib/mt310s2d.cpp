@@ -354,7 +354,7 @@ void cMT310S2dServer::updateI2cDevicesConnected()
 }
 
 
-void cMT310S2dServer::MTIntHandler(int)
+void cMT310S2dServer::MTIntHandler()
 {// handles clamp interrupt sent by the controler
 
     char dummy[2];
