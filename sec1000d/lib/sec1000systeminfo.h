@@ -1,5 +1,5 @@
-#ifndef SYSTEMINFO_H
-#define SYSTEMINFO_H
+#ifndef SEC1000SYSTEMINFO_H
+#define SEC1000SYSTEMINFO_H
 
 #include <QString>
 
@@ -22,4 +22,4 @@ private:
     QString m_sLCAVersion;
     QString m_sSerialNumber;
 };
-#endif // SYSTEMINFO_H
+#endif // SEC1000SYSTEMINFO_H
