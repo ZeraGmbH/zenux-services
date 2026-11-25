@@ -89,24 +89,23 @@ void PCBServer::closeTelnetScpi()
     m_telnetServer.close();
 }
 
-void PCBServer::handleControllerInterrupt(const I2cCtrlCriticalStatusPtr &crititicalStatusController)
+void PCBServer::handleControllerInterrupt(const I2cCtrlCriticalStatusPtr &crititicalStatusController,
+                                          SenseInterfaceCommon *senseInterface)
 {
-    quint16 stat = 0;
-    if (crititicalStatusController->readCriticalStatus(stat) == ZeraMControllerIo::cmddone ) {
-        if ((stat & (1 << clampstatusInterrupt)) > 0) {
+    quint16 criticalStatus = 0;
+    if (crititicalStatusController->readCriticalStatus(criticalStatus) == ZeraMControllerIo::cmddone ) {
+        if ((criticalStatus & (1 << clampstatusInterrupt)) > 0) {
             // ??? is this still the case ???
             // we must reset clamp status before handling the interrupt
             // because system may emit more interrupts so we might think
             // we must handle them too....but atualizeClampStatus uses
             // global variable for the clamp status -> so this might fail
             // with unexpected behaviour.
-            crititicalStatusController->resetCriticalStatus(stat & (1 << clampstatusInterrupt));
-            updateI2cDevicesConnected();
+            crititicalStatusController->resetCriticalStatus(criticalStatus & (1 << clampstatusInterrupt));
+            //updateI2cDevicesConnected();
         }
-        quint16 knownMaskBits = (1 << clampstatusInterrupt);
-        if((stat & ~knownMaskBits) > 0) {
-            qCritical("PCBServer::handleControllerInterrupt: unknown bits in critical status mask: %04x!", stat);
-        }
+        else
+            senseInterface->handleControlllerInterrupt(criticalStatus);
     }
     else
         qCritical("PCBServer::handleControllerInterrupt: readCriticalStatus failed - cannot actualize clamp status!");

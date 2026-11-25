@@ -4,6 +4,7 @@
 #include "scpiserverconnection.h"
 #include "resource.h"
 #include "notificationstructwithvalue.h"
+#include "senseinterfacecommon.h"
 #include "settingscontainer.h"
 #include "consoleserver.h"
 #include <scpi.h>
@@ -39,7 +40,8 @@ protected:
     void executeProtoScpi(int cmdCode, const ProtonetCommandPtr &protoCmd) override;
     void openTelnetScpi();
     void closeTelnetScpi();
-    void handleControllerInterrupt(const I2cCtrlCriticalStatusPtr &crititicalStatusController);
+    void handleControllerInterrupt(const I2cCtrlCriticalStatusPtr &crititicalStatusController,
+                                   SenseInterfaceCommon* senseInterface);
 
     SettingsContainerPtr m_settings;
     Zera::XMLConfig::cReader m_xmlConfigReader;

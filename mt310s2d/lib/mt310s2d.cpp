@@ -360,7 +360,7 @@ void cMT310S2dServer::MTIntHandler()
     char dummy[2];
     read(pipeFileDescriptorMt310s2[0], dummy, 1); // first we read the pipe
 
-    handleControllerInterrupt(m_ctrlFactory->getCriticalStatusController());
+    handleControllerInterrupt(m_ctrlFactory->getCriticalStatusController(), m_pSenseInterface);
 }
 
 HotPluggableControllerContainerPtr cMT310S2dServer::getHotPluggableControllerContainer()

@@ -450,6 +450,14 @@ QString SenseInterfaceCommon::exportXMLString(int indent)
     return justqdom.toString(indent);
 }
 
+void SenseInterfaceCommon::handleControlllerInterrupt(quint16 criticalStatus)
+{
+    for(SenseChannelCommon* channel : qAsConst(m_channelList)) {
+
+    }
+
+}
+
 void SenseInterfaceCommon::onMeasRangeProbablyChanged(const QString &channelMName)
 {
     SenseChannelCommon *channel = getChannel(channelMName);

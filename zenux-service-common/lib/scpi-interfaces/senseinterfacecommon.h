@@ -58,10 +58,12 @@ public:
                          const AbstractFactoryI2cCtrlPtr &ctrlFactory,
                          const QHash<QString, int> &availSenseModesHash);
     virtual ~SenseInterfaceCommon();
+
     quint8 getAdjustmentStatus() const override;
     SenseChannelCommon *getChannel(const QString &name);
     QString getChannelByCtrlChannelNo(quint16 ctrlChannel);
     SenseRangeCommon* getRange(const QString &channelName, const QString &rangeName);
+
     bool computeSenseAdjData();
     bool exportAdjData(QDateTime dateTimeWrite);
     bool importAdjData();
@@ -70,8 +72,11 @@ public:
 
     static int rangeFlagsExtern();
     int rangeFlagsExternDc(); // maybe this can go - for now just compatibility
+
     void initSCPIConnection() override;
     QString exportXMLString(int indent = 1) override;
+
+    void handleControlllerInterrupt(quint16 criticalStatus);
 
 public slots:
     void onMeasRangeProbablyChanged(const QString &channelMName);
