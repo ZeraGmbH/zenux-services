@@ -1,5 +1,5 @@
 #include "mt310s2d.h"
-#include "mt310s2dglobal.h"
+#include "controllerdefinitions.h"
 #include "mt310s2systeminterface.h"
 #include "mt310s2senseinterface.h"
 #include "mt581generatorchannelfactory.h"

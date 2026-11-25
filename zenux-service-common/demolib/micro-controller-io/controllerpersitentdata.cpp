@@ -1,5 +1,5 @@
 #include "controllerpersitentdata.h"
-#include "mt310s2dglobal.h"
+#include "controllerdefinitions.h"
 
 std::unique_ptr<ControllerPersitentData::TPersitentControllerData> ControllerPersitentData::m_persitentData;
 
