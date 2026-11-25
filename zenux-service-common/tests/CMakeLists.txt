@@ -55,6 +55,7 @@ SETUP_SERVICE_COMMON_TESTS(
     test_i2c_dspgenerator
     test_resetadjustment
     test_schnubbel
+    test_hard_overload_interrupt
     )
 
 target_sources(test_hotpluggablecontrollercontainer
