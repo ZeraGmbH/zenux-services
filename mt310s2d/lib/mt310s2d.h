@@ -69,7 +69,7 @@ private:
     void earlySetup(AbstractChannelRangeFactoryPtr channelRangeFactory);
     void SetFASync();
     void enableClampInterrupt();
-    void updateI2cDevicesConnected();
+    void updateI2cDevicesConnected() override;
     void setupMicroControllerIo();
     void setInitialPllChannel();
     bool hasSourceGenerator() const;

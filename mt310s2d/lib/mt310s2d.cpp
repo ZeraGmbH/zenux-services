@@ -355,29 +355,12 @@ void cMT310S2dServer::updateI2cDevicesConnected()
 
 
 void cMT310S2dServer::MTIntHandler()
-{// handles clamp interrupt sent by the controler
+{// handles interrupt sent by the controler
 
     char dummy[2];
     read(pipeFileDescriptorMt310s2[0], dummy, 1); // first we read the pipe
 
-    quint16 stat = 0;
-    if (m_ctrlFactory->getCriticalStatusController()->readCriticalStatus(stat) == ZeraMControllerIo::cmddone ) {
-        if ((stat & (1 << clampstatusInterrupt)) > 0) {
-            // we must reset clamp status before handling the interrupt
-            // because system may emit more interrupts so we might think
-            // we must handle them too....but atualizeClampStatus uses
-            // global variable for the clamp status -> so this might fail
-            // with unexpected behaviour.
-            m_ctrlFactory->getCriticalStatusController()->resetCriticalStatus(stat & (1 << clampstatusInterrupt));
-            updateI2cDevicesConnected();
-        }
-        quint16 knownMaskBits = (1 << clampstatusInterrupt);
-        if((stat & ~knownMaskBits) > 0) {
-            qWarning("cMT310S2dServer::MTIntHandler: unknown bits in critical status mask: %04x!", stat);
-        }
-    }
-    else
-        qWarning("cMT310S2dServer::MTIntHandler: readCriticalStatus failed - cannot actualize clamp status!");
+    handleControllerInterrupt(m_ctrlFactory->getCriticalStatusController());
 }
 
 HotPluggableControllerContainerPtr cMT310S2dServer::getHotPluggableControllerContainer()

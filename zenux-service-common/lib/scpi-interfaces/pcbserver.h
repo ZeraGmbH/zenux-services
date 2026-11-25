@@ -39,6 +39,7 @@ protected:
     void executeProtoScpi(int cmdCode, const ProtonetCommandPtr &protoCmd) override;
     void openTelnetScpi();
     void closeTelnetScpi();
+    void handleControllerInterrupt(const I2cCtrlCriticalStatusPtr &crititicalStatusController);
 
     SettingsContainerPtr m_settings;
     Zera::XMLConfig::cReader m_xmlConfigReader;
@@ -54,6 +55,7 @@ private slots:
     void onEstablishNewNotifier(NotificationValue *notifier);
     void onNotifierChanged(quint32 irqreg, const NotificationValue* notifier);
 private:
+    virtual void updateI2cDevicesConnected() {}
     void registerNotifier(const ProtonetCommandPtr &protoCmd); // registeres 1 notifier per command
     void unregisterNotifier(const ProtonetCommandPtr &protoCmd); // unregisters all notifiers
     void doUnregisterNotifier(VeinTcp::TcpPeer *peer, const QByteArray &clientID = QByteArray());
