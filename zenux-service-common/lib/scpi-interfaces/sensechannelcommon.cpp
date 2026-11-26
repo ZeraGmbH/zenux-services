@@ -22,13 +22,8 @@ SenseChannelCommon::SenseChannelCommon(const std::shared_ptr<cSCPI> &scpiInterfa
                                        const AbstractFactoryI2cCtrlPtr &ctrlFactory) :
     ScpiConnection(scpiInterface),
     m_ctrlFactory(ctrlFactory),
-    m_sName(cSettings->m_nameMx),
-    m_sAlias1(cSettings->m_sAlias1),
-    m_sAlias2(cSettings->m_sAlias2),
+    m_settings(*cSettings),
     m_sUnit(unit),
-    m_nCtrlChannel(cSettings->m_nCtrlChannel),
-    m_nDspChannel(cSettings->m_nDspChannel),
-    m_nOverloadBit(cSettings->m_nOverloadBit),
     m_nMMode(0)
 {
     connect(&m_delayedCtrlIos, &AsyncQueuedMControllerIo::sigCmdDone, this,
@@ -88,12 +83,12 @@ quint8 SenseChannelCommon::getAdjustmentStatus80Mask()
 
 QString SenseChannelCommon::getName()
 {
-    return m_sName;
+    return m_settings.m_nameMx;
 }
 
 quint8 SenseChannelCommon::getCtrlChannel()
 {
-    return m_nCtrlChannel;
+    return m_settings.m_nCtrlChannel;
 }
 
 void SenseChannelCommon::setUnit(const QString &s)
@@ -104,23 +99,23 @@ void SenseChannelCommon::setUnit(const QString &s)
 void SenseChannelCommon::initSCPIConnection(const QString &leadingNodes)
 {
     const QString adjLeadNodes = appendTrailingColonOnNonEmptyParentNodes(leadingNodes);
-    addDelegate(QString("%1%2").arg(adjLeadNodes, m_sName),"ALIAS", SCPI::isQuery, m_scpiInterface, cmdAlias);
-    addDelegate(QString("%1%2").arg(adjLeadNodes, m_sName),"TYPE", SCPI::isQuery, m_scpiInterface, cmdType);
-    addDelegate(QString("%1%2").arg(adjLeadNodes, m_sName),"UNIT", SCPI::isQuery, m_scpiInterface, cmdUnit);
-    addDelegate(QString("%1%2").arg(adjLeadNodes, m_sName),"DSPCHANNEL", SCPI::isQuery, m_scpiInterface, cmdDspChannel);
-    addDelegate(QString("%1%2").arg(adjLeadNodes, m_sName),"RANGE", SCPI::isQuery | SCPI::isCmdwP, m_scpiInterface, cmdRange, &notifierSenseChannelRange);
-    addDelegate(QString("%1%2").arg(adjLeadNodes, m_sName),"URVALUE", SCPI::isQuery, m_scpiInterface, cmdUrvalue);
-    addDelegate(QString("%1%2:RANGE").arg(adjLeadNodes, m_sName),"CATALOG", SCPI::isQuery, m_scpiInterface, cmdRangeCat, &notifierSenseChannelRangeCat);
+    addDelegate(QString("%1%2").arg(adjLeadNodes, m_settings.m_nameMx),"ALIAS", SCPI::isQuery, m_scpiInterface, cmdAlias);
+    addDelegate(QString("%1%2").arg(adjLeadNodes, m_settings.m_nameMx),"TYPE", SCPI::isQuery, m_scpiInterface, cmdType);
+    addDelegate(QString("%1%2").arg(adjLeadNodes, m_settings.m_nameMx),"UNIT", SCPI::isQuery, m_scpiInterface, cmdUnit);
+    addDelegate(QString("%1%2").arg(adjLeadNodes, m_settings.m_nameMx),"DSPCHANNEL", SCPI::isQuery, m_scpiInterface, cmdDspChannel);
+    addDelegate(QString("%1%2").arg(adjLeadNodes, m_settings.m_nameMx),"RANGE", SCPI::isQuery | SCPI::isCmdwP, m_scpiInterface, cmdRange, &notifierSenseChannelRange);
+    addDelegate(QString("%1%2").arg(adjLeadNodes, m_settings.m_nameMx),"URVALUE", SCPI::isQuery, m_scpiInterface, cmdUrvalue);
+    addDelegate(QString("%1%2:RANGE").arg(adjLeadNodes, m_settings.m_nameMx),"CATALOG", SCPI::isQuery, m_scpiInterface, cmdRangeCat, &notifierSenseChannelRangeCat);
     for(auto range : qAsConst(m_RangeList)) {
         connect(range, &ScpiConnection::cmdExecutionDone, this, &ScpiConnection::cmdExecutionDone);
-        range->initSCPIConnection(QString("%1%2").arg(adjLeadNodes, m_sName));
+        range->initSCPIConnection(QString("%1%2").arg(adjLeadNodes, m_settings.m_nameMx));
     }
 
     // Old implementation
-    addDelegate(QString("%1%2").arg(adjLeadNodes, m_sName),"STATUS", SCPI::isQuery, m_scpiInterface, cmdStatus);
-    addDelegate(QString("%1%2:STATUS").arg(adjLeadNodes, m_sName),"RESET", SCPI::isCmd, m_scpiInterface, cmdStatusReset);
+    addDelegate(QString("%1%2").arg(adjLeadNodes, m_settings.m_nameMx),"STATUS", SCPI::isQuery, m_scpiInterface, cmdStatus);
+    addDelegate(QString("%1%2:STATUS").arg(adjLeadNodes, m_settings.m_nameMx),"RESET", SCPI::isCmd, m_scpiInterface, cmdStatusReset);
     // New implementation
-    addDelegate(QString("%1%2").arg(adjLeadNodes, m_sName),"HARDOVERLOAD", SCPI::isQuery, m_scpiInterface, cmdHardOverLoad);
+    addDelegate(QString("%1%2").arg(adjLeadNodes, m_settings.m_nameMx),"HARDOVERLOAD", SCPI::isQuery, m_scpiInterface, cmdHardOverLoad);
 }
 
 void SenseChannelCommon::setMMode(int mode)
@@ -137,7 +132,7 @@ SenseChannelCommon::NotificationStatus SenseChannelCommon::setRangeCommon(SenseR
 {
     if ( range && range->getAvail() ) {
         I2cCtrlRangesPtr rangeCtrl = m_ctrlFactory->getRangesController();
-        ZeraMControllerIo::atmelRM atmelCmdState = rangeCtrl->setRange(m_nCtrlChannel, range->getSelCode());
+        ZeraMControllerIo::atmelRM atmelCmdState = rangeCtrl->setRange(m_settings.m_nCtrlChannel, range->getSelCode());
         const QString rangeName = range->getRangeName();
         if (atmelCmdState == ZeraMControllerIo::cmddone) {
             notifierSenseChannelRange = rangeName;
@@ -245,7 +240,7 @@ QString SenseChannelCommon::scpiReadDspChannel(const QString &scpi)
 {
     cSCPICommand cmd = scpi;
     if (cmd.isQuery())
-        return QString("%1").arg(m_nDspChannel);
+        return QString("%1").arg(m_settings.m_nDspChannel);
     return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
@@ -256,8 +251,8 @@ QString SenseChannelCommon::scpiReadChannelStatus(const QString &scpi)
         quint16 status;
         if (m_ctrlFactory->getCriticalStatusController()->readCriticalStatus(status) == ZeraMControllerIo::cmddone ) {
             quint32 r = 0;
-            if (m_nOverloadBit >= 0) { // perhaps this channel has no overload bit
-                if ( (status & (1 << m_nOverloadBit))  > 0)
+            if (m_settings.m_nOverloadBit >= 0) { // perhaps this channel has no overload bit
+                if ( (status & (1 << m_settings.m_nOverloadBit))  > 0)
                     r |= 1;
             }
             return QString("%1").arg(r);
@@ -272,8 +267,8 @@ QString SenseChannelCommon::scpiStatusReset(const QString &scpi)
 {
     cSCPICommand cmd = scpi;
     if (cmd.isCommand(1) && (cmd.getParam(0) == "")) {
-        if (m_nOverloadBit >= 0) {
-            if (m_ctrlFactory->getCriticalStatusController()->resetCriticalStatus((quint16)(1 << m_nOverloadBit)) == ZeraMControllerIo::cmddone )
+        if (m_settings.m_nOverloadBit >= 0) {
+            if (m_ctrlFactory->getCriticalStatusController()->resetCriticalStatus((quint16)(1 << m_settings.m_nOverloadBit)) == ZeraMControllerIo::cmddone )
                 return ZSCPI::scpiAnswer[ZSCPI::ack];
             else
                 return ZSCPI::scpiAnswer[ZSCPI::errexec];
@@ -290,8 +285,8 @@ QString SenseChannelCommon::scpiReadHardOverload(const QString &scpi)
     if (cmd.isQuery()) {
         quint16 status;
         if (m_ctrlFactory->getCriticalStatusController()->readCriticalStatus(status) == ZeraMControllerIo::cmddone ) {
-            if (m_nOverloadBit >= 0) { // perhaps this channel has no overload bit
-                if (status & (1 << m_nOverloadBit))
+            if (m_settings.m_nOverloadBit >= 0) { // perhaps this channel has no overload bit
+                if (status & (1 << m_settings.m_nOverloadBit))
                     return "1";
             }
             return "0";

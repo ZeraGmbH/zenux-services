@@ -62,14 +62,9 @@ protected:
 
     const AbstractFactoryI2cCtrlPtr m_ctrlFactory;
     AsyncQueuedMControllerIo m_delayedCtrlIos;
-    const QString m_sName; // the channels name m0...
-    const QString m_sAlias1; // the channel's alias name for example UL1
-    const QString m_sAlias2; // the channel's alias name for example REF1 (COM5003 only)
-    QString m_sUnit; // the channel's measured unit
-    const quint8 m_nCtrlChannel; // where to control the channel
-    const quint8 m_nDspChannel; // where to find the channel's sampled data
-    const qint8 m_nOverloadBit; // where to find overload bit in ctitical status (<0: There is no overload in hardware)
+    const SenseSystem::cChannelSettings m_settings;
     QList<SenseRangeCommon*> m_RangeList;
+    QString m_sUnit;
     quint8 m_nMMode;
 
     NotificationString notifierSenseChannelRangeCat;

@@ -3,6 +3,8 @@
 #include "senserangecommon.h"
 #include "zscpi_response_definitions.h"
 
+using namespace SenseSystem;
+
 Com5003SenseChannel::Com5003SenseChannel(const std::shared_ptr<cSCPI> &scpiInterface,
                                          const QString &unit,
                                          SenseSystem::cChannelSettings *cSettings,
@@ -17,9 +19,9 @@ Com5003SenseChannel::Com5003SenseChannel(const std::shared_ptr<cSCPI> &scpiInter
 QString Com5003SenseChannel::getAlias()
 {
     if (m_nMMode == modeAC)
-        return m_sAlias1;
+        return m_settings.m_sAlias1;
     else
-        return m_sAlias2;
+        return m_settings.m_sAlias2;
 }
 
 void Com5003SenseChannel::refreshNotifierForActualRange()
@@ -28,7 +30,7 @@ void Com5003SenseChannel::refreshNotifierForActualRange()
     if (m_ctrlFactory->getMModeController()->readMeasMode(mode) == ZeraMControllerIo::cmddone ) {
         if (mode == modeAC) {
             quint8 rSelCode;
-            if (m_ctrlFactory->getRangesController()->readRange(m_nCtrlChannel, rSelCode) == ZeraMControllerIo::cmddone ) {
+            if (m_ctrlFactory->getRangesController()->readRange(m_settings.m_nCtrlChannel, rSelCode) == ZeraMControllerIo::cmddone ) {
                 for(auto range : qAsConst(m_RangeList)) {
                     if ( (range->getSelCode() == rSelCode) && (range->getAvail())) {
                         notifierSenseChannelRange = range->getRangeName();

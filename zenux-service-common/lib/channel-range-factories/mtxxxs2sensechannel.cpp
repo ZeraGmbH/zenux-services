@@ -15,23 +15,23 @@ MtXXXs2SenseChannel::MtXXXs2SenseChannel(const std::shared_ptr<cSCPI> &scpiInter
 
 QString MtXXXs2SenseChannel::getAlias()
 {
-    return m_sAlias1;
+    return m_settings.m_sAlias1;
 }
 
 void MtXXXs2SenseChannel::refreshNotifierForActualRange()
 {
     quint8 rSelCode;
-    if (m_ctrlFactory->getRangesController()->readRange(m_nCtrlChannel, rSelCode) == ZeraMControllerIo::cmddone ) {
+    if (m_ctrlFactory->getRangesController()->readRange(m_settings.m_nCtrlChannel, rSelCode) == ZeraMControllerIo::cmddone ) {
         for(auto range : qAsConst(m_RangeList)) {
             if ( (range->getSelCode() == rSelCode) && (range->getAvail())) {
                 notifierSenseChannelRange = range->getRangeName();
                 return;
             }
         }
-        qWarning("On channel %s range for selection code %i was not found!", qPrintable(m_sAlias1), rSelCode);
+        qWarning("On channel %s range for selection code %i was not found!", qPrintable(m_settings.m_sAlias1), rSelCode);
     }
     else
-        qWarning("Reading range for notification failed for %s", qPrintable(m_sAlias1));
+        qWarning("Reading range for notification failed for %s", qPrintable(m_settings.m_sAlias1));
 }
 
 SenseChannelCommon::NotificationStatus MtXXXs2SenseChannel::scpiReadWriteRange(const ProtonetCommandPtr &protoCmd)
