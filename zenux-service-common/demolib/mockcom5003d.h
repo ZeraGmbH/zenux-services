@@ -3,8 +3,9 @@
 
 #include "com5003d.h"
 
-class MockCom5003d
+class MockCom5003d : public QObject
 {
+    Q_OBJECT
 public:
     MockCom5003d(const AbstractFactoryI2cCtrlPtr &ctrlFactory,
                  const VeinTcp::AbstractTcpNetworkFactoryPtr &tcpNetworkFactory,
