@@ -78,8 +78,9 @@ namespace SenseSystem
         QString m_sAlias2;
         quint8 m_nCtrlChannel; // where to control the channel
         quint8 m_nDspChannel;  // where to find the channel's sampled data
+        // The following show not available by value -1
         qint8 m_nPluggedBit;   // plug in/out externals (as clamps) bitmask bitno
-        qint8 m_nMuxChannelNo; // I2c mulpiplexer channel (-1 if not multiplexed)
+        qint8 m_nMuxChannelNo; // I2c mulpiplexer channel
         qint8 m_nOverloadBit;  // where to find overload condition in critical status
     };
 }
