@@ -32,7 +32,6 @@ public:
     QString getName();
     quint8 getCtrlChannel();
     void setUnit(const QString &s);
-    bool isAvail();
 
     bool initJustData();
     bool computeJustData();
@@ -68,7 +67,6 @@ protected:
     const quint8 m_nCtrlChannel; // where to control the channel
     const quint8 m_nDspChannel; // where to find the channel's sampled data
     const quint8 m_nOverloadBit;
-    const bool m_bAvail; // is this channel available ?
     QList<SenseRangeCommon*> m_RangeList;
     quint8 m_nMMode;
 

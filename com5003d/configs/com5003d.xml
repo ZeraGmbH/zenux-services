@@ -39,7 +39,6 @@
             <dspchannel>0</dspchannel>
             <pluggedbit>-1</pluggedbit>
             <overloadbit>-1</overloadbit>
-            <avail>true</avail>
         </m0>
         <m1>
             <alias1>UL2</alias1>
@@ -48,7 +47,6 @@
             <dspchannel>2</dspchannel>
             <pluggedbit>-1</pluggedbit>
             <overloadbit>-1</overloadbit>
-            <avail>true</avail>
         </m1>
         <m2>
             <alias1>UL3</alias1>
@@ -57,7 +55,6 @@
             <dspchannel>4</dspchannel>
             <pluggedbit>-1</pluggedbit>
             <overloadbit>-1</overloadbit>
-            <avail>true</avail>
         </m2>
         <m3>
             <alias1>IL1</alias1>
@@ -66,7 +63,6 @@
             <dspchannel>1</dspchannel>
             <pluggedbit>-1</pluggedbit>
             <overloadbit>0</overloadbit>
-            <avail>true</avail>
         </m3>
         <m4>
             <alias1>IL2</alias1>
@@ -75,7 +71,6 @@
             <dspchannel>3</dspchannel>
             <pluggedbit>-1</pluggedbit>
             <overloadbit>1</overloadbit>
-            <avail>true</avail>
         </m4>
         <m5>
             <alias1>IL3</alias1>
@@ -84,7 +79,6 @@
             <dspchannel>5</dspchannel>
             <pluggedbit>-1</pluggedbit>
             <overloadbit>2</overloadbit>
-            <avail>true</avail>
         </m5>
     </sense>
 

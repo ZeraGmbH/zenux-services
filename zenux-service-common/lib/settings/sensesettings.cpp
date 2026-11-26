@@ -13,8 +13,6 @@ cSenseSettings::cSenseSettings(Zera::XMLConfig::cReader *xmlread, int channelCou
         m_ConfigXMLMap[QString("serviceconfig:resource:sense:m%1:pluggedbit").arg(i)] = SenseSystem::cfg0pluggedbit + i;
         m_ConfigXMLMap[QString("serviceconfig:resource:sense:m%1:muxchannel").arg(i)] = SenseSystem::cfg0muxchannelno + i;
         m_ConfigXMLMap[QString("serviceconfig:resource:sense:m%1:overloadbit").arg(i)] = SenseSystem::cfg0overloadbit + i;
-
-        m_ConfigXMLMap[QString("serviceconfig:resource:sense:m%1:avail").arg(i)] = SenseSystem::cfg0avail + i;
     }
 }
 
@@ -233,30 +231,6 @@ void cSenseSettings::configXMLInfo(const QString &key)
             m_ChannelSettingsList.at(7)->m_nOverloadBit  =  m_pXMLReader->getValue(key).toInt();
             break;
 
-        case SenseSystem::cfg0avail:
-            m_ChannelSettingsList.at(0)->avail = (m_pXMLReader->getValue(key) == "true");
-            break;
-        case SenseSystem::cfg1avail:
-            m_ChannelSettingsList.at(1)->avail = (m_pXMLReader->getValue(key) == "true");
-            break;
-        case SenseSystem::cfg2avail:
-            m_ChannelSettingsList.at(2)->avail = (m_pXMLReader->getValue(key) == "true");
-            break;
-        case SenseSystem::cfg3avail:
-            m_ChannelSettingsList.at(3)->avail = (m_pXMLReader->getValue(key) == "true");
-            break;
-        case SenseSystem::cfg4avail:
-            m_ChannelSettingsList.at(4)->avail = (m_pXMLReader->getValue(key) == "true");
-            break;
-        case SenseSystem::cfg5avail:
-            m_ChannelSettingsList.at(5)->avail = (m_pXMLReader->getValue(key) == "true");
-            break;
-        case SenseSystem::cfg6avail:
-            m_ChannelSettingsList.at(6)->avail = (m_pXMLReader->getValue(key) == "true");
-            break;
-        case SenseSystem::cfg7avail:
-            m_ChannelSettingsList.at(7)->avail = (m_pXMLReader->getValue(key) == "true");
-            break;
         }
     }
 }

@@ -27,7 +27,6 @@ SenseChannelCommon::SenseChannelCommon(const std::shared_ptr<cSCPI> &scpiInterfa
     m_nCtrlChannel(cSettings->m_nCtrlChannel),
     m_nDspChannel(cSettings->m_nDspChannel),
     m_nOverloadBit(cSettings->m_nOverloadBit),
-    m_bAvail(cSettings->avail),
     m_nMMode(0)
 {
     connect(&m_delayedCtrlIos, &AsyncQueuedMControllerIo::sigCmdDone, this,
@@ -98,11 +97,6 @@ quint8 SenseChannelCommon::getCtrlChannel()
 void SenseChannelCommon::setUnit(const QString &s)
 {
     m_sUnit = s;
-}
-
-bool SenseChannelCommon::isAvail()
-{
-    return m_bAvail;
 }
 
 void SenseChannelCommon::initSCPIConnection(const QString &leadingNodes)
@@ -252,7 +246,7 @@ QString SenseChannelCommon::scpiReadChannelStatus(const QString &scpi)
     if (cmd.isQuery()) {
         quint16 status;
         if (m_ctrlFactory->getCriticalStatusController()->readCriticalStatus(status) == ZeraMControllerIo::cmddone ) {
-            quint32 r = ((m_bAvail) ? 0 : 1 << 31);
+            quint32 r = 0;
             if (m_nOverloadBit >= 0) { // perhaps this channel has no overload bit
                 if ( (status & (1 << m_nOverloadBit))  > 0)
                     r |= 1;

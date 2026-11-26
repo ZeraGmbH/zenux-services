@@ -45,7 +45,6 @@
             <pluggedbit>-1</pluggedbit>
             <muxchannel>-1</muxchannel>
             <overloadbit>-1</overloadbit>
-            <avail>true</avail>
         </m0>
         <m1>
             <alias1>UL2</alias1>
@@ -54,7 +53,6 @@
             <pluggedbit>-1</pluggedbit>
             <muxchannel>-1</muxchannel>
             <overloadbit>-1</overloadbit>
-            <avail>true</avail>
         </m1>
         <m2>
             <alias1>UL3</alias1>
@@ -63,7 +61,6 @@
             <pluggedbit>-1</pluggedbit>
             <muxchannel>-1</muxchannel>
             <overloadbit>-1</overloadbit>
-            <avail>true</avail>
         </m2>
         <m3>
             <alias1>IL1</alias1>
@@ -72,7 +69,6 @@
             <pluggedbit>4</pluggedbit>
             <muxchannel>1</muxchannel>
             <overloadbit>0</overloadbit>
-            <avail>true</avail>
         </m3>
         <m4>
             <alias1>IL2</alias1>
@@ -81,7 +77,6 @@
             <pluggedbit>5</pluggedbit>
             <muxchannel>2</muxchannel>
             <overloadbit>1</overloadbit>
-            <avail>true</avail>
         </m4>
         <m5>
             <alias1>IL3</alias1>
@@ -90,7 +85,6 @@
             <pluggedbit>6</pluggedbit>
             <muxchannel>3</muxchannel>
             <overloadbit>2</overloadbit>
-            <avail>true</avail>
         </m5>
         <m6>
             <alias1>UAUX</alias1>
@@ -99,7 +93,6 @@
             <pluggedbit>-1</pluggedbit>
             <muxchannel>-1</muxchannel>
             <overloadbit>-1</overloadbit>
-            <avail>true</avail>
         </m6>
         <m7>
             <alias1>IAUX</alias1>
@@ -108,7 +101,6 @@
             <pluggedbit>7</pluggedbit>
             <muxchannel>4</muxchannel>
             <overloadbit>3</overloadbit>
-            <avail>true</avail>
         </m7>
     </sense>
 

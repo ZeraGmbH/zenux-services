@@ -69,16 +69,7 @@ namespace SenseSystem
         cfg4overloadbit,
         cfg5overloadbit,
         cfg6overloadbit,
-        cfg7overloadbit,
-
-        cfg0avail,
-        cfg1avail,
-        cfg2avail,
-        cfg3avail,
-        cfg4avail,
-        cfg5avail,
-        cfg6avail,
-        cfg7avail
+        cfg7overloadbit
     };
     struct cChannelSettings // what we want to get configured
     {
@@ -90,7 +81,6 @@ namespace SenseSystem
         qint8 m_nPluggedBit;   // plug in/out externals (as clamps) bitmask bitno
         qint8 m_nMuxChannelNo; // I2c mulpiplexer channel (-1 if not multiplexed)
         qint8 m_nOverloadBit;  // where to find overload condition in critical status
-        bool avail;            // is this channel available ?
     };
 }
 
