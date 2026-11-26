@@ -4,6 +4,16 @@
 #include "scpiconnection.h"
 #include "adjrangescpi.h"
 
+struct SenseRangeCommonConfig {
+    const QString m_name;
+    const double m_nominalValue; // aka urValue or rValue
+    const double m_fRejection; // 100% rejection value
+    const double m_fOVRejection; // overload rejection value
+    const quint8 m_nSelCode; // selection code
+    const quint32 m_typeFlags;
+    const int m_rejectionScpiQueryDigits;
+};
+
 class SenseRangeCommon : public ScpiConnection
 {
     Q_OBJECT
@@ -12,15 +22,9 @@ public:
     static const char* rangeAliasNull;
 
     SenseRangeCommon(const std::shared_ptr<cSCPI> &scpiInterface,
-                     const QString &name,
-                     bool avail,
-                     double upperRangeValue, // = nominal
-                     double rejection,
-                     double ovrejection,
-                     quint8 rselcode,
-                     quint32 typeFlags,
-                     AdjRangeScpi* justdata,
-                     int rejectionScpiQueryDigits);
+                     bool available,
+                     const SenseRangeCommonConfig &config,
+                     AdjRangeScpi* justdata);
     virtual ~SenseRangeCommon();
     void initSCPIConnection(const QString &leadingNodes);
     QString getRangeName();
@@ -36,7 +40,6 @@ public:
     bool computeJustData();
 
 protected:
-    bool m_bAvail; // range io avail or not
 private:
     void executeProtoScpi(int cmdCode, const ProtonetCommandPtr &protoCmd) override;
     QString scpiRangeAvail(const QString& scpi) const;
@@ -47,13 +50,8 @@ private:
     QString scpiRangeTypeFlags(const QString& scpi) const;
     QString scpiControllerSelection(const QString& scpi) const;
 
-    QString m_sName; // the range name
-    const double m_upperRangeValue; // more a nominal value - we keep name for SCPI name
-    const double m_fRejection; // 100% rejection value
-    const double m_fOVRejection; // overload rejection value
-    const quint8 m_nSelCode; // selection code
-    const quint32 m_typeFlags;
-    const int m_rejectionScpiQueryDigits;
+    bool m_available; // range io avail or not
+    const SenseRangeCommonConfig m_config;
     AdjRangeScpi* m_justdata;
 };
 

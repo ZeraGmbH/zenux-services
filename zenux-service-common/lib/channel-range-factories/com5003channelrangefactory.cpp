@@ -75,14 +75,17 @@ void COM5003ChannelRangeFactory::tryAddRange(QList<SenseRangeCommon *> &rngList,
                                              quint8 controllerSelectionNum,
                                              quint16 supportedMeasModeMask)
 {
+    const SenseRangeCommonConfig config {
+        rangeName,
+        nominalValue,
+        nominalSampleValue,
+        round(nominalSampleValue * overloadFactor),
+        controllerSelectionNum,
+        supportedMeasModeMask,
+        rejectionScpiQueryDigitsCom5003
+    };
     rngList.append(new SenseRangeCommon(scpi,
-                                        rangeName,
                                         avail,
-                                        nominalValue,
-                                        nominalSampleValue,
-                                        round(nominalSampleValue * overloadFactor),
-                                        controllerSelectionNum,
-                                        supportedMeasModeMask,
-                                        new AdjRangeScpi(scpi, AdjustScpiValueFormatterFactory::createCom5003AdjFormatter()),
-                                        rejectionScpiQueryDigitsCom5003));
+                                        config,
+                                        new AdjRangeScpi(scpi, AdjustScpiValueFormatterFactory::createCom5003AdjFormatter())));
 }

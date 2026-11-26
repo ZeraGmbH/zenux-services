@@ -96,22 +96,25 @@ void MT310s2ChannelRangeFactory::tryAddRange(QList<SenseRangeCommon *> &rngList,
                                              const std::shared_ptr<cSCPI> &scpi,
                                              bool avail,
                                              double nominalValue,
-                                             int nominalSampleValue,
+                                             double nominalSampleValue,
                                              double overloadFactor,
                                              quint8 controllerSelectionNum,
                                              quint16 supportedMeasModeMask)
 {
     if(isInvalidAdjDataOrChannelRangeAvail(adjData, channelName, rangeName)) {
+        const SenseRangeCommonConfig config {
+            rangeName,
+            nominalValue,
+            nominalSampleValue,
+            round(nominalSampleValue * overloadFactor),
+            controllerSelectionNum,
+            supportedMeasModeMask,
+            rejectionScpiQueryDigitsMtXXXs2
+        };
         rngList.append(new SenseRangeCommon(scpi,
-                                            rangeName,
                                             avail,
-                                            nominalValue,
-                                            nominalSampleValue,
-                                            round(nominalSampleValue * overloadFactor),
-                                            controllerSelectionNum,
-                                            supportedMeasModeMask,
-                                            new AdjRangeScpi(scpi, AdjustScpiValueFormatterFactory::createMt310s2AdjFormatter()),
-                                            rejectionScpiQueryDigitsMtXXXs2));
+                                            config,
+                                            new AdjRangeScpi(scpi, AdjustScpiValueFormatterFactory::createMt310s2AdjFormatter())));
     }
 }
 

@@ -18,7 +18,7 @@ private:
                             const std::shared_ptr<cSCPI> &scpi,
                             bool avail,
                             double nominalValue,
-                            int nominalSampleValue,
+                            double nominalSampleValue,
                             double overloadFactor,
                             quint8 controllerSelectionNum,
                             quint16 supportedMeasModeMask);

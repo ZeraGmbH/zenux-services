@@ -14,14 +14,17 @@ ClampSenseRange::ClampSenseRange(const std::shared_ptr<cSCPI> &scpiInterface,
                                  AdjRangeScpi* justdata) :
     SenseRangeCommon(
         scpiInterface,
-        name,
         avail,
-        rValue,
-        rejection,
-        ovrejection,
-        rselcode,
-        mmask,
-        justdata,
-        rejectionScpiQueryDigitsClamp)
+        {
+            name,
+            rValue,
+            rejection,
+            ovrejection,
+            rselcode,
+            mmask,
+            rejectionScpiQueryDigitsClamp
+        },
+        justdata
+)
 {
 }

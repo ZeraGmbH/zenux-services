@@ -11,14 +11,13 @@ public:
                                                               const std::shared_ptr<cSCPI> &scpi,
                                                               const AbstractFactoryI2cCtrlPtr &ctrlFactory) override;
 private:
-    static void tryAddRange(QList<SenseRangeCommon *> &rngList,
-                            const QString &rangeName,
+    static void tryAddRange(QList<SenseRangeCommon *> &rngList, const QString &rangeName,
                             const QString &channelName,
                             AdjDataPtr adjData,
                             const std::shared_ptr<cSCPI> &scpi,
                             bool avail,
                             double nominalValue,
-                            int nominalSampleValue,
+                            double nominalSampleValue,
                             double overloadFactor,
                             quint8 controllerSelectionNum,
                             quint16 supportedMeasModeMask);

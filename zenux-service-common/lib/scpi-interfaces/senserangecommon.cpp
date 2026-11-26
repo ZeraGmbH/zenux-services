@@ -17,24 +17,12 @@ enum Commands
 };
 
 SenseRangeCommon::SenseRangeCommon(const std::shared_ptr<cSCPI> &scpiInterface,
-                                   const QString &name,
-                                   bool avail,
-                                   double upperRangeValue,
-                                   double rejection,
-                                   double ovrejection,
-                                   quint8 rselcode,
-                                   quint32 typeFlags,
-                                   AdjRangeScpi *justdata,
-                                   int rejectionScpiQueryDigits) :
+                                   bool available,
+                                   const SenseRangeCommonConfig &config,
+                                   AdjRangeScpi *justdata) :
     ScpiConnection(scpiInterface),
-    m_bAvail(avail),
-    m_sName(name),
-    m_upperRangeValue(upperRangeValue),
-    m_fRejection(rejection),
-    m_fOVRejection(ovrejection),
-    m_nSelCode(rselcode),
-    m_typeFlags(typeFlags),
-    m_rejectionScpiQueryDigits(rejectionScpiQueryDigits),
+    m_available(available),
+    m_config(config),
     m_justdata(justdata)
 {
 }
@@ -47,13 +35,13 @@ SenseRangeCommon::~SenseRangeCommon()
 void SenseRangeCommon::initSCPIConnection(const QString &leadingNodes)
 {
     const QString adjLeadNodes = appendTrailingColonOnNonEmptyParentNodes(leadingNodes);
-    addDelegate(QString("%1%2").arg(adjLeadNodes, m_sName), "AVAIL", SCPI::isQuery, m_scpiInterface, cmdAvail);
-    addDelegate(QString("%1%2").arg(adjLeadNodes, m_sName), "URVALUE", SCPI::isQuery, m_scpiInterface, cmdUpperRangeValue);
-    addDelegate(QString("%1%2").arg(adjLeadNodes, m_sName), "REJECTION", SCPI::isQuery, m_scpiInterface, cmdRejection);
-    addDelegate(QString("%1%2").arg(adjLeadNodes, m_sName), "OVREJECTION", SCPI::isQuery, m_scpiInterface, cmdOVRejection);
-    addDelegate(QString("%1%2").arg(adjLeadNodes, m_sName), "ADCREJECTION", SCPI::isQuery, m_scpiInterface, cmdADCRejection);
-    addDelegate(QString("%1%2").arg(adjLeadNodes, m_sName), "TYPE", SCPI::isQuery, m_scpiInterface, cmdType);
-    addDelegate(QString("%1%2").arg(adjLeadNodes, m_sName), "CTRLSELECTION", SCPI::isQuery, m_scpiInterface, cmdCtrlSelection);
+    addDelegate(QString("%1%2").arg(adjLeadNodes, m_config.m_name), "AVAIL", SCPI::isQuery, m_scpiInterface, cmdAvail);
+    addDelegate(QString("%1%2").arg(adjLeadNodes, m_config.m_name), "URVALUE", SCPI::isQuery, m_scpiInterface, cmdUpperRangeValue);
+    addDelegate(QString("%1%2").arg(adjLeadNodes, m_config.m_name), "REJECTION", SCPI::isQuery, m_scpiInterface, cmdRejection);
+    addDelegate(QString("%1%2").arg(adjLeadNodes, m_config.m_name), "OVREJECTION", SCPI::isQuery, m_scpiInterface, cmdOVRejection);
+    addDelegate(QString("%1%2").arg(adjLeadNodes, m_config.m_name), "ADCREJECTION", SCPI::isQuery, m_scpiInterface, cmdADCRejection);
+    addDelegate(QString("%1%2").arg(adjLeadNodes, m_config.m_name), "TYPE", SCPI::isQuery, m_scpiInterface, cmdType);
+    addDelegate(QString("%1%2").arg(adjLeadNodes, m_config.m_name), "CTRLSELECTION", SCPI::isQuery, m_scpiInterface, cmdCtrlSelection);
 
     connect(m_justdata, &ScpiConnection::cmdExecutionDone, this, &ScpiConnection::cmdExecutionDone);
     m_justdata->initSCPIConnection(QString("%1%2").arg(adjLeadNodes, getRangeName()));
@@ -61,32 +49,32 @@ void SenseRangeCommon::initSCPIConnection(const QString &leadingNodes)
 
 QString SenseRangeCommon::getRangeName()
 {
-    return m_sName;
+    return m_config.m_name;
 }
 
 double SenseRangeCommon::getUpperRangevalue() const
 {
-    return m_upperRangeValue;
+    return m_config.m_nominalValue;
 }
 
 quint8 SenseRangeCommon::getSelCode() const
 {
-    return m_nSelCode;
+    return m_config.m_nSelCode;
 }
 
 bool SenseRangeCommon::getAvail() const
 {
-    return m_bAvail;
+    return m_available;
 }
 
 quint16 SenseRangeCommon::getMMask()
 {
-    return m_typeFlags;
+    return m_config.m_typeFlags;
 }
 
 void SenseRangeCommon::setMModeToUpdateAvailability(int mode)
 {
-    m_bAvail = ((getMMask() & mode) > 0);
+    m_available = ((getMMask() & mode) > 0);
 }
 
 quint8 SenseRangeCommon::getAdjustmentStatus80Mask()
@@ -143,7 +131,7 @@ QString SenseRangeCommon::scpiRangeAvail(const QString &scpi) const
 {
     cSCPICommand cmd = scpi;
     if (cmd.isQuery())
-        return m_bAvail ? "1" : "0";
+        return m_available ? "1" : "0";
     return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
@@ -151,7 +139,7 @@ QString SenseRangeCommon::scpiRangeUpperRangeValue(const QString &scpi) const
 {
     cSCPICommand cmd = scpi;
     if (cmd.isQuery())
-        return QString("%1").arg(m_upperRangeValue);
+        return QString("%1").arg(m_config.m_nominalValue);
     return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
@@ -159,7 +147,7 @@ QString SenseRangeCommon::scpiRangeRejection(const QString &scpi) const
 {
     cSCPICommand cmd = scpi;
     if (cmd.isQuery())
-        return QString("%1").arg(m_fRejection, 0, 'g', m_rejectionScpiQueryDigits);
+        return QString("%1").arg(m_config.m_fRejection, 0, 'g', m_config.m_rejectionScpiQueryDigits);
     return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
@@ -167,7 +155,7 @@ QString SenseRangeCommon::scpiRangeOVRejection(const QString &scpi) const
 {
     cSCPICommand cmd = scpi;
     if (cmd.isQuery())
-        return QString("%1").arg(m_fOVRejection, 0, 'g', m_rejectionScpiQueryDigits);
+        return QString("%1").arg(m_config.m_fOVRejection, 0, 'g', m_config.m_rejectionScpiQueryDigits);
     return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
@@ -183,7 +171,7 @@ QString SenseRangeCommon::scpiRangeTypeFlags(const QString &scpi) const
 {
     cSCPICommand cmd = scpi;
     if (cmd.isQuery())
-        return QString("%1").arg(m_typeFlags);
+        return QString("%1").arg(m_config.m_typeFlags);
     return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
 
@@ -191,6 +179,6 @@ QString SenseRangeCommon::scpiControllerSelection(const QString &scpi) const
 {
     cSCPICommand cmd = scpi;
     if (cmd.isQuery())
-        return QString("%1").arg(m_nSelCode);
+        return QString("%1").arg(m_config.m_nSelCode);
     return ZSCPI::scpiAnswer[ZSCPI::nak];
 }
