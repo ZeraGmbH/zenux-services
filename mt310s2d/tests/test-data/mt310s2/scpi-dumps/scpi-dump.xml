@@ -23,6 +23,7 @@
       <M0 Type="Node">
         <ALIAS ScpiPath="SENSE:M0:ALIAS" Type="Query"/>
         <DSPCHANNEL ScpiPath="SENSE:M0:DSPCHANNEL" Type="Query"/>
+        <HARDOVERLOAD ScpiPath="SENSE:M0:HARDOVERLOAD" Type="Query"/>
         <N_100MV Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M0:100MV:ADCREJECTION" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M0:100MV:AVAIL" Type="Query"/>
@@ -222,6 +223,7 @@
       <M1 Type="Node">
         <ALIAS ScpiPath="SENSE:M1:ALIAS" Type="Query"/>
         <DSPCHANNEL ScpiPath="SENSE:M1:DSPCHANNEL" Type="Query"/>
+        <HARDOVERLOAD ScpiPath="SENSE:M1:HARDOVERLOAD" Type="Query"/>
         <N_100MV Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M1:100MV:ADCREJECTION" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M1:100MV:AVAIL" Type="Query"/>
@@ -421,6 +423,7 @@
       <M2 Type="Node">
         <ALIAS ScpiPath="SENSE:M2:ALIAS" Type="Query"/>
         <DSPCHANNEL ScpiPath="SENSE:M2:DSPCHANNEL" Type="Query"/>
+        <HARDOVERLOAD ScpiPath="SENSE:M2:HARDOVERLOAD" Type="Query"/>
         <N_100MV Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M2:100MV:ADCREJECTION" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M2:100MV:AVAIL" Type="Query"/>
@@ -620,6 +623,7 @@
       <M3 Type="Node">
         <ALIAS ScpiPath="SENSE:M3:ALIAS" Type="Query"/>
         <DSPCHANNEL ScpiPath="SENSE:M3:DSPCHANNEL" Type="Query"/>
+        <HARDOVERLOAD ScpiPath="SENSE:M3:HARDOVERLOAD" Type="Query"/>
         <N_1.0A Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M3:1.0A:ADCREJECTION" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M3:1.0A:AVAIL" Type="Query"/>
@@ -1935,6 +1939,7 @@
       <M4 Type="Node">
         <ALIAS ScpiPath="SENSE:M4:ALIAS" Type="Query"/>
         <DSPCHANNEL ScpiPath="SENSE:M4:DSPCHANNEL" Type="Query"/>
+        <HARDOVERLOAD ScpiPath="SENSE:M4:HARDOVERLOAD" Type="Query"/>
         <N_1.0A Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M4:1.0A:ADCREJECTION" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M4:1.0A:AVAIL" Type="Query"/>
@@ -3250,6 +3255,7 @@
       <M5 Type="Node">
         <ALIAS ScpiPath="SENSE:M5:ALIAS" Type="Query"/>
         <DSPCHANNEL ScpiPath="SENSE:M5:DSPCHANNEL" Type="Query"/>
+        <HARDOVERLOAD ScpiPath="SENSE:M5:HARDOVERLOAD" Type="Query"/>
         <N_1.0A Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M5:1.0A:ADCREJECTION" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M5:1.0A:AVAIL" Type="Query"/>
@@ -4565,6 +4571,7 @@
       <M6 Type="Node">
         <ALIAS ScpiPath="SENSE:M6:ALIAS" Type="Query"/>
         <DSPCHANNEL ScpiPath="SENSE:M6:DSPCHANNEL" Type="Query"/>
+        <HARDOVERLOAD ScpiPath="SENSE:M6:HARDOVERLOAD" Type="Query"/>
         <N_100MV Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M6:100MV:ADCREJECTION" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M6:100MV:AVAIL" Type="Query"/>
@@ -4764,6 +4771,7 @@
       <M7 Type="Node">
         <ALIAS ScpiPath="SENSE:M7:ALIAS" Type="Query"/>
         <DSPCHANNEL ScpiPath="SENSE:M7:DSPCHANNEL" Type="Query"/>
+        <HARDOVERLOAD ScpiPath="SENSE:M7:HARDOVERLOAD" Type="Query"/>
         <N_0A Type="Node">
           <ADCREJECTION ScpiPath="SENSE:M7:0A:ADCREJECTION" Type="Query"/>
           <AVAIL ScpiPath="SENSE:M7:0A:AVAIL" Type="Query"/>

@@ -100,7 +100,7 @@
             <dspchannel>7</dspchannel>
             <pluggedbit>7</pluggedbit>
             <muxchannel>4</muxchannel>
-            <overloadbit>3</overloadbit>
+            <overloadbit>-1</overloadbit>
         </m7>
     </sense>
 

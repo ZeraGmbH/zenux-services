@@ -68,7 +68,7 @@
             <dspchannel>1</dspchannel>
             <pluggedbit>4</pluggedbit>
             <muxchannel>1</muxchannel>
-            <overloadbit>0</overloadbit>
+            <overloadbit>-1</overloadbit>
         </m3>
         <m4>
             <alias1>IL2</alias1>
@@ -76,7 +76,7 @@
             <dspchannel>3</dspchannel>
             <pluggedbit>5</pluggedbit>
             <muxchannel>2</muxchannel>
-            <overloadbit>1</overloadbit>
+            <overloadbit>-1</overloadbit>
         </m4>
         <m5>
             <alias1>IL3</alias1>
@@ -84,7 +84,7 @@
             <dspchannel>5</dspchannel>
             <pluggedbit>6</pluggedbit>
             <muxchannel>3</muxchannel>
-            <overloadbit>2</overloadbit>
+            <overloadbit>-1</overloadbit>
         </m5>
         <m6>
             <alias1>UAUX</alias1>
@@ -100,7 +100,7 @@
             <dspchannel>7</dspchannel>
             <pluggedbit>7</pluggedbit>
             <muxchannel>4</muxchannel>
-            <overloadbit>3</overloadbit>
+            <overloadbit>-1</overloadbit>
         </m7>
     </sense>
 

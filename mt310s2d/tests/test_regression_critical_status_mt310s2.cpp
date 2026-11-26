@@ -37,15 +37,15 @@ void test_regression_critical_status_mt310s2::receiveOnAllFlagsSet()
     critStat = ScpiSingleTransactionBlocked::query("SENSE:m2:STATUS?");
     QCOMPARE(critStat, "0");
     critStat = ScpiSingleTransactionBlocked::query("SENSE:m3:STATUS?");
-    QCOMPARE(critStat, "1");
+    QCOMPARE(critStat, "0");
     critStat = ScpiSingleTransactionBlocked::query("SENSE:m4:STATUS?");
-    QCOMPARE(critStat, "1");
+    QCOMPARE(critStat, "0");
     critStat = ScpiSingleTransactionBlocked::query("SENSE:m5:STATUS?");
-    QCOMPARE(critStat, "1");
+    QCOMPARE(critStat, "0");
     critStat = ScpiSingleTransactionBlocked::query("SENSE:m6:STATUS?");
     QCOMPARE(critStat, "0");
     critStat = ScpiSingleTransactionBlocked::query("SENSE:m7:STATUS?");
-    QCOMPARE(critStat, "1");
+    QCOMPARE(critStat, "0");
 
     QString err = ScpiSingleTransactionBlocked::query("SENSE:m8:STATUS?");
     QCOMPARE(err, ZSCPI::scpiAnswer[ZSCPI::nak]);
@@ -67,13 +67,13 @@ void test_regression_critical_status_mt310s2::resetM3()
     critStat = ScpiSingleTransactionBlocked::query("SENSE:m3:STATUS?");
     QCOMPARE(critStat, "0");
     critStat = ScpiSingleTransactionBlocked::query("SENSE:m4:STATUS?");
-    QCOMPARE(critStat, "1");
+    QCOMPARE(critStat, "0");
     critStat = ScpiSingleTransactionBlocked::query("SENSE:m5:STATUS?");
-    QCOMPARE(critStat, "1");
+    QCOMPARE(critStat, "0");
     critStat = ScpiSingleTransactionBlocked::query("SENSE:m6:STATUS?");
     QCOMPARE(critStat, "0");
     critStat = ScpiSingleTransactionBlocked::query("SENSE:m7:STATUS?");
-    QCOMPARE(critStat, "1");
+    QCOMPARE(critStat, "0");
 }
 
 void test_regression_critical_status_mt310s2::resetM4()
@@ -90,15 +90,15 @@ void test_regression_critical_status_mt310s2::resetM4()
     critStat = ScpiSingleTransactionBlocked::query("SENSE:m2:STATUS?");
     QCOMPARE(critStat, "0");
     critStat = ScpiSingleTransactionBlocked::query("SENSE:m3:STATUS?");
-    QCOMPARE(critStat, "1");
+    QCOMPARE(critStat, "0");
     critStat = ScpiSingleTransactionBlocked::query("SENSE:m4:STATUS?");
     QCOMPARE(critStat, "0");
     critStat = ScpiSingleTransactionBlocked::query("SENSE:m5:STATUS?");
-    QCOMPARE(critStat, "1");
+    QCOMPARE(critStat, "0");
     critStat = ScpiSingleTransactionBlocked::query("SENSE:m6:STATUS?");
     QCOMPARE(critStat, "0");
     critStat = ScpiSingleTransactionBlocked::query("SENSE:m7:STATUS?");
-    QCOMPARE(critStat, "1");
+    QCOMPARE(critStat, "0");
 }
 
 void test_regression_critical_status_mt310s2::resetM5()
@@ -115,15 +115,15 @@ void test_regression_critical_status_mt310s2::resetM5()
     critStat = ScpiSingleTransactionBlocked::query("SENSE:m2:STATUS?");
     QCOMPARE(critStat, "0");
     critStat = ScpiSingleTransactionBlocked::query("SENSE:m3:STATUS?");
-    QCOMPARE(critStat, "1");
+    QCOMPARE(critStat, "0");
     critStat = ScpiSingleTransactionBlocked::query("SENSE:m4:STATUS?");
-    QCOMPARE(critStat, "1");
+    QCOMPARE(critStat, "0");
     critStat = ScpiSingleTransactionBlocked::query("SENSE:m5:STATUS?");
     QCOMPARE(critStat, "0");
     critStat = ScpiSingleTransactionBlocked::query("SENSE:m6:STATUS?");
     QCOMPARE(critStat, "0");
     critStat = ScpiSingleTransactionBlocked::query("SENSE:m7:STATUS?");
-    QCOMPARE(critStat, "1");
+    QCOMPARE(critStat, "0");
 }
 
 void test_regression_critical_status_mt310s2::resetM7()
@@ -140,11 +140,11 @@ void test_regression_critical_status_mt310s2::resetM7()
     critStat = ScpiSingleTransactionBlocked::query("SENSE:m2:STATUS?");
     QCOMPARE(critStat, "0");
     critStat = ScpiSingleTransactionBlocked::query("SENSE:m3:STATUS?");
-    QCOMPARE(critStat, "1");
+    QCOMPARE(critStat, "0");
     critStat = ScpiSingleTransactionBlocked::query("SENSE:m4:STATUS?");
-    QCOMPARE(critStat, "1");
+    QCOMPARE(critStat, "0");
     critStat = ScpiSingleTransactionBlocked::query("SENSE:m5:STATUS?");
-    QCOMPARE(critStat, "1");
+    QCOMPARE(critStat, "0");
     critStat = ScpiSingleTransactionBlocked::query("SENSE:m6:STATUS?");
     QCOMPARE(critStat, "0");
     critStat = ScpiSingleTransactionBlocked::query("SENSE:m7:STATUS?");
