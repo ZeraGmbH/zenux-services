@@ -6,7 +6,7 @@
 struct NetworkConnectionInfo
 {
     NetworkConnectionInfo() = default;
-    NetworkConnectionInfo(QString ip, quint16 port) :
+    NetworkConnectionInfo(const QString &ip, quint16 port) :
         m_sIP(ip),
         m_nPort(port)
     {
