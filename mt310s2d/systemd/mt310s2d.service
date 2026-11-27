@@ -19,4 +19,4 @@ StandardOutput=journal
 SyslogLevel=info
 
 [Install]
-WantedBy=multi-user.target
+WantedBy=base.target

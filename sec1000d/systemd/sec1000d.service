@@ -12,4 +12,4 @@ ProtectHome=true
 StandardOutput=journal
 
 [Install]
-WantedBy=multi-user.target
+WantedBy=base.target

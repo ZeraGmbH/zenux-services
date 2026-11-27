@@ -9,4 +9,4 @@ User=operator
 StandardOutput=journal
 
 [Install]
-WantedBy=multi-user.target
+WantedBy=base.target
